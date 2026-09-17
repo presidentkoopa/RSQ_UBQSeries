@@ -1,0 +1,1 @@
+custom VR weapon wheel for UZDXREMA engine. Support for Wheel, Hex-Layout, and 3d-Starchart. Includes datacard to track weapon stats and data. Calibrated with over a dozen popular mods to ensure datacard displays mod-specific weapon data.
