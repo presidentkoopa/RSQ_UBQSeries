@@ -733,7 +733,13 @@ class wr_Constellation : EventHandler
 		{
 			Class<Weapon> ty = (Class<Weapon>)(wp.GetWeapon(slot, i));
 			if (!ty) continue;
-			if (!pmo.FindInventory(ty)) continue;
+			// Owned, AND not stowed. A bHolsterHidden weapon cannot be fired
+			// (Weapon.CheckAmmo refuses it) and this chart equips without
+			// consulting CheckAmmo, so a star for one offers the player a gun
+			// that bricks the moment they take it. Same rule as
+			// wr_Rig.slotWeapons(); the reasoning is written out there.
+			let have = Weapon(pmo.FindInventory(ty));
+			if (!have || have.bHolsterHidden) continue;
 			outv.Push(ty);
 		}
 	}

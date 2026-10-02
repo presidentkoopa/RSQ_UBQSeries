@@ -3586,6 +3586,22 @@ class wr_Rig : EventHandler
 
 			let held = Weapon(pmo.FindInventory(type));
 			if (held == null) continue;
+
+			// STOWED IS NOT A CANDIDATE. Weapon.CheckAmmo refuses a
+			// bHolsterHidden weapon outright, but this wheel equips by handing
+			// the gun to a hand without ever going through CheckAmmo -- so
+			// offering a stowed weapon here gives the player one that can never
+			// fire, while whatever mount it came off still believes it is
+			// seated. The engine's own VR wheel already drops these
+			// (IsWheelWeaponUsable, hw_vrwheel.cpp) and this list has to agree
+			// with it, or the two wheels disagree about what the player owns.
+			//
+			// bHolsterHidden ONLY. A stow usually sets bNoAutoSwitchTo as well,
+			// but that flag is also a legitimate authored statement about
+			// AUTOMATIC switching, and a deliberate pick off the ring is not
+			// that -- filtering on it would hide guns nothing has stowed.
+			if (held.bHolsterHidden) continue;
+
 			if (held.bNoHandSwitch && held.bOffhandWeapon != (mRigHand == 1)) continue;
 
 			into.Push(type);
@@ -8865,6 +8881,12 @@ class wr_Rig : EventHandler
 			let twin = Weapon(pmo.FindInventory(cls));
 			if (twin == null) continue;
 			if (twin == inHand || twin == inMine) continue;
+
+			// A sibling sitting in a holster or on a hardpoint is not "free":
+			// handing it over produces a gun CheckAmmo will not let the player
+			// fire. Same rule as slotWeapons(); the reasoning is written out
+			// there.
+			if (twin.bHolsterHidden) continue;
 
 			// No point handing this hand something it is forbidden to hold.
 			if (twin.bNoHandSwitch && twin.bOffhandWeapon != (mRigHand == 1)) continue;
