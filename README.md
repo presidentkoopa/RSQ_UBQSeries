@@ -47,8 +47,8 @@ Design and reasons: `ShieldSaw_Quest_Design.md` in the zDoomVR project.
 1. Load `RS_ShieldSawQ.pk3` after your BD22 pack (or alone). Nothing to bind: the off trigger and
    off alt-fire are QZD's own bindings.
 2. `vr_quake_haptic_level` above 0 for the buzzes.
-3. Options -> RS ShieldSawQ Options -> Debug -> *Draw the guard plate*: hold the shield up and move
-   the Placement plate sliders until the red ring sits on the drawn rim.
+3. Options -> RS ShieldSawQ Options -> Debug -> *Draw the guard plate*: hold the shield up and check
+   the red ring sits on the drawn rim (the `ssq_plate_*` cvars move it).
 
 Desktop / no-motion route: *Shield saw: draw / put back / recall* and *Shield saw: throw along
 aim* in Customize Controls.
@@ -62,9 +62,8 @@ prop, a tic behind; `ssq_held_world`).
 
 ## Known limits (stock engine)
 
-- The off trigger at your shoulder also reaches whatever was in the off hand for that one tic
-  (a dual-wielded gun could fire once behind you). Open: to be gated by clearing the off-hand
-  ready bits while the hand is at the shoulder, pending the owner's call.
+- The zone beside the headset silences whatever is in the off hand while your hand is in it, so
+  the trigger there is the shield's alone, on the first tic.
 - Hand pose is sampled 35 times a second; a very fast flick is a few samples.
 - One haptic strength (the engine's quake route); duration is ours.
 - Left-handed mode (`ssq_lefthanded`) is written but untested in a headset.

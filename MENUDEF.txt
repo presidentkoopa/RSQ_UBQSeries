@@ -33,7 +33,6 @@ OptionValue "SSQ_HeldWorld"
 OptionMenu "SSQ_Options"
 {
 	Title "RS ShieldSawQ Options"
-	Option "Draw Holster When Stored", "ssq_holster", "OnOff"
 	Option "Start with Shield in Hand", "ssq_start_drawn", "OnOff"
 	StaticText ""
 	Option "Block attacks while Holstered", "ssq_guard_stowed", "OnOff"
@@ -47,53 +46,8 @@ OptionMenu "SSQ_Options"
 	Slider "Lock on Targets Max", "ssq_locks", 0, 5, 1, 0
 	Option "Hit Tiers", "ssq_tiers", "OnOff"
 	StaticText ""
-	Submenu "Controls", "SSQ_Controls"
-	Submenu "Placement", "SSQ_Placement"
 	Submenu "Tuning", "SSQ_Tuning"
 	Submenu "Debug", "SSQ_Debug"
-}
-
-OptionMenu "SSQ_Controls"
-{
-	Title "ShieldSawQ Controls"
-	Option "Left-handed", "ssq_lefthanded", "OnOff"
-	Option "Hand on the shield", "ssq_hand", "OnOff"
-	Option "Others see it in your hand", "ssq_held_world", "SSQ_HeldWorld"
-	Option "Show the mount", "ssq_marker", "SSQ_Marker"
-}
-
-OptionMenu "SSQ_Placement"
-{
-	Title "ShieldSawQ Placement"
-	StaticText "Shoulder", 1
-	Slider "Back / forward", "ssq_mount_fwd", -40.0, 20.0, 1.0, 0
-	Slider "To the off side", "ssq_mount_side", -40.0, 40.0, 1.0, 0
-	Slider "Up / down", "ssq_mount_up", -40.0, 20.0, 1.0, 0
-	StaticText ""
-	StaticText "Mount", 1
-	Slider "Reach", "ssq_mount_reach", 4.0, 30.0, 1.0, 0
-	Slider "Hangs below the grab", "ssq_mount_drop", 0.0, 40.0, 1.0, 0
-	Slider "Yaw", "ssq_mount_yaw", -180.0, 180.0, 5.0, 0
-	Slider "Pitch", "ssq_mount_pitch", -180.0, 180.0, 5.0, 0
-	Slider "Roll", "ssq_mount_roll", -180.0, 180.0, 5.0, 0
-	Slider "Scale", "ssq_mount_scale", 0.2, 3.0, 0.05, 2
-	StaticText ""
-	StaticText "In the hand", 1
-	Slider "Left / right", "ssq_held_x", -30.0, 30.0, 0.5, 1
-	Slider "Forward / back", "ssq_held_y", -30.0, 30.0, 0.5, 1
-	Slider "Down / up", "ssq_held_z", -30.0, 30.0, 0.5, 1
-	Slider "Yaw", "ssq_held_yaw", -180.0, 180.0, 1.0, 0
-	Slider "Pitch", "ssq_held_pitch", -180.0, 180.0, 1.0, 0
-	Slider "Roll", "ssq_held_roll", -180.0, 180.0, 1.0, 0
-	StaticText ""
-	StaticText "The plate", 1
-	Slider "Plate forward", "ssq_plate_f", -40.0, 20.0, 0.5, 1
-	Slider "Plate outward", "ssq_plate_l", -30.0, 30.0, 0.5, 1
-	Slider "Plate up", "ssq_plate_u", -30.0, 30.0, 0.5, 1
-	Slider "Face yaw", "ssq_plate_yaw", -90.0, 90.0, 5.0, 0
-	Slider "Face pitch", "ssq_plate_pitch", -90.0, 90.0, 5.0, 0
-	Slider "Radius", "ssq_plate_radius", 10.0, 50.0, 0.5, 1
-	Slider "Roll sign", "ssq_roll_sign", -1.0, 1.0, 2.0, 0
 }
 
 OptionMenu "SSQ_Tuning"
@@ -111,6 +65,8 @@ OptionMenu "SSQ_Tuning"
 	Slider "Rev time", "ssq_rev_tics", 1, 70, 1, 0
 	Slider "Grind damage", "ssq_grind_damage", 0, 40, 1, 0
 	Slider "Full-rev throw bonus", "ssq_rev_throw_bonus", 0.0, 2.0, 0.1, 1
+	Option "Others see it in your hand", "ssq_held_world", "SSQ_HeldWorld"
+	Option "Show the mount", "ssq_marker", "SSQ_Marker"
 	Option "Shield bash", "ssq_bash", "OnOff"
 	Slider "Shove speed", "ssq_bash_speed", 10, 400, 5, 0
 	Slider "Bash damage", "ssq_bash_damage", 0.1, 8.0, 0.1, 1

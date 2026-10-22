@@ -17,7 +17,8 @@ class SSQ_Pose play
 	Vector3 pos[3];		// newest first
 	Vector3 F, L, U;
 	int stamp[3];		// level time each sample arrived, 0 = none
-	bool grip;			// the off grip as the sender saw it (a hint; decisions use the edge events)
+	bool grip;			// the off trigger as the sender saw it
+	bool left;			// the sender plays left-handed (the engine's vr_control_scheme >= 10)
 	int count;
 
 	void Push(Vector3 p, Vector3 f, Vector3 l, Vector3 u, bool g, int now)

@@ -61,16 +61,15 @@ server float ssq_plate_blades   = 2.5;
 server float ssq_roll_sign      = 1.0;    // flip if the ring rolls the wrong way
 
 // ---- per player (user: userinfo, travels) ---------------------------------------
-user bool  ssq_lefthanded       = false;  // off hand is the RIGHT controller: mirrors the mount and the mesh
-user bool  ssq_holster          = true;   // draw the holster when stored
 user bool  ssq_start_drawn      = false;  // start with the shield in hand
 user bool  ssq_feedback         = true;   // block feedback and haptics
 
 // the shoulder mount, relative to the body: forward (negative = behind), to the off side, up from eye height
-user float ssq_mount_fwd        = -7.0;
-user float ssq_mount_side       = 8.0;
-user float ssq_mount_up         = -4.0;
-user float ssq_mount_reach      = 10.0;
+user float ssq_mount_fwd        = 0.0;
+user float ssq_mount_side       = 18.0;
+user float ssq_mount_up         = 0.0;
+user float ssq_mount_reach      = 16.0;
+server float ssq_zone_scale     = 2.2;    // the zone over the shoulder, as a multiple of the reach
 user float ssq_mount_drop       = 11.0;   // the disc hangs this far below the grab point
 user float ssq_mount_yaw        = 0.0;
 user float ssq_mount_pitch      = 0.0;
@@ -91,6 +90,5 @@ user float ssq_held_roll        = 0.0;
 user int   ssq_held_world       = 2;
 
 // ---- presentation / debug -----------------------------------------------------
-user bool  ssq_hand             = true;   // Ermac's hand on the held shield
 user bool  ssq_debug            = false;  // grip edges, pose, decisions to the console
 user bool  ssq_debug_ring       = false;  // draw the guard plate as particles every tic

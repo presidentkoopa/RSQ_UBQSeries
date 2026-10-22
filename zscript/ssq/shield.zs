@@ -63,10 +63,8 @@ class SSQ_ShieldSaw : Weapon
 	int HeldSprite()
 	{
 		let p = Owner ? Owner.player : null;
-		bool hand = p ? SSQ_Handler.UVI(p, 'ssq_hand', 1) != 0 : true;
 		bool left = p ? SSQ_Handler.LeftHanded(p) : false;
-		Name n = left ? (hand ? 'SSQJ' : 'SSQK') : (hand ? 'SSQH' : 'SSQI');
-		return GetSpriteIndex(n);
+		return GetSpriteIndex(left ? 'SSQJ' : 'SSQH');
 	}
 
 	States
@@ -77,9 +75,7 @@ class SSQ_ShieldSaw : Weapon
 	// MODELDEF only knows a sprite that some state names, and these three are set at run time
 	// by writing the layer's sprite (A_SSQ_Held), so they are named here once
 	SpriteNames:
-		SSQI A 0;
 		SSQJ A 0;
-		SSQK A 0;
 		Stop;
 	Ready:
 		SSQH A 1 A_SSQ_Held;

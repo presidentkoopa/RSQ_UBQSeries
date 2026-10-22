@@ -31,6 +31,7 @@ class SSQ_Handler : EventHandler
 	bool  mGripWas[MAXPLAYERS];
 	int   mCatchGrace[MAXPLAYERS];	// tics after a catch before the grip is read again
 	int   mStartDrawn[MAXPLAYERS];	// countdown to the draw at spawn (ssq_start_drawn)
+	bool  mInZone[MAXPLAYERS];		// the off hand is in the zone over the shoulder: the off-hand gun has yielded
 
 
 	// ---- lookups -------------------------------------------------------------------
@@ -62,7 +63,24 @@ class SSQ_Handler : EventHandler
 	clearscope int StateOf(int pnum) { return mState[pnum]; }
 	clearscope SSQ_Pose PoseOf(int pnum) { return mPose[pnum]; }
 
-	static clearscope bool LeftHanded(PlayerInfo p) { return UVI(p, 'ssq_lefthanded', 0) != 0; }
+	// LEFT-HANDED IS THE ENGINE'S SETTING, not ours: vr_control_scheme >= 10 (gl_openxrdevice.cpp:639).
+	// It is a local cvar, so it travels in the pose event (arg3 bit 0) and every machine reads it
+	// from the sender's pose; before any pose has arrived the local cvar stands in.
+	static clearscope bool LocalLeftHanded()
+	{
+		let cv = CVar.FindCVar('vr_control_scheme');
+		return cv && cv.GetInt() >= 10;
+	}
+	static clearscope bool LeftHanded(PlayerInfo p)
+	{
+		let h = Get();
+		if (h && p && p.mo)
+		{
+			int n = p.mo.PlayerNumber();
+			if (n >= 0 && n < MAXPLAYERS && h.mPose[n].count > 0) return h.mPose[n].left;
+		}
+		return LocalLeftHanded();
+	}
 
 	// ---- the mount: a point over the off shoulder, relative to the body ----------------
 	// Forward is the pawn's yaw (the head's, in VR); up is from the eye (viewz, which the sim
@@ -80,6 +98,9 @@ class SSQ_Handler : EventHandler
 	}
 
 	static clearscope double Reach(PlayerInfo p) { return CM(UV(p, 'ssq_mount_reach', 10.0)); }
+	// THE ZONE over the shoulder: larger than the grab reach, so the hand is inside it for tics
+	// before the finger can be at the grab point
+	static clearscope double Zone(PlayerInfo p) { return Reach(p) * SV('ssq_zone_scale', 2.2); }
 
 	// ---- lifecycle ----------------------------------------------------------------
 	override void OnRegister()
@@ -144,16 +165,48 @@ class SSQ_Handler : EventHandler
 			if (mState[i] == SS_FLYING && !mDisc[i]) { mState[i] = SS_STOWED; }
 			if (mStartDrawn[i] > 0 && mState[i] == SS_STOWED && --mStartDrawn[i] == 0) Draw(i);
 
+			// THE ZONE. Holstered, hand over the shoulder: the off-hand weapon's ready layer is
+			// taken away every tic, so its A_WeaponReady never runs and the engine's fire gate
+			// (TickPSprites -> CheckWeaponFire(1)) finds no ready bit: the trigger cannot fire it.
+			// P_PlayerThink runs BEFORE WorldTick, so a layer removed at tic N is gone for N+1's
+			// check -- which is why the zone is wider than the reach. Leaving the zone without a
+			// draw puts the layer back.
+			ZoneTick(i);
+
 			// the off trigger: press and release edges
 			bool grip = (p.cmd.buttons & BT_OFFHANDATTACK) != 0;
 			bool press = grip && !mGripWas[i];
 			bool release = !grip && mGripWas[i];
 			mGripWas[i] = grip;
-			if (mCatchGrace[i] > 0) { mCatchGrace[i]--; press = false; }
+			if (mCatchGrace[i] > 0) { mCatchGrace[i]--; press = false; grip = false; }
 			if (press) OnPress(i);
 			else if (release) OnRelease(i);
+			// LEVEL, NOT EDGE, for the draw: a trigger already held when the hand reaches the
+			// shoulder draws too, whatever that trigger was doing a moment ago
+			else if (grip && mState[i] == SS_STOWED) OnPress(i);
 
 			Props(i);
+		}
+	}
+
+	void ZoneTick(int i)
+	{
+		let p = players[i];
+		let mo = p.mo;
+		let pose = mPose[i];
+		bool inZone = mState[i] == SS_STOWED && pose.Fresh(Level.maptime) && (pose.pos[0] - MountPos(mo)).Length() <= Zone(p);
+		let w = p.OffhandWeapon;
+		bool ours = w is "SSQ_ShieldSaw";
+		if (inZone && w && !ours)
+		{
+			if (p.FindPSprite(PSP_OFFHANDWEAPON)) p.SetPsprite(PSP_OFFHANDWEAPON, null);
+			mInZone[i] = true;
+		}
+		else if (mInZone[i])
+		{
+			mInZone[i] = false;
+			if (w && !ours && !p.FindPSprite(PSP_OFFHANDWEAPON) && p.PendingWeapon == WP_NOCHANGE)
+				p.SetPsprite(PSP_OFFHANDWEAPON, w.GetReadyState());
 		}
 	}
 
@@ -208,6 +261,7 @@ class SSQ_Handler : EventHandler
 		mPrevMain[i] = (rw && rw.bTwoHanded) ? rw.GetClass() : null;
 		saw.bOffhandWeapon = true;
 		p.PendingWeapon = saw;
+		mInZone[i] = false;
 		mState[i] = SS_DRAWN;
 		mo.A_StartSound("ssq/draw", CHAN_6);
 		SSQ_FX.Buzz(mo, 0.5, 6);
@@ -317,15 +371,15 @@ class SSQ_Handler : EventHandler
 		{
 			mk.SetOrigin(mount, true);
 			mk.A_SetScale(Reach(p) * 0.4);
-			bool near = pose.Fresh(Level.maptime) && (pose.pos[0] - mount).Length() <= Reach(p);
-			mk.A_SetRenderStyle(near ? 0.9 : 0.25, STYLE_Add);
+			double d = pose.Fresh(Level.maptime) ? (pose.pos[0] - mount).Length() : 1e9;
+			mk.A_SetRenderStyle(d <= Reach(p) ? 0.9 : (d <= Zone(p) ? 0.5 : 0.2), STYLE_Add);
 			mk.angle += 3;
 		}
 
 		// the shield prop
 		if (mState[i] == SS_STOWED)
 		{
-			prop.bInvisible = UVI(p, 'ssq_holster', 1) == 0;
+			prop.bInvisible = true;	// never shown when stored (owner, 2026-10-22)
 			double yaw = mo.angle + 90 + UV(p, 'ssq_mount_yaw', 0);
 			prop.SetOrigin(mount - (0, 0, CM(UV(p, 'ssq_mount_drop', 11.0))), true);
 			prop.angle = yaw;
@@ -368,6 +422,7 @@ class SSQ_Handler : EventHandler
 			Vector3 F, L, U;
 			[F, L, U] = SSQ_Hand.Basis(yaw, pitch, roll);
 			mPose[i].Push(mo.pos + SSQ_Hand.UnpackPos(e.Args[0]), F, L, U, grip != 0, Level.maptime);
+			mPose[i].left = (e.Args[2] & 1) != 0;
 		}
 		else if (e.Name == "ssq-draw")
 		{
@@ -414,7 +469,7 @@ class SSQ_Handler : EventHandler
 		int st = mState[consoleplayer];
 		bool grip = (p.cmd.buttons & BT_OFFHANDATTACK) != 0;
 		Vector3 hand = mo.OffhandPos;
-		bool nearMount = (hand - MountPos(mo)).Length() <= Reach(p) * 2.0;
+		bool nearMount = (hand - MountPos(mo)).Length() <= Zone(p) * 1.5;
 		bool want = st != SS_STOWED || grip || nearMount;
 		if (!want) return;
 		Vector3 F = SSQ_Hand.OffDir(mo, 0, 0);
@@ -422,7 +477,7 @@ class SSQ_Handler : EventHandler
 		double yaw = atan2(F.y, F.x);
 		double pitch = asin(clamp(F.z, -1, 1));
 		double roll = SSQ_Hand.RollOf(F, L);
-		EventHandler.SendNetworkEvent("ssq-pose", SSQ_Hand.PackPos(hand - mo.pos), SSQ_Hand.PackAng(yaw, pitch, roll, grip), 0);
+		EventHandler.SendNetworkEvent("ssq-pose", SSQ_Hand.PackPos(hand - mo.pos), SSQ_Hand.PackAng(yaw, pitch, roll, grip), LocalLeftHanded() ? 1 : 0);
 	}
 
 }
