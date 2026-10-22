@@ -203,7 +203,7 @@ class SSQ_Disc : Actor
 			let h = SSQ_Handler.Get();
 			int pnum = thrower ? thrower.PlayerNumber() : -1;
 			// a hand waiting for it catches it
-			if (h && pnum >= 0 && SSQ_Handler.SVI('ssq_catch', 1) != 0)
+			if (h && pnum >= 0 && SSQ_Handler.SVI('ssq_catch', 1) != 0 && h.Holding(pnum))
 			{
 				let pose = h.PoseOf(pnum);
 				if (pose.Fresh(Level.maptime) && (pose.pos[0] - pos).Length() <= SSQ_Handler.SV('ssq_catch_radius', 24.0))

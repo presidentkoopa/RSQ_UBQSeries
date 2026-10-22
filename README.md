@@ -6,7 +6,7 @@ return-to-sender) verified by scripted console runs against a real imp. Not yet 
 
 ## Features
 
-- **Mounted on** the offhand forearm, shoulder or hip; reach-and-grab or grip anywhere; start in hand
+- Lives over the **offhand shoulder**. Reach over, **off trigger**: it's in your hand. Hold it; **alt-fire** revs; release moving to throw, release slow to put it back; still holding when it comes home with your hand near it catches it
 - **Block what crosses the face** — missiles, hitscan, melee, blasts — decided in the sim via
   `AbsorbDamage`, so it is identical on every machine; also while holstered
 - Blocked projectiles **cancelled or returned to sender**; blocked melee **stuns / stuns and shoves**
@@ -44,11 +44,11 @@ Design and reasons: `ShieldSaw_Quest_Design.md` in the zDoomVR project.
 
 ## Setup on the headset
 
-1. Bind the off-hand grip to **User 1** (Customize Controls), or turn on *Print decisions and key
-   codes* in the mod's options, press the grip, and put the printed code in `ssq_grip_keys`.
+1. Load `RS_ShieldSawQ.pk3` after your BD22 pack (or alone). Nothing to bind: the off trigger and
+   off alt-fire are QZD's own bindings.
 2. `vr_quake_haptic_level` above 0 for the buzzes.
-3. Options -> RS Shield Saw Q: turn on *Draw the guard plate*, hold the shield up, and move the
-   plate sliders until the red ring sits on the drawn rim. Those numbers are the whole block.
+3. Options -> RS ShieldSawQ Options -> Debug -> *Draw the guard plate*: hold the shield up and move
+   the Placement plate sliders until the red ring sits on the drawn rim.
 
 Desktop / no-motion route: *Shield saw: draw / put back / recall* and *Shield saw: throw along
 aim* in Customize Controls.
@@ -62,8 +62,9 @@ prop, a tic behind; `ssq_held_world`).
 
 ## Known limits (stock engine)
 
-- A grip press within ~50 cm of your gun hand triggers the engine's two-hand stabilise for a
-  frame, which hides the shield for that frame. That is why the grip is never *held* here.
+- The off trigger at your shoulder also reaches whatever was in the off hand for that one tic
+  (a dual-wielded gun could fire once behind you). Open: to be gated by clearing the off-hand
+  ready bits while the hand is at the shoulder, pending the owner's call.
 - Hand pose is sampled 35 times a second; a very fast flick is a few samples.
 - One haptic strength (the engine's quake route); duration is ours.
 - Left-handed mode (`ssq_lefthanded`) is written but untested in a headset.

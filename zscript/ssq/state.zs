@@ -6,17 +6,16 @@
 //            empty-handed. The disc comes home along the way it went; a hand near it on the
 //            way back catches it (DRAWN), otherwise it lands on the mount (STOWED).
 //
-// INPUT IS EDGES, NOT A HELD GRIP. On stock QZD an off grip held within ~50 cm of the gun
-// hand turns on the engine's two-hand stabilise, which hides every off-hand weapon layer and
-// skips its buttons. So the grip is never held to keep the shield: press at the shoulder to
-// draw, press while the hand is moving to throw, press at the shoulder (or slowly) to stow,
-// press while it flies to recall. The rev is the off TRIGGER, a synced usercmd bit.
-//
-// The grip reaches the sim two ways, both per player and both synced:
-//   - a usercmd bit (ssq_grip_button, BT_USER1 by default: bind the off grip to +user1)
-//   - raw key codes (ssq_grip_keys) read by InputProcess on the console player and sent as
-//     "ssq-grip" edges. The BD22 Quest pack's axe throw reads the grip the same way.
-// Either way the decision runs here, in WorldTick, from the SYNCED pose (pose.zs).
+// THE OFF TRIGGER IS THE SHIELD (owner, 2026-10-22). QuestZDoom spends the off GRIP on
+// two-handing the gun, so the shield lives on BT_OFFHANDATTACK, a synced usercmd bit:
+//   press with the hand at the shoulder   -> it is in your hand, whatever was there steps aside
+//   hold                                   -> you keep it; alt-fire (BT_OFFHANDALTATTACK) revs it
+//   release while the arm is moving fast   -> throw
+//   release slowly                         -> back on the shoulder, from anywhere
+//   still holding when it comes home, hand near it -> caught; otherwise it lands on the shoulder
+//   press while it flies                   -> recall
+// No net events for input: both bits travel in the usercmd. The decision runs here, in
+// WorldTick, from the SYNCED pose (pose.zs). The press counts on the tic it lands: no wait.
 
 class SSQ_Handler : EventHandler
 {
@@ -29,15 +28,10 @@ class SSQ_Handler : EventHandler
 	Actor mDisc[MAXPLAYERS];
 	class<Weapon> mPrevOff[MAXPLAYERS];	// what the draw displaced (null: nothing, or the pack's hands)
 	class<Weapon> mPrevMain[MAXPLAYERS];	// the main-hand weapon a two-handed conflict lowered
-	bool  mGripNet[MAXPLAYERS];		// the raw-key route's latch
 	bool  mGripWas[MAXPLAYERS];
 	int   mCatchGrace[MAXPLAYERS];	// tics after a catch before the grip is read again
 	int   mStartDrawn[MAXPLAYERS];	// countdown to the draw at spawn (ssq_start_drawn)
 
-	// ui side (console player only)
-	ui bool  uiKeyDown;
-	ui String uiKeysFrom;
-	ui Array<int> uiKeys;
 
 	// ---- lookups -------------------------------------------------------------------
 	static clearscope SSQ_Handler Get() { return SSQ_Handler(EventHandler.Find('SSQ_Handler')); }
@@ -73,15 +67,12 @@ class SSQ_Handler : EventHandler
 	// ---- the mount: a point over the off shoulder, relative to the body ----------------
 	// Forward is the pawn's yaw (the head's, in VR); up is from the eye (viewz, which the sim
 	// has for every player). The off side is the left for a right-handed scheme.
-	static clearscope int MountMode(PlayerInfo p) { return UVI(p, 'ssq_mount_mode', 1); }
-
 	static clearscope Vector3 MountPos(PlayerPawn mo)
 	{
 		let p = mo.player;
-		bool hip = MountMode(p) == 2;
-		double side = CM(UV(p, hip ? 'ssq_hip_side' : 'ssq_mount_side', 8.0)) * (LeftHanded(p) ? -1 : 1);
-		double fwd = CM(UV(p, hip ? 'ssq_hip_fwd' : 'ssq_mount_fwd', -7.0));
-		double up = CM(UV(p, hip ? 'ssq_hip_up' : 'ssq_mount_up', -4.0));
+		double side = CM(UV(p, 'ssq_mount_side', 8.0)) * (LeftHanded(p) ? -1 : 1);
+		double fwd = CM(UV(p, 'ssq_mount_fwd', -7.0));
+		double up = CM(UV(p, 'ssq_mount_up', -4.0));
 		double a = mo.angle;
 		Vector3 f = (cos(a), sin(a), 0);
 		Vector3 l = (cos(a + 90), sin(a + 90), 0);
@@ -153,19 +144,20 @@ class SSQ_Handler : EventHandler
 			if (mState[i] == SS_FLYING && !mDisc[i]) { mState[i] = SS_STOWED; }
 			if (mStartDrawn[i] > 0 && mState[i] == SS_STOWED && --mStartDrawn[i] == 0) Draw(i);
 
-			// the grip: a usercmd bit or the raw-key latch
-			int bit = UVI(p, 'ssq_grip_button', 0);
-			bool grip = mGripNet[i] || (bit != 0 && (p.cmd.buttons & bit) != 0);
+			// the off trigger: press and release edges
+			bool grip = (p.cmd.buttons & BT_OFFHANDATTACK) != 0;
 			bool press = grip && !mGripWas[i];
+			bool release = !grip && mGripWas[i];
 			mGripWas[i] = grip;
 			if (mCatchGrace[i] > 0) { mCatchGrace[i]--; press = false; }
 			if (press) OnPress(i);
+			else if (release) OnRelease(i);
 
 			Props(i);
 		}
 	}
 
-	// the grip press: what it means depends on where the hand is and how fast it moves
+	// the press: at the shoulder it draws; in flight it recalls
 	void OnPress(int i)
 	{
 		let p = players[i];
@@ -173,28 +165,33 @@ class SSQ_Handler : EventHandler
 		let pose = mPose[i];
 		bool fresh = pose.Fresh(Level.maptime);
 		double dist = fresh ? (pose.pos[0] - MountPos(mo)).Length() : 1e9;
-		int mode = MountMode(p);
-		bool reach = mode != 0 && UVI(p, 'ssq_reach', 1) != 0;
-		bool atMount = !reach || dist <= Reach(p);
-		double speed = fresh ? pose.ThrowVel().Length() * TICRATE : 0;
-		if (UVI(p, 'ssq_debug', 0)) Console.Printf("ssq: press p%d state %d fresh %d mountdist %.1f speed %.0f/s", i, mState[i], fresh, dist, speed);
-
+		bool atMount = dist <= Reach(p);
+		if (UVI(p, 'ssq_debug', 0)) Console.Printf("ssq: press p%d state %d fresh %d mountdist %.1f", i, mState[i], fresh, dist);
 		switch (mState[i])
 		{
 		case SS_STOWED:
 			if (atMount) Draw(i);
-			break;
-		case SS_DRAWN:
-			// with no reach rule the press means throw if the arm is moving, else put it away
-			if (reach && atMount) Stow(i, true);
-			else if (speed >= SV('ssq_throw_min', 25.0)) Throw(i);
-			else Stow(i, true);
 			break;
 		case SS_FLYING:
 			if (mDisc[i]) SSQ_Disc(mDisc[i]).Recall();
 			break;
 		}
 	}
+
+	// the release: moving fast throws, anything else puts it back on the shoulder
+	void OnRelease(int i)
+	{
+		if (mState[i] != SS_DRAWN) return;
+		let p = players[i];
+		let pose = mPose[i];
+		double speed = pose.Fresh(Level.maptime) ? pose.ThrowVel().Length() * TICRATE : 0;
+		if (UVI(p, 'ssq_debug', 0)) Console.Printf("ssq: release p%d speed %.0f/s", i, speed);
+		if (speed >= SV('ssq_throw_min', 25.0)) Throw(i);
+		else Stow(i, true);
+	}
+
+	// the trigger is held while the shield is in the hand
+	clearscope bool Holding(int i) { return mGripWas[i]; }
 
 	// ---- the loadout swap -------------------------------------------------------------
 	void Draw(int i)
@@ -325,28 +322,10 @@ class SSQ_Handler : EventHandler
 			mk.angle += 3;
 		}
 
-		int mmode = MountMode(p);
-		if (mmode == 0) mk.bInvisible = true;
-
 		// the shield prop
-		if (mState[i] == SS_STOWED && mmode == 0)
+		if (mState[i] == SS_STOWED)
 		{
-			// on the forearm: the world prop rides the synced hand pose, blades in
-			prop.bInvisible = !pose.Fresh(Level.maptime);
-			if (!prop.bInvisible)
-			{
-				Vector3 c = SSQ_Guard.PlateCentre(mo, pose, false);
-				prop.SetOrigin(c, true);
-				prop.angle = atan2(pose.F.y, pose.F.x);
-				prop.pitch = -asin(clamp(pose.F.z, -1, 1));
-				prop.roll = SSQ_Hand.RollOf(pose.F, pose.L) * SV('ssq_roll_sign', 1.0);
-				prop.A_SetScale(1.0);
-				prop.frame = 0;
-			}
-		}
-		else if (mState[i] == SS_STOWED)
-		{
-			prop.bInvisible = false;
+			prop.bInvisible = UVI(p, 'ssq_holster', 1) == 0;
 			double yaw = mo.angle + 90 + UV(p, 'ssq_mount_yaw', 0);
 			prop.SetOrigin(mount - (0, 0, CM(UV(p, 'ssq_mount_drop', 11.0))), true);
 			prop.angle = yaw;
@@ -390,7 +369,6 @@ class SSQ_Handler : EventHandler
 			[F, L, U] = SSQ_Hand.Basis(yaw, pitch, roll);
 			mPose[i].Push(mo.pos + SSQ_Hand.UnpackPos(e.Args[0]), F, L, U, grip != 0, Level.maptime);
 		}
-		else if (e.Name == "ssq-grip") mGripNet[i] = e.Args[0] != 0;
 		else if (e.Name == "ssq-draw")
 		{
 			// the desktop route: no reach needed
@@ -434,11 +412,10 @@ class SSQ_Handler : EventHandler
 		let mo = p.mo;
 		if (!mo || !SSQ_Hand.InVR(mo)) return;
 		int st = mState[consoleplayer];
-		int bit = UVI(p, 'ssq_grip_button', 0);
-		bool grip = mGripNet[consoleplayer] || (bit != 0 && (p.cmd.buttons & bit) != 0);
+		bool grip = (p.cmd.buttons & BT_OFFHANDATTACK) != 0;
 		Vector3 hand = mo.OffhandPos;
 		bool nearMount = (hand - MountPos(mo)).Length() <= Reach(p) * 2.0;
-		bool want = st != SS_STOWED || grip || nearMount || MountMode(p) == 0;
+		bool want = st != SS_STOWED || grip || nearMount;
 		if (!want) return;
 		Vector3 F = SSQ_Hand.OffDir(mo, 0, 0);
 		Vector3 L = SSQ_Hand.OffDir(mo, 90, 0);
@@ -448,27 +425,4 @@ class SSQ_Handler : EventHandler
 		EventHandler.SendNetworkEvent("ssq-pose", SSQ_Hand.PackPos(hand - mo.pos), SSQ_Hand.PackAng(yaw, pitch, roll, grip), 0);
 	}
 
-	override bool InputProcess(InputEvent e)
-	{
-		if (e.Type != InputEvent.Type_KeyDown && e.Type != InputEvent.Type_KeyUp) return false;
-		if (consoleplayer < 0 || !playeringame[consoleplayer]) return false;
-		let p = players[consoleplayer];
-		let cv = CVar.GetCVar('ssq_grip_keys', p);
-		String keys = cv ? cv.GetString() : "";
-		if (keys != uiKeysFrom)
-		{
-			uiKeysFrom = keys;
-			uiKeys.Clear();
-			Array<String> w;
-			keys.Split(w, " ", TOK_SKIPEMPTY);
-			for (int j = 0; j < w.Size(); j++) uiKeys.Push(w[j].ToInt());
-		}
-		if (UVI(p, 'ssq_debug', 0) && e.Type == InputEvent.Type_KeyDown) Console.Printf("ssq: key %d down", e.KeyScan);
-		if (uiKeys.Size() == 0 || uiKeys.Find(e.KeyScan) == uiKeys.Size()) return false;
-		bool down = e.Type == InputEvent.Type_KeyDown;
-		if (down == uiKeyDown) return false;		// key repeat
-		uiKeyDown = down;
-		EventHandler.SendNetworkEvent("ssq-grip", down ? 1 : 0, e.KeyScan);
-		return false;	// never eaten: the grip keeps whatever else it does
-	}
 }

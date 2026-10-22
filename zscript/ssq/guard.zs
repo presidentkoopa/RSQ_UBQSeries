@@ -99,10 +99,8 @@ class SSQ_Guard : Inventory
 		if (st == SSQ_Handler.SS_STOWED && SSQ_Handler.SVI('ssq_guard_stowed', 1) != 0 && saw)
 		{
 			held = 0;
-			bool forearm = SSQ_Handler.MountMode(mo.player) == 0;
-			if (forearm && !pose.Fresh(Level.maptime)) return false, C, n, R, held;
-			C = PlateCentre(mo, pose, forearm ? false : true);
-			n = PlateNormal(mo, pose, forearm ? false : true);
+			C = PlateCentre(mo, pose, true);
+			n = PlateNormal(mo, pose, true);
 			R = PlateRadius(false);
 			return true, C, n, R, held;
 		}

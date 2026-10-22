@@ -62,20 +62,14 @@ server float ssq_roll_sign      = 1.0;    // flip if the ring rolls the wrong wa
 
 // ---- per player (user: userinfo, travels) ---------------------------------------
 user bool  ssq_lefthanded       = false;  // off hand is the RIGHT controller: mirrors the mount and the mesh
-user int   ssq_mount_mode       = 1;      // 0 forearm, 1 shoulder, 2 hip
-user bool  ssq_reach            = true;   // reach and grab (shoulder, hip); off = grip anywhere
+user bool  ssq_holster          = true;   // draw the holster when stored
 user bool  ssq_start_drawn      = false;  // start with the shield in hand
 user bool  ssq_feedback         = true;   // block feedback and haptics
-user int   ssq_grip_button      = 2097152; // usercmd bit that is the off grip (BT_USER1). 0 = raw keys only
-user string ssq_grip_keys       = "";     // raw key codes of the off grip, space separated (ssq_debug prints them)
 
 // the shoulder mount, relative to the body: forward (negative = behind), to the off side, up from eye height
 user float ssq_mount_fwd        = -7.0;
 user float ssq_mount_side       = 8.0;
 user float ssq_mount_up         = -4.0;
-user float ssq_hip_fwd          = 2.0;
-user float ssq_hip_side         = 14.0;
-user float ssq_hip_up           = -60.0;
 user float ssq_mount_reach      = 10.0;
 user float ssq_mount_drop       = 11.0;   // the disc hangs this far below the grab point
 user float ssq_mount_yaw        = 0.0;

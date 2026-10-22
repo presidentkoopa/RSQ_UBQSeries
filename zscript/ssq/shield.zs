@@ -5,7 +5,7 @@
 // models.cpp). It never fires; the off trigger revs the saw, and the grip edges are read by
 // SSQ_Handler. Nothing but SSQ_Handler.Draw() selects it.
 //
-// The rev: BT_OFFHANDATTACK (the off trigger) is a synced usercmd bit, so the rev level is
+// The rev: BT_OFFHANDALTATTACK (the off alt-fire) is a synced usercmd bit, so the rev level is
 // the same on every machine with no traffic. It drives the blade frames, the loop's pitch,
 // the grind, and the damage of the throw it ends in.
 //
@@ -115,7 +115,7 @@ class SSQ_ShieldSaw : Weapon
 		// no WRF flags that fire: the off trigger is ours
 		A_WeaponReady(WRF_NOFIRE | WRF_NOBOB | WRF_NOSWITCH);
 		int n = SSQ_Handler.SVI('ssq_rev_tics', 21);
-		bool trig = (p.cmd.buttons & BT_OFFHANDATTACK) != 0;
+		bool trig = (p.cmd.buttons & BT_OFFHANDALTATTACK) != 0;	// alt-fire revs; the trigger is the hold
 		if (trig) { if (invoker.rev < n) invoker.rev++; }
 		else if (invoker.rev > 0) invoker.rev = max(0, invoker.rev - 2);
 
