@@ -1,0 +1,149 @@
+AddOptionMenu "OptionsMenu"
+{
+	Submenu "RS ShieldSawQ Options", "SSQ_Options"
+}
+
+OptionValue "SSQ_MountMode"
+{
+	0, "Offhand Forearm"
+	1, "Offhand Shoulder"
+	2, "Offhand Hip"
+}
+
+OptionValue "SSQ_Deflect"
+{
+	0, "Cancelled"
+	1, "Return To Sender"
+}
+
+OptionValue "SSQ_Melee"
+{
+	1, "Stun"
+	2, "Stun and Shoved Back"
+	0, "Nothing"
+}
+
+OptionValue "SSQ_Marker"
+{
+	0, "Never"
+	1, "While it matters"
+	2, "Always"
+}
+
+OptionValue "SSQ_HeldWorld"
+{
+	0, "Only you"
+	1, "Everyone"
+	2, "Everyone in a netgame"
+}
+
+OptionValue "SSQ_GripButton"
+{
+	0, "Raw keys"
+	2097152, "User 1"
+	4194304, "User 2"
+	8388608, "User 3"
+	16777216, "User 4"
+}
+
+OptionMenu "SSQ_Options"
+{
+	Title "RS ShieldSawQ Options"
+	Option "Shield Mounted On", "ssq_mount_mode", "SSQ_MountMode"
+	Option "Reach and Grab", "ssq_reach", "OnOff"
+	Option "Start with Shield in Hand", "ssq_start_drawn", "OnOff"
+	StaticText ""
+	Option "Block attacks while Holstered", "ssq_guard_stowed", "OnOff"
+	Option "Blocked Projectiles", "ssq_deflect", "SSQ_Deflect"
+	Option "Blocked Melee", "ssq_melee", "SSQ_Melee"
+	Option "Block Feedback and Haptics", "ssq_feedback", "OnOff"
+	Option "Perfect Block", "ssq_perfect", "OnOff"
+	StaticText ""
+	Slider "Hand Speed to Throw", "ssq_throw_min", 0.0, 100.0, 5.0, 0
+	Option "Back in Hand on Return", "ssq_catch", "OnOff"
+	Slider "Lock on Targets Max", "ssq_locks", 0, 5, 1, 0
+	Option "Hit Tiers", "ssq_tiers", "OnOff"
+	StaticText ""
+	Submenu "Controls", "SSQ_Controls"
+	Submenu "Placement", "SSQ_Placement"
+	Submenu "Tuning", "SSQ_Tuning"
+	Submenu "Debug", "SSQ_Debug"
+}
+
+OptionMenu "SSQ_Controls"
+{
+	Title "ShieldSawQ Controls"
+	Option "Off grip is user button", "ssq_grip_button", "SSQ_GripButton"
+	Option "Left-handed", "ssq_lefthanded", "OnOff"
+	Option "Hand on the shield", "ssq_hand", "OnOff"
+	Option "Others see it in your hand", "ssq_held_world", "SSQ_HeldWorld"
+	Option "Show the mount", "ssq_marker", "SSQ_Marker"
+}
+
+OptionMenu "SSQ_Placement"
+{
+	Title "ShieldSawQ Placement"
+	StaticText "Shoulder", 1
+	Slider "Back / forward", "ssq_mount_fwd", -40.0, 20.0, 1.0, 0
+	Slider "To the off side", "ssq_mount_side", -40.0, 40.0, 1.0, 0
+	Slider "Up / down", "ssq_mount_up", -40.0, 20.0, 1.0, 0
+	StaticText ""
+	StaticText "Hip", 1
+	Slider "Back / forward", "ssq_hip_fwd", -40.0, 40.0, 1.0, 0
+	Slider "To the off side", "ssq_hip_side", -40.0, 40.0, 1.0, 0
+	Slider "Up / down", "ssq_hip_up", -120.0, 0.0, 1.0, 0
+	StaticText ""
+	StaticText "Mount", 1
+	Slider "Reach", "ssq_mount_reach", 4.0, 30.0, 1.0, 0
+	Slider "Hangs below the grab", "ssq_mount_drop", 0.0, 40.0, 1.0, 0
+	Slider "Yaw", "ssq_mount_yaw", -180.0, 180.0, 5.0, 0
+	Slider "Pitch", "ssq_mount_pitch", -180.0, 180.0, 5.0, 0
+	Slider "Roll", "ssq_mount_roll", -180.0, 180.0, 5.0, 0
+	Slider "Scale", "ssq_mount_scale", 0.2, 3.0, 0.05, 2
+	StaticText ""
+	StaticText "In the hand", 1
+	Slider "Left / right", "ssq_held_x", -30.0, 30.0, 0.5, 1
+	Slider "Forward / back", "ssq_held_y", -30.0, 30.0, 0.5, 1
+	Slider "Down / up", "ssq_held_z", -30.0, 30.0, 0.5, 1
+	Slider "Yaw", "ssq_held_yaw", -180.0, 180.0, 1.0, 0
+	Slider "Pitch", "ssq_held_pitch", -180.0, 180.0, 1.0, 0
+	Slider "Roll", "ssq_held_roll", -180.0, 180.0, 1.0, 0
+	StaticText ""
+	StaticText "The plate", 1
+	Slider "Plate forward", "ssq_plate_f", -40.0, 20.0, 0.5, 1
+	Slider "Plate outward", "ssq_plate_l", -30.0, 30.0, 0.5, 1
+	Slider "Plate up", "ssq_plate_u", -30.0, 30.0, 0.5, 1
+	Slider "Face yaw", "ssq_plate_yaw", -90.0, 90.0, 5.0, 0
+	Slider "Face pitch", "ssq_plate_pitch", -90.0, 90.0, 5.0, 0
+	Slider "Radius", "ssq_plate_radius", 10.0, 50.0, 0.5, 1
+	Slider "Roll sign", "ssq_roll_sign", -1.0, 1.0, 2.0, 0
+}
+
+OptionMenu "SSQ_Tuning"
+{
+	Title "ShieldSawQ Tuning"
+	Slider "Throw speed", "ssq_throw_speed", 0.2, 3.0, 0.1, 1
+	Slider "Throw damage", "ssq_cut_damage", 0.2, 5.0, 0.1, 1
+	Slider "Aim cone", "ssq_lock_cone", 2.0, 60.0, 1.0, 0
+	Slider "Lock range", "ssq_lock_range", 128.0, 4000.0, 64.0, 0
+	Slider "Catch radius", "ssq_catch_radius", 4.0, 64.0, 2.0, 0
+	Slider "Bisects at or under", "ssq_tier_fodder", 0, 400, 5, 0
+	Slider "Embeds at or under", "ssq_tier_mid", 0, 4000, 50, 0
+	Slider "Glancing damage", "ssq_glance_scale", 0.0, 2.0, 0.05, 2
+	StaticText ""
+	Slider "Rev time", "ssq_rev_tics", 1, 70, 1, 0
+	Slider "Grind damage", "ssq_grind_damage", 0, 40, 1, 0
+	Slider "Full-rev throw bonus", "ssq_rev_throw_bonus", 0.0, 2.0, 0.1, 1
+	Option "Shield bash", "ssq_bash", "OnOff"
+	Slider "Shove speed", "ssq_bash_speed", 10, 400, 5, 0
+	Slider "Bash damage", "ssq_bash_damage", 0.1, 8.0, 0.1, 1
+	Slider "Perfect block speed", "ssq_perfect_speed", 10, 150, 5, 0
+	Option "Start with it", "ssq_start", "OnOff"
+}
+
+OptionMenu "SSQ_Debug"
+{
+	Title "ShieldSawQ Debug"
+	Option "Print decisions and key codes", "ssq_debug", "OnOff"
+	Option "Draw the guard plate", "ssq_debug_ring", "OnOff"
+}

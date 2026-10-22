@@ -1,0 +1,102 @@
+// RS_ShieldSawQ -- cvars. SERVER cvars decide damage and where things go, so every machine agrees.
+// USER cvars are userinfo: they travel with the player, so per-player choices the sim reads
+// (handedness, placement) are the same on every machine too.
+
+// ---- the game rules (server) ------------------------------------------------
+server bool  ssq_start          = true;   // every player spawns with it
+server float ssq_cut_damage     = 1.0;    // thrown-disc damage scale
+server float ssq_throw_speed    = 1.0;    // launch speed scale
+server float ssq_throw_min      = 25.0;   // map units/sec of hand speed below which a grip press stows instead of throws
+server float ssq_speed_floor    = 7.0;    // units/tic: the slowest a throw can leave at
+server float ssq_mass_kg        = 5.0;    // the disc keeps arm/(arm+this) of the hand speed
+server int   ssq_locks          = 5;      // targets one throw visits
+server float ssq_lock_cone      = 16.0;   // half-angle from the hand's forward at release
+server float ssq_lock_range     = 1200.0;
+server float ssq_return_speed   = 22.0;   // units/tic on the way home
+server float ssq_catch_radius   = 24.0;   // hand within this of the returning disc = caught
+server bool  ssq_catch          = true;   // back in hand on return
+server bool  ssq_perfect        = false;  // perfect block: the shield moved into the hit
+server float ssq_perfect_speed  = 40.0;   // units/sec the plate must be moving toward the attack
+server int   ssq_crumb_every    = 4;      // tics between breadcrumbs on the way out
+
+// what a thrown disc does, by the victim's authored health (SpawnHealth), never by class name
+server bool  ssq_tiers          = true;
+server int   ssq_tier_fodder    = 70;     // at or under: bisected
+server int   ssq_tier_mid       = 600;    // at or under: the disc embeds and grinds
+server int   ssq_embed_tics     = 21;
+server int   ssq_embed_dps      = 3;
+server float ssq_glance_scale   = 0.4;
+
+// the rev (off-hand trigger held)
+server int   ssq_rev_tics       = 21;     // tics from still to full speed
+server int   ssq_grind_damage   = 6;      // per hit while revved and something is in the blades
+server int   ssq_grind_every    = 4;      // tics between grind hits
+server float ssq_rev_throw_bonus = 0.6;   // a full-rev throw adds this fraction of damage and speed
+
+// the block
+server bool  ssq_guard          = true;
+server bool  ssq_guard_stowed   = true;   // the shield on your back guards your back
+server int   ssq_deflect        = 1;      // blocked projectiles: 0 cancelled, 1 return to sender
+server bool  ssq_deflect_aim    = true;   // back at the shooter; off = mirrored off the face
+server int   ssq_melee          = 2;      // blocked melee: 0 nothing, 1 stun, 2 stun and shoved back
+server float ssq_stagger_push   = 12.0;
+
+// the bash: shove the shield into something
+server bool  ssq_bash           = true;
+server float ssq_bash_speed     = 70.0;   // units/sec along the face
+server float ssq_bash_damage    = 1.0;
+
+// ---- the plate: where the disc is, in the off controller's frame, cm -------------
+// F forward along the controller, L to the controller's left, U up. Defaults measured from
+// shield.md3 drawn with Ermac's hand placement (Scale -1 1 1, Offset 0 -24 -10): the disc centre
+// sits 15 cm back along the forearm, 8 cm outward, 5 cm down; its face points outward (+L).
+// ssq_debug_ring draws it, which is how these get checked in a headset.
+server float ssq_plate_f        = -15.4;
+server float ssq_plate_l        = 8.4;
+server float ssq_plate_u        = -5.0;
+server float ssq_plate_yaw      = 0.0;    // tilt of the face normal from +L, degrees
+server float ssq_plate_pitch    = 0.0;
+server float ssq_plate_radius   = 28.5;   // cm; the blades add ssq_plate_blades when revved
+server float ssq_plate_blades   = 2.5;
+server float ssq_roll_sign      = 1.0;    // flip if the ring rolls the wrong way
+
+// ---- per player (user: userinfo, travels) ---------------------------------------
+user bool  ssq_lefthanded       = false;  // off hand is the RIGHT controller: mirrors the mount and the mesh
+user int   ssq_mount_mode       = 1;      // 0 forearm, 1 shoulder, 2 hip
+user bool  ssq_reach            = true;   // reach and grab (shoulder, hip); off = grip anywhere
+user bool  ssq_start_drawn      = false;  // start with the shield in hand
+user bool  ssq_feedback         = true;   // block feedback and haptics
+user int   ssq_grip_button      = 2097152; // usercmd bit that is the off grip (BT_USER1). 0 = raw keys only
+user string ssq_grip_keys       = "";     // raw key codes of the off grip, space separated (ssq_debug prints them)
+
+// the shoulder mount, relative to the body: forward (negative = behind), to the off side, up from eye height
+user float ssq_mount_fwd        = -7.0;
+user float ssq_mount_side       = 8.0;
+user float ssq_mount_up         = -4.0;
+user float ssq_hip_fwd          = 2.0;
+user float ssq_hip_side         = 14.0;
+user float ssq_hip_up           = -60.0;
+user float ssq_mount_reach      = 10.0;
+user float ssq_mount_drop       = 11.0;   // the disc hangs this far below the grab point
+user float ssq_mount_yaw        = 0.0;
+user float ssq_mount_pitch      = 0.0;
+user float ssq_mount_roll       = 0.0;
+user float ssq_mount_scale      = 1.0;
+user int   ssq_marker           = 1;      // 0 never, 1 while it matters, 2 always
+
+// the held shield's placement: read live by the hook every frame (cm and degrees)
+user float ssq_held_x           = 0.0;
+user float ssq_held_y           = 0.0;
+user float ssq_held_z           = 0.0;
+user float ssq_held_yaw         = 0.0;
+user float ssq_held_pitch       = 0.0;
+user float ssq_held_roll        = 0.0;
+
+// how others see the shield in your hand: 0 nobody (psprite only), 1 a world prop at the synced pose
+// (everyone, including you, a tic behind), 2 prop for others only when in a netgame
+user int   ssq_held_world       = 2;
+
+// ---- presentation / debug -----------------------------------------------------
+user bool  ssq_hand             = true;   // Ermac's hand on the held shield
+user bool  ssq_debug            = false;  // grip edges, pose, decisions to the console
+user bool  ssq_debug_ring       = false;  // draw the guard plate as particles every tic

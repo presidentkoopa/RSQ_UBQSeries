@@ -1,0 +1,5 @@
+[enu default]
+SSQ_TAG = "Shield Saw";
+SSQ_PICKUP = "Shield saw";
+SSQ_KEY_DRAW = "Shield saw: draw / put back / recall";
+SSQ_KEY_THROW = "Shield saw: throw along aim";

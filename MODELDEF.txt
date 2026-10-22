@@ -1,0 +1,192 @@
+// RS_ShieldSawQ MODELDEF. Stock QuestZDoom 17.3: no FollowMainHand, no PlacementCVars, no
+// NOAUTOREVERSE. The held shield is the off-hand weapon's own psprite model, which the engine
+// draws at the off controller every frame; its live placement comes from the weapon's
+// ModifyBobLayer3D hook (zscript/ssq/shield.zs), not from here.
+//
+// Meshes are Ermac's (Rusted Legacy, MIT). shield.md3: frames 0 (closed) to 3 (open).
+// shieldsaw.md3: 0 blades in, 1-4 deploying, 5-7 spinning. hand_ssq.md3: frame 0 open, 1 fist
+// (frames 0 and 1 of his hand.md3, nothing else). The placement -- Scale -1 1 1, Offset 0 -24 -10
+// -- is Ermac's own for this hand, the same the BD22 Quest pack draws its free hand with, and the
+// engine's mirror of the left controller is what turns the -1 the right way round.
+//
+// ---- held: SSQH with the hand, SSQI without (right-handed scheme) ----------------------
+Model SSQ_ShieldSaw
+{
+	Path "models/shieldsaw"
+	Model 0 "shield.md3"
+	Skin 0 "shieldsaw_b_HD.png"
+	Model 1 "shieldsaw.md3"
+	Skin 1 "shieldsaw_HD.png"
+	Path "models/hand"
+	Model 2 "hand_ssq.md3"
+	Skin 2 "hand.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex SSQH A 0 0	FrameIndex SSQH A 1 0	FrameIndex SSQH A 2 1
+	FrameIndex SSQH B 0 1	FrameIndex SSQH B 1 1	FrameIndex SSQH B 2 1
+	FrameIndex SSQH C 0 2	FrameIndex SSQH C 1 2	FrameIndex SSQH C 2 1
+	FrameIndex SSQH D 0 3	FrameIndex SSQH D 1 3	FrameIndex SSQH D 2 1
+	FrameIndex SSQH E 0 3	FrameIndex SSQH E 1 4	FrameIndex SSQH E 2 1
+	FrameIndex SSQH F 0 3	FrameIndex SSQH F 1 5	FrameIndex SSQH F 2 1
+	FrameIndex SSQH G 0 3	FrameIndex SSQH G 1 6	FrameIndex SSQH G 2 1
+	FrameIndex SSQH H 0 3	FrameIndex SSQH H 1 7	FrameIndex SSQH H 2 1
+}
+
+Model SSQ_ShieldSaw
+{
+	Path "models/shieldsaw"
+	Model 0 "shield.md3"
+	Skin 0 "shieldsaw_b_HD.png"
+	Model 1 "shieldsaw.md3"
+	Skin 1 "shieldsaw_HD.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex SSQI A 0 0	FrameIndex SSQI A 1 0
+	FrameIndex SSQI B 0 1	FrameIndex SSQI B 1 1
+	FrameIndex SSQI C 0 2	FrameIndex SSQI C 1 2
+	FrameIndex SSQI D 0 3	FrameIndex SSQI D 1 3
+	FrameIndex SSQI E 0 3	FrameIndex SSQI E 1 4
+	FrameIndex SSQI F 0 3	FrameIndex SSQI F 1 5
+	FrameIndex SSQI G 0 3	FrameIndex SSQI G 1 6
+	FrameIndex SSQI H 0 3	FrameIndex SSQI H 1 7
+}
+
+// ---- held, left-handed scheme (ssq_lefthanded): the off hand is the right controller,
+// which the engine does not mirror, so the scale is positive. UNTESTED in a headset.
+Model SSQ_ShieldSaw
+{
+	Path "models/shieldsaw"
+	Model 0 "shield.md3"
+	Skin 0 "shieldsaw_b_HD.png"
+	Model 1 "shieldsaw.md3"
+	Skin 1 "shieldsaw_HD.png"
+	Path "models/hand"
+	Model 2 "hand_ssq.md3"
+	Skin 2 "hand.png"
+	Scale 1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex SSQJ A 0 0	FrameIndex SSQJ A 1 0	FrameIndex SSQJ A 2 1
+	FrameIndex SSQJ B 0 1	FrameIndex SSQJ B 1 1	FrameIndex SSQJ B 2 1
+	FrameIndex SSQJ C 0 2	FrameIndex SSQJ C 1 2	FrameIndex SSQJ C 2 1
+	FrameIndex SSQJ D 0 3	FrameIndex SSQJ D 1 3	FrameIndex SSQJ D 2 1
+	FrameIndex SSQJ E 0 3	FrameIndex SSQJ E 1 4	FrameIndex SSQJ E 2 1
+	FrameIndex SSQJ F 0 3	FrameIndex SSQJ F 1 5	FrameIndex SSQJ F 2 1
+	FrameIndex SSQJ G 0 3	FrameIndex SSQJ G 1 6	FrameIndex SSQJ G 2 1
+	FrameIndex SSQJ H 0 3	FrameIndex SSQJ H 1 7	FrameIndex SSQJ H 2 1
+}
+
+Model SSQ_ShieldSaw
+{
+	Path "models/shieldsaw"
+	Model 0 "shield.md3"
+	Skin 0 "shieldsaw_b_HD.png"
+	Model 1 "shieldsaw.md3"
+	Skin 1 "shieldsaw_HD.png"
+	Scale 1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex SSQK A 0 0	FrameIndex SSQK A 1 0
+	FrameIndex SSQK B 0 1	FrameIndex SSQK B 1 1
+	FrameIndex SSQK C 0 2	FrameIndex SSQK C 1 2
+	FrameIndex SSQK D 0 3	FrameIndex SSQK D 1 3
+	FrameIndex SSQK E 0 3	FrameIndex SSQK E 1 4
+	FrameIndex SSQK F 0 3	FrameIndex SSQK F 1 5
+	FrameIndex SSQK G 0 3	FrameIndex SSQK G 1 6
+	FrameIndex SSQK H 0 3	FrameIndex SSQK H 1 7
+}
+
+// ---- the disc in flight ------------------------------------------------------------
+// shield_weapon.md3 carries a full spin in frames 0-15. UseActorRoll lets the throw plane be
+// any angle, set once at launch and held. The face and teeth are surfaces 0 and 2 on
+// shieldsaw_HD.png; the back (surface 1) on shieldsaw_b_HD.png.
+// Size: held, the rim is 58.5 mesh units = 58.5 cm = 19.9 map units at 34 units/m. This mesh
+// is 56.6 across its rim, so 19.9 / 56.6 = 0.35 at actor scale 1.
+Model SSQ_Disc
+{
+	Path "models/shieldsaw"
+	Model 0 "shield_weapon.md3"
+	Skin 0 "shieldsaw_HD.png"
+	SurfaceSkin 0 0 "shieldsaw_HD.png"
+	SurfaceSkin 0 1 "shieldsaw_b_HD.png"
+	SurfaceSkin 0 2 "shieldsaw_HD.png"
+	Scale 0.35 0.35 0.35
+	UseActorPitch
+	UseActorRoll
+	FrameIndex SSQF A 0 0
+	FrameIndex SSQF B 0 1
+	FrameIndex SSQF C 0 2
+	FrameIndex SSQF D 0 3
+	FrameIndex SSQF E 0 4
+	FrameIndex SSQF F 0 5
+	FrameIndex SSQF G 0 6
+	FrameIndex SSQF H 0 7
+	FrameIndex SSQF I 0 8
+	FrameIndex SSQF J 0 9
+	FrameIndex SSQF K 0 10
+	FrameIndex SSQF L 0 11
+	FrameIndex SSQF M 0 12
+	FrameIndex SSQF N 0 13
+	FrameIndex SSQF O 0 14
+	FrameIndex SSQF P 0 15
+}
+
+Model SSQ_DiscTrail
+{
+	Path "models/shieldsaw"
+	Model 0 "shield_weapon_glow.md3"
+	Scale 0.35 0.35 0.35
+	UseActorPitch
+	UseActorRoll
+	FrameIndex SSQF A 0 0
+}
+
+// ---- the lock marker: the glow mesh, small, stepping round -------------------------
+// AngleOffset must come BEFORE the FrameIndex it applies to.
+Model SSQ_LockMark
+{
+	Path "models/shieldsaw"
+	Model 0 "shield_weapon_glow.md3"
+	Scale 0.5 0.5 0.5
+	AngleOffset 0.0
+	FrameIndex SSQL A 0 0
+	AngleOffset 90.0
+	FrameIndex SSQL B 0 0
+	AngleOffset 180.0
+	FrameIndex SSQL C 0 0
+	AngleOffset 270.0
+	FrameIndex SSQL D 0 0
+}
+
+// ---- the shield as a WORLD actor: on your back, and in your hand as others see it ----------
+// One mesh unit is one cm here, so 0.34 makes it the size of the one in your hand (34 units/m).
+// Frames follow the rev like the held block.
+Model SSQ_Prop
+{
+	Path "models/shieldsaw"
+	Model 0 "shield.md3"
+	Skin 0 "shieldsaw_b_HD.png"
+	Model 1 "shieldsaw.md3"
+	Skin 1 "shieldsaw_HD.png"
+	Scale 0.34 0.34 0.34
+	UseActorPitch
+	UseActorRoll
+	FrameIndex SSQP A 0 0	FrameIndex SSQP A 1 0
+	FrameIndex SSQP B 0 1	FrameIndex SSQP B 1 1
+	FrameIndex SSQP C 0 2	FrameIndex SSQP C 1 2
+	FrameIndex SSQP D 0 3	FrameIndex SSQP D 1 3
+	FrameIndex SSQP E 0 3	FrameIndex SSQP E 1 4
+	FrameIndex SSQP F 0 3	FrameIndex SSQP F 1 5
+	FrameIndex SSQP G 0 3	FrameIndex SSQP G 1 6
+	FrameIndex SSQP H 0 3	FrameIndex SSQP H 1 7
+}
+
+// ---- the mount marker: a wireframe diamond, sized to the reach ---------------------------
+// The OBJ names no material; a model with no skin draws nothing, so the glow texture is named.
+Model SSQ_MountMarker
+{
+	Path "models"
+	Model 0 "rs_ss_diamond.obj"
+	Path "models/shieldsaw"
+	Skin 0 "shieldsaw_glow.png"
+	Scale 4.0 4.0 4.0
+	FrameIndex SSQM A 0 0
+}
