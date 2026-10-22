@@ -1,7 +1,5 @@
 # RS_ShieldSawQ
 
-![held](docs/screens/held_shield_ermac_hand.png)
-
 **v0.2 — 2026-10-22.** Loads clean on stock QuestZDoom 17.3 (Linux headless build of
 `emawind84/gzdoom @ questzdoom`); draw / throw / return / stow and the block (claw, fireballs,
 return-to-sender) verified by scripted console runs against a real imp. Not yet run in a headset.
@@ -82,10 +80,3 @@ zscript/ssq/disc.zs    flight, locks, tiers, breadcrumb return, catch
 zscript/ssq/state.zs   stowed / drawn / flying, mount, loadout swap, input, net events
 zscript/ssq/props.zs   the world prop and the mount marker
 ```
-
-## Screens from the build session
-
-| | |
-|---|---|
-| ![disc](docs/screens/disc_in_flight.png) | the disc leaving along the aim (desktop route, headless run) |
-| ![dialog](docs/screens/the_unknown_sprite_dialog.png) | the "hang" that wasn't: MODELDEF only knows sprites a state names |
