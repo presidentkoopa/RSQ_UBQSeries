@@ -655,6 +655,28 @@ class UBQS_SaberBase : Weapon abstract
 	// THE WHOOSH, FROM THE BLADE. The emitter is reused while it is alive, so a flurry of swings
 	// does not leave a dozen of them following the tip; a fresh swing restarts the sound on it and
 	// resets its base pitch. ubqs_swing_spatial 0 puts the sound back on the player.
+	// WHERE THE HUM IS COMING FROM. With ubqs_swing_spatial on it is an emitter on the blade; with
+	// it off the hum goes back on the player, exactly as it used to be. Everything that touches the
+	// hum -- start, volume, pitch, stop -- goes through these two, so the two routes cannot drift.
+	Actor HumSrc(bool make, Vector3 mid)
+	{
+		if (!owner) return null;
+		if (UInt("ubqs_swing_spatial", 1) == 0) return owner;
+		if (!hummer && make)
+		{
+			hummer = UBQS_Hummer(Actor.Spawn('UBQS_Hummer', mid));
+			if (hummer) { hummer.ear = owner; hummer.at = mid; }
+		}
+		return hummer ? Actor(hummer) : owner;
+	}
+	int HumChan() { return (UInt("ubqs_swing_spatial", 1) != 0 && hummer) ? CHAN_BODY : (bOffhandWeapon ? 21 : 20); }
+	void HumOff()
+	{
+		if (hummer) { hummer.A_StopSound(CHAN_BODY); hummer.Destroy(); hummer = null; }
+		if (owner) owner.A_StopSound(bOffhandWeapon ? 21 : 20);
+		humming = false;
+	}
+
 	void Swing(Vector3 tip, double speed)
 	{
 		if (!owner) return;
@@ -985,6 +1007,7 @@ class UBQS_SaberBase : Weapon abstract
 	private bool firePressed, altPressed;
 	private bool booted;	// the hilt's power-up is once per draw, not once per tic
 	private UBQS_Swish swish;	// the emitter the last swing is coming out of, while it lasts
+	private UBQS_Hummer hummer;	// and the one the hum lives on, for as long as the blade is lit
 	void TickFireLatch()
 	{
 		if (!owner || !owner.player) { firePressed = false; altPressed = false; return; }
@@ -1155,7 +1178,7 @@ class UBQS_SaberBase : Weapon abstract
 		if (!Lit())
 		{
 			if (!bOffhandWeapon) EndLock();
-			if (humming) { owner.A_StopSound(ch); humming = false; }
+			HumOff();
 			lastOk = false;
 			cutPath = 0;	// a doused or holstered blade starts its path sum clean
 			Lights(false);
@@ -1168,7 +1191,14 @@ class UBQS_SaberBase : Weapon abstract
 		// so starting the loop at 0 and setting humming = true anyway would leave no channel for the per-tic
 		// re-assert below to act on -- silence that the slider could never undo until the blade was doused.
 		double hv = HumVol();
-		if (!humming && hv > 0.0) { owner.A_StartSound(UBQS_Font.Hum(), ch, CHANF_LOOPING, hv); humming = true; }
+		// THE HUM STARTS ON THE BLADE. BladeBase/BladeDir are a few lines below, so the emitter is
+		// placed at the hand for its first tic and carried to the blade's midpoint on the same tic,
+		// before anything is heard.
+		if (!humming && hv > 0.0)
+		{
+			let hs = HumSrc(true, BladeBase());
+			if (hs) { hs.A_StartSound(UBQS_Font.Hum(), HumChan(), CHANF_LOOPING, hv); humming = true; }
+		}
 
 		Vector3 hand = BladeBase(), dir = BladeDir();
 		double len = BladeLen();
@@ -1200,12 +1230,16 @@ class UBQS_SaberBase : Weapon abstract
 		// lying to you. 0 restores exactly the old behaviour.
 		cutPath = cutPath * 0.75 + speed;
 		double eff = max(speed, cutPath * clamp(UF("ubqs_cut_sustain", 0.6), 0.0, 1.0));
-		owner.A_SoundPitch(ch, 1.0 + clamp((speed - 6.0) / 60.0, 0.0, 0.3));
+		// the swing's own lift on the hum. On the blade emitter this is the BASE the Doppler ride
+		// bends around; on the player it is the whole of it, as before.
+		double hpitch = 1.0 + clamp((speed - 6.0) / 60.0, 0.0, 0.3);
+		if (hummer) { hummer.at = hand + dir * (len * 0.5); hummer.base = hpitch; }
+		else if (owner) owner.A_SoundPitch(ch, hpitch);
 		// THE LINE THAT ACTUALLY WINS: this re-assert runs every tic, so a hum volume set only where the loop
 		// starts would appear to work for one tic and then silently revert. Both sites read HumVol(). Dropping
 		// to 0 stops the channel and clears `humming`, so raising the slider again starts a fresh loop.
-		if (hv <= 0.0) { if (humming) { owner.A_StopSound(ch); humming = false; } }
-		else owner.A_SoundVolume(ch, hv);
+		if (hv <= 0.0) { if (humming) HumOff(); }
+		else { let hs = HumSrc(false, hand); if (hs) hs.A_SoundVolume(HumChan(), hv); }
 
 		// TWIRLING: the staff is a spinning disc in front of your hand -- it cuts what it touches and turns
 		// every shot that crosses it. No line work, no burning (it would scorch circles into the wall).
@@ -2593,14 +2627,17 @@ class UBQS_SaberBase : Weapon abstract
 	{
 		KillLights();
 		ClearLocks();
+		// the two sound emitters are ours: nothing else will clean them up
+		if (hummer) { hummer.Destroy(); hummer = null; }
+		if (swish) { swish.Destroy(); swish = null; }
 		if (thrown) thrown.Destroy();
 		Super.OnDestroy();
 	}
 	override void DetachFromOwner()
 	{
 		KillLights();
-		if (owner) owner.A_StopSound(bOffhandWeapon ? 21 : 20);
-		humming = false;
+		// the blade's hum emitter goes with the saber, or it is left humming in mid air
+		HumOff();
 		ignited = false;
 		merged = false;
 		Super.DetachFromOwner();
@@ -2751,6 +2788,47 @@ class UBQS_SaberOff : UBQS_SaberBase
 //
 // Sound only. Nothing here touches the playsim, and the emitter is spawned on every machine from
 // the same swing decision the cut already is.
+// ---- THE HUM, WHICH BELONGS TO THE BLADE --------------------------------------------------
+//
+// The idle hum was played on the player, which puts it at the player's feet and leaves the sound
+// of a lit lightsaber coming out of the middle of your head. It lives here instead: a silent
+// emitter at the blade's midpoint, carried with it every tic, holding the looping hum for as long
+// as the blade is lit. Move the blade past your ear and the hum moves with it, and in a headset
+// that is most of the difference between a lightsaber and a sound effect.
+//
+// It takes the same Doppler ride the swing does, at half strength -- a hum on a blade you are
+// swinging really does bend, and it is the part you hear continuously rather than in bursts.
+class UBQS_Hummer : Actor
+{
+	Actor ear;
+	Vector3 at;			// the blade's midpoint, written by the saber every tic
+	double base;		// the pitch the saber wants from the swing speed, before the shift
+	double lastR;
+	Default
+	{
+		+NOINTERACTION +NOBLOCKMAP +NOSECTOR +NOGRAVITY +DONTSPLASH +NOTONAUTOMAP +NOTIMEFREEZE
+		RenderStyle "None";
+	}
+	override void Tick()
+	{
+		Super.Tick();
+		if (!ear) { A_StopSound(CHAN_BODY); Destroy(); return; }
+		SetOrigin(at, true);
+		let p = ear.player;
+		Vector3 head = (ear.pos.xy, p ? p.viewz : ear.pos.z + ear.height * 0.8);
+		double r = (at - head).Length();
+		if (lastR > 0 && base > 0)
+		{
+			let cv = CVar.FindCVar('ubqs_doppler');
+			double k = cv ? clamp(cv.GetFloat(), 0.0, 2.0) : 1.0;
+			double shift = clamp((lastR - r) * 0.008 * k, -0.2, 0.2);
+			A_SoundPitch(CHAN_BODY, clamp(base + shift, 0.5, 2.0));
+		}
+		lastR = r;
+	}
+	States { Spawn: TNT1 A 1; Wait; }
+}
+
 class UBQS_Swish : Actor
 {
 	Actor ear;			// whose head we are passing
