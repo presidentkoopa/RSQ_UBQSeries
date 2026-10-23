@@ -578,7 +578,10 @@ class SSQ_Handler : EventHandler
 			double pulse = 1.0 + 0.12 * sin(Level.maptime * 9.0 + k * 40);
 			m.bInvisible = false;
 			m.SetOrigin(t.pos + (0, 0, t.height + 12), true);
-			m.A_SetScale((k == 0 ? 3.0 : (k == 1 ? 2.1 : 1.6)) * pulse * SV('ssq_lock_mark_scale', 1.0));
+			// around the actor's own 0.35, not around 1: the one the disc visits first is a
+			// little under twice the others, which is plenty to read at range without
+			// magnifying a 48-pixel picture into a dinner plate.
+			m.A_SetScale(0.35 * (k == 0 ? 1.8 : (k == 1 ? 1.3 : 1.0)) * pulse * SV('ssq_lock_mark_scale', 1.0));
 			m.A_SetRenderStyle(k == 0 ? 1.0 : 0.85, STYLE_Add);
 			m.angle += (k == 0 ? 14 : 8);
 		}

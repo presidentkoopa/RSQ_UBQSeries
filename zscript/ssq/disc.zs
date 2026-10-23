@@ -413,6 +413,9 @@ class SSQ_LockMark : Actor
 		+FORCEXYBILLBOARD
 		RenderStyle "Add";
 		Alpha 0.95;
+		// the size the art was drawn for: it is a 48x48 picture, and the saber draws it at
+		// 0.35. The rank multipliers in LocksTick are around THIS, not around 1.
+		Scale 0.35;
 	}
 	States
 	{
