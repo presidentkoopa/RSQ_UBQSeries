@@ -411,10 +411,21 @@ class SSQ_Handler : EventHandler
 		if (fix)
 		{
 			saw.bOffhandWeapon = true;
+			// IT MUST NOT MATTER WHO RAN FIRST THIS TIC. Event handlers tick in registration
+			// order, which is LOAD order, so whether the saber's bridge or this handler sees the
+			// off hand first depends on which pk3 the launcher listed first. Setting only
+			// PendingWeapon makes us one voice among several and the last writer in the tic wins.
+			// Writing the slot itself does not: whoever ran before us is overridden, and whoever
+			// runs after us finds a hand that is not empty and leaves it alone -- which is all
+			// either of those mods was ever waiting for. Load order stops mattering.
+			p.OffhandWeapon = saw;
 			p.PendingWeapon = saw;
 			mo.BringUpWeapon();
 			if (UVI(p, 'ssq_debug', 0)) Console.Printf("ssq: pin off -> shield");
 		}
+		// and cancel a raise somebody else asked for while the shield is the one in the hand
+		if (p.PendingWeapon != WP_NOCHANGE && p.PendingWeapon != saw && p.PendingWeapon.bOffhandWeapon)
+			p.PendingWeapon = WP_NOCHANGE;
 		if (mPrevMain[i])
 		{
 			let back = Weapon(mo.FindInventory(mPrevMain[i]));
@@ -587,6 +598,7 @@ class SSQ_Handler : EventHandler
 		let rw = p.ReadyWeapon;
 		mPrevMain[i] = (rw && rw != saw) ? rw.GetClass() : null;	// pinned while held (switchhand undone)
 		saw.bOffhandWeapon = true;
+		p.OffhandWeapon = saw;	// the slot is ours THIS tic: no window for anyone to fill
 		p.PendingWeapon = saw;
 		// BRING IT UP OURSELVES. A switch normally happens inside the old weapon's ready state
 		// (it sees PendingWeapon, lowers, raises the next) -- and the zone took that layer away.
