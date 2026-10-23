@@ -356,8 +356,11 @@ class SSQ_Guard : Inventory
 			double ang = atan2(back.y, back.x);
 			double pit = -asin(clamp(back.z, -1, 1));
 			int dmg = int(max(1, damage * SSQ_Handler.SV('ssq_hitscan_damage', 1.0)));
-			// (angle, distance, pitch, damage, type, puff, flags, victim, offsetz, fwd, side)
-			mo.LineAttack(ang, max(dist, 1024.0), pit, dmg, 'Hitscan', 'BulletPuff', LAF_ABSPOSITION, null, P.z, 0, 0);
+			// With LAF_ABSPOSITION the engine reads the three offsets as LITERAL COORDINATES --
+			// tempos = (offsetforward, offsetside, sz), p_map.cpp:4875 -- so the forward and side
+			// slots carry X and Y. Passing 0,0 started this trace at the map origin.
+			// (angle, distance, pitch, damage, type, puff, flags, victim, Z, X, Y)
+			mo.LineAttack(ang, max(dist, 1024.0), pit, dmg, 'Hitscan', 'BulletPuff', LAF_ABSPOSITION, null, P.z, P.x, P.y);
 		}
 		return true;
 	}
