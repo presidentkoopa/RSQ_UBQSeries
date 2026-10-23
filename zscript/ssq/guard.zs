@@ -309,6 +309,65 @@ class SSQ_Guard : Inventory
 		}
 	}
 
+	// THE ENEMY YOU ARE LOOKING AT: the nearest live one inside `cone` degrees of your gaze
+	// that you can see. A deflection that goes where you are LOOKING is the one that feels
+	// like skill rather than luck -- you turn your head and the shot follows it.
+	static Actor GazeTarget(PlayerPawn mo, double cone)
+	{
+		if (cone <= 0) return null;
+		Vector3 eye = mo.Vec3Offset(0, 0, mo.player ? mo.player.viewheight : 41.0);
+		Vector3 look = (cos(mo.angle) * cos(mo.pitch), sin(mo.angle) * cos(mo.pitch), -sin(mo.pitch));
+		Actor best = null;
+		double bestOff = cone;
+		double range = SSQ_Handler.SV('ssq_lock_range', 1200.0);
+		let it = BlockThingsIterator.CreateFromPos(eye.x, eye.y, eye.z - range, range * 2.0, range, false);
+		while (it.Next())
+		{
+			Actor t = it.thing;
+			if (!t || t == mo || !t.bShootable || t.health <= 0) continue;
+			if (!t.bIsMonster && !t.player) continue;
+			if (t.bFriendly && !deathmatch) continue;
+			if (t.player && !deathmatch) continue;
+			Vector3 d = t.pos + (0, 0, t.height * 0.55) - eye;
+			double dist = d.Length();
+			if (dist < 1 || dist > range) continue;
+			double off = acos(clamp((d / dist) dot look, -1, 1));
+			if (off >= bestOff) continue;
+			if (!mo.CheckSight(t)) continue;
+			bestOff = off;
+			best = t;
+		}
+		return best;
+	}
+
+	// WHERE A TURNED SHOT GOES, for both the sweep and the block, so they never disagree.
+	// ssq_deflect_aim: 0 straight back at whoever fired it, 1 where you are LOOKING (helped
+	// onto the nearest enemy within ssq_deflect_assist of your gaze), 2 mirrored off the face.
+	// 1 is the default because it is the one that makes a shield feel like a weapon: you catch
+	// a fireball on the plate and send it wherever you turn your head.
+	static Vector3 DeflectDir(PlayerPawn mo, Vector3 from, Vector3 vel, Vector3 n, Actor shooter)
+	{
+		int aim = SSQ_Handler.SVI('ssq_deflect_aim', 1);
+		Vector3 d = (0, 0, 0);
+		if (aim == 1)
+		{
+			let pick = GazeTarget(mo, SSQ_Handler.SV('ssq_deflect_assist', 14.0));
+			if (pick) d = (pick.pos + (0, 0, pick.height * 0.55)) - from;
+			else d = (cos(mo.angle) * cos(mo.pitch), sin(mo.angle) * cos(mo.pitch), -sin(mo.pitch));
+		}
+		else if (aim == 2)
+		{
+			double vl = vel.Length();
+			Vector3 u = vl > 0 ? vel / vl : -n;
+			d = u - n * (2 * (u dot n));
+		}
+		if (d.Length() < 0.001 && shooter && shooter.health > 0 && shooter != mo)
+			d = (shooter.pos + (0, 0, shooter.height * 0.5)) - from;
+		if (d.Length() < 0.001) d = -vel;
+		if (d.Length() < 0.001) d = n;
+		return d.Unit();
+	}
+
 	// A SWEPT SHOT IS TURNED, NOT REPLACED. The block path spawns a fresh missile because the
 	// original is already mid-impact by then; out here it has not hit anything yet, so it just
 	// gets a new heading -- no spawn, no second sound, and a seeker keeps seeking.
@@ -316,14 +375,7 @@ class SSQ_Guard : Inventory
 	{
 		Actor shooter = sh.target;
 		double sp = max(sh.vel.Length(), sh.speed, 8.0) * SSQ_Handler.SV('ssq_sweep_boost', 1.0);
-		Vector3 dir;
-		if (SSQ_Handler.SVI('ssq_deflect_aim', 1) != 0 && shooter && shooter.health > 0 && shooter != mo)
-			dir = (shooter.pos + (0, 0, shooter.height * 0.5) - sh.pos).Unit();
-		else
-		{
-			Vector3 u = sh.vel.Unit();
-			dir = (u - n * (2 * (u dot n))).Unit();
-		}
+		Vector3 dir = DeflectDir(mo, sh.pos, sh.vel, n, shooter);
 		sh.target = mo;						// ours now: it hurts them, never us
 		if (sh.bSeekerMissile) sh.tracer = shooter;
 		sh.vel = dir * sp;
@@ -349,16 +401,7 @@ class SSQ_Guard : Inventory
 		let back = Actor.Spawn(missile.GetClass(), P + n * 6);
 		if (!back) return;
 		double sp = max(missile.vel.Length(), missile.speed, 8) * boost;
-		Vector3 dir;
-		if (SSQ_Handler.SVI('ssq_deflect_aim', 1) != 0 && source && source.health > 0 && source != mo)
-			dir = (source.pos + (0, 0, source.height * 0.5) - back.pos).Unit();
-		else
-		{
-			Vector3 v = missile.vel;
-			double vl = v.Length();
-			Vector3 u = vl > 0 ? v / vl : -n;
-			dir = (u - n * (2 * (u dot n))).Unit();
-		}
+		Vector3 dir = DeflectDir(mo, back.pos, missile.vel, n, source);
 		back.vel = dir * sp;
 		back.angle = atan2(dir.y, dir.x);
 		back.pitch = -asin(clamp(dir.z, -1, 1));

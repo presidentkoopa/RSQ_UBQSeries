@@ -46,10 +46,11 @@ server bool  ssq_guard          = true;
 server bool  ssq_guard_stowed   = false;  // off: a shield you cannot see does not block. Both this and ssq_stow_world default off, together
 server int   ssq_yield_offhand  = 0;      // 0 pin the hands (v0.6 behaviour); 1 let switchhand take the off hand and stow the shield
 server int   ssq_deflect        = 1;      // blocked projectiles: 0 cancelled, 1 return to sender
-server bool  ssq_deflect_aim    = true;   // back at the shooter; off = mirrored off the face
+server int   ssq_deflect_aim    = 1;      // a turned shot goes: 0 back at the shooter, 1 where you LOOK, 2 mirrored off the face
+server float ssq_deflect_assist = 14.0;   // degrees of help putting a looked-at deflection onto an enemy; 0 = none
 server int   ssq_sweep          = 1;      // turn shots that cross the plate BEFORE they reach you, not only ones that would hit
 server float ssq_sweep_lead     = 3.0;    // tics of a shot's own path tested against the plate (1..6)
-server float ssq_sweep_pad      = 10.0;   // cm added to the plate for the sweep only: the felt size of the guard
+server float ssq_sweep_pad      = 18.0;   // cm added to the plate for the sweep only: the felt size of the guard
 server float ssq_sweep_boost    = 1.0;    // speed a turned shot leaves at, as a multiple of its own
 server int   ssq_melee          = 2;      // blocked melee: 0 nothing, 1 stun, 2 stun and shoved back
 server float ssq_stagger_push   = 12.0;

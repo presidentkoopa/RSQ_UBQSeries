@@ -30,6 +30,13 @@ OptionValue "SSQ_HeldWorld"
 	2, "Everyone in a netgame"
 }
 
+OptionValue "SSQ_DeflectAim"
+{
+	0, "Back at the shooter"
+	1, "Where you look"
+	2, "Off the face"
+}
+
 OptionMenu "SSQ_Options"
 {
 	Title "RS ShieldSawQ Options"
@@ -37,6 +44,10 @@ OptionMenu "SSQ_Options"
 	StaticText ""
 	Option "Block attacks while Holstered", "ssq_guard_stowed", "OnOff"
 	Option "Blocked Projectiles", "ssq_deflect", "SSQ_Deflect"
+	Option "Turned shots go", "ssq_deflect_aim", "SSQ_DeflectAim"
+	Slider "Aim help on a turned shot", "ssq_deflect_assist", 0.0, 45.0, 1.0, 0
+	Option "Turn shots before they reach you", "ssq_sweep", "OnOff"
+	Slider "Guard generosity (cm)", "ssq_sweep_pad", 0.0, 60.0, 1.0, 0
 	Option "Blocked Melee", "ssq_melee", "SSQ_Melee"
 	Option "Block Feedback and Haptics", "ssq_feedback", "OnOff"
 	Option "Perfect Block", "ssq_perfect", "OnOff"

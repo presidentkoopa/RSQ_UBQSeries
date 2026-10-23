@@ -162,6 +162,36 @@ class SSQ_Handler : EventHandler
 	// letting go with the arm moving throws, which is also how the saber does it and makes a
 	// revved throw the natural one. ssq_lock_button 0 keeps the old alt-only behaviour, 2 is
 	// the trigger alone.
+	// ---- LIVING WITH OTHER OFF-HAND MODS ------------------------------------------------
+	//
+	// Two mods we load beside are built to never leave the off hand empty: the weapon pack's
+	// RSQ_Hands re-gives itself whenever the slot is null, and UltraBadassQuestSaber's bridge
+	// gives UBQS_SaberOff to an empty off hand every tic when dual is on. Both are right to
+	// do it and neither knows about us. The consequence is that an off-hand slot we leave
+	// null for even one tic gets filled by somebody, and whatever we do next fights them.
+	//
+	// So: a weapon that appears in the off hand BY ITSELF is not the player taking the hand
+	// away from us. This names those -- by class name, at run time, so neither mod has to be
+	// present and nothing links against them.
+	static clearscope bool IsFiller(Weapon w)
+	{
+		if (!w) return false;
+		String n = w.GetClassName();
+		return n.IndexOf('Hands') >= 0 || n.IndexOf('UBQS_') == 0;
+	}
+
+	// the off-hand weapon another mod would hand back when we let go, if there is one
+	static clearscope Weapon HandBack(PlayerPawn mo)
+	{
+		static const Name fillers[] = { 'UBQS_SaberOff', 'RSQ_Hands' };
+		for (int k = 0; k < 2; k++)
+		{
+			let w = Weapon(mo.FindInventory(fillers[k]));
+			if (w) return w;
+		}
+		return null;
+	}
+
 	static clearscope bool SecHeld(PlayerInfo p)
 	{
 		int b = p.cmd.buttons;
@@ -408,6 +438,11 @@ class SSQ_Handler : EventHandler
 		if (mDrawGrace[i] > 0) { mDrawGrace[i]--; return; }
 		if (p.OffhandWeapon == saw) return;
 		if (p.PendingWeapon != WP_NOCHANGE && p.PendingWeapon == saw) return;	// mid-raise
+		// A WEAPON THAT PUT ITSELF THERE IS NOT THE PLAYER TAKING THE HAND. The pack's hands and
+		// the saber's off-hand blade both appear in an empty off hand on their own; yielding to
+		// those would have the shield stow itself a tic after every draw. Only a real weapon
+		// arriving -- a switchhand, a pickup -- counts, and anything else gets pinned back.
+		if (IsFiller(p.OffhandWeapon) || !p.OffhandWeapon) { PinHands(i, saw); return; }
 		if (UVI(p, 'ssq_debug', 0)) Console.Printf("ssq: p%d off hand taken -- shield to the shoulder", i);
 		// the player has just arranged their own hands: forget what the draw displaced, so
 		// Unstow does not hand it straight back and start the fight over.
@@ -583,10 +618,22 @@ class SSQ_Handler : EventHandler
 		}
 		if (p.PendingWeapon == saw) p.PendingWeapon = WP_NOCHANGE;
 		if (saw) saw.StopRev();
-		if (mPrevOff[i] && p.PendingWeapon == WP_NOCHANGE)
+		// HAND THE SLOT OVER, DO NOT DROP IT. Leaving OffhandWeapon null even for one tic is an
+		// invitation: the pack and the saber both fill an empty off hand on their own schedule,
+		// and then two mods are writing PendingWeapon in the same tic and the last one wins.
+		// Whatever we displaced goes back here and now; if we displaced nothing, we give the
+		// slot to whoever would have claimed it anyway, deliberately, instead of racing them.
+		if (p.PendingWeapon == WP_NOCHANGE)
 		{
-			let back = Weapon(mo.FindInventory(mPrevOff[i]));
-			if (back && back != p.ReadyWeapon) { back.bOffhandWeapon = true; p.PendingWeapon = back; mo.BringUpWeapon(); }
+			Weapon back = mPrevOff[i] ? Weapon(mo.FindInventory(mPrevOff[i])) : null;
+			if (!back) back = HandBack(mo);
+			if (back && back != p.ReadyWeapon && back != saw)
+			{
+				back.bOffhandWeapon = true;
+				p.OffhandWeapon = back;	// the slot is filled THIS tic, not after a raise
+				p.PendingWeapon = back;
+				mo.BringUpWeapon();
+			}
 		}
 		else if (mPrevMain[i] && !p.ReadyWeapon && p.PendingWeapon == WP_NOCHANGE)
 		{
