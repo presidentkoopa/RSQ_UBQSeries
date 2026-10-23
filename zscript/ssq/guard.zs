@@ -26,42 +26,64 @@ class SSQ_Guard : Inventory
 		+INVENTORY.PERSISTENTPOWER
 	}
 
-	// ---- the plate --------------------------------------------------------------------
-	// Held: centre = hand + F*f + L*l*side + U*u (cm in the controller's frame), face = +L*side,
-	// where side is +1 for the off hand being the LEFT controller (right-handed scheme) and
-	// -1 for the right. Stowed: at the mount, facing backward.
+	// ---- the plate: MEASURED OFF THE MESH, not guessed ----------------------------------
+	//
+	// Where shield.md3 actually ends up when the held block of MODELDEF draws it
+	// (Scale -1 1 1, Offset 0 -24 -10), followed through stock QZD 17.3 (qzd173-pinned):
+	//
+	//   models_md3.cpp BuildVertexBuffer  render vertex = (mx, mz, my)
+	//   models.cpp RenderHUDModel         M = Hand . S(0.01) . T(0,5,30) . S(xs,zs,ys)
+	//                                         . T(xo/xs, zo/zs, yo/ys) . R(90,Y)
+	//   hw_vrmodes.cpp MapWeaponDir       F = -Zlocal, L = -Xlocal, U = +Ylocal
+	//
+	// which reduces, in the off controller's own frame and in cm, to
+	//
+	//   F = mx - 6        L = my (right-handed scheme) / -my (left)       U = mz - 5
+	//
+	// and the meshes measure (frame 0 closed / frame 3 open):
+	//
+	//   shield_rim     centre F -15.36  L -8.37  U -4.93   radius 28.46 / 29.27
+	//   shield_back    centre F -15.40  L -6.60  U -5.00   radius 29.04
+	//   shield_front   the saw housing, L -16.03 .. -8.86, in-plane radius 29.16
+	//   saw blades     L -8.70 .. -8.02, tip radius 29.2 retracted, 35.2 deployed
+	//   shield_handle  a bar at F -1.3, L -4.5, spanning U -13.8 .. +4.4: the grip
+	//   hand_ssq       straddles the origin, F -13.3..9.1  L -3.9..8.5  U -11.7..3.0
+	//
+	// So the disc sits 15.4 cm back along the forearm (the handle is at the hand, the
+	// disc covers the arm toward the elbow), 7.5 cm to the controller's RIGHT -- the
+	// arm is on the plate's +L side -- and 5 cm down. Its face normal is -L to within
+	// 0.001, and the whole assembly spans L -3.7 (holder) to -16.0 (housing).
+	//
+	// v0.6 had the sign of L inverted and the normal pointing into the forearm; that is
+	// "the ring is on the wrong side of the shield" and "the plate is not aligned with
+	// the geometry". The numbers below are the measurement; ssq_debug_ring draws them.
+	//
+	// side is +1 when the off hand is the LEFT controller (right-handed scheme) and -1
+	// when it is the right: MODELDEF mirrors the mesh for the other hand (SSQJ, Scale 1),
+	// so the lateral axis flips with it.
 	static clearscope double Side(PlayerInfo p) { return SSQ_Handler.LeftHanded(p) ? -1.0 : 1.0; }
 
 	static clearscope Vector3 PlateCentre(PlayerPawn mo, SSQ_Pose pose, bool stowed)
 	{
 		let p = mo.player;
-		if (stowed)
-			return SSQ_Handler.MountPos(mo) - (0, 0, SSQ_Handler.CM(SSQ_Handler.UV(p, 'ssq_mount_drop', 11.0)));
+		if (stowed) return SSQ_Handler.MountPlateCentre(mo);
 		double s = Side(p);
 		return pose.pos[0]
 			+ pose.F * SSQ_Handler.CM(SSQ_Handler.SV('ssq_plate_f', -15.4))
-			+ pose.L * (SSQ_Handler.CM(SSQ_Handler.SV('ssq_plate_l', 8.4)) * s)
+			+ pose.L * (SSQ_Handler.CM(SSQ_Handler.SV('ssq_plate_l', -7.5)) * s)
 			+ pose.U * SSQ_Handler.CM(SSQ_Handler.SV('ssq_plate_u', -5.0));
 	}
 
+	// OUTWARD: away from the forearm, which the mesh puts on the plate's +L side.
 	static clearscope Vector3 PlateNormal(PlayerPawn mo, SSQ_Pose pose, bool stowed)
 	{
-		if (stowed)
-		{
-			double a = mo.angle;
-			return (-cos(a), -sin(a), 0);
-		}
-		double s = Side(mo.player);
-		double yaw = SSQ_Handler.SV('ssq_plate_yaw', 0);
-		double pitch = SSQ_Handler.SV('ssq_plate_pitch', 0);
-		// the face is +L; a yaw tilts it toward F, a pitch toward U
-		Vector3 n = pose.L * (s * cos(yaw) * cos(pitch)) + pose.F * (sin(yaw) * cos(pitch)) + pose.U * sin(pitch);
-		return n.Unit();
+		if (stowed) return SSQ_Handler.MountPlateNormal(mo);
+		return pose.L * (-Side(mo.player));
 	}
 
 	static clearscope double PlateRadius(bool blades)
 	{
-		return SSQ_Handler.CM(SSQ_Handler.SV('ssq_plate_radius', 28.5) + (blades ? SSQ_Handler.SV('ssq_plate_blades', 2.5) : 0));
+		return SSQ_Handler.CM(SSQ_Handler.SV('ssq_plate_radius', 29.2) + (blades ? SSQ_Handler.SV('ssq_plate_blades', 6.0) : 0));
 	}
 
 	// does the segment A->B pass through the THICK disc (centre C, face n, radius R, half
@@ -86,7 +108,22 @@ class SSQ_Guard : Inventory
 		Vector3 inplane = rel - n * along;
 		if (inplane.Length() > R) return false;
 		if (along > thick || along < -thick) return false;
-		// the reported point: on the face
+		// THE REPORTED POINT GOES ON THE FACE. Where the segment actually pierces the
+		// face plane if it does -- the slab is thick, so the closest point can be 10 cm
+		// off the face and the spark lands in mid air. Otherwise the closest point,
+		// flattened onto the plane.
+		double da = (A - C) dot n, db = (B - C) dot n;
+		if ((da > 0) != (db > 0))
+		{
+			double den = da - db;
+			if (den != 0 && den == den)
+			{
+				Vector3 x = A + d * (da / den);
+				Vector3 xr = x - C;
+				Vector3 xp = xr - n * (xr dot n);
+				if (xp.Length() <= R) { hitP = C + xp; return true; }
+			}
+		}
 		hitP = C + inplane;
 		return true;
 	}

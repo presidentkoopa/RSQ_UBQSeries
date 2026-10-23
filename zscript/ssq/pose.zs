@@ -60,16 +60,25 @@ class SSQ_Pose play
 	// slowing, so the velocity on that tic reads low and a real throw looks like a drop. The
 	// fastest 2-tic window in the last six samples is the throw, and its direction is the
 	// throw's direction.
-	Vector3 ThrowVel()
+	//
+	// AND THE HAND'S TRAVEL IS NOT METRIC. OffhandPos.Z is divided by pixelstretch while X
+	// and Y are not (hw_openxrdevice.cpp:605-609), so the same real swing measures about 20%
+	// slower straight up than straight out, and an overhand throw left the hand soft. ps puts
+	// that back into the MAGNITUDE only: the direction is already correct in Doom space, so
+	// the returned vector keeps its heading and carries the true speed in its length.
+	Vector3 ThrowVel(double ps)
 	{
 		Vector3 best = (0, 0, 0);
 		double bl = 0;
 		for (int k = 0; k < 6; k++)
 		{
 			Vector3 v = VelAt(k);
-			double l = v.Length();
+			double zt = v.z * ps;
+			double l = sqrt(v.x * v.x + v.y * v.y + zt * zt);
 			if (l > bl) { bl = l; best = v; }
 		}
+		double dl = best.Length();
+		if (bl > 0 && dl > 0) best = best * (bl / dl);
 		return best;
 	}
 }

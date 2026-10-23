@@ -5,14 +5,17 @@
 // ---- the game rules (server) ------------------------------------------------
 server bool  ssq_start          = true;   // every player spawns with it
 server float ssq_cut_damage     = 1.0;    // thrown-disc damage scale
-server float ssq_throw_speed    = 1.0;    // launch speed scale
+server float ssq_throw_speed    = 1.6;    // launch speed scale: a 6 m/s swing leaves at ~17 units/tic (a rocket is 20)
 server float ssq_throw_min      = 20.0;   // map units/sec of hand speed below which a grip press stows instead of throws
-server float ssq_speed_floor    = 7.0;    // units/tic: the slowest a throw can leave at
+server float ssq_speed_floor    = 12.0;   // units/tic: the slowest a throw can leave at
 server float ssq_mass_kg        = 5.0;    // the disc keeps arm/(arm+this) of the hand speed
 server int   ssq_locks          = 5;      // targets one throw visits
 server float ssq_lock_cone      = 25.0;   // half-angle from the hand's forward at release
 server float ssq_lock_range     = 1200.0;
+server float ssq_lock_keep      = 60.0;   // a lock is KEPT out to here, far wider than the cone it was acquired in
+server int   ssq_lock_grace     = 14;     // tics a lock may stay out of that cone or out of sight before it drops
 server float ssq_return_speed   = 22.0;   // units/tic on the way home
+server int   ssq_home_patience  = 105;    // tics of returning before it ignores geometry and flies straight home
 server float ssq_catch_radius   = 24.0;   // hand within this of the returning disc = caught
 server bool  ssq_catch          = true;   // back in hand on return
 server bool  ssq_perfect        = false;  // perfect block: the shield moved into the hit
@@ -48,17 +51,15 @@ server float ssq_bash_damage    = 1.0;
 
 // ---- the plate: where the disc is, in the off controller's frame, cm -------------
 // F forward along the controller, L to the controller's left, U up. Defaults measured from
-// shield.md3 drawn with Ermac's hand placement (Scale -1 1 1, Offset 0 -24 -10): the disc centre
-// sits 15 cm back along the forearm, 8 cm outward, 5 cm down; its face points outward (+L).
+// shield.md3 as MODELDEF draws it (Scale -1 1 1, Offset 0 -24 -10), followed through the stock
+// QZD 17.3 HUD model chain -- the derivation is in guard.zs. The face points outward, -L.
 // ssq_debug_ring draws it, which is how these get checked in a headset.
 server float ssq_plate_f        = -15.4;
-server float ssq_plate_l        = 8.4;
+server float ssq_plate_l        = -7.5;   // to the controller's RIGHT: the arm sits on the plate's +L side
 server float ssq_plate_u        = -5.0;
-server float ssq_plate_yaw      = 0.0;    // tilt of the face normal from +L, degrees
-server float ssq_plate_pitch    = 0.0;
-server float ssq_plate_radius   = 28.5;   // cm; the blades add ssq_plate_blades when revved
+server float ssq_plate_radius   = 29.2;   // cm, measured rim; the blades add ssq_plate_blades when revved
 server float ssq_plate_thick    = 25.0;   // cm either side of the face that still counts as the shield
-server float ssq_plate_blades   = 2.5;
+server float ssq_plate_blades   = 6.0;    // deployed tips measure 35.2 cm
 server float ssq_roll_sign      = 1.0;    // flip if the ring rolls the wrong way
 
 // ---- per player (user: userinfo, travels) ---------------------------------------
@@ -71,7 +72,7 @@ user float ssq_mount_side       = 12.0;
 user float ssq_mount_up         = -30.0;
 user float ssq_mount_reach      = 30.0;
 server float ssq_zone_scale     = 1.6;    // the zone over the shoulder, as a multiple of the reach
-user float ssq_mount_drop       = 11.0;   // the disc hangs this far below the grab point
+user int   ssq_stow_world       = 1;      // draw the shield on your back while it is stowed
 user float ssq_mount_yaw        = 0.0;
 user float ssq_mount_pitch      = 0.0;
 user float ssq_mount_roll       = 0.0;

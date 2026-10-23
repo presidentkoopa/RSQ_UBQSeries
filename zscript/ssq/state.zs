@@ -32,6 +32,7 @@ class SSQ_Handler : EventHandler
 	bool  mGripWas[MAXPLAYERS];		// off secondary last tic
 	bool  mUseWas[MAXPLAYERS];
 	int   mCatchGrace[MAXPLAYERS];	// tics after a catch before the grip is read again
+	int   mDrawGrace[MAXPLAYERS];	// tics after a draw before an empty off hand counts as eviction
 	int   mStartDrawn[MAXPLAYERS];	// countdown to the draw at spawn (ssq_start_drawn)
 	bool  mInZone[MAXPLAYERS];		// the off hand is in the zone over the shoulder: the off-hand gun has yielded
 	// THE LOCK-ON YOU SEE. While the shield is held, a cone from where the off hand points picks
@@ -39,6 +40,7 @@ class SSQ_Handler : EventHandler
 	// Let go and this list is what flies, in this order.
 	Array<Actor> mLocks[MAXPLAYERS];
 	Array<Actor> mLockMarks[MAXPLAYERS];
+	Array<int>   mLockMiss[MAXPLAYERS];	// tics each lock has been out of the keep cone or out of sight
 	int   mLockSig[MAXPLAYERS];
 
 
@@ -105,6 +107,44 @@ class SSQ_Handler : EventHandler
 		return mo.pos + f * fwd + l * side + (0, 0, p.viewz - mo.pos.z + up);
 	}
 
+	// THE HOLSTERED POSE, DERIVED FROM THE MESH, not from hand-set offsets.
+	//
+	// MountPos is the grab point: where the hand is when it reaches over the shoulder.
+	// Holstered, the shield hangs there in the one orientation that is both grabbable and
+	// guards the back: its forearm axis F points UP (the handle is at the top, where your
+	// hand closes on it) and its +L side -- the side your arm is on -- faces FORWARD into
+	// your back, so the face normal -L looks behind you. U = F x L is then the player's
+	// left. The disc falls ssq_plate_f (15.4 cm, measured) below the grab point on its own,
+	// which is what ssq_mount_drop used to guess at.
+	//
+	// The world prop (SSQ_Prop) is one MODELDEF block with no mirror, so this frame uses
+	// the unmirrored lateral sign for both handednesses: 5 cm of ssq_plate_u is all that
+	// differs between them, on a 58 cm disc.
+	static clearscope Vector3 MountPlateCentre(PlayerPawn mo)
+	{
+		double a = mo.angle;
+		Vector3 Fh = (0, 0, 1);
+		Vector3 Lh = (cos(a), sin(a), 0);			// forward
+		Vector3 Uh = (cos(a + 90), sin(a + 90), 0);	// Fh x Lh = the player's left
+		return MountPos(mo)
+			+ Fh * CM(SV('ssq_plate_f', -15.4))
+			+ Lh * CM(SV('ssq_plate_l', -7.5))
+			+ Uh * CM(SV('ssq_plate_u', -5.0));
+	}
+
+	static clearscope Vector3 MountPlateNormal(PlayerPawn mo)
+	{
+		double a = mo.angle;
+		return (-cos(a), -sin(a), 0);	// -Lh: behind you
+	}
+
+	// the prop's own angles for that frame. models.cpp RenderModel composes
+	// rotate(-angle,Y) . rotate(-pitch,Z) . rotate(-roll,X) on a vertex swizzled to
+	// (mx, mz, my), so model +x is the actor's forward and model +y its left: pitch -90
+	// stands the handle up, and roll 180 turns the mesh's +y (its +L side) forward.
+	static clearscope double MountPropPitch() { return -90.0; }
+	static clearscope double MountPropRoll() { return 180.0; }
+
 	static clearscope double Reach(PlayerInfo p) { return CM(UV(p, 'ssq_mount_reach', 10.0)); }
 	// THE ZONE over the shoulder: larger than the grab reach, so the hand is inside it for tics
 	// before the finger can be at the grab point
@@ -165,7 +205,7 @@ class SSQ_Handler : EventHandler
 			// nothing but Draw() puts the shield in the hand: undo the engine filling an empty
 			// off hand with it, or a level change re-raising it
 			if (mState[i] != SS_DRAWN && p.OffhandWeapon == saw) Unstow(i);
-			if (mState[i] == SS_DRAWN) PinHands(i, saw);
+			if (mState[i] == SS_DRAWN) HoldOrYield(i, saw);
 			if (mState[i] == SS_FLYING && !mDisc[i]) { mState[i] = SS_STOWED; }
 			if (mStartDrawn[i] > 0 && mState[i] == SS_STOWED && --mStartDrawn[i] == 0) Draw(i);
 
@@ -249,8 +289,9 @@ class SSQ_Handler : EventHandler
 	{
 		if (mState[i] != SS_DRAWN) return;
 		let p = players[i];
+		let mo = p.mo;
 		let pose = mPose[i];
-		double speed = pose.Fresh(Level.maptime) ? pose.ThrowVel().Length() * TICRATE : 0;
+		double speed = pose.Fresh(Level.maptime) ? pose.ThrowVel(SSQ_Hand.PS(mo)).Length() * TICRATE : 0;
 		if (UVI(p, 'ssq_debug', 0)) Console.Printf("ssq: release p%d speed %.0f/s, %d locked", i, speed, mLocks[i].Size());
 		if (speed >= SV('ssq_throw_min', 20.0)) Throw(i);
 	}
@@ -261,33 +302,43 @@ class SSQ_Handler : EventHandler
 	// the main hand. QZD's `switchhand` (an off-hand button on the Quest) nulls BOTH hands and
 	// moves the gun across (player.zs SwitchWeaponHand); a weapon-cycle or a pickup switch
 	// changes one. Whatever happened, it is undone this tic. Only the release moves the shield.
-	void PinHands(int i, SSQ_ShieldSaw saw)
+	// WE STOPPED FIGHTING THE ENGINE FOR THE OFF HAND.
+	//
+	// v0.6 pinned both hands every single tic: if anything moved a weapon it was put back the
+	// same tic, forever. That was aimed at QZD's `switchhand`, which an off-hand button is
+	// bound to by default (engine/vr/defbind1.txt:6-7, defbind3.txt:12,21). Reading the stock
+	// source settles what it actually does (g_game.cpp:347-361 -> player.zs:2488-2502): the
+	// argument is the DESTINATION hand, so it moves the weapon in the OTHER one.
+	//
+	//   switchhand 0  moves the OFF-hand weapon -- the shield -- into the main hand.
+	//                 +WEAPON.NOHANDSWITCH on the shield blocks this outright. Already set.
+	//   switchhand 1  moves the MAIN-hand gun into the off hand. It tests NoHandSwitch on the
+	//                 GUN, not on us, then nulls BOTH slots -- so the shield can always be
+	//                 evicted and no flag we carry can prevent it.
+	//
+	// So eviction is not an error to undo, it is the player putting the shield down. We take
+	// it as exactly that: the shield goes back to the shoulder, the loadout is restored once,
+	// and the hand is theirs. Nothing is forced, nothing is re-raised behind their back, and
+	// the engine's own command keeps working the way its own menu says it does.
+	//
+	// The two-hand grab needs no handling here at all. It never nulls OffhandWeapon and never
+	// touches the hand pose; it only disables the off-hand weapon's ready/fire/button
+	// machinery (weapons.zs:415-418, player.zs:393-396, p_pspr.cpp:847-850) -- and the shield
+	// does not use any of it. Every input it has is read straight off p.cmd.buttons, which is
+	// in the replicated ticcmd and which the grab cannot gate. The one thing the grab does
+	// take is the drawn psprite, and the world prop covers that (see the prop block).
+	void HoldOrYield(int i, SSQ_ShieldSaw saw)
 	{
 		let p = players[i];
-		let mo = p.mo;
-		bool fix = false;
-		if (p.OffhandWeapon != saw) fix = true;
-		if (p.PendingWeapon != WP_NOCHANGE && p.PendingWeapon != saw && p.PendingWeapon.bOffhandWeapon) fix = true;
-		if (fix)
-		{
-			saw.bOffhandWeapon = true;
-			p.PendingWeapon = saw;
-			mo.BringUpWeapon();
-			if (UVI(p, 'ssq_debug', 0)) Console.Printf("ssq: pin off -> shield");
-		}
-		if (mPrevMain[i])
-		{
-			let back = Weapon(mo.FindInventory(mPrevMain[i]));
-			if (back && back != saw && p.ReadyWeapon != back && !back.bTwoHanded)
-			{
-				back.bOffhandWeapon = false;
-				p.PendingWeapon = back;
-				mo.BringUpWeapon();
-				if (UVI(p, 'ssq_debug', 0)) { String rw = "-"; if (p.ReadyWeapon) rw = p.ReadyWeapon.GetClassName(); Console.Printf("ssq: pin main -> %s (now %s)", mPrevMain[i].GetClassName(), rw); }
-			}
-		}
+		if (mDrawGrace[i] > 0) { mDrawGrace[i]--; return; }
+		if (p.OffhandWeapon == saw) return;
+		if (p.PendingWeapon != WP_NOCHANGE && p.PendingWeapon == saw) return;	// mid-raise
+		if (UVI(p, 'ssq_debug', 0)) Console.Printf("ssq: p%d off hand taken -- shield to the shoulder", i);
+		// the player has just arranged their own hands: forget what the draw displaced, so
+		// Unstow does not hand it straight back and start the fight over.
+		mPrevOff[i] = null; mPrevMain[i] = null;
+		Stow(i, true);
 	}
-
 	void ShownLocks(int i, out Array<Actor> found)
 	{
 		found.Clear();
@@ -298,12 +349,33 @@ class SSQ_Handler : EventHandler
 	void ClearLocks(int i)
 	{
 		mLocks[i].Clear();
+		mLockMiss[i].Clear();
 		for (int k = 0; k < mLockMarks[i].Size(); k++) if (mLockMarks[i][k]) mLockMarks[i][k].Destroy();
 		mLockMarks[i].Clear();
 		mLockSig[i] = 0;
 	}
 
-	// once a tic while held: pick, and show
+	// IS THIS ONE STILL MINE? The keep test, deliberately looser than the acquire test:
+	// alive, inside ssq_lock_keep of where the hand points, in range, in sight.
+	static bool LockHolds(PlayerPawn mo, Vector3 from, Vector3 aim, Actor t)
+	{
+		if (!t || t.health <= 0 || !t.bShootable) return false;
+		Vector3 d = t.pos + (0, 0, t.height * 0.5) - from;
+		double dist = d.Length();
+		if (dist < 1 || dist > SV('ssq_lock_range', 1200.0)) return false;
+		if (acos(clamp((d / dist) dot aim, -1, 1)) > SV('ssq_lock_keep', 60.0)) return false;
+		return mo.CheckSight(t);
+	}
+
+	// once a tic while held: keep what is locked, add what is newly aimed at, and show it.
+	//
+	// STICKY. v0.6 rebuilt this list from the acquire cone every single tic and re-sorted it
+	// by angle, so a target fell out the moment the hand drifted 25 degrees and the disc's
+	// visit order churned under the player's eyes -- "lock-on does not stay locked on".
+	// Now a lock is acquired inside ssq_lock_cone and KEPT until it dies, leaves the much
+	// wider ssq_lock_keep cone, goes out of sight or out of range for ssq_lock_grace tics in
+	// a row, or the button comes up. Order is the order you ringed them in, which is the
+	// order the disc will visit them -- it never re-sorts behind you.
 	void LocksTick(int i)
 	{
 		let p = players[i];
@@ -311,20 +383,40 @@ class SSQ_Handler : EventHandler
 		let pose = mPose[i];
 		bool aiming = (p.cmd.buttons & BT_OFFHANDALTATTACK) != 0;
 		if (mState[i] != SS_DRAWN || !aiming || !pose.Fresh(Level.maptime)) { if (mLocks[i].Size() > 0) ClearLocks(i); return; }
-		Array<Actor> found;
-		SSQ_Disc.FindTargets(mo, pose.pos[0], pose.F, found);
-		// did the list change? a soft tick when it does
-		int sig = 0;
-		for (int k = 0; k < found.Size(); k++) sig = sig * 31 + (found[k] ? found[k].SpawnTime + 7 : 1);
-		if (sig != mLockSig[i])
+
+		int want = SVI('ssq_locks', 5);
+		int grace = SVI('ssq_lock_grace', 14);
+		while (mLockMiss[i].Size() < mLocks[i].Size()) mLockMiss[i].Push(0);
+
+		// hold what is already locked
+		for (int k = mLocks[i].Size() - 1; k >= 0; k--)
 		{
-			mLockSig[i] = sig;
-			if (found.Size() > 0) mo.A_StartSound("ssq/lock", CHAN_6, 0, 0.5);
+			if (LockHolds(mo, pose.pos[0], pose.F, mLocks[i][k])) { mLockMiss[i][k] = 0; continue; }
+			bool dead = !mLocks[i][k] || mLocks[i][k].health <= 0;
+			mLockMiss[i][k] = mLockMiss[i][k] + 1;
+			if (dead || mLockMiss[i][k] > grace) { mLocks[i].Delete(k); mLockMiss[i].Delete(k); }
 		}
-		mLocks[i].Clear();
-		for (int k = 0; k < found.Size(); k++) mLocks[i].Push(found[k]);
-		// one ring per target, sized by rank
-		while (mLockMarks[i].Size() < found.Size())
+
+		// add what the hand is pointing at now, in the order it is acquired
+		int added = 0;
+		if (mLocks[i].Size() < want)
+		{
+			Array<Actor> fresh;
+			SSQ_Disc.FindTargets(mo, pose.pos[0], pose.F, fresh);
+			for (int k = 0; k < fresh.Size() && mLocks[i].Size() < want; k++)
+			{
+				let t = fresh[k];
+				if (!t) continue;
+				bool have = false;
+				for (int j = 0; j < mLocks[i].Size(); j++) if (mLocks[i][j] == t) { have = true; break; }
+				if (have) continue;
+				mLocks[i].Push(t); mLockMiss[i].Push(0); added++;
+			}
+		}
+		if (added > 0) mo.A_StartSound("ssq/lock", CHAN_6, 0, 0.5);
+
+		// one ring per target, sized by rank: biggest over the one the disc visits first
+		while (mLockMarks[i].Size() < mLocks[i].Size())
 		{
 			let m = Actor.Spawn('SSQ_LockMark', mo.pos);
 			mLockMarks[i].Push(m);
@@ -333,8 +425,9 @@ class SSQ_Handler : EventHandler
 		{
 			let m = mLockMarks[i][k];
 			if (!m) continue;
-			if (k >= found.Size()) { m.bInvisible = true; continue; }
-			let t = found[k];
+			if (k >= mLocks[i].Size()) { m.bInvisible = true; continue; }
+			let t = mLocks[i][k];
+			if (!t) { m.bInvisible = true; continue; }
 			m.bInvisible = false;
 			m.SetOrigin(t.pos + (0, 0, t.height + 10), true);
 			m.A_SetScale(k == 0 ? 1.6 : (k == 1 ? 1.1 : 0.8));
@@ -362,6 +455,7 @@ class SSQ_Handler : EventHandler
 		// (it sees PendingWeapon, lowers, raises the next) -- and the zone took that layer away.
 		mo.BringUpWeapon();
 		mInZone[i] = false;
+		mDrawGrace[i] = 8;	// the raise takes a few tics; do not read an empty slot as eviction
 		mState[i] = SS_DRAWN;
 		mo.A_StartSound("ssq/draw", CHAN_6);
 		SSQ_FX.Buzz(mo, 0.5, 6);
@@ -478,32 +572,47 @@ class SSQ_Handler : EventHandler
 			mk.angle += 3;
 		}
 
-		// the shield prop
+		// THE SHIELD YOU CAN SEE.
+		//
+		// Stowed, the prop IS the shield: it hangs at the grab point in the pose the guard
+		// plate is computed for (MountPlateCentre/Normal), so what blocks and what is drawn
+		// are the same object. The mesh origin is the grip, which is why the actor sits at
+		// the grab point itself and the disc falls below it on its own -- no drop fudge.
+		// Model +x is the actor's forward and +y its left (models.cpp RenderModel over the
+		// (mx, mz, my) swizzle), so pitch -90 stands the forearm axis up and roll 180 turns
+		// the plate's +L side -- the side your arm is on -- forward into your back.
 		if (mState[i] == SS_STOWED)
 		{
-			prop.bInvisible = true;	// never shown when stored (owner, 2026-10-22)
-			double yaw = mo.angle + 90 + UV(p, 'ssq_mount_yaw', 0);
-			prop.SetOrigin(mount - (0, 0, CM(UV(p, 'ssq_mount_drop', 11.0))), true);
-			prop.angle = yaw;
-			prop.pitch = UV(p, 'ssq_mount_pitch', 0);
-			prop.roll = UV(p, 'ssq_mount_roll', 0);
+			prop.bInvisible = UVI(p, 'ssq_stow_world', 1) == 0;
+			prop.SetOrigin(mount, true);
+			prop.angle = mo.angle + UV(p, 'ssq_mount_yaw', 0);
+			prop.pitch = MountPropPitch() + UV(p, 'ssq_mount_pitch', 0);
+			prop.roll  = MountPropRoll()  + UV(p, 'ssq_mount_roll', 0);
 			prop.A_SetScale(UV(p, 'ssq_mount_scale', 1.0));
 			prop.frame = 0;
 		}
 		else if (mState[i] == SS_DRAWN)
 		{
+			// 0 never, 1 always, 2 only for other players' eyes. PLUS: while QZD's two-hand
+			// grab is held the engine stops drawing every off-hand psprite in C++
+			// (hw_weapon.cpp:833,919) -- script cannot prevent it -- so the shield would
+			// vanish out of your own hand. The world prop stands in for exactly that long.
 			int hw = UVI(p, 'ssq_held_world', 2);
-			bool want = hw == 1 || (hw == 2 && multiplayer);
+			bool grabbed = (p.WeaponState & WF_TWOHANDSTABILIZED) != 0;
+			bool want = hw == 1 || (hw == 2 && multiplayer) || (hw != 0 && grabbed);
 			prop.bInvisible = !want || !pose.Fresh(Level.maptime);
 			if (!prop.bInvisible)
 			{
-				// the plate's centre and axes, the same numbers the guard uses: the prop's
-				// forward is the controller's forward, its face is +L
-				Vector3 c = SSQ_Guard.PlateCentre(mo, pose, false);
-				prop.SetOrigin(c, true);
+				// THE PROP'S ORIGIN IS THE GRIP, not the disc. shield.md3's origin sits in the
+				// hand (hand_ssq straddles it, the handle bar is 1.3 cm off it) and the world
+				// block carries no Offset, so the actor goes AT THE CONTROLLER and the mesh
+				// puts the disc 15.4 cm back along the forearm by itself. Placing it at the
+				// plate centre, as this did, pushed the drawn shield a whole radius off the
+				// hand -- the guard was right and the picture was not.
+				prop.SetOrigin(pose.pos[0], true);
 				prop.angle = atan2(pose.F.y, pose.F.x);
 				prop.pitch = -asin(clamp(pose.F.z, -1, 1));
-				prop.roll = SSQ_Hand.RollOf(pose.F, pose.L) * SV('ssq_roll_sign', 1.0);
+				prop.roll = SSQ_Hand.RollOf(pose.F, pose.L);
 				prop.A_SetScale(1.0);
 				prop.frame = saw ? saw.Frame() : 0;
 			}

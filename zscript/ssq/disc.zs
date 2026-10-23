@@ -28,6 +28,7 @@ class SSQ_Disc : Actor
 	Actor trail;
 	Array<Actor> marks;
 	Actor lastHit;
+	int homeTics;		// tics spent on the way back: past ssq_home_patience it stops asking the level's permission
 	int lastHitTic;
 
 	Default
@@ -65,7 +66,10 @@ class SSQ_Disc : Actor
 		SSQF A 1;
 		Loop;
 	Bounce:
-		SSQF A 0 { if (invoker.phase == PH_OUT) invoker.Home(); }
+		// OUT: the first thing it hits turns it around. HOME: it just clipped a corner on the
+		// breadcrumb path -- v0.6 did nothing here and left it grinding along the wall, which
+		// is the return that never arrives. Drop the crumb it is fighting and aim at the next.
+		SSQF A 0 { if (invoker.phase == PH_OUT) invoker.Home(); else if (invoker.phase == PH_HOME && invoker.crumbAt >= 0) invoker.crumbAt--; }
 		Goto Spawn;
 	}
 
@@ -75,15 +79,29 @@ class SSQ_Disc : Actor
 		thrower = mo;
 		int n = SSQ_Handler.SVI('ssq_rev_tics', 21);
 		revFrac = n > 0 ? clamp(rev / double(n), 0, 1) : 0;
-		Vector3 hv = pose.ThrowVel();		// units/tic
+		Vector3 hv = pose.ThrowVel(SSQ_Hand.PS(mo));		// units/tic, the vertical squash taken out
 		double keep = 30.0 / (30.0 + SSQ_Handler.SV('ssq_mass_kg', 5.0));
-		double sp = hv.Length() * keep * SSQ_Handler.SV('ssq_throw_speed', 1.0) * (1.0 + revFrac * SSQ_Handler.SV('ssq_rev_throw_bonus', 0.6));
+		double sp = hv.Length() * keep * SSQ_Handler.SV('ssq_throw_speed', 1.6) * (1.0 + revFrac * SSQ_Handler.SV('ssq_rev_throw_bonus', 0.6));
 		Vector3 dir = hv.Length() > 0.01 ? hv.Unit() : pose.F;
-		sp = max(sp, SSQ_Handler.SV('ssq_speed_floor', 7.0));
+		sp = max(sp, SSQ_Handler.SV('ssq_speed_floor', 12.0));
+		Vector3 aim = dir;	// the lock cone opens along the throw, not along the controller
+		// LEAVE TOWARD THE FIRST RING. The steering blends only 22% of the wanted heading per
+		// tic and renormalises to the launch speed, so it can never catch up with a target the
+		// swing did not point at -- it loops instead, which is most of what reads as a weird
+		// slow throw. If a lock is already ringed and is not behind the swing, the disc leaves
+		// along it and the steering only has to correct for the target moving.
+		let h = SSQ_Handler.Get();
+		Array<Actor> shown;
+		if (h) h.ShownLocks(mo.PlayerNumber(), shown);
+		if (shown.Size() > 0 && shown[0])
+		{
+			Vector3 td = (shown[0].pos + (0, 0, shown[0].height * 0.5)) - pose.pos[0];
+			double tl = td.Length();
+			if (tl > 1 && ((td / tl) dot dir) > 0) dir = td / tl;
+		}
 		// the throw plane from the wrist: the disc's face is the plate's face
 		Vector3 nrm = SSQ_Guard.PlateNormal(mo, pose, false);
-		// the lock cone opens along the throw, not along the controller
-		Begin(mo, dir, sp, SSQ_Hand.RollOf(dir, nrm) * SSQ_Handler.SV('ssq_roll_sign', 1.0), dir);
+		Begin(mo, dir, sp, SSQ_Hand.RollOf(dir, nrm) * SSQ_Handler.SV('ssq_roll_sign', 1.0), aim);
 	}
 
 	void LaunchAlong(PlayerPawn mo, Vector3 dir, double sp, double roll, int rev)
@@ -217,6 +235,16 @@ class SSQ_Disc : Actor
 		}
 		else if (phase == PH_HOME)
 		{
+			homeTics++;
+			// IT COMES BACK. EVERY TIME. A disc walking crumbs through a doorway it no longer
+			// fits through used to bounce until the 12-second age cap dropped it on the floor.
+			// Past ssq_home_patience the geometry stops being consulted: it flies straight to
+			// the hand. Nothing else in the mod depends on it being solid on the way in.
+			if (!bNOCLIP && homeTics > SSQ_Handler.SVI('ssq_home_patience', 105))
+			{
+				bNOCLIP = true;
+				crumbAt = -1;
+			}
 			let h = SSQ_Handler.Get();
 			int pnum = thrower ? thrower.PlayerNumber() : -1;
 			// a hand waiting for it catches it
@@ -258,6 +286,7 @@ class SSQ_Disc : Actor
 		if (phase == PH_HOME) return;
 		phase = PH_HOME;
 		embedIn = null;
+		homeTics = 0;
 		crumbAt = crumbX.Size() - 1;
 	}
 

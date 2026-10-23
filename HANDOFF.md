@@ -9,6 +9,38 @@ Design and history: `ShieldSaw_Quest_Design.md` in the zDoomVR project.
 
 ---
 
+## 0.5 v0.7 (2026-10-23) -- the four symptoms, answered
+
+All four of section 2 were worked, plus the off-hand fight. In short:
+
+- **Wrong side / plate not on the geometry.** Settled by measurement, not by flipping signs:
+  `ssq_plate_l` is **-7.5** (the arm is on the plate's +L side) and the face normal is exactly
+  **-L**; radius 29.2 closed, 35.2 deployed. `ssq_plate_yaw` / `ssq_plate_pitch` are gone --
+  there is nothing left for them to tilt. The derivation is in the header of `guard.zs`.
+- **Lock-on does not stay locked.** `LocksTick` no longer rebuilds and re-sorts every tic. A
+  lock is acquired in `ssq_lock_cone` and kept until it dies, leaves `ssq_lock_keep` (60 deg)
+  or is out of sight for `ssq_lock_grace` tics. Acquisition order is the visit order.
+- **The throw and the return.** `ThrowVel` now takes `pixelstretch` back out of the magnitude
+  (vertical swings read ~20% slow before); `ssq_throw_speed` 1.6 and `ssq_speed_floor` 12; the
+  disc leaves **along the first ringed target** when there is one, instead of being steered
+  onto it at 22% per tic from whatever heading the swing had. A bounce during `PH_HOME` now
+  drops the crumb it is fighting, and after `ssq_home_patience` tics the return goes NOCLIP and
+  flies straight to the hand -- it cannot be left on the floor by the 12 s age cap any more.
+- **Mount and hiding.** The stowed shield is drawn again (`ssq_stow_world`, default on) at the
+  grab point itself in the measured pose -- the mesh origin is the grip, so the disc hangs
+  below on its own and `ssq_mount_drop` is gone. The held world prop was being placed at the
+  plate centre, a whole radius off the hand; it now sits at the controller.
+- **The two-hand grab and `switchhand`.** `PinHands` is gone. Eviction is treated as the player
+  putting the shield down (`HoldOrYield` -> `Stow`), `+WEAPON.NOHANDSWITCH` already blocks
+  `switchhand 0`, and the grab needs no handling at all because every input is read from
+  `p.cmd.buttons`, which it cannot gate. While the grab hides the off-hand psprite the world
+  prop stands in. See `_reports/QZD173_MELEE_STUDY_2026-10-23.md` section 3 for the source.
+
+**None of it has been run.** No engine was launched for this work and none should be: the owner
+does the headset checks. Section 2 below is kept as written, as the record of what was wrong.
+
+---
+
 ## 1. What it is, as of v0.6
 
 Standalone pk3 for stock QuestZDoom 17.3 (`emawind84/gzdoom @ questzdoom`, the TeamBeef build).
