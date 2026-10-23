@@ -205,7 +205,7 @@ class SSQ_Handler : EventHandler
 			// nothing but Draw() puts the shield in the hand: undo the engine filling an empty
 			// off hand with it, or a level change re-raising it
 			if (mState[i] != SS_DRAWN && p.OffhandWeapon == saw) Unstow(i);
-			if (mState[i] == SS_DRAWN) HoldOrYield(i, saw);
+			if (mState[i] == SS_DRAWN) { if (SVI('ssq_yield_offhand', 0) != 0) HoldOrYield(i, saw); else PinHands(i, saw); }
 			if (mState[i] == SS_FLYING && !mDisc[i]) { mState[i] = SS_STOWED; }
 			if (mStartDrawn[i] > 0 && mState[i] == SS_STOWED && --mStartDrawn[i] == 0) Draw(i);
 
@@ -327,6 +327,42 @@ class SSQ_Handler : EventHandler
 	// does not use any of it. Every input it has is read straight off p.cmd.buttons, which is
 	// in the replicated ticcmd and which the grab cannot gate. The one thing the grab does
 	// take is the drawn psprite, and the world prop covers that (see the prop block).
+	// THE PIN. This is what v0.6 did and what the shield is known to work with: if anything
+	// moves a weapon out of the off hand, put the shield straight back the same tic. It is a
+	// fight with the engine, but it is a fight the shield wins, and the weapon pack re-giving
+	// its hands weapon to an 'empty' off hand is a real thing that happens every tic.
+	// ssq_yield_offhand 1 picks HoldOrYield below instead.
+	void PinHands(int i, SSQ_ShieldSaw saw)
+	{
+		let p = players[i];
+		let mo = p.mo;
+		bool fix = false;
+		if (p.OffhandWeapon != saw) fix = true;
+		if (p.PendingWeapon != WP_NOCHANGE && p.PendingWeapon != saw && p.PendingWeapon.bOffhandWeapon) fix = true;
+		if (fix)
+		{
+			saw.bOffhandWeapon = true;
+			p.PendingWeapon = saw;
+			mo.BringUpWeapon();
+			if (UVI(p, 'ssq_debug', 0)) Console.Printf("ssq: pin off -> shield");
+		}
+		if (mPrevMain[i])
+		{
+			let back = Weapon(mo.FindInventory(mPrevMain[i]));
+			if (back && back != saw && p.ReadyWeapon != back && !back.bTwoHanded)
+			{
+				back.bOffhandWeapon = false;
+				p.PendingWeapon = back;
+				mo.BringUpWeapon();
+				if (UVI(p, 'ssq_debug', 0)) { String rw = "-"; if (p.ReadyWeapon) rw = p.ReadyWeapon.GetClassName(); Console.Printf("ssq: pin main -> %s (now %s)", mPrevMain[i].GetClassName(), rw); }
+			}
+		}
+	}
+
+	// THE YIELD, off by default (ssq_yield_offhand 1). Reads an off hand taken by switchhand or
+	// by a pickup as the player putting the shield down, instead of undoing it. Correct in
+	// principle -- and it took the shield out of the hand entirely on a pack that re-gives its
+	// hands weapon, which is why it is not the default until it has been seen to work.
 	void HoldOrYield(int i, SSQ_ShieldSaw saw)
 	{
 		let p = players[i];
