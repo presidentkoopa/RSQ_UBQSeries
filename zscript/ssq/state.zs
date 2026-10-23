@@ -781,6 +781,43 @@ class SSQ_Handler : EventHandler
 		else prop.bInvisible = true;
 	}
 
+	// ---- the muzzle: every hitscan in the level passes through here first ----------------
+	//
+	// Stock QZD calls this before P_LineAttack traces anything (p_map.cpp:4718) and true
+	// cancels the shot outright. It is the only place a bullet can be stopped, because by the
+	// time AbsorbDamage sees one it has already hit. Cheap by construction: it returns on the
+	// first line for every shot in the game unless a player actually has a shield up.
+	//
+	// A PLAYER'S OWN SHOTS ARE NEVER TESTED. Not the gun in their hand, not the shield's own
+	// return trace, not another mod's -- a shield stops what is fired AT you.
+	override bool WorldHitscanPreFired(WorldEvent e)
+	{
+		if (SVI('ssq_guard', 1) == 0 || SVI('ssq_hitscan_guard', 1) == 0) return false;
+		Actor shooter = e.Thing;
+		if (!shooter || shooter.player) return false;
+		double ca = cos(e.AttackPitch);
+		Vector3 dir = (cos(e.AttackAngle) * ca, sin(e.AttackAngle) * ca, -sin(e.AttackPitch));
+		if (dir.Length() <= 0) return false;
+		// where the shot starts: the same shoulder height the block path assumes for a hitscan
+		Vector3 A = shooter.pos + (0, 0, shooter.height * 0.75);
+		double dist = e.AttackDistance > 0 ? e.AttackDistance : 2048.0;
+		for (int i = 0; i < MAXPLAYERS; i++)
+		{
+			if (!playeringame[i]) continue;
+			let p = players[i];
+			if (!p.mo || p.mo == shooter) continue;
+			if (mState[i] == SS_FLYING) continue;	// it is not in your hand to block with
+			let g = SSQ_Guard(p.mo.FindInventory('SSQ_Guard'));
+			if (!g) continue;
+			if (g.StopsHitscan(shooter, A, dir, dist, e.Damage))
+			{
+				if (UVI(p, 'ssq_debug', 0)) Console.Printf("ssq: p%d ATE a hitscan from %s", i, shooter.GetClassName());
+				return true;
+			}
+		}
+		return false;
+	}
+
 	// ---- events ------------------------------------------------------------------
 	// the live state in the corner, for a screenshot (Debug -> Print decisions)
 	override void RenderOverlay(RenderEvent e)

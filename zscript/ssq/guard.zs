@@ -229,9 +229,13 @@ class SSQ_Guard : Inventory
 		// the spark comes off the face on the attacker's side
 		Vector3 outward = ((A - C) dot n) >= 0 ? n : -n;
 
-		// PERFECT BLOCK: the plate was moving into the hit (ssq_perfect_speed along the attack)
+		// PERFECT BLOCK: you did not hold the shield in the way, you MET the shot with it. The
+		// plate has to have been moving into the attack at ssq_perfect_speed (units/sec along
+		// the line it came in on) at the moment it landed -- a push, a parry, a swat, not a
+		// stance. It pays: the shot goes back 60% faster, a melee attacker is always staggered
+		// and shoved whatever ssq_melee says, and you can tell one happened without being told.
 		bool perfect = false;
-		if (held != 0 && SSQ_Handler.SVI('ssq_perfect', 0) != 0)
+		if (held != 0 && SSQ_Handler.SVI('ssq_perfect', 1) != 0)
 		{
 			let h = SSQ_Handler.Get();
 			let pose = h ? h.PoseOf(mo.PlayerNumber()) : null;
@@ -245,8 +249,17 @@ class SSQ_Guard : Inventory
 			lastBlockTic = now;
 			if (fb)
 			{
-				mo.A_StartSound("ssq/block", CHAN_5, 0, perfect ? 1.0 : 0.8, ATTN_NORM, perfect ? 1.25 : 1.0);
-				if (held != 0) SSQ_FX.Buzz(mo, perfect ? 1.0 : 0.7, perfect ? 9 : 5);
+				mo.A_StartSound("ssq/block", CHAN_5, 0, perfect ? 1.0 : 0.8, ATTN_NORM, perfect ? 1.35 : 1.0);
+				if (held != 0) SSQ_FX.Buzz(mo, perfect ? 1.0 : 0.7, perfect ? 12 : 5);
+				// HOW YOU KNOW IT WAS PERFECT, without reading a message: it rings a tone higher,
+				// the hand buzz is twice as long, and the plate blooms white at the contact point.
+				// A normal block is a spark and a thud; this is unmistakable.
+				if (perfect)
+				{
+					let fl = Actor.Spawn('SSQ_BlastBloom', P);
+					if (fl) fl.A_SetScale(1.4);
+					mo.A_StartSound("ssq/bash", CHAN_6, 0, 0.7, ATTN_NORM, 1.3);
+				}
 			}
 		}
 		if (fb) SSQ_FX.Sparks(mo, P, outward, (kind == 3 || perfect) ? 14 : 8);
@@ -263,6 +276,65 @@ class SSQ_Guard : Inventory
 		}
 		if (kind == 0 && inflictor && (SSQ_Handler.SVI('ssq_deflect', 1) != 0 || perfect))
 			Deflect(mo, inflictor, source, P, outward, perfect ? 1.6 : 1.0);
+	}
+
+	// ---- THE MUZZLE: stop a hitscan before it is ever traced -----------------------------
+	//
+	// The sweep turns missiles because a missile is an actor with a path you can look at. A
+	// bullet has neither: P_LineAttack traces, damages and is gone inside one call, and the
+	// only mark it leaves on us is AbsorbDamage, which runs after it has already hit. That is
+	// the whole reason bullets felt different from fireballs against this shield.
+	//
+	// Stock QZD fires WorldHitscanPreFired before the trace (p_map.cpp:4718), and returning
+	// true cancels the shot outright -- no trace, no puff, no damage, for anybody. So we get
+	// the shooter, where it is firing from and the angle it is firing at, test that ray
+	// against the plate exactly as the sweep tests a missile's path, and if it would cross the
+	// shield the shot never happens. SSQ_Handler calls this; the geometry lives here with the
+	// rest of the guard.
+	//
+	// Returns true if this player's shield eats the shot.
+	bool StopsHitscan(Actor shooter, Vector3 A, Vector3 dir, double dist, int damage)
+	{
+		let mo = PlayerPawn(Owner);
+		if (!mo || !mo.player || mo.health <= 0) return false;
+		if (!shooter || shooter == mo) return false;
+		if (!Plate()) return false;
+		double R = plateR + SSQ_Handler.CM(SSQ_Handler.SV('ssq_sweep_pad', 18.0));
+		Vector3 B = A + dir * max(dist, 1.0);
+		if (!Crosses(A, B, plateC, plateN, R)) return false;
+		// it has to be coming at US, not merely passing the shield on its way elsewhere: the
+		// crossing point must be nearer the shooter than we are, give or take our own width.
+		Vector3 centre = mo.pos + (0, 0, mo.height * 0.5);
+		if ((hitP - A).Length() > (centre - A).Length() + mo.radius * 2) return false;
+		Vector3 P = hitP;
+		Vector3 outward = ((A - plateC) dot plateN) >= 0 ? plateN : -plateN;
+		bool fb = SSQ_Handler.UVI(mo.player, 'ssq_feedback', 1) != 0;
+		int now = Level.maptime;
+		if (now != lastSweepTic)
+		{
+			lastSweepTic = now;
+			if (fb)
+			{
+				mo.A_StartSound("ssq/block", CHAN_5, 0, 0.8, ATTN_NORM, 1.15);
+				if (plateHeld != 0) SSQ_FX.Buzz(mo, 0.6, 4);
+			}
+		}
+		if (fb) SSQ_FX.Sparks(mo, P, outward, 8);
+		// AND IT GOES BACK. A stopped bullet that simply vanishes is a disappointment; one that
+		// comes off the plate and finds the thing that fired it is the point of carrying a
+		// shield. The return is a trace of our own from the plate, so it uses the same aim rule
+		// as every other deflection (ssq_deflect_aim), and because it is ours it cannot be
+		// eaten by this same hook -- a player's shots are never tested.
+		if (SSQ_Handler.SVI('ssq_hitscan_return', 1) != 0 && damage > 0)
+		{
+			Vector3 back = DeflectDir(mo, P, dir * max(dist, 1.0), outward, shooter);
+			double ang = atan2(back.y, back.x);
+			double pit = -asin(clamp(back.z, -1, 1));
+			int dmg = int(max(1, damage * SSQ_Handler.SV('ssq_hitscan_damage', 1.0)));
+			// (angle, distance, pitch, damage, type, puff, flags, victim, offsetz, fwd, side)
+			mo.LineAttack(ang, max(dist, 1024.0), pit, dmg, 'Hitscan', 'BulletPuff', LAF_ABSPOSITION, null, P.z, 0, 0);
+		}
+		return true;
 	}
 
 	// ---- THE SWEEP: turn a shot BEFORE it reaches you ------------------------------------

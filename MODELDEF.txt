@@ -94,21 +94,6 @@ Model SSQ_DiscTrail
 }
 
 // ---- the lock marker: the glow mesh, small, stepping round -------------------------
-// AngleOffset must come BEFORE the FrameIndex it applies to.
-Model SSQ_LockMark
-{
-	Path "models/shieldsaw"
-	Model 0 "shield_weapon_glow.md3"
-	Scale 0.5 0.5 0.5
-	AngleOffset 0.0
-	FrameIndex SSQL A 0 0
-	AngleOffset 90.0
-	FrameIndex SSQL B 0 0
-	AngleOffset 180.0
-	FrameIndex SSQL C 0 0
-	AngleOffset 270.0
-	FrameIndex SSQL D 0 0
-}
 
 // ---- the shield as a WORLD actor: on your back, and in your hand as others see it ----------
 // One mesh unit is one cm here, so 0.34 makes it the size of the one in your hand (34 units/m).

@@ -47,6 +47,8 @@ OptionMenu "SSQ_Options"
 	Option "Turned shots go", "ssq_deflect_aim", "SSQ_DeflectAim"
 	Slider "Aim help on a turned shot", "ssq_deflect_assist", 0.0, 45.0, 1.0, 0
 	Option "Turn shots before they reach you", "ssq_sweep", "OnOff"
+	Option "Stop bullets at the muzzle", "ssq_hitscan_guard", "OnOff"
+	Option "Send stopped bullets back", "ssq_hitscan_return", "OnOff"
 	Slider "Guard generosity (cm)", "ssq_sweep_pad", 0.0, 60.0, 1.0, 0
 	Option "Blocked Melee", "ssq_melee", "SSQ_Melee"
 	Option "Block Feedback and Haptics", "ssq_feedback", "OnOff"

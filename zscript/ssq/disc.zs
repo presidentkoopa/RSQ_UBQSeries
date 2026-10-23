@@ -398,6 +398,10 @@ class SSQ_DiscTrail : Actor
 	}
 }
 
+// THE RING OVER A LOCKED TARGET. The art is the owner's own lock mark out of
+// UltraBadassQuestSaber (its UBLK frames), carried here under our own sprite name so the two
+// mods never share a lump and neither cares which loads first. It billboards and does not
+// turn with the world, which the old model mark did -- a diamond seen edge-on is nothing.
 class SSQ_LockMark : Actor
 {
 	Default
@@ -405,13 +409,15 @@ class SSQ_LockMark : Actor
 		+NOINTERACTION
 		+NOBLOCKMAP
 		+NOGRAVITY
+		+NOTONAUTOMAP
+		+FORCEXYBILLBOARD
 		RenderStyle "Add";
-		Alpha 0.8;
+		Alpha 0.95;
 	}
 	States
 	{
 	Spawn:
-		SSQL ABCD 3 Bright;
+		SSQK ABCD 3 Bright;
 		Loop;
 	}
 }
