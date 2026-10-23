@@ -129,3 +129,236 @@ Model SSQ_MountMarker
 	Scale 4.0 4.0 4.0
 	FrameIndex SSQM A 0 0
 }
+
+// ---- held, baked sizes (SSH1..SSH5 right-handed scheme, SSJ1..SSJ5 left) ------------
+//
+// MODELDEF decides a model's size at load and the only thing a mod can change at run
+// time is which SPRITE the layer carries, so a size slider needs one baked block per
+// size -- the same answer UltraBadassQuestSaber reaches with its five blade lengths.
+// The block's own Scale would grow the HAND with the shield, so the sizes live in the
+// mesh instead: shield_s2..s5.md3 and shieldsaw_s2..s5.md3 are the originals scaled
+// about their own origin, which is the grip -- so the shield grows and the hand, the
+// grip point and the Offset all stay exactly where they were.
+//
+// ssq_shield_scale picks between them (SSQ_ShieldSaw.HeldSprite). The guard plate
+// scales by the same number, so what blocks and what you see stay one object.
+
+Model SSQ_ShieldSaw
+{
+	Path "models/shieldsaw"
+	Model 0 "shield.md3"
+	Skin 0 "shieldsaw_b_HD.png"
+	Model 1 "shieldsaw.md3"
+	Skin 1 "shieldsaw_HD.png"
+	Path "models/hand"
+	Model 2 "hand_ssq.md3"
+	Skin 2 "hand.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex SSH1 A 0 0	FrameIndex SSH1 A 1 0	FrameIndex SSH1 A 2 1
+	FrameIndex SSH1 B 0 1	FrameIndex SSH1 B 1 1	FrameIndex SSH1 B 2 1
+	FrameIndex SSH1 C 0 2	FrameIndex SSH1 C 1 2	FrameIndex SSH1 C 2 1
+	FrameIndex SSH1 D 0 3	FrameIndex SSH1 D 1 3	FrameIndex SSH1 D 2 1
+	FrameIndex SSH1 E 0 3	FrameIndex SSH1 E 1 4	FrameIndex SSH1 E 2 1
+	FrameIndex SSH1 F 0 3	FrameIndex SSH1 F 1 5	FrameIndex SSH1 F 2 1
+	FrameIndex SSH1 G 0 3	FrameIndex SSH1 G 1 6	FrameIndex SSH1 G 2 1
+	FrameIndex SSH1 H 0 3	FrameIndex SSH1 H 1 7	FrameIndex SSH1 H 2 1
+}
+
+Model SSQ_ShieldSaw
+{
+	Path "models/shieldsaw"
+	Model 0 "shield.md3"
+	Skin 0 "shieldsaw_b_HD.png"
+	Model 1 "shieldsaw.md3"
+	Skin 1 "shieldsaw_HD.png"
+	Path "models/hand"
+	Model 2 "hand_ssq.md3"
+	Skin 2 "hand.png"
+	Scale 1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex SSJ1 A 0 0	FrameIndex SSJ1 A 1 0	FrameIndex SSJ1 A 2 1
+	FrameIndex SSJ1 B 0 1	FrameIndex SSJ1 B 1 1	FrameIndex SSJ1 B 2 1
+	FrameIndex SSJ1 C 0 2	FrameIndex SSJ1 C 1 2	FrameIndex SSJ1 C 2 1
+	FrameIndex SSJ1 D 0 3	FrameIndex SSJ1 D 1 3	FrameIndex SSJ1 D 2 1
+	FrameIndex SSJ1 E 0 3	FrameIndex SSJ1 E 1 4	FrameIndex SSJ1 E 2 1
+	FrameIndex SSJ1 F 0 3	FrameIndex SSJ1 F 1 5	FrameIndex SSJ1 F 2 1
+	FrameIndex SSJ1 G 0 3	FrameIndex SSJ1 G 1 6	FrameIndex SSJ1 G 2 1
+	FrameIndex SSJ1 H 0 3	FrameIndex SSJ1 H 1 7	FrameIndex SSJ1 H 2 1
+}
+
+Model SSQ_ShieldSaw
+{
+	Path "models/shieldsaw"
+	Model 0 "shield_s2.md3"
+	Skin 0 "shieldsaw_b_HD.png"
+	Model 1 "shieldsaw_s2.md3"
+	Skin 1 "shieldsaw_HD.png"
+	Path "models/hand"
+	Model 2 "hand_ssq.md3"
+	Skin 2 "hand.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex SSH2 A 0 0	FrameIndex SSH2 A 1 0	FrameIndex SSH2 A 2 1
+	FrameIndex SSH2 B 0 1	FrameIndex SSH2 B 1 1	FrameIndex SSH2 B 2 1
+	FrameIndex SSH2 C 0 2	FrameIndex SSH2 C 1 2	FrameIndex SSH2 C 2 1
+	FrameIndex SSH2 D 0 3	FrameIndex SSH2 D 1 3	FrameIndex SSH2 D 2 1
+	FrameIndex SSH2 E 0 3	FrameIndex SSH2 E 1 4	FrameIndex SSH2 E 2 1
+	FrameIndex SSH2 F 0 3	FrameIndex SSH2 F 1 5	FrameIndex SSH2 F 2 1
+	FrameIndex SSH2 G 0 3	FrameIndex SSH2 G 1 6	FrameIndex SSH2 G 2 1
+	FrameIndex SSH2 H 0 3	FrameIndex SSH2 H 1 7	FrameIndex SSH2 H 2 1
+}
+
+Model SSQ_ShieldSaw
+{
+	Path "models/shieldsaw"
+	Model 0 "shield_s2.md3"
+	Skin 0 "shieldsaw_b_HD.png"
+	Model 1 "shieldsaw_s2.md3"
+	Skin 1 "shieldsaw_HD.png"
+	Path "models/hand"
+	Model 2 "hand_ssq.md3"
+	Skin 2 "hand.png"
+	Scale 1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex SSJ2 A 0 0	FrameIndex SSJ2 A 1 0	FrameIndex SSJ2 A 2 1
+	FrameIndex SSJ2 B 0 1	FrameIndex SSJ2 B 1 1	FrameIndex SSJ2 B 2 1
+	FrameIndex SSJ2 C 0 2	FrameIndex SSJ2 C 1 2	FrameIndex SSJ2 C 2 1
+	FrameIndex SSJ2 D 0 3	FrameIndex SSJ2 D 1 3	FrameIndex SSJ2 D 2 1
+	FrameIndex SSJ2 E 0 3	FrameIndex SSJ2 E 1 4	FrameIndex SSJ2 E 2 1
+	FrameIndex SSJ2 F 0 3	FrameIndex SSJ2 F 1 5	FrameIndex SSJ2 F 2 1
+	FrameIndex SSJ2 G 0 3	FrameIndex SSJ2 G 1 6	FrameIndex SSJ2 G 2 1
+	FrameIndex SSJ2 H 0 3	FrameIndex SSJ2 H 1 7	FrameIndex SSJ2 H 2 1
+}
+
+Model SSQ_ShieldSaw
+{
+	Path "models/shieldsaw"
+	Model 0 "shield_s3.md3"
+	Skin 0 "shieldsaw_b_HD.png"
+	Model 1 "shieldsaw_s3.md3"
+	Skin 1 "shieldsaw_HD.png"
+	Path "models/hand"
+	Model 2 "hand_ssq.md3"
+	Skin 2 "hand.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex SSH3 A 0 0	FrameIndex SSH3 A 1 0	FrameIndex SSH3 A 2 1
+	FrameIndex SSH3 B 0 1	FrameIndex SSH3 B 1 1	FrameIndex SSH3 B 2 1
+	FrameIndex SSH3 C 0 2	FrameIndex SSH3 C 1 2	FrameIndex SSH3 C 2 1
+	FrameIndex SSH3 D 0 3	FrameIndex SSH3 D 1 3	FrameIndex SSH3 D 2 1
+	FrameIndex SSH3 E 0 3	FrameIndex SSH3 E 1 4	FrameIndex SSH3 E 2 1
+	FrameIndex SSH3 F 0 3	FrameIndex SSH3 F 1 5	FrameIndex SSH3 F 2 1
+	FrameIndex SSH3 G 0 3	FrameIndex SSH3 G 1 6	FrameIndex SSH3 G 2 1
+	FrameIndex SSH3 H 0 3	FrameIndex SSH3 H 1 7	FrameIndex SSH3 H 2 1
+}
+
+Model SSQ_ShieldSaw
+{
+	Path "models/shieldsaw"
+	Model 0 "shield_s3.md3"
+	Skin 0 "shieldsaw_b_HD.png"
+	Model 1 "shieldsaw_s3.md3"
+	Skin 1 "shieldsaw_HD.png"
+	Path "models/hand"
+	Model 2 "hand_ssq.md3"
+	Skin 2 "hand.png"
+	Scale 1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex SSJ3 A 0 0	FrameIndex SSJ3 A 1 0	FrameIndex SSJ3 A 2 1
+	FrameIndex SSJ3 B 0 1	FrameIndex SSJ3 B 1 1	FrameIndex SSJ3 B 2 1
+	FrameIndex SSJ3 C 0 2	FrameIndex SSJ3 C 1 2	FrameIndex SSJ3 C 2 1
+	FrameIndex SSJ3 D 0 3	FrameIndex SSJ3 D 1 3	FrameIndex SSJ3 D 2 1
+	FrameIndex SSJ3 E 0 3	FrameIndex SSJ3 E 1 4	FrameIndex SSJ3 E 2 1
+	FrameIndex SSJ3 F 0 3	FrameIndex SSJ3 F 1 5	FrameIndex SSJ3 F 2 1
+	FrameIndex SSJ3 G 0 3	FrameIndex SSJ3 G 1 6	FrameIndex SSJ3 G 2 1
+	FrameIndex SSJ3 H 0 3	FrameIndex SSJ3 H 1 7	FrameIndex SSJ3 H 2 1
+}
+
+Model SSQ_ShieldSaw
+{
+	Path "models/shieldsaw"
+	Model 0 "shield_s4.md3"
+	Skin 0 "shieldsaw_b_HD.png"
+	Model 1 "shieldsaw_s4.md3"
+	Skin 1 "shieldsaw_HD.png"
+	Path "models/hand"
+	Model 2 "hand_ssq.md3"
+	Skin 2 "hand.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex SSH4 A 0 0	FrameIndex SSH4 A 1 0	FrameIndex SSH4 A 2 1
+	FrameIndex SSH4 B 0 1	FrameIndex SSH4 B 1 1	FrameIndex SSH4 B 2 1
+	FrameIndex SSH4 C 0 2	FrameIndex SSH4 C 1 2	FrameIndex SSH4 C 2 1
+	FrameIndex SSH4 D 0 3	FrameIndex SSH4 D 1 3	FrameIndex SSH4 D 2 1
+	FrameIndex SSH4 E 0 3	FrameIndex SSH4 E 1 4	FrameIndex SSH4 E 2 1
+	FrameIndex SSH4 F 0 3	FrameIndex SSH4 F 1 5	FrameIndex SSH4 F 2 1
+	FrameIndex SSH4 G 0 3	FrameIndex SSH4 G 1 6	FrameIndex SSH4 G 2 1
+	FrameIndex SSH4 H 0 3	FrameIndex SSH4 H 1 7	FrameIndex SSH4 H 2 1
+}
+
+Model SSQ_ShieldSaw
+{
+	Path "models/shieldsaw"
+	Model 0 "shield_s4.md3"
+	Skin 0 "shieldsaw_b_HD.png"
+	Model 1 "shieldsaw_s4.md3"
+	Skin 1 "shieldsaw_HD.png"
+	Path "models/hand"
+	Model 2 "hand_ssq.md3"
+	Skin 2 "hand.png"
+	Scale 1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex SSJ4 A 0 0	FrameIndex SSJ4 A 1 0	FrameIndex SSJ4 A 2 1
+	FrameIndex SSJ4 B 0 1	FrameIndex SSJ4 B 1 1	FrameIndex SSJ4 B 2 1
+	FrameIndex SSJ4 C 0 2	FrameIndex SSJ4 C 1 2	FrameIndex SSJ4 C 2 1
+	FrameIndex SSJ4 D 0 3	FrameIndex SSJ4 D 1 3	FrameIndex SSJ4 D 2 1
+	FrameIndex SSJ4 E 0 3	FrameIndex SSJ4 E 1 4	FrameIndex SSJ4 E 2 1
+	FrameIndex SSJ4 F 0 3	FrameIndex SSJ4 F 1 5	FrameIndex SSJ4 F 2 1
+	FrameIndex SSJ4 G 0 3	FrameIndex SSJ4 G 1 6	FrameIndex SSJ4 G 2 1
+	FrameIndex SSJ4 H 0 3	FrameIndex SSJ4 H 1 7	FrameIndex SSJ4 H 2 1
+}
+
+Model SSQ_ShieldSaw
+{
+	Path "models/shieldsaw"
+	Model 0 "shield_s5.md3"
+	Skin 0 "shieldsaw_b_HD.png"
+	Model 1 "shieldsaw_s5.md3"
+	Skin 1 "shieldsaw_HD.png"
+	Path "models/hand"
+	Model 2 "hand_ssq.md3"
+	Skin 2 "hand.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex SSH5 A 0 0	FrameIndex SSH5 A 1 0	FrameIndex SSH5 A 2 1
+	FrameIndex SSH5 B 0 1	FrameIndex SSH5 B 1 1	FrameIndex SSH5 B 2 1
+	FrameIndex SSH5 C 0 2	FrameIndex SSH5 C 1 2	FrameIndex SSH5 C 2 1
+	FrameIndex SSH5 D 0 3	FrameIndex SSH5 D 1 3	FrameIndex SSH5 D 2 1
+	FrameIndex SSH5 E 0 3	FrameIndex SSH5 E 1 4	FrameIndex SSH5 E 2 1
+	FrameIndex SSH5 F 0 3	FrameIndex SSH5 F 1 5	FrameIndex SSH5 F 2 1
+	FrameIndex SSH5 G 0 3	FrameIndex SSH5 G 1 6	FrameIndex SSH5 G 2 1
+	FrameIndex SSH5 H 0 3	FrameIndex SSH5 H 1 7	FrameIndex SSH5 H 2 1
+}
+
+Model SSQ_ShieldSaw
+{
+	Path "models/shieldsaw"
+	Model 0 "shield_s5.md3"
+	Skin 0 "shieldsaw_b_HD.png"
+	Model 1 "shieldsaw_s5.md3"
+	Skin 1 "shieldsaw_HD.png"
+	Path "models/hand"
+	Model 2 "hand_ssq.md3"
+	Skin 2 "hand.png"
+	Scale 1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex SSJ5 A 0 0	FrameIndex SSJ5 A 1 0	FrameIndex SSJ5 A 2 1
+	FrameIndex SSJ5 B 0 1	FrameIndex SSJ5 B 1 1	FrameIndex SSJ5 B 2 1
+	FrameIndex SSJ5 C 0 2	FrameIndex SSJ5 C 1 2	FrameIndex SSJ5 C 2 1
+	FrameIndex SSJ5 D 0 3	FrameIndex SSJ5 D 1 3	FrameIndex SSJ5 D 2 1
+	FrameIndex SSJ5 E 0 3	FrameIndex SSJ5 E 1 4	FrameIndex SSJ5 E 2 1
+	FrameIndex SSJ5 F 0 3	FrameIndex SSJ5 F 1 5	FrameIndex SSJ5 F 2 1
+	FrameIndex SSJ5 G 0 3	FrameIndex SSJ5 G 1 6	FrameIndex SSJ5 G 2 1
+	FrameIndex SSJ5 H 0 3	FrameIndex SSJ5 H 1 7	FrameIndex SSJ5 H 2 1
+}

@@ -1,260 +1,169 @@
-# RS_ShieldSawQ — handoff to the local lane (2026-10-23)
+# Ultra Badass ShieldSaw — handoff (2026-10-23, v0.7)
 
-State: **v0.6**, commit on `main`. Everything structural works; what is left is tuning that needs
-a headset beside the editor. This file is the whole picture: what is built, how it is wired, the
-four open symptoms with their likely causes and the exact code to look at, the engine facts that
-bit us, and the headless harness that catches script errors before a headset run.
+A shield that is also a throwable saw disc, in the off hand, for **stock QuestZDoom 17.3**
+(`emawind84/gzdoom @ questzdoom`, TeamBeef's build). Standalone pk3, no engine changes, and none
+are permitted: anything it needs it does in ZScript or it does not do.
 
-Design and history: `ShieldSaw_Quest_Design.md` in the zDoomVR project.
+Loads alongside the owner's **UltraBadassQuestSaber** — two separate mods, either order, either
+one absent. See §6.
 
----
-
-## 0.5 v0.7 (2026-10-23) -- the four symptoms, answered
-
-All four of section 2 were worked, plus the off-hand fight. In short:
-
-- **Wrong side / plate not on the geometry.** Settled by measurement, not by flipping signs:
-  `ssq_plate_l` is **-7.5** (the arm is on the plate's +L side) and the face normal is exactly
-  **-L**; radius 29.2 closed, 35.2 deployed. `ssq_plate_yaw` / `ssq_plate_pitch` are gone --
-  there is nothing left for them to tilt. The derivation is in the header of `guard.zs`.
-- **Lock-on does not stay locked.** `LocksTick` no longer rebuilds and re-sorts every tic. A
-  lock is acquired in `ssq_lock_cone` and kept until it dies, leaves `ssq_lock_keep` (60 deg)
-  or is out of sight for `ssq_lock_grace` tics. Acquisition order is the visit order.
-- **The throw and the return.** `ThrowVel` now takes `pixelstretch` back out of the magnitude
-  (vertical swings read ~20% slow before); `ssq_throw_speed` 1.6 and `ssq_speed_floor` 12; the
-  disc leaves **along the first ringed target** when there is one, instead of being steered
-  onto it at 22% per tic from whatever heading the swing had. A bounce during `PH_HOME` now
-  drops the crumb it is fighting, and after `ssq_home_patience` tics the return goes NOCLIP and
-  flies straight to the hand -- it cannot be left on the floor by the 12 s age cap any more.
-- **Mount and hiding.** The stowed shield is drawn again (`ssq_stow_world`, default on) at the
-  grab point itself in the measured pose -- the mesh origin is the grip, so the disc hangs
-  below on its own and `ssq_mount_drop` is gone. The held world prop was being placed at the
-  plate centre, a whole radius off the hand; it now sits at the controller.
-- **The two-hand grab and `switchhand`.** `PinHands` is gone. Eviction is treated as the player
-  putting the shield down (`HoldOrYield` -> `Stow`), `+WEAPON.NOHANDSWITCH` already blocks
-  `switchhand 0`, and the grab needs no handling at all because every input is read from
-  `p.cmd.buttons`, which it cannot gate. While the grab hides the off-hand psprite the world
-  prop stands in. See `_reports/QZD173_MELEE_STUDY_2026-10-23.md` section 3 for the source.
-
-**None of it has been run.** No engine was launched for this work and none should be: the owner
-does the headset checks. Section 2 below is kept as written, as the record of what was wrong.
+Packaged as `UltraBadassShieldSaw.pk3`. Classes, cvars and sprite lumps keep the `SSQ_` / `ssq_`
+prefix: renaming those would break saved games and the git remote for nothing.
 
 ---
 
-## 1. What it is, as of v0.6
+## 1. What it does
 
-Standalone pk3 for stock QuestZDoom 17.3 (`emawind84/gzdoom @ questzdoom`, the TeamBeef build).
-No engine changes. Loads with BD22 Quest or alone. Ermac's hand on the shield (his placement).
-
-Input is three of QZD's own **actions** (bind in Customize Controls; never a physical key):
+Input is QZD's own **actions** (bind in Customize Controls; never a physical key):
 
 | Action | Does |
 |---|---|
-| **Use**, with the off hand at the shoulder point | holstered → the shield is in the off hand; drawn → back on the shoulder |
-| **Offhand Attack** held | revs the saw (blades deploy, loop pitch climbs, grinds what it touches, revved throws hit harder) |
-| **Offhand Alt Attack** held | lock-on: rings over up to 5 monsters in a cone from where the off hand points |
-| **Offhand Alt Attack** released while the arm is moving | throw, at the ringed targets in order; released still → stays in the hand |
-| **Offhand Alt Attack** pressed while it flies | recall |
+| **Use**, off hand at the shoulder point | holstered → shield in hand; drawn → back on the shoulder |
+| **Offhand Attack** *or* **Offhand Alt Attack**, held | revs the saw and paints lock-on targets |
+| the same, released while the arm snaps forward | throws, at the ringed targets in order |
+| the same, released still, or not forward | nothing; it stays in your hand, marks kept a second |
+| the same, pressed while it flies | recall |
 
-While the shield is held, **both hands are pinned**: QZD's `switchhand` button, weapon cycling,
-pickups — anything that moves a weapon — is undone the same tic (`SSQ_Handler.PinHands`). Only the
-release moves the shield. On throw/holster the previous off-hand weapon (or the pack's hands) and
-the main gun come back.
+Either off-hand button, because QZD's stock binds put `+oh_altatk` behind a grip shift — the same
+grip that arms the two-hand grab, so on a Quest the alt alone was unreachable in practice
+(`ssq_lock_button`: 0 alt only, 1 either, 2 trigger only).
 
-Blocking: `SSQ_Guard : Inventory`, `AbsorbDamage` — the engine calls it on every machine for every
-damage to the player (`p_interaction.cpp:1347`). The attack line (missile path / shooter→centre /
-striker→centre / blast→centre) is tested against a **thick disc** (`Crosses`): radius
-`ssq_plate_radius`, half-thickness `ssq_plate_thick`, centre and face from the synced hand pose
-when held, from the mount when holstered. Blocked → damage 0, sparks + flash at the crossing
-point (RS_CombatFX `RSS1`/`RSS0`/`RSH0`, renamed `SSQX/Y/Z`), buzz, striker reels/shoved, missile
-spawned back at its source. No per-mod patches: it keys on damage, not on classes. BD22's bullets
-are `FastProjectile`s and arrive as missiles.
+Defence is four separate things:
 
-Pose sync: the console player's machine sends `ssq-pose` once a tic (pos rel. to pawn in quarter
-units, yaw/pitch/roll of the controller, handedness bit) while drawn / flying / in the zone / a
-shield button held. Every machine keeps an 8-sample history per player (`SSQ_Pose`). **The sim
-never reads `OffhandPos` directly** — only that history — so SP and netplay run the same code.
+- **The sweep** (`ssq_sweep`) — every tic, missiles whose path crosses the plate in the next
+  `ssq_sweep_lead` tics are turned, including ones that would have missed. Proactive.
+- **The muzzle** (`ssq_hitscan_guard`) — `WorldHitscanPreFired` cancels a bullet before it is
+  ever traced if its ray crosses the plate and is coming at you. A stopped bullet goes back out.
+- **AbsorbDamage** — the backstop, for melee, blasts and anything the first two did not catch.
+- **The bash** — drive the plate forward at `ssq_bash_speed` and everything within
+  `ssq_bash_reach` of it is damaged, shoved and lifted off the floor.
 
-Haptics: `A_QuakeEx` at the player's own feet, tremor radius 4 (X = left controller, Y = right;
-needs `vr_quake_haptic_level > 0`). Deterministic; only the owner feels it.
+A turned shot goes where `ssq_deflect_aim` says: back at the shooter, **where you are looking**
+(the default, helped onto an enemy within `ssq_deflect_assist`), or mirrored off the face.
 
-Files:
-
-```
-zscript/ssq/pose.zs    SSQ_Pose (history, axes built IN PLACE, peak-speed throw velocity); SSQ_Hand (QZD fields, packing)
-zscript/ssq/state.zs   SSQ_Handler: states, mount point, zone, input edges, PinHands, locks you see, props, debug HUD, net events
-zscript/ssq/guard.zs   SSQ_Guard: plate geometry, AbsorbDamage, Crosses (thick disc), deflect, grind, bash, debug ring
-zscript/ssq/shield.zs  SSQ_ShieldSaw (off-hand Weapon): states, rev, ModifyBobLayer3D (live cvars + forward to RSQ_Hands), SSQ_FX
-zscript/ssq/disc.zs    SSQ_Disc: launch, steering through the lock list, tiers, breadcrumb return, catch; trail, lock mark
-zscript/ssq/props.zs   SSQ_Prop (holster / others' view), SSQ_MountMarker, block flash & spark actors
-```
-
-Debug (Options → RS ShieldSawQ Options → Debug):
-- **Print decisions and key codes** (`ssq_debug`): console lines on press/release/draw/throw/home,
-  every guard decision with the full geometry (`A B C n`), the pose once a second while held
-  (`F L U hand C n R fresh`), and a **3-line HUD** top-left: state / weapons in each hand /
-  pending; the four fire bits + stabilise bit + rev + lock count; pose freshness + distance to the
-  mount point + in-zone.
-- **Draw the guard plate** (`ssq_debug_ring`): 36 red particles on the plate rim, a red centre, a
-  **green spoke along the face normal**, a blue dot at the controller, white dots along the
-  controller's forward.
+**Perfect block**: the plate moving *into* the attack at `ssq_perfect_speed` when it lands. The
+shot returns 60% faster, melee always staggers and shoves, and it tells you — a tone higher, a
+longer buzz, a white bloom at the contact point.
 
 ---
 
-## 2. The four open symptoms, with where to look
+## 2. The geometry, which is measured and not guessed
 
-### 2.1 "Ring on the wrong side of the shield"
+`shield.md3` followed through the stock HUD-model chain (`models_md3.cpp BuildVertexBuffer`,
+`models.cpp RenderHUDModel`, `hw_vrmodes.cpp MapWeaponDir`) reduces, in the off controller's own
+frame and in cm, to `F = mx - 6`, `L = my` (right-handed scheme; `-my` left), `U = mz - 5`.
 
-The plate is placed relative to the controller by three cm offsets and faces along `+L`
-(controller left, `s` = +1 right-handed / −1 left-handed):
+The meshes measure:
 
 ```
-guard.zs  PlateCentre():  C = hand + F*ssq_plate_f + L*(ssq_plate_l*s) + U*ssq_plate_u
-guard.zs  PlateNormal():  n = L*s  (tilted by ssq_plate_yaw toward F, ssq_plate_pitch toward U)
-CVARINFO: ssq_plate_f -15.4, ssq_plate_l 8.4, ssq_plate_u -5.0  (cm; derived from the mesh and
-          Ermac's MODELDEF placement, never seen in a headset)
+shield_rim     centre F -15.36  L -8.37  U -4.93   radius 28.46 / 29.27
+shield_back    centre F -15.40  L -6.60  U -5.00   radius 29.04
+shield_front   the saw housing, L -16.03 .. -8.86, in-plane radius 29.16
+saw blades     L -8.70 .. -8.02, tip radius 29.2 retracted, 35.2 deployed
+shield_handle  a bar at F -1.3, L -4.5, spanning U -13.8 .. +4.4: the grip
+hand_ssq       straddles the origin, F -13.3..9.1  L -3.9..8.5  U -11.7..3.0
 ```
 
-Those numbers came from mapping `shield.md3` through the HUD-model chain in `models.cpp
-RenderHUDModel` (mesh x→forward, mesh y→left after `Scale -1`, mesh z→up; disc centre at mesh
-(−9.4, −8.4, 0) relative to the hand at (4.3, 1.8, 0)). "Wrong side" means the `L` sign (or the
-mirror the engine applies to the left controller) is the opposite of what I assumed. **Tuning:**
-with the ring on, flip `ssq_plate_l` to `-8.4`; if the ring is then on the shield but the green
-spoke points into your arm instead of out of the face, `ssq_plate_yaw 180`. Adjust `ssq_plate_f`
-(along the forearm) and `ssq_plate_u` until the red ring hugs the drawn rim. Then bake the numbers
-into CVARINFO. Because the block is a thick disc (`ssq_plate_thick` 25 cm), blocking already works
-even with the sign wrong; this is for the sparks to land on the face and the lock cone to be sane.
+So the disc sits **15.4 cm back along the forearm, 7.5 cm to the controller's RIGHT and 5 cm
+down**, radius 29.2 closed and 35.2 with the blades out, and the **arm is on the plate's +L
+side** — the face looks the other way, `-L`, to within 0.001. v0.6 had that sign inverted and the
+normal pointing into the forearm, which was both "the shield guards the wrong side" and "the
+plate is not on the geometry". `ssq_plate_yaw` and `ssq_plate_pitch` are gone; there is nothing
+left for them to tilt.
 
-Also worth checking in the same look: `ssq_roll_sign` (−1 if the ring rolls the wrong way when you
-twist the wrist) — it also decides the disc's flight plane at launch (`disc.zs Launch`).
-
-### 2.2 "Lock-on does not stay locked on"
-
-`state.zs LocksTick()` rebuilds the list **every tic** from a cone of `ssq_lock_cone` (25°) around
-the controller's forward `pose.F`, nearest-angle-first, line of sight required, and the rings
-follow the list. So a target drops out the moment the hand drifts 25° off it, and the order
-re-sorts as you move. That is "does not stay locked".
-
-Suggested rule (not built): **sticky locks** — once a target is in the list it stays until (a) the
-alt button is released, (b) it dies, (c) it leaves a wider *keep* cone (say 60°) or line of sight
-for > N tics. New targets are added from the acquire cone only while the list has room. Keep the
-order of acquisition (first ringed = first visited) instead of re-sorting. All of that is local to
-`LocksTick` and `ShownLocks`; the disc reads the list once at launch (`disc.zs FindLocks`).
-
-Also: the aim axis is the controller's forward (`pose.F`). If the ring from 2.1 shows the face is
-really along `L`, consider aiming the cone along the *face normal* or along the arm — the owner
-should say which feels right.
-
-### 2.3 "Shield does not return to the shoulder"
-
-The return (`disc.zs Tick`, phase `PH_HOME`) walks the breadcrumbs back
-(`crumbX/Y/Z`, one every `ssq_crumb_every` = 4 tics outbound), then flies to
-`SSQ_Handler.MountPos(thrower)`. It ends with `Done(false)` when within `ssq_return_speed*1.2`
-of the current goal and no crumbs remain. Things to check in order:
-
-1. **Ends in a wall / floor**: `+BOUNCEONWALLS/FLOORS/CEILINGS` with `+USEBOUNCESTATE` — the
-   `Bounce` state calls `Home()` only when `phase == PH_OUT`; a bounce *during* the return does
-   nothing, so a crumb path that clips a corner can leave it bouncing. Fix: on bounce in
-   `PH_HOME`, skip to the next crumb (`crumbAt--`) or straight to the mount.
-2. **The shortcut**: `if (crumbAt > 0 && CheckSight(thrower)) crumbAt = -1;` jumps straight to the
-   mount as soon as the disc can see the thrower — the mount point is 27 cm behind and 30 cm
-   below the headset (`ssq_mount_fwd/up`), i.e. **inside the player's body**; the disc is
-   `+MISSILE` with radius 10, so it can collide with the player? No — `target` = the thrower, and
-   missiles pass their shooter. But it can still hit the *floor* (mount z is low) and bounce.
-   Try raising `ssq_mount_up` for the return goal, or end the return at the headset instead and
-   let `DiscHome` snap the state.
-3. **Age limit**: `age > 35*12` → `Done(false)` after 12 s regardless; if it "never" returns, it is
-   stuck for < 12 s and then lands. That's the bounce case above.
-4. The owner's "weird slow-throw motion" (2.4) may actually *be* the return phase seen from the
-   wrong angle: `ssq_return_speed` 22 units/tic is fast; the breadcrumb walk is a straight line
-   per crumb, so it zig-zags on a curved throw. Look at it with `ssq_debug` on: `disc home` prints
-   when it lands.
-
-### 2.4 "Some weird slow-throw motion"
-
-Three candidates, all in `disc.zs`:
-
-- **Launch speed**: `Launch()` uses the **peak** 2-tic hand velocity over the last 6 samples
-  (`SSQ_Pose.ThrowVel`, units/tic) × `30/(30+ssq_mass_kg)` × `ssq_throw_speed` × rev bonus, floored
-  at `ssq_speed_floor` (7). A slow-ish swing at the 20 units/s threshold launches at ~0.6
-  units/tic → floored to 7. 7 units/tic = 7 m/s-ish at 34 u/m... that is slow for a thrown disc.
-  Raise `ssq_speed_floor` to ~16 and `ssq_throw_speed` to ~1.5, or map hand speed through a curve.
-- **Steering**: with a lock, `vel = vel*0.78 + want*0.22` then renormalised to `cruise` — it
-  cannot speed up beyond the launch speed, and it banks toward the first target from tic 1. If the
-  launch was along the swing but the target is behind the hand, it loops. Consider launching
-  *toward the first lock* when one exists.
-- **No lock, free throw**: flies 2 s (`age > 35*2 → Home()`), then turns around. A gentle lob
-  that returns after 2 s reads as "weird slow motion".
-
-Check with `ssq_debug`: the `THROW ... speed X/tic` line prints the launch speed; `release p0
-speed N/s, K locked` prints the measured hand speed and lock count.
+**The mesh origin is the grip.** That is why the world prop sits at the controller and the disc
+hangs 15 cm back by itself, and why the stowed shield hangs below the grab point with no drop
+fudge. `ssq_debug_ring` draws the plate: rim, a green spoke along the face normal, the hand.
 
 ---
 
-## 3. Engine facts that cost time (QZD 17.3 stock, `qzd173-pinned`)
+## 3. Size: five baked meshes
 
-- **VM drops multiple `Vector3` returns and `out Vector3` params** (silently zero / JIT abort).
-  Never return or out-pass vectors. `SSQ_Pose.Push` builds axes in place; `SSQ_Guard.Plate()` and
-  `Crosses()` write member fields. Scalars and `out Array<Actor>` are fine.
-- `abs(x) < 1e-6` did not stop a true zero divide in `Crosses` on this build; use `x == 0 ||
-  x != x || (x < 1e-6 && x > -1e-6)` with plain literals.
-- `Array<Vector3>` is not allowed (use three `Array<double>`).
-- `OffhandDir`, `GetSpriteIndex`, `Spawn` are play-scope: the pose is sampled and sent from
-  `WorldTick` for the console player, not from `UiTick`.
+MODELDEF fixes a model's size at load, and the only thing a mod may change per frame is which
+**sprite** the layer carries. So `ssq_shield_scale` (1.0–1.5) picks between five baked blocks —
+`SSH1..SSH5` right-handed, `SSJ1..SSJ5` left — and `SSQ_ShieldSaw.HeldSprite()` does the
+picking. The same number scales the guard plate, so what you see and what blocks stay one object.
+
+The sizes are in the **mesh**, not the block: `shield_s2..s5.md3` and `shieldsaw_s2..s5.md3` are
+the originals scaled about their own origin. A block's `Scale` would have grown the hand with the
+shield; scaling about the grip leaves the hand, the grip point and the `Offset` exactly where
+they were. (UltraBadassQuestSaber reaches the same answer for its blade lengths — that is what
+its ten thousand sprite lumps are: labels, one per baked block.)
+
+---
+
+## 4. Engine facts that cost time (stock QZD 17.3 = `670d19eba6^`, NOT the local HEAD)
+
+- The checkout at `E:\DOOMWork\QZD17-engine` carries the owner's own additions at HEAD
+  (`ButtonInject`, `RegisterModelStateFrame`, `SetModelSurfaceOffset`, …). **None of them exist
+  on the engine this pk3 runs on.** Verify every symbol against `670d19eba6^`.
+- The VM drops **multiple `Vector3` returns and `out Vector3` params** (silently zero / JIT
+  abort). `Array<Vector3>` is not allowed either (three `Array<double>`).
+- `abs(x) < 1e-6` did not stop a true zero divide; use `x == 0 || x != x || (x < 1e-6 && x > -1e-6)`.
+- `LineAttack` takes **11** arguments, not 12: `(angle, distance, pitch, damage, type, puff,
+  flags, victim, offsetz, forward, side)`.
+- `ModifyBobLayer3D` returns a translation and a rotation. **There is no scale**, which is why
+  §3 exists.
+- `OffhandPos.Z` is divided by `pixelstretch` while X and Y are not
+  (`hw_openxrdevice.cpp:605-609`), so hand travel is **not metric**: a vertical swing reads ~20%
+  slow. `SSQ_Pose.ThrowVel(ps)` takes that back out of the magnitude only.
 - MODELDEF only knows a sprite that some **state** names; a sprite written to a layer at run time
   must appear in a dummy state or startup dies with "Unknown sprite" — in a dialog, not on stdout.
-- `P_PlayerThink` (weapon buttons, fire) runs **before** `WorldTick` in a tic (`p_tick.cpp:166-173`).
-- `switchhand <0|1>` is a console command (`g_game.cpp:334`) calling `PlayerPawn.SwitchWeaponHand`,
-  which nulls both hands and moves the gun across; the Quest layer binds it to an off-hand button.
-  It is not a net command (QZD's own desync).
-- Weapon switches happen inside the *old* weapon's ready state; if that layer is gone, nobody
-  performs the switch — call `mo.BringUpWeapon()` yourself after setting `PendingWeapon`.
-- The off-hand weapon's `ModifyBobLayer3D` is called for every layer not owned by the ready
-  weapon; the pack's gun-side hands depend on `RSQ_Hands`' hook, so ours forwards to it (found by
-  a run-time `Name`, no compile-time link).
-- Left-handed is the engine's `vr_control_scheme >= 10` (local cvar) — carried in the pose event's
-  arg3 bit 0 so peers mirror correctly.
-- The controller relative to the headset: pawn XY **is** the HMD XY; `player.viewz` tracks the HMD
-  height; `OffhandPos − (pawn.x, pawn.y, viewz)` is the controller relative to the head
-  (`gl_openxrdevice.cpp:586-593`). Measured grab point: 27 cm back, 12 cm to the off side, 30 cm
-  below the headset (owner, 03:17) → `ssq_mount_fwd/side/up`.
-- Haptics: `vrmode->Vibrate` is reachable from script only via the quake route or a player
-  `LineAttack`; the quake one is used.
+- `P_PlayerThink` runs **before** `WorldTick` in a tic (`p_tick.cpp:166-173`).
+- `switchhand` is a console command, not a net command, and its argument is the **destination**
+  hand — so it moves the weapon in the *other* one. `+WEAPON.NOHANDSWITCH` blocks `switchhand 0`
+  only; `switchhand 1` nulls both slots and no flag of ours prevents it.
+- The two-hand grab never touches `OffhandWeapon` or the hand pose. It only disables the off-hand
+  weapon's ready/fire/button machinery and hides its psprite in C++. Every input here is read
+  from `p.cmd.buttons`, which it cannot gate; the world prop covers the hidden psprite.
+- `vr_quake_haptic_level > 0` is required for `A_QuakeEx` haptics to be felt.
+- Full study: `E:\DOOMWork\_reports\QZD173_MELEE_STUDY_2026-10-23.md` (its §9 is fork material —
+  off limits for this mod).
 
 ---
 
-## 4. The headless harness (catches every script error before a headset run)
-
-Linux build of upstream `emawind84/gzdoom @ questzdoom` (two harness-only patches needed on Linux:
-null `cmdlineprofile` in `m_misc.cpp M_GetActiveProfile`, short rows in
-`stringtable.cpp ParseLanguageCSV`). Run under Xvfb + llvmpipe; a fatal script error shows as a
-**dialog**, so the harness screenshots the display on a timeout.
+## 5. Files
 
 ```
-test.sh "<console command string>" [seconds]
-  packs the pk3 (excluding .git/docs), runs -warp 1 with +ssq_debug 1 +sv_cheats 1 and the
-  command string as ONE +"..." argument (QZD's `wait` only defers the rest of the same string),
-  greps the log for ssq:/errors, screenshots stuck.png if it does not exit.
+zscript/ssq/pose.zs    SSQ_Pose (history, axes in place, true-speed ThrowVel); SSQ_Hand
+zscript/ssq/state.zs   SSQ_Handler: states, mount, zone, input, sticky locks, the muzzle hook,
+                       PinHands / HoldOrYield, props, debug HUD, net events
+zscript/ssq/guard.zs   SSQ_Guard: plate geometry, the sweep, the hitscan stop, AbsorbDamage,
+                       Crosses, DeflectDir/GazeTarget, grind, bash, debug ring
+zscript/ssq/shield.zs  SSQ_ShieldSaw (off-hand Weapon): rev, baked-size HeldSprite,
+                       ModifyBobLayer3D (live cvars, forwards to RSQ_Hands), SSQ_FX
+zscript/ssq/disc.zs    SSQ_Disc: launch along the first lock, steering, tiers, the return that
+                       cannot fail, catch, trail, SSQ_LockMark
+zscript/ssq/props.zs   SSQ_Prop (holster / others' view), SSQ_MountMarker, block flash, sparks
 ```
-
-Useful scripts:
-- block, holstered: `wait 140; summon DoomImp; wait 10; turn180; wait 300; quit`
-- draw/throw/return by the desktop keys: `wait 140; netevent ssq-draw; wait 70; netevent ssq-throw; wait 175; quit`
-- **inject a hand pose** (the sim reads only the net event, so this exercises the real path):
-  pack args with the Python in the session log (`packpos(x,y,z)` quarter units rel. to the pawn,
-  `packang(yaw,pitch,roll,grip)`), then `netevent ssq-pose A B 0` once a tic. A hand 16 units in
-  front at z 26 facing the imp blocked claw and fireball on the **held** plate; `+oh_altatk` held
-  over it gave `1 locked`.
-- hand switch: `switchhand 1` mid-hold → both pins print and the throw still shows the pistol in
-  the main hand.
 
 ---
 
-## 5. What the owner has decided (do not re-open)
+## 6. Living beside other off-hand mods
 
-Shoulder only, nothing drawn when holstered, no placement/controls menus, hand always on the
-shield, left-handed from the engine, the three actions above, grab on the first tic (no wait),
-stray-shot prevention by the zone (Use is not a fire button, so it no longer matters), lock-on =
-up to five, throw = release at speed, missed catch → mount, blocked missiles → return to sender,
-holstered shield guards the back, name `RS_ShieldSawQ`. Options menu = exactly the list in
-`MENUDEF.txt` top level, no descriptors.
+`RSQ_Hands` re-gives itself to an empty off hand; UltraBadassQuestSaber's bridge gives
+`UBQS_SaberOff` to one every tic while dual is on. Both are right to, neither knows about us, and
+**event handlers tick in load order** — so being correct could not depend on running first.
+
+- The shield **writes the slot itself** (`p.OffhandWeapon = saw`) on draw and in `PinHands`,
+  rather than asking via `PendingWeapon`. Whoever ran before is overridden; whoever runs after
+  finds a hand that is not empty and leaves it alone.
+- On stow it **hands the slot over in the same tic** — to what it displaced, or deliberately to
+  whoever would have claimed it (`HandBack`).
+- `IsFiller` names the weapons that put themselves there, by class name at run time, so an absent
+  mod is a null and never a compile error.
+- `ssq_yield_offhand 1` is the other policy: treat a *deliberate* switch as the player putting
+  the shield down. Off by default.
+
+Checked: shield alone, saber alone, shield first, saber first — all compile clean. No class,
+cvar, sprite, model or sound name is shared.
+
+---
+
+## 7. Decided, do not re-open
+
+Shoulder mount only; nothing drawn when stowed and no blocking when stowed (both switchable,
+both off — a shield you cannot see should not stop bullets); hand always on the shield;
+left-handed comes from the engine; lock-on up to five; throw is a release at speed in the
+direction you are looking; a missed catch lands on the mount; blocked missiles go back; the
+options menu is the list in `MENUDEF.txt`, no descriptors.

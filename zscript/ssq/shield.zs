@@ -60,11 +60,20 @@ class SSQ_ShieldSaw : Weapon
 	}
 
 	// which sprite the held layer wants: hand or not, mirrored or not
+	// WHICH BAKED SIZE IS IN YOUR HAND. MODELDEF fixes a model's size at load; the only thing
+	// a mod can change per frame is the SPRITE on the layer. So the five sizes are five baked
+	// blocks and this picks between them -- SSH1..SSH5 right-handed, SSJ1..SSJ5 left. Same
+	// number the guard plate scales by, so the shield you see and the shield that blocks are
+	// one object at every setting.
 	int HeldSprite()
 	{
 		let p = Owner ? Owner.player : null;
 		bool left = p ? SSQ_Handler.LeftHanded(p) : false;
-		return GetSpriteIndex(left ? 'SSQJ' : 'SSQH');
+		double k = clamp(SSQ_Handler.SV('ssq_shield_scale', 1.0), 1.0, 1.5);
+		int step = clamp(int(floor((k - 1.0) / 0.125 + 0.5)), 0, 4);	// 1.0 1.125 1.25 1.375 1.5
+		static const Name rh[] = { 'SSH1', 'SSH2', 'SSH3', 'SSH4', 'SSH5' };
+		static const Name lh[] = { 'SSJ1', 'SSJ2', 'SSJ3', 'SSJ4', 'SSJ5' };
+		return GetSpriteIndex(left ? lh[step] : rh[step]);
 	}
 
 	States
@@ -76,6 +85,8 @@ class SSQ_ShieldSaw : Weapon
 	// by writing the layer's sprite (A_SSQ_Held), so they are named here once
 	SpriteNames:
 		SSQJ A 0;
+		SSH1 A 0; SSH2 A 0; SSH3 A 0; SSH4 A 0; SSH5 A 0;
+		SSJ1 A 0; SSJ2 A 0; SSJ3 A 0; SSJ4 A 0; SSJ5 A 0;
 		Stop;
 	Ready:
 		SSQH A 1 A_SSQ_Held;

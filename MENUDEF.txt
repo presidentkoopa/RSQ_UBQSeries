@@ -39,7 +39,7 @@ OptionValue "SSQ_DeflectAim"
 
 OptionMenu "SSQ_Options"
 {
-	Title "RS ShieldSawQ Options"
+	Title "Ultra Badass ShieldSaw"
 	Option "Start with Shield in Hand", "ssq_start_drawn", "OnOff"
 	StaticText ""
 	Option "Block attacks while Holstered", "ssq_guard_stowed", "OnOff"
@@ -66,7 +66,7 @@ OptionMenu "SSQ_Options"
 
 OptionMenu "SSQ_Tuning"
 {
-	Title "ShieldSawQ Tuning"
+	Title "Ultra Badass ShieldSaw: Tuning"
 	Slider "Throw speed", "ssq_throw_speed", 0.2, 3.0, 0.1, 1
 	Slider "Throw damage", "ssq_cut_damage", 0.2, 5.0, 0.1, 1
 	Slider "Aim cone", "ssq_lock_cone", 2.0, 60.0, 1.0, 0
@@ -93,14 +93,14 @@ OptionMenu "SSQ_Tuning"
 
 OptionMenu "SSQ_Debug"
 {
-	Title "ShieldSawQ Debug"
+	Title "Ultra Badass ShieldSaw: Debug"
 	Option "Print decisions and key codes", "ssq_debug", "OnOff"
 	Option "Draw the guard plate", "ssq_debug_ring", "OnOff"
 }
 
 OptionMenu "SSQ_Fit"
 {
-	Title "ShieldSaw Fit"
+	Title "Ultra Badass ShieldSaw: Fit"
 	StaticText "Shield size. Model and block area together."
 	Slider "Shield size", "ssq_shield_scale", 1.0, 1.5, 0.05, 2
 	StaticText ""

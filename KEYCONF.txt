@@ -4,6 +4,6 @@ addslotdefault 1 SSQ_ShieldSaw
 // the desktop route, and a backup for a headset: draw / put back / recall, and throw along the aim
 alias ssq_draw "netevent ssq-draw"
 alias ssq_throw "netevent ssq-throw"
-addkeysection "RS Shield Saw Q" ssq_keys
+addkeysection "Ultra Badass ShieldSaw" ssq_keys
 addmenukey "$SSQ_KEY_DRAW" ssq_draw
 addmenukey "$SSQ_KEY_THROW" ssq_throw
