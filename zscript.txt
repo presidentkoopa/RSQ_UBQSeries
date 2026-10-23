@@ -506,7 +506,6 @@ class UBQS_SaberBase : Weapon abstract
 	// IDLE: the shimmer -- or, with the second blade lit, the staff twirling in your hand (ubqs_twirl)
 	action void A_UBReady(int f)
 	{
-		if (invoker.igniteAnim > 0) invoker.igniteAnim--;
 		if (invoker.Twirling())
 		{
 			int step = (invoker.UInt("ubqs_twirl", 2) >= 2) ? 1 : 2;
@@ -587,7 +586,11 @@ class UBQS_SaberBase : Weapon abstract
 		// should leave you a working alt button, not a dead one.
 		bool force = invoker.UInt("ubqs_force", 1) != 0;
 		if (force && invoker.bOffhandWeapon && invoker.UInt("ubqs_force_gestures", 1)) return ResolveState("AltDone");
-		if (!force || invoker.UInt("ubqs_alt", 1) == 0) { invoker.ToggleBack(); return ResolveState("AltDone"); }
+		if (!force || invoker.UInt("ubqs_alt", 1) == 0)
+		{
+			if (invoker.TakeAltPress()) invoker.ToggleBack();
+			return ResolveState("AltDone");
+		}
 		invoker.ForcePush();
 		return ResolveState("AltDone");
 	}
@@ -605,6 +608,10 @@ class UBQS_SaberBase : Weapon abstract
 	void Paint()
 	{
 		int most = clamp(UInt("ubqs_locks", 5), 1, 8);
+		// A DEAD LOCK IS NOT A LOCK. Its mark destroys itself and NextLeg skips it, but it still counted
+		// against ubqs_locks -- so killing what you painted mid-hold stopped you painting anything else.
+		for (int k = locks.Size() - 1; k >= 0; k--)
+			if (!locks[k] || locks[k].health <= 0) locks.Delete(k);
 		if (locks.Size() >= most || level.maptime - lastPaintTic < 3) return;
 		lastPaintTic = level.maptime;
 		Vector3 hp = HandPos();
@@ -699,7 +706,13 @@ class UBQS_SaberBase : Weapon abstract
 		if (!owner || !owner.player) return false;
 		return bOffhandWeapon ? (owner.player.OffhandWeapon == self) : (owner.player.ReadyWeapon == self);
 	}
-	bool Lit() { return !thrown && UBQS_Data.Ext(frameNow) > 0.5 && InHand(); }
+	// THE HAND POSE IS LOCAL-ONLY, so a saber whose owner's pose this machine does not have is not a
+	// blade. VRMode::SetUp and OpenXRDeviceMode::SetUp both write r_viewpoint.camera->player and nobody
+	// else; for every OTHER player here AttackPos is zero, HandPosOf falls back to the chest and
+	// BladeDir() is a fixed world direction. Left to run, that phantom blade deflects, burns, clashes
+	// and blocks on THIS machine and not on theirs. The same four reads WorldUp() already makes.
+	bool HandLive() { return owner && (bOffhandWeapon ? owner.OffhandPos : owner.AttackPos) != (0, 0, 0); }
+	bool Lit() { return !thrown && UBQS_Data.Ext(frameNow) > 0.5 && InHand() && HandLive(); }
 	bool Twirling() { return back && !thrown && !doused && UInt("ubqs_twirl", 2) > 0; }
 
 	// ---- THE BLADE ON AND OFF --------------------------------------------------------------------------------
@@ -751,17 +764,28 @@ class UBQS_SaberBase : Weapon abstract
 	// +WEAPON.NOAUTOFIRE is not available: this saber does not set it, and in this engine
 	// CheckWeaponFire lost the latch that would make it mean anything. So the latch lives here,
 	// on the button, per hand. Ticked in DoEffect above every early return so it cannot stick.
-	private bool firePressed;
+	private bool firePressed, altPressed;
 	void TickFireLatch()
 	{
-		if (!owner || !owner.player) { firePressed = false; return; }
+		if (!owner || !owner.player) { firePressed = false; altPressed = false; return; }
 		int bit = bOffhandWeapon ? BT_OFFHANDATTACK : BT_ATTACK;
 		if (!(owner.player.cmd.buttons & bit)) firePressed = false;
+		// THE SAME LATCH ON THE SECOND BUTTON. ToggleBack() hangs off alt, and AltFire is re-entered
+		// every time AltDone falls back into ReadyLoop -- so a held alt flipped the second blade, with
+		// both its sounds, every 8 tics.
+		int abit = bOffhandWeapon ? BT_OFFHANDALTATTACK : BT_ALTATTACK;
+		if (!(owner.player.cmd.buttons & abit)) altPressed = false;
 	}
 	bool TakeFirePress()
 	{
 		if (firePressed) return false;
 		firePressed = true;
+		return true;
+	}
+	bool TakeAltPress()
+	{
+		if (altPressed) return false;
+		altPressed = true;
 		return true;
 	}
 	UBQS_SaberBase Other()
@@ -789,6 +813,11 @@ class UBQS_SaberBase : Weapon abstract
 	{
 		// the fastest of the last three single-tic steps, so a quick flick counts as much as a long swing
 		Vector3 a = h0 - h1, b = h1 - h2, c = h2 - h3;
+		// ...IN METRIC UNITS. The hand's Z arrives divided by pixelstretch while X and Y do not, so a raw
+		// delta is about 17% short in the vertical: a downward or upward throw needed a fifth more arm than
+		// a flat one to pass ubqs_throw_min, and left the hand flatter than the throw really was.
+		double ps = level.pixelstretch;
+		a.z *= ps; b.z *= ps; c.z *= ps;
 		Vector3 v = a;
 		if (b.Length() > v.Length()) v = b;
 		if (c.Length() > v.Length()) v = c;
@@ -881,6 +910,10 @@ class UBQS_SaberBase : Weapon abstract
 		if (keepMarksUntil > 0 && level.maptime > keepMarksUntil) { keepMarksUntil = 0; ClearLocks(); }
 		if (flashTics > 0 && --flashTics == 0 && flash) flash.Dark();
 		if (burnQuiet > 0) burnQuiet--;
+		// THE IGNITION RUNS IN EVERY STATE, not only in ReadyLoop. A_UBReady was the only place this ticked
+		// down, so holding fire inside the 8-tic ignition froze the blade on frame 13 -- a 3 unit stub below
+		// Lit()'s threshold: no hum, no light, no cut, no block, for the whole hold.
+		if (igniteAnim > 0) igniteAnim--;
 		if (swingQuiet > 0) swingQuiet--;
 		// THE SABER ITSELF, IN THE WORLD -- and the ONE motion prediction of the tic, which the beam further
 		// down then shares. Placed here, from the player's own tick, because P_Ticker has already done
@@ -891,6 +924,12 @@ class UBQS_SaberBase : Weapon abstract
 		// destroyed whether it was lit or not. The old code had nothing to do on that path but turn the beam
 		// off. Also above every gameplay consumer: `hand`, `dir`, `len` and `pom` are still computed from the
 		// UNPREDICTED pose further down, so the prediction stays purely cosmetic.
+		// THE PREDICTOR'S TUNABLES, READ BEFORE ITS ONE CALL. GlowPredict leads the HILT as well as the
+		// beam and its call site is PoseTick, here -- above BladeGlow, where GlowTunables() sits. Left
+		// there it is read a call too late and never at all on the paths BladeGlow returns early from
+		// (ubqs_blade_glow 0, a blade under 2 units, an unlit blade); cHitch 0 then throws the sample
+		// history away every tic and the world hilt loses its interpolation and its lead entirely.
+		GlowTunables();
 		PoseTick();
 		if (!Lit())
 		{
@@ -921,7 +960,15 @@ class UBQS_SaberBase : Weapon abstract
 		}
 		// THE BLADE'S OWN SPEED, less the body's: walking is not swinging (the owner, 10-01: "it makes the swing
 		// sound every time i take a step"). The hum rises a little with a real swing and stays steady otherwise.
-		double speed = lastOk ? ((tip - lastTip) - bodyStep).Length() : 0.0;
+		// THE ENGINE DIVIDES ONLY THE HAND'S Z BY pixelstretch (hw_openxrdevice.cpp:595/608 -- X and Y
+		// are multiplied by vr_vunits_per_meter and nothing else), so the hand's own vertical travel
+		// arrives at 1/1.2 of its real size while the blade-direction part of the tip is already metric.
+		// Undone on the hand term alone -- (h0 - h1) IS that term -- or an overhead chop needs about a
+		// fifth more real speed to reach ubqs_swing_cut than a flat slash does.
+		Vector3 dTip = ((tip - lastTip) - bodyStep);
+		Vector3 hStep = h0 - h1;	// ZScript will not dereference .z off a parenthesised expression
+		dTip.z += hStep.z * (level.pixelstretch - 1.0);
+		double speed = lastOk ? dTip.Length() : 0.0;
 		owner.A_SoundPitch(ch, 1.0 + clamp((speed - 6.0) / 60.0, 0.0, 0.3));
 		// THE LINE THAT ACTUALLY WINS: this re-assert runs every tic, so a hum volume set only where the loop
 		// starts would appear to work for one tic and then silently revert. Both sites read HumVol(). Dropping
@@ -939,7 +986,10 @@ class UBQS_SaberBase : Weapon abstract
 			BladeGlowOff();
 			lastTip = tip;
 			lastBase = hand;
-			lastOk = true;
+			// THE SWING HISTORY IS FORGOTTEN ACROSS THE TWIRL. A twirl frame's blade points along Up() 90
+			// and frame 0's along Up() 50, so the tic the twirl ENDS measures a ~19 unit tip jump out of a
+			// 40 degree frame change and handed CutAlong a free full-damage swing for no swing at all.
+			lastOk = false;
 			Lights(true);
 			return;
 		}
@@ -2911,7 +2961,9 @@ class UBQS_Thrown : Actor
 	{
 		if (!launcher || !master || master.health <= 0 || launcher.owner != master)
 		{
-			UBQS_LockMark.ClearAll(launcher);
+			// NOT ClearAll(null) -- a null launcher is one of the reasons we are in here, and ClearAll
+			// reads null as every mark of every saber of every player.
+			if (launcher) UBQS_LockMark.ClearAll(launcher);
 			if (launcher && launcher.thrown == self) launcher.thrown = null;
 			Destroy();
 			return;
@@ -2954,7 +3006,11 @@ class UBQS_Thrown : Actor
 		{
 			// HOME, to the hand wherever it has gone. Through walls if it must: the Force does not path-find.
 			Vector3 to = level.Vec3Diff(pos, launcher.HandPos());
-			double d = to.Length();
+			// NEVER DIVIDE BY IT. Once the step is min(hs, d) == d the saber lands exactly on the hand
+			// point, so d really does reach 0 whenever two tics read the same pose (a hitch) -- and to / d
+			// then poisons dir, step and the actor's own position with NaN, with no PH_PULL timeout to
+			// recover from it: the hilt is gone for the rest of the level. PH_ROUTE already guards this.
+			double d = max(to.Length(), 0.001);
 			// IT HAS TO HAVE LEFT BEFORE IT CAN COME BACK. Catch() fires inside 26 units and the saber is
 			// SPAWNED at the hand, so a throw that ends at once is already inside its own catch radius:
 			// catch, destroy, return to hand, thrown again next release -- a hilt flickering at the hand.
@@ -3865,12 +3921,12 @@ class UBQS_Remote : Actor
 		// THE DANCE: round you, out in front, drifting in and out and up and down
 		if (level.maptime >= omUntil)
 		{
-			om = frandom[UBQSFx](0.8, 2.6) * (random[UBQSFx](0, 1) ? 1 : -1);
-			omUntil = level.maptime + random[UBQSFx](25, 70);
+			om = frandom[UBQSRem](0.8, 2.6) * (random[UBQSRem](0, 1) ? 1 : -1);
+			omUntil = level.maptime + random[UBQSRem](25, 70);
 			// a new place to be, re-rolled with the new direction: somewhere between in your face and
 			// the far side of the room, at any height from your knees to above your head
-			radWant = frandom[UBQSFx](72.0, 300.0);
-			hgtWant = frandom[UBQSFx](-26.0, 42.0);
+			radWant = frandom[UBQSRem](72.0, 300.0);
+			hgtWant = frandom[UBQSRem](-26.0, 42.0);
 		}
 		// ALL THE WAY ROUND. It used to bounce off +-70 degrees, so it never left the arc in front of
 		// you -- you could stand still and face it the whole session.
@@ -3879,7 +3935,7 @@ class UBQS_Remote : Actor
 		if (th < 0.0) th += 360.0;
 		// IN AND OUT. Easing toward a target reads as the remote deciding to close or back off; the old
 		// +-1.5 a tic inside a 44-unit band was a wobble you could not see.
-		if (radWant <= 0) { radWant = frandom[UBQSFx](72.0, 300.0); hgtWant = frandom[UBQSFx](-26.0, 42.0); }
+		if (radWant <= 0) { radWant = frandom[UBQSRem](72.0, 300.0); hgtWant = frandom[UBQSRem](-26.0, 42.0); }
 		rad = clamp(rad + clamp(radWant - rad, -3.5, 3.5), 56.0, 300.0);
 		hgt = clamp(hgt + clamp(hgtWant - hgt, -1.6, 1.6), -26.0, 42.0);
 		double a = trainee.angle + th;
@@ -3919,7 +3975,7 @@ class UBQS_Remote : Actor
 		}
 		if (level.maptime >= nextChirp)
 		{
-			nextChirp = level.maptime + random[UBQSFx](60, 160);
+			nextChirp = level.maptime + random[UBQSRem](60, 160);
 			// A droid chirping every two to five seconds for a whole training session, with no off switch.
 			// The RNG above stays unconditional; only the sound is scaled (0 = quiet). All three ubqs/rbeep
 			// sites read this cvar, so 0 really does mean a quiet remote.
@@ -3933,7 +3989,7 @@ class UBQS_Remote : Actor
 		static const int GAPMIN[] = { 45, 30, 18 };
 		static const int GAPMAX[] = { 90, 60, 40 };
 		int L = Level() - 1;
-		Vector3 at = trainee.pos + (frandom[UBQSFx](-8, 8), frandom[UBQSFx](-8, 8), trainee.height * frandom[UBQSFx](0.45, 0.85));
+		Vector3 at = trainee.pos + (frandom[UBQSRem](-8, 8), frandom[UBQSRem](-8, 8), trainee.height * frandom[UBQSRem](0.45, 0.85));
 		Vector3 from = pos + (0, 0, height * 0.5);
 		Vector3 d = level.Vec3Diff(from, at);
 		if (d.Length() < 1) return;
@@ -3951,7 +4007,7 @@ class UBQS_Remote : Actor
 		}
 		shots++;
 		A_StartSound("ubqs/rfire", CHAN_WEAPON);
-		nextShot = level.maptime + random[UBQSFx](GAPMIN[L], GAPMAX[L]);
+		nextShot = level.maptime + random[UBQSRem](GAPMIN[L], GAPMAX[L]);
 	}
 	override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags, double angle)
 	{
@@ -3963,7 +4019,7 @@ class UBQS_Remote : Actor
 			A_StartSound("ubqs/rsad", CHAN_VOICE);
 		}
 		else A_StartSound("ubqs/rbeep", CHAN_VOICE, 0, UBQS_Data.F(trainee, "ubqs_remote_chirp", 1.0));
-		Vector3 kick = (frandom[UBQSFx](-1, 1), frandom[UBQSFx](-1, 1), frandom[UBQSFx](0, 1));
+		Vector3 kick = (frandom[UBQSRem](-1, 1), frandom[UBQSRem](-1, 1), frandom[UBQSRem](0, 1));
 		if (source && source != self)
 		{
 			Vector3 away = level.Vec3Diff(source.pos, pos);
@@ -4145,7 +4201,10 @@ class UBQS_Bridge : EventHandler
 		{
 			if (!playeringame[i] || !players[i].mo) continue;
 			let p = players[i];
-			if (p.health <= 0) continue;
+			// THE OFF-HAND RAISE LATCH IS PER LIFE, NOT PER LEVEL. PlayerPawn nulls BOTH hands on a
+			// respawn (player.zs:1012) and only re-raises the main one, so a latch that survives death
+			// leaves you one-handed for the rest of the map.
+			if (p.health <= 0) { raisedAt[i] = 0; continue; }
 			// THEIRS OUT, OURS IN: whatever their saber is, carried
 			bool swapped = false, held = false;
 			for (let item = p.mo.Inv; item; )
@@ -4208,6 +4267,9 @@ class UBQS_Bridge : EventHandler
 			// hand when it is brought up as PendingWeapon (PlayerPawn.BringUpWeapon). With the off hand empty
 			// and nothing else switching, bring ours up there.
 			// ONCE, not every 350 tics -- see the note above
+			// ...and re-armed whenever the slot is occupied, so switchhand 1 evicting the saber (it always
+			// can) is a transition we come back from rather than a one-way door.
+			if (p.OffhandWeapon != null) raisedAt[i] = 0;
 			if (dual && p.OffhandWeapon == null && p.PendingWeapon == WP_NOCHANGE && raisedAt[i] == 0)
 			{
 				raisedAt[i] = level.maptime;
