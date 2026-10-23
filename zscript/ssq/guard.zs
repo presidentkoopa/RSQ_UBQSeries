@@ -150,7 +150,7 @@ class SSQ_Guard : Inventory
 			plateR = PlateRadius(saw && saw.Revved());
 			return true;
 		}
-		if (st == SSQ_Handler.SS_STOWED && SSQ_Handler.SVI('ssq_guard_stowed', 1) != 0 && saw)
+		if (st == SSQ_Handler.SS_STOWED && SSQ_Handler.SVI('ssq_guard_stowed', 0) != 0 && saw)
 		{
 			plateHeld = 0;
 			plateC = PlateCentre(mo, pose, true);

@@ -38,7 +38,7 @@ server float ssq_rev_throw_bonus = 0.6;   // a full-rev throw adds this fraction
 
 // the block
 server bool  ssq_guard          = true;
-server bool  ssq_guard_stowed   = true;   // the shield on your back guards your back
+server bool  ssq_guard_stowed   = false;  // off: a shield you cannot see does not block. Both this and ssq_stow_world default off, together
 server int   ssq_deflect        = 1;      // blocked projectiles: 0 cancelled, 1 return to sender
 server bool  ssq_deflect_aim    = true;   // back at the shooter; off = mirrored off the face
 server int   ssq_melee          = 2;      // blocked melee: 0 nothing, 1 stun, 2 stun and shoved back
@@ -72,7 +72,7 @@ user float ssq_mount_side       = 12.0;
 user float ssq_mount_up         = -30.0;
 user float ssq_mount_reach      = 30.0;
 server float ssq_zone_scale     = 1.6;    // the zone over the shoulder, as a multiple of the reach
-user int   ssq_stow_world       = 1;      // draw the shield on your back while it is stowed
+user int   ssq_stow_world       = 0;      // draw the shield on your back while it is stowed (owner: off, 2026-10-22)
 user float ssq_mount_yaw        = 0.0;
 user float ssq_mount_pitch      = 0.0;
 user float ssq_mount_roll       = 0.0;

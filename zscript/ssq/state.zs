@@ -583,7 +583,7 @@ class SSQ_Handler : EventHandler
 		// the plate's +L side -- the side your arm is on -- forward into your back.
 		if (mState[i] == SS_STOWED)
 		{
-			prop.bInvisible = UVI(p, 'ssq_stow_world', 1) == 0;
+			prop.bInvisible = UVI(p, 'ssq_stow_world', 0) == 0;	// owner's default: not drawn when stored
 			prop.SetOrigin(mount, true);
 			prop.angle = mo.angle + UV(p, 'ssq_mount_yaw', 0);
 			prop.pitch = MountPropPitch() + UV(p, 'ssq_mount_pitch', 0);
