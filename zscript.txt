@@ -658,6 +658,35 @@ class UBQS_SaberBase : Weapon abstract
 		if (!UInt("ubqs_haptics", 1)) return;
 		owner.LineAttack(owner.angle, 1, -90, 1, 'UBQS_Haptic', 'UBQS_HapticPuff', bOffhandWeapon ? 256 : 0);
 	}
+	// ONE RUMBLE, ON THE RIGHT CONTROLLER, FOR AS LONG AS IT IS WORTH.
+	//
+	// The comment above is wrong about this engine, and it cost the mod its best channel: A_QuakeEx IS
+	// the hook. r_utility.cpp drives vrmode->Vibrate from the quake's intensity -- X is the LEFT
+	// controller and Y the RIGHT -- scaled by vr_quake_haptic_level (0.8 by default), while the VIEW
+	// shake rides r_quakeintensity, which is 0 for VR. With damrad 0 the whole damage and thrust block
+	// is skipped, so this is a pure feedback channel, and a quake is a serialised thinker: the only
+	// haptic route on this engine that is net-safe and demo-safe. The spot is an actor following the
+	// pawn with a tremor radius of 8, so in co-op only its owner feels it, and walking does not walk
+	// you out of your own rumble.
+	//
+	// strength is 0..3 before ubqs_haptic_power. Never fire this in the same tic as Buzz() on the same
+	// hand: the Quest drops a haptic request while one is running, so a short weak pulse eats a long one.
+	void Rumble(double strength, int tics)
+	{
+		if (!owner || !owner.player || !UInt("ubqs_haptics", 1)) return;
+		double k = strength * clamp(UF("ubqs_haptic_power", 1.0), 0.0, 3.0);
+		if (k <= 0.01) return;
+		// WHICH CONTROLLER. ubqs_lefty is a user cvar, so it is userinfo: every machine reads the same
+		// owner's answer and the thinker spawned is identical everywhere. -1 falls back to the engine's
+		// own scheme, read in the one place this mod has ever read it.
+		int lh = UInt("ubqs_lefty", -1);
+		bool lefty = (lh < 0) ? UBQS_Data.WorldMirror(false) : (lh != 0);
+		bool left = bOffhandWeapon != lefty;
+		let q = UBQS_Buzzer(Actor.Spawn("UBQS_Buzzer", owner.pos));
+		if (!q) return;
+		q.feels = owner;
+		q.A_QuakeEx(left ? int(k) : 0, left ? 0 : int(k), 0, clamp(tics, 1, 16), 0, 8, "", QF_SCALEDOWN);
+	}
 	void ClearLocks()
 	{
 		locks.Clear();
@@ -1675,7 +1704,7 @@ class UBQS_SaberBase : Weapon abstract
 		// nothing: all five Buzz() sites were Force or targeting events. ONCE per swing, not once per victim --
 		// a sweep through four imps is one pulse a controller could tell apart, and Buzz() is a LineAttack.
 		// Off by default, so today is unchanged -- but this is the first thing to turn on (ubqs_haptic_cut).
-		if (buzzc && cutAny) Buzz();
+		if (buzzc && cutAny) Rumble(0.9, 4);
 		for (int k = cutWho.Size() - 1; k >= 0; k--)
 			if (!cutWho[k] || cutWho[k].health <= 0) { cutWho.Delete(k); cutWhen.Delete(k); }
 	}
@@ -2144,7 +2173,7 @@ class UBQS_SaberBase : Weapon abstract
 			}
 			glowPop = 0.8 + 0.4 * hard;
 			LockGlow(at, o.RgbNow());
-			if (buzzk) Buzz();
+			if (buzzk) Rumble(1.2, 3);
 			return;
 		}
 		LockGlow(at, o.RgbNow());
@@ -2158,7 +2187,7 @@ class UBQS_SaberBase : Weapon abstract
 			if (cfx > 0.01 && spark) UBQS_Data.Sparks(at, (0, 0, 1), 0xFFFFFF, int(4 * cfx));
 			double lrad = frandom[UBQSFx](50, 96);
 			if (cfx > 0.01) FlashAt(at, lrad * cfx, 2);
-			if (buzzk) Buzz();
+			if (buzzk) Rumble(1.2, 3);
 		}
 		if (level.maptime >= nextSnap)
 		{
@@ -2441,6 +2470,21 @@ class UBQS_SaberOff : UBQS_SaberBase
 // ---- THE CLASH FLASH: a white-hot starburst where two blades meet -----------------------------------------
 // One additive, fullbright billboard that blooms and fades in a fifth of a second. No light of its own (the
 // saber's flash light does that), so it costs a sprite.
+// A RUMBLE OF OUR OWN, WITH A LENGTH AND A STRENGTH. See UBQS_SaberBase.Rumble for why this exists
+// and why it follows the pawn rather than sitting where it was spawned.
+class UBQS_Buzzer : Actor
+{
+	Actor feels;
+	Default { +NOINTERACTION +NOBLOCKMAP +NOSECTOR +NOGRAVITY +DONTSPLASH +NOTONAUTOMAP RenderStyle "None"; }
+	override void Tick()
+	{
+		Super.Tick();
+		if (!feels) { Destroy(); return; }
+		SetOrigin(feels.pos, true);
+	}
+	States { Spawn: TNT1 A 20; Stop; }
+}
+
 class UBQS_HapticPuff : Actor
 {
 	Default { +NOINTERACTION +NOBLOCKMAP +BLOODLESSIMPACT +PAINLESS +NODAMAGETHRUST -ALWAYSPUFF RenderStyle "None"; }

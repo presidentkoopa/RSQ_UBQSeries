@@ -194,6 +194,13 @@ OptionMenu "UBQS_Predict"
 	Command "Put this page back the way it shipped", "resetcvar ubqs_glow_predict ubqs_glow_lead ubqs_glow_frame_ms ubqs_glow_maxang ubqs_glow_maxlin ubqs_glow_ramp_deg ubqs_glow_stop ubqs_glow_hitch_ms ubqs_snap_turn_deg"
 }
 
+OptionValue "UBQS_Lefty"
+{
+	-1, "However the engine is set"
+	0, "Right-handed"
+	1, "Left-handed"
+}
+
 OptionMenu "UBQS_Swing"
 {
 	Title "YOUR SWING"
@@ -348,6 +355,9 @@ OptionMenu "UBQS_Sound"
 	StaticText ""
 	StaticText "CONTROLLER BUZZ", "Gold"
 	Option "Controller buzz", "ubqs_haptics", "OnOff"
+	Slider "How hard it buzzes", "ubqs_haptic_power", 0, 3, 0.1, 1
+	Option "I play", "ubqs_lefty", "UBQS_Lefty"
+	StaticText "Needs vr_quake_haptic_level above 0 (0.8 by default)."
 	Option "Buzz when the blade cuts something", "ubqs_haptic_cut", "OnOff"
 	Option "Buzz when blades cross, and while they stay locked", "ubqs_haptic_clash", "OnOff"
 }

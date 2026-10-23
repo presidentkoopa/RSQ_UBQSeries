@@ -144,9 +144,11 @@ user float   ubqs_remote_chirp      = 1.0;      // the training remote's chirps,
 
 // -- LIGHT AND FEEL --
 user int     ubqs_flash             = 1;        // hit and clash flashes: 0 off, 1 follow the blade light, 2 always
-user int     ubqs_haptics           = 1;        // controller buzz at all (strength is the engine's: none possible)
-user int     ubqs_haptic_cut        = 0;        // buzz when the blade cuts something (once a swing)
-user int     ubqs_haptic_clash      = 0;        // buzz when blades cross, and while they stay locked
+user int     ubqs_haptics           = 1;        // controller buzz at all (ubqs_haptic_power sets how hard)
+user int     ubqs_haptic_cut        = 1;        // buzz when the blade cuts something (once a swing)
+user int     ubqs_haptic_clash      = 1;        // buzz when blades cross, and while they stay locked
+user float   ubqs_haptic_power      = 1.0;      // how hard every saber rumble is (A_QuakeEx, not the engine's fixed pulse)
+user int     ubqs_lefty             = -1;       // which controller: -1 the engine's scheme, 0 right-handed, 1 left-handed
 
 // -- THE TRAINING REMOTE --
 user int     ubqs_remote_warn       = 0;        // extra tics of warning before it shoots (it rode the level)
