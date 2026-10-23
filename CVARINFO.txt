@@ -6,11 +6,11 @@
 server bool  ssq_start          = true;   // every player spawns with it
 server float ssq_cut_damage     = 1.0;    // thrown-disc damage scale
 server float ssq_throw_speed    = 1.0;    // launch speed scale
-server float ssq_throw_min      = 25.0;   // map units/sec of hand speed below which a grip press stows instead of throws
+server float ssq_throw_min      = 20.0;   // map units/sec of hand speed below which a grip press stows instead of throws
 server float ssq_speed_floor    = 7.0;    // units/tic: the slowest a throw can leave at
 server float ssq_mass_kg        = 5.0;    // the disc keeps arm/(arm+this) of the hand speed
 server int   ssq_locks          = 5;      // targets one throw visits
-server float ssq_lock_cone      = 16.0;   // half-angle from the hand's forward at release
+server float ssq_lock_cone      = 25.0;   // half-angle from the hand's forward at release
 server float ssq_lock_range     = 1200.0;
 server float ssq_return_speed   = 22.0;   // units/tic on the way home
 server float ssq_catch_radius   = 24.0;   // hand within this of the returning disc = caught
@@ -57,6 +57,7 @@ server float ssq_plate_u        = -5.0;
 server float ssq_plate_yaw      = 0.0;    // tilt of the face normal from +L, degrees
 server float ssq_plate_pitch    = 0.0;
 server float ssq_plate_radius   = 28.5;   // cm; the blades add ssq_plate_blades when revved
+server float ssq_plate_thick    = 25.0;   // cm either side of the face that still counts as the shield
 server float ssq_plate_blades   = 2.5;
 server float ssq_roll_sign      = 1.0;    // flip if the ring rolls the wrong way
 
@@ -65,11 +66,11 @@ user bool  ssq_start_drawn      = false;  // start with the shield in hand
 user bool  ssq_feedback         = true;   // block feedback and haptics
 
 // the shoulder mount, relative to the body: forward (negative = behind), to the off side, up from eye height
-user float ssq_mount_fwd        = 0.0;
-user float ssq_mount_side       = 18.0;
-user float ssq_mount_up         = 0.0;
-user float ssq_mount_reach      = 16.0;
-server float ssq_zone_scale     = 2.2;    // the zone over the shoulder, as a multiple of the reach
+user float ssq_mount_fwd        = -27.0;
+user float ssq_mount_side       = 12.0;
+user float ssq_mount_up         = -30.0;
+user float ssq_mount_reach      = 30.0;
+server float ssq_zone_scale     = 1.6;    // the zone over the shoulder, as a multiple of the reach
 user float ssq_mount_drop       = 11.0;   // the disc hangs this far below the grab point
 user float ssq_mount_yaw        = 0.0;
 user float ssq_mount_pitch      = 0.0;

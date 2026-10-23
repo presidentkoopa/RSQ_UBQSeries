@@ -82,7 +82,8 @@ class SSQ_Disc : Actor
 		sp = max(sp, SSQ_Handler.SV('ssq_speed_floor', 7.0));
 		// the throw plane from the wrist: the disc's face is the plate's face
 		Vector3 nrm = SSQ_Guard.PlateNormal(mo, pose, false);
-		Begin(mo, dir, sp, SSQ_Hand.RollOf(dir, nrm) * SSQ_Handler.SV('ssq_roll_sign', 1.0), pose.F);
+		// the lock cone opens along the throw, not along the controller
+		Begin(mo, dir, sp, SSQ_Hand.RollOf(dir, nrm) * SSQ_Handler.SV('ssq_roll_sign', 1.0), dir);
 	}
 
 	void LaunchAlong(PlayerPawn mo, Vector3 dir, double sp, double roll, int rev)
@@ -109,12 +110,14 @@ class SSQ_Disc : Actor
 		if (trail) trail.target = self;
 	}
 
-	// targets in a cone from the hand's forward, nearest angle first
-	void FindLocks(PlayerPawn mo, Vector3 aim)
+	// targets in a cone from a point along an aim, nearest angle first, line of sight required.
+	// Used every tic while the shield is held (SSQ_Handler.LocksTick: the markers you see) and
+	// once more at launch, so what flies is what was shown.
+	static void FindTargets(PlayerPawn mo, Vector3 from, Vector3 aim, out Array<Actor> found)
 	{
-		locks.Clear();
-		lockAt = 0;
+		found.Clear();
 		int want = SSQ_Handler.SVI('ssq_locks', 5);
+		if (want <= 0) return;
 		double cone = SSQ_Handler.SV('ssq_lock_cone', 16.0);
 		double range = SSQ_Handler.SV('ssq_lock_range', 1200.0);
 		Array<Actor> cand; Array<double> score;
@@ -125,7 +128,7 @@ class SSQ_Disc : Actor
 			if (t == mo || !t.bShootable || t.health <= 0 || (!t.bIsMonster && !t.player)) continue;
 			if (t.player && !deathmatch) continue;
 			if (t.bFriendly && !deathmatch) continue;
-			Vector3 d = t.pos + (0, 0, t.height * 0.5) - pos;
+			Vector3 d = t.pos + (0, 0, t.height * 0.5) - from;
 			double dist = d.Length();
 			if (dist > range || dist < 1) continue;
 			double ang = acos(clamp((d / dist) dot aim, -1, 1));
@@ -136,11 +139,25 @@ class SSQ_Disc : Actor
 			while (k < cand.Size() && score[k] <= sc) k++;
 			cand.Insert(k, t); score.Insert(k, sc);
 		}
-		for (int i = 0; i < cand.Size() && i < want; i++)
+		for (int i = 0; i < cand.Size() && i < want; i++) found.Push(cand[i]);
+	}
+
+	// the list at launch: what the player was shown while holding (SSQ_Handler), else a fresh
+	// cone along the throw
+	void FindLocks(PlayerPawn mo, Vector3 aim)
+	{
+		locks.Clear();
+		lockAt = 0;
+		let h = SSQ_Handler.Get();
+		Array<Actor> shown;
+		if (h) h.ShownLocks(mo.PlayerNumber(), shown);
+		if (shown.Size() == 0) FindTargets(mo, pos, aim, shown);
+		for (int i = 0; i < shown.Size(); i++)
 		{
-			locks.Push(cand[i]);
-			let m = Spawn('SSQ_LockMark', cand[i].pos + (0, 0, cand[i].height + 8));
-			if (m) { m.tracer = cand[i]; marks.Push(m); }
+			if (!shown[i] || shown[i].health <= 0) continue;
+			locks.Push(shown[i]);
+			let m = Spawn('SSQ_LockMark', shown[i].pos + (0, 0, shown[i].height + 8));
+			if (m) { m.tracer = shown[i]; marks.Push(m); }
 		}
 		if (locks.Size() > 0) A_StartSound("ssq/lock", CHAN_6);
 	}

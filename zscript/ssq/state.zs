@@ -6,16 +6,17 @@
 //            empty-handed. The disc comes home along the way it went; a hand near it on the
 //            way back catches it (DRAWN), otherwise it lands on the mount (STOWED).
 //
-// THE OFF TRIGGER IS THE SHIELD (owner, 2026-10-22). QuestZDoom spends the off GRIP on
-// two-handing the gun, so the shield lives on BT_OFFHANDATTACK, a synced usercmd bit:
-//   press with the hand at the shoulder   -> it is in your hand, whatever was there steps aside
-//   hold                                   -> you keep it; alt-fire (BT_OFFHANDALTATTACK) revs it
-//   release while the arm is moving fast   -> throw
-//   release slowly                         -> back on the shoulder, from anywhere
-//   still holding when it comes home, hand near it -> caught; otherwise it lands on the shoulder
-//   press while it flies                   -> recall
-// No net events for input: both bits travel in the usercmd. The decision runs here, in
-// WorldTick, from the SYNCED pose (pose.zs). The press counts on the tic it lands: no wait.
+// THE INPUT (owner, 2026-10-22 04:08), all synced usercmd bits, nothing to bind:
+//   off hand in the ZONE by the off shoulder + USE   -> the shield is in the hand (whatever was
+//                                                        there steps aside and comes back after)
+//   off PRIMARY held                                  -> the saw revs
+//   off SECONDARY held                                -> lock-on: rings over what you aim at
+//   off SECONDARY released, arm moving               -> throw, at the ringed targets in order
+//   off SECONDARY released, arm still                -> nothing; it stays in the hand
+//   off SECONDARY pressed while it flies              -> recall
+//   USE in the zone again                             -> back on the shoulder
+//   hand near the returning disc (Back in Hand on Return) -> caught
+// The decision runs here, in WorldTick, from the SYNCED pose (pose.zs). No wait on the grab.
 
 class SSQ_Handler : EventHandler
 {
@@ -28,10 +29,17 @@ class SSQ_Handler : EventHandler
 	Actor mDisc[MAXPLAYERS];
 	class<Weapon> mPrevOff[MAXPLAYERS];	// what the draw displaced (null: nothing, or the pack's hands)
 	class<Weapon> mPrevMain[MAXPLAYERS];	// the main-hand weapon a two-handed conflict lowered
-	bool  mGripWas[MAXPLAYERS];
+	bool  mGripWas[MAXPLAYERS];		// off secondary last tic
+	bool  mUseWas[MAXPLAYERS];
 	int   mCatchGrace[MAXPLAYERS];	// tics after a catch before the grip is read again
 	int   mStartDrawn[MAXPLAYERS];	// countdown to the draw at spawn (ssq_start_drawn)
 	bool  mInZone[MAXPLAYERS];		// the off hand is in the zone over the shoulder: the off-hand gun has yielded
+	// THE LOCK-ON YOU SEE. While the shield is held, a cone from where the off hand points picks
+	// the targets every tic; a ring hangs over each, biggest over the first the disc will visit.
+	// Let go and this list is what flies, in this order.
+	Array<Actor> mLocks[MAXPLAYERS];
+	Array<Actor> mLockMarks[MAXPLAYERS];
+	int   mLockSig[MAXPLAYERS];
 
 
 	// ---- lookups -------------------------------------------------------------------
@@ -157,34 +165,37 @@ class SSQ_Handler : EventHandler
 			// nothing but Draw() puts the shield in the hand: undo the engine filling an empty
 			// off hand with it, or a level change re-raising it
 			if (mState[i] != SS_DRAWN && p.OffhandWeapon == saw) Unstow(i);
-			if (mState[i] == SS_DRAWN && p.OffhandWeapon != saw && p.PendingWeapon != saw)
-			{
-				// something else took the hand (a pickup switch): the shield goes home
-				Stow(i, false);
-			}
+			if (mState[i] == SS_DRAWN) PinHands(i, saw);
 			if (mState[i] == SS_FLYING && !mDisc[i]) { mState[i] = SS_STOWED; }
 			if (mStartDrawn[i] > 0 && mState[i] == SS_STOWED && --mStartDrawn[i] == 0) Draw(i);
 
-			// THE ZONE. Holstered, hand over the shoulder: the off-hand weapon's ready layer is
-			// taken away every tic, so its A_WeaponReady never runs and the engine's fire gate
-			// (TickPSprites -> CheckWeaponFire(1)) finds no ready bit: the trigger cannot fire it.
-			// P_PlayerThink runs BEFORE WorldTick, so a layer removed at tic N is gone for N+1's
-			// check -- which is why the zone is wider than the reach. Leaving the zone without a
-			// draw puts the layer back.
-			ZoneTick(i);
+			// USE: grab in the zone / holster in the zone. Level, not edge, for the grab: a use
+			// already held when the hand reaches the zone grabs too.
+			bool use = (p.cmd.buttons & BT_USE) != 0;
+			bool usePress = use && !mUseWas[i];
+			mUseWas[i] = use;
+			if (mCatchGrace[i] > 0) { mCatchGrace[i]--; usePress = false; use = false; }
+			if (mState[i] == SS_STOWED && use) OnPress(i);
+			else if (mState[i] == SS_DRAWN && usePress) OnPress(i);
+			// SECONDARY: hold to lock on, let go to throw, press in flight to recall
+			// the off secondary: the ACTION "Offhand Alt Attack" (+oh_altatk), whatever key it is on
+			bool sec = (p.cmd.buttons & BT_OFFHANDALTATTACK) != 0;
+			bool secPress = sec && !mGripWas[i];
+			bool secRelease = !sec && mGripWas[i];
+			mGripWas[i] = sec;
+			if (secRelease) OnRelease(i);
+			else if (secPress && mState[i] == SS_FLYING && mDisc[i]) SSQ_Disc(mDisc[i]).Recall();
 
-			// the off trigger: press and release edges
-			bool grip = (p.cmd.buttons & BT_OFFHANDATTACK) != 0;
-			bool press = grip && !mGripWas[i];
-			bool release = !grip && mGripWas[i];
-			mGripWas[i] = grip;
-			if (mCatchGrace[i] > 0) { mCatchGrace[i]--; press = false; grip = false; }
-			if (press) OnPress(i);
-			else if (release) OnRelease(i);
-			// LEVEL, NOT EDGE, for the draw: a trigger already held when the hand reaches the
-			// shoulder draws too, whatever that trigger was doing a moment ago
-			else if (grip && mState[i] == SS_STOWED) OnPress(i);
-
+			if (mState[i] == SS_DRAWN && UVI(p, 'ssq_debug', 0) != 0 && (Level.maptime % 35) == 0)
+			{
+				let ps = mPose[i];
+				Vector3 C = SSQ_Guard.PlateCentre(mo, ps, false);
+				Vector3 n = SSQ_Guard.PlateNormal(mo, ps, false);
+				Console.Printf("ssq: pose F(%.2f %.2f %.2f) L(%.2f %.2f %.2f) U(%.2f %.2f %.2f) hand(%.0f %.0f %.0f) C(%.0f %.0f %.0f) n(%.2f %.2f %.2f) R %.1f fresh %d",
+					ps.F.x, ps.F.y, ps.F.z, ps.L.x, ps.L.y, ps.L.z, ps.U.x, ps.U.y, ps.U.z,
+					ps.pos[0].x, ps.pos[0].y, ps.pos[0].z, C.x, C.y, C.z, n.x, n.y, n.z, SSQ_Guard.PlateRadius(false), ps.Fresh(Level.maptime));
+			}
+			LocksTick(i);
 			Props(i);
 		}
 	}
@@ -210,7 +221,7 @@ class SSQ_Handler : EventHandler
 		}
 	}
 
-	// the press: at the shoulder it draws; in flight it recalls
+	// USE in the zone: holstered -> draw; drawn -> holster
 	void OnPress(int i)
 	{
 		let p = players[i];
@@ -219,32 +230,118 @@ class SSQ_Handler : EventHandler
 		bool fresh = pose.Fresh(Level.maptime);
 		double dist = fresh ? (pose.pos[0] - MountPos(mo)).Length() : 1e9;
 		bool atMount = dist <= Reach(p);
-		if (UVI(p, 'ssq_debug', 0)) Console.Printf("ssq: press p%d state %d fresh %d mountdist %.1f", i, mState[i], fresh, dist);
-		switch (mState[i])
+		if (UVI(p, 'ssq_debug', 0))
 		{
-		case SS_STOWED:
-			if (atMount) Draw(i);
-			break;
-		case SS_FLYING:
-			if (mDisc[i]) SSQ_Disc(mDisc[i]).Recall();
-			break;
+			// the hand relative to the headset, in cm: forward, to the off side, up
+			Vector3 rel = fresh ? pose.pos[0] - (mo.pos.x, mo.pos.y, p.viewz) : (0, 0, 0);
+			double a = mo.angle, k = 100.0 / SSQ_Hand.VU();
+			double f = (rel.x * cos(a) + rel.y * sin(a)) * k;
+			double l = (rel.x * cos(a + 90) + rel.y * sin(a + 90)) * k * (LeftHanded(p) ? -1 : 1);
+			Console.Printf("ssq: press p%d state %d fresh %d mountdist %.1f  hand from headset: fwd %.0f side %.0f up %.0f cm", i, mState[i], fresh, dist, f, l, rel.z * k);
 		}
+		if (!atMount) return;
+		if (mState[i] == SS_STOWED) Draw(i);
+		else if (mState[i] == SS_DRAWN) Stow(i, true);
 	}
 
-	// the release: moving fast throws, anything else puts it back on the shoulder
+	// secondary released: moving fast throws; still, it stays in the hand
 	void OnRelease(int i)
 	{
 		if (mState[i] != SS_DRAWN) return;
 		let p = players[i];
 		let pose = mPose[i];
 		double speed = pose.Fresh(Level.maptime) ? pose.ThrowVel().Length() * TICRATE : 0;
-		if (UVI(p, 'ssq_debug', 0)) Console.Printf("ssq: release p%d speed %.0f/s", i, speed);
-		if (speed >= SV('ssq_throw_min', 25.0)) Throw(i);
-		else Stow(i, true);
+		if (UVI(p, 'ssq_debug', 0)) Console.Printf("ssq: release p%d speed %.0f/s, %d locked", i, speed, mLocks[i].Size());
+		if (speed >= SV('ssq_throw_min', 20.0)) Throw(i);
 	}
 
-	// the trigger is held while the shield is in the hand
-	clearscope bool Holding(int i) { return mGripWas[i]; }
+	clearscope bool Holding(int i) { return true; }	// the catch needs only the hand near the disc
+
+	// WHILE FIRE IS HELD BOTH HANDS ARE PINNED: the shield in the off hand, the gun you had in
+	// the main hand. QZD's `switchhand` (an off-hand button on the Quest) nulls BOTH hands and
+	// moves the gun across (player.zs SwitchWeaponHand); a weapon-cycle or a pickup switch
+	// changes one. Whatever happened, it is undone this tic. Only the release moves the shield.
+	void PinHands(int i, SSQ_ShieldSaw saw)
+	{
+		let p = players[i];
+		let mo = p.mo;
+		bool fix = false;
+		if (p.OffhandWeapon != saw) fix = true;
+		if (p.PendingWeapon != WP_NOCHANGE && p.PendingWeapon != saw && p.PendingWeapon.bOffhandWeapon) fix = true;
+		if (fix)
+		{
+			saw.bOffhandWeapon = true;
+			p.PendingWeapon = saw;
+			mo.BringUpWeapon();
+			if (UVI(p, 'ssq_debug', 0)) Console.Printf("ssq: pin off -> shield");
+		}
+		if (mPrevMain[i])
+		{
+			let back = Weapon(mo.FindInventory(mPrevMain[i]));
+			if (back && back != saw && p.ReadyWeapon != back && !back.bTwoHanded)
+			{
+				back.bOffhandWeapon = false;
+				p.PendingWeapon = back;
+				mo.BringUpWeapon();
+				if (UVI(p, 'ssq_debug', 0)) { String rw = "-"; if (p.ReadyWeapon) rw = p.ReadyWeapon.GetClassName(); Console.Printf("ssq: pin main -> %s (now %s)", mPrevMain[i].GetClassName(), rw); }
+			}
+		}
+	}
+
+	void ShownLocks(int i, out Array<Actor> found)
+	{
+		found.Clear();
+		if (i < 0 || i >= MAXPLAYERS) return;
+		for (int k = 0; k < mLocks[i].Size(); k++) if (mLocks[i][k] && mLocks[i][k].health > 0) found.Push(mLocks[i][k]);
+	}
+
+	void ClearLocks(int i)
+	{
+		mLocks[i].Clear();
+		for (int k = 0; k < mLockMarks[i].Size(); k++) if (mLockMarks[i][k]) mLockMarks[i][k].Destroy();
+		mLockMarks[i].Clear();
+		mLockSig[i] = 0;
+	}
+
+	// once a tic while held: pick, and show
+	void LocksTick(int i)
+	{
+		let p = players[i];
+		let mo = p.mo;
+		let pose = mPose[i];
+		bool aiming = (p.cmd.buttons & BT_OFFHANDALTATTACK) != 0;
+		if (mState[i] != SS_DRAWN || !aiming || !pose.Fresh(Level.maptime)) { if (mLocks[i].Size() > 0) ClearLocks(i); return; }
+		Array<Actor> found;
+		SSQ_Disc.FindTargets(mo, pose.pos[0], pose.F, found);
+		// did the list change? a soft tick when it does
+		int sig = 0;
+		for (int k = 0; k < found.Size(); k++) sig = sig * 31 + (found[k] ? found[k].SpawnTime + 7 : 1);
+		if (sig != mLockSig[i])
+		{
+			mLockSig[i] = sig;
+			if (found.Size() > 0) mo.A_StartSound("ssq/lock", CHAN_6, 0, 0.5);
+		}
+		mLocks[i].Clear();
+		for (int k = 0; k < found.Size(); k++) mLocks[i].Push(found[k]);
+		// one ring per target, sized by rank
+		while (mLockMarks[i].Size() < found.Size())
+		{
+			let m = Actor.Spawn('SSQ_LockMark', mo.pos);
+			mLockMarks[i].Push(m);
+		}
+		for (int k = 0; k < mLockMarks[i].Size(); k++)
+		{
+			let m = mLockMarks[i][k];
+			if (!m) continue;
+			if (k >= found.Size()) { m.bInvisible = true; continue; }
+			let t = found[k];
+			m.bInvisible = false;
+			m.SetOrigin(t.pos + (0, 0, t.height + 10), true);
+			m.A_SetScale(k == 0 ? 1.6 : (k == 1 ? 1.1 : 0.8));
+			m.A_SetRenderStyle(k == 0 ? 1.0 : 0.6, STYLE_Add);
+			m.angle += (k == 0 ? 12 : 6);
+		}
+	}
 
 	// ---- the loadout swap -------------------------------------------------------------
 	void Draw(int i)
@@ -258,9 +355,12 @@ class SSQ_Handler : EventHandler
 		// off hand is empty), so it is not remembered; anything else is
 		mPrevOff[i] = (cur && cur != saw && cur.GetClassName() != 'RSQ_Hands') ? cur.GetClass() : null;
 		let rw = p.ReadyWeapon;
-		mPrevMain[i] = (rw && rw.bTwoHanded) ? rw.GetClass() : null;
+		mPrevMain[i] = (rw && rw != saw) ? rw.GetClass() : null;	// pinned while held (switchhand undone)
 		saw.bOffhandWeapon = true;
 		p.PendingWeapon = saw;
+		// BRING IT UP OURSELVES. A switch normally happens inside the old weapon's ready state
+		// (it sees PendingWeapon, lowers, raises the next) -- and the zone took that layer away.
+		mo.BringUpWeapon();
 		mInZone[i] = false;
 		mState[i] = SS_DRAWN;
 		mo.A_StartSound("ssq/draw", CHAN_6);
@@ -290,12 +390,12 @@ class SSQ_Handler : EventHandler
 		if (mPrevOff[i] && p.PendingWeapon == WP_NOCHANGE)
 		{
 			let back = Weapon(mo.FindInventory(mPrevOff[i]));
-			if (back && back != p.ReadyWeapon) { back.bOffhandWeapon = true; p.PendingWeapon = back; }
+			if (back && back != p.ReadyWeapon) { back.bOffhandWeapon = true; p.PendingWeapon = back; mo.BringUpWeapon(); }
 		}
 		else if (mPrevMain[i] && !p.ReadyWeapon && p.PendingWeapon == WP_NOCHANGE)
 		{
 			let back = Weapon(mo.FindInventory(mPrevMain[i]));
-			if (back) { back.bOffhandWeapon = false; p.PendingWeapon = back; }
+			if (back) { back.bOffhandWeapon = false; p.PendingWeapon = back; mo.BringUpWeapon(); }
 		}
 		mPrevOff[i] = null; mPrevMain[i] = null;
 	}
@@ -303,6 +403,7 @@ class SSQ_Handler : EventHandler
 	void Stow(int i, bool sound)
 	{
 		Unstow(i);
+		ClearLocks(i);
 		mState[i] = SS_STOWED;
 		if (sound) players[i].mo.A_StartSound("ssq/stow", CHAN_6);
 		if (UVI(players[i], 'ssq_debug', 0)) Console.Printf("ssq: p%d STOW", i);
@@ -317,8 +418,9 @@ class SSQ_Handler : EventHandler
 		int rev = saw ? saw.rev : 0;
 		Unstow(i);
 		let d = SSQ_Disc(Actor.Spawn('SSQ_Disc', pose.pos[0]));
-		if (!d) { mState[i] = SS_STOWED; return; }
+		if (!d) { mState[i] = SS_STOWED; ClearLocks(i); return; }
 		d.Launch(mo, pose, rev);
+		ClearLocks(i);
 		mDisc[i] = d;
 		mState[i] = SS_FLYING;
 		mo.A_StartSound("ssq/throw", CHAN_6);
@@ -410,6 +512,30 @@ class SSQ_Handler : EventHandler
 	}
 
 	// ---- events ------------------------------------------------------------------
+	// the live state in the corner, for a screenshot (Debug -> Print decisions)
+	override void RenderOverlay(RenderEvent e)
+	{
+		if (consoleplayer < 0 || !playeringame[consoleplayer]) return;
+		let p = players[consoleplayer];
+		if (!p.mo || UVI(p, 'ssq_debug', 0) == 0) return;
+		int i = consoleplayer;
+		String off = "-", main = "-";
+		if (p.OffhandWeapon) off = p.OffhandWeapon.GetClassName();
+		if (p.ReadyWeapon) main = p.ReadyWeapon.GetClassName();
+		String pend = (p.PendingWeapon == WP_NOCHANGE) ? "-" : (p.PendingWeapon ? String.Format("%s", p.PendingWeapon.GetClassName()) : "null");
+		let saw = SSQ_ShieldSaw(p.mo.FindInventory('SSQ_ShieldSaw'));
+		int b = p.cmd.buttons;
+		String line1 = String.Format("SSQ state %d  off %s  main %s  pending %s", mState[i], off, main, pend);
+		String line2 = String.Format("buttons: atk %d alt %d ohatk %d ohalt %d   stabilised %d   rev %d  locks %d",
+			(b & BT_ATTACK) != 0, (b & BT_ALTATTACK) != 0, (b & BT_OFFHANDATTACK) != 0, (b & BT_OFFHANDALTATTACK) != 0,
+			(p.WeaponState & WF_TWOHANDSTABILIZED) != 0, saw ? saw.rev : -1, mLocks[i].Size());
+		let pose = mPose[i];
+		String line3 = String.Format("pose fresh %d  mountdist %.1f  zone %d", pose.Fresh(Level.maptime), pose.Fresh(Level.maptime) ? (pose.pos[0] - MountPos(p.mo)).Length() : -1.0, mInZone[i]);
+		Screen.DrawText(SmallFont, Font.CR_GOLD, 8, 40, line1, DTA_VirtualWidth, 640, DTA_VirtualHeight, 400, DTA_KeepRatio, true);
+		Screen.DrawText(SmallFont, Font.CR_GOLD, 8, 50, line2, DTA_VirtualWidth, 640, DTA_VirtualHeight, 400, DTA_KeepRatio, true);
+		Screen.DrawText(SmallFont, Font.CR_GOLD, 8, 60, line3, DTA_VirtualWidth, 640, DTA_VirtualHeight, 400, DTA_KeepRatio, true);
+	}
+
 	override void NetworkProcess(ConsoleEvent e)
 	{
 		int i = e.Player;
@@ -419,9 +545,7 @@ class SSQ_Handler : EventHandler
 		{
 			double yaw, pitch, roll; int grip;
 			[yaw, pitch, roll, grip] = SSQ_Hand.UnpackAng(e.Args[1]);
-			Vector3 F, L, U;
-			[F, L, U] = SSQ_Hand.Basis(yaw, pitch, roll);
-			mPose[i].Push(mo.pos + SSQ_Hand.UnpackPos(e.Args[0]), F, L, U, grip != 0, Level.maptime);
+			mPose[i].Push(mo.pos + SSQ_Hand.UnpackPos(e.Args[0]), yaw, pitch, roll, grip != 0, Level.maptime);
 			mPose[i].left = (e.Args[2] & 1) != 0;
 		}
 		else if (e.Name == "ssq-draw")
@@ -453,7 +577,12 @@ class SSQ_Handler : EventHandler
 		mDisc[i] = d;
 		mState[i] = SS_FLYING;
 		mo.A_StartSound("ssq/throw", CHAN_6);
-		if (UVI(p, 'ssq_debug', 0)) Console.Printf("ssq: p%d THROW along aim, speed %.1f/tic rev %d locks %d", i, d.vel.Length(), rev, d.locks.Size());
+		if (UVI(p, 'ssq_debug', 0))
+		{
+			String mw = "-"; if (p.ReadyWeapon) mw = p.ReadyWeapon.GetClassName();
+			String ow = "-"; if (p.OffhandWeapon) ow = p.OffhandWeapon.GetClassName();
+			Console.Printf("ssq: p%d THROW along aim, speed %.1f/tic rev %d locks %d  (main now %s, off now %s)", i, d.vel.Length(), rev, d.locks.Size(), mw, ow);
+		}
 	}
 
 	// ---- the console player's side: the pose, and the raw grip ----------------------------
@@ -467,7 +596,7 @@ class SSQ_Handler : EventHandler
 		let mo = p.mo;
 		if (!mo || !SSQ_Hand.InVR(mo)) return;
 		int st = mState[consoleplayer];
-		bool grip = (p.cmd.buttons & BT_OFFHANDATTACK) != 0;
+		bool grip = (p.cmd.buttons & (BT_USE | BT_OFFHANDALTATTACK)) != 0;
 		Vector3 hand = mo.OffhandPos;
 		bool nearMount = (hand - MountPos(mo)).Length() <= Zone(p) * 1.5;
 		bool want = st != SS_STOWED || grip || nearMount;

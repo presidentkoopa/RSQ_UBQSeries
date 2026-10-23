@@ -91,6 +91,9 @@ class SSQ_ShieldSaw : Weapon
 	Fire:
 		SSQH A 1 A_SSQ_Held;
 		Goto Ready;
+	AltFire:
+		SSQH A 1 A_SSQ_Held;
+		Goto Ready;
 	}
 
 	action void A_SSQ_Select()
@@ -111,7 +114,7 @@ class SSQ_ShieldSaw : Weapon
 		// no WRF flags that fire: the off trigger is ours
 		A_WeaponReady(WRF_NOFIRE | WRF_NOBOB | WRF_NOSWITCH);
 		int n = SSQ_Handler.SVI('ssq_rev_tics', 21);
-		bool trig = (p.cmd.buttons & BT_OFFHANDALTATTACK) != 0;	// alt-fire revs; the trigger is the hold
+		bool trig = (p.cmd.buttons & BT_OFFHANDATTACK) != 0;	// off primary held revs (main primary stays the gun's)
 		if (trig) { if (invoker.rev < n) invoker.rev++; }
 		else if (invoker.rev > 0) invoker.rev = max(0, invoker.rev - 2);
 
@@ -140,7 +143,24 @@ class SSQ_ShieldSaw : Weapon
 	// Y pitch, Z roll.
 	override Vector3, Vector3 ModifyBobLayer3D(Vector3 translation, Vector3 rotation, int layer, double ticfrac)
 	{
-		if (layer != PSP_OFFHANDWEAPON || consoleplayer < 0) return translation, rotation;
+		if (layer != PSP_OFFHANDWEAPON)
+		{
+			// NOT OURS: the pack's gun-side hand layers are placed by the hook of ITS hands weapon,
+			// which the shield displaces from the off hand. Forward to it (found by name: no link).
+			if (Owner)
+			{
+				Name hn = "RSQ_Hands";	// a variable, so an absent class is a run-time null, not a compile error
+				let w = Weapon(Owner.FindInventory(hn));
+				if (w && w != self)
+				{
+					Vector3 t, r;
+					[t, r] = w.ModifyBobLayer3D(translation, rotation, layer, ticfrac);
+					return t, r;
+				}
+			}
+			return translation, rotation;
+		}
+		if (consoleplayer < 0) return translation, rotation;
 		let p = players[consoleplayer];
 		translation += (SSQ_Handler.UV(p, 'ssq_held_x', 0), SSQ_Handler.UV(p, 'ssq_held_z', 0), -SSQ_Handler.UV(p, 'ssq_held_y', 0));
 		rotation += (SSQ_Handler.UV(p, 'ssq_held_yaw', 0), SSQ_Handler.UV(p, 'ssq_held_pitch', 0), SSQ_Handler.UV(p, 'ssq_held_roll', 0));

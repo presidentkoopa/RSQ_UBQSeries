@@ -6,7 +6,7 @@ return-to-sender) verified by scripted console runs against a real imp. Not yet 
 
 ## Features
 
-- Lives over the **offhand shoulder**. Reach over, **off trigger**: it's in your hand. Hold it; **alt-fire** revs; release moving to throw, release slow to put it back; still holding when it comes home with your hand near it catches it
+- Lives over the **offhand shoulder**. Off hand up by the shoulder, **Use**: it's in your hand. **Off primary** held revs it. **Off secondary** held locks on to what you aim at (rings); let go while swinging to throw it at them in order; press it while it flies to recall. **Use** at the shoulder again puts it back
 - **Block what crosses the face** — missiles, hitscan, melee, blasts — decided in the sim via
   `AbsorbDamage`, so it is identical on every machine; also while holstered
 - Blocked projectiles **cancelled or returned to sender**; blocked melee **stuns / stuns and shoves**
@@ -44,8 +44,9 @@ Design and reasons: `ShieldSaw_Quest_Design.md` in the zDoomVR project.
 
 ## Setup on the headset
 
-1. Load `RS_ShieldSawQ.pk3` after your BD22 pack (or alone). Nothing to bind: the off trigger and
-   off alt-fire are QZD's own bindings.
+1. Load `RS_ShieldSawQ.pk3` after your BD22 pack (or alone). The shield uses three of QZD's own
+   actions: **Use**, **Offhand Attack** and **Offhand Alt Attack**. Make sure the last one is bound
+   to a button on your off controller (Customize Controls).
 2. `vr_quake_haptic_level` above 0 for the buzzes.
 3. Options -> RS ShieldSawQ Options -> Debug -> *Draw the guard plate*: hold the shield up and check
    the red ring sits on the drawn rim (the `ssq_plate_*` cvars move it).

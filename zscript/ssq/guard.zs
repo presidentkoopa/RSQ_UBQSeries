@@ -64,47 +64,64 @@ class SSQ_Guard : Inventory
 		return SSQ_Handler.CM(SSQ_Handler.SV('ssq_plate_radius', 28.5) + (blades ? SSQ_Handler.SV('ssq_plate_blades', 2.5) : 0));
 	}
 
-	// does the segment A->B cross the disc (C, n, R)? P is the crossing point
-	static clearscope bool, Vector3 Crosses(Vector3 A, Vector3 B, Vector3 C, Vector3 n, double R)
+	// does the segment A->B pass through the THICK disc (centre C, face n, radius R, half
+	// thickness T)? P is where. A thick disc, not a plane: the plane test misses a shot that
+	// skims the face edge-on, and it needs the face's sign to be right; the thick disc blocks
+	// anything whose path comes within the rim and within T of the face.
+	Vector3 hitP;		// where the last Crosses() hit the face (no Vector3 returns: the VM drops them)
+
+	bool Crosses(Vector3 A, Vector3 B, Vector3 C, Vector3 n, double R)
 	{
+		double thick = SSQ_Handler.CM(SSQ_Handler.SV('ssq_plate_thick', 25.0));
 		Vector3 d = B - A;
-		double dn = d dot n;
-		if (abs(dn) < 1e-6) return false, A;
-		double t = ((C - A) dot n) / dn;
-		if (t < 0 || t > 1) return false, A;
-		Vector3 P = A + d * t;
-		return (P - C).Length() <= R, P;
+		double dd = d dot d;
+		if (dd <= 0 || dd != dd) return false;
+		// the closest point on the segment to the centre
+		double frac = ((C - A) dot d) / dd;
+		if (frac < 0) frac = 0; else if (frac > 1) frac = 1;
+		Vector3 q = A + d * frac;
+		Vector3 rel = q - C;
+		double along = rel dot n;
+		if (along != along) return false;
+		Vector3 inplane = rel - n * along;
+		if (inplane.Length() > R) return false;
+		if (along > thick || along < -thick) return false;
+		// the reported point: on the face
+		hitP = C + inplane;
+		return true;
 	}
 
 	// which plate is up for this player right now, if any
-	bool, Vector3, Vector3, double, int Plate()
+	Vector3 plateC, plateN; double plateR; int plateHeld;
+
+	bool Plate()
 	{
-		Vector3 C = (0, 0, 0), n = (0, 0, 1); double R = 0; int held = 0;
+		plateC = (0, 0, 0); plateN = (0, 0, 1); plateR = 0; plateHeld = 0;
 		let mo = PlayerPawn(Owner);
-		if (!mo || !mo.player) return false, C, n, R, held;
+		if (!mo || !mo.player) return false;
 		let h = SSQ_Handler.Get();
-		if (!h) return false, C, n, R, held;
+		if (!h) return false;
 		int pnum = mo.PlayerNumber();
 		int st = h.StateOf(pnum);
 		let pose = h.PoseOf(pnum);
 		let saw = SSQ_ShieldSaw(mo.FindInventory('SSQ_ShieldSaw'));
 		if (st == SSQ_Handler.SS_DRAWN && pose.Fresh(Level.maptime))
 		{
-			held = 1;
-			C = PlateCentre(mo, pose, false);
-			n = PlateNormal(mo, pose, false);
-			R = PlateRadius(saw && saw.Revved());
-			return true, C, n, R, held;
+			plateHeld = 1;
+			plateC = PlateCentre(mo, pose, false);
+			plateN = PlateNormal(mo, pose, false);
+			plateR = PlateRadius(saw && saw.Revved());
+			return true;
 		}
 		if (st == SSQ_Handler.SS_STOWED && SSQ_Handler.SVI('ssq_guard_stowed', 1) != 0 && saw)
 		{
-			held = 0;
-			C = PlateCentre(mo, pose, true);
-			n = PlateNormal(mo, pose, true);
-			R = PlateRadius(false);
-			return true, C, n, R, held;
+			plateHeld = 0;
+			plateC = PlateCentre(mo, pose, true);
+			plateN = PlateNormal(mo, pose, true);
+			plateR = PlateRadius(false);
+			return true;
 		}
-		return false, C, n, R, held;
+		return false;
 	}
 
 	// ---- the block ----------------------------------------------------------------------
@@ -113,9 +130,8 @@ class SSQ_Guard : Inventory
 		if (damage <= 0 || SSQ_Handler.SVI('ssq_guard', 1) == 0) return;
 		let mo = PlayerPawn(Owner);
 		if (!mo) return;
-		Vector3 C, n; double R; int held; bool up;
-		[up, C, n, R, held] = Plate();
-		if (!up) return;
+		if (!Plate()) return;
+		Vector3 C = plateC, n = plateN; double R = plateR; int held = plateHeld;
 
 		Vector3 centre = mo.pos + (0, 0, mo.height * 0.5);
 		Vector3 A, B;
@@ -150,13 +166,13 @@ class SSQ_Guard : Inventory
 			B = centre;
 		}
 
-		Vector3 P; bool hit;
-		[hit, P] = Crosses(A, B, C, n, R);
+		bool hit = Crosses(A, B, C, n, R);
+		Vector3 P = hitP;
 		if (SSQ_Handler.UVI(mo.player, 'ssq_debug', 0))
 		{
 			String who = "?";
 			if (source) who = source.GetClassName();
-			Console.Printf("ssq: guard kind %d %s dmg %d from %s (held %d, plate r %.1f)", kind, hit ? "BLOCKED" : "missed", damage, who, held, R);
+			Console.Printf("ssq: guard kind %d %s dmg %d from %s (held %d, plate r %.1f) A(%.0f %.0f %.0f) B(%.0f %.0f %.0f) C(%.0f %.0f %.0f) n(%.2f %.2f %.2f)", kind, hit ? "BLOCKED" : "missed", damage, who, held, R, A.x, A.y, A.z, B.x, B.y, B.z, C.x, C.y, C.z, n.x, n.y, n.z);
 		}
 		if (!hit) return;
 
@@ -284,13 +300,14 @@ class SSQ_Guard : Inventory
 		Vector3 a = pose.F;
 		Vector3 b = (n.y * a.z - n.z * a.y, n.z * a.x - n.x * a.z, n.x * a.y - n.y * a.x);
 		a = (b.y * n.z - b.z * n.y, b.z * n.x - b.x * n.z, b.x * n.y - b.y * n.x);
-		for (int k = 0; k < 24; k++)
+		for (int k = 0; k < 36; k++)
 		{
-			double t = k * 15.0;
-			SSQ_FX.Particle(mo, C + a * (R * cos(t)) + b * (R * sin(t)), (0, 0, 0), "ff3030", 2, 1.5);
+			double t = k * 10.0;
+			SSQ_FX.Particle(mo, C + a * (R * cos(t)) + b * (R * sin(t)), (0, 0, 0), "ff2020", 4, 6.0);
 		}
-		for (int k = 1; k <= 4; k++) SSQ_FX.Particle(mo, C + n * (k * 4.0), (0, 0, 0), "30ff30", 2, 1.5);
-		SSQ_FX.Particle(mo, pose.pos[0], (0, 0, 0), "3080ff", 2, 2.5);
-		SSQ_FX.Particle(mo, pose.pos[0] + pose.F * 8, (0, 0, 0), "ffffff", 2, 1.5);
+		SSQ_FX.Particle(mo, C, (0, 0, 0), "ff2020", 4, 8.0);
+		for (int k = 1; k <= 6; k++) SSQ_FX.Particle(mo, C + n * (k * 3.0), (0, 0, 0), "20ff20", 4, 5.0);
+		SSQ_FX.Particle(mo, pose.pos[0], (0, 0, 0), "3080ff", 4, 7.0);
+		for (int k = 1; k <= 4; k++) SSQ_FX.Particle(mo, pose.pos[0] + pose.F * (k * 3.0), (0, 0, 0), "ffffff", 4, 4.0);
 	}
 }

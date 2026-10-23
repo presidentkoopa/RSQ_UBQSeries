@@ -14,22 +14,33 @@
 
 class SSQ_Pose play
 {
-	Vector3 pos[3];		// newest first
+	const N = 8;
+	Vector3 pos[8];		// newest first
 	Vector3 F, L, U;
-	int stamp[3];		// level time each sample arrived, 0 = none
+	int stamp[8];		// level time each sample arrived, 0 = none
 	bool grip;			// the off trigger as the sender saw it
 	bool left;			// the sender plays left-handed (the engine's vr_control_scheme >= 10)
 	int count;
 
-	void Push(Vector3 p, Vector3 f, Vector3 l, Vector3 u, bool g, int now)
+	// THE AXES ARE BUILT HERE, IN PLACE. A function returning three Vector3s came back all
+	// zeros on QZD 17.3's VM (found 2026-10-22, like the `out Vector3` fault): so the raw
+	// angles come in and the fields are written directly.
+	void Push(Vector3 p, double yaw, double pitch, double roll, bool g, int now)
 	{
-		pos[2] = pos[1]; pos[1] = pos[0]; pos[0] = p;
-		stamp[2] = stamp[1]; stamp[1] = stamp[0]; stamp[0] = now;
-		F = f; L = l; U = u; grip = g;
-		if (count < 3) count++;
+		for (int k = N - 1; k > 0; k--) { pos[k] = pos[k - 1]; stamp[k] = stamp[k - 1]; }
+		pos[0] = p; stamp[0] = now;
+		double cp = cos(pitch);
+		F.x = cp * cos(yaw); F.y = cp * sin(yaw); F.z = sin(pitch);
+		double l0x = cos(yaw + 90), l0y = sin(yaw + 90), l0z = 0;
+		double u0x = F.y * l0z - F.z * l0y, u0y = F.z * l0x - F.x * l0z, u0z = F.x * l0y - F.y * l0x;
+		double cr = cos(roll), sr = sin(roll);
+		L.x = l0x * cr + u0x * sr; L.y = l0y * cr + u0y * sr; L.z = l0z * cr + u0z * sr;
+		U.x = u0x * cr - l0x * sr; U.y = u0y * cr - l0y * sr; U.z = u0z * cr - l0z * sr;
+		grip = g;
+		if (count < N) count++;
 	}
 
-	bool Fresh(int now) { return count > 0 && now - stamp[0] <= 3; }
+	clearscope bool Fresh(int now) { return count > 0 && now - stamp[0] <= 3; }
 
 	// map units per tic, from the last two samples (zero until there are two)
 	Vector3 Vel()
@@ -38,11 +49,28 @@ class SSQ_Pose play
 		return (pos[0] - pos[1]) / (stamp[0] - stamp[1]);
 	}
 
-	// a smoother velocity for the throw: the fit over three samples when they exist
+	// velocity over a 2-tic window starting k samples back; zero if not there
+	Vector3 VelAt(int k)
+	{
+		if (k + 2 >= count || stamp[k] == stamp[k + 2]) return (0, 0, 0);
+		return (pos[k] - pos[k + 2]) / (stamp[k] - stamp[k + 2]);
+	}
+
+	// THE THROW IS THE PEAK, NOT THE RELEASE. When the finger lets go the arm is already
+	// slowing, so the velocity on that tic reads low and a real throw looks like a drop. The
+	// fastest 2-tic window in the last six samples is the throw, and its direction is the
+	// throw's direction.
 	Vector3 ThrowVel()
 	{
-		if (count < 3 || stamp[0] == stamp[2]) return Vel();
-		return (pos[0] - pos[2]) / (stamp[0] - stamp[2]);
+		Vector3 best = (0, 0, 0);
+		double bl = 0;
+		for (int k = 0; k < 6; k++)
+		{
+			Vector3 v = VelAt(k);
+			double l = v.Length();
+			if (l > bl) { bl = l; best = v; }
+		}
+		return best;
 	}
 }
 
