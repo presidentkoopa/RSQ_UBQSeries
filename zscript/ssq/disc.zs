@@ -139,10 +139,16 @@ class SSQ_Disc : Actor
 		double cone = SSQ_Handler.SV('ssq_lock_cone', 16.0);
 		double range = SSQ_Handler.SV('ssq_lock_range', 1200.0);
 		Array<Actor> cand; Array<double> score;
-		let it = ThinkerIterator.Create('Actor', STAT_DEFAULT);
+		// EVERY ACTOR IN THE LEVEL was being walked, every tic, to find things within 1200 units
+		// of one hand. A blockmap iterator around the hand looks at the few sectors that can
+		// possibly hold a candidate instead -- the owner's lightsaber does the same, and on a
+		// Quest the difference is not academic.
+		let it = BlockThingsIterator.CreateFromPos(from.x, from.y, from.z - range, range * 2.0, range, false);
 		Actor t;
-		while (t = Actor(it.Next()))
+		while (it.Next())
 		{
+			t = it.thing;
+			if (!t) continue;
 			if (t == mo || !t.bShootable || t.health <= 0 || (!t.bIsMonster && !t.player)) continue;
 			if (t.player && !deathmatch) continue;
 			if (t.bFriendly && !deathmatch) continue;

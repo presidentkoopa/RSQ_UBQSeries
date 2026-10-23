@@ -140,6 +140,7 @@ class SSQ_Guard : Inventory
 
 	// which plate is up for this player right now, if any
 	Vector3 plateC, plateN; double plateR; int plateHeld;
+	int lastSweepTic;
 
 	bool Plate()
 	{
@@ -262,6 +263,83 @@ class SSQ_Guard : Inventory
 		}
 		if (kind == 0 && inflictor && (SSQ_Handler.SVI('ssq_deflect', 1) != 0 || perfect))
 			Deflect(mo, inflictor, source, P, outward, perfect ? 1.6 : 1.0);
+	}
+
+	// ---- THE SWEEP: turn a shot BEFORE it reaches you ------------------------------------
+	//
+	// AbsorbDamage only ever runs when something is already damaging you, so the old guard
+	// could only block what was going to hit anyway, at the exact instant it hit. That is why
+	// the window felt small: a shot is tested against one line, drawn to your centre, on one
+	// tic. The owner's lightsaber does the opposite and it is the better idea -- every tic it
+	// looks for missiles NEAR THE BLADE and bats them away, testing each shot's own path from
+	// a tic behind to ssq_sweep_lead tics ahead, so fast bolts are turned early instead of
+	// arriving between two checks.
+	//
+	// Same thing here, against the plate instead of a blade: anything crossing the disc in the
+	// next few tics is turned, including shots that would have missed. It runs from DoEffect,
+	// which ticks on every machine for every player, off the same synced pose the block uses,
+	// so it stays deterministic. AbsorbDamage stays exactly as it was and still catches
+	// hitscans, melee and blasts, which have no flight to intercept.
+	override void DoEffect()
+	{
+		Super.DoEffect();
+		if (SSQ_Handler.SVI('ssq_guard', 1) == 0 || SSQ_Handler.SVI('ssq_sweep', 1) == 0) return;
+		let mo = PlayerPawn(Owner);
+		if (!mo || !mo.player || mo.health <= 0) return;
+		if (!Plate()) return;
+		Vector3 C = plateC, n = plateN;
+		double R = plateR + SSQ_Handler.CM(SSQ_Handler.SV('ssq_sweep_pad', 10.0));
+		double lead = clamp(SSQ_Handler.SV('ssq_sweep_lead', 3.0), 1.0, 6.0);
+		double reach = R + 320.0;	// a fast bolt covers a lot of ground between two tics
+		let it = BlockThingsIterator.CreateFromPos(C.x, C.y, C.z - reach, reach * 2.0, reach, false);
+		while (it.Next())
+		{
+			Actor sh = it.thing;
+			if (!sh || !sh.bMissile || sh == mo) continue;
+			if (sh.target == mo) continue;		// ours already, or one we just turned
+			if (sh is 'SSQ_Disc') continue;		// never our own shield
+			Vector3 v = sh.vel;
+			if (v.Length() <= 0) continue;
+			Vector3 A = sh.pos - v;				// a tic behind
+			Vector3 B = sh.pos + v * lead;		// and a few ahead
+			if (!Crosses(A, B, C, n, R + sh.radius)) continue;
+			Vector3 P = hitP;
+			Vector3 outward = ((A - C) dot n) >= 0 ? n : -n;
+			BatBack(mo, sh, P, outward);
+		}
+	}
+
+	// A SWEPT SHOT IS TURNED, NOT REPLACED. The block path spawns a fresh missile because the
+	// original is already mid-impact by then; out here it has not hit anything yet, so it just
+	// gets a new heading -- no spawn, no second sound, and a seeker keeps seeking.
+	void BatBack(PlayerPawn mo, Actor sh, Vector3 P, Vector3 n)
+	{
+		Actor shooter = sh.target;
+		double sp = max(sh.vel.Length(), sh.speed, 8.0) * SSQ_Handler.SV('ssq_sweep_boost', 1.0);
+		Vector3 dir;
+		if (SSQ_Handler.SVI('ssq_deflect_aim', 1) != 0 && shooter && shooter.health > 0 && shooter != mo)
+			dir = (shooter.pos + (0, 0, shooter.height * 0.5) - sh.pos).Unit();
+		else
+		{
+			Vector3 u = sh.vel.Unit();
+			dir = (u - n * (2 * (u dot n))).Unit();
+		}
+		sh.target = mo;						// ours now: it hurts them, never us
+		if (sh.bSeekerMissile) sh.tracer = shooter;
+		sh.vel = dir * sp;
+		sh.angle = atan2(dir.y, dir.x);
+		sh.pitch = -asin(clamp(dir.z, -1, 1));
+		int now = Level.maptime;
+		if (now != lastSweepTic)
+		{
+			lastSweepTic = now;
+			if (SSQ_Handler.UVI(mo.player, 'ssq_feedback', 1) != 0)
+			{
+				mo.A_StartSound("ssq/block", CHAN_5, 0, 0.7, ATTN_NORM, 1.1);
+				if (plateHeld != 0) SSQ_FX.Buzz(mo, 0.55, 4);
+			}
+		}
+		if (SSQ_Handler.UVI(mo.player, 'ssq_feedback', 1) != 0) SSQ_FX.Sparks(mo, P, n, 8);
 	}
 
 	// a blocked missile comes back: the same class, from the face, at its source or

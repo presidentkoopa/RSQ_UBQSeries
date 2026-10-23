@@ -41,6 +41,8 @@ class SSQ_Handler : EventHandler
 	Array<Actor> mLocks[MAXPLAYERS];
 	Array<Actor> mLockMarks[MAXPLAYERS];
 	Array<int>   mLockMiss[MAXPLAYERS];	// tics each lock has been out of the keep cone or out of sight
+	int   mLastPaint[MAXPLAYERS];	// the tic the last target was painted: they go on one at a time
+	int   mKeepMarks[MAXPLAYERS];	// let go for less than this long and your marks are still there
 	int   mLockSig[MAXPLAYERS];
 
 
@@ -315,9 +317,22 @@ class SSQ_Handler : EventHandler
 		let p = players[i];
 		let mo = p.mo;
 		let pose = mPose[i];
-		double speed = pose.Fresh(Level.maptime) ? pose.ThrowVel(SSQ_Hand.PS(mo)).Length() * TICRATE : 0;
-		if (UVI(p, 'ssq_debug', 0)) Console.Printf("ssq: release p%d speed %.0f/s, %d locked", i, speed, mLocks[i].Size());
-		if (speed >= SV('ssq_throw_min', 20.0)) Throw(i);
+		Vector3 hv = pose.Fresh(Level.maptime) ? pose.ThrowVel(SSQ_Hand.PS(mo)) : (0, 0, 0);
+		double speed = hv.Length() * TICRATE;
+		// A THROW IS A FORWARD SNAP, NOT ANY FAST HAND. Letting go at the end of a block, a
+		// backhand or a chop used to launch the shield because only raw speed was tested. The
+		// hand has to be going out the way you are looking -- ssq_throw_forward is the cosine
+		// of how far off that it may be (0.35 is about 70 degrees). 0 takes any direction back.
+		double fwdmin = SV('ssq_throw_forward', 0.35);
+		bool forward = true;
+		if (fwdmin > 0 && speed > 0)
+		{
+			Vector3 look = (cos(mo.angle) * cos(mo.pitch), sin(mo.angle) * cos(mo.pitch), -sin(mo.pitch));
+			forward = (hv.Unit() dot look) >= fwdmin;
+		}
+		if (UVI(p, 'ssq_debug', 0)) Console.Printf("ssq: release p%d speed %.0f/s, %d locked, forward %d", i, speed, mLocks[i].Size(), forward);
+		if (speed >= SV('ssq_throw_min', 20.0) && forward) Throw(i);
+		else mKeepMarks[i] = Level.maptime + SVI('ssq_keep_marks', 35);	// not a throw: hold the marks a moment
 	}
 
 	clearscope bool Holding(int i) { return true; }	// the catch needs only the hand near the disc
@@ -410,6 +425,8 @@ class SSQ_Handler : EventHandler
 	{
 		mLocks[i].Clear();
 		mLockMiss[i].Clear();
+		mKeepMarks[i] = 0;
+		mLastPaint[i] = 0;
 		for (int k = 0; k < mLockMarks[i].Size(); k++) if (mLockMarks[i][k]) mLockMarks[i][k].Destroy();
 		mLockMarks[i].Clear();
 		mLockSig[i] = 0;
@@ -442,7 +459,19 @@ class SSQ_Handler : EventHandler
 		let mo = p.mo;
 		let pose = mPose[i];
 		bool aiming = SecHeld(p);
-		if (mState[i] != SS_DRAWN || !aiming || !pose.Fresh(Level.maptime)) { if (mLocks[i].Size() > 0) ClearLocks(i); return; }
+		// A BRIEF RELEASE DOES NOT COST YOU YOUR MARKS. Let go for under ssq_keep_marks tics --
+		// to re-grip, to steady yourself -- and the list is still there when you take hold again.
+		// Longer than that, or the shield leaving your hand, and it starts fresh.
+		if (mState[i] != SS_DRAWN || !pose.Fresh(Level.maptime))
+		{
+			if (mLocks[i].Size() > 0) ClearLocks(i);
+			return;
+		}
+		if (!aiming)
+		{
+			if (mLocks[i].Size() > 0 && Level.maptime > mKeepMarks[i]) ClearLocks(i);
+			return;
+		}
 
 		int want = SVI('ssq_locks', 5);
 		int grace = SVI('ssq_lock_grace', 14);
@@ -457,13 +486,16 @@ class SSQ_Handler : EventHandler
 			if (dead || mLockMiss[i][k] > grace) { mLocks[i].Delete(k); mLockMiss[i].Delete(k); }
 		}
 
-		// add what the hand is pointing at now, in the order it is acquired
+		// ONE AT A TIME, AS YOU SWEEP. Taking every target in the cone at once turns lock-on into
+		// a scan: you point roughly at a crowd and five rings appear. Painting the best one every
+		// ssq_paint_every tics makes it aiming -- you drag the hand across them and feel each one
+		// go on, which is how the owner's lightsaber does it.
 		int added = 0;
-		if (mLocks[i].Size() < want)
+		if (mLocks[i].Size() < want && Level.maptime - mLastPaint[i] >= SVI('ssq_paint_every', 3))
 		{
 			Array<Actor> fresh;
 			SSQ_Disc.FindTargets(mo, pose.pos[0], pose.F, fresh);
-			for (int k = 0; k < fresh.Size() && mLocks[i].Size() < want; k++)
+			for (int k = 0; k < fresh.Size(); k++)
 			{
 				let t = fresh[k];
 				if (!t) continue;
@@ -471,6 +503,8 @@ class SSQ_Handler : EventHandler
 				for (int j = 0; j < mLocks[i].Size(); j++) if (mLocks[i][j] == t) { have = true; break; }
 				if (have) continue;
 				mLocks[i].Push(t); mLockMiss[i].Push(0); added++;
+				mLastPaint[i] = Level.maptime;
+				break;		// the nearest to the hand's line, and only that one, this time
 			}
 		}
 		if (added > 0)
