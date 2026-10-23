@@ -652,6 +652,33 @@ class UBQS_SaberBase : Weapon abstract
 	}
 	// IDLE: the shimmer -- or, with the second blade lit, the staff twirling in your hand (ubqs_twirl)
 	// the hilt's own power-up, played once when the saber is drawn, not every tic of the raise
+	// THE WHOOSH, FROM THE BLADE. The emitter is reused while it is alive, so a flurry of swings
+	// does not leave a dozen of them following the tip; a fresh swing restarts the sound on it and
+	// resets its base pitch. ubqs_swing_spatial 0 puts the sound back on the player.
+	void Swing(Vector3 tip, double speed)
+	{
+		if (!owner) return;
+		double vol = clamp(speed / 24.0, 0.5, 1.0) * UF("ubqs_vol_swing", 1.0);
+		double pit = clamp(0.85 + speed / 60.0, 0.85, 1.35);
+		if (UInt("ubqs_swing_spatial", 1) == 0)
+		{
+			owner.A_StartSound(UBQS_Font.Swing(), CHAN_AUTO, 0, vol, ATTN_NORM, pit);
+			return;
+		}
+		if (!swish)
+		{
+			swish = UBQS_Swish(Actor.Spawn('UBQS_Swish', tip));
+			if (!swish) { owner.A_StartSound(UBQS_Font.Swing(), CHAN_AUTO, 0, vol, ATTN_NORM, pit); return; }
+			swish.ear = owner;
+		}
+		swish.tip = tip;
+		swish.base = pit;
+		swish.lastR = 0;
+		swish.life = 24;	// longer than any swing sample; the tic loop ends it
+		swish.SetOrigin(tip, true);
+		swish.A_StartSound(UBQS_Font.Swing(), CHAN_BODY, CHANF_OVERLAP, vol, ATTN_NORM, pit);
+	}
+
 	action void A_UBBoot()
 	{
 		if (!player || invoker.booted) return;
@@ -957,6 +984,7 @@ class UBQS_SaberBase : Weapon abstract
 	// on the button, per hand. Ticked in DoEffect above every early return so it cannot stick.
 	private bool firePressed, altPressed;
 	private bool booted;	// the hilt's power-up is once per draw, not once per tic
+	private UBQS_Swish swish;	// the emitter the last swing is coming out of, while it lasts
 	void TickFireLatch()
 	{
 		if (!owner || !owner.player) { firePressed = false; altPressed = false; return; }
@@ -1214,10 +1242,11 @@ class UBQS_SaberBase : Weapon abstract
 			CutAlong(eff);
 			if (speed >= cut && swingQuiet <= 0)
 			{
-				owner.A_StartSound(UBQS_Font.Swing(), CHAN_AUTO, 0, clamp(speed / 24.0, 0.5, 1.0) * UF("ubqs_vol_swing", 1.0), ATTN_NORM, clamp(0.85 + speed / 60.0, 0.85, 1.35));
+				Swing(tip, speed);
 				swingQuiet = max(UInt("ubqs_swing_gap", 8), 1);
 			}
 		}
+		if (swish) swish.tip = tip;	// it follows the blade, not the tic it was born on
 		if (speed >= cut - 2.0 && lastOk && UInt("ubqs_trail", 1)) Trail(hand, tip, speed, cut);
 		if (UInt("ubqs_deflect", 1))
 		{
@@ -2705,6 +2734,59 @@ class UBQS_SaberOff : UBQS_SaberBase
 // saber's flash light does that), so it costs a sprite.
 // A RUMBLE OF OUR OWN, WITH A LENGTH AND A STRENGTH. See UBQS_SaberBase.Rumble for why this exists
 // and why it follows the pawn rather than sitting where it was spawned.
+// ---- THE SWING, HEARD FROM THE BLADE ------------------------------------------------------
+//
+// A sound played on the player is a sound at the player's feet: in a headset the whoosh of a
+// metre-long blade arrived from inside your chest, in the middle of your head, the same whatever
+// you did with your arm. The engine spatialises a sound at the ACTOR that plays it, so the swing
+// is played from here instead -- a silent emitter sitting on the blade's tip, following it every
+// tic for as long as the sound lasts. The whoosh then comes from where the blade actually is, and
+// sweeps across your head as the blade does.
+//
+// AND IT BENDS. Each tic this measures how fast the tip is closing on your head along the line
+// between them -- the radial component, which is the only part of a velocity that shifts a pitch --
+// and rides A_SoundPitch with it: rising while the blade comes at you, falling as it leaves. That
+// is the whole of the Doppler effect, and on a blade swung at arm's length it is a real interval,
+// not a subtlety: a 10 m/s pass is about a semitone each way.
+//
+// Sound only. Nothing here touches the playsim, and the emitter is spawned on every machine from
+// the same swing decision the cut already is.
+class UBQS_Swish : Actor
+{
+	Actor ear;			// whose head we are passing
+	Vector3 tip;		// where the blade's tip is this tic, set by the saber
+	double base;		// the pitch the swing started at, before any shift
+	double lastR;		// the distance to the ear last tic
+	int life;
+	Default
+	{
+		+NOINTERACTION +NOBLOCKMAP +NOSECTOR +NOGRAVITY +DONTSPLASH +NOTONAUTOMAP +NOTIMEFREEZE
+		RenderStyle "None";
+	}
+	override void Tick()
+	{
+		Super.Tick();
+		if (!ear || life <= 0) { A_StopSound(CHAN_BODY); Destroy(); return; }
+		life--;
+		SetOrigin(tip, true);
+		let p = ear.player;
+		Vector3 head = (ear.pos.xy, p ? p.viewz : ear.pos.z + ear.height * 0.8);
+		double r = (tip - head).Length();
+		if (lastR > 0)
+		{
+			// closing speed in units per tic; positive while it comes at you. The engine's own sound
+			// speed is irrelevant here -- this is a feel number, scaled by ubqs_doppler.
+			double closing = (lastR - r);
+			let cv = CVar.FindCVar('ubqs_doppler');
+			double k = cv ? clamp(cv.GetFloat(), 0.0, 2.0) : 1.0;
+			double shift = clamp(closing * 0.016 * k, -0.35, 0.35);
+			A_SoundPitch(CHAN_BODY, clamp(base + shift, 0.5, 2.0));
+		}
+		lastR = r;
+	}
+	States { Spawn: TNT1 A 1; Wait; }
+}
+
 class UBQS_Buzzer : Actor
 {
 	Actor feels;

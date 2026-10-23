@@ -376,6 +376,8 @@ OptionMenu "UBQS_Sound"
 	StaticText ""
 	StaticText "THE SABER YOU HEAR", "Gold"
 	Option "Sound font", "ubqs_font", "UBQS_FontList"
+	Option "Hear the swing from the blade", "ubqs_swing_spatial", "OnOff"
+	Slider "How far the whoosh bends as it passes you", "ubqs_doppler", 0, 2, 0.1, 1
 	StaticText ""
 	StaticText "CONTROLLER BUZZ", "Gold"
 	Option "Controller buzz", "ubqs_haptics", "OnOff"
