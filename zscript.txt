@@ -1915,7 +1915,7 @@ class UBQS_SaberBase : Weapon abstract
 				mo.vel += sw * kk;
 				mo.vel.z += kk * lift;
 			}
-			owner.A_StartSound(mo.bNoBlood ? "ubqs/wall" : "ubqs/hit", CHAN_AUTO, 0, vhit);
+			UBQS_Ping.At(owner, at, mo.bNoBlood ? "ubqs/wall" : "ubqs/hit", vhit);
 			FlashAt(at, 56, 3);
 			cutAny = true;
 			if (i < cutWho.Size()) cutWhen[i] = level.maptime;
@@ -2005,7 +2005,7 @@ class UBQS_SaberBase : Weapon abstract
 			Vector3 at = level.Vec3Offset(hand, mid);
 			if (!mo.bNoBlood) mo.SpawnBlood(at, VectorAngle(n.x, n.y), dmg);
 			mo.DamageMobj(self, owner, dmg, 'Saber', DMG_THRUSTLESS);
-			owner.A_StartSound(mo.bNoBlood ? "ubqs/wall" : "ubqs/hit", CHAN_AUTO, 0, vhit);
+			UBQS_Ping.At(owner, at, mo.bNoBlood ? "ubqs/wall" : "ubqs/hit", vhit);
 			if (i < cutWho.Size()) cutWhen[i] = level.maptime;
 			else { cutWho.Push(mo); cutWhen.Push(level.maptime); }
 		}
@@ -2245,7 +2245,7 @@ class UBQS_SaberBase : Weapon abstract
 		double pg = ParryGain(-back);
 		if (loud)
 		{
-			owner.A_StartSound(UBQS_Font.Clash(), CHAN_AUTO, 0, UF("ubqs_vol_clash", 1.0), ATTN_NORM, pg > 1.01 ? 1.25 : 1.0);
+			UBQS_Ping.At(owner, at, UBQS_Font.Clash(), UF("ubqs_vol_clash", 1.0), pg > 1.01 ? 1.25 : 1.0);
 			Rumble(0.8 * pg, pg > 1.01 ? 5 : 3);
 		}
 		UBQS_Data.Sparks(at, back, RgbNow(), int(10 * pg));
@@ -2312,7 +2312,7 @@ class UBQS_SaberBase : Weapon abstract
 		Vector3 at = tr.Results.HitPos;
 		if (burnQuiet > 0) return;
 		burnQuiet = 5;
-		owner.A_StartSound("ubqs/burn", CHAN_AUTO, 0, 0.7);
+		UBQS_Ping.At(owner, at, "ubqs/burn", 0.7);
 		if (tr.Results.HitType != TRACE_HitWall) return;
 		// the scorch, sprayed from a hair in front of the wall (the flash light's actor, parked there dark)
 		if (!flash) flash = UBQS_Light(Actor.Spawn("UBQS_Light", at - dir * 4.0));
@@ -2798,6 +2798,45 @@ class UBQS_SaberOff : UBQS_SaberBase
 //
 // It takes the same Doppler ride the swing does, at half strength -- a hum on a blade you are
 // swinging really does bend, and it is the part you hear continuously rather than in bursts.
+// ---- A CONTACT, HEARD WHERE IT HAPPENED ---------------------------------------------------
+//
+// The hum and the swing moved onto the blade; every other saber sound was still played on the
+// player, which is the one place none of them happen. A clash is at the crossing point, a cut is
+// at the body, a scorch is on the wall. All three are a position this code has already worked out
+// to put its sparks at -- it was throwing the position away and playing the sound at your feet.
+//
+// So: a silent one-shot that sits where it happened for long enough to be heard out, then goes.
+// Sound only, and spawned from a decision every machine already makes.
+class UBQS_Ping : Actor
+{
+	int life;
+	Default
+	{
+		+NOINTERACTION +NOBLOCKMAP +NOSECTOR +NOGRAVITY +DONTSPLASH +NOTONAUTOMAP +NOTIMEFREEZE
+		RenderStyle "None";
+	}
+	// at: where it happened. The emitter never moves -- a clash stays where the blades met even if
+	// you walk away from it, which is what makes it read as a place rather than as a cue.
+	// NOT Play(): `play` is a scope keyword in ZScript and a method of that name is a fatal
+	// "Unexpected 'play'" at every call site.
+	static void At(Actor from, Vector3 at, Sound s, double vol, double pitch = 1.0)
+	{
+		if (!from) return;
+		let cv = CVar.FindCVar('ubqs_swing_spatial');
+		if (cv && cv.GetInt() == 0) { from.A_StartSound(s, CHAN_AUTO, 0, vol, ATTN_NORM, pitch); return; }
+		let p = UBQS_Ping(Actor.Spawn('UBQS_Ping', at));
+		if (!p) { from.A_StartSound(s, CHAN_AUTO, 0, vol, ATTN_NORM, pitch); return; }
+		p.life = 70;		// two seconds: longer than any of these samples, and the tic loop ends it
+		p.A_StartSound(s, CHAN_BODY, 0, vol, ATTN_NORM, pitch);
+	}
+	override void Tick()
+	{
+		Super.Tick();
+		if (--life <= 0) Destroy();
+	}
+	States { Spawn: TNT1 A 1; Wait; }
+}
+
 class UBQS_Hummer : Actor
 {
 	Actor ear;
