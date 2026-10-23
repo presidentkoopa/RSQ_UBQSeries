@@ -387,7 +387,12 @@ class SSQ_Guard : Inventory
 		bool bashNow = SSQ_Handler.SVI('ssq_bash', 1) != 0 && g.bashCool == 0 && shove >= SSQ_Handler.SV('ssq_bash_speed', 70.0);
 		if (!grindNow && !bashNow) return;
 
-		let it = BlockThingsIterator.Create(mo, R + 64);
+		// THE BASH REACHES FURTHER THAN THE GRIND. A shove is the whole shield and your whole
+		// arm behind it, not the rim touching something: ssq_bash_reach opens the disc and its
+		// depth by a fifth for the bash test only. The grind still has to actually be on them.
+		double bashK = max(SSQ_Handler.SV('ssq_bash_reach', 1.2), 1.0);
+		double bashR = R * bashK;
+		let it = BlockThingsIterator.Create(mo, bashR + 64);
 		while (it.Next())
 		{
 			let t = it.thing;
@@ -397,9 +402,13 @@ class SSQ_Guard : Inventory
 			Vector3 d = tc - C;
 			double along = d dot n;
 			Vector3 inplane = d - n * along;
-			if (inplane.Length() > R + t.radius) continue;
-			if (abs(along) > t.radius + 10) continue;
-			if (grindNow)
+			double reach = bashNow ? bashR : R;
+			double depth = (bashNow ? (t.radius + 10) * bashK : t.radius + 10);
+			if (inplane.Length() > reach + t.radius) continue;
+			if (abs(along) > depth) continue;
+			// the grind is the rim on them, and keeps the tighter box
+			bool onPlate = inplane.Length() <= R + t.radius && abs(along) <= t.radius + 10;
+			if (grindNow && onPlate)
 			{
 				int dmg = SSQ_Handler.SVI('ssq_grind_damage', 6);
 				t.DamageMobj(mo, mo, dmg, 'Saw');
@@ -411,7 +420,15 @@ class SSQ_Guard : Inventory
 			{
 				int dmg = int(clamp(10 + 0.15 * shove, 10, 40) * SSQ_Handler.SV('ssq_bash_damage', 1.0));
 				t.DamageMobj(mo, mo, dmg, 'Melee');
-				t.Thrust(clamp(shove / 20.0, 4, 16), atan2(n.y, n.x));
+				// CLEAR SOME SPACE. The shove is away from the face, scaled by how hard you drove
+				// it, with a small lift under it so a body actually leaves the floor and lands
+				// somewhere else instead of sliding a few units and standing back up in your face.
+				// Anything too heavy to throw (NOBLOCKMAP, boss-flagged, DONTTHRUST) ignores it
+				// on its own, which is the behaviour we want anyway.
+				double knock = clamp(shove / 20.0, 4, 16) * SSQ_Handler.SV('ssq_bash_knock', 1.35);
+				t.Thrust(knock, atan2(n.y, n.x));
+				if (!t.bNoGravity && !t.bDontThrust)
+					t.vel.z += SSQ_Handler.SV('ssq_bash_lift', 2.5) * (t.player ? 0.5 : 1.0);
 				mo.A_StartSound("ssq/bash", CHAN_5);
 				SSQ_FX.Buzz(mo, 1.0, 8);
 				g.bashCool = 10;

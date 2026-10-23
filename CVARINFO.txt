@@ -58,6 +58,9 @@ server float ssq_stagger_push   = 12.0;
 server bool  ssq_bash           = true;
 server float ssq_bash_speed     = 70.0;   // units/sec along the face
 server float ssq_bash_damage    = 1.0;
+server float ssq_bash_reach     = 1.2;    // the bash opens the plate and its depth by this much, for the shove only
+server float ssq_bash_knock     = 1.35;   // how far a bashed body goes
+server float ssq_bash_lift      = 2.5;    // the small lift under the shove, so they leave the floor
 
 // ---- the plate: where the disc is, in the off controller's frame, cm -------------
 // F forward along the controller, L to the controller's left, U up. Defaults measured from
