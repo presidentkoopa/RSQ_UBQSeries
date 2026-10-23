@@ -1991,21 +1991,93 @@ class UBQS_SaberBase : Weapon abstract
 		Vector3 at = hand + dir * (BladeLen() * 0.6);
 		Vector3 back = level.Vec3Diff(at, (source.pos.xy, source.pos.z + source.height * 0.55));
 		if (back.Length() > 0.001) back = back.Unit();
-		owner.A_StartSound("ubqs/deflect", CHAN_AUTO, 0, UF("ubqs_vol_clash", 1.0));
-		UBQS_Data.Sparks(at, back, RgbNow(), 10);
-		FlashAt(at, 64, 4);
-		if (UInt("ubqs_block_return", 1))
+		BlockFx(at, back, source, damage, true);
+	}
+
+	// ---- THE PARRY: the blade going INTO the shot, not merely standing in it --------------------
+	// The blade's own step this tic (the body's motion out of it, as everywhere else) against the
+	// direction the shot was travelling. 1.0 is a block; above it is a parry. Nothing is latched and
+	// nothing is remembered: it is the step that is happening when the shot arrives, which is what the
+	// player felt themselves do. ubqs_parry_speed is in the SAME units as ubqs_swing_cut.
+	double ParryGain(Vector3 shotDir)
+	{
+		if (!lastOk) return 1.0;
+		double need = UF("ubqs_parry_speed", 6.0);
+		if (need <= 0.01 || shotDir.Length() < 0.001) return 1.0;
+		Vector3 step = ((BladeBase() + BladeDir() * BladeLen()) - lastTip) - bodyStep;
+		double sp = step.Length();
+		if (sp < need) return 1.0;
+		Vector3 su = step / sp;
+		Vector3 sd = shotDir.Unit();
+		double into = -(su dot sd);
+		if (into < 0.3) return 1.0;
+		return 1.0 + (clamp(UF("ubqs_parry_power", 2.0), 1.0, 4.0) - 1.0) * clamp(into, 0.0, 1.0);
+	}
+
+	// THE BLOCK'S NOISE, SPARKS, FLASH AND RETURN BOLT, in one place because two callers make it now:
+	// ModifyDamage, which sees a shot that already hit, and StopsHitscan, which sees one before it is
+	// traced at all. `loud` is false for the second and later pellets of one shotgun blast in a tic.
+	int lastBlockTic;
+	void BlockFx(Vector3 at, Vector3 back, Actor src, int damage, bool loud)
+	{
+		if (!owner) return;
+		double pg = ParryGain(-back);
+		if (loud)
 		{
-			let b = UBQS_Bolt(Actor.Spawn("UBQS_Bolt", at));
-			if (b)
-			{
-				b.target = owner;
-				b.rgb = RgbNow();
-				b.vel = back * b.Speed;
-				b.angle = VectorAngle(back.x, back.y);
-				b.pitch = -asin(clamp(back.z, -1.0, 1.0));
-			}
+			owner.A_StartSound("ubqs/deflect", CHAN_AUTO, 0, UF("ubqs_vol_clash", 1.0), ATTN_NORM, pg > 1.01 ? 1.25 : 1.0);
+			Rumble(0.8 * pg, pg > 1.01 ? 5 : 3);
 		}
+		UBQS_Data.Sparks(at, back, RgbNow(), int(10 * pg));
+		FlashAt(at, 64 * pg, 4);
+		if (!loud || !UInt("ubqs_block_return", 1)) return;
+		Vector3 d = back;
+		if (src && src.health > 0)
+		{
+			Vector3 toSrc = level.Vec3Diff(at, (src.pos.xy, src.pos.z + src.height * 0.55));
+			if (toSrc.Length() > 0.001) d = toSrc.Unit();
+		}
+		let b = UBQS_Bolt(Actor.Spawn("UBQS_Bolt", at));
+		if (!b) return;
+		b.target = owner;
+		b.rgb = RgbNow();
+		b.vel = d * (b.Speed * pg);
+		b.angle = VectorAngle(d.x, d.y);
+		b.pitch = -asin(clamp(d.z, -1.0, 1.0));
+	}
+
+	// ---- A SHOT STOPPED AT THE MUZZLE, not in your chest ----------------------------------------
+	// ModifyDamage can only ever block what was already going to hit you, tested against one line
+	// drawn to your middle with a few units of slack -- so it blocked shots that would have missed and
+	// missed shots that were really coming, and nothing the blade stood in front of but which was not
+	// aimed at your centre could be stopped at all. This is the same block made BEFORE the engine
+	// traces the bullet, against the shot's OWN ray, which WorldHitscanPreFired hands us exactly. A
+	// blade really in the way stops it; one that is not, does not.
+	bool StopsHitscan(Actor sh, Vector3 from, Vector3 dir, double dist, int damage)
+	{
+		if (!Lit() || !owner || owner.health <= 0 || owner == sh || !sh) return false;
+		double gw = clamp(UF("ubqs_blade_guard", 6.0), 0.0, 24.0);
+		if (gw <= 0.01) return false;
+		double len = BladeLen();
+		if (len < 1.0) return false;
+		Vector3 mid = (owner.pos.xy, owner.pos.z + owner.height * 0.5);
+		Vector3 toMe = level.Vec3Diff(from, mid);
+		if ((toMe dot dir) <= 0) return false;		// it is not coming our way at all
+		Vector3 ray = dir * max(dist, 1.0);
+		double s, t, bs, bt;
+		Vector3 sep = UBQS_Data.SegST(level.Vec3Diff(from, BladeBase()), BladeDir() * len, ray, s, t);
+		bool got = sep.Length() <= gw;
+		if (!got && back)
+		{
+			sep = UBQS_Data.SegST(level.Vec3Diff(from, Pommel()), -BladeDir() * len, ray, bs, bt);
+			if (sep.Length() <= gw) { got = true; t = bt; }
+		}
+		if (!got) return false;
+		// and it has to be stopped IN FRONT of us, not caught on its way to something behind us
+		if ((ray * t).Length() > toMe.Length() + owner.radius * 2.0) return false;
+		Vector3 at = level.Vec3Offset(from, ray * t);
+		BlockFx(at, -dir, sh, damage, level.maptime != lastBlockTic);
+		lastBlockTic = level.maptime;
+		return true;
 	}
 
 	// ---- BURN: a blade pushed into a wall or the floor spits sparks and scorches it ----------------------
@@ -4285,6 +4357,32 @@ class UBQS_Bridge : EventHandler
 	{
 		if (!On() || e.IsFinal || !e.Replacee) return;
 		if (IsTheirs(e.Replacee)) { e.Replacement = "UBQS_Saber"; e.IsFinal = true; }
+	}
+
+	// EVERY HITSCAN IN THE GAME passes through here, so it returns on the first few lines unless a
+	// player is actually holding a lit blade. A PLAYER'S OWN SHOTS ARE NEVER TESTED -- not the gun in
+	// their hand, not Buzz()'s own 1-unit trace, not the block's return bolt.
+	override bool WorldHitscanPreFired(WorldEvent e)
+	{
+		Actor sh = e.Thing;
+		if (!sh || sh.player || e.Damage <= 0 || !On()) return false;
+		let hc = CVar.FindCVar("ubqs_hitscan_guard");
+		if (hc && !hc.GetBool()) return false;
+		double ca = cos(e.AttackPitch);
+		Vector3 dir = (ca * cos(e.AttackAngle), ca * sin(e.AttackAngle), -sin(e.AttackPitch));
+		// the muzzle, by P_LineAttack's own formula: the shooter's centre plus the attack's own z
+		Vector3 from = (sh.pos.xy, sh.pos.z + sh.height * 0.5 + e.AttackZ);
+		double dist = e.AttackDistance > 0 ? e.AttackDistance : 2048.0;
+		for (int i = 0; i < MAXPLAYERS; i++)
+		{
+			if (!playeringame[i] || !players[i].mo || players[i].mo == sh) continue;
+			for (let item = players[i].mo.Inv; item; item = item.Inv)
+			{
+				let sb = UBQS_SaberBase(item);
+				if (sb && sb.StopsHitscan(sh, from, dir, dist, e.Damage)) return true;
+			}
+		}
+		return false;
 	}
 
 	override void WorldTick()

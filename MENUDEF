@@ -241,6 +241,10 @@ OptionMenu "UBQS_Contact"
 	StaticText "THE CROSS GUARD", "Gold"
 	Option "Cross guard (blades crossed = no damage from the front)", "ubqs_crossguard", "OnOff"
 	Slider "How wide the wall is (degrees either side)", "ubqs_guard_arc", 30, 120, 5, 0
+	StaticText ""
+	Option "Stop bullets at the muzzle", "ubqs_hitscan_guard", "OnOff"
+	Slider "Parry: how hard the blade must move into the shot (0 = off)", "ubqs_parry_speed", 0, 16, 0.5, 1
+	Slider "What a parry multiplies the return by", "ubqs_parry_power", 1, 4, 0.25, 2
 	Slider "...and how near a blade must be to the attack (0 = the arc alone)", "ubqs_guard_width", 0, 48, 2, 0
 	StaticText ""
 	StaticText "BLOCKING BULLETS", "Gold"

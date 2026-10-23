@@ -160,3 +160,8 @@ server int   ubqs_cut_los       = 1;     // the blade must be able to reach what
 server float ubqs_cut_sustain   = 0.6;   // a steady push counts this much of its path: a thrust and a draw-cut (0 = fast arcs only)
 server float ubqs_guard_width   = 14.0;  // cross guard: how near a crossed blade must be to the attack's own line (0 = the arc alone)
 user   int   ubqs_throw_on_lock = 1;     // letting go with enemies marked throws, snap or no snap
+
+// ---- stopping a bullet, and meeting it ---------------------------------------------------
+server bool  ubqs_hitscan_guard = true;  // stop a bullet at the muzzle when the blade is really in its path
+server float ubqs_parry_speed   = 6.0;   // units a tic the blade must move INTO a shot to parry it (0 = no parries)
+server float ubqs_parry_power   = 2.0;   // what a parry multiplies the return by: speed, and the tell
