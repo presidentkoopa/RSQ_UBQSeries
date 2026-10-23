@@ -1,4 +1,12 @@
 AddSlotDefault 1 UBQS_Saber
+// THE SECOND BLADE AND THE DOUSE ARE THE ONLY INPUTS THIS MOD HAS THAT ARE NOT THE TRIGGER, and they
+// shipped reachable only from the mod's own submenu -- so on a clean profile the staff twirl (which
+// ships at Fast, with ten md3 frames and forty V*X lumps baked for it) could never happen at all.
+// addmenukey needs a single token, which is why these are aliases, exactly as the remote is.
 alias ubqs_remote_toggle "netevent ubqs_remote"
+alias ubqs_blade2_toggle "netevent ubqs_blade2"
+alias ubqs_ignite_toggle "netevent ubqs_ignite"
 addkeysection "Ultra Badass QuestSaber" ubqs_keys
+addmenukey "Second blade on / off" ubqs_blade2_toggle
+addmenukey "Blade on / off (douse it)" ubqs_ignite_toggle
 addmenukey "Summon / dismiss training remote" ubqs_remote_toggle

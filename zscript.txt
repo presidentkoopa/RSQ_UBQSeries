@@ -567,7 +567,12 @@ class UBQS_SaberBase : Weapon abstract
 		// a chop or a backhand released mid-swing is not a throw. A slow release keeps the marks for a second.
 		if (!held)
 		{
-			if (invoker.ThrowRelease(thr)) invoker.Throw();
+			// A PAINTED RELEASE IS ALREADY A THROW. Throw() does not read the arm at all when there is a
+			// route -- it flies the ringed targets in order -- so demanding a forward snap on top of the
+			// marks asked for a gesture that changed nothing, and threw the marks away when it was missed.
+			// With nothing marked the snap is still the whole decision, and nothing below this changed.
+			if (invoker.locks.Size() > 0 && invoker.UInt("ubqs_throw_on_lock", 1)) invoker.Throw();
+			else if (invoker.ThrowRelease(thr)) invoker.Throw();
 			else invoker.keepMarksUntil = level.maptime + 35;
 			return ResolveState("AltDone");
 		}
@@ -807,6 +812,7 @@ class UBQS_SaberBase : Weapon abstract
 	// walk -- so the body's own motion is its feet's xy and its eye's height, as they actually moved this tic
 	// (the owner, 10-01: "walking around causes the saber to register swings")
 	Vector3 bodyNow, bodyStep;
+	private double cutPath;	// the decaying sum of the blade's travel: a committed push cuts too
 	static Vector3 BodyAt(Actor o) { return (o.pos.x, o.pos.y, o.player ? o.player.viewz : o.pos.z + 41.0); }
 	int snapQuiet;
 	Vector3 HandVel()
@@ -936,6 +942,7 @@ class UBQS_SaberBase : Weapon abstract
 			if (!bOffhandWeapon) EndLock();
 			if (humming) { owner.A_StopSound(ch); humming = false; }
 			lastOk = false;
+			cutPath = 0;	// a doused or holstered blade starts its path sum clean
 			Lights(false);
 			BladeGlowOff();
 			return;
@@ -969,6 +976,15 @@ class UBQS_SaberBase : Weapon abstract
 		Vector3 hStep = h0 - h1;	// ZScript will not dereference .z off a parenthesised expression
 		dTip.z += hStep.z * (level.pixelstretch - 1.0);
 		double speed = lastOk ? dTip.Length() : 0.0;
+		// A COMMITTED PUSH IS A CUT TOO. `speed` is ONE TIC of tip travel, so the only motion that ever
+		// reached ubqs_swing_cut was a fast ARC: a thrust moves the tip along its own axis, which is the
+		// slowest motion the tip ever makes, and a draw-cut and a blade leant into a body move it less
+		// still -- all three did nothing at all, for as long as you held them. So the path is INTEGRATED
+		// as well as differenced: a decaying sum worth about four tics, counted at ubqs_cut_sustain of
+		// itself. Integrating instead of differentiating is also what stops the turnaround of a swing
+		// lying to you. 0 restores exactly the old behaviour.
+		cutPath = cutPath * 0.75 + speed;
+		double eff = max(speed, cutPath * clamp(UF("ubqs_cut_sustain", 0.6), 0.0, 1.0));
 		owner.A_SoundPitch(ch, 1.0 + clamp((speed - 6.0) / 60.0, 0.0, 0.3));
 		// THE LINE THAT ACTUALLY WINS: this re-assert runs every tic, so a hum volume set only where the loop
 		// starts would appear to work for one tic and then silently revert. Both sites read HumVol(). Dropping
@@ -1002,11 +1018,14 @@ class UBQS_SaberBase : Weapon abstract
 		// stays 2 units below it, off the same cvar, so the deliberate "you see the arc just before it bites"
 		// tell cannot drift apart from the cut.
 		double cut = UF("ubqs_swing_cut", 8.0);
-		if (speed >= cut)
+		// THE WHOOSH AND THE BLOCK WINDOW STILL BELONG TO A REAL ARC, and only the CUT uses the
+		// integral: lastFastTic buys a third of a second of hitscan immunity, and a slow lean must not
+		// be able to buy that.
+		if (eff >= cut)
 		{
-			lastFastTic = level.maptime;
-			CutAlong(speed);
-			if (swingQuiet <= 0)
+			if (speed >= cut) lastFastTic = level.maptime;
+			CutAlong(eff);
+			if (speed >= cut && swingQuiet <= 0)
 			{
 				owner.A_StartSound("ubqs/swing", CHAN_AUTO, 0, clamp(speed / 24.0, 0.5, 1.0) * UF("ubqs_vol_swing", 1.0), ATTN_NORM, clamp(0.85 + speed / 60.0, 0.85, 1.35));
 				swingQuiet = max(UInt("ubqs_swing_gap", 8), 1);
@@ -1579,10 +1598,16 @@ class UBQS_SaberBase : Weapon abstract
 	{
 		Vector3 hand = BladeBase(), dir = BladeDir();
 		double len = BladeLen();
-		CutLine(hand, dir, len, speed);
-		if (back) CutLine(Pommel(), -dir, len, speed);
+		// THE ARC THE BLADE ACTUALLY TRAVELLED, which is the direction a cut throws a body. Taken here,
+		// before the history moves on, so it is the same step `speed` was measured from; the body's own
+		// motion is already out of it, so walking into a monster does not shove it.
+		Vector3 sw = lastOk ? (((hand + dir * len) - lastTip) - bodyStep) : (0, 0, 0);
+		if (sw.Length() < 0.01) sw = dir;
+		sw = sw.Unit();
+		CutLine(hand, dir, len, speed, sw);
+		if (back) CutLine(Pommel(), -dir, len, speed, sw);
 	}
-	private void CutLine(Vector3 base, Vector3 dir, double len, double speed)
+	private void CutLine(Vector3 base, Vector3 dir, double len, double speed, Vector3 sw)
 	{
 		if (len < 1) return;
 		Vector3 mid = base + dir * (len * 0.5);
@@ -1600,7 +1625,10 @@ class UBQS_SaberBase : Weapon abstract
 		double dmg0 = UF("ubqs_damage", 30.0);
 		double mult = 1.0 + (clamp(speed / 20.0, 0.5, 2.0) - 1.0) * clamp(UF("ubqs_swing_scale", 1.0), 0.0, 1.0);
 		double vhit = UF("ubqs_vol_hit", 1.0);
-		bool   buzzc = UInt("ubqs_haptic_cut", 0) != 0;
+		bool   buzzc = UInt("ubqs_haptic_cut", 1) != 0;
+		double shove = UF("ubqs_cut_shove", 1.0);
+		double lift  = clamp(UF("ubqs_cut_lift", 0.35), 0.0, 1.0);
+		bool   los   = UInt("ubqs_cut_los", 1) != 0;
 		bool   cutAny = false;
 		let it = BlockThingsIterator.CreateFromPos(mid.x, mid.y, mid.z - reach, reach * 2.0, reach, false);
 		while (it.Next())
@@ -1616,10 +1644,27 @@ class UBQS_SaberBase : Weapon abstract
 			double t = clamp((c dot blade) / (len * len), 0.0, 1.0);
 			Vector3 gap = c - blade * t;
 			if ((gap.xy).Length() > mo.radius + pad || abs(gap.z) > mo.height * 0.5 + pad) continue;
+			// NOT THROUGH THE WALL. The iterator box is nearly 100 units across and nothing here ever
+			// asked whether the blade could reach what it found, so a swing near a thin wall or a closed
+			// door killed what was behind it. Paint() and GazeTarget() have always used this exact test;
+			// only the cut never got it. Last of the per-victim tests, so it costs a sight check only for
+			// something the blade geometrically touched.
+			if (los && !owner.CheckSight(mo, SF_IGNOREVISIBILITY)) continue;
 			int dmg = int(dmg0 * mult);
 			Vector3 at = level.Vec3Offset(base, blade * t);
 			CutFx(at, dir, mo, dmg);
 			mo.DamageMobj(self, owner, dmg, 'Saber', DMG_THRUSTLESS);
+			// ...AND IT MOVES WHAT IT CUT. The engine's own thrust cannot be used: the inflictor is this
+			// Weapon item, which has no position of its own, which is what DMG_THRUSTLESS is for. So the
+			// shove is ours, along the arc, scaled by the victim's MASS (an imp is 100, a Cyberdemon 1000)
+			// and by the same swing-speed multiplier the damage uses. The lift is what makes it read as a
+			// stagger instead of a slide: a Doom monster off the floor cannot change direction.
+			if (mo && !mo.bDestroyed && shove > 0.01 && !mo.bDontThrust && !mo.bNoDamageThrust)
+			{
+				double kk = shove * 5.0 * clamp(100.0 / max(mo.mass, 1.0), 0.08, 2.0) * mult;
+				mo.vel += sw * kk;
+				mo.vel.z += kk * lift;
+			}
 			owner.A_StartSound(mo.bNoBlood ? "ubqs/wall" : "ubqs/hit", CHAN_AUTO, 0, vhit);
 			FlashAt(at, 56, 3);
 			cutAny = true;
@@ -1861,7 +1906,15 @@ class UBQS_SaberBase : Weapon abstract
 				double off = abs(DeltaAngle(owner.angle, VectorAngle(from.pos.x - owner.pos.x, from.pos.y - owner.pos.y)));
 				// ubqs_guard_arc: 100 either side is 200 degrees of TOTAL immunity, measured from the BODY's
 				// yaw and not from the blades. The most abusable number in the mod, with no way to tighten it.
-				if (off < UF("ubqs_guard_arc", 100.0))
+				// ubqs_guard_arc is the outer gate: nothing from behind you is guarded, whatever the blades
+				// are doing. ubqs_guard_width is the wall itself -- ONE of the two crossed blades has to be
+				// in the attack's own path, exactly as the single-blade block is tested, just wider, because
+				// an X is a big object and a lock is held with a trembling hand. 0 is the old arc alone.
+				// This is what makes WHERE you cross them matter.
+				double gw2 = clamp(UF("ubqs_guard_width", 14.0), 0.0, 48.0);
+				let og = Other();
+				bool inPath = gw2 <= 0.01 || BladeInPath(from, gw2) || (og && og.BladeInPath(from, gw2));
+				if (off < UF("ubqs_guard_arc", 100.0) && inPath)
 				{
 					newdamage = 0;
 					owner.A_StartSound("ubqs/deflect", CHAN_AUTO, 0, UF("ubqs_vol_clash", 1.0));

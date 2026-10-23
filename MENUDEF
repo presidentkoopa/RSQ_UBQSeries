@@ -134,10 +134,11 @@ OptionMenu "UBQS_Look"
 	Option "Solid blade tube in the hand", "ubqs_blade_tube", "OnOff"
 	Slider "Beam drawn in your hand (0 = off)", "ubqs_hand_glow", 0, 1, 0.05, 2
 	Slider "Beam drawn in the world (0 = off)", "ubqs_blade_glow", 0, 1, 0.05, 2
-	// ubqs_world_saber -- the HILT drawn in the world instead of in your hand -- does not exist yet.
-	// The lane building it owns both its CVARINFO line and this row: a cvar defined TWICE in CVARINFO
-	// hangs QuestZDoom at startup. Uncomment this when that line lands, and not before.
-	// Option "Hilt drawn in the world instead of in your hand", "ubqs_world_saber", "OnOff"
+	// ubqs_world_saber shipped with no row at all -- the only cvar in the file without one. The note
+	// here said it did not exist yet; it does, it is declared in CVARINFO, WorldUp() reads it and it
+	// defaults ON, so the whole world-hilt path had no switch and could not be judged against the
+	// telemetry that exists to judge it.
+	Option "Hilt drawn in the world instead of in your hand", "ubqs_world_saber", "OnOff"
 	StaticText ""
 	StaticText "SIZE AND COLOUR", "Gold"
 	Option "Colour", "ubqs_color", "UBQS_Colors"
@@ -197,12 +198,17 @@ OptionMenu "UBQS_Swing"
 {
 	Title "YOUR SWING"
 	Slider "How hard you must swing to cut (lower = easier)", "ubqs_swing_cut", 3, 20, 0.5, 1
+	Slider "A steady push cuts too (0 = only fast arcs)", "ubqs_cut_sustain", 0, 1, 0.05, 2
 	Slider "Damage", "ubqs_damage", 10, 100, 5, 0
 	// the cauterized wound: flash, sparks and smoke. 0 leaves only blood, which is how it was.
 	Slider "Cut effects: flash, sparks, smoke", "ubqs_cut_fx", 0, 3, 0.25, 2
 	Slider "How much swing speed changes damage (0 = not at all)", "ubqs_swing_scale", 0, 1, 0.1, 1
 	Slider "Same enemy can be cut again after (tics)", "ubqs_cut_rate", 2, 20, 1, 0
 	Slider "Blade generosity: how near a miss still cuts (units)", "ubqs_cut_pad", 0, 12, 0.5, 1
+	Option "The blade cannot cut through walls", "ubqs_cut_los", "OnOff"
+	StaticText ""
+	Slider "A cut shoves what it hits", "ubqs_cut_shove", 0, 4, 0.25, 2
+	Slider "...and lifts it off the floor", "ubqs_cut_lift", 0, 1, 0.05, 2
 	StaticText ""
 	StaticText "THE TRAIL", "Gold"
 	Option "Swing trail", "ubqs_trail", "OnOff"
@@ -228,6 +234,7 @@ OptionMenu "UBQS_Contact"
 	StaticText "THE CROSS GUARD", "Gold"
 	Option "Cross guard (blades crossed = no damage from the front)", "ubqs_crossguard", "OnOff"
 	Slider "How wide the wall is (degrees either side)", "ubqs_guard_arc", 30, 120, 5, 0
+	Slider "...and how near a blade must be to the attack (0 = the arc alone)", "ubqs_guard_width", 0, 48, 2, 0
 	StaticText ""
 	StaticText "BLOCKING BULLETS", "Gold"
 	// ONE blade in the way, measured. Above 0 this is what decides a block and the two rows below

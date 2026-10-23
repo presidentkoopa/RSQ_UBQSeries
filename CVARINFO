@@ -150,3 +150,11 @@ user int     ubqs_haptic_clash      = 0;        // buzz when blades cross, and w
 
 // -- THE TRAINING REMOTE --
 user int     ubqs_remote_warn       = 0;        // extra tics of warning before it shoots (it rode the level)
+
+// ---- what a cut does to what it hits, and what counts as a cut ----------------------------
+server float ubqs_cut_shove     = 1.0;   // how hard a cut throws what it hit (0 = nothing moves, as before)
+server float ubqs_cut_lift      = 0.35;  // how much of that shove is upward: the stagger
+server int   ubqs_cut_los       = 1;     // the blade must be able to reach what it cuts (0 = it cuts through walls)
+server float ubqs_cut_sustain   = 0.6;   // a steady push counts this much of its path: a thrust and a draw-cut (0 = fast arcs only)
+server float ubqs_guard_width   = 14.0;  // cross guard: how near a crossed blade must be to the attack's own line (0 = the arc alone)
+user   int   ubqs_throw_on_lock = 1;     // letting go with enemies marked throws, snap or no snap
