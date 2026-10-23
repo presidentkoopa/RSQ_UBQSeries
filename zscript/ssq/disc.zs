@@ -82,7 +82,17 @@ class SSQ_Disc : Actor
 		Vector3 hv = pose.ThrowVel(SSQ_Hand.PS(mo));		// units/tic, the vertical squash taken out
 		double keep = 30.0 / (30.0 + SSQ_Handler.SV('ssq_mass_kg', 5.0));
 		double sp = hv.Length() * keep * SSQ_Handler.SV('ssq_throw_speed', 1.6) * (1.0 + revFrac * SSQ_Handler.SV('ssq_rev_throw_bonus', 0.6));
-		Vector3 dir = hv.Length() > 0.01 ? hv.Unit() : pose.F;
+		// HONEST VERSUS ACCURATE. The arm's own direction is what you actually did; where the
+		// hand points is what you meant. ssq_throw_blend slides between them -- 1 all arm,
+		// 0 all aim -- which is the classic VR throw slider and what the owner's saber carries.
+		Vector3 dir;
+		if (hv.Length() > 0.01)
+		{
+			double bl = clamp(SSQ_Handler.SV('ssq_throw_blend', 0.7), 0.0, 1.0);
+			Vector3 mix = hv.Unit() * bl + pose.F * (1.0 - bl);
+			dir = mix.Length() > 0.001 ? mix.Unit() : hv.Unit();
+		}
+		else dir = pose.F;
 		sp = max(sp, SSQ_Handler.SV('ssq_speed_floor', 12.0));
 		Vector3 aim = dir;	// the lock cone opens along the throw, not along the controller
 		// LEAVE TOWARD THE FIRST RING. The steering blends only 22% of the wanted heading per
@@ -214,6 +224,14 @@ class SSQ_Disc : Actor
 				double dist = d.Length();
 				if (dist > 1)
 				{
+					// IT CAN BUILD SPEED. The steering renormalised to the launch speed every tic,
+					// so a disc that left slowly stayed slow all the way round the room however
+					// many targets it chained. Now it winds up toward ssq_cruise_max while it has
+					// somewhere to be, at ssq_cruise_gain a tic, and a throw that starts gentle
+					// still arrives like a saw.
+					double gain = SSQ_Handler.SV('ssq_cruise_gain', 0.05);
+					double top = SSQ_Handler.SV('ssq_cruise_max', 34.0);
+					if (gain > 0 && cruise < top) cruise = min(top, cruise * (1.0 + gain));
 					Vector3 want = d / dist * cruise;
 					vel = vel * 0.78 + want * 0.22;
 					double vl = vel.Length();

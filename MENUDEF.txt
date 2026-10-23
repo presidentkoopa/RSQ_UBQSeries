@@ -68,6 +68,9 @@ OptionMenu "SSQ_Tuning"
 {
 	Title "Ultra Badass ShieldSaw: Tuning"
 	Slider "Throw speed", "ssq_throw_speed", 0.2, 3.0, 0.1, 1
+	Slider "Throw: arm vs aim", "ssq_throw_blend", 0.0, 1.0, 0.05, 2
+	Slider "Disc wind-up", "ssq_cruise_gain", 0.0, 0.2, 0.01, 2
+	Slider "Disc top speed", "ssq_cruise_max", 10.0, 60.0, 1.0, 0
 	Slider "Throw damage", "ssq_cut_damage", 0.2, 5.0, 0.1, 1
 	Slider "Aim cone", "ssq_lock_cone", 2.0, 60.0, 1.0, 0
 	Slider "Lock range", "ssq_lock_range", 128.0, 4000.0, 64.0, 0

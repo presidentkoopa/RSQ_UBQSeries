@@ -278,6 +278,24 @@ class SSQ_Guard : Inventory
 			Deflect(mo, inflictor, source, P, outward, perfect ? 1.6 : 1.0);
 	}
 
+	// HOW FAR THE PLATE ITSELF MOVED THIS TIC. The sweep tests a shot's path across several
+	// tics but used to test it against a plate frozen where it was when the tic began -- so a
+	// shield being swung was checked at a stale position while the shot was checked at a live
+	// one, and the faster you parried the more it missed. This is the plate's own travel over
+	// the last tic, from the synced history, so the test can walk the plate along it. The
+	// facing is this tic's: the history keeps positions, not past axes, and across one tic the
+	// translation is the part that matters.
+	Vector3 PlateTravel()
+	{
+		let mo = PlayerPawn(Owner);
+		if (!mo || plateHeld == 0) return (0, 0, 0);
+		let h = SSQ_Handler.Get();
+		if (!h) return (0, 0, 0);
+		let pose = h.PoseOf(mo.PlayerNumber());
+		if (!pose || pose.count < 2) return (0, 0, 0);
+		return pose.pos[1] - pose.pos[0];	// where it came FROM, relative to where it is
+	}
+
 	// ---- THE MUZZLE: stop a hitscan before it is ever traced -----------------------------
 	//
 	// The sweep turns missiles because a missile is an actor with a path you can look at. A
@@ -301,7 +319,14 @@ class SSQ_Guard : Inventory
 		if (!Plate()) return false;
 		double R = plateR + SSQ_Handler.CM(SSQ_Handler.SV('ssq_sweep_pad', 18.0));
 		Vector3 B = A + dir * max(dist, 1.0);
-		if (!Crosses(A, B, plateC, plateN, R)) return false;
+		Vector3 travel = PlateTravel();
+		bool got = false;
+		for (int s = 0; s <= 2 && !got; s++)
+		{
+			Vector3 Cs = plateC + travel * (1.0 - s * 0.5);
+			if (Crosses(A, B, Cs, plateN, R)) got = true;
+		}
+		if (!got) return false;
 		// it has to be coming at US, not merely passing the shield on its way elsewhere: the
 		// crossing point must be nearer the shooter than we are, give or take our own width.
 		Vector3 centre = mo.pos + (0, 0, mo.height * 0.5);
@@ -362,7 +387,8 @@ class SSQ_Guard : Inventory
 		Vector3 C = plateC, n = plateN;
 		double R = plateR + SSQ_Handler.CM(SSQ_Handler.SV('ssq_sweep_pad', 10.0));
 		double lead = clamp(SSQ_Handler.SV('ssq_sweep_lead', 3.0), 1.0, 6.0);
-		double reach = R + 320.0;	// a fast bolt covers a lot of ground between two tics
+		Vector3 travel = PlateTravel();
+		double reach = R + 320.0 + travel.Length();	// a fast bolt, and a fast arm, cover ground
 		let it = BlockThingsIterator.CreateFromPos(C.x, C.y, C.z - reach, reach * 2.0, reach, false);
 		while (it.Next())
 		{
@@ -374,7 +400,14 @@ class SSQ_Guard : Inventory
 			if (v.Length() <= 0) continue;
 			Vector3 A = sh.pos - v;				// a tic behind
 			Vector3 B = sh.pos + v * lead;		// and a few ahead
-			if (!Crosses(A, B, C, n, R + sh.radius)) continue;
+			// three places the plate was during this tic: where it came from, halfway, here
+			bool got = false;
+			for (int s = 0; s <= 2 && !got; s++)
+			{
+				Vector3 Cs = C + travel * (1.0 - s * 0.5);
+				if (Crosses(A, B, Cs, n, R + sh.radius)) got = true;
+			}
+			if (!got) continue;
 			Vector3 P = hitP;
 			Vector3 outward = ((A - C) dot n) >= 0 ? n : -n;
 			BatBack(mo, sh, P, outward);

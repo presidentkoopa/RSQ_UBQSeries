@@ -6,6 +6,7 @@
 server bool  ssq_start          = true;   // every player spawns with it
 server float ssq_cut_damage     = 1.0;    // thrown-disc damage scale
 server float ssq_throw_speed    = 1.6;    // launch speed scale: a 6 m/s swing leaves at ~17 units/tic (a rocket is 20)
+server float ssq_throw_blend    = 0.7;    // 1 = throw along the arm's own direction, 0 = along where the hand points
 server float ssq_throw_min      = 20.0;   // map units/sec of hand speed below which a grip press stows instead of throws
 server float ssq_throw_forward  = 0.35;   // how closely the throw must go where you look (cosine; 0 = any direction)
 server float ssq_speed_floor    = 12.0;   // units/tic: the slowest a throw can leave at
@@ -20,6 +21,8 @@ server int   ssq_lock_grace     = 14;     // tics a lock may stay out of that co
 server int   ssq_paint_every    = 3;      // tics between targets going on: they paint one at a time as you sweep
 server int   ssq_keep_marks     = 35;     // tics your marks survive a release that was not a throw
 server float ssq_return_speed   = 22.0;   // units/tic on the way home
+server float ssq_cruise_gain    = 0.05;   // how fast a flying disc winds up while it has a target, per tic
+server float ssq_cruise_max     = 34.0;   // units/tic it will wind up to
 server int   ssq_home_patience  = 105;    // tics of returning before it ignores geometry and flies straight home
 server float ssq_catch_radius   = 24.0;   // hand within this of the returning disc = caught
 server bool  ssq_catch          = true;   // back in hand on return
