@@ -246,6 +246,153 @@ class UBQS_Data
 // ONE ACTOR, ONE ATTACHED LIGHT, set by script: any colour, any radius, no GLDEFS table. It is moved with
 // SetOrigin(..., true), so the renderer slides it between tics with the blade. The light is re-attached only
 // when its colour or (quantised) radius changes -- never per tic.
+// ===========================================================================================
+// THE SOUND FONT PICKER
+//
+// GZDoom fixes a sound definition at load and ZScript cannot build a Sound from a String
+// variable, so choosing a font at run time has to be a switch over literal names -- one per
+// event per font. Generated, with SNDINFO, from the owner's font collection.
+//
+// Font 0 is the original set, untouched, so nothing anyone has tuned against it moves.
+// ===========================================================================================
+class UBQS_Font abstract
+{
+	static int Which()
+	{
+		let cv = CVar.FindCVar('ubqs_font');
+		return cv ? cv.GetInt() : 1;
+	}
+	static Sound Hum()
+	{
+		switch (Which())
+		{
+		case 1: return "ubqs/f01/hum";
+		case 2: return "ubqs/f02/hum";
+		case 3: return "ubqs/f03/hum";
+		case 4: return "ubqs/f04/hum";
+		case 5: return "ubqs/f05/hum";
+		case 6: return "ubqs/f06/hum";
+		case 7: return "ubqs/f07/hum";
+		case 8: return "ubqs/f08/hum";
+		case 9: return "ubqs/f09/hum";
+		case 10: return "ubqs/f10/hum";
+		case 11: return "ubqs/f11/hum";
+		case 12: return "ubqs/f12/hum";
+		}
+		return UBQS_Font.Hum();
+	}
+	static Sound Boot()
+	{
+		switch (Which())
+		{
+		case 1: return "ubqs/f01/boot";
+		case 2: return "ubqs/f02/boot";
+		case 4: return "ubqs/f04/boot";
+		case 5: return "ubqs/f05/boot";
+		case 6: return "ubqs/f06/boot";
+		case 7: return "ubqs/f07/boot";
+		case 8: return "ubqs/f08/boot";
+		case 9: return "ubqs/f09/boot";
+		}
+		return On();	// a font with no boot of its own uses its own ignition
+	}
+	static Sound On()
+	{
+		switch (Which())
+		{
+		case 1: return "ubqs/f01/on";
+		case 2: return "ubqs/f02/on";
+		case 3: return "ubqs/f03/on";
+		case 4: return "ubqs/f04/on";
+		case 5: return "ubqs/f05/on";
+		case 6: return "ubqs/f06/on";
+		case 7: return "ubqs/f07/on";
+		case 8: return "ubqs/f08/on";
+		case 9: return "ubqs/f09/on";
+		case 10: return "ubqs/f10/on";
+		case 11: return "ubqs/f11/on";
+		case 12: return "ubqs/f12/on";
+		}
+		return UBQS_Font.On();
+	}
+	static Sound Off()
+	{
+		switch (Which())
+		{
+		case 1: return "ubqs/f01/off";
+		case 2: return "ubqs/f02/off";
+		case 3: return "ubqs/f03/off";
+		case 4: return "ubqs/f04/off";
+		case 5: return "ubqs/f05/off";
+		case 6: return "ubqs/f06/off";
+		case 7: return "ubqs/f07/off";
+		case 8: return "ubqs/f08/off";
+		case 9: return "ubqs/f09/off";
+		case 10: return "ubqs/f10/off";
+		case 11: return "ubqs/f11/off";
+		case 12: return "ubqs/f12/off";
+		}
+		return UBQS_Font.Off();
+	}
+	static Sound Lock()
+	{
+		switch (Which())
+		{
+		case 1: return "ubqs/f01/lock";
+		case 2: return "ubqs/f02/lock";
+		case 3: return "ubqs/f03/lock";
+		case 4: return "ubqs/f04/lock";
+		case 5: return "ubqs/f05/lock";
+		case 6: return "ubqs/f06/lock";
+		case 7: return "ubqs/f07/lock";
+		case 8: return "ubqs/f08/lock";
+		case 9: return "ubqs/f09/lock";
+		case 10: return "ubqs/f10/lock";
+		case 11: return "ubqs/f11/lock";
+		case 12: return "ubqs/f12/lock";
+		}
+		return UBQS_Font.Lock();
+	}
+	static Sound Swing()
+	{
+		switch (Which())
+		{
+		case 1: return "ubqs/f01/swing";
+		case 2: return "ubqs/f02/swing";
+		case 3: return "ubqs/f03/swing";
+		case 4: return "ubqs/f04/swing";
+		case 5: return "ubqs/f05/swing";
+		case 6: return "ubqs/f06/swing";
+		case 7: return "ubqs/f07/swing";
+		case 8: return "ubqs/f08/swing";
+		case 9: return "ubqs/f09/swing";
+		case 10: return "ubqs/f10/swing";
+		case 11: return "ubqs/f11/swing";
+		case 12: return "ubqs/f12/swing";
+		}
+		return UBQS_Font.Swing();
+	}
+	static Sound Clash()
+	{
+		switch (Which())
+		{
+		case 1: return "ubqs/f01/clash";
+		case 2: return "ubqs/f02/clash";
+		case 3: return "ubqs/f03/clash";
+		case 4: return "ubqs/f04/clash";
+		case 5: return "ubqs/f05/clash";
+		case 6: return "ubqs/f06/clash";
+		case 7: return "ubqs/f07/clash";
+		case 8: return "ubqs/f08/clash";
+		case 9: return "ubqs/f09/clash";
+		case 10: return "ubqs/f10/clash";
+		case 11: return "ubqs/f11/clash";
+		case 12: return "ubqs/f12/clash";
+		}
+		return UBQS_Font.Clash();
+	}
+}
+
 class UBQS_Light : Actor
 {
 	int litRgb;
@@ -504,6 +651,15 @@ class UBQS_SaberBase : Weapon abstract
 		g.Alpha = show ? clamp(str, 0.0, 1.0) : 0.0;
 	}
 	// IDLE: the shimmer -- or, with the second blade lit, the staff twirling in your hand (ubqs_twirl)
+	// the hilt's own power-up, played once when the saber is drawn, not every tic of the raise
+	action void A_UBBoot()
+	{
+		if (!player || invoker.booted) return;
+		invoker.booted = true;
+		if (UBQS_Font.Which() <= 0) return;	// the original set has no boot of its own
+		A_StartSound(UBQS_Font.Boot(), CHAN_7, 0, invoker.UF("ubqs_vol_ignite", 1.0));
+	}
+
 	action void A_UBReady(int f)
 	{
 		if (invoker.Twirling())
@@ -524,13 +680,14 @@ class UBQS_SaberBase : Weapon abstract
 		// is what douses and relights it by hand; there is no wrist flick any more.
 		invoker.doused = false;
 		invoker.ignited = true;
-		A_StartSound("ubqs/on", CHAN_WEAPON, 0, invoker.UF("ubqs_vol_ignite", 1.0));
+		A_StartSound(UBQS_Font.On(), CHAN_WEAPON, 0, invoker.UF("ubqs_vol_ignite", 1.0));
 	}
 	action void A_UBOff()
 	{
+		invoker.booted = false;	// so the hilt powers up again the next time it is drawn
 		if (invoker.thrown || !invoker.ignited) return;
 		invoker.ignited = false;
-		A_StartSound("ubqs/off", CHAN_WEAPON, 0, invoker.UF("ubqs_vol_ignite", 1.0));
+		A_StartSound(UBQS_Font.Off(), CHAN_WEAPON, 0, invoker.UF("ubqs_vol_ignite", 1.0));
 	}
 	// ---- FIRE: LOCK ON, THEN THROW IT WITH YOUR ARM (the owner, 10-01) -------------------------------------
 	// There is no button swing: the saber cuts what your real swing passes it through (DoEffect). Fire is the
@@ -695,7 +852,7 @@ class UBQS_SaberBase : Weapon abstract
 	void ToggleBack()
 	{
 		back = !back;
-		if (owner) owner.A_StartSound(back ? "ubqs/on" : "ubqs/off", CHAN_WEAPON, 0, UF("ubqs_vol_ignite", 1.0));
+		if (owner) owner.A_StartSound(back ? UBQS_Font.On() : UBQS_Font.Off(), CHAN_WEAPON, 0, UF("ubqs_vol_ignite", 1.0));
 	}
 
 	// ---- THE HAND ----------------------------------------------------------------------------------------
@@ -775,7 +932,7 @@ class UBQS_SaberBase : Weapon abstract
 		doused = !doused;
 		ignited = !doused;
 		igniteAnim = 8;
-		owner.A_StartSound(doused ? "ubqs/off" : "ubqs/on", bOffhandWeapon ? CHAN_6 : CHAN_WEAPON, 0, UF("ubqs_vol_ignite", 1.0));
+		owner.A_StartSound(doused ? UBQS_Font.Off() : UBQS_Font.On(), bOffhandWeapon ? CHAN_6 : CHAN_WEAPON, 0, UF("ubqs_vol_ignite", 1.0));
 		Buzz();
 	}
 
@@ -799,6 +956,7 @@ class UBQS_SaberBase : Weapon abstract
 	// CheckWeaponFire lost the latch that would make it mean anything. So the latch lives here,
 	// on the button, per hand. Ticked in DoEffect above every early return so it cannot stick.
 	private bool firePressed, altPressed;
+	private bool booted;	// the hilt's power-up is once per draw, not once per tic
 	void TickFireLatch()
 	{
 		if (!owner || !owner.player) { firePressed = false; altPressed = false; return; }
@@ -982,7 +1140,7 @@ class UBQS_SaberBase : Weapon abstract
 		// so starting the loop at 0 and setting humming = true anyway would leave no channel for the per-tic
 		// re-assert below to act on -- silence that the slider could never undo until the blade was doused.
 		double hv = HumVol();
-		if (!humming && hv > 0.0) { owner.A_StartSound("ubqs/hum", ch, CHANF_LOOPING, hv); humming = true; }
+		if (!humming && hv > 0.0) { owner.A_StartSound(UBQS_Font.Hum(), ch, CHANF_LOOPING, hv); humming = true; }
 
 		Vector3 hand = BladeBase(), dir = BladeDir();
 		double len = BladeLen();
@@ -1056,7 +1214,7 @@ class UBQS_SaberBase : Weapon abstract
 			CutAlong(eff);
 			if (speed >= cut && swingQuiet <= 0)
 			{
-				owner.A_StartSound("ubqs/swing", CHAN_AUTO, 0, clamp(speed / 24.0, 0.5, 1.0) * UF("ubqs_vol_swing", 1.0), ATTN_NORM, clamp(0.85 + speed / 60.0, 0.85, 1.35));
+				owner.A_StartSound(UBQS_Font.Swing(), CHAN_AUTO, 0, clamp(speed / 24.0, 0.5, 1.0) * UF("ubqs_vol_swing", 1.0), ATTN_NORM, clamp(0.85 + speed / 60.0, 0.85, 1.35));
 				swingQuiet = max(UInt("ubqs_swing_gap", 8), 1);
 			}
 		}
@@ -1865,7 +2023,7 @@ class UBQS_SaberBase : Weapon abstract
 		// ubqs_vol_clash covers the blade meeting energy, which is a deflect as much as a crossing: ubqs/deflect
 		// is one of the most frequent combat sounds in the mod (ubqs_deflect is on by default) and had no knob
 		// at all. All three of its sites read the one cvar.
-		owner.A_StartSound("ubqs/deflect", CHAN_AUTO, 0, UF("ubqs_vol_clash", 1.0));
+		owner.A_StartSound(UBQS_Font.Clash(), CHAN_AUTO, 0, UF("ubqs_vol_clash", 1.0));
 		UBQS_Data.Sparks(mo.pos, d, RgbNow(), 8);
 		FlashAt(mo.pos, 64, 4);
 	}
@@ -1946,7 +2104,7 @@ class UBQS_SaberBase : Weapon abstract
 				if (off < UF("ubqs_guard_arc", 100.0) && inPath)
 				{
 					newdamage = 0;
-					owner.A_StartSound("ubqs/deflect", CHAN_AUTO, 0, UF("ubqs_vol_clash", 1.0));
+					owner.A_StartSound(UBQS_Font.Clash(), CHAN_AUTO, 0, UF("ubqs_vol_clash", 1.0));
 					double gfx = clamp(UF("ubqs_clash_fx", 1.0), 0.0, 3.0);
 					if (gfx > 0.01)
 					{
@@ -2024,7 +2182,7 @@ class UBQS_SaberBase : Weapon abstract
 		double pg = ParryGain(-back);
 		if (loud)
 		{
-			owner.A_StartSound("ubqs/deflect", CHAN_AUTO, 0, UF("ubqs_vol_clash", 1.0), ATTN_NORM, pg > 1.01 ? 1.25 : 1.0);
+			owner.A_StartSound(UBQS_Font.Clash(), CHAN_AUTO, 0, UF("ubqs_vol_clash", 1.0), ATTN_NORM, pg > 1.01 ? 1.25 : 1.0);
 			Rumble(0.8 * pg, pg > 1.01 ? 5 : 3);
 		}
 		UBQS_Data.Sparks(at, back, RgbNow(), int(10 * pg));
@@ -2233,9 +2391,9 @@ class UBQS_SaberBase : Weapon abstract
 			lockSince = level.maptime;
 			nextSnap = level.maptime + random[UBQSFx](10, 18);
 			double hard = clamp(rel / 12.0, 0.6, 1.6);
-			owner.A_StartSound("ubqs/clash", CHAN_AUTO, 0, 1.0 * vcl);
+			owner.A_StartSound(UBQS_Font.Clash(), CHAN_AUTO, 0, 1.0 * vcl);
 			owner.A_StartSound("ubqs/crack", CHAN_AUTO, 0, clamp(0.5 + hard * 0.3, 0.6, 1.0) * vcl);
-			owner.A_StartSound("ubqs/bladelock", 22, CHANF_LOOPING, 0.3 * vcl);
+			owner.A_StartSound(UBQS_Font.Lock(), 22, CHANF_LOOPING, 0.3 * vcl);
 			if (cfx > 0.01)
 			{
 				UBQS_ClashFlash.Burst(at, hard * cfx);
@@ -2264,7 +2422,7 @@ class UBQS_SaberBase : Weapon abstract
 		if (level.maptime >= nextSnap)
 		{
 			nextSnap = level.maptime + random[UBQSFx](9, 20);
-			owner.A_StartSound("ubqs/clash", CHAN_AUTO, 0, 0.55 * vcl);
+			owner.A_StartSound(UBQS_Font.Clash(), CHAN_AUTO, 0, 0.55 * vcl);
 			owner.A_StartSound("ubqs/crack", CHAN_AUTO, 0, 0.5 * vcl);
 			if (cfx > 0.01)
 			{
@@ -2320,7 +2478,7 @@ class UBQS_SaberBase : Weapon abstract
 		t.Launch(d, vert);
 		thrown = t;
 		Lights(false);
-		owner.A_StartSound("ubqs/swing", CHAN_WEAPON, 0, UF("ubqs_vol_swing", 1.0));
+		owner.A_StartSound(UBQS_Font.Swing(), CHAN_WEAPON, 0, UF("ubqs_vol_swing", 1.0));
 	}
 	// BACK IN THE HAND: it lights again as it lands
 	void Caught()
@@ -2425,6 +2583,9 @@ class UBQS_SaberBase : Weapon abstract
 		UBPK A -1;
 		Stop;
 	Select:
+		// THE HILT POWERING UP, once, as it comes out -- the sound a saber makes before the blade is
+		// out. Most fonts ship one; the ones that do not use their own ignition instead.
+		UBSP R 0 A_UBBoot();
 		UBSP R 1 { A_UBShow(17); A_Raise(12); }
 		Loop;
 	Deselect:
@@ -3092,7 +3253,7 @@ class UBQS_Thrown : Actor
 	void Recall()
 	{
 		if (phase == PH_PULL || phase == PH_HOME) return;
-		if (phase == PH_REST) A_StartSound("ubqs/on", CHAN_BODY, 0, 0.7);     // a dark saber relighting
+		if (phase == PH_REST) A_StartSound(UBQS_Font.On(), CHAN_BODY, 0, 0.7);     // a dark saber relighting
 		ClearRoute();
 		SetPhase(PH_PULL);
 	}
@@ -3210,7 +3371,7 @@ class UBQS_Thrown : Actor
 				z = floorz;
 				SetPhase(PH_REST);
 				A_StartSound("ubqs/drop", CHAN_BODY);
-				A_StartSound("ubqs/off", CHAN_AUTO);
+				A_StartSound(UBQS_Font.Off(), CHAN_AUTO);
 			}
 			SetOrigin((pos.xy, z), true);
 			break;
@@ -3582,7 +3743,7 @@ class UBQS_Force : Inventory
 	{
 		// the main hand reaches this through ForcePush(), never through DoEffect, so it needs its own gate
 		if (!owner || !IV("ubqs_force", 1)) return;
-		if (level.maptime < pushReady) { owner.A_StartSound("ubqs/off", CHAN_AUTO, 0, 0.25); return; }
+		if (level.maptime < pushReady) { owner.A_StartSound(UBQS_Font.Off(), CHAN_AUTO, 0, 0.25); return; }
 		pushReady = level.maptime + int(FV("ubqs_push_cooldown", 1.5) * 35);
 		// ubqs_push_cone: power and reach were both sliders and the SHAPE was baked at 80 degrees of total arc.
 		// A narrow focused shove and a wide room-clearing blast are different abilities.
@@ -3649,7 +3810,7 @@ class UBQS_Force : Inventory
 	// ---- PULL ------------------------------------------------------------------------------------------------
 	void Pull(Vector3 hp, Vector3 d)
 	{
-		if (level.maptime < pushReady) { owner.A_StartSound("ubqs/off", CHAN_AUTO, 0, 0.25); return; }
+		if (level.maptime < pushReady) { owner.A_StartSound(UBQS_Font.Off(), CHAN_AUTO, 0, 0.25); return; }
 		pushReady = level.maptime + int(FV("ubqs_push_cooldown", 1.5) * 35);
 		owner.A_StartSound("ubqs/pull", CHAN_AUTO, 0, 1.0 * FV("ubqs_vol_force", 1.0));
 		// your sabers, wherever they are, come home
