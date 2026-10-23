@@ -46,6 +46,7 @@ OptionMenu "SSQ_Options"
 	Slider "Lock on Targets Max", "ssq_locks", 0, 5, 1, 0
 	Option "Hit Tiers", "ssq_tiers", "OnOff"
 	StaticText ""
+	Submenu "Shield Fit", "SSQ_Fit"
 	Submenu "Tuning", "SSQ_Tuning"
 	Submenu "Debug", "SSQ_Debug"
 }
@@ -79,4 +80,22 @@ OptionMenu "SSQ_Debug"
 	Title "ShieldSawQ Debug"
 	Option "Print decisions and key codes", "ssq_debug", "OnOff"
 	Option "Draw the guard plate", "ssq_debug_ring", "OnOff"
+}
+
+OptionMenu "SSQ_Fit"
+{
+	Title "ShieldSaw Fit"
+	StaticText "Shield size. Model and block area together."
+	Slider "Shield size", "ssq_shield_scale", 1.0, 1.5, 0.05, 2
+	StaticText ""
+	StaticText "Where the disc sits, in cm from the controller."
+	Slider "Back along the forearm", "ssq_plate_f", -40.0, 10.0, 0.5, 1
+	Slider "Sideways", "ssq_plate_l", -25.0, 25.0, 0.5, 1
+	Slider "Up and down", "ssq_plate_u", -25.0, 25.0, 0.5, 1
+	StaticText ""
+	Slider "Block area radius (cm)", "ssq_plate_radius", 10.0, 60.0, 0.5, 1
+	Slider "Block depth either side (cm)", "ssq_plate_thick", 2.0, 60.0, 1.0, 0
+	StaticText ""
+	Option "Draw the block area", "ssq_debug_ring", "OnOff"
+	StaticText "Close the menu to see a change: the game is frozen while it is open."
 }

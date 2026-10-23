@@ -61,6 +61,7 @@ server float ssq_plate_u        = -5.0;
 server float ssq_plate_radius   = 29.2;   // cm, measured rim; the blades add ssq_plate_blades when revved
 server float ssq_plate_thick    = 25.0;   // cm either side of the face that still counts as the shield
 server float ssq_plate_blades   = 6.0;    // deployed tips measure 35.2 cm
+server float ssq_shield_scale   = 1.0;    // the whole shield, model and plate together: 1.0 .. 1.5
 server float ssq_roll_sign      = 1.0;    // flip if the ring rolls the wrong way
 
 // ---- per player (user: userinfo, travels) ---------------------------------------

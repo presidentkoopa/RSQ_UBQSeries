@@ -63,15 +63,25 @@ class SSQ_Guard : Inventory
 	// so the lateral axis flips with it.
 	static clearscope double Side(PlayerInfo p) { return SSQ_Handler.LeftHanded(p) ? -1.0 : 1.0; }
 
+	// ONE SCALE FOR THE WHOLE SHIELD. A model scaled about its own origin moves its disc
+	// further from the grip by the same factor it grows, so the offsets scale with the
+	// radius -- otherwise a bigger shield would sit in the same place and hang off the hand
+	// wrongly. 1.0 is the mesh as it is; 1.5 is half again, which is as far as it goes.
+	static clearscope double Scale()
+	{
+		return clamp(SSQ_Handler.SV('ssq_shield_scale', 1.0), 1.0, 1.5);
+	}
+
 	static clearscope Vector3 PlateCentre(PlayerPawn mo, SSQ_Pose pose, bool stowed)
 	{
 		let p = mo.player;
 		if (stowed) return SSQ_Handler.MountPlateCentre(mo);
 		double s = Side(p);
+		double k = Scale();
 		return pose.pos[0]
-			+ pose.F * SSQ_Handler.CM(SSQ_Handler.SV('ssq_plate_f', -15.4))
-			+ pose.L * (SSQ_Handler.CM(SSQ_Handler.SV('ssq_plate_l', -7.5)) * s)
-			+ pose.U * SSQ_Handler.CM(SSQ_Handler.SV('ssq_plate_u', -5.0));
+			+ pose.F * (SSQ_Handler.CM(SSQ_Handler.SV('ssq_plate_f', -15.4)) * k)
+			+ pose.L * (SSQ_Handler.CM(SSQ_Handler.SV('ssq_plate_l', -7.5)) * s * k)
+			+ pose.U * (SSQ_Handler.CM(SSQ_Handler.SV('ssq_plate_u', -5.0)) * k);
 	}
 
 	// OUTWARD: away from the forearm, which the mesh puts on the plate's +L side.
@@ -83,7 +93,7 @@ class SSQ_Guard : Inventory
 
 	static clearscope double PlateRadius(bool blades)
 	{
-		return SSQ_Handler.CM(SSQ_Handler.SV('ssq_plate_radius', 29.2) + (blades ? SSQ_Handler.SV('ssq_plate_blades', 6.0) : 0));
+		return SSQ_Handler.CM((SSQ_Handler.SV('ssq_plate_radius', 29.2) + (blades ? SSQ_Handler.SV('ssq_plate_blades', 6.0) : 0)) * Scale());
 	}
 
 	// does the segment A->B pass through the THICK disc (centre C, face n, radius R, half

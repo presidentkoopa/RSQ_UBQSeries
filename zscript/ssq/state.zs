@@ -126,10 +126,11 @@ class SSQ_Handler : EventHandler
 		Vector3 Fh = (0, 0, 1);
 		Vector3 Lh = (cos(a), sin(a), 0);			// forward
 		Vector3 Uh = (cos(a + 90), sin(a + 90), 0);	// Fh x Lh = the player's left
+		double k = SSQ_Guard.Scale();
 		return MountPos(mo)
-			+ Fh * CM(SV('ssq_plate_f', -15.4))
-			+ Lh * CM(SV('ssq_plate_l', -7.5))
-			+ Uh * CM(SV('ssq_plate_u', -5.0));
+			+ Fh * (CM(SV('ssq_plate_f', -15.4)) * k)
+			+ Lh * (CM(SV('ssq_plate_l', -7.5)) * k)
+			+ Uh * (CM(SV('ssq_plate_u', -5.0)) * k);
 	}
 
 	static clearscope Vector3 MountPlateNormal(PlayerPawn mo)
@@ -624,7 +625,7 @@ class SSQ_Handler : EventHandler
 			prop.angle = mo.angle + UV(p, 'ssq_mount_yaw', 0);
 			prop.pitch = MountPropPitch() + UV(p, 'ssq_mount_pitch', 0);
 			prop.roll  = MountPropRoll()  + UV(p, 'ssq_mount_roll', 0);
-			prop.A_SetScale(UV(p, 'ssq_mount_scale', 1.0));
+			prop.A_SetScale(UV(p, 'ssq_mount_scale', 1.0) * SSQ_Guard.Scale());
 			prop.frame = 0;
 		}
 		else if (mState[i] == SS_DRAWN)
@@ -649,7 +650,7 @@ class SSQ_Handler : EventHandler
 				prop.angle = atan2(pose.F.y, pose.F.x);
 				prop.pitch = -asin(clamp(pose.F.z, -1, 1));
 				prop.roll = SSQ_Hand.RollOf(pose.F, pose.L);
-				prop.A_SetScale(1.0);
+				prop.A_SetScale(SSQ_Guard.Scale());	// the world copy grows with the plate
 				prop.frame = saw ? saw.Frame() : 0;
 			}
 		}
