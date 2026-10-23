@@ -146,6 +146,29 @@ class SSQ_Handler : EventHandler
 	static clearscope double MountPropPitch() { return -90.0; }
 	static clearscope double MountPropRoll() { return 180.0; }
 
+	// THE LOCK/THROW TRIGGER, and why it is not just the alt button any more.
+	//
+	// Lock-on and the throw both hung on BT_OFFHANDALTATTACK alone. On a Quest that action is
+	// `alt +oh_altatk` in the stock bind set (engine/vr/defbind3.txt) -- a GRIP-SHIFTED trigger:
+	// you must hold the off grip to reach it, and holding that same grip is what arms QZD's
+	// two-hand grab. So the one button the shield needed most was the one button the player
+	// could not press cleanly, and from the outside the shield simply never locked and never
+	// threw. The owner's own lightsaber reads BT_OFFHANDATTACK -- the plain off-hand trigger --
+	// and that is why its lock-on and throw work.
+	//
+	// So: either button, by default. Holding the off trigger revs the saw AND paints locks;
+	// letting go with the arm moving throws, which is also how the saber does it and makes a
+	// revved throw the natural one. ssq_lock_button 0 keeps the old alt-only behaviour, 2 is
+	// the trigger alone.
+	static clearscope bool SecHeld(PlayerInfo p)
+	{
+		int b = p.cmd.buttons;
+		int mode = SVI('ssq_lock_button', 1);
+		if (mode == 0) return (b & BT_OFFHANDALTATTACK) != 0;
+		if (mode == 2) return (b & BT_OFFHANDATTACK) != 0;
+		return (b & (BT_OFFHANDATTACK | BT_OFFHANDALTATTACK)) != 0;
+	}
+
 	static clearscope double Reach(PlayerInfo p) { return CM(UV(p, 'ssq_mount_reach', 10.0)); }
 	// THE ZONE over the shoulder: larger than the grab reach, so the hand is inside it for tics
 	// before the finger can be at the grab point
@@ -218,9 +241,9 @@ class SSQ_Handler : EventHandler
 			if (mCatchGrace[i] > 0) { mCatchGrace[i]--; usePress = false; use = false; }
 			if (mState[i] == SS_STOWED && use) OnPress(i);
 			else if (mState[i] == SS_DRAWN && usePress) OnPress(i);
-			// SECONDARY: hold to lock on, let go to throw, press in flight to recall
-			// the off secondary: the ACTION "Offhand Alt Attack" (+oh_altatk), whatever key it is on
-			bool sec = (p.cmd.buttons & BT_OFFHANDALTATTACK) != 0;
+			// HOLD to lock on, let go to throw, press again in flight to recall.
+			// Either off-hand button by default -- see SecHeld.
+			bool sec = SecHeld(p);
 			bool secPress = sec && !mGripWas[i];
 			bool secRelease = !sec && mGripWas[i];
 			mGripWas[i] = sec;
@@ -418,7 +441,7 @@ class SSQ_Handler : EventHandler
 		let p = players[i];
 		let mo = p.mo;
 		let pose = mPose[i];
-		bool aiming = (p.cmd.buttons & BT_OFFHANDALTATTACK) != 0;
+		bool aiming = SecHeld(p);
 		if (mState[i] != SS_DRAWN || !aiming || !pose.Fresh(Level.maptime)) { if (mLocks[i].Size() > 0) ClearLocks(i); return; }
 
 		int want = SVI('ssq_locks', 5);
@@ -450,7 +473,11 @@ class SSQ_Handler : EventHandler
 				mLocks[i].Push(t); mLockMiss[i].Push(0); added++;
 			}
 		}
-		if (added > 0) mo.A_StartSound("ssq/lock", CHAN_6, 0, 0.5);
+		if (added > 0)
+		{
+			mo.A_StartSound("ssq/lock", CHAN_6, 0, 0.8);
+			SSQ_FX.Buzz(mo, 0.35, 3);	// you feel each one land, the way the saber does
+		}
 
 		// one ring per target, sized by rank: biggest over the one the disc visits first
 		while (mLockMarks[i].Size() < mLocks[i].Size())
@@ -465,11 +492,15 @@ class SSQ_Handler : EventHandler
 			if (k >= mLocks[i].Size()) { m.bInvisible = true; continue; }
 			let t = mLocks[i][k];
 			if (!t) { m.bInvisible = true; continue; }
+			// BIG ENOUGH TO SEE. These were 1.6 / 1.1 / 0.8 at 60% alpha over a monster's head,
+			// which in a headset at ten metres is nothing. The one the disc visits first is twice
+			// the size of the rest and fully lit, and it breathes so it reads as alive.
+			double pulse = 1.0 + 0.12 * sin(Level.maptime * 9.0 + k * 40);
 			m.bInvisible = false;
-			m.SetOrigin(t.pos + (0, 0, t.height + 10), true);
-			m.A_SetScale(k == 0 ? 1.6 : (k == 1 ? 1.1 : 0.8));
-			m.A_SetRenderStyle(k == 0 ? 1.0 : 0.6, STYLE_Add);
-			m.angle += (k == 0 ? 12 : 6);
+			m.SetOrigin(t.pos + (0, 0, t.height + 12), true);
+			m.A_SetScale((k == 0 ? 3.0 : (k == 1 ? 2.1 : 1.6)) * pulse * SV('ssq_lock_mark_scale', 1.0));
+			m.A_SetRenderStyle(k == 0 ? 1.0 : 0.85, STYLE_Add);
+			m.angle += (k == 0 ? 14 : 8);
 		}
 	}
 
