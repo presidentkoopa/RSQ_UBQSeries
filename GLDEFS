@@ -1,0 +1,132 @@
+// ULTRA BADASS QUESTSABER -- the blade's skins are fullbright. Its LIGHTS are not here: they are
+// attached by script (UBQS_Light.Look), any colour, any radius, no table.
+
+brightmap texture "models/ubqs/blade_core.png"
+{
+	map "models/ubqs/blade_bm.png"
+}
+
+brightmap texture "models/ubqs/blade_inner_B.png"
+{
+	map "models/ubqs/blade_bm.png"
+}
+
+brightmap texture "models/ubqs/blade_mid_B.png"
+{
+	map "models/ubqs/blade_bm.png"
+}
+
+brightmap texture "models/ubqs/blade_inner_G.png"
+{
+	map "models/ubqs/blade_bm.png"
+}
+
+brightmap texture "models/ubqs/blade_mid_G.png"
+{
+	map "models/ubqs/blade_bm.png"
+}
+
+brightmap texture "models/ubqs/blade_inner_R.png"
+{
+	map "models/ubqs/blade_bm.png"
+}
+
+brightmap texture "models/ubqs/blade_mid_R.png"
+{
+	map "models/ubqs/blade_bm.png"
+}
+
+brightmap texture "models/ubqs/blade_inner_P.png"
+{
+	map "models/ubqs/blade_bm.png"
+}
+
+brightmap texture "models/ubqs/blade_mid_P.png"
+{
+	map "models/ubqs/blade_bm.png"
+}
+
+brightmap texture "models/ubqs/blade_inner_Y.png"
+{
+	map "models/ubqs/blade_bm.png"
+}
+
+brightmap texture "models/ubqs/blade_mid_Y.png"
+{
+	map "models/ubqs/blade_bm.png"
+}
+
+brightmap texture "models/ubqs/blade_inner_O.png"
+{
+	map "models/ubqs/blade_bm.png"
+}
+
+brightmap texture "models/ubqs/blade_mid_O.png"
+{
+	map "models/ubqs/blade_bm.png"
+}
+
+brightmap texture "models/ubqs/blade_inner_C.png"
+{
+	map "models/ubqs/blade_bm.png"
+}
+
+brightmap texture "models/ubqs/blade_mid_C.png"
+{
+	map "models/ubqs/blade_bm.png"
+}
+
+brightmap texture "models/ubqs/blade_inner_W.png"
+{
+	map "models/ubqs/blade_bm.png"
+}
+
+brightmap texture "models/ubqs/blade_mid_W.png"
+{
+	map "models/ubqs/blade_bm.png"
+}
+
+brightmap texture "models/ubqs/beamglow_B.png"
+{
+	map "models/ubqs/blade_bm.png"
+}
+
+brightmap texture "models/ubqs/beamglow_G.png"
+{
+	map "models/ubqs/blade_bm.png"
+}
+
+brightmap texture "models/ubqs/beamglow_R.png"
+{
+	map "models/ubqs/blade_bm.png"
+}
+
+brightmap texture "models/ubqs/beamglow_P.png"
+{
+	map "models/ubqs/blade_bm.png"
+}
+
+brightmap texture "models/ubqs/beamglow_Y.png"
+{
+	map "models/ubqs/blade_bm.png"
+}
+
+brightmap texture "models/ubqs/beamglow_O.png"
+{
+	map "models/ubqs/blade_bm.png"
+}
+
+brightmap texture "models/ubqs/beamglow_C.png"
+{
+	map "models/ubqs/blade_bm.png"
+}
+
+brightmap texture "models/ubqs/beamglow_W.png"
+{
+	map "models/ubqs/blade_bm.png"
+}
+
+brightmap texture "models/ubqs/remote_lit.png"
+{
+	map "models/ubqs/remote_bm.png"
+}

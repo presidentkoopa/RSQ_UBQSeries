@@ -1,0 +1,26 @@
+UltraBadassQuestSaber -- credits
+================================
+
+A volumetric lightsaber for stock QuestZDoom 17.3. No engine changes: everything here runs on the
+shipped Quest build.
+
+BORROWED, WITH THANKS
+  RS_Main (Ermac -- DXR, Rusted Legacy)
+      combat FX sprites, used for the Force and the blade's impacts:
+        UXFL  the choke/grip lightning arcs        (RSL2*)
+        UXPD  blast smoke -- Force push, and the smoke off a cut   (JSMO*)
+        UXFH  the armed-hand flare                 (RSF7*)
+      and the Force choke loop:
+        ubqs/grip   built from monsters/RSELLOOP.ogg
+  QuestZDoom (Emawind)
+      the engine this targets, and the off-hand weapon and AttackPos/Angle/Pitch/Roll script API
+      the whole mod is built on.
+  li-gnrcwpn
+      ubqs/rbeep -- the training remote's ready beep, from the plasma rifle's alt-fire alert
+      (weapons/plasrifle/PLBEEP).
+
+EVERYTHING ELSE
+  The hilt, blade and glow meshes, their skins, and every other sound are this pack's own --
+  synthesized or built here, with no sample taken from any film or game.
+
+NOT FOR DISTRIBUTION.

@@ -1,0 +1,54 @@
+// ULTRA BADASS QUESTSABER -- Wardust's saber set, and four synthesized (clash, burn, catch, drop).
+ubqs/on       sounds/ubqs/dssabreu.wav
+ubqs/off      sounds/ubqs/dssabreu.wav
+$volume ubqs/off 0.6
+ubqs/hum      sounds/ubqs/dssabrei.wav
+ubqs/deflect  sounds/ubqs/dssawhit.wav
+ubqs/swing1  sounds/ubqs/dssabre1.mp3
+ubqs/swing2  sounds/ubqs/dssabre2.mp3
+ubqs/swing3  sounds/ubqs/dssabre3.mp3
+ubqs/swing4  sounds/ubqs/dssabre4.mp3
+ubqs/swing5  sounds/ubqs/dssabre5.mp3
+$random ubqs/swing { ubqs/swing1 ubqs/swing2 ubqs/swing3 ubqs/swing4 ubqs/swing5 }
+ubqs/hit1    sounds/ubqs/lsabhit1.mp3
+ubqs/wall1   sounds/ubqs/lsabhtw1.mp3
+ubqs/hit2    sounds/ubqs/lsabhit2.mp3
+ubqs/wall2   sounds/ubqs/lsabhtw2.mp3
+ubqs/hit3    sounds/ubqs/lsabhit3.mp3
+ubqs/wall3   sounds/ubqs/lsabhtw3.mp3
+$random ubqs/hit { ubqs/hit1 ubqs/hit2 ubqs/hit3 }
+$random ubqs/wall { ubqs/wall1 ubqs/wall2 ubqs/wall3 }
+ubqs/burn  sounds/ubqs/ubqs_burn.wav
+ubqs/drop  sounds/ubqs/ubqs_drop.wav
+ubqs/lock  sounds/ubqs/ubqs_lock.wav
+ubqs/bladelock  sounds/ubqs/ubqs_bladelock.wav
+ubqs/crack  sounds/ubqs/ubqs_crack.wav
+ubqs/push  sounds/ubqs/ubqs_push.wav
+ubqs/pull  sounds/ubqs/ubqs_pull.wav
+ubqs/grip  sounds/ubqs/ubqs_grip.wav
+ubqs/rcharge  sounds/ubqs/ubqs_rcharge.wav
+ubqs/rfire  sounds/ubqs/ubqs_rfire.wav
+ubqs/rsad  sounds/ubqs/ubqs_rsad.wav
+ubqs/rbeep1  sounds/ubqs/ubqs_rbeep1.wav
+ubqs/rbeep2  sounds/ubqs/ubqs_rbeep2.wav
+ubqs/rbeep3  sounds/ubqs/ubqs_rbeep3.wav
+ubqs/rbeep4  sounds/ubqs/ubqs_rbeep4.ogg
+$random ubqs/rbeep { ubqs/rbeep1 ubqs/rbeep2 ubqs/rbeep3 ubqs/rbeep4 ubqs/rbeep4 }
+$volume ubqs/grip 0.7
+ubqs/clash1  sounds/ubqs/lsabhit1.mp3
+ubqs/clash2  sounds/ubqs/lsabhit2.mp3
+ubqs/clash3  sounds/ubqs/lsabhit3.mp3
+ubqs/clash4  sounds/ubqs/lsabhit4.mp3
+$random ubqs/clash { ubqs/clash1 ubqs/clash2 ubqs/clash3 ubqs/clash4 }
+ubqs/spin0  sounds/ubqs/sbrspn0.wav
+ubqs/spin1  sounds/ubqs/sbrspn1.wav
+ubqs/spin2  sounds/ubqs/sbrspn2.wav
+ubqs/spin3  sounds/ubqs/sbrspn3.wav
+ubqs/spin4  sounds/ubqs/sbrspn4.wav
+$random ubqs/spin { ubqs/spin0 ubqs/spin1 ubqs/spin2 ubqs/spin3 ubqs/spin4 }
+ubqs/catch  sounds/ubqs/sabrcth.mp3
+$volume ubqs/bladelock 0.9
+$limit ubqs/clash 3
+$limit ubqs/burn 2
+$limit ubqs/swing 3
+$volume ubqs/burn 0.6

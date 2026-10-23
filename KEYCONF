@@ -1,0 +1,4 @@
+AddSlotDefault 1 UBQS_Saber
+alias ubqs_remote_toggle "netevent ubqs_remote"
+addkeysection "Ultra Badass QuestSaber" ubqs_keys
+addmenukey "Summon / dismiss training remote" ubqs_remote_toggle

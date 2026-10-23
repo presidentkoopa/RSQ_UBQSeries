@@ -1,0 +1,376 @@
+OptionValue "UBQS_Colors"
+{
+	0, "Blue"
+	1, "Green"
+	2, "Red"
+	3, "Purple"
+	4, "Yellow"
+	5, "Orange"
+	6, "Cyan"
+	7, "White"
+}
+OptionValue "UBQS_Alt"
+{
+	1, "Force push"
+	0, "Second blade on / off"
+}
+OptionValue "UBQS_GlowColors"
+{
+	-1, "Same as the blade"
+	0, "Blue"
+	1, "Green"
+	2, "Red"
+	3, "Purple"
+	4, "Yellow"
+	5, "Orange"
+	6, "Cyan"
+	7, "White"
+}
+OptionValue "UBQS_SizeOff"
+{
+	-1, "The same as my main hand"
+	0.70, "0.70 (a shoto)"
+	0.85, "0.85"
+	1.00, "1.00"
+	1.15, "1.15"
+	1.30, "1.30"
+}
+OptionValue "UBQS_Plane"
+{
+	0, "My wrist decides"
+	1, "Flat (disc)"
+	2, "End over end"
+}
+OptionValue "UBQS_Aim"
+{
+	1, "Where I look (onto the enemy)"
+	0, "Back at the shooter"
+	2, "Bounce off the blade"
+}
+OptionValue "UBQS_Throw"
+{
+	0, "Comes back"
+	1, "Drops (call it back)"
+}
+OptionValue "UBQS_Twirl"
+{
+	0, "Off"
+	1, "Slow"
+	2, "Fast"
+}
+OptionValue "UBQS_Lights"
+{
+	0, "Off"
+	1, "Quest (one per saber)"
+	2, "Rich (two)"
+	3, "PC (three)"
+}
+OptionValue "UBQS_GlowQ"
+{
+	1, "Low (2520 triangles a blade)"
+	2, "Medium (3872)"
+	3, "High (7360)"
+	4, "Ultra (11808)"
+}
+OptionValue "UBQS_Flash"
+{
+	0, "Off"
+	1, "Follow the blade light"
+	2, "Always on"
+}
+OptionValue "UBQS_Diag"
+{
+	0, "Off"
+	1, "Dots along the blade line, and the clash log"
+	2, "World beam prediction telemetry"
+}
+
+OptionMenu "UBQS_Options"
+{
+	Title "ULTRA BADASS QUESTSABER"
+	Option "Use this saber", "ubqs_on", "OnOff"
+	Option "Start with it", "ubqs_start", "OnOff"
+	Option "Second saber in your off hand", "ubqs_dual", "OnOff"
+	Option "Doom's chainsaw becomes a saber too", "ubqs_chainsaw", "OnOff"
+	StaticText ""
+	StaticText "Fire: hold and sweep to mark enemies. Let go mid forward throw to throw it.", "DarkGray"
+	StaticText ""
+	StaticText "SETTINGS", "Gold"
+	Submenu "The saber you see", "UBQS_Look"
+	Submenu "The beam in the world", "UBQS_Beam"
+	Submenu "The world beam's prediction", "UBQS_Predict"
+	Submenu "Your swing, the trail, the staff", "UBQS_Swing"
+	Submenu "Blade on blade: contact, guard, block", "UBQS_Contact"
+	Submenu "Deflecting shots", "UBQS_Deflecting"
+	Submenu "Throwing the saber", "UBQS_Throwing"
+	Submenu "The Force", "UBQS_TheForce"
+	Submenu "Sound and feel", "UBQS_Sound"
+	Submenu "The training remote", "UBQS_Trainer"
+	Submenu "Tuning (the short list)", "UBQS_Tune"
+	Submenu "Keys and ready-made looks", "UBQS_Setup"
+	StaticText ""
+	Option "Diagnostic overlay", "ubqs_diag", "UBQS_Diag"
+}
+
+OptionMenu "UBQS_Setup"
+{
+	Title "KEYS AND READY-MADE LOOKS"
+	StaticText "KEYS", "Gold"
+	Control "Second blade on / off (either hand)", "netevent ubqs_blade2"
+	Control "Blade on / off (douse it)", "netevent ubqs_ignite"
+	Control "Summon / dismiss the training remote", "ubqs_remote_toggle"
+	StaticText ""
+	StaticText "READY-MADE LOOKS", "Gold"
+	Command "Set up for Quest (fewest frames lost)", "ubqs_glow_quality 1; ubqs_lights 1; ubqs_glow_dots 0; ubqs_trail_steps 2; ubqs_trail_life 6; ubqs_clash_fx 0.5; ubqs_hand_glow 0; ubqs_blade_glow 0.6; ubqs_glow_width 1.2; ubqs_flash 1"
+	Command "Set up for PC VR (everything on)", "ubqs_glow_quality 4; ubqs_lights 3; ubqs_glow_dots 0; ubqs_trail_steps 4; ubqs_trail_life 12; ubqs_clash_fx 2; ubqs_hand_glow 1; ubqs_blade_glow 0.6; ubqs_glow_width 1.2; ubqs_flash 2"
+	Command "Set up for the film look", "ubqs_glow_quality 3; ubqs_glow_width 1.0; ubqs_glow_motionfade 1; ubqs_glow_fade_deg0 150; ubqs_glow_fade_deg1 450; ubqs_glow_fade_widen 0.35; ubqs_trail_life 10; ubqs_hand_glow 0; ubqs_blade_glow 0.6; ubqs_flash 1"
+	Command "Put the ready-made look back to default", "resetcvar ubqs_hand_glow ubqs_blade_glow ubqs_glow_quality ubqs_glow_width ubqs_glow_dots ubqs_glow_motionfade ubqs_glow_fade_deg0 ubqs_glow_fade_deg1 ubqs_glow_fade_widen ubqs_trail_steps ubqs_trail_life ubqs_clash_fx ubqs_lights ubqs_flash"
+}
+
+OptionMenu "UBQS_Look"
+{
+	Title "THE SABER YOU SEE"
+	StaticText "WHICH SABER IS DRAWN", "Gold"
+	Option "Solid blade tube in the hand", "ubqs_blade_tube", "OnOff"
+	Slider "Beam drawn in your hand (0 = off)", "ubqs_hand_glow", 0, 1, 0.05, 2
+	Slider "Beam drawn in the world (0 = off)", "ubqs_blade_glow", 0, 1, 0.05, 2
+	// ubqs_world_saber -- the HILT drawn in the world instead of in your hand -- does not exist yet.
+	// The lane building it owns both its CVARINFO line and this row: a cvar defined TWICE in CVARINFO
+	// hangs QuestZDoom at startup. Uncomment this when that line lands, and not before.
+	// Option "Hilt drawn in the world instead of in your hand", "ubqs_world_saber", "OnOff"
+	StaticText ""
+	StaticText "SIZE AND COLOUR", "Gold"
+	Option "Colour", "ubqs_color", "UBQS_Colors"
+	Option "Off-hand colour", "ubqs_color_off", "UBQS_Colors"
+	Slider "Size", "ubqs_size", 0.7, 1.3, 0.15, 2
+	Option "Off-hand size", "ubqs_size_off", "UBQS_SizeOff"
+	StaticText ""
+	Option "Alt fire", "ubqs_alt", "UBQS_Alt"
+	StaticText ""
+	Submenu "The beam in the world", "UBQS_Beam"
+}
+
+OptionMenu "UBQS_Beam"
+{
+	Title "THE BEAM IN THE WORLD"
+	Option "Detail", "ubqs_glow_quality", "UBQS_GlowQ"
+	Slider "Width (1.2 = the designed look)", "ubqs_glow_width", 0.4, 3, 0.1, 1
+	Slider "Beam drawn in the world (0 = off)", "ubqs_blade_glow", 0, 1, 0.05, 2
+	Option "Beam colour (both beams)", "ubqs_blade_glow_color", "UBQS_GlowColors"
+	StaticText ""
+	StaticText "WHERE IT MEETS THE HILT", "Gold"
+	Slider "White core reaches into the hilt, units", "ubqs_glow_overlap_core", 0, 4, 0.25, 2
+	Slider "Halo reaches into the hilt, units", "ubqs_glow_overlap_halo", 0, 4, 0.25, 2
+	Slider "Whole beam starts this far along the blade, units", "ubqs_beam_shift", -8, 8, 0.25, 2
+	StaticText ""
+	StaticText "FAST SWINGS", "Gold"
+	Option "The white core fades, the halo widens", "ubqs_glow_motionfade", "OnOff"
+	Slider "Fade starts at (degrees a second)", "ubqs_glow_fade_deg0", 50, 600, 25, 0
+	Slider "Fade complete at (degrees a second)", "ubqs_glow_fade_deg1", 150, 1200, 50, 0
+	Slider "How much the halo widens", "ubqs_glow_fade_widen", 0, 1, 0.05, 2
+	Slider "Also fade on sharp direction changes", "ubqs_glow_fade_jerk", 0, 2, 0.1, 1
+	StaticText ""
+	Option "Soft dots inside the beam (10 actors a blade)", "ubqs_glow_dots", "OnOff"
+	StaticText ""
+	Submenu "The world beam's prediction", "UBQS_Predict"
+}
+
+OptionMenu "UBQS_Predict"
+{
+	Title "THE WORLD BEAM'S PREDICTION"
+	Option "Motion prediction", "ubqs_glow_predict", "OnOff"
+	Slider "Prediction lead (1 = the whole lag)", "ubqs_glow_lead", 0, 2, 0.05, 2
+	Slider "One headset frame, ms", "ubqs_glow_frame_ms", 8.3, 13.9, 2.8, 1
+	StaticText ""
+	Slider "Most one guess may turn it (degrees)", "ubqs_glow_maxang", 5, 60, 2.5, 1
+	Slider "Most one guess may move its base (units)", "ubqs_glow_maxlin", 0, 12, 0.5, 1
+	Slider "Lead fully in at (degrees a second)", "ubqs_glow_ramp_deg", 20, 200, 5, 0
+	Slider "What counts as stopping (part of the last speed)", "ubqs_glow_stop", 0.2, 0.95, 0.05, 2
+	Slider "A gap longer than this starts over, ms", "ubqs_glow_hitch_ms", 40, 400, 20, 0
+	StaticText ""
+	Slider "Ignore the arm above this turn rate (degrees a tic)", "ubqs_snap_turn_deg", 4, 30, 1, 0
+	StaticText ""
+	Command "Put this page back the way it shipped", "resetcvar ubqs_glow_predict ubqs_glow_lead ubqs_glow_frame_ms ubqs_glow_maxang ubqs_glow_maxlin ubqs_glow_ramp_deg ubqs_glow_stop ubqs_glow_hitch_ms ubqs_snap_turn_deg"
+}
+
+OptionMenu "UBQS_Swing"
+{
+	Title "YOUR SWING"
+	Slider "How hard you must swing to cut (lower = easier)", "ubqs_swing_cut", 3, 20, 0.5, 1
+	Slider "Damage", "ubqs_damage", 10, 100, 5, 0
+	// the cauterized wound: flash, sparks and smoke. 0 leaves only blood, which is how it was.
+	Slider "Cut effects: flash, sparks, smoke", "ubqs_cut_fx", 0, 3, 0.25, 2
+	Slider "How much swing speed changes damage (0 = not at all)", "ubqs_swing_scale", 0, 1, 0.1, 1
+	Slider "Same enemy can be cut again after (tics)", "ubqs_cut_rate", 2, 20, 1, 0
+	Slider "Blade generosity: how near a miss still cuts (units)", "ubqs_cut_pad", 0, 12, 0.5, 1
+	StaticText ""
+	StaticText "THE TRAIL", "Gold"
+	Option "Swing trail", "ubqs_trail", "OnOff"
+	Slider "Trail: most blobs a tic (2 = Quest)", "ubqs_trail_steps", 1, 4, 1, 0
+	Slider "Trail: how long it hangs (tics)", "ubqs_trail_life", 2, 24, 1, 0
+	StaticText ""
+	StaticText "THE STAFF", "Gold"
+	Option "Staff twirl", "ubqs_twirl", "UBQS_Twirl"
+	StaticText "Needs the second blade lit -- bind the second-blade key (Keys).", "DarkGray"
+	Slider "Twirl disc damage, times the damage above", "ubqs_dmg_twirl", 0.1, 2, 0.1, 1
+	StaticText ""
+	Option "Blade burns walls", "ubqs_burn", "OnOff"
+}
+
+OptionMenu "UBQS_Contact"
+{
+	Title "BLADE ON BLADE"
+	Slider "How close the beams must come", "ubqs_contact", 0.5, 10, 0.25, 2
+	Slider "Dead zone above the hilts", "ubqs_contact_hilt", 0, 8, 0.25, 2
+	Slider "Lock stickiness (how much wider it is to STAY locked)", "ubqs_lock_stick", 1, 3, 0.1, 1
+	Slider "Sparks and flashes (0 = none)", "ubqs_clash_fx", 0, 3, 0.25, 2
+	StaticText ""
+	StaticText "THE CROSS GUARD", "Gold"
+	Option "Cross guard (blades crossed = no damage from the front)", "ubqs_crossguard", "OnOff"
+	Slider "How wide the wall is (degrees either side)", "ubqs_guard_arc", 30, 120, 5, 0
+	StaticText ""
+	StaticText "BLOCKING BULLETS", "Gold"
+	// ONE blade in the way, measured. Above 0 this is what decides a block and the two rows below
+	// it do nothing; at 0 the blade stops being geometry and goes back to the cone and the dice.
+	Slider "One blade blocks: how near the blade counts (0 = old dice roll)", "ubqs_blade_guard", 0, 24, 1, 0
+	Slider "Block bullets held still, per cent", "ubqs_block", 0, 100, 5, 0
+	Slider "How far off the shooter the blade may point (degrees)", "ubqs_block_cone", 10, 120, 5, 0
+	Slider "After a fast swing, everything is blocked for (tics)", "ubqs_block_swung", 0, 35, 1, 0
+	Option "Blocked bullets fly back", "ubqs_block_return", "OnOff"
+	Slider "Blocked bullets hit back for", "ubqs_block_damage", 0, 100, 5, 0
+}
+
+OptionMenu "UBQS_Deflecting"
+{
+	Title "DEFLECTING SHOTS"
+	Option "Deflect shots", "ubqs_deflect", "OnOff"
+	Option "Deflected shots go", "ubqs_deflect_aim", "UBQS_Aim"
+	Slider "Aim help, cone (0 = none)", "ubqs_deflect_assist", 0, 40, 1, 0
+	Slider "Looks this far ahead of the shot (tics)", "ubqs_deflect_lead", 1, 6, 0.5, 1
+}
+
+OptionMenu "UBQS_Throwing"
+{
+	Title "THROWING THE SABER"
+	Option "Thrown saber", "ubqs_throw", "UBQS_Throw"
+	Slider "How hard you must throw (lower = easier)", "ubqs_throw_min", 1, 8, 0.5, 1
+	Slider "How straight ahead it must go (lower = easier)", "ubqs_throw_straight", 0, 1, 0.05, 2
+	Slider "Follows your arm, or where the hand points", "ubqs_throw_blend", 0, 1, 0.05, 2
+	Slider "Flight speed", "ubqs_throw_speed", 0.5, 2, 0.1, 1
+	Slider "Range (a hard throw multiplies it 0.8 to 1.6)", "ubqs_throw_range", 192, 1024, 64, 0
+	Slider "Spin", "ubqs_throw_spin", 4, 40, 2, 0
+	Option "Spins", "ubqs_throw_plane", "UBQS_Plane"
+	Option "Second blade lights when thrown", "ubqs_throw_double", "OnOff"
+	Slider "Thrown saber damage, times the base damage", "ubqs_dmg_thrown", 0.1, 3, 0.1, 1
+	StaticText ""
+	StaticText "LOCKING ON", "Gold"
+	Slider "Enemies one throw locks", "ubqs_locks", 1, 8, 1, 0
+	Slider "Lock-on cone (degrees)", "ubqs_lock_cone", 6, 30, 1, 0
+}
+
+OptionMenu "UBQS_TheForce"
+{
+	Title "THE FORCE (off hand)"
+	Option "Force powers", "ubqs_force", "OnOff"
+	Option "Off-hand Force gestures", "ubqs_force_gestures", "OnOff"
+	Slider "Gesture snap needed (lower = easier)", "ubqs_force_gesture", 1, 6, 0.5, 1
+	Slider "How straight a push or pull must be (lower = easier)", "ubqs_gesture_straight", 0, 1, 0.05, 2
+	Option "Bare Force hand when there is no off-hand saber", "ubqs_force_hand", "OnOff"
+	StaticText ""
+	Submenu "Push and pull", "UBQS_PushPull"
+	Submenu "The grip", "UBQS_Grip"
+	Submenu "Force jump", "UBQS_Jump"
+	StaticText ""
+	StaticText "Hold off-hand alt: thrust = push, yank back = pull, hold on an enemy = grip.", "DarkGray"
+	StaticText "Hold jump with a saber out = Force jump.", "DarkGray"
+}
+
+OptionMenu "UBQS_PushPull"
+{
+	Title "PUSH AND PULL"
+	Slider "Push strength (this also scales pull)", "ubqs_push_power", 0.25, 3, 0.25, 2
+	Slider "Pull strength, times the push strength", "ubqs_pull_power", 0.25, 3, 0.25, 2
+	Slider "Push reach", "ubqs_push_range", 128, 1024, 32, 0
+	Slider "Pull reach", "ubqs_pull_range", 128, 1024, 32, 0
+	Slider "Push: how wide the shove is (degrees)", "ubqs_push_cone", 10, 90, 5, 0
+	Slider "Pull: how wide the yank is (degrees)", "ubqs_pull_cone", 10, 90, 5, 0
+	Slider "Push damage (0 = knock back only)", "ubqs_push_damage", 0, 50, 1, 0
+	Slider "Cooldown, seconds (push and pull share it)", "ubqs_push_cooldown", 0.25, 5, 0.25, 2
+}
+
+OptionMenu "UBQS_Grip"
+{
+	Title "THE GRIP"
+	Slider "Lifts up to mass (0 = no grip at all)", "ubqs_grip_mass", 0, 1000, 50, 0
+	Option "Can take bosses too (still within the mass above)", "ubqs_grip_boss", "OnOff"
+	Slider "How precisely you must point (degrees)", "ubqs_grip_cone", 4, 45, 1, 0
+	Slider "Reach", "ubqs_grip_range", 256, 1536, 64, 0
+	Slider "How still your hand must be (higher = easier)", "ubqs_grip_still", 0.5, 6, 0.25, 2
+	Slider "How long you hold still first (tics)", "ubqs_grip_hold", 2, 35, 1, 0
+	Slider "Choke damage per second (0 = just move things)", "ubqs_grip_damage", 0, 90, 2, 0
+	Slider "Fling strength", "ubqs_grip_fling", 1, 8, 0.5, 1
+	Slider "Slam damage when a flung body hits something", "ubqs_grip_slam", 0, 10, 0.5, 1
+}
+
+OptionMenu "UBQS_Jump"
+{
+	Title "FORCE JUMP"
+	Option "Force jump", "ubqs_force_jump", "OnOff"
+	Slider "Power (how fast you rise)", "ubqs_jump_power", 0.5, 2, 0.25, 2
+	Slider "How long holding keeps lifting you (tics)", "ubqs_jump_hold", 2, 24, 1, 0
+	Slider "How slowly you fall holding jump", "ubqs_jump_float", 0.5, 3, 0.25, 2
+}
+
+OptionMenu "UBQS_Sound"
+{
+	Title "SOUND AND FEEL"
+	Slider "Blade hum (0 = silent)", "ubqs_hum", 0, 1, 0.05, 2
+	Slider "Off-hand hum, times the above", "ubqs_hum_off", 0, 1, 0.05, 2
+	Slider "Swing whoosh", "ubqs_vol_swing", 0, 1, 0.05, 2
+	Slider "Swing whoosh: least gap between them (tics)", "ubqs_swing_gap", 2, 20, 1, 0
+	Slider "Hitting things", "ubqs_vol_hit", 0, 1, 0.05, 2
+	Slider "Blades crossing, and deflecting shots", "ubqs_vol_clash", 0, 1, 0.05, 2
+	Slider "The Force", "ubqs_vol_force", 0, 1, 0.05, 2
+	Option "Choke loop", "ubqs_snd_choke", "OnOff"
+	Slider "Switching the blade on and off", "ubqs_vol_ignite", 0, 1, 0.05, 2
+	Slider "Training remote: chirps (0 = quiet)", "ubqs_remote_chirp", 0, 1, 0.05, 2
+	StaticText ""
+	StaticText "LIGHT", "Gold"
+	Option "Blade light", "ubqs_lights", "UBQS_Lights"
+	Option "Hit and clash flashes", "ubqs_flash", "UBQS_Flash"
+	StaticText ""
+	StaticText "CONTROLLER BUZZ", "Gold"
+	Option "Controller buzz", "ubqs_haptics", "OnOff"
+	Option "Buzz when the blade cuts something", "ubqs_haptic_cut", "OnOff"
+	Option "Buzz when blades cross, and while they stay locked", "ubqs_haptic_clash", "OnOff"
+}
+
+OptionMenu "UBQS_Trainer"
+{
+	Title "THE TRAINING REMOTE"
+	Command "Summon / dismiss the training remote", "netevent ubqs_remote"
+	Control "Key: summon / dismiss remote", "ubqs_remote_toggle"
+	Slider "Remote level", "ubqs_remote_level", 1, 3, 1, 0
+	Slider "Remote sting damage (0 = none)", "ubqs_remote_sting", 0, 10, 1, 0
+	Slider "Extra warning before it shoots (tics)", "ubqs_remote_warn", 0, 20, 1, 0
+	Slider "Chirps (0 = quiet)", "ubqs_remote_chirp", 0, 1, 0.05, 2
+}
+
+OptionMenu "UBQS_Tune"
+{
+	Title "TUNING"
+	Submenu "The beam in the world", "UBQS_Beam"
+	Submenu "The world beam's prediction", "UBQS_Predict"
+	Submenu "Your swing, the trail, the staff", "UBQS_Swing"
+	Submenu "Blade on blade", "UBQS_Contact"
+	Submenu "Deflecting shots", "UBQS_Deflecting"
+	Submenu "Throwing the saber", "UBQS_Throwing"
+	Submenu "The Force", "UBQS_TheForce"
+	Submenu "Sound and feel", "UBQS_Sound"
+	Submenu "The saber you see", "UBQS_Look"
+}
+
+AddOptionMenu "OptionsMenu"
+{
+	Submenu "Ultra Badass QuestSaber", "UBQS_Options"
+}

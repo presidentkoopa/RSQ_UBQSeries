@@ -1,0 +1,4 @@
+GameInfo
+{
+	AddEventHandlers = "UBQS_Bridge", "UBQS_Telemetry"
+}
