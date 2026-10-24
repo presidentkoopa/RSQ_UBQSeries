@@ -88,6 +88,7 @@ server float ssq_roll_sign      = 1.0;    // flip if the ring rolls the wrong wa
 // ---- per player (user: userinfo, travels) ---------------------------------------
 user bool  ssq_start_drawn      = false;  // start with the shield in hand
 user bool  ssq_feedback         = true;   // block feedback and haptics
+user bool  ssq_spatial          = true;   // contacts are heard where they happen, not at your feet
 
 // the shoulder mount, relative to the body: forward (negative = behind), to the off side, up from eye height
 user float ssq_mount_fwd        = -27.0;

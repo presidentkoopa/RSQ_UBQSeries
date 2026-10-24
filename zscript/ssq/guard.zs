@@ -254,7 +254,7 @@ class SSQ_Guard : Inventory
 			lastBlockTic = now;
 			if (fb)
 			{
-				mo.A_StartSound("ssq/block", CHAN_5, 0, perfect ? 1.0 : 0.8, ATTN_NORM, perfect ? 1.35 : 1.0);
+				SSQ_FX.At(mo, P, "ssq/block", CHAN_5, perfect ? 1.0 : 0.8, perfect ? 1.35 : 1.0);
 				if (held != 0) SSQ_FX.Buzz(mo, perfect ? 1.0 : 0.7, perfect ? 12 : 5);
 				// HOW YOU KNOW IT WAS PERFECT, without reading a message: it rings a tone higher,
 				// the hand buzz is twice as long, and the plate blooms white at the contact point.
@@ -263,7 +263,7 @@ class SSQ_Guard : Inventory
 				{
 					let fl = Actor.Spawn('SSQ_BlastBloom', P);
 					if (fl) fl.A_SetScale(1.4);
-					mo.A_StartSound("ssq/bash", CHAN_6, 0, 0.7, ATTN_NORM, 1.3);
+					SSQ_FX.At(mo, P, "ssq/bash", CHAN_6, 0.7, 1.3);
 				}
 			}
 		}
@@ -345,7 +345,7 @@ class SSQ_Guard : Inventory
 			lastSweepTic = now;
 			if (fb)
 			{
-				mo.A_StartSound("ssq/block", CHAN_5, 0, 0.8, ATTN_NORM, 1.15);
+				SSQ_FX.At(mo, P, "ssq/block", CHAN_5, 0.8, 1.15);
 				if (plateHeld != 0) SSQ_FX.Buzz(mo, 0.6, 4);
 			}
 		}
@@ -500,7 +500,7 @@ class SSQ_Guard : Inventory
 			lastSweepTic = now;
 			if (SSQ_Handler.UVI(mo.player, 'ssq_feedback', 1) != 0)
 			{
-				mo.A_StartSound("ssq/block", CHAN_5, 0, 0.7, ATTN_NORM, 1.1);
+				SSQ_FX.At(mo, P, "ssq/block", CHAN_5, 0.7, 1.1);
 				if (plateHeld != 0) SSQ_FX.Buzz(mo, 0.55, 4);
 			}
 		}
@@ -588,7 +588,7 @@ class SSQ_Guard : Inventory
 			{
 				int dmg = SSQ_Handler.SVI('ssq_grind_damage', 6);
 				t.DamageMobj(mo, mo, dmg, 'Saw');
-				mo.A_StartSound("ssq/grind", CHAN_5, 0, 0.8);
+				SSQ_FX.At(mo, C + n * (t.radius * 0.5), "ssq/grind", CHAN_5, 0.8);
 				SSQ_FX.Sparks(mo, C + n * (t.radius * 0.5), n, 4);
 				SSQ_FX.Buzz(mo, 0.3, 3);
 			}
@@ -610,7 +610,7 @@ class SSQ_Guard : Inventory
 				t.Thrust(knock, atan2(n.y, n.x));
 				if (!t.bNoGravity && !t.bDontThrust)
 					t.vel.z += SSQ_Handler.SV('ssq_bash_lift', 2.5) * mk * (t.player ? 0.5 : 1.0);
-				mo.A_StartSound("ssq/bash", CHAN_5);
+				SSQ_FX.At(mo, C + n * (t.radius * 0.5), "ssq/bash", CHAN_5);
 				SSQ_FX.Buzz(mo, 1.0, 8);
 				g.bashCool = 10;
 			}

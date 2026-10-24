@@ -196,6 +196,22 @@ class SSQ_FX abstract play
 		q.A_QuakeEx(left ? strength : 0, left ? 0 : strength, 0, max(1, tics), 0, 4, "", QF_SCALEDOWN);
 	}
 
+	// a shield sound played AT the contact instead of at the player's feet. ssq_spatial 0 puts
+	// every one of them back on the pawn, exactly as they were.
+	static void At(PlayerPawn mo, Vector3 p, Sound s, int chan, double vol = 1.0, double pitch = 1.0)
+	{
+		if (!mo) return;
+		if (!mo.player || SSQ_Handler.UVI(mo.player, 'ssq_spatial', 1) == 0)
+		{
+			mo.A_StartSound(s, chan, 0, vol, ATTN_NORM, pitch);
+			return;
+		}
+		let e = SSQ_Ping(Actor.Spawn('SSQ_Ping', p));
+		if (!e) { mo.A_StartSound(s, chan, 0, vol, ATTN_NORM, pitch); return; }
+		e.life = 70;	// two seconds: longer than any of these samples, and the tic loop ends it
+		e.A_StartSound(s, CHAN_BODY, 0, vol, ATTN_NORM, pitch);
+	}
+
 	static void Particle(Actor at, Vector3 p, Vector3 v, Color c, int life, double size)
 	{
 		FSpawnParticleParams pp;
@@ -218,6 +234,28 @@ class SSQ_FX abstract play
 			Particle(at, p, v, "ffd27a", 10 + random(0, 8), 2.5);
 		}
 	}
+}
+
+// A CONTACT, HEARD WHERE IT HAPPENED. Every held-shield sound played on the pawn, which the
+// engine places at the player's feet: in a headset a block arrived from the middle of your chest
+// while the spark you were watching was half a metre out on the plate, and it sounded identical
+// whatever you did with your arm. Every one of these points is already computed, for the sparks,
+// and then thrown away for the audio. Sound only, from a decision every machine already makes.
+// (Lifted from the lightsaber's UBQS_Ping. Copied, never linked.)
+class SSQ_Ping : Actor
+{
+	int life;
+	Default
+	{
+		+NOINTERACTION +NOBLOCKMAP +NOSECTOR +NOGRAVITY +DONTSPLASH +NOTONAUTOMAP +NOTIMEFREEZE
+		RenderStyle "None";
+	}
+	override void Tick()
+	{
+		Super.Tick();
+		if (--life <= 0) Destroy();
+	}
+	States { Spawn: TNT1 A 1; Wait; }
 }
 
 class SSQ_Buzzer : Actor

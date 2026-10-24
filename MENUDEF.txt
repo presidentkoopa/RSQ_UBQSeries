@@ -52,6 +52,7 @@ OptionMenu "SSQ_Options"
 	Slider "Guard generosity (cm)", "ssq_sweep_pad", 0.0, 60.0, 1.0, 0
 	Option "Blocked Melee", "ssq_melee", "SSQ_Melee"
 	Option "Block Feedback and Haptics", "ssq_feedback", "OnOff"
+	Option "Hear contacts where they happen", "ssq_spatial", "OnOff"
 	Option "Perfect Block", "ssq_perfect", "OnOff"
 	StaticText ""
 	Slider "Hand Speed to Throw", "ssq_throw_min", 0.0, 100.0, 5.0, 0
