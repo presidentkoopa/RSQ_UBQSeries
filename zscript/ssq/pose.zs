@@ -18,6 +18,11 @@ class SSQ_Pose play
 	Vector3 pos[8];		// newest first
 	Vector3 F, L, U;
 	int stamp[8];		// level time each sample arrived, 0 = none
+	// WHERE THE BODY WAS AND WHICH WAY IT FACED for each sample. pos[] is absolute, so every
+	// velocity read off it used to carry the player's own travel and his own turn: see Vel().
+	// Both are synced playsim state, so this stays deterministic on every machine.
+	Vector3 bod[8];
+	double byaw[8];
 	bool grip;			// the off trigger as the sender saw it
 	bool left;			// the sender plays left-handed (the engine's vr_control_scheme >= 10)
 	int count;
@@ -25,10 +30,10 @@ class SSQ_Pose play
 	// THE AXES ARE BUILT HERE, IN PLACE. A function returning three Vector3s came back all
 	// zeros on QZD 17.3's VM (found 2026-10-22, like the `out Vector3` fault): so the raw
 	// angles come in and the fields are written directly.
-	void Push(Vector3 p, double yaw, double pitch, double roll, bool g, int now)
+	void Push(Vector3 p, Vector3 body, double bodyYaw, double yaw, double pitch, double roll, bool g, int now)
 	{
-		for (int k = N - 1; k > 0; k--) { pos[k] = pos[k - 1]; stamp[k] = stamp[k - 1]; }
-		pos[0] = p; stamp[0] = now;
+		for (int k = N - 1; k > 0; k--) { pos[k] = pos[k - 1]; stamp[k] = stamp[k - 1]; bod[k] = bod[k - 1]; byaw[k] = byaw[k - 1]; }
+		pos[0] = p; stamp[0] = now; bod[0] = body; byaw[0] = bodyYaw;
 		double cp = cos(pitch);
 		F.x = cp * cos(yaw); F.y = cp * sin(yaw); F.z = sin(pitch);
 		double l0x = cos(yaw + 90), l0y = sin(yaw + 90), l0z = 0;
@@ -42,18 +47,54 @@ class SSQ_Pose play
 
 	clearscope bool Fresh(int now) { return count > 0 && now - stamp[0] <= 3; }
 
+	// THE ARM'S OWN MOTION, NOT THE BODY'S. pos[] is absolute -- the sender packs the hand
+	// relative to the pawn and the receiver adds the pawn straight back -- so every velocity
+	// read off it carried the player's travel and his turn along with it. Doom run speed is
+	// about 583 units/sec: eight times ssq_bash_speed, fourteen times ssq_perfect_speed and
+	// twenty-nine times ssq_throw_min. Walking with the plate ahead of you bashed everything
+	// in reach, every block came out perfect, and letting go of the lock button while moving
+	// threw the shield away. A snap turn did all three in one tic: the hand is 20 units off
+	// the body axis, so 45 degrees in a tic is 15 units, about 525 units/sec.
+	//
+	// So the hand is differenced in the BODY's frame -- relative to the pawn, turned back by
+	// the pawn's yaw -- and the answer is turned into the frame the player faces NOW, because
+	// the callers compare it against world directions: the plate normal in the bash and the
+	// perfect block, and the look direction in the throw. A turn of the body with the arm
+	// still now reads as nothing, which is what it is. No threshold to tune, no history to
+	// throw away.
+	//
+	// The owner's own BD22 Quest pack fixed this twice and carries his reports as comments --
+	// "goes insane with attacks just when I move around", "constantly firing when I walk" --
+	// and the lightsaber fixed it twice more (bodyStep, and a snap-turn history flush).
+	// Copied from both, linked to neither.
+	//
+	// SSQ_Guard.PlateTravel deliberately stays absolute: it walks the plate through world
+	// space against world-space missiles, which is a different question.
+	Vector3 Rel(int k)
+	{
+		Vector3 d = pos[k] - bod[k];
+		double c = cos(byaw[k]), s = sin(byaw[k]);
+		return (d.x * c + d.y * s, d.y * c - d.x * s, d.z);
+	}
+
+	Vector3 Turn(Vector3 v)
+	{
+		double c = cos(byaw[0]), s = sin(byaw[0]);
+		return (v.x * c - v.y * s, v.x * s + v.y * c, v.z);
+	}
+
 	// map units per tic, from the last two samples (zero until there are two)
 	Vector3 Vel()
 	{
 		if (count < 2 || stamp[0] == stamp[1]) return (0, 0, 0);
-		return (pos[0] - pos[1]) / (stamp[0] - stamp[1]);
+		return Turn(Rel(0) - Rel(1)) / (stamp[0] - stamp[1]);
 	}
 
 	// velocity over a 2-tic window starting k samples back; zero if not there
 	Vector3 VelAt(int k)
 	{
 		if (k + 2 >= count || stamp[k] == stamp[k + 2]) return (0, 0, 0);
-		return (pos[k] - pos[k + 2]) / (stamp[k] - stamp[k + 2]);
+		return Turn(Rel(k) - Rel(k + 2)) / (stamp[k] - stamp[k + 2]);
 	}
 
 	// THE THROW IS THE PEAK, NOT THE RELEASE. When the finger lets go the arm is already

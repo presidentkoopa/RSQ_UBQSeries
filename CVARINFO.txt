@@ -66,6 +66,8 @@ server bool  ssq_bash           = true;
 server float ssq_bash_speed     = 70.0;   // units/sec along the face
 server float ssq_bash_damage    = 1.0;
 server float ssq_bash_reach     = 1.2;    // the bash opens the plate and its depth by this much, for the shove only
+server bool  ssq_bash_los       = true;   // the bash and the grind cannot reach through a wall or a door
+server float ssq_bash_sustain   = 0.6;    // how much of a sustained push counts as a bash (0 = fast shoves only)
 server float ssq_bash_knock     = 1.35;   // how far a bashed body goes
 server float ssq_bash_lift      = 2.5;    // the small lift under the shove, so they leave the floor
 

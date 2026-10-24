@@ -801,8 +801,15 @@ class SSQ_Handler : EventHandler
 		double ca = cos(e.AttackPitch);
 		Vector3 dir = (cos(e.AttackAngle) * ca, sin(e.AttackAngle) * ca, -sin(e.AttackPitch));
 		if (dir.Length() <= 0) return false;
-		// where the shot starts: the same shoulder height the block path assumes for a hitscan
-		Vector3 A = shooter.pos + (0, 0, shooter.height * 0.75);
+		// WHERE THE SHOT REALLY STARTS, by P_LineAttack's own formula (p_map.cpp on stock QZD
+		// 17.3): shootz = Center() - Floorclip + AttackOffset() + sz, and AttackOffset() is a flat
+		// 8 for anything that is not a player. sz is the attack's own z offset, which the event
+		// hands us as AttackZ and this never read. height * 0.75 was a guess sitting 6 units high
+		// on an imp and 14 on a Cyberdemon -- against a 29 cm plate at twenty metres that is most
+		// of the guard, which is why bullets that looked blockable were not.
+		// LAF_OVERRIDEZ measures from the actor's feet instead.
+		double mz = ((e.AttackLineFlags & LAF_OVERRIDEZ) ? 0.0 : (shooter.height * 0.5 - shooter.Floorclip + 8.0)) + e.AttackZ;
+		Vector3 A = shooter.pos + (0, 0, mz);
 		double dist = e.AttackDistance > 0 ? e.AttackDistance : 2048.0;
 		for (int i = 0; i < MAXPLAYERS; i++)
 		{
@@ -855,7 +862,7 @@ class SSQ_Handler : EventHandler
 		{
 			double yaw, pitch, roll; int grip;
 			[yaw, pitch, roll, grip] = SSQ_Hand.UnpackAng(e.Args[1]);
-			mPose[i].Push(mo.pos + SSQ_Hand.UnpackPos(e.Args[0]), yaw, pitch, roll, grip != 0, Level.maptime);
+			mPose[i].Push(mo.pos + SSQ_Hand.UnpackPos(e.Args[0]), mo.pos, mo.angle, yaw, pitch, roll, grip != 0, Level.maptime);
 			mPose[i].left = (e.Args[2] & 1) != 0;
 		}
 		else if (e.Name == "ssq-draw")

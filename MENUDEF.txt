@@ -88,6 +88,8 @@ OptionMenu "SSQ_Tuning"
 	Slider "Shove speed", "ssq_bash_speed", 10, 400, 5, 0
 	Slider "Bash damage", "ssq_bash_damage", 0.1, 8.0, 0.1, 1
 	Slider "Bash reach", "ssq_bash_reach", 1.0, 2.0, 0.05, 2
+	Slider "A leaned shield bashes (0 = fast shoves only)", "ssq_bash_sustain", 0, 1, 0.1, 1
+	Option "Bash needs line of sight", "ssq_bash_los", "OnOff"
 	Slider "Bash knockback", "ssq_bash_knock", 0.0, 3.0, 0.05, 2
 	Slider "Bash lift", "ssq_bash_lift", 0.0, 8.0, 0.5, 1
 	Slider "Perfect block speed", "ssq_perfect_speed", 10, 150, 5, 0

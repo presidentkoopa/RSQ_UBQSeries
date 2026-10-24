@@ -15,6 +15,11 @@
 class SSQ_Guard : Inventory
 {
 	int bashCool;
+	// THE PLATE'S PATH ALONG ITS OWN FACE, decaying: see HeldTick. lastPushTic makes the sum
+	// self-healing -- any gap (stowed, thrown, dead, a level change) starts it clean, with no
+	// second site having to remember to reset it.
+	double pushPath;
+	int lastPushTic;
 	int lastBlockTic;
 
 	Default
@@ -388,7 +393,7 @@ class SSQ_Guard : Inventory
 		if (!mo || !mo.player || mo.health <= 0) return;
 		if (!Plate()) return;
 		Vector3 C = plateC, n = plateN;
-		double R = plateR + SSQ_Handler.CM(SSQ_Handler.SV('ssq_sweep_pad', 10.0));
+		double R = plateR + SSQ_Handler.CM(SSQ_Handler.SV('ssq_sweep_pad', 18.0));
 		double lead = clamp(SSQ_Handler.SV('ssq_sweep_lead', 3.0), 1.0, 6.0);
 		Vector3 travel = PlateTravel();
 		double reach = R + 320.0 + travel.Length();	// a fast bolt, and a fast arm, cover ground
@@ -535,7 +540,19 @@ class SSQ_Guard : Inventory
 		bool grindNow = saw.Revved() && SSQ_Handler.SVI('ssq_grind_damage', 6) > 0 && (mo.Level.maptime % max(1, SSQ_Handler.SVI('ssq_grind_every', 4))) == 0;
 		Vector3 v = pose.Vel() * TICRATE;
 		double shove = v dot n;
-		bool bashNow = SSQ_Handler.SVI('ssq_bash', 1) != 0 && g.bashCool == 0 && shove >= SSQ_Handler.SV('ssq_bash_speed', 70.0);
+		// A COMMITTED PUSH IS A BASH TOO. `shove` is ONE tic of plate travel along the face, so
+		// the only thing that ever reached ssq_bash_speed was a fast snap -- and now that the
+		// body's own motion is out of the measurement, leaning the shield into a body or walking
+		// it into a doorway full of them moves the plate steadily and slowly and would do nothing
+		// at all, for as long as you held it. So the push is INTEGRATED as well as differenced: a
+		// decaying sum worth about four tics, counted at ssq_bash_sustain of itself. Integrating
+		// instead of differentiating is also what stops the turnaround of a shove lying to you.
+		// 0 restores exactly the old behaviour. (The saber's cut does this with ubqs_cut_sustain.)
+		if (mo.Level.maptime != g.lastPushTic + 1) g.pushPath = 0;
+		g.lastPushTic = mo.Level.maptime;
+		g.pushPath = g.pushPath * 0.75 + max(shove, 0.0);
+		double eff = max(shove, g.pushPath * clamp(SSQ_Handler.SV('ssq_bash_sustain', 0.6), 0.0, 1.0));
+		bool bashNow = SSQ_Handler.SVI('ssq_bash', 1) != 0 && g.bashCool == 0 && eff >= SSQ_Handler.SV('ssq_bash_speed', 70.0);
 		if (!grindNow && !bashNow) return;
 
 		// THE BASH REACHES FURTHER THAN THE GRIND. A shove is the whole shield and your whole
@@ -543,6 +560,8 @@ class SSQ_Guard : Inventory
 		// depth by a fifth for the bash test only. The grind still has to actually be on them.
 		double bashK = max(SSQ_Handler.SV('ssq_bash_reach', 1.2), 1.0);
 		double bashR = R * bashK;
+		// read above the iterator, like everything else here: SVI is an uncached lookup by name
+		bool los = SSQ_Handler.SVI('ssq_bash_los', 1) != 0;
 		let it = BlockThingsIterator.Create(mo, bashR + 64);
 		while (it.Next())
 		{
@@ -557,6 +576,12 @@ class SSQ_Guard : Inventory
 			double depth = (bashNow ? (t.radius + 10) * bashK : t.radius + 10);
 			if (inplane.Length() > reach + t.radius) continue;
 			if (abs(along) > depth) continue;
+			// NOT THROUGH THE WALL. The iterator box is over a hundred units across and nothing here
+			// asked whether the shield could reach what it found, so a bash beside a thin wall or a
+			// closed door damaged and launched what was behind it. Last of the per-victim tests, so
+			// it costs a sight check only for something the plate geometrically touched.
+			// (The saber's cut took exactly this fix: ubqs_cut_los.)
+			if (los && !mo.CheckSight(t, SF_IGNOREVISIBILITY)) continue;
 			// the grind is the rim on them, and keeps the tighter box
 			bool onPlate = inplane.Length() <= R + t.radius && abs(along) <= t.radius + 10;
 			if (grindNow && onPlate)
@@ -569,17 +594,22 @@ class SSQ_Guard : Inventory
 			}
 			if (bashNow && along > 0)
 			{
-				int dmg = int(clamp(10 + 0.15 * shove, 10, 40) * SSQ_Handler.SV('ssq_bash_damage', 1.0));
+				int dmg = int(clamp(10 + 0.15 * eff, 10, 40) * SSQ_Handler.SV('ssq_bash_damage', 1.0));
 				t.DamageMobj(mo, mo, dmg, 'Melee');
 				// CLEAR SOME SPACE. The shove is away from the face, scaled by how hard you drove
 				// it, with a small lift under it so a body actually leaves the floor and lands
 				// somewhere else instead of sliding a few units and standing back up in your face.
 				// Anything too heavy to throw (NOBLOCKMAP, boss-flagged, DONTTHRUST) ignores it
 				// on its own, which is the behaviour we want anyway.
-				double knock = clamp(shove / 20.0, 4, 16) * SSQ_Handler.SV('ssq_bash_knock', 1.35);
+				// AND SCALED BY WHAT YOU HIT. Thrust() adds velocity outright and ignores Mass, so a
+				// Cyberdemon (1000) left the plate exactly as fast as an imp (100) and the shove read
+				// as a scripted launch instead of as weight. The lift takes the same factor, so a
+				// heavy thing leans where a light one is thrown.
+				double mk = clamp(100.0 / max(t.mass, 1.0), 0.08, 2.0);
+				double knock = clamp(eff / 20.0, 4, 16) * SSQ_Handler.SV('ssq_bash_knock', 1.35) * mk;
 				t.Thrust(knock, atan2(n.y, n.x));
 				if (!t.bNoGravity && !t.bDontThrust)
-					t.vel.z += SSQ_Handler.SV('ssq_bash_lift', 2.5) * (t.player ? 0.5 : 1.0);
+					t.vel.z += SSQ_Handler.SV('ssq_bash_lift', 2.5) * mk * (t.player ? 0.5 : 1.0);
 				mo.A_StartSound("ssq/bash", CHAN_5);
 				SSQ_FX.Buzz(mo, 1.0, 8);
 				g.bashCool = 10;
