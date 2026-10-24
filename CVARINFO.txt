@@ -7,7 +7,20 @@ server bool  ssq_start          = true;   // every player spawns with it
 server float ssq_cut_damage     = 1.0;    // thrown-disc damage scale
 server float ssq_throw_speed    = 1.6;    // launch speed scale: a 6 m/s swing leaves at ~17 units/tic (a rocket is 20)
 server float ssq_throw_blend    = 0.7;    // 1 = throw along the arm's own direction, 0 = along where the hand points
-server float ssq_throw_min      = 20.0;   // map units/sec of hand speed below which a grip press stows instead of throws
+// ---- THE THREE TRIGGER SPEEDS, RE-PICKED FOR AN ARM ----------------------------------------
+// These were chosen while the measurement still carried the player's own travel, so they had to
+// be large to stop walking setting them off -- and now that only the arm counts, the same number
+// asks for a shove nobody makes. Re-picked in real units at 34 map units to the metre, 35 tics a
+// second, and sanity-checked against what an arm actually does:
+//
+//   a deliberate plate shove      1.2 - 1.5 m/s   41 - 51 u/s
+//   a parry flick into a shot     0.7 - 0.9 m/s   24 - 31 u/s
+//   a real throwing motion        2 m/s and up    68 u/s and up
+//
+// ssq_throw_min goes UP, not down: 20 was only ever met by the player's own travel, and on the
+// arm alone a casual wave clears it. A throw should be a throw.
+// Everything here is still a feel number -- the sliders are on the menu and these are a start.
+server float ssq_throw_min      = 60.0;   // units/sec of ARM speed below which a release stows instead of throwing
 server float ssq_throw_forward  = 0.35;   // how closely the throw must go where you look (cosine; 0 = any direction)
 server float ssq_speed_floor    = 12.0;   // units/tic: the slowest a throw can leave at
 server float ssq_mass_kg        = 5.0;    // the disc keeps arm/(arm+this) of the hand speed
@@ -27,7 +40,7 @@ server int   ssq_home_patience  = 105;    // tics of returning before it ignores
 server float ssq_catch_radius   = 24.0;   // hand within this of the returning disc = caught
 server bool  ssq_catch          = true;   // back in hand on return
 server bool  ssq_perfect        = true;   // meeting a shot with a moving plate: faster return, always staggers, rings bright
-server float ssq_perfect_speed  = 40.0;   // units/sec the plate must be moving toward the attack
+server float ssq_perfect_speed  = 25.0;   // units/sec the plate must be moving INTO the attack: a parry flick, arm only
 server int   ssq_crumb_every    = 4;      // tics between breadcrumbs on the way out
 
 // what a thrown disc does, by the victim's authored health (SpawnHealth), never by class name
@@ -63,7 +76,10 @@ server float ssq_stagger_push   = 12.0;
 
 // the bash: shove the shield into something
 server bool  ssq_bash           = true;
-server float ssq_bash_speed     = 70.0;   // units/sec along the face
+// 45 u/s is about 1.3 m/s of arm along the face for a snap. A steady LEAN gets there too: the
+// path sum decays at 0.75 a tic, so a sustained push counts about 2.4x itself at ssq_bash_sustain
+// 0.6 -- roughly 19 u/s held, which is a deliberate press and not a drift.
+server float ssq_bash_speed     = 45.0;   // units/sec of arm along the face
 server float ssq_bash_damage    = 1.0;
 server float ssq_bash_reach     = 1.2;    // the bash opens the plate and its depth by this much, for the shove only
 server bool  ssq_bash_los       = true;   // the bash and the grind cannot reach through a wall or a door
