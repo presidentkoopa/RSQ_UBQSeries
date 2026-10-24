@@ -168,3 +168,6 @@ server float ubqs_parry_power   = 2.0;   // what a parry multiplies the return b
 
 user int     ubqs_swing_spatial = 1;     // the swing is heard from the blade, not from the player
 user float   ubqs_doppler       = 1.0;   // how far the whoosh bends as the blade passes your ear (0 = not at all)
+
+// ---- which saber you hear ---------------------------------------------------------------
+user int     ubqs_saber_sound  = 0;     // 0 Graflex, 1 Vader (Rogue One)

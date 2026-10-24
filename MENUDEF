@@ -194,6 +194,12 @@ OptionMenu "UBQS_Predict"
 	Command "Put this page back the way it shipped", "resetcvar ubqs_glow_predict ubqs_glow_lead ubqs_glow_frame_ms ubqs_glow_maxang ubqs_glow_maxlin ubqs_glow_ramp_deg ubqs_glow_stop ubqs_glow_hitch_ms ubqs_snap_turn_deg"
 }
 
+OptionValue "UBQS_SaberSound"
+{
+	0, "Graflex"
+	1, "Vader (Rogue One)"
+}
+
 OptionValue "UBQS_Lefty"
 {
 	-1, "However the engine is set"
@@ -356,6 +362,9 @@ OptionMenu "UBQS_Sound"
 	StaticText "LIGHT", "Gold"
 	Option "Blade light", "ubqs_lights", "UBQS_Lights"
 	Option "Hit and clash flashes", "ubqs_flash", "UBQS_Flash"
+	StaticText ""
+	StaticText "THE SABER YOU HEAR", "Gold"
+	Option "Saber", "ubqs_saber_sound", "UBQS_SaberSound"
 	StaticText ""
 	StaticText "THE BLADE IN SPACE", "Gold"
 	Option "Hear the swing from the blade", "ubqs_swing_spatial", "OnOff"

@@ -89,3 +89,51 @@ $volume ubqs/off 0.8
 $volume ubqs/bladelock 0.9
 $limit ubqs/clash 3
 $limit ubqs/swing 3
+
+
+// ---- VADER (ROGUE ONE): the second profile ------------------------------------------------
+//
+// Chosen file by file, not by pattern. Left out on purpose: its boot (this mod has no boot
+// event), its "Lockup Choke" (a Vader font's choke is the character, breathing and all -- a
+// blade lock is not a character moment), and the superseded "Power on" take.
+//
+// Heavier and slower than the Graflex: a longer ignition, a lower hum, a lock that grinds.
+// ubqs_saber_sound picks between the two.
+
+ubqs/v2/hum                  sounds/ubqs/fonts/f02/hum.wav
+ubqs/v2/bladelock            sounds/ubqs/fonts/f02/lock.wav
+ubqs/v2/on                   sounds/ubqs/fonts/f02/on1.wav
+ubqs/v2/off                  sounds/ubqs/fonts/f02/off1.wav
+
+ubqs/v2/swing1               sounds/ubqs/fonts/f02/swing1.wav
+ubqs/v2/swing2               sounds/ubqs/fonts/f02/swing2.wav
+ubqs/v2/swing3               sounds/ubqs/fonts/f02/swing3.wav
+ubqs/v2/swing4               sounds/ubqs/fonts/f02/swing4.wav
+ubqs/v2/swing5               sounds/ubqs/fonts/f02/swing5.wav
+ubqs/v2/swing6               sounds/ubqs/fonts/f02/swing6.wav
+ubqs/v2/swing7               sounds/ubqs/fonts/f02/swing7.wav
+ubqs/v2/swing8               sounds/ubqs/fonts/f02/swing8.wav
+ubqs/v2/swing9               sounds/ubqs/fonts/f02/swing9.wav
+ubqs/v2/swing10              sounds/ubqs/fonts/f02/swing10.wav
+ubqs/v2/swing11              sounds/ubqs/fonts/f02/swing11.wav
+ubqs/v2/swing12              sounds/ubqs/fonts/f02/swing12.wav
+$random ubqs/v2/swing { ubqs/v2/swing1 ubqs/v2/swing2 ubqs/v2/swing3 ubqs/v2/swing4 ubqs/v2/swing5 ubqs/v2/swing6 ubqs/v2/swing7 ubqs/v2/swing8 ubqs/v2/swing9 ubqs/v2/swing10 ubqs/v2/swing11 ubqs/v2/swing12 }
+
+ubqs/v2/clash1               sounds/ubqs/fonts/f02/clash1.wav
+ubqs/v2/clash2               sounds/ubqs/fonts/f02/clash2.wav
+ubqs/v2/clash3               sounds/ubqs/fonts/f02/clash3.wav
+ubqs/v2/clash4               sounds/ubqs/fonts/f02/clash4.wav
+ubqs/v2/clash5               sounds/ubqs/fonts/f02/clash5.wav
+ubqs/v2/clash6               sounds/ubqs/fonts/f02/clash6.wav
+ubqs/v2/clash7               sounds/ubqs/fonts/f02/clash7.wav
+ubqs/v2/clash8               sounds/ubqs/fonts/f02/clash8.wav
+ubqs/v2/clash9               sounds/ubqs/fonts/f02/clash9.wav
+ubqs/v2/clash10              sounds/ubqs/fonts/f02/clash10.wav
+ubqs/v2/clash11              sounds/ubqs/fonts/f02/clash11.wav
+$random ubqs/v2/clash { ubqs/v2/clash1 ubqs/v2/clash2 ubqs/v2/clash3 ubqs/v2/clash4 ubqs/v2/clash5 ubqs/v2/clash6 ubqs/v2/clash7 ubqs/v2/clash8 ubqs/v2/clash9 ubqs/v2/clash10 ubqs/v2/clash11 }
+
+// matched to the Graflex so switching profiles does not change how loud the saber is
+$volume ubqs/v2/off 0.8
+$volume ubqs/v2/bladelock 0.9
+$limit ubqs/v2/clash 3
+$limit ubqs/v2/swing 3
