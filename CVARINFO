@@ -170,4 +170,4 @@ user int     ubqs_swing_spatial = 1;     // the swing is heard from the blade, n
 user float   ubqs_doppler       = 1.0;   // how far the whoosh bends as the blade passes your ear (0 = not at all)
 
 // ---- which saber you hear ---------------------------------------------------------------
-user int     ubqs_saber_sound  = 0;     // 0 Graflex, 1 Vader (Rogue One)
+user int     ubqs_saber_sound  = 0;     // 0 Graflex, 1 Vader (Rogue One), 2 Rogue Rebel (the original set)

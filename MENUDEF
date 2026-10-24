@@ -198,6 +198,7 @@ OptionValue "UBQS_SaberSound"
 {
 	0, "Graflex"
 	1, "Vader (Rogue One)"
+	2, "Rogue Rebel (original)"
 }
 
 OptionValue "UBQS_Lefty"

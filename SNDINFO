@@ -137,3 +137,34 @@ $volume ubqs/v2/off 0.8
 $volume ubqs/v2/bladelock 0.9
 $limit ubqs/v2/clash 3
 $limit ubqs/v2/swing 3
+
+
+// ---- ROGUE REBEL: the set this mod shipped with, and the owner's own RS_Lightsaber ---------
+//
+// Wardust's saber set, mirroring Doom's chainsaw slots: dssabreu is the ignition -- the same
+// file, byte for byte, that RS_Lightsaber plays as saber/on. It was this mod's ubqs/on until the
+// Graflex import replaced it, and the owner wants it back as a choice. Every file here is
+// already in the pk3; this profile costs nothing but the lines.
+//
+// The set has no retract of its own -- a saber hisses the same way in both directions, so the
+// retract is the ignition at 0.6 -- and no blade lock, so the lock stays the mod's own.
+
+ubqs/v3/hum                  sounds/ubqs/dssabrei.wav
+ubqs/v3/on                   sounds/ubqs/dssabreu.wav
+ubqs/v3/off                  sounds/ubqs/dssabreu.wav
+$volume ubqs/v3/off 0.6
+
+ubqs/v3/swing1               sounds/ubqs/dssabre1.mp3
+ubqs/v3/swing2               sounds/ubqs/dssabre2.mp3
+ubqs/v3/swing3               sounds/ubqs/dssabre3.mp3
+ubqs/v3/swing4               sounds/ubqs/dssabre4.mp3
+ubqs/v3/swing5               sounds/ubqs/dssabre5.mp3
+$random ubqs/v3/swing { ubqs/v3/swing1 ubqs/v3/swing2 ubqs/v3/swing3 ubqs/v3/swing4 ubqs/v3/swing5 }
+
+ubqs/v3/clash1               sounds/ubqs/lsabhit1.mp3
+ubqs/v3/clash2               sounds/ubqs/lsabhit2.mp3
+ubqs/v3/clash3               sounds/ubqs/lsabhit3.mp3
+ubqs/v3/clash4               sounds/ubqs/lsabhit4.mp3
+$random ubqs/v3/clash { ubqs/v3/clash1 ubqs/v3/clash2 ubqs/v3/clash3 ubqs/v3/clash4 }
+$limit ubqs/v3/clash 3
+$limit ubqs/v3/swing 3

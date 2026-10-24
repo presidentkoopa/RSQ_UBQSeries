@@ -249,9 +249,12 @@ class UBQS_Data
 // ===========================================================================================
 // WHICH SABER YOU HEAR
 //
-// Two profiles, and the default IS the plain name -- the Graflex files are defined in SNDINFO
+// Three profiles, and the default IS the plain name -- the Graflex files are defined in SNDINFO
 // as ubqs/hum, ubqs/on and the rest, so profile 0 is not a lookup at all and nothing can go
-// wrong with it. Profile 1 is the Vader set, under ubqs/v2/.
+// wrong with it. Profile 1 is the Vader set, under ubqs/v2/, and profile 2 is the Rogue Rebel
+// set this mod shipped with -- the same ignition the owner's own RS_Lightsaber plays, byte for
+// byte, which the Graflex import had buried. The blade lock is the mod's own in every profile:
+// only the Graflex and Vader fonts ship one.
 //
 // Written out by hand and short on purpose. The last version of this was generated over twelve
 // unvetted font folders, and shipped a saber that recited a film line when you switched it on.
@@ -266,12 +269,12 @@ class UBQS_Font abstract
 		let cv = CVar.FindCVar('ubqs_saber_sound');
 		return cv ? cv.GetInt() : 0;
 	}
-	static Sound Hum()   { return Which() == 1 ? "ubqs/v2/hum"       : "ubqs/hum"; }
-	static Sound On()    { return Which() == 1 ? "ubqs/v2/on"        : "ubqs/on"; }
-	static Sound Off()   { return Which() == 1 ? "ubqs/v2/off"       : "ubqs/off"; }
+	static Sound Hum()   { int w = Which(); return w == 1 ? "ubqs/v2/hum" : w == 2 ? "ubqs/v3/hum" : "ubqs/hum"; }
+	static Sound On()    { int w = Which(); return w == 1 ? "ubqs/v2/on" : w == 2 ? "ubqs/v3/on" : "ubqs/on"; }
+	static Sound Off()   { int w = Which(); return w == 1 ? "ubqs/v2/off" : w == 2 ? "ubqs/v3/off" : "ubqs/off"; }
 	static Sound Lock()  { return Which() == 1 ? "ubqs/v2/bladelock" : "ubqs/bladelock"; }
-	static Sound Swing() { return Which() == 1 ? "ubqs/v2/swing"     : "ubqs/swing"; }
-	static Sound Clash() { return Which() == 1 ? "ubqs/v2/clash"     : "ubqs/clash"; }
+	static Sound Swing() { int w = Which(); return w == 1 ? "ubqs/v2/swing" : w == 2 ? "ubqs/v3/swing" : "ubqs/swing"; }
+	static Sound Clash() { int w = Which(); return w == 1 ? "ubqs/v2/clash" : w == 2 ? "ubqs/v3/clash" : "ubqs/clash"; }
 }
 class UBQS_Light : Actor
 {
