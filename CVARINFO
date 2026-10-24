@@ -148,7 +148,7 @@ user int     ubqs_haptics           = 1;        // controller buzz at all (ubqs_
 user int     ubqs_haptic_cut        = 1;        // buzz when the blade cuts something (once a swing)
 user int     ubqs_haptic_clash      = 1;        // buzz when blades cross, and while they stay locked
 user float   ubqs_haptic_power      = 1.0;      // how hard every saber rumble is (A_QuakeEx, not the engine's fixed pulse)
-user int     ubqs_lefty             = -1;       // which controller: -1 the engine's scheme, 0 right-handed, 1 left-handed
+user int     ubqs_lefty             = 0;        // which controller the rumble goes to: 0 right-handed, 1 left-handed
 
 // -- THE TRAINING REMOTE --
 user int     ubqs_remote_warn       = 0;        // extra tics of warning before it shoots (it rode the level)
@@ -171,3 +171,5 @@ user float   ubqs_doppler       = 1.0;   // how far the whoosh bends as the blad
 
 // ---- which saber you hear ---------------------------------------------------------------
 user int     ubqs_saber_sound  = 0;     // 0 Graflex, 1 Vader (Rogue One), 2 Rogue Rebel (the original set)
+server bool  ubqs_block_stagger = true;  // a blocked claw staggers and shoves what swung it
+server float ubqs_stagger_push  = 12.0;  // how far back a staggered melee attacker goes

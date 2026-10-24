@@ -203,7 +203,6 @@ OptionValue "UBQS_SaberSound"
 
 OptionValue "UBQS_Lefty"
 {
-	-1, "However the engine is set"
 	0, "Right-handed"
 	1, "Left-handed"
 }
@@ -253,6 +252,8 @@ OptionMenu "UBQS_Contact"
 	Slider "Parry: how hard the blade must move into the shot (0 = off)", "ubqs_parry_speed", 0, 16, 0.5, 1
 	Slider "What a parry multiplies the return by", "ubqs_parry_power", 1, 4, 0.25, 2
 	Slider "...and how near a blade must be to the attack (0 = the arc alone)", "ubqs_guard_width", 0, 48, 2, 0
+	Option "A blocked claw staggers its owner", "ubqs_block_stagger", "OnOff"
+	Slider "...and is shoved back", "ubqs_stagger_push", 0, 30, 2, 0
 	StaticText ""
 	StaticText "BLOCKING BULLETS", "Gold"
 	// ONE blade in the way, measured. Above 0 this is what decides a block and the two rows below

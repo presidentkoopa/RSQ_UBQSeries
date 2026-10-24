@@ -372,6 +372,14 @@ class UBQS_SaberBase : Weapon abstract
 	int  burnQuiet, swingQuiet, flashTics;
 	bool humming;
 	private Vector3 lastTip, lastBase;
+	// THE BLADE AS IT WAS A FULL TIC AGO. lastBase/lastTip are overwritten at the end of DoEffect,
+	// and the engine runs every P_PlayerThink before WorldTick and before RunThinkers, so by the
+	// time a monster fires they already hold THIS tic's blade -- the muzzle stop had nothing left
+	// to sweep against and tested a frozen blade while the shot was tested live. The harder you
+	// parried, the less a parry worked. These keep the tic before it.
+	// (RS_ShieldSawQ walks its guard plate the same way: guard.zs PlateTravel and StopsHitscan.)
+	private Vector3 prevTip, prevBase;
+	private bool    prevOk;
 	private bool    lastOk;
 	private Array<Actor> cutWho;
 	private Array<int>   cutWhen;
@@ -389,6 +397,7 @@ class UBQS_SaberBase : Weapon abstract
 		+WEAPON.AMMO_OPTIONAL
 		+WEAPON.NOAUTOAIM
 		+WEAPON.NOAUTOFIRE
+		+WEAPON.NODEATHINPUT	// TickPSprites still runs CheckWeaponFire on a corpse without this
 		Inventory.PickupMessage "You got a lightsaber!";
 		Inventory.PickupSound "ubqs/catch";
 		Tag "Lightsaber";
@@ -707,7 +716,10 @@ class UBQS_SaberBase : Weapon abstract
 		while (it.Next())
 		{
 			Actor mo = it.thing;
-			if (!mo || mo == owner || !mo.bIsMonster || !mo.bShootable || mo.health <= 0 || mo.bFriendly) continue;
+			// ...and painted, for the same reason GazeTarget takes one.
+			if (!mo || mo == owner || !mo.bShootable || mo.health <= 0) continue;
+			if (!mo.bIsMonster && !(mo.player && deathmatch)) continue;
+			if (mo.bFriendly && !deathmatch) continue;
 			if (locks.Find(mo) < locks.Size()) continue;
 			Vector3 to = level.Vec3Diff(hp, (mo.pos.xy, mo.pos.z + mo.height * 0.5));
 			if (to.Length() > range) continue;
@@ -759,12 +771,21 @@ class UBQS_SaberBase : Weapon abstract
 		// owner's answer and the thinker spawned is identical everywhere. -1 falls back to the engine's
 		// own scheme, read in the one place this mod has ever read it.
 		int lh = UInt("ubqs_lefty", -1);
-		bool lefty = (lh < 0) ? UBQS_Data.WorldMirror(false) : (lh != 0);
+		// NOT the engine's vr_control_scheme: that is a local archived cvar, and a quake is a
+		// serialised thinker, so on the old default two machines in co-op spawned the mirror of each
+		// other's rumble for the same event. ubqs_lefty is userinfo and is the only answer here.
+		bool lefty = (lh > 0);
 		bool left = bOffhandWeapon != lefty;
 		let q = UBQS_Buzzer(Actor.Spawn("UBQS_Buzzer", owner.pos));
 		if (!q) return;
 		q.feels = owner;
-		q.A_QuakeEx(left ? int(k) : 0, left ? 0 : int(k), 0, clamp(tics, 1, 16), 0, 8, "", QF_SCALEDOWN);
+		// A_QuakeEx's intensities are DOUBLES and the engine's own range is 0..9, so the 0..3 scale
+		// above maps onto it instead of being truncated: int(0.9) was 0, int(0.8 * pg) was 0, and
+		// QuakePower returns exactly 0 for an intensity of 0. Every rumble this was added for -- the
+		// cut, the block -- produced nothing in the hand, which is the precise thing it was written
+		// to fix. Only the clash survived, at a ninth of the amplitude available.
+		double amp = clamp(k * 3.0, 0.3, 9.0);
+		q.A_QuakeEx(left ? amp : 0.0, left ? 0.0 : amp, 0, clamp(tics, 1, 16), 0, 8, "", QF_SCALEDOWN);
 	}
 	void ClearLocks()
 	{
@@ -825,7 +846,10 @@ class UBQS_SaberBase : Weapon abstract
 	// BladeDir() is a fixed world direction. Left to run, that phantom blade deflects, burns, clashes
 	// and blocks on THIS machine and not on theirs. The same four reads WorldUp() already makes.
 	bool HandLive() { return owner && (bOffhandWeapon ? owner.OffhandPos : owner.AttackPos) != (0, 0, 0); }
-	bool Lit() { return !thrown && UBQS_Data.Ext(frameNow) > 0.5 && InHand() && HandLive(); }
+	// A CORPSE HOLDS NO BLADE. WorldUp() and StopsHitscan already test health; nothing else did,
+	// and DeathThink keeps ticking the weapon layer -- so a dead player's blade went on cutting,
+	// deflecting and scorching from the floor until the respawn.
+	bool Lit() { return !thrown && owner && owner.health > 0 && UBQS_Data.Ext(frameNow) > 0.5 && InHand() && HandLive(); }
 	bool Twirling() { return back && !thrown && !doused && UInt("ubqs_twirl", 2) > 0; }
 
 	// ---- THE BLADE ON AND OFF --------------------------------------------------------------------------------
@@ -953,6 +977,11 @@ class UBQS_SaberBase : Weapon abstract
 	private void HideWhileAway()
 	{
 		if (!owner || !owner.player) return;
+		// THE LAYER BELONGS TO WHATEVER IS ACTUALLY IN THAT HAND. A thrown saber is still the
+		// ReadyWeapon, so this does not weaken the hiding it was written for -- but the moment the
+		// player switches weapons the layer is someone else's, and DoEffect runs after their psprite
+		// states, so stamping frame 18 onto it broke their gun for as long as the hilt lay there.
+		if (!InHand()) return;
 		bool away = thrown || merged;
 		int  main = bOffhandWeapon ? PSP_OFFHANDWEAPON : PSP_WEAPON;
 		// RESTORED FROM THE SAME PLACE, so a caught saber cannot stay invisible -- the one way this
@@ -1162,6 +1191,7 @@ class UBQS_SaberBase : Weapon abstract
 		Burn(hand, dir, len);
 		if (back) Burn(pom, -dir, len);
 		if (!bOffhandWeapon) Clash(hand, dir, len);
+		prevTip = lastTip; prevBase = lastBase; prevOk = lastOk;
 		lastTip = tip;
 		lastBase = hand;
 		lastOk = true;
@@ -1890,9 +1920,13 @@ class UBQS_SaberBase : Weapon abstract
 	{
 		if (len < 1) return;
 		Vector3 mid = base + dir * (len * 0.5);
-		double reach = len * 0.5 + 300.0;          // fast bolts cover a lot of ground in a tic (two tics ahead)
 		Vector3 pb = lastOk ? lastBase : base;
 		Vector3 pt = lastOk ? lastTip : base + dir * len;
+		// ...AND THE BLADE'S OWN TRAVEL. The box is centred on the midpoint NOW while the samples
+		// below reach back to where the blade WAS, so on a hard swing a bolt crossing the early
+		// samples could sit outside the box the sweep ever looks in -- the sweep got narrower the
+		// faster you swung, which is backwards. (The shield adds its own travel for the same reason.)
+		double reach = len * 0.5 + 300.0 + (base - pb).Length();
 		// ubqs_deflect_lead: how far along a shot's OWN path the blade is tested, in tics. 3 is what fixed his
 		// report that one blade held across did not turn Wardust's fast bolts -- and it is also why shots are
 		// turned two tics early, including ones that would have missed. Only he can say whether that now feels
@@ -1958,7 +1992,16 @@ class UBQS_SaberBase : Weapon abstract
 		// ubqs_vol_clash covers the blade meeting energy, which is a deflect as much as a crossing: ubqs/deflect
 		// is one of the most frequent combat sounds in the mod (ubqs_deflect is on by default) and had no knob
 		// at all. All three of its sites read the one cvar.
-		owner.A_StartSound(UBQS_Font.Clash(), CHAN_AUTO, 0, UF("ubqs_vol_clash", 1.0));
+		// ONE PER TIC, AND FROM THE BOLT. CHAN_AUTO finds a free channel, so a Mancubus salvo or a
+		// Revenant pair turned on the same tic started three or four copies of this sample on top of
+		// each other and a deflection came out as a blare instead of an impact. It was also the last
+		// contact in the mod still played at the player's feet, while the bolt it belongs to is out
+		// at arm's length. The sparks and the flash stay per shot; only the sound stacks.
+		if (level.maptime != lastDeflectTic)
+		{
+			lastDeflectTic = level.maptime;
+			UBQS_Ping.At(owner, mo.pos, UBQS_Font.Clash(), UF("ubqs_vol_clash", 1.0));
+		}
 		UBQS_Data.Sparks(mo.pos, d, RgbNow(), 8);
 		FlashAt(mo.pos, 64, 4);
 	}
@@ -1974,7 +2017,11 @@ class UBQS_SaberBase : Weapon abstract
 		while (it.Next())
 		{
 			Actor mo = it.thing;
-			if (!mo || !mo.bIsMonster || mo.health <= 0 || mo.bFriendly || mo == owner) continue;
+			// A HOSTILE PLAYER IS A TARGET TOO: bIsMonster alone meant a deflection in a deathmatch
+			// could never be aimed at the only thing worth aiming it at.
+			if (!mo || mo.health <= 0 || mo == owner || !mo.bShootable) continue;
+			if (!mo.bIsMonster && !(mo.player && deathmatch)) continue;
+			if (mo.bFriendly && !deathmatch) continue;
 			Vector3 to = level.Vec3Diff(eye, (mo.pos.xy, mo.pos.z + mo.height * 0.55));
 			double dist = to.Length();
 			if (dist < 1 || dist > 1536) continue;
@@ -2085,6 +2132,22 @@ class UBQS_SaberBase : Weapon abstract
 		Vector3 back = level.Vec3Diff(at, (source.pos.xy, source.pos.z + source.height * 0.55));
 		if (back.Length() > 0.001) back = back.Unit();
 		BlockFx(at, back, source, damage, true);
+		// AND WHAT SWUNG AT YOU REELS. A blade held across you already stops a claw -- and nothing
+		// happened to the thing that threw it: it stood in your face and swung again next tic, and
+		// from inside the headset a blocked claw was indistinguishable from the monster missing.
+		// Melee is the one case where the attacker is inside reach of an answer. Melee only: a
+		// hitscan arrives as its puff, so the inflictor is the puff and never the shooter, while a
+		// claw calls DamageMobj with the monster as both. A parry staggers twice as hard, off the
+		// same ParryGain the return bolt uses.
+		// (RS_ShieldSawQ does this on every blocked melee: ssq_melee / ssq_stagger_push.)
+		if (UInt("ubqs_block_stagger", 1) != 0 && inflictor == source && !(flags & DMG_EXPLOSION)
+			&& source.bIsMonster && source.health > 0)
+		{
+			source.TriggerPainChance('Melee', true);
+			double push = UF("ubqs_stagger_push", 12.0) / 10.0 * ParryGain(-back);
+			Vector3 away = (source.pos.x - owner.pos.x, source.pos.y - owner.pos.y, 0);
+			if (push > 0.01 && away.Length() > 0) source.Thrust(push, VectorAngle(away.x, away.y));
+		}
 	}
 
 	// ---- THE PARRY: the blade going INTO the shot, not merely standing in it --------------------
@@ -2111,6 +2174,7 @@ class UBQS_SaberBase : Weapon abstract
 	// ModifyDamage, which sees a shot that already hit, and StopsHitscan, which sees one before it is
 	// traced at all. `loud` is false for the second and later pellets of one shotgun blast in a tic.
 	int lastBlockTic;
+	int lastDeflectTic;		// one clash per tic out of BatBack, however many shots crossed
 	void BlockFx(Vector3 at, Vector3 back, Actor src, int damage, bool loud)
 	{
 		if (!owner) return;
@@ -2122,6 +2186,16 @@ class UBQS_SaberBase : Weapon abstract
 		}
 		UBQS_Data.Sparks(at, back, RgbNow(), int(10 * pg));
 		FlashAt(at, 64 * pg, 4);
+		// AND YOU CAN SEE IT WAS A PARRY. The tell was a quarter-tone of pitch and a few more
+		// sparks, which is nothing to read mid-fight: this is the clash starburst the mod already
+		// has, at the contact point, so a parry blooms white where a block only sparks. Rides
+		// ubqs_clash_fx with everything else that bursts, so it turns off with them.
+		// (The shield blooms the same way on a perfect block.)
+		if (pg > 1.01)
+		{
+			double pgfx = clamp(UF("ubqs_clash_fx", 1.0), 0.0, 3.0);
+			if (pgfx > 0.01) UBQS_ClashFlash.Burst(at, 0.9 * pgfx);
+		}
 		if (!loud || !UInt("ubqs_block_return", 1)) return;
 		Vector3 d = back;
 		if (src && src.health > 0)
@@ -2145,6 +2219,30 @@ class UBQS_SaberBase : Weapon abstract
 	// aimed at your centre could be stopped at all. This is the same block made BEFORE the engine
 	// traces the bullet, against the shot's OWN ray, which WorldHitscanPreFired hands us exactly. A
 	// blade really in the way stops it; one that is not, does not.
+	// THE BLADE WALKED ALONG ITS OWN TRAVEL. Three places it was during this tic -- a full tic
+	// ago, halfway, and where it is now -- against one straight ray; nearest separation wins and
+	// `t` comes back as the fraction along the ray of the sample that won. Deflect() has always
+	// done this for missiles; the muzzle stop tested the blade frozen.
+	private double SweptSep(Vector3 base, Vector3 dir, double len, Vector3 from, Vector3 ray, out double t)
+	{
+		double best = 1e9;
+		t = 0;
+		Vector3 tip = base + dir * len;
+		Vector3 pb = prevOk ? prevBase : base;
+		Vector3 pt = prevOk ? prevTip : tip;
+		for (int k = 0; k <= 2; k++)
+		{
+			double f = k * 0.5;
+			Vector3 b = pb + (base - pb) * f;
+			Vector3 e = pt + (tip - pt) * f;
+			double s, tt;
+			Vector3 sep = UBQS_Data.SegST(level.Vec3Diff(from, b), e - b, ray, s, tt);
+			double d = sep.Length();
+			if (d < best) { best = d; t = tt; }
+		}
+		return best;
+	}
+
 	bool StopsHitscan(Actor sh, Vector3 from, Vector3 dir, double dist, int damage)
 	{
 		if (!Lit() || !owner || owner.health <= 0 || owner == sh || !sh) return false;
@@ -2156,12 +2254,13 @@ class UBQS_SaberBase : Weapon abstract
 		Vector3 toMe = level.Vec3Diff(from, mid);
 		if ((toMe dot dir) <= 0) return false;		// it is not coming our way at all
 		Vector3 ray = dir * max(dist, 1.0);
-		double s, t, bs, bt;
-		Vector3 sep = UBQS_Data.SegST(level.Vec3Diff(from, BladeBase()), BladeDir() * len, ray, s, t);
-		bool got = sep.Length() <= gw;
+		double t, bs, bt;
+		bool got = SweptSep(BladeBase(), BladeDir(), len, from, ray, t) <= gw;
 		if (!got && back)
 		{
-			sep = UBQS_Data.SegST(level.Vec3Diff(from, Pommel()), -BladeDir() * len, ray, bs, bt);
+			// the pommel leg keeps the frozen test: prevBase/prevTip are the main leg's, and the
+			// second blade's own previous position is not stored. A wrong sweep is worse than none.
+			Vector3 sep = UBQS_Data.SegST(level.Vec3Diff(from, Pommel()), -BladeDir() * len, ray, bs, bt);
 			if (sep.Length() <= gw) { got = true; t = bt; }
 		}
 		if (!got) return false;
@@ -4599,8 +4698,13 @@ class UBQS_Bridge : EventHandler
 		if (hc && !hc.GetBool()) return false;
 		double ca = cos(e.AttackPitch);
 		Vector3 dir = (ca * cos(e.AttackAngle), ca * sin(e.AttackAngle), -sin(e.AttackPitch));
-		// the muzzle, by P_LineAttack's own formula: the shooter's centre plus the attack's own z
-		Vector3 from = (sh.pos.xy, sh.pos.z + sh.height * 0.5 + e.AttackZ);
+		// the muzzle, by P_LineAttack's own formula on stock QZD 17.3: shootz = Center() -
+		// Floorclip + AttackOffset() + sz, and AttackOffset() is a flat 8 for anything that is not a
+		// player. The 8 and the floorclip were missing, so every stopped bullet was tested along a
+		// ray leaving the muzzle 8 units low -- more than the whole of a 6-unit ubqs_blade_guard.
+		// LAF_OVERRIDEZ measures from the actor's feet instead.
+		double mz = ((e.AttackLineFlags & LAF_OVERRIDEZ) ? 0.0 : (sh.height * 0.5 - sh.Floorclip + 8.0)) + e.AttackZ;
+		Vector3 from = (sh.pos.xy, sh.pos.z + mz);
 		double dist = e.AttackDistance > 0 ? e.AttackDistance : 2048.0;
 		for (int i = 0; i < MAXPLAYERS; i++)
 		{
