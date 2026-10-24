@@ -91,7 +91,7 @@ user float   ubqs_glow_maxlin       = 4.0;      // the most it may move the base
 user float   ubqs_glow_ramp_deg     = 60.0;     // deg/s where the lead is fully in (GLOW_RAMPW)
 user float   ubqs_glow_stop         = 0.6;      // what counts as stopping, part of the last step (GLOW_STOP)
 user float   ubqs_glow_hitch_ms     = 120.0;    // a gap longer than this throws the sample history away
-user float   ubqs_snap_turn_deg     = 8.0;      // deg in ONE TIC that is a snap turn, not your arm (saber + Force)
+user float   ubqs_snap_turn_deg     = 45.0;      // deg in ONE TIC that is a snap turn, not your arm (saber + Force)
 
 // -- YOUR SWING --
 server float ubqs_swing_cut         = 8.0;      // units a tic the blade must travel to cut: THE most-felt number

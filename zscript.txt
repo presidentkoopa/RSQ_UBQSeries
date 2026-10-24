@@ -961,6 +961,15 @@ class UBQS_SaberBase : Weapon abstract
 		Vector3 v = a;
 		if (b.Length() > v.Length()) v = b;
 		if (c.Length() > v.Length()) v = c;
+		// ...AND BACK INTO THE WORLD. h0..h3 are kept in the body's frame so a turn contributes
+		// nothing to them, but every caller compares this against world directions -- where the
+		// head points, the throw's heading -- so the answer is turned into the frame the player
+		// faces now. Magnitude is unchanged; only the heading is restored.
+		if (owner)
+		{
+			double c2 = cos(owner.angle), s2 = sin(owner.angle);
+			v = (v.x * c2 - v.y * s2, v.x * s2 + v.y * c2, v.z);
+		}
 		return v;
 	}
 
@@ -1033,19 +1042,31 @@ class UBQS_SaberBase : Weapon abstract
 		bodyStep = bn - bodyNow;
 		if (bodyStep.Length() > 48.0) bodyStep = (0, 0, 0);
 		bodyNow = bn;
-		h0 = HandPos() - bn;
+		// AND THE BODY'S TURN, NOT ONLY ITS TRAVEL. bn takes the walking out; nothing took the
+		// TURN out, and a hand 26 units off the body axis gains about 3.2 units a tic from a
+		// smooth turn alone -- 40% of the cut threshold, with the arm perfectly still. The history
+		// is kept in the BODY's frame instead (hand relative to the pawn, turned back by the pawn's
+		// yaw), so a turn of the body contributes nothing at all and only the arm does.
+		// RS_ShieldSawQ and the owner's BD22 Quest pack both difference in the body frame for the
+		// same reason; this is the saber catching up with them.
+		Vector3 hrel = HandPos() - bn;
+		double byc = cos(owner.angle), bys = sin(owner.angle);
+		h0 = (hrel.x * byc + hrel.y * bys, hrel.y * byc - hrel.x * bys, hrel.z);
 		// A SNAP TURN (or a teleport) jumps the whole world-space arm around the body in one tic. That is not
 		// a swing and not a throw (the owner, 10-01: "snap turn registers as an attack"): forget the motion history.
 		double turned = abs(DeltaAngle(lastYaw, owner.angle));
 		bool jumped = (owner.pos - lastBodyPos).Length() > 48.0;
 		lastYaw = owner.angle;
 		lastBodyPos = owner.pos;
-		// ubqs_snap_turn_deg: 8 degrees in ONE TIC is 280 deg/s, so a smooth-turn player above that rate trips
-		// this every tic -- which sets snapQuiet, flattens the hand history and zeroes the predictor, killing
-		// prediction, swings and throws for the whole turn. A plausible single cause of "the glow lags when I
-		// turn". The knob is a workaround: the real fix is telling a snap from a fast smooth turn, and that
-		// belongs on the backlog, not in a slider. UBQS_Force holds the same literal and now reads the same cvar.
-		if (turned >= UF("ubqs_snap_turn_deg", 8.0) || jumped)
+		// ubqs_snap_turn_deg USED TO BE LOGIC AND IS NOW A SAFETY NET. The comment that stood here said
+		// the knob was a workaround and that the real fix was telling a snap from a fast smooth turn;
+		// the body-frame history above is that fix, and it does not care how fast you turned, because a
+		// turn no longer moves the hand in the frame the history is kept in. What is left is the
+		// TELEPORT case -- a jump the body frame cannot absorb -- and a genuine snap, where the whole
+		// view changes between two samples and a tip position from before it is not comparable with one
+		// after. The threshold is raised well above any smooth-turn rate so it stops firing every tic on
+		// a turning player, which is what was killing prediction, swings and throws through a turn.
+		if (turned >= UF("ubqs_snap_turn_deg", 45.0) || jumped)
 		{
 			h1 = h0; h2 = h0; h3 = h0;
 			lastOk = false;
