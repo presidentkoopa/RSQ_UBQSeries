@@ -1022,6 +1022,7 @@ class UBQS_SaberBase : Weapon abstract
 		Super.DoEffect();
 		TickFireLatch();
 		if (!owner || !owner.player) return;
+		GrippedInput();
 		// EACH SABER BELONGS TO ONE HAND AND STAYS IN IT (the owner, 10-02, twice: "stop letting
 		// the sabers switch hands, it fucks them completely" -- both in one hand, a mace windu,
 		// and a broken throw). The CLASS decides the hand; bOffhandWeapon is only the engine's
@@ -1812,11 +1813,35 @@ class UBQS_SaberBase : Weapon abstract
 			if (mo.player && !deathmatch) continue;
 			int i = cutWho.Find(mo);
 			if (i < cutWho.Size() && level.maptime - cutWhen[i] < rate) continue;
-			Vector3 c = level.Vec3Diff(base, (mo.pos.xy, mo.pos.z + mo.height * 0.5));
-			Vector3 blade = dir * len;
-			double t = clamp((c dot blade) / (len * len), 0.0, 1.0);
-			Vector3 gap = c - blade * t;
-			if ((gap.xy).Length() > mo.radius + pad || abs(gap.z) > mo.height * 0.5 + pad) continue;
+			// THE BLADE WALKED THROUGH THE TIC, not tested where it happens to be now. A 90-unit blade
+			// crosses a 20-radius imp in well under a tic on a hard swing, so both samples could sit
+			// either side of the body and the swing passed clean through it -- the harder you swung, the
+			// more it missed. Deflect() has swept for missiles all along and says why; the cut never did,
+			// and cutPath only papered over the slow cases. Three places the blade was this tic, nearest
+			// first contact wins. cutWho/cutWhen already stop this multiplying the damage.
+			Vector3 pb = lastOk ? lastBase : base;
+			Vector3 pt = lastOk ? lastTip : base + dir * len;
+			Vector3 target = (mo.pos.xy, mo.pos.z + mo.height * 0.5);
+			Vector3 c = (0, 0, 0), blade = dir * len, gap = (0, 0, 0);
+			double t = 0;
+			bool touched = false;
+			for (int sk = 2; sk >= 0 && !touched; sk--)
+			{
+				double f = sk * 0.5;
+				Vector3 sb = pb + (base - pb) * f;
+				Vector3 se = pt + ((base + dir * len) - pt) * f;
+				Vector3 sblade = se - sb;
+				double slen2 = sblade dot sblade;
+				if (slen2 < 1.0) continue;
+				Vector3 sc = level.Vec3Diff(sb, target);
+				double st = clamp((sc dot sblade) / slen2, 0.0, 1.0);
+				Vector3 sgap = sc - sblade * st;
+				if ((sgap.xy).Length() > mo.radius + pad || abs(sgap.z) > mo.height * 0.5 + pad) continue;
+				// this sample touched: everything below works from it
+				base = sb; blade = sblade; c = sc; t = st; gap = sgap;
+				touched = true;
+			}
+			if (!touched) continue;
 			// NOT THROUGH THE WALL. The iterator box is nearly 100 units across and nothing here ever
 			// asked whether the blade could reach what it found, so a swing near a thin wall or a closed
 			// door killed what was behind it. Paint() and GazeTarget() have always used this exact test;
@@ -1824,7 +1849,16 @@ class UBQS_SaberBase : Weapon abstract
 			// something the blade geometrically touched.
 			if (los && !owner.CheckSight(mo, SF_IGNOREVISIBILITY)) continue;
 			int dmg = int(dmg0 * mult);
+			// THE EFFECTS GO INSIDE THE BODY. `at` is the closest point on the blade, and the gate above
+			// allows a full radius plus ubqs_cut_pad of slack -- so on every cut that only just qualified,
+			// the flash, the spark burst and the smoke appeared in mid-air BESIDE the monster. Clamped
+			// laterally into the body and into its height, the way BD22's own cut does it.
 			Vector3 at = level.Vec3Offset(base, blade * t);
+			Vector3 off = level.Vec3Diff((mo.pos.xy, at.z), at);
+			double offl = (off.xy).Length();
+			if (offl > mo.radius - 2.0 && offl > 0.001)
+				at = level.Vec3Offset(at, (off.xy, 0) * ((offl - (mo.radius - 2.0)) / offl));
+			at.z = clamp(at.z, mo.pos.z + 1.0, mo.pos.z + mo.height - 1.0);
 			CutFx(at, dir, mo, dmg);
 			mo.DamageMobj(self, owner, dmg, 'Saber', DMG_THRUSTLESS);
 			// ...AND IT MOVES WHAT IT CUT. The engine's own thrust cannot be used: the inflictor is this
@@ -1899,11 +1933,14 @@ class UBQS_SaberBase : Weapon abstract
 		int    rate = max(UInt("ubqs_cut_rate", 8), 1);
 		double dmg0 = UF("ubqs_damage", 30.0) * UF("ubqs_dmg_twirl", 0.8);
 		double vhit = UF("ubqs_vol_hit", 1.0);
+		bool   los  = UInt("ubqs_cut_los", 1) != 0;	// the swing got this; the twirl never did
 		let it = BlockThingsIterator.CreateFromPos(hand.x, hand.y, hand.z - reach, reach * 2.0, reach, false);
 		while (it.Next())
 		{
 			Actor mo = it.thing;
 			if (!mo || mo == owner) continue;
+			// NOT THROUGH THE WALL: a twirl with your back to a door killed what was behind it.
+			if (los && !owner.CheckSight(mo, SF_IGNOREVISIBILITY)) continue;
 			Vector3 c = level.Vec3Diff(hand, mo.pos);
 			if (mo.bMissile)
 			{
@@ -2028,8 +2065,52 @@ class UBQS_SaberBase : Weapon abstract
 	}
 
 	// THE ENEMY YOU ARE LOOKING AT: the nearest live one inside `cone` degrees of your gaze, that you can see.
+	// THE TWO-HAND GRIP TAKES THE OFF HAND'S WEAPON MACHINERY AWAY, so the off-hand saber's own
+	// Fire state never runs while you hold the hilt with both hands -- the single most natural
+	// thing to do with a lightsaber in a headset. Paint, throw and recall all die; the blade keeps
+	// cutting, because that runs from DoEffect, so the failure is partial and silent, which is the
+	// worst shape for it. Stock does five separate things on that flag and three of them are the
+	// ones that matter here: A_WeaponReady will not set the off-hand ready bits, FireWeapon and
+	// FireWeaponAlt early-return for the off hand, and P_CheckWeaponButtons returns for it too.
+	//
+	// None of them can gate cmd.buttons, which is in the replicated ticcmd and readable in play
+	// scope. So for exactly as long as the grip is held, the same three decisions are driven from
+	// here instead. Gated on the flag, so the weapon path and this one can never both fire.
+	// (RS_ShieldSawQ reads every one of its inputs this way and is immune to the whole problem.)
+	private bool gripHeldWas;
+	void GrippedInput()
+	{
+		let p = owner.player;
+		bool stabilised = (p.WeaponState & WF_TWOHANDSTABILIZED) != 0;
+		bool held = bOffhandWeapon && stabilised && (p.cmd.buttons & BT_OFFHANDATTACK) != 0;
+		if (!bOffhandWeapon || !stabilised) { gripHeldWas = held; return; }
+		if (held && !gripHeldWas)
+		{
+			if (thrown) thrown.Recall();
+			else if (level.maptime > keepMarksUntil) ClearLocks();
+			if (!thrown) keepMarksUntil = 0;
+		}
+		else if (held && !thrown) Paint();
+		else if (!held && gripHeldWas && !thrown)
+		{
+			double thr = UF("ubqs_throw_min", 1.5);
+			if (locks.Size() > 0 && UInt("ubqs_throw_on_lock", 1)) Throw();
+			else if (ThrowRelease(thr)) Throw();
+			else keepMarksUntil = level.maptime + 35;
+		}
+		gripHeldWas = held;
+	}
+
+	private int gazeTic;		// the gaze answer is one per tic, however many shots were turned
+	private Actor gazeMo;
 	Actor GazeTarget(double cone)
 	{
+		// ONCE A TIC. This walks a 1536-unit blockmap box and sight-checks every monster in the cone,
+		// and BatBack calls it for EVERY missile turned -- both hands' Deflect, the twirl and the
+		// thrown blade. The answer cannot differ between two missiles in the same tic.
+		if (gazeTic == level.maptime) return gazeMo;
+		gazeTic = level.maptime;
+		gazeMo = null;
 		Vector3 eye = owner.Vec3Offset(0, 0, owner.player ? owner.player.viewheight : 41.0);
 		Vector3 look = (cos(owner.angle) * cos(owner.pitch), sin(owner.angle) * cos(owner.pitch), -sin(owner.pitch));
 		Actor best = null;
@@ -2052,6 +2133,7 @@ class UBQS_SaberBase : Weapon abstract
 			double score = off * 40.0 + dist * 0.05;
 			if (score < bestScore) { bestScore = score; best = mo; }
 		}
+		gazeMo = best;
 		return best;
 	}
 
@@ -2296,13 +2378,16 @@ class UBQS_SaberBase : Weapon abstract
 	// ---- BURN: a blade pushed into a wall or the floor spits sparks and scorches it ----------------------
 	private void Burn(Vector3 base, Vector3 dir, double len)
 	{
-		if (len < 4 || !UInt("ubqs_burn", 1)) return;
+		// THE GATE FIRST. This allocated a tracer and ran a full Trace before testing its own 5-tic
+		// cooldown -- two allocations and two traces a tic per saber, four fifths of them thrown away,
+		// and the thrown blade does the same twice a tic. Nothing below the gate has a side effect, so
+		// moving it up is a strict win.
+		if (len < 4 || burnQuiet > 0 || !UInt("ubqs_burn", 1)) return;
 		let tr = new("UBQS_Tracer");
 		Sector sec = level.PointInSector(base.xy);
 		if (!tr.Trace(base, sec, dir, len, 0, 0xFFFFFFFF, true)) return;
 		if (tr.Results.HitType == TRACE_HitNone || tr.Results.HitType == TRACE_HitActor) return;
 		Vector3 at = tr.Results.HitPos;
-		if (burnQuiet > 0) return;
 		burnQuiet = 5;
 		UBQS_Ping.At(owner, at, "ubqs/burn", 0.7);
 		if (tr.Results.HitType != TRACE_HitWall) return;
@@ -3674,6 +3759,9 @@ class UBQS_Thrown : Actor
 			if (mo.bFriendly && master.player) continue;
 			if (mo.player && !deathmatch) continue;
 			if (Distance2D(mo) > reach + mo.radius) continue;
+			// NOT THROUGH THE WALL -- and the HILT is the eye here, not the thrower, which is right for a
+			// blade flying down a corridor away from you.
+			if (UBQS_Data.I(master, "ubqs_cut_los", 1) && !CheckSight(mo, SF_IGNOREVISIBILITY)) continue;
 			double mz = mo.pos.z + mo.height * 0.5;
 			if (abs(mz - pos.z) > mo.height * 0.5 + reach * (vertical ? 1.0 : 0.3)) continue;
 			int i = cutWho.Find(mo);
@@ -3700,6 +3788,8 @@ class UBQS_Thrown : Actor
 		{
 			Actor mo = it.thing;
 			if (!mo || !mo.bMissile || mo == self || mo.target == master || mo is "UBQS_Thrown") continue;
+			// ...and a flying blade does not turn shots on the far side of a wall
+			if (UBQS_Data.I(master, "ubqs_cut_los", 1) && !CheckSight(mo, SF_IGNOREVISIBILITY)) continue;
 			if (Distance3D(mo) < bladeLen + mo.radius) launcher.BatBack(mo, BladeVec());
 		}
 	}
@@ -4803,10 +4893,13 @@ class UBQS_Bridge : EventHandler
 			// ONCE, not every 350 tics -- see the note above
 			if (fhand && p.OffhandWeapon == null && p.PendingWeapon == WP_NOCHANGE && raisedAt[i] == 0)
 			{
-				raisedAt[i] = level.maptime;
 				let fh = Weapon(p.mo.FindInventory("UBQS_ForceHand"));
 				if (fh && !(p.ReadyWeapon && p.ReadyWeapon.bTwoHanded))
 				{
+					// LATCHED ONLY ON A RAISE WE ACTUALLY MADE. Taken above the test, a two-handed main
+					// weapon held at the wrong moment ate the one attempt and the off hand stayed empty
+					// for the whole life -- nothing else clears the latch while the slot is null.
+					raisedAt[i] = level.maptime;
 					fh.bOffhandWeapon = true;
 					p.PendingWeapon = fh;
 					p.mo.BringUpWeapon();
@@ -4821,10 +4914,11 @@ class UBQS_Bridge : EventHandler
 			if (p.OffhandWeapon != null) raisedAt[i] = 0;
 			if (dual && p.OffhandWeapon == null && p.PendingWeapon == WP_NOCHANGE && raisedAt[i] == 0)
 			{
-				raisedAt[i] = level.maptime;
 				let off = Weapon(p.mo.FindInventory("UBQS_SaberOff"));
 				if (off && !(p.ReadyWeapon && p.ReadyWeapon.bTwoHanded))
 				{
+					// ...and the same here: the latch is the record of a raise, not of an attempt.
+					raisedAt[i] = level.maptime;
 					off.bOffhandWeapon = true;
 					p.PendingWeapon = off;
 					p.mo.BringUpWeapon();
