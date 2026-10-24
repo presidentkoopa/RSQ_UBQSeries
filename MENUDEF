@@ -194,23 +194,6 @@ OptionMenu "UBQS_Predict"
 	Command "Put this page back the way it shipped", "resetcvar ubqs_glow_predict ubqs_glow_lead ubqs_glow_frame_ms ubqs_glow_maxang ubqs_glow_maxlin ubqs_glow_ramp_deg ubqs_glow_stop ubqs_glow_hitch_ms ubqs_snap_turn_deg"
 }
 
-OptionValue "UBQS_FontList"
-{
-	0, "Original set"
-	1, "Graflex"
-	2, "Graflex legacy"
-	3, "Graflex TFA"
-	4, "ROTS"
-	5, "Vader"
-	6, "Maul double"
-	7, "Maul"
-	8, "Jedi Knight"
-	9, "RvB2"
-	10, "Saber I"
-	11, "Saber II"
-	12, "Saber III"
-}
-
 OptionValue "UBQS_Lefty"
 {
 	-1, "However the engine is set"
@@ -374,8 +357,7 @@ OptionMenu "UBQS_Sound"
 	Option "Blade light", "ubqs_lights", "UBQS_Lights"
 	Option "Hit and clash flashes", "ubqs_flash", "UBQS_Flash"
 	StaticText ""
-	StaticText "THE SABER YOU HEAR", "Gold"
-	Option "Sound font", "ubqs_font", "UBQS_FontList"
+	StaticText "THE BLADE IN SPACE", "Gold"
 	Option "Hear the swing from the blade", "ubqs_swing_spatial", "OnOff"
 	Slider "How far the whoosh bends as it passes you", "ubqs_doppler", 0, 2, 0.1, 1
 	StaticText ""

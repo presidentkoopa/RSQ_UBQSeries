@@ -166,7 +166,5 @@ server bool  ubqs_hitscan_guard = true;  // stop a bullet at the muzzle when the
 server float ubqs_parry_speed   = 6.0;   // units a tic the blade must move INTO a shot to parry it (0 = no parries)
 server float ubqs_parry_power   = 2.0;   // what a parry multiplies the return by: speed, and the tell
 
-// ---- which saber you can hear ------------------------------------------------------------
-user int     ubqs_font          = 1;     // 0 the original set, 1..12 the HD fonts (1 = Graflex)
 user int     ubqs_swing_spatial = 1;     // the swing is heard from the blade, not from the player
 user float   ubqs_doppler       = 1.0;   // how far the whoosh bends as the blade passes your ear (0 = not at all)
