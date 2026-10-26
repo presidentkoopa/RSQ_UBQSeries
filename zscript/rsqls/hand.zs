@@ -5,7 +5,7 @@
 // engine's, verified there:
 //
 //   Yaw   = AttackAngle + 90   (hw_vrmodes.cpp writes viewYaw - 90)
-//   Pitch = -AttackPitch       (written as -viewPitch); positive is UP here
+//   Pitch = AttackPitch        (written as -viewPitch, so positive is UP)
 //   the hand fields ARE the controller (hw_openxrdevice.cpp writes the real pose
 //   into AttackPos/OffhandPos for the camera player), and a LineAttack fired by
 //   a weapon in VR goes along exactly these angles from exactly this point
@@ -20,7 +20,12 @@ class RSQLS_Hand
 	const PIXELSTRETCH = 1.2;
 
 	static double Yaw(PlayerPawn pmo, int h)   { return ((h == 0) ? pmo.AttackAngle : pmo.OffhandAngle) + 90; }
-	static double Pitch(PlayerPawn pmo, int h) { return -((h == 0) ? pmo.AttackPitch : pmo.OffhandPitch); }
+	// Positive UP: AttackPitch already is (the engine negated Doom's view pitch).
+	// Negating it again was the 2026-10-26 upside-down bug shared with the grab:
+	// the muzzle offset and the no-hit end went the wrong way vertically.
+	static double Pitch(PlayerPawn pmo, int h) { return (h == 0) ? pmo.AttackPitch : pmo.OffhandPitch; }
+	// Doom's sense (positive DOWN), for LineTrace and friends.
+	static double DoomPitch(PlayerPawn pmo, int h) { return -Pitch(pmo, h); }
 	static double Roll(PlayerPawn pmo, int h)  { return (h == 0) ? pmo.AttackRoll : pmo.OffhandRoll; }
 	static Vector3 Grip(PlayerPawn pmo, int h) { return (h == 0) ? pmo.AttackPos : pmo.OffhandPos; }
 
@@ -48,10 +53,16 @@ class RSQLS_Hand
 	static Vector3 Dir(PlayerPawn pmo, int h) { return Fwd(Yaw(pmo, h), Pitch(pmo, h)); }
 
 	// A physical offset in METRES along the gun's own axes, as a map-space point.
-	static Vector3 Offset(PlayerPawn pmo, int h, double fwdM, double upM, double sideM)
+	// (The parameter was once `upM` -- which ZScript, being case-blind, read as
+	// the constant UPM: every offset was scaled by 0.03 instead of 34 and the
+	// muzzle sat on the grip, every gun, from v1 until the rig caught it on
+	// 2026-10-26.)
+	static Vector3 GunOffset(PlayerPawn pmo, int h, double fwdMetres, double upMetres, double sideMetres)
 	{
-		double y = Yaw(pmo, h), p = Pitch(pmo, h), r = Roll(pmo, h);
-		Vector3 m = Fwd(y, p) * fwdM + Up(y, p, r) * upM + Side(y, p, r) * sideM;
+		double y = Yaw(pmo, h);
+		double pt = Pitch(pmo, h);
+		double r = Roll(pmo, h);
+		Vector3 m = Fwd(y, pt) * fwdMetres + Up(y, pt, r) * upMetres + Side(y, pt, r) * sideMetres;
 		return (m.x * UPM, m.y * UPM, m.z * UPM / PIXELSTRETCH);
 	}
 

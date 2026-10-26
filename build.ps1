@@ -19,7 +19,7 @@ $out  = Join-Path $root 'RSQ_LaserSight.pk3'
 # tools/ stays out too: gen_sounds.py and gen_cone.py WRITE lumps, they are not lumps.
 # models/rsqdg is the generated cone and beam; models/hands (the FBX) stays out.
 $required = @('zscript.txt', 'MAPINFO.txt', 'CVARINFO.txt')
-$optional = @('TRNSLATE.txt', 'KEYCONF.txt', 'MENUDEF.txt', 'MODELDEF.txt', 'SNDINFO.txt', 'MASSDEF.txt')
+$optional = @('TRNSLATE.txt', 'KEYCONF.txt', 'MENUDEF.txt', 'MODELDEF.txt', 'SNDINFO.txt', 'MASSDEF.txt', 'ANIMDEFS.txt')
 $dirs     = @('zscript', 'graphics', 'sprites', 'sounds', 'models/rsqls')
 
 $files = @()
