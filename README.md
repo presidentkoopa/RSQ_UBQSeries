@@ -66,6 +66,9 @@ a missing mod is simply never found:
 - The **grab's beam hides on a hand where the laser already draws a beam**. The laser reports this
   through `RSQLS_SightService` (`laser.beam` / `laser.active`).
 - The **laser stays off** melee weapons and off-hand utilities.
+- A **weapon pack can place the laser's muzzle** on each gun: provide a `Service` whose class
+  name contains `LaserMuzzleService` and answer `GetString("laser.muzzle", <weapon class>, <hand>)`
+  with `"forward up side"` in metres from the grip (or `""` to leave a gun alone).
 - The ShieldSaw and the saber share the hands cleanly: saber in the main hand, shield in the off.
 
 Rumble on all of them goes through the one route the Quest runtime honours: amplitude-shaped,
@@ -98,13 +101,22 @@ This needs `zip`. Each mod also keeps its original script (DistanceGrab and Lase
 
 ## Status (2026-10-26)
 
-All four are on their **polish** pass:
-
-- Rig-tested on a Linux QuestZDoom build with posed controllers.
-- All four load together in both orders, menus open, and a fight runs with no script errors.
+- **Tested on the real QuestZDoom 17.3 engine** (the qzd17.3 tag, 4.14.3), built headless
+  for testing ([tools/rig17](tools/rig17/)), and on the older 4.12 build. All four load together
+  in both orders, menus open, a fight runs, and the full Brutal Doom + VoxelPack load order
+  pulls and catches with no script errors.
 - An independent review of every change was done and its findings fixed.
 - **Not yet played on a headset.** Feel numbers (rumble strength, arc height, throw thresholds)
   are first guesses.
+
+Latest round:
+
+- **DistanceGrab:** the hand's up/down angle was read upside down (what you could grab, the
+  "not at the floor" check and the wrist flick). Fixed and re-tested. Voxel items flash instead
+  of wearing the thin glow. A "Feel tuning" page collects the headset numbers.
+- **LaserSight phase 3:** a spread ring and a grenade arc, both learned by watching each gun
+  fire; per-weapon muzzle points through a `LaserMuzzleService`; a range readout. Also fixed:
+  the beam started at the grip instead of the muzzle on every gun.
 
 What changed, what's measured and what's still open is in each mod's handoff:
 [DistanceGrab](DistanceGrab/docs/HANDOFF_2026-10-26.md) ·
