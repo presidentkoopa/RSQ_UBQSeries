@@ -5,7 +5,7 @@
 // models.cpp). It never fires; the off trigger revs the saw, and the grip edges are read by
 // SSQ_Handler. Nothing but SSQ_Handler.Draw() selects it.
 //
-// The rev: BT_OFFHANDALTATTACK (the off alt-fire) is a synced usercmd bit, so the rev level is
+// The rev: BT_OFFHANDATTACK (the off trigger) is a synced usercmd bit, so the rev level is
 // the same on every machine with no traffic. It drives the blade frames, the loop's pitch,
 // the grind, and the damage of the throw it ends in.
 //
@@ -81,7 +81,7 @@ class SSQ_ShieldSaw : Weapon
 	Spawn:
 		SSQH A -1;
 		Stop;
-	// MODELDEF only knows a sprite that some state names, and these three are set at run time
+	// MODELDEF only knows a sprite that some state names, and these eleven are set at run time
 	// by writing the layer's sprite (A_SSQ_Held), so they are named here once
 	SpriteNames:
 		SSQJ A 0;
@@ -184,6 +184,14 @@ class SSQ_ShieldSaw : Weapon
 // every machine alike (deterministic), and the view does not shake. X buzzes the left
 // controller, Y the right (r_utility.cpp), so the off hand is picked by handedness.
 // Needs vr_quake_haptic_level > 0 on the headset.
+//
+// THE RUMBLE IS A WAVE NOW, AND IT FOLLOWS YOU (series polish, 2026-10-26). A plain quake's
+// jigger is a fresh random value in +/-intensity each frame (QuakePower): half the frames
+// negative -- nothing -- and the rest clipped. And the spot stayed where it spawned with a
+// 4-unit radius, so a block taken while running buzzed for a tic and left you behind. SSQ_Buzzer
+// now follows the player and re-issues a 2-tic QF_WAVE quake each tic (the method
+// RSQ_DistanceGrab measured: never negative, the amplitude asked for, decaying like the old
+// QF_SCALEDOWN).
 class SSQ_FX abstract play
 {
 	static void Buzz(PlayerPawn mo, double strength, int tics)
@@ -191,9 +199,13 @@ class SSQ_FX abstract play
 		if (!mo || !mo.player) return;
 		if (SSQ_Handler.UVI(mo.player, 'ssq_feedback', 1) == 0) return;
 		bool left = !SSQ_Handler.LeftHanded(mo.player);
-		let q = Actor.Spawn('SSQ_Buzzer', mo.pos);
+		let q = SSQ_Buzzer(Actor.Spawn('SSQ_Buzzer', mo.pos));
 		if (!q) return;
-		q.A_QuakeEx(left ? strength : 0, left ? 0 : strength, 0, max(1, tics), 0, 4, "", QF_SCALEDOWN);
+		q.feels = mo;
+		q.left = left;
+		q.amp = clamp(strength, 0.1, 1.0);
+		q.total = clamp(tics, 1, 16);
+		q.tleft = q.total;
 	}
 
 	// a shield sound played AT the contact instead of at the player's feet. ssq_spatial 0 puts
@@ -260,6 +272,10 @@ class SSQ_Ping : Actor
 
 class SSQ_Buzzer : Actor
 {
+	Actor feels;
+	bool left;
+	double amp;
+	int total, tleft;
 	Default
 	{
 		+NOINTERACTION
@@ -267,10 +283,23 @@ class SSQ_Buzzer : Actor
 		+NOSECTOR
 		+DONTSPLASH
 	}
+	// Spawned this tic, ticked later this same tic (the fresh-thinker pass), so the first pulse
+	// happens here and is never doubled.
+	override void Tick()
+	{
+		Super.Tick();
+		if (!feels) { Destroy(); return; }
+		SetOrigin(feels.pos, true);
+		if (tleft <= 0) return;
+		// amplitude / 3.2: the jigger peak is 4x the intensity, the haptic 0.8x that by default
+		double a = amp * tleft / double(total) / 3.2;
+		tleft--;
+		A_QuakeEx(left ? a : 0.0, left ? 0.0 : a, 0, 2, 0, 8, "", QF_WAVE, 17.5, 17.5, 1);
+	}
 	States
 	{
 	Spawn:
-		TNT1 A 12;
+		TNT1 A 20;
 		Stop;
 	}
 }

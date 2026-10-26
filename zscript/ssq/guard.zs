@@ -244,7 +244,7 @@ class SSQ_Guard : Inventory
 		{
 			let h = SSQ_Handler.Get();
 			let pose = h ? h.PoseOf(mo.PlayerNumber()) : null;
-			if (pose) perfect = (pose.Vel() * TICRATE) dot outward >= SSQ_Handler.SV('ssq_perfect_speed', 40.0);
+			if (pose) perfect = (pose.Vel() * TICRATE) dot outward >= SSQ_Handler.SV('ssq_perfect_speed', 25.0);
 		}
 
 		bool fb = SSQ_Handler.UVI(mo.player, 'ssq_feedback', 1) != 0;
@@ -565,7 +565,7 @@ class SSQ_Guard : Inventory
 		g.lastPushTic = mo.Level.maptime;
 		g.pushPath = g.pushPath * 0.75 + max(shove, 0.0);
 		double eff = max(shove, g.pushPath * clamp(SSQ_Handler.SV('ssq_bash_sustain', 0.6), 0.0, 1.0));
-		bool bashNow = SSQ_Handler.SVI('ssq_bash', 1) != 0 && g.bashCool == 0 && eff >= SSQ_Handler.SV('ssq_bash_speed', 70.0);
+		bool bashNow = SSQ_Handler.SVI('ssq_bash', 1) != 0 && g.bashCool == 0 && eff >= SSQ_Handler.SV('ssq_bash_speed', 45.0);
 		if (!grindNow && !bashNow) return;
 
 		// THE BASH REACHES FURTHER THAN THE GRIND. A shove is the whole shield and your whole

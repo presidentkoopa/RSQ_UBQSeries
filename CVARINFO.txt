@@ -5,7 +5,7 @@
 // ---- the game rules (server) ------------------------------------------------
 server bool  ssq_start          = true;   // every player spawns with it
 server float ssq_cut_damage     = 1.0;    // thrown-disc damage scale
-server float ssq_throw_speed    = 1.6;    // launch speed scale: a 6 m/s swing leaves at ~17 units/tic (a rocket is 20)
+server float ssq_throw_speed    = 1.6;    // launch speed scale: a 6 m/s swing gives ~8 units/tic (204 u/s / 35 x 30/35 x 1.6), so ssq_speed_floor sets it; a rocket is 20
 server float ssq_throw_blend    = 0.7;    // 1 = throw along the arm's own direction, 0 = along where the hand points
 // ---- THE THREE TRIGGER SPEEDS, RE-PICKED FOR AN ARM ----------------------------------------
 // These were chosen while the measurement still carried the player's own travel, so they had to
@@ -48,7 +48,7 @@ server bool  ssq_tiers          = true;
 server int   ssq_tier_fodder    = 70;     // at or under: bisected
 server int   ssq_tier_mid       = 600;    // at or under: the disc embeds and grinds
 server int   ssq_embed_tics     = 21;
-server int   ssq_embed_dps      = 3;
+server int   ssq_embed_dps      = 3;      // damage PER TIC while embedded, dealt as 3x this every third tic (not per second)
 server float ssq_glance_scale   = 0.4;
 
 // the rev (off-hand trigger held)

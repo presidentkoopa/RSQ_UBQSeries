@@ -150,7 +150,7 @@ class SSQ_Disc : Actor
 		found.Clear();
 		int want = SSQ_Handler.SVI('ssq_locks', 5);
 		if (want <= 0) return;
-		double cone = SSQ_Handler.SV('ssq_lock_cone', 16.0);
+		double cone = SSQ_Handler.SV('ssq_lock_cone', 25.0);
 		double range = SSQ_Handler.SV('ssq_lock_range', 1200.0);
 		Array<Actor> cand; Array<double> score;
 		// EVERY ACTOR IN THE LEVEL was being walked, every tic, to find things within 1200 units

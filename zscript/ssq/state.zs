@@ -7,14 +7,14 @@
 //            way back catches it (DRAWN), otherwise it lands on the mount (STOWED).
 //
 // THE INPUT (owner, 2026-10-22 04:08), all synced usercmd bits, nothing to bind:
-//   off hand in the ZONE by the off shoulder + USE   -> the shield is in the hand (whatever was
+//   off hand AT THE MOUNT by the off shoulder + USE  -> the shield is in the hand (whatever was
 //                                                        there steps aside and comes back after)
 //   off PRIMARY held                                  -> the saw revs
 //   off SECONDARY held                                -> lock-on: rings over what you aim at
 //   off SECONDARY released, arm moving               -> throw, at the ringed targets in order
 //   off SECONDARY released, arm still                -> nothing; it stays in the hand
 //   off SECONDARY pressed while it flies              -> recall
-//   USE in the zone again                             -> back on the shoulder
+//   USE at the mount again                            -> back on the shoulder
 //   hand near the returning disc (Back in Hand on Return) -> caught
 // The decision runs here, in WorldTick, from the SYNCED pose (pose.zs). No wait on the grab.
 
@@ -35,7 +35,7 @@ class SSQ_Handler : EventHandler
 	int   mCatchGrace[MAXPLAYERS];	// tics after a catch before the grip is read again
 	int   mDrawGrace[MAXPLAYERS];	// tics after a draw before an empty off hand counts as eviction
 	int   mStartDrawn[MAXPLAYERS];	// countdown to the draw at spawn (ssq_start_drawn)
-	bool  mInZone[MAXPLAYERS];		// the off hand is in the zone over the shoulder: the off-hand gun has yielded
+	bool  mInZone[MAXPLAYERS];		// kept for the debug line; the zone-hides-the-gun pass was retired
 	// THE LOCK-ON YOU SEE. While the shield is held, a cone from where the off hand points picks
 	// the targets every tic; a ring hangs over each, biggest over the first the disc will visit.
 	// Let go and this list is what flies, in this order.
@@ -101,9 +101,9 @@ class SSQ_Handler : EventHandler
 	static clearscope Vector3 MountPos(PlayerPawn mo)
 	{
 		let p = mo.player;
-		double side = CM(UV(p, 'ssq_mount_side', 8.0)) * (LeftHanded(p) ? -1 : 1);
-		double fwd = CM(UV(p, 'ssq_mount_fwd', -7.0));
-		double up = CM(UV(p, 'ssq_mount_up', -4.0));
+		double side = CM(UV(p, 'ssq_mount_side', 12.0)) * (LeftHanded(p) ? -1 : 1);
+		double fwd = CM(UV(p, 'ssq_mount_fwd', -27.0));
+		double up = CM(UV(p, 'ssq_mount_up', -30.0));
 		double a = mo.angle;
 		Vector3 f = (cos(a), sin(a), 0);
 		Vector3 l = (cos(a + 90), sin(a + 90), 0);
@@ -202,10 +202,10 @@ class SSQ_Handler : EventHandler
 		return (b & (BT_OFFHANDATTACK | BT_OFFHANDALTATTACK)) != 0;
 	}
 
-	static clearscope double Reach(PlayerInfo p) { return CM(UV(p, 'ssq_mount_reach', 10.0)); }
+	static clearscope double Reach(PlayerInfo p) { return CM(UV(p, 'ssq_mount_reach', 30.0)); }
 	// THE ZONE over the shoulder: larger than the grab reach, so the hand is inside it for tics
 	// before the finger can be at the grab point
-	static clearscope double Zone(PlayerInfo p) { return Reach(p) * SV('ssq_zone_scale', 2.2); }
+	static clearscope double Zone(PlayerInfo p) { return Reach(p) * SV('ssq_zone_scale', 1.6); }
 
 	// ---- lifecycle ----------------------------------------------------------------
 	override void OnRegister()
@@ -302,27 +302,6 @@ class SSQ_Handler : EventHandler
 		}
 	}
 
-	void ZoneTick(int i)
-	{
-		let p = players[i];
-		let mo = p.mo;
-		let pose = mPose[i];
-		bool inZone = mState[i] == SS_STOWED && pose.Fresh(Level.maptime) && (pose.pos[0] - MountPos(mo)).Length() <= Zone(p);
-		let w = p.OffhandWeapon;
-		bool ours = w is "SSQ_ShieldSaw";
-		if (inZone && w && !ours)
-		{
-			if (p.FindPSprite(PSP_OFFHANDWEAPON)) p.SetPsprite(PSP_OFFHANDWEAPON, null);
-			mInZone[i] = true;
-		}
-		else if (mInZone[i])
-		{
-			mInZone[i] = false;
-			if (w && !ours && !p.FindPSprite(PSP_OFFHANDWEAPON) && p.PendingWeapon == WP_NOCHANGE)
-				p.SetPsprite(PSP_OFFHANDWEAPON, w.GetReadyState());
-		}
-	}
-
 	// USE in the zone: holstered -> draw; drawn -> holster
 	void OnPress(int i)
 	{
@@ -367,7 +346,7 @@ class SSQ_Handler : EventHandler
 			forward = (hv.Unit() dot look) >= fwdmin;
 		}
 		if (UVI(p, 'ssq_debug', 0)) Console.Printf("ssq: release p%d speed %.0f/s, %d locked, forward %d", i, speed, mLocks[i].Size(), forward);
-		if (speed >= SV('ssq_throw_min', 20.0) && forward) Throw(i);
+		if (speed >= SV('ssq_throw_min', 60.0) && forward) Throw(i);
 		else mKeepMarks[i] = Level.maptime + SVI('ssq_keep_marks', 35);	// not a throw: hold the marks a moment
 	}
 
@@ -914,7 +893,7 @@ class SSQ_Handler : EventHandler
 		Unstow(i);
 		let d = SSQ_Disc(Actor.Spawn('SSQ_Disc', from + dir * 16));
 		if (!d) { mState[i] = SS_STOWED; return; }
-		d.LaunchAlong(mo, dir, SV('ssq_speed_floor', 7.0) * 3.0, 90, rev);	// flat, like a frisbee
+		d.LaunchAlong(mo, dir, SV('ssq_speed_floor', 12.0) * 3.0, 90, rev);	// flat, like a frisbee
 		mDisc[i] = d;
 		mState[i] = SS_FLYING;
 		mo.A_StartSound("ssq/throw", CHAN_6);

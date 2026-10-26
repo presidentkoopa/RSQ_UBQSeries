@@ -5,7 +5,7 @@
 // decides from the hand (a block, a throw, a bash, a catch) has to come from a pose every
 // machine has, or the game desyncs the moment somebody raises a shield.
 //
-// So: the console player's UiTick reads its own fields and sends "ssq-pose" (three ints) once
+// So: the console player's WorldTick reads its own fields and sends "ssq-pose" (three ints) once
 // a tic while the pose matters; NetworkProcess, which runs on every peer, unpacks it into the
 // per-player history below. The sim reads ONLY the history -- on the sender's machine too.
 //
@@ -23,7 +23,7 @@ class SSQ_Pose play
 	// Both are synced playsim state, so this stays deterministic on every machine.
 	Vector3 bod[8];
 	double byaw[8];
-	bool grip;			// the off trigger as the sender saw it
+	bool grip;			// written with the pose (Use or the off alt as the sender saw it); not read
 	bool left;			// the sender plays left-handed (the engine's vr_control_scheme >= 10)
 	int count;
 
