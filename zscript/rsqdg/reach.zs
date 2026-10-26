@@ -21,7 +21,11 @@ class RSQDG_Reach
 	// engine conventions, not ours, and both are visible in stock's own
 	// consumers -- weaponmace.zs:69-79 does exactly this conversion, and the
 	// base writer at hw_vrmodes.cpp:443-444 sets `AttackAngle = viewYaw - 90`
-	// and `AttackPitch = -viewPitch`, which fixes the convention beyond doubt.
+	// and `AttackPitch = -viewPitch`, which fixes the convention beyond doubt:
+	// viewPitch is Doom's (positive DOWN), so AttackPitch is positive UP. Undo
+	// the yaw offset; take the pitch as it is for vectors, negate it only for
+	// engine calls that want Doom's sense (DoomPitch). (Negating it for vectors
+	// too was the 2026-10-26 upside-down bug -- see Pitch.)
 	//
 	// Getting either wrong puts the tested volume and the drawn ray on opposite
 	// sides of the hand, so the conversion lives HERE, once, and nothing else
@@ -31,10 +35,24 @@ class RSQDG_Reach
 		return ((hand == 0) ? pmo.AttackAngle : pmo.OffhandAngle) + 90;
 	}
 
+	// PITCH, POSITIVE UP -- the convention every vector in this file (Fwd, Up,
+	// Side) and every test above it (the palm gate's "not at the floor", the
+	// flick's "tipped up") was written for. AttackPitch IS that already: the
+	// engine stores it negated FROM DOOM'S down-positive view pitch. This used
+	// to negate it a second time, which turned the hand upside down in pitch:
+	// measured in the rig 2026-10-26, a hand aimed 9 deg DOWN at a floor barrel
+	// found nothing and one aimed 9 deg UP took it, while the pistol's own
+	// puffs and the drawn beam (a LineTrace, which takes Doom's down-positive
+	// pitch) went the right way. The headset-proven QuestSaber reads it the same
+	// way as here now (its fw.z = sin(AttackPitch)).
 	static double Pitch(PlayerPawn pmo, int hand)
 	{
-		return -((hand == 0) ? pmo.AttackPitch : pmo.OffhandPitch);
+		return (hand == 0) ? pmo.AttackPitch : pmo.OffhandPitch;
 	}
+
+	// Doom's own convention (positive DOWN), for engine calls that take it:
+	// LineTrace, AimLineAttack, LineAttack.
+	static double DoomPitch(PlayerPawn pmo, int hand) { return -Pitch(pmo, hand); }
 
 	// AttackRoll, not MainHandRoll. The fork renamed it; stock's name is the
 	// original and is what actor.zs:270 declares.

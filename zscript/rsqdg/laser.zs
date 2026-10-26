@@ -394,7 +394,7 @@ class RSQDG_Laser : EventHandler
 			// true, which in VR is always.
 			double reach = RSQDG_Reach.Num("rsqdg_reach", p, 512.0);
 			FLineTraceData t;
-			bool hit = pmo.LineTrace(RSQDG_Reach.Yaw(pmo, h), reach, RSQDG_Reach.Pitch(pmo, h),
+			bool hit = pmo.LineTrace(RSQDG_Reach.Yaw(pmo, h), reach, RSQDG_Reach.DoomPitch(pmo, h),
 				TRF_ABSPOSITION | TRF_THRUACTORS, realPalm.z, realPalm.x, realPalm.y, t);
 			to = hit ? t.HitLocation : (realPalm + RSQDG_Reach.Dir(pmo, h) * reach);
 			to = LeadTo(h, to);
