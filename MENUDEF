@@ -106,18 +106,22 @@ OptionMenu "UBQS_Options"
 	Submenu "The Force", "UBQS_TheForce"
 	Submenu "Sound and feel", "UBQS_Sound"
 	Submenu "The training remote", "UBQS_Trainer"
-	Submenu "Tuning (the short list)", "UBQS_Tune"
 	Submenu "Keys and ready-made looks", "UBQS_Setup"
 	StaticText ""
+	StaticText "DIAGNOSTICS", "Gold"
 	Option "Diagnostic overlay", "ubqs_diag", "UBQS_Diag"
+	StaticText ""
+	SafeCommand "Put EVERYTHING back the way it shipped", "resetcvar ubqs_size ubqs_color ubqs_color_off ubqs_alt ubqs_deflect_aim ubqs_throw ubqs_throw_spin ubqs_throw_plane ubqs_throw_double ubqs_throw_min ubqs_contact ubqs_blade_glow ubqs_glow_width ubqs_blade_glow_color ubqs_glow_quality ubqs_glow_predict ubqs_glow_lead ubqs_glow_dots ubqs_glow_motionfade ubqs_blade_tube ubqs_world_saber ubqs_glow_overlap_core ubqs_glow_overlap_halo ubqs_contact_hilt ubqs_diag ubqs_trail ubqs_locks ubqs_lock_cone ubqs_lights ubqs_twirl ubqs_force_gestures ubqs_force_gesture ubqs_remote_level ubqs_remote_sting ubqs_on ubqs_start ubqs_dual ubqs_chainsaw ubqs_deflect ubqs_block ubqs_block_cone ubqs_block_return ubqs_block_damage ubqs_burn ubqs_crossguard ubqs_push_power ubqs_push_range ubqs_push_damage ubqs_push_cooldown ubqs_damage ubqs_cut_fx ubqs_throw_range ubqs_force ubqs_force_hand ubqs_pull_range ubqs_grip_mass ubqs_grip_damage ubqs_blade_guard ubqs_grip_fling ubqs_grip_slam ubqs_force_jump ubqs_jump_power ubqs_hand_glow ubqs_size_off ubqs_beam_shift ubqs_glow_fade_deg0 ubqs_glow_fade_deg1 ubqs_glow_fade_widen ubqs_glow_fade_jerk ubqs_glow_frame_ms ubqs_glow_maxang ubqs_glow_maxlin ubqs_glow_ramp_deg ubqs_glow_stop ubqs_glow_hitch_ms ubqs_snap_turn_deg ubqs_swing_cut ubqs_swing_scale ubqs_cut_rate ubqs_cut_pad ubqs_dmg_twirl ubqs_dmg_thrown ubqs_trail_steps ubqs_trail_life ubqs_lock_stick ubqs_clash_fx ubqs_guard_arc ubqs_block_swung ubqs_deflect_assist ubqs_deflect_lead ubqs_throw_straight ubqs_throw_blend ubqs_throw_speed ubqs_gesture_straight ubqs_push_cone ubqs_pull_cone ubqs_pull_power ubqs_grip_boss ubqs_grip_cone ubqs_grip_range ubqs_grip_still ubqs_grip_hold ubqs_jump_hold ubqs_jump_float ubqs_hum ubqs_hum_off ubqs_vol_swing ubqs_swing_gap ubqs_vol_hit ubqs_vol_clash ubqs_snd_choke ubqs_vol_force ubqs_vol_ignite ubqs_remote_chirp ubqs_flash ubqs_haptics ubqs_haptic_cut ubqs_haptic_clash ubqs_haptic_power ubqs_lefty ubqs_remote_warn ubqs_cut_shove ubqs_cut_lift ubqs_cut_los ubqs_cut_sustain ubqs_guard_width ubqs_throw_on_lock ubqs_hitscan_guard ubqs_parry_speed ubqs_parry_power ubqs_swing_spatial ubqs_doppler ubqs_saber_sound ubqs_block_stagger ubqs_stagger_push"
 }
 
 OptionMenu "UBQS_Setup"
 {
 	Title "KEYS AND READY-MADE LOOKS"
 	StaticText "KEYS", "Gold"
-	Control "Second blade on / off (either hand)", "netevent ubqs_blade2"
-	Control "Blade on / off (douse it)", "netevent ubqs_ignite"
+	// The SAME bind targets as Customize Controls (KEYCONF's aliases), so a key bound in either place
+	// shows as bound in both. These rows used to bind the netevent itself.
+	Control "Second blade on / off (either hand)", "ubqs_blade2_toggle"
+	Control "Blade on / off (douse it)", "ubqs_ignite_toggle"
 	Control "Summon / dismiss the training remote", "ubqs_remote_toggle"
 	StaticText ""
 	StaticText "READY-MADE LOOKS", "Gold"
@@ -189,7 +193,7 @@ OptionMenu "UBQS_Predict"
 	Slider "What counts as stopping (part of the last speed)", "ubqs_glow_stop", 0.2, 0.95, 0.05, 2
 	Slider "A gap longer than this starts over, ms", "ubqs_glow_hitch_ms", 40, 400, 20, 0
 	StaticText ""
-	Slider "Ignore the arm above this turn rate (degrees a tic)", "ubqs_snap_turn_deg", 4, 30, 1, 0
+	Slider "Teleport-sized turn (degrees a tic)", "ubqs_snap_turn_deg", 10, 90, 1, 0
 	StaticText ""
 	Command "Put this page back the way it shipped", "resetcvar ubqs_glow_predict ubqs_glow_lead ubqs_glow_frame_ms ubqs_glow_maxang ubqs_glow_maxlin ubqs_glow_ramp_deg ubqs_glow_stop ubqs_glow_hitch_ms ubqs_snap_turn_deg"
 }
@@ -247,18 +251,19 @@ OptionMenu "UBQS_Contact"
 	StaticText "THE CROSS GUARD", "Gold"
 	Option "Cross guard (blades crossed = no damage from the front)", "ubqs_crossguard", "OnOff"
 	Slider "How wide the wall is (degrees either side)", "ubqs_guard_arc", 30, 120, 5, 0
+	Slider "...and how near a blade must be to the attack (0 = the arc alone)", "ubqs_guard_width", 0, 48, 2, 0
 	StaticText ""
 	Option "Stop bullets at the muzzle", "ubqs_hitscan_guard", "OnOff"
 	Slider "Parry: how hard the blade must move into the shot (0 = off)", "ubqs_parry_speed", 0, 16, 0.5, 1
 	Slider "What a parry multiplies the return by", "ubqs_parry_power", 1, 4, 0.25, 2
-	Slider "...and how near a blade must be to the attack (0 = the arc alone)", "ubqs_guard_width", 0, 48, 2, 0
 	Option "A blocked claw staggers its owner", "ubqs_block_stagger", "OnOff"
 	Slider "...and is shoved back", "ubqs_stagger_push", 0, 30, 2, 0
 	StaticText ""
 	StaticText "BLOCKING BULLETS", "Gold"
-	// ONE blade in the way, measured. Above 0 this is what decides a block and the two rows below
+	// ONE blade in the way, measured. Above 0 this is what decides a block and the THREE rows below
 	// it do nothing; at 0 the blade stops being geometry and goes back to the cone and the dice.
 	Slider "One blade blocks: how near the blade counts (0 = old dice roll)", "ubqs_blade_guard", 0, 24, 1, 0
+	StaticText "The next three are used only when the row above is 0.", "DarkGray"
 	Slider "Block bullets held still, per cent", "ubqs_block", 0, 100, 5, 0
 	Slider "How far off the shooter the blade may point (degrees)", "ubqs_block_cone", 10, 120, 5, 0
 	Slider "After a fast swing, everything is blocked for (tics)", "ubqs_block_swung", 0, 35, 1, 0
@@ -292,6 +297,7 @@ OptionMenu "UBQS_Throwing"
 	StaticText "LOCKING ON", "Gold"
 	Slider "Enemies one throw locks", "ubqs_locks", 1, 8, 1, 0
 	Slider "Lock-on cone (degrees)", "ubqs_lock_cone", 6, 30, 1, 0
+	Option "A throw flies to the locked enemies", "ubqs_throw_on_lock", "OnOff"
 }
 
 OptionMenu "UBQS_TheForce"
@@ -390,20 +396,6 @@ OptionMenu "UBQS_Trainer"
 	Slider "Remote sting damage (0 = none)", "ubqs_remote_sting", 0, 10, 1, 0
 	Slider "Extra warning before it shoots (tics)", "ubqs_remote_warn", 0, 20, 1, 0
 	Slider "Chirps (0 = quiet)", "ubqs_remote_chirp", 0, 1, 0.05, 2
-}
-
-OptionMenu "UBQS_Tune"
-{
-	Title "TUNING"
-	Submenu "The beam in the world", "UBQS_Beam"
-	Submenu "The world beam's prediction", "UBQS_Predict"
-	Submenu "Your swing, the trail, the staff", "UBQS_Swing"
-	Submenu "Blade on blade", "UBQS_Contact"
-	Submenu "Deflecting shots", "UBQS_Deflecting"
-	Submenu "Throwing the saber", "UBQS_Throwing"
-	Submenu "The Force", "UBQS_TheForce"
-	Submenu "Sound and feel", "UBQS_Sound"
-	Submenu "The saber you see", "UBQS_Look"
 }
 
 AddOptionMenu "OptionsMenu"

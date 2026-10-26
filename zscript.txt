@@ -509,8 +509,8 @@ class UBQS_SaberBase : Weapon abstract
 	}
 	// THE GLOW, IN THE HAND: a second layer of this saber, drawn ADDITIVE, its model the glow shell baked onto
 	// the blade for every frame (ubqs.py glow_md3) -- drawn with the blade, from the controller, every frame,
-	// so it cannot lag (the owner, 10-01). ubqs_blade_glow is its strength (0 off); ubqs_blade_glow_color its
-	// colour (-1 the blade's own).
+	// so it cannot lag (the owner, 10-01). ubqs_hand_glow switches this layer on; ubqs_blade_glow_color is its
+	// colour (-1 the blade's own). (ubqs_blade_glow is the WORLD beam's strength, not this one's.)
 	action void A_UBGlow(int f)
 	{
 		// drawn AFTER both sabers (layers are drawn in order; the off hand's saber is layer 1000000), so a glow
@@ -946,7 +946,8 @@ class UBQS_SaberBase : Weapon abstract
 		// faces now. Magnitude is unchanged; only the heading is restored.
 		if (owner)
 		{
-			double c2 = cos(owner.angle), s2 = sin(owner.angle);
+			double fy = UBQS_FrameKeeper.YawOf(owner);
+			double c2 = cos(fy), s2 = sin(fy);
 			v = (v.x * c2 - v.y * s2, v.x * s2 + v.y * c2, v.z);
 		}
 		return v;
@@ -1030,7 +1031,9 @@ class UBQS_SaberBase : Weapon abstract
 		// RS_ShieldSawQ and the owner's BD22 Quest pack both difference in the body frame for the
 		// same reason; this is the saber catching up with them.
 		Vector3 hrel = HandPos() - bn;
-		double byc = cos(owner.angle), bys = sin(owner.angle);
+		// THE TRACKING SPACE'S YAW, not owner.angle -- which follows the headset (UBQS_FrameKeeper).
+		double fyaw = UBQS_FrameKeeper.YawOf(owner);
+		double byc = cos(fyaw), bys = sin(fyaw);
 		h0 = (hrel.x * byc + hrel.y * bys, hrel.y * byc - hrel.x * bys, hrel.z);
 		// A SNAP TURN (or a teleport) jumps the whole world-space arm around the body in one tic. That is not
 		// a swing and not a throw (the owner, 10-01: "snap turn registers as an attack"): forget the motion history.
@@ -1119,7 +1122,20 @@ class UBQS_SaberBase : Weapon abstract
 		// arrives at 1/1.2 of its real size while the blade-direction part of the tip is already metric.
 		// Undone on the hand term alone -- (h0 - h1) IS that term -- or an overhead chop needs about a
 		// fifth more real speed to reach ubqs_swing_cut than a flat slash does.
-		Vector3 dTip = ((tip - lastTip) - bodyStep);
+		// A TURN OF THE TRACKING SPACE IS NOT A SWING. Last tic's tip is carried round the body by
+		// however far the space turned this tic (UBQS_FrameKeeper: zero for a head turn, the whole snap
+		// for a snap turn), so a snap of ANY size -- 30, 45, or 45 with the head moving against it --
+		// leaves the blade where the arm left it. Before, only snaps at or above ubqs_snap_turn_deg were
+		// caught, and anything under that was a free full-damage cut.
+		Vector3 lastT = lastTip;
+		double tturn = UBQS_FrameKeeper.TurnOf(owner);
+		if (tturn != 0)
+		{
+			Vector3 pivot = bn - bodyStep;
+			Vector2 rel = Actor.RotateVector(lastT.xy - pivot.xy, tturn);
+			lastT = (pivot.x + rel.x, pivot.y + rel.y, lastT.z);
+		}
+		Vector3 dTip = ((tip - lastT) - bodyStep);
 		Vector3 hStep = h0 - h1;	// ZScript will not dereference .z off a parenthesised expression
 		dTip.z += hStep.z * (level.pixelstretch - 1.0);
 		double speed = lastOk ? dTip.Length() : 0.0;
@@ -1859,8 +1875,8 @@ class UBQS_SaberBase : Weapon abstract
 		}
 		// THE BLADE GOING THROUGH A BODY is the single event a VR player most expects to feel, and it did
 		// nothing: all five Buzz() sites were Force or targeting events. ONCE per swing, not once per victim --
-		// a sweep through four imps is one pulse a controller could tell apart, and Buzz() is a LineAttack.
-		// Off by default, so today is unchanged -- but this is the first thing to turn on (ubqs_haptic_cut).
+		// a sweep through four imps is one pulse a controller could tell apart. On by default
+		// (ubqs_haptic_cut 1).
 		if (buzzc && cutAny) Rumble(0.9, 4);
 		for (int k = cutWho.Size() - 1; k >= 0; k--)
 			if (!cutWho[k] || cutWho[k].health <= 0) { cutWho.Delete(k); cutWhen.Delete(k); }
@@ -3954,12 +3970,24 @@ class UBQS_Force : Inventory
 		double a = owner.angle, p = owner.pitch;
 		return (cos(p) * cos(a), cos(p) * sin(a), -sin(p));
 	}
+	// THE SAME RULES AS THE SABER'S OWN HandVel: kept in the tracking frame (so a snap or smooth turn is
+	// not a gesture and a head turn is not either), metric on Z (the engine divides only the hand's Z by
+	// pixelstretch -- uncorrected, a fling or an up/down push came out about 17% short), and turned back
+	// into the world for the callers, who compare it with where you are looking.
 	Vector3 HandVel()
 	{
 		Vector3 a = h0 - h1, b = h1 - h2, c = h2 - h3;
+		double ps = level.pixelstretch;
+		a.z *= ps; b.z *= ps; c.z *= ps;
 		Vector3 v = a;
 		if (b.Length() > v.Length()) v = b;
 		if (c.Length() > v.Length()) v = c;
+		if (owner)
+		{
+			double fy = UBQS_FrameKeeper.YawOf(owner);
+			double c2 = cos(fy), s2 = sin(fy);
+			v = (v.x * c2 - v.y * s2, v.x * s2 + v.y * c2, v.z);
+		}
 		return v;
 	}
 	void Buzz()
@@ -3987,8 +4015,14 @@ class UBQS_Force : Inventory
 		let p = owner.player;
 		// the off hand's last four positions, less the body; a snap turn or teleport forgets them
 		h3 = h2; h2 = h1; h1 = h0;
-		h0 = OffPos() - UBQS_SaberBase.BodyAt(owner);
-		if (abs(DeltaAngle(lastYaw, owner.angle)) >= FV("ubqs_snap_turn_deg", 8.0) || (owner.pos - lastBody).Length() > 48.0) { h1 = h0; h2 = h0; h3 = h0; }
+		{
+			Vector3 hr = OffPos() - UBQS_SaberBase.BodyAt(owner);
+			double fy = UBQS_FrameKeeper.YawOf(owner);
+			double fc = cos(fy), fs = sin(fy);
+			h0 = (hr.x * fc + hr.y * fs, hr.y * fc - hr.x * fs, hr.z);
+		}
+		// A teleport still forgets the history; a snap turn no longer needs to (the frame above absorbs it).
+		if ((owner.pos - lastBody).Length() > 48.0) { h1 = h0; h2 = h0; h3 = h0; }
 		lastYaw = owner.angle;
 		lastBody = owner.pos;
 
@@ -4974,6 +5008,73 @@ class UBQS_Bridge : EventHandler
 // against where the world glow is actually DRAWN this frame: lerp(Prev, Pos, FracTic), the angles lerped from
 // the glow's own record of last tic's (pYaw / pPitch: PrevAngles is not in ZScript). One console line per frame
 // (UBQSTEL ..., to the log only -- +logfile captures it, the view is not flooded) and a readout of the last full second's RMS / max. UI only READS play.
+// THE TRACKING SPACE'S YAW, which is not the pawn's.
+//
+// On QuestZDoom the pawn's angle follows the HEADSET. A head turn changes owner.angle and leaves the
+// controllers exactly where they were in the room; a snap or smooth turn rotates the whole tracking space,
+// hands and all. Keeping the hand history in "owner.angle's frame" therefore removed a snap turn but ADDED a
+// head turn (the hands appear to swing the opposite way), and a snap below ubqs_snap_turn_deg was still read
+// as a cut (the owner's 10-01 report, still reachable at a 30 degree snap setting).
+//
+// The frame turned this tic exactly when BOTH controllers' yaws moved with the pawn's angle -- a head turn
+// moves the angle alone. Measured and proven in RSQ_DistanceGrab (aim.zs, rig: head glance, smooth head turn
+// and snap turn all read 0.0 m/s; a real jerk 10.5 m/s). The hand fields are written for the camera player
+// only, so other players fall back to the pawn's angle, as before.
+//
+// Static and measurement-only: it holds nothing a savegame needs. Ticks in WorldTick, which runs after the
+// players think and before any actor (and so any saber's DoEffect) ticks.
+class UBQS_FrameKeeper : StaticEventHandler
+{
+	const TOL = 1.5;
+	double yaw[MAXPLAYERS], turn[MAXPLAYERS];
+	double lastA[MAXPLAYERS], lastH0[MAXPLAYERS], lastH1[MAXPLAYERS];
+	bool primed[MAXPLAYERS];
+
+	static UBQS_FrameKeeper Get() { return UBQS_FrameKeeper(StaticEventHandler.Find("UBQS_FrameKeeper")); }
+
+	// The tracking space's yaw for this actor's player, and how far it turned this tic.
+	static double YawOf(Actor who)
+	{
+		let k = Get();
+		if (!who || !who.player || !k) return who ? who.angle : 0;
+		int n = who.PlayerNumber();
+		if (n != consoleplayer || !k.primed[n]) return who.angle;
+		return k.yaw[n];
+	}
+	static double TurnOf(Actor who)
+	{
+		let k = Get();
+		if (!who || !who.player || !k) return 0;
+		int n = who.PlayerNumber();
+		return (n == consoleplayer) ? k.turn[n] : 0;
+	}
+
+	override void WorldTick()
+	{
+		for (int i = 0; i < MAXPLAYERS; i++)
+		{
+			turn[i] = 0;
+			if (!playeringame[i] || !players[i].mo) { primed[i] = false; continue; }
+			let mo = players[i].mo;
+			double a = mo.angle, h0 = mo.AttackAngle, h1 = mo.OffhandAngle;
+			if (!primed[i]) { yaw[i] = a; primed[i] = true; }
+			else
+			{
+				double dA = Actor.DeltaAngle(lastA[i], a);
+				double d0 = Actor.DeltaAngle(lastH0[i], h0), d1 = Actor.DeltaAngle(lastH1[i], h1);
+				if (abs(d0 - dA) < TOL && abs(d1 - dA) < TOL && abs(dA) > 0.0001)
+				{
+					turn[i] = dA;
+					yaw[i] += dA;
+				}
+			}
+			lastA[i] = a; lastH0[i] = h0; lastH1[i] = h1;
+		}
+	}
+
+	override void WorldLoaded(WorldEvent e) { for (int i = 0; i < MAXPLAYERS; i++) primed[i] = false; }
+}
+
 class UBQS_Telemetry : EventHandler
 {
 	ui double tLastMs;

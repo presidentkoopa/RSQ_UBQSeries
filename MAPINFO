@@ -1,4 +1,4 @@
 GameInfo
 {
-	AddEventHandlers = "UBQS_Bridge", "UBQS_Telemetry"
+	AddEventHandlers = "UBQS_FrameKeeper", "UBQS_Bridge", "UBQS_Telemetry"
 }
