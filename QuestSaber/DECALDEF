@@ -1,0 +1,9 @@
+decal UBQS_Burn
+{
+	pic UBQSBURN
+	shade "10 06 02"
+	x-scale 0.22
+	y-scale 0.32
+	randomflipx
+	randomflipy
+}

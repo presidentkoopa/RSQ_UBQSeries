@@ -1,0 +1,170 @@
+// ULTRA BADASS QUESTSABER -- Wardust's saber set, and four synthesized (clash, burn, catch, drop).
+ubqs/hit1    sounds/ubqs/lsabhit1.mp3
+ubqs/wall1   sounds/ubqs/lsabhtw1.mp3
+ubqs/hit2    sounds/ubqs/lsabhit2.mp3
+ubqs/wall2   sounds/ubqs/lsabhtw2.mp3
+ubqs/hit3    sounds/ubqs/lsabhit3.mp3
+ubqs/wall3   sounds/ubqs/lsabhtw3.mp3
+$random ubqs/hit { ubqs/hit1 ubqs/hit2 ubqs/hit3 }
+$random ubqs/wall { ubqs/wall1 ubqs/wall2 ubqs/wall3 }
+ubqs/burn  sounds/ubqs/ubqs_burn.wav
+ubqs/drop  sounds/ubqs/ubqs_drop.wav
+ubqs/lock  sounds/ubqs/ubqs_lock.wav
+ubqs/crack  sounds/ubqs/ubqs_crack.wav
+ubqs/push  sounds/ubqs/ubqs_push.wav
+ubqs/pull  sounds/ubqs/ubqs_pull.wav
+ubqs/grip  sounds/ubqs/ubqs_grip.wav
+ubqs/rcharge  sounds/ubqs/ubqs_rcharge.wav
+ubqs/rfire  sounds/ubqs/ubqs_rfire.wav
+ubqs/rsad  sounds/ubqs/ubqs_rsad.wav
+ubqs/rbeep1  sounds/ubqs/ubqs_rbeep1.wav
+ubqs/rbeep2  sounds/ubqs/ubqs_rbeep2.wav
+ubqs/rbeep3  sounds/ubqs/ubqs_rbeep3.wav
+ubqs/rbeep4  sounds/ubqs/ubqs_rbeep4.ogg
+$random ubqs/rbeep { ubqs/rbeep1 ubqs/rbeep2 ubqs/rbeep3 ubqs/rbeep4 ubqs/rbeep4 }
+$volume ubqs/grip 0.7
+ubqs/spin0  sounds/ubqs/sbrspn0.wav
+ubqs/spin1  sounds/ubqs/sbrspn1.wav
+ubqs/spin2  sounds/ubqs/sbrspn2.wav
+ubqs/spin3  sounds/ubqs/sbrspn3.wav
+ubqs/spin4  sounds/ubqs/sbrspn4.wav
+$random ubqs/spin { ubqs/spin0 ubqs/spin1 ubqs/spin2 ubqs/spin3 ubqs/spin4 }
+ubqs/catch  sounds/ubqs/sabrcth.mp3
+$limit ubqs/burn 2
+$volume ubqs/burn 0.6
+
+// ---- THE SABER ITSELF: one set, Graflex ----------------------------------------------------
+//
+// The original ANH / ROTJ saber, out of the owner's HD SFX collection. 48 kHz mono, which is what
+// a sound carried in your hand wants: the engine places it, and a stereo file cannot be placed.
+//
+// ONE SET, WIRED STRAIGHT IN. These are the saber, not an option: no picker, no run-time switch,
+// no second definition anywhere in this file. A font pack ships character boots and music stings
+// next to its sounds, and a saber that recites a film line when you switch it on is a joke that
+// stops being funny the first time. Nothing here is a voice.
+
+ubqs/hum                     sounds/ubqs/fonts/f01/hum.wav
+ubqs/bladelock               sounds/ubqs/fonts/f01/lock.wav
+ubqs/off                     sounds/ubqs/fonts/f01/off1.wav
+
+// the ignition, three takes of it
+ubqs/on1                     sounds/ubqs/fonts/f01/on1.wav
+ubqs/on2                     sounds/ubqs/fonts/f01/on2.wav
+ubqs/on3                     sounds/ubqs/fonts/f01/on3.wav
+$random ubqs/on { ubqs/on1 ubqs/on2 ubqs/on3 }
+
+// the blade through air
+ubqs/swing1                  sounds/ubqs/fonts/f01/swing1.wav
+ubqs/swing2                  sounds/ubqs/fonts/f01/swing2.wav
+ubqs/swing3                  sounds/ubqs/fonts/f01/swing3.wav
+ubqs/swing4                  sounds/ubqs/fonts/f01/swing4.wav
+ubqs/swing5                  sounds/ubqs/fonts/f01/swing5.wav
+ubqs/swing6                  sounds/ubqs/fonts/f01/swing6.wav
+ubqs/swing7                  sounds/ubqs/fonts/f01/swing7.wav
+ubqs/swing8                  sounds/ubqs/fonts/f01/swing8.wav
+ubqs/swing9                  sounds/ubqs/fonts/f01/swing9.wav
+ubqs/swing10                 sounds/ubqs/fonts/f01/swing10.wav
+ubqs/swing11                 sounds/ubqs/fonts/f01/swing11.wav
+ubqs/swing12                 sounds/ubqs/fonts/f01/swing12.wav
+$random ubqs/swing { ubqs/swing1 ubqs/swing2 ubqs/swing3 ubqs/swing4 ubqs/swing5 ubqs/swing6 ubqs/swing7 ubqs/swing8 ubqs/swing9 ubqs/swing10 ubqs/swing11 ubqs/swing12 }
+
+// blade on blade, and a bolt turned off it: a saber font has no separate blaster sound and
+// the clash is the right one for both
+ubqs/clash1                  sounds/ubqs/fonts/f01/clash1.wav
+ubqs/clash2                  sounds/ubqs/fonts/f01/clash2.wav
+ubqs/clash3                  sounds/ubqs/fonts/f01/clash3.wav
+ubqs/clash4                  sounds/ubqs/fonts/f01/clash4.wav
+ubqs/clash5                  sounds/ubqs/fonts/f01/clash5.wav
+ubqs/clash6                  sounds/ubqs/fonts/f01/clash6.wav
+ubqs/clash7                  sounds/ubqs/fonts/f01/clash7.wav
+ubqs/clash8                  sounds/ubqs/fonts/f01/clash8.wav
+ubqs/clash9                  sounds/ubqs/fonts/f01/clash9.wav
+ubqs/clash10                 sounds/ubqs/fonts/f01/clash10.wav
+ubqs/clash11                 sounds/ubqs/fonts/f01/clash11.wav
+ubqs/clash12                 sounds/ubqs/fonts/f01/clash12.wav
+$random ubqs/clash { ubqs/clash1 ubqs/clash2 ubqs/clash3 ubqs/clash4 ubqs/clash5 ubqs/clash6 ubqs/clash7 ubqs/clash8 ubqs/clash9 ubqs/clash10 ubqs/clash11 ubqs/clash12 }
+$alias ubqs/deflect ubqs/clash
+
+$volume ubqs/off 0.8
+$volume ubqs/bladelock 0.9
+$limit ubqs/clash 3
+$limit ubqs/swing 3
+
+
+// ---- VADER (ROGUE ONE): the second profile ------------------------------------------------
+//
+// Chosen file by file, not by pattern. Left out on purpose: its boot (this mod has no boot
+// event), its "Lockup Choke" (a Vader font's choke is the character, breathing and all -- a
+// blade lock is not a character moment), and the superseded "Power on" take.
+//
+// Heavier and slower than the Graflex: a longer ignition, a lower hum, a lock that grinds.
+// ubqs_saber_sound picks between the two.
+
+ubqs/v2/hum                  sounds/ubqs/fonts/f02/hum.wav
+ubqs/v2/bladelock            sounds/ubqs/fonts/f02/lock.wav
+ubqs/v2/on                   sounds/ubqs/fonts/f02/on1.wav
+ubqs/v2/off                  sounds/ubqs/fonts/f02/off1.wav
+
+ubqs/v2/swing1               sounds/ubqs/fonts/f02/swing1.wav
+ubqs/v2/swing2               sounds/ubqs/fonts/f02/swing2.wav
+ubqs/v2/swing3               sounds/ubqs/fonts/f02/swing3.wav
+ubqs/v2/swing4               sounds/ubqs/fonts/f02/swing4.wav
+ubqs/v2/swing5               sounds/ubqs/fonts/f02/swing5.wav
+ubqs/v2/swing6               sounds/ubqs/fonts/f02/swing6.wav
+ubqs/v2/swing7               sounds/ubqs/fonts/f02/swing7.wav
+ubqs/v2/swing8               sounds/ubqs/fonts/f02/swing8.wav
+ubqs/v2/swing9               sounds/ubqs/fonts/f02/swing9.wav
+ubqs/v2/swing10              sounds/ubqs/fonts/f02/swing10.wav
+ubqs/v2/swing11              sounds/ubqs/fonts/f02/swing11.wav
+ubqs/v2/swing12              sounds/ubqs/fonts/f02/swing12.wav
+$random ubqs/v2/swing { ubqs/v2/swing1 ubqs/v2/swing2 ubqs/v2/swing3 ubqs/v2/swing4 ubqs/v2/swing5 ubqs/v2/swing6 ubqs/v2/swing7 ubqs/v2/swing8 ubqs/v2/swing9 ubqs/v2/swing10 ubqs/v2/swing11 ubqs/v2/swing12 }
+
+ubqs/v2/clash1               sounds/ubqs/fonts/f02/clash1.wav
+ubqs/v2/clash2               sounds/ubqs/fonts/f02/clash2.wav
+ubqs/v2/clash3               sounds/ubqs/fonts/f02/clash3.wav
+ubqs/v2/clash4               sounds/ubqs/fonts/f02/clash4.wav
+ubqs/v2/clash5               sounds/ubqs/fonts/f02/clash5.wav
+ubqs/v2/clash6               sounds/ubqs/fonts/f02/clash6.wav
+ubqs/v2/clash7               sounds/ubqs/fonts/f02/clash7.wav
+ubqs/v2/clash8               sounds/ubqs/fonts/f02/clash8.wav
+ubqs/v2/clash9               sounds/ubqs/fonts/f02/clash9.wav
+ubqs/v2/clash10              sounds/ubqs/fonts/f02/clash10.wav
+ubqs/v2/clash11              sounds/ubqs/fonts/f02/clash11.wav
+$random ubqs/v2/clash { ubqs/v2/clash1 ubqs/v2/clash2 ubqs/v2/clash3 ubqs/v2/clash4 ubqs/v2/clash5 ubqs/v2/clash6 ubqs/v2/clash7 ubqs/v2/clash8 ubqs/v2/clash9 ubqs/v2/clash10 ubqs/v2/clash11 }
+
+// matched to the Graflex so switching profiles does not change how loud the saber is
+$volume ubqs/v2/off 0.8
+$volume ubqs/v2/bladelock 0.9
+$limit ubqs/v2/clash 3
+$limit ubqs/v2/swing 3
+
+
+// ---- ROGUE REBEL: the set this mod shipped with, and the owner's own RS_Lightsaber ---------
+//
+// Wardust's saber set, mirroring Doom's chainsaw slots: dssabreu is the ignition -- the same
+// file, byte for byte, that RS_Lightsaber plays as saber/on. It was this mod's ubqs/on until the
+// Graflex import replaced it, and the owner wants it back as a choice. Every file here is
+// already in the pk3; this profile costs nothing but the lines.
+//
+// The set has no retract of its own -- a saber hisses the same way in both directions, so the
+// retract is the ignition at 0.6 -- and no blade lock, so the lock stays the mod's own.
+
+ubqs/v3/hum                  sounds/ubqs/dssabrei.wav
+ubqs/v3/on                   sounds/ubqs/dssabreu.wav
+ubqs/v3/off                  sounds/ubqs/dssabreu.wav
+$volume ubqs/v3/off 0.6
+
+ubqs/v3/swing1               sounds/ubqs/dssabre1.mp3
+ubqs/v3/swing2               sounds/ubqs/dssabre2.mp3
+ubqs/v3/swing3               sounds/ubqs/dssabre3.mp3
+ubqs/v3/swing4               sounds/ubqs/dssabre4.mp3
+ubqs/v3/swing5               sounds/ubqs/dssabre5.mp3
+$random ubqs/v3/swing { ubqs/v3/swing1 ubqs/v3/swing2 ubqs/v3/swing3 ubqs/v3/swing4 ubqs/v3/swing5 }
+
+ubqs/v3/clash1               sounds/ubqs/lsabhit1.mp3
+ubqs/v3/clash2               sounds/ubqs/lsabhit2.mp3
+ubqs/v3/clash3               sounds/ubqs/lsabhit3.mp3
+ubqs/v3/clash4               sounds/ubqs/lsabhit4.mp3
+$random ubqs/v3/clash { ubqs/v3/clash1 ubqs/v3/clash2 ubqs/v3/clash3 ubqs/v3/clash4 }
+$limit ubqs/v3/clash 3
+$limit ubqs/v3/swing 3

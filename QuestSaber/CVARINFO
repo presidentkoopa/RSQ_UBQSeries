@@ -1,0 +1,175 @@
+// ULTRA BADASS QUESTSABER. Your look and your alt fire are yours (userinfo: every machine sees your
+// choice); what it does to the game is the server's.
+user float   ubqs_size          = 1.0;
+user int     ubqs_color         = 0;
+user int     ubqs_color_off     = 2;
+user int     ubqs_alt           = 1;
+user int     ubqs_deflect_aim   = 1;
+user int     ubqs_throw         = 0;
+user float   ubqs_throw_spin    = 14.0;
+user int     ubqs_throw_plane   = 0;
+user int     ubqs_throw_double  = 1;
+user float   ubqs_throw_min     = 1.5;
+user float   ubqs_contact       = 3.5;
+user float   ubqs_blade_glow    = 0.6;
+user float   ubqs_glow_width    = 1.2;
+user int     ubqs_blade_glow_color = -1;
+user int     ubqs_glow_quality  = 3;      // world glow: 1 low, 2 med, 3 high, 4 ultra
+user bool    ubqs_glow_predict  = true;   // the world glow placed ahead (motion prediction)
+user float   ubqs_glow_lead     = 1.0;     // how much of its lag to lead (1 = all; 0-2) -- b50: 1.0 (sim_real.py)
+user int     ubqs_glow_dots     = 0;      // the old soft dots inside the glow shell
+user int     ubqs_glow_motionfade = 1;    // fast swings: the white core fades, the halo widens
+user bool    ubqs_blade_tube    = false;  // the solid blade tube in the hand (off: the glow is the blade)
+user bool    ubqs_world_saber   = true;   // the whole saber drawn in the world as one actor (0: the old psprite hilt)
+user float   ubqs_glow_overlap_core = 0.5;  // (b54) the core starts this far below the mouth: its fade-in length
+user float   ubqs_glow_overlap_halo = 1.5;  // (b54) the halo likewise -- longer, because it is wider
+user float   ubqs_contact_hilt  = 0.75;
+user int     ubqs_diag          = 0;   // 1 blade-line dots, 2 glow telemetry (log + overlay)
+user int     ubqs_trail         = 1;
+user int     ubqs_locks         = 5;
+user float   ubqs_lock_cone     = 14.0;
+user int     ubqs_lights        = 1;
+user int     ubqs_twirl         = 2;
+user int     ubqs_force_gestures = 1;
+user float   ubqs_force_gesture = 2.0;
+user int     ubqs_remote_level  = 2;
+user int     ubqs_remote_sting  = 2;
+server bool  ubqs_on            = true;
+server bool  ubqs_start         = true;
+server bool  ubqs_dual          = true;
+server bool  ubqs_chainsaw      = false;
+server int   ubqs_deflect       = 1;
+server int   ubqs_block         = 70;
+server float ubqs_block_cone    = 75.0;
+server int   ubqs_block_return  = 1;
+server int   ubqs_block_damage  = 20;
+server int   ubqs_burn          = 1;
+server int   ubqs_crossguard    = 1;
+server float ubqs_push_power    = 1.0;
+server float ubqs_push_range    = 448.0;
+server float ubqs_push_damage   = 8.0;
+server float ubqs_push_cooldown = 1.5;
+server float ubqs_damage        = 30.0;
+// the flash, sparks and smoke a cut leaves on the victim (0 = blood only, as before b78)
+server float ubqs_cut_fx        = 1.0;
+server float ubqs_throw_range   = 512.0;
+server int   ubqs_force         = 1;        // the Force at all: push, pull, choke, jump
+server bool  ubqs_force_hand    = true;
+server float ubqs_pull_range    = 768.0;
+server float ubqs_grip_mass     = 600.0;
+server float ubqs_grip_damage   = 18.0;
+// how far off ONE blade's line an attack still counts as blocked, in map units (0 = the old
+// cone-and-percentage roll instead). The blade is ~26 units long; your body is 32 across.
+server float ubqs_blade_guard   = 6.0;
+server float ubqs_grip_fling    = 3.5;
+server float ubqs_grip_slam     = 3.0;
+server int   ubqs_force_jump    = 1;
+server float ubqs_jump_power    = 1.0;
+
+// ---- MORE KNOBS ------------------------------------------------------------------------------------------
+// EVERY DEFAULT BELOW IS THE LITERAL IT REPLACES, to the digit, so nothing changes until he moves it -- and
+// because every name is NEW, each takes this default on his first run with no console command needed.
+// SCOPE: what your body does is yours (user = userinfo, so every machine sees the same answer and netplay
+// cannot diverge); what it does to the monsters is the server's. Input thresholds stay user, beside
+// ubqs_throw_min and ubqs_force_gesture; the contact family stays user, beside ubqs_contact.
+
+// -- WHICH SABER IS DRAWN: the hand beam and the world beam, both kept, both switchable --
+user float   ubqs_hand_glow         = 0.0;      // the beam as a HUD layer from the controller: cannot lag (0 off)
+user float   ubqs_size_off          = -1.0;     // the off hand's own blade length (-1 the same as the main hand)
+user float   ubqs_beam_shift        = 0.0;      // the WORLD beam starts this far along the blade: fitting another hilt
+
+// -- THE WORLD BEAM: the look of a fast swing --
+user float   ubqs_glow_fade_deg0    = 200.0;    // deg/s where the white core starts to fade (was GLOW_FADEW0)
+user float   ubqs_glow_fade_deg1    = 500.0;    // deg/s where it is gone (was GLOW_FADEW1)
+user float   ubqs_glow_fade_widen   = 0.25;     // how much the halo widens as the core fades (motion blur)
+user float   ubqs_glow_fade_jerk    = 1.0;      // and the same fade on sharp direction changes (0 off)
+
+// -- THE WORLD BEAM'S PREDICTION: it is placed where the blade WILL be. None of this reaches the hand beam. --
+user float   ubqs_glow_frame_ms     = 11.1;     // one headset frame: 90 Hz 11.1, 72 Hz 13.9, 120 Hz 8.3 (GLOW_AGE)
+user float   ubqs_glow_maxang       = 35.0;     // the most one guess may turn the beam, deg (GLOW_MAXANG)
+user float   ubqs_glow_maxlin       = 4.0;      // the most it may move the base, map units (GLOW_MAXLIN)
+user float   ubqs_glow_ramp_deg     = 60.0;     // deg/s where the lead is fully in (GLOW_RAMPW)
+user float   ubqs_glow_stop         = 0.6;      // what counts as stopping, part of the last step (GLOW_STOP)
+user float   ubqs_glow_hitch_ms     = 120.0;    // a gap longer than this throws the sample history away
+user float   ubqs_snap_turn_deg     = 45.0;      // deg in ONE TIC that is a snap turn, not your arm (saber + Force)
+
+// -- YOUR SWING --
+server float ubqs_swing_cut         = 8.0;      // units a tic the blade must travel to cut: THE most-felt number
+server float ubqs_swing_scale       = 1.0;      // how much swing speed changes damage (0 = not at all)
+server int   ubqs_cut_rate          = 8;        // tics before the same enemy can be cut again: the real DPS cap
+server float ubqs_cut_pad           = 3.0;      // blade generosity: how near a miss still cuts, units
+server float ubqs_dmg_twirl         = 0.8;      // the twirl disc's damage, times ubqs_damage
+server float ubqs_dmg_thrown        = 1.5;      // the thrown saber's damage, times ubqs_damage
+user int     ubqs_trail_steps       = 2;        // most trail blobs a tic: 2 is Quest, 4 needs a very fast arc
+user int     ubqs_trail_life        = 6;        // tics the trail hangs in the air: THIS is the streak knob
+
+// -- BLADE ON BLADE --
+user float   ubqs_lock_stick        = 1.7;      // how much wider than ubqs_contact it is to STAY locked
+user float   ubqs_clash_fx          = 1.0;      // blade-on-blade sparks AND flashes together (0 none)
+server float ubqs_guard_arc         = 100.0;    // cross guard: degrees either side of your BODY's facing
+server int   ubqs_block_swung       = 12;       // tics after a fast swing in which EVERY shot is blocked (0 off)
+server float ubqs_deflect_assist    = 14.0;     // deflect aim help, cone in degrees (0 none; not ubqs_lock_cone)
+server float ubqs_deflect_lead      = 3.0;      // tics of a shot's own path the blade is tested against
+
+// -- THROWING --
+user float   ubqs_throw_straight    = 0.55;     // how straight ahead a throw must go (a dot, vs where you LOOK)
+user float   ubqs_throw_blend       = 0.6;      // 1 follows your arm, 0 follows where the hand points
+server float ubqs_throw_speed       = 1.0;      // flight speed, times the speed your arm earned
+
+// -- THE FORCE --
+user float   ubqs_gesture_straight  = 0.55;     // how straight a push or pull gesture must be (a dot)
+server float ubqs_push_cone         = 40.0;     // push: half the arc of the shove, degrees
+server float ubqs_pull_cone         = 30.0;     // pull: half the arc of the yank, degrees
+server float ubqs_pull_power        = 1.0;      // pull strength, times ubqs_push_power (there was no pull cvar)
+server int   ubqs_grip_boss         = 0;        // the grip may take bosses too (they were excluded outright)
+server float ubqs_grip_cone         = 12.0;     // grip: how precisely the off hand must point, degrees
+server float ubqs_grip_range        = 1024.0;   // grip reach (push and pull had reach sliders, grip had none)
+user float   ubqs_grip_still        = 1.5;      // units a tic: how still your hand must be to arm the grip
+user int     ubqs_grip_hold         = 8;        // tics you must hold it still first
+server int   ubqs_jump_hold         = 8;        // tics holding jump keeps lifting you: the real jump HEIGHT
+server float ubqs_jump_float        = 1.0;      // how slowly you fall holding jump (decoupled from the power)
+
+// -- SOUND: there was not one sound setting in the mod. The engine clamps a sound at 1.0, and none of these
+// samples has a SNDINFO $volume above it, so every slider below stops at 1 -- nothing inert. --
+user float   ubqs_hum               = 0.45;     // the blade hum, read at BOTH its sites (0 silent)
+user float   ubqs_hum_off           = 1.0;      // the off hand's hum, times the above (dual is the default)
+user float   ubqs_vol_swing         = 1.0;      // the swing whoosh, and the throw's
+user int     ubqs_swing_gap         = 8;        // tics: the least gap between two whooshes
+user float   ubqs_vol_hit           = 1.0;      // hitting things: swing, twirl disc and thrown saber
+user float   ubqs_vol_clash         = 1.0;      // blade on energy: the clash, the crack, the lock, every deflect
+user int     ubqs_snd_choke         = 1;        // the choke's held loop
+user float   ubqs_vol_force         = 1.0;      // push, pull, the grip loop, the fling, the jump
+user float   ubqs_vol_ignite        = 1.0;      // switching the blade on and off, and the second blade
+user float   ubqs_remote_chirp      = 1.0;      // the training remote's chirps, all three of them (0 quiet)
+
+// -- LIGHT AND FEEL --
+user int     ubqs_flash             = 1;        // hit and clash flashes: 0 off, 1 follow the blade light, 2 always
+user int     ubqs_haptics           = 1;        // controller buzz at all (ubqs_haptic_power sets how hard)
+user int     ubqs_haptic_cut        = 1;        // buzz when the blade cuts something (once a swing)
+user int     ubqs_haptic_clash      = 1;        // buzz when blades cross, and while they stay locked
+user float   ubqs_haptic_power      = 1.0;      // how hard every saber rumble is (A_QuakeEx, not the engine's fixed pulse)
+user int     ubqs_lefty             = -1;       // which controller the rumble goes to: -1 follow the engine's handedness (single player), 0 right-handed, 1 left-handed
+
+// -- THE TRAINING REMOTE --
+user int     ubqs_remote_warn       = 0;        // extra tics of warning before it shoots (it rode the level)
+
+// ---- what a cut does to what it hits, and what counts as a cut ----------------------------
+server float ubqs_cut_shove     = 1.0;   // how hard a cut throws what it hit (0 = nothing moves, as before)
+server float ubqs_cut_lift      = 0.35;  // how much of that shove is upward: the stagger
+server int   ubqs_cut_los       = 1;     // the blade must be able to reach what it cuts (0 = it cuts through walls)
+server float ubqs_cut_sustain   = 0.6;   // a steady push counts this much of its path: a thrust and a draw-cut (0 = fast arcs only)
+server float ubqs_guard_width   = 14.0;  // cross guard: how near a crossed blade must be to the attack's own line (0 = the arc alone)
+user   int   ubqs_throw_on_lock = 1;     // letting go with enemies marked throws, snap or no snap
+
+// ---- stopping a bullet, and meeting it ---------------------------------------------------
+server bool  ubqs_hitscan_guard = true;  // stop a bullet at the muzzle when the blade is really in its path
+server float ubqs_parry_speed   = 6.0;   // units a tic the blade must move INTO a shot to parry it (0 = no parries)
+server float ubqs_parry_power   = 2.0;   // what a parry multiplies the return by: speed, and the tell
+
+user int     ubqs_swing_spatial = 1;     // the swing is heard from the blade, not from the player
+user float   ubqs_doppler       = 1.0;   // how far the whoosh bends as the blade passes your ear (0 = not at all)
+
+// ---- which saber you hear ---------------------------------------------------------------
+user int     ubqs_saber_sound  = 0;     // 0 Graflex, 1 Vader (Rogue One), 2 Rogue Rebel (the original set)
+server bool  ubqs_block_stagger = true;  // a blocked claw staggers and shoves what swung it
+server float ubqs_stagger_push  = 12.0;  // how far back a staggered melee attacker goes
