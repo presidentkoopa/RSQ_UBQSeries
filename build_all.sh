@@ -14,7 +14,7 @@ pack_list() {   # <folder> <pk3 name> <model dir>
 	cd "$HUB/$1"
 	rm -f "$OUT/$2"
 	F=""
-	for f in zscript.txt MAPINFO.txt CVARINFO.txt TRNSLATE.txt KEYCONF.txt MENUDEF.txt MODELDEF.txt SNDINFO.txt MASSDEF.txt; do
+	for f in zscript.txt MAPINFO.txt CVARINFO.txt TRNSLATE.txt KEYCONF.txt MENUDEF.txt MODELDEF.txt SNDINFO.txt MASSDEF.txt ANIMDEFS.txt; do
 		[ -e "$f" ] && F="$F $f"
 	done
 	for d in zscript graphics sprites sounds "$3"; do
