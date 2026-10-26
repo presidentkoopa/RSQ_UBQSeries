@@ -69,6 +69,20 @@ class RSQDG_Policy : StaticEventHandler
 	// rewritten every time, so nothing stale survives from the last corpse.
 	private RSQDG_Rule corpseRule;
 
+	// THE RULE SERVICE, FOUND ONCE. Services are engine singletons made at
+	// startup (service.zs AllServices), so the lookup -- a new iterator and a
+	// MakeLower of every service name -- belongs in a cache, not in Decide(),
+	// which runs per in-cone candidate per hand per tic and again per lock.
+	// This handler is static, so the cache lives exactly as long as they do.
+	private RSQDG_GrabRuleService ruleSvc;
+	private bool ruleSvcLooked;
+
+	RSQDG_GrabRuleService RuleService()
+	{
+		if (!ruleSvcLooked) { ruleSvc = RSQDG_GrabRuleService.Find(); ruleSvcLooked = true; }
+		return ruleSvc;
+	}
+
 	static RSQDG_Policy Get()
 	{
 		return RSQDG_Policy(StaticEventHandler.Find("RSQDG_Policy"));
@@ -88,6 +102,22 @@ class RSQDG_Policy : StaticEventHandler
 		{
 			if (c == w) return true;
 			c = c.GetParentClass();
+		}
+		return false;
+	}
+
+	// The same walk for a class rather than an actor, for rules registered by
+	// class name. A missing want (not loaded) is simply false.
+	static bool InheritsClass(Class<Actor> c, Name wantName)
+	{
+		Class<Actor> want = wantName;
+		if (!c || !want) return false;
+		Class<Object> k = c;
+		Class<Object> w = want;
+		while (k)
+		{
+			if (k == w) return true;
+			k = k.GetParentClass();
 		}
 		return false;
 	}
@@ -241,6 +271,12 @@ class RSQDG_Policy : StaticEventHandler
 		// frame would lose every grabbable thing it ships to a sprite check.
 		if (a.bINVISIBLE || a.GetRenderStyle() == STYLE_None) return null;
 
+		// A DYING PROP IS NOT A PROP. A barrel that has been shot is in its
+		// death sequence for a moment before it explodes; pulling it then
+		// delivers the explosion to your palm. Something that can be killed,
+		// is not a monster, and is out of health is on its way out.
+		if (!a.bISMONSTER && a.default.bSHOOTABLE && a.Health <= 0) return null;
+
 		// LIVING THINGS ARE NOT PROPS. "It is a way of deleting monsters. A
 		// corpse is a prop, and one worth having." State, not class -- so not in
 		// the table.
@@ -265,7 +301,7 @@ class RSQDG_Policy : StaticEventHandler
 		// WHAT A MOD SAID ABOUT ITS OWN THING BEATS THE TABLE. A rule naming a
 		// class was written by whoever made it. Ownership is still checked: a
 		// registered rule says what a thing IS, not that it is on the floor.
-		let svc = RSQDG_GrabRuleService.Find();
+		let svc = RuleService();
 		if (svc)
 		{
 			bool known;
@@ -273,6 +309,7 @@ class RSQDG_Policy : StaticEventHandler
 			if (known)
 			{
 				if (!r) return null;           // the mod said no
+				if (!CategoryOn(r.category, p)) return null;
 				let rinv = Inventory(a);
 				if (rinv && rinv.Owner) return null;
 				return r;
@@ -366,7 +403,12 @@ class RSQDG_GrabRuleService : Service play
 		let r = RSQDG_Rule(new("RSQDG_Rule"));
 		r.cls      = c;
 		r.allow    = allow;
-		r.category = 'None';
+		// THE MENU SWITCHES STILL APPLY. A mod's own gun is a gun: if the player
+		// has switched weapons off, a registered weapon must not slip through
+		// on a rule that names no category. Inferred from what it IS.
+		r.category = RSQDG_Policy.InheritsClass(c, 'Weapon') ? 'Weapons'
+		           : (RSQDG_Policy.InheritsClass(c, 'ExplosiveBarrel') || RSQDG_Policy.InheritsClass(c, 'BurningBarrel')) ? 'Barrels'
+		           : 'None';
 		r.weight   = 1.0;
 		r.why      = String.Format("%s by %s", allow ? "registered" : "refused", who);
 		added.Push(r);

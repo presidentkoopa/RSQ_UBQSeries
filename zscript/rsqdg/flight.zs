@@ -36,6 +36,7 @@ class RSQDG_Flight : EventHandler
 	private double flyStart[2];   // room-distance at launch, for Progress()
 	private double flyDist[2];    // room-distance now, palm to middle
 	private int    flyLimit[2];   // tics before giving up, fixed at launch
+	private bool   flyRefused[2]; // pull.refused already said for this flight
 
 	// ---- THE BORROWED STATE, AND EXACTLY ONE OWNER OF THE BACKUP ------------
 	//
@@ -50,9 +51,10 @@ class RSQDG_Flight : EventHandler
 	//   unpickable forever, with nothing in the log.
 	//
 	// So: captured BEFORE the first mutation, owned by this one slot, and
-	// restored on EVERY exit path including the ones nobody plans for. There are
-	// four exits -- caught, arrived uncaught, blocked, aborted -- and all four go
-	// through Restore().
+	// restored on EVERY exit path including the ones nobody plans for: caught
+	// (Catch restores before the handover), taken by something else mid-air
+	// (restored in place, SPECIAL excepted), and arrived uncaught, timed out,
+	// raised, switched off, died or changed level (all through Restore()).
 	private bool   savedNoGrav[2];
 	private bool   savedThruActors[2];
 	private bool   savedSpecial[2];
@@ -137,7 +139,7 @@ class RSQDG_Flight : EventHandler
 
 		if (why != "")
 		{
-			if (RSQDG_Reach.Flag("rsqdg_trace", p, true))
+			if (RSQDG_Reach.Flag("rsqdg_trace", p, false))
 				Console.Printf("[RSQDG] hand %d launch refused -- %s", hand, why);
 			return false;
 		}
@@ -209,6 +211,7 @@ class RSQDG_Flight : EventHandler
 		// down off a ledge), where it should simply drop toward you.
 		Lift(a, d.z >= 0);
 
+		flyRefused[hand] = false;
 		flyStart[hand] = RoomDist(d);
 		flyDist[hand]  = flyStart[hand];
 
@@ -221,7 +224,7 @@ class RSQDG_Flight : EventHandler
 		flyLimit[hand] = max(int(RSQDG_Reach.Num("rsqdg_flight_timeout", p, 140.0)),
 			int(travel * 2.0) + TICRATE);
 
-		if (RSQDG_Reach.Flag("rsqdg_debug", p, true))
+		if (RSQDG_Reach.Flag("rsqdg_debug", p, false))
 			Console.Printf("[RSQDG] hand %d LAUNCHED %s  dist=%.0f  %.2fkg%s  share=%.2f  cruise=%.1fm/s  limit=%d  r=%.0f->%.0f",
 				hand, a.GetClassName(), len, RSQDG_Mass.Kg(a),
 				RSQDG_Mass.IsStated(a) ? "" : " (guessed)",
@@ -318,7 +321,7 @@ class RSQDG_Flight : EventHandler
 				[took, result] = inv.CallTryPickup(pmo);
 				if (took)
 				{
-					if (RSQDG_Reach.Flag("rsqdg_debug", p, true))
+					if (RSQDG_Reach.Flag("rsqdg_debug", p, false))
 						Console.Printf("[RSQDG] hand %d caught and USED %s", hand, cname);
 					flyActor[hand] = null;
 					flyTic[hand] = 0;
@@ -351,11 +354,17 @@ class RSQDG_Flight : EventHandler
 		double thin = RSQDG_Reach.Num("rsqdg_flight_radius", p, 2.0);
 		if (a.Radius > thin) a.A_SetSize(thin, a.Height);
 
-		if (RSQDG_Reach.Flag("rsqdg_trace", p, true))
+		if (RSQDG_Reach.Flag("rsqdg_trace", p, false))
 			Console.Printf("[RSQDG] hand %d could not take %s -- still flying",
 				hand, a.GetClassName());
-		let feel = RSQDG_Feel.Get();
-		if (feel) feel.OnRefused(hand, a);
+		// SAID ONCE PER FLIGHT. The catch is retried every tic of the arrival
+		// dwell, and the same refusal is not news five times.
+		if (!flyRefused[hand])
+		{
+			flyRefused[hand] = true;
+			let feel = RSQDG_Feel.Get();
+			if (feel) feel.OnRefused(hand, a);
+		}
 		return false;
 	}
 
@@ -368,7 +377,11 @@ class RSQDG_Flight : EventHandler
 			a.bNOGRAVITY  = savedNoGrav[hand];
 			a.bTHRUACTORS = savedThruActors[hand];
 			a.bSPECIAL    = savedSpecial[hand];
-			a.A_SetSize(savedRadius[hand], savedHeight[hand]);
+			// NOT the size of a monster that got up. The saved size is the
+			// CORPSE's; raising it already put the living size back, and
+			// writing the corpse's over it would leave a quarter-height imp.
+			if (!(a.bISMONSTER && a.Health > 0))
+				a.A_SetSize(savedRadius[hand], savedHeight[hand]);
 		}
 		flyActor[hand] = null;
 		flyTic[hand]   = 0;
@@ -438,11 +451,34 @@ class RSQDG_Flight : EventHandler
 			let inv = Inventory(a);
 			if (inv && inv.Owner)
 			{
+				// GRAVITY, PASS-THROUGH AND SIZE GO BACK -- SPECIAL DOES NOT.
+				// Becoming an item touches SPECIAL, the blockmap links and the
+				// statnum (Inventory.BecomeItem) and NOTHING ELSE, so without
+				// this the item sits in an inventory weightless, pass-through and
+				// two units wide -- and the day it is dropped (CreateTossable
+				// hands back the same actor) it floats. SPECIAL alone is left
+				// as BecomeItem set it: an owned item must not be collectable.
+				// (Found in review, 2026-10-26: the old comment here said
+				// becoming an item "set its own". It does not.)
+				a.bNOGRAVITY  = savedNoGrav[h];
+				a.bTHRUACTORS = savedThruActors[h];
+				a.A_SetSize(savedRadius[h], savedHeight[h]);
 				flyActor[h] = null;
 				flyTic[h] = 0;
 				flyHold[h] = 0;
 				let feel = RSQDG_Feel.Get();
 				if (feel) feel.OnDrop(h, a, p, "pull.aborted");
+				continue;
+			}
+
+			// RAISED MID-PULL. An Arch-Vile brings back the corpse you are
+			// pulling: a living monster is never pullable, so the pull ends.
+			// Restore() knows not to write the corpse's size back onto it.
+			if (a.bISMONSTER && a.Health > 0)
+			{
+				if (RSQDG_Reach.Flag("rsqdg_debug", p, false))
+					Console.Printf("[RSQDG] hand %d: %s got up -- pull ended", h, a.GetClassName());
+				Abort(h, "pull.aborted");
 				continue;
 			}
 
@@ -453,7 +489,7 @@ class RSQDG_Flight : EventHandler
 			// leaving it circling is worse than dropping it.
 			if (flyTic[h] > flyLimit[h])
 			{
-				if (RSQDG_Reach.Flag("rsqdg_debug", p, true))
+				if (RSQDG_Reach.Flag("rsqdg_debug", p, false))
 					Console.Printf("[RSQDG] hand %d gave up on %s after %d tics",
 						h, a.GetClassName(), flyTic[h]);
 				Abort(h, "pull.blocked");
@@ -486,8 +522,10 @@ class RSQDG_Flight : EventHandler
 			// 50-70 units it works, which is arm's reach -- exactly the distance
 			// anyone tests at first. A long pull is where it shows, and the
 			// claw's clean record at 72 units is no evidence at 512.
+			// THE ROOM DISTANCE, the same measure CatchableBy() and Near() use,
+			// so "arrived" here and "catchable" there can never disagree.
 			double catchR = RSQDG_Reach.Num("rsqdg_catch_radius", p, 24.0);
-			if (dist <= catchR)
+			if (flyDist[h] <= catchR)
 			{
 				// Park ON the palm and keep tracking it, so whatever resolves
 				// the catch gets several real looks at the real arrival
@@ -527,7 +565,7 @@ class RSQDG_Flight : EventHandler
 				// a room to CARRY it: fumbling it spent the item where it stood.
 				// An interaction whose failure mode is "you take damage" is one
 				// people stop using.
-				if (RSQDG_Reach.Flag("rsqdg_debug", p, true))
+				if (RSQDG_Reach.Flag("rsqdg_debug", p, false))
 					Console.Printf("[RSQDG] %s arrived and was not caught -- dropped",
 						a.GetClassName());
 				Abort(h, "pull.missed");

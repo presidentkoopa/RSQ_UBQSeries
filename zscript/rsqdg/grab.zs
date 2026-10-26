@@ -188,7 +188,7 @@ class RSQDG_Grab : EventHandler
 			// every tic the palm is out, so an unthrottled trace printed the same
 			// refusal thirty-five times a second and buried everything else. A
 			// reason is reported when it CHANGES, which is when it is news.
-			if (why != lastWhy[hand] && RSQDG_Reach.Flag("rsqdg_trace", p, true))
+			if (why != lastWhy[hand] && RSQDG_Reach.Flag("rsqdg_trace", p, false))
 				Console.Printf("[RSQDG] hand %d refused -- %s", hand, why);
 			lastWhy[hand] = why;
 			return;
@@ -196,7 +196,7 @@ class RSQDG_Grab : EventHandler
 		lastWhy[hand] = "";
 
 		lockActor[hand] = a;
-		if (RSQDG_Reach.Flag("rsqdg_debug", p, true))
+		if (RSQDG_Reach.Flag("rsqdg_debug", p, false))
 			Console.Printf("[RSQDG] hand %d LOCKED %s", hand, a.GetClassName());
 
 		let feel = RSQDG_Feel.Get();
@@ -238,7 +238,7 @@ class RSQDG_Grab : EventHandler
 			// rather than leaving a lock nothing can now reach.
 		}
 
-		if (RSQDG_Reach.Flag("rsqdg_debug", p, true))
+		if (RSQDG_Reach.Flag("rsqdg_debug", p, false))
 			Console.Printf("[RSQDG] hand %d let go of %s (%.1f deg/tic, needed %.1f)",
 				hand, a.GetClassName(), upRate, need);
 		Unlock(hand, p, "opened at rest");
@@ -250,7 +250,7 @@ class RSQDG_Grab : EventHandler
 	private void Unlock(int hand, PlayerInfo p, String reason)
 	{
 		Actor was = lockActor[hand];
-		if (RSQDG_Reach.Flag("rsqdg_debug", p, true) && was)
+		if (RSQDG_Reach.Flag("rsqdg_debug", p, false) && was)
 			Console.Printf("[RSQDG] hand %d unlocked %s -- %s",
 				hand, was.GetClassName(), reason);
 		lockActor[hand] = null;
@@ -314,7 +314,7 @@ class RSQDG_Grab : EventHandler
 					if (--lease[h] <= 0)
 					{
 						armed[h] = false;
-						if (RSQDG_Reach.Flag("rsqdg_debug", p, true))
+						if (RSQDG_Reach.Flag("rsqdg_debug", p, false))
 							Console.Printf("[RSQDG] hand %d lease expired -- a release went missing", h);
 						if (lockActor[h]) Unlock(h, p, "lease expired");
 					}

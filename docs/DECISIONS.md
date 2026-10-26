@@ -238,3 +238,49 @@ now, picking one input and intercepting it for the duration of the reload.
 
 Lesson for this file: an audit document records what was true when it was
 written. Check the tree before repeating it.
+
+---
+
+## D14–D18 — TAKEN 2026-10-26, distance grab + feedback pass
+
+Scope set by the owner this session: **the distance grab and its feedback only.**
+Hand models, two-hand holds, hand-to-hand passing and the D12 voxel/model swap
+are out of scope for now.
+
+| # | Decision | |
+|---|---|---|
+| **D14** | **Haptics are rhythm, not strength.** One per-hand route exists on stock: `SpawnPlayerMissile` buzzes the firing hand at a fixed 0.8 for a fixed 150 ms, and the Quest runtime ignores a request while the channel is busy. So: tick on lock, tick on launch, an approach ping that speeds up (16 → 7 tics apart), silence for the last 2.5 catch radii, tick on catch (two if heft ≥ 0.55), tick on release. | new |
+| **D15** | **The buzz actor is NOT a missile.** `RSVR_Buzz` is `Projectile;`, and Brutal22Q's recoil/flash hooks treat every player missile as a shot except `RSVR_Buzz` by name. `RSQDG_Buzz` has no `+MISSILE`: P_CheckMissileSpawn treats it as an MBF grenade, the haptic still fires, `WorldThingSpawned` sees `bMissile == false`. Verified in the rig: `missile=0`, and `QzDoom_Vibrate(150, chan, 0.8)` once per buzz. | new |
+| **D16** | **`A_QuakeEx` rejected for haptics.** It gives per-side amplitude but shakes the view by the same map units, and half its samples are zero (random ± intensity). ShieldSawQ's `SSQ_FX.Buzz` comment ("the view does not shake") is not true at useful strengths. | new |
+| **D17** | **Mass becomes a share of the pull, `k/(k+kg)`**, `k = rsqdg_pull_kg` (10). Cruise speed scales by `sqrt(share)` (floor 15%), steering authority by `share` (floor 5%). The desktop throw's own `armKg/(armKg+kg)` shape, pointed the other way. Timeout is per pull: `max(menu, 2 × travel + 1 s)`. | new |
+| **D18** | **A pull lifts the object off the floor first.** Found in the rig: Doom's ground friction (~9%/tic) applies to a grounded actor regardless of `NOGRAVITY`, and at the barrel's 0.14 share it won — the barrel slid at a third of its cruise. Launch now pops it 1 unit up with ≥1.5 u/tic rise, and it is kept off the floor while it still has to climb. A pull down off a ledge is not lifted. | new |
+
+### Policy: what changed from the desktop table, and why
+
+- `GRIPSUBJ_*` and `POSE_*` **dropped**. `GRIPSUBJ_*` is a fork engine constant —
+  zero hits in stock wadsrc and zero declarations in the desktop's own zscript —
+  so lane 1's "zero fork-only symbols, ports as-is" was wrong; a verbatim copy
+  does not compile.
+- **Weapons ON** by default (desktop: off). The desktop objection was to a HAND
+  grab of a gun; a pull is the pickup from further away, which this package has
+  always done.
+- **Powerups are a switch, OFF by default** (desktop: denied outright). Catching
+  a megasphere off a ledge has an obvious meaning for a pull that it does not
+  have for a hand.
+- Walk-over suppression, the ammo-pouch branch and `Become`/`AskTake` **not
+  ported** — near-grab features or D12 hazards.
+- Mod registration keeps the desktop protocol (`grab.hello/rule/weight/forget`,
+  any Service whose name contains `GrabRuleService`) and adds `grab.deny`.
+
+### Things found on stock that a future session will otherwise get wrong
+
+- **The WeaponDepot rig's prebuilt engine is not 17.3.** `tools/rig/bin/qzdoom`
+  lacks the `S_StartSoundAt` native and its `res/qzdoom.pk3` declares ZScript
+  **4.12**; the rig's own build.sh names `25cecc097` (2026-07-15). The `qzd17.3`
+  tag is `9afc750` (2026-08-18, ZScript 4.14.2), 329 commits later. So this
+  package avoids `Object.FindClass` and `S_StartSoundAt` and runs on both.
+  Rebuilding the rig from `9afc750` needs SDL2 dev files for its CMake configure
+  step, which were not obtainable in the cloud session.
+- **`670d19eba6` (quoted at the top of this file as the stock base) is a commit
+  in the owner's local checkout only** — it is not on emawind84/gzdoom. The
+  public stock ref is tag `qzd17.3` = `9afc750`.

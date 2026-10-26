@@ -90,7 +90,7 @@ class RSQDG_Hold : EventHandler
 		held[hand] = a;
 		frozen[hand] = false;
 
-		if (RSQDG_Reach.Flag("rsqdg_debug", p, true))
+		if (RSQDG_Reach.Flag("rsqdg_debug", p, false))
 			Console.Printf("[RSQDG] hand %d CAUGHT %s", hand, a.GetClassName());
 		return true;
 	}
@@ -132,7 +132,7 @@ class RSQDG_Hold : EventHandler
 
 		a.Vel = v;
 
-		if (RSQDG_Reach.Flag("rsqdg_debug", p, true))
+		if (RSQDG_Reach.Flag("rsqdg_debug", p, false))
 			Console.Printf("[RSQDG] hand %d released %s at %.1f m/s",
 				hand, a.GetClassName(), RSQDG_Reach.Metres(v) * TICRATE);
 
@@ -157,6 +157,9 @@ class RSQDG_Hold : EventHandler
 			a.bTHRUACTORS = savedThruActors[hand];
 			a.bSPECIAL    = savedSpecial[hand];
 			a.Vel = (0, 0, 0);
+			// Told, like every other ending, so a listener that dressed the
+			// thing can undress it -- switched off, died, level change.
+			RSQDG_Events.Tell("hold.drop", hand, a);
 		}
 		held[hand] = null;
 		frozen[hand] = false;

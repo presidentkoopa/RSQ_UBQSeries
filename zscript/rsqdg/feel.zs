@@ -128,11 +128,16 @@ class RSQDG_Feel : EventHandler
 	const PRI_RELEASE = 3;
 	const PRI_CATCH   = 4;
 
-	// 150 ms is 5.25 tics. Six tics busy, so a queued tick is sent after the
-	// channel is actually free and is not silently dropped by the runtime.
-	const BUSY_TICS = 6;
+	// THE CHANNEL IS BUSY FOR 150 ms OF REAL TIME, not for a number of tics:
+	// the runtime counts the buzz down per rendered frame, and a Quest that
+	// runs two tics in one frame to catch up gets six tics through in well
+	// under 150 ms -- a tic-counted window would send the queued tick into a
+	// channel that is still busy, and the runtime would drop it. So the window
+	// is wall-clock (MSTime, present in every 17.x engine pk3), with a small
+	// margin. Haptics are local, so wall time cannot desync anything.
+	const BUSY_MS = 165;
 
-	private int busyUntil[2];
+	private uint busyUntil[2];
 	private int pendPri[2];
 	private int pendCount[2];
 	private int lastRamp[2];
@@ -160,7 +165,7 @@ class RSQDG_Feel : EventHandler
 		if (!pmo) return;
 		pmo.SpawnPlayerMissile("RSQDG_Buzz", pmo.angle, noautoaim: true,
 			aimflags: (hand == 1) ? ALF_ISOFFHAND : 0);
-		busyUntil[hand] = level.maptime + BUSY_TICS;
+		busyUntil[hand] = MSTime() + BUSY_MS;
 	}
 
 	// Ask for `count` ticks at this priority. Sent now if the channel is free;
@@ -172,7 +177,7 @@ class RSQDG_Feel : EventHandler
 		let p = players[consoleplayer];
 		if (!p || !p.mo || !HapticsOn(p)) return;
 
-		if (level.maptime >= busyUntil[hand] && pendCount[hand] == 0)
+		if (MSTime() >= busyUntil[hand] && pendCount[hand] == 0)
 		{
 			Fire(hand, p.mo);
 			count--;
@@ -328,7 +333,7 @@ class RSQDG_Feel : EventHandler
 		{
 			// The queue first, so an owed catch tick goes out the first tic
 			// the channel is free.
-			if (pendCount[h] > 0 && level.maptime >= busyUntil[h] && HapticsOn(p))
+			if (pendCount[h] > 0 && MSTime() >= busyUntil[h] && HapticsOn(p))
 			{
 				Fire(h, pmo);
 				if (--pendCount[h] <= 0) { pendCount[h] = 0; pendPri[h] = 0; }
@@ -383,8 +388,7 @@ class RSQDG_Feel : EventHandler
 
 	override void WorldLoaded(WorldEvent e)
 	{
-		// level.maptime restarts at zero on a new map; a busyUntil carried
-		// over from the last one would mute the hands for that long.
+		// Nothing owed carries across a map.
 		for (int h = 0; h < 2; h++)
 		{
 			humOn[h] = null;

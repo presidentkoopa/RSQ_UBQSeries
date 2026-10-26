@@ -103,19 +103,25 @@ class RSQDG_Laser : EventHandler
 	// Drawn from the hand's OWN pooled beads, which are idle at exactly this
 	// moment, so it allocates nothing and costs nothing when it is not showing.
 	const BURST_TICS = 9;
-	private int burstAt[2];
+	private int  burstAt[2];
+	private bool burstOn[2];
 
+	// Stamped with THIS tic. The catch is resolved earlier in the same tic
+	// (Flight and Feel tick before Laser), so age 0 is drawn the tic it
+	// happens. A separate flag says "none", rather than a sentinel tic -- an
+	// earlier version stamped maptime + 1 to keep 0 free, which made the age
+	// -1 on the only tic that mattered and cleared it before it ever drew.
 	void Burst(int hand)
 	{
-		if (hand == 0 || hand == 1) burstAt[hand] = level.maptime + 1;
+		if (hand == 0 || hand == 1) { burstAt[hand] = level.maptime; burstOn[hand] = true; }
 	}
 
 	// True if it drew this tic.
 	private bool DrawBurst(int h, PlayerPawn pmo, PlayerInfo p)
 	{
-		if (burstAt[h] <= 0 || !RSQDG_Reach.Flag("rsqdg_catch_flash", p, true)) return false;
+		if (!burstOn[h] || !RSQDG_Reach.Flag("rsqdg_catch_flash", p, true)) return false;
 		int age = level.maptime - burstAt[h];
-		if (age < 0 || age >= BURST_TICS) { burstAt[h] = 0; return false; }
+		if (age < 0 || age >= BURST_TICS) { burstOn[h] = false; return false; }
 
 		double t = double(age) / BURST_TICS;          // 0 -> 1
 		double fade = (1.0 - t) * (1.0 - t);          // fast out
@@ -414,6 +420,6 @@ class RSQDG_Laser : EventHandler
 	{
 		for (int i = 0; i < 2 * MAX_BEADS; i++) bead[i] = null;
 		live[0] = 0; live[1] = 0;
-		burstAt[0] = 0; burstAt[1] = 0;
+		burstOn[0] = false; burstOn[1] = false;
 	}
 }

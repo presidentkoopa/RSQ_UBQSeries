@@ -10,6 +10,25 @@ Line counts are real. Desktop system: **12,074** lines across
 
 ---
 
+## STATUS 2026-10-26
+
+- **A1 fixed** — `mass.zs` + `MASSDEF` ported; flight steers on kilograms (D17), and lifts off the floor (D18).
+- **A2 fixed for the throw** — palm velocity is differenced in the pawn's frame
+  (`aim.zs`), lane 1's change, without porting `rs_swing.zs`/`rs_throw.zs`.
+  Measured in the rig: walking at ~5 u/tic and opening a still hand → 0.0 m/s,
+  a drop; a 30 cm/tic hand jerk → 10.5 m/s, a throw. A real throw now also
+  carries the body's velocity. The fuller `rs_throw.zs` model (arm/object mass
+  split) is still unported.
+- **A3 fixed** — `policy.zs`, adapted (see DECISIONS: GRIPSUBJ is fork-only, so it
+  did NOT port as-is). In the rig: HealthBonus refused, TechLamp refused (the old
+  rule pulled every solid decoration), Soulsphere refused until `rsqdg_powerups`,
+  barrel chosen over a nearer clip.
+- **Haptics and sound done** (Part D items 3 and 5) — `feel.zs`, D14–D16.
+- **New bug found and fixed:** turning the palm back out to catch re-locked the
+  object already flying at you. The cone now skips anything in flight or in a hand.
+
+---
+
 ## PART A — DEFECTS IN WHAT IS ALREADY BUILT
 
 These are not gaps. They are things that are in the package now, that I

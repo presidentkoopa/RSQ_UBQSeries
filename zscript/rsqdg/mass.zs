@@ -64,16 +64,27 @@ class RSQDG_Mass play
 		if (!a) return 0;
 
 		let t = RSQDG_MassTable.Get();
+
+		// A LINE NAMING THIS EXACT CLASS beats everything: somebody stated it.
+		if (t)
+		{
+			int e = t.FindExact(a.GetClass());
+			if (e >= 0 && t.dMass[e] > 0) return t.dMass[e];
+		}
+
+		// THEN A MEASURED GUN, BEFORE ANY INHERITED LINE. A mod's rifle that
+		// derives from Shotgun would otherwise take the vanilla Shotgun row off
+		// its parent and never ask the weapons pack that actually weighed it.
+		// (Found in review, 2026-10-26: the ancestor walk ran first.)
+		double lb = GunPounds(a);
+		if (lb > 0) return lb * 0.45359237;
+
+		// Then the ancestors' lines: a mod's clip deriving from Clip.
 		if (t)
 		{
 			int i = t.FindFor(a.GetClass());
 			if (i >= 0 && t.dMass[i] > 0) return t.dMass[i];
 		}
-
-		// After MASSDEF (a MASSDEF line is somebody deliberately overriding it),
-		// before the monster and volume paths (it is authored and they are not).
-		double lb = GunPounds(a);
-		if (lb > 0) return lb * 0.45359237;
 
 		if (a.bIsMonster) return max(1.0, double(a.Mass));
 
@@ -116,12 +127,8 @@ class RSQDG_Mass play
 	private static double GunPounds(Actor a)
 	{
 		if (!a || !(a is 'Weapon')) return 0;
-		let it = ServiceIterator.Find("RS_WeaponWeightService");
-		Service sv = null;
-		Service s;
-		// EXACT name: Find matches a case-insensitive SUBSTRING.
-		while (s = it.Next())
-			if (s.GetClassName() == 'RS_WeaponWeightService') { sv = s; break; }
+		let t = RSQDG_MassTable.Get();
+		Service sv = t ? t.GunService() : null;
 		if (!sv) return 0;
 		if (sv.GetInt("weapon.weight.has", "", -1, 0, a) != 1) return 0;
 		double lb = sv.GetDouble("weapon.weight.lbs", "", -1, 0, a);
@@ -195,6 +202,35 @@ class RSQDG_MassTable : StaticEventHandler
 		let t = RSQDG_MassTable(StaticEventHandler.Find("RSQDG_MassTable"));
 		if (t && !t.loaded) t.Load();
 		return t;
+	}
+
+	// The weapon weight service, found ONCE. Services are engine singletons,
+	// and the lookup (an iterator and a MakeLower per service name) used to run
+	// several times per tic for a weapon in the air. EXACT name: Find matches a
+	// case-insensitive substring.
+	private Service gunSvc;
+	private bool gunLooked;
+
+	Service GunService()
+	{
+		if (!gunLooked)
+		{
+			gunLooked = true;
+			let it = ServiceIterator.Find("RS_WeaponWeightService");
+			Service s;
+			while (s = it.Next())
+				if (s.GetClassName() == 'RS_WeaponWeightService') { gunSvc = s; break; }
+		}
+		return gunSvc;
+	}
+
+	// A row naming exactly this class, or -1.
+	int FindExact(Class<Actor> cls)
+	{
+		if (!cls) return -1;
+		for (int i = 0; i < dClass.Size(); i++)
+			if (dClass[i] == cls) return i;
+		return -1;
 	}
 
 	// The row for this class: its own, else its nearest ancestor's, else -1.

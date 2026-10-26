@@ -76,34 +76,77 @@ class RSQDG_Aim : EventHandler
 		// as menus, and cannot be wrong about something it does not consult.
 		//
 		// A metre in a single tic is 28.6 ms of arm movement. No arm does that.
-		// IN THE BODY'S FRAME, NOT THE WORLD'S (PORT_SCOPE A2).
+		// IN THE TRACKING SPACE'S FRAME, NOT THE WORLD'S (PORT_SCOPE A2).
 		//
-		// The hand is measured relative to the pawn and un-rotated by the
-		// pawn's yaw before it is differenced. Two things fall out of that for
-		// free, with no accumulator and no engine symbol:
+		// The hand is measured relative to the pawn, and un-rotated by the yaw
+		// of the TRACKING SPACE -- the room you are standing in -- before it is
+		// differenced. Then:
 		//
-		//   - WALKING IS NOT A THROW. The world position of your hand changes
-		//     at walking speed while your arm is still; relative to the body it
-		//     does not move at all. Opening a hand while walking used to throw.
-		//   - A TURN IS NOT A THROW. A snap turn swings the whole tracking
-		//     space, hand included, through 45 degrees about the pawn in one
-		//     tic -- a third of a metre of "hand motion" in 28 ms, the hardest
-		//     sideways throw of the session. Un-rotated, hand and pawn turn
-		//     together and cancel.
+		//   - WALKING IS NOT A THROW. The hand's world position moves at
+		//     walking speed while your arm is still; relative to the pawn it
+		//     does not move. Opening a hand while walking used to throw.
+		//   - A TURN IS NOT A THROW. A snap turn swings the tracking space,
+		//     hand included, through 45 degrees about the pawn in one tic -- a
+		//     third of a metre of "hand motion" in 28 ms. Un-rotated by the same
+		//     45, it cancels. Smooth stick turning likewise.
+		//   - A HEAD TURN IS NOT A THROW, and this is why it is not pmo.Angle.
+		//     On QuestZDoom the pawn's angle FOLLOWS THE HEADSET
+		//     (hw_openxrdevice.cpp: G_AddViewAngle(-hmdYawDelta)), while the
+		//     hands stay where they are in the room. Un-rotating by the pawn's
+		//     angle made a glance sideways swing every hand vector -- a hand
+		//     0.4 m out under a 200 deg/s head turn read as 1.7 m/s, a throw.
+		//     (Found in review, 2026-10-26; the first cut of this used Angle.)
 		//
-		// This is lane 1's fix for rs_swing.zs, in about fifteen lines instead
-		// of a port. The fork used native hand velocity and VRTurnYaw for it;
-		// stock has neither and, framed this way, needs neither.
+		// THE TRACKING YAW IS NOT EXPOSED, so it is inferred, and the inference
+		// is exact in the cases that matter. A head turn changes Angle and
+		// leaves both hands' world yaws alone. A snap or stick turn rotates
+		// the whole tracking space, so Angle AND BOTH HAND YAWS change by the
+		// same amount in the same tic. So the frame turns by Angle's change only
+		// on a tic where both hands turned with it. A wrist that happens to
+		// rotate by exactly the head's delta, on both hands at once, inside a
+		// degree and a half, is the only thing that can fool it.
 		//
-		// The jump test uses the same body-frame delta, so a teleporter or a
-		// fast lift no longer reads as tracking having lied.
+		// The jump test uses the same frame, so a teleporter or a fast lift no
+		// longer reads as tracking having lied.
 		poseTrusted = true;
-		double yaw = pmo.Angle;
+		double ang = pmo.Angle;
+		double hy0 = RSQDG_Reach.Yaw(pmo, 0);
+		double hy1 = RSQDG_Reach.Yaw(pmo, 1);
+		if (framePrimed)
+		{
+			double dA  = RSQDG_Reach.NormDeg(ang - lastAngle);
+			double dH0 = RSQDG_Reach.NormDeg(hy0 - lastHandYaw[0]);
+			double dH1 = RSQDG_Reach.NormDeg(hy1 - lastHandYaw[1]);
+			bool followed = abs(dH0 - dA) < FRAME_TOL && abs(dH1 - dA) < FRAME_TOL;
+			if (abs(dA) > 0.01 && followed)
+				frameYaw = RSQDG_Reach.NormDeg(frameYaw + dA);
+
+			// A HEAD TURN BLINDS THE THROW FOR TWO TICS. Measured in the rig:
+			// on the tic the head turns, the engine reports both hands rotated
+			// the OTHER way by the same amount, and puts them back the tic
+			// after -- the hand pose is built from the new headset yaw and the
+			// previous view yaw for one tic. That is engine code, so a real
+			// head turn does it too, and the hands appear to jump by turn x
+			// arm length: a 20-degree glance read as a 4.7 m/s throw. Nothing
+			// in the pose can tell that jump from a real one, so the sampler
+			// records nothing on those tics. The cost: you cannot throw in the
+			// same instant you whip your head round.
+			if (abs(dA) > HEAD_TURN_DEG && !followed) quietTics = 2;
+		}
+		else
+		{
+			frameYaw = ang;   // any start will do; only changes are ever used
+			framePrimed = true;
+		}
+		lastAngle = ang;
+		lastHandYaw[0] = hy0;
+		lastHandYaw[1] = hy1;
+
 		for (int h = 0; h < 2; h++)
 		{
 			Vector3 now = RSQDG_Reach.Palm(pmo, h);
 			Vector3 off = now - pmo.Pos;
-			Vector2 flat = Actor.RotateVector(off.xy, -yaw);
+			Vector2 flat = Actor.RotateVector(off.xy, -frameYaw);
 			Vector3 rel = (flat.x, flat.y, off.z);
 
 			Vector3 dRel = rel - lastRel[h];
@@ -116,13 +159,13 @@ class RSQDG_Aim : EventHandler
 			// A bad pose contributes a ZERO sample rather than the collapse
 			// delta, which would otherwise be the hardest throw of the session.
 			palmVel[h * PITCH_WINDOW + palmAt[h]] =
-				(primed[h] && poseTrusted) ? dRel : (0, 0, 0);
+				(primed[h] && poseTrusted && quietTics <= 0) ? dRel : (0, 0, 0);
 			palmAt[h] = (palmAt[h] + 1) % PITCH_WINDOW;
 
 			lastRel[h] = rel;
 			primed[h] = true;
 		}
-		bodyYaw = yaw;
+		if (quietTics > 0) quietTics--;
 
 		// The wrist is sampled whatever the pose is doing, because the sampler
 		// needs an unbroken chain to difference against -- it just contributes
@@ -140,9 +183,17 @@ class RSQDG_Aim : EventHandler
 		target[1] = RSQDG_Cone.Best(pmo, p, 1);
 	}
 
-	private Vector3 lastRel[2];   // palm relative to the pawn, un-rotated by its yaw
+	private Vector3 lastRel[2];   // palm relative to the pawn, in the tracking frame
 	private bool    primed[2];
-	private double  bodyYaw;      // the yaw those samples were taken at
+
+	// The inferred yaw of the tracking space, and what it is inferred from.
+	const FRAME_TOL = 1.5;        // degrees: how closely both hands must follow
+	const HEAD_TURN_DEG = 0.5;    // degrees/tic of unfollowed pawn turn = a head turn
+	private int     quietTics;    // tics the throw sampler records nothing
+	private double  frameYaw;
+	private double  lastAngle;
+	private double  lastHandYaw[2];
+	private bool    framePrimed;
 
 	// ---- palm velocity, for the throw --------------------------------------
 	//
@@ -158,8 +209,8 @@ class RSQDG_Aim : EventHandler
 	private int     palmAt[2];
 
 	// Map units per tic, direction included, IN THE WORLD -- a throw needs to
-	// know which way. The samples are body-frame; the peak is turned back into
-	// the world by the body's current yaw, so "forward" is where you face now.
+	// know which way. The samples are in the tracking frame; the peak is turned
+	// back into the world by the frame's current yaw.
 	Vector3 PalmVelocity(int hand) const
 	{
 		if (hand != 0 && hand != 1) return (0, 0, 0);
@@ -174,7 +225,7 @@ class RSQDG_Aim : EventHandler
 			double l = RSQDG_Reach.Metres(v);
 			if (l > bestLen) { bestLen = l; best = v; }
 		}
-		Vector2 w = Actor.RotateVector(best.xy, bodyYaw);
+		Vector2 w = Actor.RotateVector(best.xy, frameYaw);
 		return (w.x, w.y, best.z);
 	}
 
@@ -258,6 +309,7 @@ class RSQDG_Aim : EventHandler
 	{
 		target[0] = null; target[1] = null;
 		primed[0] = false; primed[1] = false;
+		framePrimed = false;
 		poseTrusted = false;
 	}
 
@@ -265,6 +317,7 @@ class RSQDG_Aim : EventHandler
 	{
 		target[0] = null; target[1] = null;
 		primed[0] = false; primed[1] = false;
+		framePrimed = false;
 		poseTrusted = false;
 	}
 }
