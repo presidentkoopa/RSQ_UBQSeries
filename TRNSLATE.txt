@@ -33,3 +33,7 @@ RSQDG_Locked = "0:255=%[0.00,0.00,0.00]:[0.35,1.60,0.45]"
 // Held and settled. The same green, brighter and used solid rather than
 // flashing -- it is the one state that is not a question.
 RSQDG_Held = "0:255=%[0.00,0.00,0.00]:[0.45,1.75,0.55]"
+
+// Searching. The cold blue of a beam that has found nothing yet -- the cone and
+// the laser wear it while the palm is out and the cone is empty.
+RSQDG_Idle = "0:255=%[0.00,0.00,0.00]:[0.45,0.85,1.70]"

@@ -13,14 +13,6 @@ AddOptionMenu "OptionsMenu"
 	Submenu "Distance Grab", "RSQDG_Options"
 }
 
-OptionValue "RSQDG_LaserQuality"
-{
-	0, "Off"
-	1, "Low  -- core only"
-	2, "Medium  -- core, halo, flare"
-	3, "High  -- everything"
-}
-
 OptionMenu "RSQDG_Options"
 {
 	Title "DISTANCE GRAB"
@@ -157,26 +149,23 @@ OptionMenu "RSQDG_Laser"
 {
 	Title "THE LASER"
 	StaticText ""
-	Option "Quality", "rsqdg_laser", "RSQDG_LaserQuality"
-	StaticText "Beads per hand: 10 / 26 / 48. One bead is one", 1
-	StaticText "sprite, so this is the frame cost to watch.", 1
+	Option "Beam", "rsqdg_beam", "OnOff"
+	Slider "Beam width",  "rsqdg_beam_w", 0.25, 4.0, 0.25, 2
+	Slider "Beam bright", "rsqdg_beam_a", 0.1, 1.0, 0.05, 2
+	StaticText ""
+	Option "Dot", "rsqdg_dot", "OnOff"
+	Slider "Dot size", "rsqdg_dot_size", 0.25, 4.0, 0.25, 2
+	StaticText "One glow where the line lands.", 1
+	StaticText ""
+	Option "Reach cone", "rsqdg_cone", "OnOff"
+	Slider "Cone bright", "rsqdg_cone_a", 0.05, 1.0, 0.05, 2
+	StaticText "The exact volume the grab tests. It follows", 1
+	StaticText "the Reach and Spread settings.", 1
 	StaticText ""
 	Option "Draw when aiming at nothing", "rsqdg_laser_idle", "OnOff"
-	StaticText "You cannot aim an invisible line.", 1
 	StaticText ""
-	Slider "Core width",  "rsqdg_laser_core_w", 0.3, 4.0,  0.1,  2
-	Slider "Core bright", "rsqdg_laser_core_a", 0.1, 1.0,  0.05, 2
-	Slider "Halo width",  "rsqdg_laser_halo_w", 1.0, 16.0, 0.5,  1
-	Slider "Halo bright", "rsqdg_laser_halo_a", 0.0, 0.8,  0.02, 2
-	StaticText "The halo is what makes it read as light", 1
-	StaticText "rather than as a wireframe.", 1
-	StaticText ""
-	Slider "Mote width", "rsqdg_laser_mote_w",  0.5, 8.0, 0.5,  1
-	Slider "Mote rate",  "rsqdg_laser_mote_hz", 0.1, 4.0, 0.1,  2
-	StaticText "Motes run toward your palm and speed up as", 1
-	StaticText "they arrive. High quality only.", 1
-	StaticText ""
-	Slider "Flare size", "rsqdg_laser_flare_w", 2.0, 24.0, 1.0, 1
+	StaticText "Blue: searching. Amber: something in reach.", 1
+	StaticText "Green: locked.", 1
 	StaticText ""
 	Option "Colour the target", "rsqdg_lightup", "OnOff"
 	Slider "Pulse period (tics)", "rsqdg_flash", 6, 70, 2, 0

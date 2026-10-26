@@ -16,10 +16,11 @@ $out  = Join-Path $root 'RSQ_DistanceGrab.pk3'
 
 # docs/ and models/ stay out for now: docs is prose, and the FBX is a 24 MB
 # SOURCE asset that the engine cannot read and must never be packed.
-# tools/ stays out too: gen_sounds.py WRITES sounds/, it is not a lump.
+# tools/ stays out too: gen_sounds.py and gen_cone.py WRITE lumps, they are not lumps.
+# models/rsqdg is the generated cone and beam; models/hands (the FBX) stays out.
 $required = @('zscript.txt', 'MAPINFO.txt', 'CVARINFO.txt')
 $optional = @('TRNSLATE.txt', 'KEYCONF.txt', 'MENUDEF.txt', 'MODELDEF.txt', 'SNDINFO.txt', 'MASSDEF.txt')
-$dirs     = @('zscript', 'graphics', 'sprites', 'sounds')
+$dirs     = @('zscript', 'graphics', 'sprites', 'sounds', 'models/rsqdg')
 
 $files = @()
 foreach ($f in $required) {
@@ -104,6 +105,10 @@ $declaredCvars = @([regex]::Matches($ct, '(?im)^\s*(?:user|server)\s+\w+\s+([A-Z
 # Matched at the CALL SITE, not as any rsqdg_* string literal. The loose form
 # flagged the netevent names `rsqdg_press` and `rsqdg_release` as undeclared
 # cvars, which they are not -- and a check that cries wolf gets switched off.
+# A CVAR DECLARED TWICE IS FATAL AT LOAD ("cvar already exists"), and nothing
+# short of starting the engine says so. Caught here instead.
+$cvDup = @($declaredCvars | Group-Object | Where-Object { $_.Count -gt 1 })
+foreach ($d in $cvDup) { Write-Warning "cvar declared more than once: $($d.Name)"; $fail++ }
 $usedCvars = @([regex]::Matches($allZs, '(?:Num|Flag|Opt|GetCVar)\s*\(\s*"([A-Za-z0-9_]+)"') | ForEach-Object { $_.Groups[1].Value.ToLower() }) | Sort-Object -Unique
 $cMiss = 0
 foreach ($c in $usedCvars) { if ($declaredCvars -notcontains $c) { Write-Warning "cvar read but not declared: $c"; $cMiss++; $fail++ } }

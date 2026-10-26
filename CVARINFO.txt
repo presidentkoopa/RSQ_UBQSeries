@@ -159,36 +159,22 @@ user bool rsqdg_catch_takes = true;
 // this engine, so the peak of a short window is differenced from the pose.
 user float rsqdg_throw_scale = 1.0;
 
-// ---- the laser -----------------------------------------------------------
-// QUALITY TIERS, because the cost is real and the owner chooses it rather than
-// having it chosen for him. Beads per active hand, where one bead is one
-// additive sprite draw:
+// ---- the laser, the dot, the cone (laser.zs) ---------------------------
+// THREE SINGLE OBJECTS PER HAND, each interpolated by the renderer. The bead
+// chain they replaced strobed in the headset and is gone.
 //
-//   0  off
-//   1  low     10 -- core only. A clean thin line.
-//   2  medium  26 -- core + halo + terminus flare. Reads as light.
-//   3  high    48 -- everything, including motes travelling toward the palm.
-//
-// Drawn as pooled VisualThinkers: world-space, DEPTH-CORRECT (so it is stopped
-// by walls, which a psprite laser is not), interpolated by the renderer, and
-// allocated once rather than rebuilt per tic. An earlier attempt at this drew
-// 84 beams per hand every tic and destroyed the framerate.
-user int   rsqdg_laser          = 3;
-user bool  rsqdg_laser_idle     = true;   // draw even when it has found
-                                          // nothing. You cannot aim an
-                                          // invisible thing, so without this
-                                          // every miss looks like a broken mod
-user float rsqdg_laser_core_w   = 1.1;    // the bright line
-user float rsqdg_laser_core_a   = 0.85;
-user float rsqdg_laser_halo_w   = 4.5;    // the wide dim line underneath. This
-user float rsqdg_laser_halo_a   = 0.22;   // is the layer that makes it light
-                                          // rather than a wireframe
-user float rsqdg_laser_mote_w   = 2.6;    // beads running target -> palm
-user float rsqdg_laser_mote_hz  = 0.9;    // cycles/sec. They ACCELERATE as they
-                                          // arrive: constant rate reads as a
-                                          // conveyor, accelerating reads as
-                                          // being drawn in
-user float rsqdg_laser_flare_w  = 9.0;    // the pulse on the thing itself
+//   beam  a model shaft of light, core + halo, from the palm to what it hits
+//   dot   one glow where the line lands, scaled to keep one apparent size
+//   cone  DXR's grab-reach cone: the exact volume the grab tests
+user bool  rsqdg_beam        = true;
+user float rsqdg_beam_w      = 1.0;    // width multiplier
+user float rsqdg_beam_a      = 0.8;
+user bool  rsqdg_dot         = true;
+user float rsqdg_dot_size    = 1.0;
+user bool  rsqdg_cone        = true;
+user float rsqdg_cone_a      = 0.45;   // faint on purpose: it surrounds your view
+user bool  rsqdg_laser_idle  = true;   // draw even when it has found nothing.
+                                       // You cannot aim an invisible thing
 
 // ---- feedback (feel.zs) --------------------------------------------------
 // Report only: switching all of these off changes nothing about what the grab

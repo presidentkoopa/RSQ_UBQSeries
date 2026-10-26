@@ -284,3 +284,30 @@ are out of scope for now.
 - **`670d19eba6` (quoted at the top of this file as the stock base) is a commit
   in the owner's local checkout only** — it is not on emawind84/gzdoom. The
   public stock ref is tag `qzd17.3` = `9afc750`.
+
+## D19 — THE LASER IS THREE MODELS, NOT A BEAD CHAIN. 2026-10-26.
+
+Owner, in the headset: the bead laser "looks like it's having a seizure, there's
+no way this will work". 48 billboards re-placed 35x/s against a hand rendered at
+headset rate, motes wrapping end to end. Removed entirely.
+
+| piece | what | from |
+|---|---|---|
+| beam | model: 3 crossed planes x (core + halo), soft bell skin, additive | the lightsaber-blade trick |
+| dot | one glow sprite at the hit, scaled with distance | QZD's bundled laser-sight (GPL-3: idea only, no code) |
+| cone | wire edges + 2 rings + faint shell, 1 MD3 frame per degree of half-angle | DXR `hw_weapon.cpp` DrawDebugWireCone/SolidCone |
+
+**The length trick.** An actor's `Scale.X` scales both horizontal model axes,
+`Scale.Y` only the vertical. The beam is authored along +Z and the actor pitched
++90 past the aim, so `Scale.Y` = exact length, `Scale.X` = width. The cone cannot
+use it (its width and length must both follow its own axis), hence one frame per
+degree and uniform scale = reach / 256.
+
+**CORRECTPIXELSTRETCH** on both: the 1.2 stretch is applied in world space after
+rotation (r_data/models.cpp), so they are authored and aimed in ROOM space — the
+same space cone.zs tests in — and land exactly on map-space endpoints.
+
+Cone skin fades in over the first 30% of reach (the edge tubes converging at the
+palm crowded the beam near the eye). All three colour by state via translation
+(new `RSQDG_Idle` blue). Verified by frame dump in the rig; lag vs DXR's per-frame
+C++ drawing is ~1 tic, untested in a headset.
