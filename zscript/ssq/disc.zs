@@ -398,8 +398,8 @@ class SSQ_Disc : Actor
 		}
 		// ON TO THE NEXT LOCK either way. With Hit Tiers off this was inside the tiers branch,
 		// so a multi-lock throw kept hitting lock 0 and never moved on.
+		// Next() homes when the last lock is done; a free throw (no locks) flies on.
 		Next(wasLock);
-		if (!CurrentLock()) Home();
 		return 1;
 	}
 

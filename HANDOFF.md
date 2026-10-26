@@ -1,4 +1,32 @@
-# Ultra Badass ShieldSaw — handoff (2026-10-23, v0.7)
+# Ultra Badass ShieldSaw — handoff
+
+## Polish branch `polish/quest-series` (2026-10-26) — read first
+
+Not yet run on the owner's headset. Rig = QZD 4.12-era Linux build, freedoom2.
+
+| | what | check |
+|---|---|---|
+| S1 | switching main weapons with the shield drawn: the switchhand fingerprint (`took == back || back.bOffhandWeapon`) tells a real hand swap from an ordinary switch | rig: Rifle and saber switches keep the shield drawn |
+| S3 | stow latch: one Use press cannot draw and stow in the same breath | — |
+| S4 | a returned bullet is fired by a non-player helper (`SSQ_Ricochet`): a player LineAttack in VR is re-aimed down the main controller and buzzes the main hand | — |
+| S2/S5/S6/S7/S8 | dead BounceCount gone; embed goes on to the next lock; Next() outside tiers; main restore before the off-hand handover; null guards | — |
+| haptics | `SSQ_FX.Buzz` -> `SSQ_Buzzer` QF_WAVE emitter on the off hand (lefty-aware) | gdb: chan 0 (left) on draw |
+| defaults | code fallbacks now equal CVARINFO defaults (mount, zone, throw min, speed floor, perfect/bash speed, lock cone) | — |
+| menu | every cvar on a menu: new **Advanced** page (lock button, off-hand switch, back-mount, held nudge, timings...); size slider step 0.125; one reset row covering all 90 cvars | regression loads; menu opened in the rig |
+| comments | dead ZoneTick removed; rev button, sprite count, WorldTick, throw-speed arithmetic (a 6 m/s swing is ~8 u/tic, so the 12 floor sets it), embed_dps is per tic | — |
+
+Independent review, fixed: stowing with a two-handed main weapon emptied the main hand again
+(BringUpWeapon nulls a two-handed main when an off-hand weapon rises) -> the off-hand handover is
+skipped then; a free throw with Hit Tiers off went home after its first glance -> flies on again;
+a monster hit by a returned bullet chased the vanishing helper -> retargets the player; buzzer
+Tick after self-destroy -> guarded.
+
+Open: feel numbers (rumble strength, throw min 60 u/s) are headset questions. Known limit: a
+returned bullet is credited to the helper, so co-op friendly-fire rules do not apply to it.
+
+---
+
+## v0.7 handoff (2026-10-23)
 
 A shield that is also a throwable saw disc, in the off hand, for **stock QuestZDoom 17.3**
 (`emawind84/gzdoom @ questzdoom`, TeamBeef's build). Standalone pk3, no engine changes, and none

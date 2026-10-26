@@ -288,6 +288,7 @@ class SSQ_Buzzer : Actor
 	override void Tick()
 	{
 		Super.Tick();
+		if (bDestroyed) return;
 		if (!feels) { Destroy(); return; }
 		SetOrigin(feels.pos, true);
 		if (tleft <= 0) return;

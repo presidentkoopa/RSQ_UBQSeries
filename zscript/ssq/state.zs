@@ -644,7 +644,9 @@ class SSQ_Handler : EventHandler
 		// and then two mods are writing PendingWeapon in the same tic and the last one wins.
 		// Whatever we displaced goes back here and now; if we displaced nothing, we give the
 		// slot to whoever would have claimed it anyway, deliberately, instead of racing them.
-		if (p.PendingWeapon == WP_NOCHANGE)
+		// NOT INTO A TWO-HANDED MAIN: BringUpWeapon nulls a two-handed ReadyWeapon whenever an
+		// off-hand weapon comes up (player.zs), which would empty the hand just restored above.
+		if (p.PendingWeapon == WP_NOCHANGE && !(p.ReadyWeapon && p.ReadyWeapon.bTwoHanded))
 		{
 			Weapon back = mPrevOff[i] ? Weapon(mo.FindInventory(mPrevOff[i])) : null;
 			if (!back) back = HandBack(mo);

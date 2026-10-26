@@ -377,7 +377,13 @@ class SSQ_Guard : Inventory
 			{
 				ric.target = mo;
 				ric.angle = ang;
-				ric.LineAttack(ang, max(dist, 1024.0), pit, dmg, 'Hitscan', 'BulletPuff', LAF_ABSPOSITION, null, P.z, P.x, P.y);
+				FTranslatedLineTarget hitT;
+				ric.LineAttack(ang, max(dist, 1024.0), pit, dmg, 'Hitscan', 'BulletPuff', LAF_ABSPOSITION, hitT, P.z, P.x, P.y);
+				// The helper vanishes in a tic: a monster it hit would chase nothing. Point the
+				// victim at the player who turned the shot. (Known limit: the engine credits the
+				// damage to the helper, so co-op friendly-fire rules do not see a player source.)
+				let v = hitT.linetarget;
+				if (v && v.health > 0 && v.target == ric) v.target = mo;
 			}
 		}
 		return true;
