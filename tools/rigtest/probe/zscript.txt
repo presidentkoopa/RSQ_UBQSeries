@@ -33,17 +33,12 @@ class RSQDGT_Probe : EventHandler
 		if (t == 20 && !setup)
 		{
 			setup = 1;
-			// face a clear direction: try 8 headings and pick the one with the longest clear line
-			double bestA = mo.angle; double bestD = 0;
-			for (int i = 0; i < 16; i++)
-			{
-				double an = i * 22.5;
-				FLineTraceData d;
-				mo.LineTrace(an, 2000, 0, TRF_THRUACTORS, 30, 0, 0, d);
-				double dd = d.Distance;
-				if (dd > bestD) { bestD = dd; bestA = an; }
-			}
-			mo.A_SetAngle(bestA);
+			// The headset owns the pawn's facing in VR (A_SetAngle does not stick),
+			// so objects are placed along the CURRENT facing; clearance is reported.
+			double bestA = mo.angle;
+			FLineTraceData d;
+			mo.LineTrace(bestA, 2000, 0, TRF_THRUACTORS, 30, 0, 0, d);
+			double bestD = d.Distance;
 			Console.Printf("T_SETUP heading=%.1f clear=%.0f", bestA, bestD);
 			Array<String> items; scen.Split(items, ",");
 			for (int i = 0; i < items.Size(); i++)
@@ -54,7 +49,7 @@ class RSQDGT_Probe : EventHandler
 				Vector2 fwd = (cos(bestA), sin(bestA)); Vector2 rt = (sin(bestA), -cos(bestA));
 				Vector2 xy = mo.pos.xy + fwd * dist + rt * side;
 				Name cn = kv[0];
-				let a = Actor.Spawn(cn, (xy.x, xy.y, mo.floorz));
+				let a = Actor.Spawn(cn, (xy.x, xy.y, mo.floorz), ALLOW_REPLACE);
 				if (a) spawned.Push(a);
 				if (a) Console.Printf("T_SPAWN %s at dist=%.0f side=%.0f  z=%.0f", kv[0], dist, side, a.pos.z);
 			}

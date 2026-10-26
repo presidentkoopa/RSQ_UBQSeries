@@ -79,11 +79,22 @@ class RSQDG_Mass play
 		double lb = GunPounds(a);
 		if (lb > 0) return lb * 0.45359237;
 
-		// Then the ancestors' lines: a mod's clip deriving from Clip.
+		// Then the ancestors' lines: a mod's clip deriving from Clip. And then
+		// what it REPLACES, which is not the same thing: Brutal Doom's
+		// `ExplosiveBarrel1 Replaces ExplosiveBarrel` has no parent at all, and
+		// without this it fell to the volume guess -- a 60 kg drum weighing
+		// whatever its collision box said.
 		if (t)
 		{
-			int i = t.FindFor(a.GetClass());
-			if (i >= 0 && t.dMass[i] > 0) return t.dMass[i];
+			Class<Actor> c = a.GetClass();
+			for (int d = 0; c && d <= RSQDG_Policy.MAX_REPLACE_DEPTH; d++)
+			{
+				int i = t.FindFor(c);
+				if (i >= 0 && t.dMass[i] > 0) return t.dMass[i];
+				Class<Actor> r = Actor.GetReplacee(c);
+				if (!r || r == c) break;
+				c = r;
+			}
 		}
 
 		if (a.bIsMonster) return max(1.0, double(a.Mass));
@@ -114,7 +125,19 @@ class RSQDG_Mass play
 	{
 		if (!a) return false;
 		let t = RSQDG_MassTable.Get();
-		if (t && t.FindFor(a.GetClass()) >= 0) return true;
+		if (t)
+		{
+			// Through the replacement chain too, the same walk Kg() makes, so
+			// the debug line does not call Brutal Doom's barrel "guessed".
+			Class<Actor> c = a.GetClass();
+			for (int d = 0; c && d <= RSQDG_Policy.MAX_REPLACE_DEPTH; d++)
+			{
+				if (t.FindFor(c) >= 0) return true;
+				Class<Actor> r = Actor.GetReplacee(c);
+				if (!r || r == c) break;
+				c = r;
+			}
+		}
 		if (GunPounds(a) > 0) return true;
 		return a.bIsMonster;
 	}

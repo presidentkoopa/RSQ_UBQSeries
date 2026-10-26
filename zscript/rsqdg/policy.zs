@@ -77,6 +77,9 @@ class RSQDG_Policy : StaticEventHandler
 	private RSQDG_GrabRuleService ruleSvc;
 	private bool ruleSvcLooked;
 
+	// The TNT1 sprite's index, looked up once (OnRegister).
+	private SpriteID tnt1;
+
 	RSQDG_GrabRuleService RuleService()
 	{
 		if (!ruleSvcLooked) { ruleSvc = RSQDG_GrabRuleService.Find(); ruleSvcLooked = true; }
@@ -111,6 +114,11 @@ class RSQDG_Policy : StaticEventHandler
 	static bool InheritsClass(Class<Actor> c, Name wantName)
 	{
 		Class<Actor> want = wantName;
+		return IsA(c, want);
+	}
+
+	static bool IsA(Class<Actor> c, Class<Actor> want)
+	{
 		if (!c || !want) return false;
 		Class<Object> k = c;
 		Class<Object> w = want;
@@ -120,6 +128,54 @@ class RSQDG_Policy : StaticEventHandler
 			k = k.GetParentClass();
 		}
 		return false;
+	}
+
+	// ---- WHAT A THING STANDS IN FOR -------------------------------------
+	//
+	// A REPLACEMENT IS NOT A SUBCLASS, and Brutal Doom is the proof. BD v22
+	// declares `ACTOR ExplosiveBarrel1 Replaces ExplosiveBarrel` with NO parent,
+	// and `HealthPlus : Health Replaces HealthBonus`. Matching on inheritance
+	// alone made every BD barrel unpullable and let every BD +1 bonus through
+	// the Health rule. (Found against brutal22test6, 2026-10-26.)
+	//
+	// So a class also answers to whatever it REPLACES, walked up the chain
+	// (a mod replacing a mod's replacement), and the table's order still
+	// decides: HealthPlus reaches the HealthBonus DENY before the Health allow,
+	// because the deny is higher in the table. This makes the table hold for
+	// every replacement mod at once, with no line naming any of them.
+	const MAX_REPLACE_DEPTH = 4;
+
+	static bool StandsFor(Class<Actor> c, Class<Actor> want)
+	{
+		for (int d = 0; c && d <= MAX_REPLACE_DEPTH; d++)
+		{
+			if (IsA(c, want)) return true;
+			Class<Actor> r = Actor.GetReplacee(c);
+			if (!r || r == c) break;
+			c = r;
+		}
+		return false;
+	}
+
+	// THE TABLE'S ANSWER PER CLASS, CACHED. The answer depends only on the
+	// class (the menu switches and ownership are checked after), and walking
+	// 25 rules x an inheritance chain x a replacement chain per candidate per
+	// tic is exactly the cost a Quest cannot spare. -1 = no rule matches.
+	private Array<Class<Actor> > memoCls;
+	private Array<int>           memoIdx;
+
+	private int RuleIndexFor(Class<Actor> c)
+	{
+		for (int m = 0; m < memoCls.Size(); m++)
+			if (memoCls[m] == c) return memoIdx[m];
+		int found = -1;
+		for (int i = 0; i < rules.Size(); i++)
+		{
+			if (StandsFor(c, rules[i].cls)) { found = i; break; }
+		}
+		memoCls.Push(c);
+		memoIdx.Push(found);
+		return found;
 	}
 
 	private void Rule(Name clsName, bool allow, Name category, String why, double weight = 1.0)
@@ -212,6 +268,15 @@ class RSQDG_Policy : StaticEventHandler
 		// lying next to it.
 		Rule('Weapon', true, 'Weapons', "a weapon", 2.0);
 
+		// BRUTAL DOOM'S GUNS ARE NOT WEAPONS. BD v22's floor guns are
+		// `BDWeaponSpawner : CustomInventory` -- a pickup whose Pickup state
+		// GIVES the weapon -- and they neither inherit nor replace a Doom
+		// weapon (the replacer that does is an invisible spawner, refused
+		// above). Without this line they still pull, through the catch-all,
+		// but at pickup weight and ignoring the Weapons switch. A class that is
+		// not loaded is skipped, so this line costs nothing without BD.
+		Rule('BDWeaponSpawner', true, 'Weapons', "a weapon (Brutal Doom)", 2.0);
+
 		// Health and armour, the real ones -- the bonuses were denied above.
 		Rule('Health', true, 'None', "a health item", 0.6);
 		Rule('Armor',  true, 'None', "armour", 0.6);
@@ -229,6 +294,7 @@ class RSQDG_Policy : StaticEventHandler
 
 	override void OnRegister()
 	{
+		tnt1 = Actor.GetSpriteIndex('TNT1');
 		Build();
 	}
 
@@ -266,10 +332,21 @@ class RSQDG_Policy : StaticEventHandler
 		// rather than RenderStyle: the field is private (actor.zs), the method
 		// is the public clearscope read.
 		//
-		// NOT A TNT1 TEST, on purpose. ModelSwapper draws its models on a
-		// pickup's own sprite frames, and a mod that puts a model on a TNT1
-		// frame would lose every grabbable thing it ships to a sprite check.
 		if (a.bINVISIBLE || a.GetRenderStyle() == STYLE_None) return null;
+
+		// AND A TNT1 FRAME IS NOTHING TO SEE. Brutal Doom v22 leaves its
+		// weapon spawner REPLACERS lying where the map's guns were -- a
+		// Health-derived item parked on `TNT1 A -1` forever, next to the real
+		// pickup it spawned (WeaponSpawners.dec ShotgunSpawnerReplacer). It
+		// stands for a Shotgun, so the table would happily lock it at weapon
+		// weight: a beam at empty air that outranks the gun beside it. Found
+		// against brutal22test6, 2026-10-26.
+		//
+		// The cost, stated: a mod that renders a MODEL on a TNT1 frame would
+		// lose those things to this test. ModelSwapper does not -- its BD22
+		// MODELDEF states "TNT1 keys removed (TNT1 means draw nothing in
+		// BD22)" -- and pickups drawn that way are rare.
+		if (a.sprite == tnt1) return null;
 
 		// A DYING PROP IS NOT A PROP. A barrel that has been shot is in its
 		// death sequence for a moment before it explodes; pulling it then
@@ -317,10 +394,10 @@ class RSQDG_Policy : StaticEventHandler
 		}
 
 		Build();
-		for (int i = 0; i < rules.Size(); i++)
+		int ri = RuleIndexFor(a.GetClass());
+		if (ri >= 0)
 		{
-			let r = rules[i];
-			if (!Inherits(a, r.cls)) continue;
+			let r = rules[ri];
 			if (!r.allow) return null;
 			if (!CategoryOn(r.category, p)) return null;
 
@@ -384,7 +461,7 @@ class RSQDG_GrabRuleService : Service play
 		{
 			let r = added[i];
 			if (!r.cls) continue;
-			if (!RSQDG_Policy.Inherits(a, r.cls)) continue;
+			if (!RSQDG_Policy.StandsFor(a.GetClass(), r.cls)) continue;
 			known = true;
 			return r.allow ? r : null;
 		}
@@ -406,8 +483,11 @@ class RSQDG_GrabRuleService : Service play
 		// THE MENU SWITCHES STILL APPLY. A mod's own gun is a gun: if the player
 		// has switched weapons off, a registered weapon must not slip through
 		// on a rule that names no category. Inferred from what it IS.
-		r.category = RSQDG_Policy.InheritsClass(c, 'Weapon') ? 'Weapons'
-		           : (RSQDG_Policy.InheritsClass(c, 'ExplosiveBarrel') || RSQDG_Policy.InheritsClass(c, 'BurningBarrel')) ? 'Barrels'
+		Class<Actor> wcls = 'Weapon';
+		Class<Actor> eb = 'ExplosiveBarrel';
+		Class<Actor> bb = 'BurningBarrel';
+		r.category = RSQDG_Policy.StandsFor(c, wcls) ? 'Weapons'
+		           : (RSQDG_Policy.StandsFor(c, eb) || RSQDG_Policy.StandsFor(c, bb)) ? 'Barrels'
 		           : 'None';
 		r.weight   = 1.0;
 		r.why      = String.Format("%s by %s", allow ? "registered" : "refused", who);
