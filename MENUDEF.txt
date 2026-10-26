@@ -162,6 +162,11 @@ OptionMenu "RSQDG_Laser"
 	StaticText "The exact volume the grab tests. It follows", 1
 	StaticText "the Reach and Spread settings.", 1
 	StaticText ""
+	Slider "Lead the hand (tics)", "rsqdg_lead", 0.0, 2.0, 0.1, 1
+	StaticText "Script moves these 35 times a second; this", 1
+	StaticText "draws them ahead so they keep up with your", 1
+	StaticText "hand. 1.0 cancels the lag; 0 turns it off.", 1
+	StaticText ""
 	Option "Draw when aiming at nothing", "rsqdg_laser_idle", "OnOff"
 	StaticText ""
 	StaticText "Blue: searching. Amber: something in reach.", 1

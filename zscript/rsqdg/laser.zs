@@ -126,6 +126,66 @@ class RSQDG_Laser : EventHandler
 
 	private SpriteID sprCone, sprConeWide;
 
+	// ---- LEADING THE HAND ----------------------------------------------------
+	//
+	// WHY THESE LAG AND THE GUN DOES NOT. The renderer draws at headset rate and
+	// places the weapon from the controller pose it read THAT frame. Script runs
+	// at 35 Hz: these actors are placed once per tic from where the hand was then,
+	// and the renderer draws a blend of the last two tics -- by construction, where
+	// the hand WAS, between 0 and 1 tic ago. Up to 28 ms behind a fast hand.
+	//
+	// THE FIX: place them where the hand WILL BE one tic from now. The renderer
+	// draws Prev + (Pos - Prev) * f; with Pos = hand + v and Prev = last tic's
+	// hand + v, that is hand + v * f -- exactly where a steadily moving hand is
+	// at fraction f of the way to the next tic. The interpolation lag and the lead
+	// cancel. The cost: a brief overshoot of about one tic's travel when a fast
+	// swing stops dead. rsqdg_lead scales it; 0 is off.
+	//
+	// Velocity is plain world-space differencing of the palm. Not the throw's
+	// tracking-frame velocity: walking and turning DO move the hand on screen,
+	// and the drawing has to follow them. A jump (a menu collapse, a teleport)
+	// leads nothing.
+	private Vector3 leadPalm[2], leadDir[2];
+	private Vector3 lastPalm[2], lastDir[2], lastTo[2];
+	private bool    leadPrimed[2], toPrimed[2];
+	private double  leadTics;
+	const LEAD_JUMP = 17.0;   // map units in one tic (~0.5 m) that is not a hand moving
+
+	private void UpdateLead(int h, PlayerPawn pmo, PlayerInfo p)
+	{
+		Vector3 palm = RSQDG_Reach.Palm(pmo, h);
+		Vector3 dir  = RSQDG_Reach.Dir(pmo, h);
+		Vector3 v = (0, 0, 0), dv = (0, 0, 0);
+		if (leadPrimed[h])
+		{
+			v  = palm - lastPalm[h];
+			dv = dir - lastDir[h];
+			if (v.Length() > LEAD_JUMP) { v = (0, 0, 0); dv = (0, 0, 0); }
+		}
+		leadPalm[h] = palm + v * leadTics;
+		Vector3 d = dir + dv * leadTics;
+		double dl = d.Length();
+		leadDir[h] = (dl > 1e-6) ? d / dl : dir;
+		lastPalm[h] = palm;
+		lastDir[h]  = dir;
+		leadPrimed[h] = true;
+	}
+
+	// The idle beam's far end slides along whatever it hits as the hand sweeps;
+	// it is led the same way, or the beam would bend toward last tic's wall spot.
+	private Vector3 LeadTo(int h, Vector3 to)
+	{
+		Vector3 r = to;
+		if (toPrimed[h])
+		{
+			Vector3 v = to - lastTo[h];
+			if (v.Length() <= LEAD_JUMP * 8) r = to + v * leadTics;   // far end moves faster
+		}
+		lastTo[h] = to;
+		toPrimed[h] = true;
+		return r;
+	}
+
 	static RSQDG_Laser Get()
 	{
 		return RSQDG_Laser(EventHandler.Find("RSQDG_Laser"));
@@ -234,6 +294,10 @@ class RSQDG_Laser : EventHandler
 		let fl   = RSQDG_Flight.Get();
 		let hold = RSQDG_Hold.Get();
 
+		leadTics = clamp(RSQDG_Reach.Num("rsqdg_lead", p, 1.0), 0.0, 2.0);
+		UpdateLead(0, pmo, p);
+		UpdateLead(1, pmo, p);
+
 		bool wantBeam = RSQDG_Reach.Flag("rsqdg_beam", p, true);
 		bool wantDot  = RSQDG_Reach.Flag("rsqdg_dot",  p, true);
 		bool wantCone = RSQDG_Reach.Flag("rsqdg_cone", p, true);
@@ -252,7 +316,11 @@ class RSQDG_Laser : EventHandler
 		RSQDG_Grab grab, RSQDG_Flight fl, RSQDG_Hold hold,
 		bool wantBeam, bool wantDot, bool wantCone)
 	{
-		Vector3 palm = RSQDG_Reach.Palm(pmo, h);
+		// WHERE TO DRAW the hand end: led a tic ahead (see UpdateLead). The REAL
+		// palm is still what the trace starts from, so what the beam finds is
+		// what the hand is actually pointing at.
+		Vector3 palm = leadPalm[h];
+		Vector3 realPalm = RSQDG_Reach.Palm(pmo, h);
 
 		// ---- the catch flash outranks everything for its nine tics ----
 		if (burstOn[h])
@@ -299,6 +367,7 @@ class RSQDG_Laser : EventHandler
 		{
 			if (!RSQDG_Reach.Flag("rsqdg_laser_idle", p, true))
 			{
+				toPrimed[h] = false;
 				Hide(beam[h], h); Hide(pip[h], 2 + h);
 				DrawCone(h, pmo, p, palm, wantCone, state);
 				return;
@@ -310,9 +379,11 @@ class RSQDG_Laser : EventHandler
 			double reach = RSQDG_Reach.Num("rsqdg_reach", p, 512.0);
 			FLineTraceData t;
 			bool hit = pmo.LineTrace(RSQDG_Reach.Yaw(pmo, h), reach, RSQDG_Reach.Pitch(pmo, h),
-				TRF_ABSPOSITION | TRF_THRUACTORS, palm.z, palm.x, palm.y, t);
-			to = hit ? t.HitLocation : (palm + RSQDG_Reach.Dir(pmo, h) * reach);
+				TRF_ABSPOSITION | TRF_THRUACTORS, realPalm.z, realPalm.x, realPalm.y, t);
+			to = hit ? t.HitLocation : (realPalm + RSQDG_Reach.Dir(pmo, h) * reach);
+			to = LeadTo(h, to);
 		}
+		if (onThing) toPrimed[h] = false;   // a thing's middle does not slide
 
 		double yaw, pit, len;
 		[yaw, pit, len] = RoomAim(to - palm);
@@ -379,7 +450,7 @@ class RSQDG_Laser : EventHandler
 		// Aimed by the hand's ROOM direction -- the same direction cone.zs
 		// tests along (it scales Dir's Z by pixelstretch before comparing).
 		double yaw, pit, len;
-		[yaw, pit, len] = RoomAim(RSQDG_Reach.Dir(pmo, h));
+		[yaw, pit, len] = RoomAim(leadDir[h]);
 		c.Angle = yaw;
 		c.Pitch = pit;
 		c.Roll  = 0;
@@ -405,6 +476,8 @@ class RSQDG_Laser : EventHandler
 	// the visible flags must too so the next spawn teleports into place.
 	override void WorldUnloaded(WorldEvent e)
 	{
+		leadPrimed[0] = false; leadPrimed[1] = false;
+		toPrimed[0] = false; toPrimed[1] = false;
 		for (int i = 0; i < 6; i++) shown[i] = false;
 		burstOn[0] = false; burstOn[1] = false;
 	}

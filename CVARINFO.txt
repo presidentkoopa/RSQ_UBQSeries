@@ -173,6 +173,10 @@ user bool  rsqdg_dot         = true;
 user float rsqdg_dot_size    = 1.0;
 user bool  rsqdg_cone        = true;
 user float rsqdg_cone_a      = 0.45;   // faint on purpose: it surrounds your view
+user float rsqdg_lead        = 1.0;    // TICS the hand end is drawn AHEAD of the
+                                       // hand, cancelling the renderer's one-tic
+                                       // interpolation lag. 0 off. Overshoots a
+                                       // little when a fast swing stops dead
 user bool  rsqdg_laser_idle  = true;   // draw even when it has found nothing.
                                        // You cannot aim an invisible thing
 

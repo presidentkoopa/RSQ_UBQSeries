@@ -311,3 +311,26 @@ Cone skin fades in over the first 30% of reach (the edge tubes converging at the
 palm crowded the beam near the eye). All three colour by state via translation
 (new `RSQDG_Idle` blue). Verified by frame dump in the rig; lag vs DXR's per-frame
 C++ drawing is ~1 tic, untested in a headset.
+
+## D20 — THE HAND END IS DRAWN ONE TIC AHEAD. 2026-10-26.
+
+Why the beam/cone lag and the gun does not: the renderer places the weapon from
+the pose it read THAT frame; script places actors once per tic and the renderer
+draws a blend of the last two tics — where the hand WAS, 0–1 tic ago. Fix: place
+the hand end at palm + v x `rsqdg_lead` (tics, default 1.0), v differenced per
+tic in world space; direction and the idle beam's wall point are led the same
+way; a >0.5 m/tic jump leads nothing. With Pos = hand+v and Prev = last hand+v,
+the renderer's Prev+(Pos-Prev)f = hand + v·f: lag and lead cancel.
+
+Measured by `tools/rigtest/leadsim.py` (engine interpolation formula, 35 Hz
+sampling of a pose up to one 90 Hz frame old):
+
+| motion | no lead avg/max | lead 1.0 avg/max |
+|---|---|---|
+| slow sweep 1 Hz 30 cm | 4.0 / 6.7 cm | 1.1 / 2.8 cm |
+| fast sweep 3 Hz 20 cm | 7.9 / 13.3 cm | 4.3 / 8.4 cm |
+| 2 m/s swing, hard stop | 1.7 / 7.8 cm | 0.3 / 4.2 cm (overshoot) |
+
+1.0 beats 1.2/1.3/1.5 overall. The fast-sweep residual is direction reversal
+within a tic, which no linear lead can follow. The real fix is drawing in the
+renderer (DXR did) — available on UZDXREMA, not on stock QZD.
