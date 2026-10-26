@@ -445,5 +445,7 @@ D9 promised the parabola behind a cvar. RS_Pull is not in this tree, so the arc
 is rebuilt on D9's own terms: no kinematic path, the engine still moves it; each
 tic the velocity is the ballistic solution onto the palm for the time left, so
 walls, floors and the moving hand all still work. Steer stays the default.
+Time of flight is chosen by height (a lob peaks at g t^2/8): `rsqdg_arc_apex`,
+the ceiling midway, and no faster than twice full flight speed.
 Ducking: a lintel is a lower ceiling a few units ahead; capping vel.z to pass
 under it is cheaper than routing, and the engine still owns everything else.

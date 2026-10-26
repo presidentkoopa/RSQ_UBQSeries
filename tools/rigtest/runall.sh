@@ -1,4 +1,6 @@
 #!/bin/bash
+# MODCVARS: the rig ini archives every cvar a test sets; start each run from the mods' defaults
+sed -i -E '/^(rsqdg_|rsqls_|ssq_|ubqs_|rsqdgt_)/d' /home/claude/rig/config/qzdoom.ini
 # runall.sh -- the series regression: all four Quest packs, both load orders, freedoom2 MAP01.
 # Fails on any script error, VM abort, unknown class/actor or menu warning in the log.
 G=/home/claude/work/RSQ_DistanceGrab/RSQ_DistanceGrab.pk3

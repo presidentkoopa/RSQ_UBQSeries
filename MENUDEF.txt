@@ -37,7 +37,7 @@ OptionMenu "RSQDG_Options"
 	StaticText ""
 	Submenu "Diagnostics",          "RSQDG_Debug"
 	StaticText ""
-	SafeCommand "Reset all Distance Grab settings", "resetcvar rsqdg_on rsqdg_reach rsqdg_spread rsqdg_sight rsqdg_corpses rsqdg_barrels rsqdg_weapons rsqdg_powerups rsqdg_button rsqdg_palm rsqdg_palm_roll rsqdg_palm_tol rsqdg_palm_pitch rsqdg_jump_m rsqdg_lock_dwell rsqdg_yield rsqdg_lightup rsqdg_glow rsqdg_glow_a rsqdg_flash rsqdg_flick_deg rsqdg_flight_speed rsqdg_steer rsqdg_pull_kg rsqdg_flight_gravity rsqdg_flight_mode rsqdg_flight_duck rsqdg_flight_radius rsqdg_flight_timeout rsqdg_catch_radius rsqdg_catch_hold rsqdg_catch_takes rsqdg_throw_scale rsqdg_arm_kg rsqdg_throw_j rsqdg_throw_min rsqdg_throw_explode rsqdg_hold_dist rsqdg_hold_k rsqdg_hold_vmax rsqdg_hold_break rsqdg_burden rsqdg_burden_kg rsqdg_beam rsqdg_beam_yield rsqdg_beam_w rsqdg_beam_a rsqdg_dot rsqdg_dot_size rsqdg_cone rsqdg_cone_a rsqdg_lead rsqdg_laser_idle rsqdg_haptics rsqdg_haptic_ramp rsqdg_rumble rsqdg_rumble_gain rsqdg_rumble_lock rsqdg_rumble_carry rsqdg_sound rsqdg_sound_vol rsqdg_catch_flash rsqdg_debug rsqdg_trace", "Put every Distance Grab setting back to its default?"
+	SafeCommand "Reset all Distance Grab settings", "resetcvar rsqdg_on rsqdg_reach rsqdg_spread rsqdg_sight rsqdg_corpses rsqdg_barrels rsqdg_weapons rsqdg_powerups rsqdg_button rsqdg_palm rsqdg_palm_roll rsqdg_palm_tol rsqdg_palm_pitch rsqdg_jump_m rsqdg_lock_dwell rsqdg_yield rsqdg_lightup rsqdg_glow rsqdg_glow_a rsqdg_flash rsqdg_flick_deg rsqdg_flight_speed rsqdg_steer rsqdg_pull_kg rsqdg_flight_gravity rsqdg_flight_mode rsqdg_arc_apex rsqdg_flight_duck rsqdg_flight_radius rsqdg_flight_timeout rsqdg_catch_radius rsqdg_catch_hold rsqdg_catch_takes rsqdg_throw_scale rsqdg_arm_kg rsqdg_throw_j rsqdg_throw_min rsqdg_throw_explode rsqdg_hold_dist rsqdg_hold_k rsqdg_hold_vmax rsqdg_hold_break rsqdg_burden rsqdg_burden_kg rsqdg_beam rsqdg_beam_yield rsqdg_beam_w rsqdg_beam_a rsqdg_dot rsqdg_dot_size rsqdg_cone rsqdg_cone_a rsqdg_lead rsqdg_laser_idle rsqdg_haptics rsqdg_haptic_ramp rsqdg_rumble rsqdg_rumble_gain rsqdg_rumble_lock rsqdg_rumble_carry rsqdg_sound rsqdg_sound_vol rsqdg_catch_flash rsqdg_debug rsqdg_trace", "Put every Distance Grab setting back to its default?"
 	StaticText ""
 	Control "Grab -- main hand", "+rsqdg_main"
 	Control "Grab -- off hand",  "+rsqdg_off"
@@ -130,6 +130,7 @@ OptionMenu "RSQDG_Flight"
 	Option "Flight path", "rsqdg_flight_mode", "RSQDG_FlightMode"
 	StaticText "Steer: flies at your hand and turns by its weight.", 1
 	StaticText "Arc: a lob onto your hand, heavier hangs longer.", 1
+	Slider "Arc height (m)", "rsqdg_arc_apex", 0.25, 3.0, 0.25, 2
 	Option "Duck under doorways", "rsqdg_flight_duck", "OnOff"
 	StaticText "On makes a long pull sag and a heavy thing", 1
 	StaticText "visibly harder to drag up to you.", 1

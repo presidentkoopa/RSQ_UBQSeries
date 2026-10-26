@@ -132,6 +132,7 @@ user float rsqdg_pull_kg        = 10.0;   // KILOGRAMS the pull moves almost
                                           // Masses come from MASSDEF (mass.zs)
 user bool  rsqdg_flight_gravity = false;  // let a pull sag. A legitimate feel
 user int   rsqdg_flight_mode    = 0;     // 0 steer to the palm (impulse + bounded steering), 1 the arc: a lob re-solved every tic (D9 A/B)
+user float rsqdg_arc_apex       = 1.0;   // arc mode: how high the lob peaks, metres (lower ceilings win)
 user bool  rsqdg_flight_duck    = true;  // dip under a lower ceiling ahead (doorways) instead of meeting the lintel
                                           // and the cheapest thing here to A/B
 user float rsqdg_flight_radius  = 2.0;    // a pickup's radius is a TRIGGER

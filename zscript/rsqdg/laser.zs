@@ -324,7 +324,7 @@ class RSQDG_Laser : EventHandler
 		let it = ServiceIterator.Find("RSQLS_SightService");
 		Service sv;
 		while (sv = it.Next())
-			if (sv.GetInt("laser.active", "", h) == 1) return true;
+			if (sv.GetInt("laser.beam", "", h) == 1) return true;   // a beam, not a dot: the dot does not double ours
 		return false;
 	}
 

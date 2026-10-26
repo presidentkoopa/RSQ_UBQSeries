@@ -209,7 +209,7 @@ class RSQDG_Flight : EventHandler
 		if (len > 0.01) a.Vel = (d / len) * cruise;
 		// The arc's time of flight: the straight run at this object's cruise, so a
 		// heavy thing hangs longer in the air. Never under half a second.
-		flyEta[hand] = max(TICRATE / 2, int(RoomDist(d) / max(cruise, 0.01)));
+		flyEta[hand] = ArcTime(a, palm, cruise, p);
 		if (arc) a.Vel = ArcVel(a, palm, flyEta[hand]);
 
 		// LIFT IT OFF THE FLOOR. Found in the rig, 2026-10-26: a barrel pulled
@@ -362,7 +362,7 @@ class RSQDG_Flight : EventHandler
 		// a hand that could not take it. Flight's own flags go back ON -- and
 		// that includes THRUACTORS, or the rest of the approach runs into the
 		// player and stops dead.
-		a.bNOGRAVITY  = !RSQDG_Reach.Flag("rsqdg_flight_gravity", p, false);
+		a.bNOGRAVITY  = flyArc[hand] ? false : !RSQDG_Reach.Flag("rsqdg_flight_gravity", p, false);   // the arc keeps its gravity
 		a.bTHRUACTORS = true;
 		a.bSPECIAL    = false;
 		double thin = RSQDG_Reach.Num("rsqdg_flight_radius", p, 2.0);
@@ -631,6 +631,39 @@ class RSQDG_Flight : EventHandler
 			Lift(a, toPalm.z > a.Height * 0.25);
 			Duck(a, p);
 		}
+	}
+
+	// THE ARC'S TIME OF FLIGHT, chosen by its HEIGHT (review, 10-26). Taking the
+	// straight run at cruise lobbed a slow barrel ~1,700 units up -- the apex of a
+	// lob is g t^2 / 8, so time is what has to be bounded. The run at cruise is
+	// still the preference (heavy things hang longer), but no longer than the
+	// time that peaks at rsqdg_arc_apex metres, and lower under a low ceiling --
+	// but never faster than twice full flight speed.
+	private static int ArcTime(Actor a, Vector3 palm, double cruise, PlayerInfo p)
+	{
+		Vector3 d = palm - MidOf(a);
+		double run = d.XY.Length();
+		double eta = RoomDist(d) / max(cruise, 0.01);
+		double g = level.gravity * a.CurSector.gravity * a.Gravity * 0.00125;
+		if (g <= 0.0001) return max(8, int(eta));
+		double apex = RSQDG_Reach.MetresToUnits(RSQDG_Reach.Num("rsqdg_arc_apex", p, 1.0));
+		double tApex = sqrt(8.0 * max(apex, 1.0) / g);
+		double full = RSQDG_Reach.MetresToUnits(RSQDG_Reach.Num("rsqdg_flight_speed", p, 12.0)) / TICRATE;
+		double tFast = run / max(2.0 * full, 0.01);
+		double t = min(eta, max(tApex, tFast));
+		// The ceiling MIDWAY, where a level lob peaks (rig: a low ceiling over the
+		// player's own spot flattened every arc in the room): its top must pass under.
+		double base = max(a.Pos.z + a.Height, palm.z + a.Height * 0.5);
+		Vector2 mid = (a.Pos.XY + palm.XY) * 0.5;
+		Sector ms = level.PointInSector(mid);
+		double room = (ms ? ms.ceilingplane.ZatPoint(mid) : a.ceilingz) - base - 2.0;
+		if (room > 1.0) t = min(t, sqrt(8.0 * room / g));
+		// Never faster than twice full flight speed, even under a low ceiling: there
+		// the arc flattens against the ceiling (Duck) rather than becoming a bullet.
+		t = max(t, tFast);
+		if (RSQDG_Reach.Flag("rsqdg_debug", p, false))
+			Console.Printf("[RSQDG] arc: run %.0f eta %.1f apexT %.1f fastT %.1f room %.0f g %.2f -> %d tics", run, eta, tApex, tFast, room, g, max(8, int(t)));
+		return max(8, int(t));
 	}
 
 	// The velocity that carries the middle of `a` onto `palm` in `t` tics under

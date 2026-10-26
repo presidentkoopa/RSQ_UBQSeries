@@ -62,5 +62,6 @@ wait 2, AIM to catch. A probe cannot set `qz_rhand` itself: engine cvars refuse
     G1 saber hilt         saber lit: palmok 0; douse: lock; relight: busy again
     G2 dwell 20           lock t41 (t21 without)
     G6 beam yield         laser on pistol: main grab beam hidden, off shown
-    G3 arc                barrel 212u, z 16 -> 84 peak -> caught t93 (ETA 48)
+    G3 arc                barrel 210u: 16 tics at apex 1 m (room 68 midway)
+    G6 dot-only laser     rsqls_beam 0: grab beam comes back
     regression            grab+laser+shield+saber, both orders: no errors

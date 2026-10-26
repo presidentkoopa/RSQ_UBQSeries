@@ -362,7 +362,7 @@ class RSQDG_Grab : EventHandler
 				int need = int(RSQDG_Reach.Num("rsqdg_lock_dwell", p, 0));
 				let aim2 = RSQDG_Aim.Get();
 				Actor cand = aim2 ? aim2.TargetFor(h) : null;
-				if (cand != dwellOn[h]) { dwellOn[h] = cand; dwellTics[h] = 0; }
+				if (cand != dwellOn[h]) { dwellOn[h] = cand; dwellTics[h] = cand ? 1 : 0; }   // this tic counts
 				else if (cand) dwellTics[h]++;
 				if (need <= 0 || (cand && dwellTics[h] >= need))
 					TryLock(h, p);
