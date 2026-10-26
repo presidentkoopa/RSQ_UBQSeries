@@ -33,3 +33,27 @@ Left hand mirror: qz_lhand "-0.25 1.3 -0.3 15 30 -90". Walk: qz_lstick "0 1".
     walk then open hand           0.0 m/s -> hold.drop   (world-frame code threw it)
     jerk hand then open           10.5 m/s -> hold.throw
     save mid-flight, load         pull completes, no errors
+
+## Round 2 checks (2026-10-26, ultimate grab) -- all pass
+Timing: console `wait N` counts GAME TICS (measured: marks at t33/68/103 for
+waits of 35). The flick only launches on the RELEASE that follows it (palm roll
+back within ~7 tics), so a pull is: AIM, wait, FLICK (pitch 2, -12), roll 0,
+wait 2, AIM to catch. A probe cannot set `qz_rhand` itself: engine cvars refuse
+`SetString` outside menu code (VM abort), so poses are scripted with `wait`.
+
+    rumble route (gdb)       330 quake writes, amp 0.00..1.00, none negative,
+                             main hand only; lock 0.18, launch 0.75, flight
+                             0.14->0.34 with 0.60 ramp ticks, quiet, catch 1.00
+    pulse route (gdb)        rsqdg_rumble 0: 7 x 150 ms vibrates, 0 quake writes
+    spring carry             barrel settles 0.59 m ahead of palm; strain
+                             0.59 -> 0.00 in ~16 tics; burden 0.67
+    pin + break              rsqdg_hold_dist 30: barrel pinned at the wall,
+                             strain 25 m, rumble 0.6, let go at tic 18
+    weighted throw           forward hand ~7 m/s -> barrel 2.3 m/s, clip 8.1 m/s
+    impact                   clip hit ShotgunGuy at 8.9 m/s for 1 (overlap path)
+    explode                  barrel at hand height: no (6 m/s threshold, gravity-
+                             corrected); BD22 ExplosiveBarrel1 at threshold 2:
+                             went off at 4.1 m/s (replacee chain)
+    save/load mid-carry      carry and burden continue; release clears burden
+    glow                     frame dumps: green twin over the locked barrel
+    BD22 load order          no script errors from this pack

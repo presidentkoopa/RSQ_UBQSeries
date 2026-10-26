@@ -143,6 +143,17 @@ OptionMenu "RSQDG_Catch"
 	Slider "Throw strength", "rsqdg_throw_scale", 0.25, 4.0, 0.25, 2
 	StaticText "Open your hand while moving to throw; open it", 1
 	StaticText "at rest to drop.", 1
+	Slider "Arm weight (kg)", "rsqdg_arm_kg", 5, 100, 5, 0
+	StaticText "Heavy things leave your hand slower.", 1
+	Slider "Impact damage (J/pt)", "rsqdg_throw_j", 2, 60, 1, 0
+	Slider "Barrel goes off at (m/s)", "rsqdg_throw_explode", 0, 15, 0.5, 1
+	StaticText ""
+	StaticText "CARRYING", 1
+	Slider "Hold distance (m)", "rsqdg_hold_dist", 0.0, 1.5, 0.05, 2
+	Slider "Hold stiffness", "rsqdg_hold_k", 0.1, 0.95, 0.05, 2
+	Slider "Let go when held back (m)", "rsqdg_hold_break", 0.0, 4.0, 0.25, 2
+	Option "Heavy things slow you", "rsqdg_burden", "OnOff"
+	Slider "Half speed at (kg)", "rsqdg_burden_kg", 20, 400, 10, 0
 }
 
 OptionMenu "RSQDG_Laser"
@@ -172,7 +183,12 @@ OptionMenu "RSQDG_Laser"
 	StaticText "Blue: searching. Amber: something in reach.", 1
 	StaticText "Green: locked.", 1
 	StaticText ""
-	Option "Colour the target", "rsqdg_lightup", "OnOff"
+	Option "Glow on the target", "rsqdg_glow", "OnOff"
+	Slider "Glow brightness", "rsqdg_glow_a", 0.25, 2.0, 0.25, 2
+	StaticText "Amber and dim: you could grab it. Green and", 1
+	StaticText "bright: you have it.", 1
+	StaticText ""
+	Option "Recolour the target", "rsqdg_lightup", "OnOff"
 	Slider "Pulse period (tics)", "rsqdg_flash", 6, 70, 2, 0
 }
 
@@ -182,10 +198,14 @@ OptionMenu "RSQDG_Feel"
 	StaticText ""
 	Option "Controller haptics", "rsqdg_haptics", "OnOff"
 	Option "Approach ping",      "rsqdg_haptic_ramp", "OnOff"
-	StaticText "A tick on lock and on launch, a ping that", 1
-	StaticText "speeds up as the object nears, a moment of", 1
-	StaticText "quiet, then a tick on the catch -- two if it", 1
-	StaticText "is heavy.", 1
+	Option "Rumble",             "rsqdg_rumble", "OnOff"
+	Slider "Rumble strength",    "rsqdg_rumble_gain", 0.0, 2.0, 0.1, 1
+	Slider "Rumble while locked","rsqdg_rumble_lock", 0.0, 0.6, 0.05, 2
+	Option "Rumble when held back", "rsqdg_rumble_carry", "OnOff"
+	StaticText "Rumble: a hum while locked, building through", 1
+	StaticText "the pull, a hard hit on the catch. Off: fixed", 1
+	StaticText "ticks instead. Turn it off if you set the", 1
+	StaticText "engine's quake haptics to 0.", 1
 	StaticText ""
 	Option "Sound",              "rsqdg_sound", "OnOff"
 	Slider "Volume",             "rsqdg_sound_vol", 0.0, 1.0, 0.05, 2

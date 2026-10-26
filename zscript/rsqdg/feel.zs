@@ -51,12 +51,64 @@
 //                                        should feel like more than a clip
 //   release    one tick
 //
-// A_QuakeEx WAS CONSIDERED AND REJECTED. It does give per-side AMPLITUDE (X
-// buzzes the left controller, Y the right, r_utility.cpp:1084-1094) -- but the
-// same intensity shakes the view by the same number of map units, and in a
-// headset a centimetre of camera jitter per buzz is a comfort problem, not
-// feedback. Its amplitude is also a random value in +/-intensity, so half its
-// samples are nothing.
+// THAT WAS THE PULSE ROUTE, and it is still here (rsqdg_rumble off). The
+// default is now the RUMBLE ROUTE, below, which has what the pulse lacks:
+// amplitude, and a continuous level.
+//
+// =========================================================================
+// THE RUMBLE ROUTE -- A_QuakeEx, and the four things that make it usable
+// =========================================================================
+//
+// The renderer turns quake jiggers into controller rumble every rendered
+// frame (r_utility.cpp:1084-1094): Vibrate(10 ms, left, level * X-jigger) and
+// Vibrate(10 ms, right, level * Y-jigger), level = vr_quake_haptic_level, 0.8
+// by default. So a quake ISSUED BY US is a per-hand amplitude dial. Four
+// things had to be got right, each from the stock source:
+//
+//  1 NO RANDOMNESS, NO NEGATIVES. Without QF_WAVE the jigger is a random draw
+//    in +/-intensity (QuakePower), so half the frames are negative -- nothing
+//    -- and the rest are noise. With QF_WAVE the jigger is
+//    intensity * sin(mult * (countdown - ticFrac) * 2pi/35) and the random
+//    term is zero (a_quake.cpp GetModWave; StaticGetQuakeIntensities). Issued
+//    with duration 2 every tic, the quake is always at countdown 1 when the
+//    frame is drawn (spawned in WorldTick, ticked once by RunThinkers in the
+//    same tic -- fresh thinkers are ticked the tic they are made,
+//    dthinker.cpp:153-160), so time is (1 - ticFrac) in (0, 1], and with
+//    mult 17.5 the phase is pi*time: the sine is NEVER negative. Every frame
+//    of a tic gets a positive amplitude that swells and falls across the tic,
+//    a 35 Hz grain under a level we control.
+//
+//  2 THE NUMBERS. GetModIntensity doubles the intensity, and in wave mode the
+//    result is multiplied again by GetModIntensity(1.0) -- 2 -- so the
+//    jigger peak is 4 x what we pass, and the haptic peak is 0.8 x that at the
+//    default level. We pass amplitude / 3.2, so `amp` below IS the controller
+//    amplitude at its peak, on a default install.
+//
+//  3 NO SOUND, NO DAMAGE, NO NEIGHBOUR. A dedicated silent spot actor at the
+//    player (DEarthquake claims CHAN_BODY on its spot for its whole life),
+//    sfx "", damrad 0, tremrad 64 -- so a co-op partner would have to be
+//    standing on top of you to feel it. Roll and Z at 0: they make no haptic.
+//
+//  4 IT AND THE PULSE CANNOT SHARE A CONTROLLER. The Quest runtime refuses a
+//    vibrate request while that channel still has time left (OpenXrInput.cpp
+//    TBXR_Vibrate). The quake writes BOTH channels every frame -- a hand at
+//    zero amplitude still gets a 10 ms request -- AFTER that frame's haptics
+//    update and BEFORE the next tic runs. So while any rumble is running,
+//    every 150 ms missile buzz on either hand arrives at a busy channel and
+//    is dropped. That is why this is a ROUTE, not a layer: with rumble on,
+//    every event here -- lock, launch, ramp, catch -- is a spike in the
+//    rumble's own amplitude, and the missile buzz is never fired.
+//
+// THE PRICE, stated: the same lockout applies to everyone else's buzz. While
+// our rumble runs, a weapon's own fire buzz is dropped too. So the rumble runs
+// only while it means something -- a lock, a flight, a spike, a strained
+// carry -- and is silent the rest of the time, including while you merely
+// carry something that is following your hand without a fight.
+//
+// View shake: r_quakeintensity defaults to 0 in VR (r_utility.cpp:116). A user
+// who raised it sees a sub-unit offset at full amplitude (4 x amp/3.2 units).
+// And a user who zeroed vr_quake_haptic_level feels nothing, which script
+// cannot detect -- the menu offers the pulse route for that player.
 //
 // CAVEAT, stated where it is true: while a weapon is two-hand stabilised the
 // engine also buzzes the OTHER hand at 0.6 (p_mobj.cpp:7557). Nothing in
@@ -116,8 +168,52 @@ class RSQDG_SoundPoint : Actor
 	}
 }
 
+// The rumble's quake spot. Silent, inert, kept for the level and moved onto the
+// player each tic it is used. One actor, so one quake source, so the two hands'
+// amplitudes always come from one place and never fight.
+class RSQDG_RumbleSpot : Actor
+{
+	Default
+	{
+		+NOINTERACTION
+		+NOBLOCKMAP
+		+NOGRAVITY
+		+NOTELEPORT
+		+DONTSPLASH
+		+NOTONAUTOMAP
+		RenderStyle "None";
+		Radius 1;
+		Height 1;
+	}
+	States
+	{
+	Spawn:
+		TNT1 A -1;
+		Stop;
+	}
+}
+
 class RSQDG_Feel : EventHandler
 {
+	// ---- the rumble ----------------------------------------------------------
+	//
+	// Spikes are written into a short per-hand timeline of future tics; each tic
+	// the head of the line is maxed with the continuous level and the line
+	// shifts. So two events that overlap make the stronger shape, never a sum
+	// that clips, and a heavy catch can be two hits with a gap between.
+	const LINE = 10;
+	private double tline[20];      // [hand * LINE + tic]
+	private Actor rumbleSpot;
+	private double lastAmp[2];    // what was sent last tic, for the probe
+
+	// One quake per tic carries both hands. 17.5 makes the wave's phase pi
+	// across a tic: never negative (see the header).
+	const WAVE_MULT   = 17.5;
+	const AMP_TO_QUAKE = 1.0 / 3.2;
+	// Generous on purpose: the spot is placed before the player moves this
+	// tic and tested in 2D, and with falloff 0 a wider radius costs nothing
+	// -- at 24 a fast mover or a teleport tic dropped out of it (review).
+	const TREMOR_RADIUS = 64;
 	// ---- the rhythm scheduler ----------------------------------------------
 	//
 	// Priorities, so an important tick is QUEUED rather than lost to a busy
@@ -160,6 +256,62 @@ class RSQDG_Feel : EventHandler
 		return RSQDG_Reach.Flag("rsqdg_haptics", p, true);
 	}
 
+	// With cl_capfps on the renderer's tic fraction is pinned at 1.0
+	// (r_utility.cpp), so the wave's phase is sin(0) every frame and the rumble
+	// is silent. Fall back to the pulse rather than say nothing (review).
+	private bool RumbleOn(PlayerInfo p)
+	{
+		if (!RSQDG_Reach.Flag("rsqdg_rumble", p, true)) return false;
+		let cap = CVar.FindCVar("cl_capfps");
+		return !(cap && cap.GetBool());
+	}
+
+	// A shape on one hand's timeline: `amp` for `tics`, starting `at` tics from
+	// now. Maxed in, never added.
+	void Spike(int hand, double amp, int tics, int at = 0)
+	{
+		if (hand != 0 && hand != 1) return;
+		for (int i = at; i < at + tics && i < LINE; i++)
+		{
+			int k = hand * LINE + i;
+			if (amp > tline[k]) tline[k] = amp;
+		}
+	}
+
+	// What was sent to each hand this tic (0..1 at default level) -- for the
+	// rig probe and for anything that wants to show it.
+	double Amp(int hand) const { return (hand == 0 || hand == 1) ? lastAmp[hand] : 0; }
+
+	// THE EMITTER. One call per tic, both hands, or none. Which controller is
+	// "main" is the engine's own rule (vr_control_scheme 10+ is left-handed), so
+	// a left-handed player's lock buzzes the hand that locked.
+	private void Emit(PlayerPawn pmo, double amp0, double amp1)
+	{
+		lastAmp[0] = amp0;
+		lastAmp[1] = amp1;
+		if (amp0 <= 0.001 && amp1 <= 0.001) return;   // the last quake dies next tic
+
+		if (!rumbleSpot)
+		{
+			rumbleSpot = Actor.Spawn("RSQDG_RumbleSpot", pmo.Pos);
+			if (!rumbleSpot) return;
+		}
+		rumbleSpot.SetOrigin(pmo.Pos, false);
+
+		let cs = CVar.FindCVar("vr_control_scheme");
+		bool leftHanded = cs && cs.GetInt() >= 10;
+		double right = leftHanded ? amp1 : amp0;
+		double left  = leftHanded ? amp0 : amp1;
+
+		rumbleSpot.A_QuakeEx(
+			clamp(left, 0.0, 1.0) * AMP_TO_QUAKE,     // X -> left controller
+			clamp(right, 0.0, 1.0) * AMP_TO_QUAKE,    // Y -> right controller
+			0,                                        // Z: no haptic, only shake
+			2,                                        // see header: always countdown 1 at draw
+			0, TREMOR_RADIUS, "", QF_WAVE,
+			WAVE_MULT, WAVE_MULT, 1);
+	}
+
 	private void Fire(int hand, PlayerPawn pmo)
 	{
 		if (!pmo) return;
@@ -176,6 +328,25 @@ class RSQDG_Feel : EventHandler
 		if (hand != 0 && hand != 1) return;
 		let p = players[consoleplayer];
 		if (!p || !p.mo || !HapticsOn(p)) return;
+
+		// THE RUMBLE ROUTE: the same vocabulary, as amplitude. The pulse's
+		// rhythm survives -- a heavy catch is still two hits -- and gains what
+		// the pulse never had: a lock is lighter than a catch.
+		if (RumbleOn(p))
+		{
+			switch (pri)
+			{
+			case PRI_RAMP:    Spike(hand, 0.60, 1); break;   // over the flight's top level
+			case PRI_LOCK:    Spike(hand, 0.55, 2); break;
+			case PRI_LAUNCH:  Spike(hand, 0.75, 3); break;   // PRI_RELEASE shares 3
+			case PRI_CATCH:   Spike(hand, 1.00, 3); break;
+			}
+			// More hits: same strength, a two-tic gap between them.
+			int len = (pri == PRI_RAMP) ? 1 : ((pri == PRI_LOCK) ? 2 : 3);
+			for (int i = 1; i < count; i++)
+				Spike(hand, (pri == PRI_CATCH) ? 1.0 : 0.75, len, i * (len + 2));
+			return;
+		}
 
 		if (MSTime() >= busyUntil[hand] && pendCount[hand] == 0)
 		{
@@ -321,7 +492,53 @@ class RSQDG_Feel : EventHandler
 		RSQDG_Events.Tell(thrown ? "hold.throw" : "hold.drop", hand, a);
 	}
 
-	// ---- per tic: the queue, the approach ramp, the rising hum --------------
+	// A thrown thing landed. Heard where it landed, louder the harder; felt in
+	// no hand, because it has left the hand.
+	void OnImpact(Actor a, PlayerInfo p, double mps, double heft)
+	{
+		if (!a || !p) return;
+		double vol = clamp(0.25 + mps / 14.0, 0.25, 1.0);
+		At(p, (a.Pos.x, a.Pos.y, a.Pos.z + a.Height * 0.5), "rsqdg/drop", vol, PitchFor(a) * 0.9);
+	}
+
+	// ---- the continuous level, per hand ------------------------------------
+	//
+	// Report §8.4's mapping, extended: nothing while merely POINTING (that is
+	// constant, and would also lock out every weapon buzz); a low steady
+	// rumble while LOCKED, so "I have it" is felt and not only seen; a rumble
+	// that BUILDS through the flight, heavier for heavier things; silence in
+	// the last stretch so the catch lands on a quiet hand; and while carrying,
+	// only STRAIN -- the object held back by a wall or a floor from where the
+	// hand wants it. A carry that follows freely is silent.
+	private double Level0(int h, PlayerInfo p, RSQDG_Flight fl)
+	{
+		Actor a = fl ? fl.FlyingActor(h) : null;
+		if (a)
+		{
+			if (fl.Near(h)) return 0;
+			double heft = RSQDG_Mass.Heft(a);
+			return (0.10 + 0.30 * fl.Progress(h)) * (0.7 + 0.6 * heft);
+		}
+
+		let grab = RSQDG_Grab.Get();
+		Actor lk = grab ? grab.Locked(h) : null;
+		if (lk)
+			return clamp(RSQDG_Reach.Num("rsqdg_rumble_lock", p, 0.15), 0.0, 1.0)
+				* (0.8 + 0.6 * RSQDG_Mass.Heft(lk));
+
+		let hold = RSQDG_Hold.Get();
+		if (hold && hold.HeldBy(h) && RSQDG_Reach.Flag("rsqdg_rumble_carry", p, true))
+		{
+			// Metres the object is short of where the hand wants it. The
+			// spring's own lag on a quick move is a few centimetres; a pin is
+			// tens.
+			double s = hold.Strain(h);
+			return clamp((s - 0.08) * 1.5, 0.0, 0.6);
+		}
+		return 0;
+	}
+
+	// ---- per tic: the rumble, the queue, the approach ramp, the rising hum --
 	override void WorldTick()
 	{
 		let p = players[consoleplayer];
@@ -329,11 +546,26 @@ class RSQDG_Feel : EventHandler
 		let pmo = p.mo;
 
 		let fl = RSQDG_Flight.Get();
+		bool rumble = HapticsOn(p) && RumbleOn(p);
+		double amp0 = 0, amp1 = 0;
+		if (rumble)
+		{
+			// THE TIMELINE. Head maxed with the continuous level, then shifted
+			// on, every tic -- a spike that outlives its event is still owed.
+			amp0 = max(Level0(0, p, fl), tline[0]);
+			amp1 = max(Level0(1, p, fl), tline[LINE]);
+		}
+		for (int k = 0; k < 2 * LINE; k++)
+			tline[k] = ((k % LINE) == LINE - 1) ? 0.0 : tline[k + 1];
+		double gain = clamp(RSQDG_Reach.Num("rsqdg_rumble_gain", p, 1.0), 0.0, 2.0);
+		Emit(pmo, amp0 * gain, amp1 * gain);
+
 		for (int h = 0; h < 2; h++)
 		{
 			// The queue first, so an owed catch tick goes out the first tic
-			// the channel is free.
-			if (pendCount[h] > 0 && MSTime() >= busyUntil[h] && HapticsOn(p))
+			// the channel is free. Pulse route only: the rumble route never
+			// queues, it has amplitude instead.
+			if (!rumble && pendCount[h] > 0 && MSTime() >= busyUntil[h] && HapticsOn(p))
 			{
 				Fire(h, pmo);
 				if (--pendCount[h] <= 0) { pendCount[h] = 0; pendPri[h] = 0; }
@@ -383,7 +615,13 @@ class RSQDG_Feel : EventHandler
 		{
 			humOn[h] = null;
 			busyUntil[h] = 0; pendPri[h] = 0; pendCount[h] = 0; lastRamp[h] = 0;
+			lastAmp[h] = 0;
 		}
+		for (int k = 0; k < 2 * LINE; k++) tline[k] = 0;
+		// DESTROYED, not just forgotten: in a hub the level is kept, and a
+		// forgotten spot would wait there for a second one to join it.
+		if (rumbleSpot) rumbleSpot.Destroy();
+		rumbleSpot = null;
 	}
 
 	override void WorldLoaded(WorldEvent e)
@@ -393,6 +631,18 @@ class RSQDG_Feel : EventHandler
 		{
 			humOn[h] = null;
 			busyUntil[h] = 0; pendPri[h] = 0; pendCount[h] = 0; lastRamp[h] = 0;
+			lastAmp[h] = 0;
+		}
+		for (int k = 0; k < 2 * LINE; k++) tline[k] = 0;
+		// A savegame brings our spot back with this handler's pointer to it;
+		// forgetting it there would leak one spot per load (review). On a
+		// fresh map, sweep up any a hub snapshot kept.
+		if (!e.IsSaveGame)
+		{
+			rumbleSpot = null;
+			let it = ThinkerIterator.Create("RSQDG_RumbleSpot");
+			Actor old;
+			while (old = Actor(it.Next())) old.Destroy();
 		}
 	}
 }

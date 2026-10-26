@@ -15,8 +15,8 @@
 
 //   mass "<class>" <kg> [drag <n>] [flutter] [impact explode]
 //
-// drag / flutter / impact are parsed for compatibility with the desktop lump;
-// the pull does not use them yet.
+// drag / flutter are parsed for compatibility with the desktop lump; `impact
+// explode` IS read: a thrown one that lands hard goes off (throw.zs).
 
 mass "Clip"             0.35
 mass "ClipBox"          3.5

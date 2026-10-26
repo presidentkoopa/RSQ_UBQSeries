@@ -97,7 +97,9 @@ user float rsqdg_palm_pitch = -30.0;
 user float rsqdg_jump_m = 1.0;
 
 // ---- the tell ------------------------------------------------------------
-user bool  rsqdg_lightup  = true;    // colour the thing the cone is considering
+user bool  rsqdg_lightup  = false;   // recolour the target itself (translation)
+user bool  rsqdg_glow     = true;    // light the target in its own silhouette
+user float rsqdg_glow_a   = 1.0;     // glow brightness multiplier
 user float rsqdg_flash    = 24.0;    // tics per full cycle. SLOW on purpose --
                                      // a room full of pickups must not strobe
 
@@ -159,6 +161,29 @@ user bool rsqdg_catch_takes = true;
 // this engine, so the peak of a short window is differenced from the pose.
 user float rsqdg_throw_scale = 1.0;
 
+// THE ARM HAS MASS TOO. Let go and the object keeps arm/(arm+kg) of the hand's
+// speed: a keycard leaves at hand speed, a 60 kg barrel at a third of it.
+user float rsqdg_arm_kg      = 30.0;
+
+// THE IMPACT (throw.zs). Kinetic energy over this many joules is one point of
+// damage: a thrown shotgun at 12 m/s ~17, a barrel at 5 m/s ~50.
+user float rsqdg_throw_j       = 15.0;
+user float rsqdg_throw_min     = 3.0;   // m/s below which nothing is an impact
+user float rsqdg_throw_explode = 6.0;   // m/s landing that sets off an
+                                        // `impact explode` MASSDEF row. 0 never
+
+// ---- the carry (hold.zs) ---------------------------------------------------
+// A SPRING, NOT A TELEPORT: the object is asked to move toward a point ahead of
+// your hand, and walls refuse. Mass scales the spring, so heavy things trail.
+user float rsqdg_hold_dist   = 0.30;   // metres ahead of the hand (plus half the
+                                       // object), so it is not inside your view
+user float rsqdg_hold_k      = 0.6;    // spring stiffness for a weightless thing
+user float rsqdg_hold_vmax   = 40.0;   // map units/tic, ever
+user float rsqdg_hold_break  = 1.5;    // metres held back for half a second and
+                                       // you let go. 0 never
+user bool  rsqdg_burden      = true;   // heavy things slow you down
+user float rsqdg_burden_kg   = 120.0;  // carrying this much halves your speed
+
 // ---- the laser, the dot, the cone (laser.zs) ---------------------------
 // THREE SINGLE OBJECTS PER HAND, each interpolated by the renderer. The bead
 // chain they replaced strobed in the headset and is gone.
@@ -184,13 +209,22 @@ user bool  rsqdg_laser_idle  = true;   // draw even when it has found nothing.
 // Report only: switching all of these off changes nothing about what the grab
 // DOES, it just does it silently.
 //
-// HAPTICS ARE RHYTHM, NOT STRENGTH. Stock 17.3 has no script vibrate call; the
-// one route a mod can reach buzzes a hand at a fixed 0.8 for a fixed 150 ms. So
-// the grab speaks in ticks: one on lock, one on launch, a ping that speeds up
-// as the object closes, a moment of quiet, then one on the catch -- two if it
-// is heavy.
+// TWO HAPTIC ROUTES, and they cannot be mixed on one controller (feel.zs):
+//   RUMBLE (default) -- amplitude, through the engine's quake-to-controller
+//     path: a steady hum while locked, a rumble that builds through the pull,
+//     a hard hit on the catch, a shudder when a carried thing is held back.
+//   PULSE -- the fixed 0.8 / 150 ms buzz, so the grab speaks in rhythm: a tick
+//     on lock and launch, a ping that speeds up as the object closes, quiet,
+//     then a tick on the catch (two if it is heavy).
 user bool  rsqdg_haptics     = true;
 user bool  rsqdg_haptic_ramp = true;   // the speeding-up ping during a pull
+// RUMBLE: amplitude, through the engine's quake-to-controller path. It and the
+// fixed buzz cannot share a controller (feel.zs), so this picks the route.
+// Rumble feels like nothing if vr_quake_haptic_level is 0 -- turn this off then.
+user bool  rsqdg_rumble       = true;
+user float rsqdg_rumble_gain  = 1.0;
+user float rsqdg_rumble_lock  = 0.15;  // the steady level while something is locked
+user bool  rsqdg_rumble_carry = true;  // rumble when a carried thing is held back
 user bool  rsqdg_sound       = true;
 user float rsqdg_sound_vol   = 0.8;
 user bool  rsqdg_catch_flash = true;   // a green bloom at the palm on a catch

@@ -30,6 +30,23 @@ class RSQDGT_Probe : EventHandler
 		let mo = p.mo;
 		int t = level.maptime;
 		String scen = CVar.FindCVar("rsqdgt_scene").GetString();
+		// SCRIPTED POSES BY GAME TIC: rsqdgt_poses "tic=x y z p yw r;tic=...". The console's
+		// `wait` counts frames, not tics, so it cannot time a gesture.
+		String poses = CVar.FindCVar("rsqdgt_poses").GetString();
+		if (poses.Length())
+		{
+			Array<String> ps; poses.Split(ps, ";");
+			for (int i = 0; i < ps.Size(); i++)
+			{
+				Array<String> kv; ps[i].Split(kv, "=");
+				if (kv.Size() == 2 && kv[0].ToInt() == t)
+				{
+					let cv = CVar.FindCVar("qz_rhand");
+					if (cv) cv.SetString(kv[1]);
+					Console.Printf("T_POSE t%d %s", t, kv[1]);
+				}
+			}
+		}
 		if (t == 20 && !setup)
 		{
 			setup = 1;
@@ -76,10 +93,17 @@ class RSQDGT_Probe : EventHandler
 				double c = (pd / pd.Length()) dot pdir;
 				let pol = RSQDG_Policy(StaticEventHandler.Find("RSQDG_Policy"));
 				let r = pol ? pol.Decide(a, mo, p) : null;
-				Console.Printf("T_OBJ %s pos=(%.0f %.0f %.0f) dist=%.0f angle=%.1f rule=%s w=%.2f sight=%d kg=%.2f special=%d",
+				Console.Printf("T_OBJ %s pos=(%.0f %.0f %.0f) dist=%.0f angle=%.1f rule=%s w=%.2f sight=%d kg=%.2f special=%d thru=%d r=%.0f grav=%d",
 					a.GetClassName(), a.pos.x, a.pos.y, a.pos.z, pd.Length(), acos(clamp(c,-1,1)), r ? r.why : "NO", r ? r.weight : 0,
-					mo.CheckSight(a), RSQDG_Mass.Kg(a), a.bSPECIAL);
+					mo.CheckSight(a), RSQDG_Mass.Kg(a), a.bSPECIAL, a.bTHRUACTORS, a.radius, !a.bNOGRAVITY);
 			}
+			let fe = RSQDG_Feel(EventHandler.Find("RSQDG_Feel"));
+			let bur = RSQDG_Burden(mo.FindInventory("RSQDG_Burden"));
+			if (hd || (fe && (fe.Amp(0) > 0 || fe.Amp(1) > 0)) || bur)
+				Console.Printf("T_FEEL t%d amp0=%.2f amp1=%.2f strain=%.2f held=(%.0f %.0f %.0f) vel=%.1f burden=%.2f pvel=%.1f palmv=%.1f",
+					t, fe ? fe.Amp(0) : 0, fe ? fe.Amp(1) : 0, ho ? ho.Strain(0) : 0,
+					hd ? hd.pos.x : 0, hd ? hd.pos.y : 0, hd ? hd.pos.z : 0, hd ? hd.vel.Length() : 0,
+					bur ? bur.GetSpeedFactor() : 1.0, mo.vel.xy.Length(), aim ? RSQDG_Reach.Metres(aim.PalmVelocity(0)) * 35 : 0);
 			Console.Printf("T_STATE t%d palm=(%.0f %.0f %.0f) yaw=%.0f pit=%.0f rol=%.0f good=%d palmok=%d armed=%d target=%s lock=%s fly=%s prog=%.2f hold=%s",
 				t, mo.AttackPos.x, mo.AttackPos.y, mo.AttackPos.z, RSQDG_Reach.Yaw(mo,0), RSQDG_Reach.Pitch(mo,0), RSQDG_Reach.Roll(mo,0),
 				aim && aim.PoseGood(), RSQDG_Reach.PalmOk(mo, p, 0), gr && gr.Held(0),

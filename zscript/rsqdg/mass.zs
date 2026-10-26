@@ -54,8 +54,8 @@ class RSQDG_Mass play
 	const PROP_MAX = 200.0;
 
 	// MASSDEF's trailing words, kept for format compatibility with the desktop
-	// lump. Nothing in the pull reads them yet; they are parsed so a shared
-	// MASSDEF line is never rejected for having them.
+	// lump. FLIGHT_EXPLODE (`impact explode`) is read by throw.zs: a hard
+	// landing sets the thing off. `flutter` and `drag` are parsed, not used.
 	const FLIGHT_FLUTTER = 1;
 	const FLIGHT_EXPLODE = 2;
 
@@ -102,22 +102,36 @@ class RSQDG_Mass play
 		return Guess(a);
 	}
 
+	// The MASSDEF row that speaks for this actor: its class or an ancestor, and
+	// failing that whatever it REPLACES (and that one's ancestors) -- the same
+	// walk the weight takes, so a Brutal Doom barrel that weighs 60 kg through
+	// ExplosiveBarrel also explodes on impact through it.
+	static int RowFor(Actor a)
+	{
+		let t = RSQDG_MassTable.Get();
+		if (!a || !t) return -1;
+		Class<Actor> c = a.GetClass();
+		for (int d = 0; c && d <= RSQDG_Policy.MAX_REPLACE_DEPTH; d++)
+		{
+			int i = t.FindFor(c);
+			if (i >= 0) return i;
+			Class<Actor> r = Actor.GetReplacee(c);
+			if (!r || r == c) break;
+			c = r;
+		}
+		return -1;
+	}
+
 	static double Drag(Actor a)
 	{
-		if (!a) return 0;
-		let t = RSQDG_MassTable.Get();
-		if (!t) return 0;
-		int i = t.FindFor(a.GetClass());
-		return (i >= 0) ? t.dDrag[i] : 0.0;
+		int i = RowFor(a);
+		return (i >= 0) ? RSQDG_MassTable.Get().dDrag[i] : 0.0;
 	}
 
 	static int Flags(Actor a)
 	{
-		if (!a) return 0;
-		let t = RSQDG_MassTable.Get();
-		if (!t) return 0;
-		int i = t.FindFor(a.GetClass());
-		return (i >= 0) ? t.dFlags[i] : 0;
+		int i = RowFor(a);
+		return (i >= 0) ? RSQDG_MassTable.Get().dFlags[i] : 0;
 	}
 
 	// Did anyone actually state this one, or is it the volume guess?

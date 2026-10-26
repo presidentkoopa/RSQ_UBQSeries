@@ -145,6 +145,10 @@ class RSQDG_Flight : EventHandler
 		}
 
 		// CAPTURED BEFORE ANYTHING IS TOUCHED.
+		// The settle list may still be lending it pass-through (throw.zs).
+		let settler = RSQDG_Throw.Get();
+		if (settler) settler.Unsettle(a);
+
 		savedNoGrav[hand]      = a.bNOGRAVITY;
 		savedThruActors[hand]  = a.bTHRUACTORS;
 		savedSpecial[hand]     = a.bSPECIAL;

@@ -334,3 +334,92 @@ sampling of a pose up to one 90 Hz frame old):
 1.0 beats 1.2/1.3/1.5 overall. The fast-sweep residual is direction reversal
 within a tic, which no linear lead can follow. The real fix is drawing in the
 renderer (DXR did) — available on UZDXREMA, not on stock QZD.
+
+## D21 — HAPTICS: THE RUMBLE ROUTE, AND WHY IT IS A ROUTE. 2026-10-26.
+
+Reverses D16's rejection of `A_QuakeEx`, on the synthesis report's §1.1/§8.4 plus
+three things read this session:
+
+- **Amplitude without noise.** `QF_WAVE`, `mulWave 17.5`, duration 2 re-issued
+  every tic: the quake is always at countdown 1 when drawn (spawned in WorldTick,
+  ticked once by RunThinkers the same tic — dthinker.cpp:153-160), so the wave's
+  phase is π·(1 − ticFrac) and the jigger is never negative. Without QF_WAVE it
+  is a random ±intensity draw: half the frames nothing. Peak = 4 × intensity ×
+  `vr_quake_haptic_level`, so intensity = amp / 3.2. **Measured** (rig, gdb on
+  `QzDoom_Vibrate`): 330 rumble writes, amplitudes 0.00–1.00, none negative, all
+  on the main hand's channel, the other hand at 0.
+- **It and the pulse cannot share a controller.** `TBXR_Vibrate` refuses a
+  request while the channel has time left. The quake writes BOTH channels every
+  frame (a 0-amplitude hand still gets a 10 ms request) after that frame's
+  haptics update and before the next tic — so any missile buzz during a rumble
+  is dropped. Hence a route switch (`rsqdg_rumble`), not a layer: with rumble on,
+  every event is a spike in the rumble's own amplitude timeline.
+- **The price:** while the rumble runs, everyone else's buzz (a weapon's fire
+  buzz) is dropped too. So it runs only while it means something — locked,
+  flying, a spike, a strained carry — never while merely pointing or carrying
+  freely.
+
+Vocabulary: lock 0.55 spike then a steady `rsqdg_rumble_lock` (0.15) × heft;
+launch 0.75; flight builds 0.10→0.40 × heft with 0.60 ramp ticks; silence in the
+last stretch; catch 1.0 (twice, 2 tics apart, if heavy); carry strain
+(metres held back − 0.08) × 1.5, cap 0.6. Off-route (`rsqdg_rumble 0`): the D16
+pulse rhythm, verified unchanged (7 × 150 ms vibrates, zero quake writes).
+
+## D22 — THE CARRY IS A SPRING TOWARD A STAND-OFF. 2026-10-26.
+
+Resolves the HANDOFF's open "D5 vs hold.zs". `vel = bodyVel + clamp(armVel ×
+share + (target − pos) × k)` — the body's own motion fed forward in full, only
+the arm's scaled by mass (review: scaling the whole palm delta made walking with
+a barrel a permanent 0.8 m lag, constant rumble, and dropped it at a run;
+re-measured walking: strain 0.00–0.07, no rumble); target = palm + hand direction × (`rsqdg_hold_dist` 0.30 m +
+the object's half-size), per-axis room→map. k = `rsqdg_hold_k` × (0.33 + 0.67 ×
+share); vmax × sqrt(share). Light things stay glued to the hand, heavy ones
+trail; walls refuse, so pinning happens on its own, and the refusal is
+**strain**, which the rumble plays and which ends the hold after 18 tics past
+`rsqdg_hold_break` (1.5 m). Pickups are thinned to half their height while
+held (their radius is a trigger, the flight's lesson). A bad pose freezes
+(velocity 0) and throws nothing. Measured: barrel settles 0.59 m ahead of the
+palm, strain decays 0.59 → 0.00 in ~16 tics; pushed into a wall it pins (strain
+25 m, rumble 0.6) and is let go at tic 18.
+
+## D23 — THE THROW HAS WEIGHT AND A LANDING. 2026-10-26.
+
+Release keeps `arm/(arm+kg)` of the hand's speed (`rsqdg_arm_kg` 30: keycard ≈
+all of it, 60 kg barrel a third — the MASSDEF comment's own numbers). Thrown
+things go to `throw.zs`: the loader's TickFlung (speed below half of last tic =
+impact; one impact per throw), plus an overlap test because pickups are not
+solid and fly through monsters. Damage = ½mv² / `rsqdg_throw_j` (15 J/pt).
+**Doom gravity is ~4.4 g** (1 u/tic², 28.3 u/m vertically), so vertical speed is
+scaled by √(g/g_doom) before it counts — found when the first rig run blew a
+barrel up after a gentle throw from hand height. MASSDEF `impact explode` now
+read (and through the replacee chain, so BD22's `ExplosiveBarrel1` obeys it):
+≥ `rsqdg_throw_explode` 6 m/s sets it off, thrower credited. The thrower's
+horizontal velocity, added at release so the object keeps up with you, is taken
+back out of the impact speed (Doom walking is ~8 m/s). On release the object's
+collision, size and collectability go to a **settle list** that restores each the
+first tic it fits (a solid barrel made solid inside the player locks both), with
+10 tics of uncollectability after a throw; anything that borrows the object next
+(flight, hold) makes the settle hand back first. Not `+MISSILE`
+(report §5.4). Measured: clip at 8.9 m/s hit a ShotgunGuy for 1; barrel throw
+2.3 m/s → landing, no explosion at 6; BD22 barrel went off at 4.1 m/s with the
+threshold at 2.
+
+## D24 — HEAVY THINGS SLOW YOU. 2026-10-26.
+
+`RSQDG_Burden` inventory token, `GetSpeedFactor = 1/(1 + kg/rsqdg_burden_kg)`
+(120: barrel 0.67, two barrels 0.5). The only hook that works in VR (report
+§5.1). Given, rewritten and destroyed every tic by the hold handler; destroyed on
+map change. Measured: 0.67 while the barrel is held, gone the tic it is let go,
+survives save/load with the carry.
+
+## D25 — THE TARGET GLOWS: "COULD" AND "HAVE". 2026-10-26.
+
+The saber's `UBQS_GripGlow` twin (report §8.3): AddStencil, `SetShade`, wears the
+host's sprite/frame/angle/scale/flips/offset ×1.06, 1.5 units toward the eye,
+Prev offset with the host so it interpolates with it. Could = amber at the
+saber's 0.55 strength; have = green, twice the tempo, peak 0.32 — measured in a
+frame dump that 0.55+ of additive green over Doom's green barrel is a solid slab.
+Default ON; the translation flash (`rsqdg_lightup`) is now default OFF and still
+available. Caveat: with the self-taking lock the "could" state is brief — the cone
+only runs with the palm out, and a target found with the palm out locks almost at
+once. It shows in full only where a lock is refused.

@@ -140,10 +140,20 @@ foreach ($en in ($z.Entries | Where-Object { $_.FullName -match '(?i)\.zs$' })) 
     $clean = [regex]::Replace($src, '//[^\r\n]*', '')
     $fields  = @([regex]::Matches($clean, '(?im)^\s*(?:private\s+|protected\s+|meta\s+|transient\s+)*(?:bool|int|uint|double|float|String|Name|Actor|Vector2|Vector3|TextureID|TranslationID|Color|Sector|Service|PlayerInfo|PlayerPawn|Inventory|Class<[^>]+>)\s+([A-Za-z_][A-Za-z0-9_]*)\s*(?:\[[^\]]*\])?\s*(?:,|;)') | ForEach-Object { $_.Groups[1].Value })
     $methods = @([regex]::Matches($clean, '(?im)^\s*(?:private\s+|protected\s+|static\s+|virtual\s+|override\s+|clearscope\s+|play\s+|ui\s+|native\s+)*(?:void|bool|int|uint|double|float|String|Name|Actor|Vector2|Vector3|TextureID|TranslationID|Color)\s+([A-Za-z_][A-Za-z0-9_]*)\s*\(') | ForEach-Object { $_.Groups[1].Value })
+    $consts  = @([regex]::Matches($clean, '(?im)^\s*const\s+([A-Za-z_][A-Za-z0-9_]*)\s*=') | ForEach-Object { $_.Groups[1].Value })
     $fl = @($fields  | ForEach-Object { $_.ToLower() })
     foreach ($m in $methods) {
         if ($fl -contains $m.ToLower()) {
             Write-Warning "CASE COLLISION in $($en.FullName): field and method both named '$m' -- ZScript will reject this"
+            $collide++; $fail++
+        }
+    }
+    # A CONSTANT IS A NAME TOO. `const LINE = 10;` beside `double line[20];` is
+    # "Attempt to redefine 'Line'" -- the third compile failure of this kind.
+    $ml = @($methods | ForEach-Object { $_.ToLower() })
+    foreach ($c in $consts) {
+        if (($fl -contains $c.ToLower()) -or ($ml -contains $c.ToLower())) {
+            Write-Warning "CASE COLLISION in $($en.FullName): constant '$c' shares its name with a field or method -- ZScript will reject this"
             $collide++; $fail++
         }
     }

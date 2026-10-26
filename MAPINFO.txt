@@ -30,15 +30,17 @@
 //   RSQDG_Hold   MOTION. Owns a carried object -- its position, its borrowed
 //                flags, and the freeze that keeps a menu from dragging it into
 //                the player's chest. After Flight, which hands over to it.
+//   RSQDG_Throw  CONSEQUENCE. Watches what was thrown until it lands, and
+//                deals the impact. After Hold, which hands it over on release.
 //   RSQDG_Feel   FEEDBACK. Haptics, sound and the grab events. After the
 //                motion, so its approach ping and rising hum read the
 //                object where it is THIS tic. Told about every event
 //                directly by the handler it happened in, so a catch tick is
 //                sent the same tic as the catch.
-//   RSQDG_Laser  DRAWING. The beam. Reads everything, writes nothing but its
-//                own pooled VisualThinkers.
-//   RSQDG_Tell   DRAWING. Reads what the others decided THIS tic and colours
-//                the object. Last, so it is never a tic behind.
+//   RSQDG_Laser  DRAWING. The beam, dot and reach cone -- three model actors
+//                per hand. Reads everything, writes nothing but its own.
+//   RSQDG_Tell   DRAWING. Reads what the others decided THIS tic and lights
+//                the object (glow twin and/or colour). Last, so it is never a tic behind.
 //
 // Putting Tell before Grab would make every colour change lag the thing it
 // describes by one tic; putting Grab before Aim would make the lock act on last
@@ -51,5 +53,5 @@
 
 GameInfo
 {
-	AddEventHandlers = "RSQDG_Policy", "RSQDG_MassTable", "RSQDG_Aim", "RSQDG_Grab", "RSQDG_Flight", "RSQDG_Hold", "RSQDG_Feel", "RSQDG_Tell", "RSQDG_Laser"
+	AddEventHandlers = "RSQDG_Policy", "RSQDG_MassTable", "RSQDG_Aim", "RSQDG_Grab", "RSQDG_Flight", "RSQDG_Hold", "RSQDG_Throw", "RSQDG_Feel", "RSQDG_Tell", "RSQDG_Laser"
 }
