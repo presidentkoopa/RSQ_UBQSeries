@@ -207,6 +207,7 @@ OptionValue "UBQS_SaberSound"
 
 OptionValue "UBQS_Lefty"
 {
+	-1, "Same as the game"
 	0, "Right-handed"
 	1, "Left-handed"
 }

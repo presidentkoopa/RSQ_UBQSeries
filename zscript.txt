@@ -3036,6 +3036,7 @@ class UBQS_Buzzer : Actor
 	override void Tick()
 	{
 		Super.Tick();
+		if (bDestroyed) return;
 		if (!feels) { Destroy(); return; }
 		SetOrigin(feels.pos, true);
 		Pulse();
@@ -3993,7 +3994,9 @@ class UBQS_Force : Inventory
 	void Buzz()
 	{
 		// A rumble on the off hand, NOT a player hitscan -- see UBQS_SaberBase.Buzz for why.
-		if (owner && owner.player && IV("ubqs_haptics", 1)) UBQS_Buzzer.Start(owner, true, 0.85, 4);
+		if (!owner || !owner.player || !IV("ubqs_haptics", 1)) return;
+		double k = 0.85 * clamp(FV("ubqs_haptic_power", 1.0), 0.0, 3.0);   // the same power slider as the saber
+		if (k > 0.01) UBQS_Buzzer.Start(owner, true, k, 4);
 	}
 
 	override void DoEffect()

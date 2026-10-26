@@ -148,7 +148,7 @@ user int     ubqs_haptics           = 1;        // controller buzz at all (ubqs_
 user int     ubqs_haptic_cut        = 1;        // buzz when the blade cuts something (once a swing)
 user int     ubqs_haptic_clash      = 1;        // buzz when blades cross, and while they stay locked
 user float   ubqs_haptic_power      = 1.0;      // how hard every saber rumble is (A_QuakeEx, not the engine's fixed pulse)
-user int     ubqs_lefty             = 0;        // which controller the rumble goes to: 0 right-handed, 1 left-handed
+user int     ubqs_lefty             = -1;       // which controller the rumble goes to: -1 follow the engine's handedness (single player), 0 right-handed, 1 left-handed
 
 // -- THE TRAINING REMOTE --
 user int     ubqs_remote_warn       = 0;        // extra tics of warning before it shoots (it rode the level)
