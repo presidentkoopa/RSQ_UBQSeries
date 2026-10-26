@@ -16,8 +16,9 @@ $out  = Join-Path $root 'RSQ_DistanceGrab.pk3'
 
 # docs/ and models/ stay out for now: docs is prose, and the FBX is a 24 MB
 # SOURCE asset that the engine cannot read and must never be packed.
+# tools/ stays out too: gen_sounds.py WRITES sounds/, it is not a lump.
 $required = @('zscript.txt', 'MAPINFO.txt', 'CVARINFO.txt')
-$optional = @('TRNSLATE.txt', 'KEYCONF.txt', 'MENUDEF.txt', 'MODELDEF.txt')
+$optional = @('TRNSLATE.txt', 'KEYCONF.txt', 'MENUDEF.txt', 'MODELDEF.txt', 'SNDINFO.txt', 'MASSDEF.txt')
 $dirs     = @('zscript', 'graphics', 'sprites', 'sounds')
 
 $files = @()
@@ -174,6 +175,27 @@ foreach ($en in ($z.Entries | Where-Object { $_.FullName -match '(?i)\.zs$' })) 
     }
 }
 
+# EVERY SOUND THE CODE NAMES MUST BE DEFINED, AND EVERY DEFINITION MUST HAVE
+# ITS FILE. An undefined logical sound is not an error at load or at play: it is
+# silence, and a feedback layer that has gone silent reads as "the sound was
+# turned down", not as a bug.
+$sMiss = 0
+$usedSnd = @([regex]::Matches($allZs, '"(rsqdg/[A-Za-z0-9_]+)"') | ForEach-Object { $_.Groups[1].Value.ToLower() }) | Sort-Object -Unique
+$sndDefs = @{}
+if ($names.ContainsKey('sndinfo.txt')) {
+    $si = $z.Entries | Where-Object { $_.FullName -eq 'SNDINFO.txt' }
+    $sr7 = New-Object System.IO.StreamReader($si.Open()); $st = $sr7.ReadToEnd(); $sr7.Close()
+    foreach ($m in [regex]::Matches($st, '(?im)^\s*(rsqdg/[A-Za-z0-9_]+)\s+([A-Za-z0-9_]+)')) {
+        $sndDefs[$m.Groups[1].Value.ToLower()] = $m.Groups[2].Value.ToLower()
+    }
+}
+foreach ($u in $usedSnd) { if (-not $sndDefs.ContainsKey($u)) { Write-Warning "sound used but not in SNDINFO: $u"; $sMiss++; $fail++ } }
+foreach ($k in $sndDefs.Keys) {
+    $lump = $sndDefs[$k]
+    $hit = @($names.Keys | Where-Object { $_ -match "^sounds/$lump\.(wav|ogg|flac)$" }).Count
+    if ($hit -eq 0) { Write-Warning "SNDINFO $k -> $lump but no sounds/$lump.* is packed"; $sMiss++; $fail++ }
+}
+
 # A TRNSLATE ENTRY NEEDS ITS SOURCE RANGE. `Name = "%[a]:[b]"` is rejected with
 # "Expected integer constant but got '%'"; it has to be `"0:255=%[a]:[b]"`. The
 # lump parses at load, so this is a startup failure rather than a silent one --
@@ -231,5 +253,6 @@ Write-Host "  option menus      : $($menus.Count) defined, $mMiss unreachable or
 Write-Host "  case collisions   : $collide"
 Write-Host "  scope qualifiers  : $scopeBad missing"
 Write-Host "  translation syntax: $trBad bad"
+Write-Host "  sounds            : $($usedSnd.Count) used, $sMiss undefined or missing"
 if ($fail -gt 0) { throw "package verification failed ($fail problems)" }
 Write-Host "  VERIFIED OK"

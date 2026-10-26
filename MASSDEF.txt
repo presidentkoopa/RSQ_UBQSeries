@@ -1,0 +1,80 @@
+// ============================================================================
+// RSQ_DistanceGrab -- WHAT DOOM'S OWN THINGS WEIGH, in kilograms.
+//
+// The desktop RS_WorldHands table, carried across unchanged so the two
+// families agree about every object, plus the one line below it that the pull
+// needs and the hand never did. Same lump name and format on purpose: it is a
+// shared format, every MASSDEF in the load order is read, and a later line for
+// the same class wins -- so a weapons pack can correct any number here by
+// shipping its own.
+//
+// In the pull a weight becomes a SHARE of the pull's strength, k/(k+kg) with
+// k = rsqdg_pull_kg (10 by default): a clip arrives at full speed, the barrel
+// at about a third of it, a Cacodemon corpse at a slow drag. See mass.zs.
+// ============================================================================
+
+//   mass "<class>" <kg> [drag <n>] [flutter] [impact explode]
+//
+// drag / flutter / impact are parsed for compatibility with the desktop lump;
+// the pull does not use them yet.
+
+mass "Clip"             0.35
+mass "ClipBox"          3.5
+mass "Shell"            0.2
+mass "ShellBox"         1.0
+mass "RocketAmmo"       3.0
+mass "RocketBox"        15.0
+mass "Cell"             1.5
+mass "CellPack"         9.0
+mass "Backpack"         5.0
+
+// ---- health and armour ----------------------------------------------------
+mass "Stimpack"         0.2
+mass "Medikit"          1.5
+mass "HealthBonus"      0.1
+mass "ArmorBonus"       0.1
+mass "GreenArmor"       8.0
+mass "BlueArmor"        12.0
+mass "Soulsphere"       2.0
+mass "Megasphere"       2.0
+mass "Berserk"          1.0
+mass "InvulnerabilitySphere" 1.0
+mass "BlurSphere"       1.0
+mass "RadSuit"          4.0
+mass "Infrared"         0.5
+mass "Allmap"           0.3
+
+// ---- keys, which should throw like a keycard and not like a brick ---------
+mass "RedCard"          0.05
+mass "BlueCard"         0.05
+mass "YellowCard"       0.05
+mass "RedSkull"         0.4
+mass "BlueSkull"        0.4
+mass "YellowSkull"      0.4
+
+// ---- weapons --------------------------------------------------------------
+// Close to the real articles, so a thrown shotgun and a thrown BFG do not
+// travel the same distance. Guns whose weight the weapons lane has measured
+// answer through the weight service instead and do not need a line here; these
+// are the vanilla fallbacks.
+mass "Pistol"           0.9
+mass "Shotgun"          3.6
+mass "SuperShotgun"     3.8
+mass "Chaingun"         12.0
+mass "RocketLauncher"   7.0
+mass "PlasmaRifle"      6.0
+mass "BFG9000"          20.0
+mass "Chainsaw"         5.0
+
+// ---- props ----------------------------------------------------------------
+// THE BARREL IS THE SHOWPIECE. 60 kg keeps a third of the arm's speed one
+// handed and a half with two, which is the difference between a shove and a
+// heave -- and it is the object most likely to be picked up and thrown at
+// something. `impact explode` lets a hard landing set it off.
+mass "ExplosiveBarrel"  60.0   drag 0.001   impact explode
+
+// ---- the pull adds ----------------------------------------------------------
+// THE OTHER BARREL. A plain +SOLID decoration, Radius 16 Height 32, which the
+// volume guess turns into 300 kg and clamps to the 200 kg ceiling -- heavier
+// than its explosive cousin by more than three times. It is the same drum.
+mass "BurningBarrel"    60.0

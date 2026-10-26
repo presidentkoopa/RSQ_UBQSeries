@@ -17,6 +17,9 @@
 //
 // The three roles, and they must stay in this order:
 //
+//   RSQDG_Policy, RSQDG_MassTable
+//                TABLES. Static handlers: what may be pulled and what it
+//                weighs, rebuilt each session, never saved, never ticking.
 //   RSQDG_Aim    MEASUREMENT. Runs the cone, publishes each hand's target and
 //                whether the pose is trustworthy. Touches nothing.
 //   RSQDG_Grab   DECISION. Reads the published target, owns the lock and the
@@ -27,6 +30,11 @@
 //   RSQDG_Hold   MOTION. Owns a carried object -- its position, its borrowed
 //                flags, and the freeze that keeps a menu from dragging it into
 //                the player's chest. After Flight, which hands over to it.
+//   RSQDG_Feel   FEEDBACK. Haptics, sound and the grab events. After the
+//                motion, so its approach ping and rising hum read the
+//                object where it is THIS tic. Told about every event
+//                directly by the handler it happened in, so a catch tick is
+//                sent the same tic as the catch.
 //   RSQDG_Laser  DRAWING. The beam. Reads everything, writes nothing but its
 //                own pooled VisualThinkers.
 //   RSQDG_Tell   DRAWING. Reads what the others decided THIS tic and colours
@@ -43,5 +51,5 @@
 
 GameInfo
 {
-	AddEventHandlers = "RSQDG_Aim", "RSQDG_Grab", "RSQDG_Flight", "RSQDG_Hold", "RSQDG_Tell", "RSQDG_Laser"
+	AddEventHandlers = "RSQDG_Policy", "RSQDG_MassTable", "RSQDG_Aim", "RSQDG_Grab", "RSQDG_Flight", "RSQDG_Hold", "RSQDG_Feel", "RSQDG_Tell", "RSQDG_Laser"
 }

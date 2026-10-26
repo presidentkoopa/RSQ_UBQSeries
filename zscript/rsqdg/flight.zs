@@ -30,9 +30,12 @@
 // cvar rather than deleted.
 class RSQDG_Flight : EventHandler
 {
-	private Actor flyActor[2];
-	private int   flyTic[2];
-	private int   flyHold[2];
+	private Actor  flyActor[2];
+	private int    flyTic[2];
+	private int    flyHold[2];
+	private double flyStart[2];   // room-distance at launch, for Progress()
+	private double flyDist[2];    // room-distance now, palm to middle
+	private int    flyLimit[2];   // tics before giving up, fixed at launch
 
 	// ---- THE BORROWED STATE, AND EXACTLY ONE OWNER OF THE BACKUP ------------
 	//
@@ -66,9 +69,53 @@ class RSQDG_Flight : EventHandler
 		return (hand == 0 || hand == 1) && flyActor[hand] != null;
 	}
 
+	bool IsFlying(Actor a) const
+	{
+		return a && (flyActor[0] == a || flyActor[1] == a);
+	}
+
 	Actor FlyingActor(int hand) const
 	{
 		return (hand == 0 || hand == 1) ? flyActor[hand] : null;
+	}
+
+	// How far along the pull is, 0 at launch to 1 on the palm. For the
+	// feedback only -- the haptic ramp and the rising hum -- never for the
+	// motion, which the engine owns.
+	double Progress(int hand) const
+	{
+		if (hand != 0 && hand != 1 || !flyActor[hand] || flyStart[hand] <= 1) return 0;
+		return clamp(1.0 - flyDist[hand] / flyStart[hand], 0.0, 1.0);
+	}
+
+	// The last stretch before the catch window, where the ramp goes quiet so
+	// the catch tick lands on a free channel. Two and a half catch radii.
+	bool Near(int hand) const
+	{
+		if (hand != 0 && hand != 1 || !flyActor[hand]) return false;
+		return flyDist[hand] <= nearDist;
+	}
+	private double nearDist;
+
+	// THE ROOM DISTANCE, the same measure the cone and the catch use, so "near"
+	// here and "within the catch radius" there are the same kind of number.
+	static double RoomDist(Vector3 d)
+	{
+		return (d.x, d.y, d.z * RSQDG_Reach.PIXELSTRETCH).Length();
+	}
+
+	// ---- what mass does to a pull ------------------------------------------
+	//
+	// The cruise speed it is steered toward. sqrt of the pull share, so the
+	// spread is felt but not absurd: a clip arrives at the full speed, a barrel
+	// at about a third of it -- a heave -- and a Cacodemon corpse at the floor of
+	// 15%, a slow drag that the dynamic timeout still lets finish.
+	static double CruiseFor(Actor a, PlayerInfo p)
+	{
+		double share = RSQDG_Mass.PullShare(a, p);
+		double full = RSQDG_Reach.MetresToUnits(
+			RSQDG_Reach.Num("rsqdg_flight_speed", p, 12.0)) / TICRATE;
+		return full * max(0.15, sqrt(share));
 	}
 
 	// ---- launch ------------------------------------------------------------
@@ -141,22 +188,62 @@ class RSQDG_Flight : EventHandler
 		flyTic[hand]   = 0;
 		flyHold[hand]  = 0;
 
-		// THE IMPULSE. Toward the palm, at the configured speed, and then the
-		// engine owns it.
+		// THE IMPULSE. Toward the palm, at the speed THIS object cruises at,
+		// and then the engine owns it.
 		Vector3 palm = RSQDG_Reach.Palm(pmo, hand);
 		Vector3 d = palm - MidOf(a);
 		double len = d.Length();
-		if (len > 0.01)
-		{
-			double speed = RSQDG_Reach.MetresToUnits(
-				RSQDG_Reach.Num("rsqdg_flight_speed", p, 12.0)) / TICRATE;
-			a.Vel = (d / len) * speed;
-		}
+		double cruise = CruiseFor(a, p);
+		if (len > 0.01) a.Vel = (d / len) * cruise;
+
+		// LIFT IT OFF THE FLOOR. Found in the rig, 2026-10-26: a barrel pulled
+		// along the ground never left it. Doom applies ground friction -- about
+		// 9% of speed per tic -- to anything touching its floor, NOGRAVITY or
+		// not, and against the barrel's share of the pull (0.14) friction won:
+		// it slid at a third of its cruise and took four seconds to cross a
+		// room it should have crossed in two. A clip never showed it because a
+		// clip's steering outruns friction easily.
+		//
+		// So the pull starts with a hop, the way a thing you yank toward you
+		// leaves the floor -- unless the palm is BELOW it (pulling something
+		// down off a ledge), where it should simply drop toward you.
+		Lift(a, d.z >= 0);
+
+		flyStart[hand] = RoomDist(d);
+		flyDist[hand]  = flyStart[hand];
+
+		// GIVE UP AFTER WHAT THIS PULL NEEDS, not a flat number. A flat 140
+		// tics was fine when everything flew at one speed; a barrel at a third
+		// of it across a big room needs most of that just to cross. So: twice
+		// the straight-line travel time at its cruise, plus a second of
+		// slack, and never less than the menu figure.
+		double travel = (cruise > 0.01) ? (len / cruise) : 0;
+		flyLimit[hand] = max(int(RSQDG_Reach.Num("rsqdg_flight_timeout", p, 140.0)),
+			int(travel * 2.0) + TICRATE);
 
 		if (RSQDG_Reach.Flag("rsqdg_debug", p, true))
-			Console.Printf("[RSQDG] hand %d LAUNCHED %s  dist=%.0f mass=%d r=%.0f->%.0f",
-				hand, a.GetClassName(), len, a.Mass, savedRadius[hand], a.Radius);
+			Console.Printf("[RSQDG] hand %d LAUNCHED %s  dist=%.0f  %.2fkg%s  share=%.2f  cruise=%.1fm/s  limit=%d  r=%.0f->%.0f",
+				hand, a.GetClassName(), len, RSQDG_Mass.Kg(a),
+				RSQDG_Mass.IsStated(a) ? "" : " (guessed)",
+				RSQDG_Mass.PullShare(a, p),
+				RSQDG_Reach.Metres((cruise, 0, 0)) * TICRATE, flyLimit[hand],
+				savedRadius[hand], a.Radius);
+
+		let feel = RSQDG_Feel.Get();
+		if (feel) feel.OnLaunch(hand, a, p);
 		return true;
+	}
+
+	// Off the floor and rising, if it is on the floor and the palm is above.
+	// One unit up breaks floor contact (no friction from the next tic); the
+	// upward speed keeps it from settling back while it climbs. Respects the
+	// ceiling: a thing in a crawlspace stays where it can fit.
+	private static void Lift(Actor a, bool palmAbove)
+	{
+		if (!palmAbove || a.Pos.z > a.floorz + 0.5) return;
+		if (a.floorz + 1 + a.Height <= a.ceilingz)
+			a.SetOrigin((a.Pos.x, a.Pos.y, a.floorz + 1), true);
+		a.Vel.z = max(a.Vel.z, 1.5);
 	}
 
 	// The MIDDLE of the thing, not its origin. A Doom actor's origin is the
@@ -221,17 +308,23 @@ class RSQDG_Flight : EventHandler
 				// is `bool, Actor CallTryPickup(Actor toucher)` -- the Actor is
 				// the thing that actually ended up being picked up, which may
 				// not be the one offered.
+				// Heft is read BEFORE the pickup: a successful one usually
+				// destroys the item, and the feedback still wants to know
+				// whether it was a clip or a backpack that landed.
+				double heft = RSQDG_Mass.Heft(a);
+				String cname = a.GetClassName();
 				bool took;
 				Actor result;
 				[took, result] = inv.CallTryPickup(pmo);
 				if (took)
 				{
 					if (RSQDG_Reach.Flag("rsqdg_debug", p, true))
-						Console.Printf("[RSQDG] hand %d caught and USED %s",
-							hand, a.GetClassName());
+						Console.Printf("[RSQDG] hand %d caught and USED %s", hand, cname);
 					flyActor[hand] = null;
 					flyTic[hand] = 0;
 					flyHold[hand] = 0;
+					let feel = RSQDG_Feel.Get();
+					if (feel) feel.OnCatch(hand, null, p, true, heft);
 					return true;
 				}
 			}
@@ -243,6 +336,8 @@ class RSQDG_Flight : EventHandler
 			flyActor[hand] = null;
 			flyTic[hand] = 0;
 			flyHold[hand] = 0;
+			let feel = RSQDG_Feel.Get();
+			if (feel) feel.OnCatch(hand, a, p, false, RSQDG_Mass.Heft(a));
 			return true;
 		}
 
@@ -259,6 +354,8 @@ class RSQDG_Flight : EventHandler
 		if (RSQDG_Reach.Flag("rsqdg_trace", p, true))
 			Console.Printf("[RSQDG] hand %d could not take %s -- still flying",
 				hand, a.GetClassName());
+		let feel = RSQDG_Feel.Get();
+		if (feel) feel.OnRefused(hand, a);
 		return false;
 	}
 
@@ -278,11 +375,21 @@ class RSQDG_Flight : EventHandler
 		flyHold[hand]  = 0;
 	}
 
-	void Abort(int hand)
+	// Every ending that is not a catch. `what` is the event the feedback and
+	// any listener hear: pull.missed, pull.blocked or pull.aborted. Only a
+	// pull that was actually in the air reports -- AbortAll runs on every
+	// level load and every tic the mechanic is off.
+	void Abort(int hand, String what = "pull.aborted")
 	{
 		Actor a = flyActor[hand];
+		bool was = (a != null) || flyTic[hand] != 0;
 		Restore(hand);
 		if (a) a.Vel = (0, 0, 0);
+		if (was)
+		{
+			let feel = RSQDG_Feel.Get();
+			if (feel) feel.OnDrop(hand, a, players[consoleplayer], what);
+		}
 	}
 
 	void AbortAll()
@@ -307,6 +414,9 @@ class RSQDG_Flight : EventHandler
 			return;
 		}
 
+		// The quiet stretch before the catch: two and a half catch radii.
+		nearDist = RSQDG_Reach.Num("rsqdg_catch_radius", p, 24.0) * 2.5;
+
 		for (int h = 0; h < 2; h++)
 		{
 			Actor a = flyActor[h];
@@ -317,7 +427,7 @@ class RSQDG_Flight : EventHandler
 			// onward as an object's "true" state.
 			if (!a)
 			{
-				if (flyTic[h] != 0) Restore(h);
+				if (flyTic[h] != 0) Abort(h, "pull.aborted");
 				continue;
 			}
 
@@ -331,6 +441,8 @@ class RSQDG_Flight : EventHandler
 				flyActor[h] = null;
 				flyTic[h] = 0;
 				flyHold[h] = 0;
+				let feel = RSQDG_Feel.Get();
+				if (feel) feel.OnDrop(h, a, p, "pull.aborted");
 				continue;
 			}
 
@@ -339,15 +451,14 @@ class RSQDG_Flight : EventHandler
 			// Give up rather than steer something forever. A pull that has not
 			// arrived in this long has met something it cannot get past, and
 			// leaving it circling is worse than dropping it.
-			int maxTics = int(RSQDG_Reach.Num("rsqdg_flight_timeout", p, 140.0));
-			if (flyTic[h] > maxTics)
+			if (flyTic[h] > flyLimit[h])
 			{
 				if (RSQDG_Reach.Flag("rsqdg_debug", p, true))
 					Console.Printf("[RSQDG] hand %d gave up on %s after %d tics",
 						h, a.GetClassName(), flyTic[h]);
-				Abort(h);
+				Abort(h, "pull.blocked");
 				continue;
-            }
+			}
 
 			// ---- the steering ----------------------------------------------
 			//
@@ -357,6 +468,7 @@ class RSQDG_Flight : EventHandler
 			Vector3 palm = RSQDG_Reach.Palm(pmo, h);
 			Vector3 toPalm = palm - MidOf(a);
 			double dist = toPalm.Length();
+			flyDist[h] = RoomDist(toPalm);
 
 			// ARRIVED. Hold it on the palm for a few tics rather than resolving
 			// the instant it gets there.
@@ -416,9 +528,9 @@ class RSQDG_Flight : EventHandler
 				// An interaction whose failure mode is "you take damage" is one
 				// people stop using.
 				if (RSQDG_Reach.Flag("rsqdg_debug", p, true))
-					Console.Printf("[RSQDG] %s arrived -- dropped (no catch yet)",
+					Console.Printf("[RSQDG] %s arrived and was not caught -- dropped",
 						a.GetClassName());
-				Abort(h);
+				Abort(h, "pull.missed");
 				continue;
 			}
 
@@ -427,17 +539,18 @@ class RSQDG_Flight : EventHandler
 			// moving. That is where the collision, the wall sliding and the
 			// stairs come from for free.
 			//
-			// MASS IS WHY THIS DESIGN WAS CHOSEN. A written path gave a barrel
-			// and a clip identical flight; here a heavy thing turns lazily and a
-			// light one snaps to the hand, off the actor's own Mass with no
-			// table to maintain.
-			double speed = RSQDG_Reach.MetresToUnits(
-				RSQDG_Reach.Num("rsqdg_flight_speed", p, 12.0)) / TICRATE;
-			Vector3 want = (toPalm / dist) * speed;
+			// MASS IS WHY THIS DESIGN WAS CHOSEN, and now it has one. A
+			// written path gave a barrel and a clip identical flight; here a
+			// heavy thing cruises slower AND turns lazily, a light one snaps to
+			// the hand. Both from RSQDG_Mass -- kilograms out of MASSDEF -- and
+			// NOT Actor.Mass, which is 100 on every non-monster and made every
+			// pickup fly the same (PORT_SCOPE A1).
+			Vector3 want = (toPalm / dist) * CruiseFor(a, p);
 
-			double massRef = RSQDG_Reach.Num("rsqdg_mass_ref", p, 100.0);
-			double mass = a.Mass > 1 ? double(a.Mass) : 1.0;
-			double authority = clamp(massRef / mass, 0.1, 4.0);
+			// Steering authority is the plain share, no sqrt: a heavy thing
+			// should be noticeably harder to turn, more than it is slower.
+			// Floored so a body can still be steered round a corner at all.
+			double authority = max(0.05, RSQDG_Mass.PullShare(a, p));
 
 			double maxAcc = RSQDG_Reach.MetresToUnits(
 				RSQDG_Reach.Num("rsqdg_steer", p, 40.0)) / (TICRATE * TICRATE) * authority;
@@ -446,6 +559,12 @@ class RSQDG_Flight : EventHandler
 			double dvl = dv.Length();
 			if (dvl > maxAcc) dv = (dv / dvl) * maxAcc;
 			a.Vel = a.Vel + dv;
+
+			// AND KEEP IT OFF THE FLOOR while it still has to climb to you. A
+			// step, a slope or a lip can ground it mid-pull, and a grounded heavy
+			// thing is back to fighting friction. Only when the palm is above:
+			// a pull down off a ledge is allowed to land and slide.
+			Lift(a, toPalm.z > a.Height * 0.25);
 		}
 	}
 

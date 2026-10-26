@@ -88,6 +88,53 @@ class RSQDG_Laser : EventHandler
 		glow = TexMan.CheckForTexture("RSQDGLO", TexMan.Type_Any);
 	}
 
+	static RSQDG_Laser Get()
+	{
+		return RSQDG_Laser(EventHandler.Find("RSQDG_Laser"));
+	}
+
+	// ---- THE CATCH FLASH -----------------------------------------------------
+	//
+	// A short green bloom AT THE PALM the moment something lands in it. The
+	// beam is gone by then -- something in the hand means no beam -- so this is
+	// the visual half of the catch tick and the catch thump: three channels
+	// saying one thing in the same tic.
+	//
+	// Drawn from the hand's OWN pooled beads, which are idle at exactly this
+	// moment, so it allocates nothing and costs nothing when it is not showing.
+	const BURST_TICS = 9;
+	private int burstAt[2];
+
+	void Burst(int hand)
+	{
+		if (hand == 0 || hand == 1) burstAt[hand] = level.maptime + 1;
+	}
+
+	// True if it drew this tic.
+	private bool DrawBurst(int h, PlayerPawn pmo, PlayerInfo p)
+	{
+		if (burstAt[h] <= 0 || !RSQDG_Reach.Flag("rsqdg_catch_flash", p, true)) return false;
+		int age = level.maptime - burstAt[h];
+		if (age < 0 || age >= BURST_TICS) { burstAt[h] = 0; return false; }
+
+		double t = double(age) / BURST_TICS;          // 0 -> 1
+		double fade = (1.0 - t) * (1.0 - t);          // fast out
+		double w = RSQDG_Reach.Num("rsqdg_laser_flare_w", p, 9.0) * (0.6 + 1.4 * t);
+		Vector3 at = RSQDG_Reach.Palm(pmo, h);
+		Color c = Color(255, 120, 255, 160);
+
+		int n = 0;
+		for (int i = 0; i < 4; i++)
+			n = Put(h, n, at, w * (1.0 + 0.4 * i), 0.55 * fade / (1.0 + i), c);
+		for (int i = n; i < live[h]; i++)
+		{
+			let b = bead[h * MAX_BEADS + i];
+			if (b) b.Hide();
+		}
+		live[h] = n;
+		return true;
+	}
+
 	// ---- how many beads each layer gets at this quality ---------------------
 	//
 	// Returned together so the budget is visible in one place rather than
@@ -142,6 +189,11 @@ class RSQDG_Laser : EventHandler
 		// feedback at that point -- the object is crossing the room at you --
 		// and a line still reaching out past it reads as unfinished business.
 		// The same reasoning that stops the colour flash during flight.
+		// The catch flash outranks everything for its nine tics -- including
+		// the case where the catch USED the item and the hand is empty again,
+		// which would otherwise go straight back to drawing an idle beam.
+		if (DrawBurst(h, pmo, p)) return;
+
 		if ((fl && fl.Flying(h)) || (hold && hold.HandIsFull(h)))
 		{
 			HideHand(h);
@@ -362,5 +414,6 @@ class RSQDG_Laser : EventHandler
 	{
 		for (int i = 0; i < 2 * MAX_BEADS; i++) bead[i] = null;
 		live[0] = 0; live[1] = 0;
+		burstAt[0] = 0; burstAt[1] = 0;
 	}
 }

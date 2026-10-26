@@ -122,6 +122,14 @@ class RSQDG_Hold : EventHandler
 		if (aim && aim.PoseGood() && !frozen[hand])
 			v = aim.PalmVelocity(hand) * RSQDG_Reach.Num("rsqdg_throw_scale", p, 1.0);
 
+		// THE ARM'S PART IS MEASURED AGAINST THE BODY (aim.zs), so walking is
+		// not a throw. But a real throw thrown while running carries the run:
+		// so the body's own velocity is added back ONLY when the arm actually
+		// threw. Opening a still hand while walking drops the thing where it
+		// is; flinging it while running sends it further than standing still.
+		bool thrown = RSQDG_Reach.Metres(v) * TICRATE > 0.5;
+		if (thrown && p.mo) v += p.mo.Vel;
+
 		a.Vel = v;
 
 		if (RSQDG_Reach.Flag("rsqdg_debug", p, true))
@@ -130,6 +138,11 @@ class RSQDG_Hold : EventHandler
 
 		held[hand] = null;
 		frozen[hand] = false;
+
+		// A throw is anything faster than a gentle set-down: half a metre a
+		// second. Below that it is a drop, and says so to anyone listening.
+		let feel = RSQDG_Feel.Get();
+		if (feel) feel.OnRelease(hand, a, thrown);
 	}
 
 	// Put it back the way it was found and forget it. Not a drop and not a

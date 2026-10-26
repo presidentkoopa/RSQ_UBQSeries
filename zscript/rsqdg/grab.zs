@@ -45,6 +45,9 @@ class RSQDG_Grab : EventHandler
 	// THE LOCK -- taken hold of, and still across the room.
 	private Actor lockActor[2];
 
+	// The last refusal reported per hand, so the trace says each one once.
+	private transient String lastWhy[2];
+
 	static RSQDG_Grab Get()
 	{
 		return RSQDG_Grab(EventHandler.Find("RSQDG_Grab"));
@@ -146,10 +149,14 @@ class RSQDG_Grab : EventHandler
 
 		let aim  = RSQDG_Aim.Get();
 		let hold = RSQDG_Hold.Get();
+		let fl   = RSQDG_Flight.Get();
 		if (!aim)                      why = "RSQDG_Aim missing";
 		else if (!aim.PoseGood())      why = "hand pose not trustworthy this tic";
 		else if (hold && hold.HandIsFull(hand))
 		                               why = "this hand is already holding something";
+		// A HAND MID-PULL IS BUSY. Its palm is out because it is waiting to
+		// catch, not because it is reaching for a second thing.
+		else if (fl && fl.Flying(hand)) why = "this hand is already pulling something";
 		else
 		{
 			a = aim.TargetFor(hand);
@@ -177,14 +184,23 @@ class RSQDG_Grab : EventHandler
 
 		if (why != "")
 		{
-			if (RSQDG_Reach.Flag("rsqdg_trace", p, true))
+			// SAID ONCE, NOT EVERY TIC. With the pose as the trigger this runs
+			// every tic the palm is out, so an unthrottled trace printed the same
+			// refusal thirty-five times a second and buried everything else. A
+			// reason is reported when it CHANGES, which is when it is news.
+			if (why != lastWhy[hand] && RSQDG_Reach.Flag("rsqdg_trace", p, true))
 				Console.Printf("[RSQDG] hand %d refused -- %s", hand, why);
+			lastWhy[hand] = why;
 			return;
 		}
+		lastWhy[hand] = "";
 
 		lockActor[hand] = a;
 		if (RSQDG_Reach.Flag("rsqdg_debug", p, true))
 			Console.Printf("[RSQDG] hand %d LOCKED %s", hand, a.GetClassName());
+
+		let feel = RSQDG_Feel.Get();
+		if (feel) feel.OnLock(hand, a, p);
 	}
 
 	// ---- opening your hand -------------------------------------------------
@@ -233,10 +249,16 @@ class RSQDG_Grab : EventHandler
 	// One place, so nothing can end a lock without the cleanup running.
 	private void Unlock(int hand, PlayerInfo p, String reason)
 	{
-		if (RSQDG_Reach.Flag("rsqdg_debug", p, true) && lockActor[hand])
+		Actor was = lockActor[hand];
+		if (RSQDG_Reach.Flag("rsqdg_debug", p, true) && was)
 			Console.Printf("[RSQDG] hand %d unlocked %s -- %s",
-				hand, lockActor[hand].GetClassName(), reason);
+				hand, was.GetClassName(), reason);
 		lockActor[hand] = null;
+		if (was)
+		{
+			let feel = RSQDG_Feel.Get();
+			if (feel) feel.OnUnlock(hand, was);
+		}
 	}
 
 	override void WorldTick()
@@ -344,6 +366,13 @@ class RSQDG_Grab : EventHandler
 		if (!a) return;
 
 		if (!armed[hand]) { Unlock(hand, p, "hand opened"); return; }
+
+		// STILL SOMETHING YOU MAY PULL. The policy's answer can change under a
+		// lock: an Arch-Vile raises the corpse you were holding, another player
+		// walks over the medikit, a switch is turned off in the menu. A living
+		// monster is never pullable, and that has to stay true after the lock.
+		let pol = RSQDG_Policy.Get();
+		if (pol && !pol.Decide(a, p.mo, p)) { Unlock(hand, p, "no longer pullable"); return; }
 
 		// A GENEROUS MARGIN, not the acquisition range. Acquiring needs
 		// precision; keeping what you already chose should not punish a wobble.

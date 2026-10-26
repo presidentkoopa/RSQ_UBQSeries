@@ -7,6 +7,14 @@
 // thing in the original design.
 class RSQDG_Cone play
 {
+	// sqrt of the CAP on any weight (RSQDG_Policy.MAX_WEIGHT, 16). Used only to
+	// prune: a candidate whose geometric cost could not beat the best so far
+	// even at the heaviest weight anything is allowed to carry is skipped
+	// before policy and sight are asked. Exact rather than heuristic -- every
+	// weight is clamped to the cap where it is set, so this can never drop a
+	// target that would have won.
+	const MAX_SQRT_WEIGHT = 4.0;
+
 	// The best thing in this hand's cone, or null.
 	//
 	// SCORED ON ANGLE FIRST, distance second, because pointing is what you are
@@ -52,7 +60,21 @@ class RSQDG_Cone play
 		double cosLimit = cos(spread);
 
 		Actor best = null;
-		double bestScore = -2.0;
+		double bestCost = 1e30;
+
+		// The policy is asked per candidate; fetched once per scan.
+		let pol = RSQDG_Policy.Get();
+		if (!pol) return null;
+		bool sightOn = RSQDG_Reach.Flag("rsqdg_sight", p, true);
+
+		// ALREADY TAKEN IS NOT A CANDIDATE. Found in the rig, 2026-10-26: you
+		// turn your palm back out to catch, the cone finds the very object
+		// flying at you, and it is LOCKED AGAIN mid-air -- a stray lock tick,
+		// a launch the next release would refuse, and a stale lock on whatever
+		// the hand then catches. Something in the air or in a hand belongs to
+		// the flight or the hold, and the cone does not get a say in it.
+		let fl   = RSQDG_Flight.Get();
+		let hold = RSQDG_Hold.Get();
 
 		// THE ITERATOR'S Z ARGUMENTS DO NOT FILTER ANYTHING. Its bounding box
 		// is built from (x, y, checkradius) only -- p_maputl.cpp:1075-1086 and
@@ -66,7 +88,6 @@ class RSQDG_Cone play
 		{
 			Actor a = it.thing;
 			if (!a || a == pmo) continue;
-			if (!Grabbable(a, pmo, p)) continue;
 
 			// THE MIDDLE OF THE THING, not its origin. A Doom actor's origin is
 			// the floor of its volume, so aiming at a barrel by eye and testing
@@ -84,52 +105,46 @@ class RSQDG_Cone play
 			double c = (pd / dist) dot pdir;
 			if (c < cosLimit) continue;
 
-			// THROUGH A WALL IS NOT POINTING AT IT. Checked last, because it is
-			// the only expensive test here and by this point at most a handful
-			// of candidates have survived the cheap ones.
-			if (RSQDG_Reach.Flag("rsqdg_sight", p, true) && !pmo.CheckSight(a))
-				continue;
+			// CHEAPEST TEST FIRST, and the order is the Quest budget. The walk
+			// above visits every actor within the reach -- monsters, lamps,
+			// gibs -- and the dot product has already thrown most of them out.
+			// Only what is actually inside the cone is asked about policy, and
+			// only a candidate that could still WIN pays for a sight check.
+			double geo = (1.0 - c) / max(1e-6, 1.0 - cosLimit) + (dist / reach) * 0.25;
+			if (geo / MAX_SQRT_WEIGHT >= bestCost) continue;   // cannot win even at the top weight
 
-			// Angle dominates; distance only separates two things you are
-			// pointing at equally well.
-			double score = c - (dist / reach) * 0.25;
-			if (score > bestScore) { bestScore = score; best = a; }
+			if ((fl && fl.IsFlying(a)) || (hold && hold.IsHeld(a))) continue;
+
+			let rule = pol.Decide(a, pmo, p);
+			if (!rule) continue;
+
+			// THE COST, and weight divides it.
+			//
+			// Angle off-axis, normalised so the edge of the cone is 1.0, plus a
+			// quarter of the normalised distance. Angle dominates because
+			// pointing is what you are doing; distance only separates two things
+			// you are pointing at equally well.
+			//
+			// THEN DIVIDED BY sqrt(weight), the desktop's own scale: weight 4
+			// "counts as half as far off", 0.25 "twice as far". A preference,
+			// never a veto -- everything that reached this line is admitted, and
+			// weight only re-orders the admitted. So a barrel beside a clip wins
+			// when you point between them, and the clip still wins when it is
+			// the only thing you are pointing at.
+			double cost = geo / sqrt(rule.weight);
+			if (cost >= bestCost) continue;
+
+			// THROUGH A WALL IS NOT POINTING AT IT. Last, because it is the only
+			// expensive test, and by now the candidate would actually win.
+			if (sightOn && !pmo.CheckSight(a)) continue;
+
+			bestCost = cost;
+			best = a;
 		}
 		return best;
 	}
 
-	// ---- what may be taken -------------------------------------------------
-	//
-	// Deliberately conservative and deliberately SEPARATE from the geometry
-	// above, so the cone can be tested and tuned before anything can decide
-	// what a thing becomes when you catch it. The full policy -- what an object
-	// is taken AS, which pose the hand makes, whether it needs two hands --
-	// belongs in its own file and is not this function's business.
-	static bool Grabbable(Actor a, PlayerPawn pmo, PlayerInfo p)
-	{
-		// A LIVING MONSTER IS NEVER GRABBABLE, and this is a design rule rather
-		// than a limitation. The desktop policy states the reason outright: a
-		// distance grab that takes a live monster "is a way of deleting
-		// monsters". A corpse is a prop, and one worth having.
-		//
-		// This is also why the question "does a held monster keep thinking"
-		// never arises for this mechanic, however much it matters to a claw.
-		if (a.bISMONSTER)
-		{
-			if (a.Health > 0) return false;
-			return RSQDG_Reach.Flag("rsqdg_corpses", p, false);
-		}
-
-		// Nothing already owned by an inventory -- that is an item inside
-		// somebody, and steering it would move it around inside their pockets.
-		let inv = Inventory(a);
-		if (inv && inv.Owner) return false;
-
-		// A pickup, or something solid enough to be a prop. bSPECIAL is the
-		// pickup-on-touch flag, which is what every collectable carries.
-		if (a.bSPECIAL) return true;
-		if (a.bSOLID && !a.bNOBLOCKMAP) return true;
-
-		return false;
-	}
+	// WHAT MAY BE TAKEN is not this file's business any more -- see policy.zs.
+	// It used to be `bSPECIAL || (bSOLID && !bNOBLOCKMAP)`, which made every
+	// tech column and tree in a map pullable and a +1 bonus as wanted as a medikit.
 }

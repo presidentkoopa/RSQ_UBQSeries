@@ -76,25 +76,53 @@ class RSQDG_Aim : EventHandler
 		// as menus, and cannot be wrong about something it does not consult.
 		//
 		// A metre in a single tic is 28.6 ms of arm movement. No arm does that.
+		// IN THE BODY'S FRAME, NOT THE WORLD'S (PORT_SCOPE A2).
+		//
+		// The hand is measured relative to the pawn and un-rotated by the
+		// pawn's yaw before it is differenced. Two things fall out of that for
+		// free, with no accumulator and no engine symbol:
+		//
+		//   - WALKING IS NOT A THROW. The world position of your hand changes
+		//     at walking speed while your arm is still; relative to the body it
+		//     does not move at all. Opening a hand while walking used to throw.
+		//   - A TURN IS NOT A THROW. A snap turn swings the whole tracking
+		//     space, hand included, through 45 degrees about the pawn in one
+		//     tic -- a third of a metre of "hand motion" in 28 ms, the hardest
+		//     sideways throw of the session. Un-rotated, hand and pawn turn
+		//     together and cancel.
+		//
+		// This is lane 1's fix for rs_swing.zs, in about fifteen lines instead
+		// of a port. The fork used native hand velocity and VRTurnYaw for it;
+		// stock has neither and, framed this way, needs neither.
+		//
+		// The jump test uses the same body-frame delta, so a teleporter or a
+		// fast lift no longer reads as tracking having lied.
 		poseTrusted = true;
+		double yaw = pmo.Angle;
 		for (int h = 0; h < 2; h++)
 		{
 			Vector3 now = RSQDG_Reach.Palm(pmo, h);
+			Vector3 off = now - pmo.Pos;
+			Vector2 flat = Actor.RotateVector(off.xy, -yaw);
+			Vector3 rel = (flat.x, flat.y, off.z);
+
+			Vector3 dRel = rel - lastRel[h];
 			if (primed[h])
 			{
-				double jumped = RSQDG_Reach.Metres(now - lastPalm[h]);
+				double jumped = RSQDG_Reach.Metres(dRel);
 				if (jumped > RSQDG_Reach.Num("rsqdg_jump_m", p, 1.0))
 					poseTrusted = false;
 			}
 			// A bad pose contributes a ZERO sample rather than the collapse
 			// delta, which would otherwise be the hardest throw of the session.
 			palmVel[h * PITCH_WINDOW + palmAt[h]] =
-				(primed[h] && poseTrusted) ? (now - lastPalm[h]) : (0, 0, 0);
+				(primed[h] && poseTrusted) ? dRel : (0, 0, 0);
 			palmAt[h] = (palmAt[h] + 1) % PITCH_WINDOW;
 
-			lastPalm[h] = now;
+			lastRel[h] = rel;
 			primed[h] = true;
 		}
+		bodyYaw = yaw;
 
 		// The wrist is sampled whatever the pose is doing, because the sampler
 		// needs an unbroken chain to difference against -- it just contributes
@@ -112,8 +140,9 @@ class RSQDG_Aim : EventHandler
 		target[1] = RSQDG_Cone.Best(pmo, p, 1);
 	}
 
-	private Vector3 lastPalm[2];
+	private Vector3 lastRel[2];   // palm relative to the pawn, un-rotated by its yaw
 	private bool    primed[2];
+	private double  bodyYaw;      // the yaw those samples were taken at
 
 	// ---- palm velocity, for the throw --------------------------------------
 	//
@@ -128,7 +157,9 @@ class RSQDG_Aim : EventHandler
 	private Vector3 palmVel[2 * PITCH_WINDOW];
 	private int     palmAt[2];
 
-	// Map units per tic, direction included -- a throw needs to know which way.
+	// Map units per tic, direction included, IN THE WORLD -- a throw needs to
+	// know which way. The samples are body-frame; the peak is turned back into
+	// the world by the body's current yaw, so "forward" is where you face now.
 	Vector3 PalmVelocity(int hand) const
 	{
 		if (hand != 0 && hand != 1) return (0, 0, 0);
@@ -143,7 +174,8 @@ class RSQDG_Aim : EventHandler
 			double l = RSQDG_Reach.Metres(v);
 			if (l > bestLen) { bestLen = l; best = v; }
 		}
-		return best;
+		Vector2 w = Actor.RotateVector(best.xy, bodyYaw);
+		return (w.x, w.y, best.z);
 	}
 
 	// ---- the wrist, for the launch gesture ---------------------------------

@@ -35,6 +35,7 @@ OptionMenu "RSQDG_Options"
 	Submenu "The pull",             "RSQDG_Flight"
 	Submenu "Catching and holding", "RSQDG_Catch"
 	Submenu "The laser",            "RSQDG_Laser"
+	Submenu "Haptics and sound",    "RSQDG_Feel"
 	StaticText ""
 	Submenu "Diagnostics",          "RSQDG_Debug"
 	StaticText ""
@@ -59,8 +60,16 @@ OptionMenu "RSQDG_Reach"
 	StaticText "precision than pointing sideways.", 1
 	StaticText ""
 	Option "Needs line of sight", "rsqdg_sight",   "OnOff"
-	Option "Corpses grabbable",   "rsqdg_corpses", "OnOff"
-	StaticText "A living monster is never grabbable.", 1
+	StaticText ""
+	StaticText "WHAT CAN BE PULLED", 1
+	Option "Barrels",             "rsqdg_barrels",  "OnOff"
+	Option "Weapons",             "rsqdg_weapons",  "OnOff"
+	Option "Powerups",            "rsqdg_powerups", "OnOff"
+	Option "Corpses",             "rsqdg_corpses",  "OnOff"
+	StaticText "Ammo, health, armour and keys always are.", 1
+	StaticText "A living monster and a +1 bonus never are.", 1
+	StaticText "When things crowd the cone, barrels, guns and", 1
+	StaticText "keys win over ammo, and bodies come last.", 1
 }
 
 OptionMenu "RSQDG_Gesture"
@@ -103,9 +112,11 @@ OptionMenu "RSQDG_Flight"
 	Slider "Pull speed (m/s)",      "rsqdg_flight_speed", 2, 40, 1, 1
 	Slider "Steering (m/s2)",       "rsqdg_steer",        5, 150, 5, 0
 	StaticText ""
-	Slider "Reference mass",        "rsqdg_mass_ref",     10, 400, 10, 0
-	StaticText "Mass at which an object gets full steering.", 1
-	StaticText "Heavier turns lazily, lighter snaps to hand.", 1
+	Slider "Pull strength (kg)",    "rsqdg_pull_kg",      1, 100, 1, 0
+	StaticText "Things this heavy get half the pull's speed", 1
+	StaticText "and steering. A clip snaps to your hand, a", 1
+	StaticText "barrel is a heave. Raise it to make heavy", 1
+	StaticText "things come easier.", 1
 	StaticText ""
 	Option "Gravity during the pull", "rsqdg_flight_gravity", "OnOff"
 	StaticText "On makes a long pull sag and a heavy thing", 1
@@ -117,6 +128,7 @@ OptionMenu "RSQDG_Flight"
 	StaticText "much; lower it if they snag in doorways.", 1
 	StaticText ""
 	Slider "Give up after (tics)", "rsqdg_flight_timeout", 35, 350, 35, 0
+	StaticText "The minimum. Slow heavy pulls get longer.", 1
 }
 
 OptionMenu "RSQDG_Catch"
@@ -168,6 +180,25 @@ OptionMenu "RSQDG_Laser"
 	StaticText ""
 	Option "Colour the target", "rsqdg_lightup", "OnOff"
 	Slider "Pulse period (tics)", "rsqdg_flash", 6, 70, 2, 0
+}
+
+OptionMenu "RSQDG_Feel"
+{
+	Title "HAPTICS AND SOUND"
+	StaticText ""
+	Option "Controller haptics", "rsqdg_haptics", "OnOff"
+	Option "Approach ping",      "rsqdg_haptic_ramp", "OnOff"
+	StaticText "A tick on lock and on launch, a ping that", 1
+	StaticText "speeds up as the object nears, a moment of", 1
+	StaticText "quiet, then a tick on the catch -- two if it", 1
+	StaticText "is heavy.", 1
+	StaticText ""
+	Option "Sound",              "rsqdg_sound", "OnOff"
+	Slider "Volume",             "rsqdg_sound_vol", 0.0, 1.0, 0.05, 2
+	StaticText "A hum rides the object and rises as it nears.", 1
+	StaticText "Light things sound high, heavy things low.", 1
+	StaticText ""
+	Option "Catch flash",        "rsqdg_catch_flash", "OnOff"
 }
 
 OptionMenu "RSQDG_Debug"

@@ -20,8 +20,19 @@ user float rsqdg_reach    = 512.0;   // map units. ~15 m horizontally
 user float rsqdg_spread   = 12.0;    // degrees, half-angle. A real cone in the
                                      // room, not in map space -- see cone.zs
 user bool  rsqdg_sight    = true;    // through a wall is not pointing at it
+
+// ---- what may be pulled (policy.zs) ---------------------------------------
+// The table decides what is an OBJECT; these switch whole families of it on
+// and off. A living monster is never pullable, and a +1 bonus never is -- those
+// are not switches, they are the table.
 user bool  rsqdg_corpses  = false;   // a corpse is a prop. Off by default: the
                                      // novelty beat the feature on desktop
+user bool  rsqdg_barrels  = true;    // both barrels -- the thing this is for
+user bool  rsqdg_weapons  = true;    // pull a gun to you. The desktop's default
+                                     // is off because a HAND grab of a gun is a
+                                     // whole interaction; a pull is the pickup
+user bool  rsqdg_powerups = false;   // spheres, berserk, suit, map. The desktop
+                                     // denied them; one switch away here
 
 // ---- THE TRIGGER IS THE GESTURE ------------------------------------------
 //
@@ -103,16 +114,22 @@ user float rsqdg_flick_deg = 5.0;
 user float rsqdg_flight_speed   = 12.0;   // metres/sec the steering aims for
 user float rsqdg_steer          = 40.0;   // m/s^2 of steering authority, at
                                           // the reference mass
-user float rsqdg_mass_ref       = 100.0;  // the mass that gets full authority.
-                                          // Heavier turns lazily, lighter snaps
+user float rsqdg_pull_kg        = 10.0;   // KILOGRAMS the pull moves almost
+                                          // effortlessly. A thing of this mass
+                                          // gets half the pull's strength; a
+                                          // clip gets nearly all of it, the
+                                          // barrel (60 kg) a seventh. Raise it
+                                          // and heavy things come easier.
+                                          // Masses come from MASSDEF (mass.zs)
 user bool  rsqdg_flight_gravity = false;  // let a pull sag. A legitimate feel
                                           // and the cheapest thing here to A/B
 user float rsqdg_flight_radius  = 2.0;    // a pickup's radius is a TRIGGER
                                           // volume, not a hull -- a clip is 20
                                           // units wide and looks like 4
-user float rsqdg_flight_timeout = 140.0;  // tics before a pull that cannot
-                                          // arrive is dropped rather than left
-                                          // circling
+user float rsqdg_flight_timeout = 140.0;  // the MINIMUM tics before a pull
+                                          // that cannot arrive is dropped. A
+                                          // slow heavy pull gets longer: twice
+                                          // its straight-line travel time
 
 // ---- arrival -------------------------------------------------------------
 // THE DWELL IS NOT POLITENESS. A state that exists for zero tics cannot be
@@ -172,6 +189,21 @@ user float rsqdg_laser_mote_hz  = 0.9;    // cycles/sec. They ACCELERATE as they
                                           // conveyor, accelerating reads as
                                           // being drawn in
 user float rsqdg_laser_flare_w  = 9.0;    // the pulse on the thing itself
+
+// ---- feedback (feel.zs) --------------------------------------------------
+// Report only: switching all of these off changes nothing about what the grab
+// DOES, it just does it silently.
+//
+// HAPTICS ARE RHYTHM, NOT STRENGTH. Stock 17.3 has no script vibrate call; the
+// one route a mod can reach buzzes a hand at a fixed 0.8 for a fixed 150 ms. So
+// the grab speaks in ticks: one on lock, one on launch, a ping that speeds up
+// as the object closes, a moment of quiet, then one on the catch -- two if it
+// is heavy.
+user bool  rsqdg_haptics     = true;
+user bool  rsqdg_haptic_ramp = true;   // the speeding-up ping during a pull
+user bool  rsqdg_sound       = true;
+user float rsqdg_sound_vol   = 0.8;
+user bool  rsqdg_catch_flash = true;   // a green bloom at the palm on a catch
 
 // ---- diagnostics ---------------------------------------------------------
 // Separate from each other because they answer different questions: `debug`
