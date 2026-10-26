@@ -31,6 +31,7 @@ class SSQ_Handler : EventHandler
 	class<Weapon> mPrevMain[MAXPLAYERS];	// the main-hand weapon a two-handed conflict lowered
 	bool  mGripWas[MAXPLAYERS];		// off secondary last tic
 	bool  mUseWas[MAXPLAYERS];
+	bool  mStowLatch[MAXPLAYERS];	// holstered with Use: no re-draw until Use is let go
 	int   mCatchGrace[MAXPLAYERS];	// tics after a catch before the grip is read again
 	int   mDrawGrace[MAXPLAYERS];	// tics after a draw before an empty off hand counts as eviction
 	int   mStartDrawn[MAXPLAYERS];	// countdown to the draw at spawn (ssq_start_drawn)
@@ -271,7 +272,12 @@ class SSQ_Handler : EventHandler
 			bool usePress = use && !mUseWas[i];
 			mUseWas[i] = use;
 			if (mCatchGrace[i] > 0) { mCatchGrace[i]--; usePress = false; use = false; }
-			if (mState[i] == SS_STOWED && use) OnPress(i);
+			// A HOLSTER ON THE PRESS MUST NOT BE A DRAW ON THE NEXT TIC. Stow fires on
+			// the press; the stowed grab reads the level -- so with Use still down and
+			// the hand still at the mount, the very next tic drew it again. The latch
+			// holds until Use is let go.
+			if (!use) mStowLatch[i] = false;
+			if (mState[i] == SS_STOWED && use && !mStowLatch[i]) OnPress(i);
 			else if (mState[i] == SS_DRAWN && usePress) OnPress(i);
 			// HOLD to lock on, let go to throw, press again in flight to recall.
 			// Either off-hand button by default -- see SecHeld.
@@ -337,7 +343,7 @@ class SSQ_Handler : EventHandler
 		}
 		if (!atMount) return;
 		if (mState[i] == SS_STOWED) Draw(i);
-		else if (mState[i] == SS_DRAWN) Stow(i, true);
+		else if (mState[i] == SS_DRAWN) { Stow(i, true); mStowLatch[i] = true; }
 	}
 
 	// secondary released: moving fast throws; still, it stays in the hand
@@ -406,8 +412,10 @@ class SSQ_Handler : EventHandler
 		let p = players[i];
 		let mo = p.mo;
 		bool fix = false;
+		// What took the off hand this tic, if anything -- switchhand's fingerprint (below).
+		Weapon took = p.OffhandWeapon;
 		if (p.OffhandWeapon != saw) fix = true;
-		if (p.PendingWeapon != WP_NOCHANGE && p.PendingWeapon != saw && p.PendingWeapon.bOffhandWeapon) fix = true;
+		if (p.PendingWeapon && p.PendingWeapon != WP_NOCHANGE && p.PendingWeapon != saw && p.PendingWeapon.bOffhandWeapon) fix = true;
 		if (fix)
 		{
 			saw.bOffhandWeapon = true;
@@ -424,12 +432,22 @@ class SSQ_Handler : EventHandler
 			if (UVI(p, 'ssq_debug', 0)) Console.Printf("ssq: pin off -> shield");
 		}
 		// and cancel a raise somebody else asked for while the shield is the one in the hand
-		if (p.PendingWeapon != WP_NOCHANGE && p.PendingWeapon != saw && p.PendingWeapon.bOffhandWeapon)
+		if (p.PendingWeapon && p.PendingWeapon != WP_NOCHANGE && p.PendingWeapon != saw && p.PendingWeapon.bOffhandWeapon)
 			p.PendingWeapon = WP_NOCHANGE;
+		// THE MAIN HAND IS UNDONE ONLY WHEN switchhand DID IT. switchhand moves the main gun
+		// INTO the off hand (sets its bOffhandWeapon, player.zs:2488-2502) -- so that gun is
+		// either what took the off hand this tic or still carries the off-hand flag. Any other
+		// change to the main hand is the player's own (a slot key, weapnext, running dry, a
+		// pickup's auto-switch), and the shield follows it: the remembered gun becomes the one
+		// now in hand. Before this, EVERY main-hand switch was put back ~12 tics later, and a
+		// gun that ran dry looped forever (rig, 2026-10-26, with BD22).
 		if (mPrevMain[i])
 		{
 			let back = Weapon(mo.FindInventory(mPrevMain[i]));
-			if (back && back != saw && p.ReadyWeapon != back && !back.bTwoHanded)
+			bool switchhand = back && back != saw && (took == back || back.bOffhandWeapon);
+			if (!switchhand && p.PendingWeapon == WP_NOCHANGE && p.ReadyWeapon && p.ReadyWeapon != saw && !p.ReadyWeapon.bOffhandWeapon)
+				mPrevMain[i] = p.ReadyWeapon.GetClass();
+			if (switchhand && p.ReadyWeapon != back && !back.bTwoHanded)
 			{
 				back.bOffhandWeapon = false;
 				p.PendingWeapon = back;
@@ -633,6 +651,15 @@ class SSQ_Handler : EventHandler
 		}
 		if (p.PendingWeapon == saw) p.PendingWeapon = WP_NOCHANGE;
 		if (saw) saw.StopRev();
+		// THE MAIN HAND FIRST, if raising the shield emptied it (BringUpWeapon nulls a two-handed
+		// main gun). This used to sit in an `else` that tested the opposite of its own `if`, so it
+		// never ran and the main hand stayed empty. BringUpWeapon raises it at once and leaves
+		// PendingWeapon free for the off-hand handover below.
+		if (mPrevMain[i] && !p.ReadyWeapon && p.PendingWeapon == WP_NOCHANGE)
+		{
+			let mainBack = Weapon(mo.FindInventory(mPrevMain[i]));
+			if (mainBack && mainBack != saw) { mainBack.bOffhandWeapon = false; p.PendingWeapon = mainBack; mo.BringUpWeapon(); }
+		}
 		// HAND THE SLOT OVER, DO NOT DROP IT. Leaving OffhandWeapon null even for one tic is an
 		// invitation: the pack and the saber both fill an empty off hand on their own schedule,
 		// and then two mods are writing PendingWeapon in the same tic and the last one wins.
@@ -649,11 +676,6 @@ class SSQ_Handler : EventHandler
 				p.PendingWeapon = back;
 				mo.BringUpWeapon();
 			}
-		}
-		else if (mPrevMain[i] && !p.ReadyWeapon && p.PendingWeapon == WP_NOCHANGE)
-		{
-			let back = Weapon(mo.FindInventory(mPrevMain[i]));
-			if (back) { back.bOffhandWeapon = false; p.PendingWeapon = back; mo.BringUpWeapon(); }
 		}
 		mPrevOff[i] = null; mPrevMain[i] = null;
 	}
@@ -798,6 +820,8 @@ class SSQ_Handler : EventHandler
 		if (SVI('ssq_guard', 1) == 0 || SVI('ssq_hitscan_guard', 1) == 0) return false;
 		Actor shooter = e.Thing;
 		if (!shooter || shooter.player) return false;
+		// our own return shot comes off the plate from a helper (guard.zs): never eat it
+		if (shooter is 'SSQ_Ricochet') return false;
 		double ca = cos(e.AttackPitch);
 		Vector3 dir = (cos(e.AttackAngle) * ca, sin(e.AttackAngle) * ca, -sin(e.AttackPitch));
 		if (dir.Length() <= 0) return false;

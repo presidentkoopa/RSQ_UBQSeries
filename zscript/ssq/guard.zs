@@ -365,7 +365,20 @@ class SSQ_Guard : Inventory
 			// tempos = (offsetforward, offsetside, sz), p_map.cpp:4875 -- so the forward and side
 			// slots carry X and Y. Passing 0,0 started this trace at the map origin.
 			// (angle, distance, pitch, damage, type, puff, flags, victim, Z, X, Y)
-			mo.LineAttack(ang, max(dist, 1024.0), pit, dmg, 'Hitscan', 'BulletPuff', LAF_ABSPOSITION, null, P.z, P.x, P.y);
+			//
+			// FIRED BY A HELPER, NOT BY THE PLAYER. A player's LineAttack in VR is re-aimed by the
+			// engine: with OverrideAttackPosDir, P_LineAttack replaces the direction with the MAIN
+			// CONTROLLER's AttackDir (p_map.cpp:4787-4797), so the return went where the gun
+			// pointed, buzzed the gun hand (p_map.cpp:4762-4772), and read the local controller
+			// in a netgame. A non-player shooter is traced exactly along `back`. The helper is
+			// excluded from our own hitscan hook (state.zs) and owned by the player (target).
+			let ric = Actor.Spawn('SSQ_Ricochet', P);
+			if (ric)
+			{
+				ric.target = mo;
+				ric.angle = ang;
+				ric.LineAttack(ang, max(dist, 1024.0), pit, dmg, 'Hitscan', 'BulletPuff', LAF_ABSPOSITION, null, P.z, P.x, P.y);
+			}
 		}
 		return true;
 	}
@@ -632,5 +645,30 @@ class SSQ_Guard : Inventory
 		for (int k = 1; k <= 6; k++) SSQ_FX.Particle(mo, C + n * (k * 3.0), (0, 0, 0), "20ff20", 4, 5.0);
 		SSQ_FX.Particle(mo, pose.pos[0], (0, 0, 0), "3080ff", 4, 7.0);
 		for (int k = 1; k <= 4; k++) SSQ_FX.Particle(mo, pose.pos[0] + pose.F * (k * 3.0), (0, 0, 0), "ffffff", 4, 4.0);
+	}
+}
+
+
+// The shield's bullet return is fired from here, so the engine traces it exactly along the
+// deflection instead of re-aiming it down the gun (see StopsHitscan). One tic, then gone.
+class SSQ_Ricochet : Actor
+{
+	Default
+	{
+		+NOINTERACTION
+		+NOBLOCKMAP
+		+NOGRAVITY
+		+NOTELEPORT
+		+DONTSPLASH
+		+NOTONAUTOMAP
+		RenderStyle "None";
+		Radius 1;
+		Height 1;
+	}
+	States
+	{
+	Spawn:
+		TNT1 A 1;
+		Stop;
 	}
 }

@@ -46,7 +46,11 @@ class SSQ_Disc : Actor
 		BounceType "Hexen";
 		BounceFactor 0.9;
 		WallBounceFactor 0.9;
-		BounceCount 1;
+		// NO BounceCount. `BounceCount 1` meant the first wall or floor touch EXPLODED the
+		// missile before it could bounce (p_map.cpp:3646, p_mobj.cpp:1839 -> P_ExplodeMissile
+		// clears MF_MISSILE): the Bounce state never ran, SpecialMissileHit never fired again,
+		// and a throw that clipped a door frame hovered at its first lock doing nothing until
+		// the 12 s cap, with the shield unavailable. The default is unlimited.
 		Radius 10;
 		Height 6;
 		Speed 20;
@@ -243,7 +247,14 @@ class SSQ_Disc : Actor
 		}
 		else if (phase == PH_EMBED)
 		{
-			if (!embedIn || embedIn.health <= 0 || embedTics <= 0) { Home(); }
+			// DONE GRINDING: on to the next lock if there is one, home only when there is not.
+			// (It went home with locks still waiting -- a Cacodemon ground, two imps never
+			// visited.)
+			if (!embedIn || embedIn.health <= 0 || embedTics <= 0)
+			{
+				if (CurrentLock()) phase = PH_OUT;
+				else Home();
+			}
 			else
 			{
 				SetOrigin(embedIn.pos + embedOfs, true);
@@ -384,9 +395,11 @@ class SSQ_Disc : Actor
 		{
 			Vector3 away = (pos - (victim.pos + (0, 0, victim.height * 0.5))).Unit();
 			vel = away * cruise;
-			Next(wasLock);
-			if (!CurrentLock()) Home();
 		}
+		// ON TO THE NEXT LOCK either way. With Hit Tiers off this was inside the tiers branch,
+		// so a multi-lock throw kept hitting lock 0 and never moved on.
+		Next(wasLock);
+		if (!CurrentLock()) Home();
 		return 1;
 	}
 
