@@ -1,0 +1,240 @@
+# Decisions — RSQ_DistanceGrab
+
+Owner decisions, as made. One line per decision, with the shape it implies and
+the citation it rests on. The reasoning lives in
+`C:\Users\Command\Desktop\GRAB_AND_OBJECT_MANIPULATION_ON_QUESTZDOOM_2026-10-24.md`;
+this file is the record of what was chosen, so nobody has to re-read 1754 lines
+to find out.
+
+All engine citations are against **stock qzd17.3**, which is the git tree
+`670d19eba6^` in `E:\DOOMWork\QZD17-engine`. That checkout's HEAD is NOT stock.
+
+---
+
+## D1 — INPUT CHANNEL: a KEYCONF action + netevent. DECIDED 2026-10-24.
+
+Not a usercmd bit. The owner took the §7.2 recommendation.
+
+**Why this and not a bit.** Every bit is contested by mods we cannot see or
+modify, and our own census only ever saw our own packages — the lesson learned
+twice, first on `BT_USE` and then on `BT_USER1..4`. A KEYCONF action consumes no
+usercmd bit at all, so contention is **structurally impossible** however many
+foreign mods are loaded. It is also the channel `UltraBadassQuestSaber` already
+uses for all its non-trigger inputs, so there is a shipping precedent on this
+engine.
+
+**The shape:**
+
+- `addkeysection` + `addmenukey` register a rebindable action that appears in the
+  stock Customize Controls menu.
+- `defaultbind` gives a working default **without writing the owner's ini**,
+  which is read-only.
+- `+name` / `-name` falls through to alias lookup when it is not a buttonMap
+  action, and key-up rewrites `+` to `-`, so **press and release arrive as two
+  separate netevents**.
+- `netevent` reaches `NetworkProcess` / `NetworkCommandProcess` at the **top of
+  the tic, before `P_PlayerThink`** — earlier than `WorldTick`, so better timing
+  than reading a bit.
+- Replicated, and `player >= 0` identifies who pressed it.
+
+**The one real cost, and its fix.** A netevent is an **edge, not a continuously
+readable held state**. A hold-based gesture therefore needs the held state
+tracked mod-side, and a dropped release would leave it stuck on. So the held
+state gets a **lease**: it expires unless re-asserted, the same shape as the grip
+arbiter's `LEASE_TICS`. About a dozen lines, and it buys immunity from every
+other mod on the system.
+
+**Carry the target's network ID, never a raw pointer.** `Object.GetNetworkID()`
+is a `uint` and a `ConsoleEvent` carries three ints, so one argument does it.
+Every actor already carries a replicated, `clearscope`, savegame-stable network
+ID — `p_mobj.cpp:4996` enables networking on every actor at spawn. Mind the
+recycling trap: IDs come off a free list, so a stored ID can resolve to a
+different actor. Validate on use.
+
+### Consequences of taking this instead of `BT_USE`
+
+- The `ui InputProcess` conditional-consume machinery (§7.4) is **not needed**.
+  It stays on record as the fallback if the decision is ever revisited, and it is
+  the only true suppression route: `G_Responder` calls the ZScript responder at
+  `g_game.cpp:1088` and returns if it ate the event, while `C_DoKey` is not
+  reached until `:1152`.
+- No geometric hand-picking is forced on us. `BT_USE` is one bit for two hands
+  (there is no `BT_OFFHANDUSE`; the full list is `constants.zs:832-870`), which
+  would have required "the hand with a cone target wins, main breaks the tie".
+  A KEYCONF action can simply be bound per hand.
+- We do not inherit the `doublebind pad_a "slot 3"` collision in the stock VR
+  layout, where a quickly-retried grab would switch weapon.
+- `RS_ShieldSawQ`'s existing `BT_USE` reads (`zscript/ssq/state.zs:270-274` and
+  `:916`) are left alone. The shield keeps the bit; we never contend for it.
+
+### Still worth copying from the shield
+
+Its `OnPress` (`state.zs:321-342`) computes hand-to-shoulder distance and
+`return`s if `!atMount`. It never writes `cmd.buttons`. A press at the shoulder
+draws the shield; anywhere else it passes straight through to the door. That is
+observe-and-yield, shipped, on Quest — and it stays the reference implementation
+for how our gate behaves even though we are no longer sharing a bit.
+
+---
+
+## D2–D13 — DECIDED 2026-10-24
+
+Taken in one sitting. Where the owner went against the report's recommendation
+it is marked, with the reason, because a future session will otherwise "correct"
+it back.
+
+| # | Decision | |
+|---|---|---|
+| **D2** | **Three acts** — point → lock → launch. Lock on the **press edge**, catch on the hold. | as recommended |
+| **D3** | **Wrist tip only.** Mode 1, differencing `AttackPitch`. **Mode 0 dropped** — frame-broken on stock. | as recommended |
+| **D4** | **Release decides, by speed.** Moving = throw, at rest = drop. No separate throw input. | as recommended |
+| **D5** | **Stand-off carry.** Object floats where it was grabbed, not dragged to the face. Must **freeze on `menuactive`**. | as recommended |
+| **D6** | **Moot — no decision needed.** See below. | — |
+| **D7** | **TWO systems.** Claw and distance grab stay separate. | **against the recommendation** |
+| **D8** | **A `Service`**, shipped with the grab, reachable by name only, answering "what is in this hand's way" with evidence rather than permission. | as recommended |
+| **D10** | **Laser blocked by walls.** `VisualThinker` chain for the shaft; `ModifyBobLayer3D` on a psprite for hand-glued parts. Route psprite layers by **explicit caller, never layer id**. | as recommended |
+| **D11** | **Parked** with the dual-weapon question. | deferred |
+| **D12** | **Voxel/model swap on lock AND through the flight.** | **against the recommendation** |
+| **D13** | **Built-in network ID** for identity after acquisition. | as recommended |
+
+### D6 was never a question for this mechanic
+
+"Does a held monster keep thinking?" came from the Power Loader, whose purpose
+is seizing and crushing Aliens, and from the saber's Force grip. **The distance
+grab cannot hold a living monster at all.** `rs_grabpolicy.zs:694-696`:
+
+```zscript
+if (a.bISMONSTER)
+{
+    if (a.Health > 0) return null;
+```
+
+Only corpses are ever grabbable, and the policy says why — *"it is a way of
+deleting monsters. A corpse is a prop, and one worth having."* The synthesis
+report was writing about all three systems together and carried the question
+across. Nothing to decide.
+
+### D7 — why two systems, against the recommendation
+
+The report argued one system because *"they differ by three numbers and a
+bool."* That understates it: **the claw grabs living Aliens and crushes them;
+the distance grab refuses anything living** (D6 above). That is not a parameter
+difference, it is a different mechanic.
+
+The cost the report warned of is real and must be managed rather than dismissed:
+two systems means **two flag-ownership implementations that can both touch one
+actor**, which is the §11.2 trap. Mitigation: the two must never hold the same
+object at once, and whichever takes an object is the single named owner of its
+flag backup. The desktop tree states that rule three times because it bit three
+times.
+
+### D12 — voxel through the flight, against the recommendation
+
+The owner wants the swap to persist for the whole gesture: *"being able to
+distance grab a sprite and have it turn into a 3d model in the air while flying
+to me, or a voxel, was a lot of fun."* The report recommended lock-only and
+warned that keeping it through flight **must be tested against two specific
+paths**:
+
+- **`Become`** (`rs_distance.zs:747-765`) swaps the actor mid-catch, so the lent
+  model is on the object that is being discarded.
+- **`AskTake`** / `OnTake` can consume the object on the way in — a weapon that
+  equips, a third copy that becomes ammo — so there is nothing left to take the
+  model back off.
+
+Both must be handled before this ships, or an object ends up permanently wearing
+a borrowed model with nothing able to remove it. Same shape as the flag-ownership
+trap: whoever lends is the single owner of the restore, on every exit path
+including the unplanned ones.
+
+---
+
+## Open, carried forward
+
+- **D9 — the flight: parabola or impulse.** The one genuinely open *design*
+  question. Recommendation on record: build impulse-and-steer, keep the parabola
+  behind a cvar, settle it in the headset. Lanes 1 and 7 disagree and the
+  disagreement is real — lane 7 is right on the engineering, lane 1 right on the
+  risk, since the parabola is the only finished part and `MeasureArc` exists
+  because a kinematic path can be route-planned and an impulse path cannot.
+- Every other decision has a recommendation in §13 and none has been taken yet.
+
+---
+
+## D9 — THE FLIGHT: impulse-and-steer, parabola behind a cvar. DECIDED 2026-10-24.
+
+The owner took the §10.1 recommendation. Lanes 1 and 7 disagreed here and the
+disagreement was real: lane 1 ports `RS_Pull` almost whole, lane 7 wanted it
+deleted.
+
+**Why impulse wins on the engineering.** `RS_Pull` flies a **kinematic**
+parabola — `a.Vel = (0,0,0)` in five places, position written per step — which
+fights the engine exactly where `rs_throw.zs:9-13` says to use it: *"AND THEN
+DOOM DOES EVERYTHING ELSE. `P_XYMovement` and `P_ZMovement` give gravity,
+floors, ceilings, stairs, wall sliding, bouncing and impact — for a thrown
+object those are not features to implement, they are what an actor with a
+velocity already does."* A scripted path also **cannot carry mass**, so a barrel
+and a clip fly identically while the outbound throw has the best weight model in
+the package (`rs_mass.zs`), and it **cannot be a reel** — a continuous pull-in
+rather than a launch-and-arrive.
+
+**The shape:** a launch velocity, `P_XYMovement`/`P_ZMovement` own the flight,
+with bounded steering acceleration toward a lead point scaled by `1/mass`.
+
+**Why the parabola stays behind a cvar.** It is the only *finished* part of the
+desktop flight — `MeasureArc`, `flyHold`, the tumble, the flag ownership and the
+radius shrink are all tuned against each other. The two paths share acquisition,
+lock, catch, hold and release; only the ~300 ms between launch and arrival
+differs, which makes it the cheapest thing in the system to A/B. **Do not delete
+`RS_Pull` before both have been flown in the headset.**
+
+### THE ONE LESSON AT RISK — check it, do not assume it
+
+Lane 7 asserts all of §11's hard-won lessons carry forward. **§11.3 is the one
+that does not obviously survive, because an impulse path has no arc to plan.**
+
+The desktop lesson: *"Clamping is the wrong remedy: it does not lower the arc,
+it SQUASHES it, pinning the object to whatever surface it met and dragging it
+there. Every 'it hops and settles instead of sailing' report is that clamp doing
+its job."* `MeasureArc` exists precisely because a kinematic path **can** be
+planned against a whole route — it samples one point per 24 units, takes
+`minCeil` and `maxFloor` over the entire path, and decides the shape **once, at
+launch**.
+
+An impulse path gets mass and the engine's physics for free and **loses route
+planning**: a pull under a low doorway stops being a flatter arc and becomes a
+steering problem. The generalised rule still applies — *decide the shape of a
+motion once, at the start, against the whole route; clamping per-tic against a
+local obstacle deforms it instead of avoiding it* — but the mechanism that
+delivered it does not port. **This is the specific thing to watch when the
+impulse path meets a doorway.**
+
+Also carried forward regardless of path (§11.3, smaller): a Doom pickup's
+`radius` is a **pickup-trigger volume, not a physical hull** — a clip is radius
+20, the same as a shotgun guy — and *"flying a 40-unit-wide box through a
+doorway for an object the size of a fist is what produced twelve blocked pulls
+in one session, every one of them a radius-20 pickup and not one of them a
+radius-10 barrel."*
+
+And §11.1's dwell requirement is path-independent and **will** bite on Quest: a
+state that exists for zero tics cannot be observed by anything reading last
+tic's value, so every arrival, catch and handover needs a dwell. The trap hides
+at short range because the residual error is a constant number of units, so it
+appears only on the first long pull — *"the loader's clean record is no evidence
+against it"* at 72 units when the cone reaches 512.
+
+---
+
+## Corrections to this file
+
+**The Aliens `MENUDEF.ae` bug I recorded here on 2026-10-24 was already fixed,
+and I removed it.** I relayed it from `AUDIT_2026-10-23_bugs_and_qol.md` §4.1
+without checking the file. `MENUDEF.ae` carries its own comment dated
+2026-10-23 recording the fix, and the design changed as well: those values were
+usercmd button masks, which was the wrong shape for the choice — *"'Either' let
+the grip and the trigger both grab, and 'Use key' put `BT_USE` in the mask,
+which grabs a magazine AND opens the door behind it."* It is `rsr_grab_with`
+now, picking one input and intercepting it for the duration of the reload.
+
+Lesson for this file: an audit document records what was true when it was
+written. Check the tree before repeating it.

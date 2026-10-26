@@ -1,0 +1,184 @@
+// THE OPTIONS, AND EVERY PAGE MUST BE REACHABLE.
+//
+// An orphaned OptionMenu compiles clean, loads clean and says nothing. In a
+// headset it reads as the feature having been removed -- which is exactly what
+// happened to ten pages of the desktop package when it was split out, because
+// they hung off a parent menu that did not come across. So: this file has one
+// root, it is added to the engine's own Options menu, and every page below is
+// linked from it. build.ps1 checks that nothing is orphaned.
+
+AddOptionMenu "OptionsMenu"
+{
+	StaticText ""
+	Submenu "Distance Grab", "RSQDG_Options"
+}
+
+OptionValue "RSQDG_LaserQuality"
+{
+	0, "Off"
+	1, "Low  -- core only"
+	2, "Medium  -- core, halo, flare"
+	3, "High  -- everything"
+}
+
+OptionMenu "RSQDG_Options"
+{
+	Title "DISTANCE GRAB"
+	StaticText ""
+	Option "Distance grab", "rsqdg_on", "OnOff"
+	StaticText ""
+	StaticText "Turn your palm out to arm the reach. Flick your", 1
+	StaticText "wrist up to pull. Roll your palm back to let go.", 1
+	StaticText ""
+	Submenu "Reach and aim",        "RSQDG_Reach"
+	Submenu "The gesture",          "RSQDG_Gesture"
+	Submenu "The pull",             "RSQDG_Flight"
+	Submenu "Catching and holding", "RSQDG_Catch"
+	Submenu "The laser",            "RSQDG_Laser"
+	StaticText ""
+	Submenu "Diagnostics",          "RSQDG_Debug"
+	StaticText ""
+	Control "Grab -- main hand", "+rsqdg_main"
+	Control "Grab -- off hand",  "+rsqdg_off"
+	StaticText "Only needed if the button fallback is on.", 1
+}
+
+OptionMenu "RSQDG_Reach"
+{
+	Title "REACH AND AIM"
+	StaticText ""
+	StaticText "HOW FAR and HOW PRECISELY are separate", 1
+	StaticText "numbers. One slider for both would force", 1
+	StaticText "one of them to be wrong.", 1
+	StaticText ""
+	Slider "Reach (map units)",   "rsqdg_reach",  64, 2048, 32, 0
+	Slider "Spread (degrees)",    "rsqdg_spread", 2,  45,   1,  1
+	StaticText ""
+	StaticText "The spread is a real cone in the room, not in", 1
+	StaticText "map space -- so pointing up needs no more", 1
+	StaticText "precision than pointing sideways.", 1
+	StaticText ""
+	Option "Needs line of sight", "rsqdg_sight",   "OnOff"
+	Option "Corpses grabbable",   "rsqdg_corpses", "OnOff"
+	StaticText "A living monster is never grabbable.", 1
+}
+
+OptionMenu "RSQDG_Gesture"
+{
+	Title "THE GESTURE"
+	StaticText ""
+	Option "Palm gate", "rsqdg_palm", "OnOff"
+	StaticText "Off means the reach is always armed, which", 1
+	StaticText "pulls things while you hold a gun.", 1
+	StaticText ""
+	Slider "Palm roll target",    "rsqdg_palm_roll",  0,   180, 5, 1
+	Slider "Palm roll tolerance", "rsqdg_palm_tol",   5,   90,  5, 1
+	Slider "Minimum hand pitch",  "rsqdg_palm_pitch", -90, 60,  5, 1
+	StaticText ""
+	StaticText "Pitch is paired with roll because roll alone", 1
+	StaticText "is not safe -- an idle hand already rests", 1
+	StaticText "inside any useful roll tolerance.", 1
+	StaticText ""
+	Slider "Flick strength needed", "rsqdg_flick_deg", 1, 20, 0.5, 1
+	StaticText "Degrees of wrist pitch per tic. If the pull", 1
+	StaticText "fires while you are only aiming, RAISE this.", 1
+	StaticText ""
+	Option "Button fallback", "rsqdg_button", "OnOff"
+	StaticText "Adds a keypress alongside the gesture. Bind", 1
+	StaticText "it on the previous page.", 1
+	StaticText ""
+	Slider "Pose jump cutoff (m)", "rsqdg_jump_m", 0.25, 3.0, 0.25, 2
+	StaticText "Apparent hand travel in one tic that means", 1
+	StaticText "tracking lied. No arm moves a metre in 28ms.", 1
+}
+
+OptionMenu "RSQDG_Flight"
+{
+	Title "THE PULL"
+	StaticText ""
+	StaticText "The object is given a velocity and the engine", 1
+	StaticText "moves it, so it collides, slides along walls", 1
+	StaticText "and climbs stairs on its own.", 1
+	StaticText ""
+	Slider "Pull speed (m/s)",      "rsqdg_flight_speed", 2, 40, 1, 1
+	Slider "Steering (m/s2)",       "rsqdg_steer",        5, 150, 5, 0
+	StaticText ""
+	Slider "Reference mass",        "rsqdg_mass_ref",     10, 400, 10, 0
+	StaticText "Mass at which an object gets full steering.", 1
+	StaticText "Heavier turns lazily, lighter snaps to hand.", 1
+	StaticText ""
+	Option "Gravity during the pull", "rsqdg_flight_gravity", "OnOff"
+	StaticText "On makes a long pull sag and a heavy thing", 1
+	StaticText "visibly harder to drag up to you.", 1
+	StaticText ""
+	Slider "Flight width",   "rsqdg_flight_radius",  1, 16, 1, 0
+	StaticText "A clip's collision is 20 units wide and looks", 1
+	StaticText "like 4. Raise this if things pass through too", 1
+	StaticText "much; lower it if they snag in doorways.", 1
+	StaticText ""
+	Slider "Give up after (tics)", "rsqdg_flight_timeout", 35, 350, 35, 0
+}
+
+OptionMenu "RSQDG_Catch"
+{
+	Title "CATCHING AND HOLDING"
+	StaticText ""
+	StaticText "Keep your palm out as it arrives and you", 1
+	StaticText "catch it. Turn your hand away and you do not.", 1
+	StaticText ""
+	Slider "Catch distance", "rsqdg_catch_radius", 8, 64, 4, 0
+	Slider "Catch window (tics)", "rsqdg_catch_hold", 1, 16, 1, 0
+	StaticText "How long it waits on your palm before giving", 1
+	StaticText "up. Never 0 -- a thing that exists for no tics", 1
+	StaticText "cannot be caught at all.", 1
+	StaticText ""
+	Option "Use pickups on catch", "rsqdg_catch_takes", "OnOff"
+	StaticText "On: catch a weapon and it equips. Off: carry", 1
+	StaticText "everything instead, so you can move a medikit.", 1
+	StaticText ""
+	Slider "Throw strength", "rsqdg_throw_scale", 0.25, 4.0, 0.25, 2
+	StaticText "Open your hand while moving to throw; open it", 1
+	StaticText "at rest to drop.", 1
+}
+
+OptionMenu "RSQDG_Laser"
+{
+	Title "THE LASER"
+	StaticText ""
+	Option "Quality", "rsqdg_laser", "RSQDG_LaserQuality"
+	StaticText "Beads per hand: 10 / 26 / 48. One bead is one", 1
+	StaticText "sprite, so this is the frame cost to watch.", 1
+	StaticText ""
+	Option "Draw when aiming at nothing", "rsqdg_laser_idle", "OnOff"
+	StaticText "You cannot aim an invisible line.", 1
+	StaticText ""
+	Slider "Core width",  "rsqdg_laser_core_w", 0.3, 4.0,  0.1,  2
+	Slider "Core bright", "rsqdg_laser_core_a", 0.1, 1.0,  0.05, 2
+	Slider "Halo width",  "rsqdg_laser_halo_w", 1.0, 16.0, 0.5,  1
+	Slider "Halo bright", "rsqdg_laser_halo_a", 0.0, 0.8,  0.02, 2
+	StaticText "The halo is what makes it read as light", 1
+	StaticText "rather than as a wireframe.", 1
+	StaticText ""
+	Slider "Mote width", "rsqdg_laser_mote_w",  0.5, 8.0, 0.5,  1
+	Slider "Mote rate",  "rsqdg_laser_mote_hz", 0.1, 4.0, 0.1,  2
+	StaticText "Motes run toward your palm and speed up as", 1
+	StaticText "they arrive. High quality only.", 1
+	StaticText ""
+	Slider "Flare size", "rsqdg_laser_flare_w", 2.0, 24.0, 1.0, 1
+	StaticText ""
+	Option "Colour the target", "rsqdg_lightup", "OnOff"
+	Slider "Pulse period (tics)", "rsqdg_flash", 6, 70, 2, 0
+}
+
+OptionMenu "RSQDG_Debug"
+{
+	Title "DIAGNOSTICS"
+	StaticText ""
+	Option "Report what happened", "rsqdg_debug", "OnOff"
+	StaticText "Locks, launches, catches, releases.", 1
+	StaticText ""
+	Option "Report why it refused", "rsqdg_trace", "OnOff"
+	StaticText "Every refusal in words -- \"nothing in the", 1
+	StaticText "cone\", \"the other hand has it\". Turn this on", 1
+	StaticText "first when something does nothing.", 1
+}

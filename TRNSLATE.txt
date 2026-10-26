@@ -1,0 +1,35 @@
+// THE COLOUR LANGUAGE.
+//
+// Four states, and the colour says which one you are in:
+//
+//   considered      neutral <-> ORANGE    the cone is on it
+//   locked          orange  <-> GREEN     you have taken hold of it at range
+//   in flight       nothing               the flash stops
+//   in your hand    green, solid          settled, it is yours
+//
+// ORANGE IS THE SHARED END of the first two cycles on purpose, so taking hold
+// of something continues the colour it was already showing instead of starting
+// a new one. The flash changes what it is DOING, not what it IS.
+//
+// Flight clearing the flash entirely is deliberate: the arc is the feedback by
+// then -- the object is crossing the room at you and there is nothing left to
+// tell you -- and a thing still pulsing while it flies reads as unfinished
+// business.
+//
+// A DESATURATE-AND-TINT (`%`) rather than a palette range remap, because this
+// has to work on an arbitrary actor from an arbitrary mod. A range remap
+// assumes the sprite's colours live where you think they do; the `%` form reads
+// the source's luminance and tints it, so it behaves on anything.
+
+// Considered. Amber rather than pure orange -- it has to read as "noticed"
+// rather than "damaged", and red-orange on a barrel looks like it is already
+// on fire.
+RSQDG_Considered = "0:255=%[0.00,0.00,0.00]:[1.60,0.95,0.35]"
+
+// Locked. Green means "mine" everywhere in this language, so every state of a
+// thing you own is a variation on the same colour.
+RSQDG_Locked = "0:255=%[0.00,0.00,0.00]:[0.35,1.60,0.45]"
+
+// Held and settled. The same green, brighter and used solid rather than
+// flashing -- it is the one state that is not a question.
+RSQDG_Held = "0:255=%[0.00,0.00,0.00]:[0.45,1.75,0.55]"

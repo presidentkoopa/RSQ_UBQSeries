@@ -1,0 +1,47 @@
+// HANDLER REGISTRATION, AND THE ORDER IS THE SEMANTICS.
+//
+// Not a formality. Handlers tick in registration order, which is the order this
+// list gives, and that decides who sees whose writes within a single tic. The
+// desktop build paid for this twice:
+//
+//   - its catch test lived in a handler registered 4th and asked "is the flying
+//     object on my palm" BEFORE the handler registered 7th wrote the object's
+//     new position -- so the only position the test ever saw was last tic's.
+//     The catch window was not tight, it was SHUT, and it only worked at arm's
+//     reach because the residual error is a constant number of units.
+//   - a sibling package found that "event handlers tick in load order, so the
+//     last writer in the tic wins and correctness depended on pk3 order".
+//
+// So: measurement first, decisions second, motion last. Anything that reads a
+// pose must be registered before anything that acts on one.
+//
+// The three roles, and they must stay in this order:
+//
+//   RSQDG_Aim    MEASUREMENT. Runs the cone, publishes each hand's target and
+//                whether the pose is trustworthy. Touches nothing.
+//   RSQDG_Grab   DECISION. Reads the published target, owns the lock and the
+//                lease, and decides on release whether to launch.
+//   RSQDG_Flight MOTION. Owns the object in the air -- its velocity, its
+//                borrowed flags, and its arrival. Nothing else may touch a
+//                flying object: one owner of the backup, per object.
+//   RSQDG_Hold   MOTION. Owns a carried object -- its position, its borrowed
+//                flags, and the freeze that keeps a menu from dragging it into
+//                the player's chest. After Flight, which hands over to it.
+//   RSQDG_Laser  DRAWING. The beam. Reads everything, writes nothing but its
+//                own pooled VisualThinkers.
+//   RSQDG_Tell   DRAWING. Reads what the others decided THIS tic and colours
+//                the object. Last, so it is never a tic behind.
+//
+// Putting Tell before Grab would make every colour change lag the thing it
+// describes by one tic; putting Grab before Aim would make the lock act on last
+// tic's target, which is the exact shape of the bug described above.
+//
+// AND THE CATCH TEST LIVES INSIDE RSQDG_Flight, not in a handler of its own.
+// That is the direct lesson of the desktop bug: a catch test in an EARLIER
+// handler than the code that moves the object can only ever see last tic's
+// position. Whoever moves it resolves it.
+
+GameInfo
+{
+	AddEventHandlers = "RSQDG_Aim", "RSQDG_Grab", "RSQDG_Flight", "RSQDG_Hold", "RSQDG_Tell", "RSQDG_Laser"
+}

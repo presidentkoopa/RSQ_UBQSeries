@@ -1,0 +1,17 @@
+version "4.14"
+
+// RSQ_DistanceGrab -- point at a thing across the room and pull it to you.
+//
+// Stock QuestZDoom 17.3 only. No engine change is required anywhere in this
+// package, and none may be introduced: the Quest target is the shipping engine.
+//
+// Decisions and their reasoning: docs/DECISIONS.md
+
+#include "zscript/rsqdg/reach.zs"
+#include "zscript/rsqdg/cone.zs"
+#include "zscript/rsqdg/aim.zs"
+#include "zscript/rsqdg/grab.zs"
+#include "zscript/rsqdg/flight.zs"
+#include "zscript/rsqdg/hold.zs"
+#include "zscript/rsqdg/tell.zs"
+#include "zscript/rsqdg/laser.zs"

@@ -1,0 +1,181 @@
+// AN UNDECLARED CVAR IS NOT AN ERROR IN ZSCRIPT, IT IS A ZERO.
+//
+// So every name the code reads is declared here, and a reach of 0 or a spread
+// of 0 switches the cone off silently rather than loudly. The spin-out of the
+// desktop package nearly shipped with nineteen cvars stranded in the wrong
+// region of its own CVARINFO for exactly this reason.
+//
+// ALL `user`, NOT `server`. These change what YOU see and what YOUR hands do;
+// nothing here is read by the playsim on another machine's behalf. The voxel
+// pack's own cvarinfo states the rule the other way round and is worth
+// repeating: anything that physically alters actor data in the playsim MUST be
+// a server cvar or multiplayer will desync. Nothing in this file does.
+
+// ---- the cone ------------------------------------------------------------
+// REACH AND SPREAD ARE SEPARATE AND MUST STAY SEPARATE. How far you can pull
+// from and how precisely you have to point are different complaints; one
+// slider for both forces one of them to be wrong.
+user bool  rsqdg_on       = true;    // the whole mechanic
+user float rsqdg_reach    = 512.0;   // map units. ~15 m horizontally
+user float rsqdg_spread   = 12.0;    // degrees, half-angle. A real cone in the
+                                     // room, not in map space -- see cone.zs
+user bool  rsqdg_sight    = true;    // through a wall is not pointing at it
+user bool  rsqdg_corpses  = false;   // a corpse is a prop. Off by default: the
+                                     // novelty beat the feature on desktop
+
+// ---- THE TRIGGER IS THE GESTURE ------------------------------------------
+//
+// There is no button in the gesture. Turning your palm out arms the reach and
+// HOLDS it, the wrist flick pulls, and rolling your palm back lets go. Three
+// acts, one continuous motion, nothing to press.
+//
+// AND A CONTINUOUSLY READABLE TRIGGER CANNOT GET STUCK, which is the real prize
+// over any button. A netevent is an edge: a release swallowed by a focus change
+// or a menu leaves the grab held forever, which is why the button path below
+// needs a timeout and the pose path does not. The pose is read fresh from the
+// controller every tic -- if your palm is not out, you are not holding
+// anything, and nothing has to be remembered to know that.
+//
+// The button survives as an optional fallback for a desktop test, or for anyone
+// who prefers one. With both on they simply both work.
+user bool rsqdg_button = false;
+
+// ---- THE PALM GATE -------------------------------------------------------
+//
+// WHERE THE HAND IS, not what it is doing. Turn your palm out and the reach
+// arms; hold the controller in a gun grip and it does not. The button alone
+// says "grab" but cannot say "I meant to reach", so without this the hand pulls
+// things across the room from a gun grip and the only warning is that it
+// happened.
+//
+// GATED ON THE TARGET, not on the drawing. Gating the beam alone would hide the
+// ray and leave the grab reaching exactly as before. No target means no beam,
+// no lock and no pull, from one test.
+//
+// THE POSE GATES, IT DOES NOT TRIGGER, and that is a netplay rule rather than a
+// preference. A pose is local -- the VR fields are written for the camera player
+// only -- so a pose-only trigger cannot be replicated. The netevent travels; the
+// pose decides whether it meant anything.
+user bool  rsqdg_palm       = true;
+
+// PALM OUT, a quarter turn. Compared as a DISTANCE from this target using the
+// ABSOLUTE roll, so one number covers both wrists -- a right hand turning
+// palm-out rolls one way and a left hand the other.
+user float rsqdg_palm_roll  = 90.0;
+
+// How far off still counts. Generous on purpose: this is a gross wrist position,
+// not precision aiming.
+user float rsqdg_palm_tol   = 30.0;
+
+// AND PITCH, BECAUSE ROLL ALONE IS NOT SAFE. An idle hand rests within any
+// useful roll tolerance, so roll by itself arms the reach whenever you are not
+// thinking about it. Pitch is what has no overlap: a hand hanging at your side
+// sits around forty degrees below level and a hand reaching at something does
+// not. Degrees; the hand must be ABOVE this. -181 disables this half.
+user float rsqdg_palm_pitch = -30.0;
+
+// ---- trusting the pose ---------------------------------------------------
+// The VR hand fields do NOT freeze when a menu opens -- they collapse to the
+// body position and snap back, so the first frame either side reads as a huge
+// swing. Latched on a jump rather than on `menuactive`, because a jump test
+// needs no engine symbol, also catches tracking loss, and cannot be wrong about
+// something it does not consult.
+//
+// Metres of apparent hand travel in ONE TIC (28.6 ms) that means the pose lied.
+// No arm moves a metre in 28 ms.
+user float rsqdg_jump_m = 1.0;
+
+// ---- the tell ------------------------------------------------------------
+user bool  rsqdg_lightup  = true;    // colour the thing the cone is considering
+user float rsqdg_flash    = 24.0;    // tics per full cycle. SLOW on purpose --
+                                     // a room full of pickups must not strobe
+
+// ---- the launch gesture --------------------------------------------------
+// DEGREES OF WRIST PITCH PER TIC, so it is a RATE and not a total: a slow
+// deliberate lift of the whole forearm never crosses it however far it travels,
+// while a sharp tip of the wrist does immediately. If it ever misfires the fix
+// is to RAISE this, never to shorten the sampling window.
+user float rsqdg_flick_deg = 5.0;
+
+// ---- the flight ----------------------------------------------------------
+// Impulse-and-steer: the object is given a velocity and the engine moves it,
+// which is where collision, wall sliding and stairs come from for free.
+user float rsqdg_flight_speed   = 12.0;   // metres/sec the steering aims for
+user float rsqdg_steer          = 40.0;   // m/s^2 of steering authority, at
+                                          // the reference mass
+user float rsqdg_mass_ref       = 100.0;  // the mass that gets full authority.
+                                          // Heavier turns lazily, lighter snaps
+user bool  rsqdg_flight_gravity = false;  // let a pull sag. A legitimate feel
+                                          // and the cheapest thing here to A/B
+user float rsqdg_flight_radius  = 2.0;    // a pickup's radius is a TRIGGER
+                                          // volume, not a hull -- a clip is 20
+                                          // units wide and looks like 4
+user float rsqdg_flight_timeout = 140.0;  // tics before a pull that cannot
+                                          // arrive is dropped rather than left
+                                          // circling
+
+// ---- arrival -------------------------------------------------------------
+// THE DWELL IS NOT POLITENESS. A state that exists for zero tics cannot be
+// observed by anything reading last tic's value, and that is exactly how the
+// desktop catch window came to be shut rather than merely tight. Four tics is
+// ~114 ms: several real looks at the real arrival position, including one after
+// the hand's own pose has settled.
+user float rsqdg_catch_radius = 24.0;
+user float rsqdg_catch_hold   = 4.0;
+
+// CONSUMED ON THE WAY IN, or carried?
+//
+// On: catching a weapon equips it and catching a medikit heals you -- "caught
+// it and used it right away". Off: everything is carried instead, which is the
+// only way to pull a medikit across a room in order to take it somewhere.
+//
+// A switch rather than a rule because both are real wants, and the desktop
+// build's mistake was offering only one of them.
+user bool rsqdg_catch_takes = true;
+
+// ---- the throw -----------------------------------------------------------
+// Opening your hand while it is moving throws what you are carrying; opening it
+// at rest drops it. One act, two meanings, decided by whether your arm was
+// doing anything -- so there is no separate throw input to get wrong.
+//
+// Scales the differenced palm velocity. There is no native hand velocity on
+// this engine, so the peak of a short window is differenced from the pose.
+user float rsqdg_throw_scale = 1.0;
+
+// ---- the laser -----------------------------------------------------------
+// QUALITY TIERS, because the cost is real and the owner chooses it rather than
+// having it chosen for him. Beads per active hand, where one bead is one
+// additive sprite draw:
+//
+//   0  off
+//   1  low     10 -- core only. A clean thin line.
+//   2  medium  26 -- core + halo + terminus flare. Reads as light.
+//   3  high    48 -- everything, including motes travelling toward the palm.
+//
+// Drawn as pooled VisualThinkers: world-space, DEPTH-CORRECT (so it is stopped
+// by walls, which a psprite laser is not), interpolated by the renderer, and
+// allocated once rather than rebuilt per tic. An earlier attempt at this drew
+// 84 beams per hand every tic and destroyed the framerate.
+user int   rsqdg_laser          = 3;
+user bool  rsqdg_laser_idle     = true;   // draw even when it has found
+                                          // nothing. You cannot aim an
+                                          // invisible thing, so without this
+                                          // every miss looks like a broken mod
+user float rsqdg_laser_core_w   = 1.1;    // the bright line
+user float rsqdg_laser_core_a   = 0.85;
+user float rsqdg_laser_halo_w   = 4.5;    // the wide dim line underneath. This
+user float rsqdg_laser_halo_a   = 0.22;   // is the layer that makes it light
+                                          // rather than a wireframe
+user float rsqdg_laser_mote_w   = 2.6;    // beads running target -> palm
+user float rsqdg_laser_mote_hz  = 0.9;    // cycles/sec. They ACCELERATE as they
+                                          // arrive: constant rate reads as a
+                                          // conveyor, accelerating reads as
+                                          // being drawn in
+user float rsqdg_laser_flare_w  = 9.0;    // the pulse on the thing itself
+
+// ---- diagnostics ---------------------------------------------------------
+// Separate from each other because they answer different questions: `debug`
+// reports what happened, `trace` reports why something refused. A refusal that
+// says nothing is five faults with one symptom.
+user bool  rsqdg_debug    = false;
+user bool  rsqdg_trace    = false;
