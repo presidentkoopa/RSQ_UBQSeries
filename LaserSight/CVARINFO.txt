@@ -1,0 +1,75 @@
+// RSQ_LaserSight -- every option is per player (user). Laid out like UZDXREMA's
+// laser menu, section by section (MENUDEF.txt).
+
+// ---- laser pointer ------------------------------------------------------------
+user bool  rsqls_on           = true;   // the whole mod
+user bool  rsqls_main         = true;   // per hand on/off -- bound to keys in KEYCONF
+user bool  rsqls_off          = true;
+user bool  rsqls_pointer      = true;   // the dot where it lands
+user bool  rsqls_show_melee   = false;  // show on a fist, chainsaw, saber, shield or empty hand
+user bool  rsqls_ready_only   = false;  // hide while switching/reloading
+user float rsqls_spot_size    = 1.0;
+user float rsqls_spot_a       = 1.0;
+user int   rsqls_glow         = 3;      // 0 off, 1 bloom, 2 real light, 3 both
+user float rsqls_glow_scale   = 1.8;    // bloom size (times the dot), and the light's reach
+user float rsqls_glow_int     = 1.0;
+user bool  rsqls_ir           = false;  // only visible through light amplification goggles
+
+// ---- laser beam -----------------------------------------------------------------
+user bool  rsqls_beam         = true;
+user float rsqls_beam_a       = 0.75;
+user float rsqls_beam_w       = 1.0;
+user float rsqls_beam_glow    = 1.0;    // the halo round the core
+user float rsqls_beam_emissive= 1.0;    // 1..2: a second core stacked on the first
+user float rsqls_beam_taper   = 1.0;    // far end's width as a share of the near end's
+user float rsqls_beam_fade    = 0.0;    // map units it is drawn before dying away; 0 off
+user int   rsqls_beam_length  = 0;      // 0 to what it hits, 1 half, 2 fixed
+user float rsqls_beam_fixed   = 200.0;  // map units, for length 2
+user float rsqls_beam_daylight= 0.35;   // beam brightness in FULL light, as a share of
+                                        // the dark: real beams show in the dark
+user float rsqls_muzzle_fwd   = 0.18;   // where the beam leaves the gun, metres from
+user float rsqls_muzzle_up    = 0.03;   // the grip along the gun's own axes
+user float rsqls_muzzle_side  = 0.0;
+user float rsqls_lead         = 1.0;    // tics drawn AHEAD of the hand, cancelling the
+                                        // 35 Hz interpolation lag. 0 off
+
+// ---- target lock -----------------------------------------------------------------
+user bool  rsqls_lock          = true;  // react to a live hostile
+user float rsqls_lock_tighten  = 0.0;   // the dot shrinks onto it by this share
+user float rsqls_lock_rate     = 2.2;   // pulse, Hz
+user float rsqls_range         = 2048.0;// how far the trace looks, map units (~60 m)
+user float rsqls_dot_range     = 0.0;   // no dot beyond this; 0 = as far as the range
+user bool  rsqls_target_recolor= false; // turn the target colour on a hostile
+user color rsqls_col_target    = "ff e0 20";
+
+// ---- colours -----------------------------------------------------------------------
+user int   rsqls_color_mode    = 1;     // 0 one colour, 1 per hand, 2 beam and dot separately
+user color rsqls_col_main      = "ff 20 10";
+user color rsqls_col_off       = "20 ff 30";
+user color rsqls_col_dot_main  = "ff 20 10";
+user color rsqls_col_dot_off   = "20 ff 30";
+user bool  rsqls_col_per_slot  = false;
+user color rsqls_col_slot1     = "ff 20 10";
+user color rsqls_col_slot2     = "ff 80 10";
+user color rsqls_col_slot3     = "ff e0 20";
+user color rsqls_col_slot4     = "20 ff 30";
+user color rsqls_col_slot5     = "20 e0 ff";
+user color rsqls_col_slot6     = "30 50 ff";
+user color rsqls_col_slot7     = "c0 30 ff";
+user color rsqls_col_slot8     = "ff 20 e0";
+user color rsqls_col_slot9     = "ff ff ff";
+user color rsqls_col_slot0     = "ff 20 10";
+
+// ---- colour cycling -----------------------------------------------------------------
+user bool  rsqls_cycle         = false;
+user float rsqls_cycle_speed   = 60.0;  // degrees of hue a second
+user bool  rsqls_cycle_dot     = true;
+
+// ---- headshot reaction --------------------------------------------------------------
+user bool  rsqls_head          = false; // the top fifth of a monster counts as its head
+user color rsqls_col_head      = "ff ff ff";
+user bool  rsqls_head_pulse    = true;
+user float rsqls_head_pulse_hz = 4.0;
+
+// ---- feedback ------------------------------------------------------------------------
+user bool  rsqls_haptics       = true;  // a tick in the hand when you toggle it
