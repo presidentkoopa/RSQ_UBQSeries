@@ -172,10 +172,16 @@ class RSQDG_Mass play
 		return lb > 0 ? lb : 0;
 	}
 
+	// FROM THE CLASS DEFAULTS, NOT THE LIVE SIZE. The flight thins a pulled
+	// object's radius and the carry thins a pickup's, so the live box changes
+	// under our own hands -- and a guess read from it changed with it: the same
+	// BD22/VoxelPack ShotgunSpawner weighed 2.3 kg at launch and 5.0 kg in the
+	// hand (rig, full load order, 2026-10-26). The class's own box never moves.
 	private static double Guess(Actor a)
 	{
-		double w = 2.0 * a.Radius / UNITS_PER_METRE;
-		double h = a.Height / UNITS_PER_METRE;
+		let def = GetDefaultByType(a.GetClass());
+		double w = 2.0 * def.Radius / UNITS_PER_METRE;
+		double h = def.Height / UNITS_PER_METRE;
 		double m = w * w * h * DEFAULT_DENSITY;
 		if (a is 'Inventory') return clamp(m, INV_MIN, INV_MAX);
 		return clamp(m, PROP_MIN, PROP_MAX);
