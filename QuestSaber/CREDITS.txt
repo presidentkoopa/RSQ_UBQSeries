@@ -23,4 +23,7 @@ EVERYTHING ELSE
   The hilt, blade and glow meshes, their skins, and every other sound are this pack's own --
   synthesized or built here, with no sample taken from any film or game.
 
-NOT FOR DISTRIBUTION.
+SHARING
+  Free to share as part of the Ultra Badass Quest series. Borrowed assets keep their authors'
+  terms: much of Ermac's work is MIT-licensed, and he is DoomVR's co-designer and has okayed its
+  use here. (The old "not for distribution" line was carried over from another repo by mistake.)
