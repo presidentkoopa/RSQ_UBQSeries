@@ -107,7 +107,7 @@ class RSQDG_Reach
 		double tol = Num("rsqdg_palm_tol",  p, 30.0);
 		if (abs(rl - tgt) > tol) return false;
 
-		// Not pointing at the floor. Negative disables the half.
+		// Not pointing at the floor. -180 or below disables the half.
 		double minPitch = Num("rsqdg_palm_pitch", p, -30.0);
 		if (minPitch > -180 && Pitch(pmo, hand) < minPitch) return false;
 

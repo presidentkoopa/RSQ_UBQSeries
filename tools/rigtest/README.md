@@ -24,7 +24,7 @@ symbols but no debug info). Channel 1 = right, 0 = left.
 ~13 deg UP, and the old FLICK 15 -> -12 tipped the hand DOWN; the mirrored grab
 read both the other way round. Ground truth: the pistol's puffs.)
     CATCH  back to AIM
-Left hand mirror: qz_lhand "-0.25 1.3 -0.3 15 30 -90". Walk: qz_lstick "0 1".
+Left hand mirror: qz_lhand "-0.25 1.3 -0.3 -11 30 -90". Walk: qz_lstick "0 1".
 
 ## The checks run on 2026-10-26 (all pass)
     clip pull + catch-and-use     lock t30, launch t47, catch t62; 4 buzzes = 4 vibrates

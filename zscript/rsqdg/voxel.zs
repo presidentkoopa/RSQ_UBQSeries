@@ -27,17 +27,26 @@ class RSQDG_Voxels : StaticEventHandler
 		if (!me.built) me.Build();
 		int s = a.sprite, f = a.frame;
 		for (int i = 0; i < me.sprites.Size(); i++)
-			if (me.sprites[i] == s && me.frames[i] == f) return true;
+			if (me.sprites[i] == s && (me.frames[i] == f || me.frames[i] < 0)) return true;
 		return false;
 	}
+
+	// Built at the first level load, not the first time something is aimed at:
+	// a pass over every lump is a hitch, and a load is where a hitch belongs.
+	override void WorldLoaded(WorldEvent e) { if (!built) Build(); }
 
 	private void Add(String key)
 	{
 		// "BAR1A", "bar1a0", "BAR1A1" ...: four letters of sprite, then the frame.
-		if (key.Length() < 5) return;
+		// Four letters alone ("BAR1") is every frame of that sprite (voxeldef.cpp).
+		if (key.Length() < 4) return;
 		key = key.MakeUpper();
-		int f = key.ByteAt(4) - 65;   // 'A'
-		if (f < 0 || f > 28) return;
+		int f = -1;
+		if (key.Length() >= 5)
+		{
+			f = key.ByteAt(4) - 65;   // 'A'
+			if (f < 0 || f > 28) return;
+		}
 		int s = Actor.GetSpriteIndex(key.Left(4));
 		if (s <= 0) return;
 		for (int i = 0; i < sprites.Size(); i++)
@@ -72,10 +81,14 @@ class RSQDG_Voxels : StaticEventHandler
 					int eq = ln.IndexOf("=");
 					if (eq > 0)
 					{
-						String key = ln.Left(eq);
-						key.StripLeftRight();
-						key.Replace("\"", "");
-						Add(key);
+						// One voxel can serve several sprites: `BAR1A BAR1B = "x"`.
+						String keys = ln.Left(eq);
+						keys.Replace("\"", " ");
+						keys.Replace(",", " ");
+						keys.Replace("\t", " ");
+						Array<String> parts;
+						keys.Split(parts, " ", TOK_SKIPEMPTY);
+						for (int q = 0; q < parts.Size(); q++) Add(parts[q]);
 					}
 				}
 				for (int j = 0; j < ln.Length(); j++)

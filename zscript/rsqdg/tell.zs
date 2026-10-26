@@ -95,7 +95,10 @@ class RSQDG_Tell : EventHandler
 	// A voxel-drawn host takes the colour flash instead of the glow twin.
 	private static bool VoxelFlash(Actor a, PlayerInfo p)
 	{
-		return RSQDG_Reach.Flag("rsqdg_voxel_flash", p, true) && RSQDG_Voxels.Drawn(a);
+		// Only while the glow is on: it flashes INSTEAD of the glow, so with the
+		// glow switched off a voxel is left alone like everything else (review).
+		return RSQDG_Reach.Flag("rsqdg_glow", p, true)
+			&& RSQDG_Reach.Flag("rsqdg_voxel_flash", p, true) && RSQDG_Voxels.Drawn(a);
 	}
 
 	private void ClearMark(int h)
