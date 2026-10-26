@@ -1,0 +1,4 @@
+GameInfo
+{
+	AddEventHandlers = "SSQ_Handler"
+}

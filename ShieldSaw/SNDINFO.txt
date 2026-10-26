@@ -1,0 +1,35 @@
+// RS_ShieldSawQ sounds. Lumps are Ermac's; the aliases are ours.
+ssq/draw         ssawdraw
+ssq/stow         ssawdraw
+ssq/loop         ssqloop
+ssq/revstart     ssqstart
+ssq/revstop      ssqstop
+ssq/throw        shwhoosh
+ssq/catch        ssawdraw
+$random ssq/block  { shldhit1 shldhit2 shldhit3 }
+$random ssq/hit    { shldhit1 shldhit2 shldhit3 }
+$random ssq/lock   { shdehit1 shdehit2 shdehit3 }
+$random ssq/bounce { shbounc1 shbounc2 shbounc3 }
+$random ssq/grind  { ssqcut1 ssqcut2 }
+$random ssq/bash   { ssqwall1 ssqwall2 ssqwall3 }
+shldhit1 shldhit1
+shldhit2 shldhit2
+shldhit3 shldhit3
+shdehit1 shdehit1
+shdehit2 shdehit2
+shdehit3 shdehit3
+shbounc1 shbounc1
+shbounc2 shbounc2
+shbounc3 shbounc3
+$volume ssq/draw 0.7
+$volume ssq/loop 0.7
+$volume ssq/block 0.8
+ssqloop ssqloop
+ssqstart ssqstart
+ssqstop ssqstop
+ssqcut1 ssqcut1
+ssqcut2 ssqcut2
+ssqwall1 ssqwall1
+ssqwall2 ssqwall2
+ssqwall3 ssqwall3
+$volume ssq/grind 0.9
