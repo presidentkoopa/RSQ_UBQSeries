@@ -52,6 +52,9 @@ OptionMenu "RSQDG_Reach"
 	StaticText "precision than pointing sideways.", 1
 	StaticText ""
 	Option "Needs line of sight", "rsqdg_sight",   "OnOff"
+	Option "Not with a saber, shield or fist", "rsqdg_yield", "OnOff"
+	StaticText "A swing is full of the reach gesture, so a hand", 1
+	StaticText "holding a melee weapon does not reach.", 1
 	StaticText ""
 	StaticText "WHAT CAN BE PULLED", 1
 	Option "Barrels",             "rsqdg_barrels",  "OnOff"

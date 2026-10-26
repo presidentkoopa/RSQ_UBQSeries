@@ -81,6 +81,7 @@ class RSQDG_Reach
 	// below level, and a hand reaching at something does not.
 	static bool PalmOk(PlayerPawn pmo, PlayerInfo p, int hand)
 	{
+		if (HandBusy(p, hand)) return false;
 		if (!Flag("rsqdg_palm", p, true)) return true;
 
 		double rl  = abs(NormDeg(Roll(pmo, hand)));
@@ -93,6 +94,30 @@ class RSQDG_Reach
 		if (minPitch > -180 && Pitch(pmo, hand) < minPitch) return false;
 
 		return true;
+	}
+
+	// A HAND THAT IS ALREADY SOMEONE ELSE'S GESTURE STANDS DOWN.
+	//
+	// A saber or a shield is swung, and a swing is full of wrist roll and
+	// pitch -- palm out, tip up -- which is exactly this mechanic's gesture. In
+	// the rig, with UltraBadassQuestSaber in the right hand, the grab locked and
+	// pulled a barrel off an ordinary roll-and-flick. So a hand stands down while
+	// it holds:
+	//   - a MELEE weapon (the saber, a chainsaw, a fist): swung, never pointed;
+	//   - another mod's hand system, found BY NAME AT RUN TIME so nothing links
+	//     against it and an absent mod is just a string that never matches --
+	//     RS_ShieldSawQ (SSQ_) and UltraBadassQuestSaber's Force hand (UBQS_),
+	//     which has its own pull, push and grip on the same off hand.
+	// The empty-hand fillers (RSQ_Hands and the like) are not busy: an empty hand
+	// is exactly the hand that should reach. rsqdg_yield 0 turns this off.
+	static bool HandBusy(PlayerInfo p, int hand)
+	{
+		if (!p || !Flag("rsqdg_yield", p, true)) return false;
+		Weapon w = (hand == 0) ? p.ReadyWeapon : p.OffhandWeapon;
+		if (!w) return false;
+		if (w.bMELEEWEAPON) return true;
+		String n = w.GetClassName();
+		return n.IndexOf("SSQ_") == 0 || n.IndexOf("UBQS_") == 0;
 	}
 
 	// ---- the basis ----------------------------------------------------------

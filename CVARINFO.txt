@@ -97,6 +97,10 @@ user float rsqdg_palm_pitch = -30.0;
 user float rsqdg_jump_m = 1.0;
 
 // ---- the tell ------------------------------------------------------------
+// A hand holding a melee weapon (a saber, a chainsaw, a fist) or another mod's
+// hand system (RS_ShieldSawQ, the QuestSaber's Force hand) does not reach: a
+// swing is full of the palm-out flick this mod listens for.
+user bool  rsqdg_yield    = true;
 user bool  rsqdg_lightup  = false;   // recolour the target itself (translation)
 user bool  rsqdg_glow     = true;    // light the target in its own silhouette
 user float rsqdg_glow_a   = 1.0;     // glow brightness multiplier
