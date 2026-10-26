@@ -53,5 +53,5 @@
 
 GameInfo
 {
-	AddEventHandlers = "RSQDG_Policy", "RSQDG_MassTable", "RSQDG_Aim", "RSQDG_Grab", "RSQDG_Flight", "RSQDG_Hold", "RSQDG_Throw", "RSQDG_Feel", "RSQDG_Tell", "RSQDG_Laser"
+	AddEventHandlers = "RSQDG_Policy", "RSQDG_MassTable", "RSQDG_Voxels", "RSQDG_Aim", "RSQDG_Grab", "RSQDG_Flight", "RSQDG_Hold", "RSQDG_Throw", "RSQDG_Feel", "RSQDG_Tell", "RSQDG_Laser"
 }

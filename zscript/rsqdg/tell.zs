@@ -66,8 +66,9 @@ class RSQDG_Tell : EventHandler
 		for (int h = 0; h < 2; h++)
 		{
 			Actor a = want[h];
-			// A host with no sprite to wear (TNT1, or invisible) gets no glow.
-			if (!a || a.bINVISIBLE || a.sprite == 0)
+			// A host with no sprite to wear (TNT1, or invisible) gets no glow; nor a
+			// host drawn as a VOXEL -- it gets the colour flash instead (G7, below).
+			if (!a || a.bINVISIBLE || a.sprite == 0 || VoxelFlash(a, p))
 			{
 				if (glw[h]) glw[h].Hide();
 				continue;
@@ -91,6 +92,12 @@ class RSQDG_Tell : EventHandler
 		}
 	}
 
+	// A voxel-drawn host takes the colour flash instead of the glow twin.
+	private static bool VoxelFlash(Actor a, PlayerInfo p)
+	{
+		return RSQDG_Reach.Flag("rsqdg_voxel_flash", p, true) && RSQDG_Voxels.Drawn(a);
+	}
+
 	private void ClearMark(int h)
 	{
 		// An Actor pointer nulls itself when the actor dies, so a target that
@@ -108,13 +115,14 @@ class RSQDG_Tell : EventHandler
 		UpdateGlow(p);
 		if (!p || !p.mo) { ClearMark(0); ClearMark(1); return; }
 
-		if (p.mo.Health <= 0
-			|| !RSQDG_Reach.Flag("rsqdg_on", p, true)
-			|| !RSQDG_Reach.Flag("rsqdg_lightup", p, true))
+		if (p.mo.Health <= 0 || !RSQDG_Reach.Flag("rsqdg_on", p, true))
 		{
 			ClearMark(0); ClearMark(1);
 			return;
 		}
+		// With the flash off (the default) it still runs for VOXEL hosts, which
+		// the glow twin cannot light (G7); everything else is the glow's.
+		bool lightAll = RSQDG_Reach.Flag("rsqdg_lightup", p, true);
 
 		let aim  = RSQDG_Aim.Get();
 		let grab = RSQDG_Grab.Get();
@@ -147,6 +155,11 @@ class RSQDG_Tell : EventHandler
 			// language, and a thing you are already carrying has nothing left
 			// to tell you.
 			let hold = RSQDG_Hold.Get();
+			if (hold && hold.HeldBy(h) && !lightAll && !VoxelFlash(hold.HeldBy(h), p))
+			{
+				ClearMark(h);
+				continue;
+			}
 			if (hold && hold.HeldBy(h))
 			{
 				Actor hv = hold.HeldBy(h);
@@ -177,6 +190,8 @@ class RSQDG_Tell : EventHandler
 			{
 				want = aim.TargetFor(h);
 			}
+
+			if (want && !lightAll && !VoxelFlash(want, p)) want = null;
 
 			if (litActor[h] != want)
 			{

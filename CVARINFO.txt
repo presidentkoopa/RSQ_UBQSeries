@@ -107,6 +107,7 @@ user bool  rsqdg_yield    = true;
 user bool  rsqdg_lightup  = false;   // recolour the target itself (translation)
 user bool  rsqdg_glow     = true;    // light the target in its own silhouette
 user float rsqdg_glow_a   = 1.0;     // glow brightness multiplier
+user bool  rsqdg_voxel_flash = true; // a voxel-drawn target flashes its colour instead of the glow twin (G7)
 user float rsqdg_flash    = 24.0;    // tics per full cycle. SLOW on purpose --
                                      // a room full of pickups must not strobe
 
