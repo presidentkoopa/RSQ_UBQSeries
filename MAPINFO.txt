@@ -1,0 +1,6 @@
+// One handler. Visuals only; registration order against other mods does not
+// matter, because nothing here writes anything another mod reads.
+GameInfo
+{
+	AddEventHandlers = "RSQLS_Sight"
+}

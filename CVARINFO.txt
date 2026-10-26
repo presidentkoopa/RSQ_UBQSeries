@@ -1,0 +1,32 @@
+// RSQ_LaserSight. All `user`: these change what YOU see, nothing in the playsim.
+// An undeclared cvar is not an error in ZScript, it is a zero -- build.ps1 checks
+// every name the code reads is declared here.
+
+user int   rsqls_mode         = 2;      // 0 off, 1 dot, 2 beam + dot, 3 IR (needs the goggles)
+user bool  rsqls_main         = true;   // per hand on/off -- bound to keys in KEYCONF
+user bool  rsqls_off          = true;
+user int   rsqls_color_main   = 0;      // 0 red 1 green 2 blue 3 cyan 4 magenta 5 yellow 6 white
+user int   rsqls_color_off    = 1;
+user int   rsqls_target_color = 7;      // colour on a live hostile; 7 = keep the hand's colour
+user float rsqls_range        = 2048.0; // map units (~60 m)
+
+user float rsqls_beam_w       = 1.0;
+user float rsqls_beam_a       = 0.75;
+user float rsqls_beam_daylight= 0.35;   // beam brightness in FULL light, as a share of
+                                        // its brightness in the dark. Real beams show
+                                        // in the dark and barely in daylight
+user float rsqls_spot_size    = 1.0;
+user bool  rsqls_light        = true;   // a real dynamic light where the spot lands
+
+user float rsqls_lead         = 1.0;    // tics drawn AHEAD of the hand, cancelling the
+                                        // renderer's one-tic lag. 0 off
+
+// Where the beam leaves the gun, in METRES from the grip along the gun's own
+// axes. Any gun from any mod, so this is a sensible default, not per-gun data.
+user float rsqls_muzzle_fwd   = 0.18;
+user float rsqls_muzzle_up    = 0.03;
+user float rsqls_muzzle_side  = 0.0;
+
+user bool  rsqls_hide_melee   = true;   // no laser on a chainsaw or a fist
+user bool  rsqls_ready_only   = false;  // hide while switching/reloading
+user bool  rsqls_haptics      = true;   // a tick in the hand when you toggle it

@@ -1,0 +1,91 @@
+// One root, added to the engine's Options menu; every page linked from it.
+// build.ps1 checks nothing is orphaned.
+AddOptionMenu "OptionsMenu"
+{
+	StaticText ""
+	Submenu "Laser Sight", "RSQLS_Options"
+}
+
+OptionValue "RSQLS_Modes"
+{
+	0, "Off"
+	1, "Dot"
+	2, "Beam + dot"
+	3, "IR (needs light amp goggles)"
+}
+
+OptionValue "RSQLS_Colors"
+{
+	0, "Red"
+	1, "Green"
+	2, "Blue"
+	3, "Cyan"
+	4, "Magenta"
+	5, "Yellow"
+	6, "White"
+}
+
+OptionValue "RSQLS_TargetColors"
+{
+	7, "Keep the hand's colour"
+	0, "Red"
+	1, "Green"
+	2, "Blue"
+	3, "Cyan"
+	4, "Magenta"
+	5, "Yellow"
+	6, "White"
+}
+
+OptionMenu "RSQLS_Options"
+{
+	Title "LASER SIGHT"
+	StaticText ""
+	Option "Mode",            "rsqls_mode",       "RSQLS_Modes"
+	Option "Main hand",       "rsqls_main",       "OnOff"
+	Option "Off hand",        "rsqls_off",        "OnOff"
+	Option "Main hand colour","rsqls_color_main", "RSQLS_Colors"
+	Option "Off hand colour", "rsqls_color_off",  "RSQLS_Colors"
+	Option "On an enemy",     "rsqls_target_color", "RSQLS_TargetColors"
+	StaticText "The spot also swells and pulses on a live enemy.", 1
+	StaticText ""
+	Submenu "Look",            "RSQLS_Look"
+	Submenu "Fit to your guns", "RSQLS_Fit"
+	StaticText ""
+	Control "Toggle -- main hand", "toggle rsqls_main"
+	Control "Toggle -- off hand",  "toggle rsqls_off"
+}
+
+OptionMenu "RSQLS_Look"
+{
+	Title "LOOK"
+	StaticText ""
+	Slider "Beam width",      "rsqls_beam_w", 0.25, 4.0, 0.25, 2
+	Slider "Beam brightness", "rsqls_beam_a", 0.1, 1.0, 0.05, 2
+	Slider "Beam in daylight","rsqls_beam_daylight", 0.0, 1.0, 0.05, 2
+	StaticText "Real beams show in the dark and barely in", 1
+	StaticText "daylight. 1.0 ignores the room's light.", 1
+	StaticText ""
+	Slider "Spot size",       "rsqls_spot_size", 0.25, 4.0, 0.25, 2
+	Option "Spot lights the surface", "rsqls_light", "OnOff"
+	StaticText ""
+	Slider "Lead the hand (tics)", "rsqls_lead", 0.0, 2.0, 0.1, 1
+	StaticText "1.0 cancels the 35 Hz lag; 0 turns it off.", 1
+	StaticText ""
+	Slider "Range (map units)", "rsqls_range", 256, 8192, 256, 0
+}
+
+OptionMenu "RSQLS_Fit"
+{
+	Title "FIT TO YOUR GUNS"
+	StaticText ""
+	StaticText "Where the beam leaves the gun, in metres", 1
+	StaticText "from your grip along the gun.", 1
+	Slider "Forward", "rsqls_muzzle_fwd",  -0.2, 0.6, 0.01, 2
+	Slider "Up",      "rsqls_muzzle_up",   -0.2, 0.2, 0.01, 2
+	Slider "Side",    "rsqls_muzzle_side", -0.2, 0.2, 0.01, 2
+	StaticText ""
+	Option "Hide on melee weapons", "rsqls_hide_melee", "OnOff"
+	Option "Only when ready to fire", "rsqls_ready_only", "OnOff"
+	Option "Haptic tick on toggle", "rsqls_haptics", "OnOff"
+}
