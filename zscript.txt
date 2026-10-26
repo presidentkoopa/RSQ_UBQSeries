@@ -736,18 +736,16 @@ class UBQS_SaberBase : Weapon abstract
 		UBQS_LockMark.MarkFor(self, best);
 		Buzz();
 	}
-	// Haptic tick on the saber hand. QZD has no script haptics; the engine buzzes the firing hand on any
-	// player hitscan with damage > 0. A 1-unit trace pointed straight up reaches nothing: no puff, no hit, no noise.
+	// Haptic tick on the saber hand: a short, crisp rumble.
+	//
+	// It used to be a 1-unit, damage-1 LineAttack, because the engine buzzes the firing hand on any player
+	// hitscan. But a player hitscan is seen by EVERY mod that watches the player's shots: the WeaponDepot
+	// BD22Q pack's recoil, muzzle flash and tracer (recoil.zs:250, flash.zs:121, ballistics.zs:95) key off
+	// ReadyWeapon and filter neither LAF_ISOFFHAND nor the damage type -- so every off-hand Force buzz kicked
+	// and flashed the gun in the other hand. The rumble (below) reaches only the controller.
 	void Buzz()
 	{
-		if (!owner || !owner.player) return;
-		// ubqs_haptics: the one thing nobody could do before -- switch the rumble off. There is deliberately NO
-		// strength slider: this is a trick (a 1-unit, damage-1 LineAttack that reaches nothing, so the fork
-		// buzzes the firing hand), amplitude and waveform are the engine's, and QZD gives script no hook at
-		// all. A slider that moves and changes nothing is worse than no slider. It is a USER cvar, so it is
-		// userinfo: every machine reads the same owner's answer and netplay cannot diverge.
-		if (!UInt("ubqs_haptics", 1)) return;
-		owner.LineAttack(owner.angle, 1, -90, 1, 'UBQS_Haptic', 'UBQS_HapticPuff', bOffhandWeapon ? 256 : 0);
+		Rumble(0.85, 4);
 	}
 	// ONE RUMBLE, ON THE RIGHT CONTROLLER, FOR AS LONG AS IT IS WORTH.
 	//
@@ -760,32 +758,13 @@ class UBQS_SaberBase : Weapon abstract
 	// pawn with a tremor radius of 8, so in co-op only its owner feels it, and walking does not walk
 	// you out of your own rumble.
 	//
-	// strength is 0..3 before ubqs_haptic_power. Never fire this in the same tic as Buzz() on the same
-	// hand: the Quest drops a haptic request while one is running, so a short weak pulse eats a long one.
+	// strength is 0..3 before ubqs_haptic_power. Every haptic in the saber now comes through here.
 	void Rumble(double strength, int tics)
 	{
 		if (!owner || !owner.player || !UInt("ubqs_haptics", 1)) return;
 		double k = strength * clamp(UF("ubqs_haptic_power", 1.0), 0.0, 3.0);
 		if (k <= 0.01) return;
-		// WHICH CONTROLLER. ubqs_lefty is a user cvar, so it is userinfo: every machine reads the same
-		// owner's answer and the thinker spawned is identical everywhere. -1 falls back to the engine's
-		// own scheme, read in the one place this mod has ever read it.
-		int lh = UInt("ubqs_lefty", -1);
-		// NOT the engine's vr_control_scheme: that is a local archived cvar, and a quake is a
-		// serialised thinker, so on the old default two machines in co-op spawned the mirror of each
-		// other's rumble for the same event. ubqs_lefty is userinfo and is the only answer here.
-		bool lefty = (lh > 0);
-		bool left = bOffhandWeapon != lefty;
-		let q = UBQS_Buzzer(Actor.Spawn("UBQS_Buzzer", owner.pos));
-		if (!q) return;
-		q.feels = owner;
-		// A_QuakeEx's intensities are DOUBLES and the engine's own range is 0..9, so the 0..3 scale
-		// above maps onto it instead of being truncated: int(0.9) was 0, int(0.8 * pg) was 0, and
-		// QuakePower returns exactly 0 for an intensity of 0. Every rumble this was added for -- the
-		// cut, the block -- produced nothing in the hand, which is the precise thing it was written
-		// to fix. Only the clash survived, at a ninth of the amplitude available.
-		double amp = clamp(k * 3.0, 0.3, 9.0);
-		q.A_QuakeEx(left ? amp : 0.0, left ? 0.0 : amp, 0, clamp(tics, 1, 16), 0, 8, "", QF_SCALEDOWN);
+		UBQS_Buzzer.Start(owner, bOffhandWeapon, k, tics);
 	}
 	void ClearLocks()
 	{
@@ -2896,8 +2875,9 @@ class UBQS_Ping : Actor
 	static void At(Actor from, Vector3 at, Sound s, double vol, double pitch = 1.0)
 	{
 		if (!from) return;
-		let cv = CVar.FindCVar('ubqs_swing_spatial');
-		if (cv && cv.GetInt() == 0) { from.A_StartSound(s, CHAN_AUTO, 0, vol, ATTN_NORM, pitch); return; }
+		// Read through the OWNER's userinfo like every other saber setting, not the local cvar: whether an
+		// actor is spawned is playsim, and the local answer differed per machine (a netgame desync).
+		if (UBQS_Data.I(from, "ubqs_swing_spatial", 1) == 0) { from.A_StartSound(s, CHAN_AUTO, 0, vol, ATTN_NORM, pitch); return; }
 		let p = UBQS_Ping(Actor.Spawn('UBQS_Ping', at));
 		if (!p) { from.A_StartSound(s, CHAN_AUTO, 0, vol, ATTN_NORM, pitch); return; }
 		p.life = 70;		// two seconds: longer than any of these samples, and the tic loop ends it
@@ -2978,15 +2958,71 @@ class UBQS_Swish : Actor
 	States { Spawn: TNT1 A 1; Wait; }
 }
 
+// ONE RUMBLE, ON THE RIGHT CONTROLLER, AT THE STRENGTH ASKED FOR.
+//
+// A_QuakeEx is the hook: r_utility.cpp drives vrmode->Vibrate from the quake jiggers every frame -- X the LEFT
+// controller, Y the RIGHT -- scaled by vr_quake_haptic_level; the view shake rides r_quakeintensity, 0 in VR;
+// damrad 0 skips damage and thrust; a quake is a serialised thinker, so it is net- and demo-safe.
+//
+// WHY IT USED TO BUZZ OR NOT AT RANDOM. A plain quake's jigger is a fresh random value in +/-intensity every
+// frame (QuakePower), doubled (GetModIntensity): half the frames negative -- nothing -- and the rest clipped
+// at full. ubqs_haptic_power changed how OFTEN it buzzed, not how hard, and a weak rumble could land on a run
+// of silent frames and seem not to fire at all (the "two rumbles shipped silent" question).
+//
+// NOW: QF_WAVE with wave speed 17.5, re-issued each tic with duration 2, the method RSQ_DistanceGrab measured
+// (its feel.zs has the derivation). A quake made in a tic is ticked once in that same tic, so it is always at
+// countdown 1 when drawn; the jigger is then intensity x 4 x sin(pi x (1 - ticFrac)) -- never negative, no
+// randomness -- and intensity = amplitude / 3.2 makes the controller's peak the amplitude asked for, at the
+// default haptic level. The decay over the rumble's length (the old QF_SCALEDOWN) is done here, per tic.
 class UBQS_Buzzer : Actor
 {
 	Actor feels;
+	bool left;
+	double amp;
+	int total, left_tics;
 	Default { +NOINTERACTION +NOBLOCKMAP +NOSECTOR +NOGRAVITY +DONTSPLASH +NOTONAUTOMAP RenderStyle "None"; }
+
+	// k is the old 0..9 strength scale's input (strength x power, 0..3 and beyond); the controller
+	// amplitude is k x 0.85, so the clash (1.2) is full and the cut (0.9) just under.
+	static void Start(Actor who, bool offhand, double k, int tics)
+	{
+		if (!who || !who.player) return;
+		// WHICH CONTROLLER. ubqs_lefty is userinfo, the same answer on every machine. Left at -1 (unset) in
+		// a single-player game, the engine's own vr_control_scheme decides -- a local cvar is safe when there
+		// is no other machine -- so a left-handed player is right without finding a setting. In a netgame
+		// unset means right-handed, as before.
+		int lh = UBQS_Data.I(who, "ubqs_lefty", -1);
+		bool lefty = lh > 0;
+		if (lh < 0 && !multiplayer)
+		{
+			let cs = CVar.FindCVar("vr_control_scheme");
+			lefty = cs && cs.GetInt() >= 10;
+		}
+		let q = UBQS_Buzzer(Actor.Spawn("UBQS_Buzzer", who.pos));
+		if (!q) return;
+		q.feels = who;
+		q.left = offhand != lefty;
+		q.amp = clamp(k * 0.85, 0.12, 1.0);
+		q.total = clamp(tics, 1, 16);
+		q.left_tics = q.total;
+		// NOT pulsed here: an actor spawned this tic is ticked later in this same tic (the
+		// fresh-thinker pass), and pulsing twice would stack two quakes on the first frame.
+	}
+
+	void Pulse()
+	{
+		if (left_tics <= 0) return;
+		double a = amp * left_tics / double(total) / 3.2;
+		left_tics--;
+		A_QuakeEx(left ? a : 0.0, left ? 0.0 : a, 0, 2, 0, 8, "", QF_WAVE, 17.5, 17.5, 1);
+	}
+
 	override void Tick()
 	{
 		Super.Tick();
 		if (!feels) { Destroy(); return; }
 		SetOrigin(feels.pos, true);
+		Pulse();
 	}
 	States { Spawn: TNT1 A 20; Stop; }
 }
@@ -3928,7 +3964,8 @@ class UBQS_Force : Inventory
 	}
 	void Buzz()
 	{
-		if (owner && owner.player && IV("ubqs_haptics", 1)) owner.LineAttack(owner.angle, 1, -90, 1, 'UBQS_Haptic', 'UBQS_HapticPuff', 256);
+		// A rumble on the off hand, NOT a player hitscan -- see UBQS_SaberBase.Buzz for why.
+		if (owner && owner.player && IV("ubqs_haptics", 1)) UBQS_Buzzer.Start(owner, true, 0.85, 4);
 	}
 
 	override void DoEffect()
@@ -4340,6 +4377,10 @@ class UBQS_Force : Inventory
 	private void ForceJump(PlayerInfo p)
 	{
 		if (!IV("ubqs_force_jump", 1)) return;
+		// WITH A SABER OR THE FORCE HAND OUT, as the menu says. It used to run with any weapon at all --
+		// a BD22 rifle in hand still boosted every jump and clamped every fall.
+		bool forceOut = (p.ReadyWeapon is "UBQS_SaberBase") || (p.OffhandWeapon is "UBQS_SaberBase") || (p.OffhandWeapon is "UBQS_ForceHand");
+		if (!forceOut) { airTics = 0; boostOk = false; return; }
 		bool jump = (p.cmd.buttons & BT_JUMP) != 0;
 		if (p.onground) { airTics = 0; boostOk = jump; return; }
 		airTics++;
