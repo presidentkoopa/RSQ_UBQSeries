@@ -5156,3 +5156,27 @@ class UBQS_Telemetry : EventHandler
 		Screen.DrawText(SmallFont, Font.CR_GREEN, 8, 60, hiltLine, DTA_VirtualWidth, 640, DTA_VirtualHeight, 400);
 	}
 }
+
+// WHAT THE SABER IS DOING, FOR ANY MOD THAT ASKS -- found by name (ServiceIterator), so nothing links
+// against this mod and an absent saber is simply no answer.
+//   GetInt("saber.lit", "", hand)   hand 0 = main, 1 = off
+//     1   a saber is in that hand with its blade lit, or it is out of the hand (thrown: the catch is ours)
+//     0   a saber is in that hand with the blade switched off (doused): just a hilt
+//    -1   no saber in that hand
+// RSQ_DistanceGrab asks this: an unlit hilt is not being swung, so that hand may reach. The psprite frame
+// cannot say it -- with the world saber on (the default) the layer is blanked to frame 18 whatever the blade does.
+class UBQS_SaberService : Service
+{
+	override int GetInt(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
+	{
+		if (!(request ~== "saber.lit")) return -1;
+		let p = players[consoleplayer];
+		let pp = PlayerPawn(objectArg);
+		if (pp && pp.player) p = pp.player;
+		if (!p) return -1;
+		let sb = UBQS_SaberBase(intArg == 1 ? p.OffhandWeapon : p.ReadyWeapon);
+		if (!sb) return -1;
+		if (sb.thrown) return 1;
+		return sb.doused ? 0 : 1;
+	}
+}
