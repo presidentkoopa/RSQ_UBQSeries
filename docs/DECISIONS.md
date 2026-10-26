@@ -423,3 +423,27 @@ Default ON; the translation flash (`rsqdg_lightup`) is now default OFF and still
 available. Caveat: with the self-taking lock the "could" state is brief — the cone
 only runs with the palm out, and a target found with the palm out locks almost at
 once. It shows in full only where a lock is refused.
+
+
+## D26 — A HILT IS NOT A SWING: YIELD BY EVIDENCE. 2026-10-26.
+`rsqdg_yield` stood the hand down for any UBQS_ weapon, so with the saber's dual
+mode the off hand never grabbed. The evidence that a saber is not being swung is
+its blade being off. The psprite frame does not carry it (world saber on = frame
+18 always, rig). So the saber publishes `saber.lit` through a Service and the
+grab asks by name; no answer means busy, the old behaviour.
+
+## D27 — THE DWELL IS OPTIONAL. 2026-10-26.
+`rsqdg_lock_dwell` defaults to 0 so nothing changes until the owner tries it.
+
+## D28 — ONE BEAM PER HAND. 2026-10-26.
+With RSQ_LaserSight drawing on a gun hand, the grab's beam doubled it. The laser
+publishes `laser.active`; the grab hides only its beam there (dot and cone say
+what the grab would take, which the laser does not). `rsqdg_beam_yield`.
+
+## D29 — THE ARC IS BACK FOR THE A/B, AND THE PULL DUCKS. 2026-10-26.
+D9 promised the parabola behind a cvar. RS_Pull is not in this tree, so the arc
+is rebuilt on D9's own terms: no kinematic path, the engine still moves it; each
+tic the velocity is the ballistic solution onto the palm for the time left, so
+walls, floors and the moving hand all still work. Steer stays the default.
+Ducking: a lintel is a lower ceiling a few units ahead; capping vel.z to pass
+under it is cheaper than routing, and the engine still owns everything else.

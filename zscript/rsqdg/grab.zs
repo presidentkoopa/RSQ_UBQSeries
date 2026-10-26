@@ -48,6 +48,10 @@ class RSQDG_Grab : EventHandler
 	// The last refusal reported per hand, so the trace says each one once.
 	private transient String lastWhy[2];
 
+	// The dwell before a self-lock: what the cone has held, and for how long.
+	private transient Actor dwellOn[2];
+	private transient int   dwellTics[2];
+
 	static RSQDG_Grab Get()
 	{
 		return RSQDG_Grab(EventHandler.Find("RSQDG_Grab"));
@@ -347,8 +351,23 @@ class RSQDG_Grab : EventHandler
 			// becomes the lock, and then STICKS. Sticking is the point -- a
 			// moment of wobble must not lose a target you already chose, and you
 			// are allowed to look away from what you are holding.
+			//
+			// THE DWELL (G2, rsqdg_lock_dwell, tics; 0 = off and the old behaviour).
+			// The lock took itself the first tic the cone had anything, so the amber
+			// "could" glow flashed by before green. With a dwell the cone must hold
+			// the SAME target that many tics first; a different target restarts it.
+			// Only the pose path waits: a button press is already deliberate.
 			if (armed[h] && !lockActor[h] && poseGood)
-				TryLock(h, p);
+			{
+				int need = int(RSQDG_Reach.Num("rsqdg_lock_dwell", p, 0));
+				let aim2 = RSQDG_Aim.Get();
+				Actor cand = aim2 ? aim2.TargetFor(h) : null;
+				if (cand != dwellOn[h]) { dwellOn[h] = cand; dwellTics[h] = 0; }
+				else if (cand) dwellTics[h]++;
+				if (need <= 0 || (cand && dwellTics[h] >= need))
+					TryLock(h, p);
+			}
+			else { dwellOn[h] = null; dwellTics[h] = 0; }
 
 			ValidateLock(h, p);
 		}

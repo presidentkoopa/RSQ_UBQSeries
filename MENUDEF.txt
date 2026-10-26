@@ -13,6 +13,12 @@ AddOptionMenu "OptionsMenu"
 	Submenu "Distance Grab", "RSQDG_Options"
 }
 
+OptionValue "RSQDG_FlightMode"
+{
+	0, "Steer"
+	1, "Arc"
+}
+
 OptionMenu "RSQDG_Options"
 {
 	Title "DISTANCE GRAB"
@@ -30,6 +36,8 @@ OptionMenu "RSQDG_Options"
 	Submenu "Haptics and sound",    "RSQDG_Feel"
 	StaticText ""
 	Submenu "Diagnostics",          "RSQDG_Debug"
+	StaticText ""
+	SafeCommand "Reset all Distance Grab settings", "resetcvar rsqdg_on rsqdg_reach rsqdg_spread rsqdg_sight rsqdg_corpses rsqdg_barrels rsqdg_weapons rsqdg_powerups rsqdg_button rsqdg_palm rsqdg_palm_roll rsqdg_palm_tol rsqdg_palm_pitch rsqdg_jump_m rsqdg_lock_dwell rsqdg_yield rsqdg_lightup rsqdg_glow rsqdg_glow_a rsqdg_flash rsqdg_flick_deg rsqdg_flight_speed rsqdg_steer rsqdg_pull_kg rsqdg_flight_gravity rsqdg_flight_mode rsqdg_flight_duck rsqdg_flight_radius rsqdg_flight_timeout rsqdg_catch_radius rsqdg_catch_hold rsqdg_catch_takes rsqdg_throw_scale rsqdg_arm_kg rsqdg_throw_j rsqdg_throw_min rsqdg_throw_explode rsqdg_hold_dist rsqdg_hold_k rsqdg_hold_vmax rsqdg_hold_break rsqdg_burden rsqdg_burden_kg rsqdg_beam rsqdg_beam_yield rsqdg_beam_w rsqdg_beam_a rsqdg_dot rsqdg_dot_size rsqdg_cone rsqdg_cone_a rsqdg_lead rsqdg_laser_idle rsqdg_haptics rsqdg_haptic_ramp rsqdg_rumble rsqdg_rumble_gain rsqdg_rumble_lock rsqdg_rumble_carry rsqdg_sound rsqdg_sound_vol rsqdg_catch_flash rsqdg_debug rsqdg_trace", "Put every Distance Grab setting back to its default?"
 	StaticText ""
 	Control "Grab -- main hand", "+rsqdg_main"
 	Control "Grab -- off hand",  "+rsqdg_off"
@@ -54,7 +62,8 @@ OptionMenu "RSQDG_Reach"
 	Option "Needs line of sight", "rsqdg_sight",   "OnOff"
 	Option "Not with a saber, shield or fist", "rsqdg_yield", "OnOff"
 	StaticText "A swing is full of the reach gesture, so a hand", 1
-	StaticText "holding a melee weapon does not reach.", 1
+	StaticText "holding a melee weapon does not reach. A", 1
+	StaticText "QuestSaber hilt with its blade off may reach.", 1
 	StaticText ""
 	StaticText "WHAT CAN BE PULLED", 1
 	Option "Barrels",             "rsqdg_barrels",  "OnOff"
@@ -91,6 +100,10 @@ OptionMenu "RSQDG_Gesture"
 	StaticText "Adds a keypress alongside the gesture. Bind", 1
 	StaticText "it on the previous page.", 1
 	StaticText ""
+	Slider "Hold before it locks (tics)", "rsqdg_lock_dwell", 0, 35, 1, 0
+	StaticText "0 locks the moment the cone finds something.", 1
+	StaticText "A few tics lets you see amber before green.", 1
+	StaticText ""
 	Slider "Pose jump cutoff (m)", "rsqdg_jump_m", 0.25, 3.0, 0.25, 2
 	StaticText "Apparent hand travel in one tic that means", 1
 	StaticText "tracking lied. No arm moves a metre in 28ms.", 1
@@ -114,6 +127,10 @@ OptionMenu "RSQDG_Flight"
 	StaticText "things come easier.", 1
 	StaticText ""
 	Option "Gravity during the pull", "rsqdg_flight_gravity", "OnOff"
+	Option "Flight path", "rsqdg_flight_mode", "RSQDG_FlightMode"
+	StaticText "Steer: flies at your hand and turns by its weight.", 1
+	StaticText "Arc: a lob onto your hand, heavier hangs longer.", 1
+	Option "Duck under doorways", "rsqdg_flight_duck", "OnOff"
 	StaticText "On makes a long pull sag and a heavy thing", 1
 	StaticText "visibly harder to drag up to you.", 1
 	StaticText ""
@@ -164,6 +181,7 @@ OptionMenu "RSQDG_Laser"
 	Title "THE LASER"
 	StaticText ""
 	Option "Beam", "rsqdg_beam", "OnOff"
+	Option "Hide it where a laser sight already is", "rsqdg_beam_yield", "OnOff"
 	Slider "Beam width",  "rsqdg_beam_w", 0.25, 4.0, 0.25, 2
 	Slider "Beam bright", "rsqdg_beam_a", 0.1, 1.0, 0.05, 2
 	StaticText ""

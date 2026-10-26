@@ -79,7 +79,7 @@ class RSQDG_Reach
 	// itself arms the reach whenever you are not thinking about it. PITCH is
 	// what has no overlap: a hand hanging at your side sits around forty degrees
 	// below level, and a hand reaching at something does not.
-	static bool PalmOk(PlayerPawn pmo, PlayerInfo p, int hand)
+	static play bool PalmOk(PlayerPawn pmo, PlayerInfo p, int hand)
 	{
 		if (HandBusy(p, hand)) return false;
 		if (!Flag("rsqdg_palm", p, true)) return true;
@@ -110,14 +110,30 @@ class RSQDG_Reach
 	//     which has its own pull, push and grip on the same off hand.
 	// The empty-hand fillers (RSQ_Hands and the like) are not busy: an empty hand
 	// is exactly the hand that should reach. rsqdg_yield 0 turns this off.
-	static bool HandBusy(PlayerInfo p, int hand)
+	static play bool HandBusy(PlayerInfo p, int hand)
 	{
 		if (!p || !Flag("rsqdg_yield", p, true)) return false;
 		Weapon w = (hand == 0) ? p.ReadyWeapon : p.OffhandWeapon;
 		if (!w) return false;
-		if (w.bMELEEWEAPON) return true;
+		// GetClassName can come back lower-cased (seen in the rig), so compare lower-cased.
 		String n = w.GetClassName();
-		return n.IndexOf("SSQ_") == 0 || n.IndexOf("UBQS_") == 0;
+		n = n.MakeLower();
+		// BY EVIDENCE, NOT BY NAME ALONE (G1). UltraBadassQuestSaber answers "saber.lit"
+		// through its UBQS_SaberService: 0 means a hilt with the blade switched off, which
+		// is not being swung, so that hand may reach. Asked by service name, so an absent
+		// or older saber gives no answer and the hand stays busy as before. (The psprite
+		// frame was the first idea and does not work: with the world saber on, the
+		// default, the layer is blanked to frame 18 whatever the blade does -- rig, 10-26.)
+		if (n.IndexOf("ubqs_saber") == 0)
+		{
+			let it = ServiceIterator.Find("UBQS_SaberService");
+			Service sv;
+			while (sv = it.Next())
+				if (sv.GetInt("saber.lit", "", hand, 0, p.mo) == 0) return false;
+			return true;
+		}
+		if (w.bMELEEWEAPON) return true;
+		return n.IndexOf("ssq_") == 0 || n.IndexOf("ubqs_") == 0;
 	}
 
 	// ---- the basis ----------------------------------------------------------

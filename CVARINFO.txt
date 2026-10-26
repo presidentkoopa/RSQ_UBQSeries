@@ -96,6 +96,9 @@ user float rsqdg_palm_pitch = -30.0;
 // No arm moves a metre in 28 ms.
 user float rsqdg_jump_m = 1.0;
 
+// Tics the cone must hold the SAME target before the pose path locks it (G2). 0 = at once (the old way).
+user int   rsqdg_lock_dwell = 0;
+
 // ---- the tell ------------------------------------------------------------
 // A hand holding a melee weapon (a saber, a chainsaw, a fist) or another mod's
 // hand system (RS_ShieldSawQ, the QuestSaber's Force hand) does not reach: a
@@ -128,6 +131,8 @@ user float rsqdg_pull_kg        = 10.0;   // KILOGRAMS the pull moves almost
                                           // and heavy things come easier.
                                           // Masses come from MASSDEF (mass.zs)
 user bool  rsqdg_flight_gravity = false;  // let a pull sag. A legitimate feel
+user int   rsqdg_flight_mode    = 0;     // 0 steer to the palm (impulse + bounded steering), 1 the arc: a lob re-solved every tic (D9 A/B)
+user bool  rsqdg_flight_duck    = true;  // dip under a lower ceiling ahead (doorways) instead of meeting the lintel
                                           // and the cheapest thing here to A/B
 user float rsqdg_flight_radius  = 2.0;    // a pickup's radius is a TRIGGER
                                           // volume, not a hull -- a clip is 20
@@ -196,6 +201,7 @@ user float rsqdg_burden_kg   = 120.0;  // carrying this much halves your speed
 //   dot   one glow where the line lands, scaled to keep one apparent size
 //   cone  DXR's grab-reach cone: the exact volume the grab tests
 user bool  rsqdg_beam        = true;
+user bool  rsqdg_beam_yield  = true;   // hide the grab beam on a hand RSQ_LaserSight is already lighting (G6)
 user float rsqdg_beam_w      = 1.0;    // width multiplier
 user float rsqdg_beam_a      = 0.8;
 user bool  rsqdg_dot         = true;

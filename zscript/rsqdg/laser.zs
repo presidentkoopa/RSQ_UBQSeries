@@ -308,8 +308,24 @@ class RSQDG_Laser : EventHandler
 			pip[h]  = Ensure(pip[h],  "RSQDG_Dot");
 			cone[h] = Ensure(cone[h], "RSQDG_ConeViz");
 			if (!beam[h] || !pip[h] || !cone[h]) continue;
-			DrawHand(h, pmo, p, aim, grab, fl, hold, wantBeam, wantDot, wantCone);
+			// TWO BEAMS FROM ONE HAND IS ONE TOO MANY (G6). When RSQ_LaserSight is
+			// already drawing on this hand, the grab's beam stands down; the dot and
+			// the cone stay, since they say what the GRAB would take. rsqdg_beam_yield 0
+			// keeps both.
+			bool wb = wantBeam && !(RSQDG_Reach.Flag("rsqdg_beam_yield", p, true) && LaserOn(h));
+			DrawHand(h, pmo, p, aim, grab, fl, hold, wb, wantDot, wantCone);
 		}
+	}
+
+	// Asked of RSQ_LaserSight by service name, so this links against nothing and
+	// an absent laser just answers nothing (no service -> false).
+	private static bool LaserOn(int h)
+	{
+		let it = ServiceIterator.Find("RSQLS_SightService");
+		Service sv;
+		while (sv = it.Next())
+			if (sv.GetInt("laser.active", "", h) == 1) return true;
+		return false;
 	}
 
 	private void DrawHand(int h, PlayerPawn pmo, PlayerInfo p, RSQDG_Aim aim,

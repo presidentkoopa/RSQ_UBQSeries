@@ -37,6 +37,8 @@ class RSQDG_Flight : EventHandler
 	private double flyDist[2];    // room-distance now, palm to middle
 	private int    flyLimit[2];   // tics before giving up, fixed at launch
 	private bool   flyRefused[2]; // pull.refused already said for this flight
+	private bool   flyArc[2];     // this flight is the ARC (rsqdg_flight_mode 1), fixed at launch
+	private int    flyEta[2];     // arc: tics from launch to the palm, fixed at launch
 
 	// ---- THE BORROWED STATE, AND EXACTLY ONE OWNER OF THE BACKUP ------------
 	//
@@ -171,7 +173,11 @@ class RSQDG_Flight : EventHandler
 		// it would sag every long pull into the floor and the steering would
 		// spend its whole authority climbing. Switchable, because "let it sag"
 		// is a legitimate feel and this is the cheapest thing here to A/B.
-		if (!RSQDG_Reach.Flag("rsqdg_flight_gravity", p, false))
+		// THE ARC (rsqdg_flight_mode 1, G3) needs gravity: it IS the curve.
+		bool arc = int(RSQDG_Reach.Num("rsqdg_flight_mode", p, 0)) == 1;
+		flyArc[hand] = arc;
+		if (arc) a.bNOGRAVITY = false;
+		else if (!RSQDG_Reach.Flag("rsqdg_flight_gravity", p, false))
 			a.bNOGRAVITY = true;
 
 		// SHRUNK TO SOMETHING THE SIZE IT LOOKS.
@@ -201,6 +207,10 @@ class RSQDG_Flight : EventHandler
 		double len = d.Length();
 		double cruise = CruiseFor(a, p);
 		if (len > 0.01) a.Vel = (d / len) * cruise;
+		// The arc's time of flight: the straight run at this object's cruise, so a
+		// heavy thing hangs longer in the air. Never under half a second.
+		flyEta[hand] = max(TICRATE / 2, int(RoomDist(d) / max(cruise, 0.01)));
+		if (arc) a.Vel = ArcVel(a, palm, flyEta[hand]);
 
 		// LIFT IT OFF THE FLOOR. Found in the rig, 2026-10-26: a barrel pulled
 		// along the ground never left it. Doom applies ground friction -- about
@@ -587,6 +597,18 @@ class RSQDG_Flight : EventHandler
 			// the hand. Both from RSQDG_Mass -- kilograms out of MASSDEF -- and
 			// NOT Actor.Mass, which is 100 on every non-monster and made every
 			// pickup fly the same (PORT_SCOPE A1).
+			// THE ARC (G3): no steering force at all. Each tic the throw that would
+			// land on the palm in the time remaining is solved again under gravity
+			// and becomes the velocity -- a lob that follows your hand, and the one
+			// path a kinematic arc could route-plan. Mass is in the time of flight.
+			if (flyArc[h])
+			{
+				int left = max(2, flyEta[h] - flyTic[h]);
+				a.Vel = ArcVel(a, palm, left);
+				Duck(a, p);
+				continue;
+			}
+
 			Vector3 want = (toPalm / dist) * CruiseFor(a, p);
 
 			// Steering authority is the plain share, no sqrt: a heavy thing
@@ -607,6 +629,44 @@ class RSQDG_Flight : EventHandler
 			// thing is back to fighting friction. Only when the palm is above:
 			// a pull down off a ledge is allowed to land and slide.
 			Lift(a, toPalm.z > a.Height * 0.25);
+			Duck(a, p);
+		}
+	}
+
+	// The velocity that carries the middle of `a` onto `palm` in `t` tics under
+	// this actor's own gravity (the engine's: level x sector x actor x 1/800).
+	private static Vector3 ArcVel(Actor a, Vector3 palm, int t)
+	{
+		Vector3 d = palm - MidOf(a);
+		double g = a.bNOGRAVITY ? 0.0 : level.gravity * a.CurSector.gravity * a.Gravity * 0.00125;
+		return (d.x / t, d.y / t, d.z / t + 0.5 * g * t);
+	}
+
+	// CEILING-AWARE (G4). The pull climbs toward a palm that is usually higher
+	// than the object, and a doorway's lintel is a lower ceiling a few units
+	// ahead: the top of the object met the header and the whole pull stopped dead
+	// on the wall above the door. Look along the flight for the lowest ceiling in
+	// the next few tics and cap the climb so the top passes under it. Floors are
+	// not mirrored -- stepping up is already the engine's. rsqdg_flight_duck 0 off.
+	const DUCK_AHEAD = 4;       // tics of flight looked along
+	const DUCK_MARGIN = 2.0;    // units kept under the ceiling
+	private static void Duck(Actor a, PlayerInfo p)
+	{
+		if (!RSQDG_Reach.Flag("rsqdg_flight_duck", p, true)) return;
+		double sp = a.Vel.XY.Length();
+		if (sp < 0.5) return;
+		for (int k = 1; k <= DUCK_AHEAD; k++)
+		{
+			Vector2 at = a.Pos.XY + a.Vel.XY * k;
+			Sector sec = level.PointInSector(at);
+			if (!sec) continue;
+			double ceil = sec.ceilingplane.ZatPoint(at);
+			double flr  = sec.floorplane.ZatPoint(at);
+			// Only a gap it can actually fit through; a wall is the engine's business.
+			if (ceil - flr < a.Height + DUCK_MARGIN) continue;
+			double room = ceil - DUCK_MARGIN - a.Height - a.Pos.z;   // how far up it may still go
+			double cap = room / k;
+			if (a.Vel.z > cap) a.Vel.z = cap;
 		}
 	}
 
