@@ -27,6 +27,6 @@ user float rsqls_muzzle_fwd   = 0.18;
 user float rsqls_muzzle_up    = 0.03;
 user float rsqls_muzzle_side  = 0.0;
 
-user bool  rsqls_hide_melee   = true;   // no laser on a chainsaw or a fist
+user bool  rsqls_hide_melee   = true;   // no laser on a fist, chainsaw, saber, shield or empty hand
 user bool  rsqls_ready_only   = false;  // hide while switching/reloading
 user bool  rsqls_haptics      = true;   // a tick in the hand when you toggle it

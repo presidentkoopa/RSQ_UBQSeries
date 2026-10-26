@@ -147,7 +147,13 @@ class RSQLS_Sight : EventHandler
 		if (!RSQLS_Hand.Flag(h == 0 ? "rsqls_main" : "rsqls_off", p, true)) return false;
 		Weapon w = (h == 0) ? p.ReadyWeapon : p.OffhandWeapon;
 		if (!w) return false;
-		if (w.bMELEEWEAPON && RSQLS_Hand.Flag("rsqls_hide_melee", p, true)) return false;
+		// NOTHING TO AIM: a melee weapon (fist, chainsaw, the QuestSaber), or a
+		// hand that is not a gun at all. CHEATNOTWEAPON is the stock marker for
+		// the second -- it is what keeps a thing out of `give weapons` -- and
+		// every off-hand utility in the family carries it: RS_ShieldSawQ's
+		// shield, the QuestSaber's Force hand, RSQ_Hands. Found in the rig:
+		// with the shield drawn, a laser came out of the shield.
+		if ((w.bMELEEWEAPON || w.bCHEATNOTWEAPON) && RSQLS_Hand.Flag("rsqls_hide_melee", p, true)) return false;
 		if (RSQLS_Hand.Flag("rsqls_ready_only", p, false))
 		{
 			int ready = (h == 0) ? (WF_WEAPONREADY | WF_WEAPONREADYALT)

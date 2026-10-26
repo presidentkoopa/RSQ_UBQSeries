@@ -85,7 +85,7 @@ OptionMenu "RSQLS_Fit"
 	Slider "Up",      "rsqls_muzzle_up",   -0.2, 0.2, 0.01, 2
 	Slider "Side",    "rsqls_muzzle_side", -0.2, 0.2, 0.01, 2
 	StaticText ""
-	Option "Hide on melee weapons", "rsqls_hide_melee", "OnOff"
+	Option "Hide on melee and non-guns", "rsqls_hide_melee", "OnOff"
 	Option "Only when ready to fire", "rsqls_ready_only", "OnOff"
 	Option "Haptic tick on toggle", "rsqls_haptics", "OnOff"
 }
