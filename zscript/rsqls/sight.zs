@@ -130,6 +130,12 @@ class RSQLS_Sight : EventHandler
 	// Which hands drew a laser last tic (bit 0 main, bit 1 off), for other mods
 	// through RSQLS_SightService. Console player only, like the drawing.
 	transient int liveMask;
+	transient int beamMask;   // the same, beam only
+	static int BeamHands()
+	{
+		let me = RSQLS_Sight(EventHandler.Find("RSQLS_Sight"));
+		return me ? me.beamMask : 0;
+	}
 	static int LiveHands()
 	{
 		let me = RSQLS_Sight(EventHandler.Find("RSQLS_Sight"));
@@ -280,7 +286,7 @@ class RSQLS_Sight : EventHandler
 
 	override void WorldTick()
 	{
-		liveMask = 0;
+		liveMask = 0; beamMask = 0;
 		let p = players[consoleplayer];
 		if (!p || !p.mo) return;
 		let pmo = p.mo;
@@ -318,7 +324,9 @@ class RSQLS_Sight : EventHandler
 			glow[h] = Ensure(glow[h], "RSQLS_Glow");
 			if (!beam[h] || !halo[h] || !emis[h] || !spot[h] || !glow[h]) continue;
 			DrawHand(h, pmo, p, wantBeam, wantDot);
-			liveMask |= 1 << h;
+			// What actually drew (review, 10-26): a dot-only laser that hits nothing is no light.
+			if (beamShown[h] || spotShown[h]) liveMask |= 1 << h;
+			if (beamShown[h]) beamMask |= 1 << h;
 		}
 	}
 
@@ -540,6 +548,7 @@ class RSQLS_Sight : EventHandler
 // asks never links against this one and an absent laser is simply no answer.
 //   GetInt("laser.active", "", hand)  -> 1 if a laser (beam or dot) drew on that
 //                                        hand (0 main, 1 off) last tic, else 0
+//   GetInt("laser.beam", "", hand)    -> the same for the beam alone
 // RSQ_DistanceGrab asks this so its grab beam stands down on a hand the laser
 // already lights.
 class RSQLS_SightService : Service
@@ -548,6 +557,8 @@ class RSQLS_SightService : Service
 	{
 		if (request == "laser.active")
 			return (RSQLS_Sight.LiveHands() >> (intArg & 1)) & 1;
+		if (request == "laser.beam")
+			return (RSQLS_Sight.BeamHands() >> (intArg & 1)) & 1;
 		return -1;
 	}
 }
