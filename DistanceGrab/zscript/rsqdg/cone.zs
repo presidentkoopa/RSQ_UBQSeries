@@ -47,9 +47,12 @@ class RSQDG_Cone play
 		// you would need more precision than pointing at something beside you,
 		// for no reason the player could ever discover.
 		//
-		// Both the direction and the offset get their Z scaled by pixelstretch
-		// before the comparison, which makes the test a real cone in the room.
-		Vector3 pdir = (dir.x, dir.y, dir.z * RSQDG_Reach.PIXELSTRETCH);
+		// The OFFSET gets its Z scaled by pixelstretch (map -> room) before the
+		// comparison. The direction does NOT: Reach.Dir is built from the hand's
+		// angles and is already a room vector (hold.zs treats it so). Scaling it
+		// too stretched the axis twice -- at 30 deg up the cone aimed at ~34.7
+		// (review, 2026-10-26, harmless while the pitch was mirrored).
+		Vector3 pdir = dir;
 		double pdl = pdir.Length();
 		if (pdl < 1e-6) return null;
 		pdir = pdir / pdl;

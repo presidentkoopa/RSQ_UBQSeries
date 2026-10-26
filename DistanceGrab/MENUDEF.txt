@@ -28,6 +28,8 @@ OptionMenu "RSQDG_Options"
 	StaticText "Turn your palm out to arm the reach. Flick your", 1
 	StaticText "wrist up to pull. Roll your palm back to let go.", 1
 	StaticText ""
+	Submenu "Feel tuning (the headset numbers)", "RSQDG_Tune"
+	StaticText ""
 	Submenu "Reach and aim",        "RSQDG_Reach"
 	Submenu "The gesture",          "RSQDG_Gesture"
 	Submenu "The pull",             "RSQDG_Flight"
@@ -37,7 +39,7 @@ OptionMenu "RSQDG_Options"
 	StaticText ""
 	Submenu "Diagnostics",          "RSQDG_Debug"
 	StaticText ""
-	SafeCommand "Reset all Distance Grab settings", "resetcvar rsqdg_on rsqdg_reach rsqdg_spread rsqdg_sight rsqdg_corpses rsqdg_barrels rsqdg_weapons rsqdg_powerups rsqdg_button rsqdg_palm rsqdg_palm_roll rsqdg_palm_tol rsqdg_palm_pitch rsqdg_jump_m rsqdg_lock_dwell rsqdg_yield rsqdg_lightup rsqdg_glow rsqdg_glow_a rsqdg_flash rsqdg_flick_deg rsqdg_flight_speed rsqdg_steer rsqdg_pull_kg rsqdg_flight_gravity rsqdg_flight_mode rsqdg_arc_apex rsqdg_flight_duck rsqdg_flight_radius rsqdg_flight_timeout rsqdg_catch_radius rsqdg_catch_hold rsqdg_catch_takes rsqdg_throw_scale rsqdg_arm_kg rsqdg_throw_j rsqdg_throw_min rsqdg_throw_explode rsqdg_hold_dist rsqdg_hold_k rsqdg_hold_vmax rsqdg_hold_break rsqdg_burden rsqdg_burden_kg rsqdg_beam rsqdg_beam_yield rsqdg_beam_w rsqdg_beam_a rsqdg_dot rsqdg_dot_size rsqdg_cone rsqdg_cone_a rsqdg_lead rsqdg_laser_idle rsqdg_haptics rsqdg_haptic_ramp rsqdg_rumble rsqdg_rumble_gain rsqdg_rumble_lock rsqdg_rumble_carry rsqdg_sound rsqdg_sound_vol rsqdg_catch_flash rsqdg_debug rsqdg_trace", "Put every Distance Grab setting back to its default?"
+	SafeCommand "Reset all Distance Grab settings", "resetcvar rsqdg_on rsqdg_reach rsqdg_spread rsqdg_sight rsqdg_corpses rsqdg_barrels rsqdg_weapons rsqdg_powerups rsqdg_button rsqdg_palm rsqdg_palm_roll rsqdg_palm_tol rsqdg_palm_pitch rsqdg_jump_m rsqdg_lock_dwell rsqdg_yield rsqdg_lightup rsqdg_glow rsqdg_glow_a rsqdg_voxel_flash rsqdg_flash rsqdg_flick_deg rsqdg_flight_speed rsqdg_steer rsqdg_pull_kg rsqdg_flight_gravity rsqdg_flight_mode rsqdg_arc_apex rsqdg_flight_duck rsqdg_flight_radius rsqdg_flight_timeout rsqdg_catch_radius rsqdg_catch_hold rsqdg_catch_takes rsqdg_throw_scale rsqdg_arm_kg rsqdg_throw_j rsqdg_throw_min rsqdg_throw_explode rsqdg_hold_dist rsqdg_hold_k rsqdg_hold_vmax rsqdg_hold_break rsqdg_burden rsqdg_burden_kg rsqdg_beam rsqdg_beam_yield rsqdg_beam_w rsqdg_beam_a rsqdg_dot rsqdg_dot_size rsqdg_cone rsqdg_cone_a rsqdg_lead rsqdg_laser_idle rsqdg_haptics rsqdg_haptic_ramp rsqdg_rumble rsqdg_rumble_gain rsqdg_rumble_lock rsqdg_rumble_carry rsqdg_sound rsqdg_sound_vol rsqdg_catch_flash rsqdg_debug rsqdg_trace", "Put every Distance Grab setting back to its default?"
 	StaticText ""
 	Control "Grab -- main hand", "+rsqdg_main"
 	Control "Grab -- off hand",  "+rsqdg_off"
@@ -209,6 +211,9 @@ OptionMenu "RSQDG_Laser"
 	Slider "Glow brightness", "rsqdg_glow_a", 0.25, 2.0, 0.25, 2
 	StaticText "Amber and dim: you could grab it. Green and", 1
 	StaticText "bright: you have it.", 1
+	Option "Voxel targets flash instead", "rsqdg_voxel_flash", "OnOff"
+	StaticText "A voxel (BD_VoxelPack) cannot wear the glow,", 1
+	StaticText "so it is recoloured instead.", 1
 	StaticText ""
 	Option "Recolour the target", "rsqdg_lightup", "OnOff"
 	Slider "Pulse period (tics)", "rsqdg_flash", 6, 70, 2, 0
@@ -248,4 +253,37 @@ OptionMenu "RSQDG_Debug"
 	StaticText "Every refusal in words -- \"nothing in the", 1
 	StaticText "cone\", \"the other hand has it\". Turn this on", 1
 	StaticText "first when something does nothing.", 1
+}
+
+// G5: the numbers that were first guesses, together on one page for the headset pass.
+// Each is the same cvar as on its own page; nothing here is new.
+OptionMenu "RSQDG_Tune"
+{
+	Title "FEEL TUNING"
+	StaticText ""
+	StaticText "These were set without a headset. Tune them", 1
+	StaticText "here; they also live on their own pages.", 1
+	StaticText ""
+	StaticText "RUMBLE", 1
+	Slider "Rumble strength",       "rsqdg_rumble_gain",   0.0, 2.0, 0.1, 1
+	Slider "Hum while locked",      "rsqdg_rumble_lock",   0.0, 0.6, 0.05, 2
+	StaticText ""
+	StaticText "THE PULL", 1
+	Slider "Pull speed (m/s)",      "rsqdg_flight_speed",  2, 40, 1, 1
+	Slider "Steering (m/s2)",       "rsqdg_steer",         5, 150, 5, 0
+	Slider "Pull strength (kg)",    "rsqdg_pull_kg",       1, 100, 1, 0
+	Option "Flight path",           "rsqdg_flight_mode",   "RSQDG_FlightMode"
+	Slider "Arc height (m)",        "rsqdg_arc_apex",      0.25, 3.0, 0.25, 2
+	StaticText ""
+	StaticText "THROWS AND IMPACTS", 1
+	Slider "Throw strength",        "rsqdg_throw_scale",   0.25, 4.0, 0.25, 2
+	Slider "Arm weight (kg)",       "rsqdg_arm_kg",        5, 100, 5, 0
+	Slider "Impact damage (J/pt)",  "rsqdg_throw_j",       2, 60, 1, 0
+	Slider "Barrel goes off at (m/s)", "rsqdg_throw_explode", 0, 15, 0.5, 1
+	StaticText "Lower J/pt = more damage per hit.", 1
+	StaticText ""
+	StaticText "CARRYING", 1
+	Slider "Half speed at (kg)",    "rsqdg_burden_kg",     20, 400, 10, 0
+	StaticText ""
+	SafeCommand "Reset just these", "resetcvar rsqdg_rumble_gain rsqdg_rumble_lock rsqdg_flight_speed rsqdg_steer rsqdg_pull_kg rsqdg_flight_mode rsqdg_arc_apex rsqdg_throw_scale rsqdg_arm_kg rsqdg_throw_j rsqdg_throw_explode rsqdg_burden_kg", "Put the feel numbers back?"
 }

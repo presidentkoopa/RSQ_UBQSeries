@@ -18,10 +18,13 @@ tic 20, after turning to the longest clear heading.
 symbols but no debug info). Channel 1 = right, 0 = left.
 
 ## Poses that work (right hand; vr_weaponRotate -30 is applied after the roll)
-    AIM    qz_rhand "0.25 1.3 -0.3 15 -30 90"   palm out, ~13 deg down, straight ahead
-    FLICK  pitch 15 -> 2 -> -12 over two tics (hand tips UP ~13 deg/tic), then roll 0
+    AIM    qz_rhand "0.25 1.3 -0.3 -11 -30 90"  palm out, ~10 deg down, straight ahead
+    FLICK  pitch -11 -> 2 -> 15 over two tics (hand tips UP ~13 deg/tic), then roll 0
+(Corrected 2026-10-26 with the pitch-sign fix: the old AIM "15 -30 90" pointed
+~13 deg UP, and the old FLICK 15 -> -12 tipped the hand DOWN; the mirrored grab
+read both the other way round. Ground truth: the pistol's puffs.)
     CATCH  back to AIM
-Left hand mirror: qz_lhand "-0.25 1.3 -0.3 15 30 -90". Walk: qz_lstick "0 1".
+Left hand mirror: qz_lhand "-0.25 1.3 -0.3 -11 30 -90". Walk: qz_lstick "0 1".
 
 ## The checks run on 2026-10-26 (all pass)
     clip pull + catch-and-use     lock t30, launch t47, catch t62; 4 buzzes = 4 vibrates
@@ -65,3 +68,9 @@ wait 2, AIM to catch. A probe cannot set `qz_rhand` itself: engine cvars refuse
     G3 arc                barrel 210u: 16 tics at apex 1 m (room 68 midway)
     G6 dot-only laser     rsqls_beam 0: grab beam comes back
     regression            grab+laser+shield+saber, both orders: no errors
+
+## Pitch-sign fix (2026-10-26) -- all pass
+    aimed 9 deg down at a floor barrel   locks it (before: nothing)
+    aimed 9 deg up                       no target (before: took the floor barrel)
+    corrected AIM + upward FLICK         lock t21, launch t47, caught t91
+    downward flick                       no pull; palm roll back just unlocks
