@@ -1,0 +1,498 @@
+// CARRYING IT. One object per hand, from the catch until you let go.
+//
+// A PLAIN EventHandler, NOT A StaticEventHandler, and that is load-bearing.
+//
+// The saved flags below are the ONLY record that a held object was ever normal.
+// The object's own flags are serialized by the engine; if the backup that undoes
+// them is not serialized alongside, a save taken while you are holding something
+// restores the MODIFIED object and loses the record of what it used to be --
+// permanently weightless, permanently unpickable, and nothing in the log.
+//
+// A plain EventHandler's fields are serialized with the level. A
+// StaticEventHandler is marked transient and its fields are NOT. So the split is
+// forced: measurement may be static, held-object state may not.
+//
+// =========================================================================
+// THE CARRY IS A SPRING, NOT A TELEPORT (report §3.3, every Quest grab agrees)
+// =========================================================================
+//
+//   vel = palmVel * share + (target - pos) * k,   clamped to vmax
+//
+// SetOrigin is a teleport: it puts the object through the wall you hold it
+// against, and there is nothing to push back. Asking for a VELOCITY lets the
+// engine's own movement do the collision -- so pinning something against a wall
+// is not a feature anyone writes, it is what happens when the hand keeps asking
+// and the wall keeps refusing. And that refusal is measurable: STRAIN, the
+// distance between where the hand wants the object and where it is, which the
+// rumble plays (feel.zs) and which ends the hold if it goes on too long.
+//
+// MASS DECIDES THE SPRING. `share` is the same k/(k+kg) the pull steers on:
+//   - the FEED-FORWARD term (palm velocity x share) is what makes a clip stay
+//     glued to the hand through a fast move, and a barrel trail behind it;
+//   - k (rsqdg_hold_k x (0.33 + 0.67 share)) is how hard the lag is pulled in;
+//   - vmax (x sqrt(share), floor 0.3) is how fast the ARM can haul it.
+// THE BODY'S OWN MOTION IS FED FORWARD IN FULL, and only the arm's part is
+// scaled by mass. Found in review: scaling the whole palm delta made walking
+// with a barrel a permanent 0.8 m lag -- constant "strain", constant rumble --
+// and running past vmax dropped it. You carry a barrel at walking pace; it is
+// your arm that cannot whip it about.
+// So weight is felt in the hand's motion with no extra rule for it.
+//
+// THE TARGET IS A STAND-OFF, not the palm (D5, report §13): a short distance
+// ahead of the hand along where it points, plus the object's own half-size --
+// so a barrel sits in front of your hand rather than inside your view, and
+// pointing the hand at a wall puts the object on the wall.
+class RSQDG_Hold : EventHandler
+{
+	private Actor held[2];
+
+	// ---- the borrowed state, one owner --------------------------------------
+	//
+	// Captured BEFORE the first mutation and restored on every exit. The flight
+	// hands the object over with its TRUE flags already put back, precisely so
+	// that what gets saved here is the truth rather than what the flight
+	// imposed. That handover order is not incidental -- it is the whole fix for
+	// the trap the desktop tree documents three times.
+	private bool   savedNoGrav[2];
+	private bool   savedThruActors[2];
+	private bool   savedSpecial[2];
+	private bool   savedCorpse[2];
+	private double savedRadius[2];
+	private double savedHeight[2];
+
+	// A FREEZE, rather than a target recomputed when the pose lies.
+	//
+	// The VR hand fields do not freeze when a menu opens -- they COLLAPSE TO
+	// THE BODY (hw_vrmodes.cpp:442; the real write is gated on menuactive,
+	// hw_openxrdevice.cpp:568). A carry that chased the live hand point would
+	// haul the object into the player's chest for as long as the menu stayed
+	// open, then fling it back out. So a bad pose stops the object dead where
+	// it is, and refuses to read the release as a throw.
+	private bool frozen[2];
+
+	// The spring's memory: last tic's palm (for the feed-forward) and the
+	// strain it measured.
+	private Vector3 lastPalm[2];
+	private Vector3 lastBody[2];
+	private bool    havePalm[2];
+	private double  strainM[2];
+	private int     strainTics[2];
+
+	// HOW LONG A HOLD SURVIVES BEING HELD BACK. Half a second at more than
+	// rsqdg_hold_break metres short: the object is behind a wall, or you walked
+	// away from where it is stuck. Let go of it there, rather than tow it
+	// through the geometry or keep it straining for ever.
+	const BREAK_TICS = 18;
+
+	// A palm that moves further than this in one tic did not move, it was
+	// moved -- a teleport, a level-start pose. No feed-forward from that.
+	const PALM_JUMP = 64.0;
+
+	static RSQDG_Hold Get()
+	{
+		return RSQDG_Hold(EventHandler.Find("RSQDG_Hold"));
+	}
+
+	bool HandIsFull(int hand) const
+	{
+		return (hand == 0 || hand == 1) && held[hand] != null;
+	}
+
+	Actor HeldBy(int hand) const
+	{
+		return (hand == 0 || hand == 1) ? held[hand] : null;
+	}
+
+	bool IsHeld(Actor a) const
+	{
+		return a && (held[0] == a || held[1] == a);
+	}
+
+	// Metres the object is short of where the hand wants it. 0 when empty.
+	double Strain(int hand) const
+	{
+		return (hand == 0 || hand == 1) && held[hand] ? strainM[hand] : 0;
+	}
+
+	// What both hands are carrying, in kilograms. The burden token reads it.
+	double CarriedKg() const
+	{
+		double kg = 0;
+		for (int h = 0; h < 2; h++)
+			if (held[h]) kg += RSQDG_Mass.Kg(held[h]);
+		return kg;
+	}
+
+	// ---- taking it ---------------------------------------------------------
+	//
+	// Called by the flight on a successful catch, with the object's true flags
+	// already restored. Returns false if it could not be taken, so the caller
+	// can leave it in the air rather than dropping it on a refusal.
+	bool Take(int hand, Actor a, PlayerInfo p)
+	{
+		if (hand != 0 && hand != 1 || !a) return false;
+		if (held[hand]) return false;
+
+		// NOT OUT OF THE OTHER HAND. Two holders would each save the object's
+		// state before touching it, so the second records what the first already
+		// changed as the "original". Whichever releases last restores that
+		// fiction and the true values are gone.
+		if (held[1 - hand] == a) return false;
+
+		// The settle list may still be lending it pass-through (throw.zs).
+		let settler = RSQDG_Throw.Get();
+		if (settler) settler.Unsettle(a);
+
+		savedNoGrav[hand]     = a.bNOGRAVITY;
+		savedThruActors[hand] = a.bTHRUACTORS;
+		savedSpecial[hand]    = a.bSPECIAL;
+		savedCorpse[hand]     = a.bCORPSE;
+		savedRadius[hand]     = a.Radius;
+		savedHeight[hand]     = a.Height;
+
+		// Weightless while carried, pass-through so it does not fight your own
+		// collision cylinder, and not collectable by walking over your own hand.
+		a.bNOGRAVITY  = true;
+		a.bTHRUACTORS = true;
+		a.bSPECIAL    = false;
+		a.Vel = (0, 0, 0);
+
+		// A PICKUP'S RADIUS IS ITS TRIGGER, not its body (a clip is radius 20,
+		// the same as a shotgun guy). Carried at that size, a clip stops 20
+		// units from every wall you reach toward. Capped at its own half-height
+		// -- the flight's lesson again -- and only for pickups: a barrel's
+		// radius IS the barrel.
+		if (a is "Inventory")
+		{
+			double thin = max(RSQDG_Reach.Num("rsqdg_flight_radius", p, 2.0),
+				min(a.Radius, a.Height * 0.5));
+			if (a.Radius > thin) a.A_SetSize(thin, a.Height);
+		}
+
+		held[hand] = a;
+		frozen[hand] = false;
+		havePalm[hand] = false;
+		strainM[hand] = 0;
+		strainTics[hand] = 0;
+
+		if (RSQDG_Reach.Flag("rsqdg_debug", p, false))
+			Console.Printf("[RSQDG] hand %d CAUGHT %s (%.1f kg)", hand, a.GetClassName(), RSQDG_Mass.Kg(a));
+		return true;
+	}
+
+	// A corpse that got up while in your hand (an Arch-Vile) is a monster now,
+	// at its living size; giving it back the corpse's size would make a
+	// quarter-height imp. The flight has the same guard.
+	private bool Raised(int hand, Actor a) const
+	{
+		return savedCorpse[hand] && a.Health > 0 && !a.bCORPSE;
+	}
+
+	// Every borrowed thing back, in one place. Every exit goes through here.
+	//
+	// BUT NOT ALWAYS AT ONCE (review): the object may be overlapping the
+	// player or a wall it was pinned to, and a solid barrel turned solid
+	// inside a solid player locks both; a clip widened back to its trigger
+	// radius inside a wall cannot move. So gravity comes back now, and the
+	// rest -- collision, size, collectability -- is handed to the settle list
+	// (throw.zs), which puts each back the first tic it fits. One owner of
+	// the remaining backup: the settler, from this line on.
+	private void Restore(int hand, Actor a, int minTics = 0)
+	{
+		a.bNOGRAVITY = savedNoGrav[hand];
+		double r = Raised(hand, a) ? a.Radius : savedRadius[hand];
+		double h = Raised(hand, a) ? a.Height : savedHeight[hand];
+		let th = RSQDG_Throw.Get();
+		if (th)
+		{
+			th.Settle(a, savedThruActors[hand], savedSpecial[hand], r, h, minTics);
+			return;
+		}
+		a.bTHRUACTORS = savedThruActors[hand];
+		a.bSPECIAL    = savedSpecial[hand];
+		if (a.Radius != r || a.Height != h) a.A_SetSize(r, h);
+	}
+
+	private void Forget(int hand)
+	{
+		held[hand] = null;
+		frozen[hand] = false;
+		havePalm[hand] = false;
+		strainM[hand] = 0;
+		strainTics[hand] = 0;
+	}
+
+	// ---- letting go --------------------------------------------------------
+	//
+	// THE RELEASE DECIDES, by the same rule the launch uses: open your hand while
+	// it is moving and the object is thrown; open it at rest and it simply drops.
+	// One act, two meanings, and which one you got is decided by whether your arm
+	// was doing anything. `canThrow` false is a set-down whatever the arm did --
+	// the path for a hold that broke.
+	void Release(int hand, PlayerInfo p, bool canThrow = true)
+	{
+		Actor a = held[hand];
+		if (!a) return;
+
+		// THE THROW. Hand velocity differenced from the palm, in the tracking
+		// frame, peak of the last ~200 ms (aim.zs) -- there is no native hand
+		// velocity on this engine.
+		//
+		// A BAD POSE THROWS NOTHING. The collapse to the body position would
+		// otherwise read as the hardest throw of the session.
+		Vector3 v = (0, 0, 0);
+		let aim = RSQDG_Aim.Get();
+		if (canThrow && aim && aim.PoseGood() && !frozen[hand])
+			v = aim.PalmVelocity(hand) * RSQDG_Reach.Num("rsqdg_throw_scale", p, 1.0);
+
+		// THE ARM HAS MASS TOO (rs_throw.zs's model). A throw is your arm and
+		// the object moving together; let go and the object keeps the share
+		// of that motion that was its own -- arm/(arm+kg). With the arm at
+		// 30 kg a keycard leaves at your hand's speed and a 60 kg barrel at a
+		// third of it: a heave, not a flick. Weight shows in the throw with no
+		// rule written for any object.
+		double kg = RSQDG_Mass.Kg(a);
+		double arm = max(1.0, RSQDG_Reach.Num("rsqdg_arm_kg", p, 30.0));
+		v *= arm / (arm + kg);
+
+		// THE ARM'S PART IS MEASURED AGAINST THE BODY (aim.zs), so walking is
+		// not a throw. But a real throw thrown while running carries the run:
+		// so the body's own velocity is added back ONLY when the arm actually
+		// threw. Half a metre a second is the line between a throw and a
+		// gentle set-down.
+		bool thrown = RSQDG_Reach.Metres(v) * TICRATE > 0.5;
+		Vector3 body = (0, 0, 0);
+		if (thrown && p.mo) body = p.mo.Vel;
+		v += body;
+
+		// A thrown pickup stays uncollectable for a moment, or walking after
+		// your own throw picks it straight back up on the same tic.
+		Restore(hand, a, thrown ? 10 : 0);
+		a.Vel = v;
+
+		if (RSQDG_Reach.Flag("rsqdg_debug", p, false))
+			Console.Printf("[RSQDG] hand %d released %s at %.1f m/s (%s; arm %.1f, body %.1f)",
+				hand, a.GetClassName(), RSQDG_Reach.Metres(v) * TICRATE,
+				thrown ? "thrown" : "dropped",
+				RSQDG_Reach.Metres(v - body) * TICRATE, RSQDG_Reach.Metres(body) * TICRATE);
+
+		Forget(hand);
+
+		// A thrown thing is watched until it lands: the impact is what hurts
+		// (throw.zs).
+		if (thrown && p.mo)
+		{
+			let th = RSQDG_Throw.Get();
+			if (th) th.Watch(a, p.mo, hand, body.xy);
+		}
+
+		let feel = RSQDG_Feel.Get();
+		if (feel) feel.OnRelease(hand, a, thrown);
+	}
+
+	// Put it back the way it was found and forget it. Not a drop and not a
+	// throw -- this is the path for a hold that cannot continue: the mechanic
+	// switched off, the player died, the level ended.
+	void Drop(int hand)
+	{
+		Actor a = held[hand];
+		if (a)
+		{
+			Restore(hand, a);
+			a.Vel = (0, 0, 0);
+			// Told, like every other ending, so a listener that dressed the
+			// thing can undress it -- switched off, died, level change.
+			RSQDG_Events.Tell("hold.drop", hand, a);
+		}
+		Forget(hand);
+	}
+
+	void DropAll()
+	{
+		Drop(0);
+		Drop(1);
+	}
+
+	// Where the hand wants the object's ORIGIN (feet, not centre) this tic.
+	private Vector3 Target(PlayerPawn pmo, PlayerInfo p, int h, Actor a)
+	{
+		Vector3 palm = RSQDG_Reach.Palm(pmo, h);
+		Vector3 dir  = RSQDG_Reach.Dir(pmo, h);   // room-space unit vector
+
+		// Metres ahead of the hand: the setting, plus the object's half-size so
+		// its near face, not its middle, sits at the stand-off. Half-size from
+		// the TRUE radius capped by half-height, for the same reason as the
+		// thinning above.
+		double half = min(savedRadius[h], savedHeight[h] * 0.5) / RSQDG_Reach.UNITS_PER_METRE_XY;
+		double m = max(0.0, RSQDG_Reach.Num("rsqdg_hold_dist", p, 0.30)) + half;
+
+		// Room metres to map units, per axis (34 across, 28.3 up).
+		Vector3 off = (dir.x * m * RSQDG_Reach.UNITS_PER_METRE_XY,
+		               dir.y * m * RSQDG_Reach.UNITS_PER_METRE_XY,
+		               dir.z * m * RSQDG_Reach.UNITS_PER_METRE_XY / RSQDG_Reach.PIXELSTRETCH);
+		Vector3 c = palm + off;
+		return (c.x, c.y, c.z - a.Height * 0.5);
+	}
+
+	override void WorldTick()
+	{
+		let p = players[consoleplayer];
+		if (!p || !p.mo) { DropAll(); return; }
+		let pmo = p.mo;
+
+		// OFF HAS TO MEAN OFF, and that includes handing back everything
+		// borrowed. A held object left weightless and pass-through after the
+		// mechanic was switched off is an object nothing in the game will ever
+		// put right.
+		if (pmo.Health <= 0 || !RSQDG_Reach.Flag("rsqdg_on", p, true))
+		{
+			DropAll();
+			UpdateBurden(pmo, p);
+			return;
+		}
+
+		let aim = RSQDG_Aim.Get();
+		bool good = aim && aim.PoseGood();
+
+		for (int h = 0; h < 2; h++)
+		{
+			Actor a = held[h];
+			if (!a) { Forget(h); continue; }
+
+			// GOT UP, or GOT TAKEN: an Arch-Vile raised it, or something put
+			// it in an inventory. Either way it is not ours to steer.
+			if (Raised(h, a) || (Inventory(a) && Inventory(a).Owner))
+			{
+				if (RSQDG_Reach.Flag("rsqdg_debug", p, false))
+					Console.Printf("[RSQDG] hand %d: %s is no longer a held thing", h, a.GetClassName());
+				Drop(h);
+				continue;
+			}
+
+			if (!good)
+			{
+				// STOP WHERE IT IS. Not "carry on toward the body position",
+				// which is what reading the live hand point would do.
+				frozen[h] = true;
+				havePalm[h] = false;
+				strainM[h] = 0;
+				strainTics[h] = 0;
+				a.Vel = (0, 0, 0);
+				continue;
+			}
+			frozen[h] = false;
+
+			Vector3 palm = RSQDG_Reach.Palm(pmo, h);
+			Vector3 armVel = (0, 0, 0), bodyVel = (0, 0, 0);
+			if (havePalm[h])
+			{
+				bodyVel = pmo.Pos - lastBody[h];
+				armVel = (palm - lastPalm[h]) - bodyVel;
+				if (bodyVel.Length() > PALM_JUMP) bodyVel = (0, 0, 0);   // teleported
+				if (armVel.Length() > PALM_JUMP)  armVel  = (0, 0, 0);
+			}
+			lastPalm[h] = palm;
+			lastBody[h] = pmo.Pos;
+			havePalm[h] = true;
+
+			Vector3 want = Target(pmo, p, h, a);
+			Vector3 err = want - a.Pos;
+
+			// STRAIN is measured BEFORE this tic's push, from where the
+			// engine let the object get to on the last one.
+			strainM[h] = RSQDG_Reach.Metres(err);
+
+			double breakM = RSQDG_Reach.Num("rsqdg_hold_break", p, 1.5);
+			if (breakM > 0 && strainM[h] > breakM)
+			{
+				if (++strainTics[h] >= BREAK_TICS)
+				{
+					if (RSQDG_Reach.Flag("rsqdg_debug", p, false))
+						Console.Printf("[RSQDG] hand %d lost %s -- held back %.2f m",
+							h, a.GetClassName(), strainM[h]);
+					Release(h, p, false);
+					continue;
+				}
+			}
+			else strainTics[h] = 0;
+
+			double share = RSQDG_Mass.PullShare(a, p);
+			double k = clamp(RSQDG_Reach.Num("rsqdg_hold_k", p, 0.6), 0.05, 0.95)
+				* (0.33 + 0.67 * share);
+			double vmax = RSQDG_Reach.Num("rsqdg_hold_vmax", p, 40.0) * max(0.3, sqrt(share));
+
+			// The arm's part, mass-scaled and capped; the body's, in full.
+			Vector3 v = armVel * share + err * k;
+			double vl = v.Length();
+			if (vl > vmax) v *= vmax / vl;
+			a.Vel = v + bodyVel;
+		}
+
+		UpdateBurden(pmo, p);
+	}
+
+	// ---- the burden --------------------------------------------------------
+	//
+	// HEAVY THINGS SLOW YOU, through the only hook that can (report §5.1):
+	// Inventory.GetSpeedFactor, multiplied in by TweakSpeeds INSIDE MovePlayer,
+	// after MovePlayer has reset Speed for the tic -- which is why A_SetSpeed
+	// from anywhere never works in VR. Given and taken HERE, every tic, by the
+	// thing that knows what is held: a flag set in one place and cleared in
+	// another is the bug that outlives the session.
+	private void UpdateBurden(PlayerPawn pmo, PlayerInfo p)
+	{
+		double factor = 1.0;
+		if (RSQDG_Reach.Flag("rsqdg_burden", p, true) && pmo.Health > 0)
+		{
+			// Half speed at rsqdg_burden_kg; a clip is nothing, a barrel is
+			// felt, two barrels are a struggle.
+			double ref = max(1.0, RSQDG_Reach.Num("rsqdg_burden_kg", p, 120.0));
+			factor = 1.0 / (1.0 + CarriedKg() / ref);
+		}
+
+		let tok = RSQDG_Burden(pmo.FindInventory("RSQDG_Burden"));
+		if (factor > 0.99)
+		{
+			if (tok) tok.Destroy();
+			return;
+		}
+		if (!tok)
+		{
+			tok = RSQDG_Burden(pmo.GiveInventoryType("RSQDG_Burden"));
+			if (!tok) return;
+		}
+		tok.factor = factor;
+	}
+
+	private void TakeBurden()
+	{
+		let p = players[consoleplayer];
+		if (!p || !p.mo) return;
+		let tok = p.mo.FindInventory("RSQDG_Burden");
+		if (tok) tok.Destroy();
+	}
+
+	override void WorldLoaded(WorldEvent e) { DropAll(); TakeBurden(); }
+	override void WorldUnloaded(WorldEvent e) { DropAll(); TakeBurden(); }
+}
+
+// The slowdown itself. Nothing but a number the hold handler writes. Undroppable,
+// invisible, and destroyed by the handler the tic nothing heavy is held -- or on
+// any map change, so it can never ride into a new level by itself.
+class RSQDG_Burden : Inventory
+{
+	double factor;
+
+	Default
+	{
+		+INVENTORY.UNDROPPABLE
+		+INVENTORY.UNTOSSABLE
+		+INVENTORY.UNCLEARABLE
+		Inventory.MaxAmount 1;
+	}
+
+	override double GetSpeedFactor()
+	{
+		return clamp(factor, 0.2, 1.0);
+	}
+}

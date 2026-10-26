@@ -1,0 +1,49 @@
+// THE INPUT, AND IT IS NOT A BUTTON BIT.
+//
+// Every usercmd bit is contested by mods we cannot see or modify. The lesson
+// was learned twice here: BT_USE turned out to be read by our own shield, and
+// BT_USER1..4 are used by a bullet-time mod, a grappling-hook mod and Brutal
+// Doom. A census only ever sees your own packages.
+//
+// A KEYCONF action consumes NO usercmd bit, so contention is structurally
+// impossible however many mods are loaded. It is also what UltraBadassQuestSaber
+// uses for all of its non-trigger inputs, so there is shipping precedent on this
+// engine.
+//
+// HOW THE PRESS AND THE RELEASE BOTH ARRIVE. `+name` is not a buttonMap action,
+// so it falls through to alias lookup; and key-up rewrites the leading `+` to a
+// `-`, so binding a key to `+rsqdg_main` gives `-rsqdg_main` when it is let go.
+// Two aliases, two netevents, a real press/release pair -- which is what makes a
+// hold gesture possible on a channel that only reports edges.
+//
+// A netevent reaches NetworkProcess at the TOP of the tic, before
+// P_PlayerThink -- earlier than WorldTick, so better timing than reading a bit.
+// It is replicated and it names the player who pressed it.
+
+addkeysection "Distance Grab" RSQDG
+addmenukey "Grab / pull (main hand)" "+rsqdg_main"
+addmenukey "Grab / pull (off hand)"  "+rsqdg_off"
+
+// ONE ACTION PER HAND, rather than one action and a guess.
+//
+// A shared input would have to pick the hand geometrically -- "whichever hand
+// has a cone target, main breaks the tie" -- which is what a single BT_USE bit
+// would have forced on us, since there is no BT_OFFHANDUSE. Having our own
+// channel means we simply bind each hand separately and never guess.
+alias "+rsqdg_main" "netevent rsqdg_press 0"
+alias "-rsqdg_main" "netevent rsqdg_release 0"
+alias "+rsqdg_off"  "netevent rsqdg_press 1"
+alias "-rsqdg_off"  "netevent rsqdg_release 1"
+
+// DESKTOP KEYS ONLY, and deliberately no controller default.
+//
+// `defaultbind` is used rather than `bind` because the owner's ini is read-only
+// and must not be written.
+//
+// The controller binds are left unset ON PURPOSE. Which key name a Quest
+// controller button posts is not discoverable from the engine tree -- the
+// Android layer that maps buttons to key names is not in it -- so a guessed
+// default would either silently bind nothing or steal a button that already
+// does something. Bind the grips in Customize Controls, under "Distance Grab".
+defaultbind g "+rsqdg_main"
+defaultbind h "+rsqdg_off"

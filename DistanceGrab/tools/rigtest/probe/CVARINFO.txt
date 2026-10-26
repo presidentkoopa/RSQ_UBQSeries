@@ -1,0 +1,3 @@
+user string rsqdgt_scene = "";
+user bool rsqdgt_every = false;
+user string rsqdgt_poses = "";
