@@ -69,3 +69,15 @@ Model RSQLS_Halo
 	FrameIndex RSLH I 1 3
 	FrameIndex RSLH J 1 4
 }
+
+// The range readout: its skin is the canvas texture RSLRANGE (ANIMDEFS).
+Model RSQLS_Readout
+{
+	Path "models/rsqls"
+	Model 0 "rslsread.md3"
+	Skin 0 "RSLRANGE"
+	Scale 1.0 1.0 1.0
+	USEACTORPITCH
+	CORRECTPIXELSTRETCH
+	FrameIndex RSLQ A 0 0
+}

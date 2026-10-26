@@ -124,6 +124,20 @@ def main():
         c = int(255 * max(0.0, math.exp(-(r / 0.45) ** 2) - 0.02))
         return (c, c, c, c)
     png(os.path.join(sd, 'RSLGA0.png'), 64, 64, glow_px, grab=(32, 32))
+    # PHASE 3. The spread ring: a thin soft circle, radius 0.9 of the sprite, so a
+    # sprite scaled to 2r/64 per axis outlines where the pellets can land.
+    def ring_px(x, y):
+        r = math.hypot(x - 31.5, y - 31.5) / 32.0
+        c = int(255 * math.exp(-((r - 0.90) / 0.035) ** 2))
+        return (c, c, c, c)
+    png(os.path.join(sd, 'RSLRA0.png'), 64, 64, ring_px, grab=(32, 32))
+    # The range readout: one flat quad (8 x 2 units, facing +X, double-sided) whose
+    # skin is the canvas texture RSLRANGE (ANIMDEFS), written each frame by the UI.
+    q = [(0.0, -4.0, 2.0), (0.0, 4.0, 2.0), (0.0, 4.0, 0.0), (0.0, -4.0, 0.0)]
+    n = write_md3(os.path.join(md, 'rslsread.md3'), [q], [(0, 0), (1, 0), (1, 1), (0, 1)],
+                  [(0, 1, 2), (0, 2, 3), (0, 2, 1), (0, 3, 2)], 'RSLRANGE', 'rslsread')
+    print('rslsread.md3 %d bytes' % n)
+    png(os.path.join(sd, 'RSLQA0.png'), 1, 1, lambda x, y: (0, 0, 0, 0))
     # Placeholders: MODELDEF only draws a frame some state names, and a state can
     # only name a sprite whose lump exists.
     nfr = 2 * len(TAPERS)
@@ -147,6 +161,10 @@ def main():
         for i in range(len(TAPERS)):
             out.append('\tFrameIndex %s %s 1 %d' % (spr, chr(65 + len(TAPERS) + i), i))
         out += ['}', '']
+    out += ['// The range readout: its skin is the canvas texture RSLRANGE (ANIMDEFS).',
+            'Model RSQLS_Readout', '{', '\tPath "models/rsqls"', '\tModel 0 "rslsread.md3"',
+            '\tSkin 0 "RSLRANGE"', '\tScale 1.0 1.0 1.0', '\tUSEACTORPITCH', '\tCORRECTPIXELSTRETCH',
+            '\tFrameIndex RSLQ A 0 0', '}', '']
     open(os.path.join(ROOT, 'MODELDEF.txt'), 'w').write('\n'.join(out))
     print('assets written')
 

@@ -30,6 +30,20 @@ OptionValue "RSQLS_ColorMode"
 	2, "Beam and dot separately"
 }
 
+OptionValue "RSQLS_Readout"
+{
+	0, "Off"
+	1, "By the gun"
+	2, "At the dot"
+}
+
+OptionValue "RSQLS_Units"
+{
+	0, "Metres"
+	1, "Feet"
+	2, "Map units"
+}
+
 OptionMenu "RSQLS_Options"
 {
 	Title "LASER SIGHT"
@@ -105,11 +119,29 @@ OptionMenu "RSQLS_Options"
 	StaticText "A head is the top fifth of a monster -- an approximation.", 1
 
 	StaticText ""
+	StaticText "Learned From Each Gun", gold
+	StaticText "Fire a gun once and the laser learns how it shoots.", 1
+	Option "Grenade arc",              "rsqls_arc",         "OnOff"
+	Option "Keep the straight beam too", "rsqls_arc_beam",  "OnOff"
+	Slider "Arc dot size",             "rsqls_arc_size",    0.25, 4.0, 0.25, 2
+	Slider "Arc brightness",           "rsqls_arc_a",       0.1, 1.0, 0.05, 2
+	Option "Spread ring",              "rsqls_spread",      "OnOff"
+	Slider "No ring under (deg)",      "rsqls_spread_min",  0.0, 5.0, 0.25, 2
+	Slider "Ring brightness",          "rsqls_spread_a",    0.1, 1.0, 0.05, 2
+	StaticText "The ring is the widest spread the gun has shown.", 1
+
+	StaticText ""
+	StaticText "Range Readout", gold
+	Option "Show range",               "rsqls_readout",       "RSQLS_Readout"
+	Option "Units",                    "rsqls_readout_units", "RSQLS_Units"
+	Slider "Readout size",             "rsqls_readout_size",  0.5, 3.0, 0.25, 2
+
+	StaticText ""
 	Option "Haptic tick on toggle",    "rsqls_haptics", "OnOff"
 	Control "Toggle -- main hand",     "toggle rsqls_main"
 	Control "Toggle -- off hand",      "toggle rsqls_off"
 	StaticText ""
-	SafeCommand "Reset to defaults", "resetcvar rsqls_on; resetcvar rsqls_main; resetcvar rsqls_off; resetcvar rsqls_pointer; resetcvar rsqls_show_melee; resetcvar rsqls_ready_only; resetcvar rsqls_spot_size; resetcvar rsqls_spot_a; resetcvar rsqls_glow; resetcvar rsqls_glow_scale; resetcvar rsqls_glow_int; resetcvar rsqls_ir; resetcvar rsqls_beam; resetcvar rsqls_beam_a; resetcvar rsqls_beam_w; resetcvar rsqls_beam_glow; resetcvar rsqls_beam_emissive; resetcvar rsqls_beam_taper; resetcvar rsqls_beam_fade; resetcvar rsqls_beam_length; resetcvar rsqls_beam_fixed; resetcvar rsqls_beam_daylight; resetcvar rsqls_muzzle_fwd; resetcvar rsqls_muzzle_up; resetcvar rsqls_muzzle_side; resetcvar rsqls_lead; resetcvar rsqls_lock; resetcvar rsqls_lock_tighten; resetcvar rsqls_lock_rate; resetcvar rsqls_range; resetcvar rsqls_dot_range; resetcvar rsqls_target_recolor; resetcvar rsqls_col_target; resetcvar rsqls_color_mode; resetcvar rsqls_col_main; resetcvar rsqls_col_off; resetcvar rsqls_col_dot_main; resetcvar rsqls_col_dot_off; resetcvar rsqls_col_per_slot; resetcvar rsqls_col_slot1; resetcvar rsqls_col_slot2; resetcvar rsqls_col_slot3; resetcvar rsqls_col_slot4; resetcvar rsqls_col_slot5; resetcvar rsqls_col_slot6; resetcvar rsqls_col_slot7; resetcvar rsqls_col_slot8; resetcvar rsqls_col_slot9; resetcvar rsqls_col_slot0; resetcvar rsqls_cycle; resetcvar rsqls_cycle_speed; resetcvar rsqls_cycle_dot; resetcvar rsqls_head; resetcvar rsqls_col_head; resetcvar rsqls_head_pulse; resetcvar rsqls_head_pulse_hz; resetcvar rsqls_haptics"
+	SafeCommand "Reset to defaults", "resetcvar rsqls_on; resetcvar rsqls_main; resetcvar rsqls_off; resetcvar rsqls_pointer; resetcvar rsqls_show_melee; resetcvar rsqls_ready_only; resetcvar rsqls_spot_size; resetcvar rsqls_spot_a; resetcvar rsqls_glow; resetcvar rsqls_glow_scale; resetcvar rsqls_glow_int; resetcvar rsqls_ir; resetcvar rsqls_beam; resetcvar rsqls_beam_a; resetcvar rsqls_beam_w; resetcvar rsqls_beam_glow; resetcvar rsqls_beam_emissive; resetcvar rsqls_beam_taper; resetcvar rsqls_beam_fade; resetcvar rsqls_beam_length; resetcvar rsqls_beam_fixed; resetcvar rsqls_beam_daylight; resetcvar rsqls_muzzle_fwd; resetcvar rsqls_muzzle_up; resetcvar rsqls_muzzle_side; resetcvar rsqls_lead; resetcvar rsqls_lock; resetcvar rsqls_lock_tighten; resetcvar rsqls_lock_rate; resetcvar rsqls_range; resetcvar rsqls_dot_range; resetcvar rsqls_target_recolor; resetcvar rsqls_col_target; resetcvar rsqls_color_mode; resetcvar rsqls_col_main; resetcvar rsqls_col_off; resetcvar rsqls_col_dot_main; resetcvar rsqls_col_dot_off; resetcvar rsqls_col_per_slot; resetcvar rsqls_col_slot1; resetcvar rsqls_col_slot2; resetcvar rsqls_col_slot3; resetcvar rsqls_col_slot4; resetcvar rsqls_col_slot5; resetcvar rsqls_col_slot6; resetcvar rsqls_col_slot7; resetcvar rsqls_col_slot8; resetcvar rsqls_col_slot9; resetcvar rsqls_col_slot0; resetcvar rsqls_cycle; resetcvar rsqls_cycle_speed; resetcvar rsqls_cycle_dot; resetcvar rsqls_head; resetcvar rsqls_col_head; resetcvar rsqls_head_pulse; resetcvar rsqls_head_pulse_hz; resetcvar rsqls_haptics; resetcvar rsqls_arc; resetcvar rsqls_arc_beam; resetcvar rsqls_arc_size; resetcvar rsqls_arc_a; resetcvar rsqls_spread; resetcvar rsqls_spread_min; resetcvar rsqls_spread_a; resetcvar rsqls_readout; resetcvar rsqls_readout_units; resetcvar rsqls_readout_size"
 }
 
 // Ten slots is too many rows for the main page; they get their own.

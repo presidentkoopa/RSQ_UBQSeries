@@ -2,5 +2,5 @@
 // matter, because nothing here writes anything another mod reads.
 GameInfo
 {
-	AddEventHandlers = "RSQLS_ColorTable", "RSQLS_Sight"
+	AddEventHandlers = "RSQLS_ColorTable", "RSQLS_Learn", "RSQLS_Sight"
 }

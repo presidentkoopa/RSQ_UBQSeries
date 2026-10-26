@@ -95,6 +95,26 @@ class RSQLS_Glow : RSQLS_Spot
 	States { Spawn: RSLG A -1 Bright; Stop; }
 }
 
+// PHASE 3 pieces. A dot along a thrown weapon's arc; the spread ring (RSLR, a
+// thin circle at 0.9 of the sprite's radius); the range readout, a quad model
+// wearing the canvas texture RSLRANGE that the UI writes (see UiTick).
+class RSQLS_ArcDot : RSQLS_Spot {}
+class RSQLS_Ring : RSQLS_Spot
+{
+	States { Spawn: RSLR A -1 Bright; Stop; }
+}
+class RSQLS_Readout : Actor
+{
+	Default
+	{
+		+NOINTERACTION +NOBLOCKMAP +NOGRAVITY +NOTELEPORT +DONTSPLASH +NOTONAUTOMAP
+		+BRIGHT
+		RenderStyle "Add";
+		Radius 1; Height 1;
+	}
+	States { Spawn: RSLQ A -1 Bright; Stop; }
+}
+
 // The haptic tick on a toggle. NOT a missile -- see RSQ_DistanceGrab feel.zs:
 // Brutal22Q's recoil and flash hooks treat every player missile as a shot except
 // RSVR_Buzz by name; without +MISSILE, P_CheckMissileSpawn treats this as an MBF
@@ -148,6 +168,29 @@ class RSQLS_Sight : EventHandler
 	private int   lightRadius[2];
 	private bool  lightOn[2];
 
+	// ---- phase 3 ------------------------------------------------------------
+	const ARC_N = 24;          // dots along a thrown weapon's arc, per hand
+	const ARC_TICS = 140;      // the longest flight simulated: four seconds
+	const RING_PX = 28.8;      // RSLR's ring radius in pixels (0.9 x 32)
+	private Actor arcDot[48];  // ARC_N per hand
+	private bool  arcShown[2];
+	private Actor ring[2];
+	private Actor readout;
+	// The simulated path (no dynamic arrays of vectors on 4.12-4.14: three of doubles).
+	private transient Array<double> arcX, arcY, arcZ;
+	private void ArcClear() { arcX.Clear(); arcY.Clear(); arcZ.Clear(); }
+	private void ArcPush(Vector3 v) { arcX.Push(v.x); arcY.Push(v.y); arcZ.Push(v.z); }
+	private Vector3 ArcAt(int i) { return (arcX[i], arcY[i], arcZ[i]); }
+	// The weapon pack's muzzle point (LaserMuzzleService), cached per weapon class.
+	private transient String mzKey[2];
+	private transient bool   mzGot[2];
+	private transient double mzF[2], mzU[2], mzS[2];
+	// What the readout shows: room metres to the hit (0 = nothing), its colour.
+	transient double rangeM[2];
+	transient int    rangeRgb[2];
+	transient double readM;
+	transient int    readRgb;
+
 	// Leading (see header).
 	private Vector3 lastMuzzle[2], lastHit[2];
 	private bool    muzzlePrimed[2], hitPrimed[2];
@@ -189,7 +232,13 @@ class RSQLS_Sight : EventHandler
 		spotShown[h] = false;
 		hitPrimed[h] = false;
 	}
-	private void HideHand(int h) { HideBeam(h); HideSpot(h); muzzlePrimed[h] = false; }
+	private void HideArc(int h)
+	{
+		if (!arcShown[h]) return;
+		for (int i = 0; i < ARC_N; i++) Hide(arcDot[h * ARC_N + i]);
+		arcShown[h] = false;
+	}
+	private void HideHand(int h) { HideBeam(h); HideSpot(h); HideArc(h); Hide(ring[h]); rangeM[h] = 0; muzzlePrimed[h] = false; }
 
 	// ---- which hands have a laser right now -----------------------------------
 	private bool HandLive(PlayerInfo p, int h)
@@ -311,6 +360,7 @@ class RSQLS_Sight : EventHandler
 			|| (!wantDot && !wantBeam) || (ir && !irVisible))
 		{
 			HideHand(0); HideHand(1);
+			UpdateReadout(pmo, p);
 			return;
 		}
 
@@ -328,6 +378,7 @@ class RSQLS_Sight : EventHandler
 			if (beamShown[h] || spotShown[h]) liveMask |= 1 << h;
 			if (beamShown[h]) beamMask |= 1 << h;
 		}
+		UpdateReadout(pmo, p);
 	}
 
 	// One beam piece: placed, aimed, sized, framed, tinted.
@@ -350,10 +401,27 @@ class RSQLS_Sight : EventHandler
 		Weapon w = (h == 0) ? p.ReadyWeapon : p.OffhandWeapon;
 
 		// ---- the muzzle: a physical offset from the grip, in metres --------
-		Vector3 muzzle = RSQLS_Hand.Grip(pmo, h) + RSQLS_Hand.Offset(pmo, h,
-			RSQLS_Hand.Num("rsqls_muzzle_fwd",  p, 0.18),
-			RSQLS_Hand.Num("rsqls_muzzle_up",   p, 0.03),
-			RSQLS_Hand.Num("rsqls_muzzle_side", p, 0.0));
+		// A weapon pack that knows where its muzzles are says so through
+		// LaserMuzzleService (see MuzzleFor); otherwise the one default.
+		double mf = RSQLS_Hand.Num("rsqls_muzzle_fwd",  p, 0.18);
+		double mu = RSQLS_Hand.Num("rsqls_muzzle_up",   p, 0.03);
+		double ms = RSQLS_Hand.Num("rsqls_muzzle_side", p, 0.0);
+		if (w)
+		{
+			bool got; double f, u, sd;
+			[got, f, u, sd] = MuzzleFor(h, w);
+			if (got) { mf = f; mu = u; ms = sd; }
+		}
+		Vector3 muzzle = RSQLS_Hand.Grip(pmo, h) + RSQLS_Hand.GunOffset(pmo, h, mf, mu, ms);
+
+		// A THROWN WEAPON (grenades): once it has been seen firing, the line is
+		// the ballistic path its projectile will take, and the spot is where it
+		// lands (learn.zs). The straight beam would point at the wrong place.
+		bool arcOn = false;
+		double aSp, aGr, aEl, aYw;
+		if (w && RSQLS_Hand.Flag("rsqls_arc", p, true))
+			[arcOn, aSp, aGr, aEl, aYw] = RSQLS_Learn.Arc(w);
+		if (arcOn && !RSQLS_Hand.Flag("rsqls_arc_beam", p, false)) wantBeam = false;
 
 		// ---- the trace: from the REAL muzzle, along the gun ------------------
 		// TRF_ABSPOSITION with coordinates computed here and zero offsets:
@@ -361,10 +429,50 @@ class RSQLS_Sight : EventHandler
 		// when OverrideAttackPosDir is true, which in VR is always.
 		double range = RSQLS_Hand.Num("rsqls_range", p, 2048.0);
 		FLineTraceData t;
-		bool hit = pmo.LineTrace(RSQLS_Hand.Yaw(pmo, h), range, RSQLS_Hand.Pitch(pmo, h),
-			TRF_ABSPOSITION, muzzle.z, muzzle.x, muzzle.y, t);
+		bool hit;
+		Vector3 end;
+		if (arcOn)
+		{
+			// One tic at a time, exactly as the engine will move it: position
+			// plus velocity, then gravity off the velocity. Each tic's segment is
+			// a LineTrace, so the arc stops at the first wall, floor or body.
+			ArcClear();
+			double g = level.gravity * aGr * 0.00125;
+			Sector s0 = level.PointInSector(muzzle.xy);
+			if (s0) g *= s0.gravity;
+			Vector3 v = RSQLS_Hand.Fwd(RSQLS_Hand.Yaw(pmo, h) + aYw, RSQLS_Hand.Pitch(pmo, h) + aEl) * aSp;
+			Vector3 pos = muzzle;
+			hit = false;
+			ArcPush(muzzle);
+			for (int i = 0; i < ARC_TICS; i++)
+			{
+				Vector3 np = pos + v;
+				v.z -= g;
+				Vector3 seg = np - pos;
+				double sl = seg.Length();
+				if (sl > 0.01 && pmo.LineTrace(VectorAngle(seg.x, seg.y), sl, -atan2(seg.z, seg.xy.Length()),
+					TRF_ABSPOSITION, pos.z, pos.x, pos.y, t))
+				{
+					hit = true;
+					ArcPush(t.HitLocation);
+					break;
+				}
+				ArcPush(np);
+				pos = np;
+			}
+			end = ArcAt(arcX.Size() - 1);
+		}
+		else
+		{
+			hit = pmo.LineTrace(RSQLS_Hand.Yaw(pmo, h), range, RSQLS_Hand.DoomPitch(pmo, h),
+				TRF_ABSPOSITION, muzzle.z, muzzle.x, muzzle.y, t);
+			end = hit ? t.HitLocation : (muzzle + RSQLS_Hand.Dir(pmo, h) * range);
+		}
 		bool sky = hit && t.HitType == FLineTraceData.TRACE_HasHitSky;
-		Vector3 end = hit ? t.HitLocation : (muzzle + RSQLS_Hand.Dir(pmo, h) * range);
+		{
+			Vector3 rd = end - muzzle;
+			rangeM[h] = (hit && !sky) ? (rd.x, rd.y, rd.z * RSQLS_Hand.PIXELSTRETCH).Length() / RSQLS_Hand.UPM : 0;
+		}
 
 		// ---- lead: draw a tic ahead (see header) ---------------------------
 		double lead = clamp(RSQLS_Hand.Num("rsqls_lead", p, 1.0), 0.0, 2.0);
@@ -397,6 +505,8 @@ class RSQLS_Sight : EventHandler
 		int dotRgb  = ColorOf(p, h, w, true,  hostile, head);
 		TranslationID beamTint = RSQLS_Colors.Tint(beamRgb);
 		TranslationID dotTint  = RSQLS_Colors.Tint(dotRgb);
+		rangeRgb[h] = dotRgb;
+		if (arcOn) LayArc(h, dotTint, p); else HideArc(h);
 
 		// The room's light at the muzzle, 0..1. Dark rooms show the beam.
 		Sector sec = Level.PointInSector(muzzle.xy);
@@ -442,7 +552,7 @@ class RSQLS_Sight : EventHandler
 		// ---- the spot: painted on what it hit ----------------------------------
 		double dist = (end - muzzle).Length();
 		double dotRange = RSQLS_Hand.Num("rsqls_dot_range", p, 0.0);
-		if (!wantDot || !hit || sky || (dotRange > 0 && dist > dotRange)) { HideSpot(h); return; }
+		if (!wantDot || !hit || sky || (dotRange > 0 && dist > dotRange)) { HideSpot(h); Hide(ring[h]); return; }
 
 		let s = spot[h];
 		Vector3 at = drawEnd;
@@ -499,6 +609,9 @@ class RSQLS_Sight : EventHandler
 		s.Alpha = clamp(RSQLS_Hand.Num("rsqls_spot_a", p, 1.0), 0.0, 1.0);
 		s.Translation = dotTint;
 
+		// ---- the spread ring: where this gun's shots can land (learn.zs) -------
+		LayRing(h, w, p, at, dist, wallS, flatS, sAngle, arcOn, dotTint, shownS);
+
 		// ---- the glow: off, a bloom, a real light, or both ----------------------
 		int gmode = RSQLS_Hand.Opt("rsqls_glow", p, 3);
 		double gscale = clamp(RSQLS_Hand.Num("rsqls_glow_scale", p, 1.8), 1.1, 4.0);
@@ -534,10 +647,160 @@ class RSQLS_Sight : EventHandler
 		else if (lightOn[h]) { s.A_RemoveLight('RSQLS'); lightOn[h] = false; }
 	}
 
+	// The arc: ARC_N dots spaced evenly by length along the simulated path.
+	private void LayArc(int h, TranslationID tint, PlayerInfo p)
+	{
+		int n = arcX.Size();
+		if (n < 2) { HideArc(h); return; }
+		double total = 0;
+		for (int i = 1; i < n; i++) total += (ArcAt(i) - ArcAt(i - 1)).Length();
+		if (total < 1) { HideArc(h); return; }
+		double size = RSQLS_Hand.Num("rsqls_arc_size", p, 1.0) * 0.022;
+		double alpha = clamp(RSQLS_Hand.Num("rsqls_arc_a", p, 0.8), 0.0, 1.0);
+		int seg = 1;
+		double segStart = 0, segLen = (ArcAt(1) - ArcAt(0)).Length();
+		for (int k = 0; k < ARC_N; k++)
+		{
+			int slot = h * ARC_N + k;
+			arcDot[slot] = Ensure(arcDot[slot], "RSQLS_ArcDot");
+			let d = arcDot[slot];
+			if (!d) continue;
+			double want = total * (k + 1) / (ARC_N + 1);
+			while (seg < n - 1 && segStart + segLen < want)
+			{
+				segStart += segLen;
+				seg++;
+				segLen = (ArcAt(seg) - ArcAt(seg - 1)).Length();
+			}
+			double f = segLen > 0.001 ? clamp((want - segStart) / segLen, 0.0, 1.0) : 0.0;
+			Vector3 at = ArcAt(seg - 1) + (ArcAt(seg) - ArcAt(seg - 1)) * f;
+			Put(d, arcShown[h], at);
+			d.Scale = (size, size);
+			d.Alpha = alpha;
+			d.Translation = tint;
+		}
+		arcShown[h] = true;
+	}
+
+	// The ring: the widest spread this gun has shown, drawn at the spot as an
+	// ellipse (horizontal and vertical spread separately), facing the surface the
+	// way the spot does. Not on an arc, and not before the gun has fired.
+	private void LayRing(int h, Weapon w, PlayerInfo p, Vector3 at, double dist,
+		bool wallS, bool flatS, double sAngle, bool arcOn, TranslationID tint, bool spotWasShown)
+	{
+		double sh, sv;
+		[sh, sv] = RSQLS_Learn.Spread(w);
+		double minDeg = RSQLS_Hand.Num("rsqls_spread_min", p, 0.75);
+		if (arcOn || !RSQLS_Hand.Flag("rsqls_spread", p, true) || max(sh, sv) < minDeg)
+		{
+			Hide(ring[h]);
+			return;
+		}
+		ring[h] = Ensure(ring[h], "RSQLS_Ring");
+		let r = ring[h];
+		if (!r) return;
+		if (sv < minDeg) sv = sh;    // a purely sideways spread still draws a circle's height
+		if (sh < minDeg) sh = sv;
+		double rh = dist * tan(sh), rv = dist * tan(sv);
+		r.bWALLSPRITE = wallS; r.bFLATSPRITE = flatS; r.Angle = sAngle;
+		Vector3 rat = at;
+		if (wallS) rat += (cos(sAngle), sin(sAngle), 0) * 0.2;
+		else if (flatS) rat.z += 0.2;
+		Put(r, spotWasShown && !r.bINVISIBLE, rat);
+		r.Scale = (rh / RING_PX, rv / RING_PX);
+		r.Alpha = clamp(RSQLS_Hand.Num("rsqls_spread_a", p, 0.6), 0.0, 1.0);
+		r.Translation = tint;
+	}
+
+	// THE PACK'S OWN MUZZLE. A weapon pack (the WeaponDepot cards, say) can tell
+	// the laser where each gun's barrel ends by providing a Service:
+	//   class MyPackMuzzles : Service {
+	//     override String GetString(String request, String stringArg, int intArg, ...)
+	//     // request "laser.muzzle", stringArg = weapon class name, intArg = hand
+	//     // -> "forward up side" in METRES from the grip, or "" for "don't know"
+	//   }
+	// Found by name (LaserMuzzleService in the class name), asked once per weapon
+	// class and cached, so neither mod links against the other.
+	private bool, double, double, double MuzzleFor(int h, Weapon w)
+	{
+		String k = w.GetClassName();
+		if (k == mzKey[h]) return mzGot[h], mzF[h], mzU[h], mzS[h];
+		mzKey[h] = k;
+		mzGot[h] = false;
+		let it = ServiceIterator.Find("LaserMuzzleService");
+		Service sv;
+		while (sv = it.Next())
+		{
+			String r = sv.GetString("laser.muzzle", k, h, 0, w);
+			if (r == "") continue;
+			Array<String> f;
+			r.Split(f, " ", TOK_SKIPEMPTY);
+			if (f.Size() < 3) continue;
+			mzF[h] = f[0].ToDouble(); mzU[h] = f[1].ToDouble(); mzS[h] = f[2].ToDouble();
+			mzGot[h] = true;
+			break;
+		}
+		return mzGot[h], mzF[h], mzU[h], mzS[h];
+	}
+
+	// THE RANGE READOUT: metres to what the main hand's laser is on (the off
+	// hand's when the main has none), on a small screen by the gun or at the
+	// spot. The numbers are written to the canvas texture in UiTick.
+	private void UpdateReadout(PlayerPawn pmo, PlayerInfo p)
+	{
+		int mode = RSQLS_Hand.Opt("rsqls_readout", p, 0);
+		int h = (rangeM[0] > 0) ? 0 : 1;
+		if (mode <= 0 || rangeM[h] <= 0 || pmo.Health <= 0)
+		{
+			Hide(readout);
+			readM = 0;
+			return;
+		}
+		readout = Ensure(readout, "RSQLS_Readout");
+		if (!readout) return;
+		bool was = !readout.bINVISIBLE;
+		Vector3 at;
+		double sc = 1.0;
+		if (mode == 2 && spot[h] && !spot[h].bINVISIBLE)
+		{
+			at = spot[h].pos + (0, 0, 4 + rangeM[h] * 0.6);
+			sc = clamp(rangeM[h] / 4.0, 1.0, 8.0);
+		}
+		else
+			at = RSQLS_Hand.Grip(pmo, h) + RSQLS_Hand.GunOffset(pmo, h, 0.08, 0.09, 0.0);
+		Put(readout, was, at);
+		Vector3 eye = (pmo.pos.x, pmo.pos.y, p.viewz);
+		Vector3 d = eye - at;
+		readout.Angle = VectorAngle(d.x, d.y);
+		readout.Pitch = -atan2(d.z * RSQLS_Hand.PIXELSTRETCH, d.xy.Length());
+		sc *= RSQLS_Hand.Num("rsqls_readout_size", p, 1.0);
+		readout.Scale = (sc, sc);
+		readM = rangeM[h];
+		readRgb = rangeRgb[h];
+	}
+
+	override void UiTick()
+	{
+		let cv = TexMan.GetCanvas("RSLRANGE");
+		if (!cv) return;
+		cv.Clear(0, 0, 128, 32, Color(255, 0, 0, 0));
+		if (readM <= 0) return;
+		let pp = players[consoleplayer];
+		int units = RSQLS_Hand.Opt("rsqls_readout_units", pp, 0);
+		String txt;
+		if (units == 1) txt = String.Format("%.0f ft", readM * 3.28084);
+		else if (units == 2) txt = String.Format("%.0f u", readM * RSQLS_Hand.UPM);
+		else txt = readM < 10 ? String.Format("%.1f m", readM) : String.Format("%.0f m", readM);
+		double tw = SmallFont.StringWidth(txt) * 2.0;
+		cv.DrawText(SmallFont, Font.CR_WHITE, (128 - tw) * 0.5, 16 - SmallFont.GetHeight(), txt,
+			DTA_ScaleX, 2.0, DTA_ScaleY, 2.0, DTA_Color, Color(255, (readRgb >> 16) & 255, (readRgb >> 8) & 255, readRgb & 255));
+	}
+
 	override void WorldUnloaded(WorldEvent e)
 	{
 		for (int h = 0; h < 2; h++)
 		{
+			arcShown[h] = false;
 			beamShown[h] = false; spotShown[h] = false; lightOn[h] = false;
 			muzzlePrimed[h] = false; hitPrimed[h] = false;
 		}
