@@ -25,5 +25,6 @@ EVERYTHING ELSE
 
 SHARING
   Free to share as part of the Ultra Badass Quest series. Borrowed assets keep their authors'
-  terms: much of Ermac's work is MIT-licensed, and he is DoomVR's co-designer and has okayed its
-  use here. (The old "not for distribution" line was carried over from another repo by mistake.)
+  terms. Much of Ermac's work (he is DoomVR's co-designer) is MIT-licensed; sharing it here is
+  the project owner's decision. (The old "not for distribution" line was carried over from
+  another repo by mistake.)
