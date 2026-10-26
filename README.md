@@ -122,9 +122,8 @@ Known limits:
 
 - **QuestZDoom**: Emawind and Team Beef. The engine, and the off-hand weapon and attack-pose script
   API all four mods are built on.
-- **Ermac** (DXR, Rusted Legacy / RS_Main): the hand the ShieldSaw is held in, and the Force and
-  impact FX sprites and choke loop in the QuestSaber. See [QuestSaber/CREDITS.txt](QuestSaber/CREDITS.txt).
+- **Ermac**, co-designer of DoomVR (DXR, Rusted Legacy / RS_Main): the hand the ShieldSaw is held
+  in, and the Force and impact FX sprites and choke loop in the QuestSaber. Used with his blessing.
+  See [QuestSaber/CREDITS.txt](QuestSaber/CREDITS.txt).
 - **li-gnrcwpn**: the training remote's ready beep.
 - Everything else (meshes, skins, generated sounds, code) was made for these mods.
-
-The QuestSaber's credits mark it **not for distribution**, so this repository is private.
