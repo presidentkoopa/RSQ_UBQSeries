@@ -4,5 +4,6 @@ version "4.14"
 // you do not, and enemy bullets become rounds you can see and dodge.
 // RS_SlowMo's design (the owner's engine build) brought to Quest; same events.
 
+#include "zscript/rsqsm/cb.zs"
 #include "zscript/rsqsm/clock.zs"
 #include "zscript/rsqsm/round.zs"

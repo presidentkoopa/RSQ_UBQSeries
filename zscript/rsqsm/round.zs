@@ -85,7 +85,7 @@ class RSQSM_Shots : EventHandler
 		if (len < 32) return;
 		int n = clamp(int(len / 24), 2, 48);
 		FSpawnParticleParams pp;
-		pp.color1 = "FFF0C8";
+		pp.color1 = RSQSM_CB.Pick(RSQSM_CB.CB_HAVE, 0xFFF0C8);
 		pp.style = STYLE_Add;
 		pp.flags = SPF_FULLBRIGHT;
 		pp.lifetime = 24;
@@ -128,7 +128,20 @@ class RSQSM_Round : Actor
 	override void BeginPlay()
 	{
 		Super.BeginPlay();
+		CBLook(self);
 		for (int i = 0; i < MAXPLAYERS; i++) nearD[i] = 1e9;
+	}
+
+	// COLOUR-BLIND PLAY (rsqa_colorblind, cb.zs): the stock orange streak is dim to a protanope,
+	// and your own trail is warm white; with the setting on a round is the series' COULD colour
+	// (amber / red / yellow) on its own gradient (AddShaded), and a quarter larger -- it is the
+	// thing to dodge -- while your trail turns HAVE (azure / cyan / magenta, RSQSM_Shots).
+	static void CBLook(Actor r)
+	{
+		if (!RSQSM_CB.Mode()) return;
+		r.A_SetRenderStyle(1.0, STYLE_AddShaded);
+		r.SetShade(RSQSM_CB.Rgb(RSQSM_CB.CB_COULD, RSQSM_CB.Mode()));
+		r.Scale = (1.25, 1.25);
 	}
 
 	// It hurts exactly as the hitscan would have, and like a hitscan (not like a
