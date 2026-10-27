@@ -96,9 +96,13 @@ class SSQ_Guard : Inventory
 		return pose.L * (-Side(mo.player));
 	}
 
+	// ssq_block_double (the owner, 10-27, "Double Block Radius: On / Off, where the plate size is
+	// doubled"): the plate that blocks, bashes and grinds is twice as wide. The shield you see is
+	// unchanged.
 	static clearscope double PlateRadius(bool blades)
 	{
-		return SSQ_Handler.CM((SSQ_Handler.SV('ssq_plate_radius', 29.2) + (blades ? SSQ_Handler.SV('ssq_plate_blades', 6.0) : 0)) * Scale());
+		double dbl = SSQ_Handler.SV('ssq_block_double', 0) > 0.5 ? 2.0 : 1.0;
+		return SSQ_Handler.CM((SSQ_Handler.SV('ssq_plate_radius', 29.2) + (blades ? SSQ_Handler.SV('ssq_plate_blades', 6.0) : 0)) * Scale() * dbl);
 	}
 
 	// does the segment A->B pass through the THICK disc (centre C, face n, radius R, half
