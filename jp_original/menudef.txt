@@ -1,0 +1,4 @@
+AddOptionMenu "JPModServerOptions"
+{
+	Option "$AllowHookshot", "sv_allowhookshot", "YesNo"
+}
