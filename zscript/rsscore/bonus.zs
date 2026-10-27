@@ -74,6 +74,11 @@ class RS_ScoreBonus play
 	// Most bonuses never are: a moment that happens every few seconds is not a moment.
 	virtual bool BigMoment(RS_ScoreEvent ev, double paid) const { return false; }
 
+	// AFTER EVERY OTHER BONUS HAS ANSWERED (and the supersede pass): a bonus that is a function of the
+	// others' answers -- Bullet Time multiplies the style of the kill -- returns its multiplier here.
+	// `me` is this bonus's index in `all` / `mults`. Every other bonus keeps what Evaluate said.
+	virtual double AfterOthers(RS_ScoreEvent ev, Array<RS_ScoreBonus> all, Array<double> mults, int me) { return mults[me]; }
+
 	// ------------------------------------------------------------ small helpers
 
 	// The colour name this family draws in. One per family, three in all.
@@ -133,6 +138,7 @@ class RS_ScoreRegistry : StaticEventHandler
 		RS_MeleeSeed.Names(more);       // melee.zs: melee, saber, Force, shield
 		RS_PhysicalSeed.Names(more);    // physical.zs: thrown things, the rig, VR, Gun Bonsai
 		RS_AwardSeed.Names(more);       // awards.zs: rows paid by other mods (the training remote)
+		RS_HookSeed.Names(more);        // hook.zs: the grappling hook and the combos across mods
 		for (int k = 0; k < more.Size(); k++) Own(more[k]);
 	}
 

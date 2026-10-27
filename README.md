@@ -251,7 +251,7 @@ the shapes gameplay mods use: a replacement without COUNTKILL, a monster that sp
 | Body Blow | Style | 0.3 | a corpse you threw with Distance Grab killed it |
 | Hand-Me-Down | Style | 0.3 | a weapon that fell out of a monster, thrown, killed it |
 | Hot Swap | Daring | 0.25 | a holster swap mid-fight: last kill with another gun at most 3 s before the draw, this kill at most 3 s after |
-| Bullet Time | Style | 0.15 | a kill while RSQ_SlowMo has the world slowed (not inside Score's own pulse) |
+| Bullet Time | Style | 50% of the kill's style/daring/melee bonuses | a kill while RSQ_SlowMo has the world slowed (not inside Score's own pulse); was a flat 0.15, see The arcade layer |
 | Two Guns | Style | 0.25 | a shot kill from one hand's trigger within a second of one from the other's |
 
 Also: **Brawler** now pays the boxing gloves as fists (0.5) and follows replacements, so Brutal
@@ -295,3 +295,76 @@ sound and one 20-tic tint, no actors. Measured in a Brutal Doom fight (30 imps, 
 B): all of Score's per-tic work 0.004 ms a tic, the HUD 0.011-0.015 ms a frame with lives held,
 the spawn hook 0.0005 ms an actor (it now compares class pointers, not names, because Brutal Doom
 spawns hundreds of actors a second), 0.2-0.5 ms per scored kill (noisy rig).
+
+## The arcade layer (10-27): the hook and the combos across mods
+
+The suite's mods are tools for your hands; Score is the arcade room that pays for mixing them. No
+monster class is named: it works over vanilla, Brutal Doom, Champions, LegenDoom or any set.
+Brutal Doom-specific scoring is later. RSQ_Grapple's facts come from its own `RSQGR_Service`
+(found by name; RSQ_Grapple branch `agent-svc`, its HANDOFF has the API); absent, every row here is
+silent and nothing else changes.
+
+**What already scored the suite, so nothing scores twice** (the table above, plus): saber --
+Pulled In (Force pull), Twin Blades, Riposte/Perfect Riposte, Return to Sender, Poetic Justice,
+Rally, Choked, Slammed, Ground Pound, Juggle, Hurled/Boomerang (thrown saber); ShieldSaw -- Shield
+Work, Hurled, Boomerang, Ground Down, Clean Sweep, Bank Shot, Shield Wall, Riposte; Distance Grab --
+Thrown, Powder Keg, Air Catch, Body Blow, Hand-Me-Down, Full Hands; Tactical Rig -- Quick Draw, Hot
+Swap; SlowMo -- Bullet Time, big-moment pulses; VR -- No-Look, Blind-fire, Off-hand, Two Guns;
+any melee -- Combo (distinct melee kinds in 4 s), Ring Out, Counter, Knockdown, Flurry, Boot,
+Cleaved, Fatality, Heavy Swing; awards (non-kills) -- Deflect, Remote Down (the saber's remote).
+The per-kill cap (`rs_score_cap_kill` 300) holds over all of it, these rows included.
+
+**New rows** (multipliers of the kill's base = the monster's spawn health; measured firing on rig E,
+vanilla doom2 and the full order, scripted scenarios on a test map, each fired once per kill):
+
+| Row | Family | Pays | For | Measured |
+|---|---|---|---|---|
+| Reeled In | Melee | 0.3, +0.15 per earlier one inside 4 s, to 0.75 (replaces Pulled In) | the hook brought it (it came, or you reeled to a heavy one) and a melee blow finished it within 2 s of the line letting go | imp 60: 0.30 (+18), next in chain 0.45; full order BD imp 80 +24 |
+| Ping-Pong | Style | 0.4, +0.2 per volley past one, to 1.0 | hooked, sent flying back AWAY (its own velocity, >= 6 u/tic), hooked again, killed by you | 2 volleys 0.60 (vanilla), 1 volley 0.40 (full order) |
+| Bowling | Style | 0.5, +0.25 per later pin of one throw, to 1.25 | a body your hook threw struck it and it died of that (or you finished it inside 1 s) | Baron struck by a yanked imp: 0.50 = +500 on base 1000 |
+| Hard Landing | Style | 0.3 | the throw's own landing / strike killed the hooked body | imp 0.30 (was Brawler 0.5 + Knockdown 0.2 as a "punch") |
+| Fly Ball | Style | 0.35 (replaces Skeet, Juggle) | killed in the air while your hook was throwing it | imp shot 6 tics into the yank: 0.35 |
+| Swinging | Daring | 0.35 (replaces Air) | a kill while a latched rope holds you off the ground | 0.35 both orders |
+| Dismount | Daring | 0.4 (replaces Air) | let go of a swing in the air, killed before landing (within 3 s) or within 1 s of landing | 0.40 in the air, 0.40 five tics after landing |
+| Lashed | Melee | 0.25 | the whip's crack killed it (was Brawler 0.5 with fists held) | 0.25 both orders |
+| Variety | Style | 0.15 per tool past two, to 0.6 | a kill that brings a NEW tool into the fight (kills each within 10 s): shot, saber, shield, hook, Distance Grab throw, holster draw, hands/blades | gun+saber+hook+hands: 0.15 at the 3rd, 0.30 at the 4th; repeats 0 |
+| Indiana Jones | Daring (award) | 150 + (dist-192)/2 points, to 500; once per gap per map | RSQ_Grapple: a roped flight left a floor, passed over one >= 64 lower than both ends, landed >= 192 units away in another sector | 429 / 427 points for a 751 / 747-unit crossing; second crossing "already paid"; after save/load x2 still paid; after a map change paid again |
+
+Big moments (SlowMo pulse): Reeled In from the 3rd of a chain, Ping-Pong at 2 volleys, Bowling
+always, Variety at 5 tools.
+
+**Fixed on the way**: RSQ_Grapple's own blows land as `'Melee'` with no inflictor (a thrown body)
+or the pawn as inflictor (the whip), and were read as punches -- Brawler 0.5 with fists held,
+Knockdown 0.2 (a thrown body is held in its Pain state), Counter, Cleaved. They are `MK_HOOK` /
+`MK_WHIP` now (`RS_Melee.KindOf` asks the service, which notes each blow before it lands), Brawler
+and Cleaved skip them. Measured before/after on the same scene: yank landing kill
+Brawler 0.5 + Knockdown 0.2 + Point-Blank -> Hard Landing 0.3 + Point-Blank; whip kill Brawler 0.5 ->
+Lashed 0.25. **Ring Out** now also credits the hooker for a monster the hook let go of in the last
+2 s that the level or another monster then killed (measured: 0.5, paid to the player, not to
+everyone).
+
+**Slow motion multiplies style, it is not an easy mode** (the owner). Bullet Time paid a flat 0.15
+for any kill in slow motion. It now pays `rs_score_slowstyle` percent (50, menu Tuning "Slow Motion
+Style") of the kill's style, daring and melee bonuses, and nothing on a plain kill (measured: Reeled
+In 0.3 + Point-Blank 0.1 under `rsm_on` -> Bullet Time 0.20; a plain shot under `rsm_on` -> 0). The
+new `AfterOthers` hook on `RS_ScoreBonus` (bonus.zs, called in the handler after the supersede pass,
+before the caps) is how a bonus reads the others' answers.
+
+**Monster mods** (the owner's order: Champions then LegenDoom Lite 4.2 after BD22Q, Champions'
+`champion_legendoom 1, champion_dormant 1, champion_booster 1`): base points are `GetSpawnHealth()`,
+so a LegenDoom legendary (health x3, StartHealth untouched) pays its class's base (BD imp 80 at
+240 health) and a Champions champion pays its StartHealth (a bronze imp 160); every multiplier is on
+that base and the 300 cap holds (measured with the cap at 50: the bonuses scaled to sum 0.50).
+No runaway. A legendary at low health transforms and refills (LegenDoom's own rule): a yank landing
+that "should" kill it does not, and nothing is paid until it really dies. Champions and LegenDoom
+only touch monsters placed on the map, not ones spawned later.
+
+**Not reachable yet**: Bowling's second pin -- a thrown body that strikes something is stopped dead
+(RSQ_Grapple monster.zs), so one throw strikes one thing; the pin count is there for when it can
+carry on. A path throw also hops over a monster shorter than its arc (its vertical move into a head
+is refused), so bowling happens against tall monsters or in the low first part of the arc.
+
+**Needs the headset**: whether Reeled In's 2 s and Ping-Pong's 5 s windows match real hook play;
+whether 6 u/tic is the right "sent flying" line for the real Force push and BD kicks (scripted here
+with a 20 u/tic shove); whether Indiana Jones' 192/64 thresholds catch real gaps on real maps and
+not stairs; the popup rows' text is the HUD's existing breakdown (no HUD change).

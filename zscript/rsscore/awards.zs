@@ -9,7 +9,15 @@ class RS_AwardSeed play
 	{
 		into.Push("RS_Award_Deflect");
 		into.Push("RS_Award_RemoteDown");
+		into.Push("RS_Award_IndianaJones");
 	}
+}
+
+// RSQ_Grapple: a gap crossed on the rope (its service.zs measures and pays it, once per gap per map).
+class RS_Award_IndianaJones : RS_ScoreBonus
+{
+	override int Family() const { return FAM_DARING; }
+	override String DisplayName() const { return "Indiana Jones"; }
 }
 
 // The saber's training remote: a bolt knocked back into it, and the remote knocked out of the air.

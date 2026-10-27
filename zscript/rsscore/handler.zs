@@ -451,6 +451,15 @@ class RS_ScoreHandler : EventHandler
 			}
 		}
 
+		// 2b. The bonuses that read the others' answers (Bullet Time). Taken from a copy, so the order
+		//     two of them run in can never matter.
+		Array<double> asked;
+		asked.Copy(mults);
+		for (int b = 0; b < m_bonuses.Size(); b++)
+		{
+			mults[b] = m_bonuses[b].AfterOthers(ev, m_bonuses, asked, b);
+		}
+
 		// 3. Cap per family, then in total. Both default to off, so out of the box
 		//    the numbers are the original's exactly.
 		Array<double> famSum;

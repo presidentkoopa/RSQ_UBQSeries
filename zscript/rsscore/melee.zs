@@ -76,6 +76,8 @@ class RS_Melee play
 		MK_FINISH,     // a Brutal Doom fatality
 		MK_FORCE,      // the saber's Force: push, grip choke, a flung body's slam (inflictor UBQS_Force)
 		MK_BOOT,       // Brutal Doom's boots: Kick, HeadKick, Stomp (and the VR butt strike's kick)
+		MK_HOOK,       // RSQ_Grapple's throw: a hooked body's landing or strike, or what it struck (hook.zs)
+		MK_WHIP,       // RSQ_Grapple's whip crack
 	}
 
 	static int Kind(RS_ScoreEvent ev)
@@ -96,6 +98,11 @@ class RS_Melee play
 		// UBQS_Force item (QuestSaber zscript.txt, Push / GripTick / SlamTick) -- so the item, not
 		// the type, says it was the Force and not a cut
 		if (inf ~== "UBQS_Force") return MK_FORCE;
+		// RSQ_Grapple's own blows land as 'Melee' -- a thrown body's landing or strike with no inflictor,
+		// the whip's crack with the pawn as inflictor -- and are no punch: its service noted each one
+		// before it landed (hook.zs)
+		if (dt == 'Melee' && !ev.inflictor && (RS_Grapple.Ask("landing", ev.victim) == 0 || RS_Grapple.Ask("struck", ev.victim) == 0)) return MK_HOOK;
+		if (dt == 'Melee' && ev.inflictor == ev.killer && RS_Grapple.Ask("whipped", ev.victim) == 0) return MK_WHIP;
 		if (dt == 'Fatality') return MK_FINISH;
 		if (dt == 'Saber') return inf ~== "UBQS_Bolt" || inf ~== "UBQS_RemoteBolt" ? MK_NONE : MK_SABER;
 		// A thing thrown with Distance Grab strikes as 'Melee' (BD's death reactions want that), but
@@ -306,7 +313,7 @@ class RS_Bonus_Cleaved : RS_ScoreBonus
 	override double Evaluate(RS_ScoreEvent ev)
 	{
 		int k = RS_Melee.Kind(ev);
-		if (k == RS_Melee.MK_NONE || k == RS_Melee.MK_FINISH) return 0.0;
+		if (k == RS_Melee.MK_NONE || k == RS_Melee.MK_FINISH || k == RS_Melee.MK_HOOK) return 0.0;
 		return RS_Melee.Gibbed(ev.victim) ? MULT : 0.0;
 	}
 }
@@ -1139,6 +1146,13 @@ class RS_ScoreShots : EventHandler
 		if (!h || !v) return null;
 		for (int k = h.lnV.Size() - 1; k >= 0; k--)
 			if (h.lnV[k] == v && h.lnBy[k] && h.lnBy[k].player && level.maptime - h.lnTic[k] <= RS_Melee.LAUNCH_TICS) return h.lnBy[k];
+		// RSQ_Grapple's hook let go of it lately (dropped in a pit, thrown into harm): the hooker
+		int t = RS_Grapple.Ask("hooked", v);
+		if (t >= 0 && t <= RS_Melee.LAUNCH_TICS)
+		{
+			let by = RS_Grapple.AskActor("hooked.by", v);
+			if (by && by.player) return by;
+		}
 		return null;
 	}
 

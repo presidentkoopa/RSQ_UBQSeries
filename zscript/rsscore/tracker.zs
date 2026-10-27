@@ -48,6 +48,12 @@ class RS_ScoreTracker : Inventory
 	int   rallyCount;        // Rally: shots sent back that killed, one after another
 	int   rallyTic;
 
+	// ---- the arcade layer (hook.zs) ----------------------------------------
+	int   reelCount;         // Reeled In: one after another
+	int   reelTic;
+	int   varMask;           // Variety: the tools used in this fight
+	int   varTic;
+
 	// ---- slow motion for big moments (handler.zs BigMomentPulse) -------------
 	int slowmoReady;         // no pulse before this tic (rs_score_slowmo_cooldown)
 	int slowmoUntil;         // our own last pulse is still slowing the world until about here

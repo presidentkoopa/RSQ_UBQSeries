@@ -668,19 +668,23 @@ class RS_Bonus_HotSwap : RS_PhysicalBonus
 	}
 }
 
-// Bullet Time: a kill while RSQ_SlowMo has the world slowed (held, a reload's moment, an upgrade's
-// pulse) -- but not inside the pulse this scorer itself asked for, so a big moment does not pay the
-// next kill for being slow.
+// Bullet Time: SLOW MOTION MULTIPLIES STYLE, IT IS NOT AN EASY MODE (the owner, 10-27). A kill while
+// RSQ_SlowMo has the world slowed (held, a reload's moment, an upgrade's pulse -- but not inside the
+// pulse this scorer itself asked for) pays rs_score_slowstyle percent (50) of what the kill's style,
+// daring and melee bonuses paid. A plain kill in slow motion pays nothing more. (It paid a flat 0.15
+// on every kill before.)
 class RS_Bonus_BulletTime : RS_PhysicalBonus
 {
-	const MULT = 0.15;
 	override int Family() const { return FAM_STYLE; }
 	override String DisplayName() const { return "Bullet Time"; }
-	override double Evaluate(RS_ScoreEvent ev)
+	override double Evaluate(RS_ScoreEvent ev) { return 0.0; }
+	override double AfterOthers(RS_ScoreEvent ev, Array<RS_ScoreBonus> all, Array<double> mults, int me)
 	{
-		if (!ev.killer || ev.ringOut) return 0.0;
-		if (ev.tracker && level.maptime <= ev.tracker.slowmoUntil) return 0.0;
-		return RS_Physical.AskSlowMo("slowmo.active") == 1 ? MULT : 0.0;
+		if (!ev.killer || ev.ringOut || !RS_Grapple.SlowNow(ev)) return 0.0;
+		double sum = 0.0;
+		for (int b = 0; b < all.Size(); b++)
+			if (b != me && mults[b] > 0.0 && all[b].Family() != FAM_EFFICIENCY) sum += mults[b];
+		return sum * clamp(RS_ScoreHandler.CvarInt("rs_score_slowstyle", 50), 0, 200) / 100.0;
 	}
 }
 

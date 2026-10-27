@@ -325,6 +325,9 @@ class RS_Bonus_Brawler : RS_ScoreBonus
 	override double Evaluate(RS_ScoreEvent ev)
 	{
 		if (!ev.killer) { return 0.0; }
+		// the grapple's throw and whip are not the fist in the hand (hook.zs pays them)
+		int mk = RS_Melee.Kind(ev);
+		if (mk == RS_Melee.MK_HOOK || mk == RS_Melee.MK_WHIP) { return 0.0; }
 		if (!m_built) { BuildTable(); }
 
 		String dt = ev.damageType;
