@@ -66,6 +66,9 @@ class RSQTR_Rig : EventHandler
 	// ---- synced state (written by NetworkProcess on every machine) --------------
 	bool   gripDown[MAXPLAYERS * 2];
 	String lastPut[MAXPLAYERS * RSQTR_Region.N];   // the weapon last holstered there (its icon)
+	bool lastPair[MAXPLAYERS * RSQTR_Region.N];    // ...and it went away as a PAIR (one in each hand)
+	String offNext[MAXPLAYERS];                     // the off-hand weapon to raise once the main hand has switched
+	int offWait[MAXPLAYERS];
 
 	// ---- local state (console player) -------------------------------------------
 	private transient RSQTR_Body body;
@@ -333,7 +336,16 @@ class RSQTR_Rig : EventHandler
 		if (own.Find(cls) == own.Size()) return;   // not this region's class: refused
 		let empty = EmptyHand(pmo);
 		if (empty && empty != w) p.PendingWeapon = empty;
-		lastPut[pmo.PlayerNumber() * RSQTR_Region.N + r] = cls;
+		int n = pmo.PlayerNumber();
+		lastPut[n * RSQTR_Region.N + r] = cls;
+		// A PAIR GOES AWAY TOGETHER. With the gun's own off-hand copy in the other hand (BD22Q's
+		// dual wield: RSQ_Off_<gun>, a subclass of the gun flagged OFFHANDWEAPON), both guns go
+		// on the holster and the off hand goes back to its empty hand.
+		let off = p.OffhandWeapon;
+		class<Weapon> wc = cls;
+		bool pair = off && wc && off is wc && off.GetClass() != wc;
+		lastPair[n * RSQTR_Region.N + r] = pair;
+		if (pair) QueueOff(n, OffEmptyName(pmo));
 		pmo.A_StartSound("rsqtr/holster", CHAN_AUTO, CHANF_LOCAL, 0.8);
 	}
 
@@ -349,14 +361,69 @@ class RSQTR_Rig : EventHandler
 		if (!w) return;
 		let p = pmo.player;
 		if (p.ReadyWeapon != w) p.PendingWeapon = w;
-		int slot = pmo.PlayerNumber() * RSQTR_Region.N + r;
-		if (lastPut[slot] == own[idx]) lastPut[slot] = "";
+		int n = pmo.PlayerNumber();
+		int slot = n * RSQTR_Region.N + r;
+		// DRAWN AS A PAIR (the owner, 10-27: "call up the dual pistol or SMG from that holster"):
+		// rsqtr_pairs 2 whenever you own the gun's off-hand copy, 1 only if it went away as a pair,
+		// 0 never. The copy follows into the off hand once the main hand has switched.
+		int mode = Opt("rsqtr_pairs", p, 2);
+		let copy = OffCopy(pmo, wc);
+		if (copy && (mode == 2 || (mode == 1 && lastPair[slot]))) QueueOff(n, copy.GetClassName());
+		if (lastPut[slot] == own[idx]) { lastPut[slot] = ""; lastPair[slot] = false; }
 		pmo.A_StartSound("rsqtr/draw", CHAN_AUTO, CHANF_LOCAL, 0.8);
+	}
+
+	// The gun's own off-hand copy, if the player has one: a weapon flagged OFFHANDWEAPON that
+	// is a subclass of it (BD22Q's RSQ_Off_<gun>). Found by inheritance, not by name.
+	static Weapon OffCopy(PlayerPawn pmo, class<Weapon> wc)
+	{
+		if (!pmo || !wc) return null;
+		for (let it = pmo.Inv; it; it = it.Inv)
+		{
+			let w = Weapon(it);
+			if (w && w.bOffhandWeapon && w is wc && w.GetClass() != wc) return w;
+		}
+		return null;
+	}
+
+	// What the off hand holds when it is empty: the pack's own hands weapon (BD22Q's RSQ_Hands).
+	static String OffEmptyName(PlayerPawn pmo)
+	{
+		class<Weapon> h = "RSQ_Hands";
+		return h ? "RSQ_Hands" : "";
+	}
+
+	private void QueueOff(int n, String cls)
+	{
+		if (cls == "") return;
+		offNext[n] = cls;
+		offWait[n] = 70;
+	}
+
+	// Once the main hand has finished switching, raise the queued weapon into the off hand
+	// (an OFFHANDWEAPON raised through PendingWeapon goes to the off hand, as BD22Q's Dual key
+	// does it). Every player, every tic: this is the playsim, not the local look.
+	private void TickPairs()
+	{
+		for (int n = 0; n < MAXPLAYERS; n++)
+		{
+			if (offNext[n] == "") continue;
+			let p = players[n];
+			if (!playeringame[n] || !p.mo || p.mo.health <= 0 || --offWait[n] <= 0) { offNext[n] = ""; continue; }
+			if (p.PendingWeapon != WP_NOCHANGE) continue;          // the main hand is still switching
+			class<Weapon> c = offNext[n];
+			offNext[n] = "";
+			if (!c) continue;
+			let w = Weapon(p.mo.FindInventory(c));
+			if (!w) { p.mo.GiveInventory(c, 1); w = Weapon(p.mo.FindInventory(c)); }
+			if (w && p.OffhandWeapon != w) p.PendingWeapon = w;
+		}
 	}
 
 	// ---- the local loop (console player) ----------------------------------------------
 	override void WorldTick()
 	{
+		TickPairs();
 		if (afterLoad) { afterLoad = false; ClearLocalMarks(); }
 		if (!migrated) { migrated = true; MigratePlaces(); }
 		let p = players[consoleplayer];

@@ -56,6 +56,10 @@ places are*, "Holds slots"); the defaults:
   floor voxels, the same ones you see lying around). The shipped table is for
   brutal22test6 -> BD_VoxelPack -> BD22Q_199c; a weapon not in it shows at its pickup size.
   Still backwards? Menu: *Stored guns to turn round* takes weapon class names.
+- **Pairs:** a gun you carry two of (BD22Q's dual wield: its off-hand copy) is drawn as a
+  pair -- one in each hand -- and holstering the pair puts both away and empties the off hand.
+  Menu *Draw two-gun pairs as a pair*: whenever you have both (default), only if it went away as
+  a pair, or never.
 - A hand only acts on a region after it has been there a moment (3 tics), so a hand
   passing through a holster on its way somewhere else does nothing.
 - A hand steadying the main gun (the engine's two-handed grip) never fires a region.
