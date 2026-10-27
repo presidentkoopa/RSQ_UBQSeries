@@ -70,3 +70,8 @@ frames (rig, same pose): indistinguishable in flight. `rsqgr_rope_style 1` Cable
 - Damping feel (21.9 s to rest from 31.7 deg on a 19 m rope), pump.
 - Climb comfort: 1:1 with one tic of delay (the pose of the last frame before the tic), the cap, the reach.
 - Whether the chain near the hand reads right in VR (rig projection is not a headset).
+
+## Art and sound: slated for replacement
+The default claw, chain and sounds are jpalomo's (see CREDITS.txt). The owner (10-27): the hook is our
+rebuild, so it should look and sound like our mod -- replace them from RS_CombatFX (and other cleared
+sources). Status: open.
