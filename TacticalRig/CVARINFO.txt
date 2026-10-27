@@ -58,13 +58,6 @@ user int    rsqtr_profile_active = 1;     // the holster profile in use: its col
 // long strings overflowed the userinfo every player sends ("User info descriptor too big").
 nosave string rsqtr_profile1 = ""; nosave string rsqtr_profile2 = ""; nosave string rsqtr_profile3 = ""; nosave string rsqtr_profile4 = "";
 
-// Doors lifted by hand.
-user bool  rsqtr_door        = true;    // take hold of a door and lift it
-user bool  rsqtr_door_grip   = true;    // the grip takes hold
-user bool  rsqtr_door_use    = true;    // Use takes hold
-user bool  rsqtr_door_palm   = true;    // a palm turned out against the door takes hold
-user float rsqtr_door_commit = 0.40;    // let go past this much open and the door finishes opening
-user float rsqtr_door_gain   = 2.5;     // door travel per unit of hand travel (a lift of 0.6 m opens ~50 units)
 
 // Ermac's cigarette (optional tribute).
 user bool  rsqtr_cig         = false;   // a pocket of cigarettes on the left chest
@@ -82,4 +75,6 @@ user float rsqtr_vest_u     = -0.20;   // metres from your eyes down to its coll
 user float rsqtr_vest_f     = -0.04;   // metres forward of your eyes
 user float rsqtr_vest_size  = 1.0;
 user int   rsqtr_vest_low   = 35;      // health under which it breathes red
+server bool rsqtr_vest_fade = true;
+server bool rsqtr_helmet    = true;    // a helmet on your head with the marine torso (seen only in mirrors)    // the torso fades as you look down (local look only)
 user int    rsqtr_cfgver      = 0;       // settings version this machine has been moved to (internal)

@@ -37,9 +37,44 @@ OptionValue "RSQTR_Markers"
 	2, "Always"
 }
 
+// THE FRONT PAGE (the owner, 10-27: "there are way too many options in all of these things,
+// people will be overwhelmed"). What a player reaches for; every setting, unchanged, is one
+// page down under Advanced.
 OptionMenu "RSQTR_Options"
 {
 	Title "TACTICAL RIG"
+	StaticText "Reach to a place on your body and grip to draw. Grip there again to put it back.", 1
+	StaticText ""
+	Option "Tactical rig", "rsqtr_on", "OnOff"
+	Option "Grip draws and holsters", "rsqtr_grip", "OnOff"
+	Option "Rings where the holsters are", "rsqtr_markers", "RSQTR_Markers"
+	Option "Draw two-gun pairs as a pair", "rsqtr_pairs", "RSQTR_Pairs"
+	Slider "Size of the stored weapons", "rsqtr_icon_scale", 0.25, 3.0, 0.05, 2
+	StaticText ""
+	StaticText "FIT IT TO YOU", gold
+	Command "Measure my height (stand straight, look ahead)", "netevent rsqtr_calib"
+	Option "Move the holsters with your hands", "rsqtr_edit", "OnOff"
+	Option "A mirror in front of you", "rsqtr_mirror", "RSQTR_Mirror"
+	SafeCommand "Use Standing A (blue)", "netevent rsqtr_prof_load 1", "Replace your holster places with Standing A (blue)?"
+	SafeCommand "Use Standing B (orange)", "netevent rsqtr_prof_load 2", "Replace your holster places with Standing B (orange)?"
+	SafeCommand "Use Seated A (purple)", "netevent rsqtr_prof_load 3", "Replace your holster places with Seated A (purple)?"
+	SafeCommand "Use Seated B (yellow)", "netevent rsqtr_prof_load 4", "Replace your holster places with Seated B (yellow)?"
+	Submenu "Save a profile, move each holster", "RSQTR_Regions"
+	StaticText ""
+	StaticText "YOUR BODY", gold
+	Option "Wear a torso (shows armour and health)", "rsqtr_vest", "OnOff"
+	Option "Torso fades when you look down", "rsqtr_vest_fade", "OnOff"
+	Option "Helmet (seen in mirrors)", "rsqtr_helmet", "OnOff"
+	Option "Ermac's cigarettes", "rsqtr_cig", "OnOff"
+	StaticText ""
+	Submenu "Advanced: every setting", "RSQTR_Advanced"
+	StaticText ""
+	SafeCommand "Reset all Tactical Rig settings", "resetcvar rsqtr_on rsqtr_grip rsqtr_use rsqtr_keys_main rsqtr_keys_off rsqtr_markers rsqtr_icons rsqtr_pairs rsqtr_icon_scale rsqtr_icon_m rsqtr_icon_back_m rsqtr_icon_flip rsqtr_icon_turn rsqtr_haptics rsqtr_messages rsqtr_reach rsqtr_yield_shield rsqtr_saber_hip rsqtr_eye_m rsqtr_edit rsqtr_mirror rsqtr_mirror_view rsqtr_mirror_m rsqtr_dwell rsqtr_body_turn rsqtr_body_secs rsqtr_vest rsqtr_vest_style rsqtr_vest_u rsqtr_vest_f rsqtr_vest_size rsqtr_vest_low rsqtr_vest_fade rsqtr_helmet rsqtr_empty rsqtr_cig rsqtr_cig_zippo rsqtr_cig_secs rsqtr_cig_slowmo rsqtr_cig_depth rsqtr_cig_count rsqtr_cig_refill rsqtr_r0_f rsqtr_r0_l rsqtr_r0_u rsqtr_r0_rad rsqtr_r0_slots rsqtr_r1_f rsqtr_r1_l rsqtr_r1_u rsqtr_r1_rad rsqtr_r1_slots rsqtr_r2_f rsqtr_r2_l rsqtr_r2_u rsqtr_r2_rad rsqtr_r2_slots rsqtr_r3_f rsqtr_r3_l rsqtr_r3_u rsqtr_r3_rad rsqtr_r3_slots rsqtr_r4_f rsqtr_r4_l rsqtr_r4_u rsqtr_r4_rad rsqtr_r4_slots rsqtr_r5_f rsqtr_r5_l rsqtr_r5_u rsqtr_r5_rad rsqtr_r5_slots rsqtr_r6_f rsqtr_r6_l rsqtr_r6_u rsqtr_r6_rad rsqtr_r6_slots rsqtr_r7_f rsqtr_r7_l rsqtr_r7_u rsqtr_r7_rad rsqtr_r7_slots rsqtr_r8_f rsqtr_r8_l rsqtr_r8_u rsqtr_r8_rad rsqtr_r8_slots rsqtr_r9_f rsqtr_r9_l rsqtr_r9_u rsqtr_r9_rad rsqtr_r9_slots rsqtr_r10_f rsqtr_r10_l rsqtr_r10_u rsqtr_r10_rad rsqtr_r10_slots", "Put every Tactical Rig setting back?"
+}
+
+OptionMenu "RSQTR_Advanced"
+{
+	Title "TACTICAL RIG: EVERY SETTING"
 	StaticText ""
 	StaticText "Six places on your body, one weapon class each.", 1
 	StaticText "Reach there and grip (or press Use) to draw.", 1
@@ -65,13 +100,7 @@ OptionMenu "RSQTR_Options"
 	Slider "Body follows a head turned past (degrees)", "rsqtr_body_turn", 10, 90, 5, 0
 	Slider "...after waiting (seconds, 0 at once)", "rsqtr_body_secs", 0, 3, 0.25, 2
 	StaticText ""
-	StaticText "Doors", 1
-	Option "Lift doors by hand", "rsqtr_door", "OnOff"
-	Option "Grip takes hold", "rsqtr_door_grip", "OnOff"
-	Option "Use takes hold", "rsqtr_door_use", "OnOff"
-	Option "Palm out takes hold", "rsqtr_door_palm", "OnOff"
-	Slider "Open past this, it finishes", "rsqtr_door_commit", 0.1, 0.9, 0.05, 2
-	Slider "Lift gain", "rsqtr_door_gain", 1.0, 5.0, 0.25, 2
+	StaticText "Doors: now in Distance Grab's options", 1
 	StaticText ""
 	StaticText "Ermac's cigarette", 1
 	StaticText "A pocket on your left chest: grip there, bring it to your mouth.", 1
@@ -85,6 +114,8 @@ OptionMenu "RSQTR_Options"
 	StaticText ""
 	StaticText "Torso", 1
 	Option "Wear a torso (shows armour and health)", "rsqtr_vest", "OnOff"
+	Option "Torso fades when you look down", "rsqtr_vest_fade", "OnOff"
+	Option "Helmet (seen in mirrors)", "rsqtr_helmet", "OnOff"
 	Option "Torso", "rsqtr_vest_style", "RSQTR_VestStyle"
 	Slider "Torso: collar below your eyes, metres", "rsqtr_vest_u", -0.45, 0.0, 0.01, 2
 	Slider "Torso: forward, metres", "rsqtr_vest_f", -0.20, 0.15, 0.01, 2
@@ -105,7 +136,7 @@ OptionMenu "RSQTR_Options"
 	TextField "Main grip", "rsqtr_keys_main"
 	TextField "Off grip", "rsqtr_keys_off"
 	StaticText ""
-	SafeCommand "Reset all Tactical Rig settings", "resetcvar rsqtr_on rsqtr_grip rsqtr_use rsqtr_keys_main rsqtr_keys_off rsqtr_markers rsqtr_icons rsqtr_pairs rsqtr_icon_scale rsqtr_icon_m rsqtr_icon_back_m rsqtr_icon_flip rsqtr_icon_turn rsqtr_haptics rsqtr_messages rsqtr_reach rsqtr_yield_shield rsqtr_saber_hip rsqtr_eye_m rsqtr_edit rsqtr_mirror rsqtr_mirror_view rsqtr_mirror_m rsqtr_dwell rsqtr_body_turn rsqtr_body_secs rsqtr_vest rsqtr_vest_style rsqtr_vest_u rsqtr_vest_f rsqtr_vest_size rsqtr_vest_low rsqtr_empty rsqtr_door rsqtr_door_grip rsqtr_door_use rsqtr_door_palm rsqtr_door_commit rsqtr_door_gain rsqtr_cig rsqtr_cig_zippo rsqtr_cig_secs rsqtr_cig_slowmo rsqtr_cig_depth rsqtr_cig_count rsqtr_cig_refill rsqtr_r0_f rsqtr_r0_l rsqtr_r0_u rsqtr_r0_rad rsqtr_r0_slots rsqtr_r1_f rsqtr_r1_l rsqtr_r1_u rsqtr_r1_rad rsqtr_r1_slots rsqtr_r2_f rsqtr_r2_l rsqtr_r2_u rsqtr_r2_rad rsqtr_r2_slots rsqtr_r3_f rsqtr_r3_l rsqtr_r3_u rsqtr_r3_rad rsqtr_r3_slots rsqtr_r4_f rsqtr_r4_l rsqtr_r4_u rsqtr_r4_rad rsqtr_r4_slots rsqtr_r5_f rsqtr_r5_l rsqtr_r5_u rsqtr_r5_rad rsqtr_r5_slots rsqtr_r6_f rsqtr_r6_l rsqtr_r6_u rsqtr_r6_rad rsqtr_r6_slots rsqtr_r7_f rsqtr_r7_l rsqtr_r7_u rsqtr_r7_rad rsqtr_r7_slots rsqtr_r8_f rsqtr_r8_l rsqtr_r8_u rsqtr_r8_rad rsqtr_r8_slots rsqtr_r9_f rsqtr_r9_l rsqtr_r9_u rsqtr_r9_rad rsqtr_r9_slots rsqtr_r10_f rsqtr_r10_l rsqtr_r10_u rsqtr_r10_rad rsqtr_r10_slots", "Put every Tactical Rig setting back?"
+	SafeCommand "Reset all Tactical Rig settings", "resetcvar rsqtr_on rsqtr_grip rsqtr_use rsqtr_keys_main rsqtr_keys_off rsqtr_markers rsqtr_icons rsqtr_pairs rsqtr_icon_scale rsqtr_icon_m rsqtr_icon_back_m rsqtr_icon_flip rsqtr_icon_turn rsqtr_haptics rsqtr_messages rsqtr_reach rsqtr_yield_shield rsqtr_saber_hip rsqtr_eye_m rsqtr_edit rsqtr_mirror rsqtr_mirror_view rsqtr_mirror_m rsqtr_dwell rsqtr_body_turn rsqtr_body_secs rsqtr_vest rsqtr_vest_style rsqtr_vest_u rsqtr_vest_f rsqtr_vest_size rsqtr_vest_low rsqtr_vest_fade rsqtr_helmet rsqtr_empty rsqtr_cig rsqtr_cig_zippo rsqtr_cig_secs rsqtr_cig_slowmo rsqtr_cig_depth rsqtr_cig_count rsqtr_cig_refill rsqtr_r0_f rsqtr_r0_l rsqtr_r0_u rsqtr_r0_rad rsqtr_r0_slots rsqtr_r1_f rsqtr_r1_l rsqtr_r1_u rsqtr_r1_rad rsqtr_r1_slots rsqtr_r2_f rsqtr_r2_l rsqtr_r2_u rsqtr_r2_rad rsqtr_r2_slots rsqtr_r3_f rsqtr_r3_l rsqtr_r3_u rsqtr_r3_rad rsqtr_r3_slots rsqtr_r4_f rsqtr_r4_l rsqtr_r4_u rsqtr_r4_rad rsqtr_r4_slots rsqtr_r5_f rsqtr_r5_l rsqtr_r5_u rsqtr_r5_rad rsqtr_r5_slots rsqtr_r6_f rsqtr_r6_l rsqtr_r6_u rsqtr_r6_rad rsqtr_r6_slots rsqtr_r7_f rsqtr_r7_l rsqtr_r7_u rsqtr_r7_rad rsqtr_r7_slots rsqtr_r8_f rsqtr_r8_l rsqtr_r8_u rsqtr_r8_rad rsqtr_r8_slots rsqtr_r9_f rsqtr_r9_l rsqtr_r9_u rsqtr_r9_rad rsqtr_r9_slots rsqtr_r10_f rsqtr_r10_l rsqtr_r10_u rsqtr_r10_rad rsqtr_r10_slots", "Put every Tactical Rig setting back?"
 }
 
 OptionMenu "RSQTR_Regions"

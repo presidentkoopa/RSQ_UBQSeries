@@ -68,8 +68,10 @@ class RSQTR_RigService : Service
 			if (rig.HandBusy(h)) return 1;
 			let cig = RSQTR_Cig.Get();
 			if (cig && (cig.cigHand[consoleplayer] == h || cig.zipHand[consoleplayer] == h)) return 1;
-			let door = RSQTR_Door.Get();
-			if (door && door.Holding(h)) return 1;
+			// a hand lifting a door (RSQ_DistanceGrab's doors, asked by name)
+			let dit = ServiceIterator.Find("RSQDG_DoorService");
+			Service ds;
+			while (ds = dit.Next()) if (ds.GetInt("door.holding", "", h, 0, null) >= 0) return 1;
 			return 0;
 		}
 		return -1;

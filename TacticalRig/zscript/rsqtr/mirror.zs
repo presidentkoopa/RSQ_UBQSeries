@@ -15,7 +15,7 @@
 // inside out, so a gun's left side shows where its right side would.
 class RSQTR_MirrorView play
 {
-	Actor mBody, mBreath;
+	Actor mBody, mBreath, mHelmet;
 	Actor mMark[RSQTR_Region.N];
 	Actor mIcon[RSQTR_Region.N];
 	Actor mHand[2];
@@ -75,6 +75,8 @@ class RSQTR_MirrorView play
 	{
 		mBody = Copy(mBody, tor ? tor.body : null);
 		mBreath = Copy(mBreath, tor ? tor.breath : null);
+		mHelmet = Copy(mHelmet, tor ? tor.helmet : null);
+		if (mHelmet) mHelmet.bONLYVISIBLEINMIRRORS = false;     // the copy IS the mirror
 		for (int r = 0; r < RSQTR_Region.N; r++)
 		{
 			mMark[r] = Copy(mMark[r], rig.marker[r]);
@@ -97,6 +99,7 @@ class RSQTR_MirrorView play
 	{
 		if (mBody) mBody.bINVISIBLE = true;
 		if (mBreath) mBreath.bINVISIBLE = true;
+		if (mHelmet) mHelmet.bINVISIBLE = true;
 		for (int r = 0; r < RSQTR_Region.N; r++)
 		{
 			if (mMark[r]) mMark[r].bINVISIBLE = true;

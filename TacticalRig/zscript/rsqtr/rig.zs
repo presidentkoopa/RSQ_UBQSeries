@@ -175,15 +175,21 @@ class RSQTR_Rig : EventHandler
 		for (let it = pmo.Inv; it; it = it.Inv)
 		{
 			let w = Weapon(it);
-			if (!w || w.bPOWERED_UP || w.bOffhandWeapon || w.Amount <= 0) continue;
-			// UltraBadassQuestSaber's hilt is slot 1, but it clips to either hip
-			// (rsqtr_saber_hip), found by class name so the saber need not be loaded.
+			if (!w || w.bPOWERED_UP || w.Amount <= 0) continue;
+			// ONE HOLSTER PER SABER (the owner, 10-27: "I still have no saber holsters"). The main
+			// saber's is the left one for a right-handed player (the home holster), the second
+			// saber's the right one; swapped when left-handed. Found by class name so the saber
+			// need not be loaded. The main saber may also clip to a hip (rsqtr_saber_hip).
 			if (IsSaber(w))
 			{
-				if (r == RSQTR_Region.SABER_L || r == RSQTR_Region.SABER_R) into.Push(w.GetClassName());
+				int home = RSQTR_Body.LeftHanded() ? RSQTR_Region.SABER_R : RSQTR_Region.SABER_L;
+				int away = home == RSQTR_Region.SABER_L ? RSQTR_Region.SABER_R : RSQTR_Region.SABER_L;
+				if (IsSecondSaber(w)) { if (r == away && SecondSaberAllowed()) into.Push(w.GetClassName()); }
+				else if (r == home) into.Push(w.GetClassName());
 				else if ((r == 0 || r == 1) && Flag("rsqtr_saber_hip", pmo.player, false)) into.Push(w.GetClassName());
 				continue;
 			}
+			if (w.bOffhandWeapon) continue;
 			bool found; int slot, idx;
 			[found, slot, idx] = pmo.player.weapons.LocateWeapon(w.GetClass());
 			// CHEATNOTWEAPON alone does not keep a gun off the body: Brutal Doom's dual
@@ -228,6 +234,21 @@ class RSQTR_Rig : EventHandler
 		}
 		if (bySel) { String bn = bySel.GetClassName(); return bn; }
 		return cls;
+	}
+
+	static bool IsSecondSaber(Weapon w)
+	{
+		String n = w.GetClassName();
+		n = n.MakeLower();
+		return n == "ubqs_saberoff";
+	}
+
+	// The saber's own switches (server cvars, read by name): a second saber at all, and not "one only".
+	static bool SecondSaberAllowed()
+	{
+		let d = CVar.FindCVar("ubqs_dual");
+		let m = CVar.FindCVar("ubqs_dual_mode");
+		return (!d || d.GetBool()) && (!m || m.GetInt() != 0);
 	}
 
 	static bool IsSaber(Weapon w)
@@ -427,9 +448,10 @@ class RSQTR_Rig : EventHandler
 		let w = wc ? Weapon(pmo.FindInventory(wc)) : null;
 		if (!w) return;
 		let p = pmo.player;
-		if (p.ReadyWeapon != w) p.PendingWeapon = w;
 		int n = pmo.PlayerNumber();
 		int slot = n * RSQTR_Region.N + r;
+		if (IsSaber(w) && IsSecondSaber(w)) return;     // the saber moves its own second hilt (Press)
+		if (p.ReadyWeapon != w) p.PendingWeapon = w;
 		// DRAWN AS A PAIR (the owner, 10-27: "call up the dual pistol or SMG from that holster"):
 		// rsqtr_pairs 2 whenever you own the gun's off-hand copy, 1 only if it went away as a pair,
 		// 0 never. The copy follows into the off hand once the main hand has switched.
@@ -653,6 +675,45 @@ class RSQTR_Rig : EventHandler
 	{
 		Array<String> own;
 		Owned(pmo, r, own);
+		// A SABER PUT ANYWHERE GOES TO ITS OWN HOLSTER (the owner, 10-27: "if I try to put the
+		// sabers anywhere else, they just jump to their dedicated slots"). Put on an empty holster,
+		// the saber goes home instead; on a holster with a gun, the gun is drawn as always and the
+		// saber, out of the hand, shows in its own holster (DrawMarkers).
+		let offW = p.OffhandWeapon;
+		if (h == 1 && own.Size() == 0 && offW && IsSaber(offW) && IsSecondSaber(offW))
+		{
+			EventHandler.SendNetworkEvent("ubqs_dual_in");
+			pmo.A_StartSound("rsqtr/holster", CHAN_AUTO, CHANF_LOCAL, 0.8);
+			RSQTR_Buzzer.Start(pmo, h, 0.55, 5);
+			return;
+		}
+		let mainW = p.ReadyWeapon;
+		if (h == 0 && mainW && IsSaber(mainW) && !IsSecondSaber(mainW))
+		{
+			int home = RSQTR_Body.LeftHanded() ? RSQTR_Region.SABER_R : RSQTR_Region.SABER_L;
+			bool itsOwn = r == home || ((r == 0 || r == 1) && Flag("rsqtr_saber_hip", p, false));
+			if (!itsOwn && own.Size() == 0)
+			{
+				EventHandler.SendNetworkEvent("rsqtr_holster", home);
+				RSQTR_Buzzer.Start(pmo, h, 0.55, 5);
+				return;
+			}
+		}
+		// THE SECOND SABER'S HOLSTER: the saber itself takes it out to the off hand or puts it
+		// back (its ubqs_dual_out / ubqs_dual_in, the same thing its Dual key does).
+		if (own.Size() == 1)
+		{
+			class<Weapon> sc = own[0];
+			let sw = sc ? Weapon(pmo.FindInventory(sc)) : null;
+			if (sw && IsSaber(sw) && IsSecondSaber(sw))
+			{
+				bool inHand = p.OffhandWeapon == sw;
+				EventHandler.SendNetworkEvent(inHand ? "ubqs_dual_in" : "ubqs_dual_out");
+				pmo.A_StartSound(inHand ? "rsqtr/holster" : "rsqtr/draw", CHAN_AUTO, CHANF_LOCAL, 0.8);
+				RSQTR_Buzzer.Start(pmo, h, inHand ? 0.55 : 0.65, inHand ? 5 : 6);
+				return;
+			}
+		}
 		String cur = HeldAs(pmo, p.ReadyWeapon);
 		if (cur != "" && own.Find(cur) < own.Size())
 		{
@@ -820,13 +881,18 @@ class RSQTR_Rig : EventHandler
 			if (put != "" && fitT.Find(put) < 0) put = "";
 			// ONE HILT, TWO HOLSTERS: the saber is shown only in the one it was put in (the
 			// off-hand side's holster until it has been put anywhere).
-			if (put != "" && (r == RSQTR_Region.SABER_L || r == RSQTR_Region.SABER_R))
+			// EACH SABER HAS ITS HOLSTER and shows there whenever it is not in its hand: the main
+			// saber in the home holster unless the main hand holds it, the second saber in the
+			// other unless the off hand holds it (Owned lists only that one saber per holster).
+			if (r == RSQTR_Region.SABER_L || r == RSQTR_Region.SABER_R)
 			{
-				int other = r == RSQTR_Region.SABER_L ? RSQTR_Region.SABER_R : RSQTR_Region.SABER_L;
-				String here = lastPut[consoleplayer * RSQTR_Region.N + r];
-				String there = lastPut[consoleplayer * RSQTR_Region.N + other];
-				int home = RSQTR_Body.LeftHanded() ? RSQTR_Region.SABER_R : RSQTR_Region.SABER_L;
-				if (here != put && (there == put || r != home)) put = "";
+				put = "";
+				for (int k = 0; k < own.Size(); k++)
+				{
+					let sw = Weapon(pmo.FindInventory(own[k]));
+					if (sw && sw != p.ReadyWeapon && sw != p.OffhandWeapon) { put = own[k]; break; }
+				}
+				if (put != "" && fitT.Find(put) < 0) put = "";
 			}
 			if (icons && live && put != "")
 			{

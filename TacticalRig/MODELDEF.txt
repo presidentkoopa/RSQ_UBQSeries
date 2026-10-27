@@ -117,3 +117,34 @@ Model RSQTR_MarinePart
 	SurfaceSkin 0 2 "rtmsho_red.png"
 	FrameIndex RSVM C 0 0
 }
+
+// THE HELMET (rsqtr_helmet, worn with the torso): the Doom Eternal Classic Slayer's helmet
+// from RS_VRBody (models/helmet/PROVENANCE.md there): shell, visor, interior, one OBJ each,
+// in map units with the ORIGIN AT YOUR EYES, x forward, so it turns about your eyes with the
+// headset. The actor carries +ONLYVISIBLEINMIRRORS: your own view never draws it (it would sit
+// over your eyes), a real mirror in a map does, and the rig's mirror copy draws it plainly.
+// Frames A B C: green, blue, red, as the torso.
+Model RSQTR_HelmetPart
+{
+	Path "models/rsqtr"
+	Model 0 "rthelm.obj"
+	Model 1 "rthelmv.obj"
+	Model 2 "rthelmi.obj"
+	Skin 1 "rthelmv.png"
+	Skin 2 "rthelmi.png"
+	Scale 1.0 1.0 1.0
+	USEACTORPITCH
+	USEACTORROLL
+	Skin 0 "rthelm_green.png"
+	FrameIndex RSVH A 0 0
+	FrameIndex RSVH A 1 0
+	FrameIndex RSVH A 2 0
+	Skin 0 "rthelm_blue.png"
+	FrameIndex RSVH B 0 0
+	FrameIndex RSVH B 1 0
+	FrameIndex RSVH B 2 0
+	Skin 0 "rthelm_red.png"
+	FrameIndex RSVH C 0 0
+	FrameIndex RSVH C 1 0
+	FrameIndex RSVH C 2 0
+}

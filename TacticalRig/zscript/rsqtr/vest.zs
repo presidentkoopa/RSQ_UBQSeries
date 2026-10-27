@@ -24,6 +24,7 @@ class RSQTR_Torso : EventHandler
 	const COLLAR = 18.1;          // model units: the top of the Quake mesh
 	const SHOULDERS = 51.689;     // model units: the marine's shoulder line (RS_VRBody's PivotOffset)
 	transient Actor body, breath;      // read by the mirror (mirror.zs)
+	transient Actor helmet;            // read by the mirror too
 
 	override void WorldTick()
 	{
@@ -55,16 +56,43 @@ class RSQTR_Torso : EventHandler
 		}
 		// The marine has no bare look: green unless blue (RS_VRBody's rule); its frames are
 		// green, blue, red. The Quake torso's: own, green, blue, red.
-		Place(body, at, yaw, sz, marine ? (skin == 2 ? 1 : 0) : skin, 1.0);
+		// IT FADES AS YOU LOOK DOWN (the owner, 10-27: "can the torsos fade out when I look down,
+		// I can't see my holsters or stored weapons"). Solid looking ahead; from 25 degrees down
+		// it thins, to a ghost (0.12) by 50, so the holsters and the guns on them show through.
+		double fade = 1.0;
+		if (RSQTR_Rig.CVarOn("rsqtr_vest_fade"))
+			fade = clamp(1.0 - (pmo.pitch - 25.0) / 25.0, 0.12, 1.0);
+		Place(body, at, yaw, sz, marine ? (skin == 2 ? 1 : 0) : skin, fade);
+		body.A_SetRenderStyle(fade, fade > 0.99 ? STYLE_Normal : STYLE_Translucent);
+
+		int low = int(RSQTR_Rig.Num("rsqtr_vest_low", p, 35));
+		// THE HELMET, on your head and turning with the headset (rsqtr_helmet, the owner, 10-27:
+		// "can we get that on our torso so we have a helmet, and hide the surface from our view so
+		// it still shows up in mirrors"). Its colour follows the torso's armour.
+		if (RSQTR_Rig.CVarOn("rsqtr_helmet") && marine)
+		{
+			if (!helmet) helmet = Actor.Spawn("RSQTR_HelmetPart", RSQTR_Body.Head(pmo));
+			if (helmet)
+			{
+				helmet.SetOrigin(RSQTR_Body.Head(pmo), true);
+				helmet.angle = pmo.angle;
+				helmet.pitch = pmo.pitch;
+				helmet.roll = pmo.roll;
+				double hs = RSQTR_Rig.Num("rsqtr_vest_size", p, 1.0) * k;
+				helmet.Scale = (hs, hs);
+				helmet.frame = skin == 2 ? 1 : 0;
+				helmet.bINVISIBLE = false;
+			}
+		}
+		else if (helmet) helmet.bINVISIBLE = true;
 
 		// Red breathing over it at low health.
-		int low = int(RSQTR_Rig.Num("rsqtr_vest_low", p, 35));
 		if (pmo.health < low)
 		{
 			if (!breath) breath = Actor.Spawn(cls, at);
 			if (breath)
 			{
-				double a = 0.25 + 0.35 * (0.5 + 0.5 * sin(level.maptime * 9.0));
+				double a = (0.25 + 0.35 * (0.5 + 0.5 * sin(level.maptime * 9.0))) * fade;
 				Place(breath, at, yaw, sz * 1.003, marine ? 2 : 3, a);
 				breath.A_SetRenderStyle(a, STYLE_Translucent);
 			}
@@ -86,6 +114,7 @@ class RSQTR_Torso : EventHandler
 	{
 		if (body) body.bINVISIBLE = true;
 		if (breath) breath.bINVISIBLE = true;
+		if (helmet) helmet.bINVISIBLE = true;
 	}
 }
 
@@ -107,4 +136,15 @@ class RSQTR_TorsoPart : Actor
 		Radius 1; Height 1;
 	}
 	States { Spawn: RSVT A -1; Stop; }
+}
+
+class RSQTR_HelmetPart : Actor
+{
+	Default
+	{
+		+NOINTERACTION +NOBLOCKMAP +NOGRAVITY +NOTELEPORT +DONTSPLASH +NOTONAUTOMAP
+		+ONLYVISIBLEINMIRRORS
+		Radius 1; Height 1;
+	}
+	States { Spawn: RSVH A -1; Stop; }
 }
