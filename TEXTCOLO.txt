@@ -1,0 +1,56 @@
+// Score colours. See CREDITS.md. Names are prefixed RSScore_ rather than reused
+// verbatim so that loading the original mod alongside this pack cannot have one
+// definition quietly win over the other.
+//
+// Three families, three colours, and that is the whole reason the breakdown is
+// readable at a glance: Efficiency reads red, Style reads green, Daring reads
+// orange. Base is the same gold as the score line so the first row of a
+// breakdown ties back to the number above it.
+
+RSScore_White
+{
+	#404040 #606060 0  24
+	#C0C0C0 #FFFFFF 25 255
+}
+
+RSScore_WhiteFlash
+{
+	#707070 #A0A0A0 0  24
+	#FFFFFF #FFFFFF 25 255
+}
+
+RSScore_Gold
+{
+	#403010 #604020 0  24
+	#C0B020 #FFD030 25 255
+}
+
+RSScore_GoldFlash
+{
+	#807540 #bfb75f 0  24
+	#fff8b3 #fff7cc 25 255
+}
+
+RSScore_Base
+{
+	#403010 #604020 0  24
+	#C0B020 #FFD030 25 255
+}
+
+RSScore_Efficiency
+{
+	#402020 #603030 0  24
+	#C09090 #FF8080 25 255
+}
+
+RSScore_Style
+{
+	#204010 #286014 0  24
+	#90C020 #B8FF30 25 255
+}
+
+RSScore_Daring
+{
+	#402008 #603010 0  24
+	#C06020 #FF8030 25 255
+}

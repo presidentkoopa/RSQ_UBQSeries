@@ -1,0 +1,12 @@
+// The two reward cues. Names prefixed rsscore/ rather than reused verbatim so that
+// loading the original mod alongside this pack cannot have one definition win over
+// the other. See CREDITS.md for where the audio came from.
+//
+// $limit 0 matches the original: a reward cue is never dropped for being one voice
+// too many, because missing it means missing the only signal that you earned it.
+
+rsscore/pointreward   sounds/score/points_reward.ogg
+rsscore/fullheal      sounds/score/points_fullheal.ogg
+
+$limit rsscore/pointreward 0
+$limit rsscore/fullheal    0

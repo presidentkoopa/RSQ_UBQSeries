@@ -1,0 +1,15 @@
+// Three handlers, on purpose.
+//
+//   RS_ScoreRegistry is static: the bonus list is decided by which mods are loaded
+//     and cannot change mid-session, so it is built once and outlives the map.
+//   RS_ScoreHandler is per-level: the census, the threshold and the counted-monster
+//     list all belong to one map.
+//   RS_ScoreHUD is per-level and only draws.
+//
+// The registry is listed FIRST so its OnRegister has run before anything asks it
+// for the list.
+
+gameinfo
+{
+    AddEventHandlers = "RS_ScoreRegistry", "RS_ScoreHandler", "RS_ScoreHUD"
+}

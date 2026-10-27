@@ -1,0 +1,63 @@
+// RS_Score settings.
+//
+// WHAT IS SERVER AND WHAT IS USER, and it is not arbitrary. A `server` cvar changes
+// what the GAME does, so it has to be the same for everyone or two machines score
+// differently -- that is GZDoom's word for "the host decides". A `user` cvar changes
+// what ONE PERSON SEES, so it is theirs. Putting a scoring number in the user column
+// would be a desync waiting for a co-op session.
+
+// ---- the map's reward threshold ----
+server int  rs_score_monstermin      = 140;
+server int  rs_score_monstermax      = 800;
+server int  rs_score_monsterscalar   = 50;
+server int  rs_score_interval        = 5000;
+
+// What crossing the threshold pays out.
+//   0  ammo regen first, then a life, alternating
+//   1  a life first, then regen, alternating
+//   2  regen only, never a life
+//   3  A LIFE EVERY TIME, never regen   <- ours
+//   4  nothing; the score is just a number and a bar
+//
+// 3 by decision, not by inheritance: the lives reward is the one we want and the
+// ammo one is not. The regen path stays in the code because modes 0-2 still use it,
+// and because turning a reward off is a cvar, not a deletion.
+server int  rs_score_rewardtypes     = 3;
+
+// What the score does on a map change. The original's four modes.
+//   0  wipe everything                      <- the original's default
+//   1  keep the running total, wipe the rest
+//   2  keep the running total and the rewards, wipe the score
+//   3  keep everything
+server int  rs_score_startmode       = 0;
+
+// How much base a monster pays if it was NOT on the map when it loaded -- spawned by
+// a script, raised by an Arch-vile, a Lost Soul thrown by a Pain Elemental.
+//
+// 100 IS INERT AND IS THE DEFAULT, because the original has no such rule: it paid
+// full for all of them, which makes an Arch-vile an endless score fountain. Lower
+// this and the scores stop matching the original, deliberately.
+server int  rs_score_farmpercent     = 100;
+
+// Percentage of each ammo type's maximum handed back over one 20-second regen
+// burst. Not the original's numbers: it regenerated a hardcoded list of its own eight
+// ammo classes at fixed rates, which does nothing for any other weapon set.
+server int  rs_score_regenpercent    = 40;
+
+// Multiplier ceilings, as a percentage. 0 is off, and off is the default, so out
+// of the box the arithmetic is unchanged.
+server int  rs_score_cap_efficiency  = 0;
+server int  rs_score_cap_style       = 0;
+server int  rs_score_cap_daring      = 0;
+server int  rs_score_cap_total       = 0;
+
+server noarchive bool rs_score_debug = false;
+
+// ---- what one person sees ----
+user bool rs_score_hide         = false;
+user bool rs_score_norewards    = false;
+user bool rs_score_flash        = true;
+user int  rs_score_bonustime    = 35;
+user int  rs_score_scale        = 100;
+user int  rs_score_x            = 85;
+user int  rs_score_y            = 10;

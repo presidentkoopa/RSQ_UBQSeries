@@ -1,0 +1,15 @@
+version "5.0.0"
+
+// RS_Score -- the scoring service. Points for a kill, bonuses for how you got it,
+// a per-map target that pays out when you cross it. See CREDITS.md.
+//
+// Read in this order: the tracker holds the state, the event describes one kill,
+// the bonus is the extension point, the bonuses are the thirteen, the handler
+// drives everything, and the HUD only reads.
+
+#include "zscript/rsscore/tracker.zs"
+#include "zscript/rsscore/event.zs"
+#include "zscript/rsscore/bonus.zs"
+#include "zscript/rsscore/bonuses.zs"
+#include "zscript/rsscore/handler.zs"
+#include "zscript/rsscore/hud.zs"
