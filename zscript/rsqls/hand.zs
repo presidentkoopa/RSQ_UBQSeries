@@ -74,6 +74,63 @@ class RSQLS_Hand
 		return VectorAngle(r.x, r.y), -atan2(r.z, r.xy.Length()), r.Length();
 	}
 
+	// ---- THE HAND'S OWN FRAME, as the renderer builds it ---------------------------
+	// hw_openxrdevice.cpp GetHandTransform: the hand matrix is metres in the ROOM, turned
+	// yaw (about y), pitch (about x), roll (about z, negated), in GL axes (x, y up, z) with
+	// map = (vu x, -vu z, vu y / pixelstretch). hw_vrmodes.cpp GetWeaponTransform mirrors x on
+	// the LEFT controller's weapon unless it has NoAutoReverse. models.cpp RenderHUDModel then
+	// scales by 0.01 and moves (0, 5, 30): a HUD model's point p (cm) is the hand point
+	// 0.01 (p + (0, 5, 30)) m. The yaw is AttackAngle (forward = AttackAngle + 90 in the map,
+	// the shot's direction: MapWeaponDir fires along the matrix's -z), pitch AttackPitch, roll
+	// -AttackRoll -- the same numbers the engine writes into both (hw_openxrdevice.cpp).
+	static bool Mirrored(PlayerPawn pmo, int h)
+	{
+		Weapon w = (h == 0) ? pmo.player.ReadyWeapon : pmo.player.OffhandWeapon;
+		let cs = CVar.FindCVar("vr_control_scheme");
+		bool rightHanded = !cs || cs.GetInt() < 10;
+		int idx = (h == 1) ? (rightHanded ? 0 : 1) : (rightHanded ? 1 : 0);
+		return idx == 0 && !(w && w.bNoAutoReverse);
+	}
+
+	// A vector in the hand's frame (room units, GL axes) turned into the room (GL axes).
+	static Vector3 HandToRoom(PlayerPawn pmo, int h, Vector3 v)
+	{
+		double yw = (h == 0) ? pmo.AttackAngle : pmo.OffhandAngle;
+		double pt = (h == 0) ? pmo.AttackPitch : pmo.OffhandPitch;
+		double rl = -((h == 0) ? pmo.AttackRoll : pmo.OffhandRoll);
+		// Rz(rl), then Rx(pt), then Ry(yw): glRotate's matrices
+		v = (v.x * cos(rl) - v.y * sin(rl), v.x * sin(rl) + v.y * cos(rl), v.z);
+		v = (v.x, v.y * cos(pt) - v.z * sin(pt), v.y * sin(pt) + v.z * cos(pt));
+		v = (v.x * cos(yw) + v.z * sin(yw), v.y, -v.x * sin(yw) + v.z * cos(yw));
+		return v;
+	}
+
+	// Room metres (GL axes) -> a map-space vector.
+	static Vector3 RoomToMap(Vector3 r)
+	{
+		double vu = UPM;
+		let c = CVar.FindCVar("vr_vunits_per_meter");
+		if (c) vu = c.GetFloat();
+		return (vu * r.x, -vu * r.z, vu * r.y / PIXELSTRETCH);
+	}
+
+	// A point of a HUD model (cm, the controller's HUD frame) -> where it is in the map.
+	static Vector3 HudPoint(PlayerPawn pmo, int h, Vector3 p)
+	{
+		Vector3 m = (p + (0, 5, 30)) * 0.01;
+		if (Mirrored(pmo, h)) m.x = -m.x;
+		return Grip(pmo, h) + RoomToMap(HandToRoom(pmo, h, m));
+	}
+
+	// A direction in the HUD frame -> a map-space unit vector.
+	static Vector3 HudDir(PlayerPawn pmo, int h, Vector3 d)
+	{
+		if (Mirrored(pmo, h)) d.x = -d.x;
+		Vector3 m = RoomToMap(HandToRoom(pmo, h, d));
+		double l = m.Length();
+		return l > 0 ? m / l : Dir(pmo, h);
+	}
+
 	static double Num(String n, PlayerInfo p, double d) { let c = CVar.GetCVar(n, p); return c ? c.GetFloat() : d; }
 	static bool   Flag(String n, PlayerInfo p, bool d)  { let c = CVar.GetCVar(n, p); return c ? c.GetBool() : d; }
 	static int    Opt(String n, PlayerInfo p, int d)    { let c = CVar.GetCVar(n, p); return c ? c.GetInt() : d; }

@@ -3,20 +3,11 @@
 
     python3 tools/gen_assets.py
 
-  models/rsqls/rslscore.md3 / rslscorf.md3  the beam's core, 3 crossed planes along
-                                            +Z, 5 taper frames; the f = fade variant
-  models/rsqls/rslshalo.md3 / rslshalf.md3  the halo, same shapes, wider
-  models/rsqls/rslscore.png / rslshalo.png  bell across the width, fade along it
+  (the beam is not made here: it rides the gun as voxel rods, tools/gen_beams.py)
+  models/rsqls/rslsread.md3  the range readout's quad
   sprites/rsqls/RSLGA0.png                  the pointer glow (a wide soft bloom)
   sprites/rsqls/RSLSA0.png   the spot: hot white centre, soft falloff, faint ring
-  sprites/rsqls/RSLBA0.png   placeholder so the beam's sprite name exists
   MODELDEF.txt               generated
-
-WHY THE BEAM IS AUTHORED ALONG +Z: an actor's Scale.X scales BOTH horizontal model
-axes, Scale.Y only the vertical one. Along +Z, Scale.Y is the beam's exact LENGTH
-and Scale.X its WIDTH, independently; the actor is pitched 90 degrees past the aim
-to lay its up axis along the beam. One object, any length, depth-correct. Proven
-in RSQ_DistanceGrab (D19) before it came here.
 
 Everything is WHITE: colour is the actor's translation at runtime, and additive
 blending makes dark mean faint.
@@ -25,10 +16,7 @@ import os, math, struct, zlib
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.normpath(os.path.join(HERE, '..'))
 
-BEAM_L = 256.0     # authored length; Scale.Y = distance / BEAM_L
-CORE_W = 0.5       # half-widths at Scale.X 1, map units. Thinner than the grab's
-HALO_W = 2.4       # beam: a gun laser is a thread, a Force pull is a rope
-PLANES = 3
+MD3_RADIUS = 256.0 # the frame radius written into the readout's MD3
 
 def pad(s, n):
     b = s.encode('ascii')[:n - 1]; return b + b'\0' * (n - len(b))
@@ -57,56 +45,21 @@ def write_md3(path, frames, uvs, tris, skin, name):
     fr = b''
     for verts in frames:
         mn = [min(p[k] for p in verts) for k in range(3)]; mx = [max(p[k] for p in verts) for k in range(3)]
-        fr += struct.pack('<3f3f3ff', *mn, *mx, 0, 0, 0, BEAM_L) + pad('f', 16)
+        fr += struct.pack('<3f3f3ff', *mn, *mx, 0, 0, 0, MD3_RADIUS) + pad('f', 16)
     hl = 4 + 4 + 64 + 36
     out = b'IDP3' + struct.pack('<i', 15) + pad(name, 64) + struct.pack('<9i', 0, nf, 0, 1, 0, hl, hl + len(fr), hl + len(fr), hl + len(fr) + len(s)) + fr + bytes(s)
     open(path, 'wb').write(out); return len(out)
 
-# THE BEAM, v2: core and halo are SEPARATE models, so the halo ("beam glow") has
-# its own brightness -- UZDXREMA's Beam Glow slider. Each comes in TAPER frames
-# (the far end's width as a share of the near end's) and in a FADE variant whose
-# texture runs out toward the far end (UZDXREMA's Beam Fade Distance: the beam is
-# drawn only so far and dies away there). MD3 frames share their UVs, so the fade
-# needs its own mesh; the taper does not.
-TAPERS = [1.0, 0.7, 0.45, 0.25, 0.1]
-
-def beam_mesh(w, fade):
-    frames, UV, T = [], [], []
-    for ti, tp in enumerate(TAPERS):
-        V = []
-        for k in range(PLANES):
-            a = math.pi * k / PLANES; dx, dy = math.cos(a) * w, math.sin(a) * w
-            V += [(-dx, -dy, 0.0), (dx, dy, 0.0), (dx * tp, dy * tp, BEAM_L), (-dx * tp, -dy * tp, BEAM_L)]
-            if ti == 0:
-                b = 4 * k
-                v0, v1 = (0.02, 0.98) if fade else (0.02, 0.02)
-                UV += [(0.0, v0), (1.0, v0), (1.0, v1), (0.0, v1)]
-                T += [(b, b + 1, b + 2), (b, b + 2, b + 3), (b, b + 2, b + 1), (b, b + 3, b + 2)]
-        frames.append(V)
-    return frames, UV, T
-
-def skin_px(peak, sigma):
-    def px(x, y):
-        u = (x + 0.5) / 32.0; v = (y + 0.5) / 64.0
-        across = math.exp(-((u - 0.5) / sigma) ** 2)
-        along = 1.0 if v < 0.5 else max(0.0, 1.0 - ((v - 0.5) / 0.5) ** 1.5)
-        c = int(min(255, peak * across * along))
-        return (c, c, c, 255)
-    return px
-
 def main():
     md = os.path.join(ROOT, 'models', 'rsqls'); sd = os.path.join(ROOT, 'sprites', 'rsqls')
     os.makedirs(md, exist_ok=True); os.makedirs(sd, exist_ok=True)
-    for old in ('rslsbeam.md3', 'rslsbeam.png'):
+    # The world-actor beam of v1-v3 is gone (it trailed the gun: the playsim moves it 35
+    # times a second, the headset draws 72-90). Its files go with it.
+    for old in ('rslsbeam.md3', 'rslsbeam.png', 'rslscore.md3', 'rslscorf.md3', 'rslshalo.md3',
+                'rslshalf.md3', 'rslscore.png', 'rslshalo.png'):
         if os.path.exists(os.path.join(md, old)): os.remove(os.path.join(md, old))
-    for nm, w, fade in (('rslscore', CORE_W, False), ('rslscorf', CORE_W, True),
-                        ('rslshalo', HALO_W, False), ('rslshalf', HALO_W, True)):
-        fr, UV, T = beam_mesh(w, fade)
-        skin = 'rslscore.png' if nm.startswith('rslsc') else 'rslshalo.png'
-        n = write_md3(os.path.join(md, nm + '.md3'), fr, UV, T, skin, nm)
-        print('%s.md3 %d bytes, %d frames' % (nm, n, len(fr)))
-    png(os.path.join(md, 'rslscore.png'), 32, 64, skin_px(300, 0.16))
-    png(os.path.join(md, 'rslshalo.png'), 32, 64, skin_px(110, 0.30))
+    for f in os.listdir(sd):
+        if f[:4] in ('RSLB', 'RSLH', 'RSLE'): os.remove(os.path.join(sd, f))
     # The spot: what a real laser dot looks like on a surface -- a small blown-out
     # centre, a soft bloom, and a faint ring (the speckle halo).
     def spot_px(x, y):
@@ -138,29 +91,7 @@ def main():
                   [(0, 1, 2), (0, 2, 3), (0, 2, 1), (0, 3, 2)], 'RSLRANGE', 'rslsread')
     print('rslsread.md3 %d bytes' % n)
     png(os.path.join(sd, 'RSLQA0.png'), 1, 1, lambda x, y: (0, 0, 0, 0))
-    # Placeholders: MODELDEF only draws a frame some state names, and a state can
-    # only name a sprite whose lump exists.
-    nfr = 2 * len(TAPERS)
-    for spr in ('RSLB', 'RSLH', 'RSLE'):
-        for f in range(nfr):
-            png(os.path.join(sd, '%s%s0.png' % (spr, chr(65 + f))), 1, 1, lambda x, y: (0, 0, 0, 0))
-    out = ['// GENERATED by tools/gen_assets.py -- edit that, not this.',
-           '// The beam: core, halo and the emissive second core. Authored along +Z:',
-           '// Scale.Y is its length, Scale.X its width. Frames A-E are the taper levels',
-           '// (%s), F-J the same with the fade-out texture.' % ', '.join(str(t) for t in TAPERS),
-           '// CORRECTPIXELSTRETCH: authored and aimed in ROOM space (see the handler).', '']
-    for cls, spr, a, b, skin in (('RSQLS_Beam', 'RSLB', 'rslscore', 'rslscorf', 'rslscore.png'),
-                                 ('RSQLS_Emissive', 'RSLE', 'rslscore', 'rslscorf', 'rslscore.png'),
-                                 ('RSQLS_Halo', 'RSLH', 'rslshalo', 'rslshalf', 'rslshalo.png')):
-        out += ['Model %s' % cls, '{', '\tPath "models/rsqls"',
-                '\tModel 0 "%s.md3"' % a, '\tSkin 0 "%s"' % skin,
-                '\tModel 1 "%s.md3"' % b, '\tSkin 1 "%s"' % skin,
-                '\tScale 1.0 1.0 1.0', '\tUSEACTORPITCH', '\tCORRECTPIXELSTRETCH']
-        for i in range(len(TAPERS)):
-            out.append('\tFrameIndex %s %s 0 %d' % (spr, chr(65 + i), i))
-        for i in range(len(TAPERS)):
-            out.append('\tFrameIndex %s %s 1 %d' % (spr, chr(65 + len(TAPERS) + i), i))
-        out += ['}', '']
+    out = ['// GENERATED by tools/gen_assets.py -- edit that, not this.', '']
     out += ['// The range readout: its skin is the canvas texture RSLRANGE (ANIMDEFS).',
             'Model RSQLS_Readout', '{', '\tPath "models/rsqls"', '\tModel 0 "rslsread.md3"',
             '\tSkin 0 "RSLRANGE"', '\tScale 1.0 1.0 1.0', '\tUSEACTORPITCH', '\tCORRECTPIXELSTRETCH',

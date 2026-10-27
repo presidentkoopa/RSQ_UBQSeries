@@ -1,0 +1,26 @@
+version "4.12"
+class RSLSProbe_Ready : StaticEventHandler
+{
+	bool done;
+	override void WorldLoaded(WorldEvent e)
+	{
+		if (done) return;
+		done = true;
+		for (int i = 0; i < AllActorClasses.Size(); i++)
+		{
+			let c = AllActorClasses[i];
+			if (!(c is 'Weapon')) continue;
+			let d = GetDefaultByType(c);
+			State st = d.FindState("Ready");
+			int guard = 0;
+			while (st && guard < 8)
+			{
+				String n = TexMan.GetName(st.GetSpriteTexture(0));
+				if (n != "" && n.Left(4) != "TNT1") break;
+				st = st.NextState; guard++;
+			}
+			if (!st) continue;
+			Console.Printf("PR %s %s %d", c.GetClassName(), TexMan.GetName(st.GetSpriteTexture(0)), st.Frame);
+		}
+	}
+}

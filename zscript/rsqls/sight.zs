@@ -1,81 +1,31 @@
 // ULTIMATE BADASS QUEST LASER SIGHT.
 //
-// A laser on every gun in every mod, both hands, no per-weapon setup. It reads
-// the hand's gun pose -- the same point and angles the engine fires a VR shot
-// along (OverrideAttackPosDir) -- so it lands where the shot lands, for
-// Brutal22Q, the WeaponDepot packs, vanilla, anything.
+// A laser on every gun, both hands. Two parts, each drawn where it can be drawn best:
 //
-// PER HAND, EACH TIC: one trace and at most two objects.
+//   THE BEAM  rides the gun model: a psprite layer called by the gun, so the renderer
+//             puts it on that gun's controller every rendered frame, exactly as it puts
+//             the gun (beam.zs). It starts at THAT gun's muzzle and runs along THAT gun's
+//             barrel -- both measured from its held model (tools/gen_beams.py,
+//             docs/MUZZLES.txt) -- brightest at the muzzle and fading to nothing over the
+//             fade length. A gun with no measurement gets no beam rather than a wrong one.
+//   THE SPOT  a world actor where the trace from the muzzle, along the barrel, lands
+//             (35 Hz, interpolated by the renderer), PAINTED ON THE SURFACE: a WALLSPRITE
+//             turned to the wall's own normal, a FLATSPRITE on floors and ceilings, a
+//             billboard only on an actor. Constant apparent size; a real dynamic light of
+//             its colour (switchable). The beam's fade hides the small difference between
+//             where the beam ends (per frame) and where the spot is (per tic).
 //
-//   THE BEAM  a model: three crossed planes round the bore, core + halo, soft
-//             bell skin, additive -- a solid thread of light from any angle but
-//             straight down it. Authored along +Z so Scale.Y is its EXACT length
-//             and Scale.X its width; the actor is pitched 90 past the aim to lay
-//             that axis along the beam. Depth-correct: walls cut it.
-//             IT KNOWS THE ROOM: brightness falls with the sector's light level.
-//             In a dark corridor the beam is a bar of light; in daylight it is a
-//             faint thread and the spot does the work -- which is how real ones
-//             look.
-//   THE SPOT  PAINTED ON THE SURFACE, not a billboard: a WALLSPRITE turned to the
-//             wall's own normal, a FLATSPRITE on floors and ceilings, a billboard
-//             only on an actor. So it is round head-on and an ellipse on a wall
-//             you see at an angle. Constant apparent size. A real dynamic light
-//             of the beam's colour lights the surface round it (switchable).
+// The beam stops where the trace hits: a HUD model is drawn over the world (hw_models.cpp
+// squeezes its depth range), so a beam left long would show through the wall. It comes in
+// lengths 10 cm .. 6 m in 6% steps and the longest that does not pass the hit is drawn.
 //
-// IT LEADS THE HAND. Script moves things 35 times a second; the renderer draws a
-// blend of the last two tics, i.e. where the hand WAS. Placing the muzzle end
-// and the spot one tic ahead cancels that (Prev + (Pos - Prev) f = hand + v f).
-// RSQ_DistanceGrab D20 has the measurements: avg error 4.0 -> 1.1 cm on a slow
-// sweep. The spot needs it most -- a small wrist turn moves a spot 10 m away
-// across the wall fast.
+// THE OPTIONS keep what still applies of UZDXREMA's laser menu: pointer and beam
+// separately, pointer glow (bloom / real light / both), any colour by picker -- per hand,
+// beam and dot separately, per weapon slot, cycling, target and headshot reactions -- IR,
+// visible only through the light amplification goggles, and the fade length.
 //
-// THE OPTIONS are UZDXREMA's laser menu, row for row where stock QuestZDoom can
-// do it (docs/HANDOFF: the table): pointer and beam separately, pointer alpha and
-// glow (bloom / real light / both), beam glow, emissive, taper, fade, length
-// modes, target lock tighten and rate, any colour by picker -- per hand, beam and
-// dot separately, per weapon slot, cycling, a headshot colour -- and IR, visible
-// only through the light amplification goggles (PowerLightAmp).
-//
-// Visuals only. Nothing here changes damage, aim, or the playsim of any other
-// mod -- it cannot break a weapon, only draw on top of it.
-
-// THE BEAM IS THREE MODELS NOW: the core, the halo round it (its own brightness:
-// "beam glow"), and a second core stacked on the first for "emissive" -- script
-// cannot push one additive draw past full brightness, two can. Each has ten
-// frames: A-E the taper levels, F-J the same with the fade-out texture
-// (tools/gen_assets.py). The frame is chosen by writing `frame`; the dummy states
-// below exist because MODELDEF only draws a frame some state names.
-class RSQLS_Beam : Actor
-{
-	Default
-	{
-		+NOINTERACTION +NOBLOCKMAP +NOGRAVITY +NOTELEPORT +DONTSPLASH +NOTONAUTOMAP
-		+INTERPOLATEANGLES +BRIGHT
-		RenderStyle "Add";
-		Radius 1; Height 1;
-	}
-	States
-	{
-	Spawn: RSLB A -1 Bright; Stop;
-	Frames: RSLB ABCDEFGHIJ -1; Stop;
-	}
-}
-class RSQLS_Emissive : RSQLS_Beam
-{
-	States
-	{
-	Spawn: RSLE A -1 Bright; Stop;
-	Frames: RSLE ABCDEFGHIJ -1; Stop;
-	}
-}
-class RSQLS_Halo : RSQLS_Beam
-{
-	States
-	{
-	Spawn: RSLH A -1 Bright; Stop;
-	Frames: RSLH ABCDEFGHIJ -1; Stop;
-	}
-}
+// Visuals only. Nothing here changes damage, aim, or the playsim of any other mod -- it
+// cannot break a weapon, only draw on top of it.
 
 class RSQLS_Spot : Actor
 {
@@ -134,14 +84,8 @@ class RSQLS_Buzz : Actor
 
 class RSQLS_Sight : EventHandler
 {
-	const BEAM_L = 256.0;       // tools/gen_assets.py
 	const LEAD_JUMP = 17.0;     // map units in one tic (~0.5 m) that is not a hand
-	const NTAPER = 5;           // frames A-E; F-J the same with the fade texture
-	static const double TAPERS[] = { 1.0, 0.7, 0.45, 0.25, 0.1 };
 
-	private Actor beam[2];
-	private Actor halo[2];
-	private Actor emis[2];
 	private Actor spot[2];
 	private Actor glow[2];
 	private bool  beamShown[2];
@@ -220,7 +164,12 @@ class RSQLS_Sight : EventHandler
 
 	private static void Hide(Actor a) { if (a) a.bINVISIBLE = true; }
 
-	private void HideBeam(int h) { Hide(beam[h]); Hide(halo[h]); Hide(emis[h]); beamShown[h] = false; }
+	private void HideBeam(int h)
+	{
+		let p = players[consoleplayer];
+		if (p) RSQLS_Beams.Hide(p, h);
+		beamShown[h] = false;
+	}
 	private void HideSpot(int h)
 	{
 		if (spot[h])
@@ -252,7 +201,12 @@ class RSQLS_Sight : EventHandler
 		// every off-hand utility in the family carries it: RS_ShieldSawQ's
 		// shield, the QuestSaber's Force hand, RSQ_Hands. Found in the rig:
 		// with the shield drawn, a laser came out of the shield.
-		if ((w.bMELEEWEAPON || w.bCHEATNOTWEAPON) && !RSQLS_Hand.Flag("rsqls_show_melee", p, false)) return false;
+		// A MEASURED GUN is a gun whatever its flags: Brutal Doom Quest's off-hand dual
+		// copies (RSQ_Off_*) carry CHEATNOTWEAPON too, so `give weapons` skips them.
+		// Found in the rig 2026-10-27: the off-hand copy drew no laser.
+		let bt = RSQLS_Beams.Get();
+		bool measured = bt && bt.Find(w) >= 0 && !w.bMELEEWEAPON;
+		if ((w.bMELEEWEAPON || w.bCHEATNOTWEAPON) && !measured && !RSQLS_Hand.Flag("rsqls_show_melee", p, false)) return false;
 		if (RSQLS_Hand.Flag("rsqls_ready_only", p, false))
 		{
 			int ready = (h == 0) ? (WF_WEAPONREADY | WF_WEAPONREADYALT)
@@ -367,12 +321,9 @@ class RSQLS_Sight : EventHandler
 		for (int h = 0; h < 2; h++)
 		{
 			if (!HandLive(p, h)) { HideHand(h); continue; }
-			beam[h] = Ensure(beam[h], "RSQLS_Beam");
-			halo[h] = Ensure(halo[h], "RSQLS_Halo");
-			emis[h] = Ensure(emis[h], "RSQLS_Emissive");
 			spot[h] = Ensure(spot[h], "RSQLS_Spot");
 			glow[h] = Ensure(glow[h], "RSQLS_Glow");
-			if (!beam[h] || !halo[h] || !emis[h] || !spot[h] || !glow[h]) continue;
+			if (!spot[h] || !glow[h]) continue;
 			DrawHand(h, pmo, p, wantBeam, wantDot);
 			// What actually drew (review, 10-26): a dot-only laser that hits nothing is no light.
 			if (beamShown[h] || spotShown[h]) liveMask |= 1 << h;
@@ -381,38 +332,41 @@ class RSQLS_Sight : EventHandler
 		UpdateReadout(pmo, p);
 	}
 
-	// One beam piece: placed, aimed, sized, framed, tinted.
-	private static void Lay(Actor b, bool shown, Vector3 at, double yaw, double pit,
-		double w, double len, int fr, double alpha, TranslationID tint)
-	{
-		if (alpha <= 0.004) { b.bINVISIBLE = true; return; }
-		Put(b, shown, at);
-		b.Angle = yaw;
-		b.Pitch = pit + 90;     // lay the model's up axis along the aim
-		b.Roll  = 0;
-		b.Scale = (w, len / BEAM_L);
-		b.frame = fr;
-		b.Alpha = min(1.0, alpha);
-		b.Translation = tint;
-	}
-
 	private void DrawHand(int h, PlayerPawn pmo, PlayerInfo p, bool wantBeam, bool wantDot)
 	{
 		Weapon w = (h == 0) ? p.ReadyWeapon : p.OffhandWeapon;
+		let bt = RSQLS_Beams.Get();
+		int ci = bt ? bt.Find(w) : -1;
+		int pi = (ci >= 0) ? bt.Place(ci) : -1;
+		let gp = p.FindPSprite(h == 0 ? PSprite.WEAPON : PSprite.OFFHANDWEAPON);
 
-		// ---- the muzzle: a physical offset from the grip, in metres --------
-		// A weapon pack that knows where its muzzles are says so through
-		// LaserMuzzleService (see MuzzleFor); otherwise the one default.
-		double mf = RSQLS_Hand.Num("rsqls_muzzle_fwd",  p, 0.18);
-		double mu = RSQLS_Hand.Num("rsqls_muzzle_up",   p, 0.03);
-		double ms = RSQLS_Hand.Num("rsqls_muzzle_side", p, 0.0);
-		if (w)
+		// ---- the muzzle and the barrel -------------------------------------------
+		// A MEASURED GUN: its muzzle and barrel from its held model (tools/gen_beams.py),
+		// carried from the controller's HUD frame into the map the way the renderer
+		// carries the gun (hand.zs HudPoint). vr_weaponScale stretches the gun about its
+		// MODELDEF Offset, so it stretches the muzzle's distance from it too.
+		// ANY OTHER GUN: no beam; the spot is traced from the grip along the aim -- the
+		// shot's own line (OverrideAttackPosDir) -- or from the point a weapon pack's
+		// LaserMuzzleService names.
+		Vector3 muzzle, dir;
+		if (pi >= 0)
 		{
-			bool got; double f, u, sd;
-			[got, f, u, sd] = MuzzleFor(h, w);
-			if (got) { mf = f; mu = u; ms = sd; }
+			let wsc = CVar.FindCVar("vr_weaponScale");
+			double ws = wsc ? wsc.GetFloat() : 1.0;
+			muzzle = RSQLS_Hand.HudPoint(pmo, h, RSQLS_Beams.Offset(pi) + RSQLS_Beams.Muzzle(pi) * ws);
+			dir = RSQLS_Hand.HudDir(pmo, h, RSQLS_Beams.Barrel(pi));
 		}
-		Vector3 muzzle = RSQLS_Hand.Grip(pmo, h) + RSQLS_Hand.GunOffset(pmo, h, mf, mu, ms);
+		else
+		{
+			muzzle = RSQLS_Hand.Grip(pmo, h);
+			if (w)
+			{
+				bool got; double f, u, sd;
+				[got, f, u, sd] = MuzzleFor(h, w);
+				if (got) muzzle += RSQLS_Hand.GunOffset(pmo, h, f, u, sd);
+			}
+			dir = RSQLS_Hand.Dir(pmo, h);
+		}
 
 		// A THROWN WEAPON (grenades): once it has been seen firing, the line is
 		// the ballistic path its projectile will take, and the spot is where it
@@ -423,7 +377,7 @@ class RSQLS_Sight : EventHandler
 			[arcOn, aSp, aGr, aEl, aYw] = RSQLS_Learn.Arc(w);
 		if (arcOn && !RSQLS_Hand.Flag("rsqls_arc_beam", p, false)) wantBeam = false;
 
-		// ---- the trace: from the REAL muzzle, along the gun ------------------
+		// ---- the trace: from the muzzle, along the barrel -------------------------
 		// TRF_ABSPOSITION with coordinates computed here and zero offsets:
 		// P_LineTrace accumulates offsets onto an uninitialised vector exactly
 		// when OverrideAttackPosDir is true, which in VR is always.
@@ -464,18 +418,24 @@ class RSQLS_Sight : EventHandler
 		}
 		else
 		{
-			hit = pmo.LineTrace(RSQLS_Hand.Yaw(pmo, h), range, RSQLS_Hand.DoomPitch(pmo, h),
+			hit = pmo.LineTrace(VectorAngle(dir.x, dir.y), range, -atan2(dir.z, dir.xy.Length()),
 				TRF_ABSPOSITION, muzzle.z, muzzle.x, muzzle.y, t);
-			end = hit ? t.HitLocation : (muzzle + RSQLS_Hand.Dir(pmo, h) * range);
+			end = hit ? t.HitLocation : (muzzle + dir * range);
 		}
 		bool sky = hit && t.HitType == FLineTraceData.TRACE_HasHitSky;
+		double hitCm = -1;      // room centimetres from the muzzle to what the trace hit
 		{
 			Vector3 rd = end - muzzle;
-			rangeM[h] = (hit && !sky) ? (rd.x, rd.y, rd.z * RSQLS_Hand.PIXELSTRETCH).Length() / RSQLS_Hand.UPM : 0;
+			double vu = RSQLS_Hand.UPM;
+			let vc = CVar.FindCVar("vr_vunits_per_meter");
+			if (vc) vu = vc.GetFloat();
+			double roomM = (rd.x, rd.y, rd.z * RSQLS_Hand.PIXELSTRETCH).Length() / vu;
+			rangeM[h] = (hit && !sky) ? roomM : 0;
+			if (hit && !sky && !arcOn) hitCm = roomM * 100.0;
 		}
 
-		// ---- lead: draw a tic ahead (see header) ---------------------------
-		double lead = clamp(RSQLS_Hand.Num("rsqls_lead", p, 1.0), 0.0, 2.0);
+		// ---- lead (the spot only): a tic ahead, if asked for ---------------------
+		double lead = clamp(RSQLS_Hand.Num("rsqls_lead", p, 0.0), 0.0, 2.0);
 		Vector3 drawMuzzle = muzzle, drawEnd = end;
 		if (muzzlePrimed[h])
 		{
@@ -492,6 +452,7 @@ class RSQLS_Sight : EventHandler
 		}
 		if (hit && !sky) { lastHit[h] = end; hitPrimed[h] = true; }
 		else hitPrimed[h] = false;
+		double len = (drawEnd - drawMuzzle).Length();
 
 		// ---- what it is on ------------------------------------------------------
 		Actor onWho = (hit && t.HitType == FLineTraceData.TRACE_HitActor) ? t.HitActor : null;
@@ -503,7 +464,6 @@ class RSQLS_Sight : EventHandler
 
 		int beamRgb = ColorOf(p, h, w, false, hostile, head);
 		int dotRgb  = ColorOf(p, h, w, true,  hostile, head);
-		TranslationID beamTint = RSQLS_Colors.Tint(beamRgb);
 		TranslationID dotTint  = RSQLS_Colors.Tint(dotRgb);
 		rangeRgb[h] = dotRgb;
 		if (arcOn) LayArc(h, dotTint, p); else HideArc(h);
@@ -512,41 +472,27 @@ class RSQLS_Sight : EventHandler
 		Sector sec = Level.PointInSector(muzzle.xy);
 		double lit = sec ? clamp(sec.lightlevel / 255.0, 0.0, 1.0) : 0.5;
 
-		// ---- the beam ----------------------------------------------------------
-		Vector3 toEnd = drawEnd - drawMuzzle;
-		double yaw, pit, len;
-		[yaw, pit, len] = RSQLS_Hand.RoomAim(toEnd);
-		// LENGTH: full (to what it hits), half, or a fixed reach. Lengths here are
-		// room length, which is what Scale.Y measures.
-		int lmode = RSQLS_Hand.Opt("rsqls_beam_length", p, 0);
-		double drawn = len;
-		if (lmode == 1) drawn = len * 0.5;
-		else if (lmode == 2) drawn = min(len, RSQLS_Hand.Num("rsqls_beam_fixed", p, 200.0));
-		// FADE: drawn no further than this, dying away over its last half.
-		double fade = RSQLS_Hand.Num("rsqls_beam_fade", p, 0.0);
-		bool fading = fade > 0;
-		if (fading) drawn = min(drawn, fade);
-		// TAPER: the nearest pre-built frame.
-		double tp = clamp(RSQLS_Hand.Num("rsqls_beam_taper", p, 1.0), 0.05, 1.0);
-		int fr = 0;
-		for (int k = 1; k < NTAPER; k++)
-			if (abs(TAPERS[k] - tp) < abs(TAPERS[fr] - tp)) fr = k;
-		if (fading) fr += NTAPER;
-
-		if (wantBeam && drawn > 2)
+		// ---- the beam: on the gun, in its ready pose, as far as the hit -----------
+		// Only while the gun layer shows a frame that draws the gun in the pose its
+		// muzzle was measured in: on any other frame (a reload, a kick in the mesh) the
+		// mesh has moved and the rod would not be on the barrel.
+		bool beamOn = false;
+		if (wantBeam && pi >= 0 && bt.ReadyPose(ci, gp))
 		{
-			double litFade = RSQLS_Hand.Num("rsqls_beam_daylight", p, 0.35);
-			double a = RSQLS_Hand.Num("rsqls_beam_a", p, 0.75) * (1.0 - (1.0 - litFade) * lit);
-			if (hostile && RSQLS_Hand.Flag("rsqls_lock", p, true)) a *= 1.35;
-			double bw = RSQLS_Hand.Num("rsqls_beam_w", p, 1.0);
-			double emissive = clamp(RSQLS_Hand.Num("rsqls_beam_emissive", p, 1.0), 1.0, 2.0);
-			double glowA = a * clamp(RSQLS_Hand.Num("rsqls_beam_glow", p, 1.0), 0.0, 3.0) * 0.6;
-			bool shown = beamShown[h];
-			Lay(beam[h], shown, drawMuzzle, yaw, pit, bw, drawn, fr, a, beamTint);
-			Lay(halo[h], shown, drawMuzzle, yaw, pit, bw, drawn, fr, glowA, beamTint);
-			Lay(emis[h], shown, drawMuzzle, yaw, pit, bw, drawn, fr, a * (emissive - 1.0), beamTint);
-			beamShown[h] = true;
+			let wsc = CVar.FindCVar("vr_weaponScale");
+			double ws = wsc ? wsc.GetFloat() : 1.0;
+			double fadeCm = clamp(RSQLS_Hand.Num("rsqls_beam_len", p, 3.0), 0.5, RSQLS_Muzzles.FADE_MAX / 100.0) * 100.0;
+			int k = RSQLS_Beams.Length(hitCm, fadeCm, ws);
+			if (k >= 0)
+			{
+				double litFade = RSQLS_Hand.Num("rsqls_beam_daylight", p, 0.35);
+				double a = RSQLS_Hand.Num("rsqls_beam_a", p, 0.8) * (1.0 - (1.0 - litFade) * lit);
+				if (hostile && RSQLS_Hand.Flag("rsqls_lock", p, true)) a *= 1.35;
+				bt.Show(p, h, w, ci, gp, k, bt.Tint(beamRgb, a, fadeCm));
+				beamOn = true;
+			}
 		}
+		if (beamOn) beamShown[h] = true;
 		else HideBeam(h);
 
 		// ---- the spot: painted on what it hit ----------------------------------

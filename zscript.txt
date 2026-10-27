@@ -6,6 +6,8 @@ version "4.12"
 // must load on it as well as on the 17.3 tag (4.14.2).
 
 #include "zscript/rsqls/hand.zs"
+#include "zscript/rsqls/muzzles.zs"
+#include "zscript/rsqls/beam.zs"
 #include "zscript/rsqls/learn.zs"
 #include "zscript/rsqls/sight.zs"
 #include "zscript/rsqls/colors.zs"

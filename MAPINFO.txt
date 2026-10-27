@@ -1,6 +1,6 @@
-// Two handlers: the colour table (static, rebuilt each session) and the sight. Visuals only; registration order against other mods does not
+// The colour table and the beam table (static, rebuilt each session), the learner, and the sight. Visuals only; registration order against other mods does not
 // matter, because nothing here writes anything another mod reads.
 GameInfo
 {
-	AddEventHandlers = "RSQLS_ColorTable", "RSQLS_Learn", "RSQLS_Sight"
+	AddEventHandlers = "RSQLS_ColorTable", "RSQLS_Beams", "RSQLS_Learn", "RSQLS_Sight"
 }

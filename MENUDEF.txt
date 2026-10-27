@@ -1,10 +1,9 @@
-// THE OPTIONS, laid out like UZDXREMA's laser menu (VRLaserSightOptions), section
-// for section and in the same order, so a player who knows one knows the other.
-// Every page reachable from Options; build.ps1 checks nothing is orphaned.
+// RSQ_LaserSight options, in BD22 VR Weapons' style (its MENUDEF.rsq): a short title, short
+// Title Case labels, no help text in the menu (StaticText " " is only a spacer), and the
+// niche settings one level down. What each setting does is in docs/HANDOFF.
 
 AddOptionMenu "OptionsMenu"
 {
-	StaticText ""
 	Submenu "Laser Sight", "RSQLS_Options"
 }
 
@@ -12,146 +11,85 @@ OptionValue "RSQLS_Glow"
 {
 	0, "Off"
 	1, "Bloom"
-	2, "Real light"
-	3, "Bloom + light"
-}
-
-OptionValue "RSQLS_Length"
-{
-	0, "To what it hits"
-	1, "Half"
-	2, "Fixed"
+	2, "Light"
+	3, "Bloom and Light"
 }
 
 OptionValue "RSQLS_ColorMode"
 {
-	0, "One colour"
-	1, "Per hand"
-	2, "Beam and dot separately"
+	0, "One Colour"
+	1, "Per Hand"
+	2, "Beam and Dot"
 }
 
 OptionValue "RSQLS_Readout"
 {
 	0, "Off"
-	1, "By the gun"
-	2, "At the dot"
+	1, "By the Gun"
+	2, "At the Dot"
 }
 
 OptionValue "RSQLS_Units"
 {
 	0, "Metres"
 	1, "Feet"
-	2, "Map units"
+	2, "Map Units"
 }
 
 OptionMenu "RSQLS_Options"
 {
 	Title "LASER SIGHT"
-
-	StaticText ""
-	StaticText "Laser Pointer", gold
-	Option "Laser sight",              "rsqls_on",        "OnOff"
-	Option "Main hand",                "rsqls_main",      "OnOff"
-	Option "Off hand",                 "rsqls_off",       "OnOff"
-	Option "Show the dot",             "rsqls_pointer",   "OnOff"
-	Option "Show on melee/unarmed",    "rsqls_show_melee","YesNo"
-	Option "Only when ready to fire",  "rsqls_ready_only","YesNo"
-	Slider "Dot size",                 "rsqls_spot_size", 0.25, 4.0, 0.05, 2
-	Slider "Dot transparency",         "rsqls_spot_a",    0.0, 1.0, 0.05, 2
-	Option "Dot glow",                 "rsqls_glow",      "RSQLS_Glow"
-	Slider "Glow size",                "rsqls_glow_scale", 1.1, 4.0, 0.05, 2
-	Slider "Glow intensity",           "rsqls_glow_int",  0.1, 4.0, 0.05, 2
-	Option "Infrared (needs goggles)", "rsqls_ir",        "OnOff"
-
-	StaticText ""
-	StaticText "Laser Beam", gold
-	Option "Show the beam",            "rsqls_beam",      "OnOff"
-	Slider "Beam transparency",        "rsqls_beam_a",    0.0, 1.0, 0.05, 2
-	Slider "Beam width",               "rsqls_beam_w",    0.1, 4.0, 0.05, 2
-	Slider "Beam glow",                "rsqls_beam_glow", 0.0, 3.0, 0.1, 1
-	Slider "Emissive",                 "rsqls_beam_emissive", 1.0, 2.0, 0.1, 1
-	Slider "Beam taper",               "rsqls_beam_taper", 0.1, 1.0, 0.05, 2
-	Slider "Beam fade distance",       "rsqls_beam_fade", 0, 4096, 32, 0
-	StaticText "0 = no fade. Otherwise the beam dies away by this distance.", 1
-	Option "Beam length",              "rsqls_beam_length", "RSQLS_Length"
-	Slider "Fixed length",             "rsqls_beam_fixed", 60, 1000, 10, 0
-	Slider "Beam in daylight",         "rsqls_beam_daylight", 0.0, 1.0, 0.05, 2
-	StaticText "Real beams show in the dark and barely in daylight.", 1
-	Slider "Origin forward (m)",       "rsqls_muzzle_fwd",  -0.2, 0.6, 0.01, 2
-	Slider "Origin up (m)",            "rsqls_muzzle_up",   -0.2, 0.2, 0.01, 2
-	Slider "Origin side (m)",          "rsqls_muzzle_side", -0.2, 0.2, 0.01, 2
-	Slider "Lead the hand (tics)",     "rsqls_lead", 0.0, 2.0, 0.1, 1
-	StaticText "1.0 cancels the 35 Hz lag; 0 turns it off.", 1
-
-	StaticText ""
-	StaticText "Target Lock", gold
-	Option "React to targets",         "rsqls_lock",         "OnOff"
-	Slider "Lock tighten",             "rsqls_lock_tighten", 0.0, 0.9, 0.05, 2
-	Slider "Lock pulse rate (Hz)",     "rsqls_lock_rate",    0.25, 8.0, 0.25, 2
-	Option "Change colour on a target","rsqls_target_recolor", "OnOff"
-	ColorPicker "Target colour",       "rsqls_col_target"
-	Slider "Range (map units)",        "rsqls_range",     256, 8192, 256, 0
-	Slider "Dot range limit",          "rsqls_dot_range", 0, 8192, 32, 0
-	StaticText "0 = the dot shows as far as the range.", 1
-
-	StaticText ""
-	StaticText "Laser Colours", gold
-	Option "Colour mode",              "rsqls_color_mode", "RSQLS_ColorMode"
-	ColorPicker "Main hand beam",      "rsqls_col_main"
-	ColorPicker "Off hand beam",       "rsqls_col_off"
-	ColorPicker "Main hand dot",       "rsqls_col_dot_main"
-	ColorPicker "Off hand dot",        "rsqls_col_dot_off"
-	Option "Different colour per slot","rsqls_col_per_slot", "OnOff"
-	Submenu "Weapon slot colours",     "RSQLS_SlotColors"
-
-	StaticText ""
-	StaticText "Colour Cycling", gold
-	Option "Cycle colours",            "rsqls_cycle",       "OnOff"
-	Slider "Cycle speed (deg/sec)",    "rsqls_cycle_speed", 6.0, 360.0, 6.0, 0
-	Option "Dot cycles too",           "rsqls_cycle_dot",   "OnOff"
-
-	StaticText ""
-	StaticText "Headshot Reaction", gold
-	Option "React to a lined-up headshot", "rsqls_head",       "OnOff"
-	ColorPicker "Headshot colour",     "rsqls_col_head"
-	Option "Pulse",                    "rsqls_head_pulse",    "OnOff"
-	Slider "Pulse speed (Hz)",         "rsqls_head_pulse_hz", 0.5, 20.0, 0.5, 1
-	StaticText "A head is the top fifth of a monster -- an approximation.", 1
-
-	StaticText ""
-	StaticText "Learned From Each Gun", gold
-	StaticText "Fire a gun once and the laser learns how it shoots.", 1
-	Option "Grenade arc",              "rsqls_arc",         "OnOff"
-	Option "Keep the straight beam too", "rsqls_arc_beam",  "OnOff"
-	Slider "Arc dot size",             "rsqls_arc_size",    0.25, 4.0, 0.25, 2
-	Slider "Arc brightness",           "rsqls_arc_a",       0.1, 1.0, 0.05, 2
-	Option "Spread ring",              "rsqls_spread",      "OnOff"
-	Slider "No ring under (deg)",      "rsqls_spread_min",  0.0, 5.0, 0.25, 2
-	Slider "Ring brightness",          "rsqls_spread_a",    0.1, 1.0, 0.05, 2
-	StaticText "The ring is the widest spread the gun has shown.", 1
-
-	StaticText ""
-	StaticText "Range Readout", gold
-	Option "Show range",               "rsqls_readout",       "RSQLS_Readout"
-	Option "Units",                    "rsqls_readout_units", "RSQLS_Units"
-	Slider "Readout size",             "rsqls_readout_size",  0.5, 3.0, 0.25, 2
-
-	StaticText ""
-	Option "Haptic tick on toggle",    "rsqls_haptics", "OnOff"
-	Control "Toggle -- main hand",     "toggle rsqls_main"
-	Control "Toggle -- off hand",      "toggle rsqls_off"
-	StaticText ""
-	SafeCommand "Reset to defaults", "resetcvar rsqls_on; resetcvar rsqls_main; resetcvar rsqls_off; resetcvar rsqls_pointer; resetcvar rsqls_show_melee; resetcvar rsqls_ready_only; resetcvar rsqls_spot_size; resetcvar rsqls_spot_a; resetcvar rsqls_glow; resetcvar rsqls_glow_scale; resetcvar rsqls_glow_int; resetcvar rsqls_ir; resetcvar rsqls_beam; resetcvar rsqls_beam_a; resetcvar rsqls_beam_w; resetcvar rsqls_beam_glow; resetcvar rsqls_beam_emissive; resetcvar rsqls_beam_taper; resetcvar rsqls_beam_fade; resetcvar rsqls_beam_length; resetcvar rsqls_beam_fixed; resetcvar rsqls_beam_daylight; resetcvar rsqls_muzzle_fwd; resetcvar rsqls_muzzle_up; resetcvar rsqls_muzzle_side; resetcvar rsqls_lead; resetcvar rsqls_lock; resetcvar rsqls_lock_tighten; resetcvar rsqls_lock_rate; resetcvar rsqls_range; resetcvar rsqls_dot_range; resetcvar rsqls_target_recolor; resetcvar rsqls_col_target; resetcvar rsqls_color_mode; resetcvar rsqls_col_main; resetcvar rsqls_col_off; resetcvar rsqls_col_dot_main; resetcvar rsqls_col_dot_off; resetcvar rsqls_col_per_slot; resetcvar rsqls_col_slot1; resetcvar rsqls_col_slot2; resetcvar rsqls_col_slot3; resetcvar rsqls_col_slot4; resetcvar rsqls_col_slot5; resetcvar rsqls_col_slot6; resetcvar rsqls_col_slot7; resetcvar rsqls_col_slot8; resetcvar rsqls_col_slot9; resetcvar rsqls_col_slot0; resetcvar rsqls_cycle; resetcvar rsqls_cycle_speed; resetcvar rsqls_cycle_dot; resetcvar rsqls_head; resetcvar rsqls_col_head; resetcvar rsqls_head_pulse; resetcvar rsqls_head_pulse_hz; resetcvar rsqls_haptics; resetcvar rsqls_arc; resetcvar rsqls_arc_beam; resetcvar rsqls_arc_size; resetcvar rsqls_arc_a; resetcvar rsqls_spread; resetcvar rsqls_spread_min; resetcvar rsqls_spread_a; resetcvar rsqls_readout; resetcvar rsqls_readout_units; resetcvar rsqls_readout_size"
+	Option "Laser Sight", "rsqls_on", "OnOff"
+	Option "Main Hand", "rsqls_main", "OnOff"
+	Option "Off Hand", "rsqls_off", "OnOff"
+	StaticText " "
+	Option "Show Beam", "rsqls_beam", "OnOff"
+	Slider "Beam Fade Length", "rsqls_beam_len", 0.5, 6.0, 0.25, 2
+	Slider "Beam Brightness", "rsqls_beam_a", 0.1, 1.0, 0.05, 2
+	Slider "Beam in Daylight", "rsqls_beam_daylight", 0.0, 1.0, 0.05, 2
+	StaticText " "
+	Option "Show Dot", "rsqls_pointer", "OnOff"
+	Slider "Dot Size", "rsqls_spot_size", 0.25, 4.0, 0.05, 2
+	Slider "Dot Brightness", "rsqls_spot_a", 0.0, 1.0, 0.05, 2
+	Option "Dot Glow", "rsqls_glow", "RSQLS_Glow"
+	StaticText " "
+	Option "Colour Mode", "rsqls_color_mode", "RSQLS_ColorMode"
+	ColorPicker "Main Hand Colour", "rsqls_col_main"
+	ColorPicker "Off Hand Colour", "rsqls_col_off"
+	StaticText " "
+	Submenu "Dot Options", "RSQLS_DotOptions"
+	Submenu "Colour Options", "RSQLS_ColorOptions"
+	Submenu "Target Options", "RSQLS_TargetOptions"
+	Submenu "Learned From Guns", "RSQLS_LearnOptions"
+	Submenu "Range Readout", "RSQLS_ReadoutOptions"
+	StaticText " "
+	Option "Show on Melee", "rsqls_show_melee", "YesNo"
+	Option "Only When Ready", "rsqls_ready_only", "YesNo"
+	Option "Infrared Only", "rsqls_ir", "OnOff"
+	Option "Toggle Haptics", "rsqls_haptics", "OnOff"
+	Control "Toggle Main Hand", "toggle rsqls_main"
+	Control "Toggle Off Hand", "toggle rsqls_off"
+	StaticText " "
+	SafeCommand "Reset Laser Sight", "resetcvar rsqls_on; resetcvar rsqls_main; resetcvar rsqls_off; resetcvar rsqls_pointer; resetcvar rsqls_show_melee; resetcvar rsqls_ready_only; resetcvar rsqls_spot_size; resetcvar rsqls_spot_a; resetcvar rsqls_glow; resetcvar rsqls_glow_scale; resetcvar rsqls_glow_int; resetcvar rsqls_ir; resetcvar rsqls_beam; resetcvar rsqls_beam_a; resetcvar rsqls_beam_len; resetcvar rsqls_beam_daylight; resetcvar rsqls_lead; resetcvar rsqls_lock; resetcvar rsqls_lock_tighten; resetcvar rsqls_lock_rate; resetcvar rsqls_range; resetcvar rsqls_dot_range; resetcvar rsqls_target_recolor; resetcvar rsqls_col_target; resetcvar rsqls_color_mode; resetcvar rsqls_col_main; resetcvar rsqls_col_off; resetcvar rsqls_col_dot_main; resetcvar rsqls_col_dot_off; resetcvar rsqls_col_per_slot; resetcvar rsqls_col_slot1; resetcvar rsqls_col_slot2; resetcvar rsqls_col_slot3; resetcvar rsqls_col_slot4; resetcvar rsqls_col_slot5; resetcvar rsqls_col_slot6; resetcvar rsqls_col_slot7; resetcvar rsqls_col_slot8; resetcvar rsqls_col_slot9; resetcvar rsqls_col_slot0; resetcvar rsqls_cycle; resetcvar rsqls_cycle_speed; resetcvar rsqls_cycle_dot; resetcvar rsqls_head; resetcvar rsqls_col_head; resetcvar rsqls_head_pulse; resetcvar rsqls_head_pulse_hz; resetcvar rsqls_haptics; resetcvar rsqls_arc; resetcvar rsqls_arc_beam; resetcvar rsqls_arc_size; resetcvar rsqls_arc_a; resetcvar rsqls_spread; resetcvar rsqls_spread_min; resetcvar rsqls_spread_a; resetcvar rsqls_readout; resetcvar rsqls_readout_units; resetcvar rsqls_readout_size"
 }
 
-// Ten slots is too many rows for the main page; they get their own.
-OptionMenu "RSQLS_SlotColors"
+OptionMenu "RSQLS_DotOptions"
 {
-	Title "WEAPON SLOT COLOURS"
-	StaticText ""
-	StaticText "Used when Different colour per slot is on.", 1
-	StaticText "A weapon pack may still ask for its own colour.", 1
-	StaticText ""
+	Title "DOT OPTIONS"
+	Slider "Glow Size", "rsqls_glow_scale", 1.1, 4.0, 0.05, 2
+	Slider "Glow Intensity", "rsqls_glow_int", 0.1, 4.0, 0.05, 2
+	Slider "Trace Range", "rsqls_range", 256, 8192, 256, 0
+	Slider "Dot Range Limit", "rsqls_dot_range", 0, 8192, 32, 0
+	Slider "Dot Lead (Tics)", "rsqls_lead", 0.0, 2.0, 0.1, 1
+}
+
+OptionMenu "RSQLS_ColorOptions"
+{
+	Title "COLOUR OPTIONS"
+	ColorPicker "Main Hand Dot", "rsqls_col_dot_main"
+	ColorPicker "Off Hand Dot", "rsqls_col_dot_off"
+	StaticText " "
+	Option "Colour per Slot", "rsqls_col_per_slot", "OnOff"
 	ColorPicker "Slot 1", "rsqls_col_slot1"
 	ColorPicker "Slot 2", "rsqls_col_slot2"
 	ColorPicker "Slot 3", "rsqls_col_slot3"
@@ -162,4 +100,44 @@ OptionMenu "RSQLS_SlotColors"
 	ColorPicker "Slot 8", "rsqls_col_slot8"
 	ColorPicker "Slot 9", "rsqls_col_slot9"
 	ColorPicker "Slot 0", "rsqls_col_slot0"
+	StaticText " "
+	Option "Cycle Colours", "rsqls_cycle", "OnOff"
+	Slider "Cycle Speed", "rsqls_cycle_speed", 6.0, 360.0, 6.0, 0
+	Option "Dot Cycles Too", "rsqls_cycle_dot", "OnOff"
+}
+
+OptionMenu "RSQLS_TargetOptions"
+{
+	Title "TARGET OPTIONS"
+	Option "Target Lock", "rsqls_lock", "OnOff"
+	Slider "Lock Tighten", "rsqls_lock_tighten", 0.0, 0.9, 0.05, 2
+	Slider "Lock Pulse Rate", "rsqls_lock_rate", 0.25, 8.0, 0.25, 2
+	Option "Target Colour Change", "rsqls_target_recolor", "OnOff"
+	ColorPicker "Target Colour", "rsqls_col_target"
+	StaticText " "
+	Option "Headshot Reaction", "rsqls_head", "OnOff"
+	ColorPicker "Headshot Colour", "rsqls_col_head"
+	Option "Headshot Pulse", "rsqls_head_pulse", "OnOff"
+	Slider "Headshot Pulse Rate", "rsqls_head_pulse_hz", 0.5, 20.0, 0.5, 1
+}
+
+OptionMenu "RSQLS_LearnOptions"
+{
+	Title "LEARNED FROM GUNS"
+	Option "Grenade Arc", "rsqls_arc", "OnOff"
+	Option "Arc With Beam", "rsqls_arc_beam", "OnOff"
+	Slider "Arc Dot Size", "rsqls_arc_size", 0.25, 4.0, 0.25, 2
+	Slider "Arc Brightness", "rsqls_arc_a", 0.1, 1.0, 0.05, 2
+	StaticText " "
+	Option "Spread Ring", "rsqls_spread", "OnOff"
+	Slider "Ring Minimum Spread", "rsqls_spread_min", 0.0, 5.0, 0.25, 2
+	Slider "Ring Brightness", "rsqls_spread_a", 0.1, 1.0, 0.05, 2
+}
+
+OptionMenu "RSQLS_ReadoutOptions"
+{
+	Title "RANGE READOUT"
+	Option "Show Range", "rsqls_readout", "RSQLS_Readout"
+	Option "Units", "rsqls_readout_units", "RSQLS_Units"
+	Slider "Readout Size", "rsqls_readout_size", 0.5, 3.0, 0.25, 2
 }
