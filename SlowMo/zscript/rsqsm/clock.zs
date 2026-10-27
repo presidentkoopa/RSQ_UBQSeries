@@ -273,15 +273,26 @@ class RSQSM_Clock : EventHandler
 		cvSlowOwn = Cv("rsqsm_slow_own", 1) != 0;
 	}
 
+	private transient Map<Name, int> byClass;   // 1 real time by name, 2 not (0 unknown)
+
 	bool RealTime(Actor a)
 	{
 		if (!a || a.player) return true;
 		if (a is "Inventory" && Inventory(a).Owner) return true;
 		if (a.bDORMANT) return true;
-		String n = a.GetClassName();
-		n = n.MakeLower();
-		if (n.Left(11) == "rsqsm_round") return false;    // our own rounds slow like any bullet
-		if (n.Left(3) == "rsq" || n.Left(4) == "ubqs" || n.Left(3) == "ssq") return true;
+		// The series' own actors run in real time, decided by class name ONCE per class (the
+		// runtime audit, 10-27: the string work per actor per gather cost 0.6 ms/tic on BD gore maps).
+		Name cn = a.GetClassName();
+		int known = byClass.GetIfExists(cn);
+		if (known == 0)
+		{
+			String n = a.GetClassName();
+			n = n.MakeLower();
+			bool rt = n.Left(11) != "rsqsm_round" && (n.Left(3) == "rsq" || n.Left(4) == "ubqs" || n.Left(3) == "ssq");
+			known = rt ? 1 : 2;
+			byClass.Insert(cn, known);
+		}
+		if (known == 1) return true;
 		// Your own missiles, when that is switched off.
 		if (a.bMISSILE && a.target && a.target.player && !cvSlowOwn) return true;
 		return false;
@@ -337,7 +348,7 @@ class RSQSM_Clock : EventHandler
 		bool first = act.Size() == 0;
 		while ((a = Actor(it.Next())) && act.Size() < MAXSCAN)
 		{
-			if (RealTime(a) || !NearAPlayer(a)) continue;
+			if (!NearAPlayer(a) || RealTime(a)) continue;     // the cheap distance test first
 			if (!first && act.Find(a) < act.Size()) continue;
 			Consider(a, false);
 		}
