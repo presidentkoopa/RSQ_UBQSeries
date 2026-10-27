@@ -135,6 +135,16 @@ class RSQDG_Reach
 		// RSQ_TacticalRig: a hand reaching into a holster or its radial, or holding a
 		// door, the cigarette or the Zippo, is the rig's. Asked by service name, so an
 		// absent rig gives no answer.
+		// TWO-HANDING. A hand close to the other one while the main hand holds a gun is
+		// steadying it, and canting a steadied rifle to the side ("SWAT style") rolls
+		// both palms out -- the grab's own gesture (the owner's headset test, 10-27). So
+		// both hands stand down inside rsqdg_steady_m of each other (the engine's own
+		// two-hand steadying reaches 0.5 m).
+		if (p.mo && p.ReadyWeapon && !p.ReadyWeapon.bMELEEWEAPON)
+		{
+			double steady = Num("rsqdg_steady_m", p, 0.45);
+			if (steady > 0 && Metres(p.mo.AttackPos - p.mo.OffhandPos) < steady) return true;
+		}
 		let rit = ServiceIterator.Find("RSQTR_RigService");
 		Service rs;
 		while (rs = rit.Next())
