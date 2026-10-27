@@ -1,3 +1,42 @@
+## Branch `agent-block` (2026-10-27): the blade blocks Brutal Doom's attacks -- read first
+
+Not yet run on the owner's headset. Rig = QZD 17.3 Linux, doom2 MAP01, the owner's load order
+(brutal22test6 -> BD_VoxelPack -> BD22_VR-Reloaded_1.99x-lb-r7-saveload -> saber), one saber
+(`ubqs_dual_mode 0`) held still across the line from the monster to the player's middle (rig hand
+pose `0.25 1.15 -0.3 -20 90 0`). Probe in the session scratchpad `blk/probe` (counts the damage the
+player takes from a real BD monster firing its own attack for 30 s).
+
+Why it failed (parsed from brutal22test6, not guessed): BD's monsters make 4375 A_CustomMissile calls
+and no live bullet attack. Its zombies' bullets are FastProjectile tracers (MonsterTracer, radius 2,
+speed 50); its claws, bites and punches are short missiles fired from Melee states (ImpAttack,
+DemonAttack, BaronAttack...: Spawn chain ends after speed x tics = 16 to 168 units). The saber's
+contact block returned for every missile and every blast, so only the sweep could stop BD, and the
+sweep only sees a claw along the claw's own knee-high path. RS_ShieldSawQ decides every hit on contact
+(guard.zs AbsorbDamage); the saber now does the same:
+- claw (`UBQS_Memory.IsClaw`: a missile whose Spawn chain stops within 192 units of travel) = melee:
+  the attacker's own line against the blade (BladeInPath, ubqs_blade_guard), stagger, one bolt per
+  bite; claws are left out of the sweep's missile list
+- shot (`ContactBlock`): its own path (two tics back, a body width forward) against the swept blade,
+  width ubqs_blade_guard + its radius; a copy goes back by the deflect's aim rule, the original dies
+- blast: from where it went off to your middle; a missile already stopped on contact is stopped when
+  it goes off on your box (remembered a second)
+
+| attack (30 s) | no saber | before (HEAD bc01328+a462cad) | after |
+|---|---|---|---|
+| BD imp claw, 56 units, blade in its line | 93 hits, 1860 dmg | 93 hits, 1860 dmg | 0 hits / 132 claws, 0 dmg |
+| same, blade NOT in its line (control) | -- | -- | 57 of 58 claws hit (it is not a free pass) |
+| BD rifle zombie tracers, 300 units | 120 hits / 364, 720 dmg | 33 / 385, 198 dmg | 22 / 364, 132 dmg |
+| BD imp fireballs, 400 units | 27 hits, 540 dmg | 0 (sweep) | 0 |
+
+Save at tic 600 and `-loadgame` on the full load order: runs on, claws still blocked, no script error
+(2 claws landed in the first tics after the load, before the engine writes the hand pose). Vanilla
+doom2 alone: imp claws still blocked (old path), no script error. The only script errors in every
+run are BD_VoxelPack's own voxeldef.txt lines 66/72/77/892.
+
+Not done / headset: the leftover tracer hits are shots whose path misses the blade band (6 units
+each side, `ubqs_blade_guard`, the owner's "small hitbox"); whether that is too small against BD is
+his call -- the slider is already on the menu (Blade Block Reach).
+
 ## Branch `agent-upgrades` (2026-10-27): Gun Bonsai melee upgrades
 
 ## Branch `agent-up2` (2026-10-27) -- read first
