@@ -35,7 +35,10 @@ class UBQS_Data
 		// THE ROLL TURNS THE OTHER WAY (the owner in the headset, 10-01: the debug dots were the blade mirrored
 		// left-right -- blade tilted to 11 o'clock, dots at 1). QuestZDoom draws the hand model rolled by
 		// -AttackRoll, and the off hand mirrored in X, so the frame's own yaw and twirl flip with the hand.
-		double m = off ? 1.0 : -1.0;
+		// LEFT-HANDED: the hand mirrored in X is the one on the physical LEFT controller (hw_vrmodes.cpp
+		// GetWeaponTransform), which is the MAIN hand under a left-handed vr_control_scheme -- so the flip
+		// follows WorldMirror, not bOffhandWeapon. Right-handed it is the same `off ? 1 : -1` as before.
+		double m = WorldMirror(off) ? 1.0 : -1.0;
 		double a = ha, r = -hr + m * TwAngle(f);
 		Vector3 fw = (cos(hp) * cos(ha), cos(hp) * sin(ha), -sin(hp));
 		Vector3 flatRight = (sin(a), -cos(a), 0);
@@ -3647,9 +3650,9 @@ class UBQS_WorldSaber : Actor
 // NEGATIVE ACTOR Scale.X IS NOT AN ESCAPE HATCH: Scale.X feeds BOTH lateral axes (models.cpp:85-86), so it
 // gives a 180-degree rotation, not a reflection -- which is why this has to be a second class with its own
 // blocks at all.
-// KEEPING THE PARITY IS ALSO WHAT KEEPS UBQS_Data.BladeDirOf CORRECT UNCHANGED -- its `m = off ? 1.0 : -1.0`
-// was validated in the headset on 10-01 against the drawn object's net handedness, and this recipe preserves
-// that net handedness, so nothing downstream of the pose needs touching.
+// KEEPING THE PARITY IS ALSO WHAT KEEPS UBQS_Data.BladeDirOf CORRECT -- its `m` (then `off ? 1.0 : -1.0`,
+// now WorldMirror(off) ? 1.0 : -1.0, the same thing right-handed) was validated in the headset on 10-01 against
+// the drawn object's net handedness, and this recipe preserves that net handedness.
 // MODELDEF DOES NOT INHERIT -- the lookup is exact PClass pointer identity (models.cpp:1313) and a subclass's
 // `hasmodel` is memcpy'd from the parent (info.cpp:486) before MODELDEF is parsed (d_main.cpp:3460 before
 // :3486) -- so this empty subclass needs its OWN full set of blocks, exactly as UBQS_Saber and UBQS_SaberOff
