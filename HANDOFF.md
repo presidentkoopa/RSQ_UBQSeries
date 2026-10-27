@@ -32,6 +32,18 @@ floor, passed over one >= 64 below both ends, landed >= 192 units 2D away in ano
 sector pair per player per map; 150 + (dist-192)/2, max 500). `rsqgr_score` (menu "Score Stunts") turns the
 push off.
 
+Measured (rig E, QZD 17.3; vanilla doom2 and the owner's full order doom2 -> brutal22test6 -> BD_VoxelPack ->
+BD22Q r7 -> Champions -> LegenDoom Lite 4.2 -> the suite with this build; scripted on a generated test map with
+the GRTEST pit, probe in the session scratch, never shipped): bite noted on the bite tic; `hooked` 0 on the line,
+then counts; two push-outs and rehooks -> `volleys` 2; a yanked imp's landing kill reads `landing` 0 at the
+death; a Baron struck by a yanked imp reads `struck` 0 pin 1; whip kill `whipped` 0; swing -> `swinging` 1,
+let go in the air -> `released` counts, `airborne` 1 until the floor, `landed` counts. Gap: a 751-unit
+crossing west ledge -> east ledge over the -512 pit paid 429 (full order 747 / 427); a fall into the pit
+(drop 0) and a swing back into the pit are not gaps; the same crossing again "already paid"; save, load,
+load: still paid; map change: paid again. Without RSQ_Score the push answers -1 and nothing else changes.
+No script errors beyond BD_VoxelPack's 4 voxeldef lines. Takeoff/landing sectors are the FLOOR's sector
+(floorsector), not the centre's: standing on a ledge edge the centre is over the pit.
+
 Core edits (one line each): core.zs Fly (Bitten after the bite/anchor), monster.zs Impact (Struck, Slam)
 and Land (Slam), whip.zs Crack (Whipped). MAPINFO: RSQGR_Events registered last.
 

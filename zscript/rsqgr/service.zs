@@ -247,7 +247,7 @@ class RSQGR_Events : EventHandler
 		for (int k = 0; k < vA.Size(); k++)
 		{
 			let v = vA[k];
-			if (!v || vOn[k] || vFlung[k] || !vBy[k] || now - vRel[k] > CHAIN) continue;
+			if (!v || v.Health <= 0 || vOn[k] || vFlung[k] || !vBy[k] || now - vRel[k] > CHAIN) continue;
 			Vector2 away = v.Pos.xy - vBy[k].Pos.xy;
 			double al = away.Length();
 			if (al < 1) continue;
@@ -284,7 +284,7 @@ class RSQGR_Events : EventHandler
 				inAir[pn] = false;
 				gPos[pn] = pmo.Pos;
 				gFloor[pn] = pmo.floorz;
-				gSec[pn] = pmo.CurSector ? pmo.CurSector.Index() : -1;
+				gSec[pn] = pmo.floorsector ? pmo.floorsector.Index() : -1;
 				airMin[pn] = pmo.floorz;
 				continue;
 			}
@@ -303,7 +303,7 @@ class RSQGR_Events : EventHandler
 		double drop = min(gFloor[pn], pmo.floorz) - airMin[pn];
 		fDist[pn] = dist;
 		fDrop[pn] = drop;
-		int sec = pmo.CurSector ? pmo.CurSector.Index() : -1;
+		int sec = pmo.floorsector ? pmo.floorsector.Index() : -1;
 		bool gap = pmo.waterlevel < 2 && dist >= GAP_DIST && drop >= GAP_DEPTH && sec != gSec[pn];
 		bool dbg = RSQGR_Util.Flag("rsqgr_debug", false);
 		if (dbg)
