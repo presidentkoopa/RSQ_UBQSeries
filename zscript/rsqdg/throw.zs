@@ -34,6 +34,22 @@
 // watching it land.
 class RSQDG_Throw : EventHandler
 {
+	// Gun Bonsai VR patch perks (RSQDG_Perks): levels per player, refreshed once a second
+	transient int pkTic[MAXPLAYERS], pkReach[MAXPLAYERS], pkGrip[MAXPLAYERS], pkHeave[MAXPLAYERS], pkCatch[MAXPLAYERS];
+	void RefreshPerks(int pn, Actor pawn)
+	{
+		if (pkTic[pn] > 0 && level.maptime < pkTic[pn] && level.maptime >= pkTic[pn] - 35) return;
+		pkTic[pn] = level.maptime + 35;
+		pkReach[pn] = 0; pkGrip[pn] = 0; pkHeave[pn] = 0; pkCatch[pn] = 0;
+		let it = ServiceIterator.Find("RSQ_MeleeUpgradeService");
+		let svc = it.Next();
+		if (!svc) return;
+		pkReach[pn] = max(0, svc.GetInt("plevel", "LongArm", 0, 0, pawn));
+		pkGrip[pn]  = max(0, svc.GetInt("plevel", "IronGrip", 0, 0, pawn));
+		pkHeave[pn] = max(0, svc.GetInt("plevel", "HeavyHitter", 0, 0, pawn));
+		pkCatch[pn] = max(0, svc.GetInt("plevel", "AirCatch", 0, 0, pawn));
+	}
+
 	const MAX_WATCH  = 16;
 	const LIFE_TICS  = 105;     // three seconds; nothing flies longer than that
 	const STILL_TICS = 6;       // this long under ~0.6 m/s and it has landed
@@ -428,6 +444,7 @@ class RSQDG_Throw : EventHandler
 
 	override void WorldTick()
 	{
+		for (int pn = 0; pn < MAXPLAYERS; pn++) if (playeringame[pn] && players[pn].mo) RefreshPerks(pn, players[pn].mo);
 		let p = players[consoleplayer];
 		if (!p) return;
 
