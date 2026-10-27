@@ -120,10 +120,14 @@ class SSQ_Guard : Inventory
 	}
 	static double GrowFor(PlayerPawn mo)
 	{
+		// THE OPTION ALWAYS WINS (the owner, 10-27: "2x as large doesn't seem to visibly increase the
+		// plate"): with Gun Bonsai's VR patch loaded the option used to be ignored in favour of the
+		// Broadening upgrade. Double Block Radius on is double, at once; off, Broadening grows it.
+		if (SSQ_Handler.SV('ssq_block_double', 0) > 0.5) return 2.0;
 		let svc = SSQ_Upg.Svc();
 		if (svc && svc.GetInt("loaded") > 0)
 			return 1.0 + 0.2 * clamp(SSQ_Upg.Lv(mo ? mo.FindInventory('SSQ_ShieldSaw') : null, "Broadening"), 0, 5);
-		return SSQ_Handler.SV('ssq_block_double', 0) > 0.5 ? 2.0 : 1.0;
+		return 1.0;
 	}
 
 	// does the segment A->B pass through the THICK disc (centre C, face n, radius R, half
