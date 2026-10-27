@@ -29,9 +29,9 @@ class RSQTR_Region
 	static const String NAMES[] = { "Left hip", "Right hip", "Chest", "Stomach", "Left shoulder", "Right shoulder", "Left pectoral", "Right pectoral", "Lower back" };
 
 	// Defaults, metres from the head in the body frame: forward, left, up, radius.
-	static const double DF[] = {  0.00,  0.00,  0.15,  0.15, -0.08, -0.08,  0.13,  0.13, -0.15 };
-	static const double DL[] = {  0.18, -0.18,  0.00,  0.00,  0.18, -0.18,  0.11, -0.11,  0.00 };
-	static const double DU[] = { -0.70, -0.70, -0.40, -0.58, -0.10, -0.10, -0.27, -0.27, -0.62 };
+	static const double DF[] = {  0.00,  0.00,  0.15,  0.15, -0.08, -0.08,  0.07,  0.07, -0.15 };
+	static const double DL[] = {  0.18, -0.18,  0.00,  0.00,  0.18, -0.18,  0.17, -0.17,  0.00 };
+	static const double DU[] = { -0.70, -0.70, -0.40, -0.58, -0.10, -0.10, -0.36, -0.36, -0.62 };
 	static const double DR[] = {  0.14,  0.14,  0.09,  0.11,  0.14,  0.14,  0.08,  0.08,  0.12 };
 
 	// WHAT EACH PLACE HOLDS: the Doom weapon slots it takes, a setting per place
@@ -91,6 +91,8 @@ class RSQTR_Rig : EventHandler
 	ui bool keyState[2];
 
 	static RSQTR_Rig Get() { return RSQTR_Rig(EventHandler.Find("RSQTR_Rig")); }
+	private transient RSQTR_Fit fitData;
+	RSQTR_Fit GetFit() { if (!fitData) fitData = RSQTR_Fit.Load(); return fitData; }
 	int HoverRegion(int h) const { return (h == 0 || h == 1) ? hoverR[h] : -1; }
 	bool HandBusy(int h) const { return (h == 0 || h == 1) && (hoverR[h] >= 0 || radialHand == h); }
 
@@ -547,7 +549,9 @@ class RSQTR_Rig : EventHandler
 			let ic = RSQTR_Icon(ricon[i]);
 			if (!ic) continue;
 			ic.Wear(radialItems[i], i == radialPick ? 0.55 : 0.32, i == radialPick ? 1.0 : 0.6);
+			// measured guns all the same length, lying level with the muzzle to your right
 			ic.Place(RadialSpot(pmo, i, n));
+			ic.Fit(i == radialPick ? 0.22 : 0.15, i == radialPick ? 0.55 : 0.32, BodyYaw(pmo) - 90, 0, 0);
 		}
 		if (release)
 		{
@@ -625,10 +629,15 @@ class RSQTR_Rig : EventHandler
 				let ic = RSQTR_Icon(icon[r]);
 				if (ic)
 				{
-					ic.Wear(put, 0.28 * Num("rsqtr_icon_scale", p, 1.0), 0.85);
+					double sc = Num("rsqtr_icon_scale", p, 1.0);
+					bool backside = r == 4 || r == 5;
+					// One size on the body (a pistol's), longer on the back: the butt shows
+					// over the shoulder at the edge of your view.
+					double metres = sc * (backside ? Num("rsqtr_icon_back_m", p, 0.70) : Num("rsqtr_icon_m", p, 0.25));
+					ic.Wear(put, 0.28 * sc, 0.85);
 					double by = (body && body.primed) ? body.yaw : pmo.angle;
-					ic.Place(ShowAt(at, r, by));
-					Hang(ic, r, by + Num("rsqtr_icon_turn", p, 0));
+					ic.Place(ShowAt(at, r, by, metres));
+					Hang(ic, r, by + Num("rsqtr_icon_turn", p, 0), metres, 0.28 * sc);
 				}
 			}
 			else if (icon[r]) icon[r].bINVISIBLE = true;
@@ -646,7 +655,7 @@ class RSQTR_Rig : EventHandler
 	//   shoulders   on the back: butt up over the shoulder, muzzle down toward the other hip
 	//   lower back  flat across the small of the back, grip toward the drawing hand
 	// A left-handed player gets the mirror image. Sprites face you whatever is set.
-	static void Hang(Actor ic, int r, double yaw)
+	static void Hang(RSQTR_Icon ic, int r, double yaw, double metres, double fallback)
 	{
 		double s = RSQTR_Body.LeftHanded() ? -1 : 1;   // flips left and right
 		double off = 0, pt = 0, rl = 0;               // off: muzzle heading from the body's
@@ -663,20 +672,23 @@ class RSQTR_Rig : EventHandler
 		default: off = 90 * s; pt = 0; break;         // lower back: muzzle to the off side
 		}
 		if (s < 0 && r != 2 && r != 3 && r != 8) { off = -off; rl = -rl; }
-		ic.angle = yaw + off; ic.pitch = pt; ic.roll = rl;
+		ic.Fit(metres, fallback, yaw + off, pt, rl);
 	}
 
 	// Where a stored gun is SHOWN: at its region, except over the shoulders, where it hangs
 	// on the back -- behind the region (or it fills your view looking down) and below it,
 	// so its butt, not its middle, is where your hand reaches over the shoulder.
-	static Vector3 ShowAt(Vector3 at, int r, double yaw)
+	static Vector3 ShowAt(Vector3 at, int r, double yaw, double metres)
 	{
 		if (r != 4 && r != 5) return at;
 		double u = RSQTR_Body.UPM;
-		return at - (cos(yaw) * BACK_SHOW * u, sin(yaw) * BACK_SHOW * u, DOWN_SHOW * u / RSQTR_Body.PIXELSTRETCH);
+		double down = DOWN_SHOW * metres;
+		return at - (cos(yaw) * BACK_SHOW * u, sin(yaw) * BACK_SHOW * u, down * u / RSQTR_Body.PIXELSTRETCH);
 	}
 	const BACK_SHOW = 0.12;   // metres behind a shoulder region
-	const DOWN_SHOW = 0.22;   // metres below it (a first guess: pickup sizes vary by pack)
+	// Below it, as a share of the gun's length: hanging 65 degrees down, its middle is 0.45 of
+	// its length below its butt; 0.31 leaves the butt about 0.1 m above the shoulder (0.7 m gun).
+	const DOWN_SHOW = 0.31;
 
 	private void HideAll()
 	{
@@ -762,7 +774,11 @@ class RSQTR_Icon : Actor
 			if (st && st.sprite != tnt)
 			{
 				sprite = st.sprite; frame = st.Frame;
-				A_ChangeModel(Name(cls));
+				// the class whose MODELDEF draws this pickup on the floor (fit.zs), else its own
+				let rig = RSQTR_Rig.Get();
+				let fit = rig ? rig.GetFit() : null;
+				int at = fit ? fit.Find(cls) : -1;
+				A_ChangeModel(at >= 0 ? Name(fit.holder[at]) : Name(cls));
 				// Pickup models seldom turn with their actor's pitch and roll (they lie on
 				// the floor); these do, so the gun can hang as worn. Voxels too.
 				SetModelFlag(MDL_USEACTORPITCH | MDL_USEACTORROLL);
@@ -777,5 +793,38 @@ class RSQTR_Icon : Actor
 	void Place(Vector3 at)
 	{
 		SetOrigin(at, true);
+	}
+
+	// SIZED AND TURNED BY MEASURE (fit.zs): a measured gun is shown `metres` long whatever
+	// its pickup's size, turned so its muzzle goes where (a, p, r) says, and moved so its
+	// middle is where it was Placed; one not measured keeps its pickup size times
+	// `fallback` and its own facing.
+	void Fit(double metres, double fallback, double a, double p, double r)
+	{
+		let rig = RSQTR_Rig.Get();
+		let fit = rig ? rig.GetFit() : null;
+		int at = fit && wearing != "" ? fit.Find(wearing) : -1;
+		if (at < 0)
+		{
+			Scale = (fallback, fallback);
+			angle = a; pitch = p; roll = r;
+			return;
+		}
+		// A squat pickup (a missile pod, a box) is not a long gun: it never grows past a
+		// pistol's size, even on the back.
+		if (fit.squat[at] > 0.7) metres = min(metres, RSQTR_Rig.Num("rsqtr_icon_m", players[consoleplayer], 0.25));
+		double s = metres * RSQTR_Body.UPM / fit.len[at];
+		Scale = (s, s);
+		// still backwards in your pack? listed in "Stored guns to turn round" (rsqtr_icon_flip)
+		double cy = fit.yaw[at], cp = fit.pitch[at];
+		if (RSQTR_Fit.Listed(wearing, players[consoleplayer])) { cy += 180; cp = -cp; }
+		double oa, op, orl;
+		RSQTR_Fit.Compose(a, p, r, cy, cp, oa, op, orl);
+		angle = oa; pitch = op; roll = orl;
+		// its middle, not its origin, on the spot it was Placed at (call after Place)
+		Vector3 F, L, U;
+		[F, L, U] = RSQTR_Fit.Basis(oa, op, orl);
+		Vector3 c = fit.Centre(at) * s;
+		SetOrigin(pos - (F * c.x + L * c.y + U * c.z), true);
 	}
 }

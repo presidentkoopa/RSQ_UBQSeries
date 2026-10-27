@@ -1,0 +1,14 @@
+# Weapons whose muzzle (or blade, or head) the tool's thin-end guess put backwards, with
+# brutal22test6 -> BD_VoxelPack -> BD22Q_199c. Checked by eye, 2026-10-27: each gun drawn by the
+# rig's own Fit() turned to point at the screen's right (faceprobe frame dumps).
+Chain_saw          # blade pointed left
+BrutalAxe          # head pointed left
+Rifle              # muzzle left, stock right
+MG42               # bipod and muzzle left, wooden stock right
+AssaultShotgun     # stock right
+Machinegun         # stock right
+BIG_FUCKING_GUN    # emitter left
+# Not readable at that size, left as measured (check in the mirror; rsqtr_icon_flip):
+# DSweap (turning it round made no visible change at that size)
+# BrutalSMG Rocket_Launcher Plasma_Gun Unmaker GrenadeLauncher BFG10k Railgun NukeLauncher
+# FlameCannon HellishMissileLauncher

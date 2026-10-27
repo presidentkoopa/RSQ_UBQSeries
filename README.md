@@ -16,7 +16,7 @@ places are*, "Holds slots"); the defaults:
 | Place | Where | Holds |
 |---|---|---|
 | Left hip, right hip | belt line, each side | slot 2 (pistols, small arms) |
-| Left pectoral, right pectoral | high on the chest, each side | slot 0 (grenades, small things) |
+| Left pectoral, right pectoral | the side of the chest, under the arm | slot 0 (grenades, small things) |
 | Chest | the sternum | slot 3 (shotguns) |
 | Stomach | below the chest | slot 4 (rifles, chainguns) |
 | Left shoulder | behind the shoulder | slots 5-6 (launchers, plasma, railgun) |
@@ -48,8 +48,14 @@ places are*, "Holds slots"); the defaults:
   down; pectorals under the arm, muzzle down and back; chest and stomach slung on the two
   diagonals, muzzle toward the opposite hip; shoulders on the back, butt up over the shoulder
   and muzzle down toward the other hip; lower back flat across. Mirrored for left-handers.
-  This holds for a pickup model that points its muzzle forward; packs differ (see Open, in the
-  handoff).
+- **One size:** every stored gun is shown at a pistol's length on the body (25 cm) and longer
+  over the shoulders (70 cm, its butt just over the shoulder at the edge of your view); a squat
+  pickup (a missile pod) stays pistol-sized. Pickups are made to lie on a floor, each pack at its
+  own size and facing, so `tools/measure_pickups.py` measures the load order's pickups ahead of
+  time into the lump `RSQTRFIT` (length, facing, middle, and which MODELDEF draws it -- BD22Q's
+  floor voxels, the same ones you see lying around). The shipped table is for
+  brutal22test6 -> BD_VoxelPack -> BD22Q_199c; a weapon not in it shows at its pickup size.
+  Still backwards? Menu: *Stored guns to turn round* takes weapon class names.
 - A hand only acts on a region after it has been there a moment (3 tics), so a hand
   passing through a holster on its way somewhere else does nothing.
 - A hand steadying the main gun (the engine's two-handed grip) never fires a region.
