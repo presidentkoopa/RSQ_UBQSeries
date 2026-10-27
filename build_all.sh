@@ -1,7 +1,7 @@
 #!/bin/sh
 # build_all.sh -- pack every mod into pk3/ from the folders beside it.
-# Needs `zip`. Each folder keeps its own original build script too (DistanceGrab and
-# ShieldSaw: build.sh); this does the same packing
+# Needs `zip`. Each folder keeps its own original build script too (DistanceGrab: build.ps1;
+# ShieldSaw, TacticalRig, SlowMo: build.sh); this does the same packing
 # in one go on any machine with a shell. Include lists match those scripts exactly.
 set -e
 HUB="$(cd "$(dirname "$0")" && pwd)"
@@ -14,7 +14,7 @@ pack_list() {   # <folder> <pk3 name> <model dir>
 	cd "$HUB/$1"
 	rm -f "$OUT/$2"
 	F=""
-	for f in zscript.txt MAPINFO.txt CVARINFO.txt TRNSLATE.txt KEYCONF.txt MENUDEF.txt MODELDEF.txt SNDINFO.txt MASSDEF.txt ANIMDEFS.txt TEXTURES.txt GLDEFS.txt RSQTRFIT.txt; do
+	for f in zscript.txt MAPINFO.txt CVARINFO.txt TRNSLATE.txt KEYCONF.txt MENUDEF.txt MODELDEF.txt SNDINFO.txt MASSDEF.txt ANIMDEFS.txt TEXTURES.txt GLDEFS.txt RSQTRFIT.txt CREDITS.txt; do
 		[ -e "$f" ] && F="$F $f"
 	done
 	for d in zscript graphics sprites sounds "$3"; do
@@ -27,10 +27,11 @@ pack_list DistanceGrab RSQ_DistanceGrab.pk3 models/rsqdg
 pack_list TacticalRig  RSQ_TacticalRig.pk3  models/rsqtr
 pack_list SlowMo       RSQ_SlowMo.pk3       models/rsqsm
 
-# ShieldSaw: everything but docs, scripts and git files (its build.sh).
+# ShieldSaw: everything but docs, tools, scripts, the handoff and git files (its build.sh).
+# README.md ships: it carries the credits.
 cd "$HUB/ShieldSaw"
 rm -f "$OUT/UltraBadassShieldSaw.pk3"
-zip -q -r -X "$OUT/UltraBadassShieldSaw.pk3" . -x 'docs/*' '*.sh' '.gitignore'
+zip -q -r -X "$OUT/UltraBadassShieldSaw.pk3" . -x 'docs/*' 'tools/*' '*.sh' '.gitignore' 'HANDOFF.md'
 echo "built pk3/UltraBadassShieldSaw.pk3"
 
 # QuestSaber: everything but docs.
