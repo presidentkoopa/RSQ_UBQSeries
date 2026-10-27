@@ -38,6 +38,9 @@
 //   "struck.by"    the player number who threw that body; -1
 //   "pin"          which thing that body struck it was: 1 the first, 2 the second...; -1
 //   "whipped"      tics since the whip's crack hit it; -1
+//   "stunned"      1 the hook has it stunned now: the yank's landing hold (rsqgr_yank_stun tics from
+//                  the tic its throw ended, alive) or the whip's crack within 35 tics while it is
+//                  still in its Pain state; 0 not; -1 never hooked or whipped (RSQ_TopHPBars' marker)
 // GUN BONSAI'S VR PATCH (perks.zs keeps these: the hook's XP and its upgrades; objectArg = the pawn)
 //   "xp.bites" / "xp.yanks" / "xp.kills" / "xp.killhp" / "xp.slams"   running counts this map: bites,
 //                  yanks (thrown), kills the hook was in on (3 s) and their spawn health, Double Hook slams
@@ -98,6 +101,7 @@ class RSQGR_Events : EventHandler
 	Array<PlayerPawn> vBy;
 	Array<int> vLine, vRel, vBites, vVolleys, vLand, vStruck, vPin, vWhip;
 	Array<int> vOn, vFlung, vHeavy;   // bools as ints (0/1)
+	Array<int> vThrown, vStunAt;      // on a throw last tic (0/1); the tic its throw ended (the landing hold starts)
 	Array<Actor> vBall;
 	Array<PlayerPawn> vBallBy;
 
@@ -199,6 +203,7 @@ class RSQGR_Events : EventHandler
 		vLine.Push(-100000); vRel.Push(-100000); vBites.Push(0); vVolleys.Push(0);
 		vLand.Push(-100000); vStruck.Push(-100000); vPin.Push(0); vWhip.Push(-100000);
 		vOn.Push(0); vFlung.Push(0); vHeavy.Push(0);
+		vThrown.Push(0); vStunAt.Push(-100000);
 		return vA.Size() - 1;
 	}
 
@@ -208,6 +213,7 @@ class RSQGR_Events : EventHandler
 		vLine.Delete(k); vRel.Delete(k); vBites.Delete(k); vVolleys.Delete(k);
 		vLand.Delete(k); vStruck.Delete(k); vPin.Delete(k); vWhip.Delete(k);
 		vOn.Delete(k); vFlung.Delete(k); vHeavy.Delete(k);
+		vThrown.Delete(k); vStunAt.Delete(k);
 	}
 
 	// gone, or nothing about it newer than KEEP
@@ -217,7 +223,7 @@ class RSQGR_Events : EventHandler
 		for (int k = vA.Size() - 1; k >= 0; k--)
 		{
 			if (!vA[k]) { Drop(k); continue; }
-			int last = max(max(vLine[k], vLand[k]), max(vStruck[k], vWhip[k]));
+			int last = max(max(max(vLine[k], vLand[k]), max(vStruck[k], vWhip[k])), vStunAt[k]);
 			if (!vOn[k] && now - last > KEEP) Drop(k);
 		}
 	}
@@ -267,6 +273,19 @@ class RSQGR_Events : EventHandler
 				if (RSQGR_Util.Flag("rsqgr_debug", false))
 					Console.Printf("T_GRS t%d flung %s at %.1f u/tic", now, v.GetClassName(), (v.Vel.xy dot (away / al)) / sc);
 			}
+		}
+		// the throw's end: the tic it leaves the flight (it is on the floor; monster.zs Land holds it
+		// rsqgr_yank_stun tics there). Read from the flight's slots, so nothing else changes.
+		let fl = RSQGR_Flight.Get();
+		while (vThrown.Size() < vA.Size()) vThrown.Push(0);
+		while (vStunAt.Size() < vA.Size()) vStunAt.Push(-100000);
+		for (int k = 0; k < vA.Size(); k++)
+		{
+			let v = vA[k];
+			if (!v) continue;
+			bool thrown = fl && fl.SlotOf(v) >= 0;
+			if (vThrown[k] && !thrown && v.Health > 0) vStunAt[k] = now;
+			vThrown[k] = thrown ? 1 : 0;
 		}
 		if (now % 35 == 0) Prune();
 
@@ -414,6 +433,16 @@ class RSQGR_Events : EventHandler
 		if (req ~== "struck.by") return vBallBy[r] && vBallBy[r].player ? vBallBy[r].PlayerNumber() : -1;
 		if (req ~== "pin") return vPin[r] > 0 ? vPin[r] : -1;
 		if (req ~== "whipped") return Since(vWhip[r]);
+		if (req ~== "stunned")
+		{
+			if (a.Health <= 0) return 0;
+			int st = r < vStunAt.Size() ? Since(vStunAt[r]) : -1;
+			if (st >= 0 && st <= max(1, RSQGR_Util.Opt("rsqgr_yank_stun", 8))) return 1;
+			int wh = Since(vWhip[r]);
+			State pain = a.FindState("Pain");
+			if (wh >= 0 && wh <= 35 && pain && a.InStateSequence(a.CurState, pain)) return 1;
+			return 0;
+		}
 		return -1;
 	}
 
