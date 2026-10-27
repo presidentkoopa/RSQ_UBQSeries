@@ -7,6 +7,7 @@ version "4.14"
 // the bonus is the extension point, the bonuses are the thirteen, the handler
 // drives everything, and the HUD only reads.
 
+#include "zscript/rsscore/cb.zs"
 #include "zscript/rsscore/tracker.zs"
 #include "zscript/rsscore/event.zs"
 #include "zscript/rsscore/bonus.zs"
