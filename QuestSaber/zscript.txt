@@ -1823,12 +1823,12 @@ class UBQS_SaberBase : Weapon abstract
 		else if (++momQuiet >= 6) momTics = 0;
 	}
 	// what one cut is worth from the upgrades: Momentum +10% a level per half second of motion (up to
-	// two seconds), Riposte Edge x2 (+0.25 a level after the first) when primed
+	// two seconds), Riposte Edge x1.5 (+0.25 a level after the first) when primed
 	double UpgCutMult(bool ripe)
 	{
 		double m = 1.0;
 		if (uMomentum > 0) m *= 1.0 + 0.10 * uMomentum * (momTics / 17.5);
-		if (ripe) m *= 2.0 + 0.25 * (uRiposte - 1);
+		if (ripe) m *= 1.5 + 0.25 * (uRiposte - 1);
 		return m;
 	}
 	// RIPOSTE EDGE: a block or a deflect primes the blade for a second (+half a second a level)
@@ -2066,11 +2066,16 @@ class UBQS_SaberBase : Weapon abstract
 		// turned two tics early, including ones that would have missed. Only he can say whether that now feels
 		// psychic. Read above the loop, not inside it.
 		double dlead = clamp(UF("ubqs_deflect_lead", 3.0), 1.0, 6.0);
-		let it = BlockThingsIterator.CreateFromPos(mid.x, mid.y, mid.z - reach, reach * 2.0, reach, false);
-		while (it.Next())
+		// THE MISSILES IN FLIGHT (UBQS_Memory.missiles). A projectile is +NOBLOCKMAP, so a BlockThingsIterator
+		// never returns one -- measured on QZD 17.3: an imp ball flew through a held blade and hit the player;
+		// only the block on contact (DamageMobj) ever turned a shot. Every missile is noted as it spawns.
+		let mem = UBQS_Memory.Get();
+		int mn = mem ? mem.missiles.Size() : 0;
+		for (int mi = mn - 1; mi >= 0; mi--)
 		{
-			Actor mo = it.thing;
+			Actor mo = mem.missiles[mi];
 			if (!mo || !mo.bMissile || mo == owner || mo.target == owner || mo is "UBQS_Thrown") continue;
+			if (level.Vec3Diff(mid, mo.pos).Length() > reach) continue;
 			double near = 1e9;
 			for (int k = 0; k <= 2; k++)
 			{
@@ -3966,11 +3971,14 @@ class UBQS_Thrown : Actor
 	private void SpinDeflect()
 	{
 		if (!UBQS_Data.I(master, "ubqs_deflect", 1)) return;
-		let it = BlockThingsIterator.Create(self, bladeLen + 64.0);
-		while (it.Next())
+		// the missiles in flight, as in Deflect (a projectile is never in the blockmap)
+		let mem = UBQS_Memory.Get();
+		int mn = mem ? mem.missiles.Size() : 0;
+		for (int mi = mn - 1; mi >= 0; mi--)
 		{
-			Actor mo = it.thing;
+			Actor mo = mem.missiles[mi];
 			if (!mo || !mo.bMissile || mo == self || mo.target == master || mo is "UBQS_Thrown") continue;
+			if (Distance3D(mo) > bladeLen + 64.0 + mo.radius) continue;
 			// ...and a flying blade does not turn shots on the far side of a wall
 			if (UBQS_Data.I(master, "ubqs_cut_los", 1) && !CheckSight(mo, SF_IGNOREVISIBILITY)) continue;
 			if (Distance3D(mo) < bladeLen + mo.radius) launcher.BatBack(mo, BladeVec());
@@ -4367,7 +4375,7 @@ class UBQS_Force : Inventory
 			UBQS_Memory.Note(UBQS_Memory.M_PULLED, mo);
 			// 2+: it is stunned when it arrives. 3+: the yank takes its weapon -- no ranged attacks
 			if (uPull >= 2) { stunMo.Push(mo); stunUntil.Push(level.maptime + 52); }
-			if (uPull >= 3) { disarmMo.Push(mo); disarmUntil.Push(level.maptime + 70 + 35 * (uPull - 3)); UBQS_Data.Sparks(mo.pos + (0, 0, mo.height * 0.6), (0, 0, 1), 0xBFE0FF, 8); }
+			if (uPull >= 3) { disarmMo.Push(mo); disarmUntil.Push(level.maptime + 70 + 35 * (uPull - 3)); UBQS_Data.Sparks(mo.pos + (0, 0, mo.height * 0.6), (0, 0, 1), 0xBFE0FF, 8); Yank(mo, hp); }
 			UBQS_FX.Fx(mo.pos + (0, 0, mo.height * 0.5), 'UXFL', 13, 1, 0.14 + mo.radius * 0.003, 0.8, 0xBFE0FF, 1.03);
 			// THE LINE OF FORCE, four arcs between it and your hand. Without this a pull is a noise and
 			// then something arriving; with it you can see which one you have got hold of.
@@ -4782,6 +4790,34 @@ class UBQS_Force : Inventory
 		}
 		Buzz();
 	}
+	// THE YANK TAKES SOMETHING (Force Pull 3+). What a disarmed monster would drop when it dies -- its
+	// own DropItem, the likeliest entry (Brutal Doom's zombieman: RifleDrop; vanilla's: Clip) -- leaves
+	// its hands now and is lobbed at yours. Once per monster. Spawned with replacement, so a base game's
+	// own swaps and Slappers Only (no gun pickups) apply as to any drop. Its death drop is then not dropped
+	// a second time (UpgTicks).
+	void Yank(Actor mo, Vector3 hp)
+	{
+		if (!mo || !UBQS_Memory.Yank(mo)) return;
+		DropItem best = null;
+		for (DropItem di = mo.GetDropItems(); di; di = di.Next)
+		{
+			if (di.Name == 'None' || di.Name == '') continue;
+			Class<Actor> c = di.Name;
+			if (!c) continue;
+			if (!best || di.Probability > best.Probability) best = di;
+		}
+		if (!best) return;
+		Class<Actor> bc = best.Name;
+		let it = Actor.Spawn(bc, mo.pos + (0, 0, mo.height * 0.6), ALLOW_REPLACE);
+		if (!it) return;
+		Vector3 to = level.Vec3Diff(it.pos, hp);
+		double dist = max(to.Length(), 1.0);
+		// a lob that lands at the hand in about 20 tics (gravity 1 unit/tic^2 at Doom's default)
+		double tt = clamp(dist / 14.0, 8.0, 24.0);
+		it.vel = (to.x / tt, to.y / tt, to.z / tt + 0.5 * tt * it.GetGravity());
+		if (FV("ubqs_debug", 0) != 0) Console.Printf("ubqs: pull yanked %s from %s", it.GetClassName(), mo.GetClassName());
+	}
+
 	// the pulled-and-stunned and the disarmed, each tic
 	private void UpgTicks()
 	{
@@ -5791,8 +5827,50 @@ class UBQS_Memory : EventHandler
 		return -1;
 	}
 
+	// FORCE PULL 3+'S YANK: the monsters whose weapon was already taken. True the first time (yank it),
+	// false after (once per monster).
+	Array<Actor> yanked;
+	Array<int> yankedDead;
+	static bool Yank(Actor mo)
+	{
+		let h = UBQS_Memory(EventHandler.Find("UBQS_Memory"));
+		if (!h) return true;
+		if (h.yanked.Find(mo) < h.yanked.Size()) return false;
+		if (h.yanked.Size() >= 64) { h.yanked.Delete(0); h.yankedDead.Delete(0); }
+		h.yanked.Push(mo); h.yankedDead.Push(0);
+		return true;
+	}
+	// ...and when one of them dies, the first dropped pickup to appear by its body within three seconds
+	// is what the yank already took: it goes (a random spawner's drop is caught too: it is a spawn)
+	// every missile in flight, for the blade's sweeps (Deflect, SpinDeflect): pruned each tic
+	Array<Actor> missiles;
+	static UBQS_Memory Get() { return UBQS_Memory(EventHandler.Find("UBQS_Memory")); }
+
+	override void WorldThingSpawned(WorldEvent e)
+	{
+		if (e.Thing && e.Thing.bMissile && !(e.Thing is "UBQS_Thrown")) missiles.Push(e.Thing);
+		let inv = Inventory(e.Thing);
+		if (!inv || inv.Owner || !inv.bDropped) return;
+		for (int k = 0; k < yanked.Size(); k++)
+		{
+			let mo = yanked[k];
+			if (!mo || mo.health > 0 || mo.Distance2D(inv) > 128) continue;
+			yanked.Delete(k); yankedDead.Delete(k);
+			inv.Destroy();
+			return;
+		}
+	}
+
 	override void WorldTick()
 	{
+		for (int k = missiles.Size() - 1; k >= 0; k--) if (!missiles[k] || !missiles[k].bMissile) missiles.Delete(k);
+		for (int k = yanked.Size() - 1; k >= 0; k--)
+		{
+			if (!yanked[k]) { yanked.Delete(k); yankedDead.Delete(k); continue; }
+			if (yanked[k].health > 0) continue;
+			if (yankedDead[k] == 0) yankedDead[k] = level.maptime;
+			else if (level.maptime - yankedDead[k] > 105) { yanked.Delete(k); yankedDead.Delete(k); }
+		}
 		if (level.maptime % 35) return;
 		for (int k = who.Size() - 1; k >= 0; k--)
 			if (!who[k] || level.maptime - when[k] > KEEP) { who.Delete(k); what.Delete(k); when.Delete(k); }
