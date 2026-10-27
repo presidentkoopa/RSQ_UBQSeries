@@ -16,6 +16,13 @@ server float  rsqgr_rope_friction = 0.025;  // and a constant loss (u/tic per ti
 server float  rsqgr_attach        = 0.6;    // where the rope meets the body, fraction of height
 server float  rsqgr_hop           = 6;      // lift when letting go at the top of a wall
 
+// climbing hand over hand
+server int    rsqgr_climb           = 1;     // 1: a free hand on Grab Rope climbs the rope, 0 off
+server bool   rsqgr_climb_free_only = true;  // only an empty hand (fist) may take hold, never a gun hand
+server float  rsqgr_grab_reach      = 16;    // how near the rope the hand must be to take hold (map units)
+server float  rsqgr_climb_cap       = 8;     // most the body moves per tic by the hand (u/tic); faster slips
+server bool   rsqgr_grab_dg         = true;  // RSQ_DistanceGrab's grab binds take hold of the rope too
+
 // monsters
 server float  rsqgr_mass_max      = 1000;   // heavier than this (or a boss) = an anchor, it does not come
 server float  rsqgr_slide_speed   = 10;     // a hooked monster slides to you this fast (scaled by slow motion)

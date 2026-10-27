@@ -50,6 +50,41 @@ class RSQGR_Input : EventHandler
 		{
 			EventHandler.SendNetworkEvent("rsqgr_up", e.Args[0] ? 1 : 0);
 		}
+		else if (e.Name ~== "rsqgr_grip")
+			EventHandler.SendNetworkEvent("rsqgr_grab", e.Args[0] ? 1 : 0, 1);
+		else if (e.Name ~== "rsqgr_ungrip")
+			EventHandler.SendNetworkEvent("rsqgr_grab", e.Args[0] ? 1 : 0, 0);
+	}
+
+	// THE CLIMBING HAND'S POSE, streamed from the machine that holds the controller,
+	// every rendered frame while that hand is on the grab bind and a rope is out (the
+	// last one before a tic is the one the tic uses). Sent in single player too: not
+	// for the network but for a clean height.
+	//
+	// THE HEIGHT IS NOT CLEAN IN PLAY. AttackPos.Z is written per frame from the
+	// INTERPOLATED eye (hw_openxrdevice.cpp: r_viewpoint.CenterEyePos.Z + controller
+	// height), while X/Y come from the pawn's raw position. Read against pmo.Pos in
+	// play, a still hand on a rising body wobbles by up to a tic of vertical speed
+	// (rig: AttackPos.z - pmo.z went 36.8 -> 43.0 -> 51.5 -> 58.1 at frac 0.53/0.25/0.81
+	// while the hand did not move), and climbing fed on it: the body overshot and came
+	// back 14-17 units a stroke. Against the frame's own eye (RenderEvent.ViewPos) it is
+	// constant (-4.17 every frame of the same run), so the height is taken there and
+	// put back on the pawn's uninterpolated eye (player.viewz).
+	override void RenderOverlay(RenderEvent e)
+	{
+		let c = RSQGR_Core.Get();
+		let p = players[consoleplayer];
+		if (!c || !p || !p.mo || !p.mo.OverrideAttackPosDir) return;
+		int pn = consoleplayer;
+		if (!c.hooks[pn * 2] && !c.hooks[pn * 2 + 1]) return;
+		let pmo = p.mo;
+		for (int hand = 0; hand < 2; hand++)
+		{
+			if (!c.grabHeld[pn * 2 + hand] || !RSQGR_Util.PoseGood(pmo, hand)) continue;
+			Vector3 h = hand == 0 ? pmo.AttackPos : pmo.OffhandPos;
+			Vector3 off = (h.x - pmo.Pos.x, h.y - pmo.Pos.y, (h.z - e.ViewPos.z) + (p.viewz - pmo.Pos.z));
+			EventHandler.SendNetworkEvent("rsqgr_pose", hand, RSQGR_Climb.Pack(off));
+		}
 	}
 
 	override void NetworkProcess(ConsoleEvent e)
@@ -83,5 +118,17 @@ class RSQGR_Input : EventHandler
 		{
 			core.Release(e.Player, e.Args[0] & 1);
 		}
+		else if (e.Name ~== "rsqgr_grab")
+			core.Grab(e.Player, e.Args[0] & 1, e.Args[1] != 0);
+		else if (e.Name ~== "rsqgr_pose")
+		{
+			int i = e.Player * 2 + (e.Args[0] & 1);
+			core.poseOff[i] = RSQGR_Climb.Unpack(e.Args[1]);
+			core.poseTic[i] = level.maptime;
+		}
+		// RSQ_DistanceGrab's own grab binds (rsqdg_press / rsqdg_release <hand>) are where
+		// the owner keeps the grips; heard here too, so the grips take hold of the rope.
+		else if ((e.Name ~== "rsqdg_press" || e.Name ~== "rsqdg_release") && RSQGR_Util.Flag("rsqgr_grab_dg", true))
+			core.Grab(e.Player, e.Args[0] & 1, e.Name ~== "rsqdg_press");
 	}
 }

@@ -50,7 +50,7 @@ class RSQGR_Hook : Actor
 	Array<RSQGR_Rope> segs;     // cable look
 	Array<RSQGR_Link> links;    // chain look
 	int gripHand;               // a hand climbing this rope, -1 none (RSQGR_Climb)
-	double gripS;               // the rope's length from the anchor to that hand's hold
+	Vector3 gripLastOff;        // that hand's offset from the pawn last tic
 	bool gripPending;           // the hold is taken on the next tic, from that tic's pose
 	double drawMs;        // last rope draw cost (rsqgr_debug)
 

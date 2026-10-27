@@ -28,6 +28,7 @@ OptionMenu "RSQGR_Options"
 	Slider "Hook Speed", "rsqgr_speed", 16, 96, 4, 0
 	StaticText " "
 	Slider "Reel Speed", "rsqgr_reel_speed", 2, 30, 1, 0
+	Option "Rope Climbing", "rsqgr_climb", "OnOff"
 	Slider "Swing Lean", "rsqgr_pump", 0.0, 1.0, 0.05, 2
 	Slider "Top Speed", "rsqgr_max_speed", 10, 60, 1, 0
 	StaticText " "
@@ -54,6 +55,11 @@ OptionMenu "RSQGR_Tuning"
 	Slider "Ledge Hop", "rsqgr_hop", 0, 12, 1, 0
 	Slider "Return Speed", "rsqgr_retract_speed", 16, 128, 8, 0
 	Slider "Stop Distance", "rsqgr_slide_gap", 0, 64, 4, 0
+	StaticText " "
+	Option "Free Hand Only", "rsqgr_climb_free_only", "OnOff"
+	Option "Grips From Grab", "rsqgr_grab_dg", "OnOff"
+	Slider "Grab Reach", "rsqgr_grab_reach", 4, 40, 2, 0
+	Slider "Climb Speed Cap", "rsqgr_climb_cap", 2, 20, 1, 0
 	StaticText " "
 	Option "Debug Log", "rsqgr_debug", "OnOff"
 }

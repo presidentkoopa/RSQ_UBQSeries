@@ -43,6 +43,12 @@ class GRP_Probe : EventHandler
 			pmo.DamageMobj(null, null, 10000, 'None');
 		}
 	}
+	override void RenderOverlay(RenderEvent e)
+	{
+		if (CVar.FindCVar("grp_log").GetInt() != 4) return;
+		let pmo = players[consoleplayer].mo; if (!pmo) return;
+		Console.Printf("T_RO g%d frac %.2f atk.z %.2f view.z %.2f pmo.z %.2f viewz %.2f  atk-view %.2f atk-pmo %.2f atkxy-pmo %.2f %.2f", gametic, e.FracTic, pmo.AttackPos.z, e.ViewPos.z, pmo.pos.z, pmo.player.viewz, pmo.AttackPos.z - e.ViewPos.z, pmo.AttackPos.z - pmo.pos.z, pmo.AttackPos.x - pmo.pos.x, pmo.AttackPos.y - pmo.pos.y);
+	}
 	override void WorldTick()
 	{
 		if (CVar.FindCVar("grp_log").GetInt() < 1) return;

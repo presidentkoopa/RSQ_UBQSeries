@@ -338,9 +338,15 @@ class RSQGR_Core : EventHandler
 				h.ropeLen = min(h.ropeLen, d);
 				h.ropeLen = max(minLen, h.ropeLen - RSQGR_Util.Num("rsqgr_reel_speed", 12));
 			}
-			h.slack = !grounded || h.reelHeld;
+			// CLIMB: a free hand on the grab bind, touching the rope, takes hold of it.
+			double climbStep = 0;
+			double along = 0;
+			bool climbing = Climb(h, pmo, pn, a, b, n, d, minLen, maxLen, climbStep, along);
+			bool pullUp = climbing && climbStep < 0;
+
+			h.slack = !grounded || h.reelHeld || h.gripHand >= 0;
 			if (d > maxLen + 64) { LetGo(h, false); continue; }
-			if (grounded && !h.reelHeld)
+			if (grounded && !h.reelHeld && !pullUp)
 			{
 				// On your feet the rope pays out and takes in with you, so stepping off a
 				// ledge swings at once from that length rather than dropping into slack.
@@ -394,7 +400,7 @@ class RSQGR_Core : EventHandler
 				if (cl > cmax) corr *= cmax / cl;
 				v += corr;
 				double vl = v.Length();
-				if (!h.reelHeld && d <= h.ropeLen + 1.0 && vl > 0.01) v *= vt / vl;
+				if (!h.reelHeld && !climbing && d <= h.ropeLen + 1.0 && vl > 0.01) v *= vt / vl;
 			}
 
 			// A reel pulls in at about its own speed, not faster: the correction above
@@ -405,6 +411,13 @@ class RSQGR_Core : EventHandler
 				double vmax = RSQGR_Util.Num("rsqgr_reel_speed", 12) * 1.5;
 				if (vin > vmax) v += n * (vin - vmax);
 			}
+
+			// The climbing hand moves the body exactly as far as it moved along the rope
+			// (1:1, capped by rsqgr_climb_cap): the radial speed IS the hand's step, both
+			// ways, so pulling down lifts you and pushing up lowers you at the hand's pace
+			// -- no spring, no smoothing to lag behind the arm.
+			if (climbing)
+				v += n * (climbStep - (v dot n));
 
 			if (!grounded && d >= h.ropeLen - 1.0)
 			{
@@ -452,10 +465,86 @@ class RSQGR_Core : EventHandler
 				if (!Sees(pmo, b, a)) { if (++h.losBad >= 3) { LetGo(h, false); continue; } }
 				else h.losBad = 0;
 			}
-			if (level.maptime % 2 == 0) Log(h, h.reelHeld ? "reel" : "swing");
+			if (level.maptime % 2 == 0 || climbing) Log(h, climbing ? "climb" : h.reelHeld ? "reel" : (h.gripHand >= 0 ? "hold" : "swing"));
 		}
 		tracked[pn] = roped;
 		if (roped) { lastPos[pn] = pmo.Pos; lastSet[pn] = pmo.vel; }
+	}
+
+	// ---- hand over hand (climb.zs says which hand may and where it is) -------------
+
+	bool grabHeld[NHOOK];     // the grab bind is down (rsqgr_grip, or RSQ_DistanceGrab's grips)
+	bool wantGrip[NHOOK];     // a press not yet turned into a hold (the hand may still be reaching)
+	Vector3 poseOff[NHOOK];   // netgame: the hand's offset from the pawn, streamed (rsqgr_pose)
+	int poseTic[NHOOK];
+
+	void Grab(int pn, int hand, bool down)
+	{
+		int i = pn * 2 + hand;
+		grabHeld[i] = down;
+		wantGrip[i] = down;
+		if (down) return;
+		for (int k = 0; k < 2; k++)
+		{
+			let h = hooks[pn * 2 + k];
+			if (h && h.gripHand == hand) { h.gripHand = -1; Log(h, "unhold"); }
+		}
+	}
+
+	// Takes or keeps the hold, moves the rope's length by the hand, returns whether the
+	// hand moved the body this tic and by how much along the rope (negative = up it).
+	bool Climb(RSQGR_Hook h, PlayerPawn pmo, int pn, Vector3 a, Vector3 b, Vector3 n, double d,
+		double minLen, double maxLen, out double step, out double along)
+	{
+		step = 0;
+		along = 0;
+		if (RSQGR_Util.Opt("rsqgr_climb", 1) == 0) { h.gripHand = -1; return false; }
+		// a new press takes the rope over from the other hand once it touches it
+		for (int g = 0; g < 2; g++)
+		{
+			int gi = pn * 2 + g;
+			if (!wantGrip[gi] || h.gripHand == g) { if (h.gripHand == g) wantGrip[gi] = false; continue; }
+			bool ok; Vector3 off;
+			[ok, off] = RSQGR_Climb.HandOffset(pmo, pn, g);
+			if (!ok || !RSQGR_Climb.HandFree(pmo, g)) continue;
+			Vector3 hp = pmo.Pos + off;
+			if (RSQGR_Climb.ToSegment(hp, a, b) > RSQGR_Util.Num("rsqgr_grab_reach", 16)) continue;
+			h.gripHand = g;
+			h.gripPending = true;
+			wantGrip[gi] = false;
+			Log(h, String.Format("take h%d", g));
+		}
+		if (h.gripHand < 0) return false;
+		if (!RSQGR_Climb.HandFree(pmo, h.gripHand)) { h.gripHand = -1; return false; }
+		bool ok; Vector3 off;
+		[ok, off] = RSQGR_Climb.HandOffset(pmo, pn, h.gripHand);
+		if (!ok) { h.gripHand = -1; return false; }
+		Vector3 hp = pmo.Pos + off;
+		along = (hp - b) dot n;            // + = the hand is further down the rope than the body's attach point
+		if (h.gripPending)
+		{
+			h.gripLastOff = off;           // where the hand closed
+			h.gripPending = false;
+			h.ropeLen = clamp(d, minLen, maxLen);
+			return false;
+		}
+		// BY THE HAND'S STEP, not its place: the hand moved this much since last tic,
+		// measured along the rope as it hangs now. Taken from the place instead (rope
+		// length = hold point - hand offset along the rope), a still hand on a swinging
+		// body drifted the length 6-14 units a swing as the rope turned (rig, full order).
+		Vector3 dOff = off - h.gripLastOff;
+		h.gripLastOff = off;
+		double delta = -(dOff dot n);
+		double cap = RSQGR_Util.Num("rsqgr_climb_cap", 8);
+		// faster than the cap: the excess slips through the hand rather than being owed --
+		// the body never catches up with motion the arm made a tic ago
+		delta = clamp(delta, -cap, cap);
+		double nl = clamp(h.ropeLen + delta, minLen, maxLen);
+		delta = nl - h.ropeLen;
+		if (abs(delta) < 0.01) return false;
+		h.ropeLen += delta;
+		step = delta;
+		return true;
 	}
 
 	// Follows a moving plane, a moving heavy monster; checks a wall is still there.
@@ -509,7 +598,7 @@ class RSQGR_Core : EventHandler
 	// every bind reads as up (a release that happened before the save never comes).
 	override void WorldLoaded(WorldEvent e)
 	{
-		for (int i = 0; i < NHOOK; i++) { hooks[i] = null; held[i] = false; pressFired[i] = false; }
+		for (int i = 0; i < NHOOK; i++) { hooks[i] = null; held[i] = false; pressFired[i] = false; grabHeld[i] = false; wantGrip[i] = false; poseTic[i] = -100; }
 		if (!e.IsSaveGame) return;
 		let it = ThinkerIterator.Create("RSQGR_Hook");
 		RSQGR_Hook h;
@@ -519,6 +608,7 @@ class RSQGR_Core : EventHandler
 			int i = h.owner.PlayerNumber() * 2 + h.hand;
 			if (i < 0 || i >= NHOOK || hooks[i]) { h.Destroy(); continue; }
 			hooks[i] = h;
+			h.gripHand = -1;   // a hold does not survive a load: the bind's release may never come
 		}
 		// stray rope pieces and links whose hook is gone
 		Array<Actor> keep;
@@ -551,9 +641,9 @@ class RSQGR_Core : EventHandler
 		if (RSQGR_Util.Opt("rsqgr_debug", 0) < 1 || !h || !h.owner) return;
 		let p = h.owner;
 		Vector3 b = AttachPoint(p);
-		Console.Printf("T_GR t%d h%d %s pos(%.1f %.1f %.1f) vel(%.2f %.2f %.2f) claw(%.1f %.1f %.1f) L%.1f d%.1f segs%d ms%.3f/%.3f scale%.2f%s",
+		Console.Printf("T_GR t%d h%d %s pos(%.1f %.1f %.1f) vel(%.2f %.2f %.2f) claw(%.1f %.1f %.1f) L%.1f d%.1f segs%d ms%.3f/%.3f scale%.2f grip%d free%d%d%s",
 			level.maptime, h.hand, what, p.Pos.x, p.Pos.y, p.Pos.z, p.vel.x, p.vel.y, p.vel.z,
-			h.Pos.x, h.Pos.y, h.Pos.z, h.ropeLen, (h.anchor - b).Length(), h.segs.Size(), h.drawMs, tickMs, worldScale,
+			h.Pos.x, h.Pos.y, h.Pos.z, h.ropeLen, (h.anchor - b).Length(), h.segs.Size() + h.links.Size(), h.drawMs, tickMs, worldScale, h.gripHand, RSQGR_Climb.HandFree(p, 0), RSQGR_Climb.HandFree(p, 1),
 			h.victim ? String.Format(" victim %s (%.1f %.1f %.1f)", h.victim.GetClassName(), h.victim.Pos.x, h.victim.Pos.y, h.victim.Pos.z) : "");
 	}
 }
