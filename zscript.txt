@@ -5855,6 +5855,7 @@ class UBQS_Telemetry : EventHandler
 
 // WHAT THE SABER IS DOING, FOR ANY MOD THAT ASKS -- found by name (ServiceIterator), so nothing links
 // against this mod and an absent saber is simply no answer.
+//   GetInt("gripped", "", 0, 0, monster)   1 a Force grip holds it now, 0 not (RSQ_TopHPBars' marker)
 //   GetInt("saber.lit", "", hand)   hand 0 = main, 1 = off
 //     1   a saber is in that hand with its blade lit, or it is out of the hand (thrown: the catch is ours)
 //     0   a saber is in that hand with the blade switched off (doused): just a hilt
@@ -5878,6 +5879,20 @@ class UBQS_SaberService : Service
 			if (t.phase == UBQS_Thrown.PH_OUT || t.phase == UBQS_Thrown.PH_ROUTE) return 0;
 			if (t.phase == UBQS_Thrown.PH_HOME || t.phase == UBQS_Thrown.PH_PULL) return 1;
 			return -1;
+		}
+		// "gripped": 1 a player's Force grip holds this monster now (the grip, or one held with it by
+		// Force Choke 3+), 0 not (RSQ_TopHPBars' marker)
+		if (request ~== "gripped")
+		{
+			let m = Actor(objectArg);
+			if (!m) return -1;
+			for (int i = 0; i < MAXPLAYERS; i++)
+			{
+				if (!playeringame[i] || !players[i].mo) continue;
+				let f = UBQS_Force(players[i].mo.FindInventory("UBQS_Force"));
+				if (f && f.gripped && (f.gripped == m || f.extraGrip.Find(m) < f.extraGrip.Size())) return 1;
+			}
+			return 0;
 		}
 		if (!(request ~== "saber.lit")) return -1;
 		let p = players[consoleplayer];
