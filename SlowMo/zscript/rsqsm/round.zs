@@ -25,6 +25,12 @@ class RSQSM_Shots : EventHandler
 		if (!t || t.player) return false;
 		if (RSQSM_Clock.Cv("rsqsm_rounds", 1) == 0) return false;
 		if ((e.AttackLineFlags & LAF_ISMELEEATTACK) || e.AttackDistance <= 128) return false;
+		// A test trace (no damage, or no interaction: A_CustomBulletAttack aiming its
+		// tracer, for one) is not a bullet. Absolute positions are left to the engine.
+		if (e.Damage <= 0 || (e.AttackLineFlags & (LAF_NOINTERACT | LAF_ABSPOSITION | LAF_ABSOFFSET))) return false;
+		// Only a shooter inside the slowed range: far away the world runs at full speed.
+		double f = clock.FactorFor(t, t.Speed);
+		if (f >= 0.9999) return false;
 
 		double a = e.AttackAngle, p = e.AttackPitch;     // p: Doom's sign, positive down
 		Vector3 dir = (cos(p) * cos(a), cos(p) * sin(a), -sin(p));
@@ -40,10 +46,27 @@ class RSQSM_Shots : EventHandler
 		r.angle = a;
 		r.pitch = p;
 		r.dmg = e.Damage;
-		r.DamageType = e.DamageType;
 		r.puff = e.AttackPuffType;
 		r.maxDist = e.AttackDistance;
-		r.vel = dir * r.Speed;           // Speed is already slowed by the clock
+		// What the puff would have brought to the hit, as P_LineAttack applies it.
+		Name dt = e.DamageType;
+		if (r.puff)
+		{
+			let pd = GetDefaultByType(r.puff);
+			if (pd.DamageType != 'None') dt = pd.DamageType;
+			r.bTHRUGHOST = pd.bTHRUGHOST;
+			r.bSPECTRAL = pd.bSPECTRAL;
+			r.bFOILINVUL = pd.bFOILINVUL;
+			r.bPAINLESS = pd.bPAINLESS;
+			r.bFORCEPAIN = pd.bFORCEPAIN;
+		}
+		r.DamageType = dt;
+		// Already slowed when it leaves the muzzle: the clock is told the factor it was
+		// made at (the spawn event comes later, just before its first tic).
+		r.baseSpeed = clock.RoundBase();
+		r.preFactor = f;
+		r.Speed = r.baseSpeed * f;
+		r.vel = dir * r.Speed;
 		r.CheckMissileSpawn(t.radius);
 		return true;
 	}
@@ -81,6 +104,7 @@ class RSQSM_Shots : EventHandler
 class RSQSM_Round : Actor
 {
 	int dmg;
+	double baseSpeed, preFactor;
 	class<Actor> puff;
 	double maxDist, flown;
 	Actor hit;
@@ -97,13 +121,13 @@ class RSQSM_Round : Actor
 		RenderStyle "Add";
 		+NOTELEPORT
 		+DONTSPLASH
+		-ACTIVATEPCROSS
+		-ACTIVATEIMPACT
 	}
 
 	override void BeginPlay()
 	{
 		Super.BeginPlay();
-		let clock = RSQSM_Clock.Get();
-		Speed = clock ? clock.RoundBase() : 56;     // the full-time speed; the clock slows it
 		for (int i = 0; i < MAXPLAYERS; i++) nearD[i] = 1e9;
 	}
 
@@ -115,10 +139,11 @@ class RSQSM_Round : Actor
 	override int SpecialMissileHit(Actor victim)
 	{
 		if (victim == target) return 1;
-		if (!victim.bSHOOTABLE) return -1;
-		if (victim.bSPECTRAL || (victim.bGHOST && bTHRUGHOST)) return 1;
+		// A hitscan passes everything that is not shootable (columns, lamps, trees).
+		if (!victim.bSHOOTABLE) return 1;
+		if ((victim.bSPECTRAL && !bSPECTRAL) || (victim.bGHOST && bTHRUGHOST)) return 1;
 		hit = victim;
-		int done = victim.DamageMobj(self, target, dmg, DamageType, 0, angle);
+		int done = victim.DamageMobj(self, target, dmg, DamageType, DMG_USEANGLE, angle);
 		if (done > 0 && !victim.bNOBLOOD && !victim.bINVULNERABLE && !victim.bDORMANT)
 		{
 			victim.SpawnBlood(pos, angle + 180, done);
