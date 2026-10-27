@@ -5539,7 +5539,16 @@ class UBQS_Bridge : EventHandler
 			// for the second saber, once a life: BD22Q puts its hands there at the start of a level.
 			bool offFree = p.OffhandWeapon == null || IsFiller(p.OffhandWeapon);
 			if (p.OffhandWeapon != null && !IsFiller(p.OffhandWeapon)) raisedAt[i] = 0;
-			if (wantOff && offFree && p.PendingWeapon == WP_NOCHANGE && raisedAt[i] == 0)
+			// THE GUN MOD OWNS THE OFF HAND WHILE A GUN IS IN THE MAIN ONE (the owner, 10-27: "offhand
+			// saber is going bananas, keeps appearing and disappearing when I switch weapons"). Brutal
+			// Doom Quest puts its hands in the off hand for its guns (to steady them), and this raise put
+			// the saber back: the two swapped it every ten tics (measured: rifle and shotgun alike). With
+			// that pack loaded the second saber comes out by itself only beside the first; the Dual key
+			// and the rig's saber holster still bring it out whenever you ask.
+			String hn2 = "RSQ_Hands";
+			class<Weapon> hc2 = hn2;
+			bool gunHands = hc2 != null && !(p.ReadyWeapon is "UBQS_Saber");
+			if (wantOff && !gunHands && offFree && p.PendingWeapon == WP_NOCHANGE && raisedAt[i] == 0)
 			{
 				let off = Weapon(p.mo.FindInventory("UBQS_SaberOff"));
 				if (off && !(p.ReadyWeapon && p.ReadyWeapon.bTwoHanded))
