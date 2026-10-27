@@ -113,6 +113,10 @@ class RSQDG_Grab : EventHandler
 			// The catch comes first because it is the one with a window. A lock
 			// can be taken a moment later and nothing is lost; a catch missed is
 			// the object on the floor.
+			// A HAND ON A DOOR is lifting the door (door.zs), not reaching across the room.
+			let door = RSQDG_Door.Get();
+			if (door && e.Player == consoleplayer && door.Touching(hand)) return;
+
 			let fl = RSQDG_Flight.Get();
 			if (fl && fl.CatchableBy(hand, p.mo, p))
 			{

@@ -248,3 +248,11 @@ user bool  rsqdg_catch_flash = true;   // a green bloom at the palm on a catch
 // says nothing is five faults with one symptom.
 user bool  rsqdg_debug    = false;
 user bool  rsqdg_trace    = false;
+
+// Doors lifted by hand (moved from RSQ_TacticalRig, 10-27).
+user bool  rsqdg_door        = true;    // take hold of a door and lift it
+user bool  rsqdg_door_grip   = true;    // the grab's grip takes hold
+user bool  rsqdg_door_use    = true;    // Use takes hold
+user bool  rsqdg_door_palm   = true;    // a palm turned out against the door takes hold
+user float rsqdg_door_commit = 0.40;    // let go past this much open and the door finishes opening
+user float rsqdg_door_gain   = 2.5;     // door travel per unit of hand travel

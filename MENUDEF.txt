@@ -36,6 +36,7 @@ OptionMenu "RSQDG_Options"
 	Submenu "Catching and holding", "RSQDG_Catch"
 	Submenu "The laser",            "RSQDG_Laser"
 	Submenu "Haptics and sound",    "RSQDG_Feel"
+	Submenu "Doors",                "RSQDG_Doors"
 	StaticText ""
 	Submenu "Diagnostics",          "RSQDG_Debug"
 	StaticText ""
@@ -287,4 +288,17 @@ OptionMenu "RSQDG_Tune"
 	Slider "Half speed at (kg)",    "rsqdg_burden_kg",     20, 400, 10, 0
 	StaticText ""
 	SafeCommand "Reset just these", "resetcvar rsqdg_rumble_gain rsqdg_rumble_lock rsqdg_flight_speed rsqdg_steer rsqdg_pull_kg rsqdg_flight_mode rsqdg_arc_apex rsqdg_throw_scale rsqdg_arm_kg rsqdg_throw_j rsqdg_throw_explode rsqdg_burden_kg", "Put the feel numbers back?"
+}
+
+OptionMenu "RSQDG_Doors"
+{
+	Title "DOORS"
+	Option "Lift doors by hand", "rsqdg_door", "OnOff"
+	Option "Grip takes hold", "rsqdg_door_grip", "OnOff"
+	Option "Use takes hold", "rsqdg_door_use", "OnOff"
+	Option "Palm out takes hold", "rsqdg_door_palm", "OnOff"
+	Slider "Open past this, it finishes", "rsqdg_door_commit", 0.1, 0.9, 0.05, 2
+	Slider "Lift gain", "rsqdg_door_gain", 1.0, 5.0, 0.25, 2
+	StaticText ""
+	StaticText "Hand flat on a door, take hold, lift. The door sounds as fast as you lift it.", "DarkGray"
 }
