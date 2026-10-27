@@ -36,6 +36,7 @@ class RSQTR_Door : EventHandler
 	private transient int    buzzT;
 
 	static RSQTR_Door Get() { return RSQTR_Door(EventHandler.Find("RSQTR_Door")); }
+	bool Holding(int h) const { return (h == 0 || h == 1) && held[h] >= 0; }
 
 	override void OnRegister()
 	{
