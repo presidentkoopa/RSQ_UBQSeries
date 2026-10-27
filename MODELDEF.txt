@@ -16,6 +16,38 @@ Model RSQTR_Marker
 	FrameIndex RSTM D 0 0
 	Skin 0 "rtwireye.png"
 	FrameIndex RSTM E 0 0
+	// colour-blind play (rsqa_colorblind; tools/gen_cb_skins.py): hand inside, then profiles 1-4,
+	// F-J protanopia/deuteranopia, K-O tritanopia, P-T high contrast
+	Skin 0 "rtwcbp0.png"
+	FrameIndex RSTM F 0 0
+	Skin 0 "rtwcbp1.png"
+	FrameIndex RSTM G 0 0
+	Skin 0 "rtwcbp2.png"
+	FrameIndex RSTM H 0 0
+	Skin 0 "rtwcbp3.png"
+	FrameIndex RSTM I 0 0
+	Skin 0 "rtwcbp4.png"
+	FrameIndex RSTM J 0 0
+	Skin 0 "rtwcbt0.png"
+	FrameIndex RSTM K 0 0
+	Skin 0 "rtwcbt1.png"
+	FrameIndex RSTM L 0 0
+	Skin 0 "rtwcbt2.png"
+	FrameIndex RSTM M 0 0
+	Skin 0 "rtwcbt3.png"
+	FrameIndex RSTM N 0 0
+	Skin 0 "rtwcbt4.png"
+	FrameIndex RSTM O 0 0
+	Skin 0 "rtwcbh0.png"
+	FrameIndex RSTM P 0 0
+	Skin 0 "rtwcbh1.png"
+	FrameIndex RSTM Q 0 0
+	Skin 0 "rtwcbh2.png"
+	FrameIndex RSTM R 0 0
+	Skin 0 "rtwcbh3.png"
+	FrameIndex RSTM S 0 0
+	Skin 0 "rtwcbh4.png"
+	FrameIndex RSTM T 0 0
 }
 
 // Ermac's cigarette (his Virtual Tactical Vest) and his voxel Zippo (ZBlood-VR), held in the hand.

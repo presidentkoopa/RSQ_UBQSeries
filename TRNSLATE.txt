@@ -1,2 +1,6 @@
 // The region marker with a hand inside it: amber, the series' "could" colour.
 RSQTR_Hot = "0:255=%[0.00,0.00,0.00]:[2.00,1.38,0.38]"
+
+// Blue armour for tritanopia (rsqa_colorblind 3): green and blue are one colour to a tritanope,
+// so the blue suit is worn violet, which they see as rose against the green suit's teal.
+RSQTR_BlueT = "0:255=%[0.00,0.00,0.00]:[1.50,0.50,1.50]"

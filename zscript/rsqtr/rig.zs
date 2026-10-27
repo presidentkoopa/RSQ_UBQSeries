@@ -878,6 +878,21 @@ class RSQTR_Rig : EventHandler
 		RSQTR_Buzzer.Start(pmo, h, 0.65, 6);
 	}
 
+	// The sphere's skin (MODELDEF RSQTR_Marker): A blue idle, B green with a hand inside, C-E
+	// profiles 2-4 orange, purple, yellow. Colour-blind play (rsqa_colorblind, cb.zs): those five
+	// are three or four colours to a dichromat (simulated, the closest pair is 6.1 apart for
+	// protanopia), so each vision gets its own five (F-T, tools/gen_cb_skins.py), at least 17.4
+	// apart in the vision they are for (as drawn); inside is the series HAVE colour.
+	static int MarkerFrame(bool inside, int prof)
+	{
+		static const int IDLE[] = { 0, 2, 3, 4 };
+		static const int CBBASE[] = { 0, 5, 5, 10, 15 };
+		prof = clamp(prof, 1, 4);
+		int cb = RSQTR_CB.Mode();
+		if (cb) return CBBASE[cb] + (inside ? 0 : prof);
+		return inside ? 1 : IDLE[prof - 1];
+	}
+
 	// ---- what you see ------------------------------------------------------------------
 	// A soft ring at each region while a hand is near it (or always, rsqtr_markers 2),
 	// amber with the hand inside; and the weapon last holstered there, as its own
@@ -916,9 +931,7 @@ class RSQTR_Rig : EventHandler
 					// alone: a sphere with a hand in it is also brighter and a size larger.
 					double s = rad * RSQTR_Body.UPM * (inside ? 1.15 : 1.0);   // the wireframe sphere has radius 1.0
 					m.Scale = (s, s);
-					static const int IDLE[] = { 0, 2, 3, 4 };
-					int prof = clamp(Opt("rsqtr_profile_active", p, 1), 1, 4);
-					m.frame = inside ? 1 : IDLE[prof - 1];
+					m.frame = MarkerFrame(inside, Opt("rsqtr_profile_active", p, 1));
 				}
 			}
 			else if (marker[r]) marker[r].bINVISIBLE = true;
