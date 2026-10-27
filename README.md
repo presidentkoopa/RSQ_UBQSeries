@@ -386,7 +386,7 @@ cap like any other row, and only on a player's kill (an infight pays base + Infi
 | Legendary Champion | risen AND an active champion -- the owner's "dormant boosted legendary champion" | 0.5 |
 
 No double pay with the base (measured, rig C): a champion's base is its StartHealth, which Champions
-sets after its own health change (Gold imp 400); a plain legendary's base is the class's (LegenDoom
+sets after its own health change (a Bronze Titan imp: 780); a plain legendary's base is the class's (LegenDoom
 Lite's ACS raises health, not StartHealth), so Legendary is the big row; a legendary champion's
 StartHealth already holds LegenDoom's 300 % (dormant mode: Champions sets up on the transform, a Gold
 legendary imp's base is 1200 = 80 x 3 x 5; out of dormant mode a legendary spawned in play is boosted
