@@ -1,0 +1,17 @@
+H_SPAWN BarrelVOX at (476 512 0) dist 220 player (256 512 -0) ang 0 hand (266.2 503.5 36.8) poseGood 1
+T_GRM launch BarrelVOX m=200 r=10 h=34 dist=178 T=14.5 arc=22 (want 22 room 470) tumble=3 voxel=1 scale=1.00
+T_GRM 1 BarrelVOX ph=1 tt=1.00/14.5 sc=1.00 mid=(473.5 512.0 18.2) step=2.75 v=(-2.46 0.00 1.22) ang=205 roll=0 pitch=25 hp=1000
+T_GRM 2 BarrelVOX ph=1 tt=2.00/14.5 sc=1.00 mid=(468.5 512.0 20.6) step=6.16 v=(-5.00 0.00 3.60) ang=230 roll=0 pitch=50 hp=1000
+T_GRM 3 BarrelVOX ph=1 tt=3.00/14.5 sc=1.00 mid=(461.7 512.0 23.6) step=7.45 v=(-6.81 0.00 3.02) ang=254 roll=0 pitch=74 hp=1000
+T_GRM 4 BarrelVOX ph=1 tt=4.00/14.5 sc=1.00 mid=(453.4 512.0 27.0) step=8.98 v=(-8.34 0.00 3.34) ang=279 roll=0 pitch=99 hp=1000
+T_GRM 5 BarrelVOX ph=1 tt=5.00/14.5 sc=1.00 mid=(443.7 512.0 30.3) step=10.27 v=(-9.70 0.00 3.38) ang=304 roll=0 pitch=124 hp=1000
+T_GRM 6 BarrelVOX ph=1 tt=6.00/14.5 sc=1.00 mid=(432.8 512.0 33.5) step=11.39 v=(-10.94 0.00 3.18) ang=329 roll=0 pitch=149 hp=1000
+T_GRM 7 BarrelVOX ph=1 tt=7.00/14.5 sc=1.00 mid=(420.7 512.0 36.2) step=12.40 v=(-12.10 0.00 2.72) ang=353 roll=0 pitch=173 hp=1000
+T_GRM 8 BarrelVOX ph=1 tt=8.00/14.5 sc=1.00 mid=(407.5 512.0 38.3) step=13.34 v=(-13.18 0.00 2.02) ang=378 roll=0 pitch=198 hp=1000
+T_GRM 9 BarrelVOX ph=1 tt=9.00/14.5 sc=1.00 mid=(393.3 512.0 39.3) step=14.25 v=(-14.21 0.00 1.08) ang=403 roll=0 pitch=223 hp=1000
+T_GRM 10 BarrelVOX ph=1 tt=10.00/14.5 sc=1.00 mid=(378.1 512.0 39.2) step=15.19 v=(-15.19 0.00 -0.12) ang=428 roll=0 pitch=248 hp=1000
+T_GRM 11 BarrelVOX ph=1 tt=11.00/14.5 sc=1.00 mid=(361.9 512.0 37.7) step=16.21 v=(-16.13 0.00 -1.56) ang=453 roll=0 pitch=273 hp=1000
+T_GRM 12 BarrelVOX ph=1 tt=12.00/14.5 sc=1.00 mid=(344.9 512.0 34.4) step=17.35 v=(-17.04 0.00 -3.24) ang=477 roll=0 pitch=297 hp=1000
+T_GRM 13 BarrelVOX ph=1 tt=13.00/14.5 sc=1.00 mid=(327.0 512.0 29.2) step=18.65 v=(-17.91 0.00 -5.19) ang=502 roll=0 pitch=322 hp=1000
+T_GRM 14 BarrelVOX ph=1 tt=14.00/14.5 sc=1.00 mid=(308.2 512.0 21.9) step=20.16 v=(-18.76 0.00 -7.38) ang=527 roll=0 pitch=347 hp=1000
+T_GRM land BarrelVOX (arrived) after 15 tics speed 20.2 down 7.4 peak 22.3 dmg 0 at (298.0 512.0 -0.0) floorz -0.0 fits 1

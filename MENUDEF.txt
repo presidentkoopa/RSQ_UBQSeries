@@ -35,6 +35,14 @@ OptionMenu "RSQGR_Options"
 	Slider "Monster Pull", "rsqgr_slide_speed", 2, 30, 1, 0
 	Slider "Heaviest Pulled", "rsqgr_mass_max", 100, 5000, 100, 0
 	StaticText " "
+	// ==== monster side ====
+	Option "Monster Hook", "rsqgr_monster_mode", "RSQGR_MonsterModes"
+	Option "Tumble", "rsqgr_yank_tumble", "RSQGR_Tumbles"
+	Option "Throw Damage", "rsqgr_yank_damage", "OnOff"
+	Option "Whip", "rsqgr_whip", "OnOff"
+	Option "Look", "rsqgr_looks", "RSQGR_LookSets"
+	StaticText " "
+	// ==== end monster side ====
 	Submenu "Rope and Tuning", "RSQGR_Tuning"
 	StaticText " "
 	SafeCommand "Reset All", "rsqgr_reset"
@@ -61,5 +69,37 @@ OptionMenu "RSQGR_Tuning"
 	Slider "Grab Reach", "rsqgr_grab_reach", 4, 40, 2, 0
 	Slider "Climb Speed Cap", "rsqgr_climb_cap", 2, 20, 1, 0
 	StaticText " "
+	// ==== monster side ====
+	Slider "Heaviest Thrown", "rsqgr_yank_mass", 100, 5000, 100, 0
+	Slider "Throw Air", "rsqgr_yank_air", 0.1, 1.0, 0.01, 2
+	Slider "Throw Turns", "rsqgr_yank_turns", 1, 3, 1, 0
+	Slider "Throw Stun", "rsqgr_yank_stun", 0, 35, 1, 0
+	Slider "Whip Reach", "rsqgr_whip_reach", 96, 320, 16, 0
+	Slider "Whip Damage", "rsqgr_whip_damage", 0, 40, 2, 0
+	Option "Whip Stun", "rsqgr_whip_stun", "OnOff"
+	Option "Whip Snag", "rsqgr_whip_snag", "OnOff"
+	StaticText " "
+	// ==== end monster side ====
 	Option "Debug Log", "rsqgr_debug", "OnOff"
 }
+
+// ==== monster side ====
+OptionValue "RSQGR_MonsterModes"
+{
+	0, "Slide"
+	1, "Yank"
+}
+OptionValue "RSQGR_Tumbles"
+{
+	0, "Off"
+	1, "Spin"
+	2, "Flip"
+	3, "Both"
+}
+OptionValue "RSQGR_LookSets"
+{
+	0, "JP"
+	1, "Combat FX"
+	2, "Ballistics"
+}
+// ==== end monster side ====

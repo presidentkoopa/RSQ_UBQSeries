@@ -13,3 +13,25 @@ Model RSQGR_Rope
 	CORRECTPIXELSTRETCH
 	FrameIndex RSGM A 0 0
 }
+
+// ==== monster side: RS_Ballistics' tracer mesh (80 x 7 units along X) for the Ballistics look ====
+// The claw in flight, a 20-unit streak along the line it was fired on.
+Model RSQGR_Hook
+{
+	Path "models/rsqgr"
+	Model 0 "btracer.obj"
+	Skin 0 "btracer.png"
+	Scale 0.25 0.25 0.25
+	FrameIndex RSGB A 0 0
+}
+// A wall hit's sparks: 6-unit streaks along their own flight.
+Model RSQGR_Streak
+{
+	Path "models/rsqgr"
+	Model 0 "btracer.obj"
+	Skin 0 "btracer.png"
+	Scale 0.075 0.075 0.075
+	USEACTORPITCH
+	FrameIndex RSGB A 0 0
+}
+// ==== end monster side ====

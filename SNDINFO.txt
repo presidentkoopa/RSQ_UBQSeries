@@ -4,3 +4,25 @@ rsqgr/swish         RSGSWISH
 rsqgr/loop          RSGPULCH
 rsqgr/hit/terrain   RSGMETAL
 rsqgr/hit/flesh     RSGMEAT
+
+// ==== monster side: the Combat FX and Ballistics look sets (looks.zs) ====
+// RS_CombatFX (the owner's well): shared draw, holster x3, unsorted foley x3
+rsqgr/cfx/draw      RSGXDRAW
+rsqgr/cfx/hol1      RSGXHOL1
+rsqgr/cfx/hol2      RSGXHOL2
+rsqgr/cfx/hol3      RSGXHOL3
+$random rsqgr/cfx/holster { rsqgr/cfx/hol1 rsqgr/cfx/hol2 rsqgr/cfx/hol3 }
+rsqgr/cfx/fol1      RSGXFOL1
+rsqgr/cfx/fol2      RSGXFOL2
+rsqgr/cfx/fol3      RSGXFOL3
+$random rsqgr/cfx/foley { rsqgr/cfx/fol1 rsqgr/cfx/fol2 rsqgr/cfx/fol3 }
+// RS_Ballistics (the owner's): near-miss whiz x4, near crack x2
+rsqgr/bal/wz1       RSGBWZ1
+rsqgr/bal/wz2       RSGBWZ2
+rsqgr/bal/wz3       RSGBWZ3
+rsqgr/bal/wz4       RSGBWZ4
+$random rsqgr/bal/whiz { rsqgr/bal/wz1 rsqgr/bal/wz2 rsqgr/bal/wz3 rsqgr/bal/wz4 }
+rsqgr/bal/crk1      RSGBCRK1
+rsqgr/bal/crk2      RSGBCRK2
+$random rsqgr/bal/crack { rsqgr/bal/crk1 rsqgr/bal/crk2 }
+// ==== end monster side ====

@@ -48,3 +48,41 @@ mass > rsqgr_mass_max (anchor instead; the seam is not called).
 
 ## Test kit (scratch, not shipped)
 `tools/rigtest/`: `build_probe.sh` (probe handler + generated GRTEST map: ledges, 768-wide pit, ceiling 512, 3D slab, tagged alcove), `gr.sh <name> <secs> "<console script>" [1 = full load order]`, `swing.py <log>` (turning points). Probe events: grp_tp x y ang, grp_summon idx dist angofs, grp_dir, grp_ceil raise amount, grp_hurt; cvar grp_log 1/2.
+
+# ==== monster side (branch agent-monster): monster.zs, whip.zs, looks.zs, 2026-10-27 ====
+
+## Done (measured, rig C, QZD 17.3; evidence logs and frames in test/evidence/, harness test/harness.zs, never shipped)
+| what | measured |
+|---|---|
+| Slide (default) | core's stub kept line for line (`RSQGR_Monster.Slide`); a monster over `rsqgr_yank_mass` or wider than 64 / taller than 110 slides even in Yank mode (Demon 400 with the limit at 300: 10 u/tic slide). |
+| Yank | DG's WorldHands path (e = t^1.6, arc 0.15 x dist capped by MeasureArc, 15 m/s, 6..70 tics) x weight (mass/100)^0.25 on time, / on arc. Vanilla imp 168 u: 12 tics, peak 24.9, lands 52 u in front of you, facing you. |
+| Slow motion | identical arc at any world speed: imp full 12 tics / quarter 47 tics, same landing spot (308,512), landing speed 27.2 both, damage 4 both. BD Imp, BullDemon, Baron, Caco, Mancubus, Arachnotron, RifleZombie, Arch-vile, Lost Soul on the full order: same peak and landing spot full vs 0.25, 4.0x the tics (table in the report). Rope cut mid-throw at the same path clock: same cut velocity (-14.12, 0, 4.02), same peak 61.5, same landing x 22.3, full vs 0.25. |
+| Tumble | Spin (angle, ends facing you), Flip (roll on sprites with ROLLSPRITE/ROLLCENTER; pitch via SetModelFlag on voxels, whole turns so it lands upright), Both. Frames: test/evidence/frames_spin.png, frames_flip.png; BD_VoxelPack barrel detected as voxel and flipped by pitch: frames_voxel_barrel.png. |
+| Landing | only TryMove/SetZ, a thing refused in Z too (comes down on a head: pushed off, falls); TestMobjLocation at landing: fits 1 in every run. Damage (speed-8) x 0.8, max 40: imp arrival 4, wall strike at 26.6 u/t 14. Death mid-flight: corpse finishes the path, flags restored, no landing damage. |
+| Whip | `rsqgr_whip 1`: core's fresh claw is taken back on the same netevent; crack at tic 4: imp at 120 u, 12 damage, Pain entered. Snag: tip on the alcove lintel 91 u above the hand -> core's own Latch(); reel and swing are core's (log w_snag.txt). |
+| Looks | JP / Combat FX / Ballistics: every Sound name resolves (H_SND), Ballistics claw = btracer mesh (RSGB), wall hit = 4 tracer streaks. |
+| Save/load | BullDemon mid-throw under slow motion, full order: saved, loaded twice (age 28 -> 26 twice), landed at the same spot as without the save; map change mid-throw and back: no errors. Script errors: only BD_VoxelPack's 4 voxeldef lines. |
+| Cost | full order, a Baron thrown: 0.036 ms mean, 0.075 max per tic (incl. logging). |
+
+## Not done
+- Carry/hold (monster dangling on the rope): core's 52-tic no-progress guard would drop it; would need a seam change.
+- Whip as a flick gesture: it cracks on the bind press along the hand.
+- Disarm: a Doom monster's attack is a state, not an item; the whip's forced Pain breaks off the attack, nothing more.
+
+## Open / needs the headset
+- Yank speed/arc feel (DG's numbers were tuned for objects to the hand, here monsters to your feet); 0.27 air after a cut makes a monster sail over you.
+- Whip: whether a button-cracked lash along the controller reads as a whip at all.
+- Combat FX set: the uploaded well has no impact sounds or art; hits stay JP's.
+
+## Cheello's Voxel Doom II (not available here) -- check when the pk3 arrives
+- `RSQGR_Voxels` must list its monster sprites (it reads VOXELDEF + voxels/ namespace); the launch log says voxel=1/0.
+- Pivots: Flip assumes the KVX pivot at the feet (BD_VoxelPack's, measured). If Cheello's pivots are centred, the WorldOffset fix will move the voxel off its path by half its height while flipping: watch a flipped imp.
+- Does it replace monster classes or only add VOXELDEF? Class-agnostic code either way; masses/radii come from whatever is loaded.
+- If it uses MODELDEF models instead of KVX: models are not detected (no API); Flip then rolls the sprite flags only and the model will not turn. Spin works regardless.
+
+## For core
+- Reset All: KEYCONF's monster block redefines `rsqgr_reset` = core's list + this side's; if core's list changes, regenerate both.
+- Whip takes back core's claw from its own NetworkProcess (registered after RSQGR_Input). A one-line seam in `RSQGR_Core.Press` (`if (RSQGR_Whip.Takes(...)) return;`) would be cleaner.
+
+## RSQ_SlowMo findings (for its owner; not edited here)
+See the report: (1) Consider() double-adds a thing spawned before the clock's WorldTick (summon, NetworkProcess) on a Gather tic -> tics x16 per tic, int overflow, monster frozen at tics 1; (2) Impulses() exempts a vertical push from the floor.

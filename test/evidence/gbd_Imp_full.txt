@@ -1,0 +1,14 @@
+H_SPAWN Imp at (476 512 0) dist 220 player (256 512 -0) ang 0 hand (266.2 503.5 36.8) poseGood 1
+T_GRM launch Imp m=100 r=16 h=56 dist=172 T=11.8 arc=26 (want 26 room 448) tumble=1 voxel=0 scale=1.00
+T_GRM 1 Imp ph=1 tt=1.00/11.8 sc=1.00 mid=(472.7 512.0 29.9) step=3.84 v=(-3.31 0.00 1.95) ang=210 roll=0 pitch=0 hp=1000
+T_GRM 2 Imp ph=1 tt=2.00/11.8 sc=1.00 mid=(466.0 512.0 33.7) step=8.80 v=(-6.73 0.00 5.67) ang=241 roll=0 pitch=0 hp=1000
+T_GRM 3 Imp ph=1 tt=3.00/11.8 sc=1.00 mid=(456.8 512.0 38.2) step=10.25 v=(-9.17 0.00 4.57) ang=271 roll=0 pitch=0 hp=1000
+T_GRM 4 Imp ph=1 tt=4.00/11.8 sc=1.00 mid=(445.6 512.0 43.0) step=12.21 v=(-11.23 0.00 4.79) ang=302 roll=0 pitch=0 hp=1000
+T_GRM 5 Imp ph=1 tt=5.00/11.8 sc=1.00 mid=(432.5 512.0 47.5) step=13.81 v=(-13.07 0.00 4.47) ang=332 roll=0 pitch=0 hp=1000
+T_GRM 6 Imp ph=1 tt=6.00/11.8 sc=1.00 mid=(417.7 512.0 51.1) step=15.18 v=(-14.74 0.00 3.61) ang=363 roll=0 pitch=0 hp=1000
+T_GRM 7 Imp ph=1 tt=7.00/11.8 sc=1.00 mid=(401.5 512.0 53.3) step=16.45 v=(-16.29 0.00 2.23) ang=393 roll=0 pitch=0 hp=1000
+T_GRM 8 Imp ph=1 tt=8.00/11.8 sc=1.00 mid=(383.7 512.0 53.7) step=17.76 v=(-17.76 0.00 0.32) ang=424 roll=0 pitch=0 hp=1000
+T_GRM 9 Imp ph=1 tt=9.00/11.8 sc=1.00 mid=(364.6 512.0 51.5) step=19.26 v=(-19.14 0.00 -2.12) ang=454 roll=0 pitch=0 hp=1000
+T_GRM 10 Imp ph=1 tt=10.00/11.8 sc=1.00 mid=(344.1 512.0 46.4) step=21.09 v=(-20.46 0.00 -5.09) ang=485 roll=0 pitch=0 hp=1000
+T_GRM 11 Imp ph=1 tt=11.00/11.8 sc=1.00 mid=(322.4 512.0 37.8) step=23.37 v=(-21.73 0.00 -8.61) ang=515 roll=0 pitch=0 hp=1000
+T_GRM land Imp (arrived) after 12 tics speed 23.4 down 9.8 peak 25.7 dmg 2 at (304.0 512.0 -0.0) floorz -0.0 fits 1
