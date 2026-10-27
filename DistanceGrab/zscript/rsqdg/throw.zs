@@ -48,6 +48,25 @@ class RSQDG_Throw : EventHandler
 	private int     wHand[MAX_WATCH];
 	private Actor   wHit[MAX_WATCH * MAX_VICTIMS];   // already struck by this throw
 	private Vector2 wBody[MAX_WATCH];    // the thrower's own velocity, added at release
+	private bool    wAir[MAX_WATCH];     // off the floor last tic (a re-catch now is a mid-air one)
+
+	// ---- the throw ledger: what a SCORER needs to know, after the fact ---------
+	//
+	// The watch above forgets a throw the tic it lands, and a barrel's blast comes
+	// tics after that (its death sequence runs first), so the facts a scorer asks
+	// about -- whose throw, how hard it landed, whether the landing set it off --
+	// are written here and kept for LOG_TICS. Read through RSQDG_ThrowService
+	// (bottom of this file); nothing here changes what a throw does.
+	// Serialized with the handler, like the watch.
+	const MAX_LOG  = 16;
+	const LOG_TICS = 350;       // ten seconds after the release
+	private Actor   lgA[MAX_LOG];        // the object
+	private Actor   lgBy[MAX_LOG];       // the thrower's pawn
+	private int     lgRel[MAX_LOG];      // level.maptime of the release
+	private int     lgCms[MAX_LOG];      // impact speed, cm/s; -1 until it lands
+	private bool    lgBlast[MAX_LOG];    // its hard landing set it off (or a thrown blast set it off)
+	private int     lgJuggle[MAX_LOG];   // mid-air re-catches carried into this throw
+	private bool    lgAloft[MAX_LOG];    // taken back into a hand / a pull before it landed
 
 	// ---- the settle list ---------------------------------------------------
 	//
@@ -186,7 +205,82 @@ class RSQDG_Throw : EventHandler
 		wStill[slot] = 0;
 		wHand[slot] = hand;
 		wBody[slot] = body;
+		wAir[slot] = false;
 		for (int v = 0; v < MAX_VICTIMS; v++) wHit[slot * MAX_VICTIMS + v] = null;
+		LogThrow(a, by);
+	}
+
+	// ---- the ledger --------------------------------------------------------
+
+	private int LogFind(Actor a) const
+	{
+		if (!a) return -1;
+		for (int k = 0; k < MAX_LOG; k++)
+			if (lgA[k] == a && level.maptime - lgRel[k] <= LOG_TICS) return k;
+		return -1;
+	}
+
+	private int LogSlot(Actor a)
+	{
+		int slot = -1, oldest = 0;
+		for (int k = 0; k < MAX_LOG; k++)
+		{
+			if (lgA[k] == a) return k;
+			if (!lgA[k] && slot < 0) slot = k;
+			if (lgRel[k] < lgRel[oldest]) oldest = k;
+		}
+		return slot >= 0 ? slot : oldest;
+	}
+
+	// A new throw of `a`. If it was caught back out of its previous throw before
+	// that one landed, the catch is carried: a juggle.
+	private void LogThrow(Actor a, Actor by)
+	{
+		int prev = LogFind(a);
+		int juggle = (prev >= 0 && lgAloft[prev]) ? lgJuggle[prev] + 1 : 0;
+		int k = LogSlot(a);
+		lgA[k] = a; lgBy[k] = by; lgRel[k] = level.maptime;
+		lgCms[k] = -1; lgBlast[k] = false; lgJuggle[k] = juggle; lgAloft[k] = false;
+	}
+
+	private void LogLanded(Actor a, double mps)
+	{
+		int k = LogFind(a);
+		if (k >= 0 && lgCms[k] < 0) lgCms[k] = int(mps * 100);
+	}
+
+	// Read by RSQDG_ThrowService. -1 when `a` is no recent throw.
+	int Ask(String request, Actor a) const
+	{
+		int k = LogFind(a);
+		if (k < 0) return -1;
+		if (request ~== "throw.by")     return (lgBy[k] && lgBy[k].player) ? lgBy[k].PlayerNumber() : -1;
+		if (request ~== "throw.age")    return level.maptime - lgRel[k];
+		if (request ~== "throw.cms")    return lgCms[k];
+		if (request ~== "throw.blast")  return lgBlast[k] ? 1 : 0;
+		if (request ~== "throw.juggle") return lgJuggle[k];
+		return -1;
+	}
+
+	// A BLAST IS THE THROWER'S, DOWN THE CHAIN. The engine already credits the kill
+	// (a barrel killed through DamageMobj with the thrower as source keeps him as its
+	// target, and its A_Explode passes that on -- measured, QZD 17.3 + brutal22test6:
+	// three imps killed by a thrown BarrelVOX, every one with target = the player,
+	// inflictor = the barrel). What it cannot say is that it was a THROW that set it
+	// off; a barrel shot by the same player looks identical. So a barrel that dies to
+	// a thrown blast is written down as one too, and so on along the chain.
+	override void WorldThingDied(WorldEvent e)
+	{
+		let a = e.Thing;
+		if (!a || a.bIsMonster || !e.Inflictor || e.Inflictor == a) return;
+		int src = LogFind(e.Inflictor);
+		if (src < 0 || !lgBlast[src]) return;
+		if (!(RSQDG_Mass.Flags(a) & RSQDG_Mass.FLIGHT_EXPLODE)) return;
+		Actor by = lgBy[src];
+		int rel = lgRel[src];
+		int k = LogSlot(a);
+		lgA[k] = a; lgBy[k] = by; lgRel[k] = rel;
+		lgCms[k] = lgCms[src]; lgBlast[k] = true; lgJuggle[k] = lgJuggle[src]; lgAloft[k] = false;
 	}
 
 	private void Forget(int i)
@@ -286,6 +380,7 @@ class RSQDG_Throw : EventHandler
 	private void Impact(int i, double speedMps, PlayerInfo p)
 	{
 		Actor a = wa[i];
+		LogLanded(a, speedMps);
 
 		// Everything shootable within reach of where it stopped, once each.
 		// COLLECTED FIRST, STRUCK AFTER (review): damage inside the iterator
@@ -325,6 +420,8 @@ class RSQDG_Throw : EventHandler
 		{
 			if (RSQDG_Reach.Flag("rsqdg_debug", p, false))
 				Console.Printf("[RSQDG] thrown %s went off at %.1f m/s", a.GetClassName(), speedMps);
+			int k = LogFind(a);
+			if (k >= 0) lgBlast[k] = true;      // before the damage: the ledger says why it went off
 			a.DamageMobj(null, wBy[i], a.Health, 'None', DMG_FORCED);
 		}
 	}
@@ -352,6 +449,10 @@ class RSQDG_Throw : EventHandler
 			let fl = RSQDG_Flight.Get();
 			if ((hold && hold.IsHeld(a)) || (fl && fl.IsFlying(a)))
 			{
+				// Caught back before it landed (it was off the floor last tic): the
+				// next throw of it carries the catch (the ledger's juggle).
+				int k = LogFind(a);
+				if (k >= 0 && wAir[i] && lgCms[k] < 0) lgAloft[k] = true;
 				Forget(i);
 				continue;
 			}
@@ -378,6 +479,7 @@ class RSQDG_Throw : EventHandler
 				}
 				if (hitT)
 				{
+					LogLanded(a, mps);
 					Strike(i, hitT, mps, p);
 					if (!wa[i]) { Forget(i); continue; }
 					// It does not sail on through: it hit something, and
@@ -401,6 +503,7 @@ class RSQDG_Throw : EventHandler
 
 			wLast[i] = speed;
 			wLastMps[i] = ImpactMps(a, a.Vel, wBody[i]);
+			wAir[i] = a.Pos.Z > a.FloorZ + 2 && !a.bOnMobj;
 			if (mps < 0.6) wStill[i]++;
 			else wStill[i] = 0;
 
@@ -414,11 +517,40 @@ class RSQDG_Throw : EventHandler
 		// plain, serialized handler.
 		if (e.IsSaveGame) return;
 		for (int i = 0; i < MAX_WATCH; i++) Forget(i);
+		for (int k = 0; k < MAX_LOG; k++) { lgA[k] = null; lgBy[k] = null; }
 	}
 
 	override void WorldUnloaded(WorldEvent e)
 	{
 		for (int k = 0; k < MAX_SETTLE; k++) Finish(k, true);
 		for (int i = 0; i < MAX_WATCH; i++) Forget(i);
+	}
+}
+
+
+// THE THROW, FOR A SCORER (RSQ_Score's physical bonuses), found by name like the
+// rig's RSQTR_RigService -- nothing links. Every answer is -1 when there is nothing
+// to say.
+//   GetInt("throw.by",     "", 0, 0, object)   player number of whoever threw it
+//   GetInt("throw.age",    "", 0, 0, object)   tics since it left the hand
+//   GetInt("throw.cms",    "", 0, 0, object)   how hard it landed, cm/s (-1 in flight)
+//   GetInt("throw.blast",  "", 0, 0, object)   1: its throw set it off (or a thrown blast did)
+//   GetInt("throw.juggle", "", 0, 0, object)   times it was caught back out of the air first
+//   GetInt("hold.full",    "", hand, 0, pawn)  1 while that hand carries something
+// A throw is remembered for ten seconds after the release. The hands, like the rest
+// of the grab, are the console player's own (hold.full is 0 for anyone else).
+class RSQDG_ThrowService : Service play
+{
+	override int GetInt(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
+	{
+		if (request ~== "hold.full")
+		{
+			let who = Actor(objectArg);
+			if (who && who.player != players[consoleplayer]) return 0;
+			let hold = RSQDG_Hold.Get();
+			return (hold && hold.HandIsFull(intArg & 1)) ? 1 : 0;
+		}
+		let th = RSQDG_Throw.Get();
+		return th ? th.Ask(request, Actor(objectArg)) : -1;
 	}
 }
