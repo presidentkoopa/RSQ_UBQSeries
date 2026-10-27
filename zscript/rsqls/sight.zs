@@ -298,7 +298,7 @@ class RSQLS_Sight : EventHandler
 			int hc = RSQLS_Hand.Opt("rsqls_col_head", p, 0xFFFFFF);
 			if (RSQLS_Hand.Flag("rsqls_head_pulse", p, true))
 			{
-				double hz = RSQLS_Hand.Num("rsqls_head_pulse_hz", p, 4.0);
+				double hz = RSQLS_A11y.Hz(RSQLS_Hand.Num("rsqls_head_pulse_hz", p, 4.0));   // Photosensitive Mode: <= 2.5
 				double ph = 0.5 + 0.5 * sin(level.maptime * hz * 360.0 / TICRATE);
 				// Quantised to 8 steps, again for the cache.
 				c = RSQLS_Colors.Mix(c, hc, floor(ph * 8.0) / 8.0);
@@ -567,12 +567,12 @@ class RSQLS_Sight : EventHandler
 		// CONSTANT APPARENT SIZE: about half a degree across at any range (a real
 		// laser sight reads at roughly that), with a floor so it never shrinks to
 		// nothing up close.
-		double sc = RSQLS_Hand.Num("rsqls_spot_size", p, 1.0) * (0.03 + dist / 2000.0);
+		double sc = RSQLS_Hand.Num("rsqls_spot_size", p, 1.0) * (0.03 + dist / 2000.0) * RSQLS_A11y.Cue();   // Cue Size (the glow follows)
 		if (hostile && RSQLS_Hand.Flag("rsqls_lock", p, true))
 		{
 			// TARGET LOCK: it TIGHTENS onto the target and bites at the pulse rate.
 			double tighten = clamp(RSQLS_Hand.Num("rsqls_lock_tighten", p, 0.0), 0.0, 0.9);
-			double hz = RSQLS_Hand.Num("rsqls_lock_rate", p, 2.2);
+			double hz = RSQLS_A11y.Hz(RSQLS_Hand.Num("rsqls_lock_rate", p, 2.2));   // Photosensitive Mode: <= 2.5
 			double depth = RSQLS_CB.Mode() ? 0.25 : 0.12;   // colour-blind play: the lock reads by its pulse
 			sc *= (1.0 - tighten) * (1.25 + depth * sin(level.maptime * hz * 360.0 / TICRATE));
 		}
@@ -626,7 +626,7 @@ class RSQLS_Sight : EventHandler
 		double total = 0;
 		for (int i = 1; i < n; i++) total += (ArcAt(i) - ArcAt(i - 1)).Length();
 		if (total < 1) { HideArc(h); return; }
-		double size = RSQLS_Hand.Num("rsqls_arc_size", p, 1.0) * 0.022;
+		double size = RSQLS_Hand.Num("rsqls_arc_size", p, 1.0) * 0.022 * RSQLS_A11y.Cue();   // Cue Size
 		double alpha = clamp(RSQLS_Hand.Num("rsqls_arc_a", p, 0.8), 0.0, 1.0);
 		int seg = 1;
 		double segStart = 0, segLen = (ArcAt(1) - ArcAt(0)).Length();
@@ -744,7 +744,7 @@ class RSQLS_Sight : EventHandler
 		Vector3 d = eye - at;
 		readout.Angle = VectorAngle(d.x, d.y);
 		readout.Pitch = -atan2(d.z * RSQLS_Hand.PIXELSTRETCH, d.xy.Length());
-		sc *= RSQLS_Hand.Num("rsqls_readout_size", p, 1.0);
+		sc *= RSQLS_Hand.Num("rsqls_readout_size", p, 1.0) * RSQLS_A11y.Text();   // RSQ_Accessibility's Text Size
 		readout.Scale = (sc, sc);
 		readM = rangeM[h];
 		readRgb = rangeRgb[h];
