@@ -8,6 +8,9 @@ user string rsqtr_keys_off    = "443 436"; // key codes that are the OFF grip (4
 user int    rsqtr_markers     = 1;       // region rings: 0 never, 1 when a hand is near, 2 always
 user bool   rsqtr_icons       = true;
 user float  rsqtr_icon_scale  = 1.0;
+user float  rsqtr_icon_m      = 0.25;    // metres: every measured gun stored on the body (a pistol's length)
+user string rsqtr_icon_flip    = "";      // weapon class names shown turned round (if still backwards in your pack)
+user float  rsqtr_icon_back_m = 0.70;    // metres: one over the shoulders, on the back
 user float  rsqtr_icon_turn   = 0;       // degrees: turn every stored weapon (for a pack whose models face another way)     // size of the stored weapon shown at its region    // show the weapon last holstered at its region
 user bool   rsqtr_haptics     = true;
 user bool   rsqtr_messages    = false;
@@ -31,8 +34,8 @@ user float rsqtr_r2_f = 0.15;  user float rsqtr_r2_l =  0.00; user float rsqtr_r
 user float rsqtr_r3_f = 0.15;  user float rsqtr_r3_l =  0.00; user float rsqtr_r3_u = -0.58; user float rsqtr_r3_rad = 0.11;
 user float rsqtr_r4_f = -0.08; user float rsqtr_r4_l =  0.18; user float rsqtr_r4_u = -0.10; user float rsqtr_r4_rad = 0.14;
 user float rsqtr_r5_f = -0.08; user float rsqtr_r5_l = -0.18; user float rsqtr_r5_u = -0.10; user float rsqtr_r5_rad = 0.14;
-user float rsqtr_r6_f = 0.13;  user float rsqtr_r6_l =  0.11; user float rsqtr_r6_u = -0.27; user float rsqtr_r6_rad = 0.08;
-user float rsqtr_r7_f = 0.13;  user float rsqtr_r7_l = -0.11; user float rsqtr_r7_u = -0.27; user float rsqtr_r7_rad = 0.08;
+user float rsqtr_r6_f = 0.07;  user float rsqtr_r6_l =  0.17; user float rsqtr_r6_u = -0.36; user float rsqtr_r6_rad = 0.08;
+user float rsqtr_r7_f = 0.07;  user float rsqtr_r7_l = -0.17; user float rsqtr_r7_u = -0.36; user float rsqtr_r7_rad = 0.08;
 user float rsqtr_r8_f = -0.15; user float rsqtr_r8_l =  0.00; user float rsqtr_r8_u = -0.62; user float rsqtr_r8_rad = 0.12;
 
 // What each place holds: the Doom weapon slots it takes (a list).
