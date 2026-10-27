@@ -392,11 +392,19 @@ class RSQDG_Laser : EventHandler
 			// computed here and ZERO offsets -- P_LineTrace accumulates offsets
 			// onto an uninitialised vector exactly when OverrideAttackPosDir is
 			// true, which in VR is always.
+			// ALONG THE HAND AS THE CONE TESTS IT. Dir is a ROOM direction (the
+			// controller's real pitch), and map space is the room squashed 1.2x
+			// vertically -- so in map units the hand points along (x, y, z / 1.2).
+			// Traced at the raw pitch, the line ran steeper than the hand and the
+			// cone around it (measured: 25.7 deg up drawn at 30.0).
 			double reach = RSQDG_Reach.Num("rsqdg_reach", p, 512.0);
+			Vector3 rd = RSQDG_Reach.Dir(pmo, h);
+			Vector3 md = (rd.x, rd.y, rd.z / RSQDG_Reach.PIXELSTRETCH);
+			double mpit = -atan2(md.z, md.xy.Length());
 			FLineTraceData t;
-			bool hit = pmo.LineTrace(RSQDG_Reach.Yaw(pmo, h), reach, RSQDG_Reach.DoomPitch(pmo, h),
+			bool hit = pmo.LineTrace(RSQDG_Reach.Yaw(pmo, h), reach * md.Length(), mpit,
 				TRF_ABSPOSITION | TRF_THRUACTORS, realPalm.z, realPalm.x, realPalm.y, t);
-			to = hit ? t.HitLocation : (realPalm + RSQDG_Reach.Dir(pmo, h) * reach);
+			to = hit ? t.HitLocation : (realPalm + md * reach);
 			to = LeadTo(h, to);
 		}
 		if (onThing) toPrimed[h] = false;   // a thing's middle does not slide
@@ -419,9 +427,15 @@ class RSQDG_Laser : EventHandler
 			// pitched a quarter turn past the aim to lay that axis along it.
 			b.Pitch = pit + 90;
 			b.Roll  = 0;
-			double w = RSQDG_Reach.Num("rsqdg_beam_w", p, 1.0);
+			// EVERY STATE IS ITS OWN LINE (rs_grabviz.zs DrawAimBeams): WorldHands
+			// gives idle, considering and locked each a thickness and an opacity --
+			// 0.4 / 0.7 / 0.9 thick, 0.35 / 1.0 / 1.0 opaque -- because they are three
+			// different messages and telling them apart at a glance is why the line
+			// is drawn at all. Locked is the full rsqdg_beam_w; the others in
+			// WorldHands' proportion to it.
+			double w = RSQDG_Reach.Num("rsqdg_beam_w", p, 1.0) * ((state == 2) ? 1.0 : ((state == 1) ? 0.7 / 0.9 : 0.4 / 0.9));
 			b.Scale = (w, len / BEAM_L);
-			b.Alpha = RSQDG_Reach.Num("rsqdg_beam_a", p, 0.8) * dim;
+			b.Alpha = RSQDG_Reach.Num("rsqdg_beam_a", p, 0.8) * ((state == 0) ? 0.35 : 1.0);
 			b.Translation = tint;
 		}
 		else Hide(beam[h], h);
@@ -465,8 +479,14 @@ class RSQDG_Laser : EventHandler
 
 		// Aimed by the hand's ROOM direction -- the same direction cone.zs
 		// tests along (it scales Dir's Z by pixelstretch before comparing).
+		// leadDir is a ROOM direction already; RoomAim takes a MAP vector, so it
+		// is handed the map form (z / 1.2) and gives the room pitch back. Feeding
+		// it the room vector raw stretched the pitch twice: the drawn cone sat
+		// 1.9 deg off the tested one at 9.5 deg down and 4.3 deg off at 25.7 up
+		// (measured, rig, 10-27).
+		Vector3 ld = leadDir[h];
 		double yaw, pit, len;
-		[yaw, pit, len] = RoomAim(leadDir[h]);
+		[yaw, pit, len] = RoomAim((ld.x, ld.y, ld.z / RSQDG_Reach.PIXELSTRETCH));
 		c.Angle = yaw;
 		c.Pitch = pit;
 		c.Roll  = 0;

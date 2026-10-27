@@ -15,7 +15,8 @@ AddOptionMenu "OptionsMenu"
 OptionValue "RSQDG_FlightMode"
 {
 	0, "Steer"
-	1, "Arc"
+	1, "Lob"
+	2, "WorldHands"
 }
 
 OptionMenu "RSQDG_Options"
@@ -33,19 +34,18 @@ OptionMenu "RSQDG_Options"
 	Option "Corpses", "rsqdg_corpses", "OnOff"
 	StaticText " "
 	Option "Flight Path", "rsqdg_flight_mode", "RSQDG_FlightMode"
-	Slider "Arc Height", "rsqdg_arc_apex", 0.25, 3.0, 0.25, 2
+	Slider "Tumble", "rsqdg_tumble", -2.0, 2.0, 0.5, 1
 	Slider "Throw Strength", "rsqdg_throw_scale", 0.25, 4.0, 0.25, 2
 	StaticText " "
 	Option "Beam", "rsqdg_beam", "OnOff"
 	Option "Haptics", "rsqdg_haptics", "OnOff"
-	Option "Sound", "rsqdg_sound", "OnOff"
 	Option "Lift Doors", "rsqdg_door", "OnOff"
 	StaticText " "
 	Submenu "Gesture", "RSQDG_Gesture"
 	Submenu "Pull", "RSQDG_Flight"
 	Submenu "Catch and Carry", "RSQDG_Catch"
 	Submenu "Beam and Glow", "RSQDG_Laser"
-	Submenu "Haptics and Sound", "RSQDG_Feel"
+	Submenu "Haptics", "RSQDG_Feel"
 	Submenu "Doors", "RSQDG_Doors"
 	Submenu "Controls", "RSQDG_Keys"
 	StaticText " "
@@ -68,6 +68,12 @@ OptionMenu "RSQDG_Gesture"
 OptionMenu "RSQDG_Flight"
 {
 	Title "PULL"
+	Slider "Arc Speed", "rsqdg_path_speed", 4, 40, 1, 1
+	Slider "Arc Height", "rsqdg_path_arc", 0.0, 0.5, 0.05, 2
+	Slider "Arc Pull-In", "rsqdg_path_accel", 1.0, 3.0, 0.1, 1
+	StaticText " "
+	Slider "Lob Height", "rsqdg_arc_apex", 0.25, 3.0, 0.25, 2
+	StaticText " "
 	Slider "Pull Speed", "rsqdg_flight_speed", 2, 40, 1, 1
 	Slider "Steering", "rsqdg_steer", 5, 150, 5, 0
 	Slider "Pull Strength", "rsqdg_pull_kg", 1, 100, 1, 0
@@ -92,6 +98,10 @@ OptionMenu "RSQDG_Catch"
 	Slider "Break Distance", "rsqdg_hold_break", 0.0, 4.0, 0.25, 2
 	Option "Heavy Slows You", "rsqdg_burden", "OnOff"
 	Slider "Half Speed Mass", "rsqdg_burden_kg", 20, 400, 10, 0
+	Option "Tip With Wrist", "rsqdg_hold_turn", "OnOff"
+	Slider "Heavy Sag", "rsqdg_hold_sag", 0.0, 2.0, 0.25, 2
+	StaticText " "
+	Slider "Throw Gravity", "rsqdg_air_gravity", 0.1, 1.0, 0.01, 2
 }
 
 OptionMenu "RSQDG_Laser"
@@ -115,14 +125,13 @@ OptionMenu "RSQDG_Laser"
 
 OptionMenu "RSQDG_Feel"
 {
-	Title "HAPTICS AND SOUND"
+	Title "HAPTICS"
 	Option "Approach Ping", "rsqdg_haptic_ramp", "OnOff"
 	Option "Rumble", "rsqdg_rumble", "OnOff"
 	Slider "Rumble Strength", "rsqdg_rumble_gain", 0.0, 2.0, 0.1, 1
 	Slider "Locked Rumble", "rsqdg_rumble_lock", 0.0, 0.6, 0.05, 2
 	Option "Held Back Rumble", "rsqdg_rumble_carry", "OnOff"
 	StaticText " "
-	Slider "Volume", "rsqdg_sound_vol", 0.0, 1.0, 0.05, 2
 	Option "Catch Flash", "rsqdg_catch_flash", "OnOff"
 }
 
@@ -154,5 +163,5 @@ OptionMenu "RSQDG_Debug"
 	Option "Report Actions", "rsqdg_debug", "OnOff"
 	Option "Report Refusals", "rsqdg_trace", "OnOff"
 	StaticText " "
-	SafeCommand "Reset All", "resetcvar rsqdg_on rsqdg_reach rsqdg_spread rsqdg_sight rsqdg_corpses rsqdg_barrels rsqdg_weapons rsqdg_powerups rsqdg_button rsqdg_palm rsqdg_palm_roll rsqdg_palm_tol rsqdg_palm_pitch rsqdg_jump_m rsqdg_lock_dwell rsqdg_yield rsqdg_steady_m rsqdg_lightup rsqdg_glow rsqdg_glow_a rsqdg_voxel_flash rsqdg_flash rsqdg_flick_deg rsqdg_flight_speed rsqdg_steer rsqdg_pull_kg rsqdg_flight_gravity rsqdg_flight_mode rsqdg_arc_apex rsqdg_flight_duck rsqdg_flight_radius rsqdg_flight_timeout rsqdg_catch_radius rsqdg_catch_hold rsqdg_catch_takes rsqdg_throw_scale rsqdg_arm_kg rsqdg_throw_j rsqdg_throw_min rsqdg_throw_explode rsqdg_hold_dist rsqdg_hold_k rsqdg_hold_vmax rsqdg_hold_break rsqdg_burden rsqdg_burden_kg rsqdg_beam rsqdg_beam_yield rsqdg_beam_w rsqdg_beam_a rsqdg_dot rsqdg_dot_size rsqdg_cone rsqdg_cone_a rsqdg_lead rsqdg_laser_idle rsqdg_haptics rsqdg_haptic_ramp rsqdg_rumble rsqdg_rumble_gain rsqdg_rumble_lock rsqdg_rumble_carry rsqdg_sound rsqdg_sound_vol rsqdg_catch_flash rsqdg_debug rsqdg_trace rsqdg_door rsqdg_door_grip rsqdg_door_use rsqdg_door_palm rsqdg_door_commit rsqdg_door_gain", "Reset all Distance Grab settings?"
+	SafeCommand "Reset All", "resetcvar rsqdg_on rsqdg_reach rsqdg_spread rsqdg_sight rsqdg_corpses rsqdg_barrels rsqdg_weapons rsqdg_powerups rsqdg_button rsqdg_palm rsqdg_palm_roll rsqdg_palm_tol rsqdg_palm_pitch rsqdg_jump_m rsqdg_lock_dwell rsqdg_yield rsqdg_steady_m rsqdg_lightup rsqdg_glow rsqdg_glow_a rsqdg_voxel_flash rsqdg_flash rsqdg_flick_deg rsqdg_flight_speed rsqdg_steer rsqdg_pull_kg rsqdg_flight_gravity rsqdg_flight_mode rsqdg_arc_apex rsqdg_flight_duck rsqdg_flight_radius rsqdg_flight_timeout rsqdg_catch_radius rsqdg_catch_hold rsqdg_catch_takes rsqdg_throw_scale rsqdg_arm_kg rsqdg_throw_j rsqdg_throw_min rsqdg_throw_explode rsqdg_hold_dist rsqdg_hold_k rsqdg_hold_vmax rsqdg_hold_break rsqdg_burden rsqdg_burden_kg rsqdg_beam rsqdg_beam_yield rsqdg_beam_w rsqdg_beam_a rsqdg_dot rsqdg_dot_size rsqdg_cone rsqdg_cone_a rsqdg_lead rsqdg_laser_idle rsqdg_haptics rsqdg_haptic_ramp rsqdg_rumble rsqdg_rumble_gain rsqdg_rumble_lock rsqdg_rumble_carry rsqdg_path_speed rsqdg_path_tmin rsqdg_path_tmax rsqdg_path_accel rsqdg_path_arc rsqdg_tumble rsqdg_air_gravity rsqdg_air_flutter rsqdg_air_maxtics rsqdg_hold_turn rsqdg_hold_sag rsqdg_catch_flash rsqdg_debug rsqdg_trace rsqdg_door rsqdg_door_grip rsqdg_door_use rsqdg_door_palm rsqdg_door_commit rsqdg_door_gain", "Reset all Distance Grab settings?"
 }
