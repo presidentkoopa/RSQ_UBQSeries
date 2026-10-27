@@ -427,9 +427,15 @@ class RSQDG_Laser : EventHandler
 			// pitched a quarter turn past the aim to lay that axis along it.
 			b.Pitch = pit + 90;
 			b.Roll  = 0;
-			double w = RSQDG_Reach.Num("rsqdg_beam_w", p, 1.0);
+			// EVERY STATE IS ITS OWN LINE (rs_grabviz.zs DrawAimBeams): WorldHands
+			// gives idle, considering and locked each a thickness and an opacity --
+			// 0.4 / 0.7 / 0.9 thick, 0.35 / 1.0 / 1.0 opaque -- because they are three
+			// different messages and telling them apart at a glance is why the line
+			// is drawn at all. Locked is the full rsqdg_beam_w; the others in
+			// WorldHands' proportion to it.
+			double w = RSQDG_Reach.Num("rsqdg_beam_w", p, 1.0) * ((state == 2) ? 1.0 : ((state == 1) ? 0.7 / 0.9 : 0.4 / 0.9));
 			b.Scale = (w, len / BEAM_L);
-			b.Alpha = RSQDG_Reach.Num("rsqdg_beam_a", p, 0.8) * dim;
+			b.Alpha = RSQDG_Reach.Num("rsqdg_beam_a", p, 0.8) * ((state == 0) ? 0.35 : 1.0);
 			b.Translation = tint;
 		}
 		else Hide(beam[h], h);
