@@ -17,7 +17,7 @@ user bool   rsqtr_messages    = false;
 user float  rsqtr_reach       = 1.0;     // scales every region's radius
 user bool   rsqtr_yield_shield = true;   // leave the off shoulder to RS_ShieldSawQ while its shield is stowed there
 user float  rsqtr_eye_m       = 0;       // your eye height in metres ("Measure my height"; 0 = the 1.62 m the defaults are made for)
-user int    rsqtr_pairs       = 2;       // draw a gun as a PAIR (its off-hand copy too): 0 never, 1 if it went away as a pair, 2 whenever you have both
+user int    rsqtr_pairs       = 0;       // the off-hand copy with a holstered gun: 0 never (Dual is its own key), 1 if it went away as a pair, 2 whenever you have both
 user bool   rsqtr_edit        = false;   // move the regions with your hands: grip in one, carry it, let go
 user int    rsqtr_mirror      = 1;       // a mirror in front of you: 0 off, 1 while moving the regions, 2 always
 user int    rsqtr_mirror_view = 2;       // the mirror shows 0 your front, 1 your back, 2 both side by side
