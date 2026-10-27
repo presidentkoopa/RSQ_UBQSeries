@@ -5,6 +5,7 @@
 // as well (every archive's ZSCRIPT is read): it adds new classes only and shadows nothing.
 version "4.14"
 
+#include "rsq/zscript/a11y.zs"
 #include "rsq/zscript/core.zs"
 #include "rsq/zscript/gloves.zs"
 #include "rsq/zscript/slappers.zs"

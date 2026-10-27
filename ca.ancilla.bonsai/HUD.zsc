@@ -370,3 +370,20 @@ class RSQGB_CB
 		return m ? Rgb(role, m) : own;
 	}
 }
+
+// RSQGB_Photo -- RSQ_Accessibility's Photosensitive Mode (rsqa_photosafe) for the shadowed Gun Bonsai
+// files, which compile under Gun Bonsai's own ZSCRIPT (version 2.5, before services): only the three
+// reads they need. The rest of the round-two settings are RSQGB_A11y (rsq/zscript/a11y.zs, the
+// series template). Without RSQ_Accessibility, or off, every answer is "as Gun Bonsai does it".
+class RSQGB_Photo
+{
+	static clearscope bool On()
+	{
+		CVar cv = null; { Name rsqaN = "RSQA_Menu"; class<Object> rsqaC = rsqaN; if (rsqaC) cv = CVar.FindCVar("rsqa_photosafe"); }  // only while RSQ_Accessibility is loaded
+		return cv && cv.GetInt() != 0;
+	}
+	// a strong flash at 40% of its brightness
+	static clearscope double Dim(double v) { return On() ? v * 0.4 : v; }
+	// at least 14 tics between strong flashes (2.5 a second)
+	static clearscope bool Gap(int sinceLast) { return !On() || sinceLast >= 14; }
+}

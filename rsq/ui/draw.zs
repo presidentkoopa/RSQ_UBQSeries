@@ -10,6 +10,7 @@
 class RSQUI_Pen ui
 {
 	double ox, oy, u;   // screen px of design (0,0), and screen px per design unit
+	double ts;          // RSQ_Accessibility's Text Size (1 = the mockups' own sizes)
 	Font fPix, fTerm, fChrome, fOrb;
 	// One Shape2D per polygon per frame: the 2D drawer keeps a reference and renders later, so a
 	// shape refilled for the next polygon would redraw as that one (or not at all).
@@ -26,6 +27,7 @@ class RSQUI_Pen ui
 		p.fChrome = BigFont;
 		p.white = TexMan.CheckForTexture("RSQWHITE", TexMan.Type_Any);
 		p.u = 1;
+		p.ts = 1;
 		return p;
 	}
 
@@ -52,6 +54,7 @@ class RSQUI_Pen ui
 		double sx, sy, sw, sh;
 		[sx, sy, sw, sh] = SafeArea();
 		u = min(sw / dw, sh / dh) * scaleMul;
+		ts = RSQGB_A11y.Text();
 		ox = sx + (sw - dw * u) * 0.5;
 		oy = sy + (sh - dh * u) * vpos;
 	}
@@ -66,6 +69,7 @@ class RSQUI_Pen ui
 		// the mockup's top row (two gauges and the score) needs 660 units across: a near-square
 		// headset layer is narrower than the 16:9 mockup, so it scales by width there
 		u = min(sh / 540.0, sw / 660.0) * clamp(Setting("rsq_ui_hud_scale", 1.0), 0.4, 2.5);
+		ts = RSQGB_A11y.Text();
 		ox = sx; oy = sy;
 	}
 	// Design width of the safe area in HUD units (for right-anchoring).
@@ -167,12 +171,13 @@ class RSQUI_Pen ui
 	}
 
 	// ---- text ----
-	// size = the font's line height in design units.
-	double Scale(Font f, double size) { return size / max(1, f.GetHeight()) * u; }
+	// size = the font's line height in design units (times Text Size: the layout stays, the words grow,
+	// and wrapped text re-wraps to the same width).
+	double Scale(Font f, double size) { return size * ts / max(1, f.GetHeight()) * u; }
 	double ScaleY(Font f, double size) { return Scale(f, size); }
 
 	double Width(Font f, double size, String s) { return f.StringWidth(s) * Scale(f, size) / u; }
-	double Height(Font f, double size) { return size; }
+	double Height(Font f, double size) { return size * ts; }
 
 	// Doom's fonts start their capitals at the top of the line.
 	double CapTop(Font f, double size) { return 0; }
@@ -276,7 +281,7 @@ class RSQUI_Pen ui
 		for (int i = 0; i < lines.Size() && i < maxLines; i++)
 		{
 			Text(f, size, lines[i], x, y, c, 0, alpha);
-			y += lineh;
+			y += lineh * ts;
 		}
 		return y;
 	}

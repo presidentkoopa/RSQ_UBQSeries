@@ -144,8 +144,9 @@ class TFLV_Upgrade_Dot : Inventory {
       } else if (stylin == 0) {
         // Last tic, turn off flashy flashy
         owner.RestoreRenderStyle();
-      } else if (random[TFLV_Upgrade_RNG_DotFlash](0, -stylin) > 5) {
+      } else if (random[TFLV_Upgrade_RNG_DotFlash](0, -stylin) > 5 && RSQGB_Photo.Gap(-stylin)) {
         // Not currently flashing? chance to start based on how long it's been.
+        // (VR PATCH: RSQ_Accessibility's Photosensitive Mode waits 14 tics between flashes.)
         stylin = 1+ceil(stacks**0.5);
       }
       --stylin;

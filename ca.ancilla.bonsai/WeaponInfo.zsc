@@ -219,7 +219,7 @@ class TFLV_WeaponInfo : Object play {
     EventHandler.SendNetworkEvent("bonsai-level-up", 1, self.level+1);
     let flash = TFLV_Settings.levelup_flash();
     if (flash) {
-      wpn.owner.A_SetBlend(flash, 0.8, 40);
+      wpn.owner.A_SetBlend(flash, RSQGB_Photo.Dim(0.8), 40);   // VR PATCH: Photosensitive Mode, 40%
     }
     if (TFLV_Settings.levelup_sound() != "") {
       wpn.owner.A_StartSound(TFLV_Settings.levelup_sound(), CHAN_AUTO,

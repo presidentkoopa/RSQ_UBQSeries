@@ -1098,8 +1098,9 @@ class TFLV_PerPlayerStats : Object play {
     EventHandler.SendNetworkEvent("bonsai-level-up", 0, self.level+1);
     let flash = TFLV_Settings.levelup_flash();
     if (flash) {
-      owner.A_SetBlend(flash, 0.8, 35);
-      owner.A_SetBlend(flash, 0.4, 105);
+      // VR PATCH: RSQ_Accessibility's Photosensitive Mode dims the whole-view flash to 40%
+      owner.A_SetBlend(flash, RSQGB_Photo.Dim(0.8), 35);
+      owner.A_SetBlend(flash, RSQGB_Photo.Dim(0.4), 105);
     }
     if (TFLV_Settings.levelup_sound() != "") {
       owner.A_StartSound(TFLV_Settings.levelup_sound(), CHAN_AUTO,
