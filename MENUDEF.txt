@@ -85,6 +85,7 @@ OptionMenu "RSQTR_Options"
 	StaticText ""
 	StaticText "Torso", 1
 	Option "Wear a torso (shows armour and health)", "rsqtr_vest", "OnOff"
+	Option "Torso fades when you look down", "rsqtr_vest_fade", "OnOff"
 	Option "Torso", "rsqtr_vest_style", "RSQTR_VestStyle"
 	Slider "Torso: collar below your eyes, metres", "rsqtr_vest_u", -0.45, 0.0, 0.01, 2
 	Slider "Torso: forward, metres", "rsqtr_vest_f", -0.20, 0.15, 0.01, 2

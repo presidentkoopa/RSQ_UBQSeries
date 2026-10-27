@@ -55,7 +55,14 @@ class RSQTR_Torso : EventHandler
 		}
 		// The marine has no bare look: green unless blue (RS_VRBody's rule); its frames are
 		// green, blue, red. The Quake torso's: own, green, blue, red.
-		Place(body, at, yaw, sz, marine ? (skin == 2 ? 1 : 0) : skin, 1.0);
+		// IT FADES AS YOU LOOK DOWN (the owner, 10-27: "can the torsos fade out when I look down,
+		// I can't see my holsters or stored weapons"). Solid looking ahead; from 25 degrees down
+		// it thins, to a ghost (0.12) by 50, so the holsters and the guns on them show through.
+		double fade = 1.0;
+		if (RSQTR_Rig.CVarOn("rsqtr_vest_fade"))
+			fade = clamp(1.0 - (pmo.pitch - 25.0) / 25.0, 0.12, 1.0);
+		Place(body, at, yaw, sz, marine ? (skin == 2 ? 1 : 0) : skin, fade);
+		body.A_SetRenderStyle(fade, fade > 0.99 ? STYLE_Normal : STYLE_Translucent);
 
 		// Red breathing over it at low health.
 		int low = int(RSQTR_Rig.Num("rsqtr_vest_low", p, 35));
@@ -64,7 +71,7 @@ class RSQTR_Torso : EventHandler
 			if (!breath) breath = Actor.Spawn(cls, at);
 			if (breath)
 			{
-				double a = 0.25 + 0.35 * (0.5 + 0.5 * sin(level.maptime * 9.0));
+				double a = (0.25 + 0.35 * (0.5 + 0.5 * sin(level.maptime * 9.0))) * fade;
 				Place(breath, at, yaw, sz * 1.003, marine ? 2 : 3, a);
 				breath.A_SetRenderStyle(a, STYLE_Translucent);
 			}
