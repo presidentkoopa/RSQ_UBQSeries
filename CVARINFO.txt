@@ -1,0 +1,34 @@
+// RSQ_SlowMo settings. SERVER settings change everyone's world (the host's);
+// USER settings are yours. Same names as RS_SlowMo where they mean the same.
+
+// ---- the world's (RS_SlowMo's names)
+server float rsm_depth        = 0.25;   // how slow: 1 normal, 0.25 quarter speed
+server float rsm_ramp_in      = 0.15;   // seconds to slow down over
+server float rsm_ramp_out     = 0.40;   // seconds to come back over
+server bool  rsm_yield        = true;   // stand down if Bullet Time X (or RS_SlowMo) is loaded
+
+// ---- yours
+user float rsm_sound_follow   = 1.0;    // how far slowed things' sounds drop in pitch
+
+// ---- the world's, this mod's
+server float rsqsm_radius       = 3000;  // map units around a player that slow
+server bool  rsqsm_slow_own     = true;  // your own missiles slow too
+server bool  rsqsm_rounds       = true;  // enemy hitscans become dodgeable rounds
+server float rsqsm_round_speed  = 14;    // a round's speed at the set depth, map units per tic (14 = about 14 m/s)
+server bool  rsqsm_trails       = true;  // your shots leave a fading trail
+server bool  rsqsm_wakes        = true;  // slowed missiles leave a wake
+server bool  rsqsm_adrenaline   = false; // the held slow motion costs adrenaline
+server float rsqsm_adr_min      = 25;    // needed to start it
+server float rsqsm_adr_secs     = 10;    // a full meter lasts this long
+server float rsqsm_adr_kill     = 12;    // earned per kill
+server float rsqsm_adr_near     = 4;     // earned per near miss
+server bool  rsqsm_adr_keep     = true;  // the meter carries over to the next level
+
+// ---- yours, this mod's
+user bool  rsqsm_gesture        = true;  // cross your wrists in front of your face to toggle
+user float rsqsm_gesture_gap    = 0.16;  // how close the wrists, metres
+user int   rsqsm_gesture_hold   = 12;    // tics to hold the pose
+user bool  rsqsm_reload         = false; // a reload buys a moment of slow motion
+user int   rsqsm_reload_ms      = 1200;
+user int   rsqsm_reload_depth   = 40;    // percent speed
+user bool  rsqsm_haptics        = true;

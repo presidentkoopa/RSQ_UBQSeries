@@ -1,0 +1,4 @@
+GameInfo
+{
+	AddEventHandlers = "RSQSM_Clock", "RSQSM_Shots"
+}

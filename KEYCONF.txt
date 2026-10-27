@@ -1,0 +1,3 @@
+alias rsqsm_toggle "netevent rsm_toggle"
+addkeysection "RSQ SlowMo" RSQSlowMo
+addmenukey "Slow motion on/off" rsqsm_toggle
