@@ -356,6 +356,8 @@ class RSQTR_Rig : EventHandler
 			return;
 		}
 		if (!pmo || pmo.health <= 0) return;
+		if (e.Name == "rsqtr_holster_off") { HolsterOff(pmo, e.Args[0]); return; }
+		if (e.Name == "rsqtr_draw_off") { DrawOff(pmo, e.Args[0]); return; }
 		if (e.Name == "rsqtr_holster") Holster(pmo, e.Args[0]);
 		else if (e.Name == "rsqtr_draw") Draw(pmo, e.Args[0], e.Args[1]);
 	}
@@ -440,6 +442,69 @@ class RSQTR_Rig : EventHandler
 		return w != empty;
 	}
 
+	// A GUN IN THE OFF HAND, put there by the engine's own switchhand (the owner's "move weapon to
+	// off hand" button): a weapon whose class is NOT an off-hand weapon by default. Off-hand-only
+	// things -- Brutal Doom Quest's hands and its Dual copies, the saber's second hilt, the shield --
+	// are not guns the rig moves (Dual is its own key).
+	static bool IsMovedGun(Weapon w)
+	{
+		if (!w || IsSaber(w)) return false;
+		let d = GetDefaultByType(w.GetClass());
+		return d && !d.bOffhandWeapon;
+	}
+
+	static bool OffHoldsGun(PlayerPawn pmo) { return IsMovedGun(pmo.player.OffhandWeapon); }
+
+	// The off hand goes empty: Brutal Doom Quest's hands if it has them, else nothing.
+	private void EmptyOff(PlayerPawn pmo)
+	{
+		let p = pmo.player;
+		String en = OffEmptyName(pmo);
+		if (en != "") { QueueOff(pmo.PlayerNumber(), en); return; }
+		p.SetPsprite(PSP_OFFHANDWEAPON, null);
+		p.OffhandWeapon = null;
+	}
+
+	// The OFF hand's gun onto holster r (a full one swaps: its gun comes to the off hand).
+	private void HolsterOff(PlayerPawn pmo, int r)
+	{
+		if (!IsGunRegion(r)) return;
+		let p = pmo.player;
+		let w = p.OffhandWeapon;
+		if (!IsMovedGun(w)) return;
+		int n = pmo.PlayerNumber();
+		String cls = w.GetClassName();
+		String was = Content(pmo, r);
+		for (int k = 0; k < RSQTR_Region.N; k++)
+			if (k != r && lastPut[n * RSQTR_Region.N + k] == cls) lastPut[n * RSQTR_Region.N + k] = "";
+		lastPut[n * RSQTR_Region.N + r] = cls;
+		lastPair[n * RSQTR_Region.N + r] = false;
+		class<Weapon> ic = was;
+		let incoming = (was != "" && was != cls && ic) ? Weapon(pmo.FindInventory(ic)) : null;
+		if (incoming && incoming != p.ReadyWeapon)
+		{
+			incoming.bOffhandWeapon = true;
+			QueueOff(n, was);
+		}
+		else EmptyOff(pmo);
+		pmo.A_StartSound("rsqtr/holster", CHAN_AUTO, CHANF_LOCAL, 0.8);
+	}
+
+	// Holster r's gun into the OFF hand.
+	private void DrawOff(PlayerPawn pmo, int r)
+	{
+		let p = pmo.player;
+		String c = Content(pmo, r);
+		if (c == "") return;
+		class<Weapon> wc = c;
+		let w = wc ? Weapon(pmo.FindInventory(wc)) : null;
+		if (!w || w == p.ReadyWeapon) return;
+		w.bOffhandWeapon = true;
+		lastPut[pmo.PlayerNumber() * RSQTR_Region.N + r] = "";
+		QueueOff(pmo.PlayerNumber(), c);
+		pmo.A_StartSound("rsqtr/draw", CHAN_AUTO, CHANF_LOCAL, 0.8);
+	}
+
 	// Put the main hand's weapon on the body at region r. On a gun holster that already holds
 	// a gun, the two swap.
 	private void Holster(PlayerPawn pmo, int r)
@@ -482,6 +547,7 @@ class RSQTR_Rig : EventHandler
 		lastPair[slot] = pair;
 		if (incoming)
 		{
+			if (IsMovedGun(incoming)) incoming.bOffhandWeapon = false;
 			p.PendingWeapon = incoming;
 			int mode = Opt("rsqtr_pairs", p, 2);
 			let copy = OffCopy(pmo, incoming.GetClass());
@@ -523,6 +589,8 @@ class RSQTR_Rig : EventHandler
 		let w = wc ? Weapon(pmo.FindInventory(wc)) : null;
 		if (!w) return;
 		if (IsSaber(w) && IsSecondSaber(w)) return;     // the saber moves its own second hilt (Press)
+		if (w == p.OffhandWeapon) return;               // already in the other hand
+		if (IsMovedGun(w)) w.bOffhandWeapon = false;
 		if (p.ReadyWeapon != w) p.PendingWeapon = w;
 		// DRAWN AS A PAIR (the owner, 10-27: "call up the dual pistol or SMG from that holster"):
 		// rsqtr_pairs 2 whenever you own the gun's off-hand copy, 1 only if it went away as a pair,
@@ -819,6 +887,24 @@ class RSQTR_Rig : EventHandler
 				return;
 			}
 		}
+		// EACH HAND ITS OWN GUN (the owner, 10-27: guns move between hands with the engine's own
+		// switchhand button). The off hand puts the gun it holds on a holster, or draws a holster's
+		// gun into itself; the main hand does the same for itself.
+		if (h == 1 && IsGunRegion(r))
+		{
+			if (OffHoldsGun(pmo))
+			{
+				EventHandler.SendNetworkEvent("rsqtr_holster_off", r);
+				RSQTR_Buzzer.Start(pmo, h, 0.55, 5);
+			}
+			else if (Content(pmo, r) != "")
+			{
+				EventHandler.SendNetworkEvent("rsqtr_draw_off", r);
+				RSQTR_Buzzer.Start(pmo, h, 0.65, 6);
+			}
+			else RSQTR_Buzzer.Start(pmo, h, 0.12, 2);
+			return;
+		}
 		if (IsGunRegion(r))
 		{
 			// gun in hand: in it goes (a full holster swaps); hand empty: draw what is there
@@ -993,7 +1079,7 @@ class RSQTR_Rig : EventHandler
 			// 10-27: "impossible to keep track what is where").
 			String held = HeldAs(pmo, p.ReadyWeapon);
 			String put = live ? Content(pmo, r) : "";
-			if (put == held) put = "";
+			if (put == held || (p.OffhandWeapon && put == p.OffhandWeapon.GetClassName())) put = "";
 			Array<String> own;
 			Owned(pmo, r, own);
 			// ONLY A MEASURED MODEL IS SHOWN ON THE BODY. A weapon not in the fit table has no
