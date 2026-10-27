@@ -127,13 +127,31 @@ Built and run on stock QuestZDoom 17.3 (`build.sh`), with brutal22test6 + BD_Vox
   | Fatality | 0.5 | Brutal Doom's execution landed the kill |
   | Cleaved | 0.3 | a melee kill that took the body apart (its extreme death) |
   | Hurled | 0.3, +0.15 per earlier kill by the same throw (to 0.75) | the ShieldSaw or the saber thrown |
+  | Boomerang | 0.5 | a throw that already killed on its way out kills again on its way home |
+  | Ground Down | 0.3 | the thrown disc stuck in a monster too tough to cut through and ground it to death |
   | Shield Work | 0.3 bash, 0.2 grind | the shield itself in the hand |
   | Riposte | 0.4 | killed within 3 s of the shield blocking that monster's attack |
-  | Return to Sender | 0.4 | killed by a shot sent back: turned by the shield or the saber, or a returned bullet |
-  | Combo | 0.1 per different melee move inside 4 s (to 0.4) | a jab, a saber cut, a saw throw... |
+  | Perfect Riposte | 0.7 (replaces Riposte) | the same after a PERFECT block (the plate met the attack) |
+  | Return to Sender | 0.4 | killed by a shot sent back: turned by the shield, the saber or the Force, or a returned bullet |
+  | Poetic Justice | 0.3 (on top) | ...and the shot killed the very monster that fired it |
+  | Heavy Swing | 0.15 blow 2, 0.3 blow 3 | BD22Q's VR swing stacks BD's attacks by swing power (2nd at 1.6, 3rd at 2.4); the 2nd or 3rd blow made the kill |
+  | Choked | 0.3 | the Force grip choked it to death |
+  | Slammed | 0.5 | a body flung from the Force grip died hitting something |
+  | Juggle | 0.3 | a melee or Force kill of a non-flyer in the air that your Force, a kick, a punch or a bash put there (top of a push, held in the grip) |
+  | Boot | 0.2 | Brutal Doom's boots: a kick, head kick or stomp |
+  | Combo | 0.1 per different melee move inside 4 s (to 0.4) | a jab, a saber cut, a Force kill, a kick, a saw throw... |
 
   Tested on the rig: a disc throw through two imps paid Cleaved + Hurled 0.30, then 0.45; a
   turned imp fireball paid Return to Sender; a kill after a shield block paid Riposte + Shield Work.
+  Second round (probe `mlprobe`, the owner's load order): Perfect Riposte 0.7 after a perfect block;
+  a fireball turned back into its shooter paid Return to Sender + Poetic Justice; the disc killed out,
+  then home (Boomerang 0.5, Hurled 0.45), and ground a BD imp (Ground Down); the saber thrown killed out,
+  then home (Boomerang, measured from its motion); BD22Q's axe stack killed on blow 2 (0.15) and 3
+  (0.3), not on blow 1; the Force choke, slam and a saber cut after (Combo 0.1); the saber's real Force
+  push lifted an imp 8 units and a cut at the top paid Juggle; a kick paid Boot.
+  Not measurable yet: a PULL does no damage and (on the rig) did not lift an imp, so "pulled, then cut on
+  arrival" needs the saber to report pulls; a saber block/parry riposte needs it to report blocks.
+  The big moments (for SlowMo later, not wired) are listed in one place: `RS_Melee.BigMoment`.
   `rs_score_cap_melee` caps the family (0 off). The original thirteen are unchanged.
 - **Options -> Score**: a menu (the original had none; a headset has no console).
 - **The revival**: Dakka's fire-and-explosion revival was never carried; a life spent is now a
