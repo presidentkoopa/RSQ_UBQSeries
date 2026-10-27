@@ -395,8 +395,12 @@ class SSQ_Handler : EventHandler
 		bool fix = false;
 		// What took the off hand this tic, if anything -- switchhand's fingerprint (below).
 		Weapon took = p.OffhandWeapon;
+		// Only a hand that actually LOST the shield is put back. A raise merely ASKED FOR while
+		// the shield is still in the hand is cancelled below, not answered with a re-raise:
+		// with BD22Q loaded the off trigger asks for its hands weapon every tic, and re-raising
+		// the shield ran its Select every tic, which zeroed the rev -- it never wound up, so the
+		// blades never deployed (the owner's headset, 10-27: "the animations are gone").
 		if (p.OffhandWeapon != saw) fix = true;
-		if (p.PendingWeapon && p.PendingWeapon != WP_NOCHANGE && p.PendingWeapon != saw && p.PendingWeapon.bOffhandWeapon) fix = true;
 		if (fix)
 		{
 			saw.bOffhandWeapon = true;
