@@ -299,9 +299,14 @@ class RSQGR_Core : EventHandler
 		if (cap > 0 && s > cap) pmo.vel *= cap / s;
 	}
 
+	Vector3 lastPos[MAXPLAYERS], lastSet[MAXPLAYERS];   // where the rope left him, and how fast
+	bool tracked[MAXPLAYERS];
+
 	void Swing(PlayerPawn pmo, int pn)
 	{
 		bool any = false;
+		bool truthTaken = false;
+		bool roped = false;
 		for (int hand = 0; hand < 2; hand++)
 		{
 			int i = pn * 2 + hand;
@@ -344,6 +349,21 @@ class RSQGR_Core : EventHandler
 				continue;
 			}
 
+			// WHAT HE REALLY DID LAST TIC. A wall or a ceiling stops the player but the
+			// engine leaves the blocked part in his velocity (measured: reeling into a wall,
+			// vel grew 14.7 -> 17.6 u/tic over 8 tics with the pawn not moving), and the
+			// rope would keep adding to it -- a fling the moment he let go. So the velocity
+			// solved here is what he actually moved last tic, plus whatever the engine and
+			// his input changed since the rope set it (gravity, air control).
+			if (!truthTaken)
+			{
+				truthTaken = true;
+				if (tracked[pn])
+				{
+					Vector3 moved = pmo.Pos - lastPos[pn];
+					if (moved.Length() < 64) pmo.vel = moved + (pmo.vel - lastSet[pn]);
+				}
+			}
 			Vector3 v = pmo.vel;
 			// remove the outward part once the rope is taut
 			if (d >= h.ropeLen - 0.5)
@@ -357,11 +377,19 @@ class RSQGR_Core : EventHandler
 			double pd = pa.Length();
 			if (pd > h.ropeLen && pd > 0.01)
 			{
+				// Projecting the step back onto the rope's sphere cuts the chord short and
+				// bleeds speed every tic (measured: a free swing lost ~20% of its height
+				// per half swing). So a free swing keeps the speed it had before the
+				// projection -- a rope does no work on what hangs from it. Reeling is work,
+				// and keeps what the projection gives.
+				double vt = v.Length();
 				Vector3 corr = a + pa / pd * h.ropeLen - p;
 				double cmax = RSQGR_Util.Num("rsqgr_reel_speed", 12) + 8;
 				double cl = corr.Length();
 				if (cl > cmax) corr *= cmax / cl;
 				v += corr;
+				double vl = v.Length();
+				if (!h.reelHeld && d <= h.ropeLen + 1.0 && vl > 0.01) v *= vt / vl;
 			}
 
 			if (!grounded && d >= h.ropeLen - 1.0)
@@ -378,10 +406,11 @@ class RSQGR_Core : EventHandler
 					push -= n * (push dot n);
 					v += push * RSQGR_Util.Num("rsqgr_pump", 0.25);
 				}
-				v *= 1.0 - clamp(RSQGR_Util.Num("rsqgr_drag", 0.002), 0.0, 0.2);
+				v *= 1.0 - clamp(RSQGR_Util.Num("rsqgr_drag", 0.0005), 0.0, 0.2);
 			}
 			pmo.vel = v;
 			CapSpeed(pmo);
+			roped = true;
 
 			// The rope must see its anchor. Swing round a corner and it slips: checked
 			// every 4 tics, three misses in a row let go.
@@ -392,6 +421,8 @@ class RSQGR_Core : EventHandler
 			}
 			if (level.maptime % 2 == 0) Log(h, h.reelHeld ? "reel" : "swing");
 		}
+		tracked[pn] = roped;
+		if (roped) { lastPos[pn] = pmo.Pos; lastSet[pn] = pmo.vel; }
 	}
 
 	// Follows a moving plane, a moving heavy monster; checks a wall is still there.

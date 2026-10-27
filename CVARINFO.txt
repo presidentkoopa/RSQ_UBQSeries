@@ -11,7 +11,7 @@ server float  rsqgr_reel_speed    = 12;     // holding the bind takes in this mu
 server float  rsqgr_min_len       = 32;     // shortest rope (reeled all the way in)
 server float  rsqgr_max_speed     = 30;     // speed cap on the rope and on a yank (keeps falls sane)
 server float  rsqgr_pump          = 0.25;   // how hard the movement stick leans a swing
-server float  rsqgr_drag          = 0.002;  // air drag per tic while swinging
+server float  rsqgr_drag          = 0.0005;  // air drag per tic while swinging
 server float  rsqgr_attach        = 0.6;    // where the rope meets the body, fraction of height
 server float  rsqgr_hop           = 6;      // lift when letting go at the top of a wall
 
