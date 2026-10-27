@@ -25,7 +25,7 @@ user float  rsqtr_mirror_m    = 1.0;     // metres from your eyes to the mirror
 user int    rsqtr_dwell       = 3;       // tics a hand must be in a region before a press counts
 user float  rsqtr_body_turn   = 25;    // degrees: a head turned further than this takes the body round with it
 user float  rsqtr_body_secs   = 0;     // seconds to wait first (0: at once)
-user bool   rsqtr_saber_hip   = true;    // UltraBadassQuestSaber's hilt clips to either hip
+user bool   rsqtr_saber_hip   = false;   // UltraBadassQuestSaber's hilt also clips to the hips (it has two holsters of its own)
 user string rsqtr_empty       = "";      // the weapon an empty hand holds (blank: the slot-1 weapon with the highest SelectionOrder, the fist)
 
 // The six regions: metres from the head, in the body's frame (forward, left, up), and radius.
@@ -38,6 +38,8 @@ user float rsqtr_r5_f = -0.08; user float rsqtr_r5_l = -0.18; user float rsqtr_r
 user float rsqtr_r6_f = 0.07;  user float rsqtr_r6_l =  0.17; user float rsqtr_r6_u = -0.36; user float rsqtr_r6_rad = 0.08;
 user float rsqtr_r7_f = 0.07;  user float rsqtr_r7_l = -0.17; user float rsqtr_r7_u = -0.36; user float rsqtr_r7_rad = 0.08;
 user float rsqtr_r8_f = -0.15; user float rsqtr_r8_l =  0.00; user float rsqtr_r8_u = -0.62; user float rsqtr_r8_rad = 0.12;
+user float rsqtr_r9_f = 0.02;  user float rsqtr_r9_l =  0.21; user float rsqtr_r9_u = -0.84; user float rsqtr_r9_rad = 0.10;
+user float rsqtr_r10_f = 0.02; user float rsqtr_r10_l = -0.21; user float rsqtr_r10_u = -0.84; user float rsqtr_r10_rad = 0.10;
 
 // What each place holds: the Doom weapon slots it takes (a list).
 user string rsqtr_r0_slots = "2";
@@ -49,6 +51,12 @@ user string rsqtr_r5_slots = "7 8 9 0";
 user string rsqtr_r6_slots = "2";
 user string rsqtr_r7_slots = "2";
 user string rsqtr_r8_slots = "1";
+user string rsqtr_r9_slots = "";     // the saber holsters hold the saber only
+user string rsqtr_r10_slots = "";
+user int    rsqtr_profile_active = 1;     // the holster profile in use: its colour on the spheres (1 blue, 2 orange, 3 purple, 4 yellow)
+// Profiles are this machine's alone (nosave: never sent to other players). As user settings, four
+// long strings overflowed the userinfo every player sends ("User info descriptor too big").
+nosave string rsqtr_profile1 = ""; nosave string rsqtr_profile2 = ""; nosave string rsqtr_profile3 = ""; nosave string rsqtr_profile4 = "";
 
 // Doors lifted by hand.
 user bool  rsqtr_door        = true;    // take hold of a door and lift it
@@ -74,3 +82,4 @@ user float rsqtr_vest_u     = -0.20;   // metres from your eyes down to its coll
 user float rsqtr_vest_f     = -0.04;   // metres forward of your eyes
 user float rsqtr_vest_size  = 1.0;
 user int   rsqtr_vest_low   = 35;      // health under which it breathes red
+user int    rsqtr_cfgver      = 0;       // settings version this machine has been moved to (internal)

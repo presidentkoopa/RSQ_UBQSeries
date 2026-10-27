@@ -10,7 +10,7 @@ than your head, and carries a whole arsenal per region.
 
 ## Carrying weapons
 
-Nine places on the body. Each holds the Doom weapon slots set for it (menu: *Where the
+Eleven places on the body: nine for guns and two for the saber. Each holds the Doom weapon slots set for it (menu: *Where the
 places are*, "Holds slots"); the defaults:
 
 | Place | Where | Holds |
@@ -22,6 +22,7 @@ places are*, "Holds slots"); the defaults:
 | Left shoulder | behind the shoulder | slots 5-6 (launchers, plasma, railgun) |
 | Right shoulder | behind the shoulder | slots 7-9 and 0 (BFGs, nukes, flamethrowers) |
 | Lower back | the small of the back | slot 1 (melee: axe, chainsaw; never the fists) |
+| Left saber, right saber | just below each hip | UltraBadassQuestSaber's hilt only (shown in the one it was put in) |
 
 - **Holster:** bring the gun into its region and grip (or press Use). Your hand is left
   empty: the fists (Brutal Doom's own fists with Brutal Doom).
@@ -60,13 +61,18 @@ places are*, "Holds slots"); the defaults:
   pair -- one in each hand -- and holstering the pair puts both away and empties the off hand.
   Menu *Draw two-gun pairs as a pair*: whenever you have both (default), only if it went away as
   a pair, or never.
+- **Holster profiles:** four, *Standing A* (blue), *Standing B* (orange), *Seated A* (purple),
+  *Seated B* (yellow): menu *Where the places are*, Save as / Use. Each keeps every place's
+  position, size and slot list, on this machine only. The spheres show the profile in use by their
+  colour; a sphere with your hand in it turns green and also grows and brightens, so it does not
+  rest on colour alone.
 - A hand only acts on a region after it has been there a moment (3 tics), so a hand
   passing through a holster on its way somewhere else does nothing.
 - A hand steadying the main gun (the engine's two-handed grip) never fires a region.
 - With RS_ShieldSawQ loaded, the off shoulder is left to the shield while it hangs there --
   unless the ShieldSaw's *Draw from the shoulder with Use* is off (its Draw key only): then the
   shoulder is the rig's again.
-- With UltraBadassQuestSaber loaded, the saber's hilt clips to either hip (menu).
+- With UltraBadassQuestSaber loaded, the saber has its own two holsters; *The saber can also go on a hip* adds the hips.
 
 ## Lifting doors
 

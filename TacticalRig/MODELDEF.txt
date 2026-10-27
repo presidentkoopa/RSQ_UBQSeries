@@ -9,6 +9,13 @@ Model RSQTR_Marker
 	FrameIndex RSTM A 0 0
 	Skin 0 "rtwireht.png"
 	FrameIndex RSTM B 0 0
+	// the holster profiles' idle colours (profile 1 blue above): 2 orange, 3 purple, 4 yellow
+	Skin 0 "rtwireor.png"
+	FrameIndex RSTM C 0 0
+	Skin 0 "rtwirepu.png"
+	FrameIndex RSTM D 0 0
+	Skin 0 "rtwireye.png"
+	FrameIndex RSTM E 0 0
 }
 
 // Ermac's cigarette (his Virtual Tactical Vest) and his voxel Zippo (ZBlood-VR), held in the hand.

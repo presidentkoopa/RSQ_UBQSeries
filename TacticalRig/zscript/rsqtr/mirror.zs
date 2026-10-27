@@ -54,6 +54,15 @@ class RSQTR_MirrorView play
 		m.angle = MapAngle(src.angle);
 		m.pitch = src.pitch;
 		m.roll = MapRoll(src.roll);
+		// A model drawn off its own origin (a held model's grip offset) cannot be reflected by its
+		// origin alone: the mesh is not turned inside out, so its side offset would land on the
+		// wrong side. Its middle is reflected instead, and the offset applied in the copy's turn.
+		if (si && si.hasOff)
+		{
+			Vector3 F, L, U;
+			[F, L, U] = RSQTR_Fit.Basis(m.angle, m.pitch, m.roll);
+			m.SetOrigin(Map(si.placed) - (F * si.cOff.x + L * si.cOff.y + U * si.cOff.z), true);
+		}
 		m.sprite = src.sprite;
 		m.frame = src.frame;
 		m.Scale = src.Scale;
