@@ -1,0 +1,30 @@
+// Gun Bonsai VR patch -- the melee upgrades' sounds. All from SuperPunchOut (presidentkoopa),
+// which took them from Punch Out Doom / Virtual Punch Out (plspnch*, DSSWING, HITTHE, KNOCKED,
+// STAR) and the Super Punch-Out!! announcer's count (SPOANUM*). Full paths, so no short lump
+// name here can collide with another mod's.
+$random rsq/punch { rsq/punch1 rsq/punch2 rsq/punch3 rsq/punch4 rsq/punch5 rsq/punch6 }
+rsq/punch1		"sounds/rsq/plspnch1.ogg"
+rsq/punch2		"sounds/rsq/plspnch2.ogg"
+rsq/punch3		"sounds/rsq/plspnch3.ogg"
+rsq/punch4		"sounds/rsq/plspnch4.ogg"
+rsq/punch5		"sounds/rsq/plspnch5.ogg"
+rsq/punch6		"sounds/rsq/plspnch6.ogg"
+rsq/whoosh		"sounds/rsq/DSSWING.ogg"
+rsq/smash		"sounds/rsq/HITTHE.wav"
+rsq/knocked		"sounds/rsq/KNOCKED.wav"
+rsq/star		"sounds/rsq/STAR.wav"
+rsq/counter		"sounds/rsq/HITTHE.wav"
+rsq/execute		"sounds/rsq/HITTHE.wav"
+rsq/ram			"sounds/rsq/HITTHE.wav"
+rsq/count/1		"sounds/rsq/SPOANUM1.wav"
+rsq/count/2		"sounds/rsq/SPOANUM2.wav"
+rsq/count/3		"sounds/rsq/SPOANUM3.wav"
+rsq/count/4		"sounds/rsq/SPOANUM4.wav"
+rsq/count/5		"sounds/rsq/SPOANUM5.wav"
+rsq/count/6		"sounds/rsq/SPOANUM6.wav"
+rsq/count/7		"sounds/rsq/SPOANUM7.wav"
+rsq/count/8		"sounds/rsq/SPOANUM8.wav"
+rsq/count/9		"sounds/rsq/SPOANUM9.wav"
+rsq/count/10	"sounds/rsq/SPOANU10.wav"
+$limit rsq/punch 4
+$limit rsq/smash 2

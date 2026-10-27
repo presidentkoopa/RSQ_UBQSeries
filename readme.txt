@@ -143,3 +143,52 @@ Requires an engine with player.OffhandWeapon and PSP_OFFHANDWEAPON.
 
 Gun Bonsai is by Rebecca "ToxicFrog" Kelly and is MIT licensed; this patch is a
 derivative of it under the same terms. See Gun Bonsai's COPYING.md.
+
+
+MELEE UPGRADES (rsq/)
+---------------------
+Upgrade paths for melee weapons, added as new files (nothing more of Gun Bonsai is
+shadowed): the boxing gloves, the sabers (UltraBadassQuestSaber), the ShieldSaw
+(UltraBadassShieldSaw) and any melee weapon. No elemental damage and nothing that is
+rate of fire -- in VR the rewards are for how you move. Options: Options -> RSQ Melee
+Upgrades (Slappers Only, Start with boxing gloves; the rest under Advanced).
+
+  Gloves        Haymaker, One-Two, Star Punch, Counterpunch, Body Blow, Knockdown
+  Sabers        Momentum, Riposte Edge, Piercing Return, Saber Throw, Chain Choke,
+                Dual Harmony, Force Push, Force Pull, Force Choke, Force Jump
+  ShieldSaw     Ricochet, Meat Grinder, Hunter's Return, Bulwark, Rebound, Battering Ram
+  Any melee     Lunge, Executioner, Adrenaline (pulses RSQ SlowMo through rsm_pulse)
+
+The saber and the ShieldSaw ask this patch for their levels by name
+(RSQ_MeleeUpgradeService). No mod links to another; each pk3 still loads and works
+alone, and without this patch the saber and the ShieldSaw behave exactly as before.
+With it loaded, an unlearned Force power starts at rsq_force_start (60%).
+
+THE GLOVES are SuperPunchOut's: the glove weapons, Ermac's glove mesh and fit, and
+SuperPunchOut's punch reader (a punch arms after 15 cm of travel and must average
+rsq_punch_min_speed; power is the average speed). Renamed RSQ_Glove / RSQ_GloveOff so
+they can sit beside SuperPunchOut itself. A punch does Brutal Doom's own 10 (its
+MeleeStrikeNormal) at the slowest that counts, up to 20 at full speed.
+
+SLAPPERS ONLY (rsq_slappers, off by default): your guns are taken at each level start,
+gun pickups become nothing, and a gun handed to you later is taken again within a
+quarter second. You keep or are given the gloves, the sabers and the ShieldSaw (when
+loaded), the Force hand, and Brutal Doom's fists, axe and sword (and any weapon flagged
+as melee, such as the chainsaw). Ammo stays. Brutal Doom's hand grenades are a Weapon
+too, so they go.
+
+CREDIT FOR SCRIPT DAMAGE. The ShieldSaw's bash and grind name the player as their
+inflictor; a mod in that position can bracket the damage:
+    svc.GetInt("credit.push", "", hint, 0, weapon); target.DamageMobj(...);
+    svc.GetInt("credit.pop", "", 0, 0, weapon);
+and anything inside is paid to that weapon (PerPlayerStats claimStack).
+
+
+CREDITS
+-------
+Gun Bonsai: Rebecca "ToxicFrog" Kelly, MIT. This patch and the melee upgrades:
+presidentkoopa, same terms. Gloves, punch reader and sounds: SuperPunchOut
+(presidentkoopa); the glove mesh and its fit are Ermac's (iAmErmac, PunchOutVR /
+Virtual Punch Out); punch, star and knockdown sounds from Punch Out Doom
+(DerrickDavison) through Virtual Punch Out; the count is the Super Punch-Out!!
+announcer, as SuperPunchOut ships it. Punch-Out!! is Nintendo's.

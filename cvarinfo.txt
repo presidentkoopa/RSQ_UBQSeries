@@ -37,3 +37,25 @@ user int bonsai_vr_hud_off_mirror = 2;
 // OnRegister, which is play scope, and user cvars are per-client so play code
 // is not allowed to read them.
 server bool bonsai_vr_warn_binding = true;
+
+// ---- the melee upgrades (rsq/) -- all server settings ----
+// Slappers Only: guns taken at each level start, gun pickups replaced with nothing.
+server bool rsq_slappers = false;
+// Outside Slappers Only: 1 hands you the boxing gloves at each level start.
+server int rsq_gloves = 0;
+// The Force with this patch loaded: an unlearned power works at this share of the saber's own.
+server float rsq_force_start = 0.6;
+// The gloves' punch reader (SuperPunchOut's own defaults: spo_min_speed, spo_full_speed,
+// spo_rehit_tics, spo_uppercut_rise) and reach past the glove's 9 cm radius, in map units.
+server float rsq_punch_min_speed = 2.0;
+server float rsq_punch_full_speed = 7.0;
+server int rsq_punch_rehit = 6;
+server float rsq_punch_uppercut_rise = 0.5;
+server float rsq_punch_pad = 4.0;
+// Brutal Doom's own punch is 10 (MeleeStrikeNormal); a full-speed glove doubles it.
+server float rsq_punch_damage = 10.0;
+// Star Punch banking, SuperPunchOut's `stars <first> <every>` (Soda Popinski's line).
+server int rsq_star_first = 1;
+server int rsq_star_every = 2;
+// The punch reader's decisions to the console.
+server bool rsq_punch_debug = false;

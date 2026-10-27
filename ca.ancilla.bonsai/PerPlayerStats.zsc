@@ -217,6 +217,17 @@ class TFLV_PerPlayerStats : Object play {
   array<TFLV_WeaponInfo> hitscanStack;
   array<int> hitscanHints;
 
+  // VR PATCH (melee upgrades): the claim bracket. A mod whose damage names the
+  // PLAYER as the inflictor -- the ShieldSaw's bash and grind are
+  // DamageMobj(pawn, pawn, ...) because RS_Score reads "inflictor is the pawn"
+  // as the shield -- has no actor of its own to claim. It pushes the weapon
+  // here (RSQ_MeleeUpgradeService "credit.push"), deals the damage, and pops.
+  // Any damage inside that window whose inflictor is the player or nothing
+  // belongs to the top weapon. Cleared once a tic with the hitscan bracket, so
+  // a missed pop can never outlive the tic that made it.
+  array<TFLV_WeaponInfo> claimStack;
+  array<int> claimHints;
+
   // VR PATCH: resolver telemetry, dumped by `netevent bonsai-debug,hands`.
   // If we are guessing often in real play we want a counter to say so, not a
   // player noticing a week later that their XP went to the wrong gun.
@@ -725,6 +736,21 @@ class TFLV_PerPlayerStats : Object play {
   void ResetHitscanBracket() {
     hitscanStack.Clear();
     hitscanHints.Clear();
+    claimStack.Clear();
+    claimHints.Clear();
+  }
+
+  void PushClaim(Weapon wpn, int typeHint) {
+    if (!wpn || wpn.owner != owner) return;
+    if (claimStack.size() >= HITSCAN_MAX_DEPTH) { claimStack.Delete(0); claimHints.Delete(0); }
+    claimStack.push(GetOrCreateInfoFor(wpn));
+    claimHints.push(typeHint);
+  }
+
+  void PopClaim() {
+    if (claimStack.size() == 0) return;
+    claimStack.Pop();
+    claimHints.Pop();
   }
 
   // ==========================================================================
@@ -852,6 +878,20 @@ class TFLV_PerPlayerStats : Object play {
     // and is a reserved word.
     let dotItem = TFLV_Upgrade_Dot(shot);
     if (dotItem && dotItem.credit && !dotItem.credit.IsEmpty()) return dotItem.credit;
+
+    // VR PATCH (melee upgrades): inside a claim bracket, damage dealt by the
+    // player's own body belongs to the weapon that opened it. See claimStack.
+    if ((!shot || shot == owner) && claimStack.size() > 0) {
+      int ctop = claimStack.size() - 1;
+      let cinfo = claimStack[ctop];
+      if (cinfo && cinfo.wpn) {
+        ++provClaims;
+        let cp = new("TFLV_VR_Provenance");
+        cp.Init(shot, claimHints[ctop]);
+        cp.Add(cinfo, 1.0);
+        return cp;
+      }
+    }
 
     if (shot) {
       let p = FindProvenance(shot);

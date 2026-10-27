@@ -1,0 +1,14 @@
+// Gun Bonsai VR / Offhand Patch -- the melee upgrades (rsq/).
+//
+// Gun Bonsai's own zscript.txt still compiles its tree, and the nine shadowed files above
+// replace their stock twins by path. This lump is a second ZSCRIPT, which the engine compiles
+// as well (every archive's ZSCRIPT is read): it adds new classes only and shadows nothing.
+version "4.14"
+
+#include "rsq/zscript/core.zs"
+#include "rsq/zscript/gloves.zs"
+#include "rsq/zscript/slappers.zs"
+#include "rsq/zscript/up_gloves.zs"
+#include "rsq/zscript/up_melee.zs"
+#include "rsq/zscript/up_saber.zs"
+#include "rsq/zscript/up_shield.zs"

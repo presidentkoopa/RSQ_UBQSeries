@@ -1,0 +1,25 @@
+// Gun Bonsai VR patch -- the melee upgrades' options: one short page, the rest under Advanced.
+AddOptionMenu "OptionsMenu"
+{
+	Submenu "$RSQ_MENU_TITLE", "RSQ_MeleeOptions"
+}
+
+OptionMenu "RSQ_MeleeOptions"
+{
+	Title "$RSQ_MENU_TITLE"
+	Option "$RSQ_MENU_SLAPPERS", "rsq_slappers", "OnOff"
+	Option "$RSQ_MENU_GLOVES", "rsq_gloves", "OnOff"
+	StaticText ""
+	Submenu "$RSQ_MENU_ADV", "RSQ_MeleeAdvanced"
+}
+
+OptionMenu "RSQ_MeleeAdvanced"
+{
+	Title "$RSQ_MENU_ADV"
+	Slider "$RSQ_MENU_FORCE_START", "rsq_force_start", 0.1, 1.0, 0.05, 2
+	Slider "$RSQ_MENU_PUNCH_MIN", "rsq_punch_min_speed", 0.5, 5.0, 0.25, 2
+	Slider "$RSQ_MENU_PUNCH_FULL", "rsq_punch_full_speed", 3.0, 12.0, 0.5, 1
+	Slider "$RSQ_MENU_PUNCH_DMG", "rsq_punch_damage", 2, 40, 1, 0
+	Slider "$RSQ_MENU_STAR_FIRST", "rsq_star_first", 0, 20, 1, 0
+	Slider "$RSQ_MENU_STAR_EVERY", "rsq_star_every", 0, 10, 1, 0
+}

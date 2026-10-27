@@ -24,6 +24,16 @@ ca.ancilla.bonsai/upgrades/RapidFire.zsc    per-hand psprite, null guard
 Any file shipped here that is *not* actually modified should be deleted — an
 unchanged shadowed file is collision surface with other patches for no benefit.
 
+## Melee upgrades (`rsq/`)
+
+New files only, compiled by a second ZSCRIPT lump (`zscript.txt` at the root): upgrade paths for
+the boxing gloves (from SuperPunchOut), UltraBadassQuestSaber's sabers and Force, the ShieldSaw and
+any melee weapon, plus **Slappers Only**. See `readme.txt`. The saber and the ShieldSaw ask
+`RSQ_MeleeUpgradeService` for their levels by name; nothing links to anything.
+
+The one change to a shadowed file is the claim bracket in `PerPlayerStats.zsc` (`claimStack`),
+used by the ShieldSaw's bash and grind.
+
 ## Known collisions
 
 Other Gun Bonsai patches that shadow the same files will silently clobber, or be
@@ -33,5 +43,8 @@ clobbered by, this one. GunBonsai has a number of addons and patches which alter
 
 Gun Bonsai is by Rebecca "ToxicFrog" Kelly, MIT licensed. This is a derivative
 work under the same terms.
+
+Gloves, punch reader and sounds from SuperPunchOut (presidentkoopa); glove mesh and fit by Ermac
+(iAmErmac); sounds from Punch Out Doom (DerrickDavison) via Virtual Punch Out.
 
 vr patch conceptualized by PresidentKoopa, authored with agentic ai
