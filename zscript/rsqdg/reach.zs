@@ -168,6 +168,10 @@ class RSQDG_Reach
 				if (sv.GetInt("saber.lit", "", hand, 0, p.mo) == 0) return false;
 			return true;
 		}
+		// THE BARE HAND IS AN EMPTY HAND, not a melee weapon to swing (the owner, 10-27: "I don't see
+		// distance grabbing working at all"): Brutal Doom's fists (Melee_Attacks, +MELEEWEAPON) are
+		// what the main hand holds once its gun is holstered, and the vanilla Fist the same. They reach.
+		if (n == "fist" || (w.bMELEEWEAPON && w.bCHEATNOTWEAPON)) return false;
 		if (w.bMELEEWEAPON) return true;
 		return n.IndexOf("ssq_") == 0 || n.IndexOf("ubqs_") == 0;
 	}
