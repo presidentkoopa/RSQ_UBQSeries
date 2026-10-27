@@ -677,7 +677,9 @@ class RSQSM_AdrToken : Inventory
 
 // FOR OTHER MODS, found by name (nothing links): GetInt("adrenaline.add", "", points) adds to
 // the shared adrenaline meter (nothing while the meter is off) and answers the meter after it,
-// 0..100. GetInt("adrenaline") reads it. -1: unknown request.
+// 0..100. GetInt("adrenaline") reads it. GetInt("slowmo.active") is 1 while the world is slowed
+// (held, a pulse, or easing in or out), 0 when it is not (or this mod has stood down); RSQ_Score's
+// Bullet Time reads it. -1: unknown request.
 // The Gun Bonsai VR patch's Adrenaline upgrade charges it on melee kills.
 class RSQSM_Service : Service
 {
@@ -687,6 +689,7 @@ class RSQSM_Service : Service
 		if (!c) return -1;
 		if (request ~== "adrenaline.add") { c.AddAdrenaline(intArg); return int(c.adr); }
 		if (request ~== "adrenaline") return int(c.adr);
+		if (request ~== "slowmo.active") return (!c.StoodDown() && c.Active()) ? 1 : 0;
 		return -1;
 	}
 }
