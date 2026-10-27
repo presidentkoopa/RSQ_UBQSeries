@@ -146,6 +146,9 @@ class RSQ_Upgrade_Adrenaline : RSQ_Upgrade_Base
 		if (!h || !pawn) return;
 		int pn = pawn.PlayerNumber();
 		bool executed = h.execTic[pn] == gametic;
+		// AND IT CHARGES SLOWMO'S METER: 4 points a melee kill per level (RSQ SlowMo's
+		// RSQSM_Service "adrenaline.add", found by name; nothing when SlowMo or its meter is off)
+		RSQM.Charge(4 * level);
 		if (h.MeleeKill(pn, target, executed)) RSQM.Pulse(pawn, Ms(level), Depth(level));
 	}
 	override void GetTooltipFields(Dictionary fields, uint level)

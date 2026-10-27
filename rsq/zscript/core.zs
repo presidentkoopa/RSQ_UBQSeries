@@ -114,6 +114,13 @@ class RSQM play
 		EventHandler.SendNetworkEvent("rsm_pulse", ms, depthPct);
 	}
 
+	static void Charge(int points)
+	{
+		let it = ServiceIterator.Find("RSQSM_Service");
+		Service sv;
+		while (sv = it.Next()) sv.GetInt("adrenaline.add", "", points);
+	}
+
 	static bool IsFoe(Actor pawn, Actor mo)
 	{
 		if (!mo || mo == pawn || !mo.bShootable || mo.health <= 0) return false;
