@@ -5292,6 +5292,17 @@ class UBQS_Bridge : EventHandler
 		return false;
 	}
 
+	// ONE DUAL SETTING ON THE MENU. ubqs_dual ("a second saber at all") duplicated ubqs_dual_mode 0, so the
+	// menu shows only the mode; an old config with ubqs_dual off is moved to mode 0 once, by the host (both
+	// are server settings). DualMode() still honours ubqs_dual either way.
+	override void WorldLoaded(WorldEvent e)
+	{
+		if (consoleplayer != Net_Arbitrator) return;
+		let dc = CVar.FindCVar("ubqs_dual");
+		let mc = CVar.FindCVar("ubqs_dual_mode");
+		if (dc && mc && !dc.GetBool()) { mc.SetInt(0); dc.SetBool(true); }
+	}
+
 	// THE TRAINING REMOTE: `netevent ubqs_remote` (the menu's button) summons one for you, or sends yours away
 	override void NetworkProcess(ConsoleEvent e)
 	{
