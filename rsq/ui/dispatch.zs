@@ -16,7 +16,7 @@
 //  * RS Score's own score line would sit beside ours, so its user cvar rs_score_hide is set, and
 //    put back as it was (saved in rsq_ui_saved_scorehide) when rsq_ui_skin returns to 0.
 //  * with rsq_ui_bottom on, the base game's fullscreen HUD would sit under our bottom row. Brutal
-//    Doom's is chosen by its user cvar bd_sbartype; it is set to 0 (no fullscreen HUD) the same way
+//    Doom's is chosen by its user cvar bd_sbartype; it is set to 5 (a type with no status bar) the same way
 //    (saved in rsq_ui_saved_sbartype). Any other base HUD is left alone and drawn over.
 //  Removing the patch while a skin is on leaves those two as they were set: put them back by hand
 //  (rs_score_hide 0, bd_sbartype 1) or set rsq_ui_skin 0 once before removing it.
@@ -68,7 +68,10 @@ class RSQUI_Dispatch ui
 		if (!scoreKnown) scoreKnown = RSQUI_Data.ScoreServiceLoaded() ? 1 : 2;
 		// RS Score draws its own line, untouched: only put back a hide an older build set.
 		Manage("rs_score_hide", "rsq_ui_saved_scorehide", false, 1);
-		Manage("bd_sbartype", "rsq_ui_saved_sbartype", active && BottomOn(), 0);
+		// 5: a HUD type Brutal Doom has a token for (sbartype5, no "Unknown item" line) but no status bar
+		// branch, so its HUD draws nothing while ours draws (0 printed "GiveInventory: Unknown item type
+		// sbartype0" at every map start: independent review). Put back when the screens are switched off.
+		Manage("bd_sbartype", "rsq_ui_saved_sbartype", active && BottomOn(), 5);
 	}
 
 	static void Manage(String userVar, String saveVar, bool want, int hideVal)

@@ -53,10 +53,10 @@ Bonsai's own HUD while a skin is on (one cvar check). Gun Bonsai opens its menus
 patch's MENUDEF points those three names at routers (`rsq/ui/router.zs`) that are Gun Bonsai's own
 menus with skin 0 and open the skin's screen otherwise. No other Gun Bonsai file is shadowed.
 
-While a skin is on it sets RS Score's `rs_score_hide` (the skin draws the score) and, with the
-bottom row on, Brutal Doom's `bd_sbartype` to 0 (its fullscreen HUD would sit under the row). Both
-are put back when the skin is set to 0. Remove the patch with a skin on and they stay as set:
-`rs_score_hide 0`, `bd_sbartype 1`.
+RS Score's display and Gun Bonsai's XP gauges draw themselves, untouched. With the bottom row on, a
+skin sets Brutal Doom's `bd_sbartype` to 5 (a type Brutal Doom knows but draws nothing for; its
+fullscreen HUD would sit under the row). It is put back when the skin is set to 0. Remove the patch
+with a skin on and it stays as set: pick your HUD again in Brutal Doom's options (or `bd_sbartype 1`).
 
 Fonts and art are made by `tools/rsqui_bake.py`; gun pictures by `tools/rsqui_gunshots.py` (the
 gun's own model on the test rig, keyed and cropped into `graphics/rsqui/guns/<Class>.png`; a gun
