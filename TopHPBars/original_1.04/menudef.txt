@@ -1,0 +1,22 @@
+OptionValue "TopHPBars_Style_Values"
+{
+	0, "A (Green - Yellow - Red)"
+	1, "B (Red)"
+}
+
+OptionMenu "TopHPBars_Settings"
+{
+	Title		"Top HP Bars Settings"
+	StaticText	" "
+	Option		"Style", "TopHPBars_Style", "TopHPBars_Style_Values"
+	Slider		"Scale", "TopHPBars_Scale", 0.01, 1.0, 0.01, 2
+	Slider		"Vertical Offset", "TopHPBars_Offset", -0.5, 0.5, 0.01, 2
+	Option		"Full Bright", "TopHPBars_FullBright", "YesNo"
+	Option		"Allow Stealth", "TopHPBars_RenderStyle", "YesNo"
+}
+
+AddOptionMenu "HUDOptions"
+{
+	StaticText " "
+	Submenu "Top HP Bars Settings", "TopHPBars_Settings"
+}

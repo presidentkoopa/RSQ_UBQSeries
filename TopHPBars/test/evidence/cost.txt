@@ -1,0 +1,9 @@
+/home/claude/scratch/logsA/bench2.log:THPT_BENCH bars 0 tracked 1 | steady 0.012 us/bar-tic | rebuild 0.012 us/bar | handler tick 1.812 us (1 tracked)
+/home/claude/scratch/logsA/bench2.log:THPT_CENSUS t0 monsters 19 | over spawn 0, at spawn 19, below 0 | with bar 0, with overheal strip 0
+/home/claude/scratch/logsA/bench2.log:THPT_CENSUS t80 monsters 223 | over spawn 68, at spawn 53, below 102 | with bar 170, with overheal strip 68
+/home/claude/scratch/logsA/bench2.log:THPT_BENCH bars 170 tracked 224 | steady 1.364 us/bar-tic | rebuild 1.982 us/bar | handler tick 2.756 us (224 tracked)
+/home/claude/scratch/logsA/coldb.log:THPT_BENCH bars 0 tracked 1 | steady 0.013 us/bar-tic | rebuild 0.023 us/bar | handler tick 1.150 us (1 tracked)
+/home/claude/scratch/logsA/coldb.log:THPT_CENSUS t0 monsters 19 | over spawn 0, at spawn 19, below 0 | with bar 0, with overheal strip 0
+/home/claude/scratch/logsA/coldb.log:THPT_COLDBENCH bars 0 items 1 | bar 0.013 us/bar-tic | item 0.166 us/monster-tic
+/home/claude/scratch/logsA/coldb.log:THPT_BENCH bars 0 tracked 224 | steady 0.018 us/bar-tic | rebuild 0.028 us/bar | handler tick 1.208 us (224 tracked)
+/home/claude/scratch/logsA/coldb.log:THPT_COLDBENCH bars 170 items 224 | bar 8.360 us/bar-tic | item 0.115 us/monster-tic

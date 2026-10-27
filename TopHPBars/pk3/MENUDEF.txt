@@ -1,0 +1,44 @@
+// RSQ Top HP Bars options, in BD22 VR Weapons' style: short labels, no notes, reset last.
+// What each one does is in CVARINFO's comments.
+AddOptionMenu "OptionsMenu"
+{
+	Submenu "RSQ HP Bars", "RSQTHP_Options"
+}
+
+OptionValue "RSQTHP_Schemes"
+{
+	0, "Classic"
+	1, "Red"
+	2, "Protanopia"
+	3, "Deuteranopia"
+	4, "Tritanopia"
+	5, "High Contrast"
+}
+
+OptionMenu "RSQTHP_Options"
+{
+	Title "HP BARS"
+	Option "HP Bars", "rsqthp_on", "OnOff"
+	Option "Colours", "rsqthp_scheme", "RSQTHP_Schemes"
+	StaticText " "
+	Slider "Size", "rsqthp_scale", 0.05, 1.0, 0.05, 2
+	Slider "Far Size", "rsqthp_far", 1.0, 3.0, 0.25, 2
+	Slider "Height", "rsqthp_offset", -0.5, 0.5, 0.05, 2
+	Option "Full Bright", "rsqthp_bright", "OnOff"
+	Option "Allow Stealth", "rsqthp_stealth", "OnOff"
+	StaticText " "
+	Option "Overheal", "rsqthp_overheal", "OnOff"
+	Option "Markers", "rsqthp_markers", "OnOff"
+	StaticText " "
+	SafeCommand "Reset All", "rsqthp_reset"
+}
+
+// COLDCITE'S OWN MENU, TAKEN OVER. If coldcite's TopHPBars pk3 is loaded BEFORE this one, his HUD
+// Options entry opens this menu instead of his (a later MENUDEF definition replaces an earlier one),
+// so there is one settings page for the one set of bars that shows (the handler removes his bars).
+// Without his pk3 nothing links here and this definition is never seen.
+OptionMenu "TopHPBars_Settings"
+{
+	Title "HP BARS"
+	Submenu "RSQ HP Bars", "RSQTHP_Options"
+}

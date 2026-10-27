@@ -1,0 +1,4 @@
+// TEST ONLY: draw the imp's standing frames as BD_VoxelPack's 64-tall cube voxel (SPDEU: zsiz 64,
+// pivot z 64), so a voxel monster's top (64) differs from its sprite's (57). The KVX is a copy of BD_VoxelPack's, inside this TEST-only pk3.
+TROOA = "SPDEU" { Scale = 1.0 }
+TROOB = "SPDEU" { Scale = 1.0 }

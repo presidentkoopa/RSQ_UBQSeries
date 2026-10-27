@@ -1,0 +1,5 @@
+User Float	TopHPBars_Scale = 0.3;
+User Int	TopHPBars_Style = 0;
+User Float	TopHPBars_Offset = 0.1;
+User Bool	TopHPBars_FullBright = False;
+User Bool	TopHPBars_RenderStyle = True;

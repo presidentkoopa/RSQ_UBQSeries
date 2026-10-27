@@ -1,0 +1,17 @@
+      4 t6  ShotgunGuy1:-
+      1 t14  Imp:- Imp:- Imp:- ShotgunGuy1:- Imp:- Imp:- Imp:-
+     11 t16  Imp:- Imp:- Imp:- Imp:- ShotgunGuy1:- Imp:- Imp:- Imp:-
+      7 t38  Imp:- Imp:- Imp:- Imp:-
+      3 t52  Imp:- Imp:RSYZD Imp:- Imp:-
+      1 t58  Imp:RSYZD Imp:RSYZD Imp:- Imp:-
+     17 t60  Imp:RSYZD Imp:RSYZD Imp:RSYZD Imp:-
+      4 t94  Imp:RSYZE Imp:RSYZD Imp:RSYZD Imp:-
+      6 t102  Imp:RSYZF Imp:RSYZD Imp:RSYZD Imp:-
+      1 t114  Imp:RSYZD Imp:RSYZD Imp:RSYZD Imp:-
+      3 t116  Imp:RSYZD Imp:RSYZD Imp:RSYZD Imp:- BDoomer:-
+      2 t122  Imp:RSYZE Imp:RSYZD Imp:RSYZD Imp:- BDoomer:-
+     13 t126  Imp:RSYZD Imp:RSYZD Imp:RSYZD Imp:- BDoomer:-
+      1 t152  Imp:RSYZD Imp:- Imp:RSYZD Imp:- BDoomer:-
+      1 t154  Imp:- Imp:- Imp:RSYZD Imp:- BDoomer:-
+     21 t156  Imp:- Imp:- Imp:- Imp:- BDoomer:-
+     82 t198  Imp:- Imp:- Imp:- Imp:-

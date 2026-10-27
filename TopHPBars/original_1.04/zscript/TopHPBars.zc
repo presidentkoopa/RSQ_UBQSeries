@@ -1,0 +1,302 @@
+//===========================================================================
+//
+// Top HP Bars
+//
+// RPG-like HP bars on top of enemies and players
+//
+// Written by coldcite
+// (Based on SpriteShadow, written by Nash Muhandes)
+//
+// Feel free to use this in your mods. You don't have to ask my permission!
+//
+// Known Issues:
+//	- "Allow Stealth" setting might not update properly until next level on enemies with special rendering styles (like spectres)
+//	- Mods that change max HP dynamically may cause display issues
+//
+// 1.04
+//	- Fix: crashing issue with some sprites
+//
+// 1.03
+//	- Fix: positioning issues finally fixed (for real this time)
+//	- Add: setting to make bars FULLBRIGHT and ignore sector light
+//	- Add: setting to adjust vertical offset
+//	- Add: setting to enable/disable displaying bars on "stealth" enemies
+//
+// 1.02
+//	- Fix: vertical positioning should be more accurate
+//	- Fix: enemy renderstyle/alpha correctly applied now (G)
+//	- Fix: elevators won't drop bars to the floor anymore
+//	- Add: settings menu under "Gameplay Options" (bar scale, style A and B)
+//
+// 1.01
+//	- Fix: scaling issue with high-resolution sprites (M)
+//	- Fix: compatibility with LegenDoom (G)
+//
+//===========================================================================
+
+// Dummy Classes
+Class HPBar : Actor { States { Spawn: TNT1 A 0; } }
+
+// Style-A
+Class HPBar_A_HPXX : HPBar { States { Spawn: HAXX A 1; } }
+Class HPBar_A_HP99 : HPBar { States { Spawn: HA99 A 1; } }
+Class HPBar_A_HP95 : HPBar { States { Spawn: HA95 A 1; } }
+Class HPBar_A_HP90 : HPBar { States { Spawn: HA90 A 1; } }
+Class HPBar_A_HP85 : HPBar { States { Spawn: HA85 A 1; } }
+Class HPBar_A_HP80 : HPBar { States { Spawn: HA80 A 1; } }
+Class HPBar_A_HP75 : HPBar { States { Spawn: HA75 A 1; } }
+Class HPBar_A_HP70 : HPBar { States { Spawn: HA70 A 1; } }
+Class HPBar_A_HP65 : HPBar { States { Spawn: HA65 A 1; } }
+Class HPBar_A_HP60 : HPBar { States { Spawn: HA60 A 1; } }
+Class HPBar_A_HP55 : HPBar { States { Spawn: HA55 A 1; } }
+Class HPBar_A_HP50 : HPBar { States { Spawn: HA50 A 1; } }
+Class HPBar_A_HP45 : HPBar { States { Spawn: HA45 A 1; } }
+Class HPBar_A_HP40 : HPBar { States { Spawn: HA40 A 1; } }
+Class HPBar_A_HP35 : HPBar { States { Spawn: HA35 A 1; } }
+Class HPBar_A_HP30 : HPBar { States { Spawn: HA30 A 1; } }
+Class HPBar_A_HP25 : HPBar { States { Spawn: HA25 A 1; } }
+Class HPBar_A_HP20 : HPBar { States { Spawn: HA20 A 1; } }
+Class HPBar_A_HP15 : HPBar { States { Spawn: HA15 A 1; } }
+Class HPBar_A_HP10 : HPBar { States { Spawn: HA10 A 1; } }
+Class HPBar_A_HP05 : HPBar { States { Spawn: HA05 A 1; } }
+Class HPBar_A_HP00 : HPBar { States { Spawn: HA00 A 1; } }
+
+// Style-B
+Class HPBar_B_HPXX : HPBar { States { Spawn: HBXX A 1; } }
+Class HPBar_B_HP99 : HPBar { States { Spawn: HB99 A 1; } }
+Class HPBar_B_HP95 : HPBar { States { Spawn: HB95 A 1; } }
+Class HPBar_B_HP90 : HPBar { States { Spawn: HB90 A 1; } }
+Class HPBar_B_HP85 : HPBar { States { Spawn: HB85 A 1; } }
+Class HPBar_B_HP80 : HPBar { States { Spawn: HB80 A 1; } }
+Class HPBar_B_HP75 : HPBar { States { Spawn: HB75 A 1; } }
+Class HPBar_B_HP70 : HPBar { States { Spawn: HB70 A 1; } }
+Class HPBar_B_HP65 : HPBar { States { Spawn: HB65 A 1; } }
+Class HPBar_B_HP60 : HPBar { States { Spawn: HB60 A 1; } }
+Class HPBar_B_HP55 : HPBar { States { Spawn: HB55 A 1; } }
+Class HPBar_B_HP50 : HPBar { States { Spawn: HB50 A 1; } }
+Class HPBar_B_HP45 : HPBar { States { Spawn: HB45 A 1; } }
+Class HPBar_B_HP40 : HPBar { States { Spawn: HB40 A 1; } }
+Class HPBar_B_HP35 : HPBar { States { Spawn: HB35 A 1; } }
+Class HPBar_B_HP30 : HPBar { States { Spawn: HB30 A 1; } }
+Class HPBar_B_HP25 : HPBar { States { Spawn: HB25 A 1; } }
+Class HPBar_B_HP20 : HPBar { States { Spawn: HB20 A 1; } }
+Class HPBar_B_HP15 : HPBar { States { Spawn: HB15 A 1; } }
+Class HPBar_B_HP10 : HPBar { States { Spawn: HB10 A 1; } }
+Class HPBar_B_HP05 : HPBar { States { Spawn: HB05 A 1; } }
+Class HPBar_B_HP00 : HPBar { States { Spawn: HB00 A 1; } }
+
+Class Z_TopHPBase : Actor
+{
+	Default
+	{
+		+NOINTERACTION
+		//+MOVEWITHSECTOR
+	}
+
+	// reference to owner
+	Actor ownerRef;
+
+	// style
+	Static Const String TopHPBar_Style[] = { "A", "B" };
+
+	override void Tick(void)
+	{
+		Super.Tick();
+
+		if (ownerRef)
+		{
+			CVar SelStyle = CVar.FindCVar("TopHPBars_Style");
+			String HPSpriteBase = String.Format("H%s", TopHPBar_Style[SelStyle.GetInt()]);
+			String HPSprite = String.Format("%s00", HPSpriteBase);
+			Float PctHP = 100;
+
+			if (ownerRef.bInvulnerable)
+				HPSprite = String.Format("%sXX", HPSpriteBase);
+			else
+			{
+				PctHP = (Float(ownerRef.Health) / Float(ownerRef.SpawnHealth())) * 100;
+				if (PctHP>=100)
+					HPSprite = String.Format("%s99", HPSpriteBase);
+				else
+					for (Int i=5; i<100; i+=5)
+						if (PctHP >= i) HPSprite = String.Format("%s%02d", HPSpriteBase, i);
+			}
+
+			Sprite = GetSpriteIndex(HPSprite);
+			Frame = 0;
+			Angle = 0;
+
+			//Console.printf(String.Format("%s: %d/%d (%d\%) [%s] H=%d A=%f", ownerRef.GetClassName(), ownerRef.Health, ownerRef.SpawnHealth(), PctHP, HPSprite, ownerRef.Pos.Z, ownerRef.Alpha));
+		}
+	}
+}
+
+Class Z_TopHP : Z_TopHPBase
+{
+	override void Tick(void)
+	{
+		Super.Tick();
+
+		if (ownerRef)
+		{
+			// filter your own bar and hide it from your first person view
+			if (ownerRef is "PlayerPawn" && players[consoleplayer].mo == ownerRef)
+			{
+				if (players[consoleplayer].camera == players[consoleplayer].mo && !(ownerRef.player.cheats & CF_CHASECAM))
+					bInvisible = true;
+				else
+					bInvisible = false;
+			}
+			else
+				bInvisible = (ownerRef.Health <= 0); // always visible for living monsters
+
+			// set alpha and renderstyle
+			CVar SelAlwaysRender = CVar.FindCVar("TopHPBars_RenderStyle");
+			If ( SelAlwaysRender.GetInt() ) A_SetRenderStyle(ownerRef.Alpha, ownerRef.GetRenderStyle());
+
+			// set scale
+			CVar SelScale = CVar.FindCVar("TopHPBars_Scale");
+			Scale.X = SelScale.GetFloat();
+			Scale.Y = SelScale.GetFloat();
+
+			// set fullbright
+			CVar SelFullBright = CVar.FindCVar("TopHPBars_FullBright");
+			bBright = SelFullBright.GetInt();
+
+			// get the real height (sprite texture, not actor's height)
+			Int SpriteTexHeight;
+			TextureID SpriteTexture; Bool SpriteFlip; Vector2 SpriteScale;
+			[SpriteTexture, SpriteFlip, SpriteScale] = ownerRef.CurState.GetSpriteTexture(ownerRef.SpriteRotation);
+			SpriteTexHeight = SpriteTexture ? TexMan.CheckRealHeight(SpriteTexture) : ownerRef.Height;
+
+			// sync position
+			CVar SelOffset = CVar.FindCVar("TopHPBars_Offset");
+			Float CustomOffset = 1 + SelOffset.GetFloat();
+			Int ZPos = (ownerRef.Pos.Z + ((SpriteTexHeight * ownerRef.Scale.Y) * CustomOffset));
+			Vector3 sPos = (ownerRef.Pos.X, ownerRef.Pos.Y, ZPos);
+			SetOrigin(sPos, True);
+		}
+
+		// clean-up
+		if (ownerRef && ownerRef.CountInv("Z_MyTopHP") <= 0) Destroy();
+		if (!ownerRef) Destroy();
+	}
+}
+
+Class Z_MyTopHP : CustomInventory
+{
+	// reference to the bar
+	Actor sr;
+
+	Default
+	{
+		Inventory.MaxAmount 1;
+		+INVENTORY.UNDROPPABLE
+		+INVENTORY.UNTOSSABLE
+		+INVENTORY.AUTOACTIVATE
+	}
+
+	override void Tick(void)
+	{
+		if (!sr)
+		{
+			if (Owner.Health != Owner.SpawnHealth()) // spawn bar only for those who damaged
+			{
+				// spawn the bar
+				Actor sh = Spawn("Z_TopHP", Owner.Pos, NO_REPLACE);
+				sr = sh;
+				Z_TopHP(sh).ownerRef = Owner;
+			}
+		}
+
+		Super.Tick();
+	}
+
+	States
+	{
+		Use:
+			TNT1 A 0;
+			Fail;
+		Pickup:
+			TNT1 A 0
+			{ return true; }
+			Stop;
+	}
+}
+
+Class TopHPHandler : EventHandler
+{
+	// add health bar to the monster
+	override void WorldThingSpawned(WorldEvent e)
+	{
+		if (e.Thing.bIsMonster && !e.Thing.bNoInteraction && !e.Thing.bNoTeleStomp)
+			if (!e.Thing.CountInv("Z_MyTopHP"))
+				e.Thing.GiveInventory("Z_MyTopHP", 1);
+	}
+
+	// remove health bar if the monster is dead
+	override void WorldThingDied(WorldEvent e)
+	{
+		if (e.Thing.bIsMonster && !e.Thing.bNoInteraction && !e.Thing.bNoTeleStomp)
+			while (e.Thing.CountInv("Z_MyTopHP"))
+				e.Thing.TakeInventory("Z_MyTopHP", 1);
+	}
+
+	// add health bar again if the monster is revived
+	override void WorldThingRevived(WorldEvent e)
+	{
+		if (e.Thing.bIsMonster && !e.Thing.bNoInteraction && !e.Thing.bNoTeleStomp)
+			if (!e.Thing.CountInv("Z_MyTopHP"))
+				e.Thing.GiveInventory("Z_MyTopHP", 1);
+	}
+
+
+	// players need to be handled a little differently...
+
+	void DoSpawnPlayerTopHP(PlayerPawn p)
+	{
+		if (p) p.GiveInventory("Z_MyTopHP", 1);
+	}
+
+	void DoRemovePlayerTopHP(PlayerPawn p)
+	{
+		if (p) p.TakeInventory("Z_MyTopHP", 0x7FFFFFFF);
+	}
+
+	override void PlayerEntered(PlayerEvent e)
+	{
+		let p = players[e.PlayerNumber].mo;
+		if (p) DoSpawnPlayerTopHP(p);
+	}
+
+	override void PlayerRespawned(PlayerEvent e)
+	{
+		let p = players[e.PlayerNumber].mo;
+		if (p) DoSpawnPlayerTopHP(p);
+	}
+
+	override void PlayerDied(PlayerEvent e)
+	{
+		let p = players[e.PlayerNumber].mo;
+		if (p) DoRemovePlayerTopHP(p);
+	}
+
+	override void WorldUnloaded(WorldEvent e)
+	{
+		// player is leaving this level, so mark their bars for destruction
+		for (int i = 0; i < MAXPLAYERS; i++)
+		{
+			let p = players[i].mo;
+			if (p && playeringame[i])
+			{
+				// find the bar and destroy it
+				let myTopHP = Z_MyTopHP(p.FindInventory("Z_MyTopHP"));
+
+				if (myTopHP && myTopHP.sr != null)
+					myTopHP.sr.Destroy();
+
+				DoRemovePlayerTopHP(p);
+			}
+		}
+	}
+}

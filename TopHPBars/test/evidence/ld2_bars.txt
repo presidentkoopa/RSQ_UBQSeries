@@ -1,0 +1,80 @@
+THPT_HURT0 0 DoomImp hp 60/60
+THPT_HURT0 1 DoomImp hp 60/60
+THPT_HURT0 2 DoomImp hp 60/60
+THPT_HURT0 3 DoomImp hp 60/60
+THPT_BAR t20 DoomImp hp 180/60 bar RSYAB over RS11T mark - dz 62.70 top 57.00 tgt 57.00 dxy 0.000 prevdz 62.70 roll 0 sc 0.300 a 1.00 st 1 inv 0 br 0
+THPT_BAR t20 DoomImp hp 180/60 bar RSYAB over RS11T mark - dz 62.70 top 57.00 tgt 57.00 dxy 0.000 prevdz 62.70 roll 0 sc 0.300 a 1.00 st 1 inv 0 br 0
+THPT_BAR t20 DoomImp hp 180/60 bar RSYAB over RS11T mark - dz 62.70 top 57.00 tgt 57.00 dxy 0.000 prevdz 62.70 roll 0 sc 0.300 a 1.00 st 1 inv 0 br 0
+THPT_BAR t20 DoomImp hp 180/60 bar RSYAB over RS11T mark - dz 62.70 top 57.00 tgt 57.00 dxy 0.000 prevdz 62.70 roll 0 sc 0.300 a 1.00 st 1 inv 0 br 0
+THPT_BAR t40 DoomImp hp 180/60 bar RSYAB over RS11T mark - dz 62.70 top 57.00 tgt 57.00 dxy 0.000 prevdz 62.70 roll 0 sc 0.300 a 1.00 st 1 inv 0 br 0
+THPT_BAR t40 DoomImp hp 180/60 bar RSYAB over RS11T mark - dz 62.70 top 57.00 tgt 57.00 dxy 0.000 prevdz 62.70 roll 0 sc 0.300 a 1.00 st 1 inv 0 br 0
+THPT_BAR t40 DoomImp hp 180/60 bar RSYAB over RS11T mark - dz 62.70 top 57.00 tgt 57.00 dxy 0.000 prevdz 62.70 roll 0 sc 0.300 a 1.00 st 1 inv 0 br 0
+THPT_BAR t40 DoomImp hp 180/60 bar RSYAB over RS11T mark - dz 62.70 top 57.00 tgt 57.00 dxy 0.000 prevdz 62.70 roll 0 sc 0.300 a 1.00 st 1 inv 0 br 0
+THPT_BAR t60 DoomImp hp 180/60 bar RSYAB over RS11T mark - dz 62.70 top 57.00 tgt 57.00 dxy 0.000 prevdz 62.70 roll 0 sc 0.300 a 1.00 st 1 inv 0 br 0
+THPT_BAR t60 DoomImp hp 180/60 bar RSYAB over RS11T mark - dz 62.70 top 57.00 tgt 57.00 dxy 0.000 prevdz 62.70 roll 0 sc 0.300 a 1.00 st 1 inv 0 br 0
+THPT_BAR t60 DoomImp hp 180/60 bar RSYAB over RS11T mark - dz 62.70 top 57.00 tgt 57.00 dxy 0.000 prevdz 62.70 roll 0 sc 0.300 a 1.00 st 1 inv 0 br 0
+THPT_BAR t60 DoomImp hp 180/60 bar RSYAB over RS11T mark - dz 62.70 top 57.00 tgt 57.00 dxy 0.000 prevdz 62.70 roll 0 sc 0.300 a 1.00 st 1 inv 0 br 0
+THPT_HURT t70 0 DoomImp hp 150/60
+THPT_HURT t70 1 DoomImp hp 150/60
+THPT_HURT t70 2 DoomImp hp 150/60
+THPT_HURT t70 3 DoomImp hp 150/60
+THPT_BAR t80 DoomImp hp 150/60 bar RSYAB over RS11J mark - dz 62.70 top 57.00 tgt 57.00 dxy 0.000 prevdz 62.70 roll 0 sc 0.300 a 1.00 st 1 inv 0 br 0
+THPT_BAR t80 DoomImp hp 150/60 bar RSYAB over RS11J mark - dz 62.70 top 57.00 tgt 57.00 dxy 0.000 prevdz 62.70 roll 0 sc 0.300 a 1.00 st 1 inv 0 br 0
+THPT_BAR t80 DoomImp hp 150/60 bar RSYAB over RS11J mark - dz 62.70 top 57.00 tgt 57.00 dxy 0.000 prevdz 62.70 roll 0 sc 0.300 a 1.00 st 1 inv 0 br 0
+THPT_BAR t80 DoomImp hp 150/60 bar RSYAB over RS11J mark - dz 62.70 top 57.00 tgt 57.00 dxy 0.000 prevdz 62.70 roll 0 sc 0.300 a 1.00 st 1 inv 0 br 0
+THPT_BAR t100 DoomImp hp 150/60 bar RSYAB over RS11J mark - dz 62.70 top 57.00 tgt 57.00 dxy 0.000 prevdz 62.70 roll 0 sc 0.300 a 1.00 st 1 inv 0 br 0
+THPT_BAR t100 DoomImp hp 150/60 bar RSYAB over RS11J mark - dz 62.70 top 57.00 tgt 57.00 dxy 0.000 prevdz 62.70 roll 0 sc 0.300 a 1.00 st 1 inv 0 br 0
+THPT_BAR t100 DoomImp hp 150/60 bar RSYAB over RS11J mark - dz 62.70 top 57.00 tgt 57.00 dxy 0.000 prevdz 62.70 roll 0 sc 0.300 a 1.00 st 1 inv 0 br 0
+THPT_BAR t100 DoomImp hp 150/60 bar RSYAB over RS11J mark - dz 62.70 top 57.00 tgt 57.00 dxy 0.000 prevdz 62.70 roll 0 sc 0.300 a 1.00 st 1 inv 0 br 0
+THPT_HURT t110 0 DoomImp hp 120/60
+THPT_HURT t110 1 DoomImp hp 120/60
+THPT_HURT t110 2 DoomImp hp 120/60
+THPT_HURT t110 3 DoomImp hp 120/60
+THPT_BAR t120 DoomImp hp 120/60 bar RSYAB over RS10T mark - dz 62.70 top 57.00 tgt 57.00 dxy 0.000 prevdz 62.70 roll 0 sc 0.300 a 1.00 st 1 inv 0 br 0
+THPT_BAR t120 DoomImp hp 120/60 bar RSYAB over RS10T mark - dz 62.70 top 57.00 tgt 57.00 dxy 0.000 prevdz 62.70 roll 0 sc 0.300 a 1.00 st 1 inv 0 br 0
+THPT_BAR t120 DoomImp hp 120/60 bar RSYAB over RS10T mark - dz 62.70 top 57.00 tgt 57.00 dxy 0.000 prevdz 62.70 roll 0 sc 0.300 a 1.00 st 1 inv 0 br 0
+THPT_BAR t120 DoomImp hp 120/60 bar RSYAB over RS10T mark - dz 62.70 top 57.00 tgt 57.00 dxy 0.000 prevdz 62.70 roll 0 sc 0.300 a 1.00 st 1 inv 0 br 0
+THPT_BAR t140 DoomImp hp 120/60 bar RSYAB over RS10T mark - dz 62.70 top 57.00 tgt 57.00 dxy 0.000 prevdz 62.70 roll 0 sc 0.300 a 1.00 st 1 inv 0 br 0
+THPT_BAR t140 DoomImp hp 120/60 bar RSYAB over RS10T mark - dz 62.70 top 57.00 tgt 57.00 dxy 0.000 prevdz 62.70 roll 0 sc 0.300 a 1.00 st 1 inv 0 br 0
+THPT_BAR t140 DoomImp hp 120/60 bar RSYAB over RS10T mark - dz 62.70 top 57.00 tgt 57.00 dxy 0.000 prevdz 62.70 roll 0 sc 0.300 a 1.00 st 1 inv 0 br 0
+THPT_BAR t140 DoomImp hp 120/60 bar RSYAB over RS10T mark - dz 62.70 top 57.00 tgt 57.00 dxy 0.000 prevdz 62.70 roll 0 sc 0.300 a 1.00 st 1 inv 0 br 0
+THPT_HURT t150 0 DoomImp hp 90/60
+THPT_HURT t150 1 DoomImp hp 90/60
+THPT_HURT t150 2 DoomImp hp 90/60
+THPT_HURT t150 3 DoomImp hp 90/60
+THPT_BAR t160 DoomImp hp 90/60 bar RSYAB over RS10J mark - dz 62.70 top 57.00 tgt 57.00 dxy 0.000 prevdz 62.70 roll 0 sc 0.300 a 1.00 st 1 inv 0 br 0
+THPT_BAR t160 DoomImp hp 90/60 bar RSYAB over RS10J mark - dz 62.70 top 57.00 tgt 57.00 dxy 0.000 prevdz 62.70 roll 0 sc 0.300 a 1.00 st 1 inv 0 br 0
+THPT_BAR t160 DoomImp hp 90/60 bar RSYAB over RS10J mark - dz 62.70 top 57.00 tgt 57.00 dxy 0.000 prevdz 62.70 roll 0 sc 0.300 a 1.00 st 1 inv 0 br 0
+THPT_BAR t160 DoomImp hp 90/60 bar RSYAB over RS10J mark - dz 62.70 top 57.00 tgt 57.00 dxy 0.000 prevdz 62.70 roll 0 sc 0.300 a 1.00 st 1 inv 0 br 0
+THPT_BAR t180 DoomImp hp 90/60 bar RSYAB over RS10J mark - dz 62.70 top 57.00 tgt 57.00 dxy 0.000 prevdz 62.70 roll 0 sc 0.300 a 1.00 st 1 inv 0 br 0
+THPT_BAR t180 DoomImp hp 90/60 bar RSYAB over RS10J mark - dz 62.70 top 57.00 tgt 57.00 dxy 0.000 prevdz 62.70 roll 0 sc 0.300 a 1.00 st 1 inv 0 br 0
+THPT_BAR t180 DoomImp hp 90/60 bar RSYAB over RS10J mark - dz 62.70 top 57.00 tgt 57.00 dxy 0.000 prevdz 62.70 roll 0 sc 0.300 a 1.00 st 1 inv 0 br 0
+THPT_BAR t180 DoomImp hp 90/60 bar RSYAB over RS10J mark - dz 62.70 top 57.00 tgt 57.00 dxy 0.000 prevdz 62.70 roll 0 sc 0.300 a 1.00 st 1 inv 0 br 0
+THPT_HURT t190 0 DoomImp hp 60/60
+THPT_HURT t190 1 DoomImp hp 60/60
+THPT_HURT t190 2 DoomImp hp 60/60
+THPT_HURT t190 3 DoomImp hp 60/60
+THPT_BAR t200 DoomImp hp 60/60 bar RSYAB over - mark - dz 62.70 top 57.00 tgt 57.00 dxy 0.000 prevdz 62.70 roll 0 sc 0.300 a 1.00 st 1 inv 0 br 0
+THPT_BAR t200 DoomImp hp 60/60 bar RSYAB over - mark - dz 62.70 top 57.00 tgt 57.00 dxy 0.000 prevdz 62.70 roll 0 sc 0.300 a 1.00 st 1 inv 0 br 0
+THPT_BAR t200 DoomImp hp 60/60 bar RSYAB over - mark - dz 62.70 top 57.00 tgt 57.00 dxy 0.000 prevdz 62.70 roll 0 sc 0.300 a 1.00 st 1 inv 0 br 0
+THPT_BAR t200 DoomImp hp 60/60 bar RSYAB over - mark - dz 62.70 top 57.00 tgt 57.00 dxy 0.000 prevdz 62.70 roll 0 sc 0.300 a 1.00 st 1 inv 0 br 0
+THPT_BAR t220 DoomImp hp 60/60 bar RSYAB over - mark - dz 62.70 top 57.00 tgt 57.00 dxy 0.000 prevdz 62.70 roll 0 sc 0.300 a 1.00 st 1 inv 0 br 0
+THPT_BAR t220 DoomImp hp 60/60 bar RSYAB over - mark - dz 62.70 top 57.00 tgt 57.00 dxy 0.000 prevdz 62.70 roll 0 sc 0.300 a 1.00 st 1 inv 0 br 0
+THPT_BAR t220 DoomImp hp 60/60 bar RSYAB over - mark - dz 62.70 top 57.00 tgt 57.00 dxy 0.000 prevdz 62.70 roll 0 sc 0.300 a 1.00 st 1 inv 0 br 0
+THPT_BAR t220 DoomImp hp 60/60 bar RSYAB over - mark - dz 62.70 top 57.00 tgt 57.00 dxy 0.000 prevdz 62.70 roll 0 sc 0.300 a 1.00 st 1 inv 0 br 0
+THPT_HURT t230 0 DoomImp hp 30/60
+THPT_HURT t230 1 DoomImp hp 30/60
+THPT_HURT t230 2 DoomImp hp 30/60
+THPT_HURT t230 3 DoomImp hp 30/60
+THPT_BAR t240 DoomImp hp 30/60 bar RSYAL over - mark - dz 62.70 top 57.00 tgt 57.00 dxy 0.000 prevdz 62.70 roll 0 sc 0.300 a 1.00 st 1 inv 0 br 0
+THPT_BAR t240 DoomImp hp 30/60 bar RSYAL over - mark - dz 62.70 top 57.00 tgt 57.00 dxy 0.000 prevdz 62.70 roll 0 sc 0.300 a 1.00 st 1 inv 0 br 0
+THPT_BAR t240 DoomImp hp 30/60 bar RSYAL over - mark - dz 62.70 top 57.00 tgt 57.00 dxy 0.000 prevdz 62.70 roll 0 sc 0.300 a 1.00 st 1 inv 0 br 0
+THPT_BAR t240 DoomImp hp 30/60 bar RSYAL over - mark - dz 62.70 top 57.00 tgt 57.00 dxy 0.000 prevdz 62.70 roll 0 sc 0.300 a 1.00 st 1 inv 0 br 0
+THPT_BAR t260 DoomImp hp 30/60 bar RSYAL over - mark - dz 62.70 top 57.00 tgt 57.00 dxy 0.000 prevdz 62.70 roll 0 sc 0.300 a 1.00 st 1 inv 0 br 0
+THPT_BAR t260 DoomImp hp 30/60 bar RSYAL over - mark - dz 62.70 top 57.00 tgt 57.00 dxy 0.000 prevdz 62.70 roll 0 sc 0.300 a 1.00 st 1 inv 0 br 0
+THPT_BAR t260 DoomImp hp 30/60 bar RSYAL over - mark - dz 62.70 top 57.00 tgt 57.00 dxy 0.000 prevdz 62.70 roll 0 sc 0.300 a 1.00 st 1 inv 0 br 0
+THPT_BAR t260 DoomImp hp 30/60 bar RSYAL over - mark - dz 62.70 top 57.00 tgt 57.00 dxy 0.000 prevdz 62.70 roll 0 sc 0.300 a 1.00 st 1 inv 0 br 0
+THPT_HURT t270 0 DoomImp hp 0/60
+THPT_HURT t270 1 DoomImp hp 0/60
+THPT_HURT t270 2 DoomImp hp 0/60
+THPT_HURT t270 3 DoomImp hp 0/60

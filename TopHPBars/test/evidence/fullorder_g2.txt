@@ -1,0 +1,81 @@
+THPT_COUNT t0 bars 0 tracked 1 spawned 0 scheme 0 set 0 | coldcite bars 0 items 0
+THPT_LATE t0 bars 0 | max |bar-thing| xy 0.0000 | max prev mismatch 0.0000 | fastest thing moved 0.00 this tic ()
+THPT_LATE t5 bars 0 | max |bar-thing| xy 0.0000 | max prev mismatch 0.0000 | fastest thing moved 0.00 this tic ()
+THPT_LATE t10 bars 1 | max |bar-thing| xy 0.0000 | max prev mismatch 0.0000 | fastest thing moved 0.00 this tic ()
+THPT_COUNT t15 bars 4 tracked 27 spawned 4 scheme 0 set 0 | coldcite bars 0 items 0
+THPT_LATE t15 bars 4 | max |bar-thing| xy 0.0000 | max prev mismatch 0.0000 | fastest thing moved 0.00 this tic ()
+THPT_LATE t20 bars 4 | max |bar-thing| xy 0.0000 | max prev mismatch 0.0000 | fastest thing moved 0.00 this tic ()
+THPT_LATE t25 bars 4 | max |bar-thing| xy 0.0000 | max prev mismatch 0.0000 | fastest thing moved 0.00 this tic ()
+THPT_COUNT t30 bars 6 tracked 26 spawned 6 scheme 0 set 0 | coldcite bars 0 items 0
+THPT_LATE t30 bars 6 | max |bar-thing| xy 0.0000 | max prev mismatch 0.0000 | fastest thing moved 0.00 this tic ()
+THPT_LATE t35 bars 6 | max |bar-thing| xy 0.0000 | max prev mismatch 0.0000 | fastest thing moved 0.00 this tic ()
+THPT_LATE t40 bars 7 | max |bar-thing| xy 0.0000 | max prev mismatch 0.0000 | fastest thing moved 0.00 this tic ()
+THPT_COUNT t45 bars 7 tracked 26 spawned 7 scheme 0 set 0 | coldcite bars 0 items 0
+THPT_LATE t45 bars 7 | max |bar-thing| xy 0.0000 | max prev mismatch 0.0000 | fastest thing moved 0.00 this tic ()
+THPT_LATE t50 bars 7 | max |bar-thing| xy 0.0000 | max prev mismatch 0.0000 | fastest thing moved 0.00 this tic ()
+THPT_LATE t55 bars 7 | max |bar-thing| xy 0.0000 | max prev mismatch 0.0000 | fastest thing moved 0.00 this tic ()
+THPT_COUNT t60 bars 7 tracked 26 spawned 7 scheme 0 set 0 | coldcite bars 0 items 0
+THPT_LATE t60 bars 7 | max |bar-thing| xy 0.0000 | max prev mismatch 0.0000 | fastest thing moved 0.00 this tic ()
+THPT_LATE t65 bars 7 | max |bar-thing| xy 0.0000 | max prev mismatch 0.0000 | fastest thing moved 0.00 this tic ()
+THPT_LATE t70 bars 6 | max |bar-thing| xy 0.0000 | max prev mismatch 0.0000 | fastest thing moved 0.00 this tic ()
+THPT_COUNT t75 bars 7 tracked 26 spawned 7 scheme 0 set 0 | coldcite bars 0 items 0
+THPT_LATE t75 bars 6 | max |bar-thing| xy 0.0000 | max prev mismatch 0.0000 | fastest thing moved 0.00 this tic ()
+THPT_LATE t80 bars 6 | max |bar-thing| xy 0.0000 | max prev mismatch 0.0000 | fastest thing moved 0.00 this tic ()
+THPT_LATE t85 bars 6 | max |bar-thing| xy 0.0000 | max prev mismatch 0.0000 | fastest thing moved 0.00 this tic ()
+THPT_COUNT t90 bars 6 tracked 25 spawned 7 scheme 0 set 0 | coldcite bars 0 items 0
+THPT_LATE t90 bars 6 | max |bar-thing| xy 0.0000 | max prev mismatch 0.0000 | fastest thing moved 0.00 this tic ()
+THPT_LATE t95 bars 6 | max |bar-thing| xy 0.0000 | max prev mismatch 0.0000 | fastest thing moved 17.43 this tic (Imp)
+THPT_LATE t100 bars 6 | max |bar-thing| xy 0.0000 | max prev mismatch 0.0000 | fastest thing moved 0.00 this tic ()
+THPT_COUNT t105 bars 6 tracked 25 spawned 7 scheme 0 set 0 | coldcite bars 0 items 0
+THPT_LATE t105 bars 6 | max |bar-thing| xy 0.0000 | max prev mismatch 0.0000 | fastest thing moved 0.00 this tic ()
+THPT_LATE t110 bars 6 | max |bar-thing| xy 0.0000 | max prev mismatch 0.0000 | fastest thing moved 5.00 this tic (Imp)
+THPT_LATE t115 bars 7 | max |bar-thing| xy 0.0000 | max prev mismatch 0.0000 | fastest thing moved 0.64 this tic (Imp)
+THPT_COUNT t120 bars 7 tracked 25 spawned 8 scheme 0 set 0 | coldcite bars 0 items 0
+THPT_LATE t120 bars 7 | max |bar-thing| xy 0.0000 | max prev mismatch 0.0000 | fastest thing moved 0.39 this tic (Imp)
+THPT_LATE t125 bars 7 | max |bar-thing| xy 0.0000 | max prev mismatch 0.0000 | fastest thing moved 0.24 this tic (Imp)
+THPT_LATE t130 bars 7 | max |bar-thing| xy 0.0000 | max prev mismatch 0.0000 | fastest thing moved 0.32 this tic (Imp)
+THPT_COUNT t135 bars 7 tracked 25 spawned 8 scheme 0 set 0 | coldcite bars 0 items 0
+THPT_LATE t135 bars 7 | max |bar-thing| xy 0.0000 | max prev mismatch 0.0000 | fastest thing moved 0.20 this tic (Imp)
+LOAD1
+THPT_COUNT t120 bars 7 tracked 25 spawned 8 scheme 0 set 0 | coldcite bars 0 items 0
+THPT_LATE t120 bars 7 | max |bar-thing| xy 0.0000 | max prev mismatch 0.0000 | fastest thing moved 0.39 this tic (Imp)
+THPT_LATE t125 bars 7 | max |bar-thing| xy 0.0000 | max prev mismatch 0.0000 | fastest thing moved 0.24 this tic (Imp)
+THPT_LATE t130 bars 7 | max |bar-thing| xy 0.0000 | max prev mismatch 0.0000 | fastest thing moved 0.32 this tic (Imp)
+THPT_COUNT t135 bars 7 tracked 25 spawned 8 scheme 0 set 0 | coldcite bars 0 items 0
+THPT_LATE t135 bars 7 | max |bar-thing| xy 0.0000 | max prev mismatch 0.0000 | fastest thing moved 0.20 this tic (Imp)
+THPT_LATE t140 bars 7 | max |bar-thing| xy 0.0000 | max prev mismatch 0.0000 | fastest thing moved 0.12 this tic (Imp)
+THPT_LATE t145 bars 7 | max |bar-thing| xy 0.0000 | max prev mismatch 0.0000 | fastest thing moved 0.07 this tic (Imp)
+LOAD2
+THPT_COUNT t120 bars 7 tracked 25 spawned 8 scheme 0 set 0 | coldcite bars 0 items 0
+THPT_LATE t120 bars 7 | max |bar-thing| xy 0.0000 | max prev mismatch 0.0000 | fastest thing moved 0.39 this tic (Imp)
+THPT_LATE t125 bars 7 | max |bar-thing| xy 0.0000 | max prev mismatch 0.0000 | fastest thing moved 0.24 this tic (Imp)
+THPT_LATE t130 bars 7 | max |bar-thing| xy 0.0000 | max prev mismatch 0.0000 | fastest thing moved 0.32 this tic (Imp)
+THPT_COUNT t135 bars 7 tracked 25 spawned 8 scheme 0 set 0 | coldcite bars 0 items 0
+THPT_LATE t135 bars 7 | max |bar-thing| xy 0.0000 | max prev mismatch 0.0000 | fastest thing moved 0.20 this tic (Imp)
+THPT_LATE t140 bars 7 | max |bar-thing| xy 0.0000 | max prev mismatch 0.0000 | fastest thing moved 0.12 this tic (Imp)
+THPT_LATE t145 bars 7 | max |bar-thing| xy 0.0000 | max prev mismatch 0.0000 | fastest thing moved 0.07 this tic (Imp)
+MAP2
+THPT_COUNT t150 bars 7 tracked 25 spawned 8 scheme 0 set 0 | coldcite bars 0 items 0
+THPT_LATE t150 bars 7 | max |bar-thing| xy 0.0000 | max prev mismatch 0.0000 | fastest thing moved 0.34 this tic (Imp)
+THPT_COUNT t0 bars 0 tracked 1 spawned 0 scheme 0 set 0 | coldcite bars 0 items 0
+THPT_LATE t0 bars 0 | max |bar-thing| xy 0.0000 | max prev mismatch 0.0000 | fastest thing moved 0.00 this tic ()
+THPT_LATE t5 bars 0 | max |bar-thing| xy 0.0000 | max prev mismatch 0.0000 | fastest thing moved 0.00 this tic ()
+THPT_LATE t10 bars 0 | max |bar-thing| xy 0.0000 | max prev mismatch 0.0000 | fastest thing moved 0.00 this tic ()
+THPT_COUNT t15 bars 3 tracked 83 spawned 3 scheme 0 set 0 | coldcite bars 0 items 0
+THPT_LATE t15 bars 3 | max |bar-thing| xy 0.0000 | max prev mismatch 0.0000 | fastest thing moved 0.00 this tic ()
+THPT_LATE t20 bars 6 | max |bar-thing| xy 0.0000 | max prev mismatch 0.0000 | fastest thing moved 0.00 this tic ()
+THPT_LATE t25 bars 6 | max |bar-thing| xy 0.0000 | max prev mismatch 0.0000 | fastest thing moved 0.00 this tic ()
+THPT_COUNT t30 bars 6 tracked 77 spawned 6 scheme 0 set 0 | coldcite bars 0 items 0
+THPT_LATE t30 bars 6 | max |bar-thing| xy 0.0000 | max prev mismatch 0.0000 | fastest thing moved 0.00 this tic ()
+THPT_LATE t35 bars 6 | max |bar-thing| xy 0.0000 | max prev mismatch 0.0000 | fastest thing moved 0.00 this tic ()
+THPT_LATE t40 bars 7 | max |bar-thing| xy 0.0000 | max prev mismatch 0.0000 | fastest thing moved 0.00 this tic ()
+THPT_COUNT t45 bars 7 tracked 77 spawned 7 scheme 0 set 0 | coldcite bars 0 items 0
+THPT_LATE t45 bars 7 | max |bar-thing| xy 0.0000 | max prev mismatch 0.0000 | fastest thing moved 0.00 this tic ()
+THPT_LATE t50 bars 7 | max |bar-thing| xy 0.0000 | max prev mismatch 0.0000 | fastest thing moved 0.00 this tic ()
+THPT_LATE t55 bars 7 | max |bar-thing| xy 0.0000 | max prev mismatch 0.0000 | fastest thing moved 0.00 this tic ()
+THPT_COUNT t60 bars 7 tracked 77 spawned 7 scheme 0 set 0 | coldcite bars 0 items 0
+THPT_LATE t60 bars 7 | max |bar-thing| xy 0.0000 | max prev mismatch 0.0000 | fastest thing moved 0.00 this tic ()
+THPT_LATE t65 bars 7 | max |bar-thing| xy 0.0000 | max prev mismatch 0.0000 | fastest thing moved 0.00 this tic ()
+THPT_LATE t70 bars 6 | max |bar-thing| xy 0.0000 | max prev mismatch 0.0000 | fastest thing moved 0.00 this tic ()
+THPT_COUNT t75 bars 7 tracked 77 spawned 7 scheme 0 set 0 | coldcite bars 0 items 0
+THPT_LATE t75 bars 6 | max |bar-thing| xy 0.0000 | max prev mismatch 0.0000 | fastest thing moved 0.00 this tic ()

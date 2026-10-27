@@ -1,0 +1,13 @@
+      7 t14  DoomImp:- DoomImp:- DoomImp:- DoomImp:- DoomImp:- DoomImp:-
+      4 t28  DoomImp:- DoomImp:- DoomImp:-
+      3 t36  DoomImp:- DoomImp:RSYZD DoomImp:-
+      1 t42  DoomImp:RSYZD DoomImp:RSYZD DoomImp:-
+     15 t44  DoomImp:RSYZD DoomImp:RSYZD DoomImp:RSYZD
+      4 t74  DoomImp:RSYZE DoomImp:RSYZD DoomImp:RSYZD
+      4 t82  DoomImp:RSYZF DoomImp:RSYZD DoomImp:RSYZD
+     27 t90  DoomImp:RSYZD DoomImp:RSYZD DoomImp:RSYZD
+      8 t144  DoomImp:RSYZD DoomImp:RSYZE DoomImp:RSYZD
+      1 t160  DoomImp:RSYZD DoomImp:RSYZA DoomImp:-
+     16 t162  DoomImp:- DoomImp:RSYZA DoomImp:-
+      4 t194  DoomImp:- DoomImp:RSYZA DoomImp:- DoomImp:- DoomImp:RSYZA DoomImp:- DoomImp:- DoomImp:RSYZA DoomImp:-
+      4 t202  DoomImp:- DoomImp:RSYZA DoomImp:- DoomImp:- DoomImp:RSYZA DoomImp:-

@@ -1,0 +1,13 @@
+// RSQ Top HP Bars. Server cvars, like the rest of the series (single-player VR; the bars are play-scope
+// actors, so every machine must see the same values). Defaults are coldcite's (size 0.3, height 0.1, not full bright, stealth followed).
+server bool   rsqthp_on       = true;   // bars on/off
+server int    rsqthp_scheme   = 0;      // 0 Classic (coldcite's A), 1 Red (coldcite's B), 2 Protanopia, 3 Deuteranopia,
+                                      // 4 Tritanopia, 5 High Contrast. RSQ_Accessibility's rsqa_colorblind, when
+                                      // loaded and not Off, overrides this.
+server float  rsqthp_scale    = 0.3;    // bar size (coldcite's Scale)
+server float  rsqthp_far      = 2.0;    // size multiplier reached at range: 1 = off; grows from 256 to 1024 units
+server float  rsqthp_offset   = 0.1;    // height above the sprite, as a fraction of its height (coldcite's)
+server bool   rsqthp_bright   = false;  // ignore sector light (High Contrast always does)
+server bool   rsqthp_stealth  = true;   // follow the monster's translucency (coldcite's Allow Stealth)
+server bool   rsqthp_overheal = true;   // strip above the bar for health over spawn health
+server bool   rsqthp_markers  = true;   // hooked / stunned / locked / gripped icons from the series' mods

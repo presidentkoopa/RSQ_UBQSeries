@@ -1,0 +1,2 @@
+// TEST ONLY: stands in for RSQ_Accessibility's shared setting until that pk3 is built.
+server int rsqa_colorblind = 0;   // 0 off, 1 protan, 2 deutan, 3 tritan, 4 high contrast

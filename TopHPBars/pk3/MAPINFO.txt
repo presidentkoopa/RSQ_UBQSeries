@@ -1,0 +1,4 @@
+GameInfo
+{
+	AddEventHandlers = "RSQTHP_Handler", "RSQTHP_Voxels"
+}
