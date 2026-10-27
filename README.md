@@ -236,14 +236,15 @@ Known limits:
 
 - **QuestZDoom**: Emawind and Team Beef. The engine, and the off-hand weapon and attack-pose script
   API all six mods are built on.
-- **id Software**: the shield saw (*Doom: The Dark Ages*), its design and the shield and saw meshes
-  and textures the ShieldSaw uses; and Quake's Grunt, whose torso the TacticalRig can wear.
+- **id Software**: the shield saw (*Doom: The Dark Ages*): its design, and the mesh Ermac ripped
+  from the game; and Quake's Grunt, whose torso the TacticalRig can wear.
 - **Ermac**, co-designer of DoomVR ([Rusted Legacy](https://github.com/iAmErmac/rusted-legacy),
   DXR, RS_Main):
-  - Brought the shield saw to Doom VR first, in Rusted Legacy, and prepared its meshes for VR
-    (split into working parts). The ShieldSaw started from his version, with its hand model and
-    sounds. Those meshes are id Software's, not his authored models, and his MIT licence covers
-    his code, not them.
+  - Brought the shield saw to Doom VR first, in Rusted Legacy. In his words, he worked on two
+    shield models: the first took him about three days to make work, the second was a rip from
+    the game whose parts he separated in a day. Which of the ShieldSaw's two meshes is which is
+    not recorded ([ShieldSaw/README.md](ShieldSaw/README.md)). The ShieldSaw started from his
+    version, with its hand model and sounds. His MIT licence covers his code, not the ripped mesh.
   - In the QuestSaber: the Force and impact FX sprites and the choke loop.
   - **The TacticalRig is built on his Virtual Tactical Vest idea**, and the cigarette is his
     tribute idea: the cigarette, butt and smoke come from that mod (its credits name him as their
