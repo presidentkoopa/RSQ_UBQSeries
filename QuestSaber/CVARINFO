@@ -36,7 +36,7 @@ user int     ubqs_remote_level  = 2;
 user int     ubqs_remote_sting  = 2;
 server bool  ubqs_on            = true;
 server bool  ubqs_start         = true;
-server bool  ubqs_dual          = true;
+server bool  ubqs_dual          = true;   // the old "a second saber at all": off = ubqs_dual_mode 0; not on the menu, moved to mode 0 on load
 server int   ubqs_dual_mode     = 1;      // the second saber: 0 one saber only, 1 the Dual key brings it out / puts it away (like Brutal Doom's dual guns), 2 always out
 server bool  ubqs_bd_sword      = true;   // with Brutal Doom, its sword (DSweap) becomes the saber
 server bool  ubqs_chainsaw      = false;
