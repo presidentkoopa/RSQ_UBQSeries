@@ -209,6 +209,7 @@ class SSQ_Disc : Actor
 		found.Clear();
 		int want = SSQ_Handler.SVI('ssq_locks', 5);
 		if (want <= 0) return;
+		want += SSQ_Upg.Lv(mo.FindInventory('SSQ_ShieldSaw'), "Lockstep");	// LOCKSTEP (Gun Bonsai VR patch)
 		double cone = SSQ_Handler.SV('ssq_lock_cone', 25.0);
 		double range = SSQ_Handler.SV('ssq_lock_range', 1200.0);
 		Array<Actor> cand; Array<double> score;

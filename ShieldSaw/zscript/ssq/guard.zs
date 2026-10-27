@@ -96,13 +96,34 @@ class SSQ_Guard : Inventory
 		return pose.L * (-Side(mo.player));
 	}
 
-	// ssq_block_double (the owner, 10-27, "Double Block Radius: On / Off, where the plate size is
-	// doubled"): the plate that blocks, bashes and grinds is twice as wide. The shield you see is
-	// unchanged.
-	static clearscope double PlateRadius(bool blades)
+	// HOW WIDE THE PLATE IS (the shield you see is unchanged). `grow` is GrowK(): with the Gun
+	// Bonsai VR patch loaded the plate GROWS -- its Broadening upgrade, +20% a level up to double
+	// at level 5 (the owner, 10-27: "grow the shield over time from its default instead of
+	// doubling it in options"). Without the patch, ssq_block_double (Double Block Radius) still
+	// doubles it outright.
+	static clearscope double PlateRadius(bool blades, double grow = 1.0)
 	{
-		double dbl = SSQ_Handler.SV('ssq_block_double', 0) > 0.5 ? 2.0 : 1.0;
-		return SSQ_Handler.CM((SSQ_Handler.SV('ssq_plate_radius', 29.2) + (blades ? SSQ_Handler.SV('ssq_plate_blades', 6.0) : 0)) * Scale() * dbl);
+		return SSQ_Handler.CM((SSQ_Handler.SV('ssq_plate_radius', 29.2) + (blades ? SSQ_Handler.SV('ssq_plate_blades', 6.0) : 0)) * Scale() * grow);
+	}
+
+	// the plate's width factor for this player, asked once a second (a service call by name)
+	double growNow;
+	int growTic;
+	double GrowK()
+	{
+		if (growNow <= 0 || Level.maptime >= growTic || Level.maptime < growTic - 35)
+		{
+			growTic = Level.maptime + 35;
+			growNow = GrowFor(PlayerPawn(Owner));
+		}
+		return growNow;
+	}
+	static double GrowFor(PlayerPawn mo)
+	{
+		let svc = SSQ_Upg.Svc();
+		if (svc && svc.GetInt("loaded") > 0)
+			return 1.0 + 0.2 * clamp(SSQ_Upg.Lv(mo ? mo.FindInventory('SSQ_ShieldSaw') : null, "Broadening"), 0, 5);
+		return SSQ_Handler.SV('ssq_block_double', 0) > 0.5 ? 2.0 : 1.0;
 	}
 
 	// does the segment A->B pass through the THICK disc (centre C, face n, radius R, half
@@ -167,7 +188,7 @@ class SSQ_Guard : Inventory
 			plateHeld = 1;
 			plateC = PlateCentre(mo, pose, false);
 			plateN = PlateNormal(mo, pose, false);
-			plateR = PlateRadius(saw && saw.Revved());
+			plateR = PlateRadius(saw && saw.Revved(), GrowK());
 			return true;
 		}
 		if (st == SSQ_Handler.SS_STOWED && SSQ_Handler.SVI('ssq_guard_stowed', 0) != 0 && saw)
@@ -175,7 +196,7 @@ class SSQ_Guard : Inventory
 			plateHeld = 0;
 			plateC = PlateCentre(mo, pose, true);
 			plateN = PlateNormal(mo, pose, true);
-			plateR = PlateRadius(false);
+			plateR = PlateRadius(false, GrowK());
 			return true;
 		}
 		return false;
@@ -372,7 +393,7 @@ class SSQ_Guard : Inventory
 			// REBOUND (Gun Bonsai): a returned bullet hits harder. (A turned missile gets the same from the
 			// patch itself, which can see it; this return is traced by a helper the patch cannot credit.)
 			int rb = SSQ_Upg.Lv(mo.FindInventory('SSQ_ShieldSaw'), "Rebound");
-			if (rb > 0) dmg = int(dmg * (1.25 + 0.25 * rb));
+			if (rb > 0) dmg = int(dmg * (1.1 + 0.15 * rb));
 			// With LAF_ABSPOSITION the engine reads the three offsets as LITERAL COORDINATES --
 			// tempos = (offsetforward, offsetside, sz), p_map.cpp:4875 -- so the forward and side
 			// slots carry X and Y. Passing 0,0 started this trace at the map origin.
@@ -392,6 +413,14 @@ class SSQ_Guard : Inventory
 				// returned bullet was credited to this helper, and so to nobody
 				ric.bMissile = true;
 				ric.angle = ang;
+				// AND PAID TO THE SHIELDSAW. The engine names the helper as the damage source, so Gun
+				// Bonsai saw nobody's damage: FriendPlayer makes the helper count as this player's
+				// (Gun Bonsai's GetPlayerDamageSource reads it), and the claim -- its master is the
+				// saw, asked of the VR patch by name -- pays the helper and the puff it leaves to the
+				// ShieldSaw. Without the patch the claim is nobody's call and nothing changes.
+				ric.FriendPlayer = mo.PlayerNumber() + 1;
+				ric.master = mo.FindInventory('SSQ_ShieldSaw');
+				{ let upg = SSQ_Upg.Svc(); if (upg && ric.master) upg.GetInt("claim", "", 0, 0, ric); }
 				FTranslatedLineTarget hitT;
 				ric.LineAttack(ang, max(dist, 1024.0), pit, dmg, 'Hitscan', 'BulletPuff', LAF_ABSPOSITION, hitT, P.z, P.x, P.y);
 				// The helper vanishes in a tic: a monster it hit would chase nothing. Point the
@@ -432,11 +461,14 @@ class SSQ_Guard : Inventory
 		double lead = clamp(SSQ_Handler.SV('ssq_sweep_lead', 3.0), 1.0, 6.0);
 		Vector3 travel = PlateTravel();
 		double reach = R + 320.0 + travel.Length();	// a fast bolt, and a fast arm, cover ground
-		let it = BlockThingsIterator.CreateFromPos(C.x, C.y, C.z - reach, reach * 2.0, reach, false);
-		while (it.Next())
+		// the missiles in flight (SSQ_Handler.mMissiles: a projectile is never in the blockmap)
+		let hh = SSQ_Handler.Get();
+		if (!hh) return;
+		for (int k = hh.mMissiles.Size() - 1; k >= 0; k--)
 		{
-			Actor sh = it.thing;
+			Actor sh = hh.mMissiles[k];
 			if (!sh || !sh.bMissile || sh == mo) continue;
+			if ((sh.pos - C).Length() > reach) continue;
 			if (sh.target == mo) continue;		// ours already, or one we just turned
 			if (sh is 'SSQ_Disc') continue;		// never our own shield
 			Vector3 v = sh.vel;
@@ -525,6 +557,13 @@ class SSQ_Guard : Inventory
 		double sp = max(sh.vel.Length(), sh.speed, 8.0) * SSQ_Handler.SV('ssq_sweep_boost', 1.0);
 		Vector3 dir = DeflectDir(mo, sh.pos, sh.vel, n, shooter);
 		sh.target = mo;						// ours now: it hurts them, never us
+		// and the ShieldSaw turned it: Gun Bonsai's VR patch pays a missile to its master weapon
+		// (before, a swept shot had no master and its damage went to whichever hand scored best)
+		let saw = mo.FindInventory('SSQ_ShieldSaw');
+		if (saw) sh.master = saw;
+		// and remembered as turned, like the block path's: a scorer's "returned", and the patch's
+		// Rebound, read it (the sweep never told them, so a swept shot was never a returned one)
+		{ let shh = SSQ_Handler.Get(); if (shh && shh.score) shh.score.Turned(sh, shooter); }
 		if (sh.bSeekerMissile) sh.tracer = shooter;
 		sh.vel = dir * sp;
 		sh.angle = atan2(dir.y, dir.x);
@@ -570,7 +609,7 @@ class SSQ_Guard : Inventory
 		let p = mo.player;
 		Vector3 C = PlateCentre(mo, pose, false);
 		Vector3 n = PlateNormal(mo, pose, false);
-		double R = PlateRadius(saw.Revved());
+		double R = PlateRadius(saw.Revved(), g.GrowK());
 
 		if (SSQ_Handler.UVI(p, 'ssq_debug_ring', 0) != 0) g.Ring(mo, C, n, R, pose);
 
