@@ -19,11 +19,33 @@ OptionValue "RSQDG_FlightMode"
 	1, "Arc"
 }
 
+// THE FRONT PAGE (the owner, 10-27: "way too many options, people will be overwhelmed").
+// Every setting, unchanged, is under "Advanced: every setting".
 OptionMenu "RSQDG_Options"
 {
 	Title "DISTANCE GRAB"
+	StaticText "Turn your palm out and flick your wrist up to pull a thing to your hand.", 1
+	StaticText "Roll your palm back to let go; let go mid-swing to throw it.", 1
 	StaticText ""
 	Option "Distance grab", "rsqdg_on", "OnOff"
+	Slider "Reach (map units)", "rsqdg_reach", 64, 2048, 32, 0
+	Slider "Throw strength", "rsqdg_throw_scale", 0.25, 4.0, 0.25, 2
+	Option "Barrels", "rsqdg_barrels", "OnOff"
+	Option "Weapons", "rsqdg_weapons", "OnOff"
+	Option "Corpses", "rsqdg_corpses", "OnOff"
+	Option "Beam to what you would grab", "rsqdg_beam", "OnOff"
+	Option "Controller haptics", "rsqdg_haptics", "OnOff"
+	Option "Lift doors by hand", "rsqdg_door", "OnOff"
+	StaticText ""
+	Submenu "Advanced: every setting", "RSQDG_Every"
+	StaticText ""
+	SafeCommand "Reset all Distance Grab settings", "resetcvar rsqdg_on rsqdg_reach rsqdg_spread rsqdg_sight rsqdg_corpses rsqdg_barrels rsqdg_weapons rsqdg_powerups rsqdg_button rsqdg_palm rsqdg_palm_roll rsqdg_palm_tol rsqdg_palm_pitch rsqdg_jump_m rsqdg_lock_dwell rsqdg_yield rsqdg_steady_m rsqdg_lightup rsqdg_glow rsqdg_glow_a rsqdg_voxel_flash rsqdg_flash rsqdg_flick_deg rsqdg_flight_speed rsqdg_steer rsqdg_pull_kg rsqdg_flight_gravity rsqdg_flight_mode rsqdg_arc_apex rsqdg_flight_duck rsqdg_flight_radius rsqdg_flight_timeout rsqdg_catch_radius rsqdg_catch_hold rsqdg_catch_takes rsqdg_throw_scale rsqdg_arm_kg rsqdg_throw_j rsqdg_throw_min rsqdg_throw_explode rsqdg_hold_dist rsqdg_hold_k rsqdg_hold_vmax rsqdg_hold_break rsqdg_burden rsqdg_burden_kg rsqdg_beam rsqdg_beam_yield rsqdg_beam_w rsqdg_beam_a rsqdg_dot rsqdg_dot_size rsqdg_cone rsqdg_cone_a rsqdg_lead rsqdg_laser_idle rsqdg_haptics rsqdg_haptic_ramp rsqdg_rumble rsqdg_rumble_gain rsqdg_rumble_lock rsqdg_rumble_carry rsqdg_sound rsqdg_sound_vol rsqdg_catch_flash rsqdg_debug rsqdg_trace rsqdg_door rsqdg_door_grip rsqdg_door_use rsqdg_door_palm rsqdg_door_commit rsqdg_door_gain", "Put every Distance Grab setting back to its default?"
+}
+
+OptionMenu "RSQDG_Every"
+{
+	Title "DISTANCE GRAB: EVERY SETTING"
+	StaticText ""
 	StaticText ""
 	StaticText "Turn your palm out to arm the reach. Flick your", 1
 	StaticText "wrist up to pull. Roll your palm back to let go.", 1
@@ -36,10 +58,11 @@ OptionMenu "RSQDG_Options"
 	Submenu "Catching and holding", "RSQDG_Catch"
 	Submenu "The laser",            "RSQDG_Laser"
 	Submenu "Haptics and sound",    "RSQDG_Feel"
+	Submenu "Doors",                "RSQDG_Doors"
 	StaticText ""
 	Submenu "Diagnostics",          "RSQDG_Debug"
 	StaticText ""
-	SafeCommand "Reset all Distance Grab settings", "resetcvar rsqdg_on rsqdg_reach rsqdg_spread rsqdg_sight rsqdg_corpses rsqdg_barrels rsqdg_weapons rsqdg_powerups rsqdg_button rsqdg_palm rsqdg_palm_roll rsqdg_palm_tol rsqdg_palm_pitch rsqdg_jump_m rsqdg_lock_dwell rsqdg_yield rsqdg_steady_m rsqdg_lightup rsqdg_glow rsqdg_glow_a rsqdg_voxel_flash rsqdg_flash rsqdg_flick_deg rsqdg_flight_speed rsqdg_steer rsqdg_pull_kg rsqdg_flight_gravity rsqdg_flight_mode rsqdg_arc_apex rsqdg_flight_duck rsqdg_flight_radius rsqdg_flight_timeout rsqdg_catch_radius rsqdg_catch_hold rsqdg_catch_takes rsqdg_throw_scale rsqdg_arm_kg rsqdg_throw_j rsqdg_throw_min rsqdg_throw_explode rsqdg_hold_dist rsqdg_hold_k rsqdg_hold_vmax rsqdg_hold_break rsqdg_burden rsqdg_burden_kg rsqdg_beam rsqdg_beam_yield rsqdg_beam_w rsqdg_beam_a rsqdg_dot rsqdg_dot_size rsqdg_cone rsqdg_cone_a rsqdg_lead rsqdg_laser_idle rsqdg_haptics rsqdg_haptic_ramp rsqdg_rumble rsqdg_rumble_gain rsqdg_rumble_lock rsqdg_rumble_carry rsqdg_sound rsqdg_sound_vol rsqdg_catch_flash rsqdg_debug rsqdg_trace", "Put every Distance Grab setting back to its default?"
+	SafeCommand "Reset all Distance Grab settings", "resetcvar rsqdg_on rsqdg_reach rsqdg_spread rsqdg_sight rsqdg_corpses rsqdg_barrels rsqdg_weapons rsqdg_powerups rsqdg_button rsqdg_palm rsqdg_palm_roll rsqdg_palm_tol rsqdg_palm_pitch rsqdg_jump_m rsqdg_lock_dwell rsqdg_yield rsqdg_steady_m rsqdg_lightup rsqdg_glow rsqdg_glow_a rsqdg_voxel_flash rsqdg_flash rsqdg_flick_deg rsqdg_flight_speed rsqdg_steer rsqdg_pull_kg rsqdg_flight_gravity rsqdg_flight_mode rsqdg_arc_apex rsqdg_flight_duck rsqdg_flight_radius rsqdg_flight_timeout rsqdg_catch_radius rsqdg_catch_hold rsqdg_catch_takes rsqdg_throw_scale rsqdg_arm_kg rsqdg_throw_j rsqdg_throw_min rsqdg_throw_explode rsqdg_hold_dist rsqdg_hold_k rsqdg_hold_vmax rsqdg_hold_break rsqdg_burden rsqdg_burden_kg rsqdg_beam rsqdg_beam_yield rsqdg_beam_w rsqdg_beam_a rsqdg_dot rsqdg_dot_size rsqdg_cone rsqdg_cone_a rsqdg_lead rsqdg_laser_idle rsqdg_haptics rsqdg_haptic_ramp rsqdg_rumble rsqdg_rumble_gain rsqdg_rumble_lock rsqdg_rumble_carry rsqdg_sound rsqdg_sound_vol rsqdg_catch_flash rsqdg_debug rsqdg_trace rsqdg_door rsqdg_door_grip rsqdg_door_use rsqdg_door_palm rsqdg_door_commit rsqdg_door_gain", "Put every Distance Grab setting back to its default?"
 	StaticText ""
 	Control "Grab -- main hand", "+rsqdg_main"
 	Control "Grab -- off hand",  "+rsqdg_off"
@@ -287,4 +310,17 @@ OptionMenu "RSQDG_Tune"
 	Slider "Half speed at (kg)",    "rsqdg_burden_kg",     20, 400, 10, 0
 	StaticText ""
 	SafeCommand "Reset just these", "resetcvar rsqdg_rumble_gain rsqdg_rumble_lock rsqdg_flight_speed rsqdg_steer rsqdg_pull_kg rsqdg_flight_mode rsqdg_arc_apex rsqdg_throw_scale rsqdg_arm_kg rsqdg_throw_j rsqdg_throw_explode rsqdg_burden_kg", "Put the feel numbers back?"
+}
+
+OptionMenu "RSQDG_Doors"
+{
+	Title "DOORS"
+	Option "Lift doors by hand", "rsqdg_door", "OnOff"
+	Option "Grip takes hold", "rsqdg_door_grip", "OnOff"
+	Option "Use takes hold", "rsqdg_door_use", "OnOff"
+	Option "Palm out takes hold", "rsqdg_door_palm", "OnOff"
+	Slider "Open past this, it finishes", "rsqdg_door_commit", 0.1, 0.9, 0.05, 2
+	Slider "Lift gain", "rsqdg_door_gain", 1.0, 5.0, 0.25, 2
+	StaticText ""
+	StaticText "Hand flat on a door, take hold, lift. The door sounds as fast as you lift it.", "DarkGray"
 }
