@@ -55,6 +55,21 @@ class GRP_Probe : EventHandler
 				if (a.bISMONSTER && a.Health > 0)
 					Console.Printf("T_M t%d %s pos(%.1f %.1f %.1f) vel(%.2f %.2f %.2f) tics %d", level.maptime, a.GetClassName(), a.pos.x, a.pos.y, a.pos.z, a.vel.x, a.vel.y, a.vel.z, a.tics);
 		}
+		if (CVar.FindCVar("grp_log").GetInt() == 3)
+		{
+			let it = ThinkerIterator.Create("Actor");
+			Actor a; int n = 0; double mn = 1e9, mx = 0; Actor hk;
+			while (a = Actor(it.Next()))
+			{
+				String cn = a.GetClassName();
+				if (cn == "LoreShot2" || cn == "RSQGR_Link")
+				{
+					n++; double d = (a.pos - pmo.AttackPos).Length(); mn = min(mn, d); mx = max(mx, d);
+				}
+				if (cn == "HookShot") hk = a;
+			}
+			Console.Printf("T_TR t%d links %d nearest %.1f farthest %.1f hook %s", level.maptime, n, mn, mx, hk ? String.Format("%.1f", (hk.pos - pmo.AttackPos).Length()) : "-");
+		}
 		Console.Printf("T_P t%d pos(%.1f %.1f %.1f) vel(%.2f %.2f %.2f) fz %.1f cz %.1f hp %d h %.1f vh %.1f", level.maptime, pmo.pos.x, pmo.pos.y, pmo.pos.z, pmo.vel.x, pmo.vel.y, pmo.vel.z, pmo.floorz, pmo.ceilingz, pmo.health, pmo.height, pmo.player.viewheight);
 	}
 }

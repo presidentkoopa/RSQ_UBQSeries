@@ -12,11 +12,18 @@ OptionValue "RSQGR_GeoModes"
 	1, "Yank"
 }
 
+OptionValue "RSQGR_RopeStyles"
+{
+	0, "Chain"
+	1, "Cable"
+}
+
 OptionMenu "RSQGR_Options"
 {
 	Title "GRAPPLE"
 	Option "Grapple", "rsqgr_on", "OnOff"
 	Option "Wall Hook", "rsqgr_geo_mode", "RSQGR_GeoModes"
+	Option "Rope Look", "rsqgr_rope_style", "RSQGR_RopeStyles"
 	Slider "Range", "rsqgr_range", 256, 4096, 64, 0
 	Slider "Hook Speed", "rsqgr_speed", 16, 96, 4, 0
 	StaticText " "
@@ -35,6 +42,8 @@ OptionMenu "RSQGR_Options"
 OptionMenu "RSQGR_Tuning"
 {
 	Title "ROPE AND TUNING"
+	Slider "Chain Links", "rsqgr_chain_links", 32, 320, 16, 0
+	Slider "Link Size", "rsqgr_chain_scale", 0.05, 0.3, 0.025, 3
 	Slider "Rope Pieces", "rsqgr_rope_segs", 4, 32, 1, 0
 	Slider "Rope Thickness", "rsqgr_rope_width", 0.2, 2.0, 0.1, 1
 	StaticText " "

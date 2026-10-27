@@ -520,14 +520,18 @@ class RSQGR_Core : EventHandler
 			if (i < 0 || i >= NHOOK || hooks[i]) { h.Destroy(); continue; }
 			hooks[i] = h;
 		}
-		// stray rope pieces whose hook is gone
-		let lt = ThinkerIterator.Create("RSQGR_Rope");
-		Array<RSQGR_Rope> keep;
+		// stray rope pieces and links whose hook is gone
+		Array<Actor> keep;
 		for (int i = 0; i < NHOOK; i++)
-			if (hooks[i]) for (int k = 0; k < hooks[i].segs.Size(); k++) keep.Push(hooks[i].segs[k]);
-		RSQGR_Rope l;
-		while (l = RSQGR_Rope(lt.Next()))
-			if (keep.Find(l) == keep.Size()) l.Destroy();
+		{
+			if (!hooks[i]) continue;
+			for (int k = 0; k < hooks[i].segs.Size(); k++) keep.Push(hooks[i].segs[k]);
+			for (int k = 0; k < hooks[i].links.Size(); k++) keep.Push(hooks[i].links[k]);
+		}
+		let lt = ThinkerIterator.Create("Actor");
+		Actor l;
+		while (l = Actor(lt.Next()))
+			if ((l is "RSQGR_Rope" || l is "RSQGR_Link") && keep.Find(l) == keep.Size()) l.Destroy();
 	}
 
 	override void WorldUnloaded(WorldEvent e)

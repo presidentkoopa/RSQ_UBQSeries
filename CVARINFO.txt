@@ -22,6 +22,9 @@ server float  rsqgr_slide_speed   = 10;     // a hooked monster slides to you th
 server float  rsqgr_slide_gap     = 16;     // and stops this far from you
 
 // the look of the rope
+server int    rsqgr_rope_style    = 0;      // the rope: 0 chain (jpalomo's tenda0 links), 1 cable (tube model)
+server int    rsqgr_chain_links   = 160;    // most chain links per rope (jp_grapple peaks at 152); past it they spread
+server float  rsqgr_chain_scale   = 0.125;  // link size (0.125 = jp_grapple's 5 units)
 server int    rsqgr_rope_segs     = 12;     // most pieces a slack rope is drawn in (a taut one is one piece)
 server float  rsqgr_rope_width    = 0.6;    // rope thickness (radius, map units; 0.6 = about 2 cm)
 

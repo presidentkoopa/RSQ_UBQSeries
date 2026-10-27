@@ -47,7 +47,11 @@ class RSQGR_Hook : Actor
 	double bestDist;
 	int noProgress;
 
-	Array<RSQGR_Rope> segs;
+	Array<RSQGR_Rope> segs;     // cable look
+	Array<RSQGR_Link> links;    // chain look
+	int gripHand;               // a hand climbing this rope, -1 none (RSQGR_Climb)
+	double gripS;               // the rope's length from the anchor to that hand's hold
+	bool gripPending;           // the hold is taken on the next tic, from that tic's pose
 	double drawMs;        // last rope draw cost (rsqgr_debug)
 
 	Default
@@ -72,6 +76,12 @@ class RSQGR_Hook : Actor
 	Shut:
 		RSGK A -1;
 		Stop;
+	}
+
+	override void BeginPlay()
+	{
+		Super.BeginPlay();
+		gripHand = -1;
 	}
 
 	void SetPhase(int ph)
@@ -129,21 +139,47 @@ class RSQGR_Hook : Actor
 		DrawRope();
 	}
 
-	// THE ROPE: tube segments (models/rsqgr/rsqrope.md3) from the hand to the claw.
-	// Taut, it is ONE straight segment however long. Slack, it sags in a parabola
-	// deep enough for the spare length (half the spare: a fair stand-in for a
-	// catenary at these spans) drawn as up to rsqgr_rope_segs straight pieces.
-	// Coming back, it hangs a little.
+	// THE ROPE, two looks (rsqgr_rope_style):
+	//
+	//   0 CHAIN (default, jpalomo's look). His hook is a FastProjectile with
+	//     MissileType LoreShot2: the engine's Strife chain trail, a plain TEND A sprite
+	//     (normal style, scale 1, 20 tics) that jp_grapple's tenda0 replaces -- 5 x 5
+	//     units (the 40 px hires drawn at the 5 px size). FastProjectile.Effect drops
+	//     one every sub-step: radius 10, speed 40 -> 8 sub-steps -> a link every 5 units.
+	//     Measured with his own pk3 in the rig: links every 5.0 units, the nearest 15.0
+	//     units out from the hand (the missile starts a radius ahead), at most 152 at
+	//     once. This draws the same links at the same size and spacing, from 15 units
+	//     out, along the live rope (his trail is only the flight path and fades in 20
+	//     tics; ours stays while the rope does). The first cut here drew 8-unit links
+	//     starting 3 units from the controller: 1.6x his size, five times closer to
+	//     the eye -- the "fat white balls in the face".
+	//   1 CABLE: tube segments (models/rsqgr/rsqrope.md3); one piece when taut.
+	//
+	// The line: from the firing hand, through the hand that has the rope if another
+	// hand is climbing it (a tail hangs between them), to the claw; it sags in a
+	// parabola deep enough for the spare length when slack.
 	void DrawRope()
 	{
 		double t0 = MSTimeF();
 		Vector3 from = RSQGR_Util.HandPos(owner, hand);
 		Vector3 to = Pos;
-		Vector3 span = to - from;
-		double d = span.Length();
 
+		Array<double> px, py, pz;
+		px.Push(from.x); py.Push(from.y); pz.Push(from.z);
+
+		Vector3 mainFrom = from;
+		if (phase == PH_LATCH && gripHand >= 0 && gripHand != hand)
+		{
+			// the tail: from the firing hand up to the climbing hand, hanging loose
+			Vector3 g = RSQGR_Util.HandPos(owner, gripHand);
+			AddArc(px, py, pz, from, g, (g - from).Length() * 0.25, 6);
+			mainFrom = g;
+		}
+
+		Vector3 span = to - mainFrom;
+		double d = span.Length();
 		double sag = 0;
-		if (phase == PH_LATCH && slack)
+		if (phase == PH_LATCH && slack && gripHand < 0)
 		{
 			// The rope's length is kept from the body's attach point, not the hand: the
 			// spare is measured there and the sag drawn from the hand with that spare.
@@ -152,25 +188,92 @@ class RSQGR_Hook : Actor
 		}
 		else if (phase == PH_RETRACT) sag = d * 0.06;
 		sag = min(sag, 160);
-		int n = 0;
-		if (d >= 4)
-			n = (sag > 1.5) ? clamp(int(d / 24) + 2, 4, max(1, RSQGR_Util.Opt("rsqgr_rope_segs", 12))) : 1;
+		int n = (sag > 1.5) ? clamp(int(d / 24) + 2, 4, max(1, RSQGR_Util.Opt("rsqgr_rope_segs", 12))) : 1;
+		AddArc(px, py, pz, mainFrom, to, sag, n);
 
-		while (segs.Size() > n)
+		double total = 0;
+		for (int i = 1; i < px.Size(); i++)
+			total += ((px[i], py[i], pz[i]) - (px[i - 1], py[i - 1], pz[i - 1])).Length();
+
+		if (RSQGR_Util.Opt("rsqgr_rope_style", 0) == 1)
 		{
-			let r = segs[segs.Size() - 1];
-			if (r) r.Destroy();
-			segs.Pop();
+			ClearLinks(0);
+			PlaceCable(px, py, pz, total < 4);
 		}
+		else
+		{
+			ClearSegs(0);
+			PlaceChain(px, py, pz, total);
+		}
+		drawMs = MSTimeF() - t0;
+	}
+
+	// points from a (exclusive) to b (inclusive) in n pieces, sagging by `sag` mid-way
+	static void AddArc(Array<double> px, Array<double> py, Array<double> pz, Vector3 a, Vector3 b, double sag, int n)
+	{
+		Vector3 sp = b - a;
+		for (int k = 1; k <= n; k++)
+		{
+			double t = double(k) / n;
+			Vector3 q = a + sp * t;
+			q.z -= sag * 4 * t * (1 - t);
+			px.Push(q.x); py.Push(q.y); pz.Push(q.z);
+		}
+	}
+
+	const CHAIN_START = 15.0;   // jp_grapple, measured: the nearest link to the hand
+	const CHAIN_STEP = 5.0;     // and the spacing
+
+	void PlaceChain(Array<double> px, Array<double> py, Array<double> pz, double total)
+	{
+		int cap = clamp(RSQGR_Util.Opt("rsqgr_chain_links", 160), 8, 400);
+		double avail = total - CHAIN_START;
+		int want = avail > 0 ? int(avail / CHAIN_STEP) + 1 : 0;
+		double step = CHAIN_STEP;
+		if (want > cap) { step = avail / (cap - 1); want = cap; }
+		ClearLinks(want);
+		int seg = 1;
+		double segStart = 0;
+		Vector3 a = (px[0], py[0], pz[0]);
+		Vector3 b = (px[1], py[1], pz[1]);
+		double segLen = (b - a).Length();
+		double sc = RSQGR_Util.Num("rsqgr_chain_scale", 0.125);
+		for (int k = 0; k < want; k++)
+		{
+			double at = CHAIN_START + k * step;
+			while (at > segStart + segLen && seg < px.Size() - 1)
+			{
+				segStart += segLen;
+				seg++;
+				a = b;
+				b = (px[seg], py[seg], pz[seg]);
+				segLen = (b - a).Length();
+			}
+			double f = segLen > 0.001 ? clamp((at - segStart) / segLen, 0.0, 1.0) : 0.0;
+			Vector3 q = a + (b - a) * f;
+			if (k >= links.Size()) links.Push(null);
+			let l = links[k];
+			if (!l)
+			{
+				l = RSQGR_Link(Spawn("RSQGR_Link", q, NO_REPLACE));
+				links[k] = l;
+			}
+			else l.SetOrigin(q, true);
+			l.scale = (sc, sc);
+		}
+	}
+
+	void PlaceCable(Array<double> px, Array<double> py, Array<double> pz, bool none)
+	{
+		int n = none ? 0 : px.Size() - 1;
+		ClearSegs(n);
 		double w = RSQGR_Util.Num("rsqgr_rope_width", 0.6);
-		Vector3 a = from;
 		for (int k = 0; k < n; k++)
 		{
-			double t = (k + 1.0) / n;
-			Vector3 b = from + span * t;
-			b.z -= sag * 4 * t * (1 - t);
+			Vector3 a = (px[k], py[k], pz[k]);
+			Vector3 b = (px[k + 1], py[k + 1], pz[k + 1]);
 			bool fresh = false;
-			if (k >= segs.Size()) { segs.Push(null); }
+			if (k >= segs.Size()) segs.Push(null);
 			let r = segs[k];
 			if (!r) { r = RSQGR_Rope(Spawn("RSQGR_Rope", a, NO_REPLACE)); segs[k] = r; fresh = true; }
 			if (!fresh) r.SetOrigin(a, true);
@@ -180,19 +283,62 @@ class RSQGR_Hook : Actor
 			r.angle = atan2(room.y, room.x);
 			r.pitch = -atan2(room.z, room.xy.Length()) + 90;
 			r.scale = (w, len / RSQGR_Rope.ROPE_L);
-			if (fresh) { r.ClearInterpolation(); }
-			a = b;
+			if (fresh) r.ClearInterpolation();
 		}
-		drawMs = MSTimeF() - t0;
+	}
+
+	void ClearSegs(int keep)
+	{
+		while (segs.Size() > keep)
+		{
+			let r = segs[segs.Size() - 1];
+			if (r) r.Destroy();
+			segs.Pop();
+		}
+	}
+
+	void ClearLinks(int keep)
+	{
+		while (links.Size() > keep)
+		{
+			let l = links[links.Size() - 1];
+			if (l) l.Destroy();
+			links.Pop();
+		}
 	}
 
 	override void OnDestroy()
 	{
-		for (int i = 0; i < segs.Size(); i++)
-			if (segs[i]) segs[i].Destroy();
-		segs.Clear();
+		ClearSegs(0);
+		ClearLinks(0);
 		Super.OnDestroy();
 	}
+}
+
+// One link of the chain look: jpalomo's tenda0 (40 px, drawn at 0.125 = his 5 units),
+// normal style, like the LoreShot2 trail his hook drops. Placed by its hook every tic.
+class RSQGR_Link : Actor
+{
+	Default
+	{
+		Radius 1;
+		Height 1;
+		+NOINTERACTION
+		+NOBLOCKMAP
+		+NOGRAVITY
+		+DONTSPLASH
+		+NOTONAUTOMAP
+		+NOTELEPORT
+		RenderStyle "Normal";
+		Scale 0.125;
+	}
+	States
+	{
+	Spawn:
+		RSGL A -1;
+		Stop;
+	}
+	override void Tick() {}
 }
 
 // One straight piece of rope: a tube model, placed by its hook every tic.
@@ -234,7 +380,7 @@ class RSQGR_Tracer : LineTracer
 			let a = Results.HitActor;
 			if (!a || a == shooter) return TRACE_Skip;
 			if (a.player) return TRACE_Skip;                         // no hooking people
-			if (a is "RSQGR_Hook" || a is "RSQGR_Rope") return TRACE_Skip;
+			if (a is "RSQGR_Hook" || a is "RSQGR_Rope" || a is "RSQGR_Link") return TRACE_Skip;
 			if (!a.bSHOOTABLE || a.bNONSHOOTABLE || a.Health <= 0) return TRACE_Skip;
 			if (a.bMISSILE) return TRACE_Skip;
 			return TRACE_Stop;

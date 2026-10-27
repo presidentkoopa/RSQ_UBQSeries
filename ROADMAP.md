@@ -8,6 +8,7 @@ agent-monster's and tracked there.
 |---|---|---|
 | 0 | Core: fire from either hand, rope swing/reel/release, JP yank, latch walls/ceilings/3D floors, monster slide seam, slow motion, save/load, menu | done, measured (HANDOFF.md) |
 | 1 | Pendulum comes to rest | done, measured -- see below |
+| 1b | JP-look rope (owner: "the og mod does not have this issue"): tenda0 chain links like jp_grapple's LoreShot2 trail; cable model kept as an option | done, measured -- see below |
 | 2 | Hand-over-hand rope climbing (BD22Q free hands, universal fallback, netplay by streamed pose, 1:1 with caps) | in progress |
 | 3 | Same bar: vanilla + full order, save/load twice mid-climb and mid-swing, map change, death, frames | pending |
 | - | Headset: feel of reel/top speed/pump/tap window, damping, climbing comfort | needs the owner |
@@ -26,3 +27,14 @@ Half period 80-82 tics both ways (the player runs in real time under RSQ_SlowMo,
 21.9 s after stepping off (normal), 19.5 s (slow-mo; it started 4.6 deg smaller), hanging 6.3 / 1.6
 units from straight under the anchor. Stick pumped in time with the swing: amplitude held at 28-30 deg
 for 9 half swings (to the end of the run).
+
+## 1b. The rope looks like jp_grapple's (measured)
+jp_grapple's rope is its FastProjectile's MissileType, LoreShot2 (engine zscript loremaster.zs: TEND A,
+normal style, scale 1, 20 tics, no gravity); FastProjectile.Effect drops one per sub-step (radius 10,
+speed 40 -> 8 sub-steps). His own pk3 run in the rig (probe counting LoreShot2): a link every 5.0 units,
+nearest 15.0 units from the hand, 152 at most, each 5 x 5 units (tenda0's 40 px hires at the 5 px size).
+The first sprite chain here drew 8-unit links from 3 units off the controller -- 1.6x his size and five
+times closer to the eye: the fat white balls. Now `rsqgr_rope_style 0` Chain (default): same sprite,
+size (0.125 of 40 px = 5 u), spacing 5.0, nearest 15.0 (measured: same probe, our links), normal style,
+up to 160 links then they spread; along the live rope rather than a 20-tic flight trail. Side-by-side
+frames (rig, same pose): indistinguishable in flight. `rsqgr_rope_style 1` Cable: the tube model.
