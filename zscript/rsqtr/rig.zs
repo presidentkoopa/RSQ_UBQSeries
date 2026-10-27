@@ -451,8 +451,9 @@ class RSQTR_Rig : EventHandler
 	// What the off hand holds when it is empty: the pack's own hands weapon (BD22Q's RSQ_Hands).
 	static String OffEmptyName(PlayerPawn pmo)
 	{
-		class<Weapon> h = "RSQ_Hands";
-		return h ? "RSQ_Hands" : "";
+		String hn = "RSQ_Hands";        // a run-time lookup: null without Brutal Doom Quest
+		class<Weapon> h = hn;
+		return h ? hn : "";
 	}
 
 	private void QueueOff(int n, String cls)
