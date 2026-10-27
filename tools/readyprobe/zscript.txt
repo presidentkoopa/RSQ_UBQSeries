@@ -20,7 +20,7 @@ class RSLSProbe_Ready : StaticEventHandler
 				st = st.NextState; guard++;
 			}
 			if (!st) continue;
-			Console.Printf("PR %s %s %d", c.GetClassName(), TexMan.GetName(st.GetSpriteTexture(0)), st.Frame);
+			Console.Printf("PR %s %s %d %s", c.GetClassName(), TexMan.GetName(st.GetSpriteTexture(0)), st.Frame, Weapon(d).bMELEEWEAPON ? "melee" : "gun");
 		}
 	}
 }

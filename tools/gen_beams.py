@@ -2,10 +2,10 @@
 """gen_beams.py -- each gun's muzzle, measured from its HELD model, and the beam that rides it.
 
     python3 tools/gen_beams.py --ready tools/ready_bd22q.txt \
-        brutal22test6.pk3 BD_VoxelPack.pk3 BD22_VR-Reloaded_2.0-b1m.pk3
+        brutal22test6.pk3 BD_VoxelPack.pk3 BD22_VR-Reloaded_1.99x-lb-r7-saveload.pk3
 
 pk3s in load order. --ready is the engine's own answer to "which sprite frame is each weapon's
-Ready frame" (lines `PR <Class> <SPRITELUMP> <frame>`, written by tools/readyprobe, the same
+Ready frame, and is it a melee weapon" (lines `PR <Class> <SPRITELUMP> <frame> <melee|gun>`, written by tools/readyprobe, the same
 dump RSQ_TacticalRig's measure_pickups.py --held reads). Nothing here is typed in by hand: every
 number comes from a mesh or a MODELDEF block in those files.
 
@@ -323,14 +323,19 @@ def main():
 
     ready = []
     for line in open(a.ready, encoding='latin-1'):
-        m = re.match(r'PR (\S+) (\S+) (\d+)', line)
+        m = re.match(r'PR (\S+) (\S+) (\d+)(?: (\S+))?', line)
         if m and m.group(2)[:4].upper() != 'TNT1':
-            ready.append((m.group(1), m.group(2)[:4].upper(), chr(65 + int(m.group(3)))))
+            ready.append((m.group(1), m.group(2)[:4].upper(), chr(65 + int(m.group(3))), m.group(4) == 'melee'))
 
     placements = []        # (off, q0, d) unique
     rows = []              # class rows
     skipped = []
-    for cls, spr, fr in ready:
+    for cls, spr, fr, melee in ready:
+        if melee:
+            # +WEAPON.MELEEWEAPON (the engine's own flag, from the probe): a fist or a blade has
+            # no bore, so no beam -- whatever its mesh's far end looks like.
+            skipped.append((cls, 'a melee weapon (+WEAPON.MELEEWEAPON): no bore'))
+            continue
         snap = table.get((cls.lower(), spr, fr))
         if not snap:
             skipped.append((cls, 'no model for its Ready frame %s %s (a sprite or a voxel)' % (spr, fr)))
