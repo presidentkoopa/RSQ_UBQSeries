@@ -4,11 +4,14 @@
 QuestZDoom 17.3** (TeamBeef / emawind84 build). Standalone pk3: loads with any weapon pack, needs
 no engine changes, replaces no player class.
 
-**Built on Ermac's work.** The ShieldSaw is Ermac's: the throwable ShieldSaw first appeared in his
-VR mod [Rusted Legacy](https://github.com/iAmErmac/rusted-legacy) (MIT), and this mod started from
-it. The shield and saw models -- which he split into working parts himself -- their textures, the
-hand that holds it and the sounds are all his, used under his MIT licence
-(`models/hand/LICENSE_RustedLegacy_MIT.txt`). This version re-implements the behaviour for stock
+**Where it comes from.** The shield saw is id Software's: the weapon of *Doom: The Dark Ages*
+(2025). Ermac brought it to Doom VR first, in his mod
+[Rusted Legacy](https://github.com/iAmErmac/rusted-legacy), and this mod started from his version.
+The shield and saw meshes and textures are id Software's, from *Doom: The Dark Ages*, prepared for
+Doom VR by Ermac (who split them into working parts); they are not his authored models, and the MIT
+licence of his Rusted Legacy code (`models/hand/LICENSE_RustedLegacy_MIT.txt`) does not make them
+MIT. The hand that holds it and the sounds come with Rusted Legacy's ShieldSaw; where they came
+from before that is not recorded here. This version re-implements the behaviour for stock
 QuestZDoom 17.3 as a standalone off-hand mod: the mount, blocking and deflection, the bash, the
 rev and lock-on throw.
 
@@ -96,9 +99,11 @@ Details, measurements and the engine's traps: `HANDOFF.md`.
 
 ## Credits
 
-- **Ermac** ([Rusted Legacy](https://github.com/iAmErmac/rusted-legacy), MIT) -- the ShieldSaw:
-  the idea and the original throwable ShieldSaw this mod started from; the shield and saw models
-  (which he split into working parts), their textures, the hand model and the sounds.
+- **id Software** -- the shield saw itself, from *Doom: The Dark Ages*: its design, and the
+  shield and saw meshes and textures used here.
+- **Ermac** ([Rusted Legacy](https://github.com/iAmErmac/rusted-legacy), MIT code) -- brought the
+  shield saw to Doom VR first; prepared its meshes for VR (split into working parts); the version
+  this mod started from, with its hand model and sounds.
 - **QuestZDoom** (Emawind, Team Beef) -- the engine and its off-hand weapon and attack-pose API.
 - President_Koopa -- this standalone Quest version: its design, its testing on the headset, and
   the direction of every change.
