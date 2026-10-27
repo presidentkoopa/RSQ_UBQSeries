@@ -2,8 +2,8 @@
 
 **Version 0.8a — 2026-10-26.** Ready-to-load pk3s are in [`pk3/`](pk3/).
 
-Six standalone add-ons for **Doom VR on the Quest**, all in one place: a distance grab, a laser
-sight, a shield-saw, a lightsaber, a tactical rig and slow motion. Each one is its own pk3. Load
+Five standalone add-ons for **Doom VR on the Quest**, all in one place: a distance grab, a
+shield-saw, a lightsaber, a tactical rig and slow motion. Each one is its own pk3. Load
 any of them, in any order, alone or all together.
 
 They target **stock QuestZDoom 17.3** (TeamBeef / Emawind). There are no engine changes. Everything
@@ -203,7 +203,6 @@ What's new in 0.8a:
 
 What changed, what's measured and what's still open is in each mod's handoff:
 [DistanceGrab](DistanceGrab/docs/HANDOFF_2026-10-26.md) ·
-[LaserSight](LaserSight/docs/HANDOFF_2026-10-26.md) ·
 [ShieldSaw](ShieldSaw/HANDOFF.md) ·
 [QuestSaber](QuestSaber/docs/HANDOFF_polish.md) ·
 [TacticalRig](TacticalRig/docs/HANDOFF_2026-10-26.md) ·
@@ -215,12 +214,9 @@ What changed, what's measured and what's still open is in each mod's handoff:
 Known limits:
 
 - Not yet played on a headset (above).
-- LaserSight's range readout has not been seen on screen yet; the grab's doorway duck has no
-  measured run.
-- The spread ring and grenade arc appear only after a gun has fired once, and are re-learned
-  after loading a saved game.
-- In co-op, a bullet the shield turns back is credited to a helper actor, so friendly-fire rules
-  don't apply to it.
+- The grab's doorway duck has no measured run.
+- In co-op, a bullet the shield turns back is fired by a helper actor, so friendly-fire rules
+  don't see a player source (the kill itself is credited to the player).
 - The top of the saber's haptic power slider saturates.
 - SlowMo can't slow doors, lifts or engine particles on stock 17.3; its cost on the Quest CPU in
   a big Brutal Doom fight is not measured yet.
