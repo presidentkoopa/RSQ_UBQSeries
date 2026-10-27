@@ -499,26 +499,39 @@ class RSQSM_Clock : EventHandler
 	}
 
 	// ---- a reload buys a moment (rsqsm_reload, each player's own choice) ----------------------
-	// Any weapon whose Reload sequence is playing. The BD22 set's immersive reloads,
-	// or anything else, can call rsm_pulse directly instead.
+	// Two signs, either one: the weapon's Reload sequence starts playing, or ammo moves
+	// from the reserve into the magazine on one tic (one count falls as the other
+	// rises; a pickup only ever raises). The second catches Brutal Doom's reloads,
+	// which reach their animation through their own tokens and jumps rather than by
+	// playing on from "Reload" (measured: BD22 Rifle, magazine 20 -> 31, reserve 30 ->
+	// 19, while the Reload sequence check saw nothing). The BD22 set's immersive
+	// reloads, or anything else, can also call rsm_pulse directly.
 	private transient bool wasReloading[MAXPLAYERS];
+	private transient int  lastA1[MAXPLAYERS], lastA2[MAXPLAYERS];
+	private transient Weapon lastW[MAXPLAYERS];
 	private void Reloads()
 	{
 		for (int n = 0; n < MAXPLAYERS; n++)
 		{
 			if (!playeringame[n]) continue;
 			let p = players[n];
-			bool r = false;
 			let w = p.ReadyWeapon;
-			if (w && CvP("rsqsm_reload", p, 0) != 0)
+			bool on = w && CvP("rsqsm_reload", p, 0) != 0;
+			bool r = false, moved = false;
+			int a1 = (w && w.Ammo1) ? w.Ammo1.Amount : 0;
+			int a2 = (w && w.Ammo2) ? w.Ammo2.Amount : 0;
+			if (on)
 			{
 				State rs = w.FindState("Reload");
 				let ps = p.GetPSprite(PSP_WEAPON);
 				r = rs && ps && ps.CurState && Actor.InStateSequence(ps.CurState, rs);
+				if (w == lastW[n] && w.Ammo1 && w.Ammo2 && w.Ammo1 != w.Ammo2)
+					moved = (a2 > lastA2[n] && a1 < lastA1[n]) || (a1 > lastA1[n] && a2 < lastA2[n]);
 			}
-			if (r && !wasReloading[n])
+			if ((r && !wasReloading[n]) || moved)
 				Pulse(int(CvP("rsqsm_reload_ms", p, 1200)), int(CvP("rsqsm_reload_depth", p, 40)));
 			wasReloading[n] = r;
+			lastW[n] = w; lastA1[n] = a1; lastA2[n] = a2;
 		}
 	}
 
