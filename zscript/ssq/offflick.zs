@@ -40,7 +40,7 @@ class SSQ_OffFlick : EventHandler
 			bool on = p.playerstate == PST_LIVE && mo.health > 0 && mo.OverrideAttackPosDir
 				&& (p.OffhandWeapon && p.OffhandWeapon.GetClassName() == 'SSQ_ShieldSaw') && IsGun(p.ReadyWeapon) && (!fc || fc.GetInt() != 0);
 			if (!on) { count[n] = 0; armed[n] = false; continue; }
-			double e = -mo.AttackPitch;
+			double e = mo.AttackPitch;	// the engine stores AttackPitch = -view pitch: already positive UP (hw_vrmodes.cpp:444); BD22Q reads the same elevation from the hand direction
 			head[n] = (head[n] + 1) % HIST;
 			el[n][head[n]] = e;
 			if (count[n] < HIST) count[n]++;
