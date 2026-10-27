@@ -3,7 +3,8 @@
 // lives in Gun Bonsai's own CVARINFO.
 
 // Draw a HUD for each hand instead of a single one.
-// Mainhand goes top-right, offhand top-left.
+// Mainhand goes top-right, offhand top-left (reflected for a left-hander:
+// rsqa_handed from RSQ_Accessibility, else QuestZDoom's Control Scheme).
 user bool bonsai_vr_dual_hud = true;
 
 // When dual HUD is OFF, which hand the single HUD follows.

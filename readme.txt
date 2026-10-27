@@ -51,6 +51,9 @@ SETTINGS
   bonsai_vr_hud_main_mirror Default 3 (both axes).
   bonsai_vr_hud_off_x/y     Offhand HUD anchor. Default 0.01 / 0.02.
   bonsai_vr_hud_off_mirror  Default 2 (vertical).
+                            Left-handed (rsqa_handed from RSQ_Accessibility,
+                            else QuestZDoom's Control Scheme), both HUDs are
+                            reflected across the screen: main top left.
   bonsai_vr_warn_binding    Startup warning when binding mode isn't per-weapon.
 
 Set Gun Bonsai's own "upgrade binding mode" to PER WEAPON. With a weapon in each

@@ -89,7 +89,26 @@ class TFLV_HUD : Object ui {
       mi = TFLV_Settings.GetInt("bonsai_vr_hud_main_mirror");
     }
     Calibrate(x, y, sc, al, mi);
+    // RSQ PATCH (left-handed): the anchors are written for a right-hander (main hand top right).
+    // A left-hander's main hand is on the left, so the pair is reflected across the screen: the
+    // same place measured from the other edge, and the horizontal mirror bit flipped so the
+    // corner frame still points outward. Whatever the anchor's form (fraction, pixels from the
+    // right, absolute pixels), hudx is resolved by now, so one reflection covers all three.
+    if (RSQ_LeftLayout() && fbw > hudw) {
+      hudx = (hudx <= fbw - hudw) ? (fbw - hudw) - hudx : 0;
+      mirror ^= 1;
+    }
     DrawHUD(stats);
+  }
+
+  // rsqa_handed (RSQ_Accessibility: 1 right, 2 left) when set, else QuestZDoom's own Control Scheme.
+  static clearscope bool RSQ_LeftLayout() {
+    let h = CVar.FindCVar("rsqa_handed");
+    int v = h ? h.GetInt() : 0;
+    if (v == 1) return false;
+    if (v == 2) return true;
+    let cs = CVar.FindCVar("vr_control_scheme");
+    return cs && cs.GetInt() >= 10;
   }
 
   // at scale 1.0, the framebuffer height is 512 and the width is whatever is
