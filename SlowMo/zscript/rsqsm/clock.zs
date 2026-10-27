@@ -537,9 +537,15 @@ class RSQSM_Clock : EventHandler
 		if (adr <= 0) { adr = 0; Aim(false, -1); }
 	}
 
+	// A KILL IS COUNTED WHERE THE DAMAGE NAMES ITS SOURCE. WorldThingDied only carries the inflictor,
+	// and a hitscan's inflictor is its puff, which points at nobody unless the puff is PUFFGETSOWNER:
+	// measured, a player's pistol kill earned no adrenaline. The killing blow's WorldThingDamaged has
+	// the source itself; a death that never passes through damage (a script's A_Die) still counts
+	// through WorldThingDied as before.
+	private transient Actor lastKilled;
 	override void WorldThingDied(WorldEvent e)
 	{
-		if (!e.Thing || !e.Thing.bISMONSTER) return;
+		if (!e.Thing || !e.Thing.bISMONSTER || e.Thing == lastKilled) return;
 		Actor src = e.Inflictor;
 		if (src && !src.player) src = src.target;
 		if (src && src.player) AddAdrenaline(Cv("rsqsm_adr_kill", 12));
@@ -548,6 +554,12 @@ class RSQSM_Clock : EventHandler
 	override void WorldThingDamaged(WorldEvent e)
 	{
 		if (e.Thing && e.Thing.player && e.Damage > 0) AddAdrenaline(e.Damage * 0.5);
+		if (e.Thing && e.Thing.bISMONSTER && e.Thing.health <= 0 && e.Thing != lastKilled)
+		{
+			Actor src = e.DamageSource;
+			if (src && !src.player && src.FriendPlayer > 0) src = players[src.FriendPlayer - 1].mo;
+			if (src && src.player) { lastKilled = e.Thing; AddAdrenaline(Cv("rsqsm_adr_kill", 12)); }
+		}
 	}
 
 	// ---- a reload buys a moment (rsqsm_reload, each player's own choice) ----------------------
@@ -677,9 +689,10 @@ class RSQSM_AdrToken : Inventory
 
 // FOR OTHER MODS, found by name (nothing links): GetInt("adrenaline.add", "", points) adds to
 // the shared adrenaline meter (nothing while the meter is off) and answers the meter after it,
-// 0..100. GetInt("adrenaline") reads it. GetInt("slowmo.active") is 1 while the world is slowed
-// (held, a pulse, or easing in or out), 0 when it is not (or this mod has stood down); RSQ_Score's
-// Bullet Time reads it. -1: unknown request.
+// 0..100. GetInt("adrenaline") reads it. GetInt("slowmo.active") (or "active") is 1 while the world
+// is slowed (held, a pulse, or easing), 0 when not or stood down -- RSQ_Score's Bullet Time and the
+// Gun Bonsai VR patch's slow-motion perks read it; GetInt("scale") is the world's speed in permille.
+// -1: unknown request.
 // The Gun Bonsai VR patch's Adrenaline upgrade charges it on melee kills.
 class RSQSM_Service : Service
 {
@@ -690,6 +703,10 @@ class RSQSM_Service : Service
 		if (request ~== "adrenaline.add") { c.AddAdrenaline(intArg); return int(c.adr); }
 		if (request ~== "adrenaline") return int(c.adr);
 		if (request ~== "slowmo.active") return (!c.StoodDown() && c.Active()) ? 1 : 0;
+		// slow motion is doing something this tic (1) or not (0), and how slow, in permille
+		// of full speed (1000 = not slowed) -- the Gun Bonsai VR patch's slow-motion perks
+		if (request ~== "active") return (c.Active() && !c.StoodDown()) ? 1 : 0;
+		if (request ~== "scale") return int(clamp(c.scale, 0.0, 1.0) * 1000);
 		return -1;
 	}
 }
