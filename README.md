@@ -54,7 +54,7 @@ patch's MENUDEF points those three names at routers (`rsq/ui/router.zs`) that ar
 menus with skin 0 and open the skin's screen otherwise. No other Gun Bonsai file is shadowed.
 
 While a skin is on it sets RS Score's `rs_score_hide` (the skin draws the score) and, with the
-bottom row on, Brutal Doom's `bd_sbartype` to 0 (its fullscreen HUD would sit under the row). Both
+bottom row on, Brutal Doom's `bd_sbartype` to 5 (a type Brutal Doom knows but draws nothing for) (its fullscreen HUD would sit under the row). Both
 are put back when the skin is set to 0. Remove the patch with a skin on and they stay as set:
 `rs_score_hide 0`, `bd_sbartype 1`.
 
