@@ -13,7 +13,7 @@ is ZScript and data lumps.
 |---|---|---|---|
 | ✋ | [DistanceGrab](DistanceGrab/) | `RSQ_DistanceGrab.pk3` | Turn your palm out, flick, and pull items, guns, barrels and bodies to your hand. Then carry them, throw them, and hit things with them. |
 | 🔴 | [LaserSight](LaserSight/) | `RSQ_LaserSight.pk3` | A laser on every gun in every mod, in both hands, with no per-weapon setup. Any colour, plus lock-on and headshot cues. |
-| 🛡️ | [ShieldSaw](ShieldSaw/) | `UltraBadassShieldSaw.pk3` | A shield on your off shoulder that blocks, bashes and turns shots back, and doubles as a throwable saw disc that hunts the targets you ring. |
+| 🛡️ | [ShieldSaw](ShieldSaw/) | `UltraBadassShieldSaw.pk3` | A shield on your off shoulder that blocks, bashes and turns shots back, and doubles as a throwable saw disc that hunts the targets you ring. Built on **Ermac's** ShieldSaw from Rusted Legacy. |
 | ⚔️ | [QuestSaber](QuestSaber/) | `UltraBadassQuestSaber.pk3` | A volumetric lightsaber, with an optional second one in the off hand. Cut, block, deflect, throw, and use the Force. |
 
 ---
@@ -179,9 +179,14 @@ Known limits:
 
 - **QuestZDoom**: Emawind and Team Beef. The engine, and the off-hand weapon and attack-pose script
   API all four mods are built on.
-- **Ermac**, co-designer of DoomVR (DXR, Rusted Legacy / RS_Main): the hand the ShieldSaw is held
-  in, and the Force and impact FX sprites and choke loop in the QuestSaber. Much of his work is
-  MIT-licensed; sharing it here is the project owner's decision.
-  See [QuestSaber/CREDITS.txt](QuestSaber/CREDITS.txt).
+- **Ermac**, co-designer of DoomVR ([Rusted Legacy](https://github.com/iAmErmac/rusted-legacy),
+  DXR, RS_Main):
+  - **The ShieldSaw is his.** The throwable ShieldSaw first appeared in his Rusted Legacy (MIT),
+    and this mod started from it. Its shield and saw models (which he split into working parts
+    himself), their textures, the hand that holds it and its sounds are all Ermac's, under his
+    MIT licence. The Quest version here re-implements the behaviour as a standalone off-hand mod.
+  - In the QuestSaber: the Force and impact FX sprites and the choke loop.
+  - Much of his work is MIT-licensed; sharing it here is the project owner's decision. See
+    [ShieldSaw/README.md](ShieldSaw/README.md) and [QuestSaber/CREDITS.txt](QuestSaber/CREDITS.txt).
 - **li-gnrcwpn**: the training remote's ready beep.
 - Everything else (meshes, skins, generated sounds, code) was made for these mods.
