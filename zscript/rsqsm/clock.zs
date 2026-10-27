@@ -21,8 +21,8 @@
 // or it would walk at f squared.
 //
 // THE VR RULE: nothing tracked is slowed. Players, what they carry, and the
-// series' own hand-held effects (classes named RSQ*, UBQS*, SSQ*: laser, grab,
-// shield, saber) stay on real time. Your own rockets slow (rsqsm_slow_own).
+// series' own hand-held effects (classes named RSQ*, UBQS*, SSQ*: the grab, the rig's
+// props, the shield, the saber) stay on real time. Your own rockets slow (rsqsm_slow_own).
 //
 // THE SAME DOORS AS RS_SlowMo, so callers do not change:
 //   netevent rsm_toggle | rsm_on | rsm_off

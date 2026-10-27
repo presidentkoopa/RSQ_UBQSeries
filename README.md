@@ -17,8 +17,8 @@ Nothing freezes and stutters: every slowed thing still moves every tic, by less.
 - **Time:** every animation state lasts longer by the same factor, so monsters walk,
   aim, fire and die at the slowed rate.
 - **Sound:** what a slowed thing is playing drops in pitch with it.
-- **You don't slow:** you, what you carry, and the series' hand-held effects (laser,
-  grab, shield, saber) stay on real time. Your own rockets do slow (menu).
+- **You don't slow:** you, what you carry, and the series' own hand-held effects (the
+  grab's beam, the rig's props, the shield, the saber) stay on real time. Your own rockets do slow (menu).
 - Only things within range of a player are slowed (3000 map units by default).
 
 ## Dodgeable bullets (on by default)
@@ -48,7 +48,7 @@ shots leave a fading trail.
 
 **Options → RSQ SlowMo**: how slow (`rsm_depth`, default 0.25), ease in and out
 (`rsm_ramp_in` / `rsm_ramp_out`), sound pitch, range, round speed, trails, wakes, the
-gesture, the reload moment, adrenaline, haptics, and a reset row.
+gesture, the reload moment, adrenaline, haptics, and Reset All under *Tuning and Debug*.
 
 ## With other slow-motion mods
 
@@ -76,15 +76,22 @@ Load after your weapon pack. Tested order:
 - **Bullet Time X** by Xortts: nothing is taken from it; this mod only recognises it by
   class name so the two don't compound.
 - The clock's cue sounds are generated (`tools/gen_sounds.py`).
+- What the pk3 ships and whose it is: [CREDITS.txt](CREDITS.txt).
 - QuestZDoom: Emawind and Team Beef.
 
 
-## For other mods (branch `agent-up2`, 2026-10-27)
+## For other mods
 
-`RSQSM_Service`, found by name: `GetInt("adrenaline.add", "", n)`, `GetInt("adrenaline")`,
-`GetInt("active")` (1 while slow motion is doing something), `GetInt("scale")` (the world's speed,
-permille). The Gun Bonsai VR patch's slow-motion perks read `active`.
+`RSQSM_Service` (a `Service`, found by name, e.g. `ServiceIterator.Find("RSQSM_Service")`).
+`GetInt` answers -1 when the clock is not running (the mod not loaded, or a request it doesn't know):
 
-A kill now earns adrenaline from the killing blow's own source (WorldThingDamaged): before, a
-hitscan kill named only its puff, which points at nobody, and earned nothing (measured: a pistol
-kill, adrenaline 0 -> 0; after, +12).
+| request | args | answer |
+|---|---|---|
+| `adrenaline.add` | `intArg` = amount | adds to the meter (0..100; only with *Adrenaline* on), returns the meter |
+| `adrenaline` | | the meter, 0..100 |
+| `slowmo.active` / `active` | | 1 while slow motion is doing something this tic (slowed or easing) and not stood down for another slow-motion mod, else 0 |
+| `scale` | | the world's speed now, in permille (1000 = not slowed) |
+
+The Gun Bonsai VR patch's slow-motion perks read `active`. A kill earns adrenaline from the
+killing blow's own source, so a hitscan kill counts (before, it named only its puff and earned
+nothing: measured, a pistol kill 0 -> 0; after, +12).
