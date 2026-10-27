@@ -122,12 +122,26 @@ class RSQTR_Rig : EventHandler
 		{
 			let w = Weapon(it);
 			if (!w || w.bCHEATNOTWEAPON || w.bPOWERED_UP || w.Amount <= 0) continue;
+			// UltraBadassQuestSaber's hilt is slot 1, but it clips to either hip
+			// (rsqtr_saber_hip), found by class name so the saber need not be loaded.
+			if (IsSaber(w))
+			{
+				if ((r == 0 || r == 1) && Flag("rsqtr_saber_hip", pmo.player, true)) into.Push(w.GetClassName());
+				continue;
+			}
 			bool found; int slot, idx;
 			[found, slot, idx] = pmo.player.weapons.LocateWeapon(w.GetClass());
 			if (!found) slot = w.SlotNumber;
 			if (slot < 0 || slot == 1) continue;
 			if (RSQTR_Region.Takes(r, slot)) into.Push(w.GetClassName());
 		}
+	}
+
+	static bool IsSaber(Weapon w)
+	{
+		String n = w.GetClassName();
+		n = n.MakeLower();
+		return n.IndexOf("ubqs_saber") == 0;
 	}
 
 	// The weapon an empty hand holds: a slot-1 weapon you own, the fist rather than
@@ -147,7 +161,7 @@ class RSQTR_Rig : EventHandler
 		for (let it = pmo.Inv; it; it = it.Inv)
 		{
 			let w = Weapon(it);
-			if (!w || w.bCHEATNOTWEAPON || w.bOffhandWeapon) continue;
+			if (!w || w.bCHEATNOTWEAPON || w.bOffhandWeapon || IsSaber(w)) continue;   // the saber is not an empty hand
 			bool found; int slot, idx;
 			[found, slot, idx] = pmo.player.weapons.LocateWeapon(w.GetClass());
 			if (!found || slot != 1) continue;

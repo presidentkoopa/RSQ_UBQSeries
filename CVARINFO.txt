@@ -12,6 +12,7 @@ user bool   rsqtr_messages    = false;
 user float  rsqtr_reach       = 1.0;     // scales every region's radius
 user bool   rsqtr_rifle_back  = false;   // the rifle region at the small of the back instead of the chest
 user bool   rsqtr_yield_shield = true;   // leave the off shoulder to RS_ShieldSawQ while its shield is stowed there
+user bool   rsqtr_saber_hip   = true;    // UltraBadassQuestSaber's hilt clips to either hip
 user string rsqtr_empty       = "";      // the weapon an empty hand holds (blank: the slot-1 weapon with the highest SelectionOrder, the fist)
 
 // The six regions: metres from the head, in the body's frame (forward, left, up), and radius.
