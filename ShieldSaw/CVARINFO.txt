@@ -60,6 +60,7 @@ server float ssq_rev_throw_bonus = 0.6;   // a full-rev throw adds this fraction
 
 // the block
 server bool  ssq_guard          = true;
+server bool  ssq_block_double   = false;  // Double Block Radius: the blocking plate is twice as wide (the shield you see is unchanged)
 server bool  ssq_guard_stowed   = false;  // off: a shield you cannot see does not block. Both this and ssq_stow_world default off, together
 server int   ssq_yield_offhand  = 0;      // 0 pin the hands (v0.6 behaviour); 1 let switchhand take the off hand and stow the shield
 server int   ssq_deflect        = 1;      // blocked projectiles: 0 cancelled, 1 return to sender
