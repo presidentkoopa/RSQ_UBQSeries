@@ -1,8 +1,16 @@
 # Ultra Badass ShieldSaw
 
-**v0.7 — 2026-10-23.** A shield that is also a throwable saw disc, in your off hand, for **stock
+**v0.8a — 2026-10-26.** A shield that is also a throwable saw disc, in your off hand, for **stock
 QuestZDoom 17.3** (TeamBeef / emawind84 build). Standalone pk3: loads with any weapon pack, needs
-no engine changes, replaces no player class. Ermac's hand holds it (Rusted Legacy, MIT).
+no engine changes, replaces no player class.
+
+**Built on Ermac's work.** The ShieldSaw is Ermac's: the throwable ShieldSaw first appeared in his
+VR mod [Rusted Legacy](https://github.com/iAmErmac/rusted-legacy) (MIT), and this mod started from
+it. The shield and saw models -- which he split into working parts himself -- their textures, the
+hand that holds it and the sounds are all his, used under his MIT licence
+(`models/hand/LICENSE_RustedLegacy_MIT.txt`). This version re-implements the behaviour for stock
+QuestZDoom 17.3 as a standalone off-hand mod: the mount, blocking and deflection, the bash, the
+rev and lock-on throw.
 
 Loads happily beside **UltraBadassQuestSaber** — two separate mods, either load order, either one
 absent. Saber in the main hand, shield in the off.
@@ -85,3 +93,12 @@ grip that arms the two-hand grab. `ssq_lock_button` forces one or the other if y
   `_reports/QZD173_MELEE_STUDY_2026-10-23.md`.
 
 Details, measurements and the engine's traps: `HANDOFF.md`.
+
+## Credits
+
+- **Ermac** ([Rusted Legacy](https://github.com/iAmErmac/rusted-legacy), MIT) -- the ShieldSaw:
+  the idea and the original throwable ShieldSaw this mod started from; the shield and saw models
+  (which he split into working parts), their textures, the hand model and the sounds.
+- **QuestZDoom** (Emawind, Team Beef) -- the engine and its off-hand weapon and attack-pose API.
+- President_Koopa -- this standalone Quest version: its design, its testing on the headset, and
+  the direction of every change.
