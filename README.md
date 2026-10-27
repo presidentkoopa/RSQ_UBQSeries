@@ -7,13 +7,17 @@ no engine changes, replaces no player class.
 **Where it comes from.** The shield saw is id Software's: the weapon of *Doom: The Dark Ages*
 (2025). Ermac brought it to Doom VR first, in his mod
 [Rusted Legacy](https://github.com/iAmErmac/rusted-legacy), and this mod started from his version.
-The shield and saw meshes and textures are id Software's, from *Doom: The Dark Ages*, prepared for
-Doom VR by Ermac (who split them into working parts); they are not his authored models, and the MIT
-licence of his Rusted Legacy code (`models/hand/LICENSE_RustedLegacy_MIT.txt`) does not make them
-MIT. The hand that holds it and the sounds come with Rusted Legacy's ShieldSaw; where they came
-from before that is not recorded here. This version re-implements the behaviour for stock
-QuestZDoom 17.3 as a standalone off-hand mod: the mount, blocking and deflection, the bash, the
-rev and lock-on throw.
+The meshes, in Ermac's own words (his conversation with the project owner, 2026-10-27): he worked
+on two shield models. The first took him about three days to make work; the second was ripped from
+the game, and he separated its parts in a day. This pack carries two shield meshes --
+`shield.md3` (the held shield: holder, bolt, handle, back, rim) and `shieldsaw.md3` (the HD shield
+front with its separate saw-blade parts) -- and which of his two each one is, and where the first
+came from, is not recorded here. The ripped one is id Software's mesh, and the MIT licence of his
+Rusted Legacy code (`models/hand/LICENSE_RustedLegacy_MIT.txt`) does not make it MIT. The hand
+that holds it and the sounds come with Rusted Legacy's ShieldSaw; where they came from before that
+is not recorded here either. This version re-implements the behaviour for stock QuestZDoom 17.3 as
+a standalone off-hand mod: the mount, blocking and deflection, the bash, the rev and lock-on
+throw.
 
 Loads happily beside **UltraBadassQuestSaber** — two separate mods, either load order, either one
 absent. Saber in the main hand, shield in the off.
@@ -99,11 +103,12 @@ Details, measurements and the engine's traps: `HANDOFF.md`.
 
 ## Credits
 
-- **id Software** -- the shield saw itself, from *Doom: The Dark Ages*: its design, and the
-  shield and saw meshes and textures used here.
+- **id Software** -- the shield saw itself, from *Doom: The Dark Ages*: its design, and the mesh
+  Ermac ripped from the game.
 - **Ermac** ([Rusted Legacy](https://github.com/iAmErmac/rusted-legacy), MIT code) -- brought the
-  shield saw to Doom VR first; prepared its meshes for VR (split into working parts); the version
-  this mod started from, with its hand model and sounds.
+  shield saw to Doom VR first; his two shield models (the first about three days' work to make
+  work, the second a game rip whose parts he separated); the version this mod started from, with
+  its hand model and sounds.
 - **QuestZDoom** (Emawind, Team Beef) -- the engine and its off-hand weapon and attack-pose API.
 - President_Koopa -- this standalone Quest version: its design, its testing on the headset, and
   the direction of every change.
