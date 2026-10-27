@@ -1,4 +1,4 @@
-version "5.0.0"
+version "4.14"
 
 // RS_Score -- the scoring service. Points for a kill, bonuses for how you got it,
 // a per-map target that pays out when you cross it. See CREDITS.md.

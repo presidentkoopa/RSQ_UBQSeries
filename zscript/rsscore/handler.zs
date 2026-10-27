@@ -80,6 +80,20 @@ class RS_ScoreHandler : EventHandler
 	// monster would pick up a trigger item that called back, and where the engine
 	// lacked RGF_NOSIGHT it fell back to a hardcoded list of nineteen Doom 2 monsters
 	// -- which means our own monster pack would have been invisible to it.
+	// WHAT IS A KILL. A monster the level counts toward its kills (+COUNTKILL) -- not any actor
+	// flagged a monster. Brutal Doom spawns helper actors that carry ISMONSTER and big health
+	// and "die" as effects play out: one Brutal Doom imp (80 health) scored 1305, because a
+	// blood smear (BootSmearerRed, 1000 health) died too and was paid as a kill (measured on
+	// QZD 17.3 with brutal22test6; the engine's own kill count said 1). Lost Souls are the one
+	// real monster Doom leaves uncounted, and Dakka paid for them, so they still count.
+	static bool IsScorable(Actor a)
+	{
+		if (!a || !a.bIsMonster) return false;
+		if (a.bCountKill) return true;
+		class<Actor> ls = "LostSoul";
+		return ls && (a is ls || Actor.GetReplacee(a.GetClass()) == ls);
+	}
+
 	private void Census()
 	{
 		m_counted.Clear();
@@ -91,7 +105,7 @@ class RS_ScoreHandler : EventHandler
 
 		while (a = Actor(it.Next()))
 		{
-			if (!a.bIsMonster || a.bFriendly || a.health <= 0) { continue; }
+			if (!IsScorable(a) || a.bFriendly || a.health <= 0) { continue; }
 
 			totalMonsters += 1;
 			totalPoints   += a.GetSpawnHealth();
@@ -232,7 +246,7 @@ class RS_ScoreHandler : EventHandler
 	override void WorldThingDied(WorldEvent e)
 	{
 		Actor victim = e.Thing;
-		if (!victim || !victim.bIsMonster) { return; }
+		if (!victim || !IsScorable(victim)) { return; }
 
 		// Who gets the credit. Start at whoever the victim was last set against,
 		// then walk up out of any projectile to the thing that fired it.
