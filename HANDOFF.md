@@ -1,3 +1,40 @@
+# ==== service (branch agent-svc): service.zs, 2026-10-27 ====
+
+## RSQGR_Service -- what the hook did, for any mod (found by name, nothing links)
+`ServiceIterator.Find("RSQGR_Service")`, then `GetInt(request, "", intArg, 0, objectArg)`; every unknown or
+unanswerable request is -1 (a GetObject one null). Full comment block at the top of `zscript/rsqgr/service.zs`.
+
+| request | objectArg | intArg | answer |
+|---|---|---|---|
+| `hook.phase` | pawn | hand | -1 none, 0 fly, 1 latch (wall or heavy anchor), 2 bite, 3 JP hold, 4 retract |
+| `swinging` / `reeling` / `climbing` | pawn | | 1 / 0 (swinging = latched and off the ground) |
+| `airborne` | pawn | | 1 in the air on a flight the rope took part in (floor to floor) |
+| `released` | pawn | | tics since a rope let go of him in the air (tap or slip), -1 (10 s) |
+| `landed` | pawn | | tics since he came down from a roped flight, -1 (10 s) |
+| `flight.dist` / `flight.drop` | pawn | | 2D units floor to floor / depth of the lowest floor under it, -1 |
+| `gaps` | pawn | | gap crossings counted on this map |
+| `hooked` | monster | | tics since it was last on a line (0 on it; biting or as a heavy anchor), -1 (10 s) |
+| `hooked.by` | monster | | player number, -1 |
+| `hooked.heavy` | monster | | 1 anchor (too heavy to come), 0 came |
+| `bites` | monster | | hooks in a chain (each within 5 s of the last release) |
+| `volleys` | monster | | rehooks in that chain after it was sent flying AWAY (own vel away from the hooker >= 6 u/tic world time) |
+| `yanked` | monster | | 1 on the yank path, 2 flying on its own after, 0 neither, -1 never hooked |
+| `landing` | monster | | tics since its own throw hurt it (landing, wall or thing strike), -1 |
+| `struck` / `struck.by` / `pin` | monster | | tics since a thrown body hit it / thrower's player number / 1st, 2nd... thing that body hit |
+| `whipped` | monster | | tics since the whip crack hit it |
+| GetObject `hook.victim` | pawn | hand | the monster on that line |
+| GetObject `hooked.by` / `struck.ball` | monster | | the hooker's pawn / the thrown body |
+
+Every blow is noted BEFORE it lands (Slam / Struck / Whipped are called before DamageMobj), so a scorer
+hearing the death in WorldThingDied already reads 0. Pushes one award to RSQ_Score by name:
+`RS_ScoreService GetInt("award", "Indiana Jones", points, 0, pawn)` for a gap crossed on the rope (left a
+floor, passed over one >= 64 below both ends, landed >= 192 units 2D away in another sector; once per
+sector pair per player per map; 150 + (dist-192)/2, max 500). `rsqgr_score` (menu "Score Stunts") turns the
+push off.
+
+Core edits (one line each): core.zs Fly (Bitten after the bite/anchor), monster.zs Impact (Struck, Slam)
+and Land (Slam), whip.zs Crack (Whipped). MAPINFO: RSQGR_Events registered last.
+
 # HANDOFF -- RSQ_Grapple core (branch agent-core), 2026-10-27
 
 Round 2 (Hook 1.0: pendulum comes to rest, JP-look chain rope, hand-over-hand climbing) is in ROADMAP.md, measured.

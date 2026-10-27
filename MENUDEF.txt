@@ -34,6 +34,7 @@ OptionMenu "RSQGR_Options"
 	StaticText " "
 	Slider "Monster Pull", "rsqgr_slide_speed", 2, 30, 1, 0
 	Slider "Heaviest Pulled", "rsqgr_mass_max", 100, 5000, 100, 0
+	Option "Score Stunts", "rsqgr_score", "OnOff"
 	StaticText " "
 	// ==== monster side ====
 	Option "Monster Hook", "rsqgr_monster_mode", "RSQGR_MonsterModes"

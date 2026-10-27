@@ -532,9 +532,11 @@ class RSQGR_Flight : EventHandler
 				hit ? String.Format(" -> %s %d", hit.GetClassName(), dmg / 2) : (blockLine ? String.Format(" (line %d)", blockLine.Index()) : " (nothing named)"));
 		if (dmg <= 0) return;
 		let src = fby[s];
-		// through RSQGR_Perks.Hurt: the hook's own damage (Gun Bonsai's patch pays it to the player pool)
-		if (hit && hit.bSHOOTABLE && hit != src) RSQGR_Perks.Hurt(hit, null, src, max(1, dmg / 2), 'Melee');
+		// service.zs notes each blow BEFORE it lands, so a scorer hearing the death already knows;
+		// RSQGR_Perks.Hurt brackets it as the hook's own damage (Gun Bonsai's patch pays it to the player pool)
+		if (hit && hit.bSHOOTABLE && hit != src) { RSQGR_Events.Struck(a, hit, src); RSQGR_Perks.Hurt(hit, null, src, max(1, dmg / 2), 'Melee'); }
 		if (!a) return;
+		RSQGR_Events.Slam(a, src);
 		RSQGR_Perks.Hurt(a, null, src, dmg, 'Melee');
 	}
 
@@ -549,6 +551,7 @@ class RSQGR_Flight : EventHandler
 		double speed = fv[s].Length();
 		double down = -fv[s].z;
 		let src = fby[s];
+		bool onLine = fline[s];   // still on the rope: the slide's arrival (next tic) is Get Over Here's
 		bool dbg = RSQGR_Util.Flag("rsqgr_debug", false);
 		Restore(s);
 		// overlapping a thing after the last vertical move: nudge out (8 tries round it)
@@ -572,8 +575,8 @@ class RSQGR_Flight : EventHandler
 		if (dbg)
 			Console.Printf("T_GRM land %s (%s) after %d tics speed %.1f down %.1f peak %.1f dmg %d at (%.1f %.1f %.1f) floorz %.1f fits %d",
 				a.GetClassName(), why, fage[s], speed, down, fpeak[s], dmg, a.Pos.x, a.Pos.y, a.Pos.z, a.floorz, a.TestMobjLocation());
-		if (dmg > 0) RSQGR_Perks.Hurt(a, null, src, dmg, 'Melee');
-		if (a && src) RSQGR_Perks.OnArrive(a, src);   // Get Over Here (perks.zs)
+		if (dmg > 0) { RSQGR_Events.Slam(a, src); RSQGR_Perks.Hurt(a, null, src, dmg, 'Melee'); }
+		if (a && src && !onLine) RSQGR_Perks.OnArrive(a, src);   // Get Over Here (perks.zs), off the rope
 	}
 
 	// Let go of a thrown thing where it is, everything put back (Double Hook takes it over).

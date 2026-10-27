@@ -16,7 +16,7 @@
 //                speed, staggered 15 + 10 lv, shoved aside -- and it comes on
 //   BarbedClaw   the bite does 4 + 4 lv, tearing it out of a living monster 6 + 6 lv
 //   Slingshot    letting go of a swing in the air: speed x(1 + 0.1 lv)
-//   SteadyLine   hanging with the stick centred, the swing dies 4 + 4 lv times faster
+//   SteadyLine   hanging with the stick centred, the swing's air drag x(1 + 3 lv)
 //   DoubleHook   one monster on each hand's hook: they are slammed into each other,
 //                20 + 15 lv each and staggered 35 + 15 lv
 //
@@ -126,7 +126,7 @@ class RSQGR_Perks : EventHandler
 	static play double SteadyDrag(PlayerPawn pmo, double baseDrag, bool stickCentred)
 	{
 		int lv = stickCentred ? Lv(pmo, 'SteadyLine') : 0;
-		return lv > 0 ? baseDrag * (4.0 * lv) : 0.0;
+		return lv > 0 ? baseDrag * (3.0 * lv) : 0.0;
 	}
 
 	// ---- the bracket and the ledger -----------------------------------------------------------
@@ -179,12 +179,7 @@ class RSQGR_Perks : EventHandler
 		}
 	}
 
-	// What the patch asks (forwarded by the grapple's service; see Ask's callers).
-	//   xp.bites / xp.yanks / xp.kills / xp.killhp / xp.slams  objectArg = the pawn: running count
-	//   xp.swing                                               objectArg = the pawn: units swung
-	//   hook.dealing   objectArg = the pawn: 1 while the hook's own damage to anything is being dealt
-	//   hook.by        objectArg = a monster: the player whose hook was in on it, or -1
-	//   hook.age       objectArg = a monster: tics since, or -1
+	// What the patch asks, through RSQGR_Service (service.zs forwards "xp.*" and "hook.dealing").
 	int Ask(String request, Object about)
 	{
 		let a = Actor(about);
@@ -201,18 +196,6 @@ class RSQGR_Perks : EventHandler
 			if (request ~== "xp.killhp") return xKillHP[pn];
 			if (request ~== "xp.slams") return xSlams[pn];
 			if (request ~== "xp.swing") return int(xSwing[pn]);
-			return -1;
-		}
-		if (request ~== "hook.by" || request ~== "hook.age")
-		{
-			if (!a) return -1;
-			for (int i = 0; i < NLOG; i++)
-			{
-				if (lgA[i] != a) continue;
-				int age = level.maptime - lgTic[i];
-				if (age > INVOLVED_TICS) return -1;
-				return request ~== "hook.by" ? lgPn[i] : age;
-			}
 		}
 		return -1;
 	}
@@ -269,7 +252,7 @@ class RSQGR_Perks : EventHandler
 		let fl = RSQGR_Flight.Get();
 		if (fl && fl.SlotOf(v) >= 0) me.xYanks[pn]++;
 		bool dbg = RSQGR_Util.Flag("rsqgr_debug", false);
-		if (dbg) Console.Printf("T_GRP bite p%d h%d %s heavy %d (bites %d yanks %d)", pn, h.hand, v.GetClassName(), h.heavy, me.xBites[pn], me.xYanks[pn]);
+		if (dbg) Console.Printf("T_GRP bite p%d h%d %s mass %d boss %d heavy %d (bites %d yanks %d)", pn, h.hand, v.GetClassName(), v.Mass, v.bBOSS, h.heavy, me.xBites[pn], me.xYanks[pn]);
 
 		// HEAVY HAUL: a boss on the line staggers, once per 3 s
 		int haul = Lv(pmo, 'HeavyHaul');
@@ -369,6 +352,7 @@ class RSQGR_Perks : EventHandler
 			n++;
 			int dmg = 5 + 5 * lv + int(speed * 0.5);
 			int hp0 = o.Health;
+			RSQGR_Events.Struck(a, o, pmo);   // service.zs: a pin, for a scorer (noted before the blow)
 			Hurt(o, a, pmo, dmg, 'Melee', DMG_THRUSTLESS);
 			if (!o) continue;
 			if (o.Health > 0 && o.bIsMonster) Stagger(o, 15 + 10 * lv);
@@ -495,6 +479,8 @@ class RSQGR_Perks : EventHandler
 		if (!met || !a || !b || !by) return;
 		int dmg = 20 + 15 * lv;
 		int ha = a.Health, hb = b.Health;
+		RSQGR_Events.Struck(b, a, by);   // service.zs: each struck the other (noted before the blows)
+		RSQGR_Events.Struck(a, b, by);
 		Hurt(a, b, by, dmg, 'Melee', DMG_THRUSTLESS);
 		if (b) Hurt(b, a, by, dmg, 'Melee', DMG_THRUSTLESS);
 		int st = 35 + 15 * lv;

@@ -18,3 +18,10 @@ GameInfo
 {
 	AddEventHandlers = "RSQGR_Perks"
 }
+
+// What the hook did, for other mods (service.zs: RSQGR_Service reads it). Last, so its tic runs
+// after the core's and the throw's.
+GameInfo
+{
+	AddEventHandlers = "RSQGR_Events"
+}

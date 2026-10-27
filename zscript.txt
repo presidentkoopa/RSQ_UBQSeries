@@ -10,6 +10,7 @@ version "4.14"
 #include "zscript/rsqgr/climb.zs"
 #include "zscript/rsqgr/monster.zs"
 #include "zscript/rsqgr/looks.zs"
+#include "zscript/rsqgr/service.zs"
 // ==== monster side ====
 #include "zscript/rsqgr/whip.zs"
 // ==== end monster side ====
