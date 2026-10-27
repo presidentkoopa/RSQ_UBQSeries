@@ -69,7 +69,7 @@ Model RSQTR_ZippoProp
 	FrameIndex RSZP D 1 3
 }
 
-// The Quake torso from Vittorio Romeo's Quake VR (his original mod, several years old; the owner's RS_VRBody/REMA avatar use the same vrtorso.mdl, converted to MD3 by tools/mdl2md3.py) and its
+// Quake's Grunt (id Software) as a torso: Vittorio Romeo's original Quake VR vrtorso.mdl (the owner's RS_VRBody/REMA avatar use the same file, converted to MD3 by tools/mdl2md3.py) and its
 // recoloured skins: own, green armour, blue armour, the red breath.
 Model RSQTR_TorsoPart
 {

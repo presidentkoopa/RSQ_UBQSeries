@@ -1,9 +1,10 @@
 // ERMAC'S CIGARETTE (optional tribute, off by default: rsqtr_cig).
 //
-// The idea and the models are Ermac's: the cigarette, its butt and its smoke come
-// from his Virtual Tactical Vest for Doom VR, and the Zippo is his voxel lighter
-// from ZBlood-VR (his own model, as his credits say). This is a new implementation
-// for the rig.
+// The idea is Ermac's: the cigarette, its butt and its smoke come from his Virtual
+// Tactical Vest for Doom VR (its credits name him as their modeller; the cigarette's
+// texture is an atlas shared with a Sketchfab cigarette-pack model, its pack art blanked
+// here), and the Zippo is the voxel lighter from his ZBlood-VR, credited to him there.
+// This is a new implementation for the rig.
 //
 // Reach to the pocket on your left chest and grip (or press Use): a cigarette comes
 // to that hand. Bring it to your mouth and hold it there a moment and it lights --
