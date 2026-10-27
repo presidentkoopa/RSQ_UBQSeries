@@ -63,7 +63,8 @@ your arm behind it.
 
 `Options → Ultra Badass ShieldSaw`. The front page has the everyday switches: starting with it,
 drawing with Use, what locks on and what throws, catching it on return, the most locks, blocking
-(**Double Block Radius** doubles the blocking plate, the shield you see unchanged), turned shots,
+(**Double Block Radius** doubles the blocking plate, the shield you see unchanged), **On Manual Store** (what the off hand
+holds once you put the shield away: Fist or Previously Held Weapon), turned shots,
 the muzzle block, melee, perfect block, the bash, hit tiers and Brutal Doom v22 monsters, feedback
 and where the shield shows. One page down: **Shield Fit** (size, where the disc sits, the block
 area), **Throw and Disc**, **Lock-On**, **Block and Bash**, **Mount Position**, and last **Tuning and
