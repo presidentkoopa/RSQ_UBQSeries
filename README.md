@@ -135,6 +135,56 @@ Built and run on stock QuestZDoom 17.3 (`build.sh`), with brutal22test6 + BD_Vox
   Tested on the rig: a disc throw through two imps paid Cleaved + Hurled 0.30, then 0.45; a
   turned imp fireball paid Return to Sender; a kill after a shield block paid Riposte + Shield Work.
   `rs_score_cap_melee` caps the family (0 off). The original thirteen are unchanged.
+- **Thrown things, the rig and VR feats** (`physical.zs`), in the three original families.
+  No hand pose is read anywhere (the pose exists on the local machine only): the facts are the
+  shot's own line, the head's facing (the pawn's angle and pitch, driven by the headset through
+  the replicated tic command), the fire buttons, Distance Grab's throw ledger
+  (`RSQDG_ThrowService`) and the Tactical Rig's last draw (`RSQTR_RigService`), both found by
+  name -- either mod absent, its bonuses simply never fire.
+
+  | Bonus | Family | Pays | For |
+  |---|---|---|---|
+  | Thrown | Style | 0.2, +0.03 per m/s of impact over 3 (to 0.5) | killed by something you threw with Distance Grab |
+  | Powder Keg | Style | 0.3, +0.2 per earlier kill by thrown blasts within 1 s (to 1.1) | killed by the blast of a barrel your throw set off, or one its blast set off |
+  | Juggle | Daring | 1.0, +0.5 per extra catch (to 2.0) | the thrown thing was caught back out of the air and thrown again before it landed |
+  | Skeet | Style | 0.25 | the victim was 0.85 m+ off its floor (not a flyer, not on another body) |
+  | Quick Draw | Daring | 0.35 | killed with the gun you drew from a holster, within 42 tics of the draw |
+  | No-Look | Daring | 0.3 | the shot left 60 degrees or more from where your head faced |
+  | Blind-fire | Daring | 0.4 | your eye had no line to the victim and your hand did (direct hits; replaces No-Look) |
+  | Off-hand | Style | 0.2 | the off hand's trigger alone fired the killing shot |
+  | Full Hands | Style | 0.25 | a shot kill while a Distance Grab hand carries something |
+
+  Tested on rig B (QZD 17.3, the owner's load order + Gun Bonsai, `rs_score_debug 1`, a probe
+  map with a pillar): a barrel at 3.8 m/s paid Thrown 0.225, a clip at 14.4 m/s 0.5; one thrown
+  barrel into three imps paid Powder Keg 0.3 / 0.5 / 0.7 on one tic and 0.9 for a fourth imp
+  killed by a second barrel it set off, while a barrel the player SHOT paid nothing; a barrel
+  thrown up, caught mid-air and thrown again paid Juggle 1.0 + Thrown; an imp falling from
+  120 units paid Skeet, a standing one did not; a shot 90 degrees off the head paid No-Look, a
+  straight one did not, a missile fired sideways paid it even after the head turned to follow;
+  behind the pillar a hitscan from 25 units beside the eye and a missile from there paid
+  Blind-fire, a visible imp did not, a missile from a gun pushed through the pillar did not;
+  BD22Q's off-hand rifle fired with `+oh_attack` paid Off-hand, the main rifle did not; a
+  shotgun drawn with the rig's own `rsqtr_draw` event (up 4 tics later) paid Quick Draw on the
+  kill 8 tics after the draw, not 160 tics later; a shot with a clip held paid Full Hands, with
+  the hand empty it did not.
+
+  **Big moments**, for the series' SlowMo later (not wired): each of these answers
+  `BigMoment(ev, paid)` -- Juggle and Blind-fire always, Powder Keg from the third kill of one
+  blast.
+
+  **A missile's fire tic**: the head's facing and the buttons of the last 16 tics are kept on a
+  token (`RS_PhysicalNotes`, with the flags of the player's last blow, which tell a splash from a
+  direct hit). It is given at the player's first kill, so a missile kill before that reads "now".
+
+- **Gun Bonsai** (0.10.6 + RS_GunBonsai-Offhand-VR), measured on the same rig with two BD22Q
+  rifles: XP comes from score only when `bonsai_score_to_xp_factor` is above 0 (default **0**:
+  out of the box this pack's points give no XP at all). With score 1 and damage 0, an off-hand
+  kill paid 104 points and the off-hand rifle got 104 XP, the main-hand kill 90 and 90 -- the
+  addition routes each kill's score to the gun that made it. With **both** at 1 the guns got
+  114 / 100: damage XP and score XP together pay the kill twice (the base points ARE the
+  monster's health). **Set damage to 0 when score is on.** A Distance Grab throw's points went to
+  the main-hand rifle on the rig (Gun Bonsai's resolver scores the object to a hand; headless, both
+  hands sit at the pawn, so which hand wins in the headset is not measured).
 - **Options -> Score**: a menu (the original had none; a headset has no console).
 - **The revival**: Dakka's fire-and-explosion revival was never carried; a life spent is now a
   sound and one short warm flash, no actors. *Flash the whole view on a reward or revival*
