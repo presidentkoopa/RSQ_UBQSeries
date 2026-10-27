@@ -33,6 +33,8 @@ class RSQGR_A11y
 	// ---- photosensitivity ----
 	static clearscope bool Photo() { return I('rsqa_photosafe') != 0; }
 	static clearscope double Dim(double v) { return Photo() ? v * DIM_K : v; }
+	// a pulse's rate in cycles a second, capped
+	static clearscope double Hz(double hz) { return Photo() ? min(hz, MAX_HZ) : hz; }
 	// a pulse's phase step, degrees per tic (sin(t * step)), capped
 	static clearscope double Deg(double step) { return Photo() ? min(step, MAX_DEG) : step; }
 	// a cycle's length in tics, at least MIN_GAP
@@ -54,6 +56,9 @@ class RSQGR_A11y
 	// ---- size ----
 	static clearscope double Cue() { return clamp(F('rsqa_cue_scale', 1.0), 0.5, 3.0); }
 	static clearscope double Text() { return clamp(F('rsqa_text_scale', 1.0), 1.0, 3.0); }
+	// the font for a centre-screen print (A_Print / Console.MidPrint): the engine's own below Text
+	// Size 1.5, the big font at and above it (about twice the height)
+	static clearscope Name PrintFont() { return Text() >= 1.5 ? 'BigFont' : 'none'; }
 
 	// ---- hearing ----
 	static clearscope bool CueVisual() { return (I('rsqa_sound_cues') & 1) != 0; }
