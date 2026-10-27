@@ -1,5 +1,20 @@
 # ==== service (branch agent-svc): service.zs, 2026-10-27 ====
 
+## Branch `agent-compat` (2026-10-27): Champions + LegenDoom Lite -- read first
+
+Not yet run on the owner's headset. Rig C = QZD 17.3 Linux, doom2 MAP01, the owner's order (brutal22test6 ->
+BD_VoxelPack -> BD22_VR-Reloaded r7 -> Champions -> LegenDoom Lite 4.2 -> suite -> Gun Bonsai 0.10.6 + VR patch)
+and vanilla doom2 + Champions + LegenDoom Lite + suite; Champions' setting champion_Legendoom 1,
+champion_Dormant 1, champion_Booster 1. Probe: the session scratchpad cp/probe (forces tiers through
+champion_debug_forced / champion_OverrideChance 256, legendaries through LDLegendaryMonsterPickupGuaranteed).
+Save, load twice, MAP02: no script error but BD_VoxelPack's voxeldef lines.
+
+- Heavy is re-asked every tic of the pull (TooHeavy): measured, a dormant Gold legendary imp hooked and taken
+  to half on the line became Mass 1200 (> rsqgr_mass_max 1000) and kept coming; now the line lets go.
+- A monster that turns unshootable while hooked (Champions' Dark Red hiding at 1 health) is let go. Slide
+  mode already dropped it (range guard); the yank (rsqgr_monster_mode 1) placed it on its path and its
+  landing woke it (tics 1) invisible in the far corner for ~70 tics -- now released frozen.
+
 ## RSQGR_Service -- what the hook did, for any mod (found by name, nothing links)
 `ServiceIterator.Find("RSQGR_Service")`, then `GetInt(request, "", intArg, 0, objectArg)`; every unknown or
 unanswerable request is -1 (a GetObject one null). Full comment block at the top of `zscript/rsqgr/service.zs`.
