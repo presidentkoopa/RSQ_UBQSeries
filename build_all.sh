@@ -1,14 +1,14 @@
 #!/bin/sh
 # build_all.sh -- pack every mod into pk3/ from the folders beside it.
 # Needs `zip`. Each folder keeps its own original build script too (DistanceGrab and
-# LaserSight: build.ps1 on Windows; ShieldSaw: build.sh); this does the same packing
+# ShieldSaw: build.sh); this does the same packing
 # in one go on any machine with a shell. Include lists match those scripts exactly.
 set -e
 HUB="$(cd "$(dirname "$0")" && pwd)"
 OUT="$HUB/pk3"
 mkdir -p "$OUT"
 
-# DistanceGrab and LaserSight: an EXPLICIT include list (see their build.ps1 for why:
+# DistanceGrab: an EXPLICIT include list (see their build.ps1 for why:
 # a stray file in a pk3 root can shadow a real lump).
 pack_list() {   # <folder> <pk3 name> <model dir>
 	cd "$HUB/$1"
@@ -24,7 +24,6 @@ pack_list() {   # <folder> <pk3 name> <model dir>
 	echo "built pk3/$2"
 }
 pack_list DistanceGrab RSQ_DistanceGrab.pk3 models/rsqdg
-pack_list LaserSight   RSQ_LaserSight.pk3   models/rsqls
 pack_list TacticalRig  RSQ_TacticalRig.pk3  models/rsqtr
 pack_list SlowMo       RSQ_SlowMo.pk3       models/rsqsm
 

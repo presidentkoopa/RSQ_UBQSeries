@@ -12,7 +12,6 @@ is ZScript and data lumps.
 | | Mod | pk3 | What it is |
 |---|---|---|---|
 | ✋ | [DistanceGrab](DistanceGrab/) | `RSQ_DistanceGrab.pk3` | Turn your palm out, flick, and pull items, guns, barrels and bodies to your hand. Then carry them, throw them, and hit things with them. |
-| 🔴 | [LaserSight](LaserSight/) | `RSQ_LaserSight.pk3` | A laser on every gun in every mod, in both hands, with no per-weapon setup. Any colour, plus lock-on and headshot cues. |
 | 🛡️ | [ShieldSaw](ShieldSaw/) | `UltraBadassShieldSaw.pk3` | A shield on your off shoulder that blocks, bashes and turns shots back, and doubles as a throwable saw disc that hunts the targets you ring. id Software's shield saw from *Doom: The Dark Ages*, brought to Doom VR first by **Ermac** in Rusted Legacy. |
 | ⚔️ | [QuestSaber](QuestSaber/) | `UltraBadassQuestSaber.pk3` | A volumetric lightsaber, with an optional second one in the off hand. Cut, block, deflect, throw, and use the Force. |
 | 🎒 | [TacticalRig](TacticalRig/) | `RSQ_TacticalRig.pk3` | Weapons carried on your body (hips, chest, shoulders), doors you lift open by hand, and Ermac's cigarette. Built on **Ermac's** Virtual Tactical Vest idea. |
@@ -27,7 +26,7 @@ is ZScript and data lumps.
    pack. The tested order is:
 
    ```
-   doom2.wad -> brutal22test6 -> BD_VoxelPack -> any of the six, in any order
+   doom2.wad -> brutal22test6 -> BD_VoxelPack -> any of the five, in any order
    ```
 
 3. Settings live under **Options** in the game:
@@ -35,7 +34,6 @@ is ZScript and data lumps.
    | Mod | Options menu entry |
    |---|---|
    | DistanceGrab | **Distance Grab** |
-   | LaserSight | **Laser Sight** |
    | ShieldSaw | **RS ShieldSawQ Options** |
    | QuestSaber | **Ultra Badass QuestSaber** |
    | TacticalRig | **Tactical Rig** |
@@ -58,19 +56,6 @@ is ZScript and data lumps.
   an Arc height slider), *Duck under doorways*, *Voxel targets flash instead*.
 - Stands down on a hand holding a melee weapon, the shield or the Force hand. An optional button
   fallback is under Customize Controls → Distance Grab.
-
-### LaserSight
-- **On as soon as you hold a gun**, in either hand, on every weapon from any mod. Melee weapons
-  and off-hand utilities don't get one. Toggle each hand under Customize Controls → Laser Sight.
-- **Looks:** any colour by picker, per hand and per weapon slot, beam and dot separately; colour
-  cycling; beam width, taper, fade, length and glow; dot size and glow (bloom, real light or
-  both); IR mode, visible only with the light-amp goggles.
-- **Cues:** on a live enemy the dot pulses and can tighten; a lined-up headshot can change colour.
-- **Learned from each gun** (after its first shot): a **spread ring** at the dot showing where its
-  shots land, and for a weapon that throws gravity grenades a **grenade arc** ending where the
-  grenade will land.
-- **Range readout:** distance by the gun or at the dot, in metres, feet or map units (Laser
-  Sight → Range Readout; off by default).
 
 ### ShieldSaw
 - **Draw / stow:** reach to your off shoulder and press **Use**; press Use there again to put it
@@ -142,12 +127,6 @@ a missing mod is simply never found:
 - The **grab stands down on a hand holding a melee weapon**, the shield or the Force hand, since
   a swing is full of the grab's palm-out flick. A **QuestSaber hilt with its blade switched off can
   grab**: the saber reports this through its `UBQS_SaberService` (`saber.lit`).
-- The **grab's beam hides on a hand where the laser already draws a beam**. The laser reports this
-  through `RSQLS_SightService` (`laser.beam` / `laser.active`).
-- The **laser stays off** melee weapons and off-hand utilities.
-- A **weapon pack can place the laser's muzzle** on each gun: provide a `Service` whose class
-  name contains `LaserMuzzleService` and answer `GetString("laser.muzzle", <weapon class>, <hand>)`
-  with `"forward up side"` in metres from the grip (or `""` to leave a gun alone).
 - The ShieldSaw and the saber share the hands cleanly: saber in the main hand, shield in the off.
 - The **grab stands down on a hand the rig is using** (reaching into a holster, holding a door,
   the cigarette or the Zippo): the rig reports this through `RSQTR_RigService` (`rig.busy`).
@@ -166,9 +145,8 @@ a lock). Nothing buzzes constantly.
 
 ```
 RSQ_UBQSeries/
-├── pk3/             ready-to-load builds of all six (identical contents to the tested builds)
+├── pk3/             ready-to-load builds of all five (identical contents to the tested builds)
 ├── DistanceGrab/    source, docs/ (DECISIONS, HANDOFF), tools/ (asset generators, rig tests)
-├── LaserSight/      source, docs/HANDOFF, tools/gen_assets.py
 ├── ShieldSaw/       source, README (full manual), HANDOFF
 ├── QuestSaber/      source, CREDITS, docs/HANDOFF_polish
 ├── TacticalRig/     source, README, docs/HANDOFF, tools/ (sound generator)
@@ -186,9 +164,16 @@ Each folder carries its **full git history** from the repo it came from (merged 
 ./build_all.sh
 ```
 
-This needs `zip`. Each mod also keeps its original script (DistanceGrab and LaserSight use
+This needs `zip`. Each mod also keeps its original script (DistanceGrab uses
 `build.ps1` on Windows; ShieldSaw, TacticalRig and SlowMo use `build.sh`). `build_all.sh` packs
 exactly the same files.
+
+## Retired: LaserSight (2026-10-27)
+
+The owner's headset test: the laser would not ride each weapon's barrel consistently, and it was
+jittery and laggy. It is out of the series and the build. Its history stays in this repository
+(`git log -- LaserSight/` before the removal commit); DistanceGrab's beam simply never finds it
+(it asked by service name).
 
 ## Status (0.8a, 2026-10-26)
 

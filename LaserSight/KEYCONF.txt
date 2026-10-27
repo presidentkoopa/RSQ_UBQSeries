@@ -1,9 +1,0 @@
-// The toggles. Console commands, not usercmd buttons: every button bit is
-// contested by mods we cannot see (BT_USER1..4 are taken by a bullet-time mod, a
-// grappling hook and Brutal Doom), and a KEYCONF action takes none. No default
-// binds on purpose -- which key a Quest controller posts is not knowable here,
-// and a guess would steal a button that already does something. Bind them in
-// Customize Controls under "Laser Sight".
-addkeysection "Laser Sight" RSQLS
-addmenukey "Laser on/off (main hand)" "toggle rsqls_main"
-addmenukey "Laser on/off (off hand)"  "toggle rsqls_off"

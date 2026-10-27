@@ -1,8 +1,0 @@
-# The built package is an artefact, not source. It goes stale the moment
-# anything changes and a stale one in a repo is worse than none.
-*.pk3
-
-# Scratch
-*.log
-*.bak
-.claude/settings.local.json
