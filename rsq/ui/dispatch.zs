@@ -66,7 +66,8 @@ class RSQUI_Dispatch ui
 	void Housekeep(bool active)
 	{
 		if (!scoreKnown) scoreKnown = RSQUI_Data.ScoreServiceLoaded() ? 1 : 2;
-		Manage("rs_score_hide", "rsq_ui_saved_scorehide", active && scoreKnown == 1, 1);
+		// RS Score draws its own line, untouched: only put back a hide an older build set.
+		Manage("rs_score_hide", "rsq_ui_saved_scorehide", false, 1);
 		Manage("bd_sbartype", "rsq_ui_saved_sbartype", active && BottomOn(), 0);
 	}
 

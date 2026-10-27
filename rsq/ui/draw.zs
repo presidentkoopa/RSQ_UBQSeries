@@ -3,16 +3,14 @@
 // screen -- an origin and a scale -- so a layout is written once and fits whatever the headset's
 // 2D layer is (QZD's is near-square, not 16:9: 320x300 on the rig at QZ_RES 300, measured).
 //
-// Fonts are the baked folders in fonts/ (tools/rsqui_bake.py): rsqui_pix (Press Start 2P, 8 units
-// to the em at size 8), rsqui_term (VT323, 16 units at size 16) and rsqui_chrom (Orbitron, 16 at
-// size 16). Colour comes from DTA_Color on white glyphs, so one font serves every neon.
+// Fonts are Doom's own (owner, 10-27: "just use the doom fonts"): SmallFont for labels and card
+// titles, BigFont for the big title, NewSmallFont (the face Gun Bonsai's own HUD writes in) for body
+// text. A size is the font's line height in design units. Colour is the nearest of the engine's
+// text colours (Font.CR_*), since Doom's glyphs are not white and cannot be tinted.
 class RSQUI_Pen ui
 {
 	double ox, oy, u;   // screen px of design (0,0), and screen px per design unit
 	Font fPix, fTerm, fChrome, fOrb;
-	// VT323 is narrower than the mockups' terminal face (cap/advance 1.31 measured there, 1.125 in
-	// the baked VT323): it is drawn this much taller than wide.
-	const TERM_TALL = 1.16;
 	// One Shape2D per polygon per frame: the 2D drawer keeps a reference and renders later, so a
 	// shape refilled for the next polygon would redraw as that one (or not at all).
 	Array<Shape2D> shapes;
@@ -22,14 +20,10 @@ class RSQUI_Pen ui
 	static RSQUI_Pen Make()
 	{
 		let p = new("RSQUI_Pen");
-		p.fPix = Font.GetFont("rsqui_pix");
-		p.fTerm = Font.GetFont("rsqui_term");
-		p.fChrome = Font.GetFont("rsqui_chrom");
-		p.fOrb = Font.GetFont("rsqui_orb");
-		if (!p.fOrb) p.fOrb = SmallFont;
-		if (!p.fPix) p.fPix = SmallFont;
-		if (!p.fTerm) p.fTerm = NewConsoleFont;
-		if (!p.fChrome) p.fChrome = BigFont;
+		p.fPix = SmallFont;
+		p.fOrb = SmallFont;
+		p.fTerm = NewSmallFont;
+		p.fChrome = BigFont;
 		p.white = TexMan.CheckForTexture("RSQWHITE", TexMan.Type_Any);
 		p.u = 1;
 		return p;
@@ -173,61 +167,57 @@ class RSQUI_Pen ui
 	}
 
 	// ---- text ----
-	// size = the font's em in design units (rsqui_pix is 8 at 1x, the others 16).
-	double Scale(Font f, double size)
-	{
-		double em = (f == fPix) ? 8.0 : 16.0;
-		return size / em * u;
-	}
-	double ScaleY(Font f, double size) { return Scale(f, size) * (f == fTerm ? TERM_TALL : 1.0); }
+	// size = the font's line height in design units.
+	double Scale(Font f, double size) { return size / max(1, f.GetHeight()) * u; }
+	double ScaleY(Font f, double size) { return Scale(f, size); }
 
-	double Width(Font f, double size, String s)
-	{
-		return f.StringWidth(s) * Scale(f, size) / u;
-	}
+	double Width(Font f, double size, String s) { return f.StringWidth(s) * Scale(f, size) / u; }
+	double Height(Font f, double size) { return size; }
 
-	double Height(Font f, double size)
-	{
-		return f.GetHeight() * ScaleY(f, size) / u;
-	}
+	// Doom's fonts start their capitals at the top of the line.
+	double CapTop(Font f, double size) { return 0; }
 
-	// Where a font's capitals start below the y Text() is given, in units (the baked glyphs carry
-	// their pad and outline): measured off the baked 'L's.
-	double CapTop(Font f, double size)
+	// The engine text colour nearest to c (Doom's glyphs take a translation, not a tint).
+	static int NearestCR(Color c)
 	{
-		if (f == fPix) return size / 8;
-		if (f == fTerm) return 5.0 * TERM_TALL * size / 16;
-		if (f == fOrb) return 5.75 * size / 16;
-		if (f == fChrome) return 6.75 * size / 16;
-		return 0;
+		static const int crs[] = { Font.CR_WHITE, Font.CR_GRAY, Font.CR_DARKGRAY, Font.CR_RED,
+			Font.CR_DARKRED, Font.CR_ORANGE, Font.CR_GOLD, Font.CR_YELLOW, Font.CR_GREEN,
+			Font.CR_DARKGREEN, Font.CR_CYAN, Font.CR_LIGHTBLUE, Font.CR_BLUE, Font.CR_PURPLE,
+			Font.CR_BRICK, Font.CR_TAN };
+		static const int rgb[] = { 0xFFFFFF, 0xB0B0B0, 0x606060, 0xFF3030,
+			0xA01010, 0xFF9020, 0xFFC830, 0xFFFF40, 0x40FF40,
+			0x208020, 0x40FFFF, 0x80B0FF, 0x4060FF, 0xFF50FF,
+			0xFF8070, 0xD0B080 };
+		int best = Font.CR_WHITE, bd = 0x7FFFFFFF;
+		for (int i = 0; i < 16; i++)
+		{
+			int dr = c.r - ((rgb[i] >> 16) & 255), dg = c.g - ((rgb[i] >> 8) & 255), db = c.b - (rgb[i] & 255);
+			int d = dr * dr + dg * dg + db * db;
+			if (d < bd) { bd = d; best = crs[i]; }
+		}
+		return best;
 	}
 
 	// align: 0 left, 1 centre, 2 right. y is the top of the line.
 	void Text(Font f, double size, String s, double x, double y, Color c, int align = 0, double alpha = 1.0)
 	{
-		double k = Scale(f, size), ky = ScaleY(f, size);
+		double k = Scale(f, size);
 		double w = f.StringWidth(s) * k / u;
 		if (align == 1) x -= w / 2;
 		else if (align == 2) x -= w;
-		Screen.DrawText(f, Font.CR_UNTRANSLATED, X(x), Y(y), s,
-			DTA_ScaleX, k, DTA_ScaleY, ky, DTA_Color, c, DTA_Alpha, alpha);
+		Screen.DrawText(f, NearestCR(c), X(x), Y(y), s,
+			DTA_ScaleX, k, DTA_ScaleY, k, DTA_Alpha, alpha);
 	}
 
-	// Text placed by the top of its capitals (how the mockups were measured).
 	void Cap(Font f, double size, String s, double x, double capTop, Color c, int align = 0, double alpha = 1.0)
 	{
 		Text(f, size, s, x, capTop - CapTop(f, size), c, align, alpha);
 	}
 
-	// Untinted (the title font carries its own colour).
+	// The big title: BigFont in light blue (the mockups' chrome-blue title).
 	void TextRaw(Font f, double size, String s, double x, double y, int align = 0, double alpha = 1.0)
 	{
-		double k = Scale(f, size), ky = ScaleY(f, size);
-		double w = f.StringWidth(s) * k / u;
-		if (align == 1) x -= w / 2;
-		else if (align == 2) x -= w;
-		Screen.DrawText(f, Font.CR_UNTRANSLATED, X(x), Y(y), s,
-			DTA_ScaleX, k, DTA_ScaleY, ky, DTA_Alpha, alpha);
+		Text(f, size, s, x, y, Color(255, 0x80, 0xB0, 0xFF), align, alpha);
 	}
 
 	// Gun Bonsai colours some names (\c[GREEN]Venomous Inscription): the skins colour by card.

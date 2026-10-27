@@ -35,13 +35,7 @@ class RSQUI_A_Skin : RSQUI_Skin
 		data.Read();
 		pen.HudFrame();
 		double W = pen.UnitsWide(), H = pen.UnitsHigh();
-		if (data.stats)
-		{
-			// the off hand's gun top left, the main hand's top right: as you hold them
-			if (data.hands[1].valid) DrawGauge(data.hands[1], 0, true);
-			if (data.hands[0].valid) DrawGauge(data.hands[0], W - 236, false);
-		}
-		if (data.haveScore) DrawScore(W / 2, 0);
+		// Gun Bonsai's XP gauges and RS Score's line draw themselves, untouched (owner, 10-27).
 		if (RSQUI_Dispatch.BottomOn()) DrawBottom(W, H);
 		return true;
 	}
