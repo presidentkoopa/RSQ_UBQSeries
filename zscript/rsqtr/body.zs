@@ -186,6 +186,20 @@ class RSQTR_Body play
 		let cv = CVar.FindCVar("vr_control_scheme");
 		return cv && cv.GetInt() >= 10;
 	}
+
+	// Which way the BODY LAYOUT goes where no hand owns the spot (the cigarette pocket, the way a
+	// stored gun hangs): RSQ_Accessibility's rsqa_handed (1 right, 2 left) when it is loaded and set,
+	// else the engine's handedness. Everything a particular hand owns -- which controller is main,
+	// the saber spots (each saber's own hand), the shield's shoulder, the mirror's reflected hand, the
+	// rumble side -- stays on LeftHanded(): that is the engine's and no mod can move it.
+	static bool LayoutLeft()
+	{
+		let h = CVar.FindCVar("rsqa_handed");
+		int v = h ? h.GetInt() : 0;
+		if (v == 1) return false;
+		if (v == 2) return true;
+		return LeftHanded();
+	}
 }
 
 // A RUMBLE WITH A LENGTH AND A STRENGTH, on one controller. The series' route:
