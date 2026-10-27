@@ -2285,8 +2285,22 @@ class UBQS_SaberBase : Weapon abstract
 				}
 			}
 		}
-		if (!Lit() || !source || source == owner) return;
-		if (inflictor && inflictor.bMissile) return;        // missiles are the deflect's: it bats them back
+		if (!Lit() || source == owner) return;
+		// BRUTAL DOOM FIRES NOTHING BUT MISSILES. Parsed from brutal22test6's monsters: 4375 A_CustomMissile
+		// calls against 2 A_CustomBulletAttack, both commented out -- its zombies' bullets are FastProjectile tracers
+		// (MonsterTracer: radius 2, speed 50) and its claws are short-lived missiles (UBQS_Memory.IsClaw).
+		// This used to return for every missile ("the deflect's") and for every blast, so against BD only
+		// the sweep could ever stop anything: a shot it missed by a tic, and every claw, went straight in.
+		// RS_ShieldSawQ decides the same question here, on contact, for every kind of hit (guard.zs
+		// AbsorbDamage) -- which is why it stops BD's attacks. Now the blade does too: a claw is melee and
+		// goes down the melee path below; a shot or a blast is tested by ContactBlock.
+		bool claw = inflictor && inflictor != source && UBQS_Memory.IsClaw(inflictor);
+		if (inflictor && inflictor != source && !claw && (inflictor.bMissile || (flags & DMG_EXPLOSION)))
+		{
+			if (ContactBlock(inflictor, source, damage, flags)) newdamage = 0;
+			return;
+		}
+		if (!source) return;
 		// ONE SABER, HELD ACROSS YOU (ubqs_blade_guard -- the owner, 10-02: "one saber, hosiztonally, with a
 		// small ass hitbox to be kinda tralistic"). The cross guard above is an ARC off the BODY's yaw and
 		// stops everything inside it. This is its opposite: the blade's own segment against the attack's own
@@ -2318,7 +2332,11 @@ class UBQS_SaberBase : Weapon abstract
 		Vector3 at = hand + dir * (BladeLen() * 0.6);
 		Vector3 back = level.Vec3Diff(at, (source.pos.xy, source.pos.z + source.height * 0.55));
 		if (back.Length() > 0.001) back = back.Unit();
-		BlockFx(at, back, source, damage, true);
+		// a claw raked by a whole bite is one block, one noise and one return bolt (a Demon's bite is four
+		// DemonAttack missiles in 12 tics, parsed; each one is stopped)
+		bool loud = !claw || level.maptime - lastBlockTic > 3;
+		BlockFx(at, back, source, damage, loud);
+		if (claw) { lastBlockTic = level.maptime; inflictor.vel = (0, 0, 0); }
 		// AND WHAT SWUNG AT YOU REELS. A blade held across you already stops a claw -- and nothing
 		// happened to the thing that threw it: it stood in your face and swung again next tic, and
 		// from inside the headset a blocked claw was indistinguishable from the monster missing.
@@ -2327,7 +2345,7 @@ class UBQS_SaberBase : Weapon abstract
 		// claw calls DamageMobj with the monster as both. A parry staggers twice as hard, off the
 		// same ParryGain the return bolt uses.
 		// (RS_ShieldSawQ does this on every blocked melee: ssq_melee / ssq_stagger_push.)
-		if (UInt("ubqs_block_stagger", 1) != 0 && inflictor == source && !(flags & DMG_EXPLOSION)
+		if (UInt("ubqs_block_stagger", 1) != 0 && (inflictor == source || (claw && loud)) && !(flags & DMG_EXPLOSION)
 			&& source.bIsMonster && source.health > 0)
 		{
 			source.TriggerPainChance('Melee', true);
@@ -2362,7 +2380,7 @@ class UBQS_SaberBase : Weapon abstract
 	// traced at all. `loud` is false for the second and later pellets of one shotgun blast in a tic.
 	int lastBlockTic;
 	int lastDeflectTic;		// one clash per tic out of BatBack, however many shots crossed
-	void BlockFx(Vector3 at, Vector3 back, Actor src, int damage, bool loud)
+	void BlockFx(Vector3 at, Vector3 back, Actor src, int damage, bool loud, bool bolt = true)
 	{
 		Prime();
 		if (!owner) return;
@@ -2386,7 +2404,7 @@ class UBQS_SaberBase : Weapon abstract
 			double pgfx = clamp(UF("ubqs_clash_fx", 1.0), 0.0, 3.0);
 			if (pgfx > 0.01) UBQS_ClashFlash.Burst(at, 0.9 * pgfx);
 		}
-		if (!loud || !UInt("ubqs_block_return", 1)) return;
+		if (!loud || !bolt || !UInt("ubqs_block_return", 1)) return;
 		Vector3 d = back;
 		if (src && src.health > 0)
 		{
@@ -2465,6 +2483,76 @@ class UBQS_SaberBase : Weapon abstract
 		Vector3 at = level.Vec3Offset(from, ray * t);
 		BlockFx(at, -dir, sh, damage, level.maptime != lastBlockTic);
 		lastBlockTic = level.maptime;
+		return true;
+	}
+
+	// ---- ON CONTACT: a shot or a blast that reached you, tested against the blade -------------------
+	// The sweep (Deflect) turns a shot BEFORE it arrives; this is the same decision made when it arrives,
+	// exactly where RS_ShieldSawQ makes it (guard.zs AbsorbDamage, kinds 0 and 3), so nothing the sweep
+	// misses by a tic -- a FastProjectile tracer covers 50 units a tic -- gets through a blade that is
+	// really in its way. Width is ubqs_blade_guard (+ the shot's own radius), the same reach as the
+	// hitscan and melee block, so one setting is the whole block.
+	//   a shot: its own path, from two tics of its travel behind where it touched you to a body width past
+	//     it (the shield's numbers: back sp*2+8; forward 2 x your radius). Blocked, a copy of it goes
+	//     back off the blade by the deflect's aim rule (BatBack), and the original dies on your box as
+	//     it would have -- the engine explodes a missile that touched something, and nothing in script
+	//     can stop that once DamageMobj is running.
+	//   a blast: from where it went off to your middle. A missile this blade already stopped on contact
+	//     and that then went off on your box is stopped too (it is remembered for a second).
+	Vector3 lineAt;							// where the last BladeOnLine crossed (no Vector3 out params)
+	private bool BladeOnLine(Vector3 from, Vector3 ray, double w)
+	{
+		double len = BladeLen();
+		if (len < 1.0 || ray.Length() < 0.001) return false;
+		double t, bs, bt;
+		bool got = SweptSep(BladeBase(), BladeDir(), len, from, ray, t) <= w;
+		if (!got && back)
+		{
+			Vector3 sep = UBQS_Data.SegST(level.Vec3Diff(from, Pommel()), -BladeDir() * len, ray, bs, bt);
+			if (sep.Length() <= w) { got = true; t = bt; }
+		}
+		if (got) lineAt = level.Vec3Offset(from, ray * t);
+		return got;
+	}
+
+	private Array<Actor> stopped;			// missiles this blade stopped on contact, for their blast
+	private Array<int> stoppedTic;
+	bool ContactBlock(Actor inf, Actor src, int damage, int flags)
+	{
+		double gw = clamp(UF("ubqs_blade_guard", 6.0), 0.0, 24.0);
+		if (gw <= 0.01 || !owner) return false;	// 0 = the old roll, which never touched a missile
+		for (int k = stopped.Size() - 1; k >= 0; k--)
+			if (!stopped[k] || level.maptime - stoppedTic[k] > 35) { stopped.Delete(k); stoppedTic.Delete(k); }
+		Vector3 mid = (owner.pos.xy, owner.pos.z + owner.height * 0.5);
+		if (flags & DMG_EXPLOSION)
+		{
+			if (stopped.Find(inf) < stopped.Size()) return true;
+			Vector3 ray = level.Vec3Diff(inf.pos, mid);
+			if (!BladeOnLine(inf.pos, ray, gw)) return false;
+			Vector3 bk = -ray.Unit();
+			BlockFx(lineAt, bk, src, damage, level.maptime != lastBlockTic, false);
+			lastBlockTic = level.maptime;
+			return true;
+		}
+		Vector3 v = inf.vel;
+		double sp = v.Length();
+		Vector3 u = sp > 0.001 ? v / sp : level.Vec3Diff(inf.pos, mid);
+		if (sp <= 0.001) { if (u.Length() < 0.001) return false; u = u.Unit(); }
+		double behind = sp * 2.0 + 8.0;
+		Vector3 from = inf.pos - u * behind;
+		if (!BladeOnLine(from, u * (behind + owner.radius * 2.0), gw + inf.radius)) return false;
+		stopped.Push(inf); stoppedTic.Push(level.maptime);
+		UBQS_Memory.Note(UBQS_Memory.M_BLOCKED, src);
+		let bk = Actor.Spawn(inf.GetClass(), lineAt);
+		if (bk)
+		{
+			bk.target = inf.target;
+			bk.tracer = inf.tracer;
+			bk.vel = v;
+			BatBack(bk, BladeDir());
+		}
+		inf.vel = (0, 0, 0);
+		Rumble(0.8, 3);
 		return true;
 	}
 
@@ -5857,9 +5945,35 @@ class UBQS_Memory : EventHandler
 	Array<Actor> missiles;
 	static UBQS_Memory Get() { return UBQS_Memory(EventHandler.Find("UBQS_Memory")); }
 
+	// A CLAW: BRUTAL DOOM'S MELEE IS A MISSILE. Every BD bite, punch and claw is an A_CustomMissile out of a
+	// Melee state (parsed from brutal22test6: ImpAttack, DemonAttack, BaronAttack, KnightAttack,
+	// RevenantAttack, CacodemonBite, MarinePunch, NaziKick, CyberStomp...), and what tells one from a shot
+	// is its own Spawn state: a claw runs out ("Stop") after a few tics, a shot loops until it hits.
+	// Speed x Spawn tics, measured off BD's code: 16 (DemonAttack) to 168 (KnightAttack); its looping
+	// shots (tracers, balls, rockets) have no end at all. So a missile whose Spawn chain stops within
+	// CLAW_REACH units of travel is a claw. Read off the actor's own states, so it holds for any mod.
+	const CLAW_REACH = 192;
+	static bool IsClaw(Actor mo)
+	{
+		if (!mo || !mo.bMissile) return false;
+		State s = mo.SpawnState;
+		int total = 0;
+		Array<State> seen;
+		for (int i = 0; i < 32 && s; i++)
+		{
+			if (s.tics < 0 || seen.Find(s) < seen.Size()) return false;	// lasts forever, or loops
+			seen.Push(s);
+			total += s.tics;
+			s = s.NextState;
+			if (!s) return mo.Speed * total <= CLAW_REACH;				// "Stop": it runs out
+		}
+		return false;
+	}
+
 	override void WorldThingSpawned(WorldEvent e)
 	{
-		if (e.Thing && e.Thing.bMissile && !(e.Thing is "UBQS_Thrown")) missiles.Push(e.Thing);
+		// a claw is not in flight: it is melee, decided on contact by the attacker's own line (ModifyDamage)
+		if (e.Thing && e.Thing.bMissile && !(e.Thing is "UBQS_Thrown") && !IsClaw(e.Thing)) missiles.Push(e.Thing);
 		let inv = Inventory(e.Thing);
 		if (!inv || inv.Owner || !inv.bDropped) return;
 		for (int k = 0; k < yanked.Size(); k++)
