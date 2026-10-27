@@ -35,9 +35,8 @@ OptionMenu "RSQGR_Options"
 OptionMenu "RSQGR_Tuning"
 {
 	Title "ROPE AND TUNING"
-	Slider "Links", "rsqgr_rope_links", 8, 160, 8, 0
-	Slider "Link Spacing", "rsqgr_rope_spacing", 2, 24, 1, 0
-	Slider "Link Size", "rsqgr_rope_scale", 0.05, 0.6, 0.05, 2
+	Slider "Rope Pieces", "rsqgr_rope_segs", 4, 32, 1, 0
+	Slider "Rope Thickness", "rsqgr_rope_width", 0.2, 2.0, 0.1, 1
 	StaticText " "
 	Slider "Shortest Rope", "rsqgr_min_len", 16, 128, 8, 0
 	Slider "Rope Height", "rsqgr_attach", 0.3, 0.9, 0.05, 2

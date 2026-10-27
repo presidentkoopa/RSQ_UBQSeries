@@ -3,11 +3,11 @@
 // whole with the JP / CombatFX / Ballistics sets. The contract:
 //
 //   Sound(what)   a SNDINFO name, "" for silence   fire loop swish hitwall hitflesh retract
-//   Sprite(what)  a 4-letter sprite name           open closed link
+//   Sprite(what)  a 4-letter sprite name           open closed
 //   Spark(at, what)  an impact effect, or nothing  wall flesh
 //
 // The JP set is jpalomo's hook (jp_original/): OCLW/CCLW claw (here RSGH/RSGK),
-// tenda0 (RSGR) and his five sounds. JP's hook makes no spark.
+// and his five sounds. The rope is a tube model in tenda0's grey (tools/gen_rope.py). JP's hook makes no spark.
 class RSQGR_Looks
 {
 	static String Sound(Name what)
@@ -25,7 +25,6 @@ class RSQGR_Looks
 	{
 		if (what == 'open') return 'RSGH';
 		if (what == 'closed') return 'RSGK';
-		if (what == 'link') return 'RSGR';
 		return 'TNT1';
 	}
 

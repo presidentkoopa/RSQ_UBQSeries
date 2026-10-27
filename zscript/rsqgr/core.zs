@@ -487,13 +487,13 @@ class RSQGR_Core : EventHandler
 			if (i < 0 || i >= NHOOK || hooks[i]) { h.Destroy(); continue; }
 			hooks[i] = h;
 		}
-		// stray links whose hook is gone
-		let lt = ThinkerIterator.Create("RSQGR_Link");
-		Array<RSQGR_Link> keep;
+		// stray rope pieces whose hook is gone
+		let lt = ThinkerIterator.Create("RSQGR_Rope");
+		Array<RSQGR_Rope> keep;
 		for (int i = 0; i < NHOOK; i++)
-			if (hooks[i]) for (int k = 0; k < hooks[i].links.Size(); k++) keep.Push(hooks[i].links[k]);
-		RSQGR_Link l;
-		while (l = RSQGR_Link(lt.Next()))
+			if (hooks[i]) for (int k = 0; k < hooks[i].segs.Size(); k++) keep.Push(hooks[i].segs[k]);
+		RSQGR_Rope l;
+		while (l = RSQGR_Rope(lt.Next()))
 			if (keep.Find(l) == keep.Size()) l.Destroy();
 	}
 
@@ -514,9 +514,9 @@ class RSQGR_Core : EventHandler
 		if (RSQGR_Util.Opt("rsqgr_debug", 0) < 1 || !h || !h.owner) return;
 		let p = h.owner;
 		Vector3 b = AttachPoint(p);
-		Console.Printf("T_GR t%d h%d %s pos(%.1f %.1f %.1f) vel(%.2f %.2f %.2f) claw(%.1f %.1f %.1f) L%.1f d%.1f links%d ms%.3f scale%.2f%s",
+		Console.Printf("T_GR t%d h%d %s pos(%.1f %.1f %.1f) vel(%.2f %.2f %.2f) claw(%.1f %.1f %.1f) L%.1f d%.1f segs%d ms%.3f scale%.2f%s",
 			level.maptime, h.hand, what, p.Pos.x, p.Pos.y, p.Pos.z, p.vel.x, p.vel.y, p.vel.z,
-			h.Pos.x, h.Pos.y, h.Pos.z, h.ropeLen, (h.anchor - b).Length(), h.links.Size(), h.drawMs, worldScale,
+			h.Pos.x, h.Pos.y, h.Pos.z, h.ropeLen, (h.anchor - b).Length(), h.segs.Size(), h.drawMs, worldScale,
 			h.victim ? String.Format(" victim %s (%.1f %.1f %.1f)", h.victim.GetClassName(), h.victim.Pos.x, h.victim.Pos.y, h.victim.Pos.z) : "");
 	}
 }
