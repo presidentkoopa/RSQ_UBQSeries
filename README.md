@@ -74,7 +74,7 @@ is ZScript and data lumps.
 
 ### ShieldSaw
 - **Draw / stow:** reach to your off shoulder and press **Use**; press Use there again to put it
-  back.
+  back. Or bind **Draw** and turn *Draw from the shoulder with Use* off: the key alone.
 - **Block:** shots that cross the shield's face are stopped or turned back (back at the shooter,
   where you look, or off the face); fireballs are batted away before they reach you; blocked
   melee staggers. Meet a shot with a moving shield for a **perfect block**.
@@ -98,7 +98,8 @@ is ZScript and data lumps.
 ### TacticalRig
 - **Nine places on your body**: two hips (pistols), two pectorals (grenades), chest
   (shotguns), stomach (rifles), two shoulders (heavy weapons, split), lower back (melee). What
-  each place holds is a setting.
+  each place holds is a setting. A **mirror** (while moving the places, or always) shows you
+  wearing it, front and back.
 - **Holster:** bring the gun into its region and grip (or press Use). **Draw:** reach in
   with an empty hand and grip or Use; with several weapons there a small radial opens
   round your hand: move toward one and let go.
@@ -145,7 +146,8 @@ a missing mod is simply never found:
 - The ShieldSaw and the saber share the hands cleanly: saber in the main hand, shield in the off.
 - The **grab stands down on a hand the rig is using** (reaching into a holster, holding a door,
   the cigarette or the Zippo): the rig reports this through `RSQTR_RigService` (`rig.busy`).
-- The **rig leaves the off shoulder to the ShieldSaw** while the shield hangs there.
+- The **rig leaves the off shoulder to the ShieldSaw** while the shield hangs there, unless the
+  ShieldSaw's *Draw from the shoulder with Use* is off (its Draw key only): then the rig keeps it.
 - **Ermac's cigarette asks SlowMo for slow motion** through RS_SlowMo's own `rsm_pulse` event;
   without SlowMo it is simply a cigarette.
 - **SlowMo's rounds** are ordinary projectiles to the shield and the saber, so they block and
