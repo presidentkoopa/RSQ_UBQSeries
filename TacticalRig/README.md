@@ -10,15 +10,18 @@ than your head, and carries a whole arsenal per region.
 
 ## Carrying weapons
 
-Six regions on the body, each holding one Doom weapon class:
+Nine places on the body. Each holds the Doom weapon slots set for it (menu: *Where the
+places are*, "Holds slots"); the defaults:
 
-| Region | Where | Holds |
+| Place | Where | Holds |
 |---|---|---|
 | Left hip, right hip | belt line, each side | slot 2 (pistols, small arms) |
-| Chest | across the chest | slot 3 (shotguns) |
-| Chest (rifle) | chest centre, or the small of the back (menu) | slot 4 (rifles, chainguns) |
+| Left pectoral, right pectoral | high on the chest, each side | slot 0 (grenades, small things) |
+| Chest | the sternum | slot 3 (shotguns) |
+| Stomach | below the chest | slot 4 (rifles, chainguns) |
 | Left shoulder | behind the shoulder | slots 5-6 (launchers, plasma, railgun) |
-| Right shoulder | behind the shoulder | slots 7 and up, and 0 (BFGs, nukes, flamers, grenades) |
+| Right shoulder | behind the shoulder | slots 7-9 (BFGs, nukes, flamers) |
+| Lower back | the small of the back | slot 1 (melee: axe, chainsaw; never the fists) |
 
 - **Holster:** bring the gun into its region and grip (or press Use). Your hand is left
   empty: the fists (Brutal Doom's own fists with Brutal Doom).
