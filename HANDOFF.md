@@ -1,5 +1,30 @@
 # Ultra Badass ShieldSaw — handoff
 
+## Branch `agent-upgrades` (2026-10-27): Gun Bonsai melee upgrades — read first
+
+Not yet run on the owner's headset. Rig = stock QZD 17.3 Linux build, freedoom2 MAP01, the owner's
+load order (brutal22test6, BD_VoxelPack, BD22_VR-Reloaded_2.0-b1m, the UBQ series, RSQ_Score, Gun
+Bonsai 0.10.6, the Gun Bonsai VR patch `agent-upgrades`).
+
+The shield asks the Gun Bonsai VR patch for its upgrade levels BY NAME (`SSQ_Upg`, score.zs ->
+`RSQ_MeleeUpgradeService`). Without the patch every level reads 0 and nothing changes (rig: loads
+and runs alone with BD, 0 script errors).
+
+| | what | rig |
+|---|---|---|
+| XP credit | the disc's `master` is the ShieldSaw (`SSQ_Disc.Claim`), the bash and grind are bracketed with the patch's `credit.push/pop` (they keep the pawn as inflictor for RS_Score), a turned missile's `master` is the saw | measured: before, disc / bash / grind XP all went to the main-hand saber; after, to the ShieldSaw (disc: real `ssq-throw`; grind: real HeldTick fed synthetic `ssq-pose` events) |
+| Ricochet | a wall turns the disc toward the nearest visible enemy instead of home, one per level (looked for over 4 tics after the wall: at the wall itself CheckSight fails) | real throw: turned and embedded in a new target |
+| Meat Grinder | a kill while embedded sends it at the next lock at `ssq_cruise_max`; 2+ finds a new one if there is none; grind +25%/level after 1 | real throw: embedded, kill, flew at 34 u/tic into the next imp and killed it |
+| Hunter's Return | on the way home it swerves into enemies within 160+32/level of it, one per level | real throw: imp beside the return path 80 -> 2 |
+| Bulwark | perfect block needs `ssq_perfect_speed / (1 + 0.35 x level)` | NOT measured (needs plate velocity) |
+| Rebound | returned bullets x(1.25+0.25 x level) here; turned missiles get the same from the patch | turned 20-damage missile: 20 -> 30 at level 1 |
+| Battering Ram | after a bash the patch makes the monster a missile (`ram`) | service call on a flying imp: 14 to the one it hit, 7 to itself |
+
+Known limit: a returned bullet is fired by `SSQ_Ricochet`, so Gun Bonsai cannot credit its damage
+to anyone (no player source). Rebound still multiplies it.
+
+---
+
 ## Polish branch `polish/quest-series` (2026-10-26) — read first
 
 Not yet run on the owner's headset. Rig = QZD 4.12-era Linux build, freedoom2.

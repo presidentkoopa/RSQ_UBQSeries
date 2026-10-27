@@ -728,6 +728,7 @@ class SSQ_Handler : EventHandler
 		Unstow(i);
 		let d = SSQ_Disc(Actor.Spawn('SSQ_Disc', pose.pos[0]));
 		if (!d) { mState[i] = SS_STOWED; ClearLocks(i); return; }
+		d.Claim(saw);
 		d.Launch(mo, pose, rev);
 		ClearLocks(i);
 		mDisc[i] = d;
@@ -948,6 +949,7 @@ class SSQ_Handler : EventHandler
 		Unstow(i);
 		let d = SSQ_Disc(Actor.Spawn('SSQ_Disc', from + dir * 16));
 		if (!d) { mState[i] = SS_STOWED; return; }
+		d.Claim(saw);
 		d.LaunchAlong(mo, dir, SV('ssq_speed_floor', 12.0) * 3.0, 90, rev);	// flat, like a frisbee
 		mDisc[i] = d;
 		mState[i] = SS_FLYING;

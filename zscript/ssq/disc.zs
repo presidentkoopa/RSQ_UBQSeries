@@ -32,6 +32,13 @@ class SSQ_Disc : Actor
 	Actor lastHit;
 	int homeTics;		// tics spent on the way back: past ssq_home_patience it stops asking the level's permission
 	int lastHitTic;
+	// GUN BONSAI MELEE UPGRADES (SSQ_Upg, read by name at the throw; all 0 without the patch)
+	int ricLeft;		// Ricochet: walls it may still turn off toward a new target
+	int ricPend;		// tics left to find one after a wall (at the wall itself it sees nothing)
+	int grinder;		// Meat Grinder
+	int huntLeft, hunter;	// Hunter's Return: swerves left on this trip home, and the level
+	Actor huntT;
+	Array<Actor> hunted;
 
 	Default
 	{
@@ -75,8 +82,58 @@ class SSQ_Disc : Actor
 		// OUT: the first thing it hits turns it around. HOME: it just clipped a corner on the
 		// breadcrumb path -- v0.6 did nothing here and left it grinding along the wall, which
 		// is the return that never arrives. Drop the crumb it is fighting and aim at the next.
-		SSQF A 0 { if (invoker.phase == PH_OUT) invoker.Home(); else if (invoker.phase == PH_HOME && invoker.crumbAt >= 0) invoker.crumbAt--; }
+		SSQF A 0 { if (invoker.phase == PH_OUT) { if (!invoker.Ricochet()) { if (invoker.ricLeft > 0) invoker.ricPend = 4; else invoker.Home(); } } else if (invoker.phase == PH_HOME && invoker.crumbAt >= 0) invoker.crumbAt--; }
 		Goto Spawn;
+	}
+
+	// WHICH WEAPON THREW IT. Gun Bonsai's VR patch reads a missile's master as the weapon that fired it,
+	// so the disc's damage is paid to the ShieldSaw and not to whatever the other hand holds (measured:
+	// it went to the main-hand saber, before). Nothing else reads the disc's master.
+	void Claim(Weapon saw)
+	{
+		master = saw;
+		if (!saw) return;
+		ricLeft = SSQ_Upg.Lv(saw, "Ricochet");
+		grinder = SSQ_Upg.Lv(saw, "MeatGrinder");
+		hunter = SSQ_Upg.Lv(saw, "HuntersReturn");
+	}
+
+	// RICOCHET: the wall it just hit turns it toward a new target instead of home
+	bool Ricochet()
+	{
+		if (ricLeft <= 0) return false;
+		let t = NearestFoe(768.0);
+		if (!t) return false;
+		ricLeft--;
+		locks.Insert(lockAt, t);
+		Vector3 d = (t.pos + (0, 0, t.height * 0.5)) - pos;
+		double l = d.Length();
+		if (l > 1) vel = d / l * max(cruise, vel.Length());
+		A_StartSound("ssq/bounce", CHAN_5);
+		SSQ_FX.Sparks(self, pos, (0, 0, 1), 8);
+		let m = Spawn('SSQ_LockMark', t.pos + (0, 0, t.height + 8));
+		if (m) { m.tracer = t; marks.Push(m); }
+		return true;
+	}
+
+	// the nearest live enemy this disc can see, that it is not already headed for or just hit
+	Actor NearestFoe(double r)
+	{
+		Actor best = null;
+		double bd = r;
+		let it = BlockThingsIterator.Create(self, r);
+		while (it.Next())
+		{
+			let t = it.thing;
+			if (!t || t == thrower || !t.bShootable || t.health <= 0 || !t.bIsMonster || t.bFriendly) continue;
+			if (t == lastHit || t == embedIn) continue;
+			if (lockAt < locks.Size() && locks.Find(t) >= lockAt && locks.Find(t) < locks.Size()) continue;
+			double d = Distance3D(t);
+			if (d >= bd || !CheckSight(t)) continue;
+			bd = d;
+			best = t;
+		}
+		return best;
 	}
 
 	// ---- launch -------------------------------------------------------------------
@@ -221,6 +278,12 @@ class SSQ_Disc : Actor
 		if (!thrower || thrower.health <= 0) { Home(); }
 		if (age > 35 * 12) { Done(false); return; }
 
+		if (phase == PH_OUT && ricPend > 0)
+		{
+			// RICOCHET: off the wall now, so it can see what to turn toward; nothing in 4 tics and it goes home
+			if (Ricochet()) ricPend = 0;
+			else if (--ricPend <= 0) Home();
+		}
 		if (phase == PH_OUT)
 		{
 			let t = CurrentLock();
@@ -254,7 +317,27 @@ class SSQ_Disc : Actor
 			// visited.)
 			if (!embedIn || embedIn.health <= 0 || embedTics <= 0)
 			{
-				if (CurrentLock()) phase = PH_OUT;
+				// MEAT GRINDER: a kill while stuck frees it at full speed, straight at the next lock --
+				// or, from level 2, at the nearest new enemy when there is none
+				bool killed = grinder > 0 && (!embedIn || embedIn.health <= 0);
+				if (killed && !CurrentLock() && grinder >= 2)
+				{
+					let nt = NearestFoe(768.0);
+					if (nt) locks.Insert(lockAt, nt);
+				}
+				let nl = CurrentLock();
+				if (nl)
+				{
+					phase = PH_OUT;
+					if (killed)
+					{
+						cruise = SSQ_Handler.SV('ssq_cruise_max', 34.0);
+						Vector3 d = (nl.pos + (0, 0, nl.height * 0.5)) - pos;
+						double l = d.Length();
+						if (l > 1) vel = d / l * cruise;
+						A_StartSound("ssq/throw", CHAN_6);
+					}
+				}
 				else Home();
 			}
 			else
@@ -264,7 +347,7 @@ class SSQ_Disc : Actor
 				embedTics--;
 				if (embedTics % 3 == 0)
 				{
-					embedIn.DamageMobj(self, thrower, SSQ_Handler.SVI('ssq_embed_dps', 3) * 3, 'Saw');
+					embedIn.DamageMobj(self, thrower, int(SSQ_Handler.SVI('ssq_embed_dps', 3) * 3 * (grinder > 1 ? 1.0 + 0.25 * (grinder - 1) : 1.0)), 'Saw');
 					A_StartSound("ssq/grind", CHAN_5, 0, 0.8);
 					SSQ_FX.Sparks(self, pos, (0, 0, 1), 3);
 				}
@@ -273,6 +356,8 @@ class SSQ_Disc : Actor
 		else if (phase == PH_HOME)
 		{
 			homeTics++;
+			// HUNTER'S RETURN: on the way home it swerves through what is near its path
+			if (Hunt()) { Super.Tick(); if (trail) trail.SetOrigin(pos, true); return; }
 			// IT COMES BACK. EVERY TIME. A disc walking crumbs through a doorway it no longer
 			// fits through used to bounce until the 12-second age cap dropped it on the floor.
 			// Past ssq_home_patience the geometry stops being consulted: it flies straight to
@@ -325,6 +410,41 @@ class SSQ_Disc : Actor
 		embedIn = null;
 		homeTics = 0;
 		crumbAt = crumbX.Size() - 1;
+		huntLeft = hunter;
+		huntT = null;
+		hunted.Clear();
+	}
+
+	// HUNTER'S RETURN: while it has swerves left, pick an enemy within reach of where it is and fly
+	// through it at the return speed; true while it is doing that (the way home waits)
+	bool Hunt()
+	{
+		if (hunter <= 0) return false;
+		if (huntT && (huntT.health <= 0 || huntT == lastHit && Level.maptime - lastHitTic < 2)) { hunted.Push(huntT); huntT = null; huntLeft--; }
+		if (!huntT && huntLeft > 0 && (age % 4) == 0)
+		{
+			double r = 160.0 + 32.0 * hunter;
+			Actor best = null;
+			double bd = r;
+			let it = BlockThingsIterator.Create(self, r);
+			while (it.Next())
+			{
+				let t = it.thing;
+				if (!t || t == thrower || !t.bShootable || t.health <= 0 || !t.bIsMonster || t.bFriendly) continue;
+				if (hunted.Find(t) < hunted.Size()) continue;
+				double d = Distance3D(t);
+				if (d >= bd || !CheckSight(t)) continue;
+				bd = d;
+				best = t;
+			}
+			huntT = best;
+		}
+		if (!huntT) return false;
+		Vector3 d = (huntT.pos + (0, 0, huntT.height * 0.5)) - pos;
+		double l = d.Length();
+		if (l > 1) vel = d / l * SSQ_Handler.SV('ssq_return_speed', 22.0);
+		if (homeTics > 140) { huntT = null; huntLeft = 0; return false; }	// never at the cost of coming home
+		return true;
 	}
 
 	void Crumb() { crumbX.Push(pos.x); crumbY.Push(pos.y); crumbZ.Push(pos.z); }
