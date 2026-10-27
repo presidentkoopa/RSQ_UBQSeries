@@ -28,7 +28,8 @@ class SSQ_Handler : EventHandler
 	Actor mMarker[MAXPLAYERS];
 	Actor mDisc[MAXPLAYERS];
 	class<Weapon> mPrevOff[MAXPLAYERS];	// what the draw displaced (null: nothing, or the pack's hands)
-	transient bool mFistNext[MAXPLAYERS];	// the next store hands the off hand its fist (ssq_store_to 0)
+	transient bool mFistNext[MAXPLAYERS];
+	transient int a11yFlash;	// the last block star / bloom's tic (Photosensitive Mode, SSQ_FX.FlashOk)	// the next store hands the off hand its fist (ssq_store_to 0)
 	class<Weapon> mPrevMain[MAXPLAYERS];	// the main-hand weapon a two-handed conflict lowered
 	bool  mGripWas[MAXPLAYERS];		// off secondary last tic
 	bool  mUseWas[MAXPLAYERS];
@@ -250,7 +251,8 @@ class SSQ_Handler : EventHandler
 	static clearscope double Reach(PlayerInfo p) { return CM(UV(p, 'ssq_mount_reach', 30.0)); }
 	// THE ZONE over the shoulder: larger than the grab reach, so the hand is inside it for tics
 	// before the finger can be at the grab point
-	static clearscope double Zone(PlayerInfo p) { return Reach(p) * SV('ssq_zone_scale', 1.6); }
+	// RSQ_Accessibility's Gesture Ease: the shoulder's zone x1..x2. 0 / absent: as set.
+	static clearscope double Zone(PlayerInfo p) { return SSQ_A11y.Wide(Reach(p) * SV('ssq_zone_scale', 1.6)); }
 
 	// ---- lifecycle ----------------------------------------------------------------
 	override void OnRegister()
@@ -409,7 +411,7 @@ class SSQ_Handler : EventHandler
 		// backhand or a chop used to launch the shield because only raw speed was tested. The
 		// hand has to be going out the way you are looking -- ssq_throw_forward is the cosine
 		// of how far off that it may be (0.35 is about 70 degrees). 0 takes any direction back.
-		double fwdmin = SV('ssq_throw_forward', 0.35);
+		double fwdmin = SSQ_A11y.Low(SV('ssq_throw_forward', 0.35));   // Gesture Ease: x1..x0.5
 		bool forward = true;
 		if (fwdmin > 0 && speed > 0)
 		{
@@ -417,7 +419,7 @@ class SSQ_Handler : EventHandler
 			forward = (hv.Unit() dot look) >= fwdmin;
 		}
 		if (UVI(p, 'ssq_debug', 0)) Console.Printf("ssq: release p%d speed %.0f/s, %d locked, forward %d", i, speed, mLocks[i].Size(), forward);
-		if (speed >= SV('ssq_throw_min', 60.0) && forward) Throw(i);
+		if (speed >= SSQ_A11y.Low(SV('ssq_throw_min', 60.0)) && forward) Throw(i);
 		else mKeepMarks[i] = max(mKeepMarks[i], Level.maptime + SVI('ssq_keep_marks', 175));	// not a throw: hold the marks
 	}
 
@@ -661,7 +663,7 @@ class SSQ_Handler : EventHandler
 			// around the actor's own 0.35, not around 1: the one the disc visits first is a
 			// little under twice the others, which is plenty to read at range without
 			// magnifying a 48-pixel picture into a dinner plate.
-			m.A_SetScale(0.35 * (k == 0 ? 1.8 : (k == 1 ? 1.3 : 1.0)) * pulse * SV('ssq_lock_mark_scale', 1.0));
+			m.A_SetScale(0.35 * (k == 0 ? 1.8 : (k == 1 ? 1.3 : 1.0)) * pulse * SV('ssq_lock_mark_scale', 1.0) * SSQ_A11y.Cue());   // Cue Size
 			m.A_SetRenderStyle((k == 0 || hc) ? 1.0 : 0.85, STYLE_Add);
 			m.angle += (k == 0 ? 14 : 8);
 		}
@@ -970,12 +972,20 @@ class SSQ_Handler : EventHandler
 		}
 		else if (e.Name == "ssq-lock")
 		{
-			mLockKey[i] = e.Args[0] != 0;
+			// RSQ_Accessibility's Hold to Toggle: a press latches the lock key, the next lets it go
+			if (SSQ_A11y.HoldToggle()) { if (e.Args[0]) mLockKey[i] = !mLockKey[i]; }
+			else mLockKey[i] = e.Args[0] != 0;
 		}
 		else if (e.Name == "ssq-throw")
 		{
 			// throw along the aim, for a player with no hand motion to read
 			if (mState[i] == SS_DRAWN) ThrowAlongAim(i);
+		}
+		else if (e.Name == "rsqa_alt" && e.Args[0] == 6 && e.Args[1] && SSQ_A11y.OneHand())
+		{
+			// RSQ_Accessibility's Shield Throw gesture button (One-Handed): the forward flick's throw --
+			// to the ringed targets when there are any, else along the aim
+			if (mState[i] == SS_DRAWN) { if (mLocks[i].Size() > 0) Throw(i); else ThrowAlongAim(i); }
 		}
 	}
 
@@ -1016,11 +1026,16 @@ class SSQ_Handler : EventHandler
 		int st = mState[consoleplayer];
 		bool grip = (p.cmd.buttons & (BT_USE | BT_OFFHANDALTATTACK)) != 0;
 		Vector3 hand = mo.OffhandPos;
+		// RSQ_Accessibility's Off-Hand Modifier (One-Handed): while it is held and the shield is on the
+		// shoulder, the MAIN hand is the one that reaches for it (Use at the off shoulder draws, as ever).
+		// Drawn, the plate is where the engine draws the off weapon: on the off controller.
+		bool swapped = st == SS_STOWED && SSQ_A11y.Swapped(mo);
+		if (swapped) hand = mo.AttackPos;
 		bool nearMount = (hand - MountPos(mo)).Length() <= Zone(p) * 1.5;
 		bool want = st != SS_STOWED || grip || nearMount;
 		if (!want) return;
-		Vector3 F = SSQ_Hand.OffDir(mo, 0, 0);
-		Vector3 L = SSQ_Hand.OffDir(mo, 90, 0);
+		Vector3 F = swapped ? SSQ_Hand.MainDir(mo, 0, 0) : SSQ_Hand.OffDir(mo, 0, 0);
+		Vector3 L = swapped ? SSQ_Hand.MainDir(mo, 90, 0) : SSQ_Hand.OffDir(mo, 90, 0);
 		double yaw = atan2(F.y, F.x);
 		double pitch = asin(clamp(F.z, -1, 1));
 		double roll = SSQ_Hand.RollOf(F, L);

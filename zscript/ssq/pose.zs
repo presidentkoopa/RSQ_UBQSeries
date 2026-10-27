@@ -158,6 +158,19 @@ class SSQ_Hand abstract play
 		return v / l;
 	}
 
+	// The main controller's, the same way (RSQ_Accessibility's Off-Hand Modifier: the main hand
+	// reaching for the stowed shield, state.zs SendPose).
+	static Vector3 MainDir(PlayerPawn mo, double yaw, double pitch)
+	{
+		double ps = PS(mo);
+		Vector3 ap = mo.AttackDir(mo, mo.angle + yaw, mo.pitch + pitch);
+		double cp = cos(ap.y);
+		Vector3 v = (cp * cos(ap.x), cp * sin(ap.x), -sin(ap.y) * ps);
+		double l = v.Length();
+		if (l <= 0) return (1, 0, 0);
+		return v / l;
+	}
+
 	// ---- packing ------------------------------------------------------------------
 	// arg1: x, y relative to the pawn in quarter units (11 bits signed each), z in quarter
 	//       units (10 bits signed)

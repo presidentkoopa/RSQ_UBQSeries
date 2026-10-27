@@ -233,13 +233,29 @@ class SSQ_FX abstract play
 		at.Level.SpawnParticle(pp);
 	}
 
+	// PHOTOSENSITIVE MODE (RSQ_Accessibility, SSQ_A11y): the star and the bloom at most every 14 tics
+	// (2.5 a second) and at 40%; the sparks themselves (particles) stay. Off / absent: as before.
+	static bool FlashOk()
+	{
+		if (!SSQ_A11y.Photo()) return true;
+		let h = SSQ_Handler.Get();
+		if (!h) return true;
+		if (!SSQ_A11y.Gate(h.a11yFlash, Level.maptime)) return false;
+		h.a11yFlash = Level.maptime;
+		return true;
+	}
+
 	static void Sparks(Actor at, Vector3 p, Vector3 n, int count)
 	{
 		if (!at) return;
-		let f = Actor.Spawn('SSQ_BlockFlash', p);
-		if (f) f.A_SetScale(0.25 + count * 0.015);
-		let sp = Actor.Spawn('SSQ_SparkPuff', p + n * 2);
-		if (count >= 12) Actor.Spawn('SSQ_BlastBloom', p + n * 4);
+		if (FlashOk())
+		{
+			let f = Actor.Spawn('SSQ_BlockFlash', p);
+			if (f) { f.A_SetScale(0.25 + count * 0.015); f.alpha = SSQ_A11y.Dim(f.alpha); }
+			let sp = Actor.Spawn('SSQ_SparkPuff', p + n * 2);
+			if (sp) sp.alpha = SSQ_A11y.Dim(sp.alpha);
+			if (count >= 12) { let bb = Actor.Spawn('SSQ_BlastBloom', p + n * 4); if (bb) bb.alpha = SSQ_A11y.Dim(bb.alpha); }
+		}
 		for (int k = 0; k < count; k++)
 		{
 			Vector3 v = n * frandom(2, 6) + (frandom(-2, 2), frandom(-2, 2), frandom(0, 3));
