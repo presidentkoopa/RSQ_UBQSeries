@@ -1,0 +1,23 @@
+H_SPAWN BaronofHell2 at (476 512 0) dist 220 player (256 512 -0) ang 0 hand (266.2 503.5 36.8) poseGood 1
+T_GRM launch BaronofHell2 m=1000 r=24 h=60 dist=164 T=20.0 arc=14 (want 14 room 444) tumble=1 voxel=0 scale=1.00
+T_GRM 1 BaronofHell2 ph=1 tt=1.00/20.0 sc=1.00 mid=(474.6 512.0 30.5) step=1.43 v=(-1.36 0.00 0.45) ang=198 roll=0 pitch=0 hp=1000
+T_GRM 2 BaronofHell2 ph=1 tt=2.00/20.0 sc=1.00 mid=(471.9 512.0 31.4) step=3.07 v=(-2.76 0.00 1.35) ang=216 roll=0 pitch=0 hp=1000
+T_GRM 3 BaronofHell2 ph=1 tt=3.00/20.0 sc=1.00 mid=(468.1 512.0 32.5) step=4.53 v=(-3.76 0.00 2.53) ang=234 roll=0 pitch=0 hp=1000
+T_GRM 4 BaronofHell2 ph=1 tt=4.00/20.0 sc=1.00 mid=(463.5 512.0 33.9) step=4.80 v=(-4.60 0.00 1.36) ang=252 roll=0 pitch=0 hp=1000
+T_GRM 5 BaronofHell2 ph=1 tt=5.00/20.0 sc=1.00 mid=(458.2 512.0 35.4) step=5.55 v=(-5.35 0.00 1.47) ang=270 roll=0 pitch=0 hp=1000
+T_GRM 6 BaronofHell2 ph=1 tt=6.00/20.0 sc=1.00 mid=(452.1 512.0 36.9) step=6.23 v=(-6.04 0.00 1.52) ang=288 roll=0 pitch=0 hp=1000
+T_GRM 7 BaronofHell2 ph=1 tt=7.00/20.0 sc=1.00 mid=(445.5 512.0 38.4) step=6.84 v=(-6.68 0.00 1.51) ang=306 roll=0 pitch=0 hp=1000
+T_GRM 8 BaronofHell2 ph=1 tt=8.00/20.0 sc=1.00 mid=(438.2 512.0 39.8) step=7.41 v=(-7.27 0.00 1.43) ang=324 roll=0 pitch=0 hp=1000
+T_GRM 9 BaronofHell2 ph=1 tt=9.00/20.0 sc=1.00 mid=(430.3 512.0 41.1) step=7.95 v=(-7.84 0.00 1.30) ang=342 roll=0 pitch=0 hp=1000
+T_GRM 10 BaronofHell2 ph=1 tt=10.00/20.0 sc=1.00 mid=(422.0 512.0 42.2) step=8.46 v=(-8.38 0.00 1.11) ang=360 roll=0 pitch=0 hp=1000
+T_GRM 11 BaronofHell2 ph=1 tt=11.00/20.0 sc=1.00 mid=(413.1 512.0 43.1) step=8.94 v=(-8.90 0.00 0.86) ang=378 roll=0 pitch=0 hp=1000
+T_GRM 12 BaronofHell2 ph=1 tt=12.00/20.0 sc=1.00 mid=(403.7 512.0 43.6) step=9.42 v=(-9.40 0.00 0.56) ang=396 roll=0 pitch=0 hp=1000
+T_GRM 13 BaronofHell2 ph=1 tt=13.00/20.0 sc=1.00 mid=(393.8 512.0 43.8) step=9.89 v=(-9.88 0.00 0.19) ang=414 roll=0 pitch=0 hp=1000
+T_GRM 14 BaronofHell2 ph=1 tt=14.00/20.0 sc=1.00 mid=(383.4 512.0 43.6) step=10.35 v=(-10.35 0.00 -0.23) ang=432 roll=0 pitch=0 hp=1000
+T_GRM 15 BaronofHell2 ph=1 tt=15.00/20.0 sc=1.00 mid=(372.6 512.0 42.9) step=10.83 v=(-10.80 0.00 -0.71) ang=450 roll=0 pitch=0 hp=1000
+T_GRM 16 BaronofHell2 ph=1 tt=16.00/20.0 sc=1.00 mid=(361.4 512.0 41.6) step=11.32 v=(-11.25 0.00 -1.25) ang=468 roll=0 pitch=0 hp=1000
+T_GRM 17 BaronofHell2 ph=1 tt=17.00/20.0 sc=1.00 mid=(349.7 512.0 39.8) step=11.82 v=(-11.68 0.00 -1.85) ang=486 roll=0 pitch=0 hp=1000
+T_GRM 18 BaronofHell2 ph=1 tt=18.00/20.0 sc=1.00 mid=(337.6 512.0 37.3) step=12.35 v=(-12.10 0.00 -2.51) ang=504 roll=0 pitch=0 hp=1000
+T_GRM 19 BaronofHell2 ph=1 tt=19.00/20.0 sc=1.00 mid=(325.1 512.0 34.1) step=12.91 v=(-12.51 0.00 -3.22) ang=522 roll=0 pitch=0 hp=1000
+T_GRM 20 BaronofHell2 ph=1 tt=20.00/20.0 sc=1.00 mid=(312.2 512.0 30.1) step=13.51 v=(-12.91 0.00 -4.00) ang=540 roll=0 pitch=0 hp=1000
+T_GRM land BaronofHell2 (arrived) after 21 tics speed 13.5 down 4.0 peak 13.8 dmg 0 at (312.0 512.0 -0.0) floorz -0.0 fits 1

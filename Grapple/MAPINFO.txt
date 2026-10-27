@@ -1,0 +1,27 @@
+// RSQGR_Core decides (WorldTick, before any thinker moves); RSQGR_Input only turns
+// the binds into network events and hands them to the core.
+GameInfo
+{
+	AddEventHandlers = "RSQGR_Core", "RSQGR_Input"
+}
+
+// ==== monster side: the throw, the whip (after RSQGR_Input: it takes back the claw core just
+// fired when the whip is on), and the voxel table ====
+GameInfo
+{
+	AddEventHandlers = "RSQGR_Flight", "RSQGR_Whip", "RSQGR_Voxels"
+}
+// ==== end monster side ====
+
+// Gun Bonsai VR patch upgrades + the hook's XP ledger (perks.zs). After the core and the throw.
+GameInfo
+{
+	AddEventHandlers = "RSQGR_Perks"
+}
+
+// What the hook did, for other mods (service.zs: RSQGR_Service reads it). Last, so its tic runs
+// after the core's and the throw's.
+GameInfo
+{
+	AddEventHandlers = "RSQGR_Events"
+}

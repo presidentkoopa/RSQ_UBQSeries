@@ -1,0 +1,40 @@
+T_SUM t49 #0 Imp at (364.0 512.0 -0.0) mass 100 r 16 h 56 boss 0 hp 80
+T_LDX #0 given LDLegendaryMonsterTransformed
+T_INFO t67 #0 Imp mass 1200 boss 0 hp 400/400 painchance 25 scale 1.04 r 16 h 56 inv: LDLegendaryMonsterTransformed SlaughterCounter champion_GoldToken SKImp champion_PersistentInfo
+T_LV t67 LongLine=0 FastReel=0 HeavyHaul=0 GetOverHere=0 Bowling=0 BarbedClaw=0 Slingshot=0 SteadyLine=0 DoubleHook=0 range x1.00 reel x1.00 mass x1.00 size x1.00
+T_GR t67 h0 fire pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(74.0 503.5 37.0) L0.0 d517.1 segs0 ms0.000/0.010 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t73 h0 latch pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(348.0 503.5 37.0) L286.0 d286.0 segs45 ms0.056/0.016 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (364.0 512.0 -0.0)
+T_GRS t73 bite Imp hand 0 heavy 1 bites 1 volleys 0
+T_GRP bite p0 h0 Imp mass 1200 boss 0 heavy 1 (bites 1 yanks 0)
+T_GBH t73 p0 hook xp +15.0 (bites +1 yanks +0 swing +0 kills +0 hp +0 slams +0) paid 15.0 pool 15.0/1200 player xp 0 lv 0
+T_GR t74 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(349.9 504.5 37.0) L286.0 d286.0 segs53 ms0.061/0.200 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (364.0 512.0 -0.0)
+T_GR t76 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(349.9 504.5 37.0) L286.0 d286.0 segs53 ms0.055/0.025 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (364.0 512.0 -0.0)
+T_GR t78 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(349.9 504.5 37.0) L286.0 d286.0 segs53 ms0.055/0.034 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (364.0 512.0 -0.0)
+T_GR t80 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(349.9 504.5 37.0) L286.0 d286.0 segs53 ms0.050/0.031 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (364.0 512.0 -0.0)
+T_GR t82 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(349.9 504.5 37.0) L286.0 d286.0 segs53 ms0.070/0.034 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (364.0 512.0 -0.0)
+T_GR t84 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(349.9 504.5 37.0) L286.0 d286.0 segs53 ms0.052/0.026 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (364.0 512.0 -0.0)
+T_GR t86 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(349.9 504.5 37.0) L286.0 d286.0 segs53 ms0.050/0.026 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (364.0 512.0 -0.0)
+T_GR t88 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(349.9 504.5 37.0) L286.0 d286.0 segs53 ms0.050/0.024 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (364.0 512.0 -0.0)
+T_GR t90 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(349.9 504.5 37.0) L286.0 d286.0 segs53 ms0.049/0.024 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (364.0 512.0 -0.0)
+T_GR t92 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(349.9 504.5 37.0) L286.0 d286.0 segs53 ms0.055/0.040 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (364.0 512.0 -0.0)
+T_GR t94 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(349.9 504.5 37.0) L286.0 d286.0 segs53 ms0.063/0.042 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (364.0 512.0 -0.0)
+T_GR t96 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(349.9 504.5 37.0) L286.0 d286.0 segs53 ms0.067/0.035 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (364.0 512.0 -0.0)
+T_GR t98 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(349.9 504.5 37.0) L286.0 d286.0 segs53 ms0.053/0.043 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (364.0 512.0 -0.0)
+T_GR t100 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(349.9 504.5 37.0) L286.0 d286.0 segs53 ms0.050/0.032 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (364.0 512.0 -0.0)
+T_GR t102 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(349.9 504.5 37.0) L286.0 d286.0 segs53 ms0.052/0.028 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (364.0 512.0 -0.0)
+T_GR t104 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(349.9 504.5 37.0) L286.0 d286.0 segs53 ms0.048/0.029 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (364.0 512.0 -0.0)
+T_GR t106 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(349.9 504.5 37.0) L286.0 d286.0 segs53 ms0.060/0.027 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (364.0 512.0 -0.0)
+T_GR t108 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(349.9 504.5 37.0) L286.0 d286.0 segs53 ms0.049/0.028 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (364.0 512.0 -0.0)
+T_GR t110 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(349.9 504.5 37.0) L286.0 d286.0 segs53 ms0.050/0.026 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (364.0 512.0 -0.0)
+T_GR t112 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(349.9 504.5 37.0) L286.0 d286.0 segs53 ms0.068/0.023 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (364.0 512.0 -0.0)
+T_GR t114 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(349.9 504.5 37.0) L286.0 d286.0 segs53 ms0.050/0.027 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (364.0 512.0 -0.0)
+T_GR t116 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(349.9 504.5 37.0) L286.0 d286.0 segs53 ms0.052/0.029 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (364.0 512.0 -0.0)
+T_GR t118 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(349.9 504.5 37.0) L286.0 d286.0 segs53 ms0.052/0.036 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (364.0 512.0 -0.0)
+T_GR t120 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(349.9 504.5 37.0) L286.0 d286.0 segs53 ms0.057/0.032 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (364.0 512.0 -0.0)
+T_GR t122 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(349.9 504.5 37.0) L286.0 d286.0 segs53 ms0.074/0.029 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (364.0 512.0 -0.0)
+T_GR t124 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(349.9 504.5 37.0) L286.0 d286.0 segs53 ms0.050/0.027 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (364.0 512.0 -0.0)
+T_GR t126 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(349.9 504.5 37.0) L286.0 d286.0 segs53 ms0.054/0.028 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (364.0 512.0 -0.0)
+T_INFO t128 #0 Imp mass 1200 boss 0 hp 400/400 painchance 25 scale 1.04 r 16 h 56 inv: LDLegendaryMonsterTransformed SlaughterCounter champion_GoldToken SKImp champion_PersistentInfo
+T_XP t128 now pool 15.0 player xp 0 lv 0 pooled 0
+T_XP2 gun Rifle xp 0.0 lv 0
+T_XP3 svc bites 1 yanks 0 swing 0 kills 0 killhp 0 slams 0

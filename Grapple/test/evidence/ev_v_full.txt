@@ -1,0 +1,14 @@
+H_SPAWN DoomImp at (476 512 0) dist 220 player (256 512 -0) ang 0 hand (266.2 503.5 36.8) poseGood 1
+T_GRM launch DoomImp m=100 r=20 h=56 dist=168 T=11.5 arc=25 (want 25 room 448) tumble=1 voxel=0 scale=1.00
+T_GRM 1 DoomImp ph=1 tt=1.00/11.5 sc=1.00 mid=(472.6 512.0 30.0) step=3.90 v=(-3.36 0.00 1.98) ang=211 roll=0 pitch=0 hp=1000
+T_GRM 2 DoomImp ph=1 tt=2.00/11.5 sc=1.00 mid=(465.8 512.0 33.7) step=8.92 v=(-6.83 0.00 5.74) ang=242 roll=0 pitch=0 hp=1000
+T_GRM 3 DoomImp ph=1 tt=3.00/11.5 sc=1.00 mid=(456.5 512.0 38.3) step=10.38 v=(-9.30 0.00 4.60) ang=274 roll=0 pitch=0 hp=1000
+T_GRM 4 DoomImp ph=1 tt=4.00/11.5 sc=1.00 mid=(445.1 512.0 43.1) step=12.36 v=(-11.39 0.00 4.79) ang=305 roll=0 pitch=0 hp=1000
+T_GRM 5 DoomImp ph=1 tt=5.00/11.5 sc=1.00 mid=(431.9 512.0 47.5) step=13.96 v=(-13.25 0.00 4.40) ang=336 roll=0 pitch=0 hp=1000
+T_GRM 6 DoomImp ph=1 tt=6.00/11.5 sc=1.00 mid=(416.9 512.0 51.0) step=15.34 v=(-14.95 0.00 3.46) ang=367 roll=0 pitch=0 hp=1000
+T_GRM 7 DoomImp ph=1 tt=7.00/11.5 sc=1.00 mid=(400.4 512.0 52.9) step=16.64 v=(-16.53 0.00 1.97) ang=399 roll=0 pitch=0 hp=1000
+T_GRM 8 DoomImp ph=1 tt=8.00/11.5 sc=1.00 mid=(382.4 512.0 52.9) step=18.01 v=(-18.01 0.00 -0.08) ang=430 roll=0 pitch=0 hp=1000
+T_GRM 9 DoomImp ph=1 tt=9.00/11.5 sc=1.00 mid=(363.0 512.0 50.2) step=19.60 v=(-19.41 0.00 -2.68) ang=461 roll=0 pitch=0 hp=1000
+T_GRM 10 DoomImp ph=1 tt=10.00/11.5 sc=1.00 mid=(342.2 512.0 44.3) step=21.56 v=(-20.76 0.00 -5.84) ang=492 roll=0 pitch=0 hp=1000
+T_GRM 11 DoomImp ph=1 tt=11.00/11.5 sc=1.00 mid=(320.2 512.0 34.8) step=24.03 v=(-22.04 0.00 -9.57) ang=523 roll=0 pitch=0 hp=1000
+T_GRM land DoomImp (arrived) after 12 tics speed 27.2 down 14.0 peak 24.9 dmg 4 at (308.0 512.0 -0.0) floorz -0.0 fits 1

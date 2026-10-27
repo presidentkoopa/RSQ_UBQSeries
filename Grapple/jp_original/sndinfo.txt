@@ -1,0 +1,5 @@
+hookshot/loop dspulchn
+hookshot/swish dsswish
+hookshot/fire dschain
+hookshot/hit/terrain dsmtalht
+hookshot/hit/flesh dsmeatht

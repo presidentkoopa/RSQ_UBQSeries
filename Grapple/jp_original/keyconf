@@ -1,0 +1,4 @@
+AddKeySection "Extra ZDoom controls" Extra_ZDoom_controls
+AddMenuKey "Use Hook Shot" +User1
+
+DefaultBind x +User1

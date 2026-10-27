@@ -1,0 +1,55 @@
+T_LV t49 LongLine=0 FastReel=0 HeavyHaul=0 GetOverHere=0 Bowling=0 BarbedClaw=0 Slingshot=0 SteadyLine=0 DoubleHook=0 range x1.00 reel x1.00 mass x1.00 size x1.00
+T_SUM t49 #0 Cyberdemon at (364.0 512.0 -0.0) mass 1000 r 40 h 110 boss 1 hp 4000
+T_GR t54 h0 fire pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(74.0 503.5 37.0) L0.0 d517.1 segs0 ms0.000/0.020 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t60 h0 latch pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(324.0 503.5 37.0) L261.0 d261.0 segs45 ms0.060/0.035 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Cyberdemon (364.0 512.0 -0.0)
+T_GRS t60 bite Cyberdemon hand 0 heavy 1 bites 1 volleys 0
+T_GRP bite p0 h0 Cyberdemon heavy 1 (bites 1 yanks 0)
+T_GR t60 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(324.0 503.5 37.0) L261.0 d261.0 segs45 ms0.060/0.035 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Cyberdemon (364.0 512.0 -0.0)
+T_GBH t60 p0 hook xp +15.0 (bites +1 yanks +0 swing +0 kills +0 hp +0 slams +0) paid 15.0 pool 15.0/1200 player xp 0 lv 0
+T_GR t62 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(324.9 503.7 37.0) L261.0 d261.0 segs48 ms0.046/0.044 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Cyberdemon (364.0 512.0 -0.0)
+T_GR t64 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(324.9 503.7 37.0) L261.0 d261.0 segs48 ms0.049/0.047 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Cyberdemon (364.0 512.0 -0.0)
+T_GR t66 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(324.9 503.7 37.0) L261.0 d261.0 segs48 ms0.035/0.035 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Cyberdemon (364.0 512.0 -0.0)
+T_GR t68 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(324.9 503.7 37.0) L261.0 d261.0 segs48 ms0.046/0.044 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Cyberdemon (364.0 512.0 -0.0)
+T_GR t70 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(324.9 503.7 37.0) L261.0 d261.0 segs48 ms0.035/0.043 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Cyberdemon (364.0 512.0 -0.0)
+T_GR t72 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(324.9 503.7 37.0) L261.0 d261.0 segs48 ms0.042/0.040 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Cyberdemon (364.0 512.0 -0.0)
+T_GR t74 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(324.9 503.7 37.0) L261.0 d261.0 segs48 ms0.035/0.038 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Cyberdemon (364.0 512.0 -0.0)
+T_GR t76 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(324.9 503.7 37.0) L261.0 d261.0 segs48 ms0.044/0.046 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Cyberdemon (364.0 512.0 -0.0)
+T_GR t78 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(324.9 503.7 37.0) L261.0 d261.0 segs48 ms0.047/0.041 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Cyberdemon (364.0 512.0 -0.0)
+T_GR t80 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(324.9 503.7 37.0) L261.0 d261.0 segs48 ms0.049/0.044 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Cyberdemon (364.0 512.0 -0.0)
+T_GR t82 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(324.9 503.7 37.0) L261.0 d261.0 segs48 ms0.047/0.044 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Cyberdemon (364.0 512.0 -0.0)
+T_GR t84 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(324.9 503.7 37.0) L261.0 d261.0 segs48 ms0.048/0.042 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Cyberdemon (364.0 512.0 -0.0)
+T_GR t86 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(324.9 503.7 37.0) L261.0 d261.0 segs48 ms0.046/0.042 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Cyberdemon (364.0 512.0 -0.0)
+T_GR t88 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(324.9 503.7 37.0) L261.0 d261.0 segs48 ms0.048/0.042 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Cyberdemon (364.0 512.0 -0.0)
+T_GR t90 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(324.9 503.7 37.0) L261.0 d261.0 segs48 ms0.045/0.047 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Cyberdemon (364.0 512.0 -0.0)
+T_GR t92 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(324.9 503.7 37.0) L261.0 d261.0 segs48 ms0.043/0.042 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Cyberdemon (364.0 512.0 -0.0)
+T_GR t94 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(324.9 503.7 37.0) L261.0 d261.0 segs48 ms0.045/0.039 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Cyberdemon (364.0 512.0 -0.0)
+T_GR t96 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(324.9 503.7 37.0) L261.0 d261.0 segs48 ms0.051/0.046 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Cyberdemon (364.0 512.0 -0.0)
+T_GR t98 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(324.9 503.7 37.0) L261.0 d261.0 segs48 ms0.047/0.043 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Cyberdemon (364.0 512.0 -0.0)
+T_GR t99 h0 letgo pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(324.9 503.7 37.0) L261.0 d261.0 segs48 ms0.068/0.121 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t109 h0 fire pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(74.0 503.5 37.0) L0.0 d517.1 segs0 ms0.000/0.016 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t115 h0 latch pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(324.0 503.5 37.0) L261.0 d261.0 segs45 ms0.060/0.033 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Cyberdemon (364.0 512.0 -0.0)
+T_GRS t115 bite Cyberdemon hand 0 heavy 1 bites 2 volleys 0
+T_GRP bite p0 h0 Cyberdemon heavy 1 (bites 2 yanks 0)
+T_GBH t115 p0 hook xp +15.0 (bites +1 yanks +0 swing +0 kills +0 hp +0 slams +0) paid 30.0 pool 30.0/1200 player xp 0 lv 0
+T_GR t116 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(324.9 503.7 37.0) L261.0 d261.0 segs48 ms0.051/0.204 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Cyberdemon (364.0 512.0 -0.0)
+T_GR t118 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(324.9 503.7 37.0) L261.0 d261.0 segs48 ms0.045/0.040 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Cyberdemon (364.0 512.0 -0.0)
+T_GR t120 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(324.9 503.7 37.0) L261.0 d261.0 segs48 ms0.046/0.066 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Cyberdemon (364.0 512.0 -0.0)
+T_GR t122 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(324.9 503.7 37.0) L261.0 d261.0 segs48 ms0.049/0.046 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Cyberdemon (364.0 512.0 -0.0)
+T_GR t124 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(324.9 503.7 37.0) L261.0 d261.0 segs48 ms0.046/0.041 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Cyberdemon (364.0 512.0 -0.0)
+T_GR t126 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(324.9 503.7 37.0) L261.0 d261.0 segs48 ms0.050/0.042 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Cyberdemon (364.0 512.0 -0.0)
+T_GR t128 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(324.9 503.7 37.0) L261.0 d261.0 segs48 ms0.046/0.046 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Cyberdemon (364.0 512.0 -0.0)
+T_GR t130 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(324.9 503.7 37.0) L261.0 d261.0 segs48 ms0.048/0.043 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Cyberdemon (364.0 512.0 -0.0)
+T_GR t132 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(324.9 503.7 37.0) L261.0 d261.0 segs48 ms0.047/0.045 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Cyberdemon (364.0 512.0 -0.0)
+T_GR t134 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(324.9 503.7 37.0) L261.0 d261.0 segs48 ms0.054/0.053 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Cyberdemon (364.0 512.0 -0.0)
+T_GR t136 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(324.9 503.7 37.0) L261.0 d261.0 segs48 ms0.053/0.045 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Cyberdemon (364.0 512.0 -0.0)
+T_GR t138 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(324.9 503.7 37.0) L261.0 d261.0 segs48 ms0.041/0.041 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Cyberdemon (364.0 512.0 -0.0)
+T_GR t140 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(324.9 503.7 37.0) L261.0 d261.0 segs48 ms0.047/0.045 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Cyberdemon (364.0 512.0 -0.0)
+T_GR t142 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(324.9 503.7 37.0) L261.0 d261.0 segs48 ms0.049/0.055 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Cyberdemon (364.0 512.0 -0.0)
+T_GR t144 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(324.9 503.7 37.0) L261.0 d261.0 segs48 ms0.048/0.090 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Cyberdemon (364.0 512.0 -0.0)
+T_GR t146 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(324.9 503.7 37.0) L261.0 d261.0 segs48 ms0.037/0.051 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Cyberdemon (364.0 512.0 -0.0)
+T_GR t148 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(324.9 503.7 37.0) L261.0 d261.0 segs48 ms0.049/0.042 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Cyberdemon (364.0 512.0 -0.0)
+T_GR t150 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(324.9 503.7 37.0) L261.0 d261.0 segs48 ms0.051/0.064 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Cyberdemon (364.0 512.0 -0.0)
+T_XP t152 now pool 30.0 player xp 0 lv 0 pooled 0
+T_XP2 gun Pistol xp 0.0 lv 0
+T_XP3 svc bites 2 yanks 0 swing 0 kills 0 killhp 0 slams 0
+T_GR t152 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(324.9 503.7 37.0) L261.0 d261.0 segs48 ms0.044/0.043 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Cyberdemon (364.0 512.0 -0.0)

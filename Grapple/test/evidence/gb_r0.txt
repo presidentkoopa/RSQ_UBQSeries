@@ -1,0 +1,6 @@
+T_LV t49 LongLine=0 FastReel=0 HeavyHaul=0 GetOverHere=0 Bowling=0 BarbedClaw=0 Slingshot=0 SteadyLine=0 DoubleHook=0 range x1.00 reel x1.00 mass x1.00 size x1.00
+T_GR t49 h0 fire pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(74.0 503.5 37.0) L0.0 d517.1 segs0 ms0.000/0.020 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t75 h0 drop pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(1098.0 503.5 37.0) L0.0 d517.1 segs160 ms0.109/0.049 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_XP t112 now pool 0.0 player xp 0 lv 0 pooled 0
+T_XP2 gun Pistol xp 0.0 lv 0
+T_XP3 svc bites 0 yanks 0 swing 0 kills 0 killhp 0 slams 0
