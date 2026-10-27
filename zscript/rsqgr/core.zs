@@ -192,8 +192,28 @@ class RSQGR_Core : EventHandler
 				else if (h.phase == RSQGR_Hook.PH_HOLD) { if (h.phaseAge >= 16) LetGo(h, false); }
 			}
 			if (pmo && pmo.Health > 0) Swing(pmo, pn);
+			if (pmo && pmo.Health > 0 && RSQGR_A11y.Vignette() > 0) Comfort(pmo, pn);
 		}
 		tickMs = MSTimeF() - t0;
+	}
+
+	// RSQ_Accessibility's Comfort Vignette: a swing in the air, a reel, a climb or a yank is a
+	// comfort moment, as strong as the body is moving fast (0.35 at rest on the rope, full at
+	// rsqgr_max_speed). Standing on the ground with the rope slack is not.
+	void Comfort(PlayerPawn pmo, int pn)
+	{
+		double k = 0;
+		for (int hand = 0; hand < 2; hand++)
+		{
+			let h = hooks[pn * 2 + hand];
+			if (!h) continue;
+			bool grounded = pmo.Pos.z <= pmo.floorz + 0.5 || pmo.bOnMobj;
+			if (h.phase == RSQGR_Hook.PH_HOLD || (h.phase == RSQGR_Hook.PH_LATCH && (!grounded || h.reelHeld || h.gripHand >= 0)))
+				k = 1;
+		}
+		if (k <= 0) return;
+		double top = max(1.0, RSQGR_Util.Num("rsqgr_max_speed", 30));
+		RSQGR_A11y.Comfort(pmo, clamp(0.35 + 0.65 * pmo.vel.Length() / top, 0.35, 1.0));
 	}
 
 	// ---- flight -----------------------------------------------------------------
@@ -531,7 +551,7 @@ class RSQGR_Core : EventHandler
 			[ok, off] = RSQGR_Climb.HandOffset(pmo, pn, g);
 			if (!ok || !RSQGR_Climb.HandFree(pmo, g)) continue;
 			Vector3 hp = pmo.Pos + off;
-			if (RSQGR_Climb.ToSegment(hp, a, b) > RSQGR_Util.Num("rsqgr_grab_reach", 16)) continue;
+			if (RSQGR_Climb.ToSegment(hp, a, b) > RSQGR_A11y.Wide(RSQGR_Util.Num("rsqgr_grab_reach", 16))) continue;   // Gesture Ease: x1..x2
 			h.gripHand = g;
 			h.gripPending = true;
 			wantGrip[gi] = false;

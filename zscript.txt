@@ -4,6 +4,7 @@ version "4.14"
 // Part of the Ultra Badass Quest series. Credits: CREDITS.txt.
 
 #include "zscript/rsqgr/cb.zs"
+#include "zscript/rsqgr/a11y.zs"
 #include "zscript/rsqgr/util.zs"
 #include "zscript/rsqgr/input.zs"
 #include "zscript/rsqgr/core.zs"
