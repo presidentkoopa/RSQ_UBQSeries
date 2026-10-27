@@ -1,7 +1,7 @@
 #!/bin/bash
 # gr.sh <name> <secs> <script> [full]  -- RSQ_Grapple on rig H. full=1: owner's load order.
 sed -i -E '/^(rsqgr_|grp_)/d' /home/claude/g9/rigH/config/qzdoom.ini
-EXTRA=${EXTRA-$(dirname "$0")/grprobe.pk3}
+EXTRA=${EXTRA-$(cd "$(dirname "$0")" && pwd)/grprobe.pk3}
 G=/home/claude/work/RSQGR_core/RSQ_Grapple.pk3
 D=/mnt/user-data/uploads/DOOMWork; U=/home/claude/scratch/ubq_zip
 if [ "$4" = "1" ]; then
