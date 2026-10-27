@@ -1,0 +1,52 @@
+version "4.12"
+class RSLSProbe_Ready : StaticEventHandler
+{
+	bool done;
+	override void WorldLoaded(WorldEvent e)
+	{
+		if (done) return;
+		done = true;
+		for (int i = 0; i < AllActorClasses.Size(); i++)
+		{
+			let c = AllActorClasses[i];
+			if (!(c is 'Weapon')) continue;
+			let d = GetDefaultByType(c);
+			// THE FRAMES IT CAN SIT IN. The first non-TNT1 frame of Ready is not enough: BD's
+			// SSG opens Ready on SHTN A 0 and sits in SHT2 A; its Pistol sits in PIST E with a
+			// round chambered and PIST I without (a zero-tic jump picks which). So walk the
+			// whole Ready sequence the way the engine sets a layer's state (p_pspr.cpp
+			// PSprite::SetState: sprite 1 "----" keeps sprite and frame, sprite 2 "####"
+			// keeps the sprite, bSameFrame keeps the frame), without taking any jump, until it
+			// loops, and print every sprite frame it names -- each branch's frame-setting
+			// state is on that straight path. A frame printed that is never shown at rest
+			// costs a measurement, never a wrong beam: every frame is measured on its own.
+			State st = d.FindState("Ready");
+			if (!st) continue;
+			Array<String> seen;
+			Array<State> visited;
+			int spr = 0, fr = 0;
+			bool melee = Weapon(d).bMELEEWEAPON;
+			while (st && visited.Size() < 96 && visited.Find(st) == visited.Size())
+			{
+				visited.Push(st);
+				if (st.sprite != 1)
+				{
+					if (!st.bSameFrame) fr = st.Frame;
+					if (st.sprite != 2) spr = st.sprite;
+				}
+				if (spr > 2)
+				{
+					String tn = TexMan.GetName(st.GetSpriteTexture(0, 0, (0, 0), spr, fr));
+					String k = String.Format("%s %d", tn, fr);
+					if (tn != "" && seen.Find(k) == seen.Size())
+					{
+						seen.Push(k);
+						Console.Printf("PR %s %s %s", c.GetClassName(), k, melee ? "melee" : "gun");
+					}
+				}
+				st = st.NextState;
+			}
+			if (seen.Size() == 0) Console.Printf("PR %s TNT1A0 0 %s", c.GetClassName(), melee ? "melee" : "gun");
+		}
+	}
+}

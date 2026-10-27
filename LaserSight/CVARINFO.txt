@@ -1,0 +1,78 @@
+// RSQ_LaserSight -- every option is a SERVER cvar: userinfo carries each user cvar with a
+// 256-byte limit per cvar, and this is a single-player VR mod. MENUDEF.txt lays them out.
+
+// ---- laser pointer ------------------------------------------------------------
+server bool  rsqls_on           = true;   // the whole mod
+server bool  rsqls_main         = true;   // per hand on/off -- bound to keys in KEYCONF
+server bool  rsqls_off          = true;
+server bool  rsqls_pointer      = true;   // the dot where it lands
+server bool  rsqls_show_melee   = false;  // show on a fist, chainsaw, saber, shield or empty hand
+server bool  rsqls_ready_only   = false;  // hide while switching/reloading
+server float rsqls_spot_size    = 1.0;
+server float rsqls_spot_a       = 1.0;
+server int   rsqls_glow         = 3;      // 0 off, 1 bloom, 2 real light, 3 both
+server float rsqls_glow_scale   = 1.8;    // bloom size (times the dot), and the light's reach
+server float rsqls_glow_int     = 1.0;
+server bool  rsqls_ir           = false;  // only visible through light amplification goggles
+
+// ---- laser beam -----------------------------------------------------------------
+server bool  rsqls_beam         = true;
+server float rsqls_beam_a       = 0.8;    // brightness at the muzzle
+server float rsqls_beam_len     = 3.0;    // metres it takes to fade to nothing (0.5 .. 6)
+server float rsqls_beam_daylight= 0.35;   // beam brightness in FULL light, as a share of
+                                        // the dark: real beams show in the dark
+server float rsqls_lead         = 0.0;    // tics the SPOT is drawn ahead of the hand (it is a 35 Hz
+                                        // world actor; the beam rides the gun). 0 off
+
+// ---- target lock -----------------------------------------------------------------
+server bool  rsqls_lock          = true;  // react to a live hostile
+server float rsqls_lock_tighten  = 0.0;   // the dot shrinks onto it by this share
+server float rsqls_lock_rate     = 2.2;   // pulse, Hz
+server float rsqls_range         = 2048.0;// how far the trace looks, map units (~60 m)
+server float rsqls_dot_range     = 0.0;   // no dot beyond this; 0 = as far as the range
+server bool  rsqls_target_recolor= false; // turn the target colour on a hostile
+server color rsqls_col_target    = "ff e0 20";
+
+// ---- colours -----------------------------------------------------------------------
+server int   rsqls_color_mode    = 1;     // 0 one colour, 1 per hand, 2 beam and dot separately
+server color rsqls_col_main      = "ff 20 10";
+server color rsqls_col_off       = "20 ff 30";
+server color rsqls_col_dot_main  = "ff 20 10";
+server color rsqls_col_dot_off   = "20 ff 30";
+server bool  rsqls_col_per_slot  = false;
+server color rsqls_col_slot1     = "ff 20 10";
+server color rsqls_col_slot2     = "ff 80 10";
+server color rsqls_col_slot3     = "ff e0 20";
+server color rsqls_col_slot4     = "20 ff 30";
+server color rsqls_col_slot5     = "20 e0 ff";
+server color rsqls_col_slot6     = "30 50 ff";
+server color rsqls_col_slot7     = "c0 30 ff";
+server color rsqls_col_slot8     = "ff 20 e0";
+server color rsqls_col_slot9     = "ff ff ff";
+server color rsqls_col_slot0     = "ff 20 10";
+
+// ---- colour cycling -----------------------------------------------------------------
+server bool  rsqls_cycle         = false;
+server float rsqls_cycle_speed   = 60.0;  // degrees of hue a second
+server bool  rsqls_cycle_dot     = true;
+
+// ---- headshot reaction --------------------------------------------------------------
+server bool  rsqls_head          = false; // the top fifth of a monster counts as its head
+server color rsqls_col_head      = "ff ff ff";
+server bool  rsqls_head_pulse    = true;
+server float rsqls_head_pulse_hz = 4.0;
+
+// ---- feedback ------------------------------------------------------------------------
+server bool  rsqls_haptics       = true;  // a tick in the hand when you toggle it
+
+// ---- phase 3: learned from each gun, the pack's muzzles, the range readout ----
+server bool  rsqls_arc          = true;    // a thrown weapon (grenades) shows its arc, once it has fired once
+server bool  rsqls_arc_beam     = false;   // keep the straight beam as well as the arc
+server float rsqls_arc_size     = 1.0;     // arc dot size
+server float rsqls_arc_a        = 0.8;     // arc dot brightness
+server bool  rsqls_spread       = true;    // a ring at the spot: where this gun's shots can land (its widest spread seen)
+server float rsqls_spread_min   = 0.75;    // degrees: tighter than this draws no ring
+server float rsqls_spread_a     = 0.6;     // ring brightness
+server int   rsqls_readout      = 0;       // range readout: 0 off, 1 by the gun, 2 at the spot
+server int   rsqls_readout_units = 0;       // 0 metres, 1 feet, 2 map units
+server float rsqls_readout_size = 1.0;

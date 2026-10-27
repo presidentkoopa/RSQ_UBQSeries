@@ -1,0 +1,1 @@
+GameInfo { AddEventHandlers = "RSLSProbe_Ready" }
