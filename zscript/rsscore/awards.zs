@@ -35,6 +35,28 @@ class RS_ScoreService : Service
 			let h = RS_ScoreHandler(EventHandler.Find("RS_ScoreHandler"));
 			return h ? h.AwardExternal(Actor(objectArg), stringArg, intArg) : -1;
 		}
+		// READS FOR A HUD THAT DRAWS THE SCORE ITSELF (the Gun Bonsai VR patch's screens, 10-27),
+		// here and through GetIntUI. objectArg = the pawn (null: the console player's); -1 when
+		// there is no score. "score" the running total the player reads; "progress" permille of
+		// the way to the next reward (0..1000); "lives" extra lives held; "rewards" this map's.
+		return Read(request, Actor(objectArg));
+	}
+
+	// the same reads from a HUD or menu (ui scope)
+	override int GetIntUI(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
+	{
+		return Read(request, Actor(objectArg));
+	}
+
+	static clearscope int Read(String request, Actor pawn)
+	{
+		if (!pawn && players[consoleplayer].mo) pawn = players[consoleplayer].mo;
+		let tr = pawn ? RS_ScoreTracker(pawn.FindInventory("RS_ScoreTracker")) : null;
+		if (!tr) return -1;
+		if (request == "score") return tr.displayScore;
+		if (request == "progress") return int(clamp(tr.scorePercent, 0.0, 1.0) * 1000);
+		if (request == "lives") return tr.extraLives;
+		if (request == "rewards") return tr.rewardCount;
 		return -1;
 	}
 }
