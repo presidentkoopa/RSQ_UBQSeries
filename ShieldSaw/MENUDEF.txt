@@ -1,178 +1,70 @@
+// Ultra Badass ShieldSaw options, in BD22 VR Weapons' style (the owner, 10-27: "too many words...
+// the bd22 weapons q options menu is a good example of a ton of options that don't overwhelm"):
+// short labels, no notes, blank lines between groups, the niche groups one page down, tuning,
+// debug and reset last. What each setting does is in CVARINFO's comments and README.md.
 AddOptionMenu "OptionsMenu"
 {
-	Submenu "RS ShieldSawQ Options", "SSQ_Options"
+	Submenu "Ultra Badass ShieldSaw", "SSQ_Options"
 }
 
 OptionValue "SSQ_Deflect"
 {
 	0, "Cancelled"
-	1, "Return To Sender"
+	1, "Returned"
 }
 
 OptionValue "SSQ_Melee"
 {
 	1, "Stun"
-	2, "Stun and Shoved Back"
+	2, "Stun and Shove"
 	0, "Nothing"
 }
 
 OptionValue "SSQ_Marker"
 {
 	0, "Never"
-	1, "While it matters"
+	1, "When Needed"
 	2, "Always"
 }
 
 OptionValue "SSQ_HeldWorld"
 {
-	0, "Only you"
+	0, "Only Me"
 	1, "Everyone"
-	2, "Everyone in a netgame"
+	2, "Netgame Only"
 }
 
 OptionValue "SSQ_DeflectAim"
 {
-	0, "Back at the shooter"
-	1, "Where you look"
-	2, "Off the face"
-}
-
-// THE FRONT PAGE (the owner, 10-27: "way too many options, people will be overwhelmed").
-// Every setting, unchanged, is under "Advanced: every setting".
-OptionValue "SSQ_StoreTo"
-{
-	0, "Fist"
-	1, "Previously Held Weapon"
-}
-
-OptionMenu "SSQ_Options"
-{
-	Title "Ultra Badass ShieldSaw"
-	StaticText "Sweep the shield over enemies to lock on. Trigger revs; let go with a flick to throw.", "Gray"
-	StaticText ""
-	Option "Start with Shield in Hand", "ssq_start_drawn", "OnOff"
-	Option "Draw from the shoulder with Use", "ssq_shoulder_use", "OnOff"
-	Option "Lock on with", "ssq_lock_input", "SSQ_LockInput"
-	Option "Back in Hand on Return", "ssq_catch", "OnOff"
-	Slider "Lock on Targets Max", "ssq_locks", 0, 5, 1, 0
-	StaticText ""
-	Option "Double Block Radius", "ssq_block_double", "OnOff"
-	Option "On Manual Store", "ssq_store_to", "SSQ_StoreTo"
-	Option "Blocked Projectiles", "ssq_deflect", "SSQ_Deflect"
-	Option "Turned shots go", "ssq_deflect_aim", "SSQ_DeflectAim"
-	Option "Perfect Block", "ssq_perfect", "OnOff"
-	Option "Brutal Doom v22 monster compatibility", "ssq_bd22", "OnOff"
-	StaticText ""
-	Submenu "Advanced: every setting", "SSQ_Every"
-	StaticText ""
-	SafeCommand "Reset all ShieldSaw settings", "resetcvar ssq_start ssq_block_double ssq_store_to ssq_cut_damage ssq_throw_speed ssq_throw_blend ssq_throw_min ssq_throw_forward ssq_speed_floor ssq_mass_kg ssq_locks ssq_lock_cone ssq_lock_button ssq_lock_mark_scale ssq_lock_range ssq_lock_keep ssq_lock_grace ssq_paint_every ssq_keep_marks ssq_return_speed ssq_cruise_gain ssq_cruise_max ssq_home_patience ssq_catch_radius ssq_catch ssq_perfect ssq_perfect_speed ssq_crumb_every ssq_tiers ssq_bd22 ssq_tier_fodder ssq_tier_mid ssq_embed_tics ssq_embed_dps ssq_glance_scale ssq_rev_tics ssq_grind_damage ssq_grind_every ssq_rev_throw_bonus ssq_guard ssq_guard_stowed ssq_yield_offhand ssq_deflect ssq_deflect_aim ssq_deflect_assist ssq_sweep ssq_sweep_lead ssq_sweep_pad ssq_sweep_boost ssq_hitscan_guard ssq_hitscan_return ssq_hitscan_damage ssq_melee ssq_stagger_push ssq_bash ssq_bash_speed ssq_bash_damage ssq_bash_reach ssq_bash_los ssq_bash_sustain ssq_bash_knock ssq_bash_lift ssq_plate_f ssq_plate_l ssq_plate_u ssq_plate_radius ssq_plate_thick ssq_plate_blades ssq_shield_scale ssq_roll_sign ssq_start_drawn ssq_shoulder_use ssq_lock_input ssq_feedback ssq_spatial ssq_mount_fwd ssq_mount_side ssq_mount_up ssq_mount_reach ssq_zone_scale ssq_stow_world ssq_mount_yaw ssq_mount_pitch ssq_mount_roll ssq_mount_scale ssq_marker ssq_held_x ssq_held_y ssq_held_z ssq_held_yaw ssq_held_pitch ssq_held_roll ssq_held_world ssq_debug ssq_debug_ring", "Put every ShieldSaw setting back to its default?"
-}
-
-OptionMenu "SSQ_Every"
-{
-	Title "Ultra Badass ShieldSaw: every setting"
-	Option "Start with Shield in Hand", "ssq_start_drawn", "OnOff"
-	Option "Draw from the shoulder with Use", "ssq_shoulder_use", "OnOff"
-	Option "Lock on with", "ssq_lock_input", "SSQ_LockInput"
-	StaticText "Hold it and sweep the shield over enemies. Trigger revs; let go with a flick to throw.", "Gray"
-	StaticText "Off: only the Draw key draws and holsters it (the shoulder is free for Tactical Rig).", "Gray"
-	StaticText ""
-	Option "Double Block Radius", "ssq_block_double", "OnOff"
-	Option "Block attacks while Holstered", "ssq_guard_stowed", "OnOff"
-	Option "Blocked Projectiles", "ssq_deflect", "SSQ_Deflect"
-	Option "Turned shots go", "ssq_deflect_aim", "SSQ_DeflectAim"
-	Slider "Aim help on a turned shot", "ssq_deflect_assist", 0.0, 45.0, 1.0, 0
-	Option "Turn shots before they reach you", "ssq_sweep", "OnOff"
-	Option "Stop bullets at the muzzle", "ssq_hitscan_guard", "OnOff"
-	Option "Send stopped bullets back", "ssq_hitscan_return", "OnOff"
-	Slider "Guard generosity (cm)", "ssq_sweep_pad", 0.0, 60.0, 1.0, 0
-	Option "Blocked Melee", "ssq_melee", "SSQ_Melee"
-	Option "Block Feedback and Haptics", "ssq_feedback", "OnOff"
-	Option "Hear contacts where they happen", "ssq_spatial", "OnOff"
-	Option "Perfect Block", "ssq_perfect", "OnOff"
-	StaticText ""
-	Slider "Hand Speed to Throw", "ssq_throw_min", 0.0, 100.0, 5.0, 0
-	Option "Back in Hand on Return", "ssq_catch", "OnOff"
-	Slider "Lock on Targets Max", "ssq_locks", 0, 5, 1, 0
-	Option "Hit Tiers", "ssq_tiers", "OnOff"
-	Option "Brutal Doom v22 monster compatibility", "ssq_bd22", "OnOff"
-	StaticText ""
-	Submenu "Shield Fit", "SSQ_Fit"
-	Submenu "Tuning", "SSQ_Tuning"
-	Submenu "Advanced", "SSQ_Advanced"
-	Submenu "Debug", "SSQ_Debug"
-	StaticText ""
-	SafeCommand "Reset all ShieldSaw settings", "resetcvar ssq_start ssq_block_double ssq_store_to ssq_cut_damage ssq_throw_speed ssq_throw_blend ssq_throw_min ssq_throw_forward ssq_speed_floor ssq_mass_kg ssq_locks ssq_lock_cone ssq_lock_button ssq_lock_mark_scale ssq_lock_range ssq_lock_keep ssq_lock_grace ssq_paint_every ssq_keep_marks ssq_return_speed ssq_cruise_gain ssq_cruise_max ssq_home_patience ssq_catch_radius ssq_catch ssq_perfect ssq_perfect_speed ssq_crumb_every ssq_tiers ssq_bd22 ssq_tier_fodder ssq_tier_mid ssq_embed_tics ssq_embed_dps ssq_glance_scale ssq_rev_tics ssq_grind_damage ssq_grind_every ssq_rev_throw_bonus ssq_guard ssq_guard_stowed ssq_yield_offhand ssq_deflect ssq_deflect_aim ssq_deflect_assist ssq_sweep ssq_sweep_lead ssq_sweep_pad ssq_sweep_boost ssq_hitscan_guard ssq_hitscan_return ssq_hitscan_damage ssq_melee ssq_stagger_push ssq_bash ssq_bash_speed ssq_bash_damage ssq_bash_reach ssq_bash_los ssq_bash_sustain ssq_bash_knock ssq_bash_lift ssq_plate_f ssq_plate_l ssq_plate_u ssq_plate_radius ssq_plate_thick ssq_plate_blades ssq_shield_scale ssq_roll_sign ssq_start_drawn ssq_shoulder_use ssq_lock_input ssq_feedback ssq_spatial ssq_mount_fwd ssq_mount_side ssq_mount_up ssq_mount_reach ssq_zone_scale ssq_stow_world ssq_mount_yaw ssq_mount_pitch ssq_mount_roll ssq_mount_scale ssq_marker ssq_held_x ssq_held_y ssq_held_z ssq_held_yaw ssq_held_pitch ssq_held_roll ssq_held_world ssq_debug ssq_debug_ring", "Put every ShieldSaw setting back to its default?"
+	0, "To Shooter"
+	1, "Where I Look"
+	2, "Off the Face"
 }
 
 OptionValue "SSQ_LockButton"
 {
-	0, "Off alt only"
-	1, "Either off button"
-	2, "Off trigger only"
+	0, "Off Alt"
+	1, "Either"
+	2, "Off Trigger"
 }
 
 OptionValue "SSQ_LockInput"
 {
-	0, "Use (away from the shoulder)"
-	1, "ShieldSaw lock key (bind in Controls)"
-	2, "The throw button (old way)"
+	0, "Use"
+	1, "Lock Key"
+	2, "Throw Button"
 }
 
 OptionValue "SSQ_YieldOff"
 {
-	0, "Keep the shield (pin the hands)"
-	1, "Let switchhand take it"
+	0, "Keep Shield"
+	1, "Allow Switch"
 }
 
-OptionMenu "SSQ_Advanced"
+OptionValue "SSQ_StoreTo"
 {
-	Title "Ultra Badass ShieldSaw: Advanced"
-	StaticText "Settings that were in the file but not on a menu."
-	Option "What throws (let go with a flick)", "ssq_lock_button", "SSQ_LockButton"
-	Option "Off-hand weapon switch", "ssq_yield_offhand", "SSQ_YieldOff"
-	Option "Shield blocks at all", "ssq_guard", "OnOff"
-	Option "Shield on your back while stowed", "ssq_stow_world", "OnOff"
-	Slider "Throw must go where you look", "ssq_throw_forward", 0.0, 1.0, 0.05, 2
-	Slider "Slowest throw (units/tic)", "ssq_speed_floor", 4.0, 30.0, 1.0, 0
-	Slider "Disc weight (kg)", "ssq_mass_kg", 0.5, 20.0, 0.5, 1
-	Slider "Return speed", "ssq_return_speed", 8.0, 60.0, 1.0, 0
-	Slider "Lock kept out to (degrees)", "ssq_lock_keep", 10.0, 120.0, 5.0, 0
-	Slider "Lock kept out of sight (tics)", "ssq_lock_grace", 0, 350, 5, 0
-	Slider "Tics between new locks", "ssq_paint_every", 1, 20, 1, 0
-	Slider "Lock ring size", "ssq_lock_mark_scale", 0.25, 3.0, 0.05, 2
-	Slider "Embedded damage per tic", "ssq_embed_dps", 0, 20, 1, 0
-	Slider "Embed time (tics)", "ssq_embed_tics", 0, 140, 1, 0
-	Slider "Returned bullet damage", "ssq_hitscan_damage", 0.0, 3.0, 0.1, 1
-	Slider "Turned shot speed", "ssq_sweep_boost", 0.25, 3.0, 0.05, 2
-	Slider "Shot path tested ahead (tics)", "ssq_sweep_lead", 1.0, 6.0, 0.5, 1
-	Slider "Blocked melee shove", "ssq_stagger_push", 0.0, 40.0, 1.0, 0
-	Slider "Blade reach when revved (cm)", "ssq_plate_blades", 0.0, 15.0, 0.5, 1
-	Slider "Tics between grind hits", "ssq_grind_every", 1, 20, 1, 0
-	Slider "Tics between breadcrumbs", "ssq_crumb_every", 1, 20, 1, 0
-	Slider "Return patience (tics)", "ssq_home_patience", 35, 350, 5, 0
-	Slider "Rings kept after letting go (tics)", "ssq_keep_marks", 0, 525, 5, 0
-	StaticText ""
-	StaticText "Shoulder mount (cm from your eyes)."
-	Slider "Forward (negative = behind)", "ssq_mount_fwd", -60.0, 30.0, 1.0, 0
-	Slider "To the off side", "ssq_mount_side", -30.0, 40.0, 1.0, 0
-	Slider "Up from eye height", "ssq_mount_up", -80.0, 20.0, 1.0, 0
-	Slider "Reach to grab it", "ssq_mount_reach", 10.0, 60.0, 1.0, 0
-	Slider "Grab zone (x reach)", "ssq_zone_scale", 1.0, 3.0, 0.1, 1
-	StaticText "On your back (only with it shown while stowed)."
-	Slider "Back yaw", "ssq_mount_yaw", -180.0, 180.0, 5.0, 0
-	Slider "Back pitch", "ssq_mount_pitch", -90.0, 90.0, 5.0, 0
-	Slider "Back roll", "ssq_mount_roll", -180.0, 180.0, 5.0, 0
-	Slider "Back size", "ssq_mount_scale", 0.25, 2.0, 0.05, 2
-	StaticText ""
-	StaticText "Held shield nudge (cm and degrees)."
-	Slider "X", "ssq_held_x", -20.0, 20.0, 0.5, 1
-	Slider "Y", "ssq_held_y", -20.0, 20.0, 0.5, 1
-	Slider "Z", "ssq_held_z", -20.0, 20.0, 0.5, 1
-	Slider "Yaw", "ssq_held_yaw", -90.0, 90.0, 1.0, 0
-	Slider "Pitch", "ssq_held_pitch", -90.0, 90.0, 1.0, 0
-	Slider "Roll", "ssq_held_roll", -90.0, 90.0, 1.0, 0
-	Option "Flip the disc spin", "ssq_roll_sign", "SSQ_RollSign"
+	0, "Fist"
+	1, "Previously Held Weapon"
 }
 
 OptionValue "SSQ_RollSign"
@@ -181,59 +73,151 @@ OptionValue "SSQ_RollSign"
 	-1, "Flipped"
 }
 
-OptionMenu "SSQ_Tuning"
+OptionMenu "SSQ_Options"
 {
-	Title "Ultra Badass ShieldSaw: Tuning"
-	Slider "Throw speed", "ssq_throw_speed", 0.2, 3.0, 0.1, 1
-	Slider "Throw: arm vs aim", "ssq_throw_blend", 0.0, 1.0, 0.05, 2
-	Slider "Disc wind-up", "ssq_cruise_gain", 0.0, 0.2, 0.01, 2
-	Slider "Disc top speed", "ssq_cruise_max", 10.0, 60.0, 1.0, 0
-	Slider "Throw damage", "ssq_cut_damage", 0.2, 5.0, 0.1, 1
-	Slider "Aim cone", "ssq_lock_cone", 2.0, 60.0, 1.0, 0
-	Slider "Lock range", "ssq_lock_range", 128.0, 4000.0, 64.0, 0
-	Slider "Catch radius", "ssq_catch_radius", 4.0, 64.0, 2.0, 0
-	Slider "Bisects at or under", "ssq_tier_fodder", 0, 400, 5, 0
-	Slider "Embeds at or under", "ssq_tier_mid", 0, 4000, 50, 0
-	Slider "Glancing damage", "ssq_glance_scale", 0.0, 2.0, 0.05, 2
-	StaticText ""
-	Slider "Rev time", "ssq_rev_tics", 1, 70, 1, 0
-	Slider "Grind damage", "ssq_grind_damage", 0, 40, 1, 0
-	Slider "Full-rev throw bonus", "ssq_rev_throw_bonus", 0.0, 2.0, 0.1, 1
-	Option "Others see it in your hand", "ssq_held_world", "SSQ_HeldWorld"
-	Option "Show the mount", "ssq_marker", "SSQ_Marker"
-	Option "Shield bash", "ssq_bash", "OnOff"
-	Slider "Shove speed", "ssq_bash_speed", 10, 400, 5, 0
-	Slider "Bash damage", "ssq_bash_damage", 0.1, 8.0, 0.1, 1
-	Slider "Bash reach", "ssq_bash_reach", 1.0, 2.0, 0.05, 2
-	Slider "A leaned shield bashes (0 = fast shoves only)", "ssq_bash_sustain", 0, 1, 0.1, 1
-	Option "Bash needs line of sight", "ssq_bash_los", "OnOff"
-	Slider "Bash knockback", "ssq_bash_knock", 0.0, 3.0, 0.05, 2
-	Slider "Bash lift", "ssq_bash_lift", 0.0, 8.0, 0.5, 1
-	Slider "Perfect block speed", "ssq_perfect_speed", 10, 150, 5, 0
-	Option "Start with it", "ssq_start", "OnOff"
-}
-
-OptionMenu "SSQ_Debug"
-{
-	Title "Ultra Badass ShieldSaw: Debug"
-	Option "Print decisions and pose to the console", "ssq_debug", "OnOff"
-	Option "Draw the guard plate", "ssq_debug_ring", "OnOff"
+	Title "SHIELDSAW"
+	Option "Start With Shield", "ssq_start", "OnOff"
+	Option "Start in Hand", "ssq_start_drawn", "OnOff"
+	Option "Draw With Use", "ssq_shoulder_use", "OnOff"
+	Option "Lock On With", "ssq_lock_input", "SSQ_LockInput"
+	Option "Throw Button", "ssq_lock_button", "SSQ_LockButton"
+	Option "Catch on Return", "ssq_catch", "OnOff"
+	Slider "Max Locks", "ssq_locks", 0, 5, 1, 0
+	StaticText " "
+	Option "Shield Blocks", "ssq_guard", "OnOff"
+	Option "Block While Holstered", "ssq_guard_stowed", "OnOff"
+	Option "Double Block Radius", "ssq_block_double", "OnOff"
+	Option "On Manual Store", "ssq_store_to", "SSQ_StoreTo"
+	Option "Blocked Projectiles", "ssq_deflect", "SSQ_Deflect"
+	Option "Turned Shots Go", "ssq_deflect_aim", "SSQ_DeflectAim"
+	Option "Turn Shots Early", "ssq_sweep", "OnOff"
+	Option "Muzzle Block", "ssq_hitscan_guard", "OnOff"
+	Option "Return Bullets", "ssq_hitscan_return", "OnOff"
+	Option "Blocked Melee", "ssq_melee", "SSQ_Melee"
+	Option "Perfect Block", "ssq_perfect", "OnOff"
+	Option "Shield Bash", "ssq_bash", "OnOff"
+	Option "Hit Tiers", "ssq_tiers", "OnOff"
+	Option "BD22 Monsters", "ssq_bd22", "OnOff"
+	StaticText " "
+	Option "Block Feedback", "ssq_feedback", "OnOff"
+	Option "Positional Sound", "ssq_spatial", "OnOff"
+	Option "Show Mount", "ssq_marker", "SSQ_Marker"
+	Option "Shield on Back", "ssq_stow_world", "OnOff"
+	Option "Others See Shield", "ssq_held_world", "SSQ_HeldWorld"
+	Option "Off-Hand Switch", "ssq_yield_offhand", "SSQ_YieldOff"
+	StaticText " "
+	Submenu "Shield Fit", "SSQ_Fit"
+	Submenu "Throw and Disc", "SSQ_Throw"
+	Submenu "Lock-On", "SSQ_Lock"
+	Submenu "Block and Bash", "SSQ_Block"
+	Submenu "Mount Position", "SSQ_Mount"
+	StaticText " "
+	Submenu "Tuning and Debug", "SSQ_Debug"
 }
 
 OptionMenu "SSQ_Fit"
 {
-	Title "Ultra Badass ShieldSaw: Fit"
-	StaticText "Shield size. Model and block area together."
-	Slider "Shield size", "ssq_shield_scale", 1.0, 1.5, 0.125, 3
-	StaticText ""
-	StaticText "Where the disc sits, in cm from the controller."
-	Slider "Back along the forearm", "ssq_plate_f", -40.0, 10.0, 0.5, 1
-	Slider "Sideways", "ssq_plate_l", -25.0, 25.0, 0.5, 1
-	Slider "Up and down", "ssq_plate_u", -25.0, 25.0, 0.5, 1
-	StaticText ""
-	Slider "Block area radius (cm)", "ssq_plate_radius", 10.0, 60.0, 0.5, 1
-	Slider "Block depth either side (cm)", "ssq_plate_thick", 2.0, 60.0, 1.0, 0
-	StaticText ""
-	Option "Draw the block area", "ssq_debug_ring", "OnOff"
-	StaticText "Close the menu to see a change: the game is frozen while it is open."
+	Title "SHIELD FIT"
+	Slider "Shield Size", "ssq_shield_scale", 1.0, 1.5, 0.125, 3
+	Slider "Disc Forward", "ssq_plate_f", -40.0, 10.0, 0.5, 1
+	Slider "Disc Side", "ssq_plate_l", -25.0, 25.0, 0.5, 1
+	Slider "Disc Up", "ssq_plate_u", -25.0, 25.0, 0.5, 1
+	Slider "Block Radius", "ssq_plate_radius", 10.0, 60.0, 0.5, 1
+	Slider "Block Depth", "ssq_plate_thick", 2.0, 60.0, 1.0, 0
+	Option "Show Block Area", "ssq_debug_ring", "OnOff"
+}
+
+OptionMenu "SSQ_Throw"
+{
+	Title "THROW AND DISC"
+	Slider "Throw Hand Speed", "ssq_throw_min", 0.0, 100.0, 5.0, 0
+	Slider "Throw Speed", "ssq_throw_speed", 0.2, 3.0, 0.1, 1
+	Slider "Arm or Aim", "ssq_throw_blend", 0.0, 1.0, 0.05, 2
+	Slider "Aim Forward", "ssq_throw_forward", 0.0, 1.0, 0.05, 2
+	Slider "Slowest Throw", "ssq_speed_floor", 4.0, 30.0, 1.0, 0
+	Slider "Disc Weight", "ssq_mass_kg", 0.5, 20.0, 0.5, 1
+	Slider "Disc Wind-Up", "ssq_cruise_gain", 0.0, 0.2, 0.01, 2
+	Slider "Disc Top Speed", "ssq_cruise_max", 10.0, 60.0, 1.0, 0
+	Option "Spin Direction", "ssq_roll_sign", "SSQ_RollSign"
+	StaticText " "
+	Slider "Return Speed", "ssq_return_speed", 8.0, 60.0, 1.0, 0
+	Slider "Return Patience", "ssq_home_patience", 35, 350, 5, 0
+	Slider "Catch Radius", "ssq_catch_radius", 4.0, 64.0, 2.0, 0
+	Slider "Breadcrumb Gap", "ssq_crumb_every", 1, 20, 1, 0
+	StaticText " "
+	Slider "Throw Damage", "ssq_cut_damage", 0.2, 5.0, 0.1, 1
+	Slider "Bisect Limit", "ssq_tier_fodder", 0, 400, 5, 0
+	Slider "Embed Limit", "ssq_tier_mid", 0, 4000, 50, 0
+	Slider "Glance Damage", "ssq_glance_scale", 0.0, 2.0, 0.05, 2
+	Slider "Embed Damage", "ssq_embed_dps", 0, 20, 1, 0
+	Slider "Embed Time", "ssq_embed_tics", 0, 140, 1, 0
+	StaticText " "
+	Slider "Rev Time", "ssq_rev_tics", 1, 70, 1, 0
+	Slider "Grind Damage", "ssq_grind_damage", 0, 40, 1, 0
+	Slider "Grind Gap", "ssq_grind_every", 1, 20, 1, 0
+	Slider "Rev Throw Bonus", "ssq_rev_throw_bonus", 0.0, 2.0, 0.1, 1
+	Slider "Revved Blade Reach", "ssq_plate_blades", 0.0, 15.0, 0.5, 1
+}
+
+OptionMenu "SSQ_Lock"
+{
+	Title "LOCK-ON"
+	Slider "Lock Cone", "ssq_lock_cone", 2.0, 60.0, 1.0, 0
+	Slider "Lock Range", "ssq_lock_range", 128.0, 4000.0, 64.0, 0
+	Slider "Lock Keep Angle", "ssq_lock_keep", 10.0, 120.0, 5.0, 0
+	Slider "Out of Sight Grace", "ssq_lock_grace", 0, 350, 5, 0
+	Slider "Lock Gap", "ssq_paint_every", 1, 20, 1, 0
+	Slider "Rings Kept", "ssq_keep_marks", 0, 525, 5, 0
+	Slider "Ring Size", "ssq_lock_mark_scale", 0.25, 3.0, 0.05, 2
+}
+
+OptionMenu "SSQ_Block"
+{
+	Title "BLOCK AND BASH"
+	Slider "Deflect Assist", "ssq_deflect_assist", 0.0, 45.0, 1.0, 0
+	Slider "Guard Margin", "ssq_sweep_pad", 0.0, 60.0, 1.0, 0
+	Slider "Early Turn Lookahead", "ssq_sweep_lead", 1.0, 6.0, 0.5, 1
+	Slider "Turned Shot Speed", "ssq_sweep_boost", 0.25, 3.0, 0.05, 2
+	Slider "Bullet Return Damage", "ssq_hitscan_damage", 0.0, 3.0, 0.1, 1
+	Slider "Melee Shove", "ssq_stagger_push", 0.0, 40.0, 1.0, 0
+	Slider "Perfect Block Speed", "ssq_perfect_speed", 10, 150, 5, 0
+	StaticText " "
+	Slider "Bash Speed", "ssq_bash_speed", 10, 400, 5, 0
+	Slider "Bash Damage", "ssq_bash_damage", 0.1, 8.0, 0.1, 1
+	Slider "Bash Reach", "ssq_bash_reach", 1.0, 2.0, 0.05, 2
+	Slider "Leaned Bash", "ssq_bash_sustain", 0, 1, 0.1, 1
+	Option "Bash Needs Sight", "ssq_bash_los", "OnOff"
+	Slider "Bash Knockback", "ssq_bash_knock", 0.0, 3.0, 0.05, 2
+	Slider "Bash Lift", "ssq_bash_lift", 0.0, 8.0, 0.5, 1
+}
+
+OptionMenu "SSQ_Mount"
+{
+	Title "MOUNT POSITION"
+	Slider "Mount Forward", "ssq_mount_fwd", -60.0, 30.0, 1.0, 0
+	Slider "Mount Side", "ssq_mount_side", -30.0, 40.0, 1.0, 0
+	Slider "Mount Up", "ssq_mount_up", -80.0, 20.0, 1.0, 0
+	Slider "Grab Reach", "ssq_mount_reach", 10.0, 60.0, 1.0, 0
+	Slider "Grab Zone", "ssq_zone_scale", 1.0, 3.0, 0.1, 1
+	StaticText " "
+	Slider "Back Yaw", "ssq_mount_yaw", -180.0, 180.0, 5.0, 0
+	Slider "Back Pitch", "ssq_mount_pitch", -90.0, 90.0, 5.0, 0
+	Slider "Back Roll", "ssq_mount_roll", -180.0, 180.0, 5.0, 0
+	Slider "Back Size", "ssq_mount_scale", 0.25, 2.0, 0.05, 2
+	StaticText " "
+	Slider "Held X", "ssq_held_x", -20.0, 20.0, 0.5, 1
+	Slider "Held Y", "ssq_held_y", -20.0, 20.0, 0.5, 1
+	Slider "Held Z", "ssq_held_z", -20.0, 20.0, 0.5, 1
+	Slider "Held Yaw", "ssq_held_yaw", -90.0, 90.0, 1.0, 0
+	Slider "Held Pitch", "ssq_held_pitch", -90.0, 90.0, 1.0, 0
+	Slider "Held Roll", "ssq_held_roll", -90.0, 90.0, 1.0, 0
+}
+
+OptionMenu "SSQ_Debug"
+{
+	Title "TUNING AND DEBUG"
+	Option "Debug Log", "ssq_debug", "OnOff"
+	Option "Show Block Area", "ssq_debug_ring", "OnOff"
+	StaticText " "
+	SafeCommand "Reset All", "resetcvar ssq_start ssq_block_double ssq_store_to ssq_cut_damage ssq_throw_speed ssq_throw_blend ssq_throw_min ssq_throw_forward ssq_speed_floor ssq_mass_kg ssq_locks ssq_lock_cone ssq_lock_button ssq_lock_mark_scale ssq_lock_range ssq_lock_keep ssq_lock_grace ssq_paint_every ssq_keep_marks ssq_return_speed ssq_cruise_gain ssq_cruise_max ssq_home_patience ssq_catch_radius ssq_catch ssq_perfect ssq_perfect_speed ssq_crumb_every ssq_tiers ssq_bd22 ssq_tier_fodder ssq_tier_mid ssq_embed_tics ssq_embed_dps ssq_glance_scale ssq_rev_tics ssq_grind_damage ssq_grind_every ssq_rev_throw_bonus ssq_guard ssq_guard_stowed ssq_yield_offhand ssq_deflect ssq_deflect_aim ssq_deflect_assist ssq_sweep ssq_sweep_lead ssq_sweep_pad ssq_sweep_boost ssq_hitscan_guard ssq_hitscan_return ssq_hitscan_damage ssq_melee ssq_stagger_push ssq_bash ssq_bash_speed ssq_bash_damage ssq_bash_reach ssq_bash_los ssq_bash_sustain ssq_bash_knock ssq_bash_lift ssq_plate_f ssq_plate_l ssq_plate_u ssq_plate_radius ssq_plate_thick ssq_plate_blades ssq_shield_scale ssq_roll_sign ssq_start_drawn ssq_shoulder_use ssq_lock_input ssq_feedback ssq_spatial ssq_mount_fwd ssq_mount_side ssq_mount_up ssq_mount_reach ssq_zone_scale ssq_stow_world ssq_mount_yaw ssq_mount_pitch ssq_mount_roll ssq_mount_scale ssq_marker ssq_held_x ssq_held_y ssq_held_z ssq_held_yaw ssq_held_pitch ssq_held_roll ssq_held_world ssq_debug ssq_debug_ring", "Reset all ShieldSaw settings?"
 }
