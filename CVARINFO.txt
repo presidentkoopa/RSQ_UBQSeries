@@ -58,13 +58,6 @@ user int    rsqtr_profile_active = 1;     // the holster profile in use: its col
 // long strings overflowed the userinfo every player sends ("User info descriptor too big").
 nosave string rsqtr_profile1 = ""; nosave string rsqtr_profile2 = ""; nosave string rsqtr_profile3 = ""; nosave string rsqtr_profile4 = "";
 
-// Doors lifted by hand.
-user bool  rsqtr_door        = true;    // take hold of a door and lift it
-user bool  rsqtr_door_grip   = true;    // the grip takes hold
-user bool  rsqtr_door_use    = true;    // Use takes hold
-user bool  rsqtr_door_palm   = true;    // a palm turned out against the door takes hold
-user float rsqtr_door_commit = 0.40;    // let go past this much open and the door finishes opening
-user float rsqtr_door_gain   = 2.5;     // door travel per unit of hand travel (a lift of 0.6 m opens ~50 units)
 
 // Ermac's cigarette (optional tribute).
 user bool  rsqtr_cig         = false;   // a pocket of cigarettes on the left chest
