@@ -274,8 +274,29 @@ class SSQ_Handler : EventHandler
 		mStartDrawn[pnum] = UVI(p, 'ssq_start_drawn', 0) != 0 ? 3 : 0;
 	}
 
+	// THE MISSILES IN FLIGHT, for the sweep. A projectile is +NOBLOCKMAP (the PROJECTILE combo), so a
+	// BlockThingsIterator never returns one -- measured on QZD 17.3: an imp ball crossing the plate
+	// was absent from the iterator around it, and the sweep (SSQ_Guard.DoEffect) had never turned a
+	// single shot; only the block on contact ever did. So every missile is noted as it spawns and the
+	// sweep walks this list instead (pruned each tic; a few dozen entries in a firefight).
+	Array<Actor> mMissiles;
+	override void WorldThingSpawned(WorldEvent e)
+	{
+		let a = e.Thing;
+		if (a && a.bMissile && !(a is 'SSQ_Disc')) mMissiles.Push(a);
+	}
+	void PruneMissiles()
+	{
+		for (int k = mMissiles.Size() - 1; k >= 0; k--)
+		{
+			let a = mMissiles[k];
+			if (!a || !a.bMissile) mMissiles.Delete(k);
+		}
+	}
+
 	override void WorldUnloaded(WorldEvent e)
 	{
+		mMissiles.Clear();
 		for (int i = 0; i < MAXPLAYERS; i++) { mProp[i] = null; mMarker[i] = null; mDisc[i] = null; }
 	}
 
@@ -284,6 +305,7 @@ class SSQ_Handler : EventHandler
 	{
 		if (!mMigrated) { mMigrated = true; MigrateLocks(); }
 		if (!score) score = new('SSQ_ScoreMemory');
+		PruneMissiles();
 		SendPose();
 		for (int i = 0; i < MAXPLAYERS; i++)
 		{
@@ -334,7 +356,7 @@ class SSQ_Handler : EventHandler
 				Vector3 n = SSQ_Guard.PlateNormal(mo, ps, false);
 				Console.Printf("ssq: pose F(%.2f %.2f %.2f) L(%.2f %.2f %.2f) U(%.2f %.2f %.2f) hand(%.0f %.0f %.0f) C(%.0f %.0f %.0f) n(%.2f %.2f %.2f) R %.1f fresh %d",
 					ps.F.x, ps.F.y, ps.F.z, ps.L.x, ps.L.y, ps.L.z, ps.U.x, ps.U.y, ps.U.z,
-					ps.pos[0].x, ps.pos[0].y, ps.pos[0].z, C.x, C.y, C.z, n.x, n.y, n.z, SSQ_Guard.PlateRadius(false), ps.Fresh(Level.maptime));
+					ps.pos[0].x, ps.pos[0].y, ps.pos[0].z, C.x, C.y, C.z, n.x, n.y, n.z, SSQ_Guard.PlateRadius(false, SSQ_Guard.GrowFor(mo)), ps.Fresh(Level.maptime));
 			}
 			LocksTick(i);
 			Props(i);
@@ -564,7 +586,8 @@ class SSQ_Handler : EventHandler
 			return;
 		}
 
-		int want = SVI('ssq_locks', 5);
+		// LOCKSTEP (Gun Bonsai VR patch, asked by name): one more lock a level
+		int want = SVI('ssq_locks', 5) + SSQ_Upg.Lv(mo.FindInventory('SSQ_ShieldSaw'), "Lockstep");
 		int grace = SVI('ssq_lock_grace', 105);
 		while (mLockMiss[i].Size() < mLocks[i].Size()) mLockMiss[i].Push(0);
 

@@ -1,5 +1,27 @@
 # Ultra Badass ShieldSaw — handoff
 
+## Branch `agent-up2` (2026-10-27): plate growth, a sweep that sees missiles, credit for returned bullets -- read first
+
+Not yet run on the owner's headset. Rig = QZD 17.3 Linux, doom2 MAP01 (and freedoom2), the owner's
+load order + Gun Bonsai 0.10.6 + the VR patch `agent-up2`. Probe `up2/sxa` in the session scratchpad.
+
+| | what | rig (measured) |
+|---|---|---|
+| THE SWEEP NEVER SAW A MISSILE | a projectile is +NOBLOCKMAP (the PROJECTILE combo), so the BlockThingsIterator in `SSQ_Guard.DoEffect` never returned one: an imp ball crossing the plate was absent from the iterator, and only the block on body contact ever turned a shot. Now `SSQ_Handler` keeps the missiles in flight (`mMissiles`, WorldThingSpawned, pruned each tic) and the sweep walks that list | before: ball flew through the plate at 53 units; after: turned at ~110 units, back into the baron |
+| Broadening | `PlateRadius(blades, grow)`; `SSQ_Guard.GrowK()` asks the patch for "Broadening" once a second: 1 + 0.2 x level, double at 5. With the patch loaded this replaces `ssq_block_double`; without it the option still doubles | patch: 9.93 / 11.91 / 13.90 / 15.88 / 17.87 / 19.86 at levels 0-5, level 6 stays 19.86; option on with the patch: 9.93. No patch: option 0 9.93, option 1 19.86 |
+| Lockstep | `ssq_locks` + level (FindTargets and LocksTick) | 9 imps: 5 locks, 7 with Lockstep 2 |
+| returned bullet XP | `SSQ_Ricochet` gets `FriendPlayer` and `master` = the saw and is claimed through the patch ("claim"); the patch brackets its trace | zombie 10 -> -5, ShieldSaw XP +10, main-hand 0 |
+| swept shot XP | BatBack sets `master` = the saw and tells the score memory it was turned (Rebound and a scorer now see swept shots too) | baron hit, ShieldSaw XP +12.5, main-hand 0 |
+| bash | real `HeldTick`, pose pushed into the synced history with a plate moving 140 u/s along its face | imp 80 -> 49, ShieldSaw XP +31, main 0. NOTE: headless, `HeldTick` was not reached from the saw's Ready state; the probe called it |
+| Bulwark | real `AbsorbDamage`, plate 15 u/s into the shot | perfect -1 without, 0 (this tic) with Bulwark 2 |
+| Rebound | returned bullets x(1.1 + 0.15 x level) (was 1.25 + 0.25) | -- |
+
+Why the earlier bash/Bulwark tests read 0: the rig's own headless controller sends an `ssq-pose` every
+tic with the same stamp as a probe's, so two samples share a tic and `Vel()` is 0. The probe now
+puts its own previous sample back behind its new one.
+
+---
+
 ## Branch `agent-upgrades` (2026-10-27): Gun Bonsai melee upgrades — read first
 
 Not yet run on the owner's headset. Rig = stock QZD 17.3 Linux build, freedoom2 MAP01, the owner's
