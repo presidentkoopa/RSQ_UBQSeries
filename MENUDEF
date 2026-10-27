@@ -85,17 +85,66 @@ OptionValue "UBQS_Diag"
 	2, "World beam prediction telemetry"
 }
 
+OptionValue "UBQS_DualMode"
+{
+	1, "The Dual key brings it out / puts it away"
+	2, "Always out"
+	0, "One saber only"
+}
+
+// THE FRONT PAGE: what a player actually reaches for (the owner, 10-27: "assume I like the saber
+// options, assume there are too many, clean up that list"). Every other setting is one page down,
+// under Advanced, unchanged.
 OptionMenu "UBQS_Options"
 {
 	Title "ULTRA BADASS QUESTSABER"
 	Option "Use this saber", "ubqs_on", "OnOff"
 	Option "Start with it", "ubqs_start", "OnOff"
-	Option "Second saber in your off hand", "ubqs_dual", "OnOff"
+	Option "Second saber", "ubqs_dual_mode", "UBQS_DualMode"
+	Control "Dual key (also Brutal Doom's)", "ubqs_dual_toggle"
+	Option "Brutal Doom's sword becomes the saber", "ubqs_bd_sword", "OnOff"
 	Option "Doom's chainsaw becomes a saber too", "ubqs_chainsaw", "OnOff"
 	StaticText ""
 	StaticText "Fire: hold and sweep to mark enemies. Let go mid forward throw to throw it.", "DarkGray"
 	StaticText ""
-	StaticText "SETTINGS", "Gold"
+	StaticText "THE SABER", "Gold"
+	Option "Colour", "ubqs_color", "UBQS_Colors"
+	Option "Off-hand colour", "ubqs_color_off", "UBQS_Colors"
+	Slider "Size", "ubqs_size", 0.7, 1.3, 0.15, 2
+	Option "Alt fire", "ubqs_alt", "UBQS_Alt"
+	Slider "How hard you must swing to cut (lower = easier)", "ubqs_swing_cut", 3, 20, 0.5, 1
+	Slider "Damage", "ubqs_damage", 10, 100, 5, 0
+	Option "Deflected shots go", "ubqs_deflect_aim", "UBQS_Aim"
+	Option "Thrown saber", "ubqs_throw", "UBQS_Throw"
+	Option "Force powers", "ubqs_force", "OnOff"
+	StaticText ""
+	StaticText "SOUND, LIGHT AND FEEL", "Gold"
+	Option "Saber", "ubqs_saber_sound", "UBQS_SaberSound"
+	Slider "Blade hum (0 = silent)", "ubqs_hum", 0, 1, 0.05, 2
+	Option "Blade light", "ubqs_lights", "UBQS_Lights"
+	Option "Controller buzz", "ubqs_haptics", "OnOff"
+	StaticText ""
+	StaticText "READY-MADE LOOKS", "Gold"
+	Command "Set up for Quest (fewest frames lost)", "ubqs_glow_quality 1; ubqs_lights 1; ubqs_glow_dots 0; ubqs_trail_steps 2; ubqs_trail_life 6; ubqs_clash_fx 0.5; ubqs_hand_glow 0; ubqs_blade_glow 0.6; ubqs_glow_width 1.2; ubqs_flash 1"
+	Command "Set up for PC VR (everything on)", "ubqs_glow_quality 4; ubqs_lights 3; ubqs_glow_dots 0; ubqs_trail_steps 4; ubqs_trail_life 12; ubqs_clash_fx 2; ubqs_hand_glow 1; ubqs_blade_glow 0.6; ubqs_glow_width 1.2; ubqs_flash 2"
+	StaticText ""
+	StaticText "TRAINING REMOTE", "Gold"
+	Command "Summon / dismiss the training remote", "netevent ubqs_remote"
+	Slider "Starts at level", "ubqs_remote_level", 1, 3, 1, 0
+	Slider "Sting damage (0 = none)", "ubqs_remote_sting", 0, 10, 1, 0
+	StaticText "Knock its bolts back into it: streaks multiply, 4 hits knock it down,", "DarkGray"
+	StaticText "and it comes back harder. Points go to Score if it is loaded.", "DarkGray"
+	StaticText ""
+	Submenu "Advanced: every setting", "UBQS_Advanced"
+	StaticText ""
+	SafeCommand "Put EVERYTHING back the way it shipped", "resetcvar ubqs_size ubqs_color ubqs_color_off ubqs_alt ubqs_deflect_aim ubqs_throw ubqs_throw_spin ubqs_throw_plane ubqs_throw_double ubqs_throw_min ubqs_contact ubqs_blade_glow ubqs_glow_width ubqs_blade_glow_color ubqs_glow_quality ubqs_glow_predict ubqs_glow_lead ubqs_glow_dots ubqs_glow_motionfade ubqs_blade_tube ubqs_world_saber ubqs_glow_overlap_core ubqs_glow_overlap_halo ubqs_contact_hilt ubqs_diag ubqs_trail ubqs_locks ubqs_lock_cone ubqs_lights ubqs_twirl ubqs_force_gestures ubqs_force_gesture ubqs_remote_level ubqs_remote_sting ubqs_on ubqs_start ubqs_dual ubqs_dual_mode ubqs_bd_sword ubqs_chainsaw ubqs_deflect ubqs_block ubqs_block_cone ubqs_block_return ubqs_block_damage ubqs_burn ubqs_crossguard ubqs_push_power ubqs_push_range ubqs_push_damage ubqs_push_cooldown ubqs_damage ubqs_cut_fx ubqs_throw_range ubqs_force ubqs_force_hand ubqs_pull_range ubqs_grip_mass ubqs_grip_damage ubqs_blade_guard ubqs_grip_fling ubqs_grip_slam ubqs_force_jump ubqs_jump_power ubqs_hand_glow ubqs_size_off ubqs_beam_shift ubqs_glow_fade_deg0 ubqs_glow_fade_deg1 ubqs_glow_fade_widen ubqs_glow_fade_jerk ubqs_glow_frame_ms ubqs_glow_maxang ubqs_glow_maxlin ubqs_glow_ramp_deg ubqs_glow_stop ubqs_glow_hitch_ms ubqs_snap_turn_deg ubqs_swing_cut ubqs_swing_scale ubqs_cut_rate ubqs_cut_pad ubqs_dmg_twirl ubqs_dmg_thrown ubqs_trail_steps ubqs_trail_life ubqs_lock_stick ubqs_clash_fx ubqs_guard_arc ubqs_block_swung ubqs_deflect_assist ubqs_deflect_lead ubqs_throw_straight ubqs_throw_blend ubqs_throw_speed ubqs_gesture_straight ubqs_push_cone ubqs_pull_cone ubqs_pull_power ubqs_grip_boss ubqs_grip_cone ubqs_grip_range ubqs_grip_still ubqs_grip_hold ubqs_jump_hold ubqs_jump_float ubqs_hum ubqs_hum_off ubqs_vol_swing ubqs_swing_gap ubqs_vol_hit ubqs_vol_clash ubqs_snd_choke ubqs_vol_force ubqs_vol_ignite ubqs_remote_chirp ubqs_flash ubqs_haptics ubqs_haptic_cut ubqs_haptic_clash ubqs_haptic_power ubqs_lefty ubqs_remote_warn ubqs_cut_shove ubqs_cut_lift ubqs_cut_los ubqs_cut_sustain ubqs_guard_width ubqs_throw_on_lock ubqs_hitscan_guard ubqs_parry_speed ubqs_parry_power ubqs_swing_spatial ubqs_doppler ubqs_saber_sound ubqs_block_stagger ubqs_stagger_push"
+}
+
+OptionMenu "UBQS_Advanced"
+{
+	Title "EVERY SETTING"
+	Option "Allow a second saber at all", "ubqs_dual", "OnOff"
+	StaticText ""
 	Submenu "The saber you see", "UBQS_Look"
 	Submenu "The beam in the world", "UBQS_Beam"
 	Submenu "The world beam's prediction", "UBQS_Predict"
@@ -110,8 +159,6 @@ OptionMenu "UBQS_Options"
 	StaticText ""
 	StaticText "DIAGNOSTICS", "Gold"
 	Option "Diagnostic overlay", "ubqs_diag", "UBQS_Diag"
-	StaticText ""
-	SafeCommand "Put EVERYTHING back the way it shipped", "resetcvar ubqs_size ubqs_color ubqs_color_off ubqs_alt ubqs_deflect_aim ubqs_throw ubqs_throw_spin ubqs_throw_plane ubqs_throw_double ubqs_throw_min ubqs_contact ubqs_blade_glow ubqs_glow_width ubqs_blade_glow_color ubqs_glow_quality ubqs_glow_predict ubqs_glow_lead ubqs_glow_dots ubqs_glow_motionfade ubqs_blade_tube ubqs_world_saber ubqs_glow_overlap_core ubqs_glow_overlap_halo ubqs_contact_hilt ubqs_diag ubqs_trail ubqs_locks ubqs_lock_cone ubqs_lights ubqs_twirl ubqs_force_gestures ubqs_force_gesture ubqs_remote_level ubqs_remote_sting ubqs_on ubqs_start ubqs_dual ubqs_chainsaw ubqs_deflect ubqs_block ubqs_block_cone ubqs_block_return ubqs_block_damage ubqs_burn ubqs_crossguard ubqs_push_power ubqs_push_range ubqs_push_damage ubqs_push_cooldown ubqs_damage ubqs_cut_fx ubqs_throw_range ubqs_force ubqs_force_hand ubqs_pull_range ubqs_grip_mass ubqs_grip_damage ubqs_blade_guard ubqs_grip_fling ubqs_grip_slam ubqs_force_jump ubqs_jump_power ubqs_hand_glow ubqs_size_off ubqs_beam_shift ubqs_glow_fade_deg0 ubqs_glow_fade_deg1 ubqs_glow_fade_widen ubqs_glow_fade_jerk ubqs_glow_frame_ms ubqs_glow_maxang ubqs_glow_maxlin ubqs_glow_ramp_deg ubqs_glow_stop ubqs_glow_hitch_ms ubqs_snap_turn_deg ubqs_swing_cut ubqs_swing_scale ubqs_cut_rate ubqs_cut_pad ubqs_dmg_twirl ubqs_dmg_thrown ubqs_trail_steps ubqs_trail_life ubqs_lock_stick ubqs_clash_fx ubqs_guard_arc ubqs_block_swung ubqs_deflect_assist ubqs_deflect_lead ubqs_throw_straight ubqs_throw_blend ubqs_throw_speed ubqs_gesture_straight ubqs_push_cone ubqs_pull_cone ubqs_pull_power ubqs_grip_boss ubqs_grip_cone ubqs_grip_range ubqs_grip_still ubqs_grip_hold ubqs_jump_hold ubqs_jump_float ubqs_hum ubqs_hum_off ubqs_vol_swing ubqs_swing_gap ubqs_vol_hit ubqs_vol_clash ubqs_snd_choke ubqs_vol_force ubqs_vol_ignite ubqs_remote_chirp ubqs_flash ubqs_haptics ubqs_haptic_cut ubqs_haptic_clash ubqs_haptic_power ubqs_lefty ubqs_remote_warn ubqs_cut_shove ubqs_cut_lift ubqs_cut_los ubqs_cut_sustain ubqs_guard_width ubqs_throw_on_lock ubqs_hitscan_guard ubqs_parry_speed ubqs_parry_power ubqs_swing_spatial ubqs_doppler ubqs_saber_sound ubqs_block_stagger ubqs_stagger_push"
 }
 
 OptionMenu "UBQS_Setup"
@@ -120,6 +167,7 @@ OptionMenu "UBQS_Setup"
 	StaticText "KEYS", "Gold"
 	// The SAME bind targets as Customize Controls (KEYCONF's aliases), so a key bound in either place
 	// shows as bound in both. These rows used to bind the netevent itself.
+	Control "Second saber in / out (Dual key)", "ubqs_dual_toggle"
 	Control "Second blade on / off (either hand)", "ubqs_blade2_toggle"
 	Control "Blade on / off (douse it)", "ubqs_ignite_toggle"
 	Control "Summon / dismiss the training remote", "ubqs_remote_toggle"
@@ -393,7 +441,7 @@ OptionMenu "UBQS_Trainer"
 	Title "THE TRAINING REMOTE"
 	Command "Summon / dismiss the training remote", "netevent ubqs_remote"
 	Control "Key: summon / dismiss remote", "ubqs_remote_toggle"
-	Slider "Remote level", "ubqs_remote_level", 1, 3, 1, 0
+	Slider "Remote starts at level", "ubqs_remote_level", 1, 3, 1, 0
 	Slider "Remote sting damage (0 = none)", "ubqs_remote_sting", 0, 10, 1, 0
 	Slider "Extra warning before it shoots (tics)", "ubqs_remote_warn", 0, 20, 1, 0
 	Slider "Chirps (0 = quiet)", "ubqs_remote_chirp", 0, 1, 0.05, 2
