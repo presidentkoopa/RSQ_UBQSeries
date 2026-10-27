@@ -38,7 +38,7 @@ class RS_PhysicalSeed play
 	{
 		into.Push("RS_Bonus_Thrown");
 		into.Push("RS_Bonus_PowderKeg");
-		into.Push("RS_Bonus_Juggle");
+		into.Push("RS_Bonus_AirCatch");
 		into.Push("RS_Bonus_Skeet");
 		into.Push("RS_Bonus_QuickDraw");
 		into.Push("RS_Bonus_NoLook");
@@ -384,15 +384,15 @@ class RS_Bonus_PowderKeg : RS_PhysicalBonus
 	override bool BigMoment(RS_ScoreEvent ev, double paid) const { return paid >= MULT + 2 * PER - 0.001; }
 }
 
-// Juggle: killed by something you caught back out of the air after throwing it, then threw
+// Air Catch: killed by something you caught back out of the air after throwing it, then threw
 // again -- before it ever landed. 1.0, +0.5 per extra catch, up to 2.0. Rare by design.
-class RS_Bonus_Juggle : RS_PhysicalBonus
+class RS_Bonus_AirCatch : RS_PhysicalBonus
 {
 	const MULT = 1.0;
 	const PER = 0.5;
 	const MAXMULT = 2.0;
 	override int Family() const { return FAM_DARING; }
-	override String DisplayName() const { return "Juggle"; }
+	override String DisplayName() const { return "Air Catch"; }
 	override double Evaluate(RS_ScoreEvent ev)
 	{
 		if (!RS_Physical.ThrownBy(ev)) return 0.0;

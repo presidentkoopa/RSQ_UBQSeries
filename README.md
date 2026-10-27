@@ -164,7 +164,7 @@ Built and run on stock QuestZDoom 17.3 (`build.sh`), with brutal22test6 + BD_Vox
   |---|---|---|---|
   | Thrown | Style | 0.2, +0.03 per m/s of impact over 3 (to 0.5) | killed by something you threw with Distance Grab |
   | Powder Keg | Style | 0.3, +0.2 per earlier kill by thrown blasts within 1 s (to 1.1) | killed by the blast of a barrel your throw set off, or one its blast set off |
-  | Juggle | Daring | 1.0, +0.5 per extra catch (to 2.0) | the thrown thing was caught back out of the air and thrown again before it landed |
+  | Air Catch | Daring | 1.0, +0.5 per extra catch (to 2.0) | the thrown thing was caught back out of the air and thrown again before it landed |
   | Skeet | Style | 0.25 | the victim was 0.85 m+ off its floor (not a flyer, not on another body) |
   | Quick Draw | Daring | 0.35 | killed with the gun you drew from a holster, within 42 tics of the draw |
   | No-Look | Daring | 0.3 | the shot left 60 degrees or more from where your head faced |
@@ -176,7 +176,7 @@ Built and run on stock QuestZDoom 17.3 (`build.sh`), with brutal22test6 + BD_Vox
   map with a pillar): a barrel at 3.8 m/s paid Thrown 0.225, a clip at 14.4 m/s 0.5; one thrown
   barrel into three imps paid Powder Keg 0.3 / 0.5 / 0.7 on one tic and 0.9 for a fourth imp
   killed by a second barrel it set off, while a barrel the player SHOT paid nothing; a barrel
-  thrown up, caught mid-air and thrown again paid Juggle 1.0 + Thrown; an imp falling from
+  thrown up, caught mid-air and thrown again paid Air Catch 1.0 + Thrown; an imp falling from
   120 units paid Skeet, a standing one did not; a shot 90 degrees off the head paid No-Look, a
   straight one did not, a missile fired sideways paid it even after the head turned to follow;
   behind the pillar a hitscan from 25 units beside the eye and a missile from there paid
@@ -187,7 +187,7 @@ Built and run on stock QuestZDoom 17.3 (`build.sh`), with brutal22test6 + BD_Vox
   the hand empty it did not.
 
   **Big moments**, for the series' SlowMo later (not wired): each of these answers
-  `BigMoment(ev, paid)` -- Juggle and Blind-fire always, Powder Keg from the third kill of one
+  `BigMoment(ev, paid)` -- Air Catch and Blind-fire always, Powder Keg from the third kill of one
   blast.
 
   **A missile's fire tic**: the head's facing and the buttons of the last 16 tics are kept on a

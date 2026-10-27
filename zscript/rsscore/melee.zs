@@ -79,6 +79,9 @@ class RS_Melee play
 		if (inf ~== "UBQS_Force") return MK_FORCE;
 		if (dt == 'Fatality') return MK_FINISH;
 		if (dt == 'Saber') return inf ~== "UBQS_Bolt" || inf ~== "UBQS_RemoteBolt" ? MK_NONE : MK_SABER;
+		// A thing thrown with Distance Grab strikes as 'Melee' (BD's death reactions want that), but
+		// it is no punch: the physical family pays for it (Thrown), so melee leaves it alone.
+		if (dt == 'Melee' && ev.inflictor && ev.inflictor != ev.killer && RS_Physical.AskGrab("throw.by", ev.inflictor) >= 0) return MK_NONE;
 		bool byPawn = ev.inflictor == ev.killer;
 		if (byPawn && ShieldInHand(ev.killer))
 		{
