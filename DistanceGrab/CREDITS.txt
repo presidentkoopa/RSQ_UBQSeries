@@ -1,0 +1,23 @@
+RSQ_DistanceGrab -- credits
+===========================
+
+Point at a thing across the room, pull it to your hand, carry it, throw it; lift doors by hand.
+Part of the Ultra Badass Quest series. For stock QuestZDoom 17.3: ZScript and lumps only, no
+engine changes. The code is new, ported in part from the project owner's desktop RS_WorldHands and
+written for this pack.
+
+WHAT THIS PK3 SHIPS, AND WHOSE IT IS
+  Generated for this pack (original, procedural; nothing sampled or ripped)
+      The sounds (sounds/RSQDG*.wav: lock, launch, hum, catch, drop): tools/gen_sounds.py.
+      The beam and the reach cone (models/rsqdg/rsqbeam*, rsqcone*) and the cone's placeholder
+      sprites (sprites/rsqdg/RSQC*, RSQE*, RSQB*): tools/gen_cone.py.
+  The aim dot's glow (sprites/rsqdg/RSQTA0.png, the same image as graphics/rsqdglo.png)
+      Added with the first laser models; no outside source is recorded for it.
+  Ideas, no code or assets taken
+      The dot: QuestZDoom's bundled laser sight (GPL-3). The cone's look: DXR's debug wire cone
+      (hw_weapon.cpp). The beam: the lightsaber blade's crossed-plane trick.
+  QuestZDoom (Emawind and Team Beef)
+      The engine, and the hand-pose script API the grab reads.
+
+SHARING
+  Free to share as part of the Ultra Badass Quest series.
