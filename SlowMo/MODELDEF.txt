@@ -1,0 +1,10 @@
+// The round: RS_Ballistics' tracer mesh (80 x 7 units along X), scaled to a 14-unit streak.
+Model RSQSM_Round
+{
+	Path "models/rsqsm"
+	Model 0 "btracer.obj"
+	Skin 0 "btracer.png"
+	Scale 0.18 0.18 0.18
+	USEACTORPITCH
+	FrameIndex RSQR A 0 0
+}

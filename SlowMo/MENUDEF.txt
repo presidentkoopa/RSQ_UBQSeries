@@ -1,0 +1,46 @@
+AddOptionMenu "OptionsMenu"
+{
+	Submenu "RSQ SlowMo", "RSQSM_Options"
+}
+
+OptionMenu "RSQSM_Options"
+{
+	Title "RSQ SlowMo"
+	StaticText "The world slows; you do not.", 1
+	StaticText "Toggle: the key (Customize Controls), or cross your wrists in front of your face.", 1
+	StaticText ""
+	Control "Slow motion on/off", "rsqsm_toggle"
+	Slider "How slow (1 = normal)", "rsm_depth", 0.1, 0.9, 0.05, 2
+	Slider "Ease in, seconds", "rsm_ramp_in", 0.0, 1.0, 0.05, 2
+	Slider "Ease out, seconds", "rsm_ramp_out", 0.0, 2.0, 0.05, 2
+	Slider "Sounds drop with it", "rsm_sound_follow", 0.0, 1.0, 0.1, 1
+	Slider "Range, map units", "rsqsm_radius", 1000, 8000, 250, 0
+	Option "Your own missiles slow too", "rsqsm_slow_own", "OnOff"
+	StaticText ""
+	StaticText "Bullets", 1
+	Option "Enemy bullets you can dodge", "rsqsm_rounds", "OnOff"
+	Slider "Round speed in slow motion", "rsqsm_round_speed", 4, 40, 1, 0
+	Option "Trails on your shots", "rsqsm_trails", "OnOff"
+	Option "Wakes behind missiles", "rsqsm_wakes", "OnOff"
+	StaticText ""
+	StaticText "Triggers", 1
+	Option "Wrist-cross gesture", "rsqsm_gesture", "OnOff"
+	Slider "Gesture: wrists within, metres", "rsqsm_gesture_gap", 0.08, 0.30, 0.01, 2
+	Slider "Gesture: hold, tics", "rsqsm_gesture_hold", 4, 35, 1, 0
+	Option "Reloading buys a moment", "rsqsm_reload", "OnOff"
+	Slider "Reload moment, ms", "rsqsm_reload_ms", 300, 3000, 100, 0
+	Slider "Reload moment, % speed", "rsqsm_reload_depth", 10, 90, 5, 0
+	StaticText ""
+	StaticText "Adrenaline", 1
+	Option "Slow motion costs adrenaline", "rsqsm_adrenaline", "OnOff"
+	Slider "Needed to start", "rsqsm_adr_min", 0, 100, 5, 0
+	Slider "A full meter lasts, seconds", "rsqsm_adr_secs", 3, 30, 1, 0
+	Slider "Per kill", "rsqsm_adr_kill", 0, 50, 1, 0
+	Slider "Per near miss", "rsqsm_adr_near", 0, 20, 1, 0
+	Option "Keep it between levels", "rsqsm_adr_keep", "OnOff"
+	StaticText ""
+	Option "Haptics", "rsqsm_haptics", "OnOff"
+	Option "Stand down for another slow-motion mod", "rsm_yield", "OnOff"
+	StaticText ""
+	SafeCommand "Reset all RSQ SlowMo settings", "resetcvar rsm_depth; resetcvar rsm_ramp_in; resetcvar rsm_ramp_out; resetcvar rsm_yield; resetcvar rsm_sound_follow; resetcvar rsqsm_radius; resetcvar rsqsm_slow_own; resetcvar rsqsm_rounds; resetcvar rsqsm_round_speed; resetcvar rsqsm_trails; resetcvar rsqsm_wakes; resetcvar rsqsm_adrenaline; resetcvar rsqsm_adr_min; resetcvar rsqsm_adr_secs; resetcvar rsqsm_adr_kill; resetcvar rsqsm_adr_near; resetcvar rsqsm_adr_keep; resetcvar rsqsm_gesture; resetcvar rsqsm_gesture_gap; resetcvar rsqsm_gesture_hold; resetcvar rsqsm_reload; resetcvar rsqsm_reload_ms; resetcvar rsqsm_reload_depth; resetcvar rsqsm_haptics", "Put every RSQ SlowMo setting back?"
+}
