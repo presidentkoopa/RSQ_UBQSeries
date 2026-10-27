@@ -96,8 +96,9 @@ is ZScript and data lumps.
   deflecting, throwing, the Force, sound and feel, and the training remote.
 
 ### TacticalRig
-- **Six regions on your body**, one weapon class each: two hips (slot 2), chest (slot 3),
-  chest or small of the back (slot 4, menu), left shoulder (slots 5-6), right shoulder (7 and up).
+- **Nine places on your body**: two hips (pistols), two pectorals (grenades), chest
+  (shotguns), stomach (rifles), two shoulders (heavy weapons, split), lower back (melee). What
+  each place holds is a setting.
 - **Holster:** bring the gun into its region and grip (or press Use). **Draw:** reach in
   with an empty hand and grip or Use; with several weapons there a small radial opens
   round your hand: move toward one and let go.
