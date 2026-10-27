@@ -58,11 +58,12 @@ class RSQTR_Torso : EventHandler
 		// The marine has no bare look: green unless blue (RS_VRBody's rule); its frames are
 		// green, blue, red. The Quake torso's: own, green, blue, red.
 		// IT FADES AS YOU LOOK DOWN (the owner, 10-27: "can the torsos fade out when I look down,
-		// I can't see my holsters or stored weapons"). Solid looking ahead; from 25 degrees down
-		// it thins, to a ghost (0.12) by 50, so the holsters and the guns on them show through.
+		// I can't see my holsters or stored weapons"). Solid looking ahead; from 12 degrees down
+		// it thins, to a ghost (0.06) by 32 -- the first version (25 -> 50) went unseen in the
+		// headset (10-27): a glance at the hip is a shallow head pitch.
 		double fade = 1.0;
 		if (RSQTR_Rig.CVarOn("rsqtr_vest_fade"))
-			fade = clamp(1.0 - (pmo.pitch - 25.0) / 25.0, 0.12, 1.0);
+			fade = clamp(1.0 - (pmo.pitch - 12.0) / 20.0, 0.06, 1.0);
 		Place(body, at, yaw, sz, marine ? (skin == 2 ? 1 : 0) : skin, fade);
 		body.A_SetRenderStyle(fade, fade > 0.99 ? STYLE_Normal : STYLE_Translucent);
 
