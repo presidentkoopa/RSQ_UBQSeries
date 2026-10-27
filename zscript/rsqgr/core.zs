@@ -334,6 +334,7 @@ class RSQGR_Core : EventHandler
 				h.ropeLen = min(h.ropeLen, d);
 				h.ropeLen = max(minLen, h.ropeLen - RSQGR_Util.Num("rsqgr_reel_speed", 12));
 			}
+			h.slack = !grounded || h.reelHeld;
 			if (d > maxLen + 64) { LetGo(h, false); continue; }
 			if (grounded && !h.reelHeld)
 			{
@@ -390,6 +391,15 @@ class RSQGR_Core : EventHandler
 				v += corr;
 				double vl = v.Length();
 				if (!h.reelHeld && d <= h.ropeLen + 1.0 && vl > 0.01) v *= vt / vl;
+			}
+
+			// A reel pulls in at about its own speed, not faster: the correction above
+			// stacks on momentum and measured up to 29 u/tic reeling to a Cyberdemon.
+			if (h.reelHeld)
+			{
+				double vin = -(v dot n);
+				double vmax = RSQGR_Util.Num("rsqgr_reel_speed", 12) * 1.5;
+				if (vin > vmax) v += n * (vin - vmax);
 			}
 
 			if (!grounded && d >= h.ropeLen - 1.0)
