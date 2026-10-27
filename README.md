@@ -34,6 +34,38 @@ any melee weapon, plus **Slappers Only**. See `readme.txt`. The saber and the Sh
 The one change to a shadowed file is the claim bracket in `PerPlayerStats.zsc` (`claimStack`),
 used by the ShieldSaw's bash and grind.
 
+## The screens (`rsq/ui/`)
+
+The owner's Gun Bonsai mockups, drawn instead of Gun Bonsai's own HUD, status screen and level-up
+menus. Options: **Gun Bonsai Screens** (skin, HUD inset, HUD size, ammo and health row).
+
+```
+rsq_ui_skin       0 Gun Bonsai's own, 1 Mockup (the recreation), 2 Hex Rail, 3 Terminal
+rsq_ui_inset      fraction of each screen edge kept clear (the headset's edge of view)
+rsq_ui_hud_scale  HUD size
+rsq_ui_bottom     per-hand ammo, health, face and armour along the bottom
+```
+
+How it hooks Gun Bonsai: `RSQUI_Handler` draws the HUD; the shadowed `EventHandler.zsc` skips Gun
+Bonsai's own HUD while a skin is on (one cvar check). Gun Bonsai opens its menus by name, and this
+patch's MENUDEF points those three names at routers (`rsq/ui/router.zs`) that are Gun Bonsai's own
+menus with skin 0 and open the skin's screen otherwise. No other Gun Bonsai file is shadowed.
+
+While a skin is on it sets RS Score's `rs_score_hide` (the skin draws the score) and, with the
+bottom row on, Brutal Doom's `bd_sbartype` to 0 (its fullscreen HUD would sit under the row). Both
+are put back when the skin is set to 0. Remove the patch with a skin on and they stay as set:
+`rs_score_hide 0`, `bd_sbartype 1`.
+
+Fonts and art are made by `tools/rsqui_bake.py`; gun pictures by `tools/rsqui_gunshots.py` (the
+gun's own model on the test rig, keyed and cropped into `graphics/rsqui/guns/<Class>.png`; a gun
+without one shows its icon or pickup sprite).
+
+Fonts (SIL Open Font License 1.1, licence beside each in `fonts/*/OFL.txt`), converted to bitmap
+glyphs under other names: Press Start 2P (The Press Start 2P Project Authors, CodeMan38),
+VT323 (The VT323 Project Authors, Peter Hull), Orbitron (The Orbitron Project Authors, Matt
+McInerney / The League of Moveable Type). The gauge frame is Gun Bonsai's own HUD art. Screens
+designed by presidentkoopa.
+
 ## Known collisions
 
 Other Gun Bonsai patches that shadow the same files will silently clobber, or be

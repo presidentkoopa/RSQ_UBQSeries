@@ -126,6 +126,10 @@ class TFLV_EventHandler : StaticEventHandler {
   }
 
   /* ui */ override void RenderOverlay(RenderEvent evt) {
+    // RSQ UI: with rsq_ui_skin on, a skin draws both gauges (RSQUI_Handler, rsq/ui/dispatch.zs).
+    // Asked by cvar, not by type: this file compiles in Gun Bonsai's ZSCRIPT, before the patch's.
+    int rsqSkin = TFLV_Settings.GetInt("rsq_ui_skin");
+    if (rsqSkin >= 1 && rsqSkin <= 3) return;
     if (!ShouldDrawHUD(consoleplayer)) return;
     if (!hud) hud = new("TFLV_HUD");
 
