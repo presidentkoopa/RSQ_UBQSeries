@@ -1,0 +1,11 @@
+// RSQ_Accessibility -- the comfort vignette (rsqa_vignette): a post-process pass on the 3D scene,
+// run per eye by QuestZDoom, so the dark edge sits on each eye's own view and follows the head
+// with no lag at all (nothing is drawn in the world). Off until RSQA_Handler enables it; the two
+// uniforms are set every frame it is on.
+HardwareShader PostProcess scene
+{
+	Name "RSQA_Vignette"
+	Shader "shaders/pp/rsqa_vignette.fp" 330
+	Uniform float rsqaStrength
+	Uniform float rsqaInner
+}
