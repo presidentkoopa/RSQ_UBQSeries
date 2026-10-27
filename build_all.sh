@@ -1,5 +1,5 @@
 #!/bin/sh
-# build_all.sh -- pack all four mods into pk3/ from the folders beside it.
+# build_all.sh -- pack every mod into pk3/ from the folders beside it.
 # Needs `zip`. Each folder keeps its own original build script too (DistanceGrab and
 # LaserSight: build.ps1 on Windows; ShieldSaw: build.sh); this does the same packing
 # in one go on any machine with a shell. Include lists match those scripts exactly.
@@ -14,7 +14,7 @@ pack_list() {   # <folder> <pk3 name> <model dir>
 	cd "$HUB/$1"
 	rm -f "$OUT/$2"
 	F=""
-	for f in zscript.txt MAPINFO.txt CVARINFO.txt TRNSLATE.txt KEYCONF.txt MENUDEF.txt MODELDEF.txt SNDINFO.txt MASSDEF.txt ANIMDEFS.txt; do
+	for f in zscript.txt MAPINFO.txt CVARINFO.txt TRNSLATE.txt KEYCONF.txt MENUDEF.txt MODELDEF.txt SNDINFO.txt MASSDEF.txt ANIMDEFS.txt TEXTURES.txt GLDEFS.txt; do
 		[ -e "$f" ] && F="$F $f"
 	done
 	for d in zscript graphics sprites sounds "$3"; do
@@ -25,6 +25,8 @@ pack_list() {   # <folder> <pk3 name> <model dir>
 }
 pack_list DistanceGrab RSQ_DistanceGrab.pk3 models/rsqdg
 pack_list LaserSight   RSQ_LaserSight.pk3   models/rsqls
+pack_list TacticalRig  RSQ_TacticalRig.pk3  models/rsqtr
+pack_list SlowMo       RSQ_SlowMo.pk3       models/rsqsm
 
 # ShieldSaw: everything but docs, scripts and git files (its build.sh).
 cd "$HUB/ShieldSaw"
