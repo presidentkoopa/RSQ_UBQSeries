@@ -76,5 +76,6 @@ user float rsqtr_vest_f     = -0.04;   // metres forward of your eyes
 user float rsqtr_vest_size  = 1.0;
 user int   rsqtr_vest_low   = 35;      // health under which it breathes red
 server bool rsqtr_vest_fade = true;
-server bool rsqtr_helmet    = true;    // a helmet on your head with the marine torso (seen only in mirrors)    // the torso fades as you look down (local look only)
+server bool rsqtr_helmet    = true;
+server float rsqtr_helmet_u = 0.0;    // metres to raise (+) or lower (-) the helmet from where it rests on the torso    // a helmet on your head with the marine torso (seen only in mirrors)    // the torso fades as you look down (local look only)
 user int    rsqtr_cfgver      = 0;       // settings version this machine has been moved to (internal)
