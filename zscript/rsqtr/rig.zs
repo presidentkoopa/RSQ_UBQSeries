@@ -675,6 +675,30 @@ class RSQTR_Rig : EventHandler
 	{
 		Array<String> own;
 		Owned(pmo, r, own);
+		// A SABER PUT ANYWHERE GOES TO ITS OWN HOLSTER (the owner, 10-27: "if I try to put the
+		// sabers anywhere else, they just jump to their dedicated slots"). Put on an empty holster,
+		// the saber goes home instead; on a holster with a gun, the gun is drawn as always and the
+		// saber, out of the hand, shows in its own holster (DrawMarkers).
+		let offW = p.OffhandWeapon;
+		if (h == 1 && own.Size() == 0 && offW && IsSaber(offW) && IsSecondSaber(offW))
+		{
+			EventHandler.SendNetworkEvent("ubqs_dual_in");
+			pmo.A_StartSound("rsqtr/holster", CHAN_AUTO, CHANF_LOCAL, 0.8);
+			RSQTR_Buzzer.Start(pmo, h, 0.55, 5);
+			return;
+		}
+		let mainW = p.ReadyWeapon;
+		if (h == 0 && mainW && IsSaber(mainW) && !IsSecondSaber(mainW))
+		{
+			int home = RSQTR_Body.LeftHanded() ? RSQTR_Region.SABER_R : RSQTR_Region.SABER_L;
+			bool itsOwn = r == home || ((r == 0 || r == 1) && Flag("rsqtr_saber_hip", p, false));
+			if (!itsOwn && own.Size() == 0)
+			{
+				EventHandler.SendNetworkEvent("rsqtr_holster", home);
+				RSQTR_Buzzer.Start(pmo, h, 0.55, 5);
+				return;
+			}
+		}
 		// THE SECOND SABER'S HOLSTER: the saber itself takes it out to the off hand or puts it
 		// back (its ubqs_dual_out / ubqs_dual_in, the same thing its Dual key does).
 		if (own.Size() == 1)
