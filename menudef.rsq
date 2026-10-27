@@ -1,6 +1,14 @@
-// Gun Bonsai VR patch -- the melee upgrades' options: one short page, the rest under Advanced.
+// Gun Bonsai VR patch -- the suite upgrades' options: one short page, the rest under Advanced.
 AddOptionMenu "OptionsMenu"
 {
+	Submenu "$RSQ_MENU_TITLE", "RSQ_MeleeOptions"
+}
+
+// and in Gun Bonsai's own options, at the bottom: Slappers Only and the way in
+AddOptionMenu "GunBonsaiOptions"
+{
+	StaticText " "
+	Option "$RSQ_MENU_SLAPPERS", "rsq_slappers", "OnOff"
 	Submenu "$RSQ_MENU_TITLE", "RSQ_MeleeOptions"
 }
 
@@ -9,7 +17,7 @@ OptionMenu "RSQ_MeleeOptions"
 	Title "$RSQ_MENU_TITLE"
 	Option "$RSQ_MENU_SLAPPERS", "rsq_slappers", "OnOff"
 	Option "$RSQ_MENU_GLOVES", "rsq_gloves", "OnOff"
-	StaticText ""
+	StaticText " "
 	Submenu "$RSQ_MENU_ADV", "RSQ_MeleeAdvanced"
 }
 

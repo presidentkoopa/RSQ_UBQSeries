@@ -100,8 +100,13 @@ class TFLV_Debug : Object play {
     // like score XP arriving at the right one until a level comes up.
     string credited = "(no attributed kill yet)";
     if (stats.lastKillInfo) credited = stats.lastKillInfo.wpnClass;
+    if (stats.lastKillPooled) credited = "(the player pool: a throw)";
     console.printf("  last kill credited to %s; score-to-XP factor %.2f",
       credited, bonsai_score_to_xp_factor);
+    // VR PATCH (suite): XP no gun earned (Distance Grab throws and the blasts
+    // they set off), and the player XP / level it has become.
+    console.printf("  pooled hits %d, pool %.1f / %d, player xp %d level %d",
+      stats.provPooled, stats.poolXP, bonsai_base_level_cost, stats.XP, stats.level);
   }
 
   static void AddAllUpgrades(TFLV_GunBonsaiService service, int player) {

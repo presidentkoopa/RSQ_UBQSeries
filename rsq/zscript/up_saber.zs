@@ -21,12 +21,12 @@ class RSQ_Upgrade_Momentum : RSQ_Upgrade_SaberMarker
 	}
 }
 
-// RIPOSTE EDGE: a block primes the blade; the next cut inside the window does double.
+// RIPOSTE EDGE: a block primes the blade; the next cut inside the window does x1.5 (+0.25 a level).
 class RSQ_Upgrade_RiposteEdge : RSQ_Upgrade_SaberMarker
 {
 	override void GetTooltipFields(Dictionary fields, uint level)
 	{
-		fields.Insert("mult", string.format("x%.2f", 2.0 + 0.25 * (level - 1)));
+		fields.Insert("mult", string.format("x%.2f", 1.5 + 0.25 * (level - 1)));
 		fields.Insert("time", AsSeconds(35 + 17 * (level - 1)));
 	}
 }

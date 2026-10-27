@@ -18,19 +18,37 @@ class RSQM play
 	static bool IsSaberName(String n) { return n ~== "UBQS_Saber" || n ~== "UBQS_SaberOff"; }
 	static bool IsShieldName(String n) { return n ~== "SSQ_ShieldSaw"; }
 
-	// What Slappers Only lets you keep: the gloves, the sabers, the ShieldSaw, the Force hand,
-	// Brutal Doom's fists, axe and sword, the BD22 pack's off-hand fist -- and anything a mod
-	// itself flags as a melee weapon (the chainsaw is one).
-	static bool IsSlapperClass(Class<Actor> c)
+	// WHAT SLAPPERS ONLY LETS YOU KEEP, in any base game -- no list of one mod's names. The suite's
+	// own melee (the gloves, the sabers, the ShieldSaw, the Force hand), and then anything the loaded
+	// game itself says is not a gun:
+	//   - flagged a melee weapon (+WEAPON.MELEEWEAPON: vanilla's fist and chainsaw, Brutal Doom's
+	//     fists and axe, most mods' knives);
+	//   - using no ammo at all (a hands weapon such as BD22Q's empty off hand, a sword, a joke weapon
+	//     like Brutal Doom's Dragonslayer);
+	//   - or, for a weapon this player has already used, Gun Bonsai's own type inference calling it
+	//     melee (WeaponInfo.IsMelee -- which also honours a BONSAIRC `type ... : MELEE` line).
+	static bool IsSlapperClass(Class<Actor> c, Actor pawn = null)
 	{
 		if (!c) return false;
 		String n = c.GetClassName();
-		if (IsGloveName(n) || IsSaberName(n) || IsShieldName(n)) return true;
-		if (n ~== "Melee_Attacks" || n ~== "BrutalAxe" || n ~== "DSweap" || n ~== "RSQ_Hands" || n ~== "UBQS_ForceHand") return true;
+		if (IsGloveName(n) || IsSaberName(n) || IsShieldName(n) || n ~== "UBQS_ForceHand") return true;
 		let w = (Class<Weapon>)(c);
 		if (!w) return false;
 		let d = GetDefaultByType(w);
-		return d && d.bMeleeWeapon;
+		if (!d) return false;
+		if (d.bMeleeWeapon) return true;
+		if (!d.AmmoType1 && !d.AmmoType2) return true;
+		if (pawn)
+		{
+			let stats = TFLV_PerPlayerStats.GetStatsFor(pawn);
+			if (stats)
+				for (int i = 0; i < stats.weapons.Size(); ++i)
+				{
+					let info = stats.weapons[i];
+					if (info && info.wpn && info.wpn.GetClass() == w && info.IsMelee()) return true;
+				}
+		}
+		return false;
 	}
 
 	// ---- levels ----------------------------------------------------------------------------
@@ -63,6 +81,44 @@ class RSQM play
 			if (w) best = max(best, LevelOn(w, upClass));
 		}
 		return best;
+	}
+
+	// The level of a PLAYER upgrade (Gun Bonsai's player bag): the suite's perks that are no
+	// one weapon's -- the grab, the rig, slow motion, the two hands, the body.
+	static int PLevel(Actor pawn, String upClass)
+	{
+		if (!pawn) return 0;
+		let stats = TFLV_PerPlayerStats.GetStatsFor(pawn);
+		if (!stats || !stats.upgrades) return 0;
+		for (int i = 0; i < stats.upgrades.upgrades.Size(); ++i)
+		{
+			let u = stats.upgrades.upgrades[i];
+			if (u && u.GetClassName() == upClass) return u.enabled ? int(u.level) : 0;
+		}
+		return 0;
+	}
+
+	// level time, for code inside an upgrade (whose own `level` field hides the global)
+	static int Now() { return level.maptime; }
+
+	// Is that mod loaded? Asked by one of its class names, never a literal.
+	static bool Has(String cls) { return Object.FindClass(cls) != null; }
+
+	// The first service of that name, or null.
+	static Service Svc(String name) { let it = ServiceIterator.Find(name); return it.Next(); }
+
+	// The hand that caused this damage (0 main, 1 off, -1 none), read without registering.
+	static int HandOf(Actor pawn, Actor shot)
+	{
+		let stats = TFLV_PerPlayerStats.GetStatsFor(pawn);
+		return stats ? stats.HandOfShot(shot) : -1;
+	}
+
+	// RSQ SlowMo is slowing the world right now (RSQSM_Service "active", by name).
+	static bool Slowed()
+	{
+		let s = Svc("RSQSM_Service");
+		return s && s.GetInt("active") > 0;
 	}
 
 	// An item another mod may or may not define: reached through a string, never a literal (a
@@ -136,6 +192,8 @@ class RSQM play
 //   "credit.push"  objectArg = a Weapon: damage the player's own body deals until "credit.pop"
 //                  is paid to that weapon (the ShieldSaw's bash and grind). intArg = type hint.
 //   "credit.pop"
+//   "plevel"       stringArg = a PLAYER upgrade's short name, objectArg = the pawn. >= 0.
+//   "claim"        objectArg = an actor whose master is a Weapon: pays it (and its puffs) to it.
 //   "ram"          objectArg = a monster the ShieldSaw just bashed, intArg = player number,
 //                  doubleArg = how hard: Battering Ram turns it into a missile, if learned.
 class RSQ_MeleeUpgradeService : Service
@@ -151,6 +209,22 @@ class RSQ_MeleeUpgradeService : Service
 			let a = Actor(objectArg);
 			if (a) return RSQM.LevelAny(a, uc);
 			return 0;
+		}
+		if (request == "plevel")
+		{
+			// a player upgrade's level; objectArg = the pawn (the grab and the rig ask this)
+			return RSQM.PLevel(Actor(objectArg), RSQM.UpClass(stringArg));
+		}
+		if (request == "claim")
+		{
+			// objectArg = an actor a mod fired for a weapon, whose MASTER is that weapon: it, and
+			// what it spawns (a hitscan's puff), is paid to that weapon. intArg = type hint. The
+			// ShieldSaw's returned bullet (SSQ_Ricochet) is the case: a helper fires it.
+			let a = Actor(objectArg);
+			let w = a ? Weapon(a.master) : null;
+			if (!w || !w.owner) return 0;
+			TFLV_VR_Attribution.Claim(a, w, intArg);
+			return 1;
 		}
 		if (request == "credit.push" || request == "credit.pop")
 		{
