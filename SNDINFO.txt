@@ -7,6 +7,8 @@
 
 rsscore/pointreward   sounds/score/points_reward.ogg
 rsscore/fullheal      sounds/score/points_fullheal.ogg
+rsscore/revive        sounds/score/point_revive.ogg
 
 $limit rsscore/pointreward 0
 $limit rsscore/fullheal    0
+$limit rsscore/revive      0

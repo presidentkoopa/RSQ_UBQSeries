@@ -1,0 +1,43 @@
+// RSQ_Score options (Quest series): the original had none, and a headset has no console to type in.
+AddOptionMenu "OptionsMenu"
+{
+	Submenu "Score", "RSQSC_Options"
+}
+
+OptionValue "RSQSC_Rewards"
+{
+	0, "Ammo regen, then a life"
+	1, "A life, then ammo regen"
+	2, "Ammo regen only"
+	3, "A life every time"
+	4, "No rewards"
+}
+
+OptionValue "RSQSC_Start"
+{
+	0, "Nothing carries over"
+	1, "The running total"
+	2, "Total and rewards"
+	3, "Everything"
+}
+
+OptionMenu "RSQSC_Options"
+{
+	Title "Score"
+	StaticText "What you see"
+	Option "Hide the score", "rs_score_hide", "OnOff"
+	Option "Flash the bar on a gain", "rs_score_flash", "OnOff"
+	Option "Flash the whole view on a reward or revival", "rs_score_screenflash", "OnOff"
+	Slider "How long a bonus stays (tics)", "rs_score_bonustime", 35, 193, 7, 0
+	Slider "Size", "rs_score_scale", 50, 200, 5, 0
+	Slider "Across (percent)", "rs_score_x", 0, 100, 1, 0
+	Slider "Down (percent)", "rs_score_y", 0, 100, 1, 0
+	StaticText ""
+	StaticText "The game (host)"
+	Option "Crossing the target pays", "rs_score_rewardtypes", "RSQSC_Rewards"
+	Option "On a new map, keep", "rs_score_startmode", "RSQSC_Start"
+	Slider "Respawned / raised monsters pay (percent)", "rs_score_farmpercent", 0, 100, 5, 0
+	Slider "Melee family cap (percent, 0 off)", "rs_score_cap_melee", 0, 300, 10, 0
+	StaticText ""
+	SafeCommand "Reset all Score settings", "resetcvar rs_score_hide rs_score_flash rs_score_screenflash rs_score_bonustime rs_score_scale rs_score_x rs_score_y rs_score_rewardtypes rs_score_startmode rs_score_farmpercent rs_score_cap_efficiency rs_score_cap_style rs_score_cap_daring rs_score_cap_melee rs_score_cap_total", "Put every Score setting back?"
+}

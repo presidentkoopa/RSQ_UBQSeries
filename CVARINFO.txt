@@ -58,6 +58,7 @@ server noarchive bool rs_score_debug = false;
 user bool rs_score_hide         = false;
 user bool rs_score_norewards    = false;
 user bool rs_score_flash        = true;
+user bool rs_score_screenflash  = true;   // the whole-view colour flash on a reward and a revival (Quest series)
 user int  rs_score_bonustime    = 35;
 user int  rs_score_scale        = 100;
 user int  rs_score_x            = 85;

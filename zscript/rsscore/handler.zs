@@ -599,7 +599,7 @@ class RS_ScoreHandler : EventHandler
 			tr.owner.A_StartSound("rsscore/pointreward", CHAN_VOICE, CHANF_LOCAL, 1.0, ATTN_NONE);
 
 			double a = 1.0 - (0.65 ** crossings);
-			tr.owner.A_SetBlend("80 D4 FF", a, 26, "80 D4 FF", 0.0);
+			if (ScreenFlash(tr.owner)) tr.owner.A_SetBlend("80 D4 FF", a, 26, "80 D4 FF", 0.0);
 		}
 
 		tr.rewardTic = level.maptime;
@@ -623,7 +623,7 @@ class RS_ScoreHandler : EventHandler
 		mo.A_StartSound("rsscore/fullheal", CHAN_VOICE, CHANF_LOCAL, 1.0, ATTN_NONE);
 
 		double a = 1.0 - (0.5 ** n);
-		mo.A_SetBlend("C0 E0 FF", a, 26, "C0 7C FF", 0.0);
+		if (ScreenFlash(mo)) mo.A_SetBlend("C0 E0 FF", a, 26, "C0 7C FF", 0.0);
 
 		tr.rewardLifeTic = 0;
 		tr.pendingLives  = 0;
@@ -756,6 +756,12 @@ class RS_ScoreHandler : EventHandler
 
 				tr.extraLives -= 1;
 				tr.reviveTic = level.maptime;
+				// THE REVIVAL, KEPT CHEAP FOR A QUEST. Dakka's revival was fire and explosion
+				// actors (not carried, see CREDITS.md); here a life spent is a sound and one short
+				// warm flash -- no actors, no particles, nothing for the headset to draw but a tint,
+				// and the tint is the player's to turn off (rs_score_screenflash).
+				mo.A_StartSound("rsscore/revive", CHAN_VOICE, CHANF_LOCAL, 1.0, ATTN_NONE);
+				if (ScreenFlash(mo)) mo.A_SetBlend("FF C0 60", 0.45, 20, "FF 60 20", 0.0);
 
 				if (DebugOn())
 				{
@@ -797,6 +803,16 @@ class RS_ScoreHandler : EventHandler
 	}
 
 	// ----------------------------------------------------------------- helpers
+
+	// A whole-view colour flash is the one effect that can be unpleasant in a headset; it is the
+	// player's own choice (a user cvar, read through their replicated userinfo, so every machine
+	// agrees and it only changes that player's view).
+	static bool ScreenFlash(Actor mo)
+	{
+		if (!mo || !mo.player) return false;
+		let cv = CVar.GetCVar("rs_score_screenflash", mo.player);
+		return !cv || cv.GetBool();
+	}
 
 	static int CvarInt(String name, int fallback)
 	{

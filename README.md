@@ -1,4 +1,8 @@
-# RS_Score
+# RS_Score -- the Quest series version (RSQ_Score)
+
+This copy is the owner's RS_Score brought to **stock QuestZDoom 17.3** for the Ultra Badass Quest
+series: Brutal Doom compatible, a fourth bonus family for melee, a menu, and a light revival cue.
+What changed is listed under *Quest version* at the end; everything above it is the original.
 
 A scoring system for GZDoom: points for a kill, bonuses for how you got it, and a
 per-map target that pays out when you cross it.
@@ -106,3 +110,33 @@ graphics are **ijon's**, from *Dakka* (<https://github.com/0dot0repeating/dakka>
 released under the WTFPL. This is a rebuild of those rules in ZScript, not a copy of
 the code. See [CREDITS.md](CREDITS.md) for the full breakdown, including which
 assets are **not** ours to redistribute.
+
+## Quest version
+
+Built and run on stock QuestZDoom 17.3 (`build.sh`), with brutal22test6 + BD_VoxelPack + BD22Q.
+
+- **Only real kills score.** A kill is a monster the level counts (+COUNTKILL), plus Lost Souls.
+  Brutal Doom spawns helper actors flagged as monsters that "die" as effects play out: one
+  Brutal Doom imp (80 health) scored **1305** because a blood smear (BootSmearerRed, 1000 health)
+  died too. Now **80**, the same as the engine's own kill count. The census uses the same rule.
+- **A fourth family, Melee** (steel blue), for the series' VR melee. From damage types and
+  inflictors measured in Brutal Doom's actors, and the ShieldSaw's service, with no links:
+
+  | Bonus | Pays | For |
+  |---|---|---|
+  | Fatality | 0.5 | Brutal Doom's execution landed the kill |
+  | Cleaved | 0.3 | a melee kill that took the body apart (its extreme death) |
+  | Hurled | 0.3, +0.15 per earlier kill by the same throw (to 0.75) | the ShieldSaw or the saber thrown |
+  | Shield Work | 0.3 bash, 0.2 grind | the shield itself in the hand |
+  | Riposte | 0.4 | killed within 3 s of the shield blocking that monster's attack |
+  | Return to Sender | 0.4 | killed by a shot sent back: turned by the shield or the saber, or a returned bullet |
+  | Combo | 0.1 per different melee move inside 4 s (to 0.4) | a jab, a saber cut, a saw throw... |
+
+  Tested on the rig: a disc throw through two imps paid Cleaved + Hurled 0.30, then 0.45; a
+  turned imp fireball paid Return to Sender; a kill after a shield block paid Riposte + Shield Work.
+  `rs_score_cap_melee` caps the family (0 off). The original thirteen are unchanged.
+- **Options -> Score**: a menu (the original had none; a headset has no console).
+- **The revival**: Dakka's fire-and-explosion revival was never carried; a life spent is now a
+  sound and one short warm flash, no actors. *Flash the whole view on a reward or revival*
+  (`rs_score_screenflash`) turns every whole-view tint off.
+- ZScript header 4.14 (the engine's version), so no version warning.

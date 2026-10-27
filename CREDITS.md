@@ -38,3 +38,10 @@ spectacle is not.
   therefore **not** *Dakka*'s and cannot be.
 - Measuring gravity from the actor rather than assuming it, so the Air bonus is
   right under a jump modifier, in low gravity and in water.
+
+## The Quest series version
+
+The Brutal Doom kill rule, the Melee family, the menu and the light revival cue are the Quest
+series' (2026-10-27), built on the owner's RS_Score. **Publishing:** this version is delivered to
+the owner, not to the public series hub, because the fonts above are not licensed for distribution;
+sharing it is the owner's decision.
