@@ -13,4 +13,4 @@ alias "+rsqgr_off"  "event rsqgr_press 1"
 alias "-rsqgr_off"  "event rsqgr_release 1"
 
 // Reset All (generated from CVARINFO's defaults)
-alias rsqgr_reset "rsqgr_on 1; rsqgr_geo_mode 0; rsqgr_speed 40; rsqgr_range 1024; rsqgr_retract_speed 64; rsqgr_reel_speed 12; rsqgr_min_len 32; rsqgr_max_speed 30; rsqgr_pump 0.25; rsqgr_drag 0.0005; rsqgr_attach 0.6; rsqgr_hop 6; rsqgr_mass_max 1000; rsqgr_slide_speed 10; rsqgr_slide_gap 16; rsqgr_rope_segs 12; rsqgr_rope_width 0.6; rsqgr_debug 0"
+alias rsqgr_reset "rsqgr_on 1; rsqgr_geo_mode 0; rsqgr_speed 40; rsqgr_range 1024; rsqgr_retract_speed 64; rsqgr_reel_speed 12; rsqgr_min_len 32; rsqgr_max_speed 30; rsqgr_pump 0.25; rsqgr_drag 0.002; rsqgr_rope_friction 0.025; rsqgr_attach 0.6; rsqgr_hop 6; rsqgr_mass_max 1000; rsqgr_slide_speed 10; rsqgr_slide_gap 16; rsqgr_rope_segs 12; rsqgr_rope_width 0.6; rsqgr_debug 0"

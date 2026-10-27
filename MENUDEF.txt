@@ -40,7 +40,8 @@ OptionMenu "RSQGR_Tuning"
 	StaticText " "
 	Slider "Shortest Rope", "rsqgr_min_len", 16, 128, 8, 0
 	Slider "Rope Height", "rsqgr_attach", 0.3, 0.9, 0.05, 2
-	Slider "Air Drag", "rsqgr_drag", 0.0, 0.02, 0.001, 3
+	Slider "Air Drag", "rsqgr_drag", 0.0, 0.01, 0.0005, 4
+	Slider "Rope Friction", "rsqgr_rope_friction", 0.0, 0.1, 0.005, 3
 	Slider "Ledge Hop", "rsqgr_hop", 0, 12, 1, 0
 	Slider "Return Speed", "rsqgr_retract_speed", 16, 128, 8, 0
 	Slider "Stop Distance", "rsqgr_slide_gap", 0, 64, 4, 0

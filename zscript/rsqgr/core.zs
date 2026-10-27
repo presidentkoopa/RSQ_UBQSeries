@@ -420,7 +420,26 @@ class RSQGR_Core : EventHandler
 					push -= n * (push dot n);
 					v += push * RSQGR_Util.Num("rsqgr_pump", 0.25);
 				}
-				v *= 1.0 - clamp(RSQGR_Util.Num("rsqgr_drag", 0.0005), 0.0, 0.2);
+				// THE SWING DIES DOWN. Two losses on the TANGENTIAL speed only (the radial
+				// part is the rope's): air drag in proportion to speed (rsqgr_drag, per tic)
+				// and a small constant rope/body friction (rsqgr_rope_friction, u/tic per
+				// tic) that finishes the last small swings -- drag alone would leave a
+				// 1-degree sway going for a minute. Tuned in a model of this integrator
+				// (40 deg, L 200..643): ~12% of the amplitude per half swing, settled in
+				// 8-10 half swings. When the swing is that small and slow near the bottom,
+				// it stops: hanging still under the anchor. The stick pump (0.25) is ten
+				// times the friction, so a pumped swing keeps going.
+				Vector3 vt = v - n * (v dot n);
+				double st = vt.Length();
+				if (st > 0)
+				{
+					double k = clamp(RSQGR_Util.Num("rsqgr_drag", 0.002), 0.0, 0.2);
+					double f = max(0.0, RSQGR_Util.Num("rsqgr_rope_friction", 0.025));
+					double ns = max(0.0, st * (1.0 - k) - f);
+					double ang = acos(clamp(-n.z, -1.0, 1.0));   // from hanging straight down
+					if (ns <= f && ang < 1.5 && fwd == 0 && side == 0) ns = 0;
+					v = (v - vt) + vt * (ns / st);
+				}
 			}
 			pmo.vel = v;
 			CapSpeed(pmo);
