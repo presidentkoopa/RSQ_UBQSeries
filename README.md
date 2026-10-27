@@ -69,8 +69,8 @@ Turn on **Cigarettes** in the menu. A pocket on your left chest holds a few
 
 ## The torso (optional)
 
-Options → Tactical Rig → *Wear a torso*: a torso on the rig's body that your holsters sit
-on. It turns green or blue with your armour and breathes red at low health. Sliders move
+Options → Tactical Rig → *Wear a torso*: Quake's Grunt torso (see Credits) on the rig's
+body, for your holsters to sit on. It turns green or blue with your armour and breathes red at low health. Sliders move
 and size it.
 
 ## Install
@@ -89,13 +89,14 @@ the console player only. RSQ_DistanceGrab already asks `rig.busy`.
 ## Credits
 
 - **Ermac**: the vest and the cigarette are his ideas (Virtual Tactical Vest). The
-  cigarette, butt and smoke models and textures are his, from that mod; the Zippo is his
-  voxel lighter from ZBlood-VR (his own model, per its credits). The cigarette texture's
-  pack artwork (from another model) is blanked out here. Sharing his work in this pack
-  is the project owner's decision.
-- **Vittorio Romeo**: the torso is the one from his original Quake VR mod (converted from
-  Quake's .mdl; recoloured skins from the project owner's RS_VRBody). Shipping it is the
-  project owner's decision.
+  cigarette, butt and smoke come from that mod, whose credits name him as their modeller;
+  the cigarette's texture is an atlas it shares with a Sketchfab cigarette-pack model (a real
+  brand's pack art, blanked out here). The Zippo is the voxel lighter from his ZBlood-VR,
+  credited to him there.
+- **The torso** is Quake's Grunt (id Software, *Quake*, 1996): Vittorio Romeo's original
+  Quake VR mod cut it into a torso, and the project owner's RS_VRBody recoloured its skin.
+  It is id Software's mesh, not an authored model; converted here from Quake's .mdl to MD3.
+- Sharing other people's work in this pack is the project owner's decision.
 - The region spheres are the project owner's, from his RS_Holsters.
 - Holster, draw and foley sounds: RS_CombatFX (the project owner's effects library).
 - The Zippo and cigarette sounds and the region ring are generated (`tools/`).

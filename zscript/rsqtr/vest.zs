@@ -1,9 +1,9 @@
 // THE TORSO (optional, off by default: rsqtr_vest).
 //
 // A torso worn on the rig's body frame, so the holsters sit on something you can
-// see and each stored gun hangs on it. The Quake torso from Vittorio Romeo's Quake VR
-// (his original mod, several years back), the same vrtorso.mdl the owner's RS_VRBody and
-// REMA avatar work use: Doom meets Quake. Converted to MD3 by tools/mdl2md3.py (stock
+// see and each stored gun hangs on it. Quake's Grunt (id Software), cut into a torso by
+// Vittorio Romeo's original Quake VR mod -- vrtorso.mdl, the same file the owner's RS_VRBody
+// and REMA avatar work use: Doom meets Quake. Converted to MD3 by tools/mdl2md3.py (stock
 // QuestZDoom reads MD3, not Quake .mdl), with RS_VRBody's recoloured skins and its rule:
 //   no armour      the torso's own skin
 //   green armour   green
