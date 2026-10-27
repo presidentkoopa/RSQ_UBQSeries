@@ -317,6 +317,10 @@ class RSQSM_Clock : EventHandler
 	{
 		if (RealTime(a)) return;
 		if (act.Size() >= MAXSCAN) return;
+		// Once only: a thing spawned before this tic's scan is found by the scan AND by the spawn
+		// hook. Twice listed, each copy took the other's stretch for a new state, so its tics grew
+		// 16x a tic until it froze, and its pushes were scaled twice.
+		if (act.Find(a) < act.Size()) return;
 		int i = act.Size();
 		double f = spawned ? FactorFor(a, a.Speed) : 1.0;
 		double pre = 1.0;
@@ -482,6 +486,9 @@ class RSQSM_Clock : EventHandler
 		}
 		Vector3 d = a.vel - expect;
 		bool touching = onFloor || a.pos.z + a.height >= a.ceilingz - 0.01;
+		// Pushed up off the floor (a bash, a pain leap) is a push, not a landing: slowed like any
+		// other. Kept at full speed under f^2 gravity, a quarter-speed leap went 16x higher.
+		if (onFloor && a.vel.z > 0.01) touching = false;
 		if (touching) d.z = 0;          // a landing or a bump on the ceiling
 		if (d.Length() <= 0.5) return;
 		if (a.bMISSILE && abs(a.vel.Length() - a.Speed) <= a.Speed * 0.05 + 0.01) return;
