@@ -1,0 +1,60 @@
+version "4.14"
+class GRP_Probe : EventHandler
+{
+	static const Name cls[] = { "ZombieMan", "DoomImp", "Demon", "Cacodemon", "BaronOfHell", "Cyberdemon", "ExplosiveBarrel", "Revenant", "Fatso", "LostSoul", "Arachnotron", "ShotgunGuy" };
+	double lastz; int airT;
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		let pmo = players[e.Player].mo; if (!pmo) return;
+		if (e.Name == "grp_tp")
+		{
+			pmo.SetOrigin((e.Args[0], e.Args[1], pmo.floorz), false);
+			pmo.SetOrigin((e.Args[0], e.Args[1], pmo.CurSector.floorplane.ZatPoint((e.Args[0], e.Args[1]))), false);
+			pmo.angle = e.Args[2]; pmo.vel = (0,0,0);
+			Console.Printf("T_TP t%d pos(%.1f %.1f %.1f) ang %.1f ceil %.1f", level.maptime, pmo.pos.x, pmo.pos.y, pmo.pos.z, pmo.angle, pmo.ceilingz);
+		}
+		else if (e.Name == "grp_summon")
+		{
+			int i = clamp(e.Args[0], 0, cls.Size() - 1);
+			Vector2 f = Actor.AngleToVector(pmo.angle + e.Args[2], e.Args[1]);
+			let a = Actor.Spawn(cls[i], (pmo.pos.xy + f, pmo.pos.z));
+			if (a) { a.angle = a.AngleTo(pmo); Console.Printf("T_SUM t%d %s at (%.1f %.1f %.1f) mass %d boss %d", level.maptime, a.GetClassName(), a.pos.x, a.pos.y, a.pos.z, a.Mass, a.bBOSS); }
+		}
+		else if (e.Name == "grp_dir")
+		{
+			for (int h = 0; h < 2; h++)
+			{
+				double yaw = RSQGR_Util.HandYaw(pmo, h), pit = RSQGR_Util.HandPitch(pmo, h);
+				Vector3 my = RSQGR_Util.MapDir(yaw, pit);
+				Vector3 eng = (0,0,0);
+				if (pmo.OverrideAttackPosDir) eng = h == 0 ? pmo.AttackDir(pmo, pmo.Angle, pmo.Pitch) : pmo.OffhandDir(pmo, pmo.Angle, pmo.Pitch);
+				Vector3 hp = RSQGR_Util.HandPos(pmo, h);
+				Console.Printf("T_DIR t%d h%d ovr%d yaw %.2f pit %.2f roll %.2f my(%.3f %.3f %.3f) eng(%.3f %.3f %.3f) hand-off(%.1f %.1f %.1f) pang %.1f", level.maptime, h, pmo.OverrideAttackPosDir, yaw, pit, h == 0 ? pmo.AttackRoll : pmo.OffhandRoll, my.x, my.y, my.z, eng.x, eng.y, eng.z, hp.x - pmo.pos.x, hp.y - pmo.pos.y, hp.z - pmo.pos.z, pmo.angle);
+			}
+		}
+		else if (e.Name == "grp_ceil")
+		{
+			// Ceiling_LowerByValue (tag, speed, value) / Ceiling_RaiseByValue
+			level.ExecuteSpecial(e.Args[0] ? 41 : 40, pmo, null, false, 2, 8, e.Args[1]);
+			Console.Printf("T_CEIL t%d %s by %d", level.maptime, e.Args[0] ? "raise" : "lower", e.Args[1]);
+		}
+		else if (e.Name == "grp_hurt")
+		{
+			pmo.DamageMobj(null, null, 10000, 'None');
+		}
+	}
+	override void WorldTick()
+	{
+		if (CVar.FindCVar("grp_log").GetInt() < 1) return;
+		let pmo = players[consoleplayer].mo; if (!pmo) return;
+		if (CVar.FindCVar("grp_log").GetInt() >= 2)
+		{
+			let it = ThinkerIterator.Create("Actor");
+			Actor a;
+			while (a = Actor(it.Next()))
+				if (a.bISMONSTER && a.Health > 0)
+					Console.Printf("T_M t%d %s pos(%.1f %.1f %.1f) vel(%.2f %.2f %.2f) tics %d", level.maptime, a.GetClassName(), a.pos.x, a.pos.y, a.pos.z, a.vel.x, a.vel.y, a.vel.z, a.tics);
+		}
+		Console.Printf("T_P t%d pos(%.1f %.1f %.1f) vel(%.2f %.2f %.2f) fz %.1f cz %.1f hp %d h %.1f vh %.1f", level.maptime, pmo.pos.x, pmo.pos.y, pmo.pos.z, pmo.vel.x, pmo.vel.y, pmo.vel.z, pmo.floorz, pmo.ceilingz, pmo.health, pmo.height, pmo.player.viewheight);
+	}
+}
