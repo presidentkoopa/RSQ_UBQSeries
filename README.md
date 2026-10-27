@@ -105,8 +105,8 @@ is ZScript and data lumps.
   region when your hand is near; the weapon last put there shows as its pickup.
 - **Fit it to you:** *Measure my height* scales the rig to you; *Move the regions with your
   hands* lets you grip a ring and carry it where your hand naturally goes.
-- **A torso** (optional): Quake's Grunt torso (via Quake VR) on your body, green or blue
-  with your armour, red at low health.
+- **A torso** (optional): the Doom marine's (default) or Quake's Grunt, on your body, green or
+  blue with your armour, red at low health.
 - **Doors:** hand flat on a door, take hold (grip, Use or palm out) and lift. Let go
   past 40% open and it finishes by itself; before that it drops shut. Locked doors need
   their key.
@@ -237,7 +237,8 @@ Known limits:
 - **QuestZDoom**: Emawind and Team Beef. The engine, and the off-hand weapon and attack-pose script
   API all six mods are built on.
 - **id Software**: the shield saw (*Doom: The Dark Ages*): its design, and the mesh Ermac ripped
-  from the game; and Quake's Grunt, whose torso the TacticalRig can wear.
+  from the game; the Doom Eternal Classic Slayer, whose torso the TacticalRig wears (a rip,
+  prepared in the project owner's RS_VRBody); and Quake's Grunt, its other torso.
 - **Ermac**, co-designer of DoomVR ([Rusted Legacy](https://github.com/iAmErmac/rusted-legacy),
   DXR, RS_Main):
   - Brought the shield saw to Doom VR first, in Rusted Legacy. In his words, he worked on two
