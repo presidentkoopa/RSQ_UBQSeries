@@ -1,0 +1,63 @@
+// RSQ_Accessibility -- one Options entry for the whole series, in BD22 VR Weapons' style
+// (short Title Case labels, no help text; StaticText " " is only a spacer).
+//
+// Section "Label", "Class1|Class2" starts a series mod's rows. RSQA_Menu keeps the section
+// (as a header) and its rows only when one of those classes exists at run time, so a mod's
+// rows show only when that mod is loaded. A section runs to the next Section or the end.
+// Rows before the first Section are shared and always shown.
+
+AddOptionMenu "OptionsMenu"
+{
+	Submenu "Accessibility", "RSQA_Options"
+}
+
+OptionValue "RSQA_ColorBlind"
+{
+	0, "Off"
+	1, "Protanopia"
+	2, "Deuteranopia"
+	3, "Tritanopia"
+	4, "High Contrast"
+}
+
+OptionValue "RSQA_Handed"
+{
+	0, "Follow QuestZDoom"
+	1, "Right-Handed"
+	2, "Left-Handed"
+}
+
+OptionMenu "RSQA_Options"
+{
+	Class "RSQA_Menu"
+	Title "ACCESSIBILITY"
+	Option "Colour Blind Mode", "rsqa_colorblind", "RSQA_ColorBlind"
+	RSQAHanded "Handedness", "rsqa_handed", "RSQA_Handed"
+
+	RSQASection "QuestSaber", "UBQS_SaberService"
+	Submenu "QuestSaber Options", "UBQS_Options"
+
+	RSQASection "ShieldSaw", "SSQ_Handler"
+	Submenu "ShieldSaw Options", "SSQ_Options"
+
+	RSQASection "Tactical Rig", "RSQTR_Rig"
+	Submenu "Tactical Rig Options", "RSQTR_Options"
+
+	RSQASection "Distance Grab", "RSQDG_Grab"
+	Submenu "Distance Grab Options", "RSQDG_Options"
+
+	RSQASection "Slow Motion", "RSQSM_Clock"
+	Submenu "Slow Motion Options", "RSQSM_Options"
+
+	RSQASection "Laser Sight", "RSQLS_Sight"
+	Submenu "Laser Sight Options", "RSQLS_Options"
+
+	RSQASection "Grapple", "RSQGR_Core"
+	Submenu "Grapple Options", "RSQGR_Options"
+
+	RSQASection "Gun Bonsai VR", "RSQ_GloveHandler"
+	Submenu "Gun Bonsai VR Options", "RSQ_MeleeOptions"
+
+	RSQASection "Score", "RS_ScoreHandler"
+	Submenu "Score Options", "RSQSC_Options"
+}

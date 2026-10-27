@@ -1,0 +1,7 @@
+// RSQ_Accessibility -- the shared settings of the Ultra Badass Quest series (README.md).
+// Server cvars like the rest of the series (single-player VR; userinfo has a size limit).
+// Every series mod reads these with CVar.FindCVar and keeps its own behaviour when this pk3
+// is absent. Names are fixed: add more only as rsqa_*.
+
+server int rsqa_colorblind = 0;   // 0 Off, 1 Protanopia, 2 Deuteranopia, 3 Tritanopia, 4 High Contrast
+server int rsqa_handed     = 0;   // 0 Follow QuestZDoom, 1 Right-Handed, 2 Left-Handed
