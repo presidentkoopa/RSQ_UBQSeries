@@ -1,0 +1,11 @@
+version "4.14"
+
+// RSQ_TacticalRig -- the Ultimate Badass Ermac Rig: weapons carried on the body, doors
+// lifted open by hand, and Ermac's cigarette. Stock QuestZDoom 17.3 (ZScript 4.14).
+// Built on Ermac's idea (his Virtual Tactical Vest for Doom VR); new code.
+
+#include "zscript/rsqtr/body.zs"
+#include "zscript/rsqtr/rig.zs"
+#include "zscript/rsqtr/hooks.zs"
+#include "zscript/rsqtr/door.zs"
+#include "zscript/rsqtr/cig.zs"

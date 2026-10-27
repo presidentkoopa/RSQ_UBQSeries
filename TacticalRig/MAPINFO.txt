@@ -1,0 +1,4 @@
+GameInfo
+{
+	AddEventHandlers = "RSQTR_Rig", "RSQTR_Door", "RSQTR_Cig"
+}
