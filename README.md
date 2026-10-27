@@ -101,8 +101,10 @@ is ZScript and data lumps.
 - **Holster:** bring the gun into its region and grip (or press Use). **Draw:** reach in
   with an empty hand and grip or Use; with several weapons there a small radial opens
   round your hand: move toward one and let go.
-- The regions stay on your body when you look around; snap turns carry them. A ring
-  shows a region when your hand is near; the weapon last put there shows as its pickup.
+- The regions stay on your body when you look around; turns carry them. A ring shows a
+  region when your hand is near; the weapon last put there shows as its pickup.
+- **Fit it to you:** *Measure my height* scales the rig to you; *Move the regions with your
+  hands* lets you grip a ring and carry it where your hand naturally goes.
 - **Doors:** hand flat on a door, take hold (grip, Use or palm out) and lift. Let go
   past 40% open and it finishes by itself; before that it drops shut. Locked doors need
   their key.
