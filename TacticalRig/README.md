@@ -27,8 +27,15 @@ Six regions on the body, each holding one Doom weapon class:
 - **Feedback:** a ring shows the region when your hand is near (menu: never / near /
   always), the last weapon you put there shows as its own pickup sprite, a holster
   sound and a rumble on the right controller.
-- The regions stay on your **body**: looking around does not swing them, snap turns
-  carry them. Each region's place and size is a menu slider.
+- The regions stay on your **body**: looking around does not swing them, snap and smooth
+  turns carry them. Holding your head far round for a couple of seconds counts as your
+  body having turned, and they swing round under you.
+- **Fit it to you:** *Measure my height* (stand straight, look ahead) scales the whole
+  rig to your eye height. *Move the regions with your hands*: turn it on, grip in a ring,
+  carry it to where your hand naturally goes, let go; it's saved. Turn it off to play.
+  Each region also has menu sliders.
+- A hand only acts on a region after it has been there a moment (3 tics), so a hand
+  passing through a holster on its way somewhere else does nothing.
 - A hand steadying the main gun (the engine's two-handed grip) never fires a region.
 - With RS_ShieldSawQ loaded, the off shoulder is left to the shield while it hangs there.
 - With UltraBadassQuestSaber loaded, the saber's hilt clips to either hip (menu).

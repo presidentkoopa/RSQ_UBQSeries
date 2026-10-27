@@ -12,6 +12,9 @@ user bool   rsqtr_messages    = false;
 user float  rsqtr_reach       = 1.0;     // scales every region's radius
 user bool   rsqtr_rifle_back  = false;   // the rifle region at the small of the back instead of the chest
 user bool   rsqtr_yield_shield = true;   // leave the off shoulder to RS_ShieldSawQ while its shield is stowed there
+user float  rsqtr_eye_m       = 0;       // your eye height in metres ("Measure my height"; 0 = the 1.62 m the defaults are made for)
+user bool   rsqtr_edit        = false;   // move the regions with your hands: grip in one, carry it, let go
+user int    rsqtr_dwell       = 3;       // tics a hand must be in a region before a press counts
 user float  rsqtr_body_turn   = 60.0;    // degrees: a head held this far round...
 user float  rsqtr_body_secs   = 2.0;     // ...this long means your body turned; the rig swings round (0 never)
 user bool   rsqtr_saber_hip   = true;    // UltraBadassQuestSaber's hilt clips to either hip

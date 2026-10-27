@@ -70,6 +70,10 @@ class RSQTR_Rig : EventHandler
 	private transient Actor icon[6];
 	private transient Actor ricon[RADIAL_MAX];
 	private transient int  buzzCool[2];
+	private transient int  hoverT[2];          // tics the hand has been in its region
+	private transient bool pendPress[2];       // pressed before the dwell was up
+	private transient int  editHand, editRegion;   // a region being carried in edit mode
+	private transient Vector3 editAt;
 
 	// ui: the grip arrives as raw key events
 	ui Array<int> keysMain, keysOff;
@@ -93,21 +97,45 @@ class RSQTR_Rig : EventHandler
 		double l = Num(String.Format("rsqtr_r%d_l", r), p, RSQTR_Region.DL[r]);
 		double u = Num(String.Format("rsqtr_r%d_u", r), p, RSQTR_Region.DU[r]);
 		if (r == 3 && Flag("rsqtr_rifle_back", p, false)) { f = -0.15; l = 0.0; u = -0.62; }
+		if (editHand >= 0 && editRegion == r && pmo.player == players[consoleplayer]) return editAt;
 		return BodyPoint(pmo, f, l, u);
 	}
 
 	// Any point on the body (metres, body frame): the cigarette pocket uses it too.
+	// Scaled to the player: the defaults are for an eye height of 1.62 m (a ~1.75 m
+	// person); after "Measure my height" every offset scales by your eye height over
+	// that, so a short and a tall player both find the hips at their own hips.
+	const REF_EYE = 1.62;
+	static double BodyScale(PlayerInfo p)
+	{
+		double eye = Num("rsqtr_eye_m", p, 0);
+		return eye > 0.8 ? clamp(eye / REF_EYE, 0.7, 1.3) : 1.0;
+	}
+
 	Vector3 BodyPoint(PlayerPawn pmo, double f, double l, double u)
 	{
+		double k = BodyScale(pmo.player);
+		f *= k; l *= k; u *= k;
 		if (body && body.primed) return body.At(pmo, f, l, u);
 		RSQTR_Body tmp = new("RSQTR_Body");
 		tmp.yaw = pmo.angle; tmp.primed = true;
 		return tmp.At(pmo, f, l, u);
 	}
 
+	// The other way: a world point as body-frame metres (unscaled), for edit mode.
+	void BodyOffsets(PlayerPawn pmo, Vector3 at, out double f, out double l, out double u)
+	{
+		double yaw = (body && body.primed) ? body.yaw : pmo.angle;
+		Vector3 d = at - RSQTR_Body.Head(pmo);
+		double k = BodyScale(pmo.player);
+		f = (d.x * cos(yaw) + d.y * sin(yaw)) / RSQTR_Body.UPM / k;
+		l = (-d.x * sin(yaw) + d.y * cos(yaw)) / RSQTR_Body.UPM / k;
+		u = d.z * RSQTR_Body.PIXELSTRETCH / RSQTR_Body.UPM / k;
+	}
+
 	double RegionRadius(PlayerInfo p, int r)
 	{
-		return Num(String.Format("rsqtr_r%d_rad", r), p, RSQTR_Region.DR[r]) * Num("rsqtr_reach", p, 1.0);
+		return Num(String.Format("rsqtr_r%d_rad", r), p, RSQTR_Region.DR[r]) * Num("rsqtr_reach", p, 1.0) * BodyScale(p);
 	}
 
 	// ---- what the body carries ---------------------------------------------------
@@ -217,6 +245,22 @@ class RSQTR_Rig : EventHandler
 			if (h == 0 || h == 1) gripDown[n * 2 + h] = e.Args[1] != 0;
 			return;
 		}
+		if (e.Name == "rsqtr_calib")
+		{
+			// The headset's own height above the room floor. Measured on the machine
+			// that owns the headset and stored in that player's own setting.
+			if (n == consoleplayer && pmo)
+			{
+				double eye = pmo.HmdPosition.y;
+				if (eye > 0.8 && eye < 2.3)
+				{
+					CVar.FindCVar("rsqtr_eye_m").SetFloat(eye);     // this machine's own setting (GetCVar with a player is that player's copy)
+					pmo.A_Print(String.Format("Tactical Rig: eye height %.2f m (rig scaled %.0f%%)", eye, 100 * clamp(eye / REF_EYE, 0.7, 1.3)));
+				}
+				else pmo.A_Print("Tactical Rig: stand up straight and try again (no headset height read)");
+			}
+			return;
+		}
 		if (!pmo || pmo.health <= 0) return;
 		if (e.Name == "rsqtr_holster") Holster(pmo, e.Args[0]);
 		else if (e.Name == "rsqtr_draw") Draw(pmo, e.Args[0], e.Args[1]);
@@ -297,7 +341,10 @@ class RSQTR_Rig : EventHandler
 			{
 				if (r >= 0 && buzzCool[h] <= 0) { RSQTR_Buzzer.Start(pmo, h, 0.18, 3); buzzCool[h] = 10; }
 				hoverR[h] = r;
+				hoverT[h] = 0;
+				pendPress[h] = false;
 			}
+			else if (r >= 0) hoverT[h]++;
 
 			bool gripNow = gripOk && gripDown[n * 2 + h];
 			bool pressNow = gripNow || (usePress && useDown && (h == 0 || hoverR[0] < 0));
@@ -305,15 +352,51 @@ class RSQTR_Rig : EventHandler
 			bool release = !pressNow && pressWas[h];
 			pressWas[h] = pressNow;
 
+			// EDIT MODE (rsqtr_edit): grip in a region carries it with the hand; let go
+			// and it stays there, saved to that region's settings.
+			if (Flag("rsqtr_edit", p, false))
+			{
+				if (editHand == h)
+				{
+					editAt = hp;
+					if (release) { SaveEdit(pmo, p); RSQTR_Buzzer.Start(pmo, h, 0.5, 5); }
+				}
+				else if (edge && r >= 0 && editHand < 0)
+				{
+					editHand = h; editRegion = r; editAt = hp;
+					RSQTR_Buzzer.Start(pmo, h, 0.4, 4);
+				}
+				continue;
+			}
+			else if (editHand >= 0) editHand = -1;
+
 			if (radialHand == h)
 			{
 				TickRadial(pmo, p, h, hp, release);
 				continue;
 			}
-			if (edge && r >= 0) Press(pmo, p, h, r, hp);
+			// A hand passing through a region does not act on it: the press counts once
+			// the hand has been there rsqtr_dwell tics (a press a moment early waits).
+			int dwell = Opt("rsqtr_dwell", p, 3);
+			if (edge && r >= 0) pendPress[h] = true;
+			if (!pressNow) pendPress[h] = false;
+			if (pendPress[h] && r >= 0 && hoverT[h] >= dwell) { pendPress[h] = false; Press(pmo, p, h, r, hp); }
 		}
 		useWas = useDown;
 		DrawMarkers(pmo, p);
+	}
+
+	private void SaveEdit(PlayerPawn pmo, PlayerInfo p)
+	{
+		int r = editRegion;
+		double f, l, u;
+		BodyOffsets(pmo, editAt, f, l, u);
+		CVar.FindCVar(String.Format("rsqtr_r%d_f", r)).SetFloat(f);
+		CVar.FindCVar(String.Format("rsqtr_r%d_l", r)).SetFloat(l);
+		CVar.FindCVar(String.Format("rsqtr_r%d_u", r)).SetFloat(u);
+		if (r == 3) CVar.FindCVar("rsqtr_rifle_back").SetBool(false);   // a placed rifle region is where you put it
+		pmo.A_Print(String.Format("%s: %.2f forward, %.2f left, %.2f up", RSQTR_Region.NAMES[r], f, l, u));
+		editHand = -1; editRegion = -1;
 	}
 
 	static bool CVarOn(String name)
@@ -443,6 +526,7 @@ class RSQTR_Rig : EventHandler
 	private void DrawMarkers(PlayerPawn pmo, PlayerInfo p)
 	{
 		int mode = Opt("rsqtr_markers", p, 1);
+		if (Flag("rsqtr_edit", p, false)) mode = 2;
 		bool icons = Flag("rsqtr_icons", p, true);
 		for (int r = 0; r < RSQTR_Region.N; r++)
 		{
@@ -518,6 +602,7 @@ class RSQTR_Rig : EventHandler
 	private transient bool afterLoad;
 	override void OnRegister()
 	{
+		editHand = -1; editRegion = -1;
 		radialHand = -1; radialRegion = -1;
 		hoverR[0] = -1; hoverR[1] = -1;
 		afterLoad = true;
