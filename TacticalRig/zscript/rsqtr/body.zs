@@ -6,11 +6,19 @@
 // firing an invisible missile every tic; none of that is needed here.
 //
 // THE BODY IS NOT THE HEAD. pmo.angle follows the headset, so a rig placed off it
-// swings round every time you look sideways -- the original vest did exactly that.
-// So the body keeps its own yaw: it stays put while you look around inside a dead
-// zone, follows when the head goes past it, drifts back to centre slowly, and
-// takes a snap or smooth turn whole (the pawn's angle jumping by more than a head
-// can turn in one tic is a turn, not a look).
+// swings round every time you look sideways (the original vest did, and so did this
+// rig's first version, which let the body drift back under the head: the owner's
+// headset test, 10-27, "the holster slots turn with the head").
+//
+// So the body is anchored to the TRACKING SPACE's yaw, the frame the controllers live
+// in, the way UltraBadassQuestSaber's UBQS_FrameKeeper does it: a snap or smooth turn
+// rotates the whole tracking space, which shows as BOTH controllers' yaws moving with
+// the pawn's angle in the same tic; a head turn moves the angle alone. Looking around
+// leaves the rig where it is; turns carry it.
+//
+// Turning your actual body in the room cannot be seen (there is no body tracker), so
+// only a head held far round for a while is taken as the body having turned: past
+// rsqtr_body_turn degrees for rsqtr_body_secs seconds, the body swings round under it.
 //
 // ROOM vs MAP: 34 map units per metre horizontally, 28.33 vertically (Doom's
 // pixels are 1.2 tall). Every offset here is given in metres and converted per
@@ -19,25 +27,38 @@ class RSQTR_Body play
 {
 	const UPM = 34.0;
 	const PIXELSTRETCH = 1.2;
-	const DEADZONE = 35.0;     // degrees of head turn the body ignores
-	const DRIFT = 0.6;         // degrees per tic the body eases back under the head
-	const TURN_JUMP = 20.0;    // degrees in one tic that are a turn, not a look
+	const TOL = 1.5;           // degrees: both controllers moved with the pawn = a turn
+	const SWING = 6.0;         // degrees per tic the body swings round once it follows
 
 	double yaw;                // the body's heading, degrees
-	double lastHead;
-	bool primed;
+	double lastA, lastH0, lastH1;
+	int    offFor;             // tics the head has been held far round
+	bool   swinging;
+	bool   primed;
 
 	void Update(PlayerPawn pmo)
 	{
-		double head = pmo.angle;
-		if (!primed) { yaw = head; lastHead = head; primed = true; return; }
-		double jump = Actor.DeltaAngle(lastHead, head);
-		lastHead = head;
-		if (abs(jump) >= TURN_JUMP) { yaw += jump; return; }     // a snap turn carries the body
-		double off = Actor.DeltaAngle(yaw, head);
-		if (off > DEADZONE) yaw += off - DEADZONE;
-		else if (off < -DEADZONE) yaw += off + DEADZONE;
-		else yaw += clamp(off, -DRIFT, DRIFT) * (abs(off) > 2.0 ? 1.0 : 0.0);
+		double a = pmo.angle, h0 = pmo.AttackAngle, h1 = pmo.OffhandAngle;
+		if (!primed) { yaw = a; lastA = a; lastH0 = h0; lastH1 = h1; primed = true; return; }
+		double dA = Actor.DeltaAngle(lastA, a);
+		double d0 = Actor.DeltaAngle(lastH0, h0), d1 = Actor.DeltaAngle(lastH1, h1);
+		lastA = a; lastH0 = h0; lastH1 = h1;
+		// The tracking space turned (snap, smooth, or a teleport's new facing): the body turns with it.
+		if (abs(dA) > 0.0001 && abs(d0 - dA) < TOL && abs(d1 - dA) < TOL) yaw += dA;
+
+		// A head held far round for long enough: the body has turned in the room.
+		let p = pmo.player;
+		double limit = RSQTR_Rig.Num("rsqtr_body_turn", p, 60.0);
+		int need = int(RSQTR_Rig.Num("rsqtr_body_secs", p, 2.0) * TICRATE);
+		double off = Actor.DeltaAngle(yaw, a);
+		if (need > 0 && abs(off) > limit) offFor++;
+		else if (!swinging) offFor = 0;
+		if (need > 0 && offFor >= need) swinging = true;
+		if (swinging)
+		{
+			yaw += clamp(off, -SWING, SWING);
+			if (abs(off) < SWING) { swinging = false; offFor = 0; }
+		}
 	}
 
 	// The head in the world: the pawn's place (QuestZDoom moves the pawn with the

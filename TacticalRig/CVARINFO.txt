@@ -12,6 +12,8 @@ user bool   rsqtr_messages    = false;
 user float  rsqtr_reach       = 1.0;     // scales every region's radius
 user bool   rsqtr_rifle_back  = false;   // the rifle region at the small of the back instead of the chest
 user bool   rsqtr_yield_shield = true;   // leave the off shoulder to RS_ShieldSawQ while its shield is stowed there
+user float  rsqtr_body_turn   = 60.0;    // degrees: a head held this far round...
+user float  rsqtr_body_secs   = 2.0;     // ...this long means your body turned; the rig swings round (0 never)
 user bool   rsqtr_saber_hip   = true;    // UltraBadassQuestSaber's hilt clips to either hip
 user string rsqtr_empty       = "";      // the weapon an empty hand holds (blank: the slot-1 weapon with the highest SelectionOrder, the fist)
 
