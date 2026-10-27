@@ -61,4 +61,4 @@ server int rsq_star_every = 2;
 server bool rsq_punch_debug = false;
 
 // Which screens draw Gun Bonsai: 0 its own, 1 the recreation of the owner's mockups, 2 and 3 the alternatives
-server int rsq_ui_skin = 1;
+server int rsq_ui_skin = 0;
