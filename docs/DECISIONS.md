@@ -449,3 +449,33 @@ Time of flight is chosen by height (a lob peaks at g t^2/8): `rsqdg_arc_apex`,
 the ceiling midway, and no faster than twice full flight speed.
 Ducking: a lintel is a lower ceiling a few units ahead; capping vel.z to pass
 under it is cheaper than routing, and the engine still owns everything else.
+
+## D30 — WORLDHANDS' GRAB, PORTED; THE RENDER-RATE BEAM LEFT. 2026-10-27.
+
+The owner wants RS_WorldHands' fine details. Taken, with its numbers: the written pull path
+(now the default flight, mode 2; Steer and Lob stay selectable -- in WorldHands mass never
+changed the pull, so a barrel and a clip now fly the same path, and Steer is the mode where mass
+still shows), the tumble (sprites by render flags; voxels by SetModelFlag + WorldOffset, which
+stock has), the air for everything let go (0.27 g added back; drag; flutter), the carry's wrist
+turn, sag and strain rumble, and its silence. Changed for this engine: the wrist turn is relative
+to the catch, because here the palm pose IS the hold and the wrist is always rolled a quarter turn.
+
+Left, and why:
+- WorldStep (fork-only): the air runs on WorldTick; RSQ_SlowMo scales Gravity by f^2, so the
+  add-back (GetGravity-based) slows with it and stays under its impulse threshold.
+- VoxelOverride, FollowHandMode/FollowHandOfs, level.VRHaptic, HandVelAtPoint, MainHandRoll,
+  Level.SetBeam/ClaimBeam: fork natives. Their stock substitutes are noted where used; the
+  sag lowers the carried thing instead of the drawing.
+- WorldHands' impact model (momentum both ways, 0.1 J scale, 200 cap): ours (D23) feeds the
+  scorer's ledger and was tuned against Doom gravity; kept.
+- Its reach ovals, volume box, two-hand holds, passing, routing to the face: hand-model or
+  near-grab features, outside this pack (D12 scope).
+- RENDER-RATE BEAM AND CONE (the laser agent's idea: a psprite layer the renderer places with
+  the controller each frame). Measured in the rig: a layer is drawn in a hand's frame only when
+  its CALLER is that hand's weapon (models.cpp RenderHUDModel), and its model is looked up by
+  the caller's CLASS, so on the off hand -- BD22Q's free, grabbing hand -- only a VOXEL can be
+  drawn (found by sprite frame). A voxel wire cone at the cone's size is 1.3 to 4 map units per
+  voxel: frame dumps show blocky staircases near the hand where the MD3 cone has 0.55-unit tubes.
+  The layer also turns about a point 0.30 m behind the palm (the HUD origin) and would need a
+  root VOXELDEF the hub build does not ship. So the beam and cone stay world models with the
+  one-tic lead (D20); they were made to agree with the tested cone instead.

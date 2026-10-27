@@ -15,8 +15,10 @@
 
 //   mass "<class>" <kg> [drag <n>] [flutter] [impact explode]
 //
-// drag / flutter are parsed for compatibility with the desktop lump; `impact
-// explode` IS read: a thrown one that lands hard goes off (throw.zs).
+// All three are read. `drag` (per unit/tic, Vel /= 1 + drag x speed) and `flutter` (a
+// sideways wobble while it falls) act on anything that has left a hand, as in the
+// desktop RS_Flight (throw.zs, the air); `impact explode`: a thrown one that lands
+// hard goes off (throw.zs).
 
 mass "Clip"             0.35
 mass "ClipBox"          3.5
