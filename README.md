@@ -17,10 +17,11 @@ Six regions on the body, each holding one Doom weapon class:
 | Left hip, right hip | belt line, each side | slot 2 (pistols, small arms) |
 | Chest | across the chest | slot 3 (shotguns) |
 | Chest (rifle) | chest centre, or the small of the back (menu) | slot 4 (rifles, chainguns) |
-| Left shoulder, right shoulder | behind each shoulder | slot 5 and up (heavy weapons) |
+| Left shoulder | behind the shoulder | slots 5-6 (launchers, plasma, railgun) |
+| Right shoulder | behind the shoulder | slots 7 and up, and 0 (BFGs, nukes, flamers, grenades) |
 
 - **Holster:** bring the gun into its region and grip (or press Use). Your hand is left
-  empty (the fist).
+  empty: the fists (Brutal Doom's own fists with Brutal Doom).
 - **Draw:** reach into a region with an empty hand and grip or Use. One weapon there
   comes to your hand; with several, a small **radial** of their pickup sprites opens
   round your hand: move toward one and let go.
