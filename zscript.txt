@@ -2199,6 +2199,7 @@ class UBQS_SaberBase : Weapon abstract
 				if (off < UF("ubqs_guard_arc", 100.0) && inPath)
 				{
 					newdamage = 0;
+					UBQS_Memory.Note(UBQS_Memory.M_BLOCKED, source);
 					owner.A_StartSound(UBQS_Font.Clash(), CHAN_AUTO, 0, UF("ubqs_vol_clash", 1.0));
 					double gfx = clamp(UF("ubqs_clash_fx", 1.0), 0.0, 3.0);
 					if (gfx > 0.01)
@@ -2292,6 +2293,8 @@ class UBQS_SaberBase : Weapon abstract
 	{
 		if (!owner) return;
 		double pg = ParryGain(-back);
+		UBQS_Memory.Note(UBQS_Memory.M_BLOCKED, src);
+		if (pg > 1.01) UBQS_Memory.Note(UBQS_Memory.M_PERFECT, src);
 		if (loud)
 		{
 			UBQS_Ping.At(owner, at, UBQS_Font.Clash(), UF("ubqs_vol_clash", 1.0), pg > 1.01 ? 1.25 : 1.0);
@@ -2319,6 +2322,7 @@ class UBQS_SaberBase : Weapon abstract
 		let b = UBQS_Bolt(Actor.Spawn("UBQS_Bolt", at));
 		if (!b) return;
 		b.target = owner;
+		b.tracer = src;            // whose shot it answers (RS_Score's Poetic Justice reads it)
 		b.rgb = RgbNow();
 		b.vel = d * (b.Speed * pg);
 		b.angle = VectorAngle(d.x, d.y);
@@ -4221,6 +4225,7 @@ class UBQS_Force : Inventory
 			// skidding along it -- that arc is what reads as gravity gloves rather than a shove in reverse.
 			double f = clamp(1800.0 / max(mo.Mass, 50), 2.0, 45.0) * falloff * pwr;
 			mo.vel += (-u.x * f, -u.y * f, f * 0.45);
+			UBQS_Memory.Note(UBQS_Memory.M_PULLED, mo);
 			UBQS_FX.Fx(mo.pos + (0, 0, mo.height * 0.5), 'UXFL', 13, 1, 0.14 + mo.radius * 0.003, 0.8, 0xBFE0FF, 1.03);
 			// THE LINE OF FORCE, four arcs between it and your hand. Without this a pull is a noise and
 			// then something arriving; with it you can see which one you have got hold of.
@@ -5345,6 +5350,20 @@ class UBQS_SaberService : Service
 {
 	override int GetInt(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
 	{
+		// FOR A SCORER (RS_Score's melee family): tics since the saber did this to that monster, or -1.
+		//   "blocked" its attack stopped (10 s)   "perfect" parried (10 s)   "pulled" yanked by Pull (2 s)
+		//   "thrown.leg" objectArg = a UBQS_Thrown: 0 on its way out, 1 on its way home, -1 otherwise
+		if (request ~== "blocked") return UBQS_Memory.Since(UBQS_Memory.M_BLOCKED, Actor(objectArg), 350);
+		if (request ~== "perfect") return UBQS_Memory.Since(UBQS_Memory.M_PERFECT, Actor(objectArg), 350);
+		if (request ~== "pulled") return UBQS_Memory.Since(UBQS_Memory.M_PULLED, Actor(objectArg), 70);
+		if (request ~== "thrown.leg")
+		{
+			let t = UBQS_Thrown(objectArg);
+			if (!t) return -1;
+			if (t.phase == UBQS_Thrown.PH_OUT || t.phase == UBQS_Thrown.PH_ROUTE) return 0;
+			if (t.phase == UBQS_Thrown.PH_HOME || t.phase == UBQS_Thrown.PH_PULL) return 1;
+			return -1;
+		}
 		if (!(request ~== "saber.lit")) return -1;
 		let p = players[consoleplayer];
 		let pp = PlayerPawn(objectArg);
@@ -5354,5 +5373,48 @@ class UBQS_SaberService : Service
 		if (!sb) return -1;
 		if (sb.thrown) return 1;
 		return sb.doused ? 0 : 1;
+	}
+}
+
+
+// WHAT THE SABER DID TO WHOM, AND WHEN -- kept only for a scorer to ask (UBQS_SaberService).
+// Small and trimmed: at most 64 rows, and a row older than 10 s or whose monster is gone is dropped.
+class UBQS_Memory : EventHandler
+{
+	enum EMem { M_BLOCKED, M_PERFECT, M_PULLED }
+	const KEEP = 350;
+	Array<Actor> who;
+	Array<int> what, when;
+
+	static void Note(int kind, Actor mo)
+	{
+		if (!mo) return;
+		let h = UBQS_Memory(EventHandler.Find("UBQS_Memory"));
+		if (!h) return;
+		for (int k = 0; k < h.who.Size(); k++)
+			if (h.who[k] == mo && h.what[k] == kind) { h.when[k] = level.maptime; return; }
+		if (h.who.Size() >= 64) { h.who.Delete(0); h.what.Delete(0); h.when.Delete(0); }
+		h.who.Push(mo); h.what.Push(kind); h.when.Push(level.maptime);
+	}
+
+	static clearscope int Since(int kind, Actor mo, int keep)
+	{
+		if (!mo) return -1;
+		let h = UBQS_Memory(EventHandler.Find("UBQS_Memory"));
+		if (!h) return -1;
+		for (int k = 0; k < h.who.Size(); k++)
+			if (h.who[k] == mo && h.what[k] == kind)
+			{
+				int t = level.maptime - h.when[k];
+				return t <= keep ? t : -1;
+			}
+		return -1;
+	}
+
+	override void WorldTick()
+	{
+		if (level.maptime % 35) return;
+		for (int k = who.Size() - 1; k >= 0; k--)
+			if (!who[k] || level.maptime - when[k] > KEEP) { who.Delete(k); what.Delete(k); when.Delete(k); }
 	}
 }

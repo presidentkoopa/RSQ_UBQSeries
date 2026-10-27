@@ -45,3 +45,8 @@ Done (measured on the rig, load order bd22testv5 + VoxelPack + BD22Q, and bare D
     matches.
 
 Not done: headset feel for the remote's pace.
+- For RS_Score's melee family, UBQS_SaberService now answers "blocked", "perfect", "pulled"
+  (tics since, or -1) and "thrown.leg" (0 = out, 1 = home). They come from UBQS_Memory, a small
+  EventHandler (64 rows, trimmed each second). The return bolt's tracer is the shooter.
+  Rig check with the real BlockFx and Pull: Riposte 0.4 on a saber-blocked imp; the bolt killed its
+  own shooter for Poetic Justice 0.3 + Return to Sender 0.4; "pulled" read 10 tics after a Pull.
