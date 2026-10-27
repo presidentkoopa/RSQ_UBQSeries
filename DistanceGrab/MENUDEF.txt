@@ -39,7 +39,7 @@ OptionMenu "RSQDG_Options"
 	StaticText ""
 	Submenu "Diagnostics",          "RSQDG_Debug"
 	StaticText ""
-	SafeCommand "Reset all Distance Grab settings", "resetcvar rsqdg_on rsqdg_reach rsqdg_spread rsqdg_sight rsqdg_corpses rsqdg_barrels rsqdg_weapons rsqdg_powerups rsqdg_button rsqdg_palm rsqdg_palm_roll rsqdg_palm_tol rsqdg_palm_pitch rsqdg_jump_m rsqdg_lock_dwell rsqdg_yield rsqdg_lightup rsqdg_glow rsqdg_glow_a rsqdg_voxel_flash rsqdg_flash rsqdg_flick_deg rsqdg_flight_speed rsqdg_steer rsqdg_pull_kg rsqdg_flight_gravity rsqdg_flight_mode rsqdg_arc_apex rsqdg_flight_duck rsqdg_flight_radius rsqdg_flight_timeout rsqdg_catch_radius rsqdg_catch_hold rsqdg_catch_takes rsqdg_throw_scale rsqdg_arm_kg rsqdg_throw_j rsqdg_throw_min rsqdg_throw_explode rsqdg_hold_dist rsqdg_hold_k rsqdg_hold_vmax rsqdg_hold_break rsqdg_burden rsqdg_burden_kg rsqdg_beam rsqdg_beam_yield rsqdg_beam_w rsqdg_beam_a rsqdg_dot rsqdg_dot_size rsqdg_cone rsqdg_cone_a rsqdg_lead rsqdg_laser_idle rsqdg_haptics rsqdg_haptic_ramp rsqdg_rumble rsqdg_rumble_gain rsqdg_rumble_lock rsqdg_rumble_carry rsqdg_sound rsqdg_sound_vol rsqdg_catch_flash rsqdg_debug rsqdg_trace", "Put every Distance Grab setting back to its default?"
+	SafeCommand "Reset all Distance Grab settings", "resetcvar rsqdg_on rsqdg_reach rsqdg_spread rsqdg_sight rsqdg_corpses rsqdg_barrels rsqdg_weapons rsqdg_powerups rsqdg_button rsqdg_palm rsqdg_palm_roll rsqdg_palm_tol rsqdg_palm_pitch rsqdg_jump_m rsqdg_lock_dwell rsqdg_yield rsqdg_steady_m rsqdg_lightup rsqdg_glow rsqdg_glow_a rsqdg_voxel_flash rsqdg_flash rsqdg_flick_deg rsqdg_flight_speed rsqdg_steer rsqdg_pull_kg rsqdg_flight_gravity rsqdg_flight_mode rsqdg_arc_apex rsqdg_flight_duck rsqdg_flight_radius rsqdg_flight_timeout rsqdg_catch_radius rsqdg_catch_hold rsqdg_catch_takes rsqdg_throw_scale rsqdg_arm_kg rsqdg_throw_j rsqdg_throw_min rsqdg_throw_explode rsqdg_hold_dist rsqdg_hold_k rsqdg_hold_vmax rsqdg_hold_break rsqdg_burden rsqdg_burden_kg rsqdg_beam rsqdg_beam_yield rsqdg_beam_w rsqdg_beam_a rsqdg_dot rsqdg_dot_size rsqdg_cone rsqdg_cone_a rsqdg_lead rsqdg_laser_idle rsqdg_haptics rsqdg_haptic_ramp rsqdg_rumble rsqdg_rumble_gain rsqdg_rumble_lock rsqdg_rumble_carry rsqdg_sound rsqdg_sound_vol rsqdg_catch_flash rsqdg_debug rsqdg_trace", "Put every Distance Grab setting back to its default?"
 	StaticText ""
 	Control "Grab -- main hand", "+rsqdg_main"
 	Control "Grab -- off hand",  "+rsqdg_off"
@@ -63,6 +63,7 @@ OptionMenu "RSQDG_Reach"
 	StaticText ""
 	Option "Needs line of sight", "rsqdg_sight",   "OnOff"
 	Option "Not with a saber, shield or fist", "rsqdg_yield", "OnOff"
+	Slider "Not while two-handing: hands within, metres", "rsqdg_steady_m", 0.0, 0.8, 0.05, 2
 	StaticText "A swing is full of the reach gesture, so a hand", 1
 	StaticText "holding a melee weapon does not reach. A", 1
 	StaticText "QuestSaber hilt with its blade off may reach.", 1

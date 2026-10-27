@@ -104,6 +104,7 @@ user int   rsqdg_lock_dwell = 0;
 // hand system (RS_ShieldSawQ, the QuestSaber's Force hand) does not reach: a
 // swing is full of the palm-out flick this mod listens for.
 user bool  rsqdg_yield    = true;
+user float rsqdg_steady_m = 0.45;   // metres: hands this close with a gun in the main hand are two-handing it; neither grabs (0 off)
 user bool  rsqdg_lightup  = false;   // recolour the target itself (translation)
 user bool  rsqdg_glow     = true;    // light the target in its own silhouette
 user float rsqdg_glow_a   = 1.0;     // glow brightness multiplier
