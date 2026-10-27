@@ -1,0 +1,82 @@
+AddOptionMenu "OptionsMenu"
+{
+	Submenu "Tactical Rig", "RSQTR_Options"
+}
+
+OptionValue "RSQTR_Markers"
+{
+	0, "Never"
+	1, "When a hand is near"
+	2, "Always"
+}
+
+OptionMenu "RSQTR_Options"
+{
+	Title "TACTICAL RIG"
+	StaticText ""
+	StaticText "Six places on your body, one weapon class each.", 1
+	StaticText "Reach there and grip (or press Use) to draw.", 1
+	StaticText "With that class in your hand, it goes back.", 1
+	StaticText "Several weapons there: move toward one and let go.", 1
+	StaticText ""
+	Option "Tactical rig", "rsqtr_on", "OnOff"
+	Option "Grip draws and holsters", "rsqtr_grip", "OnOff"
+	Option "Use draws and holsters", "rsqtr_use", "OnOff"
+	Option "Region rings", "rsqtr_markers", "RSQTR_Markers"
+	Option "Show holstered weapons", "rsqtr_icons", "OnOff"
+	Option "Haptics", "rsqtr_haptics", "OnOff"
+	Option "Messages", "rsqtr_messages", "OnOff"
+	Slider "Reach (all regions)", "rsqtr_reach", 0.5, 2.0, 0.05, 2
+	Option "Rifles at the small of the back", "rsqtr_rifle_back", "OnOff"
+	Option "Leave the shield's shoulder to the ShieldSaw", "rsqtr_yield_shield", "OnOff"
+	StaticText ""
+	Submenu "Where the regions are", "RSQTR_Regions"
+	StaticText ""
+	StaticText "Grip key codes (QuestZDoom sends grips as keys):", 1
+	TextField "Main grip", "rsqtr_keys_main"
+	TextField "Off grip", "rsqtr_keys_off"
+	StaticText ""
+	SafeCommand "Reset all Tactical Rig settings", "resetcvar rsqtr_on rsqtr_grip rsqtr_use rsqtr_keys_main rsqtr_keys_off rsqtr_markers rsqtr_icons rsqtr_haptics rsqtr_messages rsqtr_reach rsqtr_rifle_back rsqtr_yield_shield rsqtr_empty rsqtr_r0_f rsqtr_r0_l rsqtr_r0_u rsqtr_r0_rad rsqtr_r1_f rsqtr_r1_l rsqtr_r1_u rsqtr_r1_rad rsqtr_r2_f rsqtr_r2_l rsqtr_r2_u rsqtr_r2_rad rsqtr_r3_f rsqtr_r3_l rsqtr_r3_u rsqtr_r3_rad rsqtr_r4_f rsqtr_r4_l rsqtr_r4_u rsqtr_r4_rad rsqtr_r5_f rsqtr_r5_l rsqtr_r5_u rsqtr_r5_rad", "Put every Tactical Rig setting back?"
+}
+
+OptionMenu "RSQTR_Regions"
+{
+	Title "WHERE THE REGIONS ARE"
+	StaticText "Metres from your eyes, turning with your body.", 1
+	StaticText ""
+	StaticText "Left hip", gold
+	Slider "Forward (m)", "rsqtr_r0_f", -0.5, 0.5, 0.01, 2
+	Slider "Left (m)", "rsqtr_r0_l", -0.5, 0.5, 0.01, 2
+	Slider "Up from your eyes (m)", "rsqtr_r0_u", -1.2, 0.2, 0.01, 2
+	Slider "Size (m)", "rsqtr_r0_rad", 0.05, 0.30, 0.01, 2
+	StaticText ""
+	StaticText "Right hip", gold
+	Slider "Forward (m)", "rsqtr_r1_f", -0.5, 0.5, 0.01, 2
+	Slider "Left (m)", "rsqtr_r1_l", -0.5, 0.5, 0.01, 2
+	Slider "Up from your eyes (m)", "rsqtr_r1_u", -1.2, 0.2, 0.01, 2
+	Slider "Size (m)", "rsqtr_r1_rad", 0.05, 0.30, 0.01, 2
+	StaticText ""
+	StaticText "Chest (shotguns)", gold
+	Slider "Forward (m)", "rsqtr_r2_f", -0.5, 0.5, 0.01, 2
+	Slider "Left (m)", "rsqtr_r2_l", -0.5, 0.5, 0.01, 2
+	Slider "Up from your eyes (m)", "rsqtr_r2_u", -1.2, 0.2, 0.01, 2
+	Slider "Size (m)", "rsqtr_r2_rad", 0.05, 0.30, 0.01, 2
+	StaticText ""
+	StaticText "Chest or back (rifles)", gold
+	Slider "Forward (m)", "rsqtr_r3_f", -0.5, 0.5, 0.01, 2
+	Slider "Left (m)", "rsqtr_r3_l", -0.5, 0.5, 0.01, 2
+	Slider "Up from your eyes (m)", "rsqtr_r3_u", -1.2, 0.2, 0.01, 2
+	Slider "Size (m)", "rsqtr_r3_rad", 0.05, 0.30, 0.01, 2
+	StaticText ""
+	StaticText "Left shoulder", gold
+	Slider "Forward (m)", "rsqtr_r4_f", -0.5, 0.5, 0.01, 2
+	Slider "Left (m)", "rsqtr_r4_l", -0.5, 0.5, 0.01, 2
+	Slider "Up from your eyes (m)", "rsqtr_r4_u", -1.2, 0.2, 0.01, 2
+	Slider "Size (m)", "rsqtr_r4_rad", 0.05, 0.30, 0.01, 2
+	StaticText ""
+	StaticText "Right shoulder", gold
+	Slider "Forward (m)", "rsqtr_r5_f", -0.5, 0.5, 0.01, 2
+	Slider "Left (m)", "rsqtr_r5_l", -0.5, 0.5, 0.01, 2
+	Slider "Up from your eyes (m)", "rsqtr_r5_u", -1.2, 0.2, 0.01, 2
+	Slider "Size (m)", "rsqtr_r5_rad", 0.05, 0.30, 0.01, 2
+}

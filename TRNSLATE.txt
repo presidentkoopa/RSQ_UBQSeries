@@ -1,0 +1,2 @@
+// The region marker with a hand inside it: amber, the series' "could" colour.
+RSQTR_Hot = "0:255=%[0.00,0.00,0.00]:[2.00,1.38,0.38]"

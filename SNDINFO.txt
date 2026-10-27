@@ -1,0 +1,10 @@
+// RSQ_TacticalRig sounds. From RS_CombatFX (the owner's effects library): shared/holster, shared/draw, shared/unsorted FOLEY.
+rsqtr/hols1   rthols1
+rsqtr/hols2   rthols2
+rsqtr/hols3   rthols3
+$random rsqtr/holster { rsqtr/hols1 rsqtr/hols2 rsqtr/hols3 }
+rsqtr/draw    rtdraw
+rsqtr/foly1   rtfoly1
+rsqtr/foly2   rtfoly2
+rsqtr/foly3   rtfoly3
+$random rsqtr/radial { rsqtr/foly1 rsqtr/foly2 rsqtr/foly3 }
