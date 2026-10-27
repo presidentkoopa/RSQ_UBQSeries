@@ -106,8 +106,8 @@ class RSQGR_Core : EventHandler
 		h.owner = pmo;
 		h.hand = hand;
 		h.dir = dir;
-		h.speed = max(4.0, RSQGR_Util.Num("rsqgr_speed", 40));
-		h.range = max(64.0, RSQGR_Util.Num("rsqgr_range", 1024));
+		h.speed = max(4.0, RSQGR_Util.Num("rsqgr_speed", 40)) * RSQGR_Perks.Factor(pmo, 'reel');     // Fast Reel (perks.zs)
+		h.range = max(64.0, RSQGR_Util.Num("rsqgr_range", 1024)) * RSQGR_Perks.Factor(pmo, 'range'); // Long Line
 		h.angle = atan2(dir.y, dir.x);
 		h.SetPhase(RSQGR_Hook.PH_FLY);
 		hooks[pn * 2 + hand] = h;
@@ -124,6 +124,7 @@ class RSQGR_Core : EventHandler
 	void LetGo(RSQGR_Hook h, bool byPlayer)
 	{
 		if (!h) return;
+		RSQGR_Perks.OnLetGo(h, byPlayer);   // Barbed Claw's tear, Slingshot (perks.zs)
 		if (h.phase == RSQGR_Hook.PH_BITE && h.victim && h.owner && !h.heavy)
 			RSQGR_Monster.OnRelease(h.victim, h.owner, h.hand);
 		// A hop off the top: let go within reach of a wall's latch while reeling and the
@@ -225,7 +226,7 @@ class RSQGR_Core : EventHandler
 			ofs.xy = ofs.xy.Length() > v.radius ? ofs.xy.Unit() * v.radius : ofs.xy;
 			ofs.z = clamp(ofs.z, 0, v.Height);
 			h.victimOfs = ofs;
-			double mmax = RSQGR_Util.Num("rsqgr_mass_max", 1000);
+			double mmax = RSQGR_Util.Num("rsqgr_mass_max", 1000) * RSQGR_Perks.Factor(h.owner, 'mass');   // Heavy Haul
 			h.heavy = v.bBOSS || (mmax > 0 && v.Mass > mmax) || v.bDORMANT;
 			String s = RSQGR_Looks.Sound('hitflesh');
 			if (s != "") h.A_StartSound(s, CHAN_VOICE);
@@ -245,6 +246,7 @@ class RSQGR_Core : EventHandler
 				Log(h, "bite");
 			}
 			RSQGR_Events.Bitten(h.owner, v, h.hand, h.heavy);   // service.zs: for other mods to read
+			RSQGR_Perks.OnBite(h, v);   // perks.zs: Gun Bonsai patch upgrades + XP ledger
 			return;
 		}
 
@@ -356,7 +358,7 @@ class RSQGR_Core : EventHandler
 			if (h.reelHeld)
 			{
 				h.ropeLen = min(h.ropeLen, d);
-				h.ropeLen = max(minLen, h.ropeLen - RSQGR_Util.Num("rsqgr_reel_speed", 12));
+				h.ropeLen = max(minLen, h.ropeLen - RSQGR_Util.Num("rsqgr_reel_speed", 12) * RSQGR_Perks.Factor(pmo, 'reel'));
 			}
 			// CLIMB: a free hand on the grab bind, touching the rope, takes hold of it.
 			double climbStep = 0;
@@ -415,7 +417,7 @@ class RSQGR_Core : EventHandler
 				// and keeps what the projection gives.
 				double vt = v.Length();
 				Vector3 corr = a + pa / pd * h.ropeLen - p;
-				double cmax = RSQGR_Util.Num("rsqgr_reel_speed", 12) + 8;
+				double cmax = RSQGR_Util.Num("rsqgr_reel_speed", 12) * RSQGR_Perks.Factor(pmo, 'reel') + 8;
 				double cl = corr.Length();
 				if (cl > cmax) corr *= cmax / cl;
 				v += corr;
@@ -428,7 +430,7 @@ class RSQGR_Core : EventHandler
 			if (h.reelHeld)
 			{
 				double vin = -(v dot n);
-				double vmax = RSQGR_Util.Num("rsqgr_reel_speed", 12) * 1.5;
+				double vmax = RSQGR_Util.Num("rsqgr_reel_speed", 12) * RSQGR_Perks.Factor(pmo, 'reel') * 1.5;
 				if (vin > vmax) v += n * (vin - vmax);
 			}
 
@@ -467,6 +469,7 @@ class RSQGR_Core : EventHandler
 				if (st > 0)
 				{
 					double k = clamp(RSQGR_Util.Num("rsqgr_drag", 0.002), 0.0, 0.2);
+					k = min(k + RSQGR_Perks.SteadyDrag(pmo, k, fwd == 0 && side == 0), 0.2);   // Steady Line
 					double f = max(0.0, RSQGR_Util.Num("rsqgr_rope_friction", 0.025));
 					double ns = max(0.0, st * (1.0 - k) - f);
 					double ang = acos(clamp(-n.z, -1.0, 1.0));   // from hanging straight down

@@ -38,6 +38,11 @@
 //   "struck.by"    the player number who threw that body; -1
 //   "pin"          which thing that body struck it was: 1 the first, 2 the second...; -1
 //   "whipped"      tics since the whip's crack hit it; -1
+// GUN BONSAI'S VR PATCH (perks.zs keeps these: the hook's XP and its upgrades; objectArg = the pawn)
+//   "xp.bites" / "xp.yanks" / "xp.kills" / "xp.killhp" / "xp.slams"   running counts this map: bites,
+//                  yanks (thrown), kills the hook was in on (3 s) and their spawn health, Double Hook slams
+//   "xp.swing"     units swung in the air on a latched rope this map (at most 1280 a latch)
+//   "hook.dealing" 1 while the hook's own blow to anything is being dealt (inside DamageMobj), 0 not
 // OBJECTS (GetObject)
 //   "hook.victim"  objectArg pawn, intArg hand: the monster on that hand's line, or null
 //   "hooked.by"    objectArg monster: the pawn who hooked it
@@ -60,6 +65,11 @@ class RSQGR_Service : Service
 {
 	override int GetInt(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
 	{
+		if (request.Left(3) ~== "xp." || request ~== "hook.dealing")
+		{
+			let pk = RSQGR_Perks.Get();
+			return pk ? pk.Ask(request, objectArg) : -1;
+		}
 		let ev = RSQGR_Events.Get();
 		if (!ev) return -1;
 		return ev.Answer(request, Actor(objectArg), intArg);

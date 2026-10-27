@@ -1,0 +1,41 @@
+T_LV t49 LongLine=0 FastReel=4 HeavyHaul=0 GetOverHere=0 Bowling=0 BarbedClaw=0 Slingshot=0 SteadyLine=0 DoubleHook=0 range x1.00 reel x1.60 mass x1.00 size x1.00
+T_GR t52 h0 fire pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(74.0 503.5 37.0) L0.0 d517.1 segs0 ms0.000/0.017 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t63 h0 latch pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(643.2 503.5 511.4) L750.9 d750.9 segs138 ms0.652/0.028 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t64 h0 reel pos(78.8 511.8 12.2) vel(14.76 -0.22 12.28) claw(643.2 503.5 511.4) L712.5 d731.7 segs146 ms0.116/0.169 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GBH t65 p0 hook xp +1.0 (bites +0 yanks +0 swing +32 kills +0 hp +0 slams +0) paid 1.0 pool 1.0/1200 player xp 0 lv 0
+T_GR t66 h0 reel pos(108.8 511.3 36.2) vel(15.70 -0.23 11.14) claw(643.2 503.5 511.4) L674.1 d693.3 segs140 ms0.105/0.074 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GBH t67 p0 hook xp +1.0 (bites +0 yanks +0 swing +32 kills +0 hp +0 slams +0) paid 2.0 pool 2.0/1200 player xp 0 lv 0
+T_GR t68 h0 reel pos(140.7 510.9 57.9) vel(16.66 -0.24 10.02) claw(643.2 503.5 511.4) L635.7 d654.9 segs132 ms0.128/0.073 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GBH t68 p0 hook xp +1.0 (bites +0 yanks +0 swing +32 kills +0 hp +0 slams +0) paid 3.0 pool 3.0/1200 player xp 0 lv 0
+T_GR t70 h0 reel pos(174.5 510.4 77.4) vel(17.63 -0.26 8.95) claw(643.2 503.5 511.4) L597.3 d616.5 segs124 ms0.101/0.079 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GBH t70 p0 hook xp +1.0 (bites +0 yanks +0 swing +32 kills +0 hp +0 slams +0) paid 4.0 pool 4.0/1200 player xp 0 lv 0
+T_GR t72 h0 reel pos(210.2 509.9 94.8) vel(18.65 -0.27 7.95) claw(643.2 503.5 511.4) L558.9 d578.1 segs117 ms0.099/0.072 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GBH t72 p0 hook xp +1.0 (bites +0 yanks +0 swing +32 kills +0 hp +0 slams +0) paid 5.0 pool 5.0/1200 player xp 0 lv 0
+T_GBH t73 p0 hook xp +1.0 (bites +0 yanks +0 swing +32 kills +0 hp +0 slams +0) paid 6.0 pool 6.0/1200 player xp 0 lv 0
+T_GR t74 h0 reel pos(248.1 509.3 110.2) vel(19.72 -0.29 7.08) claw(643.2 503.5 511.4) L520.5 d539.7 segs109 ms0.071/0.063 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GBH t75 p0 hook xp +1.0 (bites +0 yanks +0 swing +32 kills +0 hp +0 slams +0) paid 7.0 pool 7.0/1200 player xp 0 lv 0
+T_GR t76 h0 reel pos(288.1 508.7 124.0) vel(20.88 -0.31 6.39) claw(643.2 503.5 511.4) L482.1 d501.3 segs101 ms0.101/0.081 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GBH t76 p0 hook xp +1.0 (bites +0 yanks +0 swing +32 kills +0 hp +0 slams +0) paid 8.0 pool 8.0/1200 player xp 0 lv 0
+T_GR t78 h0 reel pos(330.5 508.1 136.6) vel(22.16 -0.33 5.97) claw(643.2 503.5 511.4) L443.7 d462.9 segs93 ms0.083/0.074 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GBH t78 p0 hook xp +1.0 (bites +0 yanks +0 swing +32 kills +0 hp +0 slams +0) paid 9.0 pool 9.0/1200 player xp 0 lv 0
+T_GBH t79 p0 hook xp +1.0 (bites +0 yanks +0 swing +32 kills +0 hp +0 slams +0) paid 10.0 pool 10.0/1200 player xp 0 lv 0
+T_GR t80 h0 reel pos(375.5 507.4 148.4) vel(23.56 -0.35 5.93) claw(643.2 503.5 511.4) L405.3 d424.5 segs86 ms0.076/0.075 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GBH t81 p0 hook xp +1.0 (bites +0 yanks +0 swing +32 kills +0 hp +0 slams +0) paid 11.0 pool 11.0/1200 player xp 0 lv 0
+T_GR t82 h0 swing pos(423.3 506.7 160.5) vel(24.26 -0.36 5.14) claw(643.2 503.5 511.4) L386.1 d386.1 segs78 ms0.073/0.075 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GBH t82 p0 hook xp +1.0 (bites +0 yanks +0 swing +32 kills +0 hp +0 slams +0) paid 12.0 pool 12.0/1200 player xp 0 lv 0
+T_GBH t83 p0 hook xp +1.0 (bites +0 yanks +0 swing +32 kills +0 hp +0 slams +0) paid 13.0 pool 13.0/1200 player xp 0 lv 0
+T_GR t84 h0 swing pos(471.8 506.0 169.7) vel(24.26 -0.36 3.14) claw(643.2 503.5 511.4) L386.1 d352.5 segs74 ms0.075/0.080 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GBH t85 p0 hook xp +1.0 (bites +0 yanks +0 swing +32 kills +0 hp +0 slams +0) paid 14.0 pool 14.0/1200 player xp 0 lv 0
+T_GR t86 h0 swing pos(520.3 505.3 175.0) vel(24.26 -0.36 1.14) claw(643.2 503.5 511.4) L386.1 d326.7 segs71 ms0.092/0.081 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GBH t86 p0 hook xp +1.0 (bites +0 yanks +0 swing +32 kills +0 hp +0 slams +0) paid 15.0 pool 15.0/1200 player xp 0 lv 0
+T_GBH t87 p0 hook xp +1.0 (bites +0 yanks +0 swing +32 kills +0 hp +0 slams +0) paid 16.0 pool 16.0/1200 player xp 0 lv 0
+T_GR t88 h0 swing pos(568.8 504.6 176.3) vel(24.26 -0.36 -0.86) claw(643.2 503.5 511.4) L386.1 d310.5 segs67 ms0.078/0.057 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GBH t88 p0 hook xp +1.0 (bites +0 yanks +0 swing +32 kills +0 hp +0 slams +0) paid 17.0 pool 17.0/1200 player xp 0 lv 0
+T_GR t90 h0 swing pos(617.4 503.9 173.6) vel(24.26 -0.36 -2.86) claw(643.2 503.5 511.4) L386.1 d305.3 segs65 ms0.076/0.058 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GBH t90 p0 hook xp +1.0 (bites +0 yanks +0 swing +32 kills +0 hp +0 slams +0) paid 18.0 pool 18.0/1200 player xp 0 lv 0
+T_GBH t91 p0 hook xp +1.0 (bites +0 yanks +0 swing +32 kills +0 hp +0 slams +0) paid 19.0 pool 19.0/1200 player xp 0 lv 0
+T_XP t92 now pool 19.0 player xp 0 lv 0 pooled 0
+T_XP2 gun Pistol xp 0.0 lv 0
+T_XP3 svc bites 0 yanks 0 swing 618 kills 0 killhp 0 slams 0
+T_GR t92 h0 swing pos(665.9 503.2 166.9) vel(24.26 -0.36 -4.86) claw(643.2 503.5 511.4) L386.1 d311.7 segs63 ms0.077/0.066 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GBH t92 p0 hook xp +1.0 (bites +0 yanks +0 swing +32 kills +0 hp +0 slams +0) paid 20.0 pool 20.0/1200 player xp 0 lv 0

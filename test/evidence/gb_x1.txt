@@ -1,0 +1,31 @@
+T_SUM t11 #0 DoomImp at (314.0 512.0 -0.0) mass 100 r 20 h 56 boss 0 hp 60
+T_XP t16 now pool 0.0 player xp 0 lv 0 pooled 0
+T_XP2 gun Pistol xp 0.0 lv 0
+T_XP3 svc bites 0 yanks 0 swing 0 kills 0 killhp 0 slams 0
+T_GR t16 h0 fire pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(74.0 503.5 37.0) L0.0 d517.1 segs0 ms0.000/0.018 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t21 h0 bite pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(294.0 503.5 37.0) L0.0 d517.1 segs37 ms0.053/0.032 scale1.00 grip-1 free01 hoff0.00 pt-1 victim DoomImp (314.0 512.0 -0.0)
+T_GRS t21 bite DoomImp hand 0 heavy 0 bites 1 volleys 0
+T_GRP bite p0 h0 DoomImp heavy 0 (bites 1 yanks 0)
+T_GBH t21 p0 hook xp +15.0 (bites +1 yanks +0 swing +0 kills +0 hp +0 slams +0) paid 15.0 pool 15.0/1200 player xp 0 lv 0
+T_GR t23 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(285.6 504.2 37.0) L0.0 d517.1 segs40 ms0.056/0.085 scale1.00 grip-1 free01 hoff0.00 pt-1 victim DoomImp (294.0 512.0 -0.0)
+T_GR t25 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(265.6 504.2 37.0) L0.0 d517.1 segs36 ms0.085/0.062 scale1.00 grip-1 free01 hoff0.00 pt-1 victim DoomImp (274.0 512.0 -0.0)
+T_GR t27 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(245.6 504.2 37.0) L0.0 d517.1 segs32 ms0.045/0.056 scale1.00 grip-1 free01 hoff0.00 pt-1 victim DoomImp (254.0 512.0 -0.0)
+T_GR t29 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(225.6 504.2 37.0) L0.0 d517.1 segs28 ms0.032/0.047 scale1.00 grip-1 free01 hoff0.00 pt-1 victim DoomImp (234.0 512.0 -0.0)
+T_GR t31 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(205.6 504.2 37.0) L0.0 d517.1 segs24 ms0.034/0.045 scale1.00 grip-1 free01 hoff0.00 pt-1 victim DoomImp (214.0 512.0 -0.0)
+T_GR t33 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(185.6 504.2 37.0) L0.0 d517.1 segs20 ms0.067/0.054 scale1.00 grip-1 free01 hoff0.00 pt-1 victim DoomImp (194.0 512.0 -0.0)
+T_GR t35 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(165.6 504.2 37.0) L0.0 d517.1 segs16 ms0.038/0.059 scale1.00 grip-1 free01 hoff0.00 pt-1 victim DoomImp (174.0 512.0 -0.0)
+T_GR t37 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(145.6 504.2 37.0) L0.0 d517.1 segs12 ms0.026/0.047 scale1.00 grip-1 free01 hoff0.00 pt-1 victim DoomImp (154.0 512.0 -0.0)
+T_GR t39 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(125.6 504.2 37.0) L0.0 d517.1 segs8 ms0.031/0.053 scale1.00 grip-1 free01 hoff0.00 pt-1 victim DoomImp (134.0 512.0 -0.0)
+T_GR t41 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(105.6 504.2 37.0) L0.0 d517.1 segs4 ms0.027/0.056 scale1.00 grip-1 free01 hoff0.00 pt-1 victim DoomImp (116.0 512.0 -0.0)
+T_GR t42 h0 drop pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(97.6 504.2 37.0) L0.0 d517.1 segs2 ms0.021/0.132 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_XP t59 now pool 15.0 player xp 0 lv 0 pooled 0
+T_XP2 gun Pistol xp 0.0 lv 0
+T_XP3 svc bites 1 yanks 0 swing 0 kills 0 killhp 0 slams 0
+T_DMG t59 DoomImp took 100000 from DoomPlayer inf DoomPlayer hp now -99940
+T_GRP kill p0 DoomImp hp 60 (kills 1)
+T_DIED t59 DoomImp
+T_GRS t59 flung DoomImp at 32.0 u/tic
+T_GBH t59 p0 hook xp +30.0 (bites +0 yanks +0 swing +0 kills +1 hp +60 slams +0) paid 45.0 pool 45.0/1200 player xp 0 lv 0
+T_XP t62 now pool 45.0 player xp 0 lv 0 pooled 0
+T_XP2 gun Pistol xp 60.0 lv 0
+T_XP3 svc bites 1 yanks 0 swing 0 kills 1 killhp 60 slams 0

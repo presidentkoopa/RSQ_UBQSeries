@@ -1,0 +1,131 @@
+T_LV t49 LongLine=0 FastReel=0 HeavyHaul=0 GetOverHere=0 Bowling=3 BarbedClaw=0 Slingshot=0 SteadyLine=0 DoubleHook=0 range x1.00 reel x1.00 mass x1.00 size x1.00
+T_SUM t49 #0 DoomImp at (444.0 512.0 -0.0) mass 100 r 20 h 56 boss 0 hp 60
+T_SUM t49 #1 Zombieman at (262.5 536.4 -0.0) mass 100 r 20 h 56 boss 0 hp 20
+T_GR t52 h0 fire pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(74.0 503.5 37.0) L0.0 d517.1 segs0 ms0.000/0.017 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GRM launch DoomImp m=100 r=20 h=56 dist=328 T=22.5 arc=49 (want 49 room 448) tumble=1 voxel=0 scale=1.00
+T_GR t60 h0 bite pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(424.0 503.5 37.0) L0.0 d517.1 segs61 ms0.064/0.033 scale1.00 grip-1 free01 hoff0.00 pt-1 victim DoomImp (444.0 512.0 -0.0)
+T_GRS t60 bite DoomImp hand 0 heavy 0 bites 1 volleys 0
+T_GRP bite p0 h0 DoomImp mass 100 boss 0 heavy 0 (bites 1 yanks 1)
+T_GBH t60 p0 hook xp +30.0 (bites +1 yanks +1 swing +0 kills +0 hp +0 slams +0) paid 30.0 pool 30.0/1200 player xp 0 lv 0
+T_MON t60 #0 DoomImp pos(441.8 512.0 1.3) hp 60 pain 1 tics -1
+T_MON t61 #0 DoomImp pos(437.2 512.0 4.0) hp 60 pain 1 tics -1
+T_GR t62 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(418.8 504.2 41.0) L0.0 d517.1 segs66 ms0.052/0.022 scale1.00 grip-1 free01 hoff0.00 pt-1 victim DoomImp (437.2 512.0 4.0)
+T_MON t62 #0 DoomImp pos(431.0 512.0 7.5) hp 60 pain 1 tics -1
+T_MON t63 #0 DoomImp pos(423.3 512.0 11.6) hp 60 pain 1 tics -1
+T_GR t64 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(404.9 504.2 48.6) L0.0 d517.1 segs64 ms0.064/0.025 scale1.00 grip-1 free01 hoff0.00 pt-1 victim DoomImp (423.3 512.0 11.6)
+T_MON t64 #0 DoomImp pos(414.5 512.0 16.1) hp 60 pain 1 tics -1
+T_MON t65 #0 DoomImp pos(404.5 512.0 20.9) hp 60 pain 1 tics -1
+T_GR t66 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(386.0 504.2 57.9) L0.0 d517.1 segs60 ms0.051/0.017 scale1.00 grip-1 free01 hoff0.00 pt-1 victim DoomImp (404.5 512.0 20.9)
+T_MON t66 #0 DoomImp pos(393.4 512.0 25.7) hp 60 pain 1 tics -1
+T_MON t67 #0 DoomImp pos(381.3 512.0 30.4) hp 60 pain 1 tics -1
+T_GR t68 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(362.9 504.2 67.4) L0.0 d517.1 segs56 ms0.052/0.018 scale1.00 grip-1 free01 hoff0.00 pt-1 victim DoomImp (381.3 512.0 30.4)
+T_MON t68 #0 DoomImp pos(368.3 512.0 34.9) hp 60 pain 1 tics -1
+T_MON t69 #0 DoomImp pos(354.4 512.0 39.1) hp 60 pain 1 tics -1
+T_GR t70 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(336.0 504.2 76.1) L0.0 d517.1 segs50 ms0.048/0.018 scale1.00 grip-1 free01 hoff0.00 pt-1 victim DoomImp (354.4 512.0 39.1)
+T_MON t70 #0 DoomImp pos(339.7 512.0 42.7) hp 60 pain 1 tics -1
+T_MON t71 #0 DoomImp pos(324.1 512.0 45.6) hp 60 pain 1 tics -1
+T_GR t72 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(305.7 504.2 82.6) L0.0 d517.1 segs45 ms0.042/0.017 scale1.00 grip-1 free01 hoff0.00 pt-1 victim DoomImp (324.1 512.0 45.6)
+T_MON t72 #0 DoomImp pos(307.7 512.0 47.8) hp 60 pain 1 tics -1
+T_GRS t73 struck Zombieman by DoomImp pin 1
+T_DMG t73 Zombieman took 28 from DoomPlayer inf DoomImp hp now -8
+T_GRP kill p0 Zombieman hp 20 (kills 1)
+T_DIED t73 Zombieman
+T_GRP bowl DoomImp -> Zombieman speed 17.2 dmg 28 hp 20 -> -8 shoved 0
+T_GBH t73 p0 hook xp +10.0 (bites +0 yanks +0 swing +0 kills +1 hp +20 slams +0) paid 40.0 pool 60.0/1200 player xp 0 lv 0
+T_MON t73 #0 DoomImp pos(290.6 512.0 49.0) hp 60 pain 1 tics -1
+T_MON t73 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics 3
+T_GR t74 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(272.2 504.2 86.0) L0.0 d517.1 segs38 ms0.057/0.024 scale1.00 grip-1 free01 hoff0.00 pt-1 victim DoomImp (290.6 512.0 49.0)
+T_MON t74 #0 DoomImp pos(272.7 512.0 49.1) hp 60 pain 1 tics -1
+T_MON t74 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics 2
+T_MON t75 #0 DoomImp pos(254.0 512.0 48.0) hp 60 pain 1 tics -1
+T_MON t75 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics 1
+T_GR t76 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(235.6 504.2 85.0) L0.0 d517.1 segs31 ms0.037/0.019 scale1.00 grip-1 free01 hoff0.00 pt-1 victim DoomImp (254.0 512.0 48.0)
+T_MON t76 #0 DoomImp pos(234.7 512.0 45.4) hp 60 pain 1 tics -1
+T_MON t76 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics 5
+T_MON t77 #0 DoomImp pos(214.6 512.0 41.4) hp 60 pain 1 tics -1
+T_MON t77 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics 4
+T_GR t78 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(196.2 504.2 78.4) L0.0 d517.1 segs23 ms0.039/0.022 scale1.00 grip-1 free01 hoff0.00 pt-1 victim DoomImp (214.6 512.0 41.4)
+T_MON t78 #0 DoomImp pos(193.9 512.0 35.6) hp 60 pain 1 tics -1
+T_MON t78 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics 3
+T_MON t79 #0 DoomImp pos(172.5 512.0 28.1) hp 60 pain 1 tics -1
+T_MON t79 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics 2
+T_GR t80 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(154.1 504.2 65.1) L0.0 d517.1 segs14 ms0.051/0.024 scale1.00 grip-1 free01 hoff0.00 pt-1 victim DoomImp (172.5 512.0 28.1)
+T_MON t80 #0 DoomImp pos(150.5 512.0 18.5) hp 60 pain 1 tics -1
+T_MON t80 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics 1
+T_MON t81 #0 DoomImp pos(127.8 512.0 6.8) hp 60 pain 1 tics -1
+T_MON t81 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics 5
+T_GR t82 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(109.4 504.2 43.8) L0.0 d517.1 segs5 ms0.028/0.044 scale1.00 grip-1 free01 hoff0.00 pt-1 victim DoomImp (127.8 512.0 6.8)
+T_GRM land DoomImp (arrived) after 23 tics speed 27.2 down 14.0 peak 49.1 dmg 4 at (116.0 512.0 -0.0) floorz -0.0 fits 1
+T_DMG t82 DoomImp took 4 from DoomPlayer inf None hp now 56
+T_MON t82 #0 DoomImp pos(116.0 512.0 -0.0) hp 56 pain 1 tics 2
+T_MON t82 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics 4
+T_GR t83 h0 drop pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(97.6 504.2 37.0) L0.0 d517.1 segs2 ms0.025/0.110 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_MON t83 #0 DoomImp pos(116.0 512.0 -0.0) hp 56 pain 1 tics 1
+T_MON t83 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics 3
+T_MON t84 #0 DoomImp pos(116.0 512.0 -0.0) hp 56 pain 1 tics 2
+T_MON t84 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics 2
+T_MON t85 #0 DoomImp pos(116.0 512.0 -0.0) hp 56 pain 1 tics 1
+T_MON t85 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics 1
+T_MON t86 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics 5
+T_MON t87 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics 4
+T_MON t88 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics 3
+T_MON t89 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics 2
+T_MON t90 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics 1
+T_MON t91 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics -1
+T_MON t92 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics -1
+T_MON t93 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics -1
+T_MON t94 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics -1
+T_MON t95 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics -1
+T_MON t96 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics -1
+T_MON t97 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics -1
+T_MON t98 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics -1
+T_MON t99 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics -1
+T_MON t100 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics -1
+T_MON t101 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics -1
+T_MON t102 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics -1
+T_MON t103 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics -1
+T_MON t104 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics -1
+T_MON t105 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics -1
+T_MON t106 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics -1
+T_MON t107 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics -1
+T_MON t108 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics -1
+T_MON t109 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics -1
+T_MON t110 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics -1
+T_MON t111 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics -1
+T_MON t112 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics -1
+T_MON t113 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics -1
+T_MON t114 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics -1
+T_MON t115 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics -1
+T_MON t116 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics -1
+T_MON t117 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics -1
+T_MON t118 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics -1
+T_MON t119 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics -1
+T_MON t120 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics -1
+T_MON t121 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics -1
+T_MON t122 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics -1
+T_MON t123 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics -1
+T_MON t124 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics -1
+T_MON t125 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics -1
+T_MON t126 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics -1
+T_MON t127 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics -1
+T_MON t128 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics -1
+T_MON t129 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics -1
+T_MON t130 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics -1
+T_MON t131 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics -1
+T_MON t132 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics -1
+T_MON t133 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics -1
+T_MON t134 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics -1
+T_MON t135 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics -1
+T_MON t136 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics -1
+T_MON t137 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics -1
+T_MON t138 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics -1
+T_MON t139 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics -1
+T_MON t140 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics -1
+T_MON t141 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics -1
+T_MON t142 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics -1
+T_MON t143 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics -1
+T_MON t144 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics -1
+T_XP t145 now pool 64.0 player xp 0 lv 0 pooled 2
+T_XP2 gun Pistol xp 0.0 lv 0
+T_XP3 svc bites 1 yanks 1 swing 0 kills 1 killhp 20 slams 0
+T_MON t145 #1 Zombieman pos(262.5 536.4 -0.0) hp -8 pain 0 tics -1

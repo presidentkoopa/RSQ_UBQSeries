@@ -1,0 +1,190 @@
+T_LV t49 LongLine=0 FastReel=0 HeavyHaul=1 GetOverHere=3 Bowling=3 BarbedClaw=4 Slingshot=0 SteadyLine=0 DoubleHook=0 range x1.00 reel x1.00 mass x1.50 size x1.15
+T_SUM t49 #0 Imp at (444.0 512.0 -0.0) mass 100 r 16 h 56 boss 0 hp 80
+T_SUM t49 #1 Revenant1 at (262.5 536.4 -0.0) mass 500 r 20 h 56 boss 0 hp 250
+T_INFO t58 #0 Imp mass 100 boss 0 hp 80/80 painchance 255 scale 1.04 r 16 h 56 inv: SlaughterCounter champion_GoldToken SKImp champion_PersistentInfo
+T_INFO t58 #1 Revenant1 mass 500 boss 0 hp 250/250 painchance 100 scale 0.90 r 20 h 56 inv: DemonGotHeadshotHitbox IsARevenant SlaughterCounter champion_GoldToken champion_PersistentInfo
+T_XP t58 now pool 0.0 player xp 0 lv 0 pooled 0
+T_XP2 gun Rifle xp 0.0 lv 0
+T_XP3 svc bites 0 yanks 0 swing 0 kills 0 killhp 0 slams 0
+T_GR t58 h0 fire pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(74.0 503.5 37.0) L0.0 d517.1 segs0 ms0.000/0.010 scale1.00 grip-1 free01 hoff0.00 pt-1
+SAVE1
+T_GRM launch Imp m=100 r=16 h=56 dist=332 T=22.8 arc=50 (want 50 room 448) tumble=1 voxel=0 scale=1.00
+T_GR t66 h0 bite pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(428.0 503.5 37.0) L0.0 d517.1 segs61 ms0.067/0.015 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (444.0 512.0 -0.0)
+T_GRS t66 bite Imp hand 0 heavy 0 bites 1 volleys 0
+T_GRP bite p0 h0 Imp mass 100 boss 0 heavy 0 (bites 1 yanks 1)
+T_DMG t66 Imp took 20 from BDoomer inf RSQGR_Hook hp now 60
+T_GRP barb bite Imp 80 -> 60
+T_GBH t66 p0 hook xp +30.0 (bites +1 yanks +1 swing +0 kills +0 hp +0 slams +0) paid 30.0 pool 50.0/1200 player xp 0 lv 0
+T_XP t67 now pool 50.0 player xp 0 lv 0 pooled 1
+T_XP2 gun Rifle xp 0.0 lv 0
+T_XP3 svc bites 1 yanks 1 swing 0 kills 0 killhp 0 slams 0
+T_GR t68 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(423.1 504.5 41.0) L0.0 d517.1 segs67 ms0.071/0.017 scale1.00 grip-1 free00 hoff0.00 pt-1 victim Imp (437.2 512.0 4.0)
+T_GR t70 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(409.3 504.5 48.6) L0.0 d517.1 segs67 ms0.045/0.013 scale1.00 grip-1 free00 hoff0.00 pt-1 victim Imp (423.5 512.0 11.6)
+T_GR t72 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(390.6 504.5 57.8) L0.0 d517.1 segs63 ms0.049/0.017 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (404.7 512.0 20.8)
+T_GR t74 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(367.7 504.5 67.3) L0.0 d517.1 segs57 ms0.039/0.015 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (381.8 512.0 30.3)
+T_GR t76 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(341.0 504.5 76.1) L0.0 d517.1 segs51 ms0.063/0.022 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (355.1 512.0 39.1)
+T_GR t78 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(310.9 504.5 82.8) L0.0 d517.1 segs46 ms0.068/0.014 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (325.0 512.0 45.8)
+T_GR t80 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(277.6 504.5 98.5) L0.0 d517.1 segs40 ms0.033/0.013 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (291.7 512.0 61.5)
+T_GRS t80 struck Revenant1 by Imp pin 1
+T_DMG t80 Revenant1 took 30 from BDoomer inf Imp hp now 220
+T_GRP bowl Imp -> Revenant1 speed 21.3 dmg 30 hp 250 -> 220 shoved 1
+T_MON t80 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 45
+T_MON t81 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 44
+T_GR t82 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(241.3 504.5 85.9) L0.0 d517.1 segs32 ms0.039/0.015 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (255.4 512.0 48.9)
+T_MON t82 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 43
+T_MON t83 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 42
+T_GR t84 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(202.2 504.5 79.9) L0.0 d517.1 segs25 ms0.027/0.012 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (216.3 512.0 42.9)
+T_MON t84 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 41
+T_MON t85 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 40
+T_GR t86 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(160.4 504.5 67.4) L0.0 d517.1 segs16 ms0.022/0.012 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (174.5 512.0 30.4)
+T_MON t86 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 39
+T_MON t87 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 38
+T_GR t88 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(116.0 504.5 47.3) L0.0 d517.1 segs6 ms0.038/0.015 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (130.1 512.0 10.3)
+T_GRM land Imp (arrived) after 23 tics speed 27.2 down 14.0 peak 61.5 dmg 4 at (112.0 512.0 -0.0) floorz -0.0 fits 1
+T_DMG t88 Imp took 4 from BDoomer inf None hp now 56
+T_MON t88 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 37
+T_GRP goh Imp arrives staggered 65 tics (1)
+T_DMG t89 Imp took 30 from BDoomer inf RSQGR_Hook hp now 26
+T_GRP barb tear Imp 56 -> 26
+T_GR t89 h0 drop pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(97.9 504.5 37.0) L0.0 d517.1 segs2 ms0.017/0.080 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_MON t89 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 36
+T_MON t90 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 35
+T_MON t91 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 34
+T_MON t92 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 33
+T_MON t93 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 32
+T_MON t94 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 31
+T_MON t95 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 30
+LOAD1
+T_MON t96 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 29
+T_XP t68 now pool 50.0 player xp 0 lv 0 pooled 1
+T_XP2 gun Rifle xp 0.0 lv 0
+T_XP3 svc bites 1 yanks 1 swing 0 kills 0 killhp 0 slams 0
+T_GR t68 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(423.1 504.5 41.0) L0.0 d517.1 segs67 ms0.071/0.017 scale1.00 grip-1 free00 hoff0.00 pt-1 victim Imp (437.2 512.0 4.0)
+T_GR t70 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(409.3 504.5 48.6) L0.0 d517.1 segs67 ms0.069/0.016 scale1.00 grip-1 free00 hoff0.00 pt-1 victim Imp (423.5 512.0 11.6)
+T_XP t72 now pool 50.0 player xp 0 lv 0 pooled 1
+T_XP2 gun Rifle xp 0.0 lv 0
+T_XP3 svc bites 1 yanks 1 swing 0 kills 0 killhp 0 slams 0
+T_GR t72 h0 pull pos(64.0 512.0 0.0) vel(0.00 0.00 0.00) claw(390.6 504.5 57.8) L0.0 d517.1 segs63 ms0.049/0.018 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (404.7 512.0 20.8)
+T_GR t74 h0 pull pos(64.0 512.0 0.0) vel(0.00 0.00 0.00) claw(367.7 504.5 67.3) L0.0 d517.1 segs57 ms0.074/0.014 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (381.8 512.0 30.3)
+T_GR t76 h0 pull pos(64.0 512.0 0.0) vel(0.00 0.00 0.00) claw(341.0 504.5 76.1) L0.0 d517.1 segs51 ms0.102/0.015 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (355.1 512.0 39.1)
+T_GR t78 h0 pull pos(64.0 512.0 0.0) vel(0.00 0.00 0.00) claw(310.9 504.5 82.8) L0.0 d517.1 segs46 ms6.826/0.047 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (325.0 512.0 45.8)
+T_GR t80 h0 pull pos(64.0 512.0 0.0) vel(0.00 0.00 0.00) claw(277.6 504.5 98.5) L0.0 d517.1 segs40 ms0.052/0.014 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (291.7 512.0 61.5)
+T_GRS t80 struck Revenant1 by Imp pin 1
+T_DMG t80 Revenant1 took 30 from BDoomer inf Imp hp now 220
+T_GRP bowl Imp -> Revenant1 speed 21.3 dmg 30 hp 250 -> 220 shoved 1
+T_MON t80 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 45
+T_MON t81 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 44
+T_GR t82 h0 pull pos(64.0 512.0 0.0) vel(0.00 0.00 0.00) claw(241.3 504.5 85.9) L0.0 d517.1 segs32 ms0.041/0.014 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (255.4 512.0 48.9)
+T_MON t82 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 43
+T_MON t83 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 42
+T_GR t84 h0 pull pos(64.0 512.0 0.0) vel(0.00 0.00 0.00) claw(202.2 504.5 79.9) L0.0 d517.1 segs25 ms0.030/0.013 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (216.3 512.0 42.9)
+T_MON t84 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 41
+T_MON t85 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 40
+T_GR t86 h0 pull pos(64.0 512.0 0.0) vel(0.00 0.00 0.00) claw(160.4 504.5 67.4) L0.0 d517.1 segs16 ms0.025/0.013 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (174.5 512.0 30.4)
+T_MON t86 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 39
+T_MON t87 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 38
+T_GR t88 h0 pull pos(64.0 512.0 0.0) vel(0.00 0.00 0.00) claw(116.0 504.5 47.3) L0.0 d517.1 segs6 ms0.030/0.013 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (130.1 512.0 10.3)
+T_GRM land Imp (arrived) after 23 tics speed 27.2 down 14.0 peak 61.5 dmg 4 at (112.0 512.0 -0.0) floorz -0.0 fits 1
+T_DMG t88 Imp took 4 from BDoomer inf None hp now 56
+T_MON t88 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 37
+T_GRP goh Imp arrives staggered 65 tics (1)
+T_DMG t89 Imp took 30 from BDoomer inf RSQGR_Hook hp now 26
+T_GRP barb tear Imp 56 -> 26
+T_GR t89 h0 drop pos(64.0 512.0 0.0) vel(0.00 0.00 0.00) claw(97.9 504.5 37.0) L0.0 d517.1 segs2 ms0.018/0.073 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_MON t89 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 36
+T_MON t90 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 35
+T_MON t91 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 34
+T_MON t92 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 33
+T_MON t93 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 32
+T_MON t94 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 31
+T_MON t95 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 30
+T_MON t96 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 29
+T_MON t97 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 28
+T_MON t98 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 27
+T_MON t99 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 26
+LOAD2
+T_MON t100 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 25
+T_GR t68 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(423.1 504.5 41.0) L0.0 d517.1 segs67 ms0.071/0.017 scale1.00 grip-1 free00 hoff0.00 pt-1 victim Imp (437.2 512.0 4.0)
+T_XP t69 now pool 50.0 player xp 0 lv 0 pooled 1
+T_XP2 gun Rifle xp 0.0 lv 0
+T_XP3 svc bites 1 yanks 1 swing 0 kills 0 killhp 0 slams 0
+T_GR t70 h0 pull pos(64.0 512.0 0.0) vel(0.00 0.00 0.00) claw(409.3 504.5 48.6) L0.0 d517.1 segs65 ms0.093/0.017 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (423.5 512.0 11.6)
+T_GR t72 h0 pull pos(64.0 512.0 0.0) vel(0.00 0.00 0.00) claw(390.6 504.5 57.8) L0.0 d517.1 segs61 ms0.046/0.014 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (404.7 512.0 20.8)
+T_GR t74 h0 pull pos(64.0 512.0 0.0) vel(0.00 0.00 0.00) claw(367.7 504.5 67.3) L0.0 d517.1 segs57 ms0.037/0.013 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (381.8 512.0 30.3)
+T_GR t76 h0 pull pos(64.0 512.0 0.0) vel(0.00 0.00 0.00) claw(341.0 504.5 76.1) L0.0 d517.1 segs51 ms0.061/0.013 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (355.1 512.0 39.1)
+T_GR t78 h0 pull pos(64.0 512.0 0.0) vel(0.00 0.00 0.00) claw(310.9 504.5 82.8) L0.0 d517.1 segs46 ms0.032/0.012 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (325.0 512.0 45.8)
+T_GR t80 h0 pull pos(64.0 512.0 0.0) vel(0.00 0.00 0.00) claw(277.6 504.5 98.5) L0.0 d517.1 segs40 ms0.030/0.012 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (291.7 512.0 61.5)
+T_GRS t80 struck Revenant1 by Imp pin 1
+T_DMG t80 Revenant1 took 30 from BDoomer inf Imp hp now 220
+T_GRP bowl Imp -> Revenant1 speed 21.3 dmg 30 hp 250 -> 220 shoved 1
+T_MON t80 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 45
+T_MON t81 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 44
+T_GR t82 h0 pull pos(64.0 512.0 0.0) vel(0.00 0.00 0.00) claw(241.3 504.5 85.9) L0.0 d517.1 segs32 ms0.029/0.012 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (255.4 512.0 48.9)
+T_MON t82 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 43
+T_MON t83 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 42
+T_XP t84 now pool 91.9 player xp 0 lv 0 pooled 2
+T_XP2 gun Rifle xp 0.0 lv 0
+T_XP3 svc bites 1 yanks 1 swing 0 kills 0 killhp 0 slams 0
+T_GR t84 h0 pull pos(64.0 512.0 0.0) vel(0.00 0.00 0.00) claw(202.2 504.5 79.9) L0.0 d517.1 segs25 ms0.038/0.018 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (216.3 512.0 42.9)
+T_MON t84 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 41
+T_MON t85 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 40
+T_GR t86 h0 pull pos(64.0 512.0 0.0) vel(0.00 0.00 0.00) claw(160.4 504.5 67.4) L0.0 d517.1 segs16 ms0.039/0.016 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (174.5 512.0 30.4)
+T_MON t86 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 39
+T_MON t87 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 38
+T_GR t88 h0 pull pos(64.0 512.0 0.0) vel(0.00 0.00 0.00) claw(116.0 504.5 47.3) L0.0 d517.1 segs6 ms0.025/0.015 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (130.1 512.0 10.3)
+T_GRM land Imp (arrived) after 23 tics speed 27.2 down 14.0 peak 61.5 dmg 4 at (112.0 512.0 -0.0) floorz -0.0 fits 1
+T_DMG t88 Imp took 4 from BDoomer inf None hp now 56
+T_MON t88 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 37
+T_GRP goh Imp arrives staggered 65 tics (1)
+T_DMG t89 Imp took 30 from BDoomer inf RSQGR_Hook hp now 26
+T_GRP barb tear Imp 56 -> 26
+T_GR t89 h0 drop pos(64.0 512.0 0.0) vel(0.00 0.00 0.00) claw(97.9 504.5 37.0) L0.0 d517.1 segs2 ms0.033/0.058 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_MON t89 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 36
+T_MON t90 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 35
+T_MON t91 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 34
+T_MON t92 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 33
+T_MON t93 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 32
+T_MON t94 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 31
+T_MON t95 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 30
+T_MON t96 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 29
+T_MON t97 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 28
+T_MON t98 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 27
+T_MON t99 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 26
+T_MON t100 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 25
+T_MON t101 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 24
+T_MON t102 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 23
+T_MON t103 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 22
+T_MON t104 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 21
+T_MON t105 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 20
+T_MON t106 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 19
+T_MON t107 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 18
+T_MON t108 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 17
+T_MON t109 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 16
+T_MON t110 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 15
+T_MON t111 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 14
+T_MON t112 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 13
+T_MON t113 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 12
+T_MON t114 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 11
+T_MON t115 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 10
+T_MON t116 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 9
+T_MON t117 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 8
+T_MON t118 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 7
+T_MON t119 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 6
+T_MON t120 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 5
+T_MON t121 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 4
+T_MON t122 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 3
+T_MON t123 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 2
+T_MON t124 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 1
+T_MON t125 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 5
+T_MON t126 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 4
+T_MON t127 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 3
+T_MON t128 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 2
+T_MON t129 #1 Revenant1 pos(254.5 552.0 -0.0) hp 220 pain 1 tics 1
+MAPCHANGE
+T_XP t131 now pool 125.9 player xp 0 lv 0 pooled 4
+T_XP2 gun Rifle xp 0.0 lv 0
+T_XP3 svc bites 1 yanks 1 swing 0 kills 0 killhp 0 slams 0
+T_XP t19 now pool 0.0 player xp 0 lv 0 pooled 0
+T_XP2 gun Rifle xp 0.0 lv 0
+T_XP3 svc bites 0 yanks 0 swing 0 kills 0 killhp 0 slams 0
+T_LV t19 LongLine=0 FastReel=0 HeavyHaul=0 GetOverHere=0 Bowling=0 BarbedClaw=0 Slingshot=0 SteadyLine=0 DoubleHook=0 range x1.00 reel x1.00 mass x1.00 size x1.00

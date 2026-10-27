@@ -1,0 +1,43 @@
+T_LV t49 LongLine=0 FastReel=0 HeavyHaul=0 GetOverHere=0 Bowling=0 BarbedClaw=0 Slingshot=0 SteadyLine=0 DoubleHook=0 range x1.00 reel x1.00 mass x1.00 size x1.00
+T_SUM t49 #0 DoomImp at (349.3 604.7 -0.0) mass 100 r 20 h 56 boss 0 hp 60
+T_SUM t49 #1 DoomImp at (349.3 419.3 -0.0) mass 100 r 20 h 56 boss 0 hp 60
+T_GR t54 h0 fire pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(74.0 503.5 37.0) L0.0 d517.1 segs0 ms0.000/0.015 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t60 h0 bite pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(329.3 420.5 37.0) L0.0 d517.1 segs45 ms0.053/0.056 scale1.00 grip-1 free01 hoff0.00 pt-1 victim DoomImp (349.3 419.3 -0.0)
+T_GRS t60 bite DoomImp hand 0 heavy 0 bites 1 volleys 0
+T_GRP bite p0 h0 DoomImp mass 100 boss 0 heavy 0 (bites 1 yanks 0)
+T_GBH t60 p0 hook xp +15.0 (bites +1 yanks +0 swing +0 kills +0 hp +0 slams +0) paid 15.0 pool 15.0/1200 player xp 0 lv 0
+T_GR t61 h1 fire pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(74.0 520.5 37.0) L0.0 d517.1 segs0 ms0.000/0.190 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t62 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(319.8 423.6 37.0) L0.0 d517.1 segs49 ms0.050/0.043 scale1.00 grip-1 free01 hoff0.00 pt-1 victim DoomImp (330.3 425.5 -0.0)
+T_GR t64 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(300.8 429.8 37.0) L0.0 d517.1 segs45 ms0.047/0.060 scale1.00 grip-1 free01 hoff0.00 pt-1 victim DoomImp (311.3 431.7 -0.0)
+T_GR t66 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(281.8 436.0 37.0) L0.0 d517.1 segs41 ms0.044/0.063 scale1.00 grip-1 free01 hoff0.00 pt-1 victim DoomImp (292.3 437.8 -0.0)
+T_GR t67 h1 bite pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(329.3 603.5 37.0) L0.0 d517.1 segs45 ms0.031/0.146 scale1.00 grip-1 free01 hoff0.00 pt-1 victim DoomImp (349.3 604.7 -0.0)
+T_GRS t67 bite DoomImp hand 1 heavy 0 bites 1 volleys 0
+T_GRP bite p0 h1 DoomImp mass 100 boss 0 heavy 0 (bites 2 yanks 0)
+T_GBH t67 p0 hook xp +15.0 (bites +1 yanks +0 swing +0 kills +0 hp +0 slams +0) paid 30.0 pool 30.0/1200 player xp 0 lv 0
+T_GR t68 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(262.8 442.2 37.0) L0.0 d517.1 segs37 ms0.040/0.208 scale1.00 grip-1 free01 hoff0.00 pt-1 victim DoomImp (273.2 444.0 -0.0)
+T_GR t69 h1 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(319.8 600.4 37.0) L0.0 d517.1 segs49 ms0.028/0.144 scale1.00 grip-1 free01 hoff0.00 pt-1 victim DoomImp (330.3 598.5 -0.0)
+T_GR t70 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(243.8 448.4 37.0) L0.0 d517.1 segs33 ms0.041/0.174 scale1.00 grip-1 free01 hoff0.00 pt-1 victim DoomImp (254.2 450.2 -0.0)
+T_GR t71 h1 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(300.8 594.2 37.0) L0.0 d517.1 segs45 ms0.027/0.145 scale1.00 grip-1 free01 hoff0.00 pt-1 victim DoomImp (311.3 592.3 -0.0)
+T_GR t72 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(224.7 454.5 37.0) L0.0 d517.1 segs29 ms0.048/0.144 scale1.00 grip-1 free01 hoff0.00 pt-1 victim DoomImp (235.2 456.4 -0.0)
+T_GR t73 h1 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(281.8 588.0 37.0) L0.0 d517.1 segs41 ms0.052/0.155 scale1.00 grip-1 free01 hoff0.00 pt-1 victim DoomImp (292.3 586.2 -0.0)
+T_GR t74 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(205.7 460.7 37.0) L0.0 d517.1 segs25 ms0.036/0.163 scale1.00 grip-1 free01 hoff0.00 pt-1 victim DoomImp (216.2 462.6 -0.0)
+T_GR t75 h1 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(262.8 581.8 37.0) L0.0 d517.1 segs37 ms0.054/0.141 scale1.00 grip-1 free01 hoff0.00 pt-1 victim DoomImp (273.2 580.0 -0.0)
+T_GR t76 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(186.7 466.9 37.0) L0.0 d517.1 segs21 ms0.033/0.136 scale1.00 grip-1 free01 hoff0.00 pt-1 victim DoomImp (197.1 468.7 -0.0)
+T_GR t77 h1 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(243.8 575.6 37.0) L0.0 d517.1 segs33 ms0.021/0.147 scale1.00 grip-1 free01 hoff0.00 pt-1 victim DoomImp (254.2 573.8 -0.0)
+T_GR t78 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(167.7 473.1 37.0) L0.0 d517.1 segs17 ms0.031/0.135 scale1.00 grip-1 free01 hoff0.00 pt-1 victim DoomImp (178.1 474.9 -0.0)
+T_GR t79 h1 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(224.7 569.5 37.0) L0.0 d517.1 segs29 ms0.024/0.165 scale1.00 grip-1 free01 hoff0.00 pt-1 victim DoomImp (235.2 567.6 -0.0)
+T_GR t80 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(148.7 479.3 37.0) L0.0 d517.1 segs13 ms0.030/0.134 scale1.00 grip-1 free01 hoff0.00 pt-1 victim DoomImp (159.1 481.1 -0.0)
+T_GR t81 h1 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(205.7 563.3 37.0) L0.0 d517.1 segs25 ms0.019/0.157 scale1.00 grip-1 free01 hoff0.00 pt-1 victim DoomImp (216.2 561.4 -0.0)
+T_GR t82 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(129.6 485.4 37.0) L0.0 d517.1 segs9 ms0.027/0.141 scale1.00 grip-1 free01 hoff0.00 pt-1 victim DoomImp (140.1 487.3 -0.0)
+T_GR t83 h1 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(186.7 557.1 37.0) L0.0 d517.1 segs21 ms0.014/0.161 scale1.00 grip-1 free01 hoff0.00 pt-1 victim DoomImp (197.1 555.3 -0.0)
+T_GR t84 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(110.6 491.6 37.0) L0.0 d517.1 segs5 ms0.026/0.163 scale1.00 grip-1 free01 hoff0.00 pt-1 victim DoomImp (121.1 493.5 -0.0)
+T_GR t85 h1 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(167.7 550.9 37.0) L0.0 d517.1 segs17 ms0.013/0.169 scale1.00 grip-1 free01 hoff0.00 pt-1 victim DoomImp (178.1 549.1 -0.0)
+T_GR t86 h0 drop pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(93.5 497.2 37.0) L0.0 d517.1 segs2 ms0.034/0.180 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t87 h1 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(148.7 544.7 37.0) L0.0 d517.1 segs13 ms0.022/0.138 scale1.00 grip-1 free01 hoff0.00 pt-1 victim DoomImp (159.1 542.9 -0.0)
+T_GR t89 h1 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(129.6 538.6 37.0) L0.0 d517.1 segs9 ms0.028/0.053 scale1.00 grip-1 free01 hoff0.00 pt-1 victim DoomImp (140.1 536.7 -0.0)
+T_GR t91 h1 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(110.6 535.5 37.0) L0.0 d517.1 segs5 ms0.035/0.063 scale1.00 grip-1 free01 hoff0.00 pt-1 victim DoomImp (121.2 536.7 -0.0)
+T_GR t93 h1 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(92.1 535.5 37.0) L0.0 d517.1 segs2 ms0.029/0.063 scale1.00 grip-1 free01 hoff0.00 pt-1 victim DoomImp (110.2 536.7 -0.0)
+T_GR t94 h1 drop pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(90.3 535.5 37.0) L0.0 d517.1 segs2 ms0.023/0.207 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_XP t144 now pool 30.0 player xp 0 lv 0 pooled 0
+T_XP2 gun Pistol xp 0.0 lv 0
+T_XP3 svc bites 2 yanks 0 swing 0 kills 0 killhp 0 slams 0

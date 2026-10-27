@@ -66,8 +66,8 @@ class RSQGR_Monster
 		Vector2 to = pmo.Pos.xy - victim.Pos.xy;
 		double d = to.Length();
 		double stopAt = pmo.radius + victim.radius + RSQGR_Util.Num("rsqgr_slide_gap", 16);
-		if (d <= stopAt + 1.0) return false;
-		double step = min(RSQGR_Util.Num("rsqgr_slide_speed", 10) * RSQGR_Core.Scale(), d - stopAt);
+		if (d <= stopAt + 1.0) { RSQGR_Perks.OnArrive(victim, pmo); return false; }   // Get Over Here (perks.zs)
+		double step = min(RSQGR_Util.Num("rsqgr_slide_speed", 10) * RSQGR_Perks.Factor(pmo, 'reel') * RSQGR_Core.Scale(), d - stopAt);
 		Vector2 dir = to / d;
 		Vector2 np = victim.Pos.xy + dir * step;
 
@@ -79,6 +79,7 @@ class RSQGR_Monster
 			double nz = clamp(victim.Pos.z + sz, victim.floorz, victim.ceilingz - victim.Height);
 			victim.SetZ(nz);
 		}
+		RSQGR_Perks.Bowl(victim, pmo, (np.x, np.y, victim.Pos.z + victim.Height * 0.5), step / max(RSQGR_Core.Scale(), 0.0001));   // Bowling
 		if (!victim.TryMove(np, true))
 		{
 			// slide along whatever stopped it, one axis at a time
@@ -195,13 +196,15 @@ class RSQGR_Flight : EventHandler
 
 	static Vector3 MidOf(Actor a) { return (a.Pos.x, a.Pos.y, a.Pos.z + a.Height * 0.5); }
 
-	static bool Throwable(Actor a)
+	static bool Throwable(Actor a, PlayerPawn by = null)
 	{
 		if (!a || a.bDONTTHRUST || a.bBOSS) return false;
-		double maxM = RSQGR_Util.Num("rsqgr_yank_mass", 1000);
+		// Heavy Haul (perks.zs) raises all three for the thrower
+		double maxM = RSQGR_Util.Num("rsqgr_yank_mass", 1000) * RSQGR_Perks.Factor(by, 'mass');
 		if (maxM > 0 && a.Mass > maxM) return false;
-		if (a.Radius > RSQGR_Util.Num("rsqgr_yank_radius", 64)) return false;
-		if (a.Height > RSQGR_Util.Num("rsqgr_yank_height", 110)) return false;
+		double size = RSQGR_Perks.Factor(by, 'size');
+		if (a.Radius > RSQGR_Util.Num("rsqgr_yank_radius", 64) * size) return false;
+		if (a.Height > RSQGR_Util.Num("rsqgr_yank_height", 110) * size) return false;
 		return true;
 	}
 
@@ -223,7 +226,7 @@ class RSQGR_Flight : EventHandler
 
 	bool Launch(Actor a, PlayerPawn pmo, int hand)
 	{
-		if (!a || !pmo || SlotOf(a) >= 0 || !Throwable(a)) return false;
+		if (!a || !pmo || SlotOf(a) >= 0 || !Throwable(a, pmo)) return false;
 		int s = -1;
 		for (int i = 0; i < NFLY; i++) if (fph[i] == FP_NONE || !fa[i]) { s = i; break; }
 		if (s < 0) return false;
@@ -432,6 +435,7 @@ class RSQGR_Flight : EventHandler
 		want.z += 4.0 * farc[s] * e * (1.0 - e);
 
 		Vector3 was = MidOf(a);
+		if (fby[s]) RSQGR_Perks.Bowl(a, fby[s], want, (want - was).Length() / max(sc, 0.0001));   // Bowling (perks.zs)
 		Actor hit;
 		bool moved = PlaceMid(a, want, hit);
 		Vector3 now = MidOf(a);
@@ -528,11 +532,12 @@ class RSQGR_Flight : EventHandler
 				hit ? String.Format(" -> %s %d", hit.GetClassName(), dmg / 2) : (blockLine ? String.Format(" (line %d)", blockLine.Index()) : " (nothing named)"));
 		if (dmg <= 0) return;
 		let src = fby[s];
-		// service.zs notes each blow BEFORE it lands, so a scorer hearing the death already knows
-		if (hit && hit.bSHOOTABLE && hit != src) { RSQGR_Events.Struck(a, hit, src); hit.DamageMobj(null, src, max(1, dmg / 2), 'Melee'); }
+		// service.zs notes each blow BEFORE it lands, so a scorer hearing the death already knows;
+		// RSQGR_Perks.Hurt brackets it as the hook's own damage (Gun Bonsai's patch pays it to the player pool)
+		if (hit && hit.bSHOOTABLE && hit != src) { RSQGR_Events.Struck(a, hit, src); RSQGR_Perks.Hurt(hit, null, src, max(1, dmg / 2), 'Melee'); }
 		if (!a) return;
 		RSQGR_Events.Slam(a, src);
-		a.DamageMobj(null, src, dmg, 'Melee');
+		RSQGR_Perks.Hurt(a, null, src, dmg, 'Melee');
 	}
 
 	static int Damage(double speed)
@@ -546,6 +551,7 @@ class RSQGR_Flight : EventHandler
 		double speed = fv[s].Length();
 		double down = -fv[s].z;
 		let src = fby[s];
+		bool onLine = fline[s];   // still on the rope: the slide's arrival (next tic) is Get Over Here's
 		bool dbg = RSQGR_Util.Flag("rsqgr_debug", false);
 		Restore(s);
 		// overlapping a thing after the last vertical move: nudge out (8 tries round it)
@@ -569,7 +575,15 @@ class RSQGR_Flight : EventHandler
 		if (dbg)
 			Console.Printf("T_GRM land %s (%s) after %d tics speed %.1f down %.1f peak %.1f dmg %d at (%.1f %.1f %.1f) floorz %.1f fits %d",
 				a.GetClassName(), why, fage[s], speed, down, fpeak[s], dmg, a.Pos.x, a.Pos.y, a.Pos.z, a.floorz, a.TestMobjLocation());
-		if (dmg > 0) { RSQGR_Events.Slam(a, src); a.DamageMobj(null, src, dmg, 'Melee'); }
+		if (dmg > 0) { RSQGR_Events.Slam(a, src); RSQGR_Perks.Hurt(a, null, src, dmg, 'Melee'); }
+		if (a && src && !onLine) RSQGR_Perks.OnArrive(a, src);   // Get Over Here (perks.zs), off the rope
+	}
+
+	// Let go of a thrown thing where it is, everything put back (Double Hook takes it over).
+	void Free(Actor a)
+	{
+		int s = SlotOf(a);
+		if (s >= 0) Restore(s);
 	}
 
 	// Put back everything borrowed, and free the slot.

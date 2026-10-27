@@ -14,3 +14,5 @@ version "4.14"
 // ==== monster side ====
 #include "zscript/rsqgr/whip.zs"
 // ==== end monster side ====
+// Gun Bonsai VR patch upgrades and the hook's XP ledger (asked by name; nothing without the patch)
+#include "zscript/rsqgr/perks.zs"

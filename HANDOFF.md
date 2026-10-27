@@ -135,3 +135,40 @@ mass > rsqgr_mass_max (anchor instead; the seam is not called).
 
 ## RSQ_SlowMo findings (for its owner; not edited here)
 See the report: (1) Consider() double-adds a thing spawned before the clock's WorldTick (summon, NetworkProcess) on a Gather tic -> tics x16 per tic, int overflow, monster frozen at tics 1; (2) Impulses() exempts a vertical push from the floor.
+
+# ==== Gun Bonsai hook upgrades (branch agent-gbhook): perks.zs, 2026-10-27 ====
+
+The Gun Bonsai VR / Offhand patch (rs_gunbonsai-offhand-vr, branch agent-gbhook, rsq/zscript/up_hook.zs) offers
+nine PLAYER perks while this pk3 is loaded; `zscript/rsqgr/perks.zs` (RSQGR_Perks) reads their levels by name
+(RSQ_MeleeUpgradeService "plevel", once a second) and does the effects. Without the patch every level is 0 and
+the hook is unchanged (rig: grapple alone, yank as before, no errors). Calls added: one line each in core
+(Fire range/speed, Fly mass + OnBite, LetGo, reel x3, drag), monster (slide speed + arrival + Bowl, Throwable
+limits, path Bowl, Land arrival off the rope, Free() for Double Hook) and whip; every hook blow goes through
+RSQGR_Perks.Hurt (a bracket RSQGR_Service answers as "hook.dealing", so Gun Bonsai pays it to the player pool).
+RSQGR_Service (agent-svc, merged) also forwards "xp.bites/yanks/swing/kills/killhp/slams" to perks.zs.
+
+## Done (measured, rig F, QZD 17.3; logs test/evidence/gb_*.txt)
+| upgrade | measured |
+|---|---|
+| Long Line (cap 4) | claw turns back at 1024 (lv0); lv4 range 1843: latched the far wall 1717 away (gb_r0/r4) |
+| Fast Reel (cap 4) | rope in 12.0 -> 19.2 u/tic (lv4); claw to the ceiling 21 -> 14 tics (gb_e0/e4); slide x1.15/lv |
+| Heavy Haul (cap 3) | Cyberdemon bitten: 0 -> 40 pain tics (lv3), second bite inside 3 s not re-staggered (gb_b0/b3). Gold champion (Champions, woken by LegenDoom's transform token) mass 1200: lv0 an anchor, lv1 (limit 1500) it slides / is thrown (T 32 tics, arc 20) (gb_hc0/hc1/hg) |
+| Get Over Here (cap 3) | imp slid in: 0 -> 65 pain tics on arrival (lv3); yanked: once per arrival (gb_s0/s3/y3) |
+| Bowling (cap 3) | slide lv0: imp stuck behind a Demon, claw dropped after 52 tics of no progress; lv3: Demon 25 dmg, 47 pain tics, shoved 30 u aside, imp arrives (gb_bd0/bd3); zombieman pin killed (gb_bowl3); yank 28 dmg at 17.2 u/tic (gb_bowly3) |
+| Barbed Claw (cap 4) | Baron: bite 20, tear 30 at lv4 (gb_ba4) |
+| Slingshot (cap 3) | release 9.76 -> 12.69 u/tic (lv3); fell 331 -> 444 units from the release point (gb_sl0/sl3) |
+| Steady Line (cap 3) | GRTEST pit from rest: 15.4 s to still (lv0), 9.5 s (lv1), 7.5 s (lv3) (gb_st*) |
+| Double Hook (cap 3, player lv 5+) | two imps 177 apart: slammed in 4 tics, 65 each at lv3 (both died), 2 kills + slam paid (gb_dh3); lv0 both slide as usual |
+
+XP ledger (paid by the patch to the player pool): bite 15, yank +15, 1 per 32 units swung airborne (1280 a latch),
+half the spawn health of a kill the hook was in on (3 s), 40 a slam; hook damage pays the pool as damage and no
+gun (gb_x1, gb_ba4: Pistol xp 0, pool +100 for 50 Baron damage). Save mid-throw/slide, loaded twice: same
+outcome each time; changemap: perks and pool kept, the ledger restarts at 0 on both sides (gb_f1/f2/v1).
+Full order incl. Champions (dormant boosted legendary) + LegenDoom Lite: no script errors from these pk3s.
+
+## Not done / open
+- Bronze champion (mass 2^31-1) and Titan (+BOSS) not forced on the rig (champion_debug_forced kept giving Gold);
+  by the code they are anchors at any level and Heavy Haul staggers them.
+- Cost of perks.zs not measured (2 hooks x players + 16 flight slots + 8 slams per tic, no iterators unless Bowling
+  is learned).
+- Headset: Bowling shove and Double Hook slam feel; whether Steady Line x(1+3lv) is too strong for swingers.
