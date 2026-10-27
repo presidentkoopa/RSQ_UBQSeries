@@ -32,7 +32,10 @@ class RSQTR_Region
 	static const double DU[] = { -0.70, -0.70, -0.38, -0.58, -0.10, -0.10 };
 	static const double DR[] = {  0.14,  0.14,  0.12,  0.12,  0.14,  0.14 };
 
-	// Does a weapon in Doom slot s belong in region r?
+	// Does a weapon in Doom slot s belong in region r? The two shoulders split the
+	// heavy weapons, because Brutal Doom alone owns fourteen of them (measured with
+	// BD22 + BD22Q, `give all`): slots 5-6 (launchers, plasma, rail) over the left,
+	// slots 7 and up (BFGs, nukes, flamers) and slot 0 (grenades) over the right.
 	static bool Takes(int r, int s)
 	{
 		switch (r)
@@ -40,7 +43,8 @@ class RSQTR_Region
 		case 0: case 1: return s == 2;
 		case 2: return s == 3;
 		case 3: return s == 4;
-		default: return s >= 5 || s == 0;
+		case 4: return s == 5 || s == 6;
+		default: return s >= 7 || s == 0;
 		}
 	}
 }
@@ -149,7 +153,7 @@ class RSQTR_Rig : EventHandler
 		for (let it = pmo.Inv; it; it = it.Inv)
 		{
 			let w = Weapon(it);
-			if (!w || w.bCHEATNOTWEAPON || w.bPOWERED_UP || w.Amount <= 0) continue;
+			if (!w || w.bCHEATNOTWEAPON || w.bPOWERED_UP || w.bOffhandWeapon || w.Amount <= 0) continue;
 			// UltraBadassQuestSaber's hilt is slot 1, but it clips to either hip
 			// (rsqtr_saber_hip), found by class name so the saber need not be loaded.
 			if (IsSaber(w))
@@ -189,7 +193,9 @@ class RSQTR_Rig : EventHandler
 		for (let it = pmo.Inv; it; it = it.Inv)
 		{
 			let w = Weapon(it);
-			if (!w || w.bCHEATNOTWEAPON || w.bOffhandWeapon || IsSaber(w)) continue;   // the saber is not an empty hand
+			// CHEATNOTWEAPON is allowed here: Brutal Doom's own fists (Melee_Attacks, slot 1,
+			// SelectionOrder 3700) are one; otherwise the axe or the DSweap won.
+			if (!w || w.bOffhandWeapon || IsSaber(w)) continue;   // the saber is not an empty hand
 			bool found; int slot, idx;
 			[found, slot, idx] = pmo.player.weapons.LocateWeapon(w.GetClass());
 			if (!found || slot != 1) continue;
