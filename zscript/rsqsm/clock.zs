@@ -57,14 +57,18 @@ class RSQSM_Clock : EventHandler
 	Array<double> baseGrav, baseSpeed, carry;
 	Array<State>  lastState;
 	Array<int>    lastTics;
-	Array<bool>   fresh;     // spawned since the last tic: velocity not yet seen
 	Array<double> lvx, lvy, lvz;   // its velocity as this handler left it last tic
 
 	// ---- local (this machine) ---------------------------------------------------
 	private transient int gestT, gestCool;
 	private transient bool gestArmed;
 	private transient int  pitchTick;
-	transient bool firing;   // RSQSM_Round re-entry guard (hitscans we fire ourselves)
+	private transient bool reloadPrimed;
+
+	// The settings the per-actor loop reads, read once a tic (Refresh), not per actor.
+	private transient int    cvTic;
+	private transient double cvRadius2, cvRoundBase, cvDepth;
+	private transient bool   cvSlowOwn;
 
 	const MAXSCAN = 4000;
 
@@ -103,10 +107,14 @@ class RSQSM_Clock : EventHandler
 	}
 	bool StoodDown() { return rival && Cv("rsm_yield", 1) != 0; }
 
+	// OnRegister also runs when a save is loaded, AFTER the synced fields are read back
+	// (p_saveg.cpp), so it touches only this machine's transient state; the synced
+	// defaults are set in WorldLoaded for a new level.
 	override void OnRegister()
 	{
-		scale = 1; target = 1; on = false; pulseUntil = 0; pulseDepth = 1; adr = 0;
 		gestArmed = true;
+		reloadPrimed = false;
+		cvTic = -1;
 	}
 
 	override void WorldLoaded(WorldEvent e)
@@ -115,9 +123,16 @@ class RSQSM_Clock : EventHandler
 		if (e.IsSaveGame) return;
 		// A level never starts slowed (and nothing carries over: the arrays are empty).
 		on = false; target = 1; scale = 1; pulseUntil = 0; pulseDepth = 1;
-		act.Clear(); fac.Clear(); baseGrav.Clear(); baseSpeed.Clear(); carry.Clear();
-		lastState.Clear(); lastTics.Clear(); fresh.Clear(); lvx.Clear(); lvy.Clear(); lvz.Clear();
-		if (Cv("rsqsm_adr_keep", 1) == 0) adr = 0;
+		ClearAll();
+		// An EventHandler is rebuilt on every map, so the meter is carried on the player.
+		adr = 0;
+		if (Cv("rsqsm_adr_keep", 1) != 0)
+			for (int i = 0; i < MAXPLAYERS; i++)
+			{
+				if (!playeringame[i] || !players[i].mo) continue;
+				let t = RSQSM_AdrToken(players[i].mo.FindInventory("RSQSM_AdrToken"));
+				if (t) { adr = t.meter; break; }
+			}
 		if (rival)
 		{
 			if (StoodDown())
@@ -127,6 +142,27 @@ class RSQSM_Clock : EventHandler
 			else
 				Console.Printf("\c[Orange]RSQ_SlowMo: another slow-motion mod is loaded and rsm_yield is 0: running anyway. THE TWO WILL COMPOUND.");
 		}
+	}
+
+	// Leaving the level: every slowed thing is put back (a hub keeps them), and the
+	// meter goes with the players to the next one.
+	override void WorldUnloaded(WorldEvent e)
+	{
+		for (int i = act.Size() - 1; i >= 0; i--) Drop(i);
+		for (int i = 0; i < MAXPLAYERS; i++)
+		{
+			if (!playeringame[i] || !players[i].mo) continue;
+			let pmo = players[i].mo;
+			let t = RSQSM_AdrToken(pmo.FindInventory("RSQSM_AdrToken"));
+			if (!t) t = RSQSM_AdrToken(pmo.GiveInventoryType("RSQSM_AdrToken"));
+			if (t) t.meter = adr;
+		}
+	}
+
+	private void ClearAll()
+	{
+		act.Clear(); fac.Clear(); baseGrav.Clear(); baseSpeed.Clear(); carry.Clear();
+		lastState.Clear(); lastTics.Clear(); lvx.Clear(); lvy.Clear(); lvz.Clear();
 	}
 
 	// ---- the doors ---------------------------------------------------------------------
@@ -217,20 +253,27 @@ class RSQSM_Clock : EventHandler
 		Adrenaline();
 		Reloads();
 
-		bool active = Active();
-		if (!active && act.Size() == 0) return;
-		if (active && act.Size() == 0) Gather();
+		bool running = Active();
+		if (!running && act.Size() == 0) return;
+		Refresh();
+		if (running && (act.Size() == 0 || level.maptime % 17 == 0)) Gather();
 		Process();
-		if (!active)
-		{
-			// Back at full speed and every actor restored: let go of them all.
-			act.Clear(); fac.Clear(); baseGrav.Clear(); baseSpeed.Clear(); carry.Clear();
-			lastState.Clear(); lastTics.Clear(); fresh.Clear(); lvx.Clear(); lvy.Clear(); lvz.Clear();
-		}
+		if (!running) ClearAll();     // back at full speed and every actor restored
 	}
 
 	// ---- who is slowed ---------------------------------------------------------------------
-	static bool RealTime(Actor a)
+	private void Refresh()
+	{
+		if (cvTic == level.maptime) return;
+		cvTic = level.maptime;
+		double r = Cv("rsqsm_radius", 3000);
+		cvRadius2 = r * r;
+		cvDepth = Depth();
+		cvRoundBase = max(1.0, Cv("rsqsm_round_speed", 14)) / cvDepth;
+		cvSlowOwn = Cv("rsqsm_slow_own", 1) != 0;
+	}
+
+	bool RealTime(Actor a)
 	{
 		if (!a || a.player) return true;
 		if (a is "Inventory" && Inventory(a).Owner) return true;
@@ -240,45 +283,69 @@ class RSQSM_Clock : EventHandler
 		if (n.Left(11) == "rsqsm_round") return false;    // our own rounds slow like any bullet
 		if (n.Left(3) == "rsq" || n.Left(4) == "ubqs" || n.Left(3) == "ssq") return true;
 		// Your own missiles, when that is switched off.
-		if (a.bMISSILE && a.target && a.target.player && Cv("rsqsm_slow_own", 1) == 0) return true;
+		if (a.bMISSILE && a.target && a.target.player && !cvSlowOwn) return true;
 		return false;
 	}
 
+	bool NearAPlayer(Actor a)
+	{
+		for (int p = 0; p < MAXPLAYERS; p++)
+		{
+			if (!playeringame[p] || !players[p].mo) continue;
+			Vector3 d = level.Vec3Diff(players[p].mo.pos, a.pos);
+			if (d dot d <= cvRadius2) return true;
+		}
+		return false;
+	}
+
+	// SPAWNED: WorldThingSpawned comes from PostBeginPlay, just before the thing's first
+	// tic -- after whoever spawned it has set its velocity (dthinker.cpp, p_mobj.cpp). So
+	// its velocity, Speed and gravity are final and are all scaled now, before it ever
+	// moves at full speed. A round arrives already slowed (it sets preFactor).
 	void Consider(Actor a, bool spawned)
 	{
 		if (RealTime(a)) return;
 		if (act.Size() >= MAXSCAN) return;
+		int i = act.Size();
+		double f = spawned ? FactorFor(a, a.Speed) : 1.0;
+		double pre = 1.0;
+		let rnd = RSQSM_Round(a);
+		if (rnd && rnd.preFactor > 0) { pre = rnd.preFactor; f = pre; }
 		act.Push(a);
-		fac.Push(1.0);
+		fac.Push(f);
 		baseGrav.Push(a.Gravity);
-		baseSpeed.Push(a.Speed);
+		baseSpeed.Push(rnd && rnd.preFactor > 0 ? rnd.baseSpeed : a.Speed);
 		carry.Push(0);
-		lastState.Push(a.CurState);
+		lastState.Push(spawned ? null : a.CurState);   // a new thing's first state is stretched at the first look
 		lastTics.Push(a.tics);
-		fresh.Push(spawned);
+		if (spawned && f < 0.9999 && pre == 1.0)
+		{
+			a.vel *= f;
+			if (a.bMISSILE) a.Speed = baseSpeed[i] * f;
+			a.Gravity = baseGrav[i] * f * f;
+		}
 		lvx.Push(a.vel.x); lvy.Push(a.vel.y); lvz.Push(a.vel.z);
-		if (!spawned) return;     // already in the world at full speed: Process scales it from 1
-		// A missile is given its velocity from its Speed right after it spawns, so a
-		// Speed scaled now comes out slowed; the first look at its velocity (fresh)
-		// catches the ones given a velocity some other way.
-		int i = act.Size() - 1;
-		lastState[i] = null;      // its first state is stretched at the first look
-		double f = FactorFor(a, baseSpeed[i]);
-		if (a.bMISSILE) a.Speed = baseSpeed[i] * f;
-		if (!a.bNOGRAVITY) a.Gravity = baseGrav[i] * f * f;
-		fac[i] = f;
 	}
 
+	// Things already in the world near a player (the first look, then every 17 tics for
+	// what has come into range). Missiles spawned while it runs arrive through
+	// WorldThingSpawned.
 	private void Gather()
 	{
 		let it = ThinkerIterator.Create("Actor");
 		Actor a;
-		while ((a = Actor(it.Next())) && act.Size() < MAXSCAN) Consider(a, false);
+		bool first = act.Size() == 0;
+		while ((a = Actor(it.Next())) && act.Size() < MAXSCAN)
+		{
+			if (RealTime(a) || !NearAPlayer(a)) continue;
+			if (!first && act.Find(a) < act.Size()) continue;
+			Consider(a, false);
+		}
 	}
 
 	override void WorldThingSpawned(WorldEvent e)
 	{
-		if (Active() && !StoodDown() && e.Thing) Consider(e.Thing, true);
+		if (Active() && !StoodDown() && e.Thing) { Refresh(); Consider(e.Thing, true); }
 	}
 
 	// The factor an actor wants: the clock near a player, full speed out of range.
@@ -288,31 +355,19 @@ class RSQSM_Clock : EventHandler
 	{
 		double s = scale;
 		if (s >= 0.9999) return 1.0;
-		double r = Cv("rsqsm_radius", 3000);
-		double r2 = r * r;
-		bool near = false;
-		for (int p = 0; p < MAXPLAYERS && !near; p++)
+		Refresh();
+		if (!NearAPlayer(a)) return 1.0;
+		if (a.bMISSILE && a.radius <= 8 && !(a is "RSQSM_Round") && base > cvRoundBase * 1.05)
 		{
-			if (!playeringame[p] || !players[p].mo) continue;
-			Vector3 d = level.Vec3Diff(players[p].mo.pos, a.pos);
-			if (d dot d <= r2) near = true;
-		}
-		if (!near) return 1.0;
-		if (a.bMISSILE && a.radius <= 8 && !(a is "RSQSM_Round"))
-		{
-			double round = RoundBase();
-			if (base > round * 1.05)
-			{
-				double k = clamp((1.0 - s) / max(1.0 - Depth(), 0.01), 0.0, 1.0);
-				return s * (1.0 - k * (1.0 - round / base));
-			}
+			double k = clamp((1.0 - s) / max(1.0 - cvDepth, 0.01), 0.0, 1.0);
+			return s * (1.0 - k * (1.0 - cvRoundBase / base));
 		}
 		return s;
 	}
 
 	// A dodgeable round's speed at full time, so that at the set depth it flies at
 	// rsqsm_round_speed.
-	double RoundBase() { return max(1.0, Cv("rsqsm_round_speed", 14)) / Depth(); }
+	double RoundBase() { Refresh(); return cvRoundBase; }
 
 	private void Process()
 	{
@@ -330,16 +385,11 @@ class RSQSM_Clock : EventHandler
 			double want = FactorFor(a, baseSpeed[i]);
 			double f = fac[i];
 
-			// First look at a newly spawned thing: a velocity it was given at full
-			// speed is scaled now. A missile whose velocity already came from the
-			// scaled Speed is left alone.
-			if (fresh[i])
-			{
-				fresh[i] = false;
-				bool already = a.bMISSILE && a.vel.Length() <= baseSpeed[i] * f * 1.25 + 0.01;
-				if (!already) a.vel *= f;
-			}
-			else if (f < 0.9999) Impulses(a, i, f);
+			// A script that set its own gravity or speed since last tic (Brutal Doom's gibs
+			// do, in their first state) is taken as the new base, not overwritten.
+			if (abs(a.Gravity - baseGrav[i] * f * f) > 0.000001) baseGrav[i] = a.Gravity / (f * f);
+			if (a.bMISSILE && abs(a.Speed - baseSpeed[i] * f) > 0.0001) baseSpeed[i] = a.Speed / f;
+			if (f < 0.9999) Impulses(a, i, f);
 
 			// A state entered since last tic lasts 1/f as long (at the factor it was entered
 			// under; a change of factor is applied after, to what is left of it).
@@ -365,7 +415,9 @@ class RSQSM_Clock : EventHandler
 				double r = want / f;
 				a.vel *= r;
 				if (a.bMISSILE) a.Speed = baseSpeed[i] * want;
-				if (!a.bNOGRAVITY) a.Gravity = baseGrav[i] * want * want;
+				// Gravity is written whatever NOGRAVITY says now: dying clears that flag
+				// (a cacodemon's corpse falls), and a flag set later must not keep f^2.
+				a.Gravity = baseGrav[i] * want * want;
 				if (a.tics > 0)
 				{
 					double t = a.tics / r + carry[i];
@@ -393,7 +445,7 @@ class RSQSM_Clock : EventHandler
 			}
 			else if (doPitch) Repitch(a, 1.0);
 
-			if (want >= 0.9999 && !Active()) { Drop(i); continue; }
+			if (want >= 0.9999 && (!Active() || !NearAPlayer(a))) { Drop(i); continue; }
 			lvx[i] = a.vel.x; lvy[i] = a.vel.y; lvz[i] = a.vel.z;
 		}
 	}
@@ -434,11 +486,11 @@ class RSQSM_Clock : EventHandler
 			double r = 1.0 / fac[i];
 			a.vel *= r;
 			if (a.bMISSILE) a.Speed = baseSpeed[i];
-			if (!a.bNOGRAVITY) a.Gravity = baseGrav[i];
+			a.Gravity = baseGrav[i];
 			if (a.tics > 0) a.tics = max(1, int(a.tics / r));
 		}
 		act.Delete(i); fac.Delete(i); baseGrav.Delete(i); baseSpeed.Delete(i); carry.Delete(i);
-		lastState.Delete(i); lastTics.Delete(i); fresh.Delete(i); lvx.Delete(i); lvy.Delete(i); lvz.Delete(i);
+		lastState.Delete(i); lastTics.Delete(i); lvx.Delete(i); lvy.Delete(i); lvz.Delete(i);
 	}
 
 	private static void Repitch(Actor a, double pitch)
@@ -516,11 +568,11 @@ class RSQSM_Clock : EventHandler
 			if (!playeringame[n]) continue;
 			let p = players[n];
 			let w = p.ReadyWeapon;
-			bool on = w && CvP("rsqsm_reload", p, 0) != 0;
+			bool wanted = w && CvP("rsqsm_reload", p, 0) != 0;
 			bool r = false, moved = false;
 			int a1 = (w && w.Ammo1) ? w.Ammo1.Amount : 0;
 			int a2 = (w && w.Ammo2) ? w.Ammo2.Amount : 0;
-			if (on)
+			if (wanted)
 			{
 				State rs = w.FindState("Reload");
 				let ps = p.GetPSprite(PSP_WEAPON);
@@ -528,11 +580,12 @@ class RSQSM_Clock : EventHandler
 				if (w == lastW[n] && w.Ammo1 && w.Ammo2 && w.Ammo1 != w.Ammo2)
 					moved = (a2 > lastA2[n] && a1 < lastA1[n]) || (a1 > lastA1[n] && a2 < lastA2[n]);
 			}
-			if ((r && !wasReloading[n]) || moved)
+			if (reloadPrimed && ((r && !wasReloading[n]) || moved))
 				Pulse(int(CvP("rsqsm_reload_ms", p, 1200)), int(CvP("rsqsm_reload_depth", p, 40)));
 			wasReloading[n] = r;
 			lastW[n] = w; lastA1[n] = a1; lastA2[n] = a2;
 		}
+		reloadPrimed = true;     // the first tic after a load only looks
 	}
 
 	// ---- the gesture (local; it only sends the toggle) ------------------------------------------
@@ -608,4 +661,16 @@ class RSQSM_Buzz : Actor
 	}
 
 	States { Spawn: TNT1 A 20; Stop; }
+}
+
+// The adrenaline meter, carried with the player from level to level (an EventHandler
+// is rebuilt on every map).
+class RSQSM_AdrToken : Inventory
+{
+	double meter;
+	Default
+	{
+		Inventory.MaxAmount 1;
+		+INVENTORY.UNDROPPABLE +INVENTORY.UNTOSSABLE +INVENTORY.KEEPDEPLETED
+	}
 }
