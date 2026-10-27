@@ -39,10 +39,23 @@ places are*, "Holds slots"); the defaults:
   rig to your eye height. *Move the regions with your hands*: turn it on, grip in a ring,
   carry it to where your hand naturally goes, let go; it's saved. Turn it off to play.
   Each region also has menu sliders.
+- **See yourself:** *A mirror in front of you* (menu; on by default while moving the regions,
+  or always). A copy of you stands in front of you, about a metre out: the torso, every
+  region's sphere, what each one holds and your two hands (small green spheres), moving as you
+  move. It shows your front as a mirror would, your back as someone behind you would see it,
+  or both side by side. Only you see it.
+- **How stored guns hang** (from the owner's reference pictures): hips strong-side, muzzle
+  down; pectorals under the arm, muzzle down and back; chest and stomach slung on the two
+  diagonals, muzzle toward the opposite hip; shoulders on the back, butt up over the shoulder
+  and muzzle down toward the other hip; lower back flat across. Mirrored for left-handers.
+  This holds for a pickup model that points its muzzle forward; packs differ (see Open, in the
+  handoff).
 - A hand only acts on a region after it has been there a moment (3 tics), so a hand
   passing through a holster on its way somewhere else does nothing.
 - A hand steadying the main gun (the engine's two-handed grip) never fires a region.
-- With RS_ShieldSawQ loaded, the off shoulder is left to the shield while it hangs there.
+- With RS_ShieldSawQ loaded, the off shoulder is left to the shield while it hangs there --
+  unless the ShieldSaw's *Draw from the shoulder with Use* is off (its Draw key only): then the
+  shoulder is the rig's again.
 - With UltraBadassQuestSaber loaded, the saber's hilt clips to either hip (menu).
 
 ## Lifting doors

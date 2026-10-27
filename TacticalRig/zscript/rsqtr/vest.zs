@@ -23,7 +23,7 @@ class RSQTR_Torso : EventHandler
 {
 	const COLLAR = 18.1;          // model units: the top of the Quake mesh
 	const SHOULDERS = 51.689;     // model units: the marine's shoulder line (RS_VRBody's PivotOffset)
-	private transient Actor body, breath;
+	transient Actor body, breath;      // read by the mirror (mirror.zs)
 
 	override void WorldTick()
 	{

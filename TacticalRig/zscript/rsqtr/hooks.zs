@@ -6,7 +6,8 @@
 //   RS_ShieldSawQ  its stowed shield hangs over the off shoulder and Use there draws
 //                  it. While the shield is on the shoulder, the rig leaves that
 //                  shoulder region alone (rsqtr_yield_shield), so the two never act
-//                  on the same press.
+//                  on the same press. With its Draw key route chosen (Use at the
+//                  shoulder off), the shoulder is the rig's again.
 //
 // Other mods can ask the rig what it holds, through RSQTR_RigService:
 //   GetInt("rig.region", "", hand)          region the hand is in, or -1
@@ -33,6 +34,10 @@ class RSQTR_Hooks play
 		if (!c) return false;
 		let s = pmo.FindInventory(c);
 		if (!s) return false;
+		// The ShieldSaw's key route (ssq_shoulder_use off): the shield is drawn by its key
+		// only, so its shoulder is no grab and the rig keeps that shoulder for weapons.
+		let cv = CVar.GetCVar("ssq_shoulder_use", pmo.player);
+		if (cv && !cv.GetBool()) return false;
 		return pmo.player.OffhandWeapon != s;
 	}
 }
