@@ -2,8 +2,15 @@
 
 **Version 0.9 — 2026-10-27.** Ready-to-load pk3s are in [`pk3/`](pk3/).
 
-Six standalone add-ons for **Doom VR on the Quest**, all in one place: a distance grab, a
-shield-saw, a lightsaber, a tactical rig, slow motion and a laser sight. Each one is its own pk3. Load
+Standalone add-ons for **Doom VR on the Quest**, all in one place: a distance grab, a
+shield-saw, a lightsaber, a tactical rig, slow motion, a laser sight, a grappling hook, HP bars and one
+shared Accessibility menu.
+
+**Each one works alone; together they make one arcade game.** They talk through services, never hard
+links, so any combination loads. Gun Bonsai Offhand VR (progression: everything you use levels up in your
+hands) and RSQ Score (style and cross-mod combos) are the arcade room on top, and neither needs Brutal
+Doom: they read what monsters do, not what they're called, so the same arcade runs on vanilla Doom,
+Golden Souls, Ashes or any monster set. Each one is its own pk3. Load
 any of them, in any order, alone or all together.
 
 They target **stock QuestZDoom 17.3** (TeamBeef / Emawind). There are no engine changes. Everything
@@ -17,6 +24,9 @@ is ZScript and data lumps.
 | 🎒 | [TacticalRig](TacticalRig/) | `RSQ_TacticalRig.pk3` | Guns holstered on your hips and shoulders, spots for the saber, a torso and helmet, a mirror, and Ermac's cigarette. Built on **Ermac's** Virtual Tactical Vest idea. |
 | ⏱️ | [SlowMo](SlowMo/) | `RSQ_SlowMo.pk3` | The world slows, you don't. Enemy bullets become rounds you can see and dodge. |
 | 🔴 | [LaserSight](LaserSight/) | `RSQ_LaserSight.pk3` | A laser from each gun's own barrel, in either hand, fading with distance, with a dot on whatever it hits. |
+| 🪝 | [Grapple](Grapple/) | `RSQ_Grapple.pk3` | A grappling hook from either hand: swing across gaps, reel, climb hand over hand, slide or yank monsters to you, a whip. jpalomo's hook art and sound. |
+| ❤️ | [TopHPBars](TopHPBars/) | `RSQ_TopHPBars.pk3` | coldcite's Top HP Bars, series version: colour-blind schemes, an overheal strip, hooked / stunned / locked / gripped markers. |
+| ♿ | [Accessibility](Accessibility/) | `RSQ_Accessibility.pk3` | One Accessibility menu for every series mod you load: colour-blind modes and handedness. |
 
 ---
 
@@ -28,7 +38,7 @@ is ZScript and data lumps.
 
    ```
    doom2.wad -> brutal22test6 -> BD_VoxelPack -> BD22_VR-Reloaded (1.99x-lb-r7-saveload or later)
-             -> any of the six, in any order
+             -> (optional) Champions -> LegenDoom Lite -> any of the mods, in any order
    ```
 
 3. Settings live under **Options** in the game:
@@ -41,6 +51,9 @@ is ZScript and data lumps.
    | TacticalRig | **Tactical Rig** |
    | SlowMo | **RSQ SlowMo** |
    | LaserSight | **Laser Sight** |
+   | Grapple | **Grapple** |
+   | TopHPBars | **RSQ HP Bars** |
+   | Accessibility | **Accessibility** |
 
    Every menu ends with **Tuning and Debug**, which holds a **Reset All** row.
 
@@ -134,7 +147,7 @@ is ZScript and data lumps.
 
 ## They work together
 
-The six mods never link against each other. Each checks for the others by name at run time, so
+The mods never link against each other. Each checks for the others by name at run time, so
 a missing mod is simply never found:
 
 - The **grab stands down on a hand holding a melee weapon**, the shield or the Force hand, since
@@ -159,13 +172,16 @@ a lock). Nothing buzzes constantly.
 
 ```
 RSQ_UBQSeries/
-├── pk3/             ready-to-load builds of all six (identical contents to the tested builds)
+├── pk3/             ready-to-load builds of every mod (identical contents to the tested builds)
 ├── DistanceGrab/    source, CREDITS, docs/ (DECISIONS, HANDOFF), tools/ (asset generators, rig tests)
 ├── ShieldSaw/       source, README (full manual), HANDOFF
 ├── QuestSaber/      source, CREDITS, docs/HANDOFF_polish
 ├── TacticalRig/     source, README, CREDITS, docs/HANDOFF, tools/ (sound generator, pickup measurer)
 ├── SlowMo/          source, README, CREDITS, docs/HANDOFF, tools/ (sound generator)
 ├── LaserSight/      source, docs/HANDOFF, tools/ (muzzle measurer, beam generator)
+├── Grapple/         source, README, ROADMAP (Hook 1.0), HANDOFF, jp_original/ (jpalomo's hook, source material)
+├── TopHPBars/       pk3/ (the mod), original_1.04/ (coldcite's), tools/ (art generator, colour-vision check)
+├── Accessibility/   source, README, tools/ (colour-vision simulation, palette generator)
 ├── tools/rig17/     how the real QuestZDoom 17.3 test engine was built, and the test runners
 └── build_all.sh     rebuilds every pk3 into pk3/
 ```
@@ -259,7 +275,7 @@ Known limits:
 ## Credits
 
 - **QuestZDoom**: Emawind and Team Beef. The engine, and the off-hand weapon and attack-pose script
-  API all six mods are built on.
+  API all the mods are built on.
 - **id Software**: the shield saw (*Doom: The Dark Ages*): its design, and the mesh Ermac ripped
   from the game; the Doom Eternal Classic Slayer, whose torso the TacticalRig wears (a rip,
   prepared in the project owner's RS_VRBody) and the Classic Slayer's helmet the rig's mirror shows

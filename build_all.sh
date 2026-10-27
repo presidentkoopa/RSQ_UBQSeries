@@ -46,3 +46,21 @@ rm -f "$OUT/RSQ_LaserSight.pk3"
 zip -q -r -X "$OUT/RSQ_LaserSight.pk3" zscript.txt MAPINFO.txt CVARINFO.txt KEYCONF.txt MENUDEF.txt MODELDEF.txt \
 	VOXELDEF.txt ANIMDEFS.txt zscript sprites models/rsqls
 echo "built pk3/RSQ_LaserSight.pk3"
+
+# Grapple: its explicit include list (jp_original/ is source material and does not ship).
+cd "$HUB/Grapple"
+rm -f "$OUT/RSQ_Grapple.pk3"
+zip -q -r -X "$OUT/RSQ_Grapple.pk3" zscript.txt MAPINFO.txt CVARINFO.txt KEYCONF.txt MENUDEF.txt SNDINFO.txt CREDITS.txt MODELDEF.txt zscript sprites sounds models
+echo "built pk3/RSQ_Grapple.pk3"
+
+# TopHPBars: the mod lives in pk3/ (its art is generated from coldcite's originals by tools/gen_art.py).
+cd "$HUB/TopHPBars"
+rm -f "$OUT/RSQ_TopHPBars.pk3"
+(cd pk3 && zip -q -r -X "$OUT/RSQ_TopHPBars.pk3" .)
+echo "built pk3/RSQ_TopHPBars.pk3"
+
+# Accessibility: the shared menu and settings.
+cd "$HUB/Accessibility"
+rm -f "$OUT/RSQ_Accessibility.pk3"
+zip -q -r -X "$OUT/RSQ_Accessibility.pk3" zscript.txt CVARINFO.txt MENUDEF.txt CREDITS.txt zscript
+echo "built pk3/RSQ_Accessibility.pk3"
