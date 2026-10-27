@@ -13,7 +13,7 @@ is ZScript and data lumps.
 |---|---|---|---|
 | ✋ | [DistanceGrab](DistanceGrab/) | `RSQ_DistanceGrab.pk3` | Turn your palm out, flick, and pull items, guns, barrels and bodies to your hand. Then carry them, throw them, and hit things with them. |
 | 🔴 | [LaserSight](LaserSight/) | `RSQ_LaserSight.pk3` | A laser on every gun in every mod, in both hands, with no per-weapon setup. Any colour, plus lock-on and headshot cues. |
-| 🛡️ | [ShieldSaw](ShieldSaw/) | `UltraBadassShieldSaw.pk3` | A shield on your off shoulder that blocks, bashes and turns shots back, and doubles as a throwable saw disc that hunts the targets you ring. Built on **Ermac's** ShieldSaw from Rusted Legacy. |
+| 🛡️ | [ShieldSaw](ShieldSaw/) | `UltraBadassShieldSaw.pk3` | A shield on your off shoulder that blocks, bashes and turns shots back, and doubles as a throwable saw disc that hunts the targets you ring. id Software's shield saw from *Doom: The Dark Ages*, brought to Doom VR first by **Ermac** in Rusted Legacy. |
 | ⚔️ | [QuestSaber](QuestSaber/) | `UltraBadassQuestSaber.pk3` | A volumetric lightsaber, with an optional second one in the off hand. Cut, block, deflect, throw, and use the Force. |
 | 🎒 | [TacticalRig](TacticalRig/) | `RSQ_TacticalRig.pk3` | Weapons carried on your body (hips, chest, shoulders), doors you lift open by hand, and Ermac's cigarette. Built on **Ermac's** Virtual Tactical Vest idea. |
 | ⏱️ | [SlowMo](SlowMo/) | `RSQ_SlowMo.pk3` | The world slows, you don't. Enemy bullets become rounds you can see and dodge. |
@@ -105,8 +105,8 @@ is ZScript and data lumps.
   region when your hand is near; the weapon last put there shows as its pickup.
 - **Fit it to you:** *Measure my height* scales the rig to you; *Move the regions with your
   hands* lets you grip a ring and carry it where your hand naturally goes.
-- **A torso** (optional): Vittorio Romeo's Quake VR torso on your body, green or blue with
-  your armour, red at low health.
+- **A torso** (optional): Quake's Grunt torso (via Quake VR) on your body, green or blue
+  with your armour, red at low health.
 - **Doors:** hand flat on a door, take hold (grip, Use or palm out) and lift. Let go
   past 40% open and it finishes by itself; before that it drops shut. Locked doors need
   their key.
@@ -236,20 +236,25 @@ Known limits:
 
 - **QuestZDoom**: Emawind and Team Beef. The engine, and the off-hand weapon and attack-pose script
   API all six mods are built on.
+- **id Software**: the shield saw (*Doom: The Dark Ages*), its design and the shield and saw meshes
+  and textures the ShieldSaw uses; and Quake's Grunt, whose torso the TacticalRig can wear.
 - **Ermac**, co-designer of DoomVR ([Rusted Legacy](https://github.com/iAmErmac/rusted-legacy),
   DXR, RS_Main):
-  - **The ShieldSaw is his.** The throwable ShieldSaw first appeared in his Rusted Legacy (MIT),
-    and this mod started from it. Its shield and saw models (which he split into working parts
-    himself), their textures, the hand that holds it and its sounds are all Ermac's, under his
-    MIT licence. The Quest version here re-implements the behaviour as a standalone off-hand mod.
+  - Brought the shield saw to Doom VR first, in Rusted Legacy, and prepared its meshes for VR
+    (split into working parts). The ShieldSaw started from his version, with its hand model and
+    sounds. Those meshes are id Software's, not his authored models, and his MIT licence covers
+    his code, not them.
   - In the QuestSaber: the Force and impact FX sprites and the choke loop.
   - **The TacticalRig is built on his Virtual Tactical Vest idea**, and the cigarette is his
-    tribute idea: its cigarette, butt and smoke models and textures come from that mod, and the
-    Zippo is his voxel lighter from ZBlood-VR (his own model, per its credits).
-  - Much of his work is MIT-licensed; sharing it here is the project owner's decision. See
-    [ShieldSaw/README.md](ShieldSaw/README.md) and [QuestSaber/CREDITS.txt](QuestSaber/CREDITS.txt).
+    tribute idea: the cigarette, butt and smoke come from that mod (its credits name him as their
+    modeller; the cigarette's texture atlas is shared with a Sketchfab pack model), and the Zippo
+    is the voxel lighter from his ZBlood-VR, credited to him there.
+- Sharing other people's work in this series is the project owner's decision. See
+  [ShieldSaw/README.md](ShieldSaw/README.md), [QuestSaber/CREDITS.txt](QuestSaber/CREDITS.txt) and
+  [TacticalRig/README.md](TacticalRig/README.md).
 - **li-gnrcwpn**: the training remote's ready beep.
-- **Vittorio Romeo**: the TacticalRig's optional torso, from his original Quake VR mod.
+- **Vittorio Romeo**: his original Quake VR mod cut Quake's Grunt into the torso the
+  TacticalRig can wear.
 - The project owner's libraries: RS_CombatFX (the rig's holster, draw and foley sounds),
   RS_Ballistics (SlowMo's tracer mesh and near-miss whiz and crack), RS_SlowMo (SlowMo's design
   and events).
