@@ -68,3 +68,20 @@ Model RSQTR_ZippoProp
 	FrameIndex RSZP D 0 6
 	FrameIndex RSZP D 1 3
 }
+
+// The owner's Quake torso (RS_VRBody's vrtorso.mdl, converted to MD3 by tools/mdl2md3.py) and its
+// recoloured skins: own, green armour, blue armour, the red breath.
+Model RSQTR_TorsoPart
+{
+	Path "models/rsqtr"
+	Model 0 "rttorso.md3"
+	Skin 0 "rttorso_skin.png"
+	Scale 1.0 1.0 1.0
+	FrameIndex RSVT A 0 0
+	Skin 0 "rttorso_green.png"
+	FrameIndex RSVT B 0 0
+	Skin 0 "rttorso_blue.png"
+	FrameIndex RSVT C 0 0
+	Skin 0 "rttorso_red.png"
+	FrameIndex RSVT D 0 0
+}

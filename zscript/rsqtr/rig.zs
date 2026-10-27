@@ -126,6 +126,8 @@ class RSQTR_Rig : EventHandler
 		return tmp.At(pmo, f, l, u);
 	}
 
+	double BodyYaw(PlayerPawn pmo) { return (body && body.primed) ? body.yaw : pmo.angle; }
+
 	// The other way: a world point as body-frame metres (unscaled), for edit mode.
 	void BodyOffsets(PlayerPawn pmo, Vector3 at, out double f, out double l, out double u)
 	{
@@ -678,7 +680,7 @@ class RSQTR_Rig : EventHandler
 		let it = ThinkerIterator.Create("Actor");
 		Actor a;
 		while (a = Actor(it.Next()))
-			if (a is "RSQTR_Marker" || a is "RSQTR_Icon") a.Destroy();
+			if (a is "RSQTR_Marker" || a is "RSQTR_Icon" || a is "RSQTR_TorsoPart") a.Destroy();
 	}
 
 	// OnRegister also runs when a save is loaded (a level's handlers get no WorldLoaded

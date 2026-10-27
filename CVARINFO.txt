@@ -46,3 +46,10 @@ user bool  rsqtr_cig_slowmo  = true;    // RSQ_SlowMo slows the world while it b
 user int   rsqtr_cig_depth   = 25;      // how slow, percent speed
 user int   rsqtr_cig_count   = 3;       // how many in the pocket
 user bool  rsqtr_cig_refill  = true;    // the pocket refills on a new level
+
+// The torso (optional).
+user bool  rsqtr_vest       = false;   // wear a torso the holsters sit on
+user float rsqtr_vest_u     = -0.20;   // metres from your eyes down to its collar
+user float rsqtr_vest_f     = -0.04;   // metres forward of your eyes
+user float rsqtr_vest_size  = 1.0;
+user int   rsqtr_vest_low   = 35;      // health under which it breathes red
