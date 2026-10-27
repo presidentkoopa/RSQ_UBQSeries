@@ -39,6 +39,12 @@ OptionValue "SSQ_DeflectAim"
 
 // THE FRONT PAGE (the owner, 10-27: "way too many options, people will be overwhelmed").
 // Every setting, unchanged, is under "Advanced: every setting".
+OptionValue "SSQ_StoreTo"
+{
+	0, "Fist"
+	1, "Previously Held Weapon"
+}
+
 OptionMenu "SSQ_Options"
 {
 	Title "Ultra Badass ShieldSaw"
@@ -51,6 +57,7 @@ OptionMenu "SSQ_Options"
 	Slider "Lock on Targets Max", "ssq_locks", 0, 5, 1, 0
 	StaticText ""
 	Option "Double Block Radius", "ssq_block_double", "OnOff"
+	Option "On Manual Store", "ssq_store_to", "SSQ_StoreTo"
 	Option "Blocked Projectiles", "ssq_deflect", "SSQ_Deflect"
 	Option "Turned shots go", "ssq_deflect_aim", "SSQ_DeflectAim"
 	Option "Perfect Block", "ssq_perfect", "OnOff"
@@ -58,7 +65,7 @@ OptionMenu "SSQ_Options"
 	StaticText ""
 	Submenu "Advanced: every setting", "SSQ_Every"
 	StaticText ""
-	SafeCommand "Reset all ShieldSaw settings", "resetcvar ssq_start ssq_block_double ssq_cut_damage ssq_throw_speed ssq_throw_blend ssq_throw_min ssq_throw_forward ssq_speed_floor ssq_mass_kg ssq_locks ssq_lock_cone ssq_lock_button ssq_lock_mark_scale ssq_lock_range ssq_lock_keep ssq_lock_grace ssq_paint_every ssq_keep_marks ssq_return_speed ssq_cruise_gain ssq_cruise_max ssq_home_patience ssq_catch_radius ssq_catch ssq_perfect ssq_perfect_speed ssq_crumb_every ssq_tiers ssq_bd22 ssq_tier_fodder ssq_tier_mid ssq_embed_tics ssq_embed_dps ssq_glance_scale ssq_rev_tics ssq_grind_damage ssq_grind_every ssq_rev_throw_bonus ssq_guard ssq_guard_stowed ssq_yield_offhand ssq_deflect ssq_deflect_aim ssq_deflect_assist ssq_sweep ssq_sweep_lead ssq_sweep_pad ssq_sweep_boost ssq_hitscan_guard ssq_hitscan_return ssq_hitscan_damage ssq_melee ssq_stagger_push ssq_bash ssq_bash_speed ssq_bash_damage ssq_bash_reach ssq_bash_los ssq_bash_sustain ssq_bash_knock ssq_bash_lift ssq_plate_f ssq_plate_l ssq_plate_u ssq_plate_radius ssq_plate_thick ssq_plate_blades ssq_shield_scale ssq_roll_sign ssq_start_drawn ssq_shoulder_use ssq_lock_input ssq_feedback ssq_spatial ssq_mount_fwd ssq_mount_side ssq_mount_up ssq_mount_reach ssq_zone_scale ssq_stow_world ssq_mount_yaw ssq_mount_pitch ssq_mount_roll ssq_mount_scale ssq_marker ssq_held_x ssq_held_y ssq_held_z ssq_held_yaw ssq_held_pitch ssq_held_roll ssq_held_world ssq_debug ssq_debug_ring", "Put every ShieldSaw setting back to its default?"
+	SafeCommand "Reset all ShieldSaw settings", "resetcvar ssq_start ssq_block_double ssq_store_to ssq_cut_damage ssq_throw_speed ssq_throw_blend ssq_throw_min ssq_throw_forward ssq_speed_floor ssq_mass_kg ssq_locks ssq_lock_cone ssq_lock_button ssq_lock_mark_scale ssq_lock_range ssq_lock_keep ssq_lock_grace ssq_paint_every ssq_keep_marks ssq_return_speed ssq_cruise_gain ssq_cruise_max ssq_home_patience ssq_catch_radius ssq_catch ssq_perfect ssq_perfect_speed ssq_crumb_every ssq_tiers ssq_bd22 ssq_tier_fodder ssq_tier_mid ssq_embed_tics ssq_embed_dps ssq_glance_scale ssq_rev_tics ssq_grind_damage ssq_grind_every ssq_rev_throw_bonus ssq_guard ssq_guard_stowed ssq_yield_offhand ssq_deflect ssq_deflect_aim ssq_deflect_assist ssq_sweep ssq_sweep_lead ssq_sweep_pad ssq_sweep_boost ssq_hitscan_guard ssq_hitscan_return ssq_hitscan_damage ssq_melee ssq_stagger_push ssq_bash ssq_bash_speed ssq_bash_damage ssq_bash_reach ssq_bash_los ssq_bash_sustain ssq_bash_knock ssq_bash_lift ssq_plate_f ssq_plate_l ssq_plate_u ssq_plate_radius ssq_plate_thick ssq_plate_blades ssq_shield_scale ssq_roll_sign ssq_start_drawn ssq_shoulder_use ssq_lock_input ssq_feedback ssq_spatial ssq_mount_fwd ssq_mount_side ssq_mount_up ssq_mount_reach ssq_zone_scale ssq_stow_world ssq_mount_yaw ssq_mount_pitch ssq_mount_roll ssq_mount_scale ssq_marker ssq_held_x ssq_held_y ssq_held_z ssq_held_yaw ssq_held_pitch ssq_held_roll ssq_held_world ssq_debug ssq_debug_ring", "Put every ShieldSaw setting back to its default?"
 }
 
 OptionMenu "SSQ_Every"
@@ -95,7 +102,7 @@ OptionMenu "SSQ_Every"
 	Submenu "Advanced", "SSQ_Advanced"
 	Submenu "Debug", "SSQ_Debug"
 	StaticText ""
-	SafeCommand "Reset all ShieldSaw settings", "resetcvar ssq_start ssq_block_double ssq_cut_damage ssq_throw_speed ssq_throw_blend ssq_throw_min ssq_throw_forward ssq_speed_floor ssq_mass_kg ssq_locks ssq_lock_cone ssq_lock_button ssq_lock_mark_scale ssq_lock_range ssq_lock_keep ssq_lock_grace ssq_paint_every ssq_keep_marks ssq_return_speed ssq_cruise_gain ssq_cruise_max ssq_home_patience ssq_catch_radius ssq_catch ssq_perfect ssq_perfect_speed ssq_crumb_every ssq_tiers ssq_bd22 ssq_tier_fodder ssq_tier_mid ssq_embed_tics ssq_embed_dps ssq_glance_scale ssq_rev_tics ssq_grind_damage ssq_grind_every ssq_rev_throw_bonus ssq_guard ssq_guard_stowed ssq_yield_offhand ssq_deflect ssq_deflect_aim ssq_deflect_assist ssq_sweep ssq_sweep_lead ssq_sweep_pad ssq_sweep_boost ssq_hitscan_guard ssq_hitscan_return ssq_hitscan_damage ssq_melee ssq_stagger_push ssq_bash ssq_bash_speed ssq_bash_damage ssq_bash_reach ssq_bash_los ssq_bash_sustain ssq_bash_knock ssq_bash_lift ssq_plate_f ssq_plate_l ssq_plate_u ssq_plate_radius ssq_plate_thick ssq_plate_blades ssq_shield_scale ssq_roll_sign ssq_start_drawn ssq_shoulder_use ssq_lock_input ssq_feedback ssq_spatial ssq_mount_fwd ssq_mount_side ssq_mount_up ssq_mount_reach ssq_zone_scale ssq_stow_world ssq_mount_yaw ssq_mount_pitch ssq_mount_roll ssq_mount_scale ssq_marker ssq_held_x ssq_held_y ssq_held_z ssq_held_yaw ssq_held_pitch ssq_held_roll ssq_held_world ssq_debug ssq_debug_ring", "Put every ShieldSaw setting back to its default?"
+	SafeCommand "Reset all ShieldSaw settings", "resetcvar ssq_start ssq_block_double ssq_store_to ssq_cut_damage ssq_throw_speed ssq_throw_blend ssq_throw_min ssq_throw_forward ssq_speed_floor ssq_mass_kg ssq_locks ssq_lock_cone ssq_lock_button ssq_lock_mark_scale ssq_lock_range ssq_lock_keep ssq_lock_grace ssq_paint_every ssq_keep_marks ssq_return_speed ssq_cruise_gain ssq_cruise_max ssq_home_patience ssq_catch_radius ssq_catch ssq_perfect ssq_perfect_speed ssq_crumb_every ssq_tiers ssq_bd22 ssq_tier_fodder ssq_tier_mid ssq_embed_tics ssq_embed_dps ssq_glance_scale ssq_rev_tics ssq_grind_damage ssq_grind_every ssq_rev_throw_bonus ssq_guard ssq_guard_stowed ssq_yield_offhand ssq_deflect ssq_deflect_aim ssq_deflect_assist ssq_sweep ssq_sweep_lead ssq_sweep_pad ssq_sweep_boost ssq_hitscan_guard ssq_hitscan_return ssq_hitscan_damage ssq_melee ssq_stagger_push ssq_bash ssq_bash_speed ssq_bash_damage ssq_bash_reach ssq_bash_los ssq_bash_sustain ssq_bash_knock ssq_bash_lift ssq_plate_f ssq_plate_l ssq_plate_u ssq_plate_radius ssq_plate_thick ssq_plate_blades ssq_shield_scale ssq_roll_sign ssq_start_drawn ssq_shoulder_use ssq_lock_input ssq_feedback ssq_spatial ssq_mount_fwd ssq_mount_side ssq_mount_up ssq_mount_reach ssq_zone_scale ssq_stow_world ssq_mount_yaw ssq_mount_pitch ssq_mount_roll ssq_mount_scale ssq_marker ssq_held_x ssq_held_y ssq_held_z ssq_held_yaw ssq_held_pitch ssq_held_roll ssq_held_world ssq_debug ssq_debug_ring", "Put every ShieldSaw setting back to its default?"
 }
 
 OptionValue "SSQ_LockButton"
