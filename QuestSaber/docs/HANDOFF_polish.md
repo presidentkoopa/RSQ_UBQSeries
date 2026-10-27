@@ -1,3 +1,27 @@
+## Branch `agent-lh` (2026-10-27): left-handed blade direction -- read first
+
+Not yet run on the owner's headset. `UBQS_Data.BladeDirOf` flipped the frame's yaw and twirl by
+`off ? 1 : -1`; the engine reflects the hand on the physical LEFT controller (hw_vrmodes.cpp
+GetWeaponTransform), which is the MAIN hand when vr_control_scheme >= 10. It now uses
+`WorldMirror(off)` -- the rule the world saber already picks its parity class by; right-handed it is
+the same value. Rig D, controllers posed as exact mirror images, main saber, blade direction in the
+body frame (fwd, left, up):
+
+| frame | right-handed | left-handed before | left-handed now |
+|---|---|---|---|
+| 0 idle | 0.717 0.027 0.697 | 0.717 -0.027 0.697 | 0.717 -0.027 0.697 |
+| 3 chop | 0.437 -0.219 0.872 | 0.556 0.348 0.755 | 0.437 0.219 0.872 |
+| 10 side cut | 0.939 -0.272 0.209 | 0.286 -0.435 0.854 | 0.939 0.272 0.209 |
+| 12 side cut | 0.450 0.690 0.567 | 0.994 -0.101 0.029 | 0.450 -0.690 0.567 |
+| 23 twirl | 0.625 -0.731 -0.275 | -0.448 -0.429 0.784 | 0.625 0.731 -0.275 |
+
+Now the exact mirror image in every frame; before, the swing frames were up to ~70 degrees off the
+drawn blade for a left-hander (hits, glow, deflects). Everything else in the saber already followed the
+engine (world-saber parity, Force hand = OffhandPos, rumble via ubqs_lefty / vr_control_scheme).
+Full order + suite, and vanilla, both handednesses: save, load twice, MAP02, no script error but
+BD_VoxelPack's voxeldef lines. Headset: a left-handed side cut -- the glow and the hits should sit on
+the drawn blade.
+
 ## Branch `agent-block` (2026-10-27): the blade blocks Brutal Doom's attacks -- read first
 
 Not yet run on the owner's headset. Rig = QZD 17.3 Linux, doom2 MAP01, the owner's load order

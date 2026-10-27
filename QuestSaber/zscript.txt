@@ -35,7 +35,10 @@ class UBQS_Data
 		// THE ROLL TURNS THE OTHER WAY (the owner in the headset, 10-01: the debug dots were the blade mirrored
 		// left-right -- blade tilted to 11 o'clock, dots at 1). QuestZDoom draws the hand model rolled by
 		// -AttackRoll, and the off hand mirrored in X, so the frame's own yaw and twirl flip with the hand.
-		double m = off ? 1.0 : -1.0;
+		// LEFT-HANDED: the hand mirrored in X is the one on the physical LEFT controller (hw_vrmodes.cpp
+		// GetWeaponTransform), which is the MAIN hand under a left-handed vr_control_scheme -- so the flip
+		// follows WorldMirror, not bOffhandWeapon. Right-handed it is the same `off ? 1 : -1` as before.
+		double m = WorldMirror(off) ? 1.0 : -1.0;
 		double a = ha, r = -hr + m * TwAngle(f);
 		Vector3 fw = (cos(hp) * cos(ha), cos(hp) * sin(ha), -sin(hp));
 		Vector3 flatRight = (sin(a), -cos(a), 0);
@@ -1152,7 +1155,7 @@ class UBQS_SaberBase : Weapon abstract
 		// ubqs_diag 1: dots along the blade line the script uses, to check it sits on the blade you see
 		if (UInt("ubqs_diag", 0) == 1 && (level.maptime & 1))
 		{
-			int dc = bOffhandWeapon ? 0x00FF00 : 0xFF00FF;
+			int dc = bOffhandWeapon ? UBQS_CB.Pick(UBQS_CB.CB_COULD, 0x00FF00) : UBQS_CB.Pick(UBQS_CB.CB_HAVE, 0xFF00FF);
 			for (int i = 0; i <= 8; i++) UBQS_Data.Glow(hand + dir * (len * i / 8.0), dc, 0.03, 1.0, 2);
 		}
 		// THE BLADE'S OWN SPEED, less the body's: walking is not swinging (the owner, 10-01: "it makes the swing
@@ -3647,9 +3650,9 @@ class UBQS_WorldSaber : Actor
 // NEGATIVE ACTOR Scale.X IS NOT AN ESCAPE HATCH: Scale.X feeds BOTH lateral axes (models.cpp:85-86), so it
 // gives a 180-degree rotation, not a reflection -- which is why this has to be a second class with its own
 // blocks at all.
-// KEEPING THE PARITY IS ALSO WHAT KEEPS UBQS_Data.BladeDirOf CORRECT UNCHANGED -- its `m = off ? 1.0 : -1.0`
-// was validated in the headset on 10-01 against the drawn object's net handedness, and this recipe preserves
-// that net handedness, so nothing downstream of the pose needs touching.
+// KEEPING THE PARITY IS ALSO WHAT KEEPS UBQS_Data.BladeDirOf CORRECT -- its `m` (then `off ? 1.0 : -1.0`,
+// now WorldMirror(off) ? 1.0 : -1.0, the same thing right-handed) was validated in the headset on 10-01 against
+// the drawn object's net handedness, and this recipe preserves that net handedness.
 // MODELDEF DOES NOT INHERIT -- the lookup is exact PClass pointer identity (models.cpp:1313) and a subclass's
 // `hasmodel` is memcpy'd from the parent (info.cpp:486) before MODELDEF is parsed (d_main.cpp:3460 before
 // :3486) -- so this empty subclass needs its OWN full set of blocks, exactly as UBQS_Saber and UBQS_SaberOff
@@ -4293,7 +4296,7 @@ class UBQS_Force : Inventory
 		// it reads as a steady glow rather than a flicker.
 		if (bits != 0 && (armed || gripped) && (level.maptime % 4) == 0)
 			UBQS_FX.Fx(OffPos(), 'UXFH', 18, 1, gripped ? 0.085 : 0.055, gripped ? 0.75 : 0.45,
-				gripped ? 0xFFC860 : 0xBFE0FF, 1.0);
+				gripped ? UBQS_CB.Pick(UBQS_CB.CB_HAVE, 0xFFC860) : UBQS_CB.Pick(UBQS_CB.CB_COULD, 0xBFE0FF), 1.0);
 
 		SlamTick();
 		PulledTick();
@@ -4525,12 +4528,11 @@ class UBQS_Force : Inventory
 		{
 			aimGlow = UBQS_GripGlow(Actor.Spawn("UBQS_GripGlow", aimedAt.pos));
 			if (!aimGlow) return;
-			aimGlow.SetShade(0xFFC860);      // warm, against the held grip's cold blue
+			aimGlow.aim = true;              // warm, against the held grip's cold blue (UBQS_GripGlow.Look)
 			aimTic = 0;
 		}
 		aimTic++;
-		aimGlow.Follow(aimedAt, owner, aimTic);
-		aimGlow.alpha *= 0.55;             // a hint, not a hold
+		aimGlow.Follow(aimedAt, owner, aimTic);   // a hint, not a hold: Look dims it
 	}
 
 	// ---- GRIP ------------------------------------------------------------------------------------------------
@@ -4961,11 +4963,21 @@ class UBQS_GripGlow : Actor
 		+NOTELEPORT
 		+BRIGHT
 	}
-	override void PostBeginPlay()
+	bool aim;   // the "could" outline (AimTick), not a held grip
+
+	// THE LOOK, could or have, t tics in: brightness, colour, size over the host. A held grip breathes
+	// 0.15..0.50 once every 60 tics in Force blue; the aim outline is warm and at 0.55 of that.
+	// COLOUR-BLIND PLAY (RSQ_Accessibility's rsqa_colorblind; UBQS_CB): the series pair for that
+	// vision, and not colour alone -- the outline drops to 0.40 of the hold and a hold is drawn
+	// 1.08 times the host, a rim the outline does not have.
+	static double, int, double Look(bool aim, int t)
 	{
-		Super.PostBeginPlay();
-		SetShade(0x5AA0FF);
+		double a = 0.15 + 0.35 * (0.5 - 0.5 * cos(t * 6.0));
+		if (!UBQS_CB.Mode()) return aim ? a * 0.55 : a, aim ? 0xFFC860 : 0x5AA0FF, 1.0;
+		if (aim) return a * 0.40, UBQS_CB.Pick(UBQS_CB.CB_COULD, 0xFFC860), 1.0;
+		return a, UBQS_CB.Pick(UBQS_CB.CB_HAVE, 0x5AA0FF), 1.08;
 	}
+
 	void Follow(Actor mo, Actor viewer, int t)
 	{
 		if (!mo) return;
@@ -4980,11 +4992,14 @@ class UBQS_GripGlow : Actor
 		sprite = mo.sprite;
 		frame = mo.frame;
 		angle = mo.angle;
-		scale = mo.scale;
 		bXFlip = mo.bXFlip;
 		bYFlip = mo.bYFlip;
 		SpriteOffset = mo.SpriteOffset;
-		alpha = 0.15 + 0.35 * (0.5 - 0.5 * cos(t * 6.0));
+		double a, k; int c;
+		[a, c, k] = Look(aim, t);
+		alpha = a;
+		scale = mo.scale * k;
+		SetShade(c);
 	}
 	override void Tick()
 	{
@@ -5855,6 +5870,7 @@ class UBQS_Telemetry : EventHandler
 
 // WHAT THE SABER IS DOING, FOR ANY MOD THAT ASKS -- found by name (ServiceIterator), so nothing links
 // against this mod and an absent saber is simply no answer.
+//   GetInt("gripped", "", 0, 0, monster)   1 a Force grip holds it now, 0 not (RSQ_TopHPBars' marker)
 //   GetInt("saber.lit", "", hand)   hand 0 = main, 1 = off
 //     1   a saber is in that hand with its blade lit, or it is out of the hand (thrown: the catch is ours)
 //     0   a saber is in that hand with the blade switched off (doused): just a hilt
@@ -5878,6 +5894,20 @@ class UBQS_SaberService : Service
 			if (t.phase == UBQS_Thrown.PH_OUT || t.phase == UBQS_Thrown.PH_ROUTE) return 0;
 			if (t.phase == UBQS_Thrown.PH_HOME || t.phase == UBQS_Thrown.PH_PULL) return 1;
 			return -1;
+		}
+		// "gripped": 1 a player's Force grip holds this monster now (the grip, or one held with it by
+		// Force Choke 3+), 0 not (RSQ_TopHPBars' marker)
+		if (request ~== "gripped")
+		{
+			let m = Actor(objectArg);
+			if (!m) return -1;
+			for (int i = 0; i < MAXPLAYERS; i++)
+			{
+				if (!playeringame[i] || !players[i].mo) continue;
+				let f = UBQS_Force(players[i].mo.FindInventory("UBQS_Force"));
+				if (f && f.gripped && (f.gripped == m || f.extraGrip.Find(m) < f.extraGrip.Size())) return 1;
+			}
+			return 0;
 		}
 		if (!(request ~== "saber.lit")) return -1;
 		let p = players[consoleplayer];
@@ -6074,5 +6104,62 @@ class UBQS_OffFlick : EventHandler
 			State st = w.FindState("Reload");
 			if (st) p.SetPsprite(PSP_WEAPON, st, false, w);
 		}
+	}
+}
+
+// ==========================================================================================================
+// UBQS_CB -- the series' colour-blind palette, read from RSQ_Accessibility's rsqa_colorblind.
+// The same table sits in every Ultra Badass Quest mod under its own prefix (RSQ_Accessibility,
+// tools/cb_template.zs), so a cue means the same colour across the series and each mod still
+// loads alone: without RSQ_Accessibility the setting reads 0 and every cue keeps its own colour.
+//
+//   rsqa_colorblind  0 Off, 1 Protanopia, 2 Deuteranopia, 3 Tritanopia, 4 High Contrast
+//
+// Roles, not colours: IDLE (searching, nothing found), COULD (noticed, would take it), HAVE
+// (taken, locked, yours). A pair of anything (two hands, two bars) uses HAVE and COULD.
+//   protan/deutan  grey D0D0D0, amber FFB000, azure 3090FF  (the blue-yellow axis they keep)
+//   tritan         grey D0D0D0, red FF4040, cyan 00E0E0     (the red-cyan axis they keep)
+//   high contrast  dim grey 8C8C8C, yellow FFFF00, magenta FF40FF (the widest brightness gaps)
+// Measured with tools/cvd.py (Machado 2009 / Vienot 1999, CIEDE2000): every pair >= 24 in the
+// vision it is for; the stock amber/green pair is 7.5 for deuteranopia.
+class UBQS_CB
+{
+	enum ERole { CB_IDLE, CB_COULD, CB_HAVE }
+
+	static clearscope int Mode()
+	{
+		CVar cv = null; { Name rsqaN = "RSQA_Menu"; class<Object> rsqaC = rsqaN; if (rsqaC) cv = CVar.FindCVar("rsqa_colorblind"); }  // only while RSQ_Accessibility is loaded: a value left in the ini must not act on its own
+		return cv ? clamp(cv.GetInt(), 0, 4) : 0;
+	}
+
+	// 0xRRGGBB for a role in a mode (1..4).
+	static clearscope int Rgb(int role, int mode)
+	{
+		static const int T[] = {
+			0xD0D0D0, 0xFFB000, 0x3090FF,   // 1 protanopia
+			0xD0D0D0, 0xFFB000, 0x3090FF,   // 2 deuteranopia
+			0xD0D0D0, 0xFF4040, 0x00E0E0,   // 3 tritanopia
+			0x8C8C8C, 0xFFFF00, 0xFF40FF    // 4 high contrast
+		};
+		return T[(clamp(mode, 1, 4) - 1) * 3 + clamp(role, 0, 2)];
+	}
+
+	// For lump-defined looks (TRNSLATE, TEXTCOLO): "" off, "_PD", "_T" or "_HC" appended to a name.
+	static clearscope String Suffix()
+	{
+		switch (Mode())
+		{
+			case 1: case 2: return "_PD";
+			case 3: return "_T";
+			case 4: return "_HC";
+		}
+		return "";
+	}
+
+	// The role's colour while the setting is on, else the mod's own colour.
+	static clearscope int Pick(int role, int own)
+	{
+		int m = Mode();
+		return m ? Rgb(role, m) : own;
 	}
 }
