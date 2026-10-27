@@ -16,9 +16,13 @@
 // Measured: the mesh spans x -6.3..6.0 (front-back), y -12.9..12.8 (shoulder to
 // shoulder, 0.75 m), z -3.8..18.1 (waist to collar), in map units at scale 1.
 
+// TWO TORSOS (rsqtr_vest_style): the Doom marine's (the default, the owner's pick:
+// RS_VRBody's marine_torso.iqm, a Doom Eternal Classic Slayer rip, recoloured green /
+// blue / red there -- green without armour too) or Quake's Grunt (below).
 class RSQTR_Torso : EventHandler
 {
-	const COLLAR = 18.1;          // model units: the top of the mesh
+	const COLLAR = 18.1;          // model units: the top of the Quake mesh
+	const SHOULDERS = 51.689;     // model units: the marine's shoulder line (RS_VRBody's PivotOffset)
 	private transient Actor body, breath;
 
 	override void WorldTick()
@@ -33,10 +37,13 @@ class RSQTR_Torso : EventHandler
 		double back = RSQTR_Rig.Num("rsqtr_vest_f", p, -0.04);         // metres forward of the eyes
 		double sz = RSQTR_Rig.Num("rsqtr_vest_size", p, 1.0) * k;
 		Vector3 neck = rig.BodyPoint(pmo, back, 0, drop);
-		Vector3 at = neck - (0, 0, COLLAR * sz);
+		bool marine = RSQTR_Rig.Opt("rsqtr_vest_style", p, 0) == 0;
+		Vector3 at = neck - (0, 0, (marine ? SHOULDERS : COLLAR) * sz);
 		double yaw = rig.BodyYaw(pmo);
+		String cls = marine ? "RSQTR_MarinePart" : "RSQTR_TorsoPart";
 
-		if (!body) body = Actor.Spawn("RSQTR_TorsoPart", at);
+		if (body && body.GetClassName() != cls) { body.Destroy(); body = null; if (breath) { breath.Destroy(); breath = null; } }
+		if (!body) body = Actor.Spawn(cls, at);
 		if (!body) return;
 		int skin = 0;                                   // 0 own, 1 green, 2 blue
 		let armor = BasicArmor(pmo.FindInventory("BasicArmor"));
@@ -46,17 +53,19 @@ class RSQTR_Torso : EventHandler
 			t = t.MakeLower();
 			skin = (armor.Amount >= 150 || t.IndexOf("blue") >= 0 || armor.SavePercent >= 0.5) ? 2 : 1;
 		}
-		Place(body, at, yaw, sz, skin, 1.0);
+		// The marine has no bare look: green unless blue (RS_VRBody's rule); its frames are
+		// green, blue, red. The Quake torso's: own, green, blue, red.
+		Place(body, at, yaw, sz, marine ? (skin == 2 ? 1 : 0) : skin, 1.0);
 
 		// Red breathing over it at low health.
 		int low = int(RSQTR_Rig.Num("rsqtr_vest_low", p, 35));
 		if (pmo.health < low)
 		{
-			if (!breath) breath = Actor.Spawn("RSQTR_TorsoPart", at);
+			if (!breath) breath = Actor.Spawn(cls, at);
 			if (breath)
 			{
 				double a = 0.25 + 0.35 * (0.5 + 0.5 * sin(level.maptime * 9.0));
-				Place(breath, at, yaw, sz * 1.003, 3, a);
+				Place(breath, at, yaw, sz * 1.003, marine ? 2 : 3, a);
 				breath.A_SetRenderStyle(a, STYLE_Translucent);
 			}
 		}
@@ -78,6 +87,16 @@ class RSQTR_Torso : EventHandler
 		if (body) body.bINVISIBLE = true;
 		if (breath) breath.bINVISIBLE = true;
 	}
+}
+
+class RSQTR_MarinePart : Actor
+{
+	Default
+	{
+		+NOINTERACTION +NOBLOCKMAP +NOGRAVITY +NOTELEPORT +DONTSPLASH +NOTONAUTOMAP
+		Radius 1; Height 1;
+	}
+	States { Spawn: RSVM A -1; Stop; }
 }
 
 class RSQTR_TorsoPart : Actor
