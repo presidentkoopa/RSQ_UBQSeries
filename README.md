@@ -77,3 +77,14 @@ Load after your weapon pack. Tested order:
   class name so the two don't compound.
 - The clock's cue sounds are generated (`tools/gen_sounds.py`).
 - QuestZDoom: Emawind and Team Beef.
+
+
+## For other mods (branch `agent-up2`, 2026-10-27)
+
+`RSQSM_Service`, found by name: `GetInt("adrenaline.add", "", n)`, `GetInt("adrenaline")`,
+`GetInt("active")` (1 while slow motion is doing something), `GetInt("scale")` (the world's speed,
+permille). The Gun Bonsai VR patch's slow-motion perks read `active`.
+
+A kill now earns adrenaline from the killing blow's own source (WorldThingDamaged): before, a
+hitscan kill named only its puff, which points at nobody, and earned nothing (measured: a pistol
+kill, adrenaline 0 -> 0; after, +12).
