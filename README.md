@@ -1,5 +1,8 @@
 # RSQ_UBQSeries — the Ultra Badass Quest series
 
+**Release 0.8a — 2026-10-26.** Ready-to-load pk3s are in [`pk3/`](pk3/) and attached to the
+[0.8a release](../../releases/tag/v0.8a).
+
 Four standalone add-ons for **Doom VR on the Quest**, all in one place: a distance grab, a laser
 sight, a shield-saw and a lightsaber. Each one is its own pk3. Load any of them, in any order,
 alone or all together.
@@ -18,8 +21,9 @@ is ZScript and data lumps.
 
 ## Install
 
-1. Grab the pk3s you want from [`pk3/`](pk3/).
-2. Load them **after** your weapon pack. The tested order is:
+1. Grab the pk3s you want from [`pk3/`](pk3/) (or the 0.8a release).
+2. Add them to your QuestZDoom load order the way you normally load mods, **after** your weapon
+   pack. The tested order is:
 
    ```
    doom2.wad -> brutal22test6 -> BD_VoxelPack -> any of the four, in any order
@@ -36,24 +40,57 @@ is ZScript and data lumps.
 
    Every mod's menu has a **reset** row that puts all of its settings back to default.
 
-## Quick controls
+## What each one does, and how to use it
 
-**DistanceGrab.** Turn your palm out to arm the reach. What you could take glows amber, and green
-once it's locked. Flick your wrist up to pull it. Keep your hand open to catch it, then roll your
-palm back to let go, or snap your arm to throw. Heavy things pull slower, carry with lag and slow
-you down. *(Optional button fallback: Customize Controls → Distance Grab.)*
+### DistanceGrab
+- **Reach:** turn your palm out (roll your hand so the palm faces away). Whatever you could take
+  glows **amber**; once it's yours it glows **green**. A beam, a dot and the reach cone show where
+  you're pointing.
+- **Pull:** flick your wrist **up**. The thing flies to your hand: heavy things slower and lazier,
+  light ones snappier. Keep your hand open and you catch it.
+- **Carry and throw:** roll your palm back to let go, or snap your arm and let go to throw.
+  Thrown things hit with their weight; barrels can go off on a hard landing. Heavy loads slow you.
+- **Options worth knowing:** *Feel tuning* (all the headset numbers on one page), *Hold before it
+  locks* (a short delay so you see amber before green), *Flight path* Steer or Arc (a lob, with
+  an Arc height slider), *Duck under doorways*, *Voxel targets flash instead*.
+- Stands down on a hand holding a melee weapon, the shield or the Force hand. An optional button
+  fallback is under Customize Controls → Distance Grab.
 
-**LaserSight.** It's on as soon as you hold a gun. Toggle each hand under Customize Controls →
-Laser Sight. Melee weapons and off-hand utilities (the shield, the Force hand) don't get a laser.
+### LaserSight
+- **On as soon as you hold a gun**, in either hand, on every weapon from any mod. Melee weapons
+  and off-hand utilities don't get one. Toggle each hand under Customize Controls → Laser Sight.
+- **Looks:** any colour by picker, per hand and per weapon slot, beam and dot separately; colour
+  cycling; beam width, taper, fade, length and glow; dot size and glow (bloom, real light or
+  both); IR mode, visible only with the light-amp goggles.
+- **Cues:** on a live enemy the dot pulses and can tighten; a lined-up headshot can change colour.
+- **Learned from each gun** (after its first shot): a **spread ring** at the dot showing where its
+  shots land, and for a weapon that throws gravity grenades a **grenade arc** ending where the
+  grenade will land.
+- **Range readout:** distance by the gun or at the dot, in metres, feet or map units (Laser
+  Sight → Range Readout; off by default).
 
-**ShieldSaw.** Reach to your off shoulder and press **Use** to draw it, and press Use there again
-to put it back. Hold **either off-hand button** to rev the saw and ring targets. Release while
-snapping your arm forward to throw, and press again while it flies to call it back. Shots that
-cross the shield's face are stopped or turned back. Shove it into an enemy to bash.
+### ShieldSaw
+- **Draw / stow:** reach to your off shoulder and press **Use**; press Use there again to put it
+  back.
+- **Block:** shots that cross the shield's face are stopped or turned back (back at the shooter,
+  where you look, or off the face); fireballs are batted away before they reach you; blocked
+  melee staggers. Meet a shot with a moving shield for a **perfect block**.
+- **Bash:** shove the shield into an enemy.
+- **Rev and throw:** hold **either off-hand button** to rev the saw and ring targets as you sweep;
+  release while snapping your arm forward to throw. It visits the ringed targets in order and
+  comes back; press again while it flies to call it back.
+- Shield size, fit and placement are under *Shield Fit*; everything else under *Tuning* and
+  *Advanced*.
 
-**QuestSaber.** It's in weapon slot 1. Swing to cut; the blade blocks and deflects. Your off hand
-holds a second saber or the Force (push, pull, grip, jump). Keys under Customize Controls → Ultra
-Badass QuestSaber: blade on/off, second blade, training remote.
+### QuestSaber
+- **The saber** is in weapon slot 1. Swing to cut; the blade blocks and deflects shots, and two
+  blades clash and lock. It can be thrown (it comes back, or drops until you call it).
+- **The off hand** holds a second saber by default (*dual*), and the Force: push, pull, grip and
+  jump, by gesture.
+- **Keys** (Customize Controls → Ultra Badass QuestSaber): blade on/off, second blade, training
+  remote.
+- A deep options menu covers the look, the beam, swing and trail, contact and blocking,
+  deflecting, throwing, the Force, sound and feel, and the training remote.
 
 ## They work together
 
@@ -84,6 +121,7 @@ RSQ_UBQSeries/
 ├── LaserSight/      source, docs/HANDOFF, tools/gen_assets.py
 ├── ShieldSaw/       source, README (full manual), HANDOFF
 ├── QuestSaber/      source, CREDITS, docs/HANDOFF_polish
+├── tools/rig17/     how the real QuestZDoom 17.3 test engine was built, and the test runners
 └── build_all.sh     rebuilds every pk3 into pk3/
 ```
 
@@ -99,7 +137,7 @@ Each folder carries its **full git history** from the repo it came from (merged 
 This needs `zip`. Each mod also keeps its original script (DistanceGrab and LaserSight use
 `build.ps1` on Windows; ShieldSaw uses `build.sh`). `build_all.sh` packs exactly the same files.
 
-## Status (2026-10-26)
+## Status (0.8a, 2026-10-26)
 
 - **Tested on the real QuestZDoom 17.3 engine** (the qzd17.3 tag, 4.14.3), built headless
   for testing ([tools/rig17](tools/rig17/)), and on the older 4.12 build. All four load together
@@ -109,7 +147,7 @@ This needs `zip`. Each mod also keeps its original script (DistanceGrab and Lase
 - **Not yet played on a headset.** Feel numbers (rumble strength, arc height, throw thresholds)
   are first guesses.
 
-Latest round:
+What's new in 0.8a:
 
 - **DistanceGrab:** the hand's up/down angle was read upside down (what you could grab, the
   "not at the floor" check and the wrist flick). Fixed and re-tested. Voxel items flash instead
@@ -124,8 +162,16 @@ What changed, what's measured and what's still open is in each mod's handoff:
 [ShieldSaw](ShieldSaw/HANDOFF.md) ·
 [QuestSaber](QuestSaber/docs/HANDOFF_polish.md)
 
+- **ShieldSaw and QuestSaber:** the polish pass (weapon switching with the shield drawn, rumble on
+  the right controller, every setting on a menu, reset rows, many fixes from two reviews).
+
 Known limits:
 
+- Not yet played on a headset (above).
+- LaserSight's range readout has not been seen on screen yet; the grab's doorway duck has no
+  measured run.
+- The spread ring and grenade arc appear only after a gun has fired once, and are re-learned
+  after loading a saved game.
 - In co-op, a bullet the shield turns back is credited to a helper actor, so friendly-fire rules
   don't apply to it.
 - The top of the saber's haptic power slider saturates.
