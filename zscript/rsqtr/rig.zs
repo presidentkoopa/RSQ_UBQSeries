@@ -486,7 +486,7 @@ class RSQTR_Rig : EventHandler
 			int mode = Opt("rsqtr_pairs", p, 2);
 			let copy = OffCopy(pmo, incoming.GetClass());
 			if (copy && (mode == 2 || (mode == 1 && incomingPair))) QueueOff(n, copy.GetClassName());
-			else if (pair) QueueOff(n, OffEmptyName(pmo));
+			else if (pair && mode != 0) QueueOff(n, OffEmptyName(pmo));
 			drawTic[n] = level.maptime + 1;
 			drawClass[n] = incoming.GetClassName();
 		}
@@ -494,7 +494,7 @@ class RSQTR_Rig : EventHandler
 		{
 			let empty = EmptyHand(pmo);
 			if (empty && empty != w) p.PendingWeapon = empty;
-			if (pair) QueueOff(n, OffEmptyName(pmo));
+			if (pair && Opt("rsqtr_pairs", p, 0) != 0) QueueOff(n, OffEmptyName(pmo));
 		}
 		pmo.A_StartSound("rsqtr/holster", CHAN_AUTO, CHANF_LOCAL, 0.8);
 	}
@@ -694,12 +694,22 @@ class RSQTR_Rig : EventHandler
 		}
 		// settings version 3 (10-27, the simple rig): the body's turn rule becomes 35 degrees
 		// held 1 s with a slow ease (it was 25 at once: "everything moves around")
+		// settings version 4 (10-27): DUAL IS ITS OWN THING (the owner: "I have a button that is
+		// dedicated to... put it in offhand / take it out of offhand; leave its appearance and
+		// disappearance in the off hand as a different kind of thing"). The rig never touches the
+		// off hand for a pair any more: rsqtr_pairs 0 (it was 2).
+		if (ver && ver.GetInt() < 4)
+		{
+			let pr = CVar.FindCVar("rsqtr_pairs");
+			if (pr) pr.SetInt(0);
+			if (ver.GetInt() >= 3) ver.SetInt(4);
+		}
 		if (ver && ver.GetInt() < 3)
 		{
 			let bt3 = CVar.FindCVar("rsqtr_body_turn"), bs3 = CVar.FindCVar("rsqtr_body_secs");
 			if (bt3) bt3.SetFloat(35);
 			if (bs3) bs3.SetFloat(1);
-			ver.SetInt(3);
+			ver.SetInt(4);
 		}
 		// slot 0 was the pectorals' (my pick, 10-27): in BD that is the flamethrowers, so the
 		// pectorals hold pistols like the shoulder holsters they are, and slot 0 goes with the
