@@ -25,6 +25,7 @@ OptionMenu "RSQTR_Options"
 	Option "Region rings", "rsqtr_markers", "RSQTR_Markers"
 	Option "Show what each region holds", "rsqtr_icons", "OnOff"
 	Slider "Size of the stored weapons shown", "rsqtr_icon_scale", 0.25, 3.0, 0.05, 2
+	Slider "Turn the stored weapons, degrees", "rsqtr_icon_turn", -180, 180, 15, 0
 	Option "Haptics", "rsqtr_haptics", "OnOff"
 	Option "Messages", "rsqtr_messages", "OnOff"
 	Slider "Reach (all regions)", "rsqtr_reach", 0.5, 2.0, 0.05, 2
@@ -63,7 +64,7 @@ OptionMenu "RSQTR_Options"
 	TextField "Main grip", "rsqtr_keys_main"
 	TextField "Off grip", "rsqtr_keys_off"
 	StaticText ""
-	SafeCommand "Reset all Tactical Rig settings", "resetcvar rsqtr_on rsqtr_grip rsqtr_use rsqtr_keys_main rsqtr_keys_off rsqtr_markers rsqtr_icons rsqtr_icon_scale rsqtr_haptics rsqtr_messages rsqtr_reach rsqtr_rifle_back rsqtr_yield_shield rsqtr_saber_hip rsqtr_eye_m rsqtr_edit rsqtr_dwell rsqtr_body_turn rsqtr_body_secs rsqtr_empty rsqtr_door rsqtr_door_grip rsqtr_door_use rsqtr_door_palm rsqtr_door_commit rsqtr_door_gain rsqtr_cig rsqtr_cig_zippo rsqtr_cig_secs rsqtr_cig_slowmo rsqtr_cig_depth rsqtr_cig_count rsqtr_cig_refill rsqtr_r0_f rsqtr_r0_l rsqtr_r0_u rsqtr_r0_rad rsqtr_r1_f rsqtr_r1_l rsqtr_r1_u rsqtr_r1_rad rsqtr_r2_f rsqtr_r2_l rsqtr_r2_u rsqtr_r2_rad rsqtr_r3_f rsqtr_r3_l rsqtr_r3_u rsqtr_r3_rad rsqtr_r4_f rsqtr_r4_l rsqtr_r4_u rsqtr_r4_rad rsqtr_r5_f rsqtr_r5_l rsqtr_r5_u rsqtr_r5_rad", "Put every Tactical Rig setting back?"
+	SafeCommand "Reset all Tactical Rig settings", "resetcvar rsqtr_on rsqtr_grip rsqtr_use rsqtr_keys_main rsqtr_keys_off rsqtr_markers rsqtr_icons rsqtr_icon_scale rsqtr_icon_turn rsqtr_haptics rsqtr_messages rsqtr_reach rsqtr_rifle_back rsqtr_yield_shield rsqtr_saber_hip rsqtr_eye_m rsqtr_edit rsqtr_dwell rsqtr_body_turn rsqtr_body_secs rsqtr_empty rsqtr_door rsqtr_door_grip rsqtr_door_use rsqtr_door_palm rsqtr_door_commit rsqtr_door_gain rsqtr_cig rsqtr_cig_zippo rsqtr_cig_secs rsqtr_cig_slowmo rsqtr_cig_depth rsqtr_cig_count rsqtr_cig_refill rsqtr_r0_f rsqtr_r0_l rsqtr_r0_u rsqtr_r0_rad rsqtr_r1_f rsqtr_r1_l rsqtr_r1_u rsqtr_r1_rad rsqtr_r2_f rsqtr_r2_l rsqtr_r2_u rsqtr_r2_rad rsqtr_r3_f rsqtr_r3_l rsqtr_r3_u rsqtr_r3_rad rsqtr_r4_f rsqtr_r4_l rsqtr_r4_u rsqtr_r4_rad rsqtr_r5_f rsqtr_r5_l rsqtr_r5_u rsqtr_r5_rad", "Put every Tactical Rig setting back?"
 }
 
 OptionMenu "RSQTR_Regions"

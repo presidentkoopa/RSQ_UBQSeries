@@ -153,7 +153,7 @@ class RSQTR_Rig : EventHandler
 		for (let it = pmo.Inv; it; it = it.Inv)
 		{
 			let w = Weapon(it);
-			if (!w || w.bCHEATNOTWEAPON || w.bPOWERED_UP || w.bOffhandWeapon || w.Amount <= 0) continue;
+			if (!w || w.bPOWERED_UP || w.bOffhandWeapon || w.Amount <= 0) continue;
 			// UltraBadassQuestSaber's hilt is slot 1, but it clips to either hip
 			// (rsqtr_saber_hip), found by class name so the saber need not be loaded.
 			if (IsSaber(w))
@@ -163,10 +163,47 @@ class RSQTR_Rig : EventHandler
 			}
 			bool found; int slot, idx;
 			[found, slot, idx] = pmo.player.weapons.LocateWeapon(w.GetClass());
+			// CHEATNOTWEAPON alone does not keep a gun off the body: Brutal Doom's dual
+			// guns are CHEATNOTWEAPON and sit in the weapon slots (measured: DualRifles,
+			// slot 4), and picking up the second gun replaces the single one. Only a
+			// CHEATNOTWEAPON that is in no slot (a utility) stays off.
+			if (!found && w.bCHEATNOTWEAPON) continue;
 			if (!found) slot = w.SlotNumber;
 			if (slot < 0 || slot == 1) continue;
 			if (RSQTR_Region.Takes(r, slot)) into.Push(w.GetClassName());
 		}
+	}
+
+	// WHAT THE HAND HOLDS, as the rig files it. Brutal Doom's dual guns (DualRifles,
+	// DualPistols, DualSMG, ...) are separate weapons outside the slots
+	// (CHEATNOTWEAPON), switched to from inside the single gun with A_SelectWeapon
+	// (BD22 Rifle.dec:830). They are filed as the single gun they pair: the class whose
+	// name ends with the dual's name minus "Dual" and a plural s (Rifle, BrutalPistol,
+	// BrutalSMG), else the slotted gun with the same SelectionOrder (DualRifles and
+	// Rifle are both 800). Holstering a pair puts the gun away; drawing gives the
+	// single, and Brutal Doom's own control pairs it again.
+	static String HeldAs(PlayerPawn pmo, Weapon w)
+	{
+		if (!w) return "";
+		String cls = w.GetClassName();
+		if (w.bOffhandWeapon) return cls;      // (BD22Q's DualRifles is not CHEATNOTWEAPON: measured)
+		String low = cls.MakeLower();
+		if (low.IndexOf("dual") != 0) return cls;
+		String stem = low.Mid(4);
+		if (stem.Length() > 1 && stem.Mid(stem.Length() - 1) == "s") stem = stem.Left(stem.Length() - 1);
+		Weapon bySel = null;
+		for (let it = pmo.Inv; it; it = it.Inv)
+		{
+			let o = Weapon(it);
+			if (!o || o == w || o.bCHEATNOTWEAPON || o.bOffhandWeapon) continue;
+			String on = o.GetClassName();
+			if (on.MakeLower().IndexOf("dual") == 0) continue;
+			String ol = on.MakeLower();
+			if (stem.Length() > 0 && ol.Length() >= stem.Length() && ol.Mid(ol.Length() - stem.Length()) == stem) return on;
+			if (!bySel && o.SelectionOrder == w.SelectionOrder) bySel = o;
+		}
+		if (bySel) { String bn = bySel.GetClassName(); return bn; }
+		return cls;
 	}
 
 	static bool IsSaber(Weapon w)
@@ -281,7 +318,7 @@ class RSQTR_Rig : EventHandler
 		if (!w) return;
 		Array<String> own;
 		Owned(pmo, r, own);
-		String cls = w.GetClassName();
+		String cls = HeldAs(pmo, w);
 		if (own.Find(cls) == own.Size()) return;   // not this region's class: refused
 		let empty = EmptyHand(pmo);
 		if (empty && empty != w) p.PendingWeapon = empty;
@@ -422,9 +459,7 @@ class RSQTR_Rig : EventHandler
 	{
 		Array<String> own;
 		Owned(pmo, r, own);
-		let w = p.ReadyWeapon;
-		String cur = "";
-		if (w) cur = w.GetClassName();
+		String cur = HeldAs(pmo, p.ReadyWeapon);
 		if (cur != "" && own.Find(cur) < own.Size())
 		{
 			EventHandler.SendNetworkEvent("rsqtr_holster", r);
@@ -567,8 +602,7 @@ class RSQTR_Rig : EventHandler
 			// WHAT IS STORED THERE, always shown: the weapon last put there if you still
 			// own it, otherwise the first weapon of that region you own; never the one in
 			// your hand.
-			String held = "";
-			if (p.ReadyWeapon) held = p.ReadyWeapon.GetClassName();
+			String held = HeldAs(pmo, p.ReadyWeapon);
 			String put = lastPut[consoleplayer * RSQTR_Region.N + r];
 			Array<String> own;
 			Owned(pmo, r, own);
@@ -581,10 +615,44 @@ class RSQTR_Rig : EventHandler
 			{
 				if (!icon[r]) icon[r] = Actor.Spawn("RSQTR_Icon", at);
 				let ic = RSQTR_Icon(icon[r]);
-				if (ic) { ic.Wear(put, 0.28 * Num("rsqtr_icon_scale", p, 1.0), 0.85); ic.Place(at); }
+				if (ic)
+				{
+					ic.Wear(put, 0.28 * Num("rsqtr_icon_scale", p, 1.0), 0.85);
+					double by = (body && body.primed) ? body.yaw : pmo.angle;
+					// A gun over the shoulder hangs on the BACK: shown 0.12 m behind the
+					// region, or it fills your view every time you look down.
+					Vector3 show = at;
+					if (r >= 4) show -= (cos(by) * 0.12 * RSQTR_Body.UPM, sin(by) * 0.12 * RSQTR_Body.UPM, 0);
+					ic.Place(show);
+					Hang(ic, r, by + Num("rsqtr_icon_turn", p, 0), Flag("rsqtr_rifle_back", p, false));
+				}
 			}
 			else if (icon[r]) icon[r].bINVISIBLE = true;
 		}
+	}
+
+	// HOW A STORED GUN HANGS, the way it would be worn (degrees, from the body's
+	// heading; an actor's pitch is positive nose-DOWN). A pickup model points its
+	// muzzle along its own forward axis, as they are made to lie on the floor:
+	//   hips        muzzle down, grip up: a holster
+	//   chest       across the chest, muzzle up toward the left shoulder: a sling
+	//   rifle spot  the other diagonal, muzzle up toward the right shoulder
+	//               (small of the back: across the back, level)
+	//   shoulders   behind, muzzle up and back: carried over the shoulder
+	// Sprites face you whatever is set; voxels and models turn.
+	static void Hang(Actor ic, int r, double yaw, bool rifleBack)
+	{
+		double a = yaw, pt = 0, rl = 0;
+		switch (r)
+		{
+		case 0: a = yaw; pt = 80; rl = -10; break;
+		case 1: a = yaw; pt = 80; rl = 10; break;
+		case 2: a = yaw + 90; pt = -40; break;
+		case 3: if (rifleBack) { a = yaw + 90; pt = 0; } else { a = yaw - 90; pt = -40; } break;
+		case 4: a = yaw + 180; pt = -70; rl = 10; break;
+		default: a = yaw + 180; pt = -70; rl = -10; break;
+		}
+		ic.angle = a; ic.pitch = pt; ic.roll = rl;
 	}
 
 	private void HideAll()
@@ -672,6 +740,9 @@ class RSQTR_Icon : Actor
 			{
 				sprite = st.sprite; frame = st.Frame;
 				A_ChangeModel(Name(cls));
+				// Pickup models seldom turn with their actor's pitch and roll (they lie on
+				// the floor); these do, so the gun can hang as worn. Voxels too.
+				SetModelFlag(MDL_USEACTORPITCH | MDL_USEACTORROLL);
 			}
 			else { sprite = tnt; frame = 0; }
 		}
