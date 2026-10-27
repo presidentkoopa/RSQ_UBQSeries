@@ -326,6 +326,25 @@ class UBQS_Light : Actor
 class UBQS_Bolt : FastProjectile
 {
 	int rgb;
+	// PIERCING RETURN (a Gun Bonsai upgrade, read by the saber that sent it): this many bodies are hurt
+	// and passed through before the bolt stops on one
+	int pierce;
+	Actor lastPierced;
+	override int SpecialMissileHit(Actor victim)
+	{
+		if (victim && victim == lastPierced) return 1;	// already through this one: it does not stop in it
+		if (pierce > 0 && victim && victim != target && victim.bShootable
+			&& victim.health > 0 && !victim.player)
+		{
+			lastPierced = victim;
+			pierce--;
+			if (!victim.bNoBlood) victim.SpawnBlood(pos, angle, 10);
+			victim.DamageMobj(self, target, GetMissileDamage(0, 1), 'Saber');
+			UBQS_Data.Sparks(pos, (0, 0, 1), rgb, 6);
+			return 1;
+		}
+		return -1;
+	}
 	Default
 	{
 		Radius 3;
@@ -383,6 +402,12 @@ class UBQS_SaberBase : Weapon abstract
 	int  slashNo;             // alternates the two slashes
 	int  altHold;             // tics the second button has been held (alt = tap: blade / hold: throw)
 	UBQS_Thrown thrown;       // out of the hand (in the air, or lying somewhere); null in the hand
+	// GUN BONSAI MELEE UPGRADES. The Gun Bonsai VR patch answers RSQ_MeleeUpgradeService by name with
+	// this saber's level in each (UBQS_Upg); without the patch every one reads 0 and nothing below
+	// changes anything. Read once a second, not per cut.
+	int  upgTic, uMomentum, uRiposte, uPierce, uThrow;
+	int  momTics, momQuiet;   // Momentum: tics the blade has kept moving, and tics it has been still
+	int  primedUntil;         // Riposte Edge: a block primes the next cut until this tic
 	int  lastFastTic;         // the last tic the blade was swung hard (a swung blade blocks surely)
 	int  burnQuiet, swingQuiet, flashTics;
 	bool humming;
@@ -1200,6 +1225,7 @@ class UBQS_SaberBase : Weapon abstract
 		// stays 2 units below it, off the same cvar, so the deliberate "you see the arc just before it bites"
 		// tell cannot drift apart from the cut.
 		double cut = UF("ubqs_swing_cut", 8.0);
+		MomentumTick(eff, cut);
 		// THE WHOOSH AND THE BLOCK WINDOW STILL BELONG TO A REAL ARC, and only the CUT uses the
 		// integral: lastFastTic buys a third of a second of hitscan immunity, and a slow lean must not
 		// be able to buy that.
@@ -1778,6 +1804,42 @@ class UBQS_SaberBase : Weapon abstract
 	}
 
 	// ---- CUT: whatever the blade is in ------------------------------------------------------------------
+	// ---- GUN BONSAI MELEE UPGRADES (see the fields) -----------------------------------------------
+	void UpgRefresh()
+	{
+		if (upgTic > 0 && level.maptime >= upgTic && level.maptime - upgTic < 35) return;
+		upgTic = max(level.maptime, 1);
+		uMomentum = UBQS_Upg.Lv(self, "Momentum");
+		uRiposte  = UBQS_Upg.Lv(self, "RiposteEdge");
+		uPierce   = UBQS_Upg.Lv(self, "PiercingReturn");
+		uThrow    = UBQS_Upg.Lv(self, "SaberThrow");
+	}
+	// MOMENTUM: the blade moving at half the cut speed or more builds it; six still tics end it
+	private void MomentumTick(double eff, double cut)
+	{
+		UpgRefresh();
+		if (uMomentum <= 0) { momTics = 0; return; }
+		if (eff >= cut * 0.5) { momTics = min(momTics + 1, 70); momQuiet = 0; }
+		else if (++momQuiet >= 6) momTics = 0;
+	}
+	// what one cut is worth from the upgrades: Momentum +10% a level per half second of motion (up to
+	// two seconds), Riposte Edge x2 (+0.25 a level after the first) when primed
+	double UpgCutMult(bool ripe)
+	{
+		double m = 1.0;
+		if (uMomentum > 0) m *= 1.0 + 0.10 * uMomentum * (momTics / 17.5);
+		if (ripe) m *= 2.0 + 0.25 * (uRiposte - 1);
+		return m;
+	}
+	// RIPOSTE EDGE: a block or a deflect primes the blade for a second (+half a second a level)
+	void Prime()
+	{
+		UpgRefresh();
+		if (uRiposte <= 0) return;
+		if (level.maptime > primedUntil) Rumble(0.5, 3);
+		primedUntil = level.maptime + 35 + 17 * (uRiposte - 1);
+	}
+
 	void CutAlong(double speed)
 	{
 		Vector3 hand = BladeBase(), dir = BladeDir();
@@ -1814,6 +1876,8 @@ class UBQS_SaberBase : Weapon abstract
 		double lift  = clamp(UF("ubqs_cut_lift", 0.35), 0.0, 1.0);
 		bool   los   = UInt("ubqs_cut_los", 1) != 0;
 		bool   cutAny = false;
+		bool   ripe = uRiposte > 0 && level.maptime <= primedUntil;
+		double um = UpgCutMult(ripe);
 		let it = BlockThingsIterator.CreateFromPos(mid.x, mid.y, mid.z - reach, reach * 2.0, reach, false);
 		while (it.Next())
 		{
@@ -1858,7 +1922,7 @@ class UBQS_SaberBase : Weapon abstract
 			// only the cut never got it. Last of the per-victim tests, so it costs a sight check only for
 			// something the blade geometrically touched.
 			if (los && !owner.CheckSight(mo, SF_IGNOREVISIBILITY)) continue;
-			int dmg = int(dmg0 * mult);
+			int dmg = int(dmg0 * mult * um);
 			// THE EFFECTS GO INSIDE THE BODY. `at` is the closest point on the blade, and the gate above
 			// allows a full radius plus ubqs_cut_pad of slack -- so on every cut that only just qualified,
 			// the flash, the spark burst and the smoke appeared in mid-air BESIDE the monster. Clamped
@@ -1893,6 +1957,8 @@ class UBQS_SaberBase : Weapon abstract
 		// a sweep through four imps is one pulse a controller could tell apart. On by default
 		// (ubqs_haptic_cut 1).
 		if (buzzc && cutAny) Rumble(0.9, 4);
+		// THE RIPOSTE IS SPENT on the cut that lands, not on a swing at the air
+		if (ripe && cutAny) { primedUntil = 0; if (owner) owner.A_StartSound(UBQS_Font.Clash(), CHAN_AUTO, 0, 0.6 * UF("ubqs_vol_clash", 1.0), ATTN_NORM, 1.3); }
 		for (int k = cutWho.Size() - 1; k >= 0; k--)
 			if (!cutWho[k] || cutWho[k].health <= 0) { cutWho.Delete(k); cutWhen.Delete(k); }
 	}
@@ -2054,6 +2120,8 @@ class UBQS_SaberBase : Weapon abstract
 		d = d.Unit();
 		mo.target = owner;
 		if (mo.bSeekerMissile) mo.tracer = shooter;
+		if (!mo.master) mo.master = self;	// paid to this saber (Gun Bonsai's VR patch), if nothing uses it
+		Prime();
 		mo.vel = d * sp;
 		mo.angle = VectorAngle(d.x, d.y);
 		mo.pitch = -asin(clamp(d.z, -1.0, 1.0));
@@ -2291,6 +2359,7 @@ class UBQS_SaberBase : Weapon abstract
 	int lastDeflectTic;		// one clash per tic out of BatBack, however many shots crossed
 	void BlockFx(Vector3 at, Vector3 back, Actor src, int damage, bool loud)
 	{
+		Prime();
 		if (!owner) return;
 		double pg = ParryGain(-back);
 		UBQS_Memory.Note(UBQS_Memory.M_BLOCKED, src);
@@ -2323,6 +2392,11 @@ class UBQS_SaberBase : Weapon abstract
 		if (!b) return;
 		b.target = owner;
 		b.tracer = src;            // whose shot it answers (RS_Score's Poetic Justice reads it)
+		// AND WHICH SABER SENT IT: Gun Bonsai's VR patch reads a redirected shot's master as the weapon
+		// that turned it, so the bolt's damage is paid to this saber and not to whatever the other hand
+		// holds (it guessed, before). Nothing else reads a bolt's master.
+		b.master = self;
+		b.pierce = uPierce;
 		b.rgb = RgbNow();
 		b.vel = d * (b.Speed * pg);
 		b.angle = VectorAngle(d.x, d.y);
@@ -2598,6 +2672,11 @@ class UBQS_SaberBase : Weapon abstract
 		t.target = owner;
 		t.master = owner;
 		t.launcher = self;
+		// WHICH SABER THREW IT, for Gun Bonsai's VR patch: the flying blade's tracer is this weapon, which
+		// it reads as the weapon's own claim (target and master are the thrower). Nothing else reads it.
+		t.tracer = self;
+		UpgRefresh();
+		t.extraHops = uThrow;
 		t.col = ColIdx();
 		// THE SECOND BLADE LIGHTS AS IT LEAVES YOUR HAND (ubqs_throw_double): a staff spinning is the throw
 		t.dbl = back || UInt("ubqs_throw_double", 1);
@@ -3550,6 +3629,7 @@ class UBQS_Thrown : Actor
 	int    burnQuiet;
 	private Array<Actor> cutWho;
 	private Array<int>   cutWhen;
+	int    extraHops;         // SABER THROW (Gun Bonsai): enemies it still finds on its own when the route is done
 	private int    litRgb;
 	private int    litRad;
 
@@ -3622,8 +3702,39 @@ class UBQS_Thrown : Actor
 			if (t && t.health > 0 && t.bShootable) return;
 			leg++;
 		}
+		if (ExtraHop()) return;
 		ClearRoute();
 		Done();
+	}
+	// SABER THROW: the route is done (or a free throw ran out of range) -- fly on to the nearest
+	// enemy it can see that it has not already visited, while it has hops left
+	private bool ExtraHop()
+	{
+		if (extraHops <= 0 || !master) return false;
+		Actor best = null;
+		double bd = 512.0;
+		let it = BlockThingsIterator.Create(self, 512.0);
+		while (it.Next())
+		{
+			Actor mo = it.thing;
+			if (!mo || mo == master || !mo.bIsMonster || !mo.bShootable || mo.health <= 0 || mo.bFriendly) continue;
+			if (route.Find(mo) < route.Size()) continue;
+			double d = Distance3D(mo);
+			if (d >= bd) continue;
+			if (!CheckSight(mo, SF_IGNOREVISIBILITY)) continue;
+			bd = d;
+			best = mo;
+		}
+		if (!best) return false;
+		extraHops--;
+		route.Push(best);
+		leg = route.Size() - 1;
+		legHit = false;
+		cutWho.Clear();
+		cutWhen.Clear();
+		if (phase != PH_ROUTE) SetPhase(PH_ROUTE);
+		if (launcher) UBQS_LockMark.MarkFor(launcher, best);
+		return true;
 	}
 	// THE THROW IS OVER: home, or down where it is (ubqs_throw)
 	private void Done()
@@ -3655,7 +3766,7 @@ class UBQS_Thrown : Actor
 		case PH_OUT:
 			if (!Fly(dir * sp)) { Bang(); ClearRoute(); Done(); break; }
 			flown += sp;
-			if (flown >= (range > 0 ? range : UBQS_Data.F(master, "ubqs_throw_range", 512.0))) Done();
+			if (flown >= (range > 0 ? range : UBQS_Data.F(master, "ubqs_throw_range", 512.0))) { if (!ExtraHop()) Done(); }
 			break;
 		case PH_ROUTE:
 		{
@@ -3955,6 +4066,22 @@ class UBQS_Force : Inventory
 	// the jump
 	int airTics;
 	bool boostOk;
+	// GUN BONSAI MELEE UPGRADES for the Force (UBQS_Upg, read by name once a second). With the Gun Bonsai
+	// VR patch loaded an unlearned power starts weaker (its rsq_force_start, 0.6) and each level makes it
+	// stronger or changes it; without the patch uLoaded is false and every power is exactly as it was.
+	int    upgTic;
+	bool   uLoaded;
+	int    uPush, uPull, uChoke, uJump, uChain;
+	double uStart;
+	Array<Actor> extraGrip;       // Force Choke 3+: the others held with the first
+	Array<int>   extraNoGrav;
+	Array<Actor> stunMo;          // Force Pull 2+: stunned when it arrives
+	Array<int>   stunUntil;
+	Array<Actor> disarmMo;        // Force Pull 3+: no ranged attacks for a while
+	Array<int>   disarmUntil;
+	Vector3 gripLast;             // Chain Choke: where the grip was when its victim died
+	bool   slamArmed;             // Force Jump 2+: airborne off a Force jump
+	double slamFall;
 
 	Default
 	{
@@ -4035,6 +4162,7 @@ class UBQS_Force : Inventory
 			return;
 		}
 		let p = owner.player;
+		UpgRefresh();
 		// the off hand's last four positions, less the body; a snap turn or teleport forgets them
 		h3 = h2; h2 = h1; h1 = h0;
 		{
@@ -4073,6 +4201,7 @@ class UBQS_Force : Inventory
 
 		SlamTick();
 		PulledTick();
+		UpgTicks();
 		ForceJump(p);     // ubqs_force_jump is the only gate -- see ForceJump
 	}
 
@@ -4123,6 +4252,12 @@ class UBQS_Force : Inventory
 		double range = FV("ubqs_push_range", 448.0), cone = clamp(FV("ubqs_push_cone", 40.0), 5.0, 90.0);
 		double pwr = FV("ubqs_push_power", 1.0);
 		double pdmg = FV("ubqs_push_damage", 8.0);
+		// Force Push (Gun Bonsai): weaker unlearned, full at 1, +15% a level after; 2+ opens the cone
+		UpgRefresh();
+		pwr *= FScale(uPush);
+		pdmg *= FScale(uPush);
+		if (uLoaded && uPush <= 0) range *= 0.75;
+		if (uPush >= 2) cone = min(cone + 10.0 * (uPush - 1), 90.0);
 		owner.A_StartSound("ubqs/push", CHAN_AUTO, 0, 1.0 * FV("ubqs_vol_force", 1.0));
 		let it = BlockThingsIterator.CreateFromPos(hp.x, hp.y, hp.z - range, range * 2.0, range, false);
 		while (it.Next())
@@ -4154,6 +4289,7 @@ class UBQS_Force : Inventory
 			mo.DamageMobj(self, owner, int(pdmg), 'Saber', DMG_THRUSTLESS);
 		}
 		Ring(hp, d, 1.0);
+		if (uPush >= 3) Shockwave(pwr, pdmg);
 		// DUST DOWN THE CONE. Three sheets at increasing distance, each wider and fainter, so the shove
 		// has a shape and a direction rather than one ring at the hand. RS_Main's 18-frame blast smoke.
 		for (int i = 0; i < 3; i++)
@@ -4197,6 +4333,9 @@ class UBQS_Force : Inventory
 		// today. Both read above the iterator.
 		double range = FV("ubqs_pull_range", 768.0), cone = clamp(FV("ubqs_pull_cone", 30.0), 5.0, 90.0);
 		double pwr = FV("ubqs_push_power", 1.0) * FV("ubqs_pull_power", 1.0);
+		// Force Pull (Gun Bonsai): weaker unlearned, full at 1, +15% a level after
+		pwr *= FScale(uPull);
+		if (uLoaded && uPull <= 0) range *= 0.75;
 		let it = BlockThingsIterator.CreateFromPos(hp.x, hp.y, hp.z - range, range * 2.0, range, false);
 		while (it.Next())
 		{
@@ -4226,6 +4365,9 @@ class UBQS_Force : Inventory
 			double f = clamp(1800.0 / max(mo.Mass, 50), 2.0, 45.0) * falloff * pwr;
 			mo.vel += (-u.x * f, -u.y * f, f * 0.45);
 			UBQS_Memory.Note(UBQS_Memory.M_PULLED, mo);
+			// 2+: it is stunned when it arrives. 3+: the yank takes its weapon -- no ranged attacks
+			if (uPull >= 2) { stunMo.Push(mo); stunUntil.Push(level.maptime + 52); }
+			if (uPull >= 3) { disarmMo.Push(mo); disarmUntil.Push(level.maptime + 70 + 35 * (uPull - 3)); UBQS_Data.Sparks(mo.pos + (0, 0, mo.height * 0.6), (0, 0, 1), 0xBFE0FF, 8); }
 			UBQS_FX.Fx(mo.pos + (0, 0, mo.height * 0.5), 'UXFL', 13, 1, 0.14 + mo.radius * 0.003, 0.8, 0xBFE0FF, 1.03);
 			// THE LINE OF FORCE, four arcs between it and your hand. Without this a pull is a noise and
 			// then something arriving; with it you can see which one you have got hold of.
@@ -4298,7 +4440,7 @@ class UBQS_Force : Inventory
 	// ---- GRIP ------------------------------------------------------------------------------------------------
 	private Actor FindGrip()
 	{
-		double maxMass = FV("ubqs_grip_mass", 600.0);
+		double maxMass = GripMass();
 		if (maxMass <= 0) return null;
 		Vector3 hp = OffPos(), aim = OffAim();
 		// ubqs_grip_range / ubqs_grip_cone: push and pull both had reach sliders and grip had NONE, and 12
@@ -4348,6 +4490,7 @@ class UBQS_Force : Inventory
 		mo.A_StartSound(mo.PainSound, CHAN_VOICE);
 		if (gripPain) mo.SetState(gripPain);
 		Buzz();
+		if (uChoke >= 3) GripExtras(mo, uChoke - 2);
 	}
 	private void GripTick(bool held)
 	{
@@ -4359,10 +4502,11 @@ class UBQS_Force : Inventory
 			                     frandom[UBQSFx](-1.0, 1.0) * mo.radius * 0.7,
 			                     mo.height * frandom[UBQSFx](0.25, 0.85)),
 				'UXFL', 13, 1, 0.10 + mo.radius * 0.0025, 0.65, 0xCFE4FF, 1.02);
-		if (!mo || mo.health <= 0) { EndGrip(false); return; }
+		if (!mo || mo.health <= 0) { EndGrip(false); if (held) ChainGrip(); return; }
 		if (!held) { EndGrip(true); return; }
-		// it hangs where your hand points, lifted a little, and follows the hand
-		Vector3 want = OffPos() + OffAim() * gripDist + (0, 0, 10.0 - mo.height * 0.5);
+		gripLast = mo.pos + (0, 0, mo.height * 0.5);
+		// it hangs where your hand points, lifted a little, and follows the hand (Force Choke 2+: higher)
+		Vector3 want = OffPos() + OffAim() * gripDist + (0, 0, 10.0 - mo.height * 0.5 + (uChoke >= 2 ? 34.0 : 0.0));
 		Vector3 dv = level.Vec3Diff(mo.pos, want);
 		double l = dv.Length();
 		Vector3 v = dv * 0.25;
@@ -4379,14 +4523,20 @@ class UBQS_Force : Inventory
 		}
 		if ((t % 12) == 0) Buzz();
 		// the choke
-		dmgAcc += FV("ubqs_grip_damage", 18.0) / 35.0;
+		// Force Choke (Gun Bonsai): weaker unlearned, full at 1, +15% a level after; 2+ crushes harder
+		// the longer it is held (+50% a second, up to x3)
+		double crush = uChoke >= 2 ? min(1.0 + 0.5 * t / 35.0, 3.0) : 1.0;
+		dmgAcc += FV("ubqs_grip_damage", 18.0) * FScale(uChoke) * crush / 35.0;
+		int edmg = 0;
 		if (dmgAcc >= 1.0)
 		{
 			int dmg = int(dmgAcc);
 			dmgAcc -= dmg;
+			edmg = dmg;
 			mo.DamageMobj(self, owner, dmg, 'Force', DMG_NO_PAIN | DMG_THRUSTLESS);
-			if (!mo || mo.health <= 0) { EndGrip(false); return; }
+			if (!mo || mo.health <= 0) { ExtrasTick(want, edmg); EndGrip(false); ChainGrip(); return; }
 		}
+		ExtrasTick(want, edmg);
 		if (gripGlow) gripGlow.Follow(mo, owner, level.maptime - gripSince);
 		// the Force about it: the CombatFX plasma pulse wrapped round its body
 		if ((t % 6) == 0) UBQS_FX.Fx(mo.pos + (0, 0, mo.height * 0.5), 'UXPL', 6, 1, mo.radius * 2.6 / 56.0, 0.45);
@@ -4398,6 +4548,17 @@ class UBQS_Force : Inventory
 		if (owner) owner.A_StopSound(23);
 		if (gripGlow) gripGlow.Destroy();
 		gripGlow = null;
+		// the others held with it (Force Choke 3+) are let go with it, and flung with it
+		for (int k = 0; k < extraGrip.Size(); k++)
+		{
+			let e = extraGrip[k];
+			if (!e) continue;
+			e.bNoGravity = extraNoGrav[k] != 0;
+			if (e.tics > 1) e.tics = 1;
+			if (fling && e.health > 0) { Vector3 ev = HandVel() * FV("ubqs_grip_fling", 3.5); if (ev.Length() > 40.0) ev = ev.Unit() * 40.0; e.vel += ev; }
+		}
+		extraGrip.Clear();
+		extraNoGrav.Clear();
 		if (!mo) return;
 		mo.bNoGravity = gripNoGrav;
 		if (mo.tics > 1) mo.tics = 1;
@@ -4439,15 +4600,28 @@ class UBQS_Force : Inventory
 		bool forceOut = (p.ReadyWeapon is "UBQS_SaberBase") || (p.OffhandWeapon is "UBQS_SaberBase") || (p.OffhandWeapon is "UBQS_ForceHand");
 		if (!forceOut) { airTics = 0; boostOk = false; return; }
 		bool jump = (p.cmd.buttons & BT_JUMP) != 0;
-		if (p.onground) { airTics = 0; boostOk = jump; return; }
+		if (p.onground)
+		{
+			// Force Jump 2+ (Gun Bonsai): coming down from a Force jump is a slam
+			if (slamArmed && airTics > 8) LandSlam();
+			slamArmed = false;
+			slamFall = 0;
+			airTics = 0;
+			boostOk = jump;
+			return;
+		}
 		airTics++;
+		slamFall = min(slamFall, owner.vel.z);
 		if (!jump) { boostOk = false; return; }
 		double pw = FV("ubqs_jump_power", 1.0);
 		// ubqs_jump_hold is the whole HEIGHT of a Force jump -- ubqs_jump_power only changes the rate inside the
 		// window, so a genuinely big leap needs this and not the power slider. ubqs_jump_float decouples the
 		// glide from the height: today raising the power makes you fall FASTER, which nothing said.
-		if (boostOk && owner.vel.z > 0 && airTics <= max(IV("ubqs_jump_hold", 8), 1))
+		// Force Jump (Gun Bonsai): the hold window, which is the jump's height, weaker unlearned
+		int jhold = max(int(max(IV("ubqs_jump_hold", 8), 1) * FScale(uJump) + 0.5), 1);
+		if (boostOk && owner.vel.z > 0 && airTics <= jhold)
 		{
+			if (uJump >= 2) slamArmed = true;
 			owner.vel.z += 0.55 * pw;
 			if (airTics == 1) owner.A_StartSound("ubqs/push", CHAN_AUTO, 0, 0.35 * FV("ubqs_vol_force", 1.0), ATTN_NORM, 1.6);
 		}
@@ -4455,6 +4629,183 @@ class UBQS_Force : Inventory
 		{
 			double fl = -5.0 / max(pw * FV("ubqs_jump_float", 1.0), 0.25);
 			if (owner.vel.z < fl) owner.vel.z = fl;        // a floating fall
+		}
+	}
+
+	// ---- GUN BONSAI MELEE UPGRADES (see the fields) ------------------------------------------------
+	void UpgRefresh()
+	{
+		if (!owner) return;
+		if (upgTic > 0 && level.maptime >= upgTic && level.maptime - upgTic < 35) return;
+		upgTic = max(level.maptime, 1);
+		let svc = UBQS_Upg.Svc();
+		uLoaded = svc != null;
+		if (!svc)
+		{
+			uPush = 0; uPull = 0; uChoke = 0; uJump = 0; uChain = 0; uStart = 1.0;
+			return;
+		}
+		uPush  = max(0, svc.GetInt("level", "ForcePush", 0, 0, owner));
+		uPull  = max(0, svc.GetInt("level", "ForcePull", 0, 0, owner));
+		uChoke = max(0, svc.GetInt("level", "ForceChoke", 0, 0, owner));
+		uJump  = max(0, svc.GetInt("level", "ForceJump", 0, 0, owner));
+		uChain = max(0, svc.GetInt("level", "ChainChoke", 0, 0, owner));
+		uStart = clamp(svc.GetDouble("force.start"), 0.1, 1.0);
+		// WHO THE FORCE'S DAMAGE IS PAID TO: Gun Bonsai's VR patch follows this item's master to a
+		// weapon. The off-hand saber is the Force hand's; else the main one.
+		Actor sb = owner.FindInventory("UBQS_SaberOff");
+		if (!sb) sb = owner.FindInventory("UBQS_Saber");
+		if (sb) master = sb;
+	}
+	// a power's strength: exactly 1 without the patch; with it, the start share unlearned, full at
+	// level 1 and +15% each level after
+	double FScale(int lv)
+	{
+		if (!uLoaded) return 1.0;
+		return lv <= 0 ? uStart : 1.0 + 0.15 * (lv - 1);
+	}
+	double GripMass()
+	{
+		double m = FV("ubqs_grip_mass", 600.0);
+		if (uLoaded && uChoke <= 0) m *= 0.5;
+		return m;
+	}
+	private bool Grippable(Actor mo, double maxMass, bool boss)
+	{
+		if (!mo || mo == owner || !mo.bIsMonster || !mo.bShootable || mo.health <= 0 || mo.bFriendly || (mo.bBoss && !boss)) return false;
+		return mo.Mass <= maxMass && !mo.bDontThrust;
+	}
+	// FORCE CHOKE 3+: the ones standing nearest the first are taken with it
+	private void GripExtras(Actor first, int n)
+	{
+		extraGrip.Clear();
+		extraNoGrav.Clear();
+		double maxMass = GripMass();
+		bool boss = IV("ubqs_grip_boss", 0) != 0;
+		let it = BlockThingsIterator.Create(first, 160.0);
+		while (it.Next() && extraGrip.Size() < n)
+		{
+			Actor mo = it.thing;
+			if (mo == first || !Grippable(mo, maxMass, boss)) continue;
+			if (first.Distance3D(mo) > 160.0 || !owner.CheckSight(mo, SF_IGNOREVISIBILITY)) continue;
+			extraGrip.Push(mo);
+			extraNoGrav.Push(mo.bNoGravity ? 1 : 0);
+			mo.bNoGravity = true;
+			if (gripPain) { State ps = mo.FindState("Pain"); if (ps) mo.SetState(ps); }
+			UBQS_FX.Fx(mo.pos + (0, 0, mo.height * 0.55), 'UXFL', 13, 1, 0.18 + mo.radius * 0.004, 0.9, 0xCFE4FF, 1.04);
+		}
+	}
+	// they hang in a fan round the first, and choke with it
+	private void ExtrasTick(Vector3 want, int dmg)
+	{
+		for (int k = extraGrip.Size() - 1; k >= 0; k--)
+		{
+			let e = extraGrip[k];
+			if (!e || e.health <= 0) { extraGrip.Delete(k); extraNoGrav.Delete(k); continue; }
+			double a = (k + 1) * 75.0 * ((k % 2) ? -1 : 1);
+			Vector3 side = (cos(owner.angle + 90 + a * 0.3), sin(owner.angle + 90 + a * 0.3), 0) * (40.0 + 20.0 * k);
+			Vector3 dv = level.Vec3Diff(e.pos, want + side * ((k % 2) ? -1 : 1));
+			Vector3 v = dv * 0.25;
+			if (v.Length() > 14.0) v = v.Unit() * 14.0;
+			e.vel = v;
+			if (e.tics >= 0 && e.tics < 2) e.tics = 2;
+			if (dmg > 0) e.DamageMobj(self, owner, dmg, 'Force', DMG_NO_PAIN | DMG_THRUSTLESS);
+		}
+	}
+	// CHAIN CHOKE: the grip killed -- it jumps to the nearest one it can take, while the hand holds
+	private void ChainGrip()
+	{
+		if (uChain <= 0 || !owner) return;
+		double r = 256.0 + 64.0 * uChain;
+		double maxMass = GripMass();
+		bool boss = IV("ubqs_grip_boss", 0) != 0;
+		Actor best = null;
+		double bd = r;
+		let it = BlockThingsIterator.CreateFromPos(gripLast.x, gripLast.y, gripLast.z - r, r * 2.0, r, false);
+		while (it.Next())
+		{
+			Actor mo = it.thing;
+			if (!Grippable(mo, maxMass, boss)) continue;
+			double d = level.Vec3Diff(gripLast, mo.pos + (0, 0, mo.height * 0.5)).Length();
+			if (d >= bd || !owner.CheckSight(mo, SF_IGNOREVISIBILITY)) continue;
+			bd = d;
+			best = mo;
+		}
+		if (!best) return;
+		// the arc jumps from the dead one to the next
+		for (int s = 1; s <= 4; s++)
+			UBQS_FX.Fx(gripLast + level.Vec3Diff(gripLast, best.pos + (0, 0, best.height * 0.5)) * (s / 5.0), 'UXFL', 13, 1, 0.09, 0.6, 0xCFE4FF, 1.0);
+		StartGrip(best);
+	}
+	// FORCE PUSH 3+: the shove is a shockwave all round you as well
+	private void Shockwave(double pwr, double pdmg)
+	{
+		double r = 128.0 + 32.0 * (uPush - 3);
+		UBQS_FX.Fx(owner.pos + (0, 0, 6), 'UXRG', 17, 1, r / 150.0, 0.75, 0xB8D8FF, 1.06);
+		let it = BlockThingsIterator.Create(owner, r);
+		while (it.Next())
+		{
+			Actor mo = it.thing;
+			if (!mo || mo == owner || !mo.bShootable || mo.health <= 0 || mo.bDontThrust || (mo.player && !deathmatch) || (mo.bFriendly && owner.player)) continue;
+			if (mo is "UBQS_Thrown" || mo is "UBQS_Remote") continue;
+			Vector2 away = mo.pos.xy - owner.pos.xy;
+			double d = away.Length();
+			if (d > r + mo.radius || d < 0.01) continue;
+			away /= d;
+			double f = clamp(1600.0 / max(mo.Mass, 50), 2.0, 20.0) * pwr * (1.0 - 0.5 * d / r);
+			mo.vel += (away.x * f, away.y * f, f * 0.35);
+			mo.DamageMobj(self, owner, int(pdmg), 'Saber', DMG_THRUSTLESS);
+		}
+	}
+	// FORCE JUMP 2+: landing from a Force jump throws everything round you
+	private void LandSlam()
+	{
+		double r = 96.0 + 32.0 * (uJump - 2);
+		int dmg = int((8.0 + 2.0 * abs(slamFall)) * (uJump - 1));
+		owner.A_StartSound("ubqs/push", CHAN_AUTO, 0, 0.9 * FV("ubqs_vol_force", 1.0), ATTN_NORM, 0.7);
+		UBQS_FX.Fx(owner.pos + (0, 0, 4), 'UXRG', 17, 1, r / 150.0, 0.8, 0xB8D8FF, 1.06);
+		let it = BlockThingsIterator.Create(owner, r);
+		while (it.Next())
+		{
+			Actor mo = it.thing;
+			if (!mo || mo == owner || !mo.bShootable || mo.health <= 0 || (mo.player && !deathmatch) || (mo.bFriendly && owner.player)) continue;
+			Vector2 away = mo.pos.xy - owner.pos.xy;
+			double d = away.Length();
+			if (d > r + mo.radius || abs(mo.pos.z - owner.pos.z) > 64.0) continue;
+			if (d > 0.01) away /= d; else away = (cos(owner.angle), sin(owner.angle));
+			if (!mo.bDontThrust)
+			{
+				double f = clamp(1600.0 / max(mo.Mass, 50), 2.0, 18.0);
+				mo.vel += (away.x * f, away.y * f, f * 0.5);
+			}
+			mo.DamageMobj(self, owner, dmg, 'Force', DMG_THRUSTLESS);
+		}
+		Buzz();
+	}
+	// the pulled-and-stunned and the disarmed, each tic
+	private void UpgTicks()
+	{
+		int now = level.maptime;
+		for (int k = stunMo.Size() - 1; k >= 0; k--)
+		{
+			let mo = stunMo[k];
+			if (!mo || mo.health <= 0 || now > stunUntil[k]) { stunMo.Delete(k); stunUntil.Delete(k); continue; }
+			if (owner.Distance3D(mo) > owner.radius + mo.radius + 48.0) continue;
+			// ARRIVED: it reels where it lands
+			int tt = 17 + 9 * uPull;
+			State ps = mo.FindState("Pain");
+			if (ps) mo.SetState(ps);
+			if (mo.tics >= 0 && mo.tics < tt) mo.tics = tt;
+			mo.vel.xy *= 0.3;
+			UBQS_FX.Fx(mo.pos + (0, 0, mo.height * 0.8), 'UXFL', 13, 1, 0.12, 0.7, 0xBFE0FF, 1.02);
+			stunMo.Delete(k); stunUntil.Delete(k);
+		}
+		for (int k = disarmMo.Size() - 1; k >= 0; k--)
+		{
+			let mo = disarmMo[k];
+			if (!mo || mo.health <= 0 || now > disarmUntil[k]) { disarmMo.Delete(k); disarmUntil.Delete(k); continue; }
+			State m = mo.FindState("Missile");
+			if (m && mo.InStateSequence(mo.CurState, m)) { State see = mo.FindState("See"); if (see) mo.SetState(see); }
 		}
 	}
 
@@ -5436,5 +5787,22 @@ class UBQS_Memory : EventHandler
 		if (level.maptime % 35) return;
 		for (int k = who.Size() - 1; k >= 0; k--)
 			if (!who[k] || level.maptime - when[k] > KEEP) { who.Delete(k); what.Delete(k); when.Delete(k); }
+	}
+}
+
+// THE GUN BONSAI VR PATCH, asked by name. Its RSQ_MeleeUpgradeService answers "level" with an upgrade's
+// level on a weapon (or the best on anything a pawn carries). This saber never names a class of the patch:
+// absent, Svc() is null, every level is 0, and the saber is exactly what it was.
+class UBQS_Upg play
+{
+	static Service Svc()
+	{
+		let it = ServiceIterator.Find("RSQ_MeleeUpgradeService");
+		return it.Next();
+	}
+	static int Lv(Object who, String upgrade)
+	{
+		let s = Svc();
+		return s ? max(0, s.GetInt("level", upgrade, 0, 0, who)) : 0;
 	}
 }
