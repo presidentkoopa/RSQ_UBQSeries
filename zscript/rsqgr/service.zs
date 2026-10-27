@@ -287,6 +287,15 @@ class RSQGR_Events : EventHandler
 			if (vThrown[k] && !thrown && v.Health > 0) vStunAt[k] = now;
 			vThrown[k] = thrown ? 1 : 0;
 		}
+		// a body thrown without a bite noted (a throw started by another path) gets its record here
+		if (fl)
+			for (int sl = 0; sl < RSQGR_Flight.NFLY; sl++)
+			{
+				let v = fl.fa[sl];
+				if (!v || fl.fph[sl] == RSQGR_Flight.FP_NONE) continue;
+				int r = Rec(v, true);
+				vThrown[r] = 1;
+			}
 		if (now % 35 == 0) Prune();
 
 		// the players' flights
