@@ -1,4 +1,4 @@
 GameInfo
 {
-	AddEventHandlers = "SSQ_Handler"
+	AddEventHandlers = "SSQ_Handler", "SSQ_OffFlick"
 }
