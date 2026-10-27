@@ -716,14 +716,18 @@ class SSQ_Guard : Inventory
 		Vector3 a = pose.F;
 		Vector3 b = (n.y * a.z - n.z * a.y, n.z * a.x - n.x * a.z, n.x * a.y - n.y * a.x);
 		a = (b.y * n.z - b.z * n.y, b.z * n.x - b.x * n.z, b.x * n.y - b.y * n.x);
+		// Colour-blind play (rsqa_colorblind, cb.zs): the red rim and green spoke are one colour to
+		// a deuteranope, so they take the series pair; the hand goes grey. Sizes already differ.
+		Color rim = SSQ_CB.Pick(SSQ_CB.CB_COULD, 0xff2020), spoke = SSQ_CB.Pick(SSQ_CB.CB_HAVE, 0x20ff20);
+		Color hand = SSQ_CB.Pick(SSQ_CB.CB_IDLE, 0x3080ff);
 		for (int k = 0; k < 36; k++)
 		{
 			double t = k * 10.0;
-			SSQ_FX.Particle(mo, C + a * (R * cos(t)) + b * (R * sin(t)), (0, 0, 0), "ff2020", 4, 6.0);
+			SSQ_FX.Particle(mo, C + a * (R * cos(t)) + b * (R * sin(t)), (0, 0, 0), rim, 4, 6.0);
 		}
-		SSQ_FX.Particle(mo, C, (0, 0, 0), "ff2020", 4, 8.0);
-		for (int k = 1; k <= 6; k++) SSQ_FX.Particle(mo, C + n * (k * 3.0), (0, 0, 0), "20ff20", 4, 5.0);
-		SSQ_FX.Particle(mo, pose.pos[0], (0, 0, 0), "3080ff", 4, 7.0);
+		SSQ_FX.Particle(mo, C, (0, 0, 0), rim, 4, 8.0);
+		for (int k = 1; k <= 6; k++) SSQ_FX.Particle(mo, C + n * (k * 3.0), (0, 0, 0), spoke, 4, 5.0);
+		SSQ_FX.Particle(mo, pose.pos[0], (0, 0, 0), hand, 4, 7.0);
 		for (int k = 1; k <= 4; k++) SSQ_FX.Particle(mo, pose.pos[0] + pose.F * (k * 3.0), (0, 0, 0), "ffffff", 4, 4.0);
 	}
 }

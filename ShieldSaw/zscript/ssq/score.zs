@@ -2,6 +2,7 @@
 //
 // The shield is the only one who sees a block or a turned shot -- a blocked attack does no damage,
 // so a scorer never hears of it. It keeps a short memory and answers through a Service:
+//   GetInt("locked", "", 0, 0, monster)     1 a lock-on ring is on it now, 0 not (RSQ_TopHPBars)
 //   GetInt("blocked", "", 0, 0, monster)    tics since the shield blocked an attack FROM that
 //                                           monster, or -1 (kept 10 s)
 //   GetInt("returned", "", 0, 0, actor)     0 if that actor is a shot the shield turned, or a
@@ -113,6 +114,16 @@ class SSQ_ScoreService : Service
 	override int GetInt(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
 	{
 		let h = SSQ_Handler.Get();
+		// "locked": 1 the shield's lock-on ring is on this monster now (any player's), 0 not
+		// (RSQ_TopHPBars' marker). Read from the lock lists the rings are drawn from.
+		if (request == "locked")
+		{
+			let m = Actor(objectArg);
+			if (!h || !m) return -1;
+			for (int i = 0; i < MAXPLAYERS; i++)
+				if (playeringame[i] && h.mLocks[i].Find(m) < h.mLocks[i].Size()) return 1;
+			return 0;
+		}
 		if (!h || !h.score) return -1;
 		let a = Actor(objectArg);
 		if (request == "blocked") return h.score.SinceBlocked(a);
