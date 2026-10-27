@@ -34,7 +34,7 @@ from PIL import Image
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 KEY = (255, 0, 255)
-BITS = 10          # barcode bits (index+1, so up to 1023 guns)
+BITS = 10          # barcode bits: gun index+1 (7 bits, up to 127 guns), candidate frame (3)
 BX, BY, BS, BP = 4, 4, 8, 12   # barcode: first block at (BX,BY), BS px square, BP px pitch
 
 
@@ -78,7 +78,10 @@ class RSQGun_Stage : StaticEventHandler
 	Actor shown;
 	int cur, curTic, phaseTic;
 	const HOLD = %(hold)d;
-	const SETTLE = 20;
+	const SETTLE = 12;
+	const CANDS = 8;   // four frames, each at two yaws (models are not all authored facing the same way)
+	const DIST = 96;
+	int tnt1;
 
 	override void WorldLoaded(WorldEvent e)
 	{
@@ -88,6 +91,7 @@ class RSQGun_Stage : StaticEventHandler
 		if (given != "") given.Split(guns, ",", TOK_SKIPEMPTY);
 		cur = -1;
 		phaseTic = level.maptime + 30;
+		tnt1 = Actor.GetSpriteIndex("TNT1");
 	}
 
 	void Collect()
@@ -115,6 +119,8 @@ class RSQGun_Stage : StaticEventHandler
 		if (cur < 0)
 		{
 			if (guns.Size() == 0) Collect();
+			// nothing in hand: no hand meshes in front of the stage
+			p.mo.ClearInventory();
 			cur = 0; curTic = level.maptime;
 			Show();
 			return;
@@ -141,33 +147,75 @@ class RSQGun_Stage : StaticEventHandler
 		if (!c) return;
 		let p = players[consoleplayer];
 		double z = p.mo.pos.z + p.mo.player.viewheight - 6;
-		shown = Actor.Spawn(c, (-256 + 72, 0, z), NO_REPLACE);
+		shown = Actor.Spawn(c, (-256 + DIST, 0, z), NO_REPLACE);
 		if (!shown) return;
 		shown.bNoInteraction = true;
 		shown.bNoGravity = true;
-		shown.bNoBlockmap = true;
 		shown.angle = 90;
+		Candidates();
 		Console.Printf("RSQGUN %%d %%s", cur, guns[cur]);
 	}
 
-	// MODELDEF keys the hand's mesh by class + sprite + frame: show the Ready frame.
+	// MODELDEF keys the hand's mesh by class + sprite + frame, and not every frame is keyed: try
+	// the first drawn frames of Ready, Select, Fire and Spawn in turn (the tool keeps the one that
+	// shows the most model).
+	Array<State> candStates;
+	void Candidates()
+	{
+		candStates.Clear();
+		if (!shown) return;
+		for (int l = 0; l < 5 && candStates.Size() < CANDS / 2; l++)
+		{
+			State st;
+			switch (l)
+			{
+			case 0: st = shown.FindState("Ready"); break;
+			case 1: st = shown.FindState("Select"); break;
+			case 2: st = shown.FindState("Fire"); break;
+			case 3: st = shown.FindState("Deselect"); break;
+			default: st = shown.SpawnState; break;
+			}
+			for (int i = 0; st && i < 40; i++)
+			{
+				// a frame that is ever on screen: not TNT1, not a 0-tic jump
+				if (st.sprite != tnt1 && st.tics != 0)
+				{
+					bool dup = false;
+					for (int k = 0; k < candStates.Size(); k++)
+						if (candStates[k].sprite == st.sprite && candStates[k].Frame == st.Frame) dup = true;
+					if (!dup) { candStates.Push(st); break; }
+				}
+				st = st.NextState;
+			}
+		}
+	}
+
+	clearscope int Cand() { return (level.maptime - curTic) / (HOLD / CANDS); }
+
+	clearscope int Shots() { return candStates.Size() * 2; }
+
 	void Pose()
 	{
-		if (!shown) return;
-		let st = shown.FindState("Ready");
-		if (!st) st = shown.SpawnState;
-		if (!st) return;
+		if (!shown || candStates.Size() == 0) return;
+		int k = min(Cand(), Shots() - 1);
+		let st = candStates[k / 2];
+		shown.angle = (k & 1) ? 0 : 90;
 		shown.sprite = st.sprite;
 		shown.frame = st.Frame;
 		shown.tics = -1;
-		shown.SetOrigin((-256 + 72, 0, shown.pos.z), false);
+		shown.SetOrigin((-256 + DIST, 0, shown.pos.z), false);
 	}
 
 	override void RenderOverlay(RenderEvent e)
 	{
 		if (level.MapName != "RSQGUN") return;
+		// the code: gun index + 1 in the low 7 bits, the candidate frame in the high 3, and nothing
+		// while a frame is still settling
 		int code = 0;
-		if (cur >= 0 && cur < guns.Size() && level.maptime - curTic >= SETTLE) code = cur + 1;
+		int per = HOLD / CANDS;
+		int into = (level.maptime - curTic) %% per;
+		if (cur >= 0 && cur < guns.Size() && into >= SETTLE && Cand() < Shots())
+			code = (cur + 1) | (Cand() << 7);
 		for (int b = 0; b < %(bits)d; b++)
 		{
 			bool on = (code >> b) & 1;
@@ -215,7 +263,7 @@ def is_key(p):
 def cut(im):
     """Key out the magenta and crop to the model inside the middle of the eye (the hands are low)."""
     w, h = im.size
-    box = (int(w * 0.12), int(h * 0.18), int(w * 0.88), int(h * 0.70))
+    box = (int(w * 0.02), int(h * 0.15), int(w * 0.98), int(h * 0.72))
     sub = im.crop(box).convert('RGBA')
     px = sub.load()
     for y in range(sub.height):
@@ -246,7 +294,7 @@ def main():
     ap.add_argument('--classes', default='')
     ap.add_argument('--out', default=os.path.join(ROOT, 'graphics', 'rsqui', 'guns'))
     ap.add_argument('--res', type=int, default=600)
-    ap.add_argument('--hold', type=int, default=70, help='tics each gun is shown')
+    ap.add_argument('--hold', type=int, default=240, help='tics each gun is shown (eight views tried)')
     ap.add_argument('--secs', type=int, default=0, help='rig timeout (default: from the gun count)')
     ap.add_argument('--every', type=int, default=4)
     ap.add_argument('--keep', action='store_true', help='keep the temp folder (frames, stage)')
@@ -258,38 +306,60 @@ def main():
     frames = os.path.join(tmp, 'frames')
     os.makedirs(frames)
     n = len(classes) or 40
-    secs = a.secs or (90 + n * (a.hold // 35 + 2) * 4)
+    secs = a.secs or (100 + n * (a.hold // 35 + 1) * 5)
     env = dict(os.environ, PK3S=a.pk3s + ' ' + stage, QZ_RES=str(a.res), QZ_DUMP_EVERY=str(a.every),
                QZ_DUMP_DIR=frames)
-    script = ('vr_hud_scale 1; screenblocks 12; wait 40; give all; wait 10; map RSQGUN')
+    script = ('vr_hud_scale 1; screenblocks 12; bd_tips 0; wait 40; give all; wait 10; map RSQGUN')
     print('rig: %s, %d s, stage %s' % (rig, secs, stage))
-    subprocess.run([rig, 'rsqgun', str(secs), script], env=env)
-    logs = glob.glob('/home/claude/scratch/logs*/rsqgun.log')
+    # the stage prints "RSQGUN done" after the last gun: stop the rig there instead of at its timeout
+    logdir = os.environ.get('RSQUI_RIG_LOGS', '/home/claude/scratch/logs*')
+    for lg in glob.glob(os.path.join(logdir, 'rsqgun.log')):
+        os.remove(lg)
+    proc = subprocess.Popen([rig, 'rsqgun', str(secs), script], env=env, start_new_session=True)
+    import time
+    while proc.poll() is None:
+        time.sleep(3)
+        if any('RSQGUN done' in open(lg, errors='replace').read() for lg in glob.glob(os.path.join(logdir, 'rsqgun.log'))):
+            time.sleep(4)
+            os.killpg(proc.pid, 15)
+            proc.wait()
+            break
+    logs = glob.glob(os.path.join(logdir, 'rsqgun.log'))
     names = {}
     for lg in logs:
         for line in open(lg, errors='replace'):
             parts = line.split()
             if len(parts) == 3 and parts[0] == 'RSQGUN' and parts[1].isdigit():
                 names[int(parts[1]) + 1] = parts[2]
-    best = {}
+    frames_by = {}
     for f in sorted(glob.glob(os.path.join(frames, '*.ppm'))):
         im = Image.open(f).convert('RGB')
         c = read_code(im)
         if c:
-            best[c] = f
+            frames_by[c] = f          # the last settled frame of each (gun, candidate)
     os.makedirs(a.out, exist_ok=True)
+    guns = {}
+    for c, f in frames_by.items():
+        guns.setdefault(c & 127, []).append(f)
     done = 0
-    for c, f in sorted(best.items()):
-        name = names.get(c) or (classes[c - 1] if c - 1 < len(classes) else None)
+    for g, fs in sorted(guns.items()):
+        name = names.get(g) or (classes[g - 1] if g - 1 < len(classes) else None)
         if not name:
             continue
-        pic = cut(Image.open(f).convert('RGB'))
-        if pic is None:
-            print('  %s: nothing on the stage (no model for its Ready frame?)' % name)
+        best, area = None, 0
+        for f in fs:
+            pic = cut(Image.open(f).convert('RGB'))
+            if pic is None:
+                continue
+            n = sum(1 for p in pic.getchannel('A').getdata() if p)
+            if n > area:
+                best, area = pic, n
+        if best is None:
+            print('  %s: nothing on the stage (no model keyed on its first frames)' % name)
             continue
-        pic.save(os.path.join(a.out, name + '.png'))
+        best.save(os.path.join(a.out, name + '.png'))
         done += 1
-        print('  %s: %dx%d' % (name, pic.width, pic.height))
+        print('  %s: %dx%d' % (name, best.width, best.height))
     print('%d pictures in %s' % (done, a.out))
     if a.keep:
         print('kept', tmp)

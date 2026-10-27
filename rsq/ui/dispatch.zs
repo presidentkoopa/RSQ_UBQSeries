@@ -72,7 +72,9 @@ class RSQUI_Dispatch ui
 
 	static void Manage(String userVar, String saveVar, bool want, int hideVal)
 	{
-		let uc = CVar.GetCVar(userVar, players[consoleplayer]);
+		// the local cvar (FindCVar): what the console shows, what is archived, and what reaches
+		// userinfo. Setting the userinfo copy (GetCVar with a player) did not stick on the rig.
+		let uc = CVar.FindCVar(userVar);
 		let sv = CVar.FindCVar(saveVar);
 		if (!uc || !sv) return;
 		if (want)
