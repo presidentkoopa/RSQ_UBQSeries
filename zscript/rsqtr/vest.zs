@@ -22,7 +22,7 @@
 class RSQTR_Torso : EventHandler
 {
 	const COLLAR = 18.1;          // model units: the top of the Quake mesh
-	const HELMET_DROP = 6.0;      // map units the helmet sits below the eyes: at 0 it floated 0.62 of its height over the collar, at 7.8 it sank 0.28 into the shoulders (both measured in the mirror)
+	const HELMET_DROP = 3.45;     // map units the helmet sits below the eyes: resting on the collar is 6.0 (at 0 it floated 0.62 of its height over it, at 7.8 it sank 0.28 into the shoulders, both measured in the mirror); the owner, 10-27, wants it 3-4 inches above that so it stays near the eyeline: 3.5 in = 0.09 m = 2.55 units up
 	const SHOULDERS = 51.689;     // model units: the marine's shoulder line (RS_VRBody's PivotOffset)
 	transient Actor body, breath;      // read by the mirror (mirror.zs)
 	transient Actor helmet;            // read by the mirror too
