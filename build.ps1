@@ -20,7 +20,7 @@ New-Item -ItemType Directory -Force $staging | Out-Null
 # $name must be excluded, or each build zips the previous build into itself:
 # the 86 KB release carried a stale 42 KB copy of an older build of this mod,
 # and grew every time. .gitignore has no business in a release either.
-$exclude = @('.git', '.gitignore', 'build.ps1', 'NOTES.md', $name)
+$exclude = @('.git', '.gitignore', 'build.ps1', 'NOTES.md', 'tools', $name)
 Get-ChildItem -Path $src -Force | Where-Object { $exclude -notcontains $_.Name } | ForEach-Object {
   Copy-Item -Recurse -Force $_.FullName -Destination $staging
 }
