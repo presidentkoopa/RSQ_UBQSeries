@@ -15,6 +15,11 @@
 //                                           holds a door, the cigarette or the Zippo
 // The hands are known on the console player's own machine only, so both answers are
 // for that player (a pawn passed as objectArg that is someone else's gets 0 / -1).
+//   GetInt("rig.drawtic", "", 0, 0, pawn)   level.maptime of that player's last draw from
+//                                           a holster this map, or -1 (RSQ_Score's Quick Draw)
+//   GetString("rig.drawn", "", 0, 0, pawn)  the weapon class that draw brought up, or ""
+// These two are synced play state (the draw is a network event), so they answer for any
+// player, not only the console player.
 class RSQTR_Hooks play
 {
 	static bool Claimed(PlayerPawn pmo, int r)
@@ -52,6 +57,11 @@ class RSQTR_RigService : Service
 		let who = PlayerPawn(objectArg);
 		bool local = !who || (who.player && who.player == players[consoleplayer]);
 		if (request == "rig.region") return local ? rig.HoverRegion(h) : -1;
+		if (request == "rig.drawtic")
+		{
+			int n = who ? who.PlayerNumber() : -1;
+			return (n >= 0 && n < MAXPLAYERS && rig.drawTic[n] > 0) ? rig.drawTic[n] - 1 : -1;
+		}
 		if (request == "rig.busy")
 		{
 			if (!local) return 0;
@@ -63,5 +73,14 @@ class RSQTR_RigService : Service
 			return 0;
 		}
 		return -1;
+	}
+
+	override String GetString(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
+	{
+		let rig = RSQTR_Rig.Get();
+		let who = PlayerPawn(objectArg);
+		if (!rig || !who || request != "rig.drawn") return "";
+		int n = who.PlayerNumber();
+		return (n >= 0 && n < MAXPLAYERS) ? rig.drawClass[n] : "";
 	}
 }
