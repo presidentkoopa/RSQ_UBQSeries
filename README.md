@@ -77,15 +77,21 @@ your arm behind it.
 
 ## Controls
 
-Bind in **Customize Controls**; there are no keys of our own.
+Keys of its own (Draw, Throw, Lock) are in **Customize Controls** under Ultra Badass ShieldSaw.
 
 | | |
 |---|---|
 | **Use**, off hand at the shoulder | draw / put back |
 | **Draw** key (Customize Controls) | draw / put back from anywhere |
-| **Offhand Attack** or **Offhand Alt Attack**, held | rev and lock on |
-| the same, released with the arm snapping forward | throw |
-| the same, pressed while it flies | recall |
+| **Off trigger**, held | rev the saw (grind, bash) |
+| **Use**, held away from the shoulder | lock on: sweep the shield over enemies, one ring each |
+| the trigger, let go with the arm snapping forward | throw: to the rings in order, or where you point |
+| the trigger, pressed while it flies | recall |
+
+The lock-on is its own button (the owner, 10-27: the trigger used to rev, lock and throw at once).
+*Lock on with* picks it: **Use** (default, nothing to bind), the **ShieldSaw lock key** (bind the off
+grip or any key to "ShieldSaw: lock on (hold)" in Customize Controls), or the throw button as before.
+A lock is kept 3 s out of sight; the rings stay 5 s after you let go, so you can lock, rev, then throw.
 
 *Draw from the shoulder with Use* (on by default): turn it off to use the Draw key alone; the shoulder
 is then no grab, its marker is hidden, and RSQ_TacticalRig keeps that shoulder for weapons.
@@ -94,8 +100,8 @@ is then no grab, its marker is hidden, and RSQ_TacticalRig keeps that shoulder f
 so on the normal limits nearly everything from an imp up stops the disc. On: it slices through anything up
 to 250 health (to the revenant), sticks and grinds up to 1200 (to the baron), and glances off bigger.
 
-Either off-hand button works, because QZD's stock binds put the alt behind a grip shift — the same
-grip that arms the two-hand grab. `ssq_lock_button` forces one or the other if you prefer.
+The throw is the off trigger alone by default (*What throws*): QZD's stock binds put the off alt behind a
+grip shift, the same grip that arms the two-hand grab.
 
 ## Notes
 

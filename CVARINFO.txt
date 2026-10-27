@@ -26,13 +26,13 @@ server float ssq_speed_floor    = 12.0;   // units/tic: the slowest a throw can 
 server float ssq_mass_kg        = 5.0;    // the disc keeps arm/(arm+this) of the hand speed
 server int   ssq_locks          = 5;      // targets one throw visits
 server float ssq_lock_cone      = 25.0;   // half-angle from the hand's forward at release
-server int   ssq_lock_button    = 1;      // what locks and throws: 0 off alt only, 1 either off button, 2 off trigger only
+server int   ssq_lock_button    = 2;      // what throws when let go with a flick: 0 off alt only, 1 either off button, 2 off trigger only
 server float ssq_lock_mark_scale = 1.0;   // size of the ring over a locked target
 server float ssq_lock_range     = 1200.0;
 server float ssq_lock_keep      = 60.0;   // a lock is KEPT out to here, far wider than the cone it was acquired in
-server int   ssq_lock_grace     = 14;     // tics a lock may stay out of that cone or out of sight before it drops
+server int   ssq_lock_grace     = 105;     // tics a lock may stay out of that cone or out of sight before it drops
 server int   ssq_paint_every    = 3;      // tics between targets going on: they paint one at a time as you sweep
-server int   ssq_keep_marks     = 35;     // tics your marks survive a release that was not a throw
+server int   ssq_keep_marks     = 175;     // tics your marks survive a release that was not a throw
 server float ssq_return_speed   = 22.0;   // units/tic on the way home
 server float ssq_cruise_gain    = 0.05;   // how fast a flying disc winds up while it has a target, per tic
 server float ssq_cruise_max     = 34.0;   // units/tic it will wind up to
@@ -119,6 +119,7 @@ user float ssq_mount_pitch      = 0.0;
 user float ssq_mount_roll       = 0.0;
 user float ssq_mount_scale      = 1.0;
 user bool  ssq_shoulder_use     = true;   // Use at the shoulder draws and holsters; off: only the Draw key does (the shoulder is free for RSQ_TacticalRig)
+user int   ssq_lock_input       = 0;      // what locks on: 0 Use (away from the shoulder), 1 the ShieldSaw lock key (bind the off grip to it), 2 the throw button too (the old way)
 user int   ssq_marker           = 1;      // 0 never, 1 while it matters, 2 always
 
 // the held shield's placement: read live by the hook every frame (cm and degrees)
