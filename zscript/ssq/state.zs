@@ -47,6 +47,7 @@ class SSQ_Handler : EventHandler
 	bool  mLockKey[MAXPLAYERS];	// the ShieldSaw Lock key is down (netevent ssq-lock, ssq_lock_input 1)
 	bool  mLockWas[MAXPLAYERS];	// the lock input last tic
 	bool  mMigrated;
+	SSQ_ScoreMemory score;		// what a scorer may ask about blocks and turned shots (score.zs)
 	int   mLockSig[MAXPLAYERS];
 
 
@@ -282,6 +283,7 @@ class SSQ_Handler : EventHandler
 	override void WorldTick()
 	{
 		if (!mMigrated) { mMigrated = true; MigrateLocks(); }
+		if (!score) score = new('SSQ_ScoreMemory');
 		SendPose();
 		for (int i = 0; i < MAXPLAYERS; i++)
 		{
