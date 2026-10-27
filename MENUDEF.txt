@@ -1,15 +1,14 @@
-// THE OPTIONS, AND EVERY PAGE MUST BE REACHABLE.
+// Distance Grab options, in BD22 VR Weapons' style (the owner, 10-27: "too many words... the
+// bd22 weapons q options menu is a good example of a ton of options that don't overwhelm"):
+// short labels, no notes, blank lines between groups, the niche groups one page down, tuning,
+// debug and reset last. What each setting does is in CVARINFO's comments and the docs.
 //
-// An orphaned OptionMenu compiles clean, loads clean and says nothing. In a
-// headset it reads as the feature having been removed -- which is exactly what
-// happened to ten pages of the desktop package when it was split out, because
-// they hung off a parent menu that did not come across. So: this file has one
-// root, it is added to the engine's own Options menu, and every page below is
-// linked from it. build.ps1 checks that nothing is orphaned.
+// EVERY PAGE MUST BE REACHABLE: an orphaned OptionMenu compiles and loads clean and reads in a
+// headset as the feature removed. One root, added to the engine's Options menu, every page
+// linked from it.
 
 AddOptionMenu "OptionsMenu"
 {
-	StaticText ""
 	Submenu "Distance Grab", "RSQDG_Options"
 }
 
@@ -19,308 +18,141 @@ OptionValue "RSQDG_FlightMode"
 	1, "Arc"
 }
 
-// THE FRONT PAGE (the owner, 10-27: "way too many options, people will be overwhelmed").
-// Every setting, unchanged, is under "Advanced: every setting".
 OptionMenu "RSQDG_Options"
 {
 	Title "DISTANCE GRAB"
-	StaticText "Turn your palm out and flick your wrist up to pull a thing to your hand.", 1
-	StaticText "Roll your palm back to let go; let go mid-swing to throw it.", 1
-	StaticText ""
-	Option "Distance grab", "rsqdg_on", "OnOff"
-	Slider "Reach (map units)", "rsqdg_reach", 64, 2048, 32, 0
-	Slider "Throw strength", "rsqdg_throw_scale", 0.25, 4.0, 0.25, 2
+	Option "Distance Grab", "rsqdg_on", "OnOff"
+	Slider "Reach", "rsqdg_reach", 64, 2048, 32, 0
+	Slider "Spread", "rsqdg_spread", 2, 45, 1, 1
+	Option "Line of Sight", "rsqdg_sight", "OnOff"
+	Option "Not With Melee", "rsqdg_yield", "OnOff"
+	StaticText " "
 	Option "Barrels", "rsqdg_barrels", "OnOff"
 	Option "Weapons", "rsqdg_weapons", "OnOff"
+	Option "Powerups", "rsqdg_powerups", "OnOff"
 	Option "Corpses", "rsqdg_corpses", "OnOff"
-	Option "Beam to what you would grab", "rsqdg_beam", "OnOff"
-	Option "Controller haptics", "rsqdg_haptics", "OnOff"
-	Option "Lift doors by hand", "rsqdg_door", "OnOff"
-	StaticText ""
-	Submenu "Advanced: every setting", "RSQDG_Every"
-	StaticText ""
-	SafeCommand "Reset all Distance Grab settings", "resetcvar rsqdg_on rsqdg_reach rsqdg_spread rsqdg_sight rsqdg_corpses rsqdg_barrels rsqdg_weapons rsqdg_powerups rsqdg_button rsqdg_palm rsqdg_palm_roll rsqdg_palm_tol rsqdg_palm_pitch rsqdg_jump_m rsqdg_lock_dwell rsqdg_yield rsqdg_steady_m rsqdg_lightup rsqdg_glow rsqdg_glow_a rsqdg_voxel_flash rsqdg_flash rsqdg_flick_deg rsqdg_flight_speed rsqdg_steer rsqdg_pull_kg rsqdg_flight_gravity rsqdg_flight_mode rsqdg_arc_apex rsqdg_flight_duck rsqdg_flight_radius rsqdg_flight_timeout rsqdg_catch_radius rsqdg_catch_hold rsqdg_catch_takes rsqdg_throw_scale rsqdg_arm_kg rsqdg_throw_j rsqdg_throw_min rsqdg_throw_explode rsqdg_hold_dist rsqdg_hold_k rsqdg_hold_vmax rsqdg_hold_break rsqdg_burden rsqdg_burden_kg rsqdg_beam rsqdg_beam_yield rsqdg_beam_w rsqdg_beam_a rsqdg_dot rsqdg_dot_size rsqdg_cone rsqdg_cone_a rsqdg_lead rsqdg_laser_idle rsqdg_haptics rsqdg_haptic_ramp rsqdg_rumble rsqdg_rumble_gain rsqdg_rumble_lock rsqdg_rumble_carry rsqdg_sound rsqdg_sound_vol rsqdg_catch_flash rsqdg_debug rsqdg_trace rsqdg_door rsqdg_door_grip rsqdg_door_use rsqdg_door_palm rsqdg_door_commit rsqdg_door_gain", "Put every Distance Grab setting back to its default?"
-}
-
-OptionMenu "RSQDG_Every"
-{
-	Title "DISTANCE GRAB: EVERY SETTING"
-	StaticText ""
-	StaticText ""
-	StaticText "Turn your palm out to arm the reach. Flick your", 1
-	StaticText "wrist up to pull. Roll your palm back to let go.", 1
-	StaticText ""
-	Submenu "Feel tuning (the headset numbers)", "RSQDG_Tune"
-	StaticText ""
-	Submenu "Reach and aim",        "RSQDG_Reach"
-	Submenu "The gesture",          "RSQDG_Gesture"
-	Submenu "The pull",             "RSQDG_Flight"
-	Submenu "Catching and holding", "RSQDG_Catch"
-	Submenu "The laser",            "RSQDG_Laser"
-	Submenu "Haptics and sound",    "RSQDG_Feel"
-	Submenu "Doors",                "RSQDG_Doors"
-	StaticText ""
-	Submenu "Diagnostics",          "RSQDG_Debug"
-	StaticText ""
-	SafeCommand "Reset all Distance Grab settings", "resetcvar rsqdg_on rsqdg_reach rsqdg_spread rsqdg_sight rsqdg_corpses rsqdg_barrels rsqdg_weapons rsqdg_powerups rsqdg_button rsqdg_palm rsqdg_palm_roll rsqdg_palm_tol rsqdg_palm_pitch rsqdg_jump_m rsqdg_lock_dwell rsqdg_yield rsqdg_steady_m rsqdg_lightup rsqdg_glow rsqdg_glow_a rsqdg_voxel_flash rsqdg_flash rsqdg_flick_deg rsqdg_flight_speed rsqdg_steer rsqdg_pull_kg rsqdg_flight_gravity rsqdg_flight_mode rsqdg_arc_apex rsqdg_flight_duck rsqdg_flight_radius rsqdg_flight_timeout rsqdg_catch_radius rsqdg_catch_hold rsqdg_catch_takes rsqdg_throw_scale rsqdg_arm_kg rsqdg_throw_j rsqdg_throw_min rsqdg_throw_explode rsqdg_hold_dist rsqdg_hold_k rsqdg_hold_vmax rsqdg_hold_break rsqdg_burden rsqdg_burden_kg rsqdg_beam rsqdg_beam_yield rsqdg_beam_w rsqdg_beam_a rsqdg_dot rsqdg_dot_size rsqdg_cone rsqdg_cone_a rsqdg_lead rsqdg_laser_idle rsqdg_haptics rsqdg_haptic_ramp rsqdg_rumble rsqdg_rumble_gain rsqdg_rumble_lock rsqdg_rumble_carry rsqdg_sound rsqdg_sound_vol rsqdg_catch_flash rsqdg_debug rsqdg_trace rsqdg_door rsqdg_door_grip rsqdg_door_use rsqdg_door_palm rsqdg_door_commit rsqdg_door_gain", "Put every Distance Grab setting back to its default?"
-	StaticText ""
-	Control "Grab -- main hand", "+rsqdg_main"
-	Control "Grab -- off hand",  "+rsqdg_off"
-	StaticText "Only needed if the button fallback is on.", 1
-}
-
-OptionMenu "RSQDG_Reach"
-{
-	Title "REACH AND AIM"
-	StaticText ""
-	StaticText "HOW FAR and HOW PRECISELY are separate", 1
-	StaticText "numbers. One slider for both would force", 1
-	StaticText "one of them to be wrong.", 1
-	StaticText ""
-	Slider "Reach (map units)",   "rsqdg_reach",  64, 2048, 32, 0
-	Slider "Spread (degrees)",    "rsqdg_spread", 2,  45,   1,  1
-	StaticText ""
-	StaticText "The spread is a real cone in the room, not in", 1
-	StaticText "map space -- so pointing up needs no more", 1
-	StaticText "precision than pointing sideways.", 1
-	StaticText ""
-	Option "Needs line of sight", "rsqdg_sight",   "OnOff"
-	Option "Not with a saber, shield or fist", "rsqdg_yield", "OnOff"
-	Slider "Not while two-handing: hands within, metres", "rsqdg_steady_m", 0.0, 0.8, 0.05, 2
-	StaticText "A swing is full of the reach gesture, so a hand", 1
-	StaticText "holding a melee weapon does not reach. A", 1
-	StaticText "QuestSaber hilt with its blade off may reach.", 1
-	StaticText ""
-	StaticText "WHAT CAN BE PULLED", 1
-	Option "Barrels",             "rsqdg_barrels",  "OnOff"
-	Option "Weapons",             "rsqdg_weapons",  "OnOff"
-	Option "Powerups",            "rsqdg_powerups", "OnOff"
-	Option "Corpses",             "rsqdg_corpses",  "OnOff"
-	StaticText "Ammo, health, armour and keys always are.", 1
-	StaticText "A living monster and a +1 bonus never are.", 1
-	StaticText "When things crowd the cone, barrels, guns and", 1
-	StaticText "keys win over ammo, and bodies come last.", 1
+	StaticText " "
+	Option "Flight Path", "rsqdg_flight_mode", "RSQDG_FlightMode"
+	Slider "Arc Height", "rsqdg_arc_apex", 0.25, 3.0, 0.25, 2
+	Slider "Throw Strength", "rsqdg_throw_scale", 0.25, 4.0, 0.25, 2
+	StaticText " "
+	Option "Beam", "rsqdg_beam", "OnOff"
+	Option "Haptics", "rsqdg_haptics", "OnOff"
+	Option "Sound", "rsqdg_sound", "OnOff"
+	Option "Lift Doors", "rsqdg_door", "OnOff"
+	StaticText " "
+	Submenu "Gesture", "RSQDG_Gesture"
+	Submenu "Pull", "RSQDG_Flight"
+	Submenu "Catch and Carry", "RSQDG_Catch"
+	Submenu "Beam and Glow", "RSQDG_Laser"
+	Submenu "Haptics and Sound", "RSQDG_Feel"
+	Submenu "Doors", "RSQDG_Doors"
+	Submenu "Controls", "RSQDG_Keys"
+	StaticText " "
+	Submenu "Tuning and Debug", "RSQDG_Debug"
 }
 
 OptionMenu "RSQDG_Gesture"
 {
-	Title "THE GESTURE"
-	StaticText ""
-	Option "Palm gate", "rsqdg_palm", "OnOff"
-	StaticText "Off means the reach is always armed, which", 1
-	StaticText "pulls things while you hold a gun.", 1
-	StaticText ""
-	Slider "Palm roll target",    "rsqdg_palm_roll",  0,   180, 5, 1
-	Slider "Palm roll tolerance", "rsqdg_palm_tol",   5,   90,  5, 1
-	Slider "Minimum hand pitch",  "rsqdg_palm_pitch", -90, 60,  5, 1
-	StaticText ""
-	StaticText "Pitch is paired with roll because roll alone", 1
-	StaticText "is not safe -- an idle hand already rests", 1
-	StaticText "inside any useful roll tolerance.", 1
-	StaticText ""
-	Slider "Flick strength needed", "rsqdg_flick_deg", 1, 20, 0.5, 1
-	StaticText "Degrees of wrist pitch per tic. If the pull", 1
-	StaticText "fires while you are only aiming, RAISE this.", 1
-	StaticText ""
-	Option "Button fallback", "rsqdg_button", "OnOff"
-	StaticText "Adds a keypress alongside the gesture. Bind", 1
-	StaticText "it on the previous page.", 1
-	StaticText ""
-	Slider "Hold before it locks (tics)", "rsqdg_lock_dwell", 0, 35, 1, 0
-	StaticText "0 locks the moment the cone finds something.", 1
-	StaticText "A few tics lets you see amber before green.", 1
-	StaticText ""
-	Slider "Pose jump cutoff (m)", "rsqdg_jump_m", 0.25, 3.0, 0.25, 2
-	StaticText "Apparent hand travel in one tic that means", 1
-	StaticText "tracking lied. No arm moves a metre in 28ms.", 1
+	Title "GESTURE"
+	Option "Palm Gate", "rsqdg_palm", "OnOff"
+	Slider "Palm Roll", "rsqdg_palm_roll", 0, 180, 5, 1
+	Slider "Roll Tolerance", "rsqdg_palm_tol", 5, 90, 5, 1
+	Slider "Min Hand Pitch", "rsqdg_palm_pitch", -90, 60, 5, 1
+	Slider "Flick Strength", "rsqdg_flick_deg", 1, 20, 0.5, 1
+	Slider "Lock Delay", "rsqdg_lock_dwell", 0, 35, 1, 0
+	Slider "Two-Hand Gap", "rsqdg_steady_m", 0.0, 0.8, 0.05, 2
+	Option "Button Fallback", "rsqdg_button", "OnOff"
 }
 
 OptionMenu "RSQDG_Flight"
 {
-	Title "THE PULL"
-	StaticText ""
-	StaticText "The object is given a velocity and the engine", 1
-	StaticText "moves it, so it collides, slides along walls", 1
-	StaticText "and climbs stairs on its own.", 1
-	StaticText ""
-	Slider "Pull speed (m/s)",      "rsqdg_flight_speed", 2, 40, 1, 1
-	Slider "Steering (m/s2)",       "rsqdg_steer",        5, 150, 5, 0
-	StaticText ""
-	Slider "Pull strength (kg)",    "rsqdg_pull_kg",      1, 100, 1, 0
-	StaticText "Things this heavy get half the pull's speed", 1
-	StaticText "and steering. A clip snaps to your hand, a", 1
-	StaticText "barrel is a heave. Raise it to make heavy", 1
-	StaticText "things come easier.", 1
-	StaticText ""
-	Option "Gravity during the pull", "rsqdg_flight_gravity", "OnOff"
-	Option "Flight path", "rsqdg_flight_mode", "RSQDG_FlightMode"
-	StaticText "Steer: flies at your hand and turns by its weight.", 1
-	StaticText "Arc: a lob onto your hand, heavier hangs longer.", 1
-	Slider "Arc height (m)", "rsqdg_arc_apex", 0.25, 3.0, 0.25, 2
-	Option "Duck under doorways", "rsqdg_flight_duck", "OnOff"
-	StaticText "On makes a long pull sag and a heavy thing", 1
-	StaticText "visibly harder to drag up to you.", 1
-	StaticText ""
-	Slider "Flight width",   "rsqdg_flight_radius",  1, 16, 1, 0
-	StaticText "A clip's collision is 20 units wide and looks", 1
-	StaticText "like 4. Raise this if things pass through too", 1
-	StaticText "much; lower it if they snag in doorways.", 1
-	StaticText ""
-	Slider "Give up after (tics)", "rsqdg_flight_timeout", 35, 350, 35, 0
-	StaticText "The minimum. Slow heavy pulls get longer.", 1
+	Title "PULL"
+	Slider "Pull Speed", "rsqdg_flight_speed", 2, 40, 1, 1
+	Slider "Steering", "rsqdg_steer", 5, 150, 5, 0
+	Slider "Pull Strength", "rsqdg_pull_kg", 1, 100, 1, 0
+	Option "Pull Gravity", "rsqdg_flight_gravity", "OnOff"
+	Option "Duck Under Doors", "rsqdg_flight_duck", "OnOff"
+	Slider "Flight Width", "rsqdg_flight_radius", 1, 16, 1, 0
+	Slider "Give Up After", "rsqdg_flight_timeout", 35, 350, 35, 0
 }
 
 OptionMenu "RSQDG_Catch"
 {
-	Title "CATCHING AND HOLDING"
-	StaticText ""
-	StaticText "Keep your palm out as it arrives and you", 1
-	StaticText "catch it. Turn your hand away and you do not.", 1
-	StaticText ""
-	Slider "Catch distance", "rsqdg_catch_radius", 8, 64, 4, 0
-	Slider "Catch window (tics)", "rsqdg_catch_hold", 1, 16, 1, 0
-	StaticText "How long it waits on your palm before giving", 1
-	StaticText "up. Never 0 -- a thing that exists for no tics", 1
-	StaticText "cannot be caught at all.", 1
-	StaticText ""
-	Option "Use pickups on catch", "rsqdg_catch_takes", "OnOff"
-	StaticText "On: catch a weapon and it equips. Off: carry", 1
-	StaticText "everything instead, so you can move a medikit.", 1
-	StaticText ""
-	Slider "Throw strength", "rsqdg_throw_scale", 0.25, 4.0, 0.25, 2
-	StaticText "Open your hand while moving to throw; open it", 1
-	StaticText "at rest to drop.", 1
-	Slider "Arm weight (kg)", "rsqdg_arm_kg", 5, 100, 5, 0
-	StaticText "Heavy things leave your hand slower.", 1
-	Slider "Impact damage (J/pt)", "rsqdg_throw_j", 2, 60, 1, 0
-	Slider "Barrel goes off at (m/s)", "rsqdg_throw_explode", 0, 15, 0.5, 1
-	StaticText ""
-	StaticText "CARRYING", 1
-	Slider "Hold distance (m)", "rsqdg_hold_dist", 0.0, 1.5, 0.05, 2
-	Slider "Hold stiffness", "rsqdg_hold_k", 0.1, 0.95, 0.05, 2
-	Slider "Let go when held back (m)", "rsqdg_hold_break", 0.0, 4.0, 0.25, 2
-	Option "Heavy things slow you", "rsqdg_burden", "OnOff"
-	Slider "Half speed at (kg)", "rsqdg_burden_kg", 20, 400, 10, 0
+	Title "CATCH AND CARRY"
+	Slider "Catch Distance", "rsqdg_catch_radius", 8, 64, 4, 0
+	Slider "Catch Window", "rsqdg_catch_hold", 1, 16, 1, 0
+	Option "Use Pickups on Catch", "rsqdg_catch_takes", "OnOff"
+	Slider "Arm Weight", "rsqdg_arm_kg", 5, 100, 5, 0
+	Slider "Impact Damage", "rsqdg_throw_j", 2, 60, 1, 0
+	Slider "Barrel Blast Speed", "rsqdg_throw_explode", 0, 15, 0.5, 1
+	StaticText " "
+	Slider "Hold Distance", "rsqdg_hold_dist", 0.0, 1.5, 0.05, 2
+	Slider "Hold Stiffness", "rsqdg_hold_k", 0.1, 0.95, 0.05, 2
+	Slider "Break Distance", "rsqdg_hold_break", 0.0, 4.0, 0.25, 2
+	Option "Heavy Slows You", "rsqdg_burden", "OnOff"
+	Slider "Half Speed Mass", "rsqdg_burden_kg", 20, 400, 10, 0
 }
 
 OptionMenu "RSQDG_Laser"
 {
-	Title "THE LASER"
-	StaticText ""
-	Option "Beam", "rsqdg_beam", "OnOff"
-	Option "Hide it where a laser sight already is", "rsqdg_beam_yield", "OnOff"
-	Slider "Beam width",  "rsqdg_beam_w", 0.25, 4.0, 0.25, 2
-	Slider "Beam bright", "rsqdg_beam_a", 0.1, 1.0, 0.05, 2
-	StaticText ""
+	Title "BEAM AND GLOW"
+	Option "Yield to Laser Sight", "rsqdg_beam_yield", "OnOff"
+	Slider "Beam Width", "rsqdg_beam_w", 0.25, 4.0, 0.25, 2
+	Slider "Beam Brightness", "rsqdg_beam_a", 0.1, 1.0, 0.05, 2
+	Option "Show When Idle", "rsqdg_laser_idle", "OnOff"
 	Option "Dot", "rsqdg_dot", "OnOff"
-	Slider "Dot size", "rsqdg_dot_size", 0.25, 4.0, 0.25, 2
-	StaticText "One glow where the line lands.", 1
-	StaticText ""
-	Option "Reach cone", "rsqdg_cone", "OnOff"
-	Slider "Cone bright", "rsqdg_cone_a", 0.05, 1.0, 0.05, 2
-	StaticText "The exact volume the grab tests. It follows", 1
-	StaticText "the Reach and Spread settings.", 1
-	StaticText ""
-	Slider "Lead the hand (tics)", "rsqdg_lead", 0.0, 2.0, 0.1, 1
-	StaticText "Script moves these 35 times a second; this", 1
-	StaticText "draws them ahead so they keep up with your", 1
-	StaticText "hand. 1.0 cancels the lag; 0 turns it off.", 1
-	StaticText ""
-	Option "Draw when aiming at nothing", "rsqdg_laser_idle", "OnOff"
-	StaticText ""
-	StaticText "Blue: searching. Amber: something in reach.", 1
-	StaticText "Green: locked.", 1
-	StaticText ""
-	Option "Glow on the target", "rsqdg_glow", "OnOff"
-	Slider "Glow brightness", "rsqdg_glow_a", 0.25, 2.0, 0.25, 2
-	StaticText "Amber and dim: you could grab it. Green and", 1
-	StaticText "bright: you have it.", 1
-	Option "Voxel targets flash instead", "rsqdg_voxel_flash", "OnOff"
-	StaticText "A voxel (BD_VoxelPack) cannot wear the glow,", 1
-	StaticText "so it is recoloured instead.", 1
-	StaticText ""
-	Option "Recolour the target", "rsqdg_lightup", "OnOff"
-	Slider "Pulse period (tics)", "rsqdg_flash", 6, 70, 2, 0
+	Slider "Dot Size", "rsqdg_dot_size", 0.25, 4.0, 0.25, 2
+	Option "Reach Cone", "rsqdg_cone", "OnOff"
+	Slider "Cone Brightness", "rsqdg_cone_a", 0.05, 1.0, 0.05, 2
+	StaticText " "
+	Option "Target Glow", "rsqdg_glow", "OnOff"
+	Slider "Glow Brightness", "rsqdg_glow_a", 0.25, 2.0, 0.25, 2
+	Option "Voxel Flash", "rsqdg_voxel_flash", "OnOff"
+	Option "Recolour Target", "rsqdg_lightup", "OnOff"
+	Slider "Pulse Period", "rsqdg_flash", 6, 70, 2, 0
 }
 
 OptionMenu "RSQDG_Feel"
 {
 	Title "HAPTICS AND SOUND"
-	StaticText ""
-	Option "Controller haptics", "rsqdg_haptics", "OnOff"
-	Option "Approach ping",      "rsqdg_haptic_ramp", "OnOff"
-	Option "Rumble",             "rsqdg_rumble", "OnOff"
-	Slider "Rumble strength",    "rsqdg_rumble_gain", 0.0, 2.0, 0.1, 1
-	Slider "Rumble while locked","rsqdg_rumble_lock", 0.0, 0.6, 0.05, 2
-	Option "Rumble when held back", "rsqdg_rumble_carry", "OnOff"
-	StaticText "Rumble: a hum while locked, building through", 1
-	StaticText "the pull, a hard hit on the catch. Off: fixed", 1
-	StaticText "ticks instead. Turn it off if you set the", 1
-	StaticText "engine's quake haptics to 0.", 1
-	StaticText ""
-	Option "Sound",              "rsqdg_sound", "OnOff"
-	Slider "Volume",             "rsqdg_sound_vol", 0.0, 1.0, 0.05, 2
-	StaticText "A hum rides the object and rises as it nears.", 1
-	StaticText "Light things sound high, heavy things low.", 1
-	StaticText ""
-	Option "Catch flash",        "rsqdg_catch_flash", "OnOff"
-}
-
-OptionMenu "RSQDG_Debug"
-{
-	Title "DIAGNOSTICS"
-	StaticText ""
-	Option "Report what happened", "rsqdg_debug", "OnOff"
-	StaticText "Locks, launches, catches, releases.", 1
-	StaticText ""
-	Option "Report why it refused", "rsqdg_trace", "OnOff"
-	StaticText "Every refusal in words -- \"nothing in the", 1
-	StaticText "cone\", \"the other hand has it\". Turn this on", 1
-	StaticText "first when something does nothing.", 1
-}
-
-// G5: the numbers that were first guesses, together on one page for the headset pass.
-// Each is the same cvar as on its own page; nothing here is new.
-OptionMenu "RSQDG_Tune"
-{
-	Title "FEEL TUNING"
-	StaticText ""
-	StaticText "These were set without a headset. Tune them", 1
-	StaticText "here; they also live on their own pages.", 1
-	StaticText ""
-	StaticText "RUMBLE", 1
-	Slider "Rumble strength",       "rsqdg_rumble_gain",   0.0, 2.0, 0.1, 1
-	Slider "Hum while locked",      "rsqdg_rumble_lock",   0.0, 0.6, 0.05, 2
-	StaticText ""
-	StaticText "THE PULL", 1
-	Slider "Pull speed (m/s)",      "rsqdg_flight_speed",  2, 40, 1, 1
-	Slider "Steering (m/s2)",       "rsqdg_steer",         5, 150, 5, 0
-	Slider "Pull strength (kg)",    "rsqdg_pull_kg",       1, 100, 1, 0
-	Option "Flight path",           "rsqdg_flight_mode",   "RSQDG_FlightMode"
-	Slider "Arc height (m)",        "rsqdg_arc_apex",      0.25, 3.0, 0.25, 2
-	StaticText ""
-	StaticText "THROWS AND IMPACTS", 1
-	Slider "Throw strength",        "rsqdg_throw_scale",   0.25, 4.0, 0.25, 2
-	Slider "Arm weight (kg)",       "rsqdg_arm_kg",        5, 100, 5, 0
-	Slider "Impact damage (J/pt)",  "rsqdg_throw_j",       2, 60, 1, 0
-	Slider "Barrel goes off at (m/s)", "rsqdg_throw_explode", 0, 15, 0.5, 1
-	StaticText "Lower J/pt = more damage per hit.", 1
-	StaticText ""
-	StaticText "CARRYING", 1
-	Slider "Half speed at (kg)",    "rsqdg_burden_kg",     20, 400, 10, 0
-	StaticText ""
-	SafeCommand "Reset just these", "resetcvar rsqdg_rumble_gain rsqdg_rumble_lock rsqdg_flight_speed rsqdg_steer rsqdg_pull_kg rsqdg_flight_mode rsqdg_arc_apex rsqdg_throw_scale rsqdg_arm_kg rsqdg_throw_j rsqdg_throw_explode rsqdg_burden_kg", "Put the feel numbers back?"
+	Option "Approach Ping", "rsqdg_haptic_ramp", "OnOff"
+	Option "Rumble", "rsqdg_rumble", "OnOff"
+	Slider "Rumble Strength", "rsqdg_rumble_gain", 0.0, 2.0, 0.1, 1
+	Slider "Locked Rumble", "rsqdg_rumble_lock", 0.0, 0.6, 0.05, 2
+	Option "Held Back Rumble", "rsqdg_rumble_carry", "OnOff"
+	StaticText " "
+	Slider "Volume", "rsqdg_sound_vol", 0.0, 1.0, 0.05, 2
+	Option "Catch Flash", "rsqdg_catch_flash", "OnOff"
 }
 
 OptionMenu "RSQDG_Doors"
 {
 	Title "DOORS"
-	Option "Lift doors by hand", "rsqdg_door", "OnOff"
-	Option "Grip takes hold", "rsqdg_door_grip", "OnOff"
-	Option "Use takes hold", "rsqdg_door_use", "OnOff"
-	Option "Palm out takes hold", "rsqdg_door_palm", "OnOff"
-	Slider "Open past this, it finishes", "rsqdg_door_commit", 0.1, 0.9, 0.05, 2
-	Slider "Lift gain", "rsqdg_door_gain", 1.0, 5.0, 0.25, 2
-	StaticText ""
-	StaticText "Hand flat on a door, take hold, lift. The door sounds as fast as you lift it.", "DarkGray"
+	Option "Grip Takes Hold", "rsqdg_door_grip", "OnOff"
+	Option "Use Takes Hold", "rsqdg_door_use", "OnOff"
+	Option "Palm Takes Hold", "rsqdg_door_palm", "OnOff"
+	Slider "Commit Point", "rsqdg_door_commit", 0.1, 0.9, 0.05, 2
+	Slider "Lift Gain", "rsqdg_door_gain", 1.0, 5.0, 0.25, 2
+}
+
+OptionMenu "RSQDG_Keys"
+{
+	Title "CONTROLS"
+	Control "Grab Main Hand", "+rsqdg_main"
+	Control "Grab Off Hand", "+rsqdg_off"
+}
+
+OptionMenu "RSQDG_Debug"
+{
+	Title "TUNING AND DEBUG"
+	Slider "Hand Lead", "rsqdg_lead", 0.0, 2.0, 0.1, 1
+	Slider "Pose Jump Cutoff", "rsqdg_jump_m", 0.25, 3.0, 0.25, 2
+	Slider "Min Impact Speed", "rsqdg_throw_min", 0.0, 10.0, 0.5, 1
+	Slider "Max Hold Speed", "rsqdg_hold_vmax", 10, 80, 5, 0
+	StaticText " "
+	Option "Report Actions", "rsqdg_debug", "OnOff"
+	Option "Report Refusals", "rsqdg_trace", "OnOff"
+	StaticText " "
+	SafeCommand "Reset All", "resetcvar rsqdg_on rsqdg_reach rsqdg_spread rsqdg_sight rsqdg_corpses rsqdg_barrels rsqdg_weapons rsqdg_powerups rsqdg_button rsqdg_palm rsqdg_palm_roll rsqdg_palm_tol rsqdg_palm_pitch rsqdg_jump_m rsqdg_lock_dwell rsqdg_yield rsqdg_steady_m rsqdg_lightup rsqdg_glow rsqdg_glow_a rsqdg_voxel_flash rsqdg_flash rsqdg_flick_deg rsqdg_flight_speed rsqdg_steer rsqdg_pull_kg rsqdg_flight_gravity rsqdg_flight_mode rsqdg_arc_apex rsqdg_flight_duck rsqdg_flight_radius rsqdg_flight_timeout rsqdg_catch_radius rsqdg_catch_hold rsqdg_catch_takes rsqdg_throw_scale rsqdg_arm_kg rsqdg_throw_j rsqdg_throw_min rsqdg_throw_explode rsqdg_hold_dist rsqdg_hold_k rsqdg_hold_vmax rsqdg_hold_break rsqdg_burden rsqdg_burden_kg rsqdg_beam rsqdg_beam_yield rsqdg_beam_w rsqdg_beam_a rsqdg_dot rsqdg_dot_size rsqdg_cone rsqdg_cone_a rsqdg_lead rsqdg_laser_idle rsqdg_haptics rsqdg_haptic_ramp rsqdg_rumble rsqdg_rumble_gain rsqdg_rumble_lock rsqdg_rumble_carry rsqdg_sound rsqdg_sound_vol rsqdg_catch_flash rsqdg_debug rsqdg_trace rsqdg_door rsqdg_door_grip rsqdg_door_use rsqdg_door_palm rsqdg_door_commit rsqdg_door_gain", "Reset all Distance Grab settings?"
 }
