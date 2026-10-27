@@ -50,6 +50,7 @@ class RSQDG_Glow : Actor
 	// Prev (cleared to last tic's spot) gives it the same blend the host has.
 	Actor host;
 	Vector3 eye;
+	double rim;      // the twin's size over the host's: 1.06, wider for "have" in colour-blind play
 
 	override void Tick()
 	{
@@ -63,7 +64,7 @@ class RSQDG_Glow : Actor
 		SpriteOffset = host.SpriteOffset;
 		// A whisker larger, so the light reads as a rim past the edge as well
 		// as a wash over the face.
-		Scale    = host.Scale * 1.06;
+		Scale    = host.Scale * (rim > 0 ? rim : 1.06);
 
 		// 1.5 units toward the viewer, so the twin is drawn in front of the
 		// host's sprite, never behind it.
@@ -73,8 +74,9 @@ class RSQDG_Glow : Actor
 		SetOrigin(host.Pos + off, true);
 	}
 
-	void Follow(Actor h, Vector3 toward, double alph, Color col)
+	void Follow(Actor h, Vector3 toward, double alph, Color col, double rimScale = 1.06)
 	{
+		rim = rimScale;
 		bool fresh = (host != h) || bINVISIBLE;
 		host = h;
 		eye = toward;

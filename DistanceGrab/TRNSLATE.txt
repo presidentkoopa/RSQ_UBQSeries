@@ -37,3 +37,22 @@ RSQDG_Held = "0:255=%[0.00,0.00,0.00]:[0.45,1.75,0.55]"
 // Searching. The cold blue of a beam that has found nothing yet -- the cone and
 // the laser wear it while the palm is out and the cone is empty.
 RSQDG_Idle = "0:255=%[0.00,0.00,0.00]:[0.45,0.85,1.70]"
+
+// THE SAME FOUR STATES FOR COLOUR-BLIND PLAY (RSQ_Accessibility's rsqa_colorblind; the
+// series palette in zscript/rsqdg/cb.zs). Amber and green are one colour to a deuteranope
+// (CIEDE2000 7.5 simulated), so each vision gets its own pair, picked by suffix:
+//   _PD  protanopia / deuteranopia   searching grey, considered amber, locked/held azure
+//   _T   tritanopia                  searching grey, considered red,   locked/held cyan
+//   _HC  high contrast               searching dim grey, considered yellow, locked/held magenta
+RSQDG_Considered_PD = "0:255=%[0.00,0.00,0.00]:[1.60,1.10,0.00]"
+RSQDG_Locked_PD     = "0:255=%[0.00,0.00,0.00]:[0.30,0.90,1.60]"
+RSQDG_Held_PD       = "0:255=%[0.00,0.00,0.00]:[0.33,0.98,1.75]"
+RSQDG_Idle_PD       = "0:255=%[0.00,0.00,0.00]:[1.30,1.30,1.30]"
+RSQDG_Considered_T  = "0:255=%[0.00,0.00,0.00]:[1.60,0.40,0.40]"
+RSQDG_Locked_T      = "0:255=%[0.00,0.00,0.00]:[0.00,1.40,1.40]"
+RSQDG_Held_T        = "0:255=%[0.00,0.00,0.00]:[0.00,1.54,1.54]"
+RSQDG_Idle_T        = "0:255=%[0.00,0.00,0.00]:[1.30,1.30,1.30]"
+RSQDG_Considered_HC = "0:255=%[0.00,0.00,0.00]:[1.60,1.60,0.00]"
+RSQDG_Locked_HC     = "0:255=%[0.00,0.00,0.00]:[1.60,0.40,1.60]"
+RSQDG_Held_HC       = "0:255=%[0.00,0.00,0.00]:[1.75,0.44,1.75]"
+RSQDG_Idle_HC       = "0:255=%[0.00,0.00,0.00]:[0.88,0.88,0.88]"

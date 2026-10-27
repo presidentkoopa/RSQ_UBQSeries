@@ -270,11 +270,11 @@ class RSQDG_Laser : EventHandler
 		return yaw, pit, len;
 	}
 
-	private TranslationID Tint(int state)
+	static TranslationID Tint(int state)
 	{
-		if (state == 2) return Translation.GetID("RSQDG_Locked");
-		if (state == 1) return Translation.GetID("RSQDG_Considered");
-		return Translation.GetID("RSQDG_Idle");
+		if (state == 2) return Translation.GetID("RSQDG_Locked" .. RSQDG_CB.Suffix());
+		if (state == 1) return Translation.GetID("RSQDG_Considered" .. RSQDG_CB.Suffix());
+		return Translation.GetID("RSQDG_Idle" .. RSQDG_CB.Suffix());
 	}
 
 	override void WorldTick()
