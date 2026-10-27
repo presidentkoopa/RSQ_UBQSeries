@@ -29,6 +29,7 @@ class RSQTR_Body play
 	const PIXELSTRETCH = 1.2;
 	const TOL = 1.5;           // degrees: both controllers moved with the pawn = a turn
 	const SWING = 6.0;         // degrees per tic the body swings round once it follows
+	const STEEP = 40.0;        // degrees of head pitch past which the head's yaw is not trusted
 
 	double yaw;                // the body's heading, degrees
 	double lastA, lastH0, lastH1;
@@ -51,6 +52,16 @@ class RSQTR_Body play
 		double limit = RSQTR_Rig.Num("rsqtr_body_turn", p, 60.0);
 		int need = int(RSQTR_Rig.Num("rsqtr_body_secs", p, 2.0) * TICRATE);
 		double off = Actor.DeltaAngle(yaw, a);
+		// LOOKING DOWN AT YOURSELF IS NOT TURNING. With the head pitched steeply the
+		// headset's yaw swings wildly (the owner's headset, 10-27: "it keeps spinning all
+		// around me" looking at the rig), and in edit mode the body must hold still while
+		// regions are placed on it. Neither counts toward, nor continues, a swing.
+		if (abs(pmo.pitch) > STEEP || RSQTR_Rig.Flag("rsqtr_edit", p, false))
+		{
+			offFor = 0;
+			swinging = false;
+			return;
+		}
 		if (need > 0 && abs(off) > limit) offFor++;
 		else if (!swinging) offFor = 0;
 		if (need > 0 && offFor >= need) swinging = true;
