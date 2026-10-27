@@ -18,7 +18,7 @@ class RSQGR_CB
 
 	static clearscope int Mode()
 	{
-		let cv = CVar.FindCVar('rsqa_colorblind');
+		CVar cv = null; { Name rsqaN = "RSQA_Menu"; class<Object> rsqaC = rsqaN; if (rsqaC) cv = CVar.FindCVar("rsqa_colorblind"); }  // only while RSQ_Accessibility is loaded: a value left in the ini must not act on its own
 		return cv ? clamp(cv.GetInt(), 0, 4) : 0;
 	}
 
