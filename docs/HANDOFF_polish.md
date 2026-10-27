@@ -1,5 +1,17 @@
 ## Branch `agent-upgrades` (2026-10-27): Gun Bonsai melee upgrades
 
+## Branch `agent-up2` (2026-10-27) -- read first
+
+Not yet run on the owner's headset. Rig = QZD 17.3 Linux, freedoom2 / doom2, the owner's load order
++ Gun Bonsai 0.10.6 + the VR patch `agent-up2` (probes `up2/sxa`, `up2/sxe` in the session scratchpad).
+
+| | what | rig (measured) |
+|---|---|---|
+| THE BLADE'S SWEEP NEVER SAW A MISSILE | a projectile is +NOBLOCKMAP (PROJECTILE), so the BlockThingsIterator in `Deflect` and `SpinDeflect` never returned one; only the block on contact (DamageMobj) turned shots. `UBQS_Memory.missiles` (WorldThingSpawned, pruned each tic) is walked instead | before: an imp ball aimed at a still, held blade flew through it and stopped on the player; after: turned at 63 units, master = the saber, back at the imp |
+| Force Pull 3+ yank | the monster's likeliest DropItem is spawned (with replacement) and lobbed at the hand, once per monster; its own death drop is then removed (`UBQS_Memory.Yank`, WorldThingSpawned) | vanilla zombieman: a clip lands 20 units from the player; its death drops nothing (control zombieman: 1 clip). Brutal Doom zombie: its PistolSpawner / RifleSpawner flies to the player and is picked up ("You got the Assault Rifle") |
+| Riposte Edge | x1.5 at level 1 (+0.25 a level), was x2 | a real `CutAlong`: 30 unprimed, 45 primed; the prime is spent on the cut |
+
+
 Not yet run on the owner's headset. The saber asks the Gun Bonsai VR patch for its upgrade levels by
 NAME (`UBQS_Upg` at the end of zscript.txt -> `RSQ_MeleeUpgradeService`), cached once a second.
 Without the patch every level reads 0 and the Force is today's (rig, saber + BD only: push 20.9,
