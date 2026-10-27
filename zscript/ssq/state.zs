@@ -651,14 +651,18 @@ class SSQ_Handler : EventHandler
 			// BIG ENOUGH TO SEE. These were 1.6 / 1.1 / 0.8 at 60% alpha over a monster's head,
 			// which in a headset at ten metres is nothing. The one the disc visits first is twice
 			// the size of the rest and fully lit, and it breathes so it reads as alive.
-			double pulse = 1.0 + 0.12 * sin(Level.maptime * 9.0 + k * 40);
+			// High contrast (rsqa_colorblind 4): every mark fully lit and a fifth larger, the first
+			// breathing twice as deep -- the gold art carries no meaning of its own, rank is size.
+			bool hc = SSQ_CB.Mode() == 4;
+			double pulse = 1.0 + (hc && k == 0 ? 0.24 : 0.12) * sin(Level.maptime * 9.0 + k * 40);
+			if (hc) pulse *= 1.2;
 			m.bInvisible = false;
 			m.SetOrigin(t.pos + (0, 0, t.height + 12), true);
 			// around the actor's own 0.35, not around 1: the one the disc visits first is a
 			// little under twice the others, which is plenty to read at range without
 			// magnifying a 48-pixel picture into a dinner plate.
 			m.A_SetScale(0.35 * (k == 0 ? 1.8 : (k == 1 ? 1.3 : 1.0)) * pulse * SV('ssq_lock_mark_scale', 1.0));
-			m.A_SetRenderStyle(k == 0 ? 1.0 : 0.85, STYLE_Add);
+			m.A_SetRenderStyle((k == 0 || hc) ? 1.0 : 0.85, STYLE_Add);
 			m.angle += (k == 0 ? 14 : 8);
 		}
 	}
