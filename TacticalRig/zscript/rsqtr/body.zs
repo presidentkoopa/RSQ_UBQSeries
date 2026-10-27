@@ -17,8 +17,9 @@
 // leaves the rig where it is; turns carry it.
 //
 // Turning your actual body in the room cannot be seen (there is no body tracker), so a
-// head turned past rsqtr_body_turn degrees (25) is taken as the body turning, and the body
-// follows it at once; small looks to the side, and anything while you look down, leave it.
+// head turned past rsqtr_body_turn degrees (35) and held rsqtr_body_secs (1 s) is taken as the
+// body turning, and the body eases round to it; small looks to the side, and anything while you
+// look steeply down, leave it.
 //
 // ROOM vs MAP: 34 map units per metre horizontally, 28.33 vertically (Doom's
 // pixels are 1.2 tall). Every offset here is given in metres and converted per

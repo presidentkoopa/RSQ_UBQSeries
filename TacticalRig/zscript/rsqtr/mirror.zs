@@ -1,7 +1,6 @@
 // THE MIRROR (rsqtr_mirror): see yourself wearing the rig.
 //
-// You can look down at your hips, chest and stomach, but never at your own shoulders or
-// back. So a copy of you stands in front of you: the torso, every region's sphere, what
+// You can look down at your hips, but never at your own shoulders or back. So a copy of you stands in front of you: the torso, every region's sphere, what
 // each region holds, and your two hands (small green spheres), moving as you move.
 //   rsqtr_mirror       0 off, 1 while moving the regions (the default), 2 always
 //   rsqtr_mirror_view  0 your front, as a mirror shows it (reach for your right shoulder

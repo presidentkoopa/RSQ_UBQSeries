@@ -11,8 +11,8 @@
 //
 // Other mods can ask the rig what it holds, through RSQTR_RigService:
 //   GetInt("rig.region", "", hand)          region the hand is in, or -1
-//   GetInt("rig.busy", "", hand, 0, pawn)   1 while the hand is in a region or a radial,
-//                                           holds a door, the cigarette or the Zippo
+//   GetInt("rig.busy", "", hand, 0, pawn)   1 while the hand is in a holster,
+//                                           holds a Distance Grab door, the cigarette or the Zippo
 // The hands are known on the console player's own machine only, so both answers are
 // for that player (a pawn passed as objectArg that is someone else's gets 0 / -1).
 //   GetInt("rig.drawtic", "", 0, 0, pawn)   level.maptime of that player's last draw from
