@@ -103,7 +103,7 @@ class TFLV_HUD : Object ui {
 
   // rsqa_handed (RSQ_Accessibility: 1 right, 2 left) when set, else QuestZDoom's own Control Scheme.
   static clearscope bool RSQ_LeftLayout() {
-    let h = CVar.FindCVar("rsqa_handed");
+    CVar h = null; { Name rsqaN = "RSQA_Menu"; class<Object> rsqaC = rsqaN; if (rsqaC) h = CVar.FindCVar("rsqa_handed"); }  // only while RSQ_Accessibility is loaded: a value left in the ini must not act on its own
     int v = h ? h.GetInt() : 0;
     if (v == 1) return false;
     if (v == 2) return true;
@@ -335,7 +335,7 @@ class RSQGB_CB
 
 	static clearscope int Mode()
 	{
-		let cv = CVar.FindCVar('rsqa_colorblind');
+		CVar cv = null; { Name rsqaN = "RSQA_Menu"; class<Object> rsqaC = rsqaN; if (rsqaC) cv = CVar.FindCVar("rsqa_colorblind"); }  // only while RSQ_Accessibility is loaded: a value left in the ini must not act on its own
 		return cv ? clamp(cv.GetInt(), 0, 4) : 0;
 	}
 
