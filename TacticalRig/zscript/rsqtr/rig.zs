@@ -70,6 +70,7 @@ class RSQTR_Rig : EventHandler
 	ui bool keyState[2];
 
 	static RSQTR_Rig Get() { return RSQTR_Rig(EventHandler.Find("RSQTR_Rig")); }
+	RSQTR_Body GetBody() const { return body; }
 	private transient RSQTR_Fit fitData;
 	RSQTR_Fit GetFit() { if (!fitData) fitData = RSQTR_Fit.Load(); return fitData; }
 	int HoverRegion(int h) const { return (h == 0 || h == 1) ? hoverR[h] : -1; }
@@ -1028,7 +1029,7 @@ class RSQTR_Rig : EventHandler
 		let it = ThinkerIterator.Create("Actor");
 		Actor a;
 		while (a = Actor(it.Next()))
-			if (a is "RSQTR_Marker" || a is "RSQTR_Icon" || a is "RSQTR_TorsoPart" || a is "RSQTR_MarinePart" || a is "RSQTR_HelmetPart") a.Destroy();
+			if (a is "RSQTR_Marker" || a is "RSQTR_Icon" || a is "RSQTR_TorsoPart" || a is "RSQTR_MarinePart" || a is "RSQTR_HelmetPart" || a is "RSQTR_HeldShow") a.Destroy();
 	}
 
 	// OnRegister also runs when a save is loaded (a level's handlers get no WorldLoaded
