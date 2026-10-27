@@ -231,6 +231,7 @@ class SSQ_Guard : Inventory
 
 		// blocked
 		newdamage = 0;
+		{ let sh = SSQ_Handler.Get(); if (sh && sh.score) sh.score.Blocked(source); }
 		// the spark comes off the face on the attacker's side
 		Vector3 outward = ((A - C) dot n) >= 0 ? n : -n;
 
@@ -376,6 +377,9 @@ class SSQ_Guard : Inventory
 			if (ric)
 			{
 				ric.target = mo;
+				// a MISSILE so a scorer walks from it to the player who turned the shot: a kill by a
+				// returned bullet was credited to this helper, and so to nobody
+				ric.bMissile = true;
 				ric.angle = ang;
 				FTranslatedLineTarget hitT;
 				ric.LineAttack(ang, max(dist, 1024.0), pit, dmg, 'Hitscan', 'BulletPuff', LAF_ABSPOSITION, hitT, P.z, P.x, P.y);
@@ -384,6 +388,7 @@ class SSQ_Guard : Inventory
 				// damage to the helper, so co-op friendly-fire rules do not see a player source.)
 				let v = hitT.linetarget;
 				if (v && v.health > 0 && v.target == ric) v.target = mo;
+				{ let sh = SSQ_Handler.Get(); if (sh && sh.score) sh.score.ReturnHit(v); }
 			}
 		}
 		return true;
@@ -539,6 +544,7 @@ class SSQ_Guard : Inventory
 		back.pitch = -asin(clamp(dir.z, -1, 1));
 		back.target = mo;	// ours now: it hurts them, never us
 		back.bMissile = true;
+		{ let sh = SSQ_Handler.Get(); if (sh && sh.score) sh.score.Turned(back); }
 		missile.vel = (0, 0, 0);	// the original dies on the box as it would have
 	}
 

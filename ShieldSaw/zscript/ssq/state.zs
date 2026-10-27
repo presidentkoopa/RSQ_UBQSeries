@@ -44,6 +44,10 @@ class SSQ_Handler : EventHandler
 	Array<int>   mLockMiss[MAXPLAYERS];	// tics each lock has been out of the keep cone or out of sight
 	int   mLastPaint[MAXPLAYERS];	// the tic the last target was painted: they go on one at a time
 	int   mKeepMarks[MAXPLAYERS];	// let go for less than this long and your marks are still there
+	bool  mLockKey[MAXPLAYERS];	// the ShieldSaw Lock key is down (netevent ssq-lock, ssq_lock_input 1)
+	bool  mLockWas[MAXPLAYERS];	// the lock input last tic
+	bool  mMigrated;
+	SSQ_ScoreMemory score;		// what a scorer may ask about blocks and turned shots (score.zs)
 	int   mLockSig[MAXPLAYERS];
 
 
@@ -196,10 +200,43 @@ class SSQ_Handler : EventHandler
 	static clearscope bool SecHeld(PlayerInfo p)
 	{
 		int b = p.cmd.buttons;
-		int mode = SVI('ssq_lock_button', 1);
+		int mode = SVI('ssq_lock_button', 2);
 		if (mode == 0) return (b & BT_OFFHANDALTATTACK) != 0;
 		if (mode == 2) return (b & BT_OFFHANDATTACK) != 0;
 		return (b & (BT_OFFHANDATTACK | BT_OFFHANDALTATTACK)) != 0;
+	}
+
+	// Server settings still at the OLD defaults move to the new ones (a saved cvar outlives a
+	// changed default): locks dropped 0.4 s out of view (14 tics) and the rings 1 s after letting
+	// go (35); either off button threw. Now 3 s, 5 s, and the trigger.
+	void MigrateLocks()
+	{
+		let g = CVar.FindCVar('ssq_lock_grace');
+		if (g && g.GetInt() == 14) g.SetInt(105);
+		let k = CVar.FindCVar('ssq_keep_marks');
+		if (k && k.GetInt() == 35) k.SetInt(175);
+		let b = CVar.FindCVar('ssq_lock_button');
+		if (b && b.GetInt() == 1) b.SetInt(2);
+	}
+
+	// THE LOCK INPUT, ITS OWN BUTTON (the owner, 10-27: "hold trigger to rev AND lock on? ... the
+	// lock on fades off after a few tics so I still can't hit shit"). Holding the trigger used to
+	// rev, paint and throw at once. Now the trigger revs (and throws on release), and locking is
+	// a separate hold, picked per player in ssq_lock_input:
+	//   0  Use, held away from the shoulder mount (no binding needed)        <- default
+	//   1  the "ShieldSaw: lock on (hold)" key -- bind the off grip or any key to it
+	//   2  the old way: the throw button paints too
+	bool LockHeld(int i)
+	{
+		let p = players[i];
+		int mode = UVI(p, 'ssq_lock_input', 0);
+		if (mode == 1) return mLockKey[i];
+		if (mode == 2) return SecHeld(p);
+		if ((p.cmd.buttons & BT_USE) == 0) return false;
+		// Use at the mount is the draw / holster, not a lock
+		let pose = mPose[i];
+		if (!pose.Fresh(Level.maptime)) return true;
+		return (pose.pos[0] - MountPos(p.mo)).Length() > Reach(p);
 	}
 
 	static clearscope double Reach(PlayerInfo p) { return CM(UV(p, 'ssq_mount_reach', 30.0)); }
@@ -245,6 +282,8 @@ class SSQ_Handler : EventHandler
 	// ---- the sim, once a tic, every machine ------------------------------------------
 	override void WorldTick()
 	{
+		if (!mMigrated) { mMigrated = true; MigrateLocks(); }
+		if (!score) score = new('SSQ_ScoreMemory');
 		SendPose();
 		for (int i = 0; i < MAXPLAYERS; i++)
 		{
@@ -279,8 +318,8 @@ class SSQ_Handler : EventHandler
 			if (!use) mStowLatch[i] = false;
 			if (mState[i] == SS_STOWED && use && !mStowLatch[i]) OnPress(i);
 			else if (mState[i] == SS_DRAWN && usePress) OnPress(i);
-			// HOLD to lock on, let go to throw, press again in flight to recall.
-			// Either off-hand button by default -- see SecHeld.
+			// THE TRIGGER: held revs; let go with a forward flick throws (to the locks, or where
+			// you point); press again in flight to recall. Locking is its own input (LockHeld).
 			bool sec = SecHeld(p);
 			bool secPress = sec && !mGripWas[i];
 			bool secRelease = !sec && mGripWas[i];
@@ -349,7 +388,7 @@ class SSQ_Handler : EventHandler
 		}
 		if (UVI(p, 'ssq_debug', 0)) Console.Printf("ssq: release p%d speed %.0f/s, %d locked, forward %d", i, speed, mLocks[i].Size(), forward);
 		if (speed >= SV('ssq_throw_min', 60.0) && forward) Throw(i);
-		else mKeepMarks[i] = Level.maptime + SVI('ssq_keep_marks', 35);	// not a throw: hold the marks a moment
+		else mKeepMarks[i] = max(mKeepMarks[i], Level.maptime + SVI('ssq_keep_marks', 175));	// not a throw: hold the marks
 	}
 
 	clearscope bool Holding(int i) { return true; }	// the catch needs only the hand near the disc
@@ -507,7 +546,10 @@ class SSQ_Handler : EventHandler
 		let p = players[i];
 		let mo = p.mo;
 		let pose = mPose[i];
-		bool aiming = SecHeld(p);
+		bool aiming = LockHeld(i);
+		// let go of the lock: the rings stay ssq_keep_marks tics (5 s), long enough to rev and throw
+		if (!aiming && mLockWas[i]) mKeepMarks[i] = Level.maptime + SVI('ssq_keep_marks', 175);
+		mLockWas[i] = aiming;
 		// A BRIEF RELEASE DOES NOT COST YOU YOUR MARKS. Let go for under ssq_keep_marks tics --
 		// to re-grip, to steady yourself -- and the list is still there when you take hold again.
 		// Longer than that, or the shield leaving your hand, and it starts fresh.
@@ -523,7 +565,7 @@ class SSQ_Handler : EventHandler
 		}
 
 		int want = SVI('ssq_locks', 5);
-		int grace = SVI('ssq_lock_grace', 14);
+		int grace = SVI('ssq_lock_grace', 105);
 		while (mLockMiss[i].Size() < mLocks[i].Size()) mLockMiss[i].Push(0);
 
 		// hold what is already locked
@@ -883,6 +925,10 @@ class SSQ_Handler : EventHandler
 			if (mState[i] == SS_STOWED) Draw(i);
 			else if (mState[i] == SS_DRAWN) Stow(i, true);
 			else if (mDisc[i]) SSQ_Disc(mDisc[i]).Recall();
+		}
+		else if (e.Name == "ssq-lock")
+		{
+			mLockKey[i] = e.Args[0] != 0;
 		}
 		else if (e.Name == "ssq-throw")
 		{

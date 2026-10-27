@@ -195,3 +195,24 @@ both off — a shield you cannot see should not stop bullets); hand always on th
 left-handed comes from the engine; lock-on up to five; throw is a release at speed in the
 direction you are looking; a missed catch lands on the mount; blocked missiles go back; the
 options menu is the list in `MENUDEF.txt`, no descriptors.
+
+
+## 2026-10-27 (owner's headset rounds)
+
+- **Rev fixed with BD22Q.** BD22Q asked for its hands weapon in the off hand every tic; PinHands
+  answered with BringUpWeapon, whose Select zeroed the rev, so it never wound up and the blades never
+  opened (rig probe: rev stuck at 1 with BD22Q, 21 without). A raise merely asked for while the shield
+  is in the hand is now cancelled, not answered. Rig with BD22Q: rev 21, frames 5-7.
+- **Brutal Doom v22 monster compatibility** (`ssq_bd22`): sliced up to 250 spawn health, grinding up
+  to 1200 (BD health measured: imp 80, demon 200, revenant 250, baron 1200). Rig: a BD imp was ground
+  down over ~16 tics with it off, bisected in one hit with it on.
+- **Lock-on is its own button** (`ssq_lock_input`: Use away from the mount by default, a bindable
+  "ShieldSaw: lock on (hold)" key, or the throw button as before). The trigger revs and throws on a
+  flicked release (`ssq_lock_button` default 2). Locks kept 105 tics out of sight (was 14), rings 175
+  tics after letting go (was 35); saved old defaults are moved. Rig: Use held 25 tics locked a BD imp;
+  the lock held ~5 s after letting go; saved 14/35/1 read back 105/175/2.
+- **Draw from the shoulder with Use** (`ssq_shoulder_use`): off, only the Draw key draws and the rig
+  keeps the shoulder.
+- **SSQ_ScoreService** (score.zs): blocks and turned shots for a scorer, by name. A returned bullet's
+  helper is a MISSILE now, so its kill is credited to the player who turned it.
+- Not felt in a headset: the flick throw with the trigger alone, Use as the lock button.
