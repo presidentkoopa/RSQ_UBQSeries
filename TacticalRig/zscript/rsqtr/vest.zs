@@ -22,6 +22,7 @@
 class RSQTR_Torso : EventHandler
 {
 	const COLLAR = 18.1;          // model units: the top of the Quake mesh
+	const HELMET_DROP = 6.0;      // map units the helmet sits below the eyes: at 0 it floated 0.62 of its height over the collar, at 7.8 it sank 0.28 into the shoulders (both measured in the mirror)
 	const SHOULDERS = 51.689;     // model units: the marine's shoulder line (RS_VRBody's PivotOffset)
 	transient Actor body, breath;      // read by the mirror (mirror.zs)
 	transient Actor helmet;            // read by the mirror too
@@ -74,7 +75,13 @@ class RSQTR_Torso : EventHandler
 			if (!helmet) helmet = Actor.Spawn("RSQTR_HelmetPart", RSQTR_Body.Head(pmo));
 			if (helmet)
 			{
-				helmet.SetOrigin(RSQTR_Body.Head(pmo), true);
+				// IT RESTS ON THE TORSO (the owner, 10-27: "the helmet seems pretty high, does it
+				// rest on the torso like a real head?"). At the eyes it floated a neck's height over
+				// the collar (measured in the mirror: a gap of 0.62 of the helmet's own height), so it
+				// sits DROP lower, scaled with the body; rsqtr_helmet_u fine-tunes it in metres.
+				double hs0 = RSQTR_Rig.Num("rsqtr_vest_size", p, 1.0) * k;
+				double lift = RSQTR_Rig.Num("rsqtr_helmet_u", p, 0.0) * RSQTR_Body.UPM / RSQTR_Body.PIXELSTRETCH;
+				helmet.SetOrigin(RSQTR_Body.Head(pmo) + (0, 0, lift - HELMET_DROP * hs0), true);
 				helmet.angle = pmo.angle;
 				helmet.pitch = pmo.pitch;
 				helmet.roll = pmo.roll;
