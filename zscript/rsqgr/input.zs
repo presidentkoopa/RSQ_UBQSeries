@@ -69,7 +69,10 @@ class RSQGR_Input : EventHandler
 	// while the hand did not move), and climbing fed on it: the body overshot and came
 	// back 14-17 units a stroke. Against the frame's own eye (RenderEvent.ViewPos) it is
 	// constant (-4.17 every frame of the same run), so the height is taken there and
-	// put back on the pawn's uninterpolated eye (player.viewz).
+	// put back on the eye's height above the pawn (player.viewheight). Not on
+	// player.viewz - pos.z: viewz is set in P_PlayerThink BEFORE the pawn moves that tic,
+	// so it trails a moving body by a tic of vertical speed, and the climb chased it in
+	// a 6-tic, 16-unit loop with the hand held still (rig).
 	override void RenderOverlay(RenderEvent e)
 	{
 		let c = RSQGR_Core.Get();
@@ -82,7 +85,7 @@ class RSQGR_Input : EventHandler
 		{
 			if (!c.grabHeld[pn * 2 + hand] || !RSQGR_Util.PoseGood(pmo, hand)) continue;
 			Vector3 h = hand == 0 ? pmo.AttackPos : pmo.OffhandPos;
-			Vector3 off = (h.x - pmo.Pos.x, h.y - pmo.Pos.y, (h.z - e.ViewPos.z) + (p.viewz - pmo.Pos.z));
+			Vector3 off = (h.x - pmo.Pos.x, h.y - pmo.Pos.y, (h.z - e.ViewPos.z) + p.viewheight);
 			EventHandler.SendNetworkEvent("rsqgr_pose", hand, RSQGR_Climb.Pack(off));
 		}
 	}

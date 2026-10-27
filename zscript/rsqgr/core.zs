@@ -150,9 +150,28 @@ class RSQGR_Core : EventHandler
 
 	double tickMs;   // last WorldTick's cost (rsqgr_debug)
 
+	// Not saved: after a load (or on a new map) it reads false on the first tic.
+	transient bool settled;
+
+	// THE FIRST TIC AFTER A LOAD. WorldLoaded runs before a saved handler's fields are
+	// read back (rig: a hold reset there came back from the save and kept climbing), so
+	// the reset is done here, on the first tic this handler object has not seen: no
+	// bind reads as held (a release that happened before the save never comes), no hand
+	// holds the rope, no streamed pose is fresh.
+	void Settle()
+	{
+		settled = true;
+		for (int i = 0; i < NHOOK; i++)
+		{
+			held[i] = false; pressFired[i] = false; grabHeld[i] = false; wantGrip[i] = false; poseTic[i] = -100;
+			if (hooks[i]) { hooks[i].gripHand = -1; hooks[i].gripPending = false; }
+		}
+	}
+
 	override void WorldTick()
 	{
 		double t0 = MSTimeF();
+		if (!settled) Settle();
 		worldScale = RSQGR_Util.WorldScale();
 		for (int pn = 0; pn < MAXPLAYERS; pn++)
 		{
@@ -465,7 +484,7 @@ class RSQGR_Core : EventHandler
 				if (!Sees(pmo, b, a)) { if (++h.losBad >= 3) { LetGo(h, false); continue; } }
 				else h.losBad = 0;
 			}
-			if (level.maptime % 2 == 0 || climbing) Log(h, climbing ? "climb" : h.reelHeld ? "reel" : (h.gripHand >= 0 ? "hold" : "swing"));
+			if (level.maptime % 2 == 0 || (climbing && climbStep != 0)) Log(h, (climbing && climbStep != 0) ? "climb" : h.reelHeld ? "reel" : (h.gripHand >= 0 ? "hold" : "swing"));
 		}
 		tracked[pn] = roped;
 		if (roped) { lastPos[pn] = pmo.Pos; lastSet[pn] = pmo.vel; }
@@ -541,9 +560,11 @@ class RSQGR_Core : EventHandler
 		delta = clamp(delta, -cap, cap);
 		double nl = clamp(h.ropeLen + delta, minLen, maxLen);
 		delta = nl - h.ropeLen;
-		if (abs(delta) < 0.01) return false;
 		h.ropeLen += delta;
 		step = delta;
+		// HOLDING is the answer even when the hand is still: the body then hangs from
+		// the hand with no radial speed of its own, so a stroke stops when the arm does
+		// instead of coasting on (rig: 27 units of overshoot after a stroke ended).
 		return true;
 	}
 
@@ -641,9 +662,9 @@ class RSQGR_Core : EventHandler
 		if (RSQGR_Util.Opt("rsqgr_debug", 0) < 1 || !h || !h.owner) return;
 		let p = h.owner;
 		Vector3 b = AttachPoint(p);
-		Console.Printf("T_GR t%d h%d %s pos(%.1f %.1f %.1f) vel(%.2f %.2f %.2f) claw(%.1f %.1f %.1f) L%.1f d%.1f segs%d ms%.3f/%.3f scale%.2f grip%d free%d%d%s",
+		Console.Printf("T_GR t%d h%d %s pos(%.1f %.1f %.1f) vel(%.2f %.2f %.2f) claw(%.1f %.1f %.1f) L%.1f d%.1f segs%d ms%.3f/%.3f scale%.2f grip%d free%d%d hoff%.2f pt%d%s",
 			level.maptime, h.hand, what, p.Pos.x, p.Pos.y, p.Pos.z, p.vel.x, p.vel.y, p.vel.z,
-			h.Pos.x, h.Pos.y, h.Pos.z, h.ropeLen, (h.anchor - b).Length(), h.segs.Size() + h.links.Size(), h.drawMs, tickMs, worldScale, h.gripHand, RSQGR_Climb.HandFree(p, 0), RSQGR_Climb.HandFree(p, 1),
+			h.Pos.x, h.Pos.y, h.Pos.z, h.ropeLen, (h.anchor - b).Length(), h.segs.Size() + h.links.Size(), h.drawMs, tickMs, worldScale, h.gripHand, RSQGR_Climb.HandFree(p, 0), RSQGR_Climb.HandFree(p, 1), h.gripHand >= 0 ? poseOff[p.PlayerNumber() * 2 + h.gripHand].z : 0., h.gripHand >= 0 ? poseTic[p.PlayerNumber() * 2 + h.gripHand] : -1,
 			h.victim ? String.Format(" victim %s (%.1f %.1f %.1f)", h.victim.GetClassName(), h.victim.Pos.x, h.victim.Pos.y, h.victim.Pos.z) : "");
 	}
 }

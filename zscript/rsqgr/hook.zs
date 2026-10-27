@@ -238,6 +238,8 @@ class RSQGR_Hook : Actor
 		Vector3 b = (px[1], py[1], pz[1]);
 		double segLen = (b - a).Length();
 		double sc = RSQGR_Util.Num("rsqgr_chain_scale", 0.125);
+		bool nearEye = owner.player == players[consoleplayer];
+		Vector3 eye = owner.Pos + (0, 0, owner.player.viewheight);
 		for (int k = 0; k < want; k++)
 		{
 			double at = CHAIN_START + k * step;
@@ -251,6 +253,12 @@ class RSQGR_Hook : Actor
 			}
 			double f = segLen > 0.001 ? clamp((at - segStart) / segLen, 0.0, 1.0) : 0.0;
 			Vector3 q = a + (b - a) * f;
+			// NOT IN YOUR FACE. A climbing hand holds the rope above your head, so the
+			// chain runs past the eye; a 5-unit link 5 units from the eye fills the view
+			// (rig frames, 10-27). jp_grapple's nearest link is 15 units from the hand and
+			// his trail never comes back past you, so no link is drawn within 15 units of
+			// the viewer's eye (local: only the camera player's own rope).
+			bool hide = nearEye && (q - eye).Length() < CHAIN_START;
 			if (k >= links.Size()) links.Push(null);
 			let l = links[k];
 			if (!l)
@@ -260,6 +268,7 @@ class RSQGR_Hook : Actor
 			}
 			else l.SetOrigin(q, true);
 			l.scale = (sc, sc);
+			l.bINVISIBLE = hide;
 		}
 	}
 
@@ -329,6 +338,7 @@ class RSQGR_Link : Actor
 		+DONTSPLASH
 		+NOTONAUTOMAP
 		+NOTELEPORT
+		+FORCEXYBILLBOARD   // round when you look up the rope at it (LoreShot2 is yaw-only: squashed ovals overhead, rig frames)
 		RenderStyle "Normal";
 		Scale 0.125;
 	}
