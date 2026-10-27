@@ -100,6 +100,13 @@ class RSQTR_MirrorView play
 class RSQTR_Mirror : EventHandler
 {
 	private transient RSQTR_MirrorView views[2];
+	// THE MIRROR STANDS STILL. Placed in front of you when it appears and left there, like
+	// a real one: it does not follow your head or body round (it did: "it keeps spinning all
+	// around me"). It is put back in front of you when you walk 3 m from it or turn more than
+	// 100 degrees away from it.
+	private transient bool anchored;
+	private transient Vector2 aPlane, aN;
+	private transient double aYaw;
 
 	override void WorldTick()
 	{
@@ -110,6 +117,23 @@ class RSQTR_Mirror : EventHandler
 			&& (mode == 2 || (mode == 1 && RSQTR_Rig.Flag("rsqtr_edit", p, false)));
 		int view = want ? RSQTR_Rig.Opt("rsqtr_mirror_view", p, 2) : -1;
 		let pmo = want ? p.mo : null;
+		if (!want) anchored = false;
+		else
+		{
+			double by = rig.BodyYaw(pmo);
+			Vector3 h3 = RSQTR_Body.Head(pmo);
+			Vector2 hd = h3.xy;
+			double dist = RSQTR_Rig.Num("rsqtr_mirror_m", p, 1.0) * RSQTR_Body.UPM;
+			if (anchored && ((hd - aPlane).Length() > 3.0 * RSQTR_Body.UPM + dist || abs(Actor.DeltaAngle(aYaw, by)) > 100))
+				anchored = false;
+			if (!anchored)
+			{
+				aYaw = by;
+				aN = (cos(by), sin(by));
+				aPlane = hd + aN * dist;
+				anchored = true;
+			}
+		}
 		let tor = RSQTR_Torso(EventHandler.Find("RSQTR_Torso"));
 		for (int i = 0; i < 2; i++)
 		{
@@ -118,10 +142,10 @@ class RSQTR_Mirror : EventHandler
 			if (!views[i]) views[i] = new("RSQTR_MirrorView");
 			let v = views[i];
 			if (!show) { v.Hide(); continue; }
-			v.yaw = rig.BodyYaw(pmo);
-			v.n = (cos(v.yaw), sin(v.yaw));
+			v.yaw = aYaw;
+			v.n = aN;
 			v.head = RSQTR_Body.Head(pmo);
-			v.plane = v.head.xy + v.n * (RSQTR_Rig.Num("rsqtr_mirror_m", p, 1.0) * RSQTR_Body.UPM);
+			v.plane = aPlane;
 			v.back = i == 1;
 			v.side = view == 2 ? (i == 0 ? 0.45 : -0.45) * RSQTR_Body.UPM : 0;
 			v.Update(pmo, rig, tor);

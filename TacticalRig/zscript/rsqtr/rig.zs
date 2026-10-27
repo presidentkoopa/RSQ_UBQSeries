@@ -358,6 +358,7 @@ class RSQTR_Rig : EventHandler
 	override void WorldTick()
 	{
 		if (afterLoad) { afterLoad = false; ClearLocalMarks(); }
+		if (!migrated) { migrated = true; MigratePlaces(); }
 		let p = players[consoleplayer];
 		if (!p || !p.mo) return;
 		let pmo = p.mo;
@@ -438,6 +439,27 @@ class RSQTR_Rig : EventHandler
 		}
 		useWas = useDown;
 		DrawMarkers(pmo, p);
+	}
+
+	// Saved places outlive new defaults (a user cvar keeps its stored value), so a place
+	// still at an OLD default is moved to the new one: the pectorals were at the collarbone
+	// (0.13 f, +-0.11 l, -0.27 u) until 10-27, beside your face. A place moved by hand is left.
+	private transient bool migrated;
+	private void MigratePlaces()
+	{
+		for (int r = 6; r <= 7; r++)
+		{
+			let cf = CVar.FindCVar(String.Format("rsqtr_r%d_f", r));
+			let cl = CVar.FindCVar(String.Format("rsqtr_r%d_l", r));
+			let cu = CVar.FindCVar(String.Format("rsqtr_r%d_u", r));
+			if (!cf || !cl || !cu) continue;
+			if (abs(cf.GetFloat() - 0.13) < 0.001 && abs(abs(cl.GetFloat()) - 0.11) < 0.001 && abs(cu.GetFloat() + 0.27) < 0.001)
+			{
+				cf.SetFloat(RSQTR_Region.DF[r]);
+				cl.SetFloat(RSQTR_Region.DL[r]);
+				cu.SetFloat(RSQTR_Region.DU[r]);
+			}
+		}
 	}
 
 	private void SaveEdit(PlayerPawn pmo, PlayerInfo p)
