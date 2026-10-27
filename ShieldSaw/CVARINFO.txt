@@ -45,6 +45,7 @@ server int   ssq_crumb_every    = 4;      // tics between breadcrumbs on the way
 
 // what a thrown disc does, by the victim's authored health (SpawnHealth), never by class name
 server bool  ssq_tiers          = true;
+server bool  ssq_bd22           = false;  // Brutal Doom v22 monster compatibility: hit tiers for its tougher monsters (slice <= 250, grind <= 1200)
 server int   ssq_tier_fodder    = 70;     // at or under: bisected
 server int   ssq_tier_mid       = 600;    // at or under: the disc embeds and grinds
 server int   ssq_embed_tics     = 21;

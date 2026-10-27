@@ -90,6 +90,10 @@ Bind in **Customize Controls**; there are no keys of our own.
 *Draw from the shoulder with Use* (on by default): turn it off to use the Draw key alone; the shoulder
 is then no grab, its marker is hidden, and RSQ_TacticalRig keeps that shoulder for weapons.
 
+*Brutal Doom v22 monster compatibility* (off by default): Brutal Doom's monsters are tougher than Doom's,
+so on the normal limits nearly everything from an imp up stops the disc. On: it slices through anything up
+to 250 health (to the revenant), sticks and grinds up to 1200 (to the baron), and glances off bigger.
+
 Either off-hand button works, because QZD's stock binds put the alt behind a grip shift — the same
 grip that arms the two-hand grab. `ssq_lock_button` forces one or the other if you prefer.
 

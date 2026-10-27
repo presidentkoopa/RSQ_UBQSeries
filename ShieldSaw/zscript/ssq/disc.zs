@@ -11,6 +11,8 @@
 
 class SSQ_Disc : Actor
 {
+	const BD22_FODDER = 250;	// ssq_bd22: sliced through at or under this spawn health
+	const BD22_MID = 1200;		// ssq_bd22: stuck and grinding at or under this
 	enum EPhase { PH_OUT = 0, PH_EMBED, PH_HOME }
 
 	PlayerPawn thrower;
@@ -355,6 +357,14 @@ class SSQ_Disc : Actor
 		bool tiers = SSQ_Handler.SVI('ssq_tiers', 1) != 0;
 		int fodder = SSQ_Handler.SVI('ssq_tier_fodder', 70);
 		int mid = SSQ_Handler.SVI('ssq_tier_mid', 600);
+		// BRUTAL DOOM v22 MONSTERS (ssq_bd22): its monsters are tougher than Doom's (measured on
+		// brutal22test6, spawn health: zombie and shotgunner 40, imp and chaingunner 80, lost
+		// soul 100, demon 200, revenant 250, cacodemon 400, hell knight 500, mancubus 600,
+		// archvile 700, arachnotron 750, baron 1200, spider 4000, cyberdemon 5000), so on the
+		// vanilla limits nearly everything from an imp up stopped the disc. With it on: sliced
+		// through up to 250 (up to the revenant), stuck and grinding up to 1200 (to the baron),
+		// glancing off past that.
+		if (SSQ_Handler.SVI('ssq_bd22', 0) != 0) { fodder = BD22_FODDER; mid = BD22_MID; }
 		bool wasLock = locks.Find(victim) < locks.Size();
 
 		if (tiers && !victim.bBoss && sh <= fodder)
