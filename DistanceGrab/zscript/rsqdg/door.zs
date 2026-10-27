@@ -77,6 +77,11 @@ class RSQDG_Door : EventHandler
 	// door is let go as if released (it finishes or drops by the same rule).
 	private void ReleaseAfterLoad()
 	{
+		// A door voice saved mid-lift keeps looping with nothing pointing at it (the pointer is
+		// transient; the runtime audit, 10-27): find them and stop them.
+		let vit = ThinkerIterator.Create("RSQDG_DoorVoice");
+		Actor dv;
+		while (dv = Actor(vit.Next())) { dv.A_StopSound(CHAN_BODY); dv.Destroy(); }
 		for (int i = 0; i < MAXPLAYERS; i++)
 		{
 			if (dLine[i] < 0) continue;
