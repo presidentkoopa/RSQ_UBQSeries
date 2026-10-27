@@ -9,6 +9,12 @@ register
   RSQ_Upgrade_ForcePush RSQ_Upgrade_ForcePull RSQ_Upgrade_ForceChoke RSQ_Upgrade_ForceJump
   RSQ_Upgrade_Ricochet RSQ_Upgrade_MeatGrinder RSQ_Upgrade_HuntersReturn
   RSQ_Upgrade_Bulwark RSQ_Upgrade_Rebound RSQ_Upgrade_BatteringRam
+  RSQ_Upgrade_Broadening RSQ_Upgrade_Lockstep RSQ_Upgrade_Deflector
+  RSQ_Upgrade_LongArm RSQ_Upgrade_IronGrip RSQ_Upgrade_HeavyHitter RSQ_Upgrade_AirCatch RSQ_Upgrade_PowderKeg
+  RSQ_Upgrade_QuickDraw RSQ_Upgrade_PairDraw RSQ_Upgrade_Showdown
+  RSQ_Upgrade_Marksman RSQ_Upgrade_Dodger RSQ_Upgrade_SecondWind RSQ_Upgrade_TimeDilation
+  RSQ_Upgrade_Akimbo RSQ_Upgrade_Crossfire RSQ_Upgrade_Alternator
+  RSQ_Upgrade_Evasion RSQ_Upgrade_Southpaw RSQ_Upgrade_SteadyAim
 ;
 
 # The gloves, the sabers and the ShieldSaw are melee weapons whatever they are seen to do: the

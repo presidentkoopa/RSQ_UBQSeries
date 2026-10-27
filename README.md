@@ -24,15 +24,17 @@ ca.ancilla.bonsai/upgrades/RapidFire.zsc    per-hand psprite, null guard
 Any file shipped here that is *not* actually modified should be deleted — an
 unchanged shadowed file is collision surface with other patches for no benefit.
 
-## Melee upgrades (`rsq/`)
+## Suite upgrades (`rsq/`)
 
-New files only, compiled by a second ZSCRIPT lump (`zscript.txt` at the root): upgrade paths for
-the boxing gloves (from SuperPunchOut), UltraBadassQuestSaber's sabers and Force, the ShieldSaw and
-any melee weapon, plus **Slappers Only**. See `readme.txt`. The saber and the ShieldSaw ask
-`RSQ_MeleeUpgradeService` for their levels by name; nothing links to anything.
+New files only, compiled by a second ZSCRIPT lump (`zscript.txt` at the root): weapon upgrade paths
+for the boxing gloves, the sabers and the Force, the ShieldSaw and any melee weapon; player upgrade
+paths for Distance Grab, the Tactical Rig, SlowMo, the two hands and the body (each offered only
+while its mod is loaded); **Slappers Only**. See `readme.txt` for the list, who earns which XP, and
+the score-as-XP settings. The saber, the ShieldSaw and the grab ask `RSQ_MeleeUpgradeService` for
+their levels by name; nothing links to anything.
 
-The one change to a shadowed file is the claim bracket in `PerPlayerStats.zsc` (`claimStack`),
-used by the ShieldSaw's bash and grind.
+The changes to shadowed files: `PerPlayerStats.zsc` (the claim bracket `claimStack`, the player
+pool for throws, score XP shared per kill, `HandOfShot`) and `debug.zsc` (the pool in the hands dump).
 
 ## The screens (`rsq/ui/`)
 

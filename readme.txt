@@ -145,24 +145,60 @@ Gun Bonsai is by Rebecca "ToxicFrog" Kelly and is MIT licensed; this patch is a
 derivative of it under the same terms. See Gun Bonsai's COPYING.md.
 
 
-MELEE UPGRADES (rsq/)
+SUITE UPGRADES (rsq/)
 ---------------------
-Upgrade paths for melee weapons, added as new files (nothing more of Gun Bonsai is
-shadowed): the boxing gloves, the sabers (UltraBadassQuestSaber), the ShieldSaw
-(UltraBadassShieldSaw) and any melee weapon. No elemental damage and nothing that is
-rate of fire -- in VR the rewards are for how you move. Options: Options -> RSQ Melee
-Upgrades (Slappers Only, Start with boxing gloves; the rest under Advanced).
+Upgrade paths for the whole RSQ suite, added as new files. No elemental damage, nothing that is
+rate of fire, no new resource: each one grows a number the suite already has, or rewards something
+the player already does. Options: Options -> RSQ Upgrades (also at the bottom of Gun Bonsai's own
+options): Slappers Only, Start With Gloves, and Tuning.
 
+WEAPON PATHS (offered when that weapon levels)
   Gloves        Haymaker, One-Two, Star Punch, Counterpunch, Body Blow, Knockdown
-  Sabers        Momentum, Riposte Edge, Piercing Return, Saber Throw, Chain Choke,
-                Dual Harmony, Force Push, Force Pull, Force Choke, Force Jump
-  ShieldSaw     Ricochet, Meat Grinder, Hunter's Return, Bulwark, Rebound, Battering Ram
-  Any melee     Lunge, Executioner, Adrenaline (pulses RSQ SlowMo through rsm_pulse)
+  Sabers        Momentum, Riposte Edge, Piercing Return, Saber Throw, Chain Choke, Dual Harmony,
+                Deflector; the Force: Force Push, Force Pull, Force Choke, Force Jump
+  ShieldSaw     Broadening (the plate grows to double), Lockstep (more locks), Ricochet, Meat
+                Grinder, Hunter's Return, Bulwark, Rebound, Battering Ram
+  Any melee     Lunge, Executioner, Adrenaline
 
-The saber and the ShieldSaw ask this patch for their levels by name
-(RSQ_MeleeUpgradeService). No mod links to another; each pk3 still loads and works
-alone, and without this patch the saber and the ShieldSaw behave exactly as before.
-With it loaded, an unlearned Force power starts at rsq_force_start (60%).
+PLAYER PATHS (offered when the player levels; each only while its mod is loaded)
+  Distance Grab Long Arm, Iron Grip, Heavy Hitter, Air Catch, Powder Keg
+  Tactical Rig  Quick Draw, Pair Draw, Showdown (with SlowMo)
+  SlowMo        Marksman, Dodger, Second Wind, Time Dilation
+  Two hands     Akimbo, Crossfire, Alternator
+  The body      Evasion, Southpaw, Steady Aim
+
+The saber, the ShieldSaw and the grab ask this patch for their levels by name
+(RSQ_MeleeUpgradeService "level" / "plevel"). No mod links to another; each pk3 still loads and
+works alone, and without this patch each behaves exactly as before (the ShieldSaw's Double Block
+Radius option then still doubles the plate; with the patch the plate grows by Broadening instead).
+
+WHO EARNS THE XP
+  a gun, either hand              that gun (the hitscan bracket, or the shot's own record)
+  saber cut / thrown saber / bolt the saber that did it (it names itself, or is the bolt's master)
+  the Force                       the saber (the Force names it)
+  ShieldSaw disc, bash, grind     the ShieldSaw (disc master; bash and grind are bracketed)
+  a shot the ShieldSaw turned     the ShieldSaw (block AND sweep set the missile's master)
+  a bullet it sent back           the ShieldSaw (its helper is claimed and made the player's)
+  gloves                          the glove that landed
+  a Distance Grab throw, and the  NO gun: the player pool. Every bonsai_base_level_cost of it
+  blast of a barrel it set off    (1200) is one player XP, what a gun's level-up is worth
+  Tactical Rig draws              the drawn gun, as any shot (the rig deals no damage itself)
+  SlowMo                          deals no damage; a slowed enemy round turned by the saber or
+                                  the ShieldSaw pays that weapon
+
+SCORE AS XP (Gun Bonsai's bonsai_score_to_xp_factor, e.g. with RSQ Score)
+  Each kill since the last score rise shares it by its victim's spawn health, so two kills in one
+  tic by two hands each pay their own gun, and a throw's kill pays the pool. Score and damage both
+  paying XP pay every kill twice (a score award's base is the monster's health). Recommended with
+  RSQ Score: bonsai_score_to_xp_factor 1, bonsai_damage_to_xp_factor 0. The patch says so on the
+  console when both are above 0.
+
+SLAPPERS ONLY (rsq_slappers, off by default). Turning it on puts the boxing gloves on both hands at
+once, puts every gun away, and makes gun pickups vanish while it lasts; a gun given later is put
+away within a quarter second. You keep the suite's melee and whatever the loaded game calls melee
+(flagged MELEEWEAPON, using no ammo, or melee by Gun Bonsai's own inference) -- no list of one
+mod's names. Ammo stays. Turning it off gives the guns back, with no free ammo, and the gun that was
+in your main hand (and what was in your off hand) back into it.
 
 THE GLOVES are SuperPunchOut's: the glove weapons, Ermac's glove mesh and fit, and
 SuperPunchOut's punch reader (a punch arms after 15 cm of travel and must average
@@ -170,18 +206,11 @@ rsq_punch_min_speed; power is the average speed). Renamed RSQ_Glove / RSQ_GloveO
 they can sit beside SuperPunchOut itself. A punch does Brutal Doom's own 10 (its
 MeleeStrikeNormal) at the slowest that counts, up to 20 at full speed.
 
-SLAPPERS ONLY (rsq_slappers, off by default): your guns are taken at each level start,
-gun pickups become nothing, and a gun handed to you later is taken again within a
-quarter second. You keep or are given the gloves, the sabers and the ShieldSaw (when
-loaded), the Force hand, and Brutal Doom's fists, axe and sword (and any weapon flagged
-as melee, such as the chainsaw). Ammo stays. Brutal Doom's hand grenades are a Weapon
-too, so they go.
-
-CREDIT FOR SCRIPT DAMAGE. The ShieldSaw's bash and grind name the player as their
-inflictor; a mod in that position can bracket the damage:
+CREDIT FOR SCRIPT DAMAGE. A mod whose damage names the player as its inflictor can bracket it:
     svc.GetInt("credit.push", "", hint, 0, weapon); target.DamageMobj(...);
     svc.GetInt("credit.pop", "", 0, 0, weapon);
-and anything inside is paid to that weapon (PerPlayerStats claimStack).
+A mod that fires from a helper actor for a weapon sets the helper's master to the weapon and
+FriendPlayer to the player, and calls svc.GetInt("claim", "", hint, 0, helper).
 
 
 CREDITS

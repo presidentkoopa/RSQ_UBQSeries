@@ -238,6 +238,27 @@ class TFLV_PerPlayerStats : Object play {
   // with the saber, the rule did not run and the thin/scored counters below are
   // the ones that answered instead.
   int provSelfClaims;
+  // VR PATCH (suite): damage the suite deals without a gun -- a Distance Grab
+  // throw, the blast of a barrel it set off -- counted here, paid to no weapon.
+  int provPooled;
+
+  // VR PATCH (suite): THE PLAYER POOL. XP earned by something that is not a gun
+  // (a thrown object, a thrown barrel's blast, and the score those kills earn)
+  // goes to no weapon -- crediting the main-hand gun for a barrel it never
+  // touched is the bug this replaces -- and is not thrown away either. It
+  // accumulates here, and every bonsai_base_level_cost of it (the price of a
+  // gun's first level) is one player XP, which is exactly what a gun's level-up
+  // is worth toward a player level (WeaponInfo.AddXP -> AddPlayerXP(1)).
+  double poolXP;
+
+  // VR PATCH (suite): score XP per kill. Each attributed kill since the last
+  // score payment is queued with its weight (the victim's spawn health, which is
+  // the base of a score award); a score rise is split across the queue. A null
+  // info is a pooled kill (a throw). An empty queue falls back to lastKillInfo.
+  array<TFLV_WeaponInfo> scoreKills;
+  array<double> scoreKillW;
+  array<int> scoreKillTic;
+  bool lastKillPooled;
   // Which hand most recently earned XP, for bonsai_vr_hud_hand == 2.
   int lastXPHand;
 
@@ -753,6 +774,67 @@ class TFLV_PerPlayerStats : Object play {
     claimHints.Pop();
   }
 
+  // VR PATCH (suite): is this inflictor something THIS player threw with RSQ
+  // Distance Grab, or the blast of something a throw set off? Asked by name
+  // (RSQDG_ThrowService "throw.by" / "throw.blast" / "throw.age"); false when
+  // Distance Grab is not loaded. A thrown object that landed and lay still is
+  // the player's barrel again after 3 s, so shooting it later pays the gun as
+  // it always did; a blast a throw caused is the throw's however late.
+  bool IsSuiteThrow(Actor shot) const {
+    if (!shot || !owner || !owner.player || Weapon(shot) || shot.player) return false;
+    let it = ServiceIterator.Find("RSQDG_ThrowService");
+    let svc = it.Next();
+    if (!svc) return false;
+    if (svc.GetInt("throw.by", "", 0, 0, shot) != owner.PlayerNumber()) return false;
+    if (svc.GetInt("throw.blast", "", 0, 0, shot) == 1) return true;
+    int age = svc.GetInt("throw.age", "", 0, 0, shot);
+    return age >= 0 && age <= 105;
+  }
+
+  void AddPoolXP(double xp) {
+    if (xp <= 0) return;
+    poolXP += xp;
+    double cost = max(1, bonsai_base_level_cost);
+    while (poolXP >= cost) {
+      poolXP -= cost;
+      AddPlayerXP(1);
+    }
+  }
+
+  // VR PATCH (suite): which hand caused this damage, WITHOUT registering
+  // anything (ResolveCredit counts and records; a player upgrade only asks).
+  // -1 when no hand did (a throw, a gun no longer in either hand, unknown).
+  int HandOfShot(Actor shot) const {
+    if (!owner || !owner.player) return -1;
+    let dotItem = TFLV_Upgrade_Dot(shot);
+    if (dotItem && dotItem.credit) { let d = dotItem.credit.Dominant(); return d ? HandHolding(d.wpn) : -1; }
+    if ((!shot || shot == owner) && claimStack.size() > 0) {
+      let c = claimStack[claimStack.size() - 1];
+      return c ? HandHolding(c.wpn) : -1;
+    }
+    if (shot) {
+      let w = Weapon(shot);
+      if (w && w.owner == owner) return HandHolding(w);
+      let p = FindProvenance(shot);
+      if (p) { let d = p.Dominant(); return d ? HandHolding(d.wpn) : -1; }
+      for (int k = 0; k < 3; ++k) {
+        Actor up = k == 0 ? shot.target : (k == 1 ? shot.master : shot.tracer);
+        let uw = Weapon(up);
+        if (uw && uw.owner == owner) return HandHolding(uw);
+        let up2 = FindProvenance(up);
+        if (up && !Weapon(up) && up2) { let d = up2.Dominant(); return d ? HandHolding(d.wpn) : -1; }
+      }
+    }
+    if (hitscanStack.size() > 0) {
+      let h = hitscanStack[hitscanStack.size() - 1];
+      return h ? HandHolding(h.wpn) : -1;
+    }
+    if (IsSuiteThrow(shot)) return -1;
+    int hand; double margin;
+    [hand, margin] = ScoreHandFor(shot);
+    return WeaponForHand(hand) ? hand : -1;
+  }
+
   // ==========================================================================
   // HAND RESOLUTION AT CREATION TIME
   // ==========================================================================
@@ -1104,6 +1186,14 @@ class TFLV_PerPlayerStats : Object play {
 //      damage, TAG(target), TAG(shot));
     upgrades.OnDamageDealt(owner, shot, target, damage);
 
+    // VR PATCH (suite): a thrown object is no gun's. Its XP goes to the player
+    // pool and no weapon's upgrades fire on it (see poolXP).
+    if (IsSuiteThrow(shot)) {
+      ++provPooled;
+      AddPoolXP(GetXPForDamage(target, damage));
+      return;
+    }
+
     // VR PATCH: credit follows provenance, not whatever is in hand right now.
     let prov = ResolveCredit(shot);
     if (!prov) return;
@@ -1154,9 +1244,20 @@ class TFLV_PerPlayerStats : Object play {
 
   void OnKill(Actor shot, Actor target) {
     upgrades.OnKill(PlayerPawn(owner), shot, target);
+    double w = target ? max(1, target.GetSpawnHealth()) : 1;
+    // VR PATCH (suite): a throw's kill queues a pooled entry, so the score it
+    // earns follows it to the pool instead of to the last gun that killed.
+    if (IsSuiteThrow(shot)) {
+      QueueScoreKill(null, w);
+      lastKillInfo = null;
+      lastKillPooled = true;
+      return;
+    }
     let prov = ResolveCredit(shot);
     let info = prov ? prov.Dominant() : null;
     if (!info) return;
+    QueueScoreKill(info, w);
+    lastKillPooled = false;
     // VR PATCH: remember who earned it, for the score-to-XP block in TickStats.
     // This is set after the !info bail on purpose: a kill we could not attribute
     // has no credited weapon, so the last one we *could* attribute stands. The
@@ -1327,7 +1428,26 @@ class TFLV_PerPlayerStats : Object play {
       // it. Falling back to stock AddXP() in that case at least puts it
       // somewhere the player can watch.
       double scoreXP = (owner.score - prevScore) * bonsai_score_to_xp_factor;
-      if (lastKillInfo && lastKillInfo.wpn && GetInfoFor(lastKillInfo.wpn) == lastKillInfo) {
+      // VR PATCH (suite): every kill since the last payment shares the rise by
+      // its victim's spawn health (a score award's base), so two kills in one
+      // tic by two hands each pay their own gun; a throw's share pools.
+      for (int i = scoreKillTic.size() - 1; i >= 0; --i) {
+        if (gametic - scoreKillTic[i] > 70) { scoreKills.Delete(i); scoreKillW.Delete(i); scoreKillTic.Delete(i); }
+      }
+      if (scoreKills.size() > 0) {
+        double tw = 0;
+        for (int i = 0; i < scoreKillW.size(); ++i) tw += scoreKillW[i];
+        for (int i = 0; i < scoreKills.size(); ++i) {
+          double part = scoreXP * scoreKillW[i] / max(tw, 1);
+          let ki = scoreKills[i];
+          if (!ki) AddPoolXP(part);
+          else if (ki.wpn && GetInfoFor(ki.wpn) == ki) AddXPTo(ki, part);
+          else AddXP(part);
+        }
+        scoreKills.Clear(); scoreKillW.Clear(); scoreKillTic.Clear();
+      } else if (lastKillPooled) {
+        AddPoolXP(scoreXP);
+      } else if (lastKillInfo && lastKillInfo.wpn && GetInfoFor(lastKillInfo.wpn) == lastKillInfo) {
         AddXPTo(lastKillInfo, scoreXP);
       } else {
         lastKillInfo = null;
@@ -1335,6 +1455,19 @@ class TFLV_PerPlayerStats : Object play {
       }
       prevScore = owner.score;
     }
+  }
+
+  // A kill waits up to two seconds for the score it earns; a scorer pays on the
+  // kill's own tic (RS_Score does, in WorldThingDied), so this is slack.
+  void QueueScoreKill(TFLV_WeaponInfo info, double w) {
+    if (bonsai_score_to_xp_factor <= 0) return;
+    for (int i = scoreKillTic.size() - 1; i >= 0; --i) {
+      if (gametic - scoreKillTic[i] > 70) { scoreKills.Delete(i); scoreKillW.Delete(i); scoreKillTic.Delete(i); }
+    }
+    if (scoreKills.size() >= 32) { scoreKills.Delete(0); scoreKillW.Delete(0); scoreKillTic.Delete(0); }
+    scoreKills.push(info);
+    scoreKillW.push(w);
+    scoreKillTic.push(gametic);
   }
 
   void Autosave() {

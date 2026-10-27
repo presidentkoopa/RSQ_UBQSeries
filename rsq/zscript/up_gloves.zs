@@ -53,7 +53,7 @@ class RSQ_Upgrade_OneTwo : RSQ_Upgrade_Base
 class RSQ_Upgrade_StarPunch : RSQ_Upgrade_Base
 {
 	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return GloveInfo(info); }
-	static double Mult(uint lv) { return 2.0 + lv; }
+	static double Mult(uint lv) { return 1.5 + 0.5 * lv; }
 	override double ModifyDamageDealt(Actor pawn, Actor shot, Actor target, double damage, Name attacktype)
 	{
 		let g = RSQ_Glove(shot);
@@ -70,7 +70,7 @@ class RSQ_Upgrade_StarPunch : RSQ_Upgrade_Base
 	}
 	override void GetTooltipFields(Dictionary fields, uint level)
 	{
-		fields.Insert("mult", string.format("x%d", Mult(level)));
+		fields.Insert("mult", string.format("x%.1f", Mult(level)));
 	}
 }
 

@@ -39,7 +39,7 @@ user int bonsai_vr_hud_off_mirror = 2;
 server bool bonsai_vr_warn_binding = true;
 
 // ---- the melee upgrades (rsq/) -- all server settings ----
-// Slappers Only: guns taken at each level start, gun pickups replaced with nothing.
+// Slappers Only: on puts the boxing gloves on both hands at once and puts your guns away (gun pickups vanish); off gives them back.
 server bool rsq_slappers = false;
 // Outside Slappers Only: 1 hands you the boxing gloves at each level start.
 server int rsq_gloves = 0;

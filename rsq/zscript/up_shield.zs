@@ -38,7 +38,7 @@ class RSQ_Upgrade_Bulwark : RSQ_Upgrade_ShieldMarker
 // REBOUND: shots the shield turns hit harder.
 class RSQ_Upgrade_Rebound : RSQ_Upgrade_ShieldMarker
 {
-	static double Mult(uint lv) { return 1.25 + 0.25 * lv; }
+	static double Mult(uint lv) { return 1.1 + 0.15 * lv; }
 	override double ModifyDamageDealt(Actor pawn, Actor shot, Actor target, double damage, Name attacktype)
 	{
 		// the ShieldSaw remembers what it turned (SSQ_ScoreService "returned", asked by name);
