@@ -1,0 +1,50 @@
+// RSQ Grapple options, in BD22 VR Weapons' style: short labels, no notes, groups
+// apart, the niche numbers one page down, reset last. What each one does is in
+// CVARINFO's comments.
+AddOptionMenu "OptionsMenu"
+{
+	Submenu "RSQ Grapple", "RSQGR_Options"
+}
+
+OptionValue "RSQGR_GeoModes"
+{
+	0, "Swing"
+	1, "Yank"
+}
+
+OptionMenu "RSQGR_Options"
+{
+	Title "GRAPPLE"
+	Option "Grapple", "rsqgr_on", "OnOff"
+	Option "Wall Hook", "rsqgr_geo_mode", "RSQGR_GeoModes"
+	Slider "Range", "rsqgr_range", 256, 4096, 64, 0
+	Slider "Hook Speed", "rsqgr_speed", 16, 96, 4, 0
+	StaticText " "
+	Slider "Reel Speed", "rsqgr_reel_speed", 2, 30, 1, 0
+	Slider "Swing Lean", "rsqgr_pump", 0.0, 1.0, 0.05, 2
+	Slider "Top Speed", "rsqgr_max_speed", 10, 60, 1, 0
+	StaticText " "
+	Slider "Monster Pull", "rsqgr_slide_speed", 2, 30, 1, 0
+	Slider "Heaviest Pulled", "rsqgr_mass_max", 100, 5000, 100, 0
+	StaticText " "
+	Submenu "Rope and Tuning", "RSQGR_Tuning"
+	StaticText " "
+	SafeCommand "Reset All", "rsqgr_reset"
+}
+
+OptionMenu "RSQGR_Tuning"
+{
+	Title "ROPE AND TUNING"
+	Slider "Links", "rsqgr_rope_links", 8, 160, 8, 0
+	Slider "Link Spacing", "rsqgr_rope_spacing", 2, 24, 1, 0
+	Slider "Link Size", "rsqgr_rope_scale", 0.05, 0.6, 0.05, 2
+	StaticText " "
+	Slider "Shortest Rope", "rsqgr_min_len", 16, 128, 8, 0
+	Slider "Rope Height", "rsqgr_attach", 0.3, 0.9, 0.05, 2
+	Slider "Air Drag", "rsqgr_drag", 0.0, 0.02, 0.001, 3
+	Slider "Ledge Hop", "rsqgr_hop", 0, 12, 1, 0
+	Slider "Return Speed", "rsqgr_retract_speed", 16, 128, 8, 0
+	Slider "Stop Distance", "rsqgr_slide_gap", 0, 64, 4, 0
+	StaticText " "
+	Option "Debug Log", "rsqgr_debug", "OnOff"
+}

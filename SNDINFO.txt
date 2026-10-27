@@ -1,0 +1,6 @@
+// jpalomo's hook sounds (jp_original/), under this mod's names.
+rsqgr/fire          RSGCHAIN
+rsqgr/swish         RSGSWISH
+rsqgr/loop          RSGPULCH
+rsqgr/hit/terrain   RSGMETAL
+rsqgr/hit/flesh     RSGMEAT

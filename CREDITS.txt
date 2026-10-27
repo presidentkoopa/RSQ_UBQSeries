@@ -1,0 +1,14 @@
+RSQ_Grapple -- credits
+======================
+
+The hook's art and sound are jpalomo's, from the grappling hook in his mod pack
+(jp_grapple.pk3, kept unmodified in jp_original/ of the source repo):
+  - claw sprites OCLW (open) and CCLW (shut), shipped here as RSGH / RSGK
+  - chain link tenda0 (the 40 px hires version), shipped here as RSGR
+  - sounds dschain, dsswish, dspulchn, dsmtalht, dsmeatht, shipped here as
+    RSGCHAIN, RSGSWISH, RSGPULCH, RSGMETAL, RSGMEAT
+  - the "Yank" wall mode reproduces his Hook_HitWall thrust (hook.acs).
+Thank you, jpalomo.
+
+Code: ZScript written for the Ultra Badass Quest series (presidentkoopa), for
+stock QuestZDoom 17.3 by Emawind84 and Team Beef. No engine change.

@@ -1,0 +1,6 @@
+// RSQGR_Core decides (WorldTick, before any thinker moves); RSQGR_Input only turns
+// the binds into network events and hands them to the core.
+GameInfo
+{
+	AddEventHandlers = "RSQGR_Core", "RSQGR_Input"
+}

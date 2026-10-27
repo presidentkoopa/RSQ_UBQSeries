@@ -1,0 +1,16 @@
+// Two binds, one per hand, as their own commands -- never +user1-4 (Brutal Doom
+// Quest uses all four). `+name` falls through to alias lookup and key-up sends
+// `-name`, so each bind gives a press and a release. The press goes through a
+// local `event` first so the firing hand's pose can be read on the machine that
+// owns it and packed into the network event (zscript/rsqgr/input.zs).
+// No default controller binds: the owner binds the stick clicks himself.
+addkeysection "RSQ Grapple" RSQGrapple
+addmenukey "Fire Hook (Main)" "+rsqgr_main"
+addmenukey "Fire Hook (Off)"  "+rsqgr_off"
+alias "+rsqgr_main" "event rsqgr_press 0"
+alias "-rsqgr_main" "event rsqgr_release 0"
+alias "+rsqgr_off"  "event rsqgr_press 1"
+alias "-rsqgr_off"  "event rsqgr_release 1"
+
+// Reset All (generated from CVARINFO's defaults)
+alias rsqgr_reset "rsqgr_on 1; rsqgr_geo_mode 0; rsqgr_speed 40; rsqgr_range 1024; rsqgr_retract_speed 64; rsqgr_reel_speed 12; rsqgr_min_len 32; rsqgr_max_speed 30; rsqgr_pump 0.25; rsqgr_drag 0.002; rsqgr_attach 0.6; rsqgr_hop 6; rsqgr_mass_max 1000; rsqgr_slide_speed 10; rsqgr_slide_gap 16; rsqgr_rope_links 64; rsqgr_rope_spacing 6; rsqgr_rope_scale 0.2; rsqgr_debug 0"

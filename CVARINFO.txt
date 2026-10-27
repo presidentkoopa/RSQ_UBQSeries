@@ -1,0 +1,28 @@
+// RSQ_Grapple settings. All SERVER cvars (the host's world); none are user cvars.
+
+server bool   rsqgr_on            = true;   // the hook is available
+server int    rsqgr_geo_mode      = 0;      // hooking a wall: 0 swing (rope), 1 yank (jpalomo's pull)
+server float  rsqgr_speed         = 40;     // claw flight, map units per tic (JP: 40)
+server float  rsqgr_range         = 1024;   // how far the claw flies before it comes back
+server float  rsqgr_retract_speed = 64;     // the claw coming back
+
+// the rope
+server float  rsqgr_reel_speed    = 12;     // holding the bind takes in this much rope per tic
+server float  rsqgr_min_len       = 32;     // shortest rope (reeled all the way in)
+server float  rsqgr_max_speed     = 30;     // speed cap on the rope and on a yank (keeps falls sane)
+server float  rsqgr_pump          = 0.25;   // how hard the movement stick leans a swing
+server float  rsqgr_drag          = 0.002;  // air drag per tic while swinging
+server float  rsqgr_attach        = 0.6;    // where the rope meets the body, fraction of height
+server float  rsqgr_hop           = 6;      // lift when letting go at the top of a wall
+
+// monsters
+server float  rsqgr_mass_max      = 1000;   // heavier than this (or a boss) = an anchor, it does not come
+server float  rsqgr_slide_speed   = 10;     // a hooked monster slides to you this fast (scaled by slow motion)
+server float  rsqgr_slide_gap     = 16;     // and stops this far from you
+
+// the look of the rope
+server int    rsqgr_rope_links    = 64;     // most links drawn per rope
+server float  rsqgr_rope_spacing  = 6;      // map units between links (before the cap spreads them)
+server float  rsqgr_rope_scale    = 0.2;    // link size (0.2 = 8 units)
+
+server int    rsqgr_debug         = 0;      // 1: log every hook tic to the console (T_GR lines)
