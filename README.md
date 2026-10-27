@@ -192,7 +192,7 @@ New since 0.8a (not yet in a release):
 
 - **TacticalRig** and **SlowMo**, both new. Tested on the real 17.3 engine with the full Brutal
   Doom + VoxelPack load order and all six packs: no script errors. An independent review of
-  both is in progress.
+  both was done and its findings fixed and re-tested.
 - **DistanceGrab:** stands down on a hand the rig is using.
 
 What's new in 0.8a:
