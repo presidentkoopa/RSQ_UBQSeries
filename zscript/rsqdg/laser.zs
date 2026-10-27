@@ -392,11 +392,19 @@ class RSQDG_Laser : EventHandler
 			// computed here and ZERO offsets -- P_LineTrace accumulates offsets
 			// onto an uninitialised vector exactly when OverrideAttackPosDir is
 			// true, which in VR is always.
+			// ALONG THE HAND AS THE CONE TESTS IT. Dir is a ROOM direction (the
+			// controller's real pitch), and map space is the room squashed 1.2x
+			// vertically -- so in map units the hand points along (x, y, z / 1.2).
+			// Traced at the raw pitch, the line ran steeper than the hand and the
+			// cone around it (measured: 25.7 deg up drawn at 30.0).
 			double reach = RSQDG_Reach.Num("rsqdg_reach", p, 512.0);
+			Vector3 rd = RSQDG_Reach.Dir(pmo, h);
+			Vector3 md = (rd.x, rd.y, rd.z / RSQDG_Reach.PIXELSTRETCH);
+			double mpit = -atan2(md.z, md.xy.Length());
 			FLineTraceData t;
-			bool hit = pmo.LineTrace(RSQDG_Reach.Yaw(pmo, h), reach, RSQDG_Reach.DoomPitch(pmo, h),
+			bool hit = pmo.LineTrace(RSQDG_Reach.Yaw(pmo, h), reach * md.Length(), mpit,
 				TRF_ABSPOSITION | TRF_THRUACTORS, realPalm.z, realPalm.x, realPalm.y, t);
-			to = hit ? t.HitLocation : (realPalm + RSQDG_Reach.Dir(pmo, h) * reach);
+			to = hit ? t.HitLocation : (realPalm + md * reach);
 			to = LeadTo(h, to);
 		}
 		if (onThing) toPrimed[h] = false;   // a thing's middle does not slide
@@ -465,8 +473,14 @@ class RSQDG_Laser : EventHandler
 
 		// Aimed by the hand's ROOM direction -- the same direction cone.zs
 		// tests along (it scales Dir's Z by pixelstretch before comparing).
+		// leadDir is a ROOM direction already; RoomAim takes a MAP vector, so it
+		// is handed the map form (z / 1.2) and gives the room pitch back. Feeding
+		// it the room vector raw stretched the pitch twice: the drawn cone sat
+		// 1.9 deg off the tested one at 9.5 deg down and 4.3 deg off at 25.7 up
+		// (measured, rig, 10-27).
+		Vector3 ld = leadDir[h];
 		double yaw, pit, len;
-		[yaw, pit, len] = RoomAim(leadDir[h]);
+		[yaw, pit, len] = RoomAim((ld.x, ld.y, ld.z / RSQDG_Reach.PIXELSTRETCH));
 		c.Angle = yaw;
 		c.Pitch = pit;
 		c.Roll  = 0;
