@@ -194,7 +194,7 @@ class RSQTR_Body play
 	// rumble side -- stays on LeftHanded(): that is the engine's and no mod can move it.
 	static bool LayoutLeft()
 	{
-		let h = CVar.FindCVar("rsqa_handed");
+		CVar h = null; { Name rsqaN = "RSQA_Menu"; class<Object> rsqaC = rsqaN; if (rsqaC) h = CVar.FindCVar("rsqa_handed"); }  // only while RSQ_Accessibility is loaded: a value left in the ini must not act on its own
 		int v = h ? h.GetInt() : 0;
 		if (v == 1) return false;
 		if (v == 2) return true;
