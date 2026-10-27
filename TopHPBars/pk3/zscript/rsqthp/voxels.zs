@@ -8,9 +8,22 @@
 // the caller). Built lazily, the first time a bar asks; a lookup is one Map probe.
 class RSQTHP_Voxels : StaticEventHandler
 {
-	transient Map<int, double> tops;     // key sprite * 32 + frame (frame 31 = every frame)
+	// Cheap at the first bar, whatever else is loaded (the review, 10-27: a char-by-char parse of every
+	// VOXELDEF froze the first hurt monster for 300-400 ms once RSQ_LaserSight's 7633-voxel VOXELDEF was
+	// loaded). The build only notes WHICH lump draws a frame (lines split natively, no tokenising, no
+	// voxel read); a voxel's header is read the first time a monster wearing that frame asks.
+	transient Map<int, int> lumpOf;      // key sprite * 32 + frame (frame 31 = every frame) -> voxel lump
+	transient Map<int, double> scaleOf;  // VOXELDEF Scale for that key
+	transient Map<int, double> tops;     // resolved tops (0 = not a readable voxel)
 	transient bool built;
 	transient int count;
+
+	// Built while the level loads (also after a save is loaded: the tables are transient), not
+	// mid-fight: 40 ms on the desktop rig with the full order plus RSQ_LaserSight (was 402 ms).
+	override void WorldLoaded(WorldEvent e)
+	{
+		if (!built) Build();
+	}
 
 	static double TopOf(Actor a)
 	{
@@ -18,12 +31,30 @@ class RSQTHP_Voxels : StaticEventHandler
 		if (!me) return 0;
 		if (!me.built) me.Build();
 		if (me.count == 0) return 0;
+		double t = me.Resolve(a.sprite * 32 + a.frame);
+		if (t > 0) return t;
+		return me.Resolve(a.sprite * 32 + 31);
+	}
+
+	private double Resolve(int key)
+	{
 		bool ok;
 		double t;
-		[t, ok] = me.tops.CheckValue(a.sprite * 32 + a.frame);
+		[t, ok] = tops.CheckValue(key);
 		if (ok) return t;
-		[t, ok] = me.tops.CheckValue(a.sprite * 32 + 31);
-		return ok ? t : 0;
+		int lump;
+		[lump, ok] = lumpOf.CheckValue(key);
+		t = 0;
+		if (ok)
+		{
+			double sc;
+			bool sok;
+			[sc, sok] = scaleOf.CheckValue(key);
+			if (!sok || sc <= 0) sc = 1.0;
+			t = KvxTop(lump) * sc;
+		}
+		tops.Insert(key, t);
+		return t;
 	}
 
 	private static int I32(String d, int o)
@@ -47,19 +78,28 @@ class RSQTHP_Voxels : StaticEventHandler
 		return t > 0 ? t : 0;
 	}
 
-	private void Add(String key, double top)
+	// key from a sprite-frame name (SPRT or SPRTF); -1 when the sprite doesn't exist
+	private static int KeyOf(String nm)
 	{
-		if (top <= 0 || key.Length() < 4) return;
-		key = key.MakeUpper();
+		if (nm.Length() < 4) return -1;
+		nm = nm.MakeUpper();
 		int f = 31;
-		if (key.Length() >= 5)
+		if (nm.Length() >= 5)
 		{
-			f = key.ByteAt(4) - 65;
-			if (f < 0 || f > 28) return;
+			f = nm.ByteAt(4) - 65;
+			if (f < 0 || f > 28) return -1;
 		}
-		int s = Actor.GetSpriteIndex(key.Left(4));
-		if (s <= 0) return;
-		tops.Insert(s * 32 + f, top);
+		int s = Actor.GetSpriteIndex(nm.Left(4));
+		if (s <= 0) return -1;
+		return s * 32 + f;
+	}
+
+	private void Note(int key, int lump, double scale)
+	{
+		if (key < 0 || lump < 0) return;
+		lumpOf.Insert(key, lump);
+		scaleOf.Insert(key, scale);
+		tops.Remove(key);
 		count++;
 	}
 
@@ -69,81 +109,57 @@ class RSQTHP_Voxels : StaticEventHandler
 		int n = Wads.GetNumLumps();
 		for (int i = 0; i < n; i++)
 			if (Wads.GetLumpNamespace(i) == Wads.ns_voxels)
-			{
-				String nm = Wads.GetLumpName(i);
-				Add(nm, KvxTop(i));
-			}
+				Note(KeyOf(Wads.GetLumpName(i)), i, 1.0);
 		int lump = -1;
 		while ((lump = Wads.FindLump("VOXELDEF", lump + 1, Wads.AnyNamespace)) >= 0)
 			ParseDef(Wads.ReadLump(lump));
 	}
 
-	// tokens: words, "strings", = { } ; -- comments stripped
-	private void Tokenise(String src, out Array<String> toks)
-	{
-		int i = 0, n = src.Length();
-		while (i < n)
-		{
-			int c = src.ByteAt(i);
-			if (c <= 32) { i++; continue; }
-			if (c == 47 && i + 1 < n && src.ByteAt(i + 1) == 47) { while (i < n && src.ByteAt(i) != 10) i++; continue; }
-			if (c == 47 && i + 1 < n && src.ByteAt(i + 1) == 42)
-			{
-				i += 2;
-				while (i + 1 < n && !(src.ByteAt(i) == 42 && src.ByteAt(i + 1) == 47)) i++;
-				i += 2; continue;
-			}
-			if (c == 34)
-			{
-				int j = i + 1;
-				while (j < n && src.ByteAt(j) != 34) j++;
-				toks.Push(src.Mid(i + 1, j - i - 1));
-				i = j + 1; continue;
-			}
-			if (c == 61 || c == 123 || c == 125 || c == 59 || c == 44) { toks.Push(src.Mid(i, 1)); i++; continue; }
-			int j = i;
-			while (j < n)
-			{
-				int d = src.ByteAt(j);
-				if (d <= 32 || d == 61 || d == 123 || d == 125 || d == 59 || d == 34 || d == 44) break;
-				j++;
-			}
-			toks.Push(src.Mid(i, j - i));
-			i = j;
-		}
-	}
-
+	// One line at a time: `KEY = "lump"` starts an entry (possibly with `{ Scale = n ... }` on the
+	// same line or the lines after). Only entries whose sprite exists are kept.
 	private void ParseDef(String src)
 	{
-		Array<String> t;
-		Tokenise(src, t);
-		int i = 0;
-		while (i < t.Size())
+		Array<String> lines;
+		src.Split(lines, "\n");
+		int curKey = -1, curLump = -1;
+		double curScale = 1.0;
+		for (int i = 0; i < lines.Size(); i++)
 		{
-			// KEY = "lump" [ { props } ]
-			if (i + 2 < t.Size() && t[i + 1] == "=")
+			String ln = lines[i];
+			int c = ln.IndexOf("//");
+			if (c >= 0) ln = ln.Left(c);
+			int eq = ln.IndexOf("=");
+			int q1 = ln.IndexOf("\"");
+			if (eq > 0 && q1 > eq)
 			{
-				String key = t[i];
-				String lumpName = t[i + 2];
-				i += 3;
-				double scale = 1.0;
-				if (i < t.Size() && t[i] == "{")
+				Note(curKey, curLump, curScale);
+				int q2 = ln.IndexOf("\"", q1 + 1);
+				String key = ln.Left(eq);
+				key.StripRight();
+				key.StripLeft();
+				String lumpName = q2 > q1 ? ln.Mid(q1 + 1, q2 - q1 - 1) : "";
+				curKey = KeyOf(key);
+				curLump = -1;
+				curScale = 1.0;
+				if (curKey >= 0 && lumpName != "")
 				{
-					i++;
-					while (i < t.Size() && t[i] != "}")
-					{
-						if (t[i] ~== "Scale" && i + 2 < t.Size() && t[i + 1] == "=") { scale = t[i + 2].ToDouble(); i += 3; continue; }
-						i++;
-					}
-					i++;
+					curLump = Wads.CheckNumForName(lumpName, Wads.ns_voxels);
+					if (curLump < 0) curLump = Wads.CheckNumForFullName(lumpName);
 				}
-				int lump = Wads.CheckNumForName(lumpName, Wads.ns_voxels);
-				if (lump < 0) lump = Wads.CheckNumForFullName(lumpName);
-				double top = KvxTop(lump);
-				if (top > 0 && scale > 0) Add(key, top * scale);
-				continue;
 			}
-			i++;
+			int sc = ln.MakeLower().IndexOf("scale");
+			if (sc >= 0 && curKey >= 0)
+			{
+				int e2 = ln.IndexOf("=", sc);
+				if (e2 > 0)
+				{
+					String v = ln.Mid(e2 + 1);
+					v.StripLeft();
+					double d = v.ToDouble();
+					if (d > 0) curScale = d;
+				}
+			}
 		}
+		Note(curKey, curLump, curScale);
 	}
 }
