@@ -696,10 +696,13 @@ class SSQ_Guard : Inventory
 				// Cyberdemon (1000) left the plate exactly as fast as an imp (100) and the shove read
 				// as a scripted launch instead of as weight. The lift takes the same factor, so a
 				// heavy thing leans where a light one is thrown.
+				// Thrust() itself checks NO flag, so the comment above was a hope: a DONTTHRUST boss
+				// (a LegenDoom Lite legendary boss once risen) and a max-mass body (Champions' Bronze,
+				// Mass 0x7FFFFFFF, its way of saying "immovable") slid like anything else.
 				double mk = clamp(100.0 / max(t.mass, 1.0), 0.08, 2.0);
 				double knock = clamp(eff / 20.0, 4, 16) * SSQ_Handler.SV('ssq_bash_knock', 1.35) * mk;
-				t.Thrust(knock, atan2(n.y, n.x));
-				if (!t.bNoGravity && !t.bDontThrust)
+				if (!t.bDontThrust && t.Mass < 0x7FFFFFFF) t.Thrust(knock, atan2(n.y, n.x));
+				if (!t.bNoGravity && !t.bDontThrust && t.Mass < 0x7FFFFFFF)
 					t.vel.z += SSQ_Handler.SV('ssq_bash_lift', 2.5) * mk * (t.player ? 0.5 : 1.0);
 				SSQ_FX.At(mo, C + n * (t.radius * 0.5), "ssq/bash", CHAN_5);
 				SSQ_FX.Buzz(mo, 1.0, 8);
