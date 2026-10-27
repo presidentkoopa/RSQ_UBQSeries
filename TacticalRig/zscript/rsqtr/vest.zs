@@ -66,6 +66,9 @@ class RSQTR_Torso : EventHandler
 			fade = clamp(1.0 - (pmo.pitch - 12.0) / 20.0 * 0.47, 0.53, 1.0);   // half the change (the owner, 10-27): solid to 0.53
 		Place(body, at, yaw, sz, marine ? (skin == 2 ? 1 : 0) : skin, fade);
 		body.A_SetRenderStyle(fade, fade > 0.99 ? STYLE_Normal : STYLE_Translucent);
+		// Tritanopia (rsqa_colorblind 3, cb.zs): green and blue armour are one colour to a tritanope
+		// (the skins simulated 11.9 apart), so blue armour is worn violet (TRNSLATE RSQTR_BlueT).
+		body.Translation = (skin == 2 && RSQTR_CB.Mode() == 3) ? Translation.GetID("RSQTR_BlueT") : 0;
 
 		int low = int(RSQTR_Rig.Num("rsqtr_vest_low", p, 35));
 		// THE HELMET, on your head and turning with the headset (rsqtr_helmet, the owner, 10-27:
@@ -103,6 +106,20 @@ class RSQTR_Torso : EventHandler
 				double a = (0.25 + 0.35 * (0.5 + 0.5 * sin(level.maptime * 9.0))) * fade;
 				Place(breath, at, yaw, sz * 1.003, marine ? 2 : 3, a);
 				breath.A_SetRenderStyle(a, STYLE_Translucent);
+				// COLOUR-BLIND PLAY (rsqa_colorblind, cb.zs): the red skin and the green one are one
+				// colour to a deuteranope (simulated 2.8 apart, at one brightness), so for protanopia,
+				// deuteranopia and high contrast the breath becomes LIGHT -- an additive flat copy in
+				// yellow or white, pulsing deeper, 0.05..0.80. A tritanope sees red against green
+				// well: the stock breath stays (rendered, it beat a red light, 33.4 against 22.5).
+				int cb = RSQTR_CB.Mode();
+				if (cb && cb != 3)
+				{
+					static const int WARN[] = { 0, 0xFFE000, 0xFFE000, 0, 0xFFFFFF };
+					a = (0.05 + 0.75 * (0.5 + 0.5 * sin(level.maptime * 9.0))) * fade;
+					breath.Alpha = a;
+					breath.A_SetRenderStyle(a, STYLE_AddStencil);
+					breath.SetShade(WARN[cb]);
+				}
 			}
 		}
 		else if (breath) breath.bINVISIBLE = true;

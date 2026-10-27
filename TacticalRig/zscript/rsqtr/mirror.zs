@@ -66,6 +66,8 @@ class RSQTR_MirrorView play
 		m.frame = src.frame;
 		m.Scale = src.Scale;
 		m.A_SetRenderStyle(src.Alpha, src.GetRenderStyle());
+		m.Translation = src.Translation;   // colour-blind play recolours by translation and shade
+		m.SetShade(src.fillcolor);
 		m.bINVISIBLE = false;
 		return m;
 	}
@@ -88,7 +90,7 @@ class RSQTR_MirrorView play
 			mHand[h].SetOrigin(Map(RSQTR_Body.Hand(pmo, h)), true);
 			double s = 0.035 * RSQTR_Body.UPM;
 			mHand[h].Scale = (s, s);
-			mHand[h].frame = 1;
+			mHand[h].frame = RSQTR_Rig.MarkerFrame(true, 1);
 			mHand[h].Alpha = 0.9;
 			mHand[h].bINVISIBLE = false;
 		}
