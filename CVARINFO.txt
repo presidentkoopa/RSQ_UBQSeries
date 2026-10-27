@@ -12,7 +12,6 @@ user float  rsqtr_icon_turn   = 0;       // degrees: turn every stored weapon (f
 user bool   rsqtr_haptics     = true;
 user bool   rsqtr_messages    = false;
 user float  rsqtr_reach       = 1.0;     // scales every region's radius
-user bool   rsqtr_rifle_back  = false;   // the rifle region at the small of the back instead of the chest
 user bool   rsqtr_yield_shield = true;   // leave the off shoulder to RS_ShieldSawQ while its shield is stowed there
 user float  rsqtr_eye_m       = 0;       // your eye height in metres ("Measure my height"; 0 = the 1.62 m the defaults are made for)
 user bool   rsqtr_edit        = false;   // move the regions with your hands: grip in one, carry it, let go
@@ -25,10 +24,24 @@ user string rsqtr_empty       = "";      // the weapon an empty hand holds (blan
 // The six regions: metres from the head, in the body's frame (forward, left, up), and radius.
 user float rsqtr_r0_f = 0.00;  user float rsqtr_r0_l =  0.18; user float rsqtr_r0_u = -0.70; user float rsqtr_r0_rad = 0.14;
 user float rsqtr_r1_f = 0.00;  user float rsqtr_r1_l = -0.18; user float rsqtr_r1_u = -0.70; user float rsqtr_r1_rad = 0.14;
-user float rsqtr_r2_f = 0.15;  user float rsqtr_r2_l =  0.00; user float rsqtr_r2_u = -0.38; user float rsqtr_r2_rad = 0.12;
-user float rsqtr_r3_f = 0.15;  user float rsqtr_r3_l =  0.00; user float rsqtr_r3_u = -0.58; user float rsqtr_r3_rad = 0.12;
+user float rsqtr_r2_f = 0.15;  user float rsqtr_r2_l =  0.00; user float rsqtr_r2_u = -0.40; user float rsqtr_r2_rad = 0.09;
+user float rsqtr_r3_f = 0.15;  user float rsqtr_r3_l =  0.00; user float rsqtr_r3_u = -0.58; user float rsqtr_r3_rad = 0.11;
 user float rsqtr_r4_f = -0.08; user float rsqtr_r4_l =  0.18; user float rsqtr_r4_u = -0.10; user float rsqtr_r4_rad = 0.14;
 user float rsqtr_r5_f = -0.08; user float rsqtr_r5_l = -0.18; user float rsqtr_r5_u = -0.10; user float rsqtr_r5_rad = 0.14;
+user float rsqtr_r6_f = 0.13;  user float rsqtr_r6_l =  0.11; user float rsqtr_r6_u = -0.27; user float rsqtr_r6_rad = 0.08;
+user float rsqtr_r7_f = 0.13;  user float rsqtr_r7_l = -0.11; user float rsqtr_r7_u = -0.27; user float rsqtr_r7_rad = 0.08;
+user float rsqtr_r8_f = -0.15; user float rsqtr_r8_l =  0.00; user float rsqtr_r8_u = -0.62; user float rsqtr_r8_rad = 0.12;
+
+// What each place holds: the Doom weapon slots it takes (a list).
+user string rsqtr_r0_slots = "2";
+user string rsqtr_r1_slots = "2";
+user string rsqtr_r2_slots = "3";
+user string rsqtr_r3_slots = "4";
+user string rsqtr_r4_slots = "5 6";
+user string rsqtr_r5_slots = "7 8 9";
+user string rsqtr_r6_slots = "0";
+user string rsqtr_r7_slots = "0";
+user string rsqtr_r8_slots = "1";
 
 // Doors lifted by hand.
 user bool  rsqtr_door        = true;    // take hold of a door and lift it

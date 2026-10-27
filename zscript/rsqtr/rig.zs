@@ -23,29 +23,35 @@
 
 class RSQTR_Region
 {
-	const N = 6;
-	static const String NAMES[] = { "Left hip", "Right hip", "Chest", "Chest (rifle)", "Left shoulder", "Right shoulder" };
+	// NINE PLACES (the owner, 10-27: "two hip, two pectoral, two shoulder, one chest, one
+	// stomach, one lower back"). Indices 0-5 keep their old meaning so saved places carry over.
+	const N = 9;
+	static const String NAMES[] = { "Left hip", "Right hip", "Chest", "Stomach", "Left shoulder", "Right shoulder", "Left pectoral", "Right pectoral", "Lower back" };
 
 	// Defaults, metres from the head in the body frame: forward, left, up, radius.
-	static const double DF[] = {  0.00,  0.00,  0.15,  0.15, -0.08, -0.08 };
-	static const double DL[] = {  0.18, -0.18,  0.00,  0.00,  0.18, -0.18 };
-	static const double DU[] = { -0.70, -0.70, -0.38, -0.58, -0.10, -0.10 };
-	static const double DR[] = {  0.14,  0.14,  0.12,  0.12,  0.14,  0.14 };
+	static const double DF[] = {  0.00,  0.00,  0.15,  0.15, -0.08, -0.08,  0.13,  0.13, -0.15 };
+	static const double DL[] = {  0.18, -0.18,  0.00,  0.00,  0.18, -0.18,  0.11, -0.11,  0.00 };
+	static const double DU[] = { -0.70, -0.70, -0.40, -0.58, -0.10, -0.10, -0.27, -0.27, -0.62 };
+	static const double DR[] = {  0.14,  0.14,  0.09,  0.11,  0.14,  0.14,  0.08,  0.08,  0.12 };
 
-	// Does a weapon in Doom slot s belong in region r? The two shoulders split the
-	// heavy weapons, because Brutal Doom alone owns fourteen of them (measured with
-	// BD22 + BD22Q, `give all`): slots 5-6 (launchers, plasma, rail) over the left,
-	// slots 7 and up (BFGs, nukes, flamers) and slot 0 (grenades) over the right.
-	static bool Takes(int r, int s)
+	// WHAT EACH PLACE HOLDS: the Doom weapon slots it takes, a setting per place
+	// (rsqtr_rN_slots, a list such as "5 6"). The rules keep the chaos down: a gun only
+	// goes where its kind goes. Defaults:
+	//   hips 2 (pistols)  chest 3 (shotguns)  stomach 4 (rifles)
+	//   shoulders 5 6 / 7 8 9 (heavy: Brutal Doom alone owns fourteen, measured with BD22 +
+	//   BD22Q, so they split)  pectorals 0 (grenades, small things)  lower back 1 (melee:
+	//   the axe, the chainsaw -- never the fists, which are the empty hand).
+	static const String DEFSLOTS[] = { "2", "2", "3", "4", "5 6", "7 8 9", "0", "0", "1" };
+
+	static bool Takes(int r, int s, PlayerInfo p)
 	{
-		switch (r)
-		{
-		case 0: case 1: return s == 2;
-		case 2: return s == 3;
-		case 3: return s == 4;
-		case 4: return s == 5 || s == 6;
-		default: return s >= 7 || s == 0;
-		}
+		String holds = RSQTR_Region.DEFSLOTS[r];
+		let cv = p ? CVar.GetCVar(String.Format("rsqtr_r%d_slots", r), p) : null;
+		if (cv) holds = cv.GetString();
+		Array<String> w;
+		holds.Split(w, " ", TOK_SKIPEMPTY);
+		for (int i = 0; i < w.Size(); i++) if (w[i].ToInt() == s && w[i] != "") return true;
+		return false;
 	}
 }
 
@@ -70,8 +76,8 @@ class RSQTR_Rig : EventHandler
 	private transient Vector3 radialAt;
 	private transient int  radialPick;
 	private transient Array<String> radialItems;
-	private transient Actor marker[6];
-	private transient Actor icon[6];
+	private transient Actor marker[RSQTR_Region.N];
+	private transient Actor icon[RSQTR_Region.N];
 	private transient Actor ricon[RADIAL_MAX];
 	private transient int  buzzCool[2];
 	private transient int  hoverT[2];          // tics the hand has been in its region
@@ -100,7 +106,6 @@ class RSQTR_Rig : EventHandler
 		double f = Num(String.Format("rsqtr_r%d_f", r), p, RSQTR_Region.DF[r]);
 		double l = Num(String.Format("rsqtr_r%d_l", r), p, RSQTR_Region.DL[r]);
 		double u = Num(String.Format("rsqtr_r%d_u", r), p, RSQTR_Region.DU[r]);
-		if (r == 3 && Flag("rsqtr_rifle_back", p, false)) { f = -0.15; l = 0.0; u = -0.62; }
 		if (editHand >= 0 && editRegion == r && pmo.player == players[consoleplayer]) return editAt;
 		return BodyPoint(pmo, f, l, u);
 	}
@@ -152,6 +157,7 @@ class RSQTR_Rig : EventHandler
 	{
 		into.Clear();
 		if (!pmo || !pmo.player) return;
+		let empty = EmptyHand(pmo);
 		for (let it = pmo.Inv; it; it = it.Inv)
 		{
 			let w = Weapon(it);
@@ -171,8 +177,9 @@ class RSQTR_Rig : EventHandler
 			// CHEATNOTWEAPON that is in no slot (a utility) stays off.
 			if (!found && w.bCHEATNOTWEAPON) continue;
 			if (!found) slot = w.SlotNumber;
-			if (slot < 0 || slot == 1) continue;
-			if (RSQTR_Region.Takes(r, slot)) into.Push(w.GetClassName());
+			if (slot < 0) continue;
+			if (slot == 1 && (w == empty || w.bOffhandWeapon)) continue;   // the fists are the empty hand
+			if (RSQTR_Region.Takes(r, slot, pmo.player)) into.Push(w.GetClassName());
 		}
 	}
 
@@ -439,7 +446,6 @@ class RSQTR_Rig : EventHandler
 		CVar.FindCVar(String.Format("rsqtr_r%d_f", r)).SetFloat(f);
 		CVar.FindCVar(String.Format("rsqtr_r%d_l", r)).SetFloat(l);
 		CVar.FindCVar(String.Format("rsqtr_r%d_u", r)).SetFloat(u);
-		if (r == 3) CVar.FindCVar("rsqtr_rifle_back").SetBool(false);   // a placed rifle region is where you put it
 		pmo.A_Print(String.Format("%s: %.2f forward, %.2f left, %.2f up", RSQTR_Region.NAMES[r], f, l, u));
 		editHand = -1; editRegion = -1;
 	}
@@ -624,9 +630,9 @@ class RSQTR_Rig : EventHandler
 					// A gun over the shoulder hangs on the BACK: shown 0.12 m behind the
 					// region, or it fills your view every time you look down.
 					Vector3 show = at;
-					if (r >= 4) show -= (cos(by) * 0.12 * RSQTR_Body.UPM, sin(by) * 0.12 * RSQTR_Body.UPM, 0);
+					if (r == 4 || r == 5) show -= (cos(by) * 0.12 * RSQTR_Body.UPM, sin(by) * 0.12 * RSQTR_Body.UPM, 0);
 					ic.Place(show);
-					Hang(ic, r, by + Num("rsqtr_icon_turn", p, 0), Flag("rsqtr_rifle_back", p, false));
+					Hang(ic, r, by + Num("rsqtr_icon_turn", p, 0));
 				}
 			}
 			else if (icon[r]) icon[r].bINVISIBLE = true;
@@ -636,23 +642,24 @@ class RSQTR_Rig : EventHandler
 	// HOW A STORED GUN HANGS, the way it would be worn (degrees, from the body's
 	// heading; an actor's pitch is positive nose-DOWN). A pickup model points its
 	// muzzle along its own forward axis, as they are made to lie on the floor:
-	//   hips        muzzle down, grip up: a holster
-	//   chest       across the chest, muzzle up toward the left shoulder: a sling
-	//   rifle spot  the other diagonal, muzzle up toward the right shoulder
-	//               (small of the back: across the back, level)
-	//   shoulders   behind, muzzle up and back: carried over the shoulder
+	//   hips, pectorals  muzzle down, grip up: a holster, a pouch
+	//   chest            across the chest, muzzle up toward the left shoulder: a sling
+	//   stomach          the other diagonal, muzzle up toward the right shoulder
+	//   shoulders        behind, muzzle up and back: carried over the shoulder
+	//   lower back       across the small of the back, level
 	// Sprites face you whatever is set; voxels and models turn.
-	static void Hang(Actor ic, int r, double yaw, bool rifleBack)
+	static void Hang(Actor ic, int r, double yaw)
 	{
 		double a = yaw, pt = 0, rl = 0;
 		switch (r)
 		{
-		case 0: a = yaw; pt = 80; rl = -10; break;
-		case 1: a = yaw; pt = 80; rl = 10; break;
+		case 0: case 6: a = yaw; pt = 80; rl = -10; break;
+		case 1: case 7: a = yaw; pt = 80; rl = 10; break;
 		case 2: a = yaw + 90; pt = -40; break;
-		case 3: if (rifleBack) { a = yaw + 90; pt = 0; } else { a = yaw - 90; pt = -40; } break;
+		case 3: a = yaw - 90; pt = -40; break;
 		case 4: a = yaw + 180; pt = -70; rl = 10; break;
-		default: a = yaw + 180; pt = -70; rl = -10; break;
+		case 5: a = yaw + 180; pt = -70; rl = -10; break;
+		default: a = yaw + 90; pt = 0; break;
 		}
 		ic.angle = a; ic.pitch = pt; ic.roll = rl;
 	}
