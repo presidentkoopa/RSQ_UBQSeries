@@ -1,0 +1,39 @@
+RSQ_TacticalRig -- credits
+==========================
+
+The Ultimate Badass Ermac Rig, part of the Ultra Badass Quest series. For stock QuestZDoom 17.3:
+ZScript and lumps only, no engine changes. The code is new, written for this pack.
+
+WHAT THIS PK3 SHIPS, AND WHOSE IT IS
+  Ermac (iAmErmac -- DoomVR co-designer; Rusted Legacy, DXR)
+      The idea: his Virtual Tactical Vest for Doom VR (body holsters, and the cigarette as a
+      tribute). From that mod: the cigarette, the butt and the smoke (models/rsqtr/rtcig*,
+      rtbutt.md3, graphics/RTCIGSMK.png); its credits name him as their modeller. The
+      cigarette's texture is an atlas shared with a Sketchfab cigarette-pack model (a real
+      brand's pack art, blanked out here).
+      The Zippo (models/rsqtr/rtzippo*, rtzipfl.md3): the voxel lighter from his ZBlood-VR,
+      credited to him there.
+  id Software
+      The marine torso (models/rsqtr/rtmarine.iqm, rtmtor_*, rtmsho_*): the Doom Eternal Classic
+      Slayer, a rip shared on Sketchfab, cut to torso and shoulder pads and recoloured
+      green / blue / red in the project owner's RS_VRBody (its models/marine/PROVENANCE.md);
+      skins halved to 1024 here for the Quest.
+      The helmet (models/rsqtr/rthelm*): the Doom Eternal Classic Slayer's helmet, a rip,
+      prepared in RS_VRBody (its models/helmet/PROVENANCE.md): shell, visor, interior, with
+      green / blue / red skins.
+      The Quake torso (models/rsqtr/rttorso*): Quake's Grunt (Quake, 1996), cut into a torso by
+      Vittorio Romeo's original Quake VR mod and recoloured in RS_VRBody; converted here from
+      Quake's .mdl to MD3 (tools/mdl2md3.py).
+  The project owner (presidentkoopa)
+      The holster spheres (models/rsqtr/rtwire*), from his RS_Holsters.
+      Holster, draw and foley sounds (sounds/rsqtr/rthols*, rtdraw, rtfoly*), from his
+      RS_CombatFX effects library.
+  Generated for this pack
+      The Zippo and cigarette sounds (rtzp*, rtcglite: tools/gen_sounds.py), the stored-gun
+      fit table RSQTRFIT (tools/measure_pickups.py), the placeholder sprites.
+  QuestZDoom (Emawind and Team Beef)
+      The engine, and the off-hand weapon and hand-pose script API the rig reads.
+
+SHARING
+  Free to share as part of the Ultra Badass Quest series. Borrowed assets keep their authors'
+  terms; sharing other people's work in this pack is the project owner's decision.

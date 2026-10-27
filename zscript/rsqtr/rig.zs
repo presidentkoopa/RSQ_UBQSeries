@@ -1,70 +1,42 @@
 // RSQ_TacticalRig -- weapons carried on the body.
 //
-// SIX REGIONS, ONE WEAPON CLASS EACH (the owner's layout, 2026-10-26):
-//   hip L, hip R          slot 2 (pistols, small arms)
-//   chest diagonal        slot 3 (shotguns)
-//   chest / low back      slot 4 (rifles, chainguns)
-//   over L, over R shoulder  slot 5 and up (heavy weapons)
-// A region holds every weapon you own of its class. Reach there and grip (or press
-// Use): the one weapon comes to your hand, or, with several, a small RADIAL opens
-// round your hand and you move toward the one you want and let go. Reach there
-// with that class already in your hand and it goes back on the body (your hand is
-// left empty: the fist).
+// FOUR GUN HOLSTERS AND TWO SABER SPOTS (the owner's simple rig, 2026-10-27): both hips and
+// both shoulders hold one gun each, exactly the one you put there; just below each hip is a
+// spot for UltraBadassQuestSaber's hilts. Grip (or press Use) at a holster with a gun in the
+// hand and it goes in (a full holster swaps: its gun comes out); with the hand empty, the
+// holster's gun is drawn. Each hand holsters and draws its own gun.
 //
 // Credit: the tactical vest and the cigarette are Ermac's ideas (his Virtual
 // Tactical Vest for Doom VR). This is a new implementation for stock QuestZDoom
-// 17.3 that reads the real hand poses, keeps the rig on the body rather than the
-// head, and carries a whole arsenal per region.
+// 17.3 that reads the real hand poses and keeps the rig on the body rather than the
+// head.
 //
 // NETPLAY: the hand poses exist only for the camera player, so the console player's
-// machine decides (hover, press, radial) and sends one network event per ACTION;
+// machine decides (hover, press) and sends one network event per ACTION;
 // every machine applies it from the same inventory, so the worlds agree. Feedback
 // (markers, icons, rumble, sound) is local.
 
 class RSQTR_Region
 {
-	// NINE PLACES (the owner, 10-27: "two hip, two pectoral, two shoulder, one chest, one
-	// stomach, one lower back"). Indices 0-5 keep their old meaning so saved places carry over.
-	// ...AND TWO SABER HOLSTERS, just below the hips (the owner, 10-27), indices 9 and 10. They hold
-	// UltraBadassQuestSaber's hilt and nothing else.
+	// ELEVEN INDICES, SIX IN USE. The index is a place's identity: its cvars (rsqtr_rN_*) and its
+	// position in a saved holster profile. 0 1 hips, 4 5 shoulders, 9 10 saber spots. 2 3 6 7 8
+	// (chest, stomach, pectorals, lower back) are RETIRED: never live, no settings; kept as
+	// indices so nothing renumbers.
 	const N = 11;
-	static const String NAMES[] = { "Left hip", "Right hip", "Chest", "Stomach", "Left shoulder", "Right shoulder", "Left pectoral", "Right pectoral", "Lower back", "Left saber", "Right saber" };
+	static const String NAMES[] = { "Left hip", "Right hip", "", "", "Left shoulder", "Right shoulder", "", "", "", "Left saber", "Right saber" };
 	const SABER_L = 9;
 	const SABER_R = 10;
+	static bool Retired(int r) { return r == 2 || r == 3 || r == 6 || r == 7 || r == 8; }
 
-	// Defaults, metres from the head in the body frame: forward, left, up, radius.
-	static const double DF[] = {  0.00,  0.00,  0.15,  0.15, -0.08, -0.08,  0.07,  0.07, -0.15,  0.02,  0.02 };
-	static const double DL[] = {  0.18, -0.18,  0.00,  0.00,  0.18, -0.18,  0.17, -0.17,  0.00,  0.21, -0.21 };
-	static const double DU[] = { -0.70, -0.70, -0.40, -0.58, -0.10, -0.10, -0.36, -0.36, -0.62, -0.84, -0.84 };
-	static const double DR[] = {  0.14,  0.14,  0.09,  0.11,  0.14,  0.14,  0.08,  0.08,  0.12,  0.10,  0.10 };
-
-	// WHAT EACH PLACE HOLDS: the Doom weapon slots it takes, a setting per place
-	// (rsqtr_rN_slots, a list such as "5 6"). The rules keep the chaos down: a gun only
-	// goes where its kind goes. Defaults:
-	//   hips 2 (pistols)  chest 3 (shotguns)  stomach 4 (rifles)
-	//   shoulders 5 6 / 7 8 9 (heavy: Brutal Doom alone owns fourteen, measured with BD22 +
-	//   BD22Q, so they split)  pectorals 0 (grenades, small things)  lower back 1 (melee:
-	//   the axe, the chainsaw -- never the fists, which are the empty hand).
-	static const String DEFSLOTS[] = { "2", "2", "3", "4", "5 6", "7 8 9 0", "2", "2", "1", "", "" };
-
-	static bool Takes(int r, int s, PlayerInfo p)
-	{
-		String holds = RSQTR_Region.DEFSLOTS[r];
-		let cv = p ? CVar.GetCVar(String.Format("rsqtr_r%d_slots", r), p) : null;
-		if (cv) holds = cv.GetString();
-		Array<String> w;
-		holds.Split(w, " ", TOK_SKIPEMPTY);
-		for (int i = 0; i < w.Size(); i++) if (w[i].ToInt() == s && w[i] != "") return true;
-		return false;
-	}
+	// Defaults, metres from the head in the body frame: forward, left, up, radius (0: retired).
+	static const double DF[] = {  0.00,  0.00, 0, 0, -0.08, -0.08, 0, 0, 0,  0.02,  0.02 };
+	static const double DL[] = {  0.18, -0.18, 0, 0,  0.18, -0.18, 0, 0, 0,  0.21, -0.21 };
+	static const double DU[] = { -0.70, -0.70, 0, 0, -0.10, -0.10, 0, 0, 0, -0.84, -0.84 };
+	static const double DR[] = {  0.14,  0.14, 0, 0,  0.14,  0.14, 0, 0, 0,  0.10,  0.10 };
 }
 
 class RSQTR_Rig : EventHandler
 {
-	const RADIAL_MAX = 10;
-	const RADIAL_R = 0.10;        // metres: the ring of choices round the hand
-	const RADIAL_DEAD = 0.035;    // metres: inside this nothing is picked
-	const RADIAL_CANCEL = 0.30;   // metres: pull away this far and the radial closes
 	const STEADY_RANGE = 0.50;    // metres: the engine's own two-hand steadying distance
 
 	// ---- synced state (written by NetworkProcess on every machine) --------------
@@ -84,14 +56,8 @@ class RSQTR_Rig : EventHandler
 	private transient int  hoverR[2];          // region each hand is in, -1 none
 	private transient bool pressWas[2];
 	private transient bool useWas;
-	private transient int  radialHand, radialRegion;   // -1 when closed
-	private transient Vector3 radialAt;
-	private transient int  radialPick;
-	private transient Array<String> radialItems;
 	transient Actor marker[RSQTR_Region.N];   // read by the mirror (mirror.zs)
 	transient Actor icon[RSQTR_Region.N];
-	private transient bool nearR[2];
-	private transient Actor ricon[RADIAL_MAX];
 	private transient int  buzzCool[2];
 	private transient int  hoverT[2];          // tics the hand has been in its region
 	private transient bool pendPress[2];       // pressed before the dwell was up
@@ -107,9 +73,9 @@ class RSQTR_Rig : EventHandler
 	private transient RSQTR_Fit fitData;
 	RSQTR_Fit GetFit() { if (!fitData) fitData = RSQTR_Fit.Load(); return fitData; }
 	int HoverRegion(int h) const { return (h == 0 || h == 1) ? hoverR[h] : -1; }
-	// Busy = INSIDE a holster (or its radial). "Near" was tried (10-27) and switched Distance Grab off
+	// Busy = INSIDE a holster. "Near" was tried (10-27) and switched Distance Grab off
 	// for good: a hand resting at your side is always within reach of a hip holster.
-	bool HandBusy(int h) const { return (h == 0 || h == 1) && (hoverR[h] >= 0 || radialHand == h); }
+	bool HandBusy(int h) const { return (h == 0 || h == 1) && hoverR[h] >= 0; }
 
 	// ---- settings ----------------------------------------------------------------
 	static double Num(String n, PlayerInfo p, double d) { let c = CVar.GetCVar(n, p); return c ? c.GetFloat() : d; }
@@ -130,6 +96,7 @@ class RSQTR_Rig : EventHandler
 		double reach = Num("rsqtr_reach", p, 1.0) * BodyScale(p);
 		for (int r = 0; r < RSQTR_Region.N; r++)
 		{
+			if (RSQTR_Region.Retired(r)) { cF[r] = 0; cL[r] = 0; cU[r] = 0; cR[r] = 0; continue; }
 			cF[r] = Num(String.Format("rsqtr_r%d_f", r), p, RSQTR_Region.DF[r]);
 			cL[r] = Num(String.Format("rsqtr_r%d_l", r), p, RSQTR_Region.DL[r]);
 			cU[r] = Num(String.Format("rsqtr_r%d_u", r), p, RSQTR_Region.DU[r]);
@@ -186,44 +153,25 @@ class RSQTR_Rig : EventHandler
 		return cR[r];
 	}
 
-	// ---- what the body carries ---------------------------------------------------
-	// Every weapon this player owns that belongs in region r, in inventory order (the
-	// same order on every machine). Off-hand utilities (the shield, the Force hand,
-	// empty-hand fillers: CHEATNOTWEAPON), powered-up twins and slot-1 melee stay off.
+	// ---- the saber spots ------------------------------------------------------------
+	// The saber classes this player owns that belong at place r. ONE SPOT PER SABER (the owner,
+	// 10-27): the main saber's is the left one for a right-handed player (the home spot), the
+	// second saber's the right one; swapped when left-handed. Found by class name so the saber
+	// need not be loaded. The main saber is also listed on a hip with rsqtr_saber_hip.
+	// Gun holsters hold what was put there (Content), not a list.
 	static void Owned(PlayerPawn pmo, int r, out Array<String> into)
 	{
 		into.Clear();
 		if (!pmo || !pmo.player) return;
-		let empty = EmptyHand(pmo);
+		int home = RSQTR_Body.LeftHanded() ? RSQTR_Region.SABER_R : RSQTR_Region.SABER_L;
+		int away = home == RSQTR_Region.SABER_L ? RSQTR_Region.SABER_R : RSQTR_Region.SABER_L;
 		for (let it = pmo.Inv; it; it = it.Inv)
 		{
 			let w = Weapon(it);
-			if (!w || w.bPOWERED_UP || w.Amount <= 0) continue;
-			// ONE HOLSTER PER SABER (the owner, 10-27: "I still have no saber holsters"). The main
-			// saber's is the left one for a right-handed player (the home holster), the second
-			// saber's the right one; swapped when left-handed. Found by class name so the saber
-			// need not be loaded. The main saber may also clip to a hip (rsqtr_saber_hip).
-			if (IsSaber(w))
-			{
-				int home = RSQTR_Body.LeftHanded() ? RSQTR_Region.SABER_R : RSQTR_Region.SABER_L;
-				int away = home == RSQTR_Region.SABER_L ? RSQTR_Region.SABER_R : RSQTR_Region.SABER_L;
-				if (IsSecondSaber(w)) { if (r == away && SecondSaberAllowed()) into.Push(w.GetClassName()); }
-				else if (r == home) into.Push(w.GetClassName());
-				else if ((r == 0 || r == 1) && Flag("rsqtr_saber_hip", pmo.player, false)) into.Push(w.GetClassName());
-				continue;
-			}
-			if (w.bOffhandWeapon) continue;
-			bool found; int slot, idx;
-			[found, slot, idx] = pmo.player.weapons.LocateWeapon(w.GetClass());
-			// CHEATNOTWEAPON alone does not keep a gun off the body: Brutal Doom's dual
-			// guns are CHEATNOTWEAPON and sit in the weapon slots (measured: DualRifles,
-			// slot 4), and picking up the second gun replaces the single one. Only a
-			// CHEATNOTWEAPON that is in no slot (a utility) stays off.
-			if (!found && w.bCHEATNOTWEAPON) continue;
-			if (!found) slot = w.SlotNumber;
-			if (slot < 0) continue;
-			if (slot == 1 && (w == empty || w.bOffhandWeapon)) continue;   // the fists are the empty hand
-			if (RSQTR_Region.Takes(r, slot, pmo.player)) into.Push(w.GetClassName());
+			if (!w || w.bPOWERED_UP || w.Amount <= 0 || !IsSaber(w)) continue;
+			if (IsSecondSaber(w)) { if (r == away && SecondSaberAllowed()) into.Push(w.GetClassName()); }
+			else if (r == home) into.Push(w.GetClassName());
+			else if ((r == 0 || r == 1) && Flag("rsqtr_saber_hip", pmo.player, false)) into.Push(w.GetClassName());
 		}
 	}
 
@@ -385,9 +333,9 @@ class RSQTR_Rig : EventHandler
 	}
 
 	// HOLSTER PROFILES (the owner, 10-27: "save up to four holster profiles"). Every place's
-	// position, size and slot list, written into one of this machine's own settings
-	// (rsqtr_profile1..4) or read back from it. Format: "f,l,u,rad,slots|..." per place, the slot
-	// list's spaces as dots.
+	// position and size, written into one of this machine's own settings (rsqtr_profile1..4) or
+	// read back from it. Format: "f,l,u,rad|..." by place index (a retired index is left empty).
+	// Profiles saved before 10-27 carry a fifth field, the old slot list: ignored.
 	private void Profile(Actor who, int k, bool save)
 	{
 		if (k < 1 || k > 4) return;
@@ -398,11 +346,11 @@ class RSQTR_Rig : EventHandler
 			String txt = "";
 			for (int r = 0; r < RSQTR_Region.N; r++)
 			{
-				String sl = CVar.FindCVar(String.Format("rsqtr_r%d_slots", r)).GetString();
-				sl.Replace(" ", ".");
-				txt = txt .. String.Format("%s%.3f,%.3f,%.3f,%.3f,%s", r ? "|" : "",
+				if (r) txt = txt .. "|";
+				if (RSQTR_Region.Retired(r)) continue;
+				txt = txt .. String.Format("%.3f,%.3f,%.3f,%.3f",
 					CVar.FindCVar(String.Format("rsqtr_r%d_f", r)).GetFloat(), CVar.FindCVar(String.Format("rsqtr_r%d_l", r)).GetFloat(),
-					CVar.FindCVar(String.Format("rsqtr_r%d_u", r)).GetFloat(), CVar.FindCVar(String.Format("rsqtr_r%d_rad", r)).GetFloat(), sl);
+					CVar.FindCVar(String.Format("rsqtr_r%d_u", r)).GetFloat(), CVar.FindCVar(String.Format("rsqtr_r%d_rad", r)).GetFloat());
 			}
 			pc.SetString(txt);
 			CVar.FindCVar("rsqtr_profile_active").SetInt(k);
@@ -415,16 +363,14 @@ class RSQTR_Rig : EventHandler
 		all.Split(places, "|");
 		for (int r = 0; r < RSQTR_Region.N && r < places.Size(); r++)
 		{
+			if (RSQTR_Region.Retired(r)) continue;
 			Array<String> f;
 			places[r].Split(f, ",");
-			if (f.Size() < 5) continue;
+			if (f.Size() < 4) continue;
 			CVar.FindCVar(String.Format("rsqtr_r%d_f", r)).SetFloat(f[0].ToDouble());
 			CVar.FindCVar(String.Format("rsqtr_r%d_l", r)).SetFloat(f[1].ToDouble());
 			CVar.FindCVar(String.Format("rsqtr_r%d_u", r)).SetFloat(f[2].ToDouble());
 			CVar.FindCVar(String.Format("rsqtr_r%d_rad", r)).SetFloat(f[3].ToDouble());
-			String sl = f[4];
-			sl.Replace(".", " ");
-			CVar.FindCVar(String.Format("rsqtr_r%d_slots", r)).SetString(sl);
 		}
 		CVar.FindCVar("rsqtr_profile_active").SetInt(k);
 		if (who) who.A_Print(String.Format("Tactical Rig: holsters loaded from %s", ProfileName(k)));
@@ -687,7 +633,7 @@ class RSQTR_Rig : EventHandler
 		body.Update(pmo);
 
 		bool on = pmo.health > 0 && Flag("rsqtr_on", p, true);
-		if (!on) { CloseRadial(); HideAll(); return; }
+		if (!on) { HideAll(); return; }
 
 		int n = consoleplayer;
 		bool useDown = (p.cmd.buttons & BT_USE) != 0;
@@ -713,11 +659,6 @@ class RSQTR_Rig : EventHandler
 				&& RSQTR_Body.RoomMetres(pmo.OffhandPos, pmo.AttackPos) < STEADY_RANGE
 				&& CVarOn("vr_two_handed_weapons"))
 				r = -1;
-			// NEAR A HOLSTER (within twice its size): Distance Grab leaves the hand alone, so floor
-			// pickups do not light up and flash while you reach for your hip (rig.busy).
-			nearR[h] = false;
-			for (int i = 0; i < RSQTR_Region.N && !nearR[h]; i++)
-				if (RegionLive(pmo, i) && RSQTR_Body.RoomMetres(hp, RegionAt(pmo, i)) <= RegionRadius(p, i) * 2.0) nearR[h] = true;
 			if (r != hoverR[h])
 			{
 				if (r >= 0 && buzzCool[h] <= 0) { RSQTR_Buzzer.Start(pmo, h, 0.18, 3); buzzCool[h] = 10; }
@@ -751,11 +692,6 @@ class RSQTR_Rig : EventHandler
 			}
 			else if (editHand >= 0) editHand = -1;
 
-			if (radialHand == h)
-			{
-				TickRadial(pmo, p, h, hp, release);
-				continue;
-			}
 			// A hand passing through a region does not act on it: the press counts once
 			// the hand has been there rsqtr_dwell tics (a press a moment early waits).
 			int dwell = Opt("rsqtr_dwell", p, 3);
@@ -767,9 +703,8 @@ class RSQTR_Rig : EventHandler
 		DrawMarkers(pmo, p);
 	}
 
-	// Saved places outlive new defaults (a user cvar keeps its stored value), so a place
-	// still at an OLD default is moved to the new one: the pectorals were at the collarbone
-	// (0.13 f, +-0.11 l, -0.27 u) until 10-27, beside your face. A place moved by hand is left.
+	// Saved settings outlive new defaults (a user cvar keeps its stored value), so a setting
+	// still at an OLD default is moved to the new one, once (rsqtr_cfgver).
 	private transient bool migrated;
 	private void MigratePlaces()
 	{
@@ -801,35 +736,10 @@ class RSQTR_Rig : EventHandler
 			if (bs3) bs3.SetFloat(1);
 			ver.SetInt(4);
 		}
-		// slot 0 was the pectorals' (my pick, 10-27): in BD that is the flamethrowers, so the
-		// pectorals hold pistols like the shoulder holsters they are, and slot 0 goes with the
-		// heavy weapons on the right shoulder (the owner: "who would put a flamethrower in
-		// their chest"). Lists still at the old defaults are moved; edited ones are left.
-		for (int r = 6; r <= 7; r++)
-		{
-			let cs = CVar.FindCVar(String.Format("rsqtr_r%d_slots", r));
-			if (cs && cs.GetString() == "0") cs.SetString(RSQTR_Region.DEFSLOTS[r]);
-		}
 		// the body's turn rule was 60 degrees held 2 s until 10-27 (the regions stood in the
 		// room while he turned); still at those, it moves to the new 25 / 0
 		let bt = CVar.FindCVar("rsqtr_body_turn"), bs = CVar.FindCVar("rsqtr_body_secs");
 		if (bt && bs && abs(bt.GetFloat() - 60) < 0.01 && abs(bs.GetFloat() - 2) < 0.01) { bt.SetFloat(25); bs.SetFloat(0); }
-		let c5 = CVar.FindCVar("rsqtr_r5_slots");
-		if (c5 && c5.GetString() == "7 8 9") c5.SetString(RSQTR_Region.DEFSLOTS[5]);
-
-		for (int r = 6; r <= 7; r++)
-		{
-			let cf = CVar.FindCVar(String.Format("rsqtr_r%d_f", r));
-			let cl = CVar.FindCVar(String.Format("rsqtr_r%d_l", r));
-			let cu = CVar.FindCVar(String.Format("rsqtr_r%d_u", r));
-			if (!cf || !cl || !cu) continue;
-			if (abs(cf.GetFloat() - 0.13) < 0.001 && abs(abs(cl.GetFloat()) - 0.11) < 0.001 && abs(cu.GetFloat() + 0.27) < 0.001)
-			{
-				cf.SetFloat(RSQTR_Region.DF[r]);
-				cl.SetFloat(RSQTR_Region.DL[r]);
-				cu.SetFloat(RSQTR_Region.DU[r]);
-			}
-		}
 	}
 
 	private void SaveEdit(PlayerPawn pmo, PlayerInfo p)
@@ -855,7 +765,7 @@ class RSQTR_Rig : EventHandler
 	bool RegionLive(PlayerPawn pmo, int r)
 	{
 		if (IsSaberRegion(r)) { if (!SaberLoaded()) return false; }
-		else if (!IsGunRegion(r)) return false;      // chest, stomach, pectorals, lower back: retired
+		else if (!IsGunRegion(r)) return false;      // a retired index (RSQTR_Region.Retired)
 		return !RSQTR_Hooks.Claimed(pmo, r);
 	}
 
@@ -874,8 +784,10 @@ class RSQTR_Rig : EventHandler
 		// sabers anywhere else, they just jump to their dedicated slots"). Put on an empty holster,
 		// the saber goes home instead; on a holster with a gun, the gun is drawn as always and the
 		// saber, out of the hand, shows in its own holster (DrawMarkers).
+		// "Empty": a gun holster with nothing put in it, a saber spot with no saber of its own.
+		bool spotEmpty = IsGunRegion(r) ? Content(pmo, r) == "" : own.Size() == 0;
 		let offW = p.OffhandWeapon;
-		if (h == 1 && own.Size() == 0 && offW && IsSaber(offW) && IsSecondSaber(offW))
+		if (h == 1 && spotEmpty && offW && IsSaber(offW) && IsSecondSaber(offW))
 		{
 			EventHandler.SendNetworkEvent("ubqs_dual_in");
 			pmo.A_StartSound("rsqtr/holster", CHAN_AUTO, CHANF_LOCAL, 0.8);
@@ -887,7 +799,7 @@ class RSQTR_Rig : EventHandler
 		{
 			int home = RSQTR_Body.LeftHanded() ? RSQTR_Region.SABER_R : RSQTR_Region.SABER_L;
 			bool itsOwn = r == home || ((r == 0 || r == 1) && Flag("rsqtr_saber_hip", p, false));
-			if (!itsOwn && own.Size() == 0)
+			if (!itsOwn && spotEmpty)
 			{
 				EventHandler.SendNetworkEvent("rsqtr_holster", home);
 				RSQTR_Buzzer.Start(pmo, h, 0.55, 5);
@@ -960,94 +872,9 @@ class RSQTR_Rig : EventHandler
 			if (Flag("rsqtr_messages", p, false)) pmo.A_Print(String.Format("%s: nothing here", RSQTR_Region.NAMES[r]));
 			return;
 		}
-		if (own.Size() == 1)
-		{
-			EventHandler.SendNetworkEvent("rsqtr_draw", r, 0);
-			RSQTR_Buzzer.Start(pmo, h, 0.65, 6);
-			return;
-		}
-		OpenRadial(pmo, h, r, hp, own);
-	}
-
-	// ---- the radial -----------------------------------------------------------------
-	private void OpenRadial(PlayerPawn pmo, int h, int r, Vector3 hp, Array<String> own)
-	{
-		radialHand = h; radialRegion = r; radialAt = hp; radialPick = -1;
-		radialItems.Clear();
-		for (int i = 0; i < own.Size() && i < RADIAL_MAX; i++) radialItems.Push(own[i]);
-		pmo.A_StartSound("rsqtr/radial", CHAN_AUTO, CHANF_LOCAL, 0.6);
-		RSQTR_Buzzer.Start(pmo, h, 0.30, 3);
-	}
-
-	private void CloseRadial()
-	{
-		radialHand = -1; radialRegion = -1; radialPick = -1;
-		for (int i = 0; i < RADIAL_MAX; i++) if (ricon[i]) ricon[i].bINVISIBLE = true;
-	}
-
-	// The ring sits round where the hand opened it, in the plane facing the head:
-	// item i at angle 90 - i * 360/n (the first at the top, then clockwise).
-	private Vector3 RadialSpot(PlayerPawn pmo, int i, int n)
-	{
-		Vector3 toHead = RSQTR_Body.Head(pmo) - radialAt;
-		double yaw = VectorAngle(toHead.x, toHead.y);
-		Vector3 right = (sin(yaw), -cos(yaw), 0);      // the viewer's right, seen from the head
-		Vector3 up = (0, 0, 1);
-		double a = 90.0 - i * 360.0 / n;
-		double rx = cos(a) * RADIAL_R, ry = sin(a) * RADIAL_R;
-		return radialAt + (right.x * rx * RSQTR_Body.UPM, right.y * rx * RSQTR_Body.UPM, ry * RSQTR_Body.UPM / RSQTR_Body.PIXELSTRETCH);
-	}
-
-	private void TickRadial(PlayerPawn pmo, PlayerInfo p, int h, Vector3 hp, bool release)
-	{
-		int n = radialItems.Size();
-		if (n == 0 || RSQTR_Body.RoomMetres(hp, radialAt) > RADIAL_CANCEL) { CloseRadial(); return; }
-		// The pick: the item whose direction the hand has moved toward, once it has
-		// moved more than the dead zone.
-		int pick = -1;
-		if (RSQTR_Body.RoomMetres(hp, radialAt) > RADIAL_DEAD)
-		{
-			double bestD = 1e9;
-			for (int i = 0; i < n; i++)
-			{
-				double d = RSQTR_Body.RoomMetres(hp, RadialSpot(pmo, i, n));
-				if (d < bestD) { bestD = d; pick = i; }
-			}
-		}
-		if (pick != radialPick)
-		{
-			if (pick >= 0) RSQTR_Buzzer.Start(pmo, h, 0.22, 2);
-			radialPick = pick;
-		}
-		// Icons: each weapon's own pickup sprite, the picked one larger.
-		for (int i = 0; i < RADIAL_MAX; i++)
-		{
-			if (i >= n) { if (ricon[i]) ricon[i].bINVISIBLE = true; continue; }
-			if (!ricon[i]) ricon[i] = Actor.Spawn("RSQTR_Icon", RadialSpot(pmo, i, n));
-			let ic = RSQTR_Icon(ricon[i]);
-			if (!ic) continue;
-			ic.Wear(radialItems[i], i == radialPick ? 0.55 : 0.32, i == radialPick ? 1.0 : 0.6);
-			// measured guns all the same length, lying level with the muzzle to your right
-			ic.Place(RadialSpot(pmo, i, n));
-			ic.Fit(i == radialPick ? 0.22 : 0.15, i == radialPick ? 0.55 : 0.32, BodyYaw(pmo) - 90, 0, 0);
-		}
-		if (release)
-		{
-			if (radialPick >= 0)
-			{
-				// The region's list may have changed since it opened; send the class's
-				// index as it stands now.
-				Array<String> own;
-				Owned(pmo, radialRegion, own);
-				int idx = own.Find(radialItems[radialPick]);
-				if (idx < own.Size())
-				{
-					EventHandler.SendNetworkEvent("rsqtr_draw", radialRegion, idx);
-					RSQTR_Buzzer.Start(pmo, h, 0.65, 6);
-				}
-			}
-			CloseRadial();
-		}
+		// a saber spot lists one saber at most (Owned): draw it
+		EventHandler.SendNetworkEvent("rsqtr_draw", r, 0);
+		RSQTR_Buzzer.Start(pmo, h, 0.65, 6);
 	}
 
 	// ---- what you see ------------------------------------------------------------------
@@ -1061,6 +888,7 @@ class RSQTR_Rig : EventHandler
 		bool icons = Flag("rsqtr_icons", p, true);
 		for (int r = 0; r < RSQTR_Region.N; r++)
 		{
+			if (RSQTR_Region.Retired(r)) continue;
 			Vector3 at = RegionAt(pmo, r);
 			double rad = RegionRadius(p, r);
 			double near = 1e9;
@@ -1094,30 +922,25 @@ class RSQTR_Rig : EventHandler
 			}
 			else if (marker[r]) marker[r].bINVISIBLE = true;
 
-			// WHAT IS STORED THERE, always shown: the weapon last put there if you still
-			// own it, otherwise the first weapon of that region you own; never the one in
-			// your hand.
 			// WHAT IS STORED THERE: exactly what you put there, nothing chosen for you (the owner,
 			// 10-27: "impossible to keep track what is where").
 			String held = HeldAs(pmo, p.ReadyWeapon);
 			String put = live ? Content(pmo, r) : "";
 			if (put == held || (p.OffhandWeapon && put == p.OffhandWeapon.GetClassName())) put = "";
-			Array<String> own;
-			Owned(pmo, r, own);
 			// ONLY A MEASURED MODEL IS SHOWN ON THE BODY. A weapon not in the fit table has no
 			// model of its own here (BD's hand grenades are a flat sprite), and a flat sprite
 			// floating at the chest is just a picture by your face (the owner, 10-27, asked
 			// three times what the little grenade icons were).
 			let fitT = GetFit();
 			if (put != "" && fitT.Find(put) < 0) put = "";
-			// ONE HILT, TWO HOLSTERS: the saber is shown only in the one it was put in (the
-			// off-hand side's holster until it has been put anywhere).
 			// EACH SABER HAS ITS HOLSTER and shows there whenever it is not in its hand: the main
 			// saber in the home holster unless the main hand holds it, the second saber in the
 			// other unless the off hand holds it (Owned lists only that one saber per holster).
 			if (r == RSQTR_Region.SABER_L || r == RSQTR_Region.SABER_R)
 			{
 				put = "";
+				Array<String> own;
+				Owned(pmo, r, own);
 				for (int k = 0; k < own.Size(); k++)
 				{
 					let sw = Weapon(pmo.FindInventory(own[k]));
@@ -1150,12 +973,8 @@ class RSQTR_Rig : EventHandler
 	// concealed-carry positions, a slung rifle, rifles on a pack). Degrees from the body's
 	// heading; an actor's pitch is positive nose-DOWN; a pickup points its muzzle along its
 	// own forward axis, lying level with the grip down. For a right-handed player:
-	//   hips        strong side: muzzle down, grip to the back
-	//   pectorals   under the arm: muzzle down and back, grip forward
-	//   chest       slung across: muzzle down toward the left hip, butt at the right shoulder
-	//   stomach     the other diagonal: muzzle down toward the right hip
-	//   shoulders   on the back: butt up over the shoulder, muzzle down toward the other hip
-	//   lower back  flat across the small of the back, grip toward the drawing hand
+	//   hips, saber spots  muzzle down
+	//   shoulders          on the back: butt up over the shoulder, muzzle down toward the other hip
 	// A left-handed player gets the mirror image. Sprites face you whatever is set.
 	static void Hang(RSQTR_Icon ic, int r, double yaw, double metres, double fallback)
 	{
@@ -1164,17 +983,11 @@ class RSQTR_Rig : EventHandler
 		switch (r)
 		{
 		case 9: case 0: off = 0;   pt = 80; rl = -10; break;  // left hip, left saber: hanging down
-		case 10: off = 0;  pt = 80; rl = 10;  break;           // right saber
-		case 1: off = 0;   pt = 80; rl = 10;  break;  // right hip
-		case 6: off = 180; pt = 50; rl = 15;  break;  // left pectoral
-		case 7: off = 180; pt = 50; rl = -15; break;  // right pectoral
-		case 2: off = 90 * s;  pt = 45; break;        // chest
-		case 3: off = -90 * s; pt = 45; break;        // stomach
+		case 10: case 1: off = 0;  pt = 80; rl = 10;  break;  // right hip, right saber
 		case 4: off = -90; pt = 65; break;            // left shoulder: muzzle toward the right hip
-		case 5: off = 90;  pt = 65; break;            // right shoulder: toward the left hip
-		default: off = 90 * s; pt = 0; break;         // lower back: muzzle to the off side
+		default: off = 90;  pt = 65; break;           // right shoulder: toward the left hip
 		}
-		if (s < 0 && r != 2 && r != 3 && r != 8) { off = -off; rl = -rl; }
+		if (s < 0) { off = -off; rl = -rl; }
 		ic.Fit(metres, fallback, yaw + off, pt, rl);
 	}
 
@@ -1204,7 +1017,6 @@ class RSQTR_Rig : EventHandler
 
 	override void WorldLoaded(WorldEvent e)
 	{
-		radialHand = -1; radialRegion = -1;
 		hoverR[0] = -1; hoverR[1] = -1;
 		afterLoad = false;
 	}
@@ -1225,7 +1037,6 @@ class RSQTR_Rig : EventHandler
 	override void OnRegister()
 	{
 		editHand = -1; editRegion = -1;
-		radialHand = -1; radialRegion = -1;
 		hoverR[0] = -1; hoverR[1] = -1;
 		afterLoad = true;
 	}
