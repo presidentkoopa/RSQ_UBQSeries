@@ -321,6 +321,8 @@ class SSQ_Handler : EventHandler
 			Console.Printf("ssq: press p%d state %d fresh %d mountdist %.1f  hand from headset: fwd %.0f side %.0f up %.0f cm", i, mState[i], fresh, dist, f, l, rel.z * k);
 		}
 		if (!atMount) return;
+		// the key route (ssq_shoulder_use off): the shoulder is not a grab, only the Draw key
+		if (UVI(p, 'ssq_shoulder_use', 1) == 0) return;
 		if (mState[i] == SS_STOWED) Draw(i);
 		else if (mState[i] == SS_DRAWN) { Stow(i, true); mStowLatch[i] = true; }
 	}
@@ -729,6 +731,7 @@ class SSQ_Handler : EventHandler
 		// the marker: 0 never, 1 while it matters, 2 always; brighter when the hand is in reach
 		int mode = UVI(p, 'ssq_marker', 1);
 		bool show = mode == 2 || (mode == 1 && mState[i] != SS_FLYING);
+		if (UVI(p, 'ssq_shoulder_use', 1) == 0) show = false;   // nothing to reach for on the key route
 		mk.bInvisible = !show;
 		if (show)
 		{

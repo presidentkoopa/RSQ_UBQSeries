@@ -82,9 +82,13 @@ Bind in **Customize Controls**; there are no keys of our own.
 | | |
 |---|---|
 | **Use**, off hand at the shoulder | draw / put back |
+| **Draw** key (Customize Controls) | draw / put back from anywhere |
 | **Offhand Attack** or **Offhand Alt Attack**, held | rev and lock on |
 | the same, released with the arm snapping forward | throw |
 | the same, pressed while it flies | recall |
+
+*Draw from the shoulder with Use* (on by default): turn it off to use the Draw key alone; the shoulder
+is then no grab, its marker is hidden, and RSQ_TacticalRig keeps that shoulder for weapons.
 
 Either off-hand button works, because QZD's stock binds put the alt behind a grip shift — the same
 grip that arms the two-hand grab. `ssq_lock_button` forces one or the other if you prefer.
