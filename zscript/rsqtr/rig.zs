@@ -259,6 +259,7 @@ class RSQTR_Rig : EventHandler
 	// ---- the local loop (console player) ----------------------------------------------
 	override void WorldTick()
 	{
+		if (afterLoad) { afterLoad = false; ClearLocalMarks(); }
 		let p = players[consoleplayer];
 		if (!p || !p.mo) return;
 		let pmo = p.mo;
@@ -499,12 +500,27 @@ class RSQTR_Rig : EventHandler
 	{
 		radialHand = -1; radialRegion = -1;
 		hoverR[0] = -1; hoverR[1] = -1;
+		afterLoad = false;
 	}
 
+	// The rings and icons are this machine's alone and held by transient pointers, so a
+	// save carries orphan copies of them: cleared on load (and respawned as needed).
+	static void ClearLocalMarks()
+	{
+		let it = ThinkerIterator.Create("Actor");
+		Actor a;
+		while (a = Actor(it.Next()))
+			if (a is "RSQTR_Marker" || a is "RSQTR_Icon") a.Destroy();
+	}
+
+	// OnRegister also runs when a save is loaded (a level's handlers get no WorldLoaded
+	// then), so it notes it: the first tic clears the orphan rings and icons the save held.
+	private transient bool afterLoad;
 	override void OnRegister()
 	{
 		radialHand = -1; radialRegion = -1;
 		hoverR[0] = -1; hoverR[1] = -1;
+		afterLoad = true;
 	}
 }
 

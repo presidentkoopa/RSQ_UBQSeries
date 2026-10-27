@@ -38,29 +38,35 @@ class RSQTR_Door : EventHandler
 	static RSQTR_Door Get() { return RSQTR_Door(EventHandler.Find("RSQTR_Door")); }
 	bool Holding(int h) const { return (h == 0 || h == 1) && held[h] >= 0; }
 
+	// OnRegister also runs when a save is loaded, AFTER the synced fields are read
+	// back (p_saveg.cpp), and a level's handlers get no WorldLoaded on a load
+	// (events.cpp skips them), so the load is noticed here and handled on the first tic.
+	private transient bool afterLoad;
+
 	override void OnRegister()
 	{
-		for (int i = 0; i < MAXPLAYERS; i++) dLine[i] = -1;
 		held[0] = -1; held[1] = -1; tried[0] = -1; tried[1] = -1;
+		afterLoad = true;
 	}
 
 	override void WorldLoaded(WorldEvent e)
 	{
-		if (e.IsSaveGame)
-		{
-			// A save taken mid-lift: the hand that held the door is not in the save, so
-			// the door is let go as if released (it finishes or drops by the same rule).
-			for (int i = 0; i < MAXPLAYERS; i++)
-			{
-				if (dLine[i] < 0) continue;
-				if (playeringame[i] && players[i].mo && dLine[i] < Level.Lines.Size())
-					Release(i, players[i].mo, Level.Lines[dLine[i]]);
-				dLine[i] = -1;
-			}
-			return;
-		}
+		afterLoad = false;      // a new level, not a load
 		for (int i = 0; i < MAXPLAYERS; i++) dLine[i] = -1;
-		held[0] = -1; held[1] = -1; tried[0] = -1; tried[1] = -1;
+	}
+
+	// A save taken mid-lift: the hand that held the door is not in the save, so the
+	// door is let go as if released (it finishes or drops by the same rule).
+	private void ReleaseAfterLoad()
+	{
+		for (int i = 0; i < MAXPLAYERS; i++)
+		{
+			if (dLine[i] < 0) continue;
+			int li = dLine[i];
+			if (playeringame[i] && players[i].mo && li < Level.Lines.Size())
+				Release(i, players[i].mo, Level.Lines[li]);
+			dLine[i] = -1;
+		}
 	}
 
 	static bool IsDoorSpecial(int sp)
@@ -110,6 +116,7 @@ class RSQTR_Door : EventHandler
 	// ---- the local loop ----------------------------------------------------------------
 	override void WorldTick()
 	{
+		if (afterLoad) { afterLoad = false; ReleaseAfterLoad(); }
 		ApplyAll();
 
 		let p = players[consoleplayer];
@@ -127,15 +134,16 @@ class RSQTR_Door : EventHandler
 			bool use = RSQTR_Rig.Flag("rsqtr_door_use", p, true) && useDown;
 			bool palm = RSQTR_Rig.Flag("rsqtr_door_palm", p, true) && PalmOut(pmo, h);
 			bool pressing = grip || use || palm;
-			// A hand inside a rig region is reaching for a weapon, not a door.
-			if (rig && rig.HoverRegion(h) >= 0) pressing = false;
+			// A hand inside a rig region is reaching for a weapon, not a door: it never
+			// STARTS a hold there (a held door is not dropped by drifting into one).
+			bool inRegion = rig && rig.HoverRegion(h) >= 0;
 
 			if (!pressing) tried[h] = -1;
 			if (held[h] < 0)
 			{
-				bool start = pressing && !pressWas[h];
+				bool start = pressing && !pressWas[h] && !inRegion;
 				// a palm turned out against the door takes hold the moment it touches
-				bool palmTouch = !start && palm;
+				bool palmTouch = !start && palm && !inRegion;
 				if (start || palmTouch)
 				{
 					Line l = FindDoor(pmo, hp);
@@ -229,9 +237,13 @@ class RSQTR_Door : EventHandler
 	{
 		if (!IsDoorSpecial(l.special) || l.args[0] != 0 || !l.backsector) return;
 		Sector sec = l.backsector;
-		if (sec.ceilingdata && !TakeOver(sec, l)) return;    // already moving: not ours to take
+		// One hand on a door at a time: another player already lifting this door's
+		// sector (through this line or another) keeps it.
+		for (int i = 0; i < MAXPLAYERS; i++)
+			if (i != n && dLine[i] >= 0 && Level.Lines[dLine[i]].backsector == sec) return;
 		int lock = LockOf(l);
 		if (lock > 0 && !pmo.CheckKeys(lock, false)) return;  // the normal locked message
+		if (sec.ceilingdata && !TakeOver(sec, l)) return;    // already moving: not ours to take
 		double top;
 		Vertex vv;
 		[top, vv] = sec.FindLowestCeilingSurrounding();
@@ -257,6 +269,7 @@ class RSQTR_Door : EventHandler
 		double flo = sec.floorplane.ZatPoint(Mid(l));
 		if (cur - flo > d.m_Speed * 6 + 1) return false;
 		d.Destroy();
+		sec.StopSoundSequence(CHAN_AUTO);    // destroying the mover leaves its sound playing
 		return sec.ceilingdata == null;
 	}
 
@@ -268,7 +281,7 @@ class RSQTR_Door : EventHandler
 		double cur = sec.ceilingplane.ZatPoint(Mid(l));
 		double frac = dTop[n] > dFloor[n] ? (cur - dFloor[n]) / (dTop[n] - dFloor[n]) : 0;
 		double commit = RSQTR_Rig.Num("rsqtr_door_commit", players[n], 0.4);
-		if (frac >= commit)
+		if (frac >= commit && IsDoorSpecial(l.special))
 		{
 			// The door's own special finishes it: it opens the rest of the way at its
 			// own speed, waits, and closes as it always did.
@@ -288,8 +301,16 @@ class RSQTR_Door : EventHandler
 		for (int n = 0; n < MAXPLAYERS; n++)
 		{
 			if (dLine[n] < 0) continue;
-			if (!playeringame[n] || !players[n].mo || players[n].mo.health <= 0) { dLine[n] = -1; continue; }
 			Line l = Level.Lines[dLine[n]];
+			if (!playeringame[n] || !players[n].mo || players[n].mo.health <= 0)
+			{
+				// The holder is gone: the door drops shut (never left hanging with no mover).
+				dLine[n] = -1;
+				Sector bs = l.backsector;
+				if (bs && !bs.ceilingdata && bs.ceilingplane.ZatPoint(Mid(l)) > dFloor[n] + 0.5)
+					Level.ExecuteSpecial(10, players[n].mo, l, false, 0, int(SpeedOf(l) * 8));
+				continue;
+			}
 			Sector sec = l.backsector;
 			if (!sec || sec.ceilingdata) { dLine[n] = -1; continue; }   // something else took it
 			double cur = sec.ceilingplane.ZatPoint(Mid(l));

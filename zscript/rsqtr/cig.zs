@@ -39,8 +39,7 @@ class RSQTR_Cig : EventHandler
 	bool lit[MAXPLAYERS];
 	int  burnEnd[MAXPLAYERS];
 	bool atMouth[MAXPLAYERS];
-	int  packs[MAXPLAYERS];
-	bool packed[MAXPLAYERS];     // packs set at least once
+	Vector3 flickAt[MAXPLAYERS]; // where the hand was when it flicked (sent, so every machine agrees)
 	int  zipHand[MAXPLAYERS];    // -1 none
 	Actor cigProp[MAXPLAYERS];
 	Actor zipProp[MAXPLAYERS];
@@ -53,23 +52,25 @@ class RSQTR_Cig : EventHandler
 
 	static RSQTR_Cig Get() { return RSQTR_Cig(EventHandler.Find("RSQTR_Cig")); }
 
-	override void OnRegister()
-	{
-		for (int i = 0; i < MAXPLAYERS; i++) { cigHand[i] = -1; zipHand[i] = -1; }
-	}
+	// The pocket's count lives on the player (RSQTR_CigPack), because an EventHandler is
+	// rebuilt on every map and its fields would not carry the count to the next level.
+	static int Packs(PlayerPawn pmo) { return pmo ? pmo.CountInv("RSQTR_CigPack") : 0; }
 
+	// No OnRegister on purpose: it also runs when a save is loaded, after the synced
+	// fields are read back (p_saveg.cpp), and would wipe them. A level's handlers get
+	// no WorldLoaded on a load (events.cpp), so this runs for new levels only.
 	override void WorldLoaded(WorldEvent e)
 	{
-		if (e.IsSaveGame) return;
 		for (int i = 0; i < MAXPLAYERS; i++)
 		{
 			cigHand[i] = -1; zipHand[i] = -1; lit[i] = false; atMouth[i] = false;
 			cigProp[i] = null; zipProp[i] = null;
-			if (!packed[i] || (playeringame[i] && RSQTR_Rig.Flag("rsqtr_cig_refill", players[i], true)))
-			{
-				packs[i] = playeringame[i] ? RSQTR_Rig.Opt("rsqtr_cig_count", players[i], 3) : 3;
-				packed[i] = true;
-			}
+			if (!playeringame[i] || !players[i].mo) continue;
+			let pmo = players[i].mo;
+			int count = RSQTR_Rig.Opt("rsqtr_cig_count", players[i], 3);
+			let tok = pmo.FindInventory("RSQTR_CigPack");
+			if (!tok) pmo.SetInventory("RSQTR_CigPack", count);
+			else if (RSQTR_Rig.Flag("rsqtr_cig_refill", players[i], true)) tok.Amount = count;
 		}
 	}
 
@@ -123,7 +124,7 @@ class RSQTR_Cig : EventHandler
 			{
 				if (cigHand[n] < 0)
 				{
-					if (packs[n] > 0) EventHandler.SendNetworkEvent("rsqtr_cigtake", h);
+					if (Packs(pmo) > 0) EventHandler.SendNetworkEvent("rsqtr_cigtake", h);
 					else RSQTR_Buzzer.Start(pmo, h, 0.2, 3);
 				}
 				else if (cigHand[n] == h && !lit[n]) EventHandler.SendNetworkEvent("rsqtr_cigback");
@@ -132,6 +133,8 @@ class RSQTR_Cig : EventHandler
 			else if (press && cigHand[n] == h && speed >= FLICK_SPEED)
 			{
 				// A flick: away it goes, with the hand's own speed.
+				Vector3 at = RSQTR_CigProp(cigProp[n]) ? cigProp[n].pos : hp;
+				EventHandler.SendNetworkEvent("rsqtr_cigat", int(at.x * 8), int(at.y * 8), int(at.z * 8));
 				EventHandler.SendNetworkEvent("rsqtr_cigflick", int(hv.x * 100), int(hv.y * 100), int(hv.z * 100));
 			}
 			if (zipHand[n] == h && !holding) EventHandler.SendNetworkEvent("rsqtr_zipoff");
@@ -200,8 +203,8 @@ class RSQTR_Cig : EventHandler
 
 		if (e.Name == "rsqtr_cigtake")
 		{
-			if (cigHand[n] >= 0 || packs[n] <= 0) return;
-			packs[n]--;
+			if (cigHand[n] >= 0 || Packs(pmo) <= 0) return;
+			pmo.TakeInventory("RSQTR_CigPack", 1);
 			cigHand[n] = clamp(e.Args[0], 0, 1);
 			lit[n] = false; atMouth[n] = false;
 			let c = RSQTR_CigProp(Actor.Spawn("RSQTR_CigProp", RSQTR_Body.Hand(pmo, cigHand[n])));
@@ -213,7 +216,7 @@ class RSQTR_Cig : EventHandler
 		else if (e.Name == "rsqtr_cigback")
 		{
 			if (cigHand[n] < 0 || lit[n]) return;
-			packs[n]++;
+			pmo.GiveInventory("RSQTR_CigPack", 1);
 			if (cigProp[n]) cigProp[n].Destroy();
 			cigHand[n] = -1;
 			pmo.A_StartSound("rsqtr/radial", CHAN_AUTO, 0, 0.5);
@@ -235,11 +238,15 @@ class RSQTR_Cig : EventHandler
 			// Away from the mouth after a draw: the exhale.
 			if (was && !atMouth[n] && lit[n]) Exhale(pmo);
 		}
+		else if (e.Name == "rsqtr_cigat")
+		{
+			flickAt[n] = (e.Args[0], e.Args[1], e.Args[2]) / 8.0;
+		}
 		else if (e.Name == "rsqtr_cigflick")
 		{
 			if (cigHand[n] < 0) return;
 			Vector3 v = (e.Args[0], e.Args[1], e.Args[2]) / 100.0;
-			DropButt(n, v);
+			DropButt(n, v, flickAt[n]);
 		}
 		else if (e.Name == "rsqtr_zipon")
 		{
@@ -274,15 +281,20 @@ class RSQTR_Cig : EventHandler
 		}
 	}
 
-	private void DropButt(int n, Vector3 v)
+	// The butt is a real thing in the world (it bounces, and the smouldering one draws
+	// monsters), so it starts from a place every machine agrees on: the flicking hand's
+	// position as sent, or, burnt down, just in front of the player at chest height.
+	// The hand-held prop's own position is only true on the holder's machine.
+	private void DropButt(int n, Vector3 v, Vector3 from = (0, 0, 0))
 	{
-		Actor at = cigProp[n];
-		Vector3 from = at ? at.pos : players[n].mo.pos;
+		let pmo = players[n].mo;
+		if (from == (0, 0, 0) && pmo)
+			from = pmo.pos + (cos(pmo.angle) * 12, sin(pmo.angle) * 12, pmo.height * 0.6);
 		let b = RSQTR_Butt(Actor.Spawn("RSQTR_Butt", from));
 		if (b)
 		{
 			b.vel = v;
-			b.target = players[n].mo;
+			b.target = pmo;
 			b.smoulder = lit[n];
 		}
 		if (cigProp[n]) cigProp[n].Destroy();
@@ -526,5 +538,15 @@ class RSQTR_Smoke : Actor
 		"####" "#" 0 A_SetScale(Scale.X - 0.0002, Scale.Y - 0.00005);
 		"####" "#" 0 A_JumpIf(Alpha <= 0, "Null");
 		Loop;
+	}
+}
+
+// The pocket's count, carried with the player from level to level.
+class RSQTR_CigPack : Inventory
+{
+	Default
+	{
+		Inventory.MaxAmount 99;
+		+INVENTORY.UNDROPPABLE +INVENTORY.UNTOSSABLE +INVENTORY.KEEPDEPLETED
 	}
 }
