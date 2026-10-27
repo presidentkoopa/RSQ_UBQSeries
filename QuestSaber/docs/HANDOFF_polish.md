@@ -22,3 +22,26 @@ FrameKeeper uses the tracked frame for the console player only (hand fields are 
 ## Not done / open
 - Rumble strengths are first guesses; the headset decides.
 - The rig engine lacks `HmdPosition`; the rig copy shims it (test only, never ships).
+
+## 2026-10-27 -- dual sabers, the options page, the training remote game
+
+Done (measured on the rig, load order bd22testv5 + VoxelPack + BD22Q, and bare Doom 2):
+- Second saber works like Brutal Doom's dual guns: you start with two, and the Dual key
+  (BD's +user3, or `ubqs_dual_toggle`) brings it out and puts it away. `ubqs_dual_mode`
+  sets this to 1 = key, 2 = always out, 0 = one saber. Without BD the saber is slot 1.
+- `ubqs_bd_sword` (on by default): Brutal Doom's DSweap counts as the saber.
+- Options: one front page with the essentials. Every older page now sits under
+  "Advanced: every setting", unchanged, together with the diagnostics. Every row was checked
+  against CVARINFO and its option lists. The reset row now also resets `ubqs_dual_mode` and
+  `ubqs_bd_sword`.
+- Training remote is now a game:
+  - Knock its bolts back to pay 10 x level and build a streak.
+  - Each hit on it pays 50 x level x (1 + 0.1 x streak, capped at 10).
+  - 4 hits knock it down for +300 x level x (1 + 0.5 x round). It comes back 3 s later
+    one level harder and fires faster (gap x 0.85 per level past 3).
+  - A sting resets the streak.
+  - Points go to RS_Score through RS_ScoreService ("award") when it is loaded.
+  - Rig check: deflect 20; hits 140/150/160; Remote Down +600; RS_Score total 1240, which
+    matches.
+
+Not done: headset feel for the remote's pace.

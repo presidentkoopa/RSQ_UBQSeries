@@ -6,7 +6,9 @@ AddSlotDefault 1 UBQS_Saber
 alias ubqs_remote_toggle "netevent ubqs_remote"
 alias ubqs_blade2_toggle "netevent ubqs_blade2"
 alias ubqs_ignite_toggle "netevent ubqs_ignite"
+alias ubqs_dual_toggle "netevent ubqs_dual"
 addkeysection "Ultra Badass QuestSaber" ubqs_keys
+addmenukey "Second saber in / out (also Brutal Doom's Dual key)" ubqs_dual_toggle
 addmenukey "Second blade on / off" ubqs_blade2_toggle
 addmenukey "Blade on / off (douse it)" ubqs_ignite_toggle
 addmenukey "Summon / dismiss training remote" ubqs_remote_toggle
