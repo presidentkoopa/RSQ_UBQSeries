@@ -315,9 +315,9 @@ class RSQTR_Rig : EventHandler
 				if (eye > 0.8 && eye < 2.3)
 				{
 					CVar.FindCVar("rsqtr_eye_m").SetFloat(eye);     // this machine's own setting (GetCVar with a player is that player's copy)
-					pmo.A_Print(String.Format("Tactical Rig: eye height %.2f m (rig scaled %.0f%%)", eye, 100 * clamp(eye / REF_EYE, 0.7, 1.3)));
+					pmo.A_Print(String.Format("Tactical Rig: eye height %.2f m (rig scaled %.0f%%)", eye, 100 * clamp(eye / REF_EYE, 0.7, 1.3)), 0, RSQTR_A11y.PrintFont());
 				}
-				else pmo.A_Print("Tactical Rig: stand up straight and try again (no headset height read)");
+				else pmo.A_Print("Tactical Rig: stand up straight and try again (no headset height read)", 0, RSQTR_A11y.PrintFont());
 			}
 			return;
 		}
@@ -355,11 +355,11 @@ class RSQTR_Rig : EventHandler
 			}
 			pc.SetString(txt);
 			CVar.FindCVar("rsqtr_profile_active").SetInt(k);
-			if (who) who.A_Print(String.Format("Tactical Rig: holsters saved to %s", ProfileName(k)));
+			if (who) who.A_Print(String.Format("Tactical Rig: holsters saved to %s", ProfileName(k)), 0, RSQTR_A11y.PrintFont());
 			return;
 		}
 		String all = pc.GetString();
-		if (all == "") { if (who) who.A_Print(String.Format("Tactical Rig: %s is empty -- save to it first", ProfileName(k))); return; }
+		if (all == "") { if (who) who.A_Print(String.Format("Tactical Rig: %s is empty -- save to it first", ProfileName(k)), 0, RSQTR_A11y.PrintFont()); return; }
 		Array<String> places;
 		all.Split(places, "|");
 		for (int r = 0; r < RSQTR_Region.N && r < places.Size(); r++)
@@ -374,7 +374,7 @@ class RSQTR_Rig : EventHandler
 			CVar.FindCVar(String.Format("rsqtr_r%d_rad", r)).SetFloat(f[3].ToDouble());
 		}
 		CVar.FindCVar("rsqtr_profile_active").SetInt(k);
-		if (who) who.A_Print(String.Format("Tactical Rig: holsters loaded from %s", ProfileName(k)));
+		if (who) who.A_Print(String.Format("Tactical Rig: holsters loaded from %s", ProfileName(k)), 0, RSQTR_A11y.PrintFont());
 	}
 
 	static String ProfileName(int k)
@@ -751,7 +751,7 @@ class RSQTR_Rig : EventHandler
 		CVar.FindCVar(String.Format("rsqtr_r%d_f", r)).SetFloat(f);
 		CVar.FindCVar(String.Format("rsqtr_r%d_l", r)).SetFloat(l);
 		CVar.FindCVar(String.Format("rsqtr_r%d_u", r)).SetFloat(u);
-		pmo.A_Print(String.Format("%s: %.2f forward, %.2f left, %.2f up", RSQTR_Region.NAMES[r], f, l, u));
+		pmo.A_Print(String.Format("%s: %.2f forward, %.2f left, %.2f up", RSQTR_Region.NAMES[r], f, l, u), 0, RSQTR_A11y.PrintFont());
 		editHand = -1; editRegion = -1;
 	}
 
@@ -856,7 +856,7 @@ class RSQTR_Rig : EventHandler
 			else
 			{
 				RSQTR_Buzzer.Start(pmo, h, 0.12, 2);
-				if (Flag("rsqtr_messages", p, false)) pmo.A_Print(String.Format("%s: empty", RSQTR_Region.NAMES[r]));
+				if (Flag("rsqtr_messages", p, false)) pmo.A_Print(String.Format("%s: empty", RSQTR_Region.NAMES[r]), 0, RSQTR_A11y.PrintFont());
 			}
 			return;
 		}
@@ -870,7 +870,7 @@ class RSQTR_Rig : EventHandler
 		if (own.Size() == 0)
 		{
 			RSQTR_Buzzer.Start(pmo, h, 0.12, 2);
-			if (Flag("rsqtr_messages", p, false)) pmo.A_Print(String.Format("%s: nothing here", RSQTR_Region.NAMES[r]));
+			if (Flag("rsqtr_messages", p, false)) pmo.A_Print(String.Format("%s: nothing here", RSQTR_Region.NAMES[r]), 0, RSQTR_A11y.PrintFont());
 			return;
 		}
 		// a saber spot lists one saber at most (Owned): draw it
