@@ -15,8 +15,8 @@ WTFPL. What came from there:
   ijon's own work, reused with credit.
 - The two fonts, carried as `RSSCFON` and `RSSCFN2`. In *Dakka*'s credits the
   clean BIGFONT used for the score line is by **Blue Shadow** and the breakdown
-  font is by **Jimmy**. Neither is licensed to us; they are here because this
-  fork is private and never distributed.
+  font is by **Jimmy**. They come with *Dakka*, a public repository, and are
+  carried here with that credit (owner, 10-27: the score stays public).
 - The colour definitions in `TEXTCOLO.txt`, renamed `RSScore_*` so that loading
   *Dakka* alongside this pack cannot have one definition win over the other.
 
