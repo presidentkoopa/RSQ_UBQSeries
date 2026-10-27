@@ -231,12 +231,27 @@ class RSQLS_Sight : EventHandler
 	// LaserColorService -- absent-safe, found by name at run time); cycling;
 	// on a live hostile the target colour; on a lined-up headshot the headshot
 	// colour. Returns 0xRRGGBB.
+	// COLOUR-BLIND PLAY (RSQ_Accessibility's rsqa_colorblind, cb.zs). The stock pair, red main and
+	// green off, is one colour to a deuteranope and a dim one to a protanope; with the setting on
+	// the hands' own colours become the series pair for that vision (main azure / cyan / magenta,
+	// off amber / red / yellow; one colour mode: the main's). The target recolour stands down: a
+	// third hue is one more to tell apart (rendered, a white target dot against the tritan red
+	// off hand was 9.9 apart), so the lock shows by shape -- the dot swells and pulses twice as
+	// deep. A colour the player picked per slot, a weapon's own, or cycling stay as they are.
+	static int CBHand(int c, int h, int colorMode)
+	{
+		if (!RSQLS_CB.Mode()) return c;
+		bool off = (h == 1 && colorMode != 0);
+		return RSQLS_CB.Pick(off ? RSQLS_CB.CB_COULD : RSQLS_CB.CB_HAVE, c);
+	}
+
 	private int ColorOf(PlayerInfo p, int h, Weapon w, bool isDot, bool hostile, bool head)
 	{
 		int mode = RSQLS_Hand.Opt("rsqls_color_mode", p, 1);
 		int beamCol = RSQLS_Hand.Opt((mode == 0 || h == 0) ? "rsqls_col_main" : "rsqls_col_off", p, 0xFF2010);
 		int c = beamCol;
 		bool own = false;    // the dot has its own colour (mode 2)
+		bool handCol = true; // c is still a hand's own colour (colour-blind play swaps those)
 		if (isDot && mode == 2)
 		{
 			c = RSQLS_Hand.Opt(h == 0 ? "rsqls_col_dot_main" : "rsqls_col_dot_off", p, 0xFF2010);
@@ -247,7 +262,10 @@ class RSQLS_Sight : EventHandler
 		{
 			int sl = w.SlotNumber;
 			if (sl >= 0 && sl <= 9)
+			{
 				c = RSQLS_Hand.Opt(String.Format("rsqls_col_slot%d", sl), p, c);
+				handCol = false;
+			}
 		}
 
 		if (w)
@@ -257,7 +275,7 @@ class RSQLS_Sight : EventHandler
 			while (sv = it.Next())
 			{
 				int r = sv.GetInt("laser.color", w.GetClassName(), h, isDot ? 1.0 : 0.0, w, 'RSQ_LaserSight');
-				if (r >= 0) { c = r & 0xFFFFFF; break; }
+				if (r >= 0) { c = r & 0xFFFFFF; handCol = false; break; }
 			}
 		}
 
@@ -267,9 +285,12 @@ class RSQLS_Sight : EventHandler
 			// 36 hues (10 degrees apart) so the translation cache holds them all.
 			double deg = level.maptime * speed / TICRATE + h * 180.0;
 			c = RSQLS_Colors.Hue(floor(deg / 10.0) * 10.0);
+			handCol = false;
 		}
+		if (handCol) c = CBHand(c, h, mode);
 
-		if (hostile && RSQLS_Hand.Flag("rsqls_lock", p, true) && RSQLS_Hand.Flag("rsqls_target_recolor", p, false))
+		if (hostile && RSQLS_Hand.Flag("rsqls_lock", p, true) && RSQLS_Hand.Flag("rsqls_target_recolor", p, false)
+			&& !RSQLS_CB.Mode())
 			c = RSQLS_Hand.Opt("rsqls_col_target", p, 0xFFE020);
 
 		if (head && RSQLS_Hand.Flag("rsqls_head", p, false))
@@ -552,7 +573,8 @@ class RSQLS_Sight : EventHandler
 			// TARGET LOCK: it TIGHTENS onto the target and bites at the pulse rate.
 			double tighten = clamp(RSQLS_Hand.Num("rsqls_lock_tighten", p, 0.0), 0.0, 0.9);
 			double hz = RSQLS_Hand.Num("rsqls_lock_rate", p, 2.2);
-			sc *= (1.0 - tighten) * (1.25 + 0.12 * sin(level.maptime * hz * 360.0 / TICRATE));
+			double depth = RSQLS_CB.Mode() ? 0.25 : 0.12;   // colour-blind play: the lock reads by its pulse
+			sc *= (1.0 - tighten) * (1.25 + depth * sin(level.maptime * hz * 360.0 / TICRATE));
 		}
 		s.Scale = (sc, sc);
 		s.Alpha = clamp(RSQLS_Hand.Num("rsqls_spot_a", p, 1.0), 0.0, 1.0);
