@@ -1,5 +1,10 @@
 # HANDOFF -- RSQ_Grapple core (branch agent-core), 2026-10-27
 
+Round 2 (Hook 1.0: pendulum comes to rest, JP-look chain rope, hand-over-hand climbing) is in ROADMAP.md, measured.
+New settings: rsqgr_rope_style / chain_links / chain_scale, rsqgr_rope_friction (drag now 0.002), rsqgr_climb /
+climb_free_only / grab_reach / climb_cap / grab_dg. New binds: Grab Rope (Main/Off). New file: zscript/rsqgr/climb.zs.
+Test kit adds settle.py, strokes.py, perf.py, climbscript.py, clsave.py.
+
 ## Done (measured on rig H, QZD 17.3 9afc750; vanilla doom2 and the owner's full order)
 
 | what | measured |
