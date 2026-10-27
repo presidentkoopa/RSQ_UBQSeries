@@ -215,4 +215,11 @@ options menu is the list in `MENUDEF.txt`, no descriptors.
   keeps the shoulder.
 - **SSQ_ScoreService** (score.zs): blocks and turned shots for a scorer, by name. A returned bullet's
   helper is a MISSILE now, so its kill is credited to the player who turned it.
+- **SSQ_ScoreService answers more** (score.zs; for RSQ_Score's second melee round): `perfect` (tics
+  since a PERFECT block of that monster -- the Blocked hook moved below the perfect test in guard.zs),
+  `GetObject("returned.from", shot or monster)` (who fired a shot the shield turned, or the bullet it
+  sent back), `thrown.leg` (disc out 0 / home 1, from its phase), `disc.grinding` (0 while stuck in a
+  monster). Rig (RSQ_Score probe mlprobe): a perfect block then a kill paid Perfect Riposte 0.7; a
+  shot turned by the shield killing its own shooter paid Poetic Justice; a disc out-kill then a home-
+  kill paid Boomerang (with `ssq_bd22 1`); a BD imp ground by the stuck disc paid Ground Down.
 - Not felt in a headset: the flick throw with the trigger alone, Use as the lock button.

@@ -231,7 +231,6 @@ class SSQ_Guard : Inventory
 
 		// blocked
 		newdamage = 0;
-		{ let sh = SSQ_Handler.Get(); if (sh && sh.score) sh.score.Blocked(source); }
 		// the spark comes off the face on the attacker's side
 		Vector3 outward = ((A - C) dot n) >= 0 ? n : -n;
 
@@ -247,6 +246,8 @@ class SSQ_Guard : Inventory
 			let pose = h ? h.PoseOf(mo.PlayerNumber()) : null;
 			if (pose) perfect = (pose.Vel() * TICRATE) dot outward >= SSQ_Handler.SV('ssq_perfect_speed', 25.0);
 		}
+		// a scorer may ask about this block, and whether it was perfect (score.zs)
+		{ let sh = SSQ_Handler.Get(); if (sh && sh.score) sh.score.Blocked(source, perfect); }
 
 		bool fb = SSQ_Handler.UVI(mo.player, 'ssq_feedback', 1) != 0;
 		int now = Level.maptime;
@@ -388,7 +389,7 @@ class SSQ_Guard : Inventory
 				// damage to the helper, so co-op friendly-fire rules do not see a player source.)
 				let v = hitT.linetarget;
 				if (v && v.health > 0 && v.target == ric) v.target = mo;
-				{ let sh = SSQ_Handler.Get(); if (sh && sh.score) sh.score.ReturnHit(v); }
+				{ let sh = SSQ_Handler.Get(); if (sh && sh.score) sh.score.ReturnHit(v, shooter); }
 			}
 		}
 		return true;
@@ -544,7 +545,7 @@ class SSQ_Guard : Inventory
 		back.pitch = -asin(clamp(dir.z, -1, 1));
 		back.target = mo;	// ours now: it hurts them, never us
 		back.bMissile = true;
-		{ let sh = SSQ_Handler.Get(); if (sh && sh.score) sh.score.Turned(back); }
+		{ let sh = SSQ_Handler.Get(); if (sh && sh.score) sh.score.Turned(back, source); }
 		missile.vel = (0, 0, 0);	// the original dies on the box as it would have
 	}
 
