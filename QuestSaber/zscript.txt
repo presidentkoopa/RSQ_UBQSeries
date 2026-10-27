@@ -4935,6 +4935,11 @@ class UBQS_Bridge : EventHandler
 			}
 			return;
 		}
+		if (e.Name ~== "ubqs_dual_out" || e.Name ~== "ubqs_dual_in")
+		{
+			if (e.Player >= 0 && e.Player < MAXPLAYERS && playeringame[e.Player]) SetDual(e.Player, e.Name ~== "ubqs_dual_out");
+			return;
+		}
 		if (e.Name ~== "ubqs_dual")
 		{
 			if (e.Player >= 0 && e.Player < MAXPLAYERS && playeringame[e.Player]) ToggleDual(e.Player);
@@ -5032,8 +5037,23 @@ class UBQS_Bridge : EventHandler
 		if (!off) return;
 		// by what the off hand actually holds: something else filled it (Brutal Doom Quest's hands take an
 		// off hand at the start of a level) -> bring the saber out
-		if (p.OffhandWeapon != off)
+		SetDual(i, p.OffhandWeapon != off);
+	}
+
+	// out = true: the second saber into the off hand; false: put away. Also what RSQ_TacticalRig's
+	// second saber holster sends (ubqs_dual_out / ubqs_dual_in): no main-hand rule there, the holster
+	// is the saber's own place.
+	void SetDual(int i, bool out_)
+	{
+		let p = players[i];
+		let mo = p.mo;
+		if (!mo || mo.health <= 0 || DualMode() == 0) return;
+		if (!out_ && DualMode() == 2) return;              // "always out": nowhere to put it
+		let off = Weapon(mo.FindInventory("UBQS_SaberOff"));
+		if (!off) return;
+		if (out_)
 		{
+			if (p.OffhandWeapon == off) return;
 			// bring it out: straight into the off hand, whatever filled it meanwhile
 			mo.TakeInventory("UBQS_DualAway", 1);
 			if (p.OffhandWeapon != off)
