@@ -1,0 +1,4 @@
+brightmap texture models/rsqtr/rtciglit.jpg
+{
+	map models/rsqtr/rtcigbm.jpg
+}

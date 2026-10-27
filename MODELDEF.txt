@@ -1,0 +1,57 @@
+// Ermac's cigarette (his Virtual Tactical Vest) and his voxel Zippo (ZBlood-VR), held in the hand.
+// Measured: the cigarette mesh runs 9.5 units along X; the Zippo stands 13.4 units tall, its flame at 10.6-14.1.
+Model RSQTR_CigProp
+{
+	Path "models/rsqtr"
+	Model 0 "rtcig.md3"
+	Skin 0 "rtcig.jpg"
+	Scale 0.3 0.3 0.3
+	// The mesh lies tipped 22 degrees (filter end -3.8,+2.1 to the burning end +5.7,-1.8 in X,Z):
+	// levelled here so it points along the hand.
+	PitchOffset 22
+	USEACTORPITCH
+	USEACTORROLL
+	FrameIndex RSCG A 0 0
+	Skin 0 "rtciglit.jpg"
+	FrameIndex RSCG B 0 0
+}
+
+Model RSQTR_Butt
+{
+	Path "models/rsqtr"
+	Model 0 "rtbutt.md3"
+	Skin 0 "rtciglit.jpg"
+	Scale 0.3 0.3 0.3
+	FrameIndex RSCB A 0 0
+}
+
+Model RSQTR_ButtLying
+{
+	Path "models/rsqtr"
+	Model 0 "rtbutt.md3"
+	Skin 0 "rtciglit.jpg"
+	Scale 0.3 0.3 0.3
+	FrameIndex RSCB A 0 0
+}
+
+Model RSQTR_ZippoProp
+{
+	Path "models/rsqtr"
+	Model 0 "rtzippo.md3"
+	Skin 0 "rtzippo.png"
+	Model 1 "rtzipfl.md3"
+	Skin 1 "rtzippo.png"
+	Scale 0.17 0.17 0.17
+	// closed, then the lid opening
+	FrameIndex RSZP A 0 0
+	FrameIndex RSZP E 0 1
+	FrameIndex RSZP F 0 2
+	FrameIndex RSZP G 0 3
+	// lit, the flame flickering
+	FrameIndex RSZP B 0 4
+	FrameIndex RSZP B 1 1
+	FrameIndex RSZP C 0 5
+	FrameIndex RSZP C 1 2
+	FrameIndex RSZP D 0 6
+	FrameIndex RSZP D 1 3
+}

@@ -93,6 +93,12 @@ class RSQTR_Rig : EventHandler
 		double l = Num(String.Format("rsqtr_r%d_l", r), p, RSQTR_Region.DL[r]);
 		double u = Num(String.Format("rsqtr_r%d_u", r), p, RSQTR_Region.DU[r]);
 		if (r == 3 && Flag("rsqtr_rifle_back", p, false)) { f = -0.15; l = 0.0; u = -0.62; }
+		return BodyPoint(pmo, f, l, u);
+	}
+
+	// Any point on the body (metres, body frame): the cigarette pocket uses it too.
+	Vector3 BodyPoint(PlayerPawn pmo, double f, double l, double u)
+	{
 		if (body && body.primed) return body.At(pmo, f, l, u);
 		RSQTR_Body tmp = new("RSQTR_Body");
 		tmp.yaw = pmo.angle; tmp.primed = true;

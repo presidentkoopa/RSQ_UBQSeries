@@ -38,13 +38,23 @@ OptionMenu "RSQTR_Options"
 	Slider "Open past this, it finishes", "rsqtr_door_commit", 0.1, 0.9, 0.05, 2
 	Slider "Lift gain", "rsqtr_door_gain", 1.0, 5.0, 0.25, 2
 	StaticText ""
+	StaticText "Ermac's cigarette", 1
+	StaticText "A pocket on your left chest: grip there, bring it to your mouth.", 1
+	Option "Cigarettes", "rsqtr_cig", "OnOff"
+	Option "Light it with the Zippo (other hand)", "rsqtr_cig_zippo", "OnOff"
+	Slider "Burns for, seconds", "rsqtr_cig_secs", 2, 20, 1, 0
+	Option "Slow motion while it burns (RSQ SlowMo)", "rsqtr_cig_slowmo", "OnOff"
+	Slider "Slow motion, % speed", "rsqtr_cig_depth", 10, 90, 5, 0
+	Slider "Cigarettes in the pocket", "rsqtr_cig_count", 1, 20, 1, 0
+	Option "Refill on a new level", "rsqtr_cig_refill", "OnOff"
+	StaticText ""
 	Submenu "Where the regions are", "RSQTR_Regions"
 	StaticText ""
 	StaticText "Grip key codes (QuestZDoom sends grips as keys):", 1
 	TextField "Main grip", "rsqtr_keys_main"
 	TextField "Off grip", "rsqtr_keys_off"
 	StaticText ""
-	SafeCommand "Reset all Tactical Rig settings", "resetcvar rsqtr_on rsqtr_grip rsqtr_use rsqtr_keys_main rsqtr_keys_off rsqtr_markers rsqtr_icons rsqtr_haptics rsqtr_messages rsqtr_reach rsqtr_rifle_back rsqtr_yield_shield rsqtr_empty rsqtr_door rsqtr_door_grip rsqtr_door_use rsqtr_door_palm rsqtr_door_commit rsqtr_door_gain rsqtr_r0_f rsqtr_r0_l rsqtr_r0_u rsqtr_r0_rad rsqtr_r1_f rsqtr_r1_l rsqtr_r1_u rsqtr_r1_rad rsqtr_r2_f rsqtr_r2_l rsqtr_r2_u rsqtr_r2_rad rsqtr_r3_f rsqtr_r3_l rsqtr_r3_u rsqtr_r3_rad rsqtr_r4_f rsqtr_r4_l rsqtr_r4_u rsqtr_r4_rad rsqtr_r5_f rsqtr_r5_l rsqtr_r5_u rsqtr_r5_rad", "Put every Tactical Rig setting back?"
+	SafeCommand "Reset all Tactical Rig settings", "resetcvar rsqtr_on rsqtr_grip rsqtr_use rsqtr_keys_main rsqtr_keys_off rsqtr_markers rsqtr_icons rsqtr_haptics rsqtr_messages rsqtr_reach rsqtr_rifle_back rsqtr_yield_shield rsqtr_empty rsqtr_door rsqtr_door_grip rsqtr_door_use rsqtr_door_palm rsqtr_door_commit rsqtr_door_gain rsqtr_cig rsqtr_cig_zippo rsqtr_cig_secs rsqtr_cig_slowmo rsqtr_cig_depth rsqtr_cig_count rsqtr_cig_refill rsqtr_r0_f rsqtr_r0_l rsqtr_r0_u rsqtr_r0_rad rsqtr_r1_f rsqtr_r1_l rsqtr_r1_u rsqtr_r1_rad rsqtr_r2_f rsqtr_r2_l rsqtr_r2_u rsqtr_r2_rad rsqtr_r3_f rsqtr_r3_l rsqtr_r3_u rsqtr_r3_rad rsqtr_r4_f rsqtr_r4_l rsqtr_r4_u rsqtr_r4_rad rsqtr_r5_f rsqtr_r5_l rsqtr_r5_u rsqtr_r5_rad", "Put every Tactical Rig setting back?"
 }
 
 OptionMenu "RSQTR_Regions"

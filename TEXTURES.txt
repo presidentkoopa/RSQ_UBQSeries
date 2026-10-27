@@ -1,0 +1,38 @@
+
+Sprite "RSMKA0B0", 128, 128
+{
+	Offset 64, 64
+	Patch "RTCIGSMK", 0, 0
+	{
+		Blend "#3A3F47"
+	}
+}
+
+Sprite "RSMKC0D0", 128, 128
+{
+	Offset 64, 64
+	Patch "RTCIGSMK", 0, 0
+	{
+		FlipY
+		Blend "#3A3C49"
+	}
+}
+
+Sprite "RSMKE0F0", 128, 128
+{
+	Offset 64, 64
+	Patch "RTCIGSMK", 0, 0
+	{
+		Blend "#E8E9EA"
+	}
+}
+
+Sprite "RSMKG0H0", 128, 128
+{
+	Offset 64, 64
+	Patch "RTCIGSMK", 0, 0
+	{
+		FlipY
+		Blend "#D8DCE0"
+	}
+}
