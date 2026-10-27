@@ -122,6 +122,7 @@ class RSQDG_Reach
 	// pulled a barrel off an ordinary roll-and-flick. So a hand stands down while
 	// it holds:
 	//   - a MELEE weapon (the saber, a chainsaw, a fist): swung, never pointed;
+	//   - a hand the tactical rig is using (RSQ_TacticalRig answers "rig.busy");
 	//   - another mod's hand system, found BY NAME AT RUN TIME so nothing links
 	//     against it and an absent mod is just a string that never matches --
 	//     RS_ShieldSawQ (SSQ_) and UltraBadassQuestSaber's Force hand (UBQS_),
@@ -131,6 +132,13 @@ class RSQDG_Reach
 	static play bool HandBusy(PlayerInfo p, int hand)
 	{
 		if (!p || !Flag("rsqdg_yield", p, true)) return false;
+		// RSQ_TacticalRig: a hand reaching into a holster or its radial, or holding a
+		// door, the cigarette or the Zippo, is the rig's. Asked by service name, so an
+		// absent rig gives no answer.
+		let rit = ServiceIterator.Find("RSQTR_RigService");
+		Service rs;
+		while (rs = rit.Next())
+			if (rs.GetInt("rig.busy", "", hand, 0, p.mo) == 1) return true;
 		Weapon w = (hand == 0) ? p.ReadyWeapon : p.OffhandWeapon;
 		if (!w) return false;
 		// GetClassName can come back lower-cased (seen in the rig), so compare lower-cased.
