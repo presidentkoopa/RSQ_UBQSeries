@@ -1,0 +1,8 @@
+server int rsgrh_at = 20;
+server string rsgrh_cls = "DoomImp";
+server float rsgrh_dist = 256;
+server float rsgrh_side = 0;
+server float rsgrh_up = 0;
+server int rsgrh_hp = 0;
+server int rsgrh_log = 0;
+server int rsgrh_scan = 0;

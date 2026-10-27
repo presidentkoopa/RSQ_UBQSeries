@@ -1,0 +1,8 @@
+
+// ==== monster side: the throw, the whip (after RSQGR_Input: it takes back the claw core just
+// fired when the whip is on), and the voxel table ====
+GameInfo
+{
+	AddEventHandlers = "RSQGR_Flight", "RSQGR_Whip", "RSQGR_Voxels"
+}
+// ==== end monster side ====

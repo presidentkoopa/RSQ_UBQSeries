@@ -1,0 +1,21 @@
+
+// ==== monster side ====
+OptionValue "RSQGR_MonsterModes"
+{
+	0, "Slide"
+	1, "Yank"
+}
+OptionValue "RSQGR_Tumbles"
+{
+	0, "Off"
+	1, "Spin"
+	2, "Flip"
+	3, "Both"
+}
+OptionValue "RSQGR_LookSets"
+{
+	0, "JP"
+	1, "Combat FX"
+	2, "Ballistics"
+}
+// ==== end monster side ====

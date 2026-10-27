@@ -1,0 +1,8 @@
+	// ==== monster side ====
+	Option "Monster Hook", "rsqgr_monster_mode", "RSQGR_MonsterModes"
+	Option "Tumble", "rsqgr_yank_tumble", "RSQGR_Tumbles"
+	Option "Throw Damage", "rsqgr_yank_damage", "OnOff"
+	Option "Whip", "rsqgr_whip", "OnOff"
+	Option "Look", "rsqgr_looks", "RSQGR_LookSets"
+	StaticText " "
+	// ==== end monster side ====
