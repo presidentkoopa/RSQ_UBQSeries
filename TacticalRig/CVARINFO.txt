@@ -49,6 +49,7 @@ user bool  rsqtr_cig_refill  = true;    // the pocket refills on a new level
 
 // The torso (optional).
 user bool  rsqtr_vest       = false;   // wear a torso the holsters sit on
+user int   rsqtr_vest_style = 0;       // 0 the Doom marine, 1 Quake's Grunt
 user float rsqtr_vest_u     = -0.20;   // metres from your eyes down to its collar
 user float rsqtr_vest_f     = -0.04;   // metres forward of your eyes
 user float rsqtr_vest_size  = 1.0;

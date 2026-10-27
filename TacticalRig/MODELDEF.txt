@@ -85,3 +85,28 @@ Model RSQTR_TorsoPart
 	Skin 0 "rttorso_red.png"
 	FrameIndex RSVT D 0 0
 }
+
+// The Doom marine's torso, the default torso: from the project owner's RS_VRBody
+// (marine_torso.iqm -- a Doom Eternal Classic Slayer rip, id Software; see README credits),
+// recoloured green / blue / red there. Measured: x -13.1..13.1 (shoulder to shoulder), y -8.2..8.5,
+// z 37.2..57.7, shoulder line at z 51.689, in the Source frame (+X left, -Y forward, +Z up), so
+// AngleOffset 90 turns its front to the actor's. Surface 0 is the neck: hidden (it is your own).
+// Skins 1024 (from 2048: six 2048 skins are ~96 MB of texture memory on a Quest).
+Model RSQTR_MarinePart
+{
+	Path "models/rsqtr"
+	Model 0 "rtmarine.iqm"
+	BaseFrame
+	Scale 1.0 1.0 1.0
+	AngleOffset 90
+	SurfaceSkin 0 0 "rtinvis.png"
+	SurfaceSkin 0 1 "rtmtor_green.png"
+	SurfaceSkin 0 2 "rtmsho_green.png"
+	FrameIndex RSVM A 0 0
+	SurfaceSkin 0 1 "rtmtor_blue.png"
+	SurfaceSkin 0 2 "rtmsho_blue.png"
+	FrameIndex RSVM B 0 0
+	SurfaceSkin 0 1 "rtmtor_red.png"
+	SurfaceSkin 0 2 "rtmsho_red.png"
+	FrameIndex RSVM C 0 0
+}

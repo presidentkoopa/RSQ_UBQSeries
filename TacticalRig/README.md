@@ -69,8 +69,8 @@ Turn on **Cigarettes** in the menu. A pocket on your left chest holds a few
 
 ## The torso (optional)
 
-Options → Tactical Rig → *Wear a torso*: Quake's Grunt torso (see Credits) on the rig's
-body, for your holsters to sit on. It turns green or blue with your armour and breathes red at low health. Sliders move
+Options → Tactical Rig → *Wear a torso*: the Doom marine's torso (the default) or Quake's
+Grunt (see Credits) on the rig's body, for your holsters to sit on. It turns green or blue with your armour and breathes red at low health. Sliders move
 and size it.
 
 ## Install
@@ -93,7 +93,11 @@ the console player only. RSQ_DistanceGrab already asks `rig.busy`.
   the cigarette's texture is an atlas it shares with a Sketchfab cigarette-pack model (a real
   brand's pack art, blanked out here). The Zippo is the voxel lighter from his ZBlood-VR,
   credited to him there.
-- **The torso** is Quake's Grunt (id Software, *Quake*, 1996): Vittorio Romeo's original
+- **The marine torso** is the Doom Eternal Classic Slayer (id Software): a rip shared on
+  Sketchfab, cut to torso and shoulder pads and recoloured green / blue / red in the project
+  owner's RS_VRBody (provenance in its `models/marine/PROVENANCE.md`); skins halved to 1024
+  here for the Quest.
+- **The Quake torso** is Quake's Grunt (id Software, *Quake*, 1996): Vittorio Romeo's original
   Quake VR mod cut it into a torso, and the project owner's RS_VRBody recoloured its skin.
   It is id Software's mesh, not an authored model; converted here from Quake's .mdl to MD3.
 - Sharing other people's work in this pack is the project owner's decision.
