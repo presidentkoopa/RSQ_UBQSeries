@@ -32,3 +32,46 @@ OptionMenu "RSQ_MeleeAdvanced"
 	Slider "$RSQ_MENU_STAR_EVERY", "rsq_star_every", 0, 10, 1, 0
 	Slider "$RSQ_MENU_HOOK_XP", "rsq_hook_xp", 0, 3, 0.1, 1
 }
+
+// The screens: Gun Bonsai's three menu names, pointed at the routers (rsq/ui/router.zs), which are
+// Gun Bonsai's own menus with rsq_ui_skin 0 and open the skin's screens otherwise.
+OptionMenu "GunBonsaiStatusDisplay"
+{
+	class RSQUI_StatusRouter
+	Title "$TFLV_MENU_STATUS_TITLE"
+}
+
+OptionMenu "GunBonsaiWeaponLevelUpMenu"
+{
+	class RSQUI_WeaponLevelUpRouter
+	Title "$TFLV_MENU_WEAPON_LEVELUP_TITLE"
+}
+
+OptionMenu "GunBonsaiPlayerLevelUpMenu"
+{
+	class RSQUI_PlayerLevelUpRouter
+	Title "$TFLV_MENU_PLAYER_LEVELUP_TITLE"
+}
+
+// The screens' options.
+AddOptionMenu "OptionsMenu"
+{
+	Submenu "Gun Bonsai Screens", "RSQUI_Options"
+}
+
+OptionValue "RSQUI_Skins"
+{
+	0, "Gun Bonsai"
+	1, "Mockup"
+	2, "Hex Rail"
+	3, "Terminal"
+}
+
+OptionMenu "RSQUI_Options"
+{
+	Title "GUN BONSAI SCREENS"
+	Option "Skin", "rsq_ui_skin", "RSQUI_Skins"
+	Slider "HUD Inset", "rsq_ui_inset", 0.0, 0.25, 0.01, 2
+	Slider "HUD Size", "rsq_ui_hud_scale", 0.5, 2.0, 0.05, 2
+	Option "Ammo And Health", "rsq_ui_bottom", "OnOff"
+}

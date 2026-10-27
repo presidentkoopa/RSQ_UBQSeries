@@ -65,4 +65,12 @@ server bool rsq_punch_debug = false;
 server float rsq_hook_xp = 1.0;
 
 // Which screens draw Gun Bonsai: 0 its own, 1 the recreation of the owner's mockups, 2 and 3 the alternatives
-server int rsq_ui_skin = 0;
+server int rsq_ui_skin = 1;
+// The screens: HUD inset (fraction of each side kept clear, for the headset's edge of view),
+// HUD size, and the bottom row (per-hand ammo, health, face, armour).
+server float rsq_ui_inset = 0.04;
+server float rsq_ui_hud_scale = 1.0;
+server bool rsq_ui_bottom = true;
+// What the skins changed in other mods' user cvars, to put back on skin 0 (-1 = nothing saved).
+server int rsq_ui_saved_scorehide = -1;
+server int rsq_ui_saved_sbartype = -1;
