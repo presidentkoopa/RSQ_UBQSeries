@@ -248,7 +248,9 @@ class SSQ_Guard : Inventory
 		{
 			let h = SSQ_Handler.Get();
 			let pose = h ? h.PoseOf(mo.PlayerNumber()) : null;
-			if (pose) perfect = (pose.Vel() * TICRATE) dot outward >= SSQ_Handler.SV('ssq_perfect_speed', 25.0);
+			// BULWARK (Gun Bonsai): a slower plate still counts, 1 / (1 + 0.35 x level) of the speed
+			double need = SSQ_Handler.SV('ssq_perfect_speed', 25.0) / (1.0 + 0.35 * SSQ_Upg.Lv(mo.FindInventory('SSQ_ShieldSaw'), "Bulwark"));
+			if (pose) perfect = (pose.Vel() * TICRATE) dot outward >= need;
 		}
 		// a scorer may ask about this block, and whether it was perfect (score.zs)
 		{ let sh = SSQ_Handler.Get(); if (sh && sh.score) sh.score.Blocked(source, perfect); }
@@ -367,6 +369,10 @@ class SSQ_Guard : Inventory
 			double ang = atan2(back.y, back.x);
 			double pit = -asin(clamp(back.z, -1, 1));
 			int dmg = int(max(1, damage * SSQ_Handler.SV('ssq_hitscan_damage', 1.0)));
+			// REBOUND (Gun Bonsai): a returned bullet hits harder. (A turned missile gets the same from the
+			// patch itself, which can see it; this return is traced by a helper the patch cannot credit.)
+			int rb = SSQ_Upg.Lv(mo.FindInventory('SSQ_ShieldSaw'), "Rebound");
+			if (rb > 0) dmg = int(dmg * (1.25 + 0.25 * rb));
 			// With LAF_ABSPOSITION the engine reads the three offsets as LITERAL COORDINATES --
 			// tempos = (offsetforward, offsetside, sz), p_map.cpp:4875 -- so the forward and side
 			// slots carry X and Y. Passing 0,0 started this trace at the map origin.
@@ -548,6 +554,8 @@ class SSQ_Guard : Inventory
 		back.angle = atan2(dir.y, dir.x);
 		back.pitch = -asin(clamp(dir.z, -1, 1));
 		back.target = mo;	// ours now: it hurts them, never us
+		// and the ShieldSaw turned it: Gun Bonsai's VR patch pays a missile to its master weapon
+		back.master = mo.FindInventory('SSQ_ShieldSaw');
 		back.bMissile = true;
 		{ let sh = SSQ_Handler.Get(); if (sh && sh.score) sh.score.Turned(back, source); }
 		missile.vel = (0, 0, 0);	// the original dies on the box as it would have
@@ -592,6 +600,10 @@ class SSQ_Guard : Inventory
 		double bashR = R * bashK;
 		// read above the iterator, like everything else here: SVI is an uncached lookup by name
 		bool los = SSQ_Handler.SVI('ssq_bash_los', 1) != 0;
+		// GUN BONSAI: the bash and the grind name the player as the inflictor (RS_Score reads that as the
+		// shield), which leaves the VR patch nothing to tell the hands apart by -- measured, it paid the
+		// main-hand weapon. So the damage is bracketed: the patch pays whatever happens inside to the saw.
+		let upg = SSQ_Upg.Svc();
 		let it = BlockThingsIterator.Create(mo, bashR + 64);
 		while (it.Next())
 		{
@@ -617,7 +629,10 @@ class SSQ_Guard : Inventory
 			if (grindNow && onPlate)
 			{
 				int dmg = SSQ_Handler.SVI('ssq_grind_damage', 6);
+				if (upg) upg.GetInt("credit.push", "", 2, 0, saw);
 				t.DamageMobj(mo, mo, dmg, 'Saw');
+				if (upg) upg.GetInt("credit.pop", "", 0, 0, saw);
+				if (!t) continue;
 				SSQ_FX.At(mo, C + n * (t.radius * 0.5), "ssq/grind", CHAN_5, 0.8);
 				SSQ_FX.Sparks(mo, C + n * (t.radius * 0.5), n, 4);
 				SSQ_FX.Buzz(mo, 0.3, 3);
@@ -625,7 +640,10 @@ class SSQ_Guard : Inventory
 			if (bashNow && along > 0)
 			{
 				int dmg = int(clamp(10 + 0.15 * eff, 10, 40) * SSQ_Handler.SV('ssq_bash_damage', 1.0));
+				if (upg) upg.GetInt("credit.push", "", 2, 0, saw);
 				t.DamageMobj(mo, mo, dmg, 'Melee');
+				if (upg) upg.GetInt("credit.pop", "", 0, 0, saw);
+				if (!t) continue;
 				// CLEAR SOME SPACE. The shove is away from the face, scaled by how hard you drove
 				// it, with a small lift under it so a body actually leaves the floor and lands
 				// somewhere else instead of sliding a few units and standing back up in your face.
@@ -643,6 +661,8 @@ class SSQ_Guard : Inventory
 				SSQ_FX.At(mo, C + n * (t.radius * 0.5), "ssq/bash", CHAN_5);
 				SSQ_FX.Buzz(mo, 1.0, 8);
 				g.bashCool = 10;
+				// BATTERING RAM (Gun Bonsai): what was bashed is thrown into whatever stands behind it
+				if (upg && t.health > 0) upg.GetInt("ram", "", mo.PlayerNumber(), eff, t);
 			}
 		}
 	}

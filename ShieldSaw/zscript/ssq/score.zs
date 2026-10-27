@@ -132,3 +132,20 @@ class SSQ_ScoreService : Service
 		return null;
 	}
 }
+
+// THE GUN BONSAI VR PATCH, asked by name (RSQ_MeleeUpgradeService). This mod names no class of the
+// patch: absent, Svc() is null, every level reads 0, and the ShieldSaw is exactly what it was.
+class SSQ_Upg play
+{
+	static Service Svc()
+	{
+		let it = ServiceIterator.Find("RSQ_MeleeUpgradeService");
+		return it.Next();
+	}
+	static int Lv(Object who, String upgrade)
+	{
+		if (!who) return 0;
+		let s = Svc();
+		return s ? max(0, s.GetInt("level", upgrade, 0, 0, who)) : 0;
+	}
+}
