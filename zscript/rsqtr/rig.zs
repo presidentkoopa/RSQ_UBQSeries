@@ -76,8 +76,8 @@ class RSQTR_Rig : EventHandler
 	private transient Vector3 radialAt;
 	private transient int  radialPick;
 	private transient Array<String> radialItems;
-	private transient Actor marker[RSQTR_Region.N];
-	private transient Actor icon[RSQTR_Region.N];
+	transient Actor marker[RSQTR_Region.N];   // read by the mirror (mirror.zs)
+	transient Actor icon[RSQTR_Region.N];
 	private transient Actor ricon[RADIAL_MAX];
 	private transient int  buzzCool[2];
 	private transient int  hoverT[2];          // tics the hand has been in its region
@@ -627,11 +627,7 @@ class RSQTR_Rig : EventHandler
 				{
 					ic.Wear(put, 0.28 * Num("rsqtr_icon_scale", p, 1.0), 0.85);
 					double by = (body && body.primed) ? body.yaw : pmo.angle;
-					// A gun over the shoulder hangs on the BACK: shown 0.12 m behind the
-					// region, or it fills your view every time you look down.
-					Vector3 show = at;
-					if (r == 4 || r == 5) show -= (cos(by) * 0.12 * RSQTR_Body.UPM, sin(by) * 0.12 * RSQTR_Body.UPM, 0);
-					ic.Place(show);
+					ic.Place(ShowAt(at, r, by));
 					Hang(ic, r, by + Num("rsqtr_icon_turn", p, 0));
 				}
 			}
@@ -639,30 +635,48 @@ class RSQTR_Rig : EventHandler
 		}
 	}
 
-	// HOW A STORED GUN HANGS, the way it would be worn (degrees, from the body's
-	// heading; an actor's pitch is positive nose-DOWN). A pickup model points its
-	// muzzle along its own forward axis, as they are made to lie on the floor:
-	//   hips, pectorals  muzzle down, grip up: a holster, a pouch
-	//   chest            across the chest, muzzle up toward the left shoulder: a sling
-	//   stomach          the other diagonal, muzzle up toward the right shoulder
-	//   shoulders        behind, muzzle up and back: carried over the shoulder
-	//   lower back       across the small of the back, level
-	// Sprites face you whatever is set; voxels and models turn.
+	// HOW A STORED GUN HANGS, the way it is worn (the owner's reference pictures, 10-27:
+	// concealed-carry positions, a slung rifle, rifles on a pack). Degrees from the body's
+	// heading; an actor's pitch is positive nose-DOWN; a pickup points its muzzle along its
+	// own forward axis, lying level with the grip down. For a right-handed player:
+	//   hips        strong side: muzzle down, grip to the back
+	//   pectorals   under the arm: muzzle down and back, grip forward
+	//   chest       slung across: muzzle down toward the left hip, butt at the right shoulder
+	//   stomach     the other diagonal: muzzle down toward the right hip
+	//   shoulders   on the back: butt up over the shoulder, muzzle down toward the other hip
+	//   lower back  flat across the small of the back, grip toward the drawing hand
+	// A left-handed player gets the mirror image. Sprites face you whatever is set.
 	static void Hang(Actor ic, int r, double yaw)
 	{
-		double a = yaw, pt = 0, rl = 0;
+		double s = RSQTR_Body.LeftHanded() ? -1 : 1;   // flips left and right
+		double off = 0, pt = 0, rl = 0;               // off: muzzle heading from the body's
 		switch (r)
 		{
-		case 0: case 6: a = yaw; pt = 80; rl = -10; break;
-		case 1: case 7: a = yaw; pt = 80; rl = 10; break;
-		case 2: a = yaw + 90; pt = -40; break;
-		case 3: a = yaw - 90; pt = -40; break;
-		case 4: a = yaw + 180; pt = -70; rl = 10; break;
-		case 5: a = yaw + 180; pt = -70; rl = -10; break;
-		default: a = yaw + 90; pt = 0; break;
+		case 0: off = 0;   pt = 80; rl = -10; break;  // left hip
+		case 1: off = 0;   pt = 80; rl = 10;  break;  // right hip
+		case 6: off = 180; pt = 50; rl = 15;  break;  // left pectoral
+		case 7: off = 180; pt = 50; rl = -15; break;  // right pectoral
+		case 2: off = 90 * s;  pt = 45; break;        // chest
+		case 3: off = -90 * s; pt = 45; break;        // stomach
+		case 4: off = -90; pt = 65; break;            // left shoulder: muzzle toward the right hip
+		case 5: off = 90;  pt = 65; break;            // right shoulder: toward the left hip
+		default: off = 90 * s; pt = 0; break;         // lower back: muzzle to the off side
 		}
-		ic.angle = a; ic.pitch = pt; ic.roll = rl;
+		if (s < 0 && r != 2 && r != 3 && r != 8) { off = -off; rl = -rl; }
+		ic.angle = yaw + off; ic.pitch = pt; ic.roll = rl;
 	}
+
+	// Where a stored gun is SHOWN: at its region, except over the shoulders, where it hangs
+	// on the back -- behind the region (or it fills your view looking down) and below it,
+	// so its butt, not its middle, is where your hand reaches over the shoulder.
+	static Vector3 ShowAt(Vector3 at, int r, double yaw)
+	{
+		if (r != 4 && r != 5) return at;
+		double u = RSQTR_Body.UPM;
+		return at - (cos(yaw) * BACK_SHOW * u, sin(yaw) * BACK_SHOW * u, DOWN_SHOW * u / RSQTR_Body.PIXELSTRETCH);
+	}
+	const BACK_SHOW = 0.12;   // metres behind a shoulder region
+	const DOWN_SHOW = 0.22;   // metres below it (a first guess: pickup sizes vary by pack)
 
 	private void HideAll()
 	{
