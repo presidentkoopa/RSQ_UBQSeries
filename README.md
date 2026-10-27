@@ -11,10 +11,10 @@ is ZScript and data lumps.
 
 | | Mod | pk3 | What it is |
 |---|---|---|---|
-| ✋ | [DistanceGrab](DistanceGrab/) | `RSQ_DistanceGrab.pk3` | Turn your palm out, flick, and pull items, guns, barrels and bodies to your hand. Then carry them, throw them, and hit things with them. |
+| ✋ | [DistanceGrab](DistanceGrab/) | `RSQ_DistanceGrab.pk3` | Turn your palm out, flick, and pull items, guns, barrels and bodies to your hand. Then carry them, throw them, and hit things with them. Lift doors open by hand. |
 | 🛡️ | [ShieldSaw](ShieldSaw/) | `UltraBadassShieldSaw.pk3` | A shield on your off shoulder that blocks, bashes and turns shots back, and doubles as a throwable saw disc that hunts the targets you ring. id Software's shield saw from *Doom: The Dark Ages*, brought to Doom VR first by **Ermac** in Rusted Legacy. |
-| ⚔️ | [QuestSaber](QuestSaber/) | `UltraBadassQuestSaber.pk3` | A volumetric lightsaber, with an optional second one in the off hand. Cut, block, deflect, throw, and use the Force. |
-| 🎒 | [TacticalRig](TacticalRig/) | `RSQ_TacticalRig.pk3` | Weapons carried on your body (hips, chest, shoulders), doors you lift open by hand, and Ermac's cigarette. Built on **Ermac's** Virtual Tactical Vest idea. |
+| ⚔️ | [QuestSaber](QuestSaber/) | `UltraBadassQuestSaber.pk3` | A volumetric lightsaber, with a second one for the off hand on the Dual key. Cut, block, deflect, throw, and use the Force. |
+| 🎒 | [TacticalRig](TacticalRig/) | `RSQ_TacticalRig.pk3` | Guns holstered on your hips and shoulders, spots for the saber, a torso and helmet, a mirror, and Ermac's cigarette. Built on **Ermac's** Virtual Tactical Vest idea. |
 | ⏱️ | [SlowMo](SlowMo/) | `RSQ_SlowMo.pk3` | The world slows, you don't. Enemy bullets become rounds you can see and dodge. |
 
 ---
@@ -34,12 +34,12 @@ is ZScript and data lumps.
    | Mod | Options menu entry |
    |---|---|
    | DistanceGrab | **Distance Grab** |
-   | ShieldSaw | **RS ShieldSawQ Options** |
+   | ShieldSaw | **Ultra Badass ShieldSaw** |
    | QuestSaber | **Ultra Badass QuestSaber** |
    | TacticalRig | **Tactical Rig** |
    | SlowMo | **RSQ SlowMo** |
 
-   Every mod's menu has a **reset** row that puts all of its settings back to default.
+   Every menu ends with **Tuning and Debug**, which holds a **Reset All** row.
 
 ## What each one does, and how to use it
 
@@ -51,57 +51,57 @@ is ZScript and data lumps.
   light ones snappier. Keep your hand open and you catch it.
 - **Carry and throw:** roll your palm back to let go, or snap your arm and let go to throw.
   Thrown things hit with their weight; barrels can go off on a hard landing. Heavy loads slow you.
-- **Options worth knowing:** *Feel tuning* (all the headset numbers on one page), *Hold before it
-  locks* (a short delay so you see amber before green), *Flight path* Steer or Arc (a lob, with
-  an Arc height slider), *Duck under doorways*, *Voxel targets flash instead*.
+- **Doors:** put a hand flat on a door, take hold (the grab's grip, Use or palm out) and lift.
+  Let go past 40% open and it finishes by itself; before that it drops shut. Locked doors need
+  their key. The door's own sound plays as fast as you lift it.
+- **Options worth knowing:** *Flight Path* Steer or Arc (a lob, with *Arc Height*), *Lock Delay*
+  (Gesture: amber before green), *Duck Under Doors* (Pull), *Voxel Flash* (Beam and Glow).
 - Stands down on a hand holding a melee weapon, the shield or the Force hand. An optional button
   fallback is under Customize Controls → Distance Grab.
 
 ### ShieldSaw
 - **Draw / stow:** reach to your off shoulder and press **Use**; press Use there again to put it
-  back. Or bind **Draw** and turn *Draw from the shoulder with Use* off: the key alone.
+  back. Or bind **Draw** and turn *Draw With Use* off: the key alone.
 - **Block:** shots that cross the shield's face are stopped or turned back (back at the shooter,
   where you look, or off the face); fireballs are batted away before they reach you; blocked
   melee staggers. Meet a shot with a moving shield for a **perfect block**.
 - **Bash:** shove the shield into an enemy.
 - **Rev:** hold the **off trigger**.
 - **Lock on:** hold **Use** (away from the shoulder) and sweep the shield over enemies, one ring
-  each. Or bind the off grip or any key to *ShieldSaw: lock on (hold)* and pick it in *Lock on
-  with*. Rings stay 5 s after you let go.
+  each. Or bind the off grip or any key to *ShieldSaw: lock on (hold)* and pick it in *Lock On
+  With*. Rings stay 5 s after you let go.
 - **Throw:** let go of the trigger while snapping your arm forward. It visits the ringed targets in
   order and comes back; press the trigger again while it flies to call it back.
-- **Brutal Doom v22 monster compatibility:** for Brutal Doom's tougher monsters, it slices through up to
+- **BD22 Monsters** (option): for Brutal Doom's tougher monsters, it slices through up to
   250 health and grinds up to 1200.
-- Shield size, fit and placement are under *Shield Fit*; everything else under *Tuning* and
-  *Advanced*.
+- **Options:** the everyday switches on the front page (*Double Block Radius*, *On Manual Store*,
+  turned shots, perfect block, the bash...); *Shield Fit*, *Throw and Disc*, *Lock-On*, *Block and
+  Bash* and *Mount Position* one page down. With Gun Bonsai's VR patch it levels up: Broadening
+  grows the plate, Lockstep adds locks, and more ([ShieldSaw/README.md](ShieldSaw/README.md)).
 
 ### QuestSaber
 - **The saber** is in weapon slot 1. Swing to cut; the blade blocks and deflects shots, and two
   blades clash and lock. It can be thrown (it comes back, or drops until you call it).
-- **The off hand** holds a second saber by default (*dual*), and the Force: push, pull, grip and
-  jump, by gesture.
+- **The second saber:** the Dual key (Brutal Doom's own, or the saber's) brings it into the off hand
+  and puts it away; *Second Saber* can make it always out, or off.
+- **The Force** in the off hand: push, pull, grip and jump, by gesture.
 - **Keys** (Customize Controls → Ultra Badass QuestSaber): blade on/off, second blade, training
   remote.
-- A deep options menu covers the look, the beam, swing and trail, contact and blocking,
-  deflecting, throwing, the Force, sound and feel, and the training remote.
+- **Options:** the everyday switches on one page; Look, Swing and Cuts, Block and Deflect,
+  Throwing, The Force, Sound and Haptics, Training Remote, Controls and Presets one page down.
 
 ### TacticalRig
-- **Nine places on your body**: two hips (pistols), two pectorals (grenades), chest
-  (shotguns), stomach (rifles), two shoulders (heavy weapons, split), lower back (melee). What
-  each place holds is a setting. A **mirror** (while moving the places, or always) shows you
-  wearing it, front and back.
-- **Holster:** bring the gun into its region and grip (or press Use). **Draw:** reach in
-  with an empty hand and grip or Use; with several weapons there a small radial opens
-  round your hand: move toward one and let go.
-- The regions stay on your body when you look around; turns carry them. A ring shows a
-  region when your hand is near; the weapon last put there shows as its pickup.
-- **Fit it to you:** *Measure my height* scales the rig to you; *Move the regions with your
-  hands* lets you grip a ring and carry it where your hand naturally goes.
-- **A torso** (optional): the Doom marine's (default) or Quake's Grunt, on your body, green or
-  blue with your armour, red at low health.
-- **Doors:** hand flat on a door, take hold (grip, Use or palm out) and lift. Let go
-  past 40% open and it finishes by itself; before that it drops shut. Locked doors need
-  their key.
+- **Four gun holsters** (both hips, both shoulders) and, with the QuestSaber, **two saber spots**
+  below the hips. A holster holds exactly the gun you put there: grip (or Use) with a gun in your
+  hand to put it in (a full one swaps), grip with the hand empty to draw.
+- **Each hand holsters and draws its own gun**; the engine's *switchhand* moves guns between
+  hands. Dual is left to its own key.
+- The holsters stay on your body when you look around; turns carry them. A sphere shows a holster
+  when your hand is near; the gun stored there shows as its pickup model.
+- **Fit it to you:** *Measure My Height*, *Move Holsters by Hand*, four *Holster Profiles*, and a
+  **mirror** that shows you wearing it, front and back.
+- **A torso** (optional): the Doom marine's (default) or Quake's Grunt, green or blue with your
+  armour, red at low health; with the marine, a **helmet** only mirrors show.
 - **Ermac's cigarette** (off by default): a pocket on your left chest. Take one, hold it
   at your mouth to light it (or light it with Ermac's Zippo in your other hand, an
   option). While it burns the world slows (with SlowMo loaded); it heals you slowly
@@ -113,6 +113,8 @@ is ZScript and data lumps.
   adrenaline meter earned from kills, hurts and near misses.
 - **The world slows, you don't:** monsters, missiles, gibs and effects near you move,
   animate and sound slower; you, your guns and the series' hand effects stay real-time.
+- Other mods can read it through `RSQSM_Service` (`active`, `scale`, `adrenaline`,
+  `adrenaline.add`; see [SlowMo/README.md](SlowMo/README.md)).
 - **Dodgeable bullets:** enemy hitscans become visible rounds on the same line, with the
   same damage. Sidestep them, block them with the shield, deflect them with the saber.
   Brutal Doom's bullets slow to the same speed. Your shots leave trails.
@@ -121,17 +123,18 @@ is ZScript and data lumps.
 
 ## They work together
 
-The four mods never link against each other. Each checks for the others by name at run time, so
+The five mods never link against each other. Each checks for the others by name at run time, so
 a missing mod is simply never found:
 
 - The **grab stands down on a hand holding a melee weapon**, the shield or the Force hand, since
   a swing is full of the grab's palm-out flick. A **QuestSaber hilt with its blade switched off can
   grab**: the saber reports this through its `UBQS_SaberService` (`saber.lit`).
 - The ShieldSaw and the saber share the hands cleanly: saber in the main hand, shield in the off.
-- The **grab stands down on a hand the rig is using** (reaching into a holster, holding a door,
-  the cigarette or the Zippo): the rig reports this through `RSQTR_RigService` (`rig.busy`).
+- The **grab stands down on a hand the rig is using** (in a holster, holding the cigarette or the
+  Zippo): the rig reports this through `RSQTR_RigService` (`rig.busy`), and asks the grab's
+  `RSQDG_DoorService` whether a hand holds a door.
 - The **rig leaves the off shoulder to the ShieldSaw** while the shield hangs there, unless the
-  ShieldSaw's *Draw from the shoulder with Use* is off (its Draw key only): then the rig keeps it.
+  ShieldSaw's *Draw With Use* is off (its Draw key only): then the rig keeps it.
 - **Ermac's cigarette asks SlowMo for slow motion** through RS_SlowMo's own `rsm_pulse` event;
   without SlowMo it is simply a cigarette.
 - **SlowMo's rounds** are ordinary projectiles to the shield and the saber, so they block and
@@ -146,11 +149,11 @@ a lock). Nothing buzzes constantly.
 ```
 RSQ_UBQSeries/
 ├── pk3/             ready-to-load builds of all five (identical contents to the tested builds)
-├── DistanceGrab/    source, docs/ (DECISIONS, HANDOFF), tools/ (asset generators, rig tests)
+├── DistanceGrab/    source, CREDITS, docs/ (DECISIONS, HANDOFF), tools/ (asset generators, rig tests)
 ├── ShieldSaw/       source, README (full manual), HANDOFF
 ├── QuestSaber/      source, CREDITS, docs/HANDOFF_polish
-├── TacticalRig/     source, README, docs/HANDOFF, tools/ (sound generator)
-├── SlowMo/          source, README, docs/HANDOFF, tools/ (sound generator)
+├── TacticalRig/     source, README, CREDITS, docs/HANDOFF, tools/ (sound generator, pickup measurer)
+├── SlowMo/          source, README, CREDITS, docs/HANDOFF, tools/ (sound generator)
 ├── tools/rig17/     how the real QuestZDoom 17.3 test engine was built, and the test runners
 └── build_all.sh     rebuilds every pk3 into pk3/
 ```
@@ -168,17 +171,17 @@ This needs `zip`. Each mod also keeps its original script (DistanceGrab uses
 `build.ps1` on Windows; ShieldSaw, TacticalRig and SlowMo use `build.sh`). `build_all.sh` packs
 exactly the same files.
 
-## Retired: LaserSight (2026-10-27)
+## LaserSight: being rebuilt (2026-10-27)
 
 The owner's headset test: the laser would not ride each weapon's barrel consistently, and it was
-jittery and laggy. It is out of the series and the build. Its history stays in this repository
-(`git log -- LaserSight/` before the removal commit); DistanceGrab's beam simply never finds it
-(it asked by service name).
+jittery and laggy. It is out of the build while it is rebuilt. Its history stays in this repository
+(`git log -- LaserSight/` before the removal commit). DistanceGrab's beam already makes way for it
+when it is back (*Yield to Laser Sight*, asked by service name).
 
 ## Status (0.8a, 2026-10-26)
 
 - **Tested on the real QuestZDoom 17.3 engine** (the qzd17.3 tag, 4.14.3), built headless
-  for testing ([tools/rig17](tools/rig17/)), and on the older 4.12 build. All four load together
+  for testing ([tools/rig17](tools/rig17/)), and on the older 4.12 build. The mods of that release load together
   in both orders, menus open, a fight runs, and the full Brutal Doom + VoxelPack load order
   pulls and catches with no script errors.
 - An independent review of every change was done and its findings fixed.
@@ -188,18 +191,20 @@ jittery and laggy. It is out of the series and the build. Its history stays in t
 New since 0.8a (not yet in a release):
 
 - **TacticalRig** and **SlowMo**, both new. Tested on the real 17.3 engine with the full Brutal
-  Doom + VoxelPack load order and all six packs: no script errors. An independent review of
+  Doom + VoxelPack load order and the whole series: no script errors. An independent review of
   both was done and its findings fixed and re-tested.
-- **DistanceGrab:** stands down on a hand the rig is using.
+- **DistanceGrab:** stands down on a hand the rig is using; doors lifted by hand moved here from
+  the rig.
+- **Every options menu** rebuilt in BD22 VR Weapons' style: short labels, no notes, niche settings
+  one page down, Tuning and Debug last.
+- **CREDITS.txt** in every pk3 (the ShieldSaw's credits are in its README).
 
 What's new in 0.8a:
 
 - **DistanceGrab:** the hand's up/down angle was read upside down (what you could grab, the
   "not at the floor" check and the wrist flick). Fixed and re-tested. Voxel items flash instead
-  of wearing the thin glow. A "Feel tuning" page collects the headset numbers.
-- **LaserSight phase 3:** a spread ring and a grenade arc, both learned by watching each gun
-  fire; per-weapon muzzle points through a `LaserMuzzleService`; a range readout. Also fixed:
-  the beam started at the grip instead of the muzzle on every gun.
+  of wearing the thin glow. (0.8a had a "Feel tuning" page; its rows now live on their own pages.)
+- **LaserSight** was in 0.8a; it is out of the build now and being rebuilt (above).
 
 What changed, what's measured and what's still open is in each mod's handoff:
 [DistanceGrab](DistanceGrab/docs/HANDOFF_2026-10-26.md) ·
@@ -224,10 +229,11 @@ Known limits:
 ## Credits
 
 - **QuestZDoom**: Emawind and Team Beef. The engine, and the off-hand weapon and attack-pose script
-  API all six mods are built on.
+  API all five mods are built on.
 - **id Software**: the shield saw (*Doom: The Dark Ages*): its design, and the mesh Ermac ripped
   from the game; the Doom Eternal Classic Slayer, whose torso the TacticalRig wears (a rip,
-  prepared in the project owner's RS_VRBody); and Quake's Grunt, its other torso.
+  prepared in the project owner's RS_VRBody) and the Classic Slayer's helmet the rig's mirror shows
+  (a rip, also prepared in RS_VRBody); and Quake's Grunt, its other torso.
 - **Ermac**, co-designer of DoomVR ([Rusted Legacy](https://github.com/iAmErmac/rusted-legacy),
   DXR, RS_Main):
   - Brought the shield saw to Doom VR first, in Rusted Legacy. In his words, he worked on two
@@ -241,8 +247,9 @@ Known limits:
     modeller; the cigarette's texture atlas is shared with a Sketchfab pack model), and the Zippo
     is the voxel lighter from his ZBlood-VR, credited to him there.
 - Sharing other people's work in this series is the project owner's decision. See
-  [ShieldSaw/README.md](ShieldSaw/README.md), [QuestSaber/CREDITS.txt](QuestSaber/CREDITS.txt) and
-  [TacticalRig/README.md](TacticalRig/README.md).
+  [ShieldSaw/README.md](ShieldSaw/README.md) and each mod's CREDITS.txt
+  ([QuestSaber](QuestSaber/CREDITS.txt), [TacticalRig](TacticalRig/CREDITS.txt),
+  [DistanceGrab](DistanceGrab/CREDITS.txt), [SlowMo](SlowMo/CREDITS.txt)).
 - **li-gnrcwpn**: the training remote's ready beep.
 - **Vittorio Romeo**: his original Quake VR mod cut Quake's Grunt into the torso the
   TacticalRig can wear.
