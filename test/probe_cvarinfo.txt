@@ -1,0 +1,23 @@
+server noarchive int    thpt_at = 12;          // tic the row is spawned
+server noarchive string thpt_cls = "DoomImp";  // class (comma list cycles)
+server noarchive string thpt_pcts = "100,80,55,25,150,300";   // health per monster, % of spawn health
+server noarchive string thpt_ld = "";          // indices given LegenDoom Lite's guaranteed legendary pickup
+server noarchive float  thpt_dist = 300;
+server noarchive float  thpt_gap = 72;
+server noarchive int    thpt_hold = 1;         // deactivate the row once set up (frozen pose)
+server noarchive int    thpt_log = 0;          // log every bar every n tics
+server noarchive int    thpt_shot = 0;         // number drawn into the eye as blocks (frame picking)
+server noarchive int    thpt_mark = 0;         // fake marker service: -1 = monster i gets bits (i+1)&15, n = all get n
+server noarchive int    thpt_bench = 0;        // tic to run the microbenchmark
+server noarchive int    thpt_tumble = -1;      // index of a monster to tumble/move by script (roll + arc)
+server noarchive int    thpt_hurt = 0;         // tic: damage every monster of the row by 10 % (damage path)
+server noarchive int    thpt_rows = 1;         // rows of the grid (bench)
+server noarchive int    thpt_logrow = 0;       // log the row's monsters every n tics
+server noarchive int    thpt_hurtn = 1;        // hurt this many times
+server noarchive int    thpt_hurtgap = 35;     // tics apart
+server noarchive int    thpt_hurtamt = 0;      // damage per hurt (0 = 10 % of spawn health)
+server noarchive int    thpt_census = 0;       // tic: count every monster against its spawn health
+server noarchive int    thpt_tumblepitch = 0;  // tumble by pitch (a voxel's flip) instead of roll
+server noarchive int    thpt_late = 0;         // log bar/thing sync after all actors ticked, every n tics
+server noarchive int    thpt_hands = 0;        // log the player's weapons and buttons with the bars
+server noarchive int    thpt_svclog = 0;       // log the series services' answers for the row every n tics

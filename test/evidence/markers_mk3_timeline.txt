@@ -1,0 +1,4 @@
+     27 t14  DoomImp:- DoomImp:- DoomImp:-
+     12 t41  DoomImp:RSYZA DoomImp:- DoomImp:-
+      8 t53  DoomImp:RSYZB DoomImp:- DoomImp:-
+     39 t61  DoomImp:- DoomImp:- DoomImp:-

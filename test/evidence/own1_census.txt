@@ -1,0 +1,22 @@
+THPT_CENSUS t0 monsters 19 | over spawn 0, at spawn 19, below 0 | with bar 0, with overheal strip 0
+THPT_MON DoomImp hp 180/60 start 0 bar 1 overstrip 1 champ 1 legend 1
+THPT_MON Zombieman hp 60/20 start 0 bar 1 overstrip 1 champ 1 legend 1
+THPT_MON Zombieman hp 60/20 start 0 bar 1 overstrip 1 champ 1 legend 1
+THPT_MON Zombieman hp 60/20 start 0 bar 1 overstrip 1 champ 1 legend 1
+THPT_MON Zombieman hp 60/20 start 0 bar 1 overstrip 1 champ 1 legend 1
+THPT_MON Zombieman hp 60/20 start 0 bar 1 overstrip 1 champ 1 legend 1
+THPT_MON Zombieman hp 60/20 start 0 bar 1 overstrip 1 champ 1 legend 1
+THPT_MON Zombieman hp 60/20 start 0 bar 1 overstrip 1 champ 1 legend 1
+THPT_MON Zombieman hp 60/20 start 0 bar 1 overstrip 1 champ 1 legend 1
+THPT_MON Zombieman hp 60/20 start 0 bar 1 overstrip 1 champ 1 legend 1
+THPT_MON Zombieman hp 60/20 start 0 bar 1 overstrip 1 champ 1 legend 1
+THPT_MON Zombieman hp 60/20 start 0 bar 1 overstrip 1 champ 1 legend 1
+THPT_MON DoomImp hp 180/60 start 0 bar 1 overstrip 1 champ 1 legend 1
+THPT_MON DoomImp hp 180/60 start 0 bar 1 overstrip 1 champ 1 legend 1
+THPT_MON DoomImp hp 180/60 start 0 bar 1 overstrip 1 champ 1 legend 1
+THPT_MON Zombieman hp 60/20 start 0 bar 1 overstrip 1 champ 1 legend 1
+THPT_MON DoomImp hp 180/60 start 0 bar 1 overstrip 1 champ 1 legend 1
+THPT_MON DoomImp hp 180/60 start 0 bar 1 overstrip 1 champ 1 legend 1
+THPT_MON DoomImp hp 180/60 start 0 bar 1 overstrip 1 champ 1 legend 1
+THPT_MON DoomImp hp 36/60 start 0 bar 1 overstrip 0 champ 0 legend 0
+THPT_CENSUS t100 monsters 25 | over spawn 19, at spawn 5, below 1 | with bar 23, with overheal strip 19

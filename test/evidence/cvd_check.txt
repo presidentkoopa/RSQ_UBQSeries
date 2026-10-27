@@ -1,0 +1,85 @@
+  Classic    normal  high -mid   dE   23.1  lum ratio 1.24
+  Classic    normal  high -low   dE   41.6  lum ratio 1.22
+  Classic    normal  high -over  dE   78.0  lum ratio 2.88
+  Classic    normal  mid  -low   dE   31.6  lum ratio 1.51
+  Classic    normal  mid  -over  dE   58.8  lum ratio 2.31
+  Classic    normal  low  -over  dE   79.9  lum ratio 3.50
+Classic: worst dE under its own simulation 23.1
+
+  Red        normal  high -mid   dE    0.0  lum ratio 1.00
+  Red        normal  high -low   dE    0.0  lum ratio 1.00
+  Red        normal  high -over  dE   81.9  lum ratio 3.31
+  Red        normal  mid  -low   dE    0.0  lum ratio 1.00
+  Red        normal  mid  -over  dE   81.9  lum ratio 3.31
+  Red        normal  low  -over  dE   81.9  lum ratio 3.31
+Red: worst dE under its own simulation 0.0
+
+  ProDeutan  normal  high -mid   dE  111.9  lum ratio 1.75
+  ProDeutan  normal  high -low   dE  113.7  lum ratio 1.68
+  ProDeutan  normal  high -over  dE   45.1  lum ratio 2.22
+  ProDeutan  normal  mid  -low   dE   67.6  lum ratio 2.92
+  ProDeutan  normal  mid  -over  dE   79.7  lum ratio 1.27
+  ProDeutan  normal  low  -over  dE   89.8  lum ratio 3.72
+  ProDeutan  protan  high -mid   dE  115.4  lum ratio 1.52
+  ProDeutan  protan  high -low   dE   88.7  lum ratio 2.35
+  ProDeutan  protan  high -over  dE   38.5  lum ratio 2.01
+  ProDeutan  protan  mid  -low   dE   49.8  lum ratio 3.56
+  ProDeutan  protan  mid  -over  dE   86.3  lum ratio 1.33
+  ProDeutan  protan  low  -over  dE   75.8  lum ratio 4.72
+  ProDeutan  deutan  high -mid   dE  113.0  lum ratio 1.91
+  ProDeutan  deutan  high -low   dE  101.1  lum ratio 1.37
+  ProDeutan  deutan  high -over  dE   47.1  lum ratio 2.37
+  ProDeutan  deutan  mid  -low   dE   33.6  lum ratio 2.62
+  ProDeutan  deutan  mid  -over  dE   75.7  lum ratio 1.24
+  ProDeutan  deutan  low  -over  dE   76.5  lum ratio 3.26
+ProDeutan: worst dE under its own simulation 33.6
+
+  Tritan     normal  high -mid   dE   47.6  lum ratio 2.40
+  Tritan     normal  high -low   dE  115.0  lum ratio 1.71
+  Tritan     normal  high -over  dE  107.3  lum ratio 1.50
+  Tritan     normal  mid  -low   dE   89.7  lum ratio 4.10
+  Tritan     normal  mid  -over  dE   84.2  lum ratio 1.60
+  Tritan     normal  low  -over  dE   72.0  lum ratio 2.56
+  Tritan     tritan  high -mid   dE   48.1  lum ratio 2.26
+  Tritan     tritan  high -low   dE  129.1  lum ratio 1.61
+  Tritan     tritan  high -over  dE   82.9  lum ratio 1.27
+  Tritan     tritan  mid  -low   dE  100.4  lum ratio 3.65
+  Tritan     tritan  mid  -over  dE   48.8  lum ratio 1.78
+  Tritan     tritan  low  -over  dE   52.0  lum ratio 2.05
+Tritan: worst dE under its own simulation 48.1
+
+  HighContrast normal  high -mid   dE   88.9  lum ratio 1.36
+  HighContrast normal  high -low   dE  105.4  lum ratio 3.43
+  HighContrast normal  high -over  dE   47.5  lum ratio 1.53
+  HighContrast normal  mid  -low   dE   80.4  lum ratio 2.53
+  HighContrast normal  mid  -over  dE  117.8  lum ratio 1.13
+  HighContrast normal  low  -over  dE  143.0  lum ratio 2.25
+  HighContrast protan  high -mid   dE   87.3  lum ratio 1.44
+  HighContrast protan  high -low   dE   75.1  lum ratio 4.94
+  HighContrast protan  high -over  dE   21.8  lum ratio 1.36
+  HighContrast protan  mid  -low   dE   50.5  lum ratio 3.42
+  HighContrast protan  mid  -over  dE  104.4  lum ratio 1.06
+  HighContrast protan  low  -over  dE   82.6  lum ratio 3.63
+  HighContrast deutan  high -mid   dE   85.2  lum ratio 1.30
+  HighContrast deutan  high -low   dE   76.5  lum ratio 2.84
+  HighContrast deutan  high -over  dE   35.2  lum ratio 1.66
+  HighContrast deutan  mid  -low   dE   31.7  lum ratio 2.18
+  HighContrast deutan  mid  -over  dE  114.4  lum ratio 1.27
+  HighContrast deutan  low  -over  dE   98.2  lum ratio 1.72
+  HighContrast tritan  high -mid   dE   26.5  lum ratio 1.46
+  HighContrast tritan  high -low   dE  102.5  lum ratio 3.95
+  HighContrast tritan  high -over  dE   50.5  lum ratio 1.41
+  HighContrast tritan  mid  -low   dE   76.9  lum ratio 2.70
+  HighContrast tritan  mid  -over  dE   69.3  lum ratio 1.03
+  HighContrast tritan  low  -over  dE  143.1  lum ratio 2.80
+HighContrast: worst dE under its own simulation 21.8
+
+  Classic    protan  high -mid   dE   14.0  lum ratio 1.16
+  Classic    protan  high -low   dE   11.5  lum ratio 1.40
+  Classic    protan  mid  -low   dE   24.3  lum ratio 1.63
+  Classic    deutan  high -mid   dE   18.3  lum ratio 1.30
+  Classic    deutan  high -low   dE    5.2  lum ratio 1.12
+  Classic    deutan  mid  -low   dE   16.3  lum ratio 1.45
+  Classic    tritan  high -mid   dE   26.4  lum ratio 1.24
+  Classic    tritan  high -low   dE   47.8  lum ratio 1.21
+  Classic    tritan  mid  -low   dE   24.8  lum ratio 1.50

@@ -1,0 +1,27 @@
+/home/claude/scratch/logsA/g1.log:THPT_COUNT t15 bars 3 tracked 26 spawned 3 scheme 0 set 0 | coldcite bars 0 items 0
+/home/claude/scratch/logsA/g1.log:THPT_COUNT t30 bars 5 tracked 26 spawned 5 scheme 0 set 0 | coldcite bars 0 items 0
+/home/claude/scratch/logsA/g1.log:THPT_COUNT t45 bars 5 tracked 26 spawned 5 scheme 0 set 0 | coldcite bars 0 items 0
+/home/claude/scratch/logsA/g1.log:LOAD1
+/home/claude/scratch/logsA/g1.log:THPT_COUNT t60 bars 5 tracked 26 spawned 5 scheme 0 set 0 | coldcite bars 0 items 0
+/home/claude/scratch/logsA/g1.log:THPT_COUNT t45 bars 5 tracked 26 spawned 5 scheme 0 set 0 | coldcite bars 0 items 0
+/home/claude/scratch/logsA/g1.log:THPT_COUNT t60 bars 5 tracked 26 spawned 5 scheme 0 set 0 | coldcite bars 0 items 0
+/home/claude/scratch/logsA/g1.log:LOAD2
+/home/claude/scratch/logsA/g1.log:THPT_COUNT t45 bars 5 tracked 26 spawned 5 scheme 0 set 0 | coldcite bars 0 items 0
+/home/claude/scratch/logsA/g1.log:THPT_COUNT t60 bars 5 tracked 26 spawned 5 scheme 0 set 0 | coldcite bars 0 items 0
+/home/claude/scratch/logsA/g1.log:MAP2
+/home/claude/scratch/logsA/g1.log:THPT_COUNT t0 bars 0 tracked 1 spawned 0 scheme 0 set 0 | coldcite bars 0 items 0
+/home/claude/scratch/logsA/g1.log:THPT_COUNT t15 bars 3 tracked 77 spawned 3 scheme 0 set 0 | coldcite bars 0 items 0
+/home/claude/scratch/logsA/g1.log:THPT_COUNT t30 bars 3 tracked 77 spawned 3 scheme 0 set 0 | coldcite bars 0 items 0
+/home/claude/scratch/logsA/g3.log:THPT_COUNT t0 bars 0 tracked 1 spawned 0 scheme 0 set 0 | coldcite bars 0 items 0
+/home/claude/scratch/logsA/g3.log:THPT_COUNT t15 bars 4 tracked 26 spawned 4 scheme 0 set 0 | coldcite bars 0 items 0
+/home/claude/scratch/logsA/g3.log:THPT_COUNT t30 bars 6 tracked 26 spawned 6 scheme 0 set 0 | coldcite bars 0 items 0
+/home/claude/scratch/logsA/g3.log:THPT_COUNT t45 bars 6 tracked 26 spawned 6 scheme 0 set 0 | coldcite bars 0 items 0
+/home/claude/scratch/logsA/g3.log:LOAD1
+/home/claude/scratch/logsA/g3.log:THPT_COUNT t45 bars 6 tracked 26 spawned 6 scheme 0 set 0 | coldcite bars 0 items 0
+/home/claude/scratch/logsA/g3.log:LOAD2
+/home/claude/scratch/logsA/g3.log:THPT_COUNT t45 bars 6 tracked 26 spawned 6 scheme 0 set 0 | coldcite bars 0 items 0
+/home/claude/scratch/logsA/g3.log:MAP2
+/home/claude/scratch/logsA/g3.log:THPT_COUNT t60 bars 6 tracked 26 spawned 6 scheme 0 set 0 | coldcite bars 0 items 0
+/home/claude/scratch/logsA/g3.log:THPT_COUNT t0 bars 0 tracked 1 spawned 0 scheme 0 set 0 | coldcite bars 0 items 0
+/home/claude/scratch/logsA/g3.log:THPT_COUNT t15 bars 6 tracked 77 spawned 6 scheme 0 set 0 | coldcite bars 0 items 0
+/home/claude/scratch/logsA/g3.log:THPT_COUNT t30 bars 7 tracked 77 spawned 7 scheme 0 set 0 | coldcite bars 0 items 0

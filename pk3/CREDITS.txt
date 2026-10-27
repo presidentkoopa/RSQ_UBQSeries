@@ -1,0 +1,47 @@
+RSQ Top HP Bars -- credits
+==========================
+
+Top HP Bars 1.04 by coldcite (2017). The layout, the bar art (both styles, all 44 frames), the
+default look and the idea are his; Classic and Red ship his images byte for byte, and every other
+colour set is his style-A art recoloured pixel by pixel (tools/gen_art.py in the source repo).
+His header: "Feel free to use this in your mods. You don't have to ask my permission!"
+Thank you, coldcite.
+
+Top HP Bars was based on SpriteShadow by Nash Muhandes. SpriteShadow's repository
+(github.com/nashmuhandes/SpriteShadow, checked 2026-10-27) is released under the MIT License:
+
+    MIT License
+
+    Copyright (c) 2021 Nash Muhandes
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
+
+(coldcite's 1.04 predates that licence file; the thread, forum.zdoom.org viewtopic p=1087777,
+states no other terms. The pattern used from it -- a world sprite that follows its owner -- is
+rewritten here; no SpriteShadow code is copied.)
+
+Not included, credited for the record:
+  - Lossvoise's flat high-visibility retexture of Mere_Duke's custom version (zdoom forum
+    t=56910) is NOT shipped: no permission yet (credit chain coldcite -> Mere_Duke -> Lossvoise).
+  - damnums by Xaser Acheron (MIT) is meant to be loaded alongside; nothing of it is bundled.
+  - Champions and LegenDoom Lite: read by class / cvar name for compatibility (handler.zs); nothing of
+    either is bundled.
+
+Code: ZScript written for the Ultra Badass Quest series (presidentkoopa), for stock QuestZDoom 17.3
+by Emawind84 and Team Beef. No engine change.

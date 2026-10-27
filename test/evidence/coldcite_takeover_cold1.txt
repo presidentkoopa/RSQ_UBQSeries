@@ -1,0 +1,6 @@
+THPT_COUNT t20 bars 3 tracked 26 spawned 3 scheme 0 set 0 | coldcite bars 0 items 0
+THPT_COUNT t40 bars 5 tracked 26 spawned 5 scheme 0 set 0 | coldcite bars 0 items 0
+THPT_COUNT t60 bars 5 tracked 26 spawned 5 scheme 0 set 0 | coldcite bars 0 items 0
+THPT_COUNT t80 bars 5 tracked 26 spawned 5 scheme 0 set 0 | coldcite bars 0 items 0
+THPT_COUNT t100 bars 5 tracked 26 spawned 5 scheme 0 set 0 | coldcite bars 0 items 0
+THPT_COUNT t120 bars 5 tracked 26 spawned 5 scheme 0 set 0 | coldcite bars 0 items 0

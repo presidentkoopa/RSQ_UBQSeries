@@ -1,0 +1,209 @@
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 66:
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 72:
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 77:
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 892:
+THPT_YANK none
+THPT_SVC t0
+THPT_SVC t2
+THPT_SVC t4
+THPT_SVC t6
+THPT_SVC t8
+THPT_SVC t10
+THPT_SVC t12 | 0: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t14 | 0: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t16 | 0: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t18 | 0: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t20 | 0: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t22 | 0: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t24 | 0: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t26 | 0: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t28 | 0: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t30 | 0: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t32 | 0: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t34 | 0: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t36 | 0: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t38 | 0: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t40 | 0: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t42 | 0: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t44 | 0: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t46 | 0: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t48 | 0: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t50 | 0: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t52 | 0: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t54 | 0: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t56 | 0: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t58 | 0: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0
+THPT_SVC t60 | 0: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0
+THPT_SVC t62 | 0: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0
+THPT_SVC t64 | 0: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0
+THPT_SVC t66 | 0: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0
+THPT_SVC t68 | 0: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0
+THPT_SVC t70 | 0: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0
+THPT_SVC t72 | 0: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0
+THPT_SVC t74 | 0: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0
+THPT_SVC t76 | 0: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0
+THPT_SVC t78 | 0: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0
+THPT_SVC t80 | 0: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0
+THPT_SVC t82 | 0: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0
+THPT_SVC t84 | 0: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0
+THPT_SVC t86 | 0: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0
+THPT_SVC t88 | 0: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0
+THPT_SVC t90 | 0: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0
+THPT_YANK 0 Imp launched 1
+THPT_SVC t92 | 0: hooked=-1 yanked=1 stunned=0 locked=1 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0
+THPT_SVC t94 | 0: hooked=-1 yanked=1 stunned=0 locked=1 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0
+THPT_SVC t96 | 0: hooked=-1 yanked=1 stunned=0 locked=1 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0
+THPT_SVC t98 | 0: hooked=-1 yanked=1 stunned=0 locked=1 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0
+THPT_SVC t100 | 0: hooked=-1 yanked=-1 stunned=1 locked=1 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0
+THPT_SVC t102 | 0: hooked=-1 yanked=-1 stunned=1 locked=1 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0
+THPT_SVC t104 | 0: hooked=-1 yanked=-1 stunned=1 locked=1 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0
+THPT_SVC t106 | 0: hooked=-1 yanked=-1 stunned=1 locked=1 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0
+THPT_SVC t108 | 0: hooked=-1 yanked=-1 stunned=1 locked=1 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0
+THPT_SVC t110 | 0: hooked=-1 yanked=-1 stunned=0 locked=1 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0
+THPT_SVC t112 | 0: hooked=-1 yanked=-1 stunned=0 locked=1 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0
+THPT_SVC t114 | 0: hooked=-1 yanked=-1 stunned=0 locked=1 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0
+THPT_SVC t116 | 0: hooked=-1 yanked=-1 stunned=0 locked=1 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0
+THPT_SVC t118 | 0: hooked=0 yanked=0 stunned=0 locked=1 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0
+THPT_SVC t120 | 0: hooked=2 yanked=0 stunned=0 locked=1 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0
+THPT_SVC t122 | 0: hooked=4 yanked=0 stunned=0 locked=1 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0
+THPT_SVC t124 | 0: hooked=6 yanked=0 stunned=0 locked=1 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0
+THPT_SVC t126 | 0: hooked=8 yanked=0 stunned=0 locked=1 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0
+THPT_SVC t128 | 0: hooked=10 yanked=0 stunned=0 locked=1 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0
+THPT_SVC t130 | 0: hooked=12 yanked=0 stunned=0 locked=1 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0
+THPT_SVC t132 | 0: hooked=14 yanked=0 stunned=0 locked=1 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0
+THPT_SVC t134 | 0: hooked=16 yanked=0 stunned=0 locked=1 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0
+THPT_SVC t136 | 0: hooked=18 yanked=0 stunned=0 locked=1 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0
+THPT_SVC t138 | 0: hooked=20 yanked=0 stunned=0 locked=1 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0
+THPT_SVC t140 | 0: hooked=22 yanked=0 stunned=0 locked=1 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0
+THPT_SVC t142 | 0: hooked=24 yanked=0 stunned=0 locked=1 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0
+THPT_SVC t144 | 0: hooked=26 yanked=0 stunned=0 locked=1 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0
+THPT_SVC t146 | 0: hooked=28 yanked=0 stunned=0 locked=1 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0
+THPT_SVC t148 | 0: hooked=30 yanked=0 stunned=0 locked=1 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0
+THPT_SVC t150 | 0: hooked=32 yanked=0 stunned=0 locked=1 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=1 gripped=0
+THPT_SVC t152 | 0: hooked=34 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t154 | 0: hooked=36 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t156 | 0: hooked=38 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t158 | 0: hooked=40 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t160 | 0: hooked=42 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t162 | 0: hooked=44 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t164 | 0: hooked=46 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t166 | 0: hooked=48 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t168 | 0: hooked=50 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t170 | 0: hooked=52 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t172 | 0: hooked=54 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t174 | 0: hooked=56 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t176 | 0: hooked=58 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t178 | 0: hooked=60 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t180 | 0: hooked=62 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t182 | 0: hooked=64 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t184 | 0: hooked=66 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t186 | 0: hooked=68 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t188 | 0: hooked=70 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t190 | 0: hooked=72 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t192 | 0: hooked=74 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t194 | 0: hooked=76 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t196 | 0: hooked=78 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t198 | 0: hooked=80 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t200 | 0: hooked=82 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t202 | 0: hooked=84 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t204 | 0: hooked=86 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t206 | 0: hooked=88 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t208 | 0: hooked=90 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t210 | 0: hooked=92 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t212 | 0: hooked=94 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t214 | 0: hooked=96 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t216 | 0: hooked=98 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t218 | 0: hooked=100 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t220 | 0: hooked=102 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t222 | 0: hooked=104 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t224 | 0: hooked=106 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t226 | 0: hooked=108 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t228 | 0: hooked=110 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t230 | 0: hooked=112 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t232 | 0: hooked=114 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t234 | 0: hooked=116 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t236 | 0: hooked=118 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t238 | 0: hooked=120 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t240 | 0: hooked=122 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t242 | 0: hooked=124 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t244 | 0: hooked=126 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t246 | 0: hooked=128 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t248 | 0: hooked=130 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t250 | 0: hooked=132 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t252 | 0: hooked=134 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t254 | 0: hooked=136 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t256 | 0: hooked=138 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t258 | 0: hooked=140 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t260 | 0: hooked=142 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t262 | 0: hooked=144 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t264 | 0: hooked=146 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t266 | 0: hooked=148 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t268 | 0: hooked=150 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t270 | 0: hooked=152 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t272 | 0: hooked=154 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t274 | 0: hooked=156 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t276 | 0: hooked=158 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t278 | 0: hooked=160 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t280 | 0: hooked=162 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t282 | 0: hooked=164 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t284 | 0: hooked=166 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t286 | 0: hooked=168 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t288 | 0: hooked=170 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t290 | 0: hooked=172 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t292 | 0: hooked=174 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t294 | 0: hooked=176 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t296 | 0: hooked=178 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t298 | 0: hooked=180 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t300 | 0: hooked=182 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t302 | 0: hooked=184 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t304 | 0: hooked=186 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t306 | 0: hooked=188 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t308 | 0: hooked=190 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t310 | 0: hooked=192 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t312 | 0: hooked=194 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t314 | 0: hooked=196 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t316 | 0: hooked=198 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t318 | 0: hooked=200 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t320 | 0: hooked=202 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t322 | 0: hooked=204 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t324 | 0: hooked=206 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t326 | 0: hooked=208 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t328 | 0: hooked=210 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+LOAD1
+THPT_SVC t330 | 0: hooked=212 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t332 | 0: hooked=214 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t334 | 0: hooked=216 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t336 | 0: hooked=218 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t338 | 0: hooked=220 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t340 | 0: hooked=222 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t342 | 0: hooked=224 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+LOAD2
+THPT_SVC t344 | 0: hooked=226 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t346 | 0: hooked=228 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t348 | 0: hooked=230 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t350 | 0: hooked=232 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t352 | 0: hooked=234 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t354 | 0: hooked=236 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t356 | 0: hooked=238 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t358 | 0: hooked=240 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+MAP2
+THPT_SVC t360 | 0: hooked=242 yanked=0 stunned=0 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t0
+THPT_SVC t2
+THPT_SVC t4
+THPT_SVC t6
+THPT_SVC t8
+THPT_SVC t10
+THPT_SVC t12 | 0: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t14 | 0: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t16 | 0: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t18 | 0: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t20 | 0: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t22 | 0: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t24 | 0: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t26 | 0: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t28 | 0: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t30 | 0: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t32 | 0: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t34 | 0: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0
+THPT_SVC t36 | 0: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 1: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0 | 2: hooked=-1 yanked=-1 stunned=-1 locked=0 gripped=0

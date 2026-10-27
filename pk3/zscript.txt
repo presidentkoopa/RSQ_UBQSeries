@@ -1,0 +1,7 @@
+version "4.14"
+
+// RSQ Top HP Bars -- the UBQ / RSQ series' version of Top HP Bars 1.04 by coldcite
+// (itself based on SpriteShadow by Nash Muhandes). See CREDITS.txt.
+#include "zscript/rsqthp/handler.zs"
+#include "zscript/rsqthp/bar.zs"
+#include "zscript/rsqthp/voxels.zs"
