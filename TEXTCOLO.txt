@@ -54,3 +54,10 @@ RSScore_Daring
 	#402008 #603010 0  24
 	#C06020 #FF8030 25 255
 }
+
+// The Quest series' fourth family, Melee: steel blue (not the original's)
+RSScore_Melee
+{
+	#102038 #182C58 0  24
+	#7090D0 #A0C8FF 25 255
+}

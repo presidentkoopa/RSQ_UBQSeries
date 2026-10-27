@@ -38,6 +38,12 @@ class RS_ScoreTracker : Inventory
 	int  regenSpent;
 	int  extraLives;
 	bool hasLives;
+
+	// ---- the melee family (melee.zs) --------------------------------------
+	Actor hurlBy;            // the throw that last scored: further kills by it pay Hurled more
+	int   hurlKills;
+	Array<int> comboKind;    // recent melee kills, for Combo
+	Array<int> comboTic;
 	int  lastResetTic;
 
 	// ---- Spree ------------------------------------------------------------

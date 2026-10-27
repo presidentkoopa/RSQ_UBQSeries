@@ -375,7 +375,7 @@ class RS_ScoreHandler : EventHandler
 		// 3. Cap per family, then in total. Both default to off, so out of the box
 		//    the numbers are the original's exactly.
 		Array<double> famSum;
-		famSum.Resize(3);
+		famSum.Resize(RS_ScoreBonus.FAM_COUNT);
 
 		for (int b = 0; b < m_bonuses.Size(); b++)
 		{
@@ -383,12 +383,13 @@ class RS_ScoreHandler : EventHandler
 		}
 
 		Array<double> famCap;
-		famCap.Resize(3);
+		famCap.Resize(RS_ScoreBonus.FAM_COUNT);
 		famCap[RS_ScoreBonus.FAM_EFFICIENCY] = CvarInt("rs_score_cap_efficiency", 0) / 100.0;
 		famCap[RS_ScoreBonus.FAM_STYLE]      = CvarInt("rs_score_cap_style",      0) / 100.0;
 		famCap[RS_ScoreBonus.FAM_DARING]     = CvarInt("rs_score_cap_daring",     0) / 100.0;
+		famCap[RS_ScoreBonus.FAM_MELEE]      = CvarInt("rs_score_cap_melee",      0) / 100.0;
 
-		for (int f = 0; f < 3; f++)
+		for (int f = 0; f < RS_ScoreBonus.FAM_COUNT; f++)
 		{
 			if (famCap[f] <= 0.0 || famSum[f] <= famCap[f]) { continue; }
 
@@ -439,6 +440,7 @@ class RS_ScoreHandler : EventHandler
 		}
 
 		tr.AddUntouchable(ev.victimSpawnHealth);
+		RS_MeleeMemory.Note(ev);	// Combo remembers every melee kill (melee.zs)
 	}
 
 	// ---------------------------------------------------------------- payment

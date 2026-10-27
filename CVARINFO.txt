@@ -49,6 +49,7 @@ server int  rs_score_regenpercent    = 40;
 server int  rs_score_cap_efficiency  = 0;
 server int  rs_score_cap_style       = 0;
 server int  rs_score_cap_daring      = 0;
+server int  rs_score_cap_melee       = 0;   // the Quest series' fourth family (melee.zs)
 server int  rs_score_cap_total       = 0;
 
 server noarchive bool rs_score_debug = false;

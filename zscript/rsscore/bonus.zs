@@ -41,6 +41,8 @@ class RS_ScoreBonus play
 		FAM_EFFICIENCY,
 		FAM_STYLE,
 		FAM_DARING,
+		FAM_MELEE,		// the Quest series' fourth (melee.zs): not in the original
+		FAM_COUNT
 	}
 
 	// Which of the three families this belongs to. The family decides the colour
@@ -76,6 +78,7 @@ class RS_ScoreBonus play
 		{
 			case FAM_EFFICIENCY: return "RSScore_Efficiency";
 			case FAM_DARING:     return "RSScore_Daring";
+			case FAM_MELEE:      return "RSScore_Melee";
 			default:             return "RSScore_Style";
 		}
 	}
@@ -120,6 +123,14 @@ class RS_ScoreRegistry : StaticEventHandler
 		Own("RS_Bonus_Redline");
 		Own("RS_Bonus_SwanSong");
 		Own("RS_Bonus_PointBlank");
+		// the Quest series' melee family (melee.zs)
+		Own("RS_Bonus_Fatality");
+		Own("RS_Bonus_Cleaved");
+		Own("RS_Bonus_Hurled");
+		Own("RS_Bonus_ShieldWork");
+		Own("RS_Bonus_Riposte");
+		Own("RS_Bonus_ReturnToSender");
+		Own("RS_Bonus_Combo");
 	}
 
 	private void Own(String typeName)
