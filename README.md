@@ -151,7 +151,7 @@ Built and run on stock QuestZDoom 17.3 (`build.sh`), with brutal22test6 + BD_Vox
   push lifted an imp 8 units and a cut at the top paid Juggle; a kick paid Boot.
   Not measurable yet: a PULL does no damage and (on the rig) did not lift an imp, so "pulled, then cut on
   arrival" needs the saber to report pulls; a saber block/parry riposte needs it to report blocks.
-  The big moments (for SlowMo later, not wired) are listed in one place: `RS_Melee.BigMoment`.
+  The melee family's big moments are listed in one place: `RS_Melee.BigMoment` (see *Slow motion*).
   `rs_score_cap_melee` caps the family (0 off). The original thirteen are unchanged.
 - **Thrown things, the rig and VR feats** (`physical.zs`), in the three original families.
   No hand pose is read anywhere (the pose exists on the local machine only): the facts are the
@@ -186,9 +186,8 @@ Built and run on stock QuestZDoom 17.3 (`build.sh`), with brutal22test6 + BD_Vox
   kill 8 tics after the draw, not 160 tics later; a shot with a clip held paid Full Hands, with
   the hand empty it did not.
 
-  **Big moments**, for the series' SlowMo later (not wired): each of these answers
-  `BigMoment(ev, paid)` -- Air Catch and Blind-fire always, Powder Keg from the third kill of one
-  blast.
+  **Big moments** (see *Slow motion*): Air Catch and Blind-fire always, Powder Keg from the third
+  kill of one blast.
 
   **A missile's fire tic**: the head's facing and the buttons of the last 16 tics are kept on a
   token (`RS_PhysicalNotes`, with the flags of the player's last blow, which tell a splash from a
@@ -203,8 +202,96 @@ Built and run on stock QuestZDoom 17.3 (`build.sh`), with brutal22test6 + BD_Vox
   monster's health). **Set damage to 0 when score is on.** A Distance Grab throw's points went to
   the main-hand rifle on the rig (Gun Bonsai's resolver scores the object to a hand; headless, both
   hands sit at the pawn, so which hand wins in the headset is not measured).
-- **Options -> Score**: a menu (the original had none; a headset has no console).
+- **Options -> Score**: a menu (the original had none; a headset has no console), in BD22 VR
+  Weapons' style: one short page (Show Score, Size, Across, Down, Target Reward, New Map Keeps,
+  Slow Motion Moments) and a Tuning page (flashes, bonus time, raised-monster pay, the caps, the
+  slow-motion cooldown, Reset All).
 - **The revival**: Dakka's fire-and-explosion revival was never carried; a life spent is now a
   sound and one short warm flash, no actors. *Flash the whole view on a reward or revival*
   (`rs_score_screenflash`) turns every whole-view tint off.
 - ZScript header 4.14 (the engine's version), so no version warning.
+
+## The suite (10-27)
+
+The suite is loaded over **any** base game, so Score has to make sense over all of them.
+
+**What a kill is, and who made it** (tested on freedoom2 and the real doom2.wad with the suite, on
+brutal22test6 + BD_VoxelPack + BD22Q, and on a synthetic monster pack, `scratch/mpack`, that has
+the shapes gameplay mods use: a replacement without COUNTKILL, a monster that splits on death, a
+50,000-health gore helper flagged as a monster, a morph, a raise):
+
+- A replacement of a counted monster is a kill even if it dropped COUNTKILL. Brutal Doom's
+  WolfensteinSS is `EvilMarine` with no COUNTKILL: five killed paid nothing before, now they pay.
+  Helpers that replace nothing (BD's smears, `Dying_Headshot`, `DyingSergeant`; the mpack gore
+  helper) still pay nothing.
+- A monster killed in the tic it was born, by a monster, pays nothing: a Pain Elemental's Lost Soul
+  with no room is killed by the Elemental at once, and those paid every player Infighter (8 of 13
+  Lost Soul deaths in the vanilla sweep, 14 everyone-payments under BD). Now 0.
+- The killer is the killing blow's own damage source, not the victim's last target. A monster
+  chasing you that died in a crusher still had you as its target and was paid to you as your kill.
+- A morphed monster's death kills its original too; the pair pays once (was 63 + 11).
+- Sweep result, every kill scored exactly once: vanilla 110 counted kills -> 110 paid; BD 110
+  counted + 5 EvilMarine -> 115 paid; mpack 7 bodies -> 7 paid, the gore helper 0.
+
+**Suite bonuses**, each read from a fact the game already has, each silent when its mod is absent:
+
+| Bonus | Family | Pays | For |
+|---|---|---|---|
+| Pulled In | Melee | 0.3 | a melee kill within 2 s of the saber's Force pull (`UBQS_SaberService` "pulled") |
+| Twin Blades | Melee | 0.2 | a saber kill with a lit saber in each hand ("saber.lit") |
+| Rally | Melee | 0.2 per earlier, to 0.6 | sent-back shots killing one after another, each within 3 s |
+| Ring Out | Melee | 0.5 | a crusher, a pit or another monster killed it within 2 s of your Force, kick, punch or bash (you get the kill) |
+| Ground Pound | Melee | 0.3 (replaces Slammed) | the Force jump's landing (LandSlam) killed it |
+| Clean Sweep | Melee | 0.5 | the ShieldSaw thrown at 2+ locks killed the last of them, all dead |
+| Bank Shot | Melee | 0.4 | the ShieldSaw's Ricochet (a Gun Bonsai upgrade) rang a new lock at a wall and killed it |
+| Shield Wall | Melee | 0.25 | a kill while the shield in your hand blocked another monster inside the last second |
+| Counter | Melee | 0.3 | a punch killed it mid-attack (its Missile/Melee states, or it fired within half a second) |
+| Knockdown | Melee | 0.2 | a punch finished it while it reeled (its Pain state) |
+| Flurry | Melee | 0.15 per punch past 2, to 0.45 | a glove kill ending left-right-left punches, each within half a second |
+| Body Blow | Style | 0.3 | a corpse you threw with Distance Grab killed it |
+| Hand-Me-Down | Style | 0.3 | a weapon that fell out of a monster, thrown, killed it |
+| Hot Swap | Daring | 0.25 | a holster swap mid-fight: last kill with another gun at most 3 s before the draw, this kill at most 3 s after |
+| Bullet Time | Style | 0.15 | a kill while RSQ_SlowMo has the world slowed (not inside Score's own pulse) |
+| Two Guns | Style | 0.25 | a shot kill from one hand's trigger within a second of one from the other's |
+
+Also: **Brawler** now pays the boxing gloves as fists (0.5) and follows replacements, so Brutal
+Doom's fists (`Melee_Attacks`, which replaces Fist) pay it; it reads the striking weapon first, so
+an off-hand glove's kill counts. **Juggle replaces Skeet** (one fact, the body in the air). A shot
+**sent back** (Return to Sender) is no longer also judged as your own shot by No-Look, Blind-fire,
+Off-hand, Full Hands or Two Guns.
+
+Not built, and why: an uppercut finisher (the glove's punch kind is on the glove object, and the
+patch exposes no service for it); a catch thrown back at the thrower (Distance Grab catches no
+missiles); a push off a ledge (Doom monsters take no falling damage).
+
+**Slow motion for big moments.** A kill that a bonus calls a big moment sends RSQ_SlowMo
+`netevent rsm_pulse 600 35` (600 ms at 35% speed), from the earning player's machine only.
+Big moments: Fatality, Perfect Riposte, Poetic Justice, Boomerang, Slammed, Heavy Swing at full,
+Ring Out, Clean Sweep, Bank Shot, Rally from the fourth, Flurry at its top; Air Catch, Blind-fire,
+Powder Keg from the third; of the original thirteen, Swan Song, Telefragged, Air from 0.5 (a
+164-unit jump) and Redline at 5 HP or less. `rs_score_slowmo` (on) turns it off;
+`rs_score_slowmo_cooldown` (6 s) spaces them. Measured: a pulse slowed the world for about 38
+tics; a second big moment 40 tics later sent nothing; one 240 tics later did. Without SlowMo the
+event goes nowhere. Bullet Time needs SlowMo's `slowmo.active` answer (RSQ_SlowMo branch
+`agent-suite`); an older SlowMo still gets the pulses.
+
+**The cap on one kill** (`rs_score_cap_kill`, 300 = bonuses at most 3x base, on by default, the
+original's `rs_score_cap_total` renamed so an archived 0 cannot hide the new default). Measured
+with Gun Bonsai's score-to-XP at 1: Swan Song + Telefragged + Point-Blank on a 60-health imp paid
+306 points and 306 XP uncapped, 240 and 240 capped. The cap also holds on kills paid to every
+player (Infighter, Darwin).
+
+**Gun Bonsai, damage XP and score XP.** With both factors at 1 the same kill paid 300 XP: 240 from
+score plus 60 from damage, which is the monster's health a second time (the base points ARE its
+health). Keep `bonsai_damage_to_xp_factor` at 0 when score-to-XP is on.
+
+**Slappers Only.** A plain glove kill pays Brawler 0.5 (a plain gun kill pays nothing), and the
+gloves have Counter, Knockdown, Flurry, Juggle, Ring Out and Combo on top; the gun-only rows
+(No-Look, Blind-fire, Off-hand, Two Guns, Full Hands, Quick Draw, Hot Swap) are worth about the
+same in all. Measured with `rsq_slappers 1` on BD: jab 80 + 40, mid-attack 80 + 75.
+
+**The lives effect on Quest.** What is left of it costs nothing measurable: a life spent is one
+sound and one 20-tic tint, no actors. Measured in a Brutal Doom fight (30 imps, ~600 actors, rig
+B): all of Score's per-tic work 0.004 ms a tic, the HUD 0.011-0.015 ms a frame with lives held,
+the spawn hook 0.0005 ms an actor (it now compares class pointers, not names, because Brutal Doom
+spawns hundreds of actors a second), 0.2-0.5 ms per scored kill (noisy rig).

@@ -50,7 +50,20 @@ server int  rs_score_cap_efficiency  = 0;
 server int  rs_score_cap_style       = 0;
 server int  rs_score_cap_daring      = 0;
 server int  rs_score_cap_melee       = 0;   // the Quest series' fourth family (melee.zs)
-server int  rs_score_cap_total       = 0;
+// (the total cap, rs_score_cap_total in the original, is rs_score_cap_kill below)
+// THE TOTAL CAP IS ON, at 300 (the Quest series' choice, not the original's 0): the bonuses on one
+// kill add at most three times its base. With the series' families there are some forty bonuses that
+// can stack on one kill, and with Gun Bonsai's score-to-XP on, every point is weapon XP. 300 never
+// trims any single bonus (the largest, Swan Song, is 3.0); it stops a pile-up. 0 turns it off.
+// A NEW NAME FOR THE ORIGINAL'S rs_score_cap_total, on purpose: a server cvar is archived, so every
+// install that ran the old version holds rs_score_cap_total=0 and would never see a new default.
+server int  rs_score_cap_kill        = 300;
+
+// A big moment (a Fatality, a Perfect Riposte, Swan Song...) asks RSQ_SlowMo for a short pulse of
+// slow motion (netevent rsm_pulse; nothing happens without SlowMo). The cooldown, in seconds, keeps a
+// spree from being one long slow motion.
+server bool rs_score_slowmo          = true;
+server int  rs_score_slowmo_cooldown = 6;
 
 server noarchive bool rs_score_debug = false;
 

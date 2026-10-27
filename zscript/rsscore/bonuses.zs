@@ -159,6 +159,10 @@ class RS_Bonus_Air : RS_ScoreBonus
 
 	override String DisplayName() const { return "Air"; }
 
+	// Big moment: a jump that reaches 164 units over the floor it left (0.5) -- a Force jump, a
+	// launch pad; Doom's own jump never gets there.
+	override bool BigMoment(RS_ScoreEvent ev, double paid) const { return paid >= 0.5; }
+
 	override double Evaluate(RS_ScoreEvent ev)
 	{
 		double over = max(0.0, ev.airHeight - MINHEIGHT);
@@ -235,6 +239,7 @@ class RS_Bonus_Telefrag : RS_ScoreBonus
 	const MULT = 1.0;
 
 	override String DisplayName() const { return "Telefragged"; }
+	override bool BigMoment(RS_ScoreEvent ev, double paid) const { return paid > 0; }
 
 	override double Evaluate(RS_ScoreEvent ev)
 	{
@@ -293,6 +298,28 @@ class RS_Bonus_Brawler : RS_ScoreBonus
 		Entry("CWeapMace",    "",                0.3,   0);
 		Entry("Staff",        "",                0.5,   0);
 		Entry("Gauntlets",    "",                0.25,  0);
+		// The Quest series (not the original's): the boxing gloves of the Gun Bonsai VR patch are
+		// fists, priced as the Fist; SuperPunchOut's own spelling too.
+		Entry("RSQ_Glove",    "",                0.5,   0);
+		Entry("RSQ_GloveOff", "",                0.5,   0);
+		Entry("SPO_Glove",    "",                0.5,   0);
+		Entry("SPO_GloveOff", "",                0.5,   0);
+	}
+
+	// THE WEAPON, BY ITS OWN NAME OR BY WHAT IT REPLACES. A weapon set renames the classes it
+	// replaces: Brutal Doom's fists are Melee_Attacks (Replaces Fist, brutal22test6
+	// actors/Weapons/Melee.dec:1), so a name-only match left Brawler dead under Brutal Doom. The
+	// names up the replacement chain, the weapon's own first.
+	private void HeldNames(class<Actor> c, out Array<String> names)
+	{
+		names.Clear();
+		for (int d = 0; c && d < 4; d++)
+		{
+			names.Push(c.GetClassName());
+			class<Actor> r = Actor.GetReplacee(c);
+			if (!r || r == c) break;
+			c = r;
+		}
 	}
 
 	override double Evaluate(RS_ScoreEvent ev)
@@ -303,10 +330,21 @@ class RS_Bonus_Brawler : RS_ScoreBonus
 		String dt = ev.damageType;
 		bool haveType = (dt != "" && dt != "None");
 
-		String held = "";
-		let p = ev.killer.player;
-		if (p && p.ReadyWeapon) { held = p.ReadyWeapon.GetClassName(); }
+		// WHAT STRUCK, before what is held: a weapon that deals its damage with ITSELF as the
+		// inflictor (the gloves: RSQ_GloveHandler.Deliver) is the weapon that killed, whichever hand
+		// it is in -- an off-hand glove's kill with a gun in the main hand is still a punch. Other
+		// kills fall back to the main hand, as the original did.
+		class<Actor> held = null;
+		if (ev.inflictor is "Weapon") held = ev.inflictor.GetClass();
+		else
+		{
+			let p = ev.killer.player;
+			if (p && p.ReadyWeapon) held = p.ReadyWeapon.GetClass();
+		}
+		Array<String> names;
+		HeldNames(held, names);
 
+		// The original's single pass, in table order: a type match or a weapon match, first wins.
 		for (int i = 0; i < m_mult.Size(); i++)
 		{
 			if (haveType && m_type[i] != "" && dt == m_type[i])
@@ -314,9 +352,9 @@ class RS_Bonus_Brawler : RS_ScoreBonus
 				return m_mult[i];
 			}
 
-			if ((!haveType || m_typeOnly[i] == 0) && m_wep[i] != "" && held == m_wep[i])
+			if ((!haveType || m_typeOnly[i] == 0) && m_wep[i] != "")
 			{
-				return m_mult[i];
+				for (int k = 0; k < names.Size(); k++) if (names[k] ~== m_wep[i]) return m_mult[i];
 			}
 		}
 
@@ -347,6 +385,9 @@ class RS_Bonus_Redline : RS_ScoreBonus
 
 		return MULTPERHP * ((MAXHP - ev.killerHealth) + 1);
 	}
+
+	// Big moment: a kill at 5 HP or less (0.42 and up), at death's door.
+	override bool BigMoment(RS_ScoreEvent ev, double paid) const { return paid >= 0.42 - 0.001; }
 }
 
 
@@ -369,6 +410,8 @@ class RS_Bonus_SwanSong : RS_ScoreBonus
 	{
 		return (other is "RS_Bonus_Redline");
 	}
+
+	override bool BigMoment(RS_ScoreEvent ev, double paid) const { return paid > 0; }
 }
 
 

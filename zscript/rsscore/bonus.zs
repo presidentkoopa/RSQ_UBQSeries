@@ -69,6 +69,11 @@ class RS_ScoreBonus play
 	// bonus from another mod can do the same deliberately.
 	virtual bool Supersedes(RS_ScoreBonus other) const { return false; }
 
+	// A BIG MOMENT: this kill, paid `paid` by this bonus, is worth a short slow-motion pulse (RSQ_SlowMo,
+	// rs_score_slowmo). The handler asks every bonus that paid, after the caps; one yes is enough.
+	// Most bonuses never are: a moment that happens every few seconds is not a moment.
+	virtual bool BigMoment(RS_ScoreEvent ev, double paid) const { return false; }
+
 	// ------------------------------------------------------------ small helpers
 
 	// The colour name this family draws in. One per family, three in all.

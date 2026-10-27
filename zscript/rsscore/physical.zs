@@ -28,8 +28,8 @@
 // machine and the body on everyone else's), scoring follows each machine's own playsim:
 // no worse than the engine, and never one machine's private opinion.
 //
-// BIG MOMENTS (for the series' SlowMo, later -- NOT wired): every bonus here answers
-// BigMoment(paid). Search "BigMoment" to find each one's rule.
+// BIG MOMENTS (a short RSQ_SlowMo pulse, handler.zs BigMomentPulse): Powder Keg, Air Catch and
+// Blind-fire answer BigMoment(ev, paid). Search "BigMoment" to find each one's rule.
 // ============================================================================
 
 class RS_PhysicalSeed play
@@ -45,6 +45,12 @@ class RS_PhysicalSeed play
 		into.Push("RS_Bonus_BlindFire");
 		into.Push("RS_Bonus_OffHand");
 		into.Push("RS_Bonus_FullHands");
+		// the suite round (10-27)
+		into.Push("RS_Bonus_BodyBlow");
+		into.Push("RS_Bonus_HandMeDown");
+		into.Push("RS_Bonus_HotSwap");
+		into.Push("RS_Bonus_BulletTime");
+		into.Push("RS_Bonus_TwoGuns");
 	}
 }
 
@@ -53,9 +59,7 @@ class RS_PhysicalSeed play
 // then a missile's fire tic falls back to "now"), and the SlowMo question.
 class RS_PhysicalBonus : RS_ScoreBonus
 {
-	// SLOWMO HOOK (not wired): was this kill, paid `paid`, a big moment?
-	virtual bool BigMoment(RS_ScoreEvent ev, double paid) const { return false; }
-
+	// BigMoment (bonus.zs) is answered by Powder Keg, Air Catch and Blind-fire below.
 	override void Commit(RS_ScoreEvent ev) { RS_PhysicalNotes.Ensure(ev.killer); }
 }
 
@@ -97,6 +101,31 @@ class RS_Physical play
 		return -1;
 	}
 
+	// RSQ_SlowMo's clock (RSQSM_Service): "slowmo.active" 1 while the world is slowed, 0 not.
+	// -1: not loaded, or a SlowMo that does not answer it.
+	static int AskSlowMo(String request)
+	{
+		let it = ServiceIterator.Find("RSQSM_Service");
+		Service s;
+		while (s = it.Next())
+		{
+			int v = s.GetInt(request, "", 0, 0, null);
+			if (v >= 0) return v;
+		}
+		return -1;
+	}
+
+	// Which hand fired the killing shot: 1 the main hand's trigger alone, 2 the off hand's alone,
+	// 0 both or neither (the buttons at the tic it left; replicated).
+	static int ShotHand(RS_ScoreEvent ev, int kind)
+	{
+		int b = ButtonsAt(ev.killer, ShotAge(ev, kind));
+		bool m = (b & BT_ATTACK) != 0, o = (b & BT_OFFHANDATTACK) != 0;
+		if (m && !o) return 1;
+		if (o && !m) return 2;
+		return 0;
+	}
+
 	static String AskRigString(String request, Actor who)
 	{
 		let it = ServiceIterator.Find("RSQTR_RigService");
@@ -127,8 +156,12 @@ class RS_Physical play
 	{
 		let k = ev.killer;
 		let inf = ev.inflictor;
-		if (!k || !inf || !ev.victim) return SHOT_NONE;
+		if (!k || !inf || !ev.victim || ev.ringOut) return SHOT_NONE;
 		if (MeleeType(ev.damageType)) return SHOT_NONE;
+		// A SHOT SENT BACK is not your shot: a monster's fireball the saber or the Force turned is
+		// a missile whose target is now you, and a bullet the shield returned is a puff -- the melee
+		// family pays it (Return to Sender), and the hand that fired is not yours to judge.
+		if (RS_Melee.Returned(ev)) return SHOT_NONE;
 		if (inf.bIsPuff) return ThrownBy(ev) ? SHOT_NONE : SHOT_HITSCAN;
 		if (inf.bMissile && inf.target == k) return SHOT_MISSILE;
 		if (inf == k) return SHOT_HITSCAN;
@@ -267,6 +300,14 @@ class RS_PhysicalNotes : Inventory
 	// Powder Keg's crowd count: kills by thrown blasts close together
 	int kegKills;
 	int kegTic;
+
+	// Hot Swap: the last kill, and with what
+	int lastKillTic;
+	String lastKillWeapon;
+
+	// Two Guns: the last shot kill's hand (RS_Physical.ShotHand) and when
+	int lastShotHand;
+	int lastShotTic;
 
 	Default
 	{
@@ -554,5 +595,122 @@ class RS_Bonus_FullHands : RS_PhysicalBonus
 		if (RS_Physical.AskGrab("hold.full", ev.killer, 0) == 1) return MULT;
 		if (RS_Physical.AskGrab("hold.full", ev.killer, 1) == 1) return MULT;
 		return 0.0;
+	}
+}
+
+
+// ---------------------------------------------------------------- the suite round (10-27)
+
+// Body Blow: killed by a corpse you threw with Distance Grab (rsqdg_corpses on): the inflictor is a
+// dead monster. On top of Thrown.
+class RS_Bonus_BodyBlow : RS_PhysicalBonus
+{
+	const MULT = 0.3;
+	override int Family() const { return FAM_STYLE; }
+	override String DisplayName() const { return "Body Blow"; }
+	override double Evaluate(RS_ScoreEvent ev)
+	{
+		if (!RS_Physical.ThrownBy(ev)) return 0.0;
+		let inf = ev.inflictor;
+		return (inf.bIsMonster && inf.health <= 0) ? MULT : 0.0;
+	}
+}
+
+// Hand-Me-Down: killed by a weapon a monster dropped, thrown with Distance Grab -- a dead zombie's
+// rifle across the room. A monster's drop is a weapon that appeared at its body within two seconds
+// of its death (RS_ScoreShots.MonsterDrop). On top of Thrown.
+class RS_Bonus_HandMeDown : RS_PhysicalBonus
+{
+	const MULT = 0.3;
+	override int Family() const { return FAM_STYLE; }
+	override String DisplayName() const { return "Hand-Me-Down"; }
+	override double Evaluate(RS_ScoreEvent ev)
+	{
+		if (!RS_Physical.ThrownBy(ev)) return 0.0;
+		let inf = ev.inflictor;
+		return RS_ScoreShots.MonsterDrop(inf) ? MULT : 0.0;
+	}
+}
+
+// Hot Swap: mid-fight, you put one gun away and drew another from a Tactical Rig holster, and the
+// drawn gun killed: your last kill was with something else, at most 3 s before the draw, and this
+// kill comes at most 3 s after it. (Quick Draw pays a kill inside 42 tics of any draw; this pays the
+// swap itself, and they stack.)
+class RS_Bonus_HotSwap : RS_PhysicalBonus
+{
+	const MULT = 0.25;
+	const WINDOW = 105;
+	override int Family() const { return FAM_DARING; }
+	override String DisplayName() const { return "Hot Swap"; }
+	override double Evaluate(RS_ScoreEvent ev)
+	{
+		let k = ev.killer;
+		if (!k || !k.player || !k.player.ReadyWeapon || ev.ringOut) return 0.0;
+		if (RS_Physical.ThrownBy(ev)) return 0.0;
+		let n = RS_PhysicalNotes.Of(k);
+		if (!n || n.lastKillTic <= 0) return 0.0;
+		int t = RS_Physical.AskRig("rig.drawtic", k);
+		if (t < 0 || level.maptime - t > WINDOW) return 0.0;
+		String now = k.player.ReadyWeapon.GetClassName();
+		if (now != RS_Physical.AskRigString("rig.drawn", k)) return 0.0;
+		if (n.lastKillTic > t || t - n.lastKillTic > WINDOW) return 0.0;
+		return (n.lastKillWeapon != "" && n.lastKillWeapon != now) ? MULT : 0.0;
+	}
+	override void Commit(RS_ScoreEvent ev)
+	{
+		Super.Commit(ev);
+		let k = ev.killer;
+		let n = RS_PhysicalNotes.Of(k);
+		if (!n || !k.player) return;
+		n.lastKillTic = level.maptime;
+		n.lastKillWeapon = "";
+		if (k.player.ReadyWeapon) n.lastKillWeapon = k.player.ReadyWeapon.GetClassName();
+	}
+}
+
+// Bullet Time: a kill while RSQ_SlowMo has the world slowed (held, a reload's moment, an upgrade's
+// pulse) -- but not inside the pulse this scorer itself asked for, so a big moment does not pay the
+// next kill for being slow.
+class RS_Bonus_BulletTime : RS_PhysicalBonus
+{
+	const MULT = 0.15;
+	override int Family() const { return FAM_STYLE; }
+	override String DisplayName() const { return "Bullet Time"; }
+	override double Evaluate(RS_ScoreEvent ev)
+	{
+		if (!ev.killer || ev.ringOut) return 0.0;
+		if (ev.tracker && level.maptime <= ev.tracker.slowmoUntil) return 0.0;
+		return RS_Physical.AskSlowMo("slowmo.active") == 1 ? MULT : 0.0;
+	}
+}
+
+// Two Guns: a gun in each hand, both killing -- this shot kill came from one hand's trigger and your
+// last shot kill, inside a second, from the other's.
+class RS_Bonus_TwoGuns : RS_PhysicalBonus
+{
+	const MULT = 0.25;
+	const WINDOW = 35;
+	override int Family() const { return FAM_STYLE; }
+	override String DisplayName() const { return "Two Guns"; }
+	private int Hand(RS_ScoreEvent ev)
+	{
+		int kind = RS_Physical.ShotKind(ev);
+		return kind == RS_Physical.SHOT_NONE ? 0 : RS_Physical.ShotHand(ev, kind);
+	}
+	override double Evaluate(RS_ScoreEvent ev)
+	{
+		int h = Hand(ev);
+		let n = RS_PhysicalNotes.Of(ev.killer);
+		if (h == 0 || !n || n.lastShotHand == 0 || n.lastShotHand == h) return 0.0;
+		return (level.maptime - n.lastShotTic <= WINDOW) ? MULT : 0.0;
+	}
+	override void Commit(RS_ScoreEvent ev)
+	{
+		Super.Commit(ev);
+		int h = Hand(ev);
+		let n = RS_PhysicalNotes.Of(ev.killer);
+		if (h == 0 || !n) return;
+		n.lastShotHand = h;
+		n.lastShotTic = level.maptime;
 	}
 }

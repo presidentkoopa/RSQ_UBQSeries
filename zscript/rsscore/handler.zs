@@ -86,12 +86,24 @@ class RS_ScoreHandler : EventHandler
 	// blood smear (BootSmearerRed, 1000 health) died too and was paid as a kill (measured on
 	// QZD 17.3 with brutal22test6; the engine's own kill count said 1). Lost Souls are the one
 	// real monster Doom leaves uncounted, and Dakka paid for them, so they still count.
+	//
+	// AND A REPLACEMENT OF A REAL MONSTER, whatever its flags say. A monster set may rename a stock
+	// monster and drop its COUNTKILL: Brutal Doom's WolfensteinSS is EvilMarine, a real soldier that
+	// the level does not count (measured, rig B: five killed, none in killed_monsters, so none were
+	// paid). Its replacee is a counted monster, so it is a kill. Brutal Doom's helpers (the smears,
+	// Dying_Headshot, DyingSergeant, PoorPinkyLostHisArm) are spawned by name and replace nothing,
+	// so they stay out.
 	static bool IsScorable(Actor a)
 	{
 		if (!a || !a.bIsMonster) return false;
 		if (a.bCountKill) return true;
 		class<Actor> ls = "LostSoul";
-		return ls && (a is ls || Actor.GetReplacee(a.GetClass()) == ls);
+		class<Actor> mine = a.GetClass();
+		class<Actor> was = Actor.GetReplacee(mine);
+		if (ls && (a is ls || was == ls)) return true;
+		if (!was || was == mine) return false;
+		let def = GetDefaultByType(was);
+		return def && def.bIsMonster && def.bCountKill;
 	}
 
 	private void Census()
@@ -248,9 +260,23 @@ class RS_ScoreHandler : EventHandler
 		Actor victim = e.Thing;
 		if (!victim || !IsScorable(victim)) { return; }
 
-		// Who gets the credit. Start at whoever the victim was last set against,
-		// then walk up out of any projectile to the thing that fired it.
-		Actor killer = victim.target;
+		// ONE BODY, ONE KILL. A morphed monster's death kills its original first (AActor::Die calls
+		// the original's Die before its own WorldThingDied, p_interaction.cpp), and both are
+		// monsters: the original is paid and names its morph (Alternative) as paid with it, so the
+		// morph's own death on the same tic is not paid again. Measured, rig B: an imp morphed into a
+		// counted monster and killed paid 63 + 11 before this.
+		if (WasScored(victim) || (victim.Alternative && WasScored(victim.Alternative))) { return; }
+
+		// Who gets the credit: the killing blow's damage source (RS_ScoreShots heard it in
+		// WorldThingDamaged, just before Die), walked up out of any projectile to the thing that
+		// fired it. NOT victim.target alone: Die() sets the target to the source only when there IS
+		// a source (p_interaction.cpp), so a monster that was chasing you and died in a crusher still
+		// had you as its target -- and was paid to you as your kill (measured, rig B: an imp crushed
+		// with no source paid 60 + Spree). The target is the fallback for a death that came some
+		// other way than a blow.
+		Actor src; bool known;
+		[src, known] = RS_ScoreShots.KillSource(victim);
+		Actor killer = known ? src : victim.target;
 		int guard = 0;
 		while (killer && killer.bMissile && killer.target && guard < 8)
 		{
@@ -258,21 +284,47 @@ class RS_ScoreHandler : EventHandler
 			guard += 1;
 		}
 
-		// Killed by the level itself -- a crusher, a damaging floor, a script. These
-		// pay nothing.
-		if (!killer) { return; }
+		bool playerKill = killer && killer.player != null;
 
-		bool selfKill  = (killer == victim);
-		bool monsterOn = !selfKill && !killer.player && killer.bIsMonster && !killer.bFriendly;
-		bool playerKill = (killer.player != null);
+		// BORN DEAD. A Pain Elemental's Lost Soul that has no room is killed in the tic it was
+		// spawned, by the Elemental itself (painelemental.zs A_PainShootSkull: ClearCounters, then
+		// DamageMobj(self, self, TELEFRAG_DAMAGE)). Lost Souls count, so each of those paid every
+		// player as Infighter (measured, rig B: 8 of 13 Lost Soul deaths in a vanilla sweep). No
+		// player did anything: a monster that never lived a tic pays nothing unless a player killed it.
+		if (!playerKill && victim.GetAge() <= 1) { return; }
+
+		// RING OUT. The level (a crusher, a pit) or another monster finished it, but a player's
+		// Force, kick, punch or bash had just sent it there: that player earned it (melee.zs).
+		Actor pusher = null;
+		if (!playerKill && victim.GetAge() > 1)
+		{
+			pusher = RS_ScoreShots.LaunchedBy(victim);
+			if (pusher && pusher == killer) pusher = null;
+		}
+
+		if (!pusher)
+		{
+			// Killed by the level itself -- a crusher, a damaging floor, a script. These
+			// pay nothing.
+			if (!killer) { return; }
+		}
+
+		bool selfKill  = killer && (killer == victim);
+		bool monsterOn = killer && !selfKill && !killer.player && killer.bIsMonster && !killer.bFriendly;
+
+		if (pusher) { selfKill = false; monsterOn = false; playerKill = true; killer = pusher; }
 
 		if (!selfKill && !monsterOn && !playerKill) { return; }
 
 		let ev = RS_ScoreEvent.Create(victim, playerKill ? killer : null, e.Inflictor, victim.DamageTypeReceived);
 		ev.selfInflicted    = selfKill;
 		ev.monsterOnMonster = monsterOn;
+		ev.ringOut          = pusher != null;
 		ev.utKillsNeeded    = utKillsNeeded;
 		ev.utHPNeeded       = utHPNeeded;
+
+		NoteScored(victim);
+		if (victim.Alternative) NoteScored(victim.Alternative);
 
 		// Anti-farming. A monster that was not on the map at load -- spawned by a
 		// script, raised from the dead, a Lost Soul thrown by a Pain Elemental --
@@ -306,6 +358,21 @@ class RS_ScoreHandler : EventHandler
 		AwardKiller(ev);
 	}
 
+	// The bodies paid this tic (the morph pair above). Cleared on the next tic that pays.
+	private Array<Actor> m_scoredNow;
+	private int m_scoredTic;
+	private bool WasScored(Actor a)
+	{
+		if (m_scoredTic != level.maptime) return false;
+		for (int i = 0; i < m_scoredNow.Size(); i++) if (m_scoredNow[i] == a) return true;
+		return false;
+	}
+	private void NoteScored(Actor a)
+	{
+		if (m_scoredTic != level.maptime) { m_scoredNow.Clear(); m_scoredTic = level.maptime; }
+		m_scoredNow.Push(a);
+	}
+
 	// A monster killed itself, or killed another monster. Nobody earned it, so
 	// everybody is paid: base plus the one bonus that applies. These used to live in
 	// separate scripts; here they are ordinary bonuses that simply cannot fire on a
@@ -326,9 +393,21 @@ class RS_ScoreHandler : EventHandler
 			EnsureRows(tr);
 			AddRow(tr, -1, ev.basePoints);
 
+			Array<double> ms;
+			double sum = 0.0;
 			for (int b = 0; b < m_bonuses.Size(); b++)
 			{
-				double m = m_bonuses[b].Evaluate(ev);
+				double m = max(0.0, m_bonuses[b].Evaluate(ev));
+				ms.Push(m);
+				sum += m;
+			}
+			// the total cap holds here too (Darwin alone is 2.0, on top of Spree and Untouchable)
+			double totalCap = CvarInt("rs_score_cap_kill", 300) / 100.0;
+			double scale = (totalCap > 0.0 && sum > totalCap) ? totalCap / sum : 1.0;
+
+			for (int b = 0; b < m_bonuses.Size(); b++)
+			{
+				double m = ms[b] * scale;
 				if (m <= 0.0) { continue; }
 
 				int points = int(round(ev.basePoints * m));
@@ -403,7 +482,7 @@ class RS_ScoreHandler : EventHandler
 		double totalMult = 0.0;
 		for (int b = 0; b < m_bonuses.Size(); b++) { totalMult += max(0.0, mults[b]); }
 
-		double totalCap = CvarInt("rs_score_cap_total", 0) / 100.0;
+		double totalCap = CvarInt("rs_score_cap_kill", 300) / 100.0;
 		if (totalCap > 0.0 && totalMult > totalCap)
 		{
 			double scale = totalCap / totalMult;
@@ -427,6 +506,7 @@ class RS_ScoreHandler : EventHandler
 		}
 
 		Pay(tr, total);
+		BigMomentPulse(ev, mults);
 
 		// 5. Only now does anything remember this kill -- and EVERY bonus is told,
 		//    not just the ones that paid. The original called AddKillstreak after every
@@ -441,6 +521,41 @@ class RS_ScoreHandler : EventHandler
 
 		tr.AddUntouchable(ev.victimSpawnHealth);
 		RS_MeleeMemory.Note(ev);	// Combo remembers every melee kill (melee.zs)
+	}
+
+	// ----------------------------------------------------- slow motion, for a big moment
+	//
+	// The owner: "recontextualize all existing point-reward events ... as taking place in slow
+	// motion". A kill that a bonus calls a big moment (BigMoment, bonus.zs; the melee family's list
+	// in RS_Melee.BigMoment) asks RSQ_SlowMo for a short pulse through its own door,
+	// `netevent rsm_pulse <hold ms> <depth %>`. Nothing hears it when SlowMo is not loaded.
+	//
+	// THE DECISION IS GAME STATE, THE SEND IS ONE MACHINE'S. Which kill is a big moment and the
+	// cooldown are play-scope facts, the same everywhere; only the machine of the player who earned
+	// it sends, so a co-op game gets the event once (the Gun Bonsai VR patch's RSQM.Pulse does the
+	// same). rs_score_slowmo turns it off; rs_score_slowmo_cooldown (seconds) keeps a spree from
+	// being one long slow motion.
+	const PULSE_MS    = 600;     // the hold; SlowMo eases in (rsm_ramp_in 0.15 s) and out (0.4 s) round it
+	const PULSE_DEPTH = 35;      // percent of full speed
+	private void BigMomentPulse(RS_ScoreEvent ev, Array<double> mults)
+	{
+		let tr = ev.tracker;
+		if (!tr || ev.killerNum < 0) return;
+		if (CvarInt("rs_score_slowmo", 1) == 0) return;
+		if (level.maptime < tr.slowmoReady) return;
+
+		RS_ScoreBonus why = null;
+		for (int b = 0; b < m_bonuses.Size() && !why; b++)
+		{
+			if (mults[b] <= 0.0) continue;
+			if (m_bonuses[b].BigMoment(ev, mults[b]) || RS_Melee.BigMoment(m_bonuses[b], mults[b])) why = m_bonuses[b];
+		}
+		if (!why) return;
+
+		tr.slowmoReady = level.maptime + 35 * clamp(CvarInt("rs_score_slowmo_cooldown", 6), 1, 120);
+		tr.slowmoUntil = level.maptime + (PULSE_MS * 35) / 1000 + 20;
+		if (DebugOn()) Console.Printf("RS_Score: big moment (%s) -> slow-motion pulse %d ms at %d%%", why.DisplayName(), PULSE_MS, PULSE_DEPTH);
+		if (ev.killerNum == consoleplayer) EventHandler.SendNetworkEvent("rsm_pulse", PULSE_MS, PULSE_DEPTH);
 	}
 
 	// ---------------------------------------------------------------- payment

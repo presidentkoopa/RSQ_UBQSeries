@@ -1,4 +1,5 @@
-// RSQ_Score options (Quest series): the original had none, and a headset has no console to type in.
+// RSQ_Score options, in BD22 VR Weapons' style (the owner, 10-27): short labels, no notes, blank
+// lines between groups, tuning and reset one page down.
 AddOptionMenu "OptionsMenu"
 {
 	Submenu "Score", "RSQSC_Options"
@@ -6,38 +7,47 @@ AddOptionMenu "OptionsMenu"
 
 OptionValue "RSQSC_Rewards"
 {
-	0, "Ammo regen, then a life"
-	1, "A life, then ammo regen"
-	2, "Ammo regen only"
-	3, "A life every time"
-	4, "No rewards"
+	0, "Ammo, Then Life"
+	1, "Life, Then Ammo"
+	2, "Ammo Only"
+	3, "Life Every Time"
+	4, "Nothing"
 }
 
 OptionValue "RSQSC_Start"
 {
-	0, "Nothing carries over"
-	1, "The running total"
-	2, "Total and rewards"
+	0, "Nothing"
+	1, "Total"
+	2, "Total and Rewards"
 	3, "Everything"
 }
 
 OptionMenu "RSQSC_Options"
 {
-	Title "Score"
-	StaticText "What you see"
-	Option "Hide the score", "rs_score_hide", "OnOff"
-	Option "Flash the bar on a gain", "rs_score_flash", "OnOff"
-	Option "Flash the whole view on a reward or revival", "rs_score_screenflash", "OnOff"
-	Slider "How long a bonus stays (tics)", "rs_score_bonustime", 35, 193, 7, 0
+	Title "SCORE"
+	Option "Show Score", "rs_score_hide", "NoYes"
 	Slider "Size", "rs_score_scale", 50, 200, 5, 0
-	Slider "Across (percent)", "rs_score_x", 0, 100, 1, 0
-	Slider "Down (percent)", "rs_score_y", 0, 100, 1, 0
-	StaticText ""
-	StaticText "The game (host)"
-	Option "Crossing the target pays", "rs_score_rewardtypes", "RSQSC_Rewards"
-	Option "On a new map, keep", "rs_score_startmode", "RSQSC_Start"
-	Slider "Respawned / raised monsters pay (percent)", "rs_score_farmpercent", 0, 100, 5, 0
-	Slider "Melee family cap (percent, 0 off)", "rs_score_cap_melee", 0, 300, 10, 0
-	StaticText ""
-	SafeCommand "Reset all Score settings", "resetcvar rs_score_hide rs_score_flash rs_score_screenflash rs_score_bonustime rs_score_scale rs_score_x rs_score_y rs_score_rewardtypes rs_score_startmode rs_score_farmpercent rs_score_cap_efficiency rs_score_cap_style rs_score_cap_daring rs_score_cap_melee rs_score_cap_total", "Put every Score setting back?"
+	Slider "Across", "rs_score_x", 0, 100, 1, 0
+	Slider "Down", "rs_score_y", 0, 100, 1, 0
+	StaticText " "
+	Option "Target Reward", "rs_score_rewardtypes", "RSQSC_Rewards"
+	Option "New Map Keeps", "rs_score_startmode", "RSQSC_Start"
+	Option "Slow Motion Moments", "rs_score_slowmo", "OnOff"
+	StaticText " "
+	Submenu "Tuning", "RSQSC_Tuning"
+}
+
+OptionMenu "RSQSC_Tuning"
+{
+	Title "SCORE TUNING"
+	Option "Bar Flash", "rs_score_flash", "OnOff"
+	Option "Screen Flash", "rs_score_screenflash", "OnOff"
+	Slider "Bonus Display Time", "rs_score_bonustime", 35, 193, 7, 0
+	StaticText " "
+	Slider "Raised Monster Pay", "rs_score_farmpercent", 0, 100, 5, 0
+	Slider "Kill Bonus Cap", "rs_score_cap_kill", 0, 1000, 50, 0
+	Slider "Melee Bonus Cap", "rs_score_cap_melee", 0, 300, 10, 0
+	Slider "Slow Motion Cooldown", "rs_score_slowmo_cooldown", 1, 30, 1, 0
+	StaticText " "
+	SafeCommand "Reset All", "resetcvar rs_score_hide rs_score_flash rs_score_screenflash rs_score_bonustime rs_score_scale rs_score_x rs_score_y rs_score_rewardtypes rs_score_startmode rs_score_farmpercent rs_score_cap_efficiency rs_score_cap_style rs_score_cap_daring rs_score_cap_melee rs_score_cap_kill rs_score_slowmo rs_score_slowmo_cooldown", "Reset all Score settings?"
 }

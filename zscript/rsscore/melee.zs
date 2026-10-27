@@ -45,6 +45,19 @@ class RS_MeleeSeed play
 		into.Push("RS_Bonus_Slammed");
 		into.Push("RS_Bonus_Juggle");
 		into.Push("RS_Bonus_Boot");
+		// the suite round (10-27): the saber's pull and second blade, sent-back chains, the push into
+		// harm, the Force jump's landing, the disc's sweep and bank, the shield held up, the gloves
+		into.Push("RS_Bonus_PulledIn");
+		into.Push("RS_Bonus_TwinBlades");
+		into.Push("RS_Bonus_Rally");
+		into.Push("RS_Bonus_RingOut");
+		into.Push("RS_Bonus_GroundPound");
+		into.Push("RS_Bonus_CleanSweep");
+		into.Push("RS_Bonus_BankShot");
+		into.Push("RS_Bonus_ShieldWall");
+		into.Push("RS_Bonus_Counter");
+		into.Push("RS_Bonus_Knockdown");
+		into.Push("RS_Bonus_Flurry");
 	}
 }
 
@@ -67,7 +80,13 @@ class RS_Melee play
 
 	static int Kind(RS_ScoreEvent ev)
 	{
-		if (!ev.killer) return MK_NONE;
+		if (ev.meleeKind < 0) ev.meleeKind = KindOf(ev);
+		return ev.meleeKind;
+	}
+
+	private static int KindOf(RS_ScoreEvent ev)
+	{
+		if (!ev.killer || ev.ringOut) return MK_NONE;	// a Ring Out was struck by the level or a monster
 		Name dt = ev.damageType;
 		String inf = "";
 		if (ev.inflictor) inf = ev.inflictor.GetClassName();
@@ -180,16 +199,82 @@ class RS_Melee play
 		return v.pos.z - v.floorz >= AIR_GAP;
 	}
 
-	// THE BIG MOMENTS, in one place, for the SlowMo mod later (not wired to anything yet): a bonus
-	// in this list, firing at or above the multiplier given, is a moment worth slowing down for.
+	// THE BIG MOMENTS, in one place: a bonus in this list, firing at or above the multiplier given,
+	// is a moment worth slowing down for (handler.zs BigMomentPulse sends RSQ_SlowMo a short pulse).
+	// The original thirteen and the physical bonuses answer for themselves (BigMoment, bonus.zs).
 	static bool BigMoment(RS_ScoreBonus b, double mult)
 	{
 		if (!b || mult <= 0) return false;
 		String n = b.GetClassName();
 		if (n ~== "RS_Bonus_Fatality" || n ~== "RS_Bonus_PerfectRiposte" || n ~== "RS_Bonus_PoeticJustice"
-			|| n ~== "RS_Bonus_Boomerang" || n ~== "RS_Bonus_Slammed") return true;
+			|| n ~== "RS_Bonus_Boomerang" || n ~== "RS_Bonus_Slammed" || n ~== "RS_Bonus_RingOut"
+			|| n ~== "RS_Bonus_CleanSweep" || n ~== "RS_Bonus_BankShot") return true;
 		if (n ~== "RS_Bonus_HeavySwing") return mult >= RS_Bonus_HeavySwing.FULL;
+		if (n ~== "RS_Bonus_Rally") return mult >= RS_Bonus_Rally.PER * 3 - 0.001;     // the fourth in a row
+		if (n ~== "RS_Bonus_Flurry") return mult >= RS_Bonus_Flurry.MAXMULT - 0.001;   // the fifth punch
 		return false;
+	}
+
+	// A SHOT SENT BACK killed it: turned by the shield or the saber, a bolt the saber returned, or a
+	// bullet either of them returned. (Return to Sender's test; Rally and the physical family read it.)
+	static bool Returned(RS_ScoreEvent ev)
+	{
+		if (ev.returned < 0) ev.returned = ReturnedOf(ev) ? 1 : 0;
+		return ev.returned == 1;
+	}
+
+	private static bool ReturnedOf(RS_ScoreEvent ev)
+	{
+		if (!ev.killer || ev.ringOut) return false;
+		let inf = ev.inflictor;
+		String n = "";
+		if (inf) n = inf.GetClassName();
+		if (n ~== "UBQS_Bolt" || n ~== "UBQS_RemoteBolt") return true;          // the saber returned it
+		if (inf && inf.bMissile && RS_ScoreShots.BornOfMonster(inf)) return true; // a monster's shot, now ours
+		if (inf && AskShield("returned", inf) >= 0) return true;
+		if (AskShield("returned", ev.victim) >= 0) return true;                // a returned bullet
+		return false;
+	}
+
+	// The saber's answer for one hand of this pawn: 1 lit (or thrown), 0 doused, -1 none.
+	static int SaberLit(Actor who, int hand)
+	{
+		let it = ServiceIterator.Find("UBQS_SaberService");
+		Service s;
+		while (s = it.Next())
+		{
+			int v = s.GetInt("saber.lit", "", hand, 0, who);
+			if (v >= 0) return v;
+		}
+		return -1;
+	}
+
+	// One of the boxing gloves (the Gun Bonsai VR patch's RSQ_Glove / RSQ_GloveOff, SuperPunchOut's
+	// SPO_Glove) dealt the blow: a glove is its own inflictor (RSQ_GloveHandler.Deliver).
+	static bool IsGlove(Actor inf)
+	{
+		if (!inf) return false;
+		String n = inf.GetClassName();
+		return n.Left(9) ~== "RSQ_Glove" || n.Left(9) ~== "SPO_Glove";
+	}
+
+	// The victim was in its own attack (its Missile or Melee sequence) when it died -- the state
+	// before Die changes it (WorldThingDied runs before the death state is set, p_interaction.cpp).
+	// The Gun Bonsai VR patch's RSQM.InAttack, the same test.
+	static bool InAttack(Actor v)
+	{
+		if (!v || !v.CurState) return false;
+		State s = v.FindState("Missile");
+		if (s && v.InStateSequence(v.CurState, s)) return true;
+		s = v.FindState("Melee");
+		return s && v.InStateSequence(v.CurState, s);
+	}
+
+	static bool InPain(Actor v)
+	{
+		if (!v || !v.CurState) return false;
+		State s = v.FindState("Pain");
+		return s && v.InStateSequence(v.CurState, s);
 	}
 
 	// Gibbed: past the victim's gib threshold, the extreme death.
@@ -312,18 +397,7 @@ class RS_Bonus_ReturnToSender : RS_ScoreBonus
 	const MULT = 0.4;
 	override int Family() const { return FAM_MELEE; }
 	override String DisplayName() const { return "Return to Sender"; }
-	override double Evaluate(RS_ScoreEvent ev)
-	{
-		if (!ev.killer) return 0.0;
-		let inf = ev.inflictor;
-		String n = "";
-		if (inf) n = inf.GetClassName();
-		if (n ~== "UBQS_Bolt" || n ~== "UBQS_RemoteBolt") return MULT;          // the saber returned it
-		if (inf && inf.bMissile && RS_ScoreShots.BornOfMonster(inf)) return MULT; // a monster's shot, now ours
-		if (RS_Melee.AskShield("returned", inf) >= 0) return MULT;
-		if (RS_Melee.AskShield("returned", ev.victim) >= 0) return MULT;      // a returned bullet
-		return 0.0;
-	}
+	override double Evaluate(RS_ScoreEvent ev) { return RS_Melee.Returned(ev) ? MULT : 0.0; }
 }
 
 // Combo: kills by different melee moves close together -- a jab, then a saber cut, then the
@@ -482,9 +556,8 @@ class RS_Bonus_Slammed : RS_ScoreBonus
 
 // Juggle: a melee or Force kill of something in the air that cannot fly, which your Force, a kick,
 // a punch or a bash put there -- caught at the top of a push, cut while it hangs in the grip, hit as it flies
-// from a fling. The choke and the slam have their own rows and replace it. (A PULL does no damage,
-// so it leaves no touch to read, and on the rig it did not lift an imp at all: a pulled monster
-// cut on arrival needs the saber to say it pulled it.)
+// from a fling. The choke and the slam have their own rows and replace it. (A PULL does no damage
+// and leaves no touch; a pulled monster cut on arrival is Pulled In, from the saber's "pulled".)
 class RS_Bonus_Juggle : RS_ScoreBonus
 {
 	const MULT = 0.3;
@@ -498,6 +571,9 @@ class RS_Bonus_Juggle : RS_ScoreBonus
 		int since = RS_ScoreShots.Launched(ev.victim, ev.killer);
 		return (since >= 0 && since <= RS_Melee.LAUNCH_TICS) ? MULT : 0.0;
 	}
+	// the body in the air is one fact: Skeet (physical.zs) pays it for any kill, Juggle for one you
+	// launched -- not both
+	override bool Supersedes(RS_ScoreBonus other) const { return other is "RS_Bonus_Skeet"; }
 }
 
 // Boot: Brutal Doom's boots finished it -- a kick, a head kick, a stomp.
@@ -507,6 +583,204 @@ class RS_Bonus_Boot : RS_ScoreBonus
 	override int Family() const { return FAM_MELEE; }
 	override String DisplayName() const { return "Boot"; }
 	override double Evaluate(RS_ScoreEvent ev) { return RS_Melee.Kind(ev) == RS_Melee.MK_BOOT ? MULT : 0.0; }
+}
+
+
+// ---------------------------------------------------------------- the suite round (10-27)
+
+// Pulled In: the saber's Force pull yanked this monster to you, and a melee blow killed it within two
+// seconds of the pull (UBQS_SaberService "pulled": the saber's own memory, kept 2 s).
+class RS_Bonus_PulledIn : RS_ScoreBonus
+{
+	const MULT = 0.3;
+	override int Family() const { return FAM_MELEE; }
+	override String DisplayName() const { return "Pulled In"; }
+	override double Evaluate(RS_ScoreEvent ev)
+	{
+		int k = RS_Melee.Kind(ev);
+		if (k == RS_Melee.MK_NONE || k == RS_Melee.MK_FINISH) return 0.0;
+		int since = RS_Melee.AskAny("pulled", ev.victim);
+		return (since >= 0 && since <= 70) ? MULT : 0.0;
+	}
+}
+
+// Twin Blades: a saber kill (a cut or a throw) while a lit saber is in each hand (the saber's own
+// "saber.lit", per hand; a thrown saber counts as out).
+class RS_Bonus_TwinBlades : RS_ScoreBonus
+{
+	const MULT = 0.2;
+	override int Family() const { return FAM_MELEE; }
+	override String DisplayName() const { return "Twin Blades"; }
+	override double Evaluate(RS_ScoreEvent ev)
+	{
+		int k = RS_Melee.Kind(ev);
+		if (k != RS_Melee.MK_SABER && k != RS_Melee.MK_THROWN) return 0.0;
+		return (RS_Melee.SaberLit(ev.killer, 0) == 1 && RS_Melee.SaberLit(ev.killer, 1) == 1) ? MULT : 0.0;
+	}
+}
+
+// Rally: shots sent back (Return to Sender) killing one after another, each within 3 s of the last --
+// a deflect chain. The second pays 0.2, the third 0.4, then 0.6. On top of Return to Sender.
+class RS_Bonus_Rally : RS_ScoreBonus
+{
+	const PER = 0.2;
+	const WINDOW = 105;
+	override int Family() const { return FAM_MELEE; }
+	override String DisplayName() const { return "Rally"; }
+	private int Earlier(RS_ScoreEvent ev)
+	{
+		let tr = ev.tracker;
+		return (tr && tr.rallyCount > 0 && level.maptime - tr.rallyTic <= WINDOW) ? tr.rallyCount : 0;
+	}
+	override double Evaluate(RS_ScoreEvent ev)
+	{
+		if (!RS_Melee.Returned(ev)) return 0.0;
+		return min(PER * 3, PER * Earlier(ev));
+	}
+	override void Commit(RS_ScoreEvent ev)
+	{
+		let tr = ev.tracker;
+		if (!tr || !RS_Melee.Returned(ev)) return;
+		tr.rallyCount = Earlier(ev) + 1;
+		tr.rallyTic = level.maptime;
+	}
+}
+
+// Ring Out: something other than you killed it -- a crusher, a pit, another monster's attack -- inside
+// two seconds of your Force, a kick, a punch or a bash sending it there (RS_ScoreShots.LaunchedBy; the
+// handler gives you the kill, which otherwise paid nobody or every player).
+class RS_Bonus_RingOut : RS_ScoreBonus
+{
+	const MULT = 0.5;
+	override int Family() const { return FAM_MELEE; }
+	override String DisplayName() const { return "Ring Out"; }
+	override double Evaluate(RS_ScoreEvent ev) { return ev.ringOut ? MULT : 0.0; }
+}
+
+// Ground Pound: the Force jump's landing (QuestSaber LandSlam, a Gun Bonsai Force Jump level 2+)
+// killed it. Its 'Force' blow has no NO_PAIN flag, like the slam's, so it is told from a flung body by
+// what LandSlam does: it strikes round a player standing on the floor, within its reach (96 + 32 a
+// level past 2, here up to 288 units with the body's radius) and 64 units of height, and throws the
+// body UP before it strikes (vel.z += half its push, at least 1). A flung body has stopped dead.
+// Replaces Slammed for that kill.
+class RS_Bonus_GroundPound : RS_ScoreBonus
+{
+	const MULT = 0.3;
+	override int Family() const { return FAM_MELEE; }
+	override String DisplayName() const { return "Ground Pound"; }
+	static bool IsLanding(RS_ScoreEvent ev)
+	{
+		if (RS_Melee.Kind(ev) != RS_Melee.MK_FORCE || ev.damageType != 'Force') return false;
+		int fl = RS_ScoreShots.KillFlags(ev.victim);
+		if (fl < 0 || (fl & DMG_NO_PAIN)) return false;
+		let k = ev.killer, v = ev.victim;
+		if (k.pos.z > k.floorz + 1.0) return false;
+		if (abs(v.pos.z - k.pos.z) > 64.0 + 16.0) return false;
+		if (k.Distance2D(v) > 288.0 + v.radius) return false;
+		return v.bDontThrust || v.vel.z >= 0.9;
+	}
+	override double Evaluate(RS_ScoreEvent ev) { return IsLanding(ev) ? MULT : 0.0; }
+	override bool Supersedes(RS_ScoreBonus other) const { return other is "RS_Bonus_Slammed"; }
+}
+
+// Clean Sweep: the ShieldSaw thrown at two or more locks killed the last of them -- every lock it
+// was sent to has been visited. Read from the disc's own lock rings (SSQ_LockMark, each pointing at
+// its target; the disc removes a ring when it is done with that lock or the target dies), counted
+// for this disc by RS_ScoreShots when they appear with it.
+class RS_Bonus_CleanSweep : RS_ScoreBonus
+{
+	const MULT = 0.5;
+	override int Family() const { return FAM_MELEE; }
+	override String DisplayName() const { return "Clean Sweep"; }
+	override double Evaluate(RS_ScoreEvent ev)
+	{
+		if (RS_Melee.Kind(ev) != RS_Melee.MK_DISC) return 0.0;
+		return RS_ScoreShots.SweptClean(ev.inflictor, ev.victim) ? MULT : 0.0;
+	}
+}
+
+// Bank Shot: the ShieldSaw came off a wall toward a new target (its Ricochet, a Gun Bonsai upgrade:
+// the disc picks a fresh lock at the wall and rings it) and killed that target.
+class RS_Bonus_BankShot : RS_ScoreBonus
+{
+	const MULT = 0.4;
+	override int Family() const { return FAM_MELEE; }
+	override String DisplayName() const { return "Bank Shot"; }
+	override double Evaluate(RS_ScoreEvent ev)
+	{
+		if (RS_Melee.Kind(ev) != RS_Melee.MK_DISC) return 0.0;
+		return RS_ScoreShots.BankedAt(ev.inflictor, ev.victim) ? MULT : 0.0;
+	}
+}
+
+// Shield Wall: a kill while the ShieldSaw in your hand is holding something else off -- it blocked
+// another monster's attack inside the last second. (The monster it blocked is Riposte's business.)
+class RS_Bonus_ShieldWall : RS_ScoreBonus
+{
+	const MULT = 0.25;
+	const WINDOW = 35;
+	const REACH = 2048;
+	override int Family() const { return FAM_MELEE; }
+	override String DisplayName() const { return "Shield Wall"; }
+	override double Evaluate(RS_ScoreEvent ev)
+	{
+		let k = ev.killer;
+		if (!k || ev.ringOut || !RS_Melee.ShieldInHand(k)) return 0.0;
+		let it = BlockThingsIterator.Create(k, REACH);
+		while (it.Next())
+		{
+			let m = it.thing;
+			if (!m || m == ev.victim || !m.bIsMonster || m.player) continue;
+			int since = RS_Melee.AskShield("blocked", m);
+			if (since >= 0 && since <= WINDOW) return MULT;
+		}
+		return 0.0;
+	}
+}
+
+// Counter: a punch killed it in the middle of its own attack -- in its Missile or Melee sequence, or
+// half a second after it fired a shot (Brutal Doom's monsters jump out of "Missile" into their own
+// attack states at once: an imp set to Missile on the rig was not in that sequence a tic later) --
+// the gloves' counter, Brutal Doom's fists too.
+class RS_Bonus_Counter : RS_ScoreBonus
+{
+	const MULT = 0.3;
+	override int Family() const { return FAM_MELEE; }
+	override String DisplayName() const { return "Counter"; }
+	override double Evaluate(RS_ScoreEvent ev)
+	{
+		if (RS_Melee.Kind(ev) != RS_Melee.MK_FIST) return 0.0;
+		return (RS_Melee.InAttack(ev.victim) || RS_ScoreShots.FiredWithin(ev.victim, 18)) ? MULT : 0.0;
+	}
+}
+
+// Knockdown: a punch finished it while it was still reeling (in its Pain sequence) from an earlier blow.
+class RS_Bonus_Knockdown : RS_ScoreBonus
+{
+	const MULT = 0.2;
+	override int Family() const { return FAM_MELEE; }
+	override String DisplayName() const { return "Knockdown"; }
+	override double Evaluate(RS_ScoreEvent ev)
+	{
+		return (RS_Melee.Kind(ev) == RS_Melee.MK_FIST && RS_Melee.InPain(ev.victim)) ? MULT : 0.0;
+	}
+}
+
+// Flurry: the gloves' one-two -- a glove kill that ends a run of punches landing left, right, left,
+// each within half a second of the last (the patch's own One-Two window, 17 tics). The third punch of
+// the run pays 0.15, the fourth 0.3, the fifth and on 0.45.
+class RS_Bonus_Flurry : RS_ScoreBonus
+{
+	const PER = 0.15;
+	const MAXMULT = 0.45;
+	override int Family() const { return FAM_MELEE; }
+	override String DisplayName() const { return "Flurry"; }
+	override double Evaluate(RS_ScoreEvent ev)
+	{
+		if (!RS_Melee.IsGlove(ev.inflictor) || ev.killerNum < 0) return 0.0;
+		int n = RS_ScoreShots.GloveRun(ev.killerNum);
+		return n >= 3 ? min(MAXMULT, PER * (n - 2)) : 0.0;
+	}
 }
 
 // Combo's memory is written for EVERY melee kill, not only the ones Combo paid on, so it is
@@ -545,6 +819,7 @@ class RS_ScoreShots : EventHandler
 {
 	Array<Actor> shots;
 	Array<Actor> shotFrom;     // the monster that fired each
+	Array<int> shotTic;        // ...and when
 
 	Array<Actor> thrown;       // discs and thrown sabers in flight
 	Array<double> thrX, thrY, thrZ, stepX, stepY, stepZ;   // Array<Vector3> is not allowed
@@ -557,12 +832,52 @@ class RS_ScoreShots : EventHandler
 	Array<int> lnTic;
 
 	Actor killVictim;          // the last blow that brought something to 0 health
+	Actor kSource;             // ...who dealt it (the engine's damage source; null: the level)
 	int kFlags, killTic, killStack;
 
-	static bool IsThrown(String n) { return n ~== "SSQ_Disc" || n ~== "UBQS_Thrown"; }
-	static bool IsSwingAttack(String n)
+	// monsters that died lately, and the weapons that fell out of them (Hand-Me-Down)
+	Array<Actor> deadV, drops;
+	Array<int> deadTic;
+
+	// the ShieldSaw's lock rings, by the disc they appeared with (Clean Sweep, Bank Shot)
+	Array<Actor> lmDisc, lmMark, lmTarget;
+	Array<int> lmLate;         // 1: rung after the throw (a Ricochet's new lock), 0: at the throw
+	Array<int> thrTic;         // the tic each thrown thing appeared
+
+	// the gloves' run of alternating punches, per player (Flurry)
+	Actor glLast[MAXPLAYERS];
+	int glTic[MAXPLAYERS], glRun[MAXPLAYERS];
+
+	// THE CLASSES THIS LOOKS FOR, resolved once per map from their names (null when that mod is not
+	// loaded). EVERY ACTOR THAT SPAWNS passes through WorldThingSpawned -- Brutal Doom spawns blood,
+	// casings and smoke by the hundred -- so the test there is a pointer compare, not a string one.
+	transient bool clsReady;
+	transient class<Actor> cDisc, cThrown, cMark, cGlove, cSpoGlove, cSw1, cSw2, cSw3, cSw4;
+	private void Classes()
 	{
-		return n ~== "AxeAttack" || n ~== "AxeAttackNoDecal" || n ~== "MeleeStrikeNormal" || n ~== "MeleeStrike1Berserked";
+		if (clsReady) return;
+		clsReady = true;
+		String n;
+		n = "SSQ_Disc";             cDisc = n;
+		n = "UBQS_Thrown";          cThrown = n;
+		n = "SSQ_LockMark";         cMark = n;
+		n = "RSQ_Glove";            cGlove = n;
+		n = "SPO_Glove";            cSpoGlove = n;
+		n = "AxeAttack";            cSw1 = n;
+		n = "AxeAttackNoDecal";     cSw2 = n;
+		n = "MeleeStrikeNormal";    cSw3 = n;
+		n = "MeleeStrike1Berserked"; cSw4 = n;
+	}
+
+	private bool IsSwing(Actor a)
+	{
+		if (!a) return false;
+		class<Actor> c = a.GetClass();
+		return c && (c == cSw1 || c == cSw2 || c == cSw3 || c == cSw4);
+	}
+	private bool IsGloveHit(Actor a)
+	{
+		return a && ((cGlove && a is cGlove) || (cSpoGlove && a is cSpoGlove));
 	}
 
 	// WorldThingSpawned runs from PostBeginPlay, on the actor's first tic -- after the spawner
@@ -571,15 +886,19 @@ class RS_ScoreShots : EventHandler
 	{
 		let a = e.Thing;
 		if (!a) return;
-		String n = a.GetClassName();
-		if (IsThrown(n))
+		Classes();
+		class<Actor> c = a.GetClass();
+		if ((cDisc && c == cDisc) || (cThrown && c == cThrown))
 		{
 			if (thrown.Size() >= 16) DropThrown(0);
 			thrown.Push(a);
 			thrX.Push(a.pos.x); thrY.Push(a.pos.y); thrZ.Push(a.pos.z);
 			stepX.Push(0); stepY.Push(0); stepZ.Push(0);
+			thrTic.Push(level.maptime);
 			return;
 		}
+		if (cMark && c == cMark) { NoteMark(a); return; }
+		if (deadV.Size() > 0 && a is "Weapon") { NoteDrop(a); return; }
 		if (!a.bMissile) return;
 		let src = a.target;
 		if (!src) return;
@@ -587,6 +906,7 @@ class RS_ScoreShots : EventHandler
 		if (shots.Size() >= 256) Trim();
 		shots.Push(a);
 		shotFrom.Push(src);
+		shotTic.Push(level.maptime);
 	}
 
 	// HOW A STACK IS COUNTED. BD22Q's Launch spawns each attack INSIDE the body and calls
@@ -600,7 +920,9 @@ class RS_ScoreShots : EventHandler
 		let v = e.Thing;
 		if (!v) return;
 		let inf = e.Inflictor, src = e.DamageSource;
-		if (inf && src && src.player && IsSwingAttack(inf.GetClassName()))
+		Classes();
+		if (inf && src && src.player && IsGloveHit(inf)) NoteGlove(src.PlayerNumber(), inf);
+		if (inf && src && src.player && IsSwing(inf))
 		{
 			if (swVictim == v && swSource == src && swTic == level.maptime) swCount++;
 			else { swVictim = v; swSource = src; swTic = level.maptime; swCount = 1; }
@@ -614,6 +936,7 @@ class RS_ScoreShots : EventHandler
 			return;
 		}
 		killVictim = v;
+		kSource = src;
 		kFlags = e.DamageFlags;
 		killTic = level.maptime;
 		killStack = (swVictim == v && swTic == level.maptime) ? swCount : 0;
@@ -622,6 +945,9 @@ class RS_ScoreShots : EventHandler
 	override void WorldTick()
 	{
 		if ((level.maptime % 35) == 0) Trim();
+		// each ring's target, kept once the ring has one (the ring itself goes when the disc is done
+		// with that lock)
+		for (int k = 0; k < lmMark.Size(); k++) if (!lmTarget[k] && lmMark[k] && lmMark[k].tracer) lmTarget[k] = lmMark[k].tracer;
 		// each thrown thing's motion over the last tic (sampled before the thinkers run)
 		for (int k = thrown.Size() - 1; k >= 0; k--)
 		{
@@ -645,12 +971,91 @@ class RS_ScoreShots : EventHandler
 	{
 		thrown.Delete(k); thrX.Delete(k); thrY.Delete(k); thrZ.Delete(k);
 		stepX.Delete(k); stepY.Delete(k); stepZ.Delete(k);
+		if (k < thrTic.Size()) thrTic.Delete(k);
+	}
+
+	// A lock ring appeared. The disc that rang it is the ShieldSaw in flight: one that appeared this
+	// very tic rang it at the throw (SSQ_Disc.FindLocks), an older one rang it at a wall (Ricochet).
+	// The ring's target (tracer) is set just after it spawns, so it is read when asked, not now. A ring
+	// with no disc in flight is the aim preview's (state.zs) and is not kept.
+	private void NoteMark(Actor m)
+	{
+		Actor disc = null;
+		int late = 0;
+		for (int k = thrown.Size() - 1; k >= 0; k--)
+		{
+			if (!thrown[k] || !(cDisc && thrown[k] is cDisc)) continue;
+			disc = thrown[k];
+			late = (k < thrTic.Size() && thrTic[k] == level.maptime) ? 0 : 1;
+			break;
+		}
+		if (!disc) return;
+		for (int k = lmDisc.Size() - 1; k >= 0; k--) if (!lmDisc[k]) { lmDisc.Delete(k); lmMark.Delete(k); lmLate.Delete(k); lmTarget.Delete(k); }
+		if (lmDisc.Size() >= 64) { lmDisc.Delete(0); lmMark.Delete(0); lmLate.Delete(0); lmTarget.Delete(0); }
+		lmDisc.Push(disc); lmMark.Push(m); lmLate.Push(late); lmTarget.Push(null);
+	}
+
+	// A WEAPON THAT FELL OUT OF A MONSTER: one that appears at the body of a monster that died in the
+	// last two seconds (a death drop: A_NoBlocking's DropItem, Brutal Doom's own drops). Not the
+	// engine's DROPPED flag: every item spawned after the map loads carries that (Inventory.BeginPlay),
+	// Brutal Doom's map weapons included, since its spawners make them at run time.
+	override void WorldThingDied(WorldEvent e)
+	{
+		let v = e.Thing;
+		if (!v || !v.bIsMonster) return;
+		if (deadV.Size() >= 16) { deadV.Delete(0); deadTic.Delete(0); }
+		deadV.Push(v); deadTic.Push(level.maptime);
+	}
+
+	private void NoteDrop(Actor w)
+	{
+		for (int k = deadV.Size() - 1; k >= 0; k--)
+		{
+			let v = deadV[k];
+			if (!v || level.maptime - deadTic[k] > 70) { deadV.Delete(k); deadTic.Delete(k); continue; }
+			// the body's standing height, not its corpse's (Die shrinks it to its DeathHeight)
+			double tall = GetDefaultByType(v.GetClass()).height;
+			if (w.Distance2D(v) <= v.radius + 32 && w.pos.z >= v.pos.z - 8 && w.pos.z <= v.pos.z + tall + 8)
+			{
+				for (int j = drops.Size() - 1; j >= 0; j--) if (!drops[j]) drops.Delete(j);
+				if (drops.Size() >= 32) drops.Delete(0);
+				drops.Push(w);
+				return;
+			}
+		}
+	}
+
+	static bool MonsterDrop(Actor w)
+	{
+		let h = Get();
+		if (!h || !w) return false;
+		for (int k = 0; k < h.drops.Size(); k++) if (h.drops[k] == w) return true;
+		return false;
+	}
+
+	// The engine's damage source for the blow that killed v this tic. `known` false when no such
+	// blow was seen (a death that did not come through DamageMobj).
+	static Actor, bool KillSource(Actor v)
+	{
+		let h = Get();
+		if (!h || !v || h.killVictim != v || h.killTic != level.maptime) return null, false;
+		return h.kSource, true;
+	}
+
+	private void NoteGlove(int pn, Actor glove)
+	{
+		if (pn < 0 || pn >= MAXPLAYERS) return;
+		if (glRun[pn] > 0 && glLast[pn] && glLast[pn] != glove && level.maptime - glTic[pn] <= 17) glRun[pn]++;
+		else glRun[pn] = 1;
+		glLast[pn] = glove;
+		glTic[pn] = level.maptime;
 	}
 
 	private void Trim()
 	{
-		for (int k = shots.Size() - 1; k >= 0; k--) if (!shots[k]) { shots.Delete(k); shotFrom.Delete(k); }
-		while (shots.Size() >= 256) { shots.Delete(0); shotFrom.Delete(0); }
+		// a spent shot is kept 35 tics (Counter asks who fired lately)
+		for (int k = shots.Size() - 1; k >= 0; k--) if (!shots[k] && level.maptime - shotTic[k] > 35) { shots.Delete(k); shotFrom.Delete(k); shotTic.Delete(k); }
+		while (shots.Size() >= 256) { shots.Delete(0); shotFrom.Delete(0); shotTic.Delete(0); }
 		for (int k = outKillers.Size() - 1; k >= 0; k--) if (!outKillers[k]) outKillers.Delete(k);
 	}
 
@@ -661,6 +1066,19 @@ class RS_ScoreShots : EventHandler
 		let h = Get();
 		if (!h || !shot) return false;
 		for (int k = 0; k < h.shots.Size(); k++) if (h.shots[k] == shot) return true;
+		return false;
+	}
+
+	// did this monster fire a shot in the last `tics` tics (its own attack, whatever its states are called)
+	static bool FiredWithin(Actor m, int tics)
+	{
+		let h = Get();
+		if (!h || !m) return false;
+		for (int k = h.shots.Size() - 1; k >= 0; k--)
+		{
+			if (level.maptime - h.shotTic[k] > tics) break;
+			if (h.shotFrom[k] == m) return true;
+		}
 		return false;
 	}
 
@@ -712,6 +1130,62 @@ class RS_ScoreShots : EventHandler
 		if (!h || !v) return -1;
 		for (int k = 0; k < h.lnV.Size(); k++) if (h.lnV[k] == v && h.lnBy[k] == by) return level.maptime - h.lnTic[k];
 		return -1;
+	}
+
+	// the player whose Force, kick, punch or bash last touched v (and v lived) inside LAUNCH_TICS, or null
+	static Actor LaunchedBy(Actor v)
+	{
+		let h = Get();
+		if (!h || !v) return null;
+		for (int k = h.lnV.Size() - 1; k >= 0; k--)
+			if (h.lnV[k] == v && h.lnBy[k] && h.lnBy[k].player && level.maptime - h.lnTic[k] <= RS_Melee.LAUNCH_TICS) return h.lnBy[k];
+		return null;
+	}
+
+	// Clean Sweep: this disc was rung on two or more locks at the throw, the victim is one of them, and
+	// every other one of them is dead. (Not "every ring is gone": the disc drops a ring when it is done
+	// with a lock, and measured on rig B it dropped a living Cyberdemon's ring and flew home -- the
+	// sweep has to be the kills.)
+	static bool SweptClean(Actor disc, Actor victim)
+	{
+		let h = Get();
+		if (!h || !disc) return false;
+		int rung = 0;
+		bool wasLock = false;
+		for (int k = 0; k < h.lmDisc.Size(); k++)
+		{
+			if (h.lmDisc[k] != disc || h.lmLate[k] != 0) continue;
+			Actor t = h.lmTarget[k];
+			if (!t && h.lmMark[k]) t = h.lmMark[k].tracer;
+			if (!t) continue;
+			rung++;
+			if (t == victim) { wasLock = true; continue; }
+			if (t.health > 0) return false;   // a lock still standing
+		}
+		return rung >= 2 && wasLock;
+	}
+
+	// Bank Shot: the victim carries a ring this disc rang after the throw (at a wall)
+	static bool BankedAt(Actor disc, Actor victim)
+	{
+		let h = Get();
+		if (!h || !disc || !victim) return false;
+		for (int k = 0; k < h.lmDisc.Size(); k++)
+		{
+			if (h.lmDisc[k] != disc || h.lmLate[k] != 1) continue;
+			Actor t = h.lmTarget[k];
+			if (!t && h.lmMark[k]) t = h.lmMark[k].tracer;
+			if (t == victim) return true;
+		}
+		return false;
+	}
+
+	// the gloves' run of alternating punches for this player, counting the punch that just landed
+	static int GloveRun(int pn)
+	{
+		let h = Get();
+		if (!h || pn < 0 || pn >= MAXPLAYERS || h.glTic[pn] != level.maptime) return 0;
+		return h.glRun[pn];
 	}
 
 	// the damage flags of the blow that killed v this tic, or -1

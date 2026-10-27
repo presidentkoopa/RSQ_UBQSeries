@@ -45,6 +45,12 @@ class RS_ScoreTracker : Inventory
 	Array<int> comboKind;    // recent melee kills, for Combo
 	Array<int> comboTic;
 	int  lastResetTic;
+	int   rallyCount;        // Rally: shots sent back that killed, one after another
+	int   rallyTic;
+
+	// ---- slow motion for big moments (handler.zs BigMomentPulse) -------------
+	int slowmoReady;         // no pulse before this tic (rs_score_slowmo_cooldown)
+	int slowmoUntil;         // our own last pulse is still slowing the world until about here
 
 	// ---- Spree ------------------------------------------------------------
 	int spreeCount;

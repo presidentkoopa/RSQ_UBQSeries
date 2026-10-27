@@ -41,7 +41,8 @@ spectacle is not.
 
 ## The Quest series version
 
-The Brutal Doom kill rule, the Melee family, the menu and the light revival cue are the Quest
-series' (2026-10-27), built on the owner's RS_Score. **Publishing:** this version is delivered to
+The Brutal Doom kill rule, the Melee family, the physical bonuses, the suite bonuses, the
+slow-motion moments, the menu and the light revival cue are the Quest series' (2026-10-27), built on
+the owner's RS_Score (presidentkoopa), which is built on ijon's design. **Publishing:** this version is delivered to
 the owner, not to the public series hub, because the fonts above are not licensed for distribution;
 sharing it is the owner's decision.

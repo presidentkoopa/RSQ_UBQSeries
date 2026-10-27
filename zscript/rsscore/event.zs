@@ -44,6 +44,13 @@ class RS_ScoreEvent play
 	// ---- how a monster died to another monster -----------------------------
 	bool monsterOnMonster;   // Infighter
 	bool selfInflicted;      // Darwin
+	bool ringOut;            // Ring Out: the level or a monster killed it, and a player's push put it there
+
+	// ---- answers worked out once per kill (melee.zs) -------------------------
+	// Twenty bonuses ask what KIND of melee kill this was, and the shot bonuses ask whether the shot
+	// was sent back -- each of those a service lookup in the other mods. Asked once, kept here.
+	int meleeKind;           // RS_Melee.MK_*, or -1 not yet asked
+	int returned;            // 1 / 0, or -1 not yet asked
 
 	// ---- this map's Untouchable thresholds ---------------------------------
 	// Both come off the census, so they belong to the map and not the player. The
@@ -62,6 +69,8 @@ class RS_ScoreEvent play
 		ev.inflictor = inflictor;
 		ev.damageType = damageType;
 		ev.killerNum = -1;
+		ev.meleeKind = -1;
+		ev.returned  = -1;
 
 		ev.victimSpawnHealth = victim ? victim.GetSpawnHealth() : 0;
 		ev.basePoints        = ev.victimSpawnHealth;
