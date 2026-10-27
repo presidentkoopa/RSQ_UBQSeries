@@ -4774,6 +4774,12 @@ class UBQS_RemoteBolt : UBQS_Bolt
 // ==========================================================================================================
 // THE BRIDGE: their saber becomes this one -- on the map, in your inventory, in your hand
 // ==========================================================================================================
+// You put the second saber away with the Dual key (it stays away across levels until you bring it out).
+class UBQS_DualAway : Inventory
+{
+	Default { +INVENTORY.UNDROPPABLE +INVENTORY.UNTOSSABLE +INVENTORY.QUIET Inventory.MaxAmount 1; }
+}
+
 class UBQS_Bridge : EventHandler
 {
 	private int ximKnown;
@@ -4802,12 +4808,19 @@ class UBQS_Bridge : EventHandler
 		return ximKnown == 1;
 	}
 	// THE SABERS THIS ONE REPLACES: Wardust's Lightsaber, the earlier SW QuestSaber's, Xim's chainsaw-saber,
-	// and Doom's own chainsaw if you ask for it (ubqs_chainsaw).
+	// Brutal Doom's sword (ubqs_bd_sword), and Doom's own chainsaw if you ask for it (ubqs_chainsaw).
 	private bool IsTheirs(class<Actor> c)
 	{
 		if (!c) return false;
 		String n = c.GetClassName();
 		if (n ~== "Lightsaber" || n ~== "SWSP_Saber") return true;
+		// BRUTAL DOOM'S SWORD (DSweap, slot 1 beside its axe and chainsaw) becomes the saber when you ask
+		// (ubqs_bd_sword, on by default): its pickups, and the one you carry.
+		if (n ~== "DSweap")
+		{
+			let bc = CVar.FindCVar("ubqs_bd_sword");
+			return !bc || bc.GetBool();
+		}
 		if (n ~== "Chainsaw")
 		{
 			if (XimLoaded()) return true;
@@ -4845,6 +4858,11 @@ class UBQS_Bridge : EventHandler
 				if (ign) sb.Flick();
 				else sb.ToggleBack();
 			}
+			return;
+		}
+		if (e.Name ~== "ubqs_dual")
+		{
+			if (e.Player >= 0 && e.Player < MAXPLAYERS && playeringame[e.Player]) ToggleDual(e.Player);
 			return;
 		}
 		if (!(e.Name ~== "ubqs_remote")) return;
@@ -4907,11 +4925,92 @@ class UBQS_Bridge : EventHandler
 		return false;
 	}
 
+	// THE SECOND SABER, LIKE BRUTAL DOOM'S DUAL GUNS (the owner, 10-27). You carry two from the start;
+	// the Dual key -- Brutal Doom's own (+user3), or "Saber: second saber in / out" -- brings the second
+	// into your off hand or puts it away, while the saber is in your main hand. ubqs_dual_mode:
+	//   0 one saber only    1 the Dual key (default)    2 always out (the old way)
+	// "Put away" is remembered on you (UBQS_DualAway), so it holds across levels.
+	private bool u3Was[MAXPLAYERS];
+
+	static bool IsFiller(Weapon w)
+	{
+		if (!w) return false;
+		String n = w.GetClassName();
+		return n ~== "RSQ_Hands" || n ~== "UBQS_ForceHand";
+	}
+
+	static int DualMode()
+	{
+		let dc = CVar.FindCVar("ubqs_dual");
+		if (dc && !dc.GetBool()) return 0;
+		let mc = CVar.FindCVar("ubqs_dual_mode");
+		return mc ? clamp(mc.GetInt(), 0, 2) : 1;
+	}
+
+	void ToggleDual(int i)
+	{
+		let p = players[i];
+		let mo = p.mo;
+		if (!mo || mo.health <= 0 || DualMode() != 1) return;
+		if (!(p.ReadyWeapon is "UBQS_Saber")) return;      // the Dual key is the gun's otherwise
+		let off = Weapon(mo.FindInventory("UBQS_SaberOff"));
+		if (!off) return;
+		// by what the off hand actually holds: something else filled it (Brutal Doom Quest's hands take an
+		// off hand at the start of a level) -> bring the saber out
+		if (p.OffhandWeapon != off)
+		{
+			// bring it out: straight into the off hand, whatever filled it meanwhile
+			mo.TakeInventory("UBQS_DualAway", 1);
+			if (p.OffhandWeapon != off)
+			{
+				off.bOffhandWeapon = true;
+				p.PendingWeapon = off;
+				mo.BringUpWeapon();
+			}
+			mo.A_StartSound("ubqs/on", CHAN_AUTO, 0, 0.6 * UBQS_Data.F(mo, "ubqs_vol_ignite", 1.0));
+			return;
+		}
+		// put it away: the off hand goes back to what fills it empty (Brutal Doom Quest's hands, or the
+		// bare Force hand), or to nothing
+		mo.GiveInventory("UBQS_DualAway", 1);
+		if (p.OffhandWeapon != off) return;
+		String hn = "RSQ_Hands";        // a run-time lookup: null without Brutal Doom Quest
+		class<Weapon> hc = hn;
+		Weapon filler = hc ? Weapon(mo.FindInventory(hc)) : null;
+		if (hc && !filler) { mo.GiveInventory(hc, 1); filler = Weapon(mo.FindInventory(hc)); }
+		let fmc = CVar.FindCVar("ubqs_force");
+		if (!filler && (!fmc || fmc.GetInt() != 0))
+		{
+			if (!mo.FindInventory("UBQS_ForceHand")) mo.GiveInventory("UBQS_ForceHand", 1);
+			filler = Weapon(mo.FindInventory("UBQS_ForceHand"));
+		}
+		if (filler)
+		{
+			filler.bOffhandWeapon = true;
+			p.PendingWeapon = filler;
+			mo.BringUpWeapon();
+		}
+		else
+		{
+			p.SetPsprite(PSP_OFFHANDWEAPON, null);
+			p.OffhandWeapon = null;
+		}
+		raisedAt[i] = level.maptime;     // and the auto-raise below does not undo it
+	}
+
 	override void WorldTick()
 	{
+		// the Dual key, every tic (an edge must not be missed)
+		for (int k = 0; k < MAXPLAYERS; k++)
+		{
+			if (!playeringame[k] || !players[k].mo) continue;
+			bool u3 = (players[k].cmd.buttons & BT_USER3) != 0;
+			if (u3 && !u3Was[k] && On()) ToggleDual(k);
+			u3Was[k] = u3;
+		}
 		if ((level.maptime % 5) != 0 || !On()) return;
-		let dc = CVar.FindCVar("ubqs_dual");
-		bool dual = !dc || dc.GetBool();
+		int dmode = DualMode();
+		bool dual = dmode != 0;
 		let stc = CVar.FindCVar("ubqs_start");
 		bool start = !stc || stc.GetBool();
 		for (int i = 0; i < MAXPLAYERS; i++)
@@ -4965,7 +5064,8 @@ class UBQS_Bridge : EventHandler
 			// and there is no reason to hold one when it cannot do anything.
 			let fhc = CVar.FindCVar("ubqs_force_hand");
 			let fmc = CVar.FindCVar("ubqs_force");
-			bool fhand = !dual && (!fhc || fhc.GetBool()) && (!fmc || fmc.GetInt() != 0);
+			bool wantOff = dual && (dmode == 2 || !p.mo.FindInventory("UBQS_DualAway"));
+			bool fhand = !wantOff && (!fhc || fhc.GetBool()) && (!fmc || fmc.GetInt() != 0);
 			if (fhand && p.mo.FindInventory("UBQS_Saber") && !p.mo.FindInventory("UBQS_ForceHand"))
 				p.mo.GiveInventory("UBQS_ForceHand", 1);
 			// ONCE, not every 350 tics -- see the note above
@@ -4989,8 +5089,11 @@ class UBQS_Bridge : EventHandler
 			// ONCE, not every 350 tics -- see the note above
 			// ...and re-armed whenever the slot is occupied, so switchhand 1 evicting the saber (it always
 			// can) is a transition we come back from rather than a one-way door.
-			if (p.OffhandWeapon != null) raisedAt[i] = 0;
-			if (dual && p.OffhandWeapon == null && p.PendingWeapon == WP_NOCHANGE && raisedAt[i] == 0)
+			// An off hand held by a FILLER (Brutal Doom Quest's hands, our bare Force hand) counts as empty
+			// for the second saber, once a life: BD22Q puts its hands there at the start of a level.
+			bool offFree = p.OffhandWeapon == null || IsFiller(p.OffhandWeapon);
+			if (p.OffhandWeapon != null && !IsFiller(p.OffhandWeapon)) raisedAt[i] = 0;
+			if (wantOff && offFree && p.PendingWeapon == WP_NOCHANGE && raisedAt[i] == 0)
 			{
 				let off = Weapon(p.mo.FindInventory("UBQS_SaberOff"));
 				if (off && !(p.ReadyWeapon && p.ReadyWeapon.bTwoHanded))
