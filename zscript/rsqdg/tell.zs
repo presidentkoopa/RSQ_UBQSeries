@@ -78,18 +78,31 @@ class RSQDG_Tell : EventHandler
 				glw[h] = RSQDG_Glow(Actor.Spawn("RSQDG_Glow", a.Pos));
 				if (!glw[h]) continue;
 			}
-			// The saber's breath: 0.15..0.50, once every 60 tics (cos is in
-			// degrees), at 0.55 for "could". "Have" breathes twice as fast and
-			// burns a little brighter -- but tops out at 0.32: in the rig a
-			// green barrel under 0.55 of additive green was a solid slab with
-			// its own detail gone, and at ~0.15 the stave lines show through.
-			// Colour and tempo carry the difference; brightness only helps.
-			double alph;
-			if (have[h]) alph = 0.12 + 0.20 * (0.5 - 0.5 * cos(t * 12.0));
-			else         alph = (0.15 + 0.35 * (0.5 - 0.5 * cos(t * 6.0))) * 0.55;   // the saber's exact "could"
-			glw[h].Follow(a, eye, clamp(alph * gain, 0.0, 1.0),
-				have[h] ? HAVE_COLOR : COULD_COLOR);
+			// How it looks: GlowLook (below).
+			double alph, rim; int col;
+			[alph, col, rim] = GlowLook(have[h], t);
+			glw[h].Follow(a, eye, clamp(alph * gain, 0.0, 1.0), col, rim);
 		}
+	}
+
+	// THE GLOW'S LOOK at map time t: brightness, colour, rim (the twin's size over the host's).
+	// The saber's breath: 0.15..0.50, once every 60 tics (cos is in degrees), at 0.55 for
+	// "could". "Have" breathes twice as fast and burns a little brighter -- but tops out at
+	// 0.32: in the rig a green barrel under 0.55 of additive green was a solid slab with its own
+	// detail gone, and at ~0.15 the stave lines show through. Colour and tempo carry the
+	// difference; brightness only helps.
+	// COLOUR-BLIND PLAY (rsqa_colorblind, cb.zs): the series' pair for that vision, and not
+	// colour alone -- "have" burns clearly brighter than "could" (0.22..0.42 against 0.05..0.18,
+	// no overlap) and wears a wider rim; the tempo stays twice as fast.
+	static double, int, double GlowLook(bool have, double t)
+	{
+		if (!RSQDG_CB.Mode())
+		{
+			if (have) return 0.12 + 0.20 * (0.5 - 0.5 * cos(t * 12.0)), HAVE_COLOR, 1.06;
+			return (0.15 + 0.35 * (0.5 - 0.5 * cos(t * 6.0))) * 0.55, COULD_COLOR, 1.06;   // the saber's exact "could"
+		}
+		if (have) return 0.22 + 0.20 * (0.5 - 0.5 * cos(t * 12.0)), RSQDG_CB.Pick(RSQDG_CB.CB_HAVE, HAVE_COLOR), 1.14;
+		return 0.05 + 0.13 * (0.5 - 0.5 * cos(t * 6.0)), RSQDG_CB.Pick(RSQDG_CB.CB_COULD, COULD_COLOR), 1.06;
 	}
 
 	// A voxel-drawn host takes the colour flash instead of the glow twin.
@@ -176,7 +189,7 @@ class RSQDG_Tell : EventHandler
 					}
 				}
 				if (litActor[h])
-					litActor[h].Translation = Translation.GetID("RSQDG_Held");
+					litActor[h].Translation = Translation.GetID("RSQDG_Held" .. RSQDG_CB.Suffix());
 				continue;
 			}
 
@@ -224,9 +237,9 @@ class RSQDG_Tell : EventHandler
 
 			// Locked pulses amber <-> green; considered pulses neutral <-> amber.
 			litActor[h].Translation = locked
-				? (phase ? Translation.GetID("RSQDG_Locked")
-				         : Translation.GetID("RSQDG_Considered"))
-				: (phase ? Translation.GetID("RSQDG_Considered")
+				? (phase ? Translation.GetID("RSQDG_Locked" .. RSQDG_CB.Suffix())
+				         : Translation.GetID("RSQDG_Considered" .. RSQDG_CB.Suffix()))
+				: (phase ? Translation.GetID("RSQDG_Considered" .. RSQDG_CB.Suffix())
 				         : litWas[h]);
 		}
 	}
