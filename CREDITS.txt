@@ -7,8 +7,13 @@ engine changes. The code is new, ported in part from the project owner's desktop
 written for this pack.
 
 WHAT THIS PK3 SHIPS, AND WHOSE IT IS
+  No sounds of its own. Like RS_WorldHands, the grab is heard only through the world: the
+      things you pull and throw, what they hit, and a door's own sound as you lift it.
+  From RS_WorldHands (presidentkoopa, the project owner; his desktop hand system)
+      The pull's flight path and its end-over-end tumble, the gravity, drag and flutter of
+      everything that leaves a hand, a held thing tipping with the wrist and sagging by its
+      weight, and the strain rumble: his designs and numbers, re-written here for stock QZD.
   Generated for this pack (original, procedural; nothing sampled or ripped)
-      The sounds (sounds/RSQDG*.wav: lock, launch, hum, catch, drop): tools/gen_sounds.py.
       The beam and the reach cone (models/rsqdg/rsqbeam*, rsqcone*) and the cone's placeholder
       sprites (sprites/rsqdg/RSQC*, RSQE*, RSQB*): tools/gen_cone.py.
   The aim dot's glow (sprites/rsqdg/RSQTA0.png, the same image as graphics/rsqdglo.png)

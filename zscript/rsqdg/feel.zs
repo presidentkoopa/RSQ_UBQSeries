@@ -1,8 +1,16 @@
-// WHAT THE GRAB FEELS AND SOUNDS LIKE.
+// WHAT THE GRAB FEELS LIKE.
 //
 // Every other file decides; this one only reports. It is told what happened --
 // a lock, a launch, a catch, a drop -- and turns it into a buzz in the right
-// hand and a sound in the right place. Nothing here can change what the grab
+// hand.
+//
+// NO SOUNDS OF ITS OWN (2026-10-27). The five procedural sounds this used to
+// play (tools/gen_sounds.py: a lock tick, a launch, a hum that rose through the
+// flight, a catch thump, a drop) are gone. The owner called them goofy, and his
+// RS_WorldHands -- the grab he wants this to feel like -- plays none at all: its
+// pk3 has no SNDINFO and no A_StartSound anywhere in its hand code. What you
+// hear is the world itself: a barrel's own sounds, a monster's pain when a
+// thrown thing lands on it, a door's own motor as you lift it. Nothing here can change what the grab
 // does, so nothing here can break it: switch every option on this page off and
 // the mechanic behaves identically, silently.
 //
@@ -143,9 +151,9 @@ class RSQDG_Buzz : Actor
 	}
 }
 
-// A SOUND AT A POINT, with nothing else about it. Invisible, touches nothing,
-// takes no part in the playsim, and removes itself after two seconds -- longer
-// than any sound it carries. Its sound stays where it was spawned.
+// KEPT ONLY SO AN OLD SAVEGAME LOADS. The grab's sounds were played from this
+// actor (two-second life); a save taken in that window names the class, and a
+// class missing from a save is a load failure. Nothing spawns it any more.
 class RSQDG_SoundPoint : Actor
 {
 	Default
@@ -163,7 +171,7 @@ class RSQDG_SoundPoint : Actor
 	States
 	{
 	Spawn:
-		TNT1 A 70;
+		TNT1 A 1;
 		Stop;
 	}
 }
@@ -237,12 +245,6 @@ class RSQDG_Feel : EventHandler
 	private int pendPri[2];
 	private int pendCount[2];
 	private int lastRamp[2];
-
-	// The slot the flight hum loops on, on the FLYING OBJECT. A number nothing
-	// else uses, so the object's own sounds -- a barrel's, a mod pickup's --
-	// are never cut off by the hum, and stopping the hum never cuts them.
-	const HUM_SLOT = 20819;
-	private Actor humOn[2];
 
 	static RSQDG_Feel Get()
 	{
@@ -366,47 +368,6 @@ class RSQDG_Feel : EventHandler
 		}
 	}
 
-	// ---- sound -------------------------------------------------------------
-
-	private bool SoundOn(PlayerInfo p)
-	{
-		return RSQDG_Reach.Flag("rsqdg_sound", p, true);
-	}
-
-	private double Vol(PlayerInfo p)
-	{
-		return clamp(RSQDG_Reach.Num("rsqdg_sound_vol", p, 0.8), 0.0, 1.0);
-	}
-
-	// Light things sound high and heavy things low. A clip ticks; a barrel
-	// clonks. One curve, from the same heft the rhythm uses.
-	private static double PitchFor(Actor a)
-	{
-		return 1.30 - 0.55 * RSQDG_Mass.Heft(a);
-	}
-
-	// Placed in the WORLD at a point, so a tick at your palm is heard at your
-	// palm and not from the floor under the pawn, which is where a sound on the
-	// player actor plays from.
-	//
-	// THROUGH A ONE-SHOT POINT ACTOR, not S_StartSoundAt. That native is in the
-	// 17.3 release (9afc750) but NOT in earlier 17.x builds, and a call to a
-	// function the engine lacks is a fatal compile error for the whole package.
-	// The point actor is ShieldSawQ's SSQ_Ping shape, already shipping on Quest:
-	// spawned, given the sound, gone in two seconds.
-	private void At(PlayerInfo p, Vector3 pos, Sound s, double vol, double pitch)
-	{
-		if (!SoundOn(p)) return;
-		let e = Actor.Spawn("RSQDG_SoundPoint", pos);
-		if (e) e.A_StartSound(s, CHAN_BODY, 0, Vol(p) * vol, ATTN_NORM, pitch);
-	}
-
-	private void StopHum(int hand)
-	{
-		if (humOn[hand]) humOn[hand].A_StopSound(HUM_SLOT);
-		humOn[hand] = null;
-	}
-
 	// ---- THE EVENTS ----------------------------------------------------------
 	//
 	// Each is also forwarded to RSQDG_Events, so a mod that wants to dress a
@@ -417,7 +378,6 @@ class RSQDG_Feel : EventHandler
 	{
 		if (!a || !p || !p.mo) return;
 		Pulse(hand, PRI_LOCK);
-		At(p, RSQDG_Reach.Palm(p.mo, hand), "rsqdg/lock", 0.6, PitchFor(a));
 		RSQDG_Events.Tell("pull.lock", hand, a);
 	}
 
@@ -432,38 +392,17 @@ class RSQDG_Feel : EventHandler
 		Pulse(hand, PRI_LAUNCH);
 		lastRamp[hand] = level.maptime;
 
-		if (SoundOn(p))
-		{
-			double pitch = PitchFor(a);
-			// The lift-off, FROM THE OBJECT: you hear it leave the floor over
-			// there, which is what tells you which thing answered.
-			a.A_StartSound("rsqdg/launch", CHAN_AUTO, CHANF_OVERLAP, Vol(p) * 0.8, ATTN_NORM, pitch);
-
-			// THE HUM, LOOPED ON THE OBJECT for the whole flight. Being on the
-			// object is the point -- it is positional, so you can hear where it
-			// is and that it is closing. It rises in pitch as it nears (see
-			// WorldTick). A sound looping on an actor is stopped by the engine
-			// if the actor is destroyed, so a pull that is consumed mid-air
-			// cannot leave a hum playing at a point in space.
-			StopHum(hand);
-			a.A_StartSound("rsqdg/hum", HUM_SLOT, CHANF_LOOPING, Vol(p) * 0.35, ATTN_NORM, pitch * 0.85);
-			humOn[hand] = a;
-		}
 		RSQDG_Events.Tell("pull.start", hand, a, true);
 	}
 
 	// `a` may be null when catching it used it up and the item is gone.
 	void OnCatch(int hand, Actor a, PlayerInfo p, bool used, double heft)
 	{
-		StopHum(hand);
 		if (!p || !p.mo) return;
 
 		// TWO TICKS FOR A HEAVY THING. Rhythm is the only dial there is, and
 		// a barrel landing in your palm should not feel like a clip landing.
 		Pulse(hand, PRI_CATCH, heft >= 0.55 ? 2 : 1);
-
-		Vector3 palm = RSQDG_Reach.Palm(p.mo, hand);
-		At(p, palm, "rsqdg/catch", 0.55 + 0.45 * heft, 1.25 - 0.5 * heft);
 
 		let las = RSQDG_Laser.Get();
 		if (las) las.Burst(hand);
@@ -480,9 +419,6 @@ class RSQDG_Feel : EventHandler
 	// off. `what` is the event name, so a listener can tell them apart.
 	void OnDrop(int hand, Actor a, PlayerInfo p, String what)
 	{
-		StopHum(hand);
-		if (a && p && what != "pull.aborted")
-			At(p, (a.Pos.x, a.Pos.y, a.Pos.z + a.Height * 0.5), "rsqdg/drop", 0.7, PitchFor(a));
 		RSQDG_Events.Tell(what, hand, a, true);
 	}
 
@@ -492,13 +428,10 @@ class RSQDG_Feel : EventHandler
 		RSQDG_Events.Tell(thrown ? "hold.throw" : "hold.drop", hand, a);
 	}
 
-	// A thrown thing landed. Heard where it landed, louder the harder; felt in
-	// no hand, because it has left the hand.
+	// A thrown thing landed. Felt in no hand, because it has left the hand, and
+	// heard only as whatever it hit (WorldHands plays nothing of its own here).
 	void OnImpact(Actor a, PlayerInfo p, double mps, double heft)
 	{
-		if (!a || !p) return;
-		double vol = clamp(0.25 + mps / 14.0, 0.25, 1.0);
-		At(p, (a.Pos.x, a.Pos.y, a.Pos.z + a.Height * 0.5), "rsqdg/drop", vol, PitchFor(a) * 0.9);
 	}
 
 	// ---- the continuous level, per hand ------------------------------------
@@ -529,16 +462,24 @@ class RSQDG_Feel : EventHandler
 		let hold = RSQDG_Hold.Get();
 		if (hold && hold.HeldBy(h) && RSQDG_Reach.Flag("rsqdg_rumble_carry", p, true))
 		{
-			// Metres the object is short of where the hand wants it. The
-			// spring's own lag on a quick move is a few centimetres; a pin is
-			// tens.
-			double s = hold.Strain(h);
-			return clamp((s - 0.08) * 1.5, 0.0, 0.6);
+			// WORLDHANDS' STRAIN HAPTIC (rs_held.zs ShouldBreak): the gap between
+			// where the hand wants the object and where it is, as a fraction of
+			// the break distance -- nothing under 15%, full strength just as the
+			// hold gives -- times 0.6, times a LOGARITHMIC bulk from the mass,
+			// clamp(0.5 + 0.9 log10(kg + 1), 0.5, 2): a controller has one motor,
+			// and what reads is the ORDER of weights (clip, medikit, barrel).
+			double brk = RSQDG_Reach.Num("rsqdg_hold_break", p, 1.5);
+			if (brk <= 0) return 0;
+			double strain = hold.Strain(h) / brk;
+			if (strain <= 0.15) return 0;
+			double kg = RSQDG_Mass.Kg(hold.HeldBy(h));
+			double bulk = clamp(0.5 + log10(max(kg, 0.0) + 1.0) * 0.9, 0.5, 2.0);
+			return clamp(strain * 0.6 * bulk, 0.0, 1.0);
 		}
 		return 0;
 	}
 
-	// ---- per tic: the rumble, the queue, the approach ramp, the rising hum --
+	// ---- per tic: the rumble, the queue, the approach ramp --
 	override void WorldTick()
 	{
 		let p = players[consoleplayer];
@@ -572,14 +513,7 @@ class RSQDG_Feel : EventHandler
 			}
 
 			Actor a = fl ? fl.FlyingActor(h) : null;
-			if (!a)
-			{
-				// Belt and braces: flight reports every ending, but a hum left
-				// on something that stopped flying for a reason nobody reported
-				// would play for the rest of the level.
-				if (humOn[h]) StopHum(h);
-				continue;
-			}
+			if (!a) continue;
 
 			double prog = fl.Progress(h);
 
@@ -596,16 +530,6 @@ class RSQDG_Feel : EventHandler
 					lastRamp[h] = level.maptime;
 				}
 			}
-
-			// THE HUM RISES as it closes -- most of an octave across the
-			// flight -- and swells. Pitch is the cue the ear reads fastest,
-			// and a rising one means "arriving" in every language.
-			if (humOn[h] == a && SoundOn(p))
-			{
-				double base = PitchFor(a) * 0.85;
-				a.A_SoundPitch(HUM_SLOT, base * (1.0 + 0.7 * prog));
-				a.A_SoundVolume(HUM_SLOT, Vol(p) * (0.30 + 0.45 * prog));
-			}
 		}
 	}
 
@@ -613,7 +537,6 @@ class RSQDG_Feel : EventHandler
 	{
 		for (int h = 0; h < 2; h++)
 		{
-			humOn[h] = null;
 			busyUntil[h] = 0; pendPri[h] = 0; pendCount[h] = 0; lastRamp[h] = 0;
 			lastAmp[h] = 0;
 		}
@@ -629,7 +552,6 @@ class RSQDG_Feel : EventHandler
 		// Nothing owed carries across a map.
 		for (int h = 0; h < 2; h++)
 		{
-			humOn[h] = null;
 			busyUntil[h] = 0; pendPri[h] = 0; pendCount[h] = 0; lastRamp[h] = 0;
 			lastAmp[h] = 0;
 		}

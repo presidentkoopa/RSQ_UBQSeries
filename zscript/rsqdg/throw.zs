@@ -99,6 +99,93 @@ class RSQDG_Throw : EventHandler
 	private int     sAge[MAX_SETTLE];
 	private int     sMin[MAX_SETTLE];
 
+	// ---- the air: what WorldHands' RS_Flight does to everything that leaves a hand --
+	//
+	// EVERY RELEASE, NOT EVERY THROW (rs_flight.zs, owner + designer 2026-09-28): a
+	// medikit set down and the same medikit tossed must fall at one rate. Three
+	// things, all WorldHands' numbers:
+	//
+	//   GRAVITY ADDED BACK, NOT TURNED DOWN. Doom's gravity is ~4 g for a thrown
+	//   thing; rsqdg_air_gravity 0.27 is real gravity. Each tic the part not wanted
+	//   is ADDED BACK -- Vel.z += GetGravity() * (1 - 0.27) -- under the engine's
+	//   own conditions (AActor::FallAndSink: above floorz + 2, not NOGRAVITY, not in
+	//   water). Nothing on the actor is changed, so losing this list (a save, a
+	//   level change) costs only the correction: the thing falls at Doom's rate.
+	//   This is the long, lazy arc of a WorldHands throw.
+	//   DRAG from MASSDEF, DIVISIVE: Vel /= (1 + drag * speed) never changes sign.
+	//   FLUTTER: a MASSDEF `flutter` thing wobbles sideways by up to 0.35 u/t a
+	//   tic while it falls, from a named RNG.
+	// Until it is resting (on its floor, under 1 u/t, after 4 tics) or 1400 tics.
+	//
+	// WorldHands ran this on WorldStep (its fork's slow-motion hook); stock has no
+	// WorldStep, so it runs on WorldTick, as the rest of this pack does.
+	const MAX_AIR = 16;
+	private Actor airA[MAX_AIR];
+	private int   airTics[MAX_AIR];
+
+	void Air(Actor a)
+	{
+		if (!a) return;
+		int slot = -1, oldest = 0;
+		for (int i = 0; i < MAX_AIR; i++)
+		{
+			if (airA[i] == a) { slot = i; break; }
+			if (!airA[i] && slot < 0) slot = i;
+			if (airTics[i] > airTics[oldest]) oldest = i;
+		}
+		if (slot < 0) slot = oldest;
+		airA[slot] = a;
+		airTics[slot] = 0;
+	}
+
+	bool InAir(Actor a) const
+	{
+		if (!a) return false;
+		for (int i = 0; i < MAX_AIR; i++) if (airA[i] == a) return true;
+		return false;
+	}
+
+	// The gravity a tracked thing is really falling at, as a fraction of Doom's.
+	static double GravityScale(Actor a)
+	{
+		let th = Get();
+		if (!th || !th.InAir(a)) return 1.0;
+		return clamp(RSQDG_Reach.Num("rsqdg_air_gravity", players[consoleplayer], 0.27), 0.0, 1.0);
+	}
+
+	private void TickAir()
+	{
+		let p = players[consoleplayer];
+		double gscale  = clamp(RSQDG_Reach.Num("rsqdg_air_gravity", p, 0.27), 0.0, 1.0);
+		double flutter = RSQDG_Reach.Num("rsqdg_air_flutter", p, 0.35);
+		int maxTics    = int(RSQDG_Reach.Num("rsqdg_air_maxtics", p, 1400));
+		let hold = RSQDG_Hold.Get();
+		let fl = RSQDG_Flight.Get();
+		for (int i = 0; i < MAX_AIR; i++)
+		{
+			Actor a = airA[i];
+			if (!a) continue;
+			// Back in a hand, or pulled again: not falling any more.
+			if (a.bDESTROYED || (hold && hold.IsHeld(a)) || (fl && fl.IsFlying(a))) { airA[i] = null; continue; }
+			airTics[i]++;
+			if (gscale < 1.0 && a.Pos.Z > a.floorz + 2 && !a.bNOGRAVITY && a.waterlevel == 0)
+				a.Vel.Z += a.GetGravity() * (1.0 - gscale);
+			double drag = RSQDG_Mass.Drag(a);
+			if (drag > 0)
+			{
+				double sp = a.Vel.Length();
+				if (sp > 0) a.Vel = a.Vel / (1.0 + drag * sp);
+			}
+			if ((RSQDG_Mass.Flags(a) & RSQDG_Mass.FLIGHT_FLUTTER) && flutter > 0 && a.Pos.Z > a.floorz + 2)
+			{
+				a.Vel.X += FRandom[RSQDGAir](-flutter, flutter);
+				a.Vel.Y += FRandom[RSQDGAir](-flutter, flutter);
+			}
+			bool resting = (a.Pos.Z <= a.floorz + 1.0) && (a.Vel.Length() < 1.0);
+			if ((resting && airTics[i] > 4) || airTics[i] > maxTics) airA[i] = null;
+		}
+	}
+
 	// Take over the rest of a release. The object stays pass-through, uncollectable
 	// and at its carried size until it is clear of everything it would collide
 	// with -- and for at least `minTics`.
@@ -340,7 +427,9 @@ class RSQDG_Throw : EventHandler
 	static double ImpactMps(Actor a, Vector3 v, Vector2 body = (0, 0))
 	{
 		v = (v.x - body.x, v.y - body.y, v.z);
-		double gDoom = a.GetGravity() * TICRATE * TICRATE
+		// The gravity it is REALLY falling at: a released thing is in the air list
+		// at a fraction of Doom's (TickAir), and its landing speed is already real.
+		double gDoom = a.GetGravity() * GravityScale(a) * TICRATE * TICRATE
 			/ (RSQDG_Reach.UNITS_PER_METRE_XY / RSQDG_Reach.PIXELSTRETCH);
 		double f = (gDoom > 9.81) ? sqrt(9.81 / gDoom) : 1.0;
 		double h = v.xy.Length() / RSQDG_Reach.UNITS_PER_METRE_XY;
@@ -455,6 +544,8 @@ class RSQDG_Throw : EventHandler
 			TrySettle(k);
 		}
 
+		TickAir();
+
 		for (int i = 0; i < MAX_WATCH; i++)
 		{
 			Actor a = wa[i];
@@ -535,10 +626,12 @@ class RSQDG_Throw : EventHandler
 		if (e.IsSaveGame) return;
 		for (int i = 0; i < MAX_WATCH; i++) Forget(i);
 		for (int k = 0; k < MAX_LOG; k++) { lgA[k] = null; lgBy[k] = null; }
+		for (int i = 0; i < MAX_AIR; i++) airA[i] = null;
 	}
 
 	override void WorldUnloaded(WorldEvent e)
 	{
+		for (int i = 0; i < MAX_AIR; i++) airA[i] = null;
 		for (int k = 0; k < MAX_SETTLE; k++) Finish(k, true);
 		for (int i = 0; i < MAX_WATCH; i++) Forget(i);
 	}

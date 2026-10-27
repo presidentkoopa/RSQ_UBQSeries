@@ -133,7 +133,7 @@ user float rsqdg_pull_kg        = 10.0;   // KILOGRAMS the pull moves almost
                                           // and heavy things come easier.
                                           // Masses come from MASSDEF (mass.zs)
 user bool  rsqdg_flight_gravity = false;  // let a pull sag. A legitimate feel
-user int   rsqdg_flight_mode    = 0;     // 0 steer to the palm (impulse + bounded steering), 1 the arc: a lob re-solved every tic (D9 A/B)
+user int   rsqdg_flight_mode    = 2;     // 0 steer to the palm (impulse + bounded steering), 1 a lob re-solved every tic (D9 A/B), 2 the WorldHands path (default, 10-27)
 user float rsqdg_arc_apex       = 1.0;   // arc mode: how high the lob peaks, metres (lower ceilings win)
 user bool  rsqdg_flight_duck    = true;  // dip under a lower ceiling ahead (doorways) instead of meeting the lintel
                                           // and the cheapest thing here to A/B
@@ -238,8 +238,6 @@ user bool  rsqdg_rumble       = true;
 user float rsqdg_rumble_gain  = 1.0;
 user float rsqdg_rumble_lock  = 0.15;  // the steady level while something is locked
 user bool  rsqdg_rumble_carry = true;  // rumble when a carried thing is held back
-user bool  rsqdg_sound       = true;
-user float rsqdg_sound_vol   = 0.8;
 user bool  rsqdg_catch_flash = true;   // a green bloom at the palm on a catch
 
 // ---- diagnostics ---------------------------------------------------------
@@ -256,3 +254,26 @@ user bool  rsqdg_door_use    = true;    // Use takes hold
 user bool  rsqdg_door_palm   = true;    // a palm turned out against the door takes hold
 user float rsqdg_door_commit = 0.40;    // let go past this much open and the door finishes opening
 user float rsqdg_door_gain   = 2.5;     // door travel per unit of hand travel
+
+// ---- FROM RS_WORLDHANDS (2026-10-27) ---------------------------------------
+// SERVER, these: they decide where a pulled or thrown thing goes, and a `user`
+// cvar's name and value share a 256-byte line. Every default is WorldHands' own
+// (its CVARINFO and code), not a new number.
+//
+// The pull's path, rsqdg_flight_mode 2 (rs_distance.zs RS_Pull):
+server float rsqdg_path_speed = 15.0;   // metres/sec; the time of flight is distance / this
+server float rsqdg_path_tmin  = 6.0;    // tics, the shortest flight
+server float rsqdg_path_tmax  = 70.0;   // tics, the longest
+server float rsqdg_path_accel = 1.6;    // e = t^this: 1 is constant speed, above 1 starts slow (it is PULLED)
+server float rsqdg_path_arc   = 0.15;   // arc height as a fraction of the launch distance, capped by the route's ceiling
+// End-over-end turns across the whole pull, every flight mode. WorldHands' shipped
+// default 0.5 ("beautiful" in the headset); whole numbers land the way they left,
+// a half turn snaps 180 degrees on the catch (invisible on a barrel). 0 off.
+server float rsqdg_tumble     = 0.5;
+// Everything that leaves a hand, thrown or set down (rs_flight.zs RS_Flight):
+server float rsqdg_air_gravity = 0.27;  // fraction of Doom's gravity it falls at; 0.27 is real gravity, 1 is Doom's
+server float rsqdg_air_flutter = 0.35;  // units/tic of sideways wobble a MASSDEF `flutter` thing gets
+server int   rsqdg_air_maxtics = 1400;  // world tics before the air lets go of something that never lands
+// The carry (rs_held.zs):
+server bool  rsqdg_hold_turn  = true;   // a held thing tips with your wrist (a voxel turns all three ways)
+server float rsqdg_hold_sag   = 1.0;    // heavy things hang lower and dip when swung. 0 off

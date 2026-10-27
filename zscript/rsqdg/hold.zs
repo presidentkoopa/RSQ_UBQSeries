@@ -60,6 +60,29 @@ class RSQDG_Hold : EventHandler
 	private double savedRadius[2];
 	private double savedHeight[2];
 
+	// ---- A HELD THING TURNS WITH THE WRIST (rs_held.zs, rs_hold_rotate) -------
+	//
+	// WorldHands' carry: a held sprite gets +ROLLSPRITE/+ROLLCENTER/
+	// +INTERPOLATEANGLES and its roll follows the controller's (NEGATED -- "turning
+	// the wrist one way rolled the barrel the other", headset 2026-08-28); a held
+	// VOXEL also takes the hand's pitch (negated: HandPitch is up-positive, Actor
+	// pitch down-positive) and yaw, because a voxel has a front and a top and all
+	// three angles show. Stock QZD draws a voxel's pitch and roll only with
+	// UseActorPitch/UseActorRoll, which SetModelFlag gives this one actor; its
+	// middle is kept on the hand with WorldOffset (RSQDG_Turn.Fix, flight.zs).
+	//
+	// ONE CHANGE, AND THE GESTURE FORCES IT. WorldHands holds on a squeeze, so the
+	// wrist is free; here the PALM POSE is the hold, and the hand is always rolled
+	// a quarter turn while carrying. Taken literally, every held thing would lie on
+	// its side. So the roll is the wrist's turn SINCE THE CATCH: the thing arrives
+	// upright and tips as you tip your wrist (within the palm tolerance, +-30 deg).
+	//
+	// Every borrowed angle and flag is saved first and put back on every exit.
+	private bool    turnOn[2];
+	private bool    tSprite[2], tCentre[2], tInterp[2], tVoxel[2];
+	private double  tRoll[2], tPitch[2], tAngle[2], tRef[2];
+	private Vector3 tOfs[2];
+
 	// A FREEZE, rather than a target recomputed when the pose lies.
 	//
 	// The VR hand fields do not freeze when a menu opens -- they COLLAPSE TO
@@ -174,6 +197,8 @@ class RSQDG_Hold : EventHandler
 		havePalm[hand] = false;
 		strainM[hand] = 0;
 		strainTics[hand] = 0;
+		turnOn[hand] = false;
+		if (p.mo) tRef[hand] = RSQDG_Reach.Roll(p.mo, hand);
 
 		if (RSQDG_Reach.Flag("rsqdg_debug", p, false))
 			Console.Printf("[RSQDG] hand %d CAUGHT %s (%.1f kg)", hand, a.GetClassName(), RSQDG_Mass.Kg(a));
@@ -199,6 +224,7 @@ class RSQDG_Hold : EventHandler
 	// the remaining backup: the settler, from this line on.
 	private void Restore(int hand, Actor a, int minTics = 0)
 	{
+		Unturn(hand, a);
 		a.bNOGRAVITY = savedNoGrav[hand];
 		double r = Raised(hand, a) ? a.Radius : savedRadius[hand];
 		double h = Raised(hand, a) ? a.Height : savedHeight[hand];
@@ -213,9 +239,60 @@ class RSQDG_Hold : EventHandler
 		if (a.Radius != r || a.Height != h) a.A_SetSize(r, h);
 	}
 
+	// ---- the turn ---------------------------------------------------------------
+	private void Turn(int h, Actor a, PlayerPawn pmo, PlayerInfo p)
+	{
+		if (!RSQDG_Reach.Flag("rsqdg_hold_turn", p, true)) { Unturn(h, a); return; }
+		if (!turnOn[h])
+		{
+			turnOn[h]  = true;
+			tSprite[h] = a.bROLLSPRITE;
+			tCentre[h] = a.bROLLCENTER;
+			tInterp[h] = a.bINTERPOLATEANGLES;
+			tRoll[h]   = a.Roll;
+			tPitch[h]  = a.Pitch;
+			tAngle[h]  = a.Angle;
+			tOfs[h]    = a.WorldOffset;
+			tVoxel[h]  = false;
+		}
+		a.bROLLSPRITE = true;
+		a.bROLLCENTER = true;
+		a.bINTERPOLATEANGLES = true;
+		double before = a.Roll;
+		a.Roll = tRoll[h] - RSQDG_Reach.NormDeg(RSQDG_Reach.Roll(pmo, h) - tRef[h]);
+		if (RSQDG_Voxels.Drawn(a))
+		{
+			if (!tVoxel[h])
+			{
+				a.SetModelFlag(MDL_USEACTORPITCH | MDL_USEACTORROLL);
+				tVoxel[h] = true;
+			}
+			a.Pitch = -RSQDG_Reach.Pitch(pmo, h);
+			a.Angle = RSQDG_Reach.Yaw(pmo, h);
+			a.WorldOffset = tOfs[h] + RSQDG_Turn.Fix(a, savedHeight[h] * 0.5, true, (before + a.Roll) * 0.5);
+		}
+	}
+
+	private void Unturn(int h, Actor a)
+	{
+		if (!turnOn[h] || !a) { turnOn[h] = false; return; }
+		turnOn[h] = false;
+		a.bROLLSPRITE = tSprite[h];
+		a.bROLLCENTER = tCentre[h];
+		a.bINTERPOLATEANGLES = tInterp[h];
+		a.Roll = tRoll[h];
+		a.Pitch = tPitch[h];
+		a.Angle = tAngle[h];
+		a.WorldOffset = tOfs[h];
+		if (tVoxel[h]) a.ResetModelFlags();
+		tVoxel[h] = false;
+	}
+
 	private void Forget(int hand)
 	{
 		held[hand] = null;
+		turnOn[hand] = false;
+		sag[hand] = 0;
 		frozen[hand] = false;
 		havePalm[hand] = false;
 		strainM[hand] = 0;
@@ -269,6 +346,11 @@ class RSQDG_Hold : EventHandler
 		// your own throw picks it straight back up on the same tic.
 		Restore(hand, a, thrown ? 10 : 0);
 		a.Vel = v;
+
+		// INTO THE AIR, EVERY RELEASE: thrown or set down, it falls at the one
+		// rate WorldHands gives everything that leaves a hand (throw.zs Air).
+		let air = RSQDG_Throw.Get();
+		if (air) air.Air(a);
 
 		if (RSQDG_Reach.Flag("rsqdg_debug", p, false))
 			Console.Printf("[RSQDG] hand %d released %s at %.1f m/s (%s; arm %.1f, body %.1f)",
@@ -331,7 +413,24 @@ class RSQDG_Hold : EventHandler
 		               dir.y * m * RSQDG_Reach.UNITS_PER_METRE_XY,
 		               dir.z * m * RSQDG_Reach.UNITS_PER_METRE_XY / RSQDG_Reach.PIXELSTRETCH);
 		Vector3 c = palm + off;
-		return (c.x, c.y, c.z - a.Height * 0.5);
+		return (c.x, c.y, c.z - a.Height * 0.5 - sag[h]);
+	}
+
+	// WHAT HEAVY LOOKS LIKE (rs_held.zs HoldSag): a heavy thing hangs lower, and
+	// dips further while you swing it, and settles when you stop. Units below the
+	// hand: heavy x rsqdg_hold_sag x (3 + swing x 4), heavy = log10(kg + 1) / 1.8
+	// (the strain haptic's logarithmic order; a barrel ~1, a clip ~0.07), swing =
+	// the arm's speed / 6 units a tic. WorldHands lowered only the DRAWING, in the
+	// hand model's frame (Z over pixelstretch); here it lowers where the spring
+	// carries the thing, by the same amount.
+	private double sag[2];
+	private void UpdateSag(int h, Actor a, Vector3 armVel, PlayerInfo p)
+	{
+		double amount = RSQDG_Reach.Num("rsqdg_hold_sag", p, 1.0);
+		if (amount <= 0) { sag[h] = 0; return; }
+		double heavy = clamp(log10(max(RSQDG_Mass.Kg(a), 0.0) + 1.0) / 1.8, 0.0, 1.0);
+		double swing = clamp(armVel.Length() / 6.0, 0.0, 1.0);
+		sag[h] = heavy * amount * (3.0 + swing * 4.0) / RSQDG_Reach.PIXELSTRETCH;
 	}
 
 	override void WorldTick()
@@ -395,6 +494,8 @@ class RSQDG_Hold : EventHandler
 			lastBody[h] = pmo.Pos;
 			havePalm[h] = true;
 
+			UpdateSag(h, a, armVel, p);
+			Turn(h, a, pmo, p);
 			Vector3 want = Target(pmo, p, h, a);
 			Vector3 err = want - a.Pos;
 

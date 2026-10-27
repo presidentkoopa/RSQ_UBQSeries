@@ -40,6 +40,43 @@ class RSQDG_Flight : EventHandler
 	private bool   flyArc[2];     // this flight is the ARC (rsqdg_flight_mode 1), fixed at launch
 	private int    flyEta[2];     // arc: tics from launch to the palm, fixed at launch
 
+	// ---- THE WORLDHANDS PATH (rsqdg_flight_mode 2, the default) ------------
+	//
+	// The owner's RS_WorldHands pull (rs_distance.zs RS_Pull), ported number for
+	// number. A WRITTEN path, not a steered one: each tic the object is placed on
+	//     start + (palm - start) * e,   e = t ^ 1.6        (it is PULLED: slow, then fast)
+	// and lifted by the parabola 4 h e (1 - e), keyed on e so the hump sits in the
+	// middle of the PATH whatever the speed curve does. h = 0.15 x the launch
+	// distance, capped ONCE at launch by the lowest ceiling over the whole route
+	// (MeasureArc) so a low doorway gives a flatter pull that still arrives. Time
+	// of flight = distance / 15 m/s, clamped 6..70 tics, so near and far pulls
+	// travel at the same speed. Moved by TryMove (Z first), lifted 6/12/18 units
+	// if the first try is boxed in, and a pull that meets a wall drops there.
+	// Mass does not change it: in WorldHands it never did.
+	private bool    flyPath[2];   // this flight is the WorldHands path
+	private int     flyTotal[2];  // its tics, fixed at launch
+	private Vector3 flyFrom[2];   // the middle of the object at launch
+	private double  flyArcH[2];   // the arc height this pull is allowed, fixed at launch
+
+	// ---- THE TUMBLE (rs_distance.zs SaveTumble/ArmTumble/RestoreTumble) ----
+	//
+	// End over end, rsqdg_tumble turns across the WHOLE flight (WorldHands' shipped
+	// default 0.5, "beautiful" in the headset), linear in time so it turns at a
+	// constant rate. A sprite needs three render flags for it: +ROLLSPRITE (a
+	// billboard ignores roll without it), +ROLLCENTER (about its middle, not its
+	// feet) and +INTERPOLATEANGLES (the renderer smooths the roll between tics).
+	// A VOXEL ignores roll unless its model flags say UseActorRoll; stock QZD lets
+	// one actor carry that flag (SetModelFlag, models.cpp getFlags), so a voxel
+	// tumbles too. A voxel turns about its PIVOT, which every BD_VoxelPack voxel
+	// puts at its feet (KVX pivot z = height, measured), so its draw position is
+	// moved by WorldOffset to keep its middle on the path (RSQDG_Turn.Fix).
+	// Every flag, the roll and the offset are saved first and put back on every
+	// exit: a sprite with +ROLLSPRITE is not drawn the same even at roll 0.
+	private double tumTurns[2];
+	private bool   tumSprite[2], tumCentre[2], tumInterp[2], tumVoxel[2];
+	private double tumRoll[2];
+	private Vector3 tumOfs[2];
+
 	// ---- THE BORROWED STATE, AND EXACTLY ONE OWNER OF THE BACKUP ------------
 	//
 	// Stated three times in the desktop tree because it bit three times, so it
@@ -174,10 +211,14 @@ class RSQDG_Flight : EventHandler
 		// spend its whole authority climbing. Switchable, because "let it sag"
 		// is a legitimate feel and this is the cheapest thing here to A/B.
 		// THE ARC (rsqdg_flight_mode 1, G3) needs gravity: it IS the curve.
-		bool arc = int(RSQDG_Reach.Num("rsqdg_flight_mode", p, 0)) == 1;
+		int mode = int(RSQDG_Reach.Num("rsqdg_flight_mode", p, 2));
+		bool arc = mode == 1;
+		bool path = mode == 2;
 		flyArc[hand] = arc;
+		flyPath[hand] = path;
 		if (arc) a.bNOGRAVITY = false;
-		else if (!RSQDG_Reach.Flag("rsqdg_flight_gravity", p, false))
+		// THE WORLDHANDS PATH IS AUTHORED: gravity fighting it would drag it down.
+		else if (path || !RSQDG_Reach.Flag("rsqdg_flight_gravity", p, false))
 			a.bNOGRAVITY = true;
 
 		// SHRUNK TO SOMETHING THE SIZE IT LOOKS.
@@ -211,6 +252,7 @@ class RSQDG_Flight : EventHandler
 		// heavy thing hangs longer in the air. Never under half a second.
 		flyEta[hand] = ArcTime(a, palm, cruise, p);
 		if (arc) a.Vel = ArcVel(a, palm, flyEta[hand]);
+		if (path) StartPath(hand, a, palm, p);
 
 		// LIFT IT OFF THE FLOOR. Found in the rig, 2026-10-26: a barrel pulled
 		// along the ground never left it. Doom applies ground friction -- about
@@ -223,7 +265,7 @@ class RSQDG_Flight : EventHandler
 		// So the pull starts with a hop, the way a thing you yank toward you
 		// leaves the floor -- unless the palm is BELOW it (pulling something
 		// down off a ledge), where it should simply drop toward you.
-		Lift(a, d.z >= 0);
+		if (!path) Lift(a, d.z >= 0);
 
 		flyRefused[hand] = false;
 		flyStart[hand] = RoomDist(d);
@@ -237,6 +279,9 @@ class RSQDG_Flight : EventHandler
 		double travel = (cruise > 0.01) ? (len / cruise) : 0;
 		flyLimit[hand] = max(int(RSQDG_Reach.Num("rsqdg_flight_timeout", p, 140.0)),
 			int(travel * 2.0) + TICRATE);
+		if (path) flyLimit[hand] = max(flyLimit[hand], flyTotal[hand] + TICRATE);
+
+		SaveTumble(hand, a, p);
 
 		if (RSQDG_Reach.Flag("rsqdg_debug", p, false))
 			Console.Printf("[RSQDG] hand %d LAUNCHED %s  dist=%.0f  %.2fkg%s  share=%.2f  cruise=%.1fm/s  limit=%d  r=%.0f->%.0f",
@@ -305,6 +350,10 @@ class RSQDG_Flight : EventHandler
 		a.bTHRUACTORS = savedThruActors[hand];
 		a.bSPECIAL    = savedSpecial[hand];
 		a.A_SetSize(savedRadius[hand], savedHeight[hand]);
+		// The tumble too, BEFORE the handover: whoever takes it next saves what it
+		// finds, and a caught barrel must not sit in the hand cocked at whatever
+		// angle it arrived at.
+		RestoreTumble(hand, a);
 
 		// CONSUMED ON THE WAY IN, when it is something you simply collect.
 		//
@@ -362,11 +411,14 @@ class RSQDG_Flight : EventHandler
 		// a hand that could not take it. Flight's own flags go back ON -- and
 		// that includes THRUACTORS, or the rest of the approach runs into the
 		// player and stops dead.
-		a.bNOGRAVITY  = flyArc[hand] ? false : !RSQDG_Reach.Flag("rsqdg_flight_gravity", p, false);   // the arc keeps its gravity
+		a.bNOGRAVITY  = flyArc[hand] ? false : (flyPath[hand] || !RSQDG_Reach.Flag("rsqdg_flight_gravity", p, false));   // the arc keeps its gravity
 		a.bTHRUACTORS = true;
 		a.bSPECIAL    = false;
 		double thin = RSQDG_Reach.Num("rsqdg_flight_radius", p, 2.0);
 		if (a.Radius > thin) a.A_SetSize(thin, a.Height);
+		// Still in the air, so still tumbling -- the flags go back on WITHOUT
+		// re-saving (the saved ones are the truth; these are the flight's).
+		ArmTumble(hand, a);
 
 		if (RSQDG_Reach.Flag("rsqdg_trace", p, false))
 			Console.Printf("[RSQDG] hand %d could not take %s -- still flying",
@@ -396,6 +448,7 @@ class RSQDG_Flight : EventHandler
 			// writing the corpse's over it would leave a quarter-height imp.
 			if (!(a.bISMONSTER && a.Health > 0))
 				a.A_SetSize(savedRadius[hand], savedHeight[hand]);
+			RestoreTumble(hand, a);
 		}
 		flyActor[hand] = null;
 		flyTic[hand]   = 0;
@@ -477,6 +530,7 @@ class RSQDG_Flight : EventHandler
 				a.bNOGRAVITY  = savedNoGrav[h];
 				a.bTHRUACTORS = savedThruActors[h];
 				a.A_SetSize(savedRadius[h], savedHeight[h]);
+				RestoreTumble(h, a);
 				flyActor[h] = null;
 				flyTic[h] = 0;
 				flyHold[h] = 0;
@@ -516,6 +570,19 @@ class RSQDG_Flight : EventHandler
 			// it was when you pulled. Over a third of a second your hand has
 			// moved, and an object flying to a stale point arrives beside it.
 			Vector3 palm = RSQDG_Reach.Palm(pmo, h);
+
+			// THE WORLDHANDS PATH places the object itself, then the arrival
+			// below works on where it got to.
+			if (flyPath[h] && !StepPath(h, a, palm, p))
+			{
+				if (RSQDG_Reach.Flag("rsqdg_trace", p, false))
+					Console.Printf("[RSQDG] hand %d lost %s -- blocked on tic %d/%d at (%.0f %.0f %.0f)",
+						h, a.GetClassName(), flyTic[h], flyTotal[h], a.Pos.x, a.Pos.y, a.Pos.z);
+				Abort(h, "pull.blocked");
+				continue;
+			}
+			StepTumble(h, a);
+
 			Vector3 toPalm = palm - MidOf(a);
 			double dist = toPalm.Length();
 			flyDist[h] = RoomDist(toPalm);
@@ -539,13 +606,24 @@ class RSQDG_Flight : EventHandler
 			// THE ROOM DISTANCE, the same measure CatchableBy() and Near() use,
 			// so "arrived" here and "catchable" there can never disagree.
 			double catchR = RSQDG_Reach.Num("rsqdg_catch_radius", p, 24.0);
-			if (flyDist[h] <= catchR)
+			bool pathDone = flyPath[h] && flyTic[h] >= flyTotal[h];
+			if (flyPath[h] && !pathDone && flyDist[h] <= catchR)
+			{
+				// On its way in and already within reach of the palm: an open
+				// hand takes it now. The path keeps placing it otherwise.
+				let g0 = RSQDG_Grab.Get();
+				if (g0 && g0.Held(h) && Catch(hand: h, pmo: pmo, p: p)) continue;
+			}
+			if (flyPath[h] ? pathDone : (flyDist[h] <= catchR))
 			{
 				// Park ON the palm and keep tracking it, so whatever resolves
 				// the catch gets several real looks at the real arrival
 				// position, including one after the hand's own pose has settled.
+				// (The WorldHands path is already on the palm: t is clamped at 1,
+				// so it re-solves onto the live palm every tic of the hold, as
+				// WorldHands' CATCH_HOLD_TICS does.)
 				a.Vel = (0, 0, 0);
-				a.SetOrigin((palm.x, palm.y, palm.z - a.Height * 0.5), true);
+				if (!flyPath[h]) a.SetOrigin((palm.x, palm.y, palm.z - a.Height * 0.5), true);
 
 				// AN OPEN HAND CATCHES IT. With the gesture as the trigger
 				// there is no button to press on arrival, so the pose does it:
@@ -601,6 +679,8 @@ class RSQDG_Flight : EventHandler
 			// land on the palm in the time remaining is solved again under gravity
 			// and becomes the velocity -- a lob that follows your hand, and the one
 			// path a kinematic arc could route-plan. Mass is in the time of flight.
+			if (flyPath[h]) continue;   // placed above, not steered
+
 			if (flyArc[h])
 			{
 				int left = max(2, flyEta[h] - flyTic[h]);
@@ -631,6 +711,148 @@ class RSQDG_Flight : EventHandler
 			Lift(a, toPalm.z > a.Height * 0.25);
 			Duck(a, p);
 		}
+	}
+
+	// ---- the WorldHands path ------------------------------------------------
+
+	// At launch: the time of flight from the distance, and the arc this route
+	// allows. All of it from rs_distance.zs RS_Pull.Start.
+	private void StartPath(int hand, Actor a, Vector3 palm, PlayerInfo p)
+	{
+		Vector3 mid0 = MidOf(a);
+		double dist = (mid0 - palm).Length();
+		double upt = max(0.1, RSQDG_Reach.MetresToUnits(RSQDG_Reach.Num("rsqdg_path_speed", p, 15.0)) / TICRATE);
+		double lo = max(1.0, RSQDG_Reach.Num("rsqdg_path_tmin", p, 6.0));
+		double hi = max(lo, RSQDG_Reach.Num("rsqdg_path_tmax", p, 70.0));
+		flyTotal[hand] = int(clamp(dist / upt, lo, hi));
+		flyFrom[hand] = mid0;
+		double want = dist * RSQDG_Reach.Num("rsqdg_path_arc", p, 0.15);
+		double cap = MeasureArc(a, mid0, palm);
+		flyArcH[hand] = (cap < 0.0) ? want : min(want, cap);
+		a.Vel = (0, 0, 0);
+		if (RSQDG_Reach.Flag("rsqdg_debug", p, false))
+			Console.Printf("[RSQDG] path: dist %.0f  %d tics  arc %.0f (wanted %.0f, room %.0f)",
+				dist, flyTotal[hand], flyArcH[hand], want, cap);
+	}
+
+	// HOW HIGH THIS PULL CAN ARC WITHOUT MEETING A CEILING (MeasureArc, verbatim
+	// in substance): the straight line sampled every 24 units (4..48 samples), the
+	// LOWEST ceiling and HIGHEST floor over the whole route, an 8-unit margin for
+	// a box turning over. -1 when nothing sampled: keep the arc wanted.
+	private static double MeasureArc(Actor a, Vector3 from, Vector3 to)
+	{
+		double span = (to - from).Length();
+		int samples = clamp(int(span / 24.0), 4, 48);
+		double minCeil = 1e30, maxFloor = -1e30;
+		for (int i = 0; i <= samples; i++)
+		{
+			double t = double(i) / double(samples);
+			Vector2 pt = (from.x + (to.x - from.x) * t, from.y + (to.y - from.y) * t);
+			Sector sec = level.PointInSector(pt);
+			if (!sec) continue;
+			double c = sec.ceilingplane.ZatPoint(pt);
+			double f = sec.floorplane.ZatPoint(pt);
+			if (c < minCeil) minCeil = c;
+			if (f > maxFloor) maxFloor = f;
+		}
+		if (minCeil > 1e29 || maxFloor < -1e29) return -1.0;
+		double margin = 8.0;
+		double room = minCeil - maxFloor - a.Height - margin;
+		double avail = (minCeil - a.Height - margin) - max(from.z, to.z);
+		double cap = min(room, avail);
+		return cap > 0.0 ? cap : 0.0;
+	}
+
+	// One tic of the path. False when the object could not move: it met a wall.
+	private bool StepPath(int h, Actor a, Vector3 palm, PlayerInfo p)
+	{
+		double t = min(1.0, double(flyTic[h]) / double(max(1, flyTotal[h])));
+		double acc = max(0.25, RSQDG_Reach.Num("rsqdg_path_accel", p, 1.6));
+		double e = t ** acc;
+		// HOMES TO WHERE YOUR HAND IS NOW, re-read every tic.
+		Vector3 pos = flyFrom[h] + (palm - flyFrom[h]) * e;
+		pos.z += 4.0 * flyArcH[h] * e * (1.0 - e);
+
+		// Z FIRST, CLAMPED TO THE ROOM, then XY by TryMove -- a real move that
+		// stops at walls, not SetOrigin, which passes through them.
+		double flyZ = pos.z - a.Height * 0.5;
+		double lo = a.floorz;
+		double hi = max(lo, a.ceilingz - a.Height);
+		a.SetZ(clamp(flyZ, lo, hi));
+		bool moved = a.TryMove((pos.x, pos.y), 1);
+
+		// LIFT IT OUT BEFORE DRAGGING IT SIDEWAYS: a pickup in an alcove is boxed
+		// in where it lies. Up to three 6-unit steps; the Z goes back if none helps.
+		if (!moved)
+		{
+			double keepZ = a.Pos.z;
+			for (int lift = 1; lift <= 3 && !moved; lift++)
+			{
+				double tryZ = keepZ + lift * 6.0;
+				if (tryZ + a.Height > a.ceilingz) break;
+				a.SetZ(tryZ);
+				moved = a.TryMove((pos.x, pos.y), 1);
+			}
+			if (!moved) a.SetZ(keepZ);
+		}
+		a.Vel = (0, 0, 0);
+		return moved;
+	}
+
+	// ---- the tumble ----------------------------------------------------------
+
+	private void SaveTumble(int hand, Actor a, PlayerInfo p)
+	{
+		tumSprite[hand] = a.bROLLSPRITE;
+		tumCentre[hand] = a.bROLLCENTER;
+		tumInterp[hand] = a.bINTERPOLATEANGLES;
+		tumRoll[hand]   = a.Roll;
+		tumOfs[hand]    = a.WorldOffset;
+		tumVoxel[hand]  = false;
+		tumTurns[hand]  = RSQDG_Reach.Num("rsqdg_tumble", p, 0.5);
+		ArmTumble(hand, a);
+	}
+
+	// The flags back ON without re-saving: the refused catch, still in the air.
+	private void ArmTumble(int hand, Actor a)
+	{
+		if (tumTurns[hand] == 0) return;   // 0 is off, and off means untouched
+		a.bROLLSPRITE = true;
+		a.bROLLCENTER = true;
+		a.bINTERPOLATEANGLES = true;
+		if (RSQDG_Voxels.Drawn(a))
+		{
+			a.SetModelFlag(MDL_USEACTORROLL);
+			tumVoxel[hand] = true;
+		}
+	}
+
+	// Every exit. The roll VALUE as well as the flags, or a caught barrel sits
+	// cocked at whatever angle it arrived at.
+	private void RestoreTumble(int hand, Actor a)
+	{
+		if (!a || tumTurns[hand] == 0) return;
+		a.bROLLSPRITE = tumSprite[hand];
+		a.bROLLCENTER = tumCentre[hand];
+		a.bINTERPOLATEANGLES = tumInterp[hand];
+		a.Roll = tumRoll[hand];
+		a.WorldOffset = tumOfs[hand];
+		if (tumVoxel[hand]) a.ResetModelFlags();
+		tumVoxel[hand] = false;
+	}
+
+	// KEYED ON TIME, NOT ON THE PATH: a tumbling thing turns at a constant rate.
+	// Turns across the whole flight, so near and far pulls turn the same amount.
+	// The WorldHands path knows its time; a steered or lobbed pull uses how far
+	// along it is.
+	private void StepTumble(int h, Actor a)
+	{
+		if (tumTurns[h] == 0) return;
+		double t = flyPath[h] ? min(1.0, double(flyTic[h]) / double(max(1, flyTotal[h])))
+		                      : Progress(h);
+		double before = a.Roll;
+		a.Roll = tumRoll[h] + tumTurns[h] * 360.0 * t;
+		if (tumVoxel[h]) a.WorldOffset = tumOfs[h] + RSQDG_Turn.Fix(a, savedHeight[h] * 0.5, false, (before + a.Roll) * 0.5);
 	}
 
 	// THE ARC'S TIME OF FLIGHT, chosen by its HEIGHT (review, 10-26). Taking the
@@ -705,4 +927,36 @@ class RSQDG_Flight : EventHandler
 
 	override void WorldLoaded(WorldEvent e) { AbortAll(); }
 	override void WorldUnloaded(WorldEvent e) { AbortAll(); }
+}
+
+// WHERE A TURNED VOXEL'S MIDDLE GOES, AND THE OFFSET THAT PUTS IT BACK.
+//
+// models.cpp RenderModel turns a model about its origin: yaw (-angle about up),
+// then pitch (-actor pitch, about the model's side axis) when USEACTORPITCH, then
+// roll (-roll, about its forward axis) when USEACTORROLL -- applied to the vertex
+// in the reverse order. A KVX voxel's origin is its pivot, which BD_VoxelPack
+// puts at the bottom of every voxel, so turning one swings it about its feet. Fix
+// returns the WorldOffset (render-only, hw_sprites.cpp adds it to the draw
+// position) that keeps a point `u` units above the origin -- the middle -- where
+// it was. `roll` is the roll to solve for (the mid-tic one: WorldOffset is not
+// interpolated and the angles are, so solving halfway halves the error).
+class RSQDG_Turn
+{
+	static Vector3 Fix(Actor a, double u, bool usePitch, double roll)
+	{
+		double r = roll;
+		double pt = usePitch ? -a.Pitch : 0.0;
+		double ya = a.Angle;
+		// GL frame: X forward, Y up, Z = left of forward (after yaw).
+		// roll (-r about X): (0, u, 0) -> (0, u cos r, -u sin r)
+		double y0 = u * cos(r), z0 = -u * sin(r);
+		// pitch (pt about Z): x = -y sin pt, y = y cos pt
+		double x1 = -y0 * sin(pt), y1 = y0 * cos(pt), z1 = z0;
+		// yaw (-ya about Y): X = x cos ya - z sin ya, Z = x sin ya + z cos ya
+		double wx = x1 * cos(ya) - z1 * sin(ya);
+		double wy = x1 * sin(ya) + z1 * cos(ya);
+		// The middle should be straight above the origin; move the drawing by the
+		// difference.
+		return (-wx, -wy, u - y1);
+	}
 }

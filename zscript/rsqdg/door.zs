@@ -279,7 +279,6 @@ class RSQDG_Door : EventHandler
 		double len = l.delta.Length();
 		dSpeed[n] = SpeedOf(l) * LIFT_CAP * clamp(64.0 / max(len, 1.0), 0.4, 1.5);
 		dLine[n] = l.Index();
-		pmo.A_StartSound("rsqdg/lock", CHAN_AUTO, 0, 0.7, ATTN_NORM, 0.6);
 		dLast[n] = dTarget[n];
 		Voice(n, l, 0, false);
 	}

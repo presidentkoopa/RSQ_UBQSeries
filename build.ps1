@@ -16,7 +16,7 @@ $out  = Join-Path $root 'RSQ_DistanceGrab.pk3'
 
 # docs/ and models/ stay out for now: docs is prose, and the FBX is a 24 MB
 # SOURCE asset that the engine cannot read and must never be packed.
-# tools/ stays out too: gen_sounds.py and gen_cone.py WRITE lumps, they are not lumps.
+# tools/ stays out too: gen_cone.py WRITES lumps, it is not one.
 # models/rsqdg is the generated cone and beam; models/hands (the FBX) stays out.
 $required = @('zscript.txt', 'MAPINFO.txt', 'CVARINFO.txt')
 $optional = @('TRNSLATE.txt', 'KEYCONF.txt', 'MENUDEF.txt', 'MODELDEF.txt', 'SNDINFO.txt', 'MASSDEF.txt', 'CREDITS.txt')
