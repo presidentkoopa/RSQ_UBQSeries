@@ -674,3 +674,19 @@ class RSQSM_AdrToken : Inventory
 		+INVENTORY.UNDROPPABLE +INVENTORY.UNTOSSABLE +INVENTORY.KEEPDEPLETED
 	}
 }
+
+// FOR OTHER MODS, found by name (nothing links): GetInt("adrenaline.add", "", points) adds to
+// the shared adrenaline meter (nothing while the meter is off) and answers the meter after it,
+// 0..100. GetInt("adrenaline") reads it. -1: unknown request.
+// The Gun Bonsai VR patch's Adrenaline upgrade charges it on melee kills.
+class RSQSM_Service : Service
+{
+	override int GetInt(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
+	{
+		let c = RSQSM_Clock.Get();
+		if (!c) return -1;
+		if (request ~== "adrenaline.add") { c.AddAdrenaline(intArg); return int(c.adr); }
+		if (request ~== "adrenaline") return int(c.adr);
+		return -1;
+	}
+}
