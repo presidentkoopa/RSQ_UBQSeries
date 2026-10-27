@@ -30,13 +30,21 @@ OptionMenu "RSQTR_Options"
 	Option "Rifles at the small of the back", "rsqtr_rifle_back", "OnOff"
 	Option "Leave the shield's shoulder to the ShieldSaw", "rsqtr_yield_shield", "OnOff"
 	StaticText ""
+	StaticText "Doors", 1
+	Option "Lift doors by hand", "rsqtr_door", "OnOff"
+	Option "Grip takes hold", "rsqtr_door_grip", "OnOff"
+	Option "Use takes hold", "rsqtr_door_use", "OnOff"
+	Option "Palm out takes hold", "rsqtr_door_palm", "OnOff"
+	Slider "Open past this, it finishes", "rsqtr_door_commit", 0.1, 0.9, 0.05, 2
+	Slider "Lift gain", "rsqtr_door_gain", 1.0, 5.0, 0.25, 2
+	StaticText ""
 	Submenu "Where the regions are", "RSQTR_Regions"
 	StaticText ""
 	StaticText "Grip key codes (QuestZDoom sends grips as keys):", 1
 	TextField "Main grip", "rsqtr_keys_main"
 	TextField "Off grip", "rsqtr_keys_off"
 	StaticText ""
-	SafeCommand "Reset all Tactical Rig settings", "resetcvar rsqtr_on rsqtr_grip rsqtr_use rsqtr_keys_main rsqtr_keys_off rsqtr_markers rsqtr_icons rsqtr_haptics rsqtr_messages rsqtr_reach rsqtr_rifle_back rsqtr_yield_shield rsqtr_empty rsqtr_r0_f rsqtr_r0_l rsqtr_r0_u rsqtr_r0_rad rsqtr_r1_f rsqtr_r1_l rsqtr_r1_u rsqtr_r1_rad rsqtr_r2_f rsqtr_r2_l rsqtr_r2_u rsqtr_r2_rad rsqtr_r3_f rsqtr_r3_l rsqtr_r3_u rsqtr_r3_rad rsqtr_r4_f rsqtr_r4_l rsqtr_r4_u rsqtr_r4_rad rsqtr_r5_f rsqtr_r5_l rsqtr_r5_u rsqtr_r5_rad", "Put every Tactical Rig setting back?"
+	SafeCommand "Reset all Tactical Rig settings", "resetcvar rsqtr_on rsqtr_grip rsqtr_use rsqtr_keys_main rsqtr_keys_off rsqtr_markers rsqtr_icons rsqtr_haptics rsqtr_messages rsqtr_reach rsqtr_rifle_back rsqtr_yield_shield rsqtr_empty rsqtr_door rsqtr_door_grip rsqtr_door_use rsqtr_door_palm rsqtr_door_commit rsqtr_door_gain rsqtr_r0_f rsqtr_r0_l rsqtr_r0_u rsqtr_r0_rad rsqtr_r1_f rsqtr_r1_l rsqtr_r1_u rsqtr_r1_rad rsqtr_r2_f rsqtr_r2_l rsqtr_r2_u rsqtr_r2_rad rsqtr_r3_f rsqtr_r3_l rsqtr_r3_u rsqtr_r3_rad rsqtr_r4_f rsqtr_r4_l rsqtr_r4_u rsqtr_r4_rad rsqtr_r5_f rsqtr_r5_l rsqtr_r5_u rsqtr_r5_rad", "Put every Tactical Rig setting back?"
 }
 
 OptionMenu "RSQTR_Regions"

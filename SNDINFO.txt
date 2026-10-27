@@ -8,3 +8,4 @@ rsqtr/foly1   rtfoly1
 rsqtr/foly2   rtfoly2
 rsqtr/foly3   rtfoly3
 $random rsqtr/radial { rsqtr/foly1 rsqtr/foly2 rsqtr/foly3 }
+$alias rsqtr/doorgrab rsqtr/foly2

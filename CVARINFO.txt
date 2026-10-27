@@ -21,3 +21,11 @@ user float rsqtr_r2_f = 0.22;  user float rsqtr_r2_l =  0.00; user float rsqtr_r
 user float rsqtr_r3_f = 0.22;  user float rsqtr_r3_l =  0.00; user float rsqtr_r3_u = -0.58; user float rsqtr_r3_rad = 0.12;
 user float rsqtr_r4_f = -0.08; user float rsqtr_r4_l =  0.18; user float rsqtr_r4_u = -0.10; user float rsqtr_r4_rad = 0.14;
 user float rsqtr_r5_f = -0.08; user float rsqtr_r5_l = -0.18; user float rsqtr_r5_u = -0.10; user float rsqtr_r5_rad = 0.14;
+
+// Doors lifted by hand.
+user bool  rsqtr_door        = true;    // take hold of a door and lift it
+user bool  rsqtr_door_grip   = true;    // the grip takes hold
+user bool  rsqtr_door_use    = true;    // Use takes hold
+user bool  rsqtr_door_palm   = true;    // a palm turned out against the door takes hold
+user float rsqtr_door_commit = 0.40;    // let go past this much open and the door finishes opening
+user float rsqtr_door_gain   = 2.5;     // door travel per unit of hand travel (a lift of 0.6 m opens ~50 units)
