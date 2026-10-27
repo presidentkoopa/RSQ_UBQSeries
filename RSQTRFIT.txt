@@ -2,82 +2,65 @@
 // brutal22test6.pk3 -> BD_VoxelPack.pk3 -> BD22Q_199c.pk3
 // <Class> <length, map units> <yaw> <pitch> <shown by> <centre x y z> <squat>: the turn
 // putting the muzzle forward; the class whose MODELDEF draws it; the middle of its bounds;
-// its second-largest extent over its largest (a long gun near 0, a box near 1)
-Chainsaw 55.11 -180.0 -0.0 RSV_Weapons 0.45 -0.45 11.70 0.39
-AssaultGun 53.80 -90.0 -0.0 RSV_Weapons 0.25 -0.25 7.25 0.25
-AssaultGunStanding 53.80 -90.0 -0.0 RSV_Weapons 0.25 -0.25 7.25 0.25
-SuperBootspork 55.11 -180.0 -0.0 RSV_Weapons 0.45 -0.45 11.70 0.39
-Pistol 22.89 -90.0 -0.0 RSV_Weapons 0.40 -0.40 6.00 0.46
-SuperShotgun 63.46 -90.0 -0.0 RSV_Weapons 0.25 -0.25 7.50 0.21
-Chaingun 61.37 -90.0 -0.0 RSV_Weapons -2.70 -0.60 11.70 0.36
-PlasmaRifle 48.33 -90.0 -0.0 RSV_Weapons 0.23 -0.22 7.88 0.29
-BFG9000 48.77 180.0 -0.0 RSV_Weapons 0.40 -0.40 14.80 0.58
-SuperLargeZorcher 63.46 -90.0 -0.0 RSV_Weapons 0.25 -0.25 7.50 0.21
-RapidZorcher 61.37 -90.0 -0.0 RSV_Weapons -2.70 -0.60 11.70 0.36
-PhasingZorcher 48.33 -90.0 -0.0 RSV_Weapons 0.23 -0.22 7.88 0.29
-LAZDevice 48.77 180.0 -0.0 RSV_Weapons 0.40 -0.40 14.80 0.58
-Chain_saw 55.11 -0.0 -0.0 RSV_Weapons 0.45 -0.45 11.70 0.39
-BrutalAxe 53.00 -0.0 -0.0 RSV_Weapons -0.50 -0.50 8.00 0.23
-Rifle 53.80 90.0 -0.0 RSV_Weapons 0.25 -0.25 7.25 0.25
-PuristRifle 53.80 90.0 -0.0 RSV_Weapons 0.25 -0.25 7.25 0.25
-DualRifles 53.80 -90.0 -0.0 RSV_Weapons 0.25 -0.25 7.25 0.25
-BrutalPistol 22.89 -90.0 -0.0 RSV_Weapons 0.40 -0.40 6.00 0.46
-PuristPistol 22.89 -90.0 -0.0 RSV_Weapons 0.40 -0.40 6.00 0.46
-DualPistols 22.89 -90.0 -0.0 RSV_Weapons 0.40 -0.40 6.00 0.46
-BrutalSMG 24.11 -90.0 -0.0 RSV_Weapons 0.40 -0.40 7.60 0.57
-PuristSMG 24.11 -90.0 -0.0 RSV_Weapons 0.40 -0.40 7.60 0.57
-DualSMG 24.11 -90.0 -0.0 RSV_Weapons 0.40 -0.40 7.60 0.57
-Shot_Gun 59.03 -90.0 -0.0 RSV_Weapons -0.50 0.25 9.00 0.26
-PuristShot_Gun 59.03 -90.0 -0.0 RSV_Weapons -0.50 0.25 9.00 0.26
-SSG 63.46 -90.0 -0.0 RSV_Weapons 0.25 -0.25 7.50 0.21
-PuristSSG 63.46 -90.0 -0.0 RSV_Weapons 0.25 -0.25 7.50 0.21
-Minigun 61.37 -90.0 -0.0 RSV_Weapons -2.70 -0.60 11.70 0.36
-PuristMinigun 61.37 -90.0 -0.0 RSV_Weapons -2.70 -0.60 11.70 0.36
-Rocket_Launcher 60.04 -90.0 -0.0 RSV_Weapons 0.50 -1.00 9.00 0.27
-PuristRocket_Launcher 60.04 -90.0 -0.0 RSV_Weapons 0.50 -1.00 9.00 0.27
-Plasma_Gun 48.33 -90.0 -0.0 RSV_Weapons 0.23 -0.22 7.88 0.29
-PuristPlasma_Gun 48.33 -90.0 -0.0 RSV_Weapons 0.23 -0.22 7.88 0.29
-BIG_FUCKING_GUN 48.77 -0.0 -0.0 RSV_Weapons 0.40 -0.40 14.80 0.58
-PuristBIG_FUCKING_GUN 48.77 -0.0 -0.0 RSV_Weapons 0.40 -0.40 14.80 0.58
-DualMP40 31.15 -90.0 -0.0 RSV_Weapons 0.40 -0.40 6.80 0.39
-MP40 31.15 -90.0 -0.0 RSV_Weapons 0.40 -0.40 6.80 0.39
-PuristMP40 31.15 -90.0 -0.0 RSV_Weapons 0.40 -0.40 6.80 0.39
-MG42 87.66 -90.0 -0.0 RSV_Weapons 0.60 -0.60 12.00 0.25
-PuristMG42 87.66 -90.0 -0.0 RSV_Weapons 0.60 -0.60 12.00 0.25
-Unmaker 38.22 -180.0 -0.0 RSV_Weapons 0.18 -0.18 8.57 0.43
-PuristUnmaker 38.22 -180.0 -0.0 RSV_Weapons 0.18 -0.18 8.57 0.43
-DSweap 90.95 90.0 -0.0 RSV_Weapons 0.37 -0.75 11.62 0.22
-GrenadeLauncher 42.40 -90.0 -0.0 RSV_Weapons 0.40 -0.40 7.20 0.30
-PuristGrenadeLauncher 42.40 -90.0 -0.0 RSV_Weapons 0.40 -0.40 7.20 0.30
-BFG10k 53.60 90.0 -0.0 RSV_Weapons 0.00 -0.40 10.00 0.35
-PuristBFG10k 53.60 90.0 -0.0 RSV_Weapons 0.00 -0.40 10.00 0.35
-Railgun 60.93 -90.0 -0.0 RSV_Weapons 0.40 -0.40 8.00 0.24
-PuristRailGun 60.93 -90.0 -0.0 RSV_Weapons 0.40 -0.40 8.00 0.24
-REVOLVER 20.78 -90.0 -0.0 RSV_Weapons 0.15 -0.15 6.15 0.61
-PuristRevolver 20.78 -90.0 -0.0 RSV_Weapons 0.15 -0.15 6.15 0.61
-AssaultShotgun 56.06 -90.0 -0.0 RSV_Weapons 0.50 -0.50 10.50 0.34
-PuristAssaultShotgun 56.06 -90.0 -0.0 RSV_Weapons 0.50 -0.50 10.50 0.34
-NukeLauncher 74.12 90.0 -0.0 RSV_Weapons 0.50 -0.50 14.00 0.32
-PuristNukeLauncher 74.12 90.0 -0.0 RSV_Weapons 0.50 -0.50 14.00 0.32
-Flamethrower2 60.00 -90.0 -0.0 RSV_Weapons 1.00 -0.50 16.50 0.52
-PuristFlamethrower2 60.00 -90.0 -0.0 RSV_Weapons 1.00 -0.50 16.50 0.52
-Devastator 114.30 179.7 -1.1 Devastator -23.04 2.14 1.34 0.34
-PuristDevastator 114.30 179.7 -1.1 PuristDevastator -23.04 2.14 1.34 0.34
-FlameCannon 56.03 90.0 -0.0 RSV_Weapons 0.50 -0.50 7.50 0.23
-PuristFlameCannon 56.03 90.0 -0.0 RSV_Weapons 0.50 -0.50 7.50 0.23
-DualFlameCannon 56.03 90.0 -0.0 RSV_Weapons 0.50 -0.50 7.50 0.23
-HellishMissileLauncher 18.20 90.0 -0.0 RSV_Weapons 0.35 -0.35 6.65 0.77
-PuristHellishMissileLauncher 18.20 90.0 -0.0 RSV_Weapons 0.35 -0.35 6.65 0.77
-BikeHUD 22.89 -90.0 -0.0 RSV_Weapons 0.40 -0.40 6.00 0.46
-RSQ_Off_BrutalPistol 22.89 -90.0 -0.0 RSV_Weapons 0.40 -0.40 6.00 0.46
-RSQ_Off_Revolver 20.78 -90.0 -0.0 RSV_Weapons 0.15 -0.15 6.15 0.61
-RSQ_Off_BrutalSMG 24.11 -90.0 -0.0 RSV_Weapons 0.40 -0.40 7.60 0.57
-RSQ_Off_MP40 31.15 -90.0 -0.0 RSV_Weapons 0.40 -0.40 6.80 0.39
-RSQ_Off_Rifle 53.80 90.0 -0.0 RSV_Weapons 0.25 -0.25 7.25 0.25
-RSQ_Off_Plasma_Gun 48.33 -90.0 -0.0 RSV_Weapons 0.23 -0.22 7.88 0.29
-RSQ_Off_Shot_Gun 59.03 -90.0 -0.0 RSV_Weapons -0.50 0.25 9.00 0.26
-RSQ_Off_SSG 63.46 -90.0 -0.0 RSV_Weapons 0.25 -0.25 7.50 0.21
-RSQ_Off_AssaultShotgun 56.06 -90.0 -0.0 RSV_Weapons 0.50 -0.50 10.50 0.34
-RSQ_Off_RailGun 60.93 -90.0 -0.0 RSV_Weapons 0.40 -0.40 8.00 0.24
-Machinegun 52.10 -90.0 -0.0 RSV_Weapons 0.00 -0.40 9.20 0.32
-Revolver2 20.78 -90.0 -0.0 RSV_Weapons 0.15 -0.15 6.15 0.61
+// its second-largest extent over its largest (a long gun near 0, a box near 1); the sprite
+// and frame number to wear (with --held, the Ready frame: the model you hold)
+Chain_saw 121.99 -180.0 -0.0 Chain_saw -94.68 13.15 -2.85 0.29 PAWG 0
+BrutalAxe 56.25 179.9 47.6 BrutalAxe -34.09 0.00 -0.17 0.93 4XEG 0
+Rifle 92.48 -180.0 -0.0 Rifle -47.68 0.32 -9.92 0.33 RIFG 0
+PuristRifle 92.50 -180.0 -0.0 PuristRifle -47.68 0.32 -9.92 0.33 RIFG 0
+BrutalPistol 27.06 -180.0 -0.0 BrutalPistol -32.14 -0.06 -11.20 0.65 2IST 4
+PuristPistol 27.06 -180.0 -0.0 PuristPistol -32.14 -0.06 -11.20 0.65 2IST 4
+BrutalSMG 64.58 -180.0 -0.0 BrutalSMG -31.95 0.09 -16.91 0.55 SMGR 0
+PuristSMG 64.58 -180.0 -0.0 PuristSMG -31.95 0.09 -16.91 0.55 SMGR 0
+Shot_Gun 94.51 -180.0 -0.0 Shot_Gun -46.73 0.00 -12.09 0.20 SHTN 0
+PuristShot_Gun 94.51 -180.0 -0.0 PuristShot_Gun -46.73 0.00 -12.09 0.20 SHTN 0
+SSG 51.70 -180.0 -0.0 SSG -39.74 0.05 -11.40 0.23 SHTN 0
+PuristSSG 51.70 -180.0 -0.0 PuristSSG -39.74 0.05 -11.40 0.23 SHTN 0
+Minigun 103.73 -180.0 -0.0 Minigun -71.59 6.95 -13.95 0.40 CHAG 0
+PuristMinigun 103.73 -180.0 -0.0 PuristMinigun -71.59 6.95 -13.95 0.40 CHAG 0
+Rocket_Launcher 151.62 -180.0 -0.0 Rocket_Launcher -4.30 -4.58 -1.50 0.26 MISS 22
+PuristRocket_Launcher 151.62 -180.0 -0.0 PuristRocket_Launcher -4.30 -4.58 -1.50 0.26 MISS 22
+Plasma_Gun 87.54 -180.0 -0.0 Plasma_Gun -56.35 -1.90 -11.27 0.33 PRSG 5
+PuristPlasma_Gun 87.54 -180.0 -0.0 PuristPlasma_Gun -56.35 -1.90 -11.27 0.33 PRSG 5
+BIG_FUCKING_GUN 114.88 -180.0 -0.0 BIG_FUCKING_GUN -55.45 0.00 -5.51 0.31 BFGN 0
+PuristBIG_FUCKING_GUN 114.88 -180.0 -0.0 PuristBIG_FUCKING_GUN -55.45 0.00 -5.51 0.31 BFGN 0
+MP40 93.06 -180.0 -0.0 MP40 -44.16 0.45 -12.84 0.33 MP40 0
+PuristMP40 93.06 -180.0 -0.0 PuristMP40 -44.16 0.45 -12.84 0.33 MP40 0
+MG42 140.80 -180.0 -0.0 MG42 -57.55 3.58 -6.71 0.18 PBUS 0
+PuristMG42 140.80 -180.0 -0.0 PuristMG42 -57.55 3.58 -6.71 0.18 PBUS 0
+Unmaker 79.41 -180.0 -0.0 Unmaker -55.11 0.00 -10.48 0.45 2NHG 0
+PuristUnmaker 79.41 -180.0 -0.0 PuristUnmaker -55.11 0.00 -10.48 0.45 2NHG 0
+DSweap 210.13 176.1 69.9 DSweap -56.16 -1.18 56.79 0.41 DSLA 0
+GrenadeLauncher 77.67 -180.0 -0.0 GrenadeLauncher -36.26 0.00 -1.52 0.31 2RLN 0
+PuristGrenadeLauncher 77.67 -180.0 -0.0 PuristGrenadeLauncher -36.26 0.00 -1.52 0.31 2RLN 0
+BFG10k 117.25 -180.0 -0.0 BFG10k -57.06 0.00 -4.05 0.33 BG2G 0
+PuristBFG10k 117.25 -180.0 -0.0 PuristBFG10k -57.06 0.00 -4.05 0.33 BG2G 0
+Railgun 152.57 -180.0 -0.0 Railgun -62.48 0.05 -5.32 0.21 RAIL 0
+PuristRailGun 152.57 -180.0 -0.0 PuristRailGun -62.48 0.05 -5.32 0.21 RAIL 0
+REVOLVER 31.00 -180.0 -0.0 REVOLVER -36.48 -0.05 -8.73 0.59 REVO 0
+PuristRevolver 31.00 -180.0 -0.0 PuristRevolver -36.48 -0.05 -8.73 0.59 REVO 0
+AssaultShotgun 93.92 -180.0 -0.0 AssaultShotgun -44.30 0.00 -10.20 0.23 USAS 0
+PuristAssaultShotgun 93.92 -180.0 -0.0 PuristAssaultShotgun -44.30 0.00 -10.20 0.23 USAS 0
+NukeLauncher 84.33 -180.0 -0.0 NukeLauncher -40.23 0.00 -6.29 0.46 NKLG 0
+PuristNukeLauncher 84.33 -180.0 -0.0 PuristNukeLauncher -40.23 0.00 -6.29 0.46 NKLG 0
+IncendiaryLauncher 101.21 -180.0 -0.0 IncendiaryLauncher -4.50 -48.38 -11.76 0.32 M202 0
+PuristIncendiaryLauncher 101.21 -180.0 -0.0 PuristIncendiaryLauncher -4.50 -48.38 -11.76 0.32 M202 0
+Flamethrower2 105.00 -180.0 -0.0 Flamethrower2 -61.17 0.01 -16.09 0.29 2LMT 0
+PuristFlamethrower2 105.00 -180.0 -0.0 PuristFlamethrower2 -61.17 0.01 -16.09 0.29 2LMT 0
+Devastator 114.30 -180.0 -0.0 Devastator -23.04 -10.86 1.34 0.34 DEVA 0
+PuristDevastator 114.30 -180.0 -0.0 PuristDevastator -23.04 -10.86 1.34 0.34 DEVA 0
+FlameCannon 67.51 -180.0 -0.0 FlameCannon -45.20 1.81 -8.77 0.41 2LMG 0
+PuristFlameCannon 67.51 -180.0 -0.0 PuristFlameCannon -45.20 1.81 -8.77 0.41 2LMG 0
+HellishMissileLauncher 96.50 -180.0 -0.0 HellishMissileLauncher -50.17 0.46 -7.00 0.51 RVCG 0
+PuristHellishMissileLauncher 96.50 -180.0 -0.0 PuristHellishMissileLauncher -50.17 0.46 -7.00 0.51 RVCG 0
+RSQ_Off_BrutalPistol 27.06 -180.0 -0.0 RSQ_Off_BrutalPistol -32.14 -0.06 -11.20 0.65 2IST 4
+RSQ_Off_Revolver 31.00 -180.0 -0.0 RSQ_Off_Revolver -36.48 -0.05 -8.73 0.59 REVO 0
+RSQ_Off_BrutalSMG 64.58 -180.0 -0.0 RSQ_Off_BrutalSMG -31.95 0.09 -16.91 0.55 SMGR 0
+RSQ_Off_MP40 93.06 -180.0 -0.0 RSQ_Off_MP40 -44.16 0.45 -12.84 0.33 MP40 0
+RSQ_Off_Rifle 92.48 -180.0 -0.0 RSQ_Off_Rifle -47.68 0.32 -9.92 0.33 RIFG 0
+RSQ_Off_Plasma_Gun 87.54 -180.0 -0.0 RSQ_Off_Plasma_Gun -56.35 -1.90 -11.27 0.33 PRSG 5
+RSQ_Off_Shot_Gun 94.51 -180.0 -0.0 RSQ_Off_Shot_Gun -46.73 0.00 -12.09 0.20 SHTN 0
+RSQ_Off_SSG 51.70 -180.0 -0.0 RSQ_Off_SSG -39.74 0.05 -11.40 0.23 SHTN 0
+RSQ_Off_AssaultShotgun 93.92 -180.0 -0.0 RSQ_Off_AssaultShotgun -44.30 0.00 -10.20 0.23 USAS 0
+RSQ_Off_RailGun 152.57 -180.0 -0.0 RSQ_Off_RailGun -62.48 0.05 -5.32 0.21 RAIL 0
+Machinegun 99.78 -180.0 -0.0 Machinegun -46.94 -0.05 -4.59 0.33 MGN1 0

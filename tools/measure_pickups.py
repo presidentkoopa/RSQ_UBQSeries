@@ -70,7 +70,7 @@ KEYS_ARGS = {'path': 1, 'model': 2, 'skin': 2, 'surfaceskin': 3, 'scale': 3, 'of
 
 def block_settings(body):
     s = {'path': '', 'models': {}, 'scale': (1.0, 1.0, 1.0), 'angle': 0.0, 'pitch': 0.0,
-         'roll': 0.0, 'frames': []}
+         'roll': 0.0, 'frames': [], 'offset': (0.0, 0.0, 0.0), 'zoffset': 0.0}
     i = 0
     while i < len(body):
         k = body[i].lower()
@@ -81,6 +81,8 @@ def block_settings(body):
         if k == 'path': s['path'] = a[0]
         elif k == 'model': s['models'][int(a[0])] = a[1]
         elif k == 'scale': s['scale'] = tuple(float(x) for x in a)
+        elif k == 'offset': s['offset'] = tuple(float(x) for x in a)
+        elif k == 'zoffset': s['zoffset'] = float(a[0])
         elif k == 'angleoffset': s['angle'] = float(a[0])
         elif k == 'pitchoffset': s['pitch'] = float(a[0])
         elif k == 'rolloffset': s['roll'] = float(a[0])
@@ -190,6 +192,8 @@ def main():
     ap.add_argument('--flips', help='a file of classes to flip end for end (one per line, # comments)')
     ap.add_argument('--only', nargs='*', default=[])
     ap.add_argument('--no-voxels', action='store_true')
+    ap.add_argument('--held', action='store_true',
+                    help='measure the model each weapon is HELD as (its Ready frame, PR lines) instead of its pickup')
     ap.add_argument('pk3s', nargs='+')
     a = ap.parse_args()
 
@@ -226,17 +230,18 @@ def main():
                         voxel[(spr, fr)] = (cls, {int(mi): (s, mf)})
 
     pick = []
+    tag = 'PR' if a.held else 'PD'
     for line in open(a.dump, encoding='latin-1'):
-        m = re.match(r'PD (\S+) (\S+) (\d+)', line)
+        m = re.match(tag + r' (\S+) (\S+) (\d+)', line)
         if m and m.group(2) != 'TNT1A0':
-            pick.append((m.group(1), m.group(2)[:4].upper(), chr(ord('A') + int(m.group(3)))))
+            pick.append((m.group(1), m.group(2)[:4].upper(), chr(ord('A') + int(m.group(3))), int(m.group(3))))
 
     rows = []
-    for cls, spr, fr in pick:
+    for cls, spr, fr, frn in pick:
         if a.only and cls not in a.only: continue
         holder = cls
         parts = None
-        if (spr, fr) in voxel and not a.no_voxels:
+        if (spr, fr) in voxel and not a.no_voxels and not a.held:
             holder, parts = voxel[(spr, fr)]
         if not parts: parts = table.get((cls.lower(), spr, fr))
         if not parts: continue                     # a sprite or a voxel by VOXELDEF: not measured
@@ -260,7 +265,12 @@ def main():
                 print('read', cls, fname, e, file=sys.stderr); continue
             sx, sy, sz = s['scale']
             pts = [(p[0] * sx, p[1] * sy, p[2] * sz) for p in pts]
-            allpts += [rot(p, s['angle'], s['pitch'], s['roll']) for p in pts]
+            # GZDoom: scale, the rotation offsets, then the Offset -- divided by the scale
+            # (its renderer translates by offset / scale before the MODELDEF scale is applied)
+            ox, oy, oz = s['offset']
+            oz += s['zoffset']
+            off = (ox / sx if sx else 0, oy / sy if sy else 0, oz / sz if sz else 0)
+            allpts += [tuple(q[i] + off[i] for i in range(3)) for q in (rot(p, s['angle'], s['pitch'], s['roll']) for p in pts)]
             names.append(path.rsplit('/', 1)[-1])
         if not allpts: continue
         pts = allpts
@@ -269,9 +279,29 @@ def main():
         length, mz, s_lo, s_hi = measure(pts)
         # a flip covers the pack's copies of that gun too (Purist..., RSQ_Off_...)
         base = re.sub(r'^(Purist|RSQ_Off_)', '', cls)
+        if a.held:
+            # THE HELD MODEL LIES ALONG ITS X AXIS: it is drawn in the hand along the controller,
+            # so every gun in a pack lies the same way -- known, not guessed per gun. The axis itself still carries the pose's
+            # small tilt, which the turn takes out.
+            # A melee weapon is held blade-up (a sword measured 70 degrees from level): its
+            # working end is the one toward +z.
+            if abs(mz[2]) > abs(mz[0]):
+                if mz[2] < 0: mz = [-t for t in mz]
+            elif mz[0] > 0: mz = [-t for t in mz]
+            # (the muzzle is the -x end: every BD22Q gun drawn by its Ready frame pointed
+            # backward with +x taken, 10-27 frame dump -- the first-person models are built
+            # facing the other way from a world actor's forward)
         if cls.lower() in flips or base.lower() in flips: mz = [-t for t in mz]
         yaw = math.degrees(math.atan2(mz[1], mz[0]))
         pitch = -math.degrees(math.atan2(mz[2], math.hypot(mz[0], mz[1])))
+        if a.held and abs(pitch) < 30 and abs(abs(yaw) - 180) < 30:
+            yaw = 180.0   # (the turn below negates: muzzle on -x means a 180 turn)
+            pitch = 0.0
+        elif a.held and abs(pitch) < 30:
+            # held along +x by construction: the long axis read off a heavy grip tilts (a
+            # revolver read 16 degrees), so a gun is taken as pointing straight ahead
+            yaw = 0.0
+            pitch = 0.0
         if all(n.lower().endswith('.kvx') for n in names):
             # A voxel made from a pickup sprite lies side-on along one of its own axes: the
             # long axis measured off a heavy grip or stock tilts (a revolver read 22 degrees),
@@ -287,16 +317,17 @@ def main():
         ext = sorted(max(p[i] for p in pts) - min(p[i] for p in pts) for i in range(3))
         length = max(length, ext[2])
         squat = ext[1] / ext[2] if ext[2] > 0 else 1.0     # 1 a cube, near 0 a long gun
-        rows.append((cls, length, -yaw, -pitch, holder, path, s_lo, s_hi, ctr, squat))
+        rows.append((cls, length, -yaw, -pitch, holder, path, s_lo, s_hi, ctr, squat, spr, frn))
 
     with open(a.out, 'w') as f:
         f.write('// RSQTRFIT -- GENERATED by tools/measure_pickups.py from the load order below. Do not edit.\n')
         f.write('// ' + ' -> '.join(p.rsplit('/', 1)[-1] for p in a.pk3s) + '\n')
         f.write('// <Class> <length, map units> <yaw> <pitch> <shown by> <centre x y z> <squat>: the turn\n')
         f.write('// putting the muzzle forward; the class whose MODELDEF draws it; the middle of its bounds;\n')
-        f.write('// its second-largest extent over its largest (a long gun near 0, a box near 1)\n')
-        for cls, length, yaw, pitch, holder, path, s_lo, s_hi, c, sq in rows:
-            f.write('%s %.2f %.1f %.1f %s %.2f %.2f %.2f %.2f\n' % (cls, length, yaw, pitch, holder, c[0], c[1], c[2], sq))
+        f.write('// its second-largest extent over its largest (a long gun near 0, a box near 1); the sprite\n')
+        f.write('// and frame number to wear (with --held, the Ready frame: the model you hold)\n')
+        for cls, length, yaw, pitch, holder, path, s_lo, s_hi, c, sq, spr, frn in rows:
+            f.write('%s %.2f %.1f %.1f %s %.2f %.2f %.2f %.2f %s %d\n' % (cls, length, yaw, pitch, holder, c[0], c[1], c[2], sq, spr, frn))
     for r in rows:
         print('%-26s len %7.2f  yaw %7.1f  pitch %6.1f  %-12s %s  ends %.1f/%.1f' % (r[0], r[1], r[2], r[3], r[4], r[5], r[6], r[7]))
 

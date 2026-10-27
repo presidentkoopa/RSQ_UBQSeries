@@ -41,7 +41,7 @@ class RSQTR_Region
 	//   shoulders 5 6 / 7 8 9 (heavy: Brutal Doom alone owns fourteen, measured with BD22 +
 	//   BD22Q, so they split)  pectorals 0 (grenades, small things)  lower back 1 (melee:
 	//   the axe, the chainsaw -- never the fists, which are the empty hand).
-	static const String DEFSLOTS[] = { "2", "2", "3", "4", "5 6", "7 8 9", "0", "0", "1" };
+	static const String DEFSLOTS[] = { "2", "2", "3", "4", "5 6", "7 8 9 0", "2", "2", "1" };
 
 	static bool Takes(int r, int s, PlayerInfo p)
 	{
@@ -447,6 +447,18 @@ class RSQTR_Rig : EventHandler
 	private transient bool migrated;
 	private void MigratePlaces()
 	{
+		// slot 0 was the pectorals' (my pick, 10-27): in BD that is the flamethrowers, so the
+		// pectorals hold pistols like the shoulder holsters they are, and slot 0 goes with the
+		// heavy weapons on the right shoulder (the owner: "who would put a flamethrower in
+		// their chest"). Lists still at the old defaults are moved; edited ones are left.
+		for (int r = 6; r <= 7; r++)
+		{
+			let cs = CVar.FindCVar(String.Format("rsqtr_r%d_slots", r));
+			if (cs && cs.GetString() == "0") cs.SetString(RSQTR_Region.DEFSLOTS[r]);
+		}
+		let c5 = CVar.FindCVar("rsqtr_r5_slots");
+		if (c5 && c5.GetString() == "7 8 9") c5.SetString(RSQTR_Region.DEFSLOTS[5]);
+
 		for (int r = 6; r <= 7; r++)
 		{
 			let cf = CVar.FindCVar(String.Format("rsqtr_r%d_f", r));
@@ -645,6 +657,12 @@ class RSQTR_Rig : EventHandler
 				put = "";
 				for (int k = 0; k < own.Size(); k++) if (own[k] != held) { put = own[k]; break; }
 			}
+			// ONLY A MEASURED MODEL IS SHOWN ON THE BODY. A weapon not in the fit table has no
+			// model of its own here (BD's hand grenades are a flat sprite), and a flat sprite
+			// floating at the chest is just a picture by your face (the owner, 10-27, asked
+			// three times what the little grenade icons were).
+			let fitT = GetFit();
+			if (put != "" && fitT.Find(put) < 0) put = "";
 			if (icons && live && put != "")
 			{
 				if (!icon[r]) icon[r] = Actor.Spawn("RSQTR_Icon", at);
@@ -793,13 +811,21 @@ class RSQTR_Icon : Actor
 			State st = d ? d.SpawnState : null;
 			int tnt = GetSpriteIndex('TNT1');
 			for (int i = 0; i < 16 && st && st.sprite == tnt; i++) st = st.NextState;
-			if (st && st.sprite != tnt)
+			let rig = RSQTR_Rig.Get();
+			let fit = rig ? rig.GetFit() : null;
+			int at = fit ? fit.Find(cls) : -1;
+			if (at >= 0 && fit.spr[at] != "")
+			{
+				// MEASURED: the frame the table names (the model you hold), drawn by the
+				// class it names
+				sprite = GetSpriteIndex(Name(fit.spr[at]));
+				frame = fit.frn[at];
+				A_ChangeModel(Name(fit.holder[at]));
+				SetModelFlag(MDL_USEACTORPITCH | MDL_USEACTORROLL);
+			}
+			else if (st && st.sprite != tnt)
 			{
 				sprite = st.sprite; frame = st.Frame;
-				// the class whose MODELDEF draws this pickup on the floor (fit.zs), else its own
-				let rig = RSQTR_Rig.Get();
-				let fit = rig ? rig.GetFit() : null;
-				int at = fit ? fit.Find(cls) : -1;
 				A_ChangeModel(at >= 0 ? Name(fit.holder[at]) : Name(cls));
 				// Pickup models seldom turn with their actor's pitch and roll (they lie on
 				// the floor); these do, so the gun can hang as worn. Voxels too.

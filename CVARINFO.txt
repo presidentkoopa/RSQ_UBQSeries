@@ -44,9 +44,9 @@ user string rsqtr_r1_slots = "2";
 user string rsqtr_r2_slots = "3";
 user string rsqtr_r3_slots = "4";
 user string rsqtr_r4_slots = "5 6";
-user string rsqtr_r5_slots = "7 8 9";
-user string rsqtr_r6_slots = "0";
-user string rsqtr_r7_slots = "0";
+user string rsqtr_r5_slots = "7 8 9 0";
+user string rsqtr_r6_slots = "2";
+user string rsqtr_r7_slots = "2";
 user string rsqtr_r8_slots = "1";
 
 // Doors lifted by hand.
