@@ -123,14 +123,12 @@ class RS_ScoreRegistry : StaticEventHandler
 		Own("RS_Bonus_Redline");
 		Own("RS_Bonus_SwanSong");
 		Own("RS_Bonus_PointBlank");
-		// the Quest series' melee family (melee.zs)
-		Own("RS_Bonus_Fatality");
-		Own("RS_Bonus_Cleaved");
-		Own("RS_Bonus_Hurled");
-		Own("RS_Bonus_ShieldWork");
-		Own("RS_Bonus_Riposte");
-		Own("RS_Bonus_ReturnToSender");
-		Own("RS_Bonus_Combo");
+		// the Quest series' own: each file names its bonuses, so each can grow on its own
+		Array<String> more;
+		RS_MeleeSeed.Names(more);       // melee.zs: melee, saber, Force, shield
+		RS_PhysicalSeed.Names(more);    // physical.zs: thrown things, the rig, VR, Gun Bonsai
+		RS_AwardSeed.Names(more);       // awards.zs: rows paid by other mods (the training remote)
+		for (int k = 0; k < more.Size(); k++) Own(more[k]);
 	}
 
 	private void Own(String typeName)

@@ -20,6 +20,21 @@
 //   RS_ScoreShots       below: which shots were born of a monster, for a returned one
 // ============================================================================
 
+// the bonuses this file adds to the registry (bonus.zs SeedOwn calls this)
+class RS_MeleeSeed play
+{
+	static void Names(out Array<String> into)
+	{
+		into.Push("RS_Bonus_Fatality");
+		into.Push("RS_Bonus_Cleaved");
+		into.Push("RS_Bonus_Hurled");
+		into.Push("RS_Bonus_ShieldWork");
+		into.Push("RS_Bonus_Riposte");
+		into.Push("RS_Bonus_ReturnToSender");
+		into.Push("RS_Bonus_Combo");
+	}
+}
+
 class RS_Melee play
 {
 	enum EKind

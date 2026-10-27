@@ -531,6 +531,27 @@ class RS_ScoreHandler : EventHandler
 		tr.rowTic.Resize(want);
 	}
 
+	// ---------------------------------------------------- awards from other mods
+	//
+	// THE ONE CALL ANOTHER MOD MAKES TO PAY POINTS FOR SOMETHING THAT IS NOT A KILL (a deflected
+	// training-remote bolt, a stunt), through RS_ScoreService so nothing links:
+	//   GetInt("award", "<row label>", points, 0, playerPawn)  -> the points paid, or -1
+	// The label must be the DisplayName of a registered bonus (an award row: a bonus whose Evaluate
+	// is always 0, see awards.zs), so it shows in the breakdown in its family's colour like any
+	// other; an unknown label pays onto the Base row. Play scope: call it from the playsim (a
+	// network event, an actor's Tick), never from ui code.
+	int AwardExternal(Actor who, String label, int points)
+	{
+		if (!who || !who.player || points <= 0) return -1;
+		let tr = GetTracker(who);
+		if (!tr) return -1;
+		int b = -1;
+		for (int k = 0; k < m_bonuses.Size(); k++) if (m_bonuses[k].DisplayName() ~== label) { b = k; break; }
+		AddRow(tr, b, points);
+		Pay(tr, points);
+		return points;
+	}
+
 	private void AddRow(RS_ScoreTracker tr, int bonusIndex, int points)
 	{
 		if (points <= 0) { return; }
