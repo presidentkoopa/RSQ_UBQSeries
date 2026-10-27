@@ -25,14 +25,18 @@ class RSQTR_Region
 {
 	// NINE PLACES (the owner, 10-27: "two hip, two pectoral, two shoulder, one chest, one
 	// stomach, one lower back"). Indices 0-5 keep their old meaning so saved places carry over.
-	const N = 9;
-	static const String NAMES[] = { "Left hip", "Right hip", "Chest", "Stomach", "Left shoulder", "Right shoulder", "Left pectoral", "Right pectoral", "Lower back" };
+	// ...AND TWO SABER HOLSTERS, just below the hips (the owner, 10-27), indices 9 and 10. They hold
+	// UltraBadassQuestSaber's hilt and nothing else.
+	const N = 11;
+	static const String NAMES[] = { "Left hip", "Right hip", "Chest", "Stomach", "Left shoulder", "Right shoulder", "Left pectoral", "Right pectoral", "Lower back", "Left saber", "Right saber" };
+	const SABER_L = 9;
+	const SABER_R = 10;
 
 	// Defaults, metres from the head in the body frame: forward, left, up, radius.
-	static const double DF[] = {  0.00,  0.00,  0.15,  0.15, -0.08, -0.08,  0.07,  0.07, -0.15 };
-	static const double DL[] = {  0.18, -0.18,  0.00,  0.00,  0.18, -0.18,  0.17, -0.17,  0.00 };
-	static const double DU[] = { -0.70, -0.70, -0.40, -0.58, -0.10, -0.10, -0.36, -0.36, -0.62 };
-	static const double DR[] = {  0.14,  0.14,  0.09,  0.11,  0.14,  0.14,  0.08,  0.08,  0.12 };
+	static const double DF[] = {  0.00,  0.00,  0.15,  0.15, -0.08, -0.08,  0.07,  0.07, -0.15,  0.02,  0.02 };
+	static const double DL[] = {  0.18, -0.18,  0.00,  0.00,  0.18, -0.18,  0.17, -0.17,  0.00,  0.21, -0.21 };
+	static const double DU[] = { -0.70, -0.70, -0.40, -0.58, -0.10, -0.10, -0.36, -0.36, -0.62, -0.84, -0.84 };
+	static const double DR[] = {  0.14,  0.14,  0.09,  0.11,  0.14,  0.14,  0.08,  0.08,  0.12,  0.10,  0.10 };
 
 	// WHAT EACH PLACE HOLDS: the Doom weapon slots it takes, a setting per place
 	// (rsqtr_rN_slots, a list such as "5 6"). The rules keep the chaos down: a gun only
@@ -41,7 +45,7 @@ class RSQTR_Region
 	//   shoulders 5 6 / 7 8 9 (heavy: Brutal Doom alone owns fourteen, measured with BD22 +
 	//   BD22Q, so they split)  pectorals 0 (grenades, small things)  lower back 1 (melee:
 	//   the axe, the chainsaw -- never the fists, which are the empty hand).
-	static const String DEFSLOTS[] = { "2", "2", "3", "4", "5 6", "7 8 9 0", "2", "2", "1" };
+	static const String DEFSLOTS[] = { "2", "2", "3", "4", "5 6", "7 8 9 0", "2", "2", "1", "", "" };
 
 	static bool Takes(int r, int s, PlayerInfo p)
 	{
@@ -171,7 +175,8 @@ class RSQTR_Rig : EventHandler
 			// (rsqtr_saber_hip), found by class name so the saber need not be loaded.
 			if (IsSaber(w))
 			{
-				if ((r == 0 || r == 1) && Flag("rsqtr_saber_hip", pmo.player, true)) into.Push(w.GetClassName());
+				if (r == RSQTR_Region.SABER_L || r == RSQTR_Region.SABER_R) into.Push(w.GetClassName());
+				else if ((r == 0 || r == 1) && Flag("rsqtr_saber_hip", pmo.player, false)) into.Push(w.GetClassName());
 				continue;
 			}
 			bool found; int slot, idx;
@@ -318,9 +323,66 @@ class RSQTR_Rig : EventHandler
 			}
 			return;
 		}
+		if (e.Name == "rsqtr_prof_save" || e.Name == "rsqtr_prof_load")
+		{
+			if (n == consoleplayer) Profile(pmo, e.Args[0], e.Name == "rsqtr_prof_save");
+			return;
+		}
 		if (!pmo || pmo.health <= 0) return;
 		if (e.Name == "rsqtr_holster") Holster(pmo, e.Args[0]);
 		else if (e.Name == "rsqtr_draw") Draw(pmo, e.Args[0], e.Args[1]);
+	}
+
+	// HOLSTER PROFILES (the owner, 10-27: "save up to four holster profiles"). Every place's
+	// position, size and slot list, written into one of this machine's own settings
+	// (rsqtr_profile1..4) or read back from it. Format: "f,l,u,rad,slots|..." per place, the slot
+	// list's spaces as dots.
+	private void Profile(Actor who, int k, bool save)
+	{
+		if (k < 1 || k > 4) return;
+		let pc = CVar.FindCVar(String.Format("rsqtr_profile%d", k));
+		if (!pc) return;
+		if (save)
+		{
+			String txt = "";
+			for (int r = 0; r < RSQTR_Region.N; r++)
+			{
+				String sl = CVar.FindCVar(String.Format("rsqtr_r%d_slots", r)).GetString();
+				sl.Replace(" ", ".");
+				txt = txt .. String.Format("%s%.3f,%.3f,%.3f,%.3f,%s", r ? "|" : "",
+					CVar.FindCVar(String.Format("rsqtr_r%d_f", r)).GetFloat(), CVar.FindCVar(String.Format("rsqtr_r%d_l", r)).GetFloat(),
+					CVar.FindCVar(String.Format("rsqtr_r%d_u", r)).GetFloat(), CVar.FindCVar(String.Format("rsqtr_r%d_rad", r)).GetFloat(), sl);
+			}
+			pc.SetString(txt);
+			CVar.FindCVar("rsqtr_profile_active").SetInt(k);
+			if (who) who.A_Print(String.Format("Tactical Rig: holsters saved to %s", ProfileName(k)));
+			return;
+		}
+		String all = pc.GetString();
+		if (all == "") { if (who) who.A_Print(String.Format("Tactical Rig: %s is empty -- save to it first", ProfileName(k))); return; }
+		Array<String> places;
+		all.Split(places, "|");
+		for (int r = 0; r < RSQTR_Region.N && r < places.Size(); r++)
+		{
+			Array<String> f;
+			places[r].Split(f, ",");
+			if (f.Size() < 5) continue;
+			CVar.FindCVar(String.Format("rsqtr_r%d_f", r)).SetFloat(f[0].ToDouble());
+			CVar.FindCVar(String.Format("rsqtr_r%d_l", r)).SetFloat(f[1].ToDouble());
+			CVar.FindCVar(String.Format("rsqtr_r%d_u", r)).SetFloat(f[2].ToDouble());
+			CVar.FindCVar(String.Format("rsqtr_r%d_rad", r)).SetFloat(f[3].ToDouble());
+			String sl = f[4];
+			sl.Replace(".", " ");
+			CVar.FindCVar(String.Format("rsqtr_r%d_slots", r)).SetString(sl);
+		}
+		CVar.FindCVar("rsqtr_profile_active").SetInt(k);
+		if (who) who.A_Print(String.Format("Tactical Rig: holsters loaded from %s", ProfileName(k)));
+	}
+
+	static String ProfileName(int k)
+	{
+		static const String NM[] = { "Standing A (blue)", "Standing B (orange)", "Seated A (purple)", "Seated B (yellow)" };
+		return NM[clamp(k, 1, 4) - 1];
 	}
 
 	// Put the main hand's weapon back on the body at region r; the hand goes empty.
@@ -514,6 +576,15 @@ class RSQTR_Rig : EventHandler
 	private transient bool migrated;
 	private void MigratePlaces()
 	{
+		// settings version 2 (10-27): the saber has two holsters of its own, so it no longer
+		// also hangs on the hips unless asked
+		let ver = CVar.FindCVar("rsqtr_cfgver");
+		if (ver && ver.GetInt() < 2)
+		{
+			let sh = CVar.FindCVar("rsqtr_saber_hip");
+			if (sh) sh.SetBool(false);
+			ver.SetInt(2);
+		}
 		// slot 0 was the pectorals' (my pick, 10-27): in BD that is the flamethrowers, so the
 		// pectorals hold pistols like the shoulder holsters they are, and slot 0 goes with the
 		// heavy weapons on the right shoulder (the owner: "who would put a flamethrower in
@@ -709,9 +780,14 @@ class RSQTR_Rig : EventHandler
 					m.SetOrigin(at, true);
 					m.bINVISIBLE = false;
 					m.Alpha = clamp(a, 0.0, 1.0);
-					double s = rad * RSQTR_Body.UPM;   // the wireframe sphere has radius 1.0
+					// THE PROFILE IN USE SHOWS IN THE COLOUR (the owner, 10-27): idle blue, orange,
+					// purple or yellow for profiles 1-4, green with a hand inside. Not by colour
+					// alone: a sphere with a hand in it is also brighter and a size larger.
+					double s = rad * RSQTR_Body.UPM * (inside ? 1.15 : 1.0);   // the wireframe sphere has radius 1.0
 					m.Scale = (s, s);
-					m.frame = inside ? 1 : 0;      // blue idle, green with a hand inside
+					static const int IDLE[] = { 0, 2, 3, 4 };
+					int prof = clamp(Opt("rsqtr_profile_active", p, 1), 1, 4);
+					m.frame = inside ? 1 : IDLE[prof - 1];
 				}
 			}
 			else if (marker[r]) marker[r].bINVISIBLE = true;
@@ -734,6 +810,16 @@ class RSQTR_Rig : EventHandler
 			// three times what the little grenade icons were).
 			let fitT = GetFit();
 			if (put != "" && fitT.Find(put) < 0) put = "";
+			// ONE HILT, TWO HOLSTERS: the saber is shown only in the one it was put in (the
+			// off-hand side's holster until it has been put anywhere).
+			if (put != "" && (r == RSQTR_Region.SABER_L || r == RSQTR_Region.SABER_R))
+			{
+				int other = r == RSQTR_Region.SABER_L ? RSQTR_Region.SABER_R : RSQTR_Region.SABER_L;
+				String here = lastPut[consoleplayer * RSQTR_Region.N + r];
+				String there = lastPut[consoleplayer * RSQTR_Region.N + other];
+				int home = RSQTR_Body.LeftHanded() ? RSQTR_Region.SABER_R : RSQTR_Region.SABER_L;
+				if (here != put && (there == put || r != home)) put = "";
+			}
 			if (icons && live && put != "")
 			{
 				if (!icon[r]) icon[r] = Actor.Spawn("RSQTR_Icon", at);
@@ -772,7 +858,8 @@ class RSQTR_Rig : EventHandler
 		double off = 0, pt = 0, rl = 0;               // off: muzzle heading from the body's
 		switch (r)
 		{
-		case 0: off = 0;   pt = 80; rl = -10; break;  // left hip
+		case 9: case 0: off = 0;   pt = 80; rl = -10; break;  // left hip, left saber: hanging down
+		case 10: off = 0;  pt = 80; rl = 10;  break;           // right saber
 		case 1: off = 0;   pt = 80; rl = 10;  break;  // right hip
 		case 6: off = 180; pt = 50; rl = 15;  break;  // left pectoral
 		case 7: off = 180; pt = 50; rl = -15; break;  // right pectoral
@@ -909,8 +996,14 @@ class RSQTR_Icon : Actor
 		bINVISIBLE = false;
 	}
 
+	Vector3 placed;		// where it was Placed (its middle goes here), for the mirror
+	Vector3 cOff;		// its middle in model axes, scaled, when Fit moved it
+	bool hasOff;
+
 	void Place(Vector3 at)
 	{
+		placed = at;
+		hasOff = false;
 		SetOrigin(at, true);
 	}
 
@@ -944,6 +1037,7 @@ class RSQTR_Icon : Actor
 		Vector3 F, L, U;
 		[F, L, U] = RSQTR_Fit.Basis(oa, op, orl);
 		Vector3 c = fit.Centre(at) * s;
+		cOff = c; hasOff = true;
 		SetOrigin(pos - (F * c.x + L * c.y + U * c.z), true);
 	}
 }

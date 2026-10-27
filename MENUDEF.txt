@@ -61,7 +61,7 @@ OptionMenu "RSQTR_Options"
 	Option "Messages", "rsqtr_messages", "OnOff"
 	Slider "Reach (all regions)", "rsqtr_reach", 0.5, 2.0, 0.05, 2
 	Option "Leave the shield's shoulder to the ShieldSaw", "rsqtr_yield_shield", "OnOff"
-	Option "The saber's hilt clips to a hip", "rsqtr_saber_hip", "OnOff"
+	Option "The saber can also go on a hip", "rsqtr_saber_hip", "OnOff"
 	Slider "Body follows a head turned past (degrees)", "rsqtr_body_turn", 10, 90, 5, 0
 	Slider "...after waiting (seconds, 0 at once)", "rsqtr_body_secs", 0, 3, 0.25, 2
 	StaticText ""
@@ -105,7 +105,7 @@ OptionMenu "RSQTR_Options"
 	TextField "Main grip", "rsqtr_keys_main"
 	TextField "Off grip", "rsqtr_keys_off"
 	StaticText ""
-	SafeCommand "Reset all Tactical Rig settings", "resetcvar rsqtr_on rsqtr_grip rsqtr_use rsqtr_keys_main rsqtr_keys_off rsqtr_markers rsqtr_icons rsqtr_pairs rsqtr_icon_scale rsqtr_icon_m rsqtr_icon_back_m rsqtr_icon_flip rsqtr_icon_turn rsqtr_haptics rsqtr_messages rsqtr_reach rsqtr_yield_shield rsqtr_saber_hip rsqtr_eye_m rsqtr_edit rsqtr_mirror rsqtr_mirror_view rsqtr_mirror_m rsqtr_dwell rsqtr_body_turn rsqtr_body_secs rsqtr_vest rsqtr_vest_style rsqtr_vest_u rsqtr_vest_f rsqtr_vest_size rsqtr_vest_low rsqtr_empty rsqtr_door rsqtr_door_grip rsqtr_door_use rsqtr_door_palm rsqtr_door_commit rsqtr_door_gain rsqtr_cig rsqtr_cig_zippo rsqtr_cig_secs rsqtr_cig_slowmo rsqtr_cig_depth rsqtr_cig_count rsqtr_cig_refill rsqtr_r0_f rsqtr_r0_l rsqtr_r0_u rsqtr_r0_rad rsqtr_r0_slots rsqtr_r1_f rsqtr_r1_l rsqtr_r1_u rsqtr_r1_rad rsqtr_r1_slots rsqtr_r2_f rsqtr_r2_l rsqtr_r2_u rsqtr_r2_rad rsqtr_r2_slots rsqtr_r3_f rsqtr_r3_l rsqtr_r3_u rsqtr_r3_rad rsqtr_r3_slots rsqtr_r4_f rsqtr_r4_l rsqtr_r4_u rsqtr_r4_rad rsqtr_r4_slots rsqtr_r5_f rsqtr_r5_l rsqtr_r5_u rsqtr_r5_rad rsqtr_r5_slots rsqtr_r6_f rsqtr_r6_l rsqtr_r6_u rsqtr_r6_rad rsqtr_r6_slots rsqtr_r7_f rsqtr_r7_l rsqtr_r7_u rsqtr_r7_rad rsqtr_r7_slots rsqtr_r8_f rsqtr_r8_l rsqtr_r8_u rsqtr_r8_rad rsqtr_r8_slots", "Put every Tactical Rig setting back?"
+	SafeCommand "Reset all Tactical Rig settings", "resetcvar rsqtr_on rsqtr_grip rsqtr_use rsqtr_keys_main rsqtr_keys_off rsqtr_markers rsqtr_icons rsqtr_pairs rsqtr_icon_scale rsqtr_icon_m rsqtr_icon_back_m rsqtr_icon_flip rsqtr_icon_turn rsqtr_haptics rsqtr_messages rsqtr_reach rsqtr_yield_shield rsqtr_saber_hip rsqtr_eye_m rsqtr_edit rsqtr_mirror rsqtr_mirror_view rsqtr_mirror_m rsqtr_dwell rsqtr_body_turn rsqtr_body_secs rsqtr_vest rsqtr_vest_style rsqtr_vest_u rsqtr_vest_f rsqtr_vest_size rsqtr_vest_low rsqtr_empty rsqtr_door rsqtr_door_grip rsqtr_door_use rsqtr_door_palm rsqtr_door_commit rsqtr_door_gain rsqtr_cig rsqtr_cig_zippo rsqtr_cig_secs rsqtr_cig_slowmo rsqtr_cig_depth rsqtr_cig_count rsqtr_cig_refill rsqtr_r0_f rsqtr_r0_l rsqtr_r0_u rsqtr_r0_rad rsqtr_r0_slots rsqtr_r1_f rsqtr_r1_l rsqtr_r1_u rsqtr_r1_rad rsqtr_r1_slots rsqtr_r2_f rsqtr_r2_l rsqtr_r2_u rsqtr_r2_rad rsqtr_r2_slots rsqtr_r3_f rsqtr_r3_l rsqtr_r3_u rsqtr_r3_rad rsqtr_r3_slots rsqtr_r4_f rsqtr_r4_l rsqtr_r4_u rsqtr_r4_rad rsqtr_r4_slots rsqtr_r5_f rsqtr_r5_l rsqtr_r5_u rsqtr_r5_rad rsqtr_r5_slots rsqtr_r6_f rsqtr_r6_l rsqtr_r6_u rsqtr_r6_rad rsqtr_r6_slots rsqtr_r7_f rsqtr_r7_l rsqtr_r7_u rsqtr_r7_rad rsqtr_r7_slots rsqtr_r8_f rsqtr_r8_l rsqtr_r8_u rsqtr_r8_rad rsqtr_r8_slots rsqtr_r9_f rsqtr_r9_l rsqtr_r9_u rsqtr_r9_rad rsqtr_r9_slots rsqtr_r10_f rsqtr_r10_l rsqtr_r10_u rsqtr_r10_rad rsqtr_r10_slots", "Put every Tactical Rig setting back?"
 }
 
 OptionMenu "RSQTR_Regions"
@@ -177,4 +177,27 @@ OptionMenu "RSQTR_Regions"
 	Slider "Left (m)", "rsqtr_r8_l", -0.5, 0.5, 0.01, 2
 	Slider "Up from your eyes (m)", "rsqtr_r8_u", -1.2, 0.2, 0.01, 2
 	Slider "Size (m)", "rsqtr_r8_rad", 0.05, 0.30, 0.01, 2
+	StaticText ""
+	StaticText "Left saber (the saber only)", gold
+	Slider "Forward (m)", "rsqtr_r9_f", -0.5, 0.5, 0.01, 2
+	Slider "Left (m)", "rsqtr_r9_l", -0.5, 0.5, 0.01, 2
+	Slider "Up from your eyes (m)", "rsqtr_r9_u", -1.2, 0.2, 0.01, 2
+	Slider "Size (m)", "rsqtr_r9_rad", 0.05, 0.30, 0.01, 2
+	StaticText ""
+	StaticText "Right saber (the saber only)", gold
+	Slider "Forward (m)", "rsqtr_r10_f", -0.5, 0.5, 0.01, 2
+	Slider "Left (m)", "rsqtr_r10_l", -0.5, 0.5, 0.01, 2
+	Slider "Up from your eyes (m)", "rsqtr_r10_u", -1.2, 0.2, 0.01, 2
+	Slider "Size (m)", "rsqtr_r10_rad", 0.05, 0.30, 0.01, 2
+	StaticText ""
+	StaticText "Holster profiles: every place's position, size and slots", gold
+	StaticText "The spheres show the one in use: blue, orange, purple, yellow.", "Gray"
+	Command "Save as Standing A (blue)", "netevent rsqtr_prof_save 1"
+	Command "Save as Standing B (orange)", "netevent rsqtr_prof_save 2"
+	Command "Save as Seated A (purple)", "netevent rsqtr_prof_save 3"
+	Command "Save as Seated B (yellow)", "netevent rsqtr_prof_save 4"
+	SafeCommand "Use Standing A (blue)", "netevent rsqtr_prof_load 1", "Replace your holster places with Standing A (blue)?"
+	SafeCommand "Use Standing B (orange)", "netevent rsqtr_prof_load 2", "Replace your holster places with Standing B (orange)?"
+	SafeCommand "Use Seated A (purple)", "netevent rsqtr_prof_load 3", "Replace your holster places with Seated A (purple)?"
+	SafeCommand "Use Seated B (yellow)", "netevent rsqtr_prof_load 4", "Replace your holster places with Seated B (yellow)?"
 }
