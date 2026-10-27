@@ -73,6 +73,11 @@ class RSQTR_Rig : EventHandler
 	bool lastPair[MAXPLAYERS * RSQTR_Region.N];    // ...and it went away as a PAIR (one in each hand)
 	String offNext[MAXPLAYERS];                     // the off-hand weapon to raise once the main hand has switched
 	int offWait[MAXPLAYERS];
+	// The last draw from a holster, for a scorer's Quick Draw (RSQTR_RigService
+	// "rig.drawtic" / "rig.drawn"). Written in Draw(), which every machine runs from the
+	// same network event, so it is the same everywhere. drawTic is level.maptime + 1 (0 = none).
+	int drawTic[MAXPLAYERS];
+	String drawClass[MAXPLAYERS];
 
 	// ---- local state (console player) -------------------------------------------
 	private transient RSQTR_Body body;
@@ -432,6 +437,8 @@ class RSQTR_Rig : EventHandler
 		let copy = OffCopy(pmo, wc);
 		if (copy && (mode == 2 || (mode == 1 && lastPair[slot]))) QueueOff(n, copy.GetClassName());
 		if (lastPut[slot] == own[idx]) { lastPut[slot] = ""; lastPair[slot] = false; }
+		drawTic[n] = level.maptime + 1;
+		drawClass[n] = w.GetClassName();
 		pmo.A_StartSound("rsqtr/draw", CHAN_AUTO, CHANF_LOCAL, 0.8);
 	}
 
