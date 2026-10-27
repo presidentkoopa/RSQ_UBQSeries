@@ -1,3 +1,27 @@
+## Branch `agent-upgrades` (2026-10-27): Gun Bonsai melee upgrades
+
+Not yet run on the owner's headset. The saber asks the Gun Bonsai VR patch for its upgrade levels by
+NAME (`UBQS_Upg` at the end of zscript.txt -> `RSQ_MeleeUpgradeService`), cached once a second.
+Without the patch every level reads 0 and the Force is today's (rig, saber + BD only: push 20.9,
+scale 1.00, grip mass 600).
+
+- XP credit (measured): the return bolt's `master` and the thrown blade's `tracer` are the saber, so
+  Gun Bonsai pays the saber that did it (before: both were guessed and went to the main hand).
+  Deflected missiles get `master` = the saber when nothing uses it. The Force item's `master` is a
+  saber (off-hand first), so Force damage is paid to a saber.
+- Momentum (`UpgCutMult`): +10%/level per half second of blade motion, up to 2 s; 6 still tics reset.
+- Riposte Edge (`Prime` from BlockFx and BatBack): next landing cut within 1 s (+0.5 s/level) x2
+  (+0.25/level).
+- Piercing Return (`UBQS_Bolt.pierce`): rig, near imp 80 -> 60 and far imp 60 -> 40 with one bolt.
+- Saber Throw (`UBQS_Thrown.ExtraHop`): rig, a free throw cut one imp, then found and killed two more.
+- The Force, with the patch: unlearned at `rsq_force_start` (0.6); level 1 = today; +15%/level.
+  Push 2+ wider cone, 3+ shockwave all round (rig: imp behind you thrown, 80 -> 70). Pull 2+ stun on
+  arrival (rig: held in Pain ~44 tics), 3+ no ranged attacks for 2 s+ (rig: Missile refused).
+  Choke 2+ lift and crush (x1.5/s up to x3), 3+ holds level-2 extra (rig: two imps choked at once);
+  Chain Choke jumps the grip on a kill (rig: A killed in the grip -> grip on B). Jump 2+ landing slam
+  (rig: real `+jump`, two imps 80 -> 51 and thrown).
+- Dual Harmony is done by the patch itself (alternating saber inflictors), no saber code.
+
 # QuestSaber — polish branch handoff (2026-10-26)
 
 Branch `polish/quest-series`. Stock QZD 17.3, ZScript only. Not yet run on the owner's headset.
