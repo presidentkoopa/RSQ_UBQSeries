@@ -1,9 +1,9 @@
 # RSQ_UBQSeries — the Ultra Badass Quest series
 
-**Version 0.8a — 2026-10-26.** Ready-to-load pk3s are in [`pk3/`](pk3/).
+**Version 0.9 — 2026-10-27.** Ready-to-load pk3s are in [`pk3/`](pk3/).
 
-Five standalone add-ons for **Doom VR on the Quest**, all in one place: a distance grab, a
-shield-saw, a lightsaber, a tactical rig and slow motion. Each one is its own pk3. Load
+Six standalone add-ons for **Doom VR on the Quest**, all in one place: a distance grab, a
+shield-saw, a lightsaber, a tactical rig, slow motion and a laser sight. Each one is its own pk3. Load
 any of them, in any order, alone or all together.
 
 They target **stock QuestZDoom 17.3** (TeamBeef / Emawind). There are no engine changes. Everything
@@ -16,6 +16,7 @@ is ZScript and data lumps.
 | ⚔️ | [QuestSaber](QuestSaber/) | `UltraBadassQuestSaber.pk3` | A volumetric lightsaber, with a second one for the off hand on the Dual key. Cut, block, deflect, throw, and use the Force. |
 | 🎒 | [TacticalRig](TacticalRig/) | `RSQ_TacticalRig.pk3` | Guns holstered on your hips and shoulders, spots for the saber, a torso and helmet, a mirror, and Ermac's cigarette. Built on **Ermac's** Virtual Tactical Vest idea. |
 | ⏱️ | [SlowMo](SlowMo/) | `RSQ_SlowMo.pk3` | The world slows, you don't. Enemy bullets become rounds you can see and dodge. |
+| 🔴 | [LaserSight](LaserSight/) | `RSQ_LaserSight.pk3` | A laser from each gun's own barrel, in either hand, fading with distance, with a dot on whatever it hits. |
 
 ---
 
@@ -26,7 +27,8 @@ is ZScript and data lumps.
    pack. The tested order is:
 
    ```
-   doom2.wad -> brutal22test6 -> BD_VoxelPack -> any of the five, in any order
+   doom2.wad -> brutal22test6 -> BD_VoxelPack -> BD22_VR-Reloaded (1.99x-lb-r7-saveload or later)
+             -> any of the six, in any order
    ```
 
 3. Settings live under **Options** in the game:
@@ -38,6 +40,7 @@ is ZScript and data lumps.
    | QuestSaber | **Ultra Badass QuestSaber** |
    | TacticalRig | **Tactical Rig** |
    | SlowMo | **RSQ SlowMo** |
+   | LaserSight | **Laser Sight** |
 
    Every menu ends with **Tuning and Debug**, which holds a **Reset All** row.
 
@@ -81,7 +84,9 @@ is ZScript and data lumps.
 
 ### QuestSaber
 - **The saber** is in weapon slot 1. Swing to cut; the blade blocks and deflects shots, and two
-  blades clash and lock. It can be thrown (it comes back, or drops until you call it).
+  blades clash and lock. Against Brutal Doom it blocks on contact, as the ShieldSaw does: claws
+  and bites (Brutal Doom's invisible short-range missiles) are stopped and stagger the monster,
+  and its tracer bullets are turned back (*Blade Block Reach* sets how wide the blade blocks). It can be thrown (it comes back, or drops until you call it).
 - **The second saber:** the Dual key (Brutal Doom's own, or the saber's) brings it into the off hand
   and puts it away; *Second Saber* can make it always out, or off.
 - **The Force** in the off hand: push, pull, grip and jump, by gesture.
@@ -98,10 +103,16 @@ is ZScript and data lumps.
   hands. Dual is left to its own key.
 - The holsters stay on your body when you look around; turns carry them. A sphere shows a holster
   when your hand is near; the gun stored there shows as its pickup model.
+- **Seated:** one switch for playing seated. The rig hangs from your seated head height instead
+  of the standing view height, and catches up if you stand.
 - **Fit it to you:** *Measure My Height*, *Move Holsters by Hand*, four *Holster Profiles*, and a
   **mirror** that shows you wearing it, front and back.
 - **A torso** (optional): the Doom marine's (default) or Quake's Grunt, green or blue with your
-  armour, red at low health; with the marine, a **helmet** only mirrors show.
+  armour, red at low health; with the marine, a **helmet** only mirrors show. It fades as you
+  look down.
+- **Mirror body:** with the torso on, map mirrors also show your held gun and both hands (Brutal
+  Doom Quest's own gun models, firing frames included), and hide the sprite marine so you see one
+  body. Flat sprite guns get no mirror copy.
 - **Ermac's cigarette** (off by default): a pocket on your left chest. Take one, hold it
   at your mouth to light it (or light it with Ermac's Zippo in your other hand, an
   option). While it burns the world slows (with SlowMo loaded); it heals you slowly
@@ -123,7 +134,7 @@ is ZScript and data lumps.
 
 ## They work together
 
-The five mods never link against each other. Each checks for the others by name at run time, so
+The six mods never link against each other. Each checks for the others by name at run time, so
 a missing mod is simply never found:
 
 - The **grab stands down on a hand holding a melee weapon**, the shield or the Force hand, since
@@ -148,12 +159,13 @@ a lock). Nothing buzzes constantly.
 
 ```
 RSQ_UBQSeries/
-├── pk3/             ready-to-load builds of all five (identical contents to the tested builds)
+├── pk3/             ready-to-load builds of all six (identical contents to the tested builds)
 ├── DistanceGrab/    source, CREDITS, docs/ (DECISIONS, HANDOFF), tools/ (asset generators, rig tests)
 ├── ShieldSaw/       source, README (full manual), HANDOFF
 ├── QuestSaber/      source, CREDITS, docs/HANDOFF_polish
 ├── TacticalRig/     source, README, CREDITS, docs/HANDOFF, tools/ (sound generator, pickup measurer)
 ├── SlowMo/          source, README, CREDITS, docs/HANDOFF, tools/ (sound generator)
+├── LaserSight/      source, docs/HANDOFF, tools/ (muzzle measurer, beam generator)
 ├── tools/rig17/     how the real QuestZDoom 17.3 test engine was built, and the test runners
 └── build_all.sh     rebuilds every pk3 into pk3/
 ```
@@ -171,12 +183,29 @@ This needs `zip`. Each mod also keeps its original script (DistanceGrab uses
 `build.ps1` on Windows; ShieldSaw, TacticalRig and SlowMo use `build.sh`). `build_all.sh` packs
 exactly the same files.
 
-## LaserSight: being rebuilt (2026-10-27)
+### LaserSight
+- **Rebuilt (2026-10-27).** Each gun's barrel and muzzle are measured from Brutal Doom Quest's own
+  gun models, for every resting pose and every firing frame, so the beam leaves the barrel and stays
+  on it in full-auto. A gun in each hand gets its own beam.
+- The beam fades out with distance; the **dot** stays on whatever it hits.
+- Melee weapons get nothing. Guns with no model to measure (sprite guns) get the dot only.
+- The beam hides during reloads and inspections (frames that move the gun more than 6 cm).
+- DistanceGrab's beam makes way for it (*Yield to Laser Sight*).
 
-The owner's headset test: the laser would not ride each weapon's barrel consistently, and it was
-jittery and laggy. It is out of the build while it is rebuilt. Its history stays in this repository
-(`git log -- LaserSight/` before the removal commit). DistanceGrab's beam already makes way for it
-when it is back (*Yield to Laser Sight*, asked by service name).
+## Status (0.9, 2026-10-27)
+
+New in 0.9:
+
+- **LaserSight** is back, rebuilt: beam from each gun's barrel in either hand, fading with
+  distance, dot on the target. Shown leaving the muzzle on 12 Brutal Doom guns in rig frames.
+- **QuestSaber blocks Brutal Doom's attacks:** measured over 30 s against a real BD imp, 0 of 132
+  claws landed with the blade in the way (93 hits, 1860 damage before); rifle zombie bullets 22 of
+  364 (9 with two sabers).
+- **TacticalRig:** Seated mode and the mirror body (above).
+- Tested together on the full load order (doom2, brutal22test6, BD_VoxelPack, BD22 VR-Reloaded
+  1.99x-lb-r7-saveload, all six plus Gun Bonsai and the VR patch): play, save, load twice, next
+  map, with no script errors besides BD_VoxelPack's own voxeldef lines. **Not yet played on a
+  headset.**
 
 ## Status (0.8a, 2026-10-26)
 
@@ -211,7 +240,8 @@ What changed, what's measured and what's still open is in each mod's handoff:
 [ShieldSaw](ShieldSaw/HANDOFF.md) ·
 [QuestSaber](QuestSaber/docs/HANDOFF_polish.md) ·
 [TacticalRig](TacticalRig/docs/HANDOFF_2026-10-26.md) ·
-[SlowMo](SlowMo/docs/HANDOFF_2026-10-26.md)
+[SlowMo](SlowMo/docs/HANDOFF_2026-10-26.md) ·
+[LaserSight](LaserSight/docs/HANDOFF_2026-10-26.md)
 
 - **ShieldSaw and QuestSaber:** the polish pass (weapon switching with the shield drawn, rumble on
   the right controller, every setting on a menu, reset rows, many fixes from two reviews).
@@ -229,7 +259,7 @@ Known limits:
 ## Credits
 
 - **QuestZDoom**: Emawind and Team Beef. The engine, and the off-hand weapon and attack-pose script
-  API all five mods are built on.
+  API all six mods are built on.
 - **id Software**: the shield saw (*Doom: The Dark Ages*): its design, and the mesh Ermac ripped
   from the game; the Doom Eternal Classic Slayer, whose torso the TacticalRig wears (a rip,
   prepared in the project owner's RS_VRBody) and the Classic Slayer's helmet the rig's mirror shows

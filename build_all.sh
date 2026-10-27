@@ -39,3 +39,10 @@ cd "$HUB/QuestSaber"
 rm -f "$OUT/UltraBadassQuestSaber.pk3"
 zip -q -r -X "$OUT/UltraBadassQuestSaber.pk3" . -x 'docs/*' '.gitignore'
 echo "built pk3/UltraBadassQuestSaber.pk3"
+
+# LaserSight: its explicit include list (its build.sh); tools/ and docs/ stay out.
+cd "$HUB/LaserSight"
+rm -f "$OUT/RSQ_LaserSight.pk3"
+zip -q -r -X "$OUT/RSQ_LaserSight.pk3" zscript.txt MAPINFO.txt CVARINFO.txt KEYCONF.txt MENUDEF.txt MODELDEF.txt \
+	VOXELDEF.txt ANIMDEFS.txt zscript sprites models/rsqls
+echo "built pk3/RSQ_LaserSight.pk3"
