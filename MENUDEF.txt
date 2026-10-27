@@ -3,9 +3,30 @@ AddOptionMenu "OptionsMenu"
 	Submenu "RSQ SlowMo", "RSQSM_Options"
 }
 
+// THE FRONT PAGE (the owner, 10-27: "way too many options, people will be overwhelmed").
+// Every setting, unchanged, is under "Advanced: every setting".
 OptionMenu "RSQSM_Options"
 {
 	Title "RSQ SlowMo"
+	StaticText "The world slows; you do not.", 1
+	StaticText "Toggle: the key, or cross your wrists in front of your face.", 1
+	StaticText ""
+	Control "Slow motion on/off", "rsqsm_toggle"
+	Slider "How slow (1 = normal)", "rsm_depth", 0.1, 0.9, 0.05, 2
+	Option "Wrist-cross gesture", "rsqsm_gesture", "OnOff"
+	Option "Reloading buys a moment", "rsqsm_reload", "OnOff"
+	Option "Slow motion costs adrenaline", "rsqsm_adrenaline", "OnOff"
+	Option "Enemy bullets you can dodge", "rsqsm_rounds", "OnOff"
+	Option "Haptics", "rsqsm_haptics", "OnOff"
+	StaticText ""
+	Submenu "Advanced: every setting", "RSQSM_Every"
+	StaticText ""
+	SafeCommand "Reset all RSQ SlowMo settings", "resetcvar rsm_depth; resetcvar rsm_ramp_in; resetcvar rsm_ramp_out; resetcvar rsm_yield; resetcvar rsm_sound_follow; resetcvar rsqsm_radius; resetcvar rsqsm_slow_own; resetcvar rsqsm_rounds; resetcvar rsqsm_round_speed; resetcvar rsqsm_trails; resetcvar rsqsm_wakes; resetcvar rsqsm_adrenaline; resetcvar rsqsm_adr_min; resetcvar rsqsm_adr_secs; resetcvar rsqsm_adr_kill; resetcvar rsqsm_adr_near; resetcvar rsqsm_adr_keep; resetcvar rsqsm_gesture; resetcvar rsqsm_gesture_gap; resetcvar rsqsm_gesture_hold; resetcvar rsqsm_reload; resetcvar rsqsm_reload_ms; resetcvar rsqsm_reload_depth; resetcvar rsqsm_haptics", "Put every RSQ SlowMo setting back?"
+}
+
+OptionMenu "RSQSM_Every"
+{
+	Title "RSQ SlowMo: every setting"
 	StaticText "The world slows; you do not.", 1
 	StaticText "Toggle: the key (Customize Controls), or cross your wrists in front of your face.", 1
 	StaticText ""
