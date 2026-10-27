@@ -1,7 +1,6 @@
 # RSQ_UBQSeries — the Ultra Badass Quest series
 
-**Release 0.8a — 2026-10-26.** Ready-to-load pk3s are in [`pk3/`](pk3/) and attached to the
-[0.8a release](../../releases/tag/v0.8a).
+**Version 0.8a — 2026-10-26.** Ready-to-load pk3s are in [`pk3/`](pk3/).
 
 Four standalone add-ons for **Doom VR on the Quest**, all in one place: a distance grab, a laser
 sight, a shield-saw and a lightsaber. Each one is its own pk3. Load any of them, in any order,
@@ -21,7 +20,7 @@ is ZScript and data lumps.
 
 ## Install
 
-1. Grab the pk3s you want from [`pk3/`](pk3/) (or the 0.8a release).
+1. Grab the pk3s you want from [`pk3/`](pk3/).
 2. Add them to your QuestZDoom load order the way you normally load mods, **after** your weapon
    pack. The tested order is:
 
