@@ -172,6 +172,7 @@ class RS_ScoreHUD : EventHandler
 		if (flashAlpha > 0.0) { DrawCentered(bgFlash, cx, y, vw, vh, flashAlpha); }
 
 		DrawCentered("SCOREBKT", cx, y, vw, vh, 1.0);
+		DrawBarTag(nextIsLife, cx, y, vw, vh);
 
 		if (handler.threshold <= 0) { return; }
 
@@ -184,6 +185,13 @@ class RS_ScoreHUD : EventHandler
 
 		DrawClipped(fg, cx, y, vw, vh, 1.0, barLeft, barLeft + barWidth);
 		if (flashAlpha > 0.0) { DrawClipped(fgFlash, cx, y, vw, vh, flashAlpha, barLeft, barLeft + barWidth); }
+	}
+
+	// Colour-blind play (rsqa_colorblind, cb.zs): what the bar fills toward is told by its colour
+	// (orange: a reward, blue: a life), so a life also shows as a life pip at the bar's end.
+	private ui void DrawBarTag(bool nextIsLife, double cx, double y, double vw, double vh)
+	{
+		if (nextIsLife && RS_ScoreCB.Mode()) DrawCentered("HUD_LIF1", cx + BARWIDTH / 2 + 8, y, vw, vh, 1.0);
 	}
 
 	// ------------------------------------------------------------- the lives
@@ -255,10 +263,25 @@ class RS_ScoreHUD : EventHandler
 			if (row >= handler.rowName.Size()) { continue; }
 			String name  = handler.rowName[row];
 			String color = handler.rowColor[row];
+			// Colour-blind play (rsqa_colorblind, cb.zs): the family's colour for that vision
+			// (TEXTCOLO _PD / _T / _HC) and its letter left of the number, so a family is never
+			// told by colour alone. Off, the breakdown is exactly as it was.
+			String tag = "";
+			String fam = color;
+			if (RS_ScoreCB.Mode())
+			{
+				tag = FamilyLetter(color);
+				if (tag != "" || fam == "RSScore_Base") fam = fam .. RS_ScoreCB.Suffix();   // a mod's own colour stays
+			}
 
 			double rowY = bonusY + ROW_STEP * (offset - 1) - half;
 
-			Screen.DrawText(fnt, Font.FindFontColor(color), cx - 55, rowY,
+			if (tag != "")
+				Screen.DrawText(fnt, Font.FindFontColor(fam), cx - 55 - fnt.StringWidth(tag .. " "), rowY, tag,
+					DTA_VirtualWidthF, vw, DTA_VirtualHeightF, vh, DTA_KeepRatio, true,
+					DTA_Alpha, alpha);
+
+			Screen.DrawText(fnt, Font.FindFontColor(fam), cx - 55, rowY,
 				String.Format("+%d", tr.rowValue[row]),
 				DTA_VirtualWidthF, vw, DTA_VirtualHeightF, vh, DTA_KeepRatio, true,
 				DTA_Alpha, alpha);
@@ -270,6 +293,16 @@ class RS_ScoreHUD : EventHandler
 	}
 
 	// ----------------------------------------------------------------- helpers
+
+	// A family's letter for colour-blind play, from its colour name (bonus.zs FamilyColor).
+	private ui String FamilyLetter(String color)
+	{
+		if (color == "RSScore_Efficiency") return "E";
+		if (color == "RSScore_Style")      return "S";
+		if (color == "RSScore_Daring")     return "D";
+		if (color == "RSScore_Melee")      return "M";
+		return "";
+	}
 
 	// HUDMSG_FADEOUT: full alpha for `hold` seconds from `startTic`, then linear to
 	// zero over `fade` seconds.

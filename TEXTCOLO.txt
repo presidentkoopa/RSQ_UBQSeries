@@ -61,3 +61,100 @@ RSScore_Melee
 	#102038 #182C58 0  24
 	#7090D0 #A0C8FF 25 255
 }
+
+
+// COLOUR-BLIND PLAY (RSQ_Accessibility's rsqa_colorblind; zscript/rsscore/cb.zs). Red, green,
+// orange and steel blue are two colours to a deuteranope (the closest families simulated 3.0
+// apart; 3.6 for a tritanope), so each vision gets its own four, picked by farthest-point
+// search against the gold Base row (smallest CIEDE2000 in the vision they are for: _PD 19.0,
+// _T 23.6, _HC 18.3), and the hud tags each row with its family's letter as well.
+
+RSScore_Base_PD
+{
+	#403010 #604020 0  24
+	#C0B020 #FFD030 25 255
+}
+
+RSScore_Efficiency_PD
+{
+	#33193F #4C265F 0  24
+	#994CBF #CC66FF 25 255
+}
+
+RSScore_Style_PD
+{
+	#19260C #263913 0  24
+	#4C7226 #669933 25 255
+}
+
+RSScore_Daring_PD
+{
+	#3F3F3F #5F5F5F 0  24
+	#BFBFBF #FFFFFF 25 255
+}
+
+RSScore_Melee_PD
+{
+	#262626 #393939 0  24
+	#727272 #999999 25 255
+}
+
+RSScore_Base_T
+{
+	#403010 #604020 0  24
+	#C0B020 #FFD030 25 255
+}
+
+RSScore_Efficiency_T
+{
+	#3F0C26 #5F1339 0  24
+	#BF2672 #FF3399 25 255
+}
+
+RSScore_Style_T
+{
+	#003F00 #005F00 0  24
+	#00BF00 #00FF00 25 255
+}
+
+RSScore_Daring_T
+{
+	#192600 #263900 0  24
+	#4C7200 #669900 25 255
+}
+
+RSScore_Melee_T
+{
+	#33333F #4C4C5F 0  24
+	#9999BF #CCCCFF 25 255
+}
+
+RSScore_Base_HC
+{
+	#403010 #604020 0  24
+	#C0B020 #FFD030 25 255
+}
+
+RSScore_Efficiency_HC
+{
+	#3F003F #5F005F 0  24
+	#BF00BF #FF00FF 25 255
+}
+
+RSScore_Style_HC
+{
+	#193F3F #265F5F 0  24
+	#4CBFBF #66FFFF 25 255
+}
+
+RSScore_Daring_HC
+{
+	#192619 #263926 0  24
+	#4C724C #669966 25 255
+}
+
+RSScore_Melee_HC
+{
+	#3F3F33 #5F5F4C 0  24
+	#BFBF99 #FFFFCC 25 255
+}
