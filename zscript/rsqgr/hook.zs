@@ -49,6 +49,7 @@ class RSQGR_Hook : Actor
 
 	Array<RSQGR_Rope> segs;     // cable look
 	Array<RSQGR_Link> links;    // chain look
+	transient bool hcLit;       // high contrast: claw and rope at full brightness (DrawRope)
 	int gripHand;               // a hand climbing this rope, -1 none (RSQGR_Climb)
 	Vector3 gripLastOff;        // that hand's offset from the pawn last tic
 	bool gripPending;           // the hold is taken on the next tic, from that tic's pose
@@ -161,6 +162,11 @@ class RSQGR_Hook : Actor
 	void DrawRope()
 	{
 		double t0 = MSTimeF();
+		// High contrast (rsqa_colorblind 4, cb.zs): the claw and the rope are lit at full
+		// brightness, so a dark chain still reads in a dark room. Nothing in the grapple speaks
+		// in colour (open and shut are two shapes), so the other visions need nothing.
+		hcLit = RSQGR_CB.Mode() == 4;
+		bBRIGHT = hcLit;
 		Vector3 from = RSQGR_Util.HandPos(owner, hand);
 		Vector3 to = Pos;
 
@@ -269,6 +275,7 @@ class RSQGR_Hook : Actor
 			else l.SetOrigin(q, true);
 			l.scale = (sc, sc);
 			l.bINVISIBLE = hide;
+			l.bBRIGHT = hcLit;
 		}
 	}
 
@@ -292,6 +299,7 @@ class RSQGR_Hook : Actor
 			r.angle = atan2(room.y, room.x);
 			r.pitch = -atan2(room.z, room.xy.Length()) + 90;
 			r.scale = (w, len / RSQGR_Rope.ROPE_L);
+			r.bBRIGHT = hcLit;
 			if (fresh) r.ClearInterpolation();
 		}
 	}
