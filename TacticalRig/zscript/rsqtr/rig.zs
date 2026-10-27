@@ -456,6 +456,10 @@ class RSQTR_Rig : EventHandler
 			let cs = CVar.FindCVar(String.Format("rsqtr_r%d_slots", r));
 			if (cs && cs.GetString() == "0") cs.SetString(RSQTR_Region.DEFSLOTS[r]);
 		}
+		// the body's turn rule was 60 degrees held 2 s until 10-27 (the regions stood in the
+		// room while he turned); still at those, it moves to the new 25 / 0
+		let bt = CVar.FindCVar("rsqtr_body_turn"), bs = CVar.FindCVar("rsqtr_body_secs");
+		if (bt && bs && abs(bt.GetFloat() - 60) < 0.01 && abs(bs.GetFloat() - 2) < 0.01) { bt.SetFloat(25); bs.SetFloat(0); }
 		let c5 = CVar.FindCVar("rsqtr_r5_slots");
 		if (c5 && c5.GetString() == "7 8 9") c5.SetString(RSQTR_Region.DEFSLOTS[5]);
 

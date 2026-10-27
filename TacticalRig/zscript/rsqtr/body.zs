@@ -16,9 +16,9 @@
 // the pawn's angle in the same tic; a head turn moves the angle alone. Looking around
 // leaves the rig where it is; turns carry it.
 //
-// Turning your actual body in the room cannot be seen (there is no body tracker), so
-// only a head held far round for a while is taken as the body having turned: past
-// rsqtr_body_turn degrees for rsqtr_body_secs seconds, the body swings round under it.
+// Turning your actual body in the room cannot be seen (there is no body tracker), so a
+// head turned past rsqtr_body_turn degrees (25) is taken as the body turning, and the body
+// follows it at once; small looks to the side, and anything while you look down, leave it.
 //
 // ROOM vs MAP: 34 map units per metre horizontally, 28.33 vertically (Doom's
 // pixels are 1.2 tall). Every offset here is given in metres and converted per
@@ -28,8 +28,8 @@ class RSQTR_Body play
 	const UPM = 34.0;
 	const PIXELSTRETCH = 1.2;
 	const TOL = 1.5;           // degrees: both controllers moved with the pawn = a turn
-	const SWING = 6.0;         // degrees per tic the body swings round once it follows
-	const STEEP = 40.0;        // degrees of head pitch past which the head's yaw is not trusted
+	const SWING = 12.0;        // most degrees per tic the body turns while it follows
+	const STEEP = 78.0;        // degrees of head pitch past which the head's yaw is not trusted (near straight down)
 
 	double yaw;                // the body's heading, degrees
 	double lastA, lastH0, lastH1;
@@ -49,8 +49,8 @@ class RSQTR_Body play
 
 		// A head held far round for long enough: the body has turned in the room.
 		let p = pmo.player;
-		double limit = RSQTR_Rig.Num("rsqtr_body_turn", p, 60.0);
-		int need = int(RSQTR_Rig.Num("rsqtr_body_secs", p, 2.0) * TICRATE);
+		double limit = RSQTR_Rig.Num("rsqtr_body_turn", p, 25.0);
+		int need = int(RSQTR_Rig.Num("rsqtr_body_secs", p, 0.0) * TICRATE);
 		double off = Actor.DeltaAngle(yaw, a);
 		// LOOKING DOWN AT YOURSELF IS NOT TURNING. With the head pitched steeply the
 		// headset's yaw swings wildly (the owner's headset, 10-27: "it keeps spinning all
@@ -62,13 +62,18 @@ class RSQTR_Body play
 			swinging = false;
 			return;
 		}
-		if (need > 0 && abs(off) > limit) offFor++;
+		// THE BODY COMES WITH YOU. Past rsqtr_body_turn degrees (25) the body follows the head
+		// straight away, catching up a fifth of the gap a tic, until it is square under it
+		// again -- the owner, 10-27: the old rule (60 degrees held 2 s) left the regions
+		// standing in the room while he turned, "they spin like the square is spinning".
+		// rsqtr_body_secs adds a wait first (0: none).
+		if (abs(off) > limit) offFor++;
 		else if (!swinging) offFor = 0;
-		if (need > 0 && offFor >= need) swinging = true;
+		if (offFor > need) swinging = true;
 		if (swinging)
 		{
-			yaw += clamp(off, -SWING, SWING);
-			if (abs(off) < SWING) { swinging = false; offFor = 0; }
+			yaw += clamp(off * 0.2, -SWING, SWING);
+			if (abs(off) < 4) { swinging = false; offFor = 0; }
 		}
 	}
 

@@ -54,8 +54,8 @@ OptionMenu "RSQTR_Options"
 	Slider "Reach (all regions)", "rsqtr_reach", 0.5, 2.0, 0.05, 2
 	Option "Leave the shield's shoulder to the ShieldSaw", "rsqtr_yield_shield", "OnOff"
 	Option "The saber's hilt clips to a hip", "rsqtr_saber_hip", "OnOff"
-	Slider "Body turns after the head is round, degrees", "rsqtr_body_turn", 30, 120, 5, 0
-	Slider "...for this long, seconds (0 never)", "rsqtr_body_secs", 0, 6, 0.5, 1
+	Slider "Body follows a head turned past (degrees)", "rsqtr_body_turn", 10, 90, 5, 0
+	Slider "...after waiting (seconds, 0 at once)", "rsqtr_body_secs", 0, 3, 0.25, 2
 	StaticText ""
 	StaticText "Doors", 1
 	Option "Lift doors by hand", "rsqtr_door", "OnOff"
