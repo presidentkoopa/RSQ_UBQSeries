@@ -28,6 +28,7 @@ class SSQ_Handler : EventHandler
 	Actor mMarker[MAXPLAYERS];
 	Actor mDisc[MAXPLAYERS];
 	class<Weapon> mPrevOff[MAXPLAYERS];	// what the draw displaced (null: nothing, or the pack's hands)
+	transient bool mFistNext[MAXPLAYERS];	// the next store hands the off hand its fist (ssq_store_to 0)
 	class<Weapon> mPrevMain[MAXPLAYERS];	// the main-hand weapon a two-handed conflict lowered
 	bool  mGripWas[MAXPLAYERS];		// off secondary last tic
 	bool  mUseWas[MAXPLAYERS];
@@ -186,6 +187,13 @@ class SSQ_Handler : EventHandler
 	}
 
 	// the off-hand weapon another mod would hand back when we let go, if there is one
+	// The off hand's fist: the pack's empty hands (Brutal Doom Quest's RSQ_Hands), found by name.
+	static clearscope Weapon FistBack(PlayerPawn mo)
+	{
+		Name hn = 'RSQ_Hands';
+		return Weapon(mo.FindInventory(hn));
+	}
+
 	static clearscope Weapon HandBack(PlayerPawn mo)
 	{
 		static const Name fillers[] = { 'UBQS_SaberOff', 'RSQ_Hands' };
@@ -720,7 +728,7 @@ class SSQ_Handler : EventHandler
 		if (p.PendingWeapon == WP_NOCHANGE && !(p.ReadyWeapon && p.ReadyWeapon.bTwoHanded))
 		{
 			Weapon back = mPrevOff[i] ? Weapon(mo.FindInventory(mPrevOff[i])) : null;
-			if (!back) back = HandBack(mo);
+			if (!back) back = mFistNext[i] ? FistBack(mo) : HandBack(mo);
 			if (back && back != p.ReadyWeapon && back != saw)
 			{
 				back.bOffhandWeapon = true;
@@ -734,7 +742,13 @@ class SSQ_Handler : EventHandler
 
 	void Stow(int i, bool sound)
 	{
+		// ON MANUAL STORE (ssq_store_to, the owner, 10-27): 0 the off hand goes back to its fist
+		// (the pack's empty hand, so reloading works at once), 1 to the weapon it held before the
+		// shield came out.
+		let st = CVar.FindCVar('ssq_store_to');
+		if (!st || st.GetInt() == 0) { mPrevOff[i] = null; mFistNext[i] = true; }
 		Unstow(i);
+		mFistNext[i] = false;
 		ClearLocks(i);
 		mState[i] = SS_STOWED;
 		if (sound) players[i].mo.A_StartSound("ssq/stow", CHAN_6);
