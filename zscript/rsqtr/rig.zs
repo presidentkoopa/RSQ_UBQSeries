@@ -979,7 +979,7 @@ class RSQTR_Rig : EventHandler
 	// A left-handed player gets the mirror image. Sprites face you whatever is set.
 	static void Hang(RSQTR_Icon ic, int r, double yaw, double metres, double fallback)
 	{
-		double s = RSQTR_Body.LeftHanded() ? -1 : 1;   // flips left and right
+		double s = RSQTR_Body.LayoutLeft() ? -1 : 1;   // flips left and right (rsqa_handed, else the engine's)
 		double off = 0, pt = 0, rl = 0;               // off: muzzle heading from the body's
 		switch (r)
 		{

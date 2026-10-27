@@ -22,7 +22,11 @@ hips (with UltraBadassQuestSaber loaded).
 - **Dual is left to its own key** (Brutal Doom Quest's Dual): the rig does not move the off-hand
   copy. *Draw Pairs* (Never by default) can bring it along again.
 - **Saber spots:** the main saber's spot is on your main-hand side's opposite hip (the left for
-  a right-hander), the second saber's on the other. Each saber shows in its spot whenever it is
+  a right-hander), the second saber's on the other.
+- **Left-handed:** QuestZDoom's Control Scheme decides which controller is your main hand, and
+  everything a hand owns follows it (saber spots, the shield's shoulder, rumble, the mirror). With
+  RSQ_Accessibility, its Handedness sets that scheme and also mirrors what no hand owns: the
+  cigarette pocket and the way stored guns hang. Each saber shows in its spot whenever it is
   not in its hand. A saber put on an empty holster goes to its own spot.
 - **Doors** are no longer the rig's: they moved to RSQ_DistanceGrab.
 
@@ -72,7 +76,7 @@ BD22Q) are shown. A sound and a rumble mark each holster and draw.
 
 ## Ermac's cigarette (optional, off by default)
 
-Turn on **Cigarettes**. A pocket on your left chest holds a few (3, refilled each level).
+Turn on **Cigarettes**. A pocket on your left chest (the right, left-handed) holds a few (3, refilled each level).
 
 - **Take one:** reach to the pocket and grip (or Use). Put it back the same way.
 - **Light it:** hold it at your mouth a moment. Or turn on *Zippo Lights It*: reach to the pocket

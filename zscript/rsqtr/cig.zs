@@ -6,7 +6,7 @@
 // here), and the Zippo is the voxel lighter from his ZBlood-VR, credited to him there.
 // This is a new implementation for the rig.
 //
-// Reach to the pocket on your left chest and grip (or press Use): a cigarette comes
+// Reach to the pocket on your left chest (right chest left-handed) and grip (or press Use): a cigarette comes
 // to that hand. Bring it to your mouth and hold it there a moment and it lights --
 // or, with the Zippo on (rsqtr_cig_zippo), reach to the same pocket with your OTHER
 // hand and keep the grip held: the Zippo comes out and flicks open, and holding its
@@ -75,13 +75,16 @@ class RSQTR_Cig : EventHandler
 		}
 	}
 
+	// On the left chest for a right-hander and the right chest for a left-hander
+	// (RSQTR_Body.LayoutLeft: rsqa_handed, else the engine's), so the main hand reaches across.
 	Vector3 Pocket(PlayerPawn pmo)
 	{
+		double l = RSQTR_Body.LayoutLeft() ? -POCKET_L : POCKET_L;
 		let rig = RSQTR_Rig.Get();
-		if (rig) return rig.BodyPoint(pmo, POCKET_F, POCKET_L, POCKET_U);
+		if (rig) return rig.BodyPoint(pmo, POCKET_F, l, POCKET_U);
 		RSQTR_Body tmp = new("RSQTR_Body");
 		tmp.yaw = pmo.angle; tmp.primed = true;
-		return tmp.At(pmo, POCKET_F, POCKET_L, POCKET_U);
+		return tmp.At(pmo, POCKET_F, l, POCKET_U);
 	}
 
 	// Just below the eyes and a little in front, turned with the head.
