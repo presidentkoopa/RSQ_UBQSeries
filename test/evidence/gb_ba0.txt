@@ -1,0 +1,14 @@
+T_LV t49 LongLine=0 FastReel=0 HeavyHaul=0 GetOverHere=0 Bowling=0 BarbedClaw=0 Slingshot=0 SteadyLine=0 DoubleHook=0 range x1.00 reel x1.00 mass x1.00 size x1.00
+T_SUM t49 #0 BaronOfHell at (464.0 512.0 -0.0) mass 1000 r 24 h 64 boss 0 hp 1000
+T_GR t54 h0 fire pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(74.0 503.5 37.0) L0.0 d517.1 segs0 ms0.000/0.037 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t63 h0 bite pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(440.0 503.5 37.0) L0.0 d517.1 segs69 ms0.072/0.031 scale1.00 grip-1 free01 hoff0.00 pt-1 victim BaronOfHell (464.0 512.0 -0.0)
+T_GRS t63 bite BaronOfHell hand 0 heavy 0 bites 1 volleys 0
+T_GRP bite p0 h0 BaronOfHell mass 1000 boss 0 heavy 0 (bites 1 yanks 0)
+T_GBH t63 p0 hook xp +15.0 (bites +1 yanks +0 swing +0 kills +0 hp +0 slams +0) paid 15.0 pool 15.0/1200 player xp 0 lv 0
+T_GR t65 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(431.4 504.0 37.0) L0.0 d517.1 segs69 ms0.070/0.077 scale1.00 grip-1 free01 hoff0.00 pt-1 victim BaronOfHell (444.0 512.0 -0.0)
+T_GR t67 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(411.4 504.0 37.0) L0.0 d517.1 segs65 ms0.084/0.055 scale1.00 grip-1 free01 hoff0.00 pt-1 victim BaronOfHell (424.0 512.0 -0.0)
+T_GR t69 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(391.4 504.0 37.0) L0.0 d517.1 segs61 ms0.055/0.053 scale1.00 grip-1 free01 hoff0.00 pt-1 victim BaronOfHell (404.0 512.0 -0.0)
+T_GR t71 h0 letgo pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(371.4 504.0 37.0) L0.0 d517.1 segs57 ms0.072/0.063 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_XP t91 now pool 15.0 player xp 0 lv 0 pooled 0
+T_XP2 gun Pistol xp 0.0 lv 0
+T_XP3 svc bites 1 yanks 0 swing 0 kills 0 killhp 0 slams 0

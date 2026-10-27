@@ -1,0 +1,86 @@
+T_LV t49 LongLine=0 FastReel=0 HeavyHaul=0 GetOverHere=3 Bowling=0 BarbedClaw=0 Slingshot=0 SteadyLine=0 DoubleHook=0 range x1.00 reel x1.00 mass x1.00 size x1.00
+T_SUM t49 #0 DoomImp at (364.0 512.0 -0.0) mass 100 r 20 h 56 boss 0 hp 60
+T_GR t54 h0 fire pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(74.0 503.5 37.0) L0.0 d517.1 segs0 ms0.000/0.022 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t60 h0 bite pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(344.0 503.5 37.0) L0.0 d517.1 segs45 ms0.079/0.041 scale1.00 grip-1 free01 hoff0.00 pt-1 victim DoomImp (364.0 512.0 -0.0)
+T_GRS t60 bite DoomImp hand 0 heavy 0 bites 1 volleys 0
+T_GRP bite p0 h0 DoomImp heavy 0 (bites 1 yanks 0)
+T_GBH t60 p0 hook xp +15.0 (bites +1 yanks +0 swing +0 kills +0 hp +0 slams +0) paid 15.0 pool 15.0/1200 player xp 0 lv 0
+T_GR t62 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(335.6 504.2 37.0) L0.0 d517.1 segs50 ms0.090/0.058 scale1.00 grip-1 free01 hoff0.00 pt-1 victim DoomImp (344.0 512.0 -0.0)
+T_GR t64 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(315.6 504.2 37.0) L0.0 d517.1 segs46 ms0.512/0.059 scale1.00 grip-1 free01 hoff0.00 pt-1 victim DoomImp (324.0 512.0 -0.0)
+T_GR t66 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(295.6 504.2 37.0) L0.0 d517.1 segs42 ms0.046/0.063 scale1.00 grip-1 free01 hoff0.00 pt-1 victim DoomImp (304.0 512.0 -0.0)
+T_GR t68 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(275.6 504.2 37.0) L0.0 d517.1 segs38 ms0.037/0.046 scale1.00 grip-1 free01 hoff0.00 pt-1 victim DoomImp (284.0 512.0 -0.0)
+T_GR t70 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(255.6 504.2 37.0) L0.0 d517.1 segs34 ms0.042/0.054 scale1.00 grip-1 free01 hoff0.00 pt-1 victim DoomImp (264.0 512.0 -0.0)
+T_GR t72 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(235.6 504.2 37.0) L0.0 d517.1 segs30 ms0.041/0.055 scale1.00 grip-1 free01 hoff0.00 pt-1 victim DoomImp (244.0 512.0 -0.0)
+T_GR t74 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(215.6 504.2 37.0) L0.0 d517.1 segs26 ms0.043/0.059 scale1.00 grip-1 free01 hoff0.00 pt-1 victim DoomImp (224.0 512.0 -0.0)
+T_GR t76 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(195.6 504.2 37.0) L0.0 d517.1 segs22 ms0.045/0.053 scale1.00 grip-1 free01 hoff0.00 pt-1 victim DoomImp (204.0 512.0 -0.0)
+T_GR t78 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(175.6 504.2 37.0) L0.0 d517.1 segs18 ms0.040/0.066 scale1.00 grip-1 free01 hoff0.00 pt-1 victim DoomImp (184.0 512.0 -0.0)
+T_GR t80 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(155.6 504.2 37.0) L0.0 d517.1 segs14 ms0.033/0.057 scale1.00 grip-1 free01 hoff0.00 pt-1 victim DoomImp (164.0 512.0 -0.0)
+T_GR t82 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(135.6 504.2 37.0) L0.0 d517.1 segs10 ms0.033/0.059 scale1.00 grip-1 free01 hoff0.00 pt-1 victim DoomImp (144.0 512.0 -0.0)
+T_GR t84 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(115.6 504.2 37.0) L0.0 d517.1 segs6 ms0.027/0.055 scale1.00 grip-1 free01 hoff0.00 pt-1 victim DoomImp (124.0 512.0 -0.0)
+T_GRP goh DoomImp arrives staggered 65 tics (1)
+T_GR t86 h0 drop pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(97.6 504.2 37.0) L0.0 d517.1 segs2 ms0.025/0.067 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_MON t86 #0 DoomImp pos(116.0 512.0 -0.0) hp 60 pain 1 tics 65
+T_MON t87 #0 DoomImp pos(116.0 512.0 -0.0) hp 60 pain 1 tics 64
+T_MON t88 #0 DoomImp pos(116.0 512.0 -0.0) hp 60 pain 1 tics 63
+T_MON t89 #0 DoomImp pos(116.0 512.0 -0.0) hp 60 pain 1 tics 62
+T_MON t90 #0 DoomImp pos(116.0 512.0 -0.0) hp 60 pain 1 tics 61
+T_MON t91 #0 DoomImp pos(116.0 512.0 -0.0) hp 60 pain 1 tics 60
+T_MON t92 #0 DoomImp pos(116.0 512.0 -0.0) hp 60 pain 1 tics 59
+T_MON t93 #0 DoomImp pos(116.0 512.0 -0.0) hp 60 pain 1 tics 58
+T_MON t94 #0 DoomImp pos(116.0 512.0 -0.0) hp 60 pain 1 tics 57
+T_MON t95 #0 DoomImp pos(116.0 512.0 -0.0) hp 60 pain 1 tics 56
+T_MON t96 #0 DoomImp pos(116.0 512.0 -0.0) hp 60 pain 1 tics 55
+T_MON t97 #0 DoomImp pos(116.0 512.0 -0.0) hp 60 pain 1 tics 54
+T_MON t98 #0 DoomImp pos(116.0 512.0 -0.0) hp 60 pain 1 tics 53
+T_MON t99 #0 DoomImp pos(116.0 512.0 -0.0) hp 60 pain 1 tics 52
+T_MON t100 #0 DoomImp pos(116.0 512.0 -0.0) hp 60 pain 1 tics 51
+T_MON t101 #0 DoomImp pos(116.0 512.0 -0.0) hp 60 pain 1 tics 50
+T_MON t102 #0 DoomImp pos(116.0 512.0 -0.0) hp 60 pain 1 tics 49
+T_MON t103 #0 DoomImp pos(116.0 512.0 -0.0) hp 60 pain 1 tics 48
+T_MON t104 #0 DoomImp pos(116.0 512.0 -0.0) hp 60 pain 1 tics 47
+T_MON t105 #0 DoomImp pos(116.0 512.0 -0.0) hp 60 pain 1 tics 46
+T_MON t106 #0 DoomImp pos(116.0 512.0 -0.0) hp 60 pain 1 tics 45
+T_MON t107 #0 DoomImp pos(116.0 512.0 -0.0) hp 60 pain 1 tics 44
+T_MON t108 #0 DoomImp pos(116.0 512.0 -0.0) hp 60 pain 1 tics 43
+T_MON t109 #0 DoomImp pos(116.0 512.0 -0.0) hp 60 pain 1 tics 42
+T_MON t110 #0 DoomImp pos(116.0 512.0 -0.0) hp 60 pain 1 tics 41
+T_MON t111 #0 DoomImp pos(116.0 512.0 -0.0) hp 60 pain 1 tics 40
+T_MON t112 #0 DoomImp pos(116.0 512.0 -0.0) hp 60 pain 1 tics 39
+T_MON t113 #0 DoomImp pos(116.0 512.0 -0.0) hp 60 pain 1 tics 38
+T_MON t114 #0 DoomImp pos(116.0 512.0 -0.0) hp 60 pain 1 tics 37
+T_MON t115 #0 DoomImp pos(116.0 512.0 -0.0) hp 60 pain 1 tics 36
+T_MON t116 #0 DoomImp pos(116.0 512.0 -0.0) hp 60 pain 1 tics 35
+T_MON t117 #0 DoomImp pos(116.0 512.0 -0.0) hp 60 pain 1 tics 34
+T_MON t118 #0 DoomImp pos(116.0 512.0 -0.0) hp 60 pain 1 tics 33
+T_MON t119 #0 DoomImp pos(116.0 512.0 -0.0) hp 60 pain 1 tics 32
+T_MON t120 #0 DoomImp pos(116.0 512.0 -0.0) hp 60 pain 1 tics 31
+T_MON t121 #0 DoomImp pos(116.0 512.0 -0.0) hp 60 pain 1 tics 30
+T_MON t122 #0 DoomImp pos(116.0 512.0 -0.0) hp 60 pain 1 tics 29
+T_MON t123 #0 DoomImp pos(116.0 512.0 -0.0) hp 60 pain 1 tics 28
+T_MON t124 #0 DoomImp pos(116.0 512.0 -0.0) hp 60 pain 1 tics 27
+T_MON t125 #0 DoomImp pos(116.0 512.0 -0.0) hp 60 pain 1 tics 26
+T_MON t126 #0 DoomImp pos(116.0 512.0 -0.0) hp 60 pain 1 tics 25
+T_MON t127 #0 DoomImp pos(116.0 512.0 -0.0) hp 60 pain 1 tics 24
+T_MON t128 #0 DoomImp pos(116.0 512.0 -0.0) hp 60 pain 1 tics 23
+T_MON t129 #0 DoomImp pos(116.0 512.0 -0.0) hp 60 pain 1 tics 22
+T_MON t130 #0 DoomImp pos(116.0 512.0 -0.0) hp 60 pain 1 tics 21
+T_MON t131 #0 DoomImp pos(116.0 512.0 -0.0) hp 60 pain 1 tics 20
+T_MON t132 #0 DoomImp pos(116.0 512.0 -0.0) hp 60 pain 1 tics 19
+T_MON t133 #0 DoomImp pos(116.0 512.0 -0.0) hp 60 pain 1 tics 18
+T_MON t134 #0 DoomImp pos(116.0 512.0 -0.0) hp 60 pain 1 tics 17
+T_MON t135 #0 DoomImp pos(116.0 512.0 -0.0) hp 60 pain 1 tics 16
+T_MON t136 #0 DoomImp pos(116.0 512.0 -0.0) hp 60 pain 1 tics 15
+T_MON t137 #0 DoomImp pos(116.0 512.0 -0.0) hp 60 pain 1 tics 14
+T_MON t138 #0 DoomImp pos(116.0 512.0 -0.0) hp 60 pain 1 tics 13
+T_MON t139 #0 DoomImp pos(116.0 512.0 -0.0) hp 60 pain 1 tics 12
+T_MON t140 #0 DoomImp pos(116.0 512.0 -0.0) hp 60 pain 1 tics 11
+T_MON t141 #0 DoomImp pos(116.0 512.0 -0.0) hp 60 pain 1 tics 10
+T_MON t142 #0 DoomImp pos(116.0 512.0 -0.0) hp 60 pain 1 tics 9
+T_MON t143 #0 DoomImp pos(116.0 512.0 -0.0) hp 60 pain 1 tics 8
+T_MON t144 #0 DoomImp pos(116.0 512.0 -0.0) hp 60 pain 1 tics 7
+T_MON t145 #0 DoomImp pos(116.0 512.0 -0.0) hp 60 pain 1 tics 6
+T_MON t146 #0 DoomImp pos(116.0 512.0 -0.0) hp 60 pain 1 tics 5
+T_XP t147 now pool 15.0 player xp 0 lv 0 pooled 0
+T_XP2 gun Pistol xp 0.0 lv 0
+T_XP3 svc bites 1 yanks 0 swing 0 kills 0 killhp 0 slams 0
+T_MON t147 #0 DoomImp pos(116.0 512.0 -0.0) hp 60 pain 1 tics 4

@@ -1,0 +1,56 @@
+T_SUM t50 #0 Imp at (444.0 512.0 -0.0) mass 100 r 16 h 56 boss 0 hp 80
+T_GR t55 h0 fire pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(74.0 503.5 37.0) L0.0 d517.1 segs0 ms0.000/0.008 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GRM launch Imp m=100 r=16 h=56 dist=332 T=22.8 arc=50 (want 50 room 448) tumble=1 voxel=0 scale=1.00
+T_GR t63 h0 bite pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(428.0 503.5 37.0) L0.0 d517.1 segs61 ms0.073/0.010 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (444.0 512.0 -0.0)
+T_GRS t63 bite Imp hand 0 heavy 0 bites 1 volleys 0
+T_GRP bite p0 h0 Imp mass 100 boss 0 heavy 0 (bites 1 yanks 1)
+T_DMG t63 Imp took 20 from BDoomer inf RSQGR_Hook hp now 60
+T_GRP barb bite Imp 80 -> 60
+T_GBH t63 p0 hook xp +30.0 (bites +1 yanks +1 swing +0 kills +0 hp +0 slams +0) paid 30.0 pool 50.0/1200 player xp 0 lv 0
+T_GR t65 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(423.1 504.5 41.0) L0.0 d517.1 segs67 ms0.119/0.010 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (437.2 512.0 4.0)
+T_GR t67 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(409.3 504.5 48.6) L0.0 d517.1 segs65 ms0.075/0.011 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (423.5 512.0 11.6)
+T_GR t69 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(390.6 504.5 57.8) L0.0 d517.1 segs61 ms0.050/0.010 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (404.7 512.0 20.8)
+T_GR t71 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(367.7 504.5 67.3) L0.0 d517.1 segs57 ms0.090/0.011 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (381.8 512.0 30.3)
+T_GR t73 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(341.0 504.5 76.1) L0.0 d517.1 segs51 ms0.043/0.009 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (355.1 512.0 39.1)
+T_GR t75 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(310.9 504.5 82.8) L0.0 d517.1 segs46 ms0.060/0.011 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (325.0 512.0 45.8)
+T_GR t77 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(277.6 504.5 86.5) L0.0 d517.1 segs39 ms0.053/0.011 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (291.7 512.0 49.5)
+T_GR t79 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(241.3 504.5 85.9) L0.0 d517.1 segs32 ms0.051/0.011 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (255.4 512.0 48.9)
+T_GR t81 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(202.2 504.5 79.9) L0.0 d517.1 segs25 ms0.041/0.012 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (216.3 512.0 42.9)
+T_GR t83 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(160.4 504.5 67.4) L0.0 d517.1 segs16 ms0.037/0.011 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (174.5 512.0 30.4)
+T_GR t85 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(116.0 504.5 47.3) L0.0 d517.1 segs6 ms0.032/0.009 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (130.1 512.0 10.3)
+T_GRM land Imp (arrived) after 23 tics speed 27.2 down 14.0 peak 49.8 dmg 4 at (112.0 512.0 -0.0) floorz -0.0 fits 1
+T_DMG t85 Imp took 4 from BDoomer inf None hp now 56
+T_GRP goh Imp arrives staggered 65 tics (1)
+T_DMG t86 Imp took 30 from BDoomer inf RSQGR_Hook hp now 26
+T_GRP barb tear Imp 56 -> 26
+T_GR t86 h0 drop pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(97.9 504.5 37.0) L0.0 d517.1 segs2 ms0.026/0.084 scale1.00 grip-1 free01 hoff0.00 pt-1
+MAPCHANGE
+T_XP t117 now pool 84.0 player xp 0 lv 0 pooled 3
+T_XP2 gun Rifle xp 0.0 lv 0
+T_XP3 svc bites 1 yanks 1 swing 0 kills 0 killhp 0 slams 0
+T_LV t117 LongLine=0 FastReel=0 HeavyHaul=0 GetOverHere=3 Bowling=0 BarbedClaw=4 Slingshot=0 SteadyLine=0 DoubleHook=0 range x1.00 reel x1.00 mass x1.00 size x1.00
+T_XP t19 now pool 84.0 player xp 0 lv 0 pooled 3
+T_XP2 gun Rifle xp 0.0 lv 0
+T_XP3 svc bites 0 yanks 0 swing 0 kills 0 killhp 0 slams 0
+T_LV t19 LongLine=0 FastReel=0 HeavyHaul=0 GetOverHere=3 Bowling=0 BarbedClaw=4 Slingshot=0 SteadyLine=0 DoubleHook=0 range x1.00 reel x1.00 mass x1.00 size x1.00
+T_GR t22 h0 fire pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 794.0 93.0) L0.0 d794.9 segs0 ms0.000/0.009 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GRM launch Imp m=100 r=16 h=56 dist=54 T=6.0 arc=8 (want 8 room 139) tumble=1 voxel=0 scale=1.00
+T_GR t22 h0 bite pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 824.0 93.0) L0.0 d794.9 segs0 ms0.000/0.009 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (-96.0 840.0 61.0)
+T_GRS t22 bite Imp hand 0 heavy 0 bites 1 volleys 0
+T_GRP bite p0 h0 Imp mass 100 boss 0 heavy 0 (bites 1 yanks 1)
+T_DMG t22 Imp took 20 from BDoomer inf RSQGR_Hook hp now 60
+T_GRP barb bite Imp 80 -> 60
+T_GBH t22 p0 hook xp +30.0 (bites +1 yanks +1 swing +0 kills +0 hp +0 slams +0) paid 30.0 pool 134.0/1200 player xp 0 lv 0
+T_GR t24 h0 pull pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-88.5 824.5 88.0) L0.0 d794.9 segs4 ms0.018/0.010 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (-96.0 838.6 56.0)
+T_GR t26 h0 pull pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-88.5 821.7 88.0) L0.0 d794.9 segs3 ms0.030/0.009 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (-96.0 835.8 56.0)
+T_GRM land Imp (arrived) after 6 tics speed 22.8 down 22.7 peak 0.0 dmg 11 at (-96.0 832.0 56.0) floorz 56.0 fits 1
+T_DMG t27 Imp took 11 from BDoomer inf None hp now 49
+T_GRP goh Imp arrives staggered 65 tics (1)
+T_DMG t28 Imp took 30 from BDoomer inf RSQGR_Hook hp now 19
+T_GRP barb tear Imp 49 -> 19
+T_GR t28 h0 drop pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-88.5 817.9 88.0) L0.0 d794.9 segs2 ms0.031/0.011 scale1.00 grip-1 free01 hoff0.00 pt-1
+SAVE2
+T_XP t85 now pool 175.0 player xp 0 lv 0 pooled 6
+T_XP2 gun Rifle xp 0.0 lv 0
+T_XP3 svc bites 1 yanks 1 swing 0 kills 0 killhp 0 slams 0
+LOAD3

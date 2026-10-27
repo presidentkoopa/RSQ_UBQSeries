@@ -1,0 +1,17 @@
+T_LV t49 LongLine=4 FastReel=0 HeavyHaul=0 GetOverHere=0 Bowling=0 BarbedClaw=0 Slingshot=0 SteadyLine=0 DoubleHook=0 range x1.80 reel x1.00 mass x1.00 size x1.00
+T_GR t49 h0 fire pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(74.0 503.5 37.0) L0.0 d517.1 segs0 ms0.000/0.024 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t91 h0 latch pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(1791.0 503.5 37.0) L1727.0 d1727.0 segs160 ms0.136/0.044 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t92 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(1791.0 503.5 37.0) L1727.0 d1727.0 segs160 ms0.136/0.211 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t94 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(1791.0 503.5 37.0) L1727.0 d1727.0 segs160 ms0.106/0.045 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t96 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(1791.0 503.5 37.0) L1727.0 d1727.0 segs160 ms0.105/0.043 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t98 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(1791.0 503.5 37.0) L1727.0 d1727.0 segs160 ms0.108/0.046 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t100 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(1791.0 503.5 37.0) L1727.0 d1727.0 segs160 ms0.104/0.042 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t102 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(1791.0 503.5 37.0) L1727.0 d1727.0 segs160 ms0.103/0.046 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t104 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(1791.0 503.5 37.0) L1727.0 d1727.0 segs160 ms0.107/0.168 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t106 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(1791.0 503.5 37.0) L1727.0 d1727.0 segs160 ms0.129/0.052 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t108 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(1791.0 503.5 37.0) L1727.0 d1727.0 segs160 ms0.108/0.043 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t110 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(1791.0 503.5 37.0) L1727.0 d1727.0 segs160 ms0.126/0.044 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_XP t112 now pool 0.0 player xp 0 lv 0 pooled 0
+T_XP2 gun Pistol xp 0.0 lv 0
+T_XP3 svc bites 0 yanks 0 swing 0 kills 0 killhp 0 slams 0
+T_GR t112 h0 ground pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(1791.0 503.5 37.0) L1727.0 d1727.0 segs160 ms0.263/0.050 scale1.00 grip-1 free01 hoff0.00 pt-1

@@ -1,0 +1,27 @@
+T_SUM t50 #0 Imp at (364.0 512.0 -0.0) mass 100 r 16 h 56 boss 0 hp 80
+T_LDX #0 given LDLegendaryMonsterTransformed
+T_INFO t64 #0 Imp mass 1200 boss 0 hp 400/400 painchance 25 scale 1.04 r 16 h 56 inv: LDLegendaryMonsterTransformed SlaughterCounter champion_GoldToken SKImp champion_PersistentInfo
+T_LV t64 LongLine=0 FastReel=0 HeavyHaul=1 GetOverHere=0 Bowling=0 BarbedClaw=0 Slingshot=0 SteadyLine=0 DoubleHook=0 range x1.00 reel x1.00 mass x1.50 size x1.15
+T_GR t64 h0 fire pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(74.0 503.5 37.0) L0.0 d517.1 segs0 ms0.000/0.012 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t70 h0 bite pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(348.0 503.5 37.0) L0.0 d517.1 segs45 ms0.063/0.016 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (364.0 512.0 -0.0)
+T_GRS t70 bite Imp hand 0 heavy 0 bites 1 volleys 0
+T_GRP bite p0 h0 Imp mass 1200 boss 0 heavy 0 (bites 1 yanks 0)
+T_GBH t70 p0 hook xp +15.0 (bites +1 yanks +0 swing +0 kills +0 hp +0 slams +0) paid 15.0 pool 15.0/1200 player xp 0 lv 0
+T_GR t72 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(339.9 504.5 37.0) L0.0 d517.1 segs51 ms0.057/0.069 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (344.0 512.0 -0.0)
+T_GR t74 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(319.9 504.5 37.0) L0.0 d517.1 segs47 ms0.060/0.039 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (324.0 512.0 -0.0)
+T_GR t76 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(299.9 504.5 37.0) L0.0 d517.1 segs43 ms0.049/0.031 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (304.0 512.0 -0.0)
+T_GR t78 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(279.9 504.5 37.0) L0.0 d517.1 segs39 ms0.047/0.037 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (284.0 512.0 -0.0)
+T_GR t80 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(259.9 504.5 37.0) L0.0 d517.1 segs35 ms0.050/0.038 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (264.0 512.0 -0.0)
+T_GR t82 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(239.9 504.5 37.0) L0.0 d517.1 segs31 ms0.029/0.031 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (244.0 512.0 -0.0)
+T_GR t84 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(219.9 504.5 37.0) L0.0 d517.1 segs27 ms0.042/0.039 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (224.0 512.0 -0.0)
+T_GR t86 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(199.9 504.5 37.0) L0.0 d517.1 segs23 ms0.040/0.037 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (204.0 512.0 -0.0)
+T_GR t88 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(179.9 504.5 37.0) L0.0 d517.1 segs19 ms0.025/0.024 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (184.0 512.0 -0.0)
+T_GR t90 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(159.9 504.5 37.0) L0.0 d517.1 segs15 ms0.037/0.037 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (164.0 512.0 -0.0)
+T_GR t92 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(139.9 504.5 37.0) L0.0 d517.1 segs11 ms0.042/0.044 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (144.0 512.0 -0.0)
+T_GR t94 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(119.9 504.5 37.0) L0.0 d517.1 segs7 ms0.032/0.037 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (124.0 512.0 -0.0)
+T_GR t96 h0 pull pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(99.9 504.5 37.0) L0.0 d517.1 segs3 ms0.030/0.089 scale1.00 grip-1 free01 hoff0.00 pt-1 victim Imp (112.0 512.0 -0.0)
+T_GR t97 h0 drop pos(64.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(97.9 504.5 37.0) L0.0 d517.1 segs2 ms0.028/0.116 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_INFO t128 #0 Imp mass 1200 boss 0 hp 400/400 painchance 25 scale 1.04 r 16 h 56 inv: LDLegendaryMonsterTransformed SlaughterCounter champion_GoldToken SKImp champion_PersistentInfo
+T_XP t128 now pool 15.0 player xp 0 lv 0 pooled 0
+T_XP2 gun Rifle xp 0.0 lv 0
+T_XP3 svc bites 1 yanks 0 swing 0 kills 0 killhp 0 slams 0

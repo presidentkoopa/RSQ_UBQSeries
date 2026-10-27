@@ -1,0 +1,3 @@
+T_OFFER t9 player level 0: LongLine=1 FastReel=1 HeavyHaul=1 GetOverHere=1 Bowling=1 BarbedClaw=1 Slingshot=1 SteadyLine=1 DoubleHook=0
+T_OFFER t9 player level 5: LongLine=1 FastReel=1 HeavyHaul=1 GetOverHere=1 Bowling=1 BarbedClaw=1 Slingshot=1 SteadyLine=1 DoubleHook=1
+T_OFFER t11 player level 5: LongLine=0 FastReel=1 HeavyHaul=1 GetOverHere=1 Bowling=1 BarbedClaw=1 Slingshot=1 SteadyLine=1 DoubleHook=1
