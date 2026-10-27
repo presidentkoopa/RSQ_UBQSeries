@@ -31,6 +31,7 @@ Six regions on the body, each holding one Doom weapon class:
   carry them. Each region's place and size is a menu slider.
 - A hand steadying the main gun (the engine's two-handed grip) never fires a region.
 - With RS_ShieldSawQ loaded, the off shoulder is left to the shield while it hangs there.
+- With UltraBadassQuestSaber loaded, the saber's hilt clips to either hip (menu).
 
 ## Lifting doors
 
