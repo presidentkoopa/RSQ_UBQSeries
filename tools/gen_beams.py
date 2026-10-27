@@ -46,6 +46,7 @@ RSQ_TacticalRig/tools/measure_pickups.py; the MODELDEF walk is redone to follow 
 exactly (each FrameIndex pushes the block's state so far; later definitions win).
 """
 import argparse, math, os, re, struct, sys, zipfile
+import numpy as np
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.normpath(os.path.join(HERE, '..'))
@@ -56,6 +57,21 @@ TIP_SLAB = 1.5        # cm: the slice at the very end of the barrel whose middle
 MAX_TILT = 15.0       # degrees: more than this off level is a blade held up, not a barrel
 MAX_AXIS_DEV = 30.0   # degrees: a mesh whose long axis is this far off x is not a barrel along x
 SPRITE_PREFIX = 'LZ'  # LZ00..LZzz, 26 frames each
+# Another frame of the gun's model that the whole mesh moved RIGIDLY into (no vertex more than
+# RIGID_RES from the best rigid motion of the rest pose's mesh) has its muzzle and barrel known
+# exactly. If they are still on the rest pose's bore -- off it by at most PERP_TOL, along it by at
+# most ALONG_TOL, turned by at most ANGLE_TOL -- the frame draws the rest pose's beam. If the gun
+# kicked further but no more than KICK_CM / KICK_DEG (recoil: BD's Rifle fire frames RIFF B, C
+# lift the muzzle 1.4 cm), the frame gets a beam placement of its own. Without both, a gun firing
+# full-auto showed its beam one tic in four (rig, 2026-10-27). Bigger moves -- reloads,
+# inspections -- hide the beam: a rod per pose per length costs VOXELDEF entries on the Quest.
+RIGID_RES = 0.3       # cm
+RIGID_SHARE = 0.95    # of the mesh's vertices that must follow the motion
+PERP_TOL = 0.4        # cm: the rod's own width (BEAM_S)
+ALONG_TOL = 3.0       # cm
+ANGLE_TOL = 0.25      # degrees
+KICK_CM = 6.0         # cm
+KICK_DEG = 6.0        # degrees
 
 def lengths():
     """Beam lengths in cm: 10 cm, then 6% steps to FADE_MAX (the beam stops at most 6% short of what
@@ -105,7 +121,13 @@ def parse_modeldef(text):
         else:
             i += 1
 
+_md3_cache = {}
 def md3_points(data, frame):
+    k = (id(data), frame)
+    if k not in _md3_cache: _md3_cache[k] = _md3_points(data, frame)
+    return _md3_cache[k]
+
+def _md3_points(data, frame):
     ident, ver, name, flags, nfr, ntags, nsurf, nskins, ofr, otag, osurf, oend = \
         struct.unpack_from('<4si64s9i', data, 0)
     frame = min(max(frame, 0), nfr - 1)
@@ -229,8 +251,36 @@ def principal(pts):
         v = [t / mm for t in w]
     return v
 
-def measure(snap, find):
-    """-> (muzzle q0 from the turning point, barrel unit d, note) in the HUD frame, or None."""
+TIP_CELL = 0.5        # cm: vertices closer than this across the barrel are one piece
+TIP_DOMINANT = 0.5    # one piece holding more than this share of the slab is the barrel
+
+def dominant_piece(tip, d):
+    # connected pieces of the slab's vertices, seen down the barrel, on a TIP_CELL grid
+    u = norm((1.0, 0.0, 0.0) if abs(d[0]) < 0.9 else (0.0, 1.0, 0.0))
+    u = norm(sub(u, mul(d, dot(u, d))))
+    v = (d[1] * u[2] - d[2] * u[1], d[2] * u[0] - d[0] * u[2], d[0] * u[1] - d[1] * u[0])
+    cells = {}
+    for i, p in enumerate(tip):
+        cells.setdefault((math.floor(dot(p, u) / TIP_CELL), math.floor(dot(p, v) / TIP_CELL)), []).append(i)
+    seen, best = set(), []
+    for c0 in cells:
+        if c0 in seen: continue
+        seen.add(c0); stack, comp = [c0], []
+        while stack:
+            c = stack.pop(); comp += cells[c]
+            for dx in (-1, 0, 1):
+                for dy in (-1, 0, 1):
+                    n = (c[0] + dx, c[1] + dy)
+                    if n in cells and n not in seen:
+                        seen.add(n); stack.append(n)
+        if len(comp) > len(best): best = comp
+    if len(best) < len(tip) and len(best) > TIP_DOMINANT * len(tip):
+        return [tip[i] for i in best]
+    return None
+
+def measure(snap, find, d=None):
+    """-> (muzzle q0 from the turning point, barrel unit d, note) in the HUD frame, or None.
+    d: the barrel, when it is known from elsewhere (a frame the gun was turned into)."""
     pts = []
     for mi, fname in sorted(snap['models'].items()):
         if not fname.strip(): continue
@@ -248,11 +298,17 @@ def measure(snap, find):
     # engine's chain above turns model +x to the controller's forward (-z: hw_vrmodes.cpp
     # MapWeaponDir fires along the hand matrix's -z). (measure_pickups.py calls it the -x end in
     # its own axes, which turn the other way.) Taken through this block's scale and angle offsets.
-    d = norm(to_hud(snap, (1.0, 0.0, 0.0)))
+    if d is None: d = norm(to_hud(snap, (1.0, 0.0, 0.0)))
     # THE MUZZLE: the end of the mesh along the barrel; the bore is the middle of the last
     # TIP_SLAB cm of it, across the barrel.
     tmax = max(dot(p, d) for p in pts)
     tip = [p for p in pts if dot(p, d) >= tmax - TIP_SLAB]
+    # A barrel with something beside it at the same length (a pump gun's magazine tube under
+    # its barrel) puts the slab's middle between the two. When one connected piece holds most
+    # of the slab's vertices, that piece is the barrel; a ring of sparse vertices (a rocket
+    # tube, a minigun's barrel cluster) has no such piece and keeps the slab's middle.
+    big = dominant_piece(tip, d)
+    if big: tip = big
     perp = [sub(p, mul(d, dot(p, d))) for p in tip]
     lo = [min(p[i] for p in perp) for i in range(3)]
     hi = [max(p[i] for p in perp) for i in range(3)]
@@ -264,6 +320,68 @@ def measure(snap, find):
     if dev > MAX_AXIS_DEV:
         return None, None, 'its long axis is %.1f deg off the model x axis: not a gun built along x' % dev
     return q0, d, 'long axis %.1f deg off the barrel; tip %d verts' % (dev, len(tip))
+
+def mesh_points(snap, find):
+    """Every vertex of the pose's meshes in the HUD frame (md3 only: an OBJ has one frame)."""
+    pts = []
+    for mi, fname in sorted(snap['models'].items()):
+        if not fname.strip(): continue
+        if not fname.lower().endswith('.md3'): return None
+        path = (snap['path'].rstrip('/') + '/' + fname) if snap['path'] else fname
+        data = find(path)
+        if data is None: return None
+        pts += [to_hud(snap, (p[0], p[2], p[1])) for p in md3_points(data, snap['frames'].get(mi, 0))]
+    return np.array(pts) if pts else None
+
+def rigid(cache, pk0, snap0, pk1, snap1, find, d=None):
+    """(R, t, residual cm) of the rigid motion carrying pose 0's gun onto pose 1's, or None.
+    Robust to small parts that move on their own (BD's Rifle fire frames slide 56 of its 14498
+    vertices -- the bolt -- 1.2 cm, measured): fitted (Kabsch, least squares) on every vertex,
+    then again on those within RIGID_RES of the first fit. The residual reported is the worst
+    over the vertices at the muzzle end (the last TIP_SLAB cm along d), the part the beam rides;
+    a frame where under RIGID_SHARE of the gun follows the motion reports infinity."""
+    for pk, sn in ((pk0, snap0), (pk1, snap1)):
+        if pk not in cache: cache[pk] = mesh_points(sn, find)
+    A, B = cache[pk0], cache[pk1]
+    if A is None or B is None or len(A) != len(B): return None
+    def fit(A, B):
+        ca, cb = A.mean(0), B.mean(0)
+        U, S, Vt = np.linalg.svd((A - ca).T @ (B - cb))
+        D = np.diag([1.0, 1.0, float(np.sign(np.linalg.det(Vt.T @ U.T)))])
+        R = Vt.T @ D @ U.T
+        return R, cb - R @ ca
+    R, tr = fit(A, B)
+    r = np.sqrt(((A @ R.T + tr - B) ** 2).sum(1))
+    keep = r <= RIGID_RES
+    if keep.sum() < RIGID_SHARE * len(A): return R, tr, float('inf')
+    R, tr = fit(A[keep], B[keep])
+    r = np.sqrt(((A @ R.T + tr - B) ** 2).sum(1))
+    if (r <= RIGID_RES).sum() < RIGID_SHARE * len(A): return R, tr, float('inf')
+    if d is not None:
+        sd = A @ np.array(d)
+        tip = sd >= sd.max() - TIP_SLAB
+        return R, tr, float(r[tip].max())
+    return R, tr, float(r.max())
+
+def xlines(snap, find):
+    """How many straight runs of the mesh lie exactly along its own x axis: vertices sharing (y, z)
+    to md3 precision (1/64) more than 5 units apart in x. An animated md3 can hold the gun turned
+    in some frames (BD's SSG.md3 frame 0 is pitched 5 deg from frame 1, measured); the frame the
+    gun was BUILT in, along x, is the one where its barrel, rails and edges run along x."""
+    runs = {}
+    for mi, fname in sorted(snap['models'].items()):
+        if not fname.strip() or not fname.lower().endswith('.md3'): continue
+        path = (snap['path'].rstrip('/') + '/' + fname) if snap['path'] else fname
+        data = find(path)
+        if data is None: continue
+        for p in md3_points(data, snap['frames'].get(mi, 0)):
+            k = (mi, round(p[1] * 64), round(p[2] * 64))
+            lo, hi = runs.get(k, (p[0], p[0]))
+            runs[k] = (min(lo, p[0]), max(hi, p[0]))
+    return sum(1 for lo, hi in runs.values() if hi - lo > 5)
+
+def mesh_id(snap):
+    return (snap['path'], tuple(sorted(snap['models'].items())), snap['scale'], snap['off'], snap['ang'], snap['pit'], snap['rol'])
 
 def pose_key(snap):
     return (snap['path'], tuple(sorted(snap['models'].items())),
@@ -314,10 +432,14 @@ def main():
     ap.add_argument('pk3s', nargs='+')
     a = ap.parse_args()
     paks = [Pak(p) for p in a.pk3s]
+    fcache = {}
     def find(path):
+        if path.lower() in fcache: return fcache[path.lower()]
         for pk in reversed(paks):
             d = pk.get(path)
-            if d is not None: return d
+            if d is not None:
+                fcache[path.lower()] = d
+                return d
         return None
     table = read_modeldefs(paks)
 
@@ -328,35 +450,127 @@ def main():
             ready.append((m.group(1), m.group(2)[:4].upper(), chr(65 + int(m.group(3))), m.group(4) == 'melee'))
 
     placements = []        # (off, q0, d) unique
-    rows = []              # class rows
+    rows = []              # (class, pose) rows; a class may have several (one per pose it rests in)
     skipped = []
+    order, cands = [], {}
+    mesh_cache, kick_stats, built, xl_cache = {}, [], {}, {}
     for cls, spr, fr, melee in ready:
-        if melee:
-            # +WEAPON.MELEEWEAPON (the engine's own flag, from the probe): a fist or a blade has
-            # no bore, so no beam -- whatever its mesh's far end looks like.
-            skipped.append((cls, 'a melee weapon (+WEAPON.MELEEWEAPON): no bore'))
+        if cls not in cands: order.append(cls); cands[cls] = []
+        cands[cls].append((spr, fr, melee))
+    for cls in order:
+        notes, rests = [], []
+        for spr, fr, melee in cands[cls]:
+            if melee:
+                # +WEAPON.MELEEWEAPON (the engine's own flag, from the probe): a fist or a blade has
+                # no bore, so no beam -- whatever its mesh's far end looks like.
+                notes = ['a melee weapon (+WEAPON.MELEEWEAPON): no bore']; rests = []
+                break
+            snap = table.get((cls.lower(), spr, fr))
+            if not snap:
+                notes.append('no model for its Ready frame %s %s (a sprite or a voxel)' % (spr, fr))
+                continue
+            if pose_key(snap) not in [pose_key(x[0]) for x in rests]:
+                rests.append((snap, spr + fr))
+        # THE FRAME EACH MESH WAS BUILT IN (most runs along x, xlines) is the one whose barrel is
+        # the model's x axis; every other frame of that mesh -- rest poses too -- gets its barrel
+        # from the motion carrying the built frame onto it (Kabsch, `rigid`), and, if the gun
+        # moved rigidly (RIGID_RES), its muzzle the same way; otherwise its own tip.
+        frames_of = {}
+        for (c, s2, f2), sn in table.items():
+            if c == cls.lower(): frames_of.setdefault(mesh_id(sn), []).append((s2, f2, sn))
+        def basis(sn):
+            mid = mesh_id(sn)
+            if mid not in built:
+                cands_b = {}
+                for s2, f2, sx in frames_of.get(mid, [(None, None, sn)]):
+                    cands_b.setdefault(pose_key(sx), sx)
+                def xl(sx):
+                    k = pose_key(sx)
+                    if k not in xl_cache: xl_cache[k] = xlines(sx, find)
+                    return xl_cache[k]
+                ref = max(cands_b.values(), key=lambda sx: (xl(sx), -sx['frames'].get(0, 0)))
+                built[mid] = (ref, measure(ref, find))
+            return built[mid]
+        def place(sn):
+            """-> (q, d, residual cm or None, note) for any frame of this class, or None + why."""
+            ref, (qr, dr, nr) = basis(sn)
+            if qr is None: return None, None, None, nr
+            if pose_key(ref) == pose_key(sn): return qr, dr, 0.0, nr
+            m = rigid(mesh_cache, pose_key(ref), ref, pose_key(sn), sn, find, dr)
+            if m is None:
+                q, d, n = measure(sn, find)
+                return q, d, None, n
+            R, tr, res = m
+            d = norm(tuple(float(x) for x in R @ np.array(dr)))
+            if res <= RIGID_RES:
+                return tuple(float(x) for x in R @ np.array(qr) + tr), d, res, nr
+            q, d, n = measure(sn, find, d)
+            return q, d, res, n + '; barrel from the frame the mesh was built in, turned with the gun (fit to %.2f cm)' % res
+        poses = []
+        for snap, rf in rests:
+            q0, d, _r, note = place(snap)
+            if q0 is None:
+                notes.append('%s: %s' % (rf, note)); continue
+            tilt = math.degrees(math.asin(max(-1.0, min(1.0, d[1]))))
+            if abs(tilt) > MAX_TILT:
+                notes.append('%s: barrel %.1f deg off level in the hand: a blade, not a barrel' % (rf, tilt))
+                continue
+            poses.append((pose_key(snap), snap, rf, q0, d, note))
+        if not poses:
+            skipped.append((cls, '; '.join(notes) if notes else 'no ready frame'))
             continue
-        snap = table.get((cls.lower(), spr, fr))
-        if not snap:
-            skipped.append((cls, 'no model for its Ready frame %s %s (a sprite or a voxel)' % (spr, fr)))
-            continue
-        q0, d, note = measure(snap, find)
-        if q0 is None:
-            skipped.append((cls, note)); continue
-        tilt = math.degrees(math.asin(max(-1.0, min(1.0, d[1]))))
-        if abs(tilt) > MAX_TILT:
-            skipped.append((cls, 'barrel %.1f deg off level in the hand: a blade, not a barrel' % tilt))
-            continue
-        off = offset_hud(snap)
-        key = (tuple(round(x, 3) for x in off), tuple(round(x, 3) for x in q0), tuple(round(x, 5) for x in d))
-        if key not in [p[0] for p in placements]:
-            placements.append((key, off, q0, d))
-        pi = [p[0] for p in placements].index(key)
-        pk = pose_key(snap)
-        same = sorted('%s%d' % (s, ord(f) - 65) for (c, s, f), sn in table.items() if c == cls.lower() and pose_key(sn) == pk)
-        mirrored = snap['scale'][0] * snap['scale'][1] * snap['scale'][2] < 0 or snap['scale'][0] < 0
-        rows.append((cls, pi, spr + fr, same, snap['scale'][0] < 0, note, q0, d, off))
+        nrest = len(poses)
+        # EVERY OTHER FRAME of the class's model whose gun moved rigidly (its muzzle and barrel
+        # exact): still on a rest pose's bore (PERP_TOL / ALONG_TOL / ANGLE_TOL) -> draws that
+        # pose's beam; a recoil kick (within KICK_CM / KICK_DEG of a rest pose) -> a pose of its
+        # own; anything else (a reload, the gun coming apart) -> no beam.
+        joined, kicks = {}, []
+        for (c, s2, f2), sn in table.items():
+            if c != cls.lower(): continue
+            pk2 = pose_key(sn)
+            if pk2 in [x[0] for x in poses]: continue
+            fname = '%s%d' % (s2, ord(f2) - 65)
+            best = None
+            for j in range(nrest):
+                pk, snap, rf, q0, d, note = poses[j]
+                if mesh_id(sn) != mesh_id(snap): continue
+                m = rigid(mesh_cache, pk, snap, pk2, sn, find, d)    # the gun's motion from this rest pose
+                if m is None or m[2] > RIGID_RES: continue
+                R, tr, res = m
+                q2 = tuple(float(x) for x in R @ np.array(q0) + tr)
+                d2 = norm(tuple(float(x) for x in R @ np.array(d)))
+                ang = math.degrees(math.acos(max(-1.0, min(1.0, dot(d2, d)))))
+                dq = sub(q2, q0)
+                along = dot(dq, d)
+                perp = math.sqrt(max(0.0, dot(dq, dq) - along * along))
+                if ang <= ANGLE_TOL and perp <= PERP_TOL and abs(along) <= ALONG_TOL:
+                    best = ('join', j, along); break
+                dist = math.sqrt(dot(dq, dq))
+                if ang <= KICK_DEG and dist <= KICK_CM and (best is None or dist < best[2]):
+                    best = ('kick', j, dist, ang, q2, d2, res)
+            if best is None: continue
+            if best[0] == 'join':
+                joined.setdefault(best[1], []).append(fname); kick_stats.append(abs(best[2]))
+            else:
+                kicks.append((pk2, sn, s2 + f2, best[4], best[5], 'kick %.2f cm %.2f deg off %s (rigid to %.2f cm)' % (best[2], best[3], poses[best[1]][2], best[6])))
+        poses += kicks
+        for j, (pk, snap, rf, q0, d, note) in enumerate(poses):
+            off = offset_hud(snap)
+            key = (tuple(round(x, 3) for x in off), tuple(round(x, 3) for x in q0), tuple(round(x, 5) for x in d))
+            if key not in [p[0] for p in placements]:
+                placements.append((key, off, q0, d))
+            pi = [p[0] for p in placements].index(key)
+            same = sorted(set('%s%d' % (s, ord(f) - 65) for (c, s, f), sn in table.items() if c == cls.lower() and pose_key(sn) == pk) | set(joined.get(j, [])))
+            # Two poses with the same muzzle (another skin, say) are one row: their frames merge.
+            prev = [i for i, r in enumerate(rows) if r[0] == cls and r[1] == pi]
+            if prev:
+                r = rows[prev[0]]
+                rows[prev[0]] = r[:3] + (sorted(set(r[3]) | set(same)),) + r[4:]
+                continue
+            rows.append((cls, pi, rf, same, snap['scale'][0] < 0, note, q0, d, off))
 
+    if kick_stats:
+        print('%d kicked frames joined to a rest pose (largest kick along the bore %.2f cm)' % (len(kick_stats), max(kick_stats)))
     print('%d weapons measured, %d placements, %d skipped' % (len(rows), len(placements), len(skipped)))
     for cls, pi, rf, same, mir, note, q0, d, off in rows:
         print('%-26s p%02d %s  muzzle F %.2f L %.2f U %.2f cm from turn point  dir (%.4f %.4f %.4f)  %d ready frames  %s'
@@ -409,7 +623,9 @@ def main():
          '\tconst FADE_MAX = %.1f;' % FADE_MAX,
          '\tstatic const double LENGTHS[] = { %s };' % ', '.join('%.1f' % L for L in LENGTHS),
          '\tstatic const String SPRITES[] = { %s };' % ', '.join('"%s"' % s for s in sprites),
-         '\t// class, placement, mirrored, ready-pose frames (sprite name + frame number, space separated)',
+         '\t// class, placement, mirrored, ready-pose frames (sprite name + frame number, space separated).',
+         '\t// A class that rests in more than one pose (a pistol with and without a round chambered) has a',
+         '\t// row per pose, adjacent; the first is the pose the dot is traced from while none is shown.',
          '\tstatic const String CLASSES[] = {']
     for cls, pi, rf, same, mir, note, q0, d, off in rows:
         z.append('\t\t"%s", "%d", "%d", "%s",' % (cls, pi, 1 if mir else 0, ' '.join(same)))

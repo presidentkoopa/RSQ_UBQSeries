@@ -84,7 +84,7 @@ class RSQLS_Beams : StaticEventHandler
 		return me;
 	}
 
-	// The measured class, or -1: no measurement, no beam.
+	// The measured class's first row, or -1: no measurement, no beam.
 	int Find(Weapon w)
 	{
 		if (!w) return -1;
@@ -96,14 +96,18 @@ class RSQLS_Beams : StaticEventHandler
 	int Place(int ci) { return cplace[ci]; }
 	bool IsMirrored(int ci) { return cmirror[ci] != 0; }
 
-	// Is the gun layer drawing the gun in its measured (ready) pose?
-	bool ReadyPose(int ci, PSprite gp)
+	// Which measured pose is the gun layer drawing the gun in? A class that rests in more than
+	// one pose (BD's pistol with and without a round chambered, its SSG on SHTN or SHT2) has a
+	// row per pose, adjacent, starting at Find's row. -1: none -- a reload, a kick in the mesh:
+	// the mesh has moved off every measured muzzle, so no beam.
+	int PoseRow(int ci, PSprite gp)
 	{
-		if (!gp) return false;
+		if (!gp || ci < 0) return -1;
 		int key = int(gp.Sprite) * 64 + gp.Frame;
-		for (int k = cfirst[ci], e = cfirst[ci] + ccount[ci]; k < e; k++)
-			if (rkeys[k] == key) return true;
-		return false;
+		for (int r = ci; r < cname.Size() && cname[r] ~== cname[ci]; r++)
+			for (int k = cfirst[r], e = cfirst[r] + ccount[r]; k < e; k++)
+				if (rkeys[k] == key) return r;
+		return -1;
 	}
 
 	// Placement numbers (tools/gen_beams.py): turning point, muzzle from it, barrel, layer y.

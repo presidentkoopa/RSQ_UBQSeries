@@ -337,8 +337,11 @@ class RSQLS_Sight : EventHandler
 		Weapon w = (h == 0) ? p.ReadyWeapon : p.OffhandWeapon;
 		let bt = RSQLS_Beams.Get();
 		int ci = bt ? bt.Find(w) : -1;
-		int pi = (ci >= 0) ? bt.Place(ci) : -1;
 		let gp = p.FindPSprite(h == 0 ? PSprite.WEAPON : PSprite.OFFHANDWEAPON);
+		// The pose the gun is drawn in right now (-1: none measured -- no beam), and the
+		// placement the dot is traced from: that pose's, or the class's first while none shows.
+		int row = (ci >= 0) ? bt.PoseRow(ci, gp) : -1;
+		int pi = (row >= 0) ? bt.Place(row) : ((ci >= 0) ? bt.Place(ci) : -1);
 
 		// ---- the muzzle and the barrel -------------------------------------------
 		// A MEASURED GUN: its muzzle and barrel from its held model (tools/gen_beams.py),
@@ -477,7 +480,7 @@ class RSQLS_Sight : EventHandler
 		// muzzle was measured in: on any other frame (a reload, a kick in the mesh) the
 		// mesh has moved and the rod would not be on the barrel.
 		bool beamOn = false;
-		if (wantBeam && pi >= 0 && bt.ReadyPose(ci, gp))
+		if (wantBeam && row >= 0)
 		{
 			let wsc = CVar.FindCVar("vr_weaponScale");
 			double ws = wsc ? wsc.GetFloat() : 1.0;
@@ -488,7 +491,7 @@ class RSQLS_Sight : EventHandler
 				double litFade = RSQLS_Hand.Num("rsqls_beam_daylight", p, 0.35);
 				double a = RSQLS_Hand.Num("rsqls_beam_a", p, 0.8) * (1.0 - (1.0 - litFade) * lit);
 				if (hostile && RSQLS_Hand.Flag("rsqls_lock", p, true)) a *= 1.35;
-				bt.Show(p, h, w, ci, gp, k, bt.Tint(beamRgb, a, fadeCm));
+				bt.Show(p, h, w, row, gp, k, bt.Tint(beamRgb, a, fadeCm));
 				beamOn = true;
 			}
 		}

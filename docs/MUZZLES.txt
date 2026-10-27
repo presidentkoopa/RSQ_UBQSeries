@@ -4,82 +4,276 @@ HUD frame of the controller, centimetres: F forward, L left/right (x), U up. "mu
 model's MODELDEF Offset (its turning point); the beam starts there and runs along "barrel".
 
 class                      pl   ready         F        x        U   barrel (x y z)           frames / note
-Rifle                      p00  RIFGA     93.40    -6.28     8.07   (-0.0671 0.0587 -0.9960)  33 mirrored; long axis 6.9 deg off the barrel; tip 178 verts
-PuristRifle                p00  RIFGA     93.40    -6.28     8.07   (-0.0671 0.0587 -0.9960)  15 mirrored; long axis 1.0 deg off the barrel; tip 178 verts
-BrutalPistol               p01  2ISTE     44.19    -3.12     1.85   (-0.0671 0.0587 -0.9960)  5 mirrored; long axis 16.1 deg off the barrel; tip 466 verts
-PuristPistol               p01  2ISTE     44.19    -3.12     1.85   (-0.0671 0.0587 -0.9960)  5 mirrored; long axis 16.1 deg off the barrel; tip 466 verts
-BrutalSMG                  p02  SMGRA     63.75    -5.18    -0.80   (-0.0671 0.0587 -0.9960)  28 mirrored; long axis 4.7 deg off the barrel; tip 160 verts
-PuristSMG                  p02  SMGRA     63.75    -5.18    -0.80   (-0.0671 0.0587 -0.9960)  27 mirrored; long axis 4.7 deg off the barrel; tip 160 verts
-Shot_Gun                   p03  SHTNA     93.47    -0.02    -0.98   (-0.0000 0.0000 -1.0000)  14 mirrored; long axis 6.3 deg off the barrel; tip 693 verts
-PuristShot_Gun             p03  SHTNA     93.47    -0.02    -0.98   (-0.0000 0.0000 -1.0000)  14 mirrored; long axis 6.3 deg off the barrel; tip 693 verts
-SSG                        p04  SHTNA     65.48    -0.04    -4.30   (-0.0000 0.0000 -1.0000)  7 mirrored; long axis 8.3 deg off the barrel; tip 622 verts
-PuristSSG                  p04  SHTNA     65.48    -0.04    -4.30   (-0.0000 0.0000 -1.0000)  7 mirrored; long axis 8.3 deg off the barrel; tip 622 verts
-Minigun                    p05  CHAGA    123.45    -0.34    -7.80   (-0.0000 0.0000 -1.0000)  35 mirrored; long axis 1.5 deg off the barrel; tip 224 verts
-PuristMinigun              p05  CHAGA    123.45    -0.34    -7.80   (-0.0000 0.0000 -1.0000)  35 mirrored; long axis 1.5 deg off the barrel; tip 224 verts
-Rocket_Launcher            p06  MISSW     80.05    -0.00     7.50   (-0.0000 0.0000 -1.0000)  25 mirrored; long axis 1.3 deg off the barrel; tip 105 verts
-PuristRocket_Launcher      p06  MISSW     80.05    -0.00     7.50   (-0.0000 0.0000 -1.0000)  25 mirrored; long axis 1.3 deg off the barrel; tip 105 verts
-Plasma_Gun                 p07  PRSGF    100.09    -0.07    -1.12   (-0.0000 0.0000 -1.0000)  31 mirrored; long axis 1.5 deg off the barrel; tip 197 verts
-PuristPlasma_Gun           p07  PRSGF    100.09    -0.07    -1.12   (-0.0000 0.0000 -1.0000)  31 mirrored; long axis 1.5 deg off the barrel; tip 197 verts
-BIG_FUCKING_GUN            p08  BFGNA    112.45    -0.01     6.05   (-0.0000 0.0000 -1.0000)  9 mirrored; long axis 2.4 deg off the barrel; tip 225 verts
-PuristBIG_FUCKING_GUN      p08  BFGNA    112.45    -0.01     6.05   (-0.0000 0.0000 -1.0000)  9 mirrored; long axis 2.4 deg off the barrel; tip 225 verts
-MP40                       p09  MP40A     90.09    -5.45     8.44   (-0.0671 0.0587 -0.9960)  21 mirrored; long axis 5.1 deg off the barrel; tip 143 verts
-PuristMP40                 p09  MP40A     90.09    -5.45     8.44   (-0.0671 0.0587 -0.9960)  21 mirrored; long axis 5.1 deg off the barrel; tip 143 verts
-MG42                       p10  PBUSA    127.95     0.15     1.82   (-0.0000 0.0000 -1.0000)  15 mirrored; long axis 0.5 deg off the barrel; tip 112 verts
-PuristMG42                 p10  PBUSA    127.95     0.15     1.82   (-0.0000 0.0000 -1.0000)  15 mirrored; long axis 0.5 deg off the barrel; tip 112 verts
-Unmaker                    p11  2NHGA     94.81    -0.00     1.60   (-0.0000 0.0000 -1.0000)  10 mirrored; long axis 1.2 deg off the barrel; tip 82 verts
-PuristUnmaker              p11  2NHGA     94.81    -0.00     1.60   (-0.0000 0.0000 -1.0000)  10 mirrored; long axis 1.2 deg off the barrel; tip 82 verts
-GrenadeLauncher            p12  2RLNA     74.89    -0.00     1.42   (-0.0000 0.0000 -1.0000)  19 mirrored; long axis 3.6 deg off the barrel; tip 436 verts
-PuristGrenadeLauncher      p12  2RLNA     74.89    -0.00     1.42   (-0.0000 0.0000 -1.0000)  19 mirrored; long axis 3.6 deg off the barrel; tip 436 verts
-BFG10k                     p13  BG2GA    115.69    -0.00     7.01   (-0.0000 0.0000 -1.0000)  7 mirrored; long axis 2.3 deg off the barrel; tip 54 verts
-PuristBFG10k               p13  BG2GA    115.69    -0.00     7.01   (-0.0000 0.0000 -1.0000)  7 mirrored; long axis 2.3 deg off the barrel; tip 54 verts
-Railgun                    p14  RAILA    138.73    -0.03     0.58   (-0.0000 0.0000 -1.0000)  35 mirrored; long axis 0.6 deg off the barrel; tip 92 verts
-PuristRailGun              p14  RAILA    138.73    -0.03     0.58   (-0.0000 0.0000 -1.0000)  35 mirrored; long axis 0.6 deg off the barrel; tip 92 verts
-REVOLVER                   p15  REVOA     50.53     0.02     1.77   (-0.0000 0.0000 -1.0000)  31 mirrored; long axis 16.1 deg off the barrel; tip 602 verts
-PuristRevolver             p15  REVOA     50.53     0.02     1.77   (-0.0000 0.0000 -1.0000)  31 mirrored; long axis 16.1 deg off the barrel; tip 602 verts
-AssaultShotgun             p16  USASA     91.05     0.12    -1.05   (-0.0000 0.0000 -1.0000)  14 mirrored; long axis 3.3 deg off the barrel; tip 112 verts
-PuristAssaultShotgun       p16  USASA     91.05     0.12    -1.05   (-0.0000 0.0000 -1.0000)  13 mirrored; long axis 3.3 deg off the barrel; tip 112 verts
-NukeLauncher               p17  NKLGA     81.93    -0.00     2.02   (-0.0000 0.0000 -1.0000)  13 mirrored; long axis 4.7 deg off the barrel; tip 222 verts
-PuristNukeLauncher         p17  NKLGA     81.93    -0.00     2.02   (-0.0000 0.0000 -1.0000)  13 mirrored; long axis 4.7 deg off the barrel; tip 222 verts
-IncendiaryLauncher         p18  M202A     54.60    -0.03     5.97   (-0.0000 0.0000 -1.0000)  1 mirrored; long axis 3.5 deg off the barrel; tip 86 verts
-PuristIncendiaryLauncher   p18  M202A     54.60    -0.03     5.97   (-0.0000 0.0000 -1.0000)  1 mirrored; long axis 3.5 deg off the barrel; tip 86 verts
-Flamethrower2              p19  2LMTA    113.87     3.57    -4.22   (0.0662 0.0315 -0.9973)  22 mirrored; long axis 1.1 deg off the barrel; tip 69 verts
-PuristFlamethrower2        p19  2LMTA    113.87     3.57    -4.22   (0.0662 0.0315 -0.9973)  22 mirrored; long axis 1.1 deg off the barrel; tip 69 verts
-Devastator                 p20  DEVAA     80.19    -0.01    12.73   (-0.0000 0.0000 -1.0000)  10 mirrored; long axis 1.1 deg off the barrel; tip 127 verts
-PuristDevastator           p20  DEVAA     80.19    -0.01    12.73   (-0.0000 0.0000 -1.0000)  10 mirrored; long axis 1.1 deg off the barrel; tip 127 verts
-FlameCannon                p21  2LMGA     78.52     0.02     1.93   (-0.0000 0.0000 -1.0000)  43 mirrored; long axis 4.1 deg off the barrel; tip 70 verts
-PuristFlameCannon          p21  2LMGA     78.52     0.02     1.93   (-0.0000 0.0000 -1.0000)  43 mirrored; long axis 4.1 deg off the barrel; tip 70 verts
-HellishMissileLauncher     p22  RVCGA     98.42     0.02     2.79   (-0.0000 0.0000 -1.0000)  10 mirrored; long axis 0.9 deg off the barrel; tip 31 verts
-PuristHellishMissileLauncher p22  RVCGA     98.42     0.02     2.79   (-0.0000 0.0000 -1.0000)  10 mirrored; long axis 0.9 deg off the barrel; tip 31 verts
-RSQ_Off_BrutalPistol       p01  2ISTE     44.19    -3.12     1.85   (-0.0671 0.0587 -0.9960)  5 mirrored; long axis 16.1 deg off the barrel; tip 466 verts
-RSQ_Off_Revolver           p15  REVOA     50.53     0.02     1.77   (-0.0000 0.0000 -1.0000)  31 mirrored; long axis 16.1 deg off the barrel; tip 602 verts
-RSQ_Off_BrutalSMG          p02  SMGRA     63.75    -5.18    -0.80   (-0.0671 0.0587 -0.9960)  28 mirrored; long axis 4.7 deg off the barrel; tip 160 verts
-RSQ_Off_MP40               p09  MP40A     90.09    -5.45     8.44   (-0.0671 0.0587 -0.9960)  21 mirrored; long axis 5.1 deg off the barrel; tip 143 verts
-RSQ_Off_Rifle              p00  RIFGA     93.40    -6.28     8.07   (-0.0671 0.0587 -0.9960)  33 mirrored; long axis 6.9 deg off the barrel; tip 178 verts
-RSQ_Off_Plasma_Gun         p07  PRSGF    100.09    -0.07    -1.12   (-0.0000 0.0000 -1.0000)  31 mirrored; long axis 1.5 deg off the barrel; tip 197 verts
-RSQ_Off_Shot_Gun           p03  SHTNA     93.47    -0.02    -0.98   (-0.0000 0.0000 -1.0000)  14 mirrored; long axis 6.3 deg off the barrel; tip 693 verts
-RSQ_Off_SSG                p04  SHTNA     65.48    -0.04    -4.30   (-0.0000 0.0000 -1.0000)  7 mirrored; long axis 8.3 deg off the barrel; tip 622 verts
-RSQ_Off_AssaultShotgun     p16  USASA     91.05     0.12    -1.05   (-0.0000 0.0000 -1.0000)  14 mirrored; long axis 3.3 deg off the barrel; tip 112 verts
-RSQ_Off_RailGun            p14  RAILA    138.73    -0.03     0.58   (-0.0000 0.0000 -1.0000)  35 mirrored; long axis 0.6 deg off the barrel; tip 92 verts
-Machinegun                 p23  MGN1A     96.83     0.04     4.68   (-0.0000 0.0000 -1.0000)  2 mirrored; long axis 3.3 deg off the barrel; tip 56 verts
+Rifle                      p00  RIFGA     93.39    -6.28     8.07   (-0.0671 0.0587 -0.9960)  89 mirrored; long axis 6.9 deg off the barrel; tip 178 verts
+Rifle                      p01  RIFR[     93.44    -6.57     8.15   (-0.0723 0.0597 -0.9956)  16 mirrored; kick 0.31 cm 0.31 deg off RIFGA (rigid to 0.02 cm)
+Rifle                      p02  2IFRI     93.20    -6.74     8.96   (-0.0761 0.0721 -0.9945)  2 mirrored; kick 1.01 cm 0.93 deg off RIFGA (rigid to 0.02 cm)
+Rifle                      p03  2IFRJ     92.65    -7.90    11.15   (-0.0994 0.1056 -0.9894)  2 mirrored; kick 3.56 cm 3.29 deg off RIFGA (rigid to 0.02 cm)
+Rifle                      p04  2IFRK     92.97    -7.25     9.93   (-0.0863 0.0869 -0.9925)  2 mirrored; kick 2.14 cm 1.97 deg off RIFGA (rigid to 0.03 cm)
+Rifle                      p05  RIFFB     91.74    -5.90     9.36   (-0.0630 0.0795 -0.9948)  6 mirrored; kick 2.13 cm 1.22 deg off RIFGA (rigid to 0.02 cm)
+Rifle                      p06  RIFFC     92.79    -6.10     8.73   (-0.0650 0.0691 -0.9955)  14 mirrored; kick 0.90 cm 0.61 deg off RIFGA (rigid to 0.02 cm)
+PuristRifle                p00  RIFGA     93.39    -6.28     8.07   (-0.0671 0.0587 -0.9960)  43 mirrored; long axis 1.0 deg off the barrel; tip 178 verts
+PuristRifle                p07  RIFR[     93.44    -6.57     8.15   (-0.0723 0.0597 -0.9956)  8 mirrored; kick 0.31 cm 0.31 deg off RIFGA (rigid to 0.02 cm)
+PuristRifle                p08  2IFRI     93.20    -6.73     8.96   (-0.0761 0.0721 -0.9945)  1 mirrored; kick 1.01 cm 0.93 deg off RIFGA (rigid to 0.02 cm)
+PuristRifle                p09  2IFRJ     92.65    -7.90    11.15   (-0.0993 0.1056 -0.9894)  1 mirrored; kick 3.56 cm 3.28 deg off RIFGA (rigid to 0.02 cm)
+PuristRifle                p10  2IFRK     92.97    -7.25     9.93   (-0.0863 0.0869 -0.9925)  1 mirrored; kick 2.14 cm 1.97 deg off RIFGA (rigid to 0.03 cm)
+PuristRifle                p11  RIFFC     92.79    -6.10     8.73   (-0.0650 0.0691 -0.9955)  7 mirrored; kick 0.90 cm 0.61 deg off RIFGA (rigid to 0.02 cm)
+BrutalPistol               p12  2ISTE     44.22    -3.12     1.87   (-0.0637 0.0740 -0.9952)  12 mirrored; long axis 15.2 deg off the barrel; tip 466 verts; barrel from the frame the mesh was built in, turned with the gun (fit to inf cm)
+BrutalPistol               p13  PISTI     44.22    -3.12     1.87   (-0.0633 0.0761 -0.9951)  37 mirrored; long axis 15.0 deg off the barrel; tip 466 verts; barrel from the frame the mesh was built in, turned with the gun (fit to inf cm)
+PuristPistol               p12  2ISTE     44.22    -3.12     1.87   (-0.0637 0.0740 -0.9952)  12 mirrored; long axis 15.2 deg off the barrel; tip 466 verts; barrel from the frame the mesh was built in, turned with the gun (fit to inf cm)
+PuristPistol               p13  PISTI     44.22    -3.12     1.87   (-0.0633 0.0761 -0.9951)  36 mirrored; long axis 15.0 deg off the barrel; tip 466 verts; barrel from the frame the mesh was built in, turned with the gun (fit to inf cm)
+BrutalSMG                  p14  SMGRA     63.76    -5.18    -0.81   (-0.0691 0.0487 -0.9964)  42 mirrored; long axis 5.3 deg off the barrel; tip 160 verts
+BrutalSMG                  p15  SMGR\     63.30    -8.24     0.96   (-0.1497 0.0957 -0.9841)  1 mirrored; kick 3.56 cm 5.40 deg off SMGRA (rigid to 0.02 cm)
+BrutalSMG                  p16  SMGR]     63.72    -5.57    -0.58   (-0.0793 0.0548 -0.9953)  1 mirrored; kick 0.45 cm 0.69 deg off SMGRA (rigid to 0.03 cm)
+BrutalSMG                  p17  SMGFB     62.74    -4.97    -0.12   (-0.0651 0.0686 -0.9955)  3 mirrored; kick 1.25 cm 1.16 deg off SMGRA (rigid to 0.01 cm)
+BrutalSMG                  p18  SMGFC     63.25    -5.07    -0.47   (-0.0671 0.0587 -0.9960)  3 mirrored; kick 0.62 cm 0.58 deg off SMGRA (rigid to 0.01 cm)
+PuristSMG                  p14  SMGRA     63.76    -5.18    -0.81   (-0.0691 0.0487 -0.9964)  41 mirrored; long axis 5.3 deg off the barrel; tip 160 verts
+PuristSMG                  p15  SMGR\     63.30    -8.24     0.96   (-0.1497 0.0957 -0.9841)  1 mirrored; kick 3.56 cm 5.40 deg off SMGRA (rigid to 0.02 cm)
+PuristSMG                  p16  SMGR]     63.72    -5.57    -0.58   (-0.0793 0.0548 -0.9953)  1 mirrored; kick 0.45 cm 0.69 deg off SMGRA (rigid to 0.03 cm)
+PuristSMG                  p17  SMGFB     62.74    -4.97    -0.12   (-0.0651 0.0686 -0.9955)  3 mirrored; kick 1.25 cm 1.16 deg off SMGRA (rigid to 0.01 cm)
+PuristSMG                  p18  SMGFC     63.25    -5.07    -0.47   (-0.0671 0.0587 -0.9960)  3 mirrored; kick 0.62 cm 0.58 deg off SMGRA (rigid to 0.01 cm)
+Shot_Gun                   p19  SHTNA     93.47    -0.02     0.21   (-0.0002 -0.0005 -1.0000)  28 mirrored; long axis 6.3 deg off the barrel; tip 381 verts; barrel from the frame the mesh was built in, turned with the gun (fit to inf cm)
+Shot_Gun                   p20  SHTNB     93.43    -0.32     1.28   (-0.0042 0.0159 -0.9999)  2 mirrored; kick 1.11 cm 0.97 deg off SHTNA (rigid to 0.03 cm)
+Shot_Gun                   p21  SHTNC     93.21    -1.17     4.19   (-0.0153 0.0607 -0.9980)  2 mirrored; kick 4.15 cm 3.61 deg off SHTNA (rigid to 0.03 cm)
+Shot_Gun                   p22  SHTAC     88.47    -0.02     0.21   (-0.0002 -0.0005 -1.0000)  3 mirrored; kick 5.00 cm 0.00 deg off SHTNA (rigid to 0.00 cm)
+Shot_Gun                   p23  SHTAE     92.08    -0.02     3.41   (-0.0002 0.0486 -0.9988)  3 mirrored; kick 3.49 cm 2.81 deg off SHTNA (rigid to 0.02 cm)
+PuristShot_Gun             p19  SHTNA     93.47    -0.02     0.21   (-0.0002 -0.0005 -1.0000)  28 mirrored; long axis 6.3 deg off the barrel; tip 381 verts; barrel from the frame the mesh was built in, turned with the gun (fit to inf cm)
+PuristShot_Gun             p20  SHTNB     93.43    -0.32     1.28   (-0.0042 0.0159 -0.9999)  2 mirrored; kick 1.11 cm 0.97 deg off SHTNA (rigid to 0.03 cm)
+PuristShot_Gun             p21  SHTNC     93.21    -1.17     4.19   (-0.0153 0.0607 -0.9980)  2 mirrored; kick 4.15 cm 3.61 deg off SHTNA (rigid to 0.03 cm)
+PuristShot_Gun             p22  SHTAC     88.47    -0.02     0.21   (-0.0002 -0.0005 -1.0000)  3 mirrored; kick 5.00 cm 0.00 deg off SHTNA (rigid to 0.00 cm)
+PuristShot_Gun             p23  SHTAE     92.08    -0.02     3.41   (-0.0002 0.0486 -0.9988)  3 mirrored; kick 3.49 cm 2.81 deg off SHTNA (rigid to 0.02 cm)
+SSG                        p24  SHTNA     65.40    -0.04    -4.35   (0.0000 -0.0869 -0.9962)  7 mirrored; long axis 13.2 deg off the barrel; tip 622 verts
+SSG                        p25  SHT2A     65.53    -0.04     1.35   (-0.0000 0.0000 -1.0000)  17 mirrored; long axis 13.2 deg off the barrel; tip 622 verts
+SSG                        p26  SHT2M     65.01    -0.04    -8.31   (0.0000 -0.1472 -0.9891)  2 mirrored; kick 3.98 cm 3.48 deg off SHTNA (rigid to 0.02 cm)
+SSG                        p27  SHT2N     65.53    -0.04    -1.18   (0.0000 -0.0386 -0.9993)  2 mirrored; kick 2.53 cm 2.21 deg off SHT2A (rigid to 0.02 cm)
+SSG                        p28  SHT2B     64.52    -0.04     1.74   (-0.0000 0.0107 -0.9999)  2 mirrored; kick 1.08 cm 0.61 deg off SHT2A (rigid to 0.02 cm)
+SSG                        p29  SHT2C     61.64    -0.04     2.85   (0.0000 0.0421 -0.9991)  2 mirrored; kick 4.18 cm 2.41 deg off SHT2A (rigid to 0.02 cm)
+SSG                        p30  SHT2H     61.39    -0.04     4.45   (0.0000 0.0870 -0.9962)  2 mirrored; kick 5.18 cm 4.99 deg off SHT2A (rigid to 0.02 cm)
+SSG                        p31  SHT2I     64.47    -0.04     2.21   (0.0000 0.0241 -0.9997)  4 mirrored; kick 1.37 cm 1.38 deg off SHT2A (rigid to 0.02 cm)
+PuristSSG                  p24  SHTNA     65.40    -0.04    -4.35   (0.0000 -0.0869 -0.9962)  7 mirrored; long axis 13.2 deg off the barrel; tip 622 verts
+PuristSSG                  p25  SHT2A     65.53    -0.04     1.35   (-0.0000 0.0000 -1.0000)  17 mirrored; long axis 13.2 deg off the barrel; tip 622 verts
+PuristSSG                  p26  SHT2M     65.01    -0.04    -8.31   (0.0000 -0.1472 -0.9891)  2 mirrored; kick 3.98 cm 3.48 deg off SHTNA (rigid to 0.02 cm)
+PuristSSG                  p27  SHT2N     65.53    -0.04    -1.18   (0.0000 -0.0386 -0.9993)  2 mirrored; kick 2.53 cm 2.21 deg off SHT2A (rigid to 0.02 cm)
+PuristSSG                  p28  SHT2B     64.52    -0.04     1.74   (-0.0000 0.0107 -0.9999)  2 mirrored; kick 1.08 cm 0.61 deg off SHT2A (rigid to 0.02 cm)
+PuristSSG                  p29  SHT2C     61.64    -0.04     2.85   (0.0000 0.0421 -0.9991)  2 mirrored; kick 4.18 cm 2.41 deg off SHT2A (rigid to 0.02 cm)
+PuristSSG                  p30  SHT2H     61.39    -0.04     4.45   (0.0000 0.0870 -0.9962)  2 mirrored; kick 5.18 cm 4.99 deg off SHT2A (rigid to 0.02 cm)
+PuristSSG                  p31  SHT2I     64.47    -0.04     2.21   (0.0000 0.0241 -0.9997)  4 mirrored; kick 1.37 cm 1.38 deg off SHT2A (rigid to 0.02 cm)
+Minigun                    p32  CHAGA    123.45    -0.34    -7.80   (-0.0000 0.0000 -1.0000)  42 mirrored; long axis 1.5 deg off the barrel; tip 224 verts
+PuristMinigun              p32  CHAGA    123.45    -0.34    -7.80   (-0.0000 0.0000 -1.0000)  42 mirrored; long axis 1.5 deg off the barrel; tip 224 verts
+Rocket_Launcher            p33  MISSW     80.05     0.00     7.50   (0.0001 0.0016 -1.0000)  25 mirrored; long axis 1.2 deg off the barrel; tip 105 verts; barrel from the frame the mesh was built in, turned with the gun (fit to inf cm)
+Rocket_Launcher            p34  MISGJ     80.20     0.02     7.50   (0.0319 -0.0072 -0.9995)  18 mirrored; long axis 0.7 deg off the barrel; tip 105 verts; barrel from the frame the mesh was built in, turned with the gun (fit to inf cm)
+PuristRocket_Launcher      p33  MISSW     80.05     0.00     7.50   (0.0001 0.0016 -1.0000)  25 mirrored; long axis 1.2 deg off the barrel; tip 105 verts; barrel from the frame the mesh was built in, turned with the gun (fit to inf cm)
+PuristRocket_Launcher      p34  MISGJ     80.20     0.02     7.50   (0.0319 -0.0072 -0.9995)  18 mirrored; long axis 0.7 deg off the barrel; tip 105 verts; barrel from the frame the mesh was built in, turned with the gun (fit to inf cm)
+Plasma_Gun                 p35  PRSGF    100.09    -0.07    -1.12   (-0.0000 0.0000 -1.0000)  40 mirrored; long axis 1.5 deg off the barrel; tip 197 verts
+Plasma_Gun                 p36  PRSRJ    100.08    -1.16    -1.13   (-0.0179 -0.0001 -0.9998)  2 mirrored; kick 1.09 cm 1.02 deg off PRSGF (rigid to 0.03 cm)
+Plasma_Gun                 p37  PRSRL    100.06    -2.44    -1.18   (-0.0386 -0.0006 -0.9993)  1 mirrored; kick 2.37 cm 2.21 deg off PRSGF (rigid to 0.03 cm)
+Plasma_Gun                 p38  PRSRM     99.98    -4.09    -1.29   (-0.0652 -0.0018 -0.9979)  1 mirrored; kick 4.03 cm 3.74 deg off PRSGF (rigid to 0.02 cm)
+Plasma_Gun                 p39  PRSRN     99.86    -6.01    -1.42   (-0.0956 -0.0031 -0.9954)  1 mirrored; kick 5.95 cm 5.49 deg off PRSGF (rigid to 0.03 cm)
+Plasma_Gun                 p40  PRSRY    100.01    -1.56    -0.12   (-0.0233 0.0142 -0.9996)  1 mirrored; kick 1.80 cm 1.56 deg off PRSGF (rigid to 0.03 cm)
+Plasma_Gun                 p41  PRSGE     95.50    -0.07     0.37   (-0.0000 0.0210 -0.9998)  2 mirrored; kick 4.84 cm 1.21 deg off PRSGF (rigid to 0.02 cm)
+Plasma_Gun                 p42  PRSAA     95.09    -0.07    -1.13   (0.0000 -0.0000 -1.0000)  1 mirrored; kick 5.00 cm 0.00 deg off PRSGF (rigid to 0.00 cm)
+PuristPlasma_Gun           p35  PRSGF    100.09    -0.07    -1.12   (-0.0000 0.0000 -1.0000)  40 mirrored; long axis 1.5 deg off the barrel; tip 197 verts
+PuristPlasma_Gun           p36  PRSRJ    100.08    -1.16    -1.13   (-0.0179 -0.0001 -0.9998)  2 mirrored; kick 1.09 cm 1.02 deg off PRSGF (rigid to 0.03 cm)
+PuristPlasma_Gun           p37  PRSRL    100.06    -2.44    -1.18   (-0.0386 -0.0006 -0.9993)  1 mirrored; kick 2.37 cm 2.21 deg off PRSGF (rigid to 0.03 cm)
+PuristPlasma_Gun           p38  PRSRM     99.98    -4.09    -1.29   (-0.0652 -0.0018 -0.9979)  1 mirrored; kick 4.03 cm 3.74 deg off PRSGF (rigid to 0.02 cm)
+PuristPlasma_Gun           p39  PRSRN     99.86    -6.01    -1.42   (-0.0956 -0.0031 -0.9954)  1 mirrored; kick 5.95 cm 5.49 deg off PRSGF (rigid to 0.03 cm)
+PuristPlasma_Gun           p40  PRSRY    100.01    -1.56    -0.12   (-0.0233 0.0142 -0.9996)  1 mirrored; kick 1.80 cm 1.56 deg off PRSGF (rigid to 0.03 cm)
+PuristPlasma_Gun           p41  PRSGE     95.50    -0.07     0.37   (-0.0000 0.0210 -0.9998)  2 mirrored; kick 4.84 cm 1.21 deg off PRSGF (rigid to 0.02 cm)
+PuristPlasma_Gun           p42  PRSAA     95.09    -0.07    -1.13   (0.0000 -0.0000 -1.0000)  1 mirrored; kick 5.00 cm 0.00 deg off PRSGF (rigid to 0.00 cm)
+BIG_FUCKING_GUN            p43  BFGNA    112.45    -0.01     6.05   (-0.0000 0.0000 -1.0000)  21 mirrored; long axis 2.4 deg off the barrel; tip 225 verts
+BIG_FUCKING_GUN            p44  BFGNB    112.61    -0.01     0.61   (0.0000 -0.0484 -0.9988)  6 mirrored; kick 5.45 cm 2.77 deg off BFGNA (rigid to 0.03 cm)
+PuristBIG_FUCKING_GUN      p43  BFGNA    112.45    -0.01     6.05   (-0.0000 0.0000 -1.0000)  21 mirrored; long axis 2.4 deg off the barrel; tip 225 verts
+PuristBIG_FUCKING_GUN      p44  BFGNB    112.61    -0.01     0.61   (0.0000 -0.0484 -0.9988)  6 mirrored; kick 5.45 cm 2.77 deg off BFGNA (rigid to 0.03 cm)
+MP40                       p45  MP40A     90.09    -5.45     8.44   (-0.0671 0.0587 -0.9960)  29 mirrored; long axis 5.1 deg off the barrel; tip 143 verts
+PuristMP40                 p45  MP40A     90.09    -5.45     8.44   (-0.0671 0.0587 -0.9960)  29 mirrored; long axis 5.1 deg off the barrel; tip 143 verts
+MG42                       p46  PBUSA    127.95     0.15     1.82   (-0.0000 0.0000 -1.0000)  15 mirrored; long axis 0.5 deg off the barrel; tip 112 verts
+MG42                       p47  HBUSB    126.43     0.15     2.82   (-0.0000 0.0078 -1.0000)  4 mirrored; kick 1.82 cm 0.45 deg off PBUSA (rigid to 0.02 cm)
+MG42                       p48  HBUSC    124.91     0.15     3.83   (0.0000 0.0157 -0.9999)  2 mirrored; kick 3.65 cm 0.90 deg off PBUSA (rigid to 0.02 cm)
+PuristMG42                 p46  PBUSA    127.95     0.15     1.82   (-0.0000 0.0000 -1.0000)  15 mirrored; long axis 0.5 deg off the barrel; tip 112 verts
+PuristMG42                 p47  HBUSB    126.43     0.15     2.82   (-0.0000 0.0078 -1.0000)  4 mirrored; kick 1.82 cm 0.45 deg off PBUSA (rigid to 0.02 cm)
+PuristMG42                 p48  HBUSC    124.91     0.15     3.83   (0.0000 0.0157 -0.9999)  2 mirrored; kick 3.65 cm 0.90 deg off PBUSA (rigid to 0.02 cm)
+Unmaker                    p49  2NHGA     94.85     0.00     1.61   (-0.0001 0.0092 -1.0000)  16 mirrored; long axis 0.7 deg off the barrel; tip 76 verts
+Unmaker                    p50  UNHGB     94.85     0.01     1.61   (-0.0001 0.0092 -1.0000)  2 mirrored; long axis 0.7 deg off the barrel; tip 76 verts
+Unmaker                    p51  UNHGC     94.85     0.01     1.61   (0.0000 0.0092 -1.0000)  2 mirrored; long axis 0.7 deg off the barrel; tip 76 verts
+Unmaker                    p52  UNHGD     94.85     0.01     1.61   (0.0001 0.0092 -1.0000)  2 mirrored; long axis 0.7 deg off the barrel; tip 76 verts
+Unmaker                    p53  UNHFE     90.30     0.01     1.61   (-0.0000 0.0092 -1.0000)  2 mirrored; kick 4.55 cm 0.01 deg off 2NHGA (rigid to 0.01 cm)
+Unmaker                    p54  UNHFD     91.01     0.01     1.61   (-0.0000 0.0092 -1.0000)  2 mirrored; kick 3.84 cm 0.01 deg off 2NHGA (rigid to 0.01 cm)
+Unmaker                    p55  UNHFF     91.33    -1.12     2.06   (-0.0000 0.0209 -0.9998)  2 mirrored; kick 3.72 cm 0.67 deg off 2NHGA (rigid to 0.02 cm)
+Unmaker                    p56  UNHFG     91.81    -0.24     0.06   (-0.0000 0.0092 -1.0000)  2 mirrored; kick 3.42 cm 0.01 deg off 2NHGA (rigid to 0.02 cm)
+Unmaker                    p57  UNHFH     91.89     1.18     0.34   (-0.0000 -0.0000 -1.0000)  2 mirrored; kick 3.43 cm 0.53 deg off 2NHGA (rigid to 0.02 cm)
+PuristUnmaker              p49  2NHGA     94.85     0.00     1.61   (-0.0001 0.0092 -1.0000)  16 mirrored; long axis 0.7 deg off the barrel; tip 76 verts
+PuristUnmaker              p50  UNHGB     94.85     0.01     1.61   (-0.0001 0.0092 -1.0000)  2 mirrored; long axis 0.7 deg off the barrel; tip 76 verts
+PuristUnmaker              p51  UNHGC     94.85     0.01     1.61   (0.0000 0.0092 -1.0000)  2 mirrored; long axis 0.7 deg off the barrel; tip 76 verts
+PuristUnmaker              p52  UNHGD     94.85     0.01     1.61   (0.0001 0.0092 -1.0000)  2 mirrored; long axis 0.7 deg off the barrel; tip 76 verts
+PuristUnmaker              p53  UNHFE     90.30     0.01     1.61   (-0.0000 0.0092 -1.0000)  2 mirrored; kick 4.55 cm 0.01 deg off 2NHGA (rigid to 0.01 cm)
+PuristUnmaker              p54  UNHFD     91.01     0.01     1.61   (-0.0000 0.0092 -1.0000)  2 mirrored; kick 3.84 cm 0.01 deg off 2NHGA (rigid to 0.01 cm)
+PuristUnmaker              p55  UNHFF     91.33    -1.12     2.06   (-0.0000 0.0209 -0.9998)  2 mirrored; kick 3.72 cm 0.67 deg off 2NHGA (rigid to 0.02 cm)
+PuristUnmaker              p56  UNHFG     91.81    -0.24     0.06   (-0.0000 0.0092 -1.0000)  2 mirrored; kick 3.42 cm 0.01 deg off 2NHGA (rigid to 0.02 cm)
+PuristUnmaker              p57  UNHFH     91.89     1.18     0.34   (-0.0000 -0.0000 -1.0000)  2 mirrored; kick 3.43 cm 0.53 deg off 2NHGA (rigid to 0.02 cm)
+GrenadeLauncher            p58  2RLNA     74.89    -0.00     2.57   (-0.0000 0.0000 -1.0000)  27 mirrored; long axis 3.6 deg off the barrel; tip 338 verts
+PuristGrenadeLauncher      p58  2RLNA     74.89    -0.00     2.57   (-0.0000 0.0000 -1.0000)  27 mirrored; long axis 3.6 deg off the barrel; tip 338 verts
+BFG10k                     p59  BG2GA    115.69    -0.00     7.01   (-0.0000 0.0000 -1.0000)  13 mirrored; long axis 2.3 deg off the barrel; tip 54 verts
+BFG10k                     p60  BG2GR    113.49     0.00    10.24   (0.0000 0.0280 -0.9996)  1 mirrored; kick 3.91 cm 1.60 deg off BG2GA (rigid to 0.02 cm)
+BFG10k                     p61  BG3GA    115.89     0.00     1.40   (0.0000 -0.0484 -0.9988)  10 mirrored; kick 5.61 cm 2.77 deg off BG2GA (rigid to 0.02 cm)
+PuristBFG10k               p59  BG2GA    115.69    -0.00     7.01   (-0.0000 0.0000 -1.0000)  13 mirrored; long axis 2.3 deg off the barrel; tip 54 verts
+PuristBFG10k               p60  BG2GR    113.49     0.00    10.24   (0.0000 0.0280 -0.9996)  1 mirrored; kick 3.91 cm 1.60 deg off BG2GA (rigid to 0.02 cm)
+PuristBFG10k               p61  BG3GA    115.89     0.00     1.40   (0.0000 -0.0484 -0.9988)  10 mirrored; kick 5.61 cm 2.77 deg off BG2GA (rigid to 0.02 cm)
+Railgun                    p62  RAILA    138.81    -0.03     0.58   (-0.0001 -0.0230 -0.9997)  39 mirrored; long axis 0.7 deg off the barrel; tip 92 verts; barrel from the frame the mesh was built in, turned with the gun (fit to inf cm)
+Railgun                    p63  RAIZO    138.73    -0.03     0.58   (-0.0000 0.0000 -1.0000)  13 mirrored; long axis 0.7 deg off the barrel; tip 92 verts
+Railgun                    p64  RAR2W    138.79     1.15     0.94   (-0.0061 -0.0175 -0.9998)  3 mirrored; kick 1.24 cm 0.46 deg off RAILA (rigid to 0.03 cm)
+Railgun                    p65  RAIRT    138.79     1.15     0.95   (-0.0061 -0.0175 -0.9998)  1 mirrored; kick 1.24 cm 0.46 deg off RAILA (rigid to 0.03 cm)
+Railgun                    p66  RAIRU    138.79     1.15     0.95   (-0.0061 -0.0174 -0.9998)  1 mirrored; kick 1.24 cm 0.47 deg off RAILA (rigid to 0.03 cm)
+Railgun                    p67  RAIRV    138.79     1.15     0.96   (-0.0061 -0.0174 -0.9998)  1 mirrored; kick 1.24 cm 0.47 deg off RAILA (rigid to 0.03 cm)
+Railgun                    p68  RAIRW    138.79     1.15     0.96   (-0.0061 -0.0174 -0.9998)  5 mirrored; kick 1.24 cm 0.47 deg off RAILA (rigid to 0.03 cm)
+Railgun                    p69  RAR2C    138.75     0.20     3.58   (-0.0010 -0.0008 -1.0000)  2 mirrored; kick 3.01 cm 1.27 deg off RAILA (rigid to 0.03 cm)
+Railgun                    p70  RAR2D    138.80     0.03     1.37   (-0.0003 -0.0171 -0.9999)  2 mirrored; kick 0.80 cm 0.34 deg off RAILA (rigid to 0.03 cm)
+Railgun                    p71  RAIFB    134.31    -0.03     0.58   (-0.0001 -0.0230 -0.9997)  2 mirrored; kick 4.50 cm 0.00 deg off RAILA (rigid to 0.00 cm)
+Railgun                    p72  RAIFE    132.86    -0.03     0.58   (-0.0001 -0.0230 -0.9997)  2 mirrored; kick 5.95 cm 0.00 deg off RAILA (rigid to 0.01 cm)
+Railgun                    p73  RAIFF    135.75    -0.03     0.58   (-0.0001 -0.0230 -0.9997)  2 mirrored; kick 3.05 cm 0.00 deg off RAILA (rigid to 0.01 cm)
+PuristRailGun              p62  RAILA    138.81    -0.03     0.58   (-0.0001 -0.0230 -0.9997)  39 mirrored; long axis 0.7 deg off the barrel; tip 92 verts; barrel from the frame the mesh was built in, turned with the gun (fit to inf cm)
+PuristRailGun              p63  RAIZO    138.73    -0.03     0.58   (-0.0000 0.0000 -1.0000)  13 mirrored; long axis 0.7 deg off the barrel; tip 92 verts
+PuristRailGun              p64  RAR2W    138.79     1.15     0.94   (-0.0061 -0.0175 -0.9998)  3 mirrored; kick 1.24 cm 0.46 deg off RAILA (rigid to 0.03 cm)
+PuristRailGun              p65  RAIRT    138.79     1.15     0.95   (-0.0061 -0.0175 -0.9998)  1 mirrored; kick 1.24 cm 0.46 deg off RAILA (rigid to 0.03 cm)
+PuristRailGun              p66  RAIRU    138.79     1.15     0.95   (-0.0061 -0.0174 -0.9998)  1 mirrored; kick 1.24 cm 0.47 deg off RAILA (rigid to 0.03 cm)
+PuristRailGun              p67  RAIRV    138.79     1.15     0.96   (-0.0061 -0.0174 -0.9998)  1 mirrored; kick 1.24 cm 0.47 deg off RAILA (rigid to 0.03 cm)
+PuristRailGun              p68  RAIRW    138.79     1.15     0.96   (-0.0061 -0.0174 -0.9998)  5 mirrored; kick 1.24 cm 0.47 deg off RAILA (rigid to 0.03 cm)
+PuristRailGun              p69  RAR2C    138.75     0.20     3.58   (-0.0010 -0.0008 -1.0000)  2 mirrored; kick 3.01 cm 1.27 deg off RAILA (rigid to 0.03 cm)
+PuristRailGun              p70  RAR2D    138.80     0.03     1.37   (-0.0003 -0.0171 -0.9999)  2 mirrored; kick 0.80 cm 0.34 deg off RAILA (rigid to 0.03 cm)
+PuristRailGun              p71  RAIFB    134.31    -0.03     0.58   (-0.0001 -0.0230 -0.9997)  2 mirrored; kick 4.50 cm 0.00 deg off RAILA (rigid to 0.00 cm)
+PuristRailGun              p72  RAIFE    132.86    -0.03     0.58   (-0.0001 -0.0230 -0.9997)  2 mirrored; kick 5.95 cm 0.00 deg off RAILA (rigid to 0.01 cm)
+PuristRailGun              p73  RAIFF    135.75    -0.03     0.58   (-0.0001 -0.0230 -0.9997)  2 mirrored; kick 3.05 cm 0.00 deg off RAILA (rigid to 0.01 cm)
+REVOLVER                   p74  REVOA     50.53     0.02     1.77   (-0.0000 0.0000 -1.0000)  33 mirrored; long axis 16.1 deg off the barrel; tip 602 verts
+REVOLVER                   p75  REVOK     45.44     0.02     1.77   (-0.0000 0.0000 -1.0000)  8 mirrored; long axis 16.1 deg off the barrel; tip 602 verts
+REVOLVER                   p76  REVRB     50.53     2.02     1.31   (-0.0000 -0.0001 -1.0000)  1 mirrored; kick 2.06 cm 0.01 deg off REVOA (rigid to 0.03 cm)
+REVOLVER                   p77  REVRC     50.45     2.68     1.63   (0.0201 0.0079 -0.9998)  1 mirrored; kick 2.67 cm 1.24 deg off REVOA (rigid to 0.03 cm)
+REVOLVER                   p78  REVRD     50.36     2.85     2.12   (0.0397 0.0198 -0.9990)  1 mirrored; kick 2.86 cm 2.54 deg off REVOA (rigid to 0.03 cm)
+REVOLVER                   p79  REVRE     50.40     1.76     2.21   (0.0368 0.0199 -0.9991)  1 mirrored; kick 1.81 cm 2.40 deg off REVOA (rigid to 0.03 cm)
+REVOLVER                   p80  REVRF     50.50     0.44     1.86   (0.0261 0.0081 -0.9996)  1 mirrored; kick 0.44 cm 1.57 deg off REVOA (rigid to 0.03 cm)
+REVOLVER                   p81  REVOC     50.53     0.02     1.76   (0.0000 -0.0002 -1.0000)  2 mirrored; kick 5.09 cm 0.01 deg off REVOK (rigid to 0.02 cm)
+REVOLVER                   p82  REVOH     42.12     0.02     2.43   (0.0000 0.0131 -0.9999)  2 mirrored; kick 3.39 cm 0.75 deg off REVOK (rigid to 0.02 cm)
+PuristRevolver             p74  REVOA     50.53     0.02     1.77   (-0.0000 0.0000 -1.0000)  33 mirrored; long axis 16.1 deg off the barrel; tip 602 verts
+PuristRevolver             p75  REVOK     45.44     0.02     1.77   (-0.0000 0.0000 -1.0000)  8 mirrored; long axis 16.1 deg off the barrel; tip 602 verts
+PuristRevolver             p76  REVRB     50.53     2.02     1.31   (-0.0000 -0.0001 -1.0000)  1 mirrored; kick 2.06 cm 0.01 deg off REVOA (rigid to 0.03 cm)
+PuristRevolver             p77  REVRC     50.45     2.68     1.63   (0.0201 0.0079 -0.9998)  1 mirrored; kick 2.67 cm 1.24 deg off REVOA (rigid to 0.03 cm)
+PuristRevolver             p78  REVRD     50.36     2.85     2.12   (0.0397 0.0198 -0.9990)  1 mirrored; kick 2.86 cm 2.54 deg off REVOA (rigid to 0.03 cm)
+PuristRevolver             p79  REVRE     50.40     1.76     2.21   (0.0368 0.0199 -0.9991)  1 mirrored; kick 1.81 cm 2.40 deg off REVOA (rigid to 0.03 cm)
+PuristRevolver             p80  REVRF     50.50     0.44     1.86   (0.0261 0.0081 -0.9996)  1 mirrored; kick 0.44 cm 1.57 deg off REVOA (rigid to 0.03 cm)
+PuristRevolver             p81  REVOC     50.53     0.02     1.76   (0.0000 -0.0002 -1.0000)  2 mirrored; kick 5.09 cm 0.01 deg off REVOK (rigid to 0.02 cm)
+PuristRevolver             p82  REVOH     42.12     0.02     2.43   (0.0000 0.0131 -0.9999)  2 mirrored; kick 3.39 cm 0.75 deg off REVOK (rigid to 0.02 cm)
+AssaultShotgun             p83  USASA     91.06     0.12    -1.06   (-0.0001 -0.0128 -0.9999)  17 mirrored; long axis 4.0 deg off the barrel; tip 112 verts; barrel from the frame the mesh was built in, turned with the gun (fit to inf cm)
+AssaultShotgun             p84  3SARI     90.90     2.42     4.97   (0.0171 0.0615 -0.9980)  2 mirrored; long axis 4.1 deg off the barrel; tip 112 verts; barrel from the frame the mesh was built in, turned with the gun (fit to inf cm)
+PuristAssaultShotgun       p83  USASA     91.06     0.12    -1.06   (-0.0001 -0.0128 -0.9999)  16 mirrored; long axis 4.0 deg off the barrel; tip 112 verts; barrel from the frame the mesh was built in, turned with the gun (fit to inf cm)
+PuristAssaultShotgun       p84  3SARI     90.90     2.42     4.97   (0.0171 0.0615 -0.9980)  2 mirrored; long axis 4.1 deg off the barrel; tip 112 verts; barrel from the frame the mesh was built in, turned with the gun (fit to inf cm)
+NukeLauncher               p85  NKLGA     81.93    -0.00     2.02   (-0.0001 0.0011 -1.0000)  13 mirrored; long axis 4.6 deg off the barrel; tip 222 verts; barrel from the frame the mesh was built in, turned with the gun (fit to inf cm)
+PuristNukeLauncher         p85  NKLGA     81.93    -0.00     2.02   (-0.0001 0.0011 -1.0000)  13 mirrored; long axis 4.6 deg off the barrel; tip 222 verts; barrel from the frame the mesh was built in, turned with the gun (fit to inf cm)
+Sniper                     p86  P21GA     46.85    -0.00     6.39   (-0.0000 0.0000 -1.0000)  81 mirrored; long axis 4.6 deg off the barrel; tip 370 verts
+IncendiaryLauncher         p87  M202A     54.60    -0.03     5.97   (-0.0000 0.0000 -1.0000)  1 mirrored; long axis 3.5 deg off the barrel; tip 86 verts
+PuristIncendiaryLauncher   p87  M202A     54.60    -0.03     5.97   (-0.0000 0.0000 -1.0000)  1 mirrored; long axis 3.5 deg off the barrel; tip 86 verts
+Flamethrower2              p88  2LMTA    113.79     3.53    -2.44   (0.0662 0.0315 -0.9973)  22 mirrored; long axis 1.1 deg off the barrel; tip 49 verts
+Flamethrower2              p89  FLMTB    113.79     3.53    -2.45   (0.0662 0.0314 -0.9973)  2 mirrored; long axis 1.1 deg off the barrel; tip 49 verts
+Flamethrower2              p90  FLMTC    113.62     3.56    -5.96   (0.0662 0.0316 -0.9973)  2 mirrored; long axis 1.0 deg off the barrel; tip 50 verts; barrel from the frame the mesh was built in, turned with the gun (fit to 0.59 cm)
+PuristFlamethrower2        p88  2LMTA    113.79     3.53    -2.44   (0.0662 0.0315 -0.9973)  22 mirrored; long axis 1.1 deg off the barrel; tip 49 verts
+PuristFlamethrower2        p89  FLMTB    113.79     3.53    -2.45   (0.0662 0.0314 -0.9973)  2 mirrored; long axis 1.1 deg off the barrel; tip 49 verts
+PuristFlamethrower2        p90  FLMTC    113.62     3.56    -5.96   (0.0662 0.0316 -0.9973)  2 mirrored; long axis 1.0 deg off the barrel; tip 50 verts; barrel from the frame the mesh was built in, turned with the gun (fit to 0.59 cm)
+Devastator                 p91  DEVAA     80.19    -0.01    12.73   (-0.0000 0.0000 -1.0000)  16 mirrored; long axis 1.1 deg off the barrel; tip 127 verts
+Devastator                 p92  DEVAC     75.26    -0.01    14.14   (-0.0000 0.0230 -0.9997)  2 mirrored; kick 5.12 cm 1.32 deg off DEVAA (rigid to 0.02 cm)
+Devastator                 p93  DEVAG     76.31    -0.01    13.84   (0.0000 0.0181 -0.9998)  2 mirrored; kick 4.03 cm 1.04 deg off DEVAA (rigid to 0.02 cm)
+PuristDevastator           p91  DEVAA     80.19    -0.01    12.73   (-0.0000 0.0000 -1.0000)  16 mirrored; long axis 1.1 deg off the barrel; tip 127 verts
+PuristDevastator           p92  DEVAC     75.26    -0.01    14.14   (-0.0000 0.0230 -0.9997)  2 mirrored; kick 5.12 cm 1.32 deg off DEVAA (rigid to 0.02 cm)
+PuristDevastator           p93  DEVAG     76.31    -0.01    13.84   (0.0000 0.0181 -0.9998)  2 mirrored; kick 4.03 cm 1.04 deg off DEVAA (rigid to 0.02 cm)
+FlameCannon                p94  2LMGA     78.52     0.02     1.93   (-0.0000 0.0000 -1.0000)  43 mirrored; long axis 4.1 deg off the barrel; tip 70 verts
+FlameCannon                p95  FLMGB     75.31     0.02     4.07   (-0.0000 0.0273 -0.9996)  2 mirrored; kick 3.85 cm 1.56 deg off 2LMGA (rigid to 0.03 cm)
+FlameCannon                p96  FLMGI     73.91     0.02     4.43   (-0.0000 0.0318 -0.9995)  4 mirrored; kick 5.24 cm 1.82 deg off 2LMGA (rigid to 0.02 cm)
+PuristFlameCannon          p94  2LMGA     78.52     0.02     1.93   (-0.0000 0.0000 -1.0000)  43 mirrored; long axis 4.1 deg off the barrel; tip 70 verts
+PuristFlameCannon          p95  FLMGB     75.31     0.02     4.07   (-0.0000 0.0273 -0.9996)  2 mirrored; kick 3.85 cm 1.56 deg off 2LMGA (rigid to 0.03 cm)
+PuristFlameCannon          p96  FLMGI     73.91     0.02     4.43   (-0.0000 0.0318 -0.9995)  4 mirrored; kick 5.24 cm 1.82 deg off 2LMGA (rigid to 0.02 cm)
+HellishMissileLauncher     p97  RVCGA     98.42     0.02     2.79   (-0.0000 0.0000 -1.0000)  14 mirrored; long axis 0.9 deg off the barrel; tip 31 verts
+PuristHellishMissileLauncher p97  RVCGA     98.42     0.02     2.79   (-0.0000 0.0000 -1.0000)  14 mirrored; long axis 0.9 deg off the barrel; tip 31 verts
+RSQ_Off_BrutalPistol       p12  2ISTE     44.22    -3.12     1.87   (-0.0637 0.0740 -0.9952)  12 mirrored; long axis 15.2 deg off the barrel; tip 466 verts; barrel from the frame the mesh was built in, turned with the gun (fit to inf cm)
+RSQ_Off_BrutalPistol       p13  PISTI     44.22    -3.12     1.87   (-0.0633 0.0761 -0.9951)  37 mirrored; long axis 15.0 deg off the barrel; tip 466 verts; barrel from the frame the mesh was built in, turned with the gun (fit to inf cm)
+RSQ_Off_Revolver           p74  REVOA     50.53     0.02     1.77   (-0.0000 0.0000 -1.0000)  33 mirrored; long axis 16.1 deg off the barrel; tip 602 verts
+RSQ_Off_Revolver           p75  REVOK     45.44     0.02     1.77   (-0.0000 0.0000 -1.0000)  8 mirrored; long axis 16.1 deg off the barrel; tip 602 verts
+RSQ_Off_Revolver           p76  REVRB     50.53     2.02     1.31   (-0.0000 -0.0001 -1.0000)  1 mirrored; kick 2.06 cm 0.01 deg off REVOA (rigid to 0.03 cm)
+RSQ_Off_Revolver           p77  REVRC     50.45     2.68     1.63   (0.0201 0.0079 -0.9998)  1 mirrored; kick 2.67 cm 1.24 deg off REVOA (rigid to 0.03 cm)
+RSQ_Off_Revolver           p78  REVRD     50.36     2.85     2.12   (0.0397 0.0198 -0.9990)  1 mirrored; kick 2.86 cm 2.54 deg off REVOA (rigid to 0.03 cm)
+RSQ_Off_Revolver           p79  REVRE     50.40     1.76     2.21   (0.0368 0.0199 -0.9991)  1 mirrored; kick 1.81 cm 2.40 deg off REVOA (rigid to 0.03 cm)
+RSQ_Off_Revolver           p80  REVRF     50.50     0.44     1.86   (0.0261 0.0081 -0.9996)  1 mirrored; kick 0.44 cm 1.57 deg off REVOA (rigid to 0.03 cm)
+RSQ_Off_Revolver           p81  REVOC     50.53     0.02     1.76   (0.0000 -0.0002 -1.0000)  2 mirrored; kick 5.09 cm 0.01 deg off REVOK (rigid to 0.02 cm)
+RSQ_Off_Revolver           p82  REVOH     42.12     0.02     2.43   (0.0000 0.0131 -0.9999)  2 mirrored; kick 3.39 cm 0.75 deg off REVOK (rigid to 0.02 cm)
+RSQ_Off_BrutalSMG          p14  SMGRA     63.76    -5.18    -0.81   (-0.0691 0.0487 -0.9964)  42 mirrored; long axis 5.3 deg off the barrel; tip 160 verts
+RSQ_Off_BrutalSMG          p15  SMGR\     63.30    -8.24     0.96   (-0.1497 0.0957 -0.9841)  1 mirrored; kick 3.56 cm 5.40 deg off SMGRA (rigid to 0.02 cm)
+RSQ_Off_BrutalSMG          p16  SMGR]     63.72    -5.57    -0.58   (-0.0793 0.0548 -0.9953)  1 mirrored; kick 0.45 cm 0.69 deg off SMGRA (rigid to 0.03 cm)
+RSQ_Off_BrutalSMG          p17  SMGFB     62.74    -4.97    -0.12   (-0.0651 0.0686 -0.9955)  3 mirrored; kick 1.25 cm 1.16 deg off SMGRA (rigid to 0.01 cm)
+RSQ_Off_BrutalSMG          p18  SMGFC     63.25    -5.07    -0.47   (-0.0671 0.0587 -0.9960)  3 mirrored; kick 0.62 cm 0.58 deg off SMGRA (rigid to 0.01 cm)
+RSQ_Off_MP40               p45  MP40A     90.09    -5.45     8.44   (-0.0671 0.0587 -0.9960)  29 mirrored; long axis 5.1 deg off the barrel; tip 143 verts
+RSQ_Off_Rifle              p00  RIFGA     93.39    -6.28     8.07   (-0.0671 0.0587 -0.9960)  89 mirrored; long axis 6.9 deg off the barrel; tip 178 verts
+RSQ_Off_Rifle              p01  RIFR[     93.44    -6.57     8.15   (-0.0723 0.0597 -0.9956)  16 mirrored; kick 0.31 cm 0.31 deg off RIFGA (rigid to 0.02 cm)
+RSQ_Off_Rifle              p02  2IFRI     93.20    -6.74     8.96   (-0.0761 0.0721 -0.9945)  2 mirrored; kick 1.01 cm 0.93 deg off RIFGA (rigid to 0.02 cm)
+RSQ_Off_Rifle              p03  2IFRJ     92.65    -7.90    11.15   (-0.0994 0.1056 -0.9894)  2 mirrored; kick 3.56 cm 3.29 deg off RIFGA (rigid to 0.02 cm)
+RSQ_Off_Rifle              p04  2IFRK     92.97    -7.25     9.93   (-0.0863 0.0869 -0.9925)  2 mirrored; kick 2.14 cm 1.97 deg off RIFGA (rigid to 0.03 cm)
+RSQ_Off_Rifle              p05  RIFFB     91.74    -5.90     9.36   (-0.0630 0.0795 -0.9948)  6 mirrored; kick 2.13 cm 1.22 deg off RIFGA (rigid to 0.02 cm)
+RSQ_Off_Rifle              p06  RIFFC     92.79    -6.10     8.73   (-0.0650 0.0691 -0.9955)  14 mirrored; kick 0.90 cm 0.61 deg off RIFGA (rigid to 0.02 cm)
+RSQ_Off_Plasma_Gun         p35  PRSGF    100.09    -0.07    -1.12   (-0.0000 0.0000 -1.0000)  40 mirrored; long axis 1.5 deg off the barrel; tip 197 verts
+RSQ_Off_Plasma_Gun         p36  PRSRJ    100.08    -1.16    -1.13   (-0.0179 -0.0001 -0.9998)  2 mirrored; kick 1.09 cm 1.02 deg off PRSGF (rigid to 0.03 cm)
+RSQ_Off_Plasma_Gun         p37  PRSRL    100.06    -2.44    -1.18   (-0.0386 -0.0006 -0.9993)  1 mirrored; kick 2.37 cm 2.21 deg off PRSGF (rigid to 0.03 cm)
+RSQ_Off_Plasma_Gun         p38  PRSRM     99.98    -4.09    -1.29   (-0.0652 -0.0018 -0.9979)  1 mirrored; kick 4.03 cm 3.74 deg off PRSGF (rigid to 0.02 cm)
+RSQ_Off_Plasma_Gun         p39  PRSRN     99.86    -6.01    -1.42   (-0.0956 -0.0031 -0.9954)  1 mirrored; kick 5.95 cm 5.49 deg off PRSGF (rigid to 0.03 cm)
+RSQ_Off_Plasma_Gun         p40  PRSRY    100.01    -1.56    -0.12   (-0.0233 0.0142 -0.9996)  1 mirrored; kick 1.80 cm 1.56 deg off PRSGF (rigid to 0.03 cm)
+RSQ_Off_Plasma_Gun         p41  PRSGE     95.50    -0.07     0.37   (-0.0000 0.0210 -0.9998)  2 mirrored; kick 4.84 cm 1.21 deg off PRSGF (rigid to 0.02 cm)
+RSQ_Off_Plasma_Gun         p42  PRSAA     95.09    -0.07    -1.13   (0.0000 -0.0000 -1.0000)  1 mirrored; kick 5.00 cm 0.00 deg off PRSGF (rigid to 0.00 cm)
+RSQ_Off_Shot_Gun           p19  SHTNA     93.47    -0.02     0.21   (-0.0002 -0.0005 -1.0000)  28 mirrored; long axis 6.3 deg off the barrel; tip 381 verts; barrel from the frame the mesh was built in, turned with the gun (fit to inf cm)
+RSQ_Off_Shot_Gun           p20  SHTNB     93.43    -0.32     1.28   (-0.0042 0.0159 -0.9999)  2 mirrored; kick 1.11 cm 0.97 deg off SHTNA (rigid to 0.03 cm)
+RSQ_Off_Shot_Gun           p21  SHTNC     93.21    -1.17     4.19   (-0.0153 0.0607 -0.9980)  2 mirrored; kick 4.15 cm 3.61 deg off SHTNA (rigid to 0.03 cm)
+RSQ_Off_Shot_Gun           p22  SHTAC     88.47    -0.02     0.21   (-0.0002 -0.0005 -1.0000)  3 mirrored; kick 5.00 cm 0.00 deg off SHTNA (rigid to 0.00 cm)
+RSQ_Off_Shot_Gun           p23  SHTAE     92.08    -0.02     3.41   (-0.0002 0.0486 -0.9988)  3 mirrored; kick 3.49 cm 2.81 deg off SHTNA (rigid to 0.02 cm)
+RSQ_Off_SSG                p24  SHTNA     65.40    -0.04    -4.35   (0.0000 -0.0869 -0.9962)  7 mirrored; long axis 13.2 deg off the barrel; tip 622 verts
+RSQ_Off_SSG                p25  SHT2A     65.53    -0.04     1.35   (-0.0000 0.0000 -1.0000)  17 mirrored; long axis 13.2 deg off the barrel; tip 622 verts
+RSQ_Off_SSG                p26  SHT2M     65.01    -0.04    -8.31   (0.0000 -0.1472 -0.9891)  2 mirrored; kick 3.98 cm 3.48 deg off SHTNA (rigid to 0.02 cm)
+RSQ_Off_SSG                p27  SHT2N     65.53    -0.04    -1.18   (0.0000 -0.0386 -0.9993)  2 mirrored; kick 2.53 cm 2.21 deg off SHT2A (rigid to 0.02 cm)
+RSQ_Off_SSG                p28  SHT2B     64.52    -0.04     1.74   (-0.0000 0.0107 -0.9999)  2 mirrored; kick 1.08 cm 0.61 deg off SHT2A (rigid to 0.02 cm)
+RSQ_Off_SSG                p29  SHT2C     61.64    -0.04     2.85   (0.0000 0.0421 -0.9991)  2 mirrored; kick 4.18 cm 2.41 deg off SHT2A (rigid to 0.02 cm)
+RSQ_Off_SSG                p30  SHT2H     61.39    -0.04     4.45   (0.0000 0.0870 -0.9962)  2 mirrored; kick 5.18 cm 4.99 deg off SHT2A (rigid to 0.02 cm)
+RSQ_Off_SSG                p31  SHT2I     64.47    -0.04     2.21   (0.0000 0.0241 -0.9997)  4 mirrored; kick 1.37 cm 1.38 deg off SHT2A (rigid to 0.02 cm)
+RSQ_Off_AssaultShotgun     p83  USASA     91.06     0.12    -1.06   (-0.0001 -0.0128 -0.9999)  17 mirrored; long axis 4.0 deg off the barrel; tip 112 verts; barrel from the frame the mesh was built in, turned with the gun (fit to inf cm)
+RSQ_Off_AssaultShotgun     p84  3SARI     90.90     2.42     4.97   (0.0171 0.0615 -0.9980)  2 mirrored; long axis 4.1 deg off the barrel; tip 112 verts; barrel from the frame the mesh was built in, turned with the gun (fit to inf cm)
+RSQ_Off_RailGun            p62  RAILA    138.81    -0.03     0.58   (-0.0001 -0.0230 -0.9997)  39 mirrored; long axis 0.7 deg off the barrel; tip 92 verts; barrel from the frame the mesh was built in, turned with the gun (fit to inf cm)
+RSQ_Off_RailGun            p63  RAIZO    138.73    -0.03     0.58   (-0.0000 0.0000 -1.0000)  13 mirrored; long axis 0.7 deg off the barrel; tip 92 verts
+RSQ_Off_RailGun            p64  RAR2W    138.79     1.15     0.94   (-0.0061 -0.0175 -0.9998)  3 mirrored; kick 1.24 cm 0.46 deg off RAILA (rigid to 0.03 cm)
+RSQ_Off_RailGun            p65  RAIRT    138.79     1.15     0.95   (-0.0061 -0.0175 -0.9998)  1 mirrored; kick 1.24 cm 0.46 deg off RAILA (rigid to 0.03 cm)
+RSQ_Off_RailGun            p66  RAIRU    138.79     1.15     0.95   (-0.0061 -0.0174 -0.9998)  1 mirrored; kick 1.24 cm 0.47 deg off RAILA (rigid to 0.03 cm)
+RSQ_Off_RailGun            p67  RAIRV    138.79     1.15     0.96   (-0.0061 -0.0174 -0.9998)  1 mirrored; kick 1.24 cm 0.47 deg off RAILA (rigid to 0.03 cm)
+RSQ_Off_RailGun            p68  RAIRW    138.79     1.15     0.96   (-0.0061 -0.0174 -0.9998)  5 mirrored; kick 1.24 cm 0.47 deg off RAILA (rigid to 0.03 cm)
+RSQ_Off_RailGun            p69  RAR2C    138.75     0.20     3.58   (-0.0010 -0.0008 -1.0000)  2 mirrored; kick 3.01 cm 1.27 deg off RAILA (rigid to 0.03 cm)
+RSQ_Off_RailGun            p70  RAR2D    138.80     0.03     1.37   (-0.0003 -0.0171 -0.9999)  2 mirrored; kick 0.80 cm 0.34 deg off RAILA (rigid to 0.03 cm)
+RSQ_Off_RailGun            p71  RAIFB    134.31    -0.03     0.58   (-0.0001 -0.0230 -0.9997)  2 mirrored; kick 4.50 cm 0.00 deg off RAILA (rigid to 0.00 cm)
+RSQ_Off_RailGun            p72  RAIFE    132.86    -0.03     0.58   (-0.0001 -0.0230 -0.9997)  2 mirrored; kick 5.95 cm 0.00 deg off RAILA (rigid to 0.01 cm)
+RSQ_Off_RailGun            p73  RAIFF    135.75    -0.03     0.58   (-0.0001 -0.0230 -0.9997)  2 mirrored; kick 3.05 cm 0.00 deg off RAILA (rigid to 0.01 cm)
+Machinegun                 p98  MGN1A     96.83     0.04     4.68   (-0.0000 0.0000 -1.0000)  12 mirrored; long axis 3.3 deg off the barrel; tip 56 verts
+Machinegun                 p99  MGN1C     93.98     0.04     5.48   (0.0000 0.0118 -0.9999)  2 mirrored; kick 2.96 cm 0.68 deg off MGN1A (rigid to 0.01 cm)
+Machinegun                 p100  MGN1D     94.75     0.04     5.37   (0.0000 0.0101 -0.9999)  2 mirrored; kick 2.19 cm 0.58 deg off MGN1A (rigid to 0.01 cm)
+Machinegun                 p101  MGN1E     95.75     0.04     5.08   (-0.0000 0.0059 -1.0000)  2 mirrored; kick 1.15 cm 0.34 deg off MGN1A (rigid to 0.01 cm)
+Machinegun                 p102  MGN2B     92.83     0.04     4.68   (-0.0000 -0.0000 -1.0000)  2 mirrored; kick 4.00 cm 0.00 deg off MGN1A (rigid to 0.00 cm)
+Machinegun                 p103  MGN2C     92.96     0.04     9.09   (0.0000 0.0436 -0.9990)  2 mirrored; kick 5.87 cm 2.50 deg off MGN1A (rigid to 0.02 cm)
+Machinegun                 p104  MGN2F     95.52     0.04     9.09   (0.0000 0.0436 -0.9990)  2 mirrored; kick 4.60 cm 2.50 deg off MGN1A (rigid to 0.02 cm)
+Machinegun                 p105  MGN2G     96.51     0.04     5.90   (-0.0000 0.0121 -0.9999)  2 mirrored; kick 1.26 cm 0.69 deg off MGN1A (rigid to 0.01 cm)
 
 NO BEAM (no measurement, so no beam rather than a wrong one):
   Fist                       a melee weapon (+WEAPON.MELEEWEAPON): no bore
   Chainsaw                   a melee weapon (+WEAPON.MELEEWEAPON): no bore
   StaffPowered               a melee weapon (+WEAPON.MELEEWEAPON): no bore
-  Crossbow                   no model for its Ready frame PLYC B (a sprite or a voxel)
-  CrossbowPowered            no model for its Ready frame PLYC B (a sprite or a voxel)
+  Crossbow                   no model for its Ready frame PLYC B (a sprite or a voxel); no model for its Ready frame PLYC C (a sprite or a voxel)
+  CrossbowPowered            no model for its Ready frame PLYC B (a sprite or a voxel); no model for its Ready frame PLYC C (a sprite or a voxel)
   GauntletsPowered           a melee weapon (+WEAPON.MELEEWEAPON): no bore
-  CWeapFlame                 no model for its Ready frame PLYC B (a sprite or a voxel)
-  CWeapStaff                 no model for its Ready frame PLYC C (a sprite or a voxel)
-  MWeapLightning             no model for its Ready frame PLYC B (a sprite or a voxel)
-  MWeapBloodscourge          no model for its Ready frame PLYC B (a sprite or a voxel)
-  FWeapQuietus               no model for its Ready frame PLYC B (a sprite or a voxel)
+  CWeapFlame                 no model for its Ready frame PLYC B (a sprite or a voxel); no model for its Ready frame PLYC C (a sprite or a voxel)
+  CWeapStaff                 no model for its Ready frame PLYC C (a sprite or a voxel); no model for its Ready frame PLYC B (a sprite or a voxel)
+  MWeapLightning             no model for its Ready frame PLYC B (a sprite or a voxel); no model for its Ready frame PLYC C (a sprite or a voxel)
+  MWeapBloodscourge          no model for its Ready frame PLYC B (a sprite or a voxel); no model for its Ready frame PLYC C (a sprite or a voxel); no model for its Ready frame PLYC D (a sprite or a voxel); no model for its Ready frame PLYC E (a sprite or a voxel); no model for its Ready frame PLYC F (a sprite or a voxel)
+  FWeapQuietus               no model for its Ready frame PLYC B (a sprite or a voxel); no model for its Ready frame PLYC C (a sprite or a voxel)
   StrifeCrossbow2            no model for its Ready frame PLYC H (a sprite or a voxel)
   AssaultGun                 no model for its Ready frame RIFG A (a sprite or a voxel)
-  FlameThrower               no model for its Ready frame FLMT A (a sprite or a voxel)
+  FlameThrower               no model for its Ready frame FLMT A (a sprite or a voxel); no model for its Ready frame FLMT B (a sprite or a voxel)
   StrifeGrenadeLauncher2     no model for its Ready frame PLYC D (a sprite or a voxel)
-  Mauler                     no model for its Ready frame PLYC F (a sprite or a voxel)
-  Mauler2                    no model for its Ready frame PLYC I (a sprite or a voxel)
+  Mauler                     no model for its Ready frame PLYC F (a sprite or a voxel); no model for its Ready frame PLYC G (a sprite or a voxel); no model for its Ready frame PLYC H (a sprite or a voxel)
+  Mauler2                    no model for its Ready frame PLYC I (a sprite or a voxel); no model for its Ready frame PLYC J (a sprite or a voxel); no model for its Ready frame PLYC K (a sprite or a voxel); no model for its Ready frame PLYC L (a sprite or a voxel)
   Bootspoon                  a melee weapon (+WEAPON.MELEEWEAPON): no bore
   SuperBootspork             a melee weapon (+WEAPON.MELEEWEAPON): no bore
   Pistol                     no model for its Ready frame PISG A (a sprite or a voxel)
@@ -97,21 +291,20 @@ NO BEAM (no measurement, so no beam rather than a wrong one):
   ZorchPropulsor             no model for its Ready frame MISG A (a sprite or a voxel)
   PhasingZorcher             no model for its Ready frame PLSG A (a sprite or a voxel)
   LAZDevice                  no model for its Ready frame BFGG A (a sprite or a voxel)
-  ExecutionWeapon            no model for its Ready frame KICK A (a sprite or a voxel)
+  ExecutionWeapon            no model for its Ready frame KICK A (a sprite or a voxel); no model for its Ready frame 3ICK A (a sprite or a voxel); no model for its Ready frame 2ICK A (a sprite or a voxel); no model for its Ready frame 1ICK A (a sprite or a voxel); no model for its Ready frame KICK B (a sprite or a voxel); no model for its Ready frame KICK C (a sprite or a voxel); no model for its Ready frame KICK D (a sprite or a voxel); no model for its Ready frame 1ICK E (a sprite or a voxel)
   Melee_Attacks              a melee weapon (+WEAPON.MELEEWEAPON): no bore
   Chain_saw                  a melee weapon (+WEAPON.MELEEWEAPON): no bore
   BrutalAxe                  a melee weapon (+WEAPON.MELEEWEAPON): no bore
   DualRifles                 no model for its Ready frame DURI A (a sprite or a voxel)
-  DualPistols                no model for its Ready frame PI2G A (a sprite or a voxel)
-  DualSMG                    no model for its Ready frame SM2S I (a sprite or a voxel)
-  DualPlasmaRifles           no model for its Ready frame DUPR A (a sprite or a voxel)
+  DualPistols                no model for its Ready frame PI2G A (a sprite or a voxel); no model for its Ready frame PI2G M (a sprite or a voxel)
+  DualSMG                    no model for its Ready frame SM2S I (a sprite or a voxel); no model for its Ready frame SM2F A (a sprite or a voxel)
+  DualPlasmaRifles           no model for its Ready frame DUPR A (a sprite or a voxel); no model for its Ready frame 2UPR A (a sprite or a voxel); no model for its Ready frame 3UPR A (a sprite or a voxel)
   DualMP40                   no model for its Ready frame MP42 A (a sprite or a voxel)
-  DSweap                     its long axis is 69.9 deg off the model x axis: not a gun built along x
-  AmmoDroper                 no model for its Ready frame PDRO P (a sprite or a voxel)
-  Sniper                     no model for its Ready frame SNIP D (a sprite or a voxel)
-  PuristSniper               no model for its Ready frame SNIP D (a sprite or a voxel)
-  HandGrenades               no model for its Ready frame PLYC Q (a sprite or a voxel)
-  PuristHandGrenades         no model for its Ready frame PLYC Q (a sprite or a voxel)
+  DSweap                     DSLAA: its long axis is 69.9 deg off the model x axis: not a gun built along x
+  AmmoDroper                 no model for its Ready frame PDRO P (a sprite or a voxel); no model for its Ready frame ADRO P (a sprite or a voxel); no model for its Ready frame ADRO G (a sprite or a voxel); no model for its Ready frame ADRO F (a sprite or a voxel); no model for its Ready frame ADRO E (a sprite or a voxel); no model for its Ready frame ADRO D (a sprite or a voxel); no model for its Ready frame ADRO C (a sprite or a voxel); no model for its Ready frame ADRO B (a sprite or a voxel); no model for its Ready frame ADRO A (a sprite or a voxel)
+  PuristSniper               no model for its Ready frame SNIP D (a sprite or a voxel); no model for its Ready frame P21G A (a sprite or a voxel); no model for its Ready frame X21G A (a sprite or a voxel)
+  HandGrenades               no model for its Ready frame PLYC Q (a sprite or a voxel); GRTHQ: its long axis is 84.9 deg off the model x axis: not a gun built along x
+  PuristHandGrenades         no model for its Ready frame PLYC Q (a sprite or a voxel); GRTHQ: its long axis is 84.9 deg off the model x axis: not a gun built along x
   DualFlameCannon            no model for its Ready frame DUFL A (a sprite or a voxel)
   ZManShield                 no model for its Ready frame PI3G A (a sprite or a voxel)
   ImpShield                  no model for its Ready frame PI3G A (a sprite or a voxel)
@@ -120,13 +313,13 @@ NO BEAM (no measurement, so no beam rather than a wrong one):
   NaziShield                 no model for its Ready frame PI3G A (a sprite or a voxel)
   EvilMarineShield           no model for its Ready frame PI3G A (a sprite or a voxel)
   ZombieCivilianShield       no model for its Ready frame PI3G A (a sprite or a voxel)
-  TankGun                    no model for its Ready frame TNHD W (a sprite or a voxel)
-  ArtilleryTankGun           no model for its Ready frame TNHD W (a sprite or a voxel)
-  MechGun                    no model for its Ready frame MEKH D (a sprite or a voxel)
+  TankGun                    no model for its Ready frame TNHD W (a sprite or a voxel); no model for its Ready frame TNHD X (a sprite or a voxel); no model for its Ready frame TNHD Y (a sprite or a voxel); no model for its Ready frame TNHD Z (a sprite or a voxel); no model for its Ready frame TNHD A (a sprite or a voxel); no model for its Ready frame NULL A (a sprite or a voxel)
+  ArtilleryTankGun           no model for its Ready frame TNHD W (a sprite or a voxel); no model for its Ready frame TNHD X (a sprite or a voxel); no model for its Ready frame TNHD Y (a sprite or a voxel); no model for its Ready frame TNHD Z (a sprite or a voxel); no model for its Ready frame TNLH G (a sprite or a voxel); no model for its Ready frame NULL A (a sprite or a voxel)
+  MechGun                    no model for its Ready frame MEKH D (a sprite or a voxel); no model for its Ready frame MEKH C (a sprite or a voxel); no model for its Ready frame MEKH B (a sprite or a voxel); no model for its Ready frame MEKH A (a sprite or a voxel)
   attackhelicopterGun        no model for its Ready frame HELH A (a sprite or a voxel)
   HeavyMachinegunHUD         no model for its Ready frame HMGH H (a sprite or a voxel)
-  BikeHUD                    no model for its Ready frame BKVU A (a sprite or a voxel)
-  D4BaronHUD                 no model for its Ready frame RIFG A (a sprite or a voxel)
-  D4RevenantHUD              no model for its Ready frame RVCG A (a sprite or a voxel)
-  BrutalRevolver             its long axis is 86.9 deg off the model x axis: not a gun built along x
+  BikeHUD                    no model for its Ready frame BKVU A (a sprite or a voxel); no model for its Ready frame BKHU A (a sprite or a voxel); no model for its Ready frame BIKE A (a sprite or a voxel)
+  D4BaronHUD                 no model for its Ready frame RIFG A (a sprite or a voxel); no model for its Ready frame HBRG A (a sprite or a voxel)
+  D4RevenantHUD              no model for its Ready frame RVCG A (a sprite or a voxel); no model for its Ready frame RIFG A (a sprite or a voxel)
+  BrutalRevolver             RVMAA: its long axis is 86.9 deg off the model x axis: not a gun built along x
   Revolver2                  no model for its Ready frame REVO A (a sprite or a voxel)
