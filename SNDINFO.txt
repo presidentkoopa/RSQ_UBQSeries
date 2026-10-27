@@ -1,3 +1,9 @@
+// jpalomo's hook sounds (jp_original/), under this mod's names.
+rsqgr/fire          RSGCHAIN
+rsqgr/swish         RSGSWISH
+rsqgr/loop          RSGPULCH
+rsqgr/hit/terrain   RSGMETAL
+rsqgr/hit/flesh     RSGMEAT
 
 // ==== monster side: the Combat FX and Ballistics look sets (looks.zs) ====
 // RS_CombatFX (the owner's well): shared draw, holster x3, unsorted foley x3

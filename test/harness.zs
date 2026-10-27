@@ -7,15 +7,31 @@ class RSQGRH_Harness : EventHandler
 	int spawned;
 	override void WorldTick()
 	{
+		CutCheck();
 		let pmo = players[consoleplayer].mo;
 		if (!pmo) return;
 		int at = CVar.FindCVar("rsgrh_at").GetInt();
+		if (level.maptime == 3 && CVar.FindCVar("rsgrh_tp").GetInt())
+		{
+			pmo.SetOrigin((CVar.FindCVar("rsgrh_px").GetFloat(), CVar.FindCVar("rsgrh_py").GetFloat(), pmo.pos.z), false);
+			pmo.SetZ(pmo.floorz);
+			pmo.angle = CVar.FindCVar("rsgrh_pa").GetFloat();
+			Console.Printf("H_TP player to (%.0f %.0f %.0f) angle %.0f", pmo.pos.x, pmo.pos.y, pmo.pos.z, pmo.angle);
+		}
 		if (level.maptime == 5 && CVar.FindCVar("rsgrh_scan").GetInt())
 		{
 			for (int k = 0; k < 12; k++)
 			{
 				FLineTraceData d;
 				pmo.LineTrace(k * 30, 4000, 0, TRF_THRUACTORS, 40, data: d);
+				String fl = "";
+				for (int q = 1; q <= 12; q++)
+				{
+					Vector2 pt = pmo.pos.xy + (cos(k * 30), sin(k * 30)) * q * 32;
+					Sector sec = level.PointInSector(pt);
+					fl = fl .. String.Format(" %.0f/%.0f", sec.floorplane.ZatPoint(pt), sec.ceilingplane.ZatPoint(pt));
+				}
+				Console.Printf("H_FLOORS %d:%s", k * 30, fl);
 				Console.Printf("H_SCAN map %s at (%.0f %.0f %.0f) angle %d -> %.0f", level.MapName, pmo.pos.x, pmo.pos.y, pmo.pos.z, k * 30, d.Distance);
 			}
 		}
@@ -42,6 +58,26 @@ class RSQGRH_Harness : EventHandler
 		if (v && CVar.FindCVar("rsgrh_log").GetInt() && level.maptime % 1 == 0 && level.maptime > at)
 			Console.Printf("H_POS %d %s pos (%.1f %.1f %.1f) hp %d tics %d grav %.4f nograv %d", level.maptime, v.GetClassName(), v.pos.x, v.pos.y, v.pos.z, v.health, v.tics, v.Gravity, v.bNOGRAVITY);
 	}
+	// rsgrh_cut_tt: let the rope go (core's own LetGo, as a tap would) once the throw's path
+	// clock reaches this many world tics -- the same point in the arc at any world speed.
+	void CutCheck()
+	{
+		double cut = CVar.FindCVar("rsgrh_cut_tt").GetFloat();
+		if (cut <= 0) return;
+		let fl = RSQGR_Flight.Get();
+		let core = RSQGR_Core.Get();
+		if (!fl || !core) return;
+		for (int s = 0; s < RSQGR_Flight.NFLY; s++)
+		{
+			if (fl.fph[s] != RSQGR_Flight.FP_PATH || !fl.fline[s] || fl.ftt[s] < cut) continue;
+			for (int i = 0; i < RSQGR_Core.NHOOK; i++)
+			{
+				let h = core.hooks[i];
+				if (h && h.victim == fl.fa[s]) { Console.Printf("H_CUT at tt %.2f", fl.ftt[s]); core.LetGo(h, true); }
+			}
+		}
+	}
+
 	override void NetworkProcess(ConsoleEvent e)
 	{
 		Console.Printf("H_NET %d %s %d %d %d", level.maptime, e.Name, e.Args[0], e.Args[1], e.Args[2]);

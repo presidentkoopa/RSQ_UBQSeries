@@ -162,6 +162,8 @@ class RSQGR_Flight : EventHandler
 	double  fstop[NFLY];       // how far in front of you it lands
 	double  farc[NFLY];        // arc height allowed, fixed at launch
 	Vector3 fv[NFLY];          // authored velocity, units per WORLD tic
+	double  flastVz[NFLY];
+	double  fvPrev[NFLY];      // its speed the step before (the arrival step can be a sliver)
 	Vector3 flast[NFLY];       // its middle last tic
 	int     fage[NFLY];        // real tics since launch
 	double  fpeak[NFLY];       // highest the middle went above its launch middle (log)
@@ -300,7 +302,22 @@ class RSQGR_Flight : EventHandler
 	{
 		if (s < 0 || s >= NFLY || fph[s] == FP_NONE) return;
 		fline[s] = false;
-		if (fph[s] == FP_PATH) ToAir(s, "cut");
+		if (fph[s] == FP_PATH) { fv[s] = PathVel(s); ToAir(s, "cut"); }
+	}
+
+	// The path's own velocity at its clock, per world tic (d/dtt of StepPath's point).
+	// Handed to the air on a cut rather than the last step's difference, which depends
+	// on how big the step was -- i.e. on the world's speed.
+	private Vector3 PathVel(int s)
+	{
+		double total = max(1.0, fT[s]);
+		double t = clamp(ftt[s] / total, 0.0001, 1.0);
+		double e = t ** 1.6;
+		double de = 1.6 * (t ** 0.6) / total;
+		Vector3 land = fby[s] ? LandMid(s) : flast[s];
+		Vector3 v = (land - ffrom[s]) * de;
+		v.z += 4.0 * farc[s] * (1.0 - 2.0 * e) * de;
+		return v;
 	}
 
 	private void ToAir(int s, String why)
@@ -340,14 +357,26 @@ class RSQGR_Flight : EventHandler
 	// Place the middle at `mid`: Z first, clamped to the room, then XY by TryMove (a
 	// real move that walls and things stop), lifted 6/12/18 if boxed in (DG). Returns
 	// false when it could not move; `hit` is what stopped it, if a thing did.
+	private transient bool zBlocked;
+	private transient Line blockLine;   // PlaceMid's last vertical move was refused by a thing
 	private bool PlaceMid(Actor a, Vector3 mid, out Actor hit)
 	{
 		hit = null;
+		blockLine = null;
 		double z = mid.z - a.Height * 0.5;
 		double keep = a.Pos.z;
 		a.SetZ(clamp(z, a.floorz, max(a.floorz, a.ceilingz - a.Height)));
+		// SetZ knows floors and ceilings, not things: coming down on a head (or up into a
+		// belly) it would sink in. The vertical part is refused instead.
+		zBlocked = false;
+		if (a.Pos.z != keep && !a.TestMobjLocation())
+		{
+			a.SetZ(keep);
+			zBlocked = true;
+		}
 		if (a.TryMove(mid.xy, 1)) return true;
 		hit = a.BlockingMobj;
+		blockLine = a.BlockingLine;
 		for (int lift = 1; lift <= 3; lift++)
 		{
 			double tz = a.Pos.z + lift * 6.0;
@@ -405,6 +434,8 @@ class RSQGR_Flight : EventHandler
 		bool moved = PlaceMid(a, want, hit);
 		Vector3 now = MidOf(a);
 		// the authored velocity, per WORLD tic (a step of sc world tics just happened)
+		fvPrev[s] = fv[s].Length();
+		flastVz[s] = fv[s].z;
 		if (sc > 0.0001) fv[s] = (now - was) / sc;
 		flast[s] = now;
 
@@ -436,9 +467,13 @@ class RSQGR_Flight : EventHandler
 			v *= 0.85 ** sc;                                      // a floater coasts and hovers
 			if (v.Length() < 0.3) { fv[s] = v; Land(s, a, "hovering"); return; }
 		}
-		else if (a.Pos.z > a.floorz + 0.01)
-			v.z -= Grav(a) * RSQGR_Util.Num("rsqgr_yank_air", 0.27) * sc;   // rsqdg_air_gravity
-		Vector3 want = MidOf(a) + v * sc;
+		// EXACT for any step size (x = v t - g t^2 / 2, then v -= g t), so a quarter-speed
+		// world draws the very same parabola in four times as many steps.
+		double g = 0;
+		if (!sNoGrav[s] && a.Pos.z > a.floorz + 0.01)
+			g = Grav(a) * RSQGR_Util.Num("rsqgr_yank_air", 0.27);   // rsqdg_air_gravity
+		Vector3 want = MidOf(a) + v * sc - (0, 0, 0.5 * g * sc * sc);
+		v.z -= g * sc;
 		Actor hit;
 		Vector3 was = MidOf(a);
 		bool moved = PlaceMid(a, want, hit);
@@ -451,6 +486,30 @@ class RSQGR_Flight : EventHandler
 		}
 		// the ceiling stops the climb, the floor ends it
 		if (v.z > 0 && a.Pos.z + a.Height >= a.ceilingz - 0.01) v.z = 0;
+		// Come down on something (your head, another monster): it does not sit there --
+		// it is pushed off sideways, away from the middle of what it is on, and falls.
+		if (zBlocked && v.z < 0)
+		{
+			v.z = 0;
+			Actor under = null;
+			let it = BlockThingsIterator.Create(a, 8);
+			while (it.Next())
+			{
+				let t = it.thing;
+				if (t == a || !t.bSOLID || t.bNOBLOCKMAP) continue;
+				if (abs(t.Pos.z + t.Height - a.Pos.z) > 12) continue;
+				if ((t.Pos.xy - a.Pos.xy).Length() > t.Radius + a.Radius) continue;
+				under = t;
+				break;
+			}
+			Vector2 off = under ? a.Pos.xy - under.Pos.xy : (fby[s] ? a.Pos.xy - fby[s].Pos.xy : (1, 0));
+			if (off.Length() < 0.01) off = (cos(a.Angle), sin(a.Angle));
+			// just enough to clear it in four world tics
+			double need = under ? max(1.0, under.Radius + a.Radius + 1.0 - (a.Pos.xy - under.Pos.xy).Length()) : 4.0;
+			v.xy = off.Unit() * (need / 4.0);
+			if (RSQGR_Util.Flag("rsqgr_debug", false))
+				Console.Printf("T_GRM on top of %s: pushed off", under ? under.GetClassName() : 'something');
+		}
 		fv[s] = v;
 		if (!sNoGrav[s] && a.Pos.z <= a.floorz + 0.01 && v.z <= 0) Land(s, a, "fell");
 	}
@@ -462,7 +521,7 @@ class RSQGR_Flight : EventHandler
 		int dmg = Damage(speed);
 		if (RSQGR_Util.Flag("rsqgr_debug", false))
 			Console.Printf("T_GRM impact %s (%s) speed %.1f dmg %d%s", a.GetClassName(), why, speed, dmg,
-				hit ? String.Format(" -> %s %d", hit.GetClassName(), dmg / 2) : "");
+				hit ? String.Format(" -> %s %d", hit.GetClassName(), dmg / 2) : (blockLine ? String.Format(" (line %d)", blockLine.Index()) : " (nothing named)"));
 		if (dmg <= 0) return;
 		let src = fby[s];
 		if (hit && hit.bSHOOTABLE && hit != src) hit.DamageMobj(null, src, max(1, dmg / 2), 'Melee');
@@ -478,8 +537,9 @@ class RSQGR_Flight : EventHandler
 
 	private void Land(int s, Actor a, String why)
 	{
-		double speed = fv[s].Length();
+		double speed = max(fv[s].Length(), fph[s] == FP_PATH ? fvPrev[s] : 0.0);
 		double down = -fv[s].z;
+		if (fph[s] == FP_PATH) down = max(down, -flastVz[s]);
 		let src = fby[s];
 		bool dbg = RSQGR_Util.Flag("rsqgr_debug", false);
 		Restore(s);

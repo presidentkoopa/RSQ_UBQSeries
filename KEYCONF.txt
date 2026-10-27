@@ -1,0 +1,20 @@
+// Two binds, one per hand, as their own commands -- never +user1-4 (Brutal Doom
+// Quest uses all four). `+name` falls through to alias lookup and key-up sends
+// `-name`, so each bind gives a press and a release. The press goes through a
+// local `event` first so the firing hand's pose can be read on the machine that
+// owns it and packed into the network event (zscript/rsqgr/input.zs).
+// No default controller binds: the owner binds the stick clicks himself.
+addkeysection "RSQ Grapple" RSQGrapple
+addmenukey "Fire Hook (Main)" "+rsqgr_main"
+addmenukey "Fire Hook (Off)"  "+rsqgr_off"
+alias "+rsqgr_main" "event rsqgr_press 0"
+alias "-rsqgr_main" "event rsqgr_release 0"
+alias "+rsqgr_off"  "event rsqgr_press 1"
+alias "-rsqgr_off"  "event rsqgr_release 1"
+
+// Reset All (generated from CVARINFO's defaults)
+alias rsqgr_reset "rsqgr_on 1; rsqgr_geo_mode 0; rsqgr_speed 40; rsqgr_range 1024; rsqgr_retract_speed 64; rsqgr_reel_speed 12; rsqgr_min_len 32; rsqgr_max_speed 30; rsqgr_pump 0.25; rsqgr_drag 0.0005; rsqgr_attach 0.6; rsqgr_hop 6; rsqgr_mass_max 1000; rsqgr_slide_speed 10; rsqgr_slide_gap 16; rsqgr_rope_segs 12; rsqgr_rope_width 0.6; rsqgr_debug 0"
+
+// ==== monster side: Reset All also resets the monster side (core's list above, then this side's) ====
+alias rsqgr_reset "rsqgr_on 1; rsqgr_geo_mode 0; rsqgr_speed 40; rsqgr_range 1024; rsqgr_retract_speed 64; rsqgr_reel_speed 12; rsqgr_min_len 32; rsqgr_max_speed 30; rsqgr_pump 0.25; rsqgr_drag 0.0005; rsqgr_attach 0.6; rsqgr_hop 6; rsqgr_mass_max 1000; rsqgr_slide_speed 10; rsqgr_slide_gap 16; rsqgr_rope_segs 12; rsqgr_rope_width 0.6; rsqgr_debug 0; rsqgr_monster_mode 0; rsqgr_yank_mass 1000; rsqgr_yank_radius 64; rsqgr_yank_height 110; rsqgr_yank_tumble 1; rsqgr_yank_turns 1; rsqgr_yank_air 0.27; rsqgr_yank_damage 1; rsqgr_yank_stun 8; rsqgr_whip 0; rsqgr_whip_reach 192; rsqgr_whip_damage 12; rsqgr_whip_stun 1; rsqgr_whip_snag 1; rsqgr_whip_above 16; rsqgr_looks 0"
+// ==== end monster side ====

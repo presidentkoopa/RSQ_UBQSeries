@@ -1,0 +1,46 @@
+// RSQ_Grapple settings. All SERVER cvars (the host's world); none are user cvars.
+
+server bool   rsqgr_on            = true;   // the hook is available
+server int    rsqgr_geo_mode      = 0;      // hooking a wall: 0 swing (rope), 1 yank (jpalomo's pull)
+server float  rsqgr_speed         = 40;     // claw flight, map units per tic (JP: 40)
+server float  rsqgr_range         = 1024;   // how far the claw flies before it comes back
+server float  rsqgr_retract_speed = 64;     // the claw coming back
+
+// the rope
+server float  rsqgr_reel_speed    = 12;     // holding the bind takes in this much rope per tic
+server float  rsqgr_min_len       = 32;     // shortest rope (reeled all the way in)
+server float  rsqgr_max_speed     = 30;     // speed cap on the rope and on a yank (keeps falls sane)
+server float  rsqgr_pump          = 0.25;   // how hard the movement stick leans a swing
+server float  rsqgr_drag          = 0.0005;  // air drag per tic while swinging
+server float  rsqgr_attach        = 0.6;    // where the rope meets the body, fraction of height
+server float  rsqgr_hop           = 6;      // lift when letting go at the top of a wall
+
+// monsters
+server float  rsqgr_mass_max      = 1000;   // heavier than this (or a boss) = an anchor, it does not come
+server float  rsqgr_slide_speed   = 10;     // a hooked monster slides to you this fast (scaled by slow motion)
+server float  rsqgr_slide_gap     = 16;     // and stops this far from you
+
+// the look of the rope
+server int    rsqgr_rope_segs     = 12;     // most pieces a slack rope is drawn in (a taut one is one piece)
+server float  rsqgr_rope_width    = 0.6;    // rope thickness (radius, map units; 0.6 = about 2 cm)
+
+server int    rsqgr_debug         = 0;      // 1: log every hook tic to the console (T_GR lines)
+
+// ==== monster side (agent-monster: monster.zs, whip.zs, looks.zs) ====
+server int    rsqgr_monster_mode  = 0;      // a hooked monster: 0 slides to you (core's), 1 is yanked through the air (Distance Grab's arc)
+server float  rsqgr_yank_mass     = 1000;   // heaviest thrown; heavier (but under rsqgr_mass_max) slides
+server float  rsqgr_yank_radius   = 64;     // widest thrown
+server float  rsqgr_yank_height   = 110;    // tallest thrown
+server int    rsqgr_yank_tumble   = 1;      // 0 off, 1 spin (angle), 2 flip (end over end: roll on sprites, pitch on voxels), 3 both
+server float  rsqgr_yank_turns    = 1;      // whole turns over the flight
+server float  rsqgr_yank_air      = 0.27;   // gravity once it flies on its own, x Doom's (Distance Grab's rsqdg_air_gravity)
+server int    rsqgr_yank_damage   = 1;      // landing / striking hurts it, from its speed
+server int    rsqgr_yank_stun     = 8;      // tics it stays in its pain frame after landing
+server bool   rsqgr_whip          = false;  // the binds crack a whip instead of firing the claw
+server float  rsqgr_whip_reach    = 192;    // map units from the hand
+server int    rsqgr_whip_damage   = 12;
+server bool   rsqgr_whip_stun     = true;   // a hit knocks it into its pain state (breaks off its attack)
+server bool   rsqgr_whip_snag     = true;   // the tip wraps round something above the hand: core's rope
+server float  rsqgr_whip_above    = 16;     // how far above the hand the tip must hit to snag
+server int    rsqgr_looks         = 0;      // 0 JP, 1 Combat FX, 2 Ballistics
+// ==== end monster side ====

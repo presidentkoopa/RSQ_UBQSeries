@@ -1,0 +1,27 @@
+RSQ_Grapple -- credits
+======================
+
+The hook's art and sound are jpalomo's, from the grappling hook in his mod pack
+(jp_grapple.pk3, kept unmodified in jp_original/ of the source repo):
+  - claw sprites OCLW (open) and CCLW (shut), shipped here as RSGH / RSGK
+  - chain link tenda0 (the 40 px hires version), shipped here as RSGR
+  - sounds dschain, dsswish, dspulchn, dsmtalht, dsmeatht, shipped here as
+    RSGCHAIN, RSGSWISH, RSGPULCH, RSGMETAL, RSGMEAT
+  - the "Yank" wall mode reproduces his Hook_HitWall thrust (hook.acs).
+Thank you, jpalomo.
+
+Code: ZScript written for the Ultra Badass Quest series (presidentkoopa), for
+stock QuestZDoom 17.3 by Emawind84 and Team Beef. No engine change.
+
+==== monster side (the throw, the whip, the look sets) ====
+The Yank is RSQ_DistanceGrab's WorldHands path ported number for number (its path,
+arc, timing, tumble, 0.27 air, MeasureArc, the voxel table and the voxel turn fix):
+the owner's RS_WorldHands design, as RSQ_DistanceGrab carries it.
+Look sets (rsqgr_looks), all the owner's own libraries:
+  - Combat FX: RS_CombatFX's shared draw (WEAPDRAW), holster x3 (HOLSTR, HOLSTR2,
+    HOLSTR3) and unsorted foley x3 (FOLEY1-3), shipped as RSGXDRAW, RSGXHOL1-3,
+    RSGXFOL1-3. The well records no further provenance for these takes.
+  - Ballistics: RS_Ballistics' near-miss whiz x4 (whizby1/5/9/14) and near crack x2
+    (bullet_crack_near_01/04), shipped as RSGBWZ1-4 and RSGBCRK1-2, and its tracer
+    mesh (models/bullet/btracer.obj/.png, shipped as models/rsqgr/btracer.*).
+  - RSGBA0 is a 1x1 transparent placeholder: the sprite name the tracer mesh is bound to.
