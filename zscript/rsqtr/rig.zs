@@ -114,15 +114,34 @@ class RSQTR_Rig : EventHandler
 	static int Opt(String n, PlayerInfo p, int d) { let c = CVar.GetCVar(n, p); return c ? c.GetInt() : d; }
 	static bool Flag(String n, PlayerInfo p, bool d) { let c = CVar.GetCVar(n, p); return c ? c.GetBool() : d; }
 
+	// THE PLACES' SETTINGS, READ ONCE A TIC (the runtime audit, 10-27: building "rsqtr_r%d_f" names
+	// and looking each up, 11 places x 2 hands x several loops every tic, made the rig the suite's
+	// costliest handler, 0.37-0.54 ms/tic on BD22Q).
+	private transient double cF[RSQTR_Region.N], cL[RSQTR_Region.N], cU[RSQTR_Region.N], cR[RSQTR_Region.N];
+	private transient int cTic, cWho;
+	private transient bool cOk;
+	private void Settings(PlayerInfo p)
+	{
+		int who = p ? p.mo.PlayerNumber() : -1;
+		if (cOk && cTic == level.maptime && cWho == who) return;
+		cOk = true; cTic = level.maptime; cWho = who;
+		double reach = Num("rsqtr_reach", p, 1.0) * BodyScale(p);
+		for (int r = 0; r < RSQTR_Region.N; r++)
+		{
+			cF[r] = Num(String.Format("rsqtr_r%d_f", r), p, RSQTR_Region.DF[r]);
+			cL[r] = Num(String.Format("rsqtr_r%d_l", r), p, RSQTR_Region.DL[r]);
+			cU[r] = Num(String.Format("rsqtr_r%d_u", r), p, RSQTR_Region.DU[r]);
+			cR[r] = Num(String.Format("rsqtr_r%d_rad", r), p, RSQTR_Region.DR[r]) * reach;
+		}
+	}
+
 	// Where region r is, in the world, for this player.
 	Vector3 RegionAt(PlayerPawn pmo, int r)
 	{
 		let p = pmo.player;
-		double f = Num(String.Format("rsqtr_r%d_f", r), p, RSQTR_Region.DF[r]);
-		double l = Num(String.Format("rsqtr_r%d_l", r), p, RSQTR_Region.DL[r]);
-		double u = Num(String.Format("rsqtr_r%d_u", r), p, RSQTR_Region.DU[r]);
 		if (editHand >= 0 && editRegion == r && pmo.player == players[consoleplayer]) return editAt;
-		return BodyPoint(pmo, f, l, u);
+		Settings(p);
+		return BodyPoint(pmo, cF[r], cL[r], cU[r]);
 	}
 
 	// Any point on the body (metres, body frame): the cigarette pocket uses it too.
@@ -161,7 +180,8 @@ class RSQTR_Rig : EventHandler
 
 	double RegionRadius(PlayerInfo p, int r)
 	{
-		return Num(String.Format("rsqtr_r%d_rad", r), p, RSQTR_Region.DR[r]) * Num("rsqtr_reach", p, 1.0) * BodyScale(p);
+		Settings(p);
+		return cR[r];
 	}
 
 	// ---- what the body carries ---------------------------------------------------
@@ -1194,7 +1214,7 @@ class RSQTR_Rig : EventHandler
 		let it = ThinkerIterator.Create("Actor");
 		Actor a;
 		while (a = Actor(it.Next()))
-			if (a is "RSQTR_Marker" || a is "RSQTR_Icon" || a is "RSQTR_TorsoPart" || a is "RSQTR_MarinePart") a.Destroy();
+			if (a is "RSQTR_Marker" || a is "RSQTR_Icon" || a is "RSQTR_TorsoPart" || a is "RSQTR_MarinePart" || a is "RSQTR_HelmetPart") a.Destroy();
 	}
 
 	// OnRegister also runs when a save is loaded (a level's handlers get no WorldLoaded

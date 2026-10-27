@@ -54,8 +54,9 @@ user string rsqtr_r8_slots = "1";
 user string rsqtr_r9_slots = "";     // the saber holsters hold the saber only
 user string rsqtr_r10_slots = "";
 user int    rsqtr_profile_active = 1;     // the holster profile in use: its colour on the spheres (1 blue, 2 orange, 3 purple, 4 yellow)
-// Profiles are this machine's alone (nosave: never sent to other players). As user settings, four
-// long strings overflowed the userinfo every player sends ("User info descriptor too big").
+// Profiles are this machine's alone (nosave: never sent to other players). As user settings they
+// hit the engine's per-setting limit: one user cvar's name plus value may not pass 256 bytes
+// (d_netinfo.cpp, "User info descriptor too big"), and a profile of every place is longer.
 nosave string rsqtr_profile1 = ""; nosave string rsqtr_profile2 = ""; nosave string rsqtr_profile3 = ""; nosave string rsqtr_profile4 = "";
 
 
