@@ -405,6 +405,16 @@ class RSQGR_Flight : EventHandler
 			fage[s]++;
 			busy++;
 			bool alive = a.Health > 0;
+			// GONE FROM PLAY WHILE ALIVE: Champions' Dark Red at 1 health turns unshootable and invisible
+			// and is parked in the far corner of the map, frozen (tics -1), until it gets up or its
+			// corpse is shot. Placing it on the path brought it back invisible, and the landing's
+			// "let it go on" (tics 1) woke it there. Let go where it is, left frozen.
+			if (alive && a.bISMONSTER && !a.bSHOOTABLE)
+			{
+				if (dbg) Console.Printf("T_GRM %s left play (unshootable): let go", a.GetClassName());
+				Restore(s, false);
+				continue;
+			}
 			// held in its pain frame while thrown (another hit re-enters pain: re-held)
 			if (alive && a.bISMONSTER && a.tics > 0) a.tics = -1;
 			a.Vel = (0, 0, 0);
@@ -587,7 +597,7 @@ class RSQGR_Flight : EventHandler
 	}
 
 	// Put back everything borrowed, and free the slot.
-	private void Restore(int s)
+	private void Restore(int s, bool wake = true)
 	{
 		let a = fa[s];
 		if (a)
@@ -602,7 +612,7 @@ class RSQGR_Flight : EventHandler
 			a.WorldOffset = sOfs[s];
 			if (sVoxel[s]) a.ClearModelFlag(MDL_USEACTORPITCH);
 			a.Vel = (0, 0, 0);
-			if (a.bISMONSTER && a.Health > 0 && a.tics < 0) a.tics = 1;
+			if (wake && a.bISMONSTER && a.Health > 0 && a.tics < 0) a.tics = 1;
 		}
 		fa[s] = null;
 		fby[s] = null;
