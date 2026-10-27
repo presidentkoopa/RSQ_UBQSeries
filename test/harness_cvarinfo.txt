@@ -14,3 +14,4 @@ server noarchive float rsgrh_cut_tt = 0;
 server noarchive int rsgrh_norep = 0;
 server noarchive int rsgrh_tpat = 10;
 server noarchive int rsgrh_sounds = 0;
+server noarchive float rsgrh_kill_tt = 0;

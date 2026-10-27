@@ -162,8 +162,6 @@ class RSQGR_Flight : EventHandler
 	double  fstop[NFLY];       // how far in front of you it lands
 	double  farc[NFLY];        // arc height allowed, fixed at launch
 	Vector3 fv[NFLY];          // authored velocity, units per WORLD tic
-	double  flastVz[NFLY];
-	double  fvPrev[NFLY];      // its speed the step before (the arrival step can be a sliver)
 	Vector3 flast[NFLY];       // its middle last tic
 	int     fage[NFLY];        // real tics since launch
 	double  fpeak[NFLY];       // highest the middle went above its launch middle (log)
@@ -393,6 +391,8 @@ class RSQGR_Flight : EventHandler
 	{
 		double sc = RSQGR_Core.Scale();
 		bool dbg = RSQGR_Util.Flag("rsqgr_debug", false);
+		double t0 = dbg ? MSTimeF() : 0;
+		int busy = 0;
 		for (int s = 0; s < NFLY; s++)
 		{
 			if (fph[s] == FP_NONE) continue;
@@ -400,6 +400,7 @@ class RSQGR_Flight : EventHandler
 			if (!a || a.bDestroyed) { fph[s] = FP_NONE; fa[s] = null; continue; }
 			if (!fby[s] || fby[s].bDestroyed) { if (fph[s] == FP_PATH) ToAir(s, "thrower gone"); }
 			fage[s]++;
+			busy++;
 			bool alive = a.Health > 0;
 			// held in its pain frame while thrown (another hit re-enters pain: re-held)
 			if (alive && a.bISMONSTER && a.tics > 0) a.tics = -1;
@@ -418,6 +419,7 @@ class RSQGR_Flight : EventHandler
 					fage[s], a.GetClassName(), fph[s], ftt[s], fT[s], sc, now.x, now.y, now.z, (now - before).Length(),
 					fv[s].x, fv[s].y, fv[s].z, a.Angle, a.Roll, a.Pitch, a.Health);
 		}
+		if (dbg && busy > 0) Console.Printf("T_GRM cost %d thrown %.3f ms (incl. logging)", busy, MSTimeF() - t0);
 	}
 
 	private void StepPath(int s, Actor a, double sc)
@@ -434,8 +436,6 @@ class RSQGR_Flight : EventHandler
 		bool moved = PlaceMid(a, want, hit);
 		Vector3 now = MidOf(a);
 		// the authored velocity, per WORLD tic (a step of sc world tics just happened)
-		fvPrev[s] = fv[s].Length();
-		flastVz[s] = fv[s].z;
 		if (sc > 0.0001) fv[s] = (now - was) / sc;
 		flast[s] = now;
 
@@ -454,6 +454,10 @@ class RSQGR_Flight : EventHandler
 		{
 			// Arrived. On the floor (a walker always is: the arc ends at e = 1 on it) it
 			// lands now; a floater, or one whose landing spot is lower, carries on as air.
+			// The path's own velocity at its end, not the last step's difference (which
+			// depends on the step's size, i.e. on the world's speed): the same landing
+			// speed, and so the same damage, at any speed.
+			fv[s] = PathVel(s);
 			if (!sNoGrav[s] && a.Pos.z > a.floorz + 0.5) { ToAir(s, "arrived above the floor"); return; }
 			Land(s, a, "arrived");
 		}
@@ -537,9 +541,8 @@ class RSQGR_Flight : EventHandler
 
 	private void Land(int s, Actor a, String why)
 	{
-		double speed = max(fv[s].Length(), fph[s] == FP_PATH ? fvPrev[s] : 0.0);
+		double speed = fv[s].Length();
 		double down = -fv[s].z;
-		if (fph[s] == FP_PATH) down = max(down, -flastVz[s]);
 		let src = fby[s];
 		bool dbg = RSQGR_Util.Flag("rsqgr_debug", false);
 		Restore(s);
@@ -560,7 +563,7 @@ class RSQGR_Flight : EventHandler
 			if (src) a.Angle = a.AngleTo(src);
 			a.tics = max(1, RSQGR_Util.Opt("rsqgr_yank_stun", 8));
 		}
-		int dmg = sNoGrav[s] ? 0 : Damage(max(down, speed * 0.5));
+		int dmg = (sNoGrav[s] || a.Health <= 0) ? 0 : Damage(max(down, speed * 0.5));   // a floater or a corpse: no landing hurt
 		if (dbg)
 			Console.Printf("T_GRM land %s (%s) after %d tics speed %.1f down %.1f peak %.1f dmg %d at (%.1f %.1f %.1f) floorz %.1f fits %d",
 				a.GetClassName(), why, fage[s], speed, down, fpeak[s], dmg, a.Pos.x, a.Pos.y, a.Pos.z, a.floorz, a.TestMobjLocation());

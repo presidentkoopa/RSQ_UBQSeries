@@ -1,0 +1,18 @@
+H_SPAWN Cacodemon_ at (476 512 0) dist 220 player (256 512 -0) ang 0 hand (266.2 503.5 36.8) poseGood 1
+T_GRM launch Cacodemon_ m=400 r=24 h=56 dist=164 T=15.9 arc=17 (want 17 room 448) tumble=1 voxel=0 scale=1.00
+T_GRM 1 Cacodemon_ ph=1 tt=1.00/15.9 sc=1.00 mid=(474.0 512.0 28.8) step=2.12 v=(-1.96 0.00 0.82) ang=203 roll=0 pitch=0 hp=1000
+T_GRM 2 Cacodemon_ ph=1 tt=2.00/15.9 sc=1.00 mid=(470.1 512.0 30.4) step=4.66 v=(-3.98 0.00 2.43) ang=225 roll=0 pitch=0 hp=1000
+T_GRM 3 Cacodemon_ ph=1 tt=3.00/15.9 sc=1.00 mid=(464.6 512.0 32.5) step=5.80 v=(-5.42 0.00 2.06) ang=248 roll=0 pitch=0 hp=1000
+T_GRM 4 Cacodemon_ ph=1 tt=4.00/15.9 sc=1.00 mid=(458.0 512.0 34.8) step=7.03 v=(-6.64 0.00 2.31) ang=270 roll=0 pitch=0 hp=1000
+T_GRM 5 Cacodemon_ ph=1 tt=5.00/15.9 sc=1.00 mid=(450.3 512.0 37.2) step=8.09 v=(-7.72 0.00 2.40) ang=293 roll=0 pitch=0 hp=1000
+T_GRM 6 Cacodemon_ ph=1 tt=6.00/15.9 sc=1.00 mid=(441.6 512.0 39.5) step=9.02 v=(-8.71 0.00 2.34) ang=316 roll=0 pitch=0 hp=1000
+T_GRM 7 Cacodemon_ ph=1 tt=7.00/15.9 sc=1.00 mid=(431.9 512.0 41.7) step=9.86 v=(-9.63 0.00 2.13) ang=338 roll=0 pitch=0 hp=1000
+T_GRM 8 Cacodemon_ ph=1 tt=8.00/15.9 sc=1.00 mid=(421.4 512.0 43.4) step=10.64 v=(-10.49 0.00 1.78) ang=361 roll=0 pitch=0 hp=1000
+T_GRM 9 Cacodemon_ ph=1 tt=9.00/15.9 sc=1.00 mid=(410.1 512.0 44.7) step=11.38 v=(-11.31 0.00 1.28) ang=384 roll=0 pitch=0 hp=1000
+T_GRM 10 Cacodemon_ ph=1 tt=10.00/15.9 sc=1.00 mid=(398.0 512.0 45.4) step=12.11 v=(-12.09 0.00 0.63) ang=406 roll=0 pitch=0 hp=1000
+T_GRM 11 Cacodemon_ ph=1 tt=11.00/15.9 sc=1.00 mid=(385.2 512.0 45.2) step=12.84 v=(-12.84 0.00 -0.16) ang=429 roll=0 pitch=0 hp=1000
+T_GRM 12 Cacodemon_ ph=1 tt=12.00/15.9 sc=1.00 mid=(371.6 512.0 44.1) step=13.61 v=(-13.56 0.00 -1.09) ang=451 roll=0 pitch=0 hp=1000
+T_GRM 13 Cacodemon_ ph=1 tt=13.00/15.9 sc=1.00 mid=(357.4 512.0 41.9) step=14.42 v=(-14.26 0.00 -2.18) ang=474 roll=0 pitch=0 hp=1000
+T_GRM 14 Cacodemon_ ph=1 tt=14.00/15.9 sc=1.00 mid=(342.4 512.0 38.5) step=15.32 v=(-14.93 0.00 -3.41) ang=497 roll=0 pitch=0 hp=1000
+T_GRM 15 Cacodemon_ ph=1 tt=15.00/15.9 sc=1.00 mid=(326.9 512.0 33.7) step=16.31 v=(-15.59 0.00 -4.79) ang=519 roll=0 pitch=0 hp=1000
+T_GRM land Cacodemon_ (arrived) after 16 tics speed 16.3 down 5.7 peak 17.4 dmg 0 at (312.0 512.0 -0.0) floorz -0.0 fits 1

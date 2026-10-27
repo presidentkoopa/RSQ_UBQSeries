@@ -78,8 +78,16 @@ class RSQGRH_Harness : EventHandler
 	void CutCheck()
 	{
 		double cut = CVar.FindCVar("rsgrh_cut_tt").GetFloat();
-		if (cut <= 0) return;
+		double kill = CVar.FindCVar("rsgrh_kill_tt").GetFloat();
 		let fl = RSQGR_Flight.Get();
+		if (kill > 0 && fl)
+			for (int s = 0; s < RSQGR_Flight.NFLY; s++)
+				if (fl.fph[s] == RSQGR_Flight.FP_PATH && fl.fa[s] && fl.fa[s].health > 0 && fl.ftt[s] >= kill)
+				{
+					Console.Printf("H_KILL at tt %.2f", fl.ftt[s]);
+					fl.fa[s].DamageMobj(null, null, 100000, 'None');
+				}
+		if (cut <= 0) return;
 		let core = RSQGR_Core.Get();
 		if (!fl || !core) return;
 		for (int s = 0; s < RSQGR_Flight.NFLY; s++)

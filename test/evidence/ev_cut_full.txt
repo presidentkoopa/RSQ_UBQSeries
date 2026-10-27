@@ -1,0 +1,47 @@
+H_SPAWN DoomImp at (476 512 0) dist 220 player (256 512 -0) ang 0 hand (266.2 503.5 36.8) poseGood 1
+T_GRM launch DoomImp m=100 r=20 h=56 dist=168 T=11.5 arc=25 (want 25 room 448) tumble=1 voxel=0 scale=1.00
+T_GRM 1 DoomImp ph=1 tt=1.00/11.5 sc=1.00 mid=(472.6 512.0 30.0) step=3.90 v=(-3.36 0.00 1.98) ang=211 roll=0 pitch=0 hp=1000
+T_GRM 2 DoomImp ph=1 tt=2.00/11.5 sc=1.00 mid=(465.8 512.0 33.7) step=8.92 v=(-6.83 0.00 5.74) ang=242 roll=0 pitch=0 hp=1000
+T_GRM 3 DoomImp ph=1 tt=3.00/11.5 sc=1.00 mid=(456.5 512.0 38.3) step=10.38 v=(-9.30 0.00 4.60) ang=274 roll=0 pitch=0 hp=1000
+T_GRM 4 DoomImp ph=1 tt=4.00/11.5 sc=1.00 mid=(445.1 512.0 43.1) step=12.36 v=(-11.39 0.00 4.79) ang=305 roll=0 pitch=0 hp=1000
+T_GRM 5 DoomImp ph=1 tt=5.00/11.5 sc=1.00 mid=(431.9 512.0 47.5) step=13.96 v=(-13.25 0.00 4.40) ang=336 roll=0 pitch=0 hp=1000
+H_CUT at tt 5.00
+T_GRM air DoomImp (cut) v=(-14.12 0.00 4.02)
+T_GRM 6 DoomImp ph=2 tt=5.00/11.5 sc=1.00 mid=(417.7 512.0 51.4) step=14.65 v=(-14.12 0.00 3.75) ang=367 roll=0 pitch=0 hp=1000
+T_GRM 7 DoomImp ph=2 tt=5.00/11.5 sc=1.00 mid=(403.6 512.0 55.0) step=14.58 v=(-14.12 0.00 3.48) ang=399 roll=0 pitch=0 hp=1000
+T_GRM 8 DoomImp ph=2 tt=5.00/11.5 sc=1.00 mid=(389.5 512.0 58.4) step=14.51 v=(-14.12 0.00 3.21) ang=430 roll=0 pitch=0 hp=1000
+T_GRM 9 DoomImp ph=2 tt=5.00/11.5 sc=1.00 mid=(375.4 512.0 61.5) step=14.45 v=(-14.12 0.00 2.94) ang=461 roll=0 pitch=0 hp=1000
+T_GRM 10 DoomImp ph=2 tt=5.00/11.5 sc=1.00 mid=(361.3 512.0 64.3) step=14.40 v=(-14.12 0.00 2.67) ang=492 roll=0 pitch=0 hp=1000
+T_GRM 11 DoomImp ph=2 tt=5.00/11.5 sc=1.00 mid=(347.1 512.0 66.8) step=14.35 v=(-14.12 0.00 2.40) ang=523 roll=0 pitch=0 hp=1000
+T_GRM 12 DoomImp ph=2 tt=5.00/11.5 sc=1.00 mid=(333.0 512.0 69.1) step=14.30 v=(-14.12 0.00 2.13) ang=540 roll=0 pitch=0 hp=1000
+T_GRM 13 DoomImp ph=2 tt=5.00/11.5 sc=1.00 mid=(318.9 512.0 71.1) step=14.26 v=(-14.12 0.00 1.86) ang=540 roll=0 pitch=0 hp=1000
+T_GRM 14 DoomImp ph=2 tt=5.00/11.5 sc=1.00 mid=(304.8 512.0 72.8) step=14.23 v=(-14.12 0.00 1.59) ang=540 roll=0 pitch=0 hp=1000
+T_GRM 15 DoomImp ph=2 tt=5.00/11.5 sc=1.00 mid=(290.6 512.0 86.2) step=19.51 v=(-14.12 0.00 1.32) ang=540 roll=0 pitch=0 hp=1000
+T_GRM 16 DoomImp ph=2 tt=5.00/11.5 sc=1.00 mid=(276.5 512.0 87.4) step=14.17 v=(-14.12 0.00 1.05) ang=540 roll=0 pitch=0 hp=1000
+T_GRM 17 DoomImp ph=2 tt=5.00/11.5 sc=1.00 mid=(262.4 512.0 88.3) step=14.15 v=(-14.12 0.00 0.78) ang=540 roll=0 pitch=0 hp=1000
+T_GRM 18 DoomImp ph=2 tt=5.00/11.5 sc=1.00 mid=(248.3 512.0 89.0) step=14.14 v=(-14.12 0.00 0.51) ang=540 roll=0 pitch=0 hp=1000
+T_GRM 19 DoomImp ph=2 tt=5.00/11.5 sc=1.00 mid=(234.1 512.0 89.4) step=14.13 v=(-14.12 0.00 0.24) ang=540 roll=0 pitch=0 hp=1000
+T_GRM 20 DoomImp ph=2 tt=5.00/11.5 sc=1.00 mid=(220.0 512.0 89.5) step=14.12 v=(-14.12 0.00 -0.03) ang=540 roll=0 pitch=0 hp=1000
+T_GRM 21 DoomImp ph=2 tt=5.00/11.5 sc=1.00 mid=(205.9 512.0 89.3) step=14.12 v=(-14.12 0.00 -0.30) ang=540 roll=0 pitch=0 hp=1000
+T_GRM 22 DoomImp ph=2 tt=5.00/11.5 sc=1.00 mid=(191.8 512.0 88.9) step=14.13 v=(-14.12 0.00 -0.57) ang=540 roll=0 pitch=0 hp=1000
+T_GRM 23 DoomImp ph=2 tt=5.00/11.5 sc=1.00 mid=(177.7 512.0 88.2) step=14.14 v=(-14.12 0.00 -0.84) ang=540 roll=0 pitch=0 hp=1000
+T_GRM 24 DoomImp ph=2 tt=5.00/11.5 sc=1.00 mid=(163.5 512.0 87.2) step=14.16 v=(-14.12 0.00 -1.11) ang=540 roll=0 pitch=0 hp=1000
+T_GRM 25 DoomImp ph=2 tt=5.00/11.5 sc=1.00 mid=(149.4 512.0 86.0) step=14.18 v=(-14.12 0.00 -1.38) ang=540 roll=0 pitch=0 hp=1000
+T_GRM 26 DoomImp ph=2 tt=5.00/11.5 sc=1.00 mid=(135.3 512.0 84.4) step=14.20 v=(-14.12 0.00 -1.65) ang=540 roll=0 pitch=0 hp=1000
+T_GRM 27 DoomImp ph=2 tt=5.00/11.5 sc=1.00 mid=(121.2 512.0 82.7) step=14.23 v=(-14.12 0.00 -1.92) ang=540 roll=0 pitch=0 hp=1000
+T_GRM 28 DoomImp ph=2 tt=5.00/11.5 sc=1.00 mid=(107.0 512.0 80.6) step=14.27 v=(-14.12 0.00 -2.19) ang=540 roll=0 pitch=0 hp=1000
+T_GRM 29 DoomImp ph=2 tt=5.00/11.5 sc=1.00 mid=(92.9 512.0 78.3) step=14.31 v=(-14.12 0.00 -2.46) ang=540 roll=0 pitch=0 hp=1000
+T_GRM 30 DoomImp ph=2 tt=5.00/11.5 sc=1.00 mid=(78.8 512.0 75.7) step=14.36 v=(-14.12 0.00 -2.73) ang=540 roll=0 pitch=0 hp=1000
+T_GRM 31 DoomImp ph=2 tt=5.00/11.5 sc=1.00 mid=(64.7 512.0 72.8) step=14.41 v=(-14.12 0.00 -3.00) ang=540 roll=0 pitch=0 hp=1000
+T_GRM 32 DoomImp ph=2 tt=5.00/11.5 sc=1.00 mid=(50.6 512.0 69.7) step=14.47 v=(-14.12 0.00 -3.27) ang=540 roll=0 pitch=0 hp=1000
+T_GRM 33 DoomImp ph=2 tt=5.00/11.5 sc=1.00 mid=(36.4 512.0 66.3) step=14.53 v=(-14.12 0.00 -3.54) ang=540 roll=0 pitch=0 hp=1000
+T_GRM 34 DoomImp ph=2 tt=5.00/11.5 sc=1.00 mid=(22.3 512.0 62.6) step=14.59 v=(-14.12 0.00 -3.81) ang=540 roll=0 pitch=0 hp=1000
+T_GRM impact DoomImp (struck in the air) speed 14.1 dmg 4 (line 0)
+T_GRM 35 DoomImp ph=2 tt=5.00/11.5 sc=1.00 mid=(22.3 512.0 58.7) step=3.94 v=(0.00 0.00 -4.08) ang=540 roll=0 pitch=0 hp=996
+T_GRM 36 DoomImp ph=2 tt=5.00/11.5 sc=1.00 mid=(22.3 512.0 54.5) step=4.21 v=(0.00 0.00 -4.35) ang=540 roll=0 pitch=0 hp=996
+T_GRM 37 DoomImp ph=2 tt=5.00/11.5 sc=1.00 mid=(22.3 512.0 50.0) step=4.48 v=(0.00 0.00 -4.62) ang=540 roll=0 pitch=0 hp=996
+T_GRM 38 DoomImp ph=2 tt=5.00/11.5 sc=1.00 mid=(22.3 512.0 45.2) step=4.75 v=(0.00 0.00 -4.89) ang=540 roll=0 pitch=0 hp=996
+T_GRM 39 DoomImp ph=2 tt=5.00/11.5 sc=1.00 mid=(22.3 512.0 40.2) step=5.02 v=(0.00 0.00 -5.16) ang=540 roll=0 pitch=0 hp=996
+T_GRM 40 DoomImp ph=2 tt=5.00/11.5 sc=1.00 mid=(22.3 512.0 34.9) step=5.29 v=(0.00 0.00 -5.43) ang=540 roll=0 pitch=0 hp=996
+T_GRM 41 DoomImp ph=2 tt=5.00/11.5 sc=1.00 mid=(22.3 512.0 29.3) step=5.56 v=(0.00 0.00 -5.70) ang=540 roll=0 pitch=0 hp=996
+T_GRM land DoomImp (fell) after 42 tics speed 5.7 down 5.7 peak 61.5 dmg 0 at (22.3 512.0 -0.0) floorz -0.0 fits 1

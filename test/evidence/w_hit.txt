@@ -1,0 +1,3 @@
+H_SPAWN DoomImp at (406 512 0) dist 150 player (256 512 -0) ang 0 hand (266.2 503.5 36.8) poseGood 1
+T_GRW 0 start reach 192 dir (1.00 0.00 -0.06)
+T_GRW 0 CRACK hit DoomImp at 120 units: hp 1000 -> 988, pain 1
