@@ -61,8 +61,12 @@ class TFLV_Menu_StatusDisplay : TFLV_Menu_GenericMenu {
   }
 
   void PushEffect(string effect, uint index, bool isDefault) {
+    // VR PATCH, colour-blind play (rsqa_colorblind): the active effect is orange against red,
+    // one colour to a deuteranope, so it is also marked with a star.
+    string title = TFLV_LegendoomUtil.GetEffectTitle(effect);
+    if (isDefault && RSQGB_CB.Mode()) title = "* " .. title;
     PushKeyValueOption(
-      TFLV_LegendoomUtil.GetEffectTitle(effect),
+      title,
       TFLV_LegendoomUtil.GetEffectDesc(effect),
       "bonsai-select-effect",
       index,
