@@ -60,5 +60,8 @@ server int rsq_star_every = 2;
 // The punch reader's decisions to the console.
 server bool rsq_punch_debug = false;
 
+// RSQ_Grapple's hook: XP for what it does (bites, yanks, swinging, kills it was in on) x this.
+server float rsq_hook_xp = 1.0;
+
 // Which screens draw Gun Bonsai: 0 its own, 1 the recreation of the owner's mockups, 2 and 3 the alternatives
 server int rsq_ui_skin = 0;

@@ -196,6 +196,8 @@ class RSQM play
 //   "claim"        objectArg = an actor whose master is a Weapon: pays it (and its puffs) to it.
 //   "ram"          objectArg = a monster the ShieldSaw just bashed, intArg = player number,
 //                  doubleArg = how hard: Battering Ram turns it into a missile, if learned.
+//   "stagger"      objectArg = a monster, intArg = tics: held in its pain frame that long (RSQ_Dazed,
+//                  the one Executioner reads). RSQ_Grapple's hook upgrades ask it. 1 done, 0 not.
 class RSQ_MeleeUpgradeService : Service
 {
 	override int GetInt(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
@@ -233,6 +235,15 @@ class RSQ_MeleeUpgradeService : Service
 			let stats = TFLV_PerPlayerStats.GetStatsFor(w.owner);
 			if (!stats) return 0;
 			if (request == "credit.push") stats.PushClaim(w, intArg); else stats.PopClaim();
+			return 1;
+		}
+		if (request == "stagger")
+		{
+			let mo = Actor(objectArg);
+			if (!mo || mo.health <= 0 || !mo.bIsMonster || intArg <= 0) return 0;
+			let d = RSQ_Dazed.On(mo);
+			if (!d) return 0;
+			d.Stagger(min(intArg, 350));
 			return 1;
 		}
 		if (request == "ram")

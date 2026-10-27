@@ -30,4 +30,5 @@ OptionMenu "RSQ_MeleeAdvanced"
 	Slider "$RSQ_MENU_PUNCH_DMG", "rsq_punch_damage", 2, 40, 1, 0
 	Slider "$RSQ_MENU_STAR_FIRST", "rsq_star_first", 0, 20, 1, 0
 	Slider "$RSQ_MENU_STAR_EVERY", "rsq_star_every", 0, 10, 1, 0
+	Slider "$RSQ_MENU_HOOK_XP", "rsq_hook_xp", 0, 3, 0.1, 1
 }

@@ -791,6 +791,19 @@ class TFLV_PerPlayerStats : Object play {
     return age >= 0 && age <= 105;
   }
 
+  // VR PATCH (suite): is THIS player's grappling hook dealing the damage being
+  // dealt right now? RSQ_Grapple brackets every blow its hook deals itself (the
+  // bite and tear, a thrown monster's landing and what it strikes, the whip, a
+  // Double Hook slam) and answers RSQGR_Service "hook.dealing" with 1 inside the
+  // bracket, asked by name; false when the grapple is not loaded. Such damage is
+  // no gun's: it pays the player pool, like a throw.
+  bool IsSuiteHook() const {
+    if (!owner || !owner.player) return false;
+    let it = ServiceIterator.Find("RSQGR_Service");
+    let svc = it.Next();
+    return svc && svc.GetInt("hook.dealing", "", 0, 0, owner) == 1;
+  }
+
   void AddPoolXP(double xp) {
     if (xp <= 0) return;
     poolXP += xp;
@@ -806,6 +819,7 @@ class TFLV_PerPlayerStats : Object play {
   // -1 when no hand did (a throw, a gun no longer in either hand, unknown).
   int HandOfShot(Actor shot) const {
     if (!owner || !owner.player) return -1;
+    if (IsSuiteHook()) return -1;
     let dotItem = TFLV_Upgrade_Dot(shot);
     if (dotItem && dotItem.credit) { let d = dotItem.credit.Dominant(); return d ? HandHolding(d.wpn) : -1; }
     if ((!shot || shot == owner) && claimStack.size() > 0) {
@@ -1188,7 +1202,7 @@ class TFLV_PerPlayerStats : Object play {
 
     // VR PATCH (suite): a thrown object is no gun's. Its XP goes to the player
     // pool and no weapon's upgrades fire on it (see poolXP).
-    if (IsSuiteThrow(shot)) {
+    if (IsSuiteThrow(shot) || IsSuiteHook()) {
       ++provPooled;
       AddPoolXP(GetXPForDamage(target, damage));
       return;
@@ -1247,7 +1261,7 @@ class TFLV_PerPlayerStats : Object play {
     double w = target ? max(1, target.GetSpawnHealth()) : 1;
     // VR PATCH (suite): a throw's kill queues a pooled entry, so the score it
     // earns follows it to the pool instead of to the last gun that killed.
-    if (IsSuiteThrow(shot)) {
+    if (IsSuiteThrow(shot) || IsSuiteHook()) {
       QueueScoreKill(null, w);
       lastKillInfo = null;
       lastKillPooled = true;
@@ -1320,7 +1334,8 @@ class TFLV_PerPlayerStats : Object play {
       // VR PATCH: only the gun that actually fired this shot modifies it. This
       // is what stops the chaingun's upgrades firing on the other hand's rounds
       // when both are shooting at once.
-      let prov = ResolveCredit(inflictor);
+      // VR PATCH (suite): the grappling hook's own blow is no gun's either.
+      let prov = IsSuiteHook() ? null : ResolveCredit(inflictor);
       let info = prov ? prov.Dominant() : null;
       if (info)
         tmpdamage = info.upgrades.ModifyDamageDealt(owner, inflictor, source, tmpdamage, damageType);

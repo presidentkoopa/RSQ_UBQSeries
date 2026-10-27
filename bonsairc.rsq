@@ -15,6 +15,8 @@ register
   RSQ_Upgrade_Marksman RSQ_Upgrade_Dodger RSQ_Upgrade_SecondWind RSQ_Upgrade_TimeDilation
   RSQ_Upgrade_Akimbo RSQ_Upgrade_Crossfire RSQ_Upgrade_Alternator
   RSQ_Upgrade_Evasion RSQ_Upgrade_Southpaw RSQ_Upgrade_SteadyAim
+  RSQ_Upgrade_LongLine RSQ_Upgrade_FastReel RSQ_Upgrade_HeavyHaul RSQ_Upgrade_GetOverHere RSQ_Upgrade_Bowling
+  RSQ_Upgrade_BarbedClaw RSQ_Upgrade_Slingshot RSQ_Upgrade_SteadyLine RSQ_Upgrade_DoubleHook
 ;
 
 # The gloves, the sabers and the ShieldSaw are melee weapons whatever they are seen to do: the

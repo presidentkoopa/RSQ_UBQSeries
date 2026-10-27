@@ -166,6 +166,8 @@ PLAYER PATHS (offered when the player levels; each only while its mod is loaded)
   SlowMo        Marksman, Dodger, Second Wind, Time Dilation
   Two hands     Akimbo, Crossfire, Alternator
   The body      Evasion, Southpaw, Steady Aim
+  Grapple       Long Line, Fast Reel, Heavy Haul, Get Over Here, Bowling, Barbed Claw, Slingshot,
+                Steady Line, Double Hook (from player level 5)
 
 The saber, the ShieldSaw and the grab ask this patch for their levels by name
 (RSQ_MeleeUpgradeService "level" / "plevel"). No mod links to another; each pk3 still loads and
@@ -183,6 +185,12 @@ WHO EARNS THE XP
   a Distance Grab throw, and the  NO gun: the player pool. Every bonsai_base_level_cost of it
   blast of a barrel it set off    (1200) is one player XP, what a gun's level-up is worth
   Tactical Rig draws              the drawn gun, as any shot (the rig deals no damage itself)
+  the grappling hook's own blows  NO gun: the player pool, as damage (bite and tear, a thrown
+  (RSQ_Grapple)                   monster's landing and what it strikes, the whip, a slam); and
+                                  for what the hook does: 15 a bite, 15 more a yank, 1 a metre
+                                  swung in the air (40 a latch at most), half the spawn health
+                                  of a kill it was in on (3 s), 40 a Double Hook slam
+                                  (x rsq_hook_xp; the killing gun still earns its own damage)
   SlowMo                          deals no damage; a slowed enemy round turned by the saber or
                                   the ShieldSaw pays that weapon
 
