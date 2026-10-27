@@ -286,7 +286,12 @@ class RSQDG_Reach
 	static double Num(String n, PlayerInfo p, double d)
 	{
 		let c = CVar.GetCVar(n, p);
-		return c ? c.GetFloat() : d;
+		double v = c ? c.GetFloat() : d;
+		// the five settings Gun Bonsai's VR patch can grow (RSQDG_Perks); 1 without it
+		if (n.Left(6) == "rsqdg_" && (n == "rsqdg_reach" || n == "rsqdg_pull_kg" || n == "rsqdg_burden_kg"
+			|| n == "rsqdg_arm_kg" || n == "rsqdg_catch_radius"))
+			v *= RSQDG_Perks.Factor(n, p);
+		return v;
 	}
 
 	static bool Flag(String n, PlayerInfo p, bool d)
@@ -299,5 +304,33 @@ class RSQDG_Reach
 	{
 		let c = CVar.GetCVar(n, p);
 		return c ? c.GetInt() : d;
+	}
+}
+
+
+// GUN BONSAI'S VR PATCH, ASKED BY NAME (RSQ_MeleeUpgradeService "plevel": a PLAYER upgrade's level).
+// A throw is no gun's, so the grab's perks are the player's own, and each grows one of the grab's
+// own settings for that player only. Without the patch every level is 0 and every factor 1: the
+// grab is exactly what it was. Levels are asked once a second per player and kept on RSQDG_Throw.
+//   Long Arm     rsqdg_reach         +15% a level
+//   Iron Grip    rsqdg_pull_kg       +50% a level (heavier things come easier), rsqdg_burden_kg +25%
+//   Heavy Hitter rsqdg_arm_kg        +25% a level (a heavy thing leaves the hand faster)
+//   Air Catch    rsqdg_catch_radius  +25% a level
+class RSQDG_Perks
+{
+	// read anywhere (the grab's cvar reads are data scope); RSQDG_Throw.WorldTick refreshes the levels
+	static double Factor(String n, PlayerInfo p)
+	{
+		if (!p || !p.mo) return 1.0;
+		let th = RSQDG_Throw(EventHandler.Find("RSQDG_Throw"));
+		if (!th) return 1.0;
+		int pn = p.mo.PlayerNumber();
+		if (pn < 0 || pn >= MAXPLAYERS) return 1.0;
+		if (n == "rsqdg_reach") return 1.0 + 0.15 * th.pkReach[pn];
+		if (n == "rsqdg_pull_kg") return 1.0 + 0.50 * th.pkGrip[pn];
+		if (n == "rsqdg_burden_kg") return 1.0 + 0.25 * th.pkGrip[pn];
+		if (n == "rsqdg_arm_kg") return 1.0 + 0.25 * th.pkHeave[pn];
+		if (n == "rsqdg_catch_radius") return 1.0 + 0.25 * th.pkCatch[pn];
+		return 1.0;
 	}
 }
