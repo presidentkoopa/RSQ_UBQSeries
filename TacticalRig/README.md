@@ -67,6 +67,12 @@ Turn on **Cigarettes** in the menu. A pocket on your left chest holds a few
   butt flicked away (grip again while swinging your hand) smoulders where it lands and
   draws monsters to it — and into each other. Burnt down, it drops from your hand.
 
+## The torso (optional)
+
+Options → Tactical Rig → *Wear a torso*: a torso on the rig's body that your holsters sit
+on. It turns green or blue with your armour and breathes red at low health. Sliders move
+and size it.
+
 ## Install
 
 Load after your weapon pack. Tested order:
@@ -87,6 +93,10 @@ the console player only. RSQ_DistanceGrab already asks `rig.busy`.
   voxel lighter from ZBlood-VR (his own model, per its credits). The cigarette texture's
   pack artwork (from another model) is blanked out here. Sharing his work in this pack
   is the project owner's decision.
+- **Vittorio Romeo**: the torso is the one from his original Quake VR mod (converted from
+  Quake's .mdl; recoloured skins from the project owner's RS_VRBody). Shipping it is the
+  project owner's decision.
+- The region spheres are the project owner's, from his RS_Holsters.
 - Holster, draw and foley sounds: RS_CombatFX (the project owner's effects library).
 - The Zippo and cigarette sounds and the region ring are generated (`tools/`).
 - QuestZDoom: Emawind and Team Beef.
