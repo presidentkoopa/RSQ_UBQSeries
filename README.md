@@ -44,6 +44,10 @@ BD22Q) are shown. A sound and a rumble mark each holster and draw.
 
 ## Fit it to you
 
+- **Seated:** for playing sitting down. Standing, the rig hangs from the game's view height,
+  which stays put when you sit; seated, it hangs from your seated eyes (the highest your
+  headset has been lately, so leaning to reach does not pull the holsters down), and the torso
+  and helmet come down with it.
 - **Measure My Height** (stand straight, look ahead) scales the whole rig to your eye height.
 - **Move Holsters by Hand:** turn it on, grip in a sphere, carry it where your hand naturally
   goes, let go; it's saved. Turn it off to play. *Holster Positions* has sliders for each.
@@ -60,6 +64,11 @@ BD22Q) are shown. A sound and a rumble mark each holster and draw.
   Down*). *Torso Fit* moves and sizes it.
 - **Helmet:** with the marine torso. It sits on your head and turns with it, and only mirrors
   draw it (the rig's mirror, or a real mirror in a map): your own view never does.
+- **In a map's mirror,** with the torso on: the guns and hands you hold are shown too (a copy
+  of each, seen only in mirrors, posed as the game draws it in your hands), and the sprite
+  marine steps out of the mirror so you see one body. Guns and hands drawn as flat sprites are
+  not copied; Brutal Doom Quest's hands sit where your controller is (its per-gun hand moves
+  happen at draw time, where a mod cannot read them).
 
 ## Ermac's cigarette (optional, off by default)
 

@@ -40,6 +40,7 @@ class RSQTR_Body play
 
 	void Update(PlayerPawn pmo)
 	{
+		UpdateSeat(pmo);
 		double a = pmo.angle, h0 = pmo.AttackAngle, h1 = pmo.OffhandAngle;
 		if (!primed) { yaw = a; lastA = a; lastH0 = h0; lastH1 = h1; primed = true; return; }
 		double dA = Actor.DeltaAngle(lastA, a);
@@ -78,10 +79,84 @@ class RSQTR_Body play
 	}
 
 	// The head in the world: the pawn's place (QuestZDoom moves the pawn with the
-	// headset) at eye height.
+	// headset) at eye height. Standing, that is the view height (player.viewz); seated
+	// (rsqtr_seated), your seated eyes (SeatedHead).
 	static Vector3 Head(PlayerPawn pmo)
 	{
+		if (pmo.player && pmo.player == players[consoleplayer])
+		{
+			let rig = RSQTR_Rig.Get();
+			let b = rig ? rig.GetBody() : null;
+			if (b && b.seatOn) return b.SeatedHead(pmo);
+		}
 		return (pmo.pos.x, pmo.pos.y, pmo.player ? pmo.player.viewz : pmo.pos.z + pmo.height * 0.9);
+	}
+
+	// SEATED (rsqtr_seated, the owner, 10-27). HOW THE ENGINE PLACES THINGS IN HEIGHT
+	// (QuestZDoom 17.3, hw_openxrdevice.cpp, measured on the rig with the headset at 1.6 m and
+	// 1.2 m):
+	//   your eyes     floor + (headset height + vr_height_adjust) * 34 / 1.2   (what you see from)
+	//   your hands    floor + (controller height + vr_height_adjust) * 34 / 1.2 (AttackPos.z)
+	//   player.viewz  the PAWN's eye: floor + its ViewHeight (41) while vr_crouch_use_button is on
+	//                 (the default), so it does not move when your head does; with it off, the
+	//                 engine sets crouchfactor = eyes / 41 and viewz follows your eyes.
+	// "floor" is viewz less the pawn's view height (button on) or less your eyes (button off),
+	// which keeps the view bob and a button crouch in it, as the hands have them.
+	// Standing, the rig hangs from player.viewz; it always has. Sitting down drops your eyes and
+	// hands about 0.4 m while viewz stays put, so the holsters stayed at standing height. Seated,
+	// the rig hangs from your SEATED EYES instead: the highest your headset has been lately (you
+	// sit up to look around, you lean to reach), easing down SEAT_EASE metres a tic so it settles
+	// if you slump, rising at once if you sit up or stand, and taken straight down to the headset
+	// once it has stayed SEAT_DROP below for a second (you stood up and sat down again).
+	const SEAT_EASE = 0.02 / 35.0;   // metres a tic: 2 cm a second (a first guess: a one-second lean to the hip moves the holsters 2 cm)
+	const SEAT_DROP = 0.20;          // metres (a first guess: deeper and longer than a reach to the hip)
+	bool seatOn;
+	double seatEye;                  // metres: your seated eyes above the room floor
+	int seatLow;                     // tics the headset has been SEAT_DROP below them
+
+	void UpdateSeat(PlayerPawn pmo)
+	{
+		let c = CVar.FindCVar("rsqtr_seated");
+		double h = pmo.HmdPosition.y;
+		seatOn = c && c.GetBool() && h > 0.3;     // no headset height read: the standing rule
+		if (!seatOn) { seatEye = 0; seatLow = 0; return; }
+		seatLow = h < seatEye - SEAT_DROP ? seatLow + 1 : 0;
+		if (seatEye <= 0 || h > seatEye || seatLow > TICRATE) { seatEye = h; seatLow = 0; }
+		else seatEye = max(h, seatEye - SEAT_EASE);
+	}
+
+	// The room floor in map height, as the engine places the hands (above).
+	static double RoomFloor(PlayerPawn pmo)
+	{
+		let p = pmo.player;
+		if (!p) return pmo.pos.z;
+		let cb = CVar.FindCVar("vr_crouch_use_button");
+		if (!cb || cb.GetBool()) return p.viewz - pmo.ViewHeight;
+		return p.viewz - EyeUnits(pmo, pmo.HmdPosition.y);
+	}
+
+	static double EyeUnits(PlayerPawn pmo, double metres)
+	{
+		let ha = CVar.FindCVar("vr_height_adjust");
+		return (metres + (ha ? ha.GetFloat() : 0)) * UPM / PIXELSTRETCH;
+	}
+
+	Vector3 SeatedHead(PlayerPawn pmo)
+	{
+		return (pmo.pos.x, pmo.pos.y, RoomFloor(pmo) + EyeUnits(pmo, seatEye));
+	}
+
+	// Where your eyes are this moment (the helmet sits on them): seated, the headset's own
+	// height; standing, the head the rig hangs from.
+	static Vector3 LiveHead(PlayerPawn pmo)
+	{
+		if (pmo.player && pmo.player == players[consoleplayer])
+		{
+			let rig = RSQTR_Rig.Get();
+			let b = rig ? rig.GetBody() : null;
+			if (b && b.seatOn) return (pmo.pos.x, pmo.pos.y, RoomFloor(pmo) + EyeUnits(pmo, pmo.HmdPosition.y));
+		}
+		return Head(pmo);
 	}
 
 	// A point fwd / left / up METRES from the head, in the body's frame.
@@ -90,7 +165,8 @@ class RSQTR_Body play
 		double c = cos(yaw), s = sin(yaw);
 		double fx = c * fwdMetres - s * leftMetres;
 		double fy = s * fwdMetres + c * leftMetres;
-		return Head(pmo) + (fx * UPM, fy * UPM, upMetres * UPM / PIXELSTRETCH);
+		Vector3 h = (seatOn && pmo.player == players[consoleplayer]) ? SeatedHead(pmo) : Head(pmo);
+		return h + (fx * UPM, fy * UPM, upMetres * UPM / PIXELSTRETCH);
 	}
 
 	// Distance in the ROOM between two map points, in metres.

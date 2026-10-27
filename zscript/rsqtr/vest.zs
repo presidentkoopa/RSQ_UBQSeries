@@ -82,7 +82,7 @@ class RSQTR_Torso : EventHandler
 				// sits DROP lower, scaled with the body; rsqtr_helmet_u fine-tunes it in metres.
 				double hs0 = RSQTR_Rig.Num("rsqtr_vest_size", p, 1.0) * k;
 				double lift = RSQTR_Rig.Num("rsqtr_helmet_u", p, 0.0) * RSQTR_Body.UPM / RSQTR_Body.PIXELSTRETCH;
-				helmet.SetOrigin(RSQTR_Body.Head(pmo) + (0, 0, lift - HELMET_DROP * hs0), true);
+				helmet.SetOrigin(RSQTR_Body.LiveHead(pmo) + (0, 0, lift - HELMET_DROP * hs0), true);
 				helmet.angle = pmo.angle;
 				helmet.pitch = pmo.pitch;
 				helmet.roll = pmo.roll;
