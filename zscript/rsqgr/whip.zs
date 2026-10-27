@@ -126,7 +126,7 @@ class RSQGR_Whip : EventHandler
 			let v = tr.Results.HitActor;
 			int dmg = RSQGR_Util.Opt("rsqgr_whip_damage", 12);
 			int hp0 = v.Health;
-			if (dmg > 0) v.DamageMobj(pmo, pmo, dmg, 'Melee');
+			if (dmg > 0) RSQGR_Perks.Hurt(v, pmo, pmo, dmg, 'Melee');   // the hook's own damage (perks.zs)
 			bool stunned = false;
 			if (v && v.Health > 0 && v.bISMONSTER && RSQGR_Util.Flag("rsqgr_whip_stun", true))
 			{

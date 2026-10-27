@@ -12,3 +12,9 @@ GameInfo
 	AddEventHandlers = "RSQGR_Flight", "RSQGR_Whip", "RSQGR_Voxels"
 }
 // ==== end monster side ====
+
+// Gun Bonsai VR patch upgrades + the hook's XP ledger (perks.zs). After the core and the throw.
+GameInfo
+{
+	AddEventHandlers = "RSQGR_Perks"
+}
