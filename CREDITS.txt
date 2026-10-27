@@ -1,0 +1,15 @@
+RSQ_Accessibility -- credits
+============================
+
+One shared Accessibility menu and settings for the Ultra Badass Quest series. For stock
+QuestZDoom 17.3: ZScript and lumps only, no engine changes. The code is new, written for this pack.
+
+WHAT THIS PK3 SHIPS, AND WHOSE IT IS
+  The project owner (presidentkoopa)
+      The design: one shared menu that detects which series mods are loaded, and the shared
+      setting names (rsqa_colorblind, rsqa_handed).
+  QuestZDoom (Emawind and Team Beef)
+      The engine and its option menu classes, which the menu extends.
+
+SHARING
+  Free to share as part of the Ultra Badass Quest series.
