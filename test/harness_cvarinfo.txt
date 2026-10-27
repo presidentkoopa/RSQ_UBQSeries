@@ -11,3 +11,6 @@ server noarchive float rsgrh_px = 0;
 server noarchive float rsgrh_py = 0;
 server noarchive float rsgrh_pa = 0;
 server noarchive float rsgrh_cut_tt = 0;
+server noarchive int rsgrh_norep = 0;
+server noarchive int rsgrh_tpat = 10;
+server noarchive int rsgrh_sounds = 0;

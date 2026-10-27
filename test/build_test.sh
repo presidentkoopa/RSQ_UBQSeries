@@ -8,6 +8,7 @@ T=$(mktemp -d)
 cd "$ME"
 cp -r zscript.txt MAPINFO.txt CVARINFO.txt KEYCONF.txt MENUDEF.txt SNDINFO.txt CREDITS.txt MODELDEF.txt zscript sprites sounds models $T/
 cp test/harness.zs $T/zscript/rsqgr_harness.zs
+mkdir -p $T/maps && python3 tools/rigtest/mkmap.py $T/maps/GRTEST.wad >/dev/null   # core's generated test map
 echo '#include "zscript/rsqgr_harness.zs"' >> $T/zscript.txt
 cat test/harness_cvarinfo.txt >> $T/CVARINFO.txt
 printf '\nGameInfo { AddEventHandlers = "RSQGRH_Harness" }\n' >> $T/MAPINFO.txt

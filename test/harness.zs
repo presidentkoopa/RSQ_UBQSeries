@@ -11,12 +11,27 @@ class RSQGRH_Harness : EventHandler
 		let pmo = players[consoleplayer].mo;
 		if (!pmo) return;
 		int at = CVar.FindCVar("rsgrh_at").GetInt();
-		if (level.maptime == 3 && CVar.FindCVar("rsgrh_tp").GetInt())
+		if (level.maptime == CVar.FindCVar("rsgrh_tpat").GetInt() && CVar.FindCVar("rsgrh_tp").GetInt())
 		{
 			pmo.SetOrigin((CVar.FindCVar("rsgrh_px").GetFloat(), CVar.FindCVar("rsgrh_py").GetFloat(), pmo.pos.z), false);
 			pmo.SetZ(pmo.floorz);
 			pmo.angle = CVar.FindCVar("rsgrh_pa").GetFloat();
 			Console.Printf("H_TP player to (%.0f %.0f %.0f) angle %.0f", pmo.pos.x, pmo.pos.y, pmo.pos.z, pmo.angle);
+		}
+		if (level.maptime == 6 && CVar.FindCVar("rsgrh_sounds").GetInt())
+		{
+			static const Name whats[] = { 'fire', 'loop', 'swish', 'hitwall', 'hitflesh', 'retract', 'lash', 'crack' };
+			for (int set = 0; set < 3; set++)
+			{
+				String line = "";
+				for (int w = 0; w < whats.Size(); w++)
+				{
+					String n = RSQGR_Looks.SoundIn(set, whats[w]);
+					Sound snd = n;
+					line = line .. String.Format(" %s=%s(%d,%.2fs)", whats[w], n, int(snd), n == "" ? 0 : S_GetLength(snd));
+				}
+				Console.Printf("H_SND set %d:%s sprites open=%s closed=%s", set, line, RSQGR_Looks.SpriteIn(set, 'open'), RSQGR_Looks.SpriteIn(set, 'closed'));
+			}
 		}
 		if (level.maptime == 5 && CVar.FindCVar("rsgrh_scan").GetInt())
 		{
@@ -43,7 +58,7 @@ class RSQGRH_Harness : EventHandler
 			double side = CVar.FindCVar("rsgrh_side").GetFloat();
 			double up = CVar.FindCVar("rsgrh_up").GetFloat();
 			Vector3 sp = pmo.Vec3Angle(d, pmo.angle) + (cos(pmo.angle - 90), sin(pmo.angle - 90), 0) * side + (0, 0, up);
-			v = Actor.Spawn(cls, sp, ALLOW_REPLACE);
+			v = Actor.Spawn(cls, sp, CVar.FindCVar("rsgrh_norep").GetInt() ? NO_REPLACE : ALLOW_REPLACE);
 			if (v)
 			{
 				v.angle = pmo.angle + 180;

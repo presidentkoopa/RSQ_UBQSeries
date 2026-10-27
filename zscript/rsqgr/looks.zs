@@ -34,9 +34,10 @@ class RSQGR_Looks
 		return clamp(RSQGR_Util.Opt("rsqgr_looks", 0), 0, 2);
 	}
 
-	static String Sound(Name what)
+	static String Sound(Name what) { return SoundIn(Set(), what); }
+
+	static String SoundIn(int set, Name what)
 	{
-		int set = Set();
 		if (set == SET_CFX)
 		{
 			if (what == 'fire') return "rsqgr/cfx/draw";
@@ -61,9 +62,11 @@ class RSQGR_Looks
 		return "";
 	}
 
-	static Name Sprite(Name what)
+	static Name Sprite(Name what) { return SpriteIn(Set(), what); }
+
+	static Name SpriteIn(int set, Name what)
 	{
-		if (Set() == SET_BAL && (what == 'open' || what == 'closed')) return 'RSGB';   // the tracer mesh (MODELDEF)
+		if (set == SET_BAL && (what == 'open' || what == 'closed')) return 'RSGB';   // the tracer mesh (MODELDEF)
 		if (what == 'open') return 'RSGH';
 		if (what == 'closed') return 'RSGK';
 		return 'TNT1';
@@ -73,6 +76,7 @@ class RSQGR_Looks
 	{
 		if (Set() != SET_BAL) return;
 		if (what != 'wall' && what != 'crack') return;
+		if (RSQGR_Util.Flag("rsqgr_debug", false)) Console.Printf("T_GRL spark %s at (%.0f %.0f %.0f): 4 tracer streaks", what, at.x, at.y, at.z);
 		for (int k = 0; k < 4; k++)
 		{
 			let s = Actor.Spawn("RSQGR_Streak", at, NO_REPLACE);
