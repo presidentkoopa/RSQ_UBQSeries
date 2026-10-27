@@ -79,9 +79,14 @@ is ZScript and data lumps.
   where you look, or off the face); fireballs are batted away before they reach you; blocked
   melee staggers. Meet a shot with a moving shield for a **perfect block**.
 - **Bash:** shove the shield into an enemy.
-- **Rev and throw:** hold **either off-hand button** to rev the saw and ring targets as you sweep;
-  release while snapping your arm forward to throw. It visits the ringed targets in order and
-  comes back; press again while it flies to call it back.
+- **Rev:** hold the **off trigger**.
+- **Lock on:** hold **Use** (away from the shoulder) and sweep the shield over enemies, one ring
+  each. Or bind the off grip or any key to *ShieldSaw: lock on (hold)* and pick it in *Lock on
+  with*. Rings stay 5 s after you let go.
+- **Throw:** let go of the trigger while snapping your arm forward. It visits the ringed targets in
+  order and comes back; press the trigger again while it flies to call it back.
+- **Brutal Doom v22 monster compatibility:** for Brutal Doom's tougher monsters, it slices through up to
+  250 health and grinds up to 1200.
 - Shield size, fit and placement are under *Shield Fit*; everything else under *Tuning* and
   *Advanced*.
 
