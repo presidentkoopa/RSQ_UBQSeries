@@ -16,11 +16,11 @@ places are*, "Holds slots"); the defaults:
 | Place | Where | Holds |
 |---|---|---|
 | Left hip, right hip | belt line, each side | slot 2 (pistols, small arms) |
-| Left pectoral, right pectoral | the side of the chest, under the arm | slot 0 (grenades, small things) |
+| Left pectoral, right pectoral | the side of the chest, under the arm | slot 2 (pistols: shoulder holsters) |
 | Chest | the sternum | slot 3 (shotguns) |
 | Stomach | below the chest | slot 4 (rifles, chainguns) |
 | Left shoulder | behind the shoulder | slots 5-6 (launchers, plasma, railgun) |
-| Right shoulder | behind the shoulder | slots 7-9 (BFGs, nukes, flamers) |
+| Right shoulder | behind the shoulder | slots 7-9 and 0 (BFGs, nukes, flamethrowers) |
 | Lower back | the small of the back | slot 1 (melee: axe, chainsaw; never the fists) |
 
 - **Holster:** bring the gun into its region and grip (or press Use). Your hand is left

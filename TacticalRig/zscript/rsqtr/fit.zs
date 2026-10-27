@@ -4,15 +4,18 @@
 // with BD22Q: the Devastator's model points backward, the Machinegun's sideways; lengths run
 // from 20 to 210 map units). The game cannot measure a model while it runs, so
 // tools/measure_pickups.py measures the load order's pickups ahead of time and writes
-//     <Class> <length in map units> <yaw> <pitch> <shown by> <centre x y z> <squat>
+//     <Class> <length in map units> <yaw> <pitch> <shown by> <centre x y z> <squat> <sprite> <frame>
 // (the turn that brings the muzzle onto the actor's forward axis; the class whose MODELDEF
-// draws it -- BD22Q lends its pickups VOXELS through holder classes, so the rig borrows the
-// same one, not the gun's first-person model; the middle of its bounds, model axes). Every lump named RSQTRFIT
+// draws it; the middle of its bounds, model axes; how squat it is; the sprite frame to wear.
+// Made with --held (the default build): the model you HOLD, the weapon's Ready frame, which
+// points forward by construction -- the owner: "really they should be the 3D models I'm
+// using in my hands". Without it: the floor pickup (BD22Q lends voxels through holders). Every lump named RSQTRFIT
 // is read, so a weapon pack can ship its own; a later one wins for the same class. A weapon
 // not in any table is shown at its pickup size and facing, as before.
 class RSQTR_Fit
 {
-	Array<String> cls, holder;
+	Array<String> cls, holder, spr;
+	Array<int> frn;
 	Array<double> len, yaw, pitch, cx, cy, cz, squat;
 
 	static RSQTR_Fit Load()
@@ -34,12 +37,13 @@ class RSQTR_Fit
 				String c = t[0];
 				c = c.MakeLower();
 				int at = f.cls.Find(c);
-				if (at == f.cls.Size()) { f.cls.Push(c); f.len.Push(0); f.yaw.Push(0); f.pitch.Push(0); f.holder.Push(t[0]); f.cx.Push(0); f.cy.Push(0); f.cz.Push(0); f.squat.Push(0); }
+				if (at == f.cls.Size()) { f.cls.Push(c); f.len.Push(0); f.yaw.Push(0); f.pitch.Push(0); f.holder.Push(t[0]); f.cx.Push(0); f.cy.Push(0); f.cz.Push(0); f.squat.Push(0); f.spr.Push(""); f.frn.Push(0); }
 				f.len[at] = t[1].ToDouble();
 				f.yaw[at] = t[2].ToDouble();
 				f.pitch[at] = t[3].ToDouble();
 				f.holder[at] = t.Size() > 4 ? t[4] : t[0];
 				if (t.Size() > 8) f.squat[at] = t[8].ToDouble();
+				if (t.Size() > 10) { f.spr[at] = t[9]; f.frn[at] = t[10].ToInt(); }
 				if (t.Size() > 7) { f.cx[at] = t[5].ToDouble(); f.cy[at] = t[6].ToDouble(); f.cz[at] = t[7].ToDouble(); }
 			}
 		}
