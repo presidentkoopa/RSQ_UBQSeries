@@ -26,12 +26,13 @@ absent. Saber in the main hand, shield in the off.
 
 It hangs over your off shoulder. Reach up and press **Use**: it is in your hand.
 
-**Hold either off-hand button.** The blades deploy and the saw revs; at the same time it paints
-lock-on targets, one at a time, as you sweep your hand across them — a ring goes on each, biggest
-over the one the disc will visit first, and your hand buzzes as each lands. A lock *stays* locked:
-once it is on, it holds until it dies, leaves a much wider cone, or is out of sight for a moment.
+**Lock on with Use**, held with the shield away from your shoulder: sweep it across enemies and a
+ring goes on each, one at a time, biggest over the one the disc will visit first, and your hand
+buzzes as each lands. A lock *stays* locked: once it is on, it holds until it dies, leaves a much
+wider cone, or is out of sight for 3 s; the rings stay 5 s after you let go of Use.
 
-**Let go while your arm snaps forward** and it flies, spinning in the plane your wrist gave it,
+**Hold the off trigger** and the blades deploy and the saw revs (grind, bash). **Let go of it while
+your arm snaps forward** and it flies, spinning in the plane your wrist gave it,
 visiting the ringed targets in the order you ringed them. Let go still, or across your body, and
 it stays in your hand and keeps the marks for a second. Press again while it flies to recall it.
 It always comes back — past three seconds it stops asking the level's permission and flies
@@ -60,20 +61,28 @@ your arm behind it.
 
 ## Options
 
-`Options → Ultra Badass ShieldSaw`:
+`Options → Ultra Badass ShieldSaw`. The front page has the everyday switches: starting with it,
+drawing with Use, what locks on and what throws, catching it on return, the most locks, blocking
+(**Double Block Radius** doubles the blocking plate, the shield you see unchanged), turned shots,
+the muzzle block, melee, perfect block, the bash, hit tiers and Brutal Doom v22 monsters, feedback
+and where the shield shows. One page down: **Shield Fit** (size, where the disc sits, the block
+area), **Throw and Disc**, **Lock-On**, **Block and Bash**, **Mount Position**, and last **Tuning and
+Debug** with Reset All.
 
-- **Blocked Projectiles**, **Turned shots go** (back at the shooter / where you look / off the
-  face), **Aim help on a turned shot**
-- **Turn shots before they reach you** (the sweep) and **Guard generosity**, in cm, on top of the
-  measured plate
-- **Stop bullets at the muzzle**, **Send stopped bullets back**
-- **Blocked Melee**, **Block Feedback and Haptics**, **Perfect Block**
-- **Hand Speed to Throw**, **Back in Hand on Return**, **Lock on Targets Max**, **Hit Tiers**
-- **Fit** — shield size (1.0 to 1.5, model and block area together), where the disc sits in cm
-  from the controller, the block radius and depth, and a ring that draws the block area
-- **Tuning** — throw and return speeds, the lock cone and range, the bash (reach, knockback,
-  lift), the grind, the rev
-- **Debug** — decisions and key codes to the console, and the plate drawn as particles
+## Gun Bonsai upgrades
+
+With Gun Bonsai's VR patch loaded, the ShieldSaw levels like a weapon and its upgrades are read by
+name (`RSQ_MeleeUpgradeService`; all off without the patch):
+
+- **Broadening**: the blocking plate grows 20% a level, to double at level 5 (it replaces Double
+  Block Radius while the patch is loaded).
+- **Lockstep**: one more lock a level.
+- **Bulwark**: a perfect block needs a slower plate.
+- **Rebound**: a returned bullet hits harder.
+- **Battering Ram**: what you bash is thrown into whatever stands behind it.
+- **Ricochet**: a wall the disc hits turns it toward a new target instead of home.
+- **Meat Grinder**: a kill while the disc is stuck frees it at full speed toward the next lock.
+- **Hunter's Return**: on the way home it swerves through enemies near its path.
 
 ## Controls
 
@@ -89,18 +98,18 @@ Keys of its own (Draw, Throw, Lock) are in **Customize Controls** under Ultra Ba
 | the trigger, pressed while it flies | recall |
 
 The lock-on is its own button (the owner, 10-27: the trigger used to rev, lock and throw at once).
-*Lock on with* picks it: **Use** (default, nothing to bind), the **ShieldSaw lock key** (bind the off
-grip or any key to "ShieldSaw: lock on (hold)" in Customize Controls), or the throw button as before.
+*Lock On With* picks it: **Use** (default, nothing to bind), **Lock Key** (bind the off grip or any
+key to "ShieldSaw: lock on (hold)" in Customize Controls), or **Throw Button** (the old way).
 A lock is kept 3 s out of sight; the rings stay 5 s after you let go, so you can lock, rev, then throw.
 
-*Draw from the shoulder with Use* (on by default): turn it off to use the Draw key alone; the shoulder
+*Draw With Use* (on by default): turn it off to use the Draw key alone; the shoulder
 is then no grab, its marker is hidden, and RSQ_TacticalRig keeps that shoulder for weapons.
 
-*Brutal Doom v22 monster compatibility* (off by default): Brutal Doom's monsters are tougher than Doom's,
+*BD22 Monsters* (off by default): Brutal Doom's monsters are tougher than Doom's,
 so on the normal limits nearly everything from an imp up stops the disc. On: it slices through anything up
 to 250 health (to the revenant), sticks and grinds up to 1200 (to the baron), and glances off bigger.
 
-The throw is the off trigger alone by default (*What throws*): QZD's stock binds put the off alt behind a
+The throw is the off trigger alone by default (*Throw Button*): QZD's stock binds put the off alt behind a
 grip shift, the same grip that arms the two-hand grab.
 
 ## Notes
@@ -110,10 +119,8 @@ grip shift, the same grip that arms the two-hand grab.
 - The plate's geometry is **measured off the mesh**, not tuned by eye, and the size slider picks
   between five baked meshes because MODELDEF cannot scale a model at run time.
 - Saw voice and block sparks come from RS_CombatFX (chainsaw archetype).
-- Engine study behind the defence work:
-  `_reports/QZD173_MELEE_STUDY_2026-10-23.md`.
 
-Details, measurements and the engine's traps: `HANDOFF.md`.
+Details, measurements and the engine's traps: `HANDOFF.md` in the repository.
 
 ## Credits
 
