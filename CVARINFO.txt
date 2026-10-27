@@ -35,6 +35,7 @@ server float  rsqgr_chain_scale   = 0.125;  // link size (0.125 = jp_grapple's 5
 server int    rsqgr_rope_segs     = 12;     // most pieces a slack rope is drawn in (a taut one is one piece)
 server float  rsqgr_rope_width    = 0.6;    // rope thickness (radius, map units; 0.6 = about 2 cm)
 
+server bool   rsqgr_score         = true;   // a gap crossed on the rope pays RSQ_Score's Indiana Jones (service.zs)
 server int    rsqgr_debug         = 0;      // 1: log every hook tic to the console (T_GR lines)
 
 // ==== monster side (agent-monster: monster.zs, whip.zs, looks.zs) ====

@@ -244,6 +244,7 @@ class RSQGR_Core : EventHandler
 				RSQGR_Monster.OnHooked(v, h.owner, h.hand, at);
 				Log(h, "bite");
 			}
+			RSQGR_Events.Bitten(h.owner, v, h.hand, h.heavy);   // service.zs: for other mods to read
 			return;
 		}
 

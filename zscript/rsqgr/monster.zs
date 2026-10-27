@@ -528,8 +528,10 @@ class RSQGR_Flight : EventHandler
 				hit ? String.Format(" -> %s %d", hit.GetClassName(), dmg / 2) : (blockLine ? String.Format(" (line %d)", blockLine.Index()) : " (nothing named)"));
 		if (dmg <= 0) return;
 		let src = fby[s];
-		if (hit && hit.bSHOOTABLE && hit != src) hit.DamageMobj(null, src, max(1, dmg / 2), 'Melee');
+		// service.zs notes each blow BEFORE it lands, so a scorer hearing the death already knows
+		if (hit && hit.bSHOOTABLE && hit != src) { RSQGR_Events.Struck(a, hit, src); hit.DamageMobj(null, src, max(1, dmg / 2), 'Melee'); }
 		if (!a) return;
+		RSQGR_Events.Slam(a, src);
 		a.DamageMobj(null, src, dmg, 'Melee');
 	}
 
@@ -567,7 +569,7 @@ class RSQGR_Flight : EventHandler
 		if (dbg)
 			Console.Printf("T_GRM land %s (%s) after %d tics speed %.1f down %.1f peak %.1f dmg %d at (%.1f %.1f %.1f) floorz %.1f fits %d",
 				a.GetClassName(), why, fage[s], speed, down, fpeak[s], dmg, a.Pos.x, a.Pos.y, a.Pos.z, a.floorz, a.TestMobjLocation());
-		if (dmg > 0) a.DamageMobj(null, src, dmg, 'Melee');
+		if (dmg > 0) { RSQGR_Events.Slam(a, src); a.DamageMobj(null, src, dmg, 'Melee'); }
 	}
 
 	// Put back everything borrowed, and free the slot.
