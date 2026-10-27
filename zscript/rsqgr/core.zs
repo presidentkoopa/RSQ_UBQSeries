@@ -148,8 +148,11 @@ class RSQGR_Core : EventHandler
 
 	// ---- the tic ----------------------------------------------------------------
 
+	double tickMs;   // last WorldTick's cost (rsqgr_debug)
+
 	override void WorldTick()
 	{
+		double t0 = MSTimeF();
 		worldScale = RSQGR_Util.WorldScale();
 		for (int pn = 0; pn < MAXPLAYERS; pn++)
 		{
@@ -170,6 +173,7 @@ class RSQGR_Core : EventHandler
 			}
 			if (pmo && pmo.Health > 0) Swing(pmo, pn);
 		}
+		tickMs = MSTimeF() - t0;
 	}
 
 	// ---- flight -----------------------------------------------------------------
@@ -277,7 +281,7 @@ class RSQGR_Core : EventHandler
 		Vector3 dv = v.Pos - h.owner.Pos;
 		double d = dv.xy.Length();
 		if (d > h.range * 1.5) { LetGo(h, false); return; }
-		if (d < h.bestDist - 1.0) { h.bestDist = d; h.noProgress = 0; }
+		if (d < h.bestDist - 0.25) { h.bestDist = d; h.noProgress = 0; }
 		else if (++h.noProgress > 52) { LetGo(h, false); return; }
 		if (!RSQGR_Monster.Tick(v, h.owner, h.hand)) { LetGo(h, false); return; }
 		if (h.phaseAge % 2 == 0) Log(h, "pull");
@@ -334,6 +338,7 @@ class RSQGR_Core : EventHandler
 				h.ropeLen = min(h.ropeLen, d);
 				h.ropeLen = max(minLen, h.ropeLen - RSQGR_Util.Num("rsqgr_reel_speed", 12));
 			}
+			h.slack = !grounded || h.reelHeld;
 			if (d > maxLen + 64) { LetGo(h, false); continue; }
 			if (grounded && !h.reelHeld)
 			{
@@ -390,6 +395,15 @@ class RSQGR_Core : EventHandler
 				v += corr;
 				double vl = v.Length();
 				if (!h.reelHeld && d <= h.ropeLen + 1.0 && vl > 0.01) v *= vt / vl;
+			}
+
+			// A reel pulls in at about its own speed, not faster: the correction above
+			// stacks on momentum and measured up to 29 u/tic reeling to a Cyberdemon.
+			if (h.reelHeld)
+			{
+				double vin = -(v dot n);
+				double vmax = RSQGR_Util.Num("rsqgr_reel_speed", 12) * 1.5;
+				if (vin > vmax) v += n * (vin - vmax);
 			}
 
 			if (!grounded && d >= h.ropeLen - 1.0)
@@ -514,9 +528,9 @@ class RSQGR_Core : EventHandler
 		if (RSQGR_Util.Opt("rsqgr_debug", 0) < 1 || !h || !h.owner) return;
 		let p = h.owner;
 		Vector3 b = AttachPoint(p);
-		Console.Printf("T_GR t%d h%d %s pos(%.1f %.1f %.1f) vel(%.2f %.2f %.2f) claw(%.1f %.1f %.1f) L%.1f d%.1f segs%d ms%.3f scale%.2f%s",
+		Console.Printf("T_GR t%d h%d %s pos(%.1f %.1f %.1f) vel(%.2f %.2f %.2f) claw(%.1f %.1f %.1f) L%.1f d%.1f segs%d ms%.3f/%.3f scale%.2f%s",
 			level.maptime, h.hand, what, p.Pos.x, p.Pos.y, p.Pos.z, p.vel.x, p.vel.y, p.vel.z,
-			h.Pos.x, h.Pos.y, h.Pos.z, h.ropeLen, (h.anchor - b).Length(), h.segs.Size(), h.drawMs, worldScale,
+			h.Pos.x, h.Pos.y, h.Pos.z, h.ropeLen, (h.anchor - b).Length(), h.segs.Size(), h.drawMs, tickMs, worldScale,
 			h.victim ? String.Format(" victim %s (%.1f %.1f %.1f)", h.victim.GetClassName(), h.victim.Pos.x, h.victim.Pos.y, h.victim.Pos.z) : "");
 	}
 }

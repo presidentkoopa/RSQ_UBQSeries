@@ -66,7 +66,7 @@ class RSQGR_Monster
 		Vector2 to = pmo.Pos.xy - victim.Pos.xy;
 		double d = to.Length();
 		double stopAt = pmo.radius + victim.radius + RSQGR_Util.Num("rsqgr_slide_gap", 16);
-		if (d <= stopAt) return false;
+		if (d <= stopAt + 1.0) return false;
 		double step = min(RSQGR_Util.Num("rsqgr_slide_speed", 10) * RSQGR_Core.Scale(), d - stopAt);
 		Vector2 dir = to / d;
 		Vector2 np = victim.Pos.xy + dir * step;

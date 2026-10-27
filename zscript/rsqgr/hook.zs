@@ -38,6 +38,7 @@ class RSQGR_Hook : Actor
 	double ropeLen;
 	int losBad;
 	bool reelHeld;        // reeling this tic (for the drawing and the log)
+	bool slack;           // the rope may hang slack this tic (off the ground or reeling)
 
 	// bite
 	Actor victim;
@@ -142,7 +143,13 @@ class RSQGR_Hook : Actor
 		double d = span.Length();
 
 		double sag = 0;
-		if (phase == PH_LATCH && ropeLen > d) sag = 0.5 * sqrt(ropeLen * ropeLen - d * d);
+		if (phase == PH_LATCH && slack)
+		{
+			// The rope's length is kept from the body's attach point, not the hand: the
+			// spare is measured there and the sag drawn from the hand with that spare.
+			double spare = ropeLen - (ClawPoint() - RSQGR_Core.AttachPoint(owner)).Length();
+			if (spare > 0.5) sag = 0.5 * sqrt((d + spare) * (d + spare) - d * d);
+		}
 		else if (phase == PH_RETRACT) sag = d * 0.06;
 		sag = min(sag, 160);
 		int n = 0;
