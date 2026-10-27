@@ -43,29 +43,17 @@ OptionValue "RSQTR_Markers"
 OptionMenu "RSQTR_Options"
 {
 	Title "TACTICAL RIG"
-	StaticText "Reach to a place on your body and grip to draw. Grip there again to put it back.", 1
+	StaticText "Four holsters (both hips, both shoulders) and two saber spots.", 1
+	StaticText "Grip a holster with a gun in hand: it goes in (a full one swaps).", 1
+	StaticText "Grip a full holster with your hand empty: you draw it.", 1
 	StaticText ""
 	Option "Tactical rig", "rsqtr_on", "OnOff"
-	Option "Grip draws and holsters", "rsqtr_grip", "OnOff"
 	Option "Rings where the holsters are", "rsqtr_markers", "RSQTR_Markers"
-	Option "Draw two-gun pairs as a pair", "rsqtr_pairs", "RSQTR_Pairs"
-	Slider "Size of the stored weapons", "rsqtr_icon_scale", 0.25, 3.0, 0.05, 2
-	StaticText ""
-	StaticText "FIT IT TO YOU", gold
-	Command "Measure my height (stand straight, look ahead)", "netevent rsqtr_calib"
+	Slider "Size of the stored guns", "rsqtr_icon_scale", 0.25, 3.0, 0.05, 2
 	Option "Move the holsters with your hands", "rsqtr_edit", "OnOff"
-	Option "A mirror in front of you", "rsqtr_mirror", "RSQTR_Mirror"
-	SafeCommand "Use Standing A (blue)", "netevent rsqtr_prof_load 1", "Replace your holster places with Standing A (blue)?"
-	SafeCommand "Use Standing B (orange)", "netevent rsqtr_prof_load 2", "Replace your holster places with Standing B (orange)?"
-	SafeCommand "Use Seated A (purple)", "netevent rsqtr_prof_load 3", "Replace your holster places with Seated A (purple)?"
-	SafeCommand "Use Seated B (yellow)", "netevent rsqtr_prof_load 4", "Replace your holster places with Seated B (yellow)?"
-	Submenu "Save a profile, move each holster", "RSQTR_Regions"
-	StaticText ""
-	StaticText "YOUR BODY", gold
-	Option "Wear a torso (shows armour and health)", "rsqtr_vest", "OnOff"
-	Option "Torso fades when you look down", "rsqtr_vest_fade", "OnOff"
-	Option "Helmet (seen in mirrors)", "rsqtr_helmet", "OnOff"
-	Option "Ermac's cigarettes", "rsqtr_cig", "OnOff"
+	Command "Measure my height (stand straight, look ahead)", "netevent rsqtr_calib"
+	Option "Wear a torso and helmet", "rsqtr_vest", "OnOff"
+	Submenu "Holster profiles", "RSQTR_Profiles"
 	StaticText ""
 	Submenu "Advanced: every setting", "RSQTR_Advanced"
 	StaticText ""
@@ -141,73 +129,34 @@ OptionMenu "RSQTR_Advanced"
 
 OptionMenu "RSQTR_Regions"
 {
-	Title "WHERE THE PLACES ARE"
+	Title "WHERE THE HOLSTERS ARE"
 	StaticText "Metres from your eyes, turning with your body.", 1
-	StaticText "Holds: the Doom weapon slots that go there (a list, e.g. 5 6).", 1
-	StaticText "Easier: Move the regions with your hands, on the main page.", 1
+	StaticText "Each holster holds the one gun you put in it.", 1
+	StaticText "Easier: Move the holsters with your hands, on the main page.", 1
 	StaticText ""
 	StaticText "Left hip", gold
-	TextField "Holds slots", "rsqtr_r0_slots"
 	Slider "Forward (m)", "rsqtr_r0_f", -0.5, 0.5, 0.01, 2
 	Slider "Left (m)", "rsqtr_r0_l", -0.5, 0.5, 0.01, 2
 	Slider "Up from your eyes (m)", "rsqtr_r0_u", -1.2, 0.2, 0.01, 2
 	Slider "Size (m)", "rsqtr_r0_rad", 0.05, 0.30, 0.01, 2
 	StaticText ""
 	StaticText "Right hip", gold
-	TextField "Holds slots", "rsqtr_r1_slots"
 	Slider "Forward (m)", "rsqtr_r1_f", -0.5, 0.5, 0.01, 2
 	Slider "Left (m)", "rsqtr_r1_l", -0.5, 0.5, 0.01, 2
 	Slider "Up from your eyes (m)", "rsqtr_r1_u", -1.2, 0.2, 0.01, 2
 	Slider "Size (m)", "rsqtr_r1_rad", 0.05, 0.30, 0.01, 2
 	StaticText ""
-	StaticText "Chest", gold
-	TextField "Holds slots", "rsqtr_r2_slots"
-	Slider "Forward (m)", "rsqtr_r2_f", -0.5, 0.5, 0.01, 2
-	Slider "Left (m)", "rsqtr_r2_l", -0.5, 0.5, 0.01, 2
-	Slider "Up from your eyes (m)", "rsqtr_r2_u", -1.2, 0.2, 0.01, 2
-	Slider "Size (m)", "rsqtr_r2_rad", 0.05, 0.30, 0.01, 2
-	StaticText ""
-	StaticText "Stomach", gold
-	TextField "Holds slots", "rsqtr_r3_slots"
-	Slider "Forward (m)", "rsqtr_r3_f", -0.5, 0.5, 0.01, 2
-	Slider "Left (m)", "rsqtr_r3_l", -0.5, 0.5, 0.01, 2
-	Slider "Up from your eyes (m)", "rsqtr_r3_u", -1.2, 0.2, 0.01, 2
-	Slider "Size (m)", "rsqtr_r3_rad", 0.05, 0.30, 0.01, 2
-	StaticText ""
 	StaticText "Left shoulder", gold
-	TextField "Holds slots", "rsqtr_r4_slots"
 	Slider "Forward (m)", "rsqtr_r4_f", -0.5, 0.5, 0.01, 2
 	Slider "Left (m)", "rsqtr_r4_l", -0.5, 0.5, 0.01, 2
 	Slider "Up from your eyes (m)", "rsqtr_r4_u", -1.2, 0.2, 0.01, 2
 	Slider "Size (m)", "rsqtr_r4_rad", 0.05, 0.30, 0.01, 2
 	StaticText ""
 	StaticText "Right shoulder", gold
-	TextField "Holds slots", "rsqtr_r5_slots"
 	Slider "Forward (m)", "rsqtr_r5_f", -0.5, 0.5, 0.01, 2
 	Slider "Left (m)", "rsqtr_r5_l", -0.5, 0.5, 0.01, 2
 	Slider "Up from your eyes (m)", "rsqtr_r5_u", -1.2, 0.2, 0.01, 2
 	Slider "Size (m)", "rsqtr_r5_rad", 0.05, 0.30, 0.01, 2
-	StaticText ""
-	StaticText "Left pectoral", gold
-	TextField "Holds slots", "rsqtr_r6_slots"
-	Slider "Forward (m)", "rsqtr_r6_f", -0.5, 0.5, 0.01, 2
-	Slider "Left (m)", "rsqtr_r6_l", -0.5, 0.5, 0.01, 2
-	Slider "Up from your eyes (m)", "rsqtr_r6_u", -1.2, 0.2, 0.01, 2
-	Slider "Size (m)", "rsqtr_r6_rad", 0.05, 0.30, 0.01, 2
-	StaticText ""
-	StaticText "Right pectoral", gold
-	TextField "Holds slots", "rsqtr_r7_slots"
-	Slider "Forward (m)", "rsqtr_r7_f", -0.5, 0.5, 0.01, 2
-	Slider "Left (m)", "rsqtr_r7_l", -0.5, 0.5, 0.01, 2
-	Slider "Up from your eyes (m)", "rsqtr_r7_u", -1.2, 0.2, 0.01, 2
-	Slider "Size (m)", "rsqtr_r7_rad", 0.05, 0.30, 0.01, 2
-	StaticText ""
-	StaticText "Lower back", gold
-	TextField "Holds slots", "rsqtr_r8_slots"
-	Slider "Forward (m)", "rsqtr_r8_f", -0.5, 0.5, 0.01, 2
-	Slider "Left (m)", "rsqtr_r8_l", -0.5, 0.5, 0.01, 2
-	Slider "Up from your eyes (m)", "rsqtr_r8_u", -1.2, 0.2, 0.01, 2
-	Slider "Size (m)", "rsqtr_r8_rad", 0.05, 0.30, 0.01, 2
 	StaticText ""
 	StaticText "Left saber (the saber only)", gold
 	Slider "Forward (m)", "rsqtr_r9_f", -0.5, 0.5, 0.01, 2
@@ -221,7 +170,12 @@ OptionMenu "RSQTR_Regions"
 	Slider "Up from your eyes (m)", "rsqtr_r10_u", -1.2, 0.2, 0.01, 2
 	Slider "Size (m)", "rsqtr_r10_rad", 0.05, 0.30, 0.01, 2
 	StaticText ""
-	StaticText "Holster profiles: every place's position, size and slots", gold
+}
+
+OptionMenu "RSQTR_Profiles"
+{
+	Title "HOLSTER PROFILES"
+	StaticText "Holster profiles: where every holster is and its size", gold
 	StaticText "The spheres show the one in use: blue, orange, purple, yellow.", "Gray"
 	Command "Save as Standing A (blue)", "netevent rsqtr_prof_save 1"
 	Command "Save as Standing B (orange)", "netevent rsqtr_prof_save 2"
