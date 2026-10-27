@@ -28,7 +28,7 @@ class RSQTR_Body play
 	const UPM = 34.0;
 	const PIXELSTRETCH = 1.2;
 	const TOL = 1.5;           // degrees: both controllers moved with the pawn = a turn
-	const SWING = 12.0;        // most degrees per tic the body turns while it follows
+	const SWING = 3.0;         // most degrees per tic the body turns while it catches up (an ease, not a snap)
 	const STEEP = 78.0;        // degrees of head pitch past which the head's yaw is not trusted (near straight down)
 
 	double yaw;                // the body's heading, degrees
@@ -49,8 +49,8 @@ class RSQTR_Body play
 
 		// A head held far round for long enough: the body has turned in the room.
 		let p = pmo.player;
-		double limit = RSQTR_Rig.Num("rsqtr_body_turn", p, 25.0);
-		int need = int(RSQTR_Rig.Num("rsqtr_body_secs", p, 0.0) * TICRATE);
+		double limit = RSQTR_Rig.Num("rsqtr_body_turn", p, 35.0);
+		int need = int(RSQTR_Rig.Num("rsqtr_body_secs", p, 1.0) * TICRATE);
 		double off = Actor.DeltaAngle(yaw, a);
 		// LOOKING DOWN AT YOURSELF IS NOT TURNING. With the head pitched steeply the
 		// headset's yaw swings wildly (the owner's headset, 10-27: "it keeps spinning all
@@ -62,17 +62,16 @@ class RSQTR_Body play
 			swinging = false;
 			return;
 		}
-		// THE BODY COMES WITH YOU. Past rsqtr_body_turn degrees (25) the body follows the head
-		// straight away, catching up a fifth of the gap a tic, until it is square under it
-		// again -- the owner, 10-27: the old rule (60 degrees held 2 s) left the regions
-		// standing in the room while he turned, "they spin like the square is spinning".
-		// rsqtr_body_secs adds a wait first (0: none).
+		// STICK TURNS, PLUS A SLOW CATCH-UP (the owner's pick, 10-27, after "everything moves
+		// around"): a head turned past rsqtr_body_turn degrees (35) and HELD there
+		// rsqtr_body_secs (1 s) is taken as the body turning, and the holsters ease round to it,
+		// at most 3 degrees a tic. Glancing about never moves them.
 		if (abs(off) > limit) offFor++;
 		else if (!swinging) offFor = 0;
 		if (offFor > need) swinging = true;
 		if (swinging)
 		{
-			yaw += clamp(off * 0.2, -SWING, SWING);
+			yaw += clamp(off * 0.08, -SWING, SWING);
 			if (abs(off) < 4) { swinging = false; offFor = 0; }
 		}
 	}

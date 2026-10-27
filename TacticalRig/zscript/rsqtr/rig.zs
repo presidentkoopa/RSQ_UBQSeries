@@ -90,6 +90,7 @@ class RSQTR_Rig : EventHandler
 	private transient Array<String> radialItems;
 	transient Actor marker[RSQTR_Region.N];   // read by the mirror (mirror.zs)
 	transient Actor icon[RSQTR_Region.N];
+	private transient bool nearR[2];
 	private transient Actor ricon[RADIAL_MAX];
 	private transient int  buzzCool[2];
 	private transient int  hoverT[2];          // tics the hand has been in its region
@@ -106,7 +107,7 @@ class RSQTR_Rig : EventHandler
 	private transient RSQTR_Fit fitData;
 	RSQTR_Fit GetFit() { if (!fitData) fitData = RSQTR_Fit.Load(); return fitData; }
 	int HoverRegion(int h) const { return (h == 0 || h == 1) ? hoverR[h] : -1; }
-	bool HandBusy(int h) const { return (h == 0 || h == 1) && (hoverR[h] >= 0 || radialHand == h); }
+	bool HandBusy(int h) const { return (h == 0 || h == 1) && (hoverR[h] >= 0 || nearR[h] || radialHand == h); }
 
 	// ---- settings ----------------------------------------------------------------
 	static double Num(String n, PlayerInfo p, double d) { let c = CVar.GetCVar(n, p); return c ? c.GetFloat() : d; }
@@ -411,45 +412,116 @@ class RSQTR_Rig : EventHandler
 		return NM[clamp(k, 1, 4) - 1];
 	}
 
-	// Put the main hand's weapon back on the body at region r; the hand goes empty.
+	// THE SIMPLE RIG (the owner, 10-27: "it's impossible to keep track what is where, everything
+	// moves around"). Four gun holsters -- both hips, both shoulders -- and the two saber spots.
+	// A gun holster holds exactly what you put in it: any gun, one at a time, never chosen for
+	// you. Grip a holster with a gun in your hand and the gun goes in (if one was there, you
+	// swap: that one comes out); grip a full holster with your hand empty and you draw it; an
+	// empty holster with an empty hand does nothing.
+	static bool IsGunRegion(int r) { return r == 0 || r == 1 || r == 4 || r == 5; }
+	static bool IsSaberRegion(int r) { return r == RSQTR_Region.SABER_L || r == RSQTR_Region.SABER_R; }
+
+	// The gun in gun holster r for player n: what was put there, while you still own it.
+	String Content(PlayerPawn pmo, int r)
+	{
+		if (!pmo || !IsGunRegion(r)) return "";
+		String c = lastPut[pmo.PlayerNumber() * RSQTR_Region.N + r];
+		if (c == "") return "";
+		class<Weapon> wc = c;
+		return (wc && pmo.FindInventory(wc)) ? c : "";
+	}
+
+	// A real gun in the main hand: not the empty hand (fists / BD22Q's hands), not a saber.
+	static bool HoldsGun(PlayerPawn pmo)
+	{
+		let w = pmo.player.ReadyWeapon;
+		if (!w || IsSaber(w)) return false;
+		let empty = EmptyHand(pmo);
+		return w != empty;
+	}
+
+	// Put the main hand's weapon on the body at region r. On a gun holster that already holds
+	// a gun, the two swap.
 	private void Holster(PlayerPawn pmo, int r)
 	{
 		if (r < 0 || r >= RSQTR_Region.N) return;
 		let p = pmo.player;
 		let w = p.ReadyWeapon;
 		if (!w) return;
-		Array<String> own;
-		Owned(pmo, r, own);
 		String cls = HeldAs(pmo, w);
-		if (own.Find(cls) == own.Size()) return;   // not this region's class: refused
-		let empty = EmptyHand(pmo);
-		if (empty && empty != w) p.PendingWeapon = empty;
 		int n = pmo.PlayerNumber();
-		lastPut[n * RSQTR_Region.N + r] = cls;
+		Weapon incoming = null;
+		if (IsSaberRegion(r))
+		{
+			Array<String> own;
+			Owned(pmo, r, own);
+			if (own.Find(cls) == own.Size()) return;
+		}
+		else
+		{
+			if (!IsGunRegion(r) || !HoldsGun(pmo)) return;
+			String was = Content(pmo, r);
+			if (was != "" && was != cls)
+			{
+				class<Weapon> ic = was;
+				incoming = ic ? Weapon(pmo.FindInventory(ic)) : null;
+			}
+			// one gun, one place: put here, it leaves wherever else it was
+			for (int k = 0; k < RSQTR_Region.N; k++)
+				if (k != r && lastPut[n * RSQTR_Region.N + k] == cls) { lastPut[n * RSQTR_Region.N + k] = ""; lastPair[n * RSQTR_Region.N + k] = false; }
+		}
+		int slot = n * RSQTR_Region.N + r;
+		bool incomingPair = lastPair[slot];
+		lastPut[slot] = cls;
 		// A PAIR GOES AWAY TOGETHER. With the gun's own off-hand copy in the other hand (BD22Q's
 		// dual wield: RSQ_Off_<gun>, a subclass of the gun flagged OFFHANDWEAPON), both guns go
 		// on the holster and the off hand goes back to its empty hand.
 		let off = p.OffhandWeapon;
 		class<Weapon> wc = cls;
 		bool pair = off && wc && off is wc && off.GetClass() != wc;
-		lastPair[n * RSQTR_Region.N + r] = pair;
-		if (pair) QueueOff(n, OffEmptyName(pmo));
+		lastPair[slot] = pair;
+		if (incoming)
+		{
+			p.PendingWeapon = incoming;
+			int mode = Opt("rsqtr_pairs", p, 2);
+			let copy = OffCopy(pmo, incoming.GetClass());
+			if (copy && (mode == 2 || (mode == 1 && incomingPair))) QueueOff(n, copy.GetClassName());
+			else if (pair) QueueOff(n, OffEmptyName(pmo));
+			drawTic[n] = level.maptime + 1;
+			drawClass[n] = incoming.GetClassName();
+		}
+		else
+		{
+			let empty = EmptyHand(pmo);
+			if (empty && empty != w) p.PendingWeapon = empty;
+			if (pair) QueueOff(n, OffEmptyName(pmo));
+		}
 		pmo.A_StartSound("rsqtr/holster", CHAN_AUTO, CHANF_LOCAL, 0.8);
 	}
 
-	// Bring the idx-th weapon of region r to the main hand.
+	// Draw from region r: a gun holster's one gun, or (a saber spot) the saber.
 	private void Draw(PlayerPawn pmo, int r, int idx)
 	{
 		if (r < 0 || r >= RSQTR_Region.N) return;
-		Array<String> own;
-		Owned(pmo, r, own);
-		if (idx < 0 || idx >= own.Size()) return;
-		class<Weapon> wc = own[idx];
-		let w = wc ? Weapon(pmo.FindInventory(wc)) : null;
-		if (!w) return;
 		let p = pmo.player;
 		int n = pmo.PlayerNumber();
 		int slot = n * RSQTR_Region.N + r;
+		class<Weapon> wc = null;
+		if (IsGunRegion(r))
+		{
+			String c = Content(pmo, r);
+			if (c == "") return;
+			wc = c;
+		}
+		else
+		{
+			Array<String> own;
+			Owned(pmo, r, own);
+			if (idx < 0 || idx >= own.Size()) return;
+			wc = own[idx];
+		}
+		let w = wc ? Weapon(pmo.FindInventory(wc)) : null;
+		if (!w) return;
 		if (IsSaber(w) && IsSecondSaber(w)) return;     // the saber moves its own second hilt (Press)
 		if (p.ReadyWeapon != w) p.PendingWeapon = w;
 		// DRAWN AS A PAIR (the owner, 10-27: "call up the dual pistol or SMG from that holster"):
@@ -458,7 +530,7 @@ class RSQTR_Rig : EventHandler
 		int mode = Opt("rsqtr_pairs", p, 2);
 		let copy = OffCopy(pmo, wc);
 		if (copy && (mode == 2 || (mode == 1 && lastPair[slot]))) QueueOff(n, copy.GetClassName());
-		if (lastPut[slot] == own[idx]) { lastPut[slot] = ""; lastPair[slot] = false; }
+		if (IsGunRegion(r)) { lastPut[slot] = ""; lastPair[slot] = false; }
 		drawTic[n] = level.maptime + 1;
 		drawClass[n] = w.GetClassName();
 		pmo.A_StartSound("rsqtr/draw", CHAN_AUTO, CHANF_LOCAL, 0.8);
@@ -551,6 +623,11 @@ class RSQTR_Rig : EventHandler
 				&& RSQTR_Body.RoomMetres(pmo.OffhandPos, pmo.AttackPos) < STEADY_RANGE
 				&& CVarOn("vr_two_handed_weapons"))
 				r = -1;
+			// NEAR A HOLSTER (within twice its size): Distance Grab leaves the hand alone, so floor
+			// pickups do not light up and flash while you reach for your hip (rig.busy).
+			nearR[h] = false;
+			for (int i = 0; i < RSQTR_Region.N && !nearR[h]; i++)
+				if (RegionLive(pmo, i) && RSQTR_Body.RoomMetres(hp, RegionAt(pmo, i)) <= RegionRadius(p, i) * 2.0) nearR[h] = true;
 			if (r != hoverR[h])
 			{
 				if (r >= 0 && buzzCool[h] <= 0) { RSQTR_Buzzer.Start(pmo, h, 0.18, 3); buzzCool[h] = 10; }
@@ -615,6 +692,15 @@ class RSQTR_Rig : EventHandler
 			if (sh) sh.SetBool(false);
 			ver.SetInt(2);
 		}
+		// settings version 3 (10-27, the simple rig): the body's turn rule becomes 35 degrees
+		// held 1 s with a slow ease (it was 25 at once: "everything moves around")
+		if (ver && ver.GetInt() < 3)
+		{
+			let bt3 = CVar.FindCVar("rsqtr_body_turn"), bs3 = CVar.FindCVar("rsqtr_body_secs");
+			if (bt3) bt3.SetFloat(35);
+			if (bs3) bs3.SetFloat(1);
+			ver.SetInt(3);
+		}
 		// slot 0 was the pectorals' (my pick, 10-27): in BD that is the flamethrowers, so the
 		// pectorals hold pistols like the shoulder holsters they are, and slot 0 goes with the
 		// heavy weapons on the right shoulder (the owner: "who would put a flamethrower in
@@ -668,7 +754,16 @@ class RSQTR_Rig : EventHandler
 	// hooks.zs); a claimed region is not ours to act on.
 	bool RegionLive(PlayerPawn pmo, int r)
 	{
+		if (IsSaberRegion(r)) { if (!SaberLoaded()) return false; }
+		else if (!IsGunRegion(r)) return false;      // chest, stomach, pectorals, lower back: retired
 		return !RSQTR_Hooks.Claimed(pmo, r);
+	}
+
+	static bool SaberLoaded()
+	{
+		String n = "UBQS_Saber";
+		class<Actor> c = n;
+		return c != null;
 	}
 
 	private void Press(PlayerPawn pmo, PlayerInfo p, int h, int r, Vector3 hp)
@@ -713,6 +808,26 @@ class RSQTR_Rig : EventHandler
 				RSQTR_Buzzer.Start(pmo, h, inHand ? 0.55 : 0.65, inHand ? 5 : 6);
 				return;
 			}
+		}
+		if (IsGunRegion(r))
+		{
+			// gun in hand: in it goes (a full holster swaps); hand empty: draw what is there
+			if (HoldsGun(pmo))
+			{
+				EventHandler.SendNetworkEvent("rsqtr_holster", r);
+				RSQTR_Buzzer.Start(pmo, h, 0.55, 5);
+			}
+			else if (Content(pmo, r) != "")
+			{
+				EventHandler.SendNetworkEvent("rsqtr_draw", r, 0);
+				RSQTR_Buzzer.Start(pmo, h, 0.65, 6);
+			}
+			else
+			{
+				RSQTR_Buzzer.Start(pmo, h, 0.12, 2);
+				if (Flag("rsqtr_messages", p, false)) pmo.A_Print(String.Format("%s: empty", RSQTR_Region.NAMES[r]));
+			}
+			return;
 		}
 		String cur = HeldAs(pmo, p.ReadyWeapon);
 		if (cur != "" && own.Find(cur) < own.Size())
@@ -864,15 +979,13 @@ class RSQTR_Rig : EventHandler
 			// WHAT IS STORED THERE, always shown: the weapon last put there if you still
 			// own it, otherwise the first weapon of that region you own; never the one in
 			// your hand.
+			// WHAT IS STORED THERE: exactly what you put there, nothing chosen for you (the owner,
+			// 10-27: "impossible to keep track what is where").
 			String held = HeldAs(pmo, p.ReadyWeapon);
-			String put = lastPut[consoleplayer * RSQTR_Region.N + r];
+			String put = live ? Content(pmo, r) : "";
+			if (put == held) put = "";
 			Array<String> own;
 			Owned(pmo, r, own);
-			if (put == "" || put == held || own.Find(put) == own.Size())
-			{
-				put = "";
-				for (int k = 0; k < own.Size(); k++) if (own[k] != held) { put = own[k]; break; }
-			}
 			// ONLY A MEASURED MODEL IS SHOWN ON THE BODY. A weapon not in the fit table has no
 			// model of its own here (BD's hand grenades are a flat sprite), and a flat sprite
 			// floating at the chest is just a picture by your face (the owner, 10-27, asked

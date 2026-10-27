@@ -23,8 +23,8 @@ user int    rsqtr_mirror      = 1;       // a mirror in front of you: 0 off, 1 w
 user int    rsqtr_mirror_view = 2;       // the mirror shows 0 your front, 1 your back, 2 both side by side
 user float  rsqtr_mirror_m    = 1.0;     // metres from your eyes to the mirror
 user int    rsqtr_dwell       = 3;       // tics a hand must be in a region before a press counts
-user float  rsqtr_body_turn   = 25;    // degrees: a head turned further than this takes the body round with it
-user float  rsqtr_body_secs   = 0;     // seconds to wait first (0: at once)
+user float  rsqtr_body_turn   = 35.0;    // degrees: a head turned further than this takes the body round with it
+user float  rsqtr_body_secs   = 1.0;     // seconds to wait first (0: at once)
 user bool   rsqtr_saber_hip   = false;   // UltraBadassQuestSaber's hilt also clips to the hips (it has two holsters of its own)
 user string rsqtr_empty       = "";      // the weapon an empty hand holds (blank: the slot-1 weapon with the highest SelectionOrder, the fist)
 
