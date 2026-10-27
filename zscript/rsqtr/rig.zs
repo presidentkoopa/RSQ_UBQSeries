@@ -107,7 +107,9 @@ class RSQTR_Rig : EventHandler
 	private transient RSQTR_Fit fitData;
 	RSQTR_Fit GetFit() { if (!fitData) fitData = RSQTR_Fit.Load(); return fitData; }
 	int HoverRegion(int h) const { return (h == 0 || h == 1) ? hoverR[h] : -1; }
-	bool HandBusy(int h) const { return (h == 0 || h == 1) && (hoverR[h] >= 0 || nearR[h] || radialHand == h); }
+	// Busy = INSIDE a holster (or its radial). "Near" was tried (10-27) and switched Distance Grab off
+	// for good: a hand resting at your side is always within reach of a hip holster.
+	bool HandBusy(int h) const { return (h == 0 || h == 1) && (hoverR[h] >= 0 || radialHand == h); }
 
 	// ---- settings ----------------------------------------------------------------
 	static double Num(String n, PlayerInfo p, double d) { let c = CVar.GetCVar(n, p); return c ? c.GetFloat() : d; }
