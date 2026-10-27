@@ -81,6 +81,7 @@ class RSQDG_Tell : EventHandler
 			// How it looks: GlowLook (below).
 			double alph, rim; int col;
 			[alph, col, rim] = GlowLook(have[h], t);
+			rim = 1.0 + (rim - 1.0) * RSQDG_A11y.Cue();   // RSQ_Accessibility's Cue Size: a wider rim
 			glw[h].Follow(a, eye, clamp(alph * gain, 0.0, 1.0), col, rim);
 		}
 	}
@@ -148,6 +149,7 @@ class RSQDG_Tell : EventHandler
 		// as alive, slow enough that a room full of pickups is not a strobe.
 		double period = RSQDG_Reach.Num("rsqdg_flash", p, 24.0);
 		if (period < 2) period = 2;
+		period = RSQDG_A11y.Period(int(period));   // Photosensitive Mode: a full cycle at least 14 tics
 		bool phase = (int(level.time / (period * 0.5)) & 1) != 0;
 
 		for (int h = 0; h < 2; h++)

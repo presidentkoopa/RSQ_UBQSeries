@@ -32,8 +32,14 @@ class RSQDG_Reach
 	// in the package touches the raw fields.
 	static double Yaw(PlayerPawn pmo, int hand)
 	{
-		return ((hand == 0) ? pmo.AttackAngle : pmo.OffhandAngle) + 90;
+		return ((Ctrl(pmo, hand) == 0) ? pmo.AttackAngle : pmo.OffhandAngle) + 90;
 	}
+
+	// THE CONTROLLER PLAYING A HAND'S PART. RSQ_Accessibility's Off-Hand Modifier (One-Handed):
+	// while it is held the off hand's part -- its reach, its lock, its catch -- is played by the
+	// main controller, and the main hand's own part stands down (HandBusy), so one controller is
+	// never two hands at once. Without it (or off) a hand is its own controller.
+	static clearscope int Ctrl(PlayerPawn pmo, int hand) { return RSQDG_A11y.Ctrl(pmo, hand); }
 
 	// PITCH, POSITIVE UP -- the convention every vector in this file (Fwd, Up,
 	// Side) and every test above it (the palm gate's "not at the floor", the
@@ -47,7 +53,7 @@ class RSQDG_Reach
 	// way as here now (its fw.z = sin(AttackPitch)).
 	static double Pitch(PlayerPawn pmo, int hand)
 	{
-		return (hand == 0) ? pmo.AttackPitch : pmo.OffhandPitch;
+		return (Ctrl(pmo, hand) == 0) ? pmo.AttackPitch : pmo.OffhandPitch;
 	}
 
 	// Doom's own convention (positive DOWN), for engine calls that take it:
@@ -58,7 +64,7 @@ class RSQDG_Reach
 	// original and is what actor.zs:270 declares.
 	static double Roll(PlayerPawn pmo, int hand)
 	{
-		return ((hand == 0) ? pmo.AttackRoll : pmo.OffhandRoll);
+		return ((Ctrl(pmo, hand) == 0) ? pmo.AttackRoll : pmo.OffhandRoll);
 	}
 
 	// Wrapped to -180..180, so a wrist a degree past the wrap is a degree away
@@ -102,13 +108,16 @@ class RSQDG_Reach
 		if (HandBusy(p, hand)) return false;
 		if (!Flag("rsqdg_palm", p, true)) return true;
 
+		// RSQ_Accessibility's Gesture Ease: the roll tolerance x1..x2 (30 -> 60 degrees) and the
+		// pitch floor lowered by as much again (-30 -> -60); 0 / absent: exactly as tuned.
 		double rl  = abs(NormDeg(Roll(pmo, hand)));
 		double tgt = Num("rsqdg_palm_roll", p, 90.0);
-		double tol = Num("rsqdg_palm_tol",  p, 30.0);
+		double tol = RSQDG_A11y.Wide(Num("rsqdg_palm_tol",  p, 30.0));
 		if (abs(rl - tgt) > tol) return false;
 
 		// Not pointing at the floor. -180 or below disables the half.
 		double minPitch = Num("rsqdg_palm_pitch", p, -30.0);
+		if (minPitch > -180) minPitch -= RSQDG_A11y.Ease() * 30.0;
 		if (minPitch > -180 && Pitch(pmo, hand) < minPitch) return false;
 
 		return true;
@@ -131,6 +140,10 @@ class RSQDG_Reach
 	// is exactly the hand that should reach. rsqdg_yield 0 turns this off.
 	static play bool HandBusy(PlayerInfo p, int hand)
 	{
+		// THE OFF-HAND MODIFIER (One-Handed): held, the main controller is playing the off hand's
+		// part -- so the main hand's own part stands down, and the off hand's part asks nothing
+		// about what either hand holds: holding the modifier IS the intent to reach.
+		if (p && p.mo && RSQDG_A11y.Swapped(p.mo)) return hand == 0;
 		if (!p || !Flag("rsqdg_yield", p, true)) return false;
 		// RSQ_TacticalRig: a hand reaching into a holster or its radial, or holding a
 		// door, the cigarette or the Zippo, is the rig's. Asked by service name, so an
@@ -243,7 +256,7 @@ class RSQDG_Reach
 	// position.
 	static Vector3 Palm(PlayerPawn pmo, int hand)
 	{
-		return (hand == 0) ? pmo.AttackPos : pmo.OffhandPos;
+		return (Ctrl(pmo, hand) == 0) ? pmo.AttackPos : pmo.OffhandPos;
 	}
 
 	// ---- units -------------------------------------------------------------
