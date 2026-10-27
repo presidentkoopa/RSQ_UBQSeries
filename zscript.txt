@@ -831,14 +831,14 @@ class UBQS_SaberBase : Weapon abstract
 	{
 		Vector3 hv = HandVel();
 		double sp = hv.Length();
-		if (sp < thr) return false;
+		if (sp < UBQS_A11y.Low(thr)) return false;   // RSQ_Accessibility's Gesture Ease: x1..x0.5
 		double p = owner.pitch, a = owner.angle;
 		Vector3 fwd = (cos(p) * cos(a), cos(p) * sin(a), -sin(p));
 		// ubqs_throw_straight: ubqs_throw_min says how HARD the throw must be, this says how FORWARD, and only
 		// the first was exposed. It is measured against the HEAD (owner.pitch / owner.angle), so a seated or
 		// swivel-chair player throwing across his body gets nothing. Exposed as the dot it is, not converted
 		// to degrees -- 0.55 is not the cosine of any round number.
-		return (hv / sp) dot fwd >= UF("ubqs_throw_straight", 0.55);
+		return (hv / sp) dot fwd >= UBQS_A11y.Low(UF("ubqs_throw_straight", 0.55));
 	}
 	Vector3 Aim()
 	{
@@ -2736,7 +2736,7 @@ class UBQS_SaberBase : Weapon abstract
 		if ((level.maptime & 1) == 0)
 		{
 			double lsc = frandom[UBQSFx](0.2, 0.32);
-			if (cfx > 0.01) UBQS_FX.Fx(at, 'UXLT', 4, 1, lsc, 0.9);
+			if (cfx > 0.01 && !UBQS_A11y.Photo()) UBQS_FX.Fx(at, 'UXLT', 4, 1, lsc, 0.9);   // 17.5 a second: Photosensitive Mode drops it
 			bool spark = random[UBQSFx](0, 3) == 0;
 			if (cfx > 0.01 && spark) UBQS_Data.Sparks(at, (0, 0, 1), 0xFFFFFF, int(4 * cfx));
 			double lrad = frandom[UBQSFx](50, 96);
@@ -2871,6 +2871,17 @@ class UBQS_SaberBase : Weapon abstract
 		if (fl == 1 && UInt("ubqs_lights", 1) <= 0) return;
 		if (!flash) flash = UBQS_Light(Actor.Spawn("UBQS_Light", at));
 		if (!flash) return;
+		// PHOTOSENSITIVE MODE (UBQS_A11y): a flash already lit is held as it is (no new brightness, no
+		// new size), each one stays at least 14 tics, and it burns at 40% -- so the light can come and go
+		// at most 2.5 times a second and a blade lock's 2-tic flicker becomes one steady light.
+		if (UBQS_A11y.Photo())
+		{
+			if (flashTics > 0 && flash.litRad > 0) { flashTics = max(flashTics, tics); return; }
+			flash.SetOrigin(at, false);
+			flash.Look(0x666059, rad);
+			flashTics = max(flashTics, max(tics, UBQS_A11y.MIN_GAP));
+			return;
+		}
 		flash.SetOrigin(at, false);
 		flash.Look(0xFFF0E0, rad);
 		flashTics = max(flashTics, tics);
@@ -3676,9 +3687,20 @@ class UBQS_ClashFlash : Actor
 		+FORCEXYBILLBOARD
 		+ROLLSPRITE
 	}
+	// PHOTOSENSITIVE MODE (RSQ_Accessibility's rsqa_photosafe, UBQS_A11y): one starburst at most every
+	// 14 tics (2.5 a second) across the mod, at 40% brightness. Off / absent: exactly as before.
 	static void Burst(Vector3 at, double size)
 	{
-		UBQS_FX.Fx(at, 'UXST', 1, 7, 0.09 * size, 1.0, -1, 1.0 + 0.1 * size);
+		if (UBQS_A11y.Photo())
+		{
+			let b = UBQS_Bridge(EventHandler.Find("UBQS_Bridge"));
+			if (b)
+			{
+				if (!UBQS_A11y.Gate(b.a11yBurst, level.maptime)) return;
+				b.a11yBurst = level.maptime;
+			}
+		}
+		UBQS_FX.Fx(at, 'UXST', 1, 7, 0.09 * size, UBQS_A11y.Dim(1.0), -1, 1.0 + 0.1 * size);
 	}
 	override void Tick()
 	{
@@ -4104,7 +4126,7 @@ class UBQS_LockMark : Actor
 	{
 		if (!target) return;
 		let m = UBQS_LockMark(Actor.Spawn("UBQS_LockMark", (target.pos.xy, target.pos.z + target.height + 8)));
-		if (m) { m.tracer = target; m.who = saber; }
+		if (m) { m.tracer = target; m.who = saber; m.scale *= UBQS_A11y.Cue(); }   // Cue Size
 	}
 	static void ClearAll(Actor saber)
 	{
@@ -4181,6 +4203,12 @@ class UBQS_Force : Inventory
 	Vector3 gripLast;             // Chain Choke: where the grip was when its victim died
 	bool   slamArmed;             // Force Jump 2+: airborne off a Force jump
 	double slamFall;
+	// RSQ_ACCESSIBILITY (UBQS_A11y; every one inert without it or with its settings off):
+	bool   a11yLatch, a11yRawWas; // Hold to Toggle: the Force trigger's press latches the Force up
+	bool   a11yAltGrip;           // the Force Grip gesture button is held
+	int    a11yCtrl;              // the controller the off hand's part was read from last tic
+	bool   a11yJumped;            // airborne off a boosted Force jump (the Comfort Vignette)
+	Actor  a11yReady;             // the last grip target a ready cue was given for (Sound Cues)
 
 	Default
 	{
@@ -4200,15 +4228,19 @@ class UBQS_Force : Inventory
 	int IV(String n, int fb) { return UBQS_Data.I(owner, n, fb); }
 
 	// ---- THE OFF HAND ------------------------------------------------------------------------------------
+	// THE CONTROLLER PLAYING THE FORCE HAND'S PART: the off one, or -- while RSQ_Accessibility's Off-Hand
+	// Modifier is held (One-Handed) -- the main one, so one hand reaches the Force.
+	int OffCtrl() { return UBQS_A11y.Ctrl(owner, 1); }
 	Vector3 OffPos()
 	{
-		Vector3 p = owner.OffhandPos;
+		Vector3 p = OffCtrl() == 0 ? owner.AttackPos : owner.OffhandPos;
 		if (p == (0, 0, 0)) p = owner.Vec3Offset(0, 0, owner.player ? owner.player.viewheight * 0.8 : 40.0);
 		return p;
 	}
 	Vector3 OffAim()
 	{
-		double a = owner.OffhandAngle + 90.0, p = -owner.OffhandPitch;
+		bool m = OffCtrl() == 0;
+		double a = (m ? owner.AttackAngle : owner.OffhandAngle) + 90.0, p = -(m ? owner.AttackPitch : owner.OffhandPitch);
 		return (cos(p) * cos(a), cos(p) * sin(a), -sin(p));
 	}
 	Vector3 ViewFwd()
@@ -4272,6 +4304,11 @@ class UBQS_Force : Inventory
 		}
 		// A teleport still forgets the history; a snap turn no longer needs to (the frame above absorbs it).
 		if ((owner.pos - lastBody).Length() > 48.0) { h1 = h0; h2 = h0; h3 = h0; }
+		// so does the Off-Hand Modifier changing which controller this is: the jump is not a gesture
+		{
+			int ctl = OffCtrl();
+			if (ctl != a11yCtrl) { a11yCtrl = ctl; h1 = h0; h2 = h0; h3 = h0; }
+		}
 		lastYaw = owner.angle;
 		lastBody = owner.pos;
 
@@ -4280,7 +4317,23 @@ class UBQS_Force : Inventory
 		int bits = 0;
 		if (forceHand) bits = BT_OFFHANDATTACK | BT_OFFHANDALTATTACK;
 		else if (off is "UBQS_SaberOff" && IV("ubqs_force_gestures", 1) && !UBQS_SaberBase(off).merged) bits = BT_OFFHANDALTATTACK;
-		bool held = bits != 0 && (p.cmd.buttons & bits);
+		bool raw = bits != 0 && (p.cmd.buttons & bits);
+		// RSQ_ACCESSIBILITY (UBQS_A11y). The Off-Hand Modifier held: the modifier itself holds the Force up,
+		// read from the main hand (OffPos / OffAim). Hold to Toggle: a press of the Force trigger latches it
+		// up, the next press lets it down. The Force Grip gesture button holds it up while held. Without
+		// RSQ_Accessibility, or with these off, held is exactly the trigger as before.
+		bool swapped = UBQS_A11y.Swapped(owner);
+		if (swapped) raw = bits != 0;
+		bool held = raw;
+		if (UBQS_A11y.HoldToggle() && !swapped)
+		{
+			if (raw && !a11yRawWas) a11yLatch = !a11yLatch;
+			held = a11yLatch && bits != 0;
+		}
+		else a11yLatch = false;
+		a11yRawWas = raw;
+		if (!UBQS_A11y.OneHand()) a11yAltGrip = false;
+		if (a11yAltGrip && bits != 0) held = true;
 
 		if (gripped) GripTick(held);
 		else if (held)
@@ -4288,6 +4341,18 @@ class UBQS_Force : Inventory
 			if (!armed) { armed = true; fired = false; armTics = 0; }
 			armTics++;
 			if (!fired) Gesture();
+			// the Force Grip button takes what the hand points at, with no still hold first
+			if (!fired && !gripped && a11yAltGrip && level.maptime - lastScan >= 3)
+			{
+				lastScan = level.maptime;
+				let t = FindGrip();
+				if (t) { StartGrip(t); fired = true; }
+			}
+			// latched up (Hold to Toggle), a gesture done re-arms once the push is ready again and the
+			// hand has slowed, so the Force stays up for the next one
+			if (fired && !gripped && a11yLatch && level.maptime >= pushReady
+				&& HandVel().Length() < UBQS_A11y.Low(FV("ubqs_force_gesture", 2.0)) * 0.5)
+			{ fired = false; armTics = 0; }
 		}
 		else armed = false;
 		AimTick(bits != 0 && !gripped);
@@ -4295,7 +4360,7 @@ class UBQS_Force : Inventory
 		// loop: the hand says the gesture is live, the outline says what it would take. Every 4 tics so
 		// it reads as a steady glow rather than a flicker.
 		if (bits != 0 && (armed || gripped) && (level.maptime % 4) == 0)
-			UBQS_FX.Fx(OffPos(), 'UXFH', 18, 1, gripped ? 0.085 : 0.055, gripped ? 0.75 : 0.45,
+			UBQS_FX.Fx(OffPos(), 'UXFH', 18, 1, (gripped ? 0.085 : 0.055) * UBQS_A11y.Cue(), gripped ? 0.75 : 0.45,
 				gripped ? UBQS_CB.Pick(UBQS_CB.CB_HAVE, 0xFFC860) : UBQS_CB.Pick(UBQS_CB.CB_COULD, 0xBFE0FF), 1.0);
 
 		SlamTick();
@@ -4309,14 +4374,16 @@ class UBQS_Force : Inventory
 	{
 		Vector3 hv = HandVel();
 		double sp = hv.Length();
-		double thr = FV("ubqs_force_gesture", 2.0);
+		// RSQ_Accessibility's Gesture Ease: the speed x1..x0.5, the straightness x1..x0.5 (57 -> 74 degrees
+		// off the view), the still hold x1..x0.5 and the stillness x1..x2. 0 / absent: as tuned.
+		double thr = UBQS_A11y.Low(FV("ubqs_force_gesture", 2.0));
 		Vector3 fwd = ViewFwd();
 		// ubqs_gesture_straight: ubqs_force_gesture says how FAST the hand must move, this says how STRAIGHT,
 		// and only the first was exposed. 0.55 is about 57 degrees off the view forward -- wide enough that a
 		// sideways sweep reads as a push, which is where accidental Force use lives. The band between +g and
 		// -g is the dead zone where a gesture does nothing at all and the player is told nothing. Exposed as
 		// the dot it is: the cosine of no round number of degrees is 0.55.
-		double gstr = clamp(FV("ubqs_gesture_straight", 0.55), 0.0, 1.0);
+		double gstr = UBQS_A11y.Low(clamp(FV("ubqs_gesture_straight", 0.55), 0.0, 1.0));
 		if (sp >= thr)
 		{
 			Vector3 u = hv / sp;
@@ -4327,12 +4394,25 @@ class UBQS_Force : Inventory
 		// Held still: reach for something to grip. A hand in VR is never truly still, so a player whose tremor
 		// stays above ubqs_grip_still can never grip anything and has no way to find out why. ubqs_grip_hold is
 		// how long he must hold it; tune the two as a pair.
-		if (armTics >= max(IV("ubqs_grip_hold", 8), 1) && sp < FV("ubqs_grip_still", 1.5) && level.maptime - lastScan >= 3)
+		if (armTics >= max(int(UBQS_A11y.Low(IV("ubqs_grip_hold", 8)) + 0.5), 1) && sp < UBQS_A11y.Wide(FV("ubqs_grip_still", 1.5)) && level.maptime - lastScan >= 3)
 		{
 			lastScan = level.maptime;
 			let t = FindGrip();
 			if (t) { StartGrip(t); fired = true; }
 		}
+	}
+
+	// RSQ_ACCESSIBILITY'S GESTURE BUTTONS (One-Handed; rsqa_alt 3 Force Push, 4 Force Pull, 5 Force Grip held),
+	// for the hand playing the Force's part, whenever the Force is in the off hand as the gestures need it.
+	void Alt(int code, bool down)
+	{
+		if (!owner || !owner.player || owner.health <= 0 || !IV("ubqs_force", 1) || !UBQS_A11y.OneHand()) return;
+		let off = owner.player.OffhandWeapon;
+		bool forceOut = off is "UBQS_ForceHand" || (off is "UBQS_SaberOff" && !UBQS_SaberBase(off).merged);
+		if (!forceOut || gripped && code != 5) return;
+		if (code == 3 && down) Push(OffPos(), (OffAim() + ViewFwd()).Unit());
+		else if (code == 4 && down) Pull(OffPos(), (OffAim() + ViewFwd()).Unit());
+		else if (code == 5) a11yAltGrip = down;
 	}
 
 	// ---- PUSH ------------------------------------------------------------------------------------------------
@@ -4518,6 +4598,10 @@ class UBQS_Force : Inventory
 			return;
 		}
 		if ((level.maptime % 3) == 0) aimedAt = FindGrip();
+		// RSQ_Accessibility's Sound Cues (rumble): a short tick on the Force hand when a new target is
+		// ready to grip (the outline below is the visual half, as ever)
+		if (aimedAt && aimedAt != a11yReady && aimedAt.health > 0) UBQS_A11y.Ready(owner, OffCtrl());
+		a11yReady = aimedAt;
 		if (!aimedAt || aimedAt.health <= 0)
 		{
 			if (aimGlow) { aimGlow.Destroy(); aimGlow = null; }
@@ -4546,7 +4630,7 @@ class UBQS_Force : Inventory
 		// grabs the one I want". ubqs_grip_boss: bBoss was excluded outright, so raising the mass slider to
 		// 1000 still could not choke a Cyberdemon and nothing said so. Default 0 is exactly today.
 		double range = clamp(FV("ubqs_grip_range", 1024.0), 128.0, 1536.0);
-		double best = clamp(FV("ubqs_grip_cone", 12.0), 1.0, 60.0);
+		double best = min(UBQS_A11y.Wide(clamp(FV("ubqs_grip_cone", 12.0), 1.0, 60.0)), 60.0);   // Gesture Ease: x1..x2
 		bool boss = IV("ubqs_grip_boss", 0) != 0;
 		Actor pick = null;
 		let it = BlockThingsIterator.CreateFromPos(hp.x, hp.y, hp.z - range, range * 2.0, range, false);
@@ -4595,11 +4679,12 @@ class UBQS_Force : Inventory
 		let mo = gripped;
 		// AND KEEPS CRACKLING while it is held, every 5 tics at a random point on the body -- one flash
 		// and then nothing for as long as you hold it read as the choke having stopped.
-		if (mo && (level.maptime % 5) == 0)
+		// (Photosensitive Mode, UBQS_A11y: every 14 tics instead of 5 -- 2.5 a second, not 7 -- at 40%.)
+		if (mo && (level.maptime % UBQS_A11y.Period(5)) == 0)
 			UBQS_FX.Fx(mo.pos + (frandom[UBQSFx](-1.0, 1.0) * mo.radius * 0.7,
 			                     frandom[UBQSFx](-1.0, 1.0) * mo.radius * 0.7,
 			                     mo.height * frandom[UBQSFx](0.25, 0.85)),
-				'UXFL', 13, 1, 0.10 + mo.radius * 0.0025, 0.65, 0xCFE4FF, 1.02);
+				'UXFL', 13, 1, 0.10 + mo.radius * 0.0025, UBQS_A11y.Dim(0.65), 0xCFE4FF, 1.02);
 		if (!mo || mo.health <= 0) { EndGrip(false); if (held) ChainGrip(); return; }
 		if (!held) { EndGrip(true); return; }
 		gripLast = mo.pos + (0, 0, mo.height * 0.5);
@@ -4696,10 +4781,11 @@ class UBQS_Force : Inventory
 		// WITH A SABER OR THE FORCE HAND OUT, as the menu says. It used to run with any weapon at all --
 		// a BD22 rifle in hand still boosted every jump and clamped every fall.
 		bool forceOut = (p.ReadyWeapon is "UBQS_SaberBase") || (p.OffhandWeapon is "UBQS_SaberBase") || (p.OffhandWeapon is "UBQS_ForceHand");
-		if (!forceOut) { airTics = 0; boostOk = false; return; }
+		if (!forceOut) { airTics = 0; boostOk = false; a11yJumped = false; return; }
 		bool jump = (p.cmd.buttons & BT_JUMP) != 0;
 		if (p.onground)
 		{
+			a11yJumped = false;
 			// Force Jump 2+ (Gun Bonsai): coming down from a Force jump is a slam
 			if (slamArmed && airTics > 8) LandSlam();
 			slamArmed = false;
@@ -4709,6 +4795,9 @@ class UBQS_Force : Inventory
 			return;
 		}
 		airTics++;
+		// RSQ_Accessibility's Comfort Vignette: the whole flight of a boosted Force jump, stronger as it
+		// climbs or falls faster
+		if (a11yJumped) UBQS_A11y.Comfort(owner, clamp(0.5 + abs(owner.vel.z) / 16.0, 0.5, 1.0));
 		slamFall = min(slamFall, owner.vel.z);
 		if (!jump) { boostOk = false; return; }
 		double pw = FV("ubqs_jump_power", 1.0);
@@ -4720,6 +4809,7 @@ class UBQS_Force : Inventory
 		if (boostOk && owner.vel.z > 0 && airTics <= jhold)
 		{
 			if (uJump >= 2) slamArmed = true;
+			a11yJumped = true;
 			owner.vel.z += 0.55 * pw;
 			if (airTics == 1) owner.A_StartSound("ubqs/push", CHAN_AUTO, 0, 0.35 * FV("ubqs_vol_force", 1.0), ATTN_NORM, 1.6);
 		}
@@ -4998,6 +5088,7 @@ class UBQS_GripGlow : Actor
 		double a, k; int c;
 		[a, c, k] = Look(aim, t);
 		alpha = a;
+		k *= 1.0 + 0.05 * (UBQS_A11y.Cue() - 1.0);   // RSQ_Accessibility's Cue Size: a wider rim (x3: +10%)
 		scale = mo.scale * k;
 		SetShade(c);
 	}
@@ -5347,6 +5438,7 @@ class UBQS_DualAway : Inventory
 
 class UBQS_Bridge : EventHandler
 {
+	transient int a11yBurst;    // the last clash starburst's tic (Photosensitive Mode's gate, UBQS_ClashFlash)
 	private int ximKnown;
 	private int raisedAt[MAXPLAYERS];
 
@@ -5409,6 +5501,14 @@ class UBQS_Bridge : EventHandler
 	// THE TRAINING REMOTE: `netevent ubqs_remote` (the menu's button) summons one for you, or sends yours away
 	override void NetworkProcess(ConsoleEvent e)
 	{
+		// RSQ_Accessibility's Force gesture buttons (rsqa_alt 3..5) go to the Force of whoever pressed them
+		if (e.Name ~== "rsqa_alt")
+		{
+			if (e.Player < 0 || e.Player >= MAXPLAYERS || !playeringame[e.Player] || !players[e.Player].mo) return;
+			let f = UBQS_Force(players[e.Player].mo.FindInventory("UBQS_Force"));
+			if (f && e.Args[0] >= 3 && e.Args[0] <= 5) f.Alt(e.Args[0], e.Args[1] != 0);
+			return;
+		}
 		// KEYS, NOT CVARS, so nothing here can go dead in his ini -- and NO KEYCONF alias either: a MENUDEF
 		// Control row binds whatever command string it is given, and `netevent` is a plain CCMD (the shipped
 		// menu already runs `netevent ubqs_remote` from a Command row), so "netevent ubqs_blade2" works as a
@@ -6095,15 +6195,39 @@ class UBQS_OffFlick : EventHandler
 			el[n][head[n]] = e;
 			if (count[n] < HIST) count[n]++;
 			if (e > REARM_DEG) armed[n] = true;
-			if (!armed[n] || count[n] <= FLICK_TICS || e > DOWN_DEG) continue;
-			double before = el[n][(head[n] - FLICK_TICS + HIST) % HIST];
-			if (before - e < FLICK_DEG) continue;
+			// RSQ_Accessibility's Gesture Ease: the drop x1..x0.5 (45 -> 22.5 degrees), over a window of
+			// 4..7 tics, ending at least 40..20 below level. 0 / absent: Brutal Doom Quest's own numbers.
+			double ease = UBQS_A11y.Ease();
+			int win = FLICK_TICS + int(ease * 3.0 + 0.5);
+			if (!armed[n] || count[n] <= win || e > UBQS_A11y.Low(-DOWN_DEG) * -1.0) continue;
+			double before = el[n][(head[n] - win + HIST) % HIST];
+			if (before - e < UBQS_A11y.Low(FLICK_DEG)) continue;
 			armed[n] = false;
-			let w = p.ReadyWeapon;
-			if (!(p.WeaponState & WF_WEAPONREADY)) continue;
-			State st = w.FindState("Reload");
-			if (st) p.SetPsprite(PSP_WEAPON, st, false, w);
+			Reload(p);
 		}
+	}
+
+	static void Reload(PlayerInfo p)
+	{
+		let w = p.ReadyWeapon;
+		if (!w || !(p.WeaponState & WF_WEAPONREADY)) return;
+		State st = w.FindState("Reload");
+		if (st) p.SetPsprite(PSP_WEAPON, st, false, w);
+	}
+
+	// RSQ_Accessibility's Flick Reload gesture button (One-Handed; rsqa_alt 7): the same reload, when the
+	// flick itself would have been heard (our item in the off hand, a gun with a Reload state).
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		if (!(e.Name ~== "rsqa_alt") || e.Args[0] != 7 || !e.Args[1] || !UBQS_A11y.OneHand()) return;
+		if (e.Player < 0 || e.Player >= MAXPLAYERS || !playeringame[e.Player]) return;
+		let p = players[e.Player];
+		let mo = p.mo;
+		if (!mo || p.playerstate != PST_LIVE || mo.health <= 0) return;
+		let fc = CVar.GetCVar("rsq_flick", p);
+		if ((p.OffhandWeapon is "UBQS_SaberBase" || (p.OffhandWeapon && p.OffhandWeapon.GetClassName() == 'UBQS_ForceHand'))
+			&& IsGun(p.ReadyWeapon) && (!fc || fc.GetInt() != 0))
+			Reload(p);
 	}
 }
 
@@ -6161,5 +6285,101 @@ class UBQS_CB
 	{
 		int m = Mode();
 		return m ? Rgb(role, m) : own;
+	}
+}
+
+// ==========================================================================================================
+// UBQS_A11y -- RSQ_Accessibility's round-two settings, read the series' way (RSQ_Accessibility,
+// tools/a11y_template.zs, one copy per mod under its own prefix). Every setting reads as OFF unless
+// RSQ_Accessibility is loaded (the class-name guard below): a value left in the ini does nothing
+// on its own, and every mod still loads and plays alone.
+//
+//   rsqa_photosafe     strong flashes dimmed to 40%, flicker / pulse rates at most 2.5 a second
+//   rsqa_onehand       the Off-Hand Modifier (RSQA_Service "swap") and the gesture buttons (rsqa_alt)
+//   rsqa_gesture_ease  0..1: tolerances x1..x2, speed thresholds and hold times x1..x0.5
+//   rsqa_vignette      comfort moments reported through RSQA_Service "vignette"
+//   rsqa_slowmo_ramp   the shortest a slow-motion ease may be, seconds
+//   rsqa_cue_scale     dots, rings, glows, markers x0.5..x3
+//   rsqa_text_scale    HUD text x1..x3
+//   rsqa_sound_cues    1 visual, 2 rumble, 3 both
+//   rsqa_hold_toggle   held binds toggle
+class UBQS_A11y
+{
+	// PHOTOSENSITIVE MODE's numbers (WCAG 2.3.1 asks for no more than 3 flashes in any second):
+	// a pulse or flicker at most 2.5 cycles a second, so a new strong flash at least 14 tics after
+	// the last; a strong flash at 40% of its brightness.
+	const MAX_HZ = 2.5;
+	const MIN_GAP = 14;
+	const DIM_K = 0.4;
+	const MAX_DEG = 25.7;       // degrees of phase per tic at MAX_HZ (2.5 * 360 / 35)
+
+	static clearscope CVar Cv(Name n)
+	{
+		CVar cv = null; { Name rsqaN = "RSQA_Menu"; class<Object> rsqaC = rsqaN; if (rsqaC) cv = CVar.FindCVar(n); }  // only while RSQ_Accessibility is loaded: a value left in the ini must not act on its own
+		return cv;
+	}
+	static clearscope int I(Name n) { let cv = Cv(n); return cv ? cv.GetInt() : 0; }
+	static clearscope double F(Name n, double d) { let cv = Cv(n); return cv ? cv.GetFloat() : d; }
+
+	// ---- photosensitivity ----
+	static clearscope bool Photo() { return I('rsqa_photosafe') != 0; }
+	static clearscope double Dim(double v) { return Photo() ? v * DIM_K : v; }
+	// a pulse's phase step, degrees per tic (sin(t * step)), capped
+	static clearscope double Deg(double step) { return Photo() ? min(step, MAX_DEG) : step; }
+	// a cycle's length in tics, at least MIN_GAP
+	static clearscope int Period(int tics) { return Photo() ? max(tics, MIN_GAP) : tics; }
+	// may a new strong flash start now, the last one having started at `last`?
+	static clearscope bool Gate(int last, int now) { return !Photo() || now - last >= MIN_GAP; }
+
+	// ---- gestures ----
+	static clearscope double Ease() { return clamp(F('rsqa_gesture_ease', 0), 0.0, 1.0); }
+	static clearscope double Wide(double tol) { return tol * (1.0 + Ease()); }
+	static clearscope double Low(double thr) { return thr * (1.0 - 0.5 * Ease()); }
+	static clearscope bool OneHand() { return I('rsqa_onehand') != 0; }
+	static clearscope bool HoldToggle() { return I('rsqa_hold_toggle') != 0; }
+
+	// ---- comfort ----
+	static clearscope int Vignette() { return clamp(I('rsqa_vignette'), 0, 3); }
+	static clearscope double SlowRamp() { return max(0.0, F('rsqa_slowmo_ramp', 0)); }
+
+	// ---- size ----
+	static clearscope double Cue() { return clamp(F('rsqa_cue_scale', 1.0), 0.5, 3.0); }
+	static clearscope double Text() { return clamp(F('rsqa_text_scale', 1.0), 1.0, 3.0); }
+
+	// ---- hearing ----
+	static clearscope bool CueVisual() { return (I('rsqa_sound_cues') & 1) != 0; }
+	static clearscope bool CueRumble() { return (I('rsqa_sound_cues') & 2) != 0; }
+
+	// ---- RSQ_Accessibility's service, by name ----
+	static clearscope Service Svc()
+	{
+		let it = ServiceIterator.Find("RSQA_Service");
+		return it.Next();
+	}
+	// the Off-Hand Modifier: this player's main hand plays the off hand's part now
+	static clearscope bool Swapped(Actor who)
+	{
+		if (!who || !who.player || !OneHand()) return false;
+		let s = Svc();
+		return s && s.GetIntData("swap", "", who.PlayerNumber()) == 1;
+	}
+	// the controller a hand's part is played by now: 0 the main controller, 1 the off one
+	static clearscope int Ctrl(Actor who, int hand)
+	{
+		return (hand == 1 && Swapped(who)) ? 0 : hand;
+	}
+	// a comfort moment this tic, strength 0..1 (the vignette eases it in and out)
+	static play void Comfort(Actor who, double strength)
+	{
+		if (!who || !who.player || Vignette() <= 0) return;
+		let s = Svc();
+		if (s) s.GetInt("vignette", "UBQS", who.PlayerNumber(), strength);
+	}
+	// a lock / grab-ready cue on a hand (0 main, 1 off): a short rumble when Sound Cues has it
+	static play void Ready(Actor who, int hand)
+	{
+		if (!who || !who.player || !CueRumble()) return;
+		let s = Svc();
+		if (s) s.GetInt("ready", "", who.PlayerNumber(), hand);
 	}
 }
