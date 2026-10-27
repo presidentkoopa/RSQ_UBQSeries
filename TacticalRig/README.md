@@ -25,9 +25,10 @@ Six regions on the body, each holding one Doom weapon class:
 - **Draw:** reach into a region with an empty hand and grip or Use. One weapon there
   comes to your hand; with several, a small **radial** of their pickup sprites opens
   round your hand: move toward one and let go.
-- **Feedback:** a ring shows the region when your hand is near (menu: never / near /
-  always), the last weapon you put there shows as its own pickup sprite, a holster
-  sound and a rumble on the right controller.
+- **Feedback:** a wireframe sphere shows each region (blue, green with your hand inside;
+  menu: never / near / always), every region shows what it holds as the weapon's own
+  pickup (its sprite, voxel or 3D model), a holster sound and a rumble on the right
+  controller.
 - The regions stay on your **body**: looking around does not swing them, snap and smooth
   turns carry them. Holding your head far round for a couple of seconds counts as your
   body having turned, and they swing round under you.

@@ -188,8 +188,8 @@ class RSQTR_Cig : EventHandler
 		pocketMark.SetOrigin(at, true);
 		pocketMark.bINVISIBLE = false;
 		pocketMark.Alpha = nearest < POCKET_R ? 0.9 : 0.35;
-		pocketMark.Scale = (POCKET_R * RSQTR_Body.UPM / 28.0, POCKET_R * RSQTR_Body.UPM / 28.0);   // the ring sprite: 64 px, ring at 28
-		pocketMark.Translation = nearest < POCKET_R ? Translation.GetID("RSQTR_Hot") : 0;
+		pocketMark.Scale = (POCKET_R * RSQTR_Body.UPM, POCKET_R * RSQTR_Body.UPM);   // the wireframe sphere: radius 1.0
+		pocketMark.frame = nearest < POCKET_R ? 1 : 0;
 	}
 	private void HideMark() { if (pocketMark) pocketMark.bINVISIBLE = true; }
 

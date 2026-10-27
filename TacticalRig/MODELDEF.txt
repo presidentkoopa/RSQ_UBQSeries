@@ -1,3 +1,16 @@
+// The region marker: the owner's wireframe sphere from RS_Holsters (three rings, radius 1.0,
+// so the actor's scale is the region's radius in map units). Blue idle, green with a hand inside.
+Model RSQTR_Marker
+{
+	Path "models/rsqtr"
+	Model 0 "rtwire.obj"
+	Skin 0 "rtwireid.png"
+	Scale 1.0 1.0 1.0
+	FrameIndex RSTM A 0 0
+	Skin 0 "rtwireht.png"
+	FrameIndex RSTM B 0 0
+}
+
 // Ermac's cigarette (his Virtual Tactical Vest) and his voxel Zippo (ZBlood-VR), held in the hand.
 // Measured: the cigarette mesh runs 9.5 units along X; the Zippo stands 13.4 units tall, its flame at 10.6-14.1.
 Model RSQTR_CigProp

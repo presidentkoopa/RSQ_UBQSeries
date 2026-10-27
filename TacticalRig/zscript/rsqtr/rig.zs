@@ -27,8 +27,8 @@ class RSQTR_Region
 	static const String NAMES[] = { "Left hip", "Right hip", "Chest", "Chest (rifle)", "Left shoulder", "Right shoulder" };
 
 	// Defaults, metres from the head in the body frame: forward, left, up, radius.
-	static const double DF[] = {  0.00,  0.00,  0.22,  0.22, -0.08, -0.08 };
-	static const double DL[] = {  0.20, -0.20,  0.00,  0.00,  0.18, -0.18 };
+	static const double DF[] = {  0.00,  0.00,  0.15,  0.15, -0.08, -0.08 };
+	static const double DL[] = {  0.18, -0.18,  0.00,  0.00,  0.18, -0.18 };
 	static const double DU[] = { -0.70, -0.70, -0.38, -0.58, -0.10, -0.10 };
 	static const double DR[] = {  0.14,  0.14,  0.12,  0.12,  0.14,  0.14 };
 
@@ -557,21 +557,31 @@ class RSQTR_Rig : EventHandler
 					m.SetOrigin(at, true);
 					m.bINVISIBLE = false;
 					m.Alpha = clamp(a, 0.0, 1.0);
-					double s = rad * RSQTR_Body.UPM / 28.0;   // the ring sprite is 64 px, ring at 28
+					double s = rad * RSQTR_Body.UPM;   // the wireframe sphere has radius 1.0
 					m.Scale = (s, s);
-					m.Translation = inside ? Translation.GetID("RSQTR_Hot") : 0;
+					m.frame = inside ? 1 : 0;      // blue idle, green with a hand inside
 				}
 			}
 			else if (marker[r]) marker[r].bINVISIBLE = true;
 
-			String put = lastPut[consoleplayer * RSQTR_Region.N + r];
+			// WHAT IS STORED THERE, always shown: the weapon last put there if you still
+			// own it, otherwise the first weapon of that region you own; never the one in
+			// your hand.
 			String held = "";
 			if (p.ReadyWeapon) held = p.ReadyWeapon.GetClassName();
-			if (icons && live && put != "" && held != put)
+			String put = lastPut[consoleplayer * RSQTR_Region.N + r];
+			Array<String> own;
+			Owned(pmo, r, own);
+			if (put == "" || put == held || own.Find(put) == own.Size())
+			{
+				put = "";
+				for (int k = 0; k < own.Size(); k++) if (own[k] != held) { put = own[k]; break; }
+			}
+			if (icons && live && put != "")
 			{
 				if (!icon[r]) icon[r] = Actor.Spawn("RSQTR_Icon", at);
 				let ic = RSQTR_Icon(icon[r]);
-				if (ic) { ic.Wear(put, 0.28, 0.85); ic.Place(at); }
+				if (ic) { ic.Wear(put, 0.28 * Num("rsqtr_icon_scale", p, 1.0), 0.85); ic.Place(at); }
 			}
 			else if (icon[r]) icon[r].bINVISIBLE = true;
 		}
@@ -642,6 +652,12 @@ class RSQTR_Icon : Actor
 	}
 	States { Spawn: TNT1 A -1; Stop; }
 
+	// Shown as the weapon's own PICKUP, as it looks lying in the world: its sprite,
+	// the voxel a voxel pack gives that sprite, or the 3D model a weapon pack binds to
+	// it. MODELDEF binds a model to a class exactly (a subclass does not inherit it), so
+	// A_ChangeModel borrows the weapon's model definition for this actor -- the way
+	// the owner's RS_Holsters showed its stored guns. The frame worn is the first
+	// visible state of the pickup's Spawn sequence (Brutal Doom's often start TNT1).
 	void Wear(String cls, double sc, double al)
 	{
 		if (cls != wearing)
@@ -649,8 +665,15 @@ class RSQTR_Icon : Actor
 			wearing = cls;
 			class<Actor> c = cls;
 			let d = c ? GetDefaultByType(c) : null;
-			if (d && d.SpawnState) { sprite = d.SpawnState.sprite; frame = d.SpawnState.Frame; }
-			else { sprite = GetSpriteIndex('TNT1'); frame = 0; }
+			State st = d ? d.SpawnState : null;
+			int tnt = GetSpriteIndex('TNT1');
+			for (int i = 0; i < 16 && st && st.sprite == tnt; i++) st = st.NextState;
+			if (st && st.sprite != tnt)
+			{
+				sprite = st.sprite; frame = st.Frame;
+				A_ChangeModel(Name(cls));
+			}
+			else { sprite = tnt; frame = 0; }
 		}
 		Scale = (sc, sc);
 		Alpha = al;
