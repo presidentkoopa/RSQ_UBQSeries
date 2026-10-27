@@ -28,3 +28,22 @@ Roles, not colours, so a cue means the same thing across the series:
 
 Mods with more than two categories (holster profiles, Score families) carry their own per-vision sets, picked by
 farthest-point search on simulated colours. Every cue that means something also differs by brightness, size, pulse or a letter.
+
+## Handedness (`rsqa_handed`) -- the left-handed builder, measured on rig D
+
+- **Which controller is the main hand is QuestZDoom's** (`vr_control_scheme`: below 10 right-handed,
+  10 / 11 left-handed A / B). It swaps the two pose sets (AttackPos / AttackAngle / AttackPitch /
+  AttackRoll = the main hand, Offhand* = the other), the buttons, which drawn weapon is reflected (the
+  physical left controller's) and which controller a weapon's rumble goes to. Rig D, controllers posed as
+  exact mirror images: scheme 0 and scheme 10 give the same two pose sets with MAIN and OFF traded (body
+  frame fwd 10.2 / left -8.5 / yaw 38.8 / pitch 5.8 / roll 34.0 against fwd 10.2 / left +8.5 / yaw -38.8 /
+  pitch 5.8 / roll -34.0). A mirrored pose is yaw and roll negated, pitch kept.
+- **Choosing Right- or Left-Handed here also sets QuestZDoom's Control Scheme** (menu code may set engine
+  cvars), so the engine and the series agree; Follow QuestZDoom leaves it alone. Rig D, driven through
+  the menu with the thumbstick: Follow -> Right (scheme stays 0) -> Left (scheme 10) -> Follow (stays 10).
+- At start-up, a Right/Left setting that disagrees with the scheme (changed since in QuestZDoom's own
+  menu, the newer choice) goes back to Follow QuestZDoom.
+- Series mods read `rsqa_handed` only for body layout no hand owns (Tactical Rig's cigarette pocket and
+  holstered-gun hang, Gun Bonsai VR's HUD sides); everything a hand owns follows the scheme. Without this
+  pk3 they follow the scheme.
+- `RSQA_Hand.Left()` / `RSQA_Hand.EngineLeft()` for mods that load after this one.

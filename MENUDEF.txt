@@ -32,7 +32,7 @@ OptionMenu "RSQA_Options"
 	Class "RSQA_Menu"
 	Title "ACCESSIBILITY"
 	Option "Colour Blind Mode", "rsqa_colorblind", "RSQA_ColorBlind"
-	Option "Handedness", "rsqa_handed", "RSQA_Handed"
+	RSQAHanded "Handedness", "rsqa_handed", "RSQA_Handed"
 
 	RSQASection "QuestSaber", "UBQS_SaberService"
 	Submenu "QuestSaber Options", "UBQS_Options"
