@@ -105,6 +105,8 @@ is ZScript and data lumps.
   region when your hand is near; the weapon last put there shows as its pickup.
 - **Fit it to you:** *Measure my height* scales the rig to you; *Move the regions with your
   hands* lets you grip a ring and carry it where your hand naturally goes.
+- **A torso** (optional): Vittorio Romeo's Quake VR torso on your body, green or blue with
+  your armour, red at low health.
 - **Doors:** hand flat on a door, take hold (grip, Use or palm out) and lift. Let go
   past 40% open and it finishes by itself; before that it drops shut. Locked doors need
   their key.
@@ -247,6 +249,7 @@ Known limits:
   - Much of his work is MIT-licensed; sharing it here is the project owner's decision. See
     [ShieldSaw/README.md](ShieldSaw/README.md) and [QuestSaber/CREDITS.txt](QuestSaber/CREDITS.txt).
 - **li-gnrcwpn**: the training remote's ready beep.
+- **Vittorio Romeo**: the TacticalRig's optional torso, from his original Quake VR mod.
 - The project owner's libraries: RS_CombatFX (the rig's holster, draw and foley sounds),
   RS_Ballistics (SlowMo's tracer mesh and near-miss whiz and crack), RS_SlowMo (SlowMo's design
   and events).
