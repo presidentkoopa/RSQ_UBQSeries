@@ -129,14 +129,7 @@ class RS_Melee play
 	// Ask the ShieldSaw (if loaded) what it remembers. -1: nothing.
 	static int AskShield(String request, Actor about)
 	{
-		let it = ServiceIterator.Find("SSQ_ScoreService");
-		Service s;
-		while (s = it.Next())
-		{
-			int v = s.GetInt(request, "", 0, 0, about);
-			if (v >= 0) return v;
-		}
-		return -1;
+		return RS_Svc.Int(RS_Svc.SHIELD, request, 0, about);
 	}
 
 	// Ask every service that may know (the ShieldSaw's, and the saber's once it answers the same
@@ -145,27 +138,13 @@ class RS_Melee play
 	{
 		int v = AskShield(request, about);
 		if (v >= 0) return v;
-		let it = ServiceIterator.Find("UBQS_SaberService");
-		Service s;
-		while (s = it.Next())
-		{
-			v = s.GetInt(request, "", 0, 0, about);
-			if (v >= 0) return v;
-		}
-		return -1;
+		return RS_Svc.Int(RS_Svc.SABER, request, 0, about);
 	}
 
 	// The ShieldSaw's object answers (who fired a shot it turned). null: nothing.
 	static Actor AskShieldActor(String request, Actor about)
 	{
-		let it = ServiceIterator.Find("SSQ_ScoreService");
-		Service s;
-		while (s = it.Next())
-		{
-			let a = Actor(s.GetObject(request, "", 0, 0, about));
-			if (a) return a;
-		}
-		return null;
+		return RS_Svc.Act(RS_Svc.SHIELD, request, about);
 	}
 
 	// WHICH WAY A THROWN THING WAS FLYING when it killed: LEG_OUT away from the thrower (or stuck
@@ -246,14 +225,7 @@ class RS_Melee play
 	// The saber's answer for one hand of this pawn: 1 lit (or thrown), 0 doused, -1 none.
 	static int SaberLit(Actor who, int hand)
 	{
-		let it = ServiceIterator.Find("UBQS_SaberService");
-		Service s;
-		while (s = it.Next())
-		{
-			int v = s.GetInt("saber.lit", "", hand, 0, who);
-			if (v >= 0) return v;
-		}
-		return -1;
+		return RS_Svc.Int(RS_Svc.SABER, "saber.lit", hand, who);
 	}
 
 	// One of the boxing gloves (the Gun Bonsai VR patch's RSQ_Glove / RSQ_GloveOff, SuperPunchOut's

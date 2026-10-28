@@ -79,40 +79,19 @@ class RS_Physical play
 	// Ask Distance Grab's ledger about an object (or a hand). -1: no answer / not loaded.
 	static int AskGrab(String request, Object about, int arg = 0)
 	{
-		let it = ServiceIterator.Find("RSQDG_ThrowService");
-		Service s;
-		while (s = it.Next())
-		{
-			int v = s.GetInt(request, "", arg, 0, about);
-			if (v >= 0) return v;
-		}
-		return -1;
+		return RS_Svc.Int(RS_Svc.GRAB, request, arg, about);
 	}
 
 	static int AskRig(String request, Actor who)
 	{
-		let it = ServiceIterator.Find("RSQTR_RigService");
-		Service s;
-		while (s = it.Next())
-		{
-			int v = s.GetInt(request, "", 0, 0, who);
-			if (v >= 0) return v;
-		}
-		return -1;
+		return RS_Svc.Int(RS_Svc.RIG, request, 0, who);
 	}
 
 	// RSQ_SlowMo's clock (RSQSM_Service): "slowmo.active" 1 while the world is slowed, 0 not.
 	// -1: not loaded, or a SlowMo that does not answer it.
 	static int AskSlowMo(String request)
 	{
-		let it = ServiceIterator.Find("RSQSM_Service");
-		Service s;
-		while (s = it.Next())
-		{
-			int v = s.GetInt(request, "", 0, 0, null);
-			if (v >= 0) return v;
-		}
-		return -1;
+		return RS_Svc.Int(RS_Svc.SLOWMO, request, 0, null);
 	}
 
 	// Which hand fired the killing shot: 1 the main hand's trigger alone, 2 the off hand's alone,
@@ -128,14 +107,7 @@ class RS_Physical play
 
 	static String AskRigString(String request, Actor who)
 	{
-		let it = ServiceIterator.Find("RSQTR_RigService");
-		Service s;
-		while (s = it.Next())
-		{
-			String v = s.GetString(request, "", 0, 0, who);
-			if (v != "") return v;
-		}
-		return "";
+		return RS_Svc.Str(RS_Svc.RIG, request, who);
 	}
 
 	// The inflictor is an object THIS killer threw with Distance Grab (recently).

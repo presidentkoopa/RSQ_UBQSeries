@@ -266,14 +266,7 @@ class RS_ComboLedger : EventHandler
 
 	static int AskSaber(String request, Actor about)
 	{
-		let it = ServiceIterator.Find("UBQS_SaberService");
-		Service s;
-		while (s = it.Next())
-		{
-			int v = s.GetInt(request, "", 0, 0, about);
-			if (v >= 0) return v;
-		}
-		return -1;
+		return RS_Svc.Int(RS_Svc.SABER, request, 0, about);
 	}
 
 	// THE CHAIN that ended on v, for player pn, oldest first: walked back from the newest run while each
