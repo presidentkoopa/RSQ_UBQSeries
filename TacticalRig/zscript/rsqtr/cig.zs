@@ -134,7 +134,7 @@ class RSQTR_Cig : EventHandler
 				else if (cigHand[n] == h && !lit[n]) EventHandler.SendNetworkEvent("rsqtr_cigback");
 				else if (cigHand[n] == 1 - h && zippo && zipHand[n] < 0 && !lit[n]) EventHandler.SendNetworkEvent("rsqtr_zipon", h);
 			}
-			else if (press && cigHand[n] == h && speed >= FLICK_SPEED)
+			else if (press && cigHand[n] == h && speed >= RSQTR_A11y.Low(FLICK_SPEED))   // Gesture Ease: x1..x0.5
 			{
 				// A flick: away it goes, with the hand's own speed.
 				Vector3 at = RSQTR_CigProp(cigProp[n]) ? cigProp[n].pos : hp;
@@ -364,7 +364,13 @@ class RSQTR_CigProp : RSQTR_HandProp
 	bool burning;
 	int age;
 
-	void SetLit() { burning = true; SetStateLabel("Lit"); A_AttachLight("rsqtr_ember", DynamicLight.PulseLight, "FF6020", 2, 4, DYNAMICLIGHT.LF_ATTENUATE, (0, 0, 0), 0.4); }
+	// (RSQ_Accessibility's Photosensitive Mode: the ember glows steady, not pulsing)
+	void SetLit()
+	{
+		burning = true; SetStateLabel("Lit");
+		if (RSQTR_A11y.Photo()) A_AttachLight("rsqtr_ember", DynamicLight.PointLight, "FF6020", 3, 0, DYNAMICLIGHT.LF_ATTENUATE);
+		else A_AttachLight("rsqtr_ember", DynamicLight.PulseLight, "FF6020", 2, 4, DYNAMICLIGHT.LF_ATTENUATE, (0, 0, 0), 0.4);
+	}
 
 	// The burning end: Ermac's mesh runs 9.5 units along X; at scale 0.3, ~1.7 forward.
 	Vector3 Tip() { return holder ? AlongHand(0.05) : pos; }
@@ -412,7 +418,9 @@ class RSQTR_ZippoProp : RSQTR_HandProp
 		if (age == 7)
 		{
 			A_StartSound("rsqtr/ziplight", CHAN_AUTO, 0, 0.8);
-			A_AttachLight("rsqtr_zippo", DynamicLight.RandomFlickerLight, "FFF4A1", 7, 10, DYNAMICLIGHT.LF_ATTENUATE, (0, 0, 2));
+			// RSQ_Accessibility's Photosensitive Mode: a steady flame, not a random flicker
+			if (RSQTR_A11y.Photo()) A_AttachLight("rsqtr_zippo", DynamicLight.PointLight, "FFF4A1", 8, 0, DYNAMICLIGHT.LF_ATTENUATE, (0, 0, 2));
+			else A_AttachLight("rsqtr_zippo", DynamicLight.RandomFlickerLight, "FFF4A1", 7, 10, DYNAMICLIGHT.LF_ATTENUATE, (0, 0, 2));
 		}
 	}
 
