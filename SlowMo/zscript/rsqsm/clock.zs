@@ -91,8 +91,10 @@ class RSQSM_Clock : EventHandler
 		return CvP(n, players[consoleplayer], d);
 	}
 	double Depth()   { return clamp(Cv("rsm_depth", 0.25), 0.05, 0.95); }
-	double RampIn()  { return max(0.0, Cv("rsm_ramp_in", 0.15)); }
-	double RampOut() { return max(0.0, Cv("rsm_ramp_out", 0.40)); }
+	// RSQ_Accessibility's Min SlowMo Ease (rsqa_slowmo_ramp) is a floor under both: no ease
+	// shorter than it, so the world never lurches into or out of slow motion. 0 / absent: as set.
+	double RampIn()  { return max(max(0.0, Cv("rsm_ramp_in", 0.15)), RSQSM_A11y.SlowRamp()); }
+	double RampOut() { return max(max(0.0, Cv("rsm_ramp_out", 0.40)), RSQSM_A11y.SlowRamp()); }
 
 	// Slow motion is doing something this tic (the ramps count).
 	bool Active() { return scale < 0.9999 || target < 0.9999; }
@@ -635,10 +637,15 @@ class RSQSM_Clock : EventHandler
 		Vector3 d = mid - head;
 		double ahead = (d.xy dot fwd) / 34.0;
 		double up = d.z * 1.2 / 34.0;
-		bool pose = together < CvP("rsqsm_gesture_gap", p, 0.16) && ahead > 0.12 && ahead < 0.6 && up > -0.40 && up < 0.15;
+		// RSQ_Accessibility's Gesture Ease widens the gap and the box in front of the face (x1..x2)
+		// and shortens the hold (x1..x0.5); 0 / absent: exactly as tuned.
+		double ease = RSQSM_A11y.Ease();
+		double box = 1.0 + ease;
+		bool pose = together < RSQSM_A11y.Wide(CvP("rsqsm_gesture_gap", p, 0.16))
+			&& ahead > 0.12 / box && ahead < 0.6 * box && up > -0.40 * box && up < 0.15 * box;
 		if (!pose) { gestT = 0; gestArmed = true; return; }
 		if (!gestArmed) return;
-		if (++gestT >= int(CvP("rsqsm_gesture_hold", p, 12)))
+		if (++gestT >= max(1, int(RSQSM_A11y.Low(CvP("rsqsm_gesture_hold", p, 12)) + 0.5)))
 		{
 			EventHandler.SendNetworkEvent("rsm_toggle");
 			gestT = 0;

@@ -5,5 +5,6 @@ version "4.14"
 // RS_SlowMo's design (the owner's engine build) brought to Quest; same events.
 
 #include "zscript/rsqsm/cb.zs"
+#include "zscript/rsqsm/a11y.zs"
 #include "zscript/rsqsm/clock.zs"
 #include "zscript/rsqsm/round.zs"
