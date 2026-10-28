@@ -1,5 +1,25 @@
 # Ultra Badass ShieldSaw — handoff
 
+## Branch `agent-compat` (2026-10-27): Champions + LegenDoom Lite -- read first
+
+Not yet run on the owner's headset. Rig C = QZD 17.3 Linux, doom2 MAP01, the owner's order (brutal22test6 ->
+BD_VoxelPack -> BD22_VR-Reloaded r7 -> Champions -> LegenDoom Lite 4.2 -> suite -> Gun Bonsai 0.10.6 + VR patch)
+and vanilla doom2 + Champions + LegenDoom Lite + suite; Champions' setting champion_Legendoom 1,
+champion_Dormant 1, champion_Booster 1. Probe: the session scratchpad cp/probe (forces tiers through
+champion_debug_forced / champion_OverrideChance 256, legendaries through LDLegendaryMonsterPickupGuaranteed).
+Save, load twice, MAP02: no script error but BD_VoxelPack's voxeldef lines.
+
+- Disc tiers by the health it has to lose: max(spawn health, health), plus an untransformed LegenDoom
+  legendary's refill (spawn x LD_legendaryhealth/100, the ACS's arithmetic). Measured, ssq_bd22 1: a
+  legendary BD imp (80 / 240) died to one disc hit before (forced bisect, its second life skipped); now it
+  takes the grind (240 -> 150) and the disc goes on.
+- No bisect through BUDDHA: the bisect is DMG_FORCED, which skips monster buddha (p_interaction.cpp). A Dark
+  Red champion died to the disc outright before; now it is ground to 1 and plays dead as Champions intends.
+- The embed ends when the victim stops being shootable: a hiding Dark Red is parked at (16384,16384);
+  measured, the disc followed it there and stayed. Now it goes home.
+- Bash: Thrust() checks no flag, so DONTTHRUST and max-mass (Champions' Bronze, 0x7FFFFFFF) bodies slid.
+  Not thrust now. (Code only: the bash needs a headset swing.)
+
 ## Branch `agent-up2` (2026-10-27): plate growth, a sweep that sees missiles, credit for returned bullets -- read first
 
 Not yet run on the owner's headset. Rig = QZD 17.3 Linux, doom2 MAP01 (and freedoom2), the owner's
