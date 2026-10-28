@@ -190,7 +190,9 @@ class RSQTHP_Handler : EventHandler
 	static bool Eligible(Actor a)
 	{
 		if (!a) return false;
-		if (a.player) return true;
+		// a player's own body only: a voodoo doll is a player-class actor whose player's mo is another
+		// actor (it takes damage, and passes it on to the player, but is not the player)
+		if (a.player) return a.player.mo == a;
 		return a.bIsMonster && !a.bNoInteraction && !a.bNoTeleStomp;
 	}
 
@@ -201,6 +203,23 @@ class RSQTHP_Handler : EventHandler
 		CheckCold();
 		CheckChampions();
 		ReadSettings();
+		// A HUB MAP COME BACK TO: its monsters come back from the hub snapshot, not through
+		// WorldThingSpawned, and WorldUnloaded cleared the list when it was left. Walk them once, so
+		// the poll sees health that changed without damage (a legendary's overheal) there too.
+		// (A saved game keeps the list itself: it is serialised with this handler.)
+		if (e.IsReopen) Retrack();
+	}
+
+	private void Retrack()
+	{
+		let it = ThinkerIterator.Create("Actor");
+		Actor a;
+		while (a = Actor(it.Next()))
+		{
+			if (a.player || a.health <= 0 || !Eligible(a)) continue;
+			Track(a);
+		}
+		for (int n = 0; n < MAXPLAYERS; n++) if (playeringame[n]) AddPlayer(n);
 	}
 
 	override void WorldThingSpawned(WorldEvent e)

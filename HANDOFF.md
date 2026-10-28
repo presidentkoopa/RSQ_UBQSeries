@@ -4,6 +4,25 @@ Rig: rig A (`/home/claude/scratch/run17A.sh`, the real QZD 17.3 binary, zscript 
 Every number below was measured there; the logs and frames are under `test/evidence/` (copies) and
 the scratchpad (`frames/<run>/`, `logsA/<run>.log`). Test runner: `test/run.sh <name> <secs> "<console>" <order>`.
 
+## Branch `agent-polish` (2026-10-27, independent review items) -- read first
+
+Not yet run on the owner's headset. Rig B (QZD 17.3 Linux), probe in the session scratchpad
+`pol/thpprobe` (a two-map hub cluster over doom2 MAP01/MAP02, a voodoo doll made by giving a second
+DoomPlayer body `player = players[0]`).
+- **No bar on voodoo dolls**: `Eligible()` takes a player-class actor only when it is its player's own
+  `mo`. Measured: a doll damaged for 5 had 1 bar before, 0 now; the player it passes the hit to still
+  gets its bar (1).
+- **Hub maps come back tracked**: on `WorldLoaded` with `IsReopen` the level's live monsters (and the
+  players) are walked once into the poll list (WorldUnloaded cleared it, and hub monsters come back from
+  the snapshot without WorldThingSpawned). Measured: MAP01 -> MAP02 -> MAP01 in a hub, an imp then set to
+  3 x spawn health without damage (a legendary's way): overheal bar after 40 tics 0 before, 1 now.
+  A saved game was already fine (the list is saved with the handler).
+- RSQ_Accessibility's shared menu now has the HP Bars section (its branch `agent-polish`): the open
+  item below is done there.
+- Full order (doom2 -> brutal22test6 -> BD_VoxelPack -> BD22Q r7 -> Champions -> LegenDoom Lite -> suite
+  -> Gun Bonsai + patch), save, load twice, map change: see the polish lane's smoke run in
+  RSQ_Accessibility's README / the report (no script error but BD_VoxelPack's voxeldef lines).
+
 ## Branch `agent-compat` (2026-10-27): Champions + LegenDoom Lite -- read first
 
 Not yet run on the owner's headset. Rig C = QZD 17.3 Linux, doom2 MAP01, the owner's order (brutal22test6 ->
@@ -79,7 +98,9 @@ Save, load twice, MAP02: no script error but BD_VoxelPack's voxeldef lines.
   request for it. Adding e.g. "dazed" there would light the stunned icon for its staggers too.
 
 ## Open
-- RSQ_Accessibility: its menu can detect this mod by class `RSQTHP_Handler`; our own row is `rsqthp_scheme`.
+- (done, RSQ_Accessibility `agent-polish`) the shared menu's HP Bars section, detected by `RSQTHP_Handler`.
+- Lossvoise's retexture is still in this repo's own git history (e7e644e, `lossvoise_retexture/`): rewrite
+  the history or never push this repo (independent review 10-27, item 7).
 - Champions sets a champion's StartHealth to its boosted health, so set-up champions read 100 % there (not
   overheal). LegenDoom Lite's evolve-at-half did not fire in the hurt tests (theirs, not looked into).
 - Lossvoise's retexture is not shipped (no permission).
