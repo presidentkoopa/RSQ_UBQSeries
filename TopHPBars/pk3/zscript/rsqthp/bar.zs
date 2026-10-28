@@ -178,7 +178,7 @@ class RSQTHP_Bar : Actor
 	void SyncParts()
 	{
 		if (over) SyncPart(over);
-		if (mark) { SyncPart(mark); mark.Scale = Scale * 2; }   // icons at twice the bar's scale: readable
+		if (mark) { SyncPart(mark); mark.Scale = Scale * 2 * RSQTHP_A11y.Cue(); }   // icons at twice the bar's scale: readable (x RSQ_Accessibility's Cue Size)
 	}
 
 	void SyncPart(RSQTHP_Part p)
