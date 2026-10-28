@@ -148,7 +148,7 @@ class RSQ_StyleXP : EventHandler
 		if (!victim) return;
 		for (int i = stats.styleV.Size() - 1; i >= 0; i--)
 		{
-			if (stats.styleV[i] != victim || gametic - stats.styleTic[i] > 350) continue;
+			if (stats.styleV[i] != victim || gametic - stats.styleTic[i] > 350 || gametic < stats.styleTic[i]) continue;	// a hit stamped in an earlier session (gametic restarts) is not recent (final review)
 			let info = stats.styleInfo[i];
 			if (!info || !info.wpn || stats.GetInfoFor(info.wpn) != info || Sort(info) != kind) continue;
 			if (to.Find(info) < to.Size()) continue;
