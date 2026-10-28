@@ -304,7 +304,7 @@ class RSQA_Handler : EventHandler
 		if (!on && (smEdge == 0 || since > 35)) return;
 		String t = on ? "Slow Motion" : "Normal Speed";
 		double sc = RSQA_Set.Text();
-		double vw = 640 / sc, vh = 400 / sc;
+		double vw = 320 / sc, vh = 200 / sc;   // twice the small font's menu size: the VR HUD layer is small
 		let f = NewSmallFont;
 		double x = (vw - f.StringWidth(t)) * 0.5;
 		double alpha = on ? 1.0 : clamp(1.0 - since / 35.0, 0.0, 1.0);

@@ -47,3 +47,45 @@ farthest-point search on simulated colours. Every cue that means something also 
   holstered-gun hang, Gun Bonsai VR's HUD sides); everything a hand owns follows the scheme. Without this
   pk3 they follow the scheme.
 - `RSQA_Hand.Left()` / `RSQA_Hand.EngineLeft()` for mods that load after this one.
+
+## Round two (`agent-a11y2`) -- the settings, what each mod does with them, and what was measured
+
+Every setting is off (or 1.0) by default, and a series mod reads none of them unless this pk3 is
+loaded (the class-name guard in `tools/a11y_template.zs`; each mod carries a copy as `<PREFIX>_A11y`,
+written by `tools/gen_a11y.sh <PREFIX> <out.zs>`). Rig B, doom2 and the owner's load order: with all
+of them off the measured numbers below are exactly the mods' own.
+
+| Row | cvar | What it does |
+|---|---|---|
+| Photosensitive Mode | `rsqa_photosafe` | strong flashes at 40%; flash / flicker / pulse at most 2.5 a second (14 tics apart) |
+| One-Handed | `rsqa_onehand` | the Off-Hand Modifier and the Gesture Buttons work |
+| Off-Hand Modifier | `+rsqa_mod` | held (or toggled), the main controller plays the off hand's part |
+| Gesture Buttons | `rsqa_*` binds | Grab Pull, Grab Reach, Force Push / Pull / Grip, Shield Throw, Flick Reload, Wrist Cross |
+| Gesture Ease | `rsqa_gesture_ease` 0..1 | tolerances x1..x2, speed thresholds and holds x1..x0.5 |
+| Hold to Toggle | `rsqa_hold_toggle` | the Force trigger, the grapple hook binds, the shield's lock key, the modifier and the held gesture buttons latch |
+| Comfort Vignette | `rsqa_vignette` | Light / Medium / Strong dark edge while a grapple swings, reels, climbs or yanks and through a boosted Force jump |
+| Min SlowMo Ease | `rsqa_slowmo_ramp` s | no slow-motion ease shorter than this |
+| Cue Size | `rsqa_cue_scale` | grab beam, dot, catch bloom, glow rim; Force outline rim, hand flare, saber lock diamonds; shield lock rings; laser dot, glow, arc; HP-bar markers |
+| Text Size | `rsqa_text_scale` | the slow-motion label, the rig's and the training remote's prints (big font at 1.5+), the laser range readout, RS Score's display, the Gun Bonsai screens' text (rsq/ui) |
+| Sound Cues | `rsqa_sound_cues` | Visual: arrows round the view for hits and incoming shots from off-view, a "Slow Motion" label; Rumble: the controller on that side, slow-mo start / stop, Force grip-ready |
+| Menus | `rsqa_menus` | Simple hides the links to the series' niche sub-pages from their front pages (rows are kept and come back on Full) |
+
+How mods reach this pk3: `RSQA_Service` -- `GetIntData("swap", "", player)`, `GetInt("vignette", src, player, strength)`,
+`GetInt("ready", "", player, hand)`; gesture buttons arrive as `netevent rsqa_alt <code> <down>` (codes in KEYCONF.txt).
+The vignette is a post-process shader (GLDEFS, `shaders/pp/rsqa_vignette.fp`): QuestZDoom runs it per eye on the scene,
+so the dark edge follows the head with no lag.
+
+Measured on rig B (scratch probe, 10 s windows):
+- Photosensitive Mode, off -> on: saber clash starbursts 3.9 -> 2.0 /s; saber flash light (a blade lock's 2-tic flicker)
+  15.3 -> 2.2 brightness changes /s; grab catch blooms 8.8 -> 2.2 /s; shield block stars 8.8 -> 2.2 /s; RS Score flashes
+  (a kill every 3 tics) 11.6 -> 2.3 /s. Laser head pulse 4.0 -> 2.5 Hz (lock pulse 2.2 stays). Choke crackle every 5 -> 14 tics.
+- Comfort Vignette, eye corner luminance 26.1 at rest: Light 9.1, Medium 6.1, Strong 0.7 at full strength; the centre unchanged
+  (67.3-68.0); off it is 26.1 again. On a reel to the ceiling it eased 0 -> 0.61 in 10 tics at 12 u/tic, 0.35-0.41 hanging.
+- Min SlowMo Ease 1.0 s: full speed to 0.25 in 26 tics (0.74 s) against 3 tics as set.
+- Gesture Ease 1: Distance Grab palm roll accepted 90.5 / 104.3 and refused 120.2 at 0; accepted 120.2 and 146.9 at 1.
+  SlowMo wrist cross with the wrists 0.22 m apart: nothing at 0, slow motion at 1 (0.12 m toggles at 0).
+- Off-Hand Modifier: Distance Grab's off part reads the main controller while held, the off one when let go; Hold to Toggle
+  latches it on a press and clears it on the next. With the off saber out, holding it arms the Force from the main hand
+  (a still hand gripped a zombieman within 10 tics); the Force Push button threw one (0 -> 9.9 u/tic).
+- Hold to Toggle, grapple: a press and release keeps the reel held; the next press lets go of the reel (the rope stays).
+- Simple menus: RSQGR_Options 24 -> 20 rows, RSQSM_Options 17 -> 11, UBQS_Options 39 -> 27; Full restores them.
