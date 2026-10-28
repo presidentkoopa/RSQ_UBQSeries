@@ -62,7 +62,7 @@ echo "built pk3/RSQ_TopHPBars.pk3"
 # Accessibility: the shared menu and settings.
 cd "$HUB/Accessibility"
 rm -f "$OUT/RSQ_Accessibility.pk3"
-zip -q -r -X "$OUT/RSQ_Accessibility.pk3" zscript.txt CVARINFO.txt MENUDEF.txt CREDITS.txt zscript
+zip -q -r -X "$OUT/RSQ_Accessibility.pk3" zscript.txt CVARINFO.txt MENUDEF.txt KEYCONF.txt MAPINFO.txt GLDEFS.txt CREDITS.txt zscript shaders
 echo "built pk3/RSQ_Accessibility.pk3"
 
 # Score: its explicit include list (its build.sh).
