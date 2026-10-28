@@ -2099,8 +2099,11 @@ class UBQS_SaberBase : Weapon abstract
 
 	// WHERE A DEFLECTED SHOT GOES (ubqs_deflect_aim): 0 back at whoever fired it; 1 where you are LOOKING,
 	// helped onto the nearest enemy inside a narrow cone of your gaze; 2 straight off the blade, a mirror.
+	Vector3 batAt;			// where BatBack's sound, sparks and flash go when batAtSet (a contact return: the blade)
+	bool batAtSet;
 	void BatBack(Actor mo, Vector3 blade)
 	{
+		Vector3 fxAt = batAtSet ? batAt : mo.pos;
 		Actor shooter = mo.target;
 		double sp = max(mo.Speed, mo.vel.Length()) * 1.2;
 		if (sp <= 0) sp = 12;
@@ -2146,10 +2149,10 @@ class UBQS_SaberBase : Weapon abstract
 		if (level.maptime != lastDeflectTic)
 		{
 			lastDeflectTic = level.maptime;
-			UBQS_Ping.At(owner, mo.pos, UBQS_Font.Clash(), UF("ubqs_vol_clash", 1.0));
+			UBQS_Ping.At(owner, fxAt, UBQS_Font.Clash(), UF("ubqs_vol_clash", 1.0));
 		}
-		UBQS_Data.Sparks(mo.pos, d, RgbNow(), 8);
-		FlashAt(mo.pos, 64, 4);
+		UBQS_Data.Sparks(fxAt, d, RgbNow(), 8);
+		FlashAt(fxAt, 64, 4);
 	}
 
 	// THE ENEMY YOU ARE LOOKING AT: the nearest live one inside `cone` degrees of your gaze, that you can see.
@@ -2255,6 +2258,8 @@ class UBQS_SaberBase : Weapon abstract
 	// blocks; held still, ubqs_block percent of the time. A blocked shot can go back (ubqs_block_return).
 	override void ModifyDamage(int damage, Name damageType, out int newdamage, bool passive, Actor inflictor, Actor source, int flags)
 	{
+		// a shot this blade let through earlier this tic is past you: any other hit is a hit again
+		if (passive) UBQS_PassThru.End(inflictor);
 		if (!passive || damage <= 0 || !owner) return;
 		// THE CROSS GUARD (your two blades crossed in front of you, an X or a +): NOTHING from in front gets
 		// through -- shots, bolts, claws, blasts. From behind, it does not help.
@@ -2498,12 +2503,17 @@ class UBQS_SaberBase : Weapon abstract
 	// really in its way. Width is ubqs_blade_guard (+ the shot's own radius), the same reach as the
 	// hitscan and melee block, so one setting is the whole block.
 	//   a shot: its own path, from two tics of its travel behind where it touched you to a body width past
-	//     it (the shield's numbers: back sp*2+8; forward 2 x your radius). Blocked, a copy of it goes
-	//     back off the blade by the deflect's aim rule (BatBack), and the original dies on your box as
-	//     it would have -- the engine explodes a missile that touched something, and nothing in script
-	//     can stop that once DamageMobj is running.
+	//     it (the shield's numbers: back sp*2+8; forward 2 x your radius). Blocked, THE SHOT ITSELF goes
+	//     back off the blade by the deflect's aim rule (BatBack) -- no copy, so nothing it does as it
+	//     starts (Brutal Doom's trails, sounds, ACS) plays twice, and nothing explodes on you. The engine
+	//     explodes a missile that touched something unless the thing it touched is +REFLECTIVE and
+	//     +THRUREFLECT, in which case it flies on through (p_map.cpp PIT_CheckThing, right after the
+	//     damage: the only test between DamageMobj and the explosion). So for that one moment you are
+	//     both, and UBQS_PassThru puts your own two flags back the instant it is past (see there).
 	//   a blast: from where it went off to your middle. A missile this blade already stopped on contact
-	//     and that then went off on your box is stopped too (it is remembered for a second).
+	//     and that then went off on your box is stopped too (it is remembered for a second) -- only
+	//     when the pass-through could not be set up (no UBQS_Memory), since a returned shot no longer
+	//     goes off on you.
 	Vector3 lineAt;							// where the last BladeOnLine crossed (no Vector3 out params)
 	private bool BladeOnLine(Vector3 from, Vector3 ray, double w)
 	{
@@ -2546,17 +2556,16 @@ class UBQS_SaberBase : Weapon abstract
 		double behind = sp * 2.0 + 8.0;
 		Vector3 from = inf.pos - u * behind;
 		if (!BladeOnLine(from, u * (behind + owner.radius * 2.0), gw + inf.radius)) return false;
-		stopped.Push(inf); stoppedTic.Push(level.maptime);
 		UBQS_Memory.Note(UBQS_Memory.M_BLOCKED, src);
-		let bk = Actor.Spawn(inf.GetClass(), lineAt);
-		if (bk)
+		Actor shooter = inf.target;
+		batAt = lineAt; batAtSet = true;
+		BatBack(inf, BladeDir());
+		batAtSet = false;
+		if (!UBQS_PassThru.Lend(owner, inf, lineAt, shooter))
 		{
-			bk.target = inf.target;
-			bk.tracer = inf.tracer;
-			bk.vel = v;
-			BatBack(bk, BladeDir());
+			// no pass-through: it goes off on your box (the old way), its blast already stopped
+			stopped.Push(inf); stoppedTic.Push(level.maptime);
 		}
-		inf.vel = (0, 0, 0);
 		Rumble(0.8, 3);
 		return true;
 	}
@@ -6093,6 +6102,10 @@ class UBQS_Memory : EventHandler
 	Array<Actor> missiles;
 	static UBQS_Memory Get() { return UBQS_Memory(EventHandler.Find("UBQS_Memory")); }
 
+	// UBQS_PassThru's state: the player whose flags are lent, the two flags as they were, the shot let through
+	Actor passWho, passInf;
+	bool passOn, passRefl, passThru;
+
 	// A CLAW: BRUTAL DOOM'S MELEE IS A MISSILE. Every BD bite, punch and claw is an A_CustomMissile out of a
 	// Melee state (parsed from brutal22test6: ImpAttack, DemonAttack, BaronAttack, KnightAttack,
 	// RevenantAttack, CacodemonBite, MarinePunch, NaziKick, CyberStomp...), and what tells one from a shot
@@ -6404,5 +6417,80 @@ class UBQS_A11y
 		if (!who || !who.player || !CueRumble()) return;
 		let s = Svc();
 		if (s) s.GetInt("ready", "", who.PlayerNumber(), hand);
+	}
+}
+
+// ---- A SHOT RETURNED ON CONTACT FLIES ON THROUGH YOU, NOT INTO YOU ---------------------------------
+// ContactBlock decides inside DamageMobj, and the engine explodes the missile right after it returns
+// unless the thing it hit is +REFLECTIVE and +THRUREFLECT (PIT_CheckThing; FastProjectile's own move goes
+// through the same check, so Brutal Doom's tracers too): then the missile passes on and its target becomes
+// that thing. So the player is lent both flags for that moment, and they go back
+//   - at the next hit on the player that is not this shot (the saber's ModifyDamage, before it decides:
+//     a second shot in the same tic is a hit again), or
+//   - the same tic, after every thinker has moved: a Thinker made now is ticked in the engine's fresh
+//     pass at the end of the tic (dthinker.cpp RunThinkers), before the player thinks again.
+// On that tick the shot is also put back on the blade, given the velocity and facing BatBack chose
+// (the rest of its move this tic carried it on along its old line), and a seeker gets back the tracer
+// BatBack gave it (the engine's pass sets tracer = target, which is now you). While lent, the flags only
+// touch missiles (the blood test in DoMissileDamage and the reflect tests), nothing else.
+class UBQS_PassThru : Thinker
+{
+	Actor who, shot, trc;
+	Vector3 at, vel;
+	double ang, pit;
+	bool seeker;
+
+	// false: no UBQS_Memory to keep the flags in, nothing lent
+	static bool Lend(Actor owner, Actor shot, Vector3 at, Actor shooter)
+	{
+		let m = UBQS_Memory.Get();
+		if (!m || !owner || !shot) return false;
+		if (m.passOn && m.passWho != owner) Restore(m);
+		if (!m.passOn)
+		{
+			m.passWho = owner;
+			m.passRefl = owner.bReflective;
+			m.passThru = owner.bThruReflect;
+			m.passOn = true;
+		}
+		m.passInf = shot;
+		owner.bReflective = true;
+		owner.bThruReflect = true;
+		let p = new("UBQS_PassThru");
+		p.who = owner; p.shot = shot; p.at = at; p.vel = shot.vel; p.ang = shot.angle; p.pit = shot.pitch;
+		p.seeker = shot.bSeekerMissile; p.trc = shot.tracer;
+		return true;
+	}
+
+	static void Restore(UBQS_Memory m)
+	{
+		if (!m || !m.passOn) return;
+		if (m.passWho) { m.passWho.bReflective = m.passRefl; m.passWho.bThruReflect = m.passThru; }
+		m.passOn = false;
+		m.passWho = null;
+		m.passInf = null;
+	}
+
+	// a hit on the player: unless it is the shot just let through, the flags go back first
+	static void End(Actor inflictor)
+	{
+		let m = UBQS_Memory.Get();
+		if (!m || !m.passOn) return;
+		if (inflictor && inflictor == m.passInf) return;
+		Restore(m);
+	}
+
+	override void Tick()
+	{
+		Restore(UBQS_Memory.Get());
+		if (shot && !shot.bDestroyed && shot.bMissile && shot.target == who)
+		{
+			shot.SetOrigin(at, false);
+			shot.vel = vel;
+			shot.angle = ang;
+			shot.pitch = pit;
+			if (seeker) shot.tracer = trc;
+		}
+		Destroy();
 	}
 }
