@@ -45,14 +45,36 @@ class SSQ_OffFlick : EventHandler
 			el[n][head[n]] = e;
 			if (count[n] < HIST) count[n]++;
 			if (e > REARM_DEG) armed[n] = true;
-			if (!armed[n] || count[n] <= FLICK_TICS || e > DOWN_DEG) continue;
-			double before = el[n][(head[n] - FLICK_TICS + HIST) % HIST];
-			if (before - e < FLICK_DEG) continue;
+			// RSQ_Accessibility's Gesture Ease: the drop x1..x0.5 (45 -> 22.5 degrees), over a window of
+			// 4..7 tics, ending at least 40..20 below level. 0 / absent: Brutal Doom Quest's own numbers.
+			int win = FLICK_TICS + int(SSQ_A11y.Ease() * 3.0 + 0.5);
+			if (!armed[n] || count[n] <= win || e > -SSQ_A11y.Low(-DOWN_DEG)) continue;
+			double before = el[n][(head[n] - win + HIST) % HIST];
+			if (before - e < SSQ_A11y.Low(FLICK_DEG)) continue;
 			armed[n] = false;
-			let w = p.ReadyWeapon;
-			if (!(p.WeaponState & WF_WEAPONREADY)) continue;
-			State st = w.FindState("Reload");
-			if (st) p.SetPsprite(PSP_WEAPON, st, false, w);
+			Reload(p);
 		}
+	}
+
+	static void Reload(PlayerInfo p)
+	{
+		let w = p.ReadyWeapon;
+		if (!w || !(p.WeaponState & WF_WEAPONREADY)) return;
+		State st = w.FindState("Reload");
+		if (st) p.SetPsprite(PSP_WEAPON, st, false, w);
+	}
+
+	// RSQ_Accessibility's Flick Reload gesture button (One-Handed; rsqa_alt 7): the same reload, when the
+	// flick itself would have been heard (the shield in the off hand, a gun with a Reload state).
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		if (e.Name != "rsqa_alt" || e.Args[0] != 7 || !e.Args[1] || !SSQ_A11y.OneHand()) return;
+		if (e.Player < 0 || e.Player >= MAXPLAYERS || !playeringame[e.Player]) return;
+		let p = players[e.Player];
+		let mo = p.mo;
+		if (!mo || p.playerstate != PST_LIVE || mo.health <= 0) return;
+		let fc = CVar.GetCVar("rsq_flick", p);
+		if (p.OffhandWeapon && p.OffhandWeapon.GetClassName() == 'SSQ_ShieldSaw' && IsGun(p.ReadyWeapon) && (!fc || fc.GetInt() != 0))
+			Reload(p);
 	}
 }

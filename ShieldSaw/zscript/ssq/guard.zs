@@ -294,8 +294,8 @@ class SSQ_Guard : Inventory
 				// A normal block is a spark and a thud; this is unmistakable.
 				if (perfect)
 				{
-					let fl = Actor.Spawn('SSQ_BlastBloom', P);
-					if (fl) fl.A_SetScale(1.4);
+					let fl = SSQ_FX.FlashOk() ? Actor.Spawn('SSQ_BlastBloom', P) : null;   // Photosensitive Mode
+					if (fl) { fl.A_SetScale(1.4); fl.alpha = SSQ_A11y.Dim(fl.alpha); }
 					SSQ_FX.At(mo, P, "ssq/bash", CHAN_6, 0.7, 1.3);
 				}
 			}

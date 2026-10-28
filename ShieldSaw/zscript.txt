@@ -3,6 +3,7 @@
 version "4.14"
 
 #include "zscript/ssq/cb.zs"
+#include "zscript/ssq/a11y.zs"
 #include "zscript/ssq/pose.zs"
 #include "zscript/ssq/props.zs"
 #include "zscript/ssq/guard.zs"
