@@ -26,6 +26,7 @@ is ZScript and data lumps.
 | 🔴 | [LaserSight](LaserSight/) | `RSQ_LaserSight.pk3` | A laser from each gun's own barrel, in either hand, fading with distance, with a dot on whatever it hits. |
 | 🪝 | [Grapple](Grapple/) | `RSQ_Grapple.pk3` | A grappling hook from either hand: swing across gaps, reel, climb hand over hand, slide or yank monsters to you, a whip. jpalomo's hook art and sound. |
 | ❤️ | [TopHPBars](TopHPBars/) | `RSQ_TopHPBars.pk3` | coldcite's Top HP Bars, series version: colour-blind schemes, an overheal strip, hooked / stunned / locked / gripped markers. |
+| 🏆 | [Score](Score/) | `RSQ_Score.pk3` | The arcade score: style, daring and melee bonuses, cross-mod combos, extra lives; names Champions and LegenDoom Lite kills. Built on ijon's Dakka points. |
 | ♿ | [Accessibility](Accessibility/) | `RSQ_Accessibility.pk3` | One Accessibility menu for every series mod you load: colour-blind modes and handedness. |
 
 ---
@@ -53,6 +54,7 @@ is ZScript and data lumps.
    | LaserSight | **Laser Sight** |
    | Grapple | **Grapple** |
    | TopHPBars | **RSQ HP Bars** |
+   | Score | **RSQ Score** |
    | Accessibility | **Accessibility** |
 
    Every menu ends with **Tuning and Debug**, which holds a **Reset All** row.
@@ -182,6 +184,7 @@ RSQ_UBQSeries/
 ├── Grapple/         source, README, ROADMAP (Hook 1.0), HANDOFF, jp_original/ (jpalomo's hook, source material)
 ├── TopHPBars/       pk3/ (the mod), original_1.04/ (coldcite's), tools/ (art generator, colour-vision check)
 ├── Accessibility/   source, README, tools/ (colour-vision simulation, palette generator)
+├── Score/           source, README (the arcade layer, combo table), CREDITS (Dakka)
 ├── tools/rig17/     how the real QuestZDoom 17.3 test engine was built, and the test runners
 └── build_all.sh     rebuilds every pk3 into pk3/
 ```

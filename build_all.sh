@@ -64,3 +64,9 @@ cd "$HUB/Accessibility"
 rm -f "$OUT/RSQ_Accessibility.pk3"
 zip -q -r -X "$OUT/RSQ_Accessibility.pk3" zscript.txt CVARINFO.txt MENUDEF.txt CREDITS.txt zscript
 echo "built pk3/RSQ_Accessibility.pk3"
+
+# Score: its explicit include list (its build.sh).
+cd "$HUB/Score"
+rm -f "$OUT/RSQ_Score.pk3"
+zip -q -r -X "$OUT/RSQ_Score.pk3" zscript.txt MAPINFO.txt CVARINFO.txt SNDINFO.txt TEXTCOLO.txt MENUDEF.txt RSSCFON.fon2 RSSCFN2.fon2 zscript sounds graphics 2>/dev/null
+echo "built pk3/RSQ_Score.pk3"
