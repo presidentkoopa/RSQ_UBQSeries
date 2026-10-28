@@ -70,7 +70,8 @@ class RSQTHP_Handler : EventHandler
 	// 0.75 x champion_IconScale. A bar over a champion is lifted above the icon (bar.zs).
 	transient bool champChecked;
 	transient class<Inventory> champInfo;
-	transient CVar cChIcons, cChScale, cChDormant;
+	transient CVar cChIcons, cChScale, cChDormant, cChLD;
+	transient bool ldLoaded;
 	transient class<Inventory> ldToken, ldTransformed;
 	bool champIcons;
 	double champIconH;
@@ -130,17 +131,23 @@ class RSQTHP_Handler : EventHandler
 		cChIcons = CVar.FindCVar('champion_Icons');
 		cChScale = CVar.FindCVar('champion_IconScale');
 		cChDormant = CVar.FindCVar('champion_Dormant');
+		cChLD = CVar.FindCVar('champion_Legendoom');
+		ldLoaded = Wads.FindLump("LEGNDLIB") != -1 || Wads.CheckNumForFullName("acs/LEGNDLIB.o") != -1;
 		String t1 = "LDLegendaryMonsterToken", t2 = "LDLegendaryMonsterTransformed";
 		ldToken = t1; ldTransformed = t2;
 	}
 
-	// Does this thing wear a Champions icon now? A champion has its PersistentInfo; a DORMANT
-	// legendary champion (champion_Dormant, LegenDoom loaded) gets its icon only once LegenDoom
-	// transforms it, so until then it has none.
+	// Does this thing wear a Champions icon now? A champion has its PersistentInfo. In Champions'
+	// dormant LegenDoom mode (champion_Legendoom AND champion_Dormant, LegenDoom loaded: its handler's
+	// own test) EVERY champion is dormant -- its controller does nothing, icon included, until
+	// LegenDoom transforms it -- not only the legendary ones: a champion LegenDoom never picked
+	// carries PersistentInfo and never shows an icon (handler.txt: the plain roll hands its controller
+	// the same ld_dormant). Before, those bars were lifted over an icon that was not there.
 	bool WearsChampIcon(Actor a)
 	{
 		if (!champIcons || !a.FindInventory(champInfo)) return false;
-		if (cChDormant && cChDormant.GetInt() && ldToken && a.FindInventory(ldToken) && !(ldTransformed && a.FindInventory(ldTransformed))) return false;
+		bool dormantMode = cChDormant && cChDormant.GetInt() && cChLD && cChLD.GetInt() && ldLoaded;
+		if (dormantMode && !(ldTransformed && a.FindInventory(ldTransformed))) return false;
 		return true;
 	}
 

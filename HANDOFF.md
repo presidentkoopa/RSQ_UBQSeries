@@ -4,6 +4,19 @@ Rig: rig A (`/home/claude/scratch/run17A.sh`, the real QZD 17.3 binary, zscript 
 Every number below was measured there; the logs and frames are under `test/evidence/` (copies) and
 the scratchpad (`frames/<run>/`, `logsA/<run>.log`). Test runner: `test/run.sh <name> <secs> "<console>" <order>`.
 
+## Branch `agent-compat` (2026-10-27): Champions + LegenDoom Lite -- read first
+
+Not yet run on the owner's headset. Rig C = QZD 17.3 Linux, doom2 MAP01, the owner's order (brutal22test6 ->
+BD_VoxelPack -> BD22_VR-Reloaded r7 -> Champions -> LegenDoom Lite 4.2 -> suite -> Gun Bonsai 0.10.6 + VR patch)
+and vanilla doom2 + Champions + LegenDoom Lite + suite; Champions' setting champion_Legendoom 1,
+champion_Dormant 1, champion_Booster 1. Probe: the session scratchpad cp/probe (forces tiers through
+champion_debug_forced / champion_OverrideChance 256, legendaries through LDLegendaryMonsterPickupGuaranteed).
+Save, load twice, MAP02: no script error but BD_VoxelPack's voxeldef lines.
+
+- WearsChampIcon: in Champions' dormant LegenDoom mode EVERY champion is dormant until transformed, not only
+  the legendary ones (handler.txt passes ld_dormant to the plain roll too). Measured: two dormant Gold imps
+  that LegenDoom never picked reported icon 1 (bar lifted over nothing); now 0; the transformed one 1.
+
 ## Done (measured)
 - **Compiles and runs clean**: shipped pk3 alone (g0), vanilla + probe (g1), Champions + LegenDoom Lite
   (g3), the owner's full order doom2 -> brutal22test6 -> BD_VoxelPack -> BD22_VR-Reloaded r7 -> Champions ->
