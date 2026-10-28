@@ -5,6 +5,7 @@
 
 server int rsqa_colorblind = 0;   // 0 Off, 1 Protanopia, 2 Deuteranopia, 3 Tritanopia, 4 High Contrast
 server int rsqa_handed     = 0;   // 0 Follow QuestZDoom, 1 Right-Handed, 2 Left-Handed
+server int rsqa_left_scheme = 10;  // the Left-Handed Control Scheme to go back to: 10 (A) or 11 (B), the last one in use (rsqa_hand.zs)
 
 // ---- round two (README.md "Round two"). Every one is off / 1.0 by default: nothing changes
 // until it is set, and a series mod reads none of them unless this pk3 is loaded.

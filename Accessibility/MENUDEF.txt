@@ -97,6 +97,9 @@ OptionMenu "RSQA_Options"
 
 	RSQASection "Score", "RS_ScoreHandler"
 	Submenu "Score Options", "RSQSC_Options"
+
+	RSQASection "HP Bars", "RSQTHP_Handler"
+	Submenu "HP Bars Options", "RSQTHP_Options"
 }
 
 OptionMenu "RSQA_Gestures"
