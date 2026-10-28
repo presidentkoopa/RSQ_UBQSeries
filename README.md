@@ -20,7 +20,7 @@ is ZScript and data lumps.
 |---|---|---|---|
 | ✋ | [DistanceGrab](DistanceGrab/) | `RSQ_DistanceGrab.pk3` | Turn your palm out, flick, and pull items, guns, barrels and bodies to your hand. Then carry them, throw them, and hit things with them. Lift doors open by hand. |
 | 🛡️ | [ShieldSaw](ShieldSaw/) | `UltraBadassShieldSaw.pk3` | A shield on your off shoulder that blocks, bashes and turns shots back, and doubles as a throwable saw disc that hunts the targets you ring. id Software's shield saw from *Doom: The Dark Ages*, brought to Doom VR first by **Ermac** in Rusted Legacy. |
-| ⚔️ | [QuestSaber](QuestSaber/) | `UltraBadassQuestSaber.pk3` | A volumetric lightsaber, with a second one for the off hand on the Dual key. Cut, block, deflect, throw, and use the Force. |
+| ⚔️ | [QuestSaber](QuestSaber/) | `UltraBadassQuestSaber.pk3` | A lightsaber (layered glowing shells that read as a solid beam), with a second one for the off hand on the Dual key. Cut, block, deflect, throw, and use the Force. |
 | 🎒 | [TacticalRig](TacticalRig/) | `RSQ_TacticalRig.pk3` | Guns holstered on your hips and shoulders, spots for the saber, a torso and helmet, a mirror, and Ermac's cigarette. Built on **Ermac's** Virtual Tactical Vest idea. |
 | ⏱️ | [SlowMo](SlowMo/) | `RSQ_SlowMo.pk3` | The world slows, you don't. Enemy bullets become rounds you can see and dodge. |
 | 🔴 | [LaserSight](LaserSight/) | `RSQ_LaserSight.pk3` | A laser from each gun's own barrel, in either hand, fading with distance, with a dot on whatever it hits. |
