@@ -36,3 +36,9 @@ Load after the series. `RSQ_Miniboss.pk3` (`./build.sh`). Options -> RSQ Minibos
 **FX** (engine particles, 0 actors; the original warped 30 actors per thrall every tic): a dotted link per living thrall with white beads running INTO the miniboss, a marker over each thrall, a faint grey line to a dead thrall that will rise, one orb per life circling its head (the last one red and pulsing), a gold ring while invulnerable, a red spark rising off each enraged monster. Drawn only within 4000 units of you.
 
 **Cost** (`rsqmb_debug 1`, MSTimeF): 0.015-0.05 ms/tic of script on the full order; choosing 1.2 ms once (MAP02, 70 monsters); starting the rage 0.8 ms once; 6-20 particles spawned per tic.
+
+## Owner (10-27 23:53): powers stay
+Keep all inherited powers until the miniboss dies (as 1.0 does) -- the owner prefers it to stripping them.
+Idea for later (owner never built it): the original's orbs around the miniboss blink out as each thrall dies;
+work them into the puzzle somehow. 1.0 shows one orb per LIFE and a link per thrall; a later pass could give
+each thrall an orb of its colour/power, and make the orbs part of the play. Discuss before building.
