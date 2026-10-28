@@ -1943,7 +1943,9 @@ class UBQS_SaberBase : Weapon abstract
 			// shove is ours, along the arc, scaled by the victim's MASS (an imp is 100, a Cyberdemon 1000)
 			// and by the same swing-speed multiplier the damage uses. The lift is what makes it read as a
 			// stagger instead of a slide: a Doom monster off the floor cannot change direction.
-			if (mo && !mo.bDestroyed && shove > 0.01 && !mo.bDontThrust && !mo.bNoDamageThrust)
+			// Mass 0x7FFFFFFF is how Champions says immovable (its Bronze champion, the Undying heart):
+			// the 0.08 floor below still slid it.
+			if (mo && !mo.bDestroyed && shove > 0.01 && !mo.bDontThrust && !mo.bNoDamageThrust && mo.mass < 0x7FFFFFFF)
 			{
 				double kk = shove * 5.0 * clamp(100.0 / max(mo.mass, 1.0), 0.08, 2.0) * mult;
 				mo.vel += sw * kk;
@@ -4464,7 +4466,7 @@ class UBQS_Force : Inventory
 			if (!owner.CheckSight(mo, SF_IGNOREVISIBILITY)) continue;
 			double falloff = 1.0 - dist / range * 0.6;
 			double f = clamp(2400.0 / max(mo.Mass, 50), 2.0, 26.0) * falloff * pwr;
-			mo.vel += (u.x * f, u.y * f, max(u.z * f, 0.0) + f * 0.3);
+			if (mo.Mass < 0x7FFFFFFF) mo.vel += (u.x * f, u.y * f, max(u.z * f, 0.0) + f * 0.3);   // immovable: hurt, not moved
 			mo.DamageMobj(self, owner, int(pdmg), 'Saber', DMG_THRUSTLESS);
 		}
 		Ring(hp, d, 1.0);
@@ -4542,7 +4544,7 @@ class UBQS_Force : Inventory
 			// real yank. The lift goes 0.25 -> 0.45 so they come OFF THE FLOOR toward you instead of
 			// skidding along it -- that arc is what reads as gravity gloves rather than a shove in reverse.
 			double f = clamp(1800.0 / max(mo.Mass, 50), 2.0, 45.0) * falloff * pwr;
-			mo.vel += (-u.x * f, -u.y * f, f * 0.45);
+			if (mo.Mass < 0x7FFFFFFF) mo.vel += (-u.x * f, -u.y * f, f * 0.45);   // immovable (Champions' Bronze): not moved
 			UBQS_Memory.Note(UBQS_Memory.M_PULLED, mo);
 			// 2+: it is stunned when it arrives. 3+: the yank takes its weapon -- no ranged attacks
 			if (uPull >= 2) { stunMo.Push(mo); stunUntil.Push(level.maptime + 52); }
@@ -4687,6 +4689,14 @@ class UBQS_Force : Inventory
 				'UXFL', 13, 1, 0.10 + mo.radius * 0.0025, UBQS_A11y.Dim(0.65), 0xCFE4FF, 1.02);
 		if (!mo || mo.health <= 0) { EndGrip(false); if (held) ChainGrip(); return; }
 		if (!held) { EndGrip(true); return; }
+		// STILL ONE THE GRIP COULD TAKE, every tic, not only at the start. A monster can change under
+		// the hand: LegenDoom Lite transforms a legendary at half health (a boss gains DONTTHRUST),
+		// and a Champions champion that was dormant until then sets up on that tic (Gold: Mass x12,
+		// Bronze: Mass 0x7FFFFFFF, a Titan mutation: BOSS) -- the choke itself brings it to half. And
+		// a Dark Red champion at 1 health turns unshootable and is moved to the far corner of the map:
+		// the hold dragged it back, invisible, and its pain state every 18 tics woke it there. Dropped,
+		// not flung.
+		if (!Grippable(mo, GripMass(), IV("ubqs_grip_boss", 0) != 0)) { EndGrip(false); return; }
 		gripLast = mo.pos + (0, 0, mo.height * 0.5);
 		// it hangs where your hand points, lifted a little, and follows the hand (Force Choke 2+: higher)
 		Vector3 want = OffPos() + OffAim() * gripDist + (0, 0, 10.0 - mo.height * 0.5 + (uChoke >= 2 ? 34.0 : 0.0));
@@ -4890,6 +4900,14 @@ class UBQS_Force : Inventory
 		{
 			let e = extraGrip[k];
 			if (!e || e.health <= 0) { extraGrip.Delete(k); extraNoGrav.Delete(k); continue; }
+			// the same check as the first (GripTick): no longer one it could take -> let go of it
+			if (!Grippable(e, GripMass(), IV("ubqs_grip_boss", 0) != 0))
+			{
+				e.bNoGravity = extraNoGrav[k] != 0;
+				if (e.tics > 1) e.tics = 1;
+				extraGrip.Delete(k); extraNoGrav.Delete(k);
+				continue;
+			}
 			double a = (k + 1) * 75.0 * ((k % 2) ? -1 : 1);
 			Vector3 side = (cos(owner.angle + 90 + a * 0.3), sin(owner.angle + 90 + a * 0.3), 0) * (40.0 + 20.0 * k);
 			Vector3 dv = level.Vec3Diff(e.pos, want + side * ((k % 2) ? -1 : 1));
@@ -4941,7 +4959,7 @@ class UBQS_Force : Inventory
 			if (d > r + mo.radius || d < 0.01) continue;
 			away /= d;
 			double f = clamp(1600.0 / max(mo.Mass, 50), 2.0, 20.0) * pwr * (1.0 - 0.5 * d / r);
-			mo.vel += (away.x * f, away.y * f, f * 0.35);
+			if (mo.Mass < 0x7FFFFFFF) mo.vel += (away.x * f, away.y * f, f * 0.35);
 			mo.DamageMobj(self, owner, int(pdmg), 'Saber', DMG_THRUSTLESS);
 		}
 	}
@@ -4961,7 +4979,7 @@ class UBQS_Force : Inventory
 			double d = away.Length();
 			if (d > r + mo.radius || abs(mo.pos.z - owner.pos.z) > 64.0) continue;
 			if (d > 0.01) away /= d; else away = (cos(owner.angle), sin(owner.angle));
-			if (!mo.bDontThrust)
+			if (!mo.bDontThrust && mo.Mass < 0x7FFFFFFF)
 			{
 				double f = clamp(1600.0 / max(mo.Mass, 50), 2.0, 18.0);
 				mo.vel += (away.x * f, away.y * f, f * 0.5);

@@ -1,3 +1,17 @@
+## Branch `agent-compat` (2026-10-27): Champions + LegenDoom Lite -- read first
+
+Not yet run on the owner's headset, and NOT run on the rig either: the grip has no headless entry (its
+gesture needs real hand poses). Compiled and loaded clean in the owner's order and vanilla, save/load twice,
+MAP02. By code (Champions and LegenDoom Lite parsed):
+- GripTick re-asks Grippable every tic: the choke itself brings a legendary to half, LegenDoom transforms
+  it, and a dormant champion sets up on that tic (Gold Mass x12 = 1200 > ubqs_grip_mass 600, Bronze
+  0x7FFFFFFF, Titan BOSS) -- the grip kept holding it. A Dark Red at 1 health turns unshootable and is
+  parked at (16384,16384); the hold dragged it back and its pain state woke it. Now dropped (not flung);
+  extras (Force Choke 3+) the same.
+- Push, pull, shockwave, landing slam and the cut's shove leave Mass 0x7FFFFFFF (Champions' immovable)
+  unmoved; the clamp floors (2.0 / 0.08) still slid it. Damage unchanged.
+- Headset: choke a legendary champion through its transform -- it should drop from the hand.
+
 ## Branch `agent-lh` (2026-10-27): left-handed blade direction -- read first
 
 Not yet run on the owner's headset. `UBQS_Data.BladeDirOf` flipped the frame's yaw and twirl by
