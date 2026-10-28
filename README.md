@@ -88,4 +88,4 @@ Measured on rig B (scratch probe, 10 s windows):
   latches it on a press and clears it on the next. With the off saber out, holding it arms the Force from the main hand
   (a still hand gripped a zombieman within 10 tics); the Force Push button threw one (0 -> 9.9 u/tic).
 - Hold to Toggle, grapple: a press and release keeps the reel held; the next press lets go of the reel (the rope stays).
-- Simple menus: RSQGR_Options 24 -> 20 rows, RSQSM_Options 17 -> 11, UBQS_Options 39 -> 27; Full restores them.
+- Simple menus: RSQGR_Options 24 -> 22 rows (Reset All stays), RSQSM_Options 17 -> 11, UBQS_Options 39 -> 27; Full restores them.
