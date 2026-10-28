@@ -76,6 +76,7 @@ user bool rs_score_hide         = false;
 user bool rs_score_norewards    = false;
 user bool rs_score_flash        = true;
 user bool rs_score_screenflash  = true;   // the whole-view colour flash on a reward and a revival (Quest series)
+user bool rs_score_alive        = true;   // the word "Score:" breathes and slowly changes colour (hud.zs LabelColor)
 user int  rs_score_bonustime    = 35;
 user int  rs_score_scale        = 100;
 user int  rs_score_x            = 85;

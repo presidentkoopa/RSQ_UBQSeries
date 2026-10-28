@@ -53,6 +53,7 @@ class RS_ScoreTracker : Inventory
 	int   reelTic;
 	int   varMask;           // Variety: the tools used in this fight
 	int   varTic;
+	int   bigComboTic;       // a big combo landed (combo.zs): the HUD's word breathes brighter
 
 	// ---- slow motion for big moments (handler.zs BigMomentPulse) -------------
 	int slowmoReady;         // no pulse before this tic (rs_score_slowmo_cooldown)

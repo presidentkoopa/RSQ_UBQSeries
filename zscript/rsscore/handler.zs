@@ -37,6 +37,8 @@ class RS_ScoreHandler : EventHandler
 	// Resolving them once here, in play scope, is what makes them readable there.
 	Array<String> rowName;
 	Array<String> rowColor;
+	// the first breakdown row of each bonus (a bonus may have several: RowCount, bonus.zs)
+	private Array<int> m_rowBase;
 
 	// ------------------------------------------------------------- map start
 
@@ -432,9 +434,7 @@ class RS_ScoreHandler : EventHandler
 				double m = ms[b] * scale;
 				if (m <= 0.0) { continue; }
 
-				int points = int(round(ev.basePoints * m));
-				total += points;
-				AddRow(tr, b, points);
+				total += PayRows(tr, b, ev.basePoints, m);
 			}
 
 			Array<double> everyMults;
@@ -531,12 +531,11 @@ class RS_ScoreHandler : EventHandler
 		{
 			if (mults[b] <= 0.0) { continue; }
 
-			int points = int(round(ev.basePoints * mults[b]));
-			total += points;
-			AddRow(tr, b, points);
+			total += PayRows(tr, b, ev.basePoints, mults[b]);
 		}
 
 		Pay(tr, total);
+		RecordKill(ev, total);
 		BigMomentPulse(ev, mults);
 
 		// 5. Only now does anything remember this kill -- and EVERY bonus is told,
@@ -660,7 +659,7 @@ class RS_ScoreHandler : EventHandler
 		{
 			if (b < mults.Size() && mults[b] > 0.0)
 			{
-				line = line .. String.Format(" | %s %.3f", m_bonuses[b].DisplayName(), mults[b]);
+				line = line .. String.Format(" | %s %.3f", m_bonuses[b].DebugName(), mults[b]);
 			}
 		}
 
@@ -672,7 +671,7 @@ class RS_ScoreHandler : EventHandler
 
 	private void EnsureRows(RS_ScoreTracker tr)
 	{
-		int want = m_bonuses.Size() + 1;
+		int want = rowName.Size();
 		if (tr.rowValue.Size() == want) { return; }
 
 		tr.rowValue.Resize(want);
@@ -693,18 +692,47 @@ class RS_ScoreHandler : EventHandler
 		if (!who || !who.player || points <= 0) return -1;
 		let tr = GetTracker(who);
 		if (!tr) return -1;
-		int b = -1;
-		for (int k = 0; k < m_bonuses.Size(); k++) if (m_bonuses[k].DisplayName() ~== label) { b = k; break; }
-		AddRow(tr, b, points);
+		EnsureRows(tr);
+		int row = 0;
+		for (int k = 1; k < rowName.Size(); k++) if (rowName[k] ~== label) { row = k; break; }
+		AddRowAt(tr, row, points);
 		Pay(tr, points);
 		return points;
 	}
 
+	// A bonus's pay onto its row (or rows: a bonus with several splits what it paid by its shares for
+	// this kill). The points paid.
+	private int PayRows(RS_ScoreTracker tr, int b, int basePoints, double mult)
+	{
+		let bon = m_bonuses[b];
+		int n = bon.RowCount();
+		if (n <= 1)
+		{
+			int points = int(round(basePoints * mult));
+			AddRow(tr, b, points);
+			return points;
+		}
+		int paid = 0;
+		for (int i = 0; i < n; i++)
+		{
+			double sh = bon.RowShare(i);
+			if (sh <= 0) continue;
+			int points = int(round(basePoints * mult * sh));
+			AddRowAt(tr, m_rowBase[b] + i, points);
+			paid += points;
+		}
+		return paid;
+	}
+
 	private void AddRow(RS_ScoreTracker tr, int bonusIndex, int points)
+	{
+		AddRowAt(tr, bonusIndex < 0 ? 0 : m_rowBase[bonusIndex], points);
+	}
+
+	private void AddRowAt(RS_ScoreTracker tr, int row, int points)
 	{
 		if (points <= 0) { return; }
 
-		int row = bonusIndex + 1;
 		if (row < 0 || row >= tr.rowValue.Size()) { return; }
 
 		// A row accumulates while it is still on screen rather than being replaced, so
@@ -964,11 +992,53 @@ class RS_ScoreHandler : EventHandler
 		rowName.Push("Base");
 		rowColor.Push("RSScore_Base");
 
+		m_rowBase.Clear();
 		for (int i = 0; i < m_bonuses.Size(); i++)
 		{
-			rowName.Push(m_bonuses[i].DisplayName());
-			rowColor.Push(m_bonuses[i].FamilyColor());
+			m_rowBase.Push(rowName.Size());
+			int n = max(1, m_bonuses[i].RowCount());
+			for (int r = 0; r < n; r++)
+			{
+				rowName.Push(m_bonuses[i].RowName(r));
+				rowColor.Push(m_bonuses[i].FamilyColor());
+			}
 		}
+	}
+
+	// ---------------------------------------------------- the last kills, for Gun Bonsai
+	//
+	// WHAT A KILL EARNED IN STYLE, read by name by the Gun Bonsai VR patch's "XP Source: Style"
+	// (RS_ScoreService "kill.serial" / "kill.style" / "kill.base" / "kill.chain", awards.zs): a running
+	// serial per kill a player earned, the base, the style (every bonus row: the total less the base --
+	// Champions' and LegenDoom's rows included), and the chain of tools, finishing blow last. The last
+	// sixteen are kept; a reader looks once a tic.
+	int killSerial;
+	Array<int> kSerial, kPn, kBase, kStyle;
+	Array<String> kChain;
+	Array<Actor> kVictim;
+
+	private void RecordKill(RS_ScoreEvent ev, int total)
+	{
+		if (ev.killerNum < 0) return;
+		RS_Combo.ChainOf(ev);
+		String c = "";
+		for (int k = 0; k < ev.chain.Size(); k++) c = c .. (k ? ">" : "") .. ev.chain[k];
+		killSerial++;
+		if (kSerial.Size() >= 16) { kSerial.Delete(0); kPn.Delete(0); kBase.Delete(0); kStyle.Delete(0); kChain.Delete(0); kVictim.Delete(0); }
+		kSerial.Push(killSerial); kPn.Push(ev.killerNum); kBase.Push(ev.basePoints); kStyle.Push(max(0, total - ev.basePoints)); kChain.Push(c); kVictim.Push(ev.victim);
+		if (DebugOn()) Console.Printf("RS_Score: kill #%d p%d base %d style %d chain %s", killSerial, ev.killerNum, ev.basePoints, max(0, total - ev.basePoints), c);
+	}
+
+	// the newest kill serial of player pn (0: none this map)
+	int LastKill(int pn)
+	{
+		for (int k = kSerial.Size() - 1; k >= 0; k--) if (kPn[k] == pn) return kSerial[k];
+		return 0;
+	}
+	int KillIndex(int serial)
+	{
+		for (int k = kSerial.Size() - 1; k >= 0; k--) if (kSerial[k] == serial) return k;
+		return -1;
 	}
 
 	// ----------------------------------------------------------------- helpers

@@ -439,6 +439,7 @@ class RS_Bonus_Combo : RS_ScoreBonus
 	{
 		int kind = RS_Melee.Kind(ev);
 		if (kind == RS_Melee.MK_NONE) return 0.0;
+		if (RS_Combo.Mixed(ev)) return 0.0;   // this kill's own chain mixed its tools (combo.zs)
 		return min(MAXMULT, PER * (Distinct(ev, kind) - 1));
 	}
 
