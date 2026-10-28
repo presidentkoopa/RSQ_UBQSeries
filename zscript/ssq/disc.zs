@@ -316,7 +316,10 @@ class SSQ_Disc : Actor
 			// DONE GRINDING: on to the next lock if there is one, home only when there is not.
 			// (It went home with locks still waiting -- a Cacodemon ground, two imps never
 			// visited.)
-			if (!embedIn || embedIn.health <= 0 || embedTics <= 0)
+			// ...or it stopped being there to grind: Champions' Dark Red, at 1 health, turns
+			// unshootable and is moved to the far corner of the map until it gets up -- the disc
+			// followed it there by SetOrigin.
+			if (!embedIn || embedIn.health <= 0 || embedTics <= 0 || !embedIn.bShootable)
 			{
 				// MEAT GRINDER: a kill while stuck frees it at full speed, straight at the next lock --
 				// or, from level 2, at the nearest new enemy when there is none
@@ -474,7 +477,7 @@ class SSQ_Disc : Actor
 
 		double scale = SSQ_Handler.SV('ssq_cut_damage', 1.0) * (1.0 + revFrac * SSQ_Handler.SV('ssq_rev_throw_bonus', 0.6));
 		int base = int((24 + random(0, 20)) * scale);
-		int sh = victim.SpawnHealth();
+		int sh = TierHealth(victim);
 		bool tiers = SSQ_Handler.SVI('ssq_tiers', 1) != 0;
 		int fodder = SSQ_Handler.SVI('ssq_tier_fodder', 70);
 		int mid = SSQ_Handler.SVI('ssq_tier_mid', 600);
@@ -488,7 +491,11 @@ class SSQ_Disc : Actor
 		if (SSQ_Handler.SVI('ssq_bd22', 0) != 0) { fodder = BD22_FODDER; mid = BD22_MID; }
 		bool wasLock = locks.Find(victim) < locks.Size();
 
-		if (tiers && !victim.bBoss && sh <= fodder)
+		// NOT THROUGH A BUDDHA: the bisect is DMG_FORCED, which the engine lets past a monster's BUDDHA
+		// (p_interaction.cpp: the monster buddha test is skipped for DMG_FORCED). Champions' Dark Red
+		// (it plays dead at 1 health and gets up) and the Undying mutation (kill its heart first) are
+		// buddha on purpose; they take the grind or the glance instead, ordinary damage.
+		if (tiers && !victim.bBoss && !victim.bBuddha && sh <= fodder)
 		{
 			// bisect: past the gib threshold every time
 			int gib = max(victim.health + abs(victim.GibHealth) + 1, base);
@@ -532,6 +539,28 @@ class SSQ_Disc : Actor
 		// Next() homes when the last lock is done; a free throw (no locks) flies on.
 		Next(wasLock);
 		return 1;
+	}
+
+	// THE HEALTH IT HAS TO LOSE, for the tiers: never less than the class's spawn health (a hurt
+	// baron still turns the disc), but more when it has more. Champions raise StartHealth themselves
+	// (their controller, once set up); LegenDoom Lite's legendaries do not: its ACS sets health to
+	// spawn health x LD_legendaryhealth / 100 (300 %, LD_legendaryhealthboss for a boss), and at half
+	// of that refills it once and transforms (LEGNDLIB.acs LDMonsterInit). Measured before this: a
+	// legendary Brutal Doom imp (spawn health 80, health 240, a second 240 to come) was "fodder" and
+	// the disc killed it outright, its whole second life skipped. So an untransformed legendary
+	// counts the refill too. Read by name; 0 when LegenDoom Lite is not loaded.
+	static int TierHealth(Actor v)
+	{
+		int sh = max(v.SpawnHealth(), v.health);
+		String tk = "LDLegendaryMonsterToken", tr = "LDLegendaryMonsterTransformed";
+		class<Inventory> ct = tk, cr = tr;
+		if (ct && v.FindInventory(ct) && !(cr && v.FindInventory(cr)))
+		{
+			let cv = CVar.FindCVar(v.bBoss ? 'LD_legendaryhealthboss' : 'LD_legendaryhealth');
+			int pct = cv ? cv.GetInt() : 300;
+			sh += v.SpawnHealth() * (pct / 100);      // the ACS's own integer arithmetic
+		}
+		return sh;
 	}
 
 	void Next(bool wasLock)
