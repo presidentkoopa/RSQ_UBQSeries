@@ -1,3 +1,49 @@
+## Branch `agent-polish` (2026-10-27): a shot blocked on contact goes back itself -- read first
+
+Not yet run on the owner's headset. Rig B, probe `pol/sbprobe` in the session scratchpad (the agent-block
+probe plus: a real shot of a Brutal Doom class fired every 20 tics along the line from 300 units out
+through the blade's middle to the player's middle, one saber held still `0.25 1.15 -0.3 -20 90 0`,
+`ubqs_dual_mode 0`, `ubqs_deflect 0` so every stop is ContactBlock's). Counted over 17 shots.
+
+**Before**: ContactBlock spawned a COPY of the missile class at the blade and sent it back, and zeroed the
+original, which the engine then exploded on the player. **Now** the shot itself goes back: for that moment
+the player is +REFLECTIVE +THRUREFLECT, the one test between DamageMobj and the explosion in
+PIT_CheckThing (FastProjectile's move goes through it too), so the missile flies on; `UBQS_PassThru` puts
+the player's own two flags back at the next hit that is not that shot (the saber's ModifyDamage, before it
+decides) or at the end of the same tic (a Thinker made now ticks in the engine's fresh pass), puts the shot
+back on the blade with BatBack's velocity and facing, and gives a seeker back the tracer BatBack chose.
+
+| BD shot (17 fired) | copies spawned | originals exploded on the player | effects born within 96 of the player | returned |
+|---|---|---|---|---|
+| FireBall_ (imp) before | 16 | 15 | 43 (16 SmallUnderwaterExplosion + 16 TinyBurningPiece3 ...) | 16 copies |
+| FireBall_ now | **0** | **0** | 20 (other monsters' hitscan puffs only) | 16 originals |
+| ZombieManTracer before | 17 | 17 | 18 (14 Player_BloodSaw: the zeroed hit still bled) | 17 copies |
+| ZombieManTracer now | **0** | **0** | 10 (puffs only, no blood) | 17 originals |
+| revenantseekermissiles before | 16 | 16 | 582 (422 RedFlareSmall, 80 ExplosionFlareEffect ...) | 16 copies |
+| revenantseekermissiles now | **0** | **0** | 20 | 16 originals; tracer = the shooter in all 359 tic samples, never the player |
+
+- Controls: the same tracers on a line 22 units under the blade: 17 of 17 hit and exploded on the player
+  (the flags are back). A blocked tracer and an unblocked one in the SAME tic: the blocked one returned
+  (17), the other still hit (17 hits, 102 damage) -- before: 17 copies + 34 explosions on the player.
+- Full order (+ Champions, LegenDoom Lite, the suite, Gun Bonsai + patch): FireBall_ 16 returned, 0 on the
+  player; ZombieManTracer 17 returned, 0 on the player; no script error.
+- BatBack's clash sound, sparks and flash for a contact return are at the blade point (as the copy's were).
+- The `stopped` list (a blocked shot's blast on your box) is now kept only if the pass-through could not
+  be set up (no UBQS_Memory), since a returned shot no longer goes off on you.
+- Left as it was: BatBack sets `master` = the saber only when the shot has none; the original may already
+  carry one from Brutal Doom, where the fresh copy never did (Gun Bonsai's credit then follows that master).
+- Not done: the rest of the shot's move in the tic it is blocked carries it on along its old line past the
+  player (up to one tic of travel: 50 units for a tracer) before it is put back on the blade; anything
+  there could be touched by it in that tic. Not seen in the runs.
+
+## 2026-10-27, also in today's commits (no note until now; their numbers, not re-measured here)
+- 7b4396a: flick-down reload fires on a flick DOWN (the independent review's item 3: AttackPitch is already
+  positive up).
+- be24062 colour-blind Force outlines, hand flare and diagram; 460083f accessibility round two (Force from
+  the main hand under the Off-Hand Modifier, Hold to Toggle, Force gesture buttons); 9765c46 / f729804 the
+  a11y class from the template and the training remote's big font.
+- 3e14b3c: UBQS_SaberService "gripped" for RSQ_TopHPBars' marker (measured in TopHPBars' round 2).
+
 ## Branch `agent-compat` (2026-10-27): Champions + LegenDoom Lite -- read first
 
 Not yet run on the owner's headset, and NOT run on the rig either: the grip has no headless entry (its
