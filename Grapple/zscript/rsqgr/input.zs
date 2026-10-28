@@ -20,8 +20,23 @@
 //   rsqgr_up    a0 = hand
 class RSQGR_Input : EventHandler
 {
+	// RSQ_Accessibility's Hold to Toggle: the hook bind's press latches on (fire, then reel while
+	// latched, as a held bind does) and the next press lets it go (a release within a tap of the
+	// press lets go of the rope, as ever). Releases are ignored. This machine's side only.
+	ui bool tog[2];
+
 	override void ConsoleProcess(ConsoleEvent e)
 	{
+		if ((e.Name ~== "rsqgr_press" || e.Name ~== "rsqgr_release") && RSQGR_A11y.HoldToggle())
+		{
+			int th = e.Args[0] ? 1 : 0;
+			if (e.Name ~== "rsqgr_release") return;
+			// a latch whose hook is gone (it came back by itself) is not on any more
+			let pp = players[consoleplayer];
+			if (tog[th] && pp && pp.mo && !RSQGR_Core.HookOf(pp.mo, th)) tog[th] = false;
+			tog[th] = !tog[th];
+			if (!tog[th]) { EventHandler.SendNetworkEvent("rsqgr_up", th); return; }
+		}
 		if (e.Name ~== "rsqgr_press")
 		{
 			int hand = e.Args[0] ? 1 : 0;
@@ -84,7 +99,7 @@ class RSQGR_Input : EventHandler
 		for (int hand = 0; hand < 2; hand++)
 		{
 			if (!c.grabHeld[pn * 2 + hand] || !RSQGR_Util.PoseGood(pmo, hand)) continue;
-			Vector3 h = hand == 0 ? pmo.AttackPos : pmo.OffhandPos;
+			Vector3 h = RSQGR_Util.Ctrl(pmo, hand) == 0 ? pmo.AttackPos : pmo.OffhandPos;
 			Vector3 off = (h.x - pmo.Pos.x, h.y - pmo.Pos.y, (h.z - e.ViewPos.z) + p.viewheight);
 			EventHandler.SendNetworkEvent("rsqgr_pose", hand, RSQGR_Climb.Pack(off));
 		}
