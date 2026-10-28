@@ -70,3 +70,9 @@ cd "$HUB/Score"
 rm -f "$OUT/RSQ_Score.pk3"
 zip -q -r -X "$OUT/RSQ_Score.pk3" zscript.txt MAPINFO.txt CVARINFO.txt SNDINFO.txt TEXTCOLO.txt MENUDEF.txt RSSCFON.fon2 RSSCFN2.fon2 zscript sounds graphics 2>/dev/null
 echo "built pk3/RSQ_Score.pk3"
+
+# Miniboss: its explicit include list (original/ is Tartlman's mod, source material only).
+cd "$HUB/Miniboss"
+rm -f "$OUT/RSQ_Miniboss.pk3"
+zip -q -r -X "$OUT/RSQ_Miniboss.pk3" zscript.txt MAPINFO.txt CVARINFO.txt MENUDEF.txt CREDITS.txt zscript
+echo "built pk3/RSQ_Miniboss.pk3"
