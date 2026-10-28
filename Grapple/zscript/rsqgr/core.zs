@@ -226,8 +226,7 @@ class RSQGR_Core : EventHandler
 			ofs.xy = ofs.xy.Length() > v.radius ? ofs.xy.Unit() * v.radius : ofs.xy;
 			ofs.z = clamp(ofs.z, 0, v.Height);
 			h.victimOfs = ofs;
-			double mmax = RSQGR_Util.Num("rsqgr_mass_max", 1000) * RSQGR_Perks.Factor(h.owner, 'mass');   // Heavy Haul
-			h.heavy = v.bBOSS || (mmax > 0 && v.Mass > mmax) || v.bDORMANT;
+			h.heavy = TooHeavy(h, v);
 			String s = RSQGR_Looks.Sound('hitflesh');
 			if (s != "") h.A_StartSound(s, CHAN_VOICE);
 			RSQGR_Looks.Spark(at, 'flesh');
@@ -294,10 +293,23 @@ class RSQGR_Core : EventHandler
 
 	// ---- a monster on the line --------------------------------------------------
 
+	// too heavy to come: an anchor instead (at the bite, and re-asked every tic of the pull)
+	static bool TooHeavy(RSQGR_Hook h, Actor v)
+	{
+		double mmax = RSQGR_Util.Num("rsqgr_mass_max", 1000) * RSQGR_Perks.Factor(h.owner, 'mass');   // Heavy Haul
+		return v.bBOSS || (mmax > 0 && v.Mass > mmax) || v.bDORMANT;
+	}
+
 	void Bite(RSQGR_Hook h, int i)
 	{
 		let v = h.victim;
 		if (!v || v.bDestroyed) { h.victim = null; LetGo(h, false); return; }
+		// IT CHANGED UNDER THE CLAW. "Too heavy to come" was decided once, at the bite; a monster can
+		// become heavy on the line: a Champions champion dormant until LegenDoom Lite transforms it (at
+		// half health) sets up on that tic (Gold Mass x12, Bronze 0x7FFFFFFF, a Titan mutation BOSS).
+		// And Champions' Dark Red at 1 health turns unshootable and is moved to the far corner of the
+		// map until it gets up -- reeling it would drag it back, invisible. Either way the line lets go.
+		if (v.Health > 0 && (!v.bShootable || TooHeavy(h, v))) { LetGo(h, false); return; }
 		// the core's own guards, so the other side of the seam gets them for free:
 		// out of range, or no closer for a second and a half.
 		Vector3 dv = v.Pos - h.owner.Pos;
