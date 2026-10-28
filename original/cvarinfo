@@ -1,0 +1,11 @@
+server int mbos_spawnrate = 5;
+server int mbos_lives = 3;
+server int mbos_invulnlength = 5;
+server float mbos_invulnbonus = 1.0;
+
+user float mbos_lifescale = 1.0;
+user int mbos_lifespinspeed = 3;
+user int mbos_thralldensity = 30;
+
+user int mbos_invulndensity = 20;
+user int mbos_invulnspinspeed = 3;

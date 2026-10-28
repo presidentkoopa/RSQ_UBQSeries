@@ -1,0 +1,170 @@
+class minibosshandler : StaticEventHandler
+{
+	array<string> namelist;
+	array<actor> minibosslist;
+	int maxnames;
+	int bossifytimer;
+	playerinfo p;
+	
+	void buildnamelist()
+	{
+		string allnames = Wads.ReadLump(Wads.CheckNumForName("mbosnams", 0));
+		
+		allnames.Split(namelist, "\n");
+		
+		for (int i = 0; i < namelist.Size(); i++)
+		{
+			if(namelist[i] == "")
+			{
+				namelist.delete(i);
+			}
+			else
+			{
+				namelist[i] = namelist[i].left(namelist[i].length() - 1);
+			}
+		}
+		
+		maxnames = namelist.Size() - 1;
+	}
+	
+	override void WorldLoaded (WorldEvent e)
+	{
+		//buildnamelist();
+		minibosslist.clear();
+		bossifytimer = 2; 
+		//only the first few tics of spawning will be minibosses
+		//so pain elementals aren't omegafugg
+		
+		p = players[consolePlayer];
+	}
+	
+	override void WorldTick()
+	{
+		if (bossifytimer >= 0)
+		{
+			bossifytimer--;
+		}
+		
+		if (bossifytimer == 0)
+		{
+			for (int i = 0; i < minibosslist.size(); i++)
+			{
+				if (minibosslist[i] != null)
+				{
+					int searchradius = minibosslist[i].SpawnHealth();
+					
+					if (searchradius < 64)
+					{
+						searchradius = 64;
+					}
+					else if (searchradius > 2048)
+					{
+						searchradius = 2048;
+					}
+					
+					BlockThingsIterator actorfinder = BlockThingsIterator.Create(minibosslist[i], 64);
+					array<actor> nearbyactors;
+					
+					while (actorfinder.next())
+					{
+						nearbyactors.push(actorfinder.thing);
+					}
+					
+					array<actor> tiedtominiboss;
+					
+					int numactors = minibosslist[i].spawnHealth() / 20;
+					if (numactors > 50)
+					{
+						numactors = 50;
+					}
+					int totalhealth = 0;
+					
+					for (int j = 0; j < numactors; j++)
+					{
+						if (nearbyactors.Size() == 0 || totalhealth > minibosslist[i].health * 3)
+						{
+							break;
+						}
+						else
+						{
+							int randomactor = random(0, nearbyactors.Size() - 1);
+							if (nearbyactors[randomactor] != null)
+							{
+								if (!(nearbyactors[randomactor].CheckInventory("minibossthrallinfo", 1)) &&
+									!(nearbyactors[randomactor].CheckInventory("minibossinfo", 1)) &&
+									nearbyactors[randomactor].Distance2D(minibosslist[i]) <= searchradius &&
+									nearbyactors[randomactor] != minibosslist[i] &&
+									nearbyactors[randomactor].bISMONSTER &&
+									nearbyactors[randomactor].bCOUNTKILL &&
+									!nearbyactors[randomactor].bSPECIAL &&
+									!nearbyactors[randomactor].bFRIENDLY &&
+									nearbyactors[randomactor].Health > 10)
+								{
+									tiedtominiboss.push(nearbyactors[randomactor]);
+									nearbyactors[randomactor].GiveInventoryType("minibossthrallinfo");
+									totalhealth += nearbyactors[randomactor].health;
+								}
+							}
+						}
+					}
+					
+					minibosscontroller miniboss = new("minibosscontroller");
+					if(miniboss)
+					{
+						miniboss.a = minibosslist[i];
+						miniboss.lives = CVar.GetCVar("mbos_lives").GetInt();
+						miniboss.minibossname = "cringe ass nae nae baby"; //namelist[random(0,maxnames)];
+						miniboss.thralls.copy(tiedtominiboss);
+					}
+					
+					tiedtominiboss.clear();
+				}
+			}
+			
+			minibosslist.clear();
+		}
+	}
+	
+	override void WorldThingSpawned (WorldEvent e)
+	{
+		if (bossifytimer > 0)
+		{
+			if (e.Thing.bISMONSTER &&
+			e.Thing.bCOUNTKILL &&
+			!e.Thing.bSPECIAL &&
+			!e.Thing.bFRIENDLY &&
+			e.Thing.Health > 10)
+			{
+				int chance = CVar.GetCVar("mbos_spawnrate").GetInt();
+				
+				if (random(0, 99) <= chance)
+				{
+					minibosslist.push(e.thing);
+					e.thing.GiveInventoryType("minibossinfo");
+				}
+			}
+		}
+	}
+}
+
+class minibossinfo : Inventory
+{
+	default
+	{
+		Inventory.maxamount 1;
+		+INVENTORY.UNDROPPABLE;
+		+INVENTORY.HUBPOWER;
+		+INVENTORY.UNTOSSABLE;
+	}
+}
+
+class minibossthrallinfo : Inventory
+{
+	default
+	{
+		Inventory.maxamount 1;
+		+INVENTORY.UNDROPPABLE;
+		+INVENTORY.HUBPOWER;
+		+INVENTORY.UNTOSSABLE;
+	}
+}

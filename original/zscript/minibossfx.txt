@@ -1,0 +1,130 @@
+class minibossinvulnfx : actor
+{
+	default
+	{
+		renderstyle "addstencil";
+		stencilcolor "red";
+		floatbobstrength 0.5;
+		alpha 0.5;
+		yscale 0.5;
+		xscale 0.3;
+		+NOINTERACTION
+		+FLOATBOB
+	}
+	
+	states
+	{
+		spawn:
+		FIRE ABABCBCDCD 2 BRIGHT;
+		goto main;
+		
+		main:
+		FIRE D -1 BRIGHT;
+		stop; 
+		
+		explode:
+		FIRE DEDEFEFGFGHGH 2 BRIGHT;
+		stop;
+	}
+}
+
+class minibosslifefx : actor
+{
+	default
+	{
+		renderstyle "addstencil";
+		stencilcolor "red";
+		scale 2.0;
+		
+		+NOINTERACTION
+		+FLOATBOB
+	}
+	
+	states
+	{
+		spawn:
+		BAL2 AB 5 BRIGHT;
+		loop;
+		
+		explode:
+		TNT1 A 0 A_PlaySound("weapons/bfgx", attenuation: ATTN_NONE);
+		//BLOOD FOR THE BLOOD GOD
+		TNT1 AAAAA 0 A_SpawnItemEx("blood", random (-4, 4), random(-4, 4), random(0, height),
+		frandom(-4, 4), frandom(-4, 4), frandom(4, 8), flags: SXF_NOCHECKPOSITION);
+		BAL2 C 5 BRIGHT; 
+		//BLOOD BLOOD BLOOD BLOOD BLOOD BLOOD BLOOD BLOOD BLOOD BLOOD BLOOD BLOOD BLOOD BLOOD BLOOD
+		TNT1 AAAAAAA 0 A_SpawnItemEx("blood", random (-4, 4), random(-4, 4), random(0, height),
+		frandom(-4, 4), frandom(-4, 4), frandom(4, 8), flags: SXF_NOCHECKPOSITION);
+		BAL2 D 5 BRIGHT;
+		//CORN FOR THE KHORNE FLAKES
+		TNT1 AAAAAAAAAA 0 A_SpawnItemEx("blood", random (-4, 4), random(-4, 4), random(0, height),
+		frandom(-4, 4), frandom(-4, 4), frandom(4, 8), flags: SXF_NOCHECKPOSITION);
+		BAL2 E 5;
+		stop;
+		
+		//sir this is a wendy's
+	}
+}
+
+class minibossthrallfx : actor
+{
+	default
+	{
+		renderstyle "addstencil";
+		stencilcolor "Red";
+		scale 0.5;
+		alpha 0.5;
+		
+		+NOINTERACTION
+		+FLOATBOB
+	}
+	
+	states
+	{
+		spawn:
+		BFS1 AB 5 BRIGHT;
+		loop;
+		
+		explode:
+		TNT1 A 0 A_PlaySound("imp/shotx");
+		BFE1 ABCDEF 5 BRIGHT;
+		TNT1 A 0 -1;
+		stop;
+		
+		explodedestroy:
+		TNT1 A 0 A_PlaySound("imp/shotx");
+		BFE1 ABCDEF 5 BRIGHT;
+		stop;
+	}
+}
+
+class minibossthralltrailfx : actor
+{
+	int destroytimer;
+	
+	default
+	{
+		renderstyle "addstencil";
+		stencilcolor "Red";
+		scale 1.0;
+		alpha 0.3;
+		
+		+NOINTERACTION
+	}
+	
+	states
+	{
+		spawn:
+		APLS AB 5 BRIGHT;
+		loop;
+		
+		explode:
+		APBX ABCDE 5 BRIGHT;
+		TNT1 A 0 -1;
+		stop;
+		
+		explodedestroy:
+		APBX ABCDE 5 BRIGHT;
+		stop;
+	}
+}

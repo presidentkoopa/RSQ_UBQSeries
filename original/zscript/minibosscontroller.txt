@@ -1,0 +1,452 @@
+class minibosscontroller : thinker
+{
+	actor a;
+	
+	//BEHOLD THE ARRAY SPAM
+	array<actor> invulnfx;
+	array<actor> lifefx;
+	array<double> lifefxangles;
+	array<double> invulnfxangles;
+	array<actor> thralls;
+	array<actor> thrallfx;
+	array<actor> thrallfxtrails; //this array is extra sinful
+	array<bool> thralldead;
+	
+	int lives;
+	int invulntimer;
+	int explodetimer;
+	int predeathheight;
+	int traildensity;
+	int invulndensity;
+	int invulnlength;
+	int invulnbonuslength;
+	string minibossname;
+	bool minibossdied;
+	bool deathsequenceover;
+	bool thrallmeup;
+	int actorhasflags;
+	int actorlostflags;
+	color minibosscolor;
+	double lifefxscale;
+	double lifefxspinspeed;
+	double invulnspinspeed;
+	
+	enum ActorAlreadyHas
+	{
+		ACTORHAS_NOBLOOD = 1,
+		ACTORHAS_ALWAYSFAST = 2,
+		ACTORHAS_NODAMAGE = 4
+	}
+	
+	override void PostBeginPlay()
+	{
+		super.postbeginplay();
+		
+		playerinfo p = players[consoleplayer];
+		
+		lifefxscale = CVar.GetCVar("mbos_lifescale", p).GetFloat() / 2.0;
+		lifefxspinspeed = CVar.GetCVar("mbos_lifespinspeed", p).GetFloat() / (double(a.radius) / 20.0);
+		traildensity = CVar.GetCVar("mbos_thralldensity", p).GetInt();
+		invulndensity = CVar.GetCVar("mbos_invulndensity", p).GetInt();
+		invulnspinspeed = CVar.GetCVar("mbos_invulnspinspeed", p).GetFloat() / (double(a.radius) / 20.0);
+		invulnlength = CVar.GetCVar("mbos_invulnlength").GetInt();
+		invulnbonuslength = CVar.GetCVar("mbos_invulnbonus").GetFloat();
+		
+		minibossdied = false;
+		deathsequenceover = false;
+		a.bBUDDHA = true;
+		//a.SetTag(minibossname);
+		predeathheight = a.height;
+		
+		invulntimer = -1;
+		
+		minibosscolor.r = random(0, 255);
+		minibosscolor.g = random(0, 255);
+		minibosscolor.b = random(0, 255);
+		
+		double angleincr = 360.0 / double(lives + 1);
+		
+		for (int i = 0; i < lives + 1; i++)
+		{
+			lifefx.push(a.Spawn("minibosslifefx"));
+			lifefxangles.push(angleincr * i);
+			
+			lifefx[i].setshade(minibosscolor);
+			
+			vector2 tempvector;
+			
+			tempvector.x = lifefxscale * 2.0;
+			tempvector.y = lifefxscale * 2.0;
+			
+			lifefx[i].scale = tempvector;
+		}
+		
+		for (int i = 0; i < thralls.Size(); i++)
+		{
+			thrallfx.push(thralls[i].Spawn("minibossthrallfx"));
+			thrallfx[i].SetShade(minibosscolor);
+			thralldead.push(false);
+			
+			for (int j = 0; j < traildensity; j++)
+			{
+				
+				actor tempactor = thralls[i].spawn("minibossthralltrailfx");
+				tempactor.setshade(minibosscolor);
+				thrallfxtrails.push(tempactor);
+			}
+		}
+		
+		thrallmeup = false;
+	}
+	
+	override void Tick()
+	{
+		super.tick();
+		if (globalfreeze || level.Frozen) 
+			return;
+		
+		if(a != null)
+		{
+			//================================================================
+			//HANDLE DEATH
+			//================================================================
+			
+			if(a.Health <= 0 && !minibossdied)
+			{
+				//Console.printf("%s is dead", minibossname);
+				minibossdied = true;
+				explodetimer = 1 * 15;
+				
+				//in case it got mdk'd or something
+				for (int i = 0; i < lifefx.Size(); i++)
+				{
+					lifefx[i].SetStateLabel("explode");
+					
+					vector2 tempv2;
+					tempv2.x = lifefxscale * 2.0;
+					tempv2.y = lifefxscale * 2.0;
+				
+					lifefx[i].Scale = tempv2;
+				}
+			
+				lives = 0;
+				lifefx.Clear();
+			}
+			
+			//================================================================
+			//DEATH SEQUENCE
+			//================================================================
+			
+			if (minibossdied && !deathsequenceover)
+			{
+				if (explodetimer % 3 == 0)
+				{
+					actor tempactor;
+					
+					tempactor = a.Spawn("minibosslifefx");
+					
+					tempactor.warp(a, frandom(-a.radius, a.radius), frandom(-a.radius, a.radius),
+					frandom(0, predeathheight), flags: WARPF_NOCHECKPOSITION);
+					tempactor.SetShade(minibosscolor);
+					tempactor.SetStateLabel("Explode");
+				}
+				
+				if (explodetimer < 0)
+				{
+					deathsequenceover = true;
+				}
+				else
+				{
+					explodetimer--;
+				}
+			}
+			
+			//================================================================
+			//ACTOR ABOUT TO DIE BUT STILL HAS EXTRA LIVES
+			//================================================================
+			
+			if(a.Health == 1)
+			{
+				a.Health = a.SpawnHealth();
+				invulntimer = (double(thralls.size()) * invulnbonuslength * 35.0) + invulnlength * 35;
+				if (invulntimer < 0)
+				{
+					invulntimer = 0;
+				}
+				
+				if (lives >= 2)
+				{
+					lives--;
+					//Console.printf("%s has lost a life, and becomes invulnerable", minibossname);
+				}
+				else if (lives == 1)
+				{
+					//Console.printf("%s is on their final life, and becomes invulnerable", minibossname);
+					a.bBUDDHA = false;
+				}
+				
+				double angleincr = 360.0 / double(invulndensity);
+				for (int i = 0; i < invulndensity; i++)
+				{
+					invulnfx.push(a.Spawn("minibossinvulnfx"));
+					invulnfx[i].SetShade(minibosscolor);
+					invulnfxangles.push(angleincr * i);
+				}
+				
+				if (lifefx.Size() != 0)
+				{
+					lifefx[lifefx.Size() - 1].SetStateLabel("explode");
+					
+					vector2 tempv2;
+					tempv2.x = lifefxscale * 2.0;
+					tempv2.y = lifefxscale * 2.0;
+				
+					lifefx[lifefx.Size() - 1].Scale = tempv2;
+					
+					lifefx.Pop();
+				}
+			}
+			
+			//================================================================
+			//INVULNERABILITY CONTROL
+			//coded on crack and berserk packs
+			//i'm fairly certain i know what it does... i hope
+			//================================================================
+			
+			if (invulntimer == 0)
+			{
+				invulntimer--; //set to -1 so we don't do this every goddamn tick
+				
+				if (!(actorhasflags & ACTORHAS_ALWAYSFAST) || (actorlostflags & ACTORHAS_ALWAYSFAST))
+					a.bALWAYSFAST = false;
+					
+				if (!(actorhasflags & ACTORHAS_NODAMAGE) || (actorlostflags & ACTORHAS_NODAMAGE))
+					a.bNODAMAGE = false;
+					
+				if (!(actorhasflags & ACTORHAS_NOBLOOD) || (actorlostflags & ACTORHAS_NOBLOOD))
+					a.bNOBLOOD = false;
+					
+				//Console.printf("%s has become vulnerable", minibossname);
+				
+				for (int i = 0; i < invulnfx.size(); i++)
+				{
+					if (invulnfx[i] != null)
+					{
+						invulnfx[i].setstatelabel("explode");
+					}
+				}
+				
+				invulnfx.clear();
+				
+				actorlostflags = 0;
+				
+				thrallmeup = true;
+			}
+			else if (invulntimer > 0)
+			{
+				invulntimer--;
+				
+				for (int i = 0; i < invulnfx.size(); i++)
+				{
+					if (invulnfx[i] != null)
+					{
+						invulnfx[i].warp(a, Cos(invulnfxangles[i]) * a.radius * 1.5, Sin(invulnfxangles[i]) * a.radius * 1.5,
+						flags: WARPF_ABSOLUTEOFFSET|WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE);
+						invulnfxangles[i] += invulnspinspeed; 
+					}
+				}
+				
+				if (a.bNOBLOOD && !(actorlostflags & ACTORHAS_NOBLOOD))
+					actorhasflags |= ACTORHAS_NOBLOOD;
+				else if (!(actorlostflags & ACTORHAS_NOBLOOD))
+				{
+					actorhasflags &=~ ACTORHAS_NOBLOOD;
+					actorlostflags |= ACTORHAS_NOBLOOD;
+				}
+					
+				if (a.bALWAYSFAST && !(actorlostflags & ACTORHAS_ALWAYSFAST))
+					actorhasflags |= ACTORHAS_ALWAYSFAST;
+				else if (!(actorlostflags & ACTORHAS_ALWAYSFAST))
+				{
+					actorhasflags &=~ ACTORHAS_ALWAYSFAST;
+					actorlostflags |= ACTORHAS_ALWAYSFAST;
+				}
+					
+				if (a.bNODAMAGE && !(actorlostflags & ACTORHAS_NODAMAGE))
+					actorhasflags |= ACTORHAS_NODAMAGE;
+				else if (!(actorlostflags & ACTORHAS_NODAMAGE))
+				{
+					actorhasflags &=~ ACTORHAS_NODAMAGE;
+					actorlostflags |= ACTORHAS_NODAMAGE;
+				}
+				
+				if (actorlostflags)
+				{
+					a.bNOBLOOD = true;
+					a.bALWAYSFAST = true;
+					a.bNODAMAGE = true;
+				}
+			}
+			
+			//================================================================
+			//LIFE FX MOVEMENT
+			//================================================================
+			
+			for (int i = 0; i < lifefx.Size(); i++)
+			{
+				if (lifefx[i] != null)
+				{
+					lifefx[i].warp(a, Cos(lifefxangles[i]) * a.radius * 1.5, Sin(lifefxangles[i]) * a.radius * 1.5,
+					flags: WARPF_ABSOLUTEOFFSET|WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE, heightoffset: 0.9);
+					lifefxangles[i] += lifefxspinspeed;
+					lifefx[i].alpha = 0.3;
+				}
+				
+				while (lifefxangles[i] > 360)
+				{
+					lifefxangles[i] -= 360;
+				}
+			}
+			
+			//================================================================
+			//LIFE FX SHRINKING
+			//================================================================
+			
+			if (lifefx.Size() != 0 && !a.bNODAMAGE)
+			{
+				vector2 tempv2;
+				double healthpercent = double(a.health) / double(a.SpawnHealth());
+				if (healthpercent > 3.0)
+				{
+					healthpercent = 3.0;
+				}
+				
+				tempv2.x = (lifefxscale * healthpercent) + lifefxscale;
+				tempv2.y = (lifefxscale * healthpercent) + lifefxscale;
+			
+				lifefx[lifefx.Size() - 1].Scale = tempv2;
+				lifefx[lifefx.Size() - 1].alpha = 1.0;
+			}
+			
+			//================================================================
+			//THRALL HANDLING
+			//abandon all hope ye who enter
+			//arrays are cursed, and i have paid dearly for using them
+			//================================================================
+			
+			if(thralls.Size() != 0)
+			{
+				int livingthralls = 0;
+				
+				for (int i = 0; i < thralls.Size(); i++)
+				{
+					if (thralls[i] != null) //while i shouldnt have to do this a vm crash happened here somehow
+					{
+						if (minibossdied && !thralldead[i])
+						{
+							thrallfx[i].SetStateLabel("explodedestroy");	
+								
+							for (int j = 0; j < traildensity; j++)
+							{
+								int fug = j + (i * traildensity);
+								
+								thrallfxtrails[fug].SetStateLabel("explodedestroy");
+							}
+							
+							thralls.delete(i);
+							thrallfxtrails.delete(i, traildensity);
+						}
+						else
+						{
+							if (thrallmeup)
+							{
+								thralls[i].A_CallSpecial(17, 0);
+								thralldead[i] = false;
+							}
+							
+							
+							if (thralls[i] != null)
+							{
+								if (thralldead[i] && thralls[i].health > 0)
+								{
+									thralldead[i] = false;
+								}
+							}
+						
+						
+							thrallfx[i].warp(thralls[i], zofs: thralls[i].height, flags: WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE);
+							
+							double xincr, yincr, zincr;
+							
+							xincr = (thralls[i].pos.x - a.pos.x) / double(traildensity);
+							yincr = (thralls[i].pos.y - a.pos.y) / double(traildensity);
+							zincr = (thralls[i].pos.z - a.pos.z) / double(traildensity);
+							
+							for (int j = 0; j < traildensity; j++)
+							{
+								int fuck = j + (i * traildensity);
+								thrallfxtrails[fuck].warp(a, xincr * double(j), 
+								yincr * double(j), (zincr * double(j)) + a.height / 2, 
+								flags: WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE|WARPF_ABSOLUTEOFFSET);
+							}
+							
+							if (!thralldead[i] && thralls[i].health <= 0)
+							{
+								thralldead[i] = true;
+								thrallfx[i].SetStateLabel("explode");
+								for (int j = 0; j < traildensity; j++)
+								{
+									int fug = j + (i * traildensity);
+									thrallfxtrails[fug].SetStateLabel("explode");
+								}
+							}
+							else if (!thralldead[i])
+							{
+								livingthralls++;
+								for (int j = 0; j < traildensity; j++)
+								{
+									int fug = j + (i * traildensity);
+									
+									if (thrallfxtrails[fug].findstate("spawn") != thrallfxtrails[fug].curstate)
+										thrallfxtrails[fug].SetStateLabel("spawn");
+										
+									if (thrallfx[i].findstate("spawn") != thrallfx[i].curstate)
+										thrallfx[i].SetStateLabel("spawn");
+								}
+							}
+						}
+					}
+				}
+				
+				if (livingthralls != 0)
+				{
+					a.DamageFactor = 1.0 - (0.8 * (livingthralls / thralls.Size()));
+				}
+				else
+				{
+					a.DamageFactor = 1.0;
+				}
+				
+				thrallmeup = false;
+			}
+		}
+		else if (!minibossdied)
+		{
+			//Console.printf("%s is dead", minibossname);
+			minibossdied = true;
+			for (int i = 0; i < lifefx.Size(); i++)
+			{
+				lifefx[i].SetStateLabel("explode");
+				
+				vector2 tempv2;
+				tempv2.x = lifefxscale * 2.0;
+				tempv2.y = lifefxscale * 2.0;
+			
+				lifefx[i].Scale = tempv2;
+			}
+				
+			lives = 0;
+			lifefx.Clear();
+		}
+	}
+}
