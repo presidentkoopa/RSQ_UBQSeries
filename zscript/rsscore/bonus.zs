@@ -211,6 +211,27 @@ class RS_ScoreRegistry : StaticEventHandler
 		return false;
 	}
 
+	// THE SERIES' SERVICES, FOUND ONCE (svc.zs). Services are made once at start-up and never change
+	// in a session, so the list of each one a name matches is kept here, rebuilt only when this static
+	// handler is new (transient: nothing to save).
+	transient bool svcBuilt;
+	transient Array<Service> svcList;
+	transient Array<int> svcStart, svcCount;
+	void EnsureSvc()
+	{
+		if (svcBuilt) return;
+		svcBuilt = true;
+		svcList.Clear(); svcStart.Clear(); svcCount.Clear();
+		for (int w = 0; w < RS_Svc.NUM; w++)
+		{
+			svcStart.Push(svcList.Size());
+			let it = ServiceIterator.Find(RS_Svc.NameOf(w));
+			Service s;
+			while (s = it.Next()) svcList.Push(s);
+			svcCount.Push(svcList.Size() - svcStart[w]);
+		}
+	}
+
 	static RS_ScoreRegistry Get()
 	{
 		let reg = RS_ScoreRegistry(StaticEventHandler.Find("RS_ScoreRegistry"));

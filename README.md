@@ -477,6 +477,18 @@ starts clean. Big moment (SlowMo pulse): a three-step named combo, or four tools
 rows included), `kill.base`, `GetString kill.chain` ("gun>whip>shield.bash", finisher last), `GetObject
 kill.victim`. The Gun Bonsai VR patch's XP Source: Style reads these.
 
+**Cost per blow (polish, 10-27, measured).** Every series question went through `ServiceIterator.Find`,
+which makes an iterator object and walks every service in the game, lower-casing and searching each name
+in the VM; the combo system asks several per blow (Classify) and per monster per tic (Poll). The services
+each name matches are now found once (`RS_ScoreRegistry.EnsureSvc`, `zscript/rsscore/svc.zs`) and asked
+directly; same services, same order, same answers. Rig B, the owner's full order, 18 Brutal Doom rifle
+zombies sprayed with Brutal Doom's own puffs (`ShotgunPuff` / `MachineGunBulletPuff`, 20 LineAttacks a tic
+for 10 s, ~5000 blows): Classify 29.6 -> 3.0 us a blow, Poll 56.4 -> 6.1 us a monster-tic, the whole
+damage-event chain (every handler of every mod loaded) 79.5 -> 29.0 us a blow, the worst tic 2.30 ->
+1.25 ms. The old and new lookups answered alike 3762 times out of 3762 (hook, shield, saber, rig, grab
+and SlowMo requests, SlowMo on). The HUD's and the accessibility helper's ui-scope lookups are unchanged
+(once per frame, not per blow).
+
 **The living word** (`rs_score_alive`, on; Options -> Score -> Living Label): only the word "Score:"
 moves: a slow pastel hue cycle (24 s), a breath (88-100 % every 4 s), warming toward gold in the last
 quarter before a reward (and breathing twice as fast), full white easing back over a second after a

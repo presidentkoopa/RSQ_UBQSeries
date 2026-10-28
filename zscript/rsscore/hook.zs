@@ -52,27 +52,13 @@ class RS_Grapple play
 	static int Ask(String request, Actor about, int arg = 0)
 	{
 		if (!about) return -1;
-		let it = ServiceIterator.Find("RSQGR_Service");
-		Service s;
-		while (s = it.Next())
-		{
-			int v = s.GetInt(request, "", arg, 0, about);
-			if (v >= 0) return v;
-		}
-		return -1;
+		return RS_Svc.Int(RS_Svc.GRAPPLE, request, arg, about);
 	}
 
 	static Actor AskActor(String request, Actor about)
 	{
 		if (!about) return null;
-		let it = ServiceIterator.Find("RSQGR_Service");
-		Service s;
-		while (s = it.Next())
-		{
-			let a = Actor(s.GetObject(request, "", 0, 0, about));
-			if (a) return a;
-		}
-		return null;
+		return RS_Svc.Act(RS_Svc.GRAPPLE, request, about);
 	}
 
 	// this killer hooked the victim, and it was on the line at most `within` tics ago
