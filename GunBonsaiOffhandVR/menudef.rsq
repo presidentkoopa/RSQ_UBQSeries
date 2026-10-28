@@ -1,0 +1,88 @@
+// Gun Bonsai VR patch -- the suite upgrades' options: one short page, the rest under Advanced.
+AddOptionMenu "OptionsMenu"
+{
+	Submenu "$RSQ_MENU_TITLE", "RSQ_MeleeOptions"
+}
+
+// and in Gun Bonsai's own options, at the bottom: Slappers Only and the way in
+AddOptionMenu "GunBonsaiOptions"
+{
+	StaticText " "
+	Option "$RSQ_MENU_SLAPPERS", "rsq_slappers", "OnOff"
+	Submenu "$RSQ_MENU_TITLE", "RSQ_MeleeOptions"
+}
+
+OptionValue "RSQ_XPSources"
+{
+	0, "$RSQ_MENU_XPSRC_DAMAGE"
+	1, "$RSQ_MENU_XPSRC_STYLE"
+	2, "$RSQ_MENU_XPSRC_BOTH"
+}
+
+OptionMenu "RSQ_MeleeOptions"
+{
+	Title "$RSQ_MENU_TITLE"
+	Option "$RSQ_MENU_SLAPPERS", "rsq_slappers", "OnOff"
+	Option "$RSQ_MENU_GLOVES", "rsq_gloves", "OnOff"
+	Option "$RSQ_MENU_XPSRC", "rsq_xp_source", "RSQ_XPSources"
+	Option "$RSQ_MENU_SHIELDGAUGE", "rsq_hud_shield", "OnOff"
+	StaticText " "
+	Submenu "$RSQ_MENU_ADV", "RSQ_MeleeAdvanced"
+}
+
+OptionMenu "RSQ_MeleeAdvanced"
+{
+	Title "$RSQ_MENU_ADV"
+	Slider "$RSQ_MENU_FORCE_START", "rsq_force_start", 0.1, 1.0, 0.05, 2
+	Slider "$RSQ_MENU_PUNCH_MIN", "rsq_punch_min_speed", 0.5, 5.0, 0.25, 2
+	Slider "$RSQ_MENU_PUNCH_FULL", "rsq_punch_full_speed", 3.0, 12.0, 0.5, 1
+	Slider "$RSQ_MENU_PUNCH_DMG", "rsq_punch_damage", 2, 40, 1, 0
+	Slider "$RSQ_MENU_STAR_FIRST", "rsq_star_first", 0, 20, 1, 0
+	Slider "$RSQ_MENU_STAR_EVERY", "rsq_star_every", 0, 10, 1, 0
+	Slider "$RSQ_MENU_HOOK_XP", "rsq_hook_xp", 0, 3, 0.1, 1
+	Slider "$RSQ_MENU_XPSTYLE", "rsq_xp_style_scale", 0.1, 3, 0.1, 1
+	Slider "$RSQ_MENU_XPPLAYER", "rsq_xp_style_player", 0, 50, 5, 0
+}
+
+// The screens: Gun Bonsai's three menu names, pointed at the routers (rsq/ui/router.zs), which are
+// Gun Bonsai's own menus with rsq_ui_skin 0 and open the skin's screens otherwise.
+OptionMenu "GunBonsaiStatusDisplay"
+{
+	class RSQUI_StatusRouter
+	Title "$TFLV_MENU_STATUS_TITLE"
+}
+
+OptionMenu "GunBonsaiWeaponLevelUpMenu"
+{
+	class RSQUI_WeaponLevelUpRouter
+	Title "$TFLV_MENU_WEAPON_LEVELUP_TITLE"
+}
+
+OptionMenu "GunBonsaiPlayerLevelUpMenu"
+{
+	class RSQUI_PlayerLevelUpRouter
+	Title "$TFLV_MENU_PLAYER_LEVELUP_TITLE"
+}
+
+// The screens' options.
+AddOptionMenu "OptionsMenu"
+{
+	Submenu "Gun Bonsai Screens", "RSQUI_Options"
+}
+
+OptionValue "RSQUI_Skins"
+{
+	0, "Gun Bonsai"
+	1, "Mockup"
+	2, "Hex Rail"
+	3, "Terminal"
+}
+
+OptionMenu "RSQUI_Options"
+{
+	Title "GUN BONSAI SCREENS"
+	Option "Skin", "rsq_ui_skin", "RSQUI_Skins"
+	Slider "HUD Inset", "rsq_ui_inset", 0.0, 0.25, 0.01, 2
+	Slider "HUD Size", "rsq_ui_hud_scale", 0.5, 2.0, 0.05, 2
+	Option "Ammo And Health", "rsq_ui_bottom", "OnOff"
+}

@@ -1,0 +1,432 @@
+// #namespace TFLV;
+//
+// ---------------------------------------------------------------------------
+// VR / OFFHAND PATCH -- replaces the stock 0.10.6 file.
+//
+// Stock Gun Bonsai draws one HUD for one weapon. We have two weapons, so we
+// draw two HUDs: mainhand top-right, offhand top-left.
+//
+// Almost nothing here needed to change to make that work. The stock HUD was
+// already fully parameterised -- position, scale, alpha and mirroring all
+// arrive through Calibrate() -- so cloning it is a matter of calling it twice
+// with a second set of anchors rather than of rewriting any drawing code. The
+// only structural change is that Calibrate() now takes its geometry as
+// arguments instead of reading the cvars itself.
+//
+// The mirror settings are picked so the two read as a matched pair. `face`
+// selects a corner-specific frame texture on the numpad convention (4 = points
+// left, 6 = points right), so the offhand HUD keeps GB's stock top-left look
+// and the mainhand HUD is its horizontal reflection.
+//
+// Both HUDs carry the player XP bar. That is duplicated information, but it is
+// what the frame art draws and blanking one side would mean shipping new
+// textures -- which belongs to the in-world HUD work, not here.
+// ---------------------------------------------------------------------------
+
+// All values here are in texture coordinate space.
+const HUD_HEIGHT = 512;
+const HUD_WIDTH = 3*HUD_HEIGHT;
+// Starting X coordinate and total width of XP bars.
+const HUD_WXP_X = 492;
+const HUD_WXP_W = 916;
+const HUD_PXP_X = 491;
+const HUD_PXP_W = 304;
+// Text positioning.
+// Northwest gravity
+const HUD_TOPTEXT_X = 150;
+const HUD_TOPTEXT_Y = 117;
+// Southeast gravity
+const HUD_BOTTEXT_X = 400;
+const HUD_BOTTEXT_Y = 392;
+// Southwest gravity
+const HUD_INFOTEXT_X = 508;
+const HUD_INFOTEXT_Y = 271;
+
+enum TFLV_HUD_Gravity {
+  HUD_GRAV_NW = 0,
+  HUD_GRAV_NE = 1,
+  HUD_GRAV_SW = 2,
+  HUD_GRAV_SE = 3
+}
+
+enum TFLV_HUD_Mirror {
+  HUD_MIRROR_H = 1,
+  HUD_MIRROR_V = 2
+}
+
+class TFLV_HUD : Object ui {
+  double scale, screenscale, alpha;
+  uint hudx, hudy;
+  uint hudw, hudh;
+  uint fbw, fbh;
+  uint mirror;
+
+  // Stock entry point. Uses the stock bonsai_hud_* cvars.
+  void Draw(TFLV_CurrentStats stats) {
+    double x, y, sc, al; uint mi;
+    [x, y, sc, al, mi] = TFLV_Settings.hud_params();
+    Calibrate(x, y, sc, al, mi);
+    DrawHUD(stats);
+  }
+
+  // VR PATCH: draw this hand's HUD at its own anchor.
+  // 0 = mainhand (top right by default), 1 = offhand (top left).
+  void DrawForHand(TFLV_CurrentStats stats, int hand) {
+    double x, y, sc, al; uint mi;
+    // Scale and alpha stay shared -- two HUDs at different sizes reads as a
+    // bug rather than as a choice.
+    [x, y, sc, al, mi] = TFLV_Settings.hud_params();
+    // Read through TFLV_Settings, not as bare identifiers: these are `user`
+    // cvars, and ZScript refuses direct access to userinfo cvars from any
+    // scope -- "Cannot access userinfo CVARs directly. Use GetCVar() instead."
+    if (hand) {
+      x = TFLV_Settings.GetDouble("bonsai_vr_hud_off_x");
+      y = TFLV_Settings.GetDouble("bonsai_vr_hud_off_y");
+      mi = TFLV_Settings.GetInt("bonsai_vr_hud_off_mirror");
+    } else {
+      x = TFLV_Settings.GetDouble("bonsai_vr_hud_main_x");
+      y = TFLV_Settings.GetDouble("bonsai_vr_hud_main_y");
+      mi = TFLV_Settings.GetInt("bonsai_vr_hud_main_mirror");
+    }
+    Calibrate(x, y, sc, al, mi);
+    // RSQ PATCH (left-handed): the anchors are written for a right-hander (main hand top right).
+    // A left-hander's main hand is on the left, so the pair is reflected across the screen: the
+    // same place measured from the other edge, and the horizontal mirror bit flipped so the
+    // corner frame still points outward. Whatever the anchor's form (fraction, pixels from the
+    // right, absolute pixels), hudx is resolved by now, so one reflection covers all three.
+    if (RSQ_LeftLayout() && fbw > hudw) {
+      hudx = (hudx <= fbw - hudw) ? (fbw - hudw) - hudx : 0;
+      mirror ^= 1;
+    }
+    DrawHUD(stats);
+  }
+
+  // RSQ PATCH (shield gauge, rsq_hud_shield, default off): a third gauge, for the ShieldSaw while it
+  // rides on the shoulder (stowed or thrown; in a hand, that hand's gauge shows it). Gun Bonsai's own
+  // gauge -- the same art, colours, bars and text, through DrawHUD -- centred at the top between the
+  // two hand gauges, at the same height, scaled down to fit the gap between them (ShieldScale).
+  void DrawShield(TFLV_CurrentStats stats) {
+    double x, y, sc, al; uint mi;
+    [x, y, sc, al, mi] = TFLV_Settings.hud_params();
+    double ty = TFLV_Settings.GetDouble("bonsai_vr_hud_main_y");
+    Calibrate(0.5, ty, sc * ShieldScale(), al, 2);
+    // just under the hand gauges' bars, whose inner ends cross the top of the gap (SHIELD_DROP of a hand
+    // gauge's height), so it touches neither their bars nor their text
+    if (sc > 1) sc = sc / 1080;
+    hudy += uint(SHIELD_DROP * sc * fbh);
+    DrawHUD(stats);
+  }
+  const SHIELD_DROP = 0.22;
+
+  // The shield gauge's size, as a share of a hand gauge's: as large as fits in 90% of the gap the two
+  // hand gauges leave (their default anchors, 0.01 and 0.99), never larger than they are, never
+  // smaller than half. A gauge is 3 x its height wide; its height is bonsai_hud_size of the screen's.
+  static double ShieldScale() {
+    double sc = TFLV_Settings.GetDouble("bonsai_hud_size");
+    if (sc > 1) sc = sc / 1080;
+    double asp = max(0.5, screen.GetAspectRatio());
+    double wf = 3 * sc / asp;
+    double offx = TFLV_Settings.GetDouble("bonsai_vr_hud_off_x"), mainx = TFLV_Settings.GetDouble("bonsai_vr_hud_main_x");
+    if (offx < 0 || offx > 1) offx = 0.01;
+    if (mainx < 0 || mainx > 1) mainx = 0.99;
+    double gap = (1 - wf) * (mainx - offx) - wf;
+    if (wf <= 0) return 1;
+    return clamp(0.9 * gap / wf, 0.5, 1.0);
+  }
+
+  // where the shield gauge sits, as fractions of the screen's height: its top and its height (RSQ_HudService)
+  static double, double ShieldBand() {
+    double sc = TFLV_Settings.GetDouble("bonsai_hud_size");
+    if (sc > 1) sc = sc / 1080;
+    double h = sc * ShieldScale();
+    double ty = TFLV_Settings.GetDouble("bonsai_vr_hud_main_y");
+    double top = ((ty >= 0 && ty <= 1) ? (1 - h) * ty : 0.02) + SHIELD_DROP * sc;
+    return top, h;
+  }
+
+  // rsqa_handed (RSQ_Accessibility: 1 right, 2 left) when set, else QuestZDoom's own Control Scheme.
+  static clearscope bool RSQ_LeftLayout() {
+    CVar h = null; { Name rsqaN = "RSQA_Menu"; class<Object> rsqaC = rsqaN; if (rsqaC) h = CVar.FindCVar("rsqa_handed"); }  // only while RSQ_Accessibility is loaded: a value left in the ini must not act on its own
+    int v = h ? h.GetInt() : 0;
+    if (v == 1) return false;
+    if (v == 2) return true;
+    let cs = CVar.FindCVar("vr_control_scheme");
+    return cs && cs.GetInt() >= 10;
+  }
+
+  // at scale 1.0, the framebuffer height is 512 and the width is whatever is
+  // appropriate to the screen AR based on that.
+  // For a framebuffer size of 768, the font looks about right for a HUD size
+  // of 0.1.
+  void Calibrate(double x, double y, double sc, double al, uint mi) {
+    self.scale = sc;
+    self.alpha = al;
+    self.mirror = mi;
+    if (scale > 1) // compatibility hack for pre-0.8.6 configs
+      scale = scale/1080;
+    // For a framebuffer size of 768, the font looks about right for a HUD scale
+    // of 0.1.
+    // This means that for a size of 512 it would be about right for a scale of 0.15.
+    self.fbh = 512/(scale/0.15);
+    self.fbw = self.fbh*screen.GetAspectRatio();
+    self.hudh = self.fbh * self.scale;
+    self.hudw = 3*self.hudh;
+    self.hudx = realposition(self.fbw, self.hudw, x);
+    self.hudy = realposition(self.fbh, self.hudh, y);
+    self.screenscale = float(self.fbh)/HUD_HEIGHT;
+  }
+
+  static uint realposition(double field_size, double obj_size, double setting) {
+    if (setting >= 0.0 && setting <= 1.0) {
+      return (field_size - obj_size)*setting;
+    } else if (setting < 0) {
+      return field_size + setting - obj_size;
+    } else {
+      return setting;
+    }
+  }
+
+  static TextureID tex(string name) {
+    return TexMan.CheckForTexture(name, TexMan.TYPE_ANY);
+  }
+
+  // Coordinates are in HUD texture coordinate space, relative to the top left
+  // corner of the HUD.
+  void Text(string text, uint colour, uint x, uint y, TFLV_HUD_Gravity grav) {
+    let thefont = NewSmallFont;
+    // Apply mirroring settings.
+    if (mirror & HUD_MIRROR_H) x = HUD_WIDTH - x;
+    if (mirror & HUD_MIRROR_V) y = HUD_HEIGHT - y + 10; // A bit of padding
+    grav ^= mirror;
+
+    // Convert to framebuffer coordinate space. hudx/y are already in framebuffer
+    // coordinates.
+    // x/y are in texture coordinates, which we need to convert based on both the
+    // ratio between the texture size (1536x512) and the framebuffer size, and
+    // the configured scale factor.
+    x = hudx + x * scale * screenscale;
+    y = hudy + y * scale * screenscale;
+
+    // Adjust for gravity based on the as-rendered size of the text.
+    switch (grav) {
+      case HUD_GRAV_NW:
+        // No changes needed.
+        break;
+      case HUD_GRAV_SE:
+        x = x - thefont.StringWidth(text);
+        y = y - thefont.GetHeight();
+        break;
+      case HUD_GRAV_NE:
+        x = x - thefont.StringWidth(text);
+        break;
+      case HUD_GRAV_SW:
+        y = y - thefont.GetHeight();
+        break;
+    }
+
+    screen.DrawText(thefont, thefont.CR_WHITE, x, y, text,
+      DTA_VirtualWidth, fbw, DTA_VirtualHeight, fbh, DTA_KeepRatio, true,
+      DTA_Color, colour, DTA_Alpha, alpha);
+  }
+
+  // Draw a progress bar overlay using the given texture and colour, starting at
+  // texture coordinate tx and with a maximum width of tw.
+  void DrawProgressBar(TextureID texture, uint colour, double progress, uint tx, uint tw) {
+    // This is real nasty.
+    // tx and tw are given in HUD texture coordinate space, 1536x512.
+    // hudx is in framebuffer coordinate space, nominally 1536x512 but adjusted
+    // based on HUD scale and screen aspect ratio.
+    // The clipping plane needs to be configured in SCREEN coordinate space,
+    // for some demented reason.
+    // So we need to convert tx and tw into framebuffer coordinate
+    // So we convert everything into framebuffer coordinate space, then convert
+    // that into screen space, then cry for a while.
+    uint clip_at;
+    if (mirror & HUD_MIRROR_H) {
+      clip_at = hudx + HUD_WIDTH * scale * screenscale; // right edge of hud
+      clip_at -= (tx + tw * progress) * scale * screenscale;
+    } else {
+      clip_at = hudx + (tx + tw * progress) * scale * screenscale;
+    }
+    clip_at *= screen.GetWidth()/float(fbw);
+    Screen.DrawTexture(
+        texture, false, hudx, hudy,
+        DTA_VirtualWidth, fbw, DTA_VirtualHeight, fbh, DTA_KeepRatio, true,
+        DTA_DestWidth, hudw, DTA_DestHeight, hudh,
+        DTA_Color, colour, DTA_Alpha, alpha,
+        (mirror & HUD_MIRROR_H) ? DTA_ClipLeft : DTA_ClipRight,
+        clip_at);
+  }
+
+  // We want the spike for each colour channel to sweep from 0 to 17, hold for 34,
+  // then back down to 0, hold for 34, etc.
+  // This is equivalent to sweeping from 0 to 51 and then back to 0, continuously,
+  // but then subtracting 17 and clipping it at y=[0,17]
+  // To get a triangle wave of wavelength 102 and amplitude 51, we need a sawtooth
+  // wave of wavelength 102, which is just y = x % 102
+  int sawtooth(int x) {
+    return x % 102;
+  }
+  int triangle(int x) {
+    return abs(sawtooth(x) - 51);
+  }
+  int clamped_triangle(int x) {
+    return clamp(triangle(x) - 17, 0, 17);
+  }
+
+  uint GetShinyColour(int offset) {
+    // Simple RGB cycle. Ramps up R to max, then G to max, then R to 0, then B
+    // to max, etc. Ramps are in increments of 15.
+    // To do this we generate a triangle wave with a wavelength of (255/15*6)
+    // from the tic counter, centered at 0 for red, 34 for green, and 68 for blue.
+    int tick = gametic % (255/15*6) - 255/15*3;
+    uint r = 15 * clamped_triangle(offset + gametic);
+    uint g = 15 * clamped_triangle(offset + gametic - 34);
+    uint b = 15 * clamped_triangle(offset + gametic - 68);
+    // ARGB8 format
+    return 0xFF000000 | r<<16 | g<<8 | b;
+  }
+
+  bool LevelUp(TFLV_CurrentStats stats) {
+    return stats.wxp >= stats.wmax || stats.pxp >= stats.pmax;
+  }
+
+  void DrawHUD(TFLV_CurrentStats stats) {
+    string frame_tex, weapon_tex, player_tex;
+    [frame_tex, weapon_tex, player_tex] = TFLV_Settings.hud_skin();
+    uint frame_rgb, weapon_rgb, player_rgb;
+    [frame_rgb, weapon_rgb, player_rgb] = TFLV_Settings.hud_colours();
+    // VR PATCH, colour-blind play (RSQ_Accessibility's rsqa_colorblind; RSQGB_CB below). Off,
+    // the HUD is Gun Bonsai's own. On, the weapon and player bars (and their text) take the
+    // series pair for that vision -- the stock azure 0080FF and green 00FF80 are one colour to a
+    // tritanope -- and a level-up is not colour alone: the whole HUD breathes in brightness
+    // while the colours cycle.
+    int cb = RSQGB_CB.Mode();
+    double alpha0 = alpha;
+    if (cb) {
+      weapon_rgb = 0xFF000000 | RSQGB_CB.Rgb(RSQGB_CB.CB_HAVE, cb);
+      player_rgb = 0xFF000000 | RSQGB_CB.Rgb(RSQGB_CB.CB_COULD, cb);
+      if (LevelUp(stats)) alpha = alpha0 * (0.45 + 0.55 * (0.5 + 0.5 * sin(gametic * 12.0)));
+    }
+    uint face = 2;
+    if (mirror & HUD_MIRROR_V) face = 4;
+    if (mirror & HUD_MIRROR_H) face = 10 - face;
+
+    // HUD disabled completely?
+    if (frame_tex == "") return;
+
+    Screen.DrawTexture(tex(frame_tex..face), false, hudx, hudy,
+        DTA_VirtualWidth, fbw, DTA_VirtualHeight, fbh, DTA_KeepRatio, true,
+        DTA_Color, LevelUp(stats) ? GetShinyColour(0) : frame_rgb,
+        DTA_Alpha, alpha,
+        DTA_DestWidth, hudw, DTA_DestHeight, hudh);
+
+    DrawProgressBar(
+        tex(weapon_tex..face), LevelUp(stats) ? GetShinyColour(34) : weapon_rgb,
+        stats.wxp/stats.wmax, HUD_WXP_X, HUD_WXP_W);
+    DrawProgressBar(
+        tex(player_tex..face), LevelUp(stats) ? GetShinyColour(68) : player_rgb,
+        double(stats.pxp)/(stats.pmax), HUD_PXP_X, HUD_PXP_W);
+
+    Text(
+      string.format(StringTable.Localize("$TFLV_HUD_LV"), stats.plvl),
+      player_rgb, HUD_TOPTEXT_X, HUD_TOPTEXT_Y, HUD_GRAV_NW);
+    Text(
+      string.format("%d/%d", stats.pxp, stats.pmax),
+      player_rgb, HUD_BOTTEXT_X, HUD_BOTTEXT_Y, HUD_GRAV_SE);
+
+    let spacer = stats.effect == "" ? "" : " ";
+    Text(
+      string.format("%s%s%s", stats.effect, spacer, stats.wname),
+      weapon_rgb, HUD_INFOTEXT_X,
+      // HACK HACK HACK, we adjust y in HUD coordinate space so that it ends up
+      // in the right place (directly above the weapon name) when it gets rendered.
+      HUD_INFOTEXT_Y - NewSmallFont.GetHeight()/scale/screenscale,
+      HUD_GRAV_SW);
+    if (stats.winfo.IsIgnored()) {
+      Text(
+        StringTable.Localize("$TFLV_HUD_LV_IGNORED"),
+        weapon_rgb, HUD_INFOTEXT_X, HUD_INFOTEXT_Y, HUD_GRAV_SW);
+      DrawProgressBar(tex(weapon_tex..face), 0xFF808080, 1.0, HUD_WXP_X, HUD_WXP_W);
+    } else {
+      Text(
+        string.format(StringTable.Localize("$TFLV_HUD_LVXP"),
+          stats.wlvl, stats.wxp, stats.wmax),
+        weapon_rgb, HUD_INFOTEXT_X, HUD_INFOTEXT_Y, HUD_GRAV_SW);
+    }
+    alpha = alpha0;
+  }
+}
+
+// RSQGB_CB -- the series' colour-blind palette, read from RSQ_Accessibility's rsqa_colorblind.
+// The same table sits in every Ultra Badass Quest mod under its own prefix (RSQ_Accessibility,
+// tools/cb_template.zs), so a cue means the same colour across the series and each mod still
+// loads alone: without RSQ_Accessibility the setting reads 0 and every cue keeps its own colour.
+//
+//   rsqa_colorblind  0 Off, 1 Protanopia, 2 Deuteranopia, 3 Tritanopia, 4 High Contrast
+//
+// Roles, not colours: IDLE (searching, nothing found), COULD (noticed, would take it), HAVE
+// (taken, locked, yours). A pair of anything (two hands, two bars) uses HAVE and COULD.
+//   protan/deutan  grey D0D0D0, amber FFB000, azure 3090FF  (the blue-yellow axis they keep)
+//   tritan         grey D0D0D0, red FF4040, cyan 00E0E0     (the red-cyan axis they keep)
+//   high contrast  dim grey 8C8C8C, yellow FFFF00, magenta FF40FF (the widest brightness gaps)
+// Measured with tools/cvd.py (Machado 2009 / Vienot 1999, CIEDE2000): every pair >= 24 in the
+// vision it is for; the stock amber/green pair is 7.5 for deuteranopia.
+class RSQGB_CB
+{
+	enum ERole { CB_IDLE, CB_COULD, CB_HAVE }
+
+	static clearscope int Mode()
+	{
+		CVar cv = null; { Name rsqaN = "RSQA_Menu"; class<Object> rsqaC = rsqaN; if (rsqaC) cv = CVar.FindCVar("rsqa_colorblind"); }  // only while RSQ_Accessibility is loaded: a value left in the ini must not act on its own
+		return cv ? clamp(cv.GetInt(), 0, 4) : 0;
+	}
+
+	// 0xRRGGBB for a role in a mode (1..4).
+	static clearscope int Rgb(int role, int mode)
+	{
+		static const int T[] = {
+			0xD0D0D0, 0xFFB000, 0x3090FF,   // 1 protanopia
+			0xD0D0D0, 0xFFB000, 0x3090FF,   // 2 deuteranopia
+			0xD0D0D0, 0xFF4040, 0x00E0E0,   // 3 tritanopia
+			0x8C8C8C, 0xFFFF00, 0xFF40FF    // 4 high contrast
+		};
+		return T[(clamp(mode, 1, 4) - 1) * 3 + clamp(role, 0, 2)];
+	}
+
+	// For lump-defined looks (TRNSLATE, TEXTCOLO): "" off, "_PD", "_T" or "_HC" appended to a name.
+	static clearscope String Suffix()
+	{
+		switch (Mode())
+		{
+			case 1: case 2: return "_PD";
+			case 3: return "_T";
+			case 4: return "_HC";
+		}
+		return "";
+	}
+
+	// The role's colour while the setting is on, else the mod's own colour.
+	static clearscope int Pick(int role, int own)
+	{
+		int m = Mode();
+		return m ? Rgb(role, m) : own;
+	}
+}
+
+// RSQGB_Photo -- RSQ_Accessibility's Photosensitive Mode (rsqa_photosafe) for the shadowed Gun Bonsai
+// files, which compile under Gun Bonsai's own ZSCRIPT (version 2.5, before services): only the three
+// reads they need. The rest of the round-two settings are RSQGB_A11y (rsq/zscript/a11y.zs, the
+// series template). Without RSQ_Accessibility, or off, every answer is "as Gun Bonsai does it".
+class RSQGB_Photo
+{
+	static clearscope bool On()
+	{
+		CVar cv = null; { Name rsqaN = "RSQA_Menu"; class<Object> rsqaC = rsqaN; if (rsqaC) cv = CVar.FindCVar("rsqa_photosafe"); }  // only while RSQ_Accessibility is loaded
+		return cv && cv.GetInt() != 0;
+	}
+	// a strong flash at 40% of its brightness
+	static clearscope double Dim(double v) { return On() ? v * 0.4 : v; }
+	// at least 14 tics between strong flashes (2.5 a second)
+	static clearscope bool Gap(int sinceLast) { return !On() || sinceLast >= 14; }
+}

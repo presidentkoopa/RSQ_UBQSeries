@@ -1,0 +1,3 @@
+// Gun Bonsai VR / Offhand Patch.
+// KEYCONF lumps are additive, so this does not disturb Gun Bonsai's own.
+alias bonsai-hands "netevent bonsai-debug,hands"

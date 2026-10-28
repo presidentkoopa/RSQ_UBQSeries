@@ -1,0 +1,1540 @@
+// Stats object. Each player gets one of these in their inventory.
+// Holds information about the player's guns and the player themself.
+// Also handles applying some damage/resistance bonuses using ModifyDamage().
+// #namespace TFLV;
+// #debug off;
+//
+// ---------------------------------------------------------------------------
+// VR / OFFHAND PATCH -- replaces the stock 0.10.6 file.
+//
+// Stock Gun Bonsai has exactly one live weapon: infoForCurrentWeapon, refreshed
+// once a tic from player.ReadyWeapon. Our engine has two -- mainhand and
+// offhand -- so this file grows a second live slot, and every damage event now
+// resolves *which gun caused it* instead of asking what is in hand right now.
+//
+// The provenance types at the top of this file are new. They live here rather
+// than in their own lump because the patch works by shadowing stock files at
+// their original paths, and adding a file would mean shadowing main.zsc too.
+// ---------------------------------------------------------------------------
+
+// Used to get all the information needed for the UI.
+struct TFLV_CurrentStats {
+  // Player stats.
+  TFLV_Upgrade_UpgradeBag pupgrades;
+  uint pxp;
+  uint pmax;
+  uint plvl;
+  // Stats for current weapon.
+  TFLV_WeaponInfo winfo;
+  TFLV_Upgrade_UpgradeBag wupgrades;
+  double wxp;
+  double wmax;
+  uint wlvl;
+  // Name of current weapon.
+  string wname;
+  // Currently active weapon effect.
+  string effect;
+}
+
+// ---------------------------------------------------------------------------
+// PROVENANCE
+//
+// "Which gun is responsible for this actor existing, and in what proportion."
+//
+// The unit of credit is the WeaponInfo, deliberately -- not a hand index and
+// not a Weapon pointer. A hand index is wrong the moment you switch that hand
+// away from the flamethrower whose burn is still ticking. A Weapon pointer
+// dangles when the gun is dropped or destroyed. The WeaponInfo is GB's own
+// per-gun record, it already survives a weapon changing hands (it is keyed by
+// weapon actor pointer, not by hand), and it is a plain object we can hold.
+//
+// It is a *list* because more than one gun can contribute to a single damage
+// source -- two flamethrowers stacking burn on one enemy is the case that
+// forced it. Crediting the last applier gives that enemy's whole remaining
+// burn to whichever gun grazed it last, which is badly wrong when the two
+// contributions are unequal.
+// ---------------------------------------------------------------------------
+class TFLV_VR_Provenance : Object play {
+  // The actor this describes -- a projectile, a puff, a DoT token, a minion.
+  Actor cause;
+  // Parallel arrays; ZScript has no dynamic array of structs.
+  array<TFLV_WeaponInfo> infos;
+  array<double> weights;
+  // What kind of attack this really was, for weapon type inference. -1 means
+  // "work it out normally". See TFLV_VR_Attribution.Claim().
+  int typeHint;
+  // Tic this was created, for age-based pruning.
+  int born;
+
+  // Beyond this many distinct contributors we fold the smallest into the
+  // largest. Two hands means two entries in practice; four is slack.
+  const MAX_CONTRIBUTORS = 4;
+
+  void Init(Actor cause, int typeHint = -1) {
+    self.cause = cause;
+    self.typeHint = typeHint;
+    // gametic, not level.maptime -- a plain `Object play` has no `level` in
+    // scope, and gametic is a global available everywhere. GB uses it the same
+    // way throughout.
+    self.born = gametic;
+  }
+
+  // Add weight for a contributor, merging if it is already present.
+  void Add(TFLV_WeaponInfo info, double weight = 1.0) {
+    if (!info || weight <= 0) return;
+    for (int i = 0; i < infos.size(); ++i) {
+      if (infos[i] == info) {
+        weights[i] += weight;
+        return;
+      }
+    }
+    if (infos.size() >= MAX_CONTRIBUTORS) {
+      // Fold the smallest contributor into the largest rather than dropping
+      // the new one -- the newest application is the one most likely to still
+      // be doing damage.
+      int smallest = 0; int largest = 0;
+      for (int i = 1; i < infos.size(); ++i) {
+        if (weights[i] < weights[smallest]) smallest = i;
+        if (weights[i] > weights[largest]) largest = i;
+      }
+      if (smallest != largest) {
+        weights[largest] += weights[smallest];
+        infos.Delete(smallest);
+        weights.Delete(smallest);
+      } else {
+        return;
+      }
+    }
+    infos.push(info);
+    weights.push(weight);
+  }
+
+  // Copy another record's contributors into this one. Used when a submunition
+  // or an explosion inherits from the round that spawned it.
+  void InheritFrom(TFLV_VR_Provenance other) {
+    if (!other) return;
+    for (int i = 0; i < other.infos.size(); ++i) {
+      Add(other.infos[i], other.weights[i]);
+    }
+    if (self.typeHint < 0) self.typeHint = other.typeHint;
+  }
+
+  double TotalWeight() const {
+    double t = 0;
+    for (int i = 0; i < weights.size(); ++i) t += weights[i];
+    return t;
+  }
+
+  // The single largest contributor. Used for effects that are not divisible --
+  // an upgrade either procs or it doesn't; you cannot fire 30% of an HE round.
+  TFLV_WeaponInfo Dominant() const {
+    TFLV_WeaponInfo best = null;
+    double bestw = 0;
+    for (int i = 0; i < infos.size(); ++i) {
+      if (weights[i] > bestw && infos[i] && infos[i].wpn) {
+        bestw = weights[i]; best = infos[i];
+      }
+    }
+    return best;
+  }
+
+  // True once every gun that contributed has been forgotten.
+  bool IsEmpty() const {
+    for (int i = 0; i < infos.size(); ++i) {
+      if (infos[i]) return false;
+    }
+    return true;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// PUBLIC CLAIM API
+//
+// Any mod that spawns a projectile and already knows which weapon fired it can
+// say so directly, at the spawn site, where the hand is a local variable
+// anyway. That is always better than us guessing afterwards.
+//
+//   TFLV_VR_Attribution.Claim(shot, firedBy);
+//   TFLV_VR_Attribution.Claim(shot, firedBy, TFLV_VR_Attribution.HINT_HITSCAN);
+//
+// The type hint matters as much as the attribution. A mod that converts
+// hitscans into travelling rounds hands GB a bMISSILE actor, and GB's weapon
+// type inference will happily conclude that your shotgun is a projectile
+// weapon and start offering it the wrong upgrades. HINT_HITSCAN says "this was
+// really a bullet" and the inference counters record it as one.
+//
+// The hint feeds the *counters*, never TFLV_WeaponInfo.typeflags -- typeflags
+// is BONSAIRC's override channel and is checked ahead of the counters, so
+// writing it here would let a claim silently outrank the user's own config.
+// ---------------------------------------------------------------------------
+class TFLV_VR_Attribution abstract play {
+  enum ETypeHint {
+    HINT_NONE       = -1,
+    HINT_HITSCAN    = 0,
+    HINT_PROJECTILE = 1,
+    HINT_MELEE      = 2,
+  }
+
+  static void Claim(Actor shot, Weapon firedBy, int typeHint = HINT_NONE) {
+    if (!shot || !firedBy || !firedBy.owner) return;
+    let stats = TFLV_PerPlayerStats.GetStatsFor(firedBy.owner);
+    if (!stats) return;
+    let info = stats.GetOrCreateInfoFor(firedBy);
+    if (!info) return;
+    stats.RegisterProvenance(shot, info, 1.0, typeHint);
+  }
+}
+
+// TODO: see if there's a way we can evacuate this to the StaticEventHandler
+// and reinsert it into the player when something happens, so that it reliably
+// persists across deaths, pistol starts, etc -- make this an option.
+class TFLV_PerPlayerStats : Object play {
+  array<TFLV_WeaponInfo> weapons;
+  TFLV_Upgrade_UpgradeBag upgrades;
+  uint XP;
+  uint level;
+  TFLV_WeaponInfo infoForCurrentWeapon;
+  // VR PATCH: the offhand's live info. Peer of infoForCurrentWeapon, not a
+  // special case of it.
+  TFLV_WeaponInfo infoForOffhandWeapon;
+  int prevScore;
+  TFLV_PerPlayerStatsProxy proxy;
+  Actor owner;
+
+  // VR PATCH: provenance registry. Bounded, newest-first, oldest dropped under
+  // pressure. Dropping the oldest degrades to spawn-time scoring, which is a
+  // soft failure; refusing new entries would silently un-attribute the newest
+  // shot, which is the exact moment the system exists for.
+  array<TFLV_VR_Provenance> provenance;
+  const PROV_MAX = 96;
+  const PROV_MAX_AGE = 35 * 60; // a minute; long-lived burns keep their own record
+
+  // VR PATCH: hitscan bracket. WorldHitscanPreFired pushes, WorldHitscanFired
+  // pops, and any damage in between belongs to the top of the stack. A single
+  // "last hand this tic" latch would be wrong the moment a shotgun puts twenty
+  // pellets through in one tic while the other hand is also firing; a stack
+  // nests correctly however many shots overlap.
+  array<TFLV_WeaponInfo> hitscanStack;
+  array<int> hitscanHints;
+
+  // VR PATCH (melee upgrades): the claim bracket. A mod whose damage names the
+  // PLAYER as the inflictor -- the ShieldSaw's bash and grind are
+  // DamageMobj(pawn, pawn, ...) because RS_Score reads "inflictor is the pawn"
+  // as the shield -- has no actor of its own to claim. It pushes the weapon
+  // here (RSQ_MeleeUpgradeService "credit.push"), deals the damage, and pops.
+  // Any damage inside that window whose inflictor is the player or nothing
+  // belongs to the top weapon. Cleared once a tic with the hitscan bracket, so
+  // a missed pop can never outlive the tic that made it.
+  array<TFLV_WeaponInfo> claimStack;
+  array<int> claimHints;
+
+  // VR PATCH: resolver telemetry, dumped by `netevent bonsai-debug,hands`.
+  // If we are guessing often in real play we want a counter to say so, not a
+  // player noticing a week later that their XP went to the wrong gun.
+  int provClaims, provInherits, provScored, provScoredThin, provFallback, provDropped;
+  // Counted apart from provClaims so the hands dump can say whether the
+  // inflictor-is-a-weapon rule is firing at all. A script weapon that is its own
+  // inflictor should push this and nothing else; if it is zero after a fight
+  // with the saber, the rule did not run and the thin/scored counters below are
+  // the ones that answered instead.
+  int provSelfClaims;
+  // VR PATCH (suite): damage the suite deals without a gun -- a Distance Grab
+  // throw, the blast of a barrel it set off -- counted here, paid to no weapon.
+  int provPooled;
+
+  // VR PATCH (suite): THE PLAYER POOL. XP earned by something that is not a gun
+  // (a thrown object, a thrown barrel's blast, and the score those kills earn)
+  // goes to no weapon -- crediting the main-hand gun for a barrel it never
+  // touched is the bug this replaces -- and is not thrown away either. It
+  // accumulates here, and every bonsai_base_level_cost of it (the price of a
+  // gun's first level) is one player XP, which is exactly what a gun's level-up
+  // is worth toward a player level (WeaponInfo.AddXP -> AddPlayerXP(1)).
+  double poolXP;
+
+  // VR PATCH (suite): score XP per kill. Each attributed kill since the last
+  // score payment is queued with its weight (the victim's spawn health, which is
+  // the base of a score award); a score rise is split across the queue. A null
+  // info is a pooled kill (a throw). An empty queue falls back to lastKillInfo.
+  array<TFLV_WeaponInfo> scoreKills;
+  array<double> scoreKillW;
+  array<int> scoreKillTic;
+  bool lastKillPooled;
+  // Which hand most recently earned XP, for bonsai_vr_hud_hand == 2.
+  int lastXPHand;
+
+  // VR PATCH (style XP, rsq/zscript/stylexp.zs): which weapon dealt each recent
+  // blow to which monster, so a kill's style can be paid along its combo chain to
+  // the guns and melee weapons that set it up. Bounded ring, newest last.
+  array<Actor> styleV;
+  array<TFLV_WeaponInfo> styleInfo;
+  array<int> styleTic;
+
+  // VR PATCH (style XP): where XP comes from. rsq_xp_source 0 Damage (stock),
+  // 1 Style (RSQ Score's style points, split along the combo chain), 2 Both.
+  // Style needs RSQ Score: without its service this answers 0, Damage.
+  static int RSQ_XPSource() {
+    let cv = CVar.FindCVar("rsq_xp_source");
+    int v = cv ? cv.GetInt() : 0;
+    if (v <= 0) return 0;
+    let it = ServiceIterator.Find("RS_ScoreService");
+    if (!it.Next()) return 0;
+    return v >= 2 ? 2 : 1;
+  }
+
+  void NoteStyleHit(Actor target, TFLV_WeaponInfo info) {
+    if (!target || !info) return;
+    for (int i = styleV.size() - 1; i >= 0; --i) {
+      if (styleV[i] == target && styleInfo[i] == info) { styleTic[i] = gametic; return; }
+    }
+    if (styleV.size() >= 64) { styleV.Delete(0); styleInfo.Delete(0); styleTic.Delete(0); }
+    styleV.push(target); styleInfo.push(info); styleTic.push(gametic);
+  }
+
+  // VR PATCH: the gun credited with the most recent kill, for score-to-XP.
+  //
+  // A TFLV_WeaponInfo and not a hand or a Weapon, for the reasons in the
+  // PROVENANCE comment at the top of this file: a hand is wrong the moment the
+  // gun moves, and a Weapon pointer dangles when it is dropped.
+  //
+  // Not cleared in Initialize(). The info objects survive a save/load and a
+  // level change -- it is the provenance ring's live Actor pointers that do not
+  // -- and Initialize() also runs mid-map when a mod takes the player's
+  // inventory away and gives it back. Clearing here would throw away good
+  // credit in that case; the liveness check at the point of payment is the real
+  // guard.
+  TFLV_WeaponInfo lastKillInfo;
+
+  // VR PATCH: which hand the status screen is showing. The Show Info key
+  // advances it, so repeated presses walk the hands instead of always landing
+  // on the same one. Starts at -1 so the first press lands on the mainhand.
+  int menuHand;
+
+  // VR PATCH: the gun currently being credited, valid only for the duration of
+  // an upgrade dispatch. Anything an upgrade creates during that window --
+  // notably a DoT stack -- reads this to know who to bill. Set and cleared
+  // around the dispatch so it can never be stale.
+  TFLV_WeaponInfo creditingInfo;
+
+  // HACK HACK HACK
+  // The various level up menus need to be able to get a handle to the specific
+  // UpgradeGiver associated with that menu, so it puts itself into this field
+  // just before opening the menu and clears it afterwards.
+  // This is also used to check if an upgrade giver is currently awaiting a menu
+  // response, in which case other upgrade givers will block (since it's possible
+  // to have up to three upgrade givers going off at once).
+  TFLV_UpgradeGiver currentEffectGiver;
+
+  static TFLV_PerPlayerStats GetStatsFor(Actor pawn) {
+    let realpawn = PlayerPawn(pawn);
+    if (!realpawn) return null;
+    return TFLV_EventHandler(StaticEventHandler.Find("TFLV_EventHandler")).GetStatsFor(realpawn);
+  }
+
+  // ==========================================================================
+  // HAND ACCESS
+  // ==========================================================================
+
+  // The weapon in the given hand. 0 = mainhand, 1 = offhand.
+  Weapon WeaponForHand(int hand) const {
+    if (!owner || !owner.player) return null;
+    // `hand == 1`, not `hand`: menuHand starts at -1, and -1 is truthy, which
+    // would silently mean "offhand" everywhere it leaked through.
+    return hand == 1 ? owner.player.OffhandWeapon : owner.player.ReadyWeapon;
+  }
+
+  // The live WeaponInfo for the given hand, or null if that hand is empty or
+  // its info has not been selected yet (which lasts one tic after a switch).
+  TFLV_WeaponInfo GetInfoForHand(int hand) const {
+    Weapon wielded = WeaponForHand(hand);
+    if (!wielded) return null;
+    let info = hand == 1 ? infoForOffhandWeapon : infoForCurrentWeapon;
+    if (info && info.wpn == wielded) return info;
+    return null;
+  }
+
+  // VR PATCH: step the status screen to the next hand that actually holds a
+  // weapon, and return it. Falls back to whatever hand has a gun, so a player
+  // with one weapon just sees that one every press instead of a dead screen.
+  int AdvanceMenuHand() {
+    for (int step = 1; step <= 2; ++step) {
+      int candidate = (menuHand + step) & 1;
+      if (GetInfoForHand(candidate)) { menuHand = candidate; return menuHand; }
+    }
+    menuHand = 0;
+    return menuHand;
+  }
+
+  // Which hand, if any, is currently holding this weapon. -1 if neither.
+  int HandHolding(Weapon wpn) const {
+    if (!wpn || !owner || !owner.player) return -1;
+    if (owner.player.ReadyWeapon == wpn) return 0;
+    if (owner.player.OffhandWeapon == wpn) return 1;
+    return -1;
+  }
+
+  // Fill in a CurrentStats struct with the current state of the player & their
+  // currently wielded weapon. This should contain all the information needed
+  // to draw the UI.
+  // If it couldn't get the needed information, fills in nothing and returns false.
+  // This is safe to call from UI context.
+  //
+  // VR PATCH: honours bonsai_vr_hud_hand, and no longer fails outright when the
+  // mainhand is empty but the offhand is not.
+  // Stock signature, kept for addons and TFLV_Debug: mainhand, falling back to
+  // the offhand when the mainhand is empty.
+  bool GetCurrentStats(out TFLV_CurrentStats stats) const {
+    return FillStats(GetInfoForCurrentWeapon(), stats);
+  }
+
+  // VR PATCH: single-HUD path. `pref` comes from bonsai_vr_hud_hand, read by
+  // the UI layer -- see GetInfoForHUD.
+  bool GetCurrentStatsPreferring(int pref, out TFLV_CurrentStats stats) const {
+    return FillStats(GetInfoForHUD(pref), stats);
+  }
+
+  // VR PATCH: the dual-HUD path. Returns false when that hand is empty, which
+  // is how the renderer knows to skip drawing that side entirely.
+  bool GetCurrentStatsForHand(int hand, out TFLV_CurrentStats stats) const {
+    return FillStats(GetInfoForHand(hand), stats);
+  }
+
+  // RSQ PATCH (shield gauge): the ShieldSaw's record while it is in neither hand (on the shoulder, or
+  // thrown). False when it is in a hand (that hand's gauge shows it), not owned, or never recorded.
+  bool GetShieldStats(out TFLV_CurrentStats stats) const {
+    if (!owner || !owner.player) return false;
+    for (let it = owner.Inv; it; it = it.Inv) {
+      let w = Weapon(it);
+      if (!w || w.GetClassName() != 'SSQ_ShieldSaw') continue;
+      if (HandHolding(w) >= 0) return false;
+      return FillStats(GetInfoFor(w), stats);
+    }
+    return false;
+  }
+
+  bool FillStats(TFLV_WeaponInfo info, out TFLV_CurrentStats stats) const {
+    if (!info || !info.wpn) return false;
+
+    stats.pxp = XP;
+    stats.pmax = bonsai_gun_levels_per_player_level;
+    stats.plvl = level;
+    stats.pupgrades = upgrades;
+    stats.winfo = info;
+    stats.wxp = floor(info.XP);
+    stats.wmax = info.maxXP;
+    stats.wlvl = info.level;
+    stats.wname = info.wpn.GetTag();
+    stats.wupgrades = info.upgrades;
+    stats.effect = info.ld_info.currentEffectName;
+    return true;
+  }
+
+  // VR PATCH: which weapon the single-weapon HUD row should show.
+  // 0 mainhand, 1 offhand, 2 whichever earned XP most recently.
+  // Always falls through to the hand that actually has a gun in it, so the HUD
+  // never blanks just because the preferred hand is empty.
+  //
+  // The preference arrives as an argument rather than being read here: it lives
+  // in a `user` cvar, and user cvars are per-client, so reading one from play
+  // scope is not allowed. The UI layer reads it and passes it down.
+  TFLV_WeaponInfo GetInfoForHUD(int pref) const {
+    if (pref == 2) pref = lastXPHand;
+    if (pref != 0 && pref != 1) pref = 0;
+    let info = GetInfoForHand(pref);
+    if (info) return info;
+    return GetInfoForHand(1 - pref);
+  }
+
+  // Return the WeaponInfo for the currently readied weapon.
+  // Returns null if:
+  // - no weapon is equipped
+  // - the equipped weapon does not have an associated WeaponInfo
+  // - the associated WeaponInfo is not stored in infoForCurrentWeapon
+  // The latter two cases should only happen for one tic after switching weapons,
+  // and anything calling this should be null-checking anyways.
+  //
+  // VR PATCH: falls back to the offhand when the mainhand is empty. That single
+  // line is what keeps Service.zsc, debug.zsc and every third-party GB addon in
+  // the load order working when the player is holding only an offhand weapon.
+  TFLV_WeaponInfo GetInfoForCurrentWeapon() const {
+    if (!owner || !owner.player) return null;
+    let info = GetInfoForHand(0);
+    if (info) return info;
+    return GetInfoForHand(1);
+  }
+
+  // Return the WeaponInfo associated with the given weapon. Unlike
+  // GetInfoForCurrentWeapon(), this always searches the entire info list, so
+  // it's slower, but will find the info for any weapon as long as it's been
+  // wielded at least once and is still bound to its info object.
+  TFLV_WeaponInfo GetInfoFor(Weapon wpn) const {
+    for (int i = 0; i < weapons.size(); ++i) {
+      if (weapons[i].wpn == wpn) {
+        return weapons[i];
+      }
+    }
+    return null;
+  }
+
+  // Called every tic to ensure that the weapon in the given hand has associated
+  // info, and that info is stored in the matching live slot.
+  //
+  // VR PATCH: was CreateInfoForCurrentWeapon(), now per hand. The activate /
+  // deactivate pairing is preserved exactly, per hand -- but note the guard:
+  // if the same info somehow ends up live in both hands we must not activate it
+  // twice, or upgrades with persistent activation side effects (Lightning's
+  // minion, Bandoliers' ammo caps) get double-applied and then half-removed.
+  TFLV_WeaponInfo CreateInfoForHand(int hand) {
+    if (GetInfoForHand(hand)) return hand ? infoForOffhandWeapon : infoForCurrentWeapon;
+
+    let old = hand ? infoForOffhandWeapon : infoForCurrentWeapon;
+    let other = hand ? infoForCurrentWeapon : infoForOffhandWeapon;
+    if (old && old != other) old.OnDeactivate();
+
+    let fresh = GetOrCreateInfoFor(WeaponForHand(hand));
+    if (hand) infoForOffhandWeapon = fresh; else infoForCurrentWeapon = fresh;
+
+    if (fresh && fresh != other) fresh.OnActivate();
+    return fresh;
+  }
+
+  // Kept for compatibility with addons and Service.zsc that call it by name.
+  TFLV_WeaponInfo CreateInfoForCurrentWeapon() {
+    return CreateInfoForHand(0);
+  }
+
+  bool weaponinfo_dirty;
+  TFLV_WeaponInfo RebuildWeaponInfo() {
+    if (weaponinfo_dirty) {
+//      DEBUG("Dirty flag set, full weaponinfo rebuild triggered for %s.", TAG(owner));
+      for (Inventory inv = owner.inv; inv; inv = inv.inv) {
+        let wep = Weapon(inv);
+        if (wep) {
+//          DEBUG("Rebuilding weaponinfo for %s", TAG(wep));
+          GetOrCreateInfoFor(wep);
+        }
+      }
+      // Force the per-hand selectors to re-select and re-activate.
+      //
+      // The old mainhand pointer is captured BEFORE it is cleared. Comparing
+      // the offhand against the field after nulling it compares against null,
+      // which always differs -- so when both hands were live on the same info
+      // (two of the same gun, or any non-per-weapon binding mode) that info got
+      // OnDeactivate()d twice. Upgrades with persistent activation side effects
+      // -- Lightning's minion, Bandoliers' ammo caps, Shield -- were then
+      // double-applied and half-removed on every level transition.
+      // This mirrors the same-object guard CreateInfoForHand already makes.
+      let oldMain = infoForCurrentWeapon;
+      if (oldMain) {
+        oldMain.OnDeactivate();
+        infoForCurrentWeapon = null;
+      }
+      if (infoForOffhandWeapon && infoForOffhandWeapon != oldMain) {
+        infoForOffhandWeapon.OnDeactivate();
+      }
+      infoForOffhandWeapon = null;
+      weaponinfo_dirty = false;
+    }
+    let main = CreateInfoForHand(0);
+    CreateInfoForHand(1);
+    return main;
+  }
+
+  // If a WeaponInfo already exists for this weapon, return it.
+  // Otherwise, if a compatible orphaned WeaponInfo exists, rebind and return that.
+  // Otherwise, create a new WeaponInfo, bind it to this weapon, add it to the
+  // weapon info list, and return it.
+  TFLV_WeaponInfo GetOrCreateInfoFor(Weapon wpn) {
+    if (!wpn) return null;
+
+    // Fast path -- we already have a WeaponInfo for the player's current weapon
+    // and just need to find it.
+    let info = GetInfoFor(wpn);
+
+    // Slow path -- no associated WeaponInfo, but there might be one we can
+    // re-use, depending on the upgrade binding settings.
+    if (!info) info = BindExistingInfoTo(wpn);
+
+    // Slowest path -- create a new WeaponInfo and stick it to this weapon.
+    if (!info) {
+      info = new("TFLV_WeaponInfo");
+      info.stats = self;
+      info.Init(wpn);
+      weapons.push(info);
+    }
+
+    // Clean up orphaned WeaponInfos.
+    PruneStaleInfo();
+    return info;
+  }
+
+  // Given a weapon, try to find a compatible existing unused WeaponInfo we can
+  // attach to it.
+  TFLV_WeaponInfo BindExistingInfoTo(Weapon wpn) {
+    for (int i = 0; i < weapons.size(); ++i) {
+//      DEBUG("Checking if %s can host info for %s", TAG(wpn), weapons[i].wpnClass);
+      if (weapons[i].CanRebindTo(wpn)) {
+        weapons[i].Rebind(wpn);
+        return weapons[i];
+      }
+    }
+    return null;
+  }
+
+  // Delete WeaponInfo entries for weapons that don't exist anymore.
+  //
+  // VR PATCH: an info with live provenance is kept even though its weapon is
+  // gone. Dropping the flamethrower must not un-attribute the burn it left
+  // behind -- and a pruned info is invisible to the HUD and the menus, so XP
+  // paid into one after pruning would silently vanish.
+  void PruneStaleInfo() {
+    // Only do this in BIND_WEAPON mode. In other binding modes the WeaponInfos
+    // can be rebound to new weapons.
+    if (bonsai_upgrade_binding_mode != TFLV_BIND_WEAPON) return;
+    for (int i = weapons.size() - 1; i >= 0; --i) {
+      if (!weapons[i].wpn && !IsInfoReferenced(weapons[i])) {
+        weapons.Delete(i);
+      }
+    }
+  }
+
+  // How long after a DoT last named an info as a creditor we keep that info
+  // alive. TickDot refreshes the stamp every 7 tics while the burn lives, so
+  // anything beyond that is slack for a paused or mid-transition playsim.
+  const DOT_CREDIT_GRACE = 35;
+
+  bool IsInfoReferenced(TFLV_WeaponInfo info) const {
+    if (!info) return false;
+    // A burn still owes this gun. Its credit record hangs off the DoT item, not
+    // off the ring below, so the ring scan alone cannot see it.
+    if (info.dotCreditTic > 0 && (gametic - info.dotCreditTic) <= DOT_CREDIT_GRACE) return true;
+    for (int i = 0; i < provenance.size(); ++i) {
+      let p = provenance[i];
+      if (!p) continue;
+      for (int j = 0; j < p.infos.size(); ++j) {
+        if (p.infos[j] == info) return true;
+      }
+    }
+    return false;
+  }
+
+  // ==========================================================================
+  // PROVENANCE REGISTRY
+  // ==========================================================================
+
+  TFLV_VR_Provenance FindProvenance(Actor cause) const {
+    if (!cause) return null;
+    // Backwards: the newest cause is overwhelmingly the likely one, and under
+    // sustained fire this is on the hot path for every damage event.
+    for (int i = provenance.size() - 1; i >= 0; --i) {
+      if (provenance[i] && provenance[i].cause == cause) return provenance[i];
+    }
+    return null;
+  }
+
+  TFLV_VR_Provenance RegisterProvenance(Actor cause, TFLV_WeaponInfo info, double weight = 1.0, int typeHint = -1) {
+    if (!cause || !info) return null;
+    let p = FindProvenance(cause);
+    if (!p) {
+      p = new("TFLV_VR_Provenance");
+      p.Init(cause, typeHint);
+      PushProvenance(p);
+    } else if (p.typeHint < 0) {
+      p.typeHint = typeHint;
+    }
+    p.Add(info, weight);
+    return p;
+  }
+
+  void PushProvenance(TFLV_VR_Provenance p) {
+    if (provenance.size() >= PROV_MAX) {
+      // Oldest out. See the comment on PROV_MAX.
+      provenance.Delete(0);
+      ++provDropped;
+    }
+    provenance.push(p);
+  }
+
+  // VR PATCH: a weapon that is named as the cause of damage has already told us
+  // which gun did it, and no amount of scoring hands can beat that.
+  //
+  // Script damage dealt as DamageMobj(theWeapon, thePlayer, ...) is the one case
+  // where the engine hands us the gun outright. The lightsaber does exactly this
+  // -- `mo.DamageMobj(self, owner, dmg, 'Saber', DMG_THRUSTLESS)` in its Cut --
+  // and without this rule it falls through to ScoreHandFor, which cannot tell
+  // its hands apart: a Weapon sitting in inventory has no position of its own to
+  // compare against AttackPos/OffhandPos, and the saber's Fire state only
+  // toggles the blade, so the psprite test never sees a swing. Both of the two
+  // strong signals are dead for it, which is the exact case the scorer warns
+  // about by counting itself as "thin".
+  //
+  // The owner check is not paranoia: in coop the inflictor can be another
+  // player's gun, and crediting it here would pay XP into the wrong player's
+  // stats object entirely. GetPlayerDamageSource() upstream has already decided
+  // whose stats we are, so disagreement means this is not our damage to claim.
+  //
+  // GetOrCreateInfoFor, not GetInfoFor, so this behaves exactly as if the mod
+  // had called TFLV_VR_Attribution.Claim() itself -- a weapon that has never
+  // been in a hand (a thrown blade, a gun the player owns but has not selected)
+  // still gets a record instead of silently falling through.
+  TFLV_WeaponInfo InfoForOwnedWeapon(Actor cause) {
+    let wpn = Weapon(cause);
+    if (!wpn || !owner || wpn.owner != owner) return null;
+    return GetOrCreateInfoFor(wpn);
+  }
+
+  // A record whose cause is a Weapon is a self-claim (see InfoForOwnedWeapon),
+  // not a parent. It describes the gun, not something the gun put in the air, so
+  // inheriting from it hands a projectile the gun's own melee hint -- and since
+  // a self-claim record lives for PROV_MAX_AGE after the first cut, that is the
+  // *normal* case for a redirected bolt, not an edge one. Skipping it here sends
+  // that bolt down the owned-weapon branch below instead, which credits the same
+  // gun but takes the hint from the bolt. It is also what keeps the self-claimed
+  // counter honest: without this the redirect half of the rule reports itself as
+  // "inherited" and self-claimed stays at 0 even when it is working.
+  TFLV_VR_Provenance ParentProvenance(Actor cause) const {
+    if (!cause || Weapon(cause)) return null;
+    return FindProvenance(cause);
+  }
+
+  // Try to inherit provenance from whatever caused this actor to exist. A
+  // submunition, a fragment, an explosion puff and a minion's attack all point
+  // back at their parent through one of these three fields.
+  TFLV_VR_Provenance InheritProvenance(Actor thing) {
+    if (!thing) return null;
+    TFLV_VR_Provenance parent = ParentProvenance(thing.target);
+    if (!parent) parent = ParentProvenance(thing.master);
+    if (!parent) parent = ParentProvenance(thing.tracer);
+
+    if (!parent) {
+      // VR PATCH: the same three fields, read for a weapon rather than for a
+      // record. This is what credits a redirected projectile: the mod that
+      // bounced it sets its master to the weapon that did the bouncing, and from
+      // our side that weapon is the only thing in the chain that knows anything.
+      // The projectile itself was a monster's, so there is no parent record to
+      // inherit from and never will be.
+      TFLV_WeaponInfo wpnInfo = InfoForOwnedWeapon(thing.target);
+      if (!wpnInfo) wpnInfo = InfoForOwnedWeapon(thing.master);
+      if (!wpnInfo) wpnInfo = InfoForOwnedWeapon(thing.tracer);
+      if (!wpnInfo) return null;
+
+      // No type hint. This is a real missile in flight and GB's own inference
+      // reads it correctly from the actor; a melee hint here would teach the
+      // weapon that it fires melee projectiles, which is two wrong answers
+      // instead of one.
+      //
+      // Through RegisterProvenance rather than new/Init/Add/Push by hand,
+      // because that is the one entry point that merges into an existing record
+      // for the same cause instead of pushing a second one. WorldThingSpawned
+      // calls us directly without checking FindProvenance first, so a shot a mod
+      // had already Claim()ed could otherwise end up with two records -- and
+      // FindProvenance scans newest-first, so the no-hint duplicate would shadow
+      // the mod's own weights and hint from then on.
+      let wp = RegisterProvenance(thing, wpnInfo, 1.0);
+      if (!wp) return null;
+      ++provSelfClaims;
+      return wp;
+    }
+
+    let p = new("TFLV_VR_Provenance");
+    p.Init(thing);
+    p.InheritFrom(parent);
+    PushProvenance(p);
+    ++provInherits;
+    return p;
+  }
+
+  // Drop records whose cause is gone or which have aged out. A record whose
+  // contributing infos have all been forgotten is dead weight too.
+  void PruneProvenance() {
+    int tic = gametic;
+    for (int i = provenance.size() - 1; i >= 0; --i) {
+      let p = provenance[i];
+      if (!p || !p.cause || p.IsEmpty() || (tic - p.born) > PROV_MAX_AGE) {
+        provenance.Delete(i);
+      }
+    }
+  }
+
+  // Push/pop the hitscan bracket. `isOffhand` comes straight off the event's
+  // LAF_ISOFFHAND / RGF_ISOFFHAND bit, which is authoritative -- the engine set
+  // it from the firing weapon itself.
+  // The bracket cannot be relied on to close. P_LineAttack has four early
+  // returns between the PreFired dispatch and the Fired one -- a trace that
+  // hits nothing at all takes one of them -- so a missed shot pushes without
+  // ever popping. That is true of both engines this patch targets (our fork's
+  // p_map.cpp and QZDoom 17's are the same shape here), so it has to be handled
+  // here rather than fixed in one of them: a Quest player runs neither our
+  // build nor our fix.
+  //
+  // Two bounds, together: the per-tic reset in TickStats means a leaked entry
+  // can never outlive the tic that made it, and this depth cap means a tic full
+  // of missed shots cannot grow the stack without limit. What is left is a
+  // same-tic window in which a leaked entry could still answer for a hit that
+  // had no inflictor of its own, which is the smallest this gets without the
+  // engines closing the bracket themselves.
+  const HITSCAN_MAX_DEPTH = 8;
+
+  void PushHitscan(bool isOffhand, int typeHint) {
+    if (hitscanStack.size() >= HITSCAN_MAX_DEPTH) {
+      // Oldest out -- the innermost shot is the one currently doing damage.
+      hitscanStack.Delete(0);
+      hitscanHints.Delete(0);
+    }
+    let info = GetInfoForHand(isOffhand ? 1 : 0);
+    hitscanStack.push(info);
+    hitscanHints.push(typeHint);
+  }
+
+  void PopHitscan() {
+    if (hitscanStack.size() == 0) return;
+    hitscanStack.Pop();
+    hitscanHints.Pop();
+  }
+
+  // A cancelled shot (something returned true from WorldHitscanPreFired) never
+  // reaches WorldHitscanFired, so the bracket would leak an entry per shot.
+  // Clearing once a tic bounds that; the stack is only ever meaningful within
+  // a single P_LineAttack anyway.
+  void ResetHitscanBracket() {
+    hitscanStack.Clear();
+    hitscanHints.Clear();
+    claimStack.Clear();
+    claimHints.Clear();
+  }
+
+  void PushClaim(Weapon wpn, int typeHint) {
+    if (!wpn || wpn.owner != owner) return;
+    if (claimStack.size() >= HITSCAN_MAX_DEPTH) { claimStack.Delete(0); claimHints.Delete(0); }
+    claimStack.push(GetOrCreateInfoFor(wpn));
+    claimHints.push(typeHint);
+  }
+
+  void PopClaim() {
+    if (claimStack.size() == 0) return;
+    claimStack.Pop();
+    claimHints.Pop();
+  }
+
+  // VR PATCH (suite): is this inflictor something THIS player threw with RSQ
+  // Distance Grab, or the blast of something a throw set off? Asked by name
+  // (RSQDG_ThrowService "throw.by" / "throw.blast" / "throw.age"); false when
+  // Distance Grab is not loaded. A thrown object that landed and lay still is
+  // the player's barrel again after 3 s, so shooting it later pays the gun as
+  // it always did; a blast a throw caused is the throw's however late.
+  bool IsSuiteThrow(Actor shot) const {
+    if (!shot || !owner || !owner.player || Weapon(shot) || shot.player) return false;
+    let it = ServiceIterator.Find("RSQDG_ThrowService");
+    let svc = it.Next();
+    if (!svc) return false;
+    if (svc.GetInt("throw.by", "", 0, 0, shot) != owner.PlayerNumber()) return false;
+    if (svc.GetInt("throw.blast", "", 0, 0, shot) == 1) return true;
+    int age = svc.GetInt("throw.age", "", 0, 0, shot);
+    return age >= 0 && age <= 105;
+  }
+
+  // VR PATCH (suite): is THIS player's grappling hook dealing the damage being
+  // dealt right now? RSQ_Grapple brackets every blow its hook deals itself (the
+  // bite and tear, a thrown monster's landing and what it strikes, the whip, a
+  // Double Hook slam) and answers RSQGR_Service "hook.dealing" with 1 inside the
+  // bracket, asked by name; false when the grapple is not loaded. Such damage is
+  // no gun's: it pays the player pool, like a throw.
+  bool IsSuiteHook() const {
+    if (!owner || !owner.player) return false;
+    let it = ServiceIterator.Find("RSQGR_Service");
+    let svc = it.Next();
+    return svc && svc.GetInt("hook.dealing", "", 0, 0, owner) == 1;
+  }
+
+  void AddPoolXP(double xp) {
+    if (xp <= 0) return;
+    poolXP += xp;
+    double cost = max(1, bonsai_base_level_cost);
+    while (poolXP >= cost) {
+      poolXP -= cost;
+      AddPlayerXP(1);
+    }
+  }
+
+  // VR PATCH (suite): which hand caused this damage, WITHOUT registering
+  // anything (ResolveCredit counts and records; a player upgrade only asks).
+  // -1 when no hand did (a throw, a gun no longer in either hand, unknown).
+  int HandOfShot(Actor shot) const {
+    if (!owner || !owner.player) return -1;
+    if (IsSuiteHook()) return -1;
+    let dotItem = TFLV_Upgrade_Dot(shot);
+    if (dotItem && dotItem.credit) { let d = dotItem.credit.Dominant(); return d ? HandHolding(d.wpn) : -1; }
+    if ((!shot || shot == owner) && claimStack.size() > 0) {
+      let c = claimStack[claimStack.size() - 1];
+      return c ? HandHolding(c.wpn) : -1;
+    }
+    if (shot) {
+      let w = Weapon(shot);
+      if (w && w.owner == owner) return HandHolding(w);
+      let p = FindProvenance(shot);
+      if (p) { let d = p.Dominant(); return d ? HandHolding(d.wpn) : -1; }
+      for (int k = 0; k < 3; ++k) {
+        Actor up = k == 0 ? shot.target : (k == 1 ? shot.master : shot.tracer);
+        let uw = Weapon(up);
+        if (uw && uw.owner == owner) return HandHolding(uw);
+        let up2 = FindProvenance(up);
+        if (up && !Weapon(up) && up2) { let d = up2.Dominant(); return d ? HandHolding(d.wpn) : -1; }
+      }
+    }
+    if (hitscanStack.size() > 0) {
+      let h = hitscanStack[hitscanStack.size() - 1];
+      return h ? HandHolding(h.wpn) : -1;
+    }
+    if (IsSuiteThrow(shot)) return -1;
+    int hand; double margin;
+    [hand, margin] = ScoreHandFor(shot);
+    return WeaponForHand(hand) ? hand : -1;
+  }
+
+  // ==========================================================================
+  // HAND RESOLUTION AT CREATION TIME
+  // ==========================================================================
+
+  // Signed shortest angular difference in degrees, -180..180.
+  // Written out rather than calling deltaangle(), which is not reachable as a
+  // free function from a plain Object.
+  static double ShortestAngle(double a, double b) {
+    double d = (a - b) % 360.0;
+    if (d < -180.0) d += 360.0;
+    else if (d > 180.0) d -= 360.0;
+    return d;
+  }
+
+  // Is this hand's psprite currently inside its weapon's firing states?
+  bool HandIsAttacking(int hand) const {
+    if (!owner || !owner.player) return false;
+    let wpn = WeaponForHand(hand);
+    if (!wpn) return false;
+    let psp = owner.player.GetPSprite(hand ? PSP_OFFHANDWEAPON : PSP_WEAPON);
+    if (!psp || !psp.CurState) return false;
+    // Same idiom Juggler uses -- State.InStateSequence, not the Actor static.
+    let fire = wpn.FindState('Fire');
+    if (fire && psp.CurState.InStateSequence(fire)) return true;
+    let altfire = wpn.FindState('AltFire');
+    if (altfire && psp.CurState.InStateSequence(altfire)) return true;
+    return false;
+  }
+
+  // Score both hands for an unclaimed projectile and return the winner plus the
+  // margin by which it won.
+  //
+  // Scored rather than laddered on purpose. The signals fail in *different*
+  // circumstances -- position dies when the hands are held together, direction
+  // dies when both point the same way, psprite state dies for a weapon whose
+  // projectile spawns a tic after the state changed. None of them share a bad
+  // case, so summing them is far more robust than trusting any fixed order.
+  int, double ScoreHandFor(Actor shot) const {
+    if (!owner || !owner.player) return 0, 0;
+    double sMain = 0, sOff = 0;
+
+    // Only hands that actually hold something can have fired.
+    bool hasMain = WeaponForHand(0) != null;
+    bool hasOff  = WeaponForHand(1) != null;
+    if (!hasOff) return 0, 1.0;
+    if (!hasMain) return 1, 1.0;
+
+    let pmo = owner;
+
+    // Position. Strong in VR, where the controllers are physically apart;
+    // inert on flat, where both poses collapse to the same view-derived point.
+    if (pmo.OverrideAttackPosDir && shot) {
+      double dMain = (shot.pos - pmo.AttackPos).Length();
+      double dOff  = (shot.pos - pmo.OffhandPos).Length();
+      double spread = abs(dMain - dOff);
+      // Only worth anything if the two hands are meaningfully separated.
+      if (spread > 4.0) {
+        double w = clamp(spread / 24.0, 0.0, 1.0) * 3.0;
+        if (dMain < dOff) sMain += w; else sOff += w;
+      }
+
+      // Direction. Independent of position, so it still separates two hands
+      // held together but aimed differently.
+      if (shot) {
+        double aMain = abs(ShortestAngle(shot.angle, pmo.AttackAngle));
+        double aOff  = abs(ShortestAngle(shot.angle, pmo.OffhandAngle));
+        double aSpread = abs(aMain - aOff);
+        if (aSpread > 2.0) {
+          double w = clamp(aSpread / 20.0, 0.0, 1.0) * 2.0;
+          if (aMain < aOff) sMain += w; else sOff += w;
+        }
+      }
+    }
+
+    // Psprite state. The only signal that survives flat mode.
+    bool atkMain = HandIsAttacking(0);
+    bool atkOff  = HandIsAttacking(1);
+    if (atkMain != atkOff) {
+      if (atkMain) sMain += 2.5; else sOff += 2.5;
+    }
+
+    // Buttons. Coarse, but a real tiebreak when everything else ties.
+    if (owner.player.attackdown != owner.player.ohattackdown) {
+      if (owner.player.attackdown) sMain += 0.5; else sOff += 0.5;
+    }
+
+    if (sMain >= sOff) return 0, sMain - sOff;
+    return 1, sOff - sMain;
+  }
+
+  // Resolve and register provenance for a freshly spawned projectile that
+  // nobody claimed.
+  TFLV_VR_Provenance ResolveSpawn(Actor shot) {
+    if (!shot) return null;
+    // Already claimed by the mod that fired it? Nothing to do.
+    let existing = FindProvenance(shot);
+    if (existing) { ++provClaims; return existing; }
+    // Descended from something we already know about?
+    let inherited = InheritProvenance(shot);
+    if (inherited) return inherited;
+
+    int hand; double margin;
+    [hand, margin] = ScoreHandFor(shot);
+    let info = GetInfoForHand(hand);
+    if (!info) info = GetInfoForHand(1 - hand);
+    if (!info) { ++provFallback; return null; }
+
+    ++provScored;
+    // A thin margin means the signals disagreed or all tied and we effectively
+    // guessed. Counted so playtesting can tell us how often that happens.
+    if (margin < 1.0) ++provScoredThin;
+    return RegisterProvenance(shot, info, 1.0);
+  }
+
+  // What should be credited for damage from this inflictor?
+  // Returns null when we genuinely do not know, and the caller awards nothing --
+  // silence is better than crediting the wrong gun.
+  TFLV_VR_Provenance ResolveCredit(Actor shot) {
+    // A DoT carries its own weighted credit record, because a burn can outlast
+    // any bounded registry -- and because it is exactly the case that needs
+    // more than one contributor. See Dot.zsc.
+    // NB: not named `dot` -- that is the vector dot-product operator in ZScript
+    // and is a reserved word.
+    let dotItem = TFLV_Upgrade_Dot(shot);
+    if (dotItem && dotItem.credit && !dotItem.credit.IsEmpty()) return dotItem.credit;
+
+    // VR PATCH (melee upgrades): inside a claim bracket, damage dealt by the
+    // player's own body belongs to the weapon that opened it. See claimStack.
+    if ((!shot || shot == owner) && claimStack.size() > 0) {
+      int ctop = claimStack.size() - 1;
+      let cinfo = claimStack[ctop];
+      if (cinfo && cinfo.wpn) {
+        ++provClaims;
+        let cp = new("TFLV_VR_Provenance");
+        cp.Init(shot, claimHints[ctop]);
+        cp.Add(cinfo, 1.0);
+        return cp;
+      }
+    }
+
+    if (shot) {
+      let p = FindProvenance(shot);
+      if (p) return p;
+
+      // VR PATCH: is the inflictor itself one of this player's weapons? Then it
+      // is its own claim -- see InfoForOwnedWeapon.
+      //
+      // Ahead of InheritProvenance on purpose. A Weapon is an Inventory item and
+      // its target/master/tracer hold whatever the mod using it last left there,
+      // so letting it inherit first can credit a record that has nothing to do
+      // with this hit, at a point where we already know the answer exactly.
+      // Behind FindProvenance, because an explicit Claim() on the same actor
+      // carries weights and a type hint this cannot reconstruct.
+      let wpnInfo = InfoForOwnedWeapon(shot);
+      if (wpnInfo) {
+        // HINT_MELEE: the weapon is the inflictor, so there is no projectile and
+        // no trace for the type inference to read, and that is its melee case.
+        // It only feeds the counters -- a BONSAIRC `type` line still outranks it,
+        // which is where a weapon that deals script damage at range belongs.
+        //
+        // Registered, unlike the live-scored melee record at the bottom of this
+        // function. That one has no stable key to look up next time; a weapon
+        // actor is exactly that, so FindProvenance above answers every later hit
+        // from the same blade and this branch runs once per record lifetime
+        // rather than once per cut. It also means the weight stays at 1 instead
+        // of climbing every tic the blade is in someone.
+        let rec = RegisterProvenance(shot, wpnInfo, 1.0,
+          TFLV_VR_Attribution.HINT_MELEE);
+        if (rec) {
+          ++provSelfClaims;
+          return rec;
+        }
+      }
+
+      let inherited = InheritProvenance(shot);
+      if (inherited) return inherited;
+    }
+
+    // Inside a hitscan? The bracket knows exactly which gun fired it.
+    if (hitscanStack.size() > 0) {
+      int top = hitscanStack.size() - 1;
+      let info = hitscanStack[top];
+      if (info && info.wpn) {
+        ++provClaims;
+        let p = new("TFLV_VR_Provenance");
+        p.Init(shot, hitscanHints[top]);
+        p.Add(info, 1.0);
+        return p;
+      }
+    }
+
+    // No inflictor, or an inflictor nothing registered -- melee, a direct
+    // A_CustomPunch, an engine-side hit. Resolve live against the hand that is
+    // mid-swing, which is what the psprite test is for.
+    int hand; double margin;
+    [hand, margin] = ScoreHandFor(shot);
+    let info = GetInfoForHand(hand);
+    if (!info) info = GetInfoForHand(1 - hand);
+    if (!info) { ++provFallback; return null; }
+    // Counted as scored, not only as thin. This path was raising provScoredThin
+    // without ever raising provScored, so a weapon resolved here with a clear
+    // margin moved NO counter at all -- the hands dump read 0/0/0 and could not
+    // say what had answered, which is the one thing it exists to say.
+    ++provScored;
+    if (margin < 1.0) ++provScoredThin;
+
+    let p = new("TFLV_VR_Provenance");
+    p.Init(shot);
+    p.Add(info, 1.0);
+    // Not pushed onto the registry -- there is no stable key to look it up by
+    // next time, and pushing one record per melee hit would churn the ring.
+    return p;
+  }
+
+  void ToggleUpgrade(uint index) {
+    let upgrade = upgrades.upgrades[index];
+    upgrade.enabled = !upgrade.enabled;
+    if (upgrade.enabled) {
+      upgrade.OnActivate(self, null);
+    } else {
+      upgrade.OnDeactivate(self, null);
+    }
+  }
+
+  void TuneUpgrade(uint index, int amount) {
+    let upgrade = upgrades.upgrades[index];
+    if (!upgrade.enabled) return;
+    let old_level = upgrade.level;
+    upgrade.level = clamp(upgrade.level + amount, 1, upgrade.max_level);
+    if (old_level != upgrade.level) {
+      upgrade.OnDeactivate(self, null);
+      upgrade.OnActivate(self, null);
+    }
+  }
+
+  // Add XP to the player. This is called by weapons when they level up to track
+  // progress towards player-level upgrades.
+  void AddPlayerXP(uint xp) {
+    let maxXP = bonsai_gun_levels_per_player_level;
+    self.XP += xp;
+    if (self.XP >= maxXP && self.XP - xp < maxXP) {
+      Fanfare();
+    }
+  }
+
+  void Fanfare() {
+    EventHandler.SendNetworkEvent("bonsai-level-up", 0, self.level+1);
+    let flash = TFLV_Settings.levelup_flash();
+    if (flash) {
+      // VR PATCH: RSQ_Accessibility's Photosensitive Mode dims the whole-view flash to 40%
+      owner.A_SetBlend(flash, RSQGB_Photo.Dim(0.8), 35);
+      owner.A_SetBlend(flash, RSQGB_Photo.Dim(0.4), 105);
+    }
+    if (TFLV_Settings.levelup_sound() != "") {
+      owner.A_StartSound(TFLV_Settings.levelup_sound(), CHAN_AUTO,
+        CHANF_OVERLAP|CHANF_UI|CHANF_NOPAUSE|CHANF_LOCAL);
+    }
+    if (0 <= bonsai_upgrade_choices_per_player_level && bonsai_upgrade_choices_per_player_level <= 1) {
+      // If autochoose is on, immediately pick an upgrade for the player.
+      StartLevelUp();
+    } else {
+      owner.A_Log(StringTable.Localize("$TFLV_MSG_PLAYER_LEVELUP_READY"), true);
+      // Earlier versions automatically opened the level-up screen, on the assumption
+      // that the player had just closed a weapon level-up screen. However, (a)
+      // with the addition of autochoose this is no longer a safe assumption, and
+      // (b) this caused problems for some players where they'd close the weapon
+      // screen and immediately start blasting, causing them to choose the wrong
+      // player upgrade.
+    }
+  }
+
+  bool StartLevelUp() {
+    if (self.XP < bonsai_gun_levels_per_player_level) return false;
+    let giver = TFLV_PlayerUpgradeGiver(owner.GiveInventoryType("TFLV_PlayerUpgradeGiver"));
+    giver.stats = self;
+    return true;
+  }
+
+  void RejectLevelUp() {
+    // Player level-ups are expensive, so we take away *half* of a level's
+    // worth of XP.
+    let maxXP = bonsai_gun_levels_per_player_level;
+    XP -= max(1, maxXP/2);
+    owner.A_Log(StringTable.Localize("$TFLV_MSG_LEVELUP_REJECTED"), true);
+    return;
+  }
+
+  void FinishLevelUp(TFLV_Upgrade_BaseUpgrade upgrade) {
+    let maxXP = bonsai_gun_levels_per_player_level;
+    XP -= maxXP;
+    ++level;
+
+    if (upgrade) {
+      upgrades.AddUpgrade(upgrade).OnActivate(self, null);
+      owner.A_Log(string.format(
+        StringTable.Localize("$TFLV_MSG_PLAYER_LEVELUP"), upgrade.GetName()),
+        true);
+    }
+  }
+
+  // Add XP to the current weapon.
+  // VR PATCH: kept for addon compatibility; new code should use AddXPTo.
+  void AddXP(double xp) {
+    TFLV_WeaponInfo info = GetInfoForCurrentWeapon();
+    if (!info) return;
+    AddXPTo(info, xp);
+  }
+
+  void AddXPTo(TFLV_WeaponInfo info, double xp) {
+    if (!info || xp <= 0) return;
+    info.AddXP(xp);
+    int hand = HandHolding(info.wpn);
+    if (hand >= 0) lastXPHand = hand;
+  }
+
+  double GetXPForDamage(Actor target, uint damage) const {
+    // VR PATCH (style XP): XP Source "Style" pays no damage XP at all; the
+    // kill's style pays instead (rsq/zscript/stylexp.zs).
+    if (RSQ_XPSource() == 1) return 0;
+    if (target.health < 0) {
+      // No bonus XP for overkills.
+      damage += target.health;
+    }
+    double xp = max(0, damage) * bonsai_damage_to_xp_factor;
+//    DEBUG("XPForDamage: damage=%d, xp=%.1f", damage, xp);
+    if (target.GetSpawnHealth() > 100) {
+      // Enemies with lots of HP get a log-scale XP bonus.
+      // This works out to about a 1.8x bonus for Archviles and a 2.6x bonus
+      // for the Cyberdemon.
+      xp = xp * (log10(target.GetSpawnHealth()) - 1);
+//      DEBUG("After hp bonus xp is: %.1f", xp);
+    }
+    return xp;
+  }
+
+  // Handlers for events that player/gun upgrades may be interested in.
+  // These are called from the EventManager on the corresponding world events,
+  // and call the handlers on the upgrades in turn.
+  // Avoid infinite recursion is handled by the UpgradeBag, which checks the
+  // priority of the inciting event against the priority of each upgrade.
+  void OnProjectileCreated(Actor shot) {
+    upgrades.OnProjectileCreated(owner, shot);
+    // VR PATCH: resolve and record which gun fired this before anything else
+    // touches it, so everything downstream -- including the projectile's own
+    // eventual explosion and any submunitions -- can inherit from it.
+    let prov = ResolveSpawn(shot);
+    let info = prov ? prov.Dominant() : null;
+    if (info) info.upgrades.OnProjectileCreated(owner, shot);
+  }
+
+  void OnDamageDealt(Actor shot, Actor target, uint damage) {
+//    DEBUG("OnDamageDealt: %d vs. %s via %s",
+//      damage, TAG(target), TAG(shot));
+    upgrades.OnDamageDealt(owner, shot, target, damage);
+
+    // VR PATCH (suite): a thrown object is no gun's. Its XP goes to the player
+    // pool and no weapon's upgrades fire on it (see poolXP).
+    if (IsSuiteThrow(shot) || IsSuiteHook()) {
+      ++provPooled;
+      AddPoolXP(GetXPForDamage(target, damage));
+      return;
+    }
+
+    // VR PATCH: credit follows provenance, not whatever is in hand right now.
+    let prov = ResolveCredit(shot);
+    if (!prov) return;
+    double total = prov.TotalWeight();
+    if (total <= 0) return;
+
+    // XP splits proportionally across contributors. Upgrade procs and type
+    // inference go to the dominant one only -- an upgrade either fires or it
+    // does not, and there is no such thing as 30% of an HE round.
+    double xp = GetXPForDamage(target, damage);
+    for (int i = 0; i < prov.infos.size(); ++i) {
+      if (!prov.infos[i]) continue;
+      AddXPTo(prov.infos[i], xp * prov.weights[i] / total);
+    }
+
+    let info = prov.Dominant();
+    if (!info) return;
+    if (target && target.bIsMonster) NoteStyleHit(target, info);
+    // Anything this dispatch creates -- a DoT stack above all -- bills the gun
+    // that actually fired the shot.
+    //
+    // Saved and restored, not set and cleared. This dispatch can re-enter
+    // itself synchronously: HE Shots calls A_Explode, which damages another
+    // monster, which raises WorldThingDamaged, which lands back here before the
+    // outer dispatch has finished. Clearing to null on the way out of the inner
+    // call left the rest of the outer one crediting nobody, so an HE + elemental
+    // combo on the same gun silently lost its burn credit.
+    let prevCrediting = creditingInfo;
+    creditingInfo = info;
+    info.upgrades.OnDamageDealt(owner, shot, target, damage);
+    creditingInfo = prevCrediting;
+
+    if (!shot || shot.weaponspecial == TFLV_Upgrade_PRI_MISSING)
+      info.InferWeaponTypeFromDamage(owner, shot, target, prov.typeHint);
+  }
+
+  void OnDamageReceived(Actor shot, Actor attacker, uint damage) {
+    upgrades.OnDamageReceived(owner, shot, attacker, damage);
+    // Incoming damage is not attributable to a gun the way outgoing damage is;
+    // fire the bags of both live weapons so a defensive upgrade on the offhand
+    // is not silently inert.
+    for (int hand = 0; hand <= 1; ++hand) {
+      let info = GetInfoForHand(hand);
+      if (!info) continue;
+      if (hand == 1 && info == GetInfoForHand(0)) continue;
+      info.upgrades.OnDamageReceived(owner, shot, attacker, damage);
+    }
+  }
+
+  void OnKill(Actor shot, Actor target) {
+    upgrades.OnKill(PlayerPawn(owner), shot, target);
+    double w = target ? max(1, target.GetSpawnHealth()) : 1;
+    // VR PATCH (suite): a throw's kill queues a pooled entry, so the score it
+    // earns follows it to the pool instead of to the last gun that killed.
+    if (IsSuiteThrow(shot) || IsSuiteHook()) {
+      QueueScoreKill(null, w);
+      lastKillInfo = null;
+      lastKillPooled = true;
+      return;
+    }
+    let prov = ResolveCredit(shot);
+    let info = prov ? prov.Dominant() : null;
+    if (!info) return;
+    QueueScoreKill(info, w);
+    lastKillPooled = false;
+    // VR PATCH: remember who earned it, for the score-to-XP block in TickStats.
+    // This is set after the !info bail on purpose: a kill we could not attribute
+    // has no credited weapon, so the last one we *could* attribute stands. The
+    // alternative is clearing it, which hands the next score award back to the
+    // main hand -- the very thing this field exists to stop.
+    lastKillInfo = info;
+    info.upgrades.OnKill(PlayerPawn(owner), shot, target);
+  }
+
+  void OnPickup(Inventory item) {
+    upgrades.OnPickup(PlayerPawn(owner), item);
+    for (int hand = 0; hand <= 1; ++hand) {
+      let info = GetInfoForHand(hand);
+      if (!info) continue;
+      if (hand == 1 && info == GetInfoForHand(0)) continue;
+      info.upgrades.OnPickup(PlayerPawn(owner), item);
+    }
+  }
+
+  // Apply all upgrades with ModifyDamageReceived/Dealt handlers here.
+  // At this point the damage has not yet been inflicted; see OnDamageDealt/
+  // OnDamageReceived for that, as well as for XP assignment.
+  void ModifyDamage(
+      int damage, Name damageType, out int newdamage, bool passive,
+      Actor inflictor, Actor source, int flags) {
+    if (damage <= 0) {
+      return;
+    }
+    if (passive) {
+      // Incoming damage.
+//      DEBUG("MD(p): %s <- %s <- %s (%d/%s) flags=%X",
+//        TAG(owner), TAG(inflictor), TAG(source),
+//        damage, damageType, flags);
+
+      // TODO: this (and ModifyDamageDealt below) should take into account the
+      // difference between current and original damage
+      double tmpdamage = upgrades.ModifyDamageReceived(owner, inflictor, source, damage, damageType);
+      // Both hands' defensive upgrades apply.
+      for (int hand = 0; hand <= 1; ++hand) {
+        let info = GetInfoForHand(hand);
+        if (!info) continue;
+        if (hand == 1 && info == GetInfoForHand(0)) continue;
+        tmpdamage = info.upgrades.ModifyDamageReceived(owner, inflictor, source, tmpdamage, damageType);
+      }
+      newdamage = tmpdamage;
+    } else {
+//      DEBUG("MD: %s -> %s -> %s (%d/%s) flags=%X",
+//        TAG(owner), TAG(inflictor), TAG(source),
+//        damage, damageType, flags);
+      // Outgoing damage. 'source' is the *target* of the damage.
+      let target = source;
+      if (!target.bISMONSTER || target.bFRIENDLY || source == owner) {
+        // Damage bonuses and XP assignment apply only when attacking monsters,
+        // not decorations, friendly NPCs, or yourself.
+        newdamage = damage;
+        return;
+      }
+
+      double tmpdamage = upgrades.ModifyDamageDealt(owner, inflictor, source, damage, damageType);
+      // VR PATCH: only the gun that actually fired this shot modifies it. This
+      // is what stops the chaingun's upgrades firing on the other hand's rounds
+      // when both are shooting at once.
+      // VR PATCH (suite): the grappling hook's own blow is no gun's either.
+      let prov = IsSuiteHook() ? null : ResolveCredit(inflictor);
+      let info = prov ? prov.Dominant() : null;
+      if (info)
+        tmpdamage = info.upgrades.ModifyDamageDealt(owner, inflictor, source, tmpdamage, damageType);
+      newdamage = tmpdamage;
+    }
+  }
+
+  // This is called both when first created, and when reassigned to a new PlayerPawn
+  // (e.g. because of a load game operation). So it should initialize any missing
+  // fields but not clear valid ones.
+  uint id;
+  void Initialize(TFLV_PerPlayerStatsProxy proxy) {
+//    DEBUG("Initializing PerPlayerStats for %s", TAG(owner));
+    if (!id) {
+//      DEBUG("this is NEW, giving it id=%d", gametic);
+      id = gametic;
+    } else {
+//      DEBUG("this is OLD, id=%d", id);
+    }
+    weaponinfo_dirty = true; // Force a full rebuild of the weaponinfo on startup.
+    prevScore = -1;
+    if (!upgrades) upgrades = new("TFLV_Upgrade_UpgradeBag");
+    self.proxy = proxy;
+    self.owner = proxy.owner;
+    // Provenance holds live Actor pointers, which do not survive a save/load or
+    // a level change. Start clean rather than carrying dangling records; the
+    // worst case is that a shot in flight across the transition goes
+    // uncredited, which is far better than crediting the wrong gun.
+    provenance.Clear();
+    upgrades.OnActivate(self, null);
+    if (currentEffectGiver) {
+      // Player was in the middle of getting a level-up! Reset the effectgiver
+      // so that the menu reopens after a level transition.
+//      DEBUG("resetting currenteffectgiver");
+      currentEffectGiver.SetStateLabel("ChooseUpgrade");
+    }
+  }
+
+  // Runs once per tic.
+  void TickStats() {
+    if (!owner || !owner.player) return;
+    // This ensures that the currently wielded weapon always has a WeaponInfo
+    // struct associated with it. It should be pretty fast, especially in the
+    // common case where the weapon already has a WeaponInfo associated with it.
+    // If the weaponinfo_dirty flag is set, it will do a full rebuild, scanning
+    // the player's entire inventory and building info for all of their weapons.
+    RebuildWeaponInfo();
+
+    // VR PATCH: a shot cancelled in WorldHitscanPreFired (which is exactly what
+    // a hitscan-to-projectile converter does) never reaches WorldHitscanFired,
+    // so the bracket would leak an entry per shot. Bound it per tic.
+    //
+    // This runs BEFORE the frozen check, not after. A frozen player skipped the
+    // reset entirely, so whatever was on the stack when they froze survived
+    // across every frozen tic and was still sitting there, stale, when they
+    // thawed -- ready to credit the first unattributed hit to the wrong hand.
+    ResetHitscanBracket();
+
+    if (owner.player.IsTotallyFrozen()) return;
+
+    // VR PATCH: cheap, and keeps the ring from filling with dead rounds.
+    if ((gametic & 15) == 0) PruneProvenance();
+
+    // Run on-tick effects for upgrades.
+    upgrades.Tick(owner);
+    // VR PATCH: both hands tick. This is what makes the offhand's RapidFire,
+    // Shield timer, Lightning minion and Bandoliers ammo caps actually run
+    // instead of being dead or flickering.
+    let main = GetInfoForHand(0);
+    let off = GetInfoForHand(1);
+    if (main) main.upgrades.Tick(owner);
+    if (off && off != main) off.upgrades.Tick(owner);
+
+    // No score integration? Nothing else to do.
+    // VR PATCH (style XP): with XP Source Style or Both the score's style is paid
+    // along the combo chain (rsq/zscript/stylexp.zs); the stock score-to-XP rise
+    // would pay the same points a second time, so it stands down.
+    if (bonsai_score_to_xp_factor <= 0 || RSQ_XPSource() != 0) {
+      prevScore = -1;
+      return;
+    }
+
+    // Otherwise, assign XP based on score.
+    if (prevScore < 0) {
+      // Negative score means score-to-XP mode was just turned on and should
+      // be initialized.
+      prevScore = owner.score;
+      return;
+    } else if (owner.score > prevScore) {
+//      DEBUG("Score changed, adding %d points -> %.1f xp",
+//        owner.score - prevScore, (owner.score - prevScore) * bonsai_score_to_xp_factor);
+      // VR PATCH: score XP goes to the gun credited with the last kill, not to
+      // whatever is in the main hand.
+      //
+      // Stock AddXP() means an offhand kill pays the mainhand, which with a gun
+      // in each hand is the wrong gun about half the time -- and for a weapon
+      // that deals its damage from script and never becomes ReadyWeapon it is
+      // the wrong gun every time. Score is overwhelmingly paid for kills, so the
+      // weapon that got the kill is the one that earned it.
+      //
+      // Deliberately the same TFLV_WeaponInfo the kill itself was credited to
+      // (OnKill -> ResolveCredit -> Dominant). There is one notion of "which
+      // weapon" in this file and this reads it rather than adding a second.
+      //
+      // Checked against the live list, not merely for null: PruneStaleInfo can
+      // drop an info whose weapon is gone, and XP paid into a pruned info does
+      // not go to the wrong gun, it vanishes -- the HUD and the menus cannot see
+      // it. Falling back to stock AddXP() in that case at least puts it
+      // somewhere the player can watch.
+      double scoreXP = (owner.score - prevScore) * bonsai_score_to_xp_factor;
+      // VR PATCH (suite): every kill since the last payment shares the rise by
+      // its victim's spawn health (a score award's base), so two kills in one
+      // tic by two hands each pay their own gun; a throw's share pools.
+      for (int i = scoreKillTic.size() - 1; i >= 0; --i) {
+        if (gametic - scoreKillTic[i] > 70) { scoreKills.Delete(i); scoreKillW.Delete(i); scoreKillTic.Delete(i); }
+      }
+      if (scoreKills.size() > 0) {
+        double tw = 0;
+        for (int i = 0; i < scoreKillW.size(); ++i) tw += scoreKillW[i];
+        for (int i = 0; i < scoreKills.size(); ++i) {
+          double part = scoreXP * scoreKillW[i] / max(tw, 1);
+          let ki = scoreKills[i];
+          if (!ki) AddPoolXP(part);
+          else if (ki.wpn && GetInfoFor(ki.wpn) == ki) AddXPTo(ki, part);
+          else AddXP(part);
+        }
+        scoreKills.Clear(); scoreKillW.Clear(); scoreKillTic.Clear();
+      } else if (lastKillPooled) {
+        AddPoolXP(scoreXP);
+      } else if (lastKillInfo && lastKillInfo.wpn && GetInfoFor(lastKillInfo.wpn) == lastKillInfo) {
+        AddXPTo(lastKillInfo, scoreXP);
+      } else {
+        lastKillInfo = null;
+        AddXP(scoreXP);
+      }
+      prevScore = owner.score;
+    }
+  }
+
+  // A kill waits up to two seconds for the score it earns; a scorer pays on the
+  // kill's own tic (RS_Score does, in WorldThingDied), so this is slack.
+  void QueueScoreKill(TFLV_WeaponInfo info, double w) {
+    if (bonsai_score_to_xp_factor <= 0) return;
+    for (int i = scoreKillTic.size() - 1; i >= 0; --i) {
+      if (gametic - scoreKillTic[i] > 70) { scoreKills.Delete(i); scoreKillW.Delete(i); scoreKillTic.Delete(i); }
+    }
+    if (scoreKills.size() >= 32) { scoreKills.Delete(0); scoreKillW.Delete(0); scoreKillTic.Delete(0); }
+    scoreKills.push(info);
+    scoreKillW.push(w);
+    scoreKillTic.push(gametic);
+  }
+
+  void Autosave() {
+    owner.Spawn("aas_instant_bonsai_token", owner.pos);
+  }
+}

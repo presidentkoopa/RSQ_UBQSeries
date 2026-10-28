@@ -1,0 +1,76 @@
+// #namespace TFLV::Menu;
+
+class TFLV_Menu_StatusDisplay : TFLV_Menu_GenericMenu {
+  override void Init(Menu parent, OptionMenuDescriptor desc) {
+    super.InitDynamic(parent, desc);
+    TooltipGeometry(0.5, 1.0, 0.9, 1.0, 0.5);
+    TooltipAppearance("", "", "tfttbg");
+
+    let pps = TFLV_EventHandler.GetConsolePlayerStats();
+
+    TFLV_CurrentStats stats;
+    // VR PATCH: show whichever hand the Show Info key last cycled to, rather
+    // than always "the current weapon". Falls back to stock behaviour if that
+    // hand turns out to be empty.
+    if (!pps.GetCurrentStatsForHand(pps.menuHand, stats)
+        && !pps.GetCurrentStats(stats)) {
+      PushText(" ", Font.CR_RED);
+      PushText("$TFLV_MENU_NO_STATS_FOUND", Font.CR_RED);
+      return;
+    }
+
+    PushText(" ", Font.CR_GOLD);
+    PushText("$TFLV_MENU_HEADER_PLAYER_STATUS", Font.CR_GOLD);
+    PushKeyValueText(
+      string.format(StringTable.Localize("$TFLV_MENU_LEVEL"), stats.plvl),
+      string.format(StringTable.Localize("$TFLV_MENU_XP"), stats.pxp, stats.pmax));
+    stats.pupgrades.DumpInteractableToMenu(self, 0);
+
+    PushText(" ", Font.CR_GOLD);
+    PushText("$TFLV_MENU_HEADER_WEAPON_STATUS", Font.CR_GOLD);
+    // VR PATCH: say which hand this is, and that pressing the key again swaps.
+    // Without it there is no way to tell the two screens apart at a glance.
+    PushKeyValueText(
+      pps.menuHand == 1 ? "Offhand" : "Mainhand",
+      pps.GetInfoForHand(1 - pps.menuHand) ? "press again for other hand" : "");
+    PushKeyValueText("$TFLV_MENU_TYPE",
+      string.format("%s (%s)",
+      stats.winfo.wpn.GetTag(), stats.winfo.wpn.GetClassName()));
+    PushKeyValueText(
+      string.format(StringTable.Localize("$TFLV_MENU_LEVEL"), stats.wlvl),
+      string.format(StringTable.Localize("$TFLV_MENU_XP"), stats.wxp, stats.wmax));
+    stats.wupgrades.DumpInteractableToMenu(self, 1);
+    PushText(" ", Font.CR_RED);
+    PushText("―――――", Font.CR_WHITE);
+    PushText("$TFLV_MENU_UPGRADE_CONTROLS_HELP", Font.CR_WHITE);
+
+    mDesc.mSelectedItem = -1;
+    let ld_info = stats.winfo.ld_info;
+    if (ld_info.effects.size() > 0) {
+      PushText("", Font.CR_GOLD);
+      PushText("$TFLV_MENU_HEADER_WEAPON_LD_EFFECTS", Font.CR_GOLD);
+      for (uint i = 0; i < ld_info.effects.size(); ++i) {
+        if (ld_info.currentEffect == i) {
+          PushEffect(ld_info.effects[i], i, true);
+          mDesc.mSelectedItem = mDesc.mItems.Size() - 1;
+        } else {
+          PushEffect(ld_info.effects[i], i, false);
+        }
+      }
+    }
+  }
+
+  void PushEffect(string effect, uint index, bool isDefault) {
+    // VR PATCH, colour-blind play (rsqa_colorblind): the active effect is orange against red,
+    // one colour to a deuteranope, so it is also marked with a star.
+    string title = TFLV_LegendoomUtil.GetEffectTitle(effect);
+    if (isDefault && RSQGB_CB.Mode()) title = "* " .. title;
+    PushKeyValueOption(
+      title,
+      TFLV_LegendoomUtil.GetEffectDesc(effect),
+      "bonsai-select-effect",
+      index,
+      isDefault ? Font.CR_ORANGE : Font.CR_DARKRED,
+      isDefault ? Font.CR_YELLOW : Font.CR_RED);
+  }
+}

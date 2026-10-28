@@ -1,0 +1,22 @@
+// THE GLOVES: SuperPunchOut's glove (models/spo/glove.md3, byte-identical to Ermac's PunchOutVR
+// glove) and Ermac's fit, unchanged -- Scale -1.2 1.2 1.2, Offset 0 -10 -10, the same on both
+// hands (the engine mirrors the off hand itself on this render path). MODELDEF matches the
+// exact class only, so the off-hand glove needs its own block.
+Model RSQ_Glove
+{
+	Path "models/rsq"
+	Model 0 "glove.md3"
+	Skin 0 "glove.png"
+	Scale -1.2 1.2 1.2
+	Offset 0.0 -10.0 -10.0
+	FrameIndex TNT1 A 0 0
+}
+Model RSQ_GloveOff
+{
+	Path "models/rsq"
+	Model 0 "glove.md3"
+	Skin 0 "glove.png"
+	Scale -1.2 1.2 1.2
+	Offset 0.0 -10.0 -10.0
+	FrameIndex TNT1 A 0 0
+}

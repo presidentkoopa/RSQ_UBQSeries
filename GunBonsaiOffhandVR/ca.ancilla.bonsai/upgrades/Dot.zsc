@@ -1,0 +1,225 @@
+// Generic class for DoT effects.
+// Subclasses should implement GetParticleColour(), GetParticleZV(), and GetDamage().
+// All of these are called every 7 tics (5 times/second) to draw particle effects
+// and apply damage.
+// They can also override TickDot(), which is the superfunction that calls
+// GetDamage().
+// #namespace TFLV::Upgrade;
+
+// VR / OFFHAND PATCH -- replaces the stock 0.10.6 file.
+//
+// A DoT is the case that forced provenance to be a weighted list rather than a
+// single owner. Light a crowd with two flamethrowers, stop firing, and every
+// burning enemy still owes XP to both guns -- in proportion to how much each
+// one actually burned it, not to whichever one grazed it last. Crediting the
+// last applier is fine when both guns contributed evenly and badly wrong when
+// they did not: one hand does ninety percent of the work and the other collects
+// a whole target's burn for a graze.
+//
+// The credit record lives on the DoT item rather than in the stats object's
+// bounded registry, for a lifetime reason -- a burn can outlast any ring, and
+// the item already *is* the inflictor (see TickDot's DamageMobj call), so it is
+// the natural place to hang it. It also means credit survives the gun being
+// switched away, dropped or destroyed, because the record holds a WeaponInfo
+// and a WeaponInfo outlives all three.
+
+class TFLV_Upgrade_Dot : Inventory {
+  double stacks;
+  property UpgradePriority: weaponspecial;
+
+  // VR PATCH: who is owed for this burn, and in what proportion.
+  TFLV_VR_Provenance credit;
+
+  // VR PATCH: record that `info` applied `weight` stacks' worth of this DoT.
+  void AddCredit(TFLV_WeaponInfo info, double weight) {
+    if (!info || weight <= 0) return;
+    if (!credit) {
+      credit = new("TFLV_VR_Provenance");
+      credit.Init(self);
+    }
+    credit.Add(info, weight);
+    info.dotCreditTic = gametic;
+  }
+
+  // VR PATCH: tell every gun owed for this burn that it is still owed.
+  // PruneStaleInfo cannot see credit records held out here on the item, so
+  // without this a burn could outlive the info it is going to pay.
+  void RefreshCredit() {
+    if (!credit) return;
+    for (int i = 0; i < credit.infos.size(); ++i) {
+      if (credit.infos[i]) credit.infos[i].dotCreditTic = gametic;
+    }
+  }
+
+  Default {
+    DamageType "None";
+    Inventory.Amount 1;
+    Inventory.MaxAmount 1;
+    TFLV_Upgrade_Dot.UpgradePriority TFLV_Upgrade_PRI_ELEMENTAL;
+    +NODAMAGETHRUST;
+  }
+
+  States {
+    Dot:
+      TNT1 A 0 TickDot();
+      TNT1 AAAAAAA 1 DrawVFX();
+      LOOP;
+  }
+
+  override void PostBeginPlay() {
+    if (!owner) { Destroy(); return; }
+    buffer = 0.0;
+    SetStateLabel("Dot");
+  }
+
+  // Convert between effective stacks (i.e. the amount stored in self.stacks and
+  // used for damage calculations and whatnot) and applied stacks (i.e. the amount
+  // actually applied by the player before softcapping is calculated).
+  // We need both because some things (stacks ticking down with time) modify the
+  // effective stacks and other things (attacks with elemental procs) modify the
+  // applied stacks.
+  // Softcap is defined by the curve y = log10(x^2.1)+1 {x>1}, where x is the
+  // applied stacks as a proportion of cap (so as/cap) and y is the same for
+  // effective stacks.
+  static double EffectiveToApplied(double es, double cap) {
+    if (es <= cap) return es;
+    return (10.0**(((es/cap) - 1)/2.1)) * cap;
+  }
+
+  static double AppliedToEffective(double as, double cap) {
+    if (as <= cap) return as;
+    return (log10((as/cap)**2.1)+1) * cap;
+  }
+
+  // Calculate how many stacks we should end up with taking diminishing returns
+  // once the softcap is exceeded into account.
+  void AddStacks(double extra, double cap) {
+    self.stacks = AppliedToEffective(
+      EffectiveToApplied(self.stacks, cap) + extra,
+      cap);
+  }
+
+  // Give count stacks of cls to the target, but don't let their total amount
+  // exceed max. Assign the dot's parent (via the target pointer) to owner, so
+  // that damage it deals is properly attributed.
+  static TFLV_Upgrade_Dot GiveStacks(Actor owner, Actor target, string cls, double count, double max = double.infinity) {
+//    DEBUG("GiveStacks: %f of %s", count, cls);
+    TFLV_Upgrade_Dot item = TFLV_Upgrade_Dot(target.FindInventory(cls));
+    if (!item) item = TFLV_Upgrade_Dot(target.GiveInventoryType(cls));
+    if (!item) {
+      // Couldn't find it or give them a new one!
+//      DEBUG(" -> failed to GiveInventoryType!");
+      return null;
+    }
+
+    item.target = owner;
+    item.AddStacks(count, max);
+
+    // VR PATCH: credit this application to whichever gun is being credited for
+    // the hit that caused it. `count` is the natural weight -- it is exactly
+    // how much of this burn this gun is responsible for.
+    let stats = TFLV_PerPlayerStats.GetStatsFor(owner);
+    if (stats && stats.creditingInfo) item.AddCredit(stats.creditingInfo, count);
+
+    return item;
+  }
+
+  // Count how many stacks of the dot the target has. Return 0 if they don't have
+  // it at all.
+  static uint CountStacks(Actor target, string cls) {
+    let dotitem = TFLV_Upgrade_Dot(target.FindInventory(cls));
+    if (!dotitem) return 0;
+    return dotitem.stacks;
+  }
+
+  int stylin; // number of tics left in drawing sprite-flash effect
+  void DrawVFX() {
+    uint mode = TFLV_Settings.vfx_mode();
+    if (mode == TFLV_VFX_FULL) {
+      SpawnOneParticle(GetParticleColour(), GetParticleZV());
+    } else if (mode == TFLV_VFX_REDUCED) {
+      if (stylin > 0) {
+        owner.A_SetRenderStyle(1.0, STYLE_STENCIL);
+        owner.SetShade(GetParticleColour());
+      } else if (stylin == 0) {
+        // Last tic, turn off flashy flashy
+        owner.RestoreRenderStyle();
+      } else if (random[TFLV_Upgrade_RNG_DotFlash](0, -stylin) > 5 && RSQGB_Photo.Gap(-stylin)) {
+        // Not currently flashing? chance to start based on how long it's been.
+        // (VR PATCH: RSQ_Accessibility's Photosensitive Mode waits 14 tics between flashes.)
+        stylin = 1+ceil(stacks**0.5);
+      }
+      --stylin;
+    } else {
+      stylin = 0;
+      owner.RestoreRenderStyle();
+    }
+  }
+
+  void SpawnOneParticle(string colour, double zv) {
+    owner.A_SpawnParticle(
+      colour, SPF_FULLBRIGHT,
+      30, 10, 0, // lifetime, size, angle
+      // position
+      random[TFLV_Upgrade_RNG_DotParticle](-owner.radius, owner.radius),
+      random[TFLV_Upgrade_RNG_DotParticle](-owner.radius, owner.radius),
+      random[TFLV_Upgrade_RNG_DotParticle](0, owner.height),
+      0, 0, zv, // v
+      0, 0, zv); // a
+  }
+
+  double buffer; // Accumlated damage for fractional damage amounts.
+  virtual void TickDot() {
+    RefreshCredit();
+    if (!owner || owner.bKILLED || stacks <= 0) {
+//      DEBUG("removing dot");
+      if (owner) owner.RestoreRenderStyle();
+      Destroy();
+      return;
+    }
+    buffer += GetDamage();
+    if (buffer > 1) {
+//      DEBUG("Dot %s damages %s for %d (source=%s)",
+//        TAG(self), TAG(owner), buffer, TAG(self.target));
+      owner.DamageMobj(
+        self, self.target, floor(buffer), self.DamageType,
+        DMG_NO_ARMOR | DMG_NO_PAIN | DMG_THRUSTLESS | DMG_NO_ENHANCE);
+      buffer -= floor(buffer);
+    }
+  }
+
+  override void OwnerDied() {
+//      DEBUG("owner died");
+    if (owner) owner.RestoreRenderStyle();
+  }
+
+  virtual double GetDamage() {
+    ThrowAbortException("Subclass of TFLV_Upgrade_Dot did not implement GetDamage()!");
+    return 0.0;
+  }
+
+  virtual string GetParticleColour() {
+    ThrowAbortException("Subclass of TFLV_Upgrade_Dot did not implement GetParticleColour()!");
+    return "black";
+  }
+
+  virtual double GetParticleZV() {
+    ThrowAbortException("Subclass of TFLV_Upgrade_Dot did not implement GetParticleZV()!");
+    return 0;
+  }
+
+  // Used by Elemental Synthesis effects to correctly copy secondary effect stacks.
+  virtual void CopyFrom(TFLV_Upgrade_Dot src) {
+    self.stacks = max(self.stacks, src.stacks);
+    // VR PATCH: Elemental Synthesis copies stacks between dots, so the credit
+    // for those stacks has to come with them. Otherwise a synthesised effect is
+    // damage nobody is paid for.
+    if (src && src.credit) {
+      if (!credit) {
+        credit = new("TFLV_VR_Provenance");
+        credit.Init(self);
+      }
+      credit.InheritFrom(src.credit);
+    }
+  }
+}

@@ -1,0 +1,88 @@
+// Gun Bonsai VR / Offhand Patch -- added cvars.
+// These are additions only; every stock bonsai_* cvar is untouched and still
+// lives in Gun Bonsai's own CVARINFO.
+
+// Draw a HUD for each hand instead of a single one.
+// Mainhand goes top-right, offhand top-left (reflected for a left-hander:
+// rsqa_handed from RSQ_Accessibility, else QuestZDoom's Control Scheme).
+user bool bonsai_vr_dual_hud = true;
+
+// When dual HUD is OFF, which hand the single HUD follows.
+// 0 = mainhand, 1 = offhand, 2 = whichever earned XP most recently.
+// Always falls through to the hand that actually holds a gun, so this can
+// never blank the HUD on its own.
+user int bonsai_vr_hud_hand = 0;
+
+// Per-hand HUD anchors, used only when bonsai_vr_dual_hud is on.
+// X/Y follow the same convention as bonsai_hud_x/y: 0..1 is a fractional
+// anchor, negative is absolute pixels from the right/bottom edge, and >1 is an
+// absolute pixel position.
+//
+// Mirror is a bitmask -- 1 = horizontal, 2 = vertical -- and also selects which
+// corner-specific frame texture is drawn. The defaults make the two HUDs exact
+// horizontal reflections of each other, so they read as a matched pair rather
+// than as two copies of the same widget.
+user float bonsai_vr_hud_main_x = 0.99;
+user float bonsai_vr_hud_main_y = 0.02;
+user int bonsai_vr_hud_main_mirror = 3;
+
+user float bonsai_vr_hud_off_x = 0.01;
+user float bonsai_vr_hud_off_y = 0.02;
+user int bonsai_vr_hud_off_mirror = 2;
+
+// A third gauge, for the ShieldSaw while it rides on the shoulder (in a hand, that hand's gauge shows
+// it): Gun Bonsai's own gauge, centred at the top between the two, scaled to fit. Off by default.
+user bool rsq_hud_shield = false;
+
+// Warn once at startup if the upgrade binding mode is not per-weapon.
+// Per-class binding rebinds a single WeaponInfo back and forth when both hands
+// hold the same weapon class, which thrashes. Set to false to silence.
+//
+// Deliberately `server`, not `user`: it is read from the event handler's
+// OnRegister, which is play scope, and user cvars are per-client so play code
+// is not allowed to read them.
+server bool bonsai_vr_warn_binding = true;
+
+// ---- the melee upgrades (rsq/) -- all server settings ----
+// Slappers Only: on puts the boxing gloves on both hands at once and puts your guns away (gun pickups vanish); off gives them back.
+server bool rsq_slappers = false;
+// Outside Slappers Only: 1 hands you the boxing gloves at each level start.
+server int rsq_gloves = 0;
+// The Force with this patch loaded: an unlearned power works at this share of the saber's own.
+server float rsq_force_start = 0.6;
+// The gloves' punch reader (SuperPunchOut's own defaults: spo_min_speed, spo_full_speed,
+// spo_rehit_tics, spo_uppercut_rise) and reach past the glove's 9 cm radius, in map units.
+server float rsq_punch_min_speed = 2.0;
+server float rsq_punch_full_speed = 7.0;
+server int rsq_punch_rehit = 6;
+server float rsq_punch_uppercut_rise = 0.5;
+server float rsq_punch_pad = 4.0;
+// Brutal Doom's own punch is 10 (MeleeStrikeNormal); a full-speed glove doubles it.
+server float rsq_punch_damage = 10.0;
+// Star Punch banking, SuperPunchOut's `stars <first> <every>` (Soda Popinski's line).
+server int rsq_star_first = 1;
+server int rsq_star_every = 2;
+// The punch reader's decisions to the console.
+server bool rsq_punch_debug = false;
+
+// RSQ_Grapple's hook: XP for what it does (bites, yanks, swinging, kills it was in on) x this.
+server float rsq_hook_xp = 1.0;
+
+// XP Source (rsq/zscript/stylexp.zs): 0 Damage (Gun Bonsai's own), 1 Style (RSQ Score's style points
+// along the combo chain: the finisher 50%, the setup tools 50%), 2 Both. Style without RSQ Score is Damage.
+server int rsq_xp_source = 0;
+// Style XP: XP per style point, and the extra share for the player bar, in percent.
+server float rsq_xp_style_scale = 1.0;
+server int rsq_xp_style_player = 10;
+server noarchive bool rsq_xp_debug = false;
+
+// Which screens draw Gun Bonsai: 0 its own, 1 the recreation of the owner's mockups, 2 and 3 the alternatives
+server int rsq_ui_skin = 1;
+// The screens: HUD inset (fraction of each side kept clear, for the headset's edge of view),
+// HUD size, and the bottom row (per-hand ammo, health, face, armour).
+server float rsq_ui_inset = 0.04;
+server float rsq_ui_hud_scale = 1.0;
+server bool rsq_ui_bottom = true;
+// What the skins changed in other mods' user cvars, to put back on skin 0 (-1 = nothing saved).
+server int rsq_ui_saved_scorehide = -1;
+server int rsq_ui_saved_sbartype = -1;

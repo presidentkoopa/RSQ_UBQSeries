@@ -1,0 +1,44 @@
+// #namespace TFLV::Upgrade;
+// #debug off;
+//
+// VR / OFFHAND PATCH -- replaces the stock 0.10.6 file.
+//
+// Juggler is a *player* upgrade, so it runs regardless of what is in either
+// hand, and it fakes instant weapon swaps by snapping the psprite straight to
+// WEAPONTOP/WEAPONBOTTOM.
+//
+// Stock paired player.ReadyWeapon with PSP_WEAPON. With two hands that pairing
+// can be wrong in both directions: the offhand's raise/lower happens on
+// PSP_OFFHANDWEAPON and was simply invisible to it, and comparing the mainhand
+// psprite's state against the wrong weapon's state sequence snaps the wrong
+// layer. It now does each hand against its own weapon.
+
+class TFLV_Upgrade_Juggler : TFLV_Upgrade_BaseUpgrade {
+  bool InState(PSprite psp, State state) {
+    if (!psp.CurState || !state) return false;
+    return psp.CurState.InStateSequence(state);
+  }
+
+  void TickHand(Actor owner, int hand) {
+    let wpn = hand ? owner.player.OffhandWeapon : owner.player.ReadyWeapon;
+    if (!wpn) return;
+    let psp = owner.player.GetPSprite(hand ? PSP_OFFHANDWEAPON : PSP_WEAPON);
+    if (!psp) return;
+
+    if (InState(psp, wpn.GetDownState())) {
+      psp.y = WEAPONBOTTOM;
+    } else if (InState(psp, wpn.GetUpState())) {
+      psp.y = WEAPONTOP;
+    }
+  }
+
+  override void Tick(Actor owner) {
+    if (!owner || !owner.player) return;
+    TickHand(owner, 0);
+    TickHand(owner, 1);
+  }
+
+  override bool IsSuitableForPlayer(TFLV_PerPlayerStats stats) {
+    return stats.upgrades.Level("TFLV_Upgrade_Juggler") == 0;
+  }
+}

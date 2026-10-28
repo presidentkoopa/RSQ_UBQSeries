@@ -1,0 +1,290 @@
+// Info about a single weapon. These are held by the PerPlayerStats and each
+// one records information about one of the player's weapons.
+// It's also responsible for handling weapon level-ups.
+// #namespace TFLV;
+
+class TFLV_WeaponInfo : Object play {
+  // At the moment "wpn" is used both as a convenient way to remember a reference
+  // to the weapon itself, and as the key for the info lookup when the caller has
+  // a weapon but not the WeaponInfo.
+  // We call it "wpn" rather than "weapon" because ZScript gets super confused
+  // if we have both a type and an instance variable in scope with the same name.
+  // Sigh.
+  Weapon wpn;
+  string wpnClass;
+  TFLV_PerPlayerStats stats;
+  TFLV_Upgrade_UpgradeBag upgrades;
+  double XP;
+  double maxXP;
+  uint level;
+  TFLV_LegendoomWeaponInfo ld_info;
+
+  // VR PATCH: last gametic at which a live DoT named this info as a creditor.
+  //
+  // A DoT's credit record lives on the DoT item, not in the stats object's
+  // provenance ring, so PruneStaleInfo could not see it: drop the flamethrower
+  // while enemies were still burning and the info was pruned out from under the
+  // burn, so the XP that burn went on to earn was paid into an object nothing
+  // could reach any more. TFLV_Upgrade_Dot.TickDot refreshes this every 7 tics
+  // for as long as the burn is alive, so it is an exact liveness signal and not
+  // a guess -- see TFLV_PerPlayerStats.IsInfoReferenced.
+  int dotCreditTic;
+
+  // Called when a new WeaponInfo is created. This should initialize the entire object.
+  void Init(Weapon wpn) {
+//    DEBUG("Initializing WeaponInfo for %s", TAG(wpn));
+    upgrades = new("TFLV_Upgrade_UpgradeBag");
+    ld_info = new("TFLV_LegendoomWeaponInfo");
+    ld_info.Init(self);
+    Rebind(wpn);
+    XP = 0;
+    level = 0;
+//    DEBUG("WeaponInfo initialize, class=%s level=%d xp=%d/%d",
+//        wpnClass, level, XP, maxXP);
+  }
+
+  // Called when this WeaponInfo is being reassociated with a new weapon. It
+  // should keep most of its stats.
+  void Rebind(Weapon wpn) {
+    self.wpn = wpn;
+    if (self.wpnClass != wpn.GetClassName()) {
+      // Rebinding to a weapon of an entirely different type. Reset the attack
+      // modality inference counters.
+      self.wpnClass = wpn.GetClassName();
+      self.ResetTypeInference();
+      TFLV_RC.GetRC().Configure(self);
+      if (!wpn.bPOWERED_UP || !maxXP)
+        // If this is not a PoweredUp weapon, recalculate max XP as well. If it is
+        // powered up, assume that we're using the max XP for it's unpowered sister.
+        self.maxXP = GetXPForLevel(level+1);
+    }
+    ld_info.Rebind(self);
+  }
+
+  void ToggleUpgrade(uint index) {
+    let upgrade = upgrades.upgrades[index];
+    upgrade.enabled = !upgrade.enabled;
+    if (upgrade.enabled) {
+      upgrade.OnActivate(stats, self);
+    } else {
+      upgrade.OnDeactivate(stats, self);
+    }
+  }
+
+  void TuneUpgrade(uint index, int amount) {
+    let upgrade = upgrades.upgrades[index];
+    if (!upgrade.enabled) return;
+    let old_level = upgrade.level;
+    upgrade.level = clamp(upgrade.level + amount, 1, upgrade.max_level);
+    if (old_level != upgrade.level) {
+      upgrade.OnDeactivate(stats, self);
+      upgrade.OnActivate(stats, self);
+    }
+  }
+
+  void OnActivate() {
+    self.upgrades.OnActivate(stats, self);
+  }
+  void OnDeactivate() {
+    self.upgrades.OnDeactivate(stats, self);
+  }
+
+  // List of upgrade classes that are unavailable on this weapon, even if they
+  // would normally spawn.
+  array<string> disabled_upgrades;
+  void DisableUpgrades(array<string> upgrades) {
+    disabled_upgrades.copy(upgrades);
+  }
+  bool CanAcceptUpgrade(string upgrade) {
+    return disabled_upgrades.find(upgrade) == disabled_upgrades.size();
+  }
+
+  // List of classes that this weapon is considered equivalent to.
+  array<string> equivalencies;
+  void SetEquivalencies(array<string> classes) {
+    equivalencies.copy(classes);
+  }
+
+  bool IsEquivalentTo(Weapon wpn) {
+    let result = wpn.GetClassName() == self.wpnClass
+      || equivalencies.find(wpn.GetClassName()) != equivalencies.size();
+//    DEBUG("Eqv? %s %s -> %d", wpnClass, TAG(wpn), result);
+    return result;
+  }
+
+  // Given another weapon to look at, determine if this WeaponInfo can be rebound
+  // to it. The actual logic used depends on the bonsai_upgrade_binding_mode cvar.
+  bool CanRebindTo(Weapon wpn) {
+    TFLV_UpgradeBindingMode mode = bonsai_upgrade_binding_mode;
+
+    // VR PATCH: never steal the weapon that is live in the *other* hand.
+    //
+    // With two weapons in play this is the difference between two guns with two
+    // upgrade trees and one WeaponInfo being Rebind()-ed back and forth every
+    // time either hand is looked at -- which also re-runs TFLV_RC.Configure and
+    // ld_info.Rebind on every bounce. It bites hardest in BIND_CLASS with two of
+    // the same weapon, one per hand, which is the obvious way to dual-wield.
+    if (IsLiveInAnotherHand(wpn)) return false;
+
+    // SisterWeapon overrides everything else; a weapon and its sister are always
+    // considered to share a binding regardless of binding mode.
+    //
+    // VR PATCH: the engine copies bOffhandWeapon onto SisterWeapon
+    // (weapons.zs:910, powerups.zs:1111), so a powered-up weapon inherits the
+    // hand -- which means this unconditional branch can hand the offhand's
+    // weapon to the mainhand's info. The guard above covers it.
+    if (self.wpn && self.wpn.SisterWeapon == wpn) return true;
+
+    // Can't rebind at all in BIND_WEAPON mode under normal circumstances.
+    // As a special case, we will permit rebinds if:
+    // - the new weapon has a different class from the old one;
+    // - the old weapon no longer exists;
+    // - the two classes are marked equivalent in BONSAIRC.
+    if (mode == TFLV_BIND_WEAPON) {
+//      DEBUG("BIND_WEAPON reuse check: orphaned=%d equivalent=%d",
+//        self.wpn == null, IsEquivalentTo(wpn));
+      return
+        self.wpnClass != wpn.GetClassName()
+        && self.wpn == null
+        && IsEquivalentTo(wpn);
+    }
+
+    // In class-bound mode, all weapons of the same type share the same WeaponInfo.
+    // When you switch weapons, the WeaponInfo for that type gets rebound to the
+    // newly wielded weapon.
+    if (mode == TFLV_BIND_CLASS) {
+      return IsEquivalentTo(wpn);
+    }
+
+    // In inheritable weapon-bound mode, a weaponinfo is only reusable if the
+    // weapon it was bound to is no longer carried by the player.
+    if (mode == TFLV_BIND_WEAPON_INHERITABLE) {
+      // We need IsReallyInInventory here because sometimes, for some reason,
+      // PlayerPawn.RemoveInventory(i) doesn't set i.owner to null, even though
+      // it absolutely should and the source code says it does, and this is most
+      // obvious when dealing with Universal Pistol Start.
+      return (self.wpn == null || self.wpn.owner == null || !IsReallyInInventory(wpn.owner, self.wpn))
+        && self.IsEquivalentTo(wpn);
+    }
+
+    ThrowAbortException("Unknown UpgradeBindingMode %d!", mode);
+    return false;
+  }
+
+  // VR PATCH: true when `self` is the live info for one hand and `wpn` is the
+  // weapon held in the other. Rebinding across that boundary is always wrong:
+  // both weapons are in use right now, so neither info is free to move.
+  bool IsLiveInAnotherHand(Weapon wpn) const {
+    if (!stats || !wpn) return false;
+    for (int hand = 0; hand <= 1; ++hand) {
+      // Is this info the live one for `hand`, and is `wpn` the *other* hand's?
+      if (stats.GetInfoForHand(hand) != self) continue;
+      let otherWpn = stats.WeaponForHand(1 - hand);
+      if (otherWpn && otherWpn == wpn) return true;
+    }
+    return false;
+  }
+
+  bool IsReallyInInventory(Actor stack, Actor needle) {
+    for (Inventory inv = stack.inv; inv; inv = inv.inv) {
+      if (inv == needle) return true;
+    }
+    return false;
+  }
+
+  double GetXPForLevel(uint level) const {
+    double XP = bonsai_base_level_cost * double(level);
+    double mul = 1.0;
+    if (IsMelee()) {
+      mul = min(mul, bonsai_level_cost_mul_for_melee);
+    }
+    if (IsWimpy()) {
+      mul = min(mul, bonsai_level_cost_mul_for_wimpy);
+    }
+//    DEBUG("GetXPForLevel: level %d -> XP %.1f", level, XP);
+    return XP * mul;
+  }
+
+  void AddXP(double newXP) {
+    if (IsIgnored()) return;
+//    DEBUG("Adding XP: %.3f + %.3f", XP, newXP);
+    XP += newXP;
+//    DEBUG("XP is now %.3f", XP);
+    if (XP >= maxXP && XP - newXP < maxXP) {
+      Fanfare();
+    }
+  }
+
+  void Fanfare() {
+    EventHandler.SendNetworkEvent("bonsai-level-up", 1, self.level+1);
+    let flash = TFLV_Settings.levelup_flash();
+    if (flash) {
+      wpn.owner.A_SetBlend(flash, RSQGB_Photo.Dim(0.8), 40);   // VR PATCH: Photosensitive Mode, 40%
+    }
+    if (TFLV_Settings.levelup_sound() != "") {
+      wpn.owner.A_StartSound(TFLV_Settings.levelup_sound(), CHAN_AUTO,
+        CHANF_OVERLAP|CHANF_UI|CHANF_NOPAUSE|CHANF_LOCAL);
+    }
+    if (0 <= bonsai_upgrade_choices_per_gun_level && bonsai_upgrade_choices_per_gun_level <= 1) {
+      StartLevelUp();
+    } else {
+      wpn.owner.A_Log(string.format(
+        StringTable.Localize("$TFLV_MSG_WEAPON_LEVELUP_READY"),
+        wpn.GetTag()),
+        true);
+    }
+  }
+
+  uint CountPendingLevels() {
+    uint pending = 0;
+    uint xp = self.XP;
+    uint maxXP = self.maxXP;
+    while (xp >= maxXP) {
+//      DEBUG("CountPending: xp=%d/%d pending=%d", xp, maxXP, pending);
+      xp -= maxXP;
+      ++pending;
+      maxXP = GetXPForLevel(1+level+pending);
+    }
+    return pending;
+  }
+
+  bool StartLevelUp() {
+    if (XP < maxXP) return false;
+
+    let giver = TFLV_WeaponUpgradeGiver(wpn.owner.GiveInventoryType("TFLV_WeaponUpgradeGiver"));
+    giver.wielded = self;
+    giver.nrof = CountPendingLevels();
+
+    return true;
+  }
+
+  void RejectLevelUp() {
+    // Don't adjust maxXP -- they didn't gain a level.
+    XP -= maxXP;
+    wpn.owner.A_Log(StringTable.Localize("$TFLV_MSG_LEVELUP_REJECTED"), true);
+    if (XP >= maxXP) Fanfare();
+    return;
+  }
+
+  void FinishLevelUp(TFLV_Upgrade_BaseUpgrade upgrade) {
+    XP -= maxXP;
+    ++level;
+    TFLV_PerPlayerStats.GetStatsFor(wpn.owner).AddPlayerXP(1);
+    maxXP = GetXPForLevel(level+1);
+
+    if (upgrade) {
+      upgrades.AddUpgrade(upgrade).OnActivate(stats, self);
+      wpn.owner.A_Log(string.format(
+          StringTable.Localize("$TFLV_MSG_WEAPON_LEVELUP"),
+          wpn.GetTag(), upgrade.GetName()),
+        true);
+    }
+
+    if (TFLV_Settings.have_legendoom()
+        && bonsai_gun_levels_per_ld_effect > 0
+        && (level % bonsai_gun_levels_per_ld_effect) == 0) {
+      let ldGiver = TFLV_LegendoomEffectGiver(wpn.owner.GiveInventoryType("TFLV_LegendoomEffectGiver"));
+      ldGiver.info = self.ld_info;
+    }
+  }
+}

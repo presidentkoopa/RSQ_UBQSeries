@@ -1,0 +1,77 @@
+// #namespace TFLV::Upgrade;
+// #debug off;
+//
+// VR / OFFHAND PATCH -- replaces the stock 0.10.6 file.
+//
+// Two fixes.
+//
+// 1. This is a *weapon* upgrade, so it must speed up the psprite of the hand
+//    holding the weapon it is attached to -- not always PSP_WEAPON. But Tick()
+//    receives only the owner, with no back-reference to its own WeaponInfo, so
+//    the upgrade finds itself: it looks for its own object in each live hand's
+//    upgrade bag. Two bags, a handful of entries; cheaper than changing the
+//    Tick signature and shadowing BaseUpgrade, UpgradeBag and every upgrade
+//    that overrides Tick.
+//
+// 2. Stock dereferenced psp.tics with no null check -- compare Juggler, which
+//    guards. GetPSprite returns null when that hand's weapon is null, so with
+//    two hands this was not a glitch but a VM abort.
+
+class TFLV_Upgrade_RapidFire : TFLV_Upgrade_BaseUpgrade {
+  void SpeedUp(PSprite psp, uint n) {
+//    DEBUG("rapidfire: state %p, tics %d - %d", psp.CurState, psp.tics, n);
+    for (uint i = 0; i < n; ++i) {
+      if (psp.tics) {
+        psp.tics--;
+        while (psp.tics == 0) {
+          if (!psp.CurState) return;
+          psp.SetState(psp.CurState.NextState, true);
+        }
+      }
+    }
+  }
+
+  // Which hand holds the weapon this upgrade is bound to? -1 if we can't tell,
+  // which happens for one tic after a switch and any time the weapon is not
+  // currently in a hand.
+  int FindOwnHand(Actor owner) {
+    let stats = TFLV_PerPlayerStats.GetStatsFor(owner);
+    if (!stats) return -1;
+    for (int hand = 0; hand <= 1; ++hand) {
+      let info = stats.GetInfoForHand(hand);
+      if (!info || !info.upgrades) continue;
+      for (int i = 0; i < info.upgrades.upgrades.size(); ++i) {
+        if (info.upgrades.upgrades[i] == self) return hand;
+      }
+    }
+    return -1;
+  }
+
+  override void Tick(Actor owner) {
+    if (!owner || !owner.player) return;
+    int hand = FindOwnHand(owner);
+    if (hand < 0) return;
+
+    let psp = owner.player.GetPSprite(hand ? PSP_OFFHANDWEAPON : PSP_WEAPON);
+    if (!psp) return;
+    if (psp.tics != -1) {
+      // Speed up by 1 tic for every 2 levels of the upgrade; on odd-numbered levels,
+      // speed up by an extra tic on odd-numbered gametics.
+      SpeedUp(psp, level/2 + (level % 2) * (gametic % 2));
+    }
+  }
+
+  override bool IsSuitableForWeapon(TFLV_WeaponInfo info) {
+    return info.upgrades.Level("TFLV_Upgrade_RapidFire") < 10
+      && (info.wpn.AmmoType1 || info.wpn.AmmoType2);
+  }
+
+  override void GetTooltipFields(Dictionary fields, uint level) {
+    fields.insert("speedup", string.format("x%.1f", 1 + level/2.0));
+  }
+}
+
+// Kept around for compatibility with older saves.
+class TFLV_Upgrade_RapidFire_Power : PowerDoubleFiringSpeed {
+  Default { Powerup.Duration 1; }
+}

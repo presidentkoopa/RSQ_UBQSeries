@@ -1,0 +1,42 @@
+# Gun Bonsai VR patch -- the melee upgrade paths (rsq/). Gun Bonsai reads every BONSAIRC.
+
+register
+  RSQ_Upgrade_Haymaker RSQ_Upgrade_OneTwo RSQ_Upgrade_StarPunch
+  RSQ_Upgrade_Counterpunch RSQ_Upgrade_BodyBlow RSQ_Upgrade_Knockdown
+  RSQ_Upgrade_Lunge RSQ_Upgrade_Executioner RSQ_Upgrade_Adrenaline
+  RSQ_Upgrade_Momentum RSQ_Upgrade_RiposteEdge RSQ_Upgrade_PiercingReturn
+  RSQ_Upgrade_SaberThrow RSQ_Upgrade_ChainChoke RSQ_Upgrade_DualHarmony
+  RSQ_Upgrade_ForcePush RSQ_Upgrade_ForcePull RSQ_Upgrade_ForceChoke RSQ_Upgrade_ForceJump
+  RSQ_Upgrade_Ricochet RSQ_Upgrade_MeatGrinder RSQ_Upgrade_HuntersReturn
+  RSQ_Upgrade_Bulwark RSQ_Upgrade_Rebound RSQ_Upgrade_BatteringRam
+  RSQ_Upgrade_Broadening RSQ_Upgrade_Lockstep RSQ_Upgrade_Deflector
+  RSQ_Upgrade_LongArm RSQ_Upgrade_IronGrip RSQ_Upgrade_HeavyHitter RSQ_Upgrade_AirCatch RSQ_Upgrade_PowderKeg
+  RSQ_Upgrade_QuickDraw RSQ_Upgrade_PairDraw RSQ_Upgrade_Showdown
+  RSQ_Upgrade_Marksman RSQ_Upgrade_Dodger RSQ_Upgrade_SecondWind RSQ_Upgrade_TimeDilation
+  RSQ_Upgrade_Akimbo RSQ_Upgrade_Crossfire RSQ_Upgrade_Alternator
+  RSQ_Upgrade_Evasion RSQ_Upgrade_Southpaw RSQ_Upgrade_SteadyAim
+  RSQ_Upgrade_LongLine RSQ_Upgrade_FastReel RSQ_Upgrade_HeavyHaul RSQ_Upgrade_GetOverHere RSQ_Upgrade_Bowling
+  RSQ_Upgrade_BarbedClaw RSQ_Upgrade_Slingshot RSQ_Upgrade_SteadyLine RSQ_Upgrade_DoubleHook
+;
+
+# The gloves, the sabers and the ShieldSaw are melee weapons whatever they are seen to do: the
+# ShieldSaw carries no MELEEWEAPON flag, and a saber's thrown blade and turned bolts would
+# otherwise teach it that it is a projectile weapon.
+type RSQ_Glove RSQ_GloveOff UBQS_Saber UBQS_SaberOff SSQ_ShieldSaw : MELEE ;
+
+# No elemental damage and nothing that is rate of fire on these: in VR the rewards are for how
+# you move.
+disable RSQ_Glove RSQ_GloveOff UBQS_Saber UBQS_SaberOff SSQ_ShieldSaw :
+  TFLV_Upgrade_RapidFire
+  TFLV_Upgrade_IncendiaryShots TFLV_Upgrade_BurningTerror TFLV_Upgrade_Conflagration TFLV_Upgrade_InfernalKiln
+  TFLV_Upgrade_PoisonShots TFLV_Upgrade_Weakness TFLV_Upgrade_Putrefaction TFLV_Upgrade_Hallucinogens
+  TFLV_Upgrade_CorrosiveShots TFLV_Upgrade_AcidSpray TFLV_Upgrade_ConcentratedAcid TFLV_Upgrade_Embrittlement
+  TFLV_Upgrade_ShockingInscription TFLV_Upgrade_Revivification TFLV_Upgrade_ChainLightning TFLV_Upgrade_Thunderbolt
+  TFLV_Upgrade_ElementalBeam TFLV_Upgrade_ElementalBlast TFLV_Upgrade_ElementalWave
+;
+
+# SuperPunchOut's own gloves, when that pack is loaded too: the same.
+ifdef SPO_Glove {
+  type SPO_Glove SPO_GloveOff : MELEE ;
+  disable SPO_Glove SPO_GloveOff : TFLV_Upgrade_RapidFire ;
+}

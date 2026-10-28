@@ -1,0 +1,385 @@
+// Event handler for Gun Bonsai.
+// Handles giving players a stat tracking item when they spawn in, and assigning
+// XP to their currently wielded weapon when they damage something.
+// #namespace TFLV;
+// #debug off;
+
+class TFLV_EventHandler : StaticEventHandler {
+  TFLV_PerPlayerStats playerstats[MAXPLAYERS];
+  TFLV_Upgrade_Registry UPGRADE_REGISTRY;
+  TFLV_RC rc;
+  TFLV_GunBonsaiService service;
+  ui TFLV_HUD hud;
+
+  override void OnRegister() {
+    console.printf("Initializing Gun Bonsai v%s...","0.10.5+185ae19d");
+    UPGRADE_REGISTRY = new("TFLV_Upgrade_Registry");
+
+    if (TFLV_Settings.have_legendoom()) {
+      console.printf("%s", StringTable.Localize("$TFLV_MSG_LD_YES"));
+    } else {
+      console.printf("%s", StringTable.Localize("$TFLV_MSG_LD_NO"));
+    }
+
+    rc = TFLV_RC.LoadAll("BONSAIRC");
+    rc.Finalize(self);
+
+    let service = TFLV_GunBonsaiService(ServiceIterator.Find("TFLV_GunBonsaiService").Next());
+    service.Init(self);
+    self.service = service;
+
+    console.printf("Gun Bonsai VR/offhand patch active: two hands, two HUDs, provenance-based XP.");
+    // VR PATCH: per-class binding rebinds a single WeaponInfo back and forth
+    // when both hands hold the same weapon class, which is the obvious way to
+    // dual-wield. Say so once rather than letting it look like lost progress.
+    if (bonsai_vr_warn_binding && bonsai_upgrade_binding_mode != TFLV_BIND_WEAPON) {
+      console.printf("  WARNING: bonsai_upgrade_binding_mode is not per-weapon. With a weapon in");
+      console.printf("  each hand this can thrash a single WeaponInfo between them. Set it to");
+      console.printf("  'each weapon' in the Gun Bonsai options, or set bonsai_vr_warn_binding 0.");
+    }
+  }
+
+  override void WorldLoaded(WorldEvent evt) {
+    if (level.totaltime == 0) {
+      // Starting a new game? Clear all info.
+      for (uint i = 0; i < MAXPLAYERS; ++i) playerstats[i] = null;
+    }
+    for (uint i = 0; i < MAXPLAYERS; ++i) {
+      if (playeringame[i]) InitPlayer(i, true);
+    }
+  }
+
+  void InitPlayer(uint p, bool new_map=false) {
+    PlayerPawn pawn = players[p].mo;
+    if (!pawn) return;
+    let proxy = TFLV_PerPlayerStatsProxy(pawn.FindInventory("TFLV_PerPlayerStatsProxy"));
+    if (proxy) {
+      // Spawned in player already has stats, those take precedence over whatever
+      // we remember.
+//      DEBUG("Restoring old stats already held by player %d", p);
+      playerstats[p] = proxy.stats;
+      playerstats[p].Initialize(proxy);
+//      DEBUG("proxy ring ok: %d", proxy.stats.proxy == proxy);
+//      DEBUG("stats ring ok: %d", playerstats[p].proxy.stats == playerstats[p]);
+//      DEBUG("pawn ring ok: %d %d",
+//        pawn == proxy.owner,
+//        pawn == proxy.stats.owner);
+    } else {
+      // Spawned in player doesn't have stats, give them a proxy holding whatever
+      // stats we have for them.
+//      DEBUG("Player %d doesn't have stats, reassigning", p);
+      if (!playerstats[p] || (new_map && !bonsai_ignore_death_exits)) {
+        // Either we don't have stats for this player, or we do but we're meant
+        // to respect death exits; in either case create new stats for them ex
+        // nihilo.
+        // Note that in the latter case we run this branch only when starting a
+        // new map; if the player's inventory has vanished mid-map we make sure
+        // to restore the upgrades they already have, for compatibility with mods
+        // like Blade of Agony that are constantly taking away your inventory for
+        // cutscenes and stuff and then giving it back later.
+//        DEBUG("No stats recorded in playerstats[%d], starting from scratch", p);
+        playerstats[p] = new("TFLV_PerPlayerStats");
+      }
+      proxy = TFLV_PerPlayerStatsProxy(pawn.GiveInventoryType("TFLV_PerPlayerStatsProxy"));
+      proxy.Initialize(playerstats[p]);
+    }
+  }
+
+  // Return the stats struct for the consoleplayer, without modifying the playsim.
+  // If the stats are missing, null will be returned, and if the playerpawn doesn't
+  // have a proxy object or disagrees with the contents of playerstats, too bad.
+  // This is used by menu code to get the stats for the player-at-keyboard.
+  ui static TFLV_PerPlayerStats GetConsolePlayerStats() {
+    return TFLV_EventHandler(StaticEventHandler.Find("TFLV_EventHandler")).playerstats[consoleplayer];
+  }
+
+  // Get the stats struct for the consoleplayer, resolving any mismatches between
+  // the EventHandler's view of things and the PlayerPawn. In particular, if only
+  // one of them has the info, that is taken as authoritative and copied to the other;
+  // if they both have info but disagree on it, PlayerPawn wins.
+  // TODO: some planned upgrades probably need the proxy to be moved to the head
+  // of the player's inventory when this happens.
+  TFLV_PerPlayerStats GetStatsFor(PlayerPawn pawn) {
+    // DEBUG("GetStatsFor: %s", TAG(pawn));
+    if (!pawn) return null;
+    let stats = playerstats[pawn.PlayerNumber()];
+    // If the stats are still attached to the proxy object and the proxy object
+    // is still attached to the player, we don't need to rummage through the
+    // player's inventory.
+    if (stats && stats.proxy && stats.proxy.owner == stats.owner && stats.owner == pawn)
+      return stats;
+    // Otherwise, something has gone wrong -- either we don't have playerstats
+    // recorded here, or they don't match the stats in the player's inventory.
+//    DEBUG("GetStats: eventhandler/playsim mismatch for player %d", pawn.PlayerNumber());
+    InitPlayer(pawn.PlayerNumber());
+    return playerstats[pawn.PlayerNumber()];
+  }
+
+  // VR PATCH: an offhand weapon is reason enough to draw. Stock gated on
+  // ReadyWeapon alone, so holding only an offhand made the entire HUD vanish.
+  ui bool ShouldDrawHUD(uint p) const {
+    return playeringame[p]
+      && playerstats[p]
+      && (players[p].ReadyWeapon || players[p].OffhandWeapon)
+      && screenblocks <= 11
+      && !automapactive;
+  }
+
+  /* ui */ override void RenderOverlay(RenderEvent evt) {
+    if (!ShouldDrawHUD(consoleplayer)) return;
+    if (!hud) hud = new("TFLV_HUD");
+
+    let stats = playerstats[consoleplayer];
+    TFLV_CurrentStats cur;
+
+    // VR PATCH: two weapons, two HUDs -- mainhand top right, offhand top left.
+    // Each side is skipped independently when that hand is empty, so a single
+    // weapon still looks like stock GB, on whichever side it belongs to.
+    if (TFLV_Settings.GetBool("bonsai_vr_dual_hud")) {
+      if (stats.GetCurrentStatsForHand(0, cur)) hud.DrawForHand(cur, 0);
+      if (stats.GetCurrentStatsForHand(1, cur)) hud.DrawForHand(cur, 1);
+      // RSQ PATCH: the ShieldSaw's gauge while it is on the shoulder (rsq_hud_shield, off by default)
+      if (TFLV_Settings.GetBool("rsq_hud_shield") && stats.GetShieldStats(cur)) hud.DrawShield(cur);
+      return;
+    }
+
+    // Single-HUD mode. bonsai_vr_hud_hand is a user cvar, so it is read here in
+    // UI scope and handed down rather than being read inside the playsim.
+    if (stats.GetCurrentStatsPreferring(TFLV_Settings.GetInt("bonsai_vr_hud_hand"), cur))
+      hud.Draw(cur);
+  }
+
+  void ShowInfo(uint p) {
+    // Force info creation
+    let stats = playerstats[p];
+    if (!stats) {
+      console.printf(StringTable.Localize("$TFLV_MSG_PLAYERSTATS_MISSING"), p);
+      return;
+    }
+    // Check for pending level ups and apply those if present.
+    // VR PATCH: both hands, mainhand first. Without this, `I` can never spend a
+    // level the offhand earned.
+    for (int hand = 0; hand <= 1; ++hand) {
+      let info = stats.GetInfoForHand(hand);
+      if (info && info.StartLevelUp()) return;
+    }
+    if (stats.StartLevelUp()) return;
+    // VR PATCH: nothing pending, so this is a browse. Step to the next hand so
+    // repeated presses cycle mainhand -> offhand -> mainhand instead of always
+    // landing on the same gun.
+    stats.AdvanceMenuHand();
+    if (p == consoleplayer) Menu.SetMenu("GunBonsaiStatusDisplay");
+    return;
+  }
+
+  void ChooseLevelUpOption(uint p, int index) {
+    if (!playerstats[p]) return;
+    let giver = playerstats[p].currentEffectGiver;
+    if (!giver) {
+      // They chose a level up but their effectgiver is missing! This probably means
+      // that something ate their inventory between them opening the menu and choosing
+      // an option.
+//      DEBUG("Stats for player %d have id %d and no effect giver", p, playerstats[p].id);
+      return;
+    }
+    giver.Choose(index);
+  }
+
+  void CycleLDEffect(uint p) {
+    if (!playerstats[p]) return;
+    let info = playerstats[p].GetInfoForCurrentWeapon();
+    if (info) info.ld_info.CycleEffect();
+  }
+
+  void SelectLDEffect(uint p, int index) {
+    if (!playerstats[p]) return;
+    let info = playerstats[p].GetInfoForCurrentWeapon();
+    if (info) info.ld_info.SelectEffect(index);
+  }
+
+  override void NetworkProcess(ConsoleEvent evt) {
+    if (evt.name == "bonsai-show-info") {
+      ShowInfo(evt.player);
+    } else if (evt.name == "bonsai-cycle-ld-effect") {
+      if (TFLV_Settings.have_legendoom()) {
+        CycleLDEffect(evt.player);
+      } else {
+        players[evt.player].mo.A_Log(StringTable.Localize("$TFLV_MSG_LD_REQUIRED"));
+      }
+    } else if (evt.name == "bonsai-select-effect") {
+      if (TFLV_Settings.have_legendoom()) {
+        SelectLDEffect(evt.player, evt.args[0]);
+      } else {
+        players[evt.player].mo.A_Log(StringTable.Localize("$TFLV_MSG_LD_REQUIRED"));
+      }
+    } else if (evt.name == "bonsai-choose-level-up-option") {
+      ChooseLevelUpOption(evt.player, evt.args[0]);
+    } else if (evt.name == "bonsai-toggle-upgrade") {
+      // args[0] holds the bag index, args[1] the index of the upgrade within that bag.
+      // In the future this might be extended to allow viewing and toggling of upgrades
+      // on weapons not presently equipped, but for now [0] is always either 0 (player
+      // upgrades) or 1 (currently equipped weapon upgrades).
+      ToggleUpgrade(evt.player, evt.args[0] != 0, evt.args[1]);
+    } else if (evt.name == "bonsai-tune-upgrade") {
+      // Same as above, except that args[2] holds the amount to tune by, which
+      // may be negative.
+      TuneUpgrade(evt.player, evt.args[0] != 0, evt.args[1], evt.args[2]);
+    } else if (evt.name.IndexOf("bonsai-debug") == 0) {
+      TFLV_Debug.DebugCommand(service, evt.player, evt.name, evt.args[0]);
+    }
+  }
+
+  void ToggleUpgrade(int player, bool on_weapon, int index) {
+    let stats = playerstats[player];
+//    DEBUG("toggle: %d %d", on_weapon, index);
+    // TFLV_Upgrade_BaseUpgrade upgrade;
+    if (on_weapon) {
+      // VR PATCH: the hand the status screen is showing, not "the current
+      // weapon" -- otherwise you browse the offhand and toggle the mainhand.
+      let info = stats.GetInfoForHand(stats.menuHand);
+      if (!info) info = stats.GetInfoForCurrentWeapon();
+      if (info) info.ToggleUpgrade(index);
+    } else {
+//      DEBUG("player has upgrades: %d", stats.upgrades != null);
+      stats.ToggleUpgrade(index);
+    }
+  }
+
+  void TuneUpgrade(int player, bool on_weapon, int index, int amount) {
+    let stats = playerstats[player];
+//    DEBUG("tune: %d %d %d", on_weapon, index, amount);
+    // TFLV_Upgrade_BaseUpgrade upgrade;
+    if (on_weapon) {
+      // Same as ToggleUpgrade: follow the screen, not the hand.
+      let info = stats.GetInfoForHand(stats.menuHand);
+      if (!info) info = stats.GetInfoForCurrentWeapon();
+      if (info) info.TuneUpgrade(index, amount);
+    } else {
+      stats.TuneUpgrade(index, amount);
+    }
+  }
+
+  static PlayerPawn GetPlayerDamageSource(WorldEvent evt) {
+    if (evt.damage <= 0
+        || !evt.thing.bISMONSTER
+        || !evt.damagesource
+        || evt.thing.bFRIENDLY
+        || evt.thing == evt.damagesource) {
+      // Don't trigger on non-damaging "attacks", attacks against things that
+      // aren't monsters, attacks on friendlies, or self-damage.
+      return null;
+    }
+    // If the damage source is a player, we're good to go.
+    if (evt.damagesource is "PlayerPawn") return PlayerPawn(evt.damagesource);
+    // If the damage source has a FriendPlayer defined, attribute the damage to
+    // them instead of the real source. Subtract 1 because FriendPlayer is 1-indexed.
+    if (evt.damagesource.FriendPlayer && playeringame[evt.damagesource.FriendPlayer-1])
+      return players[evt.damagesource.FriendPlayer-1].mo;
+    //
+    return null;
+  }
+
+  override void WorldThingDamaged(WorldEvent evt) {
+//    DEBUG("WTD: %s inflictor=%s source=%s damage=%d type=%s flags=%X, hp=%d",
+//      TAG(evt.thing), TAG(evt.inflictor), TAG(evt.damagesource),
+//      evt.damage, evt.damagetype, evt.damageflags, evt.thing.health);
+
+    // Player taking damage from something.
+    // Note that this triggers even on self-damage, which is what allows upgrades
+    // like Blast Shaping to work.
+    if (PlayerPawn(evt.thing)) {
+      TFLV_PerPlayerStats.GetStatsFor(PlayerPawn(evt.thing)).OnDamageReceived(
+        evt.inflictor, evt.damagesource, evt.damage);
+      return;
+    }
+
+    // Player damaging something. This does not trigger on self-damage (c.f.
+    // GetPlayerDamageSource()) so you don't end up applying dots to yourself
+    // or exploding or something.
+    PlayerPawn source = GetPlayerDamageSource(evt);
+    if (source) {
+      let stats = TFLV_PerPlayerStats.GetStatsFor(PlayerPawn(source));
+      stats.OnDamageDealt(evt.inflictor, evt.thing, evt.damage);
+      if (evt.thing.health <= 0) {
+        stats.OnKill(evt.inflictor, evt.thing);
+      }
+      return;
+    }
+  }
+
+  // VR PATCH: the hitscan bracket.
+  //
+  // WorldHitscanPreFired runs at the top of P_LineAttack, before any damage;
+  // WorldHitscanFired runs after. Pushing on the way in and popping on the way
+  // out means every damage event raised inside that window knows exactly which
+  // gun caused it -- and it nests correctly when a shotgun puts twenty pellets
+  // through while the other hand is also firing, which a per-tic latch cannot.
+  //
+  // We must return false. Returning true cancels the shot; that is what a
+  // hitscan-to-projectile converter does, and it is not our business here.
+  override bool WorldHitscanPreFired(WorldEvent e) {
+    let pawn = PlayerPawn(e.thing);
+    if (pawn) {
+      let stats = TFLV_PerPlayerStats.GetStatsFor(pawn);
+      if (stats) {
+        int hint = (e.AttackLineFlags & LAF_ISMELEEATTACK)
+          ? TFLV_VR_Attribution.HINT_MELEE : TFLV_VR_Attribution.HINT_HITSCAN;
+        stats.PushHitscan((e.AttackLineFlags & LAF_ISOFFHAND) != 0, hint);
+      }
+    }
+    return false;
+  }
+
+  override void WorldHitscanFired(WorldEvent e) {
+    let pawn = PlayerPawn(e.thing);
+    if (!pawn) return;
+    let stats = TFLV_PerPlayerStats.GetStatsFor(pawn);
+    if (stats) stats.PopHitscan();
+  }
+
+  override bool WorldRailgunPreFired(WorldEvent e) {
+    let pawn = PlayerPawn(e.thing);
+    if (pawn) {
+      let stats = TFLV_PerPlayerStats.GetStatsFor(pawn);
+      if (stats)
+        stats.PushHitscan((e.RailParams.flags & RGF_ISOFFHAND) != 0,
+          TFLV_VR_Attribution.HINT_HITSCAN);
+    }
+    return false;
+  }
+
+  override void WorldRailgunFired(WorldEvent e) {
+    let pawn = PlayerPawn(e.thing);
+    if (!pawn) return;
+    let stats = TFLV_PerPlayerStats.GetStatsFor(pawn);
+    if (stats) stats.PopHitscan();
+  }
+
+  override void WorldThingSpawned(WorldEvent evt) {
+    Actor thing = evt.thing;
+    if (!thing) return;
+    if (thing.bMISSILE && PlayerPawn(thing.target)) {
+      // If it's a projectile (MISSILE flag is set) and target=player, the player
+      // just fired a shot. This is our chance to fiddle with its flags and whatnot.
+      TFLV_PerPlayerStats.GetStatsFor(thing.target).OnProjectileCreated(thing);
+    } else if (PlayerPawn(thing.target) || thing.master || thing.tracer) {
+      // VR PATCH: anything else the player caused to exist -- a submunition, a
+      // fragment, an explosion, a minion -- inherits provenance from whatever
+      // spawned it. Without this the chain breaks at the first hop and a
+      // rocket's fragments get credited to whatever is in hand when they land.
+      let owner = PlayerPawn(thing.target);
+      if (!owner && thing.master) owner = PlayerPawn(thing.master.target);
+      if (!owner && thing.tracer) owner = PlayerPawn(thing.tracer.target);
+      if (owner) {
+        let stats = TFLV_PerPlayerStats.GetStatsFor(owner);
+        if (stats) stats.InheritProvenance(thing);
+      }
+    }
+
+    // DEBUG("WTS: %s (owner=NONE) (master=%s) (target=%s) (tracer=%s)",
+//    //   thing.GetClassName(),
+//    //   TAG(thing.master),
+//    //   TAG(thing.target),
+//    //   TAG(thing.tracer));
+  }
+}
