@@ -11,6 +11,13 @@ One shared Accessibility menu for the whole UBQ series (owner, 10-27: "one share
   - more (photosensitivity, one-handed, comfort, text size) as the audit decides
 - Owners: the colourblind builder creates this skeleton (menu with mod detection) and commits it first; the left-handed builder merges it and adds its rows.
 
+## Series sections in the menu
+QuestSaber, ShieldSaw, Tactical Rig, Distance Grab, Slow Motion, Laser Sight, Grapple, Gun Bonsai VR,
+Score and **HP Bars** (RSQ_TopHPBars, class `RSQTHP_Handler`; added 10-27 polish). Each is a header and
+a link to that mod's own options page. Rig B: with RSQ_TopHPBars loaded the "HP Bars" header and
+"HP Bars Options" show and the link opens `RSQTHP_Options` (where its Colours / `rsqthp_scheme` lives);
+without it neither shows.
+
 ## Files
 - `CVARINFO.txt`, `MENUDEF.txt`, `zscript/rsqa_menu.zs`: the settings and the menu. `RSQASection "Label", "Class1|Class2"`
   starts a mod's rows; `RSQA_Menu` drops a section (and its rows) when none of its classes exists.
@@ -41,6 +48,10 @@ farthest-point search on simulated colours. Every cue that means something also 
 - **Choosing Right- or Left-Handed here also sets QuestZDoom's Control Scheme** (menu code may set engine
   cvars), so the engine and the series agree; Follow QuestZDoom leaves it alone. Rig D, driven through
   the menu with the thumbstick: Follow -> Right (scheme stays 0) -> Left (scheme 10) -> Follow (stays 10).
+- **The left-handed scheme in use is remembered** (`rsqa_left_scheme`, 10 or 11, kept whenever the
+  engine is on one: at start-up and before every change made here), and Left-Handed puts it back. Rig B
+  (polish, 10-27), driven with the thumbstick from scheme 11 (B): Right -> Left -> Right -> Left gave
+  0, **11**, 0, **11** (before: 0, **10**, 0, 10 -- B was lost); from 10 (A): 0, 10, 0, 10.
 - At start-up, a Right/Left setting that disagrees with the scheme (changed since in QuestZDoom's own
   menu, the newer choice) goes back to Follow QuestZDoom.
 - Series mods read `rsqa_handed` only for body layout no hand owns (Tactical Rig's cigarette pocket and

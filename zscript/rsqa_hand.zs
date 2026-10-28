@@ -23,6 +23,12 @@
 // Only at start-up: rsqa_handed is a SERVER cvar, so a change made in a game lands a tic later (the
 // value read back straight after SetSelection is still the old one, measured), and a check on every
 // draw would see the engine already switched and the setting not yet, and undo the choice.
+//
+// WHICH LEFT-HANDED SCHEME. QuestZDoom has two (10 "Left-Handed (A)", 11 "Left-Handed (B)": the same
+// hands, different button layouts). Right-Handed writes 0, so the left one in use is kept in
+// rsqa_left_scheme first (whenever the engine is on 10 or 11: at start-up, and before every change
+// made here), and Left-Handed puts that one back. Before, Left always wrote 10: a player on B who
+// chose Right and then Left came back on A.
 
 class OptionMenuItemRSQAHanded : OptionMenuItemOption
 {
@@ -35,6 +41,7 @@ class OptionMenuItemRSQAHanded : OptionMenuItemOption
 
 	void Reconcile()
 	{
+		RememberLeft();
 		if (!mCVar) return;
 		int h = mCVar.GetInt();
 		if ((h == 1 || h == 2) && (h == 2) != RSQA_Hand.EngineLeft()) mCVar.SetInt(0);
@@ -47,8 +54,27 @@ class OptionMenuItemRSQAHanded : OptionMenuItemOption
 		if (!cs || Selection < 0 || Selection >= OptionValues.GetCount(mValues)) return;
 		// the value chosen, not mCVar's: a server cvar changed in a game is applied a tic later
 		int h = int(OptionValues.GetValue(mValues, Selection));
+		RememberLeft();
 		if (h == 1 && cs.GetInt() >= 10) cs.SetInt(0);
-		else if (h == 2 && cs.GetInt() < 10) cs.SetInt(10);
+		else if (h == 2 && cs.GetInt() < 10) cs.SetInt(LeftScheme());
+	}
+
+	// the engine's left-handed scheme now, kept for the way back
+	static void RememberLeft()
+	{
+		let cs = CVar.FindCVar("vr_control_scheme");
+		let keep = CVar.FindCVar("rsqa_left_scheme");
+		if (!cs || !keep) return;
+		int v = cs.GetInt();
+		if (v >= 10 && v != keep.GetInt()) keep.SetInt(v);
+	}
+
+	// the left-handed scheme to go back to: the last one in use, 10 when none was
+	static int LeftScheme()
+	{
+		let keep = CVar.FindCVar("rsqa_left_scheme");
+		int v = keep ? keep.GetInt() : 10;
+		return (v == 10 || v == 11) ? v : 10;
 	}
 }
 
