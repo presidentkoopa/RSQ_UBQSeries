@@ -1,8 +1,8 @@
 // THE DISPATCHER (10-27): how the skins get Gun Bonsai's screens.
 //
-//  In play   RSQUI_Handler (below) draws the skin; the shadowed EventHandler.zsc skips Gun
-//            Bonsai's own HUD while rsq_ui_skin is 1..3 (a cvar read: that file compiles in Gun
-//            Bonsai's ZSCRIPT lump, before this one, so it cannot name these classes).
+//  In play   RSQUI_Handler (below) draws the skin round Gun Bonsai's own XP gauges, which draw
+//            themselves: the shadowed EventHandler.zsc no longer skips any of Gun Bonsai's HUD
+//            (d64248c removed that skip).
 //  Menus     Gun Bonsai opens its three screens by NAME -- Menu.SetMenu("GunBonsaiStatusDisplay")
 //            in ShowInfo, AwaitChoice("GunBonsaiWeaponLevelUpMenu" / "...PlayerLevelUpMenu") in its
 //            upgrade givers. This patch's MENUDEF redefines those three names to point at the

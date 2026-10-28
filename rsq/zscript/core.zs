@@ -152,6 +152,34 @@ class RSQM play
 		return false;
 	}
 
+	// THE HEALTH IT STARTED WITH, for an upgrade sized as "a share of its health" (Knockdown,
+	// Executioner). GetSpawnHealth is the class's, x the skill -- or Champions' StartHealth, which its
+	// controller raises to the boosted health once set up. LegenDoom Lite does not touch StartHealth:
+	// its ACS sets a legendary's health to spawn health x LD_legendaryhealth / 100 (300 %;
+	// LD_legendaryhealthboss for a boss) and refills it to that once, when it transforms
+	// (LEGNDLIB.acs LDMonsterInit; the ShieldSaw's TierHealth reads it the same way). So a legendary,
+	// transformed or not, started at that boosted health; measured before this, an untransformed
+	// legendary Brutal Doom imp (80 -> 240) went down to the same 40 a plain imp does at level 1.
+	// The class's own spawn health is the multiplier (a champion that was a legendary first already
+	// carries the 300 % in its StartHealth, so the larger of the two wins). Read by name; without
+	// LegenDoom Lite this is GetSpawnHealth.
+	static int StartHealth(Actor v)
+	{
+		if (!v) return 1;
+		int sh = v.GetSpawnHealth();
+		String tk = "LDLegendaryMonsterToken";
+		class<Inventory> ct = tk;
+		if (ct && v.FindInventory(ct))
+		{
+			let cv = CVar.FindCVar(v.bBoss ? 'LD_legendaryhealthboss' : 'LD_legendaryhealth');
+			int pct = cv ? cv.GetInt() : 300;
+			let d = GetDefaultByType(v.GetClass());
+			int cls = d ? d.SpawnHealth() : sh;
+			sh = max(sh, cls * (pct / 100));      // the ACS's own integer arithmetic
+		}
+		return max(sh, 1);
+	}
+
 	// Staggered: in its Pain sequence, or held by one of this patch's own staggers.
 	static bool Staggered(Actor mo)
 	{

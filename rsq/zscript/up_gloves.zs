@@ -131,7 +131,7 @@ class RSQ_Upgrade_Knockdown : RSQ_Upgrade_Base
 		let dz = RSQ_Dazed.On(target);
 		if (dz.IsDown()) return;
 		dz.NoteHit(damage);
-		if (dz.RecentDamage(70) >= target.GetSpawnHealth() * Share(level)) dz.KnockDown(Count(level));
+		if (dz.RecentDamage(70) >= RSQM.StartHealth(target) * Share(level)) dz.KnockDown(Count(level));
 	}
 	override void GetTooltipFields(Dictionary fields, uint level)
 	{

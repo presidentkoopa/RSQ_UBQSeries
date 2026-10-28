@@ -216,7 +216,7 @@ class RSQ_Upgrade_Executioner : RSQ_Upgrade_Base
 	override double ModifyDamageDealt(Actor pawn, Actor shot, Actor target, double damage, Name attacktype)
 	{
 		if (!Monster(target) || target.bBoss) return damage;
-		if (target.health > target.GetSpawnHealth() * Share(level) || !RSQM.Staggered(target)) return damage;
+		if (target.health > RSQM.StartHealth(target) * Share(level) || !RSQM.Staggered(target)) return damage;
 		// ENOUGH TO KILL AFTER WHAT IT RESISTS. This answer is the attacker's side of the damage; the
 		// victim's own protection and damage factors still apply after it (p_interaction.cpp: the
 		// passive GetModifiedDamage, then ApplyDamageFactor). health + 1 failed on anything that

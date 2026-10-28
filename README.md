@@ -24,6 +24,41 @@ ca.ancilla.bonsai/upgrades/RapidFire.zsc    per-hand psprite, null guard
 Any file shipped here that is *not* actually modified should be deleted — an
 unchanged shadowed file is collision surface with other patches for no benefit.
 
+## Handoff (2026-10-27) -- read first
+
+Not yet run on the owner's headset. Rig B = QZD 17.3 Linux, doom2 MAP01, the owner's order
+(brutal22test6 -> BD_VoxelPack -> BD22_VR-Reloaded r7 -> Champions -> LegenDoom Lite 4.2 -> the suite ->
+GunBonsai-0.10.6 -> this patch). Probe `pol/kdprobe` in the session scratchpad (real BD imps, LegenDoom
+Lite's guaranteed legendary pickup, the upgrade objects called with level 1).
+
+**Done, measured**
+- *Knockdown and Executioner size against the health the monster STARTED with* (`RSQM.StartHealth`,
+  branch `agent-polish`): Champions' StartHealth as before, and for a LegenDoom Lite legendary
+  (transformed or not) the class's spawn health x `LD_legendaryhealth` / 100 (the ACS's own integer
+  arithmetic, the ShieldSaw's TierHealth rule), the larger winning. Knockdown level 1 (share 0.44),
+  damage in 5s until down: plain imp 40 -> 40; untransformed legendary imp (240 hp) 40 -> **110**;
+  transformed legendary (refilled to 240) 40 -> **110**. A legendary champion (StartHealth already 240)
+  stays 240, not 720. Executioner level 1 on a transformed legendary at 30 hp: no execution before
+  (threshold 12), executed now (threshold 36).
+- *Executioner after the victim's damage factors* (1f32468, `agent-compat`) still holds with the change:
+  an imp taking half (DamageFactor 0.5) at 10 hp, staggered: blow 5 -> 22, 11 dealt, dead.
+- *Brutal Doom's HUD type* (8b4b24f): the skins hide BD's HUD with `bd_sbartype` 5, a type BD knows;
+  full order + save/load twice + map change: no `Unknown item type sbartype0` line (0 in the log).
+
+**Done earlier today, recorded in commits** (their own numbers, not re-measured here): melee upgrade
+paths, gloves, Slappers Only and the claim bracket (0f2f48d); Adrenaline charges SlowMo's meter
+(b9f142e, rig: two charges of 10 read 20); suite upgrade paths for the ShieldSaw, saber, grab, rig,
+SlowMo, hands and body (a460f51); punch and swing sounds renamed so they no longer replace BD's own
+(a1ae4fb); COPYING.md (f357289); the screens and their fonts (e9b7eb8, d64248c, 90e80f2); left-handed
+dual HUD reflected (6973ddb); Grapple player perks (fcf0a7a); colour-blind HUD (4bdd8c7); accessibility
+round two (1b986bb); XP Source (49fd7c0, section below).
+
+**Not done / headset**: how often Knockdown and Executioner fire on legendaries in real play.
+
+**Open**
+- `rsq_ui_skin` defaults to 1 (the screens on). The independent review (10-27, item 1) asks for 0 unless
+  the owner chose 1; 90e80f2 turned it back on after cee9be2 had shelved it. The owner's call.
+
 ## Suite upgrades (`rsq/`)
 
 New files only, compiled by a second ZSCRIPT lump (`zscript.txt` at the root): weapon upgrade paths
@@ -83,8 +118,8 @@ rsq_ui_hud_scale  HUD size
 rsq_ui_bottom     per-hand ammo, health, face and armour along the bottom
 ```
 
-How it hooks Gun Bonsai: `RSQUI_Handler` draws the HUD; the shadowed `EventHandler.zsc` skips Gun
-Bonsai's own HUD while a skin is on (one cvar check). Gun Bonsai opens its menus by name, and this
+How it hooks Gun Bonsai: `RSQUI_Handler` draws the skin's HUD round Gun Bonsai's own XP gauges, which
+draw themselves (no Gun Bonsai HUD code is skipped any more: d64248c). Gun Bonsai opens its menus by name, and this
 patch's MENUDEF points those three names at routers (`rsq/ui/router.zs`) that are Gun Bonsai's own
 menus with skin 0 and open the skin's screen otherwise. No other Gun Bonsai file is shadowed.
 
@@ -93,15 +128,11 @@ skin sets Brutal Doom's `bd_sbartype` to 5 (a type Brutal Doom knows but draws n
 fullscreen HUD would sit under the row). It is put back when the skin is set to 0. Remove the patch
 with a skin on and it stays as set: pick your HUD again in Brutal Doom's options (or `bd_sbartype 1`).
 
-Fonts and art are made by `tools/rsqui_bake.py`; gun pictures by `tools/rsqui_gunshots.py` (the
-gun's own model on the test rig, keyed and cropped into `graphics/rsqui/guns/<Class>.png`; a gun
-without one shows its icon or pickup sprite).
-
-Fonts (SIL Open Font License 1.1, licence beside each in `fonts/*/OFL.txt`), converted to bitmap
-glyphs under other names: Press Start 2P (The Press Start 2P Project Authors, CodeMan38),
-VT323 (The VT323 Project Authors, Peter Hull), Orbitron (The Orbitron Project Authors, Matt
-McInerney / The League of Moveable Type). The gauge frame is Gun Bonsai's own HUD art. Screens
-designed by presidentkoopa.
+The screens write in Doom's own fonts from the IWAD (SmallFont, BigFont, NewSmallFont; owner, 10-27:
+"just use the doom fonts"); the baked OFL fonts were removed in d64248c. `tools/rsqui_bake.py` makes
+the remaining art; gun pictures come from `tools/rsqui_gunshots.py` (the gun's own model on the test
+rig, keyed and cropped into `graphics/rsqui/guns/<Class>.png`; a gun without one shows its icon or
+pickup sprite). The gauge frame is Gun Bonsai's own HUD art. Screens designed by presidentkoopa.
 
 ## Known collisions
 
