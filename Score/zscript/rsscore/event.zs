@@ -51,6 +51,9 @@ class RS_ScoreEvent play
 	// was sent back -- each of those a service lookup in the other mods. Asked once, kept here.
 	int meleeKind;           // RS_Melee.MK_*, or -1 not yet asked
 	int returned;            // 1 / 0, or -1 not yet asked
+	// the chain of tools that led to this kill, oldest first, the finishing blow last (combo.zs)
+	Array<String> chain;
+	bool chainAsked;
 
 	// ---- this map's Untouchable thresholds ---------------------------------
 	// Both come off the census, so they belong to the map and not the player. The

@@ -79,6 +79,15 @@ class RS_ScoreBonus play
 	// `me` is this bonus's index in `all` / `mults`. Every other bonus keeps what Evaluate said.
 	virtual double AfterOthers(RS_ScoreEvent ev, Array<RS_ScoreBonus> all, Array<double> mults, int me) { return mults[me]; }
 
+	// MORE THAN ONE BREAKDOWN ROW (the combo chain, combo.zs: its named combo and its N-Tool part). The
+	// handler gives the bonus RowCount rows labelled RowName(i), and after the caps splits what it paid
+	// by RowShare(i) for this kill (the shares sum to 1). One row, the bonus's own name, by default.
+	virtual int RowCount() const { return 1; }
+	virtual String RowName(int i) const { return DisplayName(); }
+	virtual double RowShare(int i) const { return i == 0 ? 1.0 : 0.0; }
+	// what the debug line calls this kill's answer
+	virtual String DebugName() const { return DisplayName(); }
+
 	// ------------------------------------------------------------ small helpers
 
 	// The colour name this family draws in. One per family, three in all.
@@ -108,6 +117,15 @@ class RS_ScoreRegistry : StaticEventHandler
 	private Array<String> m_typeNames;
 	private Array<RS_ScoreBonus> m_bonuses;
 	private bool m_built;
+
+	// THE COMBO TABLE (combo.zs): named signature combos, as data. Registered by name, pattern and pay;
+	// sorted by name at Build (the same reason as the bonuses: every machine in the same order).
+	private Array<String> m_comboName, m_comboPat;
+	private Array<double> m_comboMult;
+	private Array<int> cStart, cCount;
+	private Array<String> cSteps;
+	// tools another mod adds, with the groups a pattern may name them by ("melee,shield")
+	private Array<String> m_toolId, m_toolGroups;
 
 	// RS_Score's own thirteen, pushed DIRECTLY onto this instance.
 	//
@@ -140,7 +158,108 @@ class RS_ScoreRegistry : StaticEventHandler
 		RS_AwardSeed.Names(more);       // awards.zs: rows paid by other mods (the training remote)
 		RS_HookSeed.Names(more);        // hook.zs: the grappling hook and the combos across mods
 		RS_BoostSeed.Names(more);       // boost.zs: what was killed -- Champions' tiers, LegenDoom's legendaries
+		RS_ComboSeed.Names(more);       // combo.zs: the chain of tools that led to the kill
 		for (int k = 0; k < more.Size(); k++) Own(more[k]);
+		RS_ComboSeed.Combos(self);      // combo.zs: Score's own rows of the combo table
+	}
+
+	// ---- the combo table ----
+
+	void OwnCombo(String name, String pattern, double mult)
+	{
+		for (int i = 0; i < m_comboName.Size(); i++) if (m_comboName[i] == name) return;
+		m_comboName.Push(name);
+		m_comboPat.Push(pattern);
+		m_comboMult.Push(mult);
+	}
+
+	// A NAMED COMBO FROM ANY MOD, from its OnRegister (like RegisterBonus):
+	//     RS_ScoreRegistry.RegisterCombo("Lion Tamer", "whip > shield.bash", 0.5);
+	// Steps are tool ids or groups (combo.zs THE TOOLS), in order, the last the finishing blow; pay is
+	// a multiplier of the kill's base, like any bonus. A mod that must not link registers the same row
+	// by name: RS_ScoreService GetInt("combo", "<name>|<pattern>", <pay in permille>) from its OnRegister.
+	static void RegisterCombo(String name, String pattern, double mult)
+	{
+		let reg = RS_ScoreRegistry(StaticEventHandler.Find("RS_ScoreRegistry"));
+		if (!reg) return;
+		if (reg.m_built) { Console.Printf("\cgRS_Score: combo '%s' registered too late to be used.", name); return; }
+		reg.OwnCombo(name, pattern, mult);
+	}
+
+	// A TOOL ANOTHER MOD TOUCHES MONSTERS WITH (RS_ScoreService GetInt("touch", "<id>", playerNumber, 0,
+	// monster) records a use), and the groups a pattern may call it by.
+	static void RegisterTool(String id, String groups)
+	{
+		let reg = RS_ScoreRegistry(StaticEventHandler.Find("RS_ScoreRegistry"));
+		if (!reg) return;
+		for (int i = 0; i < reg.m_toolId.Size(); i++) if (reg.m_toolId[i] == id) { reg.m_toolGroups[i] = groups; return; }
+		reg.m_toolId.Push(id);
+		reg.m_toolGroups.Push(groups);
+	}
+
+	static bool ToolInGroup(String id, String group)
+	{
+		let reg = Get();
+		if (!reg) return false;
+		for (int i = 0; i < reg.m_toolId.Size(); i++)
+		{
+			if (reg.m_toolId[i] != id) continue;
+			Array<String> g;
+			reg.m_toolGroups[i].Split(g, ",", TOK_SKIPEMPTY);
+			for (int k = 0; k < g.Size(); k++) { if (Trim(g[k]) == group) return true; }
+		}
+		return false;
+	}
+
+	static RS_ScoreRegistry Get()
+	{
+		let reg = RS_ScoreRegistry(StaticEventHandler.Find("RS_ScoreRegistry"));
+		if (reg && !reg.m_built) reg.Build();
+		return reg;
+	}
+
+	int NumCombos() const { return cStart.Size(); }
+	int, int, double ComboSteps(int c) const { return cStart[c], cCount[c], m_comboMult[c]; }
+	String Step(int i) const { return cSteps[i]; }
+	static int ComboCount() { let reg = Get(); return reg ? reg.cStart.Size() : 0; }
+	static String ComboName(int c) { let reg = Get(); return (reg && c >= 0 && c < reg.m_comboName.Size()) ? reg.m_comboName[c] : ""; }
+	static int ComboLength(int c) { let reg = Get(); return (reg && c >= 0 && c < reg.cCount.Size()) ? reg.cCount[c] : 0; }
+
+	static String Trim(String x)
+	{
+		int a = 0, b = x.Length();
+		while (a < b && (x.ByteAt(a) == 32 || x.ByteAt(a) == 9)) a++;
+		while (b > a && (x.ByteAt(b - 1) == 32 || x.ByteAt(b - 1) == 9)) b--;
+		return x.Mid(a, b - a);
+	}
+
+	// sort the table by name, split each pattern into its steps
+	private void BuildCombos()
+	{
+		for (int i = 1; i < m_comboName.Size(); i++)
+		{
+			for (int j = i; j > 0 && m_comboName[j] < m_comboName[j - 1]; j--)
+			{
+				String a = m_comboName[j]; m_comboName[j] = m_comboName[j - 1]; m_comboName[j - 1] = a;
+				String b = m_comboPat[j]; m_comboPat[j] = m_comboPat[j - 1]; m_comboPat[j - 1] = b;
+				double c = m_comboMult[j]; m_comboMult[j] = m_comboMult[j - 1]; m_comboMult[j - 1] = c;
+			}
+		}
+		for (int i = 0; i < m_comboName.Size(); i++)
+		{
+			Array<String> parts;
+			m_comboPat[i].Split(parts, ">", TOK_SKIPEMPTY);
+			cStart.Push(cSteps.Size());
+			int n = 0;
+			for (int k = 0; k < parts.Size(); k++)
+			{
+				String x = Trim(parts[k]);
+				if (x == "") continue;
+				cSteps.Push(x);
+				n++;
+			}
+			cCount.Push(n);
+		}
 	}
 
 	private void Own(String typeName)
@@ -199,6 +318,7 @@ class RS_ScoreRegistry : StaticEventHandler
 
 		// Ours first, then whatever other mods registered during their OnRegister.
 		SeedOwn();
+		BuildCombos();
 
 		// Insertion sort by class name. Small list, and a stable order on every
 		// machine is the entire point (see SORTING in the header).

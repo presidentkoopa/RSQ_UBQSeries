@@ -403,3 +403,90 @@ THE HOOK for a later monster set (RS Monsters' 13 colour tiers and its EX tier):
 can be dormant, and register the class from your own `StaticEventHandler.OnRegister` with
 `RS_ScoreRegistry.RegisterBonus`. Extra bodies that are not kills: add the token to
 `RS_Boost.NotAKill`.
+
+## The combo system (10-27): the chain of tools on each monster
+
+Every monster keeps an ordered history of the **tools** that touched it (`zscript/rsscore/combo.zs`,
+the `RS_ComboLedger` level handler, saved with the level). A kill pays for the chain that led to it.
+The owner's rules: **order matters**; the chain **breaks after 3 seconds** between moves (105 tics, from
+the end of one tool's run to the start of the next, and from the last move to the kill); **guns count**
+(every gun is the one tool `gun`; varying guns is Switcharoo's); named **signature combos come from a
+data table**; an unnamed chain still pays as a **generic 2-, 3- or 4-tool combo**. No monster class is
+named. The chain is one bonus (Style family) charged against the per-kill cap like any other; the
+breakdown shows its parts as text rows (`Lion Tamer`, `3-Tool Combo`); the display is otherwise untouched.
+
+**Tools** (read by name from the series' services and the blows themselves; an absent mod's tools never
+appear): `gun`, `rig.draw` (a shot inside Quick Draw's 42 tics after a Tactical Rig draw), `saber.cut`,
+`saber.throw`, `saber.return` (a shot the saber or the Force turned), `saber.block`, `force.push`,
+`force.pull`, `force.grip` (choke and slam), `shield.bash` (bash or revved grind), `shield.disc`,
+`shield.block` (the ShieldSaw blocked that monster, or a shot it turned struck it), `hook.bite`,
+`hook.yank` (the hook threw it, or a body it threw struck it), `whip`, `grab.throw` (Distance Grab),
+`kick`, `punch`, `glove`, `blade`, `finisher`. Blows are classified as they land (WorldThingDamaged);
+what deals no damage is asked of each mod as "how long ago" at the next blow or the death (the hook's
+`hooked`/`yanked`/`struck`, the saber's `pulled`/`gripped`/`blocked`, the shield's `blocked`), so the
+order is kept. A yank is the bite's own follow-through: bite + yank count as one tool.
+
+**Named combos** (the data table, `RS_ComboSeed.Combos`; names are PROPOSALS for the owner to veto).
+Pattern steps in order, the last is the finishing blow, steps before may have other tools between them.
+Measured on rig E (doom2, the suite + Gun Bonsai + the patch, scripted on a DoomImp, base 60), each
+fired once on its kill:
+
+| Combo | Pattern | Pays | Measured |
+|---|---|---|---|
+| Lion Tamer | whip > shield.bash | 0.5 | 0.50 (+30) |
+| Clay Pigeon | force.push > gun | 0.5 | 0.50 |
+| Sitting Duck | force.grip > gun | 0.5 | 0.50 |
+| Pull! | force.pull > gun | 0.5 | 0.50 |
+| Disc Jockey | force.push > shield.disc | 0.5 | 0.50 |
+| Gun Kata | hands (kick/punch/glove) > gun | 0.4 | 0.40 |
+| Fast Hands | melee > rig.draw | 0.5 | 0.50 |
+| Lasso | whip > hook.yank | 0.5 | 0.50 (with Hard Landing 0.30) |
+| Pitch and Slice | grab.throw > saber.cut | 0.5 | 0.50 |
+| Circus Act | whip > hook.yank > gun | 0.9 | 0.90 (Lasso not also paid) |
+| Yo-Yo | force.pull > force.push > gun | 0.9 | 0.90 (Pull!, Clay Pigeon not also paid) |
+| Discus | shield.bash > force.push > shield.disc | 0.9 | 0.90 |
+
+**Generic chains**: 2 tools 0.2, 3 tools 0.4, 4 or more 0.6 (measured 0.20 / 0.40 / 0.60, five tools
+0.60). The same tool three times: nothing. A 110-tic gap breaks the chain (nothing); 100 tics does not
+(0.20). Order: bash > whip is a 2-Tool Combo, not Lion Tamer. A named combo replaces the generic pay
+for the tools it names: gun > whip > bash paid Lion Tamer 0.50 + 3-Tool Combo 0.20 (= 0.4 - 0.2).
+
+**Today's rows folded in, pay kept.** Reeled In (hook > melee), Ping-Pong (hook > shove > hook), Fly
+Ball (yank > anything, airborne), Bowling (a thrown body's strike > anything), Pulled In (Force pull >
+melee), Riposte / Perfect Riposte (block > anything) are named combos backed by their own rows: they
+pay as before and the chain pays nothing more for the tools they cover; a table combo must name a tool
+they do not (a kick inside a Ping-Pong rally is not also Gun Kata). Measured: Riposte 0.40 (chain 0),
+Reeled In 0.30 (chain 0) and 0.45 second-in-a-row with a gun first (+ 3-Tool part 0.20), Ping-Pong 0.40
+one volley (chain 0), Pulled In 0.30, Hard Landing 0.30, Bowling 0.50 by the strike and 0.50 when a gun
+finished it inside 1 s (chain 0). Swinging, Dismount, Lashed and Indiana Jones are unchanged.
+**Changed, and why**: Variety (tools across a fight) and the melee Combo (kinds across kills) pay for
+mixing tools too, so on a kill whose own chain mixed two tools or more they stand down (they still
+remember the kill). Before, a Reeled In kill also paid Combo 0.10 + Variety 0.15; now Reeled In alone.
+
+**For other mods** (no link): `RS_ScoreRegistry.RegisterCombo(name, pattern, mult)` /
+`RegisterTool(id, groups)` from `OnRegister`, or by name through `RS_ScoreService`:
+`GetInt("combo", "<name>|<pattern>", permille)`, `GetInt("tool", "<id>|<groups>")`, and
+`GetInt("touch", "<tool id>", playerNumber, 0, monster)` to record a use. Measured: a probe mod's
+"kick > saber.cut" at 650 paid 0.65; a touch through the service entered the chain (rig.draw > cut 0.20).
+
+**Saved and carried**: a chain begun before a save and finished after a load paid (twice); a new map
+starts clean. Big moment (SlowMo pulse): a three-step named combo, or four tools.
+
+**For Gun Bonsai** (`RS_ScoreService`): `kill.serial` (intArg player), and for a serial (doubleArg)
+`kill.style` (the kill's bonus points: total less base, every family, Champions' and LegenDoom's
+rows included), `kill.base`, `GetString kill.chain` ("gun>whip>shield.bash", finisher last), `GetObject
+kill.victim`. The Gun Bonsai VR patch's XP Source: Style reads these.
+
+**The living word** (`rs_score_alive`, on; Options -> Score -> Living Label): only the word "Score:"
+moves: a slow pastel hue cycle (24 s), a breath (88-100 % every 4 s), warming toward gold in the last
+quarter before a reward (and breathing twice as fast), full white easing back over a second after a
+big combo. RSQ_Accessibility's Photosensitive Mode holds it still (only the slow warming); a colour-blind
+setting drops the hue and the warming and keeps the breath. The number, bar and rows are unchanged.
+
+**The ShieldSaw gauge** (the Gun Bonsai VR patch's `rsq_hud_shield`, off by default): while it is on,
+the whole display moves down by as far as that gauge reaches below the hand gauges' top
+(`RSQ_HudService "shield.gauge.drop"`, asked by name); off, or without the patch, nothing moves.
+
+**Needs the headset**: whether 3 s is the right break for real play with every tool; whether the
+proposed names and pays feel right; the touch timings of the real hook, Force pull and shield block
+(scripted here through the same service calls the mods make); the living word's colours in the lenses.

@@ -85,6 +85,11 @@ class RS_ScoreHUD : EventHandler
 
 		double centerX = ScaledCoord(UserInt(pln, "rs_score_x", 85), widewidth,    PAD_WIDTH,  widewidth - screenwidth);
 		double centerY = ScaledCoord(UserInt(pln, "rs_score_y", 10), screenheight, PAD_HEIGHT, 0);
+		// THE SHIELDSAW'S GAUGE (the Gun Bonsai VR patch, rsq_hud_shield, off by default) takes the top
+		// middle; while it is on, the whole display -- line, bar, lives, breakdown -- moves down by as far
+		// as that gauge reaches below the hand gauges' top (asked by name: RSQ_HudService). Off, or
+		// without the patch, nothing moves.
+		centerY += screenheight * GaugeShift();
 
 		// The original draws into SetHudSize(screenwidth, screenheight) while its X
 		// coordinates were measured against widewidth. That asymmetry IS the
@@ -98,7 +103,7 @@ class RS_ScoreHUD : EventHandler
 		          && FadeAlpha(tr.flashTic, 0.05, 0.15) > 0.0;
 		double flashAlpha = flash ? RSSC_A11y.Dim(FadeAlpha(tr.flashTic, 0.05, 0.15)) : 0.0;   // Photosensitive Mode: 40%
 
-		DrawScoreLine(tr, vw, vh, centerX, centerY, flashAlpha);
+		DrawScoreLine(tr, handler, pln, vw, vh, centerX, centerY, flashAlpha);
 		DrawBar(tr, handler, pln, vw, vh, centerX, centerY, flashAlpha);
 		DrawLives(tr, vw, vh, centerX, centerY);
 
@@ -111,7 +116,7 @@ class RS_ScoreHUD : EventHandler
 	// DScore_White, x centred on centerX (.4), y BOTTOM-anchored at centerY+7 (.2).
 	// The flash is the same string in the Flash colours over the top.
 
-	private ui void DrawScoreLine(RS_ScoreTracker tr, double vw, double vh, double cx, double cy, double flashAlpha)
+	private ui void DrawScoreLine(RS_ScoreTracker tr, RS_ScoreHandler handler, int pln, double vw, double vh, double cx, double cy, double flashAlpha)
 	{
 		Font fnt = Font.GetFont("RSSCFON");
 		if (!fnt) { fnt = smallfont; }
@@ -123,8 +128,13 @@ class RS_ScoreHUD : EventHandler
 		double x     = cx - total * 0.5;            // x fraction .4: centred
 		double y     = (cy + 7) - fnt.GetHeight();  // y fraction .2: bottom edge
 
-		Screen.DrawText(fnt, Font.FindFontColor("RSScore_White"), x, y, label,
-			DTA_VirtualWidthF, vw, DTA_VirtualHeightF, vh, DTA_KeepRatio, true);
+		if (UserBool(pln, "rs_score_alive", true))
+			Screen.DrawText(fnt, Font.FindFontColor("RSScore_White"), x, y, label,
+				DTA_VirtualWidthF, vw, DTA_VirtualHeightF, vh, DTA_KeepRatio, true,
+				DTA_Color, LabelColor(tr, handler));
+		else
+			Screen.DrawText(fnt, Font.FindFontColor("RSScore_White"), x, y, label,
+				DTA_VirtualWidthF, vw, DTA_VirtualHeightF, vh, DTA_KeepRatio, true);
 
 		Screen.DrawText(fnt, Font.FindFontColor("RSScore_Gold"), x + fnt.StringWidth(label), y, num,
 			DTA_VirtualWidthF, vw, DTA_VirtualHeightF, vh, DTA_KeepRatio, true);
@@ -290,6 +300,86 @@ class RS_ScoreHUD : EventHandler
 				DTA_VirtualWidthF, vw, DTA_VirtualHeightF, vh, DTA_KeepRatio, true,
 				DTA_Alpha, alpha);
 		}
+	}
+
+	// ------------------------------------------------------------ the living word
+	//
+	// THE WORD "Score:" BREATHES (the owner, 10-27: like Gun Bonsai's XP bars, whose frame cycles the
+	// rainbow on a level-up -- HUD.zsc GetShinyColour -- but gentler). rs_score_alive (on) turns it off;
+	// only the word changes, the number, the bar and the breakdown keep their look. It multiplies the
+	// word's own white (DTA_Color), so it is a tint of the same letters:
+	//   * a slow pastel hue cycle (24 s round), the letters never less than 60% white;
+	//   * a breath in brightness (88..100%, one every 4 s);
+	//   * as the bar nears its reward (the last quarter) it warms toward gold and breathes twice as fast;
+	//   * a big combo (combo.zs: a named combo, or three tools or more) lifts it to full white for a second.
+	// RSQ_Accessibility: Photosensitive Mode holds it still (no cycle, no breath, no lift: only the slow
+	// warming, which follows the bar); a colour-blind setting drops the hue cycle and the warming (they
+	// would be colour alone) and keeps the breath, which speeds up near the reward instead.
+	private ui int LabelColor(RS_ScoreTracker tr, RS_ScoreHandler handler)
+	{
+		double t = level.maptime + 0.0;
+		bool photo = RSSC_A11y.Photo();
+		bool cb = RS_ScoreCB.Mode() != 0;
+		double near = handler.threshold > 0 ? clamp((tr.ProgressFraction(handler.threshold) - 0.75) / 0.25, 0.0, 1.0) : 0.0;
+
+		// the hue cycle, pastel: mixed 60% toward white
+		double r = 1, g = 1, b = 1;
+		if (!photo && !cb)
+		{
+			double hr, hg, hb;
+			[hr, hg, hb] = Hue((t / 840.0) % 1.0);
+			r = 0.6 + 0.4 * hr; g = 0.6 + 0.4 * hg; b = 0.6 + 0.4 * hb;
+		}
+		// warming toward gold (FFC860) near the reward
+		if (!cb && near > 0)
+		{
+			double k = 0.9 * near;
+			r = r + (1.00 - r) * k; g = g + (0.78 - g) * k; b = b + (0.38 - b) * k;
+		}
+		// the breath
+		double v = 1.0;
+		if (!photo)
+		{
+			double period = 140.0 / (1.0 + near);
+			v = 0.88 + 0.12 * (0.5 + 0.5 * sin(t * 360.0 / period));
+			// a big combo: full white, easing back over a second
+			int age = level.maptime - tr.bigComboTic;
+			if (tr.bigComboTic > 0 && age >= 0 && age < 35)
+			{
+				double k = 1.0 - age / 35.0;
+				r += (1 - r) * k; g += (1 - g) * k; b += (1 - b) * k; v += (1 - v) * k;
+			}
+		}
+		int ir = clamp(int(255 * r * v), 0, 255), ig = clamp(int(255 * g * v), 0, 255), ib = clamp(int(255 * b * v), 0, 255);
+		return 0xFF000000 | (ir << 16) | (ig << 8) | ib;
+	}
+
+	// a hue (0..1) at full saturation
+	private ui double, double, double Hue(double h)
+	{
+		double x = h * 6.0;
+		int seg = int(x) % 6;
+		double f = x - floor(x);
+		switch (seg)
+		{
+			case 0: return 1, f, 0;
+			case 1: return 1 - f, 1, 0;
+			case 2: return 0, 1, f;
+			case 3: return 0, 1 - f, 1;
+			case 4: return f, 0, 1;
+		}
+		return 1, 0, 1 - f;
+	}
+
+	// the share of the screen's height the display moves down while the Gun Bonsai VR patch's ShieldSaw
+	// gauge is on (how far it reaches below the hand gauges' top, RSQ_HudService "shield.gauge.drop"); 0 off or without the patch
+	private ui double GaugeShift()
+	{
+		let it = ServiceIterator.Find("RSQ_HudService");
+		let s = it.Next();
+		if (!s) return 0.0;
+		int h = s.GetIntUI("shield.gauge.drop", "", 0, 0, null);
+		return h > 0 ? h / 1000.0 : 0.0;
 	}
 
 	// ----------------------------------------------------------------- helpers

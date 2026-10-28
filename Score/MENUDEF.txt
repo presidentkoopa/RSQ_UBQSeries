@@ -29,6 +29,7 @@ OptionMenu "RSQSC_Options"
 	Slider "Size", "rs_score_scale", 50, 200, 5, 0
 	Slider "Across", "rs_score_x", 0, 100, 1, 0
 	Slider "Down", "rs_score_y", 0, 100, 1, 0
+	Option "Living Label", "rs_score_alive", "OnOff"
 	StaticText " "
 	Option "Target Reward", "rs_score_rewardtypes", "RSQSC_Rewards"
 	Option "New Map Keeps", "rs_score_startmode", "RSQSC_Start"
@@ -50,5 +51,5 @@ OptionMenu "RSQSC_Tuning"
 	Slider "Slow Motion Cooldown", "rs_score_slowmo_cooldown", 1, 30, 1, 0
 	Slider "Slow Motion Style", "rs_score_slowstyle", 0, 100, 10, 0
 	StaticText " "
-	SafeCommand "Reset All", "resetcvar rs_score_hide rs_score_flash rs_score_screenflash rs_score_bonustime rs_score_scale rs_score_x rs_score_y rs_score_rewardtypes rs_score_startmode rs_score_farmpercent rs_score_cap_efficiency rs_score_cap_style rs_score_cap_daring rs_score_cap_melee rs_score_cap_kill rs_score_slowmo rs_score_slowmo_cooldown rs_score_slowstyle", "Reset all Score settings?"
+	SafeCommand "Reset All", "resetcvar rs_score_hide rs_score_alive rs_score_flash rs_score_screenflash rs_score_bonustime rs_score_scale rs_score_x rs_score_y rs_score_rewardtypes rs_score_startmode rs_score_farmpercent rs_score_cap_efficiency rs_score_cap_style rs_score_cap_daring rs_score_cap_melee rs_score_cap_kill rs_score_slowmo rs_score_slowmo_cooldown rs_score_slowstyle", "Reset all Score settings?"
 }

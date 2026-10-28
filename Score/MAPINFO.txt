@@ -11,5 +11,5 @@
 
 gameinfo
 {
-    AddEventHandlers = "RS_ScoreRegistry", "RS_ScoreHandler", "RS_ScoreHUD", "RS_ScoreShots"
+    AddEventHandlers = "RS_ScoreRegistry", "RS_ScoreHandler", "RS_ScoreHUD", "RS_ScoreShots", "RS_ComboLedger"
 }

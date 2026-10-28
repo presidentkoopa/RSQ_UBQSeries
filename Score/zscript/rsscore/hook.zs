@@ -22,6 +22,12 @@
 // height -- they replace it; a thrown body's blows were read as punches (Brawler 0.5, Knockdown,
 // Counter) and are MK_HOOK now, paid only here; Bullet Time no longer pays for being slow, it
 // multiplies the style of the kill (AfterOthers).
+//
+// THE COMBO SYSTEM (combo.zs) is the general form of these: every monster keeps the ordered chain of
+// tools that touched it. Reeled In, Ping-Pong, Fly Ball and Bowling stay here with their measured pay
+// and act as named combos backed by their own rows (the chain pays nothing more for the tools they
+// cover); the hook's bite, yank (and a body it threw striking another) and the whip are tools in that
+// chain; Variety stands down on a kill whose own chain mixed two tools or more.
 // ============================================================================
 
 class RS_HookSeed play
@@ -290,6 +296,7 @@ class RS_Bonus_Variety : RS_ScoreBonus
 	override double Evaluate(RS_ScoreEvent ev)
 	{
 		if (ev.killerNum < 0) return 0.0;
+		if (RS_Combo.Mixed(ev)) return 0.0;   // this kill's own chain mixed its tools (combo.zs)
 		int had = Fight(ev);
 		int now = Tools(ev);
 		if (!(now & ~had)) return 0.0;
