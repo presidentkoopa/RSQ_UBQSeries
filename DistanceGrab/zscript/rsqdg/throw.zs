@@ -443,7 +443,10 @@ class RSQDG_Throw : EventHandler
 	{
 		double j = 0.5 * kg * speedMps * speedMps;
 		double per = max(0.5, RSQDG_Reach.Num("rsqdg_throw_j", p, 15.0));
-		return max(1, int(j / per));
+		// Bounded before int(): a monster's corpse weighs its Mass, and Champions gives its Bronze
+		// champion Mass 0x7FFFFFFF ("immovable"), which kept on its corpse -- 2.1e9 kg x v^2 went past
+		// the int range (rsqdg_corpses on, dropped from a height).
+		return max(1, int(min(j / per, 1000000.0)));
 	}
 
 	private static bool CanHurt(Actor t, Actor a, Actor by)
