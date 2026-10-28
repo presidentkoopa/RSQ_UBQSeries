@@ -597,7 +597,9 @@ class RS_ScoreHandler : EventHandler
 
 		int before = tr.score;
 		tr.AddScore(points);
-		tr.flashTic = level.maptime;
+		// RSQ_Accessibility's Photosensitive Mode: a new score flash only 14 tics after the last one
+		// started (2.5 a second at most; points landing faster ride the flash already showing)
+		if (RSSC_A11y.Gate(tr.flashTic, level.maptime)) tr.flashTic = level.maptime;
 
 		// PUBLISH GAINS TO THE NATIVE SCORE FIELD, AND ONLY GAINS. Actor.Score is a field
 		// the engine never uses for anything itself ("The engine doesn't use this itself
@@ -766,7 +768,7 @@ class RS_ScoreHandler : EventHandler
 			tr.owner.A_StartSound("rsscore/pointreward", CHAN_VOICE, CHANF_LOCAL, 1.0, ATTN_NONE);
 
 			double a = 1.0 - (0.65 ** crossings);
-			if (ScreenFlash(tr.owner)) tr.owner.A_SetBlend("80 D4 FF", a, 26, "80 D4 FF", 0.0);
+			if (ScreenFlash(tr.owner)) tr.owner.A_SetBlend("80 D4 FF", RSSC_A11y.Dim(a), 26, "80 D4 FF", 0.0);   // Photosensitive Mode: 40%
 		}
 
 		tr.rewardTic = level.maptime;
@@ -790,7 +792,7 @@ class RS_ScoreHandler : EventHandler
 		mo.A_StartSound("rsscore/fullheal", CHAN_VOICE, CHANF_LOCAL, 1.0, ATTN_NONE);
 
 		double a = 1.0 - (0.5 ** n);
-		if (ScreenFlash(mo)) mo.A_SetBlend("C0 E0 FF", a, 26, "C0 7C FF", 0.0);
+		if (ScreenFlash(mo)) mo.A_SetBlend("C0 E0 FF", RSSC_A11y.Dim(a), 26, "C0 7C FF", 0.0);
 
 		tr.rewardLifeTic = 0;
 		tr.pendingLives  = 0;
@@ -928,7 +930,7 @@ class RS_ScoreHandler : EventHandler
 				// warm flash -- no actors, no particles, nothing for the headset to draw but a tint,
 				// and the tint is the player's to turn off (rs_score_screenflash).
 				mo.A_StartSound("rsscore/revive", CHAN_VOICE, CHANF_LOCAL, 1.0, ATTN_NONE);
-				if (ScreenFlash(mo)) mo.A_SetBlend("FF C0 60", 0.45, 20, "FF 60 20", 0.0);
+				if (ScreenFlash(mo)) mo.A_SetBlend("FF C0 60", RSSC_A11y.Dim(0.45), 20, "FF 60 20", 0.0);
 
 				if (DebugOn())
 				{

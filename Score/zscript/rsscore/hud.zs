@@ -73,7 +73,7 @@ class RS_ScoreHUD : EventHandler
 		bool hideBonuses = UserInt(pln, "rs_score_bonustime", 35) == 0;
 
 		// ---- Score_Draw's coordinate space, transcribed ----------------------
-		int    d      = UserInt(pln, "rs_score_scale", 100);
+		int    d      = int(UserInt(pln, "rs_score_scale", 100) * RSSC_A11y.Text());   // RSQ_Accessibility's Text Size (1 = as set)
 		double aspect = Screen.GetWidth() / double(Screen.GetHeight());
 
 		double screenwidth  = ScaleRes(SCREEN_X, d);
@@ -96,7 +96,7 @@ class RS_ScoreHUD : EventHandler
 		// tic points landed. The message it posted held 0.05s then faded 0.15s.
 		bool flash = UserBool(pln, "rs_score_flash", true)
 		          && FadeAlpha(tr.flashTic, 0.05, 0.15) > 0.0;
-		double flashAlpha = flash ? FadeAlpha(tr.flashTic, 0.05, 0.15) : 0.0;
+		double flashAlpha = flash ? RSSC_A11y.Dim(FadeAlpha(tr.flashTic, 0.05, 0.15)) : 0.0;   // Photosensitive Mode: 40%
 
 		DrawScoreLine(tr, vw, vh, centerX, centerY, flashAlpha);
 		DrawBar(tr, handler, pln, vw, vh, centerX, centerY, flashAlpha);

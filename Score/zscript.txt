@@ -8,6 +8,7 @@ version "4.14"
 // drives everything, and the HUD only reads.
 
 #include "zscript/rsscore/cb.zs"
+#include "zscript/rsscore/a11y.zs"
 #include "zscript/rsscore/tracker.zs"
 #include "zscript/rsscore/event.zs"
 #include "zscript/rsscore/bonus.zs"
