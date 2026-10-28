@@ -215,7 +215,7 @@ class RSQDG_Laser : EventHandler
 		if (!RSQDG_A11y.Gate(lastBurst[hand], level.maptime)) return;
 		burstAt[hand] = level.maptime; burstOn[hand] = true; lastBurst[hand] = level.maptime;
 	}
-	private transient int lastBurst[2];
+	transient int lastBurst[2];   // the last bloom's tic per hand (read by tests)
 
 	// ---- placing ------------------------------------------------------------
 
