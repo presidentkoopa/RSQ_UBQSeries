@@ -139,6 +139,7 @@ class RS_ScoreRegistry : StaticEventHandler
 		RS_PhysicalSeed.Names(more);    // physical.zs: thrown things, the rig, VR, Gun Bonsai
 		RS_AwardSeed.Names(more);       // awards.zs: rows paid by other mods (the training remote)
 		RS_HookSeed.Names(more);        // hook.zs: the grappling hook and the combos across mods
+		RS_BoostSeed.Names(more);       // boost.zs: what was killed -- Champions' tiers, LegenDoom's legendaries
 		for (int k = 0; k < more.Size(); k++) Own(more[k]);
 	}
 

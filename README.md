@@ -368,3 +368,38 @@ is refused), so bowling happens against tall monsters or in the low first part o
 whether 6 u/tic is the right "sent flying" line for the real Force push and BD kicks (scripted here
 with a 20 u/tic shove); whether Indiana Jones' 192/64 thresholds catch real gaps on real maps and
 not stairs; the popup rows' text is the HUD's existing breakdown (no HUD change).
+
+## Boosted monsters (10-27): Champions and LegenDoom Lite
+
+The kill names what it killed (`zscript/rsscore/boost.zs`), read by inventory, cvar and lump NAME, so
+nothing links and every row pays 0 without the two mods. Daring family, charged against the per-kill
+cap like any other row, and only on a player's kill (an infight pays base + Infighter as always).
+
+| row | when | mult |
+|---|---|---|
+| `<Colour> Champion` (14 colours) | an active champion of that colour | 0.25 |
+| Bronze / Silver / Gold Champion | the rare three (weights 3 / 2 / 1 against 10) | 0.5 / 0.5 / 0.75 |
+| Titan, Undying | the mutation (Undying: its heart's death is noted first) | 0.5 |
+| Ghost, Balloon, Hybrid | the mutation (Hybrid: two colour tokens, or one at amount 2) | 0.25 |
+| Legendary | a LegenDoom Lite legendary that rose (half health, refilled), not a champion | 1.5 |
+| Legend Denied | a legendary killed before it rose (its 300 % gone inside one tic) | 0.75 |
+| Legendary Champion | risen AND an active champion -- the owner's "dormant boosted legendary champion" | 0.5 |
+
+No double pay with the base (measured, rig C): a champion's base is its StartHealth, which Champions
+sets after its own health change (a Bronze Titan imp: 780); a plain legendary's base is the class's (LegenDoom
+Lite's ACS raises health, not StartHealth), so Legendary is the big row; a legendary champion's
+StartHealth already holds LegenDoom's 300 % (dormant mode: Champions sets up on the transform, a Gold
+legendary imp's base is 1200 = 80 x 3 x 5; out of dormant mode a legendary spawned in play is boosted
+by LegenDoom first, a Bronze Titan imp 1740), so its row is the small one. In dormant mode a champion
+LegenDoom never transformed never had a power and pays as a plain monster.
+
+Champions' Indigo clones (`champion_CloneToken`) are not kills: Champions clears their COUNTKILL, and
+with Brutal Doom (whose classes replace counted monsters) each one paid a full base -- 80 per imp
+clone, measured; vanilla never paid them.
+
+THE HOOK for a later monster set (RS Monsters' 13 colour tiers and its EX tier): subclass
+`RS_ScoreTierRow`, answer `Token()` (the inventory class name the tier carries), `DisplayName()`,
+`Mult()`, `Group()` (one row per group per kill, highest Mult wins), override `Active(v)` if a tier
+can be dormant, and register the class from your own `StaticEventHandler.OnRegister` with
+`RS_ScoreRegistry.RegisterBonus`. Extra bodies that are not kills: add the token to
+`RS_Boost.NotAKill`.

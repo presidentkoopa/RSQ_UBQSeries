@@ -97,6 +97,10 @@ class RS_ScoreHandler : EventHandler
 	{
 		if (!a || !a.bIsMonster) return false;
 		if (a.bCountKill) return true;
+		// AN EXTRA BODY ANOTHER MOD SPAWNED is not a kill whatever it replaces (boost.zs NOT_A_KILL):
+		// Champions' Indigo clones keep the parent's class and lose COUNTKILL, so with Brutal Doom (whose
+		// classes replace counted monsters) every clone paid a full base, and in vanilla none did.
+		if (RS_Boost.NotAKill(a)) return false;
 		class<Actor> ls = "LostSoul";
 		class<Actor> mine = a.GetClass();
 		class<Actor> was = Actor.GetReplacee(mine);
@@ -258,6 +262,7 @@ class RS_ScoreHandler : EventHandler
 	override void WorldThingDied(WorldEvent e)
 	{
 		Actor victim = e.Thing;
+		RS_Boost.NoteDeath(self, victim);   // boost.zs: an Undying champion's heart, before its master
 		if (!victim || !IsScorable(victim)) { return; }
 
 		// ONE BODY, ONE KILL. A morphed monster's death kills its original first (AActor::Die calls
@@ -356,6 +361,23 @@ class RS_ScoreHandler : EventHandler
 		}
 
 		AwardKiller(ev);
+	}
+
+	// BOOST MARKS (boost.zs): a fact about a monster noted when something ELSE died first (an Undying
+	// champion's heart names its master). Saved with the level; dead entries are dropped as it grows.
+	Array<Actor> m_markV;
+	Array<Name>  m_markWhy;
+	void Mark(Actor v, Name why)
+	{
+		if (!v || Marked(v, why)) return;
+		for (int i = m_markV.Size() - 1; i >= 0; i--) if (!m_markV[i]) { m_markV.Delete(i); m_markWhy.Delete(i); }
+		m_markV.Push(v);
+		m_markWhy.Push(why);
+	}
+	bool Marked(Actor v, Name why)
+	{
+		for (int i = 0; i < m_markV.Size(); i++) if (m_markV[i] == v && m_markWhy[i] == why) return true;
+		return false;
 	}
 
 	// The bodies paid this tic (the morph pair above). Cleared on the next tic that pays.
