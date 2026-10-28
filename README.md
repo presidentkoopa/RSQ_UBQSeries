@@ -1,6 +1,6 @@
-# RSQ_UBQSeries — the Ultra Badass Quest series
+# RSQ_UBQSeries — the Radiant Silvergun Quest series
 
-**Version 1.0 — 2026-10-27.** Ready-to-load pk3s are in [`pk3/`](pk3/).
+**Version 1.0 — 2026-10-27; menus and names 2026-10-28.** Ready-to-load pk3s are in [`pk3/`](pk3/).
 
 Standalone add-ons for **Doom VR on the Quest**, all in one place: a distance grab, a
 shield-saw, a lightsaber, a tactical rig, slow motion, a laser sight, a grappling hook, HP bars and one
@@ -19,16 +19,16 @@ is ZScript and data lumps.
 | | Mod | pk3 | What it is |
 |---|---|---|---|
 | ✋ | [DistanceGrab](DistanceGrab/) | `RSQ_DistanceGrab.pk3` | Turn your palm out, flick, and pull items, guns, barrels and bodies to your hand. Then carry them, throw them, and hit things with them. Lift doors open by hand. |
-| 🛡️ | [ShieldSaw](ShieldSaw/) | `UltraBadassShieldSaw.pk3` | A shield on your off shoulder that blocks, bashes and turns shots back, and doubles as a throwable saw disc that hunts the targets you ring. id Software's shield saw from *Doom: The Dark Ages*, brought to Doom VR first by **Ermac** in Rusted Legacy. |
-| ⚔️ | [QuestSaber](QuestSaber/) | `UltraBadassQuestSaber.pk3` | A lightsaber (layered glowing shells that read as a solid beam), with a second one for the off hand on the Dual key. Cut, block, deflect, throw, and use the Force. |
+| 🛡️ | [ShieldSaw](ShieldSaw/) | `RSQ_ShieldSaw.pk3` | A shield on your off shoulder that blocks, bashes and turns shots back, and doubles as a throwable saw disc that hunts the targets you ring. id Software's shield saw from *Doom: The Dark Ages*, brought to Doom VR first by **Ermac** in Rusted Legacy. |
+| ⚔️ | [QuestSaber](QuestSaber/) | `RSQ_Saber.pk3` | A lightsaber (layered glowing shells that read as a solid beam), with a second one for the off hand on the Dual key. Cut, block, deflect, throw, and use the Force. |
 | 🎒 | [TacticalRig](TacticalRig/) | `RSQ_TacticalRig.pk3` | Guns holstered on your hips and shoulders, spots for the saber, a torso and helmet, a mirror, and Ermac's cigarette. Built on **Ermac's** Virtual Tactical Vest idea. |
 | ⏱️ | [SlowMo](SlowMo/) | `RSQ_SlowMo.pk3` | The world slows, you don't. Enemy bullets become rounds you can see and dodge. |
 | 🔴 | [LaserSight](LaserSight/) | `RSQ_LaserSight.pk3` | A laser from each gun's own barrel, in either hand, fading with distance, with a dot on whatever it hits. |
 | 🪝 | [Grapple](Grapple/) | `RSQ_Grapple.pk3` | A grappling hook from either hand: swing across gaps, reel, climb hand over hand, slide or yank monsters to you, a whip. jpalomo's hook art and sound. |
-| ❤️ | [TopHPBars](TopHPBars/) | `RSQ_TopHPBars.pk3` | coldcite's Top HP Bars, series version: colour-blind schemes, an overheal strip, hooked / stunned / locked / gripped markers. |
+| ❤️ | [TopHPBars](TopHPBars/) | `RSQ_HPBars.pk3` | coldcite's Top HP Bars, series version: colour-blind schemes, an overheal strip, hooked / stunned / locked / gripped markers. |
 | 🏆 | [Score](Score/) | `RSQ_Score.pk3` | The arcade score: style, daring and melee bonuses, cross-mod combos, extra lives; names Champions and LegenDoom Lite kills. Built on ijon's Dakka points. |
 | 👹 | [Miniboss](Miniboss/) | `RSQ_Miniboss.pk3` | A set-piece miniboss each map, fed by three thralls (boosted legendary champions with Champions + LegenDoom Lite): kill a thrall to slow time, get greedy and every monster enrages. Rebuilt from Tartlman's Minibosses!. |
-| 🌳 | [GunBonsaiOffhandVR](GunBonsaiOffhandVR/) | `Gameplay_GB_VR_Offhand_Patch.0.10.6.pk3` | The arcade room's progression: Gun Bonsai for VR -- a gauge and upgrades per hand, melee and boxing-glove upgrades, Slappers Only, saber / ShieldSaw / hook upgrade paths, XP from damage or style, the screens. Needs Gun Bonsai 0.10.6 (ToxicFrog, not included) loaded just before it. |
+| 🌳 | [GunBonsaiOffhandVR](GunBonsaiOffhandVR/) | `RSQ_GunBonsaiVR.pk3` | The arcade room's progression: Gun Bonsai for VR -- a gauge and upgrades per hand, melee and boxing-glove upgrades, Slappers Only, saber / ShieldSaw / hook upgrade paths, XP from damage or style, the screens. Needs Gun Bonsai 0.10.6 (ToxicFrog, not included) loaded just before it. |
 | ♿ | [Accessibility](Accessibility/) | `RSQ_Accessibility.pk3` | One Accessibility menu for every series mod you load: colour-blind modes and handedness. |
 
 ---
@@ -42,27 +42,43 @@ is ZScript and data lumps.
    ```
    doom2.wad -> brutal22test6 -> BD_VoxelPack -> BD22_VR-Reloaded (1.99x-lb-r7-saveload or later)
              -> (optional) Champions -> LegenDoom Lite -> any of the mods, in any order
-             -> GunBonsai-0.10.6.pk3 -> Gameplay_GB_VR_Offhand_Patch.0.10.6.pk3 (last; only with Gun Bonsai)
+             -> GunBonsai-0.10.6.pk3 -> RSQ_GunBonsaiVR.pk3 (last; only with Gun Bonsai)
    ```
 
-3. Settings live under **Options** in the game:
+3. Settings live under **Options → Radiant Silvergun Options** (in both the simple and the full
+   Options menu). That one page lists every series mod you loaded, in a fixed order whatever your
+   load order, plus Accessibility; a mod you didn't load has no row, and any one mod alone still
+   shows its page there.
 
-   | Mod | Options menu entry |
+   | Mod | Row under Radiant Silvergun Options |
    |---|---|
-   | DistanceGrab | **Distance Grab** |
-   | ShieldSaw | **Ultra Badass ShieldSaw** |
-   | QuestSaber | **Ultra Badass QuestSaber** |
-   | TacticalRig | **Tactical Rig** |
+   | QuestSaber | **RSQ Saber** |
+   | ShieldSaw | **RSQ ShieldSaw** |
+   | DistanceGrab | **RSQ Distance Grab** |
+   | Grapple | **RSQ Grapple** |
+   | LaserSight | **RSQ Laser Sight** |
+   | TacticalRig | **RSQ Tactical Rig** |
    | SlowMo | **RSQ SlowMo** |
-   | LaserSight | **Laser Sight** |
-   | Grapple | **Grapple** |
-   | TopHPBars | **RSQ HP Bars** |
    | Score | **RSQ Score** |
    | Miniboss | **RSQ Miniboss** |
-   | GunBonsaiOffhandVR | **Gun Bonsai** (its own menu) and **Gun Bonsai VR** |
+   | TopHPBars | **RSQ HP Bars** |
+   | GunBonsaiOffhandVR | **RSQ Gun Bonsai VR** (Gun Bonsai's own menu stays where Gun Bonsai puts it) |
    | Accessibility | **Accessibility** |
 
-   Every menu ends with **Tuning and Debug**, which holds a **Reset All** row.
+   Each page follows Brutal Doom Quest 2.0's options page: one short front page of real choices with
+   named values, **preset rows** where a feel spans many numbers (*Swing Feel: Light / Standard /
+   Heavy*, *Block Assist*, *Throw Feel*...; Standard is always the shipped defaults, and a row shows
+   *Custom* once you change one of its numbers by hand), a sub-page only for a list of switches, and
+   **Tuning and Debug** last, which holds every number and a **Reset All** row. No setting was
+   removed or renamed in code, so saved settings carry over.
+
+4. **Renamed pk3s (2026-10-28).** If you had an older build, delete these from your load order and
+   use the new names: `UltraBadassQuestSaber.pk3` → `RSQ_Saber.pk3`, `UltraBadassShieldSaw.pk3` →
+   `RSQ_ShieldSaw.pk3`, `RSQ_TopHPBars.pk3` → `RSQ_HPBars.pk3`,
+   `Gameplay_GB_VR_Offhand_Patch.0.10.6.pk3` → `RSQ_GunBonsaiVR.pk3` (still loaded right after
+   `GunBonsai-0.10.6.pk3`). Loading an old and a new copy of the same mod together is not supported.
+   The per-mod entries in Options (Distance Grab, Tactical Rig, Laser Sight...) are gone: everything is
+   under Radiant Silvergun Options.
 
 ## What each one does, and how to use it
 
@@ -97,9 +113,10 @@ is ZScript and data lumps.
   order and comes back; press the trigger again while it flies to call it back.
 - **BD22 Monsters** (option): for Brutal Doom's tougher monsters, it slices through up to
   250 health and grinds up to 1200.
-- **Options:** the everyday switches on the front page (*Double Block Radius*, *On Manual Store*,
-  turned shots, perfect block, the bash...); *Shield Fit*, *Throw and Disc*, *Lock-On*, *Block and
-  Bash* and *Mount Position* one page down. With Gun Bonsai's VR patch it levels up: Broadening
+- **Options** (RSQ ShieldSaw): drawing, lock-on and the throw button, *Shield Size*, *Throw Feel*,
+  *Block Assist* and *Damage* presets, where turned shots go, on the front page; the block and bash
+  switches under *Shield Options*; *Shield Fit*, *Throw and Disc*, *Lock-On*, *Block and Bash* and
+  *Mount Position* numbers under Tuning and Debug. With Gun Bonsai's VR patch it levels up: Broadening
   grows the plate, Lockstep adds locks, and more ([ShieldSaw/README.md](ShieldSaw/README.md)).
 
 ### QuestSaber
@@ -110,10 +127,13 @@ is ZScript and data lumps.
 - **The second saber:** the Dual key (Brutal Doom's own, or the saber's) brings it into the off hand
   and puts it away; *Second Saber* can make it always out, or off.
 - **The Force** in the off hand: push, pull, grip and jump, by gesture.
-- **Keys** (Customize Controls → Ultra Badass QuestSaber): blade on/off, second blade, training
+- **Keys** (Customize Controls → RSQ Saber): blade on/off, second blade, training
   remote.
-- **Options:** the everyday switches on one page; Look, Swing and Cuts, Block and Deflect,
-  Throwing, The Force, Sound and Haptics, Training Remote, Controls and Presets one page down.
+- **Options** (RSQ Saber): the everyday choices on one page with *Size*, *Blade Look* (Quest /
+  Standard / PC VR / Film), *Swing Feel*, *Damage*, *Block Assist* and *Force Strength* presets;
+  switches under *Look and Sound*, *Combat* and *The Force*; keys under *Controls*; every number
+  under Tuning and Debug (Look, Swing and Cuts, Block and Deflect, Throwing, The Force, Sound and
+  Haptics, Training Remote, Beam Prediction).
 
 ### TacticalRig
 - **Four gun holsters** (both hips, both shoulders) and, with the QuestSaber, **two saber spots**
@@ -217,6 +237,19 @@ exactly the same files.
 - Melee weapons get nothing. Guns with no model to measure (sprite guns) get the dot only.
 - The beam hides during reloads and inspections (frames that move the gun more than 6 cm).
 - DistanceGrab's beam makes way for it (*Yield to Laser Sight*).
+
+## Status (menus and names, 2026-10-28)
+
+- **Radiant Silvergun Options:** one parent page under Options for the whole series (how it stays
+  one page in any load order: [tools/rsmenu](tools/rsmenu/rsmenu_template.zs)). Every mod's own
+  Options entry is gone.
+- **Every options page rebuilt after Brutal Doom Quest 2.0's:** short front pages (7-20 rows, at
+  most one slider), named preset rows, switch lists one page down, every number on Tuning and
+  Debug. Every cvar keeps a row ([tools/rsmenu/menutool.py](tools/rsmenu/menutool.py) checks it).
+- **Names:** the series is *Radiant Silvergun Quest*; no "Badass" anywhere a player sees it. pk3s,
+  menu titles, Customize Controls sections and pickup names say RSQ (renames under Install).
+- Tested on the QZD 17.3 rig (each mod alone, all together in two orders, the full Brutal Doom
+  order and vanilla). **Not yet seen on a headset.**
 
 ## Status (1.0, 2026-10-27)
 

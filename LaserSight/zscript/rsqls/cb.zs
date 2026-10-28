@@ -1,5 +1,5 @@
 // RSQLS_CB -- the series' colour-blind palette, read from RSQ_Accessibility's rsqa_colorblind.
-// The same table sits in every Ultra Badass Quest mod under its own prefix (RSQ_Accessibility,
+// The same table sits in every Radiant Silvergun Quest mod under its own prefix (RSQ_Accessibility,
 // tools/cb_template.zs), so a cue means the same colour across the series and each mod still
 // loads alone: without RSQ_Accessibility the setting reads 0 and every cue keeps its own colour.
 //

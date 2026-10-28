@@ -2,6 +2,7 @@
 // pack, nothing to change in the engine. The design and its reasons: ShieldSaw_Quest_Design.md.
 version "4.14"
 
+#include "zscript/ssq/rsmenu.zs"   // Radiant Silvergun Options: the series' shared menu pieces (tools/rsmenu)
 #include "zscript/ssq/cb.zs"
 #include "zscript/ssq/a11y.zs"
 #include "zscript/ssq/pose.zs"

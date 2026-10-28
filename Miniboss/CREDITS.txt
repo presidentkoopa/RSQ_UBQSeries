@@ -1,7 +1,7 @@
 RSQ_Miniboss -- credits
 =======================
 
-The UBQ / RSQ series' set-piece miniboss. For stock QuestZDoom 17.3: ZScript and lumps only, no
+The Radiant Silvergun Quest series' set-piece miniboss. For stock QuestZDoom 17.3: ZScript and lumps only, no
 engine changes.
 
 WHERE IT COMES FROM
@@ -27,4 +27,4 @@ NOT SHIPPED, ONLY RECOGNISED BY NAME (nothing links)
   QuestZDoom: Emawind and Team Beef.
 
 SHARING
-  Free to share as part of the Ultra Badass Quest series.
+  Free to share as part of the Radiant Silvergun Quest series.

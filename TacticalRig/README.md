@@ -1,8 +1,8 @@
-# RSQ_TacticalRig — the Ultimate Badass Ermac Rig
+# RSQ_TacticalRig — the Radiant Silvergun Quest Ermac Rig
 
 Guns holstered on your body, spots for the saber, a torso and helmet, a mirror, and Ermac's
 cigarette. For **stock QuestZDoom 17.3**: ZScript and lumps only, no engine changes. Part of the
-Ultra Badass Quest series ([RSQ_UBQSeries](https://github.com/presidentkoopa/RSQ_UBQSeries)).
+Radiant Silvergun Quest series ([RSQ_UBQSeries](https://github.com/presidentkoopa/RSQ_UBQSeries)).
 
 Built on **Ermac's** idea: his Virtual Tactical Vest for Doom VR. This is a new implementation
 that reads the real hand poses and keeps the rig on your body rather than your head.
@@ -10,7 +10,7 @@ that reads the real hand poses and keeps the rig on your body rather than your h
 ## Holsters
 
 Four gun holsters, **both hips** and **both shoulders**, and two **saber spots** just below the
-hips (with UltraBadassQuestSaber loaded).
+hips (with RSQ_Saber loaded).
 
 - **A holster holds exactly the gun you put there**, one gun, never chosen for you.
 - **Holster:** reach to a holster with a gun in your hand and grip (or press Use). The gun goes
@@ -91,7 +91,7 @@ Turn on **Cigarettes**. A pocket on your left chest (the right, left-handed) hol
 
 Load after your weapon pack. Tested order:
 `doom2.wad -> brutal22test6 -> BD_VoxelPack -> the series, any order`.
-Settings: **Options → Tactical Rig** (reset under *Tuning and Debug*).
+Settings: **Options → Radiant Silvergun Options → RSQ Tactical Rig** (reset under *Tuning and Debug*).
 
 ## For other mods
 

@@ -2,7 +2,7 @@
 //
 // FOUR GUN HOLSTERS AND TWO SABER SPOTS (the owner's simple rig, 2026-10-27): both hips and
 // both shoulders hold one gun each, exactly the one you put there; just below each hip is a
-// spot for UltraBadassQuestSaber's hilts. Grip (or press Use) at a holster with a gun in the
+// spot for RSQ_Saber's hilts. Grip (or press Use) at a holster with a gun in the
 // hand and it goes in (a full holster swaps: its gun comes out); with the hand empty, the
 // holster's gun is drawn. Each hand holsters and draws its own gun.
 //

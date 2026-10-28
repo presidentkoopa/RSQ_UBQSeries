@@ -88,8 +88,8 @@ Save, load twice, MAP02: no script error but BD_VoxelPack's voxeldef lines.
   - RSQ_Grapple (`/home/claude/work/RSQGR_thp`, e01ffb1 + 42de5f5): service.zs "stunned" -- the yank's
     landing hold (rsqgr_yank_stun tics from the tic its throw ended) or the whip's crack within 35 tics
     while in Pain. Existing answers unchanged.
-  - UltraBadassShieldSaw (`/home/claude/work/rs_shieldsawq_thp`, bd04648): score.zs "locked".
-  - UltraBadassQuestSaber (`/home/claude/work/rs_questsaber_thp`, 3e14b3c): UBQS_SaberService "gripped".
+  - RSQ_ShieldSaw (`/home/claude/work/rs_shieldsawq_thp`, bd04648): score.zs "locked".
+  - RSQ_Saber (`/home/claude/work/rs_questsaber_thp`, 3e14b3c): UBQS_SaberService "gripped".
 - Proven with the real mods driven by their real inputs on rig A (ssq_draw + ssq-lock, the grapple's
   own throw, `event rsqgr_press`, the dual saber's off-hand alt attack held still): see the round-2
   evidence (`test/evidence/markers_*`), vanilla and the owner's full order, save/load twice, map change.

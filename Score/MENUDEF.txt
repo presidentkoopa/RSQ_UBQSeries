@@ -1,9 +1,28 @@
-// RSQ_Score options, in BD22 VR Weapons' style (the owner, 10-27): short labels, no notes, blank
-// lines between groups, tuning and reset one page down.
+// RSQ Score options, modelled on Brutal Doom Quest 2.0's options page (the owner, 10-28): ONE front
+// page of real choices, named; ONE Tuning and Debug page at the end that holds every number. Every
+// cvar keeps its row. Preset choices: tools/rsmenu/presets.py (Standard = today's defaults).
+
+// ---- Radiant Silvergun Options (tools/rsmenu) ----------------------------------------------------
+// The series' one Options entry. Every series pk3 carries this same block with its own prefix: the
+// parent is PROTECTED, so the first definition stays and later ones add nothing (QZD 17.3 merges a
+// protected option menu instead of replacing it); the link row removes any earlier copy of itself,
+// so Options shows one row however many series pk3s load. Each mod then adds its own row only.
+OptionMenu "RSQ_RSOptions" protected
+{
+	Class "RSQSC_RSMenu"
+	Title "RADIANT SILVERGUN OPTIONS"
+}
+
 AddOptionMenu "OptionsMenu"
 {
-	Submenu "Score", "RSQSC_Options"
+	RSQSCRSLink "Radiant Silvergun Options", "RSQ_RSOptions"
 }
+
+AddOptionMenu "RSQ_RSOptions"
+{
+	Submenu "RSQ Score", "RSQSC_Options"
+}
+// ----------------------------------------------------------------------------------------------------
 
 OptionValue "RSQSC_Rewards"
 {
@@ -22,27 +41,46 @@ OptionValue "RSQSC_Start"
 	3, "Everything"
 }
 
+// PRESETS -- written by tools/rsmenu/presets.py (Standard = CVARINFO defaults); edit the script, not here
+OptionString "RSQSC_P_Size"
+{
+	"rs_score_scale 75", "Small"
+	"rs_score_scale 100", "Standard"
+	"rs_score_scale 150", "Large"
+}
+OptionString "RSQSC_P_Place"
+{
+	"rs_score_x 85 rs_score_y 10", "Top Right"
+	"rs_score_x 15 rs_score_y 10", "Top Left"
+	"rs_score_x 50 rs_score_y 10", "Top Centre"
+	"rs_score_x 85 rs_score_y 80", "Bottom Right"
+}
+// END PRESETS
+
 OptionMenu "RSQSC_Options"
 {
-	Title "SCORE"
+	Title "RSQ SCORE"
 	Option "Show Score", "rs_score_hide", "NoYes"
-	Slider "Size", "rs_score_scale", 50, 200, 5, 0
-	Slider "Across", "rs_score_x", 0, 100, 1, 0
-	Slider "Down", "rs_score_y", 0, 100, 1, 0
+	RSQSCPreset "Size", "RSQSC_P_Size"
+	RSQSCPreset "Place", "RSQSC_P_Place"
 	Option "Living Label", "rs_score_alive", "OnOff"
 	StaticText " "
 	Option "Target Reward", "rs_score_rewardtypes", "RSQSC_Rewards"
 	Option "New Map Keeps", "rs_score_startmode", "RSQSC_Start"
 	Option "Slow Motion Moments", "rs_score_slowmo", "OnOff"
 	StaticText " "
-	Submenu "Tuning", "RSQSC_Tuning"
+	Option "Bar Flash", "rs_score_flash", "OnOff"
+	Option "Screen Flash", "rs_score_screenflash", "OnOff"
+	StaticText " "
+	Submenu "Tuning and Debug", "RSQSC_Tuning"
 }
 
 OptionMenu "RSQSC_Tuning"
 {
-	Title "SCORE TUNING"
-	Option "Bar Flash", "rs_score_flash", "OnOff"
-	Option "Screen Flash", "rs_score_screenflash", "OnOff"
+	Title "TUNING AND DEBUG"
+	Slider "Size", "rs_score_scale", 50, 200, 5, 0
+	Slider "Across", "rs_score_x", 0, 100, 1, 0
+	Slider "Down", "rs_score_y", 0, 100, 1, 0
 	Slider "Bonus Display Time", "rs_score_bonustime", 35, 193, 7, 0
 	StaticText " "
 	Slider "Raised Monster Pay", "rs_score_farmpercent", 0, 100, 5, 0
@@ -51,5 +89,5 @@ OptionMenu "RSQSC_Tuning"
 	Slider "Slow Motion Cooldown", "rs_score_slowmo_cooldown", 1, 30, 1, 0
 	Slider "Slow Motion Style", "rs_score_slowstyle", 0, 100, 10, 0
 	StaticText " "
-	SafeCommand "Reset All", "resetcvar rs_score_hide rs_score_alive rs_score_flash rs_score_screenflash rs_score_bonustime rs_score_scale rs_score_x rs_score_y rs_score_rewardtypes rs_score_startmode rs_score_farmpercent rs_score_cap_efficiency rs_score_cap_style rs_score_cap_daring rs_score_cap_melee rs_score_cap_kill rs_score_slowmo rs_score_slowmo_cooldown rs_score_slowstyle", "Reset all Score settings?"
+	SafeCommand "Reset All", "resetcvar rs_score_hide rs_score_alive rs_score_flash rs_score_screenflash rs_score_bonustime rs_score_scale rs_score_x rs_score_y rs_score_rewardtypes rs_score_startmode rs_score_farmpercent rs_score_cap_efficiency rs_score_cap_style rs_score_cap_daring rs_score_cap_melee rs_score_cap_kill rs_score_slowmo rs_score_slowmo_cooldown rs_score_slowstyle", "Reset all RSQ Score settings?"
 }

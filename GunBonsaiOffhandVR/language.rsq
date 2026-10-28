@@ -174,11 +174,11 @@ RSQ_Upgrade_DoubleHook_Name = "Double Hook";
 RSQ_Upgrade_DoubleHook_Desc = "Grapple: hook two and slam them together.";
 RSQ_Upgrade_DoubleHook_TT = "With a monster on each hand's hook, they are dragged into each other: @dmg damage each, staggered for @time. Offered from player level 5.";
 
-RSQ_MENU_TITLE = "RSQ Upgrades";
+RSQ_MENU_TITLE = "RSQ Gun Bonsai VR";
 RSQ_MENU_SLAPPERS = "Slappers Only";
 RSQ_MENU_SLAPPERS_TT = "On: the boxing gloves go on both hands at once, your guns are put away and gun pickups are gone. You keep the suite's melee and the game's own melee. Off: your guns come back.";
 RSQ_MENU_GLOVES = "Start With Gloves";
-RSQ_MENU_ADV = "Tuning";
+RSQ_MENU_ADV = "Tuning and Debug";
 RSQ_MENU_FORCE_START = "Force Base Strength";
 RSQ_MENU_PUNCH_MIN = "Punch Min Speed";
 RSQ_MENU_PUNCH_FULL = "Punch Full Speed";

@@ -1,7 +1,8 @@
 version "4.14"
 
+#include "zscript/rsqgr/rsmenu.zs"   // Radiant Silvergun Options: the series' shared menu pieces (tools/rsmenu)
 // RSQ_Grapple -- a grappling hook for stock QuestZDoom 17.3 (VR). No engine change.
-// Part of the Ultra Badass Quest series. Credits: CREDITS.txt.
+// Part of the Radiant Silvergun Quest series. Credits: CREDITS.txt.
 
 #include "zscript/rsqgr/cb.zs"
 #include "zscript/rsqgr/a11y.zs"

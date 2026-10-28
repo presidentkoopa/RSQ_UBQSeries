@@ -7,7 +7,7 @@
 // own cap, and the original thirteen are left exactly as they were (Brawler stays in Daring).
 //
 // WHERE THE FACTS COME FROM, and nothing here links against another mod:
-//   the damage type     'Saber' (UltraBadassQuestSaber's cuts), 'Saw' / 'Cut' (Brutal Doom's
+//   the damage type     'Saber' (RSQ_Saber's cuts), 'Saw' / 'Cut' (Brutal Doom's
 //                       axe, chainsaw and the BD22 VR swings, which spawn BD's own AxeAttack /
 //                       DSAttack), 'Melee' 'Kick' 'HeadKick' 'Stomp' 'ExtremePunches' (BD's
 //                       fists and boots), 'Fatality' (BD's executions) -- measured in

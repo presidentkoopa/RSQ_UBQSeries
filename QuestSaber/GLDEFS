@@ -1,4 +1,4 @@
-// ULTRA BADASS QUESTSABER -- the blade's skins are fullbright. Its LIGHTS are not here: they are
+// RSQ SABER -- the blade's skins are fullbright. Its LIGHTS are not here: they are
 // attached by script (UBQS_Light.Look), any colour, any radius, no table.
 
 brightmap texture "models/ubqs/blade_core.png"

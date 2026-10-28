@@ -1,6 +1,7 @@
 version "4.12"
 
-// RSQ_LaserSight -- ultimate badass Quest laser sight.
+#include "zscript/rsqls/rsmenu.zs"   // Radiant Silvergun Options: the series' shared menu pieces (tools/rsmenu)
+// RSQ_LaserSight -- the Radiant Silvergun Quest laser sight.
 // Stock QuestZDoom 17.x only. No engine change anywhere, and none may be added.
 // Version 4.12: the earliest 17.x engine pk3 in the wild declares 4.12, and this
 // must load on it as well as on the 17.3 tag (4.14.2).

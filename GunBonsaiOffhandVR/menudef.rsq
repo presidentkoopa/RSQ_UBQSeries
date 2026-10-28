@@ -1,10 +1,30 @@
-// Gun Bonsai VR patch -- the suite upgrades' options: one short page, the rest under Advanced.
-AddOptionMenu "OptionsMenu"
+// RSQ Gun Bonsai VR -- the patch's options: one short page under Radiant Silvergun Options (the
+// screens' four rows folded in), the numbers on Tuning and Debug. Gun Bonsai's own menu stays where
+// Gun Bonsai puts it; the patch adds Slappers Only and a way here at its bottom.
+// and in Gun Bonsai's own options, at the bottom: Slappers Only and the way in
+
+// ---- Radiant Silvergun Options (tools/rsmenu) ----------------------------------------------------
+// The series' one Options entry. Every series pk3 carries this same block with its own prefix: the
+// parent is PROTECTED, so the first definition stays and later ones add nothing (QZD 17.3 merges a
+// protected option menu instead of replacing it); the link row removes any earlier copy of itself,
+// so Options shows one row however many series pk3s load. Each mod then adds its own row only.
+OptionMenu "RSQ_RSOptions" protected
 {
-	Submenu "$RSQ_MENU_TITLE", "RSQ_MeleeOptions"
+	Class "RSQGBV_RSMenu"
+	Title "RADIANT SILVERGUN OPTIONS"
 }
 
-// and in Gun Bonsai's own options, at the bottom: Slappers Only and the way in
+AddOptionMenu "OptionsMenu"
+{
+	RSQGBVRSLink "Radiant Silvergun Options", "RSQ_RSOptions"
+}
+
+AddOptionMenu "RSQ_RSOptions"
+{
+	Submenu "RSQ Gun Bonsai VR", "RSQ_MeleeOptions"
+}
+// ----------------------------------------------------------------------------------------------------
+
 AddOptionMenu "GunBonsaiOptions"
 {
 	StaticText " "
@@ -21,11 +41,14 @@ OptionValue "RSQ_XPSources"
 
 OptionMenu "RSQ_MeleeOptions"
 {
-	Title "$RSQ_MENU_TITLE"
+	Title "RSQ GUN BONSAI VR"
 	Option "$RSQ_MENU_SLAPPERS", "rsq_slappers", "OnOff"
 	Option "$RSQ_MENU_GLOVES", "rsq_gloves", "OnOff"
 	Option "$RSQ_MENU_XPSRC", "rsq_xp_source", "RSQ_XPSources"
 	Option "$RSQ_MENU_SHIELDGAUGE", "rsq_hud_shield", "OnOff"
+	StaticText " "
+	Option "Screen Skin", "rsq_ui_skin", "RSQUI_Skins"
+	Option "Ammo And Health", "rsq_ui_bottom", "OnOff"
 	StaticText " "
 	Submenu "$RSQ_MENU_ADV", "RSQ_MeleeAdvanced"
 }
@@ -42,6 +65,9 @@ OptionMenu "RSQ_MeleeAdvanced"
 	Slider "$RSQ_MENU_HOOK_XP", "rsq_hook_xp", 0, 3, 0.1, 1
 	Slider "$RSQ_MENU_XPSTYLE", "rsq_xp_style_scale", 0.1, 3, 0.1, 1
 	Slider "$RSQ_MENU_XPPLAYER", "rsq_xp_style_player", 0, 50, 5, 0
+	StaticText " "
+	Slider "HUD Inset", "rsq_ui_inset", 0.0, 0.25, 0.01, 2
+	Slider "HUD Size", "rsq_ui_hud_scale", 0.5, 2.0, 0.05, 2
 }
 
 // The screens: Gun Bonsai's three menu names, pointed at the routers (rsq/ui/router.zs), which are
@@ -64,12 +90,6 @@ OptionMenu "GunBonsaiPlayerLevelUpMenu"
 	Title "$TFLV_MENU_PLAYER_LEVELUP_TITLE"
 }
 
-// The screens' options.
-AddOptionMenu "OptionsMenu"
-{
-	Submenu "Gun Bonsai Screens", "RSQUI_Options"
-}
-
 OptionValue "RSQUI_Skins"
 {
 	0, "Gun Bonsai"
@@ -78,11 +98,4 @@ OptionValue "RSQUI_Skins"
 	3, "Terminal"
 }
 
-OptionMenu "RSQUI_Options"
-{
-	Title "GUN BONSAI SCREENS"
-	Option "Skin", "rsq_ui_skin", "RSQUI_Skins"
-	Slider "HUD Inset", "rsq_ui_inset", 0.0, 0.25, 0.01, 2
-	Slider "HUD Size", "rsq_ui_hud_scale", 0.5, 2.0, 0.05, 2
-	Option "Ammo And Health", "rsq_ui_bottom", "OnOff"
-}
+// (RSQUI_Options, the screens' own page, is folded into RSQ_MeleeOptions and Tuning and Debug.)

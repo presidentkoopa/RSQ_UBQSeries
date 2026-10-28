@@ -1,6 +1,6 @@
 [enu default]
-SSQ_TAG = "Ultra Badass ShieldSaw";
-SSQ_PICKUP = "Ultra Badass ShieldSaw";
+SSQ_TAG = "RSQ ShieldSaw";
+SSQ_PICKUP = "RSQ ShieldSaw";
 SSQ_KEY_DRAW = "ShieldSaw: draw / put back / recall";
 SSQ_KEY_THROW = "ShieldSaw: throw along aim";
 SSQ_KEY_LOCK = "ShieldSaw: lock on (hold)";

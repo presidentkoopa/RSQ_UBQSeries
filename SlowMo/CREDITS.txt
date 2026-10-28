@@ -1,7 +1,7 @@
 RSQ_SlowMo -- credits
 =====================
 
-The world slows, you don't. Part of the Ultra Badass Quest series. For stock QuestZDoom 17.3:
+The world slows, you don't. Part of the Radiant Silvergun Quest series. For stock QuestZDoom 17.3:
 ZScript and lumps only, no engine changes. The code is new, written for this pack.
 
 WHAT THIS PK3 SHIPS, AND WHOSE IT IS
@@ -21,4 +21,4 @@ WHAT THIS PK3 SHIPS, AND WHOSE IT IS
       The engine, and the hand-pose script API the gesture reads.
 
 SHARING
-  Free to share as part of the Ultra Badass Quest series.
+  Free to share as part of the Radiant Silvergun Quest series.

@@ -1,11 +1,31 @@
-// Ultra Badass ShieldSaw options, in BD22 VR Weapons' style (the owner, 10-27: "too many words...
-// the bd22 weapons q options menu is a good example of a ton of options that don't overwhelm"):
-// short labels, no notes, blank lines between groups, the niche groups one page down, tuning,
-// debug and reset last. What each setting does is in CVARINFO's comments and README.md.
+// RSQ ShieldSaw options, modelled on Brutal Doom Quest 2.0's options page (the owner, 10-28): ONE
+// front page of real choices (short Title Case rows, groups split by blank lines, choices named),
+// sub-pages only for lists of switches, ONE Tuning and Debug page at the end that holds every number.
+// No help text on the page; what each setting does is in CVARINFO's comments and README.md. Every
+// cvar keeps its row, so saved settings carry over. Preset choices: tools/rsmenu/presets.py
+// (Standard = today's defaults).
+
+// ---- Radiant Silvergun Options (tools/rsmenu) ----------------------------------------------------
+// The series' one Options entry. Every series pk3 carries this same block with its own prefix: the
+// parent is PROTECTED, so the first definition stays and later ones add nothing (QZD 17.3 merges a
+// protected option menu instead of replacing it); the link row removes any earlier copy of itself,
+// so Options shows one row however many series pk3s load. Each mod then adds its own row only.
+OptionMenu "RSQ_RSOptions" protected
+{
+	Class "SSQ_RSMenu"
+	Title "RADIANT SILVERGUN OPTIONS"
+}
+
 AddOptionMenu "OptionsMenu"
 {
-	Submenu "Ultra Badass ShieldSaw", "SSQ_Options"
+	SSQRSLink "Radiant Silvergun Options", "RSQ_RSOptions"
 }
+
+AddOptionMenu "RSQ_RSOptions"
+{
+	Submenu "RSQ ShieldSaw", "SSQ_Options"
+}
+// ----------------------------------------------------------------------------------------------------
 
 OptionValue "SSQ_Deflect"
 {
@@ -73,46 +93,103 @@ OptionValue "SSQ_RollSign"
 	-1, "Flipped"
 }
 
+// PRESETS -- written by tools/rsmenu/presets.py (Standard = CVARINFO defaults); edit the script, not here
+OptionString "SSQ_P_Size"
+{
+	"ssq_shield_scale 1.0", "Standard"
+	"ssq_shield_scale 1.25", "Large"
+	"ssq_shield_scale 1.5", "Largest"
+}
+OptionString "SSQ_P_Throw"
+{
+	"ssq_throw_min 30 ssq_speed_floor 14", "Easy"
+	"ssq_throw_min 60.0 ssq_speed_floor 12.0", "Standard"
+	"ssq_throw_min 85 ssq_speed_floor 10", "Deliberate"
+}
+OptionString "SSQ_P_Block"
+{
+	"ssq_deflect_assist 4 ssq_sweep_pad 8 ssq_perfect_speed 45", "Low"
+	"ssq_deflect_assist 14.0 ssq_sweep_pad 18.0 ssq_perfect_speed 25.0", "Standard"
+	"ssq_deflect_assist 30 ssq_sweep_pad 32 ssq_perfect_speed 15", "High"
+}
+OptionString "SSQ_P_Damage"
+{
+	"ssq_cut_damage 0.6 ssq_bash_damage 0.6 ssq_grind_damage 3", "Low"
+	"ssq_cut_damage 1.0 ssq_bash_damage 1.0 ssq_grind_damage 6", "Standard"
+	"ssq_cut_damage 1.75 ssq_bash_damage 1.75 ssq_grind_damage 12", "High"
+}
+// END PRESETS
+
 OptionMenu "SSQ_Options"
 {
-	Title "SHIELDSAW"
+	Title "RSQ SHIELDSAW"
 	Option "Start With Shield", "ssq_start", "OnOff"
 	Option "Start in Hand", "ssq_start_drawn", "OnOff"
 	Option "Draw With Use", "ssq_shoulder_use", "OnOff"
 	Option "Lock On With", "ssq_lock_input", "SSQ_LockInput"
 	Option "Throw Button", "ssq_lock_button", "SSQ_LockButton"
-	Option "Catch on Return", "ssq_catch", "OnOff"
 	Slider "Max Locks", "ssq_locks", 0, 5, 1, 0
 	StaticText " "
+	SSQPreset "Shield Size", "SSQ_P_Size"
+	SSQPreset "Throw Feel", "SSQ_P_Throw"
+	SSQPreset "Block Assist", "SSQ_P_Block"
+	SSQPreset "Damage", "SSQ_P_Damage"
+	Option "Turned Shots Go", "ssq_deflect_aim", "SSQ_DeflectAim"
+	Option "Blocked Melee", "ssq_melee", "SSQ_Melee"
+	Option "BD22 Monsters", "ssq_bd22", "OnOff"
+	StaticText " "
+	Submenu "Shield Options", "SSQ_Switches"
+	Submenu "Look and Sound", "SSQ_Show"
+	StaticText " "
+	Submenu "Tuning and Debug", "SSQ_Debug"
+}
+
+// ---- switches ------------------------------------------------------------------------------------
+OptionMenu "SSQ_Switches"
+{
+	Title "SHIELD OPTIONS"
 	Option "Shield Blocks", "ssq_guard", "OnOff"
 	Option "Block While Holstered", "ssq_guard_stowed", "OnOff"
 	Option "Double Block Radius", "ssq_block_double", "OnOff"
-	Option "On Manual Store", "ssq_store_to", "SSQ_StoreTo"
 	Option "Blocked Projectiles", "ssq_deflect", "SSQ_Deflect"
-	Option "Turned Shots Go", "ssq_deflect_aim", "SSQ_DeflectAim"
 	Option "Turn Shots Early", "ssq_sweep", "OnOff"
 	Option "Muzzle Block", "ssq_hitscan_guard", "OnOff"
 	Option "Return Bullets", "ssq_hitscan_return", "OnOff"
-	Option "Blocked Melee", "ssq_melee", "SSQ_Melee"
 	Option "Perfect Block", "ssq_perfect", "OnOff"
-	Option "Shield Bash", "ssq_bash", "OnOff"
-	Option "Hit Tiers", "ssq_tiers", "OnOff"
-	Option "BD22 Monsters", "ssq_bd22", "OnOff"
 	StaticText " "
+	Option "Shield Bash", "ssq_bash", "OnOff"
+	Option "Bash Needs Sight", "ssq_bash_los", "OnOff"
+	Option "Hit Tiers", "ssq_tiers", "OnOff"
+	Option "Catch on Return", "ssq_catch", "OnOff"
+	Option "On Manual Store", "ssq_store_to", "SSQ_StoreTo"
+	Option "Off-Hand Switch", "ssq_yield_offhand", "SSQ_YieldOff"
+}
+
+OptionMenu "SSQ_Show"
+{
+	Title "LOOK AND SOUND"
 	Option "Block Feedback", "ssq_feedback", "OnOff"
 	Option "Positional Sound", "ssq_spatial", "OnOff"
 	Option "Show Mount", "ssq_marker", "SSQ_Marker"
 	Option "Shield on Back", "ssq_stow_world", "OnOff"
 	Option "Others See Shield", "ssq_held_world", "SSQ_HeldWorld"
-	Option "Off-Hand Switch", "ssq_yield_offhand", "SSQ_YieldOff"
-	StaticText " "
+	Option "Spin Direction", "ssq_roll_sign", "SSQ_RollSign"
+}
+
+// ---- Tuning and Debug: every number ----------------------------------------------------------------
+OptionMenu "SSQ_Debug"
+{
+	Title "TUNING AND DEBUG"
 	Submenu "Shield Fit", "SSQ_Fit"
 	Submenu "Throw and Disc", "SSQ_Throw"
 	Submenu "Lock-On", "SSQ_Lock"
 	Submenu "Block and Bash", "SSQ_Block"
 	Submenu "Mount Position", "SSQ_Mount"
 	StaticText " "
-	Submenu "Tuning and Debug", "SSQ_Debug"
+	Option "Debug Log", "ssq_debug", "OnOff"
+	Option "Show Block Area", "ssq_debug_ring", "OnOff"
+	StaticText " "
+	SafeCommand "Reset All", "resetcvar ssq_start ssq_block_double ssq_store_to ssq_cut_damage ssq_throw_speed ssq_throw_blend ssq_throw_min ssq_throw_forward ssq_speed_floor ssq_mass_kg ssq_locks ssq_lock_cone ssq_lock_button ssq_lock_mark_scale ssq_lock_range ssq_lock_keep ssq_lock_grace ssq_paint_every ssq_keep_marks ssq_return_speed ssq_cruise_gain ssq_cruise_max ssq_home_patience ssq_catch_radius ssq_catch ssq_perfect ssq_perfect_speed ssq_crumb_every ssq_tiers ssq_bd22 ssq_tier_fodder ssq_tier_mid ssq_embed_tics ssq_embed_dps ssq_glance_scale ssq_rev_tics ssq_grind_damage ssq_grind_every ssq_rev_throw_bonus ssq_guard ssq_guard_stowed ssq_yield_offhand ssq_deflect ssq_deflect_aim ssq_deflect_assist ssq_sweep ssq_sweep_lead ssq_sweep_pad ssq_sweep_boost ssq_hitscan_guard ssq_hitscan_return ssq_hitscan_damage ssq_melee ssq_stagger_push ssq_bash ssq_bash_speed ssq_bash_damage ssq_bash_reach ssq_bash_los ssq_bash_sustain ssq_bash_knock ssq_bash_lift ssq_plate_f ssq_plate_l ssq_plate_u ssq_plate_radius ssq_plate_thick ssq_plate_blades ssq_shield_scale ssq_roll_sign ssq_start_drawn ssq_shoulder_use ssq_lock_input ssq_feedback ssq_spatial ssq_mount_fwd ssq_mount_side ssq_mount_up ssq_mount_reach ssq_zone_scale ssq_stow_world ssq_mount_yaw ssq_mount_pitch ssq_mount_roll ssq_mount_scale ssq_marker ssq_held_x ssq_held_y ssq_held_z ssq_held_yaw ssq_held_pitch ssq_held_roll ssq_held_world ssq_debug ssq_debug_ring", "Reset all RSQ ShieldSaw settings?"
 }
 
 OptionMenu "SSQ_Fit"
@@ -124,7 +201,6 @@ OptionMenu "SSQ_Fit"
 	Slider "Disc Up", "ssq_plate_u", -25.0, 25.0, 0.5, 1
 	Slider "Block Radius", "ssq_plate_radius", 10.0, 60.0, 0.5, 1
 	Slider "Block Depth", "ssq_plate_thick", 2.0, 60.0, 1.0, 0
-	Option "Show Block Area", "ssq_debug_ring", "OnOff"
 }
 
 OptionMenu "SSQ_Throw"
@@ -138,7 +214,6 @@ OptionMenu "SSQ_Throw"
 	Slider "Disc Weight", "ssq_mass_kg", 0.5, 20.0, 0.5, 1
 	Slider "Disc Wind-Up", "ssq_cruise_gain", 0.0, 0.2, 0.01, 2
 	Slider "Disc Top Speed", "ssq_cruise_max", 10.0, 60.0, 1.0, 0
-	Option "Spin Direction", "ssq_roll_sign", "SSQ_RollSign"
 	StaticText " "
 	Slider "Return Speed", "ssq_return_speed", 8.0, 60.0, 1.0, 0
 	Slider "Return Patience", "ssq_home_patience", 35, 350, 5, 0
@@ -186,7 +261,6 @@ OptionMenu "SSQ_Block"
 	Slider "Bash Damage", "ssq_bash_damage", 0.1, 8.0, 0.1, 1
 	Slider "Bash Reach", "ssq_bash_reach", 1.0, 2.0, 0.05, 2
 	Slider "Leaned Bash", "ssq_bash_sustain", 0, 1, 0.1, 1
-	Option "Bash Needs Sight", "ssq_bash_los", "OnOff"
 	Slider "Bash Knockback", "ssq_bash_knock", 0.0, 3.0, 0.05, 2
 	Slider "Bash Lift", "ssq_bash_lift", 0.0, 8.0, 0.5, 1
 }
@@ -211,13 +285,4 @@ OptionMenu "SSQ_Mount"
 	Slider "Held Yaw", "ssq_held_yaw", -90.0, 90.0, 1.0, 0
 	Slider "Held Pitch", "ssq_held_pitch", -90.0, 90.0, 1.0, 0
 	Slider "Held Roll", "ssq_held_roll", -90.0, 90.0, 1.0, 0
-}
-
-OptionMenu "SSQ_Debug"
-{
-	Title "TUNING AND DEBUG"
-	Option "Debug Log", "ssq_debug", "OnOff"
-	Option "Show Block Area", "ssq_debug_ring", "OnOff"
-	StaticText " "
-	SafeCommand "Reset All", "resetcvar ssq_start ssq_block_double ssq_store_to ssq_cut_damage ssq_throw_speed ssq_throw_blend ssq_throw_min ssq_throw_forward ssq_speed_floor ssq_mass_kg ssq_locks ssq_lock_cone ssq_lock_button ssq_lock_mark_scale ssq_lock_range ssq_lock_keep ssq_lock_grace ssq_paint_every ssq_keep_marks ssq_return_speed ssq_cruise_gain ssq_cruise_max ssq_home_patience ssq_catch_radius ssq_catch ssq_perfect ssq_perfect_speed ssq_crumb_every ssq_tiers ssq_bd22 ssq_tier_fodder ssq_tier_mid ssq_embed_tics ssq_embed_dps ssq_glance_scale ssq_rev_tics ssq_grind_damage ssq_grind_every ssq_rev_throw_bonus ssq_guard ssq_guard_stowed ssq_yield_offhand ssq_deflect ssq_deflect_aim ssq_deflect_assist ssq_sweep ssq_sweep_lead ssq_sweep_pad ssq_sweep_boost ssq_hitscan_guard ssq_hitscan_return ssq_hitscan_damage ssq_melee ssq_stagger_push ssq_bash ssq_bash_speed ssq_bash_damage ssq_bash_reach ssq_bash_los ssq_bash_sustain ssq_bash_knock ssq_bash_lift ssq_plate_f ssq_plate_l ssq_plate_u ssq_plate_radius ssq_plate_thick ssq_plate_blades ssq_shield_scale ssq_roll_sign ssq_start_drawn ssq_shoulder_use ssq_lock_input ssq_feedback ssq_spatial ssq_mount_fwd ssq_mount_side ssq_mount_up ssq_mount_reach ssq_zone_scale ssq_stow_world ssq_mount_yaw ssq_mount_pitch ssq_mount_roll ssq_mount_scale ssq_marker ssq_held_x ssq_held_y ssq_held_z ssq_held_yaw ssq_held_pitch ssq_held_roll ssq_held_world ssq_debug ssq_debug_ring", "Reset all ShieldSaw settings?"
 }

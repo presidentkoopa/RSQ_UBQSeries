@@ -3,7 +3,11 @@
 Dual-wield support for [Gun Bonsai](https://github.com/ToxicFrog/doom-mods) 0.10.6
 on VR builds of GZDoom where the player holds a weapon in each hand.
 
-Load **after** `GunBonsai-0.10.6.pk3`.
+The pk3 is **`RSQ_GunBonsaiVR.pk3`** (it was `Gameplay_GB_VR_Offhand_Patch.0.10.6.pk3`; delete the
+old one). It needs Gun Bonsai 0.10.6 (ToxicFrog, not included): load it **right after**
+`GunBonsai-0.10.6.pk3`. Its settings are under **Options → Radiant Silvergun Options → RSQ Gun Bonsai
+VR** (Gun Bonsai's own menu stays where Gun Bonsai puts it, with Slappers Only and a link here at
+its bottom).
 
 The patch ships replacement copies of nine Gun Bonsai source files at their
 original paths. GZDoom's later-lump-wins rule substitutes them; there is no
@@ -109,7 +113,7 @@ held, or has earned XP).
 ## The screens (`rsq/ui/`)
 
 The owner's Gun Bonsai mockups, drawn instead of Gun Bonsai's own HUD, status screen and level-up
-menus. Options: **Gun Bonsai Screens** (skin, HUD inset, HUD size, ammo and health row).
+menus. Options: **RSQ Gun Bonsai VR** (Screen Skin, Ammo And Health; HUD inset and size under Tuning and Debug).
 
 ```
 rsq_ui_skin       0 Gun Bonsai's own, 1 Mockup (the recreation), 2 Hex Rail, 3 Terminal

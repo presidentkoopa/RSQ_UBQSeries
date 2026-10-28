@@ -1,4 +1,4 @@
-# RSQ_Grapple (UBQ / RSQ suite)
+# RSQ_Grapple (Radiant Silvergun Quest suite)
 
 The owner's grappling hook for QuestZDoom 17.3 VR, on doom2 -> brutal22test6 -> BD_VoxelPack -> BD22Q r7 (and vanilla monsters, with or without Cheello's Voxel Doom II).
 

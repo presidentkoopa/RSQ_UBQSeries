@@ -11,7 +11,7 @@
 // headset test, 10-27, "the holster slots turn with the head").
 //
 // So the body is anchored to the TRACKING SPACE's yaw, the frame the controllers live
-// in, the way UltraBadassQuestSaber's UBQS_FrameKeeper does it: a snap or smooth turn
+// in, the way RSQ_Saber's UBQS_FrameKeeper does it: a snap or smooth turn
 // rotates the whole tracking space, which shows as BOTH controllers' yaws moving with
 // the pawn's angle in the same tic; a head turn moves the angle alone. Looking around
 // leaves the rig where it is; turns carry it.

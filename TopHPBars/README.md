@@ -1,4 +1,4 @@
-# RSQ_TopHPBars (UBQ / RSQ suite)
+# RSQ_TopHPBars (Radiant Silvergun Quest suite)
 
 The series' version of **Top HP Bars 1.04 by coldcite** (based on SpriteShadow by Nash Muhandes). coldcite's header: "Feel free to use this in your mods. You don't have to ask my permission!" Credit coldcite and Nash in CREDITS.txt; check SpriteShadow's own terms before shipping.
 
@@ -15,7 +15,7 @@ Owner's brief (10-27):
 ## The pk3
 
 `sh build.sh` regenerates the art (`tools/gen_art.py`, from `original_1.04/graphics` only) and packs
-`RSQ_TopHPBars.pk3` from `pk3/`. Load it anywhere after the monster mods. Options -> **RSQ HP Bars**.
+`RSQ_HPBars.pk3` from `pk3/`. Load it anywhere after the monster mods. Options -> Radiant Silvergun Options -> **RSQ HP Bars**.
 
 | Path | What |
 | --- | --- |
@@ -46,8 +46,8 @@ gripped. Asked by name every 4th tic per bar (play scope), each mod in its own w
 | --- | --- | --- | --- |
 | hooked | RSQ_Grapple `RSQGR_Service` | `"hooked"` (tics since on a line, 0 on it), `"yanked"` | hooked 0..3, or yanked 1/2 |
 | stunned | RSQ_Grapple `RSQGR_Service` | `"stunned"` (added on agent-thp) | == 1 |
-| locked | UltraBadassShieldSaw `SSQ_ScoreService` | `"locked"` (added on agent-thp) | == 1 |
-| gripped | UltraBadassQuestSaber `UBQS_SaberService` | `"gripped"` (added on agent-thp) | == 1 |
+| locked | RSQ_ShieldSaw `SSQ_ScoreService` | `"locked"` (added on agent-thp) | == 1 |
+| gripped | RSQ_Saber `UBQS_SaberService` | `"gripped"` (added on agent-thp) | == 1 |
 
 Any other mod can drive all four with 1/0 answers from a Service whose class name contains `RSQTHP_Marker`.
 

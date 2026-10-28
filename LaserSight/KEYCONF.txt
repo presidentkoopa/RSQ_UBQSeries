@@ -4,6 +4,6 @@
 // binds on purpose -- which key a Quest controller posts is not knowable here,
 // and a guess would steal a button that already does something. Bind them in
 // Customize Controls under "Laser Sight".
-addkeysection "Laser Sight" RSQLS
+addkeysection "RSQ Laser Sight" RSQLS
 addmenukey "Laser on/off (main hand)" "toggle rsqls_main"
 addmenukey "Laser on/off (off hand)"  "toggle rsqls_off"

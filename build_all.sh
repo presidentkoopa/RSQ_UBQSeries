@@ -4,6 +4,9 @@
 # ShieldSaw, TacticalRig, SlowMo: build.sh); this does the same packing
 # in one go on any machine with a shell. Include lists match those scripts exactly.
 set -e
+# Player-facing pk3 names (2026-10-28, the owner): RSQ_ everywhere, no "Badass". Old names to delete
+# from a load order: UltraBadassQuestSaber.pk3 (now RSQ_Saber), UltraBadassShieldSaw.pk3 (RSQ_ShieldSaw),
+# RSQ_TopHPBars.pk3 (RSQ_HPBars), Gameplay_GB_VR_Offhand_Patch.0.10.6.pk3 (RSQ_GunBonsaiVR).
 HUB="$(cd "$(dirname "$0")" && pwd)"
 OUT="$HUB/pk3"
 mkdir -p "$OUT"
@@ -30,15 +33,15 @@ pack_list SlowMo       RSQ_SlowMo.pk3       models/rsqsm
 # ShieldSaw: everything but docs, tools, scripts, the handoff and git files (its build.sh).
 # README.md ships: it carries the credits.
 cd "$HUB/ShieldSaw"
-rm -f "$OUT/UltraBadassShieldSaw.pk3"
-zip -q -r -X "$OUT/UltraBadassShieldSaw.pk3" . -x 'docs/*' 'tools/*' '*.sh' '.gitignore' 'HANDOFF.md'
-echo "built pk3/UltraBadassShieldSaw.pk3"
+rm -f "$OUT/RSQ_ShieldSaw.pk3"
+zip -q -r -X "$OUT/RSQ_ShieldSaw.pk3" . -x 'docs/*' 'tools/*' '*.sh' '.gitignore' 'HANDOFF.md'
+echo "built pk3/RSQ_ShieldSaw.pk3"
 
 # QuestSaber: everything but docs.
 cd "$HUB/QuestSaber"
-rm -f "$OUT/UltraBadassQuestSaber.pk3"
-zip -q -r -X "$OUT/UltraBadassQuestSaber.pk3" . -x 'docs/*' '.gitignore'
-echo "built pk3/UltraBadassQuestSaber.pk3"
+rm -f "$OUT/RSQ_Saber.pk3"
+zip -q -r -X "$OUT/RSQ_Saber.pk3" . -x 'docs/*' '.gitignore'
+echo "built pk3/RSQ_Saber.pk3"
 
 # LaserSight: its explicit include list (its build.sh); tools/ and docs/ stay out.
 cd "$HUB/LaserSight"
@@ -55,9 +58,9 @@ echo "built pk3/RSQ_Grapple.pk3"
 
 # TopHPBars: the mod lives in pk3/ (its art is generated from coldcite's originals by tools/gen_art.py).
 cd "$HUB/TopHPBars"
-rm -f "$OUT/RSQ_TopHPBars.pk3"
-(cd pk3 && zip -q -r -X "$OUT/RSQ_TopHPBars.pk3" .)
-echo "built pk3/RSQ_TopHPBars.pk3"
+rm -f "$OUT/RSQ_HPBars.pk3"
+(cd pk3 && zip -q -r -X "$OUT/RSQ_HPBars.pk3" .)
+echo "built pk3/RSQ_HPBars.pk3"
 
 # Accessibility: the shared menu and settings.
 cd "$HUB/Accessibility"
@@ -77,9 +80,9 @@ rm -f "$OUT/RSQ_Miniboss.pk3"
 zip -q -r -X "$OUT/RSQ_Miniboss.pk3" zscript.txt MAPINFO.txt CVARINFO.txt MENUDEF.txt CREDITS.txt zscript
 echo "built pk3/RSQ_Miniboss.pk3"
 
-# Gun Bonsai Offhand VR patch: everything but the build script, notes, tools and git files (its build.ps1).
+# RSQ_GunBonsaiVR (the Gun Bonsai Offhand VR patch): everything but the build script, notes, tools and git files (its build.ps1).
 # Needs Gun Bonsai 0.10.6 (ToxicFrog, not included) loaded just before it.
 cd "$HUB/GunBonsaiOffhandVR"
-rm -f "$OUT/Gameplay_GB_VR_Offhand_Patch.0.10.6.pk3"
-zip -q -r -X "$OUT/Gameplay_GB_VR_Offhand_Patch.0.10.6.pk3" . -x '.git*' 'build.ps1' 'NOTES.md' 'tools/*' 'Gameplay_GB_VR_Offhand_Patch.0.10.6.pk3'
-echo "built pk3/Gameplay_GB_VR_Offhand_Patch.0.10.6.pk3"
+rm -f "$OUT/RSQ_GunBonsaiVR.pk3"
+zip -q -r -X "$OUT/RSQ_GunBonsaiVR.pk3" . -x '.git*' 'build.ps1' 'NOTES.md' 'tools/*' '*.pk3'
+echo "built pk3/RSQ_GunBonsaiVR.pk3"

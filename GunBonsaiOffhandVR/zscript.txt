@@ -5,6 +5,7 @@
 // as well (every archive's ZSCRIPT is read): it adds new classes only and shadows nothing.
 version "4.14"
 
+#include "rsq/zscript/rsmenu.zs"   // Radiant Silvergun Options: the series' shared menu pieces (tools/rsmenu)
 #include "rsq/zscript/a11y.zs"
 #include "rsq/zscript/core.zs"
 #include "rsq/zscript/gloves.zs"

@@ -14,7 +14,7 @@ SLATED FOR REPLACEMENT (owner, 10-27): this hook is the series' own rebuild, so 
 should be ours too. jpalomo's art and sounds stay as the default until replacements are made from
 the owner's RS_CombatFX library (and other cleared sources); then the JP set becomes optional or goes.
 
-Code: ZScript written for the Ultra Badass Quest series (presidentkoopa), for
+Code: ZScript written for the Radiant Silvergun Quest series (presidentkoopa), for
 stock QuestZDoom 17.3 by Emawind84 and Team Beef. No engine change.
 
 ==== monster side (the throw, the whip, the look sets) ====

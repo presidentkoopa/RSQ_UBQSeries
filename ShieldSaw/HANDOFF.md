@@ -1,4 +1,4 @@
-# Ultra Badass ShieldSaw — handoff
+# RSQ ShieldSaw — handoff
 
 ## Branch `agent-compat` (2026-10-27): Champions + LegenDoom Lite -- read first
 
@@ -45,7 +45,7 @@ puts its own previous sample back behind its new one.
 ## Branch `agent-upgrades` (2026-10-27): Gun Bonsai melee upgrades — read first
 
 Not yet run on the owner's headset. Rig = stock QZD 17.3 Linux build, freedoom2 MAP01, the owner's
-load order (brutal22test6, BD_VoxelPack, BD22_VR-Reloaded_2.0-b1m, the UBQ series, RSQ_Score, Gun
+load order (brutal22test6, BD_VoxelPack, BD22_VR-Reloaded_2.0-b1m, the Radiant Silvergun Quest series, RSQ_Score, Gun
 Bonsai 0.10.6, the Gun Bonsai VR patch `agent-upgrades`).
 
 The shield asks the Gun Bonsai VR patch for its upgrade levels BY NAME (`SSQ_Upg`, score.zs ->
@@ -99,10 +99,10 @@ A shield that is also a throwable saw disc, in the off hand, for **stock QuestZD
 (`emawind84/gzdoom @ questzdoom`, TeamBeef's build). Standalone pk3, no engine changes, and none
 are permitted: anything it needs it does in ZScript or it does not do.
 
-Loads alongside the owner's **UltraBadassQuestSaber** — two separate mods, either order, either
+Loads alongside the owner's **RSQ_Saber** — two separate mods, either order, either
 one absent. See §6.
 
-Packaged as `UltraBadassShieldSaw.pk3`. Classes, cvars and sprite lumps keep the `SSQ_` / `ssq_`
+Packaged as `RSQ_ShieldSaw.pk3`. Classes, cvars and sprite lumps keep the `SSQ_` / `ssq_`
 prefix: renaming those would break saved games and the git remote for nothing.
 
 ---
@@ -182,7 +182,7 @@ picking. The same number scales the guard plate, so what you see and what blocks
 The sizes are in the **mesh**, not the block: `shield_s2..s5.md3` and `shieldsaw_s2..s5.md3` are
 the originals scaled about their own origin. A block's `Scale` would have grown the hand with the
 shield; scaling about the grip leaves the hand, the grip point and the `Offset` exactly where
-they were. (UltraBadassQuestSaber reaches the same answer for its blade lengths — that is what
+they were. (RSQ_Saber reaches the same answer for its blade lengths — that is what
 its ten thousand sprite lumps are: labels, one per baked block.)
 
 ---
@@ -236,7 +236,7 @@ zscript/ssq/props.zs   SSQ_Prop (holster / others' view), SSQ_MountMarker, block
 
 ## 6. Living beside other off-hand mods
 
-`RSQ_Hands` re-gives itself to an empty off hand; UltraBadassQuestSaber's bridge gives
+`RSQ_Hands` re-gives itself to an empty off hand; RSQ_Saber's bridge gives
 `UBQS_SaberOff` to one every tic while dual is on. Both are right to, neither knows about us, and
 **event handlers tick in load order** — so being correct could not depend on running first.
 

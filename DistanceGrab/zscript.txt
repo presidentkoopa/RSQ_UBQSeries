@@ -1,5 +1,6 @@
 version "4.14"
 
+#include "zscript/rsqdg/rsmenu.zs"   // Radiant Silvergun Options: the series' shared menu pieces (tools/rsmenu)
 // RSQ_DistanceGrab -- point at a thing across the room and pull it to you.
 //
 // Stock QuestZDoom 17.3 only. No engine change is required anywhere in this

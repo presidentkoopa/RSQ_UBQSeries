@@ -172,7 +172,7 @@ class SSQ_Handler : EventHandler
 	// ---- LIVING WITH OTHER OFF-HAND MODS ------------------------------------------------
 	//
 	// Two mods we load beside are built to never leave the off hand empty: the weapon pack's
-	// RSQ_Hands re-gives itself whenever the slot is null, and UltraBadassQuestSaber's bridge
+	// RSQ_Hands re-gives itself whenever the slot is null, and RSQ_Saber's bridge
 	// gives UBQS_SaberOff to an empty off hand every tic when dual is on. Both are right to
 	// do it and neither knows about us. The consequence is that an off-hand slot we leave
 	// null for even one tic gets filled by somebody, and whatever we do next fights them.

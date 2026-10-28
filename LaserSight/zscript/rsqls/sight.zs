@@ -1,4 +1,4 @@
-// ULTIMATE BADASS QUEST LASER SIGHT.
+// RSQ LASER SIGHT.
 //
 // A laser on every gun, both hands. Two parts, each drawn where it can be drawn best:
 //

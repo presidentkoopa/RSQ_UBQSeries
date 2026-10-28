@@ -1,15 +1,32 @@
-// RSQ_Accessibility -- one Options entry for the whole series, in BD22 VR Weapons' style
-// (short Title Case labels, no help text; StaticText " " is only a spacer).
+// RSQ_Accessibility -- the series' shared accessibility settings, one page under Radiant Silvergun
+// Options (short Title Case labels, no help text; StaticText " " is only a spacer).
 //
-// Section "Label", "Class1|Class2" starts a series mod's rows. RSQA_Menu keeps the section
-// (as a header) and its rows only when one of those classes exists at run time, so a mod's
-// rows show only when that mod is loaded. A section runs to the next Section or the end.
-// Rows before the first Section are shared and always shown.
+// The links to each series mod's page that used to sit here (RSQASection rows) moved to Radiant
+// Silvergun Options itself (tools/rsmenu), which lists every loaded series mod beside this page.
+// RSQASection / RSQA_Menu stay in zscript/rsqa_menu.zs: a Section "Label", "Class1|Class2" row
+// still shows its rows only when one of those classes is loaded, if a row ever needs it again.
+
+// ---- Radiant Silvergun Options (tools/rsmenu) ----------------------------------------------------
+// The series' one Options entry. Every series pk3 carries this same block with its own prefix: the
+// parent is PROTECTED, so the first definition stays and later ones add nothing (QZD 17.3 merges a
+// protected option menu instead of replacing it); the link row removes any earlier copy of itself,
+// so Options shows one row however many series pk3s load. Each mod then adds its own row only.
+OptionMenu "RSQ_RSOptions" protected
+{
+	Class "RSQA_RSMenu"
+	Title "RADIANT SILVERGUN OPTIONS"
+}
 
 AddOptionMenu "OptionsMenu"
 {
+	RSQARSLink "Radiant Silvergun Options", "RSQ_RSOptions"
+}
+
+AddOptionMenu "RSQ_RSOptions"
+{
 	Submenu "Accessibility", "RSQA_Options"
 }
+// ----------------------------------------------------------------------------------------------------
 
 OptionValue "RSQA_ColorBlind"
 {
@@ -52,7 +69,7 @@ OptionValue "RSQA_Menus"
 OptionMenu "RSQA_Options"
 {
 	Class "RSQA_Menu"
-	Title "ACCESSIBILITY"
+	Title "RSQ ACCESSIBILITY"
 	Option "Colour Blind Mode", "rsqa_colorblind", "RSQA_ColorBlind"
 	RSQAHanded "Handedness", "rsqa_handed", "RSQA_Handed"
 	Option "Photosensitive Mode", "rsqa_photosafe", "OnOff"
@@ -70,36 +87,6 @@ OptionMenu "RSQA_Options"
 	Slider "Text Size", "rsqa_text_scale", 1.0, 3.0, 0.25, 2
 	Option "Sound Cues", "rsqa_sound_cues", "RSQA_SoundCues"
 	Option "Menus", "rsqa_menus", "RSQA_Menus"
-
-	RSQASection "QuestSaber", "UBQS_SaberService"
-	Submenu "QuestSaber Options", "UBQS_Options"
-
-	RSQASection "ShieldSaw", "SSQ_Handler"
-	Submenu "ShieldSaw Options", "SSQ_Options"
-
-	RSQASection "Tactical Rig", "RSQTR_Rig"
-	Submenu "Tactical Rig Options", "RSQTR_Options"
-
-	RSQASection "Distance Grab", "RSQDG_Grab"
-	Submenu "Distance Grab Options", "RSQDG_Options"
-
-	RSQASection "Slow Motion", "RSQSM_Clock"
-	Submenu "Slow Motion Options", "RSQSM_Options"
-
-	RSQASection "Laser Sight", "RSQLS_Sight"
-	Submenu "Laser Sight Options", "RSQLS_Options"
-
-	RSQASection "Grapple", "RSQGR_Core"
-	Submenu "Grapple Options", "RSQGR_Options"
-
-	RSQASection "Gun Bonsai VR", "RSQ_GloveHandler"
-	Submenu "Gun Bonsai VR Options", "RSQ_MeleeOptions"
-
-	RSQASection "Score", "RS_ScoreHandler"
-	Submenu "Score Options", "RSQSC_Options"
-
-	RSQASection "HP Bars", "RSQTHP_Handler"
-	Submenu "HP Bars Options", "RSQTHP_Options"
 }
 
 OptionMenu "RSQA_Gestures"

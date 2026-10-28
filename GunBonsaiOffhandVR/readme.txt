@@ -1,6 +1,8 @@
 Gun Bonsai -- VR / Offhand Patch
 ================================
-For Gun Bonsai 0.10.6. Load AFTER GunBonsai-0.10.6.pk3.
+RSQ_GunBonsaiVR.pk3 (was Gameplay_GB_VR_Offhand_Patch.0.10.6.pk3 -- delete the old one).
+For Gun Bonsai 0.10.6 (ToxicFrog, not included). Load it right AFTER GunBonsai-0.10.6.pk3.
+Settings: Options -> Radiant Silvergun Options -> RSQ Gun Bonsai VR.
 
 
 WHAT IT FIXES

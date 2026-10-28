@@ -134,7 +134,7 @@ Model SSQ_MountMarker
 //
 // MODELDEF decides a model's size at load and the only thing a mod can change at run
 // time is which SPRITE the layer carries, so a size slider needs one baked block per
-// size -- the same answer UltraBadassQuestSaber reaches with its five blade lengths.
+// size -- the same answer RSQ_Saber reaches with its five blade lengths.
 // The block's own Scale would grow the HAND with the shield, so the sizes live in the
 // mesh instead: shield_s2..s5.md3 and shieldsaw_s2..s5.md3 are the originals scaled
 // about their own origin, which is the grip -- so the shield grows and the hand, the

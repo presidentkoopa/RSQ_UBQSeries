@@ -1,18 +1,50 @@
-// RSQ Miniboss options, in BD22 VR Weapons' style: short Title Case labels, no notes, groups
-// split by blank lines, the tuning one page down, reset last. CVARINFO.txt says what each does.
+// RSQ Miniboss options, modelled on Brutal Doom Quest 2.0's options page (the owner, 10-28): ONE front
+// page of real choices, named; ONE Tuning and Debug page at the end that holds every number. Every
+// cvar keeps its row. CVARINFO.txt says what each does. Preset choices: tools/rsmenu/presets.py.
+
+// ---- Radiant Silvergun Options (tools/rsmenu) ----------------------------------------------------
+// The series' one Options entry. Every series pk3 carries this same block with its own prefix: the
+// parent is PROTECTED, so the first definition stays and later ones add nothing (QZD 17.3 merges a
+// protected option menu instead of replacing it); the link row removes any earlier copy of itself,
+// so Options shows one row however many series pk3s load. Each mod then adds its own row only.
+OptionMenu "RSQ_RSOptions" protected
+{
+	Class "RSQMB_RSMenu"
+	Title "RADIANT SILVERGUN OPTIONS"
+}
+
 AddOptionMenu "OptionsMenu"
+{
+	RSQMBRSLink "Radiant Silvergun Options", "RSQ_RSOptions"
+}
+
+AddOptionMenu "RSQ_RSOptions"
 {
 	Submenu "RSQ Miniboss", "RSQMB_Options"
 }
+// ----------------------------------------------------------------------------------------------------
+
+// PRESETS -- written by tools/rsmenu/presets.py (Standard = CVARINFO defaults); edit the script, not here
+OptionString "RSQMB_P_Fight"
+{
+	"rsqmb_thralls 2 rsqmb_lives 2 rsqmb_shield 50 rsqmb_invuln 3", "Easier"
+	"rsqmb_thralls 3 rsqmb_lives 3 rsqmb_shield 80 rsqmb_invuln 5.0", "Standard"
+	"rsqmb_thralls 5 rsqmb_lives 4 rsqmb_shield 90 rsqmb_invuln 8", "Harder"
+}
+OptionString "RSQMB_P_Often"
+{
+	"rsqmb_map_chance 25", "Rare"
+	"rsqmb_map_chance 50", "Some Maps"
+	"rsqmb_map_chance 100", "Every Map"
+}
+// END PRESETS
 
 OptionMenu "RSQMB_Options"
 {
-	Title "MINIBOSS"
+	Title "RSQ MINIBOSS"
 	Option "Minibosses", "rsqmb_enabled", "OnOff"
-	Slider "Per Map", "rsqmb_per_map", 0, 4, 1, 0
-	Slider "Map Chance", "rsqmb_map_chance", 0, 100, 5, 0
-	Slider "Thralls", "rsqmb_thralls", 1, 8, 1, 0
-	Slider "Lives", "rsqmb_lives", 1, 9, 1, 0
+	RSQMBPreset "How Often", "RSQMB_P_Often"
+	RSQMBPreset "Fight", "RSQMB_P_Fight"
 	StaticText " "
 	Option "Legendary Thralls", "rsqmb_legend_thralls", "OnOff"
 	Option "Inherit Powers", "rsqmb_inherit", "OnOff"
@@ -21,12 +53,17 @@ OptionMenu "RSQMB_Options"
 	Option "Effects", "rsqmb_fx", "OnOff"
 	Option "Score Awards", "rsqmb_score", "OnOff"
 	StaticText " "
-	Submenu "Tuning", "RSQMB_Tuning"
+	Submenu "Tuning and Debug", "RSQMB_Tuning"
 }
 
 OptionMenu "RSQMB_Tuning"
 {
-	Title "TUNING"
+	Title "TUNING AND DEBUG"
+	Slider "Per Map", "rsqmb_per_map", 0, 4, 1, 0
+	Slider "Map Chance", "rsqmb_map_chance", 0, 100, 5, 0
+	Slider "Thralls", "rsqmb_thralls", 1, 8, 1, 0
+	Slider "Lives", "rsqmb_lives", 1, 9, 1, 0
+	StaticText " "
 	Slider "Thrall Range", "rsqmb_radius", 256, 4096, 128, 0
 	Slider "Power Cap", "rsqmb_inherit_max", 0, 12, 1, 0
 	Slider "Thrall Shield", "rsqmb_shield", 0, 95, 5, 0
@@ -41,5 +78,6 @@ OptionMenu "RSQMB_Tuning"
 	Slider "Effects Range", "rsqmb_fx_range", 1000, 8000, 250, 0
 	StaticText " "
 	Option "Debug Lines", "rsqmb_debug", "OnOff"
+	StaticText " "
 	SafeCommand "Reset All", "resetcvar rsqmb_enabled rsqmb_per_map rsqmb_map_chance rsqmb_thralls rsqmb_radius rsqmb_legend_thralls rsqmb_inherit rsqmb_inherit_max rsqmb_lives rsqmb_shield rsqmb_invuln rsqmb_invuln_bonus rsqmb_revive rsqmb_slow rsqmb_slow_chain rsqmb_slow_max rsqmb_slow_depth rsqmb_greed rsqmb_rage_speed rsqmb_score rsqmb_fx rsqmb_fx_range", "Reset all RSQ Miniboss settings?"
 }

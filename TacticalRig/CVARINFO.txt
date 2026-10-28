@@ -25,7 +25,7 @@ user float  rsqtr_mirror_m    = 1.0;     // metres from your eyes to the mirror
 user int    rsqtr_dwell       = 3;       // tics a hand must be in a region before a press counts
 user float  rsqtr_body_turn   = 35.0;    // degrees: a head turned further than this takes the body round with it
 user float  rsqtr_body_secs   = 1.0;     // seconds to wait first (0: at once)
-user bool   rsqtr_saber_hip   = false;   // UltraBadassQuestSaber's hilt also clips to the hips (it has two holsters of its own)
+user bool   rsqtr_saber_hip   = false;   // RSQ_Saber's hilt also clips to the hips (it has two holsters of its own)
 nosave bool rsqtr_seated     = false;   // you play sitting down: the rig hangs from your seated eyes, not the standing view height (this machine only)
 user string rsqtr_empty       = "";      // the weapon an empty hand holds (blank: the slot-1 weapon with the highest SelectionOrder, the fist)
 

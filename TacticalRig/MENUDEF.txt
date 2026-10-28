@@ -1,10 +1,29 @@
-// Tactical Rig options, in BD22 VR Weapons' style (the owner, 10-27: "too many words... the bd22
-// weapons q options menu is a good example of a ton of options that don't overwhelm"): short
-// labels, no notes, blank lines between groups, the niche groups one page down.
+// RSQ Tactical Rig options, modelled on Brutal Doom Quest 2.0's options page (the owner, 10-28): ONE
+// front page of real choices (short Title Case rows, groups split by blank lines, choices named),
+// sub-pages only for lists of switches (and the profile buttons), ONE Tuning and Debug page at the
+// end that holds every number. Every cvar keeps its row. Preset choices: tools/rsmenu/presets.py.
+
+// ---- Radiant Silvergun Options (tools/rsmenu) ----------------------------------------------------
+// The series' one Options entry. Every series pk3 carries this same block with its own prefix: the
+// parent is PROTECTED, so the first definition stays and later ones add nothing (QZD 17.3 merges a
+// protected option menu instead of replacing it); the link row removes any earlier copy of itself,
+// so Options shows one row however many series pk3s load. Each mod then adds its own row only.
+OptionMenu "RSQ_RSOptions" protected
+{
+	Class "RSQTR_RSMenu"
+	Title "RADIANT SILVERGUN OPTIONS"
+}
+
 AddOptionMenu "OptionsMenu"
 {
-	Submenu "Tactical Rig", "RSQTR_Options"
+	RSQTRRSLink "Radiant Silvergun Options", "RSQ_RSOptions"
 }
+
+AddOptionMenu "RSQ_RSOptions"
+{
+	Submenu "RSQ Tactical Rig", "RSQTR_Options"
+}
+// ----------------------------------------------------------------------------------------------------
 
 OptionValue "RSQTR_Pairs"
 {
@@ -41,37 +60,102 @@ OptionValue "RSQTR_Markers"
 }
 
 
+// PRESETS -- written by tools/rsmenu/presets.py (Standard = CVARINFO defaults); edit the script, not here
+OptionString "RSQTR_P_Reach"
+{
+	"rsqtr_reach 0.75", "Tight"
+	"rsqtr_reach 1.0", "Standard"
+	"rsqtr_reach 1.5", "Easy"
+}
+OptionString "RSQTR_P_IconSize"
+{
+	"rsqtr_icon_scale 0.6", "Small"
+	"rsqtr_icon_scale 1.0", "Standard"
+	"rsqtr_icon_scale 1.5", "Large"
+}
+// END PRESETS
+
 OptionMenu "RSQTR_Options"
 {
-	Title "TACTICAL RIG"
+	Title "RSQ TACTICAL RIG"
 	Option "Tactical Rig", "rsqtr_on", "OnOff"
 	Option "Grip Holsters", "rsqtr_grip", "OnOff"
 	Option "Use Holsters", "rsqtr_use", "OnOff"
+	RSQTRPreset "Reach", "RSQTR_P_Reach"
 	Option "Holster Rings", "rsqtr_markers", "RSQTR_Markers"
-	Option "Show Stored Guns", "rsqtr_icons", "OnOff"
 	Option "Draw Pairs", "rsqtr_pairs", "RSQTR_Pairs"
-	Slider "Stored Gun Size", "rsqtr_icon_scale", 0.25, 3.0, 0.05, 2
-	Slider "Reach", "rsqtr_reach", 0.5, 2.0, 0.05, 2
-	Option "Haptics", "rsqtr_haptics", "OnOff"
 	StaticText " "
 	Option "Seated", "rsqtr_seated", "OnOff"
 	Command "Measure My Height", "netevent rsqtr_calib"
 	Option "Move Holsters by Hand", "rsqtr_edit", "OnOff"
 	Option "Mirror", "rsqtr_mirror", "RSQTR_Mirror"
-	Option "Mirror Shows", "rsqtr_mirror_view", "RSQTR_MirrorView"
-	Submenu "Holster Positions", "RSQTR_Regions"
 	Submenu "Holster Profiles", "RSQTR_Profiles"
 	StaticText " "
 	Option "Torso", "rsqtr_vest", "OnOff"
 	Option "Torso Style", "rsqtr_vest_style", "RSQTR_VestStyle"
-	Option "Torso Fades Looking Down", "rsqtr_vest_fade", "OnOff"
 	Option "Helmet", "rsqtr_helmet", "OnOff"
-	Submenu "Torso Fit", "RSQTR_TorsoFit"
-	StaticText " "
 	Option "Cigarettes", "rsqtr_cig", "OnOff"
-	Submenu "Cigarette Options", "RSQTR_Cig"
+	StaticText " "
+	Submenu "Rig Options", "RSQTR_Switches"
 	StaticText " "
 	Submenu "Tuning and Debug", "RSQTR_Debug"
+}
+
+// ---- switches ------------------------------------------------------------------------------------
+OptionMenu "RSQTR_Switches"
+{
+	Title "RIG OPTIONS"
+	Option "Show Stored Guns", "rsqtr_icons", "OnOff"
+	RSQTRPreset "Stored Gun Size", "RSQTR_P_IconSize"
+	Option "Haptics", "rsqtr_haptics", "OnOff"
+	Option "Messages", "rsqtr_messages", "OnOff"
+	Option "Mirror Shows", "rsqtr_mirror_view", "RSQTR_MirrorView"
+	Option "Torso Fades Looking Down", "rsqtr_vest_fade", "OnOff"
+	StaticText " "
+	Option "Leave Shoulder to ShieldSaw", "rsqtr_yield_shield", "OnOff"
+	Option "Saber on Hip Too", "rsqtr_saber_hip", "OnOff"
+	StaticText " "
+	Option "Zippo Lights It", "rsqtr_cig_zippo", "OnOff"
+	Option "Slow Motion While Burning", "rsqtr_cig_slowmo", "OnOff"
+	Option "Refill Each Level", "rsqtr_cig_refill", "OnOff"
+}
+
+OptionMenu "RSQTR_Profiles"
+{
+	Title "HOLSTER PROFILES"
+	Command "Save Standing A (Blue)", "netevent rsqtr_prof_save 1"
+	Command "Save Standing B (Orange)", "netevent rsqtr_prof_save 2"
+	Command "Save Seated A (Purple)", "netevent rsqtr_prof_save 3"
+	Command "Save Seated B (Yellow)", "netevent rsqtr_prof_save 4"
+	StaticText " "
+	SafeCommand "Load Standing A (Blue)", "netevent rsqtr_prof_load 1", "Load Standing A?"
+	SafeCommand "Load Standing B (Orange)", "netevent rsqtr_prof_load 2", "Load Standing B?"
+	SafeCommand "Load Seated A (Purple)", "netevent rsqtr_prof_load 3", "Load Seated A?"
+	SafeCommand "Load Seated B (Yellow)", "netevent rsqtr_prof_load 4", "Load Seated B?"
+}
+
+// ---- Tuning and Debug: every number ----------------------------------------------------------------
+OptionMenu "RSQTR_Debug"
+{
+	Title "TUNING AND DEBUG"
+	Submenu "Holster Positions", "RSQTR_Regions"
+	Submenu "Torso Fit", "RSQTR_TorsoFit"
+	Submenu "Cigarette", "RSQTR_Cig"
+	StaticText " "
+	Slider "Reach", "rsqtr_reach", 0.5, 2.0, 0.05, 2
+	Slider "Stored Gun Size", "rsqtr_icon_scale", 0.25, 3.0, 0.05, 2
+	Slider "Stored Gun Length", "rsqtr_icon_m", 0.10, 0.60, 0.01, 2
+	Slider "Back Gun Length", "rsqtr_icon_back_m", 0.30, 1.20, 0.05, 2
+	Slider "Stored Gun Turn", "rsqtr_icon_turn", -180, 180, 15, 0
+	TextField "Flip These Guns", "rsqtr_icon_flip"
+	Slider "Mirror Distance", "rsqtr_mirror_m", 0.5, 2.5, 0.1, 1
+	Slider "Body Turn Angle", "rsqtr_body_turn", 10, 90, 5, 0
+	Slider "Body Turn Delay", "rsqtr_body_secs", 0, 3, 0.25, 2
+	Slider "Press Delay", "rsqtr_dwell", 0, 10, 1, 0
+	TextField "Main Grip Keys", "rsqtr_keys_main"
+	TextField "Off Grip Keys", "rsqtr_keys_off"
+	StaticText " "
+	SafeCommand "Reset All", "resetcvar rsqtr_on rsqtr_grip rsqtr_use rsqtr_keys_main rsqtr_keys_off rsqtr_markers rsqtr_icons rsqtr_pairs rsqtr_icon_scale rsqtr_icon_m rsqtr_icon_back_m rsqtr_icon_flip rsqtr_icon_turn rsqtr_haptics rsqtr_messages rsqtr_reach rsqtr_yield_shield rsqtr_saber_hip rsqtr_eye_m rsqtr_seated rsqtr_edit rsqtr_mirror rsqtr_mirror_view rsqtr_mirror_m rsqtr_dwell rsqtr_body_turn rsqtr_body_secs rsqtr_vest rsqtr_vest_style rsqtr_vest_u rsqtr_vest_f rsqtr_vest_size rsqtr_vest_low rsqtr_vest_fade rsqtr_helmet rsqtr_helmet_u rsqtr_empty rsqtr_cig rsqtr_cig_zippo rsqtr_cig_secs rsqtr_cig_slowmo rsqtr_cig_depth rsqtr_cig_count rsqtr_cig_refill rsqtr_r0_f rsqtr_r0_l rsqtr_r0_u rsqtr_r0_rad rsqtr_r1_f rsqtr_r1_l rsqtr_r1_u rsqtr_r1_rad rsqtr_r4_f rsqtr_r4_l rsqtr_r4_u rsqtr_r4_rad rsqtr_r5_f rsqtr_r5_l rsqtr_r5_u rsqtr_r5_rad rsqtr_r9_f rsqtr_r9_l rsqtr_r9_u rsqtr_r9_rad rsqtr_r10_f rsqtr_r10_l rsqtr_r10_u rsqtr_r10_rad", "Reset all RSQ Tactical Rig settings?"
 }
 
 OptionMenu "RSQTR_Regions"
@@ -115,20 +199,6 @@ OptionMenu "RSQTR_Regions"
 	Slider "Size", "rsqtr_r10_rad", 0.05, 0.30, 0.01, 2
 }
 
-OptionMenu "RSQTR_Profiles"
-{
-	Title "HOLSTER PROFILES"
-	Command "Save Standing A (Blue)", "netevent rsqtr_prof_save 1"
-	Command "Save Standing B (Orange)", "netevent rsqtr_prof_save 2"
-	Command "Save Seated A (Purple)", "netevent rsqtr_prof_save 3"
-	Command "Save Seated B (Yellow)", "netevent rsqtr_prof_save 4"
-	StaticText " "
-	SafeCommand "Load Standing A (Blue)", "netevent rsqtr_prof_load 1", "Load Standing A?"
-	SafeCommand "Load Standing B (Orange)", "netevent rsqtr_prof_load 2", "Load Standing B?"
-	SafeCommand "Load Seated A (Purple)", "netevent rsqtr_prof_load 3", "Load Seated A?"
-	SafeCommand "Load Seated B (Yellow)", "netevent rsqtr_prof_load 4", "Load Seated B?"
-}
-
 OptionMenu "RSQTR_TorsoFit"
 {
 	Title "TORSO FIT"
@@ -141,31 +211,8 @@ OptionMenu "RSQTR_TorsoFit"
 
 OptionMenu "RSQTR_Cig"
 {
-	Title "CIGARETTE OPTIONS"
-	Option "Zippo Lights It", "rsqtr_cig_zippo", "OnOff"
+	Title "CIGARETTE"
 	Slider "Burn Time", "rsqtr_cig_secs", 2, 20, 1, 0
-	Option "Slow Motion While Burning", "rsqtr_cig_slowmo", "OnOff"
 	Slider "Slow Motion Speed", "rsqtr_cig_depth", 10, 90, 5, 0
 	Slider "Pack Size", "rsqtr_cig_count", 1, 20, 1, 0
-	Option "Refill Each Level", "rsqtr_cig_refill", "OnOff"
-}
-
-OptionMenu "RSQTR_Debug"
-{
-	Title "TUNING AND DEBUG"
-	Slider "Stored Gun Length", "rsqtr_icon_m", 0.10, 0.60, 0.01, 2
-	Slider "Back Gun Length", "rsqtr_icon_back_m", 0.30, 1.20, 0.05, 2
-	Slider "Stored Gun Turn", "rsqtr_icon_turn", -180, 180, 15, 0
-	TextField "Flip These Guns", "rsqtr_icon_flip"
-	Slider "Mirror Distance", "rsqtr_mirror_m", 0.5, 2.5, 0.1, 1
-	Slider "Body Turn Angle", "rsqtr_body_turn", 10, 90, 5, 0
-	Slider "Body Turn Delay", "rsqtr_body_secs", 0, 3, 0.25, 2
-	Slider "Press Delay", "rsqtr_dwell", 0, 10, 1, 0
-	Option "Leave Shoulder to ShieldSaw", "rsqtr_yield_shield", "OnOff"
-	Option "Saber on Hip Too", "rsqtr_saber_hip", "OnOff"
-	Option "Messages", "rsqtr_messages", "OnOff"
-	TextField "Main Grip Keys", "rsqtr_keys_main"
-	TextField "Off Grip Keys", "rsqtr_keys_off"
-	StaticText " "
-	SafeCommand "Reset All", "resetcvar rsqtr_on rsqtr_grip rsqtr_use rsqtr_keys_main rsqtr_keys_off rsqtr_markers rsqtr_icons rsqtr_pairs rsqtr_icon_scale rsqtr_icon_m rsqtr_icon_back_m rsqtr_icon_flip rsqtr_icon_turn rsqtr_haptics rsqtr_messages rsqtr_reach rsqtr_yield_shield rsqtr_saber_hip rsqtr_eye_m rsqtr_seated rsqtr_edit rsqtr_mirror rsqtr_mirror_view rsqtr_mirror_m rsqtr_dwell rsqtr_body_turn rsqtr_body_secs rsqtr_vest rsqtr_vest_style rsqtr_vest_u rsqtr_vest_f rsqtr_vest_size rsqtr_vest_low rsqtr_vest_fade rsqtr_helmet rsqtr_helmet_u rsqtr_empty rsqtr_cig rsqtr_cig_zippo rsqtr_cig_secs rsqtr_cig_slowmo rsqtr_cig_depth rsqtr_cig_count rsqtr_cig_refill rsqtr_r0_f rsqtr_r0_l rsqtr_r0_u rsqtr_r0_rad rsqtr_r1_f rsqtr_r1_l rsqtr_r1_u rsqtr_r1_rad rsqtr_r4_f rsqtr_r4_l rsqtr_r4_u rsqtr_r4_rad rsqtr_r5_f rsqtr_r5_l rsqtr_r5_u rsqtr_r5_rad rsqtr_r9_f rsqtr_r9_l rsqtr_r9_u rsqtr_r9_rad rsqtr_r10_f rsqtr_r10_l rsqtr_r10_u rsqtr_r10_rad", "Reset all Tactical Rig settings?"
 }

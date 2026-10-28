@@ -1,7 +1,7 @@
 RSQ_TacticalRig -- credits
 ==========================
 
-The Ultimate Badass Ermac Rig, part of the Ultra Badass Quest series. For stock QuestZDoom 17.3:
+The Radiant Silvergun Quest Ermac Rig, part of the Radiant Silvergun Quest series. For stock QuestZDoom 17.3:
 ZScript and lumps only, no engine changes. The code is new, written for this pack.
 
 WHAT THIS PK3 SHIPS, AND WHOSE IT IS
@@ -35,5 +35,5 @@ WHAT THIS PK3 SHIPS, AND WHOSE IT IS
       The engine, and the off-hand weapon and hand-pose script API the rig reads.
 
 SHARING
-  Free to share as part of the Ultra Badass Quest series. Borrowed assets keep their authors'
+  Free to share as part of the Radiant Silvergun Quest series. Borrowed assets keep their authors'
   terms; sharing other people's work in this pack is the project owner's decision.

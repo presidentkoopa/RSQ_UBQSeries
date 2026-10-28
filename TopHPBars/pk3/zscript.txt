@@ -1,5 +1,6 @@
 version "4.14"
 
+#include "zscript/rsqthp/rsmenu.zs"   // Radiant Silvergun Options: the series' shared menu pieces (tools/rsmenu)
 // RSQ Top HP Bars -- the UBQ / RSQ series' version of Top HP Bars 1.04 by coldcite
 // (itself based on SpriteShadow by Nash Muhandes). See CREDITS.txt.
 #include "zscript/rsqthp/a11y.zs"

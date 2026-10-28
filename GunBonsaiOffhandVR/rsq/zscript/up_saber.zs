@@ -1,4 +1,4 @@
-// THE SABERS' UPGRADE PATH (UltraBadassQuestSaber: UBQS_Saber, UBQS_SaberOff).
+// THE SABERS' UPGRADE PATH (RSQ_Saber: UBQS_Saber, UBQS_SaberOff).
 //
 // Most of these change the saber's own behaviour, so the saber does the work: it asks
 // RSQ_MeleeUpgradeService for its level by name ("level", "<short name>", weapon) and these

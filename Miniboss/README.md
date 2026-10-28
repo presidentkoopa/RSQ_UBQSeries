@@ -1,4 +1,4 @@
-# RSQ_Miniboss (UBQ / RSQ suite)
+# RSQ_Miniboss (Radiant Silvergun Quest suite)
 
 The owner's set-piece miniboss, rebuilt from the abandoned minibosses.pk3 (kept unmodified in `original/`; the owner, 10-27: "Miniboss was abandoned so its ours. We can rebuild and optimize the hell out of it and integrate whatever we want."). Tartlman's original files stay in `original/` (owner, 10-28: "I like the og style. Keep."). Credit the original: **Minibosses! v0.1.1 by Tartlman** (ZDoom forum, Nov 2019; "All code by me. Special thanks to the Hideous Destructor server"), on hiatus since 2019. (The original used Doom 2 IWAD sprites as placeholder effects; this rebuild uses engine particles only.) Tartlman's own to-do list included "special legendoom compatibility" -- which this rebuild delivers.
 
@@ -12,7 +12,7 @@ The owner's set-piece miniboss, rebuilt from the abandoned minibosses.pk3 (kept 
 
 ## As built (agent-mb, 10-27) -- measured on rig C (QZD 17.3 script, stock engine)
 
-Load after the series. `RSQ_Miniboss.pk3` (`./build.sh`). Options -> RSQ Miniboss. What each setting does: `CVARINFO.txt`.
+Load after the series. `RSQ_Miniboss.pk3` (`./build.sh`). Options -> Radiant Silvergun Options -> RSQ Miniboss. What each setting does: `CVARINFO.txt`.
 
 **Choosing** (tic 10, after LegenDoom Lite's tic 1-2 marking and Champions' tic-3 delayer): 1 miniboss per map (`rsqmb_per_map`), from the strongest third of the level's monsters weighted by spawn health (never BOSS-flagged, never a Dark Red / Undying champion), with 3 thralls (`rsqmb_thralls`) within 1024 units, none stronger than it: champions first, legendaries next, then the nearest. No class names: the same on Doom's and Brutal Doom's monsters. With LegenDoom Lite, every thrall is made legendary by LDL's own `LDLegendaryMonsterPickupGuaranteed` (measured: BD imp 80 -> 240 hp).
 

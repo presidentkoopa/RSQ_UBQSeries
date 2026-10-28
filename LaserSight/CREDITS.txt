@@ -1,7 +1,7 @@
 RSQ_LaserSight -- credits
 =========================
 
-A laser from each gun's own barrel, part of the Ultra Badass Quest series. For stock QuestZDoom 17.3:
+A laser from each gun's own barrel, part of the Radiant Silvergun Quest series. For stock QuestZDoom 17.3:
 ZScript and lumps only, no engine changes. Made by the project owner (presidentkoopa) and this pack.
 
 INSPIRED BY (no code or assets taken)

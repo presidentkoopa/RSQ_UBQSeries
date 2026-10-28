@@ -3,7 +3,7 @@
 // Gun Bonsai is Rebecca "ToxicFrog" Kelly's (MIT). The melee upgrade paths, the gloves'
 // punch reader and Slappers Only are presidentkoopa's (this patch, same terms).
 //
-// HOW THE MODS TALK. No mod links to another: the saber (UltraBadassQuestSaber) and the
+// HOW THE MODS TALK. No mod links to another: the saber (RSQ_Saber) and the
 // ShieldSaw ask RSQ_MeleeUpgradeService by NAME through ServiceIterator, and get 0 from
 // nothing when this patch is not loaded. Every class this file names from another mod is
 // reached by string, never by literal, so this patch still compiles and runs alone.
@@ -297,7 +297,7 @@ class RSQ_MeleeUpgradeService : Service
 }
 
 // ---- A RUMBLE on one controller -------------------------------------------------------------
-// The series' haptic route, as UltraBadassQuestSaber's UBQS_Buzzer does it: A_QuakeEx QF_WAVE,
+// The series' haptic route, as RSQ_Saber's UBQS_Buzzer does it: A_QuakeEx QF_WAVE,
 // re-issued each tic, X the left controller and Y the right. Local to its owner (tremor 8).
 class RSQ_Buzz : Actor
 {

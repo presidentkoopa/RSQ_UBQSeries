@@ -1,5 +1,6 @@
 version "4.14"
 
+#include "zscript/rsscore/rsmenu.zs"   // Radiant Silvergun Options: the series' shared menu pieces (tools/rsmenu)
 // RS_Score -- the scoring service. Points for a kill, bonuses for how you got it,
 // a per-map target that pays out when you cross it. See CREDITS.md.
 //

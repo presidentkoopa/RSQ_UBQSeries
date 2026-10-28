@@ -1,6 +1,7 @@
 version "4.14"
 
-// RSQ_Miniboss -- the UBQ / RSQ series' set-piece miniboss, for stock QuestZDoom 17.3 (ZScript and
+#include "zscript/rsqmb/rsmenu.zs"   // Radiant Silvergun Options: the series' shared menu pieces (tools/rsmenu)
+// RSQ_Miniboss -- the Radiant Silvergun Quest series' set-piece miniboss, for stock QuestZDoom 17.3 (ZScript and
 // lumps only, no engine changes). Rebuilt from Minibosses! v0.1.1 by Tartlman (see CREDITS.txt).
 #include "zscript/rsqmb/items.zs"
 #include "zscript/rsqmb/boss.zs"

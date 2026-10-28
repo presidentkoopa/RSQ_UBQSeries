@@ -10,7 +10,7 @@
 $ErrorActionPreference = 'Stop'
 
 $src = $PSScriptRoot
-$name = 'Gameplay_GB_VR_Offhand_Patch.0.10.6.pk3'
+$name = 'RSQ_GunBonsaiVR.pk3'
 $rotation = 'D:\SteamLibrary\steamapps\Common\DooM VR\__CurrentRotationDONOTDELETE'
 
 $staging = Join-Path $env:TEMP 'gbvr_stage'

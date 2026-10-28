@@ -1,20 +1,52 @@
-// RSQ SlowMo options, in BD22 VR Weapons' style (the owner, 10-27: "too many words... the bd22
-// weapons q options menu is a good example of a ton of options that don't overwhelm"): short
-// labels, no notes, blank lines between groups, the niche groups one page down, reset last.
-// What each setting does is in CVARINFO's comments and README.md.
+// RSQ SlowMo options, modelled on Brutal Doom Quest 2.0's options page (the owner, 10-28): ONE front
+// page of real choices, named; ONE Tuning and Debug page at the end that holds every number. Every
+// cvar keeps its row. What each setting does is in CVARINFO's comments and README.md. Preset
+// choices: tools/rsmenu/presets.py (Standard = today's defaults).
+
+// ---- Radiant Silvergun Options (tools/rsmenu) ----------------------------------------------------
+// The series' one Options entry. Every series pk3 carries this same block with its own prefix: the
+// parent is PROTECTED, so the first definition stays and later ones add nothing (QZD 17.3 merges a
+// protected option menu instead of replacing it); the link row removes any earlier copy of itself,
+// so Options shows one row however many series pk3s load. Each mod then adds its own row only.
+OptionMenu "RSQ_RSOptions" protected
+{
+	Class "RSQSM_RSMenu"
+	Title "RADIANT SILVERGUN OPTIONS"
+}
+
 AddOptionMenu "OptionsMenu"
+{
+	RSQSMRSLink "Radiant Silvergun Options", "RSQ_RSOptions"
+}
+
+AddOptionMenu "RSQ_RSOptions"
 {
 	Submenu "RSQ SlowMo", "RSQSM_Options"
 }
+// ----------------------------------------------------------------------------------------------------
+
+// PRESETS -- written by tools/rsmenu/presets.py (Standard = CVARINFO defaults); edit the script, not here
+OptionString "RSQSM_P_Depth"
+{
+	"rsm_depth 0.6", "Light"
+	"rsm_depth 0.4", "Medium"
+	"rsm_depth 0.25", "Standard"
+	"rsm_depth 0.1", "Bullet Time"
+}
+OptionString "RSQSM_P_Ease"
+{
+	"rsm_ramp_in 0 rsm_ramp_out 0", "Snap"
+	"rsm_ramp_in 0.15 rsm_ramp_out 0.40", "Standard"
+	"rsm_ramp_in 0.6 rsm_ramp_out 1.2", "Gradual"
+}
+// END PRESETS
 
 OptionMenu "RSQSM_Options"
 {
-	Title "SLOWMO"
+	Title "RSQ SLOWMO"
 	Control "Slow Motion", "rsqsm_toggle"
-	Slider "World Speed", "rsm_depth", 0.1, 0.9, 0.05, 2
-	Slider "Ease In", "rsm_ramp_in", 0.0, 1.0, 0.05, 2
-	Slider "Ease Out", "rsm_ramp_out", 0.0, 2.0, 0.05, 2
-	Slider "Range", "rsqsm_radius", 1000, 8000, 250, 0
+	RSQSMPreset "World Speed", "RSQSM_P_Depth"
+	RSQSMPreset "Ease In and Out", "RSQSM_P_Ease"
 	StaticText " "
 	Option "Dodgeable Bullets", "rsqsm_rounds", "OnOff"
 	Option "Wrist Cross", "rsqsm_gesture", "OnOff"
@@ -22,46 +54,35 @@ OptionMenu "RSQSM_Options"
 	Option "Adrenaline", "rsqsm_adrenaline", "OnOff"
 	Option "Haptics", "rsqsm_haptics", "OnOff"
 	StaticText " "
-	Submenu "World and Bullets", "RSQSM_World"
-	Submenu "Gesture and Reload", "RSQSM_Triggers"
-	Submenu "Adrenaline", "RSQSM_Adrenaline"
+	Option "Slow Own Missiles", "rsqsm_slow_own", "OnOff"
+	Option "Shot Trails", "rsqsm_trails", "OnOff"
+	Option "Missile Wakes", "rsqsm_wakes", "OnOff"
+	Option "Keep Adrenaline Between Levels", "rsqsm_adr_keep", "OnOff"
 	StaticText " "
 	Submenu "Tuning and Debug", "RSQSM_Debug"
 }
 
-OptionMenu "RSQSM_World"
-{
-	Title "WORLD AND BULLETS"
-	Slider "Sound Follows", "rsm_sound_follow", 0.0, 1.0, 0.1, 1
-	Option "Slow Own Missiles", "rsqsm_slow_own", "OnOff"
-	Slider "Round Speed", "rsqsm_round_speed", 4, 40, 1, 0
-	Option "Shot Trails", "rsqsm_trails", "OnOff"
-	Option "Missile Wakes", "rsqsm_wakes", "OnOff"
-}
-
-OptionMenu "RSQSM_Triggers"
-{
-	Title "GESTURE AND RELOAD"
-	Slider "Wrist Gap", "rsqsm_gesture_gap", 0.08, 0.30, 0.01, 2
-	Slider "Wrist Hold", "rsqsm_gesture_hold", 4, 35, 1, 0
-	StaticText " "
-	Slider "Reload Time", "rsqsm_reload_ms", 300, 3000, 100, 0
-	Slider "Reload Speed", "rsqsm_reload_depth", 10, 90, 5, 0
-}
-
-OptionMenu "RSQSM_Adrenaline"
-{
-	Title "ADRENALINE"
-	Slider "Needed to Start", "rsqsm_adr_min", 0, 100, 5, 0
-	Slider "Full Meter Time", "rsqsm_adr_secs", 3, 30, 1, 0
-	Slider "Per Kill", "rsqsm_adr_kill", 0, 50, 1, 0
-	Slider "Per Near Miss", "rsqsm_adr_near", 0, 20, 1, 0
-	Option "Keep Between Levels", "rsqsm_adr_keep", "OnOff"
-}
-
+// ---- Tuning and Debug: every number ----------------------------------------------------------------
 OptionMenu "RSQSM_Debug"
 {
 	Title "TUNING AND DEBUG"
+	Slider "World Speed", "rsm_depth", 0.1, 0.9, 0.05, 2
+	Slider "Ease In", "rsm_ramp_in", 0.0, 1.0, 0.05, 2
+	Slider "Ease Out", "rsm_ramp_out", 0.0, 2.0, 0.05, 2
+	Slider "Range", "rsqsm_radius", 1000, 8000, 250, 0
+	Slider "Sound Follows", "rsm_sound_follow", 0.0, 1.0, 0.1, 1
+	Slider "Round Speed", "rsqsm_round_speed", 4, 40, 1, 0
+	StaticText " "
+	Slider "Wrist Gap", "rsqsm_gesture_gap", 0.08, 0.30, 0.01, 2
+	Slider "Wrist Hold", "rsqsm_gesture_hold", 4, 35, 1, 0
+	Slider "Reload Time", "rsqsm_reload_ms", 300, 3000, 100, 0
+	Slider "Reload Speed", "rsqsm_reload_depth", 10, 90, 5, 0
+	StaticText " "
+	Slider "Adrenaline to Start", "rsqsm_adr_min", 0, 100, 5, 0
+	Slider "Full Meter Time", "rsqsm_adr_secs", 3, 30, 1, 0
+	Slider "Adrenaline per Kill", "rsqsm_adr_kill", 0, 50, 1, 0
+	Slider "Adrenaline per Near Miss", "rsqsm_adr_near", 0, 20, 1, 0
+	StaticText " "
 	Option "Yield to Other Mods", "rsm_yield", "OnOff"
 	StaticText " "
 	SafeCommand "Reset All", "resetcvar rsm_depth rsm_ramp_in rsm_ramp_out rsm_yield rsm_sound_follow rsqsm_radius rsqsm_slow_own rsqsm_rounds rsqsm_round_speed rsqsm_trails rsqsm_wakes rsqsm_adrenaline rsqsm_adr_min rsqsm_adr_secs rsqsm_adr_kill rsqsm_adr_near rsqsm_adr_keep rsqsm_gesture rsqsm_gesture_gap rsqsm_gesture_hold rsqsm_reload rsqsm_reload_ms rsqsm_reload_depth rsqsm_haptics", "Reset all RSQ SlowMo settings?"

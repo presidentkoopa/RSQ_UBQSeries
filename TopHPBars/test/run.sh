@@ -3,7 +3,7 @@
 #   order v     doom2 + ours (default)
 #         vm    doom2 + Champions + LegenDoom Lite 4.2 + ours   (ld / ch: only one of them)
 #         full  doom2 -> brutal22test6 -> BD_VoxelPack -> BD22_VR-Reloaded r7 -> Champions -> LegenDoom Lite
-#               -> the UBQ suite pk3s -> ours (the owner's order, 10-27)
+#               -> the Radiant Silvergun Quest suite pk3s -> ours (the owner's order, 10-27)
 #         fullnm  the same without the two monster mods
 # PRE= pk3s loaded just before ours (e.g. coldcite's own). EXTRA= more pk3s appended after ours (e.g. damnums). FRAMES=n dumps every n-th eye frame as PNG.
 SC=/tmp/claude-0/-home-claude/01ebc270-3953-5301-831b-c73a8b1320ca/scratchpad
@@ -11,7 +11,7 @@ T=${TESTPK3:-$SC/rsqthp_test.pk3}
 D=/mnt/user-data/uploads/DOOMWork; U=/home/claude/scratch/ubq_zip
 M=$SC/mod   # this round's builds of the grapple, shield and saber (marker answers)
 CH=$SC/monmods/ch.pk3; LD="/mnt/user-data/attachments/01ebc270-3953-5301-831b-c73a8b1320ca/a95b1a86-LegenDoomLite_4.2.pk3.zip"
-SUITE="$U/UltraBadassQuestSaber.pk3 $U/UltraBadassShieldSaw.pk3 $U/RSQ_TacticalRig.pk3 $U/RSQ_SlowMo.pk3 $U/RSQ_DistanceGrab.pk3 $U/RSQ_LaserSight.pk3 $U/RSQ_Grapple.pk3 $U/RSQ_Score.pk3"
+SUITE="$U/RSQ_Saber.pk3 $U/RSQ_ShieldSaw.pk3 $U/RSQ_TacticalRig.pk3 $U/RSQ_SlowMo.pk3 $U/RSQ_DistanceGrab.pk3 $U/RSQ_LaserSight.pk3 $U/RSQ_Grapple.pk3 $U/RSQ_Score.pk3"
 BD="$D/brutal22test6.pk3 $D/BD_VoxelPack.pk3 $D/BD22_VR-Reloaded_1.99x-lb-r7-saveload.pk3"
 case "${4:-v}" in
   v) P="$PRE $T";;
@@ -19,8 +19,8 @@ case "${4:-v}" in
   ld) P="$LD $PRE $T";;
   ch) P="$CH $PRE $T";;
   gr) P="$U/RSQ_Grapple.pk3 $PRE $T";;
-  mk) P="$M/RSQ_Grapple.pk3 $M/UltraBadassShieldSaw.pk3 $M/UltraBadassQuestSaber.pk3 $PRE $T";;
-  fullmk) P="$BD $CH $LD $U/RSQ_TacticalRig.pk3 $U/RSQ_SlowMo.pk3 $U/RSQ_DistanceGrab.pk3 $U/RSQ_LaserSight.pk3 $U/RSQ_Score.pk3 $M/RSQ_Grapple.pk3 $M/UltraBadassShieldSaw.pk3 $M/UltraBadassQuestSaber.pk3 $PRE $T";;
+  mk) P="$M/RSQ_Grapple.pk3 $M/RSQ_ShieldSaw.pk3 $M/RSQ_Saber.pk3 $PRE $T";;
+  fullmk) P="$BD $CH $LD $U/RSQ_TacticalRig.pk3 $U/RSQ_SlowMo.pk3 $U/RSQ_DistanceGrab.pk3 $U/RSQ_LaserSight.pk3 $U/RSQ_Score.pk3 $M/RSQ_Grapple.pk3 $M/RSQ_ShieldSaw.pk3 $M/RSQ_Saber.pk3 $PRE $T";;
   full) P="$BD $CH $LD $SUITE $PRE $T";;
   fullnm) P="$BD $SUITE $PRE $T";;
 esac

@@ -3,7 +3,7 @@
 Slow motion for **stock QuestZDoom 17.3**, in script: ZScript and lumps only, no
 engine changes. RS_SlowMo's design (made for the project owner's engine build) brought
 to Quest, with the same events and settings, plus enemy bullets you can see and dodge.
-Part of the Ultra Badass Quest series
+Part of the Radiant Silvergun Quest series
 ([RSQ_UBQSeries](https://github.com/presidentkoopa/RSQ_UBQSeries)).
 
 ## How it works
@@ -46,7 +46,7 @@ shots leave a fading trail.
 
 ## Settings
 
-**Options → RSQ SlowMo**: how slow (`rsm_depth`, default 0.25), ease in and out
+**Options → Radiant Silvergun Options → RSQ SlowMo**: how slow (`rsm_depth`, default 0.25), ease in and out
 (`rsm_ramp_in` / `rsm_ramp_out`), sound pitch, range, round speed, trails, wakes, the
 gesture, the reload moment, adrenaline, haptics, and Reset All under *Tuning and Debug*.
 

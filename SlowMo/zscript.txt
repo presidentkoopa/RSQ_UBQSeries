@@ -1,5 +1,6 @@
 version "4.14"
 
+#include "zscript/rsqsm/rsmenu.zs"   // Radiant Silvergun Options: the series' shared menu pieces (tools/rsmenu)
 // RSQ_SlowMo -- slow motion in script for stock QuestZDoom 17.3: the world slows,
 // you do not, and enemy bullets become rounds you can see and dodge.
 // RS_SlowMo's design (the owner's engine build) brought to Quest; same events.

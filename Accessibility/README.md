@@ -1,9 +1,11 @@
-# RSQ_Accessibility (UBQ / RSQ suite)
+# RSQ_Accessibility (Radiant Silvergun Quest suite)
 
-One shared Accessibility menu for the whole UBQ series (owner, 10-27: "one shared menu detecting what mods from the series we load").
+One shared Accessibility menu for the whole Radiant Silvergun Quest series (owner, 10-27: "one shared menu detecting what mods from the series we load").
 
-- This pk3 defines the shared settings (cvars, prefix `rsqa_`) and one Options entry, **Accessibility**.
-- The menu shows a mod's rows only when that mod is loaded (detected at run time by class/service name; no hard links).
+- This pk3 defines the shared settings (cvars, prefix `rsqa_`) and one page, **Accessibility**, under
+  **Options → Radiant Silvergun Options** (the series' parent page, tools/rsmenu in the hub), which lists
+  every loaded series mod beside it. (Until 2026-10-28 this page carried a link to each loaded mod's
+  options; those links are the parent page's rows now.)
 - Every series mod reads these settings with CVar.FindCVar and falls back to its own defaults when this pk3 is absent, so every mod still loads and works alone.
 - Shared settings (names fixed; add more only as `rsqa_*`):
   - `rsqa_colorblind`  0 Off, 1 Protanopia, 2 Deuteranopia, 3 Tritanopia, 4 High Contrast
@@ -12,11 +14,10 @@ One shared Accessibility menu for the whole UBQ series (owner, 10-27: "one share
 - Owners: the colourblind builder creates this skeleton (menu with mod detection) and commits it first; the left-handed builder merges it and adds its rows.
 
 ## Series sections in the menu
-QuestSaber, ShieldSaw, Tactical Rig, Distance Grab, Slow Motion, Laser Sight, Grapple, Gun Bonsai VR,
-Score and **HP Bars** (RSQ_TopHPBars, class `RSQTHP_Handler`; added 10-27 polish). Each is a header and
-a link to that mod's own options page. Rig B: with RSQ_TopHPBars loaded the "HP Bars" header and
-"HP Bars Options" show and the link opens `RSQTHP_Options` (where its Colours / `rsqthp_scheme` lives);
-without it neither shows.
+Gone (2026-10-28): the per-mod sections (a header and a link to each loaded mod's page) moved to the
+series' parent page, **Radiant Silvergun Options**, where every loaded mod's page sits beside this
+one. `RSQASection` / `RSQA_Menu` stay in `zscript/rsqa_menu.zs` for any row that should show only
+when a given mod is loaded.
 
 ## Files
 - `CVARINFO.txt`, `MENUDEF.txt`, `zscript/rsqa_menu.zs`: the settings and the menu. `RSQASection "Label", "Class1|Class2"`

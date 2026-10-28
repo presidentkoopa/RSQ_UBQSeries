@@ -1,4 +1,4 @@
-// ULTRA BADASS QUESTSABER. Your look and your alt fire are yours (userinfo: every machine sees your
+// RSQ SABER. Your look and your alt fire are yours (userinfo: every machine sees your
 // choice); what it does to the game is the server's.
 user float   ubqs_size          = 1.0;
 user int     ubqs_color         = 0;

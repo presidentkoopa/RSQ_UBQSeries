@@ -1,4 +1,4 @@
-UltraBadassQuestSaber -- credits
+RSQ_Saber -- credits
 ================================
 
 A volumetric lightsaber for stock QuestZDoom 17.3. No engine changes: everything here runs on the
@@ -31,7 +31,7 @@ THE SABER ITSELF
   Made by the project owner (presidentkoopa) and this pack.
 
 SHARING
-  Free to share as part of the Ultra Badass Quest series. Borrowed assets keep their authors'
+  Free to share as part of the Radiant Silvergun Quest series. Borrowed assets keep their authors'
   terms. Much of Ermac's work (he is DoomVR's co-designer) is MIT-licensed; sharing it here is
   the project owner's decision. (The old "not for distribution" line was carried over from
   another repo by mistake.)

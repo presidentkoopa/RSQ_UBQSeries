@@ -1,4 +1,4 @@
-# Ultra Badass ShieldSaw
+# RSQ ShieldSaw
 
 **v0.8a — 2026-10-26.** A shield that is also a throwable saw disc, in your off hand, for **stock
 QuestZDoom 17.3** (TeamBeef / emawind84 build). Standalone pk3: loads with any weapon pack, needs
@@ -19,7 +19,7 @@ is not recorded here either. This version re-implements the behaviour for stock 
 a standalone off-hand mod: the mount, blocking and deflection, the bash, the rev and lock-on
 throw.
 
-Loads happily beside **UltraBadassQuestSaber** — two separate mods, either load order, either one
+Loads happily beside **RSQ_Saber** — two separate mods, either load order, either one
 absent. Saber in the main hand, shield in the off.
 
 ## How it plays
@@ -61,14 +61,15 @@ your arm behind it.
 
 ## Options
 
-`Options → Ultra Badass ShieldSaw`. The front page has the everyday switches: starting with it,
-drawing with Use, what locks on and what throws, catching it on return, the most locks, blocking
-(**Double Block Radius** doubles the blocking plate, the shield you see unchanged), **On Manual Store** (what the off hand
-holds once you put the shield away: Fist or Previously Held Weapon), turned shots,
-the muzzle block, melee, perfect block, the bash, hit tiers and Brutal Doom v22 monsters, feedback
-and where the shield shows. One page down: **Shield Fit** (size, where the disc sits, the block
-area), **Throw and Disc**, **Lock-On**, **Block and Bash**, **Mount Position**, and last **Tuning and
-Debug** with Reset All.
+`Options → Radiant Silvergun Options → RSQ ShieldSaw`. The front page has the everyday choices:
+starting with it (and in hand), drawing with Use, what locks on and what throws, the most locks,
+four presets (**Shield Size**, **Throw Feel**, **Block Assist**, **Damage**; Standard is the
+shipped defaults, Custom once you change one of their numbers), where turned shots go, blocked
+melee and Brutal Doom v22 monsters. **Shield Options** lists the block and bash switches (**Double
+Block Radius** doubles the blocking plate, the shield you see unchanged; **On Manual Store** is what
+the off hand holds once you put the shield away), **Look and Sound** where the shield shows. Last,
+**Tuning and Debug**: every number (**Shield Fit**, **Throw and Disc**, **Lock-On**, **Block and
+Bash**, **Mount Position**), the debug switches and Reset All.
 
 ## Gun Bonsai upgrades
 
@@ -87,7 +88,7 @@ name (`RSQ_MeleeUpgradeService`; all off without the patch):
 
 ## Controls
 
-Keys of its own (Draw, Throw, Lock) are in **Customize Controls** under Ultra Badass ShieldSaw.
+Keys of its own (Draw, Throw, Lock) are in **Customize Controls** under RSQ ShieldSaw.
 
 | | |
 |---|---|

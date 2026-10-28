@@ -5,7 +5,7 @@ EXTRA=${EXTRA-$(cd "$(dirname "$0")" && pwd)/grprobe.pk3}
 G=/home/claude/work/RSQGR_core/RSQ_Grapple.pk3
 D=/mnt/user-data/uploads/DOOMWork; U=/home/claude/scratch/ubq_zip
 if [ "$4" = "1" ]; then
-  export PK3S="$D/brutal22test6.pk3 $D/BD_VoxelPack.pk3 $D/BD22_VR-Reloaded_1.99x-lb-r7-saveload.pk3 $U/UltraBadassQuestSaber.pk3 $U/UltraBadassShieldSaw.pk3 $U/RSQ_TacticalRig.pk3 $U/RSQ_SlowMo.pk3 $U/RSQ_DistanceGrab.pk3 $U/RSQ_Score.pk3 $G $EXTRA"
+  export PK3S="$D/brutal22test6.pk3 $D/BD_VoxelPack.pk3 $D/BD22_VR-Reloaded_1.99x-lb-r7-saveload.pk3 $U/RSQ_Saber.pk3 $U/RSQ_ShieldSaw.pk3 $U/RSQ_TacticalRig.pk3 $U/RSQ_SlowMo.pk3 $U/RSQ_DistanceGrab.pk3 $U/RSQ_Score.pk3 $G $EXTRA"
 else
   export PK3S="$G $EXTRA"
 fi

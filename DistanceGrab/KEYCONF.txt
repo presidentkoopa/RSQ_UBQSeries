@@ -6,7 +6,7 @@
 // Doom. A census only ever sees your own packages.
 //
 // A KEYCONF action consumes NO usercmd bit, so contention is structurally
-// impossible however many mods are loaded. It is also what UltraBadassQuestSaber
+// impossible however many mods are loaded. It is also what RSQ_Saber
 // uses for all of its non-trigger inputs, so there is shipping precedent on this
 // engine.
 //
@@ -20,7 +20,7 @@
 // P_PlayerThink -- earlier than WorldTick, so better timing than reading a bit.
 // It is replicated and it names the player who pressed it.
 
-addkeysection "Distance Grab" RSQDG
+addkeysection "RSQ Distance Grab" RSQDG
 addmenukey "Grab / pull (main hand)" "+rsqdg_main"
 addmenukey "Grab / pull (off hand)"  "+rsqdg_off"
 

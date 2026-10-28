@@ -1,4 +1,4 @@
-// RSQ_Accessibility -- the shared settings of the Ultra Badass Quest series (README.md).
+// RSQ_Accessibility -- the shared settings of the Radiant Silvergun Quest series (README.md).
 // Server cvars like the rest of the series (single-player VR; userinfo has a size limit).
 // Every series mod reads these with CVar.FindCVar and keeps its own behaviour when this pk3
 // is absent. Names are fixed: add more only as rsqa_*.

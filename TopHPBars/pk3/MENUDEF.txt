@@ -1,9 +1,28 @@
-// RSQ Top HP Bars options, in BD22 VR Weapons' style: short labels, no notes, reset last.
-// What each one does is in CVARINFO's comments.
+// RSQ HP Bars options, modelled on Brutal Doom Quest 2.0's options page (the owner, 10-28): one short
+// page of real choices, named; the numbers on Tuning and Debug. What each one does is in CVARINFO's
+// comments. Preset choices: tools/rsmenu/presets.py (Standard = today's defaults).
+
+// ---- Radiant Silvergun Options (tools/rsmenu) ----------------------------------------------------
+// The series' one Options entry. Every series pk3 carries this same block with its own prefix: the
+// parent is PROTECTED, so the first definition stays and later ones add nothing (QZD 17.3 merges a
+// protected option menu instead of replacing it); the link row removes any earlier copy of itself,
+// so Options shows one row however many series pk3s load. Each mod then adds its own row only.
+OptionMenu "RSQ_RSOptions" protected
+{
+	Class "RSQTHP_RSMenu"
+	Title "RADIANT SILVERGUN OPTIONS"
+}
+
 AddOptionMenu "OptionsMenu"
+{
+	RSQTHPRSLink "Radiant Silvergun Options", "RSQ_RSOptions"
+}
+
+AddOptionMenu "RSQ_RSOptions"
 {
 	Submenu "RSQ HP Bars", "RSQTHP_Options"
 }
+// ----------------------------------------------------------------------------------------------------
 
 OptionValue "RSQTHP_Schemes"
 {
@@ -15,22 +34,38 @@ OptionValue "RSQTHP_Schemes"
 	5, "High Contrast"
 }
 
+// PRESETS -- written by tools/rsmenu/presets.py (Standard = CVARINFO defaults); edit the script, not here
+OptionString "RSQTHP_P_Size"
+{
+	"rsqthp_scale 0.15", "Small"
+	"rsqthp_scale 0.3", "Standard"
+	"rsqthp_scale 0.5", "Large"
+}
+// END PRESETS
+
 OptionMenu "RSQTHP_Options"
 {
-	Title "HP BARS"
+	Title "RSQ HP BARS"
 	Option "HP Bars", "rsqthp_on", "OnOff"
 	Option "Colours", "rsqthp_scheme", "RSQTHP_Schemes"
+	RSQTHPPreset "Size", "RSQTHP_P_Size"
 	StaticText " "
-	Slider "Size", "rsqthp_scale", 0.05, 1.0, 0.05, 2
-	Slider "Far Size", "rsqthp_far", 1.0, 3.0, 0.25, 2
-	Slider "Height", "rsqthp_offset", -0.5, 0.5, 0.05, 2
 	Option "Full Bright", "rsqthp_bright", "OnOff"
 	Option "Allow Stealth", "rsqthp_stealth", "OnOff"
-	StaticText " "
 	Option "Overheal", "rsqthp_overheal", "OnOff"
 	Option "Markers", "rsqthp_markers", "OnOff"
 	StaticText " "
-	SafeCommand "Reset All", "rsqthp_reset"
+	Submenu "Tuning and Debug", "RSQTHP_Tuning"
+}
+
+OptionMenu "RSQTHP_Tuning"
+{
+	Title "TUNING AND DEBUG"
+	Slider "Size", "rsqthp_scale", 0.05, 1.0, 0.05, 2
+	Slider "Far Size", "rsqthp_far", 1.0, 3.0, 0.25, 2
+	Slider "Height", "rsqthp_offset", -0.5, 0.5, 0.05, 2
+	StaticText " "
+	SafeCommand "Reset All", "rsqthp_reset", "Reset all RSQ HP Bars settings?"
 }
 
 // COLDCITE'S OWN MENU, TAKEN OVER. If coldcite's TopHPBars pk3 is loaded BEFORE this one, his HUD

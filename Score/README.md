@@ -1,6 +1,6 @@
 # RS_Score -- the Quest series version (RSQ_Score)
 
-This copy is the owner's RS_Score brought to **stock QuestZDoom 17.3** for the Ultra Badass Quest
+This copy is the owner's RS_Score brought to **stock QuestZDoom 17.3** for the Radiant Silvergun Quest
 series: Brutal Doom compatible, a fourth bonus family for melee, a menu, and a light revival cue.
 What changed is listed under *Quest version* at the end; everything above it is the original.
 

@@ -1,4 +1,4 @@
-// THE SHIELDSAW'S UPGRADE PATH (UltraBadassShieldSaw: SSQ_ShieldSaw). Like the saber's, the
+// THE SHIELDSAW'S UPGRADE PATH (RSQ_ShieldSaw: SSQ_ShieldSaw). Like the saber's, the
 // ShieldSaw asks for its levels by name and does the work; Rebound is the one done here.
 
 class RSQ_Upgrade_ShieldMarker : RSQ_Upgrade_Base
