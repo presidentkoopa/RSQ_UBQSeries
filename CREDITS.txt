@@ -1,0 +1,30 @@
+RSQ_Miniboss -- credits
+=======================
+
+The UBQ / RSQ series' set-piece miniboss. For stock QuestZDoom 17.3: ZScript and lumps only, no
+engine changes.
+
+WHERE IT COMES FROM
+  Minibosses! v0.1.1 by Tartlman (ZDoom forum, November 2019; "All code by me. Special thanks to
+  the Hideous Destructor server for helping me out!"), on hiatus since 2019 -- the origin of this
+  mod: a miniboss with extra lives, thralls tied to it by trails, damage cut per living thrall,
+  invulnerability after a lost life and thralls raised again when it ends. Kept unmodified in the
+  repo's original/ folder. Its code is not copied: this is a rebuild. Its to-do list asked for
+  "special legendoom compatibility"; this rebuild delivers it.
+
+WHAT THIS PK3 SHIPS, AND WHOSE IT IS
+  The project owner (presidentkoopa)
+      The set-piece design: thralls as boosted legendary champions, the inherited powers, slow time
+      on a thrall's death, the chain, the greed rule.
+  Written for this pack
+      All code (zscript/rsqmb). The effects are engine particles: no sprites or sounds are shipped
+      (the cues use the IWAD's own sounds by name: weapons/bfgx, imp/shotx, brain/sight, vile/raise).
+
+NOT SHIPPED, ONLY RECOGNISED BY NAME (nothing links)
+  Champions (its champion_* tokens and cvars), LegenDoom Lite (its LDLegendaryMonster* tokens and
+  LDLegendaryMonsterPickupGuaranteed), RSQ_SlowMo (rsm_pulse, RSQSM_Service), RSQ_Score
+  (RS_ScoreService "award").
+  QuestZDoom: Emawind and Team Beef.
+
+SHARING
+  Free to share as part of the Ultra Badass Quest series.

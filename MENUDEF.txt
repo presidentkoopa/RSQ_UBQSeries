@@ -1,0 +1,45 @@
+// RSQ Miniboss options, in BD22 VR Weapons' style: short Title Case labels, no notes, groups
+// split by blank lines, the tuning one page down, reset last. CVARINFO.txt says what each does.
+AddOptionMenu "OptionsMenu"
+{
+	Submenu "RSQ Miniboss", "RSQMB_Options"
+}
+
+OptionMenu "RSQMB_Options"
+{
+	Title "MINIBOSS"
+	Option "Minibosses", "rsqmb_enabled", "OnOff"
+	Slider "Per Map", "rsqmb_per_map", 0, 4, 1, 0
+	Slider "Map Chance", "rsqmb_map_chance", 0, 100, 5, 0
+	Slider "Thralls", "rsqmb_thralls", 1, 8, 1, 0
+	Slider "Lives", "rsqmb_lives", 1, 9, 1, 0
+	StaticText " "
+	Option "Legendary Thralls", "rsqmb_legend_thralls", "OnOff"
+	Option "Inherit Powers", "rsqmb_inherit", "OnOff"
+	Option "Revive Thralls", "rsqmb_revive", "OnOff"
+	Option "Greed Rule", "rsqmb_greed", "OnOff"
+	Option "Effects", "rsqmb_fx", "OnOff"
+	Option "Score Awards", "rsqmb_score", "OnOff"
+	StaticText " "
+	Submenu "Tuning", "RSQMB_Tuning"
+}
+
+OptionMenu "RSQMB_Tuning"
+{
+	Title "TUNING"
+	Slider "Thrall Range", "rsqmb_radius", 256, 4096, 128, 0
+	Slider "Power Cap", "rsqmb_inherit_max", 0, 12, 1, 0
+	Slider "Thrall Shield", "rsqmb_shield", 0, 95, 5, 0
+	Slider "Invulnerable Time", "rsqmb_invuln", 0, 15, 0.5, 1
+	Slider "Per Thrall", "rsqmb_invuln_bonus", 0, 5, 0.5, 1
+	StaticText " "
+	Slider "Slow Window", "rsqmb_slow", 1, 10, 0.5, 1
+	Slider "Chain Bonus", "rsqmb_slow_chain", 0, 10, 0.5, 1
+	Slider "Window Cap", "rsqmb_slow_max", 2, 30, 1, 0
+	Slider "Slow Depth", "rsqmb_slow_depth", -1, 90, 5, 0
+	Slider "Rage Speed", "rsqmb_rage_speed", 1, 4, 0.25, 2
+	Slider "Effects Range", "rsqmb_fx_range", 1000, 8000, 250, 0
+	StaticText " "
+	Option "Debug Lines", "rsqmb_debug", "OnOff"
+	SafeCommand "Reset All", "resetcvar rsqmb_enabled rsqmb_per_map rsqmb_map_chance rsqmb_thralls rsqmb_radius rsqmb_legend_thralls rsqmb_inherit rsqmb_inherit_max rsqmb_lives rsqmb_shield rsqmb_invuln rsqmb_invuln_bonus rsqmb_revive rsqmb_slow rsqmb_slow_chain rsqmb_slow_max rsqmb_slow_depth rsqmb_greed rsqmb_rage_speed rsqmb_score rsqmb_fx rsqmb_fx_range", "Reset all RSQ Miniboss settings?"
+}

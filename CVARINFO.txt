@@ -1,0 +1,24 @@
+// RSQ_Miniboss settings. What each does (the menu carries no notes):
+server bool   rsqmb_enabled       = true;   // minibosses appear at all
+server int    rsqmb_per_map       = 1;      // minibosses chosen per level (0-4)
+server int    rsqmb_map_chance    = 100;    // % chance a level gets any
+server int    rsqmb_thralls       = 3;      // thralls per miniboss (1-8)
+server int    rsqmb_radius        = 1024;   // how far from the miniboss a thrall may stand (map units)
+server bool   rsqmb_legend_thralls = true;  // with LegenDoom Lite: every thrall is made legendary
+server bool   rsqmb_inherit       = true;   // the miniboss inherits its thralls' powers
+server int    rsqmb_inherit_max   = 4;      // most distinct powers inherited (legendary not counted)
+server int    rsqmb_lives         = 3;      // lives in all (3 = it dies on the third)
+server int    rsqmb_shield        = 80;     // % of damage the miniboss shrugs off with every thrall alive (linear per thrall)
+server float  rsqmb_invuln        = 5.0;    // seconds invulnerable after a lost life
+server float  rsqmb_invuln_bonus  = 1.0;    // + seconds per living thrall
+server bool   rsqmb_revive        = true;   // dead thralls rise when the invulnerability ends
+server float  rsqmb_slow          = 4.0;    // seconds of slow time a thrall's death buys
+server float  rsqmb_slow_chain    = 3.0;    // + seconds for another thrall killed in the window
+server float  rsqmb_slow_max      = 12.0;   // the window's longest
+server int    rsqmb_slow_depth    = -1;     // world speed % in the window; -1 = RSQ_SlowMo's own (rsm_depth)
+server bool   rsqmb_greed         = true;   // the greed rule
+server float  rsqmb_rage_speed    = 2.0;    // enraged monsters' speed multiplier
+server bool   rsqmb_score         = true;   // push awards to RSQ_Score
+user   bool   rsqmb_fx            = true;   // links, lives, invulnerability ring, rage sparks (particles)
+user   float  rsqmb_fx_range      = 4000;   // FX drawn only within this distance of you
+server noarchive bool rsqmb_debug = false;  // console lines for every rule as it fires

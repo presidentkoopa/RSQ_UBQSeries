@@ -1,0 +1,4 @@
+GameInfo
+{
+	AddEventHandlers = "RSQMB_Handler"
+}
