@@ -144,6 +144,10 @@ class RSQDG_Aim : EventHandler
 
 		for (int h = 0; h < 2; h++)
 		{
+			// THE MODIFIER CHANGES WHICH CONTROLLER A HAND IS (reach.zs Ctrl): the jump from one
+			// controller to the other is not a throw nor a flick, so that hand's history restarts.
+			int ctl = RSQDG_Reach.Ctrl(pmo, h);
+			if (ctl != lastCtrl[h]) { primed[h] = false; pitchPrimed[h] = false; lastCtrl[h] = ctl; }
 			Vector3 now = RSQDG_Reach.Palm(pmo, h);
 			Vector3 off = now - pmo.Pos;
 			Vector2 flat = Actor.RotateVector(off.xy, -frameYaw);
@@ -184,6 +188,7 @@ class RSQDG_Aim : EventHandler
 	}
 
 	private Vector3 lastRel[2];   // palm relative to the pawn, in the tracking frame
+	private transient int lastCtrl[2];   // the controller each hand was read from last tic
 	private bool    primed[2];
 
 	// The inferred yaw of the tracking space, and what it is inferred from.

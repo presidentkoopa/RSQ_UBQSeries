@@ -77,8 +77,47 @@ class RSQDG_Grab : EventHandler
 	// decision was made from a local hand pose; a peer's press arrives with its
 	// own player number and its own locally-made target, which is why the target
 	// travels as a network ID rather than being re-derived here.
+	// RSQ_ACCESSIBILITY'S GESTURE BUTTONS (One-Handed; rsqa_alt, sent only while it is on):
+	//   1 Pull   the wrist flick: whatever a hand has locked flies to it now (the main hand's
+	//            first), as a release with the wrist tipping up would launch it
+	//   2 Reach  the palm turned out, held: the main controller reaches as if its palm were out
+	//            (the off hand's part while the modifier is held), and letting go is the palm
+	//            rolled back: a flick then pulls, at rest it lets go, exactly as the pose does
+	private bool altHeld[2];
+
+	private void Alt(ConsoleEvent e)
+	{
+		let p = players[e.Player >= 0 ? e.Player : consoleplayer];
+		if (!p || !p.mo || !RSQDG_A11y.OneHand()) return;
+		int code = e.Args[0];
+		bool down = e.Args[1] != 0;
+		if (code == 1 && down)
+		{
+			for (int h = 0; h < 2; h++)
+			{
+				Actor a = lockActor[h];
+				if (!a) continue;
+				let fl = RSQDG_Flight.Get();
+				if (fl && fl.Launch(h, a, p.mo, p))
+				{
+					let aim = RSQDG_Aim.Get();
+					if (aim) aim.ForgetWrist(h);
+					lockActor[h] = null;
+				}
+				return;
+			}
+		}
+		else if (code == 2)
+		{
+			int hand = RSQDG_A11y.Swapped(p.mo) ? 1 : 0;
+			altHeld[hand] = down;
+			if (!down) altHeld[1 - hand] = false;
+		}
+	}
+
 	override void NetworkProcess(ConsoleEvent e)
 	{
+		if (e.Name == "rsqa_alt") { Alt(e); return; }
 		if (e.Name != "rsqdg_press" && e.Name != "rsqdg_release") return;
 
 		// OFF BY DEFAULT. The gesture is the trigger; this path exists for a
@@ -228,7 +267,7 @@ class RSQDG_Grab : EventHandler
 
 		let aim = RSQDG_Aim.Get();
 		double upRate = aim ? aim.PeakPitchUp(hand) : 0.0;
-		double need = RSQDG_Reach.Num("rsqdg_flick_deg", p, 5.0);
+		double need = RSQDG_A11y.Low(RSQDG_Reach.Num("rsqdg_flick_deg", p, 5.0));   // Gesture Ease: x1..x0.5
 
 		if (upRate >= need)
 		{
@@ -312,6 +351,9 @@ class RSQDG_Grab : EventHandler
 			bool poseHeld = armed[h];
 			if (poseGood)
 				poseHeld = RSQDG_Reach.PalmOk(pmo, p, h);
+			// the Reach gesture button stands in for the palm (One-Handed; off clears it)
+			if (!RSQDG_A11y.OneHand()) altHeld[h] = false;
+			if (altHeld[h] && !RSQDG_Reach.HandBusy(p, h)) poseHeld = true;
 
 			if (RSQDG_Reach.Flag("rsqdg_button", p, false))
 			{
@@ -410,6 +452,7 @@ class RSQDG_Grab : EventHandler
 	override void WorldLoaded(WorldEvent e)
 	{
 		lockActor[0] = null; lockActor[1] = null;
+		altHeld[0] = false; altHeld[1] = false;
 		armed[0] = false; armed[1] = false;
 		lease[0] = 0; lease[1] = 0;
 	}

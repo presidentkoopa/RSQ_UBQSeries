@@ -207,10 +207,15 @@ class RSQDG_Laser : EventHandler
 	private int  burstAt[2];
 	private bool burstOn[2];
 
+	// PHOTOSENSITIVE MODE (RSQ_Accessibility): a bloom no sooner than 14 tics after the last one on
+	// that hand (at most 2.5 a second) and at 40% of its brightness. Off / absent: every catch blooms.
 	void Burst(int hand)
 	{
-		if (hand == 0 || hand == 1) { burstAt[hand] = level.maptime; burstOn[hand] = true; }
+		if (hand != 0 && hand != 1) return;
+		if (!RSQDG_A11y.Gate(lastBurst[hand], level.maptime)) return;
+		burstAt[hand] = level.maptime; burstOn[hand] = true; lastBurst[hand] = level.maptime;
 	}
+	transient int lastBurst[2];   // the last bloom's tic per hand (read by tests)
 
 	// ---- placing ------------------------------------------------------------
 
@@ -349,9 +354,9 @@ class RSQDG_Laser : EventHandler
 				double t = double(age) / BURST_TICS;
 				let d = pip[h];
 				Put(d, 2 + h, palm);
-				double s = 0.10 + 0.35 * t;
+				double s = (0.10 + 0.35 * t) * RSQDG_A11y.Cue();      // Cue Size
 				d.Scale = (s, s);
-				d.Alpha = 0.9 * (1.0 - t) * (1.0 - t);
+				d.Alpha = RSQDG_A11y.Dim(0.9 * (1.0 - t) * (1.0 - t));   // Photosensitive Mode: 40%
 				d.Translation = Tint(2);
 				return;
 			}
@@ -434,6 +439,7 @@ class RSQDG_Laser : EventHandler
 			// is drawn at all. Locked is the full rsqdg_beam_w; the others in
 			// WorldHands' proportion to it.
 			double w = RSQDG_Reach.Num("rsqdg_beam_w", p, 1.0) * ((state == 2) ? 1.0 : ((state == 1) ? 0.7 / 0.9 : 0.4 / 0.9));
+			w *= RSQDG_A11y.Cue();   // RSQ_Accessibility's Cue Size
 			b.Scale = (w, len / BEAM_L);
 			b.Alpha = RSQDG_Reach.Num("rsqdg_beam_a", p, 0.8) * ((state == 0) ? 0.35 : 1.0);
 			b.Translation = tint;
@@ -450,10 +456,10 @@ class RSQDG_Laser : EventHandler
 			// SCALED WITH DISTANCE, so it keeps one apparent size: the
 			// laser-sight's rule. And it breathes, on the object flash's
 			// period, when it is on something.
-			double s = RSQDG_Reach.Num("rsqdg_dot_size", p, 1.0) * (0.04 + len / 2400.0);
+			double s = RSQDG_Reach.Num("rsqdg_dot_size", p, 1.0) * (0.04 + len / 2400.0) * RSQDG_A11y.Cue();   // Cue Size
 			if (onThing)
 			{
-				double period = max(2.0, RSQDG_Reach.Num("rsqdg_flash", p, 24.0));
+				double period = RSQDG_A11y.Period(int(max(2.0, RSQDG_Reach.Num("rsqdg_flash", p, 24.0))));   // Photosensitive Mode: >= 14
 				s *= 1.0 + 0.18 * sin(360.0 * (level.time / period));
 			}
 			d.Scale = (s, s);
