@@ -27,12 +27,49 @@ OptionValue "RSQA_Handed"
 	2, "Left-Handed"
 }
 
+OptionValue "RSQA_Vignette"
+{
+	0, "Off"
+	1, "Light"
+	2, "Medium"
+	3, "Strong"
+}
+
+OptionValue "RSQA_SoundCues"
+{
+	0, "Off"
+	1, "Visual"
+	2, "Rumble"
+	3, "Both"
+}
+
+OptionValue "RSQA_Menus"
+{
+	0, "Full"
+	1, "Simple"
+}
+
 OptionMenu "RSQA_Options"
 {
 	Class "RSQA_Menu"
 	Title "ACCESSIBILITY"
 	Option "Colour Blind Mode", "rsqa_colorblind", "RSQA_ColorBlind"
 	RSQAHanded "Handedness", "rsqa_handed", "RSQA_Handed"
+	Option "Photosensitive Mode", "rsqa_photosafe", "OnOff"
+	StaticText " "
+	Option "One-Handed", "rsqa_onehand", "OnOff"
+	Control "Off-Hand Modifier", "+rsqa_mod"
+	Submenu "Gesture Buttons", "RSQA_Gestures"
+	Slider "Gesture Ease", "rsqa_gesture_ease", 0.0, 1.0, 0.1, 1
+	Option "Hold to Toggle", "rsqa_hold_toggle", "OnOff"
+	StaticText " "
+	Option "Comfort Vignette", "rsqa_vignette", "RSQA_Vignette"
+	Slider "Min SlowMo Ease", "rsqa_slowmo_ramp", 0.0, 2.0, 0.1, 1
+	StaticText " "
+	Slider "Cue Size", "rsqa_cue_scale", 0.5, 3.0, 0.25, 2
+	Slider "Text Size", "rsqa_text_scale", 1.0, 3.0, 0.25, 2
+	Option "Sound Cues", "rsqa_sound_cues", "RSQA_SoundCues"
+	Option "Menus", "rsqa_menus", "RSQA_Menus"
 
 	RSQASection "QuestSaber", "UBQS_SaberService"
 	Submenu "QuestSaber Options", "UBQS_Options"
@@ -60,4 +97,19 @@ OptionMenu "RSQA_Options"
 
 	RSQASection "Score", "RS_ScoreHandler"
 	Submenu "Score Options", "RSQSC_Options"
+}
+
+OptionMenu "RSQA_Gestures"
+{
+	Title "GESTURE BUTTONS"
+	Control "Grab Pull", "rsqa_pull"
+	Control "Grab Reach", "+rsqa_reach"
+	StaticText " "
+	Control "Force Push", "rsqa_fpush"
+	Control "Force Pull", "rsqa_fpull"
+	Control "Force Grip", "+rsqa_fgrip"
+	StaticText " "
+	Control "Shield Throw", "rsqa_throw"
+	Control "Flick Reload", "rsqa_reload"
+	Control "Wrist Cross", "rsqa_slowmo"
 }

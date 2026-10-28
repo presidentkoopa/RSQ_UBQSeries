@@ -5,3 +5,20 @@
 
 server int rsqa_colorblind = 0;   // 0 Off, 1 Protanopia, 2 Deuteranopia, 3 Tritanopia, 4 High Contrast
 server int rsqa_handed     = 0;   // 0 Follow QuestZDoom, 1 Right-Handed, 2 Left-Handed
+
+// ---- round two (README.md "Round two"). Every one is off / 1.0 by default: nothing changes
+// until it is set, and a series mod reads none of them unless this pk3 is loaded.
+server int   rsqa_photosafe    = 0;     // 0 Off, 1 On: flashes, flickers and pulses from the series at most
+                                        //   2.5 a second (14 tics apart), strong flashes at 40% brightness
+server int   rsqa_onehand      = 0;     // 0 Off, 1 On: the Off-Hand Modifier works (held: the main hand
+                                        //   plays the off hand's part) and the gesture buttons act
+server float rsqa_gesture_ease = 0.0;   // 0..1: gesture tolerances wider (x1..x2), speeds and holds lower (x1..x0.5)
+server int   rsqa_vignette     = 0;     // 0 Off, 1 Light, 2 Medium, 3 Strong: darkens the edge of view
+                                        //   while a grapple swings, yanks or climbs and on a Force jump
+server float rsqa_slowmo_ramp  = 0.0;   // seconds: the slowest a slow-motion ease may be (0 = SlowMo's own)
+server float rsqa_cue_scale    = 1.0;   // dots, rings, glows and markers from the series, x0.5..x3
+server float rsqa_text_scale   = 1.0;   // the series' HUD text and the Gun Bonsai screens, x1..x3
+server int   rsqa_sound_cues   = 0;     // 0 Off, 1 Visual, 2 Rumble, 3 Both: hits and shots from off-view,
+                                        //   lock / grab ready, slow motion starting and stopping
+server int   rsqa_hold_toggle  = 0;     // 0 Off, 1 On: held binds (Force, grapple reel, the modifier) toggle
+server int   rsqa_menus        = 0;     // 0 Full, 1 Simple: the series' option pages hide their niche sub-pages

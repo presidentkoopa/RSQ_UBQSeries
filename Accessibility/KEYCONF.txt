@@ -1,0 +1,35 @@
+// RSQ_Accessibility -- the One-Handed binds (rsqa_onehand). Each goes through a LOCAL `event`
+// first, so this pk3 can check the setting (and Hold to Toggle) on the machine that pressed,
+// then sends one network event every machine runs (zscript/rsqa_core.zs, RSQA_Handler):
+//   rsqa_mod <0|1>         the Off-Hand Modifier is held (or toggled on) / let go
+//   rsqa_alt <code> <0|1>  a gesture button: code below, 1 press / 0 release
+// Series mods hear rsqa_alt in their own NetworkProcess (nothing links); the codes are fixed:
+//   1 Pull (Distance Grab's wrist flick)   2 Reach (Distance Grab's palm out, held)
+//   3 Force Push    4 Force Pull    5 Force Grip (held)
+//   6 Throw (the ShieldSaw's forward flick)    7 Reload (the flick-reload)
+// The wrist cross is SlowMo's own toggle (rsm_toggle), offered here too (8). The Force jump is
+// already a button (Jump, held), so it has none here.
+// No default binds: bind them in Customize Controls, under "Accessibility".
+addkeysection "Accessibility" RSQA
+addmenukey "Off-Hand Modifier" "+rsqa_mod"
+addmenukey "Grab Pull" rsqa_pull
+addmenukey "Grab Reach" "+rsqa_reach"
+addmenukey "Force Push" rsqa_fpush
+addmenukey "Force Pull" rsqa_fpull
+addmenukey "Force Grip" "+rsqa_fgrip"
+addmenukey "Shield Throw" rsqa_throw
+addmenukey "Flick Reload" rsqa_reload
+addmenukey "Wrist Cross" rsqa_slowmo
+
+alias "+rsqa_mod"   "event rsqa_key 0 1"
+alias "-rsqa_mod"   "event rsqa_key 0 0"
+alias rsqa_pull     "event rsqa_key 1 1"
+alias "+rsqa_reach" "event rsqa_key 2 1"
+alias "-rsqa_reach" "event rsqa_key 2 0"
+alias rsqa_fpush    "event rsqa_key 3 1"
+alias rsqa_fpull    "event rsqa_key 4 1"
+alias "+rsqa_fgrip" "event rsqa_key 5 1"
+alias "-rsqa_fgrip" "event rsqa_key 5 0"
+alias rsqa_throw    "event rsqa_key 6 1"
+alias rsqa_reload   "event rsqa_key 7 1"
+alias rsqa_slowmo   "event rsqa_key 8 1"
