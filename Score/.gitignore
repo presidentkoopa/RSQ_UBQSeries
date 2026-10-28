@@ -1,0 +1,8 @@
+# build.ps1 regenerates RS_Score.pk3 from the sources beside it in seconds, so the
+# archive is derived, not source.
+*.pk3
+*.zip
+
+# Scratch packs from build.ps1 -OutFile, and editor leftovers.
+*.bak
+*.bak-*
