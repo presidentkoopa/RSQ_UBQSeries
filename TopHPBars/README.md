@@ -3,7 +3,7 @@
 The series' version of **Top HP Bars 1.04 by coldcite** (based on SpriteShadow by Nash Muhandes). coldcite's header: "Feel free to use this in your mods. You don't have to ask my permission!" Credit coldcite and Nash in CREDITS.txt; check SpriteShadow's own terms before shipping.
 
 - `original_1.04/`: coldcite's pk3, unpacked, unmodified. The default look and layout (owner: "the default tophpbars ui is amazing, I love the layout").
-- Lossvoise's flat retexture (of Mere_Duke's version; zdoom forum thread t=56910) is NOT in this repo or the pk3 until Lossvoise and Mere_Duke give permission; credit chain coldcite -> Mere_Duke -> Lossvoise.
+- Lossvoise's flat retexture (of Mere_Duke's version; zdoom forum thread t=56910) is not used (owner, 10-28: no). The series ships coldcite's art and its own generated schemes only.
 
 Owner's brief (10-27):
 - Keep coldcite's layout. Add colour schemes, including colourblind schemes (read `rsqa_colorblind` from RSQ_Accessibility when loaded).
