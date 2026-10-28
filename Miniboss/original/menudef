@@ -1,0 +1,59 @@
+AddOptionMenu "OptionsMenu"
+{
+	StaticText " "
+	Submenu "Minibosses options", "mbosoptions"
+}
+
+OptionMenu "mbosoptions"
+{
+	Title "Minibosses options"
+	StaticText "All changes take place upon map change.", yellow
+	StaticText " "
+	
+	StaticText "---- Spawning Options ----", yellow
+	StaticText " "
+	
+	Slider "Spawn Rate", "mbos_spawnrate", 1, 100, 1, 0
+	StaticText "Spawn chance in %"
+	StaticText " "
+	
+	Slider "Miniboss Lives", "mbos_lives", 1, 15, 1, 0
+	StaticText "Amount of extra lives each miniboss has"
+	StaticText " "
+	
+	StaticText "---- Visual Options ----", yellow
+	StaticText " "
+	
+	Slider "Miniboss Life Scale", "mbos_lifescale", 0.1, 5, 0.1, 1
+	StaticText "Scale of miniboss life indicators"
+	StaticText " "
+	
+	Slider "Miniboss Life Spin Speed", "mbos_spinspeed", -60, 60, 1, 0
+	StaticText "Speed at which miniboss life indicators rotate"
+	StaticText "Negative values change direction"
+	StaticText " "
+	
+	Slider "Miniboss Thrall Tracker Density", "mbos_thralldensity", 0, 100, 1, 0
+	StaticText "Changes how dense the thrall tracker lines are"
+	StaticText " "
+	
+	Slider "Miniboss Invulnerability Density", "mbos_invulndensity", 0, 100, 1, 0
+	StaticText "Density of the invulnerability effects"
+	StaticText " "
+	
+	Slider "Miniboss Invulnerability Spin Speed", "mbos_invulnspinspeed", -60, 60, 1, 0
+	StaticText "Speed at which invulnerability effects spin"
+	StaticText "Same rules as life spin"
+	StaticText " "
+	
+	StaticText "---- Miniboss stat options ---- ", yellow
+	StaticText " "
+	
+	Slider "Miniboss Invulnerability Base Length", "mbos_invulnlength", 0, 60, 1, 0
+	StaticText "Length of miniboss invulnerability in seconds"
+	StaticText " "
+	
+	Slider "Miniboss Invulnerability Bonus", "mbos_invulnbonus", -10, 10, 0.1, 1
+	StaticText "Bonus time each thrall adds, in seconds"
+	StaticText " "
+}
