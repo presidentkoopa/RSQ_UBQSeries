@@ -75,3 +75,12 @@ frames (rig, same pose): indistinguishable in flight. `rsqgr_rope_style 1` Cable
 The default claw, chain and sounds are jpalomo's (see CREDITS.txt). The owner (10-27): the hook is our
 rebuild, so it should look and sound like our mod -- replace them from RS_CombatFX (and other cleared
 sources). Status: open.
+
+## Parked idea (owner, 10-28): a Bulletstorm-style leash
+Reference: Bulletstorm's Instagib leash -- the yanked enemy flies to you and HANGS in the air in slow motion
+in front of you for a moment, helpless, as the window to finish it (shot, kick, cut); the Thumper slams the leash
+into the ground and launches nearby enemies into the air in slow motion. Skillshots = our RSQ Score.
+For us: a "Leash" Yank mode -- the yanked monster stops at chest height an arm's length away and hangs, slowed,
+for about a second (finish with kick / saber / gun / bash, or Force-push it away as a ping-pong opener); a Score
+row for the hang; a Thumper-like whip ground slam floating nearby monsters. Builds on Yank, Get Over Here (Gun
+Bonsai), Reeled In (Score), SlowMo. Not built: feature freeze until 1.0 is headset-tested.
