@@ -19,9 +19,14 @@ BORROWED, WITH THANKS
       ubqs/rbeep -- the training remote's ready beep, from the plasma rifle's alt-fire alert
       (weapons/plasrifle/PLBEEP).
 
-EVERYTHING ELSE
-  The hilt, blade and glow meshes, their skins, and every other sound are this pack's own --
-  synthesized or built here, with no sample taken from any film or game.
+MODELS AND SOUNDS (the project owner, 10-28)
+  The saber models come from Sketchfab, sourced at the same time and from the same site as the
+  owner's Star Wars 3D weapon models. Their authors and licences are not recorded here yet.
+  The sounds come from the same place as the owner's RS lightsaber; their source is not recorded.
+  The blade and glow shapes and the generated sounds are this pack's own.
+
+THE SABER ITSELF
+  Made by the project owner (presidentkoopa) and this pack.
 
 SHARING
   Free to share as part of the Ultra Badass Quest series. Borrowed assets keep their authors'
