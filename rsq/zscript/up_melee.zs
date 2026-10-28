@@ -217,10 +217,21 @@ class RSQ_Upgrade_Executioner : RSQ_Upgrade_Base
 	{
 		if (!Monster(target) || target.bBoss) return damage;
 		if (target.health > target.GetSpawnHealth() * Share(level) || !RSQM.Staggered(target)) return damage;
+		// ENOUGH TO KILL AFTER WHAT IT RESISTS. This answer is the attacker's side of the damage; the
+		// victim's own protection and damage factors still apply after it (p_interaction.cpp: the
+		// passive GetModifiedDamage, then ApplyDamageFactor). health + 1 failed on anything that
+		// resists: Champions' Bronze takes half (DamageFactor 0.5), a monster its Gold champion
+		// touched 0.66 or 0.33, a Titan less the more monsters stand round it -- the execution sound
+		// played and it lived. So the same two steps are asked of a probe hit and the blow is
+		// scaled up by what comes through. Immune (nothing through): no execution.
+		int want = target.health + 1;
+		int got = target.ApplyDamageFactor(attacktype, target.GetModifiedDamage(attacktype, 1000, true, shot, pawn));
+		if (got <= 0) return damage;
+		double need = ceil(want * 1000.0 / got);
 		target.A_StartSound("rsq/execute", CHAN_AUTO, 0, 1.0);
 		let h = RSQ_MeleeHandler.Get();
 		if (h && pawn && pawn.player) h.execTic[pawn.PlayerNumber()] = gametic;   // Adrenaline: an execution
-		return max(damage, target.health + 1);
+		return max(damage, need);
 	}
 	override void GetTooltipFields(Dictionary fields, uint level)
 	{
