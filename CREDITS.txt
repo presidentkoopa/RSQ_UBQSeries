@@ -10,6 +10,10 @@ The hook's art and sound are jpalomo's, from the grappling hook in his mod pack
   - the "Yank" wall mode reproduces his Hook_HitWall thrust (hook.acs).
 Thank you, jpalomo.
 
+SLATED FOR REPLACEMENT (owner, 10-27): this hook is the series' own rebuild, so its look and sound
+should be ours too. jpalomo's art and sounds stay as the default until replacements are made from
+the owner's RS_CombatFX library (and other cleared sources); then the JP set becomes optional or goes.
+
 Code: ZScript written for the Ultra Badass Quest series (presidentkoopa), for
 stock QuestZDoom 17.3 by Emawind84 and Team Beef. No engine change.
 
