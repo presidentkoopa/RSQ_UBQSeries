@@ -137,6 +137,9 @@ class RSQMB_Boss : Thinker
 	void Finish()
 	{
 		done = true;
+		// Died with lives to spare (a telefrag or forced damage skips BUDDHA): give the monster its own
+		// BUDDHA back, or an Arch-vile raise would leave it unkillable (final review).
+		if (mb) mb.bBUDDHA = ownBuddha;
 		for (int i = 0; i < thr.Size(); i++)
 		{
 			let t = thr[i];
