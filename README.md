@@ -1,6 +1,6 @@
 # RSQ_UBQSeries — the Ultra Badass Quest series
 
-**Version 0.9 — 2026-10-27.** Ready-to-load pk3s are in [`pk3/`](pk3/).
+**Version 1.0 — 2026-10-27.** Ready-to-load pk3s are in [`pk3/`](pk3/).
 
 Standalone add-ons for **Doom VR on the Quest**, all in one place: a distance grab, a
 shield-saw, a lightsaber, a tactical rig, slow motion, a laser sight, a grappling hook, HP bars and one
@@ -213,6 +213,22 @@ exactly the same files.
 - Melee weapons get nothing. Guns with no model to measure (sprite guns) get the dot only.
 - The beam hides during reloads and inspections (frames that move the gun more than 6 cm).
 - DistanceGrab's beam makes way for it (*Yield to Laser Sight*).
+
+## Status (1.0, 2026-10-27)
+
+New in 1.0 (since 0.9, same day):
+
+- **Grapple** (hook, rope, swing, climb, Yank, whip), **TopHPBars**, **Accessibility** (colour-blind,
+  handedness, photosensitivity, one-handed, comfort vignette, cue/text size, sound cues, hold to toggle,
+  Simple/Full menus), **Score** in the repo, and **Miniboss** (Tartlman's Minibosses!, rebuilt).
+- **Score:** hook combos and the general combo system (order matters, 3 s window, named combos), Champions
+  and LegenDoom Lite rows, a living "Score:" label.
+- **Gun Bonsai patch:** hook upgrades, the screens on with Doom's own fonts, XP Source (Damage / Style /
+  Both), an optional ShieldSaw gauge.
+- **Champions + LegenDoom Lite** compatibility across the suite; two independent reviews, their findings
+  fixed. Tested on the full order (doom2, brutal22test6, BD_VoxelPack, BD22 VR-Reloaded r7, Champions,
+  LegenDoom Lite, every mod, Gun Bonsai + patch) and vanilla: save, load twice, map change, no script
+  errors besides BD_VoxelPack's voxeldef lines. **Not yet played on a headset.**
 
 ## Status (0.9, 2026-10-27)
 
