@@ -52,6 +52,7 @@ class RSQA_Handler : EventHandler
 	transient int    vigTic[MAXPLAYERS];
 	transient double vig, vigLast;
 	ui bool vigShown;
+	ui bool vigSynced;   // the shader's on/off lasts the session, this handler doesn't: turn it off once on first draw
 
 	// THE OFF-VIEW CUES: where a hit or a shot came from, kept 1.2 s (the local player's only).
 	const THREATS = 8;
@@ -240,7 +241,7 @@ class RSQA_Handler : EventHandler
 		double v = lv > 0 ? vigLast + (vig - vigLast) * e.FracTic : 0.0;
 		if (v <= 0.005)
 		{
-			if (vigShown) { PPShader.SetEnabled("RSQA_Vignette", false); vigShown = false; }
+			if (vigShown || !vigSynced) { PPShader.SetEnabled("RSQA_Vignette", false); vigShown = false; vigSynced = true; }
 			return;
 		}
 		// Light / Medium / Strong: how dark the edge gets, and how far in the dark reaches
@@ -249,6 +250,7 @@ class RSQA_Handler : EventHandler
 		PPShader.SetUniform1f("RSQA_Vignette", "rsqaStrength", DARK[lv] * v);
 		PPShader.SetUniform1f("RSQA_Vignette", "rsqaInner", INNER[lv] + (1.0 - INNER[lv]) * (1.0 - v) * 0.5);
 		if (!vigShown) { PPShader.SetEnabled("RSQA_Vignette", true); vigShown = true; }
+		vigSynced = true;
 	}
 
 	ui void DrawThreats(RenderEvent e)
