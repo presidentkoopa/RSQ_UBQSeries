@@ -1,0 +1,16 @@
+RSQ_LaserSight -- credits
+=========================
+
+A laser from each gun's own barrel, part of the Ultra Badass Quest series. For stock QuestZDoom 17.3:
+ZScript and lumps only, no engine changes. Made by the project owner (presidentkoopa) and this pack.
+
+INSPIRED BY (no code or assets taken)
+  Laser Sight by m8f (Alexander Kromm, github.com/mmaulwurff/laser-sight), GPLv3 -- the laser sight
+  bundled with QuestZDoom (laser-sight-0.5.5-vr.pk3). This pack replaces it; nothing of its code or
+  sprites is used here.
+
+GENERATED FOR THIS PACK
+  The beam voxels (models/rsqls/beam/*.kvx, VOXELDEF.txt) and the muzzle table (zscript/rsqls/muzzles.zs):
+  tools/gen_beams.py, measured from Brutal Doom Quest's own gun models.
+
+QuestZDoom (Emawind and Team Beef): the engine and the hand-pose script API.
