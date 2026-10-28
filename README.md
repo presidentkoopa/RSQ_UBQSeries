@@ -34,7 +34,42 @@ the score-as-XP settings. The saber, the ShieldSaw and the grab ask `RSQ_MeleeUp
 their levels by name; nothing links to anything.
 
 The changes to shadowed files: `PerPlayerStats.zsc` (the claim bracket `claimStack`, the player
-pool for throws, score XP shared per kill, `HandOfShot`) and `debug.zsc` (the pool in the hands dump).
+pool for throws, score XP shared per kill, `HandOfShot`, the XP Source gate `RSQ_XPSource` and the
+per-monster credit `NoteStyleHit`, `GetShieldStats`), `HUD.zsc` (`DrawShield`), `EventHandler.zsc`
+(the shield gauge's one call) and `debug.zsc` (the pool in the hands dump).
+
+## XP Source: Damage, Style, Both (`rsq/zscript/stylexp.zs`)
+
+Options -> the suite upgrades' page -> **XP Source** (`rsq_xp_source`, server): **Damage** (Gun Bonsai's
+own, the default: nothing changes -- measured: the same 17 scripted kills left every weapon record, the
+pool and the player XP identical to master), **Style**, **Both**. Style needs RSQ Score (asked by name);
+without it Style reads as Damage.
+
+With **Style** a kill's style points -- RSQ Score's bonus rows for that kill, the total less the base,
+Champions' and LegenDoom Lite's rows included -- become XP (x `rsq_xp_style_scale`, 1.0), split along
+its combo chain (RSQ Score's `kill.chain`, the finishing blow last): the **finisher's tool 50 %**, the
+**setup tools share 50 %** equally (a chain of one tool: the finisher takes it all), and on top
+`rsq_xp_style_player` (10 %) to the player pool. Damage pays no XP; the stock score-to-XP and the
+hook's action XP stand down (they would pay the same kill again). **Both** keeps damage XP and adds the
+style. Each share goes down the patch's existing paths: a gun to the gun(s) Gun Bonsai credited with
+hitting that monster (`PerPlayerStats.NoteStyleHit`), the saber and the Force to the saber (up_saber),
+the shield's tools to the ShieldSaw (up_shield), the gloves to the gloves (up_gloves), a punch, kick,
+blade or finisher to the melee weapon that hit it (up_melee), the hook, the whip and a grab throw to the
+player pool (up_hook's and the grab's perks are player upgrades). Measured (imp, base 60):
+whip > ShieldSaw bash, style 66 -> ShieldSaw 33, pool 33 + 6.6; gun > saber cut > kick, style 69 -> kick
+34.5 (pool), gun 17.25 (Shotgun), saber 17.25; four tools, style 66 -> finisher 33, three setups 11 each.
+The XP bars look exactly as before.
+
+## The ShieldSaw gauge (`rsq_hud_shield`, off by default)
+
+Options -> the suite upgrades' page -> **ShieldSaw Gauge** (user). A third Gun Bonsai gauge -- the stock
+art, colours, bars and text, through the same `DrawHUD` the hand gauges use -- for the ShieldSaw while it
+rides on the shoulder (stowed or thrown; in a hand, that hand's gauge shows it), centred at the top
+between the two hand gauges, just under their bars (22 % of a hand gauge's height down), scaled to fit
+the gap (90 % of it, between half and full size of a hand gauge; `TFLV_HUD.ShieldScale`). RSQ Score
+moves its display down by as far as the gauge reaches (`RSQ_HudService "shield.gauge.drop"`). Off,
+nothing is drawn and nothing moves. It shows once the ShieldSaw has a Gun Bonsai record (it has been
+held, or has earned XP).
 
 ## The screens (`rsq/ui/`)
 

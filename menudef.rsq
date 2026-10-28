@@ -12,11 +12,20 @@ AddOptionMenu "GunBonsaiOptions"
 	Submenu "$RSQ_MENU_TITLE", "RSQ_MeleeOptions"
 }
 
+OptionValue "RSQ_XPSources"
+{
+	0, "$RSQ_MENU_XPSRC_DAMAGE"
+	1, "$RSQ_MENU_XPSRC_STYLE"
+	2, "$RSQ_MENU_XPSRC_BOTH"
+}
+
 OptionMenu "RSQ_MeleeOptions"
 {
 	Title "$RSQ_MENU_TITLE"
 	Option "$RSQ_MENU_SLAPPERS", "rsq_slappers", "OnOff"
 	Option "$RSQ_MENU_GLOVES", "rsq_gloves", "OnOff"
+	Option "$RSQ_MENU_XPSRC", "rsq_xp_source", "RSQ_XPSources"
+	Option "$RSQ_MENU_SHIELDGAUGE", "rsq_hud_shield", "OnOff"
 	StaticText " "
 	Submenu "$RSQ_MENU_ADV", "RSQ_MeleeAdvanced"
 }
@@ -31,6 +40,8 @@ OptionMenu "RSQ_MeleeAdvanced"
 	Slider "$RSQ_MENU_STAR_FIRST", "rsq_star_first", 0, 20, 1, 0
 	Slider "$RSQ_MENU_STAR_EVERY", "rsq_star_every", 0, 10, 1, 0
 	Slider "$RSQ_MENU_HOOK_XP", "rsq_hook_xp", 0, 3, 0.1, 1
+	Slider "$RSQ_MENU_XPSTYLE", "rsq_xp_style_scale", 0.1, 3, 0.1, 1
+	Slider "$RSQ_MENU_XPPLAYER", "rsq_xp_style_player", 0, 50, 5, 0
 }
 
 // The screens: Gun Bonsai's three menu names, pointed at the routers (rsq/ui/router.zs), which are

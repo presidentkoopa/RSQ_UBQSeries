@@ -138,6 +138,8 @@ class TFLV_EventHandler : StaticEventHandler {
     if (TFLV_Settings.GetBool("bonsai_vr_dual_hud")) {
       if (stats.GetCurrentStatsForHand(0, cur)) hud.DrawForHand(cur, 0);
       if (stats.GetCurrentStatsForHand(1, cur)) hud.DrawForHand(cur, 1);
+      // RSQ PATCH: the ShieldSaw's gauge while it is on the shoulder (rsq_hud_shield, off by default)
+      if (TFLV_Settings.GetBool("rsq_hud_shield") && stats.GetShieldStats(cur)) hud.DrawShield(cur);
       return;
     }
 

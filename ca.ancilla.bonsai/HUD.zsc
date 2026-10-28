@@ -101,6 +101,49 @@ class TFLV_HUD : Object ui {
     DrawHUD(stats);
   }
 
+  // RSQ PATCH (shield gauge, rsq_hud_shield, default off): a third gauge, for the ShieldSaw while it
+  // rides on the shoulder (stowed or thrown; in a hand, that hand's gauge shows it). Gun Bonsai's own
+  // gauge -- the same art, colours, bars and text, through DrawHUD -- centred at the top between the
+  // two hand gauges, at the same height, scaled down to fit the gap between them (ShieldScale).
+  void DrawShield(TFLV_CurrentStats stats) {
+    double x, y, sc, al; uint mi;
+    [x, y, sc, al, mi] = TFLV_Settings.hud_params();
+    double ty = TFLV_Settings.GetDouble("bonsai_vr_hud_main_y");
+    Calibrate(0.5, ty, sc * ShieldScale(), al, 2);
+    // just under the hand gauges' bars, whose inner ends cross the top of the gap (SHIELD_DROP of a hand
+    // gauge's height), so it touches neither their bars nor their text
+    if (sc > 1) sc = sc / 1080;
+    hudy += uint(SHIELD_DROP * sc * fbh);
+    DrawHUD(stats);
+  }
+  const SHIELD_DROP = 0.22;
+
+  // The shield gauge's size, as a share of a hand gauge's: as large as fits in 90% of the gap the two
+  // hand gauges leave (their default anchors, 0.01 and 0.99), never larger than they are, never
+  // smaller than half. A gauge is 3 x its height wide; its height is bonsai_hud_size of the screen's.
+  static double ShieldScale() {
+    double sc = TFLV_Settings.GetDouble("bonsai_hud_size");
+    if (sc > 1) sc = sc / 1080;
+    double asp = max(0.5, screen.GetAspectRatio());
+    double wf = 3 * sc / asp;
+    double offx = TFLV_Settings.GetDouble("bonsai_vr_hud_off_x"), mainx = TFLV_Settings.GetDouble("bonsai_vr_hud_main_x");
+    if (offx < 0 || offx > 1) offx = 0.01;
+    if (mainx < 0 || mainx > 1) mainx = 0.99;
+    double gap = (1 - wf) * (mainx - offx) - wf;
+    if (wf <= 0) return 1;
+    return clamp(0.9 * gap / wf, 0.5, 1.0);
+  }
+
+  // where the shield gauge sits, as fractions of the screen's height: its top and its height (RSQ_HudService)
+  static double, double ShieldBand() {
+    double sc = TFLV_Settings.GetDouble("bonsai_hud_size");
+    if (sc > 1) sc = sc / 1080;
+    double h = sc * ShieldScale();
+    double ty = TFLV_Settings.GetDouble("bonsai_vr_hud_main_y");
+    double top = ((ty >= 0 && ty <= 1) ? (1 - h) * ty : 0.02) + SHIELD_DROP * sc;
+    return top, h;
+  }
+
   // rsqa_handed (RSQ_Accessibility: 1 right, 2 left) when set, else QuestZDoom's own Control Scheme.
   static clearscope bool RSQ_LeftLayout() {
     CVar h = null; { Name rsqaN = "RSQA_Menu"; class<Object> rsqaC = rsqaN; if (rsqaC) h = CVar.FindCVar("rsqa_handed"); }  // only while RSQ_Accessibility is loaded: a value left in the ini must not act on its own

@@ -150,9 +150,14 @@ class RSQ_HookHandler : EventHandler
 			int wPaid = seenSwing[pn] + metres * 32;
 			double xp = 15.0 * (b - seenBites[pn]) + 15.0 * (y - seenYanks[pn]) + metres
 				+ 0.5 * (hp - seenKillHP[pn]) + 40.0 * (sl - seenSlams[pn]);
-			if (xp <= 0) continue;
 			let stats = TFLV_PerPlayerStats.GetStatsFor(pmo);
-			if (!stats) continue;
+			// XP Source Style (rsq/zscript/stylexp.zs): the hook's share of each kill's style is its XP;
+			// what it did is still counted here, so turning Style off later pays nothing old
+			if (xp <= 0 || !stats || TFLV_PerPlayerStats.RSQ_XPSource() == 1)
+			{
+				seenBites[pn] = b; seenYanks[pn] = y; seenSwing[pn] = wPaid; seenKills[pn] = kk; seenKillHP[pn] = hp; seenSlams[pn] = sl;
+				continue;
+			}
 			stats.AddPoolXP(xp * k);
 			paid[pn] += xp * k;
 			if (dbg)

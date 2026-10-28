@@ -30,6 +30,10 @@ user float bonsai_vr_hud_off_x = 0.01;
 user float bonsai_vr_hud_off_y = 0.02;
 user int bonsai_vr_hud_off_mirror = 2;
 
+// A third gauge, for the ShieldSaw while it rides on the shoulder (in a hand, that hand's gauge shows
+// it): Gun Bonsai's own gauge, centred at the top between the two, scaled to fit. Off by default.
+user bool rsq_hud_shield = false;
+
 // Warn once at startup if the upgrade binding mode is not per-weapon.
 // Per-class binding rebinds a single WeaponInfo back and forth when both hands
 // hold the same weapon class, which thrashes. Set to false to silence.
@@ -63,6 +67,14 @@ server bool rsq_punch_debug = false;
 
 // RSQ_Grapple's hook: XP for what it does (bites, yanks, swinging, kills it was in on) x this.
 server float rsq_hook_xp = 1.0;
+
+// XP Source (rsq/zscript/stylexp.zs): 0 Damage (Gun Bonsai's own), 1 Style (RSQ Score's style points
+// along the combo chain: the finisher 50%, the setup tools 50%), 2 Both. Style without RSQ Score is Damage.
+server int rsq_xp_source = 0;
+// Style XP: XP per style point, and the extra share for the player bar, in percent.
+server float rsq_xp_style_scale = 1.0;
+server int rsq_xp_style_player = 10;
+server noarchive bool rsq_xp_debug = false;
 
 // Which screens draw Gun Bonsai: 0 its own, 1 the recreation of the owner's mockups, 2 and 3 the alternatives
 server int rsq_ui_skin = 1;

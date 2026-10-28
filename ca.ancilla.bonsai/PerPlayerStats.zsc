@@ -262,6 +262,34 @@ class TFLV_PerPlayerStats : Object play {
   // Which hand most recently earned XP, for bonsai_vr_hud_hand == 2.
   int lastXPHand;
 
+  // VR PATCH (style XP, rsq/zscript/stylexp.zs): which weapon dealt each recent
+  // blow to which monster, so a kill's style can be paid along its combo chain to
+  // the guns and melee weapons that set it up. Bounded ring, newest last.
+  array<Actor> styleV;
+  array<TFLV_WeaponInfo> styleInfo;
+  array<int> styleTic;
+
+  // VR PATCH (style XP): where XP comes from. rsq_xp_source 0 Damage (stock),
+  // 1 Style (RSQ Score's style points, split along the combo chain), 2 Both.
+  // Style needs RSQ Score: without its service this answers 0, Damage.
+  static int RSQ_XPSource() {
+    let cv = CVar.FindCVar("rsq_xp_source");
+    int v = cv ? cv.GetInt() : 0;
+    if (v <= 0) return 0;
+    let it = ServiceIterator.Find("RS_ScoreService");
+    if (!it.Next()) return 0;
+    return v >= 2 ? 2 : 1;
+  }
+
+  void NoteStyleHit(Actor target, TFLV_WeaponInfo info) {
+    if (!target || !info) return;
+    for (int i = styleV.size() - 1; i >= 0; --i) {
+      if (styleV[i] == target && styleInfo[i] == info) { styleTic[i] = gametic; return; }
+    }
+    if (styleV.size() >= 64) { styleV.Delete(0); styleInfo.Delete(0); styleTic.Delete(0); }
+    styleV.push(target); styleInfo.push(info); styleTic.push(gametic);
+  }
+
   // VR PATCH: the gun credited with the most recent kill, for score-to-XP.
   //
   // A TFLV_WeaponInfo and not a hand or a Weapon, for the reasons in the
@@ -368,6 +396,19 @@ class TFLV_PerPlayerStats : Object play {
   // is how the renderer knows to skip drawing that side entirely.
   bool GetCurrentStatsForHand(int hand, out TFLV_CurrentStats stats) const {
     return FillStats(GetInfoForHand(hand), stats);
+  }
+
+  // RSQ PATCH (shield gauge): the ShieldSaw's record while it is in neither hand (on the shoulder, or
+  // thrown). False when it is in a hand (that hand's gauge shows it), not owned, or never recorded.
+  bool GetShieldStats(out TFLV_CurrentStats stats) const {
+    if (!owner || !owner.player) return false;
+    for (let it = owner.Inv; it; it = it.Inv) {
+      let w = Weapon(it);
+      if (!w || w.GetClassName() != 'SSQ_ShieldSaw') continue;
+      if (HandHolding(w) >= 0) return false;
+      return FillStats(GetInfoFor(w), stats);
+    }
+    return false;
   }
 
   bool FillStats(TFLV_WeaponInfo info, out TFLV_CurrentStats stats) const {
@@ -1165,6 +1206,9 @@ class TFLV_PerPlayerStats : Object play {
   }
 
   double GetXPForDamage(Actor target, uint damage) const {
+    // VR PATCH (style XP): XP Source "Style" pays no damage XP at all; the
+    // kill's style pays instead (rsq/zscript/stylexp.zs).
+    if (RSQ_XPSource() == 1) return 0;
     if (target.health < 0) {
       // No bonus XP for overkills.
       damage += target.health;
@@ -1226,6 +1270,7 @@ class TFLV_PerPlayerStats : Object play {
 
     let info = prov.Dominant();
     if (!info) return;
+    if (target && target.bIsMonster) NoteStyleHit(target, info);
     // Anything this dispatch creates -- a DoT stack above all -- bills the gun
     // that actually fired the shot.
     //
@@ -1411,7 +1456,10 @@ class TFLV_PerPlayerStats : Object play {
     if (off && off != main) off.upgrades.Tick(owner);
 
     // No score integration? Nothing else to do.
-    if (bonsai_score_to_xp_factor <= 0) {
+    // VR PATCH (style XP): with XP Source Style or Both the score's style is paid
+    // along the combo chain (rsq/zscript/stylexp.zs); the stock score-to-XP rise
+    // would pay the same points a second time, so it stands down.
+    if (bonsai_score_to_xp_factor <= 0 || RSQ_XPSource() != 0) {
       prevScore = -1;
       return;
     }
