@@ -315,14 +315,15 @@ class RSQSM_Clock : EventHandler
 	// tic -- after whoever spawned it has set its velocity (dthinker.cpp, p_mobj.cpp). So
 	// its velocity, Speed and gravity are final and are all scaled now, before it ever
 	// moves at full speed. A round arrives already slowed (it sets preFactor).
-	void Consider(Actor a, bool spawned)
+	// known: the caller has already made sure it is not listed (Gather), so the list is not searched
+	void Consider(Actor a, bool spawned, bool known = false)
 	{
 		if (RealTime(a)) return;
 		if (act.Size() >= MAXSCAN) return;
 		// Once only: a thing spawned before this tic's scan is found by the scan AND by the spawn
 		// hook. Twice listed, each copy took the other's stretch for a new state, so its tics grew
 		// 16x a tic until it froze, and its pushes were scaled twice.
-		if (act.Find(a) < act.Size()) return;
+		if (!known && act.Find(a) < act.Size()) return;
 		int i = act.Size();
 		double f = spawned ? FactorFor(a, a.Speed) : 1.0;
 		double pre = 1.0;
@@ -347,16 +348,37 @@ class RSQSM_Clock : EventHandler
 	// Things already in the world near a player (the first look, then every 17 tics for
 	// what has come into range). Missiles spawned while it runs arrive through
 	// WorldThingSpawned.
+	//
+	// IS IT LISTED ALREADY, WITHOUT SEARCHING THE LIST FOR EVERY ACTOR (that was n^2/2 compares: the
+	// first look searched a growing list for each of up to 4000 actors, every later look searched
+	// the whole list for each). The list is built in the order the iterator walks the level -- the
+	// first look in that order, spawns in the order they first tick, which is the order the engine
+	// appends them to its thinker list -- and Drop keeps the order. So the walk below steps through
+	// `act` alongside the iterator: the next listed entry IS the actor, one compare. Only an actor
+	// out of step (one that came into range at a later look, or that changed thinker list) is
+	// searched for, and the walk jumps ahead to where it was found. The answer is always exact --
+	// "listed" only on a match, "not listed" only after a full search -- only the cost depends on
+	// the order. On the first look nothing can be listed (each actor is walked once), so nothing is
+	// searched at all. (A Map lookup was measured too: ZScript maps take only int or String keys
+	// and an Actor has no number, so the key had to be its address formatted as text, and that cost
+	// as much as the search it replaced: 1.6 ms against 1.5 at 3543 actors.)
 	private void Gather()
 	{
 		let it = ThinkerIterator.Create("Actor");
 		Actor a;
 		bool first = act.Size() == 0;
+		int j = 0, n = act.Size();
 		while ((a = Actor(it.Next())) && act.Size() < MAXSCAN)
 		{
 			if (!NearAPlayer(a) || RealTime(a)) continue;     // the cheap distance test first
-			if (!first && act.Find(a) < act.Size()) continue;
-			Consider(a, false);
+			if (!first)
+			{
+				while (j < n && !act[j]) j++;                 // gone, dropped next Process
+				if (j < n && act[j] == a) { j++; continue; }
+				int k = act.Find(a);
+				if (k < act.Size()) { if (k >= j && k < n) j = k + 1; continue; }
+			}
+			Consider(a, false, true);
 		}
 	}
 
