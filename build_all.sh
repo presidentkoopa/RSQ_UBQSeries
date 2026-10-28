@@ -76,3 +76,10 @@ cd "$HUB/Miniboss"
 rm -f "$OUT/RSQ_Miniboss.pk3"
 zip -q -r -X "$OUT/RSQ_Miniboss.pk3" zscript.txt MAPINFO.txt CVARINFO.txt MENUDEF.txt CREDITS.txt zscript
 echo "built pk3/RSQ_Miniboss.pk3"
+
+# Gun Bonsai Offhand VR patch: everything but the build script, notes, tools and git files (its build.ps1).
+# Needs Gun Bonsai 0.10.6 (ToxicFrog, not included) loaded just before it.
+cd "$HUB/GunBonsaiOffhandVR"
+rm -f "$OUT/Gameplay_GB_VR_Offhand_Patch.0.10.6.pk3"
+zip -q -r -X "$OUT/Gameplay_GB_VR_Offhand_Patch.0.10.6.pk3" . -x '.git*' 'build.ps1' 'NOTES.md' 'tools/*' 'Gameplay_GB_VR_Offhand_Patch.0.10.6.pk3'
+echo "built pk3/Gameplay_GB_VR_Offhand_Patch.0.10.6.pk3"

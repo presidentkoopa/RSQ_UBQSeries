@@ -28,6 +28,7 @@ is ZScript and data lumps.
 | ❤️ | [TopHPBars](TopHPBars/) | `RSQ_TopHPBars.pk3` | coldcite's Top HP Bars, series version: colour-blind schemes, an overheal strip, hooked / stunned / locked / gripped markers. |
 | 🏆 | [Score](Score/) | `RSQ_Score.pk3` | The arcade score: style, daring and melee bonuses, cross-mod combos, extra lives; names Champions and LegenDoom Lite kills. Built on ijon's Dakka points. |
 | 👹 | [Miniboss](Miniboss/) | `RSQ_Miniboss.pk3` | A set-piece miniboss each map, fed by three thralls (boosted legendary champions with Champions + LegenDoom Lite): kill a thrall to slow time, get greedy and every monster enrages. Rebuilt from Tartlman's Minibosses!. |
+| 🌳 | [GunBonsaiOffhandVR](GunBonsaiOffhandVR/) | `Gameplay_GB_VR_Offhand_Patch.0.10.6.pk3` | The arcade room's progression: Gun Bonsai for VR -- a gauge and upgrades per hand, melee and boxing-glove upgrades, Slappers Only, saber / ShieldSaw / hook upgrade paths, XP from damage or style, the screens. Needs Gun Bonsai 0.10.6 (ToxicFrog, not included) loaded just before it. |
 | ♿ | [Accessibility](Accessibility/) | `RSQ_Accessibility.pk3` | One Accessibility menu for every series mod you load: colour-blind modes and handedness. |
 
 ---
@@ -41,6 +42,7 @@ is ZScript and data lumps.
    ```
    doom2.wad -> brutal22test6 -> BD_VoxelPack -> BD22_VR-Reloaded (1.99x-lb-r7-saveload or later)
              -> (optional) Champions -> LegenDoom Lite -> any of the mods, in any order
+             -> GunBonsai-0.10.6.pk3 -> Gameplay_GB_VR_Offhand_Patch.0.10.6.pk3 (last; only with Gun Bonsai)
    ```
 
 3. Settings live under **Options** in the game:
@@ -57,6 +59,7 @@ is ZScript and data lumps.
    | TopHPBars | **RSQ HP Bars** |
    | Score | **RSQ Score** |
    | Miniboss | **RSQ Miniboss** |
+   | GunBonsaiOffhandVR | **Gun Bonsai** (its own menu) and **Gun Bonsai VR** |
    | Accessibility | **Accessibility** |
 
    Every menu ends with **Tuning and Debug**, which holds a **Reset All** row.
@@ -187,6 +190,7 @@ RSQ_UBQSeries/
 ├── TopHPBars/       pk3/ (the mod), original_1.04/ (coldcite's), tools/ (art generator, colour-vision check)
 ├── Accessibility/   source, README, tools/ (colour-vision simulation, palette generator)
 ├── Miniboss/        source, README (design as built), CREDITS (Tartlman), original/ (Minibosses! v0.1.1)
+├── GunBonsaiOffhandVR/  the Gun Bonsai VR patch: source, README, COPYING (Gun Bonsai's MIT notice), rsq/ (our code)
 ├── Score/           source, README (the arcade layer, combo table), CREDITS (Dakka)
 ├── tools/rig17/     how the real QuestZDoom 17.3 test engine was built, and the test runners
 └── build_all.sh     rebuilds every pk3 into pk3/
