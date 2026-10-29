@@ -662,7 +662,7 @@ class RSQLS_Sight : EventHandler
 		double sh, sv;
 		[sh, sv] = RSQLS_Learn.Spread(w);
 		double minDeg = RSQLS_Hand.Num("rsqls_spread_min", p, 0.75);
-		if (arcOn || !RSQLS_Hand.Flag("rsqls_spread", p, true) || max(sh, sv) < minDeg)
+		if (arcOn || !RSQLS_Hand.Flag("rsqls_spread", p, false) || max(sh, sv) < minDeg)
 		{
 			Hide(ring[h]);
 			return;
