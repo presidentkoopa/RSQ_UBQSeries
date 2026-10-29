@@ -23,16 +23,32 @@ user bool  rsqdg_sight    = true;    // through a wall is not pointing at it
 
 // ---- what may be pulled (policy.zs) ---------------------------------------
 // The table decides what is an OBJECT; these switch whole families of it on
-// and off. A living monster is never pullable, and a +1 bonus never is -- those
-// are not switches, they are the table.
-user bool  rsqdg_corpses  = false;   // a corpse is a prop. Off by default: the
-                                     // novelty beat the feature on desktop
+// and off. A living monster is never pullable from range (the off hand's walk-up
+// Headlock holds one, near.zs); the +1 bonuses are a switch since 10-29.
+user bool  rsqdg_corpses  = true;    // a corpse is a prop. ON by default (the owner, 10-29:
+                                     // "expanded pickup options"); off on desktop
 user bool  rsqdg_barrels  = true;    // both barrels -- the thing this is for
 user bool  rsqdg_weapons  = true;    // pull a gun to you. The desktop's default
                                      // is off because a HAND grab of a gun is a
                                      // whole interaction; a pull is the pickup
-user bool  rsqdg_powerups = false;   // spheres, berserk, suit, map. The desktop
-                                     // denied them; one switch away here
+user bool  rsqdg_powerups = true;    // spheres, berserk, suit, map. ON by default (10-29)
+user bool  rsqdg_ammo     = true;    // ammunition (10-29: each pickup kind its own switch)
+user bool  rsqdg_health   = true;    // medikits, stimpacks
+user bool  rsqdg_armor    = true;    // armour
+user bool  rsqdg_keycards = true;    // keys
+user bool  rsqdg_bonuses  = true;    // the +1 health and armour bonuses (lowest weight)
+
+// ---- THE GRIP UP CLOSE (near.zs, the owner 10-29) -------------------------
+user bool   rsqdg_near        = true;    // grip with the palm on a thing takes it (pickup used, barrel/corpse carried)
+user float  rsqdg_near_m      = 0.30;    // metres from the palm to the thing's body
+user bool   rsqdg_swap        = true;    // controllers together, palms up, grip: the two hands swap weapons
+user float  rsqdg_swap_m      = 0.25;    // metres between the controllers
+user float  rsqdg_swap_roll   = 55.0;    // degrees each wrist must be rolled (palm up / sideways)
+user bool   rsqdg_collar      = true;    // the off hand's grip holds a living monster (Headlock)
+user float  rsqdg_collar_mass = 400.0;   // the heaviest monster it can hold (Doom mass: imp 100, demon 400, baron 1000)
+user float  rsqdg_collar_secs = 3.0;     // how long it stays held before it breaks free
+user string rsqdg_keys_main   = "446";      // the main grip's key codes (as RSQ_TacticalRig reads them)
+user string rsqdg_keys_off    = "443 436";  // the off grip's key codes
 
 // ---- THE TRIGGER IS THE GESTURE ------------------------------------------
 //

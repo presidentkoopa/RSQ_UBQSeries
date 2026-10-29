@@ -385,7 +385,8 @@ class RSQDG_Grab : EventHandler
 				if (was && !poseHeld)
 				{
 					let hold = RSQDG_Hold.Get();
-					if (hold && hold.HandIsFull(h))      hold.Release(h, p);
+					// a thing the walk-up grip took is let go by the grip, not the palm (near.zs)
+					if (hold && hold.HandIsFull(h) && !RSQDG_Near.OwnsHand(p, h)) hold.Release(h, p);
 					else if (lockActor[h])               Resolve(h, p);
 				}
 			}

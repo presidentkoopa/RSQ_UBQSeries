@@ -153,7 +153,7 @@ class RSQDG_Door : EventHandler
 		for (int h = 0; h < 2; h++)
 		{
 			Vector3 hp = RSQDG_Reach.Palm(pmo, h);
-			bool grip = grab && RSQDG_Reach.Flag("rsqdg_door_grip", p, true) && grab.Held(h);
+			bool grip = RSQDG_Reach.Flag("rsqdg_door_grip", p, true) && ((grab && grab.Held(h)) || RSQDG_Near.IsGripDown(h));
 			bool use = RSQDG_Reach.Flag("rsqdg_door_use", p, true) && useDown;
 			bool palm = RSQDG_Reach.Flag("rsqdg_door_palm", p, true) && PalmOut(pmo, h);
 			bool pressing = grip || use || palm;

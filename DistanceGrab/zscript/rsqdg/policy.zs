@@ -218,8 +218,10 @@ class RSQDG_Policy : StaticEventHandler
 
 		// The "+1" pickups. A health bonus is not a small medikit, it is a
 		// number with a sprite. Walk over them.
-		Deny('HealthBonus', "a +1 is a number, not an object");
-		Deny('ArmorBonus',  "a +1 is a number, not an object");
+		// (the owner, 10-29, "expanded pickup options": a switch now, rsqdg_bonuses, and the
+		// lowest pickup weight, so a +1 never steals the cone from a real item beside it)
+		Rule('HealthBonus', true, 'Bonuses', "a +1 health bonus", 0.3);
+		Rule('ArmorBonus',  true, 'Bonuses', "a +1 armour bonus", 0.3);
 
 		// -- the powerups: their own switch, OFF by default --------------------
 		//
@@ -258,7 +260,7 @@ class RSQDG_Policy : StaticEventHandler
 
 		// Ammunition. Below neutral: the most numerous thing on a cleared floor
 		// and the least interesting to have chosen for you.
-		Rule('Ammo', true, 'None', "ammunition", 0.6);
+		Rule('Ammo', true, 'Ammo', "ammunition", 0.6);
 
 		// Weapons. ON by default here, against the desktop, and for a reason
 		// that only exists at range: the desktop's objection was that taking a
@@ -278,12 +280,12 @@ class RSQDG_Policy : StaticEventHandler
 		Rule('BDWeaponSpawner', true, 'Weapons', "a weapon (Brutal Doom)", 2.0);
 
 		// Health and armour, the real ones -- the bonuses were denied above.
-		Rule('Health', true, 'None', "a health item", 0.6);
-		Rule('Armor',  true, 'None', "armour", 0.6);
+		Rule('Health', true, 'Health', "a health item", 0.6);
+		Rule('Armor',  true, 'Armor', "armour", 0.6);
 
 		// Keys. There are never many, reaching for one is always deliberate,
 		// and a keycard is small enough that something duller is easily nearer.
-		Rule('Key', true, 'None', "a key", 2.0);
+		Rule('Key', true, 'Keys', "a key", 2.0);
 
 		// The catch-all for anything else a mod leaves in the world. LAST, so
 		// every rule above overrules it. Neutral, and here neutral is the
@@ -307,8 +309,13 @@ class RSQDG_Policy : StaticEventHandler
 	{
 		if (cat == 'Barrels')  return RSQDG_Reach.Flag("rsqdg_barrels",  p, true);
 		if (cat == 'Weapons')  return RSQDG_Reach.Flag("rsqdg_weapons",  p, true);
-		if (cat == 'Powerups') return RSQDG_Reach.Flag("rsqdg_powerups", p, false);
-		if (cat == 'Corpses')  return RSQDG_Reach.Flag("rsqdg_corpses",  p, false);
+		if (cat == 'Powerups') return RSQDG_Reach.Flag("rsqdg_powerups", p, true);
+		if (cat == 'Corpses')  return RSQDG_Reach.Flag("rsqdg_corpses",  p, true);
+		if (cat == 'Ammo')     return RSQDG_Reach.Flag("rsqdg_ammo",     p, true);
+		if (cat == 'Health')   return RSQDG_Reach.Flag("rsqdg_health",   p, true);
+		if (cat == 'Armor')    return RSQDG_Reach.Flag("rsqdg_armor",    p, true);
+		if (cat == 'Keys')     return RSQDG_Reach.Flag("rsqdg_keycards", p, true);
+		if (cat == 'Bonuses')  return RSQDG_Reach.Flag("rsqdg_bonuses",  p, true);
 		return true;
 	}
 
