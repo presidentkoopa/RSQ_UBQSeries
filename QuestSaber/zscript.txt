@@ -520,7 +520,7 @@ class UBQS_SaberBase : Weapon abstract
 		// in the world, which would make the hand beam silently unavailable in exactly the configuration
 		// it is most useful in -- a world hilt with a zero-lag beam on it.
 		// The FindPSprite half is what lets A_UBGlow blank a layer already up the moment the slider hits 0.
-		if (invoker.UF("ubqs_hand_glow", 0.0) > 0.01 || player.FindPSprite(invoker.GlowLayer())) A_UBGlow(f);
+		if (invoker.UF("ubqs_hand_glow", 1.0) > 0.01 || player.FindPSprite(invoker.GlowLayer())) A_UBGlow(f);
 		// THE PSPRITE DRAWS NOTHING WHILE THE SABER IS IN THE WORLD -- but the LAYER STAYS ALIVE.
 		// A_WeaponReady, A_Raise and A_Lower drive the whole ready / draw / holster handshake through this
 		// psprite, and PoseTick reads its y back out for the draw-and-holster rotation, so deleting the
@@ -560,7 +560,7 @@ class UBQS_SaberBase : Weapon abstract
 		// drawn AFTER both sabers (layers are drawn in order; the off hand's saber is layer 1000000), so a glow
 		// can never black out a blade drawn after it (the owner, 10-01)
 		int gl = invoker.GlowLayer();
-		double str = invoker.UF("ubqs_hand_glow", 0.0);   // its OWN 0-1 strength, not the world beam's
+		double str = invoker.UF("ubqs_hand_glow", 1.0);   // its OWN 0-1 strength, not the world beam's
 		if (!player.FindPSprite(gl))
 		{
 			if (str <= 0.01) return;
@@ -1036,7 +1036,7 @@ class UBQS_SaberBase : Weapon abstract
 			{
 				// only ever raised back from 0: the glow layer owns its own alpha (ubqs_hand_glow) and
 				// must not be stamped to 1 here on every tic it is held at half strength.
-				psp.alpha = (k == 0) ? 1.0 : clamp(UF("ubqs_hand_glow", 0.0), 0.0, 1.0);
+				psp.alpha = (k == 0) ? 1.0 : clamp(UF("ubqs_hand_glow", 1.0), 0.0, 1.0);
 			}
 		}
 	}
@@ -1505,7 +1505,7 @@ class UBQS_SaberBase : Weapon abstract
 	// just after, in the same tic, off these same four reads.
 	bool WorldUp()
 	{
-		if (UInt("ubqs_world_saber", 1) == 0) return false;
+		if (UInt("ubqs_world_saber", 0) == 0) return false;
 		if (!owner || !owner.player || !owner.player.PlayInVR) return false;
 		if (owner.health <= 0) return false;
 		return (bOffhandWeapon ? owner.OffhandPos : owner.AttackPos) != (0, 0, 0);
@@ -1657,7 +1657,7 @@ class UBQS_SaberBase : Weapon abstract
 	}
 	private void BladeGlow(Vector3 base, Vector3 dir, double len, Vector3 pom)
 	{
-		double str = UF("ubqs_blade_glow", 0.6);
+		double str = UF("ubqs_blade_glow", 0.0);
 		// retracted (or off): no glow at all -- it comes back fresh, so nothing sweeps in from where it was
 		// A LOCK BRINGS THIS ONE UP whatever ubqs_blade_glow says, because it is the half of the swap
 		// that looks right when the blades are crossed. 0.6 is its designed strength.

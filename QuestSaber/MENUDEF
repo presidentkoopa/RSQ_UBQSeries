@@ -145,7 +145,7 @@ OptionString "UBQS_P_Size"
 OptionString "UBQS_P_Look"
 {
 	"ubqs_glow_quality 1 ubqs_lights 1 ubqs_glow_dots 0 ubqs_trail_steps 2 ubqs_trail_life 6 ubqs_clash_fx 0.5 ubqs_hand_glow 0 ubqs_blade_glow 0.6 ubqs_glow_width 1.2 ubqs_flash 1 ubqs_glow_motionfade 1 ubqs_glow_fade_deg0 200.0 ubqs_glow_fade_deg1 500.0 ubqs_glow_fade_widen 0.25", "Quest"
-	"ubqs_glow_quality 3 ubqs_lights 1 ubqs_glow_dots 0 ubqs_trail_steps 2 ubqs_trail_life 6 ubqs_clash_fx 1.0 ubqs_hand_glow 0.0 ubqs_blade_glow 0.6 ubqs_glow_width 1.2 ubqs_flash 1 ubqs_glow_motionfade 1 ubqs_glow_fade_deg0 200.0 ubqs_glow_fade_deg1 500.0 ubqs_glow_fade_widen 0.25", "Standard"
+	"ubqs_glow_quality 3 ubqs_lights 1 ubqs_glow_dots 0 ubqs_trail_steps 2 ubqs_trail_life 6 ubqs_clash_fx 1.0 ubqs_hand_glow 1.0 ubqs_blade_glow 0.0 ubqs_glow_width 1.2 ubqs_flash 1 ubqs_glow_motionfade 1 ubqs_glow_fade_deg0 200.0 ubqs_glow_fade_deg1 500.0 ubqs_glow_fade_widen 0.25", "Standard"
 	"ubqs_glow_quality 4 ubqs_lights 3 ubqs_glow_dots 0 ubqs_trail_steps 4 ubqs_trail_life 12 ubqs_clash_fx 2 ubqs_hand_glow 1 ubqs_blade_glow 0.6 ubqs_glow_width 1.2 ubqs_flash 2 ubqs_glow_motionfade 1 ubqs_glow_fade_deg0 200.0 ubqs_glow_fade_deg1 500.0 ubqs_glow_fade_widen 0.25", "PC VR"
 	"ubqs_glow_quality 3 ubqs_lights 1 ubqs_glow_dots 0 ubqs_trail_steps 2 ubqs_trail_life 10 ubqs_clash_fx 1.0 ubqs_hand_glow 0 ubqs_blade_glow 0.6 ubqs_glow_width 1 ubqs_flash 1 ubqs_glow_motionfade 1 ubqs_glow_fade_deg0 150 ubqs_glow_fade_deg1 450 ubqs_glow_fade_widen 0.35", "Film"
 }

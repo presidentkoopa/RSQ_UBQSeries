@@ -11,7 +11,7 @@ user int     ubqs_throw_plane   = 0;
 user int     ubqs_throw_double  = 1;
 user float   ubqs_throw_min     = 1.5;
 user float   ubqs_contact       = 3.5;
-user float   ubqs_blade_glow    = 0.6;
+user float   ubqs_blade_glow    = 0.0;    // the WORLD beam strength: off by default (owner 10-29: the sprite-layer blade is the saber)
 user float   ubqs_glow_width    = 1.2;
 user int     ubqs_blade_glow_color = -1;
 user int     ubqs_glow_quality  = 3;      // world glow: 1 low, 2 med, 3 high, 4 ultra
@@ -20,7 +20,7 @@ user float   ubqs_glow_lead     = 1.0;     // how much of its lag to lead (1 = a
 user int     ubqs_glow_dots     = 0;      // the old soft dots inside the glow shell
 user int     ubqs_glow_motionfade = 1;    // fast swings: the white core fades, the halo widens
 user bool    ubqs_blade_tube    = false;  // the solid blade tube in the hand (off: the glow is the blade)
-user bool    ubqs_world_saber   = true;   // the whole saber drawn in the world as one actor (0: the old psprite hilt)
+user bool    ubqs_world_saber   = false;  // the whole saber drawn in the world as one actor (0: the psprite hilt -- the default, owner 10-29)
 user float   ubqs_glow_overlap_core = 0.5;  // (b54) the core starts this far below the mouth: its fade-in length
 user float   ubqs_glow_overlap_halo = 1.5;  // (b54) the halo likewise -- longer, because it is wider
 user float   ubqs_contact_hilt  = 0.75;
@@ -76,7 +76,7 @@ server float ubqs_jump_power    = 1.0;
 // ubqs_throw_min and ubqs_force_gesture; the contact family stays user, beside ubqs_contact.
 
 // -- WHICH SABER IS DRAWN: the hand beam and the world beam, both kept, both switchable --
-user float   ubqs_hand_glow         = 0.0;      // the beam as a HUD layer from the controller: cannot lag (0 off)
+user float   ubqs_hand_glow         = 1.0;      // the beam as a HUD layer from the controller: cannot lag -- ON by default (owner 10-29)
 user float   ubqs_size_off          = -1.0;     // the off hand's own blade length (-1 the same as the main hand)
 user float   ubqs_beam_shift        = 0.0;      // the WORLD beam starts this far along the blade: fitting another hilt
 
