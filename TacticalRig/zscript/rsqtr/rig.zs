@@ -156,16 +156,16 @@ class RSQTR_Rig : EventHandler
 
 	// ---- the saber spots ------------------------------------------------------------
 	// The saber classes this player owns that belong at place r. ONE SPOT PER SABER (the owner,
-	// 10-27): the main saber's is the left one for a right-handed player (the home spot), the
-	// second saber's the right one; swapped when left-handed. Found by class name so the saber
+	// 10-27): the main saber's is on the main hand's side (the home spot, SaberHome), the
+	// second saber's on the off hand's side (10-29; it was cross-draw). Found by class name so the saber
 	// need not be loaded. The main saber is also listed on a hip with rsqtr_saber_hip.
 	// Gun holsters hold what was put there (Content), not a list.
 	static void Owned(PlayerPawn pmo, int r, out Array<String> into)
 	{
 		into.Clear();
 		if (!pmo || !pmo.player) return;
-		int home = RSQTR_Body.LeftHanded() ? RSQTR_Region.SABER_R : RSQTR_Region.SABER_L;
-		int away = home == RSQTR_Region.SABER_L ? RSQTR_Region.SABER_R : RSQTR_Region.SABER_L;
+		int home = SaberHome();
+		int away = SaberAway();
 		for (let it = pmo.Inv; it; it = it.Inv)
 		{
 			let w = Weapon(it);
@@ -207,6 +207,12 @@ class RSQTR_Rig : EventHandler
 		if (bySel) { String bn = bySel.GetClassName(); return bn; }
 		return cls;
 	}
+
+	// EACH SABER ON ITS OWN HAND'S SIDE (the owner, 10-29: "saber holsters seem to be swapped"):
+	// the main saber hangs on the main hand's side, the second saber on the off hand's side.
+	// Until 10-29 they were cross-draw (main saber on the left hip for a right-handed player).
+	static int SaberHome() { return RSQTR_Body.LeftHanded() ? RSQTR_Region.SABER_L : RSQTR_Region.SABER_R; }
+	static int SaberAway() { return RSQTR_Body.LeftHanded() ? RSQTR_Region.SABER_R : RSQTR_Region.SABER_L; }
 
 	static bool IsSecondSaber(Weapon w)
 	{
@@ -654,12 +660,10 @@ class RSQTR_Rig : EventHandler
 				double d = RSQTR_Body.RoomMetres(hp, RegionAt(pmo, i));
 				if (d <= RegionRadius(p, i) && d < best) { best = d; r = i; }
 			}
-			// THE ENGINE'S STEADYING IS NOT A REACH. An off hand within half a metre
-			// of the gun with its grip held is holding the gun steady, not a holster.
-			if (h == 1 && r >= 0 && gripDown[n * 2 + 1]
-				&& RSQTR_Body.RoomMetres(pmo.OffhandPos, pmo.AttackPos) < STEADY_RANGE
-				&& CVarOn("vr_two_handed_weapons"))
-				r = -1;
+			// A HAND GRIPPING IN A HOLSTER COMES FIRST (the owner, 10-29: "when hands are gripping in
+			// holsters they should take precedent over everything"). Until 10-29 an off hand within
+			// half a metre of the gun with grip held was read as the engine's two-hand steadying and
+			// the holster was ignored; now the holster wins. Other mods yield through "rig.busy".
 			if (r != hoverR[h])
 			{
 				if (r >= 0 && buzzCool[h] <= 0) { RSQTR_Buzzer.Start(pmo, h, 0.18, 3); buzzCool[h] = 10; }
@@ -798,7 +802,7 @@ class RSQTR_Rig : EventHandler
 		let mainW = p.ReadyWeapon;
 		if (h == 0 && mainW && IsSaber(mainW) && !IsSecondSaber(mainW))
 		{
-			int home = RSQTR_Body.LeftHanded() ? RSQTR_Region.SABER_R : RSQTR_Region.SABER_L;
+			int home = SaberHome();
 			bool itsOwn = r == home || ((r == 0 || r == 1) && Flag("rsqtr_saber_hip", p, false));
 			if (!itsOwn && spotEmpty)
 			{
@@ -806,6 +810,14 @@ class RSQTR_Rig : EventHandler
 				RSQTR_Buzzer.Start(pmo, h, 0.55, 5);
 				return;
 			}
+		}
+		// EACH HAND ITS OWN SABER HOLSTER (the owner, 10-29: "offhand grip needs to store and retrieve
+		// into its own hand, mainhand grip needs to do the same"). The main saber's holster answers
+		// the main hand only, the second saber's the off hand only; the other hand there does nothing.
+		if (IsSaberRegion(r) && ((r == SaberHome() && h != 0) || (r == SaberAway() && h != 1)))
+		{
+			RSQTR_Buzzer.Start(pmo, h, 0.12, 2);
+			return;
 		}
 		// THE SECOND SABER'S HOLSTER: the saber itself takes it out to the off hand or puts it
 		// back (its ubqs_dual_out / ubqs_dual_in, the same thing its Dual key does).

@@ -4329,6 +4329,7 @@ class UBQS_Force : Inventory
 		int bits = 0;
 		if (forceHand) bits = BT_OFFHANDATTACK | BT_OFFHANDALTATTACK;
 		else if (off is "UBQS_SaberOff" && IV("ubqs_force_gestures", 1) && !UBQS_SaberBase(off).merged) bits = BT_OFFHANDALTATTACK;
+		else if (FistOff(p)) bits = BT_OFFHANDALTATTACK;
 		bool raw = bits != 0 && (p.cmd.buttons & bits);
 		// RSQ_ACCESSIBILITY (UBQS_A11y). The Off-Hand Modifier held: the modifier itself holds the Force up,
 		// read from the main hand (OffPos / OffAim). Hold to Toggle: a press of the Force trigger latches it
@@ -4381,6 +4382,22 @@ class UBQS_Force : Inventory
 		ForceJump(p);     // ubqs_force_jump is the only gate -- see ForceJump
 	}
 
+	// THE FORCE IN AN OFF-HAND FIST (the owner, 10-29: "force powers in offhand fist when mainhand saber
+	// is on"). With the saber in the main hand and a fist in the off hand -- Brutal Doom VR's RSQ_Hands,
+	// Doom's Fist or anything named a fist -- the off hand's ALT trigger is the Force (pull, choke,
+	// push), exactly as with the second saber. Its main trigger stays the fist's punch: RSQ_Hands reads
+	// only BT_OFFHANDATTACK (BD22_VR-Reloaded 1.99x zscript/rsq/hands.zs, parsed), so alt is free.
+	static bool FistOff(PlayerInfo p)
+	{
+		if (!p || !(p.ReadyWeapon is "UBQS_Saber")) return false;
+		let off = p.OffhandWeapon;
+		if (!off || off is "UBQS_SaberBase" || off is "UBQS_ForceHand") return false;
+		if (off is "Fist") return true;
+		String n = off.GetClassName();
+		n = n.MakeLower();
+		return n == "rsq_hands" || n.IndexOf("fist") >= 0;
+	}
+
 	// ---- READING THE HAND ----------------------------------------------------------------------------------
 	private void Gesture()
 	{
@@ -4420,7 +4437,7 @@ class UBQS_Force : Inventory
 	{
 		if (!owner || !owner.player || owner.health <= 0 || !IV("ubqs_force", 1) || !UBQS_A11y.OneHand()) return;
 		let off = owner.player.OffhandWeapon;
-		bool forceOut = off is "UBQS_ForceHand" || (off is "UBQS_SaberOff" && !UBQS_SaberBase(off).merged);
+		bool forceOut = off is "UBQS_ForceHand" || (off is "UBQS_SaberOff" && !UBQS_SaberBase(off).merged) || FistOff(owner.player);
 		if (!forceOut || gripped && code != 5) return;
 		if (code == 3 && down) Push(OffPos(), (OffAim() + ViewFwd()).Unit());
 		else if (code == 4 && down) Pull(OffPos(), (OffAim() + ViewFwd()).Unit());
