@@ -48,6 +48,7 @@ OptionMenu wr_Options
 	StaticText ""
 	StaticText "Master", gold
 	Option "Weapon wheel",              "wr_wheel_mode",   "wr_WheelMode"
+	Option "Either hand picks",         "wr_either_hand",  "OnOff"
 
 	StaticText ""
 	StaticText "Behaviour", gold

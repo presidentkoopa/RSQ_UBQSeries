@@ -249,9 +249,17 @@ class wr_BB : EventHandler
 	// right, v top to bottom) -- REMA's AimBillboard, same rules.
 	static int, Vector2 AimBillboard(Vector3 start, Vector3 dir, double maxDist = 0)
 	{
-		let b = Get(); if (!b) return 0, (0, 0);
+		int id; Vector2 uv; double t;
+		[id, uv, t] = AimBillboardT(start, dir, maxDist);
+		return id, uv;
+	}
+
+	// The same, with how far along the ray the hit is (0 on a miss). RSQ's own, for the beams.
+	static int, Vector2, double AimBillboardT(Vector3 start, Vector3 dir, double maxDist = 0)
+	{
+		let b = Get(); if (!b) return 0, (0, 0), 0;
 		double dl = dir.Length();
-		if (dl <= 0) return 0, (0, 0);
+		if (dl <= 0) return 0, (0, 0), 0;
 		dir /= dl;
 		int best = 0; double bestT = maxDist > 0 ? maxDist : 1e30; Vector2 bestUV = (0, 0);
 		for (int i = 0; i < b.mList.Size(); i++)
@@ -271,22 +279,7 @@ class wr_BB : EventHandler
 			bestT = t; best = r.id;
 			bestUV = ((ac + hw) / (hw * 2), (hh - dn) / (hh * 2));
 		}
-		if (level.maptime % 35 == 0 && CVar.FindCVar('wr_debug').GetBool())
-		{
-			int nh = 0; double nd = 1e30; Vector3 nc = (0,0,0);
-			for (int i = 0; i < b.mList.Size(); i++)
-			{
-				let r = b.mList[i];
-				if (!b.hittable(r)) continue;
-				nh++;
-				Vector3 c; double hw, hh; [c, hw, hh] = b.resolve(r, start);
-				Vector3 rel = c - start; double along = rel dot dir; double off = (rel - dir * along).Length();
-				if (off < nd) { nd = off; nc = c; }
-			}
-			Console.Printf("WRQAIM org=(%.1f %.1f %.1f) dir=(%.2f %.2f %.2f) hittable=%d nearestOff=%.1f at (%.1f %.1f %.1f) best=%d",
-				start.x, start.y, start.z, dir.x, dir.y, dir.z, nh, nd, nc.x, nc.y, nc.z, best);
-		}
-		return best, bestUV;
+		return best, bestUV, best ? bestT : 0;
 	}
 
 	// Point versus billboard: the nearest whose face the point is within maxRange of and inside
@@ -753,11 +746,11 @@ class wr_VR play
 	// REMA: level.ForceVRLaser / SetVRLaserRange -- the engine's laser, drawn on demand and
 	// stopped at a range the script gives it (the engine's trace cannot see billboards). Here
 	// it is the ring's own beam: a thin quad from the hand.
-	static void ForceVRLaser(bool on, int hand = -1)
+	static void ForceVRLaser(bool on, int hand = -1, bool both = false)
 	{
 		let h = wr_VRState.Get(); if (!h) return;
-		h.mLaserOn = on; h.mLaserHand = (hand == 1) ? 1 : 0;
-		if (!on) h.hideBeam();
+		h.mLaserOn = on; h.mLaserHand = (hand == 1) ? 1 : 0; h.mBoth = on && both;
+		if (!on) h.hideBeams();
 	}
 	static void SetVRLaserRange(double range, int hand = -1)
 	{
@@ -776,46 +769,65 @@ class wr_VRState : EventHandler
 	bool   mFroze;
 	bool   mLaserOn;
 	int    mLaserHand;
+	bool   mBoth;            // RSQ: the other hand shows a dimmer beam too (either-hand picking)
 	double mLaserRange;
-	Actor  mBeam;
+	Actor  mBeam[2];
 
 	static wr_VRState Get() { return wr_VRState(EventHandler.Find("wr_VRState")); }
 
-	void hideBeam() { if (mBeam) mBeam.bInvisible = true; }
+	void hideBeams() { for (int i = 0; i < 2; i++) if (mBeam[i]) mBeam[i].bInvisible = true; }
 
 	override void WorldTick()
 	{
-		if (!mLaserOn) { hideBeam(); return; }
+		if (!mLaserOn) { hideBeams(); return; }
 		let mo = players[consoleplayer].mo;
 		if (!mo) return;
-		Vector3 org = wr_Rig.handPos(PlayerPawn(mo), mLaserHand);
-		Vector3 dir = wr_Rig.handDir(PlayerPawn(mo), mLaserHand);
-		double len = mLaserRange;
-		if (len <= 0)
+		for (int hand = 0; hand < 2; hand++)
 		{
-			// No card under it: run to whatever it hits, as the engine's laser would.
-			FLineTraceData t;
-			mo.LineTrace(atan2(dir.y, dir.x), 1024, -asin(clamp(dir.z, -1.0, 1.0)), TRF_THRUACTORS | TRF_ABSPOSITION, org.z, org.x, org.y, t);
-			len = (t.HitType != TRACE_HitNone) ? t.Distance : 1024;
+			bool active = (hand == mLaserHand);
+			if (!active && !mBoth) { if (mBeam[hand]) mBeam[hand].bInvisible = true; continue; }
+			Vector3 org = wr_Rig.handPos(PlayerPawn(mo), hand);
+			Vector3 dir = wr_Rig.handDir(PlayerPawn(mo), hand);
+			double len = active ? mLaserRange : 0;
+			if (!active)
+			{
+				// the idle hand's beam stops at whatever card it crosses, as the active one does
+				int id; Vector2 uv; double t;
+				[id, uv, t] = wr_BB.AimBillboardT(org, dir, 200);
+				len = t;
+			}
+			if (len <= 0)
+			{
+				// no card under it: run to whatever it hits, as the engine's laser would
+				FLineTraceData tr;
+				mo.LineTrace(atan2(dir.y, dir.x), 1024, -asin(clamp(dir.z, -1.0, 1.0)), TRF_THRUACTORS | TRF_ABSPOSITION, org.z, org.x, org.y, tr);
+				len = (tr.HitType != TRACE_HitNone) ? tr.Distance : 1024;
+			}
+			drawBeam(mo, hand, org, dir, len, active ? 0.8 : 0.3);
 		}
-		if (!mBeam)
+	}
+
+	private void drawBeam(Actor mo, int hand, Vector3 org, Vector3 dir, double len, double alpha)
+	{
+		if (!mBeam[hand])
 		{
-			mBeam = Actor.Spawn("wr_Beam", org);
-			if (!mBeam) return;
-			mBeam.A_ChangeModel("", 0, "", "", 0, "", "WRPLATE");
-			mBeam.SetShade("FF3030");
-			mBeam.A_SetRenderStyle(0.8, STYLE_AddStencil);
+			mBeam[hand] = Actor.Spawn("wr_Beam", org);
+			if (!mBeam[hand]) return;
+			mBeam[hand].A_ChangeModel("", 0, "", "", 0, "", "WRSTONE");
+			mBeam[hand].SetShade("FF3030");
 		}
-		mBeam.bInvisible = false;
+		let b = mBeam[hand];
+		b.A_SetRenderStyle(alpha, STYLE_AddStencil);
+		b.bInvisible = false;
 		// A ribbon along the ray, turned about it to face the eye.
 		Vector3 eye = (mo.pos.xy, mo.player.viewz);
 		Vector3 mid = org + dir * (len * 0.5);
 		Vector3 toEye = eye - mid;
 		Vector3 nrm = toEye - dir * (toEye dot dir);
 		if (nrm.Length() < 1e-6) nrm = (0, 0, 1);
-		mBeam.SetOrigin(mid, true);
-		wr_BB.OrientQuad(mBeam, nrm.Unit(), dir);
-		mBeam.scale = (len, 0.12);
+		b.SetOrigin(mid, true);
+		wr_BB.OrientQuad(b, nrm.Unit(), dir);
+		b.scale = (len, 0.12);
 	}
 
 	override void WorldUnloaded(WorldEvent e)
@@ -823,7 +835,7 @@ class wr_VRState : EventHandler
 		let p = players[consoleplayer];
 		if (mFroze) { p.cheats &= ~CF_TOTALLYFROZEN; mFroze = false; }
 		mLaserOn = false;
-		mBeam = null;
+		mBeam[0] = null; mBeam[1] = null;
 	}
 }
 

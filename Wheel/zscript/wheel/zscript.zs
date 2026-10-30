@@ -744,6 +744,9 @@ class wr_Rig : EventHandler
 		if (e.Name ~== "wr_toggle_off")  { if (blockOpen) return; toggle(preferredToggleHand(1)); return; }
 		if (e.Name ~== "wr_toggle_main") { if (blockOpen) return; toggle(preferredToggleHand(0)); return; }
 		if (e.Name ~== "wr_toggle")      { if (blockOpen) return; toggle(1); return; }
+		// RSQ: ONE BUTTON. Opens the ring in front of the preferred hand (main unless
+		// wr_toggle_prefer_hand says otherwise); with wr_either_hand on, both hands pick from it.
+		if (e.Name ~== "wr_toggle_any")  { if (blockOpen) return; toggle(preferredToggleHand(0)); return; }
 
 		// MODELSWAPPER MODEL CYCLE. Applies to whatever weapon is actually
 		// in that hand right now, wheel open or not -- there is no reason
@@ -906,6 +909,10 @@ class wr_Rig : EventHandler
 	// either key. The cost: moving an open ring to the OTHER hand isn't
 	// reachable while a preference is set -- which is the deliberately
 	// intended shape of "I always mean one hand", not a regression.
+	// RSQ: both hands point at and pick from the one ring (wr_either_hand, on by default).
+	// Off, it is REMA's wheel per hand: the hand that opened it is the only one that picks.
+	private bool eitherHand() const { return cv("wr_either_hand", 1.0) > 0.0; }
+
 	private int preferredToggleHand(int pressedHand) const
 	{
 		int pref = int(cv("wr_toggle_prefer_hand", -1.0));
@@ -945,6 +952,9 @@ class wr_Rig : EventHandler
 
 	private void toggle(int hand)
 	{
+		// RSQ: with either hand picking, the ring is not "that hand's" ring -- whichever bind
+		// is pressed while it is open closes it (or re-centres it, inside the window below).
+		if (mOpen && eitherHand()) hand = mRigHand;
 
 		if (mOpen && mRigHand == hand)
 		{
@@ -3461,7 +3471,7 @@ class wr_Rig : EventHandler
 			// that -- filtering on it would hide guns nothing has stowed.
 			// RSQ: no bHolsterHidden on QZD 17.3 (a REMA weapon flag); nothing is skipped.
 
-			if (held.bNoHandSwitch && held.bOffhandWeapon != (mRigHand == 1)) continue;
+			if (!eitherHand() && held.bNoHandSwitch && held.bOffhandWeapon != (mRigHand == 1)) continue;
 
 			into.Push(type);
 		}
@@ -7642,6 +7652,20 @@ class wr_Rig : EventHandler
 		// leaves along the barrel and a normal wrist movement already crosses it.
 		// Amplifying on top of that only breaks the one thing that makes a laser
 		// legible: that it goes where the gun is pointing.
+		// RSQ: EITHER HAND POINTS. The hand that has the beam keeps it while it is on a card
+		// (or touching one); when it is not, the other hand takes over the moment IT is. So
+		// two hands never fight over a card, and moving one hand onto the ring is all it takes.
+		if (eitherHand())
+		{
+			int other = (mPokeHand == 1) ? 0 : 1;
+			double tr = cv("wr_touch", 7.0) * cv("wr_scale", 1.0);
+			if (!handOnRing(pmo, mPokeHand, tr) && handOnRing(pmo, other, tr))
+			{
+				mPokeHand = other;
+				engineLaser(true);
+			}
+		}
+
 		Vector3 org = handPos(pmo, mPokeHand);
 
 		// Aim is one-to-one. There was an angular gain here and it is gone: it
@@ -7833,8 +7857,23 @@ class wr_Rig : EventHandler
 		// second beam clamped to the ring's distance. Naming the hand is also what
 		// gets a cursor onto an EMPTY off hand at all: the engine skips the laser
 		// for a hand with no weapon in it unless a script has claimed that hand.
-		wr_VR.ForceVRLaser(on, on ? mRigHand : -1);
+		// RSQ: on the POINTING hand; with either hand picking, the other hand shows a dimmer
+		// beam so it is plain that it can point too.
+		wr_VR.ForceVRLaser(on, on ? mPokeHand : -1, on && eitherHand());
 		if (!on) wr_VR.SetVRLaserRange(0);
+	}
+
+	// RSQ: is this hand's beam on a card, or its fingertip in one?
+	private bool handOnRing(PlayerPawn pmo, int hand, double touchR)
+	{
+		Vector3 o = handPos(pmo, hand), d = handDir(pmo, hand);
+		int h; Vector2 uv;
+		[h, uv] = wr_BB.AimBillboard(o, d, POINTER_RANGE);
+		if (h != 0) return true;
+		if (touchR <= 0.0) return false;
+		double td;
+		[h, uv, td] = wr_BB.TouchBillboard(o + d * mTouchReach, touchR);
+		return h != 0;
 	}
 
 	// Sound and haptics together, because they are one event.
@@ -8796,7 +8835,22 @@ class wr_Rig : EventHandler
 		mRebuildTics = 2;
 	}
 
+	// RSQ: the gun goes into the hand that picked it. A gun that only fits one hand
+	// (bNoHandSwitch) goes to that hand whichever hand pointed at it.
 	private void commit(PlayerPawn pmo)
+	{
+		if (eitherHand() && mPage == PAGE_WEAPONS)
+		{
+			int hand = mPokeHand;
+			Class<Weapon> want = HoveredClass();
+			let w = want ? Weapon(pmo.FindInventory(want)) : null;
+			if (w && w.bNoHandSwitch) hand = w.bOffhandWeapon ? 1 : 0;
+			mRigHand = hand;
+		}
+		commitAs(pmo);
+	}
+
+	private void commitAs(PlayerPawn pmo)
 	{
 		if (mPage == PAGE_INVENTORY) { commitInventory(pmo); return; }
 		if (mPage == PAGE_MODELS)    { commitModel(pmo);     return; }

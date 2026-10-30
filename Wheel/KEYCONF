@@ -29,6 +29,9 @@ addkeysection "RSQ Wheel" RSQWheel
 // mwheel and the dpad, the brackets are free, and these DO take. So the wheel
 // opens on [ and ] in VR and appears unbound on a desktop config -- which is
 // the right way round for a VR mod, but is not obvious from the file.
+// RSQ: one button for the ring both hands pick from (wr_either_hand).
+alias wr_toggle_any  "netevent wr_toggle_any"
+addmenukey "Wheel: open"  wr_toggle_any
 alias wr_toggle_off  "netevent wr_toggle_off"
 alias wr_toggle_main "netevent wr_toggle_main"
 addmenukey "Wheel: off hand"  wr_toggle_off

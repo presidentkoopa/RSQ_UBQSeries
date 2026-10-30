@@ -1,6 +1,6 @@
 version "4.10"
 // TEST ONLY (never ships): logs what the wheel is doing, through its public service, every 5 tics.
-//   WRQ <tic> ready=<class> open=<0|1> hover=<class> quads=<n> strips=<n> glyphs=<n>
+//   WRQ <tic> ready=<class> off=<class> open=<0|1> hover=<class> quads=<n> strips=<n> glyphs=<n>
 class wrq_Probe : EventHandler
 {
 	override void WorldTick()
@@ -22,8 +22,9 @@ class wrq_Probe : EventHandler
 			else if (n == "wr_BBQuad") { if (!a.bInvisible) quads++; }
 		}
 		let rw = players[consoleplayer].ReadyWeapon;
-		Console.Printf("WRQ %d ready=%s open=%d hover=%s quads=%d strips=%d frozen=%d",
-			level.maptime, rw ? rw.GetClassName() : 'none', open,
+		let ow = players[consoleplayer].OffhandWeapon;
+		Console.Printf("WRQ %d ready=%s off=%s open=%d hover=%s quads=%d strips=%d frozen=%d",
+			level.maptime, rw ? rw.GetClassName() : 'none', ow ? ow.GetClassName() : 'none', open,
 			hov ? hov.GetClassName() : 'none', quads, strips,
 			(players[consoleplayer].cheats & CF_TOTALLYFROZEN) ? 1 : 0);
 	}

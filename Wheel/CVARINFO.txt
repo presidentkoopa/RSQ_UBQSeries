@@ -44,6 +44,11 @@
 // default. Do not declare it twice.
 user int  wr_wheel_mode = 1;
 
+// RSQ: ONE RING, EITHER HAND. On: whichever hand points at (or reaches into) a card picks it, and
+// the gun goes into that hand; one bind (Wheel: open) raises it. Off: REMA's wheel per hand --
+// the hand you opened it with is the only one that points, and the gun goes there.
+user bool wr_either_hand = true;
+
 // SCALE: vr_vunits_per_meter is 34, so one map unit is about 3cm. Every default
 // below is written as a real-world distance first and converted, because the
 // first pass at this used flat-screen numbers and put the cards a metre off

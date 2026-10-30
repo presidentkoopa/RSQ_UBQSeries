@@ -15,7 +15,13 @@ IWAD=${IWAD:-$WHEEL/../../gamedata/freedoom2.wad}
 	MENUDEF.txt SNDINFO.txt MODELDEF.txt TEXTURES.txt CREDITS.txt zscript sounds models graphics sprites 2>/dev/null )
 ( cd "$HERE/probe" && rm -f "$B/probe.pk3" && zip -q -r -X "$B/probe.pk3" . )
 D="$B/shots/$NAME"; rm -rf "$D"; mkdir -p "$D"
-files=("$B/RSQ_Wheel.pk3"); for f in "$@"; do files+=("$(realpath "$f")"); done
+# BD=1 loads the owner's Brutal Doom order first, from the game data folder beside the IWAD:
+# brutal22test6 -> BD_VoxelPack -> BD22_VR-Reloaded_2_0_3h -> its 2.0.3ha hotfix, then the wheel.
+files=()
+if [ -n "${BD:-}" ]; then G="$(dirname "$IWAD")"
+	for f in brutal22test6.pk3 BD_VoxelPack.pk3 BD22_VR-Reloaded_2_0_3h.pk3 BD22_VR-Reloaded_2.0.3ha_hotfix.pk3; do files+=("$G/$f"); done
+fi
+files+=("$B/RSQ_Wheel.pk3"); for f in "$@"; do files+=("$(realpath "$f")"); done
 [ -z "${NOPROBE:-}" ] && files+=("$B/probe.pk3")
 rm -f "$B/logs/$NAME.log"
 QZ_DUMP_DIR="$D" QZ_RES=${QZ_RES:-200} EGL_PLATFORM=surfaceless LIBGL_ALWAYS_SOFTWARE=1 \
