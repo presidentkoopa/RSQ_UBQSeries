@@ -78,3 +78,23 @@ Graphic "WRD057", 14, 16 { Patch "STTNUM9", 0, 0 }
 Graphic "WRD045", 14, 16 { Patch "STTMINUS", 0, 0 }
 Graphic "WRD037", 14, 16 { Patch "STTPRCNT", 0, 0 }
 Graphic "WRDBLNK", 14, 16 { }
+Graphic "WRY048", 5, 6 { Patch "STYSNUM0", 0, 0 }
+Graphic "WRY049", 5, 6 { Patch "STYSNUM1", 0, 0 }
+Graphic "WRY050", 5, 6 { Patch "STYSNUM2", 0, 0 }
+Graphic "WRY051", 5, 6 { Patch "STYSNUM3", 0, 0 }
+Graphic "WRY052", 5, 6 { Patch "STYSNUM4", 0, 0 }
+Graphic "WRY053", 5, 6 { Patch "STYSNUM5", 0, 0 }
+Graphic "WRY054", 5, 6 { Patch "STYSNUM6", 0, 0 }
+Graphic "WRY055", 5, 6 { Patch "STYSNUM7", 0, 0 }
+Graphic "WRY056", 5, 6 { Patch "STYSNUM8", 0, 0 }
+Graphic "WRY057", 5, 6 { Patch "STYSNUM9", 0, 0 }
+Graphic "WRN048", 5, 6 { Patch "STGNUM0", 0, 0 }
+Graphic "WRN049", 5, 6 { Patch "STGNUM1", 0, 0 }
+Graphic "WRN050", 5, 6 { Patch "STGNUM2", 0, 0 }
+Graphic "WRN051", 5, 6 { Patch "STGNUM3", 0, 0 }
+Graphic "WRN052", 5, 6 { Patch "STGNUM4", 0, 0 }
+Graphic "WRN053", 5, 6 { Patch "STGNUM5", 0, 0 }
+Graphic "WRN054", 5, 6 { Patch "STGNUM6", 0, 0 }
+Graphic "WRN055", 5, 6 { Patch "STGNUM7", 0, 0 }
+Graphic "WRN056", 5, 6 { Patch "STGNUM8", 0, 0 }
+Graphic "WRN057", 5, 6 { Patch "STGNUM9", 0, 0 }

@@ -62,8 +62,28 @@ class wr_CompatModelSwapper
 	// FOUND (that hand currently has a bridged weapon), ARCHETYPE, PICK
 	// (0-based), COUNT (models on that archetype's shelf), DONOR (the
 	// currently-bound donor class name, cleaned for display).
-	static bool, string, int, int, string StateOf(int hand)
+	// RSQ: THE SERVICE FIRST. Stock QuestZDoom has no field reflection, so ModelSwapper is asked
+	// through its own RS_WeaponArchetypeService, by name: "weapon.archetype.hand" and
+	// "weapon.donor" (hand 0 main, 1 off), which it already answers. Today's ModelSwapper no longer
+	// publishes a shelf to pick from (its bridge note: "the wheel's reader finds no count and hides
+	// its page"), so this reports the model a hand's gun wears with a count of 0 -- the sheet's
+	// MODEL row shows it, and the Models page stays hidden.
+	private static play Service msService()
 	{
+		let it = ServiceIterator.Find("RS_WeaponArchetypeService");
+		return it.Next();
+	}
+
+	static play bool, string, int, int, string StateOf(int hand)
+	{
+		let svc = msService();
+		if (svc)
+		{
+			string donor = svc.GetString("weapon.donor", "", hand);
+			if (donor == "") return false, "", 0, 0, "";
+			return true, svc.GetString("weapon.archetype.hand", "", hand), 0, 0, CleanDonor(donor);
+		}
+
 		let h = handler();
 		if (!h) return false, "", 0, 0, "";
 
@@ -107,10 +127,10 @@ class wr_CompatModelSwapper
 	// hand: 0 = main, 1 = off.
 	static string NameAt(int hand, int index)
 	{
-		let h = handler();
-		if (!h || index < 0) return "";
-
+		if (index < 0) return "";
 		string joined = "";
+		let h = handler();
+		if (!h) return "";
 		if (!wr_Field.GetFieldString(h, (hand == 1) ? "mBridgeNamesOff" : "mBridgeNamesMain", joined))
 			return "";
 		if (joined.Length() == 0) return "";

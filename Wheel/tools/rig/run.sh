@@ -12,7 +12,7 @@ NAME=$1; SECS=$2; SCRIPT=$3; shift 3
 RIG=${QZ_RIG:-$WHEEL/../../rsq_weapondepot/tools/rig/bin}
 IWAD=${IWAD:-$WHEEL/../../gamedata/freedoom2.wad}
 ( cd "$WHEEL" && rm -f "$B/RSQ_Wheel.pk3" && zip -q -r -X "$B/RSQ_Wheel.pk3" zscript.txt MAPINFO.txt CVARINFO.txt KEYCONF \
-	MENUDEF.txt SNDINFO.txt MODELDEF.txt TEXTURES.txt CREDITS.txt zscript sounds models graphics sprites 2>/dev/null )
+	MENUDEF.txt SNDINFO.txt MODELDEF.txt TEXTURES.txt WRPALS.txt WRFONTS.txt CREDITS.txt zscript sounds models graphics sprites 2>/dev/null )
 ( cd "$HERE/probe" && rm -f "$B/probe.pk3" && zip -q -r -X "$B/probe.pk3" . )
 D="$B/shots/$NAME"; rm -rf "$D"; mkdir -p "$D"
 # BD=1 loads the owner's Brutal Doom order first, from the game data folder beside the IWAD:

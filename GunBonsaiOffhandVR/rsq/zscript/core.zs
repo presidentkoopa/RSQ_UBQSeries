@@ -240,6 +240,19 @@ class RSQ_MeleeUpgradeService : Service
 			if (a) return RSQM.LevelAny(a, uc);
 			return 0;
 		}
+		// RSQ Wheel's data card: one weapon's own Gun Bonsai level, and its progress toward the
+		// next in permille. -1 when that weapon has no record yet (never held).
+		if (request == "weapon.level" || request == "weapon.xp")
+		{
+			let w = Weapon(objectArg);
+			if (!w || !w.owner) return -1;
+			let stats = TFLV_PerPlayerStats.GetStatsFor(w.owner);
+			if (!stats) return -1;
+			let info = stats.GetInfoFor(w);
+			if (!info) return -1;
+			if (request == "weapon.level") return int(info.level);
+			return info.maxXP > 0 ? int(1000.0 * info.XP / info.maxXP) : 0;
+		}
 		if (request == "plevel")
 		{
 			// a player upgrade's level; objectArg = the pawn (the grab and the rig ask this)

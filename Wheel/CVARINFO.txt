@@ -49,6 +49,39 @@ user int  wr_wheel_mode = 1;
 // the hand you opened it with is the only one that points, and the gun goes there.
 user bool wr_either_hand = true;
 
+// RSQ: HOLD, POINT, RELEASE (the +wr_wheel bind, left thumbstick click by default). Held at least
+// wr_hold_tics, letting go picks the card under a hand, or closes the ring over nothing. A
+// shorter tap leaves the ring up. A second tap within wr_doubletap tics of a tap that opened it
+// closes it and puts the last pick's hand back on the gun it held before (0 turns that off).
+user int  wr_hold_tics = 9;
+
+// RSQ: the look, by name -- a palette from a WRPALS lump and a font set from a WRFONTS lump (see
+// those lumps and zscript/wheel/wr_q_look.zs). Any pk3 can add its own.
+user string wr_palette = "Standard";
+
+// RSQ: each card's tick on landing is shaped by the gun's weight (its slot): 0 is REMA's one tick
+// for every card, 1 full. wr_follow: turn more than this many degrees away from the ring and it
+// swings round to sit ahead again (0: it stays where it opened, as in REMA).
+user float wr_weight_feel = 1.0;
+user float wr_follow = 45.0;
+
+// RSQ: THE WRIST CARD. Bring a forearm up across your chest as if checking a watch (wrist in front of
+// your face, hand pointing across the body) and hold it wr_watch_dwell tics: that hand's gun shows
+// its card over the wrist. wr_watch_scale sizes it.
+user bool  wr_watch = true;
+// RSQ: with either hand picking, a different gun's card under the other hand's beam turns the sheet
+// into a side-by-side comparison of the two.
+user bool  wr_twohand_compare = true;
+// RSQ: cards are things. With a hand in a card, snap it back toward you to pull that gun out into
+// the hand (wr_pull_speed); snap a hand holding a gun toward the ring to throw it back in -- the
+// hand takes its empty-hand weapon (wr_throw_speed). Map units per tic (1.5 is about 1.5 m/s); 0 off.
+user float wr_pull_speed = 1.5;
+user float wr_throw_speed = 2.6;
+user int   wr_watch_dwell = 8;
+user float wr_watch_scale = 0.6;
+user string wr_fontset = "StatusBar";
+user int  wr_doubletap = 10;
+
 // SCALE: vr_vunits_per_meter is 34, so one map unit is about 3cm. Every default
 // below is written as a real-world distance first and converted, because the
 // first pass at this used flat-screen numbers and put the cards a metre off
@@ -468,9 +501,16 @@ user int wr_subcards_grace = 6;
 // evw_pickupmodel, which defaults to 0. That is too many other people's
 // switches between a setting and a result for this to be on by default, or to
 // be worth chasing further.
-user bool  wr_models      = false;
+user bool  wr_models      = true;    // RSQ: on -- the BD pickup voxels are the best picture a card has
 user float wr_model_scale = 0.16;
 user float wr_model_lift  = 3.0;
+// RSQ: what a card's picture is, with wr_models on. 0: the gun as it lies in the world -- its
+// pickup voxel (BD_VoxelPack), pickup model or sprite. 1: the gun as you hold it -- the weapon
+// set's held model (BD22 VR-Reloaded's meshes), from its Ready frame. wr_model_spin: how fast a
+// pickup turns on its card (degrees per tic); a held model sways instead. 0 holds both still.
+user int   wr_model_kind  = 0;
+user float wr_model_spin  = 1.5;
+user float wr_model_scale_held = 0.05;   // a held mesh's size on its card (no size script can read)
 
 
 // A dark quad behind each card. Not decoration -- the ring floats in front of

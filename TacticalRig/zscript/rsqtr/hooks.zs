@@ -18,6 +18,9 @@
 //   GetInt("rig.drawtic", "", 0, 0, pawn)   level.maptime of that player's last draw from
 //                                           a holster this map, or -1 (RSQ_Score's Quick Draw)
 //   GetString("rig.drawn", "", 0, 0, pawn)  the weapon class that draw brought up, or ""
+//   GetInt("rig.holster", "<weapon class>", 0, 0, pawn)  the region that gun is holstered in, or -1
+//   GetString("rig.regionname", "", region)              that region's name ("Left hip" ...)
+// (RSQ Wheel badges a holstered gun's card with where it hangs.)
 // These two are synced play state (the draw is a network event), so they answer for any
 // player, not only the console player.
 class RSQTR_Hooks play
@@ -74,11 +77,20 @@ class RSQTR_RigService : Service
 			while (ds = dit.Next()) if (ds.GetInt("door.holding", "", h, 0, null) >= 0) return 1;
 			return 0;
 		}
+		if (request == "rig.holster")
+		{
+			int n = who ? who.PlayerNumber() : consoleplayer;
+			if (n < 0 || n >= MAXPLAYERS || stringArg == "") return -1;
+			for (int r = 0; r < RSQTR_Region.N; r++)
+				if (rig.lastPut[n * RSQTR_Region.N + r] ~== stringArg) return r;
+			return -1;
+		}
 		return -1;
 	}
 
 	override String GetString(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
 	{
+		if (request == "rig.regionname") return (intArg >= 0 && intArg < RSQTR_Region.N) ? RSQTR_Region.NAMES[intArg] : "";
 		let rig = RSQTR_Rig.Get();
 		let who = PlayerPawn(objectArg);
 		if (!rig || !who || request != "rig.drawn") return "";

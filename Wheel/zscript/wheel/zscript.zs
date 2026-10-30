@@ -307,6 +307,7 @@ class wr_Rig : EventHandler
 	Vector3    mLightLastPos;     // where it was, so a graced tic has somewhere to sit
 	color      mLightLastHue;
 	Array<Actor> mModels;         // a real weapon model per card, when enabled
+	Array<double> mModelFit;      // RSQ: per model, the scale that fits it on its card
 
 	// ONE GROUP PER CARD, so a card is an object rather than six loose quads.
 	//
@@ -668,7 +669,7 @@ class wr_Rig : EventHandler
 	// no mods at all. Models is ModelSwapper's shelf for the gun in your
 	// hand, and exists ONLY when that mod is loaded (see pageCount).
 	const PAGE_WEAPONS   = 0;
-	const PAGE_INVENTORY = 1;
+	const PAGE_INVENTORY = 1;    // RSQ: removed; kept as a number so nothing else renumbers
 	const PAGE_MODELS    = 2;
 
 	// Two pages, or three when ModelSwapper is loaded. Asked every time
@@ -692,7 +693,9 @@ class wr_Rig : EventHandler
 		// ring comes up completely empty with no explanation and no fallback.
 		// Audit finding #38.
 		[ms, arche, pick, cnt, donor] = wr_CompatModelSwapper.StateOf((mRigHand == 1) ? 1 : 0);
-		return ms ? 3 : 2;
+		// RSQ: the inventory page is gone (WHEEL_WORK_QUEUE.md item 1, the owner: "i will remove
+		// the inventory wheel"). Weapons, plus ModelSwapper's shelf when it is loaded.
+		return (ms && cnt > 0) ? 2 : 1;   // a shelf to pick from, not just a model worn
 	}
 
 	override void NetworkProcess(ConsoleEvent e)
@@ -747,6 +750,11 @@ class wr_Rig : EventHandler
 		// RSQ: ONE BUTTON. Opens the ring in front of the preferred hand (main unless
 		// wr_toggle_prefer_hand says otherwise); with wr_either_hand on, both hands pick from it.
 		if (e.Name ~== "wr_toggle_any")  { if (blockOpen) return; toggle(preferredToggleHand(0)); return; }
+		// RSQ: HOLD, POINT, RELEASE. The +wr_wheel bind sends its press and its release. Held,
+		// the ring is up while the button is down and the release picks whatever is under a hand
+		// (or just closes it). Tapped, the ring stays up and works as before. Tapped twice, the
+		// last pick's hand goes back to the gun it held before (wr_doubletap).
+		if (e.Name ~== "wr_press")       { if (blockOpen && !mOpen) return; pressWheel(e.Args[0] != 0); return; }
 
 		// MODELSWAPPER MODEL CYCLE. Applies to whatever weapon is actually
 		// in that hand right now, wheel open or not -- there is no reason
@@ -772,8 +780,11 @@ class wr_Rig : EventHandler
 			// get lost, and a hard stop at either end would leave the
 			// forward-only case (no alt-fire bound at all) unable to come
 			// back at all.
+			// RSQ: with the inventory page gone the pages are WEAPONS and, with ModelSwapper,
+			// MODELS -- so paging is a swap between the two, or nothing with one page.
 			int n = pageCount();
-			mPage = (mPage + e.Args[0] + n) % n;
+			if (n < 2) return;
+			mPage = (mPage == PAGE_WEAPONS) ? PAGE_MODELS : PAGE_WEAPONS;
 
 			// A fan belongs to the page that opened it.
 			collapseSlot();
@@ -909,6 +920,62 @@ class wr_Rig : EventHandler
 	// either key. The cost: moving an open ring to the OTHER hand isn't
 	// reachable while a preference is set -- which is the deliberately
 	// intended shape of "I always mean one hand", not a regression.
+	// RSQ: the hold / tap / double-tap bind. See NetworkProcess "wr_press".
+	int    mPressTic;        // when the button went down
+	bool   mPressOpened;     // this press opened the ring (so its release may pick)
+	int    mTapTic;          // when the last quick tap opened the ring, for the double tap
+	Weapon mPrevWeap[2];     // what each hand held before its last pick off the ring
+	int    mLastPickHand;
+
+	private void pressWheel(bool down)
+	{
+		let pmo = players[consoleplayer].mo;
+		if (!pmo) return;
+		int now = level.maptime;
+		if (down)
+		{
+			mPressTic = now;
+			if (mOpen)
+			{
+				// a second quick press on a ring a quick tap just opened: back to the last gun
+				int dbl = int(cv("wr_doubletap", 10.0));
+				bool doubled = dbl > 0 && mTapTic > 0 && now - mTapTic <= dbl;
+				mPressOpened = false;
+				closeRig(doubled);
+				if (doubled) swapToPrevious(pmo);
+				mTapTic = 0;
+				return;
+			}
+			openRig(preferredToggleHand(0));
+			mPressOpened = mOpen;
+			return;
+		}
+		// released
+		if (!mPressOpened || !mOpen) { mPressOpened = false; return; }
+		mPressOpened = false;
+		int held = now - mPressTic;
+		if (held >= int(cv("wr_hold_tics", 9.0)))
+		{
+			// a card under a hand takes it; the sheet, or nothing, just closes
+			bool onCard = mHovered != 0 && mHovered != mSheetHit && (mPage != PAGE_WEAPONS || HoveredClass() != null);
+			if (onCard) commit(pmo);
+			if (mOpen) closeRig();
+			mTapTic = 0;
+		}
+		else mTapTic = mPressTic;   // a quick tap: the ring stays up, and a second tap may follow
+	}
+
+	private void swapToPrevious(PlayerPawn pmo)
+	{
+		int hand = mLastPickHand;
+		let w = mPrevWeap[hand];
+		if (!w || w.Owner != pmo) return;
+		let now = (hand == 1) ? pmo.player.OffhandWeapon : pmo.player.ReadyWeapon;
+		equipInstantly(pmo, w, hand);
+		mPrevWeap[hand] = now;
+		feedback(Sound("wristrig/lock"), 0.5, 60);
+	}
+
 	// RSQ: both hands point at and pick from the one ring (wr_either_hand, on by default).
 	// Off, it is REMA's wheel per hand: the hand that opened it is the only one that picks.
 	private bool eitherHand() const { return cv("wr_either_hand", 1.0) > 0.0; }
@@ -993,6 +1060,7 @@ class wr_Rig : EventHandler
 		mRigHand    = hand;
 		mPokeHand   = hand;
 		mHaveAnchor = false;
+		mTwoCmp     = false;
 		mPage       = PAGE_WEAPONS;
 
 		gatherWeapons(pmo);
@@ -1454,6 +1522,30 @@ class wr_Rig : EventHandler
 		return liTookBar;
 	}
 
+	// RSQ: THE SERIES, ASKED BY NAME -- each row only when that mod is loaded and has an answer.
+	//   RSQ TacticalRig     where this gun is holstered (RSQTR_RigService "rig.holster")
+	//   RSQ Gun Bonsai VR   its Gun Bonsai level and progress to the next (RSQ_MeleeUpgradeService)
+	private void seriesRows(Weapon w)
+	{
+		let pmo = players[consoleplayer].mo;
+		Service svc;
+		let it = ServiceIterator.Find("RSQTR_RigService");
+		while (svc = it.Next())
+		{
+			int r = svc.GetInt("rig.holster", w.GetClassName(), 0, 0, pmo);
+			if (r >= 0) { sheetRow("HOLSTER  " .. svc.GetString("rig.regionname", "", r), 0xC8A060); break; }
+		}
+		it = ServiceIterator.Find("RSQ_MeleeUpgradeService");
+		while (svc = it.Next())
+		{
+			int lv = svc.GetInt("weapon.level", "", 0, 0, w);
+			if (lv < 0) continue;
+			int pm = svc.GetInt("weapon.xp", "", 0, 0, w);
+			sheetRow(String.Format("BONSAI LV %d  %d%%", lv, clamp(pm / 10, 0, 100)), 0x70D060);
+			break;
+		}
+	}
+
 	private void buildSheetRows(Weapon w)
 	{
 		// RESTRUNG, NOT REBUILT. SetBillboardText retexts a live BB_TEXT and
@@ -1562,6 +1654,8 @@ class wr_Rig : EventHandler
 		// are routinely given headroom over it, so a full magazine would print
 		// as a fraction of something it never reaches. A count with no
 		// denominator is true; a fraction against the wrong ceiling is not.
+		seriesRows(w);   // RSQ: what the other Radiant Silvergun mods know about this gun
+
 		if (w.Ammo1 == null && w.Ammo2 == null)
 		{
 			sheetRow("AMMO          --", SHEET_DIM);
@@ -2122,8 +2216,10 @@ class wr_Rig : EventHandler
 			{
 				bool msOn; string msArche, msDonor; int msPick, msCount;
 				[msOn, msArche, msPick, msCount, msDonor] = wr_CompatModelSwapper.StateOf(msHand);
-				if (msOn)
+				if (msOn && msCount > 0)
 					sheetRow(String.Format("MODEL %d/%d  %s", msPick + 1, msCount, msDonor), SHEET_MEAS);
+				else if (msOn)
+					sheetRow("MODEL  " .. msDonor, SHEET_MEAS);   // RSQ: ModelSwapper's service names the model, not a shelf
 			}
 		}
 
@@ -3251,45 +3347,10 @@ class wr_Rig : EventHandler
 	// beside it, not a rewrite of it.
 	private void gatherWeapons(PlayerPawn pmo)
 	{
-		if (mPage == PAGE_INVENTORY) { gatherInventory(pmo); return; }
 		if (mPage == PAGE_MODELS)    { gatherModels(pmo);    return; }
 		gatherWeaponCards(pmo);
 	}
 
-	// EVERY USABLE ITEM YOU ARE CARRYING, by the engine's own bInvBar flag --
-	// the same flag that decides what the vanilla inventory bar shows. So this
-	// needs no per-mod support at all: vanilla artifacts, Heretic/Hexen
-	// artifacts and every modded item that expects to appear in an inventory
-	// bar all arrive here for free.
-	//
-	// Weapons are excluded even though they are Inventory. They have their own
-	// page, and a mod that flags its guns for the bar would otherwise show them
-	// twice.
-	private void gatherInventory(PlayerPawn pmo)
-	{
-		// NO FANS ON THIS PAGE. mFansEnabled is written in exactly one place --
-		// gatherWeaponCards -- so a ring opened on the weapons page with a big
-		// loadout carried it true straight across a page flip. The dwell trigger
-		// is gated on mFansEnabled and not on mPage, so resting on an INVENTORY
-		// card unfolded a fan of weapon cards out of it: both non-weapon gatherers
-		// push slot 0 for every card, so expandSlot resolved slot 0's weapons.
-		// Pressing fire on one of those is then swallowed and dropped, so the
-		// trigger is consumed and nothing happens. Audit finding #23 / #28.
-		mFansEnabled = false;
-
-		for (Inventory it = pmo.Inv; it != null; it = it.Inv)
-		{
-			if (!it.bInvBar || it.Amount <= 0) continue;
-			if (it is "Weapon") continue;
-
-			mTypes.Push(it.GetClass());
-			mCardLabel.Push("");
-			mCardSlots.Push(0);
-			mCardColor.Push(COLOR_IDLE);
-			mSlotCount.Push(1);
-			mSlotAllDry.Push(false);
-		}
-	}
 
 	// MODELSWAPPER'S SHELF FOR THE GUN IN YOUR HAND.
 	//
@@ -3979,7 +4040,11 @@ class wr_Rig : EventHandler
 		if (on && !cvBool("wr_bullettime", true)) return;
 		if (on == mBtOn) return;
 
-		EventHandler.SendNetworkEvent("bt_activate");
+		// RSQ: RSQ SlowMo when it is loaded -- its own on/off events, which it holds until told
+		// otherwise -- and BulletTimeX's toggle (REMA's route) when it is not.
+		let sm = ServiceIterator.Find("RSQSM_Service");
+		if (sm.Next()) EventHandler.SendNetworkEvent(on ? "rsm_on" : "rsm_off");
+		else EventHandler.SendNetworkEvent("bt_activate");
 		mBtOn = on;
 	}
 
@@ -5851,6 +5916,25 @@ class wr_Rig : EventHandler
 			}
 		}
 
+		// RSQ: THE RING STAYS IN VIEW (wr_follow). REMA leaves it where it opened; turned well away
+		// from it (more than wr_follow degrees), it swings round the head to sit ahead again,
+		// easing, so turning your body to face a threat does not leave your guns behind you.
+		double follow = cv("wr_follow", 0.0);
+		if (follow > 0.0 && mHaveAnchor)
+		{
+			Vector3 eye = (pmo.pos.xy, pmo.player.viewz);
+			Vector2 rel = mAnchor.xy - eye.xy;
+			double ringYaw = atan2(rel.y, rel.x);
+			double off = Actor.deltaangle(ringYaw, pmo.angle);
+			if (abs(off) > follow)
+			{
+				double turn = (off - (off > 0 ? follow : -follow)) * 0.2;
+				double c = cos(turn), s2 = sin(turn);
+				mAnchor = (eye.x + rel.x * c - rel.y * s2, eye.y + rel.x * s2 + rel.y * c, mAnchor.z);
+				mAnchorYaw += turn;
+			}
+		}
+
 		Vector3 wrist = mAnchor;
 
 		// Every one of these is guarded. GetCVar returns null for a cvar the
@@ -6275,7 +6359,7 @@ class wr_Rig : EventHandler
 			// the same fade as everything else on the card.
 			if (i < mModels.Size() && mModels[i] != null)
 			{
-				double ms = hModelScale * pulse;
+				double ms = hModelScale * pulse * (i < mModelFit.Size() ? mModelFit[i] : 1.0);
 
 				// Through a local: SetOrigin wants a modifiable value and an
 				// expression is not one.
@@ -6283,6 +6367,13 @@ class wr_Rig : EventHandler
 				mModels[i].SetOrigin(mp, true);
 				mModels[i].Scale = (ms, ms);
 				mModels[i].A_SetRenderStyle(cardAlpha, STYLE_Translucent);
+				// RSQ: a pickup turns slowly on its card, as pickups do in a showcase; a held gun
+				// is shown side-on, barrel to the right (wr_model_spin 0 holds both still)
+				double spin = cv("wr_model_spin", 1.5);
+				if (cv("wr_model_kind", 0.0) > 0.0) mModels[i].angle = pmo.angle + 90 + (spin > 0 ? sin(level.maptime * spin) * 15 : 0);
+				else mModels[i].angle = pmo.angle + 180 + level.maptime * spin + i * 40;
+				// the picture replaces the flat icon rather than sitting on top of it
+				if (i < mIcons.Size()) fade(mIcons[i], 0);
 			}
 
 			// The held-weapon mark, pinned to the card's top-right corner.
@@ -7294,13 +7385,15 @@ class wr_Rig : EventHandler
 
 	// Three columns, laid out every tic so the card tracks the hand rather
 	// than hanging where the pickup was first seen.
-	private void layoutCompare(PlayerPawn pmo)
+	private void layoutCompare(PlayerPawn pmo, bool atRing = false)
 	{
 		if (mCmpPlate == 0) return;
 
 		double viewYaw = pmo.angle;
 		Vector3 right  = (cos(viewYaw - 90), sin(viewYaw - 90), 0);
 		Vector3 centre = handPos(pmo, mInspectHand) + (0, 0, cv("wr_rise", 2.0));
+		// RSQ: the two-hand comparison stands where the sheet does, in the middle of the ring
+		if (atRing && mHaveAnchor) centre = mAnchor + (0, 0, cv("wr_rise", 2.0));
 		Vector3 lift   = (cos(viewYaw + 180), sin(viewYaw + 180), 0) * LABEL_LIFT;
 		double  yaw    = viewYaw + 180;
 		double  tilt   = PANEL_TILT;
@@ -7747,6 +7840,10 @@ class wr_Rig : EventHandler
 		}
 
 		updateHover(hit);
+		tickTwoHand(pmo);   // RSQ: a card under each hand -> the two side by side
+		if (!mOpen) return;
+		tickPhysical(pmo);  // RSQ: pull a card out of the ring, throw a gun back into it
+		if (!mOpen) return;
 
 		// The beam, and the dot where it lands.
 		//
@@ -7861,6 +7958,167 @@ class wr_Rig : EventHandler
 		// beam so it is plain that it can point too.
 		wr_VR.ForceVRLaser(on, on ? mPokeHand : -1, on && eitherHand());
 		if (!on) wr_VR.SetVRLaserRange(0);
+	}
+
+	// RSQ: TWO HANDS, TWO CARDS. With either hand picking, the beam belongs to one hand; when the
+	// other hand's beam rests on a different gun's card, the sheet gives way to REMA's comparison
+	// card -- the picking hand's gun against the other one, line by line, better values marked --
+	// for as long as both stay put. wr_twohand_compare 0 turns it off.
+	bool          mTwoCmp;
+	Class<Weapon> mTwoA, mTwoB;
+	int           mTwoBuilt;
+
+	private void tickTwoHand(PlayerPawn pmo)
+	{
+		Weapon a, b;
+		if (eitherHand() && cv("wr_twohand_compare", 1.0) > 0.0 && mPage == PAGE_WEAPONS && mHovered != 0)
+		{
+			int other = (mPokeHand == 1) ? 0 : 1;
+			int oid; Vector2 ouv;
+			[oid, ouv] = wr_BB.AimBillboard(handPos(pmo, other), handDir(pmo, other), POINTER_RANGE);
+			if (oid != 0 && oid != mHovered && oid != mSheetHit)
+			{
+				Class<Weapon> ca = HoveredClass();
+				int keep = mHovered; mHovered = oid;
+				Class<Weapon> cb = HoveredClass();
+				mHovered = keep;
+				if (ca && cb && ca != cb) { a = Weapon(pmo.FindInventory(ca)); b = Weapon(pmo.FindInventory(cb)); }
+			}
+		}
+		if (!a || !b)
+		{
+			if (mTwoCmp)
+			{
+				mTwoCmp = false;
+				clearCompare();
+				if (mSheetPlate == 0) { buildSheet(); mSheetValid = false; }
+			}
+			return;
+		}
+		bool due = level.maptime - mTwoBuilt >= SHEET_TICK;
+		if (!mTwoCmp || a.GetClass() != mTwoA || b.GetClass() != mTwoB || due)
+		{
+			if (!mTwoCmp)
+			{
+				clearSheet();
+				feedback(Sound("wristrig/tick"), 0.25, 30);
+				if (cvBool("wr_debug", false)) Console.Printf("RSQ Wheel: comparing %s with %s (tic %d)", a.GetClassName(), b.GetClassName(), level.maptime);
+			}
+			mTwoCmp = true; mTwoA = a.GetClass(); mTwoB = b.GetClass(); mTwoBuilt = level.maptime;
+			if (mCmpPlate == 0) buildCompare();
+			fillCompare(a, b);
+		}
+		layoutCompare(pmo, true);
+	}
+
+	// RSQ: CARDS ARE THINGS. Two gestures with the ring up, both by hand speed:
+	//   PULL A CARD OUT -- with a hand in a weapon card, snap the hand back toward you and the gun
+	//     comes with it, into that hand (wr_pull_speed).
+	//   THROW A GUN BACK -- snap the hand holding a gun toward the ring, not at a card, and the gun
+	//     files itself away: that hand goes back to its empty-hand weapon (slot 1 -- fists, or the
+	//     off hand's own fist in a VR set) and the gun's card bursts (wr_throw_speed).
+	// Speeds are map units per tic along the hand's travel toward or away from the ring's centre
+	// (34 units a metre: 1.5 is about 1.5 m/s). 0 turns either off.
+	Vector3 mPrevHand[2];
+	bool    mHavePrev[2];
+	int     mInCard[2];       // the weapon card a hand was in, kept a few tics after it leaves
+	int     mInCardTics[2];
+	int     mGestureCool;
+
+	private void tickPhysical(PlayerPawn pmo)
+	{
+		if (mPage != PAGE_WEAPONS || !mHaveAnchor) return;
+		if (mGestureCool > 0) mGestureCool--;
+		double touchR = cv("wr_touch", 7.0) * cv("wr_scale", 1.0);
+		for (int h = 0; h < 2; h++)
+		{
+			Vector3 hp = handPos(pmo, h);
+			Vector3 v = mHavePrev[h] ? hp - mPrevHand[h] : (0, 0, 0);
+			mPrevHand[h] = hp; mHavePrev[h] = true;
+
+			// which weapon card this hand is in (the touch test, from its fingertip)
+			int id; Vector2 uv; double td;
+			[id, uv, td] = wr_BB.TouchBillboard(hp + handDir(pmo, h) * mTouchReach, touchR);
+			if (id != 0 && id != mSheetHit) { mInCard[h] = id; mInCardTics[h] = 6; }
+			else if (mInCardTics[h] > 0 && --mInCardTics[h] == 0) mInCard[h] = 0;
+
+			if (mGestureCool > 0) continue;
+			Vector3 toRing = mAnchor - hp;
+			double dist = toRing.Length();
+			if (dist < 1) continue;
+			double toward = v dot (toRing / dist);
+			if (cvBool("wr_debug", false) && (abs(toward) > 0.5 || level.maptime % 10 == 0))
+				Console.Printf("RSQ Wheel hand %d: in card %d (touch %d, %.1f), toward ring %.2f u/tic, ring %.0f away, reach %.0f",
+					h, mInCard[h], id, td, toward, dist, mTouchReach);
+
+			double pull = cv("wr_pull_speed", 1.5);
+			if (pull > 0 && mInCard[h] != 0 && -toward > pull)
+			{
+				int keep = mHovered;
+				mHovered = mInCard[h];
+				Class<Weapon> want = HoveredClass();
+				if (want)
+				{
+					mPokeHand = h;
+					commit(pmo);
+					mGestureCool = 12;
+					return;
+				}
+				mHovered = keep;
+			}
+
+			double thr = cv("wr_throw_speed", 2.6);
+			// not while reaching for a card: a hand on its way to one points at it, so a throw
+			// is a snap toward the ring with the hand's beam on no card at all
+			int aimed = 0;
+			if (thr > 0 && mInCard[h] == 0 && toward > thr && id == 0)
+				[aimed, uv] = wr_BB.AimBillboard(hp, handDir(pmo, h), POINTER_RANGE);
+			if (thr > 0 && mInCard[h] == 0 && toward > thr && id == 0 && aimed == 0)
+			{
+				if (fileAway(pmo, h)) { mGestureCool = 12; return; }
+			}
+		}
+	}
+
+	// The gun in that hand goes back on the ring; the hand takes its empty-hand weapon.
+	private bool fileAway(PlayerPawn pmo, int h)
+	{
+		Weapon held = (h == 1) ? pmo.player.OffhandWeapon : pmo.player.ReadyWeapon;
+		if (!held) return false;
+		Weapon bare = null;
+		// the off hand's own fist in a VR weapon set (BD22 VR-Reloaded's RSQ_Hands) first
+		if (h == 1)
+		{
+			String fcn = "RSQ_Hands";        // a run-time lookup: null when that set is not loaded
+			class<Inventory> fc = fcn;
+			if (fc) bare = Weapon(pmo.FindInventory(fc));
+		}
+		if (!bare)
+		{
+			Array<Class<Weapon> > ones;
+			slotWeapons(pmo, 1, ones);
+			for (int i = 0; i < ones.Size() && !bare; i++)
+			{
+				let w = Weapon(pmo.FindInventory(ones[i]));
+				if (!w || w == held) continue;
+				if (w.bNoHandSwitch && w.bOffhandWeapon != (h == 1)) continue;
+				bare = w;
+			}
+		}
+		if (!bare || bare == held) return false;
+		// the burst on the gun's own card, so you see where it went
+		for (int i = 0; i < mTypes.Size() && i < mCardColor.Size(); i++)
+		{
+			if (mTypes[i] && held is mTypes[i])
+			{
+				sparks(cardPos(i), sparkColor(mCardColor[i]), 0.8);
+				break;
+			}
+		}
+		mPrevWeap[h] = held; mLastPickHand = h;   // a double tap brings it back
+		equipInstantly(pmo, bare, h);
+		feedback(Sound("wristrig/lock"), 0.6, 70);
+		return true;
 	}
 
 	// RSQ: is this hand's beam on a card, or its fingertip in one?
@@ -8369,7 +8627,7 @@ class wr_Rig : EventHandler
 		for (int i = 0; i < mTypes.Size(); ++i)
 		{
 			let a = Actor.Spawn(mTypes[i], pmo.Pos, NO_REPLACE);
-			if (a == null) { mModels.Push(null); continue; }
+			if (a == null) { mModels.Push(null); mModelFit.Push(1.0); continue; }
 
 			// bSpecial is the one that matters: an Inventory actor in the world
 			// is picked up on touch, and a prop that vanishes into your backpack
@@ -8394,8 +8652,51 @@ class wr_Rig : EventHandler
 			a.Scale = (sc, sc);
 			a.SetStateLabel('Spawn');
 
+			// RSQ: WHICH PICTURE (wr_model_kind). 0, the gun as it lies in the world: its pickup
+			// state, so a pickup VOXEL (BD_VoxelPack) or pickup model is what the card shows.
+			// 1, the gun as you hold it: its Ready frame, which is what a VR weapon set's held
+			// MODELDEF hangs on (BD22 VR-Reloaded's meshes), frozen there -- no action function
+			// runs, since a weapon's Ready code expects a player behind it.
+			double fit = 1.0;
+			if (cv("wr_model_kind", 0.0) > 0.0)
+			{
+				State rs = a.FindState('Ready');
+				if (rs) rs = holdFrame(rs);
+				if (rs) { a.SetState(rs, true); a.tics = -1; }
+				// a held mesh has no size script can read; its own setting (wr_model_scale_held)
+				fit = cv("wr_model_scale_held", 0.05) / max(sc, 0.001);
+			}
+			else
+			{
+				// FITTED TO THE CARD. A pickup voxel is built to its sprite's size, so the sprite's
+				// longest side, scaled to most of the card's width, sizes the voxel or model the
+				// same way -- a BFG and a pistol both fill their cards. wr_model_scale stays a
+				// multiplier on that (its default, 0.16, is "as fitted").
+				TextureID t; bool fl; Vector2 ss;
+				if (a.CurState) [t, fl, ss] = a.CurState.GetSpriteTexture(0);
+				if (t.IsValid())
+				{
+					Vector2 d = TexMan.GetScaledSize(t);
+					double longest = max(d.x, d.y);
+					if (longest > 1) fit = (panelWNow() * 0.85 / longest) / 0.16;
+				}
+			}
+
 			mModels.Push(a);
+			mModelFit.Push(fit);
 		}
+	}
+
+	// RSQ: the first frame of a Ready sequence that actually draws something (a weapon set
+	// often starts Ready on a zero-length TNT1 or a jump), within a few steps.
+	private static State holdFrame(State st)
+	{
+		for (int i = 0; i < 8 && st; i++)
+		{
+			if (st.ValidateSpriteFrame() && st.sprite != Actor.GetSpriteIndex('TNT1')) return st;
+			st = st.NextState;
+		}
+		return null;
 	}
 
 	private void clearCardModels()
@@ -8405,6 +8706,7 @@ class wr_Rig : EventHandler
 			if (mModels[i] != null) mModels[i].Destroy();
 		}
 		mModels.Clear();
+		mModelFit.Clear();
 	}
 
 	// Guarded so a zero handle is a no-op rather than a call into nothing --
@@ -8636,7 +8938,24 @@ class wr_Rig : EventHandler
 
 		// Landing on a card, not leaving one. Firing on the way OUT as well would
 		// double every crossing, and sweeping the ring would sound like a zip.
-		if (hit != 0) feedback(Sound("wristrig/move"), 0.22, 30);
+		// RSQ: EACH GUN HAS ITS OWN WEIGHT IN THE HAND. The tick on landing is shaped by the gun
+		// under it -- a light short tick on a pistol, a long heavy one on a BFG -- so the ring
+		// can be learned by feel. Weight is the slot (1 light .. 9 heavy), the one size measure
+		// every weapon set shares. wr_weight_feel 0 gives every card REMA's one tick.
+		if (hit != 0)
+		{
+			double amp = 0.22, ms = 30;
+			double wf = cv("wr_weight_feel", 1.0);
+			mHovered = hit;
+			let hw = HoveredWeapon(players[consoleplayer].mo);
+			if (wf > 0 && hw)
+			{
+				double k = clamp((slotOf(hw) - 1) / 8.0, 0.0, 1.0);
+				amp = 0.14 + 0.40 * k * wf;
+				ms  = 18 + 50 * k * wf;
+			}
+			feedback(Sound("wristrig/move"), amp, ms);
+		}
 
 		mHovered   = hit;
 		mHoverTics = 0;
@@ -8785,22 +9104,6 @@ class wr_Rig : EventHandler
 		return null;
 	}
 
-	// USE IT, the same thing the vanilla inventory bar's own use key does.
-	// Items that want a hand rather than a use (a flashlight, say) are a
-	// per-item exception to add later; the plain case is the default because
-	// it is what nearly every item in nearly every mod actually wants.
-	private void commitInventory(PlayerPawn pmo)
-	{
-		int index = cardIndexOf(mHovered);
-		if (index < 0 || index >= mTypes.Size()) return;
-
-		let it = pmo.FindInventory(mTypes[index]);
-		if (it == null) { closeRig(); return; }
-
-		pmo.UseInventory(it);
-		feedback(Sound("wristrig/lock"), 0.45, 60);
-		closeRig();
-	}
 
 	// SET THE MODEL, through ModelSwapper's own bridge. Its Cycle() steps by
 	// one; picking card N means stepping (N - current), which lands exactly
@@ -8852,7 +9155,14 @@ class wr_Rig : EventHandler
 
 	private void commitAs(PlayerPawn pmo)
 	{
-		if (mPage == PAGE_INVENTORY) { commitInventory(pmo); return; }
+		// RSQ: remember what this hand held, for the double tap
+		if (mPage == PAGE_WEAPONS)
+		{
+			int h = (mRigHand == 1) ? 1 : 0;
+			let had = (h == 1) ? pmo.player.OffhandWeapon : pmo.player.ReadyWeapon;
+			Class<Weapon> want = HoveredClass();
+			if (had && (!want || !(had is want))) { mPrevWeap[h] = had; mLastPickHand = h; }
+		}
 		if (mPage == PAGE_MODELS)    { commitModel(pmo);     return; }
 
 		// Same resolution HoveredClass() answers for anyone asking from

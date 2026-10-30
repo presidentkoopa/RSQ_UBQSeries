@@ -1,0 +1,12 @@
+// RSQ Wheel font sets (zscript/wheel/wr_q_look.zs). Any pk3 can carry its own WRFONTS (and the
+// TEXTURES cells it names); pick one with wr_fontset.
+//
+//     fontset <Name> { words <cell prefix> <cell w> <cell h>  numbers <cell prefix> <cell w> <cell h> }
+//
+// Cells are TEXTURES graphics named <prefix><3-digit character code> (WRG065 is 'A').
+// tools/gen_assets.py writes the cells below from the IWAD's own lumps.
+
+fontset StatusBar  { words WRG 9 7   numbers WRD 14 16 }   // DoomFont words, the big red numerals
+fontset SmallGold  { words WRG 9 7   numbers WRY 5 6 }     // the ammo table's small yellow numerals
+fontset SmallGrey  { words WRG 9 7   numbers WRN 5 6 }     // the arms panel's small grey numerals
+fontset DoomFont   { words WRG 9 7   numbers WRG 9 7 }     // DoomFont for everything

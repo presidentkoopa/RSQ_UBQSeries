@@ -73,6 +73,11 @@ T.append('Graphic "WRSTONE", 32, 8 { Patch "STBAR", -60, -6 }')
 for dch, lump in [(str(i), 'STTNUM%d' % i) for i in range(10)] + [('-', 'STTMINUS'), ('%', 'STTPRCNT')]:
     T.append('Graphic "WRD%03d", 14, 16 { Patch "%s", 0, 0 }' % (ord(dch), lump))
 T.append('Graphic "WRDBLNK", 14, 16 { }')
+# The status bar's small numerals, for the font sets that use them: yellow (STYSNUM, the ammo
+# table's) and grey (STGNUM, the arms panel's), 4x6 glyphs in 5x6 cells.
+for pfx, lump in (('WRY', 'STYSNUM'), ('WRN', 'STGNUM')):
+    for i in range(10):
+        T.append('Graphic "%s%03d", 5, 6 { Patch "%s%d", 0, 0 }' % (pfx, 48 + i, lump, i))
 open(os.path.join(ROOT, 'TEXTURES.txt'), 'w').write('\n'.join(T) + '\n')
 
 # The palette's luminance, so a translation can recolour a WAD graphic by brightness (what

@@ -83,7 +83,7 @@ echo "built pk3/RSQ_Miniboss.pk3"
 # Wheel: REMA's weapon wheel; its explicit include list (tools/ and the work queue stay out).
 cd "$HUB/Wheel"
 rm -f "$OUT/RSQ_Wheel.pk3"
-zip -q -r -X "$OUT/RSQ_Wheel.pk3" zscript.txt MAPINFO.txt CVARINFO.txt KEYCONF MENUDEF.txt SNDINFO.txt MODELDEF.txt TEXTURES.txt CREDITS.txt README.md zscript sounds models sprites
+zip -q -r -X "$OUT/RSQ_Wheel.pk3" zscript.txt MAPINFO.txt CVARINFO.txt KEYCONF MENUDEF.txt SNDINFO.txt MODELDEF.txt TEXTURES.txt WRPALS.txt WRFONTS.txt CREDITS.txt README.md zscript sounds models sprites
 echo "built pk3/RSQ_Wheel.pk3"
 
 # RSQ_GunBonsaiVR (the Gun Bonsai Offhand VR patch): everything but the build script, notes, tools and git files (its build.ps1).

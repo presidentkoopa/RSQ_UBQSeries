@@ -1,0 +1,76 @@
+// RSQ Wheel palettes (zscript/wheel/wr_q_look.zs). Any pk3 can carry its own WRPALS; pick one with
+// wr_palette (Options -> Radiant Silvergun Options -> RSQ Wheel -> Palette, or type its name).
+//
+//     palette <Name> { <role> <RRGGBB> ... }
+//
+// Roles: idle hover label sub beam_idle dry ammo ammo_dry alt_bar mark_mine mark_other slotnum stack
+//        slot1 .. slot9  sheet_bg sheet_bg2 sheet_accent sheet_text sheet_dim sheet_hot sheet_cool
+//        sheet_meas sheet_lock delta_up delta_down laser
+// A role left out keeps the ring's own colour.
+
+// The ring as REMA coloured it.
+palette Standard { }
+
+// Doom's own HUD colours: the status bar's red numerals, its gold, the key cards.
+palette Doom
+{
+	idle        3A3430
+	hover       E0B040
+	label       C8C0B0
+	dry         4A1C1C
+	ammo        B8A880
+	ammo_dry    D03020
+	slot1       8C8070
+	slot2       D0B048
+	slot3       C86C30
+	slot4       5878C8
+	slot5       C83820
+	slot6       9058B8
+	slot7       48A048
+	slot8       C04878
+	slot9       E0D8C0
+	sheet_text  E8E0C8
+	sheet_dim   988C78
+	sheet_accent B83020
+	laser       FF2010
+}
+
+// Hell: embers and bone.
+palette Hell
+{
+	idle        2C1410
+	hover       FF8020
+	label       E8D0B0
+	slot1       806050
+	slot2       E09030
+	slot3       E06020
+	slot4       C04030
+	slot5       F04020
+	slot6       A03050
+	slot7       C0A040
+	slot8       D05040
+	slot9       F0C080
+	sheet_accent E05020
+	sheet_text  F0DCC0
+	laser       FF6000
+}
+
+// Tech base: Doom 2's computer greens and blues.
+palette Tech
+{
+	idle        1C2A28
+	hover       60F0A0
+	label       C0E8D8
+	slot1       708880
+	slot2       90E070
+	slot3       60C0A0
+	slot4       50A0E0
+	slot5       40E0C0
+	slot6       8090F0
+	slot7       60F060
+	slot8       A0C0F0
+	slot9       C0F0E0
+	sheet_accent 40C090
+	sheet_text  D8F0E8
+	laser       30FF80
+}

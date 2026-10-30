@@ -5,10 +5,11 @@
 // ORDER MATTERS. WorldTick runs front to back, InputProcess back to front (events.cpp).
 //   wr_Rig         the ring. Swallows +attack/+use in InputProcess while a card is under the hand.
 //   wr_StatEvents  the only writer of the kill/shot/accuracy ledger the data card reads.
+//   wr_Watch       the wrist card (check your watch), before wr_BB lays its quads out.
 //   wr_BB          lays out every billboard quad AFTER wr_Rig has moved them this tic.
 //   wr_VRState     the pointing beam and the freeze, after wr_Rig for the same reason.
 
 GameInfo
 {
-	AddEventHandlers = "wr_Rig", "wr_StatEvents", "wr_BB", "wr_VRState"
+	AddEventHandlers = "wr_Rig", "wr_StatEvents", "wr_Watch", "wr_BB", "wr_VRState"
 }

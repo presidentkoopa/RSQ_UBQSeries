@@ -28,6 +28,28 @@ AddOptionMenu "RSQ_RSOptions"
 }
 // ----------------------------------------------------------------------------------------------------
 
+OptionString "wr_Palettes"
+{
+	"Standard", "Standard"
+	"Doom",     "Doom"
+	"Hell",     "Hell"
+	"Tech",     "Tech"
+}
+
+OptionString "wr_FontSets"
+{
+	"StatusBar", "Status bar numerals"
+	"SmallGold", "Small gold numerals"
+	"SmallGrey", "Small grey numerals"
+	"DoomFont",  "DoomFont only"
+}
+
+OptionValue "wr_ModelKinds"
+{
+	0, "Pickup (voxel)"
+	1, "Held model"
+}
+
 OptionValue "wr_WheelMode"
 {
 	1, "On"
@@ -49,6 +71,20 @@ OptionMenu wr_Options
 	StaticText "Master", gold
 	Option "Weapon wheel",              "wr_wheel_mode",   "wr_WheelMode"
 	Option "Either hand picks",         "wr_either_hand",  "OnOff"
+	Option "  Two hands compare",       "wr_twohand_compare", "OnOff"
+	Slider "Pull a card out (speed, 0 off)", "wr_pull_speed", 0.0, 4.0, 0.1, 1
+	Slider "Throw a gun back (speed, 0 off)", "wr_throw_speed", 0.0, 5.0, 0.1, 1
+	Slider "Hold to pick (tics)",       "wr_hold_tics",    3, 35, 1, 0
+	Slider "Double tap: last gun (tics)", "wr_doubletap",  0, 20, 1, 0
+	Slider "Feel each gun's weight",    "wr_weight_feel",  0.0, 1.0, 0.1, 1
+	Slider "Ring follows past (degrees, 0 off)", "wr_follow", 0, 120, 5, 0
+
+	StaticText ""
+	StaticText "Wrist card", gold
+	StaticText "Check your watch: the gun in that hand shows its card.", "DarkGray"
+	Option "Wrist card",                "wr_watch",        "OnOff"
+	Slider "  Hold the pose (tics)",    "wr_watch_dwell",  2, 30, 1, 0
+	Slider "  Size",                    "wr_watch_scale",  0.5, 2.0, 0.1, 1
 
 	StaticText ""
 	StaticText "Behaviour", gold
@@ -81,6 +117,13 @@ OptionMenu wr_Options
 	Option "Block the engine's native VR wheels", "wr_suppress_native_wheel", "OnOff"
 
 	StaticText ""
+
+	StaticText ""
+	StaticText "Look", gold
+	Option "Palette",                   "wr_palette",      "wr_Palettes"
+	TextField "  or a palette by name",  "wr_palette"
+	Option "Font",                      "wr_fontset",      "wr_FontSets"
+	TextField "  or a font set by name", "wr_fontset"
 
 	StaticText ""
 	StaticText "Cards", gold
@@ -128,6 +171,9 @@ OptionMenu wr_Options
 	// Spawns the weapon own class as an inert prop so the engine resolves its
 	// MODELDEF. Real geometry with real stereo depth, not a picture of a gun.
 	Option "Real models on cards",      "wr_models",       "OnOff"
+	Option "  Show",                    "wr_model_kind",   "wr_ModelKinds"
+	Slider "  Turn speed",              "wr_model_spin",   0.0, 6.0, 0.25, 2
+	Slider "  Held model size",         "wr_model_scale_held", 0.01, 0.30, 0.01, 2
 	Slider "  Model size",              "wr_model_scale",  0.02, 1.0, 0.02, 2
 	Slider "  Model stand-off",         "wr_model_lift",   0.0, 12.0, 0.5, 1
 	StaticText "REMA only -- canvases do not draw in VR on QuestZDoom", "DarkGray"

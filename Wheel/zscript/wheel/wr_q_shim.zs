@@ -173,17 +173,17 @@ class wr_BB : EventHandler
 	static void SetBillboardFont(int id, int slot) {}
 
 	// Width a single line draws at this height: DoomFont cells are 9 x 7, one per character.
-	static clearscope double MeasureBillboardText(string text, double height, int fontSlot = 0)
+	static double MeasureBillboardText(string text, double height, int fontSlot = 0)
 	{
-		return text.CodePointCount() * height * CELL_ASPECT;
+		return text.CodePointCount() * height * (AllNumeral(text) ? wr_Look.NumAspect() : wr_Look.WordAspect());
 	}
-	static clearscope Vector2 MeasureBillboardTextBlock(string text, double height, int fontSlot = 0)
+	static Vector2 MeasureBillboardTextBlock(string text, double height, int fontSlot = 0)
 	{
 		Array<string> lines;
 		text.Split(lines, "\n");
 		int widest = 0;
 		for (int i = 0; i < lines.Size(); i++) widest = max(widest, lines[i].CodePointCount());
-		return (widest * height * CELL_ASPECT, max(1, lines.Size()) * height);
+		return (widest * height * (AllNumeral(text) ? wr_Look.NumAspect() : wr_Look.WordAspect()), max(1, lines.Size()) * height);
 	}
 
 	static void MoveBillboard(int id, Vector3 pos)
@@ -461,7 +461,7 @@ class wr_BB : EventHandler
 	void Tint(Actor a, color c, double alpha, bool recolour)
 	{
 		a.A_SetRenderStyle(alpha, STYLE_Translucent);
-		if (recolour) a.Translation = TransFor(c);
+		if (recolour) a.Translation = TransFor(wr_Look.Col(c));   // the palette in force (wr_q_look.zs)
 	}
 
 	private void setSkin(Actor a, string tex)
@@ -488,8 +488,10 @@ class wr_BB : EventHandler
 	{
 		text = text.MakeUpper();
 		bool num = AllNumeral(text);
-		double aspect = num ? NUM_ASPECT : CELL_ASPECT;
-		string pfx = num ? "WRD" : "WRG", blank = num ? "WRDBLNK" : "WRGBLNK";
+		// the font set in force (wr_q_look.zs): which cells draw words and which draw numbers
+		double aspect = num ? wr_Look.NumAspect() : wr_Look.WordAspect();
+		string pfx = num ? wr_Look.NumPrefix() : wr_Look.WordPrefix();
+		string blank = "WRGBLNK";
 		Array<string> lines;
 		text.Split(lines, "\n");
 		if (lines.Size() == 0) return;
@@ -772,6 +774,7 @@ class wr_VRState : EventHandler
 	bool   mBoth;            // RSQ: the other hand shows a dimmer beam too (either-hand picking)
 	double mLaserRange;
 	Actor  mBeam[2];
+	wr_LookState mLook;      // the palette and font set in force (wr_q_look.zs)
 
 	static wr_VRState Get() { return wr_VRState(EventHandler.Find("wr_VRState")); }
 
@@ -814,7 +817,7 @@ class wr_VRState : EventHandler
 			mBeam[hand] = Actor.Spawn("wr_Beam", org);
 			if (!mBeam[hand]) return;
 			mBeam[hand].A_ChangeModel("", 0, "", "", 0, "", "WRSTONE");
-			mBeam[hand].SetShade("FF3030");
+			mBeam[hand].SetShade(wr_Look.Laser());
 		}
 		let b = mBeam[hand];
 		b.A_SetRenderStyle(alpha, STYLE_AddStencil);

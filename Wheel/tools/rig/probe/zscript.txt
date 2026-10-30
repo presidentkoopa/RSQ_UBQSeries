@@ -21,6 +21,15 @@ class wrq_Probe : EventHandler
 			if (n == "wr_BBStrip") { if (!a.bInvisible) strips++; }
 			else if (n == "wr_BBQuad") { if (!a.bInvisible) quads++; }
 		}
+		// the series, by name: where TacticalRig holds a Rifle, whether RSQ SlowMo is running
+		int hol = -2, slow = -2;
+		let ti2 = ServiceIterator.Find("RSQTR_RigService"); let s2 = ti2.Next();
+		if (s2) hol = s2.GetInt("rig.holster", "Rifle", 0, 0, pmo);
+		let ti3 = ServiceIterator.Find("RSQSM_Service"); let s3 = ti3.Next();
+		if (s3) slow = s3.GetInt("active");
+		if (hol != -2 || slow != -2) Console.Printf("WRQS %d holsterRifle=%d slowmo=%d", level.maptime, hol, slow);
+		if (svc && open == 1)
+			Console.Printf("WRQA %d anchor=(%.0f %.0f) angle=%.0f", level.maptime, svc.GetDouble("AnchorX"), svc.GetDouble("AnchorY"), pmo.angle);
 		let rw = players[consoleplayer].ReadyWeapon;
 		let ow = players[consoleplayer].OffhandWeapon;
 		Console.Printf("WRQ %d ready=%s off=%s open=%d hover=%s quads=%d strips=%d frozen=%d",
