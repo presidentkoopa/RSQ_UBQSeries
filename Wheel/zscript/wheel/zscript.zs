@@ -4049,11 +4049,27 @@ class wr_Rig : EventHandler
 
 		// RSQ: RSQ SlowMo when it is loaded -- its own on/off events, which it holds until told
 		// otherwise -- and BulletTimeX's toggle (REMA's route) when it is not.
-		let sm = ServiceIterator.Find("RSQSM_Service");
-		if (sm.Next()) EventHandler.SendNetworkEvent(on ? "rsm_on" : "rsm_off");
+		//
+		// SLOW MOTION THAT WAS ALREADY RUNNING when the ring opened (the player's own SlowMo key, the
+		// cigarette, adrenaline) is the player's, not the ring's. wr_slowmo_cancel decides what
+		// closing the ring does to it: off (the default) leaves it running; on ends it, as before.
+		// Slow motion the ring started itself always ends with the ring.
+		let it = ServiceIterator.Find("RSQSM_Service");
+		let sm = it.Next();
+		if (sm)
+		{
+			if (on)
+			{
+				mSlowWasOn = sm.GetInt("active") > 0;
+				if (!mSlowWasOn) EventHandler.SendNetworkEvent("rsm_on");
+			}
+			else if (!mSlowWasOn || cvBool("wr_slowmo_cancel", false))
+				EventHandler.SendNetworkEvent("rsm_off");
+		}
 		else EventHandler.SendNetworkEvent("bt_activate");
 		mBtOn = on;
 	}
+	bool mSlowWasOn;   // RSQ: RSQ SlowMo was already running when the ring opened
 
 	private void tintCard(int id, bool lit)
 	{

@@ -72,6 +72,7 @@ OptionMenu wr_Options
 	Slider "Double tap: last gun (tics)", "wr_doubletap",  0, 20, 1, 0
 	Slider "Feel each gun's weight",    "wr_weight_feel",  0.0, 1.0, 0.1, 1
 	Slider "Ring follows past (degrees, 0 off)", "wr_follow", 0, 120, 5, 0
+	Option "Cancel existing SlowMo on exit", "wr_slowmo_cancel", "OnOff"
 
 	StaticText ""
 	StaticText "Wrist card", gold

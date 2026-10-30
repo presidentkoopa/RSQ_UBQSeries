@@ -65,6 +65,11 @@ user string wr_palette = "Standard";
 user float wr_weight_feel = 1.0;
 user float wr_follow = 45.0;
 
+// RSQ: with RSQ SlowMo loaded, slow motion that was already running when the ring opened (your own
+// SlowMo key, the cigarette, adrenaline) keeps running when the ring closes (off), or the ring's
+// close ends it too (on). Slow motion the ring started always ends with the ring.
+user bool wr_slowmo_cancel = false;
+
 // RSQ: THE WRIST CARD. Bring a forearm up across your chest as if checking a watch (wrist in front of
 // your face, hand pointing across the body) and hold it wr_watch_dwell tics: that hand's gun shows
 // its card over the wrist. wr_watch_scale sizes it.
