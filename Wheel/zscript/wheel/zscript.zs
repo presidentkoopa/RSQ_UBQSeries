@@ -283,22 +283,6 @@ class wr_Rig : EventHandler
 	// readout itself already makes, not a fresh per-tic Weapon lookup.
 	// Read every tic by the gauge's own shimmer (layout()), never
 	// written there.
-	// THE UI-SIDE MIRROR of the two alternate layouts. InputProcess runs in ui
-	// scope, where neither a cvar read through the play-side cv() helper nor a
-	// call into a layout's Commit() is legal, so the play tick parks what it
-	// needs here: 0 ring, 1 honeycomb, 2 star chart, and whether that layout has
-	// a card lit right now. Reading play data from ui is fine; calling into the
-	// playsim and writing to it are what are not.
-	int  mAltLayout;
-	bool mAltHot;
-
-	// AN ALTERNATE LAYOUT IS UP. Deliberately not mOpen: mOpen means "the
-	// RING is built", and several hundred lines downstream act on that --
-	// card arrays, the sheet, the fan, the flip animation, none of which
-	// exist here. What the chart and the comb share with the ring is the
-	// SESSION, not the ring: the same hand, the same laser, the same claim
-	// on the sticks, the same bullet time. That is what this tracks.
-	bool mAltOpen;
 
 	Array<bool> mLowAmmo;
 
@@ -850,26 +834,6 @@ class wr_Rig : EventHandler
 	// under the hand. Any wider and opening the rig would deaden your trigger.
 	override bool InputProcess(InputEvent e)
 	{
-		// THE CHART TAKES THE PRESS FIRST when it is the layout in use, and for
-		// the same reason this function exists at all: by the time the playsim
-		// sees the button the shot has already happened, so the only place to
-		// stop it is here. Its own hover test is the narrow one -- nothing lit,
-		// nothing consumed, and the trigger is yours again.
-		// mAltLayout/mAltHot rather than cv() and Commit(), because THIS FUNCTION
-		// IS UI. It cannot read a cvar through the play-side cv() helper and it
-		// cannot run the pick itself; both are playsim work. So the play tick
-		// leaves the two facts here that the decision needs -- which layout is up,
-		// and whether it has something lit right now -- and the press crosses over
-		// as a network event, exactly like the ring's own grab further down.
-		if (e.Type == InputEvent.Type_KeyDown && mAltLayout != 0 && mAltHot
-			&& (wr_Keybind.isKeyFor(e.KeyScan, "+attack")
-			 || wr_Keybind.isKeyFor(e.KeyScan, "+oh_attack")
-			 || wr_Keybind.isKeyFor(e.KeyScan, "+use")))
-		{
-			EventHandler.SendNetworkEvent(mAltLayout == 2 ? "rs-chart-pick" : "rs-comb-pick");
-			return true;
-		}
-
 		if (!mOpen || mHovered == 0) return false;
 		if (e.Type != InputEvent.Type_KeyDown) return false;
 
@@ -981,19 +945,6 @@ class wr_Rig : EventHandler
 
 	private void toggle(int hand)
 	{
-		// THE ALTERNATE LAYOUTS CLOSE ON THE SAME KEY, and before this existed
-		// they did not close at all: the branch below tests mOpen, which only
-		// the ring ever sets, so a second press of the key that raised the
-		// chart fell through to openRig and built a second one on top.
-		if (mAltOpen)
-		{
-			int prev = mRigHand;
-			closeAlt();
-			// Pressed with the other hand: move it across rather than just
-			// closing, which is what the ring does two branches down.
-			if (prev != hand) openRig(hand);
-			return;
-		}
 
 		if (mOpen && mRigHand == hand)
 		{
@@ -1025,67 +976,6 @@ class wr_Rig : EventHandler
 		// its handles leak the moment the arrays below are cleared.
 		if (mClosingTics > 0) { destroyPanels(); mClosingTics = 0; }
 
-		// THE CHART IS A LAYOUT, NOT A SECOND SYSTEM.
-		//
-		// wr_layout 2 hands this open straight to the star chart and returns, so
-		// the same key that raises the ring raises the sky and the same key picks
-		// from it. Asking the player to bind a second set for what is really a
-		// different arrangement of the same arsenal would be an admission that it
-		// is a different feature, and it is not.
-		// THE SESSION IS THE SAME FOR ALL THREE, and the first version of this
-		// branch returned before any of it ran.
-		//
-		// Opening a layout is not just building its shapes. It is claiming the
-		// hand, turning on the pointing laser, taking the sticks away from snap
-		// turn and movement, and slowing the world -- and every one of those is
-		// set up below, past the early return. So the chart and the comb opened
-		// with no laser to point with, the sticks still walking the player
-		// around, and no way to close again, because closeRig() is reached
-		// through a flag this path never set.
-		//
-		// They are LAYOUTS. They get the session.
-		int lay = int(cv("wr_layout", 0.0));
-		if (lay != 0)
-		{
-			mRigHand  = hand;
-			mPokeHand = hand;
-
-			bool built = false;
-			if (lay == 2)
-			{
-				let ch = wr_Constellation.Get();
-				if (ch) { ch.Open(hand); built = ch.IsOpen(); }
-			}
-			else
-			{
-				let hc = wr_Honeycomb.Get();
-				if (hc) { hc.Open(hand); built = hc.IsOpen(); }
-			}
-
-			// An empty arsenal builds nothing. Claiming the sticks and the laser
-			// for something with no contents would leave the player unable to
-			// move, pointing at nothing, with no card to press to get out.
-			if (!built) return;
-
-			mAltOpen  = true;
-			mOpenTics = 0;
-			level.SuppressVRInput(true);
-			engineLaser(true);
-			bulletTime(true);
-			feedback(Sound("wristrig/open"), 0.22, 45);
-
-			// THE SESSION, SAID OUT LOUD. Whether this branch ran at all is the
-			// first question every "no laser / cannot select" report reduces to,
-			// and from inside a headset there is no way to tell an alternate
-			// layout that never claimed its session from one that claimed it and
-			// had it taken away again.
-			if (cv("wr_debug", 0.0) > 0.0 || cv("wr_chart_debug", 0.0) > 0.0)
-				Console.Printf(
-					"[RIG] alt layout %d opened on hand %d -- laser forced, sticks claimed",
-					lay, hand);
-
-			return;
-		}
 
 		// Same hand wears the cards and catches them. Reaching across with your
 		// gun hand to arm your other one was backwards: it occupies the hand you
@@ -1214,42 +1104,11 @@ class wr_Rig : EventHandler
 		}
 	}
 
-	// THE ALTERNATE LAYOUTS' TEARDOWN, and it is deliberately its own function
-	// rather than a branch inside closeRig(). closeRig undoes the RING -- card
-	// arrays, groups, models, the sheet, the fold-away animation -- none of
-	// which was ever built here. What has to come back is the session: the
-	// sticks, the laser, the clock.
-	void closeAlt(bool quiet = false)
-	{
-		if (!mAltOpen) return;
-		mAltOpen = false;
-
-		let chc = wr_Constellation.Get();
-		if (chc) chc.Close();
-		let hcc = wr_Honeycomb.Get();
-		if (hcc) hcc.Close();
-
-		// UNCONDITIONALLY, and in this order. Every one of these is global
-		// state the player cannot recover on their own: a laser left forced on,
-		// sticks left suppressed and a world left slowed are all unrecoverable
-		// from inside the game.
-		engineLaser(false);
-		level.SuppressVRInput(false);
-		bulletTime(false);
-
-		if (!quiet) feedback(Sound("wristrig/close"), 0.18, 35);
-	}
 
 	// quiet is for the close that follows a commit, which has already made the
 	// louder noise of its own -- two sounds a frame apart read as a stutter.
 	private void closeRig(bool quiet = false)
 	{
-		// The chart, if that is what is up. Harmless when it is not: Close on
-		// an already-closed chart does nothing.
-		let chc = wr_Constellation.Get();
-		if (chc) chc.Close();
-		let hcc = wr_Honeycomb.Get();
-		if (hcc) hcc.Close();
 
 		// Only if there is a ring to fold: PlayerDied and WorldUnloaded call
 		// this unconditionally, and a click plus a buzz on every death and
@@ -3248,8 +3107,8 @@ class wr_Rig : EventHandler
 	// path (the PST_LIVE check) already closes hard for exactly this reason --
 	// "dying is not a moment for an animation" -- so this is the two remaining
 	// paths agreeing with it rather than a new rule.
-	override void WorldUnloaded(WorldEvent e) { closeAlt(true); mHardClose = true; closeRig(); mHardClose = false; level.SuppressVRInput(false); }
-	override void PlayerDied(PlayerEvent e)  { closeAlt(true); mHardClose = true; closeRig(); mHardClose = false; level.SuppressVRInput(false); }
+	override void WorldUnloaded(WorldEvent e) { mHardClose = true; closeRig(); mHardClose = false; level.SuppressVRInput(false); }
+	override void PlayerDied(PlayerEvent e)  { mHardClose = true; closeRig(); mHardClose = false; level.SuppressVRInput(false); }
 
 	// Open on level start while iterating, so testing a change is one launch
 	// instead of a launch and a keypress. Off for everyone else.
@@ -6665,7 +6524,7 @@ class wr_Rig : EventHandler
 	{
 		// THE RING WINS. Its own sheet is already showing what the selector
 		// is on, and two sheets would be two answers to one question.
-		if (mOpen || mAltOpen || cv("wr_inspect", 1.0) <= 0.0)
+		if (mOpen || cv("wr_inspect", 1.0) <= 0.0)
 		{
 			endInspect();
 			return;
@@ -7596,37 +7455,6 @@ class wr_Rig : EventHandler
 
 	override void WorldTick()
 	{
-		// Refreshed before anything else can early-out, because the ui side reads
-		// it on every keypress whether or not the RING is open -- and whenever a
-		// layout other than the ring is up, the ring is not open by definition.
-		{
-			mAltLayout = int(cv("wr_layout", 0.0));
-			mAltHot    = false;
-
-			// AND THE LASER HAS TO BE TOLD WHERE TO STOP, every tic, exactly as
-			// the ring tells it. The engine's own trace cannot see a billboard,
-			// so with no range the beam goes straight through the star and lands
-			// on the wall behind it -- which reads as the laser ignoring the
-			// thing it is selecting. Republished rather than set once: a stale
-			// value would clamp the player's laser for the rest of the session.
-			double altReach = 0.0;
-			if (mAltLayout == 2)
-			{
-				let ch = wr_Constellation.Get();
-				if (ch) { mAltHot = ch.Hot(); altReach = ch.LaserReach(); }
-			}
-			else if (mAltLayout == 1)
-			{
-				let hc = wr_Honeycomb.Get();
-				if (hc) { mAltHot = hc.Hot(); altReach = hc.LaserReach(); }
-			}
-
-			if (mAltOpen)
-			{
-				++mOpenTics;
-				level.SetVRLaserRange(altReach);
-			}
-		}
 
 		if (mWantAutoOpen)
 		{

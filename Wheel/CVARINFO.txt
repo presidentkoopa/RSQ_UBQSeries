@@ -59,29 +59,6 @@ user float wr_panel_h  = 3.0;
 user float wr_radius   = 5.0;
 user float wr_rise     = 2.0;
 
-// THE HONEYCOMB, an ALTERNATIVE layout rather than a replacement -- 0 is the
-// ring, exactly as it has always been and still the default; 1 lays the same
-// cards out as a gapless hex tessellation spiralling out from the centre.
-//
-// Why you would: a ring divides 360 degrees by its card count, so every extra
-// weapon tightens every gap, and past a dozen it has to grow out of reach or
-// start collapsing slots into fans. A comb grows outward at a spacing that
-// never tightens -- nineteen cells by its second ring.
-//
-// What you give up: the sheet moves. A ring has a hole at its middle for the
-// sheet to stand in; a gapless comb's centre is a real card, so under this the
-// sheet stands beside the hive instead of inside it.
-//
-// Slot positions stay just as learnable either way -- a spiral FILL is as
-// fixed as an angle, so slot 4 is the same cell every map, same promise the
-// ring's bearings make.
-
-// Tics of delay between one ring of the comb arriving and the next. The
-// centre lands, then the six around it, then the twelve around those --
-// each reusing the same ease wr_growtics already defines, just started late.
-// 0 lands the whole hive at once, the way the ring does.
-
-
 // THE CONSTELLATION
 //
 // An alternative EXPANSION -- what a slot holding several weapons unfolds
@@ -794,53 +771,3 @@ user bool  wr_stats_track = true;
 // report on your actual runtime. Leave it at 1; if the readout rolls the
 // wrong way when you turn the gun over, set it to -1.
 
-// ---- THE STAR CHART ----------------------------------------------------
-//
-// The arsenal as a night sky, drawn in real depth around the player. See
-// zscript/wheel/wr_constellation.zs for why it exists next to the ring: an arc
-// runs out of arc length and a volume does not.
-// WHICH ARRANGEMENT THE WHEEL USES. 0 ring, 1 honeycomb, 2 star chart.
-//
-// A layout, not a separate feature -- the same key opens it and the same key
-// picks from it, because it is the same arsenal arranged differently.
-user int   wr_layout = 0;
-
-user float wr_chart_link_thick = 0.12;
-user float wr_chart_link_alpha = 0.45;
-
-// The pointer ray. AimBillboard returns the nearest hittable billboard in the
-// WORLD, not the nearest of the chart's -- so anything a hand or a holster
-// leaves in front of it wins the ray and the sky stops answering. Set to 1 to
-// have the chart say so when that is what happened.
-user int   wr_chart_debug = 0;
-
-// HOW HARD REACHING AMPLIFIES on the star chart. The world may be frozen but
-// you can still physically move, so you can put your hand on a star -- and a
-// sky at forty-six to a hundred and twenty units is well past arm's length,
-// so the reach has to be earned rather than measured.
-//
-// Inside a small dead zone the fingertip is exactly your hand and nothing is
-// amplified. Past it, virtual reach grows with the SQUARE of how far you have
-// actually pushed, so a deliberate extension travels a long way and ordinary
-// movement near your body travels nowhere. This is the gain on that square.
-//
-// Higher reaches the far clusters with a shorter push and gets twitchy; lower
-// is steadier and may not reach the back of the sky at all. 0 disables the
-// amplification, leaving reaching possible only for stars you can literally
-// touch.
-user float wr_chart_gogo = 0.42;
-
-// ---- THE HONEYCOMB -----------------------------------------------------
-//
-// Every weapon at once, packed edge to edge and coloured by slot. Shows
-// everything because a grid has no arc length to run out of -- see
-// zscript/wheel/wr_honeycomb.zs.
-user float wr_hive_scale = 1.0;
-user float wr_hive_dist  = 1.0;
-
-// HOW HARD THE COMB CURVES, as a multiple of how far away it hangs. The
-// cells sit on a sphere centred on your eye -- a flattened soccerball --
-// and this is the flattening: 1.0 wraps a full bowl around you and puts
-// the outer cells beside your ears, higher numbers flatten it toward a
-// wall. Under about 0.5 it closes behind your head.
-user float wr_hive_dome  = 1.7;

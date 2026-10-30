@@ -67,16 +67,6 @@ OptionMenu wr_Options
 	Option "Block the engine's native VR wheels", "wr_suppress_native_wheel", "OnOff"
 
 	StaticText ""
-	StaticText "Layout", gold
-	// Two shapes for the same set of cards. A ring divides 360 degrees by its
-	// card count, so every extra weapon tightens every gap; a comb grows
-	// outward at a spacing that never tightens -- nineteen cells by its second
-	// ring. Both keep a fixed place per slot, so either stays learnable.
-	StaticText "How the arsenal is arranged. The same key opens each,", "DarkGray"
-	StaticText "and the same key picks from it -- these are layouts,", "DarkGray"
-	StaticText "not separate features.", "DarkGray"
-	Option "Layout",                      "wr_layout",     "wr_LayoutKind"
-	StaticText " "
 
 	StaticText ""
 	StaticText "Cards", gold
@@ -440,9 +430,3 @@ OptionValue wr_ToggleHandPref
 	1,  "Off hand"
 }
 
-OptionValue "wr_LayoutKind"
-{
-	0, "Ring"
-	1, "Honeycomb"
-	2, "Star chart"
-}

@@ -65,5 +65,5 @@
 
 GameInfo
 {
-	AddEventHandlers = "wr_Rig", "wr_Constellation", "wr_Honeycomb", "wr_StatEvents"
+	AddEventHandlers = "wr_Rig", "wr_StatEvents"
 }
