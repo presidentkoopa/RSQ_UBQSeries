@@ -50,12 +50,12 @@ class wr_CompatPandemonia
 	static bool, int, int, bool DurabilityOf(Weapon w)
 	{
 		int hasI;
-		if (!active(w) || !level.GetFieldBool(w, "dwep", hasI) || hasI == 0) return false, 0, 0, false;
+		if (!active(w) || !wr_Field.GetFieldBool(w, "dwep", hasI) || hasI == 0) return false, 0, 0, false;
 
 		int cur, max, brokenI;
-		if (!level.GetFieldInt(w, "durability", cur)) return false, 0, 0, false;
-		if (!level.GetFieldInt(w, "dmax", max)) return false, 0, 0, false;
-		if (!level.GetFieldBool(w, "dbroken", brokenI)) return false, 0, 0, false;
+		if (!wr_Field.GetFieldInt(w, "durability", cur)) return false, 0, 0, false;
+		if (!wr_Field.GetFieldInt(w, "dmax", max)) return false, 0, 0, false;
+		if (!wr_Field.GetFieldBool(w, "dbroken", brokenI)) return false, 0, 0, false;
 		return true, cur, max, brokenI != 0;
 	}
 
@@ -70,8 +70,8 @@ class wr_CompatPandemonia
 	static bool, int, int MagazineOf(Weapon w)
 	{
 		int cur, max;
-		if (!active(w) || !level.GetFieldInt(w, "magSize", max) || max <= 0) return false, 0, 0;
-		level.GetFieldInt(w, "magCount", cur);
+		if (!active(w) || !wr_Field.GetFieldInt(w, "magSize", max) || max <= 0) return false, 0, 0;
+		wr_Field.GetFieldInt(w, "magCount", cur);
 		return true, cur, max;
 	}
 
@@ -90,13 +90,13 @@ class wr_CompatPandemonia
 	static bool, bool, bool, string SidegradesOf(Weapon w)
 	{
 		int hasI;
-		if (!active(w) || !level.GetFieldBool(w, "sidegrade", hasI) || hasI == 0) return false, false, false, "";
+		if (!active(w) || !wr_Field.GetFieldBool(w, "sidegrade", hasI) || hasI == 0) return false, false, false, "";
 
 		int s1I, s2I; name n1, n2;
-		level.GetFieldBool(w, "sidegrade1", s1I);
-		level.GetFieldBool(w, "sidegrade2", s2I);
-		level.GetFieldName(w, "sidestring1", n1);
-		level.GetFieldName(w, "sidestring2", n2);
+		wr_Field.GetFieldBool(w, "sidegrade1", s1I);
+		wr_Field.GetFieldBool(w, "sidegrade2", s2I);
+		wr_Field.GetFieldName(w, "sidestring1", n1);
+		wr_Field.GetFieldName(w, "sidestring2", n2);
 
 		string l1 = "" .. n1, l2 = "" .. n2;
 		string label = "";
@@ -120,7 +120,7 @@ class wr_CompatPandemonia
 	{
 		int lvl;
 		if (!active(w) || !w.Owner) return false, 0;
-		if (!level.GetFieldInt(w.Owner, "playergamelevel", lvl)) return false, 0;
+		if (!wr_Field.GetFieldInt(w.Owner, "playergamelevel", lvl)) return false, 0;
 		return true, lvl;
 	}
 }

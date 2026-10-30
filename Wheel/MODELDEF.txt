@@ -1,0 +1,32 @@
+// RSQ Wheel -- the quads every card, label and bar is drawn with (see zscript/wheel/wr_q_shim.zs).
+// Generated geometry: tools/gen_assets.py. Skins are set per actor at run time (A_ChangeModel).
+
+Model wr_BBQuad
+{
+	Path "models/wrq"
+	Model 0 "quad.obj"
+	Skin 0 "WRPLATE"
+	USEACTORPITCH
+	USEACTORROLL
+	FrameIndex WRBQ A 0 0
+}
+
+Model wr_Beam
+{
+	Path "models/wrq"
+	Model 0 "quad.obj"
+	Skin 0 "WRPLATE"
+	USEACTORPITCH
+	USEACTORROLL
+	FrameIndex WRBQ A 0 0
+}
+
+// One quad per character, 24 to a strip; each surface is skinned with a DoomFont cell.
+Model wr_BBStrip
+{
+	Path "models/wrq"
+	Model 0 "strip24.obj"
+	USEACTORPITCH
+	USEACTORROLL
+	FrameIndex WRBQ A 0 0
+}

@@ -1,0 +1,16 @@
+RSQ Wheel -- credits
+====================
+
+The wheel is the project owner's (presidentkoopa): RS_WeaponSelectionSystem, written for his
+UZDXREMA (REMA) engine and spun out of RS_VR_Unified. This is that ring, brought to stock
+QuestZDoom 17.3 for the Radiant Silvergun Quest series.
+
+QuestZDoom: Emawind and Team Beef -- the engine, and the off-hand weapon and hand-pose script API
+the ring reads.
+
+The art it draws is the IWAD's own, referenced by lump name and never copied: STBAR (the card and
+sheet plates), STCFN033-095 (DoomFont), STTNUM0-9, STTMINUS, STTPRCNT (the numerals).
+
+The quake-wave route to the controllers' rumble is the series' (RSQ ShieldSaw's SSQ_Buzzer).
+
+Sounds (sounds/wr_*.ogg) came across with the wheel from REMA.

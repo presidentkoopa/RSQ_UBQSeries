@@ -1,5 +1,5 @@
 // ============================================================
-// RS_WeaponSelectionSystem -- KEYCONF
+// RSQ Wheel -- KEYCONF (REMA's RS_WeaponSelectionSystem)
 // ============================================================
 //
 // One key section, named for the mod. The wheel originally shipped two
@@ -11,7 +11,7 @@
 // Every alias here is wr_*, and every netevent it fires is wr_*, so nothing
 // collides with a package using rs_* / rr_* / hs_*.
 
-addkeysection "Weapon Selection System" WeaponSelectionSystem
+addkeysection "RSQ Wheel" RSQWheel
 
 // -- the ring itself.
 //

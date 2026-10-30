@@ -56,13 +56,13 @@ class wr_CompatPandemoniaInsurrection
 	{
 		int cur, max;
 		if (!active(w)) return false, 0, 0;
-		if (!level.GetFieldInt(w, "curaugs", cur)) return false, 0, 0;
+		if (!wr_Field.GetFieldInt(w, "curaugs", cur)) return false, 0, 0;
 		// Checked, not just read -- an unchecked failure here left max at
 		// its zero-initializer while still returning found=true, which
 		// could show a nonsense "5/0" instead of the honest "couldn't read
 		// this" every other failure in this file already signals with
 		// found=false.
-		if (!level.GetFieldInt(w, "maxaugs", max)) return false, 0, 0;
+		if (!wr_Field.GetFieldInt(w, "maxaugs", max)) return false, 0, 0;
 		return true, cur, max;
 	}
 
@@ -93,7 +93,7 @@ class wr_CompatPandemoniaInsurrection
 	private static string appendAug(Weapon w, string s, string field, string tag)
 	{
 		int n;
-		if (!level.GetFieldInt(w, field, n) || n <= 0) return s;
+		if (!wr_Field.GetFieldInt(w, field, n) || n <= 0) return s;
 		string t = (n > 1) ? String.Format("%s+%d", tag, n) : tag;
 		return s.Length() ? (s .. " " .. t) : t;
 	}
@@ -110,7 +110,7 @@ class wr_CompatPandemoniaInsurrection
 		// hundred lines up in zscript.zs, same pattern), so these are read
 		// into int locals and compared explicitly rather than passed as bool.
 		int hasI;
-		if (!active(w) || !level.GetFieldBool(w, "dwep", hasI) || hasI == 0) return false, 0, 0, false;
+		if (!active(w) || !wr_Field.GetFieldBool(w, "dwep", hasI) || hasI == 0) return false, 0, 0, false;
 
 		int cur, max, brokenI;
 		// All three checked -- the gate above (hasI) only confirms this
@@ -121,9 +121,9 @@ class wr_CompatPandemoniaInsurrection
 		// "0/0, broken" that reads to a player as "this weapon is
 		// destroyed" when the real state is "couldn't be read." A future
 		// Insurrection rename should show as unreadable, not as damage.
-		if (!level.GetFieldInt(w, "durability", cur)) return false, 0, 0, false;
-		if (!level.GetFieldInt(w, "dmax", max)) return false, 0, 0, false;
-		if (!level.GetFieldBool(w, "dbroken", brokenI)) return false, 0, 0, false;
+		if (!wr_Field.GetFieldInt(w, "durability", cur)) return false, 0, 0, false;
+		if (!wr_Field.GetFieldInt(w, "dmax", max)) return false, 0, 0, false;
+		if (!wr_Field.GetFieldBool(w, "dbroken", brokenI)) return false, 0, 0, false;
 		return true, cur, max, brokenI != 0;
 	}
 
@@ -135,8 +135,8 @@ class wr_CompatPandemoniaInsurrection
 	static bool, string SuperiorOf(Weapon w)
 	{
 		int gotI; string txt;
-		if (!active(w) || !level.GetFieldBool(w, "gotsupped", gotI) || gotI == 0) return false, "";
-		if (!level.GetFieldString(w, "sup_string", txt)) return false, "";
+		if (!active(w) || !wr_Field.GetFieldBool(w, "gotsupped", gotI) || gotI == 0) return false, "";
+		if (!wr_Field.GetFieldString(w, "sup_string", txt)) return false, "";
 		return true, txt;
 	}
 
@@ -149,7 +149,7 @@ class wr_CompatPandemoniaInsurrection
 	static bool, string ColorTagOf(Weapon w)
 	{
 		string tag;
-		if (!active(w) || !level.GetFieldString(w, "coltag", tag) || tag.Length() == 0) return false, "";
+		if (!active(w) || !wr_Field.GetFieldString(w, "coltag", tag) || tag.Length() == 0) return false, "";
 		return true, tag;
 	}
 
@@ -163,8 +163,8 @@ class wr_CompatPandemoniaInsurrection
 	static bool, int, int ComboOf(Weapon w)
 	{
 		int cur, max;
-		if (!active(w) || !level.GetFieldInt(w, "wepbarmax", max) || max <= 0) return false, 0, 0;
-		level.GetFieldInt(w, "wepbar", cur);
+		if (!active(w) || !wr_Field.GetFieldInt(w, "wepbarmax", max) || max <= 0) return false, 0, 0;
+		wr_Field.GetFieldInt(w, "wepbar", cur);
 		return true, cur, max;
 	}
 
@@ -180,8 +180,8 @@ class wr_CompatPandemoniaInsurrection
 	static bool, int, int AeonstaveOf(Weapon w)
 	{
 		int lvl, amt;
-		if (!active(w) || !level.GetFieldInt(w, "chaoschargelevel", lvl)) return false, 0, 0;
-		level.GetFieldInt(w, "chargeamt", amt);
+		if (!active(w) || !wr_Field.GetFieldInt(w, "chaoschargelevel", lvl)) return false, 0, 0;
+		wr_Field.GetFieldInt(w, "chargeamt", amt);
 		return true, lvl, amt;
 	}
 }

@@ -1,0 +1,30 @@
+version "4.10"
+// TEST ONLY (never ships): logs what the wheel is doing, through its public service, every 5 tics.
+//   WRQ <tic> ready=<class> open=<0|1> hover=<class> quads=<n> strips=<n> glyphs=<n>
+class wrq_Probe : EventHandler
+{
+	override void WorldTick()
+	{
+		if (level.maptime % 5) return;
+		let pmo = players[consoleplayer].mo;
+		if (!pmo) return;
+		let it = ServiceIterator.Find("wr_RigService");
+		let svc = it.Next();
+		int open = svc ? svc.GetInt("IsOpen") : -1;
+		Object hov = svc ? svc.GetObject("HoveredWeapon", "", 0, 0, pmo) : null;
+		int quads = 0, strips = 0;
+		let ti = ThinkerIterator.Create("Actor");
+		Actor a;
+		while (a = Actor(ti.Next()))
+		{
+			string n = a.GetClassName();
+			if (n == "wr_BBStrip") { if (!a.bInvisible) strips++; }
+			else if (n == "wr_BBQuad") { if (!a.bInvisible) quads++; }
+		}
+		let rw = players[consoleplayer].ReadyWeapon;
+		Console.Printf("WRQ %d ready=%s open=%d hover=%s quads=%d strips=%d frozen=%d",
+			level.maptime, rw ? rw.GetClassName() : 'none', open,
+			hov ? hov.GetClassName() : 'none', quads, strips,
+			(players[consoleplayer].cheats & CF_TOTALLYFROZEN) ? 1 : 0);
+	}
+}

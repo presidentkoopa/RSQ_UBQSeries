@@ -74,12 +74,12 @@ class wr_CompatModelSwapper
 		string donField  = (hand == 1) ? "mBridgeDonorOff" : "mBridgeDonorMain";
 
 		int hasI;
-		if (!level.GetFieldBool(h, hasField, hasI) || hasI == 0) return false, "", 0, 0, "";
+		if (!wr_Field.GetFieldBool(h, hasField, hasI) || hasI == 0) return false, "", 0, 0, "";
 
-		string arche = ""; level.GetFieldString(h, archField, arche);
-		int pick = 0;      level.GetFieldInt(h, pickField, pick);
-		int cnt = 0;       level.GetFieldInt(h, cntField, cnt);
-		string donor = ""; level.GetFieldString(h, donField, donor);
+		string arche = ""; wr_Field.GetFieldString(h, archField, arche);
+		int pick = 0;      wr_Field.GetFieldInt(h, pickField, pick);
+		int cnt = 0;       wr_Field.GetFieldInt(h, cntField, cnt);
+		string donor = ""; wr_Field.GetFieldString(h, donField, donor);
 
 		if (cnt <= 0) return false, "", 0, 0, "";
 		return true, arche, pick, cnt, CleanDonor(donor);
@@ -111,7 +111,7 @@ class wr_CompatModelSwapper
 		if (!h || index < 0) return "";
 
 		string joined = "";
-		if (!level.GetFieldString(h, (hand == 1) ? "mBridgeNamesOff" : "mBridgeNamesMain", joined))
+		if (!wr_Field.GetFieldString(h, (hand == 1) ? "mBridgeNamesOff" : "mBridgeNamesMain", joined))
 			return "";
 		if (joined.Length() == 0) return "";
 

@@ -1,29 +1,23 @@
 version "4.10"
 
 // ============================================================
-// RS_WeaponSelectionSystem
+// RSQ Wheel -- REMA's weapon wheel (RS_WeaponSelectionSystem) on stock QuestZDoom 17.3
 // ============================================================
 //
-// The weapon wheel, as its own package. Spun out of RS_VR_Unified, which is
-// where it had been merged; the code is a byte-for-byte copy of that build's
-// zscript/wheel/, minus the on-gun readout (see below).
+// The ring only. REMA's honeycomb and star chart stay in REMA.
 //
-// VERSION 4.10, not 5.0.0, and that is not an oversight. The wheel was written
-// against 4.10 semantics and every method it relies on was audited against that
-// line. Raising it is a change with its own testing, not something to do in
-// passing during a packaging move.
+// The ring's own code (zscript/wheel/zscript.zs and the compat and stat files) is REMA's, with
+// every call into REMA's engine pointed at wr_q_shim.zs instead: billboards become model quads
+// drawn in the WAD's own art, field reflection answers "not there", and the VR hooks (input
+// suppression, laser, haptics, raw stick) are done with stock 4.14 ZScript. Lines changed for
+// QuestZDoom are marked "RSQ:". No engine changes.
 //
-// INCLUDE ORDER MATTERS AND IS REPRODUCED EXACTLY. The compat readers come
-// first, then the stat pair, then the ring itself, then the two layouts. The
-// ring's own zscript.zs is ~390KB of implementation and expects the compat
-// classes to already be declared.
-//
-// WHAT IS NOT HERE: wr_gunhud.zs, the on-gun ammo readout (class wr_GunTag).
-// It never worked and had been left unregistered for that reason, so it is
-// dropped rather than carried across switched off -- along with the seventeen
-// wr_gun* cvars, the two menu pages and the placement keybinds that existed
-// only to serve it. See MAPINFO.txt.
+// VERSION 4.10, as REMA's: every method the ring relies on was audited against that line.
+// The include order is REMA's: shim first, then compat readers, the stat pair, the ring.
 
+#include "zscript/wheel/rsmenu.zs"   // Radiant Silvergun Options: the series' shared menu pieces (tools/rsmenu)
+#include "zscript/wheel/wr_q_pallum.zs"
+#include "zscript/wheel/wr_q_shim.zs"
 #include "zscript/wheel/wr_compat_legendoom.zs"
 #include "zscript/wheel/wr_compat_drla.zs"
 #include "zscript/wheel/wr_compat_doomablo.zs"

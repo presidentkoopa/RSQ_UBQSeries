@@ -90,7 +90,7 @@ class wr_CompatDoomInfinite
 	{
 		int setup;
 		if (!w || cv("wr_di_compat", 1.0) <= 0.0) return false;
-		if (!level.GetFieldBool(w, "isSetup", setup)) return false;
+		if (!wr_Field.GetFieldBool(w, "isSetup", setup)) return false;
 		return setup != 0;
 	}
 
@@ -129,14 +129,14 @@ class wr_CompatDoomInfinite
 	private static string fieldStr(Weapon w, string field)
 	{
 		string s;
-		if (!level.GetFieldString(w, field, s)) return "";
+		if (!wr_Field.GetFieldString(w, field, s)) return "";
 		return Plain(s);
 	}
 
 	private static int fieldInt(Weapon w, string field)
 	{
 		int v;
-		if (!level.GetFieldInt(w, field, v)) return 0;
+		if (!wr_Field.GetFieldInt(w, field, v)) return 0;
 		return v;
 	}
 
@@ -197,8 +197,8 @@ class wr_CompatDoomInfinite
 		// exactly this case with a purple light on the pickup, so the card
 		// borrows that colour rather than inventing one.
 		int uniq, modded;
-		level.GetFieldBool(w, "isUnique", uniq);
-		level.GetFieldBool(w, "isModded", modded);
+		wr_Field.GetFieldBool(w, "isUnique", uniq);
+		wr_Field.GetFieldBool(w, "isModded", modded);
 		if (uniq != 0 || modded != 0) return true, color(COLOR_UNIQUE), "UNIQUE";
 
 		return false, none, "";
@@ -344,7 +344,7 @@ class wr_CompatDoomInfinite
 		if (!Ready(w)) return false, 0, 0.0;
 
 		double pct;
-		if (!level.GetFieldFloat(w, "overheatPercent", pct)) return false, 0, 0.0;
+		if (!wr_Field.GetFieldFloat(w, "overheatPercent", pct)) return false, 0, 0.0;
 
 		int counter = fieldInt(w, "overheatCounter");
 		if (counter <= 0) return false, 0, 0.0;
@@ -414,9 +414,9 @@ class wr_CompatDoomInfinite
 		if (!Ready(w)) return false, "";
 
 		int a, m, alt;
-		level.GetFieldBool(w, "ammoLocked", a);
-		level.GetFieldBool(w, "modeLocked", m);
-		level.GetFieldBool(w, "altLocked",  alt);
+		wr_Field.GetFieldBool(w, "ammoLocked", a);
+		wr_Field.GetFieldBool(w, "modeLocked", m);
+		wr_Field.GetFieldBool(w, "altLocked",  alt);
 
 		string s = "";
 		if (a   != 0) s = "AMMO";
@@ -625,7 +625,7 @@ class wr_CompatDoomInfinite
 		for (int i = 0; i < 135; ++i)
 		{
 			int id;
-			if (!level.GetFieldIntArray(w.Owner, "powerupsPassiveOrdered", i, id)) break;
+			if (!wr_Field.GetFieldIntArray(w.Owner, "powerupsPassiveOrdered", i, id)) break;
 			if (id < 0) break;
 			used = i + 1;
 		}
@@ -636,7 +636,7 @@ class wr_CompatDoomInfinite
 		for (int i = used - 1; i >= 0 && shown < maxShown; --i)
 		{
 			int id;
-			if (!level.GetFieldIntArray(w.Owner, "powerupsPassiveOrdered", i, id)) break;
+			if (!wr_Field.GetFieldIntArray(w.Owner, "powerupsPassiveOrdered", i, id)) break;
 			if (id < 0) continue;
 
 			string nm = PerkName(id);
@@ -646,7 +646,7 @@ class wr_CompatDoomInfinite
 			// "AUTODOC x3" is a materially different thing from one AUTODOC,
 			// and the by-ID array is what knows.
 			int stack;
-			if (level.GetFieldIntArray(w.Owner, "powerupsPassive", id, stack) && stack > 1)
+			if (wr_Field.GetFieldIntArray(w.Owner, "powerupsPassive", id, stack) && stack > 1)
 				nm = nm .. String.Format(" x%d", stack);
 
 			s = s.Length() ? (s .. ", " .. nm) : nm;
@@ -668,12 +668,12 @@ class wr_CompatDoomInfinite
 		if (!w || !w.Owner || cv("wr_di_compat", 1.0) <= 0.0) return false, "", 0, 0, 0;
 
 		int id;
-		if (!level.GetFieldInt(w.Owner, "pwrActiveID", id) || id <= 0) return false, "", 0, 0, 0;
+		if (!wr_Field.GetFieldInt(w.Owner, "pwrActiveID", id) || id <= 0) return false, "", 0, 0, 0;
 
 		int count, cd, cdMax;
-		level.GetFieldInt(w.Owner, "pwrActiveCount", count);
-		level.GetFieldInt(w.Owner, "pwrActiveCooldown", cd);
-		level.GetFieldInt(w.Owner, "pwrMaxCooldown", cdMax);
+		wr_Field.GetFieldInt(w.Owner, "pwrActiveCount", count);
+		wr_Field.GetFieldInt(w.Owner, "pwrActiveCooldown", cd);
+		wr_Field.GetFieldInt(w.Owner, "pwrMaxCooldown", cdMax);
 
 		// The ACTIVE name table is a separate `static const` from the passive
 		// one and is not embedded here -- twenty-five more strings to carry a
@@ -697,10 +697,10 @@ class wr_CompatDoomInfinite
 		if (!w || !w.Owner || cv("wr_di_compat", 1.0) <= 0.0) return false, 0, 0, 0;
 
 		int mx;
-		if (!level.GetFieldInt(w.Owner, "user_statMaxHP", mx) || mx <= 0) return false, 0, 0, 0;
+		if (!wr_Field.GetFieldInt(w.Owner, "user_statMaxHP", mx) || mx <= 0) return false, 0, 0, 0;
 
 		int regen;
-		level.GetFieldInt(w.Owner, "user_statRegenHP", regen);
+		wr_Field.GetFieldInt(w.Owner, "user_statRegenHP", regen);
 		return true, w.Owner.health, mx, regen;
 	}
 
@@ -715,7 +715,7 @@ class wr_CompatDoomInfinite
 		if (!w || !w.Owner || cv("wr_di_compat", 1.0) <= 0.0) return false, 0, 0, 0;
 
 		int mx;
-		if (!level.GetFieldInt(w.Owner, "user_statMaxAP", mx) || mx <= 0) return false, 0, 0, 0;
+		if (!wr_Field.GetFieldInt(w.Owner, "user_statMaxAP", mx) || mx <= 0) return false, 0, 0, 0;
 
 		int have = 0;
 		for (Inventory it = w.Owner.Inv; it; it = it.Inv)
@@ -724,7 +724,7 @@ class wr_CompatDoomInfinite
 		}
 
 		int regen;
-		level.GetFieldInt(w.Owner, "user_statRegenAP", regen);
+		wr_Field.GetFieldInt(w.Owner, "user_statRegenAP", regen);
 		return true, have, mx, regen;
 	}
 
@@ -783,7 +783,7 @@ class wr_CompatDoomInfinite
 	private static string appendTimer(Actor o, string s, string field, string tag)
 	{
 		int t;
-		if (!level.GetFieldInt(o, field, t) || t <= 0) return s;
+		if (!wr_Field.GetFieldInt(o, field, t) || t <= 0) return s;
 		string e = String.Format("%s %ds", tag, t);
 		return s.Length() ? (s .. "  " .. e) : e;
 	}
@@ -791,7 +791,7 @@ class wr_CompatDoomInfinite
 	private static string appendDebuff(Actor o, string s, string meter, string timer, string tag)
 	{
 		int t;
-		if (level.GetFieldInt(o, timer, t) && t > 0)
+		if (wr_Field.GetFieldInt(o, timer, t) && t > 0)
 		{
 			string e = String.Format("%s %ds", tag, t);
 			return s.Length() ? (s .. "  " .. e) : e;
@@ -800,7 +800,7 @@ class wr_CompatDoomInfinite
 		// Not armed yet -- but filling. Shown from a quarter full, below
 		// which it is noise rather than a warning.
 		int m;
-		if (!level.GetFieldInt(o, meter, m) || m < 25) return s;
+		if (!wr_Field.GetFieldInt(o, meter, m) || m < 25) return s;
 		string e2 = String.Format("%s %d%%", tag, m);
 		return s.Length() ? (s .. "  " .. e2) : e2;
 	}
@@ -815,11 +815,11 @@ class wr_CompatDoomInfinite
 		if (!w || !w.Owner || cv("wr_di_compat", 1.0) <= 0.0) return false, 0, 0, 0;
 
 		int k;
-		if (!level.GetFieldInt(w.Owner, "histKilled", k)) return false, 0, 0, 0;
+		if (!wr_Field.GetFieldInt(w.Owner, "histKilled", k)) return false, 0, 0, 0;
 
 		int km, sh;
-		level.GetFieldInt(w.Owner, "mapKilled", km);
-		level.GetFieldInt(w.Owner, "histShots", sh);
+		wr_Field.GetFieldInt(w.Owner, "mapKilled", km);
+		wr_Field.GetFieldInt(w.Owner, "histShots", sh);
 		return true, k, km, sh;
 	}
 
@@ -833,10 +833,10 @@ class wr_CompatDoomInfinite
 		if (!w || !w.Owner || cv("wr_di_compat", 1.0) <= 0.0) return false, 0, 0;
 
 		int mx;
-		if (!level.GetFieldInt(w.Owner, "user_arenaWaveMonMax", mx) || mx <= 0) return false, 0, 0;
+		if (!wr_Field.GetFieldInt(w.Owner, "user_arenaWaveMonMax", mx) || mx <= 0) return false, 0, 0;
 
 		int killed;
-		level.GetFieldInt(w.Owner, "user_arenaWaveMonKilled", killed);
+		wr_Field.GetFieldInt(w.Owner, "user_arenaWaveMonKilled", killed);
 		return true, killed, mx;
 	}
 
@@ -863,10 +863,10 @@ class wr_CompatDoomInfinite
 		if (!pmo || cv("wr_di_compat", 1.0) <= 0.0) return false;
 
 		int menu;
-		if (level.GetFieldInt(pmo, "currentMenuID", menu) && menu != 0) return true;
+		if (wr_Field.GetFieldInt(pmo, "currentMenuID", menu) && menu != 0) return true;
 
 		int paused;
-		if (level.GetFieldInt(pmo, "user_paused", paused) && paused != 0) return true;
+		if (wr_Field.GetFieldInt(pmo, "user_paused", paused) && paused != 0) return true;
 
 		return false;
 	}
@@ -882,10 +882,10 @@ class wr_CompatDoomInfinite
 		if (!w || !w.Owner || cv("wr_di_compat", 1.0) <= 0.0) return false, 0, 0;
 
 		int maps;
-		if (!level.GetFieldInt(w.Owner, "classicMapsCompleted", maps)) return false, 0, 0;
+		if (!wr_Field.GetFieldInt(w.Owner, "classicMapsCompleted", maps)) return false, 0, 0;
 
 		int loops;
-		level.GetFieldInt(w.Owner, "classicMapLoop", loops);
+		wr_Field.GetFieldInt(w.Owner, "classicMapLoop", loops);
 		return true, maps, loops;
 	}
 
@@ -900,11 +900,11 @@ class wr_CompatDoomInfinite
 		if (!w || !w.Owner || cv("wr_di_compat", 1.0) <= 0.0) return false, 0, 0, 0;
 
 		int dmg;
-		if (!level.GetFieldInt(w.Owner, "user_statHudDamage", dmg)) return false, 0, 0, 0;
+		if (!wr_Field.GetFieldInt(w.Owner, "user_statHudDamage", dmg)) return false, 0, 0, 0;
 
 		int spd, luck;
-		level.GetFieldInt(w.Owner, "user_statHudSpeed", spd);
-		level.GetFieldInt(w.Owner, "user_statLuck", luck);
+		wr_Field.GetFieldInt(w.Owner, "user_statHudSpeed", spd);
+		wr_Field.GetFieldInt(w.Owner, "user_statLuck", luck);
 		return true, dmg, spd, luck;
 	}
 
@@ -919,7 +919,7 @@ class wr_CompatDoomInfinite
 		if (!w || !w.Owner || cv("wr_di_compat", 1.0) <= 0.0) return false, 0;
 
 		int n;
-		if (!level.GetFieldInt(w.Owner, "powerupsTotal", n)) return false, 0;
+		if (!wr_Field.GetFieldInt(w.Owner, "powerupsTotal", n)) return false, 0;
 		if (n <= 0) return false, 0;
 		return true, n;
 	}

@@ -1,30 +1,42 @@
 // ============================================================
-// RS_WeaponSelectionSystem -- MENUDEF
+// RSQ Wheel -- MENUDEF
 // ============================================================
 //
-// The weapon wheel's own option pages, spun out of RS_VR_Unified. Reached from
-// the top-level Options menu directly, rather than from Unified's page, so the
-// two mods do not have to be loaded together.
+// REMA's weapon wheel pages, under the series' one Options entry. Rows for REMA-only effects
+// (the engine's native wheel, painted canvas faces, the room effects) keep their rows, marked,
+// because they do nothing on stock QuestZDoom 17.3; see zscript/wheel/wr_q_shim.zs.
+
+// ---- Radiant Silvergun Options (tools/rsmenu) ----------------------------------------------------
+// The series' one Options entry. Every series pk3 carries this same block with its own prefix: the
+// parent is PROTECTED, so the first definition stays and later ones add nothing (QZD 17.3 merges a
+// protected option menu instead of replacing it); the link row removes any earlier copy of itself,
+// so Options shows one row however many series pk3s load. Each mod then adds its own row only.
+OptionMenu "RSQ_RSOptions" protected
+{
+	Class "RSQWH_RSMenu"
+	Title "RADIANT SILVERGUN OPTIONS"
+}
 
 AddOptionMenu "OptionsMenu"
 {
-	Submenu "Weapon Selection System", "wr_Options"
+	RSQWHRSLink "Radiant Silvergun Options", "RSQ_RSOptions"
 }
-AddOptionMenu "OptionsMenuSimple"
+
+AddOptionMenu "RSQ_RSOptions"
 {
-	Submenu "Weapon Selection System", "wr_Options"
+	Submenu "RSQ Wheel", "wr_Options"
 }
+// ----------------------------------------------------------------------------------------------------
 
 OptionValue "wr_WheelMode"
 {
-	1, "This wheel"
-	2, "Engine wheel"
+	1, "On"
 	0, "Off"
 }
 
 OptionMenu wr_Options
 {
-	Title "Weapon Selection System"
+	Title "RSQ Wheel"
 
 	// WHICH WHEEL YOU GET. First row because it decides whether anything else
 	// on this page does anything.
@@ -64,6 +76,7 @@ OptionMenu wr_Options
 	// meant to route through this mod's own gesture instead. Off if you
 	// want the native wheels back, or want to compare them against this
 	// mod's own.
+	StaticText "REMA only -- QuestZDoom has no native wheel", "DarkGray"
 	Option "Block the engine's native VR wheels", "wr_suppress_native_wheel", "OnOff"
 
 	StaticText ""
@@ -116,6 +129,7 @@ OptionMenu wr_Options
 	Option "Real models on cards",      "wr_models",       "OnOff"
 	Slider "  Model size",              "wr_model_scale",  0.02, 1.0, 0.02, 2
 	Slider "  Model stand-off",         "wr_model_lift",   0.0, 12.0, 0.5, 1
+	StaticText "REMA only -- canvases do not draw in VR on QuestZDoom", "DarkGray"
 	Option "Painted card faces",        "wr_canvas",       "OnOff"
 	// Above 1 the sprite crops at the card edge, which no billboard can do.
 	Slider "  Sprite bleed",            "wr_canvas_bleed",  0.6, 2.5, 0.05, 2
@@ -151,6 +165,7 @@ OptionMenu wr_Options
 
 	StaticText ""
 	StaticText "The room", gold
+	StaticText "REMA only -- these are REMA engine effects, off here", "DarkGray"
 	// All four borrow a single global engine slot each. A co-loaded mod using
 	// the same slot gets it back the moment the rig closes.
 	//

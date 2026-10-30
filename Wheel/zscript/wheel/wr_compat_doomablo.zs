@@ -64,7 +64,7 @@ class wr_CompatDoomablo
 	{
 		int rarity;
 		if (!w || cv("wr_dbl_compat", 1.0) <= 0.0) return false, 0;
-		if (!level.GetFieldInt(w, "generatedRarity", rarity)) return false, 0;
+		if (!wr_Field.GetFieldInt(w, "generatedRarity", rarity)) return false, 0;
 
 		// Range-checked against the seven tiers this file actually knows
 		// about (README lists six; adding_new_uniques.txt's Unique is the
@@ -166,13 +166,13 @@ class wr_CompatDoomablo
 		if (!w || !w.Owner || cv("wr_dbl_compat", 1.0) <= 0.0) return false, 0, 0.0, 0.0, 0;
 
 		Object stats;
-		if (!level.GetFieldObject(w.Owner, "stats", stats) || stats == null)
+		if (!wr_Field.GetFieldObject(w.Owner, "stats", stats) || stats == null)
 			return false, 0, 0.0, 0.0, 0;
 
 		int lvl; double xp; int points;
-		if (!level.GetFieldInt(stats, "currentExpLevel", lvl)) return false, 0, 0.0, 0.0, 0;
-		level.GetFieldFloat(stats, "currentExperience", xp);
-		level.GetFieldInt(stats, "statPointsAvailable", points);
+		if (!wr_Field.GetFieldInt(stats, "currentExpLevel", lvl)) return false, 0, 0.0, 0.0, 0;
+		wr_Field.GetFieldFloat(stats, "currentExperience", xp);
+		wr_Field.GetFieldInt(stats, "statPointsAvailable", points);
 
 		return true, lvl, xp, xpForLevel(lvl + 1), points;
 	}
@@ -186,7 +186,7 @@ class wr_CompatDoomablo
 	{
 		int inferno;
 		if (!w || !w.Owner || cv("wr_dbl_compat", 1.0) <= 0.0) return false, 0;
-		if (!level.GetFieldInt(w.Owner, "infernoLevel", inferno)) return false, 0;
+		if (!wr_Field.GetFieldInt(w.Owner, "infernoLevel", inferno)) return false, 0;
 		return true, inferno;
 	}
 
@@ -218,15 +218,15 @@ class wr_CompatDoomablo
 		if (!w || !w.Owner || cv("wr_dbl_compat", 1.0) <= 0.0) return false, 0, 0, 0, 0, 0;
 
 		Object stats;
-		if (!level.GetFieldObject(w.Owner, "stats", stats) || stats == null)
+		if (!wr_Field.GetFieldObject(w.Owner, "stats", stats) || stats == null)
 			return false, 0, 0, 0, 0, 0;
 
 		int vit, crc, crd, str, rf;
-		bool got = level.GetFieldIntArray(stats, "currentStats", STAT_VITALITY, vit);
-		level.GetFieldIntArray(stats, "currentStats", STAT_CRITCHANCE, crc);
-		level.GetFieldIntArray(stats, "currentStats", STAT_CRITDMG,    crd);
-		level.GetFieldIntArray(stats, "currentStats", STAT_STRENGTH,   str);
-		level.GetFieldIntArray(stats, "currentStats", STAT_RAREFIND,   rf);
+		bool got = wr_Field.GetFieldIntArray(stats, "currentStats", STAT_VITALITY, vit);
+		wr_Field.GetFieldIntArray(stats, "currentStats", STAT_CRITCHANCE, crc);
+		wr_Field.GetFieldIntArray(stats, "currentStats", STAT_CRITDMG,    crd);
+		wr_Field.GetFieldIntArray(stats, "currentStats", STAT_STRENGTH,   str);
+		wr_Field.GetFieldIntArray(stats, "currentStats", STAT_RAREFIND,   rf);
 		if (!got) return false, 0, 0, 0, 0, 0;
 
 		return true, vit, crc, crd, str, rf;

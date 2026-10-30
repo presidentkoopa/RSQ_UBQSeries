@@ -38,7 +38,7 @@ class wr_CompatGuncaster
 	static bool, double SpellCooldownOf(Weapon w)
 	{
 		double delay;
-		if (!active(w) || !level.GetFieldFloat(w.Owner, "spellDelay", delay) || delay <= 0.0)
+		if (!active(w) || !wr_Field.GetFieldFloat(w.Owner, "spellDelay", delay) || delay <= 0.0)
 			return false, 0.0;
 		return true, delay / 35.0;
 	}
@@ -51,7 +51,7 @@ class wr_CompatGuncaster
 	private static string appendRes(Weapon w, string s, string field, string tag)
 	{
 		int n;
-		if (!level.GetFieldInt(w.Owner, field, n) || n <= 0) return s;
+		if (!wr_Field.GetFieldInt(w.Owner, field, n) || n <= 0) return s;
 		string t = String.Format("%s %d", tag, n);
 		return s.Length() ? (s .. "  " .. t) : t;
 	}

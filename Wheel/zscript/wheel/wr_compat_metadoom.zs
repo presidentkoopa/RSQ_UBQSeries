@@ -38,8 +38,8 @@ class wr_CompatMetaDoom
 	static bool, int, int HeatOf(Weapon w)
 	{
 		int heat, shots;
-		if (!active(w) || !level.GetFieldInt(w, "heatlevel", heat)) return false, 0, 0;
-		level.GetFieldInt(w, "shotsfired", shots);
+		if (!active(w) || !wr_Field.GetFieldInt(w, "heatlevel", heat)) return false, 0, 0;
+		wr_Field.GetFieldInt(w, "shotsfired", shots);
 		return true, heat, shots;
 	}
 

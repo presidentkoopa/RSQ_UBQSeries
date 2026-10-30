@@ -1030,7 +1030,7 @@ class wr_Rig : EventHandler
 		// Claim the sticks. Snap turn and stick movement are decided in the VR
 		// input path before any script sees a button, so without this the same
 		// thumbstick that is picking a card also spins and walks you.
-		level.SuppressVRInput(true);
+		wr_VR.SuppressVRInput(true);
 		engineLaser(true);
 
 		bulletTime(true);
@@ -1049,7 +1049,7 @@ class wr_Rig : EventHandler
 		{
 			for (int i = 0; i < mGroups.Size(); ++i)
 			{
-				level.AnimateBillboardGroup(mGroups[i], 0.0, 1.0, growTics);
+				wr_BB.AnimateBillboardGroup(mGroups[i], 0.0, 1.0, growTics);
 			}
 		}
 
@@ -1082,7 +1082,7 @@ class wr_Rig : EventHandler
 			Console.Printf(
 				"\c[Gold]RSVR HUD\c- %d cards | plate %s | faces %d/%d%s | icons %d | hand %s",
 				mIds.Size(),
-				(plateKind() == LevelLocals.BB_SDFPANEL) ? "sdf" : "sampled",
+				(plateKind() == wr_BB.BB_SDFPANEL) ? "sdf" : "sampled",
 				faces, (wantCanvas && !overPool) ? mIds.Size() : 0,
 				(wantCanvas && !overPool && faces == 0) ? " \c[Red]NONE PAINTED\c-" : "",
 				icons,
@@ -1130,16 +1130,16 @@ class wr_Rig : EventHandler
 		{
 			for (int i = 0; i < mGroups.Size(); ++i)
 			{
-				level.AnimateBillboardGroup(mGroups[i], 1.0, 0.0, CLOSE_TICS);
+				wr_BB.AnimateBillboardGroup(mGroups[i], 1.0, 0.0, CLOSE_TICS);
 			}
-			if (mFanGroup != 0)    level.AnimateBillboardGroup(mFanGroup,    1.0, 0.0, CLOSE_TICS);
+			if (mFanGroup != 0)    wr_BB.AnimateBillboardGroup(mFanGroup,    1.0, 0.0, CLOSE_TICS);
 
 			mClosingTics = CLOSE_TICS;
 
 			// The playsim half of the close happens now regardless.
 			let pmoNow = players[consoleplayer].mo;
 			engineLaser(false);
-			level.SuppressVRInput(false);
+			wr_VR.SuppressVRInput(false);
 			bulletTime(false);
 			releaseDecor();
 
@@ -1460,10 +1460,10 @@ class wr_Rig : EventHandler
 
 		if (mSheetTitle != 0)
 		{
-			level.SetBillboardText(mSheetTitle, title);
-			level.UpdateBillboard(mSheetTitle, 0, tint);
+			wr_BB.SetBillboardText(mSheetTitle, title);
+			wr_BB.UpdateBillboard(mSheetTitle, 0, tint);
 		}
-		if (mSheetAccent != 0) level.UpdateBillboard(mSheetAccent, 0, tint);
+		if (mSheetAccent != 0) wr_BB.UpdateBillboard(mSheetAccent, 0, tint);
 
 		if (w == null)
 		{
@@ -1490,7 +1490,7 @@ class wr_Rig : EventHandler
 		// carries no lock tell at all (:641), so no consumer could mask it
 		// even if it tried.
 		int tier;
-		bool isRS = level.GetFieldInt(w, "Tier", tier);
+		bool isRS = wr_Field.GetFieldInt(w, "Tier", tier);
 
 		// LegenDoom has no field this fork's reflection natives can read --
 		// see wr_compat_legendoom.zs -- so this is checked independently of
@@ -2395,7 +2395,7 @@ class wr_Rig : EventHandler
 	{
 		for (int i = mSheetUsed; i < mSheetRows.Size(); ++i)
 		{
-			if (mSheetRows[i]) level.SetBillboardText(mSheetRows[i], "");
+			if (mSheetRows[i]) wr_BB.SetBillboardText(mSheetRows[i], "");
 		}
 	}
 
@@ -2463,10 +2463,10 @@ class wr_Rig : EventHandler
 			int hue = starHue(h);
 			mStarHue.Push(hue);
 
-			mStars.Push(level.AddBillboardPersistent(
+			mStars.Push(wr_BB.AddBillboardPersistent(
 				(0, 0, 0), 0.16, 0.16, 0, 0,
-				LevelLocals.BBF_FIXED, LevelLocals.BB_PANEL, 15,
-				hue, LevelLocals.BBFL_NOHIT, 0, ""));
+				wr_BB.BBF_FIXED, wr_BB.BB_PANEL, 15,
+				hue, wr_BB.BBFL_NOHIT, 0, ""));
 		}
 	}
 
@@ -2486,7 +2486,7 @@ class wr_Rig : EventHandler
 	{
 		for (int i = 0; i < mStars.Size(); ++i)
 		{
-			if (mStars[i]) level.RemoveBillboard(mStars[i]);
+			if (mStars[i]) wr_BB.RemoveBillboard(mStars[i]);
 		}
 		mStars.Clear();
 		mStarX.Clear();
@@ -2522,9 +2522,9 @@ class wr_Rig : EventHandler
 			// large ones.
 			double tw = 0.55 + 0.45 * sin(level.maptime * STAR_SPEED + i * STAR_PHASE);
 
-			level.MoveBillboard(mStars[i], pos);
-			level.OrientBillboard(mStars[i], faceYaw, tilt, LevelLocals.BBF_FIXED);
-			level.SetBillboardAlpha(mStars[i], tw * grow * cv("wr_stars_alpha", 0.5));
+			wr_BB.MoveBillboard(mStars[i], pos);
+			wr_BB.OrientBillboard(mStars[i], faceYaw, tilt, wr_BB.BBF_FIXED);
+			wr_BB.SetBillboardAlpha(mStars[i], tw * grow * cv("wr_stars_alpha", 0.5));
 		}
 	}
 
@@ -2537,32 +2537,32 @@ class wr_Rig : EventHandler
 		// same solved-rectangle payload the cards use, so the sheet is made of
 		// the same material as the thing it sits next to rather than looking
 		// like a different mod's window.
-		mSheetPlate = level.AddBillboardPersistent(
+		mSheetPlate = wr_BB.AddBillboardPersistent(
 			(0, 0, 0), 3.5, 2.5, 0, 0,
-			LevelLocals.BBF_FIXED, plateKind(), plateShape(),
-			SHEET_BG, LevelLocals.BBFL_NOHIT, 0, "");
-		level.SetBillboardGradient(mSheetPlate, SHEET_BG2);
+			wr_BB.BBF_FIXED, plateKind(), plateShape(),
+			SHEET_BG, wr_BB.BBFL_NOHIT, 0, "");
+		wr_BB.SetBillboardGradient(mSheetPlate, SHEET_BG2);
 
 		// Created AFTER the plate so it is the nearer of the two by creation
 		// order, and alpha 0 rather than absent -- a fully transparent
 		// billboard is still hittable, which is the documented trap the cards
 		// rely on here on purpose.
-		mSheetHit = level.AddBillboardPersistent(
+		mSheetHit = wr_BB.AddBillboardPersistent(
 			(0, 0, 0), 3.5, 2.5, 0, 0,
-			LevelLocals.BBF_FIXED, LevelLocals.BB_PANEL, 0,
+			wr_BB.BBF_FIXED, wr_BB.BB_PANEL, 0,
 			SHEET_BG, 0, 0, "");
-		level.SetBillboardAlpha(mSheetHit, 0);
+		wr_BB.SetBillboardAlpha(mSheetHit, 0);
 
 		// The stripe along the top, same promise the cards' accent makes.
-		mSheetAccent = level.AddBillboardPersistent(
+		mSheetAccent = wr_BB.AddBillboardPersistent(
 			(0, 0, 0), 3.5, 0.3, 0, 0,
-			LevelLocals.BBF_FIXED, LevelLocals.BB_PANEL, 0,
-			SHEET_ACCENT, LevelLocals.BBFL_NOHIT, 0, "");
+			wr_BB.BBF_FIXED, wr_BB.BB_PANEL, 0,
+			SHEET_ACCENT, wr_BB.BBFL_NOHIT, 0, "");
 
-		mSheetTitle = level.AddBillboardPersistent(
+		mSheetTitle = wr_BB.AddBillboardPersistent(
 			(0, 0, 0), 3.5, 2.5, 0, 0,
-			LevelLocals.BBF_FIXED, LevelLocals.BB_TEXT, 0,
-			SHEET_ACCENT, LevelLocals.BBFL_NOHIT, 0, "");
+			wr_BB.BBF_FIXED, wr_BB.BB_TEXT, 0,
+			SHEET_ACCENT, wr_BB.BBFL_NOHIT, 0, "");
 
 		// THE ROW POOL, allocated once for the life of the ring.
 		//
@@ -2573,10 +2573,10 @@ class wr_Rig : EventHandler
 		// because layoutSheet fits ten elements and the tenth is the bar.
 		for (int i = 0; i < SHEET_ROW_POOL; ++i)
 		{
-			mSheetRows.Push(level.AddBillboardPersistent(
+			mSheetRows.Push(wr_BB.AddBillboardPersistent(
 				(0, 0, 0), 3.5, 2.5, 0, 0,
-				LevelLocals.BBF_FIXED, LevelLocals.BB_TEXT, 0,
-				SHEET_TEXT, LevelLocals.BBFL_NOHIT, 0, ""));
+				wr_BB.BBF_FIXED, wr_BB.BB_TEXT, 0,
+				SHEET_TEXT, wr_BB.BBFL_NOHIT, 0, ""));
 		}
 
 		// ONE BAR, and it belongs to CONDITION.
@@ -2587,10 +2587,10 @@ class wr_Rig : EventHandler
 		// a maskable row would need a suppression path, and UpdateBillboard
 		// cannot delete. Condition is never cursed, so this one is
 		// unconditionally safe to update in place every tic.
-		mSheetBars.Push(level.AddBillboardPersistent(
+		mSheetBars.Push(wr_BB.AddBillboardPersistent(
 			(0, 0, 0), 3.5, 0.35, 0, 0,
-			LevelLocals.BBF_FIXED, LevelLocals.BB_BAR, 0,
-			SHEET_MEAS, LevelLocals.BBFL_NOHIT, 0, ""));
+			wr_BB.BBF_FIXED, wr_BB.BB_BAR, 0,
+			SHEET_MEAS, wr_BB.BBFL_NOHIT, 0, ""));
 
 		// The title and the rows are filled by buildSheetRows() against the
 		// weapon actually under the selector. Nothing is authored here.
@@ -2606,8 +2606,8 @@ class wr_Rig : EventHandler
 	{
 		if (mSheetBars.Size() == 0 || mSheetBars[0] == 0) return;
 
-		level.SetBillboardAlpha(mSheetBars[0], show ? 1.0 : 0.0);
-		if (show) level.UpdateBillboard(mSheetBars[0], clamp(pct, 0, 100), col);
+		wr_BB.SetBillboardAlpha(mSheetBars[0], show ? 1.0 : 0.0);
+		if (show) wr_BB.UpdateBillboard(mSheetBars[0], clamp(pct, 0, 100), col);
 	}
 
 	// Writes into the next pool slot rather than creating a billboard. The
@@ -2622,33 +2622,33 @@ class wr_Rig : EventHandler
 		++mSheetUsed;
 		if (id == 0) return;
 
-		level.SetBillboardText(id, text);
-		level.UpdateBillboard(id, 0, col);
+		wr_BB.SetBillboardText(id, text);
+		wr_BB.UpdateBillboard(id, 0, col);
 	}
 
 	private void sheetBar(int pct, color col)
 	{
-		mSheetBars.Push(level.AddBillboardPersistent(
+		mSheetBars.Push(wr_BB.AddBillboardPersistent(
 			(0, 0, 0), 3.5, 0.35, 0, 0,
-			LevelLocals.BBF_FIXED, LevelLocals.BB_BAR, pct,
-			col, LevelLocals.BBFL_NOHIT, 0, ""));
+			wr_BB.BBF_FIXED, wr_BB.BB_BAR, pct,
+			col, wr_BB.BBFL_NOHIT, 0, ""));
 	}
 
 	private void clearSheet()
 	{
-		if (mSheetPlate)  level.RemoveBillboard(mSheetPlate);
-		if (mSheetAccent) level.RemoveBillboard(mSheetAccent);
-		if (mSheetTitle)  level.RemoveBillboard(mSheetTitle);
-		if (mSheetHit)    level.RemoveBillboard(mSheetHit);
+		if (mSheetPlate)  wr_BB.RemoveBillboard(mSheetPlate);
+		if (mSheetAccent) wr_BB.RemoveBillboard(mSheetAccent);
+		if (mSheetTitle)  wr_BB.RemoveBillboard(mSheetTitle);
+		if (mSheetHit)    wr_BB.RemoveBillboard(mSheetHit);
 		mSheetPlate = 0; mSheetAccent = 0; mSheetTitle = 0; mSheetHit = 0;
 
 		for (int i = 0; i < mSheetRows.Size(); ++i)
 		{
-			if (mSheetRows[i]) level.RemoveBillboard(mSheetRows[i]);
+			if (mSheetRows[i]) wr_BB.RemoveBillboard(mSheetRows[i]);
 		}
 		for (int i = 0; i < mSheetBars.Size(); ++i)
 		{
-			if (mSheetBars[i]) level.RemoveBillboard(mSheetBars[i]);
+			if (mSheetBars[i]) wr_BB.RemoveBillboard(mSheetBars[i]);
 		}
 		mSheetRows.Clear();
 		mSheetBars.Clear();
@@ -2721,30 +2721,30 @@ class wr_Rig : EventHandler
 		Vector3 lift = (cos(viewYaw + 180), sin(viewYaw + 180), 0) * LABEL_LIFT;
 		double  yaw  = viewYaw + 180;
 
-		level.MoveBillboard(mSheetPlate, centre);
-		level.ResizeBillboard(mSheetPlate, sw, sh);
-		level.OrientBillboard(mSheetPlate, yaw, tilt, LevelLocals.BBF_FIXED);
+		wr_BB.MoveBillboard(mSheetPlate, centre);
+		wr_BB.ResizeBillboard(mSheetPlate, sw, sh);
+		wr_BB.OrientBillboard(mSheetPlate, yaw, tilt, wr_BB.BBF_FIXED);
 
 		// Exactly over the plate. Not oversized the way a card's hit quad is
 		// -- a card wants forgiving edges, but this one sits in the middle of
 		// the ring and any margin it gains is margin the nearest cards lose.
 		if (mSheetHit != 0)
 		{
-			level.MoveBillboard(mSheetHit, centre);
-			level.ResizeBillboard(mSheetHit, sw, sh);
-			level.OrientBillboard(mSheetHit, yaw, tilt, LevelLocals.BBF_FIXED);
+			wr_BB.MoveBillboard(mSheetHit, centre);
+			wr_BB.ResizeBillboard(mSheetHit, sw, sh);
+			wr_BB.OrientBillboard(mSheetHit, yaw, tilt, wr_BB.BBF_FIXED);
 		}
 
 		double top = sh * 0.5;
 
-		level.MoveBillboard(mSheetAccent, centre + lift + (0, 0, top - sh * 0.03));
-		level.ResizeBillboard(mSheetAccent, sw * 0.94, shFull * 0.025);
-		level.OrientBillboard(mSheetAccent, yaw, tilt, LevelLocals.BBF_FIXED);
+		wr_BB.MoveBillboard(mSheetAccent, centre + lift + (0, 0, top - sh * 0.03));
+		wr_BB.ResizeBillboard(mSheetAccent, sw * 0.94, shFull * 0.025);
+		wr_BB.OrientBillboard(mSheetAccent, yaw, tilt, wr_BB.BBF_FIXED);
 
 		double titleH = shFull * SHEET_TITLE_FRAC;
-		level.MoveBillboard(mSheetTitle, centre + lift + (0, 0, top - shFull * 0.10));
-		level.ResizeBillboard(mSheetTitle, sw * 0.9, titleH);
-		level.OrientBillboard(mSheetTitle, yaw, tilt, LevelLocals.BBF_FIXED);
+		wr_BB.MoveBillboard(mSheetTitle, centre + lift + (0, 0, top - shFull * 0.10));
+		wr_BB.ResizeBillboard(mSheetTitle, sw * 0.9, titleH);
+		wr_BB.OrientBillboard(mSheetTitle, yaw, tilt, wr_BB.BBF_FIXED);
 
 		// Rows march down from under the title on a fixed pitch. A pitch, not a
 		// division of the remaining space: the row height then does not change
@@ -2758,18 +2758,18 @@ class wr_Rig : EventHandler
 
 		for (int i = 0; i < mSheetRows.Size(); ++i)
 		{
-			level.MoveBillboard(mSheetRows[i], centre + lift + (0, 0, y));
-			level.ResizeBillboard(mSheetRows[i], sw * 0.86, rowH);
-			level.OrientBillboard(mSheetRows[i], yaw, tilt, LevelLocals.BBF_FIXED);
+			wr_BB.MoveBillboard(mSheetRows[i], centre + lift + (0, 0, y));
+			wr_BB.ResizeBillboard(mSheetRows[i], sw * 0.86, rowH);
+			wr_BB.OrientBillboard(mSheetRows[i], yaw, tilt, wr_BB.BBF_FIXED);
 			y -= rowH * SHEET_ROW_PITCH;
 		}
 
 		// The gauges sit under the rows, full width, spaced like two more rows.
 		for (int i = 0; i < mSheetBars.Size(); ++i)
 		{
-			level.MoveBillboard(mSheetBars[i], centre + lift + (0, 0, y));
-			level.ResizeBillboard(mSheetBars[i], sw * 0.86, shFull * 0.028);
-			level.OrientBillboard(mSheetBars[i], yaw, tilt, LevelLocals.BBF_FIXED);
+			wr_BB.MoveBillboard(mSheetBars[i], centre + lift + (0, 0, y));
+			wr_BB.ResizeBillboard(mSheetBars[i], sw * 0.86, shFull * 0.028);
+			wr_BB.OrientBillboard(mSheetBars[i], yaw, tilt, wr_BB.BBF_FIXED);
 			y -= rowH * SHEET_ROW_PITCH;
 		}
 	}
@@ -2835,51 +2835,51 @@ class wr_Rig : EventHandler
 
 		for (int i = 0; i < mIds.Size(); ++i)
 		{
-			if (mIds[i]) level.RemoveBillboard(mIds[i]);
+			if (mIds[i]) wr_BB.RemoveBillboard(mIds[i]);
 		}
 		for (int i = 0; i < mPlates.Size(); ++i)
 		{
-			if (mPlates[i]) level.RemoveBillboard(mPlates[i]);
+			if (mPlates[i]) wr_BB.RemoveBillboard(mPlates[i]);
 		}
 		for (int i = 0; i < mLabels.Size(); ++i)
 		{
-			if (mLabels[i]) level.RemoveBillboard(mLabels[i]);
+			if (mLabels[i]) wr_BB.RemoveBillboard(mLabels[i]);
 		}
 		for (int i = 0; i < mIcons.Size(); ++i)
 		{
-			if (mIcons[i]) level.RemoveBillboard(mIcons[i]);
+			if (mIcons[i]) wr_BB.RemoveBillboard(mIcons[i]);
 		}
 		for (int i = 0; i < mAmmos.Size(); ++i)
 		{
-			if (mAmmos[i]) level.RemoveBillboard(mAmmos[i]);
+			if (mAmmos[i]) wr_BB.RemoveBillboard(mAmmos[i]);
 		}
 		for (int i = 0; i < mAccents.Size(); ++i)
 		{
-			if (mAccents[i]) level.RemoveBillboard(mAccents[i]);
+			if (mAccents[i]) wr_BB.RemoveBillboard(mAccents[i]);
 		}
 		for (int i = 0; i < mGauges.Size(); ++i)
 		{
-			if (mGauges[i]) level.RemoveBillboard(mGauges[i]);
+			if (mGauges[i]) wr_BB.RemoveBillboard(mGauges[i]);
 		}
 		for (int i = 0; i < mFaces.Size(); ++i)
 		{
-			if (mFaces[i]) level.RemoveBillboard(mFaces[i]);
+			if (mFaces[i]) wr_BB.RemoveBillboard(mFaces[i]);
 		}
 		for (int i = 0; i < mMarks.Size(); ++i)
 		{
-			if (mMarks[i]) level.RemoveBillboard(mMarks[i]);
+			if (mMarks[i]) wr_BB.RemoveBillboard(mMarks[i]);
 		}
 		for (int i = 0; i < mStackBadges.Size(); ++i)
 		{
-			if (mStackBadges[i]) level.RemoveBillboard(mStackBadges[i]);
+			if (mStackBadges[i]) wr_BB.RemoveBillboard(mStackBadges[i]);
 		}
 		for (int i = 0; i < mShadows.Size(); ++i)
 		{
-			if (mShadows[i]) level.RemoveBillboard(mShadows[i]);
+			if (mShadows[i]) wr_BB.RemoveBillboard(mShadows[i]);
 		}
 		for (int i = 0; i < mSlotNums.Size(); ++i)
 		{
-			if (mSlotNums[i]) level.RemoveBillboard(mSlotNums[i]);
+			if (mSlotNums[i]) wr_BB.RemoveBillboard(mSlotNums[i]);
 		}
 
 		// Groups LAST, and not optional. A member left pointing at a dead group
@@ -2887,7 +2887,7 @@ class wr_Rig : EventHandler
 		// to end a group's life rather than tidy-up nobody would miss.
 		for (int i = 0; i < mGroups.Size(); ++i)
 		{
-			if (mGroups[i]) level.RemoveBillboardGroup(mGroups[i]);
+			if (mGroups[i]) wr_BB.RemoveBillboardGroup(mGroups[i]);
 		}
 		mMarks.Clear();
 		mStackBadges.Clear();
@@ -2948,7 +2948,7 @@ class wr_Rig : EventHandler
 		clearPanels();
 
 		engineLaser(false);
-		level.SuppressVRInput(false);
+		wr_VR.SuppressVRInput(false);
 		bulletTime(false);
 		releaseDecor();
 
@@ -3057,9 +3057,9 @@ class wr_Rig : EventHandler
 	// directly, and do not depend on any of this.
 	override void OnUnregister()
 	{
-		level.ForceVRLaser(false, -1);
-		level.SetVRLaserRange(0);
-		level.SuppressVRInput(false);
+		wr_VR.ForceVRLaser(false, -1);
+		wr_VR.SetVRLaserRange(0);
+		wr_VR.SuppressVRInput(false);
 
 		// mBtOn IS CLEARED BEFORE destroyPanels, AND THAT ORDER IS THE POINT.
 		//
@@ -3107,8 +3107,8 @@ class wr_Rig : EventHandler
 	// path (the PST_LIVE check) already closes hard for exactly this reason --
 	// "dying is not a moment for an animation" -- so this is the two remaining
 	// paths agreeing with it rather than a new rule.
-	override void WorldUnloaded(WorldEvent e) { mHardClose = true; closeRig(); mHardClose = false; level.SuppressVRInput(false); }
-	override void PlayerDied(PlayerEvent e)  { mHardClose = true; closeRig(); mHardClose = false; level.SuppressVRInput(false); }
+	override void WorldUnloaded(WorldEvent e) { mHardClose = true; closeRig(); mHardClose = false; wr_VR.SuppressVRInput(false); }
+	override void PlayerDied(PlayerEvent e)  { mHardClose = true; closeRig(); mHardClose = false; wr_VR.SuppressVRInput(false); }
 
 	// Open on level start while iterating, so testing a change is one launch
 	// instead of a launch and a keypress. Off for everyone else.
@@ -3459,7 +3459,7 @@ class wr_Rig : EventHandler
 			// but that flag is also a legitimate authored statement about
 			// AUTOMATIC switching, and a deliberate pick off the ring is not
 			// that -- filtering on it would hide guns nothing has stowed.
-			if (held.bHolsterHidden) continue;
+			// RSQ: no bHolsterHidden on QZD 17.3 (a REMA weapon flag); nothing is skipped.
 
 			if (held.bNoHandSwitch && held.bOffhandWeapon != (mRigHand == 1)) continue;
 
@@ -3549,10 +3549,10 @@ class wr_Rig : EventHandler
 		// run and there is nothing else here to read it from.
 		if (cvBool("wr_flash", true))
 		{
-			level.AddBillboard(cardPos(cardIndex), panelWNow() * 1.15, panelHNow() * 1.15,
-				pmo.angle + 180, PANEL_TILT, LevelLocals.BBF_FIXED,
-				LevelLocals.BB_RING, 0, COLOR_STACK,
-				LevelLocals.BBFL_NOHIT, 0.3);
+			wr_BB.AddBillboard(cardPos(cardIndex), panelWNow() * 1.15, panelHNow() * 1.15,
+				pmo.angle + 180, PANEL_TILT, wr_BB.BBF_FIXED,
+				wr_BB.BB_RING, 0, COLOR_STACK,
+				wr_BB.BBFL_NOHIT, 0.3);
 		}
 
 		// The face weapon is already on the slot card, so the fan is everything
@@ -3560,8 +3560,8 @@ class wr_Rig : EventHandler
 		// The whole fan is ONE group, so it unfolds as a unit out of the card
 		// that opened it rather than as four independent things that happen to
 		// appear together.
-		if (mFanGroup != 0) level.RemoveBillboardGroup(mFanGroup);
-		mFanGroup = level.AddBillboardGroup((0, 0, 0));
+		if (mFanGroup != 0) wr_BB.RemoveBillboardGroup(mFanGroup);
+		mFanGroup = wr_BB.AddBillboardGroup((0, 0, 0));
 
 		for (int i = 1; i < variants.Size(); ++i)
 		{
@@ -3607,11 +3607,11 @@ class wr_Rig : EventHandler
 			int sshad = 0;
 			if (cv("wr_shadow", 0.5) > 0.0)
 			{
-				sshad = level.AddBillboardPersistent(
+				sshad = wr_BB.AddBillboardPersistent(
 					(0, 0, 0), 3.5, 2.5, 0, 0,
-					LevelLocals.BBF_FIXED, plateKind(), plateShape(),
-					0x000000, LevelLocals.BBFL_NOHIT, 0, "");
-				level.SetBillboardGroup(sshad, mFanGroup);
+					wr_BB.BBF_FIXED, plateKind(), plateShape(),
+					0x000000, wr_BB.BBFL_NOHIT, 0, "");
+				wr_BB.SetBillboardGroup(sshad, mFanGroup);
 			}
 			mSubShadows.Push(sshad);
 
@@ -3631,20 +3631,20 @@ class wr_Rig : EventHandler
 			//
 			// Created BEFORE the plate so it sits behind it in the billboard order,
 			// same as the ring's.
-			int shit = level.AddBillboardPersistent(
+			int shit = wr_BB.AddBillboardPersistent(
 				(0, 0, 0), 3.5, 2.5, 0, 0,
-				LevelLocals.BBF_FIXED, plateKind(), plateShape(),
+				wr_BB.BBF_FIXED, plateKind(), plateShape(),
 				srest, 0, 0, "");
-			level.SetBillboardAlpha(shit, 0.0);
-			level.SetBillboardGroup(shit, mFanGroup);
+			wr_BB.SetBillboardAlpha(shit, 0.0);
+			wr_BB.SetBillboardGroup(shit, mFanGroup);
 			mSubHits.Push(shit);
 
-			int sid = level.AddBillboardPersistent(
+			int sid = wr_BB.AddBillboardPersistent(
 				(0, 0, 0), 3.5, 2.5, 0, 0,
-				LevelLocals.BBF_FIXED, plateKind(), plateShape(),
-				srest, LevelLocals.BBFL_NOHIT, 0, "");
-			level.SetBillboardGradient(sid, sdry ? GRAD_DRY : GRAD_IDLE);
-			level.SetBillboardGroup(sid, mFanGroup);
+				wr_BB.BBF_FIXED, plateKind(), plateShape(),
+				srest, wr_BB.BBFL_NOHIT, 0, "");
+			wr_BB.SetBillboardGradient(sid, sdry ? GRAD_DRY : GRAD_IDLE);
+			wr_BB.SetBillboardGroup(sid, mFanGroup);
 			mSubIds.Push(sid);
 			mSubBase.Push(srest);
 
@@ -3654,11 +3654,11 @@ class wr_Rig : EventHandler
 
 			// The parent slot's colour, so a fan reads as belonging to the card
 			// it came out of rather than as loose panels near it.
-			int sacc = level.AddBillboardPersistent(
+			int sacc = wr_BB.AddBillboardPersistent(
 				(0, 0, 0), 3.5, 0.3, 0, 0,
-				LevelLocals.BBF_FIXED, LevelLocals.BB_PANEL, 0,
-				mCardColor[cardIndex], LevelLocals.BBFL_NOHIT, 0, "");
-			level.SetBillboardGroup(sacc, mFanGroup);
+				wr_BB.BBF_FIXED, wr_BB.BB_PANEL, 0,
+				mCardColor[cardIndex], wr_BB.BBFL_NOHIT, 0, "");
+			wr_BB.SetBillboardGroup(sacc, mFanGroup);
 			mSubAccents.Push(sacc);
 
 			// Which hand already holds this one -- and in a fan of _2 clones
@@ -3667,12 +3667,12 @@ class wr_Rig : EventHandler
 			int smid = 0;
 			if (swhere != 0 && cv("wr_marker", 1.0) > 0.0)
 			{
-				smid = level.AddBillboardPersistent(
+				smid = wr_BB.AddBillboardPersistent(
 					(0, 0, 0), 0.6, 0.6, 0, 0,
-					LevelLocals.BBF_FIXED, plateKind(), 15,
+					wr_BB.BBF_FIXED, plateKind(), 15,
 					(swhere == 2) ? COLOR_MARK_OTHER : COLOR_MARK_MINE,
-					LevelLocals.BBFL_NOHIT, 0, "");
-				level.SetBillboardGroup(smid, mFanGroup);
+					wr_BB.BBFL_NOHIT, 0, "");
+				wr_BB.SetBillboardGroup(smid, mFanGroup);
 			}
 			mSubMarks.Push(smid);
 
@@ -3692,11 +3692,11 @@ class wr_Rig : EventHandler
 			int siid = 0;
 			if (icon.IsValid())
 			{
-				siid = level.AddBillboardPersistent(
+				siid = wr_BB.AddBillboardPersistent(
 					(0, 0, 0), 3.5, 2.5, 0, 0,
-					LevelLocals.BBF_FIXED, LevelLocals.BB_TEXTURE, icon.GetIndex(),
-					0xFFFFFF, LevelLocals.BBFL_NOHIT, 0, "");
-				level.SetBillboardGroup(siid, mFanGroup);
+					wr_BB.BBF_FIXED, wr_BB.BB_TEXTURE, 0,
+					0xFFFFFF, wr_BB.BBFL_NOHIT, 0, TexMan.GetName(icon));
+				wr_BB.SetBillboardGroup(siid, mFanGroup);
 			}
 			mSubIcons.Push(siid);
 
@@ -3713,12 +3713,12 @@ class wr_Rig : EventHandler
 				string stext = ammoText(held, srounds);
 				saw = readoutAspect(stext);
 
-				said = level.AddBillboardPersistent(
+				said = wr_BB.AddBillboardPersistent(
 					(0, 0, 0), 3.5, 2.5, 0, 0,
-					LevelLocals.BBF_FIXED, readoutKind(), srounds,
+					wr_BB.BBF_FIXED, readoutKind(), srounds,
 					srounds > 0 ? COLOR_AMMO : COLOR_AMMO_DRY,
-					LevelLocals.BBFL_NOHIT, 0, stext);
-				level.SetBillboardGroup(said, mFanGroup);
+					wr_BB.BBFL_NOHIT, 0, stext);
+				wr_BB.SetBillboardGroup(said, mFanGroup);
 			}
 			mSubAmmos.Push(said);
 			mSubAmmoW.Push(saw);
@@ -3741,11 +3741,11 @@ class wr_Rig : EventHandler
 			double sfrac = ammoLoadedFrac(held);
 			if (cv("wr_ammo", 1.0) > 0.0 && sfrac >= 0.0)
 			{
-				sgau = level.AddBillboardPersistent(
+				sgau = wr_BB.AddBillboardPersistent(
 					(0, 0, 0), 3.5, 0.35, 0, 0,
-					LevelLocals.BBF_FIXED, LevelLocals.BB_BAR, int(sfrac * 100.0 + 0.5),
-					shue, LevelLocals.BBFL_NOHIT, 0, "");
-				level.SetBillboardGroup(sgau, mFanGroup);
+					wr_BB.BBF_FIXED, wr_BB.BB_BAR, int(sfrac * 100.0 + 0.5),
+					shue, wr_BB.BBFL_NOHIT, 0, "");
+				wr_BB.SetBillboardGroup(sgau, mFanGroup);
 			}
 			mSubGauges.Push(sgau);
 
@@ -3753,11 +3753,11 @@ class wr_Rig : EventHandler
 			// names in a set -- "Plasma Rifle" becomes "Plasma Rifle Mk II" --
 			// so the fan is where an unfitted label overflows first.
 			string stag = wrapLabel(held.GetTag(), panelWNow() * LABEL_FIT_FRAC, panelHNow());
-			int slid = level.AddBillboardPersistent(
+			int slid = wr_BB.AddBillboardPersistent(
 				(0, 0, 0), 3.5, 2.5, 0, 0,
-				LevelLocals.BBF_FIXED, LevelLocals.BB_TEXT, 0,
-				COLOR_LABEL, LevelLocals.BBFL_NOHIT, 0, stag);
-			level.SetBillboardGroup(slid, mFanGroup);
+				wr_BB.BBF_FIXED, wr_BB.BB_TEXT, 0,
+				COLOR_LABEL, wr_BB.BBFL_NOHIT, 0, stag);
+			wr_BB.SetBillboardGroup(slid, mFanGroup);
 			mSubLabels.Push(slid);
 			mSubLabelH.Push(fitLabel(stag, panelWNow() * LABEL_FIT_FRAC, panelHNow()));
 		}
@@ -3779,10 +3779,10 @@ class wr_Rig : EventHandler
 		{
 			for (int i = 0; i < mSubIds.Size(); ++i)
 			{
-				mSubLines.Push(level.AddBillboardPersistent(
+				mSubLines.Push(wr_BB.AddBillboardPersistent(
 					(0, 0, 0), 0.1, LINE_THICK, 0, 0,
-					LevelLocals.BBF_FIXED, LevelLocals.BB_SEAM, 0,
-					mCardColor[cardIndex], LevelLocals.BBFL_NOHIT, 0, ""));
+					wr_BB.BBF_FIXED, wr_BB.BB_SEAM, 0,
+					mCardColor[cardIndex], wr_BB.BBFL_NOHIT, 0, ""));
 			}
 		}
 
@@ -3791,7 +3791,7 @@ class wr_Rig : EventHandler
 		int fanTics = int(cv("wr_growtics", 6.0));
 		if (fanTics > 0 && mSubIds.Size() > 0)
 		{
-			level.AnimateBillboardGroup(mFanGroup, 0.0, 1.0, fanTics);
+			wr_BB.AnimateBillboardGroup(mFanGroup, 0.0, 1.0, fanTics);
 		}
 	}
 
@@ -3817,47 +3817,47 @@ class wr_Rig : EventHandler
 		// expansion owns. Empty in fan mode, so this costs nothing there.
 		for (int i = 0; i < mSubLines.Size(); ++i)
 		{
-			if (mSubLines[i]) level.RemoveBillboard(mSubLines[i]);
+			if (mSubLines[i]) wr_BB.RemoveBillboard(mSubLines[i]);
 		}
 		mSubLines.Clear();
 		mFanTics = 0;
 
 		for (int i = 0; i < mSubIds.Size(); ++i)
 		{
-			if (mSubIds[i]) level.RemoveBillboard(mSubIds[i]);
-			if (i < mSubHits.Size() && mSubHits[i]) level.RemoveBillboard(mSubHits[i]);
+			if (mSubIds[i]) wr_BB.RemoveBillboard(mSubIds[i]);
+			if (i < mSubHits.Size() && mSubHits[i]) wr_BB.RemoveBillboard(mSubHits[i]);
 		}
 		for (int i = 0; i < mSubIcons.Size(); ++i)
 		{
-			if (mSubIcons[i]) level.RemoveBillboard(mSubIcons[i]);
+			if (mSubIcons[i]) wr_BB.RemoveBillboard(mSubIcons[i]);
 		}
 		for (int i = 0; i < mSubAmmos.Size(); ++i)
 		{
-			if (mSubAmmos[i]) level.RemoveBillboard(mSubAmmos[i]);
+			if (mSubAmmos[i]) wr_BB.RemoveBillboard(mSubAmmos[i]);
 		}
 		for (int i = 0; i < mSubLabels.Size(); ++i)
 		{
-			if (mSubLabels[i]) level.RemoveBillboard(mSubLabels[i]);
+			if (mSubLabels[i]) wr_BB.RemoveBillboard(mSubLabels[i]);
 		}
 		for (int i = 0; i < mSubAccents.Size(); ++i)
 		{
-			if (mSubAccents[i]) level.RemoveBillboard(mSubAccents[i]);
+			if (mSubAccents[i]) wr_BB.RemoveBillboard(mSubAccents[i]);
 		}
 		for (int i = 0; i < mSubMarks.Size(); ++i)
 		{
-			if (mSubMarks[i]) level.RemoveBillboard(mSubMarks[i]);
+			if (mSubMarks[i]) wr_BB.RemoveBillboard(mSubMarks[i]);
 		}
 		for (int i = 0; i < mSubShadows.Size(); ++i)
 		{
-			if (mSubShadows[i]) level.RemoveBillboard(mSubShadows[i]);
+			if (mSubShadows[i]) wr_BB.RemoveBillboard(mSubShadows[i]);
 		}
 		for (int i = 0; i < mSubGauges.Size(); ++i)
 		{
-			if (mSubGauges[i]) level.RemoveBillboard(mSubGauges[i]);
+			if (mSubGauges[i]) wr_BB.RemoveBillboard(mSubGauges[i]);
 		}
 		// The group goes with its members, or the next fan inherits a live
 		// animation from the last one.
-		if (mFanGroup != 0) level.RemoveBillboardGroup(mFanGroup);
+		if (mFanGroup != 0) wr_BB.RemoveBillboardGroup(mFanGroup);
 		mFanGroup = 0;
 
 		mSubIds.Clear();
@@ -3907,7 +3907,7 @@ class wr_Rig : EventHandler
 		// already applies its own 0.15 deadzone and a curve before this
 		// value ever reaches script, so wr_stickdead only needs to add
 		// margin on top of that, not define the deadzone from scratch.
-		Vector2 stick = level.GetRawStickMove();
+		Vector2 stick = wr_VR.GetRawStickMove();
 		double sx = stick.Y;
 		double sy = stick.X;
 
@@ -3988,11 +3988,11 @@ class wr_Rig : EventHandler
 			// straight into the billboard, and for an SDF plate that word IS
 			// the corner radius and border width. Passing 0 on the first hover
 			// turned the card into a sharp, rimless rectangle for good.
-			level.UpdateBillboard(mPlates[card], plateShape(), lit ? COLOR_HOVER : rest);
+			wr_BB.UpdateBillboard(mPlates[card], plateShape(), lit ? COLOR_HOVER : rest);
 
 			// The gradient's far end moves with the near end, or a lit card gets
 			// a gold top fading into the resting card's dark blue bottom.
-			level.SetBillboardGradient(mPlates[card],
+			wr_BB.SetBillboardGradient(mPlates[card],
 				lit ? GRAD_HOVER : (rest == COLOR_DRY ? GRAD_DRY : GRAD_IDLE));
 			return;
 		}
@@ -4010,8 +4010,8 @@ class wr_Rig : EventHandler
 			// loaded one, in the exact place you are trying to tell clones
 			// apart.
 			int srest = (sub < mSubBase.Size()) ? mSubBase[sub] : COLOR_SUB;
-			level.UpdateBillboard(plate, plateShape(), lit ? COLOR_HOVER : srest);
-			level.SetBillboardGradient(plate,
+			wr_BB.UpdateBillboard(plate, plateShape(), lit ? COLOR_HOVER : srest);
+			wr_BB.SetBillboardGradient(plate,
 				lit ? GRAD_HOVER : (srest == COLOR_DRY ? GRAD_DRY : GRAD_IDLE));
 		}
 	}
@@ -4048,7 +4048,7 @@ class wr_Rig : EventHandler
 	{
 		if (mExpanded < 0 || mSubIds.Size() == 0) return;
 
-		if (mFanGroup != 0) level.SetBillboardGroupOrigin(mFanGroup, cardPos);
+		if (mFanGroup != 0) wr_BB.SetBillboardGroupOrigin(mFanGroup, cardPos);
 
 		// Three bearings fanned about the slot's own -- outward and to either
 		// side. Outward IS the free space, so a fan can never cross a neighbour.
@@ -4188,11 +4188,11 @@ class wr_Rig : EventHandler
 				double up    = span.Z;
 				double ang   = atan2(up, along);
 
-				level.MoveBillboard(mSubLines[i], cardPos + span * 0.5 + lift);
-				level.ResizeBillboard(mSubLines[i], draw, LINE_THICK);
-				level.OrientBillboard(mSubLines[i], faceYaw, tilt, LevelLocals.BBF_FIXED);
-				level.RollBillboard(mSubLines[i], ang);
-				level.SetBillboardAlpha(mSubLines[i], draw > 0.01 ? subWarnFrac : 0.0);
+				wr_BB.MoveBillboard(mSubLines[i], cardPos + span * 0.5 + lift);
+				wr_BB.ResizeBillboard(mSubLines[i], draw, LINE_THICK);
+				wr_BB.OrientBillboard(mSubLines[i], faceYaw, tilt, wr_BB.BBF_FIXED);
+				wr_BB.RollBillboard(mSubLines[i], ang);
+				wr_BB.SetBillboardAlpha(mSubLines[i], draw > 0.01 ? subWarnFrac : 0.0);
 			}
 
 			// A SUBCARD IS A CARD, PART THREE -- the same four live values a
@@ -4239,13 +4239,13 @@ class wr_Rig : EventHandler
 			{
 				double sso = hSubShadowOff;
 
-				level.MoveBillboard(mSubShadows[i],
+				wr_BB.MoveBillboard(mSubShadows[i],
 					pos - lift * 0.6 + viewRight * sso - (0, 0, sso));
-				level.ResizeBillboard(mSubShadows[i], panelW * spulse * 1.06,
+				wr_BB.ResizeBillboard(mSubShadows[i], panelW * spulse * 1.06,
 				                                      panelH * spulse * 1.06);
-				level.OrientBillboard(mSubShadows[i], faceYaw, tilt, LevelLocals.BBF_FIXED);
-				level.RollBillboard(mSubShadows[i], subRoll);
-				level.SetBillboardAlpha(mSubShadows[i], hSubShadow * subAlpha);
+				wr_BB.OrientBillboard(mSubShadows[i], faceYaw, tilt, wr_BB.BBF_FIXED);
+				wr_BB.RollBillboard(mSubShadows[i], subRoll);
+				wr_BB.SetBillboardAlpha(mSubShadows[i], hSubShadow * subAlpha);
 			}
 
 			// The hit quad tracks the plate but is sized to what is DRAWN, plus the
@@ -4254,50 +4254,50 @@ class wr_Rig : EventHandler
 			// in and out from under a steady pointer.
 			if (i < mSubHits.Size() && mSubHits[i] != 0)
 			{
-				level.MoveBillboard(mSubHits[i], pos);
-				level.ResizeBillboard(mSubHits[i], panelW * HIT_PAD,
+				wr_BB.MoveBillboard(mSubHits[i], pos);
+				wr_BB.ResizeBillboard(mSubHits[i], panelW * HIT_PAD,
 				                                   panelH * CARD_STRETCH * HIT_PAD);
-				level.OrientBillboard(mSubHits[i], faceYaw, tilt, LevelLocals.BBF_FIXED);
-				level.RollBillboard(mSubHits[i], subRoll);
+				wr_BB.OrientBillboard(mSubHits[i], faceYaw, tilt, wr_BB.BBF_FIXED);
+				wr_BB.RollBillboard(mSubHits[i], subRoll);
 			}
 
-			level.MoveBillboard(mSubIds[i], pos);
-			level.ResizeBillboard(mSubIds[i], panelW * spulse, panelH * spulse);
-			level.OrientBillboard(mSubIds[i], faceYaw, tilt, LevelLocals.BBF_FIXED);
-			level.RollBillboard(mSubIds[i], subRoll);
+			wr_BB.MoveBillboard(mSubIds[i], pos);
+			wr_BB.ResizeBillboard(mSubIds[i], panelW * spulse, panelH * spulse);
+			wr_BB.OrientBillboard(mSubIds[i], faceYaw, tilt, wr_BB.BBF_FIXED);
+			wr_BB.RollBillboard(mSubIds[i], subRoll);
 
 			// THE PLATE GLOWS. Same call, same defaults as a main card's --
 			// on BB_PANEL (wr_sdf off) the engine ignores it, so this needs
 			// no branch for that case either.
 			double sg = hSubGlow;
-			level.SetBillboardGlow(mSubIds[i], slit ? clamp(GLOW_R * sg, 0.0, 1.0) : 0.0,
+			wr_BB.SetBillboardGlow(mSubIds[i], slit ? clamp(GLOW_R * sg, 0.0, 1.0) : 0.0,
 			                                   slit ? GLOW_S * sg : 0.0);
 
 			if (i < mSubIcons.Size() && mSubIcons[i] != 0)
 			{
-				level.MoveBillboard(mSubIcons[i], pos + lift + (0, 0, panelH * 0.20 * spulse));
-				level.ResizeBillboard(mSubIcons[i], panelW * mSubIconW[i] * spulse,
+				wr_BB.MoveBillboard(mSubIcons[i], pos + lift + (0, 0, panelH * 0.20 * spulse));
+				wr_BB.ResizeBillboard(mSubIcons[i], panelW * mSubIconW[i] * spulse,
 				                                    panelH * mSubIconH[i] * spulse);
-				level.OrientBillboard(mSubIcons[i], faceYaw, tilt, LevelLocals.BBF_FIXED);
-				level.RollBillboard(mSubIcons[i], subRoll);
+				wr_BB.OrientBillboard(mSubIcons[i], faceYaw, tilt, wr_BB.BBF_FIXED);
+				wr_BB.RollBillboard(mSubIcons[i], subRoll);
 			}
 			// The parent slot's stripe along the top edge.
 			if (i < mSubAccents.Size() && mSubAccents[i] != 0)
 			{
-				level.MoveBillboard(mSubAccents[i],
+				wr_BB.MoveBillboard(mSubAccents[i],
 					pos + lift + (0, 0, panelH * (0.5 - ACCENT_H_FRAC * 0.5) * spulse));
-				level.ResizeBillboard(mSubAccents[i], panelW * spulse, panelH * ACCENT_H_FRAC * spulse);
-				level.OrientBillboard(mSubAccents[i], faceYaw, tilt, LevelLocals.BBF_FIXED);
-				level.RollBillboard(mSubAccents[i], subRoll);
+				wr_BB.ResizeBillboard(mSubAccents[i], panelW * spulse, panelH * ACCENT_H_FRAC * spulse);
+				wr_BB.OrientBillboard(mSubAccents[i], faceYaw, tilt, wr_BB.BBF_FIXED);
+				wr_BB.RollBillboard(mSubAccents[i], subRoll);
 			}
 
 			if (i < mSubLabels.Size() && mSubLabels[i] != 0)
 			{
-				level.MoveBillboard(mSubLabels[i], pos + lift - (0, 0, panelH * 0.07 * spulse));
-				level.ResizeBillboard(mSubLabels[i], panelW * spulse,
+				wr_BB.MoveBillboard(mSubLabels[i], pos + lift - (0, 0, panelH * 0.07 * spulse));
+				wr_BB.ResizeBillboard(mSubLabels[i], panelW * spulse,
 				                                     panelH * mSubLabelH[i] * spulse);
-				level.OrientBillboard(mSubLabels[i], faceYaw, tilt, LevelLocals.BBF_FIXED);
-				level.RollBillboard(mSubLabels[i], subRoll);
+				wr_BB.OrientBillboard(mSubLabels[i], faceYaw, tilt, wr_BB.BBF_FIXED);
+				wr_BB.RollBillboard(mSubLabels[i], subRoll);
 
 				// The same neon the ring gets. A fan is a place you are choosing
 				// between near-identical things, so "which one is under the
@@ -4308,47 +4308,47 @@ class wr_Rig : EventHandler
 				// 1.6, a mismatch that only mattered if the cvar were ever
 				// missing from a config, which it never validly is.
 				double slg = hSubGlow;
-				level.SetBillboardGlow(mSubLabels[i], slit ? clamp(GLOW_R * slg, 0.0, 1.0) : 0.0,
+				wr_BB.SetBillboardGlow(mSubLabels[i], slit ? clamp(GLOW_R * slg, 0.0, 1.0) : 0.0,
 				                                      slit ? GLOW_S * slg : 0.0);
 			}
 
 			if (i < mSubAmmos.Size() && mSubAmmos[i] != 0)
 			{
-				level.MoveBillboard(mSubAmmos[i], pos + lift - (0, 0, panelH * 0.41 * spulse));
-				level.ResizeBillboard(mSubAmmos[i], panelW * mSubAmmoW[i] * spulse,
+				wr_BB.MoveBillboard(mSubAmmos[i], pos + lift - (0, 0, panelH * 0.41 * spulse));
+				wr_BB.ResizeBillboard(mSubAmmos[i], panelW * mSubAmmoW[i] * spulse,
 				                                    panelH * AMMO_H_FRAC * spulse);
-				level.OrientBillboard(mSubAmmos[i], faceYaw, tilt, LevelLocals.BBF_FIXED);
-				level.RollBillboard(mSubAmmos[i], subRoll);
+				wr_BB.OrientBillboard(mSubAmmos[i], faceYaw, tilt, wr_BB.BBF_FIXED);
+				wr_BB.RollBillboard(mSubAmmos[i], subRoll);
 			}
 
 			// The proportion, as a bar -- read before the number is.
 			if (i < mSubGauges.Size() && mSubGauges[i] != 0)
 			{
-				level.MoveBillboard(mSubGauges[i], pos + lift - (0, 0, panelH * 0.26 * spulse));
-				level.ResizeBillboard(mSubGauges[i], panelW * 0.76 * spulse,
+				wr_BB.MoveBillboard(mSubGauges[i], pos + lift - (0, 0, panelH * 0.26 * spulse));
+				wr_BB.ResizeBillboard(mSubGauges[i], panelW * 0.76 * spulse,
 				                                     panelH * GAUGE_H_FRAC * spulse);
-				level.OrientBillboard(mSubGauges[i], faceYaw, tilt, LevelLocals.BBF_FIXED);
-				level.RollBillboard(mSubGauges[i], subRoll);
+				wr_BB.OrientBillboard(mSubGauges[i], faceYaw, tilt, wr_BB.BBF_FIXED);
+				wr_BB.RollBillboard(mSubGauges[i], subRoll);
 
 				// Fan counterpart to the main ring's low-ammo gauge pulse.
 				if (i < mSubLowAmmo.Size() && mSubLowAmmo[i] && hSubLowAmmo > 0.0)
 				{
 					double slf = 0.5 + 0.5 * sin(level.maptime * SHIMMER_SPEED + i * SHIMMER_PHASE);
 					double slg = hSubLowAmmo * slf;
-					level.SetBillboardGlow(mSubGauges[i], clamp(GLOW_R * slg, 0.0, 1.0), GLOW_S * slg);
+					wr_BB.SetBillboardGlow(mSubGauges[i], clamp(GLOW_R * slg, 0.0, 1.0), GLOW_S * slg);
 				}
 			}
 
 			// The held mark, same corner as a ring card's.
 			if (i < mSubMarks.Size() && mSubMarks[i] != 0)
 			{
-				level.MoveBillboard(mSubMarks[i],
+				wr_BB.MoveBillboard(mSubMarks[i],
 					pos + lift * 1.5
 					    + viewRight * (panelW * 0.40 * spulse)
 					    + (0, 0, panelH * 0.34 * spulse));
-				level.ResizeBillboard(mSubMarks[i], panelW * 0.10 * spulse, panelH * 0.13 * spulse);
-				level.OrientBillboard(mSubMarks[i], faceYaw, tilt, LevelLocals.BBF_FIXED);
-				level.RollBillboard(mSubMarks[i], subRoll);
+				wr_BB.ResizeBillboard(mSubMarks[i], panelW * 0.10 * spulse, panelH * 0.13 * spulse);
+				wr_BB.OrientBillboard(mSubMarks[i], faceYaw, tilt, wr_BB.BBF_FIXED);
+				wr_BB.RollBillboard(mSubMarks[i], subRoll);
 			}
 
 			// FOCUS, LAST -- fading every element by the SAME subAlpha this
@@ -4473,7 +4473,16 @@ class wr_Rig : EventHandler
 		TextureID ready = spriteOf(it, 'Ready');
 		if (ready.IsValid()) return ready;
 
-		return it.GetSpriteTextureID(0);
+		// RSQ: GetSpriteTextureID is REMA's; the current frame's sprite is the same answer.
+		if (it.CurState)
+		{
+			TextureID cur;
+			bool flip;
+			Vector2 sc;
+			[cur, flip, sc] = it.CurState.GetSpriteTexture(0);
+			return cur;
+		}
+		return none;
 	}
 
 
@@ -4815,7 +4824,7 @@ class wr_Rig : EventHandler
 		double h = panelH * LABEL_HEIGHT_FRAC;
 		if (h <= 0.0) return text;
 
-		double w = level.MeasureBillboardText(text, h, 0);
+		double w = wr_BB.MeasureBillboardText(text, h, 0);
 
 		// 0 means no SDF atlas is loaded and the measure is unavailable -- that
 		// is "estimate it yourself", not "the string is empty", so leave it be.
@@ -4847,7 +4856,7 @@ class wr_Rig : EventHandler
 		// MeasureBillboardText reports the WIDEST line of a wrapped string, so
 		// this works unchanged on one line or two -- which is the whole reason
 		// wrapLabel can hand its result straight here.
-		double w = level.MeasureBillboardText(text, h, 0);
+		double w = wr_BB.MeasureBillboardText(text, h, 0);
 		if (w <= 0.0) return LABEL_HEIGHT_FRAC;
 
 		if (w > boxW) h *= boxW / w;
@@ -4864,7 +4873,7 @@ class wr_Rig : EventHandler
 		// per-line height comes down until they fit.
 		if (text.IndexOf("\n") >= 0)
 		{
-			Vector2 blk = level.MeasureBillboardTextBlock(text, h, 0);
+			Vector2 blk = wr_BB.MeasureBillboardTextBlock(text, h, 0);
 			double room = panelH * LABEL_BLOCK_FRAC;
 
 			if (blk.Y > room && blk.Y > 0.0) h *= room / blk.Y;
@@ -4882,8 +4891,8 @@ class wr_Rig : EventHandler
 
 	private static int plateKind()
 	{
-		return (cv("wr_sdf", 1.0) > 0.0) ? LevelLocals.BB_SDFPANEL
-		                                 : LevelLocals.BB_PANEL;
+		return (cv("wr_sdf", 1.0) > 0.0) ? wr_BB.BB_SDFPANEL
+		                                 : wr_BB.BB_PANEL;
 	}
 
 	// Corner radius in byte 0, border width in byte 1, each 0-15 across the
@@ -5008,7 +5017,7 @@ class wr_Rig : EventHandler
 
 		// Without this the untouched corners come out opaque black instead of
 		// letting the plate behind show through.
-		TexMan.SetCanvasTextureTranslucent(name, true);
+		// RSQ: SetCanvasTextureTranslucent is REMA's; canvases do not draw in VR on QZD 17.3 anyway.
 
 		int bg = dry ? COLOR_DRY : COLOR_IDLE;
 
@@ -5043,7 +5052,7 @@ class wr_Rig : EventHandler
 		{
 			Console.Printf("\c[Cyan]RSVR HUD face[%d]:\c- %s icon.valid=%d idx=%d",
 				pool, held ? (held.GetClassName() .. "") : "null",
-				int(icon.IsValid()), icon.GetIndex());
+				int(icon.IsValid()), 0);
 		}
 
 		if (icon.IsValid())
@@ -5280,11 +5289,11 @@ class wr_Rig : EventHandler
 			// So: an invisible quad does the hitting, generously sized, and the
 			// visible plate is BBFL_NOHIT. Alpha 0 is still hittable -- documented
 			// as a trap, used here on purpose.
-			int id = level.AddBillboardPersistent(
+			int id = wr_BB.AddBillboardPersistent(
 				(0, 0, 0), 3.5, 2.5, 0, 0,
-				LevelLocals.BBF_FIXED, LevelLocals.BB_PANEL, 0,
+				wr_BB.BBF_FIXED, wr_BB.BB_PANEL, 0,
 				COLOR_IDLE, 0, 0, "");
-			level.SetBillboardAlpha(id, 0);
+			wr_BB.SetBillboardAlpha(id, 0);
 			mIds.Push(id);
 
 			// A DRY WEAPON RESTS A DIFFERENT COLOUR.
@@ -5323,22 +5332,22 @@ class wr_Rig : EventHandler
 			int shad = 0;
 			if (cv("wr_shadow", 0.5) > 0.0)
 			{
-				shad = level.AddBillboardPersistent(
+				shad = wr_BB.AddBillboardPersistent(
 					(0, 0, 0), 3.5, 2.5, 0, 0,
-					LevelLocals.BBF_FIXED, plateKind(), plateShape(),
-					0x000000, LevelLocals.BBFL_NOHIT, 0, "");
+					wr_BB.BBF_FIXED, plateKind(), plateShape(),
+					0x000000, wr_BB.BBFL_NOHIT, 0, "");
 			}
 			mShadows.Push(shad);
 
-			int plate = level.AddBillboardPersistent(
+			int plate = wr_BB.AddBillboardPersistent(
 				(0, 0, 0), 3.5, 2.5, 0, 0,
-				LevelLocals.BBF_FIXED, plateKind(), plateShape(),
-				rest, LevelLocals.BBFL_NOHIT, 0, "");
+				wr_BB.BBF_FIXED, plateKind(), plateShape(),
+				rest, wr_BB.BBFL_NOHIT, 0, "");
 
 			// A gradient, not a flat swatch. Two colours cost one extra setter
 			// and give the card a top and a bottom -- which is most of what
 			// makes a rectangle read as a surface rather than as a hole.
-			level.SetBillboardGradient(plate, rest == COLOR_DRY ? GRAD_DRY : GRAD_IDLE);
+			wr_BB.SetBillboardGradient(plate, rest == COLOR_DRY ? GRAD_DRY : GRAD_IDLE);
 			mPlates.Push(plate);
 
 			// The slot's colour, as a bar along the top edge.
@@ -5346,10 +5355,10 @@ class wr_Rig : EventHandler
 			// Bearings are already fixed so the ring can be learned by feel.
 			// This is the same promise to the eye: slot 4 is always blue and
 			// always at the same angle, so it can be found two ways.
-			mAccents.Push(level.AddBillboardPersistent(
+			mAccents.Push(wr_BB.AddBillboardPersistent(
 				(0, 0, 0), 3.5, 0.3, 0, 0,
-				LevelLocals.BBF_FIXED, LevelLocals.BB_PANEL, 0,
-				mCardColor[i], LevelLocals.BBFL_NOHIT, 0, ""));
+				wr_BB.BBF_FIXED, wr_BB.BB_PANEL, 0,
+				mCardColor[i], wr_BB.BBFL_NOHIT, 0, ""));
 
 			// The weapon's name, floated just off the panel face.
 			//
@@ -5362,10 +5371,10 @@ class wr_Rig : EventHandler
 			                  : (heldNow != null ? ("" .. heldNow.GetTag())
 			                                     : ("" .. GetDefaultByType(mTypes[i]).GetTag()));
 			string tag = wrapLabel(rawTag, panelW * LABEL_FIT_FRAC, panelH);
-			int lid = level.AddBillboardPersistent(
+			int lid = wr_BB.AddBillboardPersistent(
 				(0, 0, 0), 3.5, 2.5, 0, 0,
-				LevelLocals.BBF_FIXED, LevelLocals.BB_TEXT, 0,
-				COLOR_LABEL, LevelLocals.BBFL_NOHIT, 0, tag);
+				wr_BB.BBF_FIXED, wr_BB.BB_TEXT, 0,
+				COLOR_LABEL, wr_BB.BBFL_NOHIT, 0, tag);
 			mLabels.Push(lid);
 			mLabelH.Push(fitLabel(tag, panelW * LABEL_FIT_FRAC, panelH));
 
@@ -5393,10 +5402,10 @@ class wr_Rig : EventHandler
 				TextureID face = paintFace(i, heldNow, mCardColor[i], rest == COLOR_DRY);
 				if (face.IsValid())
 				{
-					fid = level.AddBillboardPersistent(
+					fid = wr_BB.AddBillboardPersistent(
 						(0, 0, 0), 3.5, 2.5, 0, 0,
-						LevelLocals.BBF_FIXED, LevelLocals.BB_TEXTURE, face.GetIndex(),
-						0xFFFFFF, LevelLocals.BBFL_NOHIT, 0, "");
+						wr_BB.BBF_FIXED, wr_BB.BB_TEXTURE, 0,
+						0xFFFFFF, wr_BB.BBFL_NOHIT, 0, TexMan.GetName(face));
 					canvasFace = true;
 				}
 			}
@@ -5420,10 +5429,10 @@ class wr_Rig : EventHandler
 					// a texture lookup per card per frame otherwise.
 					[iw, ih] = fitIcon(icon, ICON_W_FRAC, ICON_H_FRAC);
 
-					iid = level.AddBillboardPersistent(
+					iid = wr_BB.AddBillboardPersistent(
 						(0, 0, 0), 3.5, 2.5, 0, 0,
-						LevelLocals.BBF_FIXED, LevelLocals.BB_TEXTURE, icon.GetIndex(),
-						0xFFFFFF, LevelLocals.BBFL_NOHIT, 0, "");
+						wr_BB.BBF_FIXED, wr_BB.BB_TEXTURE, 0,
+						0xFFFFFF, wr_BB.BBFL_NOHIT, 0, TexMan.GetName(icon));
 				}
 			}
 			mIcons.Push(iid);
@@ -5452,11 +5461,11 @@ class wr_Rig : EventHandler
 				string atext = ammoText(heldNow, rounds);
 				aw = readoutAspect(atext);
 
-				aid = level.AddBillboardPersistent(
+				aid = wr_BB.AddBillboardPersistent(
 					(0, 0, 0), 3.5, 2.5, 0, 0,
-					LevelLocals.BBF_FIXED, readoutKind(), rounds,
+					wr_BB.BBF_FIXED, readoutKind(), rounds,
 					rounds > 0 ? COLOR_AMMO : COLOR_AMMO_DRY,
-					LevelLocals.BBFL_NOHIT, 0, atext);
+					wr_BB.BBFL_NOHIT, 0, atext);
 			}
 			mAmmoW.Push(aw);
 
@@ -5487,11 +5496,11 @@ class wr_Rig : EventHandler
 			int mid = 0;
 			if (where != 0 && cv("wr_marker", 1.0) > 0.0)
 			{
-				mid = level.AddBillboardPersistent(
+				mid = wr_BB.AddBillboardPersistent(
 					(0, 0, 0), 0.6, 0.6, 0, 0,
-					LevelLocals.BBF_FIXED, plateKind(), 15,
+					wr_BB.BBF_FIXED, plateKind(), 15,
 					(where == 2) ? COLOR_MARK_OTHER : COLOR_MARK_MINE,
-					LevelLocals.BBFL_NOHIT, 0, "");
+					wr_BB.BBFL_NOHIT, 0, "");
 
 				// A STANDING GLOW, unlike every other glow on this ring --
 				// those all answer "which one is hovered" and go dark the
@@ -5505,7 +5514,7 @@ class wr_Rig : EventHandler
 				// hue from COLOR_HOVER's gold specifically so a held
 				// weapon stays identifiable even buried in a collapsed
 				// fan, where the mark itself is small and easy to miss.
-				if (mid) level.SetBillboardGlow(mid, 0.5, 0.6);
+				if (mid) wr_BB.SetBillboardGlow(mid, 0.5, 0.6);
 			}
 			mMarks.Push(mid);
 
@@ -5522,10 +5531,10 @@ class wr_Rig : EventHandler
 			int nid = 0;
 			if (cv("wr_slotnum", 1.0) > 0.0 && mCardSlots[i] > 0)
 			{
-				nid = level.AddBillboardPersistent(
+				nid = wr_BB.AddBillboardPersistent(
 					(0, 0, 0), 0.8, 0.8, 0, 0,
-					LevelLocals.BBF_FIXED, LevelLocals.BB_DIGITS, mCardSlots[i],
-					COLOR_SLOTNUM, LevelLocals.BBFL_NOHIT, 0, "");
+					wr_BB.BBF_FIXED, wr_BB.BB_DIGITS, mCardSlots[i],
+					COLOR_SLOTNUM, wr_BB.BBFL_NOHIT, 0, "");
 			}
 			mSlotNums.Push(nid);
 
@@ -5554,11 +5563,11 @@ class wr_Rig : EventHandler
 				// hidden variant is dry -- computed once, in gatherWeapons,
 				// across the whole slot rather than just the shown card.
 				bool allDry = (i < mSlotAllDry.Size()) && mSlotAllDry[i];
-				bid = level.AddBillboardPersistent(
+				bid = wr_BB.AddBillboardPersistent(
 					(0, 0, 0), 3.5, 2.5, 0, 0,
-					LevelLocals.BBF_FIXED, LevelLocals.BB_TEXT, 0,
+					wr_BB.BBF_FIXED, wr_BB.BB_TEXT, 0,
 					allDry ? color(COLOR_AMMO_DRY) : COLOR_STACK,
-					LevelLocals.BBFL_NOHIT, 0,
+					wr_BB.BBFL_NOHIT, 0,
 					String.Format("+%d", mSlotCount[i] - 1));
 			}
 			mStackBadges.Push(bid);
@@ -5571,10 +5580,10 @@ class wr_Rig : EventHandler
 			double frac = ammoLoadedFrac(held);
 			if (cv("wr_ammo", 1.0) > 0.0 && frac >= 0.0 && !canvasFace)
 			{
-				gid = level.AddBillboardPersistent(
+				gid = wr_BB.AddBillboardPersistent(
 					(0, 0, 0), 3.5, 0.35, 0, 0,
-					LevelLocals.BBF_FIXED, LevelLocals.BB_BAR, int(frac * 100.0 + 0.5),
-					mCardColor[i], LevelLocals.BBFL_NOHIT, 0, "");
+					wr_BB.BBF_FIXED, wr_BB.BB_BAR, int(frac * 100.0 + 0.5),
+					mCardColor[i], wr_BB.BBFL_NOHIT, 0, "");
 			}
 			mGauges.Push(gid);
 			mAmmos.Push(aid);
@@ -5591,19 +5600,19 @@ class wr_Rig : EventHandler
 			// the engine per FRAME. The hand-rolled version stepped at script's
 			// 35Hz, which is what made it look like a value being animated
 			// rather than a thing arriving.
-			int grp = level.AddBillboardGroup((0, 0, 0));
-			level.SetBillboardGroup(id, grp);
-			level.SetBillboardGroup(plate, grp);
-			level.SetBillboardGroup(mAccents[i], grp);
-			level.SetBillboardGroup(lid, grp);
-			if (iid != 0) level.SetBillboardGroup(iid, grp);
-			if (gid != 0) level.SetBillboardGroup(gid, grp);
-			if (fid != 0) level.SetBillboardGroup(fid, grp);
-			if (mid != 0) level.SetBillboardGroup(mid, grp);
-			if (shad != 0) level.SetBillboardGroup(shad, grp);
-			if (nid != 0) level.SetBillboardGroup(nid, grp);
-			if (bid != 0) level.SetBillboardGroup(bid, grp);
-			if (aid != 0) level.SetBillboardGroup(aid, grp);
+			int grp = wr_BB.AddBillboardGroup((0, 0, 0));
+			wr_BB.SetBillboardGroup(id, grp);
+			wr_BB.SetBillboardGroup(plate, grp);
+			wr_BB.SetBillboardGroup(mAccents[i], grp);
+			wr_BB.SetBillboardGroup(lid, grp);
+			if (iid != 0) wr_BB.SetBillboardGroup(iid, grp);
+			if (gid != 0) wr_BB.SetBillboardGroup(gid, grp);
+			if (fid != 0) wr_BB.SetBillboardGroup(fid, grp);
+			if (mid != 0) wr_BB.SetBillboardGroup(mid, grp);
+			if (shad != 0) wr_BB.SetBillboardGroup(shad, grp);
+			if (nid != 0) wr_BB.SetBillboardGroup(nid, grp);
+			if (bid != 0) wr_BB.SetBillboardGroup(bid, grp);
+			if (aid != 0) wr_BB.SetBillboardGroup(aid, grp);
 			mCardX.Push(0); mCardY.Push(0); mCardZ.Push(0);
 			mGroups.Push(grp);
 		}
@@ -5761,10 +5770,10 @@ class wr_Rig : EventHandler
 				// diagnostic, never a permanent fixture.
 				if (cv("wr_debug", 0.0) > 0.0)
 				{
-					level.AddBillboard(tracer.Results.HitPos, 6.0, 6.0,
-						pmo.angle + 180, 0, LevelLocals.BBF_FIXED,
-						LevelLocals.BB_SEAM, 0, color(255, 255, 200, 60),
-						LevelLocals.BBFL_NOHIT, 2.0);
+					wr_BB.AddBillboard(tracer.Results.HitPos, 6.0, 6.0,
+						pmo.angle + 180, 0, wr_BB.BBF_FIXED,
+						wr_BB.BB_SEAM, 0, color(255, 255, 200, 60),
+						wr_BB.BBFL_NOHIT, 2.0);
 				}
 			}
 
@@ -6142,7 +6151,7 @@ class wr_Rig : EventHandler
 
 			// The group carries the whole card's origin, so scale happens about
 			// the card's own centre rather than about the world origin.
-			if (i < mGroups.Size()) level.SetBillboardGroupOrigin(mGroups[i], pos);
+			if (i < mGroups.Size()) wr_BB.SetBillboardGroupOrigin(mGroups[i], pos);
 
 			// Hit quad first, sized past the picture: 1.2 to cover the vertical
 			// stretch the renderer adds, and a little more so the edges of the
@@ -6150,11 +6159,11 @@ class wr_Rig : EventHandler
 			//
 			// No grow factor in the size any more -- the group scales it, and
 			// scaling it here as well would square the animation.
-			level.MoveBillboard(mIds[i], pos);
-			level.ResizeBillboard(mIds[i], panelW * HIT_PAD,
+			wr_BB.MoveBillboard(mIds[i], pos);
+			wr_BB.ResizeBillboard(mIds[i], panelW * HIT_PAD,
 			                               panelH * CARD_STRETCH * HIT_PAD);
-			level.OrientBillboard(mIds[i], faceYaw, tilt, LevelLocals.BBF_FIXED);
-			level.RollBillboard(mIds[i], roll);
+			wr_BB.OrientBillboard(mIds[i], faceYaw, tilt, wr_BB.BBF_FIXED);
+			wr_BB.RollBillboard(mIds[i], roll);
 
 			// The hovered card BREATHES.
 			//
@@ -6201,26 +6210,26 @@ class wr_Rig : EventHandler
 			{
 				double so = hShadowOff;
 
-				level.MoveBillboard(mShadows[i],
+				wr_BB.MoveBillboard(mShadows[i],
 					pos - lift * 0.6 + viewRight * so - (0, 0, so));
-				level.ResizeBillboard(mShadows[i], panelW * pulse * 1.06,
+				wr_BB.ResizeBillboard(mShadows[i], panelW * pulse * 1.06,
 				                                   panelH * pulse * 1.06);
-				level.OrientBillboard(mShadows[i], faceYaw, tilt, LevelLocals.BBF_FIXED);
-				level.RollBillboard(mShadows[i], roll);
-				level.SetBillboardAlpha(mShadows[i], hShadow * cardAlpha);
+				wr_BB.OrientBillboard(mShadows[i], faceYaw, tilt, wr_BB.BBF_FIXED);
+				wr_BB.RollBillboard(mShadows[i], roll);
+				wr_BB.SetBillboardAlpha(mShadows[i], hShadow * cardAlpha);
 			}
 
 			// Bottom-left, opposite the held marker, so the two never collide.
 			if (i < mSlotNums.Size() && mSlotNums[i] != 0)
 			{
-				level.MoveBillboard(mSlotNums[i],
+				wr_BB.MoveBillboard(mSlotNums[i],
 					pos + lift * 1.5
 					    - viewRight * (panelW * 0.40 * pulse)
 					    + (0, 0, panelH * 0.34 * pulse));
-				level.ResizeBillboard(mSlotNums[i], panelW * 0.11 * pulse,
+				wr_BB.ResizeBillboard(mSlotNums[i], panelW * 0.11 * pulse,
 				                                    panelH * 0.15 * pulse);
-				level.OrientBillboard(mSlotNums[i], faceYaw, tilt, LevelLocals.BBF_FIXED);
-				level.RollBillboard(mSlotNums[i], roll);
+				wr_BB.OrientBillboard(mSlotNums[i], faceYaw, tilt, wr_BB.BBF_FIXED);
+				wr_BB.RollBillboard(mSlotNums[i], roll);
 			}
 
 			// Bottom-right -- the one corner slot number (bottom-left) and
@@ -6230,14 +6239,14 @@ class wr_Rig : EventHandler
 			// as the digit that IS the card's bearing.
 			if (i < mStackBadges.Size() && mStackBadges[i] != 0)
 			{
-				level.MoveBillboard(mStackBadges[i],
+				wr_BB.MoveBillboard(mStackBadges[i],
 					pos + lift * 1.5
 					    + viewRight * (panelW * 0.40 * pulse)
 					    - (0, 0, panelH * 0.34 * pulse));
-				level.ResizeBillboard(mStackBadges[i], panelW * 0.24 * pulse,
+				wr_BB.ResizeBillboard(mStackBadges[i], panelW * 0.24 * pulse,
 				                                       panelH * 0.13 * pulse);
-				level.OrientBillboard(mStackBadges[i], faceYaw, tilt, LevelLocals.BBF_FIXED);
-				level.RollBillboard(mStackBadges[i], roll);
+				wr_BB.OrientBillboard(mStackBadges[i], faceYaw, tilt, wr_BB.BBF_FIXED);
+				wr_BB.RollBillboard(mStackBadges[i], roll);
 			}
 
 			if (i < mSlotNums.Size()) fade(mSlotNums[i], cardAlpha);
@@ -6269,22 +6278,22 @@ class wr_Rig : EventHandler
 			// The held-weapon mark, pinned to the card's top-right corner.
 			if (i < mMarks.Size() && mMarks[i] != 0)
 			{
-				level.MoveBillboard(mMarks[i],
+				wr_BB.MoveBillboard(mMarks[i],
 					pos + lift * 1.5
 					    + viewRight * (panelW * 0.40 * pulse)
 					    + (0, 0, panelH * 0.34 * pulse));
-				level.ResizeBillboard(mMarks[i], panelW * 0.10 * pulse,
+				wr_BB.ResizeBillboard(mMarks[i], panelW * 0.10 * pulse,
 				                                 panelH * 0.13 * pulse);
-				level.OrientBillboard(mMarks[i], faceYaw, tilt, LevelLocals.BBF_FIXED);
-				level.RollBillboard(mMarks[i], roll);
+				wr_BB.OrientBillboard(mMarks[i], faceYaw, tilt, wr_BB.BBF_FIXED);
+				wr_BB.RollBillboard(mMarks[i], roll);
 			}
 
 			if (i < mPlates.Size())
 			{
-				level.MoveBillboard(mPlates[i], pos);
-				level.ResizeBillboard(mPlates[i], panelW * pulse, panelH * pulse);
-				level.OrientBillboard(mPlates[i], faceYaw, tilt, LevelLocals.BBF_FIXED);
-				level.RollBillboard(mPlates[i], roll);
+				wr_BB.MoveBillboard(mPlates[i], pos);
+				wr_BB.ResizeBillboard(mPlates[i], panelW * pulse, panelH * pulse);
+				wr_BB.OrientBillboard(mPlates[i], faceYaw, tilt, wr_BB.BBF_FIXED);
+				wr_BB.RollBillboard(mPlates[i], roll);
 
 				// THE CARD ITSELF GLOWS NOW, not just the name on it.
 				//
@@ -6309,7 +6318,7 @@ class wr_Rig : EventHandler
 				double shimmerFrac = 0.5 + 0.5 * sin(level.maptime * SHIMMER_SPEED + i * SHIMMER_PHASE);
 				double sr = shimmerAmt * shimmerFrac;
 
-				level.SetBillboardGlow(mPlates[i],
+				wr_BB.SetBillboardGlow(mPlates[i],
 					lit ? clamp(GLOW_R * g, 0.0, 1.0) : clamp(GLOW_R * sr, 0.0, 1.0),
 					lit ? GLOW_S * g : GLOW_S * sr);
 			}
@@ -6317,12 +6326,12 @@ class wr_Rig : EventHandler
 			// The slot bar, pinned to the card's top edge.
 			if (i < mAccents.Size())
 			{
-				level.MoveBillboard(mAccents[i],
+				wr_BB.MoveBillboard(mAccents[i],
 					pos + lift + (0, 0, panelH * (0.5 - ACCENT_H_FRAC * 0.5) * pulse));
-				level.ResizeBillboard(mAccents[i], panelW * pulse,
+				wr_BB.ResizeBillboard(mAccents[i], panelW * pulse,
 				                                   panelH * ACCENT_H_FRAC * pulse);
-				level.OrientBillboard(mAccents[i], faceYaw, tilt, LevelLocals.BBF_FIXED);
-				level.RollBillboard(mAccents[i], roll);
+				wr_BB.OrientBillboard(mAccents[i], faceYaw, tilt, wr_BB.BBF_FIXED);
+				wr_BB.RollBillboard(mAccents[i], roll);
 			}
 
 			// PARALLAX. The artwork shifts inside its frame as you move.
@@ -6358,11 +6367,11 @@ class wr_Rig : EventHandler
 			// around it -- which is what keeps the plate's glow visible.
 			if (i < mFaces.Size() && mFaces[i] != 0)
 			{
-				level.MoveBillboard(mFaces[i], pos + lift * 0.5 + par);
-				level.ResizeBillboard(mFaces[i], panelW * 0.92 * pulse,
+				wr_BB.MoveBillboard(mFaces[i], pos + lift * 0.5 + par);
+				wr_BB.ResizeBillboard(mFaces[i], panelW * 0.92 * pulse,
 				                                 panelH * 0.92 * pulse);
-				level.OrientBillboard(mFaces[i], faceYaw, tilt, LevelLocals.BBF_FIXED);
-				level.RollBillboard(mFaces[i], roll);
+				wr_BB.OrientBillboard(mFaces[i], faceYaw, tilt, wr_BB.BBF_FIXED);
+				wr_BB.RollBillboard(mFaces[i], roll);
 			}
 
 			// Sized to the icon's OWN shape rather than stamped into a fixed
@@ -6370,38 +6379,38 @@ class wr_Rig : EventHandler
 			// keeping the same anchor -- billboards are centre-origin.
 			if (i < mIcons.Size() && mIcons[i] != 0)
 			{
-				level.MoveBillboard(mIcons[i], pos + lift + par + (0, 0, panelH * 0.17 * pulse));
-				level.ResizeBillboard(mIcons[i], panelW * mIconW[i] * pulse,
+				wr_BB.MoveBillboard(mIcons[i], pos + lift + par + (0, 0, panelH * 0.17 * pulse));
+				wr_BB.ResizeBillboard(mIcons[i], panelW * mIconW[i] * pulse,
 				                                 panelH * mIconH[i] * pulse);
-				level.OrientBillboard(mIcons[i], faceYaw, tilt, LevelLocals.BBF_FIXED);
-				level.RollBillboard(mIcons[i], roll);
+				wr_BB.OrientBillboard(mIcons[i], faceYaw, tilt, wr_BB.BBF_FIXED);
+				wr_BB.RollBillboard(mIcons[i], roll);
 			}
 
 			if (i < mLabels.Size())
 			{
-				level.MoveBillboard(mLabels[i], pos + lift - (0, 0, panelH * 0.07 * pulse));
+				wr_BB.MoveBillboard(mLabels[i], pos + lift - (0, 0, panelH * 0.07 * pulse));
 				// Height measured at spawn against this card's width, so a long
 				// name is drawn smaller instead of running off both edges.
-				level.ResizeBillboard(mLabels[i], panelW * pulse,
+				wr_BB.ResizeBillboard(mLabels[i], panelW * pulse,
 				                                  panelH * mLabelH[i] * pulse);
-				level.OrientBillboard(mLabels[i], faceYaw, tilt, LevelLocals.BBF_FIXED);
-				level.RollBillboard(mLabels[i], roll);
+				wr_BB.OrientBillboard(mLabels[i], faceYaw, tilt, wr_BB.BBF_FIXED);
+				wr_BB.RollBillboard(mLabels[i], roll);
 
 				// Neon, and only on the one you are pointing at. A halo on every
 				// card is a blur; a halo on one is the answer to "which".
 				double lg = hGlow;
-				level.SetBillboardGlow(mLabels[i], lit ? clamp(GLOW_R * lg, 0.0, 1.0) : 0.0,
+				wr_BB.SetBillboardGlow(mLabels[i], lit ? clamp(GLOW_R * lg, 0.0, 1.0) : 0.0,
 				                                   lit ? GLOW_S * lg : 0.0);
 			}
 
 			// The proportion, as a bar. Read before the number is.
 			if (i < mGauges.Size() && mGauges[i] != 0)
 			{
-				level.MoveBillboard(mGauges[i], pos + lift - (0, 0, panelH * 0.26 * pulse));
-				level.ResizeBillboard(mGauges[i], panelW * 0.76 * pulse,
+				wr_BB.MoveBillboard(mGauges[i], pos + lift - (0, 0, panelH * 0.26 * pulse));
+				wr_BB.ResizeBillboard(mGauges[i], panelW * 0.76 * pulse,
 				                                  panelH * GAUGE_H_FRAC * pulse);
-				level.OrientBillboard(mGauges[i], faceYaw, tilt, LevelLocals.BBF_FIXED);
-				level.RollBillboard(mGauges[i], roll);
+				wr_BB.OrientBillboard(mGauges[i], faceYaw, tilt, wr_BB.BBF_FIXED);
+				wr_BB.RollBillboard(mGauges[i], roll);
 
 				// LOW-AMMO PULSE -- the same shimmer oscillation the plate's
 				// ambient shimmer uses (SHIMMER_SPEED/PHASE), but gated on
@@ -6414,18 +6423,18 @@ class wr_Rig : EventHandler
 				{
 					double lf = 0.5 + 0.5 * sin(level.maptime * SHIMMER_SPEED + i * SHIMMER_PHASE);
 					double lg = hLowAmmo * lf;
-					level.SetBillboardGlow(mGauges[i], clamp(GLOW_R * lg, 0.0, 1.0), GLOW_S * lg);
+					wr_BB.SetBillboardGlow(mGauges[i], clamp(GLOW_R * lg, 0.0, 1.0), GLOW_S * lg);
 				}
 			}
 
 			// The count, in its own lit bezel at the bottom of the card.
 			if (i < mAmmos.Size() && mAmmos[i] != 0)
 			{
-				level.MoveBillboard(mAmmos[i], pos + lift - (0, 0, panelH * 0.41 * pulse));
-				level.ResizeBillboard(mAmmos[i], panelW * mAmmoW[i] * pulse,
+				wr_BB.MoveBillboard(mAmmos[i], pos + lift - (0, 0, panelH * 0.41 * pulse));
+				wr_BB.ResizeBillboard(mAmmos[i], panelW * mAmmoW[i] * pulse,
 				                                 panelH * AMMO_H_FRAC * pulse);
-				level.OrientBillboard(mAmmos[i], faceYaw, tilt, LevelLocals.BBF_FIXED);
-				level.RollBillboard(mAmmos[i], roll);
+				wr_BB.OrientBillboard(mAmmos[i], faceYaw, tilt, wr_BB.BBF_FIXED);
+				wr_BB.RollBillboard(mAmmos[i], roll);
 
 				// THE READOUTS BOOT UP.
 				//
@@ -6434,7 +6443,7 @@ class wr_Rig : EventHandler
 				// characters do not appear at all until 0.55. Driving it with
 				// the same curve the cards arrive on means each one powers on as
 				// it lands rather than arriving already lit.
-				level.SetBillboardProgress(mAmmos[i], grow);
+				wr_BB.SetBillboardProgress(mAmmos[i], grow);
 			}
 
 			// The fan hangs off whichever card opened it, so it is placed here
@@ -6494,10 +6503,10 @@ class wr_Rig : EventHandler
 
 		if (mSheetTitle != 0)
 		{
-			level.SetBillboardText(mSheetTitle, title);
-			level.UpdateBillboard(mSheetTitle, 0, tint);
+			wr_BB.SetBillboardText(mSheetTitle, title);
+			wr_BB.UpdateBillboard(mSheetTitle, 0, tint);
 		}
-		if (mSheetAccent != 0) level.UpdateBillboard(mSheetAccent, 0, tint);
+		if (mSheetAccent != 0) wr_BB.UpdateBillboard(mSheetAccent, 0, tint);
 
 		// An empty label is not a lookup that failed -- it is the mod saying
 		// this character cannot use this pickup at all, which is exactly what
@@ -6558,13 +6567,14 @@ class wr_Rig : EventHandler
 		Actor tgt = null;
 		int hand = 0;
 
-		if (pmo.LaserTraceTargetMain != null)
+		// RSQ: REMA's engine keeps what each hand's laser rests on (LaserTraceTargetMain/Off).
+		// QZD 17.3 has no such field, so each hand traces for itself.
+		tgt = laserTarget(pmo, 0);
+		if (tgt != null) hand = 0;
+		else
 		{
-			tgt = pmo.LaserTraceTargetMain; hand = 0;
-		}
-		else if (pmo.LaserTraceTargetOff != null)
-		{
-			tgt = pmo.LaserTraceTargetOff;  hand = 1;
+			tgt = laserTarget(pmo, 1);
+			if (tgt != null) hand = 1;
 		}
 
 		// Anything already in somebody's inventory is not a thing in the
@@ -6695,16 +6705,16 @@ class wr_Rig : EventHandler
 		double w = panelWNow() * CMP_W_CARDS;
 		double h = panelHNow() * CMP_H_CARDS;
 
-		mCmpPlate = level.AddBillboardPersistent(
+		mCmpPlate = wr_BB.AddBillboardPersistent(
 			(0, 0, 0), w, h, 0, 0,
-			LevelLocals.BBF_FIXED, plateKind(), plateShape(),
-			SHEET_BG, LevelLocals.BBFL_NOHIT, 0, "");
-		level.SetBillboardGradient(mCmpPlate, SHEET_BG2);
+			wr_BB.BBF_FIXED, plateKind(), plateShape(),
+			SHEET_BG, wr_BB.BBFL_NOHIT, 0, "");
+		wr_BB.SetBillboardGradient(mCmpPlate, SHEET_BG2);
 
-		mCmpAccent = level.AddBillboardPersistent(
+		mCmpAccent = wr_BB.AddBillboardPersistent(
 			(0, 0, 0), w, 0.3, 0, 0,
-			LevelLocals.BBF_FIXED, LevelLocals.BB_PANEL, 0,
-			SHEET_ACCENT, LevelLocals.BBFL_NOHIT, 0, "");
+			wr_BB.BBF_FIXED, wr_BB.BB_PANEL, 0,
+			SHEET_ACCENT, wr_BB.BBFL_NOHIT, 0, "");
 
 		mCmpTitle = mkCmpText(SHEET_ACCENT);
 		mCmpSub   = mkCmpText(SHEET_DIM);
@@ -6722,25 +6732,25 @@ class wr_Rig : EventHandler
 
 	private int mkCmpText(int col)
 	{
-		return level.AddBillboardPersistent(
+		return wr_BB.AddBillboardPersistent(
 			(0, 0, 0), 3.5, 2.5, 0, 0,
-			LevelLocals.BBF_FIXED, LevelLocals.BB_TEXT, 0,
-			col, LevelLocals.BBFL_NOHIT, 0, "");
+			wr_BB.BBF_FIXED, wr_BB.BB_TEXT, 0,
+			col, wr_BB.BBFL_NOHIT, 0, "");
 	}
 
 	private void clearCompare()
 	{
-		for (int i = 0; i < mCmpLabel.Size(); ++i) if (mCmpLabel[i]) level.RemoveBillboard(mCmpLabel[i]);
-		for (int i = 0; i < mCmpA.Size(); ++i)     if (mCmpA[i])     level.RemoveBillboard(mCmpA[i]);
-		for (int i = 0; i < mCmpB.Size(); ++i)     if (mCmpB[i])     level.RemoveBillboard(mCmpB[i]);
+		for (int i = 0; i < mCmpLabel.Size(); ++i) if (mCmpLabel[i]) wr_BB.RemoveBillboard(mCmpLabel[i]);
+		for (int i = 0; i < mCmpA.Size(); ++i)     if (mCmpA[i])     wr_BB.RemoveBillboard(mCmpA[i]);
+		for (int i = 0; i < mCmpB.Size(); ++i)     if (mCmpB[i])     wr_BB.RemoveBillboard(mCmpB[i]);
 		mCmpLabel.Clear(); mCmpA.Clear(); mCmpB.Clear();
 
-		if (mCmpPlate)  level.RemoveBillboard(mCmpPlate);
-		if (mCmpAccent) level.RemoveBillboard(mCmpAccent);
-		if (mCmpTitle)  level.RemoveBillboard(mCmpTitle);
-		if (mCmpSub)    level.RemoveBillboard(mCmpSub);
-		if (mCmpHeadA)  level.RemoveBillboard(mCmpHeadA);
-		if (mCmpHeadB)  level.RemoveBillboard(mCmpHeadB);
+		if (mCmpPlate)  wr_BB.RemoveBillboard(mCmpPlate);
+		if (mCmpAccent) wr_BB.RemoveBillboard(mCmpAccent);
+		if (mCmpTitle)  wr_BB.RemoveBillboard(mCmpTitle);
+		if (mCmpSub)    wr_BB.RemoveBillboard(mCmpSub);
+		if (mCmpHeadA)  wr_BB.RemoveBillboard(mCmpHeadA);
+		if (mCmpHeadB)  wr_BB.RemoveBillboard(mCmpHeadB);
 		mCmpPlate = 0; mCmpAccent = 0; mCmpTitle = 0; mCmpSub = 0;
 		mCmpHeadA = 0; mCmpHeadB = 0;
 		mCmpUsed = 0;
@@ -6756,16 +6766,16 @@ class wr_Rig : EventHandler
 		int i = mCmpUsed;
 		++mCmpUsed;
 
-		level.SetBillboardText(mCmpLabel[i], label);
-		level.UpdateBillboard(mCmpLabel[i], 0, SHEET_DIM);
+		wr_BB.SetBillboardText(mCmpLabel[i], label);
+		wr_BB.UpdateBillboard(mCmpLabel[i], 0, SHEET_DIM);
 
-		level.SetBillboardText(mCmpA[i], a);
-		level.UpdateBillboard(mCmpA[i], 0,
+		wr_BB.SetBillboardText(mCmpA[i], a);
+		wr_BB.UpdateBillboard(mCmpA[i], 0,
 			(better > 0) ? color(COLOR_DELTA_UP)
 			: (better < 0) ? color(COLOR_DELTA_DOWN) : color(SHEET_TEXT));
 
-		level.SetBillboardText(mCmpB[i], b);
-		level.UpdateBillboard(mCmpB[i], 0,
+		wr_BB.SetBillboardText(mCmpB[i], b);
+		wr_BB.UpdateBillboard(mCmpB[i], 0,
 			(better < 0) ? color(COLOR_DELTA_UP)
 			: (better > 0) ? color(COLOR_DELTA_DOWN) : color(SHEET_TEXT));
 	}
@@ -6774,9 +6784,9 @@ class wr_Rig : EventHandler
 	{
 		for (int i = mCmpUsed; i < mCmpLabel.Size(); ++i)
 		{
-			level.SetBillboardText(mCmpLabel[i], "");
-			level.SetBillboardText(mCmpA[i], "");
-			level.SetBillboardText(mCmpB[i], "");
+			wr_BB.SetBillboardText(mCmpLabel[i], "");
+			wr_BB.SetBillboardText(mCmpA[i], "");
+			wr_BB.SetBillboardText(mCmpB[i], "");
 		}
 	}
 
@@ -6791,10 +6801,10 @@ class wr_Rig : EventHandler
 		// owner at all, which is the whole reason this card exists.
 		let pmo = players[consoleplayer].mo;
 
-		level.SetBillboardText(mCmpTitle, "" .. found.GetTag());
-		level.SetBillboardText(mCmpSub,   "vs " .. mine.GetTag());
-		level.SetBillboardText(mCmpHeadA, "THIS");
-		level.SetBillboardText(mCmpHeadB, "HELD");
+		wr_BB.SetBillboardText(mCmpTitle, "" .. found.GetTag());
+		wr_BB.SetBillboardText(mCmpSub,   "vs " .. mine.GetTag());
+		wr_BB.SetBillboardText(mCmpHeadA, "THIS");
+		wr_BB.SetBillboardText(mCmpHeadB, "HELD");
 
 		cmpStat(found, mine, "DPS", 0);
 		cmpStat(found, mine, "DAMAGE", 1);
@@ -7253,7 +7263,7 @@ class wr_Rig : EventHandler
 	private static bool, string tierWordOf(Weapon w)
 	{
 		int tier;
-		if (level.GetFieldInt(w, "Tier", tier)) return true, tierWord(tier);
+		if (wr_Field.GetFieldInt(w, "Tier", tier)) return true, tierWord(tier);
 
 		bool got; int r;
 		[got, r] = wr_CompatLegenDoom.RarityOf(w);
@@ -7288,15 +7298,15 @@ class wr_Rig : EventHandler
 		double w = panelWNow() * CMP_W_CARDS;
 		double h = panelHNow() * CMP_H_CARDS;
 
-		level.MoveBillboard(mCmpPlate, centre);
-		level.ResizeBillboard(mCmpPlate, w, h);
-		level.OrientBillboard(mCmpPlate, yaw, tilt, LevelLocals.BBF_FIXED);
+		wr_BB.MoveBillboard(mCmpPlate, centre);
+		wr_BB.ResizeBillboard(mCmpPlate, w, h);
+		wr_BB.OrientBillboard(mCmpPlate, yaw, tilt, wr_BB.BBF_FIXED);
 
 		double top = h * 0.5;
 
-		level.MoveBillboard(mCmpAccent, centre + lift + (0, 0, top - h * 0.03));
-		level.ResizeBillboard(mCmpAccent, w * 0.94, h * 0.02);
-		level.OrientBillboard(mCmpAccent, yaw, tilt, LevelLocals.BBF_FIXED);
+		wr_BB.MoveBillboard(mCmpAccent, centre + lift + (0, 0, top - h * 0.03));
+		wr_BB.ResizeBillboard(mCmpAccent, w * 0.94, h * 0.02);
+		wr_BB.OrientBillboard(mCmpAccent, yaw, tilt, wr_BB.BBF_FIXED);
 
 		double rowH = h * CMP_ROW_FRAC;
 
@@ -7327,9 +7337,9 @@ class wr_Rig : EventHandler
 	private void placeCmp(int id, Vector3 pos, double w, double h, double yaw, double tilt)
 	{
 		if (id == 0) return;
-		level.MoveBillboard(id, pos);
-		level.ResizeBillboard(id, w, h);
-		level.OrientBillboard(id, yaw, tilt, LevelLocals.BBF_FIXED);
+		wr_BB.MoveBillboard(id, pos);
+		wr_BB.ResizeBillboard(id, w, h);
+		wr_BB.OrientBillboard(id, yaw, tilt, wr_BB.BBF_FIXED);
 	}
 
 	// Tear the inspect sheet down, but ONLY if inspect is what built it --
@@ -7367,6 +7377,18 @@ class wr_Rig : EventHandler
 	// NOT private: the star chart and the honeycomb point with the same ray
 	// the ring does. Duplicating this would be duplicating the definition of
 	// where a player's hand is, and the two copies would drift.
+	// RSQ: the first actor a hand's ray reaches, within 512 units -- what REMA's engine tracked
+	// for every hand as LaserTraceTargetMain/Off.
+	private static Actor laserTarget(PlayerPawn pmo, int hand)
+	{
+		Vector3 org = handPos(pmo, hand), dir = handDir(pmo, hand);
+		FLineTraceData t;
+		pmo.LineTrace(atan2(dir.y, dir.x), 512, -asin(clamp(dir.z, -1.0, 1.0)), TRF_ABSPOSITION | TRF_ALLACTORS,
+			org.z, org.x, org.y, t);
+		if (t.HitType != TRACE_HitActor || t.HitActor == pmo) return null;
+		return t.HitActor;
+	}
+
 	static Vector3 handPos(PlayerPawn pmo, int hand)
 	{
 		if (pmo.OverrideAttackPosDir)
@@ -7446,7 +7468,7 @@ class wr_Rig : EventHandler
 
 		// MainHandRoll, not AttackRoll: P_PlayerThink zeroes AttackRoll every
 		// tic before WorldTick runs, so wr_roll never turned the main-hand ring.
-		return (hand == 1) ? pmo.OffhandRoll : pmo.MainHandRoll;
+		return (hand == 1) ? pmo.OffhandRoll : pmo.AttackRoll;   // RSQ: QZD writes AttackRoll per frame (hw_openxrdevice.cpp)
 	}
 
 	//==========================================================================
@@ -7495,16 +7517,16 @@ class wr_Rig : EventHandler
 				// invisible; the visible members are the plate and what
 				// sits on it. (Sub-cards roll mSubIds, which ARE the plates.)
 				int c = mFlipCard;
-				if (c < mPlates.Size())               level.RollBillboard(mPlates[c],  flipRoll);
-				if (c < mFaces.Size()   && mFaces[c])   level.RollBillboard(mFaces[c],   flipRoll);
-				if (c < mIcons.Size()   && mIcons[c])   level.RollBillboard(mIcons[c],   flipRoll);
-				if (c < mLabels.Size()  && mLabels[c])  level.RollBillboard(mLabels[c],  flipRoll);
-				if (c < mAccents.Size() && mAccents[c]) level.RollBillboard(mAccents[c], flipRoll);
-				if (c < mAmmos.Size()   && mAmmos[c])   level.RollBillboard(mAmmos[c],   flipRoll);
-				if (c < mGauges.Size()  && mGauges[c])  level.RollBillboard(mGauges[c],  flipRoll);
+				if (c < mPlates.Size())               wr_BB.RollBillboard(mPlates[c],  flipRoll);
+				if (c < mFaces.Size()   && mFaces[c])   wr_BB.RollBillboard(mFaces[c],   flipRoll);
+				if (c < mIcons.Size()   && mIcons[c])   wr_BB.RollBillboard(mIcons[c],   flipRoll);
+				if (c < mLabels.Size()  && mLabels[c])  wr_BB.RollBillboard(mLabels[c],  flipRoll);
+				if (c < mAccents.Size() && mAccents[c]) wr_BB.RollBillboard(mAccents[c], flipRoll);
+				if (c < mAmmos.Size()   && mAmmos[c])   wr_BB.RollBillboard(mAmmos[c],   flipRoll);
+				if (c < mGauges.Size()  && mGauges[c])  wr_BB.RollBillboard(mGauges[c],  flipRoll);
 			}
 			else if (mSubFlipCard >= 0 && mSubFlipCard < mSubIds.Size())
-				level.RollBillboard(mSubIds[mSubFlipCard], flipRoll);
+				wr_BB.RollBillboard(mSubIds[mSubFlipCard], flipRoll);
 		}
 		if (mClosingTics > 0 && --mClosingTics <= 0) destroyPanels();
 
@@ -7554,7 +7576,7 @@ class wr_Rig : EventHandler
 		{
 			mWarnedThisOpen = true;
 			double warnGain = cv("wr_haptics", 1.0);
-			if (warnGain > 0.0) level.VRHaptic(mPokeHand, 0.3 * warnGain, 40);
+			if (warnGain > 0.0) wr_VR.VRHaptic(mPokeHand, 0.3 * warnGain, 40);
 		}
 
 		if (--mLockTics <= 0)
@@ -7632,7 +7654,7 @@ class wr_Rig : EventHandler
 		Vector2 uv;
 		// Finite range on purpose: unlimited means the ray leaves the room and
 		// can find another mod's billboard through a wall.
-		[rayHit, uv] = level.AimBillboard(org, dir, POINTER_RANGE);
+		[rayHit, uv] = wr_BB.AimBillboard(org, dir, POINTER_RANGE);
 
 		// KEPT SEPARATELY from the selection below, and that separation is the
 		// whole fix. What the RAY hit and what is SELECTED are different
@@ -7694,7 +7716,7 @@ class wr_Rig : EventHandler
 			int touched;
 			Vector2 tuv;
 			double tdist;
-			[touched, tuv, tdist] = level.TouchBillboard(tip, touchR);
+			[touched, tuv, tdist] = wr_BB.TouchBillboard(tip, touchR);
 
 			mTouching = (touched != 0);
 			if (mTouching) hit = touched;
@@ -7749,7 +7771,7 @@ class wr_Rig : EventHandler
 		// the wall behind -- which reads as the laser ignoring the thing it is
 		// selecting. Republished every tic; a stale value would clamp the
 		// player's laser forever.
-		level.SetVRLaserRange(rayHit != 0 ? reach : 0);
+		wr_VR.SetVRLaserRange(rayHit != 0 ? reach : 0);
 
 		decor(pmo, org, dir, reach, hit != 0);
 		cardLight(pmo);
@@ -7774,7 +7796,7 @@ class wr_Rig : EventHandler
 			double mid = (lo + hi) * 0.5;
 			int probe;
 			Vector2 puv;
-			[probe, puv] = level.AimBillboard(org, dir, mid);
+			[probe, puv] = wr_BB.AimBillboard(org, dir, mid);
 
 			if (probe == wanted) hi = mid;
 			else                 lo = mid;
@@ -7811,8 +7833,8 @@ class wr_Rig : EventHandler
 		// second beam clamped to the ring's distance. Naming the hand is also what
 		// gets a cursor onto an EMPTY off hand at all: the engine skips the laser
 		// for a hand with no weapon in it unless a script has claimed that hand.
-		level.ForceVRLaser(on, on ? mRigHand : -1);
-		if (!on) level.SetVRLaserRange(0);
+		wr_VR.ForceVRLaser(on, on ? mRigHand : -1);
+		if (!on) wr_VR.SetVRLaserRange(0);
 	}
 
 	// Sound and haptics together, because they are one event.
@@ -7849,7 +7871,7 @@ class wr_Rig : EventHandler
 		{
 			// vr_enable_haptics is still checked engine-side, so someone who has
 			// turned haptics off globally is not overridden by a mod cvar.
-			level.VRHaptic(mPokeHand, amp * gain, ms);
+			wr_VR.VRHaptic(mPokeHand, amp * gain, ms);
 		}
 	}
 
@@ -7907,21 +7929,21 @@ class wr_Rig : EventHandler
 		double wave = cv("wr_wave", 0.0);
 		if (wave > 0.0)
 		{
-			level.SetGlowWaveOrigin(mAnchor);
-			level.SetGlowWave(cv("wr_wave_len", 120.0),
+			wr_FX.SetGlowWaveOrigin(mAnchor);
+			wr_FX.SetGlowWave(cv("wr_wave_len", 120.0),
 			                  cv("wr_wave_speed", 1.6),
 			                  cv("wr_wave_sharp", 1.4), 1);
-			level.SetGlowWaveDepth(wave, wave * 0.8, wave * 0.5, 0.15, 3.0);
+			wr_FX.SetGlowWaveDepth(wave, wave * 0.8, wave * 0.5, 0.15, 3.0);
 
 			// Offset per channel so the wave CLIMBS instead of flashing the
 			// whole room at once -- which is the entire difference between this
 			// and a screen-wide brightness pulse.
-			level.SetGlowWavePhase(0.0, 0.35, 0.7, 1.05);
+			wr_FX.SetGlowWavePhase(0.0, 0.35, 0.7, 1.05);
 			mWaveHeld = true;
 		}
 		else if (mWaveHeld)
 		{
-			level.SetGlowWave(0.0, 0.0, 0.0, 0);   // wavelength 0 = off
+			wr_FX.SetGlowWave(0.0, 0.0, 0.0, 0);   // wavelength 0 = off
 			mWaveHeld = false;
 		}
 
@@ -7936,7 +7958,7 @@ class wr_Rig : EventHandler
 			// inner is the hot core, outer where it has faded to nothing;
 			// falloff above 1 concentrates the light near the lens, which is
 			// what stops a long beam looking like a strip light.
-			level.SetVolumetricBeam(org, dir, tint,
+			wr_FX.SetVolumetricBeam(org, dir, tint,
 				cv("wr_vbeam_inner", 1.2),
 				cv("wr_vbeam_outer", 5.0),
 				reach,
@@ -7949,7 +7971,7 @@ class wr_Rig : EventHandler
 		{
 			// Switched off with the rig still open. Every cvar here is live, so
 			// each of these needs its own way back out.
-			level.ClearVolumetricBeam(VOLBEAM_SLOT);
+			wr_FX.ClearVolumetricBeam(VOLBEAM_SLOT);
 			mBeamHeld = false;
 		}
 
@@ -7969,8 +7991,8 @@ class wr_Rig : EventHandler
 			{
 				double t = mOpenTics / sweepTics;
 
-				level.SetSweepOrigin(1, pmo.Pos + (0, 0, pmo.height * 0.5), 1);
-				level.SetSweepBand(0,
+				wr_FX.SetSweepOrigin(1, pmo.Pos + (0, 0, pmo.height * 0.5), 1);
+				wr_FX.SetSweepBand(0,
 					t * cv("wr_sweep_reach", 340.0),   // radius, outward
 					18.0 + t * 40.0,                   // thickness, spreading
 					0.55,
@@ -7982,13 +8004,13 @@ class wr_Rig : EventHandler
 			{
 				// Let go the tic after it finishes rather than holding a dead
 				// band at zero intensity for as long as the rig is up.
-				level.ClearSweep();
+				wr_FX.ClearSweep();
 				mSweepHeld = false;
 			}
 		}
 		else if (mSweepHeld)
 		{
-			level.ClearSweep();
+			wr_FX.ClearSweep();
 			mSweepHeld = false;
 		}
 
@@ -8005,7 +8027,7 @@ class wr_Rig : EventHandler
 		{
 			if (mShapeSlot < 0)
 			{
-				mShapeSlot = level.AddShape(
+				mShapeSlot = wr_FX.AddShape(
 					int(cv("wr_floor_kind", 5.0)),   // 5 = cross
 					0,                                // floors only
 					pmo.Pos.X, pmo.Pos.Y, pmo.floorz,
@@ -8015,20 +8037,20 @@ class wr_Rig : EventHandler
 
 			if (mShapeSlot >= 0)
 			{
-				level.MoveShape(mShapeSlot, pmo.Pos.X, pmo.Pos.Y, pmo.floorz);
-				level.SetShapeRepeat(mShapeSlot, 1,
+				wr_FX.MoveShape(mShapeSlot, pmo.Pos.X, pmo.Pos.Y, pmo.floorz);
+				wr_FX.SetShapeRepeat(mShapeSlot, 1,
 					cv("wr_floor_count", 8.0),
 					cv("wr_floor_space", 46.0),
 					cv("wr_floor_spin", 14.0));
 
 				// Splits open as the ring does, then holds. seamRate 0 keeps
 				// the caller owning the animation, same as everything else here.
-				level.SetShapeMotion(mShapeSlot, grow * cv("wr_floor_seam", 0.5), 0.0, 0.0);
+				wr_FX.SetShapeMotion(mShapeSlot, grow * cv("wr_floor_seam", 0.5), 0.0, 0.0);
 			}
 		}
 		else if (mShapeSlot >= 0)
 		{
-			level.RemoveShape(mShapeSlot);
+			wr_FX.RemoveShape(mShapeSlot);
 			mShapeSlot = -1;
 		}
 
@@ -8041,13 +8063,13 @@ class wr_Rig : EventHandler
 		double fog = cv("wr_fog", 0.0);
 		if (fog > 0.0)
 		{
-			level.SetFogSlabOverride(mAnchor.Z + cv("wr_fog_rise", 6.0), fog, 0.6,
+			wr_FX.SetFogSlabOverride(mAnchor.Z + cv("wr_fog_rise", 6.0), fog, 0.6,
 			                 cv("wr_fog_scatter", 0.8), tint);
 			mFogHeld = true;
 		}
 		else if (mFogHeld)
 		{
-			level.ClearFogSlabOverride();
+			wr_FX.ClearFogSlabOverride();
 			mFogHeld = false;
 		}
 	}
@@ -8061,17 +8083,17 @@ class wr_Rig : EventHandler
 	// flags are the only record of what is ours.
 	private void releaseDecor()
 	{
-		if (mBeamHeld)  { level.ClearVolumetricBeam(VOLBEAM_SLOT); mBeamHeld = false; }
-		if (mSweepHeld) { level.ClearSweep();          mSweepHeld = false; }
-		if (mFogHeld)   { level.ClearFogSlabOverride();        mFogHeld = false; }
+		if (mBeamHeld)  { wr_FX.ClearVolumetricBeam(VOLBEAM_SLOT); mBeamHeld = false; }
+		if (mSweepHeld) { wr_FX.ClearSweep();          mSweepHeld = false; }
+		if (mFogHeld)   { wr_FX.ClearFogSlabOverride();        mFogHeld = false; }
 
 		// RemoveShape, not ClearShapes: ours is one slot out of a shared pool
 		// and clearing the pool would take everyone else's with it.
-		if (mShapeSlot >= 0) { level.RemoveShape(mShapeSlot); mShapeSlot = -1; }
+		if (mShapeSlot >= 0) { wr_FX.RemoveShape(mShapeSlot); mShapeSlot = -1; }
 		if (mLight != null)  { mLight.Destroy(); mLight = null; }
 		mLightGrace = 0;
 		clearCardModels();
-		if (mWaveHeld)  { level.SetGlowWave(0.0, 0.0, 0.0, 0); mWaveHeld = false; }
+		if (mWaveHeld)  { wr_FX.SetGlowWave(0.0, 0.0, 0.0, 0); mWaveHeld = false; }
 	}
 
 	// Which payload the ammo bezel is drawn with.
@@ -8086,9 +8108,9 @@ class wr_Rig : EventHandler
 	{
 		switch (int(cv("wr_readout", 0.0)))
 		{
-			case 1:  return LevelLocals.BB_SEGLCD;
-			case 2:  return LevelLocals.BB_WG13;
-			default: return LevelLocals.BB_SEGMENT;
+			case 1:  return wr_BB.BB_SEGLCD;
+			case 2:  return wr_BB.BB_WG13;
+			default: return wr_BB.BB_SEGMENT;
 		}
 	}
 
@@ -8101,7 +8123,7 @@ class wr_Rig : EventHandler
 	{
 		int chars = max(text.Length(), 1);
 
-		if (readoutKind() == LevelLocals.BB_WG13)
+		if (readoutKind() == wr_BB.BB_WG13)
 		{
 			// DIGITS ONLY, and now actually counted that way.
 			//
@@ -8351,7 +8373,7 @@ class wr_Rig : EventHandler
 	// which ones this time.
 	private void fade(int id, double alpha)
 	{
-		if (id != 0) level.SetBillboardAlpha(id, alpha);
+		if (id != 0) wr_BB.SetBillboardAlpha(id, alpha);
 	}
 
 	// Reassembles a card's position from the three arrays it has to live in.
@@ -8714,7 +8736,7 @@ class wr_Rig : EventHandler
 			// handing it over produces a gun CheckAmmo will not let the player
 			// fire. Same rule as slotWeapons(); the reasoning is written out
 			// there.
-			if (twin.bHolsterHidden) continue;
+			// RSQ: no bHolsterHidden on QZD 17.3 (a REMA weapon flag); nothing is skipped.
 
 			// No point handing this hand something it is forbidden to hold.
 			if (twin.bNoHandSwitch && twin.bOffhandWeapon != (mRigHand == 1)) continue;
@@ -8870,10 +8892,10 @@ class wr_Rig : EventHandler
 			// third that reads even with haptics or sound off.
 			if (cvBool("wr_flash", true))
 			{
-				level.AddBillboard(burstAt, panelWNow() * 1.3, panelHNow() * 1.3,
-					pmo.angle + 180, PANEL_TILT, LevelLocals.BBF_FIXED,
-					LevelLocals.BB_RING, 0, burstHue,
-					LevelLocals.BBFL_NOHIT, 0.35);
+				wr_BB.AddBillboard(burstAt, panelWNow() * 1.3, panelHNow() * 1.3,
+					pmo.angle + 180, PANEL_TILT, wr_BB.BBF_FIXED,
+					wr_BB.BB_RING, 0, burstHue,
+					wr_BB.BBFL_NOHIT, 0.35);
 			}
 
 			// And it flips as it folds away. Roll is a real axis now, and the
@@ -8908,10 +8930,10 @@ class wr_Rig : EventHandler
 
 				if (cvBool("wr_flash", true))
 				{
-					level.AddBillboard(burstAt, panelWNow() * 1.3, panelHNow() * 1.3,
-						pmo.angle + 180, PANEL_TILT, LevelLocals.BBF_FIXED,
-						LevelLocals.BB_RING, 0, burstHue,
-						LevelLocals.BBFL_NOHIT, 0.35);
+					wr_BB.AddBillboard(burstAt, panelWNow() * 1.3, panelHNow() * 1.3,
+						pmo.angle + 180, PANEL_TILT, wr_BB.BBF_FIXED,
+						wr_BB.BB_RING, 0, burstHue,
+						wr_BB.BBFL_NOHIT, 0.35);
 				}
 
 				mSubFlipCard = hitSub;

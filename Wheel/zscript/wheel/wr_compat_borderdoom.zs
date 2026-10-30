@@ -75,7 +75,7 @@ class wr_CompatBorderDoom
 		for (int i = 0; i < MAX_EQUIPPED; ++i)
 		{
 			int got;
-			if (level.GetFieldIntArray(w.Owner, "user_equippedItemType", i, got) && got == want)
+			if (wr_Field.GetFieldIntArray(w.Owner, "user_equippedItemType", i, got) && got == want)
 				return i;
 		}
 		return -1;
@@ -94,12 +94,12 @@ class wr_CompatBorderDoom
 		if (idx < 0) return false, 0, 0, 0, 0, 0, 0;
 
 		int dmg, acc, rof, rcl, clip, lvl;
-		level.GetFieldIntArray(w.Owner, "user_equippedDamage",    idx, dmg);
-		level.GetFieldIntArray(w.Owner, "user_equippedAccuracy",  idx, acc);
-		level.GetFieldIntArray(w.Owner, "user_equippedFirerate",  idx, rof);
-		level.GetFieldIntArray(w.Owner, "user_equippedRecoil",    idx, rcl);
-		level.GetFieldIntArray(w.Owner, "user_equippedClipSize",  idx, clip);
-		level.GetFieldIntArray(w.Owner, "user_equippedLevel",     idx, lvl);
+		wr_Field.GetFieldIntArray(w.Owner, "user_equippedDamage",    idx, dmg);
+		wr_Field.GetFieldIntArray(w.Owner, "user_equippedAccuracy",  idx, acc);
+		wr_Field.GetFieldIntArray(w.Owner, "user_equippedFirerate",  idx, rof);
+		wr_Field.GetFieldIntArray(w.Owner, "user_equippedRecoil",    idx, rcl);
+		wr_Field.GetFieldIntArray(w.Owner, "user_equippedClipSize",  idx, clip);
+		wr_Field.GetFieldIntArray(w.Owner, "user_equippedLevel",     idx, lvl);
 
 		return true, dmg, acc, rof, rcl, clip, lvl;
 	}

@@ -155,9 +155,9 @@ class wr_CompatLithium
 	{
 		if (!ready(w)) return false, -1, "";
 		int pc;
-		if (!level.GetFieldInt(w.Owner, "m_pclass", pc)) return false, -1, "";
+		if (!wr_Field.GetFieldInt(w.Owner, "m_pclass", pc)) return false, -1, "";
 		string dis;
-		level.GetFieldString(w.Owner, "m_discrim", dis);
+		wr_Field.GetFieldString(w.Owner, "m_discrim", dis);
 		return true, pc, dis;
 	}
 
@@ -235,7 +235,7 @@ class wr_CompatLithium
 		if (!isPickup) return false, "";
 
 		int pc;
-		if (!level.GetFieldInt(who, "m_pclass", pc)) return true, "";
+		if (!wr_Field.GetFieldInt(who, "m_pclass", pc)) return true, "";
 
 		// Thoth is unfinished content -- its two weapons exist as classes but
 		// nothing in the mod can ever grant them.
@@ -316,10 +316,10 @@ class wr_CompatLithium
 			return false, 0, 0;
 
 		int mx;
-		if (!level.GetFieldInt(w, "m_max", mx) || mx <= 0) return false, 0, 0;
+		if (!wr_Field.GetFieldInt(w, "m_max", mx) || mx <= 0) return false, 0, 0;
 
 		int fired;
-		level.GetFieldInt(w, "m_fired", fired);
+		wr_Field.GetFieldInt(w, "m_fired", fired);
 		return true, clamp(mx - fired, 0, mx), mx;
 	}
 
@@ -331,7 +331,7 @@ class wr_CompatLithium
 	{
 		if (!ready(w)) return false, "";
 		int a;
-		if (!level.GetFieldInt(w, "m_ads", a) || a <= 0) return false, "";
+		if (!wr_Field.GetFieldInt(w, "m_ads", a) || a <= 0) return false, "";
 		return true, (a == 1) ? "SCOPED" : "IRON SIGHTS";
 	}
 
@@ -347,10 +347,10 @@ class wr_CompatLithium
 	{
 		if (!ready(w)) return false, false;
 		int hs;
-		if (level.GetFieldBool(w, "bHitScan", hs)) return true, hs != 0;
+		if (wr_Field.GetFieldBool(w, "bHitScan", hs)) return true, hs != 0;
 
 		int fl;   // fallback for a build where the flagdef does not resolve
-		if (level.GetFieldInt(w, "m_flags", fl)) return true, (fl & 1) != 0;
+		if (wr_Field.GetFieldInt(w, "m_flags", fl)) return true, (fl & 1) != 0;
 		return false, false;
 	}
 
@@ -374,7 +374,7 @@ class wr_CompatLithium
 		if (pp && pp.player && pp.player.ReadyWeapon == w) return false, 0;
 
 		int t;
-		if (!level.GetFieldInt(w, "m_autoReloadTics", t) || t <= 0) return false, 0;
+		if (!wr_Field.GetFieldInt(w, "m_autoReloadTics", t) || t <= 0) return false, 0;
 		int left = AUTORELOAD_TICS - t;
 		if (left <= 0) return false, 0;
 		return true, left / 35 + 1;
@@ -468,7 +468,7 @@ class wr_CompatLithium
 	{
 		if (!ready(w)) return false, 0;
 		int f;
-		if (!level.GetFieldInt(w.Owner, "m_DmgFac", f) || f <= 0) return false, 0;
+		if (!wr_Field.GetFieldInt(w.Owner, "m_DmgFac", f) || f <= 0) return false, 0;
 		return true, clamp(f, 0, 100);
 	}
 
@@ -484,7 +484,7 @@ class wr_CompatLithium
 	{
 		if (!ready(w)) return false, 0;
 		int s;
-		if (!level.GetFieldInt(w.Owner, "m_speed", s) || s <= 0) return false, 0;
+		if (!wr_Field.GetFieldInt(w.Owner, "m_speed", s) || s <= 0) return false, 0;
 		return true, s;
 	}
 
@@ -501,7 +501,7 @@ class wr_CompatLithium
 	{
 		if (!ready(w)) return false, 0;
 		int s;
-		if (!level.GetFieldInt(w.Owner, "m_shield", s) || s <= 0) return false, 0;
+		if (!wr_Field.GetFieldInt(w.Owner, "m_shield", s) || s <= 0) return false, 0;
 		return true, s;
 	}
 
@@ -520,11 +520,11 @@ class wr_CompatLithium
 		if (!arm) return false, "", 0;
 
 		int save;
-		level.GetFieldInt(arm, "m_curSave", save);
+		wr_Field.GetFieldInt(arm, "m_curSave", save);
 		if (save <= 0) return false, "", 0;
 
 		string nm;
-		if (!level.GetFieldString(arm, "m_invName", nm) || nm.Length() == 0)
+		if (!wr_Field.GetFieldString(arm, "m_invName", nm) || nm.Length() == 0)
 			nm = "ARMOR";
 		return true, nm, save;
 	}
@@ -560,15 +560,15 @@ class wr_CompatLithium
 			// The pool is global, with no per-player filter on Lithium's own
 			// side either -- so the owner check has to happen here.
 			Object who;
-			if (level.GetFieldObject(t, "plyr", who) && who && who != w.Owner)
+			if (wr_Field.GetFieldObject(t, "plyr", who) && who && who != w.Owner)
 				continue;
 
 			string nm;
-			if (!level.GetFieldString(t, "snam", nm) || nm.Length() == 0) continue;
+			if (!wr_Field.GetFieldString(t, "snam", nm) || nm.Length() == 0) continue;
 
 			int tics, cnt;
-			level.GetFieldInt(t, "tics", tics);
-			level.GetFieldInt(t, "cnt0", cnt);
+			wr_Field.GetFieldInt(t, "tics", tics);
+			wr_Field.GetFieldInt(t, "cnt0", cnt);
 
 			string e = nm;
 			if (cnt > 1) e = e .. String.Format(" x%d", cnt);
@@ -638,8 +638,8 @@ class wr_CompatLithium
 	{
 		if (!ready(w) || clsOf(w) != "Lith_GrenadeLauncher") return false, 0, "";
 		int loaded, mode;
-		if (!level.GetFieldInt(w, "m_Loaded", loaded)) return false, 0, "";
-		level.GetFieldInt(w, "m_Mode", mode);
+		if (!wr_Field.GetFieldInt(w, "m_Loaded", loaded)) return false, 0, "";
+		wr_Field.GetFieldInt(w, "m_Mode", mode);
 		string word = (mode == 2) ? "BOUNCING" : (mode == 1) ? "SPIRAL" : "SPREAD";
 		return true, loaded, word;
 	}
@@ -653,7 +653,7 @@ class wr_CompatLithium
 	{
 		if (!ready(w) || clsOf(w) != "Lith_CombatRifle") return false, false;
 		int spent;
-		if (!level.GetFieldBool(w, "m_GrenFire", spent)) return false, false;
+		if (!wr_Field.GetFieldBool(w, "m_GrenFire", spent)) return false, false;
 		return true, spent == 0;
 	}
 
@@ -664,7 +664,7 @@ class wr_CompatLithium
 	{
 		if (!ready(w) || clsOf(w) != "Lith_MissileLauncher") return false, 0, 0;
 		int n;
-		if (!level.GetFieldInt(w, "m_Reset", n) || n <= 0) return false, 0, 0;
+		if (!wr_Field.GetFieldInt(w, "m_Reset", n) || n <= 0) return false, 0, 0;
 		return true, min(n, 5), 5;
 	}
 
@@ -758,7 +758,7 @@ class wr_CompatLithium
 	{
 		if (!ready(w) || clsOf(w) != "Lith_SMG") return false, 0.0, 0.0;
 		double r;
-		if (!level.GetFieldFloat(w, "m_Recoil", r)) return false, 0.0, 0.0;
+		if (!wr_Field.GetFieldFloat(w, "m_Recoil", r)) return false, 0.0, 0.0;
 		return true, r, 1.0;
 	}
 
@@ -774,7 +774,7 @@ class wr_CompatLithium
 	{
 		if (!ready(w) || clsOf(w) != "Lith_IonRifle") return false, 0.0, false;
 		double c;
-		if (!level.GetFieldFloat(w, "m_Charge", c) || c <= 1.0) return false, 0.0, false;
+		if (!wr_Field.GetFieldFloat(w, "m_Charge", c) || c <= 1.0) return false, 0.0, false;
 		return true, c, (c >= ION_VENT_AT);
 	}
 
@@ -791,7 +791,7 @@ class wr_CompatLithium
 	{
 		if (!ready(w) || clsOf(w) != "Lith_Minigun") return false, 0.0, 0;
 		double u;
-		if (!level.GetFieldFloat(w, "m_windUp", u) || u <= 0.0) return false, 0.0, 0;
+		if (!wr_Field.GetFieldFloat(w, "m_windUp", u) || u <= 0.0) return false, 0.0, 0;
 		return true, u, 1 + int((1.0 - u) * 10.0);
 	}
 
@@ -804,7 +804,7 @@ class wr_CompatLithium
 	{
 		if (!ready(w) || clsOf(w) != "Lith_Khanda") return false, false;
 		int p;
-		if (!level.GetFieldBool(w, "m_power", p)) return false, false;
+		if (!wr_Field.GetFieldBool(w, "m_power", p)) return false, false;
 		return true, p != 0;
 	}
 
@@ -824,9 +824,9 @@ class wr_CompatLithium
 	{
 		if (!ready(w) || clsOf(w) != "Lith_Kampilan") return false, 0, 0, 0;
 		int n;
-		if (!level.GetFieldInt(w, "m_fired", n)) return false, 0, 0, 0;
+		if (!wr_Field.GetFieldInt(w, "m_fired", n)) return false, 0, 0, 0;
 		int cd;
-		level.GetFieldInt(w, "m_cooldownTics", cd);
+		wr_Field.GetFieldInt(w, "m_cooldownTics", cd);
 		return true, clamp(n, 0, 5), 5, max(cd, 0);
 	}
 
@@ -839,7 +839,7 @@ class wr_CompatLithium
 	{
 		if (!ready(w) || clsOf(w) != "Lith_Rems") return false, 0, 0;
 		int s;
-		if (!level.GetFieldInt(w, "m_steamy", s) || s <= 0) return false, 0, 0;
+		if (!wr_Field.GetFieldInt(w, "m_steamy", s) || s <= 0) return false, 0, 0;
 		return true, min(s, REMS_VENT_MAX), REMS_VENT_MAX;
 	}
 
@@ -853,7 +853,7 @@ class wr_CompatLithium
 	{
 		if (!ready(w) || clsOf(w) != "Lith_ShrapnelGun") return false, 0, 0;
 		int c;
-		if (!level.GetFieldInt(w, "m_chargeLevel", c) || c <= 0) return false, 0, 0;
+		if (!wr_Field.GetFieldInt(w, "m_chargeLevel", c) || c <= 0) return false, 0, 0;
 		return true, c, 7 + c * 3 / 4;
 	}
 
@@ -870,7 +870,7 @@ class wr_CompatLithium
 	{
 		if (!ready(w) || clsOf(w) != "Lith_BurstRifle") return false, 0, 0;
 		double l;
-		if (!level.GetFieldFloat(w, "m_lessen", l) || l <= 0.0) return false, 0, 0;
+		if (!wr_Field.GetFieldFloat(w, "m_lessen", l) || l <= 0.0) return false, 0, 0;
 		return true, int(60.0 / l), 60;
 	}
 
@@ -890,7 +890,7 @@ class wr_CompatLithium
 		if (!got || (pc != 2 && pc != 4)) return false, 0, 0;
 
 		int d;
-		if (!level.GetFieldInt(w.Owner, "m_dodgeDbc", d)) return false, 0, 0;
+		if (!wr_Field.GetFieldInt(w.Owner, "m_dodgeDbc", d)) return false, 0, 0;
 		return true, max(d, 0), (pc == 2) ? 35 : 40;
 	}
 
@@ -904,8 +904,8 @@ class wr_CompatLithium
 	{
 		if (!ready(w)) return false, false;
 		int s;
-		if (level.GetFieldBool(w.Owner, "m_isSprinting", s)) return true, s != 0;
-		if (level.GetFieldBool(w.Owner, "m_sprinting", s))   return true, s != 0;
+		if (wr_Field.GetFieldBool(w.Owner, "m_isSprinting", s)) return true, s != 0;
+		if (wr_Field.GetFieldBool(w.Owner, "m_sprinting", s))   return true, s != 0;
 		return false, false;
 	}
 
@@ -916,7 +916,7 @@ class wr_CompatLithium
 	{
 		if (!ready(w)) return false, 0;
 		int f;
-		if (!level.GetFieldInt(w.Owner, "m_iFrames", f) || f <= 0) return false, 0;
+		if (!wr_Field.GetFieldInt(w.Owner, "m_iFrames", f) || f <= 0) return false, 0;
 		return true, f;
 	}
 

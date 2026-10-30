@@ -54,7 +54,7 @@ class wr_Stats
 	private static bool isRS(Weapon w)
 	{
 		int tier;
-		return w && level.GetFieldInt(w, "Tier", tier);
+		return w && wr_Field.GetFieldInt(w, "Tier", tier);
 	}
 
 	// FAIL CLOSED, and this is the one rule in this file that is not about
@@ -69,7 +69,7 @@ class wr_Stats
 	private static bool lockedBy(Weapon w, string flag)
 	{
 		int li;
-		return !level.GetFieldBool(w, flag, li) || li != 0;
+		return !wr_Field.GetFieldBool(w, flag, li) || li != 0;
 	}
 
 	//==========================================================================
@@ -92,7 +92,7 @@ class wr_Stats
 		{
 			if (lockedBy(w, "LockedDamage")) return SRC_MASKED, 0, 0;
 			int dmg;
-			if (level.GetFieldInt(w, "DamagePerShot", dmg) && dmg > 0)
+			if (wr_Field.GetFieldInt(w, "DamagePerShot", dmg) && dmg > 0)
 				return SRC_DECLARED, dmg, dmg;
 		}
 
@@ -128,7 +128,7 @@ class wr_Stats
 			// Never cursed -- RS_Screens.zs:299 says so outright -- so this
 			// needs no mask branch of its own.
 			int rof;
-			if (level.GetFieldInt(w, "RateOfFire", rof) && rof > 0)
+			if (wr_Field.GetFieldInt(w, "RateOfFire", rof) && rof > 0)
 				return SRC_DECLARED, double(rof);
 		}
 
@@ -167,7 +167,7 @@ class wr_Stats
 		{
 			if (lockedBy(w, "LockedAccuracy")) return SRC_MASKED, 0.0;
 			double acc;
-			if (level.GetFieldFloat(w, "Accuracy", acc))
+			if (wr_Field.GetFieldFloat(w, "Accuracy", acc))
 				return SRC_DECLARED, acc;
 		}
 
@@ -195,7 +195,7 @@ class wr_Stats
 			// Promotion's reward rather than a rolled stat (RS_Screens.zs:
 			// 325-326), so never cursed and needing no mask branch.
 			int pel;
-			if (level.GetFieldInt(w, "PelletCount", pel) && pel > 0)
+			if (wr_Field.GetFieldInt(w, "PelletCount", pel) && pel > 0)
 				return SRC_DECLARED, pel;
 		}
 
@@ -232,7 +232,7 @@ static play int, int, int Magazine(Weapon w)
 		{
 			if (lockedBy(w, "LockedCapacity")) return SRC_MASKED, -1, 0;
 			int cap;
-			if (level.GetFieldInt(w, "Capacity", cap) && cap > 0)
+			if (wr_Field.GetFieldInt(w, "Capacity", cap) && cap > 0)
 				return SRC_DECLARED, -1, cap;
 		}
 
@@ -272,7 +272,7 @@ static play int, int, int Magazine(Weapon w)
 			if (lockedBy(w, "LockedCritChance")) return SRC_MASKED, 0.0;
 
 			double crit;
-			if (level.GetFieldFloat(w, "CritChance", crit))
+			if (wr_Field.GetFieldFloat(w, "CritChance", crit))
 				return SRC_DECLARED, crit * 100.0;
 			return SRC_UNKNOWN, 0.0;
 		}
@@ -292,7 +292,7 @@ static play int, int, int Magazine(Weapon w)
 		if (lockedBy(w, "LockedVelocity")) return SRC_MASKED, 0.0;
 
 		double vel;
-		if (level.GetFieldFloat(w, "Velocity", vel))
+		if (wr_Field.GetFieldFloat(w, "Velocity", vel))
 			return SRC_DECLARED, vel;
 		return SRC_UNKNOWN, 0.0;
 	}
@@ -306,7 +306,7 @@ static play int, int, int Magazine(Weapon w)
 		if (!w || !isRS(w)) return SRC_UNKNOWN, 0.0;
 
 		double cnd;
-		if (level.GetFieldFloat(w, "Condition", cnd))
+		if (wr_Field.GetFieldFloat(w, "Condition", cnd))
 			return SRC_DECLARED, cnd;
 		return SRC_UNKNOWN, 0.0;
 	}

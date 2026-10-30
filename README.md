@@ -29,6 +29,7 @@ is ZScript and data lumps.
 | 🏆 | [Score](Score/) | `RSQ_Score.pk3` | The arcade score: style, daring and melee bonuses, cross-mod combos, extra lives; names Champions and LegenDoom Lite kills. Built on ijon's Dakka points. |
 | 👹 | [Miniboss](Miniboss/) | `RSQ_Miniboss.pk3` | A set-piece miniboss each map, fed by three thralls (boosted legendary champions with Champions + LegenDoom Lite): kill a thrall to slow time, get greedy and every monster enrages. Rebuilt from Tartlman's Minibosses!. |
 | 🌳 | [GunBonsaiOffhandVR](GunBonsaiOffhandVR/) | `RSQ_GunBonsaiVR.pk3` | The arcade room's progression: Gun Bonsai for VR -- a gauge and upgrades per hand, melee and boxing-glove upgrades, Slappers Only, saber / ShieldSaw / hook upgrade paths, XP from damage or style, the screens. Needs Gun Bonsai 0.10.6 (ToxicFrog, not included) loaded just before it. |
+| 🎡 | [Wheel](Wheel/) | `RSQ_Wheel.pk3` | REMA's weapon wheel: weapon cards in a ring around your hand -- point and pull, or reach in -- with a data sheet in the middle. Drawn in the game's own status-bar stone and DoomFont. |
 | ♿ | [Accessibility](Accessibility/) | `RSQ_Accessibility.pk3` | One Accessibility menu for every series mod you load: colour-blind modes and handedness. |
 
 ---
@@ -63,6 +64,7 @@ is ZScript and data lumps.
    | Miniboss | **RSQ Miniboss** |
    | TopHPBars | **RSQ HP Bars** |
    | GunBonsaiOffhandVR | **RSQ Gun Bonsai VR** (Gun Bonsai's own menu stays where Gun Bonsai puts it) |
+   | Wheel | **RSQ Wheel** |
    | Accessibility | **Accessibility** |
 
    Each page follows Brutal Doom Quest 2.0's options page: one short front page of real choices with
@@ -212,6 +214,7 @@ RSQ_UBQSeries/
 ├── Miniboss/        source, README (design as built), CREDITS (Tartlman), original/ (Minibosses! v0.1.1)
 ├── GunBonsaiOffhandVR/  the Gun Bonsai VR patch: source, README, COPYING (Gun Bonsai's MIT notice), rsq/ (our code)
 ├── Score/           source, README (the arcade layer, combo table), CREDITS (Dakka)
+├── Wheel/           REMA's weapon wheel (RS_WeaponSelectionSystem, ring only): source, README, tools/ (asset generator, rig runner)
 ├── tools/rig17/     how the real QuestZDoom 17.3 test engine was built, and the test runners
 └── build_all.sh     rebuilds every pk3 into pk3/
 ```

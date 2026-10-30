@@ -48,10 +48,10 @@ class wr_CompatPandemoniaAnarchy
 			if (("" .. it.GetClassName()) != "Pand_AnarchicSigil") continue;
 
 			int lvl, pts, ptsMax, usedI;
-			if (!level.GetFieldInt(it, "alevel", lvl)) return false, 0, 0, 0, false;
-			level.GetFieldInt(it, "points", pts);
-			level.GetFieldInt(it, "pointmax", ptsMax);
-			level.GetFieldBool(it, "used", usedI);
+			if (!wr_Field.GetFieldInt(it, "alevel", lvl)) return false, 0, 0, 0, false;
+			wr_Field.GetFieldInt(it, "points", pts);
+			wr_Field.GetFieldInt(it, "pointmax", ptsMax);
+			wr_Field.GetFieldBool(it, "used", usedI);
 			return true, lvl, pts, ptsMax, usedI != 0;
 		}
 		return false, 0, 0, 0, false;
