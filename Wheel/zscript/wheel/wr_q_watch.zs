@@ -58,7 +58,7 @@ class wr_Watch : EventHandler
 		int dwell = int(cv("wr_watch_dwell", 8));
 		for (int h = 0; h < 2; h++)
 		{
-			if (cv("wr_watch", 1) > 0 && !ringUp && watching(pmo, h)) mDwell[h]++;
+			if (CVar.FindCVar("wr_watch") && CVar.FindCVar("wr_watch").GetBool() && !ringUp && watching(pmo, h)) mDwell[h]++;
 			else mDwell[h] = 0;
 		}
 		int want = -1;

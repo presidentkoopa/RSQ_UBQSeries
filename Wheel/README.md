@@ -36,9 +36,9 @@ Everything is drawn in the game's own art: the cards and the sheet are the statu
 health box, the words are DoomFont, the numbers are the status bar's numerals, coloured by palette
 remaps the way Doom colours its own text.
 
-- **Card pictures** (*Real models on cards*): the gun's **pickup** -- with BD_VoxelPack, its voxel
-  -- fitted to the card and turning slowly; or its **held model** (the weapon set's VR mesh, sized
-  by *Held model size*; it sits where the set's first-person offsets put it). Off: the flat icon.
+- **Pickup voxels on cards**: a gun with a pickup voxel (BD_VoxelPack) shows it on its card, turning
+  slowly, sized from the voxel's own VOXELDEF scale and KVX size to sit inside the card. A gun with
+  no voxel keeps its flat icon; nothing is drawn at a guessed size.
 - **Palettes** (*Palette*): Standard (REMA's), Doom, Hell, Tech. A palette is a few lines in a
   `WRPALS` lump -- any pk3 can add one -- naming the ring's colour roles (`hover`, `slot2`,
   `sheet_text`, `laser`, ...). See `WRPALS.txt`.
@@ -74,7 +74,7 @@ Tested on the QuestZDoom 17.3 rig, on freedoom2 and on the owner's order (brutal
 BD_VoxelPack → BD22_VR-Reloaded 2.0.3h → its 2.0.3ha hotfix → the wheel), alone and with every
 series pk3: hold-point-release, tap and double tap, either hand picking (off hand → BrutalPistol),
 two-hand compare (Chainsaw against Pistol), pull a card out (Chainsaw), throw a gun back (Rifle →
-DSweap), pickup voxels and held models on cards, palettes and font sets, the wrist card (RIFLE,
+DSweap), pickup voxels fitted inside their cards, palettes and font sets, the wrist card (RIFLE,
 rounds and reserve), the ring following a 90° head turn, SlowMo on and off with the ring. The only
 script errors are BD_VoxelPack's own four voxeldef lines. Not run: the holster row with a gun
 really holstered, the Gun Bonsai rows (Gun Bonsai 0.10.6 is not on the rig). **Not yet on a

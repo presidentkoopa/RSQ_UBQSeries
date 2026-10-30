@@ -44,12 +44,6 @@ OptionString "wr_FontSets"
 	"DoomFont",  "DoomFont only"
 }
 
-OptionValue "wr_ModelKinds"
-{
-	0, "Pickup (voxel)"
-	1, "Held model"
-}
-
 OptionValue "wr_WheelMode"
 {
 	1, "On"
@@ -170,10 +164,8 @@ OptionMenu wr_Options
 	// A raster, so it shows its pixels up close where the field payloads do not.
 	// Spawns the weapon own class as an inert prop so the engine resolves its
 	// MODELDEF. Real geometry with real stereo depth, not a picture of a gun.
-	Option "Real models on cards",      "wr_models",       "OnOff"
-	Option "  Show",                    "wr_model_kind",   "wr_ModelKinds"
+	Option "Pickup voxels on cards",    "wr_models",       "OnOff"
 	Slider "  Turn speed",              "wr_model_spin",   0.0, 6.0, 0.25, 2
-	Slider "  Held model size",         "wr_model_scale_held", 0.01, 0.30, 0.01, 2
 	Slider "  Model size",              "wr_model_scale",  0.02, 1.0, 0.02, 2
 	Slider "  Model stand-off",         "wr_model_lift",   0.0, 12.0, 0.5, 1
 	StaticText "REMA only -- canvases do not draw in VR on QuestZDoom", "DarkGray"

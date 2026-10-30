@@ -308,6 +308,7 @@ class wr_Rig : EventHandler
 	color      mLightLastHue;
 	Array<Actor> mModels;         // a real weapon model per card, when enabled
 	Array<double> mModelFit;      // RSQ: per model, the scale that fits it on its card
+	Array<double> mModelDrop;     // RSQ: ...and how far below the card's centre its base sits, at that scale
 
 	// ONE GROUP PER CARD, so a card is an object rather than six loose quads.
 	//
@@ -978,7 +979,7 @@ class wr_Rig : EventHandler
 
 	// RSQ: both hands point at and pick from the one ring (wr_either_hand, on by default).
 	// Off, it is REMA's wheel per hand: the hand that opened it is the only one that picks.
-	private bool eitherHand() const { return cv("wr_either_hand", 1.0) > 0.0; }
+	private bool eitherHand() const { return cvBool("wr_either_hand", true); }
 
 	private int preferredToggleHand(int pressedHand) const
 	{
@@ -3292,19 +3293,25 @@ class wr_Rig : EventHandler
 
 	// Reads a user cvar, falling back rather than aborting. GetCVar returns null
 	// for anything the config has never seen, and GetFloat on null kills the VM.
+	// RSQ: THE LOCAL VALUE. QuestZDoom has no netplay, and on QZD 17.3 a user cvar's per-player
+	// copy (CVar.GetCVar with a player) read 0 for a new bool whose local value was 1 (measured:
+	// wr_models, "player copy 0 local 1"). FindCVar reads what the menu and console set.
 	private static double cv(string name, double fallback)
 	{
-		let c = CVar.GetCVar(name, players[consoleplayer]);
-		return (c == null) ? fallback : c.GetFloat();
+		let c = CVar.FindCVar(name);
+		if (c == null) return fallback;
+		return (c.GetRealType() == CVar.CVAR_Bool) ? (c.GetBool() ? 1.0 : 0.0) : c.GetFloat();
 	}
 
 	// A bool cvar holds an int, and GetFloat on one returns zero -- which is why
 	// wr_autoopen read false no matter what it was set to.
 	private static bool cvBool(string name, bool fallback)
 	{
-		let c = CVar.GetCVar(name, players[consoleplayer]);
-		return (c == null) ? fallback : (c.GetInt() != 0);
+		let c = CVar.FindCVar(name);   // RSQ: the local value -- see cv()
+		if (c == null) return fallback;
+		return (c.GetRealType() == CVar.CVAR_Bool) ? c.GetBool() : (c.GetInt() != 0);
 	}
+
 
 	//==========================================================================
 	// What goes on the rig
@@ -6359,19 +6366,18 @@ class wr_Rig : EventHandler
 			// the same fade as everything else on the card.
 			if (i < mModels.Size() && mModels[i] != null)
 			{
-				double ms = hModelScale * pulse * (i < mModelFit.Size() ? mModelFit[i] : 1.0);
+				// fitted to the card at build (mModelFit); wr_model_scale 0.16 is "as fitted"
+				double ms = (hModelScale / 0.16) * pulse * (i < mModelFit.Size() ? mModelFit[i] : 1.0);
 
 				// Through a local: SetOrigin wants a modifiable value and an
 				// expression is not one.
 				Vector3 mp = pos + lift * hModelLift;
+				if (i < mModelDrop.Size()) mp.z -= mModelDrop[i] * ms;   // RSQ: centred on the card
 				mModels[i].SetOrigin(mp, true);
 				mModels[i].Scale = (ms, ms);
 				mModels[i].A_SetRenderStyle(cardAlpha, STYLE_Translucent);
-				// RSQ: a pickup turns slowly on its card, as pickups do in a showcase; a held gun
-				// is shown side-on, barrel to the right (wr_model_spin 0 holds both still)
-				double spin = cv("wr_model_spin", 1.5);
-				if (cv("wr_model_kind", 0.0) > 0.0) mModels[i].angle = pmo.angle + 90 + (spin > 0 ? sin(level.maptime * spin) * 15 : 0);
-				else mModels[i].angle = pmo.angle + 180 + level.maptime * spin + i * 40;
+				// RSQ: a pickup turns slowly on its card, as pickups do in a showcase
+				mModels[i].angle = pmo.angle + 180 + level.maptime * cv("wr_model_spin", 1.5) + i * 40;
 				// the picture replaces the flat icon rather than sitting on top of it
 				if (i < mIcons.Size()) fade(mIcons[i], 0);
 			}
@@ -7971,7 +7977,7 @@ class wr_Rig : EventHandler
 	private void tickTwoHand(PlayerPawn pmo)
 	{
 		Weapon a, b;
-		if (eitherHand() && cv("wr_twohand_compare", 1.0) > 0.0 && mPage == PAGE_WEAPONS && mHovered != 0)
+		if (eitherHand() && cvBool("wr_twohand_compare", true) && mPage == PAGE_WEAPONS && mHovered != 0)
 		{
 			int other = (mPokeHand == 1) ? 0 : 1;
 			int oid; Vector2 ouv;
@@ -8047,6 +8053,9 @@ class wr_Rig : EventHandler
 			double dist = toRing.Length();
 			if (dist < 1) continue;
 			double toward = v dot (toRing / dist);
+			// a hand cannot move 12 units (35 cm) in one tic: that is tracking lost and found, or
+			// the view jumping, and it must not read as a pull or a throw
+			if (v.Length() > 12.0) continue;
 			if (cvBool("wr_debug", false) && (abs(toward) > 0.5 || level.maptime % 10 == 0))
 				Console.Printf("RSQ Wheel hand %d: in card %d (touch %d, %.1f), toward ring %.2f u/tic, ring %.0f away, reach %.0f",
 					h, mInCard[h], id, td, toward, dist, mTouchReach);
@@ -8620,14 +8629,15 @@ class wr_Rig : EventHandler
 		if (mPage != PAGE_WEAPONS) return;
 
 		clearCardModels();
-		if (cv("wr_models", 0.0) <= 0.0) return;
+
+		if (!cvBool("wr_models", true)) return;
 
 		double sc = cv("wr_model_scale", 0.16);
 
 		for (int i = 0; i < mTypes.Size(); ++i)
 		{
 			let a = Actor.Spawn(mTypes[i], pmo.Pos, NO_REPLACE);
-			if (a == null) { mModels.Push(null); mModelFit.Push(1.0); continue; }
+			if (a == null) { mModels.Push(null); mModelFit.Push(1.0); mModelDrop.Push(0); continue; }
 
 			// bSpecial is the one that matters: an Inventory actor in the world
 			// is picked up on touch, and a prop that vanishes into your backpack
@@ -8652,51 +8662,30 @@ class wr_Rig : EventHandler
 			a.Scale = (sc, sc);
 			a.SetStateLabel('Spawn');
 
-			// RSQ: WHICH PICTURE (wr_model_kind). 0, the gun as it lies in the world: its pickup
-			// state, so a pickup VOXEL (BD_VoxelPack) or pickup model is what the card shows.
-			// 1, the gun as you hold it: its Ready frame, which is what a VR weapon set's held
-			// MODELDEF hangs on (BD22 VR-Reloaded's meshes), frozen there -- no action function
-			// runs, since a weapon's Ready code expects a player behind it.
-			double fit = 1.0;
-			if (cv("wr_model_kind", 0.0) > 0.0)
+			// RSQ: INSIDE THE CARD OR NOT AT ALL (the owner: "must live inside that size of card").
+			// The pickup's voxel is measured from its own VOXELDEF scale and KVX size
+			// (wr_q_vox.zs) and fitted to the card's width and height; a pickup with no voxel to
+			// measure (a sprite, or a model whose size script cannot read) keeps the flat icon.
+			double fit = 0;
+			TextureID t; bool fl; Vector2 ss;
+			if (a.CurState) [t, fl, ss] = a.CurState.GetSpriteTexture(0);
+			if (t.IsValid())
 			{
-				State rs = a.FindState('Ready');
-				if (rs) rs = holdFrame(rs);
-				if (rs) { a.SetState(rs, true); a.tics = -1; }
-				// a held mesh has no size script can read; its own setting (wr_model_scale_held)
-				fit = cv("wr_model_scale_held", 0.05) / max(sc, 0.001);
+				Vector2 vs = wr_VoxSize.Size(TexMan.GetName(t));
+				if (vs.x > 0 && vs.y > 0)
+					fit = min(panelWNow() * 0.70 / vs.x, panelHNow() * 0.55 / vs.y);
 			}
-			else
-			{
-				// FITTED TO THE CARD. A pickup voxel is built to its sprite's size, so the sprite's
-				// longest side, scaled to most of the card's width, sizes the voxel or model the
-				// same way -- a BFG and a pistol both fill their cards. wr_model_scale stays a
-				// multiplier on that (its default, 0.16, is "as fitted").
-				TextureID t; bool fl; Vector2 ss;
-				if (a.CurState) [t, fl, ss] = a.CurState.GetSpriteTexture(0);
-				if (t.IsValid())
-				{
-					Vector2 d = TexMan.GetScaledSize(t);
-					double longest = max(d.x, d.y);
-					if (longest > 1) fit = (panelWNow() * 0.85 / longest) / 0.16;
-				}
-			}
+			if (cvBool("wr_debug", false))
+				Console.Printf("RSQ Wheel card %s: frame %s voxel %s fit %.3f", a.GetClassName(), t.IsValid() ? TexMan.GetName(t) : "-",
+					fit > 0 ? "measured" : "none", fit);
+			if (fit <= 0) { a.Destroy(); mModels.Push(null); mModelFit.Push(1.0); mModelDrop.Push(0); continue; }
 
+			// a voxel stands on its origin, so it drops by half its height to sit centred
+			Vector2 vsz = wr_VoxSize.Size(TexMan.GetName(t));
 			mModels.Push(a);
 			mModelFit.Push(fit);
+			mModelDrop.Push(vsz.y * 0.5);
 		}
-	}
-
-	// RSQ: the first frame of a Ready sequence that actually draws something (a weapon set
-	// often starts Ready on a zero-length TNT1 or a jump), within a few steps.
-	private static State holdFrame(State st)
-	{
-		for (int i = 0; i < 8 && st; i++)
-		{
-			if (st.ValidateSpriteFrame() && st.sprite != Actor.GetSpriteIndex('TNT1')) return st;
-			st = st.NextState;
-		}
-		return null;
 	}
 
 	private void clearCardModels()
@@ -8707,6 +8696,7 @@ class wr_Rig : EventHandler
 		}
 		mModels.Clear();
 		mModelFit.Clear();
+		mModelDrop.Clear();
 	}
 
 	// Guarded so a zero handle is a no-op rather than a call into nothing --

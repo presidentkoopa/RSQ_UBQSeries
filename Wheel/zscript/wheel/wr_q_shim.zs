@@ -775,6 +775,7 @@ class wr_VRState : EventHandler
 	double mLaserRange;
 	Actor  mBeam[2];
 	wr_LookState mLook;      // the palette and font set in force (wr_q_look.zs)
+	wr_VoxSize   mVox;       // pickup voxel sizes, read once (wr_q_vox.zs)
 
 	static wr_VRState Get() { return wr_VRState(EventHandler.Find("wr_VRState")); }
 

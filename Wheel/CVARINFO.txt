@@ -504,13 +504,10 @@ user int wr_subcards_grace = 6;
 user bool  wr_models      = true;    // RSQ: on -- the BD pickup voxels are the best picture a card has
 user float wr_model_scale = 0.16;
 user float wr_model_lift  = 3.0;
-// RSQ: what a card's picture is, with wr_models on. 0: the gun as it lies in the world -- its
-// pickup voxel (BD_VoxelPack), pickup model or sprite. 1: the gun as you hold it -- the weapon
-// set's held model (BD22 VR-Reloaded's meshes), from its Ready frame. wr_model_spin: how fast a
-// pickup turns on its card (degrees per tic); a held model sways instead. 0 holds both still.
-user int   wr_model_kind  = 0;
+// RSQ: with wr_models on, a card shows its gun's pickup VOXEL (BD_VoxelPack), measured from the
+// voxel's own VOXELDEF scale and size and fitted inside the card; a gun with no voxel keeps its
+// flat icon. wr_model_spin: how fast it turns on its card (degrees per tic), 0 holds it still.
 user float wr_model_spin  = 1.5;
-user float wr_model_scale_held = 0.05;   // a held mesh's size on its card (no size script can read)
 
 
 // A dark quad behind each card. Not decoration -- the ring floats in front of
