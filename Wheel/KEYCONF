@@ -1,0 +1,63 @@
+// ============================================================
+// RS_WeaponSelectionSystem -- KEYCONF
+// ============================================================
+//
+// One key section, named for the mod. The wheel originally shipped two
+// ("RSVR HUD" and "RSVR HUD - gun placement") and was folded down to one when
+// it was merged into RS_VR_Unified; it stays one here, because MENUDEF's
+// Control rows bind the ALIAS name ("wr_toggle_off", "wr_place", ...) and never
+// the section, so the split was only ever grouping in the controls list.
+//
+// Every alias here is wr_*, and every netevent it fires is wr_*, so nothing
+// collides with a package using rs_* / rr_* / hs_*.
+
+addkeysection "Weapon Selection System" WeaponSelectionSystem
+
+// -- the ring itself.
+//
+// THE ONLY DEFAULT BINDS IN THIS PACKAGE, and they are inherited rather than
+// chosen -- everything above is deliberately unbound. They are kept because
+// dropping them would silently change the wheel's out-of-box behaviour during
+// what is meant to be a packaging change.
+//
+// THEY COLLIDE, and it is worth knowing exactly how. UZDXREMA's own
+// engine/commonbinds.txt binds '[' to invprev and ']' to invnext, so on a
+// desktop profile these two lines do nothing at all: FKeyBindings::DefaultBind
+// refuses a key that is already bound and prints "Key already bound" rather
+// than overwriting it. On the VR profiles (engine/vr/commonbinds.txt,
+// vr/defbind0.txt, vr/defbind3.txt) inventory prev/next live on pgup/pgdn,
+// mwheel and the dpad, the brackets are free, and these DO take. So the wheel
+// opens on [ and ] in VR and appears unbound on a desktop config -- which is
+// the right way round for a VR mod, but is not obvious from the file.
+alias wr_toggle_off  "netevent wr_toggle_off"
+alias wr_toggle_main "netevent wr_toggle_main"
+addmenukey "Wheel: off hand"  wr_toggle_off
+addmenukey "Wheel: main hand" wr_toggle_main
+defaultbind ] wr_toggle_off
+defaultbind [ wr_toggle_main
+
+// Legacy spelling, kept so an already-written config that binds wr_toggle
+// still works. It fires wr_toggle_off, exactly as it did in the source file --
+// which makes it a synonym for the off-hand bind and NOT a general toggle,
+// despite the name. Bind one or the other, not both.
+alias wr_toggle      "netevent wr_toggle_off"
+
+// -- ModelSwapper model cycle. Ours, not a compat guess, so it earns a real
+// key rather than a gesture. No default bind: a model swap mid-fight from a
+// fat-fingered key would be worse than not having the feature.
+alias wr_ms_cycle_main "netevent wr_ms_cycle_main"
+alias wr_ms_cycle_off  "netevent wr_ms_cycle_off"
+addmenukey "Wheel: cycle main-hand model" wr_ms_cycle_main
+addmenukey "Wheel: cycle off-hand model"  wr_ms_cycle_off
+
+// -- gun readout placement. A calibration tool for whoever is measuring a
+// weapon set, not a normal-play control, so no default binds -- none of these
+// can fire by accident during a fight because none is on a key until you put
+// it there.
+//
+// Bindable FROM THE MENU, not console-only: this is used in VR, where there is
+// no reachable console, so an alias with no menu row is not "advanced", it is
+// unreachable. The four verbs below are the whole workflow. The sixteen nudge
+// aliases stay config-only -- eight axes times two directions would bury the
+// key list, and anyone binding all sixteen is editing a config file anyway.
+

@@ -1,0 +1,69 @@
+// ============================================================
+// RS_WeaponSelectionSystem -- MAPINFO
+// ============================================================
+//
+// Four of the wheel's five handlers. The fifth is off on purpose; see below.
+//
+// ORDER IS TWO OPPOSITE ORDERS, AND THAT IS THE TRAP.
+//
+//   WorldTick and NetworkProcess run FRONT TO BACK -- first registered, first
+//     called.
+//   InputProcess and UiProcess run BACK TO FRONT -- EventManager::Responder in
+//     src/events.cpp walks `handler = LastEventHandler; handler; handler =
+//     handler->prev`.
+//
+// wr_Rig overrides InputProcess and returns true to swallow +attack, +altattack
+// and +use while the ring is open. Being registered LATE therefore makes it the
+// FIRST handler offered every input event, which is exactly what the wheel
+// needs -- and is the opposite of what "late" means for WorldTick.
+//
+// Checked, so it is not folklore: of the wheel's five handlers only wr_Rig
+// overrides InputProcess or UiProcess. wr_Constellation, wr_Honeycomb and
+// wr_StatEvents override neither, so their position relative to wr_Rig does not
+// currently matter. The day one of them does, read this note before concluding
+// the new handler is broken.
+//
+// wr_Rig IS NOT READ-ONLY. wr_Rig::equipInstantly assigns player.ReadyWeapon,
+// player.OffhandWeapon, player.PendingWeapon = WP_NOCHANGE and bOffhandWeapon
+// on both the weapon and its SisterWeapon, then calls SetPsprite. It is safe
+// late for a specific reason rather than by being harmless: it writes only in
+// response to a committed card -- a netevent -- and never from WorldTick, so
+// anything ticking ahead of it observes the change on the FOLLOWING tic and
+// never a half-applied one.
+//
+// WHAT THE SPLIT CHANGES, AND IT IS THE ONE THING THAT DOES.
+//
+// While the wheel lived inside RS_VR_Unified, this list and Unified's were one
+// list, so wr_Rig's position against RS_Stabilize, RS_GrabHandler,
+// RS_HolsterManager and RR_Reload was fixed in the file. As a separate package
+// that position is decided by PK3 LOAD ORDER instead.
+//
+// It only bites if an RS_* handler ever overrides InputProcess -- none does
+// today. If one gains a grab or holster gesture on a bound key, then whichever
+// package loads LATER wins the key while a card is hovered. Load this one after
+// RS_VR_Unified to keep the behaviour the merged build had.
+//
+// wr_GunTag IS GONE.
+//
+// The on-gun ammo readout (wr_gunhud.zs) is removed from this package outright
+// rather than shipped switched off. It never worked, it had been left
+// unregistered for that reason, and carrying 723 lines plus seventeen cvars,
+// two menu pages and a set of keybinds for something that cannot run is exactly
+// the dead weight a split is the moment to drop.
+//
+// It took its whole placement workflow with it -- wr_place, wr_lock,
+// wr_measure, wr_save and wr_nudge existed only to position the gun tag, and
+// nothing else in the wheel handled those events.
+//
+// wr_StatEvents IS registered, and has to be. It is the ONLY writer of the
+// wr_StatLedger inventory item; wr_StatTracker's static readers -- called from
+// the ring's data sheet and from wr_stats.zs -- are the only readers.
+// Unregistered, the ledger is never created, every reader's "have data" flag
+// returns false, and the kills / shots / accuracy / headshot rows silently hide
+// themselves. In a headset that reads as a data card with fewer rows than
+// expected, which is why it went unnoticed for so long.
+
+GameInfo
+{
+	AddEventHandlers = "wr_Rig", "wr_Constellation", "wr_Honeycomb", "wr_StatEvents"
+}

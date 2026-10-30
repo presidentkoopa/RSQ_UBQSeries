@@ -1,0 +1,846 @@
+// ============================================================
+// RS_WeaponSelectionSystem -- CVARINFO
+// ============================================================
+//
+// The weapon wheel, spun out of RS_VR_Unified. Every cvar here is wr_*, which
+// is the namespace the wheel has always used and the same one the ENGINE reads
+// for its suppression hook -- see wr_suppress_native_wheel below.
+//
+// These defaults are also calibration data. The wheel's card sizes, orbits and
+// hand offsets were dialled in wearing a headset, so editing a value here moves
+// a measured layout rather than changing a preference. All live: change them
+// with the rig open and the next tic picks them up.
+//
+// SCALE: vr_vunits_per_meter is 34, so one map unit is about 3cm. Every default
+// below is written as a real-world distance first and converted, because the
+// first pass at this used flat-screen numbers and put the cards a metre off
+// each side of the hand.
+
+// ---- MASTER SWITCH -----------------------------------------------------
+//
+// WHICH WHEEL YOU GET, and it is one setting rather than two because "off" has
+// to answer what happens to the engine's own wheel.
+//
+//   1  this wheel   (default)
+//   2  the engine's native wheel
+//   0  neither
+//
+// wr_suppress_native_wheel is what the ENGINE actually reads, once, when the
+// wheel button is pressed -- hw_vrwheel.cpp, in OpenWheel. It is looked up by
+// name and absent means "not suppressed", so a session without this mod behaves
+// exactly as it always has.
+//
+// The engine reads a MOD cvar rather than owning one for mods to write, and
+// that is deliberate on its side: CVar.SetBool refuses any cvar lacking
+// CVAR_MOD when called outside menu code, so a mod writing an engine cvar from
+// its own tick would abort the VM. Both cvars here are ours, so both carry
+// CVAR_MOD and either can be written from anywhere.
+//
+// MIRROR IT AS (wr_wheel_mode != 2), NOT (== 1). Otherwise picking "neither"
+// un-suppresses the native wheel and you get the engine's ring when you asked
+// for none.
+// wr_suppress_native_wheel itself is declared further down, in the block that
+// came across with the rest of the wheel's cvars. It is `user bool` and ON by
+// default. Do not declare it twice.
+user int  wr_wheel_mode = 1;
+
+// SCALE: vr_vunits_per_meter is 34, so one map unit is about 3cm. Every default
+// below is written as a real-world distance first and converted, because the
+// first pass at this used flat-screen numbers and put the cards a metre off
+// each side of the hand.
+
+// Panel face size. 3.5 x 2.5 units is about 10cm x 7cm -- a playing card.
+user float wr_panel_w  = 4.2;
+user float wr_panel_h  = 3.0;
+
+// How far the panels orbit out from the hand, and how high above it they ride.
+// 7 units is about 20cm: far enough to read, close enough to reach without
+// moving your arm.
+user float wr_radius   = 5.0;
+user float wr_rise     = 2.0;
+
+// THE HONEYCOMB, an ALTERNATIVE layout rather than a replacement -- 0 is the
+// ring, exactly as it has always been and still the default; 1 lays the same
+// cards out as a gapless hex tessellation spiralling out from the centre.
+//
+// Why you would: a ring divides 360 degrees by its card count, so every extra
+// weapon tightens every gap, and past a dozen it has to grow out of reach or
+// start collapsing slots into fans. A comb grows outward at a spacing that
+// never tightens -- nineteen cells by its second ring.
+//
+// What you give up: the sheet moves. A ring has a hole at its middle for the
+// sheet to stand in; a gapless comb's centre is a real card, so under this the
+// sheet stands beside the hive instead of inside it.
+//
+// Slot positions stay just as learnable either way -- a spiral FILL is as
+// fixed as an angle, so slot 4 is the same cell every map, same promise the
+// ring's bearings make.
+
+// Tics of delay between one ring of the comb arriving and the next. The
+// centre lands, then the six around it, then the twelve around those --
+// each reusing the same ease wr_growtics already defines, just started late.
+// 0 lands the whole hive at once, the way the ring does.
+
+
+// THE CONSTELLATION
+//
+// An alternative EXPANSION -- what a slot holding several weapons unfolds
+// into -- rather than an alternative ring. 0 is the fan, three tidy lanes
+// stacked outward, still the default and still untouched. 1 scatters the
+// same sub-cards as stars around the card you opened and draws a line from
+// it out to each one.
+//
+// A fan answers "what else is in this slot" as a list. A constellation
+// answers it as a SHAPE, which is the point: the arrangement itself is the
+// information, so the scatter is hashed off each sub-card's own index and
+// is the same shape every time you open that slot -- never re-rolled, never
+// drifting. A constellation you can come to recognise is worth having; a
+// lava lamp is not.
+user bool  wr_constellation = false;
+
+// Tics of delay between one hub-to-star line starting to draw and the next.
+// The web traces outward a link at a time instead of every line snapping
+// taut together. 0 draws them all at once.
+user int   wr_star_stagger  = 2;
+
+
+// THE BACKGROUND STARFIELD
+//
+// Pure decoration, and the reason the constellation reads as a piece of sky
+// rather than as a scatter plot -- dimmer, further-back points of light
+// behind the real cards. Count of stars; 0 is off.
+//
+// They sit behind the cards' own depth plane, so wr_parallax separates them
+// as you move your head, and each twinkles on its own offset phase rather
+// than the whole field pulsing in lockstep. Positions and colours are hashed
+// off each star's index, so it is the same sky every time you raise your
+// hand instead of a fresh scatter every summon.
+//
+// Independent of wr_constellation on purpose: a field of quiet lights behind
+// the ring is worth having whether or not anything is expanded.
+user int   wr_stars       = 0;
+
+// How bright the field is allowed to get at its peak twinkle. Deliberately
+// low -- these are BEHIND the data and must never compete with it.
+user float wr_stars_alpha = 0.5;
+
+// Leans the tops toward you.
+user float wr_tilt     = 12.0;
+
+// REACHING INTO THE RING. The radius of the sphere carried at your fingertip,
+// and it does two jobs at once.
+//
+// It is the grab volume: how close the fingertip has to get to a card to take
+// it. Nearest-hit resolves any overlap, so generous is free.
+//
+// It is also HOW FAR YOU HAVE TO PUSH. The fingertip is parked one and a
+// fifth of this short of the cards when the ring opens, so a bigger radius
+// means both a fatter grab volume and a longer deliberate reach to reach it.
+// 7 units is about 20cm.
+//
+// 0 turns reaching off entirely and leaves the beam as the only way in.
+user float wr_touch    = 7.0;
+
+// Open the rig automatically when a level starts.
+//
+// OFF. This was on for the whole of development -- testing a change was one
+// launch instead of a launch and a keypress -- and shipping it that way means
+// a ring in your face at the start of every map you load, before you have
+// bound anything or asked for it. Turn it on while iterating.
+user bool  wr_autoopen = false;
+
+// How much wrist roll spins the fan. 0 ignores it, 1 follows it exactly.
+user float wr_roll     = 0.0;
+
+// Which generation of the defaults above this config has seen.
+//
+// user cvars are ARCHIVED: once your config holds wr_radius 30, editing the
+// default here can never reach you again -- the saved value wins forever. So
+// the mod stamps a version, and when it ships new geometry it rewrites the
+// values once and bumps the stamp. Your own tuning survives everything after
+// that, because the stamp only moves when the mod's numbers change.
+user int   wr_cfgver   = 0;
+
+
+// How far the hovered card steps toward your eye, in map units.
+user float wr_pop      = 1.5;
+
+// Tics the rig stays up with nothing hovered before folding away. 35 = 1 second.
+// Hovering a card resets it.
+user int   wr_locktics = 140;
+
+// How many tics before the idle-close, the ring starts visibly fading and
+// gives one haptic tick -- a warning window, not a second timer. 0 disables
+// the warning outright (the ring still closes on schedule, it just does so
+// without notice, same as before this existed).
+user int   wr_warn_tics = 25;
+
+// Which hand wr_toggle_main/wr_toggle_off actually open the ring on: -1
+// (default) means each bind opens on the hand its own name says. 0 or 1
+// routes BOTH binds to that hand instead -- but only while nothing is
+// open; a ring already open still responds to whichever bind was actually
+// pressed, so either key can still reach and close it.
+user int   wr_toggle_prefer_hand = -1;
+
+// Tics after opening, pressing the SAME hand's toggle key again recenters
+// the ring on your current hand position instead of closing it. 0 turns
+// the recenter off entirely -- the same key always closes, exactly as
+// before this existed.
+user int   wr_recenter_window = 10;
+
+// A one-shot ring flash when a fan actually opens (dwell or the manual
+// +use gesture) or a grab is confirmed.
+user bool  wr_flash = true;
+
+// Below this loaded fraction (not empty, just running low), a weapon's
+// ammo gauge pulses. 0 turns the check off, not just the visual --
+// nothing is loaded into mLowAmmo either way.
+user float wr_lowammo_frac  = 0.25;
+user float wr_lowammo_pulse = 0.35;
+
+// Master size. Grows distance, card size and reach together, so "make it
+// bigger" stays one thought instead of four sliders.
+user float wr_scale    = 1.0;
+
+
+
+// Slow time while the wheel is up, via BulletTimeX if it is loaded. Its
+// activate is a toggle, so turning this on means opening the wheel during a
+// bullet time you started yourself will cancel it.
+user bool  wr_bullettime = true;
+
+// How far the stick must leave centre before it picks a slot. UserCmd units:
+// a walk is about 6400.
+// -1..1 scale, not the old thousands-scale ticcmd units -- stickPick() now
+// reads GetRawStickMove() (a normalized stick axis), not cmd.sidemove/
+// forwardmove. The engine already applies its own 0.15 deadzone before
+// script sees this value, so 0.2 is a small margin on top of that, not the
+// deadzone itself.
+user float wr_stickdead  = 0.2;
+
+
+// How much the hovered card breathes. 0 holds it still.
+user float wr_pulse      = 0.10;
+
+// How far in front of your hand the ring floats, along where you were aiming
+// when it opened. 34 units is about a metre. This is the number that decides
+// how far you have to turn to cross the ring: further away means a smaller
+// sweep, because the whole thing subtends less.
+user float wr_forward  = 34.0;
+
+
+// FEEL
+//
+// The rig is worn where you cannot comfortably look at it, so the ear and the
+// wrist do most of the work of telling you what is happening. These are the
+// dials for that.
+
+// Menu clicks on hover, expand, confirm and dismiss. The rig ships its own --
+// see sndinfo.txt.
+user bool  wr_sound    = true;
+user float wr_volume   = 0.65;
+
+// Controller rumble, as a multiplier on what the rig asks for. 0 is silent
+// hands. vr_enable_haptics still overrules this, so turning haptics off in the
+// engine cannot be undone by a mod.
+user float wr_haptics  = 1.0;
+
+// Tics the cards take to grow out of your wrist to the ring. 0 makes them
+// appear finished, which is how this used to behave.
+user float wr_growtics = 6.0;
+
+// Print the ammo each weapon has left under its name, and rest a card that has
+// none in a colour that says so.
+user bool  wr_ammo     = true;
+
+// Diagnostics on the console when the rig opens. Off: these fired on every
+// single summon, and a line of console for something that worked is noise.
+user bool  wr_debug    = false;
+
+
+
+// THE ROOM
+//
+// These three are SINGLE GLOBAL SLOTS in the engine with no way to read them
+// back, so while the rig holds one, a co-loaded mod using the same slot loses
+// it. That is survivable because the engine's contract for all three is
+// "publish it every tic while it is on" -- so anything else using them
+// re-publishes and recovers by itself the moment the rig lets go. Each is
+// separately switchable anyway.
+
+// The laser gets air in it: a raymarched cone laid along the same ray the
+// engine laser already points down, with dust drifting through it. 0 is off.
+user bool  wr_vbeam         = true;
+user float wr_vbeam_inner   = 1.2;    // hot core radius
+user float wr_vbeam_outer   = 5.0;    // where it has faded to nothing
+user float wr_vbeam_density = 0.55;
+user float wr_vbeam_dust    = 0.5;
+
+// A ring of light washing outward across the room when the rig opens, tested
+// per pixel against world position so it crosses floor, wall and ceiling as one
+// unbroken line. Tics it takes; 0 is off.
+user float wr_sweep         = 14.0;
+user float wr_sweep_reach   = 340.0;  // how far it travels, map units
+user float wr_sweep_bright  = 1.4;
+
+// Mist for the cards to sit in, tinted to whatever slot you are hovering.
+// OFF by default, and it is the rude one: a map may have authored its own fog
+// slab, and this takes it for as long as the rig is up.
+user float wr_fog           = 0.0;    // density; 0 is off
+user float wr_fog_rise      = 6.0;    // how far above the ring its surface sits
+user float wr_fog_scatter   = 0.8;    // lets the beam light the mist
+
+
+// THE CARDS THEMSELVES
+//
+// Two ways to draw a plate. BB_PANEL stretches one small rounded-rect texture
+// -- cheap, and it blurs when a card is held close. BB_SDFPANEL solves the same
+// rectangle per pixel: crisp at any size, and it can take a halo, which a
+// sampled plate structurally cannot. Off gives you the old look back.
+user bool wr_sdf           = true;
+
+// Only the solved plate reads these. 0-15 each, across the half-extent.
+user int  wr_plate_radius  = 4;    // corner rounding
+user int  wr_plate_border  = 2;    // rim width; 0 is a plain filled plate
+
+
+// THE FLOOR
+//
+// A mark under your feet, repeated around a circle and spinning. One shape
+// slot: the repeat folds the coordinate rather than drawing copies, so eight
+// marks and eight hundred cost the same. Size in map units; 0 is off.
+user float wr_floor        = 0.0;
+user float wr_floor_kind   = 5.0;   // 1 disc 2 ring 3 square 4 outline 5 cross 6 hex 7 triangle
+user float wr_floor_count  = 8.0;   // copies around the circle
+user float wr_floor_space  = 46.0;  // radius of that circle
+user float wr_floor_spin   = 14.0;  // degrees per second
+user float wr_floor_thick  = 0.18;
+user float wr_floor_bright = 1.2;
+// How far each mark splits open down its middle as the rig arrives.
+user float wr_floor_seam   = 0.5;
+
+
+// CANVAS FACES
+//
+// The other way to build a card. Instead of one billboard per element, each
+// placed in map units every tic, the artwork is PAINTED into a texture in
+// ordinary 2D pixel coordinates and the card shows that one image.
+//
+// Both work and neither is strictly better. A canvas is a raster, so held
+// close in VR it shows its pixels where the distance-field payloads never
+// will -- which is why the name and the count stay as field billboards on top
+// either way, and only the artwork underneath them changes.
+//
+// Twelve canvas textures are declared in animdefs.txt, and that is a hard
+// ceiling -- they have to be declared up front and there is no allocating one
+// on demand. A ring that does not fit uses composed faces for ALL of it, not
+// for the overflow: painted and composed cards do not read as variants of one
+// card, they read as two menus, and a ring is meant to be taken in at a
+// glance. Only reachable with wr_subcards off, since a ring of slots cannot
+// exceed nine.
+//
+// Repainted every tic, not once on open -- a canvas is a command queue the
+// engine empties after it plays, so anything permanently on screen has to be
+// re-queued or it lasts exactly one frame.
+user bool wr_canvas = false;
+
+// How far the weapon sprite runs off the card, as a multiple of card width.
+// 1.0 fits it inside; above that it crops, which is the thing a billboard
+// cannot do at all -- a quad draws its whole texture, so the composed card can
+// only ever shrink a sprite until it fits.
+user float wr_canvas_bleed  = 1.30;
+
+// A dark offset twin under the sprite. Weapon art is lit every which way
+// across a weapon set; a shadow gives all of it the same weight.
+user bool  wr_canvas_shadow = true;
+
+// One dimmed row every three, over the whole face. 0 is off.
+user float wr_canvas_scan   = 0.22;
+
+// Halo strength on the card you are pointing at, as a multiplier. This is the
+// one thing the distance-field payloads can do that a sampled texture cannot --
+// a glow is placed by reading the field OUTSIDE the shape, and a texture has
+// nothing out there to read. It only ever fires on the hovered card, which is
+// why it is easy to miss entirely. Crank it to see what SDF is for.
+user float wr_glow = 1.6;
+
+// The same halo, but a slow ambient breathe on EVERY card instead of a hard
+// switch on the one you are pointing at -- so the ring has a little life in
+// it everywhere, not just where the laser lands. Off by default (0), and
+// even turned on it is deliberately far weaker and slower than wr_glow's own
+// hover halo, which is untouched by this and stays exactly as strong as it
+// always was -- this only fills in what used to be a flat 0 on every card
+// this one is NOT pointing at. Uses whatever colour that card already has
+// (tier, slot, or hashed hue), so every weapon set benefits the same way,
+// not just the ones with a rarity system to colour by.
+user float wr_shimmer = 0.0;
+
+
+// SPARKS
+//
+// A burst off the card you just took. 0 is off.
+user float wr_sparks       = 18.0;   // particles per commit
+user float wr_sparks_speed = 1.4;
+// 0 the slot's colour, 1 white hot, 2 rainbow.
+//
+// Slot colour is the default because it is doing a JOB -- same hue as the card,
+// the accent and the beam, so the burst confirms which one you hit. Rainbow is
+// prettier and says nothing.
+user int   wr_spark_color  = 0;
+
+// Degrees the taken card spins as the ring folds away. 0 holds it still.
+user float wr_flip         = 360.0;
+
+
+// GLOW WAVE
+//
+// Ripples the glows a map ALREADY HAS, per pixel, anchored at the ring -- with
+// separate phases for wall top, wall bottom, floor and ceiling so the wave
+// climbs a room instead of flashing it.
+//
+// In a map with no glowing surfaces this does nothing at all. Its whole effect
+// depends on the level you are standing in, which is why it is off by default
+// and not broken when it looks dead. 0 is off.
+user float wr_wave       = 0.0;
+user float wr_wave_len   = 120.0;
+user float wr_wave_speed = 1.6;
+user float wr_wave_sharp = 1.4;
+
+
+// CARDS, ONE MORE PASS
+
+// How far the cards you are NOT pointing at fade back. 1 is no dimming.
+// Only applies once something is hovered -- fading the whole ring the moment it
+// opens would look like it failed to load.
+user float wr_dim = 0.55;
+
+// One dynamic light, on the hovered card, in that slot's colour, breathing on
+// the same pulse the card does. ONE, not one per card: lights cost per light
+// per surface they touch, and only one card is ever the answer to "which".
+user bool  wr_light      = true;
+user float wr_light_size = 44.0;
+
+// Tics the light holds its last position/colour after the laser crosses
+// the empty space between two cards, before actually going out. The gap
+// is real hit-testable nothing, and the laser passes through it on every
+// ordinary sweep from one card to its neighbour -- without this, that
+// crossing destroyed the light and spawned a fresh one on arrival, a
+// visible off-then-on blink on every single move across the ring. Long
+// enough to bridge a gap, short enough that actually looking away from
+// the ring still reads as immediate. 0 goes back to the old instant cut.
+user int   wr_light_grace = 3;
+
+// A corner mark on a weapon one of your hands already holds. Informational
+// only -- the card stays selectable, because picking your other hand's gun
+// swaps them or finds a free clone, which is a reasonable thing to ask for.
+user bool  wr_marker = true;
+
+// Which payload draws the ammo bezel.
+//   0 LED segment, 1 LCD (punched out of a lit plate), 2 lozenge badge
+// Pick by which reads better against the room, not which is more correct.
+user int   wr_readout = 0;
+
+// How many weapons the ring will show INDIVIDUALLY before it gives up and
+// collapses to one card per SLOT with the rest folded behind it.
+//
+// BELOW the threshold: every weapon gets its own card and the ring grows to
+// fit. One reach instead of a dwell and a reach, at the cost of the fixed
+// bearing -- picking up a second plasma rifle moves everything after it round
+// the ring.
+//
+// AT OR PAST it: one card per slot, and slot 4 is in the same direction
+// whether you own one weapon in it or five -- which is what makes bearings
+// learnable. Anything past a slot's first weapon opens on dwell, and a card
+// that is hiding others says so with a small "+N" in its corner (wr_marker's
+// sibling badge) rather than looking identical to one that is not.
+//
+// 0 and a very large number are the two ends of what used to be a plain on/
+// off switch -- always collapsed, or always flat. Between them the ring picks
+// flat while it can afford to and only gives up the fixed bearing once it
+// actually has to, which is new: it used to be one or the other for the whole
+// game, not decided per loadout.
+user int wr_subcards_max = 10;
+
+// How many consecutive tics the laser has to spend on a REAL other card --
+// not empty space, which was already free -- before an open fan actually
+// folds. Picking between several cards packed into a fan is a finer aim
+// than picking between the ring's own cards, so a wobble that would never
+// have closed the ring itself used to close a fan on the very first tic it
+// strayed. 0 goes back to that instant behaviour.
+user int wr_subcards_grace = 6;
+
+
+// REAL MODELS ON THE CARDS
+//
+// MODELDEF binds a model to a CLASS, so there is no way to hand a generic
+// carrier somebody else's model. The way through is to spawn the weapon's OWN
+// class and let the engine resolve it -- which means this works for any
+// model-based weapon set rather than a list we knew about, and copies nothing.
+//
+// The spawned copy is defanged: not pickupable, not in the blockmap, no
+// gravity, not on the automap.
+//
+// OFF, and PARKED rather than removed. Whether a card shows geometry depends
+// entirely on the loaded weapon set, and a set is free to gate its own pickup
+// models behind a cvar of its own -- VanillaVRPlus branches its Spawn state on
+// evw_pickupmodel, which defaults to 0. That is too many other people's
+// switches between a setting and a result for this to be on by default, or to
+// be worth chasing further.
+user bool  wr_models      = false;
+user float wr_model_scale = 0.16;
+user float wr_model_lift  = 3.0;
+
+
+// A dark quad behind each card. Not decoration -- the ring floats in front of
+// whatever the room happens to be, and a dark plate on a dark wall has almost
+// no edge. This separates a card from ANY background without knowing anything
+// about it. 0 is off.
+user float wr_shadow        = 0.32;
+user float wr_shadow_offset = 0.35;
+
+// The slot number in the card's corner: the key you would press, on the card it
+// maps to. Also the only thing that still says which slot a card belongs to
+// once wr_subcards is off and several share one.
+user bool  wr_slotnum = true;
+
+
+// LAST TOUCHES
+
+// Every card solves its own yaw toward your eye instead of sharing one. Turns
+// the ring from a flat sheet into a shallow bowl wrapped around you -- which is
+// what it always was geometrically and never looked like.
+user bool  wr_facing = true;
+
+// The ring rises and falls a few millimetres while it sits there. Slow enough
+// that you never catch it moving; the difference between an image and an object.
+user float wr_idle       = 0.35;
+user float wr_idle_speed = 1.7;
+
+// The artwork slides inside its frame as your head moves. A lenticular trick,
+// and the cheapest depth in the mod -- no extra billboard, no shader. As a
+// fraction of the card; past a few percent it stops reading as depth and starts
+// reading as the artwork being loose.
+user float wr_parallax = 0.06;
+
+// Scanlines crawl instead of sitting still. A static pattern is a texture, a
+// drifting one is a signal. 0 holds them.
+user float wr_scan_crawl = 1.0;
+
+
+// THE DATA SHEET
+//
+// The panel standing in the middle of the ring, describing whatever the
+// selector is pointing at -- and what your hand already holds when it is
+// pointing at nothing.
+//
+// It stands at the CENTRE and not beside the ring, and that is geometry
+// rather than taste: parked beside, it rides the ring's radius, which grows
+// with the card count. Nine cards put it 25 degrees off your view axis,
+// twenty-five put it at 40, fifty at 56 -- a head turn away from the card you
+// are choosing. At the centre it is at zero degrees whatever the ring does,
+// and fans expand outward so they can never collide with it.
+//
+// Off gives you the ring alone, and the ring shrinks back to whatever
+// wr_radius and the card count ask for -- the sheet holds a minimum radius
+// open while it is there, so the cards orbit clear of it rather than through
+// it.
+user bool  wr_sheet       = true;
+
+// Sheet size, as a multiplier on its own proportions. It is measured in CARD
+// widths, so it already tracks wr_panel_* and wr_scale; this is the dial for
+// "bigger than that" without touching the cards.
+//
+// Growing it pushes the ring out, because the ring's minimum radius is set
+// from the sheet's half-width. Past about 1.5 the ring is being sized by the
+// sheet rather than by your cards.
+user float wr_sheet_scale = 1.0;
+
+// The rolled stat rows -- tier, condition, DPS, accuracy, crit, velocity,
+// rate of fire, real magazine size. Read straight off the weapon, so they
+// appear for any mod that stores its numbers in fields and simply do not
+// appear for one that does not.
+//
+// Off leaves the sheet showing what the engine itself knows: name, slot,
+// ammo type and count, handling. That is the honest floor, and it works with
+// no weapon mod loaded at all.
+user bool  wr_sheet_stats = true;
+
+// Colour a card by RS_Main's tier (Cursed/Trash/Basic/Common/Uncommon/
+// Advanced/Designer/Prototype) when it has one, before falling back to the
+// classic nine-slot palette or a per-weapon hashed hue.
+//
+// ON is the informative choice -- rarity at a glance. Off trades that away
+// for variety: Basic, the third rung and the one nearly every fresh grant
+// lands on, is white BY DESIGN in RS_Main's own palette, so a ring built
+// mostly from starting gear is a ring built mostly from white cards,
+// correctly. If that reads as lifeless rather than as "everything you're
+// holding is unremarkable," this is the switch -- off skips the tier lookup
+// entirely and every card falls through to the palette below instead.
+user bool  wr_tier_color = true;
+
+// Same idea, for LegenDoom's own rarity (Common/Uncommon/Rare/Epic) -- see
+// wr_compat_legendoom.zs for how that's read at all, since LegenDoom stores
+// it as an owned inventory marker rather than a field. Kept as its own
+// switch rather than reusing wr_tier_color's name so either mod's colouring
+// can be turned off without touching the other's -- they can't both be true
+// for the same weapon, but a ring can be crossed by guns from both mods in
+// the same session.
+user bool  wr_ld_compat = true;
+
+// The rolled-effect row (DETERMINED, REPLICATING, ...) on top of the
+// rarity above -- see wr_compat_legendoom.zs. Its own switch, under
+// wr_ld_compat, same relationship wr_drla_mods below has to
+// wr_drla_compat: the master switch turns LegenDoom reading off entirely,
+// this one just hides the extra row.
+user bool  wr_ld_effects = true;
+
+// Same again, for DoomRL Arsenal's assembly tier (Basic/Advanced/Master/
+// Exotic) -- see wr_compat_drla.zs. A separate switch from wr_ld_compat for
+// the same reason that one is separate from wr_tier_color: either mod's
+// colouring can be dropped on its own.
+user bool  wr_drla_compat = true;
+
+// The Mod Station row (NANO, BULK, AGIL, ...) on top of the tier above --
+// see wr_compat_drla.zs. Its own switch, under wr_drla_compat, the same
+// relationship wr_sheet_stats has to the RS rows: the master switch turns
+// DRLA reading off entirely, this one just hides the extra row.
+user bool  wr_drla_mods = true;
+
+// Same again, for Doomablo's own rarity (Common/Uncommon/Rare/Epic/
+// Legendary/Mythic/Unique) -- see wr_compat_doomablo.zs. Doomablo stores
+// this as a plain field, read the same way RS_Main's Tier is, but it is
+// still a different mod's field under a different name, so it gets its
+// own switch rather than folding into wr_tier_color.
+user bool  wr_dbl_compat = true;
+
+// The whole Pandemonia family -- base game (durability/magazine/sidegrade/
+// Game Level, wr_compat_pandemonia.zs), Anarchy (the Anarchic Sigil,
+// wr_compat_pandemonia_anarchy.zs), and Insurrection (augments, durability,
+// Superior text, color tag, combo bar, Sacrosanct Aeonstave leveling,
+// wr_compat_pandemonia_insurrection.zs -- formerly wr_compat_pandemonium.zs,
+// "Pandemonium" was this fork's own earlier misnomer for the family name).
+// One shared switch rather than three, since a player either has the
+// family loaded or doesn't. No rarity/tier concept anywhere in it, so
+// unlike the three compat switches above this never touches the title row
+// or wr_tier_color -- purely the extra rows it adds.
+user bool  wr_pand_compat = true;
+
+// Guncaster's player-side resource pools (spell cooldown, charge, hover,
+// glide, stomp, curse) -- see wr_compat_guncaster.zs. No per-weapon tier in
+// this mod at all -- it is one class with no rarity system -- so this
+// reads the weapon's OWNER, not the weapon, and never touches the title
+// row or wr_tier_color.
+user bool  wr_gc_compat = true;
+
+// MetaDoom's plasma rifle heat and Unmaker demon keys -- see
+// wr_compat_metadoom.zs. No tier ladder in this mod either.
+user bool  wr_meta_compat = true;
+
+// BorderDoom's cached per-weapon stats (damage/accuracy/firerate/recoil/
+// clip/level) -- see wr_compat_borderdoom.zs. Read off the array the
+// mutating GetCurrentDamage family writes into as a side effect, never
+// that ACS call itself -- see the file header for why. No tier row.
+user bool  wr_bd_compat = true;
+
+// DOOM Infinite's procedural weapon generator -- see
+// wr_compat_doominfinite.zs. The flagship compat target: real ZScript, and
+// the only mod here whose rolled stats are fully populated on a weapon still
+// lying on the FLOOR, which is what makes a genuine before-you-take-it
+// comparison possible at all. Feeds the universal damage/rate/pellet/crit
+// rows as a declared source AND colours the card by its flavour quirk, so
+// this is also the fifth mod that gets a tier word on the title row.
+user bool  wr_di_compat = true;
+
+// Combined Arms' four classes and every meter they run on -- see
+// wr_compat_combinedarms.zs. That mod is DECORATE + ACS with no ZScript, so
+// none of the field reflection the switches above rely on applies to it at
+// all; its state lives in inventory item counts instead, read by walking
+// what the player carries. No rarity ladder, so no title row, no
+// wr_tier_color -- purely the rows it adds.
+user bool  wr_ca_compat = true;
+
+// Final Doomer's nine weapon sets -- see wr_compat_finaldoomer.zs. Pure
+// DECORATE + ACS like Combined Arms, so the same owned-item walk, and no
+// rarity ladder anywhere across all nine sets -- no title row, no
+// wr_tier_color. Coverage is uneven on purpose: five sets (Whitemare,
+// Hellbound, JPCP, Alien Vendetta, BTSX) have real live counters worth a
+// row; Doom II and Aliens TC are fixed math with nothing to read past
+// which set is active.
+user bool  wr_fd_compat = true;
+
+// Lithium's seven characters and their weapons -- see wr_compat_lithium.zs.
+// Real ZScript, so magazines/mana/heat/charge/spin-up/status effects are all
+// read by ordinary field reflection. No rarity ladder anywhere in the mod, so
+// no title row and no wr_tier_color.
+//
+// NOTE that Lithium destroys any weapon actor with no owner, so unlike DOOM
+// Infinite there is nothing to read off a Lithium weapon lying on the floor --
+// every row here needs the gun to be carried.
+// ModelSwapper's model picker, live on the card -- see
+// wr_compat_modelswapper.zs. Ours, not a third party, so this is a real
+// two-way bridge rather than a read-only reflection guess: cycling a model
+// actually changes what is in your hands.
+// Shuts the engine's OWN native VR weapon/offhand/inventory wheels out
+// entirely -- our ring already replaces what the first two do, and
+// inventory access is meant to route through our own gesture instead of
+// the third.
+//
+// READ BY THE ENGINE, not written to it. VRWheel's OpenWheel() looks this
+// cvar up by name and bails if it is true (hw_vrwheel.cpp). That direction
+// is load-bearing: ZScript's CVar.SetInt/SetBool refuse any cvar the mod
+// does not itself own when called outside menu code, so the reverse -- an
+// engine cvar this mod writes each tic -- aborts the VM at runtime.
+// Nothing here has to run at all; the value simply is what it is.
+//
+// A session without this mod has no such cvar, and the engine treats
+// absent as enabled, so the native wheels behave exactly as they always
+// have. ON by default -- turn it off to get them back, or to A/B them
+// against this mod's own.
+user bool  wr_suppress_native_wheel = true;
+
+user bool  wr_ms_compat = true;
+
+user bool  wr_lith_compat = true;
+
+// Lithium's RPG layer -- the seven attributes, the 76-entry upgrade tree, the
+// rifle's fire mode.
+//
+// Everything else this wheel reads is a field or an inventory count. THIS one
+// switch calls into another mod's own ACS (its script 17002), which is the
+// thing wr_compat_borderdoom.zs refuses to do. It is allowed here because that
+// script was disassembled out of Lithium's shipped bytecode and contains no
+// line-special opcode at all, so BorderDoom's failure -- a "getter" that
+// mutated ammo capacity -- is structurally impossible rather than merely
+// unobserved.
+//
+// ON, after five independent gates were built in front of the call: the owner
+// must be a Lith_Player by class ancestry (so nothing fires when Lithium is
+// absent), the version must match 1.7.0 EXACTLY, only five allowlisted info
+// codes are permitted (the six that write savegame-persisted state are refused
+// mechanically), the index is clamped here because Lithium does not
+// bounds-check and GZDoom's global-array read INSERTS on a miss, and a canary
+// verifies the returned data before any of it is trusted.
+//
+// The residual risk this switch exists for: the canary necessarily runs AFTER
+// the first call, so it detects a script 17002 that belongs to some other mod
+// rather than preventing one call to it. That needs Lithium loaded, reporting
+// 1.7.0, AND another mod owning the same script number. Narrow -- but this is
+// the manual kill for it, and for a Lithium update landing before a patch.
+user bool  wr_lith_acs = true;
+
+// INSPECT MODE -- the data card without the wheel.
+//
+// Point at a weapon lying in the world and, after a moment's rest, the same
+// sheet the ring uses appears for it -- plus how it compares to the gun that
+// hand is already holding. The sheet has only ever existed inside the wheel,
+// which made it useless for the one thing it is best at: deciding whether
+// what is on the floor beats what you have.
+//
+// No new trace is cast for this. The engine already tracks what each hand's
+// laser rests on, every frame, for the laser sight itself.
+user bool  wr_inspect = true;
+
+// Tics of rest on the same weapon before the card appears. Sweeping an arm
+// across a room full of pickups would otherwise flash a card at every one.
+// 0 is instant.
+user int   wr_inspect_dwell = 18;
+
+// The comparison rows -- how the weapon you are pointing at differs from the
+// one that hand is holding. Off leaves the plain readout with no deltas.
+//
+// A delta is never drawn across a curse: subtracting a known number from a
+// hidden one and printing the result hands back exactly the value the curse
+// exists to hide.
+user bool  wr_inspect_delta = true;
+
+// This wheel's OWN kill/shot/accuracy/headshot tracker -- see
+// wr_stattracker.zs. Not a compat switch: nothing above this reads another
+// mod's fields, it watches the game happen and keeps its own counters, per
+// weapon instance, so it applies to every weapon whether or not any of the
+// eight mods above are loaded at all -- including genuinely vanilla guns.
+// Off also stops it granting its hidden per-player ledger item.
+user bool  wr_stats_track = true;
+
+
+// THE GUN'S OWN READOUT
+//
+// A count welded to the weapon in your hand, not just to the ring. See
+// wr_gunhud.zs for why this is a fixed offset in the hand's own frame rather
+// than anything attached to the model -- the model's world transform is not
+// reachable from script at all, and attaching to the weapon actor would put
+// the counter at your ankles, where a held weapon's Pos() actually is.
+
+// 0 lies it flush on the weapon, occluded by the gun's own geometry the way
+// depth testing already works by default -- the Dead Space reading. 1 turns
+// it to face you wherever the gun points -- always readable, reads as HUD
+// rather than as part of the gun. Both are real; the default is the one that
+// needed the placement tool built to be worth shipping.
+// Which flank of the gun a flush panel sits on. 0 and 1 are the two sides.
+
+
+// The GLOBAL fallback placement, used for any weapon nobody has measured yet.
+// Deliberately one guess and not a table of guesses by archetype -- a table
+// would be right for whatever it was tuned against and quietly wrong for
+// everything else while looking deliberate. wr_place fixes the guns that
+// actually matter; this just keeps the rest from having no readout at all.
+
+// Nudge step while placing -- map units per press, degrees per press.
+
+// Which hand wr_place calibrates. 0 main, 1 off -- the OTHER hand is always
+// the cursor, so placing an offhand weapon means flipping this first.
+
+// Flips which way positive wrist roll turns the panel. Source cannot answer
+// this one -- it depends on the handedness convention OpenXR happens to
+// report on your actual runtime. Leave it at 1; if the readout rolls the
+// wrong way when you turn the gun over, set it to -1.
+
+// ---- THE STAR CHART ----------------------------------------------------
+//
+// The arsenal as a night sky, drawn in real depth around the player. See
+// zscript/wheel/wr_constellation.zs for why it exists next to the ring: an arc
+// runs out of arc length and a volume does not.
+// WHICH ARRANGEMENT THE WHEEL USES. 0 ring, 1 honeycomb, 2 star chart.
+//
+// A layout, not a separate feature -- the same key opens it and the same key
+// picks from it, because it is the same arsenal arranged differently.
+user int   wr_layout = 0;
+
+user float wr_chart_link_thick = 0.12;
+user float wr_chart_link_alpha = 0.45;
+
+// The pointer ray. AimBillboard returns the nearest hittable billboard in the
+// WORLD, not the nearest of the chart's -- so anything a hand or a holster
+// leaves in front of it wins the ray and the sky stops answering. Set to 1 to
+// have the chart say so when that is what happened.
+user int   wr_chart_debug = 0;
+
+// HOW HARD REACHING AMPLIFIES on the star chart. The world may be frozen but
+// you can still physically move, so you can put your hand on a star -- and a
+// sky at forty-six to a hundred and twenty units is well past arm's length,
+// so the reach has to be earned rather than measured.
+//
+// Inside a small dead zone the fingertip is exactly your hand and nothing is
+// amplified. Past it, virtual reach grows with the SQUARE of how far you have
+// actually pushed, so a deliberate extension travels a long way and ordinary
+// movement near your body travels nowhere. This is the gain on that square.
+//
+// Higher reaches the far clusters with a shorter push and gets twitchy; lower
+// is steadier and may not reach the back of the sky at all. 0 disables the
+// amplification, leaving reaching possible only for stars you can literally
+// touch.
+user float wr_chart_gogo = 0.42;
+
+// ---- THE HONEYCOMB -----------------------------------------------------
+//
+// Every weapon at once, packed edge to edge and coloured by slot. Shows
+// everything because a grid has no arc length to run out of -- see
+// zscript/wheel/wr_honeycomb.zs.
+user float wr_hive_scale = 1.0;
+user float wr_hive_dist  = 1.0;
+
+// HOW HARD THE COMB CURVES, as a multiple of how far away it hangs. The
+// cells sit on a sphere centred on your eye -- a flattened soccerball --
+// and this is the flattening: 1.0 wraps a full bowl around you and puts
+// the outer cells beside your ears, higher numbers flatten it toward a
+// wall. Under about 0.5 it closes behind your head.
+user float wr_hive_dome  = 1.7;

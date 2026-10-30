@@ -1,0 +1,42 @@
+// ============================================================
+// RS_WeaponSelectionSystem -- ANIMDEFS
+// ============================================================
+//
+// NOT OPTIONAL SETUP -- this file IS the mechanism.
+//
+// A canvas texture is a blank texture the engine hands ZScript a drawing
+// surface for, and TexMan.GetCanvas() returns null for any name that was never
+// declared here. A missing ANIMDEFS is NOT an error: the card faces simply come
+// up blank, with nothing written to the log. If the cards are empty, look here
+// first.
+//
+// Canvas faces for the cards.
+//
+// A canvas texture is a blank texture the engine hands ZScript a drawing
+// surface for. TexMan.GetCanvas() returns null for anything that is NOT
+// declared here, so these lines are not optional setup -- they are the whole
+// mechanism.
+//
+// A FIXED POOL, declared up front, because that is the only way canvas
+// textures exist: there is no allocate-on-demand. Twelve is one per ring slot
+// with headroom. A ring that needs MORE than twelve draws every card composed
+// instead -- all of it, not just the overflow, because a ring split between
+// two card styles reads worse than a ring uniformly in the plainer one.
+//
+// 140x100 matches the card's own 3.5 x 2.5 proportions, so artwork painted
+// here is not stretched when it lands on the quad. `fit` gives the texture a
+// display size, which is what stops it being treated as a 140-map-unit wall.
+
+canvastexture WRFACE00 140 100 fit 140 100 WorldPanning
+canvastexture WRFACE01 140 100 fit 140 100 WorldPanning
+canvastexture WRFACE02 140 100 fit 140 100 WorldPanning
+canvastexture WRFACE03 140 100 fit 140 100 WorldPanning
+canvastexture WRFACE04 140 100 fit 140 100 WorldPanning
+canvastexture WRFACE05 140 100 fit 140 100 WorldPanning
+canvastexture WRFACE06 140 100 fit 140 100 WorldPanning
+canvastexture WRFACE07 140 100 fit 140 100 WorldPanning
+canvastexture WRFACE08 140 100 fit 140 100 WorldPanning
+canvastexture WRFACE09 140 100 fit 140 100 WorldPanning
+canvastexture WRFACE10 140 100 fit 140 100 WorldPanning
+canvastexture WRFACE11 140 100 fit 140 100 WorldPanning
+

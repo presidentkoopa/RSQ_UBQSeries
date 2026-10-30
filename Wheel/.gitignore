@@ -1,0 +1,4 @@
+# Built by build.ps1 from the sources beside it; never committed.
+*.pk3
+__pycache__/
+*.bak

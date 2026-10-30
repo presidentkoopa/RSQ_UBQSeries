@@ -1,0 +1,448 @@
+// ============================================================
+// RS_WeaponSelectionSystem -- MENUDEF
+// ============================================================
+//
+// The weapon wheel's own option pages, spun out of RS_VR_Unified. Reached from
+// the top-level Options menu directly, rather than from Unified's page, so the
+// two mods do not have to be loaded together.
+
+AddOptionMenu "OptionsMenu"
+{
+	Submenu "Weapon Selection System", "wr_Options"
+}
+AddOptionMenu "OptionsMenuSimple"
+{
+	Submenu "Weapon Selection System", "wr_Options"
+}
+
+OptionValue "wr_WheelMode"
+{
+	1, "This wheel"
+	2, "Engine wheel"
+	0, "Off"
+}
+
+OptionMenu wr_Options
+{
+	Title "Weapon Selection System"
+
+	// WHICH WHEEL YOU GET. First row because it decides whether anything else
+	// on this page does anything.
+	//
+	// One setting rather than two, because "off" has to answer what happens to
+	// the engine's own wheel. Mirrored onto wr_suppress_native_wheel as
+	// (wr_wheel_mode != 2) -- NOT (== 1), or picking "Off" would un-suppress
+	// the native wheel and hand you the engine's ring when you asked for none.
+	StaticText ""
+	StaticText "Master", gold
+	Option "Weapon wheel",              "wr_wheel_mode",   "wr_WheelMode"
+
+	StaticText ""
+	StaticText "Behaviour", gold
+	Option "Open at level start",       "wr_autoopen",     "OnOff"
+	Slider "Seconds before it folds",   "wr_locktics",     35, 700, 35, 0
+	Slider "Warning before it folds (0 = off)", "wr_warn_tics", 0, 105, 35, 0
+
+	StaticText ""
+	StaticText "Size", gold
+	Slider "Overall scale",             "wr_scale",        0.3, 3.0, 0.05, 2
+
+	StaticText ""
+	StaticText "Placement", gold
+	// Every one of these is live -- open the rig and drag a slider and the next
+	// tic has it. That is the whole reason they are sliders and not constants.
+	Slider "Ring distance ahead",       "wr_forward",      5.0, 120.0, 1.0, 0
+	Slider "Ring radius",               "wr_radius",       1.0, 40.0, 0.5, 1
+	Slider "Height above hand",         "wr_rise",        -8.0, 12.0, 0.5, 1
+	Slider "Lean toward you",           "wr_tilt",       -30.0, 30.0, 1.0, 0
+	// Off by default: a tracked controller reports ninety degrees of roll just
+	// from how you hold it, so raw wrist roll swings the ring behind you.
+	Slider "Wrist roll spins the ring", "wr_roll",         0.0, 1.0, 0.05, 2
+
+	// Closes the ENGINE'S OWN native VR wheels the instant any of the three
+	// tries to open -- ours already replaces two of them and the third is
+	// meant to route through this mod's own gesture instead. Off if you
+	// want the native wheels back, or want to compare them against this
+	// mod's own.
+	Option "Block the engine's native VR wheels", "wr_suppress_native_wheel", "OnOff"
+
+	StaticText ""
+	StaticText "Layout", gold
+	// Two shapes for the same set of cards. A ring divides 360 degrees by its
+	// card count, so every extra weapon tightens every gap; a comb grows
+	// outward at a spacing that never tightens -- nineteen cells by its second
+	// ring. Both keep a fixed place per slot, so either stays learnable.
+	StaticText "How the arsenal is arranged. The same key opens each,", "DarkGray"
+	StaticText "and the same key picks from it -- these are layouts,", "DarkGray"
+	StaticText "not separate features.", "DarkGray"
+	Option "Layout",                      "wr_layout",     "wr_LayoutKind"
+	StaticText " "
+
+	StaticText ""
+	StaticText "Cards", gold
+	Slider "Card width",                "wr_panel_w",      1.0, 12.0, 0.25, 2
+	Slider "Card height",               "wr_panel_h",      1.0, 12.0, 0.25, 2
+	Slider "Hovered card steps out",    "wr_pop",          0.0, 6.0, 0.25, 2
+	Slider "Hovered card pulse",        "wr_pulse",        0.0, 0.5, 0.01, 2
+	// Each card aims at your eye instead of all sharing one angle -- the ring
+	// becomes a shallow bowl instead of a flat sheet.
+	Option "Cards face you individually", "wr_facing",     "OnOff"
+	// The artwork slides inside its frame as your head moves.
+	Slider "Face parallax",             "wr_parallax",     0.0, 0.25, 0.01, 2
+	// A few millimetres of rise and fall while it sits there.
+	Slider "Idle breathing",            "wr_idle",         0.0, 2.0, 0.05, 2
+	Slider "  Breathing speed",         "wr_idle_speed",   0.2, 6.0, 0.1, 1
+	Slider "Scanline crawl",            "wr_scan_crawl",   0.0, 4.0, 0.1, 1
+	// 0 makes the ring appear finished, which is how this behaved before the
+	// cards grew out of the wrist.
+	Slider "Cards grow in over (tics)", "wr_growtics",     0, 20, 1, 0
+	Option "Ammo counts and gauges",    "wr_ammo",         "OnOff"
+	// Below this share of a full load a card pulses. Every weapon set gets
+	// this -- it needs no rarity system to read against.
+	Slider "Low ammo warns below",      "wr_lowammo_frac", 0.0, 0.9, 0.05, 2
+	Slider "  Low ammo pulse",          "wr_lowammo_pulse", 0.0, 1.0, 0.05, 2
+	// A slow drift of brightness across the whole ring while it sits there,
+	// each card on its own offset phase so the ring twinkles rather than
+	// blinking in step. Works on any weapon set, rarity or not.
+	Slider "Idle shimmer",              "wr_shimmer",      0.0, 1.0, 0.05, 2
+	// Off falls back to the sampled plate: cheaper, blurs up close, and cannot
+	// glow -- a halo needs a distance field to read past the shape's edge.
+	Option "Sharp plates (SDF)",        "wr_sdf",          "OnOff"
+	// Only fires on the card under your pointer. The one thing a sampled plate
+	// cannot do at all -- a halo needs a field to read past the shape edge.
+	Slider "  Hover glow",              "wr_glow",          0.0, 4.0, 0.1, 1
+	Slider "Corner rounding",           "wr_plate_radius", 0, 15, 1, 0
+	Slider "Plate border",              "wr_plate_border", 0, 15, 1, 0
+	// RS_Main's Basic tier -- the one nearly every fresh grant lands on --
+	// is white by design. On keeps rarity readable at a glance; off trades
+	// that for variety, falling back to the classic slot palette / a
+	// per-weapon hashed hue instead of asking RS_Main at all.
+	Option "Colour cards by rarity tier", "wr_tier_color", "OnOff"
+	// The other way to build a card: artwork painted into a texture in 2D pixel
+	// coordinates instead of assembled from billboards in map units. Both work.
+	// A raster, so it shows its pixels up close where the field payloads do not.
+	// Spawns the weapon own class as an inert prop so the engine resolves its
+	// MODELDEF. Real geometry with real stereo depth, not a picture of a gun.
+	Option "Real models on cards",      "wr_models",       "OnOff"
+	Slider "  Model size",              "wr_model_scale",  0.02, 1.0, 0.02, 2
+	Slider "  Model stand-off",         "wr_model_lift",   0.0, 12.0, 0.5, 1
+	Option "Painted card faces",        "wr_canvas",       "OnOff"
+	// Above 1 the sprite crops at the card edge, which no billboard can do.
+	Slider "  Sprite bleed",            "wr_canvas_bleed",  0.6, 2.5, 0.05, 2
+	Option "  Sprite shadow",           "wr_canvas_shadow", "OnOff"
+	Slider "  Scanlines",               "wr_canvas_scan",   0.0, 0.8, 0.02, 2
+
+	StaticText ""
+	StaticText "Data sheet", gold
+	// The panel in the middle of the ring. Off returns the centre to empty
+	// space and lets the ring shrink back to its own radius -- the sheet holds
+	// a minimum open so cards orbit clear of it.
+	Option "Show data sheet",           "wr_sheet",        "OnOff"
+	// Measured in card widths, so it already follows wr_panel_* and wr_scale.
+	// Past about 1.5 the ring is being sized by the sheet, not by your cards.
+	Slider "  Sheet size",              "wr_sheet_scale",  0.5, 2.0, 0.05, 2
+	// Tier, condition, DPS, accuracy, crit, velocity, rate of fire and the
+	// real magazine size, read straight off the weapon. Off leaves the rows
+	// the engine itself can answer, which work with no weapon mod at all.
+	Option "  Rolled weapon stats",     "wr_sheet_stats",  "OnOff"
+	// Kills, shots, accuracy, time held, and headshots when RS_Headshots is
+	// loaded -- counted by this mod as you play rather than read off another
+	// mod, so it works on every weapon including plain vanilla ones.
+	Option "  Track kills and accuracy", "wr_stats_track", "OnOff"
+
+	StaticText ""
+	StaticText "Inspect a weapon in the world", gold
+	// Point at a gun on the floor and the same sheet appears for it, with
+	// how it compares to what that hand is already holding.
+	Option "Show card when pointing at a weapon", "wr_inspect", "OnOff"
+	Slider "  Rest on it for (tics)",   "wr_inspect_dwell", 0, 70, 2, 0
+	Option "  Compare against held weapon", "wr_inspect_delta", "OnOff"
+	Submenu "  Weapon mod compatibility...", wr_Compat
+
+	StaticText ""
+	StaticText "The room", gold
+	// All four borrow a single global engine slot each. A co-loaded mod using
+	// the same slot gets it back the moment the rig closes.
+	//
+	// The switches live here; the shaping numbers behind each one are a page
+	// down, so turning an effect on does not mean scrolling past nine sliders
+	// that only matter once you have decided you like it.
+	Option "Laser has dust in it",      "wr_vbeam",        "OnOff"
+	Slider "Opening light sweep (tics)","wr_sweep",        0, 40, 1, 0
+	Slider "Mist density",              "wr_fog",          0.0, 1.0, 0.05, 2
+	// A mark under your feet, repeated around a circle and spinning. 0 is off.
+	Slider "Floor marks (size)",        "wr_floor",        0.0, 40.0, 1.0, 0
+	Slider "Floor mark count",          "wr_floor_count",  1.0, 24.0, 1.0, 0
+	Slider "Floor mark spin",           "wr_floor_spin", -60.0, 60.0, 2.0, 0
+	// Ripples the glows a map ALREADY has. In a map with none it does nothing
+	// at all -- off by default, and not broken when it looks dead.
+	Slider "Room glow ripple",          "wr_wave",         0.0, 3.0, 0.1, 1
+	Submenu "Fine tuning...",           wr_RoomDetail
+
+	// Below this many weapons: every one gets its own card, no dwell needed.
+	// At or past it: one card per slot, bearings stay learnable, and a card
+	// hiding others marks itself with a small "+N".
+	Slider "Flat ring up to (weapons)", "wr_subcards_max", 0, 30, 1, 0
+	// Tics the laser can spend on another real card before an open fan
+	// actually folds -- 0 is instant, the old behaviour.
+	Slider "Fan close forgiveness",     "wr_subcards_grace", 0, 20, 1, 0
+	// What a crowded slot unfolds INTO. Off is the fan -- three tidy lanes
+	// stacked outward. On scatters the same cards as stars around the one you
+	// opened and draws a line out to each. The scatter is fixed per slot, so
+	// a slot opens to the same shape every time rather than reshuffling.
+	Option "Constellation instead of fan", "wr_constellation", "OnOff"
+	Slider "  Lines draw apart by (tics)", "wr_star_stagger", 0, 12, 1, 0
+	Slider "Unhovered cards fade to",   "wr_dim",          0.05, 1.0, 0.05, 2
+	Option "Mark weapons you hold",     "wr_marker",       "OnOff"
+	Option "Slot number on cards",      "wr_slotnum",      "OnOff"
+
+	// Separates a card from a busy wall without knowing anything about the wall.
+	Slider "Card shadow",               "wr_shadow",       0.0, 1.0, 0.05, 2
+	Slider "  Shadow offset",           "wr_shadow_offset", 0.0, 1.5, 0.05, 2
+	Option "Ammo readout",              "wr_readout",     "wr_Readouts"
+	// ONE light, on the hovered card only -- eight would be eight overlapping
+	// volumes lighting the same wall.
+	Option "Hovered card lights room",  "wr_light",        "OnOff"
+	Slider "  Light size",              "wr_light_size",   8.0, 160.0, 4.0, 0
+	// Tics the light survives crossing the gap between two cards. 0 cuts it
+	// the instant you leave a card, which reads as a flicker while browsing.
+	Slider "  Light holds across gaps", "wr_light_grace",  0, 12, 1, 0
+
+	// Quiet points of light behind the cards, further back than they are, so
+	// head movement separates them into their own plane. Same sky every time
+	// rather than a fresh scatter each summon. 0 is off.
+	Slider "Background stars",          "wr_stars",        0, 200, 10, 0
+	Slider "  Star brightness",         "wr_stars_alpha",  0.0, 1.0, 0.05, 2
+
+	StaticText ""
+	StaticText "Taking a weapon", gold
+	// A one-shot ring at the card you took, plus the same flash when a fan
+	// opens. Reads even with sound and rumble both off.
+	Option "Flash on confirm",          "wr_flash",        "OnOff"
+	Slider "Sparks",                    "wr_sparks",       0.0, 80.0, 2.0, 0
+	Slider "Spark speed",               "wr_sparks_speed", 0.2, 4.0, 0.1, 1
+	Option "Spark colour",              "wr_spark_color", "wr_SparkColors"
+	// Roll is a real billboard axis now, and the fold-away keeps the card alive
+	// long enough to see it turn.
+	Slider "Taken card spins",          "wr_flip",      -720.0, 720.0, 30.0, 0
+
+	StaticText ""
+	StaticText "Feel", gold
+	// The rig is worn where you cannot comfortably look at it, so the ear and
+	// the wrist do most of the work of saying what just happened.
+	Option "Sound",                     "wr_sound",        "OnOff"
+	Slider "Volume",                    "wr_volume",       0.0, 1.0, 0.05, 2
+	// vr_enable_haptics still overrules this, so turning rumble off in the
+	// engine cannot be undone from here.
+	Slider "Controller rumble",         "wr_haptics",      0.0, 2.0, 0.1, 1
+
+	StaticText ""
+	StaticText "Reach", gold
+	// Depth tolerance more than reach: how far in front of or behind the grid
+	// your hand may sit and still register.
+	// 0 turns reaching off and leaves the beam as the only way in. Drop
+	// wr_forward toward 0 to bring the ring into actual arm reach.
+	Slider "Reach-in radius (0 = off)", "wr_touch",        0.0, 20.0, 0.5, 1
+	Slider "Stick deadzone",            "wr_stickdead",    0.05, 0.9, 0.05, 1
+
+	StaticText ""
+	StaticText "Integration", gold
+	Option "Slow time while open (BulletTimeX)", "wr_bullettime", "OnOff"
+
+	StaticText ""
+	StaticText "Controls", gold
+	// Whichever hand you summon it on is the hand that wears it, points at it,
+	// and receives what you pick -- so the bind already says which hand you
+	// meant and there is no handedness setting to get wrong.
+	Control "Off hand wheel",           "wr_toggle_off"
+	Control "Main hand wheel",          "wr_toggle_main"
+	// Both binds still work as their own keys once a ring is open --
+	// this only decides which hand an EMPTY-handed press opens on, for
+	// a player who always means the same one regardless of which key
+	// they actually reached for.
+	Option "Always open on",            "wr_toggle_prefer_hand", "wr_ToggleHandPref"
+	// Pressing the same hand's key again just after opening recenters the
+	// ring on your hand instead of closing it -- 0 turns this off, the key
+	// always closes.
+	Slider "Recenter window, tics (0 = off)", "wr_recenter_window", 0, 35, 5, 1
+
+	StaticText ""
+	StaticText "Troubleshooting", gold
+	Option "Print diagnostics on open", "wr_debug",        "OnOff"
+
+	StaticText ""
+}
+// WHAT THE DATA SHEET READS OUT OF OTHER WEAPON MODS.
+//
+// Its own page because these are nine switches that only matter to whoever
+// has that particular mod loaded -- on the main page they would be nine rows
+// of noise for everyone else. Every one is ON by default and costs nothing
+// when the mod it names is absent: the sheet asks whether a field exists on
+// the weapon in your hand, and a mod that is not loaded simply has no field
+// to find, so the row never appears. Turning one off here is for when you
+// have the mod AND would rather not see its rows.
+OptionMenu wr_Compat
+{
+	Title "RSVR HUD - WEAPON MOD DATA"
+
+	StaticText ""
+	StaticText "Mods with a rarity ladder", gold
+	// These three also COLOUR the card and the sheet title by their own
+	// rarity, which is why each has a separate switch for its extra rows:
+	// you may want the colour without the detail.
+	Option "LegenDoom rarity",          "wr_ld_compat",    "OnOff"
+	Option "  Rolled effects row",      "wr_ld_effects",   "OnOff"
+	Option "DoomRL Arsenal tier",       "wr_drla_compat",  "OnOff"
+	Option "  Mod Station upgrades row", "wr_drla_mods",   "OnOff"
+	// Rarity, plus your character level, XP, Inferno level and rolled stats.
+	Option "Doomablo rarity and level", "wr_dbl_compat",   "OnOff"
+	// Rolled damage/rate/spread/pellets/crit, exotic ammo, fire modes, alt
+	// modules, quirks, overheat and the run itself. Its stats are readable on
+	// a weapon still on the floor, so this is the mod the inspect card and
+	// the comparison table were really built for.
+	Option "DOOM Infinite weapon rolls", "wr_di_compat",   "OnOff"
+
+	StaticText ""
+	StaticText "Mods with no rarity ladder", gold
+	// None of these six colour anything -- they have no tier concept at all,
+	// confirmed by survey rather than assumed. They only add rows.
+	//
+	// One switch for the whole Pandemonia family: base game durability,
+	// magazine and sidegrades, Anarchy's Anarchic Sigil levelling, and
+	// Insurrection's augments, durability and charge bars.
+	Option "Pandemonia family",         "wr_pand_compat",  "OnOff"
+	// Spell cooldown and the five player resource pools.
+	Option "Guncaster resources",       "wr_gc_compat",    "OnOff"
+	// Plasma rifle heat, and Unmaker demon keys.
+	Option "MetaDoom heat and keys",    "wr_meta_compat",  "OnOff"
+	// Damage, accuracy, rate of fire, recoil, clip and rolled level -- read
+	// from the array BorderDoom's own stat lookup writes into, never from
+	// that lookup itself, which has side effects on your ammo capacity.
+	Option "BorderDoom weapon stats",   "wr_bd_compat",    "OnOff"
+	// All four classes and their meters -- BlastMaster heat (which also
+	// takes the sheet's gauge), Artificer skill and mace, the Tech Monk's
+	// Striker and Kame Bomb, Past Linked's subweapon carousel and its three
+	// upgrade ladders. Includes the warning the game itself only gives you
+	// once: which upgrades vanish when you leave the level.
+	Option "Combined Arms class meters", "wr_ca_compat",   "OnOff"
+	// Nine weapon sets, one active at a time. Coverage is uneven on purpose
+	// -- Whitemare, Hellbound, JPCP, Alien Vendetta and BTSX have real live
+	// counters worth a row; Doom II and Aliens TC are fixed math with
+	// nothing to read past which set is active.
+	Option "Final Doomer set mechanics", "wr_fd_compat",   "OnOff"
+	// Seven characters, 48 weapons. Magazines, mana, heat, charge, spin-up
+	// and status effects. Nothing reads off a Lithium weapon on the floor --
+	// that mod deletes unowned weapon actors.
+	// Ours, not a third party -- a real two-way bridge, not a guess.
+	// Cycle keys are under the main RSVR HUD key section, unbound by
+	// default.
+	Option "ModelSwapper model on card", "wr_ms_compat",  "OnOff"
+	Option "Lithium weapons",           "wr_lith_compat", "OnOff"
+	// Separate switch, because this is the only setting in the whole mod that
+	// calls another mod's own scripts rather than reading its data. Five gates
+	// sit in front of the call and the script was disassembled to prove it
+	// cannot mutate anything -- but turn this off if a Lithium update lands
+	// before an update to this, or if those rows ever look wrong.
+	Option "  Lithium RPG stats (ACS)", "wr_lith_acs",    "OnOff"
+
+	StaticText ""
+}
+
+// The seven SDF shape kinds, by name rather than by number. wr_floor_kind is a
+// float cvar, so the keys are floats -- an int key silently matches nothing and
+// the option renders blank.
+OptionValue wr_ShapeKinds
+{
+	1.0, "Disc"
+	2.0, "Ring"
+	3.0, "Square"
+	4.0, "Square outline"
+	5.0, "Cross"
+	6.0, "Hexagon"
+	7.0, "Triangle"
+}
+
+// Everything behind the four switches on the main page.
+//
+// Separated because these are the numbers you touch AFTER deciding you want an
+// effect, not while deciding. Nothing here is console-only -- that is the whole
+// point of the page.
+OptionMenu wr_RoomDetail
+{
+	Title "RSVR HUD - ROOM DETAIL"
+
+	StaticText ""
+	StaticText "Laser volume", gold
+	// A raymarched cone laid along the ray the engine laser already points
+	// down. Inner is the hot core, outer where it has faded to nothing.
+	Slider "Core radius",               "wr_vbeam_inner",   0.0, 8.0, 0.1, 1
+	Slider "Outer radius",              "wr_vbeam_outer",   0.5, 20.0, 0.5, 1
+	Slider "Density",                   "wr_vbeam_density", 0.0, 2.0, 0.05, 2
+	// Motes drifting in the beam. 0 is a clean cone.
+	Slider "Dust",                      "wr_vbeam_dust",    0.0, 2.0, 0.05, 2
+
+	StaticText ""
+	StaticText "Opening sweep", gold
+	// Tested per pixel against world position, so it crosses floor, wall and
+	// ceiling as one unbroken line rather than lighting whole sectors.
+	Slider "Travel distance",           "wr_sweep_reach",  40.0, 900.0, 20.0, 0
+	Slider "Brightness",                "wr_sweep_bright",  0.0, 4.0, 0.1, 1
+
+	StaticText ""
+	StaticText "Room glow ripple", gold
+	// Wavelength, how fast it travels, and how tight the peaks are.
+	Slider "Wavelength",                 "wr_wave_len",    20.0, 400.0, 10.0, 0
+	Slider "Speed",                      "wr_wave_speed",  -6.0, 6.0, 0.2, 1
+	Slider "Sharpness",                  "wr_wave_sharp",   0.2, 6.0, 0.1, 1
+
+	StaticText ""
+	StaticText "Mist", gold
+	// The slab has a TOP, so this is how far above the ring its surface sits.
+	Slider "Surface height above ring",  "wr_fog_rise",   -20.0, 40.0, 1.0, 0
+	// Lets the laser cone light the mist it passes through.
+	Slider "Scatter",                    "wr_fog_scatter",  0.0, 2.0, 0.05, 2
+
+	StaticText ""
+	StaticText "Floor marks", gold
+	Option "Shape",                      "wr_floor_kind",  "wr_ShapeKinds"
+	Slider "Ring radius",                "wr_floor_space", 10.0, 200.0, 2.0, 0
+	Slider "Line thickness",             "wr_floor_thick",  0.02, 1.0, 0.02, 2
+	Slider "Brightness",                 "wr_floor_bright", 0.0, 4.0, 0.1, 1
+	// Splits each mark down its middle as the ring arrives, showing the under
+	// colour through the gap.
+	Slider "Split open by",              "wr_floor_seam",   0.0, 1.0, 0.05, 2
+
+	StaticText ""
+}
+
+// Slot colour first because it is the one that carries information: the burst
+// comes out the same hue as the card, the accent and the beam, so it confirms
+// which one you hit. The other two are decoration.
+OptionValue wr_SparkColors
+{
+	0, "Slot colour"
+	1, "White hot"
+	2, "Rainbow"
+}
+
+// LED first because it is the one that survives a dark room, which is where
+// this thing mostly gets used.
+OptionValue wr_Readouts
+{
+	0, "LED segments"
+	1, "LCD, punched out"
+	2, "Lozenge badge"
+}
+OptionValue wr_ToggleHandPref
+{
+	-1, "Whichever bind you press"
+	0,  "Main hand"
+	1,  "Off hand"
+}
+
+OptionValue "wr_LayoutKind"
+{
+	0, "Ring"
+	1, "Honeycomb"
+	2, "Star chart"
+}

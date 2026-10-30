@@ -1,0 +1,45 @@
+version "4.10"
+
+// ============================================================
+// RS_WeaponSelectionSystem
+// ============================================================
+//
+// The weapon wheel, as its own package. Spun out of RS_VR_Unified, which is
+// where it had been merged; the code is a byte-for-byte copy of that build's
+// zscript/wheel/, minus the on-gun readout (see below).
+//
+// VERSION 4.10, not 5.0.0, and that is not an oversight. The wheel was written
+// against 4.10 semantics and every method it relies on was audited against that
+// line. Raising it is a change with its own testing, not something to do in
+// passing during a packaging move.
+//
+// INCLUDE ORDER MATTERS AND IS REPRODUCED EXACTLY. The compat readers come
+// first, then the stat pair, then the ring itself, then the two layouts. The
+// ring's own zscript.zs is ~390KB of implementation and expects the compat
+// classes to already be declared.
+//
+// WHAT IS NOT HERE: wr_gunhud.zs, the on-gun ammo readout (class wr_GunTag).
+// It never worked and had been left unregistered for that reason, so it is
+// dropped rather than carried across switched off -- along with the seventeen
+// wr_gun* cvars, the two menu pages and the placement keybinds that existed
+// only to serve it. See MAPINFO.txt.
+
+#include "zscript/wheel/wr_compat_legendoom.zs"
+#include "zscript/wheel/wr_compat_drla.zs"
+#include "zscript/wheel/wr_compat_doomablo.zs"
+#include "zscript/wheel/wr_compat_pandemonia.zs"
+#include "zscript/wheel/wr_compat_pandemonia_anarchy.zs"
+#include "zscript/wheel/wr_compat_pandemonia_insurrection.zs"
+#include "zscript/wheel/wr_compat_guncaster.zs"
+#include "zscript/wheel/wr_compat_metadoom.zs"
+#include "zscript/wheel/wr_compat_borderdoom.zs"
+#include "zscript/wheel/wr_compat_combinedarms.zs"
+#include "zscript/wheel/wr_compat_doominfinite.zs"
+#include "zscript/wheel/wr_compat_finaldoomer.zs"
+#include "zscript/wheel/wr_compat_modelswapper.zs"
+#include "zscript/wheel/wr_compat_lithium.zs"
+#include "zscript/wheel/wr_stats.zs"
+#include "zscript/wheel/wr_stattracker.zs"
+#include "zscript/wheel/zscript.zs"
+#include "zscript/wheel/wr_constellation.zs"
+#include "zscript/wheel/wr_honeycomb.zs"
