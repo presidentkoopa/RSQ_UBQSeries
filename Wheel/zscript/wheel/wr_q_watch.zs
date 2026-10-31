@@ -55,6 +55,8 @@ class wr_Watch : EventHandler
 	{
 		let pmo = PlayerPawn(players[consoleplayer].mo);
 		if (!pmo || players[consoleplayer].playerstate != PST_LIVE) { hide(); return; }
+		// the gun's own watch card (wr_q_detail.zs) replaces this one when it is on
+		if (cv("wr_card_watch_tpl", 3) > 0) { hide(); return; }
 		let rig = wr_Rig.Get();
 		bool ringUp = rig && rig.IsOpen();
 		int dwell = int(cv("wr_watch_dwell", 8));

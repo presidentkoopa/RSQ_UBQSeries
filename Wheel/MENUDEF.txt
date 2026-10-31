@@ -544,6 +544,22 @@ OptionValue "wr_CardShow"
 	2, "When you look at the gun"
 	3, "Inspect gesture"
 }
+OptionValue "wr_CardTpl"
+{
+	0, "None"
+	1, "Top card (clip count)"
+	2, "Side card, compact"
+	3, "Side card, full"
+	4, "Side card, both guns"
+}
+OptionValue "wr_CardWatchTpl"
+{
+	0, "None (the old wrist card)"
+	1, "Top card (clip count)"
+	2, "Side card, compact"
+	3, "Side card, full"
+	4, "Side card, both guns"
+}
 OptionValue "wr_CardHands"
 {
 	0, "A card on each gun"
@@ -571,9 +587,16 @@ OptionMenu wr_GunCards
 	Title "RSQ Wheel - Gun cards"
 	StaticText ""
 	StaticText "The card on the gun", gold
-	StaticText "Ermac's Force Unleashed display, beside the stock, facing you.", "DarkGray"
-	Option "Show",                       "wr_card",          "wr_CardShow"
-	Option "Hands",                      "wr_card_hands",    "wr_CardHands"
+	StaticText "Ermac's Force Unleashed display. Top card: square, the clip count.", "DarkGray"
+	StaticText "Side card: name, ammo, Gun Bonsai level and upgrades.", "DarkGray"
+	Option "Card in normal play",        "wr_card_tpl",      "wr_CardTpl"
+	Option "  Show",                     "wr_card",          "wr_CardShow"
+	Option "  Ammo card hands",          "wr_card_hands",    "wr_CardHands"
+	Option "Card when you check your watch", "wr_card_watch_tpl", "wr_CardWatchTpl"
+	StaticText "Watch check: raise the gun and twist it palm down (RSQ Gestures).", "DarkGray"
+	Option "  Turned to read upright",   "wr_card_watch_roll", "OnOff"
+	Slider "  Watch card up / down",     "wr_card_watch_up",  -20, 20, 0.5, 1
+	Slider "  Watch card left / right",  "wr_card_watch_side", -20, 20, 0.5, 1
 	StaticText ""
 	StaticText "Look", gold
 	Slider "Panel style",                "wr_card_style",    1, 18, 1, 0

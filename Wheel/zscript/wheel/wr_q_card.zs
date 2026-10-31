@@ -28,7 +28,8 @@
 class wr_CardItem : CustomInventory
 {
 	int mStyle;          // render style for every card piece, 0 = leave alone
-	double mAlpha;
+	int mStyleSet;       // the style the live layers were last given
+	Array<int> mPending; // layers made since the helper last ran: give them the style
 
 	Default
 	{
@@ -45,13 +46,18 @@ class wr_CardItem : CustomInventory
 	Fx:
 		TNT1 A 1
 		{
+			// only the layers made since last time (flags and style stay on a layer once given)
 			let it = wr_CardItem(invoker);
-			if (it && it.mStyle > 0)
-				for (int id = wr_GunCard.L_FIRST; id <= wr_GunCard.L_LAST; id++)
+			if (it)
+			{
+				for (int i = 0; i < it.mPending.Size(); i++)
 				{
-					A_OverlayFlags(id, PSPF_ALPHA | PSPF_RENDERSTYLE | PSPF_FORCESTYLE | PSPF_FORCEALPHA, true);
-					A_OverlayRenderStyle(id, it.mStyle);
+					int id = it.mPending[i];
+					A_OverlayFlags(id, PSPF_ALPHA | PSPF_RENDERSTYLE | PSPF_FORCESTYLE | PSPF_FORCEALPHA, it.mStyle > 0);
+					if (it.mStyle > 0) A_OverlayRenderStyle(id, it.mStyle);
 				}
+				it.mPending.Clear();
+			}
 		}
 		Loop;
 	}
@@ -161,7 +167,7 @@ class wr_GunCard : EventHandler
 
 	// ---- colour --------------------------------------------------------------------------------------------
 	// A translation that recolours a piece by brightness into one colour (dark stays dark).
-	private int TransFor(color c)
+	int TransFor(color c)
 	{
 		int key = (c.r << 16) | (c.g << 8) | c.b;
 		for (int i = 0; i < mTransKey.Size(); i++) if (mTransKey[i] == key) return mTransId[i];
@@ -197,7 +203,7 @@ class wr_GunCard : EventHandler
 		let p = players[consoleplayer];
 		let pmo = PlayerPawn(p.mo);
 		if (!pmo) return;
-		if (p.playerstate != PST_LIVE || ci("wr_card", 1) <= 0) { ClearAll(p); return; }
+		if (p.playerstate != PST_LIVE || (ci("wr_card", 1) <= 0 && ci("wr_card_watch_tpl", 3) <= 0)) { ClearAll(p); return; }
 
 		let item = wr_CardItem(pmo.FindInventory("wr_CardItem"));
 		if (!item) item = wr_CardItem(pmo.GiveInventoryType("wr_CardItem"));
@@ -208,31 +214,123 @@ class wr_GunCard : EventHandler
 		item.mStyle = look == 2 ? STYLE_Add : look == 1 ? STYLE_Translucent : 0;
 		if (look > 0 && !p.FindPSprite(L_FX)) p.SetPSprite(L_FX, item.FindState("Fx"), false, item);
 
-		bool both = ci("wr_card_hands", 0) == 1;     // B: both guns on the main-hand card
+		if (item.mStyle != item.mStyleSet)
+		{
+			// the look changed: every live layer gets it again
+			item.mStyleSet = item.mStyle;
+			for (int id = L_FIRST; id <= L_LAST; id++) if (p.FindPSprite(id)) item.mPending.Push(id);
+			for (int id = wr_DetailCard.BASE0; id < wr_DetailCard.BASE0 + 400; id++) if (p.FindPSprite(id)) item.mPending.Push(id);
+		}
+
+		// WHICH CARD. Checking your watch with a gun shows that gun's watch card (wr_card_watch_tpl);
+		// otherwise the always card (wr_card_tpl) shows when wr_card says. Templates: 1 ammo (the small
+		// card), 2 compact, 3 full, 4 both hands (on the main-hand card).
+		int tplAlways = ci("wr_card_tpl", 1), tplWatch = ci("wr_card_watch_tpl", 3);
+		bool both = ci("wr_card_hands", 0) == 1;
+		bool watching[2];
+		for (int hand = 0; hand < 2; hand++) watching[hand] = tplWatch > 0 && Watching(pmo, hand);
+		int tpl[2];
+		bool show[2];
+		Weapon gun[2], other[2];
 		for (int hand = 0; hand < 2; hand++)
 		{
 			Weapon w = hand == 1 ? p.OffhandWeapon : p.ReadyWeapon;
-			Weapon other = null;
-			bool show;
-			if (!both) show = w && Loaded(w) >= 0 && Wanted(pmo, hand);
-			else if (hand == 1) show = false;
+			if (w && Loaded(w) < 0) w = null;
+			gun[hand] = w;
+			other[hand] = null;
+			if (watching[hand]) { tpl[hand] = tplWatch; show[hand] = w != null; }
+			else { tpl[hand] = tplAlways; show[hand] = w && tplAlways > 0 && Wanted(pmo, hand); }
+		}
+		// both guns on one card: the "both hands" template, or wr_card_hands for the ammo card. A watch card
+		// rides the hand you are checking; the always card rides the main hand (the off hand's then stands
+		// down). A host hand with nothing to count carries the other gun alone.
+		for (int hand = 0; hand < 2; hand++)
+		{
+			bool bothHere = tpl[hand] == wr_DetailTemplates.T_BOTH || (tpl[hand] == wr_DetailTemplates.T_AMMO && both);
+			if (!bothHere) continue;
+			if (hand == 1 && !watching[1] && !watching[0] && gun[0] != null) { show[1] = false; continue; }
+			other[hand] = gun[1 - hand];
+			if (!gun[hand]) { gun[hand] = other[hand]; other[hand] = null; show[hand] = gun[hand] != null && (watching[hand] || Wanted(pmo, 0) || Wanted(pmo, 1)); }
+		}
+		for (int hand = 0; hand < 2; hand++)
+		{
+			double step = 1.0 / max(1, ci("wr_card_fade", 4));
+			mShow[hand] = clamp(mShow[hand] + (show[hand] ? step : -step), 0.0, 1.0);
+			Weapon w = gun[hand];
+			Actor owner = hand == 1 ? Actor(p.OffhandWeapon) : Actor(item);
+			if (mShow[hand] <= 0 || !w || !owner) { ClearHand(p, hand); Detail(hand).Remove(p); continue; }
+			if (tpl[hand] == wr_DetailTemplates.T_AMMO)
+			{
+				Detail(hand).Remove(p);
+				Draw(p, pmo, hand, owner, w, other[hand], other[hand] != null);
+			}
 			else
 			{
-				// B: the main-hand card carries both guns -- big = main, small = off. A main hand with
-				// nothing to count gives the card to the off-hand gun.
-				Weapon o = p.OffhandWeapon;
-				if (o && Loaded(o) < 0) o = null;
-				if (!w || Loaded(w) < 0) { w = o; o = null; }
-				other = o;
-				show = w && (Wanted(pmo, 0) || Wanted(pmo, 1));
+				ClearHand(p, hand);
+				DrawDetail(p, pmo, hand, owner, w, other[hand], tpl[hand], watching[hand]);
 			}
-			double step = 1.0 / max(1, ci("wr_card_fade", 4));
-			mShow[hand] = clamp(mShow[hand] + (show ? step : -step), 0.0, 1.0);
-			if (mShow[hand] <= 0 || !w) { ClearHand(p, hand); continue; }
-			Actor owner = hand == 1 ? Actor(p.OffhandWeapon) : Actor(item);
-			if (!owner) { ClearHand(p, hand); continue; }
-			Draw(p, pmo, hand, owner, w, both ? other : null, both);
 		}
+	}
+
+	// ---- the detailed card ---------------------------------------------------------------------------------
+	transient wr_DetailCard mDetail[2];
+	wr_DetailCard Detail(int hand)
+	{
+		if (!mDetail[hand]) { mDetail[hand] = new("wr_DetailCard"); mDetail[hand].hand = hand; }
+		return mDetail[hand];
+	}
+	private void DrawDetail(PlayerInfo p, PlayerPawn pmo, int hand, Actor owner, Weapon w, Weapon other, int tpl, bool watching)
+	{
+		let c = Detail(hand);
+		bool mir = Mirrored(p, hand);
+		int style = clamp(ci("wr_card_style", 5), 1, wr_DetailStates.STYLES) - 1;
+		string sig = wr_DetailTemplates.Signature(pmo, w, other, tpl, style) .. (mir ? " m" : "") .. String.Format(" %d", ci("wr_card_tint", 0));
+		bool rolled = watching && ci("wr_card_watch_roll", 1) > 0;
+		if (sig != c.sig || c.mir != mir || c.rolled != rolled)
+		{
+			c.sig = sig;
+			c.mir = mir;
+			c.rolled = rolled;
+			c.Clear();
+			int panelCol = -1, textCol = 0xF0F0F0;
+			if (ci("wr_card_tint", 0))
+			{
+				color pc = wr_Look.Col(wr_Look.ROLE_COLS[24]);
+				panelCol = (pc.r << 16) | (pc.g << 8) | pc.b;
+			}
+			if (tpl == wr_DetailTemplates.T_BOTH)
+			{
+				Weapon r = hand == 0 ? w : other, l = hand == 0 ? other : w;
+				wr_DetailTemplates.Both(c, pmo, r, l, style, panelCol, textCol);
+			}
+			else wr_DetailTemplates.Single(c, pmo, hand, w, tpl == wr_DetailTemplates.T_COMPACT, style, panelCol, textCol);
+		}
+		c.Sync(p, owner, mShow[hand] * cv("wr_card_alpha", 0.85), self);
+	}
+
+	// CHECKING YOUR WATCH with this hand: RSQ Gestures' inspect when that mod is loaded (palm-down twist),
+	// otherwise the Wheel's own watch pose (forearm across the chest, wrist in front of the face).
+	private bool Watching(PlayerPawn pmo, int hand)
+	{
+		int g = Inspect(pmo, hand);
+		if (g >= 0)
+		{
+			if (g >= ci("wr_card_inspect_level", 2)) mInspectTill[hand] = level.maptime + ci("wr_card_linger", 35);
+			return level.maptime < mInspectTill[hand];
+		}
+		if (!pmo.OverrideAttackPosDir || !pmo.player) return false;
+		Vector3 hp = hand == 1 ? pmo.OffhandPos : pmo.AttackPos;
+		Vector3 to = hp - (pmo.pos.xy, pmo.player.viewz);
+		to.z *= level.pixelstretch;
+		double d = to.Length();
+		if (d < 5 || d > 17) return false;
+		Vector3 look = (cos(pmo.angle) * cos(pmo.pitch), sin(pmo.angle) * cos(pmo.pitch), -sin(pmo.pitch));
+		if ((to / d) dot look < cos(35)) return false;
+		double yaw = (hand == 1 ? pmo.OffhandAngle : pmo.AttackAngle) + 90;
+		Vector2 hd = (cos(yaw), sin(yaw));
+		bool across = hd dot (cos(pmo.angle), sin(pmo.angle)) <= cos(55);
+		if (across) mInspectTill[hand] = level.maptime + ci("wr_card_linger", 35);
+		return level.maptime < mInspectTill[hand];
 	}
 
 	private void Draw(PlayerInfo p, PlayerPawn pmo, int hand, Actor owner, Weapon w, Weapon other, bool both)
@@ -246,7 +344,8 @@ class wr_GunCard : EventHandler
 		// low: a magazine below wr_lowammo_frac of a full one; any other gun only when it is empty (its
 		// 'cap' is the backpack's, so a fraction of it means nothing)
 		bool low = loaded == 0 || (HasMagazine(w) && cap > 0 && loaded <= cap * cv("wr_lowammo_frac", 0.25));
-		int reserve = both ? (other ? Loaded(other) : -1) : Reserve(w);
+		// the top card shows what is in the clip only (owner); the small row is the other gun on a both-hands card
+		int reserve = both ? (other ? Loaded(other) : -1) : -1;
 
 		int tinted = ci("wr_card_tint", 0);
 		int tPanel = -1, tDigits = -1;
@@ -298,8 +397,10 @@ class wr_GunCard : EventHandler
 		let ps = p.FindPSprite(id);
 		if (!ps || ps.Caller != owner || ps.CurState != s)
 		{
+			bool fresh = !ps || ps.Caller != owner;
 			p.SetPSprite(id, s, false, owner);
 			ps = p.FindPSprite(id);
+			if (fresh) Fresh(id);
 		}
 		if (!ps) return;
 		ps.bAddBob = false;
@@ -309,6 +410,17 @@ class wr_GunCard : EventHandler
 		ps.alpha = alpha;
 		ps.Translation = trans >= 0 ? TranslationID(trans) : TranslationID(0);
 	}
+
+	// a layer just made: the helper gives it the card's look next tic
+	void Fresh(int id)
+	{
+		let p = players[consoleplayer];
+		let item = p.mo ? wr_CardItem(p.mo.FindInventory("wr_CardItem")) : null;
+		if (item) item.mPending.Push(id);
+	}
+	// the nudge sliders, degrees about the hand
+	double Nudge(bool up) { return cv(up ? "wr_card_up" : "wr_card_side", 0); }
+	double WatchNudge(bool up) { return cv(up ? "wr_card_watch_up" : "wr_card_watch_side", up ? -8 : 0); }
 
 	private static void Kill(PlayerInfo p, int id)
 	{
@@ -322,6 +434,7 @@ class wr_GunCard : EventHandler
 	private void ClearAll(PlayerInfo p)
 	{
 		ClearHand(p, 0); ClearHand(p, 1);
+		Detail(0).Remove(p); Detail(1).Remove(p);
 		Kill(p, L_FX);
 		mShow[0] = mShow[1] = 0;
 	}

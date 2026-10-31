@@ -31,16 +31,16 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 WHEEL = os.path.dirname(HERE)
 
 # ---- the layout, in model centimetres -----------------------------------------------------------
-CARD = (5.0, -24.0, 8.0)      # rear display centre: beside the stock on the inboard side, facing you while you aim
+CARD = (7.0, -26.0, 12.0)     # the top card (owner 2026-10-31): square, on top of the gun, facing you while you aim
                               # (rig: centred over the stock, BD22 VR's stock hid it; clear of the sight line)
-PANEL_W, PANEL_H, PANEL_S = 64, 40, 0.125        # 8 x 5 cm
+PANEL_W, PANEL_H, PANEL_S = 48, 48, 0.1          # 4.8 cm square (Ermac's panels are square)
 FRONT = 0.20                                      # glyphs stand this far in front of the panel
-LABEL_S = 0.0625                                  # Ermac's 88x12 labels: 5.5 x 0.75 cm
-BIG_S, SMALL_S = 0.15, 0.08                       # 12 px digits: 1.8 cm and 0.96 cm
+LABEL_S = 0.045                                   # Ermac's 88x12 labels: 4.0 x 0.54 cm
+BIG_S, SMALL_S = 0.13, 0.08                       # 12 px digits: 1.56 cm and 0.96 cm
 # slot centres relative to the card centre (X + = player's left, Z + = up)
-LABEL_AT = (1.0, 0.0, 1.75)
-BIG_AT = [(2.6, 0.0, -0.15), (0.75, 0.0, -0.15), (-1.1, 0.0, -0.15)]
-SMALL_AT = [(-1.65, 0.0, -1.6), (-2.6, 0.0, -1.6), (-3.55, 0.0, -1.6)]
+LABEL_AT = (0.0, 0.0, 1.75)
+BIG_AT = [(1.6, 0.0, -0.2), (0.0, 0.0, -0.2), (-1.6, 0.0, -0.2)]
+SMALL_AT = [(0.9, 0.0, -1.85), (0.0, 0.0, -1.85), (-0.9, 0.0, -1.85)]   # the other gun, on a both-hands card
 LABELS = ['ammo', 'magazine', 'chamber']
 GLYPHS = [str(d) for d in range(10)] + ['o', 'g', 'd']   # digit_o / digit_g / digit_d as Ermac drew them
 

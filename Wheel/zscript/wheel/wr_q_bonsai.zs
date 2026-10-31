@@ -111,7 +111,7 @@ class WR_BonsaiEntry play
 {
 	Weapon w;
 	int lvl, permille;
-	Array<String> names, classes;
+	Array<String> names, classes, colours;   // colours: Gun Bonsai's colour code for the name (ORANGE ...), or ""
 	Array<int> levels, maxes;
 	Array<bool> on;
 
@@ -131,6 +131,7 @@ class WR_BonsaiEntry play
 			maxes.Push(f.Size() > 2 ? f[2].ToInt() : 0);
 			classes.Push(f.Size() > 3 ? f[3] : "");
 			on.Push(f.Size() > 4 ? f[4] != "0" : true);
+			colours.Push(f.Size() > 5 ? f[5] : "");
 		}
 	}
 }
