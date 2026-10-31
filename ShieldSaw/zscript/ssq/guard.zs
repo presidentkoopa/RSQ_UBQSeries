@@ -21,6 +21,18 @@ class SSQ_Guard : Inventory
 	double pushPath;
 	int lastPushTic;
 	int lastBlockTic;
+	// WHO HAS BEEN GROUND, AND WHEN. ssq_grind_every used to be a GLOBAL tic gate in HeldTick --
+	// the whole grind fired on one tic in four and did nothing on the other three -- so a body
+	// the rim crossed on a skipped tic was never touched at all, however squarely the plate was
+	// on it, while a body standing still was ground at the full rate. A per-victim cooldown is
+	// the same cap on how fast one thing can be hurt without ever skipping a thing: the grind is
+	// evaluated EVERY tic now, and each body takes a hit no oftener than once every
+	// ssq_grind_every tics. It is also the only form that is any use with a swept rim below,
+	// which is the other half of the same fix. The saber caps its cut exactly this way
+	// (ubqs_cut_rate: QuestSaber/zscript.txt:1873, :1892-1893, stamped :1958-1959, pruned
+	// :1968-1969) and the disc caps its embed grind the same way for one victim (disc.zs:475).
+	Array<Actor> grindWho;
+	Array<int> grindWhen;
 
 	Default
 	{
@@ -323,10 +335,16 @@ class SSQ_Guard : Inventory
 	// the last tic, from the synced history, so the test can walk the plate along it. The
 	// facing is this tic's: the history keeps positions, not past axes, and across one tic the
 	// translation is the part that matters.
-	Vector3 PlateTravel()
+	//
+	// `assumeHeld` is for a caller that already knows the shield is in the hand. plateHeld is
+	// written by Plate(), and the two block paths call Plate() a few lines before they ask for
+	// the travel; HeldTick never calls it at all (and DoEffect, which does, returns before it
+	// when ssq_sweep is off), so for that caller the flag is nobody's answer. HeldTick runs only
+	// from SSQ_ShieldSaw's own Ready tic with a fresh pose, which is what "in the hand" means.
+	Vector3 PlateTravel(bool assumeHeld = false)
 	{
 		let mo = PlayerPawn(Owner);
-		if (!mo || plateHeld == 0) return (0, 0, 0);
+		if (!mo || (!assumeHeld && plateHeld == 0)) return (0, 0, 0);
 		let h = SSQ_Handler.Get();
 		if (!h) return (0, 0, 0);
 		let pose = h.PoseOf(mo.PlayerNumber());
@@ -618,7 +636,13 @@ class SSQ_Guard : Inventory
 		if (SSQ_Handler.UVI(p, 'ssq_debug_ring', 0) != 0) g.Ring(mo, C, n, R, pose);
 
 		if (g.bashCool > 0) g.bashCool--;
-		bool grindNow = saw.Revved() && SSQ_Handler.SVI('ssq_grind_damage', 6) > 0 && (mo.Level.maptime % max(1, SSQ_Handler.SVI('ssq_grind_every', 4))) == 0;
+		// EVERY TIC NOW, CAPPED PER BODY. The tic gate that used to stand on this line
+		// (maptime % ssq_grind_every == 0) is the per-victim cooldown in the loop below instead:
+		// see grindWho/grindWhen. ssq_grind_every means the same thing to the player -- tics
+		// between grind hits, the menu's "Grind Gap" -- it is only counted for each body
+		// separately now, so nothing is skipped and nothing is hurt faster.
+		int grindRate = max(1, SSQ_Handler.SVI('ssq_grind_every', 4));
+		bool grindNow = saw.Revved() && SSQ_Handler.SVI('ssq_grind_damage', 6) > 0;
 		Vector3 v = pose.Vel() * TICRATE;
 		double shove = v dot n;
 		// A COMMITTED PUSH IS A BASH TOO. `shove` is ONE tic of plate travel along the face, so
@@ -643,6 +667,21 @@ class SSQ_Guard : Inventory
 		double bashR = R * bashK;
 		// read above the iterator, like everything else here: SVI is an uncached lookup by name
 		bool los = SSQ_Handler.SVI('ssq_bash_los', 1) != 0;
+		// AND THE PLATE WALKS ITS OWN TIC HERE TOO. This loop tested ONE plate centre -- the one
+		// the tic ended at -- while both block paths have walked the plate across its travel all
+		// along (StopsHitscan, :378-384; DoEffect, :484-505, and PlateTravel's own comment says
+		// why). The rim is the fastest-moving part of the shield and the grind is the rim
+		// actually on a body: sweep the arm along a line of them at a plain 3 m/s (2.91 units a
+		// tic) and the plate crossed that much between evaluations with the per-body cooldown
+		// above, and about 11.6 units before it, against a 29 cm rim -- so bodies in the gap were
+		// never tested. This was the last point-sampled contact in the mod.
+		//
+		// It costs no traces: PlateTravel() is the same one subtraction out of the synced history
+		// the block already asks for, and the walk is two more subtractions and two dot products
+		// per candidate, inside a BlockThingsIterator that was going to run anyway. The travel is
+		// deliberately absolute, as it is for the block (pose.zs:72-74): the plate really did pass
+		// through that world space, and the bodies it passed are in world space too.
+		Vector3 travel = g.PlateTravel(true);
 		// GUN BONSAI: the bash and the grind name the player as the inflictor (RS_Score reads that as the
 		// shield), which leaves the VR patch nothing to tell the hands apart by -- measured, it paid the
 		// main-hand weapon. So the damage is bracketed: the patch pays whatever happens inside to the saw.
@@ -654,23 +693,49 @@ class SSQ_Guard : Inventory
 			if (!t || t == mo || !t.bShootable || t.health <= 0) continue;
 			if (t.player && !deathmatch) continue;
 			Vector3 tc = t.pos + (0, 0, t.height * 0.5);
-			Vector3 d = tc - C;
-			double along = d dot n;
-			Vector3 inplane = d - n * along;
 			double reach = bashNow ? bashR : R;
 			double depth = (bashNow ? (t.radius + 10) * bashK : t.radius + 10);
-			if (inplane.Length() > reach + t.radius) continue;
-			if (abs(along) > depth) continue;
+			// three places the plate was during this tic: where it came from, halfway, here --
+			// the same walk in the same order as the two block paths. The first that touches
+			// wins, and the tests below read ITS in-plane distance and depth: `along`'s sign is
+			// what the bash turns on, so it has to be the sub-step that actually touched.
+			double along = 0;
+			bool got = false, onPlate = false;
+			for (int s = 0; s <= 2 && !got; s++)
+			{
+				Vector3 d = tc - (C + travel * (1.0 - s * 0.5));
+				double al = d dot n;
+				Vector3 ip = d - n * al;
+				if (ip.Length() > reach + t.radius) continue;
+				if (abs(al) > depth) continue;
+				got = true; along = al;
+				// the grind is the rim on them, and keeps the tighter box
+				onPlate = ip.Length() <= R + t.radius && abs(al) <= t.radius + 10;
+			}
+			if (!got) continue;
 			// NOT THROUGH THE WALL. The iterator box is over a hundred units across and nothing here
 			// asked whether the shield could reach what it found, so a bash beside a thin wall or a
 			// closed door damaged and launched what was behind it. Last of the per-victim tests, so
 			// it costs a sight check only for something the plate geometrically touched.
 			// (The saber's cut took exactly this fix: ubqs_cut_los.)
 			if (los && !mo.CheckSight(t, SF_IGNOREVISIBILITY)) continue;
-			// the grind is the rim on them, and keeps the tighter box
-			bool onPlate = inplane.Length() <= R + t.radius && abs(along) <= t.radius + 10;
-			if (grindNow && onPlate)
+			// ONCE EVERY ssq_grind_every TICS FOR THIS BODY, not once in that many for the whole
+			// grind: see grindWho/grindWhen above. The bash is unaffected -- it keeps its own
+			// global cooldown (bashCool), which is what a shove should have.
+			bool grindHim = grindNow && onPlate;
+			int gi = 0;
+			if (grindHim)
 			{
+				gi = g.grindWho.Find(t);
+				if (gi < g.grindWho.Size() && mo.Level.maptime - g.grindWhen[gi] < grindRate) grindHim = false;
+			}
+			if (grindHim)
+			{
+				// stamped BEFORE the damage: DamageMobj can destroy t (a gib leaves nothing to
+				// look up, and the line below already expects that), and a body that was hurt
+				// and lived must not be ground again next tic
+				if (gi < g.grindWho.Size()) g.grindWhen[gi] = mo.Level.maptime;
+				else { g.grindWho.Push(t); g.grindWhen.Push(mo.Level.maptime); }
 				int dmg = SSQ_Handler.SVI('ssq_grind_damage', 6);
 				if (upg) upg.GetInt("credit.push", "", 2, 0, saw);
 				t.DamageMobj(mo, mo, dmg, 'Saw');
@@ -710,6 +775,20 @@ class SSQ_Guard : Inventory
 				// BATTERING RAM (Gun Bonsai): what was bashed is thrown into whatever stands behind it
 				if (upg && t.health > 0) upg.GetInt("ram", "", mo.PlayerNumber(), eff, t);
 			}
+		}
+
+		// AND THE LIST IS SWEPT UP HERE, so it cannot grow for a whole map: anything gone or
+		// dead, anything whose cooldown ran out long ago, and anything stamped in the future --
+		// SSQ_Guard is PERSISTENTPOWER, so it outlives the level and maptime starts again, and
+		// the stamp test is self-healing in the same way lastPushTic above is rather than
+		// needing a second site to remember to clear it. (The saber prunes its own list the same
+		// way, QuestSaber/zscript.txt:1968-1969.)
+		for (int k = g.grindWho.Size() - 1; k >= 0; k--)
+		{
+			Actor gw = g.grindWho[k];
+			int gt = g.grindWhen[k];
+			if (!gw || gw.health <= 0 || mo.Level.maptime - gt > 70 || mo.Level.maptime < gt)
+				{ g.grindWho.Delete(k); g.grindWhen.Delete(k); }
 		}
 	}
 

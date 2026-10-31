@@ -1,5 +1,51 @@
 # RSQ ShieldSaw — handoff
 
+## Branch `shieldsaw-sweep` (2026-10-30): the grind and bash sweep, per-body grind, two residual holes -- read first
+
+Not run anywhere: **not on the owner's headset and not through a compiler.** Code only, from the
+refinement pass in `RSQ_QuestEngineSurvey/apply/03_SABER_AND_SAW.md` §1.5 and §1.7. Every engine line
+below was opened in `qzd17.3` for this change, not taken on the report's word (the report's own numbers
+for `hw_weapon.cpp` were one line out).
+
+| | what | why |
+|---|---|---|
+| THE GRIND AND BASH WERE THE LAST POINT-SAMPLED CONTACT | `HeldTick` tested one plate centre -- the one the tic ended at -- while both block paths have walked the plate across `PlateTravel()` all along (`guard.zs:378-384`, `:484-505`). The victim test is now the same three-sub-step walk, `C + travel * (1.0 - s * 0.5)`, first touch wins (`guard.zs:698-715`) | the rim is the fastest-moving part of the shield. At a plain 3 m/s the plate crossed 2.91 units between evaluations with the per-body grind, and ~11.6 units with the old tic gate, against a 29 cm rim: bodies in the gap were never tested |
+| it cost nothing | `PlateTravel()` already existed, already read the synced history, and is called once per tic outside the iterator (`guard.zs:684`). Per candidate it adds two subtractions and two dot products inside a `BlockThingsIterator` that was going to run | **no new traces of any kind.** `PlateTravel` took one new default argument, `assumeHeld` (`guard.zs:344`): it gates on `plateHeld`, which only `Plate()` writes and `HeldTick` never calls |
+| `ssq_grind_every` IS PER VICTIM NOW | was a global tic gate (`maptime % every == 0`): the whole grind fired on one tic in four and did nothing on the other three, so a body the rim crossed on a skipped tic was never touched however squarely the plate was on it. Now `grindWho` / `grindWhen` on `SSQ_Guard` (`guard.zs:24-35`), tested at `guard.zs:722-731`, stamped at `:737-738`, pruned at `:780-792` | the saber's shape exactly (`ubqs_cut_rate`, `QuestSaber/zscript.txt:1873`, `:1892-1893`, `:1958-1959`, `:1968-1969`); the disc does the same for one victim (`disc.zs:475`). Strictly better than a tick rate: the cap on how fast one body can be hurt is unchanged, and nothing is skipped. It is also the only form that is any use with a swept rim |
+| `ssq_held_world 0` NO LONGER REOPENS THE TWO-HAND HOLE | `want` was `hw == 1 \|\| (hw == 2 && multiplayer) \|\| (hw != 0 && grabbed)`; the last clause is now plain `grabbed` (`state.zs:862-872`) | the engine draws **no** off-hand psprite while the grab is held (`hw_weapon.cpp:832-835` and `:916-919`, both on the global `weaponStabilised`, which also raises `WF_TWOHANDSTABILIZED` at `p_pspr.cpp:512-515`). With `hw == 0` the shield left your own hand the instant the grip latched -- reachable from the options menu. `hw` still decides the ordinary ungrabbed case |
+| THE WORLD PROP CARRIES THE HELD OFFSETS | all six `ssq_held_*` sliders, applied to the prop in the pose basis (`state.zs:882-931`) | the psprite gets them per frame in `ModifyBobLayer3D` (`shield.zs:176-177`) and the prop got none, so on anyone who had dialled those sliders in the shield jumped by the dialled-in offset when the grab started and jumped back on release |
+
+**How the slider axes were derived, since it is the one part with no measurement behind it.** The layer's
+translation and its three rotations are applied *inside* the MODELDEF mesh scale (`models.cpp`
+`RenderHUDModel`: `S(xscale,zscale,yscale)`, then `T(pivot) . R(rotation.X about Y) . R(rotation.Y about X)
+. R(rotation.Z about Z) . T(-pivot) . T(translation)`), and `hw_vrmodes.cpp MapWeaponDir` makes the layer
+frame `X = -L, Y = U, Z = -F` -- which is why `shield.zs:176` packs the sliders as `(x, z, -y)`. The held
+MODELDEF blocks mirror the mesh for the other hand (`SSQH` is `Scale -1 1 1`, `SSQJ` is `Scale 1 1 1`), and
+the mirror conjugates everything about that X axis, so the lateral slide and the rotations about Y and Z
+change sign with the hand and the rotation about X does not. `SSQ_Guard.Side()` is already that sign.
+`SSQ_Prop` is not mirrored (`Scale 0.34 0.34 0.34`), so the code applies the effective post-mirror motion;
+the rotated basis is written out in scalar components because `pose.zs:29-31` and `guard.zs:136` both record
+that this VM drops a returned `Vector3`. **If the prop's trim rotates the wrong way for your hand, the two
+signs to flip are `ry1` and `rr1` at `state.zs:911` and `:913`.** The slide is the part that stops the jump
+and is independent of them. The one term not reproduced is the rotation pivot, which this mod never sets.
+
+**Two things to watch in the headset.**
+
+1. **The grind now evaluates every tic while revved**, so the `BlockThingsIterator` and its `CheckSight`
+   run every tic instead of one in four whenever the saw is spinning. Nothing else in the loop changed and
+   the bash always ran at that rate, but it is a real cost increase on Quest.
+2. **`PlateTravel()` is deliberately absolute**, as it is for the block (`pose.zs:72-74`): it walks the plate
+   through world space, and bodies are in world space too. That means walking forward at Doom run speed
+   (~16.6 units a tic) sweeps the grind that far back along the path the plate really did take. That is
+   physically what happened and `CheckSight` and the tight `onPlate` box still gate it, but if it reads as
+   the grind reaching backwards while you walk, the body-frame difference (`pose.Vel()`, which already has
+   the player's own travel removed) is the alternative -- say so and it is a one-line change.
+
+Out of scope on purpose, from the same report: `+SHIELDREFLECT` (random ±45° off a *body* yaw via a playsim
+RNG draw, `p_mobj.cpp:3468-3477` -- contraindicated, and the owner's netplay rule forbids it), the angular
+lerp of the sweeps (report 03 §0.3, S-M), the peak-window perfect test (§1.4), the perfect-block haptic
+envelope (§1.6), and the saber half entirely.
+
 ## Branch `agent-compat` (2026-10-27): Champions + LegenDoom Lite -- read first
 
 Not yet run on the owner's headset. Rig C = QZD 17.3 Linux, doom2 MAP01, the owner's order (brutal22test6 ->

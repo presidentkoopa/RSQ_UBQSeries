@@ -55,7 +55,7 @@ server float ssq_glance_scale   = 0.4;
 // the rev (off-hand trigger held)
 server int   ssq_rev_tics       = 21;     // tics from still to full speed
 server int   ssq_grind_damage   = 6;      // per hit while revved and something is in the blades
-server int   ssq_grind_every    = 4;      // tics between grind hits
+server int   ssq_grind_every    = 4;      // tics between grind hits ON THE SAME BODY (per victim, not a global gate)
 server float ssq_rev_throw_bonus = 0.6;   // a full-rev throw adds this fraction of damage and speed
 
 // the block

@@ -859,7 +859,17 @@ class SSQ_Handler : EventHandler
 			// vanish out of your own hand. The world prop stands in for exactly that long.
 			int hw = UVI(p, 'ssq_held_world', 2);
 			bool grabbed = (p.WeaponState & WF_TWOHANDSTABILIZED) != 0;
-			bool want = hw == 1 || (hw == 2 && multiplayer) || (hw != 0 && grabbed);
+			// AND THE GRAB IS NOT A PREFERENCE. hw == 0 is "never draw the world copy", which is
+			// a choice about what you and others see while the shield is in a normal grip -- but
+			// the grab is not a matter of taste: the engine draws NO off-hand psprite at all
+			// while it is held (hw_weapon.cpp:832-835 and :916-919, both keyed on the global
+			// weaponStabilised that also raises WF_TWOHANDSTABILIZED at p_pspr.cpp:512-515), and
+			// script cannot prevent it. So `hw != 0 && grabbed` meant a player who had turned the
+			// world copy off in the options menu lost the shield out of his own hand the instant
+			// the grip latched -- the exact failure this clause exists to prevent, with the
+			// setting that reopens it one menu line away. The stand-in is unconditional now;
+			// hw still decides the ordinary, ungrabbed case.
+			bool want = hw == 1 || (hw == 2 && multiplayer) || grabbed;
 			prop.bInvisible = !want || !pose.Fresh(Level.maptime);
 			if (!prop.bInvisible)
 			{
@@ -869,10 +879,56 @@ class SSQ_Handler : EventHandler
 				// puts the disc 15.4 cm back along the forearm by itself. Placing it at the
 				// plate centre, as this did, pushed the drawn shield a whole radius off the
 				// hand -- the guard was right and the picture was not.
-				prop.SetOrigin(pose.pos[0], true);
-				prop.angle = atan2(pose.F.y, pose.F.x);
-				prop.pitch = -asin(clamp(pose.F.z, -1, 1));
-				prop.roll = SSQ_Hand.RollOf(pose.F, pose.L);
+				// AND IT CARRIES THE HELD OFFSETS. ModifyBobLayer3D adds ssq_held_x/y/z and
+				// ssq_held_yaw/pitch/roll to the held layer every frame (shield.zs:176-177) --
+				// the placement the owner dials in with the headset on -- and this prop, which
+				// stands in for that layer whenever it is not drawn, was posed from the raw hand
+				// with none of them. So on anyone who had touched those sliders the shield JUMPED
+				// by the dialled-in offset the moment the two-hand grab started, and jumped back
+				// on release. Same pose basis, same numbers.
+				//
+				// THE LAYER'S AXES, followed through stock QZD 17.3. The translation and the
+				// three rotations are applied INSIDE the MODELDEF mesh scale (models.cpp
+				// RenderHUDModel: the S(xscale,zscale,yscale) node, then T(pivot) . R(rotation.X
+				// about Y) . R(rotation.Y about X) . R(rotation.Z about Z) . T(-pivot) .
+				// T(translation)), and hw_vrmodes.cpp MapWeaponDir makes the layer frame
+				// X = -L, Y = U, Z = -F -- which is why shield.zs packs the sliders as
+				// (x, z, -y): x is the hand's right, y its forward, z its up.
+				//
+				// The held blocks of MODELDEF MIRROR the mesh for the other hand (SSQH is
+				// Scale -1 1 1, SSQJ is Scale 1 1 1), and the nodes above sit inside that scale,
+				// so the mirror conjugates them: the lateral slide and the rotations about Y and
+				// Z change sign with the hand, the rotation about X does not. SSQ_Guard.Side() is
+				// already exactly that sign (+1 when the off hand is the left controller, which
+				// is the mirrored SSQH block), which is why the plate measurement uses it too.
+				// SSQ_Prop's own mesh is NOT mirrored (Scale 0.34 0.34 0.34), so what is applied
+				// here is the effective, post-mirror motion. ssq_shield_scale does not scale it:
+				// it swaps the held model for a larger one rather than scaling one (MODELDEF:143)
+				// and the layer translation is in mesh units either way. The one term not
+				// reproduced is the rotation pivot, which this mod never sets
+				// (ModifyBobPivotLayer3D is not overridden).
+				double hs = SSQ_Guard.Side(p);
+				double ry1 = -UV(p, 'ssq_held_yaw', 0) * hs;	// about the hand's up
+				double rp1 = UV(p, 'ssq_held_pitch', 0);		// about its lateral axis
+				double rr1 = -UV(p, 'ssq_held_roll', 0) * hs;	// about its forward
+				double c1 = cos(ry1), s1 = sin(ry1);
+				double c2 = cos(rp1), s2 = sin(rp1);
+				double c3 = cos(rr1), s3 = sin(rr1);
+				// the hand's axes turned by those three, written out in the hand's own basis so
+				// that no function has to hand a Vector3 back: pose.zs:29-31 and guard.zs:136
+				// both record that this VM drops those.
+				Vector3 hF = pose.F * (c1 * c2) + pose.L * (s1 * c2) + pose.U * s2;
+				Vector3 hL = pose.F * (-s1 * c3 + c1 * s2 * s3) + pose.L * (c1 * c3 + s1 * s2 * s3) + pose.U * (-c2 * s3);
+				Vector3 hU = pose.F * (-s1 * s3 - c1 * s2 * c3) + pose.L * (c1 * s3 - s1 * s2 * c3) + pose.U * (c2 * c3);
+				// and the slide, along the TURNED axes, because the layer's translation node sits
+				// inside its rotation node (so the layer's own offset is rotated with it)
+				Vector3 hoff = hF * CM(UV(p, 'ssq_held_y', 0))
+					+ hL * (CM(UV(p, 'ssq_held_x', 0)) * hs)
+					+ hU * CM(UV(p, 'ssq_held_z', 0));
+				prop.SetOrigin(pose.pos[0] + hoff, true);
+				prop.angle = atan2(hF.y, hF.x);
+				prop.pitch = -asin(clamp(hF.z, -1, 1));
+				prop.roll = SSQ_Hand.RollOf(hF, hL);
 				prop.A_SetScale(SSQ_Guard.Scale());	// the world copy grows with the plate
 				prop.frame = saw ? saw.Frame() : 0;
 			}
