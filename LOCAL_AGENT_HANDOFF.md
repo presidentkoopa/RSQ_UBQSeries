@@ -83,9 +83,8 @@ Four cloud agents are building the owner's "QoL round" picks (PICKS_2026-10-31.m
 touch any of those folders.
 
 **Update, 16:05 (owner hit his usage limit):** none of the four had landed. Their unfinished work was saved as
-branches on GitHub, NOT merged and NOT checked: `wip/qol-ac75011aa06e62265` (HP Bars + Wheel), `wip/qol-a6716df7e75b837d8` (Gestures + GunCards, barely started:
-Gestures only), Accessibility and SlowMo + Grapple have since FINISHED and are merged to main (Steady Hands service included: see Accessibility/zscript/rsqa_qol.zs
-and tools/a11y_template.zs, which each mod's `<PREFIX>_A11y` file is regenerated from). Treat the other two as
+branches on GitHub, NOT merged and NOT checked: `wip/qol-ac75011aa06e62265` (HP Bars + Wheel), Accessibility, SlowMo + Grapple and Gestures + GunCards have since FINISHED and are merged to main (Steady Hands service included: see Accessibility/zscript/rsqa_qol.zs
+and tools/a11y_template.zs, which each mod's `<PREFIX>_A11y` file is regenerated from). Treat the remaining one (HP Bars + Wheel) as
 drafts: read the diff, finish, test, then merge to main yourself. main and pk3/ do not contain any of it.
 
 ## 5. Task A: wire Steady Hands into the mods that aim (do after the Accessibility lane is merged)
@@ -192,3 +191,11 @@ controller.
 - ZScript traps this repo hit: identifiers are case-insensitive (a const `WRAP` clashes with `Wrap()`, a function
   `Is()` with the `is` keyword); `auto` is reserved; UI scope can't call play functions; a static helper calling
   `AttackDir` must be in a `play` class; 3-element vectors through `out` parameters crash the VM.
+
+
+## 8. Open from the QoL round
+- GC7 (Gun Cards kills this level): the Wheel's stat tracker answers no service, so GunCards keeps its own per-level
+  count using the Wheel's attribution rule. To read the Wheel's numbers instead, add a request to the Wheel.
+- Brutal Doom VR's long-gun butt strike is OFF by default in BD itself (`rsq_butt 0`); only the pistol whip is on. The
+  owner loves the butt shove: ask him whether he wants `rsq_butt` on (it's BD22Q's setting, his own mod).
+- GunCards pk3 grew 10.6 -> 13.2 MB (two new watch-card rows). Watch Quest load time.
