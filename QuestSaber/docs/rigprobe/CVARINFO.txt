@@ -1,0 +1,5 @@
+server float sbp_mx = 0;
+server float sbp_my = 0;
+server int sbp_fire = 0;
+server float sbp_mz = -1;
+server float sbp_m2dz = 0;

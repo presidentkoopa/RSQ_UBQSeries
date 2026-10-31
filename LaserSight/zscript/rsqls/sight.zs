@@ -611,8 +611,20 @@ class RSQLS_Sight : EventHandler
 		}
 		else
 		{
-			// An actor: a billboard, pulled toward you so it sits on its front.
-			if (len > 1) at += (drawMuzzle - drawEnd) * (2.0 / len);
+			// An actor: ON ITS BODY (pick 29; Quest teardown apply/06 §2.5). The trace hits the side of the actor's
+			// collision square (p_trace.cpp:695-697: |dx| > r || |dy| > r), which stands r in front of the sprite
+			// head-on and up to r*sqrt2 at a corner: the dot floated off the edge of a monster seen at an angle.
+			// The monster is a billboard drawn through its centre, so the dot goes where the ray crosses that
+			// plane (its closest approach to the centre), kept within 0.75 of the radius sideways -- the stock
+			// sprites' half-widths run 0.75r..1.1r (doom2.wad TROO/POSS/SARG/HEAD/BOSS A frames, measured), so
+			// that is on the body in every one -- and inside the body's height. Then it is brought toward the
+			// EYE (so it keeps its place on screen; toward the muzzle it slid sideways off the body, rig) until
+			// it is 2 units in front of the sprite's plane. The renderer turns a sprite square to the view's yaw
+			// (or to the eye, gl_billboard_faces_camera), not to the ray: off the centre line those planes differ
+			// by many units (rig, 2026-10-31: 16 units out on an imp at the screen's edge the dot sat behind the
+			// sprite), so it clears all of them.
+			if (len > 1 && onWho) at = OnBody(onWho, drawMuzzle, drawEnd, (pmo.Pos.xy, p.viewz), pmo.Angle);
+			else if (len > 1) at += (drawMuzzle - drawEnd) * (2.0 / len);
 		}
 		s.bWALLSPRITE = wallS; s.bFLATSPRITE = flatS; s.Angle = sAngle;
 		bool shownS = spotShown[h];
@@ -680,6 +692,46 @@ class RSQLS_Sight : EventHandler
 			}
 		}
 		else if (lightOn[h]) { s.A_RemoveLight('RSQLS'); lightOn[h] = false; }
+	}
+
+	// Where a ray from m through e (the trace's hit on the actor's collision square) shows on the actor's
+	// billboard: the ray's closest approach to the actor's axis, no further than 0.75 radius sideways of it and
+	// inside its height, then brought toward the eye until it is 2 units in front of the sprite's plane however
+	// the renderer turns it (eye: the viewer; viewYaw: the view's yaw). See DrawHand (apply/06 §2.5).
+	static Vector3 OnBody(Actor a, Vector3 m, Vector3 e, Vector3 eye, double viewYaw)
+	{
+		Vector3 d = e - m;
+		double len = d.Length();
+		if (len <= 1) return e;
+		Vector3 u = d / len;
+		double hl2 = u.x * u.x + u.y * u.y;
+		double r = max(a.radius, 1.0);
+		double s = len;
+		if (hl2 > 0.0001)
+			s = clamp(((a.pos.x - m.x) * u.x + (a.pos.y - m.y) * u.y) / hl2, len, len + r * 2.0);
+		Vector3 p = m + u * s;
+		Vector2 lat = p.xy - a.pos.xy;
+		double ll = lat.Length();
+		double side = r * 0.75;
+		if (ll > side) p = (a.pos.xy + lat * (side / ll), p.z);
+		p.z = clamp(p.z, a.pos.z, a.pos.z + a.height);
+		// In front of every plane the sprite may be drawn in: square to the ray, to the eye, to the view's yaw.
+		Vector3 back = eye - p;
+		double bl = back.Length();
+		if (bl <= 2) return p;
+		Vector3 w = back / bl;
+		double need = 2.0;
+		for (int i = 0; i < 3; i++)
+		{
+			Vector2 n = (i == 0) ? a.pos.xy - m.xy : ((i == 1) ? a.pos.xy - eye.xy : (cos(viewYaw), sin(viewYaw)));
+			double nl = n.Length();
+			if (nl < 0.001) continue;
+			n /= nl;
+			double nw = n.x * w.x + n.y * w.y;
+			if (nw > -0.1) continue;
+			need = max(need, ((n dot (p.xy - a.pos.xy)) + 2.0) / -nw);
+		}
+		return p + w * min(need, bl);
 	}
 
 	// The arc: ARC_N dots spaced evenly by length along the simulated path.
