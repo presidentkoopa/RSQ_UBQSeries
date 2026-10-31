@@ -1,3 +1,7 @@
+// The whip weapon in slot 1 (Weapon.SlotNumber is ignored when a player class -- Brutal Doom's -- lists its own slots;
+// addslotdefault appends, so Fist and Chainsaw stay, as RSQ ShieldSaw does it)
+addslotdefault 1 RSQWP_WhipWeapon
+
 // Two binds, one per hand, as their own commands -- never +user1-4 (Brutal Doom Quest uses all four).
 // `+name` falls through to alias lookup and key-up sends `-name`: a press and a release. The press goes
 // through a local `event` first so the hand's pose is read on the machine that owns it (input.zs).
