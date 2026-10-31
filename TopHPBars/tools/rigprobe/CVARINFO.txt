@@ -32,3 +32,4 @@ server noarchive int    thq_log = 1;
 server noarchive int    thq_log_from = 0;
 server noarchive int    thq_log_to = 100000;
 server noarchive int    thq_brief = 0;
+server noarchive int    thq_vanilla = 0;

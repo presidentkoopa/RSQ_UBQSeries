@@ -4,7 +4,35 @@ Rig: rig A (`/home/claude/scratch/run17A.sh`, the real QZD 17.3 binary, zscript 
 Every number below was measured there; the logs and frames are under `test/evidence/` (copies) and
 the scratchpad (`frames/<run>/`, `logsA/<run>.log`). Test runner: `test/run.sh <name> <secs> "<console>" <order>`.
 
-## Sweep 2026-10-31 (owner's picks 35, 36, 37) -- read first
+## QoL round 2026-10-31 (owner's picks HP1-HP4 options, HP6-HP9 on) -- read first
+
+Rig only, not headset-confirmed. QZD 17.3 rig, doom2 -> brutal22test6 -> BD_VoxelPack -> BD22_VR-Reloaded 2.0.3h ->
+hotfix -> RSQ_HPBars -> probe (`tools/rigprobe/zscript_qol.txt`, `PROBE=qol tools/rigprobe/run.sh`, test only).
+With every series pk3 loaded: no script error but BD_VoxelPack's voxeldef lines.
+
+Done (measured):
+- **HP6 length by toughness** (on): stretch 1 + 0.15 x log2(spawn health / 60), 0.7..2.0. BD's spawn health, logged:
+  RifleZombie 40 -> 0.91, imp 80 -> 1.06, BaronofHell2 1200 -> 1.65, TheSpiderMastermind 4000 -> 1.91,
+  TheCyberdemon 5000 -> 1.96 (widest). The icons beside the bar move out with its ends.
+- **HP7 hit flash** (on): one tic as a white stencil after a player's hit (log: flash 1 at t40, t45, t50 for hits at
+  those tics, never the tic after). Photosensitive Mode (RSQ_Accessibility, rsqa_photosafe 1): hits at t40..t60
+  every 5 tics flash only at t40 and t55 (14-tic gap), alpha 0.36 (40 %). Frame: the flash tic is a grey-white bar.
+- **HP8 raised** (on, with Markers): an Arch-Vile (BD's TehArchvile, its own A_VileChase) raised a stock imp at t37
+  (WorldThingRevived, the vile in its Heal state); the imp got its bar at once with the arrow (status frame C).
+  Frame: purple up arrow right of the bar. Brutal Doom's own imp leaves a separate DeadImp corpse actor on the
+  spot; on the rig the vile did not raise that one (not ours to change).
+- **HP9 fade in** (on): alpha 0.17 -> 1.0 over 6 tics on a new bar (and on one shown again).
+- **HP1 Damage Chunk** (option): what the hit took off stays white 17 tics, drains over 10 (log: last hit t50, full
+  to t67, gone by t77; hits while lit add up). Frame: white block right of the remaining fill, on its pixels.
+- **HP2 Ally Colour** (option): a FRIENDLY imp's bar uses the blue set RSYG (coldcite's Red, R and B swapped). Frame.
+- **HP3 Nearest 24** (option): 30 hurt imps -> 24 visible (culled every 4th tic); off -> 30.
+- **HP4 Distance Limit** (option, Limit Distance slider in Tuning, 1536 default): at 600, 12 of 30 visible.
+- All four options have a menu row and are in Reset All (KEYCONF rsqthp_reset).
+
+Not done / open: "your own shot" is any player's shot (single-player VR: yours). The flash, the chunk and the
+culling read the console player's camera like the rest of the bars (render-side visibility).
+
+## Sweep 2026-10-31 (owner's picks 35, 36, 37)
 
 Rig only, not headset-confirmed. QZD 17.3 rig, doom2 -> brutal22test6 -> BD_VoxelPack -> BD22_VR-Reloaded 2.0.3h
 -> hotfix -> (RSQ_DistanceGrab) -> RSQ_HPBars -> probe (`tools/rigprobe/run.sh`, test only). No script error
