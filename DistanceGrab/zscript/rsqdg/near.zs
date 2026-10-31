@@ -492,7 +492,11 @@ class RSQDG_Near : EventHandler
 		if (th)
 		{
 			th.Air(a, 0);
-			th.Watch(a, pmo, 1, body.xy, kg);
+			// SAME BLOW AS BEFORE (owner 2026-10-31: "back to old damage"): it flies faster, but the impact counts the
+			// weight that makes its energy what the full-weight throw had -- realKg x ((arm + kg) / (arm + realKg))^2
+			// (a BD zombie: 300 x (120/330)^2 = 40 kg at 6.6 m/s, the same ~56 as 300 kg at 2.4).
+			double hitKg = realKg * ((armKg + kg) / (armKg + realKg)) ** 2;
+			th.Watch(a, pmo, 1, body.xy, max(1.0, hitKg));
 		}
 		RSQDG_Feel.Whoosh(a, p, mps, RSQDG_Mass.Heft(a));
 		let feel = RSQDG_Feel.Get();
