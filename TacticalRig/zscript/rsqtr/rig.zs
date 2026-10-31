@@ -1,7 +1,8 @@
 // RSQ_TacticalRig -- weapons carried on the body.
 //
-// FOUR GUN HOLSTERS AND TWO SABER SPOTS (the owner's simple rig, 2026-10-27): both hips and
-// both shoulders hold one gun each, exactly the one you put there; just below each hip is a
+// SIX GUN HOLSTERS AND TWO SABER SPOTS (the owner's simple rig, 2026-10-27; the chest pair added
+// 2026-10-31: "i want two more holsters, six seems like good number", both sides of the chest): both
+// hips, both sides of the chest and both shoulders hold one gun each, exactly the one you put there; just below each hip is a
 // spot for RSQ_Saber's hilts. Grip (or press Use) at a holster with a gun in the
 // hand and it goes in (a full holster swaps: its gun comes out); with the hand empty, the
 // holster's gun is drawn. Each hand holsters and draws its own gun.
@@ -18,21 +19,25 @@
 
 class RSQTR_Region
 {
-	// ELEVEN INDICES, SIX IN USE. The index is a place's identity: its cvars (rsqtr_rN_*) and its
-	// position in a saved holster profile. 0 1 hips, 4 5 shoulders, 9 10 saber spots. 2 3 6 7 8
-	// (chest, stomach, pectorals, lower back) are RETIRED: never live, no settings; kept as
-	// indices so nothing renumbers.
+	// ELEVEN INDICES, EIGHT IN USE. The index is a place's identity: its cvars (rsqtr_rN_*) and its
+	// position in a saved holster profile. 0 1 hips, 4 5 shoulders, 6 7 the chest (cross-draw, owner
+	// 2026-10-31), 9 10 saber spots. 2 3 8 (stomach, lower back) are RETIRED: never live, no settings;
+	// kept as indices so nothing renumbers. A profile saved before the chest pair has them empty: they
+	// keep their defaults.
 	const N = 11;
-	static const String NAMES[] = { "Left hip", "Right hip", "", "", "Left shoulder", "Right shoulder", "", "", "", "Left saber", "Right saber" };
+	static const String NAMES[] = { "Left hip", "Right hip", "", "", "Left shoulder", "Right shoulder", "Left chest", "Right chest", "", "Left saber", "Right saber" };
 	const SABER_L = 9;
 	const SABER_R = 10;
-	static bool Retired(int r) { return r == 2 || r == 3 || r == 6 || r == 7 || r == 8; }
+	static bool Retired(int r) { return r == 2 || r == 3 || r == 8; }
 
 	// Defaults, metres from the head in the body frame: forward, left, up, radius (0: retired).
-	static const double DF[] = {  0.00,  0.00, 0, 0, -0.08, -0.08, 0, 0, 0,  0.02,  0.02 };
-	static const double DL[] = {  0.18, -0.18, 0, 0,  0.18, -0.18, 0, 0, 0,  0.21, -0.21 };
-	static const double DU[] = { -0.70, -0.70, 0, 0, -0.10, -0.10, 0, 0, 0, -0.84, -0.84 };
-	static const double DR[] = {  0.14,  0.14, 0, 0,  0.14,  0.14, 0, 0, 0,  0.10,  0.10 };
+	// The chest pair: 0.38 m under the eyes, 0.12 m either side of the breastbone, 0.10 m in front;
+	// a little smaller (0.11) so a gun held at the chest does not sit in one. Each is >= 0.33 m from
+	// the shoulders and the hips, more than two radii, so no two places overlap.
+	static const double DF[] = {  0.00,  0.00, 0, 0, -0.08, -0.08,  0.10,  0.10, 0,  0.02,  0.02 };
+	static const double DL[] = {  0.18, -0.18, 0, 0,  0.18, -0.18,  0.12, -0.12, 0,  0.21, -0.21 };
+	static const double DU[] = { -0.70, -0.70, 0, 0, -0.10, -0.10, -0.38, -0.38, 0, -0.84, -0.84 };
+	static const double DR[] = {  0.14,  0.14, 0, 0,  0.14,  0.14,  0.11,  0.11, 0,  0.10,  0.10 };
 }
 
 class RSQTR_Rig : EventHandler
@@ -391,12 +396,13 @@ class RSQTR_Rig : EventHandler
 	}
 
 	// THE SIMPLE RIG (the owner, 10-27: "it's impossible to keep track what is where, everything
-	// moves around"). Four gun holsters -- both hips, both shoulders -- and the two saber spots.
+	// moves around"). Six gun holsters -- both hips, both sides of the chest, both shoulders -- and the two
+	// saber spots.
 	// A gun holster holds exactly what you put in it: any gun, one at a time, never chosen for
 	// you. Grip a holster with a gun in your hand and the gun goes in (if one was there, you
 	// swap: that one comes out); grip a full holster with your hand empty and you draw it; an
 	// empty holster with an empty hand does nothing.
-	static bool IsGunRegion(int r) { return r == 0 || r == 1 || r == 4 || r == 5; }
+	static bool IsGunRegion(int r) { return r == 0 || r == 1 || r == 4 || r == 5 || r == 6 || r == 7; }
 	static bool IsSaberRegion(int r) { return r == RSQTR_Region.SABER_L || r == RSQTR_Region.SABER_R; }
 
 	// The gun in gun holster r for player n: what was put there, while you still own it.
@@ -1040,6 +1046,7 @@ class RSQTR_Rig : EventHandler
 	// own forward axis, lying level with the grip down. For a right-handed player:
 	//   hips, saber spots  muzzle down
 	//   shoulders          on the back: butt up over the shoulder, muzzle down toward the other hip
+	//   chest              cross-draw: muzzle down, butt tilted toward the middle of the chest
 	// A left-handed player gets the mirror image. Sprites face you whatever is set.
 	static void Hang(RSQTR_Icon ic, int r, double yaw, double metres, double fallback)
 	{
@@ -1049,6 +1056,8 @@ class RSQTR_Rig : EventHandler
 		{
 		case 9: case 0: off = 0;   pt = 80; rl = -10; break;  // left hip, left saber: hanging down
 		case 10: case 1: off = 0;  pt = 80; rl = 10;  break;  // right hip, right saber
+		case 6: off = 0;   pt = 70; rl = 35;  break;  // left chest: butt toward the middle (right hand draws across)
+		case 7: off = 0;   pt = 70; rl = -35; break;  // right chest: the mirror
 		case 4: off = -90; pt = 65; break;            // left shoulder: muzzle toward the right hip
 		default: off = 90;  pt = 65; break;           // right shoulder: toward the left hip
 		}

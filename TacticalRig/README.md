@@ -9,7 +9,7 @@ that reads the real hand poses and keeps the rig on your body rather than your h
 
 ## Holsters
 
-Four gun holsters, **both hips** and **both shoulders**, and two **saber spots** just below the
+Six gun holsters, **both hips**, **both sides of the chest** (cross-draw) and **both shoulders**, and two **saber spots** just below the
 hips (with RSQ_Saber loaded).
 
 - **A holster holds exactly the gun you put there**, one gun, never chosen for you.
