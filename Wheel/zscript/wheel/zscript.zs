@@ -3257,7 +3257,7 @@ class wr_Rig : EventHandler
 
 	// Geometry generation. Bump this whenever the numbers below change and every
 	// existing config picks them up once, automatically.
-	const CFG_VERSION = 22;
+	const CFG_VERSION = 23;
 
 	private void migrateConfig()
 	{
@@ -3268,6 +3268,9 @@ class wr_Rig : EventHandler
 		// generation below, so gen 21 reset the owner's settings, wr_models included: the pickup voxels
 		// went off. Gen 22 puts them back.)
 		int from = stamp.GetInt();
+
+		// Gen 23: the gun cards OFF (owner 2026-10-31: not good enough yet). Back on from Gun cards.
+		if (from < 23) { setCv("wr_card", 0); setCv("wr_card_watch_tpl", 0); }
 
 		// Gen 22: undo gen 21's side effect -- the pickup voxels back on.
 		if (from < 22) setCv("wr_models", 1);
