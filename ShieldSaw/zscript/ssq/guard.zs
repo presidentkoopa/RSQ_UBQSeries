@@ -287,7 +287,15 @@ class SSQ_Guard : Inventory
 			let pose = h ? h.PoseOf(mo.PlayerNumber()) : null;
 			// BULWARK (Gun Bonsai): a slower plate still counts, 1 / (1 + 0.35 x level) of the speed
 			double need = SSQ_Handler.SV('ssq_perfect_speed', 25.0) / (1.0 + 0.35 * SSQ_Upg.Lv(mo.FindInventory('SSQ_ShieldSaw'), "Bulwark"));
-			if (pose) perfect = (pose.Vel() * TICRATE) dot outward >= need;
+			// THE FASTEST MOMENT, NOT THE LAST TWO SAMPLES (Quest teardown apply/03 1.4): a hard parry is often past its
+			// peak by the tic the shot lands, so the newest pair under-reads it -- the best of the last few 2-tic
+			// windows decides, as the throw already does.
+			if (pose)
+			{
+				double into = (pose.Vel() * TICRATE) dot outward;
+				for (int k = 0; k < 3; k++) into = max(into, (pose.VelAt(k) * TICRATE) dot outward);
+				perfect = into >= need;
+			}
 		}
 		// a scorer may ask about this block, and whether it was perfect (score.zs)
 		{ let sh = SSQ_Handler.Get(); if (sh && sh.score) sh.score.Blocked(source, perfect); }
@@ -300,7 +308,8 @@ class SSQ_Guard : Inventory
 			if (fb)
 			{
 				SSQ_FX.At(mo, P, "ssq/block", CHAN_5, perfect ? 1.0 : 0.8, perfect ? 1.35 : 1.0);
-				if (held != 0) SSQ_FX.Buzz(mo, perfect ? 1.0 : 0.7, perfect ? 12 : 5);
+				// a perfect block is a DOUBLE knock in the hand, never just a stronger buzz (a bash is one long one)
+				if (held != 0) SSQ_FX.Buzz(mo, perfect ? 1.0 : 0.7, perfect ? 12 : 5, perfect);
 				// HOW YOU KNOW IT WAS PERFECT, without reading a message: it rings a tone higher,
 				// the hand buzz is twice as long, and the plate blooms white at the contact point.
 				// A normal block is a spark and a thud; this is unmistakable.

@@ -194,7 +194,7 @@ class SSQ_ShieldSaw : Weapon
 // QF_SCALEDOWN).
 class SSQ_FX abstract play
 {
-	static void Buzz(PlayerPawn mo, double strength, int tics)
+	static void Buzz(PlayerPawn mo, double strength, int tics, bool twice = false)
 	{
 		if (!mo || !mo.player) return;
 		if (SSQ_Handler.UVI(mo.player, 'ssq_feedback', 1) == 0) return;
@@ -206,6 +206,7 @@ class SSQ_FX abstract play
 		q.amp = clamp(strength, 0.1, 1.0);
 		q.total = clamp(tics, 1, 16);
 		q.tleft = q.total;
+		q.twice = twice;
 	}
 
 	// a shield sound played AT the contact instead of at the player's feet. ssq_spatial 0 puts
@@ -292,6 +293,7 @@ class SSQ_Buzzer : Actor
 	bool left;
 	double amp;
 	int total, tleft;
+	bool twice;		// knock-knock: on, a gap, on again
 	Default
 	{
 		+NOINTERACTION
@@ -310,6 +312,11 @@ class SSQ_Buzzer : Actor
 		if (tleft <= 0) return;
 		// amplitude / 3.2: the jigger peak is 4x the intensity, the haptic 0.8x that by default
 		double a = amp * tleft / double(total) / 3.2;
+		if (twice)
+		{
+			int k = total - tleft;			// 0.. : 4 on, 3 off, the rest on, both knocks full
+			a = (k >= 4 && k < 7) ? 0.0 : amp / 3.2;
+		}
 		tleft--;
 		A_QuakeEx(left ? a : 0.0, left ? 0.0 : a, 0, 2, 0, 8, "", QF_WAVE, 17.5, 17.5, 1);
 	}

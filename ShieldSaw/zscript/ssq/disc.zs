@@ -25,6 +25,7 @@ class SSQ_Disc : Actor
 	Actor embedIn;
 	Vector3 embedOfs;
 	double cruise;		// units/tic
+	Vector3 preVel;		// the velocity going into this tic's move: a wall bounce's normal is the change
 	double revFrac;
 	int age;
 	Actor trail;
@@ -129,7 +130,12 @@ class SSQ_Disc : Actor
 		double vl = vel.Length();
 		if (vl > 0.01) vel = vel / vl * max(cruise, vl);
 		A_StartSound("ssq/bounce", CHAN_5);
-		SSQ_FX.Sparks(self, pos, (0, 0, 1), 8);
+		// OFF THE WALL, NOT STRAIGHT UP (Quest teardown 00 3.1): the engine already turned the velocity, and the turn
+		// (after minus before) points straight out of the wall. Up only if there was no turn to read.
+		Vector3 turn = vel - preVel;
+		Vector3 n = turn.Length() > 0.5 ? turn.Unit() : (0, 0, 1);
+		SSQ_FX.Sparks(self, pos + n * 2, n, 8);
+		if (thrower && thrower.player && SSQ_Handler.UVI(thrower.player, 'ssq_debug', 0)) Console.Printf("SSQ: wall bounce at %.0f %.0f %.0f, sparks along %.2f %.2f %.2f", pos.x, pos.y, pos.z, n.x, n.y, n.z);
 		return true;
 	}
 
@@ -383,7 +389,7 @@ class SSQ_Disc : Actor
 		{
 			homeTics++;
 			// HUNTER'S RETURN: on the way home it swerves through what is near its path
-			if (Hunt()) { Super.Tick(); if (trail) trail.SetOrigin(pos, true); return; }
+			if (Hunt()) { preVel = vel; Super.Tick(); if (trail) trail.SetOrigin(pos, true); return; }
 			// IT COMES BACK. EVERY TIME. A disc walking crumbs through a doorway it no longer
 			// fits through used to bounce until the 12-second age cap dropped it on the floor.
 			// Past ssq_home_patience the geometry stops being consulted: it flies straight to
@@ -417,6 +423,7 @@ class SSQ_Disc : Actor
 		}
 
 		// the disc keeps its launch orientation; the mesh frames do the spinning
+		preVel = vel;
 		Super.Tick();
 		if (trail) trail.SetOrigin(pos, true);
 		for (int i = 0; i < marks.Size(); i++)
