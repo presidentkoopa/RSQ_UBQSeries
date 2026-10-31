@@ -1209,7 +1209,7 @@ class SSQ_Handler : EventHandler
 			let saw = mo ? mo.FindInventory('SSQ_ShieldSaw') : null;
 			let upg = SSQ_Upg.Svc();
 			if (upg && saw) upg.GetInt("credit.push", "", 2, 0, saw);
-			v.DamageMobj(mo, mo, dmg, 'Melee');
+			SSQ_FX.Hit(v, mo, mo, dmg, 'Melee');
 			if (upg && saw) upg.GetInt("credit.pop", "", 0, 0, saw);
 		}
 		if (mo && mo.player && UVI(mo.player, 'ssq_debug', 0))

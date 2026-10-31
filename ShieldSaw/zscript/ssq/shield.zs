@@ -194,6 +194,46 @@ class SSQ_ShieldSaw : Weapon
 // QF_SCALEDOWN).
 class SSQ_FX abstract play
 {
+	// NO STEALTH KILL FROM THE SHIELD (owner 2026-10-31). Brutal Doom marks a monster that has not seen you with an
+	// "SK<monster>" item (SKImp, SKChaingunGuy, SKLabguy ...); its Pain.Melee and Death.Melee jump to its stealth kill
+	// while it holds one, and that cutscene takes the camera away from the player -- a shield bash on an idle imp did
+	// exactly that. The marks are lifted for the one hit and handed back if the monster lives, so BD's own kicks and
+	// punches still stealth-kill as they always did. The damage type stays 'Melee' (RS_Score reads it as the bash).
+	static int Hit(Actor t, Actor inflictor, Actor source, int dmg, Name type)
+	{
+		if (!t) return 0;
+		Array<Class<Inventory> > kinds; Array<int> amounts;
+		Lift(t, kinds, amounts);
+		int r = t.DamageMobj(inflictor, source, dmg, type);
+		Restore(t, kinds, amounts);
+		return r;
+	}
+	static void Pain(Actor t, Name type)
+	{
+		if (!t) return;
+		Array<Class<Inventory> > kinds; Array<int> amounts;
+		Lift(t, kinds, amounts);
+		t.TriggerPainChance(type, true);
+		Restore(t, kinds, amounts);
+	}
+	private static void Lift(Actor t, out Array<Class<Inventory> > kinds, out Array<int> amounts)
+	{
+		for (let it = t.Inv; it; it = it.Inv)
+		{
+			String n = it.GetClassName();
+			if (n.Length() > 2 && n.Left(2) ~== "SK" && !(it is "Weapon") && it.Amount > 0)
+			{
+				kinds.Push(it.GetClass()); amounts.Push(it.Amount);
+			}
+		}
+		for (int i = 0; i < kinds.Size(); i++) t.TakeInventory(kinds[i], amounts[i]);
+	}
+	private static void Restore(Actor t, Array<Class<Inventory> > kinds, Array<int> amounts)
+	{
+		if (!t || t.health <= 0) return;
+		for (int i = 0; i < kinds.Size(); i++) t.GiveInventory(kinds[i], amounts[i]);
+	}
+
 	static void Buzz(PlayerPawn mo, double strength, int tics, bool twice = false)
 	{
 		if (!mo || !mo.player) return;

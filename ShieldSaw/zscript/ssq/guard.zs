@@ -357,7 +357,7 @@ class SSQ_Guard : Inventory
 		int melee = SSQ_Handler.SVI('ssq_melee', 2);
 		if (kind == 2 && source && (melee != 0 || perfect))
 		{
-			source.TriggerPainChance('Melee', true);
+			SSQ_FX.Pain(source, 'Melee');
 			if (melee == 2 || perfect)
 			{
 				Vector3 away = (source.pos - mo.pos); away.z = 0;
@@ -813,7 +813,7 @@ class SSQ_Guard : Inventory
 			{
 				int dmg = int(clamp(10 + 0.15 * eff, 10, 40) * SSQ_Handler.SV('ssq_bash_damage', 1.0));
 				if (upg) upg.GetInt("credit.push", "", 2, 0, saw);
-				t.DamageMobj(mo, mo, dmg, 'Melee');
+				SSQ_FX.Hit(t, mo, mo, dmg, 'Melee');
 				if (upg) upg.GetInt("credit.pop", "", 0, 0, saw);
 				if (!t) continue;
 				// CLEAR SOME SPACE. The shove is away from the face, scaled by how hard you drove
