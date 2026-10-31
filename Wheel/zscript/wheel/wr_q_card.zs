@@ -276,7 +276,19 @@ class wr_GunCard : EventHandler
 			mShow[hand] = clamp(mShow[hand] + (show[hand] ? step : -step), 0.0, 1.0);
 			Weapon w = gun[hand];
 			Actor owner = hand == 1 ? Actor(p.OffhandWeapon) : Actor(item);
-			if (mShow[hand] <= 0 || !w || !owner) { ClearHand(p, hand); Detail(hand).Remove(p); DetailOut(hand).Remove(p); Side(hand).Remove(p); SideOf(hand, 1).Remove(p); continue; }
+			if (mShow[hand] <= 0 || !w || !owner) { World(hand).Hide(); ClearHand(p, hand); Detail(hand).Remove(p); DetailOut(hand).Remove(p); Side(hand).Remove(p); SideOf(hand, 1).Remove(p); continue; }
+			if (ci("wr_card_world", 0))
+			{
+				// in the world: no layers on the gun at all
+				ClearHand(p, hand); Detail(hand).Remove(p); DetailOut(hand).Remove(p); Side(hand).Remove(p); SideOf(hand, 1).Remove(p);
+				let wc = World(hand);
+				bool wantFull = watching[hand] && tpl[hand] != wr_DetailTemplates.T_AMMO;
+				if (!wc.Shown() || wc.full != wantFull) wc.Show(pmo.pos, wantFull);
+				wc.Fill(pmo, w, STYLE_COL[clamp(StyleFor(p, w), 0, 17)]);
+				wc.Place(pmo, cv("wr_card_world_scale", 1.0), wantFull ? WatchNudge(true) : Nudge(true), wantFull ? WatchNudge(false) : Nudge(false), mShow[hand] * cv("wr_card_alpha", 0.85));
+				continue;
+			}
+			World(hand).Hide();
 			if (watching[hand] && tpl[hand] != wr_DetailTemplates.T_AMMO)
 			{
 				// the watch card: the full card on the side of the gun at the grip hand (wr_q_side.zs)
@@ -306,6 +318,13 @@ class wr_GunCard : EventHandler
 		return mDetail[hand];
 	}
 	static const int STYLE_COL[] = { 0xB0B0B0, 0x808080, 0x60C060, 0xC0B060, 0xB06060, 0x6080C0, 0x90A0B0, 0x7070D0, 0xA0A060, 0x9070B0, 0xD0A040, 0x60A0D0, 0xD060A0, 0x60D0C0, 0xC08040, 0x5070E0, 0xA0A0A0, 0xE0E0E0 };
+	wr_WorldCard mWorld[2];
+	wr_WorldCard World(int hand)
+	{
+		if (!mWorld[hand]) { mWorld[hand] = new("wr_WorldCard"); mWorld[hand].hand = hand; }
+		return mWorld[hand];
+	}
+	override void WorldUnloaded(WorldEvent e) { for (int h = 0; h < 2; h++) if (mWorld[h]) mWorld[h].group = 0; }
 	transient wr_SideCard mSide[2], mSide2[2];
 	wr_SideCard Side(int hand) { return SideOf(hand, 0); }
 	wr_SideCard SideOf(int hand, int side)
@@ -524,6 +543,7 @@ class wr_GunCard : EventHandler
 	private void ClearAll(PlayerInfo p)
 	{
 		ClearHand(p, 0); ClearHand(p, 1);
+		World(0).Hide(); World(1).Hide();
 		Detail(0).Remove(p); Detail(1).Remove(p); DetailOut(0).Remove(p); DetailOut(1).Remove(p); Side(0).Remove(p); Side(1).Remove(p); SideOf(0, 1).Remove(p); SideOf(1, 1).Remove(p);
 		Kill(p, L_FX);
 		mShow[0] = mShow[1] = 0;

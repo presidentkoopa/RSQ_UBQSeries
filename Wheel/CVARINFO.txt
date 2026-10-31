@@ -849,3 +849,5 @@ user int    wr_card_both_sides = 1;      // the watch card inside AND outside th
 user float  wr_card_out_turn = -40;      // how far round the hand the outside copy sits, degrees
 user int    wr_ring_art = 0;             // the ring's plates: 0 its own (Ermac style), 1 the status bar's stone
 user int    wr_show_hands = 0;           // put what the engine says about the hands on screen (for a screenshot)
+user int    wr_card_world = 0;           // 1: the cards drawn in the world at the hand (no gun can cover them; may trail a fast hand)
+user float  wr_card_world_scale = 1.4;

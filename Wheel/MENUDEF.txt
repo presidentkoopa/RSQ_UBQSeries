@@ -600,6 +600,9 @@ OptionMenu wr_GunCards
 	StaticText "The card on the gun", gold
 	StaticText "Ermac's Force Unleashed display. Top card: square, the clip count.", "DarkGray"
 	StaticText "Side card: name, ammo, Gun Bonsai level and upgrades.", "DarkGray"
+	Option "Draw in the world",          "wr_card_world",    "OnOff"
+	StaticText "On: no gun can cover them; they may trail a fast hand.", "DarkGray"
+	Slider "  World card size",          "wr_card_world_scale", 0.5, 2.5, 0.05, 2
 	Option "Card in normal play",        "wr_card_tpl",      "wr_CardTpl"
 	Option "  Show",                     "wr_card",          "wr_CardShow"
 	Option "  Ammo card hands",          "wr_card_hands",    "wr_CardHands"
