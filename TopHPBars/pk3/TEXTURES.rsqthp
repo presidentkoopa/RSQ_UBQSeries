@@ -2,6 +2,7 @@
 // Main bar: sprite RSY<set>, frames A..V = XX 99 95 90 85 80 75 70 65 60 55 50 45 40 35 30 25 20 15 10 05 00.
 // Overheal: sprite RS<set 1-5><pips 0-4>, frames A..T = 5..100 %% of the strip.
 // Markers: sprite RSYZ, frames A..O = bit mask 1..15 (1 hooked, 2 stunned, 4 locked, 8 gripped).
+// Status: sprite RSYF, frame A frozen, B held (right of the bar).
 
 Sprite "RSYAA0", 112, 11
 {
@@ -4144,4 +4145,14 @@ Sprite "RSYZO0", 40, 9
 	Patch "RQK2", 21, 0
 	Patch "RQK3", 11, 0
 	Patch "RQK4", 1, 0
+}
+Sprite "RSYFA0", 38, 9
+{
+	Offset 0, 7
+	Patch "RQS1", 29, 0
+}
+Sprite "RSYFB0", 38, 9
+{
+	Offset 0, 7
+	Patch "RQS2", 29, 0
 }

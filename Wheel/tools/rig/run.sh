@@ -13,7 +13,7 @@ RIG=${QZ_RIG:-$WHEEL/../../rsq_weapondepot/tools/rig/bin}
 IWAD=${IWAD:-$WHEEL/../../gamedata/freedoom2.wad}
 ( cd "$WHEEL" && rm -f "$B/RSQ_Wheel.pk3" && zip -q -r -X "$B/RSQ_Wheel.pk3" zscript.txt MAPINFO.txt CVARINFO.txt KEYCONF \
 	MENUDEF.txt SNDINFO.txt MODELDEF.txt TEXTURES.txt WRPALS.txt WRFONTS.txt VOXELDEF.txt CREDITS.txt zscript sounds models graphics sprites voxels 2>/dev/null )
-( cd "$HERE/probe" && rm -f "$B/probe.pk3" && zip -q -r -X "$B/probe.pk3" . )
+( cd "$HERE/${PROBE:-probe}" && rm -f "$B/probe.pk3" && zip -q -r -X "$B/probe.pk3" . )   # PROBE=prof: the cost probe
 D="$B/shots/$NAME"; rm -rf "$D"; mkdir -p "$D"
 # BD=1 loads the owner's Brutal Doom order first, from the game data folder beside the IWAD:
 # brutal22test6 -> BD_VoxelPack -> BD22_VR-Reloaded_2_0_3h -> its 2.0.3ha hotfix, then the wheel.

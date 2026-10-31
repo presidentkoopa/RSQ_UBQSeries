@@ -54,6 +54,7 @@ OptionMenu "RSQTHP_Options"
 	Option "Allow Stealth", "rsqthp_stealth", "OnOff"
 	Option "Overheal", "rsqthp_overheal", "OnOff"
 	Option "Markers", "rsqthp_markers", "OnOff"
+	Option "Aimed Only", "rsqthp_aimed", "OnOff"
 	StaticText " "
 	Submenu "Tuning and Debug", "RSQTHP_Tuning"
 }

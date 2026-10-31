@@ -696,8 +696,18 @@ class wr_Buzz : Actor
 	States { Spawn: TNT1 A 40; Stop; }
 }
 
+// THE LINEATTACK PULSE'S PUFF. LAF_NOINTERACT guarantees a puff and hands it back (p_map.cpp:4930-4937), so it must
+// be inert: one state, nothing drawn, nothing touched (RSQ DistanceGrab's RSQDG_NullPuff).
+class wr_NullPuff : Actor
+{
+	Default { +NOINTERACTION +NOBLOCKMAP +NOGRAVITY +NOTELEPORT +DONTSPLASH +NOTONAUTOMAP RenderStyle "None"; Radius 1; Height 1; }
+	States { Spawn: TNT1 A 1; Stop; }
+}
+
 class wr_VR play
 {
+	const PULSE_MS = 150;      // the LineAttack pulse's length (p_map.cpp:4764-4769)
+
 	// LEFT-HANDED IS THE ENGINE'S SETTING: vr_control_scheme >= 10 (as RSQ ShieldSaw reads it).
 	static clearscope bool LeftHanded()
 	{
@@ -710,6 +720,26 @@ class wr_VR play
 	{
 		let mo = players[consoleplayer].mo;
 		if (!mo || intensity <= 0) return;
+		// THE QUAKE ROUTE NEEDS vr_quake_haptic_level > 0 (r_utility.cpp:1085, a user cvar, 0.8 by default). Zeroed,
+		// every click, thump and warning of the ring went silent (Quest teardown apply/07 7.3, owner's pick 39). Then
+		// the other route: P_LineAttack buzzes the firing hand off its damage argument alone, gated only on
+		// vr_enable_haptics, before it traces anything (p_map.cpp:4762-4769; 99_OVERLOOKED 1a, "The other route").
+		// A flat 150 ms at 0.8 (literals in the engine) -- not shaped by the gun's weight, but felt. Hand 0/1 is the
+		// engine's main/off: LAF_ISOFFHAND, and the engine applies vr_control_scheme itself (p_map.cpp:4765-4767), as
+		// RSQ DistanceGrab's feel.zs Fire() does. While the channel is still busy a new pulse is not sent (the Quest
+		// runtime drops it anyway), so a fast sweep across the cards ticks in rhythm instead of one long buzz.
+		let qc = CVar.FindCVar('vr_quake_haptic_level');
+		if (!qc || qc.GetFloat() <= 0.0)
+		{
+			int hd = hand == 1 ? 1 : 0;
+			let st = wr_VRState.Get();
+			int now = MSTime();
+			if (st && now < st.mPulseBusy[hd]) return;
+			mo.LineAttack(mo.angle, 0.1, 0, 1, 'None', "wr_NullPuff", LAF_NOINTERACT | (hd == 1 ? LAF_ISOFFHAND : 0));
+			if (st) st.mPulseBusy[hd] = now + PULSE_MS;
+			if (st) st.mPulses++;
+			return;
+		}
 		let q = wr_Buzz(Actor.Spawn("wr_Buzz", mo.pos));
 		if (!q) return;
 		bool mainIsRight = !LeftHanded();
@@ -782,6 +812,8 @@ class wr_VRState : EventHandler
 	Actor  mBeam[2];
 	wr_LookState mLook;      // the palette and font set in force (wr_q_look.zs)
 	wr_VoxSize   mVox;       // pickup voxel sizes, read once (wr_q_vox.zs)
+	transient int mPulseBusy[2];   // MSTime a LineAttack pulse on that hand ends (wr_VR.VRHaptic, quake haptics at 0)
+	transient int mPulses;         // LineAttack pulses sent (the rig probe reads it)
 
 	static wr_VRState Get() { return wr_VRState(EventHandler.Find("wr_VRState")); }
 

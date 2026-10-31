@@ -1,0 +1,96 @@
+version "4.10"
+// TEST ONLY (never ships): what a tic of play costs with a crowd, ring closed vs open (Quest teardown apply/07 8.1).
+// wrp_First is static, so its WorldTick runs before every level handler (the Wheel's wr_Rig and wr_BB included);
+// wrp_Probe's runs after them (its MAPINFO loads last); wrp_Late is a thinker at statnum 120, after every actor.
+//   handlers = Probe - First  (every mod's WorldTick, the ring's layout and hit tests)
+//   thinkers = Late - Probe   (every actor: the crowd, the ring's quads)
+// Spawns wrp_n monsters at tic 10, opens the ring at wrp_open (netevent wr_toggle_any) and samples
+// [wrp_open - 220, wrp_open - 20] closed and [wrp_open + 20, wrp_open + 220] open. One line per phase:
+//   WRP closed|open tics <n> handlers <ms/tic> thinkers <ms/tic> total <ms/tic> actors <n> quads <n>
+class wrp_First : StaticEventHandler
+{
+	double t0;
+	override void WorldTick() { t0 = MSTimeF(); }
+	static wrp_First Get() { return wrp_First(StaticEventHandler.Find("wrp_First")); }
+}
+
+class wrp_Probe : EventHandler
+{
+	double t1;
+	double hSum[2], tSum[2];
+	int n[2];
+	static int CI(Name nm, int d) { let c = CVar.FindCVar(nm); return c ? c.GetInt() : d; }
+
+	override void WorldLoaded(WorldEvent e) { let l = new("wrp_Late"); l.ChangeStatNum(120); }
+
+	override void WorldTick()
+	{
+		t1 = MSTimeF();
+		let pmo = players[consoleplayer].mo;
+		if (!pmo) return;
+		int t = level.maptime;
+		int op = CI('wrp_open', 400);
+		if (t == 10) Crowd(pmo, CI('wrp_n', 80));
+		if (t == op) EventHandler.SendNetworkEvent("wr_toggle_any");
+		if (t == op + 230)
+		{
+			for (int k = 0; k < 2; k++)
+			{
+				int c = max(1, n[k]);
+				int acts = 0, quads = 0;
+				let it = ThinkerIterator.Create("Actor");
+				Actor a;
+				while (a = Actor(it.Next())) { acts++; if (a is "wr_BBQuad") quads++; }
+				Console.Printf("WRP %s tics %d handlers %.3f thinkers %.3f total %.3f actors %d quads %d", k ? "open" : "closed",
+					n[k], hSum[k] / c, tSum[k] / c, (hSum[k] + tSum[k]) / c, acts, quads);
+			}
+		}
+	}
+
+	void Sample(double t2)
+	{
+		let f = wrp_First.Get();
+		if (!f) return;
+		int t = level.maptime, op = CI('wrp_open', 400);
+		int k = -1;
+		if (t >= op - 220 && t < op - 20) k = 0;
+		else if (t >= op + 20 && t < op + 220) k = 1;
+		if (k < 0) return;
+		if (k == 1)
+		{
+			let it = ServiceIterator.Find("wr_RigService");
+			let s = it.Next();
+			if (!s || s.GetInt("IsOpen") != 1) return;
+		}
+		hSum[k] += t1 - f.t0;
+		tSum[k] += t2 - t1;
+		n[k]++;
+	}
+
+	void Crowd(Actor pmo, int want)
+	{
+		static const Name kinds[] = { 'DoomImp', 'ZombieMan', 'ShotgunGuy', 'Demon', 'ChaingunGuy' };
+		int made = 0;
+		for (int i = 0; i < want * 20 && made < want; i++)
+		{
+			Vector3 at = pmo.Pos + (frandom(-1400, 1400), frandom(-1400, 1400), 0);
+			if ((at.xy - pmo.Pos.xy).Length() < 200) continue;
+			let a = Actor.Spawn(kinds[made % 5], at, ALLOW_REPLACE);
+			if (!a) continue;
+			a.SetZ(a.floorz);
+			if (!level.IsPointInLevel(a.Pos) || !a.TestMobjLocation() || a.ceilingz - a.floorz < a.Height) { a.Destroy(); continue; }
+			made++;
+		}
+		Console.Printf("WRP crowd %d", made);
+	}
+}
+
+class wrp_Late : Thinker
+{
+	override void Tick()
+	{
+		double t2 = MSTimeF();
+		let p = wrp_Probe(EventHandler.Find("wrp_Probe"));
+		if (p) p.Sample(t2);
+	}
+}

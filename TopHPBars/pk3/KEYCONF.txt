@@ -1,1 +1,1 @@
-alias rsqthp_reset "resetcvar rsqthp_on; resetcvar rsqthp_scheme; resetcvar rsqthp_scale; resetcvar rsqthp_far; resetcvar rsqthp_offset; resetcvar rsqthp_bright; resetcvar rsqthp_stealth; resetcvar rsqthp_overheal; resetcvar rsqthp_markers"
+alias rsqthp_reset "resetcvar rsqthp_on; resetcvar rsqthp_scheme; resetcvar rsqthp_scale; resetcvar rsqthp_far; resetcvar rsqthp_offset; resetcvar rsqthp_bright; resetcvar rsqthp_stealth; resetcvar rsqthp_overheal; resetcvar rsqthp_markers; resetcvar rsqthp_aimed"

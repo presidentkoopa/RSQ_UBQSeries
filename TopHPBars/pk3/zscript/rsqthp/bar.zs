@@ -32,7 +32,7 @@ class RSQTHP_Bar : Actor
 {
 	Actor who;
 	RSQTHP_Handler h;
-	RSQTHP_Part over, mark;
+	RSQTHP_Part over, mark, stat;
 	int lastHp, lastMax, lastVer;
 	bool lastInv, built;
 	int lastSpr, lastFrm;
@@ -41,6 +41,9 @@ class RSQTHP_Bar : Actor
 	bool haveTop;
 	bool low;               // in the low band of a colour-blind set: pulses
 	int markPhase, markBits;
+	int statNow, lastFt;    // frozen / held icon (1 frozen, 2 held), and the freezetics seen last tic
+	int aimTic;             // Aimed Only: the last tic a hand's gun pointed at this bar's monster
+	bool aimMade;           // made only because it was aimed at (full health): goes when the aim has left
 	bool champ;             // carries Champions' icon: lifted above it
 
 	Default
@@ -67,6 +70,7 @@ class RSQTHP_Bar : Actor
 	{
 		if (over) over.Destroy();
 		if (mark) mark.Destroy();
+		if (stat) stat.Destroy();
 		Super.OnDestroy();
 	}
 
@@ -74,6 +78,13 @@ class RSQTHP_Bar : Actor
 	override void Tick()
 	{
 		if (!who || who.health <= 0 || !h) { Destroy(); return; }
+		// A bar the aim made over an unhurt monster goes once the aim has left it (or Aimed Only is off): an unhurt
+		// monster has no bar otherwise, and turning the option off must not leave full bars standing.
+		if (aimMade)
+		{
+			if (who.health != who.SpawnHealth()) aimMade = false;
+			else if (!h.aimedOnly || level.maptime - aimTic > RSQTHP_Handler.AIM_LINGER) { Destroy(); return; }
+		}
 		Update();
 	}
 
@@ -132,7 +143,19 @@ class RSQTHP_Bar : Actor
 		bool hide = false;
 		if (who.player && who == players[consoleplayer].mo && players[consoleplayer].camera == who && !(who.player.cheats & CF_CHASECAM))
 			hide = true;
+		// Aimed Only: only while a hand's gun points at it, and AIM_LINGER tics after
+		if (h.aimedOnly && level.maptime - aimTic > RSQTHP_Handler.AIM_LINGER) hide = true;
 		bInvisible = hide;
+
+		// ---- frozen / held, every tic (a hit-stop lasts 3 to 6 tics) ------------------------------
+		int st = h.markers ? StatusOf() : 0;
+		if (st != statNow)
+		{
+			statNow = st;
+			if (st && !stat) stat = RSQTHP_Part(Spawn("RSQTHP_Part", Pos, NO_REPLACE));
+			if (!st && stat) { stat.Destroy(); stat = null; }
+			if (stat) { stat.sprite = h.sprStat; stat.frame = st - 1; }
+		}
 
 		// ---- the series' markers, every 4th tic ---------------------------------------------------
 		if (((level.maptime + markPhase) & 3) == 0)
@@ -147,6 +170,25 @@ class RSQTHP_Bar : Actor
 			}
 		}
 		SyncParts();
+	}
+
+	// 0 nothing, 1 frozen (freezetics counting: a hit-stop), 2 held (RSQ DistanceGrab's Headlock or human shield:
+	// near.zs sets freezetics = 2 every tic before the thinkers run, so the count seen here stands still, and it
+	// borrows NOGRAVITY and FORCEINFIGHTING for the hold -- read against the class defaults, so a flyer that has
+	// NOGRAVITY of its own still needs the other). Read from the monster alone: nothing links to DistanceGrab.
+	int StatusOf()
+	{
+		int ft = who.freezetics, prev = lastFt;
+		lastFt = ft;
+		if (ft <= 0) return 0;
+		if (ft == prev)
+		{
+			let def = GetDefaultByType(who.GetClass());
+			if ((who.bFORCEINFIGHTING && !def.bFORCEINFIGHTING) || (who.bNOGRAVITY && !def.bNOGRAVITY)) return 2;
+			return 1;           // re-asserted by something else: frozen all the same
+		}
+		if (ft == prev - 1) return 1;   // counting down: a hit-stop
+		return statNow;     // its first tic, or topped up: one more tic tells which (no one-tic wrong icon)
 	}
 
 	void BuildFrame(int hp, int mx, bool inv)
@@ -179,6 +221,7 @@ class RSQTHP_Bar : Actor
 	{
 		if (over) SyncPart(over);
 		if (mark) { SyncPart(mark); mark.Scale = Scale * 2 * RSQTHP_A11y.Cue(); }   // icons at twice the bar's scale: readable (x RSQ_Accessibility's Cue Size)
+		if (stat) { SyncPart(stat); stat.Scale = Scale * 2 * RSQTHP_A11y.Cue(); }
 	}
 
 	void SyncPart(RSQTHP_Part p)
@@ -242,7 +285,7 @@ class RSQTHP_SpriteNames : Actor
 {
 	States
 	{
-		RSYA A 0; RSYB A 0; RSYC A 0; RSYD A 0; RSYE A 0; RSYZ A 0;
+		RSYA A 0; RSYB A 0; RSYC A 0; RSYD A 0; RSYE A 0; RSYZ A 0; RSYF A 0;
 		RS10 A 0; RS11 A 0; RS12 A 0; RS13 A 0; RS14 A 0;
 		RS20 A 0; RS21 A 0; RS22 A 0; RS23 A 0; RS24 A 0;
 		RS30 A 0; RS31 A 0; RS32 A 0; RS33 A 0; RS34 A 0;

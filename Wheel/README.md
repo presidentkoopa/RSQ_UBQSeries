@@ -25,7 +25,8 @@ The ring only. REMA's honeycomb and star chart stay in REMA.
 - **Sheet:** with ModelSwapper's shelf, the trigger on the sheet swaps to the Models page.
 - **The wrist card.** Bring a forearm up across your chest as if checking a watch: that hand's gun
   shows its card over the wrist -- rounds, reserve, kills and hit rate, Gun Bonsai level.
-- The ring holds you still while it is up and, with **RSQ SlowMo** loaded, slows the world.
+- The ring holds you still while it is up and, with **RSQ SlowMo** loaded, slows the world. Without SlowMo
+  time runs on, unless **Stop Time Without SlowMo** (`wr_own_freeze`, off) is on: then the ring freezes the world itself.
 - It swings round to stay in front of you if you turn away (*Ring follows past*).
 - Each card's tick in the controller is shaped by the gun's weight: light pistol, heavy BFG.
 - Settings: Options → Radiant Silvergun Options → RSQ Wheel.
@@ -68,7 +69,8 @@ level and upgrades* on the Data sheet page turns it off), and a BONSAI level row
   the universal rows only. LegenDoom, DRLA, Combined Arms and Final Doomer read inventory and
   may still show theirs.
 - **No inventory page.** Removed, as REMA's work queue asked.
-- **Haptics** go through the quake-wave route (`vr_quake_haptic_level` above 0).
+- **Haptics** go through the quake-wave route (`vr_quake_haptic_level` above 0). At 0 they fall back to the
+  LineAttack pulse (a flat 150 ms tick on the same hand, gated only on `vr_enable_haptics`; teardown apply/07 7.3).
 
 ## Status
 
