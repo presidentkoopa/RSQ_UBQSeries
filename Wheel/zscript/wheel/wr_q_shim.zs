@@ -531,10 +531,16 @@ class wr_BB : EventHandler
 		}
 	}
 
+	static string Stone() { let c = CVar.FindCVar("wr_ring_art"); return (c && c.GetInt() == 1) ? "WRSTONE" : "WRESTONE"; }
+
 	static string PlateFor(wr_BBRec r)
 	{
 		double ar = r.w / max(r.h, 0.001);
-		return (ar > 4.0 || ar < 0.25) ? "WRSTONE" : "WRPLATE";
+		// wr_ring_art 0: the ring's own Ermac-style plates (tools/gen_ring_art.py); 1: the status bar's
+		let c = CVar.FindCVar("wr_ring_art");
+		bool sbar = c && c.GetInt() == 1;
+		if (ar > 4.0 || ar < 0.25) return sbar ? "WRSTONE" : "WRESTONE";
+		return sbar ? "WRPLATE" : "WREPLATE";
 	}
 
 	private void build(wr_BBRec r)
@@ -553,9 +559,9 @@ class wr_BB : EventHandler
 		case BB_BAR:
 		{
 			let tr = newPart(r, "wr_BBQuad", 0, 0, 1, 1, 0);           // track
-			if (tr) setSkin(tr, "WRSTONE");
+			if (tr) setSkin(tr, Stone());
 			double fill = clamp(r.data, 0, 100) / 100.0;
-			if (fill > 0) { let fl = newPart(r, "wr_BBQuad", -(1.0 - fill), 0, fill, 1, 0); if (fl) setSkin(fl, "WRSTONE"); }
+			if (fill > 0) { let fl = newPart(r, "wr_BBQuad", -(1.0 - fill), 0, fill, 1, 0); if (fl) setSkin(fl, Stone()); }
 			break;
 		}
 		case BB_TEXT:

@@ -42,6 +42,13 @@ OptionString "wr_FontSets"
 	"SmallGold", "Small gold numerals"
 	"SmallGrey", "Small grey numerals"
 	"DoomFont",  "DoomFont only"
+	"Ermac",     "Ermac's digits"
+}
+
+OptionValue "wr_RingArt"
+{
+	0, "Its own (Ermac style)"
+	1, "Status bar stone"
 }
 
 OptionValue "wr_WheelMode"
@@ -74,6 +81,7 @@ OptionMenu wr_Options
 	TextField "  or a palette by name",  "wr_palette"
 	Option "Font",                      "wr_fontset",      "wr_FontSets"
 	TextField "  or a font set by name", "wr_fontset"
+	Option "Ring plates",               "wr_ring_art",     "wr_RingArt"
 
 	StaticText "Feel", gold
 	// The rig is worn where you cannot comfortably look at it, so the ear and

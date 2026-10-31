@@ -10,3 +10,7 @@ fontset StatusBar  { words WRG 9 7   numbers WRD 14 16 }   // DoomFont words, th
 fontset SmallGold  { words WRG 9 7   numbers WRY 5 6 }     // the ammo table's small yellow numerals
 fontset SmallGrey  { words WRG 9 7   numbers WRN 5 6 }     // the arms panel's small grey numerals
 fontset DoomFont   { words WRG 9 7   numbers WRG 9 7 }     // DoomFont for everything
+
+// >>> WRERMAC (tools/gen_ring_art.py)
+fontset Ermac      { words WRG 9 7   numbers WRE 12 12 }   // DoomFont words, Ermac's digits (the default)
+// <<< WRERMAC

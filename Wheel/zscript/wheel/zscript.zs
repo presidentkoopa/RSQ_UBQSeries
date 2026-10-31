@@ -3257,12 +3257,17 @@ class wr_Rig : EventHandler
 
 	// Geometry generation. Bump this whenever the numbers below change and every
 	// existing config picks them up once, automatically.
-	const CFG_VERSION = 20;
+	const CFG_VERSION = 21;
 
 	private void migrateConfig()
 	{
 		let stamp = CVar.GetCVar("wr_cfgver", players[consoleplayer]);
 		if (stamp == null || stamp.GetInt() >= CFG_VERSION) return;
+
+		// Gen 21: the ring's own Ermac-style art (owner 2026-10-31: "why is my wheel ugly"). Ermac's digits
+		// for numbers; the plates follow wr_ring_art, new, so it needs no rewrite.
+		let fs = CVar.GetCVar("wr_fontset", players[consoleplayer]);
+		if (fs) fs.SetString("Ermac");
 
 		// Gen 20: auto-open OFF. It was on for all of development and the
 		// archived value in an existing config outlives any change to the

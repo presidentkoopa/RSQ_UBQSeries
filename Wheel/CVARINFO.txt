@@ -84,7 +84,7 @@ user float wr_pull_speed = 1.5;
 user float wr_throw_speed = 2.6;
 user int   wr_watch_dwell = 8;
 user float wr_watch_scale = 0.6;
-user string wr_fontset = "StatusBar";
+user string wr_fontset = "Ermac";
 user int  wr_doubletap = 10;
 
 // SCALE: vr_vunits_per_meter is 34, so one map unit is about 3cm. Every default
@@ -847,3 +847,4 @@ user float  wr_card_watch_up = -8;       // the watch card's own nudge (rig: -8 
 user float  wr_card_watch_side = 0;
 user int    wr_card_both_sides = 1;      // the watch card inside AND outside the grip
 user float  wr_card_out_turn = -40;      // how far round the hand the outside copy sits, degrees
+user int    wr_ring_art = 0;             // the ring's plates: 0 its own (Ermac style), 1 the status bar's stone
