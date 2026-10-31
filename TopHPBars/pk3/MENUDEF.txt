@@ -55,6 +55,10 @@ OptionMenu "RSQTHP_Options"
 	Option "Overheal", "rsqthp_overheal", "OnOff"
 	Option "Markers", "rsqthp_markers", "OnOff"
 	Option "Aimed Only", "rsqthp_aimed", "OnOff"
+	Option "Damage Chunk", "rsqthp_chunk", "OnOff"
+	Option "Ally Colour", "rsqthp_ally", "OnOff"
+	Option "Nearest 24 Only", "rsqthp_nearest", "OnOff"
+	Option "Distance Limit", "rsqthp_limit", "OnOff"
 	StaticText " "
 	Submenu "Tuning and Debug", "RSQTHP_Tuning"
 }
@@ -65,6 +69,7 @@ OptionMenu "RSQTHP_Tuning"
 	Slider "Size", "rsqthp_scale", 0.05, 1.0, 0.05, 2
 	Slider "Far Size", "rsqthp_far", 1.0, 3.0, 0.25, 2
 	Slider "Height", "rsqthp_offset", -0.5, 0.5, 0.05, 2
+	Slider "Limit Distance", "rsqthp_limitdist", 256, 4096, 128, 0
 	StaticText " "
 	SafeCommand "Reset All", "rsqthp_reset", "Reset all RSQ HP Bars settings?"
 }

@@ -14,3 +14,9 @@ server bool   rsqthp_markers  = true;   // hooked / stunned / locked / gripped i
                                       // held icon right of the bar (owner's picks 36, 37: on with the markers)
 server bool   rsqthp_aimed    = false;  // Aimed Only (owner's pick 35, an option): a bar only over the monster a hand's gun
                                       // points at (and half a second after the aim leaves it)
+// QoL round (owner's picks, 2026-10-31). HP6-HP9 are always on (bar.zs); these four are options, off by default:
+server bool   rsqthp_chunk    = false;  // HP1 Damage Chunk: what your hit took off stays lit half a second, then drains
+server bool   rsqthp_ally     = false;  // HP2 Ally Colour: friendly monsters (allies, Brutal Doom's marines) get a blue bar
+server bool   rsqthp_nearest  = false;  // HP3 Nearest 24: only the 24 bars nearest you are drawn
+server bool   rsqthp_limit    = false;  // HP4 Distance Limit: no bars farther than rsqthp_limitdist
+server float  rsqthp_limitdist = 1536;  // HP4: that distance, map units (Tuning)

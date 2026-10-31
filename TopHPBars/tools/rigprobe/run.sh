@@ -10,7 +10,9 @@ G=/home/claude/gamedata; RIG=/home/claude/rsq_weapondepot/tools/rig/bin
 NAME=$1; SECS=$2; SCRIPT=$3; shift 3
 D="$OUT/$NAME"; rm -rf "$D"; mkdir -p "$D"
 # OLDPROBE=1: the probe without the fields the pre-sweep pk3 lacks (bar.stat, handler.aim), for a "before" run
-P=$(mktemp -d); cp "$HERE"/MAPINFO.txt "$HERE"/CVARINFO.txt "$P"/; cp "$HERE/zscript${OLDPROBE:+_old}.txt" "$P/zscript.txt"
+# PROBE=qol: the QoL round's probe (zscript_qol.txt, handler THPQ2_Probe) instead
+P=$(mktemp -d); cp "$HERE"/MAPINFO.txt "$HERE"/CVARINFO.txt "$P"/; cp "$HERE/zscript${OLDPROBE:+_old}${PROBE:+_$PROBE}.txt" "$P/zscript.txt"
+[ "${PROBE:-}" = qol ] && echo 'GameInfo { AddEventHandlers = "THPQ2_Probe" }' > "$P/MAPINFO.txt"
 rm -f "$OUT/probe_$NAME.pk3"; (cd "$P" && zip -q -r -X "$OUT/probe_$NAME.pk3" zscript.txt MAPINFO.txt CVARINFO.txt); rm -rf "$P"
 QZ_DUMP_EVERY=${DUMP:-0} QZ_DUMP_DIR=$D EGL_PLATFORM=surfaceless LIBGL_ALWAYS_SOFTWARE=1 QZ_RES=${RES:-320} timeout "$SECS" \
   flock -o -x /home/claude/rig.lock $RIG/qz -iwad $G/doom2.wad -file $G/brutal22test6.pk3 $G/BD_VoxelPack.pk3 \

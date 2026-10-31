@@ -150,6 +150,13 @@ STATUS = [
   ('held',    (255, 150, 40), [    # a padlock
     '..#####..', '.#ooooo#.', '.#o#.#o#.', '#########', '#ooooooo#', '#ooo#ooo#', '#ooo#ooo#', '#ooooooo#', '#########']),
 ]
+# RAISED (owner's QoL pick HP8, 2026-10-31): an Arch-Vile brought it back. An upward arrow, a third shape, 9x9 again;
+# it stays for the monster's life, in the slot right of the status icon (frames C..E: raised alone / + frozen / + held).
+RAISED = ('raised', (200, 140, 255), [
+    '....#....', '...#o#...', '..#ooo#..', '.#ooooo#.', '###ooo###', '..#ooo#..', '..#ooo#..', '..#ooo#..', '..#####..'])
+# FRIENDLY (owner's QoL pick HP2, an option): coldcite's Red set (B) with red and blue swapped, so allies read blue
+# with his block texture and border kept. Sprite RSYG, frames as the main sets.
+FRIEND_SRC = 'B'
 
 def icon(rows, c):
     im = Image.new('RGBA', (9, 9), (0, 0, 0, 0)); px = im.load()
@@ -167,7 +174,8 @@ def main():
            '// Main bar: sprite RSY<set>, frames A..V = %s.' % ' '.join(LEVELS),
            '// Overheal: sprite RS<set 1-5><pips 0-4>, frames A..T = 5..100 %% of the strip.',
            '// Markers: sprite RSYZ, frames A..O = bit mask 1..15 (1 hooked, 2 stunned, 4 locked, 8 gripped).',
-           '// Status: sprite RSYF, frame A frozen, B held (right of the bar).', '']
+           '// Status: sprite RSYF, frame A frozen, B held, C raised, D frozen + raised, E held + raised (right of the bar).',
+           '// Friendly main bar: sprite RSYG (frames as RSYA). Damage chunk: sprite RSYH, frame A.', '']
     for si, sc in enumerate(SCHEMES):
         s = sc['set']
         for fi, lvl in enumerate(LEVELS):
@@ -200,6 +208,23 @@ def main():
         # centred on its height (offset y as the markers'). The sprite starts AT the bar's centre (offset 0) and the
         # icon sits 29 px into it: a negative x offset (-29, the icon alone) drew nothing on the rig.
         tex += ['Sprite "RSYF%s0", 38, 9' % FRAMES[k], '{', '\tOffset 0, 7', '\tPatch "RQS%d", 29, 0' % (k + 1), '}']
+    # raised: alone in the status slot (C), or one slot further right beside frozen (D) / held (E)
+    icon(RAISED[2], RAISED[1]).save(os.path.join(OUT, 'RQS3.png'))
+    tex += ['Sprite "RSYFC0", 38, 9', '{', '\tOffset 0, 7', '\tPatch "RQS3", 29, 0', '}']
+    for k in range(2):
+        tex += ['Sprite "RSYF%s0", 48, 9' % FRAMES[3 + k], '{', '\tOffset 0, 7', '\tPatch "RQS%d", 29, 0' % (k + 1),
+                '\tPatch "RQS3", 39, 0', '}']
+    # friendly set (HP2): coldcite's B with R and B swapped
+    for fi, lvl in enumerate(LEVELS):
+        lump = 'RQMF%s' % lvl
+        im = Image.open(os.path.join(SRC, 'HP_%s_%s.png' % (FRIEND_SRC, lvl))).convert('RGBA')
+        r, g, b, a = im.split()
+        Image.merge('RGBA', (b, g, r, a)).save(os.path.join(OUT, lump + '.png'))
+        tex += ['Sprite "RSYG%s0", 112, 11' % FRAMES[fi], '{', '\tOffset 56, 11', '\tPatch "%s", 0, 0' % lump, '}']
+    # damage chunk (HP1, an option): one white column the height of the bar's inside (rows 1..9); the bar stretches it
+    # across the lost health (bar.zs) and puts its left edge there, so the offset is x 0, y 10 (bar origin = bottom)
+    Image.new('RGBA', (1, 9), (255, 255, 255, 255)).save(os.path.join(OUT, 'RQCH.png'))
+    tex += ['Sprite "RSYHA0", 1, 9', '{', '\tOffset 0, 10', '\tPatch "RQCH", 0, 0', '}']
     open(TEX, 'w').write('\n'.join(tex) + '\n')
     print('wrote', len(os.listdir(OUT)), 'images and', TEX)
 

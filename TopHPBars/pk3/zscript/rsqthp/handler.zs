@@ -42,15 +42,23 @@
 // at, either hand -- a hitscan trace from the hand along its aim (teardown surveys/00 1.2 and 3.1: AttackPos /
 // OffhandPos, yaw AttackAngle + 90, pitch positive up; outside VR the view) -- and for AIM_LINGER tics after the
 // aim leaves it, so a shaky hand does not blink it. A monster aimed at gets its bar even at full health.
+//
+// QoL ROUND (owner's picks, 2026-10-31). On: HP6 length by toughness, HP7 hit flash, HP8 raised marker, HP9 fade in
+// (bar.zs). Options, off until turned on: HP1 damage chunk (rsqthp_chunk), HP2 ally colour (rsqthp_ally), HP3 nearest
+// 24 (rsqthp_nearest), HP4 distance limit (rsqthp_limit + rsqthp_limitdist). What a player's hit is: the damage's
+// source (a missile's shooter, as WorldThingDamaged hands it) is a player's own body.
 class RSQTHP_Handler : EventHandler
 {
 	// ---- settings, refreshed every tic -------------------------------------------------------
 	bool   on, overheal, markers, stealth, bright, aimedOnly;
+	bool   chunk, ally, nearest, limit;   // QoL options HP1..HP4
+	double limitDist;
 	int    scheme;          // effective: own setting, or RSQ_Accessibility's when it is on
 	int    set;             // art set 0..4 (A Classic, B Red, C protan+deutan, D tritan, E high contrast)
 	double scale, offset, far;
 	int    ver;             // bumps when the look changes, so bars rebuild their frame
 	transient CVar cOn, cScheme, cScale, cFar, cOffset, cBright, cStealth, cOver, cMark, cCB, cAim;
+	transient CVar cChunk, cAlly, cNear, cLimit, cLimitD;
 	transient bool cvFound;
 
 	// ---- sprites, looked up once -------------------------------------------------------------
@@ -58,7 +66,13 @@ class RSQTHP_Handler : EventHandler
 	transient int sprMain[5];
 	transient int sprOver[25];       // [set * 5 + pips]
 	transient int sprMark;
-	transient int sprStat;           // RSYF: A frozen, B held
+	transient int sprStat;           // RSYF: A frozen, B held, C raised, D frozen + raised, E held + raised
+	transient int sprAlly;           // RSYG: the friendly bar (HP2)
+	transient int sprChunk;          // RSYH: the damage chunk (HP1)
+
+	// ---- nearest 24 (HP3) ----------------------------------------------------------------------
+	const NEAR_N = 24;
+	bool anyCulled;
 
 	// ---- aimed only ----------------------------------------------------------------------------
 	const AIM_RANGE = 8192;
@@ -113,6 +127,11 @@ class RSQTHP_Handler : EventHandler
 		cOver = CVar.FindCVar('rsqthp_overheal');
 		cMark = CVar.FindCVar('rsqthp_markers');
 		cAim = CVar.FindCVar('rsqthp_aimed');
+		cChunk = CVar.FindCVar('rsqthp_chunk');
+		cAlly = CVar.FindCVar('rsqthp_ally');
+		cNear = CVar.FindCVar('rsqthp_nearest');
+		cLimit = CVar.FindCVar('rsqthp_limit');
+		cLimitD = CVar.FindCVar('rsqthp_limitdist');
 		cCB = null; { Name rsqaN = "RSQA_Menu"; class<Object> rsqaC = rsqaN; if (rsqaC) cCB = CVar.FindCVar("rsqa_colorblind"); }     // RSQ_Accessibility; null when it is not loaded
 	}
 
@@ -128,6 +147,8 @@ class RSQTHP_Handler : EventHandler
 		}
 		sprMark = Actor.GetSpriteIndex('RSYZ');
 		sprStat = Actor.GetSpriteIndex('RSYF');
+		sprAlly = Actor.GetSpriteIndex('RSYG');
+		sprChunk = Actor.GetSpriteIndex('RSYH');
 	}
 
 	private void FindServices()
@@ -200,6 +221,13 @@ class RSQTHP_Handler : EventHandler
 		on = o; scheme = sc; set = SetOf(sc); overheal = ov; bright = br;
 		markers = cMark ? cMark.GetBool() : true;
 		aimedOnly = cAim ? cAim.GetBool() : false;
+		chunk = cChunk ? cChunk.GetBool() : false;
+		bool al = cAlly ? cAlly.GetBool() : false;
+		if (al != ally) ver++;
+		ally = al;
+		nearest = cNear ? cNear.GetBool() : false;
+		limit = cLimit ? cLimit.GetBool() : false;
+		limitDist = cLimitD ? max(64.0, cLimitD.GetFloat()) : 1536;
 		stealth = cStealth ? cStealth.GetBool() : true;
 		scale = cScale ? cScale.GetFloat() : 0.3;
 		far = cFar ? max(1.0, cFar.GetFloat()) : 2.0;
@@ -253,10 +281,14 @@ class RSQTHP_Handler : EventHandler
 		if (coldItem) coldPending.Push(a);
 	}
 
+	// RAISED (HP8): a monster brought back gets its bar at once, with the raised marker for the rest of its life. In
+	// stock Doom only the Arch-Vile revives a monster (A_VileChase -> RaiseActor -> WorldThingRevived; the rig log shows
+	// it, HANDOFF.md); a player's resurrect is not a monster's and gets no marker.
 	override void WorldThingRevived(WorldEvent e)
 	{
 		let a = e.Thing;
 		if (!Eligible(a)) return;
+		if (!a.player && on) { let b = Ensure(a); if (b) b.raised = true; }
 		Track(a);
 		if (!coldChecked) CheckCold();
 		if (coldItem) coldPending.Push(a);
@@ -282,7 +314,12 @@ class RSQTHP_Handler : EventHandler
 	override void WorldThingDamaged(WorldEvent e)
 	{
 		let a = e.Thing;
-		if (a && a.health > 0 && Eligible(a)) Ensure(a);
+		if (!a || a.health <= 0 || !Eligible(a)) return;
+		let b = Ensure(a);
+		// a player's hit: the flash (HP7) and the chunk it took off (HP1)
+		Actor src = e.DamageSource;
+		if (!src && e.Inflictor) src = e.Inflictor.target;
+		if (b && src && src != a && src.player && src.player.mo == src) b.PlayerHit(a.health + max(0, e.Damage));
 	}
 
 	override void WorldTick()
@@ -303,6 +340,8 @@ class RSQTHP_Handler : EventHandler
 
 		aim[0] = null; aim[1] = null;
 		if (aimedOnly) TraceAims();
+		if (nearest) { if ((level.maptime & 3) == 0) CullFar(); }
+		else if (anyCulled) { anyCulled = false; for (int i = 0; i < bars.Size(); i++) if (bars[i]) bars[i].culled = false; }
 
 		// the poll: 1/16 of the list a tic
 		while (monBar.Size() < mons.Size()) monBar.Push(null);
@@ -323,6 +362,39 @@ class RSQTHP_Handler : EventHandler
 			if ((!b || b.who != a) && a.health != a.SpawnHealth()) monBar[pollAt] = Ensure(a);
 			pollAt++;
 		}
+	}
+
+	// NEAREST 24 (HP3): every 4th tic, the bars beyond the 24 nearest the viewer are marked culled (the bar hides
+	// itself, and fades in again when it is back among the 24).
+	private void CullFar()
+	{
+		let cam = players[consoleplayer].camera;
+		if (!cam) return;
+		Array<double> d;
+		for (int i = 0; i < bars.Size(); i++)
+			d.Push(bars[i] ? (bars[i].Pos - cam.Pos).Length() : 1e12);
+		double cut = 1e12;
+		if (bars.Size() > NEAR_N)
+		{
+			Array<double> s;
+			s.Copy(d);
+			for (int i = 1; i < s.Size(); i++)    // insertion sort: a few dozen bars
+			{
+				double v = s[i]; int j = i - 1;
+				while (j >= 0 && s[j] > v) { s[j + 1] = s[j]; j--; }
+				s[j + 1] = v;
+			}
+			cut = s[NEAR_N - 1];
+		}
+		int kept = 0;
+		for (int i = 0; i < bars.Size(); i++)
+		{
+			if (!bars[i]) continue;
+			bool c = d[i] > cut || (d[i] == cut && kept >= NEAR_N);
+			if (!c) kept++;
+			bars[i].culled = c;
+		}
+		anyCulled = true;
 	}
 
 	// AIMED ONLY: what each hand's gun points at. A hitscan from the hand along its aim, as a VR shot goes

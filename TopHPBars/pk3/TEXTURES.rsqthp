@@ -2,7 +2,8 @@
 // Main bar: sprite RSY<set>, frames A..V = XX 99 95 90 85 80 75 70 65 60 55 50 45 40 35 30 25 20 15 10 05 00.
 // Overheal: sprite RS<set 1-5><pips 0-4>, frames A..T = 5..100 %% of the strip.
 // Markers: sprite RSYZ, frames A..O = bit mask 1..15 (1 hooked, 2 stunned, 4 locked, 8 gripped).
-// Status: sprite RSYF, frame A frozen, B held (right of the bar).
+// Status: sprite RSYF, frame A frozen, B held, C raised, D frozen + raised, E held + raised (right of the bar).
+// Friendly main bar: sprite RSYG (frames as RSYA). Damage chunk: sprite RSYH, frame A.
 
 Sprite "RSYAA0", 112, 11
 {
@@ -4155,4 +4156,136 @@ Sprite "RSYFB0", 38, 9
 {
 	Offset 0, 7
 	Patch "RQS2", 29, 0
+}
+Sprite "RSYFC0", 38, 9
+{
+	Offset 0, 7
+	Patch "RQS3", 29, 0
+}
+Sprite "RSYFD0", 48, 9
+{
+	Offset 0, 7
+	Patch "RQS1", 29, 0
+	Patch "RQS3", 39, 0
+}
+Sprite "RSYFE0", 48, 9
+{
+	Offset 0, 7
+	Patch "RQS2", 29, 0
+	Patch "RQS3", 39, 0
+}
+Sprite "RSYGA0", 112, 11
+{
+	Offset 56, 11
+	Patch "RQMFXX", 0, 0
+}
+Sprite "RSYGB0", 112, 11
+{
+	Offset 56, 11
+	Patch "RQMF99", 0, 0
+}
+Sprite "RSYGC0", 112, 11
+{
+	Offset 56, 11
+	Patch "RQMF95", 0, 0
+}
+Sprite "RSYGD0", 112, 11
+{
+	Offset 56, 11
+	Patch "RQMF90", 0, 0
+}
+Sprite "RSYGE0", 112, 11
+{
+	Offset 56, 11
+	Patch "RQMF85", 0, 0
+}
+Sprite "RSYGF0", 112, 11
+{
+	Offset 56, 11
+	Patch "RQMF80", 0, 0
+}
+Sprite "RSYGG0", 112, 11
+{
+	Offset 56, 11
+	Patch "RQMF75", 0, 0
+}
+Sprite "RSYGH0", 112, 11
+{
+	Offset 56, 11
+	Patch "RQMF70", 0, 0
+}
+Sprite "RSYGI0", 112, 11
+{
+	Offset 56, 11
+	Patch "RQMF65", 0, 0
+}
+Sprite "RSYGJ0", 112, 11
+{
+	Offset 56, 11
+	Patch "RQMF60", 0, 0
+}
+Sprite "RSYGK0", 112, 11
+{
+	Offset 56, 11
+	Patch "RQMF55", 0, 0
+}
+Sprite "RSYGL0", 112, 11
+{
+	Offset 56, 11
+	Patch "RQMF50", 0, 0
+}
+Sprite "RSYGM0", 112, 11
+{
+	Offset 56, 11
+	Patch "RQMF45", 0, 0
+}
+Sprite "RSYGN0", 112, 11
+{
+	Offset 56, 11
+	Patch "RQMF40", 0, 0
+}
+Sprite "RSYGO0", 112, 11
+{
+	Offset 56, 11
+	Patch "RQMF35", 0, 0
+}
+Sprite "RSYGP0", 112, 11
+{
+	Offset 56, 11
+	Patch "RQMF30", 0, 0
+}
+Sprite "RSYGQ0", 112, 11
+{
+	Offset 56, 11
+	Patch "RQMF25", 0, 0
+}
+Sprite "RSYGR0", 112, 11
+{
+	Offset 56, 11
+	Patch "RQMF20", 0, 0
+}
+Sprite "RSYGS0", 112, 11
+{
+	Offset 56, 11
+	Patch "RQMF15", 0, 0
+}
+Sprite "RSYGT0", 112, 11
+{
+	Offset 56, 11
+	Patch "RQMF10", 0, 0
+}
+Sprite "RSYGU0", 112, 11
+{
+	Offset 56, 11
+	Patch "RQMF05", 0, 0
+}
+Sprite "RSYGV0", 112, 11
+{
+	Offset 56, 11
+	Patch "RQMF00", 0, 0
+}
+Sprite "RSYHA0", 1, 9
+{
+	Offset 0, 10
+	Patch "RQCH", 0, 0
 }
