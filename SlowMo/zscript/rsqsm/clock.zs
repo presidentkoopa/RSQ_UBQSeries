@@ -50,6 +50,7 @@ class RSQSM_Clock : EventHandler
 	double pulseDepth;
 	double adr;              // the adrenaline meter, 0..100
 	bool   rival;            // decided once per map
+	RSQSM_Smooth smooth;     // the walkers' step-spreader (smooth.zs), made on first use
 
 	// ---- the slowed actors (parallel arrays) -----------------------------------
 	Array<Actor>  act;
@@ -260,6 +261,8 @@ class RSQSM_Clock : EventHandler
 		Refresh();
 		if (running && (act.Size() == 0 || level.maptime % 17 == 0)) Gather();
 		Process();
+		// the walkers' steps are spread by a thinker that runs after the actors (smooth.zs)
+		if (running && Cv("rsqsm_smooth", 1) != 0) smooth = RSQSM_Smooth.Ensure(smooth);
 		if (!running) ClearAll();     // back at full speed and every actor restored
 	}
 

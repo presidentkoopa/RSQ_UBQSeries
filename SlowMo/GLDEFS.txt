@@ -1,0 +1,10 @@
+// RSQ_SlowMo -- the colour drain (rsqsm_drain, off by default): a post-process pass on the 3D scene,
+// run per eye by QuestZDoom (the route RSQ_Accessibility's comfort vignette uses). Off until
+// RSQSM_Body.RenderOverlay enables it while time is slowed; rsqsmDrain is set every frame it is on.
+// The shader sits under models/rsqsm/ only because that is a folder this pack's build already ships.
+HardwareShader PostProcess scene
+{
+	Name "RSQSM_Drain"
+	Shader "models/rsqsm/rsqsm_drain.fp" 330
+	Uniform float rsqsmDrain
+}

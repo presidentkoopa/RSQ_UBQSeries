@@ -155,6 +155,12 @@ class RSQSM_Round : Actor
 		// A hitscan passes everything that is not shootable (columns, lamps, trees).
 		if (!victim.bSHOOTABLE) return 1;
 		if ((victim.bSPECTRAL && !bSPECTRAL) || (victim.bGHOST && bTHRUGHOST)) return 1;
+		// A player leaning out of its path (rsqsm_lean, body.zs): the gate says it passes him.
+		if (victim.player)
+		{
+			let body = RSQSM_Body.Get();
+			if (body && body.LeanDodges(self, victim)) return 1;
+		}
 		hit = victim;
 		int done = victim.DamageMobj(self, target, dmg, DamageType, DMG_USEANGLE, angle);
 		if (done > 0 && !victim.bNOBLOOD && !victim.bINVULNERABLE && !victim.bDORMANT)
@@ -179,6 +185,7 @@ class RSQSM_Round : Actor
 	// The closest approach to each player's head: a whiz past, a crack close by.
 	private void NearMisses()
 	{
+		if (target && target.player) return;     // a caught round thrown back (RSQSM_Thrown) is yours
 		for (int i = 0; i < MAXPLAYERS; i++)
 		{
 			if (!playeringame[i] || passed[i]) continue;

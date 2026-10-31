@@ -1,0 +1,8 @@
+// TEST ONLY. The rig's qzt_* hook (tools/rig engine glue): a pack-defined cvar overrides the controller.
+user string qzt_lhand = "";
+user float  qzt_lgrip = -1;
+user int    smt_mode = 0;        // 1 walk, 2 catch / throw / drop, 3 lean
+user string smt_class = "Demon"; // mode 1's walker
+user int    smt_dist = 600;      // mode 1: how far ahead it starts
+user int    smt_fire = 1;        // mode 2: 1 the probe fires RSQSM_Rounds itself, 0 wait for the shooter's own bullets
+user int    smt_walkhold = 0;    // mode 2: walk the pawn while the second round is held (walking is not a flick)

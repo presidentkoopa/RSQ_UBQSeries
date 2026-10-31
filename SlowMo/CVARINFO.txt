@@ -32,3 +32,17 @@ user bool  rsqsm_reload         = false; // a reload buys a moment of slow motio
 user int   rsqsm_reload_ms      = 1200;
 user int   rsqsm_reload_depth   = 40;    // percent speed
 user bool  rsqsm_haptics        = true;
+
+// ---- the owner's picks from the Quest teardown (2026-10-31): the body in slow motion (body.zs, smooth.zs)
+server bool  rsqsm_lean         = true;  // 26: leaning out of a slowed round's path makes it miss (10_TIME §4.6)
+server float rsqsm_lean_m       = 0.06;  // the head must be this far off its running baseline, metres
+server float rsqsm_lean_secs    = 2.0;   // the baseline follows the head over this long (a held lean stops counting)
+server bool  rsqsm_smooth       = true;  // 27: nearby walkers move a little every tic, not a step ~3 times a second (apply/05 §4)
+server float rsqsm_smooth_range = 1024;  // map units from a player
+server int   rsqsm_smooth_max   = 12;    // the nearest this many walkers
+user bool    rsqsm_catch        = false; // 25: an empty off hand with the grip held catches a slowed enemy bullet
+user float   rsqsm_catch_m      = 0.08;  // how close the hand must come, metres (the capsule between its last two samples)
+user float   rsqsm_flick        = 2.5;   // a flick this fast throws it back, metres a second (body frame)
+user string  rsqsm_catch_keys   = "443 436"; // the off-hand grip's raw keys (KEY_PAD_RTHUMB, KEY_PAD_DPAD_UP), as RSQ_DistanceGrab reads them
+user bool    rsqsm_drain        = false; // 28: colours drain while time is slowed (a post-process pass)
+user float   rsqsm_drain_amt    = 0.35;  // how much colour goes at full depth, 0..1
