@@ -108,11 +108,14 @@ class wr_DetailCard play
 
 	// ---- drawing ---------------------------------------------------------------------------------------------
 	// Put the ops on layers; layers past the ops are taken away. Only touches a layer whose state changed.
+	int copy;                   // 0 the inside card, 1 the outside copy (same ops, turned outboard)
+	double extraSide;           // degrees the outside copy is turned
+
 	void Sync(PlayerInfo p, Actor owner, double alpha, wr_GunCard gc)
 	{
-		int base = BASE0 + hand * 200;
+		int base = BASE0 + hand * 200 + copy * 400;
 		int n = min(ops.Size(), MAXL);
-		double side = (rolled ? gc.WatchNudge(false) : gc.Nudge(false)) * 4, up = (rolled ? gc.WatchNudge(true) : gc.Nudge(true)) * 4;
+		double side = ((rolled ? gc.WatchNudge(false) : gc.Nudge(false)) + extraSide) * 4 * (mir ? -1 : 1), up = (rolled ? gc.WatchNudge(true) : gc.Nudge(true)) * 4;
 		for (int i = 0; i < n; i++)
 		{
 			let o = ops[i];
@@ -140,7 +143,7 @@ class wr_DetailCard play
 	void Remove(PlayerInfo p)
 	{
 		if (laid <= 0 && sig == "") return;
-		int base = BASE0 + hand * 200;
+		int base = BASE0 + hand * 200 + copy * 400;
 		for (int i = 0; i < MAXL; i++) if (p.FindPSprite(base + i)) p.SetPSprite(base + i, null);
 		laid = 0;
 		sig = "";

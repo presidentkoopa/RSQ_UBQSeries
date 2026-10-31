@@ -85,7 +85,7 @@ class wr_GunCard : EventHandler
 	static wr_GunCard Get() { return wr_GunCard(EventHandler.Find("wr_GunCard")); }
 
 	private static double cv(string n, double f) { let c = CVar.FindCVar(n); return c ? c.GetFloat() : f; }
-	private static int ci(string n, int f) { let c = CVar.FindCVar(n); return c ? c.GetInt() : f; }
+	static int ci(string n, int f) { let c = CVar.FindCVar(n); return c ? c.GetInt() : f; }
 
 	// ---- what the card says ----------------------------------------------------------------------------
 	static bool HasMagazine(Weapon w)
@@ -219,7 +219,7 @@ class wr_GunCard : EventHandler
 			// the look changed: every live layer gets it again
 			item.mStyleSet = item.mStyle;
 			for (int id = L_FIRST; id <= L_LAST; id++) if (p.FindPSprite(id)) item.mPending.Push(id);
-			for (int id = wr_DetailCard.BASE0; id < wr_DetailCard.BASE0 + 400; id++) if (p.FindPSprite(id)) item.mPending.Push(id);
+			for (int id = wr_DetailCard.BASE0; id < wr_DetailCard.BASE0 + 800; id++) if (p.FindPSprite(id)) item.mPending.Push(id);
 		}
 
 		// WHICH CARD. Checking your watch with a gun shows that gun's watch card (wr_card_watch_tpl);
@@ -258,10 +258,10 @@ class wr_GunCard : EventHandler
 			mShow[hand] = clamp(mShow[hand] + (show[hand] ? step : -step), 0.0, 1.0);
 			Weapon w = gun[hand];
 			Actor owner = hand == 1 ? Actor(p.OffhandWeapon) : Actor(item);
-			if (mShow[hand] <= 0 || !w || !owner) { ClearHand(p, hand); Detail(hand).Remove(p); continue; }
+			if (mShow[hand] <= 0 || !w || !owner) { ClearHand(p, hand); Detail(hand).Remove(p); DetailOut(hand).Remove(p); continue; }
 			if (tpl[hand] == wr_DetailTemplates.T_AMMO)
 			{
-				Detail(hand).Remove(p);
+				Detail(hand).Remove(p); DetailOut(hand).Remove(p);
 				Draw(p, pmo, hand, owner, w, other[hand], other[hand] != null);
 			}
 			else
@@ -273,17 +273,42 @@ class wr_GunCard : EventHandler
 	}
 
 	// ---- the detailed card ---------------------------------------------------------------------------------
-	transient wr_DetailCard mDetail[2];
+	transient wr_DetailCard mDetail[2], mDetailOut[2];
 	wr_DetailCard Detail(int hand)
 	{
 		if (!mDetail[hand]) { mDetail[hand] = new("wr_DetailCard"); mDetail[hand].hand = hand; }
 		return mDetail[hand];
 	}
+	// the copy outboard of the grip (wr_card_both_sides): same layout, turned the other side of the hand
+	wr_DetailCard DetailOut(int hand)
+	{
+		if (!mDetailOut[hand]) { mDetailOut[hand] = new("wr_DetailCard"); mDetailOut[hand].hand = hand; mDetailOut[hand].copy = 1; }
+		return mDetailOut[hand];
+	}
+
+	// The panel for a gun: wr_card_style 1..18 is one of Ermac's for every gun; 0 gives each gun its own by
+	// its weapon slot, as in the mock-ups (slot 2 gold, 3 red, 4 grey, 5 green, 6 blue ...)
+	static const int SLOT_STYLE[] = { 2, 2, 4, 3, 1, 5, 16, 17, 12, 19 };   // Ermac's ammo_bg number per slot 0..9
+	static int StyleFor(PlayerInfo p, Weapon w)
+	{
+		int st = ci("wr_card_style", 0);
+		if (st > 0) return clamp(st, 1, wr_DetailStates.STYLES) - 1;
+		int slot = 0;
+		if (w)
+		{
+			bool found; int sl, idx;
+			[found, sl, idx] = p.weapons.LocateWeapon(w.GetClass());
+			if (found) slot = sl;
+		}
+		// Ermac's numbers skip 10: map the number to its place in the generated list
+		int num = wr_GunCard.SLOT_STYLE[clamp(slot, 0, 9)];
+		return num >= 10 ? num - 2 : num - 1;
+	}
 	private void DrawDetail(PlayerInfo p, PlayerPawn pmo, int hand, Actor owner, Weapon w, Weapon other, int tpl, bool watching)
 	{
 		let c = Detail(hand);
 		bool mir = Mirrored(p, hand);
-		int style = clamp(ci("wr_card_style", 5), 1, wr_DetailStates.STYLES) - 1;
+		int style = StyleFor(p, w);
 		string sig = wr_DetailTemplates.Signature(pmo, w, other, tpl, style) .. (mir ? " m" : "") .. String.Format(" %d", ci("wr_card_tint", 0));
 		bool rolled = watching && ci("wr_card_watch_roll", 1) > 0;
 		if (sig != c.sig || c.mir != mir || c.rolled != rolled)
@@ -306,6 +331,15 @@ class wr_GunCard : EventHandler
 			else wr_DetailTemplates.Single(c, pmo, hand, w, tpl == wr_DetailTemplates.T_COMPACT, style, panelCol, textCol);
 		}
 		c.Sync(p, owner, mShow[hand] * cv("wr_card_alpha", 0.85), self);
+		// the same card on the other side of the grip, while checking your watch
+		let o = DetailOut(hand);
+		if (watching && ci("wr_card_both_sides", 1))
+		{
+			o.ops.Copy(c.ops); o.mir = c.mir; o.rolled = c.rolled; o.sig = c.sig;
+			o.extraSide = cv("wr_card_out_turn", -40);
+			o.Sync(p, owner, mShow[hand] * cv("wr_card_alpha", 0.85), self);
+		}
+		else o.Remove(p);
 	}
 
 	// CHECKING YOUR WATCH with this hand: RSQ Gestures' inspect when that mod is loaded (palm-down twist),
@@ -357,7 +391,7 @@ class wr_GunCard : EventHandler
 		int tLow = low && ci("wr_card_lowwarn", 1) ? TransFor(wr_Look.Col(wr_Look.ROLE_COLS[7])) : -1;   // ammo_dry
 
 		// the panel
-		int style = clamp(ci("wr_card_style", 5), 1, wr_CardStates.STYLES) - 1;
+		int style = StyleFor(p, w);
 		Put(p, base + P_PANEL, Nth(wr_CardStates.Piece(0, mir), style), owner, alpha, tPanel);
 		// the label: MAGAZINE on a gun with one, AMMO otherwise (CHAMBER is there for a pack that wants it)
 		int lab = HasMagazine(w) ? 1 : 0;
@@ -434,7 +468,7 @@ class wr_GunCard : EventHandler
 	private void ClearAll(PlayerInfo p)
 	{
 		ClearHand(p, 0); ClearHand(p, 1);
-		Detail(0).Remove(p); Detail(1).Remove(p);
+		Detail(0).Remove(p); Detail(1).Remove(p); DetailOut(0).Remove(p); DetailOut(1).Remove(p);
 		Kill(p, L_FX);
 		mShow[0] = mShow[1] = 0;
 	}

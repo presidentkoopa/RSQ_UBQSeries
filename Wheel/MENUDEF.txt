@@ -597,9 +597,11 @@ OptionMenu wr_GunCards
 	Option "  Turned to read upright",   "wr_card_watch_roll", "OnOff"
 	Slider "  Watch card up / down",     "wr_card_watch_up",  -20, 20, 0.5, 1
 	Slider "  Watch card left / right",  "wr_card_watch_side", -20, 20, 0.5, 1
+	Option "  Both sides of the grip",   "wr_card_both_sides", "OnOff"
+	Slider "  Outside card, round the hand", "wr_card_out_turn", -80, 0, 1, 0
 	StaticText ""
 	StaticText "Look", gold
-	Slider "Panel style",                "wr_card_style",    1, 18, 1, 0
+	Slider "Panel (0 = each gun its own)", "wr_card_style",   0, 18, 1, 0
 	Option "Material",                   "wr_card_look",     "wr_CardLook"
 	Slider "  Strength",                 "wr_card_alpha",    0.1, 1.0, 0.05, 2
 	Option "Colours",                    "wr_card_tint",     "wr_CardTint"
