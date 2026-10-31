@@ -94,6 +94,23 @@ server bool  ssq_bash_los       = true;   // the bash and the grind cannot reach
 server float ssq_bash_sustain   = 0.6;    // how much of a sustained push counts as a bash (0 = fast shoves only)
 server float ssq_bash_knock     = 1.35;   // how far a bashed body goes
 server float ssq_bash_lift      = 2.5;    // the small lift under the shove, so they leave the floor
+// WALL SLAM (owner's pick 12, 2026-10-31; Quest teardown surveys/01_MELEE.md 4.7): a body the bash throws into a
+// wall hits it -- extra damage by how hard it struck, a forced pain and a short freeze (stunned), a small rebound
+server bool  ssq_slam           = true;
+server float ssq_slam_damage    = 1.0;    // scale on the slam's damage (2 x impact speed in units/tic, 5..40)
+server float ssq_slam_min       = 3.0;    // units/tic INTO the wall below which a stop is a bump, not a slam (01_MELEE 4.7: 3.0)
+server int   ssq_slam_stun      = 8;      // tics the slammed body is frozen in its pain frame
+// HIT-STOP (pick 13, off by default; 01_MELEE 3.6): a bash or a perfect block freezes the monster for a beat
+server bool  ssq_hitstop        = false;
+server int   ssq_hitstop_tics   = 4;      // 01_MELEE 3.6: 3 is a tap, 6 a heavy, 10 reads as a bug
+// PERFECT-BLOCK SLOW MOTION (pick 14, off by default; apply/05_SLOWMO.md 8): half a second through RSQ SlowMo's
+// rsm_pulse. Nothing hears it when SlowMo is not loaded.
+server bool  ssq_perfect_slowmo = false;
+// SABER-AND-SHIELD STANCE (pick 15; surveys/07_SHIELDS_PARRY.md 4.12): RSQ Saber's lit blade in the main hand
+// resting across the plate's front widens the block. Without the saber nothing changes.
+server bool  ssq_brace          = true;
+server float ssq_brace_widen    = 1.3;    // the block's radius while braced, as a multiple
+server float ssq_brace_gap      = 15.0;   // cm in front of the face the blade may rest and still count
 
 // ---- the plate: where the disc is, in the off controller's frame, cm -------------
 // F forward along the controller, L to the controller's left, U up. Defaults measured from

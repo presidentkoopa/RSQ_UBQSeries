@@ -204,7 +204,7 @@ class SSQ_Guard : Inventory
 			plateHeld = 1;
 			plateC = PlateCentre(mo, pose, false);
 			plateN = PlateNormal(mo, pose, false);
-			plateR = PlateRadius(saw && saw.Revved(), GrowK());
+			plateR = PlateRadius(saw && saw.Revved(), GrowK()) * BraceK(h, pnum);
 			return true;
 		}
 		if (st == SSQ_Handler.SS_STOWED && SSQ_Handler.SVI('ssq_guard_stowed', 0) != 0 && saw)
@@ -216,6 +216,26 @@ class SSQ_Guard : Inventory
 			return true;
 		}
 		return false;
+	}
+
+	// SABER OVER SHIELD (pick 15, surveys/07_SHIELDS_PARRY.md 4.12): while the player's lit saber rests across
+	// the plate's front the BLOCK is wider. The stance is decided on the player's own machine from the raw hand
+	// fields (SSQ_Handler.SendBrace) and arrives here as a network event, so every machine reads the same flag.
+	// The grind and the bash keep the plain plate: the stance is a guard, not a bigger blade.
+	static clearscope double BraceK(SSQ_Handler h, int pnum)
+	{
+		if (!h || pnum < 0 || pnum >= MAXPLAYERS || !h.mBraced[pnum]) return 1.0;
+		if (SSQ_Handler.SVI('ssq_brace', 1) == 0) return 1.0;
+		return clamp(SSQ_Handler.SV('ssq_brace_widen', 1.3), 1.0, 2.0);
+	}
+
+	// HIT-STOP (pick 13, off by default; surveys/01_MELEE.md 3.6): the monster stops dead for a beat --
+	// freezetics halts its whole Tick, movement and states. Never a player (their hands keep moving).
+	static void HitStop(Actor t)
+	{
+		if (!t || t.player || t.health <= 0) return;
+		if (SSQ_Handler.SVI('ssq_hitstop', 0) == 0) return;
+		t.freezetics = max(t.freezetics, clamp(SSQ_Handler.SVI('ssq_hitstop_tics', 4), 1, 10));
 	}
 
 	// ---- the block ----------------------------------------------------------------------
@@ -299,6 +319,17 @@ class SSQ_Guard : Inventory
 		}
 		// a scorer may ask about this block, and whether it was perfect (score.zs)
 		{ let sh = SSQ_Handler.Get(); if (sh && sh.score) sh.score.Blocked(source, perfect); }
+		if (perfect && source && Level.maptime != lastBlockTic)
+		{
+			HitStop(source);
+			// PERFECT-BLOCK SLOW MOTION (pick 14, off by default; apply/05_SLOWMO.md 8): half a second through
+			// RSQ SlowMo's own pulse, at the depth RS_Score's big kills use (Score handler.zs PULSE_DEPTH 35).
+			// Sent from the blocker's own machine only, so a netgame gets one event; absent SlowMo hears nothing.
+			if (SSQ_Handler.SVI('ssq_perfect_slowmo', 0) != 0 && mo.PlayerNumber() == consoleplayer)
+				EventHandler.SendNetworkEvent("rsm_pulse", 500, 35);
+			if (SSQ_Handler.UVI(mo.player, 'ssq_debug', 0))
+				Console.Printf("ssq: perfect block of %s, hitstop %d slowmo %d", source.GetClassName(), SSQ_Handler.SVI('ssq_hitstop', 0), SSQ_Handler.SVI('ssq_perfect_slowmo', 0));
+		}
 
 		bool fb = SSQ_Handler.UVI(mo.player, 'ssq_feedback', 1) != 0;
 		int now = Level.maptime;
@@ -666,7 +697,7 @@ class SSQ_Guard : Inventory
 		Vector3 n = PlateNormal(mo, pose, false);
 		double R = PlateRadius(saw.Revved(), g.GrowK());
 
-		if (SSQ_Handler.UVI(p, 'ssq_debug_ring', 0) != 0) g.Ring(mo, C, n, R, pose);
+		if (SSQ_Handler.UVI(p, 'ssq_debug_ring', 0) != 0) g.Ring(mo, C, n, R * BraceK(SSQ_Handler.Get(), mo.PlayerNumber()), pose);
 
 		if (g.bashCool > 0) g.bashCool--;
 		// EVERY TIC NOW, CAPPED PER BODY. The tic gate that used to stand on this line
@@ -804,7 +835,19 @@ class SSQ_Guard : Inventory
 					t.vel.z += SSQ_Handler.SV('ssq_bash_lift', 2.5) * mk * (t.player ? 0.5 : 1.0);
 				SSQ_FX.At(mo, C + n * (t.radius * 0.5), "ssq/bash", CHAN_5);
 				SSQ_FX.Buzz(mo, 1.0, 8);
+				// A BASH THAT LANDS READS (owner 2026-10-31: "a little more visual feedback"). It had a sound and
+				// a buzz and nothing to see. At the body's face toward the plate: a burst scaled by how hard you
+				// drove it, thrown along the bash, and the flash and bloom the block already uses (dimmed and
+				// rate-limited by Photosensitive Mode inside Sparks / BashBurst).
+				if (SSQ_Handler.UVI(p, 'ssq_feedback', 1) != 0)
+					SSQ_FX.BashBurst(mo, tc - n * min(max(along, 0.0), t.radius), n, eff);
 				g.bashCool = 10;
+				if (SSQ_Handler.UVI(p, 'ssq_debug', 0))
+					Console.Printf("ssq: BASH %s eff %.0f u/s (shove %.0f, path %.0f) dmg %d knock %.1f", t.GetClassName(), eff, shove, g.pushPath, dmg, knock);
+				HitStop(t);
+				// WALL SLAM (pick 12): watch where the shove takes it
+				let sh = SSQ_Handler.Get();
+				if (sh) sh.ArmSlam(t, mo.PlayerNumber());
 				// BATTERING RAM (Gun Bonsai): what was bashed is thrown into whatever stands behind it
 				if (upg && t.health > 0) upg.GetInt("ram", "", mo.PlayerNumber(), eff, t);
 			}

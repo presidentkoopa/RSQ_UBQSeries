@@ -57,7 +57,19 @@ it rings a tone higher, buzzes twice as long and blooms white at the contact poi
 
 **Bash**: drive the shield forward. Everything in front of it is hit, shoved and lifted off the
 floor. It reaches a fifth further than the grind does, because a shove is the whole shield with
-your arm behind it.
+your arm behind it. A bash that lands shows it: a small flash and a burst of sparks at the body,
+more the harder you drove it, with a streak thrown along the bash.
+
+**Wall slam**: bash something into a wall and it hits the wall — extra damage by how hard it struck,
+and it hangs there stunned in its pain frame for a moment before it comes off the wall.
+
+**Saber and shield** (with RSQ Saber in your main hand): rest the lit blade across the front of the
+shield and the block grows (x1.3 by default). Lift the blade off and it goes back. Without the saber
+nothing changes.
+
+Two extras are off by default (**Shield Options**): **Hit-Stop** freezes a bashed monster, or the
+one whose attack you perfectly blocked, for a beat; **Perfect Block Slow-Mo** gives half a second of
+slow motion on a perfect block through RSQ SlowMo (does nothing without it).
 
 ## Options
 
