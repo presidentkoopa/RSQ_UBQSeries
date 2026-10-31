@@ -96,7 +96,9 @@ class RSQGC_WorldCard play
 			// on the stub of the wrist (owner 03:10): behind the grip along the forearm, just above it. NOTE: the engine
 			// draws a held gun over the world (hw_models.cpp BeginDrawHUDModel depth range), so where the gun covers
 			// the wrist it covers this card too.
-			Vector3 c = hp - Fw * (9 + side + inCm) * u + (0, 0, (3 + up) * u * sc) + toEye * 2 * u;   // rsqgc_in: + toward you
+			// rsqgc_in: + toward you along the forearm; Left / Right: across your view (fixed 2026-10-31: it moved the
+			// card along the forearm, the same as In / Out, and `right` went unused)
+			Vector3 c = hp - Fw * (9 + inCm) * u + right * side * u * sc + (0, 0, (3 + up) * u * sc) + toEye * 2 * u;
 						Put(plate, c, 5 * sc * u, 4 * sc * u, 0);
 			Put(title, c + (0, 0, 1.3 * sc * u), 4.2 * sc * u, 0.7 * sc * u, 0.05);
 			Put(big, c + (0, 0, -0.1 * sc * u), 3.6 * sc * u, 1.6 * sc * u, 0.05);

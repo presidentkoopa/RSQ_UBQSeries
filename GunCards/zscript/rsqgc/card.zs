@@ -84,6 +84,9 @@ class RSQGC_GunCard : EventHandler
 
 	double mShow[2];           // 0..1 fade per hand
 	int mInspectTill[2];
+	int mReloadTill[2];        // "On Reload": shown until this tic (its own clock: a reload is not a watch check)
+	bool mWasWatch[2];         // the card a hand showed last was the watch card: it fades out as itself
+	double mTiltX[2], mTiltY[2];   // "Tilt to Your Eyes": the small card's turn this tic, psp units (TiltTo)
 	transient Array<int> mTransKey;
 	transient Array<int> mTransId;
 	transient Array<int> mLum;
@@ -210,12 +213,22 @@ class RSQGC_GunCard : EventHandler
 	}
 
 	// ---- seen or not -------------------------------------------------------------------------------------
-	// rsqgc_card: 0 off, 1 always, 2 when you look at the gun, 3 the inspect gesture (RSQ Gestures; without it, as 2)
+	// rsqgc_card: 0 off, 1 always, 2 when you look at the gun, 3 the inspect gesture (RSQ Gestures; without it, as 2),
+	// 4 on reload
 	private bool Wanted(PlayerPawn pmo, int hand)
 	{
 		int mode = ci("rsqgc_card", 1);
 		if (mode <= 0) return false;
 		if (mode == 1) return true;
+		if (mode == 4)
+		{
+			// ON RELOAD (owner's pick 41): while that hand's reload is held, and rsqgc_linger tics after. QZD 17.3 has a
+			// reload per hand (BT_MAINHANDRELOAD 1<<20, BT_OFFHANDRELOAD 1<<28) and the shared one (BT_RELOAD), which
+			// reloads both hands (p_pspr.cpp:103-115); teardown 00_CAPABILITIES 1.5.
+			int bits = BT_RELOAD | (hand == 1 ? BT_OFFHANDRELOAD : BT_MAINHANDRELOAD);
+			if (pmo.player.cmd.buttons & bits) mReloadTill[hand] = level.maptime + ci("rsqgc_linger", 35);
+			return level.maptime < mReloadTill[hand];
+		}
 		if (mode == 3)
 		{
 			int g = Inspect(pmo, hand);
@@ -409,6 +422,10 @@ class RSQGC_GunCard : EventHandler
 		{
 			double step = 1.0 / max(1, ci("rsqgc_fade", 4));
 			mShow[hand] = clamp(mShow[hand] + (show[hand] ? step : -step), 0.0, 1.0);
+			// FADING OUT, a card stays the card it was (fixed 2026-10-31: when a watch check ended, the watch card
+			// vanished at once and the small card flashed in for the fade's tics, even with Show Cards off)
+			if (show[hand]) mWasWatch[hand] = watching[hand];
+			bool full = watching[hand] || (!show[hand] && mWasWatch[hand]);
 			Weapon w = gun[hand];
 			Actor owner = hand == 1 ? Actor(p.OffhandWeapon) : Actor(item);
 			if (mShow[hand] <= 0 || !w || !owner) { World(hand).Hide(); ClearHand(p, hand); Side(hand).Remove(p); SideOf(hand, 1).Remove(p); continue; }
@@ -417,14 +434,14 @@ class RSQGC_GunCard : EventHandler
 				// in the world: no layers on the gun at all
 				ClearHand(p, hand); Side(hand).Remove(p); SideOf(hand, 1).Remove(p);
 				let wc = World(hand);
-				bool wantFull = watching[hand];
+				bool wantFull = full;
 				if (!wc.Shown() || wc.full != wantFull) wc.Show(pmo.pos, wantFull);
 				wc.Fill(pmo, w, CardColour(p, w));
 				wc.Place(pmo, cv("rsqgc_world_scale", 1.4), wantFull ? WatchNudge(true) : Nudge(true), wantFull ? WatchNudge(false) : Nudge(false), mShow[hand] * cv("rsqgc_alpha", 0.85), wantFull ? 0 : cv("rsqgc_in", 0));
 				continue;
 			}
 			World(hand).Hide();
-			if (watching[hand])
+			if (full)
 			{
 				// the watch card: the full card flat on both sides of the wrist (side.zs). Always on: the small card
 				// still shows as rsqgc_card says, beside it
@@ -500,6 +517,8 @@ class RSQGC_GunCard : EventHandler
 			tDigits = TransFor(RSQGC_Look.Role(RSQGC_Look.R_AMMO));
 		}
 		int tLow = low && ci("rsqgc_lowwarn", 1) ? TransFor(RSQGC_Look.Role(RSQGC_Look.R_AMMO_DRY)) : -1;
+		TiltTo(pmo, hand, mir);
+		mCurTilt = hand;
 
 		// the panel
 		int style = StyleFor(p, w);
@@ -550,10 +569,65 @@ class RSQGC_GunCard : EventHandler
 		if (!ps) return;
 		ps.bAddBob = false;
 		ps.bAddWeapon = false;
-		ps.x = cv("rsqgc_side", 0) * 4;        // degrees about the model origin
-		ps.y = 32 + cv("rsqgc_up", 0) * 4;
+		ps.x = cv("rsqgc_side", 0) * 4 + mTiltX[mCurTilt];        // degrees about the model origin
+		ps.y = 32 + cv("rsqgc_up", 0) * 4 + mTiltY[mCurTilt];
 		ps.alpha = alpha;
 		ps.Translation = trans >= 0 ? TranslationID(trans) : TranslationID(0);
+	}
+
+	// ---- TILT TO YOUR EYES (owner's pick 43, rsqgc_tilt) --------------------------------------------------
+	// The small card faces back along the forearm, so at many wrist angles it is seen edge-on. A layer's only per-tic
+	// freedom is two turns of its model about the model origin, psp.x (yaw about the hand's up, x/4 degrees) and
+	// psp.y (pitch about the hand's right, (y-32)/-4 degrees): hw_weapon.cpp:108, models.cpp:259-260; teardown
+	// 11_HUD_MODELS 5.3. Turning the card about that origin also carries it round it (the origin is 30 cm back and
+	// 5 cm up from the controller, models.cpp:227, so the card swings a few cm), hence the cap, rsqgc_tilt_max.
+	// The hand frame is the engine's (hw_openxrdevice.cpp GetHandTransform:440-458): x right, y up, -z the gun's
+	// facing, in true proportions (z times pixelstretch); the physical left hand is drawn mirrored in x
+	// (hw_vrmodes.cpp:468), which turns a yaw round. Card centre (tools/gen_cards.py CARD, model cm about the
+	// origin): 6.6 right, 11.3 down, 16.9 forward, moved back by rsqgc_in.
+	int mCurTilt;
+	void TiltTo(PlayerPawn pmo, int hand, bool mir)
+	{
+		mTiltX[hand] = 0; mTiltY[hand] = 0;
+		if (!ci("rsqgc_tilt", 0) || !pmo.OverrideAttackPosDir || !pmo.player) return;
+		double ps = level.pixelstretch;
+		double hYaw = hand == 1 ? pmo.OffhandAngle : pmo.AttackAngle;
+		double hPitch = hand == 1 ? pmo.OffhandPitch : pmo.AttackPitch;
+		double rl = hand == 1 ? pmo.OffhandRoll : pmo.AttackRoll;
+		Vector3 hp = hand == 1 ? pmo.OffhandPos : pmo.AttackPos;
+		// the hand's axes (world, true proportions): GetHandTransform's yaw hYaw, pitch hPitch, then roll -rl about the facing
+		Vector3 rt0 = (cos(hYaw), sin(hYaw), 0);
+		Vector3 up0 = (sin(hPitch) * sin(hYaw), -sin(hPitch) * cos(hYaw), cos(hPitch));
+		Vector3 rt = rt0 * cos(rl) - up0 * sin(rl);
+		Vector3 up = rt0 * sin(rl) + up0 * cos(rl);
+		Vector3 bk = -(cos(hPitch) * cos(hYaw + 90), cos(hPitch) * sin(hYaw + 90), sin(hPitch));     // toward the player along the hand
+		double cm = cv("vr_vunits_per_meter", 34) / 100.0;
+		double sx = mir ? -1 : 1;                                                // where the card sits: right of a main hand
+		Vector3 eye = (pmo.pos.xy, pmo.player.viewz);
+		Vector3 ox = (0, 5, 30);                                                 // the model origin, hand-local cm
+		Vector3 c0 = (6.6 * sx, -11.3, -16.9 + cv("rsqgc_in", 0));               // the card about it
+		double lim = clamp(cv("rsqgc_tilt_max", 20), 0, 60);
+		double a = 0, b = 0;
+		for (int it = 0; it < 3; it++)
+		{
+			// the card's centre with this turn (Ry(a) Rx(b), as the engine applies them), in the world
+			double y1 = c0.y * cos(b) - c0.z * sin(b), z1 = c0.y * sin(b) + c0.z * cos(b);
+			double x2 = c0.x * cos(a) + z1 * sin(a), z2 = -c0.x * sin(a) + z1 * cos(a);
+			Vector3 loc = ox + (x2, y1, z2);
+			Vector3 at = hp + (rt * loc.x + up * loc.y + bk * loc.z) * cm;     // true proportions about the hand
+			Vector3 to = eye - hp;
+			to.z *= ps;
+			to -= (at - hp);
+			double d = to.Length();
+			if (d < 1) return;
+			to /= d;
+			double ex = to dot rt, ey = to dot up, ez = to dot bk;
+			// the card's face (local +z) turned by Ry(a) Rx(b) is (cos b sin a, -sin b, cos b cos a)
+			b = clamp(-asin(clamp(ey, -1, 1)), -lim, lim);
+			a = clamp(atan2(ex, ez), -lim, lim);
+		}
+		mTiltX[hand] = (mir ? -a : a) * 4;   // a mirrored hand turns the other way
+		mTiltY[hand] = -b * 4;
 	}
 
 	// a layer just made: the helper gives it the card's look next tic
