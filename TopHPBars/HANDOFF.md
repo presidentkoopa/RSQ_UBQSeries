@@ -4,6 +4,29 @@ Rig: rig A (`/home/claude/scratch/run17A.sh`, the real QZD 17.3 binary, zscript 
 Every number below was measured there; the logs and frames are under `test/evidence/` (copies) and
 the scratchpad (`frames/<run>/`, `logsA/<run>.log`). Test runner: `test/run.sh <name> <secs> "<console>" <order>`.
 
+## Sweep 2026-10-31 (owner's picks 35, 36, 37) -- read first
+
+Rig only, not headset-confirmed. QZD 17.3 rig, doom2 -> brutal22test6 -> BD_VoxelPack -> BD22_VR-Reloaded 2.0.3h
+-> hotfix -> (RSQ_DistanceGrab) -> RSQ_HPBars -> probe (`tools/rigprobe/run.sh`, test only). No script error
+but BD_VoxelPack's voxeldef lines.
+
+Done (measured):
+- **Frozen** (pick 36, on with Markers; teardown 01_MELEE 3.6, 10_TIME): a snowflake right of the bar while the
+  monster's freezetics counts down. Log: a 5-tic hit-stop at t60 -> icon A at t61-63, gone at t64.
+- **Held** (pick 37; apply/04 1): a padlock while RSQ DistanceGrab's Headlock holds it (the real mod, its own
+  `rsqdg_ngrip` netevent): freezetics stands at 1 and NOGRAVITY/FORCEINFIGHTING are borrowed -> icon B from
+  t94 to t160 (grip released at t160), and no wrong icon on the first tic. Frame: padlock right of the bar
+  (`icons` run). Read from the monster only; nothing links to DistanceGrab.
+- **Aimed Only** (pick 35, option off, menu row, in Reset All): a bar only on what either hand's gun points
+  at, plus 18 tics. Log: unhurt imp aimed -> bar; aim moved away -> bar gone within 30 tics; three hurt imps,
+  one aimed -> one bar shown, two hidden; option off -> all three shown.
+- Bug found and fixed on the rig while building it: the first status-icon art used a negative x offset
+  (`Offset -29, 7`) and drew nothing (frame `heldpic`); now a 38-wide sprite from the bar's centre (frame `icons`).
+
+Not done / open: the frozen/held icons need a bar, so an unhurt monster shows neither. No existing bug was
+found in the old code on the rig (a raise-while-polled duplicate was suspected and could not happen: a corpse
+cannot be raised before the 1/16 poll drops it).
+
 ## Branch `agent-polish` (2026-10-27, independent review items) -- read first
 
 Not yet run on the owner's headset. Rig B (QZD 17.3 Linux), probe in the session scratchpad

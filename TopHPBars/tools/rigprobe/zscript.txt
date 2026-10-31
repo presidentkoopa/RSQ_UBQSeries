@@ -1,0 +1,131 @@
+version "4.14"
+// TEST ONLY -- never shipped (build_all.sh packs TopHPBars/pk3 only). RSQ HP Bars on the QZD 17.3 rig.
+// Spawns a row of monsters ahead, hurts them, can hit-stop one (freezetics, as Saber/ShieldSaw/Whip/DistanceGrab
+// do), can put one in front of the off palm and send RSQ DistanceGrab's own grip netevent (its Headlock), and logs
+// every bar and part from a thinker that runs after every actor (statnum 120).
+class THPQ_Probe : EventHandler
+{
+	Array<Actor> row;
+	static clearscope int CI(Name n) { let c = CVar.FindCVar(n); return c ? c.GetInt() : 0; }
+	static clearscope double CF(Name n) { let c = CVar.FindCVar(n); return c ? c.GetFloat() : 0; }
+	static clearscope String CS(Name n) { let c = CVar.FindCVar(n); return c ? c.GetString() : ""; }
+
+	override void WorldLoaded(WorldEvent e) { let l = new("THPQ_Late"); l.ChangeStatNum(120); }
+
+	override void WorldTick()
+	{
+		let pmo = players[consoleplayer].mo;
+		if (!pmo) return;
+		int t = level.maptime;
+		if (t == CI('thpq_at'))
+		{
+			int n = CI('thpq_n');
+			double d = CF('thpq_dist'), gap = CF('thpq_gap');
+			class<Actor> c = CS('thpq_cls');
+			for (int i = 0; i < n; i++)
+			{
+				double side = (i - (n - 1) / 2.0) * gap;
+				Vector3 sp = pmo.Vec3Angle(d, pmo.angle) + (cos(pmo.angle - 90), sin(pmo.angle - 90), 0) * side;
+				let a = Actor.Spawn(c, sp, ALLOW_REPLACE);
+				if (a) { a.angle = pmo.angle + 180; a.SetZ(a.floorz); if (CI('thpq_dormant')) a.bDormant = true; }
+				row.Push(a);
+				Console.Printf("THPQ_SPAWN t%d %d %s at (%.0f %.0f %.0f) hp %d", t, i, a ? a.GetClassName() : 'null', sp.x, sp.y, sp.z, a ? a.health : 0);
+			}
+		}
+		if (t == CI('thpq_at') + 2 && CI('thpq_hurt') > 0)
+			for (int i = 0; i < row.Size(); i++) if (row[i])
+			{
+				bool dm = row[i].bDormant; row[i].bDormant = false;
+				row[i].DamageMobj(null, null, max(1, row[i].SpawnHealth() * CI('thpq_hurt') / 100), 'None', DMG_NO_PAIN);
+				row[i].bDormant = dm;
+			}
+		for (int k = 0; k < 2; k++)
+		{
+			int fi = CI(k ? 'thpq_frz2_i' : 'thpq_frz_i');
+			if (t == CI(k ? 'thpq_frz2_at' : 'thpq_frz_at') && fi < row.Size() && row[fi])
+			{
+				let a = row[fi];
+				a.freezetics = max(a.freezetics, CI(k ? 'thpq_frz2_n' : 'thpq_frz_n'));
+				Console.Printf("THPQ_HITSTOP t%d %d %s freezetics %d", t, fi, a.GetClassName(), a.freezetics);
+			}
+		}
+		int rv = CI('thpq_revive_at');
+		if (rv > 0 && t == rv && row.Size() && row[0])
+		{
+			row[0].bDormant = false;
+			row[0].DamageMobj(null, null, row[0].health + 1000, 'None', DMG_FORCED | DMG_NO_ARMOR | DMG_THRUSTLESS);
+			if (row[0].health > 0) row[0].Die(null, null);
+			Console.Printf("THPQ_KILL t%d hp %d", t, row[0].health);
+		}
+		if (rv > 0 && t == rv + 1 && row.Size() && row[0])
+		{
+			bool ok = row[0].RaiseActor(row[0]);
+			Console.Printf("THPQ_REVIVE t%d ok %d hp %d", t, ok, row[0].health);
+		}
+		int ca = CI('thpq_collar_at');
+		if (ca > 0 && t == ca)
+		{
+			// the off palm (RSQ DistanceGrab's Palm is OffhandPos), the monster's cylinder 3 units ahead of it
+			double y = pmo.OffhandAngle + 90;
+			Vector3 fw = (cos(y), sin(y), 0);
+			class<Actor> c = CS('thpq_cls');
+			Vector3 hp = pmo.OffhandPos;
+			let a = Actor.Spawn(c, hp, ALLOW_REPLACE);
+			if (a)
+			{
+				Vector3 at = hp + fw * (a.Radius + 3);
+				at.z = max(a.floorz, hp.z - a.Height * 0.5);
+				a.SetOrigin(at, false);
+				a.angle = pmo.angle + 180;
+				a.DamageMobj(null, null, max(1, a.SpawnHealth() / 4), 'None', DMG_NO_PAIN);
+				row.Push(a);
+			}
+			Console.Printf("THPQ_PALM t%d palm (%.1f %.1f %.1f) %s at (%.1f %.1f %.1f) r %.0f", t, hp.x, hp.y, hp.z,
+				a ? a.GetClassName() : 'null', a ? a.pos.x : 0, a ? a.pos.y : 0, a ? a.pos.z : 0, a ? a.radius : 0);
+		}
+		if (ca > 0 && t == ca + 2) { EventHandler.SendNetworkEvent("rsqdg_ngrip", 1, 1); Console.Printf("THPQ_GRIP t%d down", t); }
+		if (ca > 0 && t == CI('thpq_collar_off')) { EventHandler.SendNetworkEvent("rsqdg_ngrip", 1, 0); Console.Printf("THPQ_GRIP t%d up", t); }
+	}
+}
+
+class THPQ_Late : Thinker
+{
+	override void Tick()
+	{
+		int t = level.maptime;
+		int lg = THPQ_Probe.CI('thpq_log');
+		if (lg <= 0 || t % lg || t < THPQ_Probe.CI('thpq_log_from') || t > THPQ_Probe.CI('thpq_log_to')) return;
+		let it = ThinkerIterator.Create("RSQTHP_Bar");
+		RSQTHP_Bar b;
+		while (b = RSQTHP_Bar(it.Next()))
+		{
+			let w = b.who;
+			Console.Printf("THPQ_BAR t%d %s hp %d/%d ft %d bar inv%d frame %d mark %s stat %s at (%.0f %.0f %.0f)", t,
+				w ? w.GetClassName() : 'null', w ? w.health : 0, w ? w.SpawnHealth() : 0, w ? w.freezetics : 0,
+				b.bInvisible, b.frame, b.mark ? String.Format("spr%d frame%c inv%d", b.mark.sprite, 65 + b.mark.frame, b.mark.bInvisible) : "-",
+				b.stat ? String.Format("%c inv%d", 65 + b.stat.frame, b.stat.bInvisible) : "-",
+				b.pos.x, b.pos.y, b.pos.z);
+			if (w && THPQ_Probe.CI('thpq_top') > 0)
+			{
+				TextureID tex; bool flip; Vector2 sc;
+				[tex, flip, sc] = w.CurState.GetSpriteTexture(0);
+				Vector2 ofs = tex.IsValid() ? TexMan.GetScaledOffset(tex) : (0, 0);
+				Vector2 siz = tex.IsValid() ? TexMan.GetScaledSize(tex) : (0, 0);
+				Console.Printf("THPQ_TOP t%d %s spr %d frame %c tex %s ofs %.0f size %.0f vox %.1f top %.1f z %.1f floor %.1f scaleY %.2f h %.0f | bar alpha %.2f style %d scale %.2f vis %d sprite %d frame %d | mon alpha %.2f style %d dormant %d", t,
+					w.GetClassName(), w.sprite, 65 + w.frame, tex.IsValid() ? TexMan.GetName(tex) : "-", ofs.y, siz.y,
+					RSQTHP_Voxels.TopOf(w), RSQTHP_Bar.TopOf(w), w.pos.z, w.floorz, w.Scale.Y, w.Height, b.Alpha, b.GetRenderStyle(), b.Scale.Y, !b.bInvisible, b.sprite, b.frame, w.Alpha, w.GetRenderStyle(), w.bDormant);
+			}
+		}
+		let h = RSQTHP_Handler.Get();
+		if (h)
+		{
+			int dup = 0;
+			for (int i = 0; i < h.mons.Size(); i++) for (int j = i + 1; j < h.mons.Size(); j++) if (h.mons[i] && h.mons[i] == h.mons[j]) dup++;
+			let pm = players[consoleplayer].mo;
+			if (pm) Console.Printf("THPQ_HAND t%d body %.1f main pos (%.1f %.1f %.1f) yaw %.1f pitch %.1f", t, pm.angle,
+				pm.AttackPos.x, pm.AttackPos.y, pm.AttackPos.z, pm.AttackAngle + 90, pm.AttackPitch);
+			Console.Printf("THPQ_H t%d tracked %d dup %d bars %d aim %s %s", t, h.mons.Size(), dup, h.bars.Size(),
+				h.aim[0] ? h.aim[0].GetClassName() : 'none', h.aim[1] ? h.aim[1].GetClassName() : 'none');
+		}
+	}
+}

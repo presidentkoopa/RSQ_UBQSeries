@@ -29,15 +29,28 @@
 //   locked   UltraBadassShieldSaw (SSQ_ScoreService): "locked" == 1 (a lock-on ring is on it)
 //   gripped  UltraBadassQuestSaber (UBQS_SaberService): "gripped" == 1 (a Force grip holds it)
 // Any other mod may answer all four as 1/0 from a Service whose class name contains "RSQTHP_Marker".
+//
+// FROZEN AND HELD (owner's picks 36 and 37, 2026-10-31), right of the bar, one at a time, every tic. Read off the
+// monster itself, so no mod is asked and nothing links (bar.zs, StatusOf):
+//   frozen   its freezetics is counting: a hit-stop (Saber, ShieldSaw, Whip, DistanceGrab, the rig's thrown gun all
+//            set it; Quest teardown surveys/01_MELEE 3.6, 10_TIME 2.4)
+//   held     RSQ DistanceGrab's Headlock or human shield (teardown apply/04 1; its near.zs): it re-asserts
+//            freezetics every tic (so the count stands still instead of counting down) and borrows the monster's
+//            NOGRAVITY and FORCEINFIGHTING for the hold. A hit-stop does neither.
+//
+// AIMED ONLY (owner's pick 35, an option, off by default): a bar is drawn only over the monster a hand's gun points
+// at, either hand -- a hitscan trace from the hand along its aim (teardown surveys/00 1.2 and 3.1: AttackPos /
+// OffhandPos, yaw AttackAngle + 90, pitch positive up; outside VR the view) -- and for AIM_LINGER tics after the
+// aim leaves it, so a shaky hand does not blink it. A monster aimed at gets its bar even at full health.
 class RSQTHP_Handler : EventHandler
 {
 	// ---- settings, refreshed every tic -------------------------------------------------------
-	bool   on, overheal, markers, stealth, bright;
+	bool   on, overheal, markers, stealth, bright, aimedOnly;
 	int    scheme;          // effective: own setting, or RSQ_Accessibility's when it is on
 	int    set;             // art set 0..4 (A Classic, B Red, C protan+deutan, D tritan, E high contrast)
 	double scale, offset, far;
 	int    ver;             // bumps when the look changes, so bars rebuild their frame
-	transient CVar cOn, cScheme, cScale, cFar, cOffset, cBright, cStealth, cOver, cMark, cCB;
+	transient CVar cOn, cScheme, cScale, cFar, cOffset, cBright, cStealth, cOver, cMark, cCB, cAim;
 	transient bool cvFound;
 
 	// ---- sprites, looked up once -------------------------------------------------------------
@@ -45,6 +58,12 @@ class RSQTHP_Handler : EventHandler
 	transient int sprMain[5];
 	transient int sprOver[25];       // [set * 5 + pips]
 	transient int sprMark;
+	transient int sprStat;           // RSYF: A frozen, B held
+
+	// ---- aimed only ----------------------------------------------------------------------------
+	const AIM_RANGE = 8192;
+	const AIM_LINGER = 18;           // tics a bar stays after the aim leaves its monster (half a second)
+	Actor aim[2];                    // what each hand's gun pointed at this tic (null: nothing)
 
 	// ---- tracking ----------------------------------------------------------------------------
 	Array<Actor> mons;               // everything that may get a bar, polled 1/16 a tic
@@ -93,6 +112,7 @@ class RSQTHP_Handler : EventHandler
 		cStealth = CVar.FindCVar('rsqthp_stealth');
 		cOver = CVar.FindCVar('rsqthp_overheal');
 		cMark = CVar.FindCVar('rsqthp_markers');
+		cAim = CVar.FindCVar('rsqthp_aimed');
 		cCB = null; { Name rsqaN = "RSQA_Menu"; class<Object> rsqaC = rsqaN; if (rsqaC) cCB = CVar.FindCVar("rsqa_colorblind"); }     // RSQ_Accessibility; null when it is not loaded
 	}
 
@@ -107,6 +127,7 @@ class RSQTHP_Handler : EventHandler
 				sprOver[s * 5 + p] = Actor.GetSpriteIndex(String.Format("RS%d%d", s + 1, p));
 		}
 		sprMark = Actor.GetSpriteIndex('RSYZ');
+		sprStat = Actor.GetSpriteIndex('RSYF');
 	}
 
 	private void FindServices()
@@ -178,6 +199,7 @@ class RSQTHP_Handler : EventHandler
 		if (o != on || sc != scheme || ov != overheal || br != bright) ver++;
 		on = o; scheme = sc; set = SetOf(sc); overheal = ov; bright = br;
 		markers = cMark ? cMark.GetBool() : true;
+		aimedOnly = cAim ? cAim.GetBool() : false;
 		stealth = cStealth ? cStealth.GetBool() : true;
 		scale = cScale ? cScale.GetFloat() : 0.3;
 		far = cFar ? max(1.0, cFar.GetFloat()) : 2.0;
@@ -279,6 +301,9 @@ class RSQTHP_Handler : EventHandler
 
 		if (!on) return;
 
+		aim[0] = null; aim[1] = null;
+		if (aimedOnly) TraceAims();
+
 		// the poll: 1/16 of the list a tic
 		while (monBar.Size() < mons.Size()) monBar.Push(null);
 		int n = mons.Size();
@@ -300,20 +325,55 @@ class RSQTHP_Handler : EventHandler
 		}
 	}
 
-	// a bar for this thing, if it has none
-	RSQTHP_Bar Ensure(Actor a)
+	// AIMED ONLY: what each hand's gun points at. A hitscan from the hand along its aim, as a VR shot goes
+	// (OverrideAttackPosDir), absolute coordinates; outside VR, the view, main hand only.
+	private void TraceAims()
+	{
+		let p = players[consoleplayer];
+		let pmo = p.mo;
+		if (!pmo || pmo.health <= 0) return;
+		for (int hd = 0; hd < 2; hd++)
+		{
+			Weapon w = hd == 0 ? p.ReadyWeapon : p.OffhandWeapon;
+			if (!w) continue;
+			FLineTraceData t;
+			bool hit;
+			if (pmo.OverrideAttackPosDir)
+			{
+				Vector3 at = hd == 0 ? pmo.AttackPos : pmo.OffhandPos;
+				double yaw = (hd == 0 ? pmo.AttackAngle : pmo.OffhandAngle) + 90;
+				double pit = hd == 0 ? pmo.AttackPitch : pmo.OffhandPitch;     // positive up
+				hit = pmo.LineTrace(yaw, AIM_RANGE, -pit, TRF_ABSPOSITION, at.z, at.x, at.y, t);
+			}
+			else
+			{
+				if (hd == 1) continue;
+				hit = pmo.LineTrace(pmo.angle, AIM_RANGE, pmo.pitch, 0, p.viewz - pmo.Pos.z, 0, 0, t);
+			}
+			if (!hit || t.HitType != FLineTraceData.TRACE_HitActor) continue;
+			let a = t.HitActor;
+			if (!a || a == pmo || a.health <= 0 || !Eligible(a)) continue;
+			aim[hd] = a;
+			Ensure(a, true);
+		}
+	}
+
+	// a bar for this thing, if it has none (aimed: the aim is on it this tic)
+	RSQTHP_Bar Ensure(Actor a, bool aimed = false)
 	{
 		if (!on) return null;
 		for (int i = bars.Size() - 1; i >= 0; i--)
 		{
 			let b = bars[i];
 			if (!b) { bars.Delete(i); continue; }
-			if (b.who == a) return b;
+			if (b.who == a) { if (aimed) b.aimTic = level.maptime; return b; }
 		}
 		let b = RSQTHP_Bar(Actor.Spawn("RSQTHP_Bar", a.Pos, NO_REPLACE));
 		if (!b) return null;
 		b.who = a;
 		b.h = self;
+		b.aimTic = aimed ? level.maptime : -AIM_LINGER - 1;
+		b.aimMade = aimed && a.health == a.SpawnHealth();
 		b.markPhase = spawnedBars & 3;
 		b.champ = WearsChampIcon(a);
 		b.Update();

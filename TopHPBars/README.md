@@ -51,6 +51,18 @@ gripped. Asked by name every 4th tic per bar (play scope), each mod in its own w
 
 Any other mod can drive all four with 1/0 answers from a Service whose class name contains `RSQTHP_Marker`.
 
+### Frozen and held (owner's picks 36, 37; on with Markers)
+One icon right of the bar, read off the monster itself every tic (no mod asked, nothing links):
+- **frozen** (snowflake): its `freezetics` is counting down -- a hit-stop or a time freeze (Quest teardown
+  surveys/01_MELEE 3.6, 10_TIME).
+- **held** (padlock): RSQ DistanceGrab's Headlock or human shield (teardown apply/04 1). Its near.zs re-sets
+  `freezetics` every tic (so the count stands still) and borrows NOGRAVITY / FORCEINFIGHTING for the hold.
+The first tic of a freeze waits one more tic to tell which, so neither icon flashes wrongly.
+
+### Aimed Only (owner's pick 35, an option, off)
+A bar only over the monster a hand's gun points at, either hand (a hitscan trace along the hand's aim), and
+for half a second after. Aiming at an unhurt monster shows its bar; the bar goes when the aim leaves it.
+
 ### Loaded with coldcite's own pk3
 Every name differs, so both load. While RSQ HP Bars is on, it takes his bar item off every monster the
 tic after it appears and his bars remove themselves: one bar per monster. His HUD Options entry opens our
