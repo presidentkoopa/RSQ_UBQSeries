@@ -1,0 +1,9 @@
+server string qzt_rhand = "";      // the rig glue's test hook: replaces qz_rhand when non-empty
+server string spp_mon = "";        // monster class to spawn on the line through the blade ("" none)
+server int    spp_norep = 0;       // 1: spawn the class itself, not Brutal Doom's replacement
+server int    spp_every = 0;       // >0: send the monster into its own Missile state every N tics
+server int    spp_probe = 0;       // >0: ALSO fire a hitscan from the WorldTick every N tics (the old probe's way)
+server int    spp_move = 0;        // 0 blade held still; 1 blade thrust toward the monster and back
+server float  spp_dist = 200;      // how far out along the line the monster stands
+server float  spp_hx = 0.25;       // the hand's room x (m): moves the blade's middle onto the line straight ahead
+server float  spp_hy = 1.15;       // the hand's room height (m): puts the blade on the shot's real path

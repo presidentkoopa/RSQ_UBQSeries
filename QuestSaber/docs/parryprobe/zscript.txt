@@ -1,0 +1,146 @@
+version "4.12"
+// TEST ONLY, never shipped (docs/ stays out of RSQ_Saber.pk3). Load after RSQ_Saber.pk3, with ubqs_diag 3
+// (the saber's own SBX_* decision lines). Build: cd QuestSaber/docs/parryprobe && zip -qr <scratch>/spp.pk3 .
+//
+// A REAL monster on the line from the player's middle through the blade's middle, held there, attacking
+// with its own Missile state every spp_every tics. The blade is posed every tic through qzt_rhand.
+// SPP_BLADE  every tic, from the WorldTick: the blade tip the player saw this tic
+// SPP_SHOT   every hitscan a monster fires
+// SPP_HURT   every hit the player takes
+// SPP_FIRE   a probe hitscan fired from the WorldTick (spp_probe), the old probe's way
+class SPP_Shooter : Actor
+{
+	Default { +NOBLOCKMAP +NOGRAVITY Height 56; Radius 20; }
+	States { Spawn: TNT1 A -1; Stop; }
+}
+class SPP_Probe : EventHandler
+{
+	Actor mon; Vector3 monAt, muzzle; bool placed; int shots, hurts;
+	double F(String n) { let c = CVar.FindCVar(n); return c ? c.GetFloat() : 0; }
+	int I(String n) { let c = CVar.FindCVar(n); return c ? c.GetInt() : 0; }
+	String S(String n) { let c = CVar.FindCVar(n); return c ? c.GetString() : ""; }
+	void Pose(String p) { let c = CVar.FindCVar("qzt_rhand"); if (c) c.SetString(p); }
+
+	override bool WorldHitscanPreFired(WorldEvent e)
+	{
+		if (!e.Thing || e.Thing.player) return false;
+		shots++;
+		Console.Printf("SPP_SHOT t%d #%d %s", level.maptime, shots, e.Thing.GetClassName());
+		return false;
+	}
+	override void WorldThingDamaged(WorldEvent e)
+	{
+		if (!e.Thing || !e.Thing.player) return;
+		hurts++;
+		String src = "none", inf = "none";
+		if (e.DamageSource) src = e.DamageSource.GetClassName();
+		if (e.Inflictor) inf = e.Inflictor.GetClassName();
+		Console.Printf("SPP_HURT t%d #%d by %s via %s dmg %d", level.maptime, hurts, src, inf, e.Damage);
+	}
+	// SPP_MIS every missile a monster fires (Brutal Doom's zombies shoot ZombieManTracer missiles, not hitscans)
+	Array<Actor> mis;
+	override void WorldThingSpawned(WorldEvent e)
+	{
+		let m = e.Thing;
+		if (!m || !m.bMissile || !m.target || m.target.player) return;
+		// NOT filtered on speed here: a monster's missile gets its velocity AFTER this event (P_SpawnMissile),
+		// so the old vel<1 filter dropped every imp ball. Trails and sound-only "missiles" are dropped by name.
+		String cn = m.GetClassName();
+		if (cn.IndexOf("Trail") >= 0 || cn.IndexOf("Sound") >= 0) return;
+		mis.Push(m);
+		Console.Printf("SPP_MIS t%d %s at %.1f %.1f %.1f vel %.1f %.1f %.1f", level.maptime, m.GetClassName(), m.pos.x, m.pos.y, m.pos.z, m.vel.x, m.vel.y, m.vel.z);
+	}
+	override void WorldThingDestroyed(WorldEvent e)
+	{
+		let m = e.Thing;
+		if (!m) return;
+		int k = mis.Find(m);
+		if (k == mis.Size()) return;
+		Console.Printf("SPP_GONE t%d %s at %.1f %.1f %.1f vel %.1f %.1f %.1f", level.maptime, m.GetClassName(), m.pos.x, m.pos.y, m.pos.z, m.vel.x, m.vel.y, m.vel.z);
+		mis.Delete(k);
+	}
+	override void WorldTick()
+	{
+		let p = players[consoleplayer];
+		if (!p || !p.mo) return;
+		int t = level.maptime;
+		// THE BLADE: still, or thrust out toward the monster 0.2 m a tic for 3 tics and back (room metres, -z forward)
+		static const double zs[] = { -0.18, -0.38, -0.58, -0.78, -0.58, -0.38 };
+		if (I("spp_move") == 1 && t >= 60) Pose(String.Format("%.2f %.2f %.2f -20 90 0", F("spp_hx"), F("spp_hy"), zs[t % 6]));
+		else Pose(String.Format("%.2f %.2f -0.48 -20 90 0", F("spp_hx"), F("spp_hy")));
+		if (t % 35 == 0)
+		{
+			String rw = "none";
+			if (p.ReadyWeapon) rw = p.ReadyWeapon.GetClassName();
+			Console.Printf("SPP_BEAT t%d holding %s", t, rw);
+		}
+		// the saber in the main hand
+		let want = Weapon(p.mo.FindInventory("UBQS_Saber"));
+		if (want && p.ReadyWeapon != want && p.PendingWeapon != want) p.PendingWeapon = want;
+		let sb = UBQS_SaberBase(p.ReadyWeapon);
+		if (!sb || t < 20) return;
+		Vector3 base = sb.BladeBase(), dir = sb.BladeDir();
+		double len = sb.BladeLen();
+		Vector3 tip = base + dir * len, mid = base + dir * (len * 0.5);
+		Console.Printf("SPP_BLADE t%d tip %.1f %.1f %.1f mid %.1f %.1f %.1f len %.1f", t, tip.x, tip.y, tip.z, mid.x, mid.y, mid.z, len);
+		// THE MONSTER, on the line from the player's middle through the blade's middle (fixed at the first tic from t40 with a lit blade)
+		Vector3 pm = (p.mo.pos.xy, p.mo.pos.z + p.mo.height * 0.5);
+		String cls = S("spp_mon");
+		if (!placed && t >= 40 && len > 1)
+		{
+			Vector3 u = (mid - pm).Unit();
+			muzzle = mid + u * F("spp_dist");
+			placed = true;
+			class<Actor> c = cls;
+			if (c)
+			{
+				mon = Actor.Spawn(c, muzzle, I("spp_norep") ? NO_REPLACE : ALLOW_REPLACE);
+				if (mon)
+				{
+					// stand it so its muzzle (P_LineAttack: height/2 + 8 over its feet) is on the line
+					monAt = (muzzle.xy, muzzle.z - mon.height * 0.5 - 8);
+					mon.bNOGRAVITY = true;
+					mon.SetOrigin(monAt, false);
+					Console.Printf("SPP_MON %s at %.1f %.1f %.1f, blade mid %.1f %.1f %.1f, player mid %.1f %.1f %.1f",
+						mon.GetClassName(), monAt.x, monAt.y, monAt.z, mid.x, mid.y, mid.z, pm.x, pm.y, pm.z);
+				}
+			}
+		}
+		// Brutal Doom's monsters often swap themselves for a variant just after they spawn: adopt
+		// whatever monster now stands nearest the spot
+		if (placed && !mon && cls != "")
+		{
+			let it = ThinkerIterator.Create("Actor");
+			Actor a; double bd = 96;
+			while (a = Actor(it.Next()))
+			{
+				if (!a.bIsMonster || a.health <= 0) continue;
+				double dd = (a.pos.xy - monAt.xy).Length();
+				if (dd < bd) { bd = dd; mon = a; }
+			}
+			if (mon) Console.Printf("SPP_ADOPT t%d %s", t, mon.GetClassName());
+		}
+		if (mon)
+		{
+			mon.SetOrigin(monAt, false); mon.vel = (0, 0, 0);
+			if (mon.health > 0 && mon.health < 1000) mon.health = 1000;
+			mon.target = p.mo; mon.angle = mon.AngleTo(p.mo);
+			int ev = I("spp_every");
+			if (ev > 0 && t >= 80 && t % ev == 0 && mon.health > 0) mon.SetStateLabel("Missile");
+			if (t % 5 == 0 && t >= 75 && t < 160) Console.Printf("SPP_MONST t%d hp %d sprite %s frame %d tics %d", t, mon.health, mon.sprite == 0 ? "?" : String.Format("%d", mon.sprite), mon.frame, mon.tics);
+		}
+		// THE OLD WAY: a hitscan fired from here, along the same line
+		int pe = I("spp_probe");
+		if (pe > 0 && placed && t >= 80 && t % pe == 0)
+		{
+			let sh = Actor.Spawn("SPP_Shooter", (muzzle.xy, muzzle.z - 28 - 8));
+			if (sh)
+			{
+				Vector3 d = pm - muzzle;
+				Console.Printf("SPP_FIRE t%d", t);
+				sh.LineAttack(VectorAngle(d.x, d.y), 1024, -atan2(d.z, d.xy.Length()), 3, 'Hitscan', "BulletPuff");
+				sh.Destroy();
+			}
+		}
+	}
+}
