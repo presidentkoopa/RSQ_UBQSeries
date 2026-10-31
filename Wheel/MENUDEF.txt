@@ -134,9 +134,11 @@ OptionMenu wr_Pick
 	// RSQ Gun Cards' own watch card takes over when that mod is loaded and its watch card is on.
 	Option "Wrist Card",                "wr_watch",        "OnOff"
 	Option "Open at Level Start",       "wr_autoopen",     "OnOff"
-	// RSQ SlowMo when loaded, BulletTimeX otherwise.
+	// RSQ SlowMo when loaded; without it, only with Stop Time Without SlowMo below.
 	Option "Slow Time While Open",      "wr_bullettime",   "OnOff"
 	Option "Closing Ends My SlowMo",    "wr_slowmo_cancel", "OnOff"
+	// Without RSQ SlowMo: the ring stops time itself while it is open.
+	Option "Stop Time Without SlowMo",  "wr_own_freeze",   "OnOff"
 	StaticText " "
 	Slider "Pull a Card Out (0 = off)", "wr_pull_speed",   0.0, 4.0, 0.1, 1
 	Slider "Throw a Gun Back (0 = off)", "wr_throw_speed", 0.0, 5.0, 0.1, 1

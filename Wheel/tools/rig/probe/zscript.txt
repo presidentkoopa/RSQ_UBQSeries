@@ -3,9 +3,22 @@ version "4.10"
 //   WRQ <tic> ready=<class> off=<class> open=<0|1> hover=<class> quads=<n> strips=<n> glyphs=<n>
 class wrq_Probe : EventHandler
 {
+	int buzz, puffs, btEvents, calls;
+	// the ring's two haptic routes, counted as they spawn: wr_Buzz (the quake route) and wr_NullPuff (the LineAttack
+	// route, a LAF_NOINTERACT hitscan's inert puff)
+	override void WorldThingSpawned(WorldEvent e)
+	{
+		if (!e.Thing) return;
+		Name n = e.Thing.GetClassName();
+		if (n == 'wr_Buzz') buzz++;
+		else if (n == 'wr_NullPuff') puffs++;
+	}
+	// BulletTimeX's toggle, if anything still sends it
+	override void NetworkProcess(ConsoleEvent e) { if (e.Name == "bt_activate") btEvents++; }
 	override void WorldTick()
 	{
-		if (level.maptime % 5) return;
+		// own count, not level.maptime: a frozen level (the ring's own freeze) may hold maptime still
+		if (++calls % 5) return;
 		let pmo = players[consoleplayer].mo;
 		if (!pmo) return;
 		let it = ServiceIterator.Find("wr_RigService");
@@ -32,6 +45,9 @@ class wrq_Probe : EventHandler
 			Console.Printf("WRQA %d anchor=(%.0f %.0f) angle=%.0f", level.maptime, svc.GetDouble("AnchorX"), svc.GetDouble("AnchorY"), pmo.angle);
 		let rw = players[consoleplayer].ReadyWeapon;
 		let ow = players[consoleplayer].OffhandWeapon;
+		let qc = CVar.FindCVar('vr_quake_haptic_level');
+		Console.Printf("WRQT %d/%d worldfrozen=%d timefreezer=%d bt_activate=%d buzz=%d linepulses=%d quake=%.2f", calls, level.maptime,
+			level.isFrozen(), players[consoleplayer].timefreezer, btEvents, buzz, puffs, qc ? qc.GetFloat() : -1);
 		Console.Printf("WRQ %d ready=%s off=%s open=%d hover=%s quads=%d strips=%d frozen=%d",
 			level.maptime, rw ? rw.GetClassName() : 'none', ow ? ow.GetClassName() : 'none', open,
 			hov ? hov.GetClassName() : 'none', quads, strips,

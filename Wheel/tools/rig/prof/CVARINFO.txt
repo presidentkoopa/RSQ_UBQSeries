@@ -1,0 +1,2 @@
+server noarchive int wrp_n = 80;
+server noarchive int wrp_open = 400;

@@ -1,0 +1,1 @@
+GameInfo { AddEventHandlers = "wrp_First", "wrp_Probe" }

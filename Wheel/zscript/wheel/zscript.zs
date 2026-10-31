@@ -4056,17 +4056,30 @@ class wr_Rig : EventHandler
 			else if (!mSlowWasOn || cvBool("wr_slowmo_cancel", false))
 				EventHandler.SendNetworkEvent("rsm_off");
 		}
-		else
+		else if (on)
 		{
-			// NO SLOWMO: THE RING STOPS THE WORLD ITSELF (Quest teardown apply/07 5.5). BulletTimeX's bt_activate was a
-			// toggle with nothing to read back, so opening the ring switched OFF a bullet time the player already had
-			// running. Level.SetFrozen stops everything but the player who holds timefreezer; WorldTick, the ring's
-			// +NOTIMEFREEZE quads and its quake clicks all go on (p_tick.cpp:172, a_quake.cpp:115).
-			Level.SetFrozen(on);
-			players[consoleplayer].timefreezer = on ? 1 : 0;
+			// NO SLOWMO: THE RING MAY STOP THE WORLD ITSELF (Quest teardown apply/07 5.5), an option, OFF by default
+			// (owner's pick 38, 2026-10-31): off, opening the ring without RSQ SlowMo leaves time alone and sends
+			// nothing (BulletTimeX's bt_activate was a toggle with nothing to read back: it switched OFF a bullet
+			// time the player already had running). On, Level.SetFrozen stops everything but the player who holds
+			// timefreezer; WorldTick, the ring's +NOTIMEFREEZE quads and its quake clicks all go on
+			// (p_tick.cpp:172, a_quake.cpp:115).
+			if (!cvBool("wr_own_freeze", false)) return;
+			Level.SetFrozen(true);
+			players[consoleplayer].timefreezer = 1;
+			mFroze = true;
+		}
+		// The off path answers to what this ring did, never to the switch: untick it with the ring up and the world
+		// still starts again when it closes.
+		if (!on && mFroze)
+		{
+			Level.SetFrozen(false);
+			players[consoleplayer].timefreezer = 0;
+			mFroze = false;
 		}
 		mBtOn = on;
 	}
+	bool mFroze;       // RSQ: this ring stopped the world itself (no SlowMo, wr_own_freeze)
 	bool mSlowWasOn;   // RSQ: RSQ SlowMo was already running when the ring opened
 
 	private void tintCard(int id, bool lit)

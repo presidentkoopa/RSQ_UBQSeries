@@ -70,6 +70,10 @@ user float wr_follow = 45.0;
 // close ends it too (on). Slow motion the ring started always ends with the ring.
 user bool wr_slowmo_cancel = false;
 
+// RSQ (owner's pick 38, 2026-10-31): without RSQ SlowMo loaded, opening the ring stops the world itself
+// (Level.SetFrozen) -- off by default: off, time runs on and nothing is sent. With SlowMo loaded it is not read.
+user bool wr_own_freeze = false;
+
 // RSQ: THE WRIST CARD. Bring a forearm up across your chest as if checking a watch (wrist in front of
 // your face, hand pointing across the body) and hold it wr_watch_dwell tics: that hand's gun shows
 // its card over the wrist. wr_watch_scale sizes it.
