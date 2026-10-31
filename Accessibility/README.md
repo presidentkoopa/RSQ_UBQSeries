@@ -104,3 +104,25 @@ Measured on rig B (scratch probe, 10 s windows):
   (a still hand gripped a zombieman within 10 tics); the Force Push button threw one (0 -> 9.9 u/tic).
 - Hold to Toggle, grapple: a press and release keeps the reel held; the next press lets go of the reel (the rope stays).
 - Simple menus: RSQGR_Options 24 -> 22 rows (Reset All stays), RSQSM_Options 17 -> 11, UBQS_Options 39 -> 27; Full restores them.
+
+## QoL round (2026-10-31, owner's picks AC1-AC8; zscript/rsqa_qol.zs) -- rig only, not headset-confirmed
+
+| Pick | Row / cvar | Default | What |
+|---|---|---|---|
+| AC1 | Reset Every Series Mod | row | runs each LOADED series mod's own "Reset All" (found under Radiant Silvergun Options, Simple-menu pages included); Accessibility is kept and has its own Reset All |
+| AC2 | Rumble Strength `rsqa_rumble_scale` | 1.0 | every RSQA_Buzz rumble x0..2, 0 = none; service `GetDoubleData("rumble")` for the rest |
+| AC3 | Seated Play `rsqa_seated`, Measure Standing Height `rsqa_stand_eye` | Auto | seated once the eyes sit 0.25 m+ below standing for 2 s (Tactical Rig's seated-eye rule); service `seated`, `seated.drop` (m) |
+| AC4 | Comfort Preset | Off | Vignette Medium + Min SlowMo Ease 1 s + Photosensitive Mode in one row |
+| AC5 | Vignette on Knockback `rsqa_vig_knock` | Off | speed jump > 8 u/tic to > 12 u/tic (held while flying); a fall faster than 10 u/tic |
+| AC6 | Steady Hands `rsqa_steady` | On | 1-euro filter per tic on both hands (pos 1 Hz + 10/(m/s), dir 1 Hz + 0.05/(deg/s), dcut 5 Hz: tools/steady_sim.py); service `steady` |
+| AC7 | Slower Taps `rsqa_slow_taps` | Off | service `GetDoubleData("taps")` 1.5 / 1.0; template `Tap(tics)` |
+| AC8 | Wake Cues `rsqa_cue_wake` | Off | a monster taking you as target, jumping > 96 u (teleport) or spawned at a teleport fog: Sound Cues arrow (grey double chevron) and rumble |
+
+Rig (tools/rigtest/qol.sh, qol_analyse.py): Steady on, jittered hand: position tremor 3.76 -> 1.15 mm RMS, direction
+0.88 -> 0.28 deg; a 48 cm / 48 deg swing in 3 tics: at most 2.7 cm / 4.9 deg behind during it, within 0.3 cm two tics
+after; off: identical to raw. Seated Auto: headset 1.62 -> 1.20 m: seated 3 s later, drop 0.42 m; back up: standing 1 s.
+Reset: SlowMo, Grapple, Gun Cards loaded, changed settings all back to default through the menu (A, then Yes).
+Rumble: ready cue amp 0.5 / 0.25 / 1.0 / none at 1 / 0.5 / 2 / 0. Knockback (mid-air throw): vignette 0 -> 0.86 in 6
+tics, nothing with the row off; a grounded blast does not move a QuestZDoom VR pawn (vel.xy wiped). Fall: 0.87 at
+landing. Wake: a ZombieMan woken at 150 deg and one teleported to -150 deg each gave a cue and a rumble on that side.
+A menu command run from outside menu code is fatal in 17.3 ("outside of menu code"): the reset runs only from its row.

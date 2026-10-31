@@ -80,18 +80,44 @@ OptionMenu "RSQA_Options"
 	Slider "Gesture Ease", "rsqa_gesture_ease", 0.0, 1.0, 0.1, 1
 	Option "Hold to Toggle", "rsqa_hold_toggle", "OnOff"
 	StaticText " "
+	RSQAPreset "Comfort Preset", "RSQA_Comfort"
 	Option "Comfort Vignette", "rsqa_vignette", "RSQA_Vignette"
+	Option "Vignette on Knockback", "rsqa_vig_knock", "OnOff"
 	Slider "Min SlowMo Ease", "rsqa_slowmo_ramp", 0.0, 2.0, 0.1, 1
+	StaticText " "
+	Option "Seated Play", "rsqa_seated", "RSQA_Seated"
+	Command "Measure Standing Height", "event rsqa_measure"
+	Option "Steady Hands", "rsqa_steady", "OnOff"
+	Option "Slower Taps", "rsqa_slow_taps", "OnOff"
 	StaticText " "
 	Slider "Cue Size", "rsqa_cue_scale", 0.5, 3.0, 0.25, 2
 	Slider "Text Size", "rsqa_text_scale", 1.0, 3.0, 0.25, 2
 	Option "Sound Cues", "rsqa_sound_cues", "RSQA_SoundCues"
+	Option "Wake Cues", "rsqa_cue_wake", "OnOff"
+	Slider "Rumble Strength", "rsqa_rumble_scale", 0.0, 2.0, 0.1, 1
 	Option "Rumble Backup", "rsqa_rumble_backup", "OnOff"
 	StaticText " "
 	RSQABrace "Two-Hand Brace", "rsqa_brace_off", "RSQA_Brace"
 	Option "Brace Cue", "rsqa_brace_cue", "RSQA_BraceCue"
 	StaticText " "
 	Option "Menus", "rsqa_menus", "RSQA_Menus"
+	StaticText " "
+	SafeCommand "Reset All", "resetcvar rsqa_colorblind; resetcvar rsqa_photosafe; resetcvar rsqa_onehand; resetcvar rsqa_gesture_ease; resetcvar rsqa_hold_toggle; resetcvar rsqa_vignette; resetcvar rsqa_vig_knock; resetcvar rsqa_slowmo_ramp; resetcvar rsqa_seated; resetcvar rsqa_stand_eye; resetcvar rsqa_steady; resetcvar rsqa_slow_taps; resetcvar rsqa_cue_scale; resetcvar rsqa_text_scale; resetcvar rsqa_sound_cues; resetcvar rsqa_cue_wake; resetcvar rsqa_rumble_scale; resetcvar rsqa_rumble_backup; resetcvar rsqa_brace_cue; resetcvar rsqa_menus", "Reset all RSQ Accessibility settings? (Handedness and Two-Hand Brace are kept.)"
+	RSQAResetSeries "Reset Every Series Mod", "Reset every loaded RSQ series mod to its defaults? (Accessibility is kept.)"
+}
+
+// AC4: one row for the three comfort settings ("Custom" when they match neither)
+OptionString "RSQA_Comfort"
+{
+	"rsqa_vignette 0 rsqa_slowmo_ramp 0 rsqa_photosafe 0", "Off"
+	"rsqa_vignette 2 rsqa_slowmo_ramp 1 rsqa_photosafe 1", "Comfort"
+}
+
+OptionValue "RSQA_Seated"
+{
+	0, "Standing"
+	1, "Seated"
+	2, "Auto"
 }
 
 OptionValue "RSQA_Brace"

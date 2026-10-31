@@ -37,6 +37,8 @@ class RSQA_Set
 	static clearscope double Cue()      { return clamp(F('rsqa_cue_scale', 1.0), 0.5, 3.0); }
 	static clearscope double Text()     { return clamp(F('rsqa_text_scale', 1.0), 1.0, 3.0); }
 	static clearscope int  ColorBlind() { return clamp(I('rsqa_colorblind'), 0, 4); }
+	static clearscope double Rumble()   { return clamp(F('rsqa_rumble_scale', 1.0), 0.0, 2.0); }
+	static clearscope double Taps()     { return I('rsqa_slow_taps') ? 1.5 : 1.0; }
 }
 
 class RSQA_Handler : EventHandler
@@ -61,7 +63,7 @@ class RSQA_Handler : EventHandler
 	const THREAT_TICS = 42;
 	transient Vector3 thPos[THREATS];
 	transient int     thTic[THREATS];
-	transient int     thKind[THREATS];    // 1 a hit on you, 2 a shot coming at you
+	transient int     thKind[THREATS];    // 1 a hit on you, 2 a shot coming at you, 3 a monster woke / teleported in (AC8)
 	transient Actor   thFrom[THREATS];
 
 	// SLOW MOTION starting and stopping (RSQ_SlowMo's service, asked by name).
@@ -229,7 +231,7 @@ class RSQA_Handler : EventHandler
 		Note(src, src.pos, 2);
 	}
 
-	private void Note(Actor from, Vector3 at, int kind)
+	void Note(Actor from, Vector3 at, int kind)
 	{
 		if (!RSQA_Set.CueVisual() && !RSQA_Set.CueRumble()) return;
 		let pmo = players[consoleplayer].mo;
@@ -246,12 +248,14 @@ class RSQA_Handler : EventHandler
 		if (slot < 0) slot = oldest;
 		thPos[slot] = at;
 		thTic[slot] = level.maptime;
-		thKind[slot] = same ? max(kind, thKind[slot]) : kind;   // a hit outranks a shot coming
+		// a hit outranks a shot coming, which outranks a wake (fixed 2026-10-31: this was max(), so a shot kept the
+		// slot of a hit from the same source)
+		thKind[slot] = same ? min(kind, thKind[slot]) : kind;
 		thFrom[slot] = from;
 		// the rumble only when it is out of view (40 degrees off where the body faces) and new
 		double rel = Actor.DeltaAngle(pmo.angle, pmo.AngleTo(from));
 		if (fresh && abs(rel) > 40 && RSQA_Set.CueRumble())
-			RSQA_Buzz.Start(pmo, (rel > 0) != RSQA_Hand.EngineLeft() ? 1 : 0, kind == 1 ? 0.6 : 0.4, kind == 1 ? 5 : 3);
+			RSQA_Buzz.Start(pmo, (rel > 0) != RSQA_Hand.EngineLeft() ? 1 : 0, kind == 1 ? 0.6 : kind == 2 ? 0.4 : 0.3, kind == 1 ? 5 : 3);
 	}
 
 	// ---- drawing ----------------------------------------------------------------------------
@@ -300,9 +304,11 @@ class RSQA_Handler : EventHandler
 			if (abs(rel) <= 35) continue;          // in view: you can see it
 			double fade = 1.0 - (age + e.FracTic) / THREAT_TICS;
 			int a = int(255 * clamp(fade * 1.4, 0.0, 1.0));
-			// a hit: the HAVE colour, big and filled; a shot coming: the COULD colour, an open chevron
+			// a hit: the HAVE colour, big and filled; a shot coming: the COULD colour, an open chevron; a monster
+			// waking or teleporting in (AC8): the IDLE colour, a double open chevron
 			Color c = thKind[i] == 1 ? Color(255, 255, 48, 48) : Color(255, 255, 176, 0);
-			if (cb > 0)
+			if (thKind[i] == 3) c = cb == 4 ? Color(255, 140, 140, 140) : Color(255, 208, 208, 208);
+			else if (cb > 0)
 			{
 				static const int HAVE[] = { 0, 0x3090FF, 0x3090FF, 0x00E0E0, 0xFF40FF };
 				static const int COULD[] = { 0, 0xFFB000, 0xFFB000, 0xFF4040, 0xFFFF00 };
@@ -319,6 +325,12 @@ class RSQA_Handler : EventHandler
 			double th = max(2.0, sz * (thKind[i] == 1 ? 0.35 : 0.2));
 			Screen.DrawThickLine(tip.x, tip.y, b1.x, b1.y, th, c, a);
 			Screen.DrawThickLine(tip.x, tip.y, b2.x, b2.y, th, c, a);
+			if (thKind[i] == 3)
+			{
+				Vector2 o = -dir * sz * 0.55;
+				Screen.DrawThickLine(tip.x + o.x, tip.y + o.y, b1.x + o.x, b1.y + o.y, th, c, a);
+				Screen.DrawThickLine(tip.x + o.x, tip.y + o.y, b2.x + o.x, b2.y + o.y, th, c, a);
+			}
 			if (thKind[i] == 1)
 			{
 				Vector2 m = (cx, cy) + dir * (r + sz * 0.45);
@@ -352,7 +364,35 @@ class RSQA_Service : Service
 		let h = RSQA_Handler(EventHandler.Find("RSQA_Handler"));
 		if (!h) return -1;
 		if (request ~== "swap") return h.Swapped(intArg) ? 1 : 0;
+		let q = RSQA_QoL(EventHandler.Find("RSQA_QoL"));
+		if (request ~== "steady") return RSQA_QoL.SteadyOn() ? 1 : 0;
+		if (request ~== "seated") return q && q.IsSeated(intArg) ? 1 : 0;
 		return -1;
+	}
+
+	// the QoL round's numbers (zscript/rsqa_qol.zs), any scope
+	override double GetDoubleData(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
+	{
+		if (request ~== "rumble") return RSQA_Set.Rumble();
+		if (request ~== "taps") return RSQA_Set.Taps();
+		let q = RSQA_QoL(EventHandler.Find("RSQA_QoL"));
+		if (!q) return 0;
+		if (request ~== "steady") return q.Steady(intArg, int(doubleArg), stringArg);
+		if (request ~== "seated.drop") return q.SeatDrop(intArg);
+		if (request ~== "seated.eye") return (intArg >= 0 && intArg < MAXPLAYERS) ? q.seatEye[intArg] : 0;
+		if (request ~== "stand.eye") return q.StandEye(intArg);
+		return 0;
+	}
+
+	// play: the same, with Steady Hands first brought up to this tic (a mod whose handler runs before ours)
+	override double GetDouble(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
+	{
+		if (request ~== "steady")
+		{
+			let q = RSQA_QoL.Get();
+			if (q) q.SteadyTick(intArg);
+		}
+		return GetDoubleData(request, stringArg, intArg, doubleArg, objectArg, nameArg);
 	}
 
 	override int GetInt(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
@@ -360,6 +400,7 @@ class RSQA_Service : Service
 		let h = RSQA_Handler.Get();
 		if (!h) return -1;
 		if (request ~== "swap") return h.Swapped(intArg) ? 1 : 0;
+		if (request ~== "steady" || request ~== "seated") return GetIntData(request, stringArg, intArg, doubleArg, objectArg, nameArg);
 		if (request ~== "vignette") { h.Comfort(intArg, doubleArg); return RSQA_Set.Vignette(); }
 		if (request ~== "ready")
 		{
@@ -386,6 +427,10 @@ class RSQA_Buzz : Actor
 	static void Start(Actor who, int hand, double strength, int tics)
 	{
 		if (!who || !who.player || who.player != players[consoleplayer]) return;
+		// RUMBLE STRENGTH (rsqa_rumble_scale, AC2): every series rumble through here x0..2; 0 is none at all
+		double scale = RSQA_Set.Rumble();
+		if (scale <= 0) return;
+		strength *= scale;
 		// RUMBLE BACKUP (rsqa_rumble_backup, owner's pick 44). The quake route is scaled by QuestZDoom's
 		// vr_quake_haptic_level and silent at 0 (r_utility.cpp:1085). The engine buzzes the firing hand for any
 		// player hitscan with damage > 0, not gated on LAF_NOINTERACT (p_map.cpp:4764-4769; teardown 99_OVERLOOKED
@@ -401,7 +446,7 @@ class RSQA_Buzz : Actor
 		if (!q) return;
 		q.feels = who;
 		q.left = (hand == 1) != RSQA_Hand.EngineLeft();
-		q.amp = clamp(strength, 0.05, 1.0);
+		q.amp = clamp(strength, 0.05, 2.0);
 		q.total = clamp(tics, 1, 16);
 		q.tleft = q.total;
 	}

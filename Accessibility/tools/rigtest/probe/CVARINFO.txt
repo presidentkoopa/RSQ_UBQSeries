@@ -1,3 +1,5 @@
 user string rsqat_sel = "";
 user int rsqat_every = 5;
 user int rsqat_slowmo = 0;
+user int rsqat_qol = 0;        // 1: log the QoL round every tic (AT_Q lines)
+user string rsqat_key = "";    // "enter" / "yes": sends that key to the open menu (then clears)

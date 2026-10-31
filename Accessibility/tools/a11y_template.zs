@@ -89,6 +89,58 @@ class @P@_A11y
 		let s = Svc();
 		if (s) s.GetInt("vignette", "@P@", who.PlayerNumber(), strength);
 	}
+	// ---- the QoL round (2026-10-31, RSQ_Accessibility zscript/rsqa_qol.zs) ----
+	// RUMBLE STRENGTH (AC2): multiply a rumble's strength by this (0 = none). Mods that rumble through
+	// RSQA_Buzz (the "ready" cue) are scaled already.
+	static clearscope double Rumble() { return clamp(F('rsqa_rumble_scale', 1.0), 0.0, 2.0); }
+	// SLOWER TAPS (AC7): a tap / double-tap window in tics, x1.5 when on
+	static clearscope double TapScale() { return I('rsqa_slow_taps') ? 1.5 : 1.0; }
+	static clearscope int Tap(int tics) { return int(tics * TapScale() + 0.5); }
+	// SEATED PLAY (AC3): is this player seated now, and how far (metres) the eyes are below standing
+	static clearscope bool Seated(Actor who)
+	{
+		if (!who || !who.player) return false;
+		let s = Svc();
+		return s && s.GetIntData("seated", "", who.PlayerNumber()) == 1;
+	}
+	static clearscope double SeatDrop(Actor who)
+	{
+		if (!who || !who.player) return 0;
+		let s = Svc();
+		return s ? s.GetDoubleData("seated.drop", "", who.PlayerNumber()) : 0;
+	}
+	// STEADY HANDS (AC6): a hand's smoothed pose (hand 0 main / 1 off), for pointing and aiming. With the
+	// setting off, or without RSQ_Accessibility, the raw pose. Pos in map units (world), Dir a unit vector.
+	static clearscope bool SteadyOn(Actor who)
+	{
+		let s = (who && who.player) ? Svc() : null;
+		return s && s.GetIntData("steady", "", who.PlayerNumber()) == 1;
+	}
+	static clearscope Vector3 SteadyPos(Actor who, int hand)
+	{
+		let s = (who && who.player) ? Svc() : null;
+		if (!s) return hand ? who.OffhandPos : who.AttackPos;
+		int pn = who.PlayerNumber();
+		return (s.GetDoubleData("steady", "x", pn, hand), s.GetDoubleData("steady", "y", pn, hand), s.GetDoubleData("steady", "z", pn, hand));
+	}
+	static clearscope Vector3 SteadyDir(Actor who, int hand)
+	{
+		let s = (who && who.player) ? Svc() : null;
+		if (!s)
+		{
+			double a = hand ? who.OffhandAngle : who.AttackAngle, p = hand ? who.OffhandPitch : who.AttackPitch;
+			return (cos(a) * cos(p), sin(a) * cos(p), -sin(p));
+		}
+		int pn = who.PlayerNumber();
+		return (s.GetDoubleData("steady", "dx", pn, hand), s.GetDoubleData("steady", "dy", pn, hand), s.GetDoubleData("steady", "dz", pn, hand));
+	}
+	static clearscope double SteadyAngle(Actor who, int hand, String comp)   // comp: angle, pitch or roll
+	{
+		let s = (who && who.player) ? Svc() : null;
+		if (!s) return comp ~== "angle" ? (hand ? who.OffhandAngle : who.AttackAngle) : comp ~== "pitch" ? (hand ? who.OffhandPitch : who.AttackPitch) : (hand ? who.OffhandRoll : who.AttackRoll);
+		return s.GetDoubleData("steady", comp, who.PlayerNumber(), hand);
+	}
+
 	// a lock / grab-ready cue on a hand (0 main, 1 off): a short rumble when Sound Cues has it
 	static play void Ready(Actor who, int hand)
 	{
