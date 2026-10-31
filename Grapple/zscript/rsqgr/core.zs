@@ -124,7 +124,10 @@ class RSQGR_Core : EventHandler
 	void LetGo(RSQGR_Hook h, bool byPlayer)
 	{
 		if (!h) return;
-		if (h.owner && h.owner.player) coastUntil[h.owner.PlayerNumber()] = level.maptime + COAST_TICS;
+		// the coast is for a FLIGHT the rope gave (let go in the air, or while it was moving him): a let-go
+		// standing on the floor -- a monster pulled in, a slack rope -- leaves the stick's own feel alone
+		// (not a Split Pull's arrival on the floor: rig, it left the walk slow for the 18 coast tics)
+		if (h.owner && h.owner.player && RopeFlew(h.owner)) coastUntil[h.owner.PlayerNumber()] = level.maptime + COAST_TICS;
 		RSQGR_Perks.OnLetGo(h, byPlayer);   // Barbed Claw's tear, Slingshot (perks.zs)
 		if (h.phase == RSQGR_Hook.PH_BITE && h.victim && h.owner && !h.heavy)
 			RSQGR_Monster.OnRelease(h.victim, h.owner, h.hand);
@@ -166,7 +169,7 @@ class RSQGR_Core : EventHandler
 		for (int i = 0; i < NHOOK; i++)
 		{
 			held[i] = false; pressFired[i] = false; grabHeld[i] = false; wantGrip[i] = false; poseTic[i] = -100;
-			if (hooks[i]) { hooks[i].gripHand = -1; hooks[i].gripPending = false; }
+			if (hooks[i]) hooks[i].ClearGrips();
 		}
 	}
 
@@ -264,6 +267,7 @@ class RSQGR_Core : EventHandler
 				h.SetPhase(RSQGR_Hook.PH_BITE);
 				RSQGR_Monster.OnHooked(v, h.owner, h.hand, at);
 				Log(h, "bite");
+				Thump(h, "bite");
 			}
 			RSQGR_Events.Bitten(h.owner, v, h.hand, h.heavy);   // service.zs: for other mods to read
 			RSQGR_Perks.OnBite(h, v);   // perks.zs: Gun Bonsai patch upgrades + XP ledger
@@ -293,6 +297,9 @@ class RSQGR_Core : EventHandler
 		Vector3 b = AttachPoint(pmo);
 		h.ropeLen = (h.anchor - b).Length();
 		h.losBad = 0;
+		h.wasTaut = false;
+		h.slackMax = 0;
+		Thump(h, "latch");
 		if (RSQGR_Util.Opt("rsqgr_geo_mode", 0) == 1)
 		{
 			// JP's yank, parsed from hook.acs Hook_HitWall + function.acs: ThrustThing
@@ -310,6 +317,34 @@ class RSQGR_Core : EventHandler
 		}
 		h.SetPhase(RSQGR_Hook.PH_LATCH);
 		Log(h, "latch");
+	}
+
+	// ---- the thump (rsqgr_thump) ------------------------------------------------
+	//
+	// A THUMP IN THE HAND when the claw bites (a wall, a monster) and when the rope catches a falling body.
+	// The stock route, Quest teardown 99 1a "The other route: LineAttack" and apply/01 7: P_LineAttack
+	// buzzes the firing hand (150 ms at 0.8) whenever a player calls it with damage > 0, before it traces
+	// anything and whatever LAF_NOINTERACT says (p_map.cpp 4756-4768), on the user's own left/right
+	// (vr_control_scheme, flipped by LAF_ISOFFHAND). 0.1 units with LAF_NOINTERACT: nothing in the world
+	// is touched. Not A_QuakeEx: that one is random noise, depends on vr_quake_haptic_level and shoves
+	// the player unless its radius is zeroed (99 1a). The same route RSQ_DistanceGrab's pulse uses.
+	// One pulse blocks that hand's channel for its 150 ms (gl_openvr.cpp 517-528), so one thump per
+	// hook per THUMP_GAP tics.
+	const THUMP_GAP = 10;
+	const TAUT_VR = 3.0;   // u/tic outward when the rope catches him, or it is only the rope settling
+	const SLACK_MIN = 12.0; // units of slack it must have hung with first
+
+	void Thump(RSQGR_Hook h, String why)
+	{
+		if (!h || !h.owner || !h.owner.player || h.owner.Health <= 0) return;
+		if (!RSQGR_Util.Flag("rsqgr_thump", true)) return;
+		if (level.maptime - h.lastThump < THUMP_GAP) return;
+		h.lastThump = level.maptime;
+		let pmo = h.owner;
+		int ctrl = RSQGR_Util.Ctrl(pmo, h.hand);   // the controller playing that hand's part now
+		pmo.LineAttack(pmo.Angle, 0.1, 0, 1, 'None', "RSQGR_NullPuff", LAF_NOINTERACT | (ctrl == 1 ? LAF_ISOFFHAND : 0));
+		if (RSQGR_Util.Opt("rsqgr_debug", 0) >= 1)
+			Console.Printf("T_GR t%d h%d thump %s ctrl%d", level.maptime, h.hand, why, ctrl);
 	}
 
 	// ---- a monster on the line --------------------------------------------------
@@ -336,7 +371,14 @@ class RSQGR_Core : EventHandler
 		Vector3 dv = v.Pos - h.owner.Pos;
 		double d = dv.xy.Length();
 		if (d > h.range * 1.5) { LetGo(h, false); return; }
-		if (d < h.bestDist - 0.25) { h.bestDist = d; h.noProgress = 0; }
+		// THE LASSO (rsqgr_monster_mode 2) holds it at length on purpose: no "no closer" guard for it
+		// (Quest teardown apply/01 4.2 step 3); the held bind reels it in, as it reels a wall rope
+		if (RSQGR_Monster.Holds(v))
+		{
+			h.noProgress = 0;
+			h.reelHeld = held[i] && (pressFired[i] || level.maptime - pressTic[i] > TAP_TICS);
+		}
+		else if (d < h.bestDist - 0.25) { h.bestDist = d; h.noProgress = 0; }
 		else if (++h.noProgress > 52) { LetGo(h, false); return; }
 		if (!RSQGR_Monster.Tick(v, h.owner, h.hand)) { LetGo(h, false); return; }
 		if (h.phaseAge % 2 == 0) Log(h, "pull");
@@ -368,19 +410,48 @@ class RSQGR_Core : EventHandler
 	// touch-down; the engine clears it itself once the player is nearly still (vr_momentum_threshold).
 	const COAST_TICS = 18;
 	int coastUntil[MAXPLAYERS];
+	int pulledTic[MAXPLAYERS];   // the last tic Split Pull drew this player toward a monster (monster.zs)
+
+	// ONLY WHILE THE ROPE IS MOVING HIM. keepmomentum is more than "no wipe": in its branch the engine also
+	// leaves Speed at Default.Speed instead of Default.Speed * 8 (player.zs 1378 vs 1382, Quest teardown
+	// 09_MOVEMENT), so stick walking turns into Doom's slow, sliding walk for as long as it is set. Set for
+	// every latched or biting hook (10-31), it did that whenever a rope was merely OUT: standing under a
+	// slack rope, or reeling a monster in on foot (rig: keepmomentum 1, Speed 1 the whole pull). So: in the
+	// air on a rope, the rope solving his velocity last tic (a reel or a climb on the floor), Split Pull
+	// drawing him in, or the coast after a let-go in the air.
+	// RopeFlew: in the air on a rope, or the rope solving his velocity (a reel or climb) -- a flight worth
+	// coasting on after a let-go
+	bool RopeFlew(PlayerPawn pmo)
+	{
+		if (!pmo || !pmo.player) return false;
+		int pn = pmo.PlayerNumber();
+		if (pn < 0 || pn >= MAXPLAYERS) return false;
+		bool grounded = pmo.Pos.z <= pmo.floorz + 0.5 || pmo.bOnMobj;
+		return !grounded || tracked[pn];
+	}
+
+	// Set at the END of Swing, from what the rope did THIS tic: it protects the next tic's P_PlayerThink,
+	// which is where the wipe runs (p_tick.cpp: the players think before WorldTick).
+	void KeepMomentum(PlayerPawn pmo, int pn)
+	{
+		if (!pmo || !pmo.player || RSQGR_Util.Num("rsqgr_momentum", 1) <= 0) return;
+		bool holding = false;
+		for (int k = 0; k < 2; k++)
+		{
+			let hk = hooks[pn * 2 + k];
+			if (hk && hk.phase == RSQGR_Hook.PH_LATCH) holding = true;
+		}
+		bool grounded = pmo.Pos.z <= pmo.floorz + 0.5 || pmo.bOnMobj;
+		bool moving = (holding && (!grounded || tracked[pn])) || level.maptime - pulledTic[pn] <= 0;
+		// a swing that touches down still on the rope coasts on like a let-go one (the engine ends it once slow);
+		// a pull along the floor (Split Pull) gets no coast: it stops where it arrives, and the walk comes
+		// straight back (rig: 18 tics of slow walk after a Split Pull arrival before this)
+		if (moving && !grounded) coastUntil[pn] = max(coastUntil[pn], level.maptime + COAST_TICS);
+		if (moving || level.maptime < coastUntil[pn]) pmo.player.keepmomentum = true;
+	}
 
 	void Swing(PlayerPawn pmo, int pn)
 	{
-		if (pmo && pmo.player)
-		{
-			bool holding = false;
-			for (int k = 0; k < 2; k++)
-			{
-				let hk = hooks[pn * 2 + k];
-				if (hk && (hk.phase == RSQGR_Hook.PH_LATCH || hk.phase == RSQGR_Hook.PH_BITE)) holding = true;
-			}
-			if ((holding || level.maptime < coastUntil[pn]) && RSQGR_Util.Num("rsqgr_momentum", 1) > 0) pmo.player.keepmomentum = true;
-		}
 		bool any = false;
 		bool truthTaken = false;
 		bool roped = false;
@@ -424,6 +495,8 @@ class RSQGR_Core : EventHandler
 				// On your feet the rope pays out and takes in with you, so stepping off a
 				// ledge swings at once from that length rather than dropping into slack.
 				h.ropeLen = clamp(d, minLen, maxLen);
+				h.wasTaut = false;
+				h.slackMax = 0;
 				if (level.maptime % 4 == (pn + hand) % 4)
 				{
 					if (!Sees(pmo, b, a)) { if (++h.losBad >= 3) { LetGo(h, false); continue; } }
@@ -449,6 +522,15 @@ class RSQGR_Core : EventHandler
 				}
 			}
 			Vector3 v = pmo.vel;
+			// THE ROPE CATCHES HIM: slack (or just stepped off) last tic, and this tic's step would stretch it
+			// while he is moving outward -- a thump in the hand that fired it (rsqgr_thump)
+			// (a real catch: it hung at least SLACK_MIN slack first -- a climb's or a swing's own couple of
+			// units of give is not one; rig: three false thumps a climb before this)
+			bool tautNow = (b + v - a).Length() >= h.ropeLen - 0.5;
+			if (!tautNow) h.slackMax = max(h.slackMax, h.ropeLen - d);
+			if (tautNow && !h.wasTaut && !grounded && h.slackMax >= SLACK_MIN && (v dot n) >= TAUT_VR) Thump(h, "taut");
+			if (tautNow) h.slackMax = 0;
+			h.wasTaut = tautNow && !grounded;
 			// remove the outward part once the rope is taut
 			if (d >= h.ropeLen - 0.5)
 			{
@@ -543,6 +625,7 @@ class RSQGR_Core : EventHandler
 		}
 		tracked[pn] = roped;
 		if (roped) { lastPos[pn] = pmo.Pos; lastSet[pn] = pmo.vel; }
+		KeepMomentum(pmo, pn);
 	}
 
 	// ---- hand over hand (climb.zs says which hand may and where it is) -------------
@@ -561,7 +644,14 @@ class RSQGR_Core : EventHandler
 		for (int k = 0; k < 2; k++)
 		{
 			let h = hooks[pn * 2 + k];
-			if (h && h.gripHand == hand) { h.gripHand = -1; Log(h, "unhold"); }
+			if (h && h.gripOn[hand])
+			{
+				h.gripOn[hand] = false;
+				h.gripPend[hand] = false;
+				if (!h.gripOn[1 - hand]) h.gripHand = -1;
+				else if (h.gripHand == hand) h.gripHand = 1 - hand;
+				Log(h, String.Format("unhold h%d", hand));
+			}
 		}
 	}
 
@@ -572,47 +662,73 @@ class RSQGR_Core : EventHandler
 	{
 		step = 0;
 		along = 0;
-		if (RSQGR_Util.Opt("rsqgr_climb", 1) == 0) { h.gripHand = -1; return false; }
-		// a new press takes the rope over from the other hand once it touches it
+		if (RSQGR_Util.Opt("rsqgr_climb", 1) == 0) { h.ClearGrips(); return false; }
+		// BOTH HANDS ON ONE ROPE (rsqgr_two_hands, Quest teardown apply/01 5.2): a new press that touches the
+		// rope JOINS the hand already on it; letting go of one leaves the other holding. Off: the new hand
+		// takes the rope over from the other, as before.
+		bool two = RSQGR_Util.Flag("rsqgr_two_hands", true);
+		bool wasHeld = h.GripCount() > 0;
 		for (int g = 0; g < 2; g++)
 		{
 			int gi = pn * 2 + g;
-			if (!wantGrip[gi] || h.gripHand == g) { if (h.gripHand == g) wantGrip[gi] = false; continue; }
+			if (!wantGrip[gi] || h.gripOn[g]) { if (h.gripOn[g]) wantGrip[gi] = false; continue; }
 			bool ok; Vector3 off;
 			[ok, off] = RSQGR_Climb.HandOffset(pmo, pn, g);
 			if (!ok || !RSQGR_Climb.HandFree(pmo, g)) continue;
 			Vector3 hp = pmo.Pos + off;
 			if (RSQGR_Climb.ToSegment(hp, a, b) > RSQGR_A11y.Wide(RSQGR_Util.Num("rsqgr_grab_reach", 16))) continue;   // Gesture Ease: x1..x2
-			h.gripHand = g;
-			h.gripPending = true;
+			if (!two) { h.gripOn[1 - g] = false; h.gripPend[1 - g] = false; }
+			h.gripOn[g] = true;
+			h.gripPend[g] = true;
 			wantGrip[gi] = false;
 			Log(h, String.Format("take h%d", g));
 		}
-		if (h.gripHand < 0) return false;
-		if (!RSQGR_Climb.HandFree(pmo, h.gripHand)) { h.gripHand = -1; return false; }
-		bool ok; Vector3 off;
-		[ok, off] = RSQGR_Climb.HandOffset(pmo, pn, h.gripHand);
-		if (!ok) { h.gripHand = -1; return false; }
-		Vector3 hp = pmo.Pos + off;
-		along = (hp - b) dot n;            // + = the hand is further down the rope than the body's attach point
-		if (h.gripPending)
+		if (h.GripCount() == 0) { h.gripHand = -1; return false; }
+
+		// BY EACH HAND'S STEP, not its place: a hand moved this much since last tic, measured along the
+		// rope as it hangs now. Taken from the place instead (rope length = hold point - hand offset along
+		// the rope), a still hand on a swinging body drifted the length 6-14 units a swing as the rope
+		// turned (rig, full order). Faster than the cap: the excess slips through the hand rather than
+		// being owed -- the body never catches up with motion the arm made a tic ago.
+		// TWO HANDS: the AVERAGE of their steps, never the sum (the teardown's warning: a sum makes frantic
+		// shaking the fastest climb). Both pulling together climb as one hand does; one still hand halves
+		// the other's stroke; and each hand's tremor is halved.
+		double cap = RSQGR_Util.Num("rsqgr_climb_cap", 8);
+		double sum = 0;
+		int n2 = 0;
+		bool fresh = false;
+		double topAlong = 1e9;
+		int top = -1;
+		for (int g = 0; g < 2; g++)
 		{
-			h.gripLastOff = off;           // where the hand closed
-			h.gripPending = false;
-			h.ropeLen = clamp(d, minLen, maxLen);
+			if (!h.gripOn[g]) continue;
+			bool ok = false; Vector3 off = (0, 0, 0);
+			if (RSQGR_Climb.HandFree(pmo, g)) { [ok, off] = RSQGR_Climb.HandOffset(pmo, pn, g); }
+			if (!ok) { h.gripOn[g] = false; h.gripPend[g] = false; Log(h, String.Format("slip h%d", g)); continue; }
+			double al = ((pmo.Pos + off) - b) dot n;   // + = further down the rope than the body's attach point
+			if (al < topAlong) { topAlong = al; top = g; }
+			if (h.gripPend[g])
+			{
+				h.gripLast[g] = off;       // where the hand closed
+				h.gripPend[g] = false;
+				fresh = true;
+				continue;
+			}
+			sum += clamp(-((off - h.gripLast[g]) dot n), -cap, cap);
+			h.gripLast[g] = off;
+			n2++;
+		}
+		h.gripHand = top;
+		if (top < 0) return false;
+		along = topAlong;
+		if (n2 == 0)
+		{
+			// only a hand that has just closed: the rope's length is taken from here (unless a hand was
+			// already holding it, whose length stands)
+			if (fresh && !wasHeld) h.ropeLen = clamp(d, minLen, maxLen);
 			return false;
 		}
-		// BY THE HAND'S STEP, not its place: the hand moved this much since last tic,
-		// measured along the rope as it hangs now. Taken from the place instead (rope
-		// length = hold point - hand offset along the rope), a still hand on a swinging
-		// body drifted the length 6-14 units a swing as the rope turned (rig, full order).
-		Vector3 dOff = off - h.gripLastOff;
-		h.gripLastOff = off;
-		double delta = -(dOff dot n);
-		double cap = RSQGR_Util.Num("rsqgr_climb_cap", 8);
-		// faster than the cap: the excess slips through the hand rather than being owed --
-		// the body never catches up with motion the arm made a tic ago
-		delta = clamp(delta, -cap, cap);
+		double delta = sum / n2;
 		double nl = clamp(h.ropeLen + delta, minLen, maxLen);
 		delta = nl - h.ropeLen;
 		h.ropeLen += delta;
@@ -684,7 +800,7 @@ class RSQGR_Core : EventHandler
 			int i = h.owner.PlayerNumber() * 2 + h.hand;
 			if (i < 0 || i >= NHOOK || hooks[i]) { h.Destroy(); continue; }
 			hooks[i] = h;
-			h.gripHand = -1;   // a hold does not survive a load: the bind's release may never come
+			h.ClearGrips();   // a hold does not survive a load: the bind's release may never come
 		}
 		// stray rope pieces and links whose hook is gone
 		Array<Actor> keep;

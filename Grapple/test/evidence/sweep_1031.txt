@@ -1,0 +1,122 @@
+# RSQ_Grapple sweep 2026-10-31: key log lines (rig, QZD 17.3). Scripts: tools/rigtest/sweep_1031/
+## BEFORE (committed pk3), vanilla doom2, GRTEST
+P1_COLLAPSED
+T_DIR t16 h0 ovr1 yaw 0.00 pit -0.00 roll -0.00 my(1.000 0.000 0.000) eng(-0.000 25.693 0.000) hand-off(0.0 0.0 33.0) pang 0.0
+T_DIR t16 h1 ovr1 yaw 0.00 pit -0.00 roll -0.00 my(1.000 0.000 0.000) eng(-0.000 25.693 0.000) hand-off(0.0 0.0 33.0) pang 0.0
+T_GR t16 h0 fire pos(100.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(100.0 512.0 33.0) L0.0 d522.8 segs0 ms0.000/0.013 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t43 h0 fire pos(100.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(110.0 505.0 37.0) L0.0 d522.8 segs0 ms0.000/0.094 scale1.00 grip-1 free11 hoff0.00 pt-1
+P2_SLIDE
+T_GR t77 h0 fire pos(100.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(110.0 505.0 37.0) L0.0 d522.8 segs0 ms0.000/0.015 scale1.00 grip-1 free11 hoff0.00 pt-1
+T_KM t77 pos(100.0 512.0 -0.0) vel(0.00 0.00 0.00) keepmomentum 1 speed 1.00 onground 1
+T_KM t85 pos(100.0 512.0 -0.0) vel(0.00 0.00 0.00) keepmomentum 1 speed 1.00 onground 1
+T_KM t93 pos(100.0 512.0 -0.0) vel(0.00 0.00 0.00) keepmomentum 1 speed 1.00 onground 1
+T_KM t101 pos(100.0 512.0 -0.0) vel(0.00 0.00 0.00) keepmomentum 1 speed 1.00 onground 1
+T_KM t109 pos(100.0 512.0 -0.0) vel(0.00 0.00 0.00) keepmomentum 1 speed 1.00 onground 1
+T_KM t117 pos(100.0 512.0 -0.0) vel(0.00 0.00 0.00) keepmomentum 0 speed 8.00 onground 1
+## AFTER, vanilla doom2
+P1_COLLAPSED
+T_GR h0 press held 5 tics for the collapsed pose
+T_GR t21 h0 fire pos(100.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(110.0 505.0 37.0) L0.0 d522.8 segs0 ms0.000/0.018 scale1.00 grip-1 free11 hoff0.00 pt-1
+P2_SLIDE
+T_GR t77 h0 fire pos(100.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(110.0 505.0 37.0) L0.0 d522.8 segs0 ms0.000/0.031 scale1.00 grip-1 free11 hoff0.00 pt-1
+T_GR t81 h0 bite pos(100.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(280.0 505.0 37.0) L0.0 d522.8 segs29 ms0.043/0.030 scale1.00 grip-1 free11 hoff0.00 pt-1 victim DoomImp (3
+T_GR t81 h0 thump bite ctrl0
+T_GRS t81 bite DoomImp hand 0 heavy 0 bites 1 volleys 0
+T_GRP bite p0 h0 DoomImp mass 100 boss 0 heavy 0 (bites 1 yanks 0)
+P3_SPLIT
+T_GR t125 h0 fire pos(100.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(110.0 505.0 37.0) L0.0 d522.8 segs0 ms0.000/0.018 scale1.00 grip-1 free11 hoff0.00 pt-1
+T_GR t129 h0 bite pos(100.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(280.0 505.0 37.0) L0.0 d522.8 segs29 ms0.041/0.032 scale1.00 grip-1 free11 hoff0.00 pt-1 victim DoomImp (
+T_GR t129 h0 thump bite ctrl0
+T_GRS t129 bite DoomImp hand 0 heavy 0 bites 1 volleys 0
+T_GRP bite p0 h0 DoomImp mass 100 boss 0 heavy 0 (bites 2 yanks 0)
+T_GRM split DoomImp mass 100 vs 100: you 0.50 of 10.0, it 5.00 u/tic
+T_GRM split DoomImp mass 100 vs 100: you 0.50 of 8.0, it 4.00 u/tic
+T_GR t163 h0 fire pos(100.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(110.0 505.0 37.0) L0.0 d522.8 segs0 ms0.000/0.025 scale1.00 grip-1 free11 hoff0.00 pt-1
+T_GR t166 h0 bite pos(100.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(270.0 505.0 37.0) L0.0 d522.8 segs21 ms0.050/0.037 scale1.00 grip-1 free11 hoff0.00 pt-1 victim Demon (30
+T_GR t166 h0 thump bite ctrl0
+T_GRS t166 bite Demon hand 0 heavy 0 bites 1 volleys 0
+T_GRP bite p0 h0 Demon mass 400 boss 0 heavy 0 (bites 3 yanks 0)
+T_GRM split Demon mass 400 vs 100: you 0.80 of 10.0, it 2.00 u/tic
+T_GRM split Demon mass 400 vs 100: you 0.80 of 8.0, it 1.60 u/tic
+P4_LASSO
+T_GR t203 h0 fire pos(100.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(110.0 505.0 37.0) L0.0 d522.8 segs0 ms0.000/0.018 scale1.00 grip-1 free11 hoff0.00 pt-1
+T_GRM lasso DoomImp m=100 len=190.1
+T_GR t207 h0 bite pos(100.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(280.0 505.0 37.0) L0.0 d522.8 segs29 ms0.041/0.031 scale1.00 grip-1 free11 hoff0.00 pt-1 victim DoomImp (
+T_GR t207 h0 thump bite ctrl0
+T_GRS t207 bite DoomImp hand 0 heavy 0 bites 1 volleys 0
+T_GRP bite p0 h0 DoomImp mass 100 boss 0 heavy 0 (bites 4 yanks 1)
+T_GRM impact DoomImp (lasso) speed 24.0 dmg 12 -> Zombieman 6
+T_GRM air DoomImp (lasso let go) v=(0.00 0.00 -0.00)
+T_GRM land DoomImp (fell) after 56 tics speed 2.2 down 2.2 peak 18.0 dmg 0 at (264.3 456.6 -0.0) floorz -0.0 fits 1
+P5_TWO
+T_GR t284 h0 fire pos(300.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(303.5 503.5 37.0) L0.0 d594.4 segs0 ms0.000/0.018 scale1.00 grip-1 free11 hoff0.00 pt-1
+T_GR t296 h0 thump latch ctrl0
+T_GR t321 h0 thump taut ctrl0
+PHASE_A_left_alone
+T_GR t341 h0 take h1 pos(553.5 491.2 37.7) vel(7.52 -0.62 1.50) claw(403.8 503.5 511.0) L464.6 d464.6 segs91 ms0.055/0.115 scale1.00 grip-1 free11 hoff0.00 pt-1
+PHASE_B_right_joins
+T_GR t352 h0 take h0 pos(607.5 486.8 65.4) vel(2.96 -0.24 0.45) claw(403.8 503.5 511.0) L459.6 d459.9 segs90 ms0.088/0.060 scale1.00 grip1 free11 hoff41.00 pt352
+PHASE_B_both_pull
+PHASE_C_right_shakes_left_still
+PHASE_D_left_lets_go_right_lowers
+T_GR t370 h0 unhold h1 pos(587.7 488.4 63.4) vel(-4.15 0.34 -2.90) claw(403.8 503.5 511.0) L452.8 d453.2 segs89 ms0.116/0.075 scale1.00 grip0 free11 hoff32.50 pt369
+PHASE_END
+T_GR t378 h0 unhold h0 pos(544.3 492.0 41.0) vel(-6.73 0.55 -3.30) claw(403.8 503.5 511.0) L457.9 d458.7 segs88 ms0.080/0.078 scale1.00 grip-1 free11 hoff0.00 pt-1
+T_KM t77 pos(100.0 512.0 -0.0) vel(0.00 0.00 0.00) keepmomentum 0 speed 8.00 onground 1
+T_KM t85 pos(100.0 512.0 -0.0) vel(0.00 0.00 0.00) keepmomentum 0 speed 8.00 onground 1
+T_KM t93 pos(100.0 512.0 -0.0) vel(0.00 0.00 0.00) keepmomentum 0 speed 8.00 onground 1
+T_KM t101 pos(100.0 512.0 -0.0) vel(0.00 0.00 0.00) keepmomentum 0 speed 8.00 onground 1
+T_KM t109 pos(100.0 512.0 -0.0) vel(0.00 0.00 0.00) keepmomentum 0 speed 8.00 onground 1
+T_KM t117 pos(100.0 512.0 -0.0) vel(0.00 0.00 0.00) keepmomentum 0 speed 8.00 onground 1
+T_KM t130 pos(100.0 512.0 -0.0) vel(5.00 0.00 0.00) keepmomentum 1 speed 8.00 onground 1
+T_KM t138 pos(140.0 512.0 -0.0) vel(5.00 0.00 0.00) keepmomentum 1 speed 1.00 onground 1
+T_KM t146 pos(178.6 512.0 -0.0) vel(3.72 0.00 0.00) keepmomentum 1 speed 1.00 onground 1
+T_KM t154 pos(188.8 512.0 -0.0) vel(0.00 0.00 0.00) keepmomentum 1 speed 1.00 onground 1
+T_KM t162 pos(100.0 512.0 -0.0) vel(0.00 0.00 0.00) keepmomentum 1 speed 1.00 onground 1
+T_KM t170 pos(124.0 512.0 -0.0) vel(8.00 0.00 0.00) keepmomentum 1 speed 1.00 onground 1
+T_KM t178 pos(188.0 512.0 -0.0) vel(8.00 0.00 0.00) keepmomentum 1 speed 1.00 onground 1
+T_KM t186 pos(223.8 512.0 -0.0) vel(0.00 0.00 0.00) keepmomentum 1 speed 1.00 onground 1
+T_KM t194 pos(223.8 512.0 -0.0) vel(0.00 0.00 0.00) keepmomentum 1 speed 1.00 onground 1
+T_GR t342 h0 climb pos(560.6 490.7 40.2) vel(7.77 -0.64 -0.26) claw(403.8 503.5 511.0) L467.5 d464.6 segs92 ms0.064/0.12
+T_GR t343 h0 climb pos(568.4 490.0 40.0) vel(5.32 -0.44 5.02) claw(403.8 503.5 511.0) L464.7 d467.6 segs92 ms0.062/0.113
+T_GR t344 h0 climb pos(573.7 489.6 45.0) vel(5.08 -0.42 4.51) claw(403.8 503.5 511.0) L462.4 d464.8 segs92 ms0.087/0.106
+T_GR t345 h0 climb pos(578.8 489.2 49.5) vel(4.47 -0.37 4.84) claw(403.8 503.5 511.0) L459.6 d462.5 segs93 ms0.066/0.111
+T_GR t353 h0 climb pos(610.1 486.6 66.7) vel(2.41 -0.20 0.42) claw(403.8 503.5 511.0) L460.3 d460.0 segs90 ms0.068/0.175
+T_GR t355 h0 climb pos(614.1 486.3 67.9) vel(-0.01 0.00 3.00) claw(403.8 503.5 511.0) L457.7 d460.7 segs90 ms0.060/0.088
+T_GR t356 h0 climb pos(614.1 486.3 70.9) vel(-0.24 0.02 2.38) claw(403.8 503.5 511.0) L455.4 d458.0 segs90 ms0.061/0.105
+T_GR t357 h0 climb pos(613.9 486.3 73.3) vel(-0.87 0.07 2.54) claw(403.8 503.5 511.0) L452.8 d455.8 segs91 ms0.064/0.118
+T_GR t361 h0 climb pos(611.7 486.5 75.2) vel(-0.58 0.05 -1.80) claw(403.8 503.5 511.0) L454.1 d453.1 segs90 ms0.065/0.09
+T_GR t362 h0 climb pos(611.2 486.5 73.4) vel(-2.17 0.18 0.38) claw(403.8 503.5 511.0) L452.8 d454.5 segs88 ms0.084/0.109
+T_GR t363 h0 climb pos(609.0 486.7 73.8) vel(-1.34 0.11 -2.19) claw(403.8 503.5 511.0) L454.1 d453.1 segs89 ms0.086/0.11
+T_GR t364 h0 climb pos(607.7 486.8 71.6) vel(-2.91 0.24 0.03) claw(403.8 503.5 511.0) L452.8 d454.5 segs88 ms0.064/0.127
+T_GR t365 h0 climb pos(604.8 487.0 71.6) vel(-2.10 0.17 -2.54) claw(403.8 503.5 511.0) L454.1 d453.1 segs89 ms0.072/0.12
+T_GR t366 h0 climb pos(602.7 487.2 69.1) vel(-3.63 0.30 -0.28) claw(403.8 503.5 511.0) L452.8 d454.5 segs88 ms0.063/0.13
+T_GR t373 h0 climb pos(573.1 489.6 57.2) vel(-4.52 0.37 -4.83) claw(403.8 503.5 511.0) L455.6 d453.3 segs88 ms0.104/0.18
+T_GR t374 h0 climb pos(568.6 490.0 52.3) vel(-5.02 0.41 -4.46) claw(403.8 503.5 511.0) L457.9 d456.1 segs88 ms0.064/0.12
+## AFTER, full order (doom2, brutal22test6, BD_VoxelPack, BD22_VR-Reloaded 2.0.3h + hotfix)
+P1_COLLAPSED
+T_DIR t28 h0 ovr1 yaw 0.00 pit -0.00 roll -0.00 my(1.000 0.000 0.000) eng(-0.000 25.693 0.000) hand-off(0.0 0.0 36.0) pang 0.0
+T_GR h0 press held 5 tics for the collapsed pose
+T_GR t33 h0 fire pos(100.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(110.0 505.0 37.0) L0.0 d522.8 segs0 ms0.000/0.018 scale1.00 grip-1 free01 hoff0.00 pt-
+T_GR t67 h0 fire pos(100.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(110.0 505.0 37.0) L0.0 d522.8 segs0 ms0.000/0.016 scale1.00 grip-1 free01 hoff0.00 pt-
+P3_SPLIT
+T_GR t101 h0 fire pos(100.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(110.0 505.0 37.0) L0.0 d522.8 segs0 ms0.000/0.015 scale1.00 grip-1 free01 hoff0.00 pt
+T_KM t101 pos(100.0 512.0 -0.0) vel(0.00 0.00 0.00) keepmomentum 0 speed 8.00 onground 1
+T_GRM split Demon mass 400 vs 150: you 0.73 of 10.0, it 2.73 u/tic
+T_GRM split Demon mass 400 vs 150: you 0.73 of 10.0, it 2.73 u/tic
+T_GRM split Demon mass 400 vs 150: you 0.73 of 10.0, it 2.73 u/tic
+T_GRM split Demon mass 400 vs 150: you 0.73 of 10.0, it 2.73 u/tic
+T_GRM split Demon mass 400 vs 150: you 0.73 of 10.0, it 2.73 u/tic
+T_GRM split Demon mass 400 vs 150: you 0.73 of 10.0, it 2.73 u/tic
+T_GRM split Demon mass 400 vs 150: you 0.73 of 10.0, it 2.73 u/tic
+T_KM t119 pos(201.1 512.0 -0.0) vel(5.97 0.00 0.00) keepmomentum 1 speed 1.00 onground 1
+T_KM t123 pos(212.5 512.0 -0.0) vel(0.00 0.00 0.00) keepmomentum 0 speed 8.00 onground 1
+T_KM t127 pos(212.5 512.0 -0.0) vel(0.00 0.00 0.00) keepmomentum 0 speed 8.00 onground 1
+T_KM t131 pos(212.5 512.0 -0.0) vel(0.00 0.00 0.00) keepmomentum 0 speed 8.00 onground 1
+T_KM t135 pos(212.5 512.0 -0.0) vel(0.00 0.00 0.00) keepmomentum 0 speed 8.00 onground 1
+T_KM t139 pos(212.5 512.0 -0.0) vel(0.00 0.00 0.00) keepmomentum 0 speed 8.00 onground 1
+T_KM t143 pos(212.5 512.0 -0.0) vel(0.00 0.00 0.00) keepmomentum 0 speed 8.00 onground 1
+T_KM t147 pos(212.5 512.0 -0.0) vel(0.00 0.00 0.00) keepmomentum 0 speed 8.00 onground 1
+T_KM t151 pos(212.5 512.0 -0.0) vel(0.00 0.00 0.00) keepmomentum 0 speed 8.00 onground 1
+T_KM t155 pos(212.5 512.0 -0.0) vel(0.00 0.00 0.00) keepmomentum 0 speed 8.00 onground 1
+T_KM t159 pos(212.5 512.0 -0.0) vel(0.00 0.00 0.00) keepmomentum 0 speed 8.00 onground 1

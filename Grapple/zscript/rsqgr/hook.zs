@@ -50,10 +50,28 @@ class RSQGR_Hook : Actor
 	Array<RSQGR_Rope> segs;     // cable look
 	Array<RSQGR_Link> links;    // chain look
 	transient bool hcLit;       // high contrast: claw and rope at full brightness (DrawRope)
-	int gripHand;               // a hand climbing this rope, -1 none (RSQGR_Climb)
-	Vector3 gripLastOff;        // that hand's offset from the pawn last tic
-	bool gripPending;           // the hold is taken on the next tic, from that tic's pose
+	int gripHand;               // the hand the rope is drawn through: the upper of the hands on it, -1 none
+	Vector3 gripLastOff;        // (old saves only; the per-hand pair below replaced it)
+	bool gripPending;           // (old saves only)
+	// BOTH HANDS ON ONE ROPE (Quest teardown apply/01 5.2, rsqgr_two_hands): each hand holds or not on
+	// its own, with its own last offset; the climb is the AVERAGE of the holding hands' steps.
+	bool gripOn[2];             // this hand (0 main, 1 off) holds the rope
+	bool gripPend[2];           // its hold is taken on the next tic, from that tic's pose
+	Vector3 gripLast[2];        // its offset from the pawn last tic
+	// THE THUMP (rsqgr_thump): the rope went taut last tic; the tic of the last thump on this hook
+	bool wasTaut;
+	double slackMax;            // the most slack it has hung with since it was last taut
+	int lastThump;
 	double drawMs;        // last rope draw cost (rsqgr_debug)
+
+	// no hand holds the rope (a load, a let-go, climbing switched off)
+	void ClearGrips()
+	{
+		for (int g = 0; g < 2; g++) { gripOn[g] = false; gripPend[g] = false; }
+		gripHand = -1;
+		gripPending = false;
+	}
+	int GripCount() const { return (gripOn[0] ? 1 : 0) + (gripOn[1] ? 1 : 0); }
 
 	Default
 	{
@@ -83,6 +101,7 @@ class RSQGR_Hook : Actor
 	{
 		Super.BeginPlay();
 		gripHand = -1;
+		lastThump = -100;
 	}
 
 	void SetPhase(int ph)
@@ -174,6 +193,7 @@ class RSQGR_Hook : Actor
 		px.Push(from.x); py.Push(from.y); pz.Push(from.z);
 
 		Vector3 mainFrom = from;
+		// (gripHand is the UPPER hand when both hold: the rope runs from it to the claw)
 		if (phase == PH_LATCH && gripHand >= 0 && gripHand != hand)
 		{
 			// the tail: from the firing hand up to the climbing hand, hanging loose
@@ -409,4 +429,28 @@ class RSQGR_Tracer : LineTracer
 	// The two-sided lines a hook stops at in their open middle: the ones that stop
 	// shots and missiles. Everything else passes through the opening.
 	const WALLMASK = Line.ML_BLOCKEVERYTHING | Line.ML_BLOCKPROJECTILE | Line.ML_BLOCKHITSCAN;
+}
+
+// THE THUMP's puff (rsqgr_thump, RSQGR_Core.Thump): the hitscan that carries the buzz touches nothing
+// (LAF_NOINTERACT, 0.1 units), and should anything ever spawn this, it is nothing too.
+class RSQGR_NullPuff : Actor
+{
+	Default
+	{
+		+NOINTERACTION
+		+NOBLOCKMAP
+		+NOGRAVITY
+		+NOTELEPORT
+		+DONTSPLASH
+		+NOTONAUTOMAP
+		RenderStyle "None";
+		Radius 1;
+		Height 1;
+	}
+	States
+	{
+	Spawn:
+		TNT1 A 1;
+		Stop;
+	}
 }

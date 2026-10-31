@@ -6,7 +6,12 @@ class GRP_Probe : EventHandler
 	override void NetworkProcess(ConsoleEvent e)
 	{
 		let pmo = players[e.Player].mo; if (!pmo) return;
-		if (e.Name == "grp_tp")
+		if (e.Name == "grp_vel")
+		{
+			pmo.vel = (e.Args[0], e.Args[1], e.Args[2]);
+			Console.Printf("T_VEL t%d vel(%.1f %.1f %.1f)", level.maptime, pmo.vel.x, pmo.vel.y, pmo.vel.z);
+		}
+		else if (e.Name == "grp_tp")
 		{
 			pmo.SetOrigin((e.Args[0], e.Args[1], pmo.floorz), false);
 			pmo.SetOrigin((e.Args[0], e.Args[1], pmo.CurSector.floorplane.ZatPoint((e.Args[0], e.Args[1]))), false);
@@ -53,6 +58,11 @@ class GRP_Probe : EventHandler
 	{
 		if (CVar.FindCVar("grp_log").GetInt() < 1) return;
 		let pmo = players[consoleplayer].mo; if (!pmo) return;
+		if (CVar.FindCVar("grp_log").GetInt() == 5)
+		{
+			Console.Printf("T_KM t%d pos(%.1f %.1f %.1f) vel(%.2f %.2f %.2f) keepmomentum %d speed %.2f onground %d", level.maptime, pmo.pos.x, pmo.pos.y, pmo.pos.z, pmo.vel.x, pmo.vel.y, pmo.vel.z, pmo.player.keepmomentum, pmo.Speed, pmo.player.onground);
+			return;
+		}
 		if (CVar.FindCVar("grp_log").GetInt() >= 2)
 		{
 			let it = ThinkerIterator.Create("Actor");
