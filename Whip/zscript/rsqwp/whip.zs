@@ -92,6 +92,21 @@ class RSQWP_Whip : EventHandler
 	Vector2 mantleFwd[MAXPLAYERS];   // and which way it lies
 	Vector2 mantleLip[MAXPLAYERS];   // the lip, in 2D
 	bool    pumpHad[NW];
+	// THE WHIP WEAPON (weapon.zs, owner 2026-10-31): mark with the trigger, cycle with alt-fire, pull by gesture, lasso
+	bool    markHeld[NW];        // the trigger is held: the whip hand marks
+	bool    markNext[NW];        // alt-fire: the mark moves on to the next nearest
+	Line    markLine[NW];        // a marked switch
+	Actor   wrapOn[NW];          // the monster the whip is wrapped round, waiting for the pull
+	int     wrapUntil[NW];
+	Vector3 pullOff[NW];         // the whip hand's offset from the body last tic
+	bool    pullHad[NW];
+	double  pullPk[NW];          // the pull so far (its peak, map units a tic)
+	bool    lassoOn[NW], lassoWas[NW];
+	Vector3 lassoP0[NW], lassoP1[NW];   // the off hand holding the thong, last tic and now (room)
+	transient Array<Actor> cA;
+	transient Array<Line> cL;
+	transient Array<double> cK;
+	transient Array<double> cPx, cPy, cPz;
 	RSQWP_Rope wl[NW * NP];      // the drawn whip: piece 0 the handle, 1..NN the thong
 	transient RSQWP_Tracer tracer;
 
@@ -251,14 +266,19 @@ class RSQWP_Whip : EventHandler
 
 	void WorldTick2()
 	{
+		// the whip weapon is in every player's slot 1 while RSQ Whip is on (no console needed)
+		if (level.maptime % 35 == 1 && RSQWP_Util.Flag("rsqwp_on", true) && RSQWP_Util.Flag("rsqwp_whip_weapon", true))
+			for (int pn = 0; pn < MAXPLAYERS; pn++)
+			{
+				let pm = playeringame[pn] ? players[pn].mo : null;
+				if (pm && pm.Health > 0 && !pm.FindInventory("RSQWP_WhipWeapon")) pm.GiveInventory("RSQWP_WhipWeapon", 1);
+			}
 		ArmPump();
 		Mantle();
 		for (int i = 0; i < NW; i++)
 		{
 			if (wstate[i] == ST_IDLE)
 			{
-				// the whip weapon's alt-fire locks before the whip is out
-				if (byWeapon[i] && (lockHeld[i] || lockLeft[i] > 0) && players[i / 2].mo) Lock(i, players[i / 2].mo, i & 1);
 				continue;
 			}
 			let pmo = wby[i];
@@ -292,12 +312,21 @@ class RSQWP_Whip : EventHandler
 			// needs the hand behind it -- a whip that only falls or settles never cracks
 			double hs = ((b + d * HANDLEN) - (hb[i] + hd[i] * HANDLEN)).Length();
 			handSpd[i] = max(handSpd[i] * 0.93, hs);
-			Lock(i, pmo, hand);
+			if (byWeapon[i]) Mark(i, pmo, hand); else Lock(i, pmo, hand);
 			Reach(i, pmo, hand);
+			HoldWrap(i, pmo, hand);
+			if (lassoOn[i])
+			{
+				lassoP1[i] = ToRoom(RSQWP_Util.HandPos(pmo, 1 - hand));
+				if (!lassoWas[i]) lassoP0[i] = lassoP1[i];
+			}
 			Vector3 peakAt, peakVel;
 			double tA = MSTimeF();
 			[peakAt, peakVel] = Sim(i, hb[i], hd[i], b, d);
 			msSim += MSTimeF() - tA;
+			if (lassoWas[i] && !lassoOn[i]) LassoThrow(i, pmo, hand);
+			lassoWas[i] = lassoOn[i];
+			lassoP0[i] = lassoP1[i];
 			hb[i] = b; hd[i] = d;
 			tA = MSTimeF();
 			bool snagged = Collide(i, pmo, hand);
@@ -358,6 +387,8 @@ class RSQWP_Whip : EventHandler
 					wp[o + k] = wp[o + k] + dd * (diff * w0 / sum);
 					wp[o + k + 1] = wp[o + k + 1] - dd * (diff * w1 / sum);
 				}
+				// the lasso: the off hand holds the thong LASSO_K links out
+				if (lassoOn[i]) wp[o + LASSO_K] = lassoP0[i] + (lassoP1[i] - lassoP0[i]) * t;
 			}
 			Vector3 tv = (wp[o + NN] - wq[o + NN]) * subs;
 			double sp = tv.Length();
@@ -521,6 +552,267 @@ class RSQWP_Whip : EventHandler
 		}
 	}
 
+	// ---- the whip weapon: mark, pull, lasso (owner 2026-10-31) ---------------------------------
+
+	const MARK_CONE = 20.0;      // degrees round the whip hand for monsters and other pickups
+	const PRIO_CONE = 70.0;      // switches, keys and powerups: anywhere roughly ahead, within rsqwp_whip_prio
+	const WRAP_TICS = 70;        // how long the whip stays wrapped round a monster waiting for the pull
+	const PULL_MIN = 1.5;        // the hand going back from the target, map units a tic (~1.5 m/s): a tug
+	const PULL_FULL = 4.0;       // ~4 m/s: a violent pull, the full yank
+	const LASSO_K = 5;           // the link the off hand holds
+	const LASSO_MIN = 6.0;       // the tip's speed (room units a tic) a let-go must have to fly
+
+	static bool IsDoor(int sp)
+	{
+		return (sp >= 10 && sp <= 14) || sp == 105 || sp == 106 || sp == 202 || sp == 249;
+	}
+	static bool Priority(Inventory inv)
+	{
+		return inv is "Key" || inv is "PowerupGiver" || inv.bCOUNTITEM || inv.bBIGPOWERUP;
+	}
+
+	private void AddCand(Actor a, Line l, Vector3 p, double key)
+	{
+		int n = cK.Size();
+		int at = n;
+		while (at > 0 && cK[at - 1] > key) at--;
+		cA.Insert(at, a); cL.Insert(at, l); cPx.Insert(at, p.x); cPy.Insert(at, p.y); cPz.Insert(at, p.z); cK.Insert(at, key);
+	}
+
+	// MARK: while the trigger is held the whip hand points. The candidates are switches, keys and powerups within
+	// rsqwp_whip_prio (nearest first), then monsters and pickups along the hand (within MARK_CONE, LOCK_RANGE,
+	// nearest first). The mark stays on what it is on while that is still a candidate; alt-fire moves it to the
+	// next. Let go of the trigger and the mark is lost. The next crack flies to it (Crack, Reach).
+	void Mark(int i, PlayerPawn pmo, int hand)
+	{
+		if (!markHeld[i])
+		{
+			lockOn[i] = null; lockLine[i] = false; lockLeft[i] = 0; markLine[i] = null; markNext[i] = false;
+			return;
+		}
+		Vector3 org = RSQWP_Util.HandPos(pmo, hand);
+		Vector3 dir = RSQWP_Util.MapDir(RSQWP_Util.HandYaw(pmo, hand), RSQWP_Util.HandPitch(pmo, hand));
+		double prio = max(0.0, RSQWP_Util.Num("rsqwp_whip_prio", 256));
+		cA.Clear(); cL.Clear(); cPx.Clear(); cPy.Clear(); cPz.Clear(); cK.Clear();
+		let it = BlockThingsIterator.CreateFromPos(org.x, org.y, org.z, 64, LOCK_RANGE, false);
+		while (it.Next())
+		{
+			let a = it.thing;
+			if (!a || a == pmo || a.player || a.bDestroyed) continue;
+			bool mon = a.bSHOOTABLE && !a.bNONSHOOTABLE && a.Health > 0 && !a.bMISSILE && a.bISMONSTER && !(a is "RSQWP_Rope");
+			if (a.bINVISIBLE || a.sprite == Actor.GetSpriteIndex('TNT1')) continue;   // a spawner or a marker, not a thing to see
+			let inv = Inventory(a);
+			bool item = inv && !inv.Owner && inv.bSPECIAL;
+			if (!mon && !item) continue;
+			Vector3 c = a.pos + (0, 0, a.height * 0.5);
+			Vector3 to = c - org;
+			double d = to.Length();
+			if (d < 8 || d > LOCK_RANGE) continue;
+			double ang = acos(clamp((to / d) dot dir, -1.0, 1.0)) - atan2(a.radius, d);
+			bool first = item && Priority(inv) && d <= prio && ang <= PRIO_CONE;
+			if (!first && ang > MARK_CONE) continue;
+			if (!pmo.CheckSight(a, SF_IGNOREVISIBILITY | SF_IGNOREWATERBOUNDARY)) continue;
+			AddCand(a, null, c, first ? d : 100000 + d);
+		}
+		if (prio > 0 && RSQWP_Util.Flag("rsqwp_whip_lines", true))
+		{
+			let tr = GetTracer();
+			tr.shooter = pmo;
+			let li = BlockLinesIterator.CreateFromPos(org, 64, prio);
+			while (li.Next())
+			{
+				Line l = li.CurLine;
+				if (!l || !l.special || IsDoor(l.special) || !(l.activation & (SPAC_Use | SPAC_Impact | SPAC_UseThrough))) continue;
+				Vector2 a = l.v1.p, dl = l.delta;
+				double len2 = dl dot dl;
+				if (len2 <= 0) continue;
+				double t = clamp(((org.xy - a) dot dl) / len2, 0.05, 0.95);
+				Vector2 p2 = a + dl * t;
+				Sector s = level.PointOnLineSide(org.xy, l) == 0 ? l.frontsector : l.backsector;
+				if (!s) continue;
+				double fz = s.floorplane.ZatPoint(p2), cz = s.ceilingplane.ZatPoint(p2);
+				// a two-sided line: its switch is on the step or the lintel, else the middle of the wall
+				Sector o2 = level.PointOnLineSide(org.xy, l) == 0 ? l.backsector : l.frontsector;
+				double z = clamp(org.z, fz + 8, max(fz + 8, cz - 8));
+				if (o2)
+				{
+					double ofz = o2.floorplane.ZatPoint(p2), ocz = o2.ceilingplane.ZatPoint(p2);
+					if (ofz > fz + 8) z = (fz + min(ofz, cz)) * 0.5;
+					else if (ocz < cz - 8) z = (max(ocz, fz) + cz) * 0.5;
+				}
+				Vector3 p = (p2.x, p2.y, z);
+				Vector3 to = p - org;
+				double d = to.Length();
+				if (d < 4 || d > prio) continue;
+				double ang = acos(clamp((to / d) dot dir, -1.0, 1.0));
+				if (ang > PRIO_CONE) continue;
+				// in sight: the first wall along the way is this one
+				Vector3 u = to / d;
+				if (tr.Trace(org, level.PointInSector(org.xy), u, d + 4, 0, RSQWP_Tracer.WALLMASK, true, pmo)
+					&& tr.Results.HitType != TRACE_HitNone && tr.Results.HitLine != l && tr.Results.Distance < d - 2) continue;
+				AddCand(null, l, p - u * 2, d);
+			}
+		}
+		int n = cK.Size();
+		int cur = -1;
+		for (int k = 0; k < n; k++)
+			if ((lockOn[i] && cA[k] == lockOn[i]) || (!lockOn[i] && markLine[i] && cL[k] == markLine[i])) { cur = k; break; }
+		int pick = cur;
+		if (n == 0) pick = -1;
+		else if (markNext[i]) pick = (cur + 1) % n;
+		else if (cur < 0) pick = 0;
+		markNext[i] = false;
+		Actor wasA = lockOn[i]; Line wasL = markLine[i];
+		if (pick < 0) { lockOn[i] = null; markLine[i] = null; lockLine[i] = false; lockLeft[i] = 0; }
+		else
+		{
+			lockOn[i] = cA[pick]; markLine[i] = cL[pick]; lockLine[i] = cL[pick] != null; lockAt[i] = (cPx[pick], cPy[pick], cPz[pick]);
+			lockLeft[i] = 35;
+		}
+		if (lockOn[i] != wasA || markLine[i] != wasL)
+		{
+			if (pick >= 0) Buzz(pmo, hand, 0.3, 2);
+			if (RSQWP_Util.Flag("rsqwp_debug", false))
+				Console.Printf("T_WPW %d MARK t%d -> %s (%d of %d)", i, level.maptime,
+					lockOn[i] ? String.Format("%s", lockOn[i].GetClassName()) : (markLine[i] ? String.Format("line %d special %d", markLine[i].Index(), markLine[i].special) : "nothing"), pick + 1, n);
+		}
+		MarkRing(i, pmo);
+	}
+
+	// the mark: a small turning ring of sparks over the marked thing (a switch: gold)
+	void MarkRing(int i, PlayerPawn pmo)
+	{
+		if (level.maptime % 2 != 0 || !(lockOn[i] || lockLine[i])) return;
+		Vector3 c = lockOn[i] ? lockOn[i].pos + (0, 0, lockOn[i].height + 6) : lockAt[i];
+		double r = lockOn[i] ? max(6.0, lockOn[i].radius * 0.8) : 6.0;
+		Vector3 off = c - pmo.pos;
+		for (int k = 0; k < 6; k++)
+		{
+			double a = level.maptime * 12 + k * 60;
+			pmo.A_SpawnParticle(lockLine[i] ? 0xFFE060 : 0xFF6030, SPF_FULLBRIGHT, 5, 3.0, 0,
+				off.x + cos(a) * r, off.y + sin(a) * r, off.z, 0, 0, 0.1);
+		}
+	}
+
+	// WRAPPED round a monster (a marked crack or a lasso landed on it): the thong stays laid out to it, and a pull
+	// back of the whip hand -- the hand going away from the monster, against the body, so walking does not count --
+	// yanks it when the pull ends (Yank: how hard is the pull's peak). Nothing in WRAP_TICS and it lets go.
+	void HoldWrap(int i, PlayerPawn pmo, int hand)
+	{
+		Vector3 hp = RSQWP_Util.HandPos(pmo, hand);
+		Vector3 off = hp - pmo.pos;
+		Vector3 d = off - pullOff[i];
+		bool had = pullHad[i];
+		pullOff[i] = off; pullHad[i] = true;
+		let v = wrapOn[i];
+		if (!v) return;
+		if (v.bDestroyed || v.Health <= 0 || level.maptime > wrapUntil[i] || reachTic[i] > 0) { if (reachTic[i] <= 0) wrapOn[i] = null; return; }
+		Vector3 c = v.pos + (0, 0, v.height * 0.6);
+		Vector3 roomTo = ToRoom(c) - ToRoom(hp);
+		double dist = roomTo.Length();
+		if (dist > LOCK_RANGE * 1.3) { wrapOn[i] = null; return; }
+		// the thong stays out to it: the outer half laid along the line, the tip on the monster
+		wlen[i] = max(baseLen[i], dist + 8);
+		int o = i * NP;
+		for (int k = NN / 2; k < NP; k++)
+		{
+			double u = double(k - NN / 2) / (NN - NN / 2);
+			Vector3 want = ToRoom(hp) + roomTo * (0.5 + 0.5 * u);
+			wp[o + k] = wp[o + k] + (want - wp[o + k]) * 0.5;
+		}
+		if (!had || d.Length() > 24) return;
+		Vector3 toV = (c - hp).Unit();
+		double pull = -(d dot toV);
+		if (pull >= PULL_MIN) { pullPk[i] = max(pullPk[i], pull); return; }
+		if (pullPk[i] >= PULL_MIN) Yank(i, pmo, hand, v, pullPk[i]);
+		pullPk[i] = 0;
+	}
+
+	// THE YANK. How hard: 0 a tug (PULL_MIN) .. 1 violent (PULL_FULL). Light monsters (mass up to rsqwp_whip_light)
+	// are pulled off their feet on an arc toward you -- most of the way on a violent pull; medium ones stagger part
+	// of the way; at rsqwp_whip_heavy mass, a boss or a thing that cannot be thrust, it does not move: the yank
+	// swings you toward it in an arc instead.
+	void Yank(int i, PlayerPawn pmo, int hand, Actor v, double peak)
+	{
+		double s = clamp((peak - PULL_MIN) / (PULL_FULL - PULL_MIN), 0.0, 1.0);
+		double light = RSQWP_Util.Num("rsqwp_whip_light", 400);
+		double heavyM = RSQWP_Util.Num("rsqwp_whip_heavy", 1000);
+		bool heavy = v.bBOSS || v.bDONTTHRUST || v.Mass >= heavyM;
+		Vector3 to = pmo.pos - v.pos;
+		double dist = to.xy.Length();
+		Vector2 u = dist > 0.01 ? to.xy / dist : (0, 0);
+		String what;
+		if (!heavy)
+		{
+			bool isLight = v.Mass <= light;
+			double frac = isLight ? 0.25 + 0.65 * s : 0.08 + 0.3 * s;
+			double travel = max(0.0, dist - pmo.radius - v.radius - 16) * frac;
+			double T = 14;
+			double g = v.bNOGRAVITY ? 0 : level.gravity * v.Gravity / 800.0;
+			double lift = isLight ? 0.5 * g * T : 0.5 * g * T * 0.4;
+			v.vel = (u.x * travel / T, u.y * travel / T, lift + max(0.0, to.z) / T);
+			if (isLight && s >= 0.5 && v.bISMONSTER)
+			{
+				State pain = v.FindState("Pain");
+				if (pain && !v.InStateSequence(v.CurState, pain)) v.SetState(pain);
+			}
+			what = isLight ? "light: pulled" : "medium: staggers";
+		}
+		else
+		{
+			double sp = 6 + 10 * s;
+			pmo.vel.xy = pmo.vel.xy * 0.3 - u * sp;
+			pmo.vel.z = max(pmo.vel.z, 4 + 5 * s);
+			double top = RSQWP_Util.Num("rsqwp_max_speed", 30);
+			if (top > 0 && pmo.vel.Length() > top) pmo.vel *= top / pmo.vel.Length();
+			pmo.player.keepmomentum = true;
+			what = "heavy: you swing to it";
+		}
+		Noise(pmo, 'swish', v.pos + (0, 0, v.height * 0.6));
+		Buzz(pmo, hand, 0.5 + 0.5 * s, 6);
+		if (RSQWP_Util.Flag("rsqwp_debug", false))
+			Console.Printf("T_WPW %d YANK t%d %s mass %d pull %.1f (%.0f%%) %s", i, level.maptime, v.GetClassName(), v.Mass, peak, s * 100, what);
+		wrapOn[i] = null;
+	}
+
+	// THE LASSO let go: the thong was whirling on the off hand; the grip let go, it flies on the way its tip was
+	// going (flat), to the monster nearest that way (within 25 degrees and twice the whip's length) and wraps round
+	// it, ready for the pull -- or out to full length if nothing is there. Too slow and it just drops.
+	void LassoThrow(int i, PlayerPawn pmo, int hand)
+	{
+		int o = i * NP;
+		Vector3 tv = wp[o + NN] - ToRoom(wt[o + NN]);
+		double sp = tv.Length();
+		if (RSQWP_Util.Flag("rsqwp_debug", false))
+			Console.Printf("T_WPW %d LASSO let go t%d tip speed %.1f%s", i, level.maptime, sp, sp < LASSO_MIN ? " (too slow: it drops)" : "");
+		if (sp < LASSO_MIN || reachTic[i] > 0) return;
+		Vector3 dir = ToMap(tv);
+		if (dir.xy.Length() < 0.01) return;
+		dir = (dir.xy.Unit(), 0);
+		Vector3 org = RSQWP_Util.HandPos(pmo, hand);
+		double reach = min(LOCK_RANGE, wlen[i] * 2);
+		Actor best = null;
+		double bestA = 25.0;
+		let it = BlockThingsIterator.CreateFromPos(org.x, org.y, org.z, 64, reach, false);
+		while (it.Next())
+		{
+			let a = it.thing;
+			if (!a || a == pmo || a.player || a.Health <= 0 || !a.bSHOOTABLE || a.bNONSHOOTABLE || a.bMISSILE || !a.bISMONSTER) continue;
+			Vector3 to = a.pos + (0, 0, a.height * 0.5) - org;
+			double d = to.xy.Length();
+			if (d < 8 || d > reach + a.radius) continue;
+			double ang = acos(clamp((to.xy / d) dot dir.xy, -1.0, 1.0)) - atan2(a.radius, d);
+			if (ang > bestA || !pmo.CheckSight(a, SF_IGNOREVISIBILITY | SF_IGNOREWATERBOUNDARY)) continue;
+			best = a; bestA = ang;
+		}
+		reachFor[i] = best;
+		reachPt[i] = best ? best.pos + (0, 0, best.height * 0.6) : org + dir * (wlen[i] / PS);
+		reachTic[i] = REACH_TICS;
+		Noise(pmo, 'swish', org);
+		if (RSQWP_Util.Flag("rsqwp_debug", false))
+			Console.Printf("T_WPW %d LASSO thrown -> %s", i, best ? String.Format("%s", best.GetClassName()) : "the air");
+	}
+
 	// A locked crack's flight: the thong pays out to the target over REACH_TICS (its length grows
 	// to the distance and the outer links are drawn along the line to it, the physics doing the
 	// rest), and strikes there: a monster takes the full crack (and, with the whip bind still
@@ -530,7 +822,7 @@ class RSQWP_Whip : EventHandler
 	{
 		if (reachTic[i] <= 0)
 		{
-			if (wlen[i] > baseLen[i]) wlen[i] = max(baseLen[i], wlen[i] - 24);
+			if (!wrapOn[i] && wlen[i] > baseLen[i]) wlen[i] = max(baseLen[i], wlen[i] - 24);
 			return;
 		}
 		if (reachFor[i] && !reachFor[i].bDestroyed) reachPt[i] = reachFor[i].pos + (0, 0, reachFor[i].height * 0.6);
@@ -573,7 +865,12 @@ class RSQWP_Whip : EventHandler
 		{
 			tipSpd[i] = max(tipSpd[i], RSQWP_Util.Num("rsqwp_whip_crack", 20));
 			Hit(i, pmo, hand, v, at, tipSpd[i], true);
-			if (v && v.Health > 0 && v.bISMONSTER && RSQWP_Util.Flag("rsqwp_whip_leash", true) && BindHeld(pmo, hand)) Leash(i, pmo, hand, v, at);
+			if (byWeapon[i] && v && v.Health > 0 && v.bISMONSTER)
+			{
+				// the whip weapon: it wraps round the monster and waits for the pull (HoldWrap)
+				wrapOn[i] = v; wrapUntil[i] = level.maptime + WRAP_TICS; pullHad[i] = false; pullPk[i] = 0;
+			}
+			else if (v && v.Health > 0 && v.bISMONSTER && RSQWP_Util.Flag("rsqwp_whip_leash", true) && BindHeld(pmo, hand)) Leash(i, pmo, hand, v, at);
 		}
 		else if (!v && RSQWP_Util.Flag("rsqwp_whip_lines", true))
 		{
@@ -756,6 +1053,7 @@ class RSQWP_Whip : EventHandler
 		double sp = tipSpd[i];
 		if (RSQWP_Util.Opt("rsqwp_debug", 0) >= 2)
 			Console.Printf("T_WPW %d t%d tip %.1f armed %d ext %.2f full %d hand %.1f pend %d tip(%.1f %.1f %.1f) ms %.3f", i, level.maptime, sp, armed[i], wext[i], fullTics[i], handSpd[i], pend[i], at.x, at.y, at.z, tickMs);
+		if (lassoOn[i]) { pend[i] = false; return; }
 		if (sp >= crackSpd * 0.55 && !swished[i] && wext[i] > 0.7)
 		{
 			swished[i] = true;
@@ -1154,6 +1452,7 @@ class RSQWP_Whip : EventHandler
 	void Halt(int i)
 	{
 		wstate[i] = ST_IDLE;
+		byWeapon[i] = false; wrapOn[i] = null; lassoOn[i] = false; lassoWas[i] = false; markHeld[i] = false; markLine[i] = null;
 		wby[i] = null;
 		lockOn[i] = null; lockLine[i] = false; lockLeft[i] = 0; lockHeld[i] = false; reachTic[i] = 0; reachFor[i] = null;
 		for (int k = 0; k < NP; k++)

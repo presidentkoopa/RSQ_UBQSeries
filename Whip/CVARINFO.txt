@@ -13,6 +13,12 @@ server float  rsqwp_whip_above    = 16;     // how far above the hand an edge mu
 server bool   rsqwp_whip_lines    = true;   // the crack throws a switch (any use line) it lands on
 server bool   rsqwp_whip_fetch    = true;   // the crack flicks a loose pickup near it to you
 server bool   rsqwp_whip_leash    = true;   // Lock: a locked crack on a monster with the bind still held catches it and pulls it in
+server bool   rsqwp_whip_weapon   = true;   // every player carries the whip weapon (slot 1)
+server float  rsqwp_whip_prio     = 256;    // the whip weapon: switches, keys and powerups this close (map units, 256 = 8 m) are marked first
+server float  rsqwp_whip_light    = 400;    // the whip weapon's pull: up to this mass a monster is pulled off its feet to you
+server float  rsqwp_whip_heavy    = 1000;   // from this mass (and bosses) it cannot be pulled: the yank swings you to it
+server bool   rsqwp_whip_lasso    = true;   // the whip weapon: grab it with the off hand (two-hand grip, SteamVR) and whirl it as a lasso
+server noarchive int rsqwp_lasso_test = 0;  // test only: 1 acts as if the off hand held the two-hand grip (the rig has no SteamVR latch)
 
 // on the rope (a snag)
 server float  rsqwp_reel_speed    = 12;     // holding the bind takes in this much rope per tic

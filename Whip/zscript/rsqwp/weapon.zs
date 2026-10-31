@@ -1,16 +1,28 @@
 // weapon.zs -- the whip as a WEAPON (owner 2026-10-31: "whip is a weapon"; slot 1 with the melee weapons, either hand).
 //
-// TRIGGER: hold = the whip is out (it uncoils from the hand; swing it to crack), let go = it rolls up. Once it has
-// caught an edge and become a rope: hold = reel in, let go = hang, a quick tap = let go of the rope (as the old bind).
-// ALT-FIRE: point the OTHER hand and hold alt-fire to lock a target (the crack flies to it). Once the whip has caught an
-// edge, alt-fire reels you in instead, and you mantle over the lip at the top.
-// Either hand: the off-hand copy fires on the off-hand trigger (BT_OFFHANDATTACK / BT_OFFHANDALTATTACK).
+// The owner's design (2026-10-31):
+//   * ALWAYS OUT while it is the weapon in the hand: swing it and it cracks.
+//   * TRIGGER held: point the whip hand, a mark shows the target; let go and the mark is lost. A crack while
+//     something is marked sends the whip out to it (whip.zs Mark / Crack / Reach). Switches, keys and powerups
+//     within rsqwp_whip_prio of you are marked first.
+//   * ALT-FIRE moves the mark to the next nearest target.
+//   * THE PULL is a gesture: with the whip wrapped round a monster, a violent pull back yanks it -- light ones fly
+//     to you, medium ones stagger, past a certain mass they cannot be pulled and the yank swings YOU to them in an
+//     arc instead (whip.zs Wrap / Yank). A gentle tug only drags.
+//   * THE LASSO: grab the whip with the off hand (the engine's two-hand grip, SteamVR) and the off hand holds the
+//     thong; it whirls as fast as the off hand drives it (the same simulated whip, nothing canned). Let go of the
+//     grip and it flies out the way it was going, and ropes the monster nearest that way.
+//   * On a rope (the whip caught an edge): trigger held = reel in, alt-fire = let go.
+// Either hand: the off-hand copy reads the off-hand trigger and alt-fire (BT_OFFHANDATTACK / BT_OFFHANDALTATTACK).
 //
-// It drives the same whip and line as the old binds (core.Press / Release, RSQWP_Whip), which still work.
-// The hand is Brutal Doom VR's own (MODELDEF: its axe grip around the whip handle); without BD the handle shows alone.
+// The hand is Brutal Doom VR's own (MODELDEF: its axe grip); while the whip is out it draws its own handle.
 
 class RSQWP_WhipWeapon : Weapon
 {
+	bool altWas;
+	bool hadHook;
+	bool reelArmed;
+
 	Default
 	{
 		Weapon.SlotNumber 1;
@@ -40,65 +52,61 @@ class RSQWP_WhipWeapon : Weapon
 		return (owner.player.cmd.buttons & (Hand() ? BT_OFFHANDALTATTACK : BT_ALTATTACK)) != 0;
 	}
 
-	action void A_WhipDown()
+	// every tic in the hand: keep the whip out, pass the trigger and alt-fire on
+	void Tend(PlayerPawn pmo)
 	{
-		let pmo = PlayerPawn(self);
-		let core = RSQWP_Core.Get();
-		if (!pmo || !core) return;
-		int hand = invoker.Hand();
-		Vector3 org = RSQWP_Util.HandPos(pmo, hand);
-		Vector3 dir = RSQWP_Util.MapDir(RSQWP_Util.HandYaw(pmo, hand), RSQWP_Util.HandPitch(pmo, hand));
-		core.Press(pmo.PlayerNumber(), hand, org, dir);
 		let w = RSQWP_Whip.Get();
-		if (w) w.byWeapon[pmo.PlayerNumber() * 2 + hand] = true;
-	}
-	// held: stay; released: let go (the whip rolls up, or the rope hangs / a tap lets go)
-	action state A_WhipHold()
-	{
-		if (RSQWP_Util.Flag("rsqwp_debug", false) && level.maptime % 10 == 0 && player)
-		{
-			let ps = player.FindPSprite(invoker.Hand() ? PSP_OFFHANDWEAPON : PSP_WEAPON);
-			Console.Printf("T_WPWEAP t%d ready %s off %s psp %s", level.maptime, player.ReadyWeapon ? player.ReadyWeapon.GetClassName() : 'none',
-				player.OffhandWeapon ? player.OffhandWeapon.GetClassName() : 'none', ps && ps.CurState ? "yes" : "no");
-		}
-		if (invoker.TriggerHeld()) return ResolveState(null);
-		let pmo = PlayerPawn(self);
 		let core = RSQWP_Core.Get();
-		if (pmo && core)
+		if (!pmo || !pmo.player || !w || !core || !RSQWP_Util.Flag("rsqwp_on", true)) return;
+		int hand = Hand();
+		int i = pmo.PlayerNumber() * 2 + hand;
+		bool trig = TriggerHeld();
+		bool alt = AltHeld();
+		bool altPress = alt && !altWas;
+		altWas = alt;
+		let h = core.hooks[i];
+		if (h)
 		{
-			int hand = invoker.Hand();
-			int pn = pmo.PlayerNumber();
-			core.Release(pn, hand);
-			let w = RSQWP_Whip.Get();
-			if (w) w.WeaponUp(pn * 2 + hand, pmo);
+			// on a rope: the trigger reels (a fresh press: the trigger that was marking does not reel at once),
+			// alt-fire lets go
+			if (!hadHook) reelArmed = !trig;
+			if (!trig) reelArmed = true;
+			hadHook = true;
+			core.held[i] = trig && reelArmed;
+			core.pressFired[i] = true;
+			if (altPress) { core.held[i] = false; core.LetGo(h, true); }
+			w.markHeld[i] = false;
+			w.lassoOn[i] = false;
+			return;
 		}
-		return ResolveState("Ready");
+		if (hadHook) { hadHook = false; core.held[i] = false; core.pressFired[i] = false; }
+		if (w.wstate[i] != RSQWP_Whip.ST_OUT || w.wby[i] != pmo) w.Start(i, pmo, hand, 0);
+		w.byWeapon[i] = true;
+		w.markHeld[i] = trig;
+		if (altPress && trig) w.markNext[i] = true;
+		// the lasso: the off hand on the two-hand grip (only the main-hand whip has an off hand to spin it)
+		bool grip = hand == 0 && ((pmo.player.WeaponState & WF_TWOHANDSTABILIZED) != 0 || RSQWP_Util.Opt("rsqwp_lasso_test", 0) > 0);
+		w.lassoOn[i] = grip && RSQWP_Util.Flag("rsqwp_whip_lasso", true);
 	}
 
-	// alt-fire: lock (whip out or not), or reel when the whip has caught an edge
-	action void A_AltDown()
+	void PutAway(PlayerPawn pmo)
 	{
-		let pmo = PlayerPawn(self);
-		let core = RSQWP_Core.Get();
 		let w = RSQWP_Whip.Get();
-		if (!pmo || !core || !w) return;
-		int i = pmo.PlayerNumber() * 2 + invoker.Hand();
-		if (core.hooks[i]) { core.held[i] = true; core.pressFired[i] = true; core.altReel[i] = true; }
-		else { w.lockHeld[i] = true; w.lockLeft[i] = 35; w.byWeapon[i] = true; }
+		let core = RSQWP_Core.Get();
+		if (!pmo || !w || !core) return;
+		int i = pmo.PlayerNumber() * 2 + Hand();
+		w.markHeld[i] = false;
+		w.lassoOn[i] = false;
+		w.wrapOn[i] = null;
+		if (core.hooks[i]) { core.held[i] = false; core.LetGo(core.hooks[i], true); }
+		w.WeaponUp(i, pmo);
+		hadHook = false;
 	}
-	action state A_AltHold()
+
+	action void A_WhipReady()
 	{
-		if (invoker.AltHeld()) return ResolveState(null);
-		let pmo = PlayerPawn(self);
-		let core = RSQWP_Core.Get();
-		let w = RSQWP_Whip.Get();
-		if (pmo && core && w)
-		{
-			int i = pmo.PlayerNumber() * 2 + invoker.Hand();
-			if (core.altReel[i]) { core.altReel[i] = false; if (!invoker.TriggerHeld()) core.held[i] = false; }
-			w.lockHeld[i] = false;
-		}
-		return ResolveState("Ready");
+		A_WeaponReady(WRF_NOFIRE);
+		invoker.Tend(PlayerPawn(self));
 	}
 
 	States
@@ -110,34 +118,14 @@ class RSQWP_WhipWeapon : Weapon
 		WHPW A 1 A_Raise(12);
 		Loop;
 	Deselect:
-		WHPW A 0
-		{
-			// put the whip away when the weapon goes
-			let pmo = PlayerPawn(self);
-			let w = RSQWP_Whip.Get();
-			let core = RSQWP_Core.Get();
-			if (pmo && w && core)
-			{
-				int i = pmo.PlayerNumber() * 2 + invoker.Hand();
-				core.Release(pmo.PlayerNumber(), invoker.Hand());
-				w.WeaponUp(i, pmo);
-				w.lockHeld[i] = false;
-			}
-		}
+		WHPW A 0 { invoker.PutAway(PlayerPawn(self)); }
 		WHPW A 1 A_Lower(12);
 		Wait;
 	Ready:
-		WHPW A 1 A_WeaponReady();
+		WHPW B 1 A_WhipReady();     // B: the hand alone -- the whip is out and draws its own handle
 		Loop;
 	Fire:
-		WHPW B 1 A_WhipDown();
-	Hold:
-		WHPW B 1 A_WhipHold();      // B: the hand alone -- the whip draws its own handle while it is out
-		Loop;
 	AltFire:
-		WHPW A 1 A_AltDown();
-	AltHold:
-		WHPW A 1 A_AltHold();
-		Loop;
+		Goto Ready;
 	}
 }

@@ -25,6 +25,7 @@ OptionMenu "RSQWP_Options"
 {
 	Title "RSQ WHIP"
 	Option "Whip", "rsqwp_on", "OnOff"
+	Option "Whip Weapon in Slot 1", "rsqwp_whip_weapon", "OnOff"
 	Option "Whip Style", "rsqwp_whip_mode", "RSQWP_WhipModes"
 	Option "Whip Aim", "rsqwp_whip_aim", "RSQWP_WhipAims"
 	Option "Catch Edges (snag)", "rsqwp_whip_snag", "OnOff"
@@ -32,6 +33,7 @@ OptionMenu "RSQWP_Options"
 	Option "Fetches Pickups", "rsqwp_whip_fetch", "OnOff"
 	Option "Leash (Lock)", "rsqwp_whip_leash", "OnOff"
 	Option "Stun", "rsqwp_whip_stun", "OnOff"
+	Option "Lasso (off-hand grip)", "rsqwp_whip_lasso", "OnOff"
 	StaticText " "
 	Option "Mantle Over Ledges", "rsqwp_mantle", "OnOff"
 	Option "Keep Momentum on Landing", "rsqwp_carry", "OnOff"
@@ -47,6 +49,9 @@ OptionMenu "RSQWP_Tuning"
 	Slider "Crack Speed (lower = easier)", "rsqwp_whip_crack", 10, 50, 1, 0
 	Slider "Damage", "rsqwp_whip_damage", 0, 40, 2, 0
 	Slider "Aim Reach", "rsqwp_whip_assist", 16, 96, 4, 0
+	Slider "Switch/Key/Powerup Mark Range", "rsqwp_whip_prio", 0, 768, 32, 0
+	Slider "Pulled Off Feet Up To (mass)", "rsqwp_whip_light", 50, 1000, 50, 0
+	Slider "Can't Be Pulled From (mass)", "rsqwp_whip_heavy", 200, 5000, 100, 0
 	Slider "Thickness", "rsqwp_rope_width", 0.2, 2.0, 0.1, 1
 	StaticText " "
 	Slider "Reel Speed", "rsqwp_reel_speed", 2, 30, 1, 0
