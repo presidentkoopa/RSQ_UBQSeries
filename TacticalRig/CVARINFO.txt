@@ -67,3 +67,7 @@ server bool rsqtr_vest_fade = true;
 server bool rsqtr_helmet    = true;
 server float rsqtr_helmet_u = 0.0;    // metres to raise (+) or lower (-) the helmet from where it rests on the torso    // a helmet on your head with the marine torso (seen only in mirrors)    // the torso fades as you look down (local look only)
 user int    rsqtr_cfgver      = 0;       // settings version this machine has been moved to (internal)
+user bool  rsqtr_quickswap   = true;    // a gun in the hand at a full holster swaps at once (no Press Delay)
+user bool  rsqtr_keep        = true;    // what each holster holds is kept from level to level
+user bool  rsqtr_ammo_light  = true;    // a full holster shows its gun's ammo: green, yellow (low / reload), red (empty)
+user bool  rsqtr_autoholster = false;   // a gun you did not have goes into the first empty holster

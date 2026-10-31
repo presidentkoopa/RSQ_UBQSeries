@@ -1,5 +1,20 @@
 // The region marker: the owner's wireframe sphere from RS_Holsters (three rings, radius 1.0,
 // so the actor's scale is the region's radius in map units). Blue idle, green with a hand inside.
+// THE AMMO LIGHT (owner 2026-10-31): a small sphere in a full holster, green half full or more, yellow low or
+// needing a reload, red empty (RSQTR_AmmoPip; rig.zs DrawMarkers)
+Model RSQTR_AmmoPip
+{
+	Path "models/rsqtr"
+	Model 0 "rtwire.obj"
+	Skin 0 "rtwireht.png"
+	Scale 1.0 1.0 1.0
+	FrameIndex RSTM A 0 0
+	Skin 0 "rtwireye.png"
+	FrameIndex RSTM B 0 0
+	Skin 0 "rtwirerd.png"
+	FrameIndex RSTM C 0 0
+}
+
 Model RSQTR_Marker
 {
 	Path "models/rsqtr"

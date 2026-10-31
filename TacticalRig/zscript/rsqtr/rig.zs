@@ -64,6 +64,7 @@ class RSQTR_Rig : EventHandler
 	private transient bool useWas;
 	transient Actor marker[RSQTR_Region.N];   // read by the mirror (mirror.zs)
 	transient Actor icon[RSQTR_Region.N];
+	transient Actor pip[RSQTR_Region.N];      // the ammo light in a full holster
 	private transient int  buzzCool[2];
 	private transient bool offHeldSaid[MAXPLAYERS];   // said once per hold, why the off-hand raise is waiting (TickPairs)
 	private transient int  hoverT[2];          // tics the hand has been in its region
@@ -538,6 +539,7 @@ class RSQTR_Rig : EventHandler
 			else if (pair && mode != 0) QueueOff(n, OffEmptyName(pmo));
 			drawTic[n] = level.maptime + 1;
 			drawClass[n] = incoming.GetClassName();
+			pmo.A_StartSound("rsqtr/draw", CHAN_AUTO, CHANF_LOCAL, 0.8);   // a swap: the draw as well
 		}
 		else
 		{
@@ -677,6 +679,7 @@ class RSQTR_Rig : EventHandler
 	override void WorldTick()
 	{
 		TickPairs();
+		TickLoadout();
 		if (afterLoad) { afterLoad = false; ClearLocalMarks(); }
 		if (!migrated) { migrated = true; MigratePlaces(); }
 		let p = players[consoleplayer];
@@ -746,6 +749,9 @@ class RSQTR_Rig : EventHandler
 			// A hand passing through a region does not act on it: the press counts once
 			// the hand has been there rsqtr_dwell tics (a press a moment early waits).
 			int dwell = Opt("rsqtr_dwell", p, 3);
+			// QUICK SWAP (owner 2026-10-31): a gun in the hand at a full holster swaps at once, no wait
+			if (r >= 0 && IsGunRegion(r) && Flag("rsqtr_quickswap", p, true) && Content(pmo, r) != ""
+				&& (h == 0 ? HoldsGun(pmo) : OffHoldsGun(pmo))) dwell = 0;
 			if (edge && r >= 0) pendPress[h] = true;
 			if (!pressNow) pendPress[h] = false;
 			if (pendPress[h] && r >= 0 && hoverT[h] >= dwell) { pendPress[h] = false; Press(pmo, p, h, r, hp); }
@@ -952,6 +958,19 @@ class RSQTR_Rig : EventHandler
 	// are three or four colours to a dichromat (simulated, the closest pair is 6.1 apart for
 	// protanopia), so each vision gets its own five (F-T, tools/gen_cb_skins.py), at least 17.4
 	// apart in the vision they are for (as drawn); inside is the series HAVE colour.
+	// A stored gun's ammo: 0 green (half a magazine or more), 1 yellow (low, or empty with rounds to reload),
+	// 2 red (nothing at all), -1 a gun with no ammo. A gun with a magazine counts its magazine (as RSQ Gun Cards).
+	static int AmmoState(Weapon w)
+	{
+		if (!w || !w.Ammo1) return -1;
+		bool mag = w.Ammo2 && w.Ammo2 != w.Ammo1;
+		let lo = mag ? w.Ammo2 : w.Ammo1;
+		int have = lo.Amount, cap = max(1, lo.MaxAmount);
+		int spare = mag ? w.Ammo1.Amount : 0;
+		if (have <= 0) return spare > 0 ? 1 : 2;
+		return have * 2 >= cap ? 0 : 1;
+	}
+
 	static int MarkerFrame(bool inside, int prof)
 	{
 		static const int IDLE[] = { 0, 2, 3, 4 };
@@ -1004,6 +1023,29 @@ class RSQTR_Rig : EventHandler
 				}
 			}
 			else if (marker[r]) marker[r].bINVISIBLE = true;
+
+			// THE AMMO LIGHT (owner 2026-10-31, "holster ammo"): with the ring showing, a full holster has a small
+			// sphere in its middle: green half full or more, yellow low or needing a reload, red empty. Not by
+			// colour alone: an empty one is smaller and blinks.
+			String inIt = (live && IsGunRegion(r)) ? Content(pmo, r) : "";
+			class<Weapon> pc = inIt;
+			let pw = pc ? Weapon(pmo.FindInventory(pc)) : null;
+			if (pw && a > 0.01 && Flag("rsqtr_ammo_light", p, true) && AmmoState(pw) >= 0)
+			{
+				int st = AmmoState(pw);
+				if (!pip[r]) pip[r] = Actor.Spawn("RSQTR_AmmoPip", at);
+				let q = pip[r];
+				if (q)
+				{
+					q.SetOrigin(at, true);
+					q.frame = st;
+					double ps = rad * RSQTR_Body.UPM * (st == 2 ? 0.18 : 0.26);
+					q.Scale = (ps, ps);
+					q.bINVISIBLE = st == 2 && (level.maptime / 8) % 2 == 1;
+					q.Alpha = clamp(a + 0.2, 0.0, 1.0);
+				}
+			}
+			else if (pip[r]) pip[r].bINVISIBLE = true;
 
 			// WHAT IS STORED THERE: exactly what you put there, nothing chosen for you (the owner,
 			// 10-27: "impossible to keep track what is where").
@@ -1098,6 +1140,7 @@ class RSQTR_Rig : EventHandler
 		{
 			if (marker[r]) marker[r].bINVISIBLE = true;
 			if (icon[r]) icon[r].bINVISIBLE = true;
+			if (pip[r]) pip[r].bINVISIBLE = true;
 		}
 	}
 
@@ -1105,6 +1148,86 @@ class RSQTR_Rig : EventHandler
 	{
 		hoverR[0] = -1; hoverR[1] = -1;
 		afterLoad = false;
+		if (!e.IsSaveGame) RestoreLoadout();
+	}
+
+	// ---- the loadout between levels, and new guns into holsters (owner 2026-10-31) ---------------------
+	//
+	// KEPT BETWEEN LEVELS (rsqtr_keep): this handler is the level's, so what each holster held went with the
+	// level. RSQTR_Loadout (a static handler, it outlives levels) keeps a copy every tic and a new level takes
+	// it back. A holster shows a gun only while you own it (Content), so after a death or a pistol start a
+	// holster is empty until you have that gun again -- then it is back where you kept it.
+	//
+	// NEW GUNS GO TO A HOLSTER (rsqtr_autoholster, off by default): a gun you did not have before goes into the
+	// first empty gun holster (hips, chest, shoulders) instead of only into the slots. Playsim, every player, from
+	// the same inventory everywhere, so netplay agrees.
+	static const int AUTO_ORDER[] = { 0, 1, 6, 7, 4, 5 };
+	String known[MAXPLAYERS];      // "|class|class|": the guns each player had, to spot a new one
+	bool knownSet[MAXPLAYERS];
+
+	private void RestoreLoadout()
+	{
+		let L = RSQTR_Loadout.Get();
+		for (int n = 0; n < MAXPLAYERS; n++) knownSet[n] = false;
+		if (!L || !L.have) return;
+		for (int n = 0; n < MAXPLAYERS; n++)
+		{
+			if (playeringame[n] && !Flag("rsqtr_keep", players[n], true)) continue;
+			for (int r = 0; r < RSQTR_Region.N; r++)
+			{
+				int k = n * RSQTR_Region.N + r;
+				if (lastPut[k] == "") { lastPut[k] = L.put[k]; lastPair[k] = L.pair[k]; }
+			}
+		}
+	}
+
+	private void TickLoadout()
+	{
+		let L = RSQTR_Loadout.Get();
+		if (L)
+		{
+			for (int k = 0; k < MAXPLAYERS * RSQTR_Region.N; k++) { L.put[k] = lastPut[k]; L.pair[k] = lastPair[k]; }
+			L.have = true;
+		}
+		if (level.maptime % 5 != 0) return;
+		for (int n = 0; n < MAXPLAYERS; n++)
+		{
+			if (!playeringame[n] || !players[n].mo || players[n].mo.health <= 0) continue;
+			let pmo = players[n].mo;
+			let p = players[n];
+			bool seed = !knownSet[n];
+			knownSet[n] = true;
+			bool autoOn = Flag("rsqtr_autoholster", p, false);
+			let empty = EmptyHand(pmo);
+			for (let it = pmo.Inv; it; it = it.Inv)
+			{
+				let w = Weapon(it);
+				if (!w || !w.Ammo1 || w == empty || IsSaber(w)) continue;
+				let d = GetDefaultByType(w.GetClass());
+				if (!d || d.bOffhandWeapon) continue;
+				String cls = w.GetClassName();
+				String tag = "|" .. cls .. "|";
+				if (known[n].IndexOf(tag) >= 0) continue;
+				known[n] = known[n] .. tag;
+				if (seed || !autoOn) continue;
+				bool placed = false;
+				for (int k = 0; k < RSQTR_Region.N; k++) if (lastPut[n * RSQTR_Region.N + k] == cls) placed = true;
+				if (placed) continue;
+				for (int j = 0; j < AUTO_ORDER.Size(); j++)
+				{
+					int r = AUTO_ORDER[j];
+					if (Content(pmo, r) != "") continue;
+					lastPut[n * RSQTR_Region.N + r] = cls;
+					lastPair[n * RSQTR_Region.N + r] = false;
+					if (n == consoleplayer)
+					{
+						pmo.A_StartSound("rsqtr/holster", CHAN_AUTO, CHANF_LOCAL, 0.6);
+						if (Flag("rsqtr_messages", p, false)) pmo.A_Print(String.Format("%s: %s", RSQTR_Region.NAMES[r], w.GetTag()), 0, RSQTR_A11y.PrintFont());
+					}
+					break;
+				}
+			}
+		}
 	}
 
 	// The rings and icons are this machine's alone and held by transient pointers, so a
@@ -1129,6 +1252,32 @@ class RSQTR_Rig : EventHandler
 }
 
 // The soft ring that shows a region.
+// The ammo light in a full holster (MODELDEF: the wire sphere, green / yellow / red frames A B C).
+class RSQTR_AmmoPip : Actor
+{
+	Default
+	{
+		+NOINTERACTION +NOBLOCKMAP +NOGRAVITY +NOTELEPORT +DONTSPLASH +NOTONAUTOMAP +BRIGHT
+		RenderStyle "Add";
+	}
+	States { Spawn: RSTM A -1; Stop; }
+}
+
+// THE LOADOUT BETWEEN LEVELS: a static handler outlives the level, so the rig keeps a copy of every holster
+// here each tic and a new level takes it back (rig.zs RestoreLoadout). Cleared on a new game.
+class RSQTR_Loadout : StaticEventHandler
+{
+	String put[MAXPLAYERS * RSQTR_Region.N];
+	bool pair[MAXPLAYERS * RSQTR_Region.N];
+	bool have;
+	static RSQTR_Loadout Get() { return RSQTR_Loadout(StaticEventHandler.Find("RSQTR_Loadout")); }
+	override void NewGame()
+	{
+		for (int k = 0; k < MAXPLAYERS * RSQTR_Region.N; k++) { put[k] = ""; pair[k] = false; }
+		have = false;
+	}
+}
+
 class RSQTR_Marker : Actor
 {
 	Default
