@@ -12,8 +12,10 @@ WHAT THIS PK3 SHIPS, AND WHOSE IT IS
       The round's tracer mesh (models/rsqsm/btracer.obj, btracer.png) and the near-miss whiz
       and crack recordings (sounds/rsqsm/smwhiz1-4, smcrak1-2): his RS_Ballistics library.
   Generated for this pack
-      The clock's cues (sounds/rsqsm/smin, smout, smredy, smempt): tools/gen_sounds.py.
       The round's placeholder sprite (sprites/rsqsm/RSQRA0.png).
+  id Software (Doom), played by name from the IWAD, NOT shipped
+      The clock's cues: DSGETPOW (slowing), DSPSTOP (back to speed), DSITEMUP (meter full),
+      DSNOWAY (not enough adrenaline). See SNDINFO.txt.
   Brutal Doom (Sergeant Mark IV), played by name, NOT shipped
       A caught bullet's ting (weapons/casing1) and a dropped one's clink (weapons/casing): its
       casing sounds. Without Brutal Doom loaded they are silent.

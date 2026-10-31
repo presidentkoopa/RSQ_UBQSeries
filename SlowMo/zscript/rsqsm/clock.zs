@@ -175,6 +175,7 @@ class RSQSM_Clock : EventHandler
 		else if (e.Name ~== "rsm_on")   Aim(true, e.Player);
 		else if (e.Name ~== "rsm_off")  Aim(false, e.Player);
 		else if (e.Name ~== "rsm_pulse") Pulse(e.Args[0], e.Args[1]);
+		else if (e.Name ~== "rsqsm_burst") Burst(e.Player);
 		else if (e.Name ~== "rsm_state")
 			Console.Printf("slow motion: %s, scale %.2f heading for %.2f (depth %.2f), %d actors slowed, adrenaline %.0f%s%s",
 				on ? "ON" : "off", scale, target, Depth(), act.Size(), adr,
@@ -191,7 +192,7 @@ class RSQSM_Clock : EventHandler
 			if (who >= 0 && who < MAXPLAYERS && playeringame[who] && players[who].mo)
 			{
 				RSQSM_Buzz.Start(players[who].mo, 0, 0.25, 3);
-				players[who].mo.A_StartSound("rsqsm/empty", CHAN_AUTO, CHANF_LOCAL, 0.6);
+				players[who].mo.A_StartSound("*usefail", CHAN_AUTO, CHANF_LOCAL, 0.6);   // stock DSNOWAY (SNDINFO.txt)
 			}
 			return;
 		}
@@ -235,11 +236,131 @@ class RSQSM_Clock : EventHandler
 		}
 	}
 
+	// SM7 (owner's QoL option, rsqsm_gesture_burst): the wrist cross asks for a 4 s pulse at the set depth
+	// instead of the held toggle. It is the pulse above (eased by the ramps, a held toggle outranks it); with
+	// the adrenaline meter on it needs the same minimum as the toggle and spends 4 s of the meter.
+	const BURST_MS = 4000;
+	private void Burst(int who)
+	{
+		if (StoodDown() || on) return;
+		bool adrOn = Cv("rsqsm_adrenaline", 0) != 0;
+		Actor mo = (who >= 0 && who < MAXPLAYERS && playeringame[who]) ? players[who].mo : null;
+		if (adrOn && adr < Cv("rsqsm_adr_min", 25))
+		{
+			if (mo) { RSQSM_Buzz.Start(mo, 0, 0.25, 3); mo.A_StartSound("*usefail", CHAN_AUTO, CHANF_LOCAL, 0.6); }
+			return;
+		}
+		if (adrOn) adr = max(0.0, adr - 100.0 * (BURST_MS / 1000.0) / max(1.0, Cv("rsqsm_adr_secs", 10)));
+		Pulse(BURST_MS, int(Depth() * 100 + 0.5));
+		Dev(String.Format("RSQ_SlowMo: wrist cross -> %d ms burst at %d%%, tic %d until tic %d", BURST_MS, int(Depth() * 100 + 0.5), level.maptime, pulseUntil));
+		if (mo)
+		{
+			mo.A_StartSound("rsqsm/in", CHAN_AUTO, 0, 0.8);
+			RSQSM_Buzz.Start(mo, 0, 0.6, 8);
+			RSQSM_Buzz.Start(mo, 1, 0.6, 8);
+		}
+	}
+
+	// ---- SM2 close calls (owner's QoL option, rsqsm_closecall) -----------------------------
+	// A rocket or fireball about to hit a player up close sets off a short pulse, so he can step aside.
+	// "About to hit": its path relative to him (its velocity minus his) passes within his radius + its
+	// radius + 8 units of his body's axis, between his feet and head, within CC_TICS tics, and it is
+	// within CC_RANGE now. A rocket or fireball, not a bullet: a missile not fired by a player whose
+	// full-speed Speed is under 40 (Brutal Doom's MonsterTracer bullets fly at 50, its imp fireball
+	// FireBall_ at 16 and the rocket at 20: parsed from brutal22test6 Tracers.dec, Imps.dec,
+	// Explosives.dec); this mod's own rounds never count. Each missile sets it off once.
+	// THE WATCH LIST IS FED BY THE SPAWN EVENT, not a blockmap search: a projectile is +NOBLOCKMAP (the
+	// Projectile flag set), so BlockThingsIterator never finds one (measured on the rig: an imp fireball
+	// flown straight at the pawn set nothing off through it).
+	const CC_TICS = 14;
+	const CC_RANGE = 400;
+	private Array<Actor> ccWatch;
+	void WatchCloseCall(Actor m)
+	{
+		if (!m || !m.bMISSILE || m is "RSQSM_Round" || Cv("rsqsm_closecall", 0) == 0) return;
+		if (GetDefaultByType(m.GetClass()).Speed >= 40) return;
+		ccWatch.Push(m);
+	}
+	private void CloseCalls()
+	{
+		if (ccWatch.Size() == 0) return;
+		bool want = !on && Cv("rsqsm_closecall", 0) != 0;
+		for (int i = ccWatch.Size() - 1; i >= 0; i--)
+		{
+			Actor m = ccWatch[i];
+			if (!want || !m || m.bDestroyed || !m.bMISSILE || m.InStateSequence(m.CurState, m.FindState("Death"))) { ccWatch.Delete(i); continue; }
+			if (m.target && m.target.player) continue;
+			for (int p = 0; p < MAXPLAYERS; p++)
+			{
+				if (!playeringame[p] || !players[p].mo || players[p].mo.health <= 0) continue;
+				let mo = players[p].mo;
+				if (m == mo) continue;
+				Vector3 d = level.Vec3Diff(m.pos, mo.pos);       // from the missile to his feet
+				Vector3 v = m.vel - mo.vel;
+				double vv = v.xy dot v.xy;
+				if (vv < 0.01 || d.xy.Length() > CC_RANGE) continue;
+				double t = (d.xy dot v.xy) / vv;                  // tics to its closest pass, flat
+				if (t < 0 || t > CC_TICS) continue;
+				double miss = (d.xy - v.xy * t).Length();
+				double z = m.pos.z + v.z * t - mo.pos.z;           // its height over his feet then
+				if (miss > mo.radius + m.radius + 8 || z < -m.height || z > mo.height + 8) continue;
+				ccWatch.Delete(i);
+				int ms = int(clamp(Cv("rsqsm_closecall_ms", 700), 100, 5000));
+				Pulse(ms, int(Depth() * 100 + 0.5));
+				Dev(String.Format("RSQ_SlowMo: close call at tic %d, %s %.1f tics from player %d (passes %.0f units off), pulse %d ms",
+					level.maptime, m.GetClassName(), t, p, miss, ms));
+				break;
+			}
+		}
+	}
+
+	// ---- SM4 head-bound rounds glow (owner's QoL option, rsqsm_headglow, the local player's choice) ----
+	// A slowed enemy round (this mod's RSQSM_Round, or Brutal Doom's bullet slowed to the round speed) whose
+	// straight path passes within HEAD_R units of your eyes before it is past you burns at full strength
+	// and half again as long; one that will miss you dims to 40%. Rendering only (alpha and scale), so a
+	// local choice; it follows a lean (the course is checked every tic).
+	const HEAD_R = 12;
+	private void HeadGlow(Actor a)
+	{
+		let p = players[consoleplayer];
+		if (!p || !p.mo) return;
+		bool bound = false;
+		Vector3 d = level.Vec3Diff(a.pos, (p.mo.pos.xy, p.viewz));
+		Vector3 v = a.vel - p.mo.vel;
+		double vv = v dot v;
+		if (vv > 0.0001)
+		{
+			double t = (d dot v) / vv;
+			if (t > 0) bound = (d - v * t).Length() < HEAD_R;
+		}
+		SetGlow(a, bound ? 1 : 0);
+	}
+	// 1 head-bound, 0 will miss, -1 as it was made
+	private static void SetGlow(Actor a, int how)
+	{
+		let def = GetDefaultByType(a.GetClass());
+		Vector2 baseS = def.Scale;
+		if (a is "RSQSM_Round" && RSQSM_CB.Mode()) baseS *= 1.25;     // its colour-blind look (round.zs CBLook)
+		a.Alpha = how == 0 ? def.Alpha * 0.4 : def.Alpha;
+		a.Scale = how == 1 ? baseS * 1.5 : baseS;
+		a.bBRIGHT = how == 1 || def.bBRIGHT;
+	}
+	static void Dev(String s)
+	{
+		let dv = CVar.FindCVar("developer");
+		if (dv && dv.GetInt() >= 1) Console.Printf("%s", s);
+	}
+	bool IsEnemyBullet(Actor a)
+	{
+		return a.bMISSILE && a.radius <= 8 && !(a.target && a.target.player) && GetDefaultByType(a.GetClass()).Speed >= 40;
+	}
+
 	// ---- every tic ---------------------------------------------------------------------
 	override void WorldTick()
 	{
 		LocalGesture();
 		if (StoodDown()) return;
+		CloseCalls();
 
 		// Where the clock is heading: the toggle, then a pulse, then full speed.
 		if (on) target = Depth();
@@ -397,6 +518,7 @@ class RSQSM_Clock : EventHandler
 
 	override void WorldThingSpawned(WorldEvent e)
 	{
+		if (e.Thing && e.Thing.bMISSILE && !StoodDown()) WatchCloseCall(e.Thing);
 		if (Active() && !StoodDown() && e.Thing) { Refresh(); Consider(e.Thing, true); }
 	}
 
@@ -430,6 +552,7 @@ class RSQSM_Clock : EventHandler
 		double follow = clamp(CvLocal("rsm_sound_follow", 1.0), 0.0, 1.0);
 		bool doPitch = (++pitchTick % 4) == 0;
 		bool wakes = Cv("rsqsm_wakes", 1) != 0;
+		bool glow = CvLocal("rsqsm_headglow", 0) != 0;
 		for (int i = act.Size() - 1; i >= 0; i--)
 		{
 			Actor a = act[i];
@@ -503,6 +626,7 @@ class RSQSM_Clock : EventHandler
 					if (fr > 0 && fr < 1) { double k = fr ** (want - 1.0); a.vel.x *= k; a.vel.y *= k; }
 				}
 				if (doPitch) Repitch(a, 1.0 - (1.0 - want) * follow);
+				if (glow && (a is "RSQSM_Round" || IsEnemyBullet(a))) HeadGlow(a);
 				if (wakes && a.bMISSILE && (level.maptime + i) % 2 == 0) Wake(a);
 			}
 			else if (doPitch) Repitch(a, 1.0);
@@ -570,6 +694,8 @@ class RSQSM_Clock : EventHandler
 			a.Gravity = baseGrav[i];
 			if (a.tics > 0) a.tics = max(1, int(a.tics / r));
 		}
+		// a round let go at full speed burns as it was made (SM4 dims and brightens only while slowed)
+		if (a && !a.bDestroyed && (a is "RSQSM_Round" || IsEnemyBullet(a))) SetGlow(a, -1);
 		act.Delete(i); fac.Delete(i); baseGrav.Delete(i); baseSpeed.Delete(i); carry.Delete(i);
 		lastState.Delete(i); lastTics.Delete(i); lvx.Delete(i); lvy.Delete(i); lvz.Delete(i);
 	}
@@ -719,7 +845,9 @@ class RSQSM_Clock : EventHandler
 		if (!gestArmed) return;
 		if (++gestT >= max(1, int(RSQSM_A11y.Low(CvP("rsqsm_gesture_hold", p, 12)) + 0.5)))
 		{
-			EventHandler.SendNetworkEvent("rsm_toggle");
+			// SM7 (owner's QoL option, rsqsm_gesture_burst): a 4 s burst instead of the toggle
+			if (CvP("rsqsm_gesture_burst", p, 0) != 0) EventHandler.SendNetworkEvent("rsqsm_burst");
+			else EventHandler.SendNetworkEvent("rsm_toggle");
 			gestT = 0;
 			gestArmed = false;      // apart again before the next one
 			gestCool = 20;

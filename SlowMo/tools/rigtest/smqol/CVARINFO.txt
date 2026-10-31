@@ -1,0 +1,2 @@
+// TEST ONLY.
+user int smq_mode = 0;
