@@ -9,7 +9,9 @@ side (model X -) faces the eyes; along the gun, model Y + reads left to right (t
 model Z + (the gun's top) is DOWN the card. So the card is the plane X = SIDE_X, its columns run along Y and its rows
 along Z.
 
-HOW. A layer's y turns its model about the model's X axis (hw_weapon.cpp:108: pitch, 1/4 degree a unit), which keeps a
+HOW (v2, 2026-10-31 03:20): EVERY ROW AND COLUMN IS BAKED -- a glyph per (row, column), so nothing is turned at run
+time and the text sits flat and straight (turning rows about the model origin slid and tilted them near the wrist).
+OLD NOTE: A layer's y turns its model about the model's X axis (hw_weapon.cpp:108: pitch, 1/4 degree a unit), which keeps a
 piece in that plane and moves it along Z: so ROWS are placed at run time. A layer's x would turn it out of the plane,
 so COLUMNS are baked: every glyph is built once per column (sprite per column, frame per glyph). The runtime turns
 each piece by atan(dz / |Y of its column|) (the pitch radius is that column's distance along Y from the axis).
@@ -27,9 +29,9 @@ import sys; sys.path.insert(0, HERE)
 from gen_cards import write_kvx
 
 # ---- the card, model cm -----------------------------------------------------------------------------------
-SIDE_X = -7.0          # side 0: the plane outboard of the wrist; side 1 is its mirror at +SIDE_X (owner 03:00: both sides of the wrist)
-CARD_Y0 = -36.0        # the card's left edge (toward the muzzle): centred on the wrist
-CARD_Z0 = -4.5         # the card's top edge (Z grows down the card)
+SIDE_X = -4.5          # flat on the side of the wrist: the measured wrist centre X 0.4, radius ~4 cm (side 1 at +4.5)
+CARD_Y0 = -22.6        # centred on the wrist along the forearm (wrist Y -16.9, card 11.4 cm)
+CARD_Z0 = -14.6        # top edge: the card centred on the wrist's height (Z -11.3)
 PX = 0.13              # cm per card pixel
 CARD_W = 88            # px (11.4 cm)
 PANEL_H = [44, 56, 68, 80]   # px: the panel heights the runtime can pick (no Bonsai / 1-2 / 3-4 upgrades / more)
@@ -98,17 +100,24 @@ def piece(im, out, scale_px, y0, z0, mirror, x_off, side=0):
     write_kvx(out, vox, (1, w, h), piv, pal)
     return len(vox)
 
+
+# the rows of the card, top to bottom: (font index, gap after in px). Fixed layout; the runtime fills them.
+ROWS = [(1, 2), (0, 1), (2, 2), (0, 2), (0, 1), (0, 1), (0, 1), (0, 1), (0, 1)]
+#        title  word   digits  LV bar up1     up2     up3     up4     +more
+CHARS = [c for c in range(33, 96) if chr(c).isalnum() or chr(c) in "+-=/%.:'()#!"]
+
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument('--iwad', required=True); a = ap.parse_args()
     vdir = os.path.join(WHEEL, 'voxels'); sdir = os.path.join(WHEEL, 'sprites', 'ws')
     os.makedirs(vdir, exist_ok=True); os.makedirs(sdir, exist_ok=True)
     import re
     for f in os.listdir(vdir):
-        if re.match(r'^w[0-2][01]\d\d[0-9a-f]{2}\.kvx$', f) or re.match(r'^wp\d\d\.kvx$', f): os.remove(os.path.join(vdir, f))
+        if re.match(r'^w[0-9a-f][0-3]\d\d[0-9a-f]{2}\.kvx$', f) or re.match(r'^w[0-5][01]\d\d[0-9a-f]{2}\.kvx$', f) or re.match(r'^wp\d+\.kvx$', f):
+            os.remove(os.path.join(vdir, f))
     for f in os.listdir(sdir): os.remove(os.path.join(sdir, f))
     doom = doom_glyphs(a.iwad); ermac = ermac_glyphs()
     letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-    vdef, states, cols_tab = [], [], []
+    vdef, states = [], []
     sprite_n = [0]
     B36 = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'
     def new_sprite():
@@ -117,65 +126,68 @@ def main():
         return 'WZ' + B36[n // 36] + B36[n % 36]
     count = 0
     s = PX
-    # glyph sets: for each font, mirror, column: one sprite name per 26 glyphs
+    font_cols, row_z, row_codes = [], [], []
     for fi, (fname, src, cw, ch, sc) in enumerate(FONTS):
+        font_cols.append(int((CARD_W - 2 * PAD) // (cw * sc)))
+    z = PAD
+    for ri, (fi, gap) in enumerate(ROWS):
+        row_z.append(z)
+        z += FONTS[fi][3] * FONTS[fi][4] + gap
+    used_h = z + PAD
+    for ri, (fi, gap) in enumerate(ROWS):
+        fname, src, cw, ch, sc = FONTS[fi]
         glyphs = doom if src == 'doom' else ermac
-        codes = sorted(glyphs)
+        codes = [c for c in sorted(glyphs) if c in CHARS]
+        row_codes.append(codes)
         gw = cw * sc
-        ncols = int((CARD_W - 2 * PAD) // gw)
-        cols_tab.append((fname, ncols, gw, ch * sc))
-        for side, m in ((0, 0), (0, 1), (1, 0), (1, 1)):
-            mm = m ^ side          # the far side is read from the other face: the mirrored layout
+        ncols = font_cols[fi]
+        z0 = CARD_Z0 + row_z[ri] * s
+        for fam, (side, m) in enumerate(((0, 0), (0, 1), (1, 0), (1, 1))):
+            mm = m ^ side
             for col in range(ncols):
                 y0 = CARD_Y0 + (PAD + col * gw) * s
-                if mm: y0 = CARD_Y0 + (CARD_W - PAD - (col + 1) * gw) * s     # mirrored: columns from the right
+                if mm: y0 = CARD_Y0 + (CARD_W - PAD - (col + 1) * gw) * s
                 frames = []
                 for gi, c in enumerate(codes):
                     if gi % 26 == 0:
                         spr = new_sprite(); frames.append((spr, []))
                     g = glyphs[c]
                     if sc != 1.0: g = g.resize((max(1, round(g.width * sc)), max(1, round(g.height * sc))), Image.NEAREST)
-                    lump = 'w%d%d%02d%02x' % (fi + 3 * side, m, col, c)
-                    # centre narrow glyphs in the cell
+                    lump = 'w%x%d%02d%02x' % (ri, fam, col, c)
                     cell = Image.new('RGBA', (max(1, round(gw)), max(1, round(ch * sc))), (0, 0, 0, 0))
                     cell.alpha_composite(g, ((cell.width - g.width) // 2, 0))
-                    count += piece(cell, os.path.join(vdir, lump + '.kvx'), s, y0, CARD_Z0, mm, FRONT, side)
+                    count += piece(cell, os.path.join(vdir, lump + '.kvx'), s, y0, z0, mm, FRONT, side)
                     vdef.append('%s%s = "%s" { Scale = %g }' % (spr, letters[gi % 26], lump, s))
                     Image.new('RGBA', (1, 1)).save(os.path.join(sdir, '%s%s0.png' % (spr, letters[gi % 26])))
                     frames[-1][1].append((letters[gi % 26], c))
-                states.append(('G%d%d%02d' % (fi + 3 * side, m, col), frames))
-    # panels: white rim, grey fill, rounded (tinted per gun at run time)
+                states.append(('R%x%d%02d' % (ri, fam, col), frames))
     pstates = []
     for hi, ph in enumerate(PANEL_H):
         big = Image.new('RGBA', (CARD_W * 4, ph * 4), (0, 0, 0, 0)); d = ImageDraw.Draw(big)
         d.rounded_rectangle((0, 0, CARD_W * 4 - 1, ph * 4 - 1), 22, fill=(235, 235, 235, 255))
         d.rounded_rectangle((8, 8, CARD_W * 4 - 9, ph * 4 - 9), 16, fill=(96, 96, 96, 255))
         im = big.resize((CARD_W, ph), Image.LANCZOS)
-        for side, m in ((0, 0), (0, 1), (1, 0), (1, 1)):
-            spr = new_sprite(); lump = 'wp%d%d%d' % (hi, m, side)
+        for fam, (side, m) in enumerate(((0, 0), (0, 1), (1, 0), (1, 1))):
+            spr = new_sprite(); lump = 'wp%d%d' % (hi, fam)
             count += piece(im, os.path.join(vdir, lump + '.kvx'), s, CARD_Y0, CARD_Z0, m ^ side, 0.0, side)
             vdef.append('%sA = "%s" { Scale = %g }' % (spr, lump, s))
             Image.new('RGBA', (1, 1)).save(os.path.join(sdir, '%sA0.png' % spr))
-            pstates.append(('P%d%d%d' % (hi, m, side), spr))
-    # VOXELDEF block
+            pstates.append(('P%d%d' % (hi, fam), spr))
     vpath = os.path.join(WHEEL, 'VOXELDEF.txt'); old = open(vpath).read() if os.path.exists(vpath) else ''
     a0, a1 = '// >>> WRSIDE (tools/gen_side.py)', '// <<< WRSIDE'
     if a0 in old: pre, rest = old.split(a0, 1); post = rest.split(a1, 1)[1]
     else: pre, post = old.rstrip('\n') + '\n\n', ''
     open(vpath, 'w').write(pre + a0 + '\n' + '\n'.join(vdef) + '\n' + a1 + post)
-    # ZScript
-    z = ['// GENERATED by tools/gen_side.py -- do not edit. The watch card on the side of the gun (owner 02:47).',
+    z = ['// GENERATED by tools/gen_side.py -- do not edit. The watch card flat on each side of the wrist (owner 03:00).',
+         '// Every row and column is baked: Glyph(row, family, column, code); family = side * 2 + mirrored.',
          'class wr_SideStates : Weapon', '{',
          '\tDefault { +WEAPON.CHEATNOTWEAPON +WEAPON.NOAUTOSWITCHTO Weapon.SelectionOrder 99999; }',
-         '\tconst PX_CM = %g;' % PX, '\tconst CARD_W = %d;' % CARD_W, '\tconst PAD = %d;' % PAD,
-         '\tconst CARD_Y0 = %g; const CARD_Z0 = %g;' % (CARD_Y0, CARD_Z0),
+         '\tconst ROWS = %d;' % len(ROWS),
+         '\tstatic const int ROW_FONT[] = { %s };' % ', '.join(str(r[0]) for r in ROWS),
+         '\tstatic const int FONT_COLS[] = { %s };' % ', '.join(map(str, font_cols)),
+         '\tstatic const int ROW_BOTTOM_PX[] = { %s };' % ', '.join(str(int(row_z[i] + FONTS[ROWS[i][0]][3] * FONTS[ROWS[i][0]][4] + PAD + 0.999)) for i in range(len(ROWS))),
          '\tstatic const int PANEL_H[] = { %s };' % ', '.join(map(str, PANEL_H)),
-         '\tenum EFont { F_SMALL, F_TITLE, F_DIGIT };',
-         '\tconst PITCH_SIGN = %d;   // which way a layer y turns a piece down the card (rig)' % PITCH_SIGN]
-    z.append('\tstatic const int NCOLS[] = { %s };' % ', '.join(str(c[1]) for c in cols_tab))
-    z.append('\tstatic const double CELL_W[] = { %s };' % ', '.join('%g' % c[2] for c in cols_tab))
-    z.append('\tstatic const double CELL_H[] = { %s };' % ', '.join('%g' % c[3] for c in cols_tab))
-    z += ['\tStates', '\t{']
+         '\tStates', '\t{']
     for label, frames in states:
         z.append('\t%s:' % label)
         for spr, fl in frames:
@@ -183,36 +195,36 @@ def main():
         z.append('\t\tStop;')
     for label, spr in pstates:
         z.append('\t%s:' % label); z.append('\t\t%s A -1 Bright;' % spr); z.append('\t\tStop;')
-    z += ['\t}', '',
-          '\tprivate static State Walk(State s, int n) { for (int i = 0; i < n && s; i++) s = s.NextState; return s; }', '']
-    # glyph code order per font (the frame index of a code)
-    for fi, (fname, src, cw, ch, sc) in enumerate(FONTS):
-        codes = sorted(doom if src == 'doom' else ermac)
+    z += ['\t}', '', '\tprivate static State Walk(State s, int n) { for (int i = 0; i < n && s; i++) s = s.NextState; return s; }']
+    for fi in range(len(FONTS)):
+        src = FONTS[fi][1]
+        codes = [c for c in sorted(doom if src == 'doom' else ermac) if c in CHARS]
         z.append('\tstatic const int CODES%d[] = { %s };' % (fi, ', '.join(map(str, codes))))
-    z += ['\tstatic State Glyph(int font, bool mirrored, int col, int code, int side = 0)', '\t{',
+    z += ['\tstatic int IndexOf(int font, int code)', '\t{',
+          '\t\tif (font == 0) { for (int i = 0; i < wr_SideStates.CODES0.Size(); i++) if (wr_SideStates.CODES0[i] == code) return i; }',
+          '\t\telse if (font == 1) { for (int i = 0; i < wr_SideStates.CODES1.Size(); i++) if (wr_SideStates.CODES1[i] == code) return i; }',
+          '\t\telse { for (int i = 0; i < wr_SideStates.CODES2.Size(); i++) if (wr_SideStates.CODES2[i] == code) return i; }',
+          '\t\treturn -1;', '\t}',
+          '\tstatic State Glyph(int row, int fam, int col, int code)', '\t{',
           '\t\tif (code >= 97 && code <= 122) code -= 32;',
-          '\t\tif (font < 0 || font > 2 || col < 0 || col >= wr_SideStates.NCOLS[font]) return null;',
-          '\t\tint idx = -1;',
-          '\t\tif (font == 0) { for (int i = 0; i < wr_SideStates.CODES0.Size(); i++) if (wr_SideStates.CODES0[i] == code) { idx = i; break; } }',
-          '\t\telse if (font == 1) { for (int i = 0; i < wr_SideStates.CODES1.Size(); i++) if (wr_SideStates.CODES1[i] == code) { idx = i; break; } }',
-          '\t\telse { for (int i = 0; i < wr_SideStates.CODES2.Size(); i++) if (wr_SideStates.CODES2[i] == code) { idx = i; break; } }',
-          '\t\tif (idx < 0) return null;',
-          '\t\treturn Walk(Start(font + 3 * side, mirrored, col), idx);', '\t}',
-          '\tstatic State Start(int font, bool mirrored, int col)', '\t{',
-          '\t\tlet d = GetDefaultByType("wr_SideStates");', '\t\tint k = (font * 2 + (mirrored ? 1 : 0)) * 100 + col;',
-          '\t\tswitch (k)', '\t\t{']
+          '\t\tif (row < 0 || row >= ROWS) return null;',
+          '\t\tint font = wr_SideStates.ROW_FONT[row];',
+          '\t\tif (col < 0 || col >= wr_SideStates.FONT_COLS[font]) return null;',
+          '\t\tint idx = IndexOf(font, code);', '\t\tif (idx < 0) return null;',
+          '\t\tlet d = GetDefaultByType("wr_SideStates");', '\t\tState st = null;',
+          '\t\tswitch ((row * 4 + fam) * 100 + col)', '\t\t{']
     for label, frames in states:
-        fi, m, col = int(label[1]), int(label[2]), int(label[3:])
-        z.append('\t\tcase %d: return d.FindState("%s");' % ((fi * 2 + m) * 100 + col, label))
-    z += ['\t\t}', '\t\treturn null;', '\t}',
-          '\tstatic State Panel(bool mirrored, int hi, int side = 0)', '\t{', '\t\tlet d = GetDefaultByType("wr_SideStates");',
-          '\t\tswitch ((hi * 2 + (mirrored ? 1 : 0)) * 2 + side)', '\t\t{']
+        ri, fam, col = int(label[1], 16), int(label[2]), int(label[3:])
+        z.append('\t\tcase %d: st = d.FindState("%s"); break;' % ((ri * 4 + fam) * 100 + col, label))
+    z += ['\t\t}', '\t\treturn Walk(st, idx);', '\t}',
+          '\tstatic State Panel(int fam, int hi)', '\t{', '\t\tlet d = GetDefaultByType("wr_SideStates");',
+          '\t\tswitch (hi * 4 + fam)', '\t\t{']
     for label, spr in pstates:
-        hi, m, sd = int(label[1]), int(label[2]), int(label[3])
-        z.append('\t\tcase %d: return d.FindState("%s");' % ((hi * 2 + m) * 2 + sd, label))
+        hi, fam = int(label[1]), int(label[2])
+        z.append('\t\tcase %d: return d.FindState("%s");' % (hi * 4 + fam, label))
     z += ['\t\t}', '\t\treturn null;', '\t}', '}', '']
     open(os.path.join(WHEEL, 'zscript', 'wheel', 'wr_q_side_states.zs'), 'w').write('\n'.join(z))
-    print('sprites %d, voxels %d, cells %d, columns %s' % (sprite_n[0], len(vdef), count, [(c[0], c[1]) for c in cols_tab]))
+    print('sprites %d, voxels %d, cells %d, font cols %s, card %d px tall' % (sprite_n[0], len(vdef), count, font_cols, used_h))
 
 if __name__ == '__main__':
     main()

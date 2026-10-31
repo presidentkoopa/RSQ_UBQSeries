@@ -31,7 +31,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 WHEEL = os.path.dirname(HERE)
 
 # ---- the layout, in model centimetres -----------------------------------------------------------
-CARD = (1.0, -28.0, 7.0)      # the small card (owner 03:00): just over the wrist, on the firing line, facing you
+CARD = (0.4, -16.9, -4.6)     # the small card (owner 03:00): just over the wrist. WRIST = (0.4, -16.9, -11.3), measured from
+                              # BD22 VR's hand mesh (fbx_b1_R.md3 wrist ring at md3 (-7.1,-0.4,-1.3), MODELDEF Offset 0 -24 -10); rig-confirmed
                               # (rig, doom2, from behind: centred over BD22 VR's rifle and pistol at X ~ 1)
 PANEL_W, PANEL_H, PANEL_S = 48, 48, 0.1          # 4.8 cm square (Ermac's panels are square)
 FRONT = 0.20                                      # glyphs stand this far in front of the panel
