@@ -2,7 +2,7 @@
 
 **Version 1.0 — 2026-10-27; menus and names 2026-10-28.** Ready-to-load pk3s are in [`pk3/`](pk3/).
 
-Standalone add-ons for **Doom VR on the Quest**, all in one place: a distance grab, a
+Standalone add-ons for **Doom VR on the Quest 17.3 PCVR or Mobile**, all in one place: a distance grab, a
 shield-saw, a lightsaber, a tactical rig, slow motion, a laser sight, a grappling hook, HP bars and one
 shared Accessibility menu.
 
