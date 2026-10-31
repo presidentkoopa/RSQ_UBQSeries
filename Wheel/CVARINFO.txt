@@ -825,10 +825,10 @@ user bool  wr_stats_track = true;
 
 // ---- THE CARD ON THE GUN (wr_q_card.zs, Project Wheel) -------------------------------------------------------
 // Ermac's Force Unleashed holo display beside each gun's stock, facing you while you aim.
-user int    wr_card = 0;                 // 0 off, 1 always, 2 when you look at the gun, 3 the inspect gesture (RSQ_Gestures)
+user int    wr_card = 1;                 // 0 off, 1 always, 2 when you look at the gun, 3 the inspect gesture (RSQ_Gestures)
 user int    wr_card_hands = 0;           // ammo template: 0 a card on each gun, 1 both guns on the main-hand card
 user int    wr_card_tpl = 1;             // the card in normal play: 0 none, 1 ammo, 2 compact, 3 full, 4 both hands
-user int    wr_card_watch_tpl = 0;       // checking your watch: 0 none (the old wrist card), 1 ammo, 2 compact, 3 full, 4 both hands
+user int    wr_card_watch_tpl = 3;       // checking your watch: 0 none (the old wrist card), 1 ammo, 2 compact, 3 full, 4 both hands
 user int    wr_card_style = 0;           // Ermac's panel: 0 each gun its own by weapon slot (the mock-ups), 1..18 one for all
 user int    wr_card_look = 1;            // 0 solid, 1 glass, 2 glow
 user float  wr_card_alpha = 0.85;        // how solid glass / glow is
@@ -843,7 +843,7 @@ user float  wr_card_glance_cone = 30;    // and within this many degrees of wher
 user int    wr_card_inspect_level = 2;   // inspect mode: 1 shows as the twist starts, 2 once it is held
 user int    wr_card_linger = 35;         // inspect mode: tics the card stays after the pose ends
 user int    wr_card_watch_roll = 1;      // the watch card turned to read upright in the palm-down twist
-user float  wr_card_watch_up = -8;       // the watch card's own nudge (rig: -8 clears the stock on both hands)
+user float  wr_card_watch_up = 0;        // the watch card's own nudge (rig: -8 clears the stock on both hands)
 user float  wr_card_watch_side = 0;
 user int    wr_card_both_sides = 1;      // the watch card inside AND outside the grip
 user float  wr_card_out_turn = -40;      // how far round the hand the outside copy sits, degrees

@@ -88,9 +88,11 @@ class wr_GunCard : EventHandler
 	static int ci(string n, int f) { let c = CVar.FindCVar(n); return c ? c.GetInt() : f; }
 
 	// ---- what the card says ----------------------------------------------------------------------------
+	// a second ammo pile is the magazine (the rule the wrist card has always used; Brutal Doom's guns keep
+	// their magazine in Ammo2 and have alt fire too, so alt fire does not rule it out)
 	static bool HasMagazine(Weapon w)
 	{
-		return w && w.Ammo2 && w.Ammo2 != w.Ammo1 && !w.FindState('AltFire');
+		return w && w.Ammo1 && w.Ammo2 && w.Ammo2 != w.Ammo1;
 	}
 	// rounds you can fire now, -1 for a gun with no ammo
 	static int Loaded(Weapon w)
@@ -235,7 +237,7 @@ class wr_GunCard : EventHandler
 			// the look changed: every live layer gets it again
 			item.mStyleSet = item.mStyle;
 			for (int id = L_FIRST; id <= L_LAST; id++) if (p.FindPSprite(id)) item.mPending.Push(id);
-			for (int id = wr_DetailCard.BASE0; id < wr_DetailCard.BASE0 + 800; id++) if (p.FindPSprite(id)) item.mPending.Push(id);
+			for (int id = wr_DetailCard.BASE0; id < wr_SideCard.BASE0 + 800; id++) if (p.FindPSprite(id)) item.mPending.Push(id);
 		}
 
 		// WHICH CARD. Checking your watch with a gun shows that gun's watch card (wr_card_watch_tpl);
@@ -274,7 +276,15 @@ class wr_GunCard : EventHandler
 			mShow[hand] = clamp(mShow[hand] + (show[hand] ? step : -step), 0.0, 1.0);
 			Weapon w = gun[hand];
 			Actor owner = hand == 1 ? Actor(p.OffhandWeapon) : Actor(item);
-			if (mShow[hand] <= 0 || !w || !owner) { ClearHand(p, hand); Detail(hand).Remove(p); DetailOut(hand).Remove(p); continue; }
+			if (mShow[hand] <= 0 || !w || !owner) { ClearHand(p, hand); Detail(hand).Remove(p); DetailOut(hand).Remove(p); Side(hand).Remove(p); SideOf(hand, 1).Remove(p); continue; }
+			if (watching[hand] && tpl[hand] != wr_DetailTemplates.T_AMMO)
+			{
+				// the watch card: the full card on the side of the gun at the grip hand (wr_q_side.zs)
+				ClearHand(p, hand); Detail(hand).Remove(p); DetailOut(hand).Remove(p);
+				DrawSide(p, pmo, hand, owner, w);
+				continue;
+			}
+			Side(hand).Remove(p); SideOf(hand, 1).Remove(p);
 			if (tpl[hand] == wr_DetailTemplates.T_AMMO)
 			{
 				Detail(hand).Remove(p); DetailOut(hand).Remove(p);
@@ -295,6 +305,35 @@ class wr_GunCard : EventHandler
 		if (!mDetail[hand]) { mDetail[hand] = new("wr_DetailCard"); mDetail[hand].hand = hand; }
 		return mDetail[hand];
 	}
+	static const int STYLE_COL[] = { 0xB0B0B0, 0x808080, 0x60C060, 0xC0B060, 0xB06060, 0x6080C0, 0x90A0B0, 0x7070D0, 0xA0A060, 0x9070B0, 0xD0A040, 0x60A0D0, 0xD060A0, 0x60D0C0, 0xC08040, 0x5070E0, 0xA0A0A0, 0xE0E0E0 };
+	transient wr_SideCard mSide[2], mSide2[2];
+	wr_SideCard Side(int hand) { return SideOf(hand, 0); }
+	wr_SideCard SideOf(int hand, int side)
+	{
+		if (side == 0) { if (!mSide[hand]) { mSide[hand] = new("wr_SideCard"); mSide[hand].hand = hand; } return mSide[hand]; }
+		if (!mSide2[hand]) { mSide2[hand] = new("wr_SideCard"); mSide2[hand].hand = hand; mSide2[hand].side = 1; }
+		return mSide2[hand];
+	}
+	private void DrawSide(PlayerInfo p, PlayerPawn pmo, int hand, Actor owner, Weapon w)
+	{
+		DrawSideOne(p, pmo, hand, owner, w, 0);
+		DrawSideOne(p, pmo, hand, owner, w, 1);
+	}
+	private void DrawSideOne(PlayerInfo p, PlayerPawn pmo, int hand, Actor owner, Weapon w, int side)
+	{
+		let c = SideOf(hand, side);
+		bool mir = Mirrored(p, hand);
+		int style = StyleFor(p, w);
+		string sig = wr_DetailTemplates.Signature(pmo, w, null, 9, style) .. (mir ? " m" : "");
+		if (sig != c.sig || c.mir != mir)
+		{
+			c.sig = sig; c.mir = mir;
+			// the panel in the gun's colour: Ermac's panel colours by slot, as the top card
+			c.Build(pmo, hand, w, wr_GunCard.STYLE_COL[clamp(style, 0, 17)]);
+		}
+		c.Sync(p, owner, mShow[hand] * cv("wr_card_alpha", 0.85), WatchNudge(true), self);
+	}
+
 	// the copy outboard of the grip (wr_card_both_sides): same layout, turned the other side of the hand
 	wr_DetailCard DetailOut(int hand)
 	{
@@ -394,8 +433,9 @@ class wr_GunCard : EventHandler
 		// low: a magazine below wr_lowammo_frac of a full one; any other gun only when it is empty (its
 		// 'cap' is the backpack's, so a fraction of it means nothing)
 		bool low = loaded == 0 || (HasMagazine(w) && cap > 0 && loaded <= cap * cv("wr_lowammo_frac", 0.25));
-		// the top card shows what is in the clip only (owner); the small row is the other gun on a both-hands card
-		int reserve = both ? (other ? Loaded(other) : -1) : -1;
+		// the top card: the magazine big, the reserve small under it (owner 02:47); on a both-hands card the
+		// small row is the other gun
+		int reserve = both ? (other ? Loaded(other) : -1) : Reserve(w);
 
 		int tinted = ci("wr_card_tint", 0);
 		int tPanel = -1, tDigits = -1;
@@ -484,7 +524,7 @@ class wr_GunCard : EventHandler
 	private void ClearAll(PlayerInfo p)
 	{
 		ClearHand(p, 0); ClearHand(p, 1);
-		Detail(0).Remove(p); Detail(1).Remove(p); DetailOut(0).Remove(p); DetailOut(1).Remove(p);
+		Detail(0).Remove(p); Detail(1).Remove(p); DetailOut(0).Remove(p); DetailOut(1).Remove(p); Side(0).Remove(p); Side(1).Remove(p); SideOf(0, 1).Remove(p); SideOf(1, 1).Remove(p);
 		Kill(p, L_FX);
 		mShow[0] = mShow[1] = 0;
 	}

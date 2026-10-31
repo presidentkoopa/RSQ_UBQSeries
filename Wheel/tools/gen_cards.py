@@ -31,8 +31,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 WHEEL = os.path.dirname(HERE)
 
 # ---- the layout, in model centimetres -----------------------------------------------------------
-CARD = (7.0, -26.0, 12.0)     # the top card (owner 2026-10-31): square, on top of the gun, facing you while you aim
-                              # (rig: centred over the stock, BD22 VR's stock hid it; clear of the sight line)
+CARD = (1.0, -28.0, 7.0)      # the small card (owner 03:00): just over the wrist, on the firing line, facing you
+                              # (rig, doom2, from behind: centred over BD22 VR's rifle and pistol at X ~ 1)
 PANEL_W, PANEL_H, PANEL_S = 48, 48, 0.1          # 4.8 cm square (Ermac's panels are square)
 FRONT = 0.20                                      # glyphs stand this far in front of the panel
 LABEL_S = 0.045                                   # Ermac's 88x12 labels: 4.0 x 0.54 cm

@@ -3257,7 +3257,7 @@ class wr_Rig : EventHandler
 
 	// Geometry generation. Bump this whenever the numbers below change and every
 	// existing config picks them up once, automatically.
-	const CFG_VERSION = 23;
+	const CFG_VERSION = 24;
 
 	private void migrateConfig()
 	{
@@ -3269,8 +3269,12 @@ class wr_Rig : EventHandler
 		// went off. Gen 22 puts them back.)
 		int from = stamp.GetInt();
 
+		// Gen 24: the cards back ON, in their new places (small over the wrist, full card both sides of it);
+		// the old placement nudges zeroed, they were for the old places.
+		if (from < 24) { setCv("wr_card", 1); setCv("wr_card_watch_tpl", 3); setCv("wr_card_up", 0); setCv("wr_card_side", 0); setCv("wr_card_watch_up", 0); setCv("wr_card_watch_side", 0); }
+
 		// Gen 23: the gun cards OFF (owner 2026-10-31: not good enough yet). Back on from Gun cards.
-		if (from < 23) { setCv("wr_card", 0); setCv("wr_card_watch_tpl", 0); }
+		if (from < 23 && from >= 24) { setCv("wr_card", 0); setCv("wr_card_watch_tpl", 0); }
 
 		// Gen 22: undo gen 21's side effect -- the pickup voxels back on.
 		if (from < 22) setCv("wr_models", 1);

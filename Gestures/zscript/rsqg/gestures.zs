@@ -216,7 +216,7 @@ class RSQG_Handler : EventHandler
 	}
 
 	// the pose: in front of the eyes at chest-to-face height, not pointing at floor or ceiling, wrist
-	// twisted at least `need` degrees (the way rsqg_inspect_dir says), `slack` metres of drift allowed
+	// twisted at least `need` degrees (the way rsqg_inspect_way says), `slack` metres of drift allowed
 	static bool InspectPose(PlayerPawn pmo, int h, double slack, double need)
 	{
 		Vector3 b = RSQG_Pose.Body(pmo, h);
@@ -229,7 +229,7 @@ class RSQG_Handler : EventHandler
 		// left controller (measured: right +60 stage roll reads +50, left -60 reads -50), so a
 		// one-way choice is flipped for the physical left hand
 		double s = RSQG_Pose.IsLeft(h) ? -1 : 1;
-		int dir = Opt("rsqg_inspect_dir", 0);
+		int dir = Opt("rsqg_inspect_way", 0);
 		if (dir == 1) return r * s >= need;
 		if (dir == 2) return -r * s >= need;
 		return abs(r) >= need;

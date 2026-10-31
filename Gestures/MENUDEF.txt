@@ -28,7 +28,7 @@ OptionMenu "RSQG_Options"
 	StaticText "series mods. Inspect: hold the gun up in front", "gray"
 	StaticText "of your face and twist your wrist.", "gray"
 	StaticText " "
-	Option "Inspect Twist Way", "rsqg_inspect_dir", "RSQG_TwistWays"
+	Option "Inspect Twist Way", "rsqg_inspect_way", "RSQG_TwistWays"
 	Slider "Inspect Twist (degrees)", "rsqg_inspect_twist", 20, 90, 5, 0
 	Slider "Inspect Hold (tics)", "rsqg_inspect_hold", 1, 35, 1, 0
 	StaticText " "
@@ -81,8 +81,8 @@ OptionMenu "RSQG_Tuning"
 OptionValue "RSQG_TwistWays"
 {
 	0, "Either Way"
-	1, "Palm Down"
-	2, "Palm Up"
+	1, "Palm Up (pulse side)"
+	2, "Knuckles Up (watch)"
 }
 OptionValue "RSQG_Debug"
 {
