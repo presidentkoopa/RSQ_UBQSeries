@@ -35,8 +35,8 @@ user float rsqtr_r0_f = 0.00;  user float rsqtr_r0_l =  0.18; user float rsqtr_r
 user float rsqtr_r1_f = 0.00;  user float rsqtr_r1_l = -0.18; user float rsqtr_r1_u = -0.70; user float rsqtr_r1_rad = 0.14;
 user float rsqtr_r4_f = -0.08; user float rsqtr_r4_l =  0.18; user float rsqtr_r4_u = -0.10; user float rsqtr_r4_rad = 0.14;
 user float rsqtr_r5_f = -0.08; user float rsqtr_r5_l = -0.18; user float rsqtr_r5_u = -0.10; user float rsqtr_r5_rad = 0.14;
-user float rsqtr_r6_f =  0.10; user float rsqtr_r6_l =  0.12; user float rsqtr_r6_u = -0.38; user float rsqtr_r6_rad = 0.11;
-user float rsqtr_r7_f =  0.10; user float rsqtr_r7_l = -0.12; user float rsqtr_r7_u = -0.38; user float rsqtr_r7_rad = 0.11;
+user float rsqtr_r6_f =  0.10; user float rsqtr_r6_l =  0.12; user float rsqtr_r6_u = -0.46; user float rsqtr_r6_rad = 0.11;
+user float rsqtr_r7_f =  0.10; user float rsqtr_r7_l = -0.12; user float rsqtr_r7_u = -0.46; user float rsqtr_r7_rad = 0.11;
 user float rsqtr_r9_f = 0.02;  user float rsqtr_r9_l =  0.21; user float rsqtr_r9_u = -0.84; user float rsqtr_r9_rad = 0.10;
 user float rsqtr_r10_f = 0.02; user float rsqtr_r10_l = -0.21; user float rsqtr_r10_u = -0.84; user float rsqtr_r10_rad = 0.10;
 

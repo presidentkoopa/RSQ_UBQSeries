@@ -31,12 +31,13 @@ class RSQTR_Region
 	static bool Retired(int r) { return r == 2 || r == 3 || r == 8; }
 
 	// Defaults, metres from the head in the body frame: forward, left, up, radius (0: retired).
-	// The chest pair: 0.38 m under the eyes, 0.12 m either side of the breastbone, 0.10 m in front;
-	// a little smaller (0.11) so a gun held at the chest does not sit in one. Each is >= 0.33 m from
-	// the shoulders and the hips, more than two radii, so no two places overlap.
+	// The chest pair: 0.46 m under the eyes, 0.12 m either side of the breastbone, 0.10 m in front;
+	// a little smaller (0.11) so a gun held at the chest does not sit in one. No two places overlap:
+	// 0.27 m from the hips, 0.40 m from the shoulders, 0.21 m from the cigarette pocket (cig.zs, radius
+	// 0.09 at 0.25 m under the eyes) -- at 0.38 m they sat on the pocket.
 	static const double DF[] = {  0.00,  0.00, 0, 0, -0.08, -0.08,  0.10,  0.10, 0,  0.02,  0.02 };
 	static const double DL[] = {  0.18, -0.18, 0, 0,  0.18, -0.18,  0.12, -0.12, 0,  0.21, -0.21 };
-	static const double DU[] = { -0.70, -0.70, 0, 0, -0.10, -0.10, -0.38, -0.38, 0, -0.84, -0.84 };
+	static const double DU[] = { -0.70, -0.70, 0, 0, -0.10, -0.10, -0.46, -0.46, 0, -0.84, -0.84 };
 	static const double DR[] = {  0.14,  0.14, 0, 0,  0.14,  0.14,  0.11,  0.11, 0,  0.10,  0.10 };
 }
 
@@ -790,6 +791,17 @@ class RSQTR_Rig : EventHandler
 		// room while he turned); still at those, it moves to the new 25 / 0
 		let bt = CVar.FindCVar("rsqtr_body_turn"), bs = CVar.FindCVar("rsqtr_body_secs");
 		if (bt && bs && abs(bt.GetFloat() - 60) < 0.01 && abs(bs.GetFloat() - 2) < 0.01) { bt.SetFloat(25); bs.SetFloat(0); }
+		// settings version 5 (10-31): the chest holsters' first height (-0.38) sat on the cigarette pocket;
+		// still there, they move to -0.46
+		if (ver && ver.GetInt() < 5)
+		{
+			for (int r = 6; r <= 7; r++)
+			{
+				let u = CVar.FindCVar(String.Format("rsqtr_r%d_u", r));
+				if (u && abs(u.GetFloat() + 0.38) < 0.001) u.SetFloat(-0.46);
+			}
+			ver.SetInt(5);
+		}
 	}
 
 	private void SaveEdit(PlayerPawn pmo, PlayerInfo p)
