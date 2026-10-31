@@ -479,3 +479,186 @@ Left, and why:
   The layer also turns about a point 0.30 m behind the palm (the HUD origin) and would need a
   root VOXELDEF the hub build does not ship. So the beam and cone stay world models with the
   one-tic lead (D20); they were made to agree with the tested cone instead.
+
+## D31 — THE GRIP, UP CLOSE: THE PRESS IS EATEN. 2026-10-29, recorded 2026-10-30.
+
+`near.zs`. The grip is read as raw key scans in an `InputProcess` override
+(`near.zs:61-86`; `rsqdg_keys_main` "446", `rsqdg_keys_off` "443 436", both
+cvars, because QuestZDoom sends the off grip as KEY_PAD_RTHUMB or as
+KEY_PAD_DPAD_UP while the main grip shifts it). Three acts share it — swap
+hands, the walk-up grab, the Headlock — and **when one of them takes the press
+the press is CONSUMED**: `InputProcess` returns `eaten[h]`, so whatever else the
+player bound to that grip does not see it. That is deliberate and it is the
+mechanism, not an accident of the key scan: a hand that is touching something
+comes first, before the engine's two-hand steadying and before the distance
+reach. A hand in a Tactical Rig holster is the rig's and is skipped before any of
+it (`near.zs:179`, and a hand on a door yields to `door.zs` at `:182`/`:212`).
+
+**The cost is on the record too, because it is the one thing a future session
+will not guess.** The press is eaten whenever `ready[h]` is true, and `ready[h]`
+is true whenever `FindNear` finds anything in reach — so with a monster at arm's
+length the grip a player bound to something else (a weapon wheel, a shield, a
+tether's lock) is swallowed by a Headlock, and nothing is asked and nothing is
+logged. No other mod is consulted about the hand except the rig. There is a
+designed answer to this (a per-hand claim protocol every mod publishes and
+consults) and it is a separate piece of work; this entry exists so the eat is not
+read as a bug and quietly removed.
+
+**The sweep is bounded by the reach, not by the blockmap (2026-10-30).**
+`FindNear` scanned a 256-unit box every tic, both hands, to find things 10.2
+units away. The half-extent is now `nearU + 8` — about 18 — because an actor is
+linked into every blockmap cell its radius touches and not just its centre cell
+(`p_maputl.cpp:518-529`) and the test subtracts the radius, so the smaller box
+still finds a Spider Mastermind corpse. A 1x1 or 2x2 cell walk instead of 2x2 to
+3x3. **Worth one rig check rather than taking it on the arithmetic**, because
+this is the one case where a wrong bound makes a grab silently stop working.
+
+## D32 — HAND SWAP: WHAT MAY CHANGE HANDS. 2026-10-29, recorded 2026-10-30.
+
+Both controllers inside `rsqdg_swap_m` (0.25 m) with both wrists rolled past
+`rsqdg_swap_roll` (55 deg): either grip swaps the two hands' weapons
+(`near.zs:110-116`, `:266-313`). A hand with nothing to give gets its empty hand
+(the fist, or Brutal Doom VR's `RSQ_Hands`), found in slot 1 by selection order.
+
+**What may not move, and why the list is hardcoded** (`Movable`, `near.zs:235-244`):
+a saber or a Force hand (`ubqs_`), a shield (`ssq_`), an empty-hand filler
+(`rsq_hands`), anything `bMELEEWEAPON`, and anything whose **class default** is
+`bOffhandWeapon` — an off-hand-only copy, which is how BD VR's dual guns are
+built, and moving one of those to the main hand produces a gun that cannot be
+drawn. The prefixes are other packages' naming, which is a thing to know about:
+the test is on the class name because a weapon that is somebody else's mechanic
+does not advertise that any other way.
+
+**The off hand is raised on a 70-tic queue** (`offNext`/`offWait`, `TickSwaps`):
+the main hand's switch has to finish first, `p.PendingWeapon` is watched for it,
+and the queue is dropped on death or when it runs out. The rig does the same
+thing for the same reason.
+
+## D33 — THE HEADLOCK IS A HUMAN SHIELD, AND D6 DOES NOT COVER IT. 2026-10-29, recorded 2026-10-30.
+
+**D6 and D7 still hold, unchanged, for the distance grab.** The distance grab
+cannot hold a living monster at all — `policy.zs:360-362` refuses anything alive
+**at range**, and that is the owner's decision with his reason on record (a way
+of deleting monsters; a corpse is a prop and one worth having). Nothing here
+proposes a living monster at range, and D7's two-systems split is what makes this
+entry possible: the near grip is a different act with a different reach.
+
+The near grip is that different act. The **off hand's** grip on a living monster
+no heavier than `rsqdg_collar_mass` (400 Doom mass) holds it in front of the palm
+for `rsqdg_collar_secs` (3 s) so the main hand can punch it, default **on**
+(`near.zs:316-371`, `CVARINFO.txt:47`). It keeps `bSHOOTABLE` — never touched —
+and that is the whole shield property: the hitscan trace's actor test reads only
+`thing->flags & ActorMask` (`p_trace.cpp:866`) and the skip filter reads the
+**puff's** pass-through flag and not the victim's (`p_map.cpp:4829`), so there is
+no intended-target test anywhere and a held monster eats the pellets.
+
+**Two things made it a bullet shield and not a fireball shield, and both are
+fixed (2026-10-30).**
+
+- **It set `bTHRUACTORS` on the held monster.** `PIT_CheckThing` returns "no
+  collision" on the **OR of both actors'** `MF2_THRUACTORS`
+  (`p_map.cpp:1409-1410`) — the second test in the function, before the
+  SHOOTABLE test, before the height gate, before `CanAttackHurt` and 180 lines
+  before `P_DoMissileDamage`. So every fireball, revenant missile and cacodemon
+  ball passed straight through the monster held in front of your face, on every
+  map, while the hitscan half worked perfectly. **The set is gone. The save and
+  the restore stay** (`cThru[]`): something else may have set the flag, and
+  whoever borrows is the single owner of the restore (D7). The flag was keeping
+  the body off the player's own collision cylinder; `TryMove` already does that
+  job, its failure is deliberately ignored, and the 1.5 m tear-away ends a hold
+  that cannot follow. **The one case to look at in the headset:** the monster is
+  placed at `Radius + 6` ahead of the palm, so with the off hand drawn in to the
+  chest that target is inside the player's own square footprint and `TryMove`
+  will refuse every tic — the monster lags at arm's length instead of following
+  in. That is arguably right (you cannot pull a demon through your own chest) and
+  if it reads badly the answer is a bigger stand-off, **not the flag back**.
+- **`+FORCEINFIGHTING` was not set**, and that leak sits behind the first one and
+  is invisible until it is fixed. The missile's owner and the held monster are
+  both non-players, so `CanAttackHurt` applies the infighting rules in full
+  (`p_map.cpp:1275-1282`, called at `:1672` with the held monster as the victim),
+  and on a `NoInfighting` map or skill `infight < 0` waves the missile through
+  unless the **victim** carries `MF7_FORCEINFIGHTING`. Now borrowed and handed
+  back beside `bNOGRAVITY`, through the same pattern (`cInfight[]`).
+
+**And it is frozen with `freezetics`, not `tics = -1` (2026-10-30).** `tics` only
+stops the state counter expiring — movement, Z, portals, crushing and the water
+block all still ran for a held monster, with `Vel` zeroed and `bNOGRAVITY` set by
+hand to cover for it. `freezetics` early-returns out of `AActor::Tick`
+(`p_mobj.cpp:3948-3952`) before states, velocity, Z and AI, and **keeps the
+blockmap link**, which is what a shield needs. Re-asserted at 2 every tic
+(`WorldTick` runs before `RunThinkers`, `p_tick.cpp:171-173`; 2 rather than 1 so
+a handler order change costs nothing), and the stunned-looking frozen frame
+survives because the state does not advance either way. It is **self-healing**:
+stop writing it and the monster resumes in two tics, so the restore that could be
+missed is gone — a flag set in one place and cleared in another is the bug that
+outlives the session (`hold.zs:541-542`'s own rule), and this is one fewer of
+them.
+
+**A Headlock does not survive a load.** `collar[]`, the borrowed flags and
+`gripDown[]` are serialized but `keyState`/`eaten` are `transient ui`, so a save
+taken mid-headlock came back with `gripDown` true and no key-up able to clear it;
+`collarEnd` bounded that to 3 s, which was luck. The monster is let go on a load
+now, and it takes **two** hooks: a level's handlers get no `WorldLoaded` when a
+save is restored (`events.cpp:662` skips every non-static handler), so
+`WorldLoaded` covers a fresh level and `OnRegister` plus a first-tic release
+covers the load — the shape `door.zs:59-68` already uses for the same reason.
+
+## D34 — THE COLLAR'S MASS GATE IS DOOM MASS, DELIBERATELY. 2026-10-29, recorded 2026-10-30. OPEN.
+
+`near.zs:148` gates the Headlock on `a.Mass <= rsqdg_collar_mass` — `Actor.Mass`,
+not the package's kilograms — and `CVARINFO.txt:48` documents it in those terms
+(imp 100, demon 400, baron 1000, default 400). For **monsters** `Actor.Mass` is
+meaningful and hand-tuned by id, which is exactly what a "light enough to hold"
+gate wants, and the numbers in the menu are the numbers a reader can check.
+
+**What is open about it.** Everything else in the package decides weight through
+`RSQDG_Mass.Kg`, and `mass.zs:175-180` warns that `Actor.Mass` is 100 on *every*
+non-monster. A mod that re-scales monster `Mass` makes this gate arbitrary —
+Champions gives a Bronze champion `0x7FFFFFFF`, the overflow the throw path
+already had to bound at `throw.zs:446-449`. Not changed, because the gate is
+right for stock and for every monster set that leaves `Mass` alone; recorded so
+that the first "the Headlock grabs a Cyberdemon" report is read as this and not
+as a reach bug.
+
+## D35 — TWO "IS THIS HAND BUSY" PREDICATES, AND THEY DISAGREE. OPEN, 2026-10-30.
+
+`reach.zs:141-191` (`HandBusy`, used by the palm gesture) asks the rig
+`rig.busy`. `near.zs:101-108` (`RigBusy`, used by the grip) asks the rig
+`rig.region`. `rig.region` is a strict subset: `TacticalRig/zscript/rsqtr/hooks.zs`
+answers `rig.busy` with its holsters **or** the cigarette **or** the Zippo **or**
+one of our own doors, and `rig.region` with the hover region alone. The doors are
+handled separately here (`near.zs:182`, `:212`), so what leaks is the smokes:
+**the walk-up grab, the hand swap and the Headlock fire on a hand that is holding
+a lit cigarette or the Zippo.** Cosmetic, and the cheapest bug in the package —
+one request string — but it is not fixed in this pass, because the two predicates
+should be reconciled once rather than patched twice: `HandBusy` is the richer
+one (two-handing distance, the saber's `saber.lit` per D26, melee by flag) and
+the grip answers a different question than the palm gesture does. **Recorded so
+that "near.zs yields to a holster but not to a cigarette" is known to be
+unfinished and not intended.**
+
+## D36 — THE PULSE IS A HITSCAN THAT TOUCHES NOTHING. 2026-10-30.
+
+`feel.zs`'s pulse route spawned `RSQDG_Buzz` to provoke the engine's own
+per-hand buzz, and D15 had to keep `+MISSILE` off it so Brutal22Q's recoil and
+muzzle flash — which watch `WorldThingSpawned` and except `RSVR_Buzz` **by name**
+— would not kick the gun every time the grab buzzed. There is a second engine
+site and it does not have the problem: `P_LineAttack` buzzes the firing hand off
+the `damage` **parameter** alone, before it traces anything
+(`p_map.cpp:4762-4768`), it is not gated on `LAF_NOINTERACT` (read separately at
+`:4724`), and handedness is the engine's own `vr_control_scheme` rule flipped by
+`LAF_ISOFFHAND`. Same 150 ms, same 0.8, same hand: **nothing about how the grab
+feels changes.** What goes away is the actor — no spawn, no
+`P_CheckMissileSpawn`, no `WorldThingSpawned` for anyone to misread — so D15's
+compatibility problem stops existing rather than being worked around by name.
+
+Two things that come with it. `LAF_NOINTERACT` **guarantees** a puff
+(`p_map.cpp:4930-4937`, and the comment at `:4927` says so), so the route needs
+an inert one: `RSQDG_NullPuff`, one state, `+NOINTERACTION`, never drawn, cheaper
+than the buzz actor it replaces. And `RSQDG_Buzz` **stays a class** so an old
+save still loads, for the reason `RSQDG_SoundPoint` is still here: a class missing
+from a save is a load failure. D15 stays on the record because the missile trick
+and its reasoning are still the only other haptic site a stock engine gives
+script, and because the engine's own caveat is unchanged either way — while a
+weapon is two-hand stabilised it buzzes the **other** hand at 0.6 as well
+(`p_map.cpp:4771-4773`), which nothing in script can see or stop.

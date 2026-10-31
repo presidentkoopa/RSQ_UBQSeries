@@ -44,6 +44,15 @@
 //   WorldThingSpawned -- which runs from CallPostBeginPlay, so it sees the
 //   class defaults -- reports bMissile false to every mod listening.
 //
+// SINCE 2026-10-30 THE PULSE SPAWNS NOTHING AT ALL. There is a second engine
+// site, and it is better: P_LineAttack buzzes the firing hand off the `damage`
+// parameter alone, before it traces anything (p_map.cpp:4762-4768). So the same
+// 150 ms at 0.8 on the same hand is reachable with LAF_NOINTERACT and no actor --
+// and the compatibility problem above stops EXISTING rather than being worked
+// around by name. The missile trick stays written down because RSQDG_Buzz stays
+// a class for old saves, and because these two sites are the whole haptic
+// vocabulary a stock engine gives script. See Fire().
+//
 // THE SHAPE IT IMPOSES. Strength is fixed at 0.8 and length at 150 ms, and the
 // Quest runtime IGNORES a vibrate request while the channel is still busy
 // (OpenXrInput.cpp TBXR_Vibrate returns early). So there is no amplitude to
@@ -123,6 +132,9 @@
 // script can see or stop that.
 // =========================================================================
 
+// KEPT ONLY SO AN OLD SAVEGAME LOADS, as RSQDG_SoundPoint below is: the pulse
+// used to spawn one of these and a save taken in that tic names the class.
+// Nothing spawns it any more -- Fire() uses the LineAttack route.
 class RSQDG_Buzz : Actor
 {
 	Default
@@ -142,6 +154,34 @@ class RSQDG_Buzz : Actor
 		// so nothing ever matches it by accident.
 		DamageType "RSQDGHaptic";
 		RenderStyle "None";
+	}
+	States
+	{
+	Spawn:
+		TNT1 A 1;
+		Stop;
+	}
+}
+
+// THE PULSE'S PUFF, AND IT HAS TO BE INERT. LAF_NOINTERACT does not mean "no
+// puff": it GUARANTEES one and hands it straight back to the caller
+// (p_map.cpp:4930-4937, and the comment at :4927 says so outright), so a visible
+// or interacting puff class would leave a mark in the world on every haptic tick
+// -- 150 ms apart at worst. One state, no interaction, never drawn: cheaper than
+// the RSQDG_Buzz it replaces, which carries a DamageType and a Speed.
+class RSQDG_NullPuff : Actor
+{
+	Default
+	{
+		+NOINTERACTION
+		+NOBLOCKMAP
+		+NOGRAVITY
+		+NOTELEPORT
+		+DONTSPLASH
+		+NOTONAUTOMAP
+		RenderStyle "None";
+		Radius 1;
+		Height 1;
 	}
 	States
 	{
@@ -314,11 +354,25 @@ class RSQDG_Feel : EventHandler
 			WAVE_MULT, WAVE_MULT, 1);
 	}
 
+	// THE PULSE, through a hitscan that touches nothing. P_LineAttack buzzes the
+	// firing hand before it traces anything at all: it tests the `damage`
+	// PARAMETER and nothing else (p_map.cpp:4762-4768), it is not gated on
+	// LAF_NOINTERACT (read separately at :4724), and handedness is the engine's
+	// own vr_control_scheme rule flipped by LAF_ISOFFHAND -- the same 150 ms at
+	// 0.8 on the same hand as the missile it replaces, so nothing about the feel
+	// changes. What goes away is the actor: no spawn, no P_CheckMissileSpawn, no
+	// WorldThingSpawned for another mod to read as a shot. D15 was a fix for that
+	// hazard by name (Brutal22Q excepts RSVR_Buzz at rsq/ballistics.zs:61); this
+	// route does not have the hazard. RSQDG_Buzz stays a class for old saves.
+	//
+	// The caveat the missile route had is unchanged and is the engine's: while a
+	// weapon is two-hand stabilised it buzzes the OTHER hand at 0.6 as well
+	// (p_map.cpp:4771-4773), so a double pulse there is not a bug here.
 	private void Fire(int hand, PlayerPawn pmo)
 	{
 		if (!pmo) return;
-		pmo.SpawnPlayerMissile("RSQDG_Buzz", pmo.angle, noautoaim: true,
-			aimflags: (hand == 1) ? ALF_ISOFFHAND : 0);
+		pmo.LineAttack(pmo.angle, 0.1, 0, 1, 'None', "RSQDG_NullPuff",
+			LAF_NOINTERACT | ((hand == 1) ? LAF_ISOFFHAND : 0));
 		busyUntil[hand] = MSTime() + BUSY_MS;
 	}
 

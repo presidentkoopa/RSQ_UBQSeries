@@ -28,7 +28,7 @@ class RSQDG_Near : EventHandler
 	bool owns[MAXPLAYERS * 2];          // this hand's held object was taken by the walk-up grip
 	Actor collar[MAXPLAYERS];
 	int collarEnd[MAXPLAYERS], collarPing[MAXPLAYERS];
-	bool cNoGrav[MAXPLAYERS], cThru[MAXPLAYERS];
+	bool cNoGrav[MAXPLAYERS], cInfight[MAXPLAYERS];
 	String offNext[MAXPLAYERS];
 	int offWait[MAXPLAYERS];
 
@@ -129,7 +129,18 @@ class RSQDG_Near : EventHandler
 		let hold = RSQDG_Hold.Get();
 		Actor best = null;
 		double bestD = 1e9;
-		let it = BlockThingsIterator.CreateFromPos(hp.x, hp.y, hp.z, 128, 128, false);
+		// THE SWEEP IS THE REACH, NOT A BLOCKMAP CELL. checkradius is a half-extent, not a
+		// diameter: the constructor keeps it as checkpoint.Z (p_maputl.cpp:1084) and the box is
+		// setBox(x, y, that) (:1142), so 128 was a 256-unit box -- a 2x2 to 3x3 walk of 128-unit
+		// cells, per hand, per tic, to find things 10.2 units away. nearU is enough on its own,
+		// because an actor is linked into EVERY cell its radius touches and not just its centre
+		// cell (p_maputl.cpp:518-529, "[RH] Link into every block this actor touches") and the test
+		// below subtracts the radius -- so anything whose cylinder comes within nearU of the palm
+		// already shares a cell with the box, whatever its radius, up to a Spider Mastermind
+		// corpse. The + 8 is slack against the rounding in a diagonal corner and costs one cell at
+		// most. checkh is left at 128: it is not the box, only the height the portal groups are
+		// collected over (checkz + checkh, :1083).
+		let it = BlockThingsIterator.CreateFromPos(hp.x, hp.y, hp.z, 128, nearU + 8, false);
 		while (it.Next())
 		{
 			Actor a = it.thing;
@@ -158,6 +169,7 @@ class RSQDG_Near : EventHandler
 	// ---- the local loop ----------------------------------------------------------------------
 	override void WorldTick()
 	{
+		if (afterLoad) { afterLoad = false; ReleaseCollars(); }
 		TickSwaps();
 		TickCollars();
 		for (int n = 0; n < MAXPLAYERS; n++)
@@ -319,9 +331,28 @@ class RSQDG_Near : EventHandler
 		let p = players[n];
 		collar[n] = a;
 		cNoGrav[n] = a.bNOGRAVITY;
-		cThru[n] = a.bTHRUACTORS;
+		cInfight[n] = a.bFORCEINFIGHTING;
 		a.bNOGRAVITY = true;
-		a.bTHRUACTORS = true;
+		// NOT bTHRUACTORS, and the whole point of the act depends on it. PIT_CheckThing returns
+		// "no collision" on the OR of BOTH actors' MF2_THRUACTORS (p_map.cpp:1409-1410) -- the
+		// second test in the function, before the SHOOTABLE test, before the height gate, before
+		// CanAttackHurt and 180 lines before P_DoMissileDamage. A hitscan, meanwhile, reads only
+		// the trace's own ActorMask (p_trace.cpp:866) and the PUFF's pass-through flag
+		// (p_map.cpp:4829), never the victim's -- so with the flag set the shield eats every pellet
+		// and lets every fireball, revenant missile and cacodemon ball through. In a room of
+		// zombiemen that reads as a shield that works, and the first imp reads as a different bug.
+		// It was here to keep the held body off the player's own collision cylinder, and it is not
+		// needed for that: TryMove below is collision-tested and its failure is deliberately
+		// ignored, so a blocked body simply stays where it is and the 1.5 m tear-away ends the
+		// hold. The save and the restore stay -- something else may have set it, and whoever
+		// borrows is the single owner of the restore (D7).
+		//
+		// FORCEINFIGHTING is the second leak, and it is invisible until the first one is fixed. The
+		// missile's owner and the held monster are both non-players, so CanAttackHurt applies the
+		// infighting rules in full (p_map.cpp:1275-1282, called at :1672 with the held monster as
+		// the victim), and on a NoInfighting map or skill infight < 0 waves the missile through
+		// unless the VICTIM carries MF7_FORCEINFIGHTING. Borrowed and handed back like bNOGRAVITY.
+		a.bFORCEINFIGHTING = true;
 		a.Vel = (0, 0, 0);
 		collarEnd[n] = level.maptime + int(RSQDG_Reach.Num("rsqdg_collar_secs", p, 3.0) * TICRATE);
 		collarPing[n] = 0;
@@ -335,8 +366,10 @@ class RSQDG_Near : EventHandler
 		collar[n] = null;
 		if (!a) return;
 		a.bNOGRAVITY = cNoGrav[n];
-		a.bTHRUACTORS = cThru[n];
-		if (a.Health > 0 && a.tics < 0) a.tics = 1;     // the frozen frame moves on
+		a.bFORCEINFIGHTING = cInfight[n];
+		// Nothing to unfreeze. freezetics counts itself down (p_mobj.cpp:3948-3952), so letting go
+		// IS the release: the monster is thinking again two tics from here, and no exit path can
+		// leave one frozen for ever the way the old tics = -1 latch could.
 	}
 
 	private void TickCollars()
@@ -358,7 +391,18 @@ class RSQDG_Near : EventHandler
 			if (!a.TryMove(at.xy, true)) { }
 			a.SetZ(max(a.floorz, at.z));
 			a.Vel = (0, 0, 0);
-			a.tics = -1;
+			// freezetics, not tics = -1. tics only stops the state counter expiring: movement, Z,
+			// portals, crushing and the water block all still run for a monster held in front of
+			// your face, and zeroing Vel and setting bNOGRAVITY by hand is doing less completely
+			// what one field does outright. freezetics early-returns out of AActor::Tick
+			// (p_mobj.cpp:3948-3952) before states, velocity, Z and AI, and -- the part that
+			// matters for a shield -- it KEEPS the blockmap link, so the monster stays solid and
+			// shootable. The frozen frame survives too (a punch's pain frame freezes with it,
+			// which is what reads as stunned).
+			// Re-asserted every tic: WorldTick runs before RunThinkers (p_tick.cpp:171-173), so the
+			// write lands and the monster's own Tick consumes one of it. 2 rather than 1 leaves a
+			// tic of slack if a handler order ever changes; 1 would be exact and fragile.
+			a.freezetics = 2;
 			// RSQ_Score: "grab.hold" touched it (kept alive every 2 s so the 3 s chain gap never breaks it)
 			if (level.maptime >= collarPing[n])
 			{
@@ -373,5 +417,33 @@ class RSQDG_Near : EventHandler
 	override void WorldUnloaded(WorldEvent e)
 	{
 		for (int n = 0; n < MAXPLAYERS; n++) if (collar[n]) EndCollar(n);
+	}
+
+	// A HEADLOCK MUST NOT SURVIVE A LOAD. collar[], cNoGrav[], cInfight[] and gripDown[]
+	// are all serialized with the level, but keyState/eaten are transient ui -- so a save taken
+	// mid-headlock comes back with gripDown true and no key-up able to clear it (the release at
+	// :72 compares equal and sends nothing). collarEnd bounds that to rsqdg_collar_secs, which is
+	// luck rather than design: the monster is let go here instead.
+	//
+	// It takes BOTH hooks, and the door already learned why (door.zs:59-68): a level's handlers get
+	// no WorldLoaded when a save is restored (events.cpp:662 skips every non-static handler), so
+	// WorldLoaded covers only a fresh level and OnRegister is where a load arrives -- after the
+	// synced fields have been read back, with the real work deferred to the first tic.
+	private transient bool afterLoad;
+
+	private void ReleaseCollars()
+	{
+		for (int n = 0; n < MAXPLAYERS; n++) if (collar[n]) EndCollar(n);
+	}
+
+	override void WorldLoaded(WorldEvent e)
+	{
+		afterLoad = false;      // a new level, not a load
+		ReleaseCollars();
+	}
+
+	override void OnRegister()
+	{
+		afterLoad = true;
 	}
 }
