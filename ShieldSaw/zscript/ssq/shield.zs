@@ -255,10 +255,9 @@ class SSQ_FX abstract play
 		if (!at) return;
 		if (FlashOk())
 		{
-			let f = Actor.Spawn('SSQ_BlockFlash', p);
-			if (f) { f.A_SetScale(0.22); f.alpha = SSQ_A11y.Dim(0.8); }
-			let sp = Actor.Spawn('SSQ_SparkPuff', p + n * 3);
-			if (sp) { sp.A_SetScale(0.6); sp.alpha = SSQ_A11y.Dim(sp.alpha); }
+			// the owner's burst, a hair toward you so the body never hides it, a little bigger the harder the hit
+			let f = Actor.Spawn('SSQ_BashHit', p - (n.x, n.y, 0) * 2);
+			if (f) { double k = clamp(0.45 + eff / 4000.0, 0.45, 0.6); f.A_SetScale(k); f.alpha = SSQ_A11y.Dim(1.0); }
 		}
 		int count = clamp(int(6 + eff / 20.0), 8, 16);
 		for (int k = 0; k < count; k++)

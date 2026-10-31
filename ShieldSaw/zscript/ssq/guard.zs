@@ -839,8 +839,17 @@ class SSQ_Guard : Inventory
 				// a buzz and nothing to see. At the body's face toward the plate: a burst scaled by how hard you
 				// drove it, thrown along the bash, and the flash and bloom the block already uses (dimmed and
 				// rate-limited by Photosensitive Mode inside Sparks / BashBurst).
+				// ON THE BODY, AT THE PLATE'S HEIGHT, never the floor (owner 2026-10-31: "is your shield bash visual that
+				// fire on the ground?" -- it was: the plate's normal tips down in a bash, and the point stepped back along
+				// it landed at the monster's feet). The face of the body toward you, across the ground only, at the height
+				// the plate struck, kept inside the body; the burst thrown level away from you.
 				if (SSQ_Handler.UVI(p, 'ssq_feedback', 1) != 0)
-					SSQ_FX.BashBurst(mo, tc - n * min(max(along, 0.0), t.radius), n, eff);
+				{
+					Vector2 fl = n.xy.Length() > 0.01 ? n.xy.Unit() : (cos(mo.angle), sin(mo.angle));
+					Vector3 hit = (tc.x - fl.x * t.radius * 0.8, tc.y - fl.y * t.radius * 0.8,
+						clamp(C.z, t.pos.z + t.height * 0.3, t.pos.z + t.height * 0.85));
+					SSQ_FX.BashBurst(mo, hit, (fl.x, fl.y, 0.15), eff);
+				}
 				g.bashCool = 10;
 				if (SSQ_Handler.UVI(p, 'ssq_debug', 0))
 					Console.Printf("ssq: BASH %s eff %.0f u/s (shove %.0f, path %.0f) dmg %d knock %.1f", t.GetClassName(), eff, shove, g.pushPath, dmg, knock);
