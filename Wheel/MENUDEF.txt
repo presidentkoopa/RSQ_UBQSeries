@@ -603,8 +603,8 @@ OptionMenu wr_GunCards
 	Option "Card when you check your watch", "wr_card_watch_tpl", "wr_CardWatchTpl"
 	StaticText "Watch check: raise the gun and twist it palm down (RSQ Gestures).", "DarkGray"
 	Option "  Turned to read upright",   "wr_card_watch_roll", "OnOff"
-	Slider "  Watch card up / down",     "wr_card_watch_up",  -20, 20, 0.5, 1
-	Slider "  Watch card left / right",  "wr_card_watch_side", -20, 20, 0.5, 1
+	Slider "  Watch card up / down",     "wr_card_watch_up",  -30, 30, 0.5, 1
+	Slider "  Watch card left / right",  "wr_card_watch_side", -30, 30, 0.5, 1
 	Option "  Both sides of the grip",   "wr_card_both_sides", "OnOff"
 	Slider "  Outside card, round the hand", "wr_card_out_turn", -80, 0, 1, 0
 	StaticText ""
@@ -617,8 +617,8 @@ OptionMenu wr_GunCards
 	Option "Low ammo warning colour",    "wr_card_lowwarn",  "OnOff"
 	StaticText ""
 	StaticText "Place", gold
-	Slider "Up / down",                  "wr_card_up",      -15, 15, 0.5, 1
-	Slider "Left / right",               "wr_card_side",    -15, 15, 0.5, 1
+	Slider "Up / down",                  "wr_card_up",      -30, 30, 0.5, 1
+	Slider "Left / right",               "wr_card_side",    -30, 30, 0.5, 1
 	Slider "Fade (tics)",                "wr_card_fade",      1, 12, 1, 0
 	StaticText ""
 	StaticText "Showing on a look", gold

@@ -3257,17 +3257,36 @@ class wr_Rig : EventHandler
 
 	// Geometry generation. Bump this whenever the numbers below change and every
 	// existing config picks them up once, automatically.
-	const CFG_VERSION = 21;
+	const CFG_VERSION = 22;
 
 	private void migrateConfig()
 	{
 		let stamp = CVar.GetCVar("wr_cfgver", players[consoleplayer]);
 		if (stamp == null || stamp.GetInt() >= CFG_VERSION) return;
 
+		// EACH GENERATION RUNS ONCE, for a config older than it. (Until gen 22 every bump re-ran every
+		// generation below, so gen 21 reset the owner's settings, wr_models included: the pickup voxels
+		// went off. Gen 22 puts them back.)
+		int from = stamp.GetInt();
+
+		// Gen 22: undo gen 21's side effect -- the pickup voxels back on.
+		if (from < 22) setCv("wr_models", 1);
+
 		// Gen 21: the ring's own Ermac-style art (owner 2026-10-31: "why is my wheel ugly"). Ermac's digits
 		// for numbers; the plates follow wr_ring_art, new, so it needs no rewrite.
-		let fs = CVar.GetCVar("wr_fontset", players[consoleplayer]);
-		if (fs) fs.SetString("Ermac");
+		if (from < 21)
+		{
+			let fs = CVar.GetCVar("wr_fontset", players[consoleplayer]);
+			if (fs) fs.SetString("Ermac");
+		}
+
+		// Gens 16..20, as they always ran, for a config from before gen 21 that has not had them yet.
+		if (from >= 20)
+		{
+			stamp.SetInt(CFG_VERSION);
+			Console.Printf("\c[Gold]RSQ Wheel\c- settings updated to gen %d", CFG_VERSION);
+			return;
+		}
 
 		// Gen 20: auto-open OFF. It was on for all of development and the
 		// archived value in an existing config outlives any change to the
@@ -3298,7 +3317,7 @@ class wr_Rig : EventHandler
 		// config the first time and the saved value wins forever -- so turning
 		// it on means rewriting it here once, which is the entire reason this
 		// stamp exists.
-		setCv("wr_models", 0);
+		setCv("wr_models", 1);     // gen 16 meant ON (see above); it wrote 0 by mistake
 		setCv("wr_touch",   7.0);
 		setCv("wr_forward", 34.0);
 		setCv("wr_bullettime", 1);
