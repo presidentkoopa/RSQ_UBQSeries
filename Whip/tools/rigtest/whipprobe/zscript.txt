@@ -110,9 +110,22 @@ class WPR_Probe : EventHandler
 		int m = CVar.FindCVar("wpr_motion").GetInt();
 		let cv = CVar.FindCVar("qzt_rhand");
 		int t = level.maptime - t0;
-		if (m == 1) cv.SetString("0.20 1.35 -0.40 30 0 0");
-		else if (m == 2) cv.SetString(String.Format("0.20 1.35 -0.40 35 %.2f 0", 40 * sin(t * 360.0 / 140.0)));
-		else if (m >= 3) cv.SetString(Lerp(t, m));
+		string pose = "";
+		if (m == 1) pose = "0.20 1.35 -0.40 30 0 0";
+		else if (m == 2) pose = String.Format("0.20 1.35 -0.40 35 %.2f 0", 40 * sin(t * 360.0 / 140.0));
+		else if (m >= 3) pose = Lerp(t, m);
+		// wpr_lefty 1: the same motion mirrored onto the LEFT controller (x and yaw negated, roll negated)
+		if (CVar.FindCVar("wpr_lefty") && CVar.FindCVar("wpr_lefty").GetInt() && pose != "")
+		{
+			Array<String> f; pose.Split(f, " ", TOK_SKIPEMPTY);
+			if (f.Size() >= 6)
+			{
+				string mp = String.Format("%.3f %s %s %s %.2f %.2f", -f[0].ToDouble(), f[1], f[2], f[3], -f[4].ToDouble(), -f[5].ToDouble());
+				CVar.FindCVar("qzt_lhand").SetString(mp);
+				cv.SetString("0.30 0.70 0.00 0 0 0");
+			}
+		}
+		else if (pose != "") cv.SetString(pose);
 		if (CVar.FindCVar("wpr_log").GetInt() == 3 && level.maptime % 4 == 0)
 			Console.Printf("T_P t%d pos(%.1f %.1f %.1f) vel(%.2f %.2f %.2f) fz %.0f", level.maptime, pmo.pos.x, pmo.pos.y, pmo.pos.z, pmo.vel.x, pmo.vel.y, pmo.vel.z, pmo.floorz);
 		if (CVar.FindCVar("wpr_log").GetInt() == 2 && pmo.OverrideAttackPosDir)
