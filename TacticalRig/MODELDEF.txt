@@ -198,20 +198,17 @@ Model RSQTR_HelmetPart
 }
 
 // THE CIGARETTE AND THE ZIPPO IN THE HAND (owner 2026-10-31: "we put it in hand"): weapons on the hand's own layer, drawn
-// with Brutal Doom VR's FBX hand (its pinch, frame 2, and its fist, frame 1) in that hand's block (Scale -1 1 1, Offset
+// where Brutal Doom VR's FBX hand pinches (frame 2) and makes a fist (frame 1), in that hand's block (Scale -1 1 1, Offset
 // 0 -24 -10). The props are baked into the hand's space by tools/gen_handprops.py (measured from BD's ring pinch and
-// the fist's grip hole). Without Brutal Doom VR the hand is missing and the prop shows alone.
+// the fist's grip hole). The hand itself is not drawn (owner 2026-10-31: hands off).
 Model RSQTR_CigWeapon
 {
 	Path "models"
 	Model 0 "rsqtr/rtcig_h.md3"
 	Skin 0 "rsqtr/rtcig.jpg"
-	Model 7 "rsq/fbx/fbx_oh_free_R.md3"
-	Skin 7 "rsq/fbx/fbx_hand.png"
 	Scale -1.0 1.0 1.0
 	Offset 0.0 -24.0 -10.0
 	FrameIndex RTCW A 0 0
-	FrameIndex RTCW A 7 2
 }
 
 Model RSQTR_ZippoWeapon
@@ -221,28 +218,19 @@ Model RSQTR_ZippoWeapon
 	Skin 0 "rsqtr/rtzippo.png"
 	Model 1 "rsqtr/rtzipfl_h.md3"
 	Skin 1 "rsqtr/rtzippo.png"
-	Model 7 "rsq/fbx/fbx_oh_free_R.md3"
-	Skin 7 "rsq/fbx/fbx_hand.png"
 	Scale -1.0 1.0 1.0
 	Offset 0.0 -24.0 -10.0
 	// closed, the lid opening, lit with the flame flickering (the mesh's own frames, as RSQTR_ZippoProp)
 	FrameIndex RTZW A 0 0
-	FrameIndex RTZW A 7 1
 	FrameIndex RTZW E 0 1
-	FrameIndex RTZW E 7 1
 	FrameIndex RTZW F 0 2
-	FrameIndex RTZW F 7 1
 	FrameIndex RTZW G 0 3
-	FrameIndex RTZW G 7 1
 	FrameIndex RTZW B 0 4
 	FrameIndex RTZW B 1 1
-	FrameIndex RTZW B 7 1
 	FrameIndex RTZW C 0 5
 	FrameIndex RTZW C 1 2
-	FrameIndex RTZW C 7 1
 	FrameIndex RTZW D 0 6
 	FrameIndex RTZW D 1 3
-	FrameIndex RTZW D 7 1
 }
 
 // the keyring (tools/gen_keyring.py), in map units
