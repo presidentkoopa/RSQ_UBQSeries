@@ -25,6 +25,9 @@ server float  rsqwp_whip_fullcrack = 50;    // a crack's tip this fast (room uni
 server bool   rsqwp_whip_flail    = true;   // a wrapped or lassoed monster is held at the rope's length, swings with your arm and smashes into others
 server bool   rsqwp_whip_fireball = false;  // option: a crack whose lash passes through a monster's missile explodes it there
 server bool   rsqwp_whip_hitstop  = false;  // option: a crack freezes the monster it hits for a beat (3-6 tics, harder = longer)
+server bool   rsqwp_whip_marklock = true;   // the whip weapon: once marked, pointing the hand elsewhere (the lift before a crack) keeps the mark; alt-fire moves it
+server bool   rsqwp_whip_yankgrace = false; // option: a wrap cannot be yanked for 12 tics (~1/3 s), so a crack's follow-through does not yank it at once
+server int    rsqwp_whip_fireball_knock = 0; // Crack Fireballs: 0 the missile explodes where it is cracked, 1 it is knocked away along the crack and explodes away from you
 
 // on the rope (a snag)
 server float  rsqwp_reel_speed    = 12;     // holding the bind takes in this much rope per tic

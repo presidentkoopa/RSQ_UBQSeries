@@ -35,7 +35,10 @@ OptionMenu "RSQWP_Options"
 	Option "Stun", "rsqwp_whip_stun", "OnOff"
 	Option "Lasso (off-hand grip)", "rsqwp_whip_lasso", "OnOff"
 	Option "Swing a Wrapped Monster (flail)", "rsqwp_whip_flail", "OnOff"
+	Option "Keep the Mark When You Lift", "rsqwp_whip_marklock", "OnOff"
+	Option "Yank Grace (no yank right after a wrap)", "rsqwp_whip_yankgrace", "OnOff"
 	Option "Crack Fireballs Out of the Air", "rsqwp_whip_fireball", "OnOff"
+	Option "Cracked Fireballs and Rockets", "rsqwp_whip_fireball_knock", "RSQWP_Knock"
 	Option "Hit-Stop (a crack freezes it)", "rsqwp_whip_hitstop", "OnOff"
 	StaticText " "
 	Option "Mantle Over Ledges", "rsqwp_mantle", "OnOff"
@@ -96,6 +99,11 @@ OptionValue "RSQWP_WhipAims"
 	0, "Free"
 	1, "Assist"
 	2, "Lock (other hand points, alt-fire holds)"
+}
+OptionValue "RSQWP_Knock"
+{
+	0, "Explode where cracked"
+	1, "Knocked away, explode there"
 }
 OptionValue "RSQWP_Debug"
 {

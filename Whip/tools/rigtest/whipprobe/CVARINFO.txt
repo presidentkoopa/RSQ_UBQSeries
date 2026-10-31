@@ -9,3 +9,4 @@ user float  wpr_slow = 1;        // motions 3-8 run this many times slower (a so
 user string wpr_ballat = "";     // "fwd side z speed": an imp ball put there each motion cycle (tic 6), flying at you
 user int    wpr_scen = 0;        // 10 flail, 11 Quest lasso (whole timelines: hands, trigger, grip)
 user int    wpr_rel = 90;        // scenario 11: the tic the left grip lets go
+user string wpr_ballcls = "DoomImpBall";  // what wpr_ballat puts there (a Rocket: the cracked-rockets test)

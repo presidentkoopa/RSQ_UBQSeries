@@ -3,7 +3,7 @@ version "4.14"
 // logs the hand, and summons targets. Motions (wpr_motion):
 //   1 still, held out    2 slow sweep (no crack expected)    3 overhead crack every 70 tics
 //   4 wrist flick only every 50 tics    5 side-arm crack every 70 tics    6 slow lift and lower (no crack)
-//   7 crack aimed up at a ledge (snag)
+//   7 crack aimed up at a ledge (snag)    9 overhead crack whose arm snaps back to the body right after (the yank grace)
 // Scenarios (wpr_scen, whole timelines driving the hands, the right trigger and the left grip):
 //   10 FLAIL: trigger marks what is ahead, an overhead crack sends the whip to it, then the arm sweeps side to side
 //   11 QUEST LASSO: the left hand closes on the handle with its grip, whirls, lets go; then the right arm sweeps
@@ -41,6 +41,14 @@ class WPR_Probe : EventHandler
 		16, 0.20, 1.55, -0.30, 60, 0,
 		20, 0.20, 1.20, -0.25, 60, 0,
 		40, 0.20, 1.55, -0.30, 60, 0 };
+	static const double K9[] = {    // K3's crack, then the arm snaps back 0.4 m in 6 tics just after it (a follow-through pull)
+		0,  0.20, 1.35, -0.35,  30, 0,
+		9,  0.22, 1.85, -0.05, 105, 0,
+		12, 0.22, 1.87, -0.02, 110, 0,
+		15, 0.20, 1.55, -0.60,  35, 0,
+		19, 0.20, 1.50, -0.60,  30, 0,
+		25, 0.20, 1.40, -0.20,  30, 0,
+		70, 0.20, 1.35, -0.35,  30, 0 };
 	static const double K7[] = {
 		0,  0.20, 1.35, -0.35,  50, 0,
 		9,  0.22, 1.80, -0.05, 125, 0,
@@ -84,12 +92,13 @@ class WPR_Probe : EventHandler
 	{
 		double sl = CVar.FindCVar("wpr_slow") ? max(0.1, CVar.FindCVar("wpr_slow").GetFloat()) : 1.0;
 		t = int(t / sl);
-		int n; double k[36];
+		int n; double k[48];
 		if (which == 3) { n = WPR_Probe.K3.Size(); for (int i = 0; i < n; i++) k[i] = WPR_Probe.K3[i]; }
 		else if (which == 4) { n = WPR_Probe.K4.Size(); for (int i = 0; i < n; i++) k[i] = WPR_Probe.K4[i]; }
 		else if (which == 5) { n = WPR_Probe.K5.Size(); for (int i = 0; i < n; i++) k[i] = WPR_Probe.K5[i]; }
 		else if (which == 6) { n = WPR_Probe.K6.Size(); for (int i = 0; i < n; i++) k[i] = WPR_Probe.K6[i]; }
 		else if (which == 8) { n = WPR_Probe.K8.Size(); for (int i = 0; i < n; i++) k[i] = WPR_Probe.K8[i]; }
+		else if (which == 9) { n = WPR_Probe.K9.Size(); for (int i = 0; i < n; i++) k[i] = WPR_Probe.K9[i]; }
 		else { n = WPR_Probe.K7.Size(); for (int i = 0; i < n; i++) k[i] = WPR_Probe.K7[i]; }
 		int rows = n / 6;
 		double period = k[(rows - 1) * 6];
@@ -186,7 +195,8 @@ class WPR_Probe : EventHandler
 			if (f.Size() >= 4)
 			{
 				Vector2 fw = Actor.AngleToVector(pmo.angle, f[0].ToDouble()) + Actor.AngleToVector(pmo.angle - 90, f[1].ToDouble());
-				let b = Actor.Spawn("DoomImpBall", (pmo.pos.xy + fw, pmo.pos.z + f[2].ToDouble()), NO_REPLACE);
+				String bc = CVar.FindCVar("wpr_ballcls").GetString(); class<Actor> bcls = bc;
+				let b = Actor.Spawn(bcls ? bcls : (class<Actor>)("DoomImpBall"), (pmo.pos.xy + fw, pmo.pos.z + f[2].ToDouble()), NO_REPLACE);
 				if (b)
 				{
 					let mi = BlockThingsIterator.Create(pmo, 600);

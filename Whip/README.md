@@ -27,9 +27,14 @@ under Options → Customize Controls → RSQ Whip. Settings: **Options → Radia
   with your arm**: held at the rope's length, it follows your arm round and smashes into the monsters it meets
   (damage and a stagger). Keep the trigger held to keep hold of it. **The lasso**: close your off hand on the
   handle or the thong (the off controller there and its grip -- any headset, Quest too -- or SteamVR's two-hand
-  grip), whirl it, let go of the grip and it ropes the monster that way.
+  grip), whirl it, let go of the grip and it ropes the monster that way. **The mark stays put** (*Keep the Mark
+  When You Lift*, on): once something is marked, lifting the whip for the crack does not move the mark to
+  something else; only alt-fire moves it on.
 - **Options (off by default).** *Crack Fireballs Out of the Air*: a crack whose lash passes through a monster's
-  missile explodes it there. *Hit-Stop*: a crack freezes the monster for a beat (3-6 tics, harder = longer).
+  missile explodes it there -- or, with *Cracked Fireballs and Rockets* set to *Knocked away*, sends it off along
+  the crack so it blows up away from you. *Hit-Stop*: a crack freezes the monster for a beat (3-6 tics, harder =
+  longer). *Yank Grace*: a wrap cannot be yanked for its first 12 tics (~1/3 s), so the crack's own
+  follow-through does not yank the monster straight away.
 - **Edges.** A lash that catches a beam, a doorway head or a ledge lip wraps round it and becomes a rope: hold to
   reel, release to hang, push the stick to pump, haul down on the whip in the air to pump, climb it hand over hand
   (Grab Whip), tap to let go and fly (your speed carries on landing). Reel up to a ledge lip -- or slap a free hand
