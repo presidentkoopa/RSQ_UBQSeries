@@ -228,6 +228,11 @@ class RSQLS_Sight : EventHandler
 		let bt = RSQLS_Beams.Get();
 		bool measured = bt && bt.Find(w) >= 0 && !w.bMELEEWEAPON;
 		if ((w.bMELEEWEAPON || w.bCHEATNOTWEAPON) && !measured && !RSQLS_Hand.Flag("rsqls_show_melee", p, false)) return false;
+		// OFF WHEN LOWERED (owner 2026-10-31): a gun pointed at the floor past rsqls_lower_deg, or on its way in or out
+		// of the hand (a switch, a holster), draws no laser. 0 = always on.
+		double lower = RSQLS_Hand.Num("rsqls_lower_deg", p, 55.0);
+		if (lower > 0 && p.mo && RSQLS_Hand.Pitch(p.mo, h) < -lower) return false;
+		if (lower > 0 && h == 0 && p.PendingWeapon != WP_NOCHANGE) return false;
 		if (RSQLS_Hand.Flag("rsqls_ready_only", p, false))
 		{
 			int ready = (h == 0) ? (WF_WEAPONREADY | WF_WEAPONREADYALT)

@@ -8,6 +8,7 @@ server bool  rsqls_off          = true;
 server bool  rsqls_pointer      = true;   // the dot where it lands
 server bool  rsqls_show_melee   = false;  // show on a fist, chainsaw, saber, shield or empty hand
 server bool  rsqls_ready_only   = false;  // hide while switching/reloading
+user float  rsqls_lower_deg    = 55.0;   // off while the gun points down past this many degrees, or is being switched/holstered (0 = never)
 server float rsqls_spot_size    = 1.0;
 server float rsqls_spot_a       = 1.0;
 server int   rsqls_glow         = 3;      // 0 off, 1 bloom, 2 real light, 3 both
@@ -77,3 +78,4 @@ server float rsqls_spread_a     = 0.6;     // ring brightness
 server int   rsqls_readout      = 0;       // range readout: 0 off, 1 by the gun, 2 at the spot
 server int   rsqls_readout_units = 0;       // 0 metres, 1 feet, 2 map units
 server float rsqls_readout_size = 1.0;
+user bool   rsqls_debug        = false; // log what the arc learner sees (testing)

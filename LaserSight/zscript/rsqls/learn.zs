@@ -41,6 +41,10 @@ class RSQLS_Learn : StaticEventHandler
 	Array<bool>   pKnown;
 
 	private Array<Actor> pend;
+	private transient double cSp[2];
+	private transient Actor cM[2];
+	private transient Weapon cW[2];
+	private transient Vector3 cV[2];
 	private Array<int>   pendAlt;
 
 	clearscope int Find(String k) const
@@ -59,6 +63,7 @@ class RSQLS_Learn : StaticEventHandler
 		return keys.Size() - 1;
 	}
 
+	static String WName(Weapon w) { return w ? w.GetClassName() .. "" : "none"; }
 	private static String KeyOf(Weapon w, bool alt) { String k = w.GetClassName(); return alt ? k .. "#alt" : k; }
 
 	private static bool AltHeld(PlayerInfo p, bool off)
@@ -137,33 +142,53 @@ class RSQLS_Learn : StaticEventHandler
 			if (!m) continue;
 			let pmo = PlayerPawn(m.target);
 			if (!pmo || !pmo.player || pmo.player != players[consoleplayer]) continue;
-			// Which hand threw it: the nearer grip to where it was a tic ago --
-			// and it must have been NEAR one (a casing ejects from the gun too,
-			// but a thing from across the room is not this gun's shot).
-			Vector3 was = m.pos - m.vel;
-			double d0 = (was - pmo.AttackPos).Length(), d1 = (was - pmo.OffhandPos).Length();
-			int h = (d0 <= d1) ? 0 : 1;
-			if (min(d0, d1) > 96) continue;
-			Weapon w = (h == 0) ? pmo.player.ReadyWeapon : pmo.player.OffhandWeapon;
-			if (!w) continue;
-			// One tic of gravity has been applied since it left (the engine
-			// applies it above floorz + 2): put that back.
+			// WHICH HAND THREW IT (rig 2026-10-31: the nearer grip picked the wrong hand when both were close, and a
+			// launcher's grenade was learned onto the empty off hand): of the hands it left near (within 96), the one
+			// it left ALONG -- its velocity nearest that hand's aim, within 30 deg.
 			double g = level.gravity * m.CurSector.gravity * m.Gravity * 0.00125;
 			Vector3 v = m.vel;
-			if (m.pos.z > m.floorz + 2) v.z += g;
+			if (m.pos.z > m.floorz + 2) v.z += g;      // one tic of gravity has been applied since it left: put it back
 			double sp = v.Length();
-			if (sp < 6) continue;   // brass and magazines are slow
-			// ALONG THE GUN, or it is not the gun's shot.
-			Vector3 aim = RSQLS_Hand.Dir(pmo, h);
-			if ((v / sp) dot aim < cos(30)) continue;
-			double vPitch = atan2(v.z, v.xy.Length());
-			double vYaw = atan2(v.y, v.x);
+			Vector3 was = m.pos - m.vel;
+			bool dbg = RSQLS_Hand.Flag("rsqls_debug", players[consoleplayer], false);
+			int h = -1;
+			double bestDot = cos(30);
+			for (int hh = 0; hh < 2; hh++)
+			{
+				double dd = (was - RSQLS_Hand.Grip(pmo, hh)).Length();
+				if (dd > 96 || sp <= 0) continue;
+				double dt = (v / sp) dot RSQLS_Hand.Dir(pmo, hh);
+				if (dt > bestDot) { bestDot = dt; h = hh; }
+			}
+			if (dbg) Console.Printf("[RSQLS] t%d missile %s speed %.1f grav %.2f hand %d", level.maptime, m.GetClassName(), sp, m.Gravity, h);
+			if (h < 0 || sp < 6) continue;            // not along a gun; brass and magazines are slow
+			Weapon w = (h == 0) ? pmo.player.ReadyWeapon : pmo.player.OffhandWeapon;
+			if (!w) continue;
+			// THE SHOT, NOT ITS SPARKS: a launcher puts out muzzle particles and a smoke trail with its grenade, all
+			// gravity missiles along the gun. Only the fastest thing a hand put out this tic is its shot.
+			if (sp <= cSp[h]) continue;
+			cSp[h] = sp; cM[h] = m; cV[h] = v; cW[h] = w;
+		}
+		for (int h = 0; h < 2; h++)
+		{
+			Actor m = cM[h];
+			Weapon w = cW[h];
+			double sp = cSp[h];
+			cSp[h] = 0; cM[h] = null; cW[h] = null;
+			if (!m || !w) continue;
+			let pmo = PlayerPawn(m.target);
+			if (!pmo) continue;
 			int i = Slot(KeyOf(w, AltHeld(pmo.player, h == 1)));
+			// A known shot is not unlearned by something much slower (a smoke puff a tic later).
+			if (pKnown[i] && sp < pSpeed[i] * 0.5) continue;
+			Vector3 v = cV[h];
 			pSpeed[i] = sp;
 			pGrav[i]  = m.Gravity;
-			pElev[i]  = vPitch - RSQLS_Hand.Pitch(pmo, h);
-			pYaw[i]   = Actor.DeltaAngle(RSQLS_Hand.Yaw(pmo, h), vYaw);
+			pElev[i]  = atan2(v.z, v.xy.Length()) - RSQLS_Hand.Pitch(pmo, h);
+			pYaw[i]   = Actor.DeltaAngle(RSQLS_Hand.Yaw(pmo, h), atan2(v.y, v.x));
 			pKnown[i] = true;
+			if (RSQLS_Hand.Flag("rsqls_debug", players[consoleplayer], false))
+				Console.Printf("[RSQLS] LEARNED %s: %s speed %.1f grav %.2f elev %.1f yaw %.1f", keys[i], m.GetClassName(), sp, m.Gravity, pElev[i], pYaw[i]);
 		}
 	}
 }
