@@ -30,6 +30,17 @@ hips (with RSQ_Saber loaded).
   not in its hand. A saber put on an empty holster goes to its own spot.
 - **Doors** are no longer the rig's: they moved to RSQ_DistanceGrab.
 
+**Grenade spot** (the belt buckle): grip it with either hand and your pack's hand grenade comes to your main hand --
+with Brutal Doom VR, its VR grenade (the off hand pulls the pin, you throw it by hand). Grip it again to put it back
+and get your gun. Its light is your grenade count: green 2+, yellow 1, red none.
+
+**Throw a gun away:** grip with the hand swinging fast, outside every holster: the gun flies from that hand and lands
+as a pickup you can take again (*Throw Swing Speed*).
+
+**Keyring:** the keys you carry hang on a steel ring on the front of your belt, off-hand side, as the keys themselves.
+
+**Quick swap, kept holsters, ammo light, new guns to a holster:** see *Rig Options*.
+
 **Feedback:** a wireframe sphere shows each holster when a hand is near (or always; *Holster
 Rings*), green with your hand inside; its idle colour is the holster profile in use. The gun
 stored there shows as its pickup model, at a pistol's length on the hips and longer over the

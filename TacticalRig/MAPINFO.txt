@@ -1,4 +1,4 @@
 GameInfo
 {
-	AddEventHandlers = "RSQTR_Loadout", "RSQTR_Rig", "RSQTR_Cig", "RSQTR_Torso", "RSQTR_Mirror", "RSQTR_MirrorBody"
+	AddEventHandlers = "RSQTR_Loadout", "RSQTR_Rig", "RSQTR_Cig", "RSQTR_Keyring", "RSQTR_Torso", "RSQTR_Mirror", "RSQTR_MirrorBody"
 }

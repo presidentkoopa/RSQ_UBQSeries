@@ -25,20 +25,23 @@ class RSQTR_Region
 	// kept as indices so nothing renumbers. A profile saved before the chest pair has them empty: they
 	// keep their defaults.
 	const N = 11;
-	static const String NAMES[] = { "Left hip", "Right hip", "", "", "Left shoulder", "Right shoulder", "Left chest", "Right chest", "", "Left saber", "Right saber" };
+	static const String NAMES[] = { "Left hip", "Right hip", "", "Grenades", "Left shoulder", "Right shoulder", "Left chest", "Right chest", "", "Left saber", "Right saber" };
 	const SABER_L = 9;
+	const GRENADES = 3;
 	const SABER_R = 10;
-	static bool Retired(int r) { return r == 2 || r == 3 || r == 8; }
+	static bool Retired(int r) { return r == 2 || r == 8; }
 
 	// Defaults, metres from the head in the body frame: forward, left, up, radius (0: retired).
 	// The chest pair: 0.46 m under the eyes, 0.12 m either side of the breastbone, 0.10 m in front;
 	// a little smaller (0.11) so a gun held at the chest does not sit in one. No two places overlap:
 	// 0.27 m from the hips, 0.40 m from the shoulders, 0.21 m from the cigarette pocket (cig.zs, radius
 	// 0.09 at 0.25 m under the eyes) -- at 0.38 m they sat on the pocket.
-	static const double DF[] = {  0.00,  0.00, 0, 0, -0.08, -0.08,  0.10,  0.10, 0,  0.02,  0.02 };
-	static const double DL[] = {  0.18, -0.18, 0, 0,  0.18, -0.18,  0.12, -0.12, 0,  0.21, -0.21 };
-	static const double DU[] = { -0.70, -0.70, 0, 0, -0.10, -0.10, -0.46, -0.46, 0, -0.84, -0.84 };
-	static const double DR[] = {  0.14,  0.14, 0, 0,  0.14,  0.14,  0.11,  0.11, 0,  0.10,  0.10 };
+	// 3, THE GRENADE SPOT (owner 2026-10-31: "dedicated grenade spot"): the front of the belt, the buckle, 0.62 m
+	// under the eyes, radius 0.08 -- 0.19 m from each chest holster and 0.22 m from each hip.
+	static const double DF[] = {  0.00,  0.00, 0,  0.12, -0.08, -0.08,  0.10,  0.10, 0,  0.02,  0.02 };
+	static const double DL[] = {  0.18, -0.18, 0,  0.00,  0.18, -0.18,  0.12, -0.12, 0,  0.21, -0.21 };
+	static const double DU[] = { -0.70, -0.70, 0, -0.62, -0.10, -0.10, -0.46, -0.46, 0, -0.84, -0.84 };
+	static const double DR[] = {  0.14,  0.14, 0,  0.08,  0.14,  0.14,  0.11,  0.11, 0,  0.10,  0.10 };
 }
 
 class RSQTR_Rig : EventHandler
@@ -62,6 +65,7 @@ class RSQTR_Rig : EventHandler
 	private transient int  hoverR[2];          // region each hand is in, -1 none
 	private transient bool pressWas[2];
 	private transient bool useWas;
+	private transient Vector3 lastHandAt[2];
 	transient Actor marker[RSQTR_Region.N];   // read by the mirror (mirror.zs)
 	transient Actor icon[RSQTR_Region.N];
 	transient Actor pip[RSQTR_Region.N];      // the ammo light in a full holster
@@ -345,6 +349,10 @@ class RSQTR_Rig : EventHandler
 		if (e.Name == "rsqtr_draw_off") { DrawOff(pmo, e.Args[0]); return; }
 		if (e.Name == "rsqtr_holster") Holster(pmo, e.Args[0]);
 		else if (e.Name == "rsqtr_draw") Draw(pmo, e.Args[0], e.Args[1]);
+		else if (e.Name == "rsqtr_nade") Nade(pmo);
+		else if (e.Name == "rsqtr_throwat") throwAt[n] = (e.Args[0], e.Args[1], e.Args[2]) / 8.0;
+		else if (e.Name == "rsqtr_throwv") throwVel[n] = (e.Args[0], e.Args[1], e.Args[2]) / 100.0;
+		else if (e.Name == "rsqtr_throw") ThrowGun(pmo, e.Args[0] & 1);
 	}
 
 	// HOLSTER PROFILES (the owner, 10-27: "save up to four holster profiles"). Every place's
@@ -406,6 +414,88 @@ class RSQTR_Rig : EventHandler
 	// empty holster with an empty hand does nothing.
 	static bool IsGunRegion(int r) { return r == 0 || r == 1 || r == 4 || r == 5 || r == 6 || r == 7; }
 	static bool IsSaberRegion(int r) { return r == RSQTR_Region.SABER_L || r == RSQTR_Region.SABER_R; }
+	static bool IsGrenadeRegion(int r) { return r == RSQTR_Region.GRENADES; }
+
+	// THE GRENADE SPOT. Grip it (either hand) and the weapon pack's own hand grenade comes to the MAIN hand -- with
+	// Brutal Doom VR that is its VR grenade: the off hand pulls the pin, you throw it by hand. Grip it again with the
+	// grenade in the hand and the gun you had comes back. The spot shows only when the pack has a hand grenade
+	// (GRENADE_WEAPON) and rsqtr_grenades is on; its light is the grenade count (green 2+, yellow 1, red none).
+	const GRENADE_WEAPON = "HandGrenades";
+	const GRENADE_AMMO = "GrenadeAmmo";
+	String nadePrev[MAXPLAYERS];
+	static int Grenades(PlayerPawn pmo)
+	{
+		class<Inventory> ac = GRENADE_AMMO;
+		return ac ? pmo.CountInv(ac) : 0;
+	}
+	static bool HasGrenadeWeapon()
+	{
+		class<Weapon> wc = GRENADE_WEAPON;
+		return wc != null;
+	}
+	private void Nade(PlayerPawn pmo)
+	{
+		let p = pmo.player;
+		int n = pmo.PlayerNumber();
+		class<Weapon> wc = GRENADE_WEAPON;
+		if (!wc) return;
+		let w = Weapon(pmo.FindInventory(wc));
+		if (p.ReadyWeapon && p.ReadyWeapon is wc)
+		{
+			// back: the gun you had
+			class<Weapon> pc = nadePrev[n];
+			let back = pc ? Weapon(pmo.FindInventory(pc)) : null;
+			if (!back) back = EmptyHand(pmo);
+			if (back) p.PendingWeapon = back;
+			pmo.A_StartSound("rsqtr/holster", CHAN_AUTO, CHANF_LOCAL, 0.7);
+			return;
+		}
+		if (!w || Grenades(pmo) <= 0) return;
+		nadePrev[n] = p.ReadyWeapon ? p.ReadyWeapon.GetClassName() : 'None';
+		if (nadePrev[n] == "None") nadePrev[n] = "";
+		p.PendingWeapon = w;
+		drawTic[n] = level.maptime + 1;
+		drawClass[n] = w.GetClassName();
+		pmo.A_StartSound("rsqtr/draw", CHAN_AUTO, CHANF_LOCAL, 0.8);	if (Flag("rsqtr_messages", p, false)) Console.Printf("T_RIG grenade out t%d (had %s, %d grenades)", level.maptime, nadePrev[n], Grenades(pmo));
+	}
+
+	// THROW THE GUN AWAY (owner 2026-10-31): grip with the hand swinging fast (rsqtr_throw_speed m/s), outside every
+	// holster, and the gun in that hand leaves it: it flies from the hand with the hand's speed and lands as a pickup
+	// you can take again. The hand is empty after. Its holster (if it had one) forgets it.
+	Vector3 throwAt[MAXPLAYERS], throwVel[MAXPLAYERS];
+	private void ThrowGun(PlayerPawn pmo, int h)
+	{
+		let p = pmo.player;
+		int n = pmo.PlayerNumber();
+		Weapon w = h == 0 ? p.ReadyWeapon : p.OffhandWeapon;
+		if (!w || (h == 0 && !HoldsGun(pmo)) || (h == 1 && !OffHoldsGun(pmo))) return;
+		class<Weapon> wc = w.GetClass();
+		String cls = w.GetClassName();
+		for (int k = 0; k < RSQTR_Region.N; k++)
+			if (lastPut[n * RSQTR_Region.N + k] == cls) { lastPut[n * RSQTR_Region.N + k] = ""; lastPair[n * RSQTR_Region.N + k] = false; }
+		// the hand goes empty first, so the engine is not left holding a gun that is gone
+		if (h == 0) { let empty = EmptyHand(pmo); if (empty && empty != w) p.PendingWeapon = empty; }
+		else EmptyOff(pmo);
+		Inventory thrown = pmo.DropInventory(w, 1);
+		if (!thrown)
+		{
+			// a pack that will not let it drop: the same gun as a pickup that gives no ammo, the hand's copy taken
+			let g = Weapon(Actor.Spawn(wc, throwAt[n], NO_REPLACE));
+			if (g) { g.AmmoGive1 = 0; g.AmmoGive2 = 0; g.bDROPPED = true; }
+			thrown = g;
+			if (p.ReadyWeapon == w) p.ReadyWeapon = null;
+			if (p.OffhandWeapon == w) { p.SetPsprite(PSP_OFFHANDWEAPON, null); p.OffhandWeapon = null; }
+			pmo.TakeInventory(wc, 1);
+		}
+		if (thrown)
+		{
+			thrown.SetOrigin(throwAt[n], false);
+			thrown.vel = throwVel[n];
+			thrown.angle = atan2(throwVel[n].y, throwVel[n].x);
+		}
+		pmo.A_StartSound("rsqtr/radial", CHAN_AUTO, 0, 0.9);
+		if (Flag("rsqtr_messages", p, false)) Console.Printf("T_RIG threw %s t%d from (%.0f %.0f %.0f) at %.1f a tic -> %s", cls, level.maptime, throwAt[n].x, throwAt[n].y, throwAt[n].z, throwVel[n].Length(), thrown ? thrown.GetClassName() : 'nothing');
+	}
 
 	// The gun in gun holster r for player n: what was put there, while you still own it.
 	String Content(PlayerPawn pmo, int r)
@@ -725,6 +815,21 @@ class RSQTR_Rig : EventHandler
 			bool gripNow = gripOk && gripDown[n * 2 + h];
 			bool pressNow = gripNow || (usePress && useDown && (h == 0 || hoverR[0] < 0));
 			bool edge = pressNow && !pressWas[h] && (gripNow || useEdge);
+			// THROW THE GUN: the grip pressed (not Use) with the hand swinging fast, outside every holster
+			double handMs = RSQTR_Body.RoomMetres(lastHandAt[h], hp) * TICRATE;
+			Vector3 handV = level.Vec3Diff(lastHandAt[h], hp);
+			lastHandAt[h] = hp;
+			if (gripNow && !pressWas[h] && r < 0 && Flag("rsqtr_throw", p, true) && handMs >= Num("rsqtr_throw_speed", p, 2.5) && handMs < 20
+				&& (h == 0 ? HoldsGun(pmo) : OffHoldsGun(pmo)))
+			{
+				Vector3 tv = handV * 1.6;      // a throw carries on a little faster than the hand
+				EventHandler.SendNetworkEvent("rsqtr_throwat", int(hp.x * 8), int(hp.y * 8), int(hp.z * 8));
+				EventHandler.SendNetworkEvent("rsqtr_throwv", int(tv.x * 100), int(tv.y * 100), int(tv.z * 100));
+				EventHandler.SendNetworkEvent("rsqtr_throw", h);
+				RSQTR_Buzzer.Start(pmo, h, 0.5, 4);
+				pressWas[h] = pressNow;
+				continue;
+			}
 			bool release = !pressNow && pressWas[h];
 			pressWas[h] = pressNow;
 
@@ -833,6 +938,7 @@ class RSQTR_Rig : EventHandler
 	bool RegionLive(PlayerPawn pmo, int r)
 	{
 		if (IsSaberRegion(r)) { if (!SaberLoaded()) return false; }
+		else if (IsGrenadeRegion(r)) { if (!HasGrenadeWeapon() || !Flag("rsqtr_grenades", pmo.player, true)) return false; }
 		else if (!IsGunRegion(r)) return false;      // a retired index (RSQTR_Region.Retired)
 		return !RSQTR_Hooks.Claimed(pmo, r);
 	}
@@ -846,6 +952,17 @@ class RSQTR_Rig : EventHandler
 
 	private void Press(PlayerPawn pmo, PlayerInfo p, int h, int r, Vector3 hp)
 	{
+		if (IsGrenadeRegion(r))
+		{
+			bool inHand = p.ReadyWeapon && p.ReadyWeapon.GetClassName() == GRENADE_WEAPON;
+			if (inHand || Grenades(pmo) > 0) { EventHandler.SendNetworkEvent("rsqtr_nade"); RSQTR_Buzzer.Start(pmo, h, 0.55, 5); }
+			else
+			{
+				RSQTR_Buzzer.Start(pmo, h, 0.12, 2);
+				if (Flag("rsqtr_messages", p, false)) pmo.A_Print("Grenades: none", 0, RSQTR_A11y.PrintFont());
+			}
+			return;
+		}
 		Array<String> own;
 		Owned(pmo, r, own);
 		// A SABER PUT ANYWHERE GOES TO ITS OWN HOLSTER (the owner, 10-27: "if I try to put the
@@ -1030,9 +1147,10 @@ class RSQTR_Rig : EventHandler
 			String inIt = (live && IsGunRegion(r)) ? Content(pmo, r) : "";
 			class<Weapon> pc = inIt;
 			let pw = pc ? Weapon(pmo.FindInventory(pc)) : null;
-			if (pw && a > 0.01 && Flag("rsqtr_ammo_light", p, true) && AmmoState(pw) >= 0)
+			int nades = (live && IsGrenadeRegion(r)) ? Grenades(pmo) : -1;
+			if ((pw || nades >= 0) && a > 0.01 && Flag("rsqtr_ammo_light", p, true) && (nades >= 0 || AmmoState(pw) >= 0))
 			{
-				int st = AmmoState(pw);
+				int st = nades >= 0 ? (nades >= 2 ? 0 : (nades == 1 ? 1 : 2)) : AmmoState(pw);
 				if (!pip[r]) pip[r] = Actor.Spawn("RSQTR_AmmoPip", at);
 				let q = pip[r];
 				if (q)
