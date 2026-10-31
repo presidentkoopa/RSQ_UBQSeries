@@ -73,6 +73,13 @@ OptionMenu "RSQG_Tuning"
 	Slider "Palms: Pointing Up (degrees)", "rsqg_two_palms_pitch", 0, 90, 5, 0
 	Slider "Palms: Apart Sideways (m)", "rsqg_two_palms_gap", 0.0, 0.8, 0.05, 2
 	StaticText " "
+	StaticText "Punch (jab, hook, uppercut)", "gold"
+	Slider "Punch Speed (m/s)", "rsqg_punch_mps", 0.5, 8.0, 0.1, 1
+	Slider "Punch Repeat (tics)", "rsqg_punch_rehit", 0, 35, 1, 0
+	Slider "Uppercut Rise", "rsqg_punch_rise", 0.2, 0.9, 0.05, 2
+	Slider "Punch Answered For (ms)", "rsqg_punch_window", 50, 1000, 50, 0
+	Slider "Two-Hand Shove Share", "rsqg_punch_together", 0.2, 1.0, 0.05, 2
+	StaticText " "
 	Option "Debug Log", "rsqg_debug", "RSQG_Debug"
 	StaticText " "
 	SafeCommand "Reset All", "rsqg_reset", "Reset all RSQ Gestures settings?"

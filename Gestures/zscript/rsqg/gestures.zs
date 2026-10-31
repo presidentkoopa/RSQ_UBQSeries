@@ -6,6 +6,18 @@
 //   IMPULSE   one hand moving fast along its own axis: THRUST (away), PULL (back). rsg_signals.zs.
 //   BOTH      a relationship between the two hands: both swept DOWN past the hips, thrown APART from
 //             the chest, both PALMS held out. rsg_pair.zs.
+// And two answers new here (owner's picks 49 and 50, 2026-10-31):
+//   BRACED    the engine's two-hand grip latch, WF_TWOHANDSTABILIZED: ONE answer for every series mod
+//             instead of each testing the bit (Wheel, TacticalRig, LaserSight, Whip, ShieldSaw do today;
+//             Quest teardown apply/00_INDEX "the shared fix is one bitwise test"). Set by SteamVR
+//             (gl_openvr.cpp 1704-1727) and by QuestZDoom's own Quest input (VrInputDefault.cpp 130-141):
+//             the off grip pressed with the controllers within 0.50 m, vr_two_handed_weapons on.
+//   PUNCH     jab / hook / uppercut, read the way Gun Bonsai's gloves read a punch (gloves.zs Swing and
+//             Classify, SuperPunchOut's Arcade reader and ClassifyPunch), copied here, not linked: a
+//             punch arms on a slow hand, counts once the hand has gone ARM_M toward where you face on
+//             consecutive tics at an average of rsqg_punch_mps, and is named by its travel against
+//             that line. Never while braced or with both hands shoving together: that is a two-hand
+//             gun, and Brutal Doom's own butt-stroke push (owner, 10-31: nothing may collide with it).
 // The drawn-shape matcher (rsg_match / rsg_capture / rsg_record) is not ported; see README.md.
 //
 // WHAT REMA HAD AND QZD DOES NOT, and what stands in for it here:
@@ -56,6 +68,23 @@ class RSQG_Handler : EventHandler
 	// ONE HAND
 	int stillFor[2], lastImpulse[2];
 
+	// PUNCH, per hand (gloves.zs RSQ_PunchHand): armed, the travel so far toward where you face, its tics,
+	// and the last punch: its gametic (0 never), kind (PK_*), average speed m/s
+	enum EPunch { PK_JAB, PK_HOOK, PK_UPPER }
+	const ARM_M = 0.15;       // gloves.zs / spo_corner.zs: metres of travel before a swing is a punch
+	const IN_MPS = 0.25;      // m/s that still counts as coming in
+	const MAX_TICS = 14;      // longer than this is two motions, not one
+	const MAX_STALE = 3;      // tics a hand may repeat its last pose (a late frame) inside one swing
+	bool pArmed[2];
+	double pTravel[2];
+	int pTics[2], pStale[2];
+	Vector3 pDir[2];
+	int punchTic[2], punchKind[2];
+	double punchMps[2];
+
+	// BRACED: the latch, and since when (gametic, 0 = not braced or not measured)
+	int bracedSince;
+
 	// BOTH HANDS (rsg_pair.zs, times in ms of gametic)
 	double downAt[2], downMps[2], apartAt[2], palmsAt[2], saidAt[3];
 	double palmsHeldFor;
@@ -82,10 +111,12 @@ class RSQG_Handler : EventHandler
 			live[h] = false; ringN[h] = 0; ringAt[h] = 0;
 			insState[h] = 0; insTics[h] = 0; insStateTics[h] = 0;
 			stillFor[h] = 0;
+			pArmed[h] = false; pTravel[h] = 0; pTics[h] = 0; pStale[h] = 0; pDir[h] = (0, 0, 0);
 			downAt[h] = NEVER; downMps[h] = 0; apartAt[h] = NEVER; palmsAt[h] = NEVER;
 		}
 		for (int k = 0; k < 3; k++) saidAt[k] = NEVER;
 		palmsHeldFor = 0; palmsSaid = false;
+		bracedSince = 0;
 	}
 
 	PlayerPawn Me()
@@ -161,6 +192,11 @@ class RSQG_Handler : EventHandler
 		if (SwSignals() || SwDebug() > 0) Signals(pmo);
 		else { stillFor[0] = StillNow(0) ? stillFor[0] + 1 : 0; stillFor[1] = StillNow(1) ? stillFor[1] + 1 : 0; }
 		if (SwTwohand()) TwoHand(pmo);
+
+		bool br = IsBraced(pmo.player);
+		if (br && bracedSince == 0) { bracedSince = gametic; if (SwDebug() >= 1) Console.Printf("\c[Gold]rsqg: braced (t%d)", level.maptime); }
+		else if (!br && bracedSince != 0) { bracedSince = 0; if (SwDebug() >= 1) Console.Printf("\c[Gold]rsqg: unbraced (t%d)", level.maptime); }
+		for (int h = 0; h < 2; h++) Punch1(pmo, h, br);
 
 		if (SwDebug() >= 2 && gametic % TICRATE == 0) Telemetry(pmo);
 	}
@@ -292,6 +328,87 @@ class RSQG_Handler : EventHandler
 			if (SwDebug() >= 1)
 				Console.Printf("\c[Gold]rsqg: %s, %s hand, %.2f m/s (t%d)", ev == "rsqg_thrust" ? "thrust" : "pull", h == 0 ? "main" : "off", abs(along), level.maptime);
 		}
+	}
+
+	// ---- BRACED --------------------------------------------------------------------------------------
+	// The engine's own latch, readable from any scope. WeaponState is play state the engine keeps for
+	// every player, so unlike the hand pose this answer is true for any player, not only this machine's.
+	static clearscope bool IsBraced(PlayerInfo p)
+	{
+		return p && (p.WeaponState & WF_TWOHANDSTABILIZED) != 0;
+	}
+
+	// ---- PUNCH (gloves.zs RSQ_GloveHandler.Swing / Classify, copied) ------------------------------------
+	// SuperPunchOut's ClassifyPunch, unchanged: from how the hand travelled against the line you face.
+	// The travel is metric with the vertical x pixelstretch (survey 01_MELEE 0: "this will cost you your
+	// uppercut"), where gloves.zs hands it map units; the rule is the same.
+	static int Classify(Vector3 dir, Vector2 toFoe, double rise)
+	{
+		double fwd = dir.xy dot toFoe;
+		double lat = abs(dir.x * toFoe.y - dir.y * toFoe.x);
+		if (dir.z > rise) return PK_UPPER;
+		if (lat > 0.6 && lat > fwd) return PK_HOOK;
+		return PK_JAB;
+	}
+
+	void PunchReset(int h) { pTravel[h] = 0; pTics[h] = 0; pStale[h] = 0; pDir[h] = (0, 0, 0); }
+
+	void Punch1(PlayerPawn pmo, int h, bool isBr)
+	{
+		if (!live[h] || ringN[h] <= 0) { pArmed[h] = false; PunchReset(h); return; }
+		double minMps = Num("rsqg_punch_mps", 2.0);
+		Vector3 v = VelAgo(h, 0);
+		// a tic that repeats the last pose exactly is a late frame, not a stop (the hand is written per
+		// rendered frame): it neither adds to the swing nor ends it, for MAX_STALE tics
+		if (v == (0, 0, 0) && pTics[h] > 0 && pStale[h] < MAX_STALE) { pStale[h]++; return; }
+		pStale[h] = 0;
+		double mps = v.Length();
+		if (!pArmed[h])
+		{
+			if (gametic - punchTic[h] >= Opt("rsqg_punch_rehit", 6) && mps < minMps * 0.6) pArmed[h] = true;
+			return;
+		}
+		if (mps >= IN_MPS && pTics[h] < MAX_TICS)
+		{
+			pTravel[h] += mps / TICRATE;
+			pTics[h]++;
+			pDir[h] += v / TICRATE;
+		}
+		else { PunchReset(h); return; }
+		if (pTravel[h] < ARM_M) return;
+		double avg = pTravel[h] * TICRATE / pTics[h];
+		if (avg < minMps) return;
+
+		// NOT A PUNCH: a braced two-hand gun, or both hands shoving the same way together (a two-hand gun
+		// without the latch -- Brutal Doom's butt-stroke push is exactly this)
+		Vector3 u = v.Unit();
+		int o = 1 - h;
+		bool together = live[o] && ringN[o] > 0 && (VelAgo(o, 0) dot u) >= mps * Num("rsqg_punch_together", 0.6);
+		if (isBr || together)
+		{
+			if (SwDebug() >= 1) Console.Printf("\c[Gold]rsqg: not a punch, %s hand, %.2f m/s: %s (t%d)", h == 0 ? "main" : "off", avg, isBr ? "braced" : "both hands together", level.maptime);
+			pArmed[h] = false; PunchReset(h);
+			return;
+		}
+
+		Vector2 face = (cos(pmo.Angle), sin(pmo.Angle));
+		// NOT A PUNCH either: a hand drawn BACK (toward you, not rising as an uppercut does) or swung DOWN.
+		// gloves.zs never meets these, because it counts only a swing that reaches a target in front; with
+		// no target here the direction stands in for it (rig: the hand pulled back from a jab read "jab").
+		double rise = Num("rsqg_punch_rise", 0.5);
+		if (((u.xy dot face) < -0.3 && u.z <= rise) || u.z < -rise)
+		{
+			if (SwDebug() >= 1) Console.Printf("\c[Gold]rsqg: not a punch, %s hand, %.2f m/s: %s (t%d)", h == 0 ? "main" : "off", avg, u.z < -rise ? "swung down" : "drawn back", level.maptime);
+			pArmed[h] = false; PunchReset(h);
+			return;
+		}
+		int kind = Classify(u, face, rise);
+		punchTic[h] = gametic; punchKind[h] = kind; punchMps[h] = avg;
+		pArmed[h] = false; PunchReset(h);
+		if (SwSignals()) EventHandler.SendNetworkEvent("rsqg_punch", h, kind, int(round(avg * 100)));
+		if (SwDebug() >= 1)
+			Console.Printf("\c[Gold]rsqg: punch %s, %s hand, %.2f m/s, dir fwd %.2f lat %.2f up %.2f (t%d)", kind == PK_JAB ? "jab" : kind == PK_HOOK ? "hook" : "uppercut",
+				h == 0 ? "main" : "off", avg, u.xy dot face, u.x * face.y - u.y * face.x, u.z, level.maptime);
 	}
 
 	// ---- BOTH HANDS (rsg_pair.zs) -------------------------------------------------------------------
@@ -432,6 +549,18 @@ class RSQG_Handler : EventHandler
 	double Thrust(int pn, int h)    { let pmo = Asked(pn); if (!pmo || h < 0 || h > 1) return 0; return ThrustAlong(pmo, h); }
 	double ThrustAgeMs(int pn, int h) { if (!Asked(pn) || h < 0 || h > 1) return -1; return PeakAgeMs(h); }
 	double PalmsOutSeconds(int pn)  { if (!Asked(pn)) return 0; return palmsHeldFor; }
+	int Braced(int pn)              { lastAsk = gametic; if (pn < 0 || pn >= MAXPLAYERS || !playeringame[pn]) return 0; return IsBraced(players[pn]) ? 1 : 0; }
+	int BracedTics(int pn)          { if (!Asked(pn) || bracedSince == 0) return 0; return gametic - bracedSince + 1; }
+	// the last punch: within rsqg_punch_window ms, kind + 1 (1 jab, 2 hook, 3 uppercut); else 0
+	int PunchNow(int pn, int h)
+	{
+		if (!Asked(pn) || h < 0 || h > 1 || punchTic[h] <= 0) return 0;
+		if ((gametic - punchTic[h]) * 1000.0 / TICRATE > Num("rsqg_punch_window", 300)) return 0;
+		return punchKind[h] + 1;
+	}
+	int LastPunchKind(int pn, int h)    { if (!Asked(pn) || h < 0 || h > 1 || punchTic[h] <= 0) return -1; return punchKind[h]; }
+	double PunchAgoMs(int pn, int h) { if (!Asked(pn) || h < 0 || h > 1 || punchTic[h] <= 0) return -1; return (gametic - punchTic[h]) * 1000.0 / TICRATE; }
+	double LastPunchMps(int pn, int h)  { if (!Asked(pn) || h < 0 || h > 1 || punchTic[h] <= 0) return 0; return punchMps[h]; }
 	double PairAgoMs(int pn, int k) { if (!Asked(pn) || k < 0 || k > 2 || saidAt[k] <= NEVER) return -1; return NowMs() - saidAt[k]; }
 	double Hand(int pn, int h, int what)
 	{
@@ -459,6 +588,8 @@ class RSQG
 	static play int StillTics(int hand)    { let h = RSQG_Handler.Get(); return h ? h.StillTics(consoleplayer, hand) : 0; }
 	static play double Thrust(int hand)    { let h = RSQG_Handler.Get(); return h ? h.Thrust(consoleplayer, hand) : 0; }
 	static play double PalmsOutSeconds()   { let h = RSQG_Handler.Get(); return h ? h.PalmsOutSeconds(consoleplayer) : 0; }
+	static clearscope bool Braced(PlayerPawn pmo) { return pmo && RSQG_Handler.IsBraced(pmo.player); }
+	static play int Punch(int hand)        { let h = RSQG_Handler.Get(); return h ? h.PunchNow(consoleplayer, hand) : 0; }
 }
 
 // RSQG_Service -- ask by name, no compile dependency:
@@ -489,7 +620,21 @@ class RSQG_Service : Service
 		if (request ~== "pair.ago")     return int(h.PairAgoMs(pn, intArg));          // ms since that two-hand gesture fired, -1 never
 		if (request ~== "palms")        return int(h.PalmsOutSeconds(pn) * 1000);     // ms both palms have been out
 		if (request ~== "mainleft")     return RSQG_Pose.MainIsLeft() ? 1 : 0;        // the main hand is the left controller
+		if (request ~== "braced")       return h.Braced(PnAny(objectArg));            // 1 while the two-hand grip latch is on
+		if (request ~== "braced.tics")  return h.BracedTics(pn);                      // tics it has been on (0 = not)
+		if (request ~== "punch")        return h.PunchNow(pn, intArg);                // 1 jab, 2 hook, 3 uppercut within rsqg_punch_window; 0 none
+		if (request ~== "punch.kind")   return h.LastPunchKind(pn, intArg);               // the last punch: 0 jab, 1 hook, 2 uppercut; -1 never
+		if (request ~== "punch.ago")    return int(h.PunchAgoMs(pn, intArg));         // ms since it, -1 never
+		if (request ~== "punch.speed")  return int(round(h.LastPunchMps(pn, intArg) * 100)); // its average, hundredths m/s
 		return -1;
+	}
+
+	// braced is the engine's play state, true for any player (not only this machine's hands)
+	static int PnAny(Object o)
+	{
+		let pmo = PlayerPawn(o);
+		if (pmo && pmo.player) return pmo.PlayerNumber();
+		return consoleplayer;
 	}
 
 	override double GetDouble(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
@@ -505,6 +650,7 @@ class RSQG_Service : Service
 		if (request ~== "hand.pitch") return h.Hand(pn, intArg, 4);
 		if (request ~== "thrust")     return h.Thrust(pn, intArg);
 		if (request ~== "palms")      return h.PalmsOutSeconds(pn);
+		if (request ~== "punch.speed") return h.LastPunchMps(pn, intArg);
 		return 0;
 	}
 
@@ -522,6 +668,13 @@ class RSQG_Service : Service
 		if (request ~== "inspect.tics") return h.PeekTics(intArg);
 		if (request ~== "inspect.any")  return max(h.Peek(0), h.Peek(1));
 		if (request ~== "mainleft")     return RSQG_Pose.MainIsLeft() ? 1 : 0;
+		if (request ~== "braced")
+		{
+			int pn = consoleplayer;
+			let pmo = PlayerPawn(objectArg);
+			if (pmo && pmo.player) pn = pmo.PlayerNumber();
+			return (pn >= 0 && pn < MAXPLAYERS && playeringame[pn] && RSQG_Handler.IsBraced(players[pn])) ? 1 : 0;
+		}
 		return -1;
 	}
 }

@@ -16,6 +16,8 @@ inspecting?") and it answers. When nothing has asked for a second, it stops meas
 | **Both hands down** | Both hands swept down past the hips together. | event `rsqg_pair` 0 (switch on: Two-Hand Events) |
 | **Both hands apart** | Both hands thrown outward from the chest. | event `rsqg_pair` 1 |
 | **Both palms out** | Both hands held out in front, pointing up, side by side, still, no trigger. | event `rsqg_pair` 2, and asks `"palms"` |
+| **Braced** (new) | The engine's two-hand grip latch (`WF_TWOHANDSTABILIZED`): the off grip pressed with the controllers within 0.50 m. SteamVR and QuestZDoom's own Quest input both set it. One answer for every series mod instead of each testing the bit. Any player, not only this machine's. | asks `"braced"`, `"braced.tics"` |
+| **Punch** (new) | A jab, hook or uppercut: a slow hand that then travels 0.15 m toward where you face at 2 m/s average, named by its travel against that line. Gun Bonsai's gloves' reader and SuperPunchOut's ClassifyPunch, copied (no link to Gun Bonsai). Never while braced, and never when both hands shove the same way together (a two-hand gun; Brutal Doom's butt-stroke push). | asks `"punch"`; event `rsqg_punch` (with Thrust and Pull Events on) |
 
 Every distance is measured from **your eyes, in metres, in your own frame** (forward, sideways, up), so
 tall, short and seated players make the same gesture, and the map's squashed vertical
@@ -53,16 +55,21 @@ PlayerPawn: anyone but the local player gets 0 (the hands are this machine's har
 | `GetInt "pair.ago"` | `intArg` = 0 down, 1 apart, 2 palms: ms since it last fired, -1 never (needs Two-Hand Events) |
 | `GetInt "palms"` | ms both palms have been out (needs Two-Hand Events) |
 | `GetInt "mainleft"` | 1 when the main hand is the left controller |
+| `GetInt "braced"` | 1 while the two-hand grip latch is on (`objectArg` = the pawn; any player). Also from `GetIntUI` / `GetIntData` |
+| `GetInt "braced.tics"` | tics it has been on, 0 when not |
+| `GetInt "punch"` | the hand's last punch within `rsqg_punch_window` (300 ms): 1 jab, 2 hook, 3 uppercut; 0 none |
+| `GetInt "punch.kind"` / `"punch.ago"` / `"punch.speed"` | the last punch: 0 jab 1 hook 2 uppercut (-1 never) / ms since (-1 never) / average hundredths of m/s |
 | `GetDouble "hand.x"`, `"hand.y"`, `"hand.z"` | the hand from your eyes, metres: forward, left, up |
 | `GetDouble "hand.roll"`, `"hand.pitch"` | the hand's twist and pitch, degrees |
 | `GetDouble "thrust"`, `"palms"` | as above, in m/s and seconds |
 | `GetIntUI` / `GetIntData` `"inspect"`, `"inspect.tics"`, `"inspect.any"`, `"mainleft"` | the last answer, from any scope, read only (does not keep it measuring) |
 
 Unknown requests return -1. A mod loaded after this one may instead call the static `RSQG.Inspect(hand)`,
-`RSQG.InspectTics(hand)`, `RSQG.StillTics(hand)`, `RSQG.Thrust(hand)`, `RSQG.PalmsOutSeconds()`.
+`RSQG.InspectTics(hand)`, `RSQG.StillTics(hand)`, `RSQG.Thrust(hand)`, `RSQG.PalmsOutSeconds()`,
+`RSQG.Braced(pmo)`, `RSQG.Punch(hand)`.
 
 **Events** (when switched on) have RS_Gestures' shape: `rsqg_thrust` / `rsqg_pull` arg0 hand, arg1 speed
-in hundredths of m/s; `rsqg_pair` arg0 which (0 down, 1 apart, 2 palms), arg1 hundredths of its own unit
+in hundredths of m/s; `rsqg_punch` arg0 hand, arg1 kind (0 jab, 1 hook, 2 uppercut), arg2 hundredths of m/s; `rsqg_pair` arg0 which (0 down, 1 apart, 2 palms), arg1 hundredths of its own unit
 (the slower hand's downward m/s, the gap's opening m/s, seconds out). They say what the hands did, not
 what it means. Apply them to `e.Player`.
 
