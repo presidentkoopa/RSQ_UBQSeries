@@ -14,3 +14,8 @@ sheet plates), STCFN033-095 (DoomFont), STTNUM0-9, STTMINUS, STTPRCNT (the numer
 The quake-wave route to the controllers' rumble is the series' (RSQ ShieldSaw's SSQ_Buzzer).
 
 Sounds (sounds/wr_*.ogg) came across with the wheel from REMA.
+
+THE CARD ON THE GUN (wr_q_card.zs, tools/gen_cards.py) is Ermac's Force Unleashed holo HUD, used with
+the owner's blessing: the ammo panels (ammo_bg*.png), the AMMO / MAGAZINE / CHAMBER labels and the
+digits (digit_*.png) in tools/card_art/ are his art, from his doom-force-unleashed devbuild
+(models/common). We turn them into voxels; the design is his.

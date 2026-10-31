@@ -90,3 +90,19 @@ headset** -- gesture speeds and the wrist pose are first guesses.
 - `zscript/wheel/wr_q_watch.zs` -- the wrist card
 - `tools/gen_assets.py` -- writes the quad models, TEXTURES and the palette table
 - `tools/rig/` -- the rig runner and probe (test only)
+
+## The card on the gun (Project Wheel)
+
+A small holo display on each gun, in Ermac's Force Unleashed style and art: his panel, the AMMO /
+MAGAZINE word, the rounds in the gun big and the reserve small. It stands beside the stock on the inside,
+facing you while you aim, and it is drawn as part of the hand, so it never trails the gun.
+
+Options -> Radiant Silvergun Options -> RSQ Wheel -> Gun cards:
+- Show: always, when you look at the gun, or on the inspect gesture (RSQ Gestures: raise the gun and
+  twist it palm down, like checking your watch).
+- Hands: a card on each gun, or both guns on the main-hand card (big = main hand, small = off hand).
+- Panel style (Ermac's 18), solid / glass / glow, Ermac's colours or the Wheel's palette, the word,
+  the low-ammo colour, nudge up/down and left/right, fade.
+
+How it is built: tools/gen_cards.py turns the art in tools/card_art into voxels (voxels/wk*.kvx,
+VOXELDEF.txt, zscript/wheel/wr_q_card_states.zs). Run it again after changing the art or the layout.

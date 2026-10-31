@@ -100,6 +100,7 @@ OptionMenu wr_Options
 	Slider "Recenter window, tics (0 = off)", "wr_recenter_window", 0, 35, 5, 1
 
 	StaticText ""
+	Submenu "Gun cards...",               "wr_GunCards"
 	Submenu "Picking and timing...",      "wr_Pick"
 	Submenu "Placement...",               "wr_Place"
 	Submenu "Cards...",                   "wr_Cards"
@@ -534,3 +535,65 @@ OptionValue wr_ToggleHandPref
 	1,  "Off hand"
 }
 
+
+// THE CARD ON THE GUN (wr_q_card.zs): Ermac's holo display over each gun's stock.
+OptionValue "wr_CardShow"
+{
+	0, "Off"
+	1, "Always"
+	2, "When you look at the gun"
+	3, "Inspect gesture"
+}
+OptionValue "wr_CardHands"
+{
+	0, "A card on each gun"
+	1, "Both guns on the main-hand card"
+}
+OptionValue "wr_CardLook"
+{
+	0, "Solid"
+	1, "Glass"
+	2, "Glow"
+}
+OptionValue "wr_CardTint"
+{
+	0, "Ermac's colours"
+	1, "Wheel palette"
+}
+OptionValue "wr_CardInspect"
+{
+	1, "As the twist starts"
+	2, "Once it is held"
+}
+
+OptionMenu wr_GunCards
+{
+	Title "RSQ Wheel - Gun cards"
+	StaticText ""
+	StaticText "The card on the gun", gold
+	StaticText "Ermac's Force Unleashed display, beside the stock, facing you.", "DarkGray"
+	Option "Show",                       "wr_card",          "wr_CardShow"
+	Option "Hands",                      "wr_card_hands",    "wr_CardHands"
+	StaticText ""
+	StaticText "Look", gold
+	Slider "Panel style",                "wr_card_style",    1, 18, 1, 0
+	Option "Material",                   "wr_card_look",     "wr_CardLook"
+	Slider "  Strength",                 "wr_card_alpha",    0.1, 1.0, 0.05, 2
+	Option "Colours",                    "wr_card_tint",     "wr_CardTint"
+	Option "AMMO / MAGAZINE word",       "wr_card_label",    "OnOff"
+	Option "Low ammo warning colour",    "wr_card_lowwarn",  "OnOff"
+	StaticText ""
+	StaticText "Place", gold
+	Slider "Up / down",                  "wr_card_up",      -15, 15, 0.5, 1
+	Slider "Left / right",               "wr_card_side",    -15, 15, 0.5, 1
+	Slider "Fade (tics)",                "wr_card_fade",      1, 12, 1, 0
+	StaticText ""
+	StaticText "Showing on a look", gold
+	Slider "Gun within (metres)",        "wr_card_glance_reach", 0.3, 1.2, 0.05, 2
+	Slider "Within (degrees of your look)", "wr_card_glance_cone", 10, 60, 1, 0
+	StaticText ""
+	StaticText "Showing on inspect (needs RSQ Gestures)", gold
+	Option "Show",                       "wr_card_inspect_level", "wr_CardInspect"
+	Slider "Stays after (tics)",         "wr_card_linger",    0, 105, 5, 0
+	StaticText ""
+}

@@ -8,8 +8,9 @@
 //   wr_Watch       the wrist card (check your watch), before wr_BB lays its quads out.
 //   wr_BB          lays out every billboard quad AFTER wr_Rig has moved them this tic.
 //   wr_VRState     the pointing beam and the freeze, after wr_Rig for the same reason.
+//   wr_GunCard     the card on each gun (wr_q_card.zs); reads only, so last.
 
 GameInfo
 {
-	AddEventHandlers = "wr_Rig", "wr_StatEvents", "wr_Watch", "wr_BB", "wr_VRState"
+	AddEventHandlers = "wr_Rig", "wr_StatEvents", "wr_Watch", "wr_BB", "wr_VRState", "wr_GunCard"
 }

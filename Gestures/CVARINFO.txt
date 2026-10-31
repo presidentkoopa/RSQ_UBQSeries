@@ -8,7 +8,7 @@
 // Always answers when a mod asks; nothing to switch on.
 user float  rsqg_inspect_twist   = 45;     // wrist twist (roll) needed to start, degrees either way
 user float  rsqg_inspect_untwist = 30;     // ...and below this it drops (less than the start: no flicker)
-user int    rsqg_inspect_dir     = 0;      // 0 either way; 1 palm down only (right hand clockwise as you see it); 2 palm up only (mirrored for the left hand)
+user int    rsqg_inspect_dir     = 1;      // (owner 2026-10-31: palm down, like checking your watch) 0 either way; 1 palm down only (right hand clockwise as you see it); 2 palm up only (mirrored for the left hand)
 user int    rsqg_inspect_hold    = 6;      // tics the pose must be held before it counts (35 tics = 1 second)
 user float  rsqg_inspect_low     = 0.30;   // lowest the hand may be, metres BELOW your eyes (upper chest)
 user float  rsqg_inspect_high    = 0.20;   // highest, metres ABOVE your eyes
