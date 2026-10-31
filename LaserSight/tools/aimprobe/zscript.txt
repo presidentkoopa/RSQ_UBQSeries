@@ -14,7 +14,11 @@ class RSLSAim_Probe : EventHandler
 	override void WorldTick()
 	{
 		let p = players[consoleplayer];
-		if (!p || !p.mo || level.maptime < 40 || level.maptime % 10) return;
+		if (!p || !p.mo) return;
+		// rsqlsaim_push: walk the pawn forward this many units a tic (the rig's +forward does not move a VR pawn)
+		let pc = CVar.FindCVar("rsqlsaim_push");
+		if (pc && pc.GetFloat() != 0) p.mo.Vel.xy = (cos(p.mo.angle), sin(p.mo.angle)) * pc.GetFloat();
+		if (level.maptime < 40 || level.maptime % 10) return;
 		let mo = p.mo;
 		let it = ThinkerIterator.Create("RSQLS_Spot");
 		Actor s;

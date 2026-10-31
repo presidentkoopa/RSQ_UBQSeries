@@ -65,7 +65,39 @@ class RSQTR_Rig : EventHandler
 	private transient int  hoverR[2];          // region each hand is in, -1 none
 	private transient bool pressWas[2];
 	private transient bool useWas;
-	private transient Vector3 lastHandAt[2];
+	private transient Vector3 relHand[12];    // per hand, the last six body-relative hand positions (newest first)
+	private transient int relN[2];
+	private transient Vector3 rawHand[2];
+
+	// The fastest 2-tic window of the last six body-relative samples: room m/s, and that velocity (map units a tic)
+	// turned into the frame the player faces now.
+	private double, Vector3 SwingPeak(PlayerPawn pmo, int h, Vector3 hp)
+	{
+		Vector3 d = level.Vec3Diff(pmo.Pos, hp);
+		double c = cos(pmo.Angle), sn = sin(pmo.Angle);
+		Vector3 rel = (d.x * c + d.y * sn, d.y * c - d.x * sn, d.z);
+		// A STALE HAND IS NOT A SAMPLE: the hand fields are written when a frame is drawn, so a tic with no new frame
+		// repeats the last hand while the pawn has moved on -- read as the hand jerking back by the walk (rig, walking).
+		bool stale = hp == rawHand[h];
+		rawHand[h] = hp;
+		if (!stale)
+		{
+			for (int k = 5; k > 0; k--) relHand[h * 6 + k] = relHand[h * 6 + k - 1];
+			relHand[h * 6] = rel;
+			if (relN[h] < 6) relN[h]++;
+		}
+		double best = 0; Vector3 bv = (0, 0, 0);
+		for (int k = 0; k + 2 < relN[h]; k++)
+		{
+			Vector3 v = (relHand[h * 6 + k] - relHand[h * 6 + k + 2]) / 2.0;
+			// ACROSS THE GROUND ONLY: the view height eases after a step down a stair, and the hand eases with it --
+			// a vertical "swing" the arm never made (rig: walking down the start room's steps read 2.6 m/s). A throw
+			// goes out from you; its speed is counted across the ground, its velocity keeps the lift.
+			double ms = v.xy.Length() / RSQTR_Body.Upm() * TICRATE;
+			if (ms > best) { best = ms; bv = v; }
+		}
+		return best, (bv.x * c - bv.y * sn, bv.x * sn + bv.y * c, bv.z);
+	}
 	transient Actor marker[RSQTR_Region.N];   // read by the mirror (mirror.zs)
 	transient Actor icon[RSQTR_Region.N];
 	transient Actor pip[RSQTR_Region.N];      // the ammo light in a full holster
@@ -155,9 +187,9 @@ class RSQTR_Rig : EventHandler
 		double yaw = (body && body.primed) ? body.yaw : pmo.angle;
 		Vector3 d = at - RSQTR_Body.Head(pmo);
 		double k = BodyScale(pmo.player);
-		f = (d.x * cos(yaw) + d.y * sin(yaw)) / RSQTR_Body.UPM / k;
-		l = (-d.x * sin(yaw) + d.y * cos(yaw)) / RSQTR_Body.UPM / k;
-		u = d.z * RSQTR_Body.PIXELSTRETCH / RSQTR_Body.UPM / k;
+		f = (d.x * cos(yaw) + d.y * sin(yaw)) / RSQTR_Body.Upm() / k;
+		l = (-d.x * sin(yaw) + d.y * cos(yaw)) / RSQTR_Body.Upm() / k;
+		u = d.z * RSQTR_Body.Ps() / RSQTR_Body.Upm() / k;
 	}
 
 	double RegionRadius(PlayerInfo p, int r)
@@ -477,6 +509,7 @@ class RSQTR_Rig : EventHandler
 		if (h == 0) { let empty = EmptyHand(pmo); if (empty && empty != w) p.PendingWeapon = empty; }
 		else EmptyOff(pmo);
 		Inventory thrown = pmo.DropInventory(w, 1);
+		if (Flag("rsqtr_debug_throw", p, false)) Console.Printf("T_THROWN t%d %s", level.maptime, cls);
 		if (!thrown)
 		{
 			// a pack that will not let it drop: the same gun as a pickup that gives no ammo, the hand's copy taken
@@ -778,7 +811,10 @@ class RSQTR_Rig : EventHandler
 		if (!body) body = new("RSQTR_Body");
 		body.Update(pmo);
 
-		bool on = pmo.health > 0 && Flag("rsqtr_on", p, true);
+		// NOT IN VR, NO RIG (Quest teardown, apply/06 1.9): without OverrideAttackPosDir the hand fields are not the
+		// controllers -- both collapse to one point -- and a hand "in" a holster there held the rig busy for good,
+		// standing every other mod's grip down with it.
+		bool on = pmo.health > 0 && Flag("rsqtr_on", p, true) && pmo.OverrideAttackPosDir;
 		if (!on) { HideAll(); return; }
 
 		int n = consoleplayer;
@@ -816,13 +852,17 @@ class RSQTR_Rig : EventHandler
 			bool pressNow = gripNow || (usePress && useDown && (h == 0 || hoverR[0] < 0));
 			bool edge = pressNow && !pressWas[h] && (gripNow || useEdge);
 			// THROW THE GUN: the grip pressed (not Use) with the hand swinging fast, outside every holster
-			double handMs = RSQTR_Body.RoomMetres(lastHandAt[h], hp) * TICRATE;
-			Vector3 handV = level.Vec3Diff(lastHandAt[h], hp);
-			lastHandAt[h] = hp;
+			// THE ARM'S OWN SWING, NOT THE BODY'S (Quest teardown 00 1.3 / gotcha 6; the ShieldSaw's pose.zs fix): the
+			// hand differenced in the body's frame -- relative to the pawn, turned back by its yaw -- so walking, running
+			// and snap turns are no swing, and the throw is the FASTEST 2-tic window of the last six, not the release
+			// tic, when the arm is already slowing. Turned back to where you face now; the run is added on top.
+			double handMs; Vector3 handV;
+			[handMs, handV] = SwingPeak(pmo, h, hp);
+			if (h == 0 && Flag("rsqtr_debug_throw", p, false)) Console.Printf("T_SWING t%d hand %.1f %.1f %.1f pawn %.1f %.1f peak %.2f grip %d", level.maptime, hp.x, hp.y, hp.z, pmo.Pos.x, pmo.Pos.y, handMs, gripOk && gripDown[n * 2 + h]);
 			if (gripNow && !pressWas[h] && r < 0 && Flag("rsqtr_throw", p, true) && handMs >= Num("rsqtr_throw_speed", p, 2.5) && handMs < 20
 				&& (h == 0 ? HoldsGun(pmo) : OffHoldsGun(pmo)))
 			{
-				Vector3 tv = handV * 1.6;      // a throw carries on a little faster than the hand
+				Vector3 tv = handV * 1.6 + pmo.Vel;   // a throw carries on a little faster than the hand, and with you
 				EventHandler.SendNetworkEvent("rsqtr_throwat", int(hp.x * 8), int(hp.y * 8), int(hp.z * 8));
 				EventHandler.SendNetworkEvent("rsqtr_throwv", int(tv.x * 100), int(tv.y * 100), int(tv.z * 100));
 				EventHandler.SendNetworkEvent("rsqtr_throw", h);
@@ -1134,7 +1174,7 @@ class RSQTR_Rig : EventHandler
 					// THE PROFILE IN USE SHOWS IN THE COLOUR (the owner, 10-27): idle blue, orange,
 					// purple or yellow for profiles 1-4, green with a hand inside. Not by colour
 					// alone: a sphere with a hand in it is also brighter and a size larger.
-					double s = rad * RSQTR_Body.UPM * (inside ? 1.15 : 1.0);   // the wireframe sphere has radius 1.0
+					double s = rad * RSQTR_Body.Upm() * (inside ? 1.15 : 1.0);   // the wireframe sphere has radius 1.0
 					m.Scale = (s, s);
 					m.frame = MarkerFrame(inside, Opt("rsqtr_profile_active", p, 1));
 				}
@@ -1157,7 +1197,7 @@ class RSQTR_Rig : EventHandler
 				{
 					q.SetOrigin(at, true);
 					q.frame = st;
-					double ps = rad * RSQTR_Body.UPM * (st == 2 ? 0.18 : 0.26);
+					double ps = rad * RSQTR_Body.Upm() * (st == 2 ? 0.18 : 0.26);
 					q.Scale = (ps, ps);
 					q.bINVISIBLE = st == 2 && (level.maptime / 8) % 2 == 1;
 					q.Alpha = clamp(a + 0.2, 0.0, 1.0);
@@ -1243,9 +1283,9 @@ class RSQTR_Rig : EventHandler
 	static Vector3 ShowAt(Vector3 at, int r, double yaw, double metres)
 	{
 		if (r != 4 && r != 5) return at;
-		double u = RSQTR_Body.UPM;
+		double u = RSQTR_Body.Upm();
 		double down = DOWN_SHOW * metres;
-		return at - (cos(yaw) * BACK_SHOW * u, sin(yaw) * BACK_SHOW * u, down * u / RSQTR_Body.PIXELSTRETCH);
+		return at - (cos(yaw) * BACK_SHOW * u, sin(yaw) * BACK_SHOW * u, down * u / RSQTR_Body.Ps());
 	}
 	const BACK_SHOW = 0.12;   // metres behind a shoulder region
 	// Below it, as a share of the gun's length: hanging 65 degrees down, its middle is 0.45 of
@@ -1494,7 +1534,7 @@ class RSQTR_Icon : Actor
 		// A squat pickup (a missile pod, a box) is not a long gun: it never grows past a
 		// pistol's size, even on the back.
 		if (fit.squat[at] > 0.7) metres = min(metres, RSQTR_Rig.Num("rsqtr_icon_m", players[consoleplayer], 0.25));
-		double s = metres * RSQTR_Body.UPM / fit.len[at];
+		double s = metres * RSQTR_Body.Upm() / fit.len[at];
 		Scale = (s, s);
 		// still backwards in your pack? listed in "Stored guns to turn round" (rsqtr_icon_flip)
 		double cy = fit.yaw[at], cp = fit.pitch[at];

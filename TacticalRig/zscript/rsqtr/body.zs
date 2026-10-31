@@ -26,8 +26,20 @@
 // axis, the convention the rest of the series uses.
 class RSQTR_Body play
 {
-	const UPM = 34.0;
-	const PIXELSTRETCH = 1.2;
+	// THE SCALE, READ LIVE (Quest teardown 00 1.2a): map units per room metre is the player's vr_vunits_per_meter
+	// (34 by default) and the vertical stretch the level's own pixelstretch (1.2). Fixed numbers put every holster
+	// out of reach the moment either is changed.
+	static clearscope double Upm()
+	{
+		let c = CVar.FindCVar("vr_vunits_per_meter");
+		double v = c ? c.GetFloat() : 34.0;
+		return v > 0 ? v : 34.0;
+	}
+	static clearscope double Ps()
+	{
+		double v = level ? level.pixelstretch : 1.2;
+		return v > 0 ? v : 1.2;
+	}
 	const TOL = 1.5;           // degrees: both controllers moved with the pawn = a turn
 	const SWING = 3.0;         // most degrees per tic the body turns while it catches up (an ease, not a snap)
 	const STEEP = 78.0;        // degrees of head pitch past which the head's yaw is not trusted (near straight down)
@@ -138,7 +150,7 @@ class RSQTR_Body play
 	static double EyeUnits(PlayerPawn pmo, double metres)
 	{
 		let ha = CVar.FindCVar("vr_height_adjust");
-		return (metres + (ha ? ha.GetFloat() : 0)) * UPM / PIXELSTRETCH;
+		return (metres + (ha ? ha.GetFloat() : 0)) * Upm() / Ps();
 	}
 
 	Vector3 SeatedHead(PlayerPawn pmo)
@@ -166,14 +178,14 @@ class RSQTR_Body play
 		double fx = c * fwdMetres - s * leftMetres;
 		double fy = s * fwdMetres + c * leftMetres;
 		Vector3 h = (seatOn && pmo.player == players[consoleplayer]) ? SeatedHead(pmo) : Head(pmo);
-		return h + (fx * UPM, fy * UPM, upMetres * UPM / PIXELSTRETCH);
+		return h + (fx * Upm(), fy * Upm(), upMetres * Upm() / Ps());
 	}
 
 	// Distance in the ROOM between two map points, in metres.
 	static double RoomMetres(Vector3 a, Vector3 b)
 	{
 		Vector3 d = a - b;
-		return (d.x, d.y, d.z * PIXELSTRETCH).Length() / UPM;
+		return (d.x, d.y, d.z * Ps()).Length() / Upm();
 	}
 
 	// The two hands. 0 = main, 1 = off.

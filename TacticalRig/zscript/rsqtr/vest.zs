@@ -84,7 +84,7 @@ class RSQTR_Torso : EventHandler
 				// the collar (measured in the mirror: a gap of 0.62 of the helmet's own height), so it
 				// sits DROP lower, scaled with the body; rsqtr_helmet_u fine-tunes it in metres.
 				double hs0 = RSQTR_Rig.Num("rsqtr_vest_size", p, 1.0) * k;
-				double lift = RSQTR_Rig.Num("rsqtr_helmet_u", p, 0.0) * RSQTR_Body.UPM / RSQTR_Body.PIXELSTRETCH;
+				double lift = RSQTR_Rig.Num("rsqtr_helmet_u", p, 0.0) * RSQTR_Body.Upm() / RSQTR_Body.Ps();
 				helmet.SetOrigin(RSQTR_Body.LiveHead(pmo) + (0, 0, lift - HELMET_DROP * hs0), true);
 				helmet.angle = pmo.angle;
 				helmet.pitch = pmo.pitch;

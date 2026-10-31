@@ -88,7 +88,7 @@ class RSQTR_MirrorView play
 			if (!mHand[h]) mHand[h] = Actor.Spawn("RSQTR_Marker", head);
 			if (!mHand[h]) continue;
 			mHand[h].SetOrigin(Map(RSQTR_Body.Hand(pmo, h)), true);
-			double s = 0.035 * RSQTR_Body.UPM;
+			double s = 0.035 * RSQTR_Body.Upm();
 			mHand[h].Scale = (s, s);
 			mHand[h].frame = RSQTR_Rig.MarkerFrame(true, 1);
 			mHand[h].Alpha = 0.9;
@@ -136,8 +136,8 @@ class RSQTR_Mirror : EventHandler
 			double by = rig.BodyYaw(pmo);
 			Vector3 h3 = RSQTR_Body.Head(pmo);
 			Vector2 hd = h3.xy;
-			double dist = RSQTR_Rig.Num("rsqtr_mirror_m", p, 1.0) * RSQTR_Body.UPM;
-			if (anchored && ((hd - aPlane).Length() > 3.0 * RSQTR_Body.UPM + dist || abs(Actor.DeltaAngle(aYaw, by)) > 100))
+			double dist = RSQTR_Rig.Num("rsqtr_mirror_m", p, 1.0) * RSQTR_Body.Upm();
+			if (anchored && ((hd - aPlane).Length() > 3.0 * RSQTR_Body.Upm() + dist || abs(Actor.DeltaAngle(aYaw, by)) > 100))
 				anchored = false;
 			if (!anchored)
 			{
@@ -160,7 +160,7 @@ class RSQTR_Mirror : EventHandler
 			v.head = RSQTR_Body.Head(pmo);
 			v.plane = aPlane;
 			v.back = i == 1;
-			v.side = view == 2 ? (i == 0 ? 0.45 : -0.45) * RSQTR_Body.UPM : 0;
+			v.side = view == 2 ? (i == 0 ? 0.45 : -0.45) * RSQTR_Body.Upm() : 0;
 			v.Update(pmo, rig, tor);
 		}
 	}

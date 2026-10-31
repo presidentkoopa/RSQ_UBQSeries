@@ -237,7 +237,7 @@ class RSQTR_HeldShow : Actor
 		Vector3 q = (0, 5, 30) + (ofs.x, ofs.z, ofs.y) + (sc.x * -cust.x, sc.z * cust.y, sc.y * cust.z);
 		if (rev) q.x = -q.x;
 		Vector3 h = Turn(ya, pi, ro, q);
-		h.z /= RSQTR_Body.PIXELSTRETCH;
+		h.z /= RSQTR_Body.Ps();
 		Vector3 hud = at + h * cm;
 		Vector3 wrl = (F * ofs.x + U * ofs.z + L * ofs.y) * k;
 		SetOrigin(hud - wrl, true);

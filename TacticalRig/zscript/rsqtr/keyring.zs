@@ -46,7 +46,7 @@ class RSQTR_Keyring : EventHandler
 			ring.bINVISIBLE = false;
 		}
 		// the keys: a fan across the ring, each hanging from it, the middle one lowest
-		double upm = RSQTR_Body.UPM;
+		double upm = RSQTR_Body.Upm();
 		Vector2 across = (-sin(yaw), cos(yaw));       // the body's left
 		int n = keys.Size();
 		for (int k = 0; k < MAXK; k++)
@@ -57,7 +57,7 @@ class RSQTR_Keyring : EventHandler
 			if (!ks) continue;
 			double off = (k - (n - 1) * 0.5) * SPREAD * upm;
 			// a key stands on its origin, so it hangs with its top at the ring: its whole height below it
-			double drop = (0.02 + KEY_H + 0.008 * abs(k - (n - 1) * 0.5)) * upm / RSQTR_Body.PIXELSTRETCH;
+			double drop = (0.02 + KEY_H + 0.008 * abs(k - (n - 1) * 0.5)) * upm / RSQTR_Body.Ps();
 			Vector3 kp = at + (across.x * off + swing.x, across.y * off + swing.y, -drop);
 			ks.Show(keys[k].GetClassName(), KEY_H * upm);
 			ks.SetOrigin(kp, true);

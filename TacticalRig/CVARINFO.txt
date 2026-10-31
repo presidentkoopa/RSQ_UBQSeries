@@ -76,3 +76,4 @@ user bool  rsqtr_throw       = true;    // grip with the hand swinging fast, out
 user float rsqtr_throw_speed = 2.5;     // how fast the hand must swing to throw, metres a second
 user bool  rsqtr_keyring     = true;    // the keys you carry hang on a ring on your belt
 user float rsqtr_r3_f = 0.12; user float rsqtr_r3_l = 0.00; user float rsqtr_r3_u = -0.62; user float rsqtr_r3_rad = 0.08;
+user bool rsqtr_debug_throw = false;
