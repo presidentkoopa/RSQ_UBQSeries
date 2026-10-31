@@ -65,10 +65,35 @@ class RSQDGT_Probe : EventHandler
 				double dist = kv[1].ToDouble(); double side = kv[2].ToDouble();
 				Vector2 fwd = (cos(bestA), sin(bestA)); Vector2 rt = (sin(bestA), -cos(bestA));
 				Vector2 xy = mo.pos.xy + fwd * dist + rt * side;
-				Name cn = kv[0];
+				// "!Class": spawned and killed at once -- a corpse
+				bool kill = kv[0].Left(1) == "!";
+				Name cn = kill ? kv[0].Mid(1) : kv[0];
 				let a = Actor.Spawn(cn, (xy.x, xy.y, mo.floorz), ALLOW_REPLACE);
+				if (a && kill) a.DamageMobj(null, null, a.Health, 'None', DMG_FORCED);
 				if (a) spawned.Push(a);
 				if (a) Console.Printf("T_SPAWN %s at dist=%.0f side=%.0f  z=%.0f", kv[0], dist, side, a.pos.z);
+			}
+		}
+		// rsqdgt_shoot "tic:Class": that tic, a missile of Class from 300 units ahead, aimed at what hand 0 holds
+		String sh = CVar.FindCVar("rsqdgt_shoot").GetString();
+		if (sh.Length())
+		{
+			Array<String> kv; sh.Split(kv, ":");
+			let ho = RSQDG_Hold(EventHandler.Find("RSQDG_Hold"));
+			Actor hd = ho ? ho.HeldBy(0) : null;
+			if (kv.Size() == 2 && kv[0].ToInt() == t && hd)
+			{
+				Vector3 c = hd.pos + (0, 0, hd.height * 0.5);
+				Vector3 from = (mo.pos.x + cos(mo.angle) * 300, mo.pos.y + sin(mo.angle) * 300, c.z);
+				Name cn = kv[1];
+				let m = Actor.Spawn(cn, from, ALLOW_REPLACE);
+				if (m)
+				{
+					Vector3 d = c - from;
+					m.Vel = d.Unit() * m.Speed;
+					m.angle = atan2(d.y, d.x);
+					Console.Printf("T_SHOOT t%d %s from (%.0f %.0f %.0f) at held (%.0f %.0f %.0f)", t, m.GetClassName(), from.x, from.y, from.z, c.x, c.y, c.z);
+				}
 			}
 		}
 		if (t >= 20 && (t % 5) == 0 || CVar.FindCVar("rsqdgt_every").GetBool())

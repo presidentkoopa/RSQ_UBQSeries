@@ -1,0 +1,3 @@
+// RSQ Distance Grab: Doom's own sounds, pitched by speed and weight (feel.zs Whoosh / Thud). No sound of our own.
+rsqdg/whoosh  dsskeswg
+rsqdg/thud    dspunch

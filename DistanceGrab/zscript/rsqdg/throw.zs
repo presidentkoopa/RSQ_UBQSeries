@@ -65,6 +65,7 @@ class RSQDG_Throw : EventHandler
 	private Actor   wHit[MAX_WATCH * MAX_VICTIMS];   // already struck by this throw
 	private Vector2 wBody[MAX_WATCH];    // the thrower's own velocity, added at release
 	private bool    wAir[MAX_WATCH];     // off the floor last tic (a re-catch now is a mid-air one)
+	private double  wRel[MAX_WATCH];     // how hard it was thrown, m/s, the body's run taken out
 
 	// ---- the throw ledger: what a SCORER needs to know, after the fact ---------
 	//
@@ -329,6 +330,7 @@ class RSQDG_Throw : EventHandler
 		wHand[slot] = hand;
 		wBody[slot] = body;
 		wAir[slot] = false;
+		wRel[slot] = ImpactMps(a, a.Vel, body);
 		for (int v = 0; v < MAX_VICTIMS; v++) wHit[slot * MAX_VICTIMS + v] = null;
 		LogThrow(a, by);
 	}
@@ -556,19 +558,21 @@ class RSQDG_Throw : EventHandler
 
 		let feel = RSQDG_Feel.Get();
 		if (feel) feel.OnImpact(a, p, speedMps, RSQDG_Mass.Heft(a));
+		RSQDG_Feel.Thud(a, p, RSQDG_Mass.Heft(a), min(1.0, speedMps / 8.0));
 		RSQDG_Events.Tell("throw.impact", wHand[i], a);
 
-		// A HARD LANDING SETS OFF WHAT IS MADE TO GO OFF. MASSDEF's `impact
-		// explode`; the thrower is the source, so the kill is his. Killed
-		// through damage rather than A_Die, so its own death sequence --
-		// the explosion -- runs exactly as if it had been shot.
-		double hard = RSQDG_Reach.Num("rsqdg_throw_explode", p, 6.0);
-		if (hard > 0 && speedMps >= hard
+		// A HARD THROW SETS OFF WHAT IS MADE TO GO OFF (owner 2026-10-31: "barrels blow on impact"). MASSDEF's
+		// `impact explode`; the thrower is the source, so the kill is his. Killed through damage rather than A_Die,
+		// so its own death sequence -- the explosion -- runs exactly as if it had been shot. Judged by how hard it
+		// was THROWN (rsqdg_throw_explode m/s at release), not by the landing: a barrel set down falls from your hand
+		// at ~5 m/s, and a barrel thrown flat into an imp at 4 hits slower than that.
+		double hard = RSQDG_Reach.Num("rsqdg_throw_explode", p, 4.0);
+		if (hard > 0 && wRel[i] >= hard
 			&& (RSQDG_Mass.Flags(a) & RSQDG_Mass.FLIGHT_EXPLODE)
 			&& a.bSHOOTABLE && a.Health > 0)
 		{
 			if (RSQDG_Reach.Flag("rsqdg_debug", p, false))
-				Console.Printf("[RSQDG] thrown %s went off at %.1f m/s", a.GetClassName(), speedMps);
+				Console.Printf("[RSQDG] thrown %s went off (thrown %.1f, hit %.1f m/s)", a.GetClassName(), wRel[i], speedMps);
 			int k = LogFind(a);
 			if (k >= 0) lgBlast[k] = true;      // before the damage: the ledger says why it went off
 			a.DamageMobj(null, wBy[i], a.Health, 'None', DMG_FORCED);

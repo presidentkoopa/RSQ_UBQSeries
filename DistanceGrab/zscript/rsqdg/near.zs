@@ -354,7 +354,10 @@ class RSQDG_Near : EventHandler
 		// unless the VICTIM carries MF7_FORCEINFIGHTING. Borrowed and handed back like bNOGRAVITY.
 		a.bFORCEINFIGHTING = true;
 		a.Vel = (0, 0, 0);
-		collarEnd[n] = level.maptime + int(RSQDG_Reach.Num("rsqdg_collar_secs", p, 3.0) * TICRATE);
+		// HUMAN SHIELD (owner 2026-10-31, an option of its own): held as long as the grip is (a minute at most), turned
+		// to face away from you -- its front to whatever is shooting. Everything that makes it a shield is above.
+		bool shield = On("rsqdg_collar_shield", p, false);
+		collarEnd[n] = level.maptime + (shield ? 60 * TICRATE : int(RSQDG_Reach.Num("rsqdg_collar_secs", p, 3.0) * TICRATE));
 		collarPing[n] = 0;
 		let feel = RSQDG_Feel.Get();
 		if (feel) feel.OnCatch(1, a, p, false, RSQDG_Mass.Heft(a));
@@ -391,6 +394,7 @@ class RSQDG_Near : EventHandler
 			if (!a.TryMove(at.xy, true)) { }
 			a.SetZ(max(a.floorz, at.z));
 			a.Vel = (0, 0, 0);
+			if (On("rsqdg_collar_shield", p, false)) a.Angle = p.mo.Angle;
 			// freezetics, not tics = -1. tics only stops the state counter expiring: movement, Z,
 			// portals, crushing and the water block all still run for a monster held in front of
 			// your face, and zeroing Vel and setting bNOGRAVITY by hand is doing less completely

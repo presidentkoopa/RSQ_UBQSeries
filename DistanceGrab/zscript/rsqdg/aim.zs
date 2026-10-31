@@ -329,12 +329,22 @@ class RSQDG_Aim : EventHandler
 	static void Migrate()
 	{
 		let ver = CVar.FindCVar("rsqdg_cfgver");
-		if (!ver || ver.GetInt() >= 1) return;
-		let c = CVar.FindCVar("rsqdg_path_speed"); if (c) c.SetFloat(22.0);
-		c = CVar.FindCVar("rsqdg_path_tmax");      if (c) c.SetFloat(40.0);
-		c = CVar.FindCVar("rsqdg_path_arc");       if (c) c.SetFloat(0.25);
-		c = CVar.FindCVar("rsqdg_tumble");         if (c) c.SetFloat(1.0);
-		ver.SetInt(1);
+		if (!ver) return;
+		CVar c;
+		if (ver.GetInt() < 1)
+		{
+			c = CVar.FindCVar("rsqdg_path_speed"); if (c) c.SetFloat(22.0);
+			c = CVar.FindCVar("rsqdg_path_tmax");  if (c) c.SetFloat(40.0);
+			c = CVar.FindCVar("rsqdg_path_arc");   if (c) c.SetFloat(0.25);
+			c = CVar.FindCVar("rsqdg_tumble");     if (c) c.SetFloat(1.0);
+			ver.SetInt(1);
+		}
+		// 2 (2026-10-31, owner: "barrels blow on impact"): the barrel goes off by how hard it was THROWN, 4 m/s.
+		if (ver.GetInt() < 2)
+		{
+			c = CVar.FindCVar("rsqdg_throw_explode"); if (c) c.SetFloat(4.0);
+			ver.SetInt(2);
+		}
 	}
 
 	override void WorldLoaded(WorldEvent e)

@@ -4,6 +4,10 @@
 // a lock, a launch, a catch, a drop -- and turns it into a buzz in the right
 // hand.
 //
+// SOUND BY WEIGHT (owner 2026-10-31, picked): Doom's own revenant swing as the whoosh of a throw, rising with its
+// speed, and Doom's own punch as the thud of a catch and a landing, deeper and louder the heavier the thing
+// (SNDINFO aliases the stock lumps; rsqdg_sounds off is silent again). What follows is the 10-27 history.
+//
 // NO SOUNDS OF ITS OWN (2026-10-27). The five procedural sounds this used to
 // play (tools/gen_sounds.py: a lock tick, a launch, a hum that rose through the
 // flight, a catch thump, a drop) are gone. The owner called them goofy, and his
@@ -457,6 +461,7 @@ class RSQDG_Feel : EventHandler
 		// TWO TICKS FOR A HEAVY THING. Rhythm is the only dial there is, and
 		// a barrel landing in your palm should not feel like a clip landing.
 		Pulse(hand, PRI_CATCH, heft >= 0.55 ? 2 : 1);
+		Thud(a ? a : Actor(p.mo), p, heft, 0.6);
 
 		let las = RSQDG_Laser.Get();
 		if (las) las.Burst(hand);
@@ -486,6 +491,24 @@ class RSQDG_Feel : EventHandler
 	// heard only as whatever it hit (WorldHands plays nothing of its own here).
 	void OnImpact(Actor a, PlayerInfo p, double mps, double heft)
 	{
+	}
+
+	// heft 0 (a clip) .. 1 (a body); hard 0..1 how hard it came. A clip ticks, a barrel thumps.
+	static void Thud(Actor a, PlayerInfo p, double heft, double hard)
+	{
+		if (!a || !p || !RSQDG_Reach.Flag("rsqdg_sounds", p, true) || hard <= 0.05) return;
+		double vol = clamp((0.25 + 0.75 * heft) * (0.35 + 0.65 * hard), 0.05, 1.0);
+		double pitch = clamp(1.45 - 0.85 * heft + FRandom[RSQDGSnd](-0.05, 0.05), 0.45, 1.6);
+		a.A_StartSound("rsqdg/thud", CHAN_AUTO, CHANF_OVERLAP, vol, ATTN_NORM, pitch);
+	}
+
+	// mps: how hard it was thrown. Faster is higher and louder; heavier is lower.
+	static void Whoosh(Actor a, PlayerInfo p, double mps, double heft)
+	{
+		if (!a || !p || !RSQDG_Reach.Flag("rsqdg_sounds", p, true) || mps < 1.5) return;
+		double vol = clamp(mps / 9.0, 0.2, 1.0);
+		double pitch = clamp(0.7 + mps / 14.0 - 0.3 * heft, 0.5, 1.6);
+		a.A_StartSound("rsqdg/whoosh", CHAN_AUTO, CHANF_OVERLAP, vol, ATTN_NORM, pitch);
 	}
 
 	// ---- the continuous level, per hand ------------------------------------

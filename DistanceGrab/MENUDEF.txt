@@ -119,6 +119,7 @@ OptionMenu "RSQDG_Targets"
 	Option "Off-Hand Headlock", "rsqdg_collar", "OnOff"
 	Slider "Headlock: Heaviest", "rsqdg_collar_mass", 50, 1000, 50, 0
 	Slider "Headlock: Seconds", "rsqdg_collar_secs", 1, 10, 0.5, 1
+	Option "Headlock: Human Shield (hold until let go)", "rsqdg_collar_shield", "OnOff"
 	StaticText " "
 	Option "Line of Sight", "rsqdg_sight", "OnOff"
 	Option "Use Pickups on Catch", "rsqdg_catch_takes", "OnOff"
@@ -176,7 +177,7 @@ OptionMenu "RSQDG_Debug"
 	Option "Report Actions", "rsqdg_debug", "OnOff"
 	Option "Report Refusals", "rsqdg_trace", "OnOff"
 	StaticText " "
-	SafeCommand "Reset All", "resetcvar rsqdg_on rsqdg_reach rsqdg_spread rsqdg_sight rsqdg_corpses rsqdg_barrels rsqdg_weapons rsqdg_powerups rsqdg_ammo rsqdg_health rsqdg_armor rsqdg_keycards rsqdg_bonuses rsqdg_near rsqdg_near_m rsqdg_swap rsqdg_swap_m rsqdg_swap_roll rsqdg_collar rsqdg_collar_mass rsqdg_collar_secs rsqdg_keys_main rsqdg_keys_off rsqdg_button rsqdg_palm rsqdg_palm_roll rsqdg_palm_tol rsqdg_palm_pitch rsqdg_jump_m rsqdg_lock_dwell rsqdg_yield rsqdg_steady_m rsqdg_lightup rsqdg_glow rsqdg_glow_a rsqdg_voxel_flash rsqdg_flash rsqdg_flick_deg rsqdg_flight_speed rsqdg_steer rsqdg_pull_kg rsqdg_flight_gravity rsqdg_flight_mode rsqdg_arc_apex rsqdg_flight_duck rsqdg_flight_radius rsqdg_flight_timeout rsqdg_catch_radius rsqdg_catch_hold rsqdg_catch_takes rsqdg_throw_scale rsqdg_throw_boost rsqdg_auto_throw rsqdg_throw_stun rsqdg_path_smooth rsqdg_spin rsqdg_throw_spin rsqdg_trail rsqdg_dust rsqdg_arm_kg rsqdg_throw_j rsqdg_throw_min rsqdg_throw_explode rsqdg_hold_dist rsqdg_hold_k rsqdg_hold_vmax rsqdg_hold_break rsqdg_burden rsqdg_burden_kg rsqdg_beam rsqdg_beam_yield rsqdg_beam_w rsqdg_beam_a rsqdg_dot rsqdg_dot_size rsqdg_cone rsqdg_cone_a rsqdg_lead rsqdg_laser_idle rsqdg_haptics rsqdg_haptic_ramp rsqdg_rumble rsqdg_rumble_gain rsqdg_rumble_lock rsqdg_rumble_carry rsqdg_path_speed rsqdg_path_tmin rsqdg_path_tmax rsqdg_path_accel rsqdg_path_arc rsqdg_tumble rsqdg_air_gravity rsqdg_air_flutter rsqdg_air_maxtics rsqdg_hold_turn rsqdg_hold_sag rsqdg_catch_flash rsqdg_debug rsqdg_trace rsqdg_door rsqdg_door_grip rsqdg_door_use rsqdg_door_palm rsqdg_door_commit rsqdg_door_gain", "Reset all RSQ Distance Grab settings?"
+	SafeCommand "Reset All", "resetcvar rsqdg_on rsqdg_reach rsqdg_spread rsqdg_sight rsqdg_corpses rsqdg_barrels rsqdg_weapons rsqdg_powerups rsqdg_ammo rsqdg_health rsqdg_armor rsqdg_keycards rsqdg_bonuses rsqdg_near rsqdg_near_m rsqdg_swap rsqdg_swap_m rsqdg_swap_roll rsqdg_collar rsqdg_collar_mass rsqdg_collar_secs rsqdg_collar_shield rsqdg_keys_main rsqdg_keys_off rsqdg_button rsqdg_palm rsqdg_palm_roll rsqdg_palm_tol rsqdg_palm_pitch rsqdg_jump_m rsqdg_lock_dwell rsqdg_yield rsqdg_steady_m rsqdg_lightup rsqdg_glow rsqdg_glow_a rsqdg_voxel_flash rsqdg_flash rsqdg_flick_deg rsqdg_flight_speed rsqdg_steer rsqdg_pull_kg rsqdg_flight_gravity rsqdg_flight_mode rsqdg_arc_apex rsqdg_flight_duck rsqdg_flight_radius rsqdg_flight_timeout rsqdg_catch_radius rsqdg_catch_hold rsqdg_catch_takes rsqdg_throw_scale rsqdg_throw_boost rsqdg_auto_throw rsqdg_throw_stun rsqdg_path_smooth rsqdg_spin rsqdg_throw_spin rsqdg_trail rsqdg_dust rsqdg_throw_assist rsqdg_sounds rsqdg_two_hand rsqdg_body_shield rsqdg_arm_kg rsqdg_throw_j rsqdg_throw_min rsqdg_throw_explode rsqdg_hold_dist rsqdg_hold_k rsqdg_hold_vmax rsqdg_hold_break rsqdg_burden rsqdg_burden_kg rsqdg_beam rsqdg_beam_yield rsqdg_beam_w rsqdg_beam_a rsqdg_dot rsqdg_dot_size rsqdg_cone rsqdg_cone_a rsqdg_lead rsqdg_laser_idle rsqdg_haptics rsqdg_haptic_ramp rsqdg_rumble rsqdg_rumble_gain rsqdg_rumble_lock rsqdg_rumble_carry rsqdg_path_speed rsqdg_path_tmin rsqdg_path_tmax rsqdg_path_accel rsqdg_path_arc rsqdg_tumble rsqdg_air_gravity rsqdg_air_flutter rsqdg_air_maxtics rsqdg_hold_turn rsqdg_hold_sag rsqdg_catch_flash rsqdg_debug rsqdg_trace rsqdg_door rsqdg_door_grip rsqdg_door_use rsqdg_door_palm rsqdg_door_commit rsqdg_door_gain", "Reset all RSQ Distance Grab settings?"
 }
 
 OptionMenu "RSQDG_Gesture"
@@ -220,7 +221,11 @@ OptionMenu "RSQDG_Catch"
 	Slider "Stagger From (damage)", "rsqdg_throw_stun", 5, 100, 5, 0
 	Slider "Arm Weight", "rsqdg_arm_kg", 5, 100, 5, 0
 	Slider "Impact Damage", "rsqdg_throw_j", 2, 60, 1, 0
-	Slider "Barrel Blast Speed", "rsqdg_throw_explode", 0, 15, 0.5, 1
+	Slider "Barrel Blast: Thrown At (m/s)", "rsqdg_throw_explode", 0, 15, 0.5, 1
+	Slider "Throw Aim Assist (deg)", "rsqdg_throw_assist", 0, 30, 1, 0
+	Slider "Two-Hand Lift", "rsqdg_two_hand", 1.0, 4.0, 0.25, 2
+	Option "Body Shield (held corpse/barrel)", "rsqdg_body_shield", "OnOff"
+	Option "Sounds (whoosh, thud)", "rsqdg_sounds", "OnOff"
 	StaticText " "
 	Slider "Hold Distance", "rsqdg_hold_dist", 0.0, 1.5, 0.05, 2
 	Slider "Hold Stiffness", "rsqdg_hold_k", 0.1, 0.95, 0.05, 2

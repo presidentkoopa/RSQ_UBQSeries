@@ -662,3 +662,27 @@ and its reasoning are still the only other haptic site a stock engine gives
 script, and because the engine's own caveat is unchanged either way — while a
 weapon is two-hand stabilised it buzzes the **other** hand at 0.6 as well
 (`p_map.cpp:4771-4773`), which nothing in script can see or stop.
+
+## D36 — ROUND TWO OF THE "GOOD FOOD" PASS. 2026-10-31.
+
+Owner picks: barrels blow on impact, throw aim assist, sound by weight, two-hand lift, body shield, and the
+Headlock as a human shield (a separate option). Random ammo in grabbed weapons waits for weapon condition.
+
+- **The wind-up was the throw.** Auto-throw read any arm speed, so pulling the arm back to throw let go on the
+  backswing and the barrel went over your shoulder (rig: it landed 3 m behind, and blew up next to you). Only a swing
+  within 60° of where you face counts now (`hold.zs`). The 10-31 "auto-thrown at 5.8 m/s" result was this bug.
+- **Barrels go off by how hard they were thrown** (`rsqdg_throw_explode` 4 m/s at release, cfgver 2), not by
+  the landing: a barrel set down falls at ~5 m/s. Rig: thrown 8.4, went off on landing.
+- **Aim assist** (`rsqdg_throw_assist` 12°): heading turned onto the nearest visible monster in the cone, lobbed to
+  its middle at the air's gravity. Rig: "onto PistolZombie, 4.3 deg off", barrel landed on it and went off.
+- **Two hands** (`rsqdg_two_hand` 2): the empty other palm on the thing; it handles that many times lighter and sits
+  between the hands. Rig: BOTH HANDS / one hand toggled with the off hand's pose.
+- **Body shield** (`rsqdg_body_shield`): a held corpse is shootable while held (health <= 0, so a bullet stops on it
+  and does nothing); missiles are tracked from their spawn (`WorldThingSpawned`; Brutal Doom's imp ball is not found
+  by a blockmap search) and any coming at the held thing is set off on it. A held barrel takes the hit and goes off.
+  Rig: an imp ball stopped on a held Zombieman corpse (plain Doom) and on a held barrel (BD order, the barrel blew).
+  Bullets on a corpse: not rig-tested.
+- **Human shield** (`rsqdg_collar_shield`, off): the Headlock lasts as long as the grip (a minute at most), the
+  monster turned to face away. Not rig-tested (the off-hand grip is a raw key).
+- **Sounds** (`rsqdg_sounds`): Doom's own revenant swing (whoosh, pitch with speed) and punch (thud, deeper with
+  weight). Not heard on the rig (it runs -nosound).

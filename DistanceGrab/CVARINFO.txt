@@ -47,6 +47,7 @@ user float  rsqdg_swap_roll   = 55.0;    // degrees each wrist must be rolled (p
 user bool   rsqdg_collar      = true;    // the off hand's grip holds a living monster (Headlock)
 user float  rsqdg_collar_mass = 400.0;   // the heaviest monster it can hold (Doom mass: imp 100, demon 400, baron 1000)
 user float  rsqdg_collar_secs = 3.0;     // how long it stays held before it breaks free
+user bool   rsqdg_collar_shield = false; // HUMAN SHIELD: the Headlock lasts as long as the grip, the monster turned to face away
 user string rsqdg_keys_main   = "446";      // the main grip's key codes (as RSQ_TacticalRig reads them)
 user string rsqdg_keys_off    = "443 436";  // the off grip's key codes
 
@@ -190,10 +191,14 @@ user bool rsqdg_catch_takes = true;
 user float rsqdg_throw_scale = 1.0;
 user float rsqdg_throw_boost = 2.5;    // the throw's speed is multiplied by this (after weight divides it): chuck a barrel
 user float rsqdg_auto_throw  = 2.5;    // m/s: an arm swung past this lets go by itself as it slows (0 = only the palm lets go)
-user float rsqdg_throw_stun  = 20.0;
+user float rsqdg_throw_stun  = 20.0;   // damage from a thrown thing that knocks a monster into its pain and shoves it
 user float rsqdg_throw_spin  = 1.0;    // how fast a thrown thing turns in the air (0 = none)
 user bool  rsqdg_trail       = true;   // a faint trail behind a pulled thing
-user bool  rsqdg_dust        = true;   // a hard landing kicks up dust   // damage from a thrown thing that knocks a monster into its pain and shoves it
+user bool  rsqdg_dust        = true;   // a hard landing kicks up dust
+user float rsqdg_throw_assist = 12.0;  // degrees: a throw within this of a monster bends to hit it (0 = off)
+user bool  rsqdg_sounds      = true;   // whoosh on a throw (higher the faster), thud on a catch and a landing (deeper the heavier)
+user float rsqdg_two_hand    = 2.0;    // the other palm on a held thing: it handles as if this many times lighter (1 = off)
+user bool  rsqdg_body_shield = true;   // a held corpse or barrel stops shots and fireballs (a barrel goes off when it is hit)
 
 // THE ARM HAS MASS TOO. Let go and the object keeps arm/(arm+kg) of the hand's
 // speed: a keycard leaves at hand speed, a 60 kg barrel at a third of it.
@@ -203,8 +208,8 @@ user float rsqdg_arm_kg      = 30.0;
 // damage: a thrown shotgun at 12 m/s ~17, a barrel at 5 m/s ~50.
 user float rsqdg_throw_j       = 15.0;
 user float rsqdg_throw_min     = 3.0;   // m/s below which nothing is an impact
-user float rsqdg_throw_explode = 6.0;   // m/s landing that sets off an
-                                        // `impact explode` MASSDEF row. 0 never
+user float rsqdg_throw_explode = 4.0;   // m/s THROWN that sets off an `impact explode` MASSDEF row (a barrel)
+                                        // where it lands. 0 never
 
 // ---- the carry (hold.zs) ---------------------------------------------------
 // A SPRING, NOT A TELEPORT: the object is asked to move toward a point ahead of

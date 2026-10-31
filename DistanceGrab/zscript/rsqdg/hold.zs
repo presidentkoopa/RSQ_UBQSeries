@@ -59,6 +59,12 @@ class RSQDG_Hold : EventHandler
 	private bool   savedCorpse[2];
 	private double savedRadius[2];
 	private double savedHeight[2];
+	private bool   savedShoot[2];
+
+	// BOTH HANDS ON IT (owner 2026-10-31, picked "two-hand lift"): the other palm on the held thing, that hand empty.
+	// It then handles as if rsqdg_two_hand times lighter -- follows faster, sags less, throws harder -- and sits
+	// between the two hands. Read fresh every tic; the release reads the last tic's.
+	private bool   two[2];
 
 	// ---- A HELD THING TURNS WITH THE WRIST (rs_held.zs, rs_hold_rotate) -------
 	//
@@ -173,6 +179,11 @@ class RSQDG_Hold : EventHandler
 		savedCorpse[hand]     = a.bCORPSE;
 		savedRadius[hand]     = a.Radius;
 		savedHeight[hand]     = a.Height;
+		savedShoot[hand]      = a.bSHOOTABLE;
+		// A BODY SHIELD (owner 2026-10-31): a held corpse stops bullets. A corpse is not shootable; while it is held it
+		// is, and with its health at or below 0 DamageMobj does nothing to it -- the bullet just stops there. A barrel
+		// is shootable already (and goes off when it is hit, held or not). Fireballs: ShieldTick.
+		if (Shieldy(a) && a.Health <= 0 && RSQDG_Reach.Flag("rsqdg_body_shield", p, true)) a.bSHOOTABLE = true;
 
 		// Weightless while carried, pass-through so it does not fight your own
 		// collision cylinder, and not collectable by walking over your own hand.
@@ -227,6 +238,7 @@ class RSQDG_Hold : EventHandler
 	{
 		Unturn(hand, a);
 		a.bNOGRAVITY = savedNoGrav[hand];
+		if (!Raised(hand, a)) a.bSHOOTABLE = savedShoot[hand];
 		double r = Raised(hand, a) ? a.Radius : savedRadius[hand];
 		double h = Raised(hand, a) ? a.Height : savedHeight[hand];
 		let th = RSQDG_Throw.Get();
@@ -292,6 +304,7 @@ class RSQDG_Hold : EventHandler
 	private void Forget(int hand)
 	{
 		held[hand] = null;
+		two[hand] = false;
 		turnOn[hand] = false;
 		sag[hand] = 0;
 		frozen[hand] = false;
@@ -329,7 +342,7 @@ class RSQDG_Hold : EventHandler
 		// 30 kg a keycard leaves at your hand's speed and a 60 kg barrel at a
 		// third of it: a heave, not a flick. Weight shows in the throw with no
 		// rule written for any object.
-		double kg = RSQDG_Mass.Kg(a);
+		double kg = EffKg(hand, a, p);
 		double arm = max(1.0, RSQDG_Reach.Num("rsqdg_arm_kg", p, 30.0));
 		v *= arm / (arm + kg);
 		// THE THROWING BOOST (owner 2026-10-31: "let me have a throwing boost so I can chuck a barrel a reasonable
@@ -350,6 +363,7 @@ class RSQDG_Hold : EventHandler
 		// A thrown pickup stays uncollectable for a moment, or walking after
 		// your own throw picks it straight back up on the same tic.
 		Restore(hand, a, thrown ? 10 : 0);
+		if (thrown && p.mo) v = Assist(p, a, v - body) + body;
 		a.Vel = v;
 
 		// INTO THE AIR, EVERY RELEASE: thrown or set down, it falls at the one
@@ -358,6 +372,7 @@ class RSQDG_Hold : EventHandler
 		double mps = RSQDG_Reach.Metres(v - body) * TICRATE;
 		double spin = thrown ? clamp(mps * 3.0, 4.0, 28.0) * (FRandom[RSQDGSpin](0, 1) < 0.5 ? -1 : 1) * RSQDG_Reach.Num("rsqdg_throw_spin", p, 1.0) : 0.0;
 		if (air) air.Air(a, spin);
+		if (thrown) RSQDG_Feel.Whoosh(a, p, mps, RSQDG_Mass.Heft(a));
 
 		if (RSQDG_Reach.Flag("rsqdg_debug", p, false))
 			Console.Printf("[RSQDG] hand %d released %s at %.1f m/s (%s; arm %.1f, body %.1f)",
@@ -403,10 +418,11 @@ class RSQDG_Hold : EventHandler
 	}
 
 	// Where the hand wants the object's ORIGIN (feet, not centre) this tic.
-	private Vector3 Target(PlayerPawn pmo, PlayerInfo p, int h, Actor a)
+	private Vector3 Target(PlayerPawn pmo, PlayerInfo p, int h, Actor a, int ph = -1)
 	{
-		Vector3 palm = RSQDG_Reach.Palm(pmo, h);
-		Vector3 dir  = RSQDG_Reach.Dir(pmo, h);   // room-space unit vector
+		if (ph < 0) ph = h;
+		Vector3 palm = RSQDG_Reach.Palm(pmo, ph);
+		Vector3 dir  = RSQDG_Reach.Dir(pmo, ph);   // room-space unit vector
 
 		// Metres ahead of the hand: the setting, plus the object's half-size so
 		// its near face, not its middle, sits at the stand-off. Half-size from
@@ -435,7 +451,7 @@ class RSQDG_Hold : EventHandler
 	{
 		double amount = RSQDG_Reach.Num("rsqdg_hold_sag", p, 1.0);
 		if (amount <= 0) { sag[h] = 0; return; }
-		double heavy = clamp(log10(max(RSQDG_Mass.Kg(a), 0.0) + 1.0) / 1.8, 0.0, 1.0);
+		double heavy = clamp(log10(max(EffKg(h, a, p), 0.0) + 1.0) / 1.8, 0.0, 1.0);
 		double swing = clamp(armVel.Length() / 6.0, 0.0, 1.0);
 		sag[h] = heavy * amount * (3.0 + swing * 4.0) / RSQDG_Reach.PIXELSTRETCH;
 	}
@@ -507,7 +523,14 @@ class RSQDG_Hold : EventHandler
 			// throw lets go by itself: the arm past rsqdg_auto_throw m/s, and then slowing (its peak passed, as a
 			// real throw lets go) -- released with the peak's speed. 0 is the old way (the palm decides).
 			double autoMps = RSQDG_Reach.Num("rsqdg_auto_throw", p, 2.5);
+			// ONLY A SWING AWAY FROM YOU (rig 2026-10-31: the wind-up was read as the throw, peak and all, and the
+			// barrel went over your shoulder). The arm's speed counts while it moves within 60 degrees of where you
+			// face, across the ground; a wind-up, a pull to the chest or a drop straight down never lets go.
 			double nowMps = RSQDG_Reach.Metres(armVel) * TICRATE;
+			Vector2 face = (cos(pmo.Angle), sin(pmo.Angle));
+			double across = armVel.xy.Length();
+			bool outward = across > 0.001 && (armVel.xy dot face) > 0.5 * across;
+			if (!outward) nowMps = 0;
 			armPeak[h] = max(armPeak[h] * 0.85, nowMps);
 			if (autoMps > 0 && armPeak[h] >= autoMps && nowMps < armPeak[h] * 0.6)
 			{
@@ -517,9 +540,15 @@ class RSQDG_Hold : EventHandler
 				continue;
 			}
 
+			bool wasTwo = two[h];
+			two[h] = BothHands(pmo, p, h, a);
+			if (two[h] && !wasTwo) RSQDG_Feel.Thud(a, p, RSQDG_Mass.Heft(a), 0.3);   // the second hand takes hold
+			if (two[h] != wasTwo && RSQDG_Reach.Flag("rsqdg_debug", p, false))
+				Console.Printf("[RSQDG] hand %d: %s %s", h, a.GetClassName(), two[h] ? "BOTH HANDS" : "one hand");
 			UpdateSag(h, a, armVel, p);
 			Turn(h, a, pmo, p);
 			Vector3 want = Target(pmo, p, h, a);
+			if (two[h]) want = (want + Target(pmo, p, h, a, 1 - h)) * 0.5;
 			Vector3 err = want - a.Pos;
 
 			// STRAIN is measured BEFORE this tic's push, from where the
@@ -540,7 +569,8 @@ class RSQDG_Hold : EventHandler
 			}
 			else strainTics[h] = 0;
 
-			double share = RSQDG_Mass.PullShare(a, p);
+			double pk = max(0.1, RSQDG_Reach.Num("rsqdg_pull_kg", p, 10.0));
+			double share = pk / (pk + EffKg(h, a, p));
 			double k = clamp(RSQDG_Reach.Num("rsqdg_hold_k", p, 0.6), 0.05, 0.95)
 				* (0.33 + 0.67 * share);
 			double vmax = RSQDG_Reach.Num("rsqdg_hold_vmax", p, 40.0) * max(0.3, sqrt(share));
@@ -550,9 +580,138 @@ class RSQDG_Hold : EventHandler
 			double vl = v.Length();
 			if (vl > vmax) v *= vmax / vl;
 			a.Vel = v + bodyVel;
+			ShieldTick(pmo, p, h, a);
 		}
 
 		UpdateBurden(pmo, p);
+		PruneFlying();
+	}
+
+	// ---- both hands, aim, shield ---------------------------------------------------
+
+	// The kilograms the hand feels: the thing's own, divided when both hands carry it.
+	private double EffKg(int h, Actor a, PlayerInfo p) const
+	{
+		double kg = RSQDG_Mass.Kg(a);
+		if ((h == 0 || h == 1) && two[h]) kg /= max(1.0, RSQDG_Reach.Num("rsqdg_two_hand", p, 2.0));
+		return kg;
+	}
+
+	// The other hand is empty and its palm is on the thing: within its body plus a quarter metre.
+	private bool BothHands(PlayerPawn pmo, PlayerInfo p, int h, Actor a)
+	{
+		if (RSQDG_Reach.Num("rsqdg_two_hand", p, 2.0) <= 1.0 || held[1 - h]) return false;
+		Vector3 op = RSQDG_Reach.Palm(pmo, 1 - h);
+		double pad = 0.25 * RSQDG_Reach.UNITS_PER_METRE_XY;
+		double r = min(savedRadius[h], max(savedHeight[h] * 0.5, 8.0)) + pad;
+		double mid = a.Pos.z + a.Height * 0.5;
+		if ((op.xy - a.Pos.xy).Length() > r) return false;
+		return abs(op.z - mid) <= a.Height * 0.5 + pad / RSQDG_Reach.PIXELSTRETCH;
+	}
+
+	// THROW AIM ASSIST (owner 2026-10-31, picked): a throw within rsqdg_throw_assist degrees of a monster you can see
+	// is turned onto it, and lobbed so the arc comes down on its middle at the speed you threw (the air's real
+	// gravity, throw.zs). The speed across the ground is yours; only the heading and the lob are corrected, the lob
+	// by no more than 0.6 of that speed either way.
+	private Vector3 Assist(PlayerInfo p, Actor a, Vector3 v)
+	{
+		double cone = RSQDG_Reach.Num("rsqdg_throw_assist", p, 12.0);
+		double hs = v.xy.Length();
+		if (cone <= 0 || hs < 0.5 || !p.mo) return v;
+		double heading = VectorAngle(v.x, v.y);
+		Actor best = null;
+		double bestOff = cone;
+		let it = BlockThingsIterator.Create(a, 1200);
+		while (it.Next())
+		{
+			Actor t = it.thing;
+			if (!t || t == a || t == p.mo || !t.bISMONSTER || t.Health <= 0 || !t.bSHOOTABLE || t.bFRIENDLY) continue;
+			Vector2 d = t.Pos.xy - a.Pos.xy;
+			double dl = d.Length();
+			if (dl < 32 || dl > 1200) continue;
+			double off = abs(Actor.DeltaAngle(heading, VectorAngle(d.x, d.y)));
+			if (off >= bestOff || !p.mo.CheckSight(t, SF_IGNOREVISIBILITY)) continue;
+			best = t;
+			bestOff = off;
+		}
+		if (!best) return v;
+		Vector2 d = best.Pos.xy - a.Pos.xy;
+		double dl = d.Length();
+		Vector2 nh = d / dl * hs;
+		double tt = dl / hs;
+		double g = a.GetGravity() * clamp(RSQDG_Reach.Num("rsqdg_air_gravity", p, 0.27), 0.0, 1.0);
+		double dz = (best.Pos.z + best.Height * 0.5) - (a.Pos.z + a.Height * 0.5);
+		double vz = clamp(dz / tt + 0.5 * g * tt, v.z - hs * 0.6, v.z + hs * 0.6);
+		if (RSQDG_Reach.Flag("rsqdg_debug", p, false))
+			Console.Printf("[RSQDG] throw assist: onto %s, %.1f deg off, %.0f units", best.GetClassName(), bestOff, dl);
+		return (nh.x, nh.y, vz);
+	}
+
+	// What can be a shield: a corpse, a barrel, a body of a thing -- not a pickup, not a living monster.
+	static bool Shieldy(Actor a)
+	{
+		return a && !(a is "Inventory") && (a.bCORPSE || !a.bISMONSTER) && RSQDG_Mass.Kg(a) >= 20.0;
+	}
+
+	// A HELD BODY STOPS FIREBALLS. The held thing is pass-through while carried (so it does not fight your own
+	// collision), and PIT_CheckThing lets a missile through anything pass-through -- so each tic every enemy missile
+	// whose next step crosses the held thing's body is stopped on it and goes off there. A held barrel that is hit
+	// takes the hit (and goes off). The body is the thing's own radius and its living height, 24..56.
+	// Every missile in the level, from its spawn: a blockmap search misses the ones that are not linked in it
+	// (rig 2026-10-31: Brutal Doom's imp ball went straight through a held barrel unseen).
+	private Array<Actor> flying;
+	override void WorldThingSpawned(WorldEvent e)
+	{
+		if (!e.Thing || !e.Thing.bMISSILE) return;
+		if (flying.Size() >= 64) PruneFlying();
+		flying.Push(e.Thing);
+	}
+	private void PruneFlying()
+	{
+		for (int k = flying.Size() - 1; k >= 0; k--)
+			if (!flying[k] || !flying[k].bMISSILE) flying.Delete(k);
+	}
+
+	private void ShieldTick(PlayerPawn pmo, PlayerInfo p, int h, Actor a)
+	{
+		if (!Shieldy(a) || !RSQDG_Reach.Flag("rsqdg_body_shield", p, true)) return;
+		if (savedShoot[h] && a.Health <= 0) return;   // a barrel that went off: its own blast is not stopped
+		let def = GetDefaultByType(a.GetClass());
+		double r = max(savedRadius[h], 14.0);
+		double ht = clamp(def ? def.Height : savedHeight[h], 24.0, 56.0);
+		double z0 = a.Pos.z + a.Height * 0.5 - ht * 0.5;
+		Array<Actor> hits;
+		Array<double> hx, hy, hz;
+		for (int k = 0; k < flying.Size(); k++)
+		{
+			Actor m = flying[k];
+			if (!m || (m.Pos.xy - a.Pos.xy).Length() > 200) continue;
+			if (m && m.bMISSILE && RSQDG_Reach.Flag("rsqdg_trace", p, false))
+				Console.Printf("[RSQDG] shield sees %s at %.0f %.0f %.0f vel %.1f %.1f %.1f r %.0f (held %.0f %.0f %.0f r %.0f ht %.0f)", m.GetClassName(), m.Pos.x, m.Pos.y, m.Pos.z, m.Vel.x, m.Vel.y, m.Vel.z, m.Radius, a.Pos.x, a.Pos.y, z0, r, ht);
+			// coming at it, at a missile's speed, and not its own (a blast's debris, a trail puff)
+			if (!m || m == a || !m.bMISSILE || m.target == pmo || m.target == a || m.Vel.Length() < 4.0) continue;
+			if (((a.Pos.xy - m.Pos.xy) dot m.Vel.xy) <= 0) continue;
+			Vector2 d = m.Vel.xy;
+			double l2 = d dot d;
+			double t = l2 > 0 ? clamp(((a.Pos.xy - m.Pos.xy) dot d) / l2, 0.0, 1.0) : 0.0;
+			Vector2 q = m.Pos.xy + d * t;
+			if ((q - a.Pos.xy).Length() > r + m.Radius) continue;
+			double z = m.Pos.z + m.Vel.z * t;
+			if (z + m.Height < z0 || z > z0 + ht) continue;
+			hits.Push(m); hx.Push(q.x); hy.Push(q.y); hz.Push(z);
+		}
+		for (int i = 0; i < hits.Size(); i++)
+		{
+			Actor m = hits[i];
+			if (!m || !m.bMISSILE) continue;
+			if (RSQDG_Reach.Flag("rsqdg_debug", p, false))
+				Console.Printf("[RSQDG] hand %d: %s stopped %s", h, a.GetClassName(), m.GetClassName());
+			m.SetOrigin((hx[i], hy[i], hz[i]), false);
+			Actor src = m.target;
+			if (a && a.bSHOOTABLE && a.Health > 0) a.DamageMobj(m, src, max(1, m.GetMissileDamage(7, 1)), m.DamageType);
+			if (m) m.ExplodeMissile(null, a);
+			RSQDG_Events.Tell("hold.block", h, a);
+		}
 	}
 
 	// ---- the burden --------------------------------------------------------
