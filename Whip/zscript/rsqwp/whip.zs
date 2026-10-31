@@ -271,7 +271,13 @@ class RSQWP_Whip : EventHandler
 			for (int pn = 0; pn < MAXPLAYERS; pn++)
 			{
 				let pm = playeringame[pn] ? players[pn].mo : null;
-				if (pm && pm.Health > 0 && !pm.FindInventory("RSQWP_WhipWeapon")) pm.GiveInventory("RSQWP_WhipWeapon", 1);
+				if (!pm || pm.Health <= 0 || pm.FindInventory("RSQWP_WhipWeapon")) continue;
+				// as RSQ ShieldSaw gives its saw: never switch to it on the give, then set the slots up again so
+				// KEYCONF's addslotdefault puts it in slot 1 whatever the player class (any mod's) lists
+				pm.GiveInventory("RSQWP_WhipWeapon", 1);
+				let wh = Weapon(pm.FindInventory("RSQWP_WhipWeapon"));
+				if (wh && players[pn].PendingWeapon == wh) players[pn].PendingWeapon = WP_NOCHANGE;
+				WeaponSlots.SetupWeaponSlots(pm);
 			}
 		ArmPump();
 		Mantle();
