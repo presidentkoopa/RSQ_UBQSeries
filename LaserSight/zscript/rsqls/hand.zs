@@ -16,8 +16,18 @@
 // metres and converted per axis, or a gun held level would aim high.
 class RSQLS_Hand
 {
-	const UPM = 34.0;          // map units per metre, horizontal
-	const PIXELSTRETCH = 1.2;
+	// Read live (Quest teardown 00 1.2a): map units per metre is vr_vunits_per_meter (34), the stretch the level's (1.2).
+	static clearscope double Upm()
+	{
+		let c = CVar.FindCVar("vr_vunits_per_meter");
+		double v = c ? c.GetFloat() : 34.0;
+		return v > 0 ? v : 34.0;
+	}
+	static clearscope double Ps()
+	{
+		double v = level ? level.pixelstretch : 1.2;
+		return v > 0 ? v : 1.2;
+	}
 
 	static double Yaw(PlayerPawn pmo, int h)   { return ((h == 0) ? pmo.AttackAngle : pmo.OffhandAngle) + 90; }
 	// Positive UP: AttackPitch already is (the engine negated Doom's view pitch).
@@ -63,14 +73,14 @@ class RSQLS_Hand
 		double pt = Pitch(pmo, h);
 		double r = Roll(pmo, h);
 		Vector3 m = Fwd(y, pt) * fwdMetres + Up(y, pt, r) * upMetres + Side(y, pt, r) * sideMetres;
-		return (m.x * UPM, m.y * UPM, m.z * UPM / PIXELSTRETCH);
+		return (m.x * Upm(), m.y * Upm(), m.z * Upm() / Ps());
 	}
 
 	// Room-space yaw, pitch (Doom convention: positive DOWN) and length of a
 	// map-space vector -- what a CORRECTPIXELSTRETCH model is aimed and sized by.
 	static double, double, double RoomAim(Vector3 d)
 	{
-		Vector3 r = (d.x, d.y, d.z * PIXELSTRETCH);
+		Vector3 r = (d.x, d.y, d.z * Ps());
 		return VectorAngle(r.x, r.y), -atan2(r.z, r.xy.Length()), r.Length();
 	}
 
@@ -108,10 +118,10 @@ class RSQLS_Hand
 	// Room metres (GL axes) -> a map-space vector.
 	static Vector3 RoomToMap(Vector3 r)
 	{
-		double vu = UPM;
+		double vu = Upm();
 		let c = CVar.FindCVar("vr_vunits_per_meter");
 		if (c) vu = c.GetFloat();
-		return (vu * r.x, -vu * r.z, vu * r.y / PIXELSTRETCH);
+		return (vu * r.x, -vu * r.z, vu * r.y / Ps());
 	}
 
 	// A point of a HUD model (cm, the controller's HUD frame) -> where it is in the map.

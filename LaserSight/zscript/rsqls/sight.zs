@@ -379,6 +379,25 @@ class RSQLS_Sight : EventHandler
 		UpdateReadout(pmo, p);
 	}
 
+	// 0 plain, 1 liquid, 2 metal: by the texture's name (Doom's own naming), cached per texture.
+	private Array<int> surfTex, surfKind;
+	private int Surface(TextureID tex)
+	{
+		if (!tex.IsValid()) return 0;
+		int id = int(tex);
+		int i = surfTex.Find(id);
+		if (i < surfTex.Size()) return surfKind[i];
+		String n = TexMan.GetName(tex);
+		n = n.MakeUpper();
+		int k = 0;
+		static const String liquid[] = { "WATER", "NUKAGE", "LAVA", "BLOOD", "SLIME", "FALL" };
+		static const String metal[] = { "METAL", "SUPPORT", "DOOR", "STEEL", "SHAWN", "PLAT", "PIPE" };
+		for (int j = 0; j < liquid.Size() && k == 0; j++) if (n.IndexOf(liquid[j]) >= 0) k = 1;
+		for (int j = 0; j < metal.Size() && k == 0; j++) if (n.IndexOf(metal[j]) >= 0) k = 2;
+		surfTex.Push(id); surfKind.Push(k);
+		return k;
+	}
+
 	private void DrawHand(int h, PlayerPawn pmo, PlayerInfo p, bool wantBeam, bool wantDot)
 	{
 		Weapon w = (h == 0) ? p.ReadyWeapon : p.OffhandWeapon;
@@ -486,10 +505,10 @@ class RSQLS_Sight : EventHandler
 		double hitCm = -1;      // room centimetres from the muzzle to what the trace hit
 		{
 			Vector3 rd = end - muzzle;
-			double vu = RSQLS_Hand.UPM;
+			double vu = RSQLS_Hand.Upm();
 			let vc = CVar.FindCVar("vr_vunits_per_meter");
 			if (vc) vu = vc.GetFloat();
-			double roomM = (rd.x, rd.y, rd.z * RSQLS_Hand.PIXELSTRETCH).Length() / vu;
+			double roomM = (rd.x, rd.y, rd.z * RSQLS_Hand.Ps()).Length() / vu;
 			rangeM[h] = (hit && !sky) ? roomM : 0;
 			if (hit && !sky && !arcOn) hitCm = roomM * 100.0;
 		}
@@ -612,8 +631,17 @@ class RSQLS_Sight : EventHandler
 			double depth = RSQLS_CB.Mode() ? 0.25 : 0.12;   // colour-blind play: the lock reads by its pulse
 			sc *= (1.0 - tighten) * (1.25 + depth * sin(level.maptime * hz * 360.0 / TICRATE));
 		}
+		// WHAT IT LANDED ON (Quest teardown 99 7: the trace already names the texture it hit). On water, slime, lava or
+		// blood the dot swims and scatters a little; on metal it glints, the glow wider. By texture name, once each.
+		int surf = RSQLS_Hand.Flag("rsqls_surface", p, true) ? Surface(t.HitTexture) : 0;
+		double sAlphaK = 1.0;
+		if (surf == 1)
+		{
+			sc *= 1.0 + 0.18 * sin(level.maptime * 9.0 + h * 90.0);
+			sAlphaK = 0.75;
+		}
 		s.Scale = (sc, sc);
-		s.Alpha = clamp(RSQLS_Hand.Num("rsqls_spot_a", p, 1.0), 0.0, 1.0);
+		s.Alpha = clamp(RSQLS_Hand.Num("rsqls_spot_a", p, 1.0) * sAlphaK, 0.0, 1.0);
 		s.Translation = dotTint;
 
 		// ---- the spread ring: where this gun's shots can land (learn.zs) -------
@@ -621,7 +649,7 @@ class RSQLS_Sight : EventHandler
 
 		// ---- the glow: off, a bloom, a real light, or both ----------------------
 		int gmode = RSQLS_Hand.Opt("rsqls_glow", p, 3);
-		double gscale = clamp(RSQLS_Hand.Num("rsqls_glow_scale", p, 1.8), 1.1, 4.0);
+		double gscale = clamp(RSQLS_Hand.Num("rsqls_glow_scale", p, 1.8), 1.1, 4.0) * (surf == 2 ? 1.5 : 1.0);
 		double gint = clamp(RSQLS_Hand.Num("rsqls_glow_int", p, 1.0), 0.1, 4.0);
 		let g = glow[h];
 		if (gmode == 1 || gmode == 3)
@@ -779,7 +807,7 @@ class RSQLS_Sight : EventHandler
 		Vector3 eye = (pmo.pos.x, pmo.pos.y, p.viewz);
 		Vector3 d = eye - at;
 		readout.Angle = VectorAngle(d.x, d.y);
-		readout.Pitch = -atan2(d.z * RSQLS_Hand.PIXELSTRETCH, d.xy.Length());
+		readout.Pitch = -atan2(d.z * RSQLS_Hand.Ps(), d.xy.Length());
 		sc *= RSQLS_Hand.Num("rsqls_readout_size", p, 1.0) * RSQLS_A11y.Text();   // RSQ_Accessibility's Text Size
 		readout.Scale = (sc, sc);
 		readM = rangeM[h];
@@ -796,7 +824,7 @@ class RSQLS_Sight : EventHandler
 		int units = RSQLS_Hand.Opt("rsqls_readout_units", pp, 0);
 		String txt;
 		if (units == 1) txt = String.Format("%.0f ft", readM * 3.28084);
-		else if (units == 2) txt = String.Format("%.0f u", readM * RSQLS_Hand.UPM);
+		else if (units == 2) txt = String.Format("%.0f u", readM * RSQLS_Hand.Upm());
 		else txt = readM < 10 ? String.Format("%.1f m", readM) : String.Format("%.0f m", readM);
 		double tw = SmallFont.StringWidth(txt) * 2.0;
 		cv.DrawText(SmallFont, Font.CR_WHITE, (128 - tw) * 0.5, 16 - SmallFont.GetHeight(), txt,
