@@ -23,6 +23,13 @@ class RSQDGT_Probe : EventHandler
 		if (e.Thing && e.Thing.GetClassName() == 'RSQDG_Buzz')
 			Console.Printf("T_BUZZ t%d missile=%d offhandflag?  pos=(%.0f %.0f %.0f)", level.maptime, e.Thing.bMissile, e.Thing.pos.x, e.Thing.pos.y, e.Thing.pos.z);
 	}
+	// every hurt monster: the Headlock throw's impact (owner's heavier toss, 2026-10-31)
+	override void WorldThingDamaged(WorldEvent e)
+	{
+		if (e.Thing && e.Thing.bISMONSTER)
+			Console.Printf("T_DMG t%d %s took %d (%s) by %s, hp now %d, pos=(%.0f %.0f %.0f)", level.maptime, e.Thing.GetClassName(), e.Damage, e.DamageType,
+				e.Inflictor ? e.Inflictor.GetClassName() : 'none', e.Thing.health, e.Thing.pos.x, e.Thing.pos.y, e.Thing.pos.z);
+	}
 	override void WorldTick()
 	{
 		let p = players[consoleplayer];

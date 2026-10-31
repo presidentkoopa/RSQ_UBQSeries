@@ -720,3 +720,24 @@ surveys/06_GRAB_INTERACTION.md §4.4 and §4.7, surveys/01_MELEE.md §3.5-3.6. R
   overlap test now runs for anything pass-through.
 - **Found, not fixed:** Brutal Doom's `Knight_NobleHeadshot` (a head hitbox helper) is a shootable monster, so a
   thrown body hitting a Hell Knight strikes both (56 + 56), and the throw aim assist can pick the helper.
+
+## D38 — HEAVIER TOSS: THE HEADLOCK THROWS A MONSTER AS LIGHTER. 2026-10-31.
+
+Owner's answer to D37's OPEN (on). A monster thrown out of the Headlock counts as `rsqdg_collar_weight` % of its
+kilograms (menu "Headlock Throw Weight %", 10-100, default 30; 100 = D37). Brutal Doom's zombies are Mass 300 (its
+knockback number); at 30 % they throw as 90 kg, so arm/(arm+kg) x boost gives 30/120 x 2.5 = 0.625 of the hand's
+speed instead of 30/330 x 2.5 = 0.23. The same counted kilograms go to the throw tracker (`Watch(..., kg)`,
+throw.zs `KgOf`): the impact's joules (what it hits and the monster itself), its stagger and the energy gate are
+judged on the counted weight and the real speed. Hand-held and distance-grabbed things are untouched (kg 0 = their
+own). Rig (picks_gen.py collar + picks_rig.sh, BD order, doom2 MAP01; the probe now logs `T_DMG`), rig only:
+
+| weight | hand peak | thrown at | hit (Hell Knight) | zombie takes |
+|---|---|---|---|---|
+| 100 (old) | 10.5 m/s | 2.4 m/s (300 kg) | 56 | 56 (BD shows 75) |
+| 30 | 10.5 m/s | 6.6 m/s (90 kg) | no impact logged that run | -- |
+| 30 | 5.3 m/s (a stale-frame read) | 3.3 m/s | 32 | 32 (43) |
+| 30 | 15.8 m/s (a stale-frame read) | 9.9 m/s | 290 | 290 (391) |
+
+Damage is kinetic energy, so the faster toss hits harder than before. Computed (not a rig hit): at the rig's own
+points per joule (56 for 864 J), a 6.6 m/s 90 kg zombie (1960 J) would land ~127. OPEN: feel in the headset; lower
+the % for a slower toss, or raise `rsqdg_throw_j` if the hits are too strong.

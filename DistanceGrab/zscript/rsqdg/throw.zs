@@ -67,6 +67,7 @@ class RSQDG_Throw : EventHandler
 	private Vector2 wBody[MAX_WATCH];    // the thrower's own velocity, added at release
 	private bool    wAir[MAX_WATCH];     // off the floor last tic (a re-catch now is a mid-air one)
 	private double  wRel[MAX_WATCH];     // how hard it was thrown, m/s, the body's run taken out
+	private double  wKg[MAX_WATCH];      // the kilograms it counts as (the Headlock throw's weight %), 0 = its own
 
 	// ---- the throw ledger: what a SCORER needs to know, after the fact ---------
 	//
@@ -305,7 +306,9 @@ class RSQDG_Throw : EventHandler
 		return false;
 	}
 
-	void Watch(Actor a, Actor by, int hand, Vector2 body = (0, 0))
+	// kg: what it counts as for the impact (near.zs ThrowSwing: a Headlock-thrown monster at rsqdg_collar_weight %);
+	// 0 = its own MASSDEF / Doom-mass kilograms (mass.zs Kg)
+	void Watch(Actor a, Actor by, int hand, Vector2 body = (0, 0), double kg = 0)
 	{
 		if (!a) return;
 		int slot = -1;
@@ -333,6 +336,7 @@ class RSQDG_Throw : EventHandler
 		wBody[slot] = body;
 		wAir[slot] = false;
 		wRel[slot] = ImpactMps(a, a.Vel, body);
+		wKg[slot] = kg;
 		for (int v = 0; v < MAX_VICTIMS; v++) wHit[slot * MAX_VICTIMS + v] = null;
 		LogThrow(a, by);
 	}
@@ -410,9 +414,16 @@ class RSQDG_Throw : EventHandler
 		lgCms[k] = lgCms[src]; lgBlast[k] = true; lgJuggle[k] = lgJuggle[src]; lgAloft[k] = false;
 	}
 
+	// the kilograms a watched throw counts as: the weight it was thrown at (wKg), else its own
+	private double KgOf(int i)
+	{
+		return wKg[i] > 0 ? wKg[i] : RSQDG_Mass.Kg(wa[i]);
+	}
+
 	private void Forget(int i)
 	{
 		wa[i] = null;
+		wKg[i] = 0;
 		wBody[i] = (0, 0);
 		wBy[i] = null;
 		for (int v = 0; v < MAX_VICTIMS; v++) wHit[i * MAX_VICTIMS + v] = null;
@@ -544,7 +555,7 @@ class RSQDG_Throw : EventHandler
 		Actor a = wa[i];
 		if (!a || !t) return;
 		String an = a.GetClassName(), tn = t.GetClassName();
-		double kg = RSQDG_Mass.Kg(a);
+		double kg = KgOf(i);
 		Vector2 dir = a.Vel.xy;
 		int dmg = DamageFor(kg, speedMps, p);
 		MarkHit(i, t);
@@ -555,7 +566,7 @@ class RSQDG_Throw : EventHandler
 		Stagger(t, kg, speedMps, dir, dmg, p);
 		HitStop(t, p);
 		if (RSQDG_Reach.Flag("rsqdg_debug", p, false))
-			Console.Printf("[RSQDG] thrown %s hit %s at %.1f m/s for %d", an, tn, speedMps, dmg);
+			Console.Printf("[RSQDG] thrown %s hit %s at %.1f m/s for %d (as %.0f kg)", an, tn, speedMps, dmg, kg);
 		RSQDG_Events.Tell("throw.hit", wHand[i], t);   // t may be gone (gibbed): null then
 	}
 
@@ -604,9 +615,9 @@ class RSQDG_Throw : EventHandler
 		// joules hurt what it hit. The thrower is the source: the kill is his.
 		if (a.bISMONSTER && a.Health > 0 && a.bSHOOTABLE)
 		{
-			int self = DamageFor(RSQDG_Mass.Kg(a), speedMps, p);
+			int self = DamageFor(KgOf(i), speedMps, p);
 			if (RSQDG_Reach.Flag("rsqdg_debug", p, false))
-				Console.Printf("[RSQDG] thrown %s landed hard at %.1f m/s, takes %d", a.GetClassName(), speedMps, self);
+				Console.Printf("[RSQDG] thrown %s landed hard at %.1f m/s, takes %d (as %.0f kg)", a.GetClassName(), speedMps, self, KgOf(i));
 			a.DamageMobj(null, wBy[i], self, 'Melee');
 			a = wa[i];
 			if (!a) return;
@@ -715,7 +726,7 @@ class RSQDG_Throw : EventHandler
 			{
 				double xy = AcrossMps(a.Vel, wBody[i]);
 				double lastXY = wLastXY[i];
-				double gate = minMps * sqrt(BARREL_KG / max(BARREL_KG, RSQDG_Mass.Kg(a)));
+				double gate = minMps * sqrt(BARREL_KG / max(BARREL_KG, KgOf(i)));
 				if (wAge[i] > 1 && lastXY >= gate && xy < lastXY * 0.5)
 				{
 					Impact(i, lastXY, p);
