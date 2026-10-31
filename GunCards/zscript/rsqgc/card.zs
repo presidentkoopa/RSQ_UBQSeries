@@ -72,6 +72,7 @@ class RSQGC_CardItem : CustomInventory
 
 class RSQGC_GunCard : EventHandler
 {
+	bool rawWatch[2];          // this tic: is the console player checking the watch on this hand (wristmap.zs)
 	// layer ids: below PSP_TARGETCENTER, clear of the Wheel's and Ermac-style mods' own
 	const L_FX = 1000299;
 	const L_FIRST = 1000300;
@@ -360,6 +361,8 @@ class RSQGC_GunCard : EventHandler
 		let pmo = PlayerPawn(p.mo);
 		if (!pmo) return;
 		if (ci("rsqgc_show_hands", 0)) ShowHands(pmo);
+		// the watch check itself, whatever the cards do (wristmap.zs reads it)
+		for (int hand = 0; hand < 2; hand++) rawWatch[hand] = Watching(pmo, hand);
 		int watchMode = ci("rsqgc_watch", 1);     // 0 off, 1 when you check your watch, 2 always (owner 2026-10-31)
 		bool watchOn = watchMode > 0;
 		bool always = watchMode == 2;

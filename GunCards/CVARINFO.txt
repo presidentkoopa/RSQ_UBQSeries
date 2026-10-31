@@ -30,3 +30,6 @@ user float  rsqgc_glance_cone = 30;    // and within this many degrees of where 
 user int    rsqgc_inspect_level = 2;   // the watch check / inspect: 1 shows as the twist starts, 2 once it is held
 user int    rsqgc_linger = 35;         // tics a card stays after the pose ends
 user int    rsqgc_show_hands = 0;      // put what the engine says about the hands on screen (for a screenshot)
+user int    rsqgc_map = 1;             // the wrist map on the forearm: 0 off, 1 when you check your watch, 2 always
+user float  rsqgc_map_zoom = 768;      // map units from you to its rim
+user float  rsqgc_map_size = 14;       // the hologram across, cm

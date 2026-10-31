@@ -30,6 +30,7 @@ OptionMenu "RSQGC_Options"
 	Option "Card Colour", "rsqgc_color", "RSQGC_Colors"
 	Option "Watch Card", "rsqgc_watch", "RSQGC_WatchModes"
 	Option "Draw in the World", "rsqgc_world", "OnOff"
+	Option "Wrist Map", "rsqgc_map", "RSQGC_WatchModes"
 	StaticText " "
 	Submenu "Placement", "RSQGC_Place"
 	Submenu "Tuning and Debug", "RSQGC_Tuning"
@@ -48,6 +49,10 @@ OptionMenu "RSQGC_Place"
 	Slider "Left / Right (in the world)", "rsqgc_watch_side", -30, 30, 0.5, 1
 	StaticText " "
 	Slider "Size in the World", "rsqgc_world_scale", 0.5, 2.5, 0.05, 2
+	StaticText " "
+	StaticText "Wrist map", gold
+	Slider "Size (cm)", "rsqgc_map_size", 6, 20, 1, 0
+	Slider "Reach (map units)", "rsqgc_map_zoom", 256, 2048, 64, 0
 }
 
 OptionMenu "RSQGC_Tuning"

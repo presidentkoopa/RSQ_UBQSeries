@@ -15,3 +15,6 @@ built (tools/gen_side.py --iwad freedoom2.wad); the cards in the world use the l
 status bar by lump name.
 
 Gun Bonsai is ToxicFrog's; the watch card only reads it, through RSQ Gun Bonsai VR's service, when loaded.
+
+Wrist map: the idea of drawing the automap's lines round the player and clipping them to a circle follows Lewisk3's
+minimap ("Cynic Games Minimap"), MIT License, Copyright (c) 2020 Lewisk3. The code in RSQ Gun Cards is new.
