@@ -1,0 +1,17 @@
+RSQ Gun Cards -- credits
+========================
+
+The cards are Ermac's Force Unleashed holo HUD, used with the owner's blessing: the ammo panels
+(ammo_bg*.png), the AMMO / MAGAZINE / CHAMBER words and the digits (digit_*.png) in tools/card_art/ are his
+art, from his doom-force-unleashed devbuild (models/common). We turn them into voxels; the design is his.
+graphics/GCEDIG*.png and GCEPLATE.png (the cards drawn in the world) are made from the same art.
+
+Code: ZScript written for the Radiant Silvergun Quest series (presidentkoopa), for stock QuestZDoom 17.3 by
+Emawind and Team Beef. No engine change. Moved out of RSQ Wheel (the owner's RS_WeaponSelectionSystem port),
+whose look reader, Gun Bonsai reader and billboards it carries its own copies of.
+
+The watch card's letters are the IWAD's DoomFont (STCFN033-095), read from Freedoom (BSD) when the voxels are
+built (tools/gen_side.py --iwad freedoom2.wad); the cards in the world use the loaded IWAD's DoomFont and
+status bar by lump name.
+
+Gun Bonsai is ToxicFrog's; the watch card only reads it, through RSQ Gun Bonsai VR's service, when loaded.

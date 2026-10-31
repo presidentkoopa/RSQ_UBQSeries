@@ -55,8 +55,9 @@ class wr_Watch : EventHandler
 	{
 		let pmo = PlayerPawn(players[consoleplayer].mo);
 		if (!pmo || players[consoleplayer].playerstate != PST_LIVE) { hide(); return; }
-		// the gun's own watch card (wr_q_detail.zs) replaces this one when it is on
-		if (cv("wr_card_watch_tpl", 3) > 0) { hide(); return; }
+		// RSQ Gun Cards' watch card replaces this one when that mod is loaded and its watch card is on
+		let gcw = CVar.FindCVar("rsqgc_watch");
+		if (gcw && gcw.GetInt() > 0) { hide(); return; }
 		let rig = wr_Rig.Get();
 		bool ringUp = rig && rig.IsOpen();
 		int dwell = int(cv("wr_watch_dwell", 8));
@@ -164,13 +165,15 @@ class wr_Watch : EventHandler
 		double sc = sc0;
 		wr_BB.MoveBillboard(mPlate, c);
 		wr_BB.ResizeBillboard(mPlate, 9 * sc, 6.4 * sc);
-		wr_BB.MoveBillboard(mAccent, c + (0, 0, 2.45 * sc) + toEye * 0.05);
+		// Lifted off the plate toward the eye as far as the ring lifts its own words (LABEL_LIFT 0.6):
+		// at the 0.05 / 0.08 this card had, the plate drew over its words and the card came up blank.
+		wr_BB.MoveBillboard(mAccent, c + (0, 0, 2.45 * sc) + toEye * 0.6);
 		wr_BB.ResizeBillboard(mAccent, 8.4 * sc, 0.35 * sc);
-		wr_BB.MoveBillboard(mTitle, c + (0, 0, 1.6 * sc) + toEye * 0.08);
+		wr_BB.MoveBillboard(mTitle, c + (0, 0, 1.6 * sc) + toEye * 0.6);
 		wr_BB.ResizeBillboard(mTitle, 8 * sc, 1.1 * sc);
 		for (int i = 0; i < ROWS; i++)
 		{
-			wr_BB.MoveBillboard(mRow[i], c + (0, 0, (0.3 - i * 1.0) * sc) + toEye * 0.08);
+			wr_BB.MoveBillboard(mRow[i], c + (0, 0, (0.3 - i * 1.0) * sc) + toEye * 0.6);
 			wr_BB.ResizeBillboard(mRow[i], 8 * sc, 0.75 * sc);
 		}
 	}

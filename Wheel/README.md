@@ -91,21 +91,7 @@ headset** -- gesture speeds and the wrist pose are first guesses.
 - `tools/gen_assets.py` -- writes the quad models, TEXTURES and the palette table
 - `tools/rig/` -- the rig runner and probe (test only)
 
-## The cards on the gun (Project Wheel)
+## The cards on the gun
 
-Ermac's Force Unleashed holo display, in his art (CREDITS.txt), drawn as part of the hand so it never trails the gun:
-- **Top card** (normal play): square, on top of the gun, the rounds left in the clip.
-- **Side card** (check your watch: raise the gun and twist it palm down, with RSQ Gestures loaded; without it, the
-  Wheel's own watch pose): rectangular, beside the gun, turned to read upright in that twist: the gun's name and hand,
-  Ermac's MAGAZINE/AMMO word over the count, the reserve, and with Gun Bonsai loaded its level, XP bar and upgrades
-  (name in Gun Bonsai's colour, level pips, "+N MORE"). Compact (bullet icons, two upgrades) and Both guns layouts too.
-  It replaces the old wrist card.
-
-Options -> Radiant Silvergun Options -> RSQ Wheel -> Gun cards: which card in normal play and which on the watch
-check (any of the four for either), when the top card shows (always / when you look at the gun / on inspect), a card
-on each gun or both on one, Ermac's 18 panels, solid / glass / glow, his colours or the Wheel palette, low-ammo
-colour, placement sliders for each card, fade.
-
-Built by tools/gen_cards.py (top card) and tools/gen_detail.py (side card pieces: glyphs, panel slices, icons; one
-voxel per glyph, laid out at run time by turning each layer about the hand). Rerun them after changing the art, the
-fonts or the placement: `python3 tools/gen_detail.py --iwad <freedoom2.wad> --anchor 16,-24,11 --px 0.14`.
+Moved to their own mod, **RSQ Gun Cards** (`GunCards/`, `RSQ_GunCards.pk3`), 2026-10-31. The Wheel loads and works
+without it, and it without the Wheel. With it loaded and its watch card on, the Wheel's wrist card stands down.

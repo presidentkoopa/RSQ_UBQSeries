@@ -20,5 +20,6 @@ gen RSQMB  Miniboss/zscript/rsqmb/rsmenu.zs
 gen RSQGBV GunBonsaiOffhandVR/rsq/zscript/rsmenu.zs
 gen RSQWH  Wheel/zscript/wheel/rsmenu.zs
 gen RSQWP  Whip/zscript/rsqwp/rsmenu.zs
+gen RSQGC  GunCards/zscript/rsqgc/rsmenu.zs
 gen RSQG   Gestures/zscript/rsqg/rsmenu.zs
 gen RSQA   Accessibility/zscript/rsqa_rsmenu.zs

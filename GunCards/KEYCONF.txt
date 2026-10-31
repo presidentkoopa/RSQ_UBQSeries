@@ -1,0 +1,4 @@
+// RSQ Gun Cards -- no keys: the cards show by themselves, the watch card on the watch check.
+
+// Reset All (from CVARINFO's defaults: tools/gen_reset.py)
+alias rsqgc_reset "rsqgc_card 1; rsqgc_color 0; rsqgc_watch 1; rsqgc_world 0; rsqgc_up 0; rsqgc_side 0; rsqgc_watch_up 0; rsqgc_watch_side 0; rsqgc_world_scale 1.4; rsqgc_hands 0; rsqgc_style 0; rsqgc_look 1; rsqgc_alpha 0.85; rsqgc_tint 0; rsqgc_label 1; rsqgc_lowwarn 1; rsqgc_lowammo_frac 0.25; rsqgc_fade 4; rsqgc_glance_reach 0.7; rsqgc_glance_cone 30; rsqgc_inspect_level 2; rsqgc_linger 35; rsqgc_show_hands 0"

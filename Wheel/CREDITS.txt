@@ -15,7 +15,6 @@ The quake-wave route to the controllers' rumble is the series' (RSQ ShieldSaw's 
 
 Sounds (sounds/wr_*.ogg) came across with the wheel from REMA.
 
-THE CARD ON THE GUN (wr_q_card.zs, tools/gen_cards.py) is Ermac's Force Unleashed holo HUD, used with
-the owner's blessing: the ammo panels (ammo_bg*.png), the AMMO / MAGAZINE / CHAMBER labels and the
-digits (digit_*.png) in tools/card_art/ are his art, from his doom-force-unleashed devbuild
-(models/common). We turn them into voxels; the design is his.
+The ring's own plates and digits (graphics/WRE*.png, tools/gen_ring_art.py) are drawn from Ermac's Force
+Unleashed holo HUD art in tools/card_art/, used with the owner's blessing (his doom-force-unleashed devbuild,
+models/common). The cards on the guns that use the rest of that art are now their own mod, RSQ Gun Cards.

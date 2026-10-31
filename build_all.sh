@@ -89,8 +89,14 @@ echo "built pk3/RSQ_Whip.pk3"
 # Wheel: REMA's weapon wheel; its explicit include list (tools/ and the work queue stay out).
 cd "$HUB/Wheel"
 rm -f "$OUT/RSQ_Wheel.pk3"
-zip -q -r -X "$OUT/RSQ_Wheel.pk3" zscript.txt MAPINFO.txt CVARINFO.txt KEYCONF MENUDEF.txt SNDINFO.txt MODELDEF.txt TEXTURES.txt WRPALS.txt WRFONTS.txt VOXELDEF.txt CREDITS.txt README.md zscript sounds models sprites graphics voxels
+zip -q -r -X "$OUT/RSQ_Wheel.pk3" zscript.txt MAPINFO.txt CVARINFO.txt KEYCONF MENUDEF.txt SNDINFO.txt MODELDEF.txt TEXTURES.txt WRPALS.txt WRFONTS.txt CREDITS.txt README.md zscript sounds models sprites graphics
 echo "built pk3/RSQ_Wheel.pk3"
+
+# GunCards: the cards on the guns (moved out of Wheel 2026-10-31); its explicit include list (tools/ stays out).
+cd "$HUB/GunCards"
+rm -f "$OUT/RSQ_GunCards.pk3"
+zip -q -r -X "$OUT/RSQ_GunCards.pk3" zscript.txt MAPINFO.txt CVARINFO.txt KEYCONF.txt MENUDEF.txt MODELDEF.txt TEXTURES.txt VOXELDEF.txt CREDITS.txt README.md zscript models sprites graphics voxels
+echo "built pk3/RSQ_GunCards.pk3"
 
 # Gestures: what the hands are doing (inspect, thrust, both hands) for any series mod that asks; tools/ stays out.
 cd "$HUB/Gestures"

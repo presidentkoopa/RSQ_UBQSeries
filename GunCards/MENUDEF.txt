@@ -1,0 +1,111 @@
+// RSQ Gun Cards -- MENUDEF. The series' shape (Whip, SlowMo): one short front page of real choices, Placement,
+// then Tuning and Debug last with Reset All. What each setting does is in CVARINFO.txt's comments and README.md.
+
+// ---- Radiant Silvergun Options (tools/rsmenu) ----------------------------------------------------
+// The series' one Options entry. Every series pk3 carries this same block with its own prefix: the
+// parent is PROTECTED, so the first definition stays and later ones add nothing (QZD 17.3 merges a
+// protected option menu instead of replacing it); the link row removes any earlier copy of itself,
+// so Options shows one row however many series pk3s load. Each mod then adds its own row only.
+OptionMenu "RSQ_RSOptions" protected
+{
+	Class "RSQGC_RSMenu"
+	Title "RADIANT SILVERGUN OPTIONS"
+}
+
+AddOptionMenu "OptionsMenu"
+{
+	RSQGCRSLink "Radiant Silvergun Options", "RSQ_RSOptions"
+}
+
+AddOptionMenu "RSQ_RSOptions"
+{
+	Submenu "RSQ Gun Cards", "RSQGC_Options"
+}
+// ----------------------------------------------------------------------------------------------------
+
+OptionMenu "RSQGC_Options"
+{
+	Title "RSQ GUN CARDS"
+	Option "Show Cards", "rsqgc_card", "RSQGC_Show"
+	Option "Card Colour", "rsqgc_color", "RSQGC_Colors"
+	Option "Watch Card", "rsqgc_watch", "OnOff"
+	Option "Draw in the World", "rsqgc_world", "OnOff"
+	StaticText " "
+	Submenu "Placement", "RSQGC_Place"
+	Submenu "Tuning and Debug", "RSQGC_Tuning"
+}
+
+OptionMenu "RSQGC_Place"
+{
+	Title "PLACEMENT"
+	StaticText "Small card", gold
+	Slider "Up / Down", "rsqgc_up", -30, 30, 0.5, 1
+	Slider "Left / Right", "rsqgc_side", -30, 30, 0.5, 1
+	StaticText " "
+	StaticText "Watch card", gold
+	Slider "Up / Down", "rsqgc_watch_up", -30, 30, 0.5, 1
+	Slider "Left / Right (in the world)", "rsqgc_watch_side", -30, 30, 0.5, 1
+	StaticText " "
+	Slider "Size in the World", "rsqgc_world_scale", 0.5, 2.5, 0.05, 2
+}
+
+OptionMenu "RSQGC_Tuning"
+{
+	Title "TUNING AND DEBUG"
+	Option "Both Guns on the Main Card", "rsqgc_hands", "OnOff"
+	Slider "Panel (0 = each gun its own)", "rsqgc_style", 0, 18, 1, 0
+	Option "Material", "rsqgc_look", "RSQGC_Looks"
+	Slider "Strength", "rsqgc_alpha", 0.1, 1.0, 0.05, 2
+	Option "Small Card Colours", "rsqgc_tint", "RSQGC_Tints"
+	Option "AMMO / MAGAZINE Word", "rsqgc_label", "OnOff"
+	Option "Low Ammo Colour", "rsqgc_lowwarn", "OnOff"
+	Slider "Low Below (share of a magazine)", "rsqgc_lowammo_frac", 0.0, 0.9, 0.05, 2
+	Slider "Fade (tics)", "rsqgc_fade", 1, 12, 1, 0
+	StaticText " "
+	Slider "Look: Gun Within (metres)", "rsqgc_glance_reach", 0.3, 1.2, 0.05, 2
+	Slider "Look: Within (degrees)", "rsqgc_glance_cone", 10, 60, 1, 0
+	Option "Watch Check Shows", "rsqgc_inspect_level", "RSQGC_Inspect"
+	Slider "Stays After (tics)", "rsqgc_linger", 0, 105, 5, 0
+	StaticText " "
+	Option "Show Hand Numbers on Screen", "rsqgc_show_hands", "OnOff"
+	StaticText " "
+	SafeCommand "Reset All", "rsqgc_reset", "Reset all RSQ Gun Cards settings?"
+}
+
+OptionValue "RSQGC_Show"
+{
+	0, "Off"
+	1, "Always"
+	2, "When You Look at the Gun"
+	3, "Inspect Gesture"
+}
+OptionValue "RSQGC_Colors"
+{
+	0, "Each Gun Its Own"
+	1, "White"
+	2, "Grey"
+	3, "Red"
+	4, "Gold"
+	5, "Green"
+	6, "Blue"
+	7, "Cyan"
+	8, "Purple"
+	9, "Orange"
+	10, "Pink"
+}
+OptionValue "RSQGC_Looks"
+{
+	0, "Solid"
+	1, "Glass"
+	2, "Glow"
+}
+OptionValue "RSQGC_Tints"
+{
+	0, "Ermac's"
+	1, "Wheel Palette"
+}
+OptionValue "RSQGC_Inspect"
+{
+	1, "As the Twist Starts"
+	2, "Once It Is Held"
+}

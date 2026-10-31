@@ -1,0 +1,31 @@
+// RSQ Gun Cards -- settings. Every one is the player's own (user). Defaults are the ones the owner chose for the
+// cards when they lived in RSQ Wheel (wr_card_*), so nothing looks different; the names are new (rsqgc_*).
+
+// ---- the front page
+user int    rsqgc_card = 1;            // the small card: 0 off, 1 always, 2 when you look at the gun, 3 inspect gesture (RSQ Gestures)
+user int    rsqgc_color = 0;           // card colour: 0 each gun its own, 1 white 2 grey 3 red 4 gold 5 green 6 blue 7 cyan 8 purple 9 orange 10 pink
+user int    rsqgc_watch = 1;           // the watch card: the full card on both sides of the wrist when you check your watch
+user int    rsqgc_world = 0;           // 1: the cards drawn in the world at the hand (no gun can cover them; may trail a fast hand)
+
+// ---- placement
+user float  rsqgc_up = 0;              // the small card: up (+) or down, degrees about the hand (~0.45 cm a degree)
+user float  rsqgc_side = 0;            // the small card: sideways, degrees
+user float  rsqgc_watch_up = 0;        // the watch card: up (+) or down, degrees
+user float  rsqgc_watch_side = 0;      // the watch card drawn in the world: sideways
+user float  rsqgc_world_scale = 1.4;   // size of the cards drawn in the world
+
+// ---- tuning
+user int    rsqgc_hands = 0;           // 1: both guns on the main hand's small card (the off hand's rounds in the small row)
+user int    rsqgc_style = 0;           // Ermac's panel: 0 each gun its own by weapon slot, 1..18 one for all
+user int    rsqgc_look = 1;            // 0 solid, 1 glass, 2 glow
+user float  rsqgc_alpha = 0.85;        // how solid glass / glow is
+user int    rsqgc_tint = 0;            // the small card's colours: 0 Ermac's own, 1 the Wheel's palette (Standard without it)
+user int    rsqgc_label = 1;           // the AMMO / MAGAZINE word
+user int    rsqgc_lowwarn = 1;         // the count turns the empty colour when low
+user float  rsqgc_lowammo_frac = 0.25; // low: a magazine at or below this share of a full one (any gun: empty)
+user int    rsqgc_fade = 4;            // tics to fade in or out
+user float  rsqgc_glance_reach = 0.7;  // "when you look at the gun": the gun within this many metres of the eyes
+user float  rsqgc_glance_cone = 30;    // and within this many degrees of where you look
+user int    rsqgc_inspect_level = 2;   // the watch check / inspect: 1 shows as the twist starts, 2 once it is held
+user int    rsqgc_linger = 35;         // tics a card stays after the pose ends
+user int    rsqgc_show_hands = 0;      // put what the engine says about the hands on screen (for a screenshot)

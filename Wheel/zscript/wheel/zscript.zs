@@ -728,10 +728,10 @@ class wr_Rig : EventHandler
 		// to trust it after a save load.
 		{
 			int mode = 1;
-			let mc = CVar.GetCVar("wr_wheel_mode", players[consoleplayer]);
+			let mc = CVar.FindCVar("wr_wheel_mode");
 			if (mc) mode = mc.GetInt();
 
-			let sup = CVar.GetCVar("wr_suppress_native_wheel", players[consoleplayer]);
+			let sup = CVar.FindCVar("wr_suppress_native_wheel");
 			if (sup) sup.SetBool(mode != 2);
 
 			// Gate ONLY the three open binds. The rest of this handler is the
@@ -3261,82 +3261,21 @@ class wr_Rig : EventHandler
 
 	private void migrateConfig()
 	{
-		let stamp = CVar.GetCVar("wr_cfgver", players[consoleplayer]);
+		// RSQ (owner 2026-10-31: "we want settings to save for wheel"). The stamp is read and written through
+		// FindCVar, the local value the config file saves. CVar.GetCVar with a player wrote a per-player copy that
+		// QuestZDoom never saves: the stamp stayed 0, every generation re-ran on every launch, and nothing it
+		// wrote was kept. Generations 16..24 never reached a QuestZDoom config, and today's defaults already
+		// hold what they set, so a config without the stamp is only stamped: the player's own values stay.
+		// A future generation goes here, written with setCv (FindCVar) and guarded by `from < N`.
+		let stamp = CVar.FindCVar("wr_cfgver");
 		if (stamp == null || stamp.GetInt() >= CFG_VERSION) return;
-
-		// EACH GENERATION RUNS ONCE, for a config older than it. (Until gen 22 every bump re-ran every
-		// generation below, so gen 21 reset the owner's settings, wr_models included: the pickup voxels
-		// went off. Gen 22 puts them back.)
 		int from = stamp.GetInt();
-
-		// Gen 24: the cards back ON, in their new places (small over the wrist, full card both sides of it);
-		// the old placement nudges zeroed, they were for the old places.
-		if (from < 24) { setCv("wr_card", 1); setCv("wr_card_watch_tpl", 3); setCv("wr_card_up", 0); setCv("wr_card_side", 0); setCv("wr_card_watch_up", 0); setCv("wr_card_watch_side", 0); }
-
-		// Gen 23: the gun cards OFF (owner 2026-10-31: not good enough yet). Back on from Gun cards.
-		if (from < 23 && from >= 24) { setCv("wr_card", 0); setCv("wr_card_watch_tpl", 0); }
-
-		// Gen 22: undo gen 21's side effect -- the pickup voxels back on.
-		if (from < 22) setCv("wr_models", 1);
-
-		// Gen 21: the ring's own Ermac-style art (owner 2026-10-31: "why is my wheel ugly"). Ermac's digits
-		// for numbers; the plates follow wr_ring_art, new, so it needs no rewrite.
-		if (from < 21)
-		{
-			let fs = CVar.GetCVar("wr_fontset", players[consoleplayer]);
-			if (fs) fs.SetString("Ermac");
-		}
-
-		// Gens 16..20, as they always ran, for a config from before gen 21 that has not had them yet.
-		if (from >= 20)
-		{
-			stamp.SetInt(CFG_VERSION);
-			Console.Printf("\c[Gold]RSQ Wheel\c- settings updated to gen %d", CFG_VERSION);
-			return;
-		}
-
-		// Gen 20: auto-open OFF. It was on for all of development and the
-		// archived value in an existing config outlives any change to the
-		// default, so anyone who ever loaded this before now would keep
-		// getting a ring in their face at every map start otherwise.
-		setCv("wr_autoopen", 0);
-
-		// Gen 19 briefly migrated wr_card_* (the in-world stat card's own
-		// size/gap cvars) -- the card and everything that read them are
-		// gone now, owner's direct order after it could not be made to
-		// render its grid correctly. Left as an empty generation rather
-		// than renumbering everything after it.
-
-		// Gen 18: bigger cards. Text readability in a headset is an ABSOLUTE
-		// size problem -- a two-line name on a small card is small however the
-		// fractions are tuned, because the card itself is the ceiling.
-		setCv("wr_panel_w", 4.2);
-		setCv("wr_panel_h", 3.0);
-		setCv("wr_radius",  5.0);
-		setCv("wr_rise",    2.0);
-		// wr_span, wr_phase and wr_follow were migrated here until the layout
-		// moved from an arc to fixed bearings. Nothing reads them now and the
-		// cvars are gone; an archived value left in someone's config is inert.
-		setCv("wr_tilt",   12.0);
-
-		// Gen 16: real models default ON. A changed DEFAULT can never reach
-		// anyone who has already loaded the mod -- the cvar was written to their
-		// config the first time and the saved value wins forever -- so turning
-		// it on means rewriting it here once, which is the entire reason this
-		// stamp exists.
-		setCv("wr_models", 1);     // gen 16 meant ON (see above); it wrote 0 by mistake
-		setCv("wr_touch",   7.0);
-		setCv("wr_forward", 34.0);
-		setCv("wr_bullettime", 1);
-		setCv("wr_roll",    0.0);
-
 		stamp.SetInt(CFG_VERSION);
-		Console.Printf("\c[Gold]RSVR HUD\c- geometry updated to gen %d", CFG_VERSION);
 	}
 
 	private static void setCv(string name, double value)
 	{
-		let c = CVar.GetCVar(name, players[consoleplayer]);
+		let c = CVar.FindCVar(name);
 		if (c != null) c.SetFloat(value);
 	}
 

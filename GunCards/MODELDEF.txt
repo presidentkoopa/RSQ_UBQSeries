@@ -1,0 +1,23 @@
+// RSQ Gun Cards -- the quads the cards drawn in the world (rsqgc_world) are made of (bb.zs). Copied from RSQ Wheel
+// (Wheel/tools/gen_assets.py). Skins are set per actor at run time (A_ChangeModel). The cards on the guns are
+// voxels (VOXELDEF.txt) and need no MODELDEF.
+
+Model RSQGC_BBQuad
+{
+	Path "models/rsqgc"
+	Model 0 "quad.obj"
+	Skin 0 "GCEPLATE"
+	USEACTORPITCH
+	USEACTORROLL
+	FrameIndex GCBQ A 0 0
+}
+
+// One quad per character, 24 to a strip; each surface is skinned with a font cell.
+Model RSQGC_BBStrip
+{
+	Path "models/rsqgc"
+	Model 0 "strip24.obj"
+	USEACTORPITCH
+	USEACTORROLL
+	FrameIndex GCBQ A 0 0
+}

@@ -1,0 +1,7 @@
+// RSQ Gun Cards -- MAPINFO
+// RSQGC_GunCard decides and draws the cards each tic; RSQGC_BB then lays out the world quads (rsqgc_world) in the
+// same tic, so a world card is where the hand is now (WorldTick runs front to back).
+GameInfo
+{
+	AddEventHandlers = "RSQGC_GunCard", "RSQGC_BB"
+}
