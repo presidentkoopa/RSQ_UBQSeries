@@ -31,6 +31,7 @@ OptionMenu "RSQGC_Options"
 	Option "Watch Card", "rsqgc_watch", "RSQGC_WatchModes"
 	Option "Draw in the World", "rsqgc_world", "OnOff"
 	Option "Tilt to Your Eyes", "rsqgc_tilt", "OnOff"
+	Option "Hide at Your Eye", "rsqgc_hide_eye", "OnOff"
 	StaticText " "
 	Submenu "Placement", "RSQGC_Place"
 	Submenu "Tuning and Debug", "RSQGC_Tuning"
@@ -69,6 +70,8 @@ OptionMenu "RSQGC_Tuning"
 	Option "Watch Check Shows", "rsqgc_inspect_level", "RSQGC_Inspect"
 	Slider "Stays After (tics)", "rsqgc_linger", 0, 105, 5, 0
 	Slider "Tilt: At Most (degrees)", "rsqgc_tilt_max", 5, 45, 5, 0
+	Slider "Hide at Eye: Within (metres)", "rsqgc_eye_reach", 0.15, 0.5, 0.05, 2
+	Slider "Pickup +N Stays (tics)", "rsqgc_plus_tics", 10, 140, 5, 0
 	StaticText " "
 	Option "Show Hand Numbers on Screen", "rsqgc_show_hands", "OnOff"
 	StaticText " "
@@ -93,6 +96,7 @@ OptionValue "RSQGC_Show"
 OptionValue "RSQGC_Colors"
 {
 	0, "Each Gun Its Own"
+	11, "By Ammo Type"
 	1, "White"
 	2, "Grey"
 	3, "Red"

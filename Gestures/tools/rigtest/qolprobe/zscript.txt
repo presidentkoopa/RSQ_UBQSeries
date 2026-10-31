@@ -1,0 +1,30 @@
+version "4.14"
+// TEST ONLY (never ships): the QoL round's answers (GE1-GE7). Asks RSQG_Service every tic as a mod would and logs
+// each change as T_GQ: inspect (main), punch / shove (main, off), quiet, the weapons in hand.
+class GQ_Probe : EventHandler
+{
+	int li, lp0, lp1, ls0, ls1, lq;
+	String lw;
+	override void WorldTick()
+	{
+		let pmo = players[consoleplayer].mo; if (!pmo) return;
+		let it = ServiceIterator.Find("RSQG_Service");
+		Service s = it.Next();
+		if (!s) return;
+		int i0 = s.GetInt("inspect", "", 0, 0, pmo);
+		int p0 = s.GetInt("punch", "", 0), p1 = s.GetInt("punch", "", 1);
+		int s0 = s.GetInt("shove", "", 0), s1 = s.GetInt("shove", "", 1);
+		int q = s.GetInt("quiet");
+		let p = pmo.player;
+		String w = String.Format("%s/%s", p.ReadyWeapon ? p.ReadyWeapon.GetClassName() : 'none', p.OffhandWeapon ? p.OffhandWeapon.GetClassName() : 'none');
+		if (i0 != li || p0 != lp0 || p1 != lp1 || s0 != ls0 || s1 != ls1 || q != lq || w != lw)
+			Console.Printf("T_GQ t%d inspect %d | punch %d/%d | shove %d/%d | quiet %d | %s", level.maptime, i0, p0, p1, s0, s1, q, w);
+		li = i0; lp0 = p0; lp1 = p1; ls0 = s0; ls1 = s1; lq = q; lw = w;
+	}
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		if (e.Name ~== "rsqg_pair") Console.Printf("T_GQ_PAIR t%d which %d mag %d", level.maptime, e.Args[0], e.Args[1]);
+		if (e.Name ~== "rsqg_shove") Console.Printf("T_GQ_SHOVE_EVENT t%d hand %d two %d speed %d", level.maptime, e.Args[0], e.Args[1], e.Args[2]);
+		if (e.Name ~== "rsqg_punch") Console.Printf("T_GQ_PUNCH_EVENT t%d hand %d kind %d speed %d", level.maptime, e.Args[0], e.Args[1], e.Args[2]);
+	}
+}

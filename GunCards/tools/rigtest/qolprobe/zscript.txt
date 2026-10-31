@@ -1,0 +1,64 @@
+version "4.10"
+// TEST ONLY (never ships): the QoL round (GC1-GC8) on the rig. With tools/rigtest/run.sh as EXTRA (beside probe/):
+//   netevent gcq_pickup <n>   give n of the main gun's ammo pile (a pickup: GC2)
+//   netevent gcq_empty        empty the main gun's magazine (GC3)
+//   netevent gcq_light <l>    the player's sector light level (GC8)
+//   netevent gcq_kill         the main gun "fires" (one round goes) and, two tics later, a zombieman spawned ahead is
+//                             killed by the player (GC7)
+//   netevent gcq_status       green armour, the red card and the blue skull, 3 grenades (GC4, GC5)
+// Logs GCQ every 10 tics: plus / kills / grenades / layers (small card main, watch card) / colour
+class GCQ_Probe : EventHandler
+{
+	Actor mPending;
+	int mKillAt;
+
+	override void WorldTick()
+	{
+		let p = players[consoleplayer];
+		if (!p.mo) return;
+		if (mPending && level.maptime >= mKillAt)
+		{
+			mPending.DamageMobj(null, p.mo, 1000, 'None');
+			Console.Printf("GCQ_KILLED t%d %s health %d", level.maptime, mPending.GetClassName(), mPending.Health);
+			mPending = null;
+		}
+		if (level.maptime % 10) return;
+		let gc = RSQGC_GunCard(EventHandler.Find("RSQGC_GunCard"));
+		if (!gc) return;
+		int n0 = 0, ns = 0;
+		for (int i = 1000300; i < 1000320; i++) if (p.FindPSprite(i)) n0++;
+		for (int i = 1001200; i < 1002000; i++) if (p.FindPSprite(i)) ns++;
+		let w = p.ReadyWeapon;
+		Console.Printf("GCQ t%d %s loaded %d reserve %d | plus %d kills %d grenades %d | small %d watch %d | colour %06x | light %d",
+			level.maptime, w ? w.GetClassName() : 'none', RSQGC_GunCard.Loaded(w), RSQGC_GunCard.Reserve(w), gc.PlusNow(0), w ? gc.KillsWith(w) : -1,
+			RSQGC_GunCard.Grenades(p.mo), n0, ns, RSQGC_GunCard.CardColour(p, w), p.mo.CurSector.lightlevel);
+	}
+
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		let p = players[e.Player];
+		let pmo = p.mo;
+		if (!pmo) return;
+		let w = p.ReadyWeapon;
+		if (e.Name ~== "gcq_pickup" && w && w.Ammo1) { pmo.GiveInventory(w.Ammo1.GetClass(), e.Args[0]); Console.Printf("GCQ_PICKUP %s +%d", w.Ammo1.GetClassName(), e.Args[0]); }
+		else if (e.Name ~== "gcq_empty" && w && w.Ammo2) { w.Ammo2.Amount = 0; Console.Printf("GCQ_EMPTY %s", w.Ammo2.GetClassName()); }
+		else if (e.Name ~== "gcq_light") { pmo.CurSector.SetLightLevel(e.Args[0]); Console.Printf("GCQ_LIGHT %d", e.Args[0]); }
+		else if (e.Name ~== "gcq_kill" && w)
+		{
+			let am = w.Ammo2 ? w.Ammo2 : w.Ammo1;
+			if (am && am.Amount > 0) am.Amount--;
+			mPending = Actor.Spawn("ZombieMan", pmo.Vec3Angle(96, pmo.angle));
+			mKillAt = level.maptime + 2;
+			Console.Printf("GCQ_KILL t%d spawned %s", level.maptime, mPending ? mPending.GetClassName() : 'none');
+		}
+		else if (e.Name ~== "gcq_status")
+		{
+			pmo.GiveInventory("GreenArmor", 1);
+			pmo.GiveInventory("RedCard", 1);
+			pmo.GiveInventory("BlueSkull", 1);
+			class<Inventory> g = "GrenadeAmmo";
+			if (g) pmo.GiveInventory(g, 3);
+			Console.Printf("GCQ_STATUS");
+		}
+	}
+}

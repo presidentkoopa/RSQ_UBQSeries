@@ -86,6 +86,7 @@ class RSQGC_GunCard : EventHandler
 	int mInspectTill[2];
 	int mReloadTill[2];        // "On Reload": shown until this tic (its own clock: a reload is not a watch check)
 	bool mWasWatch[2];         // the card a hand showed last was the watch card: it fades out as itself
+	bool mWasStatus[2];        // ...and it was the status card (GC5)
 	double mTiltX[2], mTiltY[2];   // "Tilt to Your Eyes": the small card's turn this tic, psp units (TiltTo)
 	transient Array<int> mTransKey;
 	transient Array<int> mTransId;
@@ -93,6 +94,115 @@ class RSQGC_GunCard : EventHandler
 	transient RSQGC_LookState mLook;   // look.zs
 
 	static RSQGC_GunCard Get() { return RSQGC_GunCard(EventHandler.Find("RSQGC_GunCard")); }
+
+	// ---- THE QoL ROUND (owner, 2026-10-31 afternoon) -----------------------------------------------------------
+	// GC2 "+N" on a pickup: per hand, the gun and its ammo pile last tic; a rise of that pile is ammo picked up (a
+	// reload moves rounds OUT of it, into the magazine), shown in the reserve's place for rsqgc_plus_tics.
+	Weapon mTrackW[2];
+	int mTrackAmt[2], mTrackLoaded[2];
+	int mPlusN[2], mPlusTill[2];
+	// GC7 kills with this gun this level. This handler is a level one (MAPINFO AddEventHandlers), so a new map starts
+	// at 0. A kill goes to the hand that fired last within KILL_WINDOW tics (its rounds went down), and to neither
+	// when both fired the same tic or neither fired: the attribution RSQ Wheel's stat tracker uses (wr_stattracker.zs
+	// "ATTRIBUTION IS A GUESS, AND IT FAILS CLOSED"). The Wheel's own counts are not reachable by name (no service
+	// answers them), so the cards keep their own.
+	const KILL_WINDOW = 35;
+	int mFiredTic[2];
+	Array<Weapon> mKillW;
+	Array<int> mKillN;
+	Array<Actor> mDeadSeen;
+
+	void Track(PlayerInfo p)
+	{
+		for (int hand = 0; hand < 2; hand++)
+		{
+			Weapon w = hand == 1 ? p.OffhandWeapon : p.ReadyWeapon;
+			int amt = (w && w.Ammo1) ? w.Ammo1.Amount : -1;
+			int ld = Loaded(w);
+			if (w && w == mTrackW[hand])
+			{
+				if (amt > mTrackAmt[hand] && mTrackAmt[hand] >= 0)
+				{
+					int d = amt - mTrackAmt[hand];
+					mPlusN[hand] = level.maptime < mPlusTill[hand] ? mPlusN[hand] + d : d;
+					mPlusTill[hand] = level.maptime + max(1, ci("rsqgc_plus_tics", 52));
+				}
+				if (ld >= 0 && ld < mTrackLoaded[hand]) mFiredTic[hand] = level.maptime;
+			}
+			else mPlusTill[hand] = 0;
+			mTrackW[hand] = w; mTrackAmt[hand] = amt; mTrackLoaded[hand] = ld;
+		}
+	}
+	// "+N" now for this hand, 0 none
+	int PlusNow(int hand) { return level.maptime < mPlusTill[hand] ? mPlusN[hand] : 0; }
+
+	override void WorldThingDamaged(WorldEvent e)
+	{
+		let t = e.Thing;
+		if (!t || t.Health > 0 || !(t.bIsMonster || t.bCountKill)) return;
+		let src = e.DamageSource;
+		if (!src || !src.player || src.player != players[consoleplayer]) return;
+		if (mDeadSeen.Find(t) != mDeadSeen.Size()) return;
+		if (mDeadSeen.Size() >= 64) mDeadSeen.Delete(0);
+		mDeadSeen.Push(t);
+		let p = src.player;
+		int now = level.maptime;
+		bool m = now - mFiredTic[0] <= KILL_WINDOW && mFiredTic[0] > 0, o = now - mFiredTic[1] <= KILL_WINDOW && mFiredTic[1] > 0;
+		int hand = -1;
+		if (m && (!o || mFiredTic[0] > mFiredTic[1])) hand = 0;
+		else if (o && (!m || mFiredTic[1] > mFiredTic[0])) hand = 1;
+		if (hand < 0) return;
+		Weapon w = hand == 1 ? p.OffhandWeapon : p.ReadyWeapon;
+		if (!w) return;
+		int k = mKillW.Find(w);
+		if (k == mKillW.Size()) { mKillW.Push(w); mKillN.Push(0); }
+		mKillN[k]++;
+		if (ci("rsqgc_debug_log", 0)) Console.Printf("rsqgc: kill %s -> %s hand %s (%d this level)", t.GetClassName(), hand ? "off" : "main", w.GetClassName(), mKillN[k]);
+	}
+	int KillsWith(Weapon w)
+	{
+		int k = mKillW.Find(w);
+		return k < mKillW.Size() ? mKillN[k] : 0;
+	}
+
+	// GC4 Brutal Doom's GRENADE count (GrenadeAmmo, brutal22test6 actors/MISC/Ammo.dec: the hand grenades; the mines
+	// are another pile and are NOT shown, owner). -1 when no such ammo exists (not Brutal Doom).
+	static int Grenades(PlayerPawn pmo)
+	{
+		class<Inventory> g = "GrenadeAmmo";
+		if (!g) return -1;
+		let it = pmo.FindInventory(g);
+		return it ? it.Amount : 0;
+	}
+
+	// what the extra lines say, for the watch card's signature
+	string ExtraSig(PlayerPawn pmo, int hand, Weapon w)
+	{
+		return String.Format(" +%d k%d g%d", PlusNow(hand), KillsWith(w), Grenades(pmo));
+	}
+
+	// GC1 (Option): the gun up at your eye (sights or a scope): the hand within rsqgc_eye_reach metres of the eye and
+	// pointing along where you look (within 25 degrees)
+	static bool AtEye(PlayerPawn pmo, int hand)
+	{
+		if (!pmo.OverrideAttackPosDir || !pmo.player) return false;
+		Vector3 hp = hand == 1 ? pmo.OffhandPos : pmo.AttackPos;
+		Vector3 to = hp - (pmo.pos.xy, pmo.player.viewz);
+		to.z *= level.pixelstretch;
+		if (to.Length() > cv("rsqgc_eye_reach", 0.30) * cv("vr_vunits_per_meter", 34)) return false;
+		Vector3 look = (cos(pmo.angle) * cos(pmo.pitch), sin(pmo.angle) * cos(pmo.pitch), -sin(pmo.pitch));
+		return handDir(pmo, hand) dot look >= cos(25);
+	}
+
+	// GC5: a hand with nothing to count: no weapon, or fists (Brutal Doom's Melee_Attacks, Brutal Doom VR's off-hand
+	// RSQ_Hands, vanilla's Fist)
+	static bool EmptyHand(PlayerInfo p, int hand)
+	{
+		Weapon w = hand == 1 ? p.OffhandWeapon : p.ReadyWeapon;
+		if (!w) return true;
+		Name cn = w.GetClassName();
+		return cn == 'Melee_Attacks' || cn == 'RSQ_Hands' || cn == 'Fist';
+	}
 
 	static double cv(string n, double f) { let c = CVar.FindCVar(n); return c ? c.GetFloat() : f; }
 	static int ci(string n, int f) { let c = CVar.FindCVar(n); return c ? c.GetInt() : f; }
@@ -328,8 +438,33 @@ class RSQGC_GunCard : EventHandler
 	static int CardColour(PlayerInfo p, Weapon w)
 	{
 		int pick = ci("rsqgc_color", 0);
+		if (pick == COLOR_AMMO) { int c = AmmoColour(w); if (c >= 0) return c; }
 		if (pick > 0 && pick < RSQGC_GunCard.PICK_COL.Size()) return RSQGC_GunCard.PICK_COL[pick];
 		return RSQGC_GunCard.STYLE_COL[clamp(StyleFor(p, w), 0, 17)];
+	}
+
+	// GC6 BY AMMO TYPE (rsqgc_color 11): the colour of what the gun eats, by its ammo pile's name (and the Doom pile it
+	// counts as): bullets gold, shells red, rockets and grenades orange, cells and plasma cyan, fuel green, souls
+	// purple; any other pile a fixed colour of its own from the simple list (by its name). -1: a gun with no ammo.
+	const COLOR_AMMO = 11;
+	static int AmmoColour(Weapon w)
+	{
+		if (!w || !w.Ammo1) return -1;
+		let a = w.Ammo1;
+		string n = a.GetClassName();
+		class<Ammo> par = a.GetParentAmmo();
+		if (par) n = n .. " " .. par.GetClassName();
+		n = n.MakeLower();
+		if (n.IndexOf("shell") >= 0) return 0xE04040;
+		if (n.IndexOf("rocket") >= 0 || n.IndexOf("grenade") >= 0 || n.IndexOf("glammo") >= 0 || n.IndexOf("missile") >= 0 || n.IndexOf("nuke") >= 0 || n.IndexOf("mortar") >= 0) return 0xF08030;
+		if (n.IndexOf("cell") >= 0 || n.IndexOf("plasma") >= 0 || n.IndexOf("rail") >= 0 || n.IndexOf("laser") >= 0) return 0x50D0D0;
+		if (n.IndexOf("gas") >= 0 || n.IndexOf("fuel") >= 0 || n.IndexOf("flame") >= 0) return 0x50D050;
+		if (n.IndexOf("soul") >= 0 || n.IndexOf("hell") >= 0) return 0xB060E0;
+		if (n.IndexOf("clip") >= 0 || n.IndexOf("pistol") >= 0 || n.IndexOf("smg") >= 0 || n.IndexOf("mp40") >= 0 || n.IndexOf("mauser") >= 0
+			|| n.IndexOf("sniper") >= 0 || n.IndexOf("bullet") >= 0 || n.IndexOf("rifle") >= 0 || n.IndexOf("machinegun") >= 0 || n.IndexOf("9mm") >= 0) return 0xE0B040;
+		int h = 0;
+		for (int i = 0; i < int(n.Length()); i++) h = (h * 31 + n.ByteAt(i)) & 0xFFFF;
+		return RSQGC_GunCard.PICK_COL[1 + h % 10];
 	}
 
 	// The panel for a gun: rsqgc_style 1..18 is one of Ermac's for every gun; 0 gives each gun its own by its weapon
@@ -396,9 +531,18 @@ class RSQGC_GunCard : EventHandler
 
 		// WHICH CARD. Checking your watch with a gun shows that gun's watch card (rsqgc_watch); otherwise the small
 		// card shows when rsqgc_card says.
+		Track(p);
 		bool both = ci("rsqgc_hands", 0) == 1;
-		bool watching[2];
-		for (int hand = 0; hand < 2; hand++) watching[hand] = always || (watchOn && Watching(pmo, hand));
+		bool watching[2], status[2];
+		for (int hand = 0; hand < 2; hand++)
+		{
+			bool checking = watchOn && Watching(pmo, hand);
+			watching[hand] = always || checking;
+			// GC5: checking your watch with an EMPTY hand shows health, armour and keys (the status card). On the
+			// hand only (not Draw in the World); the off hand needs its own weapon slot filled to own the layers
+			// (Brutal Doom VR's off-hand fist, RSQ_Hands, is that).
+			status[hand] = checking && EmptyHand(p, hand) && (hand == 0 || p.OffhandWeapon) && !ci("rsqgc_world", 0);
+		}
 		bool show[2];
 		Weapon gun[2], other[2];
 		for (int hand = 0; hand < 2; hand++)
@@ -407,13 +551,15 @@ class RSQGC_GunCard : EventHandler
 			if (w && Loaded(w) < 0) w = null;
 			gun[hand] = w;
 			other[hand] = null;
-			show[hand] = watching[hand] ? w != null : (w && Wanted(pmo, hand));
+			// GC1 (Option): the small card hides while the gun is up at your eye
+			bool eyeHide = ci("rsqgc_hide_eye", 0) && AtEye(pmo, hand);
+			show[hand] = status[hand] || (watching[hand] ? w != null : (w && !eyeHide && Wanted(pmo, hand)));
 		}
 		// both guns on the main-hand small card (rsqgc_hands): the off hand's stands down. A host hand with nothing
 		// to count carries the other gun alone. A hand you are checking shows its watch card instead.
 		for (int hand = 0; hand < 2; hand++)
 		{
-			if (!both || watching[hand]) continue;
+			if (!both || watching[hand] || status[hand]) continue;
 			if (hand == 1 && !watching[1] && !watching[0] && gun[0] != null) { show[1] = false; continue; }
 			other[hand] = gun[1 - hand];
 			if (!gun[hand]) { gun[hand] = other[hand]; other[hand] = null; show[hand] = gun[hand] != null && (watching[hand] || Wanted(pmo, 0) || Wanted(pmo, 1)); }
@@ -424,10 +570,18 @@ class RSQGC_GunCard : EventHandler
 			mShow[hand] = clamp(mShow[hand] + (show[hand] ? step : -step), 0.0, 1.0);
 			// FADING OUT, a card stays the card it was (fixed 2026-10-31: when a watch check ended, the watch card
 			// vanished at once and the small card flashed in for the fade's tics, even with Show Cards off)
-			if (show[hand]) mWasWatch[hand] = watching[hand];
-			bool full = watching[hand] || (!show[hand] && mWasWatch[hand]);
+			if (show[hand]) { mWasWatch[hand] = watching[hand] || status[hand]; mWasStatus[hand] = status[hand]; }
+			bool full = watching[hand] || status[hand] || (!show[hand] && mWasWatch[hand]);
+			bool stat = status[hand] || (!show[hand] && mWasStatus[hand]);
 			Weapon w = gun[hand];
 			Actor owner = hand == 1 ? Actor(p.OffhandWeapon) : Actor(item);
+			if (stat && mShow[hand] > 0 && owner && !ci("rsqgc_world", 0))
+			{
+				// GC5: the status card, flat on both sides of the wrist like the watch card
+				World(hand).Hide(); ClearHand(p, hand);
+				DrawStatus(p, pmo, hand, owner);
+				continue;
+			}
 			if (mShow[hand] <= 0 || !w || !owner) { World(hand).Hide(); ClearHand(p, hand); Side(hand).Remove(p); SideOf(hand, 1).Remove(p); continue; }
 			if (ci("rsqgc_world", 0))
 			{
@@ -436,7 +590,7 @@ class RSQGC_GunCard : EventHandler
 				let wc = World(hand);
 				bool wantFull = full;
 				if (!wc.Shown() || wc.full != wantFull) wc.Show(pmo.pos, wantFull);
-				wc.Fill(pmo, w, CardColour(p, w));
+				wc.Fill(pmo, w, CardColour(p, w), self);
 				wc.Place(pmo, cv("rsqgc_world_scale", 1.4), wantFull ? WatchNudge(true) : Nudge(true), wantFull ? WatchNudge(false) : Nudge(false), mShow[hand] * cv("rsqgc_alpha", 0.85), wantFull ? 0 : cv("rsqgc_in", 0));
 				continue;
 			}
@@ -483,13 +637,34 @@ class RSQGC_GunCard : EventHandler
 		let c = SideOf(hand, side);
 		bool mir = Mirrored(p, hand);
 		int style = StyleFor(p, w);
-		string sig = Signature(pmo, w, 9, style) .. (mir ? " m" : "") .. String.Format(" c%d", ci("rsqgc_color", 0));
+		string sig = Signature(pmo, w, 9, style) .. (mir ? " m" : "") .. String.Format(" c%d", ci("rsqgc_color", 0)) .. ExtraSig(pmo, hand, w);
 		if (sig != c.sig || c.mir != mir)
 		{
 			c.sig = sig; c.mir = mir;
-			c.Build(pmo, hand, w, CardColour(p, w));
+			c.Build(pmo, hand, w, CardColour(p, w), self);
 		}
 		c.Sync(p, owner, mShow[hand] * cv("rsqgc_alpha", 0.85), WatchNudge(true), self);
+	}
+
+	// ---- the status card (GC5) ----------------------------------------------------------------------------------
+	private void DrawStatus(PlayerInfo p, PlayerPawn pmo, int hand, Actor owner)
+	{
+		bool mir = Mirrored(p, hand);
+		let arm = pmo.FindInventory("BasicArmor");
+		string keys = "";
+		for (let i = pmo.Inv; i; i = i.Inv) if (i is "Key") keys = keys .. i.GetClassName() .. ",";
+		string sig = String.Format("status %d %d %s %d %d/%d", pmo.Health, arm ? arm.Amount : 0, keys, Grenades(pmo), level.killed_monsters, level.total_monsters)
+			.. (mir ? " m" : "");
+		for (int side = 0; side < 2; side++)
+		{
+			let c = SideOf(hand, side);
+			if (sig != c.sig || c.mir != mir)
+			{
+				c.sig = sig; c.mir = mir;
+				c.BuildStatus(pmo, hand, 0x8A8A8A, self);
+			}
+			c.Sync(p, owner, mShow[hand] * cv("rsqgc_alpha", 0.85), WatchNudge(true), self);
+		}
 	}
 
 	// ---- the small card ---------------------------------------------------------------------------------------
@@ -527,24 +702,33 @@ class RSQGC_GunCard : EventHandler
 		int lab = HasMagazine(w) ? 1 : 0;
 		if (ci("rsqgc_label", 1)) Put(p, base + P_LABEL, Nth(RSQGC_CardStates.Piece(1, mir, 0, Depth()), lab), owner, alpha, tPanel);
 		else Kill(p, base + P_LABEL);
-		// the big number, right-aligned in three slots
-		Digits(p, 2, mir, base + P_BIG, owner, clamp(loaded, 0, 999), false, alpha, tLow >= 0 ? tLow : tDigits);
-		// the small number: the reserve (or the other gun's rounds on a both-guns card)
-		if (reserve >= 0) Digits(p, 3, mir, base + P_SMALL, owner, clamp(reserve, 0, 999), true, alpha, tDigits);
+		// the big number, right-aligned in three slots; GC3: RELOAD in its place on an empty magazine with rounds to
+		// load (Ermac's lettering, tools/gen_cards.py), in the empty colour
+		if (HasMagazine(w) && loaded == 0 && Reserve(w) > 0)
+		{
+			for (int k = 1; k < RSQGC_CardStates.SLOTS; k++) Kill(p, base + P_BIG + k);
+			Put(p, base + P_BIG, RSQGC_CardStates.Piece(4, mir, 0, Depth()), owner, alpha, tLow >= 0 ? tLow : tDigits);
+		}
+		else Digits(p, 2, mir, base + P_BIG, owner, clamp(loaded, 0, 999).."", false, alpha, tLow >= 0 ? tLow : tDigits);
+		// the small number: the reserve (or the other gun's rounds on a both-guns card); GC2: "+N" for a moment after
+		// ammo for this gun is picked up
+		int plus = both ? 0 : PlusNow(hand);
+		if (plus > 0) Digits(p, 3, mir, base + P_SMALL, owner, "+" .. clamp(plus, 1, 99), true, alpha, tDigits);
+		else if (reserve >= 0) Digits(p, 3, mir, base + P_SMALL, owner, clamp(reserve, 0, 999).."", true, alpha, tDigits);
 		else for (int k = 0; k < RSQGC_CardStates.SLOTS; k++) Kill(p, base + P_SMALL + k);
 	}
 
-	private void Digits(PlayerInfo p, int kind, bool mir, int base, Actor owner, int n, bool small, double alpha, int trans)
+	private void Digits(PlayerInfo p, int kind, bool mir, int base, Actor owner, string s, bool small, double alpha, int trans)
 	{
 		int slots = RSQGC_CardStates.SLOTS;
-		string s = String.Format("%d", n);
 		int len = s.Length();
 		for (int k = 0; k < slots; k++)
 		{
 			// slot 0 is the leftmost; a short number sits on the right
 			int ci0 = k - (slots - len);
 			if (ci0 < 0) { Kill(p, base + k); continue; }
-			int g = s.ByteAt(ci0) - 48;
+			int ch = s.ByteAt(ci0);
+			int g = ch == 43 ? RSQGC_CardStates.GLYPH_PLUS : ch - 48;   // '+' (GC2)
 			Put(p, base + k, Nth(RSQGC_CardStates.Piece(kind, mir, k, Depth()), g), owner, alpha, trans);
 		}
 	}
