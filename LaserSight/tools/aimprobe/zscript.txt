@@ -2,6 +2,49 @@ version "4.12"
 // TEST ONLY. Where the laser's dot is, against where the shots land and where the controller points.
 class RSLSAim_Probe : EventHandler
 {
+	Actor mon; Vector3 monAt;
+	// rsqlsaim_mon_d / _s: at t60 put an imp rsqlsaim_mon_d units down the controller's line and rsqlsaim_mon_s
+	// units to its left, and hold it there; then log T_BODY: where the dot sits against the imp's billboard.
+	void Monster(PlayerPawn mo)
+	{
+		let dc = CVar.GetCVar("rsqlsaim_mon_d", mo.player);
+		double md = dc ? dc.GetFloat() : 0;
+		if (level.maptime == 60) Console.Printf("T_MON t60 asked d %.1f", md);
+		if (md <= 0) return;
+		if (!mon && level.maptime == 60)
+		{
+			let sc = CVar.GetCVar("rsqlsaim_mon_s", mo.player);
+			// down the LASER's line: from the gun hand toward the dot it shows now (AttackDir follows mo.angle here)
+			let si = ThinkerIterator.Create("RSQLS_Spot");
+			Actor sp, best;
+			while (sp = Actor(si.Next())) if (sp.GetClassName() == 'RSQLS_Spot' && !sp.bINVISIBLE) best = sp;
+			if (!best) { Console.Printf("T_MON no dot to aim by"); return; }
+			Vector3 d = (best.pos - mo.AttackPos).Unit();
+			Vector2 f = d.xy.Unit();
+			Vector2 l = (-f.y, f.x);
+			Vector3 at = mo.AttackPos + d * md;
+			at.xy += l * (sc ? sc.GetFloat() : 0);
+			at.z = mo.pos.z;
+			mon = Actor.Spawn("DoomImp", at);
+			if (mon) { monAt = mon.pos; mon.angle = VectorAngle(-f.x, -f.y); Console.Printf("T_MON t%d %s at %.1f %.1f %.1f r %.1f ray yaw %.1f", level.maptime, mon.GetClassName(), mon.pos.x, mon.pos.y, mon.pos.z, mon.radius, VectorAngle(f.x, f.y)); }
+		}
+		if (!mon) return;
+		mon.SetOrigin(monAt, false); mon.Vel = (0, 0, 0);
+		if (level.maptime % 10) return;
+		let it = ThinkerIterator.Create("RSQLS_Spot");
+		Actor s;
+		while (s = Actor(it.Next()))
+		{
+			if (s.GetClassName() != 'RSQLS_Spot' || s.bINVISIBLE) continue;
+			// the view's line to the imp: depth of the dot against the imp's billboard plane, and how far sideways
+			Vector3 eye = (mo.pos.xy, mo.player.viewz);
+			Vector2 v = (mon.pos.xy - eye.xy).Unit();
+			Vector2 sd = s.pos.xy - mon.pos.xy;
+			Vector2 vf = (cos(mo.angle), sin(mo.angle));   // the plane a sprite faces by default: square to the view's yaw
+			Console.Printf("T_BODY t%d dot %.1f %.1f %.1f  in-front %.1f (of view-yaw plane %.1f, view yaw %.1f)  sideways %.1f (r %.1f)  z-above-feet %.1f", level.maptime, s.pos.x, s.pos.y, s.pos.z, -(sd dot v), -(sd dot vf), mo.angle, abs(sd dot (-v.y, v.x)), mon.radius, s.pos.z - mon.pos.z);
+		}
+	}
+
 	override void WorldThingSpawned(WorldEvent e)
 	{
 		let a = e.Thing;
@@ -16,8 +59,9 @@ class RSLSAim_Probe : EventHandler
 		let p = players[consoleplayer];
 		if (!p || !p.mo) return;
 		// rsqlsaim_push: walk the pawn forward this many units a tic (the rig's +forward does not move a VR pawn)
-		let pc = CVar.FindCVar("rsqlsaim_push");
+		let pc = CVar.GetCVar("rsqlsaim_push", p);
 		if (pc && pc.GetFloat() != 0) p.mo.Vel.xy = (cos(p.mo.angle), sin(p.mo.angle)) * pc.GetFloat();
+		Monster(p.mo);
 		if (level.maptime < 40 || level.maptime % 10) return;
 		let mo = p.mo;
 		let it = ThinkerIterator.Create("RSQLS_Spot");

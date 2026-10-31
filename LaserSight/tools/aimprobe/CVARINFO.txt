@@ -1,1 +1,3 @@
 user float rsqlsaim_push = 0;
+User float rsqlsaim_mon_d = 0;
+User float rsqlsaim_mon_s = 0;
