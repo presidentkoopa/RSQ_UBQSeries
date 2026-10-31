@@ -1,0 +1,109 @@
+# RSQ_Gestures QoL round 2026-10-31: rig, doom2 + brutal22test6 + BD_VoxelPack + BD22_VR-Reloaded 2.0.3h + hotfix, rsqg_debug 1
+## s1 (+RSQ_Wheel): GE2 shove/punch, GE1 Wheel, GE4/GE5 inspect, GE6 two-hand, GE3 measure
+T_GQ t0 inspect 0 | punch 0/0 | shove 0/0 | quiet 0 | Rifle/None
+T_GQ t1 inspect 0 | punch 0/0 | shove 0/0 | quiet 0 | Rifle/rsq_hands
+rsqg: shove, main hand, 16.51 m/s, with Rifle (t13)
+rsqg: punch hook, off hand, 17.93 m/s, dir fwd -0.10 lat -0.98 up -0.20 (t13)
+T_GQ t13 inspect 0 | punch 0/2 | shove 1/0 | quiet 0 | Rifle/rsq_hands
+T_GQ t24 inspect 0 | punch 0/0 | shove 0/0 | quiet 0 | Rifle/rsq_hands
+S1_GUN_SWING
+rsqg: shove, main hand, 3.50 m/s, with Rifle (t51)
+T_GQ t51 inspect 0 | punch 0/0 | shove 1/0 | quiet 0 | Rifle/rsq_hands
+rsqg: not a shove, main hand, 14.00 m/s: drawn back (t61)
+T_GQ t62 inspect 0 | punch 0/0 | shove 0/0 | quiet 0 | Rifle/rsq_hands
+S2_FISTS
+T_GQ t85 inspect 0 | punch 0/0 | shove 0/0 | quiet 0 | Melee_Attacks/rsq_hands
+rsqg: punch jab, main hand, 3.50 m/s, dir fwd 1.00 lat 0.00 up 0.00 (t146)
+T_GQ t146 inspect 0 | punch 1/0 | shove 0/0 | quiet 0 | Melee_Attacks/rsq_hands
+rsqg: not a punch, main hand, 14.00 m/s: drawn back (t156)
+T_GQ t157 inspect 0 | punch 0/0 | shove 0/0 | quiet 0 | Melee_Attacks/rsq_hands
+S3_WHEEL_OPEN
+rsqg: quiet, the Wheel is open (t180)
+T_GQ t180 inspect 0 | punch 0/0 | shove 0/0 | quiet 2 | Melee_Attacks/rsq_hands
+S3b_WHEEL_CLOSE
+rsqg: quiet ends (t243)
+T_GQ t243 inspect 0 | punch 0/0 | shove 0/0 | quiet 0 | Melee_Attacks/rsq_hands
+rsqg: punch jab, main hand, 3.50 m/s, dir fwd 1.00 lat 0.00 up 0.00 (t266)
+T_GQ t266 inspect 0 | punch 1/0 | shove 0/0 | quiet 0 | Melee_Attacks/rsq_hands
+rsqg: not a punch, main hand, 14.00 m/s: drawn back (t275)
+T_GQ t277 inspect 0 | punch 0/0 | shove 0/0 | quiet 0 | Melee_Attacks/rsq_hands
+S5_INSPECT_A
+rsqg: punch uppercut, main hand, 12.47 m/s, dir fwd 0.42 lat -0.34 up 0.84 (t300)
+T_GQ t300 inspect 0 | punch 3/0 | shove 0/0 | quiet 0 | Melee_Attacks/rsq_hands
+T_GQ t311 inspect 0 | punch 0/0 | shove 0/0 | quiet 0 | Melee_Attacks/rsq_hands
+rsqg: not a punch, main hand, 12.47 m/s: swung down (t340)
+S5_INSPECT_B
+rsqg: punch uppercut, main hand, 12.47 m/s, dir fwd 0.42 lat -0.34 up 0.84 (t360)
+T_GQ t360 inspect 0 | punch 3/0 | shove 0/0 | quiet 0 | Melee_Attacks/rsq_hands
+rsqg: inspect main hand 0 -> 1 (t363)
+T_GQ t363 inspect 1 | punch 3/0 | shove 0/0 | quiet 0 | Melee_Attacks/rsq_hands
+rsqg: inspect main hand 1 -> 2 (t368)
+rsqg: watch-check tick, main hand (right controller) (t368)
+T_GQ t368 inspect 2 | punch 3/0 | shove 0/0 | quiet 0 | Melee_Attacks/rsq_hands
+T_GQ t371 inspect 2 | punch 0/0 | shove 0/0 | quiet 0 | Melee_Attacks/rsq_hands
+rsqg: inspect main hand 2 -> 0 (t400)
+rsqg: not a punch, main hand, 12.47 m/s: swung down (t400)
+T_GQ t400 inspect 0 | punch 0/0 | shove 0/0 | quiet 0 | Melee_Attacks/rsq_hands
+S6_INSPECT_OFF
+T_GQ t419 inspect -1 | punch 0/0 | shove 0/0 | quiet 0 | Melee_Attacks/rsq_hands
+rsqg: punch uppercut, main hand, 12.47 m/s, dir fwd 0.42 lat -0.34 up 0.84 (t420)
+T_GQ t420 inspect -1 | punch 3/0 | shove 0/0 | quiet 0 | Melee_Attacks/rsq_hands
+T_GQ t431 inspect -1 | punch 0/0 | shove 0/0 | quiet 0 | Melee_Attacks/rsq_hands
+rsqg: inspect main hand 0 -> 1 (t479)
+T_GQ t479 inspect 1 | punch 0/0 | shove 0/0 | quiet 0 | Melee_Attacks/rsq_hands
+rsqg: inspect main hand 1 -> 0 (t480)
+rsqg: not a punch, main hand, 12.47 m/s: swung down (t480)
+T_GQ t480 inspect 0 | punch 0/0 | shove 0/0 | quiet 0 | Melee_Attacks/rsq_hands
+S7_TWOHAND_DOWN_OFF
+rsqg: pair both hands apart, 3.50 (t500)
+T_GQ_PAIR t501 which 1 mag 350
+rsqg: not a punch, main hand, 14.11 m/s: both hands together (t520)
+rsqg: not a punch, off hand, 14.11 m/s: both hands together (t520)
+S7b_TWOHAND_DOWN_ON
+rsqg: not a punch, main hand, 19.57 m/s: both hands together (t546)
+rsqg: not a punch, off hand, 19.57 m/s: both hands together (t546)
+rsqg: pair both hands down, 14.00 (t576)
+rsqg: not a punch, main hand, 14.11 m/s: both hands together (t576)
+rsqg: not a punch, off hand, 14.11 m/s: both hands together (t576)
+T_GQ_PAIR t577 which 0 mag 1400
+rsqg: not a punch, main hand, 15.85 m/s: both hands together (t602)
+rsqg: not a punch, off hand, 15.85 m/s: both hands together (t602)
+S8_MEASURE
+rsqg: punch hook, main hand, 17.89 m/s, dir fwd -0.29 lat 0.82 up 0.49 (t622)
+rsqg: punch hook, off hand, 17.89 m/s, dir fwd -0.29 lat -0.82 up 0.49 (t622)
+T_GQ t622 inspect 0 | punch 2/2 | shove 0/0 | quiet 0 | Melee_Attacks/rsq_hands
+T_GQ t633 inspect 0 | punch 0/0 | shove 0/0 | quiet 0 | Melee_Attacks/rsq_hands
+rsqg: measured eyes 1.60 m, reach 0.62 m: zones x1.00 up/down, x0.89 forward/sideways
+rsqg: punch hook, main hand, 17.89 m/s, dir fwd 0.29 lat -0.82 up -0.49 (t762)
+rsqg: punch hook, off hand, 17.89 m/s, dir fwd 0.29 lat 0.82 up -0.49 (t762)
+T_GQ t762 inspect 0 | punch 2/2 | shove 0/0 | quiet 0 | Melee_Attacks/rsq_hands
+T_GQ t773 inspect 0 | punch 0/0 | shove 0/0 | quiet 0 | Melee_Attacks/rsq_hands
+## s1 gdb: controller rumble after the watch-check tick (chan 1 = right)
+Gold]rsqg: watch-check tick, main hand (right controller) (t368)
+T_VIBRATE_XR dur=10 chan=0 amp=0.00
+T_VIBRATE_XR dur=10 chan=1 amp=0.24
+## s3 (+RSQ_Grapple, GRTEST, 3 hand-over-hand strokes): quiet from the latch on
+adding /tmp/claude-0/-home-claude/62d9a60b-b086-5c5f-814f-934c01a876fc/scratchpad/rsqg/qolprobe.pk3, 2 lumps
+T_GQ t0 inspect 0 | punch 0/0 | shove 0/0 | quiet 0 | Rifle/None
+T_GQ t1 inspect 0 | punch 0/0 | shove 0/0 | quiet 0 | Rifle/rsq_hands
+T_GQ t0 inspect 0 | punch 0/0 | shove 0/0 | quiet 0 | Rifle/None
+T_GQ t8 inspect 0 | punch 0/0 | shove 0/0 | quiet 0 | Rifle/rsq_hands
+T_GQ t19 inspect 0 | punch 0/1 | shove 1/0 | quiet 0 | Rifle/rsq_hands
+rsqg: pull, main hand, 9.08 m/s (t29)
+rsqg: pull, off hand, 50.54 m/s (t29)
+rsqg: not a punch, main hand, 52.29 m/s: both hands together (t29)
+rsqg: not a punch, off hand, 50.54 m/s: both hands together (t29)
+T_GQ t29 inspect 0 | punch 0/1 | shove 1/0 | quiet 0 | Melee_Attacks/rsq_hands
+T_GQ t30 inspect 0 | punch 0/0 | shove 0/0 | quiet 0 | Melee_Attacks/rsq_hands
+T_GR t79 h0 fire pos(300.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(303.5 503.5 37.0) L0.0 d594.4 segs0 ms0.000/0.015 scale1.00 grip-1 free11 hoff0.00 pt-1
+T_GR t91 h0 latch pos(300.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(403.8 503.5 511.0) L488.6 d488.6 segs94 ms0.076/0.026 scale1.00 grip-1 free11 hoff0.00 pt-1
+rsqg: quiet, on the rope (t92)
+T_GQ t92 inspect 0 | punch 0/0 | shove 0/0 | quiet 1 | Melee_Attacks/rsq_hands
+T_GR t136 h0 take h1 pos(553.5 491.2 37.7) vel(7.52 -0.62 1.50) claw(403.8 503.5 511.0) L464.6 d464.6 segs91 ms0.082/0.063 scale1.00 grip-1 free11 hoff0.00 pt-1
+T_GR t146 h0 unhold h1 pos(601.6 487.3 71.1) vel(3.45 -0.28 0.65) claw(403.8 503.5 511.0) L451.8 d452.1 segs92 ms0.073/0.072 scale1.00 grip-1 free11 hoff0.00 pt-1
+T_GR t155 h0 take h0 pos(612.9 486.4 77.2) vel(-0.39 0.03 -1.20) claw(403.8 503.5 511.0) L451.8 d451.8 segs86 ms0.101/0.143 scale1.00 grip-1 free11 hoff0.00 pt-1
+T_GR t165 h0 unhold h0 pos(581.0 489.0 78.7) vel(-4.21 0.34 -2.94) claw(403.8 503.5 511.0) L436.4 d436.5 segs85 ms0.079/0.159 scale1.00 grip-1 free11 hoff0.00 pt-1
+T_GR t174 h0 take h1 pos(527.7 493.4 59.1) vel(-7.17 0.59 -3.20) claw(403.8 503.5 511.0) L436.4 d436.4 segs84 ms0.077/0.079 scale1.00 grip-1 free11 hoff0.00 pt-1
+T_GR t184 h0 unhold h1 pos(439.9 500.5 60.8) vel(-9.12 0.75 -2.00) claw(403.8 503.5 511.0) L417.4 d418.2 segs84 ms0.064/0.076 scale1.00 grip-1 free11 hoff0.00 pt-1
+T_GR t193 h0 take h1 pos(358.4 507.2 62.5) vel(-8.70 0.71 -0.13) claw(403.8 503.5 511.0) L417.4 d417.4 segs80 ms0.067/0.119 scale1.00 grip-1 free11 hoff0.00 pt-1
+T_GR t205 h0 unhold h1 pos(270.5 514.4 62.8) vel(-5.27 0.43 0.63) claw(403.8 503.5 511.0) L435.0 d435.6 segs85 ms0.064/0.128 scale1.00 grip-1 free11 hoff0.00 pt-1

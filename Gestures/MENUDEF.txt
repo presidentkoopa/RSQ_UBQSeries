@@ -32,8 +32,20 @@ OptionMenu "RSQG_Options"
 	Slider "Inspect Twist (degrees)", "rsqg_inspect_twist", 20, 90, 5, 0
 	Slider "Inspect Hold (tics)", "rsqg_inspect_hold", 1, 35, 1, 0
 	StaticText " "
+	Option "Watch Check Off", "rsqg_inspect_off", "OnOff"
+	Option "Watch Check Tick", "rsqg_inspect_tick", "OnOff"
+	Option "Show Gesture Names", "rsqg_names", "OnOff"
+	StaticText " "
 	Option "Thrust and Pull Events", "rsqg_signals", "OnOff"
 	Option "Two-Hand Events", "rsqg_twohand", "OnOff"
+	Option "  Both Hands Down", "rsqg_two_down", "OnOff"
+	Option "  Both Hands Apart", "rsqg_two_apart", "OnOff"
+	Option "  Both Palms Out", "rsqg_two_palms", "OnOff"
+	StaticText " "
+	StaticText "Fit to my body: stand tall, arms straight", "gray"
+	StaticText "out to your sides, Measure Me, close the menu.", "gray"
+	Option "Fit Zones to My Body", "rsqg_body", "OnOff"
+	Command "Measure Me", "netevent rsqg_measure"
 	StaticText " "
 	Submenu "Tuning and Debug", "RSQG_Tuning"
 }
@@ -73,12 +85,14 @@ OptionMenu "RSQG_Tuning"
 	Slider "Palms: Pointing Up (degrees)", "rsqg_two_palms_pitch", 0, 90, 5, 0
 	Slider "Palms: Apart Sideways (m)", "rsqg_two_palms_gap", 0.0, 0.8, 0.05, 2
 	StaticText " "
-	StaticText "Punch (jab, hook, uppercut)", "gold"
+	StaticText "Punch (jab, hook, uppercut) and shove (a gun in hand)", "gold"
 	Slider "Punch Speed (m/s)", "rsqg_punch_mps", 0.5, 8.0, 0.1, 1
 	Slider "Punch Repeat (tics)", "rsqg_punch_rehit", 0, 35, 1, 0
 	Slider "Uppercut Rise", "rsqg_punch_rise", 0.2, 0.9, 0.05, 2
 	Slider "Punch Answered For (ms)", "rsqg_punch_window", 50, 1000, 50, 0
 	Slider "Two-Hand Shove Share", "rsqg_punch_together", 0.2, 1.0, 0.05, 2
+	StaticText " "
+	Slider "Watch Check Tick Strength", "rsqg_tick_strength", 0.05, 1.0, 0.05, 2
 	StaticText " "
 	Option "Debug Log", "rsqg_debug", "RSQG_Debug"
 	StaticText " "

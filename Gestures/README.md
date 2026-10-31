@@ -17,7 +17,20 @@ inspecting?") and it answers. When nothing has asked for a second, it stops meas
 | **Both hands apart** | Both hands thrown outward from the chest. | event `rsqg_pair` 1 |
 | **Both palms out** | Both hands held out in front, pointing up, side by side, still, no trigger. | event `rsqg_pair` 2, and asks `"palms"` |
 | **Braced** (new) | The engine's two-hand grip latch (`WF_TWOHANDSTABILIZED`): the off grip pressed with the controllers within 0.50 m. SteamVR and QuestZDoom's own Quest input both set it. One answer for every series mod instead of each testing the bit. Any player, not only this machine's. | asks `"braced"`, `"braced.tics"` |
+| **Shove** (QoL GE2) | The same swing with a **gun** in that hand (anything but fists or a blade), or both hands driving a gun together, or braced: Brutal Doom's gun-butt shove. Its own answer, never a punch. Gestures only reports it: the knock back is Brutal Doom VR's own (its butt strike, Options' Two-Handed Butt Strike, `rsq_butt`, off by default; its pistol whip, `rsq_pistol_whip`, on), and nothing here pushes or hurts anything, so the two never collide. A blade in hand (axe, sword, chainsaw) is neither. | asks `"shove"`; event `rsqg_shove` (with Thrust and Pull Events on) |
 | **Punch** (new) | A jab, hook or uppercut: a slow hand that then travels 0.15 m toward where you face at 2 m/s average, named by its travel against that line. Gun Bonsai's gloves' reader and SuperPunchOut's ClassifyPunch, copied (no link to Gun Bonsai). Never while braced, and never when both hands shove the same way together (a two-hand gun; Brutal Doom's butt-stroke push). | asks `"punch"`; event `rsqg_punch` (with Thrust and Pull Events on) |
+
+**On the rope or at the Wheel nothing is a gesture** (QoL GE1): while RSQ Grapple answers `"climbing"`,
+`"swinging"` or `"reeling"`, or RSQ Wheel answers `"IsOpen"`, and for a quarter second after, no thrust, pull,
+punch, shove or two-hand event is read (asked by name through their services; neither mod is changed).
+
+**Watch check** (inspect): a light tick in that hand when the pose is held (Watch Check Tick, on), and it can be
+switched off altogether (Watch Check Off): then `"inspect"` answers -1, "not answering", and RSQ Gun Cards uses
+its own watch pose. **Show Gesture Names** (on): a small grey line low in the view names each gesture as it is
+recognised, for tuning; it is half-transparent and gone in 1.5 s. **Fit Zones to My Body** (off): stand tall, arms
+straight out to your sides, press Measure Me and close the menu: two seconds later your eye height and reach are
+measured and the zones scale from the body the defaults assume (eyes 1.60 m, reach 0.70 m). Each two-hand event
+has its own switch under Two-Hand Events.
 
 Every distance is measured from **your eyes, in metres, in your own frame** (forward, sideways, up), so
 tall, short and seated players make the same gesture, and the map's squashed vertical
@@ -47,7 +60,7 @@ PlayerPawn: anyone but the local player gets 0 (the hands are this machine's har
 
 | Request | Returns |
 |---|---|
-| `GetInt "inspect"` | 0 not, 1 starting (pose met, being held), 2 held |
+| `GetInt "inspect"` | 0 not, 1 starting (pose met, being held), 2 held; -1 when Watch Check Off |
 | `GetInt "inspect.tics"` | tics since the pose was met (counts through 1 and 2), 0 when not |
 | `GetInt "inspect.any"` | the larger of the two hands' states |
 | `GetInt "still"` | tics the hand has been still |
@@ -58,6 +71,9 @@ PlayerPawn: anyone but the local player gets 0 (the hands are this machine's har
 | `GetInt "braced"` | 1 while the two-hand grip latch is on (`objectArg` = the pawn; any player). Also from `GetIntUI` / `GetIntData` |
 | `GetInt "braced.tics"` | tics it has been on, 0 when not |
 | `GetInt "punch"` | the hand's last punch within `rsqg_punch_window` (300 ms): 1 jab, 2 hook, 3 uppercut; 0 none |
+| `GetInt "shove"` | the hand's last gun shove within `rsqg_punch_window`: 1 one hand, 2 two hands on the gun; 0 none |
+| `GetInt "shove.ago"` / `"shove.speed"` | ms since it (-1 never) / its average, hundredths of m/s |
+| `GetInt "quiet"` | 1 on the rope, 2 the Wheel open (or just closed): nothing is read as a gesture; 0 |
 | `GetInt "punch.kind"` / `"punch.ago"` / `"punch.speed"` | the last punch: 0 jab 1 hook 2 uppercut (-1 never) / ms since (-1 never) / average hundredths of m/s |
 | `GetDouble "hand.x"`, `"hand.y"`, `"hand.z"` | the hand from your eyes, metres: forward, left, up |
 | `GetDouble "hand.roll"`, `"hand.pitch"` | the hand's twist and pitch, degrees |
@@ -69,7 +85,7 @@ Unknown requests return -1. A mod loaded after this one may instead call the sta
 `RSQG.Braced(pmo)`, `RSQG.Punch(hand)`.
 
 **Events** (when switched on) have RS_Gestures' shape: `rsqg_thrust` / `rsqg_pull` arg0 hand, arg1 speed
-in hundredths of m/s; `rsqg_punch` arg0 hand, arg1 kind (0 jab, 1 hook, 2 uppercut), arg2 hundredths of m/s; `rsqg_pair` arg0 which (0 down, 1 apart, 2 palms), arg1 hundredths of its own unit
+in hundredths of m/s; `rsqg_punch` arg0 hand, arg1 kind (0 jab, 1 hook, 2 uppercut), arg2 hundredths of m/s; `rsqg_shove` arg0 hand, arg1 two hands (0/1), arg2 hundredths of m/s; `rsqg_pair` arg0 which (0 down, 1 apart, 2 palms), arg1 hundredths of its own unit
 (the slower hand's downward m/s, the gap's opening m/s, seconds out). They say what the hands did, not
 what it means. Apply them to `e.Player`.
 
