@@ -48,5 +48,13 @@ user float  rsqg_two_hold_ms     = 400;    // palms: held this long
 user float  rsqg_two_palms_pitch = 40;     // palms: each hand pointing at least this far up (degrees)
 user float  rsqg_two_palms_gap   = 0.25;   // palms: the hands at least this far apart sideways (metres)
 
+// ---- PUNCH: jab / hook / uppercut (gloves.zs's reader, copied), answered whenever a mod asks -------------
+// Never while braced or with both hands shoving together (a two-hand gun; Brutal Doom's butt-stroke push).
+user float  rsqg_punch_mps       = 2.0;    // average speed over the swing for a punch (gloves.zs rsq_punch_min_speed)
+user int    rsqg_punch_rehit     = 6;      // tics before the same hand may punch again (rsq_punch_rehit)
+user float  rsqg_punch_rise      = 0.5;    // an uppercut: the swing's upward share above this (rsq_punch_uppercut_rise)
+user float  rsqg_punch_window    = 300;    // "punch" answers the last punch for this long (ms)
+user float  rsqg_punch_together  = 0.6;    // the other hand moving the same way at this share of the speed = a two-hand shove, not a punch
+
 // ---- debug ---------------------------------------------------------------------------------------------
 user int    rsqg_debug           = 0;      // 0 off; 1 changes and events; 2 also the hands' numbers once a second; 3 also the cost

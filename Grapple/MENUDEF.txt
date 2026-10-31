@@ -66,10 +66,13 @@ OptionMenu "RSQGR_Options"
 	RSQGRPreset "Range", "RSQGR_P_Range"
 	RSQGRPreset "Swing Feel", "RSQGR_P_Swing"
 	Option "Rope Climbing", "rsqgr_climb", "OnOff"
+	Option "Two Hands on the Rope", "rsqgr_two_hands", "OnOff"
+	Option "Hook Thump", "rsqgr_thump", "OnOff"
 	Option "Rope Look", "rsqgr_rope_style", "RSQGR_RopeStyles"
 	StaticText " "
 	Option "Monster Hook", "rsqgr_monster_mode", "RSQGR_MonsterModes"
 	RSQGRPreset "Monster Pull", "RSQGR_P_Pull"
+	Option "Split Pull by Weight", "rsqgr_split_pull", "OnOff"
 	Option "Tumble", "rsqgr_yank_tumble", "RSQGR_Tumbles"
 	Option "Throw Damage", "rsqgr_yank_damage", "OnOff"
 	Option "Whip", "rsqgr_whip", "OnOff"
@@ -102,6 +105,7 @@ OptionMenu "RSQGR_Tuning"
 	Slider "Air Drag", "rsqgr_drag", 0.0, 0.01, 0.0005, 4
 	Slider "Rope Friction", "rsqgr_rope_friction", 0.0, 0.1, 0.005, 3
 	Slider "Ledge Hop", "rsqgr_hop", 0, 12, 1, 0
+	Option "Keep Momentum", "rsqgr_momentum", "OnOff"
 	Slider "Return Speed", "rsqgr_retract_speed", 16, 128, 8, 0
 	Slider "Stop Distance", "rsqgr_slide_gap", 0, 64, 4, 0
 	StaticText " "
@@ -114,6 +118,7 @@ OptionMenu "RSQGR_Tuning"
 	Slider "Throw Air", "rsqgr_yank_air", 0.1, 1.0, 0.01, 2
 	Slider "Throw Turns", "rsqgr_yank_turns", 1, 3, 1, 0
 	Slider "Throw Stun", "rsqgr_yank_stun", 0, 35, 1, 0
+	Slider "Lasso Speed", "rsqgr_lasso_speed", 8, 48, 2, 0
 	Slider "Whip Reach", "rsqgr_whip_reach", 96, 320, 16, 0
 	Slider "Whip Damage", "rsqgr_whip_damage", 0, 40, 2, 0
 	Option "Whip Stun", "rsqgr_whip_stun", "OnOff"
@@ -128,6 +133,7 @@ OptionValue "RSQGR_MonsterModes"
 {
 	0, "Slide"
 	1, "Yank"
+	2, "Lasso"
 }
 OptionValue "RSQGR_Tumbles"
 {

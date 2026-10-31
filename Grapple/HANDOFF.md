@@ -1,3 +1,30 @@
+# ==== bugfix and QoL sweep, 2026-10-31 (read first) ====
+
+Rig only, not headset-confirmed. Rig = QZD 17.3 Linux, simulated OpenXR, the GRTEST test map (tools/rigtest, scripts in
+tools/rigtest/sweep_1031), vanilla doom2 and the owner's full order: no script error from this pk3. Key log lines in `test/evidence/sweep_1031.txt`.
+
+## Done (measured)
+| what | measured |
+|---|---|
+| Bug: collapsed-pose press fired from the chest | 10-31's PoseGood guard only swapped the collapsed hand for the body fallback, so the press still left from the chest along the view. Both hands at one point (rig: hand-off (0,0,33) both): before, `fire claw(100.0 512.0 33.0)` = the body; now the press is held (`press held 5 tics for the collapsed pose`) and fires from the hand once the pose is real, `claw(110.0 505.0 37.0)`. Dropped after 10 tics if the pose never comes back (input.zs UiTick). |
+| Bug: keepmomentum held whenever a rope was out | 10-31's fix set it for every latched or biting hook, and in its branch the engine leaves Speed at Default.Speed (player.zs), so the stick walk turned slow and sliding: reeling an imp in on foot read `keepmomentum 1 speed 1.00` the whole pull. Now only while the rope moves him (in the air, a reel/climb, Split Pull, the coast after an airborne let-go): the same pull reads `keepmomentum 0 speed 8.00`. A Split Pull arrival no longer coasts 18 tics. |
+| 32 two hands on one rope (apply/01 5.2b), on | each hand holds or not on its own; the climb is the AVERAGE of the holding hands' steps. One hand: rope 464.7 -> 459.6 in 4 strokes; both pulling: 460.3 -> 452.8 in 3 (same per stroke as one); one shaking while the other holds still: rope 452.8 <-> 454.1, half the shake, no net climb; the still hand lets go, the other lowers: 452.8 -> 457.9. `rsqgr_two_hands` (menu "Two Hands on the Rope"); off = the new hand takes the rope over, as before. |
+| 34 bite thump (99 1a, apply/01 7), on | P_LineAttack's own hit buzz (0.1 units, LAF_NOINTERACT, the hand's controller): `thump bite` on a monster bite, `thump latch` on a wall latch, `thump taut` when the rope catches a fall after >= 12 units of slack (one in a swing; the three false thumps a climb made before the slack rule are gone). One per hook per 10 tics. `rsqgr_thump` (menu "Hook Thump"). The buzz itself is not felt on the rig. |
+| 30 lasso (apply/01 4.2), option | `rsqgr_monster_mode 2` (menu Monster Hook: Lasso). The imp is held at rope length (190) on the line the hand points along, placed by PlaceMid at most `rsqgr_lasso_speed` 24 u/tic; core's no-progress guard skips it. Arm swept: the imp followed at 24 u/tic and smashed a zombieman each way (`impact DoomImp (lasso) speed 24.0 dmg 12 -> Zombieman 6`, twice); a tap let it go (`lasso let go`), it fell and landed. Holding the bind reels it in. |
+| 31 split pull (apply/01 4.3), option | `rsqgr_split_pull` (menu "Split Pull by Weight"): imp 100 vs you 100: you 0.50 of the pull (you went 100 -> 188.8, it 5 u/tic); Demon 400: you 0.80 (you went 123.8, it 2 u/tic). Full order (BD's player is mass 150): imp you 0.40, Demon you 0.73; you stop where you arrive with the walk back at once (`keepmomentum 0 speed 8.00` the tic after). Over rsqgr_mass_max it is still an anchor. |
+| Menus / Reset All | every new cvar has a row and is in `rsqgr_reset`; options default off. |
+
+## Not done / open
+- Not rig-testable: the buzz you feel (34), and the lasso's feel at speed. Headset.
+- 33 texture blacklist: owner said no.
+
+## QoL ideas for the owner to pick (not built)
+1. Tap window as a slider (TAP_TICS 8 is a constant; the headset decides it).
+2. A rope that has lain slack on the floor for 3 seconds lets go by itself.
+3. A dry click (a stock sound) when the claw reaches full range and comes back empty.
+4. Lasso: a hard flick of the arm throws the held monster (the Yank arc from the flick's direction).
+5. A faint aim dot where the claw would bite, shown only while the empty hand points (no button).
+
 # ==== service (branch agent-svc): service.zs, 2026-10-27 ====
 
 ## Branch `agent-compat` (2026-10-27): Champions + LegenDoom Lite -- read first

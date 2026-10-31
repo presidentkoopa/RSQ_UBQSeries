@@ -42,7 +42,58 @@ class RSQGR_Input : EventHandler
 			int hand = e.Args[0] ? 1 : 0;
 			let p = players[consoleplayer];
 			if (!p || !p.mo) return;
-			let pmo = p.mo;
+			// THE COLLAPSED POSE: in VR, but both hands written to one point (a menu just closed, a level just
+			// began: hw_vrmodes.cpp SetUp, Quest teardown apply/01 2.1). PoseGood refuses it, and the press then
+			// fired along the BODY fallback -- from the chest, along the view (rig, 10-31). Held instead until a
+			// real pose arrives (a frame or two), then fired from the hand; dropped after WAIT_TICS.
+			if (Collapsed(p.mo)) { waitTic[hand] = gametic; waitUp[hand] = false; return; }
+			SendPress(p.mo, hand);
+		}
+		else if (e.Name ~== "rsqgr_release")
+		{
+			int hand = e.Args[0] ? 1 : 0;
+			if (waitTic[hand] > 0) { waitUp[hand] = true; return; }   // a tap while held back: fire, then let go
+			EventHandler.SendNetworkEvent("rsqgr_up", hand);
+		}
+		else if (e.Name ~== "rsqgr_grip")
+			EventHandler.SendNetworkEvent("rsqgr_grab", e.Args[0] ? 1 : 0, 1);
+		else if (e.Name ~== "rsqgr_ungrip")
+			EventHandler.SendNetworkEvent("rsqgr_grab", e.Args[0] ? 1 : 0, 0);
+	}
+
+	const WAIT_TICS = 10;
+	ui int waitTic[2];         // the gametic a press was held back at, 0 none
+	ui bool waitUp[2];
+
+	static clearscope bool Collapsed(PlayerPawn pmo)
+	{
+		return pmo && pmo.OverrideAttackPosDir && pmo.AttackPos == pmo.OffhandPos;
+	}
+
+	// a press held back from a collapsed pose goes out on the first tic the hand is real
+	override void UiTick()
+	{
+		for (int hand = 0; hand < 2; hand++)
+		{
+			if (waitTic[hand] <= 0) continue;
+			let p = players[consoleplayer];
+			if (!p || !p.mo || gametic - waitTic[hand] > WAIT_TICS)
+			{
+				if (RSQGR_Util.Opt("rsqgr_debug", 0) >= 1) Console.Printf("T_GR h%d press dropped: the pose stayed collapsed", hand);
+				waitTic[hand] = 0;
+				continue;
+			}
+			if (Collapsed(p.mo)) continue;
+			if (RSQGR_Util.Opt("rsqgr_debug", 0) >= 1) Console.Printf("T_GR h%d press held %d tics for the collapsed pose", hand, gametic - waitTic[hand]);
+			waitTic[hand] = 0;
+			SendPress(p.mo, hand);
+			if (waitUp[hand]) EventHandler.SendNetworkEvent("rsqgr_up", hand);
+		}
+	}
+
+	ui void SendPress(PlayerPawn pmo, int hand)
+	{
+		{
 			int a1 = 0, a2 = 0;
 			int yawd = 0;
 			if (RSQGR_Util.PoseGood(pmo, hand))
@@ -61,14 +112,6 @@ class RSQGR_Input : EventHandler
 			}
 			EventHandler.SendNetworkEvent("rsqgr_fire", hand | (yawd << 1), a1, a2);
 		}
-		else if (e.Name ~== "rsqgr_release")
-		{
-			EventHandler.SendNetworkEvent("rsqgr_up", e.Args[0] ? 1 : 0);
-		}
-		else if (e.Name ~== "rsqgr_grip")
-			EventHandler.SendNetworkEvent("rsqgr_grab", e.Args[0] ? 1 : 0, 1);
-		else if (e.Name ~== "rsqgr_ungrip")
-			EventHandler.SendNetworkEvent("rsqgr_grab", e.Args[0] ? 1 : 0, 0);
 	}
 
 	// THE CLIMBING HAND'S POSE, streamed from the machine that holds the controller,

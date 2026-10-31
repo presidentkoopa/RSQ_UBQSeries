@@ -27,9 +27,19 @@ class RSQGR_Monster
 	{
 		if (!victim) return;
 		victim.vel.xy = (0, 0);
-		if (RSQGR_Util.Opt("rsqgr_monster_mode", 0) != 1) return;
+		int mode = RSQGR_Util.Opt("rsqgr_monster_mode", 0);
+		if (mode != 1 && mode != 2) return;
 		let fl = RSQGR_Flight.Get();
-		if (fl) fl.Launch(victim, pmo, hand);
+		if (fl) fl.Launch(victim, pmo, hand, mode == 2);   // 2: the lasso (FP_LASSO below)
+	}
+
+	// On the lasso: held at the rope's length, not coming. Core skips its "no closer for 52 tics" guard
+	// for it (Quest teardown apply/01 4.2, step 3) -- a held monster makes no progress by design.
+	static play bool Holds(Actor victim)
+	{
+		let fl = RSQGR_Flight.Get();
+		int s = fl ? fl.SlotOf(victim) : -1;
+		return s >= 0 && fl.fph[s] == RSQGR_Flight.FP_LASSO;
 	}
 
 	static play bool Tick(Actor victim, PlayerPawn pmo, int hand)
@@ -69,6 +79,28 @@ class RSQGR_Monster
 		if (d <= stopAt + 1.0) { RSQGR_Perks.OnArrive(victim, pmo); return false; }   // Get Over Here (perks.zs)
 		double step = min(RSQGR_Util.Num("rsqgr_slide_speed", 10) * RSQGR_Perks.Factor(pmo, 'reel') * RSQGR_Core.Scale(), d - stopAt);
 		Vector2 dir = to / d;
+
+		// SPLIT PULL (rsqgr_split_pull, off by default; Quest teardown apply/01 4.3): the pull is shared by
+		// weight, shareP = mA / (mA + mP) of it moving YOU (by velocity, as core moves you) and the rest
+		// the monster (by position, as here). An imp (100) and you (100) meet halfway; a pinky (400) comes
+		// a fifth of the way and you go the rest. Over rsqgr_mass_max (or a boss) it is still an anchor
+		// (core's TooHeavy): shareP clamped to 1. The monster's share is world time (RSQ_SlowMo slows it),
+		// yours is real time, as everything of the player's is.
+		if (RSQGR_Util.Flag("rsqgr_split_pull", false))
+		{
+			double mA = max(1.0, double(victim.Mass)), mP = max(1.0, double(pmo.Mass));
+			double shareP = clamp(mA / (mA + mP), 0.0, 1.0);
+			double total = min(RSQGR_Util.Num("rsqgr_slide_speed", 10) * RSQGR_Perks.Factor(pmo, 'reel'), d - stopAt);
+			step = total * (1.0 - shareP) * RSQGR_Core.Scale();
+			double want = total * shareP;
+			Vector2 toV = -dir;
+			double vr = pmo.vel.xy dot toV;
+			if (want > 0 && vr < want) pmo.vel.xy += toV * (want - vr);
+			let c = RSQGR_Core.Get();
+			if (c && pmo.player) c.pulledTic[pmo.PlayerNumber()] = level.maptime;   // keepmomentum this tic
+			if (RSQGR_Util.Opt("rsqgr_debug", 0) >= 1)
+				Console.Printf("T_GRM split %s mass %d vs %d: you %.2f of %.1f, it %.2f u/tic", victim.GetClassName(), victim.Mass, pmo.Mass, shareP, total, step);
+		}
 		Vector2 np = victim.Pos.xy + dir * step;
 
 		// A floater comes to your height too; a walker stays on the floor.
@@ -150,7 +182,18 @@ class RSQGR_Monster
 class RSQGR_Flight : EventHandler
 {
 	const NFLY = 16;
-	enum EPhase { FP_NONE, FP_PATH, FP_AIR }
+	enum EPhase { FP_NONE, FP_PATH, FP_AIR, FP_LASSO }
+
+	// THE LASSO (rsqgr_monster_mode 2, off by default; Quest teardown apply/01 4.2): the monster is held
+	// at the rope's length on the line your hand points along, and goes where your arm goes. It is the
+	// throw's machinery with a different path: frozen in its pain frame, borrowed flags, PLACED every
+	// tic by PlaceMid (never a velocity, monster.zs's slow-motion lesson), at most rsqgr_lasso_speed
+	// world units a world tic, so a fast arm drags it rather than teleports it. What it runs into at
+	// speed takes Impact (it, and half to a thing it hit). Holding the bind reels it in (core's reel
+	// speed); a tap lets go and it flies on from its own speed, as a cut throw does (Cut -> the air).
+	int     fhand[NFLY];       // which hand's rope
+	double  flen[NFLY];        // the lasso's length, hand to its middle
+	int     fhitT[NFLY];       // fage of its last lasso impact
 
 	Actor   fa[NFLY];          // the thing
 	PlayerPawn fby[NFLY];      // who threw it (damage source, live landing point)
@@ -183,7 +226,7 @@ class RSQGR_Flight : EventHandler
 		return -1;
 	}
 
-	bool OnLine(int s) const { return s >= 0 && s < NFLY && fph[s] == FP_PATH && fline[s]; }
+	bool OnLine(int s) const { return s >= 0 && s < NFLY && (fph[s] == FP_PATH || fph[s] == FP_LASSO) && fline[s]; }
 
 	static double Grav(Actor a)
 	{
@@ -224,7 +267,7 @@ class RSQGR_Flight : EventHandler
 		return (xy.x, xy.y, z);
 	}
 
-	bool Launch(Actor a, PlayerPawn pmo, int hand)
+	bool Launch(Actor a, PlayerPawn pmo, int hand, bool lasso = false)
 	{
 		if (!a || !pmo || SlotOf(a) >= 0 || !Throwable(a, pmo)) return false;
 		int s = -1;
@@ -267,6 +310,21 @@ class RSQGR_Flight : EventHandler
 			if (a && a.Health > 0) a.tics = -1;
 		}
 		if (!a) { fph[s] = FP_NONE; return false; }
+		fhand[s] = hand;
+		fhitT[s] = -100;
+		if (lasso)
+		{
+			// held where it was bitten: the rope's length is hand to its middle now, and your arm points
+			// at it (you just fired at it), so nothing jumps on the first tic
+			Vector3 hp = RSQGR_Util.HandPos(pmo, hand);
+			double minL = pmo.Radius + a.Radius + RSQGR_Util.Num("rsqgr_slide_gap", 16);
+			flen[s] = clamp((mid0 - hp).Length(), minL, max(minL, RSQGR_Util.Num("rsqgr_range", 1024)));
+			tSpin[s] = 0; tFlip[s] = 0; ftum[s] = 0;
+			fph[s] = FP_LASSO;
+			if (RSQGR_Util.Flag("rsqgr_debug", false))
+				Console.Printf("T_GRM lasso %s m=%d len=%.1f", a.GetClassName(), a.Mass, flen[s]);
+			return true;
+		}
 
 		// the tumble
 		int style = RSQGR_Util.Opt("rsqgr_yank_tumble", 1);
@@ -304,6 +362,42 @@ class RSQGR_Flight : EventHandler
 		if (s < 0 || s >= NFLY || fph[s] == FP_NONE) return;
 		fline[s] = false;
 		if (fph[s] == FP_PATH) { fv[s] = PathVel(s); ToAir(s, "cut"); }
+		else if (fph[s] == FP_LASSO) ToAir(s, "lasso let go");   // fv: its own last step, per world tic
+	}
+
+	// ONE TIC ON THE LASSO (see FP_LASSO above).
+	private void StepLasso(int s, Actor a, double sc)
+	{
+		let p = fby[s];
+		if (!p || p.Health <= 0) { ToAir(s, "thrower gone"); return; }
+		if (a.Health <= 0) { ToAir(s, "died on the lasso"); return; }
+		let h = RSQGR_Core.HookOf(p, fhand[s]);
+		if (!h || h.phase != RSQGR_Hook.PH_BITE || h.victim != a) { ToAir(s, "rope gone"); return; }
+		double minL = p.Radius + a.Radius + RSQGR_Util.Num("rsqgr_slide_gap", 16);
+		// the held bind reels it in at core's reel speed (the rope is the player's: real time)
+		if (h && h.reelHeld)
+			flen[s] = max(minL, flen[s] - RSQGR_Util.Num("rsqgr_reel_speed", 12) * RSQGR_Perks.Factor(p, 'reel'));
+		Vector3 hand = RSQGR_Util.HandPos(p, fhand[s]);
+		Vector3 dir = RSQGR_Util.MapDir(RSQGR_Util.HandYaw(p, fhand[s]), RSQGR_Util.HandPitch(p, fhand[s]));
+		Vector3 want = hand + dir * flen[s];
+		Vector3 was = MidOf(a);
+		Vector3 step = want - was;
+		double sl = step.Length();
+		double cap = max(1.0, RSQGR_Util.Num("rsqgr_lasso_speed", 24)) * sc;
+		if (sl > cap) step *= cap / sl;
+		double before = fv[s].Length();   // how fast it was going into this tic
+		Actor hit;
+		bool moved = PlaceMid(a, was + step, hit);
+		Vector3 now = MidOf(a);
+		if (sc > 0.0001) fv[s] = (now - was) / sc;
+		flast[s] = now;
+		// SMASHED INTO SOMETHING at speed (not merely pressed against it: it must have been moving), at
+		// most once in 8 tics: the throw's own Impact (it, and half to a thing it hit)
+		if (!moved && hit != p && before > 8.0 && fage[s] - fhitT[s] >= 8)
+		{
+			fhitT[s] = fage[s];
+			Impact(s, a, hit, before, "lasso");
+		}
 	}
 
 	// The path's own velocity at its clock, per world tic (d/dtt of StepPath's point).
@@ -421,6 +515,7 @@ class RSQGR_Flight : EventHandler
 
 			Vector3 before = MidOf(a);
 			if (fph[s] == FP_PATH) StepPath(s, a, sc);
+			else if (fph[s] == FP_LASSO) StepLasso(s, a, sc);
 			else StepAir(s, a, sc);
 			if (fph[s] == FP_NONE || !fa[s]) continue;
 
@@ -748,7 +843,7 @@ class RSQGR_Voxels : StaticEventHandler
 						for (int q = 0; q < parts.Size(); q++) Add(parts[q]);
 					}
 				}
-				for (int j = 0; j < ln.Length(); j++)
+				for (int j = 0; j < int(ln.Length()); j++)
 				{
 					int ch = ln.ByteAt(j);
 					if (ch == 123) depth++;

@@ -1,0 +1,37 @@
+# RSQ_Gestures punch/braced 2026-10-31: rig, full order (doom2, brutal22test6, BD_VoxelPack, BD22_VR-Reloaded 2.0.3h + hotfix), probe tools/rigtest/punchprobe
+G1_JAB
+rsqg: punch jab, main hand, 3.50 m/s, dir fwd 1.00 lat 0.00 up 0.00 (t30)
+T_GP t30 punch main 1 off 0 | kind 0/-1 speed 350/0 | braced 0 (ui 0) tics 0
+rsqg: not a punch, main hand, 14.00 m/s: drawn back (t39)
+T_GP t41 punch main 0 off 0 | kind 0/-1 speed 350/0 | braced 0 (ui 0) tics 0
+G2_HOOK
+rsqg: punch jab, main hand, 12.37 m/s, dir fwd 0.71 lat 0.71 up 0.00 (t59)
+T_GP t59 punch main 1 off 0 | kind 0/-1 speed 1237/0 | braced 0 (ui 0) tics 0
+T_GP t70 punch main 0 off 0 | kind 0/-1 speed 1237/0 | braced 0 (ui 0) tics 0
+rsqg: punch hook, main hand, 3.50 m/s, dir fwd -0.00 lat -1.00 up 0.00 (t80)
+T_GP t80 punch main 2 off 0 | kind 1/-1 speed 350/0 | braced 0 (ui 0) tics 0
+rsqg: not a punch, main hand, 12.37 m/s: drawn back (t90)
+T_GP t91 punch main 0 off 0 | kind 1/-1 speed 350/0 | braced 0 (ui 0) tics 0
+G3_UPPERCUT
+rsqg: not a punch, main hand, 12.62 m/s: swung down (t110)
+rsqg: punch uppercut, main hand, 3.57 m/s, dir fwd 0.20 lat 0.00 up 0.98 (t131)
+T_GP t131 punch main 3 off 0 | kind 2/-1 speed 357/0 | braced 0 (ui 0) tics 0
+rsqg: not a punch, main hand, 10.41 m/s: drawn back (t140)
+T_GP t142 punch main 0 off 0 | kind 2/-1 speed 357/0 | braced 0 (ui 0) tics 0
+G4_SHOVE_BOTH
+rsqg: not a punch, main hand, 7.00 m/s: both hands together (t161)
+rsqg: not a punch, off hand, 7.00 m/s: both hands together (t161)
+rsqg: not a punch, main hand, 7.00 m/s: both hands together (t165)
+rsqg: not a punch, off hand, 7.00 m/s: both hands together (t165)
+rsqg: not a punch, main hand, 14.00 m/s: both hands together (t170)
+rsqg: not a punch, off hand, 14.00 m/s: both hands together (t170)
+G5_BRACED_JAB
+rsqg: braced (t190)
+T_GP t190 punch main 0 off 0 | kind 2/-1 speed 357/0 | braced 1 (ui 1) tics 1
+rsqg: not a punch, main hand, 3.50 m/s: braced (t195)
+rsqg: unbraced (t205)
+T_GP t205 punch main 0 off 0 | kind 2/-1 speed 357/0 | braced 0 (ui 0) tics 0
+rsqg: not a punch, main hand, 14.00 m/s: drawn back (t208)
+G6_JAB_AGAIN
+rsqg: punch jab, main hand, 5.25 m/s, dir fwd 1.00 lat 0.00 up 0.00 (t230)
+T_GP t230 punch main 1 off 0 | kind 0/-1 speed 525/0 | braced 0 (ui 0) tics 0

@@ -1,0 +1,24 @@
+version "4.14"
+// test-only: asks RSQG_Service "punch" and "braced" every tic, logs changes; gsp_brace 1 forces the latch bit
+class GSP_Probe : EventHandler
+{
+	int lp0, lp1, lb, lbt;
+	override void WorldTick()
+	{
+		let pmo = players[consoleplayer].mo; if (!pmo) return;
+		if (CVar.FindCVar("gsp_brace").GetInt()) pmo.player.WeaponState |= WF_TWOHANDSTABILIZED;
+		else pmo.player.WeaponState &= ~WF_TWOHANDSTABILIZED;
+		let it = ServiceIterator.Find("RSQG_Service");
+		Service s = it.Next();
+		if (!s) return;
+		int p0 = s.GetInt("punch", "", 0), p1 = s.GetInt("punch", "", 1);
+		int b = s.GetInt("braced", "", 0, 0, pmo), bt = s.GetInt("braced.tics", "", 0);
+		int bu = s.GetIntData("braced", "", 0);
+		if (p0 != lp0 || p1 != lp1 || b != lb)
+			Console.Printf("T_GP t%d punch main %d off %d | kind %d/%d speed %d/%d | braced %d (ui %d) tics %d", level.maptime, p0, p1,
+				s.GetInt("punch.kind", "", 0), s.GetInt("punch.kind", "", 1), s.GetInt("punch.speed", "", 0), s.GetInt("punch.speed", "", 1), b, bu, bt);
+		lp0 = p0; lp1 = p1; lb = b;
+		if (CVar.FindCVar("gsp_log").GetInt() && level.maptime % 4 == 0)
+			Console.Printf("T_GH t%d main fwd %.2f left %.2f up %.2f", level.maptime, s.GetDouble("hand.x", "", 0), s.GetDouble("hand.y", "", 0), s.GetDouble("hand.z", "", 0));
+	}
+}
