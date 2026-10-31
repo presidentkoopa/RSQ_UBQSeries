@@ -297,6 +297,9 @@ OptionMenu wr_Sheet
 	// loaded -- counted by this mod as you play rather than read off another
 	// mod, so it works on every weapon including plain vanilla ones.
 	Option "  Track kills and accuracy", "wr_stats_track", "OnOff"
+	// With Gun Bonsai and RSQ Gun Bonsai VR loaded: the gun's Gun Bonsai level and each of its
+	// upgrades by name and level. Nothing shows without them.
+	Option "  Gun Bonsai level and upgrades", "wr_sheet_bonsai", "OnOff"
 
 	StaticText "Inspect a weapon in the world", gold
 	// Point at a gun on the floor and the same sheet appears for it, with

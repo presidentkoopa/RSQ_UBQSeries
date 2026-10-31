@@ -20,6 +20,7 @@ version "4.10"
 #include "zscript/wheel/wr_q_shim.zs"
 #include "zscript/wheel/wr_q_look.zs"
 #include "zscript/wheel/wr_q_vox.zs"
+#include "zscript/wheel/wr_q_bonsai.zs"   // RSQ: Gun Bonsai level and upgrades, by name
 #include "zscript/wheel/wr_compat_legendoom.zs"
 #include "zscript/wheel/wr_compat_drla.zs"
 #include "zscript/wheel/wr_compat_doomablo.zs"

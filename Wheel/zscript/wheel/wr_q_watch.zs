@@ -36,7 +36,9 @@ class wr_Watch : EventHandler
 		if (!pmo.OverrideAttackPosDir) return false;
 		Vector3 eye = (pmo.pos.xy, pmo.player.viewz);
 		Vector3 hp = wr_Rig.handPos(pmo, h);
-		Vector3 to = hp - eye;
+		// true proportions: the engine shortens a hand's height above or below the eye by
+		// level.pixelstretch (wr_Rig.trueDelta), and this test is in real centimetres
+		Vector3 to = wr_Rig.trueDelta(hp - eye);
 		double d = to.Length();
 		// within forearm's reach of the face: 15-50 cm (34 units a metre)
 		if (d < 5 || d > 17) return false;

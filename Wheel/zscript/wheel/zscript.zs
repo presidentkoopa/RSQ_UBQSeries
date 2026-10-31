@@ -972,6 +972,7 @@ class wr_Rig : EventHandler
 		let w = mPrevWeap[hand];
 		if (!w || w.Owner != pmo) return;
 		let now = (hand == 1) ? pmo.player.OffhandWeapon : pmo.player.ReadyWeapon;
+		if (hand == 1 && offhandBraced(pmo)) { feedback(Sound("wristrig/nope"), 0.35, 60); return; }
 		equipInstantly(pmo, w, hand);
 		mPrevWeap[hand] = now;
 		feedback(Sound("wristrig/lock"), 0.5, 60);
@@ -1525,7 +1526,7 @@ class wr_Rig : EventHandler
 
 	// RSQ: THE SERIES, ASKED BY NAME -- each row only when that mod is loaded and has an answer.
 	//   RSQ TacticalRig     where this gun is holstered (RSQTR_RigService "rig.holster")
-	//   RSQ Gun Bonsai VR   its Gun Bonsai level and progress to the next (RSQ_MeleeUpgradeService)
+	//   RSQ Gun Bonsai VR   its Gun Bonsai level, progress and upgrades (WR_Bonsai, wr_q_bonsai.zs)
 	private void seriesRows(Weapon w)
 	{
 		let pmo = players[consoleplayer].mo;
@@ -1536,14 +1537,31 @@ class wr_Rig : EventHandler
 			int r = svc.GetInt("rig.holster", w.GetClassName(), 0, 0, pmo);
 			if (r >= 0) { sheetRow("HOLSTER  " .. svc.GetString("rig.regionname", "", r), 0xC8A060); break; }
 		}
-		it = ServiceIterator.Find("RSQ_MeleeUpgradeService");
-		while (svc = it.Next())
+		if (cv("wr_sheet_bonsai", 1.0) > 0.0) bonsaiRows(pmo, w);
+	}
+
+	// RSQ: GUN BONSAI (wr_q_bonsai.zs). "GUN BONSAI LV n  p%", then one row per upgrade, its name as
+	// Gun Bonsai shows it and its level as a numeral; one switched off in Gun Bonsai's status menu is
+	// dimmed. At most BONSAI_ROWS upgrade rows, so the ammo rows below always keep their place on the
+	// nine-row sheet: past that the last row says how many more there are.
+	const BONSAI_ROWS = 4;
+	private void bonsaiRows(PlayerPawn pmo, Weapon w)
+	{
+		int lv = WR_Bonsai.Level(pmo, w);
+		if (lv < 0) return;
+		sheetRow(String.Format("GUN BONSAI LV %d  %d%%", lv, clamp(WR_Bonsai.Progress(pmo, w) / 10, 0, 100)), 0x70D060);
+		Array<String> names, classes; Array<int> levels, maxes; Array<bool> on;
+		int n = WR_Bonsai.UpgradesFull(pmo, w, names, levels, maxes, classes, on);
+		for (int i = 0; i < n; ++i)
 		{
-			int lv = svc.GetInt("weapon.level", "", 0, 0, w);
-			if (lv < 0) continue;
-			int pm = svc.GetInt("weapon.xp", "", 0, 0, w);
-			sheetRow(String.Format("BONSAI LV %d  %d%%", lv, clamp(pm / 10, 0, 100)), 0x70D060);
-			break;
+			if (i == BONSAI_ROWS - 1 && n > BONSAI_ROWS)
+			{
+				sheetRow(String.Format("  +%d MORE", n - i), SHEET_DIM);
+				break;
+			}
+			string nm = names[i].MakeUpper();
+			if (nm.CodePointCount() > 20) nm = nm.Left(19) .. ".";
+			sheetRow("  " .. nm .. "  " .. WR_Bonsai.Numeral(levels[i]), on[i] ? color(0xA8E890) : color(SHEET_DIM));
 		}
 	}
 
@@ -7031,6 +7049,16 @@ class wr_Rig : EventHandler
 		string ldE = wr_CompatLegenDoom.EffectsOf(w);
 		if (ldE.Length() > 0) { labels.Push("EFFECT"); values.Push(ldE); }
 
+		// RSQ: Gun Bonsai (wr_q_bonsai.zs) -- level and how many upgrades
+		int gbLv = cv("wr_sheet_bonsai", 1.0) > 0.0 ? WR_Bonsai.Level(null, w) : -1;
+		if (gbLv >= 0)
+		{
+			Array<String> gbN; Array<int> gbL;
+			int gbC = WR_Bonsai.Upgrades(null, w, gbN, gbL);
+			labels.Push("BONSAI");
+			values.Push(gbC > 0 ? String.Format("LV %d  %d UPG", gbLv, gbC) : String.Format("LV %d", gbLv));
+		}
+
 		// DRLA
 		int drlaM1, drlaM2;
 		[drlaM1, drlaM2] = wr_CompatDRLA.ModsOf(w);
@@ -7513,6 +7541,13 @@ class wr_Rig : EventHandler
 		if (t.HitType != TRACE_HitActor || t.HitActor == pmo) return null;
 		return t.HitActor;
 	}
+
+	// RSQ: A HAND OFFSET IN TRUE PROPORTIONS. The engine divides a hand's height above or below
+	// the eye by level.pixelstretch (hw_openxrdevice.cpp:597, :610; gl_openvr.cpp:1287-1289), so
+	// the Z of a hand delta in map units reads 1/1.2 of its real size. A test written in real
+	// centimetres or metres a second (the wrist-card pose, the pull and throw speeds) puts the Z
+	// back first. Positions on the ring stay in map units: they and the cards share one space.
+	static Vector3 trueDelta(Vector3 d) { return (d.x, d.y, d.z * level.pixelstretch); }
 
 	static Vector3 handPos(PlayerPawn pmo, int hand)
 	{
@@ -8055,7 +8090,9 @@ class wr_Rig : EventHandler
 		for (int h = 0; h < 2; h++)
 		{
 			Vector3 hp = handPos(pmo, h);
-			Vector3 v = mHavePrev[h] ? hp - mPrevHand[h] : (0, 0, 0);
+			// true proportions (trueDelta): a speed in metres a second means the same whether the
+			// snap is level or up and down
+			Vector3 v = mHavePrev[h] ? trueDelta(hp - mPrevHand[h]) : (0, 0, 0);
 			mPrevHand[h] = hp; mHavePrev[h] = true;
 
 			// which weapon card this hand is in (the touch test, from its fingertip)
@@ -8065,7 +8102,7 @@ class wr_Rig : EventHandler
 			else if (mInCardTics[h] > 0 && --mInCardTics[h] == 0) mInCard[h] = 0;
 
 			if (mGestureCool > 0) continue;
-			Vector3 toRing = mAnchor - hp;
+			Vector3 toRing = trueDelta(mAnchor - hp);
 			double dist = toRing.Length();
 			if (dist < 1) continue;
 			double toward = v dot (toRing / dist);
@@ -8110,6 +8147,7 @@ class wr_Rig : EventHandler
 	{
 		Weapon held = (h == 1) ? pmo.player.OffhandWeapon : pmo.player.ReadyWeapon;
 		if (!held) return false;
+		if (h == 1 && offhandBraced(pmo)) return false;   // a braced off hand takes nothing (offhandBraced)
 		Weapon bare = null;
 		// the off hand's own fist in a VR weapon set (BD22 VR-Reloaded's RSQ_Hands) first
 		if (h == 1)
@@ -8986,10 +9024,11 @@ class wr_Rig : EventHandler
 	// mirrored onto the sister weapon, or a powered-up Tome variant ends up
 	// pointing at the wrong hand; and bNoHandSwitch is honoured rather than
 	// quietly overridden.
-	private void equipInstantly(PlayerPawn pmo, Weapon weap, int hand)
+	// RSQ: returns false when nothing was equipped.
+	private bool equipInstantly(PlayerPawn pmo, Weapon weap, int hand)
 	{
 		let player = pmo.player;
-		if (player == null || weap == null) return;
+		if (player == null || weap == null) return false;
 
 		bool wantOffhand = (hand == 1);
 
@@ -8998,9 +9037,12 @@ class wr_Rig : EventHandler
 		// reset the live psprite to Ready -- cutting a state-driven reload or
 		// a burst short -- and cancelled a pending slot-key switch.
 		let already = wantOffhand ? player.OffhandWeapon : player.ReadyWeapon;
-		if (already == weap) return;
+		if (already == weap) return true;
 
-		if (weap.bNoHandSwitch && weap.bOffhandWeapon != wantOffhand) return;
+		if (weap.bNoHandSwitch && weap.bOffhandWeapon != wantOffhand) return false;
+
+		// A braced off hand cannot be armed: see offhandBraced.
+		if (wantOffhand && offhandBraced(pmo)) return false;
 
 		// Coming out of the other hand: empty it first, or the same weapon is
 		// held twice and the engine's own bookkeeping disagrees with itself.
@@ -9017,11 +9059,25 @@ class wr_Rig : EventHandler
 
 		int layer = wantOffhand ? PSP_OFFHANDWEAPON : PSP_WEAPON;
 		player.SetPsprite(layer, weap.GetReadyState());
+		return true;
 
 		// NO SCALE BOOKKEEPING HERE. It is commit()'s job, and it has to happen
 		// BEFORE any of this runs -- see the note there. Dropping the flag at
 		// this point without putting the scale back is what shrank the weapon by
 		// half on every single use.
+	}
+
+	// RSQ: THE TWO-HAND BRACE. On a SteamVR build the engine sets WF_TWOHANDSTABILIZED while the
+	// off-hand grip is closed near the gun (gl_openvr.cpp:1716-1727). While it is set the off-hand
+	// weapon fires nothing (player.zs:393, :426), checks no buttons (p_pspr.cpp:755) and draws
+	// nothing (hw_weapon.cpp:832, :917), and SetPsprite puts the flag straight back
+	// (p_pspr.cpp:514). A gun handed to a braced off hand would arrive unseen and dead while the
+	// ring said the pick had landed. So a pick for that hand goes to the main hand when the gun
+	// allows it, and is refused out loud (the dry-pick sound) when it does not. The Quest's
+	// OpenXR path never sets the flag, so there this is always false and nothing changes.
+	private static bool offhandBraced(PlayerPawn pmo)
+	{
+		return pmo && pmo.player && (pmo.player.WeaponState & WF_TWOHANDSTABILIZED);
 	}
 
 	// Which weapon the OTHER hand is holding, or null.
@@ -9154,6 +9210,8 @@ class wr_Rig : EventHandler
 			Class<Weapon> want = HoveredClass();
 			let w = want ? Weapon(pmo.FindInventory(want)) : null;
 			if (w && w.bNoHandSwitch) hand = w.bOffhandWeapon ? 1 : 0;
+			// braced off hand: the gun goes to the hand that can hold it (offhandBraced)
+			else if (hand == 1 && offhandBraced(pmo)) hand = 0;
 			mRigHand = hand;
 		}
 		commitAs(pmo);
@@ -9161,6 +9219,14 @@ class wr_Rig : EventHandler
 
 	private void commitAs(PlayerPawn pmo)
 	{
+		// RSQ: a braced off hand takes nothing (offhandBraced). Said the way a dry pick is said,
+		// and nothing is equipped, so the ring never confirms a gun the hand cannot use.
+		if (mPage == PAGE_WEAPONS && mRigHand == 1 && offhandBraced(pmo))
+		{
+			feedback(Sound("wristrig/nope"), 0.35, 60);
+			closeRig(true);
+			return;
+		}
 		// RSQ: remember what this hand held, for the double tap
 		if (mPage == PAGE_WEAPONS)
 		{

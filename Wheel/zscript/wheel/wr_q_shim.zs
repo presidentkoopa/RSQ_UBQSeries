@@ -790,6 +790,8 @@ class wr_VRState : EventHandler
 		{
 			bool active = (hand == mLaserHand);
 			if (!active && !mBoth) { if (mBeam[hand]) mBeam[hand].bInvisible = true; continue; }
+			// the idle hand's dim beam stands down where RSQ_LaserSight already draws one
+			if (!active && laserBeamOn(hand)) { if (mBeam[hand]) mBeam[hand].bInvisible = true; continue; }
 			Vector3 org = wr_Rig.handPos(PlayerPawn(mo), hand);
 			Vector3 dir = wr_Rig.handDir(PlayerPawn(mo), hand);
 			double len = active ? mLaserRange : 0;
@@ -809,6 +811,24 @@ class wr_VRState : EventHandler
 			}
 			drawBeam(mo, hand, org, dir, len, active ? 0.8 : 0.3);
 		}
+	}
+
+	// RSQ: RSQ_LaserSight draws its own beam from a hand holding a gun. With both loaded and the
+	// ring up, the idle hand had two beams coming out of it, and only the laser's means anything
+	// there. Asked by name through its service (RSQLS_SightService "laser.beam": 1 when its beam
+	// drew on that hand last tic), so nothing links against LaserSight and without it nothing
+	// changes. The pointing hand keeps the ring's beam: that one picks.
+	transient Service mSight;
+	transient bool mSightLooked;
+	private bool laserBeamOn(int hand)
+	{
+		if (!mSightLooked)
+		{
+			mSightLooked = true;
+			let it = ServiceIterator.Find("RSQLS_SightService");
+			mSight = it.Next();
+		}
+		return mSight && mSight.GetInt("laser.beam", "", hand) > 0;
 	}
 
 	private void drawBeam(Actor mo, int hand, Vector3 org, Vector3 dir, double len, double alpha)

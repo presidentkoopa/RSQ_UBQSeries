@@ -50,8 +50,10 @@ remaps the way Doom colours its own text.
 
 Each by name, each only when loaded: **RSQ SlowMo** slows the world while the ring is up;
 **RSQ TacticalRig** adds a HOLSTER row to a holstered gun's sheet (its new `rig.holster` request);
-**RSQ Gun Bonsai VR** adds a BONSAI level row to the sheet and the wrist card (its new
-`weapon.level` / `weapon.xp` requests); **ModelSwapper** names the model a gun wears.
+**RSQ Gun Bonsai VR** adds the gun's Gun Bonsai level and each of its upgrades by name and level
+to the sheet and the inspect card, and a BONSAI row to the comparison card (`RSQGB_Service`, read by
+`zscript/wheel/wr_q_bonsai.zs`, whose `WR_Bonsai` calls any part of the Wheel can use; *Gun Bonsai
+level and upgrades* on the Data sheet page turns it off), and a BONSAI level row to the wrist card; **ModelSwapper** names the model a gun wears.
 
 ## What is different from REMA
 

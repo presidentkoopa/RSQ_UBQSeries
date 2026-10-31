@@ -589,6 +589,10 @@ user float wr_sheet_scale = 1.0;
 // no weapon mod loaded at all.
 user bool  wr_sheet_stats = true;
 
+// Gun Bonsai rows on the sheet and the inspect card: "GUN BONSAI LV n", then each upgrade by name
+// and level (wr_q_bonsai.zs). Only with Gun Bonsai and RSQ Gun Bonsai VR loaded.
+user bool  wr_sheet_bonsai = true;
+
 // Colour a card by RS_Main's tier (Cursed/Trash/Basic/Common/Uncommon/
 // Advanced/Designer/Prototype) when it has one, before falling back to the
 // classic nine-slot palette or a per-weapon hashed hue.

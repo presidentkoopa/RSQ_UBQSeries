@@ -8,6 +8,7 @@ version "4.14"
 #include "rsq/zscript/rsmenu.zs"   // Radiant Silvergun Options: the series' shared menu pieces (tools/rsmenu)
 #include "rsq/zscript/a11y.zs"
 #include "rsq/zscript/core.zs"
+#include "rsq/zscript/service.zs"   // RSQGB_Service: a gun's level and upgrades, asked by name (RSQ Wheel)
 #include "rsq/zscript/gloves.zs"
 #include "rsq/zscript/slappers.zs"
 #include "rsq/zscript/up_gloves.zs"

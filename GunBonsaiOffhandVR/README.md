@@ -84,6 +84,24 @@ round two (1b986bb); XP Source (49fd7c0, section below).
 - `rsq_ui_skin` defaults to 1 (the screens on). The independent review (10-27, item 1) asks for 0 unless
   the owner chose 1; 90e80f2 turned it back on after cee9be2 had shelved it. The owner's call.
 
+## RSQGB_Service: a gun's level and upgrades, for any mod (`rsq/zscript/service.zs`)
+
+Asked by name (`ServiceIterator.Find("RSQGB_Service")`), so the asker needs no Gun Bonsai to compile.
+Pass the Weapon (either hand, the backpack, or a dropped one a record still names), or the pawn with
+intArg 0 main / 1 off hand. `GetInt` "level", "xp", "xp.next", "xp.permille", "count", "hand";
+`GetString` "upgrades" = `Name:level:max:Class:on:Colour|...` (Gun Bonsai's own display name without
+its colour code, then the code's colour) and "name". Read-only: no Gun Bonsai method is called.
+RSQ Wheel's sheet uses it. Rig (2026-10-31, owner's order + gb 0.10.6): Rifle "HE Shots:2:2:...|Searing
+Inscription:1:1:TFLV_Upgrade_IncendiaryShots:1:ORANGE|...", off-hand Shotgun's five, a dropped Rifle's three.
+
+**Punch wall occlusion, measured 2026-10-31** (rig, simulated glove, `rsq_punch_debug 1`, a Demon at
+36 units): behind a 4-unit closed door, fist on the near face: blocked (`type 3 at 1.0 of 36.0`), no
+damage; same distances in the open: lands (150 -> 137); monster on a 24-unit step, fist 5 units below the
+step top: blocked by the step's face (`type 3 at 1.0 of 36.3`); fist at the step top, 2 above, at the
+shin: all land. The clamp of the aim point to the monster's feet only blocks a fist that is below the
+step top, where the step really is in the way; no change made. A fist pushed through the door to the far
+side still lands (the trace starts at the fist).
+
 ## Suite upgrades (`rsq/`)
 
 New files only, compiled by a second ZSCRIPT lump (`zscript.txt` at the root): weapon upgrade paths
