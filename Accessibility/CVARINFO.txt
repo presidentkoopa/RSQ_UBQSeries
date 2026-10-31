@@ -32,3 +32,13 @@ server int   rsqa_brace_off    = 0;     // 1: QuestZDoom's Two Handed Weapons (v
                                         //   0 puts back the player's own value (rsqa_brace_keep). Set from the menu row only.
 server int   rsqa_brace_keep   = -1;    // the player's own vr_two_handed_weapons before Two-Hand Brace Off (-1: none kept)
 server int   rsqa_brace_cue    = 0;     // the brace latching (the off-hand gun goes dead): 0 Off, 1 Rumble, 2 Sound, 3 Both
+
+// ---- 2026-10-31 QoL round (owner's picks AC1-AC8, zscript/rsqa_qol.zs). Yes picks on, Option picks off.
+server float rsqa_rumble_scale = 1.0;   // AC2 Rumble Strength: every series rumble x0..2 (0 = none)
+server int   rsqa_seated       = 2;     // AC3 Seated Play: 0 Standing, 1 Seated, 2 Auto (from the measured drop of your eyes)
+server float rsqa_stand_eye    = 0;     // AC3 your standing eye height in metres ("Measure Standing Height"; 0 = learned, at least 1.62)
+server int   rsqa_steady       = 1;     // AC6 Steady Hands: smoothed hand poses (1-euro filter) offered to the series
+server int   rsqa_vig_knock    = 0;     // AC5 the Comfort Vignette also on a big knockback and on a long fall
+server int   rsqa_slow_taps    = 0;     // AC7 Slower Taps: every tap / double-tap window in the series x1.5
+server int   rsqa_cue_wake     = 0;     // AC8 Sound Cues also mark a monster waking or teleporting in out of view
+nosave int   rsqa_debug        = 0;     // logs the knockback and wake detections (test only)

@@ -85,3 +85,75 @@ class RSQAT_Menu : StaticEventHandler
 		}
 	}
 }
+
+// QoL round (AC1-AC8). netevent rsqat_throw <vx> <vy> <vz>  adds velocity (a knockback stand-in)
+//   netevent rsqat_lift <units>       puts the player that far up (a long fall)
+//   netevent rsqat_behind <dist>      a dormant ZombieMan that far behind the player
+//   netevent rsqat_alert              the player's noise alert (wakes what hears it)
+//   netevent rsqat_tele <dist> <deg>  the probe's last monster teleports (Actor.Teleport, fogs) to that spot round you
+//   netevent rsqat_cv <name> <tic>    nothing: a marker in the log
+class RSQAT_QoLProbe : EventHandler
+{
+	Actor last;
+	override void WorldTick()
+	{
+		let c = CVar.FindCVar("rsqat_qol");
+		let p = players[consoleplayer];
+		if (!p.mo) return;
+		let it = ThinkerIterator.Create("RSQA_Buzz");
+		RSQA_Buzz b;
+		while (b = RSQA_Buzz(it.Next())) if (b.tleft == b.total) Console.Printf("AT_BUZZ %d left=%d amp=%.3f tics=%d", level.maptime, b.left, b.amp, b.total);
+		if (!c || !c.GetInt()) return;
+		let s = ServiceIterator.Find("RSQA_Service").Next();
+		let h = RSQA_Handler.Get();
+		let mo = p.mo;
+		Console.Printf("AT_Q %d raw %.3f %.3f %.3f %.3f %.3f st %.3f %.3f %.3f %.3f %.3f on=%d seat=%d drop=%.3f eye=%.3f stand=%.3f hmd=%.3f vig=%.3f vz=%.1f v=%.1f taps=%.2f rumble=%.2f",
+			level.maptime, mo.AttackPos.x - mo.pos.x, mo.AttackPos.y - mo.pos.y, mo.AttackPos.z - mo.pos.z, mo.AttackAngle, mo.AttackPitch,
+			s.GetDouble("steady", "x", consoleplayer, 0) - mo.pos.x, s.GetDouble("steady", "y", consoleplayer, 0) - mo.pos.y,
+			s.GetDouble("steady", "z", consoleplayer, 0) - mo.pos.z, s.GetDouble("steady", "angle", consoleplayer, 0), s.GetDouble("steady", "pitch", consoleplayer, 0),
+			s.GetIntData("steady", "", consoleplayer), s.GetIntData("seated", "", consoleplayer), s.GetDoubleData("seated.drop", "", consoleplayer),
+			s.GetDoubleData("seated.eye", "", consoleplayer), s.GetDoubleData("stand.eye", "", consoleplayer), mo.HmdPosition.y,
+			h ? h.vig : -1, mo.vel.z, mo.vel.Length(), s.GetDoubleData("taps"), s.GetDoubleData("rumble"));
+	}
+
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		let mo = players[e.Player].mo;
+		if (!mo) return;
+		if (e.Name ~== "rsqat_throw") { mo.vel += (e.Args[0], e.Args[1], e.Args[2]); Console.Printf("AT_THROW %d", level.maptime); }
+		else if (e.Name ~== "rsqat_lift") { mo.SetOrigin(mo.pos + (0, 0, e.Args[0]), false); mo.vel = (0, 0, 0); Console.Printf("AT_LIFT %d z=%.0f floor=%.0f", level.maptime, mo.pos.z, mo.floorz); }
+		else if (e.Name ~== "rsqat_behind")
+		{
+			Vector3 at = mo.Vec3Angle(e.Args[0], mo.angle + 180);
+			last = Actor.Spawn("ZombieMan", (at.xy, mo.floorz));
+			if (last) { last.angle = mo.angle; last.target = null; }
+			Console.Printf("AT_BEHIND %d %s", level.maptime, last ? "spawned" : "none");
+		}
+		else if (e.Name ~== "rsqat_alert") { mo.SoundAlert(mo); Console.Printf("AT_ALERT %d", level.maptime); }
+		else if (e.Name ~== "rsqat_tele" && last)
+		{
+			Vector3 at = mo.Vec3Angle(e.Args[0], mo.angle + e.Args[1]);
+			bool ok = last.Teleport((at.xy, mo.floorz), last.angle, 0);
+			Console.Printf("AT_TELE %d ok=%d", level.maptime, ok);
+		}
+		else if (e.Name ~== "rsqat_mark") Console.Printf("AT_MARK %d %d", level.maptime, e.Args[0]);
+	}
+}
+
+// "rsqat_key enter|yes": a key to the open menu (the message box takes "yes" as its y key)
+class RSQAT_MenuKeys : StaticEventHandler
+{
+	override void UiTick()
+	{
+		let c = CVar.FindCVar("rsqat_key");
+		if (!c || c.GetString() == "") return;
+		let m = Menu.GetCurrentMenu();
+		if (!m) return;
+		String k = c.GetString();
+		c.SetString("");
+		bool r = true;
+		if (k ~== "yes" && m is "MessageBoxMenu") MessageBoxMenu(m).HandleResult(true);
+		else r = m.MenuEvent(Menu.MKEY_Enter, false);
+		Console.Printf("AT_KEY %s menu=%s r=%d", k, m.GetClassName(), r);
+	}
+}

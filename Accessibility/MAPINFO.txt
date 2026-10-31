@@ -1,4 +1,4 @@
 GameInfo
 {
-	AddEventHandlers = "RSQA_Handler", "RSQA_MenuMode"
+	AddEventHandlers = "RSQA_Handler", "RSQA_QoL", "RSQA_MenuMode"
 }

@@ -1,1 +1,1 @@
-GameInfo { AddEventHandlers = "RSQAT_Probe", "RSQAT_Menu" }
+GameInfo { AddEventHandlers = "RSQAT_Probe", "RSQAT_QoLProbe", "RSQAT_Menu", "RSQAT_MenuKeys" }
