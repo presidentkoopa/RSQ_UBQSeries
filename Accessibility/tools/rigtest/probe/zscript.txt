@@ -56,7 +56,7 @@ class RSQAT_Probe : EventHandler
 }
 
 // stands in for RSQ_SlowMo: the "slowmo.active" its service answers
-class RSQSM_Service : Service   // the name RSQ_SlowMo answers to (it is not loaded in these runs)
+class RSQAT_RSQSM_Service : Service   // ServiceIterator matches by part of the name, so "RSQSM_Service" finds this (and the real one when SlowMo loads)
 {
 	override int GetInt(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
 	{
@@ -121,13 +121,20 @@ class RSQAT_QoLProbe : EventHandler
 		let mo = players[e.Player].mo;
 		if (!mo) return;
 		if (e.Name ~== "rsqat_throw") { mo.vel += (e.Args[0], e.Args[1], e.Args[2]); Console.Printf("AT_THROW %d", level.maptime); }
-		else if (e.Name ~== "rsqat_lift") { mo.SetOrigin(mo.pos + (0, 0, e.Args[0]), false); mo.vel = (0, 0, 0); Console.Printf("AT_LIFT %d z=%.0f floor=%.0f", level.maptime, mo.pos.z, mo.floorz); }
+		else if (e.Name ~== "rsqat_lift") { mo.SetOrigin(mo.pos + (0, 0, min(e.Args[0], mo.ceilingz - mo.pos.z - mo.height - 1)), false); mo.vel = (0, 0, 0); Console.Printf("AT_LIFT %d z=%.0f floor=%.0f", level.maptime, mo.pos.z, mo.floorz); }
 		else if (e.Name ~== "rsqat_behind")
 		{
-			Vector3 at = mo.Vec3Angle(e.Args[0], mo.angle + 180);
+			Vector3 at = mo.Vec3Angle(e.Args[0], mo.angle + (e.Args[1] ? e.Args[1] : 180));
 			last = Actor.Spawn("ZombieMan", (at.xy, mo.floorz));
 			if (last) { last.angle = mo.angle; last.target = null; }
 			Console.Printf("AT_BEHIND %d %s", level.maptime, last ? "spawned" : "none");
+		}
+		else if (e.Name ~== "rsqat_barrel")
+		{
+			// a real blast: a barrel that far ahead, set off by the player (radius thrust; god mode keeps you alive)
+			let b = Actor.Spawn("ExplosiveBarrel", (mo.Vec2Angle(e.Args[0], mo.angle), mo.floorz));
+			if (b) b.DamageMobj(mo, mo, 1000, 'None');
+			Console.Printf("AT_BARREL %d %s", level.maptime, b ? b.GetClassName() : 'none');
 		}
 		else if (e.Name ~== "rsqat_alert") { mo.SoundAlert(mo); Console.Printf("AT_ALERT %d", level.maptime); }
 		else if (e.Name ~== "rsqat_tele" && last)

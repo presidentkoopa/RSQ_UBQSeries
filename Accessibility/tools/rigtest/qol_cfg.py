@@ -43,7 +43,24 @@ def steady(out):
     L.append('echo SEAT_FORCED; rsqa_seated 1; wait 20; rsqa_seated 0; wait 20; rsqa_seated 2;')
     L.append('echo TAPS; rsqa_slow_taps 1; wait 5; rsqa_slow_taps 0; wait 5;')
     L.append('rsqat_qol 0; quit')
-    open(out, 'w').write(' '.join(L) + '\n')   # ONE line: a `wait` only delays the rest of its own line
+    chain(L, out)
+
+
+def chain(L, out):
+    # A `wait` only delays the rest of its own line, and the console cuts a line near 4096 characters (rig: a
+    # 14.8k line stopped after ~4.1k). So: files of one line under 3500 characters, each ending in `exec` of the next.
+    parts, cur = [], ''
+    for c in L:
+        if len(cur) + len(c) > 3500:
+            parts.append(cur)
+            cur = ''
+        cur += c + ' '
+    parts.append(cur)
+    base = out[:-4] if out.endswith('.cfg') else out
+    for i, p in enumerate(parts):
+        name = out if i == 0 else f'{base}_{i}.cfg'
+        nxt = f' exec {base}_{i + 1}.cfg' if i + 1 < len(parts) else ''
+        open(name, 'w').write(p + nxt + '\n')
 
 
 if __name__ == '__main__':

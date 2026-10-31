@@ -237,6 +237,7 @@ class RSQA_QoL : EventHandler
 
 	void Track(Actor m, bool fresh)
 	{
+		if (wMon.Find(m) != wMon.Size()) return;   // the map's own monsters arrive twice: spawned, then in WorldLoaded
 		wMon.Push(m); wX.Push(m.pos.x); wY.Push(m.pos.y); wZ.Push(m.pos.z);
 		wAwake.Push(m.target ? 1 : 0);
 		if (fresh) wAwake[wAwake.Size() - 1] = 2;   // new: checked against the fogs on the next look
