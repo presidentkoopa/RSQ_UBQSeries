@@ -661,7 +661,7 @@ class RSQDG_Hold : EventHandler
 		while (it.Next())
 		{
 			Actor t = it.thing;
-			if (!t || t == a || t == pmo || t.player || !t.bISMONSTER || !t.bSHOOTABLE || t.Health <= 0
+			if (!t || t == a || t == pmo || t.player || !t.bISMONSTER || !t.bSHOOTABLE || t.Health <= 0 || RSQDG_Throw.Helper(t)
 				|| t.bDORMANT || t.bFRIENDLY || IsHeld(t) || SwingHad(h, t)) continue;
 			// the nearest point of the chord to the monster's axis, and the body there
 			double u = len2 > 0 ? clamp(((t.Pos.xy - last.xy) dot seg) / len2, 0.0, 1.0) : 0.0;
@@ -740,7 +740,7 @@ class RSQDG_Hold : EventHandler
 		while (it.Next())
 		{
 			Actor t = it.thing;
-			if (!t || t == a || t == p.mo || !t.bISMONSTER || t.Health <= 0 || !t.bSHOOTABLE || t.bFRIENDLY) continue;
+			if (!t || t == a || t == p.mo || !t.bISMONSTER || t.Health <= 0 || !t.bSHOOTABLE || t.bFRIENDLY || RSQDG_Throw.Helper(t)) continue;
 			Vector2 d = t.Pos.xy - a.Pos.xy;
 			double dl = d.Length();
 			if (dl < 32 || dl > 1200) continue;

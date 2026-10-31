@@ -485,7 +485,15 @@ class RSQDG_Throw : EventHandler
 
 	private static bool CanHurt(Actor t, Actor a, Actor by)
 	{
-		return t && t != a && t != by && t.bSHOOTABLE && t.Health > 0 && !t.bDORMANT;
+		return t && t != a && t != by && t.bSHOOTABLE && t.Health > 0 && !t.bDORMANT && !Helper(t);
+	}
+
+	// A HITBOX HELPER, NOT A MONSTER: Brutal Doom's head boxes (Knight_NobleHeadshot and kin, Head_Sys.dec) are shootable
+	// non-solid things warped onto a MASTER. A thrown body hit the Hell Knight and its head box both (two blows), and
+	// the aim assist could pick the head box. Anything shootable riding a master without being solid is skipped.
+	static bool Helper(Actor t)
+	{
+		return t && t.master && !t.bSOLID && t.master != t;
 	}
 
 	// The object's real half-width: a pickup's radius is its pickup trigger
