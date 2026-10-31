@@ -7,8 +7,8 @@ set -u
 HERE="$(cd "$(dirname "$0")" && pwd)"; GR="$(dirname "$(dirname "$HERE")")"
 B="$HERE/build"; mkdir -p "$B/logs" "$B/shots"
 NAME=$1; SECS=$2; SCRIPT=$3
-RIG=${QZ_RIG:-$GR/../../rsq_weapondepot/tools/rig/bin}
-IWAD=${IWAD:-$GR/../../gamedata/freedoom2.wad}
+RIG=${QZ_RIG:-/home/claude/rsq_weapondepot/tools/rig/bin}
+IWAD=${IWAD:-/home/claude/gamedata/freedoom2.wad}
 ( cd "$GR" && rm -f "$B/RSQ_Whip.pk3" && zip -q -r -X "$B/RSQ_Whip.pk3" zscript.txt MAPINFO.txt CVARINFO.txt KEYCONF.txt MENUDEF.txt SNDINFO.txt CREDITS.txt MODELDEF.txt zscript sprites sounds models )
 ( cd "$HERE/whipprobe" && rm -f "$B/whipprobe.pk3" && zip -q -r -X "$B/whipprobe.pk3" . )
 D="$B/shots/$NAME"; rm -rf "$D"; mkdir -p "$D"
@@ -20,7 +20,7 @@ fi
 files+=("$B/RSQ_Whip.pk3" "$B/whipprobe.pk3")
 rm -f "$B/logs/$NAME.log"
 QZ_DUMP_DIR="$D" QZ_RES=${QZ_RES:-240} EGL_PLATFORM=surfaceless LIBGL_ALWAYS_SOFTWARE=1 \
-  timeout "$SECS" flock -o -x /home/claude/rig.lock "$RIG/qz" -iwad "$IWAD" -file "${files[@]}" \
+  flock -o -x /home/claude/rig.lock timeout "$SECS" "$RIG/qz" -iwad "$IWAD" -file "${files[@]}" \
   -nosound $( [ -n "${MAPNAME:-}" ] && echo "+map $MAPNAME" || echo "-warp ${MAP:-1}" ) -skill 3 +logfile "$B/logs/$NAME.log" "+$SCRIPT" > "$B/logs/$NAME.out" 2>&1
 echo "rc=$? frames=$(ls "$D" | wc -l) log=$B/logs/$NAME.log"
 (cd "$RIG" && git checkout -q config/qzdoom.ini 2>/dev/null)

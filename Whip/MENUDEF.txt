@@ -34,6 +34,9 @@ OptionMenu "RSQWP_Options"
 	Option "Leash (Lock)", "rsqwp_whip_leash", "OnOff"
 	Option "Stun", "rsqwp_whip_stun", "OnOff"
 	Option "Lasso (off-hand grip)", "rsqwp_whip_lasso", "OnOff"
+	Option "Swing a Wrapped Monster (flail)", "rsqwp_whip_flail", "OnOff"
+	Option "Crack Fireballs Out of the Air", "rsqwp_whip_fireball", "OnOff"
+	Option "Hit-Stop (a crack freezes it)", "rsqwp_whip_hitstop", "OnOff"
 	StaticText " "
 	Option "Mantle Over Ledges", "rsqwp_mantle", "OnOff"
 	Option "Keep Momentum on Landing", "rsqwp_carry", "OnOff"
@@ -47,7 +50,9 @@ OptionMenu "RSQWP_Tuning"
 	Title "TUNING AND DEBUG"
 	Slider "Whip Length", "rsqwp_whip_reach", 64, 256, 8, 0
 	Slider "Crack Speed (lower = easier)", "rsqwp_whip_crack", 10, 50, 1, 0
-	Slider "Damage", "rsqwp_whip_damage", 0, 40, 2, 0
+	Slider "Damage (hardest crack)", "rsqwp_whip_damage", 0, 40, 2, 0
+	Slider "Hardest Crack Speed", "rsqwp_whip_fullcrack", 25, 120, 5, 0
+	Slider "Lasso Grip Reach (m)", "rsqwp_lasso_reach", 0.1, 0.6, 0.05, 2
 	Slider "Aim Reach", "rsqwp_whip_assist", 16, 96, 4, 0
 	Slider "Switch/Key/Powerup Mark Range", "rsqwp_whip_prio", 0, 768, 32, 0
 	Slider "Pulled Off Feet Up To (mass)", "rsqwp_whip_light", 50, 1000, 50, 0
@@ -98,4 +103,5 @@ OptionValue "RSQWP_Debug"
 	1, "Events"
 	2, "Every tic"
 	3, "Cost"
+	4, "Snags and grip keys"
 }
