@@ -230,6 +230,15 @@ class RSQDG_Aim : EventHandler
 	// Map units per tic, direction included, IN THE WORLD -- a throw needs to
 	// know which way. The samples are in the tracking frame; the peak is turned
 	// back into the world by the frame's current yaw.
+	//
+	// READ OVER TWO TICS, NOT ONE (owner pick 24, 2026-10-31; apply/04_DISTANCEGRAB.md §4 item 1a,
+	// surveys/06_GRAB_INTERACTION.md §4.4). The peak is taken over the window's 2-tic deltas --
+	// each pair of adjacent per-tic samples averaged -- and no longer over single tics. A 1-tic delta
+	// carries twice the quantisation and jitter of a 2-tic one, and the MAXIMUM of a noisy set turns
+	// that noise straight into an over-read: the harder the throw, the more samples it has to find a
+	// lucky one in. It also stops one stale tic (the pose written per rendered frame, so a slow frame
+	// repeats the last hand and the next tic carries two tics of motion) from reading as a throw of
+	// twice the speed. Still per tic, so nothing that multiplies it changes units.
 	Vector3 PalmVelocity(int hand) const
 	{
 		if (hand != 0 && hand != 1) return (0, 0, 0);
@@ -237,7 +246,11 @@ class RSQDG_Aim : EventHandler
 		double bestLen = -1.0;
 		for (int i = 0; i < PITCH_WINDOW; i++)
 		{
-			Vector3 v = palmVel[hand * PITCH_WINDOW + i];
+			// sample i and the one before it in time (the ring is written at palmAt, oldest first);
+			// the oldest sample has no older partner inside the window, so it is only ever the newer half
+			if (i == palmAt[hand]) continue;
+			int j = (i + PITCH_WINDOW - 1) % PITCH_WINDOW;
+			Vector3 v = (palmVel[hand * PITCH_WINDOW + i] + palmVel[hand * PITCH_WINDOW + j]) * 0.5;
 			// Compared in REAL length, not map length, or a mostly-vertical
 			// throw would be judged against a stretched axis and win ties it
 			// should lose.
@@ -246,6 +259,16 @@ class RSQDG_Aim : EventHandler
 		}
 		Vector2 w = Actor.RotateVector(best.xy, frameYaw);
 		return (w.x, w.y, best.z);
+	}
+
+	// The old reading (the fastest single tic), kept for the debug line only: the release prints both
+	// so the two estimators can be compared on a real throw.
+	double PeakOneTicMps(int hand) const
+	{
+		if (hand != 0 && hand != 1) return 0;
+		double b = 0;
+		for (int i = 0; i < PITCH_WINDOW; i++) b = max(b, RSQDG_Reach.Metres(palmVel[hand * PITCH_WINDOW + i]));
+		return b * TICRATE;
 	}
 
 	// ---- the wrist, for the launch gesture ---------------------------------

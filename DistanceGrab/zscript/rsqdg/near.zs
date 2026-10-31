@@ -29,6 +29,10 @@ class RSQDG_Near : EventHandler
 	Actor collar[MAXPLAYERS];
 	int collarEnd[MAXPLAYERS], collarPing[MAXPLAYERS];
 	bool cNoGrav[MAXPLAYERS], cInfight[MAXPLAYERS];
+	// the Headlock's throw: the off hand's last palm and body, and the arm's recent top speed (m/s)
+	Vector3 cPalm[MAXPLAYERS], cBody[MAXPLAYERS];
+	bool cHave[MAXPLAYERS];
+	double cPeak[MAXPLAYERS];
 	String offNext[MAXPLAYERS];
 	int offWait[MAXPLAYERS];
 
@@ -354,6 +358,8 @@ class RSQDG_Near : EventHandler
 		// unless the VICTIM carries MF7_FORCEINFIGHTING. Borrowed and handed back like bNOGRAVITY.
 		a.bFORCEINFIGHTING = true;
 		a.Vel = (0, 0, 0);
+		cHave[n] = false;
+		cPeak[n] = 0;
 		// HUMAN SHIELD (owner 2026-10-31, an option of its own): held as long as the grip is (a minute at most), turned
 		// to face away from you -- its front to whatever is shooting. Everything that makes it a shield is above.
 		bool shield = On("rsqdg_collar_shield", p, false);
@@ -387,6 +393,7 @@ class RSQDG_Near : EventHandler
 			// held in front of the off hand, frozen in whatever frame it was in (a punch's pain frame
 			// freezes too: it reads as stunned)
 			Vector3 hp = RSQDG_Reach.Palm(p.mo, 1);
+			if (n == consoleplayer && ThrowSwing(n, p, a, hp)) continue;
 			Vector3 fw = RSQDG_Reach.Dir(p.mo, 1);
 			Vector3 at = hp + fw * (a.Radius + 6.0);
 			at.z -= a.Height * 0.5;
@@ -416,6 +423,76 @@ class RSQDG_Near : EventHandler
 				while (s = sit.Next()) s.GetInt("touch", "grab.hold", n, 0, a);
 			}
 		}
+	}
+
+	// ---- THROWING THE MONSTER YOU HOLD (owner pick 23, 2026-10-31) ---------------------------------
+	//
+	// Swing the off hand hard while the Headlock holds a monster and it is thrown, as a heavy object is thrown from
+	// a hand (hold.zs Release): the off palm's speed over the 2-tic window (aim.zs PalmVelocity), times the throw's
+	// strength, times arm/(arm + its kilograms) -- a monster's kilograms are its Doom Mass (mass.zs), so an imp at
+	// 100 leaves at under a quarter of the hand's speed before the boost -- times the throwing boost, onto a monster
+	// in the aim-assist cone if there is one, plus the body's run. Then the throw's own tracker watches it
+	// (throw.zs): when it is stopped by a wall or a body, what it hits takes the impact AND SO DOES IT, by the same
+	// joules (throw.zs Impact). It falls through the same air as everything let go.
+	//
+	// THE TRIGGER IS hold.zs's AUTO-THROW, at its own threshold: the arm, across the ground and within 60 degrees of
+	// where you face (a wind-up or a pull to the chest never throws), past rsqdg_collar_throw m/s and then slowing --
+	// its peak passed, as a real throw lets go. Higher than a held barrel's (2.5) by default, because a Headlock is
+	// also moved about on purpose: carried, turned into fire as a shield. 0 turns it off. Read from the console
+	// player's own hand, as every hand read in this package is.
+	private bool ThrowSwing(int n, PlayerInfo p, Actor a, Vector3 hp)
+	{
+		let pmo = p.mo;
+		let aim = RSQDG_Aim.Get();
+		if (!aim || !aim.PoseGood()) { cHave[n] = false; cPeak[n] = 0; return false; }
+		Vector3 arm = (0, 0, 0);
+		if (cHave[n])
+		{
+			arm = (hp - cPalm[n]) - (pmo.Pos - cBody[n]);
+			if (arm.Length() > 64.0) arm = (0, 0, 0);    // moved, not swung
+		}
+		cPalm[n] = hp;
+		cBody[n] = pmo.Pos;
+		cHave[n] = true;
+		double need = RSQDG_Reach.Num("rsqdg_collar_throw", p, 3.0);
+		if (need <= 0) return false;
+		double nowMps = RSQDG_Reach.Metres(arm) * TICRATE;
+		Vector2 face = (cos(pmo.Angle), sin(pmo.Angle));
+		double across = arm.xy.Length();
+		if (!(across > 0.001 && (arm.xy dot face) > 0.5 * across)) nowMps = 0;
+		cPeak[n] = max(cPeak[n] * 0.85, nowMps);
+		if (cPeak[n] < need || nowMps >= cPeak[n] * 0.6) return false;
+		cPeak[n] = 0;
+
+		Vector3 v = aim.PalmVelocity(1) * RSQDG_Reach.Num("rsqdg_throw_scale", p, 1.0);
+		double kg = RSQDG_Mass.Kg(a);
+		double armKg = max(1.0, RSQDG_Reach.Num("rsqdg_arm_kg", p, 30.0));
+		v *= armKg / (armKg + kg);
+		v *= max(0.0, RSQDG_Reach.Num("rsqdg_throw_boost", p, 2.5));
+		Vector3 body = pmo.Vel;
+		v = RSQDG_Hold.Assist(p, a, v) + body;
+
+		EndCollar(n);
+		// let go of the freeze NOW, not in two tics: a frozen actor's Tick returns before it moves (p_mobj.cpp:3948)
+		a.freezetics = 0;
+		a.Vel = v;
+		// stunned for the flight: its Pain, so it is not mid-attack in the air (and its pain sound is the yelp)
+		State pain = a.FindState("Pain");
+		if (pain) a.SetState(pain);
+		double mps = RSQDG_Reach.Metres(v - body) * TICRATE;
+		if (RSQDG_Reach.Flag("rsqdg_debug", p, false))
+			Console.Printf("[RSQDG] Headlock: threw %s at %.1f m/s (%.0f kg; hand peak %.1f m/s)", a.GetClassName(), mps,
+				kg, RSQDG_Reach.Metres(aim.PalmVelocity(1)) * TICRATE);
+		let th = RSQDG_Throw.Get();
+		if (th)
+		{
+			th.Air(a, 0);
+			th.Watch(a, pmo, 1, body.xy);
+		}
+		RSQDG_Feel.Whoosh(a, p, mps, RSQDG_Mass.Heft(a));
+		let feel = RSQDG_Feel.Get();
+		if (feel) feel.OnRelease(1, a, true);
+		return true;
 	}
 
 	override void WorldUnloaded(WorldEvent e)

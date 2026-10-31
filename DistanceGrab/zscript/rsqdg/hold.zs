@@ -304,6 +304,7 @@ class RSQDG_Hold : EventHandler
 	private void Forget(int hand)
 	{
 		held[hand] = null;
+		SwingForget(hand);
 		two[hand] = false;
 		turnOn[hand] = false;
 		sag[hand] = 0;
@@ -375,10 +376,11 @@ class RSQDG_Hold : EventHandler
 		if (thrown) RSQDG_Feel.Whoosh(a, p, mps, RSQDG_Mass.Heft(a));
 
 		if (RSQDG_Reach.Flag("rsqdg_debug", p, false))
-			Console.Printf("[RSQDG] hand %d released %s at %.1f m/s (%s; arm %.1f, body %.1f)",
+			Console.Printf("[RSQDG] hand %d released %s at %.1f m/s (%s; arm %.1f, body %.1f; hand 2-tic %.1f, 1-tic peak %.1f)",
 				hand, a.GetClassName(), RSQDG_Reach.Metres(v) * TICRATE,
 				thrown ? "thrown" : "dropped",
-				RSQDG_Reach.Metres(v - body) * TICRATE, RSQDG_Reach.Metres(body) * TICRATE);
+				RSQDG_Reach.Metres(v - body) * TICRATE, RSQDG_Reach.Metres(body) * TICRATE,
+				aim ? RSQDG_Reach.Metres(aim.PalmVelocity(hand)) * TICRATE : 0, aim ? aim.PeakOneTicMps(hand) : 0);
 
 		Forget(hand);
 
@@ -581,10 +583,122 @@ class RSQDG_Hold : EventHandler
 			if (vl > vmax) v *= vmax / vl;
 			a.Vel = v + bodyVel;
 			ShieldTick(pmo, p, h, a);
+			SwingTick(pmo, p, h, a, bodyVel);
 		}
 
 		UpdateBurden(pmo, p);
 		PruneFlying();
+	}
+
+	// ---- HITTING THINGS WITH WHAT YOU HOLD (owner pick 19, 2026-10-31) -------------------------
+	//
+	// apply/04_DISTANCEGRAB.md §7 (the gap: a held thing is bTHRUACTORS, so it cannot collide with a body and
+	// nothing tested a swing) and surveys/01_MELEE.md §3.5 (test the CHORD, never the point: a fast swing moves
+	// further in a tic than a lost soul is wide). The three decisions §7 asks for, as built:
+	//   1. bTHRUACTORS STAYS: without it a held barrel shoves monsters through the spring and the strain reads every
+	//      body as a wall. So this is a script hit test over a pass-through object -- which is why it is a sweep.
+	//   2. THE SPEED IS THE OBJECT'S OWN TRAVEL, not the hand's, with the body's own motion taken out: sag and spring
+	//      lag are honoured, and carrying a barrel past an imp (or walking into one) is not a hit.
+	//      rsqdg_swing_mps (3 m/s, rsqdg_throw_min's default).
+	//   3. ONCE PER SWING PER MONSTER: a hand's victims are remembered until its swing ends (the object under the gate
+	//      for SWING_QUIET tics), so a barrel resting against a monster never ticks damage at 35 Hz.
+	// THE SWEEP IS A SEGMENT AGAINST CYLINDERS, done in script, rather than §3.5's LineTrace: a trace stops at the
+	// FIRST actor and has no width (its `fatten` is extra length), while the swung thing has a body -- the throw's
+	// BodyRadius -- and may cross two monsters in a tic. The held thing moves in a straight line inside a tic (the
+	// engine moves it by Vel), so the chord between its last two positions is its exact path: no sagitta to cover.
+	// SCORED BY THE THROW'S OWN RULE (RSQDG_Throw.DamageFor, Stagger): the same kilograms and joules, so a swung
+	// barrel and a thrown barrel cannot disagree about what a barrel weighs.
+	const SWING_VICTIMS = 4;
+	const SWING_QUIET = 6;
+	private Vector3 swLast[2];
+	private bool    swHave[2];
+	private int     swQuiet[2];
+	private Actor   swHit[2 * SWING_VICTIMS];
+
+	private void SwingForget(int h)
+	{
+		swHave[h] = false;
+		swQuiet[h] = 0;
+		for (int v = 0; v < SWING_VICTIMS; v++) swHit[h * SWING_VICTIMS + v] = null;
+	}
+
+	private bool SwingHad(int h, Actor t) const
+	{
+		for (int v = 0; v < SWING_VICTIMS; v++) if (swHit[h * SWING_VICTIMS + v] == t) return true;
+		return false;
+	}
+
+	private void SwingTick(PlayerPawn pmo, PlayerInfo p, int h, Actor a, Vector3 bodyVel)
+	{
+		Vector3 now = a.Pos;
+		Vector3 last = swLast[h];
+		bool have = swHave[h];
+		swLast[h] = now;
+		swHave[h] = true;
+		if (!have || !RSQDG_Reach.Flag("rsqdg_swing", p, true)) return;
+
+		Vector3 chord = now - last;                     // where the engine moved it last tic
+		if (chord.Length() > PALM_JUMP) return;         // moved, not swung (a teleport)
+		Vector3 rel = chord - bodyVel;                  // the swing, the body's own motion taken out
+		double mps = RSQDG_Reach.Metres(rel) * TICRATE;
+		double gate = RSQDG_Reach.Num("rsqdg_swing_mps", p, 3.0);
+		if (mps < gate)
+		{
+			// the swing is over once it has been slow a moment: the next one may hit the same monster again
+			if (++swQuiet[h] >= SWING_QUIET)
+				for (int v = 0; v < SWING_VICTIMS; v++) swHit[h * SWING_VICTIMS + v] = null;
+			return;
+		}
+		swQuiet[h] = 0;
+
+		double br = RSQDG_Throw.BodyRadius(a);
+		Vector2 seg = chord.xy;
+		double len2 = seg dot seg;
+		Vector3 mid = (last + now) * 0.5;
+		// COLLECTED FIRST, STRUCK AFTER (throw.zs's rule): damage inside the iterator can kill and unlink.
+		Array<Actor> victims;
+		let it = BlockThingsIterator.CreateFromPos(mid.x, mid.y, mid.z, 128, sqrt(len2) * 0.5 + br + 8, false);
+		while (it.Next())
+		{
+			Actor t = it.thing;
+			if (!t || t == a || t == pmo || t.player || !t.bISMONSTER || !t.bSHOOTABLE || t.Health <= 0
+				|| t.bDORMANT || t.bFRIENDLY || IsHeld(t) || SwingHad(h, t)) continue;
+			// the nearest point of the chord to the monster's axis, and the body there
+			double u = len2 > 0 ? clamp(((t.Pos.xy - last.xy) dot seg) / len2, 0.0, 1.0) : 0.0;
+			Vector2 q = last.xy + seg * u;
+			if ((t.Pos.xy - q).Length() > br + t.Radius) continue;
+			double z = last.z + chord.z * u;
+			if (z > t.Pos.z + t.Height || z + a.Height < t.Pos.z) continue;
+			victims.Push(t);
+			if (victims.Size() >= SWING_VICTIMS) break;
+		}
+		if (victims.Size() == 0) return;
+
+		double kg = RSQDG_Mass.Kg(a);
+		double heft = RSQDG_Mass.Heft(a);
+		for (int k = 0; k < victims.Size(); k++)
+		{
+			Actor t = victims[k];
+			if (!t || t.Health <= 0 || !a) continue;
+			for (int v = 0; v < SWING_VICTIMS; v++)
+				if (!swHit[h * SWING_VICTIMS + v]) { swHit[h * SWING_VICTIMS + v] = t; break; }
+			String tn = t.GetClassName();
+			int dmg = RSQDG_Throw.DamageFor(kg, mps, p);
+			// the HELD THING is the inflictor and the player the source, as a throw: kill credit and infighting go to
+			// the player, and the kick comes from the thing that hit
+			t.DamageMobj(a, pmo, dmg, 'Melee');
+			RSQDG_Throw.Stagger(t, kg, mps, rel.xy, dmg, p);
+			if (RSQDG_Reach.Flag("rsqdg_debug", p, false))
+				Console.Printf("[RSQDG] hand %d: swung %s hit %s at %.1f m/s for %d", h, a.GetClassName(), tn, mps, dmg);
+			RSQDG_Events.Tell("hold.hit", h, t);
+		}
+		if (!a) return;
+		// it met a body: most of the swing stops there, and the hand feels it (a thrown thing is felt in no hand;
+		// a swung one has not left it -- apply/04 §8)
+		a.Vel = bodyVel + (a.Vel - bodyVel) * 0.3;
+		RSQDG_Feel.Thud(a, p, heft, min(1.0, mps / 8.0));
+		let feel = RSQDG_Feel.Get();
+		if (feel) feel.Pulse(h, RSQDG_Feel.PRI_CATCH, heft >= 0.55 ? 2 : 1);
 	}
 
 	// ---- both hands, aim, shield ---------------------------------------------------
@@ -613,7 +727,8 @@ class RSQDG_Hold : EventHandler
 	// is turned onto it, and lobbed so the arc comes down on its middle at the speed you threw (the air's real
 	// gravity, throw.zs). The speed across the ground is yours; only the heading and the lob are corrected, the lob
 	// by no more than 0.6 of that speed either way.
-	private Vector3 Assist(PlayerInfo p, Actor a, Vector3 v)
+	// Static, and so callable for a thing no hand holds: the Headlock's throw (near.zs) bends its monster the same way.
+	static Vector3 Assist(PlayerInfo p, Actor a, Vector3 v)
 	{
 		double cone = RSQDG_Reach.Num("rsqdg_throw_assist", p, 12.0);
 		double hs = v.xy.Length();

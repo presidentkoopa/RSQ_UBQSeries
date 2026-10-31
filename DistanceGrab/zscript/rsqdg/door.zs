@@ -44,6 +44,7 @@ class RSQDG_Door : EventHandler
 	private transient int    pendT[2], tried[2];
 	private transient int    buzzT;
 	private transient bool   onFace[2];
+	private transient int    swTried[2];   // the switch line this palm already flipped, until it leaves it
 
 	// ---- the door's voice: synced state, local sound ---------------------------------
 	double dLast[MAXPLAYERS];             // the ceiling a tic ago, to read the lift's speed
@@ -64,6 +65,7 @@ class RSQDG_Door : EventHandler
 	override void OnRegister()
 	{
 		held[0] = -1; held[1] = -1; tried[0] = -1; tried[1] = -1;
+		swTried[0] = -1; swTried[1] = -1;
 		afterLoad = true;
 	}
 
@@ -145,7 +147,16 @@ class RSQDG_Door : EventHandler
 		let p = players[consoleplayer];
 		if (!p || !p.mo || p.mo.health <= 0) return;
 		let pmo = p.mo;
-		if (!RSQDG_Reach.Flag("rsqdg_door", p, true)) return;
+		if (!RSQDG_Reach.Flag("rsqdg_door", p, true))
+		{
+			// doors off is not switches off
+			for (int h = 0; h < 2; h++)
+			{
+				onFace[h] = false;
+				PalmSwitch(pmo, p, h, RSQDG_Reach.Palm(pmo, h), RigRegion(pmo, h) >= 0);
+			}
+			return;
+		}
 		let grab = RSQDG_Grab.Get();
 		int n = consoleplayer;
 
@@ -228,7 +239,58 @@ class RSQDG_Door : EventHandler
 				}
 			}
 			pressWas[h] = pressing;
+			PalmSwitch(pmo, p, h, hp, inRegion);
 		}
+	}
+
+	// ---- SWITCHES BY PALM (owner pick 21, 2026-10-31) ------------------------------------------
+	//
+	// Lay a palm on a switch and it flips, the way a palm on a door takes hold of it. surveys/06_GRAB_INTERACTION.md
+	// §4.7: there is no force input to a line, only its activation, and `Line.Activate(actor, side, SPAC_Use)`
+	// (mapdata.zs:239 -> p_spec.cpp:218-225) is the "my hand touched the switch" primitive -- the line's own special
+	// run through the engine's own P_ActivateLine, so the key check and its locked message, the switch texture's
+	// flip and its sound, a one-shot switch clearing its special, and WorldLinePreActivated/WorldLineActivated for any
+	// mod that listens all happen exactly as for a Use press. Nothing about the line is decided here.
+	//
+	// WHAT COUNTS: a line with a special a player can Use (SPAC_Use or SPAC_UseThrough), the palm on its front face
+	// within TOUCH, between the floor and ceiling in front of it, palm turned out (the grab's own pose, as the door
+	// reads it), the hand not holding anything and not in a holster. A manual door (a door special, tag 0) is the
+	// door lift's and is skipped. ONCE PER TOUCH: the palm must leave the line before it flips it again, so a palm
+	// resting on a repeatable switch is not a switch pressed at 35 Hz.
+	static Line FindSwitch(Vector3 hand)
+	{
+		let it = BlockLinesIterator.CreateFromPos(hand, 8, TOUCH * 2);
+		Line best = null;
+		double bestD = TOUCH;
+		while (it.Next())
+		{
+			Line l = it.CurLine;
+			if (!l || l.special == 0 || !(l.activation & (SPAC_Use | SPAC_UseThrough))) continue;
+			if (IsDoorSpecial(l.special) && l.args[0] == 0 && l.backsector) continue;   // the door lift's
+			if (Level.PointOnLineSide(hand.xy, l) != 0 || !l.frontsector) continue;    // the front face only
+			Vector2 a = l.v1.p, d = l.delta;
+			double len2 = d dot d;
+			if (len2 < 1) continue;
+			double t = clamp(((hand.xy - a) dot d) / len2, 0.0, 1.0);
+			Vector2 at = a + d * t;
+			double dist = (hand.xy - at).Length();
+			if (dist >= bestD) continue;
+			if (hand.z < l.frontsector.floorplane.ZatPoint(at) || hand.z > l.frontsector.ceilingplane.ZatPoint(at)) continue;
+			bestD = dist;
+			best = l;
+		}
+		return best;
+	}
+
+	private void PalmSwitch(PlayerPawn pmo, PlayerInfo p, int h, Vector3 hp, bool inRegion)
+	{
+		if (!RSQDG_Reach.Flag("rsqdg_palm_switch", p, true)) { swTried[h] = -1; return; }
+		let hold = RSQDG_Hold.Get();
+		Line l = (held[h] < 0 && !onFace[h] && !inRegion && !(hold && hold.HandIsFull(h)) && PalmOut(pmo, h)) ? FindSwitch(hp) : null;
+		if (!l) { swTried[h] = -1; return; }
+		if (l.Index() == swTried[h]) return;
+		swTried[h] = l.Index();
+		EventHandler.SendNetworkEvent("rsqdg_switch", l.Index(), h);
 	}
 
 	// The palm turned out, the grab's own convention (rsqdg_palm_roll / _tol when the
@@ -253,6 +315,17 @@ class RSQDG_Door : EventHandler
 		int li = e.Args[0];
 		if (li < 0 || li >= Level.Lines.Size()) return;
 		Line l = Level.Lines[li];
+		if (e.Name == "rsqdg_switch")
+		{
+			// every machine runs the line's own special, as a Use press would (PalmSwitch above)
+			if (l.special == 0 || !(l.activation & (SPAC_Use | SPAC_UseThrough))) return;
+			int sp = l.special;
+			bool ok = l.Activate(pmo, 0, (l.activation & SPAC_Use) ? SPAC_Use : SPAC_UseThrough);
+			if (RSQDG_Reach.Flag("rsqdg_debug", players[n], false))
+				Console.Printf("[RSQDG] hand %d: palm on switch line %d (special %d): %s", e.Args[1], li, sp, ok ? "flipped" : "refused");
+			if (ok && n == consoleplayer) Feel(e.Args[1], RSQDG_Feel.PRI_CATCH);
+			return;
+		}
 		if (e.Name == "rsqdg_doorgrab") Grab(n, pmo, l);
 		else if (e.Name == "rsqdg_doorlift") { if (dLine[n] == li) dTarget[n] = e.Args[1] / 8.0; }
 		else if (e.Name == "rsqdg_doorrel") { if (dLine[n] == li) Release(n, pmo, l); }

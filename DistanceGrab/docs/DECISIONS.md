@@ -686,3 +686,37 @@ Headlock as a human shield (a separate option). Random ammo in grabbed weapons w
   monster turned to face away. Not rig-tested (the off-hand grip is a raw key).
 - **Sounds** (`rsqdg_sounds`): Doom's own revenant swing (whoosh, pitch with speed) and punch (thud, deeper with
   weight). Not heard on the rig (it runs -nosound).
+
+## D37 — ROUND THREE: HIT WITH IT, PALM SWITCHES, THROW THE HEADLOCK, TRUER THROWS, HIT-STOP. 2026-10-31.
+
+Owner picks 19, 21, 23, 24 (yes, on) and 22 (option, off). Built on apply/04_DISTANCEGRAB.md §4 1a, §7 and §3,
+surveys/06_GRAB_INTERACTION.md §4.4 and §4.7, surveys/01_MELEE.md §3.5-3.6. Rig only, not headset-confirmed.
+
+- **Hit with what you hold** (`rsqdg_swing`, `rsqdg_swing_mps` 3; hold.zs SwingTick). §7's three decisions as
+  written: the held thing stays `bTHRUACTORS`; the gate is the held thing's own travel with the body's taken out;
+  one hit per monster per swing (a swing ends after 6 slow tics). The sweep is the held thing's chord tested against
+  each monster's cylinder in script, not §3.5's LineTrace (a trace stops at the first actor and has no width; the
+  swung thing has a body and may cross two). Scored by the throw's own `DamageFor` and `Stagger`. Felt as the catch
+  pulse and heard as the thud; the swing loses 70 % of its speed in the body. A heavy thing follows the hand on a
+  soft spring (D22), so a barrel reaches the gate only on a sustained sweep -- a flick does not swing a barrel.
+- **Palm switches** (`rsqdg_palm_switch`; door.zs PalmSwitch). A palm turned out on the front face of a line with a
+  Use special (not a manual door, which the lift owns) runs `Line.Activate(pmo, 0, SPAC_Use)` through a network
+  event: keys, the texture flip, one-shot specials and the line hooks are the engine's. Once per touch.
+- **Throw the Headlock** (`rsqdg_collar_throw` 3 m/s; near.zs ThrowSwing). hold.zs's auto-throw trigger on the off
+  hand; the release is hold.zs's model (2-tic palm speed, arm/(arm+kg), boost, aim assist). The throw tracker
+  watches it, and for a living thrown monster **only a sideways stop is an impact** (one fell 48 units off MAP01's
+  steps and read as a 5.8 m/s blow), and **its gate is energy, not speed**: a 60 kg barrel (MASSDEF) at
+  rsqdg_throw_min. Measured: Brutal Doom's zombies are Mass 300, so a 10.5 m/s hand throws one at 2.4 m/s, under the
+  3 m/s speed gate. What it hits and the monster itself take the same joules. OPEN: under BD a Headlock throw is
+  slow (Mass 300 is BD's knockback number, not a weight); if it reads as feeble in the headset, a monster weight
+  for the throw is the dial, not the gate.
+- **Truer throws** (aim.zs PalmVelocity): the peak of the window's 2-tic deltas, not its 1-tic deltas. Rig: one
+  stale frame read 21.0 m/s as a single tic and 10.5 over two. `rsqdg_throw_scale` left alone (the owner tuned the
+  boost in the headset); the release debug line prints both readings for the A/B.
+- **Hit-stop** (`rsqdg_hitstop`, 0 = off; menu Off/3/4/6): a monster a thrown thing strikes gets `freezetics`
+  (self-counting, never the player). Its stagger shove waits in Vel and plays out after.
+- **Found on the way, fixed:** a thrown barrel is pass-through for its first 10 tics (the settle list) and only
+  non-solid things had the overlap test, so a barrel thrown at a monster under ~90 units away flew through it. The
+  overlap test now runs for anything pass-through.
+- **Found, not fixed:** Brutal Doom's `Knight_NobleHeadshot` (a head hitbox helper) is a shootable monster, so a
+  thrown body hitting a Hell Knight strikes both (56 + 56), and the throw aim assist can pick the helper.
