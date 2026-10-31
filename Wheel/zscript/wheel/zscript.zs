@@ -765,6 +765,37 @@ class wr_Rig : EventHandler
 		if (e.Name ~== "wr_ms_cycle_off")  { wr_CompatModelSwapper.Cycle(1, 1); return; }
 
 
+		if (e.Name ~== "wr_drag")
+		{
+			let pmo = players[consoleplayer].mo;
+			if (pmo == null || !mOpen) { mDragging = false; return; }
+			if (e.Args[0] != 0)
+			{
+				int sub = subIndexOf(mHovered);
+				if (sub >= 0 && sub < mSubTypes.Size())
+				{
+					mDragging = true; mDragType = mSubTypes[sub]; mDragMoved = false;
+					if (cvBool("wr_debug", false)) Console.Printf("RSQ Wheel: holding %s (place %d in its slot)", mDragType.GetClassName(), sub + 2);   // place 1 is the slot's card
+				}
+				return;
+			}
+			if (!mDragging) return;
+			mDragging = false;
+			// dropped on the slot's own card: first in its slot, so the card shows it from now on
+			if (mExpanded >= 0 && cardIndexOf(mHovered) == mExpanded) { dragTo(pmo, 0); mDragMoved = true; }
+			if (mDragMoved)
+			{
+				feedback(Sound("wristrig/lock"), 0.45, 60);
+				if (cvBool("wr_debug", false)) Console.Printf("RSQ Wheel: dropped %s, wr_slot_order \"%s\"", mDragType.GetClassName(), slotOrderStr());
+				return;
+			}
+			// not moved: a pick, the gun it was pressed on
+			int at = -1;
+			for (int i = 0; i < mSubTypes.Size(); ++i) if (mSubTypes[i] == mDragType) at = i;
+			if (at >= 0 && at < mSubHits.Size()) { mHovered = mSubHits[at]; commit(pmo); }
+			return;
+		}
+
 		if (e.Name ~== "wr_grab")
 		{
 			let pmo = players[consoleplayer].mo;
@@ -849,6 +880,15 @@ class wr_Rig : EventHandler
 	// under the hand. Any wider and opening the rig would deaden your trigger.
 	override bool InputProcess(InputEvent e)
 	{
+		// RSQ WH7: a trigger let go while a fan is up ends a drag. Sent whenever a fan is up, not only while a drag
+		// is known here: a press and its release can both land before the press's event has been processed.
+		// NetworkProcess ignores it when nothing is held. Not consumed: the press may not have been ours.
+		if (e.Type == InputEvent.Type_KeyUp && mOpen && (mDragging || mExpanded >= 0)
+			&& (wr_Keybind.isKeyFor(e.KeyScan, "+attack") || wr_Keybind.isKeyFor(e.KeyScan, "+oh_attack")))
+		{
+			EventHandler.SendNetworkEvent("wr_drag", 0);
+			return false;
+		}
 		if (!mOpen || mHovered == 0) return false;
 		if (e.Type != InputEvent.Type_KeyDown) return false;
 
@@ -896,6 +936,15 @@ class wr_Rig : EventHandler
 
 		if (!fire && !(mTouching && wr_Keybind.isKeyFor(e.KeyScan, "+use"))) return false;
 
+		// RSQ WH7: the trigger on a FAN card holds it. Let go without moving and it is picked, as a press on a fan
+		// card always was; move onto another place in the fan, or onto the slot's own card, and the gun takes that
+		// place in its slot (saved).
+		if (fire && subIndexOf(mHovered) >= 0)
+		{
+			EventHandler.SendNetworkEvent("wr_drag", 1);
+			return true;
+		}
+
 		EventHandler.SendNetworkEvent("wr_grab");
 		return true;
 	}
@@ -928,6 +977,20 @@ class wr_Rig : EventHandler
 	Weapon mPrevWeap[2];     // what each hand held before its last pick off the ring
 	int    mLastPickHand;
 
+	// RSQ QoL ROUND (owner's picks, 2026-10-31). On: WH2 the sheet names the other guns on this gun's ammo
+	// (sharedAmmoRow), WH3 one hand on each card at the release and each hand takes its gun (otherHandPick,
+	// secondPick), WH4 a fan last-used first (promoteLastPicked), WH5 a gun with no ammo is not taken: Doom's dry
+	// click and the hand keeps its gun (noAmmo, dryClick), WH7 the trigger held on a fan card drags it to a new
+	// place in its slot, saved in wr_slot_order (wr_drag, tickDrag, dragTo). Options: WH6 wr_centre_held (layout),
+	// WH8 wr_level_stats (the THIS LEVEL row; wr_stattracker.zs).
+	Array<Class<Weapon> > mUseCls;   // WH4: each gun that has been in a hand, and the last time it was (totaltime)
+	Array<int>            mUseAt;
+	bool          mDragging;          // WH7: a fan card is held by the trigger
+	Class<Weapon> mDragType;          // ...which gun
+	bool          mDragMoved;         // ...and whether it has moved yet (a release without a move is a pick)
+	bool          mFanQuiet;          // WH7: a fan rebuilt by a drag comes back without its grow-in or flash
+	bool          mCentrePending;     // WH6: move the anchor once the ring's radius is known
+
 	private void pressWheel(bool down)
 	{
 		let pmo = players[consoleplayer].mo;
@@ -959,11 +1022,80 @@ class wr_Rig : EventHandler
 		{
 			// a card under a hand takes it; the sheet, or nothing, just closes
 			bool onCard = mHovered != 0 && mHovered != mSheetHit && (mPage != PAGE_WEAPONS || HoveredClass() != null);
-			if (onCard) commit(pmo);
+			if (onCard)
+			{
+				// RSQ WH3: a different gun's card under the other hand too: that hand takes its own
+				Weapon w2; int h2;
+				[w2, h2] = otherHandPick(pmo);
+				int first = mPokeHand;
+				commit(pmo);
+				if (w2) secondPick(pmo, w2, h2, first);
+			}
 			if (mOpen) closeRig();
 			mTapTic = 0;
 		}
 		else mTapTic = mPressTic;   // a quick tap: the ring stays up, and a second tap may follow
+	}
+
+	// RSQ WH3: the gun whose card is under the OTHER hand (the one not driving the beam), when it is a different gun
+	// from the first hand's card -- the same aim (and reach-in) the two-hand compare reads.
+	private Weapon, int otherHandPick(PlayerPawn pmo)
+	{
+		if (!eitherHand() || mPage != PAGE_WEAPONS || mHovered == 0) return null, 0;
+		int other = (mPokeHand == 1) ? 0 : 1;
+		int oid; Vector2 ouv;
+		[oid, ouv] = wr_BB.AimBillboard(handPos(pmo, other), handDir(pmo, other), POINTER_RANGE);
+		double touchR = cv("wr_touch", 7.0) * cv("wr_scale", 1.0);
+		if (touchR > 0.0)
+		{
+			int tid; Vector2 tuv; double td;
+			[tid, tuv, td] = wr_BB.TouchBillboard(handPos(pmo, other) + handDir(pmo, other) * mTouchReach, touchR);
+			if (tid != 0) oid = tid;
+		}
+		if (oid == 0 || oid == mHovered || oid == mSheetHit) return null, 0;
+		Class<Weapon> ca = HoveredClass();
+		int keep = mHovered; mHovered = oid;
+		Class<Weapon> cb = HoveredClass();
+		mHovered = keep;
+		if (!ca || !cb || ca == cb) return null, 0;
+		return Weapon(pmo.FindInventory(cb)), other;
+	}
+
+	// RSQ WH3: the second hand's gun, after commit() has given the first hand its own (and closed the ring).
+	private void secondPick(PlayerPawn pmo, Weapon w, int hand, int firstHand)
+	{
+		if (mRigHand != firstHand) return;      // the first gun went to the other hand (one-handed): no second pick
+		if (w.bNoHandSwitch && w.bOffhandWeapon != (hand == 1)) return;
+		if (hand == 1 && offhandBraced(pmo)) { feedback(Sound("wristrig/nope"), 0.35, 60); return; }
+		let first = (firstHand == 1) ? pmo.player.OffhandWeapon : pmo.player.ReadyWeapon;
+		if (w == first) return;                 // never taken out of the first hand
+		if (noAmmo(w)) { dryClick(w); return; } // WH5 for this hand too: it keeps its gun
+		let had = (hand == 1) ? pmo.player.OffhandWeapon : pmo.player.ReadyWeapon;
+		if (had == w) return;
+		equipInstantly(pmo, w, hand);
+		feedback(Sound("wristrig/lock"), 0.6, 70);
+		if (cvBool("wr_debug", false)) Console.Printf("RSQ Wheel: two-hand pick: hand %d takes %s", hand, w.GetClassName());
+	}
+
+	// RSQ WH5: nothing to fire at all -- nothing loaded, nothing in reserve, nothing for its own alt fire. A gun with
+	// no ammo type always has something. Read from the amounts, not AmmoUse: Brutal Doom's guns declare AmmoUse 0 and
+	// take their rounds themselves (the rig's slot list: every BD gun reads "use 0/0").
+	private static bool noAmmo(Weapon w)
+	{
+		if (!w || (w.Ammo1 == null && w.Ammo2 == null)) return false;
+		int loaded = ammoLoaded(w);
+		if (loaded < 0 && w.Ammo2 != null) loaded = w.Ammo2.Amount;
+		return loaded <= 0 && ammoReserve(w) <= 0 && ammoLeft2(w) <= 0;
+	}
+
+	// RSQ WH5: Doom's dry click -- Brutal Doom's own dry-fire click (Weapon/Empty, its DRYFIRE lump) when it is
+	// loaded, the stock switch click (switches/normbutn) without it. The same weak pulse as a refused pick.
+	private void dryClick(Weapon w)
+	{
+		bool bd = Wads.CheckNumForName("DRYFIRE", Wads.ns_sounds) >= 0;
+		feedback(bd ? Sound("Weapon/Empty") : Sound("switches/normbutn"), 0.35, 60);
+		if (cvBool("wr_debug", false))
+			Console.Printf("RSQ Wheel: %s has no ammo: dry click (%s), the hand keeps its gun", w ? w.GetClassName() : 'none', bd ? "Weapon/Empty" : "switches/normbutn");
 	}
 
 	private void swapToPrevious(PlayerPawn pmo)
@@ -1189,6 +1321,7 @@ class wr_Rig : EventHandler
 	// louder noise of its own -- two sounds a frame apart read as a stutter.
 	private void closeRig(bool quiet = false)
 	{
+		mDragging = false;   // RSQ WH7
 
 		// Only if there is a ring to fold: PlayerDied and WorldUnloaded call
 		// this unconditionally, and a click plus a buzz on every death and
@@ -1527,6 +1660,30 @@ class wr_Rig : EventHandler
 	// RSQ: THE SERIES, ASKED BY NAME -- each row only when that mod is loaded and has an answer.
 	//   RSQ TacticalRig     where this gun is holstered (RSQTR_RigService "rig.holster")
 	//   RSQ Gun Bonsai VR   its Gun Bonsai level, progress and upgrades (WR_Bonsai, wr_q_bonsai.zs)
+	// RSQ WH2 (owner's QoL pick): the other guns you carry that draw on this gun's ammo (the same Ammo1 pile).
+	// Two names and a count, to keep the row one short line.
+	private void sharedAmmoRow(Weapon w)
+	{
+		let pmo = players[consoleplayer].mo;
+		if (!pmo || !w || !w.Ammo1) return;
+		Array<string> names;
+		for (let it = pmo.Inv; it; it = it.Inv)
+		{
+			let o = Weapon(it);
+			if (!o || o == w || o == w.SisterWeapon || o.bPowered_Up || o.Ammo1 != w.Ammo1) continue;
+			string tg = o.GetTag();
+			tg = tg.MakeUpper();
+			if (tg.CodePointCount() > 10) tg = tg.Left(9) .. ".";   // the row stays as long as the KILLS row
+			if (names.Find(tg) != names.Size()) continue;
+			names.Push(tg);
+		}
+		if (names.Size() == 0) return;
+		string row = "SHARES " .. names[0];
+		if (names.Size() > 1) row = row .. ", " .. names[1];
+		if (names.Size() > 2) row = row .. String.Format(" +%d", names.Size() - 2);
+		sheetRow(row, SHEET_DIM);
+	}
+
 	private void seriesRows(Weapon w)
 	{
 		let pmo = players[consoleplayer].mo;
@@ -1696,6 +1853,7 @@ class wr_Rig : EventHandler
 			// it twice reads as twice the ammo.
 			if (hasMagazine(w) && w.Ammo1 != null)
 				sheetRow(String.Format("RESERVE %d", w.Ammo1.Amount), SHEET_COOL);
+			sharedAmmoRow(w);   // RSQ WH2
 		}
 
 		// SHOTS, not rounds -- the one derived number worth the arithmetic.
@@ -2254,6 +2412,13 @@ class wr_Rig : EventHandler
 		{
 			int acc = trShots > 0 ? (trHits * 100 / trShots) : 0;
 			sheetRow(String.Format("KILLS %d  SHOTS %d  ACC %d%%", trKills, trShots, acc), SHEET_TEXT);
+			// RSQ WH8 (owner's QoL pick, an option): the same counts for this visit to this level, under them
+			if (cvBool("wr_level_stats", false))
+			{
+				bool hasLv; int lvK, lvS, lvH;
+				[hasLv, lvK, lvS, lvH] = wr_StatTracker.LevelBasicsOf(w);
+				sheetRow(String.Format("LEVEL KILLS %d  SHOTS %d  ACC %d%%", lvK, lvS, lvS > 0 ? lvH * 100 / lvS : 0), SHEET_DIM);
+			}
 		}
 
 		// HEADSHOTS -- only when that mod is actually loaded (Object.FindClass
@@ -3558,22 +3723,147 @@ class wr_Rig : EventHandler
 	// filling it. Precedent for the shape -- an array parameter declared in out
 	// and handed a plain local -- is wadsrc statscreen.zs:1036
 	// GetSortedPlayers(in out Array<int>), called from statscreen_dm.zs:203.
+	// RSQ QoL (owner's picks WH4, WH7, 2026-10-31): the whole order, not only the front. A slot the player has arranged
+	// by dragging (WH7, wr_slot_order) keeps that order, fanned or flat. Otherwise a fan is LAST-USED FIRST (WH4): the
+	// card shows the gun last in a hand (the one you hold, usually) and the fan the rest by how recently each was
+	// held; guns never held keep slot order behind them. A flat ring keeps slot order, so its bearings stay put.
 	private void promoteLastPicked(int slot, in out Array<Class<Weapon> > variants)
 	{
-		if (!mFansEnabled || variants.Size() < 2) return;
-		if (slot < 0 || slot >= 10) return;
-		if (mLastPicked[slot] == null || variants[0] == mLastPicked[slot]) return;
-
-		for (int vi = 1; vi < variants.Size(); ++vi)
+		if (variants.Size() < 2) return;
+		if (savedOrder(slot, variants)) return;
+		if (!mFansEnabled) return;
+		Array<int> at;
+		for (int i = 0; i < variants.Size(); ++i) at.Push(usedAt(variants[i]));
+		for (int i = 1; i < variants.Size(); ++i)    // stable insertion sort, newest first
 		{
-			if (variants[vi] == mLastPicked[slot])
+			Class<Weapon> c = variants[i];
+			int t = at[i];
+			int j = i - 1;
+			while (j >= 0 && at[j] < t) { variants[j + 1] = variants[j]; at[j + 1] = at[j]; j--; }
+			variants[j + 1] = c;
+			at[j + 1] = t;
+		}
+	}
+
+	// WH4: every tic, the guns in the hands are stamped as used now.
+	private void stampUse()
+	{
+		let p = players[consoleplayer];
+		for (int h = 0; h < 2; ++h)
+		{
+			let w = (h == 1) ? p.OffhandWeapon : p.ReadyWeapon;
+			if (!w) continue;
+			Class<Weapon> c = w.GetClass();
+			int i = 0;
+			while (i < mUseCls.Size() && mUseCls[i] != c) i++;
+			if (i == mUseCls.Size()) { mUseCls.Push(c); mUseAt.Push(level.totaltime); }
+			else mUseAt[i] = level.totaltime;
+		}
+	}
+
+	private int usedAt(Class<Weapon> c) const
+	{
+		for (int i = 0; i < mUseCls.Size(); ++i) if (mUseCls[i] == c) return mUseAt[i];
+		return -1;
+	}
+
+	// WH7: wr_slot_order holds each arranged slot as "slot:Class,Class,...;" (class names, first = the slot's card).
+	static clearscope string slotOrderStr()
+	{
+		let c = CVar.FindCVar("wr_slot_order");
+		return c ? c.GetString() : "";
+	}
+
+	private static bool slotOrderOf(int slot, out Array<String> names)
+	{
+		names.Clear();
+		Array<String> parts;
+		slotOrderStr().Split(parts, ";", TOK_SKIPEMPTY);
+		for (int i = 0; i < parts.Size(); ++i)
+		{
+			Array<String> kv;
+			parts[i].Split(kv, ":");
+			if (kv.Size() == 2 && kv[0].ToInt() == slot)
 			{
-				Class<Weapon> tmp = variants[0];
-				variants[0] = variants[vi];
-				variants[vi] = tmp;
-				break;
+				kv[1].Split(names, ",", TOK_SKIPEMPTY);
+				return names.Size() > 0;
 			}
 		}
+		return false;
+	}
+
+	// the saved order applied: named guns first, in their saved order; any gun picked up since keeps slot order after
+	private bool savedOrder(int slot, in out Array<Class<Weapon> > v)
+	{
+		Array<String> names;
+		if (!slotOrderOf(slot, names)) return false;
+		Array<Class<Weapon> > res;
+		for (int n = 0; n < names.Size(); ++n)
+		{
+			for (int i = 0; i < v.Size(); ++i)
+			{
+				if (!v[i]) continue;
+				string cn = v[i].GetClassName();
+				if (cn ~== names[n]) { res.Push(v[i]); v[i] = null; break; }
+			}
+		}
+		for (int i = 0; i < v.Size(); ++i) if (v[i]) res.Push(v[i]);
+		v.Move(res);
+		return true;
+	}
+
+	private static void saveSlotOrder(int slot, Array<Class<Weapon> > v)
+	{
+		Array<String> parts;
+		slotOrderStr().Split(parts, ";", TOK_SKIPEMPTY);
+		string res = "";
+		for (int i = 0; i < parts.Size(); ++i)
+		{
+			Array<String> kv;
+			parts[i].Split(kv, ":");
+			if (kv.Size() == 2 && kv[0].ToInt() == slot) continue;
+			res = res .. parts[i] .. ";";
+		}
+		res = res .. slot .. ":";
+		for (int i = 0; i < v.Size(); ++i) res = res .. (i ? "," : "") .. v[i].GetClassName();
+		res = res .. ";";
+		let c = CVar.FindCVar("wr_slot_order");
+		if (c) c.SetString(res);
+	}
+
+	// WH7, every tic of a drag: over another fan card, the held gun takes that card's place (the fan is rebuilt in the
+	// new order at once, so the gun moves under the hand).
+	private void tickDrag(PlayerPawn pmo)
+	{
+		if (mExpanded < 0) { mDragging = false; return; }
+		int to = subIndexOf(mHovered);
+		if (to < 0 || to >= mSubTypes.Size() || mSubTypes[to] == mDragType) return;
+		dragTo(pmo, to + 1);
+		mDragMoved = true;
+	}
+
+	// WH7: the held gun to place `place` of its slot (0 = the slot's own card), saved; what shows it is rebuilt.
+	private void dragTo(PlayerPawn pmo, int place)
+	{
+		int ci = mExpanded;
+		if (ci < 0 || ci >= mCardSlots.Size() || ci >= mTypes.Size()) return;
+		int slot = mCardSlots[ci];
+		Array<Class<Weapon> > v;
+		v.Push((class<Weapon>)(mTypes[ci]));
+		for (int i = 0; i < mSubTypes.Size(); ++i) v.Push(mSubTypes[i]);
+		int from = -1;
+		for (int i = 0; i < v.Size(); ++i) if (v[i] == mDragType) from = i;
+		if (from < 0) return;
+		v.Delete(from);
+		place = clamp(place, 0, v.Size());
+		v.Insert(place, mDragType);
+		saveSlotOrder(slot, v);
+		if (cvBool("wr_debug", false)) Console.Printf("RSQ Wheel: %s to place %d of slot %d", mDragType.GetClassName(), place + 1, slot);
+		mFanQuiet = true;
+		if (place == 0) rebuildPage(pmo);   // the slot's card changes face
+		expandSlot(pmo, ci);
+		mFanQuiet = false;
+		feedback(Sound("wristrig/tick"), 0.25, 30);
 	}
 
 	// Fans a slot's other weapons out of its card.
@@ -3615,7 +3905,7 @@ class wr_Rig : EventHandler
 		// sitting on it. faceYaw matches layout()'s own formula
 		// (viewYaw + 180) since this fires before that tic's layout() has
 		// run and there is nothing else here to read it from.
-		if (cvBool("wr_flash", true))
+		if (cvBool("wr_flash", true) && !mFanQuiet)
 		{
 			wr_BB.AddBillboard(cardPos(cardIndex), panelWNow() * 1.15, panelHNow() * 1.15,
 				pmo.angle + 180, PANEL_TILT, wr_BB.BBF_FIXED,
@@ -3857,7 +4147,7 @@ class wr_Rig : EventHandler
 		// Unfold. Same declaration-not-a-state-machine deal as the ring.
 		mFanTics = 0;
 		int fanTics = int(cv("wr_growtics", 6.0));
-		if (fanTics > 0 && mSubIds.Size() > 0)
+		if (fanTics > 0 && mSubIds.Size() > 0 && !mFanQuiet)
 		{
 			wr_BB.AnimateBillboardGroup(mFanGroup, 0.0, 1.0, fanTics);
 		}
@@ -4510,6 +4800,21 @@ class wr_Rig : EventHandler
 	// At eight it lands on the same compass bearings as before -- 135 for the
 	// first, 45 degrees apart, clockwise -- so nothing about the feel changes at
 	// the count you have been testing.
+	// RSQ WH6: the ring card of the gun this hand holds (its own card, or its slot's when the slot is collapsed)
+	private int heldCardIndex(PlayerPawn pmo) const
+	{
+		let held = (mRigHand == 1) ? pmo.player.OffhandWeapon : pmo.player.ReadyWeapon;
+		if (!held) return -1;
+		for (int i = 0; i < mTypes.Size(); ++i) if (mTypes[i] == held.GetClass()) return i;
+		let slots = pmo.player.weapons;
+		if (!slots) return -1;
+		bool found; int slot, idx;
+		[found, slot, idx] = slots.LocateWeapon(held.GetClass());
+		if (!found) return -1;
+		for (int i = 0; i < mCardSlots.Size(); ++i) if (mCardSlots[i] == slot) return i;
+		return -1;
+	}
+
 	private static double bearingForIndex(int i, int count)
 	{
 		if (count < 1) count = 1;
@@ -5909,6 +6214,7 @@ class wr_Rig : EventHandler
 			if (mTouchReach < 0.0) mTouchReach = 0.0;
 			mAnchorYaw  = pmo.angle;
 			mHaveAnchor = true;
+			mCentrePending = cvBool("wr_centre_held", false);   // RSQ WH6
 
 			// A wall the FORWARD ray can't see: one straight ahead of the
 			// hand says nothing about a corner immediately to the player's
@@ -6113,6 +6419,22 @@ class wr_Rig : EventHandler
 		// Published for RingClearance() -- anything parking beside the
 		// ring needs the count-grown extent, not the tuned base value.
 		mLastRingR = ringR;
+
+		// RSQ WH6 (owner's QoL pick, an option): the ring opens with the card of the gun this hand holds where the hand
+		// points, so the hand starts on it. Once per anchoring (the ring's radius is known from here); the ring then
+		// stays put as always.
+		if (mCentrePending)
+		{
+			mCentrePending = false;
+			int hc = heldCardIndex(pmo);
+			if (hc >= 0)
+			{
+				double hb = bearingForIndex(hc, ringCount) + handRoll;
+				mAnchor -= viewRight * (cos(hb) * ringR) + (0, 0, sin(hb) * ringR + rise);
+				wrist = mAnchor;
+				if (cvBool("wr_debug", false)) Console.Printf("RSQ Wheel: opened centred on card %d (bearing %.0f, radius %.1f)", hc, hb, ringR);
+			}
+		}
 
 		Vector3 eye = pmo.Pos + (0, 0, pmo.player.viewheight);
 
@@ -7633,6 +7955,7 @@ class wr_Rig : EventHandler
 
 	override void WorldTick()
 	{
+		stampUse();   // RSQ WH4
 
 		if (mWantAutoOpen)
 		{
@@ -7893,6 +8216,7 @@ class wr_Rig : EventHandler
 		}
 
 		updateHover(hit);
+		if (mDragging) tickDrag(pmo);   // RSQ WH7
 		tickTwoHand(pmo);   // RSQ: a card under each hand -> the two side by side
 		if (!mOpen) return;
 		tickPhysical(pmo);  // RSQ: pull a card out of the ring, throw a gun back into it
@@ -9241,6 +9565,15 @@ class wr_Rig : EventHandler
 
 		let weap = Weapon(pmo.FindInventory(want));
 		if (weap == null) { closeRig(); return; }
+
+		// RSQ WH5 (owner's QoL pick): a gun with no ammo at all is not taken. Doom's dry click, and this hand keeps
+		// the gun it has. (Empty magazine with a reserve behind it is still taken, with the dry-pick sound below.)
+		if (noAmmo(weap))
+		{
+			dryClick(weap);
+			closeRig(true);
+			return;
+		}
 
 		// PICKING THE GUN YOUR OTHER HAND IS ALREADY HOLDING.
 		//

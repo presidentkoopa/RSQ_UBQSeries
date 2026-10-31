@@ -21,7 +21,15 @@ The ring only. REMA's honeycomb and star chart stay in REMA.
 - **Pull a card out.** Put a hand into a card and snap it back toward you: the gun comes with it.
 - **Throw a gun back.** Snap the hand holding a gun toward the ring (not at a card): it files
   itself away and that hand takes its empty-hand weapon (slot 1, or BD22 VR's off-hand fist).
-- **Fan:** rest on a card that holds several guns, or press Use on it.
+- **Fan:** rest on a card that holds several guns, or press Use on it. The card shows the gun you used last and
+  the fan the rest, last used first.
+- **Arrange a slot:** hold the trigger on a fan card and move onto another place in the fan (or onto the slot's
+  card) and let go: that gun keeps that place in its slot (saved in `wr_slot_order`). Let go without moving: picked.
+- **One hand on each card** when you let go of the button: each hand takes its own gun.
+- **A gun with no ammo at all** is not taken: Brutal Doom's dry click (Doom's switch click without BD), and the hand
+  keeps its gun.
+- **Sheet:** names the other guns you carry on the same ammo (SHARES). Options: *Open on the Gun You Hold*
+  (Picking), *Kills and Accuracy This Level* (Data Sheet).
 - **Sheet:** with ModelSwapper's shelf, the trigger on the sheet swaps to the Models page.
 - **The wrist card.** Bring a forearm up across your chest as if checking a watch: that hand's gun
   shows its card over the wrist -- rounds, reserve, kills and hit rate, Gun Bonsai level.

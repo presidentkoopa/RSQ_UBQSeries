@@ -1,0 +1,12 @@
+// TEST ONLY: the QoL probe's script settings (zscript.txt)
+server noarchive int    wq_mode = 0;
+server noarchive int    wq_log = 1;
+server noarchive int    wq_ysign = 0;
+server noarchive int    wq_psign = 0;
+server noarchive string wq_gun_a = "";
+server noarchive string wq_gun_b = "";
+server noarchive string wq_gun_dry = "";
+server noarchive int    wq_slot_a = 0;
+server noarchive int    wq_slot_b = 0;
+server noarchive int    wq_slot_dry = 0;
+server noarchive int    wq_fan_slot = 0;
