@@ -416,6 +416,7 @@ class UBQS_SaberBase : Weapon abstract
 	int  burnQuiet, swingQuiet, flashTics;
 	bool humming;
 	private Vector3 lastTip, lastBase;
+	private Vector3 lastPom;  // the pommel a tic ago: the second blade's base, so its sweep has its own arc
 	// THE BLADE AS IT WAS A FULL TIC AGO. lastBase/lastTip are overwritten at the end of DoEffect,
 	// and the engine runs every P_PlayerThink before WorldTick and before RunThinkers, so by the
 	// time a monster fires they already hold THIS tic's blade -- the muzzle stop had nothing left
@@ -803,13 +804,18 @@ class UBQS_SaberBase : Weapon abstract
 	// you out of your own rumble.
 	//
 	// strength is 0..3 before ubqs_haptic_power. Every haptic in the saber now comes through here.
-	void Rumble(double strength, int tics)
+	// twice: a DOUBLE KNOCK (pick 3; apply/03 §2.5: the amplitude saturates at 1.0, so a parry or a clash
+	// could never be told from a hard cut by strength). On, a gap, on again -- the knock-knock RSQ_ShieldSaw
+	// gives a perfect block (its SSQ_Buzzer `twice`), the same idea here with nothing linked.
+	int knockQuiet;   // the clash's double knock plays out before the lock's own buzz resumes
+	void Rumble(double strength, int tics, bool twice = false)
 	{
 		if (!owner || !owner.player || !UInt("ubqs_haptics", 1)) return;
 		double k = strength * clamp(UF("ubqs_haptic_power", 1.0), 0.0, 3.0);
 		if (k <= 0.01) return;
-		UBQS_Buzzer.Start(owner, bOffhandWeapon, k, tics);
+		UBQS_Buzzer.Start(owner, bOffhandWeapon, k, tics, twice);
 	}
+	const KNOCK_TICS = 10;   // 4 on, 3 off, 3 on: the shield's shape
 	void ClearLocks()
 	{
 		locks.Clear();
@@ -1216,6 +1222,7 @@ class UBQS_SaberBase : Weapon abstract
 			BladeGlowOff();
 			lastTip = tip;
 			lastBase = hand;
+			lastPom = pom;
 			// THE SWING HISTORY IS FORGOTTEN ACROSS THE TWIRL. A twirl frame's blade points along Up() 90
 			// and frame 0's along Up() 50, so the tic the twirl ENDS measures a ~19 unit tip jump out of a
 			// 40 degree frame change and handed CutAlong a free full-damage swing for no swing at all.
@@ -1259,6 +1266,7 @@ class UBQS_SaberBase : Weapon abstract
 		prevTip = lastTip; prevBase = lastBase; prevOk = lastOk;
 		lastTip = tip;
 		lastBase = hand;
+		lastPom = pom;
 		lastOk = true;
 		Lights(true);
 		BladeGlow(hand, dir, len, pom);
@@ -1861,10 +1869,63 @@ class UBQS_SaberBase : Weapon abstract
 		Vector3 sw = lastOk ? (((hand + dir * len) - lastTip) - bodyStep) : (0, 0, 0);
 		if (sw.Length() < 0.01) sw = dir;
 		sw = sw.Unit();
-		CutLine(hand, dir, len, speed, sw);
-		if (back) CutLine(Pommel(), -dir, len, speed, sw);
+		CutLine(hand, dir, len, speed, sw, false);
+		if (back) CutLine(Pommel(), -dir, len, speed, sw, true);
 	}
-	private void CutLine(Vector3 base, Vector3 dir, double len, double speed, Vector3 sw)
+	// THE BLADE BETWEEN TWO TICS IS AN ARC, NOT A CHORD (Quest teardown apply/03 §2.2, surveys/01_MELEE §3.5).
+	// The blade turns about the wrist, so its tip travels a circle; a straight lerp of base and tip cuts
+	// across inside it, by len * (1 - cos(theta/2)) -- 12 units for a 90-unit blade turning 60 degrees in a
+	// tic, against a pad of 3 -- and a body sitting mid-arc fell between every sample. So the DIRECTION is
+	// turned on the great circle from last tic's to this tic's (the shortest arc), the base slides, and the
+	// tic is cut into steps of at most 15 degrees (at most 0.8 units of bulge on a 90-unit blade), 2 to 8.
+	const ARC_STEP = 15.0;
+	static Vector3 ArcDir(Vector3 a, Vector3 b, double theta, double f)
+	{
+		if (theta < 0.5 || theta > 179.0)
+		{
+			Vector3 l = a + (b - a) * f;
+			return l.Length() > 0.001 ? l.Unit() : b;
+		}
+		return (a * sin((1.0 - f) * theta) + b * sin(f * theta)) / sin(theta);
+	}
+	// Does the blade, swept from (pb, d0, len0) to (base, d1, len) through n steps, touch mo? The nearest
+	// step to now is tried first and the first that touches wins, as before. Returns that step's fraction of
+	// the tic (0 a tic ago, 1 now), or -1 for no touch; the caller rebuilds the step from it with ArcStep (the
+	// VM cannot hand vectors back through `out`: "REGT_ADDROF not implemented for vectors", rig 2026-10-31).
+	private double SweptTouch(Actor mo, Vector3 pb, Vector3 d0, double len0, Vector3 base, Vector3 d1, double len,
+		double theta, int n, double pad)
+	{
+		Vector3 target = (mo.pos.xy, mo.pos.z + mo.height * 0.5);
+		for (int sk = n; sk >= 0; sk--)
+		{
+			double f = sk / double(n);
+			Vector3 sb = pb + (base - pb) * f;
+			Vector3 sblade = ArcDir(d0, d1, theta, f) * (len0 + (len - len0) * f);
+			double slen2 = sblade dot sblade;
+			if (slen2 < 1.0) continue;
+			Vector3 sc = level.Vec3Diff(sb, target);
+			double st = clamp((sc dot sblade) / slen2, 0.0, 1.0);
+			Vector3 sgap = sc - sblade * st;
+			if ((sgap.xy).Length() > mo.radius + pad || abs(sgap.z) > mo.height * 0.5 + pad) continue;
+			return f;
+		}
+		return -1;
+	}
+	// A STAB (pick 4; apply/03 §2.7: "deeper single-target damage, no shove, no arc"): the hand this tic moved
+	// within STAB_CONE degrees of the blade's own line, and the blade turned less than that. It meets the first body along the blade and only that
+	// one, for STAB_MULT the damage, and does not throw it. Slashes are untouched.
+	const STAB_CONE = 30.0;
+	const STAB_MULT = 1.5;
+	// may this be cut at all right now (the cut's own filters, and the per-victim cooldown ubqs_cut_rate)
+	private bool CutCandidate(Actor mo, int rate)
+	{
+		if (!mo || mo == owner || !mo.bShootable || mo.health <= 0) return false;
+		if (mo.bFriendly && owner.player) return false;
+		if (mo.player && !deathmatch) return false;
+		int i = cutWho.Find(mo);
+		return !(i < cutWho.Size() && level.maptime - cutWhen[i] < rate);
+	}
+	private void CutLine(Vector3 base, Vector3 dir, double len, double speed, Vector3 sw, bool rear)
 	{
 		if (len < 1) return;
 		Vector3 mid = base + dir * (len * 0.5);
@@ -1889,52 +1950,74 @@ class UBQS_SaberBase : Weapon abstract
 		bool   cutAny = false;
 		bool   ripe = uRiposte > 0 && level.maptime <= primedUntil;
 		double um = UpgCutMult(ripe);
+		int    hstop = clamp(UInt("ubqs_hitstop", 0), 0, 10);   // pick 2, off by default (01_MELEE §3.6)
+		// THE BLADE WALKED THROUGH THE TIC, not tested where it happens to be now. A 90-unit blade crosses a
+		// 20-radius imp in well under a tic on a hard swing, so both samples could sit either side of the body
+		// and the swing passed clean through it -- the harder you swung, the more it missed. Deflect() has
+		// swept for missiles all along and says why; the cut never did, and cutPath only papered over the slow
+		// cases. Where the blade was through this tic, along its ARC (SweptTouch), nearest first contact wins.
+		// cutWho/cutWhen already stop this multiplying the damage. The second blade sweeps from the pommel.
+		Vector3 pb = base, d0 = dir;
+		double len0 = len;
+		if (lastOk)
+		{
+			Vector3 lb = lastTip - lastBase;
+			double ll = lb.Length();
+			if (ll > 0.5)
+			{
+				d0 = rear ? -(lb / ll) : lb / ll;
+				len0 = ll;
+				pb = rear ? lastPom : lastBase;
+			}
+		}
+		double theta = acos(clamp(d0 dot dir, -1.0, 1.0));
+		int nArc = clamp(int(ceil(theta / ARC_STEP)), 2, 8);
+		// A stab is the HAND driving along the blade with the blade not turning: the tip's chord alone cannot
+		// say, since a 120-degree flick moves the tip within 30 degrees of the blade's end direction (rig).
+		Vector3 hstep = (base - pb) - bodyStep;
+		double hlen = hstep.Length();
+		bool stab = lastOk && theta < STAB_CONE && hlen > 0.5 && (hstep dot dir) >= cos(STAB_CONE) * hlen;
+		Actor stabWho = null;
 		let it = BlockThingsIterator.CreateFromPos(mid.x, mid.y, mid.z - reach, reach * 2.0, reach, false);
+		if (stab)
+		{
+			// the first body along the blade: the point reaches it before anything further out
+			double nearest = 1e9;
+			while (it.Next())
+			{
+				Actor mo = it.thing;
+				if (!CutCandidate(mo, rate)) continue;
+				double sf = SweptTouch(mo, pb, d0, len0, base, dir, len, theta, nArc, pad);
+				if (sf < 0) continue;
+				if (los && !owner.CheckSight(mo, SF_IGNOREVISIBILITY)) continue;
+				Vector3 sb = pb + (base - pb) * sf;
+				Vector3 sbu = ArcDir(d0, dir, theta, sf);
+				double along = max(0.0, level.Vec3Diff(sb, (mo.pos.xy, mo.pos.z + mo.height * 0.5)) dot sbu);
+				if (along < nearest) { nearest = along; stabWho = mo; }
+			}
+			if (!stabWho) return;
+			it = BlockThingsIterator.CreateFromPos(mid.x, mid.y, mid.z - reach, reach * 2.0, reach, false);
+		}
+		Vector3 base0 = base;
 		while (it.Next())
 		{
 			Actor mo = it.thing;
-			if (!mo || mo == owner || !mo.bShootable || mo.health <= 0) continue;
-			if (mo.bFriendly && owner.player) continue;
-			if (mo.player && !deathmatch) continue;
+			if (!CutCandidate(mo, rate)) continue;
+			if (stab && mo != stabWho) continue;
 			int i = cutWho.Find(mo);
-			if (i < cutWho.Size() && level.maptime - cutWhen[i] < rate) continue;
-			// THE BLADE WALKED THROUGH THE TIC, not tested where it happens to be now. A 90-unit blade
-			// crosses a 20-radius imp in well under a tic on a hard swing, so both samples could sit
-			// either side of the body and the swing passed clean through it -- the harder you swung, the
-			// more it missed. Deflect() has swept for missiles all along and says why; the cut never did,
-			// and cutPath only papered over the slow cases. Three places the blade was this tic, nearest
-			// first contact wins. cutWho/cutWhen already stop this multiplying the damage.
-			Vector3 pb = lastOk ? lastBase : base;
-			Vector3 pt = lastOk ? lastTip : base + dir * len;
-			Vector3 target = (mo.pos.xy, mo.pos.z + mo.height * 0.5);
-			Vector3 c = (0, 0, 0), blade = dir * len, gap = (0, 0, 0);
-			double t = 0;
-			bool touched = false;
-			for (int sk = 2; sk >= 0 && !touched; sk--)
-			{
-				double f = sk * 0.5;
-				Vector3 sb = pb + (base - pb) * f;
-				Vector3 se = pt + ((base + dir * len) - pt) * f;
-				Vector3 sblade = se - sb;
-				double slen2 = sblade dot sblade;
-				if (slen2 < 1.0) continue;
-				Vector3 sc = level.Vec3Diff(sb, target);
-				double st = clamp((sc dot sblade) / slen2, 0.0, 1.0);
-				Vector3 sgap = sc - sblade * st;
-				if ((sgap.xy).Length() > mo.radius + pad || abs(sgap.z) > mo.height * 0.5 + pad) continue;
-				// this sample touched: everything below works from it
-				base = sb; blade = sblade; c = sc; t = st; gap = sgap;
-				touched = true;
-			}
-			if (!touched) continue;
+			double hf = SweptTouch(mo, pb, d0, len0, base0, dir, len, theta, nArc, pad);
+			if (hf < 0) continue;
+			// the step that touched: everything below works from it
+			base = pb + (base0 - pb) * hf;
+			Vector3 blade = ArcDir(d0, dir, theta, hf) * (len0 + (len - len0) * hf);
+			double t = clamp((level.Vec3Diff(base, (mo.pos.xy, mo.pos.z + mo.height * 0.5)) dot blade) / max(blade dot blade, 1.0), 0.0, 1.0);
 			// NOT THROUGH THE WALL. The iterator box is nearly 100 units across and nothing here ever
 			// asked whether the blade could reach what it found, so a swing near a thin wall or a closed
 			// door killed what was behind it. Paint() and GazeTarget() have always used this exact test;
 			// only the cut never got it. Last of the per-victim tests, so it costs a sight check only for
 			// something the blade geometrically touched.
-			if (los && !owner.CheckSight(mo, SF_IGNOREVISIBILITY)) continue;
-			int dmg = int(dmg0 * mult * um);
-			// THE EFFECTS GO INSIDE THE BODY. `at` is the closest point on the blade, and the gate above
+			if (!stab && los && !owner.CheckSight(mo, SF_IGNOREVISIBILITY)) continue;   // (a stab's one was checked)
+			int dmg = int(dmg0 * mult * um * (stab ? STAB_MULT : 1.0));			// THE EFFECTS GO INSIDE THE BODY. `at` is the closest point on the blade, and the gate above
 			// allows a full radius plus ubqs_cut_pad of slack -- so on every cut that only just qualified,
 			// the flash, the spark burst and the smoke appeared in mid-air BESIDE the monster. Clamped
 			// laterally into the body and into its height, the way BD22's own cut does it.
@@ -1946,6 +2029,10 @@ class UBQS_SaberBase : Weapon abstract
 			at.z = clamp(at.z, mo.pos.z + 1.0, mo.pos.z + mo.height - 1.0);
 			CutFx(at, dir, mo, dmg);
 			mo.DamageMobj(self, owner, dmg, 'Saber', DMG_THRUSTLESS);
+			// HIT-STOP (pick 2, ubqs_hitstop, off by default): what was cut freezes for a beat. freezetics stops
+			// its Tick outright, moves and states both (surveys/01_MELEE §3.6: 3 a tap, 4 the default, 6 heavy).
+			// Never on a player: their hands run outside the playsim.
+			if (hstop > 0 && mo && !mo.bDestroyed && !mo.player && mo.health > 0) mo.freezetics = max(mo.freezetics, hstop);
 			// ...AND IT MOVES WHAT IT CUT. The engine's own thrust cannot be used: the inflictor is this
 			// Weapon item, which has no position of its own, which is what DMG_THRUSTLESS is for. So the
 			// shove is ours, along the arc, scaled by the victim's MASS (an imp is 100, a Cyberdemon 1000)
@@ -1953,7 +2040,7 @@ class UBQS_SaberBase : Weapon abstract
 			// stagger instead of a slide: a Doom monster off the floor cannot change direction.
 			// Mass 0x7FFFFFFF is how Champions says immovable (its Bronze champion, the Undying heart):
 			// the 0.08 floor below still slid it.
-			if (mo && !mo.bDestroyed && shove > 0.01 && !mo.bDontThrust && !mo.bNoDamageThrust && mo.mass < 0x7FFFFFFF)
+			if (!stab && mo && !mo.bDestroyed && shove > 0.01 && !mo.bDontThrust && !mo.bNoDamageThrust && mo.mass < 0x7FFFFFFF)
 			{
 				double kk = shove * 5.0 * clamp(100.0 / max(mo.mass, 1.0), 0.08, 2.0) * mult;
 				mo.vel += sw * kk;
@@ -2413,7 +2500,16 @@ class UBQS_SaberBase : Weapon abstract
 		if (loud)
 		{
 			UBQS_Ping.At(owner, at, UBQS_Font.Clash(), UF("ubqs_vol_clash", 1.0), pg > 1.01 ? 1.25 : 1.0);
-			Rumble(0.8 * pg, pg > 1.01 ? 5 : 3);
+			// a parry KNOCKS TWICE at a cut's strength; a plain block stays one short buzz (was 0.8 x pg for 5 tics,
+			// a stronger buzz the controller clipped to the same 1.0 as a cut)
+			if (pg > 1.01) Rumble(0.9, KNOCK_TICS, true);
+			else Rumble(0.8, 3);
+			// PERFECT-PARRY SLOW MOTION (pick 5, ubqs_parry_slowmo, off by default): half a second through RSQ
+			// SlowMo's own door, `rsm_pulse <hold ms> <depth %>` (SlowMo clock.zs:29, :176; apply/05 §8), at the
+			// depth RS_Score's big moment uses (35%). Without SlowMo nothing hears it. Sent from the parrying
+			// player's machine only, as Score does, so a netgame gets one pulse, not one per machine.
+			if (pg > 1.01 && UInt("ubqs_parry_slowmo", 0) != 0 && owner.player == players[consoleplayer])
+				EventHandler.SendNetworkEvent("rsm_pulse", 500, 35);
 		}
 		UBQS_Data.Sparks(at, back, RgbNow(), int(10 * pg));
 		FlashAt(at, 64 * pg, 4);
@@ -2751,7 +2847,9 @@ class UBQS_SaberBase : Weapon abstract
 			}
 			glowPop = 0.8 + 0.4 * hard;
 			LockGlow(at, o.RgbNow());
-			if (buzzk) Rumble(1.2, 3);
+			// the clash KNOCKS TWICE (pick 3), and the lock's buzz below waits for it to finish, or its every-
+			// other-tic pulses would fill the gap and make it one long buzz again
+			if (buzzk) { Rumble(0.9, KNOCK_TICS, true); knockQuiet = level.maptime + KNOCK_TICS; }
 			return;
 		}
 		LockGlow(at, o.RgbNow());
@@ -2765,7 +2863,7 @@ class UBQS_SaberBase : Weapon abstract
 			if (cfx > 0.01 && spark) UBQS_Data.Sparks(at, (0, 0, 1), 0xFFFFFF, int(4 * cfx));
 			double lrad = frandom[UBQSFx](50, 96);
 			if (cfx > 0.01) FlashAt(at, lrad * cfx, 2);
-			if (buzzk) Rumble(1.2, 3);
+			if (buzzk && level.maptime >= knockQuiet) Rumble(1.2, 3);
 		}
 		if (level.maptime >= nextSnap)
 		{
@@ -3225,11 +3323,13 @@ class UBQS_Buzzer : Actor
 	bool left;
 	double amp;
 	int total, left_tics;
+	bool twice;       // knock-knock: on for 4 tics, off for 3, on again, both knocks at full amplitude
+	double lastA;     // the controller amplitude this tic asked for (0 in the gap): what a log can read
 	Default { +NOINTERACTION +NOBLOCKMAP +NOSECTOR +NOGRAVITY +DONTSPLASH +NOTONAUTOMAP RenderStyle "None"; }
 
 	// k is the old 0..9 strength scale's input (strength x power, 0..3 and beyond); the controller
 	// amplitude is k x 0.85, so the clash (1.2) is full and the cut (0.9) just under.
-	static void Start(Actor who, bool offhand, double k, int tics)
+	static void Start(Actor who, bool offhand, double k, int tics, bool twice = false)
 	{
 		if (!who || !who.player) return;
 		// WHICH CONTROLLER. ubqs_lefty is userinfo, the same answer on every machine. Left at -1 (unset) in
@@ -3250,6 +3350,7 @@ class UBQS_Buzzer : Actor
 		q.amp = clamp(k * 0.85, 0.12, 1.0);
 		q.total = clamp(tics, 1, 16);
 		q.left_tics = q.total;
+		q.twice = twice;
 		// NOT pulsed here: an actor spawned this tic is ticked later in this same tic (the
 		// fresh-thinker pass), and pulsing twice would stack two quakes on the first frame.
 	}
@@ -3258,6 +3359,12 @@ class UBQS_Buzzer : Actor
 	{
 		if (left_tics <= 0) return;
 		double a = amp * left_tics / double(total) / 3.2;
+		if (twice)
+		{
+			int k = total - left_tics;
+			a = (k >= 4 && k < 7) ? 0.0 : amp / 3.2;
+		}
+		lastA = a * 3.2;
 		left_tics--;
 		A_QuakeEx(left ? a : 0.0, left ? 0.0 : a, 0, 2, 0, 8, "", QF_WAVE, 17.5, 17.5, 1);
 	}

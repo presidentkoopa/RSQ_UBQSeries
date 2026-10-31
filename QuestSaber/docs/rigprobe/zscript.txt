@@ -1,0 +1,100 @@
+version "4.12"
+// TEST ONLY, never shipped (docs/ stays out of RSQ_Saber.pk3). Load after RSQ_Saber.pk3.
+// Build: cd QuestSaber/docs/rigprobe && zip -qr <scratch>/sbp.pk3 .
+//
+// T_BLADE  every tic: the main saber's base, tip, length, frame, and how far the blade turned since last tic
+// T_CUT    every saber hit: which imp, damage; T_SHOVE its velocity the tic after (the cut's shove)
+// T_BUZZ   every tic a UBQS_Buzzer is alive: amplitude asked for this tic, double knock or not, tics left
+// sbp_mx/sbp_my (map units, non-zero), sbp_mz (feet height, -1 = floor): an imp held there (health kept up)
+// sbp_m2dz (non-zero): a second imp at the same spot that many units higher (two bodies on one blade)
+// sbp_fire N: every N tics a hitscan from 200 units out, straight through the blade's middle
+class SBP_Shooter : Actor
+{
+	Default { +NOBLOCKMAP +NOGRAVITY Height 56; Radius 20; }
+	States { Spawn: TNT1 A -1; Stop; }
+}
+class SBP_Probe : EventHandler
+{
+	Actor mon, mon2; Vector3 monAt, mon2At; Vector3 lastDir; bool dirOk;
+	int cut1, cut2;
+	double F(String n) { let c = CVar.FindCVar(n); return c ? c.GetFloat() : 0; }
+	override void WorldThingDamaged(WorldEvent e)
+	{
+		if (e.DamageType != 'Saber' || !e.Thing) return;
+		String who = e.Thing.GetClassName();
+		if (e.Thing == mon) who = "imp1";
+		if (e.Thing == mon2) who = "imp2";
+		Console.Printf("T_CUT t%d %s dmg %d", level.maptime, who, e.Damage);
+		if (e.Thing == mon) cut1 = level.maptime;
+		if (e.Thing == mon2) cut2 = level.maptime;
+	}
+	void Hold(Actor m, Vector3 at, int cutTic, String who)
+	{
+		if (!m) return;
+		if (cutTic > 0 && level.maptime - cutTic <= 1)
+			Console.Printf("T_SHOVE t%d %s vel %.2f %.2f %.2f freezetics %d", level.maptime, who, m.vel.x, m.vel.y, m.vel.z, m.freezetics);
+		m.SetOrigin(at, false); m.vel = (0, 0, 0);
+		if (m.health > 0 && m.health < 1000) m.health = 1000;
+	}
+	override void WorldTick()
+	{
+		let p = players[consoleplayer];
+		if (!p || !p.mo) return;
+		let sb = UBQS_SaberBase(p.ReadyWeapon);
+		Vector3 base, dir, mid;
+		double len = 0;
+		if (sb && level.maptime >= 20)
+		{
+			base = sb.BladeBase(); dir = sb.BladeDir(); len = sb.BladeLen();
+			mid = base + dir * (len * 0.5);
+			double turn = dirOk ? acos(clamp(dir dot lastDir, -1.0, 1.0)) : 0;
+			Vector3 tip = base + dir * len;
+			Console.Printf("T_BLADE t%d base %.1f %.1f %.1f tip %.1f %.1f %.1f len %.1f frame %d turned %.1f", level.maptime, base.x, base.y, base.z, tip.x, tip.y, tip.z, len, sb.frameNow, turn);
+			lastDir = dir; dirOk = true;
+		}
+		// the held imps
+		double mx = F("sbp_mx"), my = F("sbp_my");
+		if ((mx != 0 || my != 0) && !mon && level.maptime == 40)
+		{
+			mon = Actor.Spawn("DoomImp", (mx, my, 0));
+			if (mon) { double mz = F("sbp_mz"); mon.SetOrigin((mx, my, mz >= 0 ? mz : mon.floorz), false); mon.bNOGRAVITY = true; monAt = mon.pos; mon.angle = mon.AngleTo(p.mo); Console.Printf("T_MON %s at %.1f %.1f %.1f r %.1f h %.1f", mon.GetClassName(), mon.pos.x, mon.pos.y, mon.pos.z, mon.radius, mon.height); }
+		}
+		double m2 = F("sbp_m2dz");
+		if (mon && !mon2 && m2 != 0 && level.maptime == 41)
+		{
+			mon2 = Actor.Spawn("DoomImp", monAt + (0, 0, m2));
+			if (mon2) { mon2.bNOGRAVITY = true; mon2.SetOrigin(monAt + (0, 0, m2), false); mon2At = mon2.pos; Console.Printf("T_MON2 at %.1f %.1f %.1f", mon2.pos.x, mon2.pos.y, mon2.pos.z); }
+		}
+		Hold(mon, monAt, cut1, "imp1");
+		Hold(mon2, mon2At, cut2, "imp2");
+		// hitscan through the blade
+		int every = int(F("sbp_fire"));
+		if (every > 0 && sb && len > 1 && level.maptime >= 60 && level.maptime % every == 0)
+		{
+			Vector3 pm = (p.mo.pos.xy, p.mo.pos.z + p.mo.height * 0.5);
+			Vector2 u = (mid.xy - pm.xy).Unit();
+			Vector3 muzzle = (mid.xy + u * 200, mid.z);
+			let sh = Actor.Spawn("SBP_Shooter", (muzzle.xy, muzzle.z - 28 - 8));
+			if (sh)
+			{
+				Vector3 d = mid - muzzle;
+				sh.LineAttack(VectorAngle(d.x, d.y), 400, -atan2(d.z, d.xy.Length()), 3, 'Hitscan', "BulletPuff");
+				sh.Destroy();
+				Console.Printf("T_FIRE t%d", level.maptime);
+			}
+		}
+		// T_SLOW: RSQ SlowMo's clock, by its service (only when loaded and below full speed)
+		let si = ServiceIterator.Find("RSQSM_Service");
+		let svc = si ? si.Next() : null;
+		if (svc)
+		{
+			int sc = svc.GetInt("scale");
+			if (sc >= 0 && sc < 1000) Console.Printf("T_SLOW t%d scale %d", level.maptime, sc);
+		}
+		let it = ThinkerIterator.Create("UBQS_Buzzer");
+		UBQS_Buzzer q;
+		while (q = UBQS_Buzzer(it.Next()))
+			if (q.left_tics > 0 || q.lastA > 0)
+				Console.Printf("T_BUZZ t%d amp %.2f now %.2f twice %d left %d of %d", level.maptime, q.amp, q.lastA, q.twice, q.left_tics, q.total);
+	}
+}

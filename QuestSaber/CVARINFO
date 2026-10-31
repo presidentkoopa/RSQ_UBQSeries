@@ -53,6 +53,11 @@ server float ubqs_blade_width   = 1.5;    // (owner 2026-10-31: "saber width") h
                                           // the blade's own half-width. Was ubqs_blade_guard 6 (a slab a
                                           // quarter of your body, "like having a second shield"), the
                                           // deflect sweep's 5 and the crossed blades' 14.
+server int   ubqs_hitstop       = 0;      // (owner's pick 2, 2026-10-31; off by default) tics a cut monster freezes:
+                                          // 0 off, 3 light, 4 medium, 6 heavy (surveys/01_MELEE 3.6)
+server bool  ubqs_parry_slowmo  = false;  // (owner's pick 5; off by default) a perfect parry asks RSQ SlowMo
+                                          // for half a second of slow motion (rsm_pulse 500 35); nothing
+                                          // happens without SlowMo
 user  float  ubqs_hum_swing     = 1.1;    // how much louder the hum gets on a hard swing (0 = steady)
 server float ubqs_blade_guard   = 6.0;    // retired 2026-10-31 (ubqs_blade_width replaces it); read by nothing
 

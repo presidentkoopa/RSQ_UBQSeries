@@ -1,4 +1,22 @@
-## Branch `agent-polish` (2026-10-27): a shot blocked on contact goes back itself -- read first
+## 2026-10-31: the owner's saber picks 1-5 (teardown apply/03 Part Two) -- read first
+
+Rig only, not headset-confirmed. Probe `docs/rigprobe` (outside the pk3), BD order, one saber, MAP01.
+- **1 arc sweep (on).** CutLine sweeps the blade's direction on the great circle between tics, in 15-degree
+  steps (2 to 8), instead of three straight lerps (apply/03 2.2). Imp held 48.5 units out, blade (28.5 units)
+  flicked 120 degrees a tic past it, 20 flicks: before 1 cut (the opening 60-degree turn), after 7 (every
+  flick the 8-tic cooldown allows). Control 12 units further out: 0.
+- **3 double knock (on).** A parry (ParryGain > 1) and a clash entry buzz 4 on / 3 off / 3 on at 0.9 (the
+  ShieldSaw's shape, not linked); a block stays one 3-tic buzz. Logged on hitscans parried by a thrust:
+  amplitude 0.77, 0.77 x4, 0 x3, 0.77 x3. The lock buzz waits out the knock. Clash: not rig-tested.
+- **4 stab (on).** Hand moving within 30 degrees of the blade, blade turning under 30: first body along the
+  blade only, x1.5, no shove. Same thrust: before 20 dmg, vel -3.4 / lift 1.2; after 30-35 dmg, vel 0. Two
+  stacked imps: each stab hit one of them.
+- **2 hit-stop (off, `ubqs_hitstop` 0/3/4/6, menu "Hit-Stop").** freezetics on the cut monster: 3 the tic after
+  at Medium (4), 0 when off.
+- **5 parry slow-mo (off, `ubqs_parry_slowmo`, menu row).** Sends `rsm_pulse 500 35`: with RSQ_SlowMo, the clock
+  went 1000 -> 350 permille the tic after the parry; option off or SlowMo absent: nothing, no error.
+
+## Branch `agent-polish` (2026-10-27): a shot blocked on contact goes back itself
 
 Not yet run on the owner's headset. Rig B, probe `pol/sbprobe` in the session scratchpad (the agent-block
 probe plus: a real shot of a Brutal Doom class fired every 20 tics along the line from 300 units out

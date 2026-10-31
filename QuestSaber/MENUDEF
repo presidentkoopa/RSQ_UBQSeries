@@ -77,6 +77,16 @@ OptionValue "UBQS_LengthOff"
 	1.30, "99 cm"
 }
 
+// HIT-STOP (the owner's pick 2, off by default): how long a cut monster freezes, in tics
+// (surveys/01_MELEE 3.6: "3 is a tap, 6 is a heavy, 10 reads as a bug").
+OptionValue "UBQS_HitStop"
+{
+	0, "Off"
+	3, "Light"
+	4, "Medium"
+	6, "Heavy"
+}
+
 OptionMenu "UBQS_Options"
 {
 	Title "RSQ SABER"
@@ -93,10 +103,12 @@ OptionMenu "UBQS_Options"
 	StaticText " "
 	Slider "Swing to Cut", "ubqs_swing_cut", 3, 20, 0.5, 1
 	Slider "Blade Block Width", "ubqs_blade_width", 0.5, 6, 0.5, 1
+	Option "Hit-Stop", "ubqs_hitstop", "UBQS_HitStop"
+	Option "Perfect Parry Slow-Mo", "ubqs_parry_slowmo", "OnOff"
 	StaticText " "
 	Submenu "Controls", "UBQS_Keys"
 	StaticText " "
-	SafeCommand "Reset All", "resetcvar ubqs_on ubqs_dual_mode ubqs_damage ubqs_locks ubqs_color ubqs_size ubqs_color_off ubqs_size_off ubqs_lights_offhand ubqs_swing_cut ubqs_blade_width ubqs_start ubqs_world_saber ubqs_lights ubqs_deflect_aim ubqs_deflect_lead ubqs_throw_min ubqs_force ubqs_force_jump ubqs_force_gesture ubqs_gesture_straight ubqs_saber_sound ubqs_haptics ubqs_lefty ubqs_remote_level ubqs_diag", "Reset all RSQ Saber settings?"
+	SafeCommand "Reset All", "resetcvar ubqs_on ubqs_dual_mode ubqs_damage ubqs_locks ubqs_color ubqs_size ubqs_color_off ubqs_size_off ubqs_lights_offhand ubqs_swing_cut ubqs_blade_width ubqs_hitstop ubqs_parry_slowmo ubqs_start ubqs_world_saber ubqs_lights ubqs_deflect_aim ubqs_deflect_lead ubqs_throw_min ubqs_force ubqs_force_jump ubqs_force_gesture ubqs_gesture_straight ubqs_saber_sound ubqs_haptics ubqs_lefty ubqs_remote_level ubqs_diag", "Reset all RSQ Saber settings?"
 }
 
 // The SAME bind targets as Customize Controls (KEYCONF's aliases), so a key bound in either place
