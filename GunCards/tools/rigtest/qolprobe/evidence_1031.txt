@@ -1,0 +1,64 @@
+# RSQ_GunCards QoL round 2026-10-31: rig, doom2 + brutal22test6 + BD_VoxelPack + BD22_VR-Reloaded 2.0.3h + hotfix + RSQ_GunCards + qolprobe
+# Frames looked at (QZ_RES 560-720 close-ups): '+20' in the reserve's place (GC2); red RELOAD in Ermac's lettering in the
+# big number's place (GC3); the card grey at sector light 48 and white at 112/255 (GC8); the gold card for the rifle's
+# bullets with Card Colour By Ammo Type (GC6); the watch card's GRENADES / KILLS lines (GC4, GC7); the STATUS card with
+# HEALTH 100 / ARMOUR 100, the red card R and blue skull B in their colours, grenades 4 (GC5).
+## t1 (pickup, empty magazine, sector light, ammo colour)
+T1_NORMAL
+GCQ t110 Rifle loaded 31 reserve 30 | plus 0 kills 0 grenades 1 | small 6 watch 0 | colour b0b0b0 | light 112
+T2_PICKUP
+GCQ_PICKUP Clip2 +20
+GCQ t120 Rifle loaded 31 reserve 50 | plus 20 kills 0 grenades 1 | small 7 watch 0 | colour b0b0b0 | light 112
+T3_RELOAD
+GCQ t190 Rifle loaded 31 reserve 50 | plus 0 kills 0 grenades 1 | small 6 watch 0 | colour b0b0b0 | light 112
+GCQ_EMPTY RifleAmmo
+GCQ t200 Rifle loaded 0 reserve 50 | plus 0 kills 0 grenades 1 | small 5 watch 0 | colour b0b0b0 | light 112
+GCQ t220 Rifle loaded 0 reserve 50 | plus 0 kills 0 grenades 1 | small 5 watch 0 | colour b0b0b0 | light 112
+T4_DARK
+GCQ_LIGHT 48
+GCQ t230 Rifle loaded 0 reserve 50 | plus 0 kills 0 grenades 1 | small 5 watch 0 | colour b0b0b0 | light 48
+GCQ t260 Rifle loaded 0 reserve 50 | plus 0 kills 0 grenades 1 | small 5 watch 0 | colour b0b0b0 | light 48
+GCQ_LIGHT 255
+GCQ t270 Rifle loaded 0 reserve 50 | plus 0 kills 0 grenades 1 | small 5 watch 0 | colour b0b0b0 | light 255
+GCQ t290 Rifle loaded 0 reserve 50 | plus 0 kills 0 grenades 1 | small 5 watch 0 | colour b0b0b0 | light 255
+T5_AMMOCOLOUR
+GCQ t300 Rifle loaded 0 reserve 50 | plus 0 kills 0 grenades 1 | small 5 watch 0 | colour e0b040 | light 255
+T6_KILL
+GCQ_PICKUP Clip2 +0
+GCQ_KILL t340 spawned Zombieman
+GCQ_KILLED t342 Zombieman health -980
+GCQ_KILL t360 spawned Zombieman
+GCQ_KILLED t362 Zombieman health -980
+T7_WATCH
+GCQ_STATUS
+T8_STATUS
+T9_EYE
+## t3 (kills, watch card, status card, hide at the eye: small = the small card's layers, watch = the watch card's)
+T6_KILL
+GCQ_KILL t30 spawned Zombieman
+rsqgc: kill Zombieman -> main hand Rifle (1 this level)
+GCQ_KILLED t32 Zombieman health -980
+GCQ_KILL t45 spawned Zombieman
+rsqgc: kill Zombieman -> main hand Rifle (2 this level)
+GCQ_KILLED t47 Zombieman health -980
+GCQ t50 Rifle loaded 29 reserve 30 | plus 0 kills 2 grenades 1 | small 6 watch 0 | colour b0b0b0 | light 112
+T7_WATCH
+GCQ_STATUS
+GCQ t70 Rifle loaded 29 reserve 30 | plus 0 kills 2 grenades 4 | small 0 watch 82 | colour b0b0b0 | light 112
+T8_STATUS
+GCQ t130 Melee_Attacks loaded -1 reserve -1 | plus 0 kills 0 grenades 4 | small 0 watch 112 | colour 808080 | light 112
+GCQ t150 Melee_Attacks loaded -1 reserve -1 | plus 0 kills 0 grenades 4 | small 0 watch 112 | colour 808080 | light 112
+T9_EYE
+GCQ t210 Rifle loaded 29 reserve 30 | plus 0 kills 2 grenades 4 | small 6 watch 0 | colour b0b0b0 | light 112
+T9_HIDE_ON
+GCQ t230 Rifle loaded 29 reserve 30 | plus 0 kills 2 grenades 4 | small 0 watch 0 | colour b0b0b0 | light 112
+T9_AWAY
+GCQ t250 Rifle loaded 29 reserve 30 | plus 0 kills 2 grenades 4 | small 6 watch 0 | colour b0b0b0 | light 112
+## t5 (+RSQ_Gestures: Watch Check Off hands the watch check to the cards' own pose, GE5)
+GCQ t60 Rifle loaded 31 reserve 30 | plus 0 kills 0 grenades 1 | small 6 watch 0 | colour e0b040 | light 112
+F1_GESTURES_INSPECT
+GCQ t80 Rifle loaded 31 reserve 30 | plus 0 kills 0 grenades 1 | small 0 watch 82 | colour e0b040 | light 112
+F2_FALLBACK_POSE_GESTURES_ON
+GCQ t170 Rifle loaded 31 reserve 30 | plus 0 kills 0 grenades 1 | small 6 watch 0 | colour e0b040 | light 112
+F3_INSPECT_OFF_FALLBACK
+GCQ t200 Rifle loaded 31 reserve 30 | plus 0 kills 0 grenades 1 | small 0 watch 82 | colour e0b040 | light 112

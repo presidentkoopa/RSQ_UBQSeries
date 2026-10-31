@@ -34,7 +34,9 @@ CARD_Y0 = -22.6        # centred on the wrist along the forearm (wrist Y -16.9, 
 CARD_Z0 = -14.6        # top edge: the card centred on the wrist's height (Z -11.3)
 PX = 0.13              # cm per card pixel
 CARD_W = 88            # px (11.4 cm)
-PANEL_H = [44, 56, 68, 80]   # px: the panel heights the runtime can pick (no Bonsai / 1-2 / 3-4 upgrades / more)
+PANEL_H = [44, 56, 68, 80, 94]   # px: the panel heights the runtime can pick (the smallest that holds the last row used)
+# QoL GC8 (owner, 2026-10-31): the cards take the room's light: no Bright on the states (hw_weapon.cpp GetWeaponLighting)
+BRIGHT = ''
 FRONT = 0.18           # glyphs stand this far nearer the eye than the panel (X -)
 PAD = 4                # px
 PITCH_SIGN = int(os.environ.get('WS_PS', '-1'))   # rig-measured: +1 if a positive turn moves a piece down the card
@@ -82,6 +84,8 @@ def ermac_glyphs():
     art = os.path.join(HERE, 'card_art'); out = {}
     for c in range(48, 58):
         out[c] = Image.open(os.path.join(art, 'digit_%s.png' % chr(c))).convert('RGBA')
+    # QoL GC2: '+' for "+N" on a pickup (gen_cards.py extra_art draws it in Ermac's digit style)
+    out[43] = Image.open(os.path.join(art, 'digit_plus.png')).convert('RGBA')
     return out
 
 def piece(im, out, scale_px, y0, z0, mirror, x_off, side=0):
@@ -112,8 +116,9 @@ def piece(im, out, scale_px, y0, z0, mirror, x_off, side=0):
 
 
 # the rows of the card, top to bottom: (font index, gap after in px). Fixed layout; the runtime fills them.
-ROWS = [(1, 2), (0, 1), (2, 2), (0, 2), (0, 1), (0, 1), (0, 1), (0, 1), (0, 1)]
-#        title  word   digits  LV bar up1     up2     up3     up4     +more
+ROWS = [(1, 2), (0, 1), (2, 2), (0, 2), (0, 1), (0, 1), (0, 1), (0, 1), (0, 1), (0, 1), (0, 1)]
+#        title  word   digits  then eight small lines the runtime fills in order (side.zs Line): the QoL round's
+#                              grenades / kills / keys lines, then Gun Bonsai's LV bar, upgrades and +more
 CHARS = [c for c in range(33, 96) if chr(c).isalnum() or chr(c) in "+-=/%.:'()#!"]
 
 def main():
@@ -135,7 +140,11 @@ def main():
     def new_sprite():
         sprite_n[0] += 1
         n = sprite_n[0]
-        return 'WZ' + B36[n // 36] + B36[n % 36]
+        # 36 x 36 names under WZ; the QoL round's two extra rows run past them, into WQ (checked free in Brutal Doom,
+        # its VR pack, the voxel pack and every series VOXELDEF / MODELDEF)
+        pre = ['WZ', 'WQ'][n // 1296]
+        n %= 1296
+        return pre + B36[n // 36] + B36[n % 36]
     count = 0
     s = PX
     font_cols, row_z, row_codes = [], [], []
@@ -203,10 +212,10 @@ def main():
     for label, frames in states:
         z.append('\t%s:' % label)
         for spr, fl in frames:
-            for fr, c in fl: z.append('\t\t%s %s -1 Bright;' % (spr, fr))
+            for fr, c in fl: z.append('\t\t%s %s -1%s;' % (spr, fr, BRIGHT))
         z.append('\t\tStop;')
     for label, spr in pstates:
-        z.append('\t%s:' % label); z.append('\t\t%s A -1 Bright;' % spr); z.append('\t\tStop;')
+        z.append('\t%s:' % label); z.append('\t\t%s A -1%s;' % (spr, BRIGHT)); z.append('\t\tStop;')
     z += ['\t}', '', '\tprivate static State Walk(State s, int n) { for (int i = 0; i < n && s; i++) s = s.NextState; return s; }']
     for fi in range(len(FONTS)):
         src = FONTS[fi][1]

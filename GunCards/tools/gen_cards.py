@@ -44,7 +44,45 @@ LABEL_AT = (0.0, 0.0, 1.75)
 BIG_AT = [(1.6, 0.0, -0.2), (0.0, 0.0, -0.2), (-1.6, 0.0, -0.2)]
 SMALL_AT = [(0.9, 0.0, -1.85), (0.0, 0.0, -1.85), (-0.9, 0.0, -1.85)]   # the other gun, on a both-hands card
 LABELS = ['ammo', 'magazine', 'chamber']
-GLYPHS = [str(d) for d in range(10)] + ['o', 'g', 'd']   # digit_o / digit_g / digit_d as Ermac drew them
+GLYPHS = [str(d) for d in range(10)] + ['o', 'g', 'd', 'plus']   # digit_o / digit_g / digit_d as Ermac drew them;
+                                                              # digit_plus (QoL GC2, "+N" on a pickup) drawn below
+                                                              # in his digit style
+# RELOAD (QoL GC3) in the big number's place on an empty magazine: one word piece, Ermac's lettering (reload.png,
+# made below from his own letters), centred where the three big digits are
+RELOAD_S = 0.062                                  # 72 x 12 px: 4.5 x 0.74 cm (the three big slots span 4.8 cm)
+RELOAD_AT = (0.0, 0.0, -0.2)
+# QoL GC8 (owner, 2026-10-31): the cards take the room's light. A HUD model is lit by the player's sector unless its
+# state is Bright (hw_weapon.cpp GetWeaponLighting), so the generated states carry no Bright.
+BRIGHT = ''
+
+
+def extra_art(art):
+    """QoL GC2 / GC3: the two pieces Ermac did not draw, made in his style, written into the art folder (deterministic).
+    reload.png: R (chamber), E (magazine), L (chamber's C, its top bar cut away), O (ammo), A (magazine), D (chamber's B
+    with ammo's O inside: B's square back, O's open middle). Each letter is its 8-px stroke run plus 2 px either side.
+    digit_plus.png: a '+' in his digit style: 2-px strokes, light over mid grey, a black outline."""
+    T, K = (0, 0, 0, 0), (0, 0, 0, 255)
+    def cell(f, x0):
+        return Image.open(os.path.join(art, f)).convert('RGBA').crop((x0 - 2, 0, x0 + 10, 12))
+    R = cell('chamber.png', 68); E = cell('magazine.png', 78); O = cell('ammo.png', 38); A = cell('magazine.png', 14)
+    L = cell('chamber.png', 2)
+    for y in range(12):
+        for x in range(12):
+            if (y <= 3 or 4 <= y <= 7) and x >= 4: L.putpixel((x, y), T)
+            if y <= 2 and x == 3: L.putpixel((x, y), K)
+    D = cell('chamber.png', 46)
+    for y in range(3, 9):
+        for x in range(12): D.putpixel((x, y), O.getpixel((x, y)))
+    word = Image.new('RGBA', (72, 12), T)
+    for i, g in enumerate((R, E, L, O, A, D)): word.alpha_composite(g, (i * 12, 0))
+    word.save(os.path.join(art, 'reload.png'))
+    rows = ['............', '....aaaa....', '....abca....', '....abca....', 'aaaaabcaaaaa', 'abccccccccba',
+            'abbbbbbbbbba', 'aaaaabcaaaaa', '....abca....', '....abca....', '....aaaa....', '............']
+    pal = {'a': K, 'b': (127, 127, 127, 255), 'c': (191, 191, 191, 255), '.': T}
+    plus = Image.new('RGBA', (12, 12), T)
+    for y, r in enumerate(rows):
+        for x, ch in enumerate(r): plus.putpixel((x, y), pal[ch])
+    plus.save(os.path.join(art, 'digit_plus.png'))
 
 
 def write_kvx(path, vox, size, pivot, pal):
@@ -125,6 +163,7 @@ def main():
     ap.add_argument('--art', default=os.path.join(HERE, 'card_art'))
     a = ap.parse_args()
     art = a.art
+    extra_art(art)
     vdir = os.path.join(ROOT, 'voxels'); os.makedirs(vdir, exist_ok=True)
     sdir = os.path.join(ROOT, 'sprites', 'wk'); os.makedirs(sdir, exist_ok=True)
     for f in os.listdir(vdir):
@@ -162,13 +201,20 @@ def main():
                                 add(LABEL_AT, (0, FRONT, 0)), m, os.path.join(vdir, lump + '.kvx'), dy=dy)
             frame(spr, letters[k], lump, LABEL_S); line.append(letters[k])
         states.append(('L%s%s' % (mc, dc), spr, line))
+        # RELOAD (GC3): Q<d>R<N|M>, one frame
+        spr = 'Q' + dc + 'R' + mc
+        lump = 'wk%sr%s' % (dc, mc.lower())
+        count += card_piece(os.path.join(art, 'reload.png'), 72, 12, RELOAD_S, add(RELOAD_AT, (0, FRONT, 0)), m,
+                            os.path.join(vdir, lump + '.kvx'), dy=dy)
+        frame(spr, 'A', lump, RELOAD_S)
+        states.append(('R%s%s' % (mc, dc), spr, ['A']))
         # digits: Q<d><B|S><0..5> (mirror * 3 + slot)
         for kind, slots, scale in (('B', BIG_AT, BIG_S), ('S', SMALL_AT, SMALL_S)):
             for si, sat in enumerate(slots):
                 spr = 'Q%s%s%d' % (dc, kind, m * 3 + si)
                 line = []
                 for gi, g in enumerate(GLYPHS):
-                    lump = 'wk%s%s%s%d%s' % (dc, kind.lower(), mc.lower(), si, g)
+                    lump = 'wk%s%s%s%d%s' % (dc, kind.lower(), mc.lower(), si, g if len(g) == 1 else 'p')   # 8 chars at most
                     count += card_piece(os.path.join(art, 'digit_%s.png' % g), 12, 12, scale,
                                         add(sat, (0, FRONT, 0)), m, os.path.join(vdir, lump + '.kvx'), dy=dy)
                     frame(spr, letters[gi], lump, scale); line.append(letters[gi])
@@ -193,15 +239,16 @@ def main():
          '\tDefault { +WEAPON.CHEATNOTWEAPON +WEAPON.NOAUTOSWITCHTO Weapon.SelectionOrder 99999; }',
          '\tconst STYLES = %d;   // Ermac ammo_bg %s, in that order' % (len(bgs), ' '.join(map(str, bgs))),
          '\tconst LABELS = %d;' % len(LABELS),
-         '\tconst GLYPHS = %d;   // 0-9, then o, g, d' % len(GLYPHS),
+         '\tconst GLYPHS = %d;   // 0-9, then o, g, d, + (GLYPH_PLUS)' % len(GLYPHS),
+         '\tconst GLYPH_PLUS = %d;' % GLYPHS.index('plus'),
          '\tconst SLOTS = %d;' % len(BIG_AT),
          '\tStates', '\t{']
     for label, spr, frames in states:
         z.append('\t%s:' % label)
-        for fr in frames: z.append('\t\t%s %s -1 Bright;' % (spr, fr))
+        for fr in frames: z.append('\t\t%s %s -1%s;' % (spr, fr, BRIGHT))
         z.append('\t\tStop;')
     z += ['\t}', '',
-          '\t// The first state of a piece. kind 0 panel, 1 label, 2 big digit, 3 small digit; slot for digits.',
+          '\t// The first state of a piece. kind 0 panel, 1 label, 2 big digit, 3 small digit, 4 RELOAD; slot for digits.',
           '\t// (FindState wants a constant label, hence the table.)',
           '\t// depth: which of the baked DEPTHS (rsqgc_in), 0..%d, %d is where the owner placed it.' % (len(DEPTHS) - 1, DEPTHS.index(0.0)),
           '\tconst DEPTHS = %d;' % len(DEPTHS),
@@ -212,7 +259,7 @@ def main():
           '\t\tint k = depth * 1000 + kind * 100 + (mirrored ? 10 : 0) + slot;',
           '\t\tswitch (k)', '\t\t{']
     for label, spr, frames in states:
-        kind = {'P': 0, 'L': 1, 'B': 2, 'S': 3}[label[0]]
+        kind = {'P': 0, 'L': 1, 'B': 2, 'S': 3, 'R': 4}[label[0]]
         mir = 1 if label[1] == 'M' else 0
         dep = int(label[-1])
         slot = int(label[2:-1]) if len(label) > 3 else 0

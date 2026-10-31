@@ -41,20 +41,32 @@ class RSQGC_WorldCard play
 	}
 
 	// what it says (only when it changed)
-	void Fill(PlayerPawn pmo, Weapon w, int panelCol)
+	void Fill(PlayerPawn pmo, Weapon w, int panelCol, RSQGC_GunCard gc)
 	{
 		int loaded = RSQGC_GunCard.Loaded(w), reserve = RSQGC_GunCard.Reserve(w);
-		string s = RSQGC_GunCard.Signature(pmo, w, full ? 8 : 7, panelCol);
+		string s = RSQGC_GunCard.Signature(pmo, w, full ? 8 : 7, panelCol) .. gc.ExtraSig(pmo, hand, w);
+		bool reload = RSQGC_GunCard.HasMagazine(w) && loaded == 0 && reserve > 0;   // GC3
 		if (s == sig) return;
 		sig = s;
 		RSQGC_BB.Update(plate, 0, panelCol);
 		RSQGC_BB.Update(big, max(loaded, 0), loaded == 0 ? 0xFF5A46 : 0xFFFFFF);
 		RSQGC_BB.Update(small, max(reserve, 0), 0xC8C8C8);
 		RSQGC_BB.SetAlpha(small, reserve >= 0 ? 1.0 : 0.0);
-		if (!full) { RSQGC_BB.SetText(title, RSQGC_GunCard.HasMagazine(w) ? "MAG" : "AMMO"); return; }
+		if (!full)
+		{
+			// GC3 RELOAD and GC2 +N take the title here (the world cards' numbers are digits only)
+			int plus = gc.PlusNow(hand);
+			RSQGC_BB.SetText(title, reload ? "RELOAD" : plus > 0 ? String.Format("+%d", plus) : RSQGC_GunCard.HasMagazine(w) ? "MAG" : "AMMO");
+			RSQGC_BB.Update(title, 0, reload ? 0xFF5A46 : plus > 0 ? 0x80E040 : 0xF0F0F0);
+			return;
+		}
 		RSQGC_BB.SetText(title, RSQGC_GunCard.HandTag(hand) .. "  " .. RSQGC_GunCard.NameOf(w));
 		Array<string> txt; Array<int> col;
-		txt.Push(RSQGC_GunCard.HasMagazine(w) ? (reserve >= 0 ? "MAGAZINE        RESERVE" : "MAGAZINE") : "AMMO"); col.Push(0xC8C8C8);
+		txt.Push((reload ? "RELOAD" : RSQGC_GunCard.HasMagazine(w) ? "MAGAZINE" : "AMMO") .. (reserve >= 0 ? "        RESERVE" : "")); col.Push(reload ? 0xFF5A46 : 0xC8C8C8);
+		if (gc.PlusNow(hand) > 0) { txt.Push(String.Format("PICKED UP +%d", gc.PlusNow(hand))); col.Push(0x80E040); }
+		int gren = RSQGC_GunCard.Grenades(pmo);
+		if (gren >= 0) { txt.Push(String.Format("GRENADES %d", gren)); col.Push(0xC8C8C8); }
+		txt.Push(String.Format("KILLS %d", gc.KillsWith(w))); col.Push(0xC8C8C8);
 		let e = RSQGC_Bonsai.Entry(pmo, w);
 		if (e && e.lvl >= 0)
 		{
@@ -62,7 +74,7 @@ class RSQGC_WorldCard play
 			int on = e.permille * 12 / 1000;
 			for (int i = 0; i < 12; i++) bar = bar .. (i < on ? "=" : "-");
 			txt.Push(String.Format("LV %d  %s", e.lvl, bar)); col.Push(0xFFD678);
-			int shown = min(e.names.Size(), ROWS - 3);
+			int shown = min(e.names.Size(), max(0, ROWS - txt.Size() - 1));   // room left, one kept for +more
 			for (int i = 0; i < shown; i++)
 			{
 				txt.Push(e.names[i].MakeUpper() .. "  " .. RSQGC_Bonsai.Numeral(e.levels[i]));
