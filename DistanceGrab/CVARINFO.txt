@@ -25,8 +25,8 @@ user bool  rsqdg_sight    = true;    // through a wall is not pointing at it
 // The table decides what is an OBJECT; these switch whole families of it on
 // and off. A living monster is never pullable from range (the off hand's walk-up
 // Headlock holds one, near.zs); the +1 bonuses are a switch since 10-29.
-user bool  rsqdg_corpses  = true;    // a corpse is a prop. ON by default (the owner, 10-29:
-                                     // "expanded pickup options"); off on desktop
+user bool  rsqdg_corpses  = false;   // a corpse is a prop. OFF by default (the owner, 10-31: "i don't want to grab
+                                     // corpses"); was on since 10-29
 user bool  rsqdg_barrels  = true;    // both barrels -- the thing this is for
 user bool  rsqdg_weapons  = true;    // pull a gun to you. The desktop's default
                                      // is off because a HAND grab of a gun is a

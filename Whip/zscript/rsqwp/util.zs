@@ -18,7 +18,8 @@
 class RSQWP_Util
 {
 	const ARM_MAX = 96.0;           // map units; a real arm reaches ~0.8 m = 27 u
-	const PIXELSTRETCH = 1.2;
+	// the level's own pixel ratio, read live (Quest teardown apply/01 2.2): 1.2 on stock maps
+	static clearscope double PS() { double v = level ? level.pixelstretch : 1.2; return v > 0 ? v : 1.2; }
 
 	static clearscope double Num(String n, double d)
 	{
@@ -40,7 +41,7 @@ class RSQWP_Util
 	// and a room pitch (positive up).
 	static clearscope Vector3 MapDir(double yaw, double pitchUp)
 	{
-		Vector3 d = (cos(pitchUp) * cos(yaw), cos(pitchUp) * sin(yaw), sin(pitchUp) / PIXELSTRETCH);
+		Vector3 d = (cos(pitchUp) * cos(yaw), cos(pitchUp) * sin(yaw), sin(pitchUp) / PS());
 		return d.Unit();
 	}
 
@@ -52,6 +53,10 @@ class RSQWP_Util
 	{
 		if (!pmo || !pmo.OverrideAttackPosDir) return false;
 		hand = Ctrl(pmo, hand);
+		// BOTH HANDS AT ONE POINT is the engine's collapsed pose (a menu just closed, a level just began --
+		// hw_vrmodes.cpp writes both hands to the body): never a real pose, and a press read there fired from the
+		// chest (Quest teardown apply/01 2.1b; Gun Bonsai's gloves.zs already guards it).
+		if (pmo.AttackPos == pmo.OffhandPos) return false;
 		Vector3 h = hand == 0 ? pmo.AttackPos : pmo.OffhandPos;
 		Vector3 d = h - pmo.Pos;
 		if (d.xy.Length() > ARM_MAX) return false;
@@ -101,7 +106,7 @@ class RSQWP_Util
 
 	static clearscope double Metres(Vector3 v)
 	{
-		double z = v.z * PIXELSTRETCH;
+		double z = v.z * PS();
 		return sqrt(v.x * v.x + v.y * v.y + z * z) / 34.0;
 	}
 }

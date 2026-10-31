@@ -124,6 +124,7 @@ class RSQGR_Core : EventHandler
 	void LetGo(RSQGR_Hook h, bool byPlayer)
 	{
 		if (!h) return;
+		if (h.owner && h.owner.player) coastUntil[h.owner.PlayerNumber()] = level.maptime + COAST_TICS;
 		RSQGR_Perks.OnLetGo(h, byPlayer);   // Barbed Claw's tear, Slingshot (perks.zs)
 		if (h.phase == RSQGR_Hook.PH_BITE && h.victim && h.owner && !h.heavy)
 			RSQGR_Monster.OnRelease(h.victim, h.owner, h.hand);
@@ -360,8 +361,26 @@ class RSQGR_Core : EventHandler
 	Vector3 lastPos[MAXPLAYERS], lastSet[MAXPLAYERS];   // where the rope left him, and how fast
 	bool tracked[MAXPLAYERS];
 
+	// MOMENTUM SURVIVES THE LANDING (Quest teardown apply/01 6). With vr_momentum off -- its default -- the engine
+	// multiplies a grounded player's horizontal velocity by 0.0001 every tic unless player.keepmomentum is set
+	// (player.zs MovePlayer), so a swing that touched down stopped dead and a grounded reel restarted from nothing
+	// each tic. Set while any hook holds, and for COAST_TICS after a let-go so the flight carries through the
+	// touch-down; the engine clears it itself once the player is nearly still (vr_momentum_threshold).
+	const COAST_TICS = 18;
+	int coastUntil[MAXPLAYERS];
+
 	void Swing(PlayerPawn pmo, int pn)
 	{
+		if (pmo && pmo.player)
+		{
+			bool holding = false;
+			for (int k = 0; k < 2; k++)
+			{
+				let hk = hooks[pn * 2 + k];
+				if (hk && (hk.phase == RSQGR_Hook.PH_LATCH || hk.phase == RSQGR_Hook.PH_BITE)) holding = true;
+			}
+			if ((holding || level.maptime < coastUntil[pn]) && RSQGR_Util.Num("rsqgr_momentum", 1) > 0) pmo.player.keepmomentum = true;
+		}
 		bool any = false;
 		bool truthTaken = false;
 		bool roped = false;

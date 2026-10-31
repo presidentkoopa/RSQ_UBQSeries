@@ -4056,7 +4056,15 @@ class wr_Rig : EventHandler
 			else if (!mSlowWasOn || cvBool("wr_slowmo_cancel", false))
 				EventHandler.SendNetworkEvent("rsm_off");
 		}
-		else EventHandler.SendNetworkEvent("bt_activate");
+		else
+		{
+			// NO SLOWMO: THE RING STOPS THE WORLD ITSELF (Quest teardown apply/07 5.5). BulletTimeX's bt_activate was a
+			// toggle with nothing to read back, so opening the ring switched OFF a bullet time the player already had
+			// running. Level.SetFrozen stops everything but the player who holds timefreezer; WorldTick, the ring's
+			// +NOTIMEFREEZE quads and its quake clicks all go on (p_tick.cpp:172, a_quake.cpp:115).
+			Level.SetFrozen(on);
+			players[consoleplayer].timefreezer = on ? 1 : 0;
+		}
 		mBtOn = on;
 	}
 	bool mSlowWasOn;   // RSQ: RSQ SlowMo was already running when the ring opened

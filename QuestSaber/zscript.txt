@@ -1508,8 +1508,12 @@ class UBQS_SaberBase : Weapon abstract
 	// just after, in the same tic, off these same four reads.
 	bool WorldUp()
 	{
-		if (UInt("ubqs_world_saber", 0) == 0) return false;
 		if (!owner || !owner.player || !owner.player.PlayInVR) return false;
+		// THE TWO-HAND BRACE HIDES THE OFF HAND (SteamVR): with the off-hand grip latched the engine stops drawing
+		// every layer the off-hand weapon calls (hw_weapon.cpp:832-835), the saber's hilt and blade with them, while
+		// the blade went on cutting. The world saber is drawn then, whatever ubqs_world_saber says.
+		bool braced = bOffhandWeapon && (owner.player.WeaponState & WF_TWOHANDSTABILIZED) != 0;
+		if (UInt("ubqs_world_saber", 0) == 0 && !braced) return false;
 		if (owner.health <= 0) return false;
 		return (bOffhandWeapon ? owner.OffhandPos : owner.AttackPos) != (0, 0, 0);
 	}

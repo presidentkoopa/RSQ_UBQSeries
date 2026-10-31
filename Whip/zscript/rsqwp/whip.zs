@@ -41,7 +41,6 @@ class RSQWP_Whip : EventHandler
 	const SUB = 8;               // Verlet sub-steps per tic
 	const ITER = 6;              // constraint passes per sub-step (fewer and the thong stretches, which eats the wave)
 	const HANDLEN = 8.0;          // the handle, map units (~24 cm)
-	const PS = 1.2;              // pixelstretch
 	const GRAV = 0.30;           // room units / tic^2 (Doom's own 1.0 is for falling bodies, not leather)
 	const DAMP = 0.9995;         // per sub-step
 	const MAXSTEP = 11.0;        // most a link may move in one sub-step (a hand teleport cannot explode it)
@@ -112,8 +111,8 @@ class RSQWP_Whip : EventHandler
 
 	static RSQWP_Whip Get() { return RSQWP_Whip(EventHandler.Find("RSQWP_Whip")); }
 
-	static clearscope Vector3 ToRoom(Vector3 m) { return (m.x, m.y, m.z * PS); }
-	static clearscope Vector3 ToMap(Vector3 r) { return (r.x, r.y, r.z / PS); }
+	static clearscope Vector3 ToRoom(Vector3 m) { return (m.x, m.y, m.z * RSQWP_Util.PS()); }
+	static clearscope Vector3 ToMap(Vector3 r) { return (r.x, r.y, r.z / RSQWP_Util.PS()); }
 
 	override void OnRegister()
 	{
@@ -812,7 +811,7 @@ class RSQWP_Whip : EventHandler
 			best = a; bestA = ang;
 		}
 		reachFor[i] = best;
-		reachPt[i] = best ? best.pos + (0, 0, best.height * 0.6) : org + dir * (wlen[i] / PS);
+		reachPt[i] = best ? best.pos + (0, 0, best.height * 0.6) : org + dir * (wlen[i] / RSQWP_Util.PS());
 		reachTic[i] = REACH_TICS;
 		Noise(pmo, 'swish', org);
 		if (RSQWP_Util.Flag("rsqwp_debug", false))
@@ -914,7 +913,7 @@ class RSQWP_Whip : EventHandler
 			// full length, or the wall first
 			let tr = GetTracer();
 			tr.shooter = pmo;
-			double len = wlen[i] / PS * 0.9 + (wlen[i] * 0.9 - wlen[i] / PS * 0.9) * (1 - abs(dir.z));   // map units, near enough
+			double len = wlen[i] / RSQWP_Util.PS() * 0.9 + (wlen[i] * 0.9 - wlen[i] / RSQWP_Util.PS() * 0.9) * (1 - abs(dir.z));   // map units, near enough
 			if (tr.Trace(org, level.PointInSector(org.xy), dir, len, 0, RSQWP_Tracer.WALLMASK, true, pmo) && tr.Results.HitType != TRACE_HitNone)
 				len = max(8.0, tr.Results.Distance - 4);
 			reachPt[i] = org + dir * len;

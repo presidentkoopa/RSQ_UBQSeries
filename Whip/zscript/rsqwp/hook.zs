@@ -298,7 +298,7 @@ class RSQWP_Hook : Actor
 			if (!r) { r = RSQWP_Rope(Spawn("RSQWP_WhipLink", a, NO_REPLACE)); segs[k] = r; fresh = true; }
 			if (!fresh) r.SetOrigin(a, true);
 			Vector3 m = b - a;
-			Vector3 room = (m.x, m.y, m.z * RSQWP_Util.PIXELSTRETCH);
+			Vector3 room = (m.x, m.y, m.z * RSQWP_Util.PS());
 			double len = room.Length();
 			r.angle = atan2(room.y, room.x);
 			r.pitch = -atan2(room.z, room.xy.Length()) + 90;

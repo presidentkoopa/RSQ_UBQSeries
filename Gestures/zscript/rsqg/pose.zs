@@ -48,6 +48,10 @@ class RSQG_Pose
 	static clearscope bool PoseGood(PlayerPawn pmo, int hand)
 	{
 		if (!pmo || !pmo.player || !pmo.OverrideAttackPosDir) return false;
+		// BOTH HANDS AT ONE POINT is the engine's collapsed pose (a menu just closed, a level just began --
+		// hw_vrmodes.cpp writes both hands to the body): never a real pose, and a press read there fired from the
+		// chest (Quest teardown apply/01 2.1b; Gun Bonsai's gloves.zs already guards it).
+		if (pmo.AttackPos == pmo.OffhandPos) return false;
 		Vector3 h = hand == 0 ? pmo.AttackPos : pmo.OffhandPos;
 		if (h.x == 0 && h.y == 0 && h.z == 0) return false;   // never written (just loaded)
 		Vector3 d = h - pmo.Pos;

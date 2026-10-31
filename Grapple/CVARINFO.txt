@@ -15,6 +15,7 @@ server float  rsqgr_drag          = 0.002;  // air drag on the swing, share of i
 server float  rsqgr_rope_friction = 0.025;  // and a constant loss (u/tic per tic) that brings it to rest
 server float  rsqgr_attach        = 0.6;    // where the rope meets the body, fraction of height
 server float  rsqgr_hop           = 6;      // lift when letting go at the top of a wall
+server float  rsqgr_momentum      = 1;      // a swing keeps its speed when you land (0 = the engine stops you dead on touch-down)
 
 // climbing hand over hand
 server int    rsqgr_climb           = 1;     // 1: a free hand on Grab Rope climbs the rope, 0 off

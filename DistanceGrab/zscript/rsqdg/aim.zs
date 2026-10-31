@@ -345,6 +345,12 @@ class RSQDG_Aim : EventHandler
 			c = CVar.FindCVar("rsqdg_throw_explode"); if (c) c.SetFloat(4.0);
 			ver.SetInt(2);
 		}
+		// 3 (2026-10-31, owner: "i don't want to grab corpses"): corpses off.
+		if (ver.GetInt() < 3)
+		{
+			c = CVar.FindCVar("rsqdg_corpses"); if (c) c.SetBool(false);
+			ver.SetInt(3);
+		}
 	}
 
 	override void WorldLoaded(WorldEvent e)
