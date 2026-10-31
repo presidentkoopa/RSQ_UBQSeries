@@ -28,7 +28,7 @@ OptionMenu "RSQGC_Options"
 	Title "RSQ GUN CARDS"
 	Option "Show Cards", "rsqgc_card", "RSQGC_Show"
 	Option "Card Colour", "rsqgc_color", "RSQGC_Colors"
-	Option "Watch Card", "rsqgc_watch", "OnOff"
+	Option "Watch Card", "rsqgc_watch", "RSQGC_WatchModes"
 	Option "Draw in the World", "rsqgc_world", "OnOff"
 	StaticText " "
 	Submenu "Placement", "RSQGC_Place"
@@ -41,6 +41,7 @@ OptionMenu "RSQGC_Place"
 	StaticText "Small card", gold
 	Slider "Up / Down", "rsqgc_up", -30, 30, 0.5, 1
 	Slider "Left / Right", "rsqgc_side", -30, 30, 0.5, 1
+	Slider "In / Out (cm)", "rsqgc_in", -6, 6, 1.5, 1
 	StaticText " "
 	StaticText "Watch card", gold
 	Slider "Up / Down", "rsqgc_watch_up", -30, 30, 0.5, 1
@@ -70,6 +71,13 @@ OptionMenu "RSQGC_Tuning"
 	Option "Show Hand Numbers on Screen", "rsqgc_show_hands", "OnOff"
 	StaticText " "
 	SafeCommand "Reset All", "rsqgc_reset", "Reset all RSQ Gun Cards settings?"
+}
+
+OptionValue "RSQGC_WatchModes"
+{
+	0, "Off"
+	1, "When I Check My Watch"
+	2, "Always On"
 }
 
 OptionValue "RSQGC_Show"

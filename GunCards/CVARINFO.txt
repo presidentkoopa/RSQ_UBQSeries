@@ -4,12 +4,13 @@
 // ---- the front page
 user int    rsqgc_card = 1;            // the small card: 0 off, 1 always, 2 when you look at the gun, 3 inspect gesture (RSQ Gestures)
 user int    rsqgc_color = 0;           // card colour: 0 each gun its own, 1 white 2 grey 3 red 4 gold 5 green 6 blue 7 cyan 8 purple 9 orange 10 pink
-user int    rsqgc_watch = 1;           // the watch card: the full card on both sides of the wrist when you check your watch
+user int    rsqgc_watch = 1;           // the watch card, the full card on both sides of the wrist: 0 off, 1 when you check your watch, 2 always
 user int    rsqgc_world = 0;           // 1: the cards drawn in the world at the hand (no gun can cover them; may trail a fast hand)
 
 // ---- placement
 user float  rsqgc_up = 0;              // the small card: up (+) or down, degrees about the hand (~0.45 cm a degree)
 user float  rsqgc_side = 0;            // the small card: sideways, degrees
+user float  rsqgc_in = 0;              // the small card: in (+, toward you along the forearm) or out, cm (baked every 1.5 cm, -6..6)
 user float  rsqgc_watch_up = 0;        // the watch card: up (+) or down, degrees
 user float  rsqgc_watch_side = 0;      // the watch card drawn in the world: sideways
 user float  rsqgc_world_scale = 1.4;   // size of the cards drawn in the world

@@ -40,6 +40,12 @@ PAD = 4                # px
 PITCH_SIGN = int(os.environ.get('WS_PS', '-1'))   # rig-measured: +1 if a positive turn moves a piece down the card
 FLIP_Y = os.environ.get('WS_FY', '1') == '1'
 FLIP_Z = os.environ.get('WS_FZ', '1') == '1'
+# TURNED HALF ROUND (owner 2026-10-31, in the headset on SteamVR: "the wrist card is upsidedown"): every piece is turned
+# 180 degrees in the card's plane about the wrist (along the forearm at the card's middle, at the wrist's height), so
+# the title is at the other end and the text reads the other way up. WS_ROT=0 lays it the old way (the rig's).
+ROT180 = os.environ.get('WS_ROT', '1') == '1'
+ROT_YC = None   # set in main(): the card's middle along the forearm
+ROT_ZC = -11.3  # the wrist's height (gen_cards.py WRIST)
 # fonts: (name, source, cell w px, cell h px, scale) -- monospaced columns
 FONTS = [('SMALL', 'doom', 6, 7, 0.75), ('TITLE', 'doom', 8, 7, 1.0), ('DIGIT', 'ermac', 12, 12, 1.0)]
 
@@ -82,6 +88,10 @@ def piece(im, out, scale_px, y0, z0, mirror, x_off, side=0):
     """im is laid in the plane X = SIDE_X - x_off: picture columns along +Y from y0, rows along +Z from z0."""
     w, h = im.size
     if mirror: im = im.transpose(Image.FLIP_LEFT_RIGHT)
+    if ROT180:
+        im = im.rotate(180)
+        y0 = 2 * ROT_YC - y0 - w * scale_px
+        z0 = 2 * ROT_ZC - z0 - h * scale_px
     q = im.convert('RGB').quantize(255); raw = q.getpalette()[:765]
     pal = [tuple(raw[i:i + 3]) for i in range(0, len(raw), 3)] + [(0, 0, 0)] * 256
     vox = {}
@@ -108,6 +118,8 @@ CHARS = [c for c in range(33, 96) if chr(c).isalnum() or chr(c) in "+-=/%.:'()#!
 
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument('--iwad', required=True); a = ap.parse_args()
+    global ROT_YC
+    ROT_YC = CARD_Y0 + CARD_W * PX / 2.0
     vdir = os.path.join(ROOT, 'voxels'); sdir = os.path.join(ROOT, 'sprites', 'ws')
     os.makedirs(vdir, exist_ok=True); os.makedirs(sdir, exist_ok=True)
     import re

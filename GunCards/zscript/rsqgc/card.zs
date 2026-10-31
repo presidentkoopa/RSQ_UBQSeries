@@ -360,7 +360,9 @@ class RSQGC_GunCard : EventHandler
 		let pmo = PlayerPawn(p.mo);
 		if (!pmo) return;
 		if (ci("rsqgc_show_hands", 0)) ShowHands(pmo);
-		bool watchOn = ci("rsqgc_watch", 1) > 0;
+		int watchMode = ci("rsqgc_watch", 1);     // 0 off, 1 when you check your watch, 2 always (owner 2026-10-31)
+		bool watchOn = watchMode > 0;
+		bool always = watchMode == 2;
 		if (p.playerstate != PST_LIVE || (ci("rsqgc_card", 1) <= 0 && !watchOn)) { ClearAll(p); return; }
 
 		let item = RSQGC_CardItem(pmo.FindInventory("RSQGC_CardItem"));
@@ -383,7 +385,7 @@ class RSQGC_GunCard : EventHandler
 		// card shows when rsqgc_card says.
 		bool both = ci("rsqgc_hands", 0) == 1;
 		bool watching[2];
-		for (int hand = 0; hand < 2; hand++) watching[hand] = watchOn && Watching(pmo, hand);
+		for (int hand = 0; hand < 2; hand++) watching[hand] = always || (watchOn && Watching(pmo, hand));
 		bool show[2];
 		Weapon gun[2], other[2];
 		for (int hand = 0; hand < 2; hand++)
@@ -418,15 +420,17 @@ class RSQGC_GunCard : EventHandler
 				bool wantFull = watching[hand];
 				if (!wc.Shown() || wc.full != wantFull) wc.Show(pmo.pos, wantFull);
 				wc.Fill(pmo, w, CardColour(p, w));
-				wc.Place(pmo, cv("rsqgc_world_scale", 1.4), wantFull ? WatchNudge(true) : Nudge(true), wantFull ? WatchNudge(false) : Nudge(false), mShow[hand] * cv("rsqgc_alpha", 0.85));
+				wc.Place(pmo, cv("rsqgc_world_scale", 1.4), wantFull ? WatchNudge(true) : Nudge(true), wantFull ? WatchNudge(false) : Nudge(false), mShow[hand] * cv("rsqgc_alpha", 0.85), wantFull ? 0 : cv("rsqgc_in", 0));
 				continue;
 			}
 			World(hand).Hide();
 			if (watching[hand])
 			{
-				// the watch card: the full card flat on both sides of the wrist (side.zs)
-				ClearHand(p, hand);
+				// the watch card: the full card flat on both sides of the wrist (side.zs). Always on: the small card
+				// still shows as rsqgc_card says, beside it
 				DrawSide(p, pmo, hand, owner, w);
+				if (always && w && Wanted(pmo, hand)) Draw(p, pmo, hand, owner, w, other[hand], other[hand] != null);
+				else ClearHand(p, hand);
 				continue;
 			}
 			Side(hand).Remove(p); SideOf(hand, 1).Remove(p);
@@ -499,10 +503,10 @@ class RSQGC_GunCard : EventHandler
 
 		// the panel
 		int style = StyleFor(p, w);
-		Put(p, base + P_PANEL, Nth(RSQGC_CardStates.Piece(0, mir), style), owner, alpha, tPanel);
+		Put(p, base + P_PANEL, Nth(RSQGC_CardStates.Piece(0, mir, 0, Depth()), style), owner, alpha, tPanel);
 		// the word: MAGAZINE on a gun with one, AMMO otherwise
 		int lab = HasMagazine(w) ? 1 : 0;
-		if (ci("rsqgc_label", 1)) Put(p, base + P_LABEL, Nth(RSQGC_CardStates.Piece(1, mir), lab), owner, alpha, tPanel);
+		if (ci("rsqgc_label", 1)) Put(p, base + P_LABEL, Nth(RSQGC_CardStates.Piece(1, mir, 0, Depth()), lab), owner, alpha, tPanel);
 		else Kill(p, base + P_LABEL);
 		// the big number, right-aligned in three slots
 		Digits(p, 2, mir, base + P_BIG, owner, clamp(loaded, 0, 999), false, alpha, tLow >= 0 ? tLow : tDigits);
@@ -522,7 +526,7 @@ class RSQGC_GunCard : EventHandler
 			int ci0 = k - (slots - len);
 			if (ci0 < 0) { Kill(p, base + k); continue; }
 			int g = s.ByteAt(ci0) - 48;
-			Put(p, base + k, Nth(RSQGC_CardStates.Piece(kind, mir, k), g), owner, alpha, trans);
+			Put(p, base + k, Nth(RSQGC_CardStates.Piece(kind, mir, k, Depth()), g), owner, alpha, trans);
 		}
 	}
 
@@ -562,6 +566,14 @@ class RSQGC_GunCard : EventHandler
 	// the nudge sliders, degrees about the hand
 	double Nudge(bool up) { return cv(up ? "rsqgc_up" : "rsqgc_side", 0); }
 	double WatchNudge(bool up) { return cv(up ? "rsqgc_watch_up" : "rsqgc_watch_side", 0); }
+	// IN AND OUT (owner 2026-10-31): rsqgc_in cm along the forearm, + toward you; the card is baked at
+	// RSQGC_CardStates.DEPTHS places DEPTH_STEP apart, and this picks the nearest
+	int Depth()
+	{
+		int mid = RSQGC_CardStates.DEPTHS / 2;
+		int k = int(floor(cv("rsqgc_in", 0) / RSQGC_CardStates.DEPTH_STEP + 0.5)) + mid;
+		return clamp(k, 0, RSQGC_CardStates.DEPTHS - 1);
+	}
 
 	private static void Kill(PlayerInfo p, int id)
 	{

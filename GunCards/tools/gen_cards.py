@@ -85,7 +85,7 @@ def write_kvx(path, vox, size, pivot, pal):
         f.write(struct.pack('<i', len(mip)) + mip + bytes(p))
 
 
-def card_piece(png, w, h, scale, local, mirror, out, alpha_cut=60):
+def card_piece(png, w, h, scale, local, mirror, out, alpha_cut=60, dy=0.0):
     """A flat piece facing the player (KVX x = across, z = down, one voxel deep in y), at CARD + local.
     The engine mirrors the physical left hand, which also puts the card on that hand's inboard side.
     The mirrored twin flips the picture and the piece's place WITHIN the card, so after the engine's
@@ -105,13 +105,19 @@ def card_piece(png, w, h, scale, local, mirror, out, alpha_cut=60):
                 vox[(x, 0, y)] = q.getpixel((x, y))
     lx, ly, lz = local
     if mirror: lx = -lx
-    X, Y, Z = CARD[0] + lx, CARD[1] + ly, CARD[2] + lz
+    X, Y, Z = CARD[0] + lx, CARD[1] + ly + dy, CARD[2] + lz
     piv = (w / 2.0 + X / scale, 0.5 + Y / scale, h / 2.0 + Z / scale)
     write_kvx(out, vox, (w, 1, h), piv, pal)
     return len(vox)
 
 
 def add(a, b): return tuple(x + y for x, y in zip(a, b))
+
+
+# IN AND OUT (owner 2026-10-31: "i want to be able to move the ammo card in and out, in addition to left right and
+# up down"). A layer's x / y only turn a model about its origin, so a move along the forearm cannot be done at run
+# time: the card is baked at DEPTHS (cm along model Y, + toward the player) and rsqgc_in picks one.
+DEPTHS = [-6.0, -4.5, -3.0, -1.5, 0.0, 1.5, 3.0, 4.5, 6.0]
 
 
 def main():
@@ -134,37 +140,39 @@ def main():
 
     import re
     bgs = sorted(int(re.match(r'ammo_bg(\d+)\.png$', f).group(1)) for f in os.listdir(art) if re.match(r'ammo_bg\d+\.png$', f))
-    for m in (0, 1):
+    for di, dy in enumerate(DEPTHS):
+     dc = str(di)
+     for m in (0, 1):
         mc = 'NM'[m]
-        # panels: sprite WKP<N|M>, frames A.. = ammo_bg1..19
-        spr = 'WKP' + mc
+        # panels: sprite Q<d>P<N|M>, frames A.. = ammo_bg1..19
+        spr = 'Q' + dc + 'P' + mc
         line = []
         for s, bg in enumerate(bgs):
-            lump = 'wkp%s%02d' % (mc.lower(), bg)
+            lump = 'wk%sp%s%02d' % (dc, mc.lower(), bg)
             count += card_piece(os.path.join(art, 'ammo_bg%d.png' % bg), PANEL_W, PANEL_H, PANEL_S, (0, 0, 0), m,
-                                os.path.join(vdir, lump + '.kvx'))
+                                os.path.join(vdir, lump + '.kvx'), dy=dy)
             frame(spr, letters[s], lump, PANEL_S); line.append(letters[s])
-        states.append(('P' + mc, spr, line))
-        # labels: WKL<N|M>
-        spr = 'WKL' + mc
+        states.append(('P%s%s' % (mc, dc), spr, line))
+        # labels: Q<d>L<N|M>
+        spr = 'Q' + dc + 'L' + mc
         line = []
         for k, name in enumerate(LABELS):
-            lump = 'wkl%s%d' % (mc.lower(), k)
+            lump = 'wk%sl%s%d' % (dc, mc.lower(), k)
             count += card_piece(os.path.join(art, name + '.png'), 88, 12, LABEL_S,
-                                add(LABEL_AT, (0, FRONT, 0)), m, os.path.join(vdir, lump + '.kvx'))
+                                add(LABEL_AT, (0, FRONT, 0)), m, os.path.join(vdir, lump + '.kvx'), dy=dy)
             frame(spr, letters[k], lump, LABEL_S); line.append(letters[k])
-        states.append(('L' + mc, spr, line))
-        # digits: big slots WKB<N|M><0..2>, small WKS<N|M><0..2>
+        states.append(('L%s%s' % (mc, dc), spr, line))
+        # digits: Q<d><B|S><0..5> (mirror * 3 + slot)
         for kind, slots, scale in (('B', BIG_AT, BIG_S), ('S', SMALL_AT, SMALL_S)):
             for si, sat in enumerate(slots):
-                spr = 'W%s%s%d' % (kind, mc, si)
+                spr = 'Q%s%s%d' % (dc, kind, m * 3 + si)
                 line = []
                 for gi, g in enumerate(GLYPHS):
-                    lump = 'wk%s%s%d%s' % (kind.lower(), mc.lower(), si, g)
+                    lump = 'wk%s%s%s%d%s' % (dc, kind.lower(), mc.lower(), si, g)
                     count += card_piece(os.path.join(art, 'digit_%s.png' % g), 12, 12, scale,
-                                        add(sat, (0, FRONT, 0)), m, os.path.join(vdir, lump + '.kvx'))
+                                        add(sat, (0, FRONT, 0)), m, os.path.join(vdir, lump + '.kvx'), dy=dy)
                     frame(spr, letters[gi], lump, scale); line.append(letters[gi])
-                states.append(('%s%s%d' % (kind, mc, si), spr, line))
+                states.append(('%s%s%d%s' % (kind, mc, si, dc), spr, line))
 
     # VOXELDEF block
     vpath = os.path.join(ROOT, 'VOXELDEF.txt')
@@ -195,16 +203,20 @@ def main():
     z += ['\t}', '',
           '\t// The first state of a piece. kind 0 panel, 1 label, 2 big digit, 3 small digit; slot for digits.',
           '\t// (FindState wants a constant label, hence the table.)',
-          '\tstatic State Piece(int kind, bool mirrored, int slot = 0)',
+          '\t// depth: which of the baked DEPTHS (rsqgc_in), 0..%d, %d is where the owner placed it.' % (len(DEPTHS) - 1, DEPTHS.index(0.0)),
+          '\tconst DEPTHS = %d;' % len(DEPTHS),
+          '\tconst DEPTH_STEP = %g;   // cm between them' % (DEPTHS[1] - DEPTHS[0]),
+          '\tstatic State Piece(int kind, bool mirrored, int slot = 0, int depth = %d)' % DEPTHS.index(0.0),
           '\t{',
           '\t\tlet d = GetDefaultByType("RSQGC_CardStates");',
-          '\t\tint k = kind * 100 + (mirrored ? 10 : 0) + slot;',
+          '\t\tint k = depth * 1000 + kind * 100 + (mirrored ? 10 : 0) + slot;',
           '\t\tswitch (k)', '\t\t{']
     for label, spr, frames in states:
         kind = {'P': 0, 'L': 1, 'B': 2, 'S': 3}[label[0]]
         mir = 1 if label[1] == 'M' else 0
-        slot = int(label[2:]) if len(label) > 2 else 0
-        z.append('\t\tcase %d: return d.FindState("%s");' % (kind * 100 + mir * 10 + slot, label))
+        dep = int(label[-1])
+        slot = int(label[2:-1]) if len(label) > 3 else 0
+        z.append('\t\tcase %d: return d.FindState("%s");' % (dep * 1000 + kind * 100 + mir * 10 + slot, label))
     z += ['\t\t}', '\t\treturn null;', '\t}', '}', '']
     with open(os.path.join(ROOT, 'zscript', 'rsqgc', 'card_states.zs'), 'w') as f:
         f.write('\n'.join(z))
