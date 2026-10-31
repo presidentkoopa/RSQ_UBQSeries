@@ -32,3 +32,13 @@ for _ in range(60):
     i = rng.integers(0, len(t) - 200); crack[i:i + 40] += rng.standard_normal(40) * np.exp(-np.arange(40) / 8) * rng.uniform(0.3, 1)
 hiss = rng.standard_normal(len(t)) * 0.15
 save("rtcglite", (crack + hiss) * np.minimum(1, t / 0.1) * np.minimum(1, (0.9 - t) / 0.3))
+
+# 2026-10-31 (the owner's smoke): the draw and the exhale, breath noise shaped by a low-pass and an envelope.
+#   rtinhale  a short sharp draw on the cigarette (rises, then cuts)
+#   rtexhale  the long breath out as the butt flies (falls away)
+def breath(sec, rise, fall, smooth):
+    t = t_(sec)
+    n = np.convolve(rng.standard_normal(len(t)), np.ones(smooth) / smooth, mode="same")
+    return n * np.minimum(1, t / rise) * np.exp(-np.maximum(t - rise, 0) / fall)
+save("rtinhale", breath(0.45, 0.30, 0.05, 6))
+save("rtexhale", breath(1.6, 0.08, 0.55, 9))

@@ -1,29 +1,21 @@
-// ERMAC'S CIGARETTE (optional tribute, off by default: rsqtr_cig).
+// ERMAC'S CIGARETTE (optional tribute, off by default: rsqtr_cig), the owner's way (2026-10-31):
 //
-// The idea is Ermac's: the cigarette, its butt and its smoke come from his Virtual
-// Tactical Vest for Doom VR (its credits name him as their modeller; the cigarette's
-// texture is an atlas shared with a Sketchfab cigarette-pack model, its pack art blanked
-// here), and the Zippo is the voxel lighter from his ZBlood-VR, credited to him there.
-// This is a new implementation for the rig.
+//   1. Grip at the pocket on your left chest (right chest left-handed) with the MAIN hand: the cigarette is in that hand,
+//      drawn WITH Brutal Doom VR's hand on the hand's own layer (RSQTR_CigWeapon), and the Zippo is in the off hand
+//      (RSQTR_ZippoWeapon). Grip at the pocket again to put it back.
+//   2. Bring it to the headset and press FIRE: it stays at your mouth, and the hand has its gun again.
+//   3. OFF-HAND FIRE flicks the Zippo open (again: shut). Hold its flame to the tip: it lights.
+//   4. OFF-HAND FIRE again: you draw on it, it flares, then you spit it out -- it flies away from your face end over
+//      end in an arc, you exhale, and RSQ_SlowMo starts (if loaded; RS_SlowMo's own rsm_pulse, no link needed).
+//      The Zippo goes away. The butt still smoulders where it lands and draws monsters, as Ermac's did.
 //
-// Reach to the pocket on your left chest (right chest left-handed) and grip (or press Use): a cigarette comes
-// to that hand. Bring it to your mouth and hold it there a moment and it lights --
-// or, with the Zippo on (rsqtr_cig_zippo), reach to the same pocket with your OTHER
-// hand and keep the grip held: the Zippo comes out and flicks open, and holding its
-// flame to the cigarette's tip at your mouth lights it. Let go of the grip and the
-// Zippo snaps shut and goes away.
+// The idea is Ermac's: the cigarette, its butt and its smoke come from his Virtual Tactical Vest for Doom VR (its credits
+// name him as their modeller; the cigarette's texture is an atlas shared with a Sketchfab cigarette-pack model, its pack
+// art blanked here), and the Zippo is the voxel lighter from his ZBlood-VR, credited to him there. tools/gen_handprops.py
+// bakes both into Brutal Doom VR's hand. A pocket holds a few (rsqtr_cig_count), refilled on a new level.
 //
-// While it burns (rsqtr_cig_secs), RSQ_SlowMo slows the world, if it is loaded:
-// the cigarette asks for it through RS_SlowMo's own rsm_pulse, so it needs no link
-// to the other mod and does nothing if nothing answers. Ermac's originals are kept:
-// smoking at your mouth heals you slowly under 35 health, and a butt flicked away
-// (press the grip again while swinging the hand) smoulders where it lands and
-// draws monsters to it, and into each other. Burnt down, it drops from your hand.
-// A pocket holds a few (rsqtr_cig_count), refilled on a new level (rsqtr_cig_refill).
-//
-// NETPLAY: the hands are the console player's alone, so that machine decides and
-// sends one event per action (take, put back, light, at the mouth or not, flick,
-// Zippo out, Zippo away); every machine spawns and moves the same things.
+// NETPLAY: the hands are the console player's alone, so that machine decides and sends one event per action (take, put
+// back, lock at the mouth, flick the Zippo, light, smoke); every machine runs the same steps from them.
 
 class RSQTR_Cig : EventHandler
 {
@@ -31,24 +23,29 @@ class RSQTR_Cig : EventHandler
 	const POCKET_L = 0.16;
 	const POCKET_U = -0.25;
 	const POCKET_R = 0.09;
-	const MOUTH_R = 0.12;        // metres: the cigarette is "at your mouth"
-	const FLAME_R = 0.07;        // metres: the Zippo's flame is "on the tip"
-	const FLICK_SPEED = 1.5;     // metres a second: a press while the hand moves this fast is a flick
+	const MOUTH_R = 0.18;        // metres: the cigarette hand is "at the headset"
+	const FLAME_R = 0.14;        // metres: the Zippo hand is "at the tip"
+	const DRAW_TICS = 14;        // the draw before the flare
+	const FLARE_TICS = 8;        // the flare before you spit it
+
+	const PH_NONE = 0;
+	const PH_HAND = 1;           // in the hand
+	const PH_MOUTH = 2;          // at the mouth, not lit
+	const PH_LIT = 3;            // lit
+	const PH_DRAW = 4;           // drawing on it, then the flare, then the spit
 
 	// ---- synced --------------------------------------------------------------------
-	int  cigHand[MAXPLAYERS];    // -1 none
-	bool lit[MAXPLAYERS];
-	int  burnEnd[MAXPLAYERS];
-	bool atMouth[MAXPLAYERS];
-	Vector3 flickAt[MAXPLAYERS]; // where the hand was when it flicked (sent, so every machine agrees)
-	int  zipHand[MAXPLAYERS];    // -1 none
-	Actor cigProp[MAXPLAYERS];
-	Actor zipProp[MAXPLAYERS];
+	int  phase[MAXPLAYERS];
+	int  phaseTic[MAXPLAYERS];
+	bool zipOpen[MAXPLAYERS];
+	int  zipTic[MAXPLAYERS];
+	String prevMain[MAXPLAYERS], prevOff[MAXPLAYERS];
+	Actor mouthProp[MAXPLAYERS];
+	int  spitTic[MAXPLAYERS];    // when the last spit was (the console player's SlowMo starts on it)
 
 	// ---- local (console player) ----------------------------------------------------
-	private transient bool pressWas[2];
-	private transient Vector3 lastHand[2];
-	private transient int mouthT, flameT, pulseNext;
+	private transient bool pressWas[2], fireWas, offFireWas;
+	private transient int flameT, spitSeen;
 	private transient Actor pocketMark;
 
 	static RSQTR_Cig Get() { return RSQTR_Cig(EventHandler.Find("RSQTR_Cig")); }
@@ -64,10 +61,11 @@ class RSQTR_Cig : EventHandler
 	{
 		for (int i = 0; i < MAXPLAYERS; i++)
 		{
-			cigHand[i] = -1; zipHand[i] = -1; lit[i] = false; atMouth[i] = false;
-			cigProp[i] = null; zipProp[i] = null;
+			phase[i] = PH_NONE; zipOpen[i] = false; mouthProp[i] = null; spitTic[i] = -100;
 			if (!playeringame[i] || !players[i].mo) continue;
 			let pmo = players[i].mo;
+			pmo.TakeInventory("RSQTR_CigWeapon", 999);
+			pmo.TakeInventory("RSQTR_ZippoWeapon", 999);
 			int count = RSQTR_Rig.Opt("rsqtr_cig_count", players[i], 3);
 			let tok = pmo.FindInventory("RSQTR_CigPack");
 			if (!tok) pmo.SetInventory("RSQTR_CigPack", count);
@@ -93,11 +91,16 @@ class RSQTR_Cig : EventHandler
 		Vector3 h = RSQTR_Body.Head(pmo);
 		return h + (cos(pmo.angle) * 0.07 * 34, sin(pmo.angle) * 0.07 * 34, -0.08 * 34 / 1.2);
 	}
+	// The cigarette's burning end at the mouth: 7 cm out along where you look, a little down.
+	static Vector3 MouthTip(PlayerPawn pmo)
+	{
+		return Mouth(pmo) + (cos(pmo.angle) * 0.07 * 34, sin(pmo.angle) * 0.07 * 34, -0.02 * 34 / 1.2);
+	}
 
 	// ---- the local loop ----------------------------------------------------------------
 	override void WorldTick()
 	{
-		BurnAll();
+		Steps();
 
 		let p = players[consoleplayer];
 		if (!p || !p.mo || p.mo.health <= 0) { HideMark(); return; }
@@ -107,76 +110,60 @@ class RSQTR_Cig : EventHandler
 		let rig = RSQTR_Rig.Get();
 		Vector3 pocket = Pocket(pmo);
 		bool useDown = (p.cmd.buttons & BT_USE) != 0;
-		bool zippo = RSQTR_Rig.Flag("rsqtr_cig_zippo", p, false);
 		double nearest = 1e9;
 
+		// the pocket: the main hand takes one, or puts it back
 		for (int h = 0; h < 2; h++)
 		{
 			Vector3 hp = RSQTR_Body.Hand(pmo, h);
-			Vector3 hv = level.Vec3Diff(lastHand[h], hp);
-			double speed = RSQTR_Body.RoomMetres(lastHand[h], hp) * TICRATE;
-			lastHand[h] = hp;
 			bool grip = rig && rig.gripDown[n * 2 + h];
 			bool holding = grip || useDown;
 			bool press = holding && !pressWas[h];
 			pressWas[h] = holding;
 			double dp = RSQTR_Body.RoomMetres(hp, pocket);
 			nearest = min(nearest, dp);
-			bool inPocket = dp < POCKET_R;
-
-			if (press && inPocket)
+			if (!press || dp >= POCKET_R || h != 0) continue;
+			if (phase[n] == PH_NONE)
 			{
-				if (cigHand[n] < 0)
-				{
-					if (Packs(pmo) > 0) EventHandler.SendNetworkEvent("rsqtr_cigtake", h);
-					else RSQTR_Buzzer.Start(pmo, h, 0.2, 3);
-				}
-				else if (cigHand[n] == h && !lit[n]) EventHandler.SendNetworkEvent("rsqtr_cigback");
-				else if (cigHand[n] == 1 - h && zippo && zipHand[n] < 0 && !lit[n]) EventHandler.SendNetworkEvent("rsqtr_zipon", h);
+				if (Packs(pmo) > 0) EventHandler.SendNetworkEvent("rsqtr_cigtake");
+				else RSQTR_Buzzer.Start(pmo, h, 0.2, 3);
 			}
-			else if (press && cigHand[n] == h && speed >= RSQTR_A11y.Low(FLICK_SPEED))   // Gesture Ease: x1..x0.5
-			{
-				// A flick: away it goes, with the hand's own speed.
-				Vector3 at = RSQTR_CigProp(cigProp[n]) ? cigProp[n].pos : hp;
-				EventHandler.SendNetworkEvent("rsqtr_cigat", int(at.x * 8), int(at.y * 8), int(at.z * 8));
-				EventHandler.SendNetworkEvent("rsqtr_cigflick", int(hv.x * 100), int(hv.y * 100), int(hv.z * 100));
-			}
-			if (zipHand[n] == h && !holding) EventHandler.SendNetworkEvent("rsqtr_zipoff");
+			else if (phase[n] == PH_HAND) EventHandler.SendNetworkEvent("rsqtr_cigback");
 		}
 
-		// At the mouth: lighting, smoking.
-		if (cigHand[n] >= 0)
+		// fire: the cigarette at the headset stays at your mouth
+		bool fire = (p.cmd.buttons & BT_ATTACK) != 0;
+		bool fireEdge = fire && !fireWas;
+		fireWas = fire;
+		if (fireEdge && phase[n] == PH_HAND && p.ReadyWeapon is "RSQTR_CigWeapon"
+			&& RSQTR_Body.RoomMetres(RSQTR_Body.Hand(pmo, 0), Mouth(pmo)) < MOUTH_R)
+			EventHandler.SendNetworkEvent("rsqtr_ciglock");
+
+		// off-hand fire: the Zippo open / shut, or (lit) the draw
+		bool off = (p.cmd.buttons & BT_OFFHANDATTACK) != 0;
+		bool offEdge = off && !offFireWas;
+		offFireWas = off;
+		if (offEdge && p.OffhandWeapon is "RSQTR_ZippoWeapon")
 		{
-			Vector3 hp = RSQTR_Body.Hand(pmo, cigHand[n]);
-			bool mouth = RSQTR_Body.RoomMetres(hp, Mouth(pmo)) < MOUTH_R;
-			if (mouth != atMouth[n]) EventHandler.SendNetworkEvent("rsqtr_cigmouth", mouth ? 1 : 0);
-			mouthT = mouth ? mouthT + 1 : 0;
-			if (!lit[n] && mouth)
-			{
-				if (!zippo)
-				{
-					if (mouthT >= 12) EventHandler.SendNetworkEvent("rsqtr_ciglight");
-				}
-				else if (zipHand[n] >= 0 && RSQTR_ZippoProp(zipProp[n]) && RSQTR_ZippoProp(zipProp[n]).Burning())
-				{
-					Vector3 tip = RSQTR_CigProp(cigProp[n]) ? RSQTR_CigProp(cigProp[n]).Tip() : hp;
-					Vector3 flame = RSQTR_ZippoProp(zipProp[n]).Flame();
-					flameT = RSQTR_Body.RoomMetres(tip, flame) < FLAME_R ? flameT + 1 : 0;
-					if (flameT >= 6) EventHandler.SendNetworkEvent("rsqtr_ciglight");
-				}
-			}
-			// While it burns, keep RSQ_SlowMo's pulse topped up (its hold caps at 5 s).
-			if (lit[n] && RSQTR_Rig.Flag("rsqtr_cig_slowmo", p, true) && level.maptime >= pulseNext)
-			{
-				int left = burnEnd[n] - level.maptime;
-				if (left > 0)
-				{
-					EventHandler.SendNetworkEvent("rsm_pulse", min(5000, left * 1000 / TICRATE), RSQTR_Rig.Opt("rsqtr_cig_depth", p, 25));
-					pulseNext = level.maptime + TICRATE * 2;
-				}
-			}
+			if (phase[n] == PH_LIT) EventHandler.SendNetworkEvent("rsqtr_cigsmoke");
+			else if (phase[n] != PH_DRAW) EventHandler.SendNetworkEvent("rsqtr_zipflick");
 		}
-		else { mouthT = 0; flameT = 0; }
+
+		// the flame on the tip lights it
+		if (phase[n] == PH_MOUTH && zipOpen[n] && level.maptime - zipTic[n] > 7 && p.OffhandWeapon is "RSQTR_ZippoWeapon")
+		{
+			flameT = RSQTR_Body.RoomMetres(RSQTR_Body.Hand(pmo, 1), MouthTip(pmo)) < FLAME_R ? flameT + 1 : 0;
+			if (flameT >= 4) { flameT = 0; EventHandler.SendNetworkEvent("rsqtr_ciglight"); }
+		}
+		else flameT = 0;
+
+		// the spit: RSQ_SlowMo starts with the exhale
+		if (spitTic[n] != spitSeen && spitTic[n] == level.maptime)
+		{
+			spitSeen = spitTic[n];
+			if (RSQTR_Rig.Flag("rsqtr_cig_slowmo", p, true))
+				EventHandler.SendNetworkEvent("rsm_pulse", int(RSQTR_Rig.Num("rsqtr_cig_secs", p, 6) * 1000), RSQTR_Rig.Opt("rsqtr_cig_depth", p, 25));
+		}
 
 		ShowMark(pocket, nearest);
 	}
@@ -198,128 +185,251 @@ class RSQTR_Cig : EventHandler
 	private void HideMark() { if (pocketMark) pocketMark.bINVISIBLE = true; }
 
 	// ---- every machine ----------------------------------------------------------------
+	private void SetPhase(int n, int ph) { phase[n] = ph; phaseTic[n] = level.maptime; }
+
+	// The hands back as they were: the main hand's gun, the off hand's (or Brutal Doom Quest's empty hand).
+	private void MainBack(PlayerPawn pmo, int n)
+	{
+		class<Weapon> wc = prevMain[n];
+		let w = wc ? Weapon(pmo.FindInventory(wc)) : null;
+		if (!w) w = RSQTR_Rig.EmptyHand(pmo);
+		if (w && !(w is "RSQTR_CigWeapon")) pmo.player.PendingWeapon = w;
+	}
+	private void OffBack(PlayerPawn pmo, int n)
+	{
+		let rig = RSQTR_Rig.Get();
+		String o = prevOff[n];
+		class<Weapon> oc = o;
+		if (!oc || !pmo.FindInventory(oc)) o = RSQTR_Rig.OffEmptyName(pmo);
+		if (rig && o != "") rig.QueueOff(n, o);
+		else { pmo.player.SetPsprite(PSP_OFFHANDWEAPON, null); pmo.player.OffhandWeapon = null; }
+	}
+
 	override void NetworkProcess(ConsoleEvent e)
 	{
 		int n = e.Player;
 		if (n < 0 || n >= MAXPLAYERS || !playeringame[n]) return;
 		let pmo = players[n].mo;
 		if (!pmo) return;
+		let p = players[n];
+		if (e.Name.Left(9) == "rsqtr_cig" || e.Name.Left(9) == "rsqtr_zip")
+			if (RSQTR_Rig.Flag("rsqtr_messages", p, false)) Console.Printf("T_CIG %s t%d phase %d", e.Name, level.maptime, phase[n]);
 
 		if (e.Name == "rsqtr_cigtake")
 		{
-			if (cigHand[n] >= 0 || Packs(pmo) <= 0) return;
+			if (phase[n] != PH_NONE || Packs(pmo) <= 0) return;
 			pmo.TakeInventory("RSQTR_CigPack", 1);
-			cigHand[n] = clamp(e.Args[0], 0, 1);
-			lit[n] = false; atMouth[n] = false;
-			let c = RSQTR_CigProp(Actor.Spawn("RSQTR_CigProp", RSQTR_Body.Hand(pmo, cigHand[n])));
-			if (c) { c.holder = pmo; c.hand = cigHand[n]; }
-			cigProp[n] = c;
+			prevMain[n] = p.ReadyWeapon && !(p.ReadyWeapon is "RSQTR_CigWeapon") ? p.ReadyWeapon.GetClassName() : 'None';
+			if (prevMain[n] == "None") prevMain[n] = "";
+			prevOff[n] = p.OffhandWeapon && !(p.OffhandWeapon is "RSQTR_ZippoWeapon") ? p.OffhandWeapon.GetClassName() : 'None';
+			if (prevOff[n] == "None") prevOff[n] = "";
+			if (!pmo.FindInventory("RSQTR_CigWeapon")) pmo.GiveInventory("RSQTR_CigWeapon", 1);
+			if (!pmo.FindInventory("RSQTR_ZippoWeapon")) pmo.GiveInventory("RSQTR_ZippoWeapon", 1);
+			p.PendingWeapon = Weapon(pmo.FindInventory("RSQTR_CigWeapon"));
+			let rig = RSQTR_Rig.Get();
+			if (rig) rig.QueueOff(n, "RSQTR_ZippoWeapon");
+			zipOpen[n] = false;
+			SetPhase(n, PH_HAND);
 			pmo.A_StartSound("rsqtr/radial", CHAN_AUTO, 0, 0.6);
-			if (n == consoleplayer) RSQTR_Buzzer.Start(pmo, cigHand[n], 0.3, 3);
+			if (n == consoleplayer) RSQTR_Buzzer.Start(pmo, 0, 0.3, 3);
 		}
 		else if (e.Name == "rsqtr_cigback")
 		{
-			if (cigHand[n] < 0 || lit[n]) return;
+			if (phase[n] != PH_HAND) return;
 			pmo.GiveInventory("RSQTR_CigPack", 1);
-			if (cigProp[n]) cigProp[n].Destroy();
-			cigHand[n] = -1;
+			MainBack(pmo, n); OffBack(pmo, n);
+			SetPhase(n, PH_NONE);
 			pmo.A_StartSound("rsqtr/radial", CHAN_AUTO, 0, 0.5);
+		}
+		else if (e.Name == "rsqtr_ciglock")
+		{
+			if (phase[n] != PH_HAND) return;
+			let c = RSQTR_CigProp(Actor.Spawn("RSQTR_CigProp", Mouth(pmo)));
+			if (c) { c.holder = pmo; c.atMouth = true; }
+			mouthProp[n] = c;
+			MainBack(pmo, n);
+			SetPhase(n, PH_MOUTH);
+			pmo.A_StartSound("rsqtr/radial", CHAN_AUTO, 0, 0.4);
+			if (n == consoleplayer) RSQTR_Buzzer.Start(pmo, 0, 0.3, 3);
+		}
+		else if (e.Name == "rsqtr_zipflick")
+		{
+			if (!(p.OffhandWeapon is "RSQTR_ZippoWeapon")) return;
+			zipOpen[n] = !zipOpen[n];
+			zipTic[n] = level.maptime;
+			pmo.A_StartSound(zipOpen[n] ? "rsqtr/zipopen" : "rsqtr/zipclose", CHAN_AUTO, 0, 0.8);
+			if (n == consoleplayer) RSQTR_Buzzer.Start(pmo, 1, 0.4, 4);
 		}
 		else if (e.Name == "rsqtr_ciglight")
 		{
-			if (cigHand[n] < 0 || lit[n]) return;
-			lit[n] = true;
-			burnEnd[n] = level.maptime + int(RSQTR_Rig.Num("rsqtr_cig_secs", players[n], 6) * TICRATE);
-			let c = RSQTR_CigProp(cigProp[n]);
+			if (phase[n] != PH_MOUTH) return;
+			let c = RSQTR_CigProp(mouthProp[n]);
 			if (c) c.SetLit();
-			pmo.A_StartSound("rsqtr/ciglight", CHAN_AUTO, 0, 0.8);
-			if (n == consoleplayer) RSQTR_Buzzer.Start(pmo, cigHand[n], 0.5, 6);
+			SetPhase(n, PH_LIT);
+			pmo.A_StartSound("rsqtr/ziplight", CHAN_AUTO, 0, 0.6);
+			if (n == consoleplayer) RSQTR_Buzzer.Start(pmo, 1, 0.5, 6);
 		}
-		else if (e.Name == "rsqtr_cigmouth")
+		else if (e.Name == "rsqtr_cigsmoke")
 		{
-			bool was = atMouth[n];
-			atMouth[n] = e.Args[0] != 0;
-			// Away from the mouth after a draw: the exhale.
-			if (was && !atMouth[n] && lit[n]) Exhale(pmo);
+			if (phase[n] != PH_LIT) return;
+			SetPhase(n, PH_DRAW);
+			pmo.A_StartSound("rsqtr/inhale", CHAN_AUTO, 0, 0.9);
 		}
-		else if (e.Name == "rsqtr_cigat")
+	}
+
+	// The draw, the flare, the spit; and tidying the two hand weapons away once they are out of the hands.
+	private void Steps()
+	{
+		for (int n = 0; n < MAXPLAYERS; n++)
 		{
-			flickAt[n] = (e.Args[0], e.Args[1], e.Args[2]) / 8.0;
+			if (!playeringame[n] || !players[n].mo) continue;
+			let pmo = players[n].mo;
+			let p = players[n];
+			if (pmo.health <= 0 && phase[n] != PH_NONE)
+			{
+				if (mouthProp[n]) mouthProp[n].Destroy();
+				SetPhase(n, PH_NONE);
+			}
+			if (phase[n] == PH_DRAW)
+			{
+				int t = level.maptime - phaseTic[n];
+				let c = RSQTR_CigProp(mouthProp[n]);
+				if (t == DRAW_TICS && c)
+				{
+					c.Flare();
+					pmo.A_StartSound("rsqtr/ciglight", CHAN_AUTO, 0, 1.0);
+				}
+				if (t >= DRAW_TICS + FLARE_TICS) Spit(pmo, n);
+			}
+			// out of the hands: away (never left in a weapon slot)
+			if (phase[n] != PH_HAND && p.ReadyWeapon != pmo.FindInventory("RSQTR_CigWeapon") && p.PendingWeapon != pmo.FindInventory("RSQTR_CigWeapon"))
+				pmo.TakeInventory("RSQTR_CigWeapon", 999);
+			bool zipNeeded = phase[n] == PH_HAND || phase[n] == PH_MOUTH || phase[n] == PH_LIT || phase[n] == PH_DRAW;
+			if (!zipNeeded && p.OffhandWeapon != pmo.FindInventory("RSQTR_ZippoWeapon"))
+				pmo.TakeInventory("RSQTR_ZippoWeapon", 999);
 		}
-		else if (e.Name == "rsqtr_cigflick")
+	}
+
+	// SPIT IT OUT: the butt flies from the mouth away from your face, end over end, on an arc; you exhale and the
+	// Zippo goes away. RSQ_SlowMo starts on this tic (WorldTick, the console player).
+	private void Spit(PlayerPawn pmo, int n)
+	{
+		Vector3 from = MouthTip(pmo);
+		let b = RSQTR_Butt(Actor.Spawn("RSQTR_Butt", from));
+		if (b)
 		{
-			if (cigHand[n] < 0) return;
-			Vector3 v = (e.Args[0], e.Args[1], e.Args[2]) / 100.0;
-			DropButt(n, v, flickAt[n]);
+			b.vel = (cos(pmo.angle) * 7, sin(pmo.angle) * 7, 4.5) + pmo.vel;
+			b.target = pmo;
+			b.smoulder = true;
+			b.spin = 24;
 		}
-		else if (e.Name == "rsqtr_zipon")
-		{
-			if (zipHand[n] >= 0) return;
-			zipHand[n] = clamp(e.Args[0], 0, 1);
-			let z = RSQTR_ZippoProp(Actor.Spawn("RSQTR_ZippoProp", RSQTR_Body.Hand(pmo, zipHand[n])));
-			if (z) { z.holder = pmo; z.hand = zipHand[n]; }
-			zipProp[n] = z;
-			pmo.A_StartSound("rsqtr/zipopen", CHAN_AUTO, 0, 0.8);
-			if (n == consoleplayer) RSQTR_Buzzer.Start(pmo, zipHand[n], 0.4, 4);
-		}
-		else if (e.Name == "rsqtr_zipoff")
-		{
-			if (zipHand[n] < 0) return;
-			if (zipProp[n]) zipProp[n].Destroy();
-			zipHand[n] = -1;
-			pmo.A_StartSound("rsqtr/zipclose", CHAN_AUTO, 0, 0.8);
-		}
+		if (mouthProp[n]) mouthProp[n].Destroy();
+		mouthProp[n] = null;
+		Exhale(pmo);
+		pmo.A_StartSound("rsqtr/exhale", CHAN_AUTO, 0, 0.9);
+		zipOpen[n] = false;
+		pmo.A_StartSound("rsqtr/zipclose", CHAN_AUTO, 0, 0.6);
+		OffBack(pmo, n);
+		spitTic[n] = level.maptime;
+		SetPhase(n, PH_NONE);
+		if (RSQTR_Rig.Flag("rsqtr_messages", players[n], false)) Console.Printf("T_CIG spit t%d", level.maptime);
 	}
 
 	private void Exhale(PlayerPawn pmo)
 	{
 		Vector3 m = Mouth(pmo);
-		for (int i = 0; i < 6; i++)
+		for (int i = 0; i < 8; i++)
 		{
 			let s = Actor.Spawn("RSQTR_Smoke", m);
 			if (s)
 			{
-				s.vel = (cos(pmo.angle) * (0.6 + i * 0.1), sin(pmo.angle) * (0.6 + i * 0.1), 0.15);
+				s.vel = (cos(pmo.angle) * (0.5 + i * 0.12), sin(pmo.angle) * (0.5 + i * 0.12), 0.12 + i * 0.02);
 				s.Scale *= 2.0;
 			}
 		}
 	}
+}
 
-	// The butt is a real thing in the world (it bounces, and the smouldering one draws
-	// monsters), so it starts from a place every machine agrees on: the flicking hand's
-	// position as sent, or, burnt down, just in front of the player at chest height.
-	// The hand-held prop's own position is only true on the holder's machine.
-	private void DropButt(int n, Vector3 v, Vector3 from = (0, 0, 0))
+// ---- the cigarette and the Zippo in the hands: weapons on the hand's own layer -------------------------------------
+// (MODELDEF: Brutal Doom VR's hand with the prop baked in; tools/gen_handprops.py.) Fire does nothing here: the rig's
+// handler reads the buttons and acts (cig.zs RSQTR_Cig), so a press never punches or shoots.
+class RSQTR_CigWeapon : Weapon
+{
+	Default
 	{
-		let pmo = players[n].mo;
-		if (from == (0, 0, 0) && pmo)
-			from = pmo.pos + (cos(pmo.angle) * 12, sin(pmo.angle) * 12, pmo.height * 0.6);
-		let b = RSQTR_Butt(Actor.Spawn("RSQTR_Butt", from));
-		if (b)
-		{
-			b.vel = v;
-			b.target = pmo;
-			b.smoulder = lit[n];
-		}
-		if (cigProp[n]) cigProp[n].Destroy();
-		cigHand[n] = -1;
-		lit[n] = false;
-		atMouth[n] = false;
+		Weapon.SelectionOrder 99999;
+		Weapon.AmmoUse 0;
+		Tag "Cigarette";
+		+WEAPON.NOAUTOFIRE +WEAPON.NOALERT +WEAPON.NOAUTOSWITCHTO +WEAPON.CHEATNOTWEAPON +WEAPON.WIMPY_WEAPON
+		+INVENTORY.UNDROPPABLE +INVENTORY.UNTOSSABLE
 	}
-
-	// Burning down, and Ermac's slow heal while you smoke under 35 health.
-	private void BurnAll()
+	States
 	{
-		for (int n = 0; n < MAXPLAYERS; n++)
-		{
-			if (!playeringame[n] || cigHand[n] < 0) continue;
-			let pmo = players[n].mo;
-			if (!pmo || pmo.health <= 0) { DropButt(n, (0, 0, 0)); continue; }
-			if (!lit[n]) continue;
-			if (level.maptime >= burnEnd[n]) { DropButt(n, (0, 0, -0.5)); continue; }
-			if (atMouth[n] && pmo.health < 35 && (burnEnd[n] - level.maptime) % 105 == 0)
-				pmo.A_SetHealth(pmo.health + 1);
-		}
+	Spawn:
+		RTCW A -1;
+		Stop;
+	Select:
+		RTCW A 1 A_Raise(24);
+		Loop;
+	Deselect:
+		RTCW A 1 A_Lower(24);
+		Loop;
+	Ready:
+		RTCW A 1 A_WeaponReady(WRF_NOFIRE);
+		Loop;
+	Fire:
+		Goto Ready;
+	}
+}
+
+class RSQTR_ZippoWeapon : Weapon
+{
+	Default
+	{
+		Weapon.SelectionOrder 99999;
+		Weapon.AmmoUse 0;
+		Tag "Zippo";
+		+WEAPON.OFFHANDWEAPON
+		+WEAPON.NOAUTOFIRE +WEAPON.NOALERT +WEAPON.NOAUTOSWITCHTO +WEAPON.CHEATNOTWEAPON +WEAPON.WIMPY_WEAPON
+		+INVENTORY.UNDROPPABLE +INVENTORY.UNTOSSABLE
+	}
+	// the lid follows RSQTR_Cig.zipOpen: shut, opening over 6 tics, then the flame
+	action state A_ZipReady(int lit)
+	{
+		A_WeaponReady(WRF_NOFIRE);
+		let c = RSQTR_Cig.Get();
+		int n = player ? PlayerPawn(self).PlayerNumber() : -1;
+		bool open = c && n >= 0 && c.zipOpen[n];
+		if (open && !lit) return ResolveState("Open");
+		if (!open && lit) return ResolveState("Shut");
+		return ResolveState(null);
+	}
+	States
+	{
+	Spawn:
+		RTZW A -1;
+		Stop;
+	Select:
+		RTZW A 1 A_Raise(24);
+		Loop;
+	Deselect:
+		RTZW A 1 A_Lower(24);
+		Loop;
+	Ready:
+		RTZW A 1 A_ZipReady(0);
+		Loop;
+	Open:
+		RTZW EEFFGG 1;
+	Burn:
+		RTZW BB 1 Bright A_ZipReady(1);
+		RTZW CC 1 Bright A_ZipReady(1);
+		RTZW DD 1 Bright A_ZipReady(1);
+		Loop;
+	Shut:
+		RTZW GGFFEE 1;
+		Goto Ready;
+	Fire:
+		Goto Ready;
 	}
 }
 
@@ -362,7 +472,20 @@ class RSQTR_HandProp : Actor
 class RSQTR_CigProp : RSQTR_HandProp
 {
 	bool burning;
+	bool atMouth;        // held in the mouth: it follows the head (cig.zs RSQTR_Cig.Mouth), pointing out
 	int age;
+
+	// the draw's flare: the ember blazes and throws sparks
+	void Flare()
+	{
+		A_RemoveLight("rsqtr_ember");
+		A_AttachLight("rsqtr_ember", DynamicLight.PointLight, "FF7A20", 10, 0, DYNAMICLIGHT.LF_ATTENUATE);
+		for (int i = 0; i < 6; i++)
+		{
+			let s = Actor.Spawn("RSQTR_Smoke", Tip());
+			if (s) s.vel = (frandom(-0.2, 0.2), frandom(-0.2, 0.2), frandom(0.2, 0.5));
+		}
+	}
 
 	// (RSQ_Accessibility's Photosensitive Mode: the ember glows steady, not pulsing)
 	void SetLit()
@@ -373,11 +496,19 @@ class RSQTR_CigProp : RSQTR_HandProp
 	}
 
 	// The burning end: Ermac's mesh runs 9.5 units along X; at scale 0.3, ~1.7 forward.
-	Vector3 Tip() { return holder ? AlongHand(0.05) : pos; }
+	Vector3 Tip() { return !holder ? pos : (atMouth ? RSQTR_Cig.MouthTip(holder) : AlongHand(0.05)); }
 
 	override void Tick()
 	{
-		Follow(false);
+		if (atMouth)
+		{
+			if (!holder) { Destroy(); return; }
+			angle = holder.angle;
+			pitch = 8;            // a little down from level, as a cigarette hangs from the lips
+			roll = 0;
+			SetOrigin(RSQTR_Cig.Mouth(holder), true);
+		}
+		else Follow(false);
 		if (bDestroyed) return;
 		Super.Tick();
 		if (burning && ++age % 4 == 0)
@@ -439,6 +570,7 @@ class RSQTR_ZippoProp : RSQTR_HandProp
 class RSQTR_Butt : Actor
 {
 	bool smoulder;
+	double spin;         // degrees a tic end over end while it flies (the spit)
 
 	Default
 	{
@@ -458,6 +590,7 @@ class RSQTR_Butt : Actor
 	{
 		Super.Tick();
 		if (bDestroyed) return;
+		if (spin != 0) pitch += spin;
 		if (smoulder && level.maptime % 3 == 0)
 		{
 			let s = Actor.Spawn("RSQTR_Smoke", pos);

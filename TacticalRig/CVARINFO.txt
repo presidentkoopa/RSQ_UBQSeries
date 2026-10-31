@@ -49,9 +49,9 @@ nosave string rsqtr_profile1 = ""; nosave string rsqtr_profile2 = ""; nosave str
 
 // Ermac's cigarette (optional tribute).
 user bool  rsqtr_cig         = false;   // a pocket of cigarettes on the left chest
-user bool  rsqtr_cig_zippo   = false;   // light it with Ermac's Zippo in the other hand
-user float rsqtr_cig_secs    = 6.0;     // how long one burns
-user bool  rsqtr_cig_slowmo  = true;    // RSQ_SlowMo slows the world while it burns (if loaded)
+user bool  rsqtr_cig_zippo   = true;    // (retired 2026-10-31: the Zippo is always in the off hand now)
+user float rsqtr_cig_secs    = 6.0;     // how long RSQ_SlowMo runs after you spit the cigarette out
+user bool  rsqtr_cig_slowmo  = true;    // RSQ_SlowMo starts as you spit it out and exhale (if loaded)
 user int   rsqtr_cig_depth   = 25;      // how slow, percent speed
 user int   rsqtr_cig_count   = 3;       // how many in the pocket
 user bool  rsqtr_cig_refill  = true;    // the pocket refills on a new level

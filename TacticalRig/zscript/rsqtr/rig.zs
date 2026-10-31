@@ -610,7 +610,7 @@ class RSQTR_Rig : EventHandler
 		return h ? hn : "";
 	}
 
-	private void QueueOff(int n, String cls)
+	void QueueOff(int n, String cls)     // (cig.zs: the Zippo into the off hand, and back)
 	{
 		if (cls == "") return;
 		offNext[n] = cls;

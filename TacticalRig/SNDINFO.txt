@@ -13,3 +13,5 @@ rsqtr/zipopen   rtzpopen
 rsqtr/ziplight  rtzplite
 rsqtr/zipclose  rtzpclos
 rsqtr/ciglight  rtcglite
+rsqtr/inhale    rtinhale
+rsqtr/exhale    rtexhale
