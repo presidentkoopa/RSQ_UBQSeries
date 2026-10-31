@@ -64,7 +64,7 @@ class RSQSM_Body : EventHandler
 	private transient bool haveHead;
 	private transient double hbx, hbz, pbx, pby;   // the baselines: head (stage, metres), pawn (map)
 	private transient int sentLX, sentLY;
-	private transient ui bool drainOn;
+	private transient ui bool drainOn, drainSeen;
 
 	const PIXELSTRETCH_DEF = 1.2;
 
@@ -165,9 +165,21 @@ class RSQSM_Body : EventHandler
 		if (BulletLike(a) && !(a.target && a.target.player)) bullets.Push(a);
 	}
 
+	// A LOADED GAME STARTS WITH NO LEAN AND NO GRIP. Both are synced, but what keeps them current is this
+	// machine's transient record of what it last sent (sentLX / sentLY, gripKey), which a load sets back
+	// to nothing: a save made mid-lean came back with the lean stuck on (the head back at its baseline
+	// reads "no lean", the same as "nothing sent", so the 0 was never sent; measured on the rig, bugfix
+	// pass 10-31: lean (7 0) for good after the load), and a save made with the grip held came back armed.
+	// Cleared on this handler's first tic, not in WorldLoaded: on a load WorldLoaded runs BEFORE the saved
+	// fields are read back (G_DoLoadGame: G_InitNew, then the level is read), so a reset there was
+	// overwritten (measured: still (7 0)). `firstTicDone` is transient, so it is false after a load on every
+	// machine alike; on a new level the fields are 0 already.
+	private transient bool firstTicDone;
+
 	// ---- every tic ------------------------------------------------------------------------------------
 	override void WorldTick()
 	{
+		if (!firstTicDone) { firstTicDone = true; for (int n = 0; n < MAXPLAYERS; n++) { leanX[n] = 0; leanY[n] = 0; grip[n] = false; } }
 		for (int i = bullets.Size() - 1; i >= 0; i--)
 			if (!bullets[i] || bullets[i].bDestroyed || !bullets[i].bMISSILE) bullets.Delete(i);
 		Synced();
@@ -507,6 +519,12 @@ class RSQSM_Body : EventHandler
 	{
 		let me = players[consoleplayer];
 		let clock = RSQSM_Clock(EventHandler.Find("RSQSM_Clock"));
+		// THE PASS IS THE RENDERER'S, NOT THE LEVEL'S: PPShader's switch outlives this handler (one global
+		// list, gl_postprocessshader.cpp:43). A level change, a load or a death's restart mid slow motion
+		// made a new handler that thought it was off and never turned it off: the colours stayed drained
+		// at full speed for good (measured on the rig, bugfix pass 10-31). The first frame of each handler
+		// switches it off; the lines below switch it back on if slow motion is running.
+		if (!drainSeen) { drainSeen = true; drainOn = false; PPShader.SetEnabled("RSQSM_Drain", false); }
 		double amt = 0;
 		let cv = CVar.GetCVar("rsqsm_drain", me);
 		let yv = CVar.FindCVar("rsm_yield");
