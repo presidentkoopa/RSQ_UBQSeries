@@ -4,6 +4,10 @@ version "4.14"
 //   1 still, held out    2 slow sweep (no crack expected)    3 overhead crack every 70 tics
 //   4 wrist flick only every 50 tics    5 side-arm crack every 70 tics    6 slow lift and lower (no crack)
 //   7 crack aimed up at a ledge (snag)
+// Scenarios (wpr_scen, whole timelines driving the hands, the right trigger and the left grip):
+//   10 FLAIL: trigger marks what is ahead, an overhead crack sends the whip to it, then the arm sweeps side to side
+//   11 QUEST LASSO: the left hand closes on the handle with its grip, whirls, lets go; then the right arm sweeps
+// wpr_log 4: every key event; 5: the monsters near you every 2 tics (hp, freezetics, state tics)
 class WPR_Probe : EventHandler
 {
 	int t0;
@@ -63,11 +67,23 @@ class WPR_Probe : EventHandler
 			Console.Printf("T_TP t%d pos(%.1f %.1f %.1f) ang %.1f ceil %.1f", level.maptime, pmo.pos.x, pmo.pos.y, pmo.pos.z, pmo.angle, pmo.ceilingz);
 		}
 		else if (e.Name == "wpr_go") { t0 = level.maptime; }
+		else if (e.Name == "wpr_ring")
+		{
+			// a2 monsters (cls index a0) in a ring of radius a1 round you, standing still until hurt
+			for (int k = 0; k < e.Args[2]; k++)
+			{
+				Vector2 f = Actor.AngleToVector(pmo.angle + k * 360.0 / e.Args[2], e.Args[1]);
+				let a = Actor.Spawn(cls[clamp(e.Args[0], 0, cls.Size() - 1)], (pmo.pos.xy + f, pmo.pos.z));
+				if (a) { a.angle = a.AngleTo(pmo); a.A_SetTics(-1); a.target = null; Console.Printf("T_SUM t%d %s at (%.1f %.1f) d %.0f", level.maptime, a.GetClassName(), a.pos.x, a.pos.y, a.Distance2D(pmo)); }
+			}
+		}
 		else if (e.Name == "wpr_push") { pmo.player.keepmomentum = true; pmo.vel += (e.Args[0] / 10.0, e.Args[1] / 10.0, e.Args[2] / 10.0); Console.Printf("T_PUSH t%d vel(%.1f %.1f %.1f)", level.maptime, pmo.vel.x, pmo.vel.y, pmo.vel.z); }
 	}
 
 	static String Lerp(int t, int which)
 	{
+		double sl = CVar.FindCVar("wpr_slow") ? max(0.1, CVar.FindCVar("wpr_slow").GetFloat()) : 1.0;
+		t = int(t / sl);
 		int n; double k[36];
 		if (which == 3) { n = WPR_Probe.K3.Size(); for (int i = 0; i < n; i++) k[i] = WPR_Probe.K3[i]; }
 		else if (which == 4) { n = WPR_Probe.K4.Size(); for (int i = 0; i < n; i++) k[i] = WPR_Probe.K4[i]; }
@@ -99,6 +115,44 @@ class WPR_Probe : EventHandler
 		if (frames % 10 == 0) Console.Printf("T_F %d g%d", frames, gametic);
 	}
 
+	override bool InputProcess(InputEvent e)
+	{
+		if (CVar.FindCVar("wpr_log").GetInt() == 4 && (e.Type == InputEvent.Type_KeyDown || e.Type == InputEvent.Type_KeyUp))
+			Console.Printf("T_KEY %d %s", e.KeyScan, e.Type == InputEvent.Type_KeyDown ? "down" : "up");
+		return false;
+	}
+
+	// A scenario's right pose, right trigger, left grip and left pose at tic t (wpr_scen).
+	static String, double, double, String Scen(int sc, int t)
+	{
+		String rest = "0.20 1.35 -0.40 30 0 0";
+		if (sc == 10)
+		{
+			if (t < 30) return rest, 1, -1, "";
+			if (t < 100) return Lerp(t - 30, 3), 1, -1, "";
+			if (t < 300) return String.Format("0.20 1.35 -0.40 30 %.2f 0", -70 * sin((t - 100) * 360.0 / 40.0)), 1, -1, "";
+			return rest, 0, -1, "";
+		}
+		if (sc == 11)
+		{
+			// the left hand comes to the handle, closes (grip) at 20, whirls overhead 20..wpr_rel, lets go
+			int rel = CVar.FindCVar("wpr_rel").GetInt();
+			String away = "-0.20 1.20 -0.30 0 0 0";
+			if (t < 10) return rest, 0, 0, away;
+			if (t < 20) return rest, 0, t >= 15 ? 1 : 0, "0.20 1.31 -0.50 0 0 0";   // closes on the handle at 15
+			if (t < rel)
+			{
+				double th = (t - 20) * 360.0 / 14.0;
+				double r = min(0.30, 0.03 * (t - 20));
+				return rest, 0, 1, String.Format("%.3f 1.70 %.3f 0 0 0", 0.15 + r * cos(th), -0.45 + r * sin(th));
+			}
+			if (t < rel + 40) return rest, 0, 0, away;
+			if (t < rel + 200) return String.Format("0.20 1.35 -0.40 30 %.2f 0", -70 * sin((t - rel - 40) * 360.0 / 40.0)), 1, 0, away;
+			return rest, 0, 0, away;
+		}
+		return "", -1, -1, "";
+	}
+
 	override void WorldLinePreActivated(WorldEvent e)
 	{
 		if (e.ActivatedLine) Console.Printf("T_LINE t%d special %d activated by %s type %d", level.maptime, e.ActivatedLine.special, e.Thing ? e.Thing.GetClassName() : 'none', e.ActivationType);
@@ -114,6 +168,46 @@ class WPR_Probe : EventHandler
 		if (m == 1) pose = "0.20 1.35 -0.40 30 0 0";
 		else if (m == 2) pose = String.Format("0.20 1.35 -0.40 35 %.2f 0", 40 * sin(t * 360.0 / 140.0));
 		else if (m >= 3) pose = Lerp(t, m);
+		int sc = CVar.FindCVar("wpr_scen").GetInt();
+		if (sc > 0)
+		{
+			double trg, grp; String lp;
+			[pose, trg, grp, lp] = Scen(sc, t);
+			CVar.FindCVar("qzt_rtrigger").SetFloat(trg);
+			CVar.FindCVar("qzt_lgrip").SetFloat(grp);
+			if (lp != "") CVar.FindCVar("qzt_lhand").SetString(lp);
+			if (t % 10 == 0) Console.Printf("T_SC t%d (%d) trig %.0f grip %.0f r[%s] l[%s]", level.maptime, t, trg, grp, pose, lp);
+		}
+		// an imp ball flying at you, put at "fwd side z speed" each motion cycle (tic 6 of 70 x wpr_slow)
+		String ba = CVar.FindCVar("wpr_ballat").GetString();
+		if (ba != "" && m >= 3 && (t % int(70 * max(0.1, CVar.FindCVar("wpr_slow").GetFloat()))) == 6)
+		{
+			Array<String> f; ba.Split(f, " ", TOK_SKIPEMPTY);
+			if (f.Size() >= 4)
+			{
+				Vector2 fw = Actor.AngleToVector(pmo.angle, f[0].ToDouble()) + Actor.AngleToVector(pmo.angle - 90, f[1].ToDouble());
+				let b = Actor.Spawn("DoomImpBall", (pmo.pos.xy + fw, pmo.pos.z + f[2].ToDouble()), NO_REPLACE);
+				if (b)
+				{
+					let mi = BlockThingsIterator.Create(pmo, 600);
+					while (mi.Next()) if (mi.thing && mi.thing.bISMONSTER && mi.thing.Health > 0) { b.target = mi.thing; break; }
+					Vector3 to = (pmo.pos.x, pmo.pos.y, b.pos.z) - b.pos;
+					b.vel = to.Unit() * f[3].ToDouble();
+					b.angle = atan2(to.y, to.x);
+					Console.Printf("T_BALL t%d at (%.0f %.0f %.0f) speed %.1f from %s", level.maptime, b.pos.x, b.pos.y, b.pos.z, b.vel.Length(), b.target ? b.target.GetClassName() : 'none');
+				}
+			}
+		}
+		if (CVar.FindCVar("wpr_log").GetInt() == 5 && level.maptime % 2 == 0)
+		{
+			let it = BlockThingsIterator.Create(pmo, 400);
+			while (it.Next())
+			{
+				let a = it.thing;
+				if (!a || !a.bISMONSTER) continue;
+				Console.Printf("T_MON t%d %s pos(%.0f %.0f %.0f) hp %d freeze %d tics %d", level.maptime, a.GetClassName(), a.pos.x, a.pos.y, a.pos.z, a.Health, a.freezetics, a.tics);
+			}
+		}
 		// wpr_lefty 1: the same motion mirrored onto the LEFT controller (x and yaw negated, roll negated)
 		if (CVar.FindCVar("wpr_lefty") && CVar.FindCVar("wpr_lefty").GetInt() && pose != "")
 		{

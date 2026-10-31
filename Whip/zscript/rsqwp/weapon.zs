@@ -6,12 +6,14 @@
 //     something is marked sends the whip out to it (whip.zs Mark / Crack / Reach). Switches, keys and powerups
 //     within rsqwp_whip_prio of you are marked first.
 //   * ALT-FIRE moves the mark to the next nearest target.
+//   * WRAPPED, it swings with your arm at the rope's length and smashes into the monsters it meets (keep the
+//     trigger held to keep hold of it).
 //   * THE PULL is a gesture: with the whip wrapped round a monster, a violent pull back yanks it -- light ones fly
 //     to you, medium ones stagger, past a certain mass they cannot be pulled and the yank swings YOU to them in an
 //     arc instead (whip.zs Wrap / Yank). A gentle tug only drags.
-//   * THE LASSO: grab the whip with the off hand (the engine's two-hand grip, SteamVR) and the off hand holds the
-//     thong; it whirls as fast as the off hand drives it (the same simulated whip, nothing canned). Let go of the
-//     grip and it flies out the way it was going, and ropes the monster nearest that way.
+//   * THE LASSO: close the off hand on the whip -- its grip with the controller at the handle or the thong (any
+//     headset, the Quest's too), or the engine's two-hand grip (SteamVR) -- and the off hand holds the thong; it
+//     whirls as fast as the off hand drives it (the same simulated whip, nothing canned). Let go of the grip and it flies out the way it was going, and ropes the monster nearest that way.
 //   * On a rope (the whip caught an edge): trigger held = reel in, alt-fire = let go.
 // Either hand: the off-hand copy reads the off-hand trigger and alt-fire (BT_OFFHANDATTACK / BT_OFFHANDALTATTACK).
 //
@@ -85,9 +87,18 @@ class RSQWP_WhipWeapon : Weapon
 		w.byWeapon[i] = true;
 		w.markHeld[i] = trig;
 		if (altPress && trig) w.markNext[i] = true;
-		// the lasso: the off hand on the two-hand grip (only the main-hand whip has an off hand to spin it)
-		bool grip = hand == 0 && ((pmo.player.WeaponState & WF_TWOHANDSTABILIZED) != 0 || RSQWP_Util.Opt("rsqwp_lasso_test", 0) > 0);
+		// the lasso: the off hand closed on the thong (only the main-hand whip has an off hand to spin it). Two routes:
+		// the engine's two-hand grip latch (WF_TWOHANDSTABILIZED: SteamVR's gl_openvr.cpp, and QZD's own Quest input
+		// too, VrInputDefault.cpp 130-141, the off grip pressed within 0.50 m with vr_two_handed_weapons on), and --
+		// any backend, latch or not -- the off controller at the handle or the thong with its grip down (whip.zs
+		// OffHandCloses; teardown apply/01 5.2).
+		bool latch = (pmo.player.WeaponState & WF_TWOHANDSTABILIZED) != 0;
+		bool test = RSQWP_Util.Opt("rsqwp_lasso_test", 0) > 0;
+		bool grip = hand == 0 && (latch || test || w.OffHandCloses(i, pmo));
+		bool was = w.lassoOn[i];
 		w.lassoOn[i] = grip && RSQWP_Util.Flag("rsqwp_whip_lasso", true);
+		if (w.lassoOn[i] && !was && RSQWP_Util.Flag("rsqwp_debug", false))
+			Console.Printf("T_WPW %d LASSO on t%d by %s", i, level.maptime, latch ? "the two-hand latch" : (test ? "rsqwp_lasso_test" : "the off hand at the thong, grip down"));
 	}
 
 	void PutAway(PlayerPawn pmo)
@@ -98,7 +109,7 @@ class RSQWP_WhipWeapon : Weapon
 		int i = pmo.PlayerNumber() * 2 + Hand();
 		w.markHeld[i] = false;
 		w.lassoOn[i] = false;
-		w.wrapOn[i] = null;
+		w.EndWrap(i);
 		if (core.hooks[i]) { core.held[i] = false; core.LetGo(core.hooks[i], true); }
 		w.WeaponUp(i, pmo);
 		hadHook = false;

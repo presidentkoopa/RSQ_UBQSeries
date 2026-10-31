@@ -5,6 +5,32 @@ Not run on the owner's headset. Rig: QZD 17.3 (RSQ_WeaponDepot tools/rig/bin), f
 tools/rigtest/whipprobe (the rig's qzt_rhand), runner tools/rigtest/whip.sh (BD=1 the owner's BD order, GRAPPLE=1 also
 loads pk3/RSQ_Grapple.pk3).
 
+## Owner's picks 2026-10-31 (6, 7, 9 yes; 8, 10 options, off) -- rig only, not headset-confirmed
+All on doom2 + brutal22test6 + BD_VoxelPack + BD22 VR-Reloaded 2.0.3h + hotfix + RSQ_Whip, the whip weapon in hand, map
+WHIPTEST (`map WHIPTEST` after `-warp 1`). Only BD_VoxelPack's 4 voxeldef script errors. Scenarios: whipprobe `wpr_scen`
+10 (flail) / 11 (lasso), `wpr_ballat` (an imp ball each cycle), `wpr_slow`, `wpr_log 4` keys / 5 monsters.
+
+### Done (measured)
+| pick | built | rig log |
+|---|---|---|
+| 6 crack damage by tip speed (apply/08 3.1, apply/01 2.4) | crack = damage x (0.25 + 0.75k), k from the crack speed (20) to `rsqwp_whip_fullcrack` (50, the top of whipsim's measured overhead/side-arm range); `rsqwp_whip_damage` is the top. Stings now stay under the softest crack (a quarter x speed/crack speed); the old half-damage sting out-hurt a soft crack (6 against 3). Assist: always the top | MAP01 motion 3: tip 21.2 -> 3, 24.9 -> 4, 47.8 -> 11, 101.8 -> 12 |
+| 7 Quest lasso (apply/01 5.2) | the off grip key read raw (`rsqwp_keys_off` "443 436", DG's codes; never eaten) or a grab bind, with the off controller within `rsqwp_lasso_reach` 0.30 m of the handle or the inner thong; kept while the grip is down | `vr_two_handed_weapons 0`: key 443 down, "off hand 0.11 m from the thong", LASSO on by the off hand, whirl, let go at tip 30.9, roped an imp. Frames: BD's left hand holds the whirling thong |
+| 7 latch kept | WF_TWOHANDSTABILIZED still turns it on | default settings: "LASSO on by the two-hand latch" on the OpenXR rig |
+| 9 flail (apply/01 4.2) | wrapped/lassoed monster held at the wrap distance from the whip hand, on its bearing off the hand's yaw; placed by TryMove (cap `rsqwp_max_speed`, half for over `rsqwp_whip_light`; heavy = no swing); light ones pinned in Pain (re-pinned every tic, put back on unwrap); a monster it is stopped by takes Grapple's (speed-8)x0.8 (max 40), forced Pain and a shove, the swung one half. Trigger held keeps hold. `rsqwp_whip_flail` | marked crack: imp swung from bearing 0 to -52 deg, SMASH into both side imps (speed 11-12, dmg 2-3, stagger). Lasso: 8 SMASHes at speed 28-30, dmg 15-17 |
+| 8 fireball (option, 06_GRAB 4.6, 01_MELEE 4.11) | in a crack's lash, a fast outer link's sweep within radius+4 of a monster missile's path -> ExplodeMissile. Missiles listed on spawn (PROJECTILE is NOBLOCKMAP: no iterator finds one) | 2 DoomImpBalls cracked (t494, t630); a BD PlasmaSmoke (no shooter) was popped before the monster-shooter filter, not after |
+| 10 hit-stop (option, 01_MELEE 3.6) | freezetics 3 + 3k | freeze 5 -> 3 -> 1 -> 0, state tics held at 2 |
+| fixes found on the way | no crack while the lash flies out to a target (a lasso throw cracked at 108 on the way); the thong no longer stings the monster it is wrapped round; `gen_reset.py` handles noarchive and string cvars (Reset All checked: keys back to "443 436") |  |
+| cost | rsqwp_debug 3, desktop, BD order | 0.16-0.20 ms out, 0.26 whirling, 0.39 mean / 0.86 max flailing into 8 imps |
+
+### Not done / open
+- Not on a headset. Feel: full crack 50, lasso reach 0.30 m, flail speed cap 30, smash damage is Grapple's thrown-body formula.
+- The teardown's "SteamVR only" for the latch is wrong for this engine: QZD's own Quest input sets it (VrInputDefault.cpp
+  130-141, off grip within 0.50 m, `vr_two_handed_weapons` true by default), and the rig latched. The position route
+  covers the setting off, and a hand more than 0.50 m away that closes on the thong.
+- Seen, not changed: the mark follows the whip hand, so the overhead crack's lift can move it to another monster (MAP01:
+  the imp ahead -> a zombie 340 away); a crack's follow-through can count as the pull (a YANK at 7% right after a wrap).
+- A fireball explosion near you (a rocket) still hurts you; the missile keeps its shooter.
+
 History: built inside RSQ_Grapple first (commit cc32dbc), then split out on the owner's word (10-30: "Grapple should stay
 intact"): RSQ_Grapple is back to exactly what it was before; this mod carries its own copy of the line.
 

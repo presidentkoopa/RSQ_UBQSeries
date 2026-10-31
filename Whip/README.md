@@ -20,7 +20,16 @@ under Options → Customize Controls → RSQ Whip. Settings: **Options → Radia
   sparks marks the lock; crack and the whip flies to it (~15 m). Keep the whip button held on a locked monster to
   leash it: it is pulled to you.
 - **What a crack does.** Damage and a stun that breaks off the monster's attack; throws a switch it lands on;
-  flicks a loose pickup to you.
+  flicks a loose pickup to you. **A harder crack hurts more**: the damage goes with the tip's speed at the crack,
+  from a quarter of *Damage (hardest crack)* at the crack speed to all of it at *Hardest Crack Speed*.
+- **The whip weapon (slot 1).** Trigger held marks a target, a crack sends the whip to it and it wraps round a
+  monster; a hard pull back yanks it (light ones fly to you, heavy ones swing you to them). **Wrapped, it swings
+  with your arm**: held at the rope's length, it follows your arm round and smashes into the monsters it meets
+  (damage and a stagger). Keep the trigger held to keep hold of it. **The lasso**: close your off hand on the
+  handle or the thong (the off controller there and its grip -- any headset, Quest too -- or SteamVR's two-hand
+  grip), whirl it, let go of the grip and it ropes the monster that way.
+- **Options (off by default).** *Crack Fireballs Out of the Air*: a crack whose lash passes through a monster's
+  missile explodes it there. *Hit-Stop*: a crack freezes the monster for a beat (3-6 tics, harder = longer).
 - **Edges.** A lash that catches a beam, a doorway head or a ledge lip wraps round it and becomes a rope: hold to
   reel, release to hang, push the stick to pump, haul down on the whip in the air to pump, climb it hand over hand
   (Grab Whip), tap to let go and fly (your speed carries on landing). Reel up to a ledge lip -- or slap a free hand
