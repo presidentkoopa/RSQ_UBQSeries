@@ -9,6 +9,9 @@ version "4.14"
 //               idle shooter; 0: waits for the shooter's own bullets (Brutal Doom's tracers).
 //   smt_mode 3  LEAN: an idle shooter 300 ahead; every 50 tics a round fired at where the pawn stood at
 //               t90 (chest high). Lean the head with the console (qz_hmd) and read T_HIT / T_PASS.
+//   smt_mode 4  SWEEP (the bugfix pass, 10-31): T_S every 5 tics (the clock, the synced lean and grip), T_SND,
+//               T_BUZZ for every rumble emitter (the clock's cues), smt_own 1 fires one of Brutal Doom's
+//               DecorativeTracers from the player (the rifle's own tracer) and T_OWN logs its speed.
 class RSQSMT_Probe : EventHandler
 {
 	int mode;
@@ -22,6 +25,9 @@ class RSQSMT_Probe : EventHandler
 	Vector3 aimH;          // where the hand waits (world)
 	Vector3 base;          // mode 3: where the pawn stood
 	Actor lastRound;
+	Actor own;             // mode 4: the player's own missile
+	int ownT;
+	Actor snd;             // mode 4: a monster given a looping sound (can the rig hear a sound play?)
 
 	static void SetCv(String n, String v) { let c = CVar.FindCVar(n); if (c) c.SetString(v); }
 
@@ -53,6 +59,8 @@ class RSQSMT_Probe : EventHandler
 	{
 		if (!e.Thing || mode < 2) return;
 		Name cn = e.Thing.GetClassName();
+		if (mode == 4 && cn == 'RSQSM_Buzz') Console.Printf("T_BUZZ t%d a rumble cue started", level.maptime);
+		if (mode == 4 && e.Thing.bMISSILE && e.Thing.target && e.Thing.target.player) { own = e.Thing; ownT = 3; }
 		if (cn == 'RSQSM_Caught' || cn == 'RSQSM_Thrown' || cn == 'RSQSM_RoundSpent')
 			Console.Printf("T_SPAWN t%d %s at (%.1f %.1f %.1f) vel %.1f", level.maptime, cn, e.Thing.pos.x, e.Thing.pos.y, e.Thing.pos.z, e.Thing.vel.Length());
 	}
@@ -75,6 +83,34 @@ class RSQSMT_Probe : EventHandler
 		if (mode == 1) Walk(mo, t);
 		else if (mode == 2) CatchTest(mo, p, t);
 		else if (mode == 3) LeanTest(mo, t);
+		else if (mode == 4) Sweep(mo, p, t);
+	}
+
+	// ---- 4: sweep -------------------------------------------------------------------------------
+	void Sweep(PlayerPawn mo, PlayerInfo p, int t)
+	{
+		let clock = RSQSM_Clock.Get();
+		let body = RSQSM_Body.Get();
+		int n = consoleplayer;
+		if (t % 5 == 0 && clock && body)
+			Console.Printf("T_S t%d scale %.3f target %.3f on %d pulse %d act %d lean (%.0f %.0f) grip %d adr %.0f", t, clock.scale, clock.target,
+				clock.on, clock.pulseUntil > 0 ? clock.pulseUntil - t : 0, clock.act.Size(), body.leanX[n], body.leanY[n], body.grip[n], clock.adr);
+		if (t == 3)
+		{
+			let it = ThinkerIterator.Create("Actor");
+			Actor a;
+			while (a = Actor(it.Next())) if (a.bISMONSTER && a.health > 0) { snd = a; break; }
+			if (snd) snd.A_StartSound("misc/chat", 5, CHANF_LOOPING, 1.0);
+		}
+		if (snd && t % 50 == 3) Console.Printf("T_SND t%d %s playing a sound on channel 5: %d", t, snd.GetClassName(), snd.IsActorPlayingSound(5));
+		let ov = CVar.FindCVar("smt_own");
+		if (ov && ov.GetInt())
+		{
+			ov.SetInt(0);
+			mo.SpawnPlayerMissile("DecorativeTracer");
+		}
+		if (own && ownT-- > 0)
+			Console.Printf("T_OWN t%d %s Speed %.1f moving %.1f units a tic (world scale %.2f)", t, own.GetClassName(), own.Speed, own.vel.Length(), clock ? clock.scale : 1.);
 	}
 
 	// ---- 1: walking ---------------------------------------------------------------------------

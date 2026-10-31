@@ -6,3 +6,4 @@ user string smt_class = "Demon"; // mode 1's walker
 user int    smt_dist = 600;      // mode 1: how far ahead it starts
 user int    smt_fire = 1;        // mode 2: 1 the probe fires RSQSM_Rounds itself, 0 wait for the shooter's own bullets
 user int    smt_walkhold = 0;    // mode 2: walk the pawn while the second round is held (walking is not a flick)
+user int    smt_own = 0;         // mode 4: 1 fires one DecorativeTracer from the player (then resets)

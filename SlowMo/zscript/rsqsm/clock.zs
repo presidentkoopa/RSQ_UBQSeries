@@ -195,8 +195,14 @@ class RSQSM_Clock : EventHandler
 			}
 			return;
 		}
+		bool was = on;
 		on = want;
 		if (on) pulseUntil = 0;     // the toggle outranks a pulse
+		// A CUE ONLY FOR A CHANGE. An rsm_off to a clock already off (the Wheel closing after the
+		// adrenaline meter refused its rsm_on; a meter that ran dry) played the way-out sound and
+		// rumble with nothing ending (measured on the rig, bugfix pass 10-31: rsm_off with the clock
+		// off -> two rumble cues).
+		if (on == was) return;
 		if (who >= 0 && who < MAXPLAYERS && playeringame[who] && players[who].mo)
 		{
 			players[who].mo.A_StartSound(on ? "rsqsm/in" : "rsqsm/out", CHAN_AUTO, 0, 0.8);
@@ -208,10 +214,14 @@ class RSQSM_Clock : EventHandler
 	// RS_SlowMo's pulse, same arguments and the same rules: hold `ms`, at `depthPct`
 	// percent speed; the ramps are this mod's; deeper wins and longer wins; the held
 	// toggle outranks it; both clamped so no caller can freeze the world for good.
+	// THE HOLD'S CAP IS 30 s, NOT 5. Ermac's cigarette (RSQ_TacticalRig rsqtr_cig_secs) asks for 6 s by
+	// default and up to 20 from its menu; a 5 s cap cut every one of those short (measured on the rig,
+	// bugfix pass 10-31: rsm_pulse 6000 25 held 175 tics, not 210).
+	const PULSE_MAX_MS = 30000;
 	private void Pulse(int ms, int depthPct)
 	{
 		if (StoodDown() || on) return;
-		int holdUntil = level.maptime + int(ceil(clamp(ms, 30, 5000) * TICRATE / 1000.0));
+		int holdUntil = level.maptime + int(ceil(clamp(ms, 30, PULSE_MAX_MS) * TICRATE / 1000.0));
 		double depth = clamp(depthPct / 100.0, 0.05, 1.0);
 		if (pulseUntil > 0)
 		{
@@ -399,7 +409,11 @@ class RSQSM_Clock : EventHandler
 		if (s >= 0.9999) return 1.0;
 		Refresh();
 		if (!NearAPlayer(a)) return 1.0;
-		if (a.bMISSILE && a.radius <= 8 && !(a is "RSQSM_Round") && base > cvRoundBase * 1.05)
+		// ENEMY bullets only. Your own (Brutal Doom's rifle fires a DecorativeTracer at 140 beside its
+		// hitscan) slow with the world like your rockets: at the round speed they crawled at a tenth of
+		// full speed, long after the shot they show had landed (measured on the rig, bugfix pass 10-31:
+		// your tracer 14 units a tic at world speed 0.25, where 35 is the world's).
+		if (a.bMISSILE && a.radius <= 8 && !(a is "RSQSM_Round") && !(a.target && a.target.player) && base > cvRoundBase * 1.05)
 		{
 			double k = clamp((1.0 - s) / max(1.0 - cvDepth, 0.01), 0.0, 1.0);
 			return s * (1.0 - k * (1.0 - cvRoundBase / base));
@@ -543,6 +557,11 @@ class RSQSM_Clock : EventHandler
 	private void Drop(int i)
 	{
 		Actor a = act[i];
+		// ITS SOUND GOES BACK TO FULL PITCH WITH IT. The pitch is retuned only every 4th tic (Process), so a
+		// thing let go on any other tic -- the end of the ease-out, or walking out of range -- kept the last
+		// lowered pitch on whatever it was still playing; a looping sound stayed low for good (bugfix pass
+		// 10-31; read from the code, the rig cannot read a pitch back).
+		if (a && !a.bDestroyed && a.IsActorPlayingSound(0)) Repitch(a, 1.0);
 		if (a && !a.bDestroyed && fac[i] != 1.0)
 		{
 			double r = 1.0 / fac[i];
