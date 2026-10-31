@@ -201,3 +201,7 @@ controller.
 - Wheel WH2 (shared-ammo names): names were cut to 10 characters after the rig check; check the sheet reads well.
 - HP Bars HP8 (raised marker): Brutal Doom's own Arch-Vile leaves a separate corpse actor for BD's imp, so BD monsters
   may never show the marker; it showed on a stock imp.
+
+## 9. Owner's to-do for next session (17:07)
+See the end of PICKS_2026-10-31.md: turn on BD VR's long-gun butt shove (`rsq_butt`); an on/off toggle that slows time
+for a few tics after a butt shove (SlowMo `rsm_pulse`); maybe extra gore/effects for a shotgun blast (ask first).
