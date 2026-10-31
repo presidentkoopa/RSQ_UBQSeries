@@ -81,6 +81,9 @@ of them off the measured numbers below are exactly the mods' own.
 | Text Size | `rsqa_text_scale` | the slow-motion label, the rig's and the training remote's prints (big font at 1.5+), the laser range readout, RS Score's display, the Gun Bonsai screens' text (rsq/ui) |
 | Sound Cues | `rsqa_sound_cues` | Visual: arrows round the view for hits and incoming shots from off-view, a "Slow Motion" label; Rumble: the controller on that side, slow-mo start / stop, Force grip-ready |
 | Menus | `rsqa_menus` | Simple hides the links to the series' niche sub-pages from their front pages (rows are kept and come back on Full) |
+| Rumble Backup | `rsqa_rumble_backup` | (2026-10-31) with QuestZDoom's Quake Haptics level at 0 every series rumble (RSQA_Buzz) still comes, as the engine's own 150 ms shot buzz on that controller (a 0.1-unit trace that touches nothing, p_map.cpp:4764-4769) |
+| Two-Hand Brace | `rsqa_brace_off` | (2026-10-31) Off turns QuestZDoom's Two Handed Weapons off, so gripping near the gun never kills the off-hand gun; "QuestZDoom's" puts the player's own value back (kept in `rsqa_brace_keep`). Menu row only (engine cvars can only be set from menus) |
+| Brace Cue | `rsqa_brace_cue` | (2026-10-31) Rumble / Sound (Doom's switch click) / Both the moment the brace latches with a gun in the off hand |
 
 How mods reach this pk3: `RSQA_Service` -- `GetIntData("swap", "", player)`, `GetInt("vignette", src, player, strength)`,
 `GetInt("ready", "", player, hand)`; gesture buttons arrive as `netevent rsqa_alt <code> <down>` (codes in KEYCONF.txt).

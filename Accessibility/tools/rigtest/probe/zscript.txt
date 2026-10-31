@@ -1,0 +1,87 @@
+version "4.14"
+// TEST ONLY (never ships): logs what RSQ Accessibility does, for tools/rigtest/run.sh.
+//   AT <tic> | the brace: WF_TWOHANDSTABILIZED, the off-hand gun, vr_two_handed_weapons, rsqa_brace_off / keep
+//            | the modifier (swap) | the slow-motion label's edge (smEdge)
+//   netevent rsqat_ready <hand>   asks the shared rumble for a "ready" cue on that hand (as every series mod does)
+//   rsqat_slowmo 0/1              stands in for RSQ_SlowMo's service: slow motion on / off
+//   set rsqat_sel "<row label>"   while a menu is open: selects that row (then the thumbstick changes it)
+class RSQAT_Probe : EventHandler
+{
+	override void WorldTick()
+	{
+		let ev = CVar.FindCVar("rsqat_every");
+		int every = ev ? max(1, ev.GetInt()) : 5;
+		if (level.maptime % every) return;
+		let p = players[consoleplayer];
+		if (!p.mo) return;
+		let h = RSQA_Handler.Get();
+		Console.Printf("AT %d stab=%d off=%s two_handed=%d brace_off=%d keep=%d swap=%d smEdge=%d quake_haptic=%.2f",
+			level.maptime, (p.WeaponState & WF_TWOHANDSTABILIZED) ? 1 : 0, p.OffhandWeapon ? p.OffhandWeapon.GetClassName() : 'none',
+			CI("vr_two_handed_weapons"), CI("rsqa_brace_off"), CI("rsqa_brace_keep"),
+			h ? int(h.swap[consoleplayer]) : -1, h ? h.smEdge : -1, CF("vr_quake_haptic_level"));
+	}
+	static int CI(Name n) { let c = CVar.FindCVar(n); return c ? c.GetInt() : -9; }
+	static double CF(Name n) { let c = CVar.FindCVar(n); return c ? c.GetFloat() : -9; }
+
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		// netevent rsqat_offgun: a gun in the off hand, put there as RSQ ShieldSaw does (OffhandWeapon, then raised)
+		if (e.Name ~== "rsqat_offgun")
+		{
+			let p = players[e.Player];
+			let w = Weapon(p.mo.FindInventory('RSQ_Off_Rifle'));
+			if (!w) { p.mo.GiveInventory('RSQ_Off_Rifle', 1); w = Weapon(p.mo.FindInventory('RSQ_Off_Rifle')); }
+			if (!w) { Console.Printf("AT_OFFGUN none"); return; }
+			w.bOffhandWeapon = true;
+			p.OffhandWeapon = w;
+			p.PendingWeapon = w;
+			p.mo.BringUpWeapon();
+			Console.Printf("AT_OFFGUN %d %s ammo1=%s", level.maptime, w.GetClassName(), w.Ammo1 ? w.Ammo1.GetClassName() : 'none');
+			return;
+		}
+		if (e.Name ~== "rsqat_ready")
+		{
+			let it = ServiceIterator.Find("RSQA_Service");
+			let s = it.Next();
+			int r = s ? s.GetInt("ready", "", e.Player, e.Args[0]) : -2;
+			Console.Printf("AT_READY %d hand=%d answer=%d", level.maptime, e.Args[0], r);
+		}
+	}
+
+	override void WorldThingSpawned(WorldEvent e)
+	{
+		if (e.Thing && (e.Thing.GetClassName() == 'RSQA_PulsePuff' || e.Thing.GetClassName() == 'RSQA_Buzz'))
+			Console.Printf("AT_SPAWN %d %s", level.maptime, e.Thing.GetClassName());
+	}
+}
+
+// stands in for RSQ_SlowMo: the "slowmo.active" its service answers
+class RSQSM_Service : Service   // the name RSQ_SlowMo answers to (it is not loaded in these runs)
+{
+	override int GetInt(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
+	{
+		if (request ~== "slowmo.active") { let c = CVar.FindCVar("rsqat_slowmo"); return c && c.GetInt() ? 1 : 0; }
+		return -1;
+	}
+}
+
+class RSQAT_Menu : StaticEventHandler
+{
+	override void UiTick()
+	{
+		let c = CVar.FindCVar("rsqat_sel");
+		if (!c || c.GetString() == "") return;
+		let m = OptionMenu(Menu.GetCurrentMenu());
+		if (!m) return;
+		for (int i = 0; i < m.mDesc.mItems.Size(); i++)
+		{
+			if (m.mDesc.mItems[i].mLabel == c.GetString())
+			{
+				m.mDesc.mSelectedItem = i;
+				Console.Printf("AT_SEL %s row %d", c.GetString(), i);
+				c.SetString("");
+				return;
+			}
+		}
+	}
+}

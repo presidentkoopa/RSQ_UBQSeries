@@ -78,6 +78,53 @@ class OptionMenuItemRSQAHanded : OptionMenuItemOption
 	}
 }
 
+// TWO-HAND BRACE (rsqa_brace_off, owner's pick 45). QuestZDoom's Two Handed Weapons (vr_two_handed_weapons, default
+// on, hw_vrmodes.cpp:119) latches a brace when the off-hand grip is pressed with the hands within 0.50 m, and the
+// off-hand gun goes dead until the grip is let go (teardown 00_CAPABILITIES 1.2b and gotcha 10a; on the Quest,
+// VrInputDefault.cpp:130-141). Players who keep losing the off-hand gun can turn the brace off here. It is an engine
+// cvar, which only menu code may set (vmnatives.cpp CVar.SetInt), so this row does it as it is changed: Off keeps
+// the player's own value in rsqa_brace_keep first, and "QuestZDoom's" puts that value back. Like Handedness, a
+// later change in QuestZDoom's own menu is the newer choice: at start-up, Off with the engine's brace on again goes
+// back to "QuestZDoom's" (and forgets the kept value).
+class OptionMenuItemRSQABrace : OptionMenuItemOption
+{
+	OptionMenuItemRSQABrace Init(String label, Name command, Name values)
+	{
+		Super.Init(label, command, values);
+		Reconcile();
+		return self;
+	}
+
+	void Reconcile()
+	{
+		let eng = CVar.FindCVar("vr_two_handed_weapons");
+		let keep = CVar.FindCVar("rsqa_brace_keep");
+		if (!mCVar || !eng || !keep) return;
+		if (mCVar.GetInt() == 1 && eng.GetBool()) { mCVar.SetInt(0); keep.SetInt(-1); }
+		else if (mCVar.GetInt() == 0 && keep.GetInt() >= 0) keep.SetInt(-1);
+	}
+
+	override void SetSelection(int Selection)
+	{
+		Super.SetSelection(Selection);
+		let eng = CVar.FindCVar("vr_two_handed_weapons");
+		let keep = CVar.FindCVar("rsqa_brace_keep");
+		if (!eng || !keep || Selection < 0 || Selection >= OptionValues.GetCount(mValues)) return;
+		// the value chosen, not mCVar's: a server cvar changed in a game is applied a tic later
+		int off = int(OptionValues.GetValue(mValues, Selection));
+		if (off == 1)
+		{
+			if (keep.GetInt() < 0) keep.SetInt(eng.GetBool() ? 1 : 0);
+			eng.SetBool(false);
+		}
+		else if (keep.GetInt() >= 0)
+		{
+			eng.SetBool(keep.GetInt() != 0);
+			keep.SetInt(-1);
+		}
+	}
+}
+
 // For any mod that loads after this pk3 and wants the answer in one call. Series mods do NOT call
 // this (it would be a hard link); each carries the same few lines and falls back to the engine.
 class RSQA_Hand
