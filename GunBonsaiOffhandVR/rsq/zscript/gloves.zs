@@ -265,9 +265,65 @@ class RSQ_GloveHandler : EventHandler
 			double dxy = (p.xy - c).Length();
 			if (dxy > mo.radius + gr) continue;
 			if (p.z < mo.pos.z - gr || p.z > mo.pos.z + mo.height + gr) continue;
-			if (dxy < bestD) { bestD = dxy; best = mo; }
+			if (dxy < bestD && ClearPath(pmo, p, mo)) { bestD = dxy; best = mo; }
 		}
 		return best;
+	}
+
+	// WALL OCCLUSION, the narrow phase. BlockThingsIterator is a blockmap query and nothing
+	// more -- it walks the thing lists of the blocks it covers and never looks at a linedef -- so
+	// the broad phase above happily returns a body on the far side of a thin wall, and until this
+	// was added that punch landed. One confirming trace, for a candidate the nearest-approach
+	// test would otherwise accept, from the glove's own contact point to the body.
+	//
+	// WHY LineTrace AND NOT CheckSight. CheckSight is actor-to-actor and starts at the first
+	// actor's eyes -- "look from eyes of t1 to any part of t2", src/playsim/p_sight.cpp:834 --
+	// and there is no way to tell it where to start. The glove is up to an arm from the chest, so
+	// a fist around a corner, or a pillar standing between the fist and the body but not between
+	// the chest and it, is exactly the geometry that produces this bug: the two calls disagree
+	// precisely where it matters. CheckSight also answers a monster's question rather than a
+	// geometric one -- it rejects on sector reject tables and the heightsec water boundary
+	// (p_sight.cpp:862, :888) and rolls pr_checksight() when the target is invisible or
+	// translucent (p_sight.cpp:879), and that RNG is the playsim's, drawn here on a machine-local
+	// pose path, which is the one thing a hand reader must never do. LineTrace takes the start
+	// point literally under TRF_ABSPOSITION -- startpos = (offsetforward, offsetside, offsetz),
+	// src/playsim/p_map.cpp:5207-5209 -- so it is the only call in the script surface that can be
+	// asked the question the glove actually has.
+	//
+	// NEITHER THE PLAYER NOR THE VICTIM IS AN OBSTRUCTION. TRF_THRUACTORS makes the trace's own
+	// callback skip every actor it meets (CheckLineTrace returns TRACE_Skip, p_map.cpp:5160), so
+	// the player's body under the fist, the victim at the far end, and any third monster between
+	// them are all transparent and only geometry can stop it; the pawn is the trace's ignore actor
+	// as well (P_LineTrace hands Trace its own t1, p_map.cpp:5269, tested at p_trace.cpp:866).
+	// Nothing in the map is disturbed either: a crossed line's special fires only under
+	// TRACE_Impact / TRACE_PCross (p_trace.cpp:485, :582) and P_LineTrace sets neither
+	// (p_map.cpp:5265).
+	//
+	// Z NEEDS NO CONVERSION, and that is worth saying because the velocity above does. A hand pose
+	// is an absolute MAP position, not an offset: the weapon transform is built from CenterEyePos,
+	// scaled by vr_vunits_per_meter, and the up axis is divided by pixelstretch INSIDE it
+	// (gl_openvr.cpp:1282-1292) before AttackPos.Z is read straight out of the matrix
+	// (gl_openvr.cpp:2529, OffhandPos.Z at :2544). So a glove position is already in mo.pos's
+	// space, which is why the contact test above compares p.z with mo.pos.z directly and is right
+	// to. The vertical pixelstretch term converts a map-unit DELTA to metres; that is what Swing
+	// applies it to (the velocity, v.z *= ps) and it has no business here.
+	static bool ClearPath(PlayerPawn pmo, Vector3 from, Actor mo)
+	{
+		// the body's axis at the height the glove met it, so a punch over a chest-high wall is
+		// still a punch and one into that wall is not
+		Vector3 to = (mo.pos.x, mo.pos.y, clamp(from.z, mo.pos.z, mo.pos.z + mo.height));
+		Vector3 d = mo.level.Vec3Diff(from, to);
+		double dist = d.Length();
+		if (dist < 1.0) return true;              // the fist is on the axis; nothing fits between
+		// P_LineTrace builds its direction as (cos(pitch)cos(angle), cos(pitch)sin(angle),
+		// -sin(pitch)) (p_map.cpp:5180), so the pitch of a delta is VectorAngle(dxy, -dz) -- the
+		// engine's own idiom for it, zscript/actors/shared/movingcamera.zs:389.
+		FLineTraceData t;
+		bool stopped = pmo.LineTrace(VectorAngle(d.x, d.y), dist, VectorAngle(d.xy.Length(), -d.z),
+			TRF_ABSPOSITION | TRF_THRUACTORS, from.z, from.x, from.y, t);
+		if (!stopped && t.HitType == TRACE_HitNone) return true;
+		if (RSQM.SVI("rsq_punch_debug", 0) != 0) { String vn = mo.GetClassName(); Console.Printf("RSQ punch blocked: type %d at %.1f of %.1f to %s", t.HitType, t.Distance, dist, vn); }
+		return false;
 	}
 
 	// A swing that ended without touching anything breaks a One-Two.

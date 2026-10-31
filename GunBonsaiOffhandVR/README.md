@@ -57,6 +57,27 @@ SlowMo, hands and body (a460f51); punch and swing sounds renamed so they no long
 dual HUD reflected (6973ddb); Grapple player perks (fcf0a7a); colour-blind HUD (4bdd8c7); accessibility
 round two (1b986bb); XP Source (49fd7c0, section below).
 
+**Done 2026-10-30, not measured -- wall occlusion on the punch contact test**
+- *A punch no longer lands through a wall* (`rsq/zscript/gloves.zs`, `RSQ_GloveHandler.ClearPath`
+  at `:310`, called from `Contact` at `:268`). `BlockThingsIterator` is a blockmap query and never
+  looks at a linedef, so the broad phase returned a body on the far side of a thin wall and the
+  nearest-approach test only measured distance; `02_MELEE_BUILD.md` §2.3 named this as the live
+  bug to fix first. The narrow phase is one `LineTrace` per candidate the nearest-approach test
+  would otherwise accept, `TRF_ABSPOSITION` from the glove's contact point to the body's axis at
+  the height it met it, `TRF_THRUACTORS` so the player's own body, the victim and any third
+  monster between them are all transparent and only geometry can stop it. `CheckSight` was
+  rejected: it starts at the actor's eyes and cannot be told where to start, and it rolls the
+  playsim RNG on an invisible target. No Z conversion -- a hand pose is an absolute map position
+  already (the pixelstretch division is inside the weapon transform), which is why the existing
+  `p.z` vs `mo.pos.z` test is right as it stands. Nothing else moved: Score needs no change,
+  because a punch that does not land is not scored.
+- Cost: zero traces on a tic no swing passes the arm/approach gate; on the tic one does, one trace
+  per foe overlapping that glove's sphere that improves on the best candidate so far -- one in
+  practice, per hand.
+- **Not compiled.** There is no build in this working tree; the first real check is the headset.
+  `rsq_punch_debug 1` prints `RSQ punch blocked: type <HitType> at <dist> of <dist> to <class>`
+  on a rejection, which is how to prove the trace fired at all.
+
 **Not done / headset**: how often Knockdown and Executioner fire on legendaries in real play.
 
 **Open**

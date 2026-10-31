@@ -218,6 +218,8 @@ SuperPunchOut's punch reader (a punch arms after 15 cm of travel and must averag
 rsq_punch_min_speed; power is the average speed). Renamed RSQ_Glove / RSQ_GloveOff so
 they can sit beside SuperPunchOut itself. A punch does Brutal Doom's own 10 (its
 MeleeStrikeNormal) at the slowest that counts, up to 20 at full speed.
+A punch also needs a clear path from the glove to the body, so it no longer lands
+through a wall.
 
 CREDIT FOR SCRIPT DAMAGE. A mod whose damage names the player as its inflictor can bracket it:
     svc.GetInt("credit.push", "", hint, 0, weapon); target.DamageMobj(...);
