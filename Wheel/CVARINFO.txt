@@ -90,6 +90,14 @@ user int   wr_watch_dwell = 8;
 user float wr_watch_scale = 0.6;
 user string wr_fontset = "Ermac";
 user int  wr_doubletap = 10;
+// RSQ QoL round (owner's picks, 2026-10-31). WH2-WH5 and WH7 are always on; these two are options, off by default.
+// WH6: the ring opens with the card of the gun this hand holds where the hand points, so the hand starts on it.
+user bool wr_centre_held = false;
+// WH8: under the sheet's KILLS / SHOTS / ACC row, a LEVEL row with the same counts for this level only.
+user bool wr_level_stats = false;
+// WH7: the order you dragged each slot's guns into (hold the trigger on a fan card, move it, let go), saved.
+// "slot:Class,Class,...;" per arranged slot, first = the slot's card. Not a setting: Reset All leaves it.
+user string wr_slot_order = "";
 
 // SCALE: vr_vunits_per_meter is 34, so one map unit is about 3cm. Every default
 // below is written as a real-world distance first and converted, because the

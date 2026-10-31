@@ -1,0 +1,143 @@
+version "4.10"
+// TEST ONLY (never ships). The Wheel's QoL round (owner's picks WH2-WH8, 2026-10-31) on the QZD 17.3 rig.
+// Play code may not set the engine's pose cvars (qz_rhand / qz_lhand: "Attempt to change CVAR outside of menu code"),
+// so the hands are posed from the console script and this only sets up and logs:
+//   t5   the slots (class, ammo) after `give all`
+//   t8   wq_gun_dry emptied (ammo 1 and 2 to 0); the main hand switched to wq_gun_a
+//   each tic: the hands' world aim, the ring (open, hover, fan, drag), the hands' guns, wr_slot_order
+//   the first tic of each open: every card's place, and the yaw / pitch each hand needs to point at it
+//   the first tic of each fan: the same for every fan card
+//   the sheet's rows whenever they change
+class wrq2_Probe : EventHandler
+{
+	static clearscope int CI(Name n) { let c = CVar.FindCVar(n); return c ? c.GetInt() : 0; }
+	static clearscope String CS(Name n) { let c = CVar.FindCVar(n); return c ? c.GetString() : ""; }
+
+	bool wasOpen;
+	int  openTic;   // cards are logged 8 tics after an open: they grow in from the centre over wr_growtics
+	int  lastExp, expTic;
+	String lastSheet;
+
+	static Vector3 Dir(PlayerPawn pmo, int h) { return wr_Rig.handDir(pmo, h); }
+
+	String Need(PlayerPawn pmo, Vector3 p)
+	{
+		String s = "";
+		for (int h = 0; h < 2; h++)
+		{
+			Vector3 u = p - wr_Rig.handPos(pmo, h);
+			Vector3 d = Dir(pmo, h);
+			s = s .. String.Format(" h%d need %.1f/%.1f (now %.1f/%.1f)", h, atan2(u.y, u.x), atan2(u.z, u.xy.Length()),
+				atan2(d.y, d.x), atan2(d.z, d.xy.Length()));
+		}
+		return s;
+	}
+
+	override void WorldTick()
+	{
+		let pmo = players[consoleplayer].mo;
+		if (!pmo) return;
+		int t = level.maptime;
+		let rig = wr_Rig.Get();
+		if (t == 5)
+		{
+			let slots = players[consoleplayer].weapons;
+			for (int s = 0; s < 10; s++)
+			{
+				String line = "";
+				for (int j = 0; j < slots.SlotSize(s); j++)
+				{
+					let c = slots.GetWeapon(s, j);
+					let w = c ? Weapon(pmo.FindInventory(c)) : null;
+					if (!w) continue;
+					line = line .. String.Format(" %s[%s %d|%s %d use %d/%d]", w.GetClassName(),
+						w.Ammo1 ? w.Ammo1.GetClassName() : 'none', w.Ammo1 ? w.Ammo1.Amount : -1,
+						w.Ammo2 ? w.Ammo2.GetClassName() : 'none', w.Ammo2 ? w.Ammo2.Amount : -1, w.AmmoUse1, w.AmmoUse2);
+				}
+				if (line.Length()) Console.Printf("WQ_SLOT %d:%s", s, line);
+			}
+		}
+		if (t == 8)
+		{
+			Name gDry = CS('wq_gun_dry');
+			let wd = gDry != 'None' ? Weapon(pmo.FindInventory(gDry)) : null;
+			if (wd) { if (wd.Ammo1) wd.Ammo1.Amount = 0; if (wd.Ammo2) wd.Ammo2.Amount = 0; }
+			Name gA = CS('wq_gun_a');
+			let wa = gA != 'None' ? Weapon(pmo.FindInventory(gA)) : null;
+			if (wa) players[consoleplayer].PendingWeapon = wa;
+			Console.Printf("WQ_SETUP t%d dry %s %s, main to %s", t, gDry, wd ? "emptied" : "-", wa ? wa.GetClassName() : 'none');
+		}
+		if (!rig) return;
+		if (rig.mOpen && !wasOpen) openTic = t;
+		if (rig.mOpen && t == openTic + 8)
+		{
+			for (int i = 0; i < rig.mTypes.Size() && i < rig.mCardX.Size(); i++)
+			{
+				Vector3 p = (rig.mCardX[i], rig.mCardY[i], rig.mCardZ[i]);
+				Console.Printf("WQ_CARD t%d %d %s slot %d at (%.1f %.1f %.1f)%s", t, i, rig.mTypes[i] ? rig.mTypes[i].GetClassName() : 'none',
+					i < rig.mCardSlots.Size() ? rig.mCardSlots[i] : -1, p.x, p.y, p.z, Need(pmo, p));
+			}
+			// how far the main hand's beam passes from the held gun's card (WH6)
+			let held = players[consoleplayer].ReadyWeapon;
+			for (int i = 0; held && i < rig.mTypes.Size() && i < rig.mCardX.Size(); i++)
+			{
+				bool mine = rig.mTypes[i] == held.GetClass();
+				if (!mine)
+				{
+					bool f; int sl, ix;
+					[f, sl, ix] = players[consoleplayer].weapons.LocateWeapon(held.GetClass());
+					mine = f && i < rig.mCardSlots.Size() && rig.mCardSlots[i] == sl && rig.mFansEnabled;
+				}
+				if (!mine) continue;
+				Vector3 cp = (rig.mCardX[i], rig.mCardY[i], rig.mCardZ[i]);
+				Vector3 hp = wr_Rig.handPos(pmo, 0), d = Dir(pmo, 0);
+				Vector3 v = cp - hp;
+				double along = v dot d;
+				Console.Printf("WQ_CENTRE t%d held %s card %d: the main beam passes %.1f units from its centre", t, held.GetClassName(), i, (v - d * along).Length());
+				break;
+			}
+		}
+		wasOpen = rig.mOpen;
+		// a fan's cards, 8 tics after it opened (grown in)
+		if (rig.mOpen && rig.mExpanded >= 0 && rig.mExpanded != lastExp) { lastExp = rig.mExpanded; expTic = t; }
+		if (rig.mOpen && rig.mExpanded >= 0 && t == expTic + 8 && rig.mSubX.Size() == rig.mSubTypes.Size())
+		{
+			for (int i = 0; i < rig.mSubTypes.Size(); i++)
+			{
+				Vector3 p = (rig.mSubX[i], rig.mSubY[i], rig.mSubZ[i]);
+				Console.Printf("WQ_SUB t%d %d %s at (%.1f %.1f %.1f)%s", t, i, rig.mSubTypes[i].GetClassName(), p.x, p.y, p.z, Need(pmo, p));
+			}
+		}
+		if (!rig.mOpen || rig.mExpanded < 0) lastExp = -1;
+		// the sheet, when its text changes
+		if (rig.mOpen)
+		{
+			String sh = "";
+			let bb = wr_BB.Get();
+			for (int i = 0; bb && i < rig.mSheetUsed && i < rig.mSheetRows.Size(); i++)
+			{
+				int id = rig.mSheetRows[i];
+				if (bb.mRecs.CheckKey(id)) sh = sh .. " | " .. bb.mRecs.Get(id).text;
+			}
+			if (sh != lastSheet) { lastSheet = sh; Console.Printf("WQ_SHEET t%d%s", t, sh); }
+		}
+		if (CI('wq_log') && (rig.mOpen || t % 10 == 0))
+		{
+			let p = players[consoleplayer];
+			let hc = rig.HoveredClass();
+			Vector3 d0 = Dir(pmo, 0), d1 = Dir(pmo, 1);
+			String subs = "";
+			for (int i = 0; i < rig.mSubTypes.Size(); i++) subs = subs .. (i ? "," : "") .. rig.mSubTypes[i].GetClassName();
+			int r0, r1; Vector2 uv;
+			[r0, uv] = wr_BB.AimBillboard(wr_Rig.handPos(pmo, 0), d0, 200);
+			[r1, uv] = wr_BB.AimBillboard(wr_Rig.handPos(pmo, 1), d1, 200);
+			int c0 = -1, c1 = -1;
+			for (int i = 0; i < rig.mIds.Size(); i++) { if (rig.mIds[i] == r0) c0 = i; if (rig.mIds[i] == r1) c1 = i; }
+			if (rig.mOpen) Console.Printf("WQ_RAY t%d main id %d card %d | off id %d card %d | hovered id %d sheet %d", t, r0, c0, r1, c1, rig.mHovered, rig.mSheetHit);
+			Console.Printf("WQ t%d open %d hover %s poke %d exp %d fan [%s] drag %d main %s off %s aim0 %.1f/%.1f aim1 %.1f/%.1f order \"%s\"", t, rig.mOpen,
+				hc ? hc.GetClassName() : 'none', rig.mPokeHand, rig.mExpanded, subs, rig.mDragging,
+				p.ReadyWeapon ? p.ReadyWeapon.GetClassName() : 'none', p.OffhandWeapon ? p.OffhandWeapon.GetClassName() : 'none',
+				atan2(d0.y, d0.x), atan2(d0.z, d0.xy.Length()), atan2(d1.y, d1.x), atan2(d1.z, d1.xy.Length()), CS('wr_slot_order'));
+		}
+	}
+}

@@ -1,0 +1,156 @@
+version "4.14"
+// TEST ONLY -- never shipped. RSQ HP Bars' QoL round (owner's picks HP1-HP4, HP6-HP9, 2026-10-31) on the QZD 17.3 rig.
+// run.sh with PROBE=qol. thq_mode:
+//   1  a row of monster classes (thq_cls, comma list) ahead, hurt 30 % by nobody at t12; the player hits row[thq_hit_i]
+//      for thq_hit_dmg at t40 and every thq_hit_gap tics after (thq_hit_n hits); one more imp, FRIENDLY, at the end
+//   2  thq_n imps in a fan ahead at growing distance, all hurt (Nearest 24, Distance Limit)
+//   3  an imp killed between the player and an Arch-Vile (no notarget: the vile chases, finds the corpse, raises it)
+// Logs every bar each thq_log tics from a thinker that runs after every actor.
+class THPQ2_Probe : EventHandler
+{
+	Array<Actor> row;
+	static clearscope int CI(Name n) { let c = CVar.FindCVar(n); return c ? c.GetInt() : 0; }
+	static clearscope double CF(Name n) { let c = CVar.FindCVar(n); return c ? c.GetFloat() : 0; }
+	static clearscope String CS(Name n) { let c = CVar.FindCVar(n); return c ? c.GetString() : ""; }
+
+	override void WorldLoaded(WorldEvent e) { let l = new("THPQ2_Late"); l.ChangeStatNum(120); }
+
+	Actor Put(class<Actor> c, Vector3 sp, double ang, bool dormant, bool noReplace = false)
+	{
+		let a = Actor.Spawn(c, sp, noReplace ? NO_REPLACE : ALLOW_REPLACE);
+		if (a) { a.angle = ang; a.SetZ(a.floorz); if (dormant) a.bDormant = true; }
+		row.Push(a);
+		return a;
+	}
+
+	override void WorldThingRevived(WorldEvent e)
+	{
+		// who raised it: anything near in a state sequence of its own "Heal" label (the Arch-Vile's raise)
+		let it = BlockThingsIterator.Create(e.Thing, 256);
+		String who = "none";
+		while (it.Next())
+		{
+			let o = it.thing;
+			if (!o || o == e.Thing) continue;
+			let hs = o.FindState("Heal");
+			if (hs && o.InStateSequence(o.CurState, hs)) who = o.GetClassName();
+		}
+		Console.Printf("THQ_REVIVED t%d %s hp %d raiser-in-Heal %s", level.maptime, e.Thing.GetClassName(), e.Thing.health, who);
+	}
+
+	override void WorldTick()
+	{
+		let pmo = players[consoleplayer].mo;
+		if (!pmo) return;
+		int t = level.maptime;
+		int mode = CI('thq_mode');
+		Vector2 fw = (cos(pmo.angle), sin(pmo.angle)), rt = (cos(pmo.angle - 90), sin(pmo.angle - 90));
+		if (mode == 1 && t == 10)
+		{
+			Array<String> cl; CS('thq_cls').Split(cl, ",");
+			double d = CF('thq_dist'), gap = CF('thq_gap');
+			int n = cl.Size() + 1;
+			for (int i = 0; i < n; i++)
+			{
+				double side = (i - (n - 1) / 2.0) * gap;
+				Vector3 sp = (pmo.Pos.xy + fw * d + rt * side, pmo.Pos.z);
+				class<Actor> c = i < cl.Size() ? cl[i] : "DoomImp";
+				let a = Put(c, sp, pmo.angle + 180, true);
+				if (a && i == cl.Size()) a.bFriendly = true;
+				Console.Printf("THQ_SPAWN t%d %d %s spawnhealth %d friendly %d", t, i, a ? a.GetClassName() : 'null', a ? a.SpawnHealth() : 0, a ? a.bFriendly : 0);
+			}
+		}
+		if (mode == 1 && t == 12)
+			for (int i = 0; i < row.Size(); i++) if (row[i])
+			{
+				bool dm = row[i].bDormant; row[i].bDormant = false;
+				row[i].DamageMobj(null, null, max(1, row[i].SpawnHealth() * 30 / 100), 'None', DMG_NO_PAIN);
+				row[i].bDormant = dm;
+			}
+		if (mode == 1)
+		{
+			int hi = CI('thq_hit_i'), gp = max(1, CI('thq_hit_gap'));
+			if (t >= 40 && (t - 40) % gp == 0 && (t - 40) / gp < CI('thq_hit_n') && hi < row.Size() && row[hi])
+			{
+				let a = row[hi];
+				bool dm = a.bDormant; a.bDormant = false;
+				int before = a.health;
+				a.DamageMobj(pmo, pmo, CI('thq_hit_dmg'), 'None', DMG_NO_PAIN);
+				a.bDormant = dm;
+				Console.Printf("THQ_HIT t%d %s %d -> %d (by the player)", t, a.GetClassName(), before, a.health);
+			}
+		}
+		if (mode == 2 && t == 10)
+		{
+			int n = CI('thq_n');
+			for (int i = 0; i < n; i++)
+			{
+				double d = 128 + i * 40, side = ((i % 5) - 2) * 50;
+				Vector3 sp = (pmo.Pos.xy + fw * d + rt * side, pmo.Pos.z);
+				Put("DoomImp", sp, pmo.angle + 180, true);
+			}
+		}
+		if (mode == 2 && t == 12)
+			for (int i = 0; i < row.Size(); i++) if (row[i])
+			{
+				bool dm = row[i].bDormant; row[i].bDormant = false;
+				row[i].DamageMobj(null, null, 20, 'None', DMG_NO_PAIN);
+				row[i].bDormant = dm;
+			}
+		if (mode == 3 && t == 10)
+		{
+			// thq_vanilla 1: the stock imp (NO_REPLACE). Brutal Doom's imp leaves a separate corpse actor (DeadImp) on
+			// the spot, which the raise's room check may find in the way.
+			let imp = Put("DoomImp", (pmo.Pos.xy + fw * 300, pmo.Pos.z), pmo.angle + 180, false, CI('thq_vanilla') > 0);
+			// 50 units behind the corpse: its raise checks the corpse 15 ahead of itself (its speed), within both radii (40),
+			// and the raised imp must fit beside the vile (closer than 40 it would not)
+			let av = Put("Archvile", (pmo.Pos.xy + fw * 350, pmo.Pos.z), pmo.angle + 180, false);
+			Console.Printf("THQ_SPAWN t%d %s / %s", t, imp ? imp.GetClassName() : 'null', av ? av.GetClassName() : 'null');
+			if (imp) imp.DamageMobj(null, null, imp.health, 'None', DMG_FORCED | DMG_THRUSTLESS);   // exactly its health: a corpse, not gibs
+			if (av) { av.target = pmo; av.SetState(av.SeeState); }   // awake and chasing: A_VileChase looks for corpses
+		}
+		// The vile stood still on this spot (stairs), so its own raise call is driven: facing the corpse (south of it:
+		// the player faces north), A_VileChase -> P_CheckForResurrection finds it and raises it (the engine's own path).
+		if (mode == 3 && t >= 20 && t < 200 && row.Size() >= 2 && row[0] && row[1] && row[0].health <= 0)
+		{
+			let av = row[1];
+			let hs = av.FindState("Heal");
+			if (!(hs && av.InStateSequence(av.CurState, hs))) { av.movedir = 6; av.A_VileChase(); }
+		}
+		if (mode == 3 && t > 10 && t % 50 == 0 && row.Size() >= 2)
+		{
+			let imp = row[0], av = row[1];
+			Console.Printf("THQ_STATE t%d imp %s hp %d corpse %d raise %d | vile %s hp %d dist %.0f", t,
+				imp ? imp.GetClassName() : 'gone', imp ? imp.health : 0, imp ? imp.bCorpse : 0, imp ? imp.FindState("Raise") != null : 0,
+				av ? av.GetClassName() : 'gone', av ? av.health : 0, (imp && av) ? av.Distance2D(imp) : -1);
+		}
+	}
+}
+
+class THPQ2_Late : Thinker
+{
+	override void Tick()
+	{
+		int t = level.maptime;
+		int lg = THPQ2_Probe.CI('thq_log');
+		if (lg <= 0 || t % lg || t < THPQ2_Probe.CI('thq_log_from') || t > THPQ2_Probe.CI('thq_log_to')) return;
+		let it = ThinkerIterator.Create("RSQTHP_Bar");
+		RSQTHP_Bar b;
+		int vis = 0, all = 0;
+		let cam = players[consoleplayer].camera;
+		bool brief = THPQ2_Probe.CI('thq_brief') > 0;
+		while (b = RSQTHP_Bar(it.Next()))
+		{
+			let w = b.who;
+			all++;
+			if (!b.bInvisible) vis++;
+			if (brief) continue;
+			Console.Printf("THQ_BAR t%d %s hp %d/%d len %.2f scale %.3fx%.3f spr %s%c alpha %.2f style %d flash %d shown %d inv %d chunk %s stat %s dist %.0f", t,
+				w ? w.GetClassName() : 'null', w ? w.health : 0, w ? w.SpawnHealth() : 0, b.lenK, b.Scale.X, b.Scale.Y,
+				b.sprite == b.h.sprAlly ? "ALLY " : "", 65 + b.frame, b.Alpha, b.GetRenderStyle(), b.flashNow, b.shown, b.bInvisible,
+				b.chunkP ? String.Format("x0 %.1f w %.1f scaleX %.3f", b.chunkX0, b.chunkW, b.chunkP.Scale.X) : "-",
+				b.stat ? String.Format("%c", 65 + b.stat.frame) : "-", cam ? (b.Pos - cam.Pos).Length() : 0);
+		}
+		Console.Printf("THQ_COUNT t%d bars %d visible %d", t, all, vis);
+	}
+}

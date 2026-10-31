@@ -4,7 +4,7 @@ its CVARINFO default (resetcvar). wr_cfgver is left alone: it is the settings-up
 setting, and resetting it would re-run every past update on the next map."""
 import os
 R = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
-SKIP = {'wr_cfgver'}
+SKIP = {'wr_cfgver', 'wr_slot_order'}   # wr_slot_order: the player's own gun order (dragged), not a setting
 names = [l.split()[2] for l in open(os.path.join(R, 'CVARINFO.txt'))
          if l.startswith(('user', 'server')) and l.split()[2] not in SKIP]
 p = os.path.join(R, 'KEYCONF'); k = open(p).read()

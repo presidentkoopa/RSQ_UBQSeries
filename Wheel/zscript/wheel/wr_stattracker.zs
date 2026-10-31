@@ -109,6 +109,15 @@ class wr_WeaponStats
 	// ten-pellet shotgun blast counts as one hit against one shot fired,
 	// not ten.
 	int pendingHitUntilTic;
+
+	// RSQ WH8 (owner's QoL pick, an option): kills, shots and hits for this visit to this level. The key is the game
+	// time the level was entered (totaltime - maptime): a new level, or the same one entered again, starts at 0.
+	int lvKey, lvKills, lvShots, lvHits;
+	void LvRoll()
+	{
+		int k = level.totaltime - level.maptime + 1;
+		if (lvKey != k) { lvKey = k; lvKills = 0; lvShots = 0; lvHits = 0; }
+	}
 }
 
 // PER-CLASS HISTORY, kept alongside the per-instance records above.
@@ -403,6 +412,7 @@ class wr_StatEvents : EventHandler
 		if (!fired) return;
 
 		s.shotsFired++;
+		s.LvRoll(); s.lvShots++;   // RSQ WH8
 
 		// Fetched HERE rather than near the top of the function. It used to be
 		// looked up alongside the time-held counter that was removed, and this
@@ -549,6 +559,7 @@ class wr_StatEvents : EventHandler
 		if (s.pendingHitUntilTic > 0 && level.totaltime <= s.lastFireTic + hitWin)
 		{
 			s.hits++;
+			s.LvRoll(); s.lvHits++;   // RSQ WH8
 			s.pendingHitUntilTic = 0;
 
 			let cs = wr_StatLedger.ClassStatsFor(pawn, w.GetClassName(), true);
@@ -582,7 +593,7 @@ class wr_StatEvents : EventHandler
 		if (!w) return;
 
 		let s = wr_StatLedger.StatsFor(pawn, w, true);
-		if (s) s.kills++;
+		if (s) { s.kills++; s.LvRoll(); s.lvKills++; }   // RSQ WH8
 
 		let cs = wr_StatLedger.ClassStatsFor(pawn, w.GetClassName(), true);
 		if (cs) cs.kills++;
@@ -665,6 +676,15 @@ class wr_StatTracker
 	// which is either a fixed-damage weapon or one that has not been fired
 	// enough to find its spread; the caller prints a single number for that
 	// case rather than "12-12".
+	// RSQ WH8: kills, shots, hits this visit to this level (found = the gun is tracked at all)
+	static play bool, int, int, int LevelBasicsOf(Weapon w)
+	{
+		let s = lookup(w);
+		if (!s) return false, 0, 0, 0;
+		s.LvRoll();
+		return true, s.lvKills, s.lvShots, s.lvHits;
+	}
+
 	static play bool, int, int DamageOf(Weapon w)
 	{
 		let s = lookup(w);

@@ -130,6 +130,8 @@ OptionMenu wr_Pick
 {
 	Title "PICKING"
 	Option "Two Hands Compare",         "wr_twohand_compare", "OnOff"
+	// The ring opens with your gun's card under your hand.
+	Option "Open on the Gun You Hold",  "wr_centre_held",  "OnOff"
 	// Forearm up across the chest, as if checking a watch: that hand's gun shows its card.
 	// RSQ Gun Cards' own watch card takes over when that mod is loaded and its watch card is on.
 	Option "Wrist Card",                "wr_watch",        "OnOff"
@@ -186,6 +188,7 @@ OptionMenu wr_Sheet
 	Option "Weapon Stats",              "wr_sheet_stats",  "OnOff"
 	// Counted by this mod as you play, so it works on every weapon.
 	Option "Track Kills and Accuracy",  "wr_stats_track",  "OnOff"
+	Option "Kills and Accuracy This Level", "wr_level_stats", "OnOff"
 	// With Gun Bonsai and RSQ Gun Bonsai VR loaded.
 	Option "Gun Bonsai Level and Upgrades", "wr_sheet_bonsai", "OnOff"
 	StaticText " "

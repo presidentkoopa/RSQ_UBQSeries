@@ -28,6 +28,20 @@
 //    1024), so it stays readable across a room in the headset and is unchanged up close.
 //  - Colour-blind / high-contrast sets (art: tools/gen_art.py) add cues that are not colour: the
 //    low band is hatched and pulses (alpha 1.0 / 0.6, 0.7 s each way), the mid band has a dark line.
+//
+// QOL ROUND (owner's picks, 2026-10-31)
+//  - HP6 length by toughness: the bar is stretched sideways by LenOf(spawn health): an imp's (60) is coldcite's
+//    112 px; x0.15 per doubling, 0.7 to 2.0 (zombieman 0.76, baron 1.61, Spider Mastermind 1.85, Cyberdemon 1.91 --
+//    the widest). The strip stretches with it; the icons beside it move out along the view's right by the extra.
+//  - HP7 hit flash: the tic after a player's hit lands, the bar is drawn as a white silhouette (stencil). Under
+//    RSQ_Accessibility's Photosensitive Mode a flash is at 40 % and at most one per 14 tics (RSQTHP_A11y.Gate/Dim).
+//  - HP8 raised: an up arrow right of the bar (in the status slot, or beside frozen / held) for the monster's life.
+//  - HP9 fade in: a bar coming into view (made, or shown again by Aimed Only / Nearest 24 / Distance Limit) goes from
+//    clear to its alpha over FADE tics.
+//  - HP1 (option) damage chunk: the health a player's hit took off stays lit white for CHUNK_HOLD tics (half a second),
+//    then drains to the new edge over CHUNK_DRAIN tics. Hits while it is lit add to it.
+//  - HP2 (option) ally colour: a friendly monster's bar (allies, Brutal Doom's marines) uses the blue set RSYG.
+//  - HP3 / HP4 (options): culled by the handler (Nearest 24), or past Limit Distance from the viewer: hidden.
 class RSQTHP_Bar : Actor
 {
 	Actor who;
@@ -45,6 +59,24 @@ class RSQTHP_Bar : Actor
 	int aimTic;             // Aimed Only: the last tic a hand's gun pointed at this bar's monster
 	bool aimMade;           // made only because it was aimed at (full health): goes when the aim has left
 	bool champ;             // carries Champions' icon: lifted above it
+	// QoL round
+	const FADE = 6;          // HP9: tics to fade in
+	const CHUNK_HOLD = 17;   // HP1: tics the lost chunk stays lit (half a second)
+	const CHUNK_DRAIN = 10;  // HP1: tics it then takes to drain
+	double lenK;            // HP6: sideways stretch by toughness
+	bool raised;            // HP8: an Arch-Vile brought it back
+	bool flashPend;         // HP7: a player's hit landed since the last update
+	int lastFlash;          // HP7: the tic of the last flash (Photosensitive Mode's gap)
+	bool flashNow;          // HP7: drawn as the flash this tic (the probe reads it)
+	int shown;              // HP9: tics in view
+	bool culled;            // HP3: beyond the nearest 24
+	int chunkHp, chunkTic;  // HP1: health before the hit(s), and when the last one landed (0 hp: none)
+	RSQTHP_Part chunkP;
+	bool lastAlly;          // HP2: drawn in the ally colour
+	double chunkX0, chunkW; // HP1: the chunk's left edge and width, in bar pixels
+	bool statRaised;        // the status part shows the raised arrow (HP8)
+	double baseAlpha;       // this tic's alpha and style before the hit flash: the parts take these
+	int baseStyle;
 
 	Default
 	{
@@ -71,7 +103,22 @@ class RSQTHP_Bar : Actor
 		if (over) over.Destroy();
 		if (mark) mark.Destroy();
 		if (stat) stat.Destroy();
+		if (chunkP) chunkP.Destroy();
 		Super.OnDestroy();
+	}
+
+	// HP6: the bar's stretch for a thing of this spawn health (imp 60 = 1)
+	static double LenOf(int mx)
+	{
+		return clamp(1.0 + 0.15 * log(max(1, mx) / 60.0) / log(2.0), 0.7, 2.0);
+	}
+
+	// a player's hit landed (handler.zs): flash once, and the chunk it took off (hpBefore: health before it)
+	void PlayerHit(int hpBefore)
+	{
+		flashPend = true;
+		if (chunkHp <= 0 || level.maptime - chunkTic > CHUNK_HOLD) chunkHp = hpBefore;   // a new chunk, or add to the lit one
+		chunkTic = level.maptime;
 	}
 
 	// No Super.Tick(): the bar has no movement and a -1 tic state; everything is done here.
@@ -96,10 +143,12 @@ class RSQTHP_Bar : Actor
 		int hp = who.health;
 		int mx = max(1, who.SpawnHealth());
 		bool inv = who.bInvulnerable;
-		if (!built || hp != lastHp || mx != lastMax || inv != lastInv || h.ver != lastVer)
+		bool al = h.ally && who.bFriendly && !who.player;     // Brutal Doom's marines switch FRIENDLY as they go
+		if (!built || hp != lastHp || mx != lastMax || inv != lastInv || h.ver != lastVer || al != lastAlly)
 		{
-			built = true; lastHp = hp; lastMax = mx; lastInv = inv; lastVer = h.ver;
+			built = true; lastHp = hp; lastMax = mx; lastInv = inv; lastVer = h.ver; lastAlly = al;
 			BuildFrame(hp, mx, inv);
+			lenK = LenOf(mx);
 		}
 
 		// ---- the height ------------------------------------------------------------------------
@@ -122,13 +171,27 @@ class RSQTHP_Bar : Actor
 		// ---- size, light, translucency ----------------------------------------------------------
 		double s = h.scale;
 		let cam = players[consoleplayer].camera;
-		if (cam && h.far > 1.0)
+		double camD = 0;
+		if (cam)
 		{
-			double d = (cam.Pos.xy - Pos.xy).Length();
-			if (d > 256) s *= 1.0 + (h.far - 1.0) * min(1.0, (d - 256) / 768.0);
+			camD = (cam.Pos.xy - Pos.xy).Length();
+			if (h.far > 1.0 && camD > 256) s *= 1.0 + (h.far - 1.0) * min(1.0, (camD - 256) / 768.0);
 		}
-		Scale = (s, s);
+		if (lenK <= 0) lenK = LenOf(mx);
+		Scale = (s * lenK, s);
 		bBright = h.bright || h.set == 4;
+
+		// your own bar, in first person
+		bool hide = false;
+		if (who.player && who == players[consoleplayer].mo && players[consoleplayer].camera == who && !(who.player.cheats & CF_CHASECAM))
+			hide = true;
+		// Aimed Only: only while a hand's gun points at it, and AIM_LINGER tics after
+		if (h.aimedOnly && level.maptime - aimTic > RSQTHP_Handler.AIM_LINGER) hide = true;
+		if (culled) hide = true;                                    // HP3 Nearest 24
+		if (h.limit && cam && camD > h.limitDist) hide = true;      // HP4 Distance Limit
+		bInvisible = hide;
+		shown = hide ? 0 : min(shown + 1, FADE);                    // HP9 fade in
+
 		double a = 1.0;
 		int style = STYLE_Normal;
 		if (h.stealth) { a = who.Alpha; style = who.GetRenderStyle(); }
@@ -137,25 +200,64 @@ class RSQTHP_Bar : Actor
 			a *= 0.6;
 			if (style == STYLE_Normal) style = STYLE_Translucent;
 		}
+		if (shown < FADE)
+		{
+			a *= double(shown) / FADE;
+			if (style == STYLE_Normal) style = STYLE_Translucent;
+		}
+		baseAlpha = a; baseStyle = style;
+		// HP7: one tic as a white silhouette after a player's hit (Photosensitive Mode: 40 %, 14 tics apart)
+		flashNow = false;
+		if (flashPend)
+		{
+			flashPend = false;
+			if (!hide && RSQTHP_A11y.Gate(lastFlash, level.maptime))
+			{
+				lastFlash = level.maptime;
+				flashNow = true;
+				if (fillcolor != Color(255, 255, 255, 255)) SetShade(Color(255, 255, 255));
+				a = RSQTHP_A11y.Dim(a * 0.9);
+				style = STYLE_TranslucentStencil;
+			}
+		}
 		if (Alpha != a || GetRenderStyle() != style) A_SetRenderStyle(a, style);
-
-		// your own bar, in first person
-		bool hide = false;
-		if (who.player && who == players[consoleplayer].mo && players[consoleplayer].camera == who && !(who.player.cheats & CF_CHASECAM))
-			hide = true;
-		// Aimed Only: only while a hand's gun points at it, and AIM_LINGER tics after
-		if (h.aimedOnly && level.maptime - aimTic > RSQTHP_Handler.AIM_LINGER) hide = true;
-		bInvisible = hide;
 
 		// ---- frozen / held, every tic (a hit-stop lasts 3 to 6 tics) ------------------------------
 		int st = h.markers ? StatusOf() : 0;
-		if (st != statNow)
+		bool rs = raised && h.markers;
+		if (st != statNow || rs != statRaised)
 		{
-			statNow = st;
-			if (st && !stat) stat = RSQTHP_Part(Spawn("RSQTHP_Part", Pos, NO_REPLACE));
-			if (!st && stat) { stat.Destroy(); stat = null; }
-			if (stat) { stat.sprite = h.sprStat; stat.frame = st - 1; }
+			statNow = st; statRaised = rs;
+			bool want = st || rs;
+			if (want && !stat) stat = RSQTHP_Part(Spawn("RSQTHP_Part", Pos, NO_REPLACE));
+			if (!want && stat) { stat.Destroy(); stat = null; }
+			// frames: A frozen, B held, C raised, D frozen + raised, E held + raised
+			if (stat) { stat.sprite = h.sprStat; stat.frame = rs ? 2 + st : st - 1; }
 		}
+
+		// ---- HP1: the chunk a player's hit took off --------------------------------------------------
+		int hi = 0;
+		double drainK = 1.0;
+		if (h.chunk && chunkHp > hp && !inv)
+		{
+			int age = level.maptime - chunkTic;
+			if (age <= CHUNK_HOLD + CHUNK_DRAIN)
+			{
+				hi = chunkHp;
+				if (age > CHUNK_HOLD) drainK = 1.0 - double(age - CHUNK_HOLD) / CHUNK_DRAIN;
+			}
+		}
+		if (!hi) chunkHp = 0;
+		double x0 = 1 + 110 * clamp(double(hp) / mx, 0.0, 1.0);
+		double x1 = 1 + 110 * clamp(double(hi) / mx, 0.0, 1.0);
+		x1 = x0 + (x1 - x0) * drainK;
+		if (hi && x1 - x0 >= 0.5)
+		{
+			if (!chunkP) chunkP = RSQTHP_Part(Spawn("RSQTHP_Part", Pos, NO_REPLACE));
+			chunkP.sprite = h.sprChunk; chunkP.frame = 0;
+			chunkX0 = x0; chunkW = x1 - x0;
+		}
+		else if (chunkP) { chunkP.Destroy(); chunkP = null; }
 
 		// ---- the series' markers, every 4th tic ---------------------------------------------------
 		if (((level.maptime + markPhase) & 3) == 0)
@@ -193,7 +295,7 @@ class RSQTHP_Bar : Actor
 
 	void BuildFrame(int hp, int mx, bool inv)
 	{
-		sprite = h.sprMain[h.set];
+		sprite = (h.ally && who.bFriendly && !who.player) ? h.sprAlly : h.sprMain[h.set];
 		double pct = double(hp) / double(mx) * 100.0;
 		int f;
 		if (inv) f = 0;                       // XX
@@ -219,19 +321,35 @@ class RSQTHP_Bar : Actor
 
 	void SyncParts()
 	{
+		// HP6: the stretched bar's extra half-width, in world units along the view's right (a sprite faces the view's
+		// yaw), so the icons beside it move out with its ends and the chunk lands on its pixels
+		double sy = Scale.Y;
+		Vector2 rt = (0, 0);
+		let cam = players[consoleplayer].camera;
+		if (cam) rt = (sin(cam.Angle), -cos(cam.Angle));
+		double ext = 56 * sy * (lenK - 1);
 		if (over) SyncPart(over);
-		if (mark) { SyncPart(mark); mark.Scale = Scale * 2 * RSQTHP_A11y.Cue(); }   // icons at twice the bar's scale: readable (x RSQ_Accessibility's Cue Size)
-		if (stat) { SyncPart(stat); stat.Scale = Scale * 2 * RSQTHP_A11y.Cue(); }
+		if (mark) { SyncPart(mark, rt * -ext); mark.Scale = (sy, sy) * 2 * RSQTHP_A11y.Cue(); }   // icons at twice the bar's scale: readable (x RSQ_Accessibility's Cue Size)
+		if (stat) { SyncPart(stat, rt * ext); stat.Scale = (sy, sy) * 2 * RSQTHP_A11y.Cue(); }
+		if (chunkP)
+		{
+			SyncPart(chunkP, rt * ((chunkX0 - 56) * sy * lenK));
+			chunkP.Scale = (chunkW * sy * lenK, sy);
+			chunkP.bBright = true;
+			double ca = baseAlpha * 0.85;
+			if (chunkP.Alpha != ca || chunkP.GetRenderStyle() != STYLE_Translucent) chunkP.A_SetRenderStyle(ca, STYLE_Translucent);
+		}
 	}
 
-	void SyncPart(RSQTHP_Part p)
+	void SyncPart(RSQTHP_Part p, Vector2 shift = (0, 0))
 	{
-		if (p.Pos != Pos) p.SetOrigin(Pos, false);
-		p.Prev = Prev;
+		Vector3 at = Pos + (shift, 0);
+		if (p.Pos != at) p.SetOrigin(at, false);
+		p.Prev = Prev + (shift, 0);
 		p.Scale = Scale;
 		p.bBright = bBright;
 		p.bInvisible = bInvisible;
-		if (p.Alpha != Alpha || p.GetRenderStyle() != GetRenderStyle()) p.A_SetRenderStyle(Alpha, GetRenderStyle());
+		if (p.Alpha != baseAlpha || p.GetRenderStyle() != baseStyle) p.A_SetRenderStyle(baseAlpha, baseStyle);
 	}
 
 	// the sprite's real top above its origin, in world units
@@ -285,7 +403,7 @@ class RSQTHP_SpriteNames : Actor
 {
 	States
 	{
-		RSYA A 0; RSYB A 0; RSYC A 0; RSYD A 0; RSYE A 0; RSYZ A 0; RSYF A 0;
+		RSYA A 0; RSYB A 0; RSYC A 0; RSYD A 0; RSYE A 0; RSYZ A 0; RSYF A 0; RSYG A 0; RSYH A 0;
 		RS10 A 0; RS11 A 0; RS12 A 0; RS13 A 0; RS14 A 0;
 		RS20 A 0; RS21 A 0; RS22 A 0; RS23 A 0; RS24 A 0;
 		RS30 A 0; RS31 A 0; RS32 A 0; RS33 A 0; RS34 A 0;
