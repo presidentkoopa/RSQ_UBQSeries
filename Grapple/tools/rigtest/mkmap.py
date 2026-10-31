@@ -49,6 +49,11 @@ for ln in lines:
 # 3D floor control line on C's first line
 for ln in lines:
     if ln[2]==C: ln[4]=160; ln[5]=(1,1,0,255,0); break
+# a SWITCH (QoL GR5, 2026-10-31): ledge B's east wall, use to lower the alcove's ceiling (tag 2) by 64,
+# Ceiling_LowerByValue(2, 8, 64), repeatable; the hook hits it from grp_tp 1600 512 0 straight ahead
+USE=set()
+for ln in lines:
+    if ln[2]==B and ln[3] is None and V[ln[0]][0]==1792 and V[ln[1]][0]==1792: ln[4]=40; ln[5]=(2,8,64,0,0); USE.add(id(ln))
 out=['namespace = "zdoom";',
  'thing { x = 256.0; y = 512.0; type = 1; angle = 0; skill1 = true; skill2 = true; skill3 = true; skill4 = true; skill5 = true; single = true; coop = true; dm = true; }']
 for (x,y) in V: out.append('vertex { x = %d.0; y = %d.0; }'%(x,y))
@@ -58,9 +63,11 @@ def side(sec, other):
     if other is None: s+='texturemiddle = "STARTAN2"; '
     else: s+='texturetop = "STARTAN2"; texturebottom = "STARTAN2"; '
     s+='}'; sides.append(s); return len(sides)-1
-for (v1,v2,f,b,sp,args) in lines:
+for ln in lines:
+    (v1,v2,f,b,sp,args)=ln
     fs=side(f,b); bs=side(b,f) if b is not None else None
     s='linedef { v1 = %d; v2 = %d; sidefront = %d; '%(v1,v2,fs)
+    if id(ln) in USE: s+='playeruse = true; repeatspecial = true; '
     if bs is not None: s+='sideback = %d; twosided = true; '%bs
     else: s+='blocking = true; '
     if sp: s+='special = %d; arg0 = %d; arg1 = %d; arg2 = %d; arg3 = %d; '%((sp,)+args[:4])

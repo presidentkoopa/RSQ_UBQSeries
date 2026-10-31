@@ -1,3 +1,22 @@
+# ==== QoL round, the owner's picks, 2026-10-31 afternoon (read first) ====
+
+Rig only, not headset-confirmed. Shared QZD 17.3 rig, BD order, GRTEST (`tools/rigtest/grq.sh`, probe rebuilt by
+build_probe.sh: a use switch added on ledge B's east wall, `grp_stick`, `grp_push`, `grp_log 6`). Zero script errors
+from the pack. Key lines: `test/evidence/qol_1031.txt` (`tools/rigtest/qol_evidence.sh`).
+
+## Done (measured)
+| pick | measured |
+|---|---|
+| GR1 calm the swing (yes, `rsqgr_calm`) | stick back past half is a brake (tangential speed x0.85 a tic) instead of a pump. Swinging at 8.5 u/tic, stick back at t166: 6.9 -> 2.1 -> 0.21 u/tic by t178 (12 tics), no swing past the bottom after; it then creeps back under the anchor at <= 0.54 u/tic. Was ~22 s to rest (ROADMAP 1). Stick-back pumping is gone (forward and side still pump). |
+| GR4 slack rope lets go (yes, `rsqgr_slack_letgo`) | standing, not reeling or holding, claw no higher than the rope's body point: claw latched on the floor t141, let go t246 (105 tics = 3 s). A wall claw above hand height never counts. |
+| GR7 lasso flick (yes with Lasso, `rsqgr_lasso_flick`) | hand speed in the body's frame (offset from the pawn turned by its angle, over 2 tics), 3 m/s (DistanceGrab's rsqdg_throw_min). Slow sweep (~0.7 m/s): nothing. Flick 7.9 m/s to the body's left: the imp left the rope at 24 u/tic (rsqgr_lasso_speed) north, landed 212 units off, dmg 3. A turn of the pawn is not a flick by construction; not rig-tested. |
+| GR8 tap slider (yes, `rsqgr_tap_tics` 8, Tuning "Tap to Let Go (tics)") | 8: a 5-frame press let go (t46). 3: a 5-frame press reeled (t92), a 2-frame press let go (t115). |
+| GR5 hook switches/doors (option, `rsqgr_use_lines`) | claw on a use line: `Line.Activate(player, side, SPAC_Use)`, then the claw returns. Switch Ceiling_LowerByValue(2,8,64): `use line 10 special 40 side 0 -> used` t23, alcove ceiling 200 -> 136. Doors go through the same call; a door not rig-tested. |
+| GR6 aim dot (option, `rsqgr_aim_dot`) | this machine's player, an empty hand (strict free-hand test), no hook out, held >= 8 units ahead of the body: a 4-unit, 35% particle where the claw's trace stops. Log: dot on the floor 146 units ahead while the off hand pointed, none once lowered. Frames: not readable at the shipped size at rig resolution; an enlarged test build showed bright pixels on the fingertip's line. |
+
+## Not done / open
+- Headset: the brake's feel, the flick threshold (3 m/s), whether the dot is visible enough.
+
 # ==== bugfix and QoL sweep, 2026-10-31 (read first) ====
 
 Rig only, not headset-confirmed. Rig = QZD 17.3 Linux, simulated OpenXR, the GRTEST test map (tools/rigtest, scripts in

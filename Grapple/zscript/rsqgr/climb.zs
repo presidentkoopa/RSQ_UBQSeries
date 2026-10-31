@@ -26,10 +26,11 @@ class RSQGR_Climb
 {
 	const FREEHAND_LAYER = 2200;   // BD22Q RSQ_Layers.FREEHAND
 
-	static play bool HandFree(PlayerPawn pmo, int hand)
+	// strict: an empty hand whatever rsqgr_climb_free_only says (the aim dot, GR6)
+	static play bool HandFree(PlayerPawn pmo, int hand, bool strict = false)
 	{
 		if (!pmo || !pmo.player) return false;
-		if (!RSQGR_Util.Flag("rsqgr_climb_free_only", true)) return true;
+		if (!strict && !RSQGR_Util.Flag("rsqgr_climb_free_only", true)) return true;
 		let p = pmo.player;
 		Weapon w = hand == 0 ? p.ReadyWeapon : p.OffhandWeapon;
 		if (!w) return true;

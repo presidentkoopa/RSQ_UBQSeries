@@ -3,9 +3,14 @@ class GRP_Probe : EventHandler
 {
 	static const Name cls[] = { "ZombieMan", "DoomImp", "Demon", "Cacodemon", "BaronOfHell", "Cyberdemon", "ExplosiveBarrel", "Revenant", "Fatso", "LostSoul", "Arachnotron", "ShotgunGuy" };
 	double lastz; int airT;
+	int stick;
+	int pushT; double pushX;   // QoL tests: the pawn pushed east at pushX u/tic for pushT tics (a single vel is wiped on the ground)   // QoL GR1 (2026-10-31): a forwardmove written into the player's cmd every tic before the rope reads it
+	override void OnRegister() { SetOrder(-1000); }   // before RSQGR_Core, so the rope sees this tic's stick
 	override void NetworkProcess(ConsoleEvent e)
 	{
 		let pmo = players[e.Player].mo; if (!pmo) return;
+		if (e.Name == "grp_push") { pushX = e.Args[0]; pushT = e.Args[1]; return; }
+		if (e.Name == "grp_stick") { stick = e.Args[0]; Console.Printf("T_STICK t%d forwardmove %d", level.maptime, stick); return; }
 		if (e.Name == "grp_vel")
 		{
 			pmo.vel = (e.Args[0], e.Args[1], e.Args[2]);
@@ -56,6 +61,15 @@ class GRP_Probe : EventHandler
 	}
 	override void WorldTick()
 	{
+		if (pushT > 0 && players[consoleplayer].mo) { pushT--; players[consoleplayer].mo.vel.x = pushX; }
+		if (stick != 0 && players[consoleplayer].mo) players[consoleplayer].cmd.forwardmove = stick;
+		if (CVar.FindCVar("grp_log").GetInt() == 6 && level.maptime % 5 == 0)
+		{
+			let it = level.CreateSectorTagIterator(2);
+			int si = it.Next();
+			if (si >= 0) Console.Printf("T_ALCOVE t%d ceiling %.1f", level.maptime, level.sectors[si].ceilingplane.ZatPoint((320, 1100)));
+		}
+		if (CVar.FindCVar("grp_log").GetInt() == 6) return;
 		if (CVar.FindCVar("grp_log").GetInt() < 1) return;
 		let pmo = players[consoleplayer].mo; if (!pmo) return;
 		if (CVar.FindCVar("grp_log").GetInt() == 5)

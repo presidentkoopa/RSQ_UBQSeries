@@ -194,6 +194,13 @@ class RSQGR_Flight : EventHandler
 	int     fhand[NFLY];       // which hand's rope
 	double  flen[NFLY];        // the lasso's length, hand to its middle
 	int     fhitT[NFLY];       // fage of its last lasso impact
+	// THE FLICK THROW (owner's QoL pick GR7, rsqgr_lasso_flick): the throwing hand's offset from the pawn in
+	// the BODY's frame (x ahead, y left, z up; rotated by the pawn's angle), the last two tics, so a turn or a
+	// walk is not a flick -- only the arm moving against the body is
+	Vector3 fk1[NFLY], fk2[NFLY];
+	int     fkN[NFLY];
+	const FLICK_MPS = 3.0;     // RSQ_DistanceGrab's swing/throw threshold (rsqdg_throw_min, rsqdg_swing_mps: 3 m/s)
+	const FLICK_WAIT = 6;      // tics after the bite before a flick counts (the firing motion itself)
 
 	Actor   fa[NFLY];          // the thing
 	PlayerPawn fby[NFLY];      // who threw it (damage source, live landing point)
@@ -320,6 +327,7 @@ class RSQGR_Flight : EventHandler
 			double minL = pmo.Radius + a.Radius + RSQGR_Util.Num("rsqgr_slide_gap", 16);
 			flen[s] = clamp((mid0 - hp).Length(), minL, max(minL, RSQGR_Util.Num("rsqgr_range", 1024)));
 			tSpin[s] = 0; tFlip[s] = 0; ftum[s] = 0;
+			fkN[s] = 0;
 			fph[s] = FP_LASSO;
 			if (RSQGR_Util.Flag("rsqgr_debug", false))
 				Console.Printf("T_GRM lasso %s m=%d len=%.1f", a.GetClassName(), a.Mass, flen[s]);
@@ -378,6 +386,7 @@ class RSQGR_Flight : EventHandler
 		if (h && h.reelHeld)
 			flen[s] = max(minL, flen[s] - RSQGR_Util.Num("rsqgr_reel_speed", 12) * RSQGR_Perks.Factor(p, 'reel'));
 		Vector3 hand = RSQGR_Util.HandPos(p, fhand[s]);
+		if (Flick(s, a, p, h, hand)) return;
 		Vector3 dir = RSQGR_Util.MapDir(RSQGR_Util.HandYaw(p, fhand[s]), RSQGR_Util.HandPitch(p, fhand[s]));
 		Vector3 want = hand + dir * flen[s];
 		Vector3 was = MidOf(a);
@@ -398,6 +407,36 @@ class RSQGR_Flight : EventHandler
 			fhitT[s] = fage[s];
 			Impact(s, a, hit, before, "lasso");
 		}
+	}
+
+	// A HARD FLICK THROWS IT (GR7). The hand's speed is read in the body's frame over the last two tics (one
+	// tic can be a stale sample on a slow frame), in metres a second; past FLICK_MPS the rope lets go and the
+	// monster flies the flick's way (turned back into the world by the pawn's angle) at the lasso's own top
+	// speed (rsqgr_lasso_speed, per world tic), on the throw's air: the cut-throw path, its landing and its
+	// impact damage. Only a pose the engine believes counts (PoseGood); the body fallback never flicks.
+	private bool Flick(int s, Actor a, PlayerPawn p, RSQGR_Hook h, Vector3 hand)
+	{
+		if (!RSQGR_Util.Flag("rsqgr_lasso_flick", true) || !RSQGR_Util.PoseGood(p, fhand[s])) { fkN[s] = 0; return false; }
+		Vector3 off = hand - p.Pos;
+		double c = cos(-p.Angle), sn = sin(-p.Angle);
+		Vector3 body = (off.x * c - off.y * sn, off.x * sn + off.y * c, off.z);
+		Vector3 old = fk2[s];
+		bool ready = fkN[s] >= 2 && fage[s] > FLICK_WAIT;
+		fk2[s] = fk1[s]; fk1[s] = body; fkN[s]++;
+		if (!ready) return false;
+		Vector3 v = (body - old) / 2.0;                      // map units a tic, body frame
+		double mps = RSQGR_Util.Metres(v) * TICRATE;
+		if (mps < FLICK_MPS) return false;
+		double ca = cos(p.Angle), sa = sin(p.Angle);
+		Vector3 w = (v.x * ca - v.y * sa, v.x * sa + v.y * ca, v.z);   // back to the world
+		double speed = max(1.0, RSQGR_Util.Num("rsqgr_lasso_speed", 24));
+		fv[s] = w.Unit() * speed;
+		if (RSQGR_Util.Flag("rsqgr_debug", false))
+			Console.Printf("T_GRM flick %s %.1f m/s body(%.1f %.1f %.1f) -> thrown (%.1f %.1f %.1f)", a.GetClassName(), mps, v.x, v.y, v.z, fv[s].x, fv[s].y, fv[s].z);
+		let core = RSQGR_Core.Get();
+		if (core) core.LetGo(h, true);                       // OnRelease -> Cut -> the air, with fv as set here
+		if (fph[s] == FP_LASSO) ToAir(s, "flick");           // (in case the seam did not cut it)
+		return true;
 	}
 
 	// The path's own velocity at its clock, per world tic (d/dtt of StepPath's point).
