@@ -26,6 +26,13 @@ server bool   rsqgr_grab_dg         = true;  // RSQ_DistanceGrab's grab binds ta
 server bool   rsqgr_two_hands       = true;  // both hands may hold the rope at once (the climb is their average); off: a new hand takes it over
 server bool   rsqgr_thump           = true;  // a thump in the hand when the hook bites or the rope catches you (the engine's own hit buzz)
 
+// the owner's QoL round (2026-10-31)
+server bool   rsqgr_calm            = true;  // GR1: hanging from the rope, the stick pulled back calms the swing (about a second)
+server bool   rsqgr_slack_letgo     = true;  // GR4: a rope lying slack on the floor for 3 s lets go by itself
+server int    rsqgr_tap_tics        = 8;     // GR8: a press released within this many tics is a tap (lets go); longer reels
+server bool   rsqgr_use_lines       = false; // GR5: the claw hitting a switch or a door uses it (the engine's Line.Activate) and comes back
+server bool   rsqgr_aim_dot         = false; // GR6: a faint dot where the claw would bite while an empty hand points
+
 // monsters
 server float  rsqgr_mass_max      = 1000;   // heavier than this (or a boss) = an anchor, it does not come
 server float  rsqgr_slide_speed   = 10;     // a hooked monster slides to you this fast (scaled by slow motion)
@@ -45,6 +52,7 @@ server int    rsqgr_debug         = 0;      // 1: log every hook tic to the cons
 // ==== monster side (agent-monster: monster.zs, whip.zs, looks.zs) ====
 server int    rsqgr_monster_mode  = 0;      // a hooked monster: 0 slides to you (core's), 1 is yanked through the air (Distance Grab's arc), 2 lasso (held at rope length, follows your arm)
 server float  rsqgr_lasso_speed   = 24;     // the lasso: fastest a held monster follows your arm (units per tic)
+server bool   rsqgr_lasso_flick   = true;   // GR7: with the lasso, a hard flick of the arm (3 m/s, body frame) throws the held monster that way
 server float  rsqgr_yank_mass     = 1000;   // heaviest thrown; heavier (but under rsqgr_mass_max) slides
 server float  rsqgr_yank_radius   = 64;     // widest thrown
 server float  rsqgr_yank_height   = 110;    // tallest thrown

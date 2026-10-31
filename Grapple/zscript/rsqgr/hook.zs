@@ -62,6 +62,7 @@ class RSQGR_Hook : Actor
 	bool wasTaut;
 	double slackMax;            // the most slack it has hung with since it was last taut
 	int lastThump;
+	int floorIdle;              // tics the rope has lain slack on the floor (GR4, RSQGR_Core.Swing)
 	double drawMs;        // last rope draw cost (rsqgr_debug)
 
 	// no hand holds the rope (a load, a let-go, climbing switched off)

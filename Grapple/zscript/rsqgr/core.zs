@@ -14,7 +14,9 @@
 class RSQGR_Core : EventHandler
 {
 	const NHOOK = MAXPLAYERS * 2;
-	const TAP_TICS = 8;
+	// THE TAP WINDOW (owner's QoL pick GR8): a press released within rsqgr_tap_tics tics is a tap (let go); held
+	// longer it reels. Was the constant 8; the default stays 8.
+	static clearscope int TapTics() { return clamp(RSQGR_Util.Opt("rsqgr_tap_tics", 8), 1, 35); }
 
 	RSQGR_Hook hooks[NHOOK];
 	bool held[NHOOK];
@@ -78,7 +80,7 @@ class RSQGR_Core : EventHandler
 		held[i] = false;
 		let h = hooks[i];
 		if (!h || !wasHeld || pressFired[i]) return;
-		if (level.maptime - pressTic[i] <= TAP_TICS
+		if (level.maptime - pressTic[i] <= TapTics()
 			&& (h.phase == RSQGR_Hook.PH_LATCH || h.phase == RSQGR_Hook.PH_BITE))
 			LetGo(h, true);
 	}
@@ -198,7 +200,50 @@ class RSQGR_Core : EventHandler
 			if (pmo && pmo.Health > 0) Swing(pmo, pn);
 			if (pmo && pmo.Health > 0 && RSQGR_A11y.Vignette() > 0) Comfort(pmo, pn);
 		}
+		AimDot();
 		tickMs = MSTimeF() - t0;
+	}
+
+	// ---- the aim dot (owner's QoL option GR6, rsqgr_aim_dot) ----------------------
+	// A faint dot where the claw would bite, for THIS machine's player only (a particle: nothing in the
+	// world, nothing synced), while a hand is empty (the climb's free-hand test, always strict here), has no
+	// hook out, and points: its pose is real and the hand is held out at least DOT_REACH units ahead of the
+	// body. The same trace the claw flies (Fly: RSQGR_Tracer, WALLMASK, monsters it can bite), to its range.
+	const DOT_REACH = 8.0;   // ~0.24 m (34 units a metre)
+	void AimDot()
+	{
+		if (!RSQGR_Util.Flag("rsqgr_aim_dot", false) || !RSQGR_Util.Flag("rsqgr_on", true)) return;
+		let p = players[consoleplayer];
+		if (!p || !p.mo || p.mo.Health <= 0) return;
+		let pmo = p.mo;
+		for (int hand = 0; hand < 2; hand++)
+		{
+			if (hooks[consoleplayer * 2 + hand] || !RSQGR_Util.PoseGood(pmo, hand) || !RSQGR_Climb.HandFree(pmo, hand, true)) continue;
+			Vector3 org = RSQGR_Util.HandPos(pmo, hand);
+			Vector2 fwd = Actor.AngleToVector(pmo.Angle, 1);
+			Vector3 rel = org - pmo.Pos;
+			if ((rel.xy dot fwd) < DOT_REACH) continue;
+			Vector3 dir = RSQGR_Util.MapDir(RSQGR_Util.HandYaw(pmo, hand), RSQGR_Util.HandPitch(pmo, hand));
+			double range = max(64.0, RSQGR_Util.Num("rsqgr_range", 1024)) * RSQGR_Perks.Factor(pmo, 'range');
+			let tr = GetTracer();
+			tr.shooter = pmo;
+			if (!tr.Trace(org, level.PointInSector(org.xy), dir, range, TRACE_HitSky, RSQGR_Tracer.WALLMASK, false, pmo)) continue;
+			int ht = tr.Results.HitType;
+			if (ht == TRACE_HitNone || ht == TRACE_HasHitSky || ht == TRACE_CrossingPortal) continue;
+			FSpawnParticleParams pp;
+			pp.color1 = ht == TRACE_HitActor ? 0xFFC8A0 : 0xE8F0FF;
+			pp.style = STYLE_Add;
+			pp.flags = SPF_FULLBRIGHT;
+			pp.lifetime = 2;
+			pp.size = 4;
+			pp.startalpha = 0.35;
+			pp.fadestep = 0;
+			pp.pos = tr.Results.HitPos - dir * 2;
+			level.SpawnParticle(pp);
+			if (RSQGR_Util.Opt("rsqgr_debug", 0) >= 1 && level.maptime % 5 == 0)
+				Console.Printf("T_GR t%d h%d aim dot at (%.1f %.1f %.1f) on %s, %.0f units", level.maptime, hand, pp.pos.x, pp.pos.y, pp.pos.z,
+					ht == TRACE_HitActor ? "a monster" : "geometry", tr.Results.Distance);
+		}
 	}
 
 	// RSQ_Accessibility's Comfort Vignette: a swing in the air, a reel, a climb or a yank is a
@@ -274,6 +319,11 @@ class RSQGR_Core : EventHandler
 			return;
 		}
 
+		// HOOK A SWITCH OR A DOOR (owner's QoL option GR5, rsqgr_use_lines): a wall with a special the player could
+		// USE is used, from range, by the engine's own Line.Activate (SPAC_Use, as P_UseLines would with the player
+		// as the activator: keys, locks and messages are the engine's), and the claw comes back instead of biting
+		if (ht == TRACE_HitWall && UseLine(h, tr.Results.HitLine, tr.Results.Side, at)) return;
+
 		// geometry: wall, floor, ceiling, 3D floor side or plane
 		h.anchor = at - h.dir * 1.0;
 		h.hitDir = h.dir;
@@ -289,6 +339,23 @@ class RSQGR_Core : EventHandler
 		if (s != "") h.A_StartSound(s, CHAN_VOICE);
 		RSQGR_Looks.Spark(at, 'wall');
 		Latch(h, i);
+	}
+
+	bool UseLine(RSQGR_Hook h, Line ln, int side, Vector3 at)
+	{
+		if (!ln || !ln.special || !h.owner || !RSQGR_Util.Flag("rsqgr_use_lines", false)) return false;
+		if (!(ln.activation & (SPAC_Use | SPAC_UseThrough | SPAC_UseBack))) return false;
+		// the back of a line only when it may be used from the back (P_UseTraverse's rule)
+		if (side != 0 && !(ln.activation & SPAC_UseBack)) return false;
+		int sp = ln.special;
+		int how = (side != 0) ? SPAC_UseBack : ((ln.activation & SPAC_Use) ? SPAC_Use : SPAC_UseThrough);
+		bool done = ln.Activate(h.owner, side, how);
+		h.SetOrigin(at - h.dir * 2, true);
+		if (RSQGR_Util.Opt("rsqgr_debug", 0) >= 1)
+			Console.Printf("T_GR t%d h%d use line %d special %d side %d -> %s", level.maptime, h.hand, ln.Index(), sp, side, done ? "used" : "refused");
+		Thump(h, "use");
+		LetGo(h, false);
+		return true;
 	}
 
 	void Latch(RSQGR_Hook h, int i)
@@ -331,6 +398,9 @@ class RSQGR_Core : EventHandler
 	// One pulse blocks that hand's channel for its 150 ms (gl_openvr.cpp 517-528), so one thump per
 	// hook per THUMP_GAP tics.
 	const THUMP_GAP = 10;
+	const SLACK_IDLE = 105;   // GR4: 3 s at 35 tics
+	// GR1: the brake's share of the tangential speed taken each tic while the stick is held back
+	const CALM_K = 0.15;
 	const TAUT_VR = 3.0;   // u/tic outward when the rope catches him, or it is only the rope settling
 	const SLACK_MIN = 12.0; // units of slack it must have hung with first
 
@@ -376,7 +446,7 @@ class RSQGR_Core : EventHandler
 		if (RSQGR_Monster.Holds(v))
 		{
 			h.noProgress = 0;
-			h.reelHeld = held[i] && (pressFired[i] || level.maptime - pressTic[i] > TAP_TICS);
+			h.reelHeld = held[i] && (pressFired[i] || level.maptime - pressTic[i] > TapTics());
 		}
 		else if (d < h.bestDist - 0.25) { h.bestDist = d; h.noProgress = 0; }
 		else if (++h.noProgress > 52) { LetGo(h, false); return; }
@@ -476,7 +546,7 @@ class RSQGR_Core : EventHandler
 			// REEL: holding the bind takes the rope in. The press that fired keeps
 			// reeling the moment it latches (hold = zip); a new press reels only once
 			// it outlasts a tap, so a tap to let go does not tug first.
-			h.reelHeld = held[i] && (pressFired[i] || level.maptime - pressTic[i] > TAP_TICS);
+			h.reelHeld = held[i] && (pressFired[i] || level.maptime - pressTic[i] > TapTics());
 			if (h.reelHeld)
 			{
 				h.ropeLen = min(h.ropeLen, d);
@@ -497,6 +567,14 @@ class RSQGR_Core : EventHandler
 				h.ropeLen = clamp(d, minLen, maxLen);
 				h.wasTaut = false;
 				h.slackMax = 0;
+				// A ROPE LYING SLACK ON THE FLOOR LETS GO (owner's QoL pick GR4, rsqgr_slack_letgo): standing, not
+				// reeling or holding it, with the claw no higher than where the rope meets the body -- a rope that
+				// cannot hold him up and lies along the floor -- for SLACK_IDLE tics (3 s), it lets go by itself
+				if (RSQGR_Util.Flag("rsqgr_slack_letgo", true) && !h.heavy && h.gripHand < 0 && a.z <= b.z)
+				{
+					if (++h.floorIdle >= SLACK_IDLE) { Log(h, "slack on the floor 3 s: lets go"); h.floorIdle = 0; LetGo(h, false); continue; }
+				}
+				else h.floorIdle = 0;
 				if (level.maptime % 4 == (pn + hand) % 4)
 				{
 					if (!Sees(pmo, b, a)) { if (++h.losBad >= 3) { LetGo(h, false); continue; } }
@@ -506,6 +584,7 @@ class RSQGR_Core : EventHandler
 				continue;
 			}
 
+			h.floorIdle = 0;
 			// WHAT HE REALLY DID LAST TIC. A wall or a ceiling stops the player but the
 			// engine leaves the blocked part in his velocity (measured: reeling into a wall,
 			// vel grew 14.7 -> 17.6 u/tic over 8 tics with the pawn not moving), and the
@@ -580,6 +659,10 @@ class RSQGR_Core : EventHandler
 				let cmd = pmo.player.cmd;
 				double fwd = cmd.forwardmove / 12800.0;
 				double side = cmd.sidemove / 10240.0;
+				// CALM THE SWING (owner's QoL pick GR1, rsqgr_calm): the stick pulled back past half is a brake, not a
+				// pump -- the swing's tangential speed is cut by CALM_K a tic below (see THE SWING DIES DOWN)
+				bool calm = fwd <= -0.5 && RSQGR_Util.Flag("rsqgr_calm", true);
+				if (calm) fwd = 0;
 				if (fwd != 0 || side != 0)
 				{
 					Vector2 f2 = Actor.AngleToVector(pmo.Angle, 1);
@@ -604,9 +687,10 @@ class RSQGR_Core : EventHandler
 					double k = clamp(RSQGR_Util.Num("rsqgr_drag", 0.002), 0.0, 0.2);
 					k = min(k + RSQGR_Perks.SteadyDrag(pmo, k, fwd == 0 && side == 0), 0.2);   // Steady Line
 					double f = max(0.0, RSQGR_Util.Num("rsqgr_rope_friction", 0.025));
+					if (calm) k = max(k, CALM_K);
 					double ns = max(0.0, st * (1.0 - k) - f);
 					double ang = acos(clamp(-n.z, -1.0, 1.0));   // from hanging straight down
-					if (ns <= f && ang < 1.5 && fwd == 0 && side == 0) ns = 0;
+					if (ns <= f && (ang < 1.5 || calm) && fwd == 0 && side == 0) ns = 0;
 					v = (v - vt) + vt * (ns / st);
 				}
 			}

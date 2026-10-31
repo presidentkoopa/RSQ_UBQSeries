@@ -50,6 +50,15 @@ shots leave a fading trail.
   at full speed, as your bullet. Open the hand without a flick and it drops and clinks.
 - **Colour drain** (option, off by default). Colours fade a little while time is slowed (35% at
   full depth): a post-process pass on each eye's view, desaturation only.
+- **Close-call slow-mo** (option, off by default; `rsqsm_closecall`). A rocket or fireball (an
+  enemy missile slower than 40 units a tic, so not a bullet) whose path will pass within your
+  width in the next 14 tics, within 400 units, sets off a short pulse (`rsqsm_closecall_ms`,
+  700 ms) so you can step aside. Once per missile.
+- **Head-bound rounds glow** (option, off by default; `rsqsm_headglow`, yours). A slowed enemy
+  round or Brutal Doom bullet whose course passes within 12 units of your eyes burns at full
+  strength and half again as big; the ones that will miss dim to 40%. It follows a lean.
+- **Wrist cross = 4 s burst** (option, off by default; `rsqsm_gesture_burst`, yours). The wrist
+  cross starts a 4-second pulse at the set depth instead of toggling slow motion.
 
 ## Starting it
 
@@ -97,7 +106,8 @@ Load after your weapon pack. Tested order:
   (the project owner's library).
 - **Bullet Time X** by Xortts: nothing is taken from it; this mod only recognises it by
   class name so the two don't compound.
-- The clock's cue sounds are generated (`tools/gen_sounds.py`).
+- The clock's cue sounds are stock Doom sounds played by name (DSGETPOW, DSPSTOP, DSITEMUP,
+  DSNOWAY; SNDINFO.txt).
 - What the pk3 ships and whose it is: [CREDITS.txt](CREDITS.txt).
 - QuestZDoom: Emawind and Team Beef.
 

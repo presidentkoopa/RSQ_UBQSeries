@@ -10,7 +10,8 @@ NAME=$1; SECS=$2; SCRIPT=$3
 RIG=${QZ_RIG:-/home/claude/rsq_weapondepot/tools/rig/bin}
 G=${GAMEDATA:-/home/claude/gamedata}
 PK3=${PK3:-$HUB/pk3/RSQ_SlowMo.pk3}
-( cd "$HERE/smprobe" && rm -f "$B/smprobe.pk3" && zip -q -r -X "$B/smprobe.pk3" . )
+PROBE=${PROBE:-smprobe}   # smqol: the QoL round's probe (2026-10-31)
+( cd "$HERE/$PROBE" && rm -f "$B/smprobe.pk3" && zip -q -r -X "$B/smprobe.pk3" . )
 D="$B/shots/$NAME"; rm -rf "$D"; mkdir -p "$D"
 rm -f "$B/logs/$NAME.log"
 QZ_DUMP_DIR="$D" QZ_RES=${QZ_RES:-200} EGL_PLATFORM=surfaceless LIBGL_ALWAYS_SOFTWARE=1 \

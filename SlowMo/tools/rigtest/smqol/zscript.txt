@@ -1,0 +1,129 @@
+version "4.14"
+// TEST ONLY. Never ships. The owner's QoL round (2026-10-31) on the rig.
+//   smq_mode 1  SM1: the clock's cue names resolve to stock Doom lumps; the generated lumps are gone.
+//   smq_mode 2  SM2: t30 an imp fireball 360 ahead flies straight at the pawn; t150 one flies past 150 to the side.
+//   smq_mode 3  SM4: rsm_on; an idle zombieman 260 ahead; t40 a hitscan at the eyes, t60 one 60 units wide
+//               (the mod turns both into rounds); t80 Brutal Doom's ZombieManTracer at the eyes. T_GLOW lines.
+//   smq_mode 4  SM7: logs the clock every 10 tics (the hands are posed from the console).
+class RSQSMQ_Probe : EventHandler
+{
+	Actor mon;
+	Array<Actor> watch;
+	Array<String> tag;
+
+	static int Mode() { let c = CVar.FindCVar("smq_mode"); return c ? c.GetInt() : 0; }
+
+	override void WorldThingSpawned(WorldEvent e)
+	{
+		if (Mode() == 3 && e.Thing && (e.Thing is "RSQSM_Round" || e.Thing.GetClassName() == 'ZombieManTracer'))
+		{
+			watch.Push(e.Thing);
+			tag.Push(String.Format("%s#%d", e.Thing.GetClassName(), watch.Size()));
+		}
+	}
+
+	override void WorldThingDestroyed(WorldEvent e)
+	{
+		int i = watch.Find(e.Thing);
+		if (Mode() == 3 && i < watch.Size())
+		{
+			let p = players[consoleplayer];
+			Console.Printf("T_GONE t%d %s at (%.0f %.0f %.0f), %.0f from the eyes", level.maptime, tag[i], e.Thing.pos.x, e.Thing.pos.y, e.Thing.pos.z,
+				p.mo ? level.Vec3Diff(e.Thing.pos, (p.mo.pos.xy, p.viewz)).Length() : -1);
+		}
+	}
+
+	void ClockLine(int t)
+	{
+		let c = RSQSM_Clock.Get();
+		if (c) Console.Printf("T_CLK t%d on %d scale %.2f target %.2f pulseUntil %d", t, c.on, c.scale, c.target, c.pulseUntil);
+	}
+
+	Actor Ball(PlayerPawn mo, Vector2 fwd, double side)
+	{
+		Vector2 rt = (fwd.y, -fwd.x);
+		Vector3 from = (mo.pos.xy + fwd * 360 + rt * side, mo.pos.z + 32);
+		let b = Actor.Spawn("DoomImpBall", from, ALLOW_REPLACE);
+		if (!b) return null;
+		Vector3 to = (mo.pos.xy + rt * side, mo.pos.z + 32);
+		Vector3 d = level.Vec3Diff(from, to);
+		b.angle = atan2(d.y, d.x);
+		b.vel = d.Unit() * b.Speed;
+		Console.Printf("T_BALL t%d %s speed %.1f radius %.0f aimed %.0f units to the side", level.maptime, b.GetClassName(), b.Speed, b.radius, side);
+		return b;
+	}
+
+	override void WorldTick()
+	{
+		let p = players[consoleplayer];
+		if (!p || !p.mo) return;
+		let mo = p.mo;
+		int t = level.maptime;
+		int m = Mode();
+		Vector2 fwd = (cos(mo.angle), sin(mo.angle));
+		mo.vel = (0, 0, 0);
+		if (m == 1 && t == 20)
+		{
+			static const String names[] = { "rsqsm/in", "rsqsm/out", "rsqsm/ready", "misc/p_pkup", "plats/pt1_stop", "misc/i_pkup", "rsqsm/whiz1" };
+			for (int i = 0; i < names.Size(); i++)
+				Console.Printf("T_SND %s -> %.2f s", names[i], S_GetLength(names[i]));
+			static const String lumps[] = { "sounds/rsqsm/smin.ogg", "sounds/rsqsm/smout.ogg", "sounds/rsqsm/smredy.ogg", "sounds/rsqsm/smempt.ogg", "sounds/rsqsm/smwhiz1.ogg" };
+			for (int i = 0; i < lumps.Size(); i++)
+				Console.Printf("T_LUMP %s %s", lumps[i], Wads.CheckNumForFullName(lumps[i]) >= 0 ? "PRESENT" : "absent");
+			static const String dl[] = { "DSGETPOW", "DSPSTOP", "DSITEMUP", "DSNOWAY" };
+			for (int i = 0; i < dl.Size(); i++)
+				Console.Printf("T_LUMP %s lump %d", dl[i], Wads.CheckNumForName(dl[i], Wads.ns_sounds));
+		}
+		if (m == 2)
+		{
+			if (t == 30) Ball(mo, fwd, 0);
+			if (t == 150) Ball(mo, fwd, 150);
+			if (t % 10 == 0) ClockLine(t);
+		}
+		if (m == 3)
+		{
+			if (t == 10) { mon = Actor.Spawn("ZombieMan", (mo.pos.xy + fwd * 260, mo.floorz), NO_REPLACE); EventHandler.SendNetworkEvent("rsm_on"); }
+			if (mon && (t == 40 || t == 60))
+			{
+				mon.angle = mon.AngleTo(mo);
+				Vector3 eye = (mo.pos.xy, p.viewz);
+				Vector2 rt = (fwd.y, -fwd.x);
+				if (t == 60) eye.xy += rt * 60;
+				Vector3 from = (mon.pos.xy, mon.pos.z + mon.height * 0.5 - mon.Floorclip + 8);
+				Vector3 d = level.Vec3Diff(from, eye);
+				double a = atan2(d.y, d.x), pt = -atan2(d.z, d.xy.Length());
+				mon.LineAttack(a, 2048, pt, 10, 'Hitscan', "BulletPuff");
+				Console.Printf("T_SHOT t%d hitscan %s", t, t == 40 ? "at the eyes" : "60 units wide");
+			}
+			if (mon && t == 80)
+			{
+				Vector3 from = (mon.pos.xy, mon.pos.z + 40);
+				let b = Actor.Spawn("ZombieManTracer", from, NO_REPLACE);
+				if (b)
+				{
+					b.target = mon;
+					Vector3 d = level.Vec3Diff(from, (mo.pos.xy, p.viewz));
+					b.angle = atan2(d.y, d.x); b.pitch = -atan2(d.z, d.xy.Length());
+					b.vel = d.Unit() * b.Speed;
+					Console.Printf("T_SHOT t80 ZombieManTracer at the eyes, speed %.1f radius %.0f", b.Speed, b.radius);
+				}
+			}
+			if (t % 5 == 0)
+				for (int i = 0; i < watch.Size(); i++)
+				{
+					if (!watch[i]) continue;
+					Vector3 d = level.Vec3Diff(watch[i].pos, (mo.pos.xy, p.viewz));
+					Vector3 v = watch[i].vel;
+					double tt = (v dot v) > 0 ? (d dot v) / (v dot v) : -1;
+					double miss = tt > 0 ? (d - v * tt).Length() : -1;
+					Console.Printf("T_GLOW t%d %s dist %.0f course passes the eyes at %.0f alpha %.2f scale %.2f bright %d", t, tag[i],
+						d.Length(), miss, watch[i].Alpha, watch[i].Scale.x, watch[i].bBRIGHT);
+				}
+		}
+		if (m == 4 && t % 10 == 0)
+		{
+			ClockLine(t);
+			Console.Printf("T_HANDS t%d gap %.3f m", t, RSQSM_Clock.Metres(mo.AttackPos - mo.OffhandPos));
+		}
+	}
+}

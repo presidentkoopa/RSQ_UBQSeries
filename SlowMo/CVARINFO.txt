@@ -46,3 +46,9 @@ user float   rsqsm_flick        = 2.5;   // a flick this fast throws it back, me
 user string  rsqsm_catch_keys   = "443 436"; // the off-hand grip's raw keys (KEY_PAD_RTHUMB, KEY_PAD_DPAD_UP), as RSQ_DistanceGrab reads them
 user bool    rsqsm_drain        = false; // 28: colours drain while time is slowed (a post-process pass)
 user float   rsqsm_drain_amt    = 0.35;  // how much colour goes at full depth, 0..1
+
+// ---- the owner's QoL round (2026-10-31): options, off by default
+server bool  rsqsm_closecall    = false; // SM2: a rocket or fireball about to hit you up close sets off a short slow-mo pulse
+server int   rsqsm_closecall_ms = 700;   // how long that pulse holds, ms (it eases in and out on the clock's own ramps)
+user bool    rsqsm_headglow     = false; // SM4: a slowed enemy round on course for your head glows; ones that will miss dim
+user bool    rsqsm_gesture_burst = false; // SM7: the wrist cross starts a 4 s slow-mo burst instead of toggling
