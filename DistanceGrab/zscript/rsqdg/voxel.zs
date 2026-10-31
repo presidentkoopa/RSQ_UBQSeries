@@ -91,7 +91,7 @@ class RSQDG_Voxels : StaticEventHandler
 						for (int q = 0; q < parts.Size(); q++) Add(parts[q]);
 					}
 				}
-				for (int j = 0; j < ln.Length(); j++)
+				for (int j = 0; j < int(ln.Length()); j++)
 				{
 					int ch = ln.ByteAt(j);
 					if (ch == 123) depth++;          // {

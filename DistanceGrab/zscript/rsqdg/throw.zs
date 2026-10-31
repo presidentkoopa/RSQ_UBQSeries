@@ -58,6 +58,7 @@ class RSQDG_Throw : EventHandler
 	private Actor   wa[MAX_WATCH];       // the object
 	private Actor   wBy[MAX_WATCH];      // who threw it -- credit and immunity
 	private double  wLast[MAX_WATCH];    // speed last tic, map units/tic
+	private double  wLastXY[MAX_WATCH];  // a thrown monster's speed across the ground last tic, the body's run out, m/s
 	private double  wLastMps[MAX_WATCH]; // the same, as an impact speed (see ImpactMps)
 	private int     wAge[MAX_WATCH];
 	private int     wStill[MAX_WATCH];
@@ -324,6 +325,7 @@ class RSQDG_Throw : EventHandler
 		wa[slot] = a;
 		wBy[slot] = by;
 		wLast[slot] = a.Vel.Length();
+		wLastXY[slot] = AcrossMps(a.Vel, body);
 		wLastMps[slot] = ImpactMps(a, a.Vel, body);
 		wAge[slot] = 0;
 		wStill[slot] = 0;
@@ -459,9 +461,19 @@ class RSQDG_Throw : EventHandler
 		return sqrt(h * h + z * z) * TICRATE;
 	}
 
+	const BARREL_KG = 60.0;     // MASSDEF's ExplosiveBarrel: the energy a thrown monster's impact gate is matched to
+
+	// Speed across the ground, m/s, the thrower's run taken out.
+	static double AcrossMps(Vector3 v, Vector2 body)
+	{
+		return (v.xy - body).Length() / RSQDG_Reach.UNITS_PER_METRE_XY * TICRATE;
+	}
+
 	// Joules -> points. Never zero for a real hit: anything that registered as
 	// an impact at all deserves to be noticed by what it hit.
-	private static int DamageFor(double kg, double speedMps, PlayerInfo p)
+	// Public: a SWUNG thing (hold.zs, owner pick 19) is scored by the same rule, so a thrown barrel and a
+	// swung barrel cannot disagree about what a barrel weighs (apply/04 §7).
+	static int DamageFor(double kg, double speedMps, PlayerInfo p)
 	{
 		double j = 0.5 * kg * speedMps * speedMps;
 		double per = max(0.5, RSQDG_Reach.Num("rsqdg_throw_j", p, 15.0));
@@ -491,27 +503,49 @@ class RSQDG_Throw : EventHandler
 		return a.Pos.z <= t.Pos.z + t.Height + pad && t.Pos.z <= a.Pos.z + a.Height + pad;
 	}
 
+	// A HEAVY HIT STAGGERS (owner 2026-10-31: "throw kills with weight"): what a thrown -- or swung (hold.zs) --
+	// thing hits hard enough and lives is knocked into its Pain (the attack it was winding up is broken off) and
+	// shoved the way the thing was moving. `dir` need not be a unit vector.
+	static void Stagger(Actor t, double kg, double speedMps, Vector2 dir, int dmg, PlayerInfo p)
+	{
+		if (!t || t.Health <= 0 || !t.bISMONSTER || dmg < RSQDG_Reach.Num("rsqdg_throw_stun", p, 20.0)) return;
+		State pain = t.FindState("Pain");
+		if (pain && !t.InStateSequence(t.CurState, pain)) t.SetState(pain);
+		double push = min(12.0, kg * speedMps / max(50.0, double(t.Mass)) * 2.0);
+		Vector2 d = dir.Length() > 0.01 ? dir.Unit() : (0, 0);
+		if (!t.bDONTTHRUST) t.Vel.xy += d * push;
+	}
+
+	// HIT-STOP (owner pick 22, an OPTION, off by default; surveys/01_MELEE.md §3.6): a monster a thrown thing hits
+	// freezes for rsqdg_hitstop tics -- 3 a tap, 4 the survey's number, 6 heavy. freezetics, which early-returns out
+	// of AActor::Tick (p_mobj.cpp:3948-3952) before states, movement and AI and counts itself down, so nothing has to
+	// undo it; its shove (Stagger) waits in Vel and plays out after. Never the player: hands are tracked outside the
+	// playsim (§3.6), and only a monster is ever passed here.
+	static void HitStop(Actor t, PlayerInfo p)
+	{
+		if (!t || t.Health <= 0 || !t.bISMONSTER || t.player) return;
+		int n = int(RSQDG_Reach.Num("rsqdg_hitstop", p, 0));
+		if (n <= 0) return;
+		t.freezetics = max(t.freezetics, min(n, 10));
+		if (RSQDG_Reach.Flag("rsqdg_debug", p, false))
+			Console.Printf("[RSQDG] hit-stop: %s frozen %d tics", t.GetClassName(), min(n, 10));
+	}
+
 	private void Strike(int i, Actor t, double speedMps, PlayerInfo p)
 	{
 		Actor a = wa[i];
 		if (!a || !t) return;
 		String an = a.GetClassName(), tn = t.GetClassName();
-		int dmg = DamageFor(RSQDG_Mass.Kg(a), speedMps, p);
+		double kg = RSQDG_Mass.Kg(a);
+		Vector2 dir = a.Vel.xy;
+		int dmg = DamageFor(kg, speedMps, p);
 		MarkHit(i, t);
 		// The OBJECT is the inflictor and the THROWER the source: kill credit
 		// and infighting both go to whoever threw it, and the kick comes from
 		// the direction the object was travelling.
 		t.DamageMobj(a, wBy[i], dmg, 'Melee');
-		// A HEAVY HIT STAGGERS (owner 2026-10-31: "throw kills with weight"): what a thrown thing hits hard enough and
-		// lives is knocked into its Pain -- the attack it was winding up is broken off -- and shoved the way it flew.
-		if (t && t.Health > 0 && t.bISMONSTER && dmg >= RSQDG_Reach.Num("rsqdg_throw_stun", p, 20.0))
-		{
-			State pain = t.FindState("Pain");
-			if (pain && !t.InStateSequence(t.CurState, pain)) t.SetState(pain);
-			double push = min(12.0, RSQDG_Mass.Kg(a) * speedMps / max(50.0, double(t.Mass)) * 2.0);
-			Vector2 dir = a.Vel.xy.Length() > 0.01 ? a.Vel.xy.Unit() : (0, 0);
-			if (!t.bDONTTHRUST) t.Vel.xy += dir * push;
-		}
+		Stagger(t, kg, speedMps, dir, dmg, p);
+		HitStop(t, p);
 		if (RSQDG_Reach.Flag("rsqdg_debug", p, false))
 			Console.Printf("[RSQDG] thrown %s hit %s at %.1f m/s for %d", an, tn, speedMps, dmg);
 		RSQDG_Events.Tell("throw.hit", wHand[i], t);   // t may be gone (gibbed): null then
@@ -555,6 +589,20 @@ class RSQDG_Throw : EventHandler
 		}
 		a = wa[i];
 		if (!a) return;
+
+		// A THROWN MONSTER TAKES THE IMPACT TOO (owner pick 23: the Headlock's throw, near.zs). The only living
+		// thing that is ever watched here is one thrown out of a Headlock (the distance grab never holds the living,
+		// D6), so a living monster stopping is a body hitting a wall or another body, and it hurts as the same
+		// joules hurt what it hit. The thrower is the source: the kill is his.
+		if (a.bISMONSTER && a.Health > 0 && a.bSHOOTABLE)
+		{
+			int self = DamageFor(RSQDG_Mass.Kg(a), speedMps, p);
+			if (RSQDG_Reach.Flag("rsqdg_debug", p, false))
+				Console.Printf("[RSQDG] thrown %s landed hard at %.1f m/s, takes %d", a.GetClassName(), speedMps, self);
+			a.DamageMobj(null, wBy[i], self, 'Melee');
+			a = wa[i];
+			if (!a) return;
+		}
 
 		let feel = RSQDG_Feel.Get();
 		if (feel) feel.OnImpact(a, p, speedMps, RSQDG_Mass.Heft(a));
@@ -621,7 +669,10 @@ class RSQDG_Throw : EventHandler
 
 			// PASSING THROUGH A BODY. Pickups are not solid and Doom lets them
 			// fly through monsters untouched, so overlap is a hit by itself.
-			if (!a.bSOLID && mps >= minMps)
+			// SO IS A BARREL FOR ITS FIRST TICS: the settle list keeps a released thing pass-through for at least
+			// 10 tics (hold.zs Restore), and in those a thrown barrel flew straight through a Cacodemon 80 units away
+			// with no hit (rig 2026-10-31, the hit-stop test). Pass-through is pass-through, solid or not.
+			if ((!a.bSOLID || a.bTHRUACTORS) && mps >= minMps)
 			{
 				Actor hitT = null;
 				let it = BlockThingsIterator.Create(a, BodyRadius(a) + 8);
@@ -643,6 +694,33 @@ class RSQDG_Throw : EventHandler
 					a.Vel *= 0.25;
 					speed = a.Vel.Length();
 				}
+			}
+
+			// A THROWN MONSTER (near.zs, the Headlock's throw) IS STOPPED ONLY BY A WALL OR A BODY. Its landing is
+			// not its impact -- a monster takes no falling damage in Doom, and one thrown off a step fell 48 units in
+			// the rig and read as a 5.8 m/s blow -- so it is judged across the ground: the impact is its sideways
+			// speed halving, and that speed is the blow. And its gate is the SAME ENERGY as the gate for MASSDEF's
+			// heaviest common thing, the 60 kg barrel at rsqdg_throw_min, not the same speed: Brutal Doom's Zombieman
+			// is Mass 300 (rig), so the arm/(arm+kg) throw sends it off at 2.4 m/s from a 10.5 m/s hand, under a
+			// 3 m/s speed gate and never an impact -- while 300 kg at 2.4 m/s carries more than a barrel at 3.
+			if (a.bISMONSTER && a.Health > 0)
+			{
+				double xy = AcrossMps(a.Vel, wBody[i]);
+				double lastXY = wLastXY[i];
+				double gate = minMps * sqrt(BARREL_KG / max(BARREL_KG, RSQDG_Mass.Kg(a)));
+				if (wAge[i] > 1 && lastXY >= gate && xy < lastXY * 0.5)
+				{
+					Impact(i, lastXY, p);
+					Forget(i);
+					continue;
+				}
+				wLast[i] = speed;
+				wLastMps[i] = mps;
+				wLastXY[i] = xy;
+				wAir[i] = a.Pos.Z > a.FloorZ + 2 && !a.bOnMobj;
+				if (xy < 0.6) wStill[i]++; else wStill[i] = 0;
+				if (wStill[i] >= STILL_TICS || wAge[i] >= LIFE_TICS) Forget(i);
+				continue;
 			}
 
 			// THE IMPACT: last tic it was moving fast enough to matter, this

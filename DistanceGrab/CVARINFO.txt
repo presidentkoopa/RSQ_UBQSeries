@@ -48,6 +48,7 @@ user bool   rsqdg_collar      = true;    // the off hand's grip holds a living m
 user float  rsqdg_collar_mass = 400.0;   // the heaviest monster it can hold (Doom mass: imp 100, demon 400, baron 1000)
 user float  rsqdg_collar_secs = 3.0;     // how long it stays held before it breaks free
 user bool   rsqdg_collar_shield = false; // HUMAN SHIELD: the Headlock lasts as long as the grip, the monster turned to face away
+user float  rsqdg_collar_throw = 3.0;    // m/s: the off hand swung past this while it holds a monster throws the monster (0 = never)
 user string rsqdg_keys_main   = "446";      // the main grip's key codes (as RSQ_TacticalRig reads them)
 user string rsqdg_keys_off    = "443 436";  // the off grip's key codes
 
@@ -196,6 +197,9 @@ user float rsqdg_throw_spin  = 1.0;    // how fast a thrown thing turns in the a
 user bool  rsqdg_trail       = true;   // a faint trail behind a pulled thing
 user bool  rsqdg_dust        = true;   // a hard landing kicks up dust
 user float rsqdg_throw_assist = 12.0;  // degrees: a throw within this of a monster bends to hit it (0 = off)
+user bool  rsqdg_swing        = true;   // a held thing swung into a monster hits it (by its weight and the swing's speed)
+user float rsqdg_swing_mps    = 3.0;    // m/s of the held thing's own travel below which a swing is not a hit
+user int   rsqdg_hitstop      = 0;      // OPTION: tics a monster a thrown thing hits freezes for (0 = off; 3 tap, 4, 6 heavy)
 user bool  rsqdg_sounds      = true;   // whoosh on a throw (higher the faster), thud on a catch and a landing (deeper the heavier)
 user float rsqdg_two_hand    = 2.0;    // the other palm on a held thing: it handles as if this many times lighter (1 = off)
 user bool  rsqdg_body_shield = true;   // a held corpse or barrel stops shots and fireballs (a barrel goes off when it is hit)
@@ -281,6 +285,7 @@ user bool  rsqdg_door_use    = true;    // Use takes hold
 user bool  rsqdg_door_palm   = true;    // a palm turned out against the door takes hold
 user float rsqdg_door_commit = 0.40;    // let go past this much open and the door finishes opening
 user float rsqdg_door_gain   = 2.5;     // door travel per unit of hand travel
+user bool  rsqdg_palm_switch = true;    // a palm laid on a switch flips it (the line's own special, as Use)
 
 // ---- FROM RS_WORLDHANDS (2026-10-27) ---------------------------------------
 // SERVER, these: they decide where a pulled or thrown thing goes, and a `user`

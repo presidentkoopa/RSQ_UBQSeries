@@ -41,10 +41,55 @@ class RSQDGT_Probe : EventHandler
 				Array<String> kv; ps[i].Split(kv, "=");
 				if (kv.Size() == 2 && kv[0].ToInt() == t)
 				{
-					let cv = CVar.FindCVar("qz_rhand");
-					if (cv) cv.SetString(kv[1]);
-					Console.Printf("T_POSE t%d %s", t, kv[1]);
+					// "L:x y z p yw r" poses the left hand
+					bool left = kv[1].Left(2) == "L:";
+					let cv = CVar.FindCVar(left ? "qz_lhand" : "qz_rhand");
+					String v = left ? kv[1].Mid(2) : kv[1];
+					if (cv) cv.SetString(v);
+					Console.Printf("T_POSE t%d %s %s", t, left ? "L" : "R", v);
 				}
+			}
+		}
+		// rsqdgt_net "tic:name:a1:a2;...": a network event that tic, as a key press would send (the grip)
+		String ne = CVar.FindCVar("rsqdgt_net").GetString();
+		if (ne.Length())
+		{
+			Array<String> ns; ne.Split(ns, ";");
+			for (int i = 0; i < ns.Size(); i++)
+			{
+				Array<String> kv; ns[i].Split(kv, ":");
+				if (kv.Size() == 4 && kv[0].ToInt() == t)
+				{
+					EventHandler.SendNetworkEvent(kv[1], kv[2].ToInt(), kv[3].ToInt());
+					Console.Printf("T_NET t%d %s %s %s", t, kv[1], kv[2], kv[3]);
+				}
+			}
+		}
+		// rsqdgt_switch tic: put the player so the RIGHT palm is on the nearest Use-special line that is not a
+		// manual door, 3 units in front of its middle (the pose's offset from the pawn is kept)
+		int swt = CVar.FindCVar("rsqdgt_switch").GetInt();
+		if (swt > 0 && t == swt)
+		{
+			Line best = null; double bd = 1e9;
+			for (int i = 0; i < Level.Lines.Size(); i++)
+			{
+				Line l = Level.Lines[i];
+				if (l.special == 0 || !(l.activation & SPAC_Use) || !l.frontsector) continue;
+				if ((l.special == 11 || l.special == 12 || l.special == 13 || l.special == 202) && l.args[0] == 0) continue;
+				double d = ((l.v1.p + l.delta * 0.5) - mo.pos.xy).Length();
+				if (d < bd) { bd = d; best = l; }
+			}
+			if (best)
+			{
+				Vector2 mid = best.v1.p + best.delta * 0.5;
+				Vector2 nrm = (best.delta.y, -best.delta.x).Unit();   // the front side (right of v1->v2)
+				Vector2 want = mid + nrm * 3;
+				Vector3 off = mo.AttackPos - mo.pos;
+				double fz = best.frontsector.floorplane.ZatPoint(mid);
+				mo.SetOrigin((want.x - off.x, want.y - off.y, fz), false);
+				Console.Printf("T_SWITCH t%d line %d special %d at (%.0f %.0f) floor %.0f ceil %.0f; palm now (%.0f %.0f %.0f) side %d",
+					t, best.Index(), best.special, mid.x, mid.y, fz, best.frontsector.ceilingplane.ZatPoint(mid),
+					mo.AttackPos.x, mo.AttackPos.y, mo.AttackPos.z, Level.PointOnLineSide(mo.AttackPos.xy, best));
 			}
 		}
 		if (t == 20 && !setup)
@@ -118,6 +163,7 @@ class RSQDGT_Probe : EventHandler
 				double c = (pd / pd.Length()) dot pdir;
 				let pol = RSQDG_Policy(StaticEventHandler.Find("RSQDG_Policy"));
 				let r = pol ? pol.Decide(a, mo, p) : null;
+				if (a.bISMONSTER) { State pn = a.FindState("Pain"); Console.Printf("T_MON t%d %s hp=%d pos=(%.0f %.0f %.0f) vel=%.1f frz=%d pain=%d", t, a.GetClassName(), a.health, a.pos.x, a.pos.y, a.pos.z, a.vel.Length(), a.freezetics, pn && a.InStateSequence(a.CurState, pn)); }
 				Console.Printf("T_OBJ %s pos=(%.0f %.0f %.0f) dist=%.0f angle=%.1f rule=%s w=%.2f sight=%d kg=%.2f special=%d thru=%d r=%.0f grav=%d",
 					a.GetClassName(), a.pos.x, a.pos.y, a.pos.z, pd.Length(), acos(clamp(c,-1,1)), r ? r.why : "NO", r ? r.weight : 0,
 					mo.CheckSight(a), RSQDG_Mass.Kg(a), a.bSPECIAL, a.bTHRUACTORS, a.radius, !a.bNOGRAVITY);

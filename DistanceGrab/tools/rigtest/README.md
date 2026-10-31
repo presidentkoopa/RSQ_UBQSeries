@@ -74,3 +74,18 @@ wait 2, AIM to catch. A probe cannot set `qz_rhand` itself: engine cvars refuse
     aimed 9 deg up                       no target (before: took the floor barrel)
     corrected AIM + upward FLICK         lock t21, launch t47, caught t91
     downward flick                       no pull; palm roll back just unlocks
+
+## Owner picks 19-24 (2026-10-31): picks_gen.py + picks_rig.sh, doom2 + BD order
+Probe additions: `rsqdgt_net "tic:name:a1:a2;..."` sends a network event that tic, and the console's own
+`netevent rsqdg_ngrip <hand> <1|0>` presses/releases a grip (what near.zs's InputProcess sends), so the
+walk-up grab and the Headlock run on the rig. `rsqdgt_switch <tic>` puts the right palm 3 units in front of the
+nearest Use-special line that is not a manual door. `T_MON` prints each spawned monster's health, freezetics and
+pain. (`rsqdgt_poses` still cannot work: qz_rhand refuses SetString outside menu code.)
+
+    19 swing     walk-up barrel swept across a HellKnight: "swung BarrelVOX hit HellKnight2 at 5.1 m/s for 51",
+                 hp 500 -> 449, pushed; one hit per sweep (the barrel stays inside it for several tics)
+    23 collar    Headlock (netevent), wind-up + fast forward: "threw PistolZombie at 2.4 m/s (300 kg)", hit the
+                 HellKnight for 56 (and its BD headshot helper for 56), and took 56 itself
+    24 2-tic     a stale rig frame: "hand 2-tic 10.5, 1-tic peak 21.0" -- the old reading doubled the throw
+    22 hit-stop  rsqdg_hitstop 4: Cacodemon frz 4,3,2 standing still with vel 13.2 waiting
+    21 switch    roll 0 on the line: nothing for 40 tics; roll 96: "palm on switch line 3 (special 11): flipped"

@@ -2,3 +2,5 @@ user string rsqdgt_scene = "";
 user bool rsqdgt_every = false;
 user string rsqdgt_poses = "";
 user string rsqdgt_shoot = "";
+user string rsqdgt_net = "";
+user int rsqdgt_switch = 0;
