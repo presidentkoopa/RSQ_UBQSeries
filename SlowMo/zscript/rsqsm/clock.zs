@@ -804,6 +804,9 @@ class RSQSM_Service : Service
 		// of full speed (1000 = not slowed) -- the Gun Bonsai VR patch's slow-motion perks
 		if (request ~== "active") return (c.Active() && !c.StoodDown()) ? 1 : 0;
 		if (request ~== "scale") return int(clamp(c.scale, 0.0, 1.0) * 1000);
+		// HELD OR PULSING, NOT JUST EASING BACK (owner 2026-10-31: the ring slows time even while slow motion eases out):
+		// 1 while something is still asking for slow motion (the held toggle or a pulse), 0 once it is only fading back
+		if (request ~== "running") return (!c.StoodDown() && c.target < 0.9999) ? 1 : 0;
 		return -1;
 	}
 }

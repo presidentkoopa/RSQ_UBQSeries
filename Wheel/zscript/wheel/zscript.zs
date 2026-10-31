@@ -4050,7 +4050,10 @@ class wr_Rig : EventHandler
 		{
 			if (on)
 			{
-				mSlowWasOn = sm.GetInt("active") > 0;
+				// SlowMo already running for something else (held, a pulse) is the player's; only EASING BACK is not, so
+				// the ring slows time again then (owner 2026-10-31). An older SlowMo without "running" answers -1.
+				int running = sm.GetInt("running");
+				mSlowWasOn = running >= 0 ? running > 0 : sm.GetInt("active") > 0;
 				if (!mSlowWasOn) EventHandler.SendNetworkEvent("rsm_on");
 			}
 			else if (!mSlowWasOn || cvBool("wr_slowmo_cancel", false))
