@@ -48,14 +48,13 @@ server float ubqs_swing_cut     = 8.0;    // units a tic the blade must travel t
                                           // number. On the menu because it is the only one no single
                                           // value can get right -- what counts as a hard swing depends
                                           // on arm length, standing or seated, and the size of the room
-server float ubqs_blade_guard   = 6.0;    // how far off ONE blade's line an attack still counts as
-                                          // blocked, in map units. The blade is ~26 units long; your
-                                          // body is 32 across. 6 is the owner's "small hitbox" and
-                                          // against Brutal Doom it let 22 of 364 tracers through, which
-                                          // is why this stays a slider and not a literal.
-                                          // 0 NO LONGER MEANS ANYTHING: the old cone-and-percentage
-                                          // roll it used to fall back to is gone (it was unreachable
-                                          // at any non-zero value, which is every value anyone ran).
+server float ubqs_blade_width   = 1.5;    // (owner 2026-10-31: "saber width") how far off a blade's line a shot or
+                                          // an attack may pass and still be blocked or turned, map units:
+                                          // the blade's own half-width. Was ubqs_blade_guard 6 (a slab a
+                                          // quarter of your body, "like having a second shield"), the
+                                          // deflect sweep's 5 and the crossed blades' 14.
+user  float  ubqs_hum_swing     = 1.1;    // how much louder the hum gets on a hard swing (0 = steady)
+server float ubqs_blade_guard   = 6.0;    // retired 2026-10-31 (ubqs_blade_width replaces it); read by nothing
 
 // ---- DELIBERATELY NOT ON THE MENU ------------------------------------------------------------------
 // These fifteen keep working and keep their full range. They are off the page because the menu is one

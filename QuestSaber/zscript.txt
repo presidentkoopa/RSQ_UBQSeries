@@ -1194,14 +1194,17 @@ class UBQS_SaberBase : Weapon abstract
 		double eff = max(speed, cutPath * clamp(UF("ubqs_cut_sustain", 0.6), 0.0, 1.0));
 		// the swing's own lift on the hum. On the blade emitter this is the BASE the Doppler ride
 		// bends around; on the player it is the whole of it, as before.
-		double hpitch = 1.0 + clamp((speed - 6.0) / 60.0, 0.0, 0.3);
+		// THE SWOOSH (owner 2026-10-31: "blade hum by speed"): the hum's pitch AND loudness ride the blade's own speed --
+		// quieter held still, up to ubqs_hum_swing times louder and a third higher on a hard swing.
+		double swingLift = clamp((speed - 3.0) / 40.0, 0.0, 1.0);
+		double hpitch = 1.0 + 0.35 * swingLift;
 		if (hummer) { hummer.at = hand + dir * (len * 0.5); hummer.base = hpitch; }
 		else if (owner) owner.A_SoundPitch(ch, hpitch);
 		// THE LINE THAT ACTUALLY WINS: this re-assert runs every tic, so a hum volume set only where the loop
 		// starts would appear to work for one tic and then silently revert. Both sites read HumVol(). Dropping
 		// to 0 stops the channel and clears `humming`, so raising the slider again starts a fresh loop.
 		if (hv <= 0.0) { if (humming) HumOff(); }
-		else { let hs = HumSrc(false, hand); if (hs) hs.A_SoundVolume(HumChan(), hv); }
+		else { let hs = HumSrc(false, hand); if (hs) hs.A_SoundVolume(HumChan(), min(1.0, hv * (0.7 + swingLift * UF("ubqs_hum_swing", 1.1)))); }
 
 		// TWIRLING: the staff is a spinning disc in front of your hand -- it cuts what it touches and turns
 		// every shot that crosses it. No line work, no burning (it would scorch circles into the wall).
@@ -2029,7 +2032,8 @@ class UBQS_SaberBase : Weapon abstract
 				if (mo.target == owner || mo is "UBQS_Thrown" || !UInt("ubqs_deflect", 1)) continue;
 				// where its path this tic crosses the disc's plane, and whether that is inside the disc
 				double a0 = c dot n, a1 = (c + mo.vel) dot n;
-				if ((a0 > 0) == (a1 > 0) && min(abs(a0), abs(a1)) > mo.radius + 4.0) continue;
+				double bwd = clamp(UF("ubqs_blade_width", 1.5), 0.0, 24.0);
+				if ((a0 > 0) == (a1 > 0) && min(abs(a0), abs(a1)) > mo.radius + bwd) continue;
 				double t = (abs(a0 - a1) > 0.001) ? clamp(a0 / (a0 - a1), 0.0, 1.0) : 0.0;
 				Vector3 hit = c + mo.vel * t;
 				if ((hit - n * (hit dot n)).Length() > len + mo.radius) continue;
@@ -2072,6 +2076,7 @@ class UBQS_SaberBase : Weapon abstract
 		// turned two tics early, including ones that would have missed. Only he can say whether that now feels
 		// psychic. Read above the loop, not inside it.
 		double dlead = clamp(UF("ubqs_deflect_lead", 3.0), 1.0, 6.0);
+		double bw = clamp(UF("ubqs_blade_width", 1.5), 0.0, 24.0);
 		// THE MISSILES IN FLIGHT (UBQS_Memory.missiles). A projectile is +NOBLOCKMAP, so a BlockThingsIterator
 		// never returns one -- measured on QZD 17.3: an imp ball flew through a held blade and hit the player;
 		// only the block on contact (DamageMobj) ever turned a shot. Every missile is noted as it spawns.
@@ -2093,7 +2098,8 @@ class UBQS_SaberBase : Weapon abstract
 				// did not deflect)
 				near = min(near, UBQS_Data.SegSeg(level.Vec3Diff(b, mo.pos - mo.vel), mo.vel * dlead, e - b));
 			}
-			if (near > mo.radius + 5.0) continue;
+			// saber width (owner 2026-10-31): the shot must actually cross the blade, not pass within 5 units of it
+			if (near > mo.radius + bw) continue;
 			BatBack(mo, dir);
 		}
 	}
@@ -2277,7 +2283,9 @@ class UBQS_SaberBase : Weapon abstract
 				// in the attack's own path, exactly as the single-blade block is tested, just wider, because
 				// an X is a big object and a lock is held with a trembling hand. 0 is the old arc alone.
 				// This is what makes WHERE you cross them matter.
-				double gw2 = clamp(UF("ubqs_guard_width", 14.0), 0.0, 48.0);
+				// SABER WIDTH (owner 2026-10-31: "it is way too generous, like having a second shield. it needs to
+				// be saber width"): each crossed blade blocks only what crosses the blade itself (ubqs_blade_width)
+				double gw2 = clamp(UF("ubqs_blade_width", 1.5), 0.0, 48.0);
 				let og = Other();
 				bool inPath = gw2 <= 0.01 || BladeInPath(from, gw2) || (og && og.BladeInPath(from, gw2));
 				if (off < UF("ubqs_guard_arc", 100.0) && inPath)
@@ -2321,7 +2329,7 @@ class UBQS_SaberBase : Weapon abstract
 		// over it would be unfeelable. ubqs_blade_guard 0 is exactly the old behaviour, roll and all.
 		// The roll also bailed out inside 96 units, so a claw was never blocked by anything but the cross
 		// guard. The geometric path has no distance floor: a blade across you stops a claw, which is right.
-		double gw = clamp(UF("ubqs_blade_guard", 6.0), 0.0, 24.0);
+		double gw = clamp(UF("ubqs_blade_width", 1.5), 0.0, 24.0);
 		if (gw > 0.01)
 		{
 			if (!BladeInPath(source, gw)) return;
@@ -2471,7 +2479,7 @@ class UBQS_SaberBase : Weapon abstract
 	bool StopsHitscan(Actor sh, Vector3 from, Vector3 dir, double dist, int damage)
 	{
 		if (!Lit() || !owner || owner.health <= 0 || owner == sh || !sh) return false;
-		double gw = clamp(UF("ubqs_blade_guard", 6.0), 0.0, 24.0);
+		double gw = clamp(UF("ubqs_blade_width", 1.5), 0.0, 24.0);
 		if (gw <= 0.01) return false;
 		double len = BladeLen();
 		if (len < 1.0) return false;
@@ -2535,7 +2543,7 @@ class UBQS_SaberBase : Weapon abstract
 	private Array<int> stoppedTic;
 	bool ContactBlock(Actor inf, Actor src, int damage, int flags)
 	{
-		double gw = clamp(UF("ubqs_blade_guard", 6.0), 0.0, 24.0);
+		double gw = clamp(UF("ubqs_blade_width", 1.5), 0.0, 24.0);
 		if (gw <= 0.01 || !owner) return false;	// 0 = the old roll, which never touched a missile
 		for (int k = stopped.Size() - 1; k >= 0; k--)
 			if (!stopped[k] || level.maptime - stoppedTic[k] > 35) { stopped.Delete(k); stoppedTic.Delete(k); }

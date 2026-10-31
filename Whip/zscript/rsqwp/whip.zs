@@ -226,11 +226,38 @@ class RSQWP_Whip : EventHandler
 
 	// The handle's base (the hand, room space) and its direction (room, unit). Assist drives
 	// the direction over the shoulder and down; Real is the controller as it is.
+	// THE WHIP WEAPON'S HANDLE IS IN THE HAND'S FIST (owner 2026-10-31, tools/gen_whiphand.py): the drawn handle runs
+	// from a butt below Brutal Doom VR's fist up through it, GRIP_UP degrees above the aim; the simulated one is hung
+	// from the same butt on the same line, so the thong leaves the drawn handle's tip. Measured by the tool, cm from the
+	// controller in the hand's own frame (in = toward the body's middle, forward = along the aim, up = the hand's up).
+	const GRIP_UP = 50.0;
+	const BUTT_IN = -2.18;
+	const BUTT_FWD = -4.32;
+	const BUTT_UP = -8.83;
+
 	Vector3, Vector3 Handle(int i, PlayerPawn pmo, int hand)
 	{
 		Vector3 b = ToRoom(RSQWP_Util.HandPos(pmo, hand));
 		double yaw = RSQWP_Util.HandYaw(pmo, hand);
 		double pit = RSQWP_Util.HandPitch(pmo, hand);
+		if (byWeapon[i])
+		{
+			double rol = RSQWP_Util.Ctrl(pmo, hand) == 0 ? pmo.AttackRoll : pmo.OffhandRoll;
+			Vector3 fw = (cos(pit) * cos(yaw), cos(pit) * sin(yaw), sin(pit));
+			Vector3 flatRight = (sin(yaw), -cos(yaw), 0);
+			Vector3 levelUp = flatRight cross fw;
+			double r = -rol;             // the engine draws the hand rolled by -AttackRoll (RSQ Saber's BladeDirOf)
+			Vector3 upv = levelUp * cos(r) - flatRight * sin(r);
+			Vector3 right = flatRight * cos(r) + levelUp * sin(r);
+			let cv = CVar.FindCVar('vr_control_scheme');
+			bool leftHanded = cv && cv.GetInt() >= 10;
+			bool physRight = (hand == 0) != leftHanded;
+			Vector3 inward = physRight ? -right : right;   // the engine mirrors the physical left hand
+			double k = 0.34;             // cm -> map (room) units
+			b += (fw * BUTT_FWD + upv * BUTT_UP + inward * BUTT_IN) * k;
+			Vector3 dw = fw * cos(GRIP_UP) + upv * sin(GRIP_UP);
+			return b, dw.Unit();
+		}
 		if (wmode[i] == 1) pit += AssistPitch(wage[i]);
 		Vector3 d = (cos(pit) * cos(yaw), cos(pit) * sin(yaw), sin(pit));
 		return b, d.Unit();
@@ -1435,6 +1462,7 @@ class RSQWP_Whip : EventHandler
 			Vector3 pa = k == 0 ? base : ToMap(wp[o + k - 1]);
 			Vector3 pb = ToMap(wp[o + k]);
 			double w = k == 0 ? 0.69 * 1.7 : w0 * max(0.18, 1.0 - 0.8 * (k - 1.0) / NN);   // the handle keeps its size whatever the thong's thickness
+			if (k == 0 && byWeapon[i]) { if (wl[o]) wl[o].bINVISIBLE = true; continue; }   // the weapon's model holds the handle
 			RSQWP_Rope r = wl[o + k];
 			bool fresh = false;
 			if (!r)
@@ -1444,6 +1472,7 @@ class RSQWP_Whip : EventHandler
 				fresh = true;
 			}
 			if (!r) continue;
+			r.bINVISIBLE = false;
 			if (!fresh) r.SetOrigin(pa, true);
 			Vector3 room = ToRoom(pb - pa);
 			double l = room.Length();
