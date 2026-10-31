@@ -5,7 +5,10 @@
 // reports them (AttackRoll / AttackPitch).
 
 // ---- INSPECT: the gun held up in front of your face, wrist twisted, held briefly ----------------------
-// Always answers when a mod asks; nothing to switch on.
+// Answers whenever a mod asks, unless switched off (rsqg_inspect_off).
+user bool   rsqg_inspect_off     = false;  // QoL GE5 (Option): 1 = the watch-check pose is off; "inspect" answers -1 (not answering), so RSQ Gun Cards uses its own pose
+user bool   rsqg_inspect_tick    = true;   // QoL GE4: a light tick in that hand's controller when the pose is reached (held)
+user float  rsqg_tick_strength   = 0.35;   // ...its strength at the peak (0..1; the series' quake rumble, vr_quake_haptic_level scales it)
 user float  rsqg_inspect_twist   = 45;     // wrist twist (roll) needed to start, degrees either way
 user float  rsqg_inspect_untwist = 30;     // ...and below this it drops (less than the start: no flicker)
 user int    rsqg_inspect_way     = 2;      // 2 knuckles up, as you check a watch (owner 2026-10-31; rig: back of the hand toward the eyes); 1 palm up (pulse side); 0 either way. Mirrored for the left hand.
@@ -31,6 +34,11 @@ user float  rsqg_still_mps       = 0.3;    // below this a hand counts as still 
 // ---- BOTH HANDS: down past the hips, thrown apart, both palms out (RS_Gestures' rsg_twohand) -----------
 // Off by default, as in RS_Gestures: the switch buys the rsqg_pair event.
 user bool   rsqg_twohand         = false;
+// QoL GE6: each two-hand event on its own switch, under the one above (which stays off by default, so nothing
+// fires until it is on; then these pick which of the three do)
+user bool   rsqg_two_down        = true;   // both hands swept down past the hips
+user bool   rsqg_two_apart       = true;   // both hands thrown apart from the chest
+user bool   rsqg_two_palms       = true;   // both palms held out
 user float  rsqg_two_window_ms   = 120;    // how far apart in time the two hands may move and still be one gesture
 user float  rsqg_two_age         = 180;    // each hand's fastest instant must be this fresh (ms; 0 = any in the last quarter second)
 user float  rsqg_two_repeat_ms   = 500;    // before the same two-hand gesture may fire again
@@ -55,6 +63,17 @@ user int    rsqg_punch_rehit     = 6;      // tics before the same hand may punc
 user float  rsqg_punch_rise      = 0.5;    // an uppercut: the swing's upward share above this (rsq_punch_uppercut_rise)
 user float  rsqg_punch_window    = 300;    // "punch" answers the last punch for this long (ms)
 user float  rsqg_punch_together  = 0.6;    // the other hand moving the same way at this share of the speed = a two-hand shove, not a punch
+
+// ---- QoL (2026-10-31) -----------------------------------------------------------------------------------
+// GE7: a small grey line low in the view names each gesture as it is recognised (inspect, jab / hook / uppercut,
+// shove, thrust / pull, the two-hand events), for tuning. Subtle (half-transparent, gone in 1.5 s), so on.
+user bool   rsqg_names           = true;
+// GE3 (Option): FIT TO MY BODY. Stand tall, arms straight out to your sides, press Measure Me: your eye height
+// and reach are measured, and the zones (inspect's box, the hips, the chest, palms out) scale from the body the
+// defaults were set for (eyes 1.60 m above the floor, reach 0.70 m from the eyes).
+user bool   rsqg_body            = false;
+user float  rsqg_body_eye        = 0;      // measured eye height, metres (0 = not measured)
+user float  rsqg_body_reach      = 0;      // measured reach from the eyes, metres (0 = not measured)
 
 // ---- debug ---------------------------------------------------------------------------------------------
 user int    rsqg_debug           = 0;      // 0 off; 1 changes and events; 2 also the hands' numbers once a second; 3 also the cost

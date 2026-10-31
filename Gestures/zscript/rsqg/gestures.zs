@@ -18,6 +18,19 @@
 //             consecutive tics at an average of rsqg_punch_mps, and is named by its travel against
 //             that line. Never while braced or with both hands shoving together: that is a two-hand
 //             gun, and Brutal Doom's own butt-stroke push (owner, 10-31: nothing may collide with it).
+// And the QoL round (owner, 2026-10-31 afternoon):
+//   SHOVE     GE2, owner: "I want the BD gun-butt shove in our RSQ melee, it's awesome. It can still knock back
+//             instead of counting as a punch." A punch-shaped swing with a GUN in that hand (or both hands driving
+//             a gun together, or braced) is a shove: its own answer, never a punch. This only REPORTS it: the
+//             knock back is Brutal Doom VR's own (2.0.3h melee.zs: the long guns' butt strike lands BD22's
+//             KickAttack, Steadied + butt leading, rsq_butt, OFF by default; the pistol whip lands BD22's punch,
+//             rsq_pistol_whip, on), and nothing here hurts or pushes anything, so nothing collides with it.
+//   QUIET     GE1: while RSQ Grapple says a hand is climbing the rope ("climbing") or RSQ Wheel is open
+//             ("IsOpen"), and for RING tics after, no thrust, pull, punch, shove or two-hand event is read.
+//             Both asked by name through their services; neither mod is touched.
+//   TICK      GE4: a light rumble in that hand when the watch-check (inspect) pose is held.
+//   NAMES     GE7: a small grey line names each gesture as it is recognised (RenderOverlay).
+//   BODY      GE3: Measure Me scales the zones to your eye height and reach.
 // The drawn-shape matcher (rsg_match / rsg_capture / rsg_record) is not ported; see README.md.
 //
 // WHAT REMA HAD AND QZD DOES NOT, and what stands in for it here:
@@ -81,6 +94,25 @@ class RSQG_Handler : EventHandler
 	Vector3 pDir[2];
 	int punchTic[2], punchKind[2];
 	double punchMps[2];
+	// SHOVE (GE2): the last gun-in-hand swing, per hand: its gametic (0 never), two hands on it, its m/s
+	int shoveTic[2];
+	bool shoveTwo[2];
+	double shoveMps[2];
+
+	// QUIET (GE1): no impulse gestures until this gametic; why (1 rope climb, 2 the Wheel open)
+	int quietTill, quietWhy;
+	transient Service svcGrapple, svcWheel;
+	transient int svcLook;
+
+	// NAMES (GE7): the last gesture named, and when (gametic)
+	String sayName;
+	int sayTic;
+
+	// BODY (GE3): measuring from this gametic until measureTill; the largest seen
+	int measureFrom, measureTill;
+	double mEye, mReach;
+	const REF_EYE = 1.60;     // the body the defaults were set for: eyes this high (metres)
+	const REF_REACH = 0.70;   // ...and a hand this far from the eyes, arm straight out
 
 	// BRACED: the latch, and since when (gametic, 0 = not braced or not measured)
 	int bracedSince;
