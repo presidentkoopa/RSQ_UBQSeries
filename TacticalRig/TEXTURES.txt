@@ -36,3 +36,87 @@ Sprite "RSMKG0H0", 128, 128
 		Blend "#D8DCE0"
 	}
 }
+// THE HOLSTER AMMO COUNT (rsqtr_ammo_count): the digits 0-9 of Doom's own small font (doom2.wad STCFN048-057,
+// 8 x 7 at most, widths measured from the wad), one frame each, origin at the middle. Drawn as stencils in the
+// ammo light's colour. No new art. The font's red ramp (palette 176-191) is turned to the grey ramp (80-95) so
+// the digits keep their shading and come out bright under the shade colour (AddShaded reads brightness).
+Sprite "RTNMA0", 8, 7
+{
+	Offset 4, 4
+	Patch "STCFN048", 0, 0
+	{
+		Translation "176:191=80:95"
+	}
+}
+Sprite "RTNMB0", 8, 7
+{
+	Offset 4, 4
+	Patch "STCFN049", 1, 0
+	{
+		Translation "176:191=80:95"
+	}
+}
+Sprite "RTNMC0", 8, 7
+{
+	Offset 4, 4
+	Patch "STCFN050", 0, 0
+	{
+		Translation "176:191=80:95"
+	}
+}
+Sprite "RTNMD0", 8, 7
+{
+	Offset 4, 4
+	Patch "STCFN051", 0, 0
+	{
+		Translation "176:191=80:95"
+	}
+}
+Sprite "RTNME0", 8, 7
+{
+	Offset 4, 4
+	Patch "STCFN052", 0, 0
+	{
+		Translation "176:191=80:95"
+	}
+}
+Sprite "RTNMF0", 8, 7
+{
+	Offset 4, 4
+	Patch "STCFN053", 0, 0
+	{
+		Translation "176:191=80:95"
+	}
+}
+Sprite "RTNMG0", 8, 7
+{
+	Offset 4, 4
+	Patch "STCFN054", 0, 0
+	{
+		Translation "176:191=80:95"
+	}
+}
+Sprite "RTNMH0", 8, 7
+{
+	Offset 4, 4
+	Patch "STCFN055", 0, 0
+	{
+		Translation "176:191=80:95"
+	}
+}
+Sprite "RTNMI0", 8, 7
+{
+	Offset 4, 4
+	Patch "STCFN056", 0, 0
+	{
+		Translation "176:191=80:95"
+	}
+}
+Sprite "RTNMJ0", 8, 7
+{
+	Offset 4, 4
+	Patch "STCFN057", 0, 0
+	{
+		Translation "176:191=80:95"
+	}
+}

@@ -525,9 +525,101 @@ class RSQTR_Rig : EventHandler
 			thrown.SetOrigin(throwAt[n], false);
 			thrown.vel = throwVel[n];
 			thrown.angle = atan2(throwVel[n].y, throwVel[n].x);
+			ArmThrown(thrown, n);
 		}
 		pmo.A_StartSound("rsqtr/radial", CHAN_AUTO, 0, 0.9);
 		if (Flag("rsqtr_messages", p, false)) Console.Printf("T_RIG threw %s t%d from (%.0f %.0f %.0f) at %.1f a tic -> %s", cls, level.maptime, throwAt[n].x, throwAt[n].y, throwAt[n].z, throwVel[n].Length(), thrown ? thrown.GetClassName() : 'nothing');
+	}
+
+	// ---- A THROWN GUN HITS (owner's pick 16, 2026-10-31) -----------------------------------------------------
+	// A dropped gun is a pickup: not solid, not a missile, and not our class, so the engine's own impact callback
+	// (+SKULLFLY -> Slam, Quest teardown surveys/06_GRAB_INTERACTION.md 4.4) cannot be put on it. So the rig watches
+	// it instead, in the sim on every machine: each tic, the path it flew last tic (WorldTick runs before the
+	// thinkers move it) is tested against the bodies near it; the first live one it passes through is hit, once.
+	// THE HIT, 06_GRAB 4.4's form: damage = speed^2 (units a tic) x weight x 0.2 x rsqtr_throw_damage, 1..60.
+	// THE WEIGHT IS MEASURED OFF THE GUN: the area of its own pickup sprite as it lies, against Doom's shotgun
+	// pickup (SHOTA0, 63 x 12 = 756 px): a pistol is about a quarter, a BFG two and a half (clamped 0.25..3).
+	// THE STAGGER, 01_MELEE.md 4.7: the plain pain state forced (not Pain.Melee, which Brutal Doom turns into its
+	// stealth-kill cutscene on an unaware monster), 3 tics frozen, a shove along the throw by weight and the
+	// victim's mass. The gun drops off it (06_GRAB 4.4: the velocity x -0.2).
+	Array<Actor>  thrownGun;
+	Array<int>    thrownBy, thrownUntil;
+	Array<double> thrownW, thrownPX, thrownPY, thrownPZ;
+
+	static double GunWeight(Actor g)
+	{
+		if (!g || !g.curstate) return 1.0;
+		let tex = g.curstate.GetSpriteTexture(0);
+		if (!tex.IsValid()) return 1.0;
+		Vector2 sz = TexMan.GetScaledSize(tex);
+		double area = sz.x * abs(g.Scale.X) * sz.y * abs(g.Scale.Y);
+		return area > 0 ? clamp(area / 756.0, 0.25, 3.0) : 1.0;
+	}
+
+	private void ArmThrown(Actor g, int n)
+	{
+		if (!Flag("rsqtr_throw_hurt", players[n], true)) return;
+		if (thrownGun.Size() >= 16) { thrownGun.Delete(0); thrownBy.Delete(0); thrownUntil.Delete(0); thrownW.Delete(0); thrownPX.Delete(0); thrownPY.Delete(0); thrownPZ.Delete(0); }
+		double w = GunWeight(g);
+		thrownGun.Push(g); thrownBy.Push(n); thrownUntil.Push(level.maptime + 70); thrownW.Push(w);
+		thrownPX.Push(g.pos.x); thrownPY.Push(g.pos.y); thrownPZ.Push(g.pos.z);
+		if (Flag("rsqtr_debug_throw", players[n], false)) Console.Printf("T_ARMED t%d %s weight %.2f (sprite) speed %.1f a tic", level.maptime, g.GetClassName(), w, g.vel.Length());
+	}
+
+	private void DropThrown(int k)
+	{
+		thrownGun.Delete(k); thrownBy.Delete(k); thrownUntil.Delete(k); thrownW.Delete(k); thrownPX.Delete(k); thrownPY.Delete(k); thrownPZ.Delete(k);
+	}
+
+	private void ThrownTick()
+	{
+		for (int k = thrownGun.Size() - 1; k >= 0; k--)
+		{
+			let g = Inventory(thrownGun[k]);
+			int n = thrownBy[k];
+			Vector3 from = (thrownPX[k], thrownPY[k], thrownPZ[k]);
+			if (!g || g.Owner || level.maptime > thrownUntil[k] || !playeringame[n]) { DropThrown(k); continue; }
+			Vector3 to = g.pos;
+			thrownPX[k] = to.x; thrownPY[k] = to.y; thrownPZ[k] = to.z;
+			Vector3 d = to - from;
+			double spd = d.Length();
+			if (spd < 2.0) { if (g.vel.Length() < 2.0) DropThrown(k); continue; }   // landed: a gun on the floor hurts nobody
+			let thrower = players[n].mo;
+			Vector3 mid = from + d * 0.5;
+			let it = BlockThingsIterator.CreateFromPos(mid.x, mid.y, mid.z, 0, spd * 0.5 + 64, false);
+			Actor hit = null; double hitAt = 2.0;
+			while (it.Next())
+			{
+				let t = it.thing;
+				if (!t || t == g || t == thrower || !t.bShootable || t.health <= 0 || t.bMissile) continue;
+				if (t.player && !deathmatch) continue;
+				// the closest point of the flight to the body's axis, across the ground
+				Vector2 a = t.pos.xy - from.xy;
+				double dd = d.xy dot d.xy;
+				double f = dd > 0 ? clamp((a dot d.xy) / dd, 0.0, 1.0) : 0.0;
+				Vector3 q = from + d * f;
+				if ((q.xy - t.pos.xy).Length() > t.radius + 6) continue;
+				if (q.z < t.pos.z - 4 || q.z > t.pos.z + t.height + 4) continue;
+				if (f < hitAt) { hitAt = f; hit = t; }
+			}
+			if (!hit) continue;
+			double w = thrownW[k];
+			int dmg = int(clamp(spd * spd * w * 0.2 * Num("rsqtr_throw_damage", players[n], 1.0), 1, 60));
+			int hp = hit.health;
+			hit.DamageMobj(g, thrower, dmg, 'Melee');
+			if (hit && hit.health > 0)
+			{
+				hit.TriggerPainChance('None', true);
+				hit.freezetics = max(hit.freezetics, 3);
+				double mk = clamp(100.0 / max(hit.Mass, 1.0), 0.05, 2.0);
+				if (!hit.bDontThrust && hit.Mass < 0x7FFFFFFF) hit.Thrust(clamp(spd * w * 0.5, 1.0, 10.0) * mk, atan2(d.y, d.x));
+			}
+			if (Flag("rsqtr_debug_throw", players[n], false))
+				Console.Printf("T_HIT t%d %s hit %s at %.1f a tic, weight %.2f: dmg %d (hp %d -> %d)", level.maptime, g.GetClassName(), hit ? hit.GetClassName() : 'gone', spd, w, dmg, hp, hit ? hit.health : 0);
+			g.vel *= -0.2;
+			g.A_StartSound("rsqtr/gunhit", CHAN_AUTO, 0, 0.8);
+			DropThrown(k);
+		}
 	}
 
 	// The gun in gun holster r for player n: what was put there, while you still own it.
@@ -801,6 +893,7 @@ class RSQTR_Rig : EventHandler
 	// ---- the local loop (console player) ----------------------------------------------
 	override void WorldTick()
 	{
+		ThrownTick();
 		TickPairs();
 		TickLoadout();
 		if (afterLoad) { afterLoad = false; ClearLocalMarks(); }
@@ -1204,6 +1297,7 @@ class RSQTR_Rig : EventHandler
 				}
 			}
 			else if (pip[r]) pip[r].bINVISIBLE = true;
+			AmmoCount(pmo, p, r, at, rad, a, pw);
 
 			// WHAT IS STORED THERE: exactly what you put there, nothing chosen for you (the owner,
 			// 10-27: "impossible to keep track what is where").
@@ -1300,6 +1394,61 @@ class RSQTR_Rig : EventHandler
 			if (icon[r]) icon[r].bINVISIBLE = true;
 			if (pip[r]) pip[r].bINVISIBLE = true;
 		}
+		for (int k = 0; k < 6; k++) HideAmmo(k);
+	}
+
+	// ---- THE AMMO COUNT (owner's pick 18, 2026-10-31; off by default, rsqtr_ammo_count) ------------------------
+	// A full gun holster, while its ring shows, carries its gun's rounds as a small number just above the ring:
+	// the magazine for a gun that has one (Ammo2, as AmmoState reads it), else its ammo. No panel, no frame: the
+	// digits alone, 2.4 cm tall, in the ammo light's colour (green, amber low or needing a reload, red empty).
+	// NOT A CANVAS, though that is RSQ_LaserSight's method (sight.zs UpdateReadout): QZD 17.3 draws a canvas texture
+	// black in VR (Quest teardown apply/07_WHEEL.md 6.2, measured; measured again here: the quad came up black).
+	// So each digit is a billboard sprite of Doom's own small font (TEXTURES RTNM A-J = STCFN048-057) drawn as an
+	// additive stencil, laid out across your line of sight; billboards face your eyes on their own.
+	const AMMO_DIGITS = 3;
+	const AMMO_DIGIT_M = 0.024;   // a digit's height, metres
+	transient Actor ammoDig[6 * AMMO_DIGITS];
+	static int GunSlot(int r)
+	{
+		static const int S[] = { 0, 1, -1, -1, 2, 3, 4, 5 };
+		return (r >= 0 && r < 8) ? S[r] : -1;
+	}
+	private void HideAmmo(int k) { for (int i = 0; i < AMMO_DIGITS; i++) if (ammoDig[k * AMMO_DIGITS + i]) ammoDig[k * AMMO_DIGITS + i].bINVISIBLE = true; }
+	private void AmmoCount(PlayerPawn pmo, PlayerInfo p, int r, Vector3 at, double rad, double a, Weapon pw)
+	{
+		int k = GunSlot(r);
+		if (k < 0) return;
+		int st = pw ? AmmoState(pw) : -1;
+		if (!pw || st < 0 || a <= 0.01 || !Flag("rsqtr_ammo_count", p, false)) { HideAmmo(k); return; }
+		bool mag = pw.Ammo2 && pw.Ammo2 != pw.Ammo1;
+		int rounds = clamp(mag ? pw.Ammo2.Amount : pw.Ammo1.Amount, 0, 999);
+		static const int RGB[] = { 0x9CF09C, 0xFFC850, 0xFF5A5A };
+		int c = RGB[clamp(st, 0, 2)];
+		String txt = String.Format("%d", rounds);
+		int n = txt.Length();
+		double upm = RSQTR_Body.Upm();
+		double hU = AMMO_DIGIT_M * upm * RSQTR_A11y.Text();       // RSQ_Accessibility's Text Size
+		double sc = hU / 7.0;                                       // the glyphs are 7 px tall
+		Vector3 pos = at + (0, 0, (rad * 1.15) * upm / RSQTR_Body.Ps() + hU * 0.6);
+		// across your line of sight, left to right as you look at it
+		Vector2 v = pos.xy - pmo.pos.xy;
+		double vl = v.Length();
+		Vector2 right = vl > 0 ? (v.y, -v.x) / vl : (1.0, 0.0);
+		for (int i = 0; i < AMMO_DIGITS; i++)
+		{
+			int slot = k * AMMO_DIGITS + i;
+			if (i >= n) { if (ammoDig[slot]) ammoDig[slot].bINVISIBLE = true; continue; }
+			if (!ammoDig[slot]) ammoDig[slot] = Actor.Spawn("RSQTR_AmmoDigit", pos);
+			let q = ammoDig[slot];
+			if (!q) continue;
+			double off = (i - (n - 1) * 0.5) * 8.5 * sc;
+			q.SetOrigin(pos + (right.x * off, right.y * off, 0), true);
+			q.frame = txt.ByteAt(i) - 48;
+			q.Scale = (sc, sc);
+			q.A_SetRenderStyle(clamp(a + 0.6, 0.0, 1.0), STYLE_AddShaded);
+			q.SetShade(c);
+			q.bINVISIBLE = false;
+		}
 	}
 
 	override void WorldLoaded(WorldEvent e)
@@ -1395,7 +1544,7 @@ class RSQTR_Rig : EventHandler
 		let it = ThinkerIterator.Create("Actor");
 		Actor a;
 		while (a = Actor(it.Next()))
-			if (a is "RSQTR_Marker" || a is "RSQTR_Icon" || a is "RSQTR_TorsoPart" || a is "RSQTR_MarinePart" || a is "RSQTR_HelmetPart" || a is "RSQTR_HeldShow") a.Destroy();
+			if (a is "RSQTR_Marker" || a is "RSQTR_Icon" || a is "RSQTR_TorsoPart" || a is "RSQTR_MarinePart" || a is "RSQTR_HelmetPart" || a is "RSQTR_HeldShow" || a is "RSQTR_AmmoDigit") a.Destroy();
 	}
 
 	// OnRegister also runs when a save is loaded (a level's handlers get no WorldLoaded
@@ -1411,6 +1560,18 @@ class RSQTR_Rig : EventHandler
 
 // The soft ring that shows a region.
 // The ammo light in a full holster (MODELDEF: the wire sphere, green / yellow / red frames A B C).
+// THE AMMO COUNT's digit (rsqtr_ammo_count): one glyph of Doom's small font, a billboard, frame = the digit
+class RSQTR_AmmoDigit : Actor
+{
+	Default
+	{
+		+NOINTERACTION +NOBLOCKMAP +NOGRAVITY +NOTELEPORT +DONTSPLASH +NOTONAUTOMAP +BRIGHT
+		RenderStyle "AddShaded";
+		Radius 1; Height 1;
+	}
+	States { Spawn: RTNM A -1 Bright; Stop; }
+}
+
 class RSQTR_AmmoPip : Actor
 {
 	Default

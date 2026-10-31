@@ -1,0 +1,102 @@
+version "4.14"
+// TEST ONLY (never ships). ShieldSaw rig probe.
+//   ssqp_mode 1: the wall scene -- the player 90 units short of the wall north of the start, an imp between,
+//                the imp logged every tic it moves or is frozen.
+//   ssqp_mode 2: the brace scene -- logs the main weapon and, for RSQ Saber, its own BladeDir() so the
+//                shield's estimate (ssq_debug "brace test" line) can be compared with the saber's own math.
+class SSQProbe : EventHandler
+{
+	Actor imp;
+	int setupTic;
+	int lastMove;
+	override void WorldThingDamaged(WorldEvent e)
+	{
+		if (e.Thing != imp) return;
+		String s = "-", i = "-";
+		if (e.DamageSource) s = e.DamageSource.GetClassName();
+		if (e.Inflictor) i = e.Inflictor.GetClassName();
+		Console.Printf("ssqp: t%d imp damaged %d type %s source %s inflictor %s hp now %d", level.maptime, e.Damage, e.DamageType, s, i, imp.health);
+	}
+
+	override void WorldTick()
+	{
+		let mo = players[0].mo;
+		if (!mo) return;
+		let cv = CVar.FindCVar('ssqp_mode');
+		int mode = cv ? cv.GetInt() : 0;
+		if ((mode == 1 || mode == 3) && !imp && setupTic == 0 && level.maptime > 20)
+		{
+			setupTic = level.maptime;
+			FLineTraceData t;
+			mo.LineTrace(90, 2048, 0, TRF_THRUACTORS, mo.height * 0.5, data: t);
+			double d = t.Distance;
+			mo.SetOrigin((mo.pos.x, mo.pos.y + d - 90, mo.pos.z), false);
+			imp = Actor.Spawn("DoomImp", (mo.pos.x, mo.pos.y + 44, mo.pos.z), ALLOW_REPLACE);
+			if (imp)
+			{
+				imp.angle = 270;
+				Console.Printf("ssqp: imp %s hp %d at (%.0f %.0f %.0f) h %.0f, wall at y %.0f, player (%.0f %.0f %.0f)", imp.GetClassName(), imp.health, imp.pos.x, imp.pos.y, imp.pos.z, imp.height, t.HitLocation.y, mo.pos.x, mo.pos.y, mo.pos.z);
+			}
+		}
+		if (imp)
+		{
+			let ln = imp.MovementBlockingLine;
+			bool pain = imp.InStateSequence(imp.curstate, imp.ResolveState("Pain"));
+			if (imp.vel.xy.Length() > 0.1) lastMove = level.maptime;
+			if (level.maptime - lastMove < 12 || imp.freezetics > 0 || pain || level.maptime % 35 == 0)
+				Console.Printf("ssqp: t%d imp hp %d y %.1f vel (%.1f %.1f) blockline %d freeze %d pain %d ", level.maptime, imp.health, imp.pos.y, imp.vel.x, imp.vel.y, ln ? 1 : 0, imp.freezetics, pain);
+		}
+		if (mode == 1)
+		{
+			let h = SSQ_Handler.Get();
+			let ps = h ? h.PoseOf(0) : null;
+			if (ps)
+			{
+				Vector3 v = ps.Vel() * TICRATE;
+				let psp = players[0].FindPSprite(PSP_OFFHANDWEAPON);
+				String ow = "-";
+				if (players[0].OffhandWeapon) ow = players[0].OffhandWeapon.GetClassName();
+				if (v.Length() > 1 || level.maptime % 35 == 0)
+					Console.Printf("ssqp: t%d pose vel (%.0f %.0f %.0f) u/s stamp %d fresh %d off %s psp %d", level.maptime, v.x, v.y, v.z, ps.stamp[0], ps.Fresh(level.maptime), ow, psp && psp.curstate ? 1 : 0);
+			}
+		}
+		// mode 3: a PERFECT block, staged: at tic 90 two pose samples a tic apart, the plate moving 1 unit along
+		// its face (35 u/s, over ssq_perfect_speed 25), then the imp's melee put through the guard's real
+		// AbsorbDamage. Logs the result, the imp's freeze, and SlowMo's world speed for the next tics.
+		if (mode == 3 && imp && level.maptime == 90)
+		{
+			let h = SSQ_Handler.Get();
+			let ps = h.PoseOf(0);
+			let g = SSQ_Guard(mo.FindInventory('SSQ_Guard'));
+			Vector3 F = ps.F, L = ps.L;
+			double yaw = atan2(F.y, F.x), pitch = asin(clamp(F.z, -1, 1)), roll = SSQ_Hand.RollOf(F, L);
+			Vector3 n = SSQ_Guard.PlateNormal(mo, ps, false);
+			Vector3 p0 = ps.pos[0];
+			ps.Push(p0 - n, mo.pos, mo.angle, yaw, pitch, roll, false, level.maptime - 1);
+			ps.Push(p0, mo.pos, mo.angle, yaw, pitch, roll, false, level.maptime);
+			int nd = 20;
+			g.AbsorbDamage(20, 'Melee', nd, imp, imp, 0);
+			Console.Printf("ssqp: t%d staged melee 20 -> %d, plate vel %.0f u/s along n, imp freeze %d", level.maptime, nd, (ps.Vel() * TICRATE) dot n, imp.freezetics);
+		}
+		if (mode == 3 && level.maptime >= 88 && level.maptime <= 120 && level.maptime % 4 == 0)
+		{
+			let sv = ServiceIterator.Find("RSQSM_Service").Next();
+			Console.Printf("ssqp: t%d slowmo scale %d active %d imp freeze %d", level.maptime, sv ? sv.GetInt("scale") : -1, sv ? sv.GetInt("active") : -1, imp ? imp.freezetics : -1);
+		}
+		if (mode == 2 && level.maptime % 35 == 5)
+		{
+			let w = players[0].ReadyWeapon;
+			String wn = "-";
+			if (w) wn = w.GetClassName();
+			let sb = UBQS_SaberBase(w);
+			if (sb)
+			{
+				Vector3 bd = sb.BladeDir();
+				Vector3 bb = sb.BladeBase();
+				double bl = sb.BladeLen();
+				Console.Printf("ssqp: saber %s frame %d BladeDir (%.2f %.2f %.2f) base (%.0f %.0f %.0f) len %.1f", wn, sb.frameNow, bd.x, bd.y, bd.z, bb.x, bb.y, bb.z, bl);
+			}
+			else Console.Printf("ssqp: main %s", wn);
+		}
+	}
+}

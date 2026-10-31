@@ -246,6 +246,34 @@ class SSQ_FX abstract play
 		return true;
 	}
 
+	// A LANDED BASH: "a little more" (owner, 10-31), so modest. The block's own flash and spark puff, the flash a
+	// touch smaller than a block's (the body is usually half a metre from your eyes when you bash it), no bloom;
+	// sparks a little more the harder the shove (8 at the bash threshold, 16 at most); and a short streak of
+	// brighter sparks thrown along the bash itself. No new actor, no new sound; through FlashOk / Dim as ever.
+	static void BashBurst(Actor at, Vector3 p, Vector3 n, double eff)
+	{
+		if (!at) return;
+		if (FlashOk())
+		{
+			let f = Actor.Spawn('SSQ_BlockFlash', p);
+			if (f) { f.A_SetScale(0.22); f.alpha = SSQ_A11y.Dim(0.8); }
+			let sp = Actor.Spawn('SSQ_SparkPuff', p + n * 3);
+			if (sp) { sp.A_SetScale(0.6); sp.alpha = SSQ_A11y.Dim(sp.alpha); }
+		}
+		int count = clamp(int(6 + eff / 20.0), 8, 16);
+		for (int k = 0; k < count; k++)
+		{
+			Vector3 v = n * frandom(2, 6) + (frandom(-2, 2), frandom(-2, 2), frandom(0, 3));
+			Particle(at, p, v, "ffd27a", 10 + random(0, 8), 2.5);
+		}
+		int streak = clamp(int(eff / 20.0), 3, 8);
+		for (int k = 0; k < streak; k++)
+		{
+			Vector3 v = n * frandom(7, 12) + (frandom(-1.5, 1.5), frandom(-1.5, 1.5), frandom(0, 2));
+			Particle(at, p, v, "fff2c8", 8 + random(0, 4), 3.5);
+		}
+	}
+
 	static void Sparks(Actor at, Vector3 p, Vector3 n, int count)
 	{
 		if (!at) return;

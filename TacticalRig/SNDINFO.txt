@@ -15,3 +15,5 @@ rsqtr/zipclose  rtzpclos
 rsqtr/ciglight  rtcglite
 rsqtr/inhale    rtinhale
 rsqtr/exhale    rtexhale
+// A thrown gun striking a body: stock Doom's punch (doom2.wad DSPUNCH), no new sound.
+rsqtr/gunhit   dspunch

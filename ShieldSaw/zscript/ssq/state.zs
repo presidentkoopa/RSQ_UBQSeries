@@ -51,6 +51,13 @@ class SSQ_Handler : EventHandler
 	bool  mMigrated;
 	SSQ_ScoreMemory score;		// what a scorer may ask about blocks and turned shots (score.zs)
 	int   mLockSig[MAXPLAYERS];
+	// SABER OVER SHIELD (pick 15): the stance, as the player's own machine last said (netevent ssq-brace)
+	bool  mBraced[MAXPLAYERS];
+	transient int mBraceSent;	// this machine's last sent value + 1 (0 = nothing sent yet)
+	// WALL SLAM (pick 12): bodies a bash threw, watched for the wall that stops them
+	Array<Actor>  mSlamWho;
+	Array<int>    mSlamBy, mSlamUntil;
+	Array<double> mSlamVX, mSlamVY;
 
 
 	// ---- lookups -------------------------------------------------------------------
@@ -367,6 +374,8 @@ class SSQ_Handler : EventHandler
 		if (!score) score = new('SSQ_ScoreMemory');
 		PruneMissiles();
 		SendPose();
+		SendBrace();
+		SlamTick();
 		for (int i = 0; i < MAXPLAYERS; i++)
 		{
 			if (!playeringame[i] || !players[i].mo) continue;
@@ -379,6 +388,7 @@ class SSQ_Handler : EventHandler
 			}
 			let saw = SSQ_ShieldSaw(mo.FindInventory('SSQ_ShieldSaw'));
 			if (!saw) { HideProps(i); continue; }
+			if (mState[i] != SS_DRAWN) mBraced[i] = false;
 
 			// nothing but Draw() puts the shield in the hand: undo the engine filling an empty
 			// off hand with it, or a level change re-raising it
@@ -1082,6 +1092,13 @@ class SSQ_Handler : EventHandler
 			if (SSQ_A11y.HoldToggle()) { if (e.Args[0]) mLockKey[i] = !mLockKey[i]; }
 			else mLockKey[i] = e.Args[0] != 0;
 		}
+		else if (e.Name == "ssq-brace")
+		{
+			bool b = e.Args[0] != 0 && mState[i] == SS_DRAWN;
+			if (b != mBraced[i] && UVI(players[i], 'ssq_debug', 0))
+				Console.Printf("ssq: p%d saber over shield %s (block x%.2f)", i, b ? "ON" : "off", b ? clamp(SV('ssq_brace_widen', 1.3), 1.0, 2.0) : 1.0);
+			mBraced[i] = b;
+		}
 		else if (e.Name == "ssq-throw")
 		{
 			// throw along the aim, for a player with no hand motion to read
@@ -1123,6 +1140,161 @@ class SSQ_Handler : EventHandler
 	// SendPose runs in WorldTick on every machine, for that machine's own console player only:
 	// it reads the renderer-written fields (console pawn only) and sends them. The sim never
 	// reads those fields anywhere else. OffhandDir is play-scope, so this cannot live in UiTick.
+	// ---- WALL SLAM (owner's pick 12; Quest teardown surveys/01_MELEE.md 4.7) -----------------------
+	// A bashed body is watched for 12 tics (longer while a hit-stop holds it). The engine stops a monster
+	// that walks into a wall dead: P_XYMovement zeroes its XY velocity and leaves the line in
+	// MovementBlockingLine (p_mobj.cpp:2231, :2400-2402), and clears that field at the start of each move
+	// (:4338). WorldTick runs before the thinkers (p_tick.cpp:171-173), so here we see the result of last
+	// tic's move against the velocity we saw before it: struck a line, and was going INTO it at
+	// ssq_slam_min or more, is a slam. Once per bash.
+	void ArmSlam(Actor t, int pnum)
+	{
+		if (!t || SVI('ssq_slam', 1) == 0) return;
+		t.MovementBlockingLine = null;	// a stale line from its own walking is not this shove's wall
+		int k = mSlamWho.Find(t);
+		if (k >= mSlamWho.Size())
+		{
+			if (mSlamWho.Size() >= 32) { mSlamWho.Delete(0); mSlamBy.Delete(0); mSlamUntil.Delete(0); mSlamVX.Delete(0); mSlamVY.Delete(0); }
+			mSlamWho.Push(t); mSlamBy.Push(pnum); mSlamUntil.Push(0); mSlamVX.Push(0); mSlamVY.Push(0);
+			k = mSlamWho.Size() - 1;
+		}
+		mSlamBy[k] = pnum;
+		mSlamUntil[k] = Level.maptime + 12 + max(t.freezetics, 0);
+		mSlamVX[k] = t.vel.x; mSlamVY[k] = t.vel.y;
+	}
+
+	void SlamTick()
+	{
+		for (int k = mSlamWho.Size() - 1; k >= 0; k--)
+		{
+			Actor v = mSlamWho[k];
+			if (!v || v.health <= 0 || v.bMissile || Level.maptime > mSlamUntil[k] || SVI('ssq_slam', 1) == 0)
+			{
+				mSlamWho.Delete(k); mSlamBy.Delete(k); mSlamUntil.Delete(k); mSlamVX.Delete(k); mSlamVY.Delete(k);
+				continue;
+			}
+			if (v.freezetics > 0) { mSlamUntil[k] = max(mSlamUntil[k], Level.maptime + v.freezetics + 2); continue; }
+			Line ln = v.MovementBlockingLine;
+			if (ln)
+			{
+				// the wall's normal, toward the side the body is on
+				Vector2 d = ln.delta;
+				Vector2 nrm = (d.y, -d.x);
+				double nl = nrm.Length();
+				if (nl > 0)
+				{
+					nrm /= nl;
+					if ((v.pos.xy - ln.v1.p) dot nrm < 0) nrm = -nrm;
+					double impact = -((mSlamVX[k], mSlamVY[k]) dot nrm);
+					if (impact >= SV('ssq_slam_min', 3.0))
+					{
+						Slam(v, mSlamBy[k], nrm, impact);
+						mSlamWho.Delete(k); mSlamBy.Delete(k); mSlamUntil.Delete(k); mSlamVX.Delete(k); mSlamVY.Delete(k);
+						continue;
+					}
+				}
+			}
+			mSlamVX[k] = v.vel.x; mSlamVY[k] = v.vel.y;
+		}
+	}
+
+	void Slam(Actor v, int pnum, Vector2 nrm, double impact)
+	{
+		PlayerPawn mo = (pnum >= 0 && pnum < MAXPLAYERS && playeringame[pnum]) ? players[pnum].mo : null;
+		int dmg = int(clamp(impact * 2.0, 5, 40) * SV('ssq_slam_damage', 1.0));
+		Vector3 at = v.pos + (-nrm.x * v.radius, -nrm.y * v.radius, v.height * 0.5);
+		int hp = v.health;
+		if (dmg > 0)
+		{
+			let saw = mo ? mo.FindInventory('SSQ_ShieldSaw') : null;
+			let upg = SSQ_Upg.Svc();
+			if (upg && saw) upg.GetInt("credit.push", "", 2, 0, saw);
+			v.DamageMobj(mo, mo, dmg, 'Melee');
+			if (upg && saw) upg.GetInt("credit.pop", "", 0, 0, saw);
+		}
+		if (mo && mo.player && UVI(mo.player, 'ssq_debug', 0))
+			Console.Printf("ssq: WALL SLAM %s at %.1f u/tic into the wall, dmg %d (hp %d -> %d), stun %d", v ? v.GetClassName() : 'gone', impact, dmg, hp, v ? v.health : 0, SVI('ssq_slam_stun', 8));
+		if (mo) SSQ_FX.At(mo, at, "ssq/bash", CHAN_5, 0.9, 0.8);
+		if (mo && mo.player && UVI(mo.player, 'ssq_feedback', 1) != 0) SSQ_FX.Sparks(mo, at, (nrm.x, nrm.y, 0.2), 10);
+		if (!v || v.health <= 0) return;
+		// stunned: the pain state, held, and a small rebound off the wall once it thaws (01_MELEE 4.7: 0.45)
+		// The PLAIN pain state, not Pain.Melee: Brutal Doom's Pain.Melee sends an unaware monster into its
+		// stealth-kill cutscene (brutal22test6 actors/Enemies/Imps.dec Pain.Melee -> GotoStealthKill; on the rig
+		// a bash on an idle BD imp already does this, old pk3 and new, and the camera leaves the player). A wall
+		// must not add a second way in. Plain Pain also takes the stealth flag away.
+		v.TriggerPainChance('None', true);
+		v.freezetics = max(v.freezetics, clamp(SVI('ssq_slam_stun', 8), 0, 35));
+		if (!v.bDontThrust && v.Mass < 0x7FFFFFFF) v.vel.xy = nrm * impact * 0.45;
+	}
+
+	// ---- SABER OVER SHIELD: decided here, on the player's own machine (pick 15) --------------------
+	// Read only through what is public: the main-hand weapon's class name (RSQ Saber's are UBQS_*, the Force
+	// hand excepted), its blade lit (UBQS_SaberService "saber.lit", hand 0, when it answers), and the raw hand
+	// fields. The blade's line is the saber's resting frame worked through from its own code: the blade leaves
+	// the hand's forward 50 degrees toward the hand's up (QuestSaber zscript.txt UBQS_Data.Up(0) = 50, Yaw(0) = 0)
+	// and runs from BeamAlong(5.111, 6.091) to BeamAlong(37.940, 45.216) along it (3.3 to 31.3 units at
+	// ubqs_size 1, vr_weaponScale 1). The plate is the synced one. Braced = two or more of nine points along
+	// the blade lie over the plate's face (within its rim) and within ssq_brace_gap of the front.
+	static double SaberAlong(double sz, double mx, double mz)
+	{
+		let wsc = CVar.FindCVar('vr_weaponScale');
+		double k = 1.6080 * sz * (wsc ? wsc.GetFloat() : 1.0);
+		return SSQ_Hand.VU() * 0.01 * ((5.0 - 8.0 + k * mz) * sin(50.0) - (30.0 - 29.0 - k * mx) * cos(50.0));
+	}
+
+	bool BraceNow()
+	{
+		if (consoleplayer < 0 || !playeringame[consoleplayer]) return false;
+		if (SVI('ssq_brace', 1) == 0) return false;
+		let p = players[consoleplayer];
+		let mo = p.mo;
+		if (!mo || mo.health <= 0 || !SSQ_Hand.InVR(mo) || mState[consoleplayer] != SS_DRAWN) return false;
+		let pose = mPose[consoleplayer];
+		if (!pose || !pose.Fresh(Level.maptime)) return false;
+		let w = p.ReadyWeapon;
+		if (!w) return false;
+		String cn = w.GetClassName();
+		if (!(cn.Left(5) ~== "UBQS_") || cn ~== "UBQS_ForceHand") return false;
+		let svc = ServiceIterator.Find("UBQS_SaberService").Next();
+		if (svc && svc.GetInt("saber.lit", "", 0, 0, mo) != 1) return false;
+		let szc = CVar.GetCVar('ubqs_size', p);
+		double sz = szc ? clamp(szc.GetFloat(), 0.7, 1.3) : 1.0;
+		Vector3 hand = mo.AttackPos;
+		Vector3 F = SSQ_Hand.MainDir(mo, 0, 0);
+		Vector3 U = SSQ_Hand.MainDir(mo, 0, 90);
+		Vector3 bd = F * cos(50.0) + U * sin(50.0);
+		double a0 = SaberAlong(sz, 5.111, 6.091), a1 = SaberAlong(sz, 37.940, 45.216);
+		Vector3 C = SSQ_Guard.PlateCentre(mo, pose, false);
+		Vector3 n = SSQ_Guard.PlateNormal(mo, pose, false);
+		double R = SSQ_Guard.PlateRadius(false, 1.0);
+		double gap = CM(SV('ssq_brace_gap', 15.0));
+		int over = 0;
+		for (int s = 0; s <= 8; s++)
+		{
+			Vector3 q = hand + bd * (a0 + (a1 - a0) * s / 8.0) - C;
+			double al = q dot n;
+			if (al < -CM(2.0) || al > gap) continue;
+			if ((q - n * al).Length() <= R) over++;
+		}
+		if (UVI(p, 'ssq_debug', 0) && (Level.maptime % 35) == 0)
+		{
+			Vector3 b0 = hand + bd * a0, b1 = hand + bd * a1;
+			Console.Printf("ssq: brace test %s over %d/9 blade (%.0f %.0f %.0f)->(%.0f %.0f %.0f) dir(%.2f %.2f %.2f) plate C(%.0f %.0f %.0f) n(%.2f %.2f %.2f)", cn, over,
+				b0.x, b0.y, b0.z, b1.x, b1.y, b1.z, bd.x, bd.y, bd.z, C.x, C.y, C.z, n.x, n.y, n.z);
+		}
+		return over >= 2;
+	}
+
+	void SendBrace()
+	{
+		if (consoleplayer < 0 || !playeringame[consoleplayer]) return;
+		int now = BraceNow() ? 2 : 1;
+		if (now == mBraceSent) return;
+		if (mBraceSent == 0 && now == 1) { mBraceSent = 1; return; }
+		mBraceSent = now;
+		EventHandler.SendNetworkEvent("ssq-brace", now - 1);
+	}
+
 	void SendPose()
 	{
 		if (consoleplayer < 0 || !playeringame[consoleplayer]) return;

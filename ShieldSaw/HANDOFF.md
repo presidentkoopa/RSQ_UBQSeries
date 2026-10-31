@@ -1,5 +1,28 @@
 # RSQ ShieldSaw — handoff
 
+## 2026-10-31: owner's picks 12-15 and a bash you can see -- read first
+
+Rig only (QZD 17.3 Linux, doom2 MAP01, brutal22test6 -> BD_VoxelPack -> BD22_VR-Reloaded 2.0.3h + hotfix ->
+RSQ_ShieldSaw + RSQ_Saber [+ RSQ_SlowMo]), **not headset-confirmed**. Probe: `tools/rigtest/ssprobe` (test only:
+puts the player 90 units short of the wall north of the start with an idle imp between; real hand motion through
+`qz_lhand`). Zero script errors from the pack.
+
+| pick | what | rig (measured) |
+|---|---|---|
+| 12 wall slam (on) | after a bash the victim is watched 12 tics (+ any freeze); last tic's move stopped by a line (`MovementBlockingLine`, p_mobj.cpp:2231, cleared :4338; WorldTick runs before the thinkers, p_tick.cpp:171) while going into it at `ssq_slam_min` 3 u/tic or more = a slam: 2 x impact (5..40) x `ssq_slam_damage`, forced PLAIN pain, `ssq_slam_stun` 8 tics frozen, rebound 0.45 x impact off the wall (surveys/01_MELEE.md 4.7) | real bash 298 u/s: imp 80 -> 40, flew 25 u/tic, `WALL SLAM imp at 24.1 u/tic, dmg 12 (40 -> 28)` (slam damage 0.3), frozen 8 tics in pain at the wall, then off it at 10.8 u/tic |
+| 15 saber over shield (on) | decided on the player's own machine (raw `AttackPos` + `AttackDir`), sent as `netevent ssq-brace`, so the sim reads a synced flag. Main weapon class `UBQS_*` (not ForceHand), `UBQS_SaberService` "saber.lit" hand 0 == 1 when it answers, blade = hand F cos50 + U sin50 from BeamAlong(5.111,6.091) to (37.94,45.216) -- the saber's resting frame worked out of its own code. Braced = 2+ of 9 blade points over the plate, within `ssq_brace_gap` 15 cm of the front. Block radius x `ssq_brace_widen` 1.3; grind and bash unchanged | estimate vs the saber's own `BladeDir()/BladeBase()/BladeLen()` in 6 poses: same direction to 0.01, base to 1 unit, length 28 vs 28.5. Toggles ON/off as the blade crosses / leaves the plate; block plate r 9.9 -> 12.9 while braced |
+| 13 hit-stop (off) | `ssq_hitstop`, `ssq_hitstop_tics` 4 (01_MELEE 3.6): `freezetics` on the bashed body and on the source of a perfect block, never a player | bash: imp `freeze 4` the tic of the bash, knockback held till it thawed, then the slam as above |
+| 14 perfect-block slow-mo (off) | `ssq_perfect_slowmo`: `netevent rsm_pulse 500 35` from the blocker's own machine (SlowMo clock.zs Pulse; depth = RS_Score's PULSE_DEPTH) | staged perfect (two pose samples 1 u apart along the face, real AbsorbDamage): melee 20 -> 0, `perfect block`, imp freeze 4, SlowMo scale 1000 -> 619 -> 350 for ~0.5 s -> 1000 |
+| bash FX (owner, on) | `SSQ_FX.BashBurst`: BlockFlash 0.22 + SparkPuff 0.6 (through FlashOk / Dim), 8..16 sparks by bash speed, 3..8 brighter sparks thrown along the bash. No new sounds, nothing on the plate | `docs/screens/bash_fx_before_after.png`: old pk3 nothing at the bash; new a small flash and sparks at the body, sparks on the slam |
+
+Found on the way (Brutal Doom's own behaviour, not changed): a bash on an IDLE BD imp can send it to BD's
+stealth-kill cutscene (its `Pain.Melee` jumps to GotoStealthKill while it holds `SKImp`), old pk3 and new -- the
+camera leaves the player for a few seconds. The slam's forced pain uses the plain Pain state so a wall never adds
+a second way in.
+
+Not done: planting the shield in the floor (pick 11, not wanted).
+
+
 ## Branch `shieldsaw-sweep` (2026-10-30): the grind and bash sweep, per-body grind, two residual holes -- read first
 
 Not run anywhere: **not on the owner's headset and not through a compiler.** Code only, from the

@@ -1,0 +1,3 @@
+user int trp_mode = 0;
+user float trp_dist = 50;
+user string trp_cls = "RSQTR_AmmoDigit";
