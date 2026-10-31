@@ -355,7 +355,9 @@ class RSQDG_Hold : EventHandler
 		// INTO THE AIR, EVERY RELEASE: thrown or set down, it falls at the one
 		// rate WorldHands gives everything that leaves a hand (throw.zs Air).
 		let air = RSQDG_Throw.Get();
-		if (air) air.Air(a);
+		double mps = RSQDG_Reach.Metres(v - body) * TICRATE;
+		double spin = thrown ? clamp(mps * 3.0, 4.0, 28.0) * (FRandom[RSQDGSpin](0, 1) < 0.5 ? -1 : 1) * RSQDG_Reach.Num("rsqdg_throw_spin", p, 1.0) : 0.0;
+		if (air) air.Air(a, spin);
 
 		if (RSQDG_Reach.Flag("rsqdg_debug", p, false))
 			Console.Printf("[RSQDG] hand %d released %s at %.1f m/s (%s; arm %.1f, body %.1f)",

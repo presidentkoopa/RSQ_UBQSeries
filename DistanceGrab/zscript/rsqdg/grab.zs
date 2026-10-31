@@ -227,6 +227,8 @@ class RSQDG_Grab : EventHandler
 			// launch, because a lock is what a launch turns into -- allowing the
 			// second lock only defers the collision to the moment both fire.
 			else if (lockActor[1 - hand] == a) why = "the other hand has it";
+			// NOT WHAT YOU JUST THREW: an open palm after a throw is the follow-through, not a reach for it again
+			else if (RSQDG_Throw.Get() && RSQDG_Throw.Get().Watching(a)) why = "you just threw it";
 		}
 
 		if (why != "")

@@ -583,6 +583,10 @@ class RSQDG_Flight : EventHandler
 				continue;
 			}
 			StepTumble(h, a);
+			// A FAINT TRAIL behind what you are pulling (owner 2026-10-31: "some life"): a few soft motes in the lock's
+			// green, fading where it was
+			if (RSQDG_Reach.Flag("rsqdg_trail", p, true) && (level.maptime & 1))
+				a.A_SpawnParticle(RSQDG_CB.Pick(RSQDG_CB.CB_HAVE, 0x8CFFA8), SPF_FULLBRIGHT, 10, 3.0, 0, 0, 0, a.Height * 0.5, 0, 0, 0.05, 0.45, -0.04);
 
 			Vector3 toPalm = palm - MidOf(a);
 			double dist = toPalm.Length();

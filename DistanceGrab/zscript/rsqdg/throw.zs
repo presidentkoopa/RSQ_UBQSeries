@@ -123,7 +123,11 @@ class RSQDG_Throw : EventHandler
 	private Actor airA[MAX_AIR];
 	private int   airTics[MAX_AIR];
 
-	void Air(Actor a)
+	// THROWN THINGS TURN IN THE AIR (owner 2026-10-31: "some life"): spinDeg a tic about its up (a voxel or a model
+	// shows it) and, for a flat sprite, rolled end over end; both settle when it lands. 0: set down, no spin.
+	private double airSpin[MAX_AIR];
+	private bool airRolled[MAX_AIR], airWasRoll[MAX_AIR];
+	void Air(Actor a, double spinDeg = 0)
 	{
 		if (!a) return;
 		int slot = -1, oldest = 0;
@@ -136,6 +140,14 @@ class RSQDG_Throw : EventHandler
 		if (slot < 0) slot = oldest;
 		airA[slot] = a;
 		airTics[slot] = 0;
+		airSpin[slot] = spinDeg;
+		airRolled[slot] = false;
+		if (spinDeg != 0 && !RSQDG_Voxels.Drawn(a))
+		{
+			airWasRoll[slot] = a.bROLLSPRITE;
+			a.bROLLSPRITE = true; a.bROLLCENTER = true;
+			airRolled[slot] = true;
+		}
 	}
 
 	bool InAir(Actor a) const
@@ -181,7 +193,15 @@ class RSQDG_Throw : EventHandler
 				a.Vel.X += FRandom[RSQDGAir](-flutter, flutter);
 				a.Vel.Y += FRandom[RSQDGAir](-flutter, flutter);
 			}
-			bool resting = (a.Pos.Z <= a.floorz + 1.0) && (a.Vel.Length() < 1.0);
+			bool onFloor = a.Pos.Z <= a.floorz + 1.0;
+			if (airSpin[i] != 0)
+			{
+				if (onFloor) airSpin[i] *= 0.6;                 // it rolls to a stop on the ground
+				if (airRolled[i]) a.Roll += airSpin[i] * 1.5; else a.Angle += airSpin[i];
+				if (abs(airSpin[i]) < 0.5) { airSpin[i] = 0; if (airRolled[i]) { a.Roll = 0; a.bROLLSPRITE = airWasRoll[i]; airRolled[i] = false; } }
+			}
+			bool resting = onFloor && (a.Vel.Length() < 1.0);
+			if (resting && airRolled[i]) { a.Roll = 0; a.bROLLSPRITE = airWasRoll[i]; airRolled[i] = false; airSpin[i] = 0; }
 			if ((resting && airTics[i] > 4) || airTics[i] > maxTics) airA[i] = null;
 		}
 	}
@@ -499,6 +519,17 @@ class RSQDG_Throw : EventHandler
 	{
 		Actor a = wa[i];
 		LogLanded(a, speedMps);
+		// a hard landing kicks up dust (owner 2026-10-31: "some life"), more the harder and heavier it came down
+		if (a && speedMps > 2.5 && RSQDG_Reach.Flag("rsqdg_dust", p, true))
+		{
+			int n = clamp(int(speedMps * 1.5 + RSQDG_Mass.Kg(a) / 15.0), 4, 24);
+			for (int k = 0; k < n; k++)
+			{
+				double an = k * 360.0 / n + FRandom[RSQDGDust](-10, 10);
+				double sp = FRandom[RSQDGDust](0.6, 1.6) * min(3.0, speedMps / 4.0);
+				a.A_SpawnParticle(0x8C8070, 0, 22, FRandom[RSQDGDust](3, 6), 0, 0, 0, 1, cos(an) * sp, sin(an) * sp, FRandom[RSQDGDust](0.2, 0.9), 0.55, -0.025);
+			}
+		}
 
 		// Everything shootable within reach of where it stopped, once each.
 		// COLLECTED FIRST, STRUCK AFTER (review): damage inside the iterator
