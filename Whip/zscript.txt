@@ -1,0 +1,16 @@
+version "4.14"
+
+#include "zscript/rsqwp/rsmenu.zs"   // Radiant Silvergun Options: the series' shared menu pieces (tools/rsmenu)
+// RSQ_Whip -- a simulated bullwhip for stock QuestZDoom 17.3 (VR). No engine change.
+// Part of the Radiant Silvergun Quest series. Its line (swing, reel, climb, let go) is forked from
+// RSQ_Grapple's core and stands alone: RSQ_Grapple is not needed, and both load together.
+#include "zscript/rsqwp/cb.zs"
+#include "zscript/rsqwp/a11y.zs"
+#include "zscript/rsqwp/util.zs"
+#include "zscript/rsqwp/fx.zs"
+#include "zscript/rsqwp/input.zs"
+#include "zscript/rsqwp/core.zs"
+#include "zscript/rsqwp/hook.zs"
+#include "zscript/rsqwp/climb.zs"
+#include "zscript/rsqwp/monster.zs"
+#include "zscript/rsqwp/whip.zs"

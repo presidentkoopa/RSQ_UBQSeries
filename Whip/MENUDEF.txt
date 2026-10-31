@@ -1,0 +1,90 @@
+// RSQ Whip -- MENUDEF
+// ---- Radiant Silvergun Options (tools/rsmenu) ----------------------------------------------------
+// The series' one Options entry. Every series pk3 carries this same block with its own prefix: the
+// parent is PROTECTED, so the first definition stays and later ones add nothing (QZD 17.3 merges a
+// protected option menu instead of replacing it); the link row removes any earlier copy of itself,
+// so Options shows one row however many series pk3s load. Each mod then adds its own row only.
+OptionMenu "RSQ_RSOptions" protected
+{
+	Class "RSQWP_RSMenu"
+	Title "RADIANT SILVERGUN OPTIONS"
+}
+
+AddOptionMenu "OptionsMenu"
+{
+	RSQWPRSLink "Radiant Silvergun Options", "RSQ_RSOptions"
+}
+
+AddOptionMenu "RSQ_RSOptions"
+{
+	Submenu "RSQ Whip", "RSQWP_Options"
+}
+// ----------------------------------------------------------------------------------------------------
+
+OptionMenu "RSQWP_Options"
+{
+	Title "RSQ WHIP"
+	Option "Whip", "rsqwp_on", "OnOff"
+	Option "Whip Style", "rsqwp_whip_mode", "RSQWP_WhipModes"
+	Option "Whip Aim", "rsqwp_whip_aim", "RSQWP_WhipAims"
+	Option "Catch Edges (snag)", "rsqwp_whip_snag", "OnOff"
+	Option "Throws Switches", "rsqwp_whip_lines", "OnOff"
+	Option "Fetches Pickups", "rsqwp_whip_fetch", "OnOff"
+	Option "Leash (Lock)", "rsqwp_whip_leash", "OnOff"
+	Option "Stun", "rsqwp_whip_stun", "OnOff"
+	StaticText " "
+	Option "Mantle Over Ledges", "rsqwp_mantle", "OnOff"
+	Option "Keep Momentum on Landing", "rsqwp_carry", "OnOff"
+	Option "Rope Climbing", "rsqwp_climb", "OnOff"
+	StaticText " "
+	Submenu "Tuning and Debug", "RSQWP_Tuning"
+}
+
+OptionMenu "RSQWP_Tuning"
+{
+	Title "TUNING AND DEBUG"
+	Slider "Whip Length", "rsqwp_whip_reach", 64, 256, 8, 0
+	Slider "Crack Speed (lower = easier)", "rsqwp_whip_crack", 10, 50, 1, 0
+	Slider "Damage", "rsqwp_whip_damage", 0, 40, 2, 0
+	Slider "Aim Reach", "rsqwp_whip_assist", 16, 96, 4, 0
+	Slider "Thickness", "rsqwp_rope_width", 0.2, 2.0, 0.1, 1
+	StaticText " "
+	Slider "Reel Speed", "rsqwp_reel_speed", 2, 30, 1, 0
+	Slider "Shortest Rope", "rsqwp_min_len", 16, 128, 8, 0
+	Slider "Top Speed", "rsqwp_max_speed", 10, 60, 1, 0
+	Slider "Swing Lean (stick)", "rsqwp_pump", 0.0, 1.0, 0.05, 2
+	Slider "Arm Pump (0 = off)", "rsqwp_arm_pump", 0.0, 0.3, 0.02, 2
+	Slider "Air Drag", "rsqwp_drag", 0.0, 0.01, 0.0005, 4
+	Slider "Rope Friction", "rsqwp_rope_friction", 0.0, 0.1, 0.005, 3
+	Slider "Ledge Hop", "rsqwp_hop", 0, 12, 1, 0
+	StaticText " "
+	Option "Free Hand Only", "rsqwp_climb_free_only", "OnOff"
+	Option "Grips From Grab", "rsqwp_grab_dg", "OnOff"
+	Slider "Grab Reach", "rsqwp_grab_reach", 4, 40, 2, 0
+	Slider "Climb Speed Cap", "rsqwp_climb_cap", 2, 20, 1, 0
+	Slider "Heaviest Leashed", "rsqwp_mass_max", 100, 5000, 100, 0
+	Slider "Leash Pull", "rsqwp_slide_speed", 2, 30, 1, 0
+	StaticText " "
+	Option "Debug Log", "rsqwp_debug", "RSQWP_Debug"
+	StaticText " "
+	SafeCommand "Reset All", "rsqwp_reset", "Reset all RSQ Whip settings?"
+}
+
+OptionValue "RSQWP_WhipModes"
+{
+	0, "Real (hold, crack it yourself)"
+	1, "Assist (press, it cracks for you)"
+}
+OptionValue "RSQWP_WhipAims"
+{
+	0, "Free"
+	1, "Assist"
+	2, "Lock (other hand points, alt-fire holds)"
+}
+OptionValue "RSQWP_Debug"
+{
+	0, "Off"
+	1, "Events"
+	2, "Every tic"
+	3, "Cost"
+}

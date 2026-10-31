@@ -26,13 +26,3 @@ rsqgr/bal/crk1      RSGBCRK1
 rsqgr/bal/crk2      RSGBCRK2
 $random rsqgr/bal/crack { rsqgr/bal/crk1 rsqgr/bal/crk2 }
 // ==== end monster side ====
-
-// ==== the whip (tools/gen_whip.py: synthesised, no samples) ====
-rsqgr/whip/crk1     RSGWCRK1
-rsqgr/whip/crk2     RSGWCRK2
-rsqgr/whip/crk3     RSGWCRK3
-$random rsqgr/whip/crack { rsqgr/whip/crk1 rsqgr/whip/crk2 rsqgr/whip/crk3 }
-rsqgr/whip/sw1      RSGWSWS1
-rsqgr/whip/sw2      RSGWSWS2
-$random rsqgr/whip/swish { rsqgr/whip/sw1 rsqgr/whip/sw2 }
-rsqgr/whip/unfurl   RSGWUNF

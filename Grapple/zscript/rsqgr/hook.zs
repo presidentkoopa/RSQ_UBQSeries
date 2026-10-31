@@ -54,8 +54,6 @@ class RSQGR_Hook : Actor
 	Vector3 gripLastOff;        // that hand's offset from the pawn last tic
 	bool gripPending;           // the hold is taken on the next tic, from that tic's pose
 	double drawMs;        // last rope draw cost (rsqgr_debug)
-	bool whipped;         // the whip's tip, wrapped round an edge or a monster (whip.zs): drawn as the whip, no claw
-	Vector3 struck;       // a whip's: where it struck the wall (its anchor is on the edge's corner)
 
 	Default
 	{
@@ -203,8 +201,7 @@ class RSQGR_Hook : Actor
 		for (int i = 1; i < px.Size(); i++)
 			total += ((px[i], py[i], pz[i]) - (px[i - 1], py[i - 1], pz[i - 1])).Length();
 
-		bInvisible = whipped;            // the whip has no claw: its tip is wrapped round the thing
-		if (whipped || RSQGR_Util.Opt("rsqgr_rope_style", 0) == 1)
+		if (RSQGR_Util.Opt("rsqgr_rope_style", 0) == 1)
 		{
 			ClearLinks(0);
 			PlaceCable(px, py, pz, total < 4);
@@ -287,7 +284,6 @@ class RSQGR_Hook : Actor
 		int n = none ? 0 : px.Size() - 1;
 		ClearSegs(n);
 		double w = RSQGR_Util.Num("rsqgr_rope_width", 0.6);
-		if (whipped) w *= 1.15;
 		for (int k = 0; k < n; k++)
 		{
 			Vector3 a = (px[k], py[k], pz[k]);
@@ -295,7 +291,7 @@ class RSQGR_Hook : Actor
 			bool fresh = false;
 			if (k >= segs.Size()) segs.Push(null);
 			let r = segs[k];
-			if (!r) { r = RSQGR_Rope(Spawn(whipped ? "RSQGR_WhipLink" : "RSQGR_Rope", a, NO_REPLACE)); segs[k] = r; fresh = true; }
+			if (!r) { r = RSQGR_Rope(Spawn("RSQGR_Rope", a, NO_REPLACE)); segs[k] = r; fresh = true; }
 			if (!fresh) r.SetOrigin(a, true);
 			Vector3 m = b - a;
 			Vector3 room = (m.x, m.y, m.z * RSQGR_Util.PIXELSTRETCH);

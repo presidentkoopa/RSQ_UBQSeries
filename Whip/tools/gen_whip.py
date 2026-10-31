@@ -4,14 +4,15 @@
     python3 tools/gen_whip.py
 
 Writes
-  models/rsqgr/rsqwhip.png   the thong's skin: plaited brown leather (an 8-strand diamond
+  models/rsqwp/rsqwhip.png   the thong's skin: plaited brown leather (an 8-strand diamond
                              plait), on the rope's tube (rsqrope.md3, gen_rope.py)
-  models/rsqgr/rsqwhiph.png  the handle's skin: dark wrapped leather with a knot band
-  sounds/RSGWCRK1..3         three cracks: a supersonic tip makes an N-wave (a pressure jump
+  models/rsqwp/rsqwhiph.png  the handle's skin: dark wrapped leather with a knot band
+  sounds/RSWPCRK1..3         three cracks: a supersonic tip makes an N-wave (a pressure jump
                              up, a ramp down, a jump back) about a millisecond long; what
                              you hear is that click and the room answering it
-  sounds/RSGWSWS1..2         two swishes: band-passed noise whose band rises with the tip
-  sounds/RSGWUNF             the thong unfurling / rolling up: a soft leather rustle
+  sounds/RSWPSWS1..2         two swishes: band-passed noise whose band rises with the tip
+  sounds/RSWPUNF             the thong unfurling / rolling up: a soft leather rustle
+  sounds/RSWPHIT             the thong landing on flesh: a thud and a slap
 """
 import os, struct, wave
 import numpy as np
@@ -40,7 +41,7 @@ def skin():
             g = 1.0 if groove > 0.06 else 0.45
             c = dark + (base - dark) * shade * g
             img[y, x] = c * (0.92 + 0.08 * rng.random())
-    Image.fromarray(np.clip(img, 0, 255).astype(np.uint8)).save(os.path.join(ROOT, 'models/rsqgr/rsqwhip.png'))
+    Image.fromarray(np.clip(img, 0, 255).astype(np.uint8)).save(os.path.join(ROOT, 'models/rsqwp/rsqwhip.png'))
     W, H = 64, 128
     img = np.zeros((H, W, 3), np.float32)
     for y in range(H):
@@ -49,7 +50,7 @@ def skin():
             c = np.array([58, 36, 22], np.float32) * wrap
             if 100 <= y <= 116: c = np.array([120, 84, 48], np.float32) * (0.7 + 0.3 * np.sin(np.pi * (y - 100) / 16))
             img[y, x] = c * (0.9 + 0.1 * rng.random())
-    Image.fromarray(np.clip(img, 0, 255).astype(np.uint8)).save(os.path.join(ROOT, 'models/rsqgr/rsqwhiph.png'))
+    Image.fromarray(np.clip(img, 0, 255).astype(np.uint8)).save(os.path.join(ROOT, 'models/rsqwp/rsqwhiph.png'))
 
 
 def band(x, lo, hi):
@@ -106,6 +107,16 @@ def swish(seed, dur, f0, f1):
     return out * env
 
 
+def smack(seed):
+    """leather on flesh: a short low thud with a slap on top"""
+    r = np.random.default_rng(seed)
+    n = int(SR * 0.22)
+    t = np.arange(n) / SR
+    thud = band(r.standard_normal(n), 60, 400) * np.exp(-t / 0.035)
+    slap = band(r.standard_normal(n), 900, 5000) * np.exp(-t / 0.008) * 0.8
+    return thud + slap
+
+
 def unfurl():
     r = np.random.default_rng(5)
     n = int(SR * 0.35)
@@ -117,10 +128,11 @@ def unfurl():
 if __name__ == '__main__':
     os.makedirs(os.path.join(ROOT, 'sounds'), exist_ok=True)
     skin()
-    write('RSGWCRK1', crack(11, 1.1, 0.09))
-    write('RSGWCRK2', crack(23, 0.9, 0.12))
-    write('RSGWCRK3', crack(37, 1.3, 0.07))
-    write('RSGWSWS1', swish(3, 0.30, 500, 2600))
-    write('RSGWSWS2', swish(8, 0.24, 700, 3400))
-    write('RSGWUNF', unfurl())
-    print('wrote rsqwhip.png rsqwhiph.png RSGWCRK1-3 RSGWSWS1-2 RSGWUNF')
+    write('RSWPCRK1', crack(11, 1.1, 0.09))
+    write('RSWPCRK2', crack(23, 0.9, 0.12))
+    write('RSWPCRK3', crack(37, 1.3, 0.07))
+    write('RSWPSWS1', swish(3, 0.30, 500, 2600))
+    write('RSWPSWS2', swish(8, 0.24, 700, 3400))
+    write('RSWPUNF', unfurl())
+    write('RSWPHIT', smack(41))
+    print('wrote rsqwhip.png rsqwhiph.png RSWPCRK1-3 RSWPSWS1-2 RSWPUNF RSWPHIT')

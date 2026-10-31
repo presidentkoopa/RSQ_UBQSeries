@@ -138,21 +138,7 @@ class RSQGR_Core : EventHandler
 		}
 		h.victim = null;
 		h.SetPhase(RSQGR_Hook.PH_RETRACT);
-		if (h.owner) Carry(PlayerPawn(h.owner));
 		Log(h, byPlayer ? "letgo" : "drop");
-	}
-
-	// KEEP THE SWING'S SPEED (rsqgr_carry). With the engine's "Slidey movement" off (vr_momentum,
-	// the default) player.zs MovePlayer cuts a grounded player's speed to 0.0001 of itself every
-	// tic unless player.keepmomentum is set -- a swing that lands stops dead. keepmomentum is the
-	// engine's own exit: set while the rope carries him and when he lets go; the engine clears it
-	// by itself once he has slowed below vr_momentum_threshold, and Doom's friction does the rest.
-	// Core ticks before any thinker (WorldTick), so it holds on the tic it is set.
-	static void Carry(PlayerPawn pmo)
-	{
-		if (!pmo || !pmo.player || !RSQGR_Util.Flag("rsqgr_carry", true)) return;
-		if (pmo.vel.xy.Length() < 2) return;
-		pmo.player.keepmomentum = true;
 	}
 
 	void Drop(int i)
@@ -526,7 +512,6 @@ class RSQGR_Core : EventHandler
 			pmo.vel = v;
 			CapSpeed(pmo);
 			roped = true;
-			Carry(pmo);
 
 			// The rope must see its anchor. Swing round a corner and it slips: checked
 			// every 4 tics, three misses in a row let go.
@@ -644,8 +629,7 @@ class RSQGR_Core : EventHandler
 			// a wall: is it still there? (a door's upper wall rises away; a polyobject goes)
 			let tr = GetTracer();
 			tr.shooter = h.owner;
-			// (a whip wrapped round an edge anchors on the corner; its wall is where it struck)
-			Vector3 s = (h.whipped ? h.struck : h.anchor) - h.hitDir * 6;
+			Vector3 s = h.anchor - h.hitDir * 6;
 			if (!tr.Trace(s, level.PointInSector(s.xy), h.hitDir, 16, TRACE_HitSky, RSQGR_Tracer.WALLMASK, true, h.owner)
 				|| tr.Results.HitType == TRACE_HitNone || tr.Results.HitType == TRACE_HasHitSky)
 				return false;

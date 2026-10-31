@@ -1,0 +1,18 @@
+RSQ_Whip -- credits
+===================
+
+Code: ZScript written for the Radiant Silvergun Quest series (presidentkoopa), for stock QuestZDoom 17.3 by
+Emawind84 and Team Beef. No engine change.
+
+The whip is simulated the way runevision (Rune Skovbo Johansen) describes Eye of the Temple's whip in his devlog
+"Trials and triumphs of whips and levers" (2017): a chain of links kept in arrays, a spring step between
+neighbours that pulls one more than the other because the whip thins toward the tip, and one sweep per link from
+where it was to where it is. The idea is his; the code is the series' own. Verlet rope references the owner
+pointed to: dylnli/rope (after Sebastian Lague) and chrischristakis/RopePhysics.
+
+The line a snag or a leash becomes (swing, reel, pump, climb hand over hand, let go, the monster slide) is
+RSQ_Grapple's core, forked and renamed (RSQWP_), with its measured pendulum and climbing.
+
+Look and sound are generated here, from nothing (tools/gen_whip.py): the plaited thong and wrapped handle skins
+(models/rsqwp/rsqwhip.png, rsqwhiph.png) on RSQ_Grapple's rope tube (rsqrope.md3, its tools/gen_rope.py), and
+the cracks, swishes, unfurl rustle and hit (sounds/RSWPCRK1-3, RSWPSWS1-2, RSWPUNF, RSWPHIT).

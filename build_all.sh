@@ -80,6 +80,12 @@ rm -f "$OUT/RSQ_Miniboss.pk3"
 zip -q -r -X "$OUT/RSQ_Miniboss.pk3" zscript.txt MAPINFO.txt CVARINFO.txt MENUDEF.txt CREDITS.txt zscript
 echo "built pk3/RSQ_Miniboss.pk3"
 
+# Whip: a simulated bullwhip; its explicit include list (tools/ stays out).
+cd "$HUB/Whip"
+rm -f "$OUT/RSQ_Whip.pk3"
+zip -q -r -X "$OUT/RSQ_Whip.pk3" zscript.txt MAPINFO.txt CVARINFO.txt KEYCONF.txt MENUDEF.txt SNDINFO.txt MODELDEF.txt CREDITS.txt README.md zscript sounds models sprites
+echo "built pk3/RSQ_Whip.pk3"
+
 # Wheel: REMA's weapon wheel; its explicit include list (tools/ and the work queue stay out).
 cd "$HUB/Wheel"
 rm -f "$OUT/RSQ_Wheel.pk3"

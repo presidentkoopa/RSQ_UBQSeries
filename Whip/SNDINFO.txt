@@ -1,0 +1,11 @@
+// RSQ_Whip's sounds, all generated (tools/gen_whip.py): no samples from anywhere.
+rsqwp/whip/crk1     RSWPCRK1
+rsqwp/whip/crk2     RSWPCRK2
+rsqwp/whip/crk3     RSWPCRK3
+$random rsqwp/whip/crack { rsqwp/whip/crk1 rsqwp/whip/crk2 rsqwp/whip/crk3 }
+rsqwp/whip/sw1      RSWPSWS1
+rsqwp/whip/sw2      RSWPSWS2
+$random rsqwp/whip/swish { rsqwp/whip/sw1 rsqwp/whip/sw2 }
+rsqwp/whip/unfurl   RSWPUNF
+rsqwp/hit           RSWPHIT
+$alias rsqwp/crack rsqwp/whip/crack

@@ -1,0 +1,25 @@
+// The whip: one tube (rsqrope.md3, from RSQ_Grapple's tools/gen_rope.py: authored along +Z, Scale.Y =
+// length / 32, Scale.X = thickness, pitched 90 degrees past the piece's direction; CORRECTPIXELSTRETCH)
+// in plaited leather for the thong and wrapped leather for the handle (tools/gen_whip.py).
+Model RSQWP_WhipLink
+{
+	Path "models/rsqwp"
+	Model 0 "rsqrope.md3"
+	Skin 0 "rsqwhip.png"
+	Scale 1.0 1.0 1.0
+	USEACTORPITCH
+	USEACTORROLL
+	CORRECTPIXELSTRETCH
+	FrameIndex RSWP A 0 0
+}
+Model RSQWP_WhipHandle
+{
+	Path "models/rsqwp"
+	Model 0 "rsqrope.md3"
+	Skin 0 "rsqwhiph.png"
+	Scale 1.0 1.0 1.0
+	USEACTORPITCH
+	USEACTORROLL
+	CORRECTPIXELSTRETCH
+	FrameIndex RSWP A 0 0
+}

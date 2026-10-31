@@ -1,0 +1,38 @@
+# RSQ_Whip (Radiant Silvergun Quest series) -- PROJECT WHIP
+
+A bullwhip for **stock QuestZDoom 17.3** VR. ZScript and data only, no engine change. It stands alone:
+**RSQ_Grapple is not needed**, and the two load together (their own binds, their own settings).
+Reference: Eye of the Temple.
+
+## Install and binds
+Load `RSQ_Whip.pk3` after your weapon pack (any order with the other series pk3s). Bind
+**Whip (Main)** and **Whip (Off)** (and, to climb, **Grab Whip (Main/Off)**, or use RSQ_DistanceGrab's grips)
+under Options → Customize Controls → RSQ Whip. Settings: **Options → Radiant Silvergun Options → RSQ Whip**.
+
+## What it does
+- **A real whip.** The thong is simulated (Eye of the Temple's method: links with mass that thin toward the
+  tip), so it hangs, trails, loops and cracks from how you move your arm. A lazy swing never cracks; lift and snap
+  the forearm, or throw it side-arm, and the loop runs down to the popper and cracks where it arrives.
+- **Whip Style.** *Real*: hold the bind and the whip uncoils from that hand; let go and it rolls up. *Assist*: a
+  press throws a lash for you at what you point at.
+- **Whip Aim.** *Free*: the crack hits what it touches. *Assist* (default): what is nearest the tip. *Lock*: point
+  the other hand and hold the whip hand's alt-fire (your gun's alt-fire is not used while a whip is out); a ring of
+  sparks marks the lock; crack and the whip flies to it (~15 m). Keep the whip button held on a locked monster to
+  leash it: it is pulled to you.
+- **What a crack does.** Damage and a stun that breaks off the monster's attack; throws a switch it lands on;
+  flicks a loose pickup to you.
+- **Edges.** A lash that catches a beam, a doorway head or a ledge lip wraps round it and becomes a rope: hold to
+  reel, release to hang, push the stick to pump, haul down on the whip in the air to pump, climb it hand over hand
+  (Grab Whip), tap to let go and fly (your speed carries on landing). Reel up to a ledge lip -- or slap a free hand
+  on it with Grab -- and you **mantle** up and over, by physics (no teleport).
+
+## Cost
+Desktop (Xeon, software GL): about 0.15 ms a tic with the whip out and still, 0.25 ms while lashing; Quest
+unmeasured (expect 2-3x). Debug Log = Cost prints it (`T_WPWMS`).
+
+## Where things are
+`zscript/rsqwp/whip.zs` the whip; `core.zs`, `hook.zs`, `climb.zs`, `monster.zs`, `input.zs`, `util.zs`, `a11y.zs`,
+`cb.zs` the line it becomes (forked from RSQ_Grapple's core, renamed RSQWP_); `fx.zs` its look and the stubs the
+fork asks for. `tools/gen_whip.py` makes the skins and sounds; `tools/whipsim.py` is the chain in Python for
+tuning against recorded hand paths; `tools/rigtest/` the rig runner, the hand-driving probe and the WHIPTEST map.
+HANDOFF.md has what is measured and what is open.

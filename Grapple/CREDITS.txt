@@ -29,14 +29,3 @@ Look sets (rsqgr_looks), all the owner's own libraries:
     (bullet_crack_near_01/04), shipped as RSGBWZ1-4 and RSGBCRK1-2, and its tracer
     mesh (models/bullet/btracer.obj/.png, shipped as models/rsqgr/btracer.*).
   - RSGBA0 is a 1x1 transparent placeholder: the sprite name the tracer mesh is bound to.
-
-==== the whip (PROJECT WHIP, 2026-10-30) ====
-The whip is simulated the way runevision (Rune Skovbo Johansen) describes Eye of the Temple's
-whip in his devlog "Trials and triumphs of whips and levers" (2017): a chain of links kept in
-arrays, a spring step between neighbours that pulls one more than the other because the whip
-thins toward the tip, and one sweep per link from where it was to where it is. The idea is his;
-the code is the series' own (zscript/rsqgr/whip.zs). Verlet rope references the owner pointed to:
-dylnli/rope (after Sebastian Lague) and chrischristakis/RopePhysics.
-Its look and sound are generated here, from nothing (tools/gen_whip.py): the plaited thong and
-wrapped handle skins (models/rsqgr/rsqwhip.png, rsqwhiph.png, on the rope's tube model) and the
-cracks, swishes and unfurl rustle (sounds/RSGWCRK1-3, RSGWSWS1-2, RSGWUNF).

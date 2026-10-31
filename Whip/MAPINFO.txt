@@ -1,0 +1,6 @@
+// RSQWP_Core runs the line (a snag or a leash: swing, reel, climb, let go); RSQWP_Input turns the binds
+// into network events; RSQWP_Whip is the whip itself.
+GameInfo
+{
+	AddEventHandlers = "RSQWP_Core", "RSQWP_Input", "RSQWP_Whip"
+}
