@@ -1,3 +1,6 @@
 # working pk3s inside the mod folders are build output; only pk3/ is kept
 *.pk3
 !pk3/*.pk3
+
+# agent worktrees (temporary, never committed)
+.claude/
