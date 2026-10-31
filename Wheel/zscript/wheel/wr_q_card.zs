@@ -284,7 +284,7 @@ class wr_GunCard : EventHandler
 				let wc = World(hand);
 				bool wantFull = watching[hand] && tpl[hand] != wr_DetailTemplates.T_AMMO;
 				if (!wc.Shown() || wc.full != wantFull) wc.Show(pmo.pos, wantFull);
-				wc.Fill(pmo, w, STYLE_COL[clamp(StyleFor(p, w), 0, 17)]);
+				wc.Fill(pmo, w, CardColour(p, w));
 				wc.Place(pmo, cv("wr_card_world_scale", 1.0), wantFull ? WatchNudge(true) : Nudge(true), wantFull ? WatchNudge(false) : Nudge(false), mShow[hand] * cv("wr_card_alpha", 0.85));
 				continue;
 			}
@@ -325,6 +325,15 @@ class wr_GunCard : EventHandler
 		return mWorld[hand];
 	}
 	override void WorldUnloaded(WorldEvent e) { for (int h = 0; h < 2; h++) if (mWorld[h]) mWorld[h].group = 0; }
+	// THE CARD COLOUR (owner 03:32: "select the colours from some simple selections"). wr_card_color 0: each gun its
+	// own (by slot); 1.. one colour for every card.
+	static const int PICK_COL[] = { 0, 0xE8E8E8, 0x8A8A8A, 0xE04040, 0xE0B040, 0x50D050, 0x5080F0, 0x50D0D0, 0xB060E0, 0xF08030, 0xF070B0 };
+	static int CardColour(PlayerInfo p, Weapon w)
+	{
+		int pick = ci("wr_card_color", 0);
+		if (pick > 0 && pick < wr_GunCard.PICK_COL.Size()) return wr_GunCard.PICK_COL[pick];
+		return wr_GunCard.STYLE_COL[clamp(StyleFor(p, w), 0, 17)];
+	}
 	transient wr_SideCard mSide[2], mSide2[2];
 	wr_SideCard Side(int hand) { return SideOf(hand, 0); }
 	wr_SideCard SideOf(int hand, int side)
@@ -343,12 +352,12 @@ class wr_GunCard : EventHandler
 		let c = SideOf(hand, side);
 		bool mir = Mirrored(p, hand);
 		int style = StyleFor(p, w);
-		string sig = wr_DetailTemplates.Signature(pmo, w, null, 9, style) .. (mir ? " m" : "");
+		string sig = wr_DetailTemplates.Signature(pmo, w, null, 9, style) .. (mir ? " m" : "") .. String.Format(" c%d", ci("wr_card_color", 0));
 		if (sig != c.sig || c.mir != mir)
 		{
 			c.sig = sig; c.mir = mir;
 			// the panel in the gun's colour: Ermac's panel colours by slot, as the top card
-			c.Build(pmo, hand, w, wr_GunCard.STYLE_COL[clamp(style, 0, 17)]);
+			c.Build(pmo, hand, w, CardColour(p, w));
 		}
 		c.Sync(p, owner, mShow[hand] * cv("wr_card_alpha", 0.85), WatchNudge(true), self);
 	}
@@ -458,6 +467,8 @@ class wr_GunCard : EventHandler
 
 		int tinted = ci("wr_card_tint", 0);
 		int tPanel = -1, tDigits = -1;
+		int pick = ci("wr_card_color", 0);
+		if (pick > 0) tPanel = TransFor(CardColour(p, w));
 		if (tinted)
 		{
 			tPanel = TransFor(wr_Look.Col(wr_Look.ROLE_COLS[24]));   // sheet_accent

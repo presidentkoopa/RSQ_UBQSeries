@@ -553,6 +553,20 @@ OptionValue "wr_CardShow"
 	2, "When you look at the gun"
 	3, "Inspect gesture"
 }
+OptionValue "wr_CardColor"
+{
+	0, "Each gun its own"
+	1, "White"
+	2, "Grey"
+	3, "Red"
+	4, "Gold"
+	5, "Green"
+	6, "Blue"
+	7, "Cyan"
+	8, "Purple"
+	9, "Orange"
+	10, "Pink"
+}
 OptionValue "wr_CardTpl"
 {
 	0, "None"
@@ -603,6 +617,7 @@ OptionMenu wr_GunCards
 	Option "Draw in the world",          "wr_card_world",    "OnOff"
 	StaticText "On: no gun can cover them; they may trail a fast hand.", "DarkGray"
 	Slider "  World card size",          "wr_card_world_scale", 0.5, 2.5, 0.05, 2
+	Option "Card colour",                "wr_card_color",    "wr_CardColor"
 	Option "Card in normal play",        "wr_card_tpl",      "wr_CardTpl"
 	Option "  Show",                     "wr_card",          "wr_CardShow"
 	Option "  Ammo card hands",          "wr_card_hands",    "wr_CardHands"
