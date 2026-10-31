@@ -195,6 +195,27 @@ class RSQLS_Sight : EventHandler
 		if (!RSQLS_Hand.Flag(h == 0 ? "rsqls_main" : "rsqls_off", p, true)) return false;
 		Weapon w = (h == 0) ? p.ReadyWeapon : p.OffhandWeapon;
 		if (!w) return false;
+		// THE ENGINE TAKES THE OFF HAND'S GUN WHEN YOU BRACE, SO THE LASER GOES WITH IT.
+		// vr_two_handed_weapons is on by default (hw_vrmodes.cpp:119), and the off-hand grip
+		// pressed with the controllers inside 0.50 m latches weaponStabilised on the grip's
+		// rising edge (gl_openvr.cpp:1716-1727). The renderer then skips every psprite layer
+		// whose CALLER is the off-hand weapon -- sprites at hw_weapon.cpp:832-835, models at
+		// :917-920 -- and the beam is exactly such a layer, handed to the gun itself
+		// (beam.zs Show). So the beam went out on its own, while the spot, the glow, its
+		// light, the spread ring and the range readout -- world actors, no business of
+		// hw_weapon's -- kept drawing from a gun the engine had stopped drawing, down the
+		// SUPPORT hand's axis rather than any barrel. And liveMask kept bit 1 set, so
+		// RSQLS_SightService reported a live off-hand laser to RSQ_DistanceGrab, which stood
+		// its grab beam down for a laser that was not there.
+		// The hand stands down whole instead: HideHand(1) takes beam, spot, glow, light and
+		// ring, and zeroes that hand's range so UpdateReadout drops the readout with them; the
+		// service bit is simply never set this tic. NOT by clearing the flag --
+		// p_pspr.cpp:512-515 re-asserts it from the C++ global on every psprite state set.
+		// Grip release clears it with no distance test (gl_openvr.cpp:1724-1726) and the laser
+		// comes straight back. OpenVR/SteamVR only in this tree: weaponStabilised is written
+		// at gl_openvr.cpp:1723 and :1726 and nowhere else, so on Quest/OpenXR this test
+		// simply never fires.
+		if (h == 1 && (p.WeaponState & WF_TWOHANDSTABILIZED) != 0) return false;
 		// NOTHING TO AIM: a melee weapon (fist, chainsaw, the QuestSaber), or a
 		// hand that is not a gun at all. CHEATNOTWEAPON is the stock marker for
 		// the second -- it is what keeps a thing out of `give weapons` -- and

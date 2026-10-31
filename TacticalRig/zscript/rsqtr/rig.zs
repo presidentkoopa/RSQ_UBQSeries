@@ -59,6 +59,7 @@ class RSQTR_Rig : EventHandler
 	transient Actor marker[RSQTR_Region.N];   // read by the mirror (mirror.zs)
 	transient Actor icon[RSQTR_Region.N];
 	private transient int  buzzCool[2];
+	private transient bool offHeldSaid[MAXPLAYERS];   // said once per hold, why the off-hand raise is waiting (TickPairs)
 	private transient int  hoverT[2];          // tics the hand has been in its region
 	private transient bool pendPress[2];       // pressed before the dwell was up
 	private transient int  editHand, editRegion;   // a region being carried in edit mode
@@ -616,7 +617,45 @@ class RSQTR_Rig : EventHandler
 		{
 			if (offNext[n] == "") continue;
 			let p = players[n];
-			if (!playeringame[n] || !p.mo || p.mo.health <= 0 || --offWait[n] <= 0) { offNext[n] = ""; continue; }
+			if (!playeringame[n] || !p.mo || p.mo.health <= 0) { offNext[n] = ""; continue; }
+			// WHILE THE ENGINE IS STEADYING THE GUN, THE OFF HAND CANNOT HOLD ANYTHING: WAIT.
+			//
+			// The holster still wins the press -- that is the owner's rule of 10-29 and it is
+			// untouched here; only the RAISE waits. With vr_two_handed_weapons on (default
+			// true, hw_vrmodes.cpp:119) the off-hand grip pressed with the hands inside 0.50 m
+			// latches weaponStabilised on the grip's rising edge (gl_openvr.cpp:1716-1727) --
+			// and that is the same edge the rig acts on, with the two shipped hips 0.36 m apart
+			// (CVARINFO.txt:34-35, rsqtr_r0_l / rsqtr_r1_l at +-0.18), so a cross-draw is in the
+			// window. A weapon raised into the off hand then fires nothing (player.zs:393-396,
+			// :426), answers no button (p_pspr.cpp:755-757) and is not drawn at all (sprites
+			// hw_weapon.cpp:832-835, models :917-920): the player hears the draw, feels the
+			// buzz, and gets an empty hand for as long as the grip is held.
+			//
+			// So hold the queued gun rather than hand over a dead one, and do NOT run offWait
+			// down while holding: release clears the latch with no distance test
+			// (gl_openvr.cpp:1724-1726), so the wait is however long the grip is held, which
+			// for a player who holds grip to keep hold of a gun is the rest of the fight. The
+			// gun arrives on release. Nothing is leaked by waiting: the next QueueOff replaces
+			// it, and death or a level change clears it above.
+			//
+			// NOT a distance test of our own (that was the pre-10-29 guard): once latched the
+			// engine ignores distance entirely, so a geometric guard lets go before the engine
+			// does. NOT by clearing the flag either -- p_pspr.cpp:512-515 re-asserts it from
+			// the C++ global on every psprite state set. Only gl_openvr.cpp:1723 / :1726 write
+			// weaponStabilised in this tree, so this holds on OpenVR/SteamVR and never fires
+			// on Quest/OpenXR.
+			if ((p.WeaponState & WF_TWOHANDSTABILIZED) != 0)
+			{
+				if (!offHeldSaid[n])
+				{
+					offHeldSaid[n] = true;
+					if (n == consoleplayer && Flag("rsqtr_messages", p, false))
+						p.mo.A_Print("Off hand is steadying the gun: the draw waits for the grip", 0, RSQTR_A11y.PrintFont());
+				}
+				continue;
+			}
+			offHeldSaid[n] = false;
+			if (--offWait[n] <= 0) { offNext[n] = ""; continue; }
 			if (p.PendingWeapon != WP_NOCHANGE) continue;          // the main hand is still switching
 			class<Weapon> c = offNext[n];
 			offNext[n] = "";
