@@ -1,16 +1,21 @@
 // RSQ Saber options, modelled on Brutal Doom Quest 2.0's options page (the owner, 10-28): ONE front
 // page with every real choice as a short Title Case row, groups split by blank lines, choices NAMED
-// (a slider only where the number itself matters), sub-pages only for lists of switches, and ONE
-// Tuning and Debug page at the end that holds every number. No help text on the page. Every cvar
-// keeps its row (Tuning and Debug's pages hold the rest), so saved settings carry over. The preset
-// rows (Swing Feel, Block Assist...) set several of those numbers at once; their choices are written
-// by tools/rsmenu/presets.py, and Standard is always today's defaults.
+// (a slider only where the number itself matters). No help text on the page.
+//
+// ELEVEN ROWS, ONE PAGE (the owner, 10-30: "Yes, sure, 11 rows, one page. Let's do it."). The old
+// page was 142 value rows across 14 pages, and 97 of the cvars behind them wanted the value they
+// already had. The Tuning and Debug tree is gone, and so are the presets: a preset row set five rows
+// that no longer exist, and the two it really stood for -- Damage and Size -- are now rows of their
+// own. Fifteen cvars are still live with no row here; they are listed and explained in CVARINFO.
+// Defaults are unchanged except ubqs_dual_mode (1 -> 2), so nobody's saved settings move.
 
 // ---- Radiant Silvergun Options (tools/rsmenu) ----------------------------------------------------
-// The series' one Options entry. Every series pk3 carries this same block with its own prefix: the
-// parent is PROTECTED, so the first definition stays and later ones add nothing (QZD 17.3 merges a
-// protected option menu instead of replacing it); the link row removes any earlier copy of itself,
-// so Options shows one row however many series pk3s load. Each mod then adds its own row only.
+// UNCHANGED, AND IT MUST STAY UNCHANGED. The series' one Options entry. Every series pk3 carries this
+// same block with its own prefix: the parent is PROTECTED, so the first definition stays and later
+// ones add nothing (QZD 17.3 merges a protected option menu instead of replacing it); the link row
+// removes any earlier copy of itself, so Options shows one row however many series pk3s load. Each
+// mod then adds its own row only. UBQSRSLink and UBQS_RSMenu come from zscript/ubqs_rsmenu.zs, which
+// is generated from the series template -- do not edit a mod's copy.
 OptionMenu "RSQ_RSOptions" protected
 {
 	Class "UBQS_RSMenu"
@@ -39,226 +44,66 @@ OptionValue "UBQS_Colors"
 	6, "Cyan"
 	7, "White"
 }
-OptionValue "UBQS_Alt"
+// START WITH DUAL SABERS. 2 is both blades always out, 0 is one saber. The old value 1 -- the Dual
+// key brings the second out and puts it away, matched to Brutal Doom's +user3 -- is off the page but
+// still honoured by DualMode() (zscript.txt:5668-5673) and still has its bind in KEYCONF. That is
+// why ubqs_dual_mode's default moved to 2: an Option row shows nothing useful for a value that is
+// not in its list, and 1 was the old default.
+OptionValue "UBQS_DualStart"
 {
-	1, "Force Push"
-	0, "Second Blade"
-}
-OptionValue "UBQS_GlowColors"
-{
-	-1, "Same as Blade"
-	0, "Blue"
-	1, "Green"
-	2, "Red"
-	3, "Purple"
-	4, "Yellow"
-	5, "Orange"
-	6, "Cyan"
-	7, "White"
-}
-OptionValue "UBQS_SizeOff"
-{
-	-1, "Same"
-	0.70, "0.70"
-	0.85, "0.85"
-	1.00, "1.00"
-	1.15, "1.15"
-	1.30, "1.30"
-}
-OptionValue "UBQS_Plane"
-{
-	0, "Wrist"
-	1, "Flat"
-	2, "End Over End"
-}
-OptionValue "UBQS_Aim"
-{
-	1, "Where I Look"
-	0, "To Shooter"
-	2, "Bounce"
-}
-OptionValue "UBQS_Throw"
-{
-	0, "Comes Back"
-	1, "Drops"
-}
-OptionValue "UBQS_Twirl"
-{
-	0, "Off"
-	1, "Slow"
-	2, "Fast"
-}
-OptionValue "UBQS_Lights"
-{
-	0, "Off"
-	1, "Quest"
-	2, "Rich"
-	3, "PC"
-}
-OptionValue "UBQS_GlowQ"
-{
-	1, "Low"
-	2, "Medium"
-	3, "High"
-	4, "Ultra"
-}
-OptionValue "UBQS_Flash"
-{
-	0, "Off"
-	1, "With Blade Light"
-	2, "Always"
-}
-OptionValue "UBQS_Diag"
-{
-	0, "Off"
-	1, "Blade Dots"
-	2, "Beam Telemetry"
-}
-// ubqs_dual (a second saber at all) is folded in here: "Off" is it off. An old config's
-// ubqs_dual false is moved to Off once (UBQS_Bridge.WorldLoaded) and still honoured.
-OptionValue "UBQS_DualMode"
-{
-	1, "Dual Key"
-	2, "Always Out"
+	2, "On"
 	0, "Off"
 }
-OptionValue "UBQS_SaberSound"
+// THE FIVE BLADES THAT EXIST, AND THEIR REAL LENGTHS. ubqs_size is not continuous: ResolveSizeIdx
+// snaps it to the nearest of 0.70 0.85 1.00 1.15 1.30 (zscript.txt:30, :466-478), and the blade is
+// 26.0 map units times that (:851), which at vr_vunits_per_meter 34 (hw_vrmodes.cpp:94) is 54 65 76
+// 88 99 cm. The labels are those lengths, so the row cannot promise a blade the mod cannot draw.
+// Two more scales would need a MODELDEF regen -- see CHANGES.md Part C.
+OptionValue "UBQS_Length"
 {
-	0, "Graflex"
-	1, "Vader"
-	2, "Rogue Rebel"
+	0.70, "54 cm"
+	0.85, "65 cm"
+	1.00, "76 cm"
+	1.15, "88 cm"
+	1.30, "99 cm"
 }
-OptionValue "UBQS_Lefty"
+OptionValue "UBQS_LengthOff"
 {
-	-1, "Auto"
-	0, "Right"
-	1, "Left"
+	-1,   "Same as Main"
+	0.70, "54 cm"
+	0.85, "65 cm"
+	1.00, "76 cm"
+	1.15, "88 cm"
+	1.30, "99 cm"
 }
-
-// PRESETS -- written by tools/rsmenu/presets.py (Standard = CVARINFO defaults); edit the script, not here
-OptionString "UBQS_P_Size"
-{
-	"ubqs_size 0.85", "Short"
-	"ubqs_size 1.0", "Standard"
-	"ubqs_size 1.15", "Long"
-}
-OptionString "UBQS_P_Look"
-{
-	"ubqs_glow_quality 1 ubqs_lights 1 ubqs_glow_dots 0 ubqs_trail_steps 2 ubqs_trail_life 6 ubqs_clash_fx 0.5 ubqs_hand_glow 0 ubqs_blade_glow 0.6 ubqs_glow_width 1.2 ubqs_flash 1 ubqs_glow_motionfade 1 ubqs_glow_fade_deg0 200.0 ubqs_glow_fade_deg1 500.0 ubqs_glow_fade_widen 0.25", "Quest"
-	"ubqs_glow_quality 3 ubqs_lights 1 ubqs_glow_dots 0 ubqs_trail_steps 2 ubqs_trail_life 6 ubqs_clash_fx 1.0 ubqs_hand_glow 1.0 ubqs_blade_glow 0.0 ubqs_glow_width 1.2 ubqs_flash 1 ubqs_glow_motionfade 1 ubqs_glow_fade_deg0 200.0 ubqs_glow_fade_deg1 500.0 ubqs_glow_fade_widen 0.25", "Standard"
-	"ubqs_glow_quality 4 ubqs_lights 3 ubqs_glow_dots 0 ubqs_trail_steps 4 ubqs_trail_life 12 ubqs_clash_fx 2 ubqs_hand_glow 1 ubqs_blade_glow 0.6 ubqs_glow_width 1.2 ubqs_flash 2 ubqs_glow_motionfade 1 ubqs_glow_fade_deg0 200.0 ubqs_glow_fade_deg1 500.0 ubqs_glow_fade_widen 0.25", "PC VR"
-	"ubqs_glow_quality 3 ubqs_lights 1 ubqs_glow_dots 0 ubqs_trail_steps 2 ubqs_trail_life 10 ubqs_clash_fx 1.0 ubqs_hand_glow 0 ubqs_blade_glow 0.6 ubqs_glow_width 1 ubqs_flash 1 ubqs_glow_motionfade 1 ubqs_glow_fade_deg0 150 ubqs_glow_fade_deg1 450 ubqs_glow_fade_widen 0.35", "Film"
-}
-OptionString "UBQS_P_Swing"
-{
-	"ubqs_swing_cut 5 ubqs_cut_sustain 0.8 ubqs_cut_rate 6 ubqs_swing_scale 0.5", "Light"
-	"ubqs_swing_cut 8.0 ubqs_cut_sustain 0.6 ubqs_cut_rate 8 ubqs_swing_scale 1.0", "Standard"
-	"ubqs_swing_cut 12 ubqs_cut_sustain 0.3 ubqs_cut_rate 10 ubqs_swing_scale 1", "Heavy"
-}
-OptionString "UBQS_P_Damage"
-{
-	"ubqs_damage 20", "Low"
-	"ubqs_damage 30.0", "Standard"
-	"ubqs_damage 45", "High"
-	"ubqs_damage 70", "Brutal"
-}
-OptionString "UBQS_P_Block"
-{
-	"ubqs_block 40 ubqs_block_cone 50 ubqs_deflect_assist 6 ubqs_blade_guard 3 ubqs_guard_width 8", "Low"
-	"ubqs_block 70 ubqs_block_cone 75.0 ubqs_deflect_assist 14.0 ubqs_blade_guard 6.0 ubqs_guard_width 14.0", "Standard"
-	"ubqs_block 90 ubqs_block_cone 100 ubqs_deflect_assist 24 ubqs_blade_guard 12 ubqs_guard_width 24", "High"
-}
-OptionString "UBQS_P_Force"
-{
-	"ubqs_push_power 0.5 ubqs_pull_power 0.5 ubqs_push_range 320 ubqs_pull_range 512 ubqs_grip_mass 300", "Gentle"
-	"ubqs_push_power 1.0 ubqs_pull_power 1.0 ubqs_push_range 448.0 ubqs_pull_range 768.0 ubqs_grip_mass 600.0", "Standard"
-	"ubqs_push_power 1.75 ubqs_pull_power 1.75 ubqs_push_range 768 ubqs_pull_range 1024 ubqs_grip_mass 1000", "Mighty"
-}
-// END PRESETS
 
 OptionMenu "UBQS_Options"
 {
 	Title "RSQ SABER"
-	Option "Saber", "ubqs_on", "OnOff"
-	Option "Start With Saber", "ubqs_start", "OnOff"
-	Option "Second Saber", "ubqs_dual_mode", "UBQS_DualMode"
-	Option "Replace BD Sword", "ubqs_bd_sword", "OnOff"
-	Option "Replace Chainsaw", "ubqs_chainsaw", "OnOff"
+	Option "Sabers", "ubqs_on", "OnOff"
+	Option "Start With Dual Sabers", "ubqs_dual_mode", "UBQS_DualStart"
+	Slider "Damage", "ubqs_damage", 15, 60, 3, 0
+	Slider "Max Lock-On Targets", "ubqs_locks", 1, 5, 1, 0
 	StaticText " "
-	Option "Colour", "ubqs_color", "UBQS_Colors"
-	Option "Off-Hand Colour", "ubqs_color_off", "UBQS_Colors"
-	UBQSPreset "Size", "UBQS_P_Size"
-	UBQSPreset "Blade Look", "UBQS_P_Look"
-	Option "Saber Sound", "ubqs_saber_sound", "UBQS_SaberSound"
+	Option "Main Blade Colour", "ubqs_color", "UBQS_Colors"
+	Option "Main Blade Length", "ubqs_size", "UBQS_Length"
+	Option "Off Blade Colour", "ubqs_color_off", "UBQS_Colors"
+	Option "Off Blade Length", "ubqs_size_off", "UBQS_LengthOff"
+	Option "Off Blade Light", "ubqs_lights_offhand", "OnOff"
 	StaticText " "
-	UBQSPreset "Swing Feel", "UBQS_P_Swing"
-	UBQSPreset "Damage", "UBQS_P_Damage"
-	UBQSPreset "Block Assist", "UBQS_P_Block"
-	UBQSPreset "Force Strength", "UBQS_P_Force"
-	Option "Alt Fire", "ubqs_alt", "UBQS_Alt"
+	Slider "Swing to Cut", "ubqs_swing_cut", 3, 20, 0.5, 1
+	Slider "Blade Block Reach", "ubqs_blade_guard", 1, 24, 1, 0
 	StaticText " "
-	Submenu "Look and Sound", "UBQS_Look"
-	Submenu "Combat", "UBQS_Swing"
-	Submenu "The Force", "UBQS_TheForce"
 	Submenu "Controls", "UBQS_Keys"
 	StaticText " "
-	Submenu "Tuning and Debug", "UBQS_Debug"
-}
-
-// ---- switches ------------------------------------------------------------------------------------
-OptionMenu "UBQS_Look"
-{
-	Title "LOOK AND SOUND"
-	Option "Off-Hand Size", "ubqs_size_off", "UBQS_SizeOff"
-	Option "Staff Twirl", "ubqs_twirl", "UBQS_Twirl"
-	Option "Blade Light", "ubqs_lights", "UBQS_Lights"
-	Option "Solid Blade Tube", "ubqs_blade_tube", "OnOff"
-	Option "World Hilt", "ubqs_world_saber", "OnOff"
-	Option "Beam Detail", "ubqs_glow_quality", "UBQS_GlowQ"
-	Option "Beam Colour", "ubqs_blade_glow_color", "UBQS_GlowColors"
-	Option "Beam Dots", "ubqs_glow_dots", "OnOff"
-	Option "Motion Fade", "ubqs_glow_motionfade", "OnOff"
-	Option "Swing Trail", "ubqs_trail", "OnOff"
-	Option "Hit Flashes", "ubqs_flash", "UBQS_Flash"
-	Option "Blade Burns Walls", "ubqs_burn", "OnOff"
-	StaticText " "
-	Option "Swing From Blade", "ubqs_swing_spatial", "OnOff"
-	Option "Choke Loop", "ubqs_snd_choke", "OnOff"
-	Option "Haptics", "ubqs_haptics", "OnOff"
-	Option "Cut Haptics", "ubqs_haptic_cut", "OnOff"
-	Option "Clash Haptics", "ubqs_haptic_clash", "OnOff"
-	Option "Handedness", "ubqs_lefty", "UBQS_Lefty"
-}
-
-OptionMenu "UBQS_Swing"
-{
-	Title "COMBAT"
-	Option "Deflect Shots", "ubqs_deflect", "OnOff"
-	Option "Deflected Shots Go", "ubqs_deflect_aim", "UBQS_Aim"
-	Option "Return Bullets", "ubqs_block_return", "OnOff"
-	Option "Muzzle Block", "ubqs_hitscan_guard", "OnOff"
-	Option "Claw Stagger", "ubqs_block_stagger", "OnOff"
-	Option "Cross Guard", "ubqs_crossguard", "OnOff"
-	Option "Walls Stop Cuts", "ubqs_cut_los", "OnOff"
-	StaticText " "
-	Option "Thrown Saber", "ubqs_throw", "UBQS_Throw"
-	Option "Spin Plane", "ubqs_throw_plane", "UBQS_Plane"
-	Option "Thrown Double Blade", "ubqs_throw_double", "OnOff"
-	Option "Fly to Locked", "ubqs_throw_on_lock", "OnOff"
-}
-
-OptionMenu "UBQS_TheForce"
-{
-	Title "THE FORCE"
-	Option "Force Powers", "ubqs_force", "OnOff"
-	Option "Force Jump", "ubqs_force_jump", "OnOff"
-	Option "Force Gestures", "ubqs_force_gestures", "OnOff"
-	Option "Bare Force Hand", "ubqs_force_hand", "OnOff"
-	Option "Grip Bosses", "ubqs_grip_boss", "OnOff"
+	SafeCommand "Reset All", "resetcvar ubqs_on ubqs_dual_mode ubqs_damage ubqs_locks ubqs_color ubqs_size ubqs_color_off ubqs_size_off ubqs_lights_offhand ubqs_swing_cut ubqs_blade_guard ubqs_start ubqs_world_saber ubqs_lights ubqs_deflect_aim ubqs_deflect_lead ubqs_throw_min ubqs_force ubqs_force_jump ubqs_force_gesture ubqs_gesture_straight ubqs_saber_sound ubqs_haptics ubqs_lefty ubqs_remote_level ubqs_diag", "Reset all RSQ Saber settings?"
 }
 
 // The SAME bind targets as Customize Controls (KEYCONF's aliases), so a key bound in either place
-// shows as bound in both.
+// shows as bound in both. These four are the only inputs the mod has that are not the trigger, and
+// the second blade and the douse are reachable nowhere else -- so this page stays.
+// (The old duplicate "Summon / Dismiss Remote" Command row is gone: the Control row above it binds
+// the same alias.)
 OptionMenu "UBQS_Keys"
 {
 	Title "CONTROLS"
@@ -266,169 +111,4 @@ OptionMenu "UBQS_Keys"
 	Control "Second Blade", "ubqs_blade2_toggle"
 	Control "Blade On / Off", "ubqs_ignite_toggle"
 	Control "Training Remote", "ubqs_remote_toggle"
-	StaticText " "
-	Command "Summon / Dismiss Remote", "netevent ubqs_remote"
-}
-
-// ---- Tuning and Debug: every number ----------------------------------------------------------------
-OptionMenu "UBQS_Debug"
-{
-	Title "TUNING AND DEBUG"
-	Submenu "Look", "UBQS_TLook"
-	Submenu "Swing and Cuts", "UBQS_TSwing"
-	Submenu "Block and Deflect", "UBQS_Contact"
-	Submenu "Throwing", "UBQS_Throwing"
-	Submenu "The Force", "UBQS_TForce"
-	Submenu "Sound and Haptics", "UBQS_Sound"
-	Submenu "Training Remote", "UBQS_Trainer"
-	Submenu "Beam Prediction", "UBQS_Predict"
-	StaticText " "
-	Option "Diagnostics", "ubqs_diag", "UBQS_Diag"
-	StaticText " "
-	SafeCommand "Reset All", "resetcvar ubqs_size ubqs_color ubqs_color_off ubqs_alt ubqs_deflect_aim ubqs_throw ubqs_throw_spin ubqs_throw_plane ubqs_throw_double ubqs_throw_min ubqs_contact ubqs_blade_glow ubqs_glow_width ubqs_blade_glow_color ubqs_glow_quality ubqs_glow_predict ubqs_glow_lead ubqs_glow_dots ubqs_glow_motionfade ubqs_blade_tube ubqs_world_saber ubqs_glow_overlap_core ubqs_glow_overlap_halo ubqs_contact_hilt ubqs_diag ubqs_trail ubqs_locks ubqs_lock_cone ubqs_lights ubqs_twirl ubqs_force_gestures ubqs_force_gesture ubqs_remote_level ubqs_remote_sting ubqs_on ubqs_start ubqs_dual ubqs_dual_mode ubqs_bd_sword ubqs_chainsaw ubqs_deflect ubqs_block ubqs_block_cone ubqs_block_return ubqs_block_damage ubqs_burn ubqs_crossguard ubqs_push_power ubqs_push_range ubqs_push_damage ubqs_push_cooldown ubqs_damage ubqs_cut_fx ubqs_throw_range ubqs_force ubqs_force_hand ubqs_pull_range ubqs_grip_mass ubqs_grip_damage ubqs_blade_guard ubqs_grip_fling ubqs_grip_slam ubqs_force_jump ubqs_jump_power ubqs_hand_glow ubqs_size_off ubqs_beam_shift ubqs_glow_fade_deg0 ubqs_glow_fade_deg1 ubqs_glow_fade_widen ubqs_glow_fade_jerk ubqs_glow_frame_ms ubqs_glow_maxang ubqs_glow_maxlin ubqs_glow_ramp_deg ubqs_glow_stop ubqs_glow_hitch_ms ubqs_snap_turn_deg ubqs_swing_cut ubqs_swing_scale ubqs_cut_rate ubqs_cut_pad ubqs_dmg_twirl ubqs_dmg_thrown ubqs_trail_steps ubqs_trail_life ubqs_lock_stick ubqs_clash_fx ubqs_guard_arc ubqs_block_swung ubqs_deflect_assist ubqs_deflect_lead ubqs_throw_straight ubqs_throw_blend ubqs_throw_speed ubqs_gesture_straight ubqs_push_cone ubqs_pull_cone ubqs_pull_power ubqs_grip_boss ubqs_grip_cone ubqs_grip_range ubqs_grip_still ubqs_grip_hold ubqs_jump_hold ubqs_jump_float ubqs_hum ubqs_hum_off ubqs_vol_swing ubqs_swing_gap ubqs_vol_hit ubqs_vol_clash ubqs_snd_choke ubqs_vol_force ubqs_vol_ignite ubqs_remote_chirp ubqs_flash ubqs_haptics ubqs_haptic_cut ubqs_haptic_clash ubqs_haptic_power ubqs_lefty ubqs_remote_warn ubqs_cut_shove ubqs_cut_lift ubqs_cut_los ubqs_cut_sustain ubqs_guard_width ubqs_throw_on_lock ubqs_hitscan_guard ubqs_parry_speed ubqs_parry_power ubqs_swing_spatial ubqs_doppler ubqs_saber_sound ubqs_block_stagger ubqs_stagger_push", "Reset all RSQ Saber settings?"
-}
-
-OptionMenu "UBQS_TLook"
-{
-	Title "LOOK"
-	Slider "Size", "ubqs_size", 0.7, 1.3, 0.15, 2
-	Slider "Hand Beam", "ubqs_hand_glow", 0, 1, 0.05, 2
-	Slider "World Beam", "ubqs_blade_glow", 0, 1, 0.05, 2
-	Slider "Beam Width", "ubqs_glow_width", 0.4, 3, 0.1, 1
-	StaticText " "
-	Slider "Fade Start", "ubqs_glow_fade_deg0", 50, 600, 25, 0
-	Slider "Fade Full", "ubqs_glow_fade_deg1", 150, 1200, 50, 0
-	Slider "Halo Widening", "ubqs_glow_fade_widen", 0, 1, 0.05, 2
-	Slider "Fade on Direction Change", "ubqs_glow_fade_jerk", 0, 2, 0.1, 1
-	StaticText " "
-	Slider "Trail Density", "ubqs_trail_steps", 1, 4, 1, 0
-	Slider "Trail Length", "ubqs_trail_life", 2, 24, 1, 0
-	StaticText " "
-	Slider "Core Into Hilt", "ubqs_glow_overlap_core", 0, 4, 0.25, 2
-	Slider "Halo Into Hilt", "ubqs_glow_overlap_halo", 0, 4, 0.25, 2
-	Slider "Beam Shift", "ubqs_beam_shift", -8, 8, 0.25, 2
-}
-
-OptionMenu "UBQS_TSwing"
-{
-	Title "SWING AND CUTS"
-	Slider "Swing to Cut", "ubqs_swing_cut", 3, 20, 0.5, 1
-	Slider "Damage", "ubqs_damage", 10, 100, 5, 0
-	Slider "Steady Push Cuts", "ubqs_cut_sustain", 0, 1, 0.05, 2
-	Slider "Speed Scales Damage", "ubqs_swing_scale", 0, 1, 0.1, 1
-	Slider "Recut Delay", "ubqs_cut_rate", 2, 20, 1, 0
-	Slider "Cut Reach", "ubqs_cut_pad", 0, 12, 0.5, 1
-	Slider "Cut Effects", "ubqs_cut_fx", 0, 3, 0.25, 2
-	Slider "Cut Shove", "ubqs_cut_shove", 0, 4, 0.25, 2
-	Slider "Cut Lift", "ubqs_cut_lift", 0, 1, 0.05, 2
-	StaticText " "
-	Slider "Twirl Damage", "ubqs_dmg_twirl", 0.1, 2, 0.1, 1
-}
-
-OptionMenu "UBQS_Contact"
-{
-	Title "BLOCK AND DEFLECT"
-	Slider "Clash Range", "ubqs_contact", 0.5, 10, 0.25, 2
-	Slider "Hilt Dead Zone", "ubqs_contact_hilt", 0, 8, 0.25, 2
-	Slider "Lock Stickiness", "ubqs_lock_stick", 1, 3, 0.1, 1
-	Slider "Clash Sparks", "ubqs_clash_fx", 0, 3, 0.25, 2
-	StaticText " "
-	Slider "Guard Arc", "ubqs_guard_arc", 30, 120, 5, 0
-	Slider "Guard Width", "ubqs_guard_width", 0, 48, 2, 0
-	Slider "Parry Speed", "ubqs_parry_speed", 0, 16, 0.5, 1
-	Slider "Parry Power", "ubqs_parry_power", 1, 4, 0.25, 2
-	Slider "Stagger Push", "ubqs_stagger_push", 0, 30, 2, 0
-	StaticText " "
-	Slider "Blade Block Reach", "ubqs_blade_guard", 0, 24, 1, 0
-	Slider "Block Chance", "ubqs_block", 0, 100, 5, 0
-	Slider "Block Cone", "ubqs_block_cone", 10, 120, 5, 0
-	Slider "Swing Block Time", "ubqs_block_swung", 0, 35, 1, 0
-	Slider "Return Damage", "ubqs_block_damage", 0, 100, 5, 0
-	StaticText " "
-	Slider "Deflect Assist", "ubqs_deflect_assist", 0, 40, 1, 0
-	Slider "Deflect Lookahead", "ubqs_deflect_lead", 1, 6, 0.5, 1
-}
-
-OptionMenu "UBQS_Throwing"
-{
-	Title "THROWING"
-	Slider "Throw Force", "ubqs_throw_min", 1, 8, 0.5, 1
-	Slider "Throw Straightness", "ubqs_throw_straight", 0, 1, 0.05, 2
-	Slider "Arm or Hand Aim", "ubqs_throw_blend", 0, 1, 0.05, 2
-	Slider "Flight Speed", "ubqs_throw_speed", 0.5, 2, 0.1, 1
-	Slider "Range", "ubqs_throw_range", 192, 1024, 64, 0
-	Slider "Spin", "ubqs_throw_spin", 4, 40, 2, 0
-	Slider "Thrown Damage", "ubqs_dmg_thrown", 0.1, 3, 0.1, 1
-	StaticText " "
-	Slider "Lock-On Targets", "ubqs_locks", 1, 8, 1, 0
-	Slider "Lock-On Cone", "ubqs_lock_cone", 6, 30, 1, 0
-}
-
-OptionMenu "UBQS_TForce"
-{
-	Title "THE FORCE"
-	Slider "Gesture Snap", "ubqs_force_gesture", 1, 6, 0.5, 1
-	Slider "Gesture Straightness", "ubqs_gesture_straight", 0, 1, 0.05, 2
-	StaticText " "
-	Slider "Push Strength", "ubqs_push_power", 0.25, 3, 0.25, 2
-	Slider "Pull Strength", "ubqs_pull_power", 0.25, 3, 0.25, 2
-	Slider "Push Reach", "ubqs_push_range", 128, 1024, 32, 0
-	Slider "Pull Reach", "ubqs_pull_range", 128, 1024, 32, 0
-	Slider "Push Width", "ubqs_push_cone", 10, 90, 5, 0
-	Slider "Pull Width", "ubqs_pull_cone", 10, 90, 5, 0
-	Slider "Push Damage", "ubqs_push_damage", 0, 50, 1, 0
-	Slider "Push Cooldown", "ubqs_push_cooldown", 0.25, 5, 0.25, 2
-	StaticText " "
-	Slider "Grip Max Mass", "ubqs_grip_mass", 0, 1000, 50, 0
-	Slider "Grip Aim Cone", "ubqs_grip_cone", 4, 45, 1, 0
-	Slider "Grip Reach", "ubqs_grip_range", 256, 1536, 64, 0
-	Slider "Grip Steadiness", "ubqs_grip_still", 0.5, 6, 0.25, 2
-	Slider "Grip Hold Time", "ubqs_grip_hold", 2, 35, 1, 0
-	Slider "Choke Damage", "ubqs_grip_damage", 0, 90, 2, 0
-	Slider "Fling Strength", "ubqs_grip_fling", 1, 8, 0.5, 1
-	Slider "Slam Damage", "ubqs_grip_slam", 0, 10, 0.5, 1
-	StaticText " "
-	Slider "Jump Power", "ubqs_jump_power", 0.5, 2, 0.25, 2
-	Slider "Jump Hold", "ubqs_jump_hold", 2, 24, 1, 0
-	Slider "Fall Float", "ubqs_jump_float", 0.5, 3, 0.25, 2
-}
-
-OptionMenu "UBQS_Sound"
-{
-	Title "SOUND AND HAPTICS"
-	Slider "Blade Hum", "ubqs_hum", 0, 1, 0.05, 2
-	Slider "Off-Hand Hum", "ubqs_hum_off", 0, 1, 0.05, 2
-	Slider "Swing Volume", "ubqs_vol_swing", 0, 1, 0.05, 2
-	Slider "Swing Sound Gap", "ubqs_swing_gap", 2, 20, 1, 0
-	Slider "Hit Volume", "ubqs_vol_hit", 0, 1, 0.05, 2
-	Slider "Clash Volume", "ubqs_vol_clash", 0, 1, 0.05, 2
-	Slider "Force Volume", "ubqs_vol_force", 0, 1, 0.05, 2
-	Slider "Ignite Volume", "ubqs_vol_ignite", 0, 1, 0.05, 2
-	Slider "Doppler", "ubqs_doppler", 0, 2, 0.1, 1
-	StaticText " "
-	Slider "Haptic Strength", "ubqs_haptic_power", 0, 3, 0.1, 1
-}
-
-OptionMenu "UBQS_Trainer"
-{
-	Title "TRAINING REMOTE"
-	Slider "Start Level", "ubqs_remote_level", 1, 3, 1, 0
-	Slider "Sting Damage", "ubqs_remote_sting", 0, 10, 1, 0
-	Slider "Extra Warning", "ubqs_remote_warn", 0, 20, 1, 0
-	Slider "Chirps", "ubqs_remote_chirp", 0, 1, 0.05, 2
-}
-
-OptionMenu "UBQS_Predict"
-{
-	Title "BEAM PREDICTION"
-	Option "Beam Prediction", "ubqs_glow_predict", "OnOff"
-	Slider "Prediction Lead", "ubqs_glow_lead", 0, 2, 0.05, 2
-	Slider "Headset Frame", "ubqs_glow_frame_ms", 8.3, 13.9, 2.8, 1
-	Slider "Max Turn", "ubqs_glow_maxang", 5, 60, 2.5, 1
-	Slider "Max Shift", "ubqs_glow_maxlin", 0, 12, 0.5, 1
-	Slider "Lead Ramp", "ubqs_glow_ramp_deg", 20, 200, 5, 0
-	Slider "Stop Threshold", "ubqs_glow_stop", 0.2, 0.95, 0.05, 2
-	Slider "Hitch Reset", "ubqs_glow_hitch_ms", 40, 400, 20, 0
-	Slider "Snap Turn Size", "ubqs_snap_turn_deg", 10, 90, 1, 0
-	Command "Reset Prediction", "resetcvar ubqs_glow_predict ubqs_glow_lead ubqs_glow_frame_ms ubqs_glow_maxang ubqs_glow_maxlin ubqs_glow_ramp_deg ubqs_glow_stop ubqs_glow_hitch_ms ubqs_snap_turn_deg"
 }

@@ -2720,7 +2720,7 @@ class UBQS_SaberBase : Weapon abstract
 		// question entirely.
 		double vcl = UF("ubqs_vol_clash", 1.0);
 		double cfx = clamp(UF("ubqs_clash_fx", 1.0), 0.0, 3.0);
-		bool buzzk = UInt("ubqs_haptic_clash", 0) != 0;
+		bool buzzk = true;   // the clash always buzzes; ubqs_haptics is the one switch (its own gate is in Rumble)
 		if (!inLock)
 		{
 			inLock = true;
@@ -2835,18 +2835,19 @@ class UBQS_SaberBase : Weapon abstract
 	}
 
 	// ---- LIGHT ---------------------------------------------------------------------------------------------
-	// ubqs_lights: 0 none; 1 QUEST -- one light per saber, mid-blade, and when your two blades are close
-	// together only the main hand's lights them both; 2 two per blade; 3 three per blade (PC).
+	// ubqs_lights: 0 none; 1 QUEST -- one light per saber, mid-blade;
+	// 2 two per blade; 3 three per blade (PC). ubqs_lights_offhand switches the off blade's own light.
 	// Every light is one attached light on a reused actor, moved, never respawned.
 	private void Lights(bool on)
 	{
 		int mode = on ? UInt("ubqs_lights", 1) : 0;
 		int want = clamp(mode, 0, 3);
-		if (want == 1 && bOffhandWeapon)
-		{
-			let o = Other();
-			if (o && (o.HandPos() - HandPos()).Length() < 40.0) want = 0;
-		}
+		// THE OFF BLADE'S LIGHT IS NOW A SWITCH, NOT A GUESS (ubqs_lights_offhand). This used to be
+		// "when your two blades are close together only the main hand's lights them both", written as
+		// 40.0 MAP UNITS -- and a map unit is 1/34 m (hw_vrmodes.cpp:94), so the cut-off was 1.17 m.
+		// Hands are never that far apart, so the off blade was unlit in every normal dual-wield pose.
+		// One answer instead of two: ubqs_lights sets the detail, this sets whether the off hand has one.
+		if (bOffhandWeapon && !UInt("ubqs_lights_offhand", 1)) want = 0;
 		while (glow.Size() > want)
 		{
 			let l = glow[glow.Size() - 1];
@@ -2880,7 +2881,6 @@ class UBQS_SaberBase : Weapon abstract
 		// flashes even with the blade light off; 0 drops them and keeps the light.
 		int fl = UInt("ubqs_flash", 1);
 		if (fl <= 0 || rad <= 0) return;
-		if (fl == 1 && UInt("ubqs_lights", 1) <= 0) return;
 		if (!flash) flash = UBQS_Light(Actor.Spawn("UBQS_Light", at));
 		if (!flash) return;
 		// PHOTOSENSITIVE MODE (UBQS_A11y): a flash already lit is held as it is (no new brightness, no
