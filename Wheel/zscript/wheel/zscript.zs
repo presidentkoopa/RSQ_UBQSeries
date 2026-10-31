@@ -3257,7 +3257,7 @@ class wr_Rig : EventHandler
 
 	// Geometry generation. Bump this whenever the numbers below change and every
 	// existing config picks them up once, automatically.
-	const CFG_VERSION = 24;
+	const CFG_VERSION = 25;
 
 	private void migrateConfig()
 	{
@@ -3270,6 +3270,8 @@ class wr_Rig : EventHandler
 		let stamp = CVar.FindCVar("wr_cfgver");
 		if (stamp == null || stamp.GetInt() >= CFG_VERSION) return;
 		int from = stamp.GetInt();
+		// Gen 25 (owner 2026-10-31: "off by default"): the Wheel's own wrist card off; RSQ_GunCards has the watch card.
+		if (from < 25) setCv("wr_watch", 0);
 		stamp.SetInt(CFG_VERSION);
 	}
 

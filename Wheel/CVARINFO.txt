@@ -73,7 +73,7 @@ user bool wr_slowmo_cancel = false;
 // RSQ: THE WRIST CARD. Bring a forearm up across your chest as if checking a watch (wrist in front of
 // your face, hand pointing across the body) and hold it wr_watch_dwell tics: that hand's gun shows
 // its card over the wrist. wr_watch_scale sizes it.
-user bool  wr_watch = true;
+user bool  wr_watch = false;
 // RSQ: with either hand picking, a different gun's card under the other hand's beam turns the sheet
 // into a side-by-side comparison of the two.
 user bool  wr_twohand_compare = true;
