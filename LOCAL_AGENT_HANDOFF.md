@@ -83,10 +83,9 @@ Four cloud agents are building the owner's "QoL round" picks (PICKS_2026-10-31.m
 touch any of those folders.
 
 **Update, 16:05 (owner hit his usage limit):** none of the four had landed. Their unfinished work was saved as
-branches on GitHub, NOT merged and NOT checked: `wip/qol-ac88b78a5c7330b23` (SlowMo + Grapple),
-`wip/qol-ac75011aa06e62265` (HP Bars + Wheel), `wip/qol-a6716df7e75b837d8` (Gestures + GunCards, barely started:
-Gestures only), Accessibility has since FINISHED and is merged to main (Steady Hands service included: see Accessibility/zscript/rsqa_qol.zs
-and tools/a11y_template.zs, which each mod's `<PREFIX>_A11y` file is regenerated from). Treat the other three as
+branches on GitHub, NOT merged and NOT checked: `wip/qol-ac75011aa06e62265` (HP Bars + Wheel), `wip/qol-a6716df7e75b837d8` (Gestures + GunCards, barely started:
+Gestures only), Accessibility and SlowMo + Grapple have since FINISHED and are merged to main (Steady Hands service included: see Accessibility/zscript/rsqa_qol.zs
+and tools/a11y_template.zs, which each mod's `<PREFIX>_A11y` file is regenerated from). Treat the other two as
 drafts: read the diff, finish, test, then merge to main yourself. main and pk3/ do not contain any of it.
 
 ## 5. Task A: wire Steady Hands into the mods that aim (do after the Accessibility lane is merged)
