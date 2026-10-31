@@ -22,13 +22,22 @@ WHIPTEST (`map WHIPTEST` after `-warp 1`). Only BD_VoxelPack's 4 voxeldef script
 | fixes found on the way | no crack while the lash flies out to a target (a lasso throw cracked at 108 on the way); the thong no longer stings the monster it is wrapped round; `gen_reset.py` handles noarchive and string cvars (Reset All checked: keys back to "443 436") |  |
 | cost | rsqwp_debug 3, desktop, BD order | 0.16-0.20 ms out, 0.26 whirling, 0.39 mean / 0.86 max flailing into 8 imps |
 
+### Owner's answers 2026-10-31 (later): lock the mark (yes), yank grace (option), cracked rockets (choice) -- rig only
+Same order (doom2 + BD + VR-Reloaded + hotfix), doom2 MAP01, whipprobe; only BD_VoxelPack's voxeldef script errors.
+| pick | built | rig log |
+|---|---|---|
+| lock the mark (`rsqwp_whip_marklock`, on) | Mark: the hand no longer points at the marked thing -> it stays marked while it is alive / untaken, within 512 and in sight (StillMarkable). Alt-fire still moves it; alt-fire with nothing else in the cone keeps it | scen 10, imp 200 ahead. Before: t88 "MARK -> RifleZombie" on the lift. After: "t88 MARK kept on DoomImp (2 other candidates there)", CRACK #1 t112 LOCKED -> DoomImp. Alt-fire: t80 DoomImp -> RifleZombie, then kept through the lift, cracked and wrapped the zombie at 335 |
+| yank grace (`rsqwp_whip_yankgrace`, option off) | HoldWrap: no pull counts for YANK_GRACE 12 tics after BeginWrap, nor a pull still under way when it ends (the hand must stop first) | probe motion 9 (K3's crack + the arm snapping back 0.4 m in 6 tics). Off: WRAP t143 -> YANK t152 (23%), WRAP t220 -> YANK t222. On: WRAP t139, "YANK held off" t146..t151 (pull 2.0-2.1), grace over t152, next yank t206 (the next lift); WRAP t915 held off t916..t921 |
+| cracked rockets (`rsqwp_whip_fireball_knock`, 0 default) | 0 = ExplodeMissile at the crack (as before). 1 = Knock: velocity along the struck link's sweep, part toward you removed (>= 0.3 away), pitch clamped -15..+30, speed max(its speed, Speed), target = you (it no longer hits you, can hit its shooter), tracer cleared | probe `wpr_ballcls Rocket`, `wpr_ballat "220 0 40 10"`, motion 3. 0: 5 rockets exploded 64-81 from you. 1: knocked at speed 20, blew up 180-335 from the crack, 254-414 from you (3 of 3 logged) |
+
 ### Not done / open
+- The knocked rocket climbs at the clamp's 30 deg on the rig's overhead crack (the link sweeps up after the crack)
+  and burst on the ceiling at z 256 on MAP01 (other crack styles not measured). Feel not headset-confirmed.
 - Not on a headset. Feel: full crack 50, lasso reach 0.30 m, flail speed cap 30, smash damage is Grapple's thrown-body formula.
 - The teardown's "SteamVR only" for the latch is wrong for this engine: QZD's own Quest input sets it (VrInputDefault.cpp
   130-141, off grip within 0.50 m, `vr_two_handed_weapons` true by default), and the rig latched. The position route
   covers the setting off, and a hand more than 0.50 m away that closes on the thong.
-- Seen, not changed: the mark follows the whip hand, so the overhead crack's lift can move it to another monster (MAP01:
-  the imp ahead -> a zombie 340 away); a crack's follow-through can count as the pull (a YANK at 7% right after a wrap).
+- (Fixed by the owner's answers above: the lift moving the mark; the follow-through yank, as the Yank Grace option.)
 - A fireball explosion near you (a rocket) still hurts you; the missile keeps its shooter.
 
 History: built inside RSQ_Grapple first (commit cc32dbc), then split out on the owner's word (10-30: "Grapple should stay

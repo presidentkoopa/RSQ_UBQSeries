@@ -49,6 +49,7 @@ user float  rsqdg_collar_mass = 400.0;   // the heaviest monster it can hold (Do
 user float  rsqdg_collar_secs = 3.0;     // how long it stays held before it breaks free
 user bool   rsqdg_collar_shield = false; // HUMAN SHIELD: the Headlock lasts as long as the grip, the monster turned to face away
 user float  rsqdg_collar_throw = 3.0;    // m/s: the off hand swung past this while it holds a monster throws the monster (0 = never)
+user float  rsqdg_collar_weight = 30.0;  // %: a monster thrown from the Headlock counts as this share of its weight (BD zombie 300 -> 90 kg: ~6.6 m/s from a 10.5 m/s hand)
 user string rsqdg_keys_main   = "446";      // the main grip's key codes (as RSQ_TacticalRig reads them)
 user string rsqdg_keys_off    = "443 436";  // the off grip's key codes
 

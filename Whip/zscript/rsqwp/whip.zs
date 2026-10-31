@@ -95,6 +95,11 @@ class RSQWP_Whip : EventHandler
 	bool    markHeld[NW];        // the trigger is held: the whip hand marks
 	bool    markNext[NW];        // alt-fire: the mark moves on to the next nearest
 	Line    markLine[NW];        // a marked switch
+	bool    markKept[NW];        // the mark is held where the hand no longer points (rsqwp_whip_marklock)
+	int     wrapTic[NW];         // when the whip wrapped round wrapOn (rsqwp_whip_yankgrace)
+	bool    graceArm[NW];        // the grace is over but the pull under way when it ended does not count yet
+	Array<Actor> knocked;        // missiles a crack knocked away (rsqwp_whip_fireball_knock 1): logged where they blow up
+	Array<double> knockX, knockY, knockZ;
 	Actor   wrapOn[NW];          // the monster the whip is wrapped round, waiting for the pull
 	int     wrapUntil[NW];
 	Vector3 pullOff[NW];         // the whip hand's offset from the body last tic
@@ -347,6 +352,7 @@ class RSQWP_Whip : EventHandler
 			gripSettled = true;
 			for (int pn = 0; pn < MAXPLAYERS; pn++) offGripKey[pn] = false;
 		}
+		if (knocked.Size()) KnockedTick();
 		if (missiles.Size() && level.maptime % 8 == 0)
 			for (int k = missiles.Size() - 1; k >= 0; k--)
 				if (!missiles[k] || missiles[k].bDestroyed || !missiles[k].bMISSILE) missiles.Delete(k);
@@ -655,6 +661,7 @@ class RSQWP_Whip : EventHandler
 	const PULL_FULL = 4.0;       // ~4 m/s: a violent pull, the full yank
 	const LASSO_K = 5;           // the link the off hand holds
 	const LASSO_MIN = 6.0;       // the tip's speed (room units a tic) a let-go must have to fly
+	const YANK_GRACE = 12;       // rsqwp_whip_yankgrace: tics after a wrap before a pull can yank (~1/3 s)
 
 	static bool IsDoor(int sp)
 	{
@@ -752,17 +759,32 @@ class RSQWP_Whip : EventHandler
 		for (int k = 0; k < n; k++)
 			if ((lockOn[i] && cA[k] == lockOn[i]) || (!lockOn[i] && markLine[i] && cL[k] == markLine[i])) { cur = k; break; }
 		int pick = cur;
-		if (n == 0) pick = -1;
+		// LOCK THE MARK (owner's pick 2026-10-31, on): the hand left what is marked (the lift before an overhead
+		// crack points it at the ceiling, or at a zombie 340 units off on MAP01) -- the mark stays where it is
+		// while that is still there to crack (alive, in range, in sight). Only alt-fire moves it on.
+		// (alt-fire with nothing else there to move to keeps it too)
+		bool keep = cur < 0 && (!markNext[i] || n == 0) && RSQWP_Util.Flag("rsqwp_whip_marklock", true) && StillMarkable(i, pmo, org);
+		if (keep) pick = -2;
+		else if (n == 0) pick = -1;
 		else if (markNext[i]) pick = (cur + 1) % n;
 		else if (cur < 0) pick = 0;
 		markNext[i] = false;
 		Actor wasA = lockOn[i]; Line wasL = markLine[i];
-		if (pick < 0) { lockOn[i] = null; markLine[i] = null; lockLine[i] = false; lockLeft[i] = 0; }
+		if (pick == -2)
+		{
+			if (lockOn[i]) lockAt[i] = lockOn[i].pos + (0, 0, lockOn[i].height * 0.5);
+			lockLeft[i] = 35;
+			if (!markKept[i] && RSQWP_Util.Flag("rsqwp_debug", false))
+				Console.Printf("T_WPW %d MARK t%d kept on %s (locked: the hand points away, %d other candidate(s) there)", i, level.maptime,
+					lockOn[i] ? String.Format("%s", lockOn[i].GetClassName()) : String.Format("line %d", markLine[i].Index()), n);
+		}
+		else if (pick < 0) { lockOn[i] = null; markLine[i] = null; lockLine[i] = false; lockLeft[i] = 0; }
 		else
 		{
 			lockOn[i] = cA[pick]; markLine[i] = cL[pick]; lockLine[i] = cL[pick] != null; lockAt[i] = (cPx[pick], cPy[pick], cPz[pick]);
 			lockLeft[i] = 35;
 		}
+		markKept[i] = pick == -2;
 		if (lockOn[i] != wasA || markLine[i] != wasL)
 		{
 			if (pick >= 0) Buzz(pmo, hand, 0.3, 2);
@@ -771,6 +793,24 @@ class RSQWP_Whip : EventHandler
 					lockOn[i] ? String.Format("%s", lockOn[i].GetClassName()) : (markLine[i] ? String.Format("line %d special %d", markLine[i].Index(), markLine[i].special) : "nothing"), pick + 1, n);
 		}
 		MarkRing(i, pmo);
+	}
+
+	// the marked thing is still one to crack, wherever the hand points now: a monster alive, a pickup not taken,
+	// within LOCK_RANGE of the hand and in sight; a switch within LOCK_RANGE
+	bool StillMarkable(int i, PlayerPawn pmo, Vector3 org)
+	{
+		let a = lockOn[i];
+		if (a)
+		{
+			if (a.bDestroyed) return false;
+			let inv = Inventory(a);
+			if (inv) { if (inv.Owner || !inv.bSPECIAL) return false; }
+			else if (a.Health <= 0 || !a.bSHOOTABLE) return false;
+			if ((a.pos + (0, 0, a.height * 0.5) - org).Length() > LOCK_RANGE) return false;
+			return pmo.CheckSight(a, SF_IGNOREVISIBILITY | SF_IGNOREWATERBOUNDARY);
+		}
+		if (markLine[i]) return (lockAt[i] - org).Length() <= LOCK_RANGE;
+		return false;
 	}
 
 	// the mark: a small turning ring of sparks over the marked thing (a switch: gold)
@@ -821,6 +861,22 @@ class RSQWP_Whip : EventHandler
 		if (!had || d.Length() > 24) return;
 		Vector3 toV = (c - hp).Unit();
 		double pull = -(d dot toV);
+		// YANK GRACE (option, owner 2026-10-31, off): for YANK_GRACE tics after the wrap nothing counts as the pull --
+		// a crack's follow-through, the hand still dropping, would yank it at once -- and a pull still under way when
+		// the grace ends does not count either: the hand has to stop first
+		if (graceArm[i])
+		{
+			bool inGrace = level.maptime - wrapTic[i] < YANK_GRACE;
+			if (inGrace || pull >= PULL_MIN)
+			{
+				if (pull >= PULL_MIN && RSQWP_Util.Flag("rsqwp_debug", false))
+					Console.Printf("T_WPW %d YANK held off t%d (%d tics after the wrap%s): pull %.1f", i, level.maptime, level.maptime - wrapTic[i], inGrace ? ", in the grace" : ", the pull from the grace still going", pull);
+				pullPk[i] = 0;
+				return;
+			}
+			graceArm[i] = false;
+			if (RSQWP_Util.Flag("rsqwp_debug", false)) Console.Printf("T_WPW %d YANK grace over t%d (%d tics after the wrap)", i, level.maptime, level.maptime - wrapTic[i]);
+		}
 		if (pull >= PULL_MIN) { pullPk[i] = max(pullPk[i], pull); return; }
 		if (pullPk[i] >= PULL_MIN) Yank(i, pmo, hand, v, pullPk[i]);
 		pullPk[i] = 0;
@@ -890,6 +946,7 @@ class RSQWP_Whip : EventHandler
 	{
 		EndWrap(i);
 		wrapOn[i] = v; wrapUntil[i] = level.maptime + WRAP_TICS; pullHad[i] = false; pullPk[i] = 0;
+		wrapTic[i] = level.maptime; graceArm[i] = RSQWP_Util.Flag("rsqwp_whip_yankgrace", false);
 		Vector3 hp = RSQWP_Util.HandPos(pmo, hand);
 		Vector2 to = v.pos.xy - hp.xy;
 		flailL[i] = max(to.Length(), v.radius + 8);
@@ -1504,14 +1561,68 @@ class RSQWP_Whip : EventHandler
 				if (d > m.radius + 4) continue;
 				let cls = m.GetClassName();
 				Vector3 at = m.pos;
-				m.ExplodeMissile(null, null);
+				bool knock = RSQWP_Util.Opt("rsqwp_whip_fireball_knock", 0) == 1;
+				if (knock) Knock(pmo, m, b - a);
+				else m.ExplodeMissile(null, null);
 				Noise(pmo, 'crack', at);
 				RSQWP_Looks.Spark(at, 'crack');
 				Buzz(pmo, hand, 0.8, 4);
 				if (RSQWP_Util.Flag("rsqwp_debug", false))
-					Console.Printf("T_WPW %d FIREBALL t%d %s cracked out of the air at (%.0f %.0f %.0f), link %d %.1f from its path", i, level.maptime, cls, at.x, at.y, at.z, k, d);
+				{
+					if (knock)
+						Console.Printf("T_WPW %d FIREBALL t%d %s knocked away at (%.0f %.0f %.0f), link %d %.1f from its path: speed %.1f, heading %.0f (straight away from you: %.0f), climbing %.0f deg", i, level.maptime, cls, at.x, at.y, at.z, k, d,
+							m.vel.Length(), VectorAngle(m.vel.x, m.vel.y), VectorAngle(at.x - pmo.pos.x, at.y - pmo.pos.y), atan2(m.vel.z, m.vel.xy.Length()));
+					else
+						Console.Printf("T_WPW %d FIREBALL t%d %s cracked out of the air at (%.0f %.0f %.0f), link %d %.1f from its path, %.0f from you", i, level.maptime, cls, at.x, at.y, at.z, k, d, (at - pmo.pos).Length());
+				}
 				break;
 			}
+		}
+	}
+
+	// CRACKED ROCKETS, knock away (rsqwp_whip_fireball_knock 1, owner 2026-10-31: "knock away and explode"): the cracked
+	// missile is sent off along the crack's sweep (the struck link's motion this tic) at its own speed (or its Speed,
+	// whichever is more), so it blows up somewhere away from you instead of at the crack. Never back at you: the part
+	// of the sweep toward you is taken out, and it flies at most 15 degrees down (an overhead crack sweeps down -- the
+	// rocket would hit the floor at your feet) and at most 30 up. It is yours now (target = you, as a reflected
+	// missile: it does not hit you, it hits the monster that shot it), and a seeker stops seeking you.
+	void Knock(PlayerPawn pmo, Actor m, Vector3 sweep)
+	{
+		Vector3 dir = sweep.Length() > 0.001 ? sweep.Unit() : (Actor.AngleToVector(pmo.angle, 1), 0);
+		Vector2 away = m.pos.xy - pmo.pos.xy;
+		away = away.Length() > 0.001 ? away.Unit() : Actor.AngleToVector(pmo.angle, 1);
+		Vector2 h = (dir.x, dir.y);
+		double toward = h dot away;
+		if (toward < 0.3) h += away * (0.3 - toward);
+		double fl = h.Length();
+		if (fl < 0.001) { h = away; fl = 1; }
+		double pz = clamp(atan2(dir.z, fl), -15.0, 30.0);
+		Vector2 f = h / fl;
+		dir = (f * cos(pz), sin(pz));
+		double spd = max(m.vel.Length(), m.Speed);
+		m.vel = dir * spd;
+		m.angle = VectorAngle(dir.x, dir.y);
+		m.pitch = -pz;
+		m.target = pmo;
+		m.tracer = null;
+		knocked.Push(m); knockX.Push(m.pos.x); knockY.Push(m.pos.y); knockZ.Push(m.pos.z);
+	}
+
+	// the knocked missiles: where each blew up (debug), and how far from you
+	void KnockedTick()
+	{
+		for (int n = knocked.Size() - 1; n >= 0; n--)
+		{
+			let m = knocked[n];
+			if (m && !m.bDestroyed && m.bMISSILE) continue;
+			if (m && !m.bDestroyed && RSQWP_Util.Flag("rsqwp_debug", false))
+			{
+				let pm = PlayerPawn(m.target);
+				Vector3 k0 = (knockX[n], knockY[n], knockZ[n]);
+				Console.Printf("T_WPW FIREBALL t%d %s blew up at (%.0f %.0f %.0f), %.0f from where it was cracked, %.0f from you", level.maptime, m.GetClassName(), m.pos.x, m.pos.y, m.pos.z,
+					(m.pos - k0).Length(), pm ? (m.pos - pm.pos).Length() : -1.0);
+			}
+			knocked.Delete(n); knockX.Delete(n); knockY.Delete(n); knockZ.Delete(n);
 		}
 	}
 

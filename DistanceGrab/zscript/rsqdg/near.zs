@@ -465,7 +465,12 @@ class RSQDG_Near : EventHandler
 		cPeak[n] = 0;
 
 		Vector3 v = aim.PalmVelocity(1) * RSQDG_Reach.Num("rsqdg_throw_scale", p, 1.0);
-		double kg = RSQDG_Mass.Kg(a);
+		// HEAVIER TOSS (owner 2026-10-31, on): a monster thrown out of the Headlock counts as rsqdg_collar_weight % of its
+		// kilograms -- Brutal Doom's zombies are Mass 300, its knockback number, not a weight (D37), and at 300 kg a
+		// 10.5 m/s hand threw one at 2.4 m/s. 30 % (90 kg) sends it at ~6.6 m/s. The impact (throw.zs) is judged on
+		// the same counted kilograms and the real speed.
+		double realKg = RSQDG_Mass.Kg(a);
+		double kg = realKg * clamp(RSQDG_Reach.Num("rsqdg_collar_weight", p, 30.0), 1.0, 100.0) / 100.0;
 		double armKg = max(1.0, RSQDG_Reach.Num("rsqdg_arm_kg", p, 30.0));
 		v *= armKg / (armKg + kg);
 		v *= max(0.0, RSQDG_Reach.Num("rsqdg_throw_boost", p, 2.5));
@@ -481,13 +486,13 @@ class RSQDG_Near : EventHandler
 		if (pain) a.SetState(pain);
 		double mps = RSQDG_Reach.Metres(v - body) * TICRATE;
 		if (RSQDG_Reach.Flag("rsqdg_debug", p, false))
-			Console.Printf("[RSQDG] Headlock: threw %s at %.1f m/s (%.0f kg; hand peak %.1f m/s)", a.GetClassName(), mps,
-				kg, RSQDG_Reach.Metres(aim.PalmVelocity(1)) * TICRATE);
+			Console.Printf("[RSQDG] Headlock: threw %s at %.1f m/s (counted as %.0f kg of its %.0f; hand peak %.1f m/s)", a.GetClassName(), mps,
+				kg, realKg, RSQDG_Reach.Metres(aim.PalmVelocity(1)) * TICRATE);
 		let th = RSQDG_Throw.Get();
 		if (th)
 		{
 			th.Air(a, 0);
-			th.Watch(a, pmo, 1, body.xy);
+			th.Watch(a, pmo, 1, body.xy, kg);
 		}
 		RSQDG_Feel.Whoosh(a, p, mps, RSQDG_Mass.Heft(a));
 		let feel = RSQDG_Feel.Get();
