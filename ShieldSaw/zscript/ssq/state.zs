@@ -104,12 +104,37 @@ class SSQ_Handler : EventHandler
 	// ---- the mount: a point over the off shoulder, relative to the body ----------------
 	// Forward is the pawn's yaw (the head's, in VR); up is from the eye (viewz, which the sim
 	// has for every player). The off side is the left for a right-handed scheme.
+	// ON YOUR BACK (owner 2026-10-31, ssq_mount_spot): 1 the handle low at the small of your back, reached behind your
+	// waist (clear of RSQ TacticalRig's hips, 0.30 m away); 2 behind your neck, at the top of the back between the rig's
+	// two shoulder holsters (0.21 m from each, a small grab); 3 either. 0 is the old mount over the off shoulder.
+	// On the back the rig keeps its off-shoulder holster.
+	static clearscope int Spot(PlayerInfo p) { return clamp(UVI(p, 'ssq_mount_spot', 1), 0, 3); }
+	static clearscope bool OnBack(PlayerInfo p) { int s = Spot(p); return s == 1 || s == 3; }   // the handle low
+	static clearscope Vector3 NeckPos(PlayerPawn mo)
+	{
+		let p = mo.player;
+		double a = mo.angle;
+		return mo.pos + (cos(a), sin(a), 0) * CM(UV(p, 'ssq_neck_fwd', -12.0)) + (0, 0, p.viewz - mo.pos.z + CM(UV(p, 'ssq_neck_up', -20.0)));
+	}
+	// how far the hand is from where the shield is taken, in the units Reach() is in: with both back spots, the nearer
+	// one (the neck's smaller reach scaled up to match)
+	static clearscope double MountDist(PlayerPawn mo, Vector3 hand)
+	{
+		let p = mo.player;
+		double d = (hand - MountPos(mo)).Length();
+		if (Spot(p) != 3) return d;
+		double nr = max(0.01, CM(UV(p, 'ssq_neck_reach', 6.0)));
+		return min(d, (hand - NeckPos(mo)).Length() * Reach(p) / nr);
+	}
+
 	static clearscope Vector3 MountPos(PlayerPawn mo)
 	{
 		let p = mo.player;
-		double side = CM(UV(p, 'ssq_mount_side', 12.0)) * (LeftHanded(p) ? -1 : 1);
-		double fwd = CM(UV(p, 'ssq_mount_fwd', -27.0));
-		double up = CM(UV(p, 'ssq_mount_up', -30.0));
+		if (Spot(p) == 2) return NeckPos(mo);
+		bool back = OnBack(p);
+		double side = back ? 0.0 : CM(UV(p, 'ssq_mount_side', 12.0)) * (LeftHanded(p) ? -1 : 1);
+		double fwd = back ? CM(UV(p, 'ssq_back_fwd', -25.0)) : CM(UV(p, 'ssq_mount_fwd', -27.0));
+		double up = back ? CM(UV(p, 'ssq_back_up', -50.0)) : CM(UV(p, 'ssq_mount_up', -30.0));
 		double a = mo.angle;
 		Vector3 f = (cos(a), sin(a), 0);
 		Vector3 l = (cos(a + 90), sin(a + 90), 0);
@@ -132,9 +157,10 @@ class SSQ_Handler : EventHandler
 	static clearscope Vector3 MountPlateCentre(PlayerPawn mo)
 	{
 		double a = mo.angle;
-		Vector3 Fh = (0, 0, 1);
+		// on the back the handle is LOW and the disc hangs above it: the forearm axis points down
+		Vector3 Fh = OnBack(mo.player) ? (0, 0, -1) : (0, 0, 1);
 		Vector3 Lh = (cos(a), sin(a), 0);			// forward
-		Vector3 Uh = (cos(a + 90), sin(a + 90), 0);	// Fh x Lh = the player's left
+		Vector3 Uh = Fh cross Lh;					// the player's left (shoulder) or right (back)
 		double k = SSQ_Guard.Scale();
 		return MountPos(mo)
 			+ Fh * (CM(SV('ssq_plate_f', -15.4)) * k)
@@ -245,10 +271,15 @@ class SSQ_Handler : EventHandler
 		// Use at the mount is the draw / holster, not a lock
 		let pose = mPose[i];
 		if (!pose.Fresh(Level.maptime)) return true;
-		return (pose.pos[0] - MountPos(p.mo)).Length() > Reach(p);
+		return MountDist(p.mo, pose.pos[0]) > Reach(p);
 	}
 
-	static clearscope double Reach(PlayerInfo p) { return CM(UV(p, 'ssq_mount_reach', 30.0)); }
+	static clearscope double Reach(PlayerInfo p)
+	{
+		int s = Spot(p);
+		if (s == 2) return CM(UV(p, 'ssq_neck_reach', 6.0));
+		return s ? CM(UV(p, 'ssq_back_reach', 10.0)) : CM(UV(p, 'ssq_mount_reach', 30.0));
+	}
 	// THE ZONE over the shoulder: larger than the grab reach, so the hand is inside it for tics
 	// before the finger can be at the grab point
 	// RSQ_Accessibility's Gesture Ease: the shoulder's zone x1..x2. 0 / absent: as set.
@@ -258,6 +289,20 @@ class SSQ_Handler : EventHandler
 	override void OnRegister()
 	{
 		for (int i = 0; i < MAXPLAYERS; i++) mPose[i] = new('SSQ_Pose');
+		Migrate();
+	}
+
+	// SETTINGS GENERATIONS, each once (ssq_cfgver; FindCVar, the values the config saves).
+	// 1 (2026-10-31, owner: "tighten up the block to plate size"): the guard margin, the slab's depth and the early
+	// turn come down to the plate itself, from whatever an older config saved.
+	static void Migrate()
+	{
+		let ver = CVar.FindCVar('ssq_cfgver');
+		if (!ver || ver.GetInt() >= 1) return;
+		let pad = CVar.FindCVar('ssq_sweep_pad'); if (pad) pad.SetFloat(0.0);
+		let th = CVar.FindCVar('ssq_plate_thick'); if (th) th.SetFloat(4.0);
+		let ld = CVar.FindCVar('ssq_sweep_lead'); if (ld) ld.SetFloat(1.0);
+		ver.SetInt(1);
 	}
 
 	override void PlayerEntered(PlayerEvent e) { Give(e.PlayerNumber); }
@@ -380,7 +425,7 @@ class SSQ_Handler : EventHandler
 		let mo = p.mo;
 		let pose = mPose[i];
 		bool fresh = pose.Fresh(Level.maptime);
-		double dist = fresh ? (pose.pos[0] - MountPos(mo)).Length() : 1e9;
+		double dist = fresh ? MountDist(mo, pose.pos[0]) : 1e9;
 		bool atMount = dist <= Reach(p);
 		if (UVI(p, 'ssq_debug', 0))
 		{
@@ -846,7 +891,7 @@ class SSQ_Handler : EventHandler
 			prop.bInvisible = UVI(p, 'ssq_stow_world', 0) == 0;	// owner's default: not drawn when stored
 			prop.SetOrigin(mount, true);
 			prop.angle = mo.angle + UV(p, 'ssq_mount_yaw', 0);
-			prop.pitch = MountPropPitch() + UV(p, 'ssq_mount_pitch', 0);
+			prop.pitch = (OnBack(p) ? -MountPropPitch() : MountPropPitch()) + UV(p, 'ssq_mount_pitch', 0);
 			prop.roll  = MountPropRoll()  + UV(p, 'ssq_mount_roll', 0);
 			prop.A_SetScale(UV(p, 'ssq_mount_scale', 1.0) * SSQ_Guard.Scale());
 			prop.frame = 0;
@@ -1087,7 +1132,7 @@ class SSQ_Handler : EventHandler
 		// Drawn, the plate is where the engine draws the off weapon: on the off controller.
 		bool swapped = st == SS_STOWED && SSQ_A11y.Swapped(mo);
 		if (swapped) hand = mo.AttackPos;
-		bool nearMount = (hand - MountPos(mo)).Length() <= Zone(p) * 1.5;
+		bool nearMount = MountDist(mo, hand) <= Zone(p) * 1.5;
 		bool want = st != SS_STOWED || grip || nearMount;
 		if (!want) return;
 		Vector3 F = swapped ? SSQ_Hand.MainDir(mo, 0, 0) : SSQ_Hand.OffDir(mo, 0, 0);

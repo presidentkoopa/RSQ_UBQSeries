@@ -35,6 +35,10 @@ class SSQ_Disc : Actor
 	// GUN BONSAI MELEE UPGRADES (SSQ_Upg, read by name at the throw; all 0 without the patch)
 	int ricLeft;		// Ricochet: walls it may still turn off toward a new target
 	int ricPend;		// tics left to find one after a wall (at the wall itself it sees nothing)
+	// RICOCHET THROWS (owner 2026-10-31): a wall between it and the next ringed target is bounced off, not the end of
+	// the throw -- ssq_bounces of them a throw. Off a wall it flies straight a few tics (bounceHold), then turns to the
+	// ringed target again as soon as it can see it; out of sight it keeps flying (and bouncing) for up to 2 s.
+	int bounces, bounceHold, blind;
 	int grinder;		// Meat Grinder
 	int huntLeft, hunter;	// Hunter's Return: swerves left on this trip home, and the level
 	Actor huntT;
@@ -82,7 +86,7 @@ class SSQ_Disc : Actor
 		// OUT: the first thing it hits turns it around. HOME: it just clipped a corner on the
 		// breadcrumb path -- v0.6 did nothing here and left it grinding along the wall, which
 		// is the return that never arrives. Drop the crumb it is fighting and aim at the next.
-		SSQF A 0 { if (invoker.phase == PH_OUT) { if (!invoker.Ricochet()) { if (invoker.ricLeft > 0) invoker.ricPend = 4; else invoker.Home(); } } else if (invoker.phase == PH_HOME && invoker.crumbAt >= 0) invoker.crumbAt--; }
+		SSQF A 0 { if (invoker.phase == PH_OUT) { if (!invoker.Ricochet() && !invoker.WallBounce()) { if (invoker.ricLeft > 0) invoker.ricPend = 4; else invoker.Home(); } } else if (invoker.phase == PH_HOME && invoker.crumbAt >= 0) invoker.crumbAt--; }
 		Goto Spawn;
 	}
 
@@ -113,6 +117,19 @@ class SSQ_Disc : Actor
 		SSQ_FX.Sparks(self, pos, (0, 0, 1), 8);
 		let m = Spawn('SSQ_LockMark', t.pos + (0, 0, t.height + 8));
 		if (m) { m.tracer = t; marks.Push(m); }
+		return true;
+	}
+
+	// RICOCHET THROWS: off the wall the engine already turned it (Hexen bounce); keep its speed, fly on
+	bool WallBounce()
+	{
+		if (bounces <= 0) return false;
+		bounces--;
+		bounceHold = 4;
+		double vl = vel.Length();
+		if (vl > 0.01) vel = vel / vl * max(cruise, vl);
+		A_StartSound("ssq/bounce", CHAN_5);
+		SSQ_FX.Sparks(self, pos, (0, 0, 1), 8);
 		return true;
 	}
 
@@ -179,6 +196,7 @@ class SSQ_Disc : Actor
 
 	void LaunchAlong(PlayerPawn mo, Vector3 dir, double sp, double roll, int rev)
 	{
+		bounces = max(0, SSQ_Handler.SVI('ssq_bounces', 3)); bounceHold = 0; blind = 0;
 		thrower = mo;
 		int n = SSQ_Handler.SVI('ssq_rev_tics', 21);
 		revFrac = n > 0 ? clamp(rev / double(n), 0, 1) : 0;
@@ -288,7 +306,11 @@ class SSQ_Disc : Actor
 		if (phase == PH_OUT)
 		{
 			let t = CurrentLock();
-			if (t)
+			bool seeIt = t && bounceHold <= 0 && CheckSight(t);
+			if (bounceHold > 0) bounceHold--;
+			if (t && !seeIt) { if (++blind > 70) Home(); }
+			else blind = 0;
+			if (seeIt)
 			{
 				Vector3 d = (t.pos + (0, 0, t.height * 0.5)) - pos;
 				double dist = d.Length();
@@ -308,7 +330,7 @@ class SSQ_Disc : Actor
 					if (vl > 0) vel = vel / vl * cruise;
 				}
 			}
-			else if (locks.Size() == 0 ? age > 35 * 2 : age > 8) Home();
+			else if (!t && (locks.Size() == 0 ? age > 35 * 2 : age > 8)) Home();
 			if (age % max(1, SSQ_Handler.SVI('ssq_crumb_every', 4)) == 0) Crumb();
 		}
 		else if (phase == PH_EMBED)

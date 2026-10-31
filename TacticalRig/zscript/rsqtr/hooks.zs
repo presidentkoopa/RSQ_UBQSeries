@@ -46,6 +46,9 @@ class RSQTR_Hooks play
 		// only, so its shoulder is no grab and the rig keeps that shoulder for weapons.
 		let cv = CVar.GetCVar("ssq_shoulder_use", pmo.player);
 		if (cv && !cv.GetBool()) return false;
+		// on the shield's back mount (ssq_mount_spot 1-3, 2026-10-31) the off shoulder is the rig's
+		let sp = CVar.GetCVar("ssq_mount_spot", pmo.player);
+		if (sp && sp.GetInt() != 0) return false;
 		return pmo.player.OffhandWeapon != s;
 	}
 }
