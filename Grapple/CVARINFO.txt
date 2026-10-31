@@ -49,10 +49,20 @@ server float  rsqgr_yank_air      = 0.27;   // gravity once it flies on its own,
 server int    rsqgr_yank_damage   = 1;      // landing / striking hurts it, from its speed
 server int    rsqgr_yank_stun     = 8;      // tics it stays in its pain frame after landing
 server bool   rsqgr_whip          = false;  // the binds crack a whip instead of firing the claw
-server float  rsqgr_whip_reach    = 192;    // map units from the hand
+server float  rsqgr_whip_reach    = 128;    // the whip's length, room units from the handle (128 = 3.8 m, a long bullwhip)
 server int    rsqgr_whip_damage   = 12;
 server bool   rsqgr_whip_stun     = true;   // a hit knocks it into its pain state (breaks off its attack)
 server bool   rsqgr_whip_snag     = true;   // the tip wraps round something above the hand: core's rope
 server float  rsqgr_whip_above    = 16;     // how far above the hand the tip must hit to snag
+server int    rsqgr_whip_mode     = 0;      // 0 Real: hold the bind, the whip is out and you crack it; 1 Assist: a press throws a lash for you
+server float  rsqgr_whip_crack    = 20;     // how fast the tip must go to crack, room units a tic (lower = easier)
+server int    rsqgr_whip_aim      = 1;      // 0 Free: the crack hits what the tip touches; 1 Assist: what is nearest the tip within rsqgr_whip_assist; 2 Lock: point the other hand, hold the whip hand's alt-fire, crack: it goes to the target
+server float  rsqgr_whip_assist   = 40;     // Assist's reach round the crack, map units
+server bool   rsqgr_whip_lines    = true;   // the crack throws a switch (any use line) it lands on
+server bool   rsqgr_whip_leash    = true;   // Lock: a locked crack on a monster with the whip bind still held catches it on the line (core's pull)
+server bool   rsqgr_whip_fetch    = true;   // the crack flicks a loose pickup near it to you
+server float  rsqgr_arm_pump      = 0.12;   // swinging on the whip, hauling down on it adds this x the haul (u/tic) to the swing; 0 off
+server bool   rsqgr_mantle        = true;   // on a line caught on a ledge lip: reel up to it or lay a free hand on it and climb over
+server bool   rsqgr_carry         = true;   // keep the swing's speed on landing (player.keepmomentum while on the rope)
 server int    rsqgr_looks         = 0;      // 0 JP, 1 Combat FX, 2 Ballistics
 // ==== end monster side ====

@@ -73,9 +73,16 @@ OptionMenu "RSQGR_Options"
 	Option "Tumble", "rsqgr_yank_tumble", "RSQGR_Tumbles"
 	Option "Throw Damage", "rsqgr_yank_damage", "OnOff"
 	Option "Whip", "rsqgr_whip", "OnOff"
+	Option "Whip Style", "rsqgr_whip_mode", "RSQGR_WhipModes"
+	Option "Whip Aim", "rsqgr_whip_aim", "RSQGR_WhipAims"
+	Option "Whip Throws Switches", "rsqgr_whip_lines", "OnOff"
+	Option "Whip Fetches Pickups", "rsqgr_whip_fetch", "OnOff"
+	Option "Whip Leash (Lock)", "rsqgr_whip_leash", "OnOff"
 	Option "Look", "rsqgr_looks", "RSQGR_LookSets"
 	StaticText " "
 	Option "Score Stunts", "rsqgr_score", "OnOff"
+	Option "Keep Momentum on Landing", "rsqgr_carry", "OnOff"
+	Option "Mantle Over Ledges", "rsqgr_mantle", "OnOff"
 	StaticText " "
 	Submenu "Tuning and Debug", "RSQGR_Tuning"
 }
@@ -114,7 +121,10 @@ OptionMenu "RSQGR_Tuning"
 	Slider "Throw Air", "rsqgr_yank_air", 0.1, 1.0, 0.01, 2
 	Slider "Throw Turns", "rsqgr_yank_turns", 1, 3, 1, 0
 	Slider "Throw Stun", "rsqgr_yank_stun", 0, 35, 1, 0
-	Slider "Whip Reach", "rsqgr_whip_reach", 96, 320, 16, 0
+	Slider "Whip Length", "rsqgr_whip_reach", 64, 256, 8, 0
+	Slider "Crack Speed (lower = easier)", "rsqgr_whip_crack", 10, 50, 1, 0
+	Slider "Whip Aim Reach", "rsqgr_whip_assist", 16, 96, 4, 0
+	Slider "Arm Pump (0 = off)", "rsqgr_arm_pump", 0.0, 0.3, 0.02, 2
 	Slider "Whip Damage", "rsqgr_whip_damage", 0, 40, 2, 0
 	Option "Whip Stun", "rsqgr_whip_stun", "OnOff"
 	Option "Whip Snag", "rsqgr_whip_snag", "OnOff"
@@ -141,4 +151,16 @@ OptionValue "RSQGR_LookSets"
 	0, "JP"
 	1, "Combat FX"
 	2, "Ballistics"
+}
+
+OptionValue "RSQGR_WhipModes"
+{
+	0, "Real (hold, crack it yourself)"
+	1, "Assist (press, it cracks for you)"
+}
+OptionValue "RSQGR_WhipAims"
+{
+	0, "Free"
+	1, "Assist"
+	2, "Lock (other hand points, alt-fire holds)"
 }

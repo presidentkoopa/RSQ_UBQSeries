@@ -35,3 +35,27 @@ Model RSQGR_Streak
 	FrameIndex RSGB A 0 0
 }
 // ==== end monster side ====
+
+// The whip (whip.zs): the rope's tube in plaited leather, and the handle in wrapped leather.
+Model RSQGR_WhipLink
+{
+	Path "models/rsqgr"
+	Model 0 "rsqrope.md3"
+	Skin 0 "rsqwhip.png"
+	Scale 1.0 1.0 1.0
+	USEACTORPITCH
+	USEACTORROLL
+	CORRECTPIXELSTRETCH
+	FrameIndex RSGM A 0 0
+}
+Model RSQGR_WhipHandle
+{
+	Path "models/rsqgr"
+	Model 0 "rsqrope.md3"
+	Skin 0 "rsqwhiph.png"
+	Scale 1.0 1.0 1.0
+	USEACTORPITCH
+	USEACTORROLL
+	CORRECTPIXELSTRETCH
+	FrameIndex RSGM A 0 0
+}

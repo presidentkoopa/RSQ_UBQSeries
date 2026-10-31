@@ -1,0 +1,4 @@
+user string qzt_rhand = "";
+user string qzt_lhand = "";
+user int    wpr_motion = 0;
+user int    wpr_log = 1;

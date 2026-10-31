@@ -1,0 +1,121 @@
+version "4.14"
+// TEST ONLY. Drives the right controller through a scripted motion every tic (the rig's qzt_rhand),
+// logs the hand, and summons targets. Motions (wpr_motion):
+//   1 still, held out    2 slow sweep (no crack expected)    3 overhead crack every 70 tics
+//   4 wrist flick only every 50 tics    5 side-arm crack every 70 tics    6 slow lift and lower (no crack)
+//   7 crack aimed up at a ledge (snag)
+class WPR_Probe : EventHandler
+{
+	int t0;
+	static const Name cls[] = { "DoomImp", "ZombieMan", "Demon", "ExplosiveBarrel", "Clip", "Shell", "Medikit" };
+	static const double K3[] = {   // tic, x, y, z, pitch, yaw  (stage metres / degrees; the engine
+		// reports AttackPitch = stage pitch - 30, so these are the wanted aim + 30)
+		0,  0.20, 1.35, -0.35,  30, 0,
+		9,  0.22, 1.85, -0.05, 105, 0,
+		12, 0.22, 1.87, -0.02, 110, 0,
+		15, 0.20, 1.55, -0.60,  35, 0,
+		24, 0.20, 1.50, -0.60,  30, 0,
+		70, 0.20, 1.35, -0.35,  30, 0 };
+	static const double K4[] = {
+		0,  0.20, 1.40, -0.40,  50, 0,
+		6,  0.20, 1.42, -0.40,  80, 0,
+		8,  0.20, 1.38, -0.42,  10, 0,
+		14, 0.20, 1.38, -0.42,  10, 0,
+		50, 0.20, 1.40, -0.40,  50, 0 };
+	static const double K5[] = {
+		0,  0.45, 1.30, -0.10,  30, -60,
+		8,  0.55, 1.35,  0.10,  35, -110,
+		11, 0.20, 1.35, -0.50,  30, 30,
+		16, 0.05, 1.30, -0.45,  25, 50,
+		70, 0.45, 1.30, -0.10,  30, -60 };
+	static const double K6[] = {
+		0,  0.20, 1.30, -0.35, 30, 0,
+		35, 0.20, 1.60, -0.35, 70, 0,
+		70, 0.20, 1.30, -0.35, 30, 0 };
+	static const double K8[] = {    // hauling down on the whip, in time: every 40 tics a 4-tic pull of 0.35 m
+		0,  0.20, 1.55, -0.30, 60, 0,
+		16, 0.20, 1.55, -0.30, 60, 0,
+		20, 0.20, 1.20, -0.25, 60, 0,
+		40, 0.20, 1.55, -0.30, 60, 0 };
+	static const double K7[] = {
+		0,  0.20, 1.35, -0.35,  50, 0,
+		9,  0.22, 1.80, -0.05, 125, 0,
+		12, 0.22, 1.82, -0.02, 130, 0,
+		15, 0.20, 1.55, -0.55,  80, 0,
+		22, 0.20, 1.50, -0.45,  75, 0,
+		70, 0.20, 1.35, -0.35,  50, 0 };
+
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		let pmo = players[e.Player].mo; if (!pmo) return;
+		if (e.Name == "wpr_summon")
+		{
+			Vector2 f = Actor.AngleToVector(pmo.angle + e.Args[2], e.Args[1]);
+			let a = Actor.Spawn(cls[clamp(e.Args[0], 0, cls.Size() - 1)], (pmo.pos.xy + f, pmo.pos.z));
+			if (a) { a.angle = a.AngleTo(pmo); Console.Printf("T_SUM t%d %s at (%.1f %.1f %.1f) d %.0f", level.maptime, a.GetClassName(), a.pos.x, a.pos.y, a.pos.z, a.Distance2D(pmo)); }
+			if (a && a.bISMONSTER) { a.A_SetTics(-1); a.target = null; }    // stands still until hurt
+		}
+		else if (e.Name == "wpr_tp")
+		{
+			pmo.SetOrigin((e.Args[0], e.Args[1], pmo.floorz), false);
+			pmo.SetOrigin((e.Args[0], e.Args[1], pmo.CurSector.floorplane.ZatPoint((e.Args[0], e.Args[1]))), false);
+			pmo.angle = e.Args[2]; pmo.vel = (0, 0, 0);
+			Console.Printf("T_TP t%d pos(%.1f %.1f %.1f) ang %.1f ceil %.1f", level.maptime, pmo.pos.x, pmo.pos.y, pmo.pos.z, pmo.angle, pmo.ceilingz);
+		}
+		else if (e.Name == "wpr_go") { t0 = level.maptime; }
+		else if (e.Name == "wpr_push") { pmo.player.keepmomentum = true; pmo.vel += (e.Args[0] / 10.0, e.Args[1] / 10.0, e.Args[2] / 10.0); Console.Printf("T_PUSH t%d vel(%.1f %.1f %.1f)", level.maptime, pmo.vel.x, pmo.vel.y, pmo.vel.z); }
+	}
+
+	static String Lerp(int t, int which)
+	{
+		int n; double k[36];
+		if (which == 3) { n = WPR_Probe.K3.Size(); for (int i = 0; i < n; i++) k[i] = WPR_Probe.K3[i]; }
+		else if (which == 4) { n = WPR_Probe.K4.Size(); for (int i = 0; i < n; i++) k[i] = WPR_Probe.K4[i]; }
+		else if (which == 5) { n = WPR_Probe.K5.Size(); for (int i = 0; i < n; i++) k[i] = WPR_Probe.K5[i]; }
+		else if (which == 6) { n = WPR_Probe.K6.Size(); for (int i = 0; i < n; i++) k[i] = WPR_Probe.K6[i]; }
+		else if (which == 8) { n = WPR_Probe.K8.Size(); for (int i = 0; i < n; i++) k[i] = WPR_Probe.K8[i]; }
+		else { n = WPR_Probe.K7.Size(); for (int i = 0; i < n; i++) k[i] = WPR_Probe.K7[i]; }
+		int rows = n / 6;
+		double period = k[(rows - 1) * 6];
+		double tt = t % int(period);
+		for (int r = 0; r < rows - 1; r++)
+		{
+			double a = k[r * 6], b = k[(r + 1) * 6];
+			if (tt >= a && tt <= b)
+			{
+				double u = b > a ? (tt - a) / (b - a) : 0;
+				double v[5];
+				for (int c = 0; c < 5; c++) v[c] = k[r * 6 + 1 + c] + (k[(r + 1) * 6 + 1 + c] - k[r * 6 + 1 + c]) * u;
+				return String.Format("%.3f %.3f %.3f %.2f %.2f 0", v[0], v[1], v[2], v[3], v[4]);
+			}
+		}
+		return String.Format("%.3f %.3f %.3f %.2f %.2f 0", k[1], k[2], k[3], k[4], k[5]);
+	}
+
+	ui int frames;
+	override void RenderOverlay(RenderEvent e)
+	{
+		frames++;
+		if (frames % 10 == 0) Console.Printf("T_F %d g%d", frames, gametic);
+	}
+
+	override void WorldLinePreActivated(WorldEvent e)
+	{
+		if (e.ActivatedLine) Console.Printf("T_LINE t%d special %d activated by %s type %d", level.maptime, e.ActivatedLine.special, e.Thing ? e.Thing.GetClassName() : 'none', e.ActivationType);
+	}
+
+	override void WorldTick()
+	{
+		let pmo = players[consoleplayer].mo; if (!pmo) return;
+		int m = CVar.FindCVar("wpr_motion").GetInt();
+		let cv = CVar.FindCVar("qzt_rhand");
+		int t = level.maptime - t0;
+		if (m == 1) cv.SetString("0.20 1.35 -0.40 30 0 0");
+		else if (m == 2) cv.SetString(String.Format("0.20 1.35 -0.40 35 %.2f 0", 40 * sin(t * 360.0 / 140.0)));
+		else if (m >= 3) cv.SetString(Lerp(t, m));
+		if (CVar.FindCVar("wpr_log").GetInt() == 3 && level.maptime % 4 == 0)
+			Console.Printf("T_P t%d pos(%.1f %.1f %.1f) vel(%.2f %.2f %.2f) fz %.0f", level.maptime, pmo.pos.x, pmo.pos.y, pmo.pos.z, pmo.vel.x, pmo.vel.y, pmo.vel.z, pmo.floorz);
+		if (CVar.FindCVar("wpr_log").GetInt() == 2 && pmo.OverrideAttackPosDir)
+			Console.Printf("T_H t%d hand(%.1f %.1f %.1f) yaw %.1f pit %.1f roll %.1f", level.maptime, pmo.AttackPos.x - pmo.pos.x, pmo.AttackPos.y - pmo.pos.y, pmo.AttackPos.z - pmo.pos.z, pmo.AttackAngle + 90 - pmo.angle, pmo.AttackPitch, pmo.AttackRoll);
+	}
+}
