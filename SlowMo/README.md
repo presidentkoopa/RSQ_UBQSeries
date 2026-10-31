@@ -31,6 +31,26 @@ the shot would have, credited to the shooter, so monsters still fight each other
 it. Brutal Doom's bullets (fired as fast projectiles) slow to the same speed. Your own
 shots leave a fading trail.
 
+## Your body in slow motion
+
+- **Lean out of a bullet's path** (on by default). QuestZDoom already moves you with your
+  head; leaning also tells the mod your body did not follow. A slowed enemy round that would
+  have clipped you on the side you leaned away from misses (the gate in the engine survey's
+  10_TIME §4.6, at a 1:1 lean). A round aimed at where your head is now still hits. Works for
+  this mod's rounds and Brutal Doom's slowed bullets. A lean held for more than a second or so
+  becomes your new stance and stops counting.
+- **Smooth walkers** (on by default). Monsters walk in steps (one step per animation frame), so a
+  slowed monster used to step, stand, step: about 4 times a second for Brutal Doom's demon at
+  the default depth. The nearest 12 walkers within 1024 units now cover each step a little every
+  tic and still arrive exactly where the engine put them, in time for the next one.
+- **Catch a bullet** (option, off by default). Hold the off hand's grip with that hand empty
+  (Brutal Doom VR's empty hand, or nothing in it) and close it on a slowed enemy round or Brutal
+  Doom bullet: it stops in your palm with a metal ting. Flick the hand (2.5 m/s, measured
+  against your body, so walking or turning is not a flick) and it flies back the way you flicked,
+  at full speed, as your bullet. Open the hand without a flick and it drops and clinks.
+- **Colour drain** (option, off by default). Colours fade a little while time is slowed (35% at
+  full depth): a post-process pass on each eye's view, desaturation only.
+
 ## Starting it
 
 - **A key:** Customize Controls → RSQ SlowMo → *Slow motion on/off*.
@@ -48,7 +68,9 @@ shots leave a fading trail.
 
 **Options → Radiant Silvergun Options → RSQ SlowMo**: how slow (`rsm_depth`, default 0.25), ease in and out
 (`rsm_ramp_in` / `rsm_ramp_out`), sound pitch, range, round speed, trails, wakes, the
-gesture, the reload moment, adrenaline, haptics, and Reset All under *Tuning and Debug*.
+gesture, the reload moment, adrenaline, haptics, lean out of bullets (`rsqsm_lean`), smooth walkers
+(`rsqsm_smooth`), catch bullets (`rsqsm_catch`), colour drain (`rsqsm_drain`), and Reset All under
+*Tuning and Debug* (with the lean, walker, catch-reach, flick-speed and drain-amount numbers).
 
 ## With other slow-motion mods
 

@@ -8,3 +8,33 @@ Model RSQSM_Round
 	USEACTORPITCH
 	FrameIndex RSQR A 0 0
 }
+
+// The same mesh for a caught round (in the hand), one thrown back, and one let fall (their actor
+// Scale shrinks the held and the fallen ones to a bullet's length, ~3.6 units).
+Model RSQSM_Caught
+{
+	Path "models/rsqsm"
+	Model 0 "btracer.obj"
+	Skin 0 "btracer.png"
+	Scale 0.18 0.18 0.18
+	USEACTORPITCH
+	FrameIndex RSQR A 0 0
+}
+Model RSQSM_Thrown
+{
+	Path "models/rsqsm"
+	Model 0 "btracer.obj"
+	Skin 0 "btracer.png"
+	Scale 0.18 0.18 0.18
+	USEACTORPITCH
+	FrameIndex RSQR A 0 0
+}
+Model RSQSM_RoundSpent
+{
+	Path "models/rsqsm"
+	Model 0 "btracer.obj"
+	Skin 0 "btracer.png"
+	Scale 0.18 0.18 0.18
+	USEACTORPITCH
+	FrameIndex RSQR A 0 0
+}

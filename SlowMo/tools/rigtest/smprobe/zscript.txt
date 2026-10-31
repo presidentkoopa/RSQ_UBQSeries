@@ -1,0 +1,283 @@
+version "4.14"
+// TEST ONLY. Never ships. Drives RSQ_SlowMo on the QuestZDoom 17.3 rig and logs what it does.
+//   smt_mode 1  WALK: a walker (smt_class) starts smt_dist ahead and comes at you; slow motion on at t20;
+//               T_W lines: its position and how far it moved each tic (pick 27, smooth walking).
+//   smt_mode 2  CATCH: the off hand is placed on a round's path (qzt_lhand, calibrated from the hand's
+//               own world position), grip held. Caught -> held 30 tics -> FLICK toward the shooter
+//               (thrown). Then a second catch -> (smt_walkhold: the pawn walks 25 tics) -> grip let go
+//               with the hand still (dropped). smt_fire 1: the probe fires the rounds itself from an
+//               idle shooter; 0: waits for the shooter's own bullets (Brutal Doom's tracers).
+//   smt_mode 3  LEAN: an idle shooter 300 ahead; every 50 tics a round fired at where the pawn stood at
+//               t90 (chest high). Lean the head with the console (qz_hmd) and read T_HIT / T_PASS.
+class RSQSMT_Probe : EventHandler
+{
+	int mode;
+	Actor mon;
+	Vector3 lastMon;
+	// hand calibration: world rel = W0 + M * (stage - S0)
+	Vector3 S0, W0, cX, cY, cZ;
+	bool calib;
+	Vector3 handStage;
+	int phase, phaseT, catches;
+	Vector3 aimH;          // where the hand waits (world)
+	Vector3 base;          // mode 3: where the pawn stood
+	Actor lastRound;
+
+	static void SetCv(String n, String v) { let c = CVar.FindCVar(n); if (c) c.SetString(v); }
+
+	void Hand(Vector3 s)
+	{
+		handStage = s;
+		SetCv("qzt_lhand", String.Format("%.4f %.4f %.4f 30 0 0", s.x, s.y, s.z));
+	}
+
+	// world rel (from the pawn) -> stage, by the calibration
+	Vector3 ToStage(Vector3 r)
+	{
+		Vector3 d = r - W0;
+		// solve [cX cY cZ] * s = d
+		double a = cX.x, b = cY.x, c = cZ.x;
+		double e = cX.y, f = cY.y, g = cZ.y;
+		double h = cX.z, i = cY.z, j = cZ.z;
+		double det = a * (f * j - g * i) - b * (e * j - g * h) + c * (e * i - f * h);
+		if (abs(det) < 1e-9) return S0;
+		double sx = (d.x * (f * j - g * i) - b * (d.y * j - g * d.z) + c * (d.y * i - f * d.z)) / det;
+		double sy = (a * (d.y * j - g * d.z) - d.x * (e * j - g * h) + c * (e * d.z - d.y * h)) / det;
+		double sz = (a * (f * d.z - d.y * i) - b * (e * d.z - d.y * h) + d.x * (e * i - f * h)) / det;
+		return S0 + (sx, sy, sz);
+	}
+
+	Vector3 Rel(PlayerPawn mo) { return mo.OffhandPos - mo.pos; }
+
+	override void WorldThingSpawned(WorldEvent e)
+	{
+		if (!e.Thing || mode < 2) return;
+		Name cn = e.Thing.GetClassName();
+		if (cn == 'RSQSM_Caught' || cn == 'RSQSM_Thrown' || cn == 'RSQSM_RoundSpent')
+			Console.Printf("T_SPAWN t%d %s at (%.1f %.1f %.1f) vel %.1f", level.maptime, cn, e.Thing.pos.x, e.Thing.pos.y, e.Thing.pos.z, e.Thing.vel.Length());
+	}
+
+	override void WorldThingDamaged(WorldEvent e)
+	{
+		if (mode < 2 || !e.Thing) return;
+		Console.Printf("T_DMG t%d victim=%s dmg=%d source=%s inflictor=%s", level.maptime, e.Thing.GetClassName(), e.Damage,
+			e.DamageSource ? String.Format("%s%s", e.DamageSource.GetClassName(), e.DamageSource.player ? "(player)" : "") : "none",
+			e.Inflictor ? e.Inflictor.GetClassName() : 'none');
+	}
+
+	override void WorldTick()
+	{
+		let p = players[consoleplayer];
+		if (!p || !p.mo) return;
+		let mo = p.mo;
+		int t = level.maptime;
+		mode = CVar.FindCVar("smt_mode").GetInt();
+		if (mode == 1) Walk(mo, t);
+		else if (mode == 2) CatchTest(mo, p, t);
+		else if (mode == 3) LeanTest(mo, t);
+	}
+
+	// ---- 1: walking ---------------------------------------------------------------------------
+	void Walk(PlayerPawn mo, int t)
+	{
+		if (t == 10)
+		{
+			Vector2 fwd = (cos(mo.angle), sin(mo.angle));
+			double d = CVar.FindCVar("smt_dist").GetInt();
+			mon = Actor.Spawn(CVar.FindCVar("smt_class").GetString(), (mo.pos.xy + fwd * d, mo.floorz), ALLOW_REPLACE);
+			if (mon) { mon.target = mo; mon.SetStateLabel("See"); lastMon = mon.pos; }
+			Console.Printf("T_SPAWNW %s speed %.1f at %.0f ahead", mon ? mon.GetClassName() : 'none', mon ? mon.Speed : 0., d);
+		}
+		if (t == 20) EventHandler.SendNetworkEvent("rsm_on");
+		if (!mon || t < 21) return;
+		double moved = (mon.pos.xy - lastMon.xy).Length();
+		Console.Printf("T_W t%d pos %.2f %.2f moved %.3f tics %d health %d z %.2f floor %.2f", t, mon.pos.x, mon.pos.y, moved, mon.tics, mon.health, mon.pos.z, mon.floorz);
+		lastMon = mon.pos;
+	}
+
+	// ---- hand calibration (modes 2) ------------------------------------------------------------
+	bool Calibrate(PlayerPawn mo, int t)
+	{
+		if (calib) return true;
+		if (t == 3) { S0 = (-0.25, 1.30, -0.30); Hand(S0); }
+		if (t == 20) { W0 = Rel(mo); Hand(S0 + (0.2, 0, 0)); }
+		if (t == 35) { cX = (Rel(mo) - W0) / 0.2; Hand(S0 + (0, 0.2, 0)); }
+		if (t == 50) { cY = (Rel(mo) - W0) / 0.2; Hand(S0 + (0, 0, 0.2)); }
+		if (t == 65)
+		{
+			cZ = (Rel(mo) - W0) / 0.2; Hand(S0); calib = true;
+			Console.Printf("T_CAL W0 (%.1f %.1f %.1f) per metre x (%.1f %.1f %.1f) y (%.1f %.1f %.1f) z (%.1f %.1f %.1f)",
+				W0.x, W0.y, W0.z, cX.x, cX.y, cX.z, cY.x, cY.y, cY.z, cZ.x, cZ.y, cZ.z);
+			return true;
+		}
+		return false;
+	}
+
+	Actor Held(PlayerPawn mo)
+	{
+		let it = ThinkerIterator.Create("Actor");
+		Actor a;
+		while (a = Actor(it.Next()))
+			if (a.GetClassName() == 'RSQSM_Caught' && !a.bDestroyed) return a;
+		return null;
+	}
+
+	// a round from the shooter at the point H (it would fly on into the face)
+	void FireAt(Vector3 h)
+	{
+		if (!mon) return;
+		Vector3 from = mon.pos + (0, 0, 40);
+		Vector3 d = level.Vec3Diff(from, h);
+		let r = RSQSM_Round(Actor.Spawn("RSQSM_Round", from));
+		let clock = RSQSM_Clock.Get();
+		if (!r || !clock) return;
+		r.target = mon;
+		r.angle = atan2(d.y, d.x);
+		r.pitch = -atan2(d.z, d.xy.Length());
+		r.dmg = 10;
+		r.puff = "BulletPuff";
+		r.maxDist = 2048;
+		r.DamageType = 'Hitscan';
+		double f = clock.FactorFor(r, r.Speed);
+		r.baseSpeed = clock.RoundBase();
+		r.preFactor = f;
+		r.Speed = r.baseSpeed * f;
+		r.vel = d.Unit() * r.Speed;
+		lastRound = r;
+		Console.Printf("T_FIRE t%d from (%.0f %.0f %.0f) at (%.1f %.1f %.1f) speed %.1f", level.maptime, from.x, from.y, from.z, h.x, h.y, h.z, r.Speed);
+	}
+
+	// the nearest enemy bullet coming at the player (Brutal Doom's tracers or rounds)
+	Actor Incoming(PlayerPawn mo)
+	{
+		let it = ThinkerIterator.Create("Actor");
+		Actor a, best;
+		double bd = 1e9;
+		while (a = Actor(it.Next()))
+		{
+			if (!a.bMISSILE || a.radius > 8 || !a.target || a.target.player) continue;
+			Vector3 d = level.Vec3Diff(a.pos, mo.pos);
+			if ((d.xy dot a.vel.xy) <= 0) continue;
+			double dl = d.xy.Length();
+			if (dl < 40 || dl > 500 || dl >= bd) continue;
+			// passes within 24 units of the face?
+			Vector2 u = a.vel.xy.Unit();
+			double lat = abs(u.x * d.y - u.y * d.x);
+			if (lat > 24) continue;
+			best = a; bd = dl;
+		}
+		return best;
+	}
+
+	void CatchTest(PlayerPawn mo, PlayerInfo p, int t)
+	{
+		if (!Calibrate(mo, t)) return;
+		Vector2 fwd = (cos(mo.angle), sin(mo.angle));
+		if (t == 70)
+		{
+			// smt_fire 1: the stock ZombieMan (NO_REPLACE): Brutal Doom's replacement can turn itself
+			// into another zombie and the pointer goes null (measured: no rounds fired after it did)
+			mon = Actor.Spawn("ZombieMan", (mo.pos.xy + fwd * 420, mo.floorz), CVar.FindCVar("smt_fire").GetInt() ? NO_REPLACE : ALLOW_REPLACE);
+			Console.Printf("T_SHOOTER %s at 420 ahead", mon ? mon.GetClassName() : 'none');
+			if (mon && CVar.FindCVar("smt_fire").GetInt() == 0) { mon.target = mo; mon.SetStateLabel("See"); }
+			EventHandler.SendNetworkEvent("rsm_on");
+			SetCv("qzt_lgrip", "1");
+			phase = 1; phaseT = t;
+		}
+		if (phase == 0) return;
+		let held = Held(mo);
+		Vector3 rel = Rel(mo);
+		bool fire = CVar.FindCVar("smt_fire").GetInt() != 0;
+		let body = RSQSM_Body.Get();
+		if (t % 5 == 0)
+			Console.Printf("T_HAND t%d grip %d phase %d off=%s hand (%.1f %.1f %.1f) held %s%s", t, (body && body.grip[consoleplayer]) ? 1 : 0, phase, p.OffhandWeapon ? p.OffhandWeapon.GetClassName() : 'none', mo.OffhandPos.x, mo.OffhandPos.y, mo.OffhandPos.z,
+				held ? "yes" : "no", held ? String.Format(" at (%.1f %.1f %.1f) gap %.2f", held.pos.x, held.pos.y, held.pos.z, (held.pos - mo.OffhandPos).Length())
+				: (lastRound && !lastRound.bDestroyed) ? String.Format(" round at (%.1f %.1f %.1f)", lastRound.pos.x, lastRound.pos.y, lastRound.pos.z) : "");
+		switch (phase)
+		{
+		case 1:     // waiting for a round to catch
+		case 4:
+			if (held)
+			{
+				catches++;
+				Console.Printf("T_CAUGHT t%d catch %d", t, catches);
+				phase = phase == 1 ? 2 : 5; phaseT = t;
+				break;
+			}
+			if (fire)
+			{
+				// the hand waits 0.45 m ahead of the face, a little low; a round every 60 tics at it
+				Vector3 h = (mo.pos.xy + fwd * 15, p.viewz - 6);
+				if (t - phaseT == 15 || (t - phaseT > 15 && (t - phaseT) % 60 == 15))
+				{
+					Hand(ToStage(h - mo.pos));
+					aimH = h;
+				}
+				if (t - phaseT > 15 && (t - phaseT) % 60 == 25) FireAt(aimH);
+			}
+			else
+			{
+				let a = Incoming(mo);
+				if (a)
+				{
+					// the point on its line 15 units short of the face
+					Vector3 head = (mo.pos.xy, p.viewz - 6);
+					Vector3 u = a.vel.Unit();
+					Vector3 d = level.Vec3Diff(a.pos, head);
+					double along = d dot u;
+					Vector3 h = a.pos + u * max(0.0, along - 15);
+					if ((h - aimH).Length() > 2) { Hand(ToStage(h - mo.pos)); aimH = h; Console.Printf("T_AIM t%d on %s at (%.1f %.1f %.1f)", t, a.GetClassName(), h.x, h.y, h.z); }
+				}
+			}
+			break;
+		case 2:     // held: wait 30 tics, then flick toward the shooter over 3 tics
+			if (!held) { Console.Printf("T_LOST t%d", t); phase = 3; phaseT = t; break; }
+			if (t - phaseT >= 30 && t - phaseT < 33 && mon)
+			{
+				Vector3 to = level.Vec3Diff(held.pos, mon.pos + (0, 0, 30)).Unit();
+				Vector3 world = rel + to * (0.12 * 34 * (t - phaseT - 29));
+				Hand(ToStage(world));
+				Console.Printf("T_FLICK t%d step %d", t, t - phaseT - 29);
+			}
+			if (t - phaseT > 40) { Console.Printf("T_NOTHROW t%d", t); phase = 3; phaseT = t; }
+			break;
+		case 3:     // thrown: wait, back to the rest, a second catch
+			if (t - phaseT == 40) { Hand(S0); phase = 4; phaseT = t; }
+			break;
+		case 5:     // held again: (walk), then let go with the hand still
+			if (!held) { Console.Printf("T_GONE t%d", t); phase = 6; phaseT = t; break; }
+			if (CVar.FindCVar("smt_walkhold").GetInt() && t - phaseT >= 5 && t - phaseT < 30)
+			{
+				mo.vel = (-fwd.y * 6, fwd.x * 6, mo.vel.z);     // a side-step walk, 6 units a tic
+				if ((t - phaseT) % 5 == 0) Console.Printf("T_WALKING t%d pawn (%.1f %.1f)", t, mo.pos.x, mo.pos.y);
+			}
+			if (t - phaseT == 45) { SetCv("qzt_lgrip", "0"); Console.Printf("T_RELEASE t%d", t); }
+			break;
+		case 6:
+			let it = ThinkerIterator.Create("Actor");
+			Actor a;
+			while (a = Actor(it.Next()))
+				if (a.GetClassName() == 'RSQSM_RoundSpent' && (t - phaseT) % 3 == 0)
+					Console.Printf("T_SPENT t%d z %.1f floor %.1f vel %.2f", t, a.pos.z, a.floorz, a.vel.Length());
+			break;
+		}
+	}
+
+	// ---- 3: lean ---------------------------------------------------------------------------------
+	void LeanTest(PlayerPawn mo, int t)
+	{
+		Vector2 fwd = (cos(mo.angle), sin(mo.angle));
+		if (t == 10)
+		{
+			mon = Actor.Spawn("ZombieMan", (mo.pos.xy + fwd * 300, mo.floorz), NO_REPLACE);
+			EventHandler.SendNetworkEvent("rsm_on");
+		}
+		if (t == 90) { base = mo.pos; Console.Printf("T_BASE (%.1f %.1f)", base.x, base.y); }
+		if (t % 10 == 0)
+			Console.Printf("T_HEAD t%d hmd (%.3f %.3f %.3f) pawn (%.1f %.1f) off base %.1f", t, mo.HmdPosition.x, mo.HmdPosition.y, mo.HmdPosition.z,
+				mo.pos.x, mo.pos.y, t >= 90 ? (mo.pos.xy - base.xy).Length() : 0.);
+		if (t > 100 && t % 20 == 0 && mon) FireAt(base + (0, 0, 32));
+		let body = RSQSM_Body.Get();
+		if (body && t % 10 == 5) Console.Printf("T_LEAN t%d synced lean (%.0f %.0f)", t, body.leanX[consoleplayer], body.leanY[consoleplayer]);
+	}
+}

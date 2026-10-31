@@ -14,6 +14,9 @@ WHAT THIS PK3 SHIPS, AND WHOSE IT IS
   Generated for this pack
       The clock's cues (sounds/rsqsm/smin, smout, smredy, smempt): tools/gen_sounds.py.
       The round's placeholder sprite (sprites/rsqsm/RSQRA0.png).
+  Brutal Doom (Sergeant Mark IV), played by name, NOT shipped
+      A caught bullet's ting (weapons/casing1) and a dropped one's clink (weapons/casing): its
+      casing sounds. Without Brutal Doom loaded they are silent.
   Bullet Time X (Xortts)
       Nothing is taken from it: this mod only recognises it by class name so the two don't
       compound.

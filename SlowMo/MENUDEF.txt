@@ -54,6 +54,11 @@ OptionMenu "RSQSM_Options"
 	Option "Adrenaline", "rsqsm_adrenaline", "OnOff"
 	Option "Haptics", "rsqsm_haptics", "OnOff"
 	StaticText " "
+	Option "Lean Out of Bullets", "rsqsm_lean", "OnOff"
+	Option "Smooth Walkers", "rsqsm_smooth", "OnOff"
+	Option "Catch Bullets", "rsqsm_catch", "OnOff"
+	Option "Color Drain", "rsqsm_drain", "OnOff"
+	StaticText " "
 	Option "Slow Own Missiles", "rsqsm_slow_own", "OnOff"
 	Option "Shot Trails", "rsqsm_trails", "OnOff"
 	Option "Missile Wakes", "rsqsm_wakes", "OnOff"
@@ -83,7 +88,15 @@ OptionMenu "RSQSM_Debug"
 	Slider "Adrenaline per Kill", "rsqsm_adr_kill", 0, 50, 1, 0
 	Slider "Adrenaline per Near Miss", "rsqsm_adr_near", 0, 20, 1, 0
 	StaticText " "
+	Slider "Lean Needed (m)", "rsqsm_lean_m", 0.02, 0.30, 0.01, 2
+	Slider "Lean Baseline (s)", "rsqsm_lean_secs", 0.5, 6.0, 0.25, 2
+	Slider "Smooth Range", "rsqsm_smooth_range", 256, 4096, 128, 0
+	Slider "Smooth Walkers", "rsqsm_smooth_max", 1, 32, 1, 0
+	Slider "Catch Reach (m)", "rsqsm_catch_m", 0.03, 0.25, 0.01, 2
+	Slider "Flick Speed (m/s)", "rsqsm_flick", 1.0, 6.0, 0.1, 1
+	Slider "Color Drain Amount", "rsqsm_drain_amt", 0.05, 1.0, 0.05, 2
+	StaticText " "
 	Option "Yield to Other Mods", "rsm_yield", "OnOff"
 	StaticText " "
-	SafeCommand "Reset All", "resetcvar rsm_depth rsm_ramp_in rsm_ramp_out rsm_yield rsm_sound_follow rsqsm_radius rsqsm_slow_own rsqsm_rounds rsqsm_round_speed rsqsm_trails rsqsm_wakes rsqsm_adrenaline rsqsm_adr_min rsqsm_adr_secs rsqsm_adr_kill rsqsm_adr_near rsqsm_adr_keep rsqsm_gesture rsqsm_gesture_gap rsqsm_gesture_hold rsqsm_reload rsqsm_reload_ms rsqsm_reload_depth rsqsm_haptics", "Reset all RSQ SlowMo settings?"
+	SafeCommand "Reset All", "resetcvar rsm_depth rsm_ramp_in rsm_ramp_out rsm_yield rsm_sound_follow rsqsm_radius rsqsm_slow_own rsqsm_rounds rsqsm_round_speed rsqsm_trails rsqsm_wakes rsqsm_adrenaline rsqsm_adr_min rsqsm_adr_secs rsqsm_adr_kill rsqsm_adr_near rsqsm_adr_keep rsqsm_gesture rsqsm_gesture_gap rsqsm_gesture_hold rsqsm_reload rsqsm_reload_ms rsqsm_reload_depth rsqsm_haptics rsqsm_lean rsqsm_lean_m rsqsm_lean_secs rsqsm_smooth rsqsm_smooth_range rsqsm_smooth_max rsqsm_catch rsqsm_catch_m rsqsm_flick rsqsm_catch_keys rsqsm_drain rsqsm_drain_amt", "Reset all RSQ SlowMo settings?"
 }
