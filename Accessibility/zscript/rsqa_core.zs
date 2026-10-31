@@ -45,7 +45,9 @@ class RSQA_Handler : EventHandler
 	// load, and every machine resets it on the same load, so it stays in step.
 	transient bool swap[MAXPLAYERS];
 	// Hold to Toggle, this machine's side: which held binds are latched on now (ui writes only).
-	ui bool latch[10];
+	// Not saved, like the modifier itself (fixed 2026-10-31): a save made with a bind latched came back with the
+	// modifier off (swap[] is transient) but the latch on, so the next press sent "let go" and it took two presses.
+	transient ui bool latch[10];
 
 	// THE VIGNETTE: the strongest comfort request this tic (play), eased per tic for the local view.
 	transient double vigReq[MAXPLAYERS];
@@ -124,6 +126,30 @@ class RSQA_Handler : EventHandler
 		if (!RSQA_Set.OneHand()) for (int i = 0; i < MAXPLAYERS; i++) swap[i] = false;
 		VignetteTick();
 		SlowMoTick();
+		BraceTick();
+	}
+
+	// THE BRACE CUE (rsqa_brace_cue, owner's pick 47). QuestZDoom's Two Handed Weapons: the off-hand grip pressed
+	// with the hands within 0.50 m latches weaponStabilised (on the Quest in VrInputDefault.cpp:130-141, on SteamVR
+	// in gl_openvr.cpp:1716-1727) and the off-hand gun goes dead: it fires nothing, checks no buttons and is not
+	// drawn (teardown 00_CAPABILITIES gotcha 10a). Script sees it as WF_TWOHANDSTABILIZED, put back on every weapon
+	// state set (p_pspr.cpp:512-515). With a gun in the off hand, the moment it latches: a rumble on the off hand,
+	// and / or Doom's own switch click (a stock sound, the local player only).
+	transient bool braceWas;
+	private void BraceTick()
+	{
+		int cue = RSQA_Set.I('rsqa_brace_cue');
+		let p = players[consoleplayer];
+		// a GUN in the off hand (it uses ammo): Brutal Doom VR keeps its fist there otherwise, and a brace with the
+		// empty hand on the gun is the two-handed hold itself, not a gun lost (rig: the fist latched it too)
+		bool now = p.mo && p.playerstate == PST_LIVE && p.OffhandWeapon && p.OffhandWeapon.Ammo1
+			&& (p.WeaponState & WF_TWOHANDSTABILIZED);
+		if (now && !braceWas && cue > 0)
+		{
+			if (cue & 1) RSQA_Buzz.Start(p.mo, 1, 0.7, 6);
+			if (cue & 2) S_StartSound("switches/normbutn", CHAN_AUTO, CHANF_UI | CHANF_LOCAL, 0.8, ATTN_NONE);
+		}
+		braceWas = now;
 	}
 
 	// THE COMFORT VIGNETTE (rsqa_vignette). Series mods report a comfort moment every tic it lasts
@@ -151,7 +177,9 @@ class RSQA_Handler : EventHandler
 	// says it is on (RenderOverlay). A pulse (a reload's, the cigarette's) counts too.
 	private void SlowMoTick()
 	{
-		if (!RSQA_Set.CueVisual() && !RSQA_Set.CueRumble()) { smWas = false; return; }
+		// cues off: forget the last edge too (fixed 2026-10-31: turned off in a slow motion and on again after it,
+		// the "Slow Motion" label came back and stayed at normal speed)
+		if (!RSQA_Set.CueVisual() && !RSQA_Set.CueRumble()) { smWas = false; smEdge = 0; return; }
 		let it = ServiceIterator.Find("RSQSM_Service");
 		let s = it.Next();
 		bool now = s && s.GetInt("slowmo.active") == 1;
@@ -358,6 +386,17 @@ class RSQA_Buzz : Actor
 	static void Start(Actor who, int hand, double strength, int tics)
 	{
 		if (!who || !who.player || who.player != players[consoleplayer]) return;
+		// RUMBLE BACKUP (rsqa_rumble_backup, owner's pick 44). The quake route is scaled by QuestZDoom's
+		// vr_quake_haptic_level and silent at 0 (r_utility.cpp:1085). The engine buzzes the firing hand for any
+		// player hitscan with damage > 0, not gated on LAF_NOINTERACT (p_map.cpp:4764-4769; teardown 99_OVERLOOKED
+		// 1a, apply/07_WHEEL 7.3), and LAF_ISOFFHAND picks the off controller by vr_control_scheme. So at level 0 a
+		// 0.1-unit trace that touches nothing gives one 150 ms pulse at 0.8 on that hand: every pulse feels the same,
+		// but every series mod that rumbles through here is felt again.
+		if (RSQA_Set.I('rsqa_rumble_backup') && RSQA_Set.F('vr_quake_haptic_level', 1.0) <= 0)
+		{
+			who.LineAttack(who.angle, 0.1, 0, 1, 'None', "RSQA_PulsePuff", LAF_NOINTERACT | (hand == 1 ? LAF_ISOFFHAND : 0));
+			return;
+		}
 		let q = RSQA_Buzz(Actor.Spawn("RSQA_Buzz", who.pos));
 		if (!q) return;
 		q.feels = who;
@@ -380,6 +419,13 @@ class RSQA_Buzz : Actor
 	}
 
 	States { Spawn: TNT1 A 20; Stop; }
+}
+
+// The rumble backup's trace leaves this (LAF_NOINTERACT always spawns its puff, p_map.cpp:4927): nothing, gone.
+class RSQA_PulsePuff : Actor
+{
+	Default { +NOINTERACTION +NOBLOCKMAP +NOGRAVITY +DONTSPLASH +NOTONAUTOMAP +PUFFONACTORS }
+	States { Spawn: TNT1 A 1; Stop; }
 }
 
 // ---- SIMPLE / FULL (rsqa_menus) ---------------------------------------------------------------

@@ -1,0 +1,62 @@
+version "4.10"
+// TEST ONLY (never ships): logs what RSQ Gun Cards draws, for tools/rigtest/run.sh.
+//   GCT <tic> guns | fade main/off | small-card layers main/off | watch-card layers | buttons | brace | the panels' psp.x/y
+// rsqgct_every: log every n tics (default 5).
+class RSQGCT_Probe : EventHandler
+{
+	// frames drawn, to match frame dumps (f<frame>.ppm) to tics: GCF <frames> <tic>, every 20 frames
+	ui int frames;
+	override void RenderOverlay(RenderEvent e)
+	{
+		frames++;
+		if (frames % 20 == 0) Console.Printf("GCF %d %d", frames, level.maptime);
+	}
+
+	override void WorldTick()
+	{
+		let ev = CVar.FindCVar("rsqgct_every");
+		int every = ev ? max(1, ev.GetInt()) : 5;
+		if (level.maptime % every) return;
+		let p = players[consoleplayer];
+		if (!p.mo) return;
+		let gc = RSQGC_GunCard(EventHandler.Find("RSQGC_GunCard"));
+		int n0 = 0, n1 = 0, ns = 0;
+		for (int i = 1000300; i < 1000320; i++) if (p.FindPSprite(i)) n0++;
+		for (int i = 1000320; i < 1000340; i++) if (p.FindPSprite(i)) n1++;
+		for (int i = 1001200; i < 1002000; i++) if (p.FindPSprite(i)) ns++;
+		let pn = p.FindPSprite(1000300);
+		let po = p.FindPSprite(1000320);
+		Console.Printf("GCT %d ready=%s off=%s show=%.2f/%.2f layers=%d/%d side=%d btn=%x stab=%d main=(%.1f %.1f) off=(%.1f %.1f)",
+			level.maptime, p.ReadyWeapon ? p.ReadyWeapon.GetClassName() : 'none', p.OffhandWeapon ? p.OffhandWeapon.GetClassName() : 'none',
+			gc ? gc.mShow[0] : -1., gc ? gc.mShow[1] : -1., n0, n1, ns, p.cmd.buttons, (p.WeaponState & WF_TWOHANDSTABILIZED) ? 1 : 0,
+			pn ? pn.x : -999., pn ? pn.y : -999., po ? po.x : -999., po ? po.y : -999.);
+		// the world small card (rsqgc_world 1): where its plate is from the hand, along the forearm and across the view
+		let bb = RSQGC_BB(EventHandler.Find("RSQGC_BB"));
+		let pmo = p.mo;
+		if (gc && bb && gc.mWorld[0] && gc.mWorld[0].live && bb.mRecs.CheckKey(gc.mWorld[0].plate))
+		{
+			Vector3 at = bb.mRecs.Get(gc.mWorld[0].plate).pos;
+			Vector3 d = at - pmo.AttackPos;
+			Vector3 f = RSQGC_GunCard.handDir(pmo, 0);
+			Vector3 eye = (pmo.pos.xy, p.viewz);
+			Vector3 te = (eye - pmo.AttackPos).Unit();
+			Vector3 side = (te.y, -te.x, 0).Unit();
+			Console.Printf("GCW %d plate from hand: along forearm %.2f  across view %.2f  up %.2f (map units)", level.maptime, d dot f, d dot side, d.z);
+		}
+	}
+
+	// netevent rsqgct_offgun: a gun in the off hand, put there as RSQ ShieldSaw does (OffhandWeapon, then raised)
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		if (!(e.Name ~== "rsqgct_offgun")) return;
+		let p = players[e.Player];
+		let w = Weapon(p.mo.FindInventory('RSQ_Off_Rifle'));
+		if (!w) { p.mo.GiveInventory('RSQ_Off_Rifle', 1); w = Weapon(p.mo.FindInventory('RSQ_Off_Rifle')); }
+		if (!w) { Console.Printf("GCT_OFFGUN none"); return; }
+		w.bOffhandWeapon = true;
+		p.OffhandWeapon = w;
+		p.PendingWeapon = w;
+		p.mo.BringUpWeapon();
+		Console.Printf("GCT_OFFGUN %d %s", level.maptime, w.GetClassName());
+	}
+}

@@ -22,7 +22,8 @@ Options -> Radiant Silvergun Options -> **RSQ Gun Cards**
 
 | Row | What it does |
 |---|---|
-| Show Cards | the small card: Off / Always / When You Look at the Gun / Inspect Gesture |
+| Show Cards | the small card: Off / Always / When You Look at the Gun / Inspect Gesture / On Reload (while that hand's reload is held, then the Stays After time) |
+| Tilt to Your Eyes | off by default. The small card turns toward your eyes every tic, so it reads at any wrist angle. The engine can only turn it about a point behind the hand, so it also swings a few cm round the wrist as it turns; Tuning's "Tilt: At Most" caps the turn (20 degrees) |
 | Card Colour | Each Gun Its Own, or one colour for all |
 | Watch Card | the full card on the watch check, on or off |
 | Draw in the World | On: the cards are drawn in the world at the hand, so no gun can cover them (they can trail a fast hand a little). Off (default): drawn with the hand itself, no lag |

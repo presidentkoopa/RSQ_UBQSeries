@@ -86,7 +86,26 @@ OptionMenu "RSQA_Options"
 	Slider "Cue Size", "rsqa_cue_scale", 0.5, 3.0, 0.25, 2
 	Slider "Text Size", "rsqa_text_scale", 1.0, 3.0, 0.25, 2
 	Option "Sound Cues", "rsqa_sound_cues", "RSQA_SoundCues"
+	Option "Rumble Backup", "rsqa_rumble_backup", "OnOff"
+	StaticText " "
+	RSQABrace "Two-Hand Brace", "rsqa_brace_off", "RSQA_Brace"
+	Option "Brace Cue", "rsqa_brace_cue", "RSQA_BraceCue"
+	StaticText " "
 	Option "Menus", "rsqa_menus", "RSQA_Menus"
+}
+
+OptionValue "RSQA_Brace"
+{
+	0, "QuestZDoom's"
+	1, "Off"
+}
+
+OptionValue "RSQA_BraceCue"
+{
+	0, "Off"
+	1, "Rumble"
+	2, "Sound"
+	3, "Both"
 }
 
 OptionMenu "RSQA_Gestures"

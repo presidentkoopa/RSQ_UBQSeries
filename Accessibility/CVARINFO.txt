@@ -23,3 +23,12 @@ server int   rsqa_sound_cues   = 0;     // 0 Off, 1 Visual, 2 Rumble, 3 Both: hi
                                         //   lock / grab ready, slow motion starting and stopping
 server int   rsqa_hold_toggle  = 0;     // 0 Off, 1 On: held binds (Force, grapple reel, the modifier) toggle
 server int   rsqa_menus        = 0;     // 0 Full, 1 Simple: the series' option pages hide their niche sub-pages
+
+// ---- 2026-10-31 sweep (owner's picks 44, 45, 47). Off by default like the rest.
+server int   rsqa_rumble_backup = 0;    // 1: when QuestZDoom's Quake Haptics level is 0 every series rumble (RSQA_Buzz)
+                                        //   still comes, as the engine's own 150 ms shot buzz on that controller
+server int   rsqa_brace_off    = 0;     // 1: QuestZDoom's Two Handed Weapons (vr_two_handed_weapons) is turned off, so the
+                                        //   off-hand grip near the gun never latches the brace that kills the off-hand gun;
+                                        //   0 puts back the player's own value (rsqa_brace_keep). Set from the menu row only.
+server int   rsqa_brace_keep   = -1;    // the player's own vr_two_handed_weapons before Two-Hand Brace Off (-1: none kept)
+server int   rsqa_brace_cue    = 0;     // the brace latching (the off-hand gun goes dead): 0 Off, 1 Rumble, 2 Sound, 3 Both

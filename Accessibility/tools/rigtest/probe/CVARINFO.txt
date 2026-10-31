@@ -1,0 +1,3 @@
+user string rsqat_sel = "";
+user int rsqat_every = 5;
+user int rsqat_slowmo = 0;
