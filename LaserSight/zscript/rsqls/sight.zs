@@ -412,6 +412,16 @@ class RSQLS_Sight : EventHandler
 			}
 			dir = RSQLS_Hand.Dir(pmo, h);
 		}
+		// THE DOT FOLLOWS THE SHOT (owner 2026-10-31: "lasersight pulled to the left"). Brutal Doom VR 2.0 fires every
+		// gun with a bore from its own muzzle table down the drawn barrel, 3.85 deg left and 3.36 deg up of the
+		// controller (its fix-accuracy). The dot is traced along that same line, from that same muzzle (bdbore.zs,
+		// parsed from its code); the beam is still drawn on the mesh's barrel, which is the same line.
+		if (w && RSQLS_Hand.Flag("rsqls_bd_bore", p, true) && RSQLS_BDBore.Active())
+		{
+			bool bdGot; Vector3 bdAt, bdDir;
+			[bdGot, bdAt, bdDir] = RSQLS_BDBore.Line(pmo, h, w);
+			if (bdGot) { muzzle = bdAt; dir = bdDir; }
+		}
 
 		// A THROWN WEAPON (grenades): once it has been seen firing, the line is
 		// the ballistic path its projectile will take, and the spot is where it

@@ -98,6 +98,10 @@ class RSQLS_Learn : StaticEventHandler
 		if (!me || !w) return false, 0, 0, 0, 0;
 		int i = me.Find(w.GetClassName());
 		if (i < 0 || !me.pKnown[i]) return false, 0, 0, 0, 0;
+		// A GUN THAT FIRES HITSCANS IS NOT A LOB (rig 2026-10-31): Brutal Doom's shotguns also throw gravity tracers
+		// and particles along the barrel, which read as a grenade's arc and dropped the dot short after the first
+		// shot. A hit seen for this weapon means its shot is the straight line.
+		if (me.hits[i] > 0) return false, 0, 0, 0, 0;
 		return true, me.pSpeed[i], me.pGrav[i], me.pElev[i], me.pYaw[i];
 	}
 

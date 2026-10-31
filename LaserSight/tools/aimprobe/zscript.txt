@@ -1,0 +1,29 @@
+version "4.12"
+// TEST ONLY. Where the laser's dot is, against where the shots land and where the controller points.
+class RSLSAim_Probe : EventHandler
+{
+	override void WorldThingSpawned(WorldEvent e)
+	{
+		let a = e.Thing;
+		let p = players[consoleplayer];
+		if (!a || !p || !p.mo || level.maptime < 40) return;
+		String n = a.GetClassName();
+		if (n.IndexOf("Puff") >= 0 || n.IndexOf("puff") >= 0 || a.bMISSILE)
+			Console.Printf("T_SHOT t%d %s at %.1f %.1f %.1f missile=%d", level.maptime, n, a.pos.x, a.pos.y, a.pos.z, a.bMISSILE);
+	}
+	override void WorldTick()
+	{
+		let p = players[consoleplayer];
+		if (!p || !p.mo || level.maptime < 40 || level.maptime % 10) return;
+		let mo = p.mo;
+		let it = ThinkerIterator.Create("RSQLS_Spot");
+		Actor s;
+		while (s = Actor(it.Next()))
+			if (s.GetClassName() == 'RSQLS_Spot' && !(s.bINVISIBLE)) Console.Printf("T_SPOT t%d %.1f %.1f %.1f alpha %.2f", level.maptime, s.pos.x, s.pos.y, s.pos.z, s.alpha);
+		FLineTraceData t;
+		Vector3 o = mo.AttackPos;
+		Vector3 d = mo.AttackDir(mo, mo.angle, mo.pitch);
+		bool hit = mo.LineTrace(VectorAngle(d.x, d.y), 4096, -atan2(d.z, d.xy.Length()), TRF_ABSPOSITION | TRF_THRUACTORS, o.z, o.x, o.y, t);
+		Console.Printf("T_CTRL t%d from %.1f %.1f %.1f hits %.1f %.1f %.1f weapon %s", level.maptime, o.x, o.y, o.z, t.HitLocation.x, t.HitLocation.y, t.HitLocation.z, p.ReadyWeapon ? p.ReadyWeapon.GetClassName() : 'none');
+	}
+}

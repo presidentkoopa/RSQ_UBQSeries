@@ -131,6 +131,7 @@ PR BrutalAxe 2XEGA0 0 melee
 PR BrutalAxe 3XEGA0 0 melee
 PR BrutalAxe 5XEGA0 0 melee
 PR BrutalAxe AXEGA0 0 melee
+PR RSQ_Off_BrutalAxe AXEGA0 0 melee
 PR Rifle RIFGA0 0 gun
 PR Rifle 2IFGA0 0 gun
 PR PuristRifle RIFGA0 0 gun
@@ -349,4 +350,4 @@ PR RSQ_Off_RailGun RAILD0 3 gun
 PR RSQ_Off_RailGun RAIZO0 14 gun
 PR Machinegun MGN1A0 0 gun
 PR BrutalRevolver RVMAA0 0 gun
-PR Revolver2 REVOA0 0 gun
+PR RSQ_Off_BrutalRevolver RVMAA0 0 gun

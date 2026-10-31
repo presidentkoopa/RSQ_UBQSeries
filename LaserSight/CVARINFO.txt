@@ -29,6 +29,7 @@ server bool  rsqls_lock          = true;  // react to a live hostile
 server float rsqls_lock_tighten  = 0.0;   // the dot shrinks onto it by this share
 server float rsqls_lock_rate     = 2.2;   // pulse, Hz
 server float rsqls_range         = 2048.0;// how far the trace looks, map units (~60 m)
+user bool   rsqls_bd_bore      = true;  // with Brutal Doom VR 2.0: the dot follows its shots (its muzzle, down its bore)
 server float rsqls_dot_range     = 0.0;   // no dot beyond this; 0 = as far as the range
 server bool  rsqls_target_recolor= false; // turn the target colour on a hostile
 server color rsqls_col_target    = "ff e0 20";
