@@ -408,7 +408,7 @@ class SSQ_Guard : Inventory
 		// eaten by this same hook -- a player's shots are never tested.
 		if (SSQ_Handler.SVI('ssq_hitscan_return', 1) != 0 && damage > 0)
 		{
-			Vector3 back = DeflectDir(mo, P, dir * max(dist, 1.0), outward, shooter);
+			Vector3 back = DeflectDir(mo, P, dir * max(dist, 1.0), outward, shooter, -PlateTravel());
 			double ang = atan2(back.y, back.x);
 			double pit = -asin(clamp(back.z, -1, 1));
 			int dmg = int(max(1, damage * SSQ_Handler.SV('ssq_hitscan_damage', 1.0)));
@@ -547,10 +547,27 @@ class SSQ_Guard : Inventory
 	// onto the nearest enemy within ssq_deflect_assist of your gaze), 2 mirrored off the face.
 	// 1 is the default because it is the one that makes a shield feel like a weapon: you catch
 	// a fireball on the plate and send it wherever you turn your head.
-	static Vector3 DeflectDir(PlayerPawn mo, Vector3 from, Vector3 vel, Vector3 n, Actor shooter)
+	// 3, OFF THE PLATE AND YOUR SWING (owner 2026-10-31: "100% of the time it sends the projectile directly back to
+	// the attacker, it doesn't seem to make a difference if I block at an angle, or bash"): the shot glances off the
+	// face as off a mirror -- an angled plate sends it aside -- and the plate's own motion this tic is added on top, so a
+	// bash or a swing throws it the way the shield was moving (ssq_deflect_swing: how much; a full-speed bash at a slow
+	// fireball all but sends it along the bash). `swing` is the plate's travel this tic, map units.
+	static Vector3 DeflectDir(PlayerPawn mo, Vector3 from, Vector3 vel, Vector3 n, Actor shooter, Vector3 swing = (0, 0, 0))
 	{
-		int aim = SSQ_Handler.SVI('ssq_deflect_aim', 1);
+		int aim = SSQ_Handler.SVI('ssq_deflect_aim', 3);
 		Vector3 d = (0, 0, 0);
+		if (aim == 3)
+		{
+			double vl = vel.Length();
+			Vector3 u = vl > 0 ? vel / vl : -n;
+			d = u - n * (2 * (u dot n));
+			double sl = swing.Length();
+			if (sl > 0.3)
+			{
+				double k = min(2.0, sl / max(vl, 8.0) * SSQ_Handler.SV('ssq_deflect_swing', 3.0));
+				d = d.Unit() + swing / sl * k;
+			}
+		}
 		if (aim == 1)
 		{
 			let pick = GazeTarget(mo, SSQ_Handler.SV('ssq_deflect_assist', 14.0));
@@ -577,7 +594,7 @@ class SSQ_Guard : Inventory
 	{
 		Actor shooter = sh.target;
 		double sp = max(sh.vel.Length(), sh.speed, 8.0) * SSQ_Handler.SV('ssq_sweep_boost', 1.0);
-		Vector3 dir = DeflectDir(mo, sh.pos, sh.vel, n, shooter);
+		Vector3 dir = DeflectDir(mo, sh.pos, sh.vel, n, shooter, -PlateTravel());
 		sh.target = mo;						// ours now: it hurts them, never us
 		// and the ShieldSaw turned it: Gun Bonsai's VR patch pays a missile to its master weapon
 		// (before, a swept shot had no master and its damage went to whichever hand scored best)
@@ -586,10 +603,17 @@ class SSQ_Guard : Inventory
 		// and remembered as turned, like the block path's: a scorer's "returned", and the patch's
 		// Rebound, read it (the sweep never told them, so a swept shot was never a returned one)
 		{ let shh = SSQ_Handler.Get(); if (shh && shh.score) shh.score.Turned(sh, shooter); }
-		if (sh.bSeekerMissile) sh.tracer = shooter;
+		// a seeker only seeks its shooter when it was sent back AT him (0 / 1); glanced off the plate it flies on as sent
+		if (sh.bSeekerMissile) sh.tracer = SSQ_Handler.SVI('ssq_deflect_aim', 3) >= 2 ? null : shooter;
 		sh.vel = dir * sp;
 		sh.angle = atan2(dir.y, dir.x);
 		sh.pitch = -asin(clamp(dir.z, -1, 1));
+		if (SSQ_Handler.SVI('ssq_debug', 0) && shooter)
+		{
+			Vector3 ts = shooter.pos - sh.pos;
+			Console.Printf("ssq: turned %s t%d -- %.0f deg off the line back to its shooter (plate swing %.1f)", sh.GetClassName(), Level.maptime,
+				acos(clamp((ts.Unit()) dot dir, -1.0, 1.0)), PlateTravel().Length());
+		}
 		int now = Level.maptime;
 		if (now != lastSweepTic)
 		{
@@ -610,7 +634,7 @@ class SSQ_Guard : Inventory
 		let back = Actor.Spawn(missile.GetClass(), P + n * 6);
 		if (!back) return;
 		double sp = max(missile.vel.Length(), missile.speed, 8) * boost;
-		Vector3 dir = DeflectDir(mo, back.pos, missile.vel, n, source);
+		Vector3 dir = DeflectDir(mo, back.pos, missile.vel, n, source, -PlateTravel());
 		back.vel = dir * sp;
 		back.angle = atan2(dir.y, dir.x);
 		back.pitch = -asin(clamp(dir.z, -1, 1));

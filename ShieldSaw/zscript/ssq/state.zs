@@ -298,11 +298,16 @@ class SSQ_Handler : EventHandler
 	static void Migrate()
 	{
 		let ver = CVar.FindCVar('ssq_cfgver');
-		if (!ver || ver.GetInt() >= 1) return;
+		if (!ver || ver.GetInt() >= 2) return;
+		int from = ver.GetInt();
+		// 2 (2026-10-31, owner: "it sends the projectile directly back to the attacker"): turned shots glance off the
+		// plate and follow your swing, unless an older config chose something other than the old default
+		let am = CVar.FindCVar('ssq_deflect_aim'); if (am && am.GetInt() == 1) am.SetInt(3);
+		if (from >= 1) { ver.SetInt(2); return; }
 		let pad = CVar.FindCVar('ssq_sweep_pad'); if (pad) pad.SetFloat(0.0);
 		let th = CVar.FindCVar('ssq_plate_thick'); if (th) th.SetFloat(4.0);
 		let ld = CVar.FindCVar('ssq_sweep_lead'); if (ld) ld.SetFloat(1.0);
-		ver.SetInt(1);
+		ver.SetInt(2);
 	}
 
 	override void PlayerEntered(PlayerEvent e) { Give(e.PlayerNumber); }
