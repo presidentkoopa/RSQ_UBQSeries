@@ -472,8 +472,14 @@ class RSQSM_Clock : EventHandler
 
 			if (want < 0.9999)
 			{
-				// Sliding on the ground loses speed at the slowed rate.
-				if (a.pos.z <= a.floorz + 0.01 && !a.bNOGRAVITY && !a.bMISSILE && (a.vel.x != 0 || a.vel.y != 0))
+				// Sliding on the ground loses speed at the slowed rate -- but only where the engine
+				// took speed off it in the first place. P_XYMovement skips friction for MF_MISSILE,
+				// MF_SKULLFLY and MF8_NOFRICTION (p_mobj.cpp:2442-2445), so a charging Lost Soul, a
+				// mid-A_SkullAttack anything, and any +NOFRICTION mod actor were being compensated
+				// for a friction they never paid, and bled speed in slow motion. A frozen thing paid
+				// none either (p_mobj.cpp:3948-3952).
+				if (a.pos.z <= a.floorz + 0.01 && !a.bNOGRAVITY && !a.bMISSILE && !a.bSKULLFLY
+					&& !a.bNOFRICTION && !a.isFrozen() && (a.vel.x != 0 || a.vel.y != 0))
 				{
 					double fr, mf;
 					[fr, mf] = a.GetFriction();
@@ -498,11 +504,22 @@ class RSQSM_Clock : EventHandler
 	// landings are left alone too: a reflection or a stop is not a push.
 	private void Impulses(Actor a, int i, double f)
 	{
+		// NOTHING IS PREDICTED FOR A FROZEN THING, because the engine did nothing to it:
+		// AActor::Tick returns on freezetics (p_mobj.cpp:3948-3952) before gravity, friction,
+		// the movement and the state machine. Predicting a tic of gravity for one anyway read
+		// as a scripted push of the whole gravity step, so -(1-f) of it was written back as
+		// velocity every tic it stayed frozen (0.75 units/tic at depth 0.25, past the 0.5 gate
+		// below), invisible while frozen and a kick downward the moment it unfroze. isFrozen()
+		// (actor.zs:513) short-circuits on freezetics (actorinlines.h:174-177), so this covers
+		// every freeze route: another mod's time sphere, Level.SetFrozen, anything.
+		if (a.isFrozen()) return;
 		if (a.bBOUNCEONWALLS || a.bBOUNCEONFLOORS || a.bBOUNCEONCEILINGS || a.BlockingLine || a.BlockingMobj) return;
 		Vector3 expect = (lvx[i], lvy[i], lvz[i]);
 		bool onFloor = a.pos.z <= a.floorz + 0.01;
 		if (!a.bNOGRAVITY && !onFloor) expect.z -= level.gravity * a.CurSector.gravity * a.Gravity * 0.00125;
-		if (onFloor && !a.bNOGRAVITY && !a.bMISSILE)
+		// Only where the engine applies friction at all: P_XYMovement skips it for MF_MISSILE,
+		// MF_SKULLFLY and MF8_NOFRICTION alike (p_mobj.cpp:2442-2445).
+		if (onFloor && !a.bNOGRAVITY && !a.bMISSILE && !a.bSKULLFLY && !a.bNOFRICTION)
 		{
 			double fr, mf;
 			[fr, mf] = a.GetFriction();
@@ -535,10 +552,21 @@ class RSQSM_Clock : EventHandler
 		lastState.Delete(i); lastTics.Delete(i); lvx.Delete(i); lvy.Delete(i); lvz.Delete(i);
 	}
 
+	// FROM CHANNEL 0, NOT 1. CHAN_AUTO is channel 0 (base.zs:6) and a sound started on it
+	// STAYS on 0: the engine sets CHANF_OVERLAP and lets them all overlap there rather than
+	// hijacking another slot (s_sound.cpp:536-541). Starting at 1 left every explicit
+	// CHAN_AUTO sound at full pitch while its actor slowed, and stock content uses CHAN_AUTO
+	// constantly (actor.zs's land and grunt, shared/spark.zs) -- as does this mod.
+	// The two calls read 0 differently and both are safe: A_SoundPitch(0) retunes channel 0
+	// only (ChangeSoundPitch matches chan->EntChannel == channel, s_sound.cpp:1057-1068),
+	// while IsActorPlayingSound(0) answers "playing anything, on any channel"
+	// (IsSourcePlayingSomething: channel == 0 matches every channel, s_sound.cpp:1151-1164).
+	// So at ch 0 the guard is a superset: it can never skip a channel-0 sound, and the most
+	// it costs is one A_SoundPitch that finds nothing there.
 	private static void Repitch(Actor a, double pitch)
 	{
 		pitch = clamp(pitch, 0.4, 1.0);
-		for (int ch = 1; ch <= 7; ch++)
+		for (int ch = 0; ch <= 7; ch++)
 			if (a.IsActorPlayingSound(ch)) a.A_SoundPitch(ch, pitch);
 	}
 
