@@ -77,6 +77,7 @@ class RSQWP_Whip : EventHandler
 	int     lashUntil[NW];       // the crack's lash: the thong still lands as hard as the crack for a few tics
 	// LOCK (rsqwp_whip_aim 2): the other hand points, the whip hand's alt-fire holds the lock
 	bool    lockHeld[NW];
+	bool    byWeapon[NW];        // this whip is the RSQWP_WhipWeapon's (weapon.zs): alt-fire locks, its model holds the handle
 	int     lockLeft[NW];        // tics the lock lasts after the button is let go
 	Actor   lockOn[NW];          // the locked monster or pickup, or
 	Vector3 lockAt[NW];          // the point on a locked switch line
@@ -153,7 +154,7 @@ class RSQWP_Whip : EventHandler
 		for (int hand = 0; hand < 2; hand++)
 		{
 			int i = consoleplayer * 2 + hand;
-			if (wstate[i] == ST_IDLE || wby[i] != p.mo) continue;
+			if (wstate[i] == ST_IDLE || wby[i] != p.mo || byWeapon[i]) continue;
 			EventHandler.SendNetworkEvent("rsqwp_lock", hand, e.Type == InputEvent.Type_KeyDown ? 1 : 0);
 			return true;
 		}
@@ -191,6 +192,12 @@ class RSQWP_Whip : EventHandler
 		if (wmode[i] == 1) Throw(i, pmo, hand);
 		if (RSQWP_Util.Flag("rsqwp_debug", false))
 			Console.Printf("T_WPW %d start mode %d len %.0f", i, wmode[i], wlen[i]);
+	}
+
+	// the whip weapon's trigger let go: roll it up (Real), as the bind's release does
+	void WeaponUp(int i, PlayerPawn pmo)
+	{
+		if (wstate[i] == ST_OUT && wmode[i] == 0 && wby[i] == pmo) RollUp(i);
 	}
 
 	void RollUp(int i)
@@ -248,7 +255,12 @@ class RSQWP_Whip : EventHandler
 		Mantle();
 		for (int i = 0; i < NW; i++)
 		{
-			if (wstate[i] == ST_IDLE) continue;
+			if (wstate[i] == ST_IDLE)
+			{
+				// the whip weapon's alt-fire locks before the whip is out
+				if (byWeapon[i] && (lockHeld[i] || lockLeft[i] > 0) && players[i / 2].mo) Lock(i, players[i / 2].mo, i & 1);
+				continue;
+			}
 			let pmo = wby[i];
 			if (!pmo || pmo.Health <= 0 || !RSQWP_Util.Flag("rsqwp_on", true)) { Halt(i); continue; }
 			int hand = i & 1;
@@ -933,7 +945,7 @@ class RSQWP_Whip : EventHandler
 	{
 		cracks[i]++;
 		lashUntil[i] = level.maptime + 8;
-		if (RSQWP_Util.Opt("rsqwp_whip_aim", 1) == 2 && (lockOn[i] || lockLine[i]) && lockLeft[i] > 0)
+		if ((RSQWP_Util.Opt("rsqwp_whip_aim", 1) == 2 || byWeapon[i]) && (lockOn[i] || lockLine[i]) && lockLeft[i] > 0)
 		{
 			// LOCK: the crack sends the thong out to the target, however far (up to the lock's
 			// range): it pays out over REACH_TICS and strikes on arrival (Reach)
@@ -1118,7 +1130,7 @@ class RSQWP_Whip : EventHandler
 		{
 			Vector3 pa = k == 0 ? base : ToMap(wp[o + k - 1]);
 			Vector3 pb = ToMap(wp[o + k]);
-			double w = k == 0 ? w0 * 1.7 : w0 * max(0.18, 1.0 - 0.8 * (k - 1.0) / NN);
+			double w = k == 0 ? 0.69 * 1.7 : w0 * max(0.18, 1.0 - 0.8 * (k - 1.0) / NN);   // the handle keeps its size whatever the thong's thickness
 			RSQWP_Rope r = wl[o + k];
 			bool fresh = false;
 			if (!r)

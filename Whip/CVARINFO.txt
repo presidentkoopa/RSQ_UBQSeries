@@ -26,7 +26,7 @@ server float  rsqwp_attach        = 0.6;    // where the rope meets the body, fr
 server float  rsqwp_hop           = 6;      // lift when letting go at the top of a wall
 server bool   rsqwp_mantle        = true;   // reel up to a ledge lip, or lay a free hand on it with Grab: up and over
 server bool   rsqwp_carry         = true;   // keep the swing's speed on landing (player.keepmomentum)
-server float  rsqwp_rope_width    = 0.6;    // the thong's thickness (radius, map units)
+server float  rsqwp_rope_width    = 1.0;    // the thong's thickness (radius, map units)
 server int    rsqwp_rope_segs     = 12;     // most pieces a slack line is drawn in
 
 // climbing hand over hand

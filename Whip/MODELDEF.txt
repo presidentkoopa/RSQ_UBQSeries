@@ -23,3 +23,20 @@ Model RSQWP_WhipHandle
 	CORRECTPIXELSTRETCH
 	FrameIndex RSWP A 0 0
 }
+
+// THE WHIP WEAPON (weapon.zs): its handle (models/rsqwp/whiphandle.obj, made in the same space as Brutal Doom VR's hand
+// mesh) in BD VR's own hand, the axe grip. Same Scale and Offset as BD VR's hands so the hand sits where it always does.
+Model RSQWP_WhipWeapon
+{
+	Path "models/rsqwp"
+	Model 0 "whiphandle.obj"
+	Skin 0 "rsqwhiph.png"
+	Path "models/rsq/fbx"
+	Model 7 "fbx_hv_BrutalAxe_R.md3"
+	Skin 7 "fbx_hand.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex WHPW A 0 0
+	FrameIndex WHPW A 7 0
+	FrameIndex WHPW B 7 0
+}

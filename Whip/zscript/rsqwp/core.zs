@@ -19,6 +19,7 @@ class RSQWP_Core : EventHandler
 	RSQWP_Hook hooks[NHOOK];
 	bool held[NHOOK];
 	int pressTic[NHOOK];
+	bool altReel[NHOOK];      // the whip weapon's alt-fire is reeling (weapon.zs)
 	bool pressFired[NHOOK];   // this press fired the hook (holding it on = reel at once)
 	double worldScale;
 	transient RSQWP_Tracer tracer;
