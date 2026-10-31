@@ -198,11 +198,27 @@ class wr_GunCard : EventHandler
 	}
 
 	// ---- the tic ----------------------------------------------------------------------------------------------
+	// HAND NUMBERS ON SCREEN (wr_show_hands): what the engine tells the mods about the hands, for a screenshot
+	// when something sits wrong in a headset. No console needed.
+	private void ShowHands(PlayerPawn pmo)
+	{
+		if (level.maptime % 5 != 0) return;
+		let p = pmo.player;
+		Vector3 m = pmo.AttackPos - pmo.pos, o = pmo.OffhandPos - pmo.pos;
+		string s = String.Format("RSQ hands  vr_mode %d  scheme %d  override %d\n", ci("vr_mode", -1), ci("vr_control_scheme", 0), pmo.OverrideAttackPosDir);
+		s = s .. String.Format("body angle %.0f pitch %.0f  eye %.1f\n", pmo.angle, pmo.pitch, p.viewz - pmo.pos.z);
+		s = s .. String.Format("MAIN  %.1f %.1f %.1f  yaw %.0f pitch %.0f roll %.0f\n", m.x, m.y, m.z, pmo.AttackAngle, pmo.AttackPitch, pmo.AttackRoll);
+		s = s .. String.Format("OFF   %.1f %.1f %.1f  yaw %.0f pitch %.0f roll %.0f\n", o.x, o.y, o.z, pmo.OffhandAngle, pmo.OffhandPitch, pmo.OffhandRoll);
+		s = s .. String.Format("guns  %s / %s  inspect %d %d", p.ReadyWeapon ? p.ReadyWeapon.GetClassName() : 'none', p.OffhandWeapon ? p.OffhandWeapon.GetClassName() : 'none', Inspect(pmo, 0), Inspect(pmo, 1));
+		Console.MidPrint(null, s, true);
+	}
+
 	override void WorldTick()
 	{
 		let p = players[consoleplayer];
 		let pmo = PlayerPawn(p.mo);
 		if (!pmo) return;
+		if (ci("wr_show_hands", 0)) ShowHands(pmo);
 		if (p.playerstate != PST_LIVE || (ci("wr_card", 1) <= 0 && ci("wr_card_watch_tpl", 3) <= 0)) { ClearAll(p); return; }
 
 		let item = wr_CardItem(pmo.FindInventory("wr_CardItem"));

@@ -372,6 +372,7 @@ OptionMenu wr_Debug
 
 	StaticText "Troubleshooting", gold
 	Option "Print diagnostics on open", "wr_debug",        "OnOff"
+	Option "Show hand numbers on screen", "wr_show_hands", "OnOff"
 
 }
 
@@ -593,6 +594,8 @@ OptionValue "wr_CardInspect"
 OptionMenu wr_GunCards
 {
 	Title "RSQ Wheel - Gun cards"
+	StaticText ""
+	Option "Show hand numbers on screen (screenshot for Claude)", "wr_show_hands", "OnOff"
 	StaticText ""
 	StaticText "The card on the gun", gold
 	StaticText "Ermac's Force Unleashed display. Top card: square, the clip count.", "DarkGray"
