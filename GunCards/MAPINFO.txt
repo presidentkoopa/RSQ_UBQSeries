@@ -3,5 +3,5 @@
 // same tic, so a world card is where the hand is now (WorldTick runs front to back).
 GameInfo
 {
-	AddEventHandlers = "RSQGC_GunCard", "RSQGC_BB", "RSQGC_WristMap"
+	AddEventHandlers = "RSQGC_GunCard", "RSQGC_BB"
 }

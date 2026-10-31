@@ -18,4 +18,3 @@ version "4.10"
 #include "zscript/rsqgc/card.zs"         // the small card, and which card shows when
 #include "zscript/rsqgc/side.zs"         // the watch card on both sides of the wrist
 #include "zscript/rsqgc/worldcard.zs"    // the same cards drawn in the world (rsqgc_world)
-#include "zscript/rsqgc/wristmap.zs"     // the wrist map on the watch check (rsqgc_map)

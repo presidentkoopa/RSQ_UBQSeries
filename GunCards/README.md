@@ -36,11 +36,3 @@ the card is part of the hand's own draw and never lags the gun. The voxels have 
 in: `tools/gen_cards.py` (the small card) and `tools/gen_side.py --iwad <freedoom2.wad>` (the watch card, every
 row and column baked). Both are deterministic: run them after changing the art or the layout, then
 `tools/gen_reset.py` if CVARINFO changed. See `zscript/rsqgc/card.zs` for the details.
-
-## Wrist map
-
-Check your watch (knuckles up, RSQ Gestures) and a small round hologram of the map floats level over your forearm:
-the level round you in miniature, laid the way the world lies, you the white mark in the middle. *Wrist Map*: Off,
-When I Check My Watch, Always On; size and reach under *Placement*. It shows what Doom's automap would (what you have
-seen; the rest in grey with a computer area map). The idea of drawing the automap's lines yourself round the player
-follows Lewisk3's minimap (Cynic Games Minimap, MIT licence); the code is new.
