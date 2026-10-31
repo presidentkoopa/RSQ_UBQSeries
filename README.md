@@ -31,6 +31,7 @@ is ZScript and data lumps.
 | 🌳 | [GunBonsaiOffhandVR](GunBonsaiOffhandVR/) | `RSQ_GunBonsaiVR.pk3` | The arcade room's progression: Gun Bonsai for VR -- a gauge and upgrades per hand, melee and boxing-glove upgrades, Slappers Only, saber / ShieldSaw / hook upgrade paths, XP from damage or style, the screens. Needs Gun Bonsai 0.10.6 (ToxicFrog, not included) loaded just before it. |
 | 🐍 | [Whip](Whip/) | `RSQ_Whip.pk3` | A simulated bullwhip from either hand (Eye of the Temple's method): it cracks from how you swing your arm, stings and stuns, throws switches, fetches pickups, locks on with the other hand and leashes monsters, catches edges to swing from, climb and mantle over. Needs no other mod. |
 | 🎡 | [Wheel](Wheel/) | `RSQ_Wheel.pk3` | REMA's weapon wheel: weapon cards in a ring around your hand -- point and pull, or reach in -- with a data sheet in the middle. Drawn in the game's own status-bar stone and DoomFont. |
+| 🤲 | [Gestures](Gestures/) | `RSQ_Gestures.pk3` | What your hands are doing, for the other mods: hold the gun up and twist your wrist to inspect it (the Wheel's weapon cards), thrust and pull, both hands down, thrown apart or palms out. Ported from RS_Gestures. Does nothing on its own. |
 | ♿ | [Accessibility](Accessibility/) | `RSQ_Accessibility.pk3` | One Accessibility menu for every series mod you load: colour-blind modes and handedness. |
 
 ---
@@ -67,6 +68,7 @@ is ZScript and data lumps.
    | GunBonsaiOffhandVR | **RSQ Gun Bonsai VR** (Gun Bonsai's own menu stays where Gun Bonsai puts it) |
    | Whip | **RSQ Whip** |
    | Wheel | **RSQ Wheel** |
+   | Gestures | **RSQ Gestures** |
    | Accessibility | **Accessibility** |
 
    Each page follows Brutal Doom Quest 2.0's options page: one short front page of real choices with

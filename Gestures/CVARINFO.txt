@@ -1,0 +1,52 @@
+// RSQ_Gestures settings. All USER cvars: a gesture is this player's own hands, read on this machine
+// (the same choice RS_Gestures made). Distances are METRES from your eyes, measured in your own frame
+// (forward / sideways / up), so a tall, short or seated player makes the same gesture; the vertical is
+// converted with level.pixelstretch (1.2) before any comparison. Angles are degrees as QuestZDoom
+// reports them (AttackRoll / AttackPitch).
+
+// ---- INSPECT: the gun held up in front of your face, wrist twisted, held briefly ----------------------
+// Always answers when a mod asks; nothing to switch on.
+user float  rsqg_inspect_twist   = 45;     // wrist twist (roll) needed to start, degrees either way
+user float  rsqg_inspect_untwist = 30;     // ...and below this it drops (less than the start: no flicker)
+user int    rsqg_inspect_dir     = 0;      // 0 either way; 1 palm down only (right hand clockwise as you see it); 2 palm up only (mirrored for the left hand)
+user int    rsqg_inspect_hold    = 6;      // tics the pose must be held before it counts (35 tics = 1 second)
+user float  rsqg_inspect_low     = 0.30;   // lowest the hand may be, metres BELOW your eyes (upper chest)
+user float  rsqg_inspect_high    = 0.20;   // highest, metres ABOVE your eyes
+user float  rsqg_inspect_near    = 0.15;   // nearest in front of your eyes, metres
+user float  rsqg_inspect_far     = 0.65;   // furthest in front, metres (an arm's length)
+user float  rsqg_inspect_side    = 0.35;   // furthest to either side of your eyes, metres
+user float  rsqg_inspect_pitch   = 60;     // the gun may point at most this far up or down (degrees)
+user float  rsqg_inspect_still   = 1.2;    // the hand must be slower than this (metres a second) to start
+user float  rsqg_inspect_slack   = 0.05;   // once on, the place may drift this far (metres) before it drops
+
+// ---- ONE HAND: thrust and pull along the hand's own axis, stillness (RS_Gestures' rsg_signals) ---------
+// Off by default, as in RS_Gestures: the switch buys the rsqg_thrust / rsqg_pull events. The queries
+// answer whenever a mod asks.
+user bool   rsqg_signals         = false;
+user float  rsqg_thrust_mps      = 2.0;    // speed along the hand needed for a thrust (or back, for a pull)
+user float  rsqg_thrust_age      = 150;    // ...and the fastest instant must be this fresh (ms; 0 = any in the last quarter second)
+user int    rsqg_thrust_repeat   = 12;     // tics before the same hand may thrust again
+user float  rsqg_still_mps       = 0.3;    // below this a hand counts as still (shared with palms out)
+
+// ---- BOTH HANDS: down past the hips, thrown apart, both palms out (RS_Gestures' rsg_twohand) -----------
+// Off by default, as in RS_Gestures: the switch buys the rsqg_pair event.
+user bool   rsqg_twohand         = false;
+user float  rsqg_two_window_ms   = 120;    // how far apart in time the two hands may move and still be one gesture
+user float  rsqg_two_age         = 180;    // each hand's fastest instant must be this fresh (ms; 0 = any in the last quarter second)
+user float  rsqg_two_repeat_ms   = 500;    // before the same two-hand gesture may fire again
+user float  rsqg_two_down_mps    = 2.0;    // down: each hand's downward speed
+user float  rsqg_two_down_frac   = 0.5;    // down: how much of the speed must be downward (0..1)
+user float  rsqg_two_hip_m       = 0.60;   // the hip line, metres below your eyes (also the floor for palms out)
+user float  rsqg_two_apart_mps   = 2.0;    // apart: how fast the gap between the hands opens
+user float  rsqg_two_chest_m     = 0.40;   // apart: the chest, metres below your eyes
+user float  rsqg_two_chest_r     = 0.50;   // apart: thrown from within this of the chest
+user float  rsqg_two_front_m     = 0.25;   // palms: each hand at least this far in front of your eyes
+user float  rsqg_two_hold_ms     = 400;    // palms: held this long
+// Palms out on QuestZDoom: there is no finger or grip reading, so "open palm" is read as the hand
+// pointing up (fingers up), not pulling a trigger, and the hands side by side, not one behind the other
+// on a rifle.
+user float  rsqg_two_palms_pitch = 40;     // palms: each hand pointing at least this far up (degrees)
+user float  rsqg_two_palms_gap   = 0.25;   // palms: the hands at least this far apart sideways (metres)
+
+// ---- debug ---------------------------------------------------------------------------------------------
+user int    rsqg_debug           = 0;      // 0 off; 1 changes and events; 2 also the hands' numbers once a second; 3 also the cost

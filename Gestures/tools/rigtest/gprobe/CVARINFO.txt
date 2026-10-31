@@ -1,0 +1,5 @@
+user string qzt_rhand = "";
+user string qzt_lhand = "";
+user int    gpr_motion = 1;
+user int    gpr_ask = 1;
+user float  gpr_yaw = 0;

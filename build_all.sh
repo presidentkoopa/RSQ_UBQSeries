@@ -92,6 +92,12 @@ rm -f "$OUT/RSQ_Wheel.pk3"
 zip -q -r -X "$OUT/RSQ_Wheel.pk3" zscript.txt MAPINFO.txt CVARINFO.txt KEYCONF MENUDEF.txt SNDINFO.txt MODELDEF.txt TEXTURES.txt WRPALS.txt WRFONTS.txt VOXELDEF.txt CREDITS.txt README.md zscript sounds models sprites graphics voxels
 echo "built pk3/RSQ_Wheel.pk3"
 
+# Gestures: what the hands are doing (inspect, thrust, both hands) for any series mod that asks; tools/ stays out.
+cd "$HUB/Gestures"
+rm -f "$OUT/RSQ_Gestures.pk3"
+zip -q -r -X "$OUT/RSQ_Gestures.pk3" zscript.txt MAPINFO.txt CVARINFO.txt KEYCONF.txt MENUDEF.txt CREDITS.txt README.md zscript
+echo "built pk3/RSQ_Gestures.pk3"
+
 # RSQ_GunBonsaiVR (the Gun Bonsai Offhand VR patch): everything but the build script, notes, tools and git files (its build.ps1).
 # Needs Gun Bonsai 0.10.6 (ToxicFrog, not included) loaded just before it.
 cd "$HUB/GunBonsaiOffhandVR"

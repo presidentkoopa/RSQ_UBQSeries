@@ -1,0 +1,13 @@
+RSQ_Gestures -- credits
+=======================
+
+Code: ZScript for the Radiant Silvergun Quest series (presidentkoopa), for stock QuestZDoom 17.3 by
+Emawind84 and Team Beef. No engine change.
+
+Ported from presidentkoopa's RS_Gestures (written for his REMA engine, UZDXREMA): the one-hand pose and
+impulse detectors (rsg_signals.zs: still, thrust, pull) and the both-hands detectors (rsg_pair.zs: both
+down, both apart, both palms out), their settings and their event shape. The inspect pose is new here,
+for the RSQ Wheel's weapon cards.
+
+The hand reading follows RSQ_Grapple's (AttackPos / OffhandPos and the engine's angle conventions), and
+the shared Radiant Silvergun Options menu is the series' tools/rsmenu.

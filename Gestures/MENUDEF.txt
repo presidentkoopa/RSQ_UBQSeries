@@ -1,0 +1,93 @@
+// RSQ Gestures -- MENUDEF
+// ---- Radiant Silvergun Options (tools/rsmenu) ----------------------------------------------------
+// The series' one Options entry. Every series pk3 carries this same block with its own prefix: the
+// parent is PROTECTED, so the first definition stays and later ones add nothing (QZD 17.3 merges a
+// protected option menu instead of replacing it); the link row removes any earlier copy of itself,
+// so Options shows one row however many series pk3s load. Each mod then adds its own row only.
+OptionMenu "RSQ_RSOptions" protected
+{
+	Class "RSQG_RSMenu"
+	Title "RADIANT SILVERGUN OPTIONS"
+}
+
+AddOptionMenu "OptionsMenu"
+{
+	RSQGRSLink "Radiant Silvergun Options", "RSQ_RSOptions"
+}
+
+AddOptionMenu "RSQ_RSOptions"
+{
+	Submenu "RSQ Gestures", "RSQG_Options"
+}
+// ----------------------------------------------------------------------------------------------------
+
+OptionMenu "RSQG_Options"
+{
+	Title "RSQ GESTURES"
+	StaticText "What your hands are doing, for the other", "gray"
+	StaticText "series mods. Inspect: hold the gun up in front", "gray"
+	StaticText "of your face and twist your wrist.", "gray"
+	StaticText " "
+	Option "Inspect Twist Way", "rsqg_inspect_dir", "RSQG_TwistWays"
+	Slider "Inspect Twist (degrees)", "rsqg_inspect_twist", 20, 90, 5, 0
+	Slider "Inspect Hold (tics)", "rsqg_inspect_hold", 1, 35, 1, 0
+	StaticText " "
+	Option "Thrust and Pull Events", "rsqg_signals", "OnOff"
+	Option "Two-Hand Events", "rsqg_twohand", "OnOff"
+	StaticText " "
+	Submenu "Tuning and Debug", "RSQG_Tuning"
+}
+
+OptionMenu "RSQG_Tuning"
+{
+	Title "TUNING AND DEBUG"
+	StaticText "Inspect: where the gun must be (metres from your eyes)", "gold"
+	Slider "Twist To Drop (degrees)", "rsqg_inspect_untwist", 10, 80, 5, 0
+	Slider "Lowest (below eyes)", "rsqg_inspect_low", 0.0, 0.8, 0.05, 2
+	Slider "Highest (above eyes)", "rsqg_inspect_high", 0.0, 0.5, 0.05, 2
+	Slider "Nearest (in front)", "rsqg_inspect_near", 0.0, 0.5, 0.05, 2
+	Slider "Furthest (in front)", "rsqg_inspect_far", 0.3, 1.0, 0.05, 2
+	Slider "To The Side", "rsqg_inspect_side", 0.1, 0.8, 0.05, 2
+	Slider "Gun Points Up/Down At Most", "rsqg_inspect_pitch", 20, 90, 5, 0
+	Slider "Hand Still Under (m/s)", "rsqg_inspect_still", 0.3, 3.0, 0.1, 1
+	Slider "Drift Allowed Once On (m)", "rsqg_inspect_slack", 0.0, 0.2, 0.01, 2
+	StaticText " "
+	StaticText "One hand", "gold"
+	Slider "Thrust Speed (m/s)", "rsqg_thrust_mps", 0.5, 8.0, 0.1, 1
+	Slider "Thrust Fresher Than (ms)", "rsqg_thrust_age", 0, 250, 10, 0
+	Slider "Thrust Repeat (tics)", "rsqg_thrust_repeat", 0, 35, 1, 0
+	Slider "Still Under (m/s)", "rsqg_still_mps", 0.05, 1.5, 0.05, 2
+	StaticText " "
+	StaticText "Both hands", "gold"
+	Slider "Together Within (ms)", "rsqg_two_window_ms", 20, 400, 10, 0
+	Slider "Peak Fresher Than (ms)", "rsqg_two_age", 0, 250, 10, 0
+	Slider "Refire After (ms)", "rsqg_two_repeat_ms", 0, 2000, 50, 0
+	Slider "Down: Speed (m/s)", "rsqg_two_down_mps", 0.5, 8.0, 0.1, 1
+	Slider "Down: How Straight", "rsqg_two_down_frac", 0.0, 1.0, 0.05, 2
+	Slider "Hips Below Eyes (m)", "rsqg_two_hip_m", 0.2, 1.2, 0.05, 2
+	Slider "Apart: Speed (m/s)", "rsqg_two_apart_mps", 0.5, 8.0, 0.1, 1
+	Slider "Chest Below Eyes (m)", "rsqg_two_chest_m", 0.1, 0.8, 0.05, 2
+	Slider "Thrown From Within (m)", "rsqg_two_chest_r", 0.2, 1.0, 0.05, 2
+	Slider "Palms: In Front (m)", "rsqg_two_front_m", 0.0, 0.8, 0.05, 2
+	Slider "Palms: Held (ms)", "rsqg_two_hold_ms", 100, 2000, 50, 0
+	Slider "Palms: Pointing Up (degrees)", "rsqg_two_palms_pitch", 0, 90, 5, 0
+	Slider "Palms: Apart Sideways (m)", "rsqg_two_palms_gap", 0.0, 0.8, 0.05, 2
+	StaticText " "
+	Option "Debug Log", "rsqg_debug", "RSQG_Debug"
+	StaticText " "
+	SafeCommand "Reset All", "rsqg_reset", "Reset all RSQ Gestures settings?"
+}
+
+OptionValue "RSQG_TwistWays"
+{
+	0, "Either Way"
+	1, "Palm Down"
+	2, "Palm Up"
+}
+OptionValue "RSQG_Debug"
+{
+	0, "Off"
+	1, "Changes and Events"
+	2, "Also the Hands, Every Second"
+	3, "Also the Cost"
+}
