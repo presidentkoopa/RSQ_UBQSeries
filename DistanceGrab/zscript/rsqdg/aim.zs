@@ -324,8 +324,22 @@ class RSQDG_Aim : EventHandler
 		pitchAt[h] = (pitchAt[h] + 1) % PITCH_WINDOW;
 	}
 
+	// SETTINGS GENERATIONS, each once (rsqdg_cfgver; FindCVar, the values the config saves).
+	// 1 (2026-10-31, owner: "smoother, quicker arc / travel time, rotating, some life"): a quicker, higher, turning pull.
+	static void Migrate()
+	{
+		let ver = CVar.FindCVar("rsqdg_cfgver");
+		if (!ver || ver.GetInt() >= 1) return;
+		let c = CVar.FindCVar("rsqdg_path_speed"); if (c) c.SetFloat(22.0);
+		c = CVar.FindCVar("rsqdg_path_tmax");      if (c) c.SetFloat(40.0);
+		c = CVar.FindCVar("rsqdg_path_arc");       if (c) c.SetFloat(0.25);
+		c = CVar.FindCVar("rsqdg_tumble");         if (c) c.SetFloat(1.0);
+		ver.SetInt(1);
+	}
+
 	override void WorldLoaded(WorldEvent e)
 	{
+		Migrate();
 		target[0] = null; target[1] = null;
 		primed[0] = false; primed[1] = false;
 		framePrimed = false;

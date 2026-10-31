@@ -106,6 +106,7 @@ class RSQDG_Hold : EventHandler
 	// away from where it is stuck. Let go of it there, rather than tow it
 	// through the geometry or keep it straining for ever.
 	const BREAK_TICS = 18;
+	private double armPeak[2];      // the arm's recent top speed, m/s (the throw lets go after it)
 
 	// A palm that moves further than this in one tic did not move, it was
 	// moved -- a teleport, a level-start pose. No feed-forward from that.
@@ -331,6 +332,10 @@ class RSQDG_Hold : EventHandler
 		double kg = RSQDG_Mass.Kg(a);
 		double arm = max(1.0, RSQDG_Reach.Num("rsqdg_arm_kg", p, 30.0));
 		v *= arm / (arm + kg);
+		// THE THROWING BOOST (owner 2026-10-31: "let me have a throwing boost so I can chuck a barrel a reasonable
+		// distance"): a VR arm swings at a fraction of a real throw's speed and has none of the body behind it, so
+		// the release is multiplied -- weight still divides it first, so a barrel still goes shorter than a clip.
+		v *= max(0.0, RSQDG_Reach.Num("rsqdg_throw_boost", p, 2.5));
 
 		// THE ARM'S PART IS MEASURED AGAINST THE BODY (aim.zs), so walking is
 		// not a throw. But a real throw thrown while running carries the run:
@@ -493,6 +498,22 @@ class RSQDG_Hold : EventHandler
 			lastPalm[h] = palm;
 			lastBody[h] = pmo.Pos;
 			havePalm[h] = true;
+
+			// THROWING NEEDS NO SECOND GESTURE (owner 2026-10-31: "throwing right now doesn't work, everything just
+			// instantly falls"). Letting go was the palm rolled back, and by the time a player has thrown AND rolled
+			// the palm the throw's speed has left the window it is read from, so it dropped at the feet. Now the
+			// throw lets go by itself: the arm past rsqdg_auto_throw m/s, and then slowing (its peak passed, as a
+			// real throw lets go) -- released with the peak's speed. 0 is the old way (the palm decides).
+			double autoMps = RSQDG_Reach.Num("rsqdg_auto_throw", p, 2.5);
+			double nowMps = RSQDG_Reach.Metres(armVel) * TICRATE;
+			armPeak[h] = max(armPeak[h] * 0.85, nowMps);
+			if (autoMps > 0 && armPeak[h] >= autoMps && nowMps < armPeak[h] * 0.6)
+			{
+				armPeak[h] = 0;
+				if (RSQDG_Reach.Flag("rsqdg_debug", p, false)) Console.Printf("[RSQDG] hand %d: the throw lets go", h);
+				Release(h, p);
+				continue;
+			}
 
 			UpdateSag(h, a, armVel, p);
 			Turn(h, a, pmo, p);

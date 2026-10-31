@@ -188,6 +188,9 @@ user bool rsqdg_catch_takes = true;
 // Scales the differenced palm velocity. There is no native hand velocity on
 // this engine, so the peak of a short window is differenced from the pose.
 user float rsqdg_throw_scale = 1.0;
+user float rsqdg_throw_boost = 2.5;    // the throw's speed is multiplied by this (after weight divides it): chuck a barrel
+user float rsqdg_auto_throw  = 2.5;    // m/s: an arm swung past this lets go by itself as it slows (0 = only the palm lets go)
+user float rsqdg_throw_stun  = 20.0;   // damage from a thrown thing that knocks a monster into its pain and shoves it
 
 // THE ARM HAS MASS TOO. Let go and the object keeps arm/(arm+kg) of the hand's
 // speed: a keycard leaves at hand speed, a 60 kg barrel at a third of it.
@@ -277,15 +280,17 @@ user float rsqdg_door_gain   = 2.5;     // door travel per unit of hand travel
 // (its CVARINFO and code), not a new number.
 //
 // The pull's path, rsqdg_flight_mode 2 (rs_distance.zs RS_Pull):
-server float rsqdg_path_speed = 15.0;   // metres/sec; the time of flight is distance / this
+server float rsqdg_path_speed = 22.0;   // metres/sec; the time of flight is distance / this (was 15: owner 10-31, "quicker")
 server float rsqdg_path_tmin  = 6.0;    // tics, the shortest flight
-server float rsqdg_path_tmax  = 70.0;   // tics, the longest
+server float rsqdg_path_tmax  = 40.0;   // tics, the longest (was 70)
 server float rsqdg_path_accel = 1.6;    // e = t^this: 1 is constant speed, above 1 starts slow (it is PULLED)
-server float rsqdg_path_arc   = 0.15;   // arc height as a fraction of the launch distance, capped by the route's ceiling
+server float rsqdg_path_arc   = 0.25;   // arc height as a fraction of the launch distance, capped by the route's ceiling (was 0.15)
+server float rsqdg_path_smooth = 0.6;   // how much of the flight eases in and settles softly into the hand (0 = the old pull curve)
+server float rsqdg_spin       = 1.0;    // turns about its own up across a pull, as well as the tumble (0 off)
 // End-over-end turns across the whole pull, every flight mode. WorldHands' shipped
 // default 0.5 ("beautiful" in the headset); whole numbers land the way they left,
 // a half turn snaps 180 degrees on the catch (invisible on a barrel). 0 off.
-server float rsqdg_tumble     = 0.5;
+server float rsqdg_tumble     = 1.0;   // (was 0.5: a whole turn lands the way it left)
 // Everything that leaves a hand, thrown or set down (rs_flight.zs RS_Flight):
 server float rsqdg_air_gravity = 0.27;  // fraction of Doom's gravity it falls at; 0.27 is real gravity, 1 is Doom's
 server float rsqdg_air_flutter = 0.35;  // units/tic of sideways wobble a MASSDEF `flutter` thing gets
@@ -293,3 +298,4 @@ server int   rsqdg_air_maxtics = 1400;  // world tics before the air lets go of 
 // The carry (rs_held.zs):
 server bool  rsqdg_hold_turn  = true;   // a held thing tips with your wrist (a voxel turns all three ways)
 server float rsqdg_hold_sag   = 1.0;    // heavy things hang lower and dip when swung. 0 off
+user int   rsqdg_cfgver     = 0;     // settings generation (not a setting): each fix to old settings runs once

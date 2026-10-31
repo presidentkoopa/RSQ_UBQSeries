@@ -75,6 +75,7 @@ class RSQDG_Flight : EventHandler
 	private double tumTurns[2];
 	private bool   tumSprite[2], tumCentre[2], tumInterp[2], tumVoxel[2];
 	private double tumRoll[2];
+	private double tumAngle[2], tumSpin[2];   // and turning about its own up (rsqdg_spin turns a flight), put back on the catch
 	private Vector3 tumOfs[2];
 
 	// ---- THE BORROWED STATE, AND EXACTLY ONE OWNER OF THE BACKUP ------------
@@ -768,7 +769,12 @@ class RSQDG_Flight : EventHandler
 	{
 		double t = min(1.0, double(flyTic[h]) / double(max(1, flyTotal[h])));
 		double acc = max(0.25, RSQDG_Reach.Num("rsqdg_path_accel", p, 1.6));
-		double e = t ** acc;
+		// SMOOTHER (owner 2026-10-31: "smoother, quicker ... some life"): the pulled curve (slow, then fast) blended
+		// with an ease that starts and lands softly, rsqdg_path_smooth of the second: it leaves the floor with a
+		// tug, flies, and settles into the hand instead of slamming into it.
+		double sm = clamp(RSQDG_Reach.Num("rsqdg_path_smooth", p, 0.6), 0.0, 1.0);
+		double soft = t * t * t * (t * (t * 6.0 - 15.0) + 10.0);
+		double e = (t ** acc) * (1.0 - sm) + soft * sm;
 		// HOMES TO WHERE YOUR HAND IS NOW, re-read every tic.
 		Vector3 pos = flyFrom[h] + (palm - flyFrom[h]) * e;
 		pos.z += 4.0 * flyArcH[h] * e * (1.0 - e);
@@ -807,6 +813,8 @@ class RSQDG_Flight : EventHandler
 		tumCentre[hand] = a.bROLLCENTER;
 		tumInterp[hand] = a.bINTERPOLATEANGLES;
 		tumRoll[hand]   = a.Roll;
+		tumAngle[hand]  = a.Angle;
+		tumSpin[hand]   = RSQDG_Reach.Num("rsqdg_spin", p, 1.0);
 		tumOfs[hand]    = a.WorldOffset;
 		tumVoxel[hand]  = false;
 		tumTurns[hand]  = RSQDG_Reach.Num("rsqdg_tumble", p, 0.5);
@@ -836,6 +844,7 @@ class RSQDG_Flight : EventHandler
 		a.bROLLCENTER = tumCentre[hand];
 		a.bINTERPOLATEANGLES = tumInterp[hand];
 		a.Roll = tumRoll[hand];
+		if (tumSpin[hand] != 0) a.Angle = tumAngle[hand];
 		a.WorldOffset = tumOfs[hand];
 		if (tumVoxel[hand]) a.ResetModelFlags();
 		tumVoxel[hand] = false;
@@ -852,6 +861,8 @@ class RSQDG_Flight : EventHandler
 		                      : Progress(h);
 		double before = a.Roll;
 		a.Roll = tumRoll[h] + tumTurns[h] * 360.0 * t;
+		// ALIVE: it spins about its own up as well as end over end, fastest mid-flight (a voxel or a model shows it)
+		if (tumSpin[h] != 0) a.Angle = tumAngle[h] + tumSpin[h] * 360.0 * (t * t * (3.0 - 2.0 * t));
 		if (tumVoxel[h]) a.WorldOffset = tumOfs[h] + RSQDG_Turn.Fix(a, savedHeight[h] * 0.5, false, (before + a.Roll) * 0.5);
 	}
 

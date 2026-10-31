@@ -480,6 +480,16 @@ class RSQDG_Throw : EventHandler
 		// and infighting both go to whoever threw it, and the kick comes from
 		// the direction the object was travelling.
 		t.DamageMobj(a, wBy[i], dmg, 'Melee');
+		// A HEAVY HIT STAGGERS (owner 2026-10-31: "throw kills with weight"): what a thrown thing hits hard enough and
+		// lives is knocked into its Pain -- the attack it was winding up is broken off -- and shoved the way it flew.
+		if (t && t.Health > 0 && t.bISMONSTER && dmg >= RSQDG_Reach.Num("rsqdg_throw_stun", p, 20.0))
+		{
+			State pain = t.FindState("Pain");
+			if (pain && !t.InStateSequence(t.CurState, pain)) t.SetState(pain);
+			double push = min(12.0, RSQDG_Mass.Kg(a) * speedMps / max(50.0, double(t.Mass)) * 2.0);
+			Vector2 dir = a.Vel.xy.Length() > 0.01 ? a.Vel.xy.Unit() : (0, 0);
+			if (!t.bDONTTHRUST) t.Vel.xy += dir * push;
+		}
 		if (RSQDG_Reach.Flag("rsqdg_debug", p, false))
 			Console.Printf("[RSQDG] thrown %s hit %s at %.1f m/s for %d", an, tn, speedMps, dmg);
 		RSQDG_Events.Tell("throw.hit", wHand[i], t);   // t may be gone (gibbed): null then
