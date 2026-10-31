@@ -1,0 +1,91 @@
+version "4.14"
+// TEST ONLY (never ships). Tactical Rig rig probe.
+//   trp_mode 1: an idle imp trp_dist units straight ahead of the start (north); its damage and state logged.
+//   trp_mode 3: finds the map's first locked door (Line.locknumber or a locked special), stands the player
+//               40 units in front of it facing it, and logs the line and the sector's ceiling every 10 tics.
+class RSQTRProbe : EventHandler
+{
+	Actor imp;
+	int setup;
+	Line door;
+	override void WorldThingDamaged(WorldEvent e)
+	{
+		if (!imp || e.Thing != imp) return;
+		String s = "-", i = "-";
+		if (e.DamageSource) s = e.DamageSource.GetClassName();
+		if (e.Inflictor) i = e.Inflictor.GetClassName();
+		Console.Printf("trp: t%d imp damaged %d type %s source %s inflictor %s hp %d", level.maptime, e.Damage, e.DamageType, s, i, imp.health);
+	}
+	override void WorldTick()
+	{
+		let mo = players[0].mo;
+		if (!mo) return;
+		let cv = CVar.FindCVar('trp_mode');
+		int mode = cv ? cv.GetInt() : 0;
+		if (mode == 1 && !setup && level.maptime > 15)
+		{
+			setup = 1;
+			double d = CVar.FindCVar('trp_dist').GetFloat();
+			imp = Actor.Spawn("DoomImp", mo.pos + (0, d, 0), ALLOW_REPLACE);
+			if (imp) { imp.angle = 270; Console.Printf("trp: imp %s hp %d at (%.0f %.0f %.0f) mass %d, player (%.0f %.0f)", imp.GetClassName(), imp.health, imp.pos.x, imp.pos.y, imp.pos.z, imp.mass, mo.pos.x, mo.pos.y); }
+		}
+		if (imp && (imp.vel.xy.Length() > 0.1 || imp.freezetics > 0))
+			Console.Printf("trp: t%d imp y %.1f vel (%.1f %.1f) freeze %d hp %d", level.maptime, imp.pos.y, imp.vel.x, imp.vel.y, imp.freezetics, imp.health);
+		if (mode == 3 && !setup && level.maptime > 15)
+		{
+			setup = 1;
+			int nl = 0;
+			for (int k = 0; k < level.Lines.Size(); k++)
+			{
+				let ln = level.Lines[k];
+				if (!RSQTR_Keyring.IsLocked(ln)) continue;
+				nl++;
+				if (!door) door = ln;
+			}
+			Console.Printf("trp: %d locked lines", nl);
+			if (door)
+			{
+				Vector2 mid = door.v1.p + door.delta * 0.5;
+				Vector2 nrm = (door.delta.y, -door.delta.x).Unit();   // the front side (right of v1->v2)
+				Vector2 at = mid + nrm * 22;
+				mo.SetOrigin((at.x, at.y, mo.pos.z), false);
+				mo.SetZ(mo.floorz);
+				mo.angle = atan2(-nrm.y, -nrm.x);
+				Console.Printf("trp: door line %d special %d args %d %d %d %d %d lock %d mid (%.0f %.0f) player at (%.0f %.0f) angle %.0f", door.Index(), door.special, door.args[0], door.args[1], door.args[2], door.args[3], door.args[4], door.locknumber, mid.x, mid.y, mo.pos.x, mo.pos.y, mo.angle);
+			}
+		}
+		// trp_mode 4: a copy of holster 2's (region 4's) number screen held 30 units in front of the eye, 3x size
+		if (mode == 4 && level.maptime > 40)
+		{
+			if (!imp) imp = Actor.Spawn(CVar.FindCVar("trp_cls").GetString(), mo.pos);
+			Vector3 at = (mo.pos.x, mo.pos.y + 30, players[0].viewz);
+			imp.SetOrigin(at, true);
+			imp.angle = 270; imp.pitch = 0;
+			imp.Scale = (3, 3);
+			imp.alpha = 1;
+			if (CVar.FindCVar("trp_dist").GetFloat() < 0) imp.A_SetRenderStyle(1, STYLE_Normal);
+		}
+		if (level.maptime % 35 == 0)
+		{
+			let rig = RSQTR_Rig.Get();
+			for (int r = 0; r < 8 && rig; r++)
+			{
+				String c = rig.Content(mo, r);
+				Vector3 ra = rig.RegionAt(mo, r);
+				if (c != "") Console.Printf("trp: t%d holster %d holds %s at (%.0f %.0f %.0f)", level.maptime, r, c, ra.x, ra.y, ra.z);
+			}
+			let it = ThinkerIterator.Create("RSQTR_AmmoDigit");
+			Actor a;
+			while (a = Actor(it.Next()))
+				Console.Printf("trp: t%d %s at (%.1f %.1f %.1f) hidden %d scale %.3f alpha %.2f angle %.0f pitch %.0f; eye (%.0f %.0f %.0f)", level.maptime, a.GetClassName(), a.pos.x, a.pos.y, a.pos.z, a.bINVISIBLE, a.Scale.X, a.Alpha, a.angle, a.pitch, mo.pos.x, mo.pos.y, players[0].viewz);
+		}
+		if (mode == 3 && door && level.maptime % 10 == 0)
+		{
+			let kr = RSQTR_Keyring(EventHandler.Find("RSQTR_Keyring"));
+			if (kr && kr.ring) Console.Printf("trp: t%d ring at (%.0f %.0f %.0f) hidden %d, keys in hand %d", level.maptime, kr.ring.pos.x, kr.ring.pos.y, kr.ring.pos.z, kr.ring.bINVISIBLE, kr.keysIn);
+			else Console.Printf("trp: t%d no ring", level.maptime);
+			let bs = door.backsector;
+			Console.Printf("trp: t%d door ceiling %.0f floor %.0f, player (%.0f %.0f) angle %.0f, hands (%.0f %.0f %.0f) (%.0f %.0f %.0f)", level.maptime, bs ? bs.ceilingplane.ZAtPoint(bs.centerspot) : -1, bs ? bs.floorplane.ZAtPoint(bs.centerspot) : -1, mo.pos.x, mo.pos.y, mo.angle, mo.AttackPos.x, mo.AttackPos.y, mo.AttackPos.z, mo.OffhandPos.x, mo.OffhandPos.y, mo.OffhandPos.z);
+		}
+	}
+}

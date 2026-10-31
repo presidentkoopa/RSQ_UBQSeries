@@ -35,11 +35,18 @@ with Brutal Doom VR, its VR grenade (the off hand pulls the pin, you throw it by
 and get your gun. Its light is your grenade count: green 2+, yellow 1, red none.
 
 **Throw a gun away:** grip with the hand swinging fast, outside every holster: the gun flies from that hand and lands
-as a pickup you can take again (*Throw Swing Speed*).
+as a pickup you can take again (*Throw Swing Speed*). **A thrown gun that hits a monster hurts it** and staggers it
+(a flinch, a short freeze, a shove): harder the heavier the gun and the faster the throw. The weight is read off the gun
+itself (its pickup's size); *Thrown Guns Hurt*, *Thrown Gun Damage*.
 
 **Keyring:** the keys you carry hang on a steel ring on the front of your belt, off-hand side, as the keys themselves.
+*Keys Open Doors by Hand* (off by default): grip the ring and the keys come into that hand while you hold the grip;
+touch them to a locked door and it opens, if one of them fits (the game's own lock check, and its own "you need a
+key" when none does).
 
 **Quick swap, kept holsters, ammo light, new guns to a holster:** see *Rig Options*.
+*Ammo Count on Holsters* (off by default): while a full holster's ring shows, its gun's rounds float just above it
+as a small number in the ammo light's colour (the magazine for a gun that has one).
 
 **Feedback:** a wireframe sphere shows each holster when a hand is near (or always; *Holster
 Rings*), green with your hand inside; its idle colour is the holster profile in use. The gun

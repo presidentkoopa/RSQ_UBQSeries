@@ -17,6 +17,100 @@ class RSQTR_Keyring : EventHandler
 	transient Actor keyShow[MAXK];
 	transient Vector2 swing;    // the fan's sway, map units (follows the body's motion, springs back)
 
+	// ---- KEYS TO A DOOR (owner's pick 17, 2026-10-31; off by default, rsqtr_key_doors) ----------------------------
+	// Grip at the ring and the keys come off it into that hand (drawn there while the grip is held); touch them to a
+	// locked door and it is used, through the engine's own lock check: Line.Activate(player, side, SPAC_Use)
+	// (Quest teardown surveys/06_GRAB_INTERACTION.md 4.7: mapdata.zs:239 -> p_spec.cpp P_ActivateLine, which runs the
+	// key check and the switch texture). No key that fits: the engine's own "you need a key" and nothing opens.
+	// The touch is found on this machine (its hands), the door is opened in the sim from a network event.
+	const TOUCH_M = 0.12;       // metres from the hand to the door's line that counts as touching it
+	const GRAB_M = 0.12;        // metres from the hand to the ring that takes the keys
+	transient int keysIn;       // the hand holding the keys + 1 (0 = on the ring)
+	transient bool gripWas[2];
+	transient int lastLine, lastLineTic;
+
+	// a line whose use needs a key: a lock number (UDMF), or one of the locked specials' lock argument
+	static bool IsLocked(Line ln)
+	{
+		if (!ln || !(ln.activation & SPAC_Use)) return false;
+		if (ln.locknumber > 0) return true;
+		switch (ln.special)
+		{
+			case 13:  return ln.args[3] > 0;     // Door_LockedRaise (tag, speed, delay, lock)
+			case 202: return ln.args[4] > 0;     // Generic_Door (tag, speed, kind, delay, lock)
+			case 83:  return ln.args[4] > 0;     // ACS_LockedExecute (script, map, a1, a2, lock)
+			case 85:  return ln.args[4] > 0;     // ACS_LockedExecuteDoor
+		}
+		return false;
+	}
+
+	static double SegDist(Vector2 p, Line ln)
+	{
+		Vector2 a = ln.v1.p, d = ln.delta;
+		double dd = d dot d;
+		double f = dd > 0 ? clamp(((p - a) dot d) / dd, 0.0, 1.0) : 0.0;
+		return (p - (a + d * f)).Length();
+	}
+
+	// this machine's hands: take the keys, touch a door
+	private Vector3 KeysTick(PlayerPawn pmo, PlayerInfo p, RSQTR_Rig rig, Vector3 ringAt)
+	{
+		if (!RSQTR_Rig.Flag("rsqtr_key_doors", p, false)) { keysIn = 0; return ringAt; }
+		int n = consoleplayer;
+		for (int h = 0; h < 2; h++)
+		{
+			bool g = rig.gripDown[n * 2 + h];
+			bool press = g && !gripWas[h];
+			gripWas[h] = g;
+			if (press && RSQTR_Rig.Flag("rsqtr_messages", p, false))
+				Console.Printf("T_KEYS grip %d t%d, %.2f m from the ring", h, level.maptime, RSQTR_Body.RoomMetres(RSQTR_Body.Hand(pmo, h), ringAt));
+			if (press && keysIn == 0 && RSQTR_Body.RoomMetres(RSQTR_Body.Hand(pmo, h), ringAt) <= GRAB_M)
+			{
+				keysIn = h + 1;
+				RSQTR_Buzzer.Start(pmo, h, 0.3, 3);
+				if (RSQTR_Rig.Flag("rsqtr_messages", p, false)) Console.Printf("T_KEYS in hand %d t%d", h, level.maptime);
+			}
+			if (!g && keysIn == h + 1) keysIn = 0;
+		}
+		if (keysIn == 0) return ringAt;
+		Vector3 hand = RSQTR_Body.Hand(pmo, keysIn - 1);
+		double reach = TOUCH_M * RSQTR_Body.Upm();
+		let it = BlockLinesIterator.CreateFromPos(hand, 64, reach + 16);
+		Line best = null; double bd = reach;
+		while (it.Next())
+		{
+			let ln = it.CurLine;
+			if (!IsLocked(ln)) continue;
+			double dd = SegDist(hand.xy, ln);
+			if (dd <= bd) { bd = dd; best = ln; }
+		}
+		if (best && (best.Index() != lastLine || level.maptime - lastLineTic > 35))
+		{
+			lastLine = best.Index(); lastLineTic = level.maptime;
+			int side = level.PointOnLineSide(pmo.pos.xy, best);
+			EventHandler.SendNetworkEvent("rsqtr_keydoor", best.Index(), side);
+			RSQTR_Buzzer.Start(pmo, keysIn - 1, 0.6, 5);
+		}
+		return hand;
+	}
+
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		if (e.Name != "rsqtr_keydoor") return;
+		int n = e.Player;
+		if (n < 0 || n >= MAXPLAYERS || !playeringame[n]) return;
+		let pmo = players[n].mo;
+		if (!pmo || pmo.health <= 0 || !RSQTR_Rig.Flag("rsqtr_key_doors", players[n], false)) return;
+		int li = e.Args[0];
+		if (li < 0 || li >= level.Lines.Size()) return;
+		Line ln = level.Lines[li];
+		// in arm's reach of the body, as the sim sees it: the event says which door, never lets a far one open
+		if (!IsLocked(ln) || SegDist(pmo.pos.xy, ln) > pmo.radius + 48) return;
+		bool ok = ln.Activate(pmo, e.Args[1] & 1, SPAC_Use);
+		if (RSQTR_Rig.Flag("rsqtr_messages", players[n], false))
+			Console.Printf("T_KEYDOOR t%d line %d: Line.Activate returned %d (the engine runs the lock check itself)", level.maptime, li, ok);
+	}
+
 	override void WorldTick()
 	{
 		let p = players[consoleplayer];
@@ -31,6 +125,7 @@ class RSQTR_Keyring : EventHandler
 
 		double side = RSQTR_Body.LayoutLeft() ? -1 : 1;     // the off-hand side: left for a right-hander
 		Vector3 at = rig.BodyPoint(pmo, RING_F, RING_L * side, RING_U);
+		Vector3 keysAt = KeysTick(pmo, p, rig, at);
 		let body = rig.GetBody();
 		double yaw = (body && body.primed) ? body.yaw : pmo.angle;
 
@@ -58,7 +153,7 @@ class RSQTR_Keyring : EventHandler
 			double off = (k - (n - 1) * 0.5) * SPREAD * upm;
 			// a key stands on its origin, so it hangs with its top at the ring: its whole height below it
 			double drop = (0.02 + KEY_H + 0.008 * abs(k - (n - 1) * 0.5)) * upm / RSQTR_Body.Ps();
-			Vector3 kp = at + (across.x * off + swing.x, across.y * off + swing.y, -drop);
+			Vector3 kp = keysAt + (across.x * off + swing.x, across.y * off + swing.y, -drop);
 			ks.Show(keys[k].GetClassName(), KEY_H * upm);
 			ks.SetOrigin(kp, true);
 			ks.angle = yaw + 180;     // facing you
