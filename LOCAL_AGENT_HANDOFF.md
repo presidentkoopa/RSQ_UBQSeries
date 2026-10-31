@@ -82,6 +82,12 @@ Four cloud agents are building the owner's "QoL round" picks (PICKS_2026-10-31.m
 `git log` on main shows each one as a "Merge ..." commit when it lands. Pull before you start, and again before you
 touch any of those folders.
 
+**Update, 16:05 (owner hit his usage limit):** none of the four had landed. Their unfinished work was saved as
+branches on GitHub, NOT merged and NOT checked: `wip/qol-ac88b78a5c7330b23` (SlowMo + Grapple),
+`wip/qol-ac75011aa06e62265` (HP Bars + Wheel), `wip/qol-a6716df7e75b837d8` (Gestures + GunCards, barely started:
+Gestures only), `wip/qol-adc7d7bdd8b658147` (Accessibility, incl. the Steady Hands service). Treat them as
+drafts: read the diff, finish, test, then merge to main yourself. main and pk3/ do not contain any of it.
+
 ## 5. Task A: wire Steady Hands into the mods that aim (do after the Accessibility lane is merged)
 
 **What the owner asked:** "steadier hands would be great in general" (pick AC6, ON by default).
