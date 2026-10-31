@@ -82,10 +82,9 @@ Four cloud agents are building the owner's "QoL round" picks (PICKS_2026-10-31.m
 `git log` on main shows each one as a "Merge ..." commit when it lands. Pull before you start, and again before you
 touch any of those folders.
 
-**Update, 16:05 (owner hit his usage limit):** none of the four had landed. Their unfinished work was saved as
-branches on GitHub, NOT merged and NOT checked: `wip/qol-ac75011aa06e62265` (HP Bars + Wheel), Accessibility, SlowMo + Grapple and Gestures + GunCards have since FINISHED and are merged to main (Steady Hands service included: see Accessibility/zscript/rsqa_qol.zs
-and tools/a11y_template.zs, which each mod's `<PREFIX>_A11y` file is regenerated from). Treat the remaining one (HP Bars + Wheel) as
-drafts: read the diff, finish, test, then merge to main yourself. main and pk3/ do not contain any of it.
+**Update, evening:** all four QoL lanes FINISHED and are merged to main and pk3/ (all 15 RSQ pk3s loaded together in the
+BD order: no script errors from them; the Wheel ring opened and closed). The `wip/qol-*` branches on GitHub are stale
+snapshots; ignore them (they couldn't be deleted from here).
 
 ## 5. Task A: wire Steady Hands into the mods that aim (do after the Accessibility lane is merged)
 
@@ -199,3 +198,6 @@ controller.
 - Brutal Doom VR's long-gun butt strike is OFF by default in BD itself (`rsq_butt 0`); only the pistol whip is on. The
   owner loves the butt shove: ask him whether he wants `rsq_butt` on (it's BD22Q's setting, his own mod).
 - GunCards pk3 grew 10.6 -> 13.2 MB (two new watch-card rows). Watch Quest load time.
+- Wheel WH2 (shared-ammo names): names were cut to 10 characters after the rig check; check the sheet reads well.
+- HP Bars HP8 (raised marker): Brutal Doom's own Arch-Vile leaves a separate corpse actor for BD's imp, so BD monsters
+  may never show the marker; it showed on a stock imp.

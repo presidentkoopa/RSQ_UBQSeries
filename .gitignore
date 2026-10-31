@@ -4,3 +4,5 @@
 
 # agent worktrees (temporary, never committed)
 .claude/
+__pycache__/
+*.pyc
