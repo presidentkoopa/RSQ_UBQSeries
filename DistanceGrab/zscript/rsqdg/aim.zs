@@ -109,6 +109,17 @@ class RSQDG_Aim : EventHandler
 		// The jump test uses the same frame, so a teleporter or a fast lift no
 		// longer reads as tracking having lied.
 		poseTrusted = true;
+		// A SAVE COLLAPSES THE POSE FOR ONE TIC, and the jump test below cannot see it. The savegame
+		// picture is rendered through the MONO VRMode::SetUp (hw_entrypoint.cpp:142, toscreen false),
+		// which writes BOTH hands to the pawn's attack point, yaw - 90 and -pitch (hw_vrmodes.cpp:438-443),
+		// and the playsim reads that before the next VR frame puts the hands back. Half a metre: under
+		// rsqdg_jump_m, so a barrel held through a save was thrown at 5.6 m/s (rig, 2026-10-30). Two
+		// real controllers never share one exact position and angle; that is the test. On the tic it
+		// APPEARS only, so a flat-screen run (collapsed on every frame) is not blinded for good.
+		bool same = pmo.AttackPos == pmo.OffhandPos && pmo.AttackAngle == pmo.OffhandAngle && pmo.AttackPitch == pmo.OffhandPitch;
+		bool collapsed = same && !wasSame;
+		wasSame = same;
+		if (collapsed) poseTrusted = false;
 		double ang = pmo.Angle;
 		double hy0 = RSQDG_Reach.Yaw(pmo, 0);
 		double hy1 = RSQDG_Reach.Yaw(pmo, 1);
@@ -176,6 +187,8 @@ class RSQDG_Aim : EventHandler
 		// zero on a tic it cannot trust.
 		SampleWrist(pmo, 0, poseTrusted);
 		SampleWrist(pmo, 1, poseTrusted);
+		// and the tic after must not difference against the collapsed pose (a throw, or a flick)
+		if (collapsed) { primed[0] = false; primed[1] = false; pitchPrimed[0] = false; pitchPrimed[1] = false; }
 
 		// Hold last tic's answer through a bad pose rather than acquiring from
 		// the body. Every consumer must do the same: a carry that recomputed
@@ -187,6 +200,7 @@ class RSQDG_Aim : EventHandler
 		target[1] = RSQDG_Cone.Best(pmo, p, 1);
 	}
 
+	private bool wasSame;          // last tic both hands were written to one point (a collapse)
 	private Vector3 lastRel[2];   // palm relative to the pawn, in the tracking frame
 	private transient int lastCtrl[2];   // the controller each hand was read from last tic
 	private bool    primed[2];

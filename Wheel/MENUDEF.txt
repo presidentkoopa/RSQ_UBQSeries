@@ -53,7 +53,6 @@ OptionValue "wr_WheelMode"
 OptionMenu wr_Options
 {
 	Title "RSQ Wheel"
-
 	// WHICH WHEEL YOU GET. First row because it decides whether anything else
 	// on this page does anything.
 	//
@@ -61,11 +60,62 @@ OptionMenu wr_Options
 	// the engine's own wheel. Mirrored onto wr_suppress_native_wheel as
 	// (wr_wheel_mode != 2) -- NOT (== 1), or picking "Off" would un-suppress
 	// the native wheel and hand you the engine's ring when you asked for none.
-	StaticText ""
+
 	StaticText "Master", gold
 	Option "Weapon wheel",              "wr_wheel_mode",   "wr_WheelMode"
 	Option "Either hand picks",         "wr_either_hand",  "OnOff"
 	Option "  Two hands compare",       "wr_twohand_compare", "OnOff"
+	Option "Wrist card",                "wr_watch",        "OnOff"
+	Option "Open at level start",       "wr_autoopen",     "OnOff"
+	Slider "Overall scale",             "wr_scale",        0.3, 3.0, 0.05, 2
+
+	StaticText "Look", gold
+	Option "Palette",                   "wr_palette",      "wr_Palettes"
+	TextField "  or a palette by name",  "wr_palette"
+	Option "Font",                      "wr_fontset",      "wr_FontSets"
+	TextField "  or a font set by name", "wr_fontset"
+
+	StaticText "Feel", gold
+	// The rig is worn where you cannot comfortably look at it, so the ear and
+	// the wrist do most of the work of saying what just happened.
+	Option "Sound",                     "wr_sound",        "OnOff"
+	// vr_enable_haptics still overrules this, so turning rumble off in the
+	// engine cannot be undone from here.
+	Slider "Controller rumble",         "wr_haptics",      0.0, 2.0, 0.1, 1
+
+	StaticText "Controls", gold
+	// Whichever hand you summon it on is the hand that wears it, points at it,
+	// and receives what you pick -- so the bind already says which hand you
+	// meant and there is no handedness setting to get wrong.
+	Control "Off hand wheel",           "wr_toggle_off"
+	Control "Main hand wheel",          "wr_toggle_main"
+	// Both binds still work as their own keys once a ring is open --
+	// this only decides which hand an EMPTY-handed press opens on, for
+	// a player who always means the same one regardless of which key
+	// they actually reached for.
+	Option "Always open on",            "wr_toggle_prefer_hand", "wr_ToggleHandPref"
+	// Pressing the same hand's key again just after opening recenters the
+	// ring on your hand instead of closing it -- 0 turns this off, the key
+	// always closes.
+	Slider "Recenter window, tics (0 = off)", "wr_recenter_window", 0, 35, 5, 1
+
+	StaticText ""
+	Submenu "Picking and timing...",      "wr_Pick"
+	Submenu "Placement...",               "wr_Place"
+	Submenu "Cards...",                   "wr_Cards"
+	Submenu "Ring layout and effects...", "wr_Ring"
+	Submenu "Data sheet and inspect...",  "wr_Sheet"
+	Submenu "Taking a weapon...",         "wr_Take"
+	Submenu "The room (REMA only)...",    "wr_Room"
+	Submenu "Tuning and Debug",           "wr_Debug"
+
+}
+
+OptionMenu wr_Pick
+{
+	Title "RSQ Wheel - Picking"
+
+	StaticText "Picking", gold
 	Slider "Pull a card out (speed, 0 off)", "wr_pull_speed", 0.0, 4.0, 0.1, 1
 	Slider "Throw a gun back (speed, 0 off)", "wr_throw_speed", 0.0, 5.0, 0.1, 1
 	Slider "Hold to pick (tics)",       "wr_hold_tics",    3, 35, 1, 0
@@ -74,24 +124,32 @@ OptionMenu wr_Options
 	Slider "Ring follows past (degrees, 0 off)", "wr_follow", 0, 120, 5, 0
 	Option "Cancel existing SlowMo on exit", "wr_slowmo_cancel", "OnOff"
 
-	StaticText ""
 	StaticText "Wrist card", gold
 	StaticText "Check your watch: the gun in that hand shows its card.", "DarkGray"
-	Option "Wrist card",                "wr_watch",        "OnOff"
 	Slider "  Hold the pose (tics)",    "wr_watch_dwell",  2, 30, 1, 0
 	Slider "  Size",                    "wr_watch_scale",  0.5, 2.0, 0.1, 1
 
-	StaticText ""
-	StaticText "Behaviour", gold
-	Option "Open at level start",       "wr_autoopen",     "OnOff"
+	StaticText "Folding", gold
 	Slider "Seconds before it folds",   "wr_locktics",     35, 700, 35, 0
 	Slider "Warning before it folds (0 = off)", "wr_warn_tics", 0, 105, 35, 0
 
-	StaticText ""
-	StaticText "Size", gold
-	Slider "Overall scale",             "wr_scale",        0.3, 3.0, 0.05, 2
+	StaticText "Reach", gold
+	// Depth tolerance more than reach: how far in front of or behind the grid
+	// your hand may sit and still register.
+	// 0 turns reaching off and leaves the beam as the only way in. Drop
+	// wr_forward toward 0 to bring the ring into actual arm reach.
+	Slider "Reach-in radius (0 = off)", "wr_touch",        0.0, 20.0, 0.5, 1
+	Slider "Stick deadzone",            "wr_stickdead",    0.05, 0.9, 0.05, 1
 
-	StaticText ""
+	StaticText "Integration", gold
+	Option "Slow time while open (BulletTimeX)", "wr_bullettime", "OnOff"
+
+}
+
+OptionMenu wr_Place
+{
+	Title "RSQ Wheel - Placement"
+
 	StaticText "Placement", gold
 	// Every one of these is live -- open the rig and drag a slider and the next
 	// tic has it. That is the whole reason they are sliders and not constants.
@@ -103,6 +161,7 @@ OptionMenu wr_Options
 	// from how you hold it, so raw wrist roll swings the ring behind you.
 	Slider "Wrist roll spins the ring", "wr_roll",         0.0, 1.0, 0.05, 2
 
+	StaticText ""
 	// Closes the ENGINE'S OWN native VR wheels the instant any of the three
 	// tries to open -- ours already replaces two of them and the third is
 	// meant to route through this mod's own gesture instead. Off if you
@@ -111,16 +170,12 @@ OptionMenu wr_Options
 	StaticText "REMA only -- QuestZDoom has no native wheel", "DarkGray"
 	Option "Block the engine's native VR wheels", "wr_suppress_native_wheel", "OnOff"
 
-	StaticText ""
+}
 
-	StaticText ""
-	StaticText "Look", gold
-	Option "Palette",                   "wr_palette",      "wr_Palettes"
-	TextField "  or a palette by name",  "wr_palette"
-	Option "Font",                      "wr_fontset",      "wr_FontSets"
-	TextField "  or a font set by name", "wr_fontset"
+OptionMenu wr_Cards
+{
+	Title "RSQ Wheel - Cards"
 
-	StaticText ""
 	StaticText "Cards", gold
 	Slider "Card width",                "wr_panel_w",      1.0, 12.0, 0.25, 2
 	Slider "Card height",               "wr_panel_h",      1.0, 12.0, 0.25, 2
@@ -176,7 +231,56 @@ OptionMenu wr_Options
 	Option "  Sprite shadow",           "wr_canvas_shadow", "OnOff"
 	Slider "  Scanlines",               "wr_canvas_scan",   0.0, 0.8, 0.02, 2
 
-	StaticText ""
+}
+
+OptionMenu wr_Ring
+{
+	Title "RSQ Wheel - Ring"
+
+	StaticText "Ring layout", gold
+	// Below this many weapons: every one gets its own card, no dwell needed.
+	// At or past it: one card per slot, bearings stay learnable, and a card
+	// hiding others marks itself with a small "+N".
+	Slider "Flat ring up to (weapons)", "wr_subcards_max", 0, 30, 1, 0
+	// Tics the laser can spend on another real card before an open fan
+	// actually folds -- 0 is instant, the old behaviour.
+	Slider "Fan close forgiveness",     "wr_subcards_grace", 0, 20, 1, 0
+	// What a crowded slot unfolds INTO. Off is the fan -- three tidy lanes
+	// stacked outward. On scatters the same cards as stars around the one you
+	// opened and draws a line out to each. The scatter is fixed per slot, so
+	// a slot opens to the same shape every time rather than reshuffling.
+	Option "Constellation instead of fan", "wr_constellation", "OnOff"
+	Slider "  Lines draw apart by (tics)", "wr_star_stagger", 0, 12, 1, 0
+	Slider "Unhovered cards fade to",   "wr_dim",          0.05, 1.0, 0.05, 2
+	Option "Mark weapons you hold",     "wr_marker",       "OnOff"
+	Option "Slot number on cards",      "wr_slotnum",      "OnOff"
+
+	StaticText "Card shadow and light", gold
+	// Separates a card from a busy wall without knowing anything about the wall.
+	Slider "Card shadow",               "wr_shadow",       0.0, 1.0, 0.05, 2
+	Slider "  Shadow offset",           "wr_shadow_offset", 0.0, 1.5, 0.05, 2
+	Option "Ammo readout",              "wr_readout",     "wr_Readouts"
+	// ONE light, on the hovered card only -- eight would be eight overlapping
+	// volumes lighting the same wall.
+	Option "Hovered card lights room",  "wr_light",        "OnOff"
+	Slider "  Light size",              "wr_light_size",   8.0, 160.0, 4.0, 0
+	// Tics the light survives crossing the gap between two cards. 0 cuts it
+	// the instant you leave a card, which reads as a flicker while browsing.
+	Slider "  Light holds across gaps", "wr_light_grace",  0, 12, 1, 0
+
+	StaticText "Background", gold
+	// Quiet points of light behind the cards, further back than they are, so
+	// head movement separates them into their own plane. Same sky every time
+	// rather than a fresh scatter each summon. 0 is off.
+	Slider "Background stars",          "wr_stars",        0, 200, 10, 0
+	Slider "  Star brightness",         "wr_stars_alpha",  0.0, 1.0, 0.05, 2
+
+}
+
+OptionMenu wr_Sheet
+{
+	Title "RSQ Wheel - Data sheet"
+
 	StaticText "Data sheet", gold
 	// The panel in the middle of the ring. Off returns the centre to empty
 	// space and lets the ring shrink back to its own radius -- the sheet holds
@@ -194,7 +298,6 @@ OptionMenu wr_Options
 	// mod, so it works on every weapon including plain vanilla ones.
 	Option "  Track kills and accuracy", "wr_stats_track", "OnOff"
 
-	StaticText ""
 	StaticText "Inspect a weapon in the world", gold
 	// Point at a gun on the floor and the same sheet appears for it, with
 	// how it compares to what that hand is already holding.
@@ -203,7 +306,32 @@ OptionMenu wr_Options
 	Option "  Compare against held weapon", "wr_inspect_delta", "OnOff"
 	Submenu "  Weapon mod compatibility...", wr_Compat
 
-	StaticText ""
+}
+
+OptionMenu wr_Take
+{
+	Title "RSQ Wheel - Taking a weapon"
+
+	StaticText "Taking a weapon", gold
+	// A one-shot ring at the card you took, plus the same flash when a fan
+	// opens. Reads even with sound and rumble both off.
+	Option "Flash on confirm",          "wr_flash",        "OnOff"
+	Slider "Sparks",                    "wr_sparks",       0.0, 80.0, 2.0, 0
+	Slider "Spark speed",               "wr_sparks_speed", 0.2, 4.0, 0.1, 1
+	Option "Spark colour",              "wr_spark_color", "wr_SparkColors"
+	// Roll is a real billboard axis now, and the fold-away keeps the card alive
+	// long enough to see it turn.
+	Slider "Taken card spins",          "wr_flip",      -720.0, 720.0, 30.0, 0
+
+	StaticText "Sound", gold
+	Slider "Volume",                    "wr_volume",       0.0, 1.0, 0.05, 2
+
+}
+
+OptionMenu wr_Room
+{
+	Title "RSQ Wheel - The room"
+
 	StaticText "The room", gold
 	StaticText "REMA only -- these are REMA engine effects, off here", "DarkGray"
 	// All four borrow a single global engine slot each. A co-loaded mod using
@@ -224,99 +352,17 @@ OptionMenu wr_Options
 	Slider "Room glow ripple",          "wr_wave",         0.0, 3.0, 0.1, 1
 	Submenu "Fine tuning...",           wr_RoomDetail
 
-	// Below this many weapons: every one gets its own card, no dwell needed.
-	// At or past it: one card per slot, bearings stay learnable, and a card
-	// hiding others marks itself with a small "+N".
-	Slider "Flat ring up to (weapons)", "wr_subcards_max", 0, 30, 1, 0
-	// Tics the laser can spend on another real card before an open fan
-	// actually folds -- 0 is instant, the old behaviour.
-	Slider "Fan close forgiveness",     "wr_subcards_grace", 0, 20, 1, 0
-	// What a crowded slot unfolds INTO. Off is the fan -- three tidy lanes
-	// stacked outward. On scatters the same cards as stars around the one you
-	// opened and draws a line out to each. The scatter is fixed per slot, so
-	// a slot opens to the same shape every time rather than reshuffling.
-	Option "Constellation instead of fan", "wr_constellation", "OnOff"
-	Slider "  Lines draw apart by (tics)", "wr_star_stagger", 0, 12, 1, 0
-	Slider "Unhovered cards fade to",   "wr_dim",          0.05, 1.0, 0.05, 2
-	Option "Mark weapons you hold",     "wr_marker",       "OnOff"
-	Option "Slot number on cards",      "wr_slotnum",      "OnOff"
+}
 
-	// Separates a card from a busy wall without knowing anything about the wall.
-	Slider "Card shadow",               "wr_shadow",       0.0, 1.0, 0.05, 2
-	Slider "  Shadow offset",           "wr_shadow_offset", 0.0, 1.5, 0.05, 2
-	Option "Ammo readout",              "wr_readout",     "wr_Readouts"
-	// ONE light, on the hovered card only -- eight would be eight overlapping
-	// volumes lighting the same wall.
-	Option "Hovered card lights room",  "wr_light",        "OnOff"
-	Slider "  Light size",              "wr_light_size",   8.0, 160.0, 4.0, 0
-	// Tics the light survives crossing the gap between two cards. 0 cuts it
-	// the instant you leave a card, which reads as a flicker while browsing.
-	Slider "  Light holds across gaps", "wr_light_grace",  0, 12, 1, 0
+OptionMenu wr_Debug
+{
+	Title "RSQ Wheel - Tuning and Debug"
 
-	// Quiet points of light behind the cards, further back than they are, so
-	// head movement separates them into their own plane. Same sky every time
-	// rather than a fresh scatter each summon. 0 is off.
-	Slider "Background stars",          "wr_stars",        0, 200, 10, 0
-	Slider "  Star brightness",         "wr_stars_alpha",  0.0, 1.0, 0.05, 2
-
-	StaticText ""
-	StaticText "Taking a weapon", gold
-	// A one-shot ring at the card you took, plus the same flash when a fan
-	// opens. Reads even with sound and rumble both off.
-	Option "Flash on confirm",          "wr_flash",        "OnOff"
-	Slider "Sparks",                    "wr_sparks",       0.0, 80.0, 2.0, 0
-	Slider "Spark speed",               "wr_sparks_speed", 0.2, 4.0, 0.1, 1
-	Option "Spark colour",              "wr_spark_color", "wr_SparkColors"
-	// Roll is a real billboard axis now, and the fold-away keeps the card alive
-	// long enough to see it turn.
-	Slider "Taken card spins",          "wr_flip",      -720.0, 720.0, 30.0, 0
-
-	StaticText ""
-	StaticText "Feel", gold
-	// The rig is worn where you cannot comfortably look at it, so the ear and
-	// the wrist do most of the work of saying what just happened.
-	Option "Sound",                     "wr_sound",        "OnOff"
-	Slider "Volume",                    "wr_volume",       0.0, 1.0, 0.05, 2
-	// vr_enable_haptics still overrules this, so turning rumble off in the
-	// engine cannot be undone from here.
-	Slider "Controller rumble",         "wr_haptics",      0.0, 2.0, 0.1, 1
-
-	StaticText ""
-	StaticText "Reach", gold
-	// Depth tolerance more than reach: how far in front of or behind the grid
-	// your hand may sit and still register.
-	// 0 turns reaching off and leaves the beam as the only way in. Drop
-	// wr_forward toward 0 to bring the ring into actual arm reach.
-	Slider "Reach-in radius (0 = off)", "wr_touch",        0.0, 20.0, 0.5, 1
-	Slider "Stick deadzone",            "wr_stickdead",    0.05, 0.9, 0.05, 1
-
-	StaticText ""
-	StaticText "Integration", gold
-	Option "Slow time while open (BulletTimeX)", "wr_bullettime", "OnOff"
-
-	StaticText ""
-	StaticText "Controls", gold
-	// Whichever hand you summon it on is the hand that wears it, points at it,
-	// and receives what you pick -- so the bind already says which hand you
-	// meant and there is no handedness setting to get wrong.
-	Control "Off hand wheel",           "wr_toggle_off"
-	Control "Main hand wheel",          "wr_toggle_main"
-	// Both binds still work as their own keys once a ring is open --
-	// this only decides which hand an EMPTY-handed press opens on, for
-	// a player who always means the same one regardless of which key
-	// they actually reached for.
-	Option "Always open on",            "wr_toggle_prefer_hand", "wr_ToggleHandPref"
-	// Pressing the same hand's key again just after opening recenters the
-	// ring on your hand instead of closing it -- 0 turns this off, the key
-	// always closes.
-	Slider "Recenter window, tics (0 = off)", "wr_recenter_window", 0, 35, 5, 1
-
-	StaticText ""
 	StaticText "Troubleshooting", gold
 	Option "Print diagnostics on open", "wr_debug",        "OnOff"
 
-	StaticText ""
 }
+
 // WHAT THE DATA SHEET READS OUT OF OTHER WEAPON MODS.
 //
 // Its own page because these are nine switches that only matter to whoever
@@ -328,7 +374,7 @@ OptionMenu wr_Options
 // have the mod AND would rather not see its rows.
 OptionMenu wr_Compat
 {
-	Title "RSVR HUD - WEAPON MOD DATA"
+	Title "RSQ Wheel - Weapon mod data"
 
 	StaticText ""
 	StaticText "Mods with a rarity ladder", gold
@@ -414,7 +460,7 @@ OptionValue wr_ShapeKinds
 // point of the page.
 OptionMenu wr_RoomDetail
 {
-	Title "RSVR HUD - ROOM DETAIL"
+	Title "RSQ Wheel - Room detail"
 
 	StaticText ""
 	StaticText "Laser volume", gold

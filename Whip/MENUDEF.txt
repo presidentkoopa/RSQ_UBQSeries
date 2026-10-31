@@ -65,6 +65,12 @@ OptionMenu "RSQWP_Tuning"
 	Slider "Heaviest Leashed", "rsqwp_mass_max", 100, 5000, 100, 0
 	Slider "Leash Pull", "rsqwp_slide_speed", 2, 30, 1, 0
 	StaticText " "
+	Slider "Snag Edge Height", "rsqwp_whip_above", 0, 64, 2, 0
+	Slider "Rope Meets Body (height)", "rsqwp_attach", 0.1, 1.0, 0.05, 2
+	Slider "Rope Draw Pieces", "rsqwp_rope_segs", 2, 32, 1, 0
+	Slider "Leash Stops At", "rsqwp_slide_gap", 0, 64, 2, 0
+	Slider "Let-Go Return Speed", "rsqwp_retract_speed", 8, 160, 8, 0
+	StaticText " "
 	Option "Debug Log", "rsqwp_debug", "RSQWP_Debug"
 	StaticText " "
 	SafeCommand "Reset All", "rsqwp_reset", "Reset all RSQ Whip settings?"
