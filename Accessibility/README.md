@@ -103,10 +103,19 @@ Load the order above plus RSQ_Accessibility.pk3. Add the mod named in a step whe
 
 Accessibility is a shared service: other mods read it, it does not change them.
 
-- **Read by**: RSQ_DistanceGrab, RSQ_Grapple, RSQ_GunBonsaiVR, RSQ_LaserSight, RSQ_Saber, RSQ_Score,
-  RSQ_ShieldSaw, RSQ_SlowMo, RSQ_TacticalRig, RSQ_HPBars, RSQ_Whip (each carries the series' helper that
-  reads these settings only while this pk3 is loaded).
-- **Not read by**: RSQ_Gestures, RSQ_GunCards, RSQ_Wheel, RSQ_Miniboss.
+- **Read by**: RSQ_DistanceGrab, RSQ_Gestures, RSQ_Grapple, RSQ_GunBonsaiVR, RSQ_LaserSight, RSQ_Saber,
+  RSQ_Score, RSQ_ShieldSaw, RSQ_SlowMo, RSQ_TacticalRig, RSQ_HPBars, RSQ_Wheel, RSQ_Whip (each carries the
+  series' helper that reads these settings only while this pk3 is loaded).
+- **Not read by**: RSQ_GunCards, RSQ_Miniboss.
+- Wired 2026-11-01 (not yet headset-confirmed):
+  - Steady Hands (aiming only, never swings or throws): Wheel pointing, Grapple fire aim and aim dot,
+    LaserSight dot and grenade arc, DistanceGrab's lock cone, Whip lock/mark aim, ShieldSaw throw aim,
+    SlowMo's bullet catch, the Saber's lock painting and Force grip target.
+  - Seated Play: Tactical Rig's body, ShieldSaw's mount, Wheel's wrist card, Gestures' Measure Me, Gun
+    Bonsai VR's Guard pose.
+  - Slower Taps: Wheel, Grapple, Whip, the Saber's keep-marks window, Gestures' two-hands window.
+  - Rumble Strength: every direct rumble in Wheel, Grapple, LaserSight, DistanceGrab, Whip, ShieldSaw,
+    Saber, SlowMo, Tactical Rig, Gestures and Gun Bonsai VR (fixed-strength pulses switch off at 0).
 - What changes, by row (from the round-two notes):
   - Photosensitive Mode: saber clash bursts and flash light, grab catch blooms, shield block stars, Score
     flashes, laser pulse, HP bar hit flash, choke crackle.
@@ -129,11 +138,9 @@ Accessibility is a shared service: other mods read it, it does not change them.
 - Everything from 2026-10-31 ran on the simulated rig only: Rumble Backup, Two-Hand Brace, Brace Cue,
   Reset Every Series Mod, Rumble Strength, Seated Play, Comfort Preset, Vignette on Knockback, Steady Hands,
   Slower Taps, Wake Cues.
-- **Steady Hands, Seated Play and Slower Taps are offered to the series but no mod reads them yet.**
-  Wiring Steady Hands into pointing and aiming (Wheel, Grapple, LaserSight dot, DistanceGrab aim, SlowMo
-  catch) is Task A in `LOCAL_AGENT_HANDOFF.md`.
-- **Rumble Strength and Rumble Backup only reach this pk3's own rumbles** today (Sound Cues, ready cues,
-  slow-mo start/stop, wake, brace, the modifier). Other mods' own rumbles are not scaled yet.
+- **Rumble Backup only reaches this pk3's own rumbles**: there is no shared "buzz" request yet, so the other
+  mods' rumbles can't use the backup route.
+- The Saber's deflect aim follows your head, which Steady Hands does not smooth.
 - A grounded blast does not move a QuestZDoom VR body, so Vignette on Knockback fires on knockback in the
   air and long falls.
 - Reset Every Series Mod works only from its menu row.
