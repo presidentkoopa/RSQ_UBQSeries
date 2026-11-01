@@ -27,6 +27,8 @@ class RSQ_MeleeHandler : EventHandler
 	Actor tgtMain[MAXPLAYERS], tgtOff[MAXPLAYERS];
 	int tgtMainTic[MAXPLAYERS], tgtOffTic[MAXPLAYERS];
 	int altHand[MAXPLAYERS], altTic[MAXPLAYERS], altStack[MAXPLAYERS];
+	// Guard (pick 55, up_suite.zs): tics both hands have been up at the face, and the guard broken until
+	int guardTics[MAXPLAYERS], guardBrokenUntil[MAXPLAYERS];
 
 	// SCORE AND DAMAGE BOTH PAYING XP pay every kill twice (a score award's base is the monster's
 	// health, and so is the damage that killed it). Said once a map, on the console, when a scorer
@@ -66,6 +68,7 @@ class RSQ_MeleeHandler : EventHandler
 			headMps[pn] = max(mps, headMps[pn] * 0.8);
 			headX[pn] = h.x; headY[pn] = h.y; headZ[pn] = h.z;
 			headTic[pn] = level.maptime;
+			Guard(pn, pmo);
 			// each hand's psprite in its Fire / AltFire sequence (the patch's own test)
 			let st = TFLV_PerPlayerStats.GetStatsFor(pmo);
 			if (st)
@@ -74,6 +77,49 @@ class RSQ_MeleeHandler : EventHandler
 				if (st.HandIsAttacking(1)) atkOff[pn] = level.maptime;
 			}
 		}
+	}
+
+	// THE GUARD POSE (pick 55; Quest teardown surveys/01_MELEE.md 4.4, apply/02_MELEE_BUILD.md 2.2): both hands at
+	// the face, with no gun in either hand (empty hands, fists, the gloves, a melee weapon: RSQM.IsSlapperClass). The
+	// pawn's position IS the head across: both hand poses are the pawn's position minus the hand's offset from the
+	// headset (01_MELEE 3.3), and viewz follows the headset's height. The same hand read as the gloves'
+	// (RSQ_GloveHandler.HandPos), so a probe can stand in for it.
+	// THE BOX IS TIGHTER THAN THE TEARDOWN'S. Its numbers (20 map units across, 14 below to 9 above the eyes) took the
+	// rig's resting pose -- hands 0.3 m below the eyes, 0.25 m out and 0.3 m forward, held at the chest -- for a guard
+	// (measured 2026-11-01). So: each hand within 0.35 m of the head across, from 0.25 m below to 0.15 m above the eyes.
+	const GUARD_XY_M = 0.35;
+	const GUARD_BELOW_M = 0.25;
+	const GUARD_ABOVE_M = 0.15;
+	void Guard(int pn, PlayerPawn pmo)
+	{
+		bool up = level.maptime >= guardBrokenUntil[pn] && GuardHands(pmo);
+		if (up)
+		{
+			let gh = RSQ_GloveHandler.Get();
+			double upm = RSQM.UnitsPerMetre();
+			double zpm = upm / (level.pixelstretch > 0.1 ? level.pixelstretch : 1.2);   // map units a metre, upward
+			double eye = pmo.player.viewz;
+			for (int h = 0; h < 2 && up; h++)
+			{
+				Vector3 hp; bool ok;
+				if (gh) { [hp, ok] = gh.HandPos(pmo, h); }
+				if (!ok) { up = false; break; }
+				double dz = hp.z - eye;
+				if ((hp.xy - pmo.pos.xy).Length() > GUARD_XY_M * upm || dz < -GUARD_BELOW_M * zpm || dz > GUARD_ABOVE_M * zpm) up = false;
+			}
+		}
+		int was = guardTics[pn];
+		guardTics[pn] = up ? min(was + 1, 1000) : 0;
+		if (RSQM.SVI("rsq_punch_debug", 0) != 0 && (guardTics[pn] == RSQ_Upgrade_Guard.HOLD || (was >= RSQ_Upgrade_Guard.HOLD && !up)))
+			Console.Printf("RSQ guard: %s at t%d", up ? "UP" : "down", level.maptime);
+	}
+	static bool GuardHands(PlayerPawn pmo)
+	{
+		let p = pmo.player;
+		if (!p) return false;
+		if (p.ReadyWeapon && !RSQM.IsSlapperClass(p.ReadyWeapon.GetClass(), pmo)) return false;
+		if (p.OffhandWeapon && !RSQM.IsSlapperClass(p.OffhandWeapon.GetClass(), pmo)) return false;
+		return true;
 	}
 
 	// the two hands' hits (Crossfire, Alternator): which hand, on what

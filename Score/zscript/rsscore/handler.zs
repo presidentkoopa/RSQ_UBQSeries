@@ -571,8 +571,6 @@ class RS_ScoreHandler : EventHandler
 	{
 		let tr = ev.tracker;
 		if (!tr || ev.killerNum < 0) return;
-		if (CvarInt("rs_score_slowmo", 1) == 0) return;
-		if (level.maptime < tr.slowmoReady) return;
 
 		RS_ScoreBonus why = null;
 		for (int b = 0; b < m_bonuses.Size() && !why; b++)
@@ -580,13 +578,49 @@ class RS_ScoreHandler : EventHandler
 			if (mults[b] <= 0.0) continue;
 			if (m_bonuses[b].BigMoment(ev, mults[b]) || RS_Melee.BigMoment(m_bonuses[b], mults[b])) why = m_bonuses[b];
 		}
-		if (!why) return;
 
+		// HIT-STOP ON BIG KILLS (owner's pick 57, an option, off: rs_score_hitstop). A big kill -- a big moment as
+		// above, or a monster of 400 spawn health or more (the Gun Bonsai VR patch's Adrenaline draws the "big
+		// monster" line at 400 too) -- stops the world for a beat: a very short, very deep RSQ_SlowMo pulse
+		// (rsm_pulse HITSTOP_MS at HITSTOP_DEPTH %, SlowMo's floor is 5 %). Nothing happens without SlowMo. Not while
+		// the world is already slowed (a deep pulse would deepen that slow motion for the rest of its hold: SlowMo's
+		// pulses merge, deeper wins), and at most once a second. When the same kill also earns the slow-motion
+		// moment, that pulse is sent once the hit-stop's hold is over (WorldTick), so it reads as stop, then slow.
+		bool stopped = false;
+		bool big = why || ev.victimSpawnHealth >= HITSTOP_HEALTH;
+		if (big && CvarInt("rs_score_hitstop", 0) != 0 && level.maptime >= hitstopReady[ev.killerNum]
+			&& level.maptime > tr.slowmoUntil && RS_Physical.AskSlowMo("slowmo.active") != 1)
+		{
+			stopped = true;
+			hitstopReady[ev.killerNum] = level.maptime + HITSTOP_COOLDOWN;
+			if (DebugOn()) Console.Printf("RS_Score: big kill (%s) -> hit-stop pulse %d ms at %d%%%s", why ? why.DisplayName() : "big monster", HitStopMs(), HITSTOP_DEPTH, RS_Physical.AskSlowMo("slowmo.active") < 0 ? " (no RSQ_SlowMo: nothing hears it)" : "");
+			if (ev.killerNum == consoleplayer) EventHandler.SendNetworkEvent("rsm_pulse", HitStopMs(), HITSTOP_DEPTH);
+		}
+
+		if (!why) return;
+		if (CvarInt("rs_score_slowmo", 1) == 0) return;
+		if (level.maptime < tr.slowmoReady) return;
+
+		int delay = stopped ? (HitStopMs() * 35 + 999) / 1000 + 1 : 0;
 		tr.slowmoReady = level.maptime + 35 * clamp(CvarInt("rs_score_slowmo_cooldown", 6), 1, 120);
-		tr.slowmoUntil = level.maptime + (PULSE_MS * 35) / 1000 + 20;
-		if (DebugOn()) Console.Printf("RS_Score: big moment (%s) -> slow-motion pulse %d ms at %d%%", why.DisplayName(), PULSE_MS, PULSE_DEPTH);
-		if (ev.killerNum == consoleplayer) EventHandler.SendNetworkEvent("rsm_pulse", PULSE_MS, PULSE_DEPTH);
+		tr.slowmoUntil = level.maptime + delay + (PULSE_MS * 35) / 1000 + 20;
+		if (DebugOn()) Console.Printf("RS_Score: big moment (%s) -> slow-motion pulse %d ms at %d%%%s", why.DisplayName(), PULSE_MS, PULSE_DEPTH, delay ? String.Format(" in %d tics", delay) : "");
+		if (delay) pulseAt[ev.killerNum] = level.maptime + delay;   // game state everywhere; only its machine sends
+		else if (ev.killerNum == consoleplayer) EventHandler.SendNetworkEvent("rsm_pulse", PULSE_MS, PULSE_DEPTH);
 	}
+	const HITSTOP_MS       = 115;    // 4 tics at the bottom (the teardown's hit-stop: 3 a tap, 4 the default, 6 heavy)
+	// SlowMo eases every pulse in over its rsm_ramp_in (0.15 s by default) and the hold counts from the ask, so a bare
+	// 115 ms pulse touched 5 % for one tic on the rig (2026-11-01). The ease is added, so the bottom lasts the 4 tics.
+	static int HitStopMs()
+	{
+		let c = CVar.FindCVar("rsm_ramp_in");
+		return HITSTOP_MS + int(clamp(c ? c.GetFloat() : 0.0, 0.0, 1.0) * 1000);
+	}
+	const HITSTOP_DEPTH    = 5;      // percent of full speed: SlowMo's floor
+	const HITSTOP_HEALTH   = 400;
+	const HITSTOP_COOLDOWN = 35;
+	int hitstopReady[MAXPLAYERS];
+	int pulseAt[MAXPLAYERS];         // a slow-motion pulse waiting for a hit-stop to end (this machine's player)
 
 	// ---------------------------------------------------------------- payment
 
@@ -841,6 +875,11 @@ class RS_ScoreHandler : EventHandler
 			// what the next map's threshold is scaled against.
 			tr.CalcScorePercent(threshold);
 
+			if (pulseAt[i] > 0 && level.maptime >= pulseAt[i])
+			{
+				pulseAt[i] = 0;
+				if (i == consoleplayer) EventHandler.SendNetworkEvent("rsm_pulse", PULSE_MS, PULSE_DEPTH);
+			}
 			ExpireRows(tr);
 			RunRewardCue(players[i].mo, tr);
 			RunAmmoRegen(players[i].mo, tr);

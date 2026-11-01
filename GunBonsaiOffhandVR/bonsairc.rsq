@@ -3,6 +3,7 @@
 register
   RSQ_Upgrade_Haymaker RSQ_Upgrade_OneTwo RSQ_Upgrade_StarPunch
   RSQ_Upgrade_Counterpunch RSQ_Upgrade_BodyBlow RSQ_Upgrade_Knockdown
+  RSQ_Upgrade_HeavyHands RSQ_Upgrade_ReturnFire RSQ_Upgrade_WallSplat RSQ_Upgrade_Guard
   RSQ_Upgrade_Lunge RSQ_Upgrade_Executioner RSQ_Upgrade_Adrenaline
   RSQ_Upgrade_Momentum RSQ_Upgrade_RiposteEdge RSQ_Upgrade_PiercingReturn
   RSQ_Upgrade_SaberThrow RSQ_Upgrade_ChainChoke RSQ_Upgrade_DualHarmony

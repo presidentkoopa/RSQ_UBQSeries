@@ -69,6 +69,10 @@ server int  rs_score_slowmo_cooldown = 6;
 // what its style, daring and melee bonuses paid. A plain kill in slow motion pays nothing more.
 server int  rs_score_slowstyle       = 50;
 
+// HIT-STOP ON BIG KILLS (owner's pick 57, off): a big kill stops the world for a beat -- an RSQ_SlowMo pulse at
+// 5 % held 115 ms past SlowMo's ease-in (handler.zs BigMomentPulse). Nothing without SlowMo.
+server bool rs_score_hitstop         = false;
+
 server noarchive bool rs_score_debug = false;
 
 // ---- what one person sees ----
@@ -81,3 +85,6 @@ user int  rs_score_bonustime    = 35;
 user int  rs_score_scale        = 100;
 user int  rs_score_x            = 85;
 user int  rs_score_y            = 10;
+// THE SCORE ON THE WRIST (owner's pick 58, off): the running total in small gold digits above the off-hand controller
+// (wrist.zs). VR only.
+user bool rs_score_wrist        = false;

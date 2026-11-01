@@ -69,6 +69,7 @@ class RSQTHP_Handler : EventHandler
 	transient int sprStat;           // RSYF: A frozen, B held, C raised, D frozen + raised, E held + raised
 	transient int sprAlly;           // RSYG: the friendly bar (HP2)
 	transient int sprChunk;          // RSYH: the damage chunk (HP1)
+	transient int sprBoss;           // RSYI: A the miniboss (crown), B its thrall (chain link)
 
 	// ---- nearest 24 (HP3) ----------------------------------------------------------------------
 	const NEAR_N = 24;
@@ -149,6 +150,7 @@ class RSQTHP_Handler : EventHandler
 		sprStat = Actor.GetSpriteIndex('RSYF');
 		sprAlly = Actor.GetSpriteIndex('RSYG');
 		sprChunk = Actor.GetSpriteIndex('RSYH');
+		sprBoss = Actor.GetSpriteIndex('RSYI');
 	}
 
 	private void FindServices()
@@ -491,6 +493,20 @@ class RSQTHP_Handler : EventHandler
 	}
 
 	bool HasServices() { if (!svcFound) FindServices(); return svc.Size() > 0; }
+
+	// RSQ_MINIBOSS (#16, 2026-11-01): is this the set piece's miniboss (1) or one of its thralls (2)? Asked through
+	// RSQ_Miniboss's own service by name (RSQMB_Service "miniboss" / "thrall", objectArg the monster: 1 for a living
+	// miniboss / a thrall bound to a living one), so nothing links and without RSQ_Miniboss there is no answer.
+	transient bool mbFound;
+	transient Service mbSvc;
+	int BossMarkOf(Actor a)
+	{
+		if (!mbFound) { mbFound = true; let it = ServiceIterator.Find("RSQMB_Service"); mbSvc = it.Next(); }
+		if (!mbSvc || !a) return 0;
+		if (mbSvc.GetInt("miniboss", "", 0, 0, a) == 1) return 1;
+		if (mbSvc.GetInt("thrall", "", 0, 0, a) == 1) return 2;
+		return 0;
+	}
 
 	override void WorldUnloaded(WorldEvent e)
 	{

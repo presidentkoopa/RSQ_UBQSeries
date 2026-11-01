@@ -150,6 +150,12 @@ class RSQ_GloveHandler : EventHandler
 
 	override void WorldTick()
 	{
+		// the missile list: what has burst or been destroyed goes (a few a tic at most)
+		if ((level.maptime & 7) == 0)
+		{
+			for (int i = missiles.Size() - 1; i >= 0; i--) if (!missiles[i] || !missiles[i].bMissile) missiles.Delete(i);
+			for (int i = returned.Size() - 1; i >= 0; i--) if (!returned[i] || !returned[i].bMissile) { returned.Delete(i); returnedLv.Delete(i); }
+		}
 		for (int pn = 0; pn < MAXPLAYERS; pn++)
 		{
 			if (!playeringame[pn]) continue;
@@ -224,6 +230,12 @@ class RSQ_GloveHandler : EventHandler
 			st.approach = 0;
 			st.approachTics = 0;
 			return;
+		}
+		// RETURN FIRE (pick 53): a glove moving at punch speed knocks back an enemy missile it meets
+		if (mps >= minSpeed && missiles.Size() > 0)
+		{
+			int rfLv = RSQM.LevelOn(g, "RSQ_Upgrade_ReturnFire");
+			if (rfLv > 0) ReturnFire(pmo, g, h, st, rfLv);
 		}
 		if (st.approach < ARM_M) return;
 		double avg = st.approach * TICRATE / st.approachTics;
@@ -326,6 +338,84 @@ class RSQ_GloveHandler : EventHandler
 		return false;
 	}
 
+	// ---- RETURN FIRE (pick 53) ----------------------------------------------------------------
+	// Missiles are not in the blockmap (a projectile is +NOBLOCKMAP), so a blockmap query never finds them: the
+	// enemy missiles in the level are listed as they spawn (the ShieldSaw keeps the same list for the same reason).
+	Array<Actor> missiles;
+	Array<Actor> returned;      // missiles a glove sent back, and the Return Fire level that did it
+	Array<int> returnedLv;
+
+	override void WorldThingSpawned(WorldEvent e)
+	{
+		let m = e.Thing;
+		if (m && m.bMissile && !(m.target && m.target.player)) missiles.Push(m);
+	}
+
+	int ReturnedLevel(Actor shot)
+	{
+		if (!shot) return 0;
+		int k = returned.Find(shot);
+		return k < returned.Size() ? returnedLv[k] : 0;
+	}
+
+	// Closest distance between segments p1-q1 and p2-q2 (Ericson, Real-Time Collision Detection 5.1.9).
+	static double SegSegDist(Vector3 p1, Vector3 q1, Vector3 p2, Vector3 q2)
+	{
+		Vector3 d1 = q1 - p1, d2 = q2 - p2, r = p1 - p2;
+		double a = d1 dot d1, e = d2 dot d2, f = d2 dot r;
+		double s = 0, t = 0;
+		if (a <= 1e-6 && e <= 1e-6) return r.Length();
+		if (a <= 1e-6) t = clamp(f / e, 0.0, 1.0);
+		else
+		{
+			double c = d1 dot r;
+			if (e <= 1e-6) s = clamp(-c / a, 0.0, 1.0);
+			else
+			{
+				double b = d1 dot d2, den = a * e - b * b;
+				s = den > 1e-9 ? clamp((b * f - c * e) / den, 0.0, 1.0) : 0.0;
+				t = (b * s + f) / e;
+				if (t < 0) { t = 0; s = clamp(-c / a, 0.0, 1.0); }
+				else if (t > 1) { t = 1; s = clamp((b - c) / a, 0.0, 1.0); }
+			}
+		}
+		return ((p1 + d1 * s) - (p2 + d2 * t)).Length();
+	}
+
+	private void ReturnFire(PlayerPawn pmo, RSQ_Glove g, int h, RSQ_PunchHand st, int lv)
+	{
+		double gr = 0.09 * RSQM.UnitsPerMetre() + RSQM.SV("rsq_punch_pad", 4.0);
+		for (int i = missiles.Size() - 1; i >= 0; i--)
+		{
+			let m = missiles[i];
+			if (!m || !m.bMissile || m.bDestroyed) { missiles.Delete(i); continue; }
+			let from = m.target;
+			// only a monster's own missile (not yours, not another player's, not a flying gib nobody fired)
+			if (!from || from.player || !from.bIsMonster || from.bFriendly) { if (!from || from.player) missiles.Delete(i); continue; }
+			if (m.Distance3D(pmo) > 256) continue;
+			// the missile's path from last tic through the next (event handlers tick before the thinkers move it)
+			if (SegSegDist(st.prevHand, st.hand, m.pos - m.vel, m.pos + m.vel) > gr + m.radius + 4) continue;
+			double sp = max(m.Speed, m.vel.Length()) * RSQ_Upgrade_ReturnFire.Speed(lv);
+			Vector3 dir;
+			if (from && from.health > 0) dir = level.Vec3Diff(m.pos, from.pos + (0, 0, from.height * 0.5));
+			else dir = st.vel;
+			if (dir.Length() < 0.001) dir = -m.vel;
+			dir = dir.Unit();
+			m.target = pmo;            // the player's now: it hurts monsters, not you, and pays you
+			m.tracer = from;           // a homing missile homes on its shooter
+			m.vel = dir * sp;
+			m.angle = VectorAngle(dir.x, dir.y);
+			m.pitch = -asin(clamp(dir.z, -1.0, 1.0));
+			TFLV_VR_Attribution.Claim(m, g, TFLV_VR_Attribution.HINT_MELEE);
+			returned.Push(m); returnedLv.Push(lv);
+			missiles.Delete(i);
+			pmo.A_StartSound("rsq/punch", CHAN_AUTO, 0, 1.0);
+			RSQ_Buzz.Start(pmo, h, 0.8, 6);
+			if (RSQM.SVI("rsq_punch_debug", 0) != 0) { String fn = from.GetClassName(); Console.Printf("RSQ return fire: %s back at %s, speed %.1f", m.GetClassName(), fn, sp); }
+		}
+		for (int i = returned.Size() - 1; i >= 0; i--) if (!returned[i]) { returned.Delete(i); returnedLv.Delete(i); }
+	}
+
 	// A swing that ended without touching anything breaks a One-Two.
 	void Whiff(PlayerPawn pmo, int h)
 	{
@@ -383,11 +473,23 @@ class RSQ_GloveHandler : EventHandler
 		victim.DamageMobj(g, pmo, dmg, 'Melee', DMG_THRUSTLESS);
 		pmo.A_StartSound(g.lastStar ? "rsq/star" : "rsq/punch", CHAN_AUTO, 0, 1.0);
 		RSQ_Buzz.Start(pmo, h, 0.5 + 0.5 * g.lastPower + (g.lastStar ? 0.5 : 0.0), g.lastStar ? 10 : 5);
+		// HEAVY HANDS (pick 52): the punch stops it for a beat and throws it further (up_gloves.zs)
+		int hhLv = RSQM.LevelOn(g, "RSQ_Upgrade_HeavyHands");
 		if (victim && victim.health > 0 && !victim.bDontThrust)
 		{
 			double kk = (2.0 + 6.0 * g.lastPower) * clamp(100.0 / max(victim.mass, 1.0), 0.08, 2.0);
+			if (hhLv > 0) kk *= RSQ_Upgrade_HeavyHands.Knock(hhLv);
 			victim.vel += dir * kk;
 		}
+		if (hhLv > 0 && victim && victim.health > 0 && !victim.player)
+		{
+			int ft = RSQ_Upgrade_HeavyHands.Freeze(hhLv, g.lastPower);
+			victim.freezetics = max(victim.freezetics, ft);
+			if (RSQM.SVI("rsq_punch_debug", 0) != 0) Console.Printf("RSQ heavy hands: %s frozen %d tics, vel %.1f", victim.GetClassName(), ft, victim.vel.xy.Length());
+		}
+		// WALL SPLAT (pick 54): watched while it flies; a wall that stops it hurts it (up_gloves.zs RSQ_Splat)
+		int wsLv = RSQM.LevelOn(g, "RSQ_Upgrade_WallSplat");
+		if (wsLv > 0 && victim && victim.health > 0) RSQ_Splat.Arm(victim, pmo, g, wsLv);
 
 		// THE BANK, SuperPunchOut's rule (spo_boxer.zs TakeHit): a punch landed into an open
 		// window earns a star, and so does the starFirst-th landed punch and every starEvery-th

@@ -4,6 +4,7 @@
 // Markers: sprite RSYZ, frames A..O = bit mask 1..15 (1 hooked, 2 stunned, 4 locked, 8 gripped).
 // Status: sprite RSYF, frame A frozen, B held, C raised, D frozen + raised, E held + raised (right of the bar).
 // Friendly main bar: sprite RSYG (frames as RSYA). Damage chunk: sprite RSYH, frame A.
+// Miniboss: sprite RSYI, frame A the miniboss (crown), B its thrall (chain link), above the bar.
 
 Sprite "RSYAA0", 112, 11
 {
@@ -4173,6 +4174,16 @@ Sprite "RSYFE0", 48, 9
 	Offset 0, 7
 	Patch "RQS2", 29, 0
 	Patch "RQS3", 39, 0
+}
+Sprite "RSYIA0", 9, 9
+{
+	Offset 4, 19
+	Patch "RQB1", 0, 0
+}
+Sprite "RSYIB0", 9, 9
+{
+	Offset 4, 19
+	Patch "RQB2", 0, 0
 }
 Sprite "RSYGA0", 112, 11
 {

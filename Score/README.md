@@ -48,6 +48,8 @@ Front page (RSQ Score):
 | Target Reward | Life Every Time | What crossing the target pays: Ammo, Then Life / Life, Then Ammo / Ammo Only / Life Every Time / Nothing. |
 | New Map Keeps | Nothing | What survives a map change: Nothing / Total / Total and Rewards / Everything. |
 | Slow Motion Moments | On | A big moment asks RSQ_SlowMo for about a second of slow motion (needs RSQ_SlowMo). |
+| Hit-Stop on Big Kills | Option (off) | A big kill (a big moment, or a monster of 400 health or more) stops the world for a beat: RSQ_SlowMo eases down to 5 % speed, holds about 4 tics, and eases back. At most once a second, never while the world is already slowed. With Slow Motion Moments on and a big moment, the slow motion follows the stop. Needs RSQ_SlowMo; nothing without it. |
+| Score on the Wrist | Option (off) | The running score in small gold digits just above your off-hand controller (VR only). Hidden with Show Score -> No. |
 | Bar Flash | On | The score line and bar flash when points land. |
 | Screen Flash | On | The whole view flashes a colour on a reward and when a life is spent. |
 
@@ -62,7 +64,7 @@ Tuning and Debug page:
 | Melee Bonus Cap | 0 | Cap on the melee family (0 = off). |
 | Slow Motion Cooldown | 6 s | Time between slow-motion moments. |
 | Slow Motion Style | 50 % | A kill in slow motion pays this share of its style, daring and melee bonuses again (Bullet Time). A plain kill in slow motion pays nothing more. |
-| Reset All | row | |
+| Reset All | row | Includes Hit-Stop on Big Kills and Score on the Wrist. |
 
 Bonus families (colours in the list): **Efficiency**, **Style**, **Daring**, and the Quest series' **Melee**
 (steel blue). The full bonus list with what each pays is in the appendix.
@@ -89,6 +91,17 @@ Load the order above plus RSQ_Score.pk3. Start MAP01.
 12. Change a map with New Map Keeps -> Total: the running total stays.
 13. Reset All (Tuning and Debug).
 
+New 2026-11-01 (rig-checked only, **not yet headset-confirmed**):
+
+13a. Score on the Wrist On: raise your off hand: gold digits of the score sit just above it, facing you, and
+     follow the hand. Off: gone. (Seen in a rig frame; the brightness in the lenses is not checked.)
+13b. Hit-Stop on Big Kills On, with RSQ_SlowMo: kill a baron or bigger: the world almost stops for a moment and
+     comes back. Without RSQ_SlowMo: nothing.
+13c. With RSQ_Miniboss: a thrall killed in the slow window, the miniboss and a greedy kill each show their own row
+     ("Thrall Slow Kill", "Miniboss", "Greedy", Daring colour) instead of adding to Base.
+13d. With RSQ_Gestures: a shotgun kill in the slow-motion window after a gun-butt shove shows "F.E.A.R. Effect"
+     (Style colour).
+
 With other mods (each needs the named pk3; none of these were headset-run):
 
 14. RSQ_SlowMo: a big moment (a Fatality, Swan Song, a 3-step combo...) slows the world for about a second.
@@ -110,23 +123,28 @@ Score is a shared service: other mods send it awards and read its kills.
 
 - **Sends to Score**: RSQ_Grapple (Indiana Jones award), RSQ_Saber (Deflect, Remote Down awards),
   RSQ_DistanceGrab (a headlock counts in the combo chain), RSQ_Miniboss (Thrall Slow Kill, Miniboss, Greedy
-  awards).
+  awards, each on its own Daring row), RSQ_Gestures (F.E.A.R. Effect, a Style row: a shotgun kill in the slow-motion
+  window after a gun-butt shove).
 - **Reads Score**: RSQ_GunBonsaiVR (XP Source: Style turns a kill's bonus points into weapon XP, split along
   the combo chain).
 - **Score asks**, each by name and only when loaded: RSQ_Grapple, RSQ_ShieldSaw, RSQ_Saber,
   RSQ_DistanceGrab (throws), RSQ_TacticalRig (draws), RSQ_SlowMo (is the world slowed?), RSQ_GunBonsaiVR
   (the ShieldSaw gauge's room), RSQ_Accessibility (Text Size, Photosensitive Mode, Colour Blind Mode).
-- **Score sends** RSQ_SlowMo a slow-motion pulse on a big moment.
+- **Score sends** RSQ_SlowMo a slow-motion pulse on a big moment, and (Hit-Stop on Big Kills) a short deep one on a big kill.
 - Champions and LegenDoom Lite: champion colours, mutations and legendaries pay their own Daring rows.
 - Gun Bonsai's own score-to-XP: if you turn it on, set Gun Bonsai's damage-to-XP to 0, or every kill pays
   XP twice.
 
 ## Known limits / open
 
-- **The owner's picks 57 (hit-stop on big kills) and 58 (score on the wrist) are not built.** Neither has
-  a menu row or code.
-- RSQ_Miniboss's awards (Thrall Slow Kill, Miniboss, Greedy) have no rows of their own in Score yet; they
-  pay onto the base row.
+- Picks 57 and 58 had only their names on the picks page; neither is described in the Quest teardown. Built as
+  read: 57 a hit-stop through RSQ_SlowMo's rsm_pulse (Score cannot freeze the world itself without SlowMo); 58 the
+  score as digits by the off-hand wrist.
+- Hit-stop: SlowMo eases every pulse in (rsm_ramp_in, 0.15 s) and out (0.4 s), so it is a sharp dip to 5 %
+  rather than a hard freeze: measured on the rig, 5 tics down, 6 tics at 5 %, 13 tics back up.
+- Score on the Wrist: drawn as billboard digits of Doom's own small font (the IWAD's STCFN glyphs), not a canvas
+  (a canvas draws black in VR on QZD 17.3). Seen on the rig's software renderer only; how bright it reads in the
+  headset is not checked. It follows the controller at 35 updates a second, so it can trail a fast hand.
 - Never headset-run: the combo break of 3 s, Reeled In and Ping-Pong windows, Indiana Jones thresholds,
   the proposed combo names and pays, the living label's colours in the lenses.
 - Not reachable yet: Bowling's second pin (a thrown body stops at the first thing it hits).

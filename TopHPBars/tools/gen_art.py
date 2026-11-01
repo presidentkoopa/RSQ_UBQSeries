@@ -154,6 +154,15 @@ STATUS = [
 # it stays for the monster's life, in the slot right of the status icon (frames C..E: raised alone / + frozen / + held).
 RAISED = ('raised', (200, 140, 255), [
     '....#....', '...#o#...', '..#ooo#..', '.#ooooo#.', '###ooo###', '..#ooo#..', '..#ooo#..', '..#ooo#..', '..#####..'])
+# MINIBOSS (2026-11-01, #16): RSQ_Miniboss's set piece, asked through its service (RSQMB_Service "miniboss" /
+# "thrall"). Sprite RSYI, ABOVE the bar's centre, clear of the overheal strip: A the miniboss = a crown, B its thrall =
+# a chain link. Two more shapes, so no colour is needed.
+BOSSMARK = [
+  ('miniboss', (255, 200, 40), [   # a crown
+    '#...#...#', '#o#.#o#.#', '#oo#ooo##', '#ooooooo#', '#ooooooo#', '#o#o#o#o#', '#ooooooo#', '#ooooooo#', '#########']),
+  ('thrall',   (200, 200, 210), [  # a chain link
+    '..#####..', '.#ooooo#.', '#oo###oo#', '#o#...#o#', '#o#...#o#', '#o#...#o#', '#oo###oo#', '.#ooooo#.', '..#####..']),
+]
 # FRIENDLY (owner's QoL pick HP2, an option): coldcite's Red set (B) with red and blue swapped, so allies read blue
 # with his block texture and border kept. Sprite RSYG, frames as the main sets.
 FRIEND_SRC = 'B'
@@ -175,7 +184,8 @@ def main():
            '// Overheal: sprite RS<set 1-5><pips 0-4>, frames A..T = 5..100 %% of the strip.',
            '// Markers: sprite RSYZ, frames A..O = bit mask 1..15 (1 hooked, 2 stunned, 4 locked, 8 gripped).',
            '// Status: sprite RSYF, frame A frozen, B held, C raised, D frozen + raised, E held + raised (right of the bar).',
-           '// Friendly main bar: sprite RSYG (frames as RSYA). Damage chunk: sprite RSYH, frame A.', '']
+           '// Friendly main bar: sprite RSYG (frames as RSYA). Damage chunk: sprite RSYH, frame A.',
+           '// Miniboss: sprite RSYI, frame A the miniboss (crown), B its thrall (chain link), above the bar.', '']
     for si, sc in enumerate(SCHEMES):
         s = sc['set']
         for fi, lvl in enumerate(LEVELS):
@@ -214,6 +224,11 @@ def main():
     for k in range(2):
         tex += ['Sprite "RSYF%s0", 48, 9' % FRAMES[3 + k], '{', '\tOffset 0, 7', '\tPatch "RQS%d", 29, 0' % (k + 1),
                 '\tPatch "RQS3", 39, 0', '}']
+    # miniboss marks: twice the bar's scale like the other icons; centred across (offset x 4 of 9), bottom 10 icon px
+    # (20 bar px) above the bar's origin, which is 3 px above the overheal strip's top (17 bar px)
+    for k, (name, c, rows) in enumerate(BOSSMARK):
+        icon(rows, c).save(os.path.join(OUT, 'RQB%d.png' % (k + 1)))
+        tex += ['Sprite "RSYI%s0", 9, 9' % FRAMES[k], '{', '\tOffset 4, 19', '\tPatch "RQB%d", 0, 0' % (k + 1), '}']
     # friendly set (HP2): coldcite's B with R and B swapped
     for fi, lvl in enumerate(LEVELS):
         lump = 'RQMF%s' % lvl

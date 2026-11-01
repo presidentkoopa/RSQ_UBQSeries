@@ -72,7 +72,13 @@ Always on (no row):
 - **Knockdown and Executioner** are sized by the health a monster started with (works on LegenDoom
   legendaries and champions).
 - **Upgrade paths for the series** (offered when that weapon or the player levels):
-  - Gloves: Haymaker, One-Two, Star Punch, Counterpunch, Body Blow, Knockdown
+  - Gloves: Haymaker, One-Two, Star Punch, Counterpunch, Body Blow, Knockdown, and the owner's picks 52-54
+    (2026-11-01): **Heavy Hands** (a landed punch freezes the monster for a beat: 2 tics at level 1 up to 4, +2 for
+    a punch at half speed or more; and knocks it back 25% further a level; up to level 4), **Return Fire** (a punch
+    that meets a monster's missile sends it back at whoever fired it, 15% faster a level, and it hits for 150% at
+    level 1, +25% a level; up to level 4), **Wall Splat** (a monster your punch knocks into a wall at 3 map units a
+    tic or more takes 10 at level 1, +5 a level, up to double for a hard slam; it bounces off and reels; up to
+    level 5)
   - Sabers: Momentum, Riposte Edge, Piercing Return, Saber Throw, Chain Choke, Dual Harmony, Deflector;
     the Force: Force Push, Force Pull, Force Choke, Force Jump
   - ShieldSaw: Broadening, Lockstep, Ricochet, Meat Grinder, Hunter's Return, Bulwark, Rebound, Battering Ram
@@ -80,7 +86,10 @@ Always on (no row):
   - Player, each only while its mod is loaded: Distance Grab (Long Arm, Iron Grip, Heavy Hitter, Air Catch,
     Powder Keg); Tactical Rig (Quick Draw, Pair Draw, Showdown with SlowMo); SlowMo (Marksman, Dodger,
     Second Wind, Time Dilation); two hands (Akimbo, Crossfire, Alternator); the body (Evasion, Southpaw,
-    Steady Aim); Grapple (Long Line, Fast Reel, Heavy Haul, Get Over Here, Bowling, Barbed Claw, Slingshot,
+    Steady Aim; and pick 55 (2026-11-01) **Guard**: both hands up at your face for 4 tics with no gun in either
+    hand, and a blow from in front (within 55 degrees) does 60% of its damage at level 1, 10% less a level, down to
+    30% at level 4; you are pushed back a step and both hands knock; a blow of 35 or more at level 1 (+10 a level)
+    breaks the guard: full damage, no guard for 0.4 s; offered whatever is loaded); Grapple (Long Line, Fast Reel, Heavy Haul, Get Over Here, Bowling, Barbed Claw, Slingshot,
     Steady Line, Double Hook from player level 5).
 
 ## Test it
@@ -112,6 +121,19 @@ on the owner's headset; nothing below is headset-confirmed.
 13. RSQ_Accessibility Handedness -> Left-Handed: the two gauges swap sides. Text Size 2: the screens' text
     grows.
 
+The owner's picks 52-55 (2026-11-01). All are Gun Bonsai upgrades: they are offered at a level-up like the
+others (the three glove ones when the gloves level, Guard when the player levels) and work once learned. No menu
+rows. Rig-checked (logs) only: **not yet headset-confirmed**.
+
+14. Heavy Hands on the gloves: punch an imp. It stops dead for a beat, then flies back further than before.
+15. Wall Splat: punch an imp standing about a metre from a wall, toward the wall. It slams into the wall with a
+    smash, bleeds, bounces off and reels.
+16. Return Fire: let an imp throw a fireball at you and punch it as it arrives. It flies back at the imp and
+    hurts it.
+17. Guard (empty hands, fists or the gloves): hold both fists up in front of your face and let a zombieman or imp
+    hit you from in front. Both hands knock, you slide back a little and take less. Let a big hit land (a baron's
+    claw): the guard breaks with a smash and you take it all. Hands down: no guard. A gun in either hand: no guard.
+
 ## Works with
 
 - **Read by RSQ_Wheel and RSQ_GunCards**: a gun's level, XP and upgrades (RSQGB_Service).
@@ -129,8 +151,17 @@ on the owner's headset; nothing below is headset-confirmed.
 
 ## Known limits / open
 
-- **The owner's picks 52 Heavy Hands, 53 Return Fire, 54 Wall Splat and 55 Guard (all "Yes") are not in
-  the code or menu.**
+- **Picks 52-55: the picks page had only the names.** What each became (2026-11-01), from the Quest teardown
+  (rsq_questenginesurvey): Heavy Hands = hit-stop plus knockback on a landed punch (surveys/01_MELEE.md 3.6, 4.5);
+  Return Fire = the literal reading, punching a missile back at its shooter (01_MELEE 4.11, a blade's deflect done
+  by a glove; the name does not appear in the teardown); Wall Splat = the wall bounce (01_MELEE 4.7); Guard = the
+  guard pose (01_MELEE 4.4, apply/02_MELEE_BUILD.md 2.2 and 5). If the owner meant something else, say which.
+- Guard's box is tighter than the teardown's (each hand within 0.35 m of the head across, 0.25 m below to 0.15 m
+  above the eyes): the teardown's numbers counted the rig's resting hands at the chest as a guard. Two hands that
+  close together may light QuestZDoom's two-hand steadying (apply/02_MELEE_BUILD.md 7); not seen with the gloves on
+  the rig, not checked in the headset.
+- Return Fire only sees a monster's missiles (not hitscan bullets, not other players' shots).
+- Wall Splat counts a line that stops the flight (a wall, or a ledge too high to step up), not another monster.
 - Never run on the owner's headset (its handoff). The 2026-10-31 work (the RSQGB_Service rig check, the
   punch wall check) is rig only.
 - How often Knockdown and Executioner fire on legendaries in real play is not measured.

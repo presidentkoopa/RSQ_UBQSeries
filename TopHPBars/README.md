@@ -36,7 +36,7 @@ Front page (RSQ HP Bars):
 | Full Bright | Option (off) | Bars ignore the room's light. |
 | Allow Stealth | On | A see-through monster gets a see-through bar. |
 | Overheal | On | A thin strip above the bar holds health over 100 %. Past one full strip, small diamonds at its end (up to 4). |
-| Markers | On | The icons: hooked / stunned / locked / gripped left of the bar; frozen (snowflake), held (padlock) and raised (purple up arrow) right of it. |
+| Markers | On | The icons: hooked / stunned / locked / gripped left of the bar; frozen (snowflake), held (padlock) and raised (purple up arrow) right of it; with RSQ_Miniboss, a gold crown above the miniboss's bar and a grey chain link above each of its thralls' bars. |
 | Aimed Only | Option (off) | A bar only over the monster either hand's gun points at, and for half a second after. An unhurt monster you aim at gets its bar too. |
 | Damage Chunk | Option (off) | What your hit took off stays lit white for half a second, then drains. |
 | Ally Colour | Option (off) | Friendly monsters get a blue bar. |
@@ -81,6 +81,9 @@ Load only the order above plus RSQ_HPBars.pk3. Start MAP01.
     Brutal Doom's own imp leaves a separate corpse, so a BD monster may never show it; it showed on a
     stock imp. (not yet headset-confirmed)
 12. Frozen and held markers need other mods (steps 14 and 15). (not yet headset-confirmed)
+12a. With RSQ_Miniboss (Markers on): hurt the miniboss: a gold crown above its bar. Hurt one of its thralls: a
+     grey chain link above that bar. Kill the miniboss: the thralls' links go. Rig frame 2026-11-01; **not yet
+     headset-confirmed**. Like every bar, the mark needs the monster hurt first (an unhurt one has no bar).
 13. Reset All on Tuning and Debug. Everything goes back to the defaults above.
 
 With other series mods (each not yet headset-confirmed):
@@ -106,7 +109,7 @@ With other series mods (each not yet headset-confirmed):
 - coldcite's Top HP Bars: taken over (his bars removed, his HUD options entry opens this menu).
 - Champions: a bar over a champion wearing its icon is lifted above the icon. LegenDoom Lite legendaries
   (300 % health) show a full overheal strip and one diamond.
-- RSQ_Miniboss: not read. HP Bars does not ask the Miniboss service yet.
+- RSQ_Miniboss (read, by name: RSQMB_Service "miniboss" / "thrall"): the crown and chain-link marks. Without it, no marks.
 
 ## Known limits / open
 

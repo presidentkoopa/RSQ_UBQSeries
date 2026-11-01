@@ -109,13 +109,13 @@ Built 2026-10-27; its handoff says it was never run on a headset.
 - **RSQ_Score** (sent to): the three awards.
 - Champions and LegenDoom Lite: powers inherited, thralls made legendary.
 - Other mods can ask it (RSQMB_Service): is this a miniboss / thrall, enraged, lives, invulnerable,
-  shield, greed, window. **No other series mod asks yet** (HP Bars does not show miniboss state).
+  shield, greed, window. RSQ_TopHPBars asks "miniboss" and "thrall" for its crown and chain-link marks (2026-11-01).
 - Does not read RSQ_Accessibility.
 
 ## Known limits / open
 
 - Never headset-run: effect readability, sizes, colours, how long the fight takes.
-- Score has no rows of its own for the three awards yet; they pay onto its base row.
+- Score shows the three awards on their own rows (Thrall Slow Kill, Miniboss, Greedy; 2026-11-01, rig-checked).
 - Open questions from the owner's notes: lives 3 in all (the original had 3 extra); greed counts even
   before any thrall died (4 s fuse); revived thralls come back at plain health; thrall kills by
   infighting open the window too (no award).
@@ -205,7 +205,7 @@ Load after the series. `RSQ_Miniboss.pk3` (`./build.sh`). Options -> Radiant Sil
 
 **Greed**: a player striking the miniboss while thralls live arms it. It comes due when the slow window runs out (struck with none running: 4 s later). Miniboss alive and a thrall standing then -> EVERY monster enraged until the miniboss dies: Speed x2 (`rsqmb_rage_speed`), `MissileChanceMult` and `MinMissileChance` halved (the fire threshold halves at every range), reaction spent. Clearing the thralls first disarms it. Measured: 70 monsters on MAP02 (BD) 4.0/0.5/200 -> 8.0/0.25/100, back after the kill; restored only where nobody changed a value since (LegenDoom's transform mid-rage keeps its own 0.0625). RSQ_SlowMo never writes a monster's Speed, so the two compose. Save/load twice mid-rage: no double application (12.0 stays 12.0).
 
-**Score** (`RS_ScoreService "award"`, by name, just the push): "Thrall Slow Kill" 100 (a thrall killed in the window), "Miniboss" 500, "Greedy" 1000 (killed with thralls alive and no rage). Unknown labels pay onto Score's Base row until its rows exist.
+**Score** (`RS_ScoreService "award"`, by name, just the push): "Thrall Slow Kill" 100 (a thrall killed in the window), "Miniboss" 500, "Greedy" 1000 (killed with thralls alive and no rage). Score has a row of its own for each (2026-11-01).
 
 **For other mods**: `RSQMB_Service` (see `zscript/rsqmb/service.zs`): `miniboss`, `thrall`, `enraged`, `lives`, `invulnerable`, `shield`, `greed`, `window`, `living`, `legendary`; objects `boss` / `thrall`; string `powers`. Console: `netevent rsqmb_state`, `netevent rsqmb_choose`.
 

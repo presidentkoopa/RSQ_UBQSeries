@@ -409,3 +409,53 @@ class RSQ_Upgrade_SteadyAim : RSQ_Perk
 	}
 	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("mult", AsPercentIncrease(Mult(level))); }
 }
+
+// GUARD (the owner's pick 55, 2026-10-31, "Yes"; Quest teardown surveys/01_MELEE.md 4.4 and apply/02_MELEE_BUILD.md
+// 2.2 and 5, "a guard path as an RSQ_Perk -- guard belongs to the player, not a weapon"): both hands up at your face
+// for 4 tics, no gun in either hand, and a blow from in front (within 55 degrees of where you face) is soaked -- you
+// take 60% at level 1, 10% less a level, down to 30% -- and pushes you back a step, with a knock in both hands. A blow
+// too big for the guard (35 at level 1, +10 a level) breaks it: full damage, and no guard for 14 tics. The pose is
+// read in RSQ_MeleeHandler.Guard (up_melee.zs).
+class RSQ_Upgrade_Guard : RSQ_Perk
+{
+	const HOLD = 4;          // tics both hands must be up (the teardown's GUARD_HOLD)
+	const ARC = 55.0;        // degrees either side of your facing (GUARD_ARC)
+	const STUN = 14;         // tics without a guard after a break (guardStun)
+	const PUSH = 2.0;        // the step back (GUARD_PUSH)
+	static double Soak(uint lv) { return max(0.7 - 0.1 * lv, 0.3); }
+	static int BreakAt(uint lv) { return 25 + 10 * lv; }
+	override double ModifyDamageReceived(Actor pawn, Actor shot, Actor attacker, double damage, Name attacktype)
+	{
+		let h = RSQ_MeleeHandler.Get(); int pn = PN(pawn);
+		if (!h || pn < 0 || h.guardTics[pn] < HOLD || damage <= 0) return damage;
+		// where the blow came from: a missile from where it is, anything else from who struck (a hazard with no
+		// attacker -- slime, a crusher -- is not guarded)
+		Actor from = (shot && shot != attacker && shot.bMissile) ? shot : attacker;
+		if (!from || from == pawn) return damage;
+		if (Actor.absangle(pawn.AngleTo(from), pawn.angle) > ARC) return damage;
+		bool dbg = RSQM.SVI("rsq_punch_debug", 0) != 0;
+		if (damage >= BreakAt(level))
+		{
+			h.guardTics[pn] = 0;
+			h.guardBrokenUntil[pn] = RSQM.Now() + STUN;
+			pawn.A_StartSound("rsq/smash", CHAN_AUTO, 0, 1.0);
+			RSQ_Buzz.Start(pawn, 0, 1.0, 10);
+			RSQ_Buzz.Start(pawn, 1, 1.0, 10);
+			if (dbg) Console.Printf("RSQ guard: BROKEN by %d from %s", int(damage), from.GetClassName());
+			return damage;
+		}
+		double away = pawn.AngleTo(from) + 180;
+		pawn.vel.xy += (cos(away), sin(away)) * PUSH;
+		if (pawn.player) pawn.player.keepmomentum = true;   // a bare Vel write is erased next tic (player.zs)
+		pawn.A_StartSound("rsq/punch", CHAN_AUTO, 0, 0.7);
+		RSQ_Buzz.Start(pawn, 0, 0.6, 6);
+		RSQ_Buzz.Start(pawn, 1, 0.6, 6);
+		if (dbg) Console.Printf("RSQ guard: soaked %d -> %d from %s", int(damage), int(damage * Soak(level)), from.GetClassName());
+		return damage * Soak(level);
+	}
+	override void GetTooltipFields(Dictionary fields, uint level)
+	{
+		fields.Insert("take", AsPercent(Soak(level)));
+		fields.Insert("brk", string.format("%d", BreakAt(level)));
+	}
+}

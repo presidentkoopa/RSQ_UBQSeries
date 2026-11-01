@@ -10,6 +10,10 @@ class RS_AwardSeed play
 		into.Push("RS_Award_Deflect");
 		into.Push("RS_Award_RemoteDown");
 		into.Push("RS_Award_IndianaJones");
+		into.Push("RS_Award_ThrallSlowKill");
+		into.Push("RS_Award_Miniboss");
+		into.Push("RS_Award_Greedy");
+		into.Push("RS_Award_FEAR");
 	}
 }
 
@@ -31,6 +35,33 @@ class RS_Award_RemoteDown : RS_ScoreBonus
 {
 	override int Family() const { return FAM_MELEE; }
 	override String DisplayName() const { return "Remote Down"; }
+}
+
+// RSQ_Miniboss (its handler.zs Award): a thrall killed in the slow window, the miniboss itself, and a greedy kill (the
+// miniboss killed with thralls still alive and no rage). The labels are Miniboss's own strings, exactly.
+class RS_Award_ThrallSlowKill : RS_ScoreBonus
+{
+	override int Family() const { return FAM_DARING; }
+	override String DisplayName() const { return "Thrall Slow Kill"; }
+}
+
+class RS_Award_Miniboss : RS_ScoreBonus
+{
+	override int Family() const { return FAM_DARING; }
+	override String DisplayName() const { return "Miniboss"; }
+}
+
+class RS_Award_Greedy : RS_ScoreBonus
+{
+	override int Family() const { return FAM_DARING; }
+	override String DisplayName() const { return "Greedy"; }
+}
+
+// RSQ_Gestures: a shotgun kill in the slow-motion window after a gun-butt shove (the owner's name, spelt as he wrote it).
+class RS_Award_FEAR : RS_ScoreBonus
+{
+	override int Family() const { return FAM_STYLE; }
+	override String DisplayName() const { return "F.E.A.R. Effect"; }
 }
 
 // The door for other mods: GetInt("award", label, points, 0, playerPawn). See RS_ScoreHandler.AwardExternal.
