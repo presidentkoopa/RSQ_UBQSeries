@@ -154,7 +154,7 @@ SUITE UPGRADES (rsq/)
 ---------------------
 Upgrade paths for the whole RSQ suite, added as new files. No elemental damage, nothing that is
 rate of fire, no new resource: each one grows a number the suite already has, or rewards something
-the player already does. Options: Options -> RSQ Upgrades (also at the bottom of Gun Bonsai's own
+the player already does. Options: Options -> Radiant Silvergun Options -> RSQ Gun Bonsai VR (also at the bottom of Gun Bonsai's own
 options): Slappers Only, Start With Gloves, and Tuning.
 
 WEAPON PATHS (offered when that weapon levels)
