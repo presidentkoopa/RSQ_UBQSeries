@@ -3,12 +3,12 @@
 // itself -- its own pickup sprite, the voxel a voxel pack gives it, or a weapon pack's model of it -- small, in a
 // little fan, swinging as you move. Look down and you see what you can open. Only you see it (it is this machine's
 // own drawing); nothing about the keys changes. rsqtr_keyring.
+// ITS OWN SPOT (owner 2026-11-01): where it hangs is the rig's place 8 (RSQTR_Region.KEYRING, rsqtr_r8_f / _l / _u /
+// _rad), so it is moved by Move Holsters by Hand, saved in the holster profiles and shown as a sphere like the
+// holsters. Its default is where it always hung. It is no gun holster: its grip does only the key doors below.
 
 class RSQTR_Keyring : EventHandler
 {
-	const RING_F = 0.14;        // metres from the head, body frame (the rig's BodyPoint): in front of the belt
-	const RING_L = 0.13;        // to the off-hand side, clear of the grenade spot on the buckle
-	const RING_U = -0.70;
 	const KEY_H = 0.08;         // a key's height, metres (bigger than life: it is read from 1.5 m away)
 	const SPREAD = 0.045;       // between keys, metres (a voxel key is ~3 cm wide)
 	const MAXK = 8;
@@ -24,7 +24,6 @@ class RSQTR_Keyring : EventHandler
 	// key check and the switch texture). No key that fits: the engine's own "you need a key" and nothing opens.
 	// The touch is found on this machine (its hands), the door is opened in the sim from a network event.
 	const TOUCH_M = 0.12;       // metres from the hand to the door's line that counts as touching it
-	const GRAB_M = 0.12;        // metres from the hand to the ring that takes the keys
 	transient int keysIn;       // the hand holding the keys + 1 (0 = on the ring)
 	transient bool gripWas[2];
 	transient int lastLine, lastLineTic;
@@ -55,7 +54,9 @@ class RSQTR_Keyring : EventHandler
 	// this machine's hands: take the keys, touch a door
 	private Vector3 KeysTick(PlayerPawn pmo, PlayerInfo p, RSQTR_Rig rig, Vector3 ringAt)
 	{
-		if (!RSQTR_Rig.Flag("rsqtr_key_doors", p, false)) { keysIn = 0; return ringAt; }
+		// (in Move Holsters by Hand the grip carries the ring instead)
+		if (!RSQTR_Rig.Flag("rsqtr_key_doors", p, false) || RSQTR_Rig.Flag("rsqtr_edit", p, false)) { keysIn = 0; return ringAt; }
+		double grab = rig.RegionRadius(p, RSQTR_Region.KEYRING);     // metres from the hand to the ring that takes the keys (its sphere)
 		int n = consoleplayer;
 		for (int h = 0; h < 2; h++)
 		{
@@ -64,7 +65,7 @@ class RSQTR_Keyring : EventHandler
 			gripWas[h] = g;
 			if (press && RSQTR_Rig.Flag("rsqtr_messages", p, false))
 				Console.Printf("T_KEYS grip %d t%d, %.2f m from the ring", h, level.maptime, RSQTR_Body.RoomMetres(RSQTR_Body.Hand(pmo, h), ringAt));
-			if (press && keysIn == 0 && RSQTR_Body.RoomMetres(RSQTR_Body.Hand(pmo, h), ringAt) <= GRAB_M)
+			if (press && keysIn == 0 && RSQTR_Body.RoomMetres(RSQTR_Body.Hand(pmo, h), ringAt) <= grab)
 			{
 				keysIn = h + 1;
 				RSQTR_Buzzer.Start(pmo, h, 0.3, 3);
@@ -123,8 +124,7 @@ class RSQTR_Keyring : EventHandler
 				if (it is "Key" && it.Amount > 0) keys.Push(it);
 		if (!on || keys.Size() == 0) { Hide(); return; }
 
-		double side = RSQTR_Body.LayoutLeft() ? -1 : 1;     // the off-hand side: left for a right-hander
-		Vector3 at = rig.BodyPoint(pmo, RING_F, RING_L * side, RING_U);
+		Vector3 at = rig.RegionAt(pmo, RSQTR_Region.KEYRING);   // its place (carried by the hand while it is moved)
 		Vector3 keysAt = KeysTick(pmo, p, rig, at);
 		let body = rig.GetBody();
 		double yaw = (body && body.primed) ? body.yaw : pmo.angle;

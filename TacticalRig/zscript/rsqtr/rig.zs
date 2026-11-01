@@ -19,17 +19,20 @@
 
 class RSQTR_Region
 {
-	// ELEVEN INDICES, EIGHT IN USE. The index is a place's identity: its cvars (rsqtr_rN_*) and its
-	// position in a saved holster profile. 0 1 hips, 4 5 shoulders, 6 7 the chest (cross-draw, owner
-	// 2026-10-31), 9 10 saber spots. 2 3 8 (stomach, lower back) are RETIRED: never live, no settings;
-	// kept as indices so nothing renumbers. A profile saved before the chest pair has them empty: they
-	// keep their defaults.
+	// ELEVEN INDICES, TEN IN USE. The index is a place's identity: its cvars (rsqtr_rN_*) and its
+	// position in a saved holster profile. 0 1 hips, 3 the grenade spot, 4 5 shoulders, 6 7 the chest
+	// (cross-draw, owner 2026-10-31), 8 the keyring (owner 2026-11-01: "its own spot"), 9 10 saber spots.
+	// 2 (the stomach) is RETIRED: never live, no settings; kept as an index so nothing renumbers. A
+	// profile saved before the chest pair has them empty: they keep the values they had. One saved
+	// before the keyring had index 8 (then retired, the lower back) empty: loading it puts the keyring
+	// back at its default (Profile).
 	const N = 11;
-	static const String NAMES[] = { "Left hip", "Right hip", "", "Grenades", "Left shoulder", "Right shoulder", "Left chest", "Right chest", "", "Left saber", "Right saber" };
+	static const String NAMES[] = { "Left hip", "Right hip", "", "Grenades", "Left shoulder", "Right shoulder", "Left chest", "Right chest", "Keyring", "Left saber", "Right saber" };
 	const SABER_L = 9;
 	const GRENADES = 3;
+	const KEYRING = 8;
 	const SABER_R = 10;
-	static bool Retired(int r) { return r == 2 || r == 8; }
+	static bool Retired(int r) { return r == 2; }
 
 	// Defaults, metres from the head in the body frame: forward, left, up, radius (0: retired).
 	// The chest pair: 0.46 m under the eyes, 0.12 m either side of the breastbone, 0.10 m in front;
@@ -38,10 +41,14 @@ class RSQTR_Region
 	// 0.09 at 0.25 m under the eyes) -- at 0.38 m they sat on the pocket.
 	// 3, THE GRENADE SPOT (owner 2026-10-31: "dedicated grenade spot"): the front of the belt, the buckle, 0.62 m
 	// under the eyes, radius 0.08 -- 0.19 m from each chest holster and 0.22 m from each hip.
-	static const double DF[] = {  0.00,  0.00, 0,  0.12, -0.08, -0.08,  0.10,  0.10, 0,  0.02,  0.02 };
-	static const double DL[] = {  0.18, -0.18, 0,  0.00,  0.18, -0.18,  0.12, -0.12, 0,  0.21, -0.21 };
-	static const double DU[] = { -0.70, -0.70, 0, -0.62, -0.10, -0.10, -0.46, -0.46, 0, -0.84, -0.84 };
-	static const double DR[] = {  0.14,  0.14, 0,  0.08,  0.14,  0.14,  0.11,  0.11, 0,  0.10,  0.10 };
+	// 8, THE KEYRING: where keyring.zs hung it until 11-01 (its RING_F / RING_L / RING_U constants, 0.14 forward,
+	// 0.13 to the off-hand side, 0.70 under the eyes), radius its old grab reach (GRAB_M, 0.12). Its "left" is
+	// TOWARD THE OFF HAND (mirrored for a left-handed layout, as it always hung), not the body's left.
+	// It is no gun holster: only the keyring and its key-doors grip use it.
+	static const double DF[] = {  0.00,  0.00, 0,  0.12, -0.08, -0.08,  0.10,  0.10,  0.14,  0.02,  0.02 };
+	static const double DL[] = {  0.18, -0.18, 0,  0.00,  0.18, -0.18,  0.12, -0.12,  0.13,  0.21, -0.21 };
+	static const double DU[] = { -0.70, -0.70, 0, -0.62, -0.10, -0.10, -0.46, -0.46, -0.70, -0.84, -0.84 };
+	static const double DR[] = {  0.14,  0.14, 0,  0.08,  0.14,  0.14,  0.11,  0.11,  0.12,  0.10,  0.10 };
 }
 
 class RSQTR_Rig : EventHandler
@@ -147,6 +154,8 @@ class RSQTR_Rig : EventHandler
 			cU[r] = Num(String.Format("rsqtr_r%d_u", r), p, RSQTR_Region.DU[r]);
 			cR[r] = Num(String.Format("rsqtr_r%d_rad", r), p, RSQTR_Region.DR[r]) * reach;
 		}
+		// the keyring's "left" is toward the off hand (RSQTR_Region.DL's note)
+		if (RSQTR_Body.LayoutLeft()) cL[RSQTR_Region.KEYRING] = -cL[RSQTR_Region.KEYRING];
 	}
 
 	// Where region r is, in the world, for this player.
@@ -385,12 +394,14 @@ class RSQTR_Rig : EventHandler
 		else if (e.Name == "rsqtr_throwat") throwAt[n] = (e.Args[0], e.Args[1], e.Args[2]) / 8.0;
 		else if (e.Name == "rsqtr_throwv") throwVel[n] = (e.Args[0], e.Args[1], e.Args[2]) / 100.0;
 		else if (e.Name == "rsqtr_throw") ThrowGun(pmo, e.Args[0] & 1);
+		else if (e.Name == "rsqtr_watchmove") WatchMoveApply(pmo, e.Args[0] & 1);
 	}
 
 	// HOLSTER PROFILES (the owner, 10-27: "save up to four holster profiles"). Every place's
 	// position and size, written into one of this machine's own settings (rsqtr_profile1..4) or
 	// read back from it. Format: "f,l,u,rad|..." by place index (a retired index is left empty).
-	// Profiles saved before 10-27 carry a fifth field, the old slot list: ignored.
+	// Profiles saved before 10-27 carry a fifth field, the old slot list: ignored. Index 8 is the keyring
+	// (11-01); a profile saved before it has that field empty, and loading it puts the keyring at its default.
 	private void Profile(Actor who, int k, bool save)
 	{
 		if (k < 1 || k > 4) return;
@@ -416,12 +427,21 @@ class RSQTR_Rig : EventHandler
 		if (all == "") { if (who) who.A_Print(String.Format("Tactical Rig: %s is empty -- save to it first", ProfileName(k)), 0, RSQTR_A11y.PrintFont()); return; }
 		Array<String> places;
 		all.Split(places, "|");
-		for (int r = 0; r < RSQTR_Region.N && r < places.Size(); r++)
+		for (int r = 0; r < RSQTR_Region.N; r++)
 		{
 			if (RSQTR_Region.Retired(r)) continue;
 			Array<String> f;
-			places[r].Split(f, ",");
-			if (f.Size() < 4) continue;
+			if (r < places.Size()) places[r].Split(f, ",");
+			if (f.Size() < 4)
+			{
+				// a profile from before the keyring was a place: the keyring goes back to its default
+				if (r == RSQTR_Region.KEYRING)
+				{
+					static const String KR[] = { "f", "l", "u", "rad" };
+					for (int j = 0; j < 4; j++) CVar.FindCVar(String.Format("rsqtr_r%d_%s", r, KR[j])).ResetToDefault();
+				}
+				continue;
+			}
 			CVar.FindCVar(String.Format("rsqtr_r%d_f", r)).SetFloat(f[0].ToDouble());
 			CVar.FindCVar(String.Format("rsqtr_r%d_l", r)).SetFloat(f[1].ToDouble());
 			CVar.FindCVar(String.Format("rsqtr_r%d_u", r)).SetFloat(f[2].ToDouble());
@@ -707,6 +727,123 @@ class RSQTR_Rig : EventHandler
 		pmo.A_StartSound("rsqtr/draw", CHAN_AUTO, CHANF_LOCAL, 0.8);
 	}
 
+	// ---- MOVE A GUN TO THE OTHER HAND AT THE WATCH CHECK (owner 2026-11-01, rsqtr_watch_move, off by default) ----
+	// "use during watch check, as a toggle on off option". While RSQ_Gestures says a hand's watch check is held
+	// (its "inspect" answer 2, the one that brings up RSQ_GunCards' watch card; asked by name, RSQG_Service), a Use
+	// press (the BT_USE edge) moves the gun in THAT hand to the other hand; a movable gun in the other hand comes
+	// back (a swap). A hand left empty gets its empty-hand weapon (EmptyHand / OffEmptyName). Without RSQ_Gestures
+	// there is no watch check and this does nothing.
+	// The holsters' rules: sabers, the ShieldSaw, the cigarette and Zippo, fists / the empty hands and Brutal
+	// Doom's off-hand dual copies (RSQ_Off_*) never move, and a hand holding one blocks the move; Brutal Doom's
+	// Dual (DualPistols ...) stays on BD's own key. A hand inside a holster (or the keyring in edit mode) keeps
+	// Use for the holster: no move while either hand is in one.
+	// Not into the off hand while the engine's two-hand latch is on (WF_TWOHANDSTABILIZED: an off-hand weapon
+	// raised then arrives invisible, apply/07_WHEEL.md 4; TickPairs' note).
+	const WATCH_GRACE = 8;                   // tics after the watch check lets go that a Use press still counts (a thumb on a button can tip the wrist)
+	private transient int watchTic[2];       // level.maptime + 1 when Gestures last said that hand's watch check was held
+
+	static int GestureInspect(PlayerPawn pmo, int h)
+	{
+		let it = ServiceIterator.Find("RSQG_Service");
+		Service s;
+		while (s = it.Next()) return s.GetInt("inspect", "", h, 0, pmo);
+		return -1;
+	}
+
+	// What a hand holds, for the move: 0 empty (its empty-hand weapon or nothing), 1 a gun that may move, 2 anything else.
+	static int HandKind(PlayerPawn pmo, int h)
+	{
+		let p = pmo.player;
+		if (h == 0)
+		{
+			let w = p.ReadyWeapon;
+			if (!w || w == EmptyHand(pmo)) return 0;
+			if (w is "RSQTR_CigWeapon" || !IsMovedGun(w)) return 2;
+			return HeldAs(pmo, w) == w.GetClassName() ? 1 : 2;    // a BD Dual (filed as its single gun) stays on BD's key
+		}
+		let o = p.OffhandWeapon;
+		if (!o) return 0;
+		String on = o.GetClassName();
+		String en = OffEmptyName(pmo);
+		if (en != "" && on ~== en) return 0;     // (BD22 VR Reloaded's class reads back as "rsq_hands")
+		return IsMovedGun(o) ? 1 : 2;
+	}
+
+	bool CanWatchMove(PlayerPawn pmo, int h)
+	{
+		let p = pmo.player;
+		int n = pmo.PlayerNumber();
+		if (p.PendingWeapon != WP_NOCHANGE || offNext[n] != "") return false;    // a switch already under way
+		let cig = RSQTR_Cig.Get();
+		if (cig && cig.phase[n] != RSQTR_Cig.PH_NONE) return false;
+		int mine = HandKind(pmo, h), other = HandKind(pmo, 1 - h);
+		if (mine != 1 || other == 2) return false;
+		bool latched = (p.WeaponState & WF_TWOHANDSTABILIZED) != 0;
+		if (latched && (h == 0 || other == 1)) return false;               // that would put a gun into the off hand
+		if (h == 0 && other == 0 && !EmptyHand(pmo)) return false;         // nothing for the main hand to hold
+		return true;
+	}
+
+	// this machine: is a watch check up, and was Use pressed?
+	private void WatchMove(PlayerPawn pmo, PlayerInfo p, bool useEdge)
+	{
+		if (!Flag("rsqtr_watch_move", p, false)) { watchTic[0] = 0; watchTic[1] = 0; return; }
+		for (int h = 0; h < 2; h++) if (GestureInspect(pmo, h) >= 2) watchTic[h] = level.maptime + 1;
+		if (!useEdge || Flag("rsqtr_edit", p, false)) return;
+		if (hoverR[0] >= 0 || hoverR[1] >= 0) return;          // a hand in a holster: Use is the holster's
+		int h = -1;
+		for (int k = 0; k < 2 && h < 0; k++)
+		{
+			int ago = level.maptime + 1 - watchTic[k];
+			if (watchTic[k] > 0 && ago >= 0 && ago <= WATCH_GRACE) h = k;
+		}
+		if (h < 0) return;
+		if (!CanWatchMove(pmo, h))
+		{
+			RSQTR_Buzzer.Start(pmo, h, 0.12, 2);
+			if (Flag("rsqtr_messages", p, false)) Console.Printf("T_RIG watch move hand %d t%d: refused (%s / %s)", h, level.maptime,
+				p.ReadyWeapon ? p.ReadyWeapon.GetClassName() : 'none', p.OffhandWeapon ? p.OffhandWeapon.GetClassName() : 'none');
+			return;
+		}
+		EventHandler.SendNetworkEvent("rsqtr_watchmove", h);
+		RSQTR_Buzzer.Start(pmo, h, 0.55, 5);
+		RSQTR_Buzzer.Start(pmo, 1 - h, 0.65, 6);
+		watchTic[0] = 0; watchTic[1] = 0;
+	}
+
+	// every machine
+	private void WatchMoveApply(PlayerPawn pmo, int h)
+	{
+		let p = pmo.player;
+		int n = pmo.PlayerNumber();
+		if (!Flag("rsqtr_watch_move", p, false) || !CanWatchMove(pmo, h)) return;
+		let mainW = p.ReadyWeapon, offW = p.OffhandWeapon;
+		bool swap = HandKind(pmo, 1 - h) == 1;
+		String toOff;
+		if (h == 0 && !swap)
+		{
+			// the main hand's gun across; the main hand goes empty
+			p.PendingWeapon = EmptyHand(pmo);
+			toOff = mainW.GetClassName();
+		}
+		else
+		{
+			// the off hand's gun comes to the main hand (h 1, or the other half of a swap)
+			p.SetPsprite(PSP_OFFHANDWEAPON, null);
+			p.OffhandWeapon = null;
+			offW.bOffhandWeapon = false;
+			p.PendingWeapon = offW;
+			if (swap) toOff = mainW.GetClassName();
+			else toOff = OffEmptyName(pmo);
+		}
+		// into the off hand once the main hand has switched (TickPairs flips a gun to an off-hand weapon there)
+		if (toOff != "") QueueOff(n, toOff);
+		pmo.A_StartSound("rsqtr/draw", CHAN_AUTO, CHANF_LOCAL, 0.8);
+		if (Flag("rsqtr_messages", p, false))
+			Console.Printf("T_RIG watch move hand %d t%d: %s -> main, %s -> off", h, level.maptime,
+				p.PendingWeapon ? p.PendingWeapon.GetClassName() : 'none', toOff == "" ? "(nothing)" : toOff);
+	}
+
 	// Put the main hand's weapon on the body at region r. On a gun holster that already holds
 	// a gun, the two swap.
 	private void Holster(PlayerPawn pmo, int r)
@@ -889,6 +1026,10 @@ class RSQTR_Rig : EventHandler
 			if (!c) continue;
 			let w = Weapon(p.mo.FindInventory(c));
 			if (!w) { p.mo.GiveInventory(c, 1); w = Weapon(p.mo.FindInventory(c)); }
+			// a gun that is not an off-hand weapon by default goes to the off hand flagged as one (the flip the
+			// holsters make in HolsterOff / DrawOff); done here, once the main hand has let go of it, for a gun
+			// moved across at the watch check (WatchMoveApply)
+			if (w && IsMovedGun(w) && w != p.ReadyWeapon) w.bOffhandWeapon = true;
 			if (w && p.OffhandWeapon != w) p.PendingWeapon = w;
 		}
 	}
@@ -918,6 +1059,7 @@ class RSQTR_Rig : EventHandler
 		bool useEdge = useDown && !useWas;
 		bool usePress = Flag("rsqtr_use", p, true);
 		bool gripOk = Flag("rsqtr_grip", p, true);
+		bool editing = Flag("rsqtr_edit", p, false);
 
 		for (int h = 0; h < 2; h++)
 		{
@@ -928,6 +1070,9 @@ class RSQTR_Rig : EventHandler
 			for (int i = 0; i < RSQTR_Region.N; i++)
 			{
 				if (!RegionLive(pmo, i)) continue;
+				// THE KEYRING IS NO HOLSTER: a hand there is the rig's only to carry it in edit mode. Its grip
+				// (keys to a door) is keyring.zs's own, as before it was a place.
+				if (i == RSQTR_Region.KEYRING && !editing) continue;
 				double d = RSQTR_Body.RoomMetres(hp, RegionAt(pmo, i));
 				if (d <= RegionRadius(p, i) && d < best) { best = d; r = i; }
 			}
@@ -971,7 +1116,7 @@ class RSQTR_Rig : EventHandler
 
 			// EDIT MODE (rsqtr_edit): grip in a region carries it with the hand; let go
 			// and it stays there, saved to that region's settings.
-			if (Flag("rsqtr_edit", p, false))
+			if (editing)
 			{
 				if (editHand == h)
 				{
@@ -997,6 +1142,8 @@ class RSQTR_Rig : EventHandler
 			if (!pressNow) pendPress[h] = false;
 			if (pendPress[h] && r >= 0 && hoverT[h] >= dwell) { pendPress[h] = false; Press(pmo, p, h, r, hp); }
 		}
+		// after the holsters: a Use press with a hand in a holster was the holster's (WatchMove stands down)
+		WatchMove(pmo, p, useEdge);
 		useWas = useDown;
 		DrawMarkers(pmo, p);
 	}
@@ -1056,6 +1203,7 @@ class RSQTR_Rig : EventHandler
 		int r = editRegion;
 		double f, l, u;
 		BodyOffsets(pmo, editAt, f, l, u);
+		if (r == RSQTR_Region.KEYRING && RSQTR_Body.LayoutLeft()) l = -l;     // its "left" is toward the off hand
 		CVar.FindCVar(String.Format("rsqtr_r%d_f", r)).SetFloat(f);
 		CVar.FindCVar(String.Format("rsqtr_r%d_l", r)).SetFloat(l);
 		CVar.FindCVar(String.Format("rsqtr_r%d_u", r)).SetFloat(u);
@@ -1075,6 +1223,7 @@ class RSQTR_Rig : EventHandler
 	{
 		if (IsSaberRegion(r)) { if (!SaberLoaded()) return false; }
 		else if (IsGrenadeRegion(r)) { if (!HasGrenadeWeapon() || !Flag("rsqtr_grenades", pmo.player, true)) return false; }
+		else if (r == RSQTR_Region.KEYRING) { if (!Flag("rsqtr_keyring", pmo.player, true)) return false; }
 		else if (!IsGunRegion(r)) return false;      // a retired index (RSQTR_Region.Retired)
 		return !RSQTR_Hooks.Claimed(pmo, r);
 	}
@@ -1251,7 +1400,8 @@ class RSQTR_Rig : EventHandler
 			double rad = RegionRadius(p, r);
 			double near = 1e9;
 			for (int h = 0; h < 2; h++) near = min(near, RSQTR_Body.RoomMetres(RSQTR_Body.Hand(pmo, h), at));
-			bool inside = hoverR[0] == r || hoverR[1] == r;
+			// (the keyring is hovered only in edit mode; outside it, "inside" is a hand within its sphere)
+			bool inside = hoverR[0] == r || hoverR[1] == r || (r == RSQTR_Region.KEYRING && near <= rad);
 			bool live = RegionLive(pmo, r);
 			double a = 0;
 			if (live && mode > 0)

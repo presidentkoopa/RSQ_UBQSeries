@@ -41,7 +41,12 @@ doom2.wad -> brutal22test6.pk3 -> BD_VoxelPack.pk3 -> BD22_VR-Reloaded_2_0_3h.pk
 - **Throw a gun away:** swing the hand fast and grip, away from any holster. The gun flies and lands as a
   pickup.
 - **Keys to a door (option):** grip at the keyring, hold the grip, touch the keys to a locked door.
-- **Move a holster (option):** turn on *Move Holsters by Hand*, grip inside a sphere, carry it, let go.
+- **Move a gun to the other hand (option, needs RSQ Gestures):** turn on *Move Gun at Watch (Use)*. Check
+  your watch with the hand holding the gun (RSQ Gestures' watch check, the one that shows RSQ Gun Cards'
+  watch card) and press Use: the gun goes to the other hand. A gun already in the other hand comes back (they
+  swap). The hand left empty holds its empty hand (Brutal Doom's hands, or nothing / the fist).
+- **Move a holster (option):** turn on *Move Holsters by Hand*, grip inside a sphere, carry it, let go. The
+  keyring moves the same way.
 - **Cigarette (option):** main hand grips at the left chest pocket; bring it to your mouth and pull the
   trigger; off-hand trigger opens the Zippo; hold the flame to the tip; off-hand trigger again to smoke
   and spit it out.
@@ -52,9 +57,20 @@ Six gun holsters: left hip, right hip, left chest, right chest, left shoulder, r
 spots just below the hips (with RSQ Saber): the main saber's on the main hand's side, drawn and put away
 by the main hand; the second saber's on the off hand's side, by the off hand. The second saber has no key
 of its own, so its spot is the only way to put it away and take it out; it stays away until drawn there
-(across map changes and saves). The grenade spot is on the belt buckle; the keyring hangs on
-the front of the belt, off-hand side. A holster holds exactly the gun you put there. Each hand holsters
-and draws its own gun. Brutal Doom's Dual keeps its own key (*Draw Pairs*: Never).
+(across map changes and saves). The grenade spot is on the belt buckle. A holster holds exactly the gun
+you put there. Each hand holsters and draws its own gun. Brutal Doom's Dual keeps its own key (*Draw
+Pairs*: Never).
+
+The keyring is a spot of its own (2026-11-01): by default on the front of the belt, off-hand side (0.14 m
+forward, 0.13 m toward the off hand, 0.70 m under the eyes, sphere 0.12 m), where it always hung. It has a
+sphere like the holsters, moves with *Move Holsters by Hand*, is saved and loaded with the holster profiles,
+and has its own sliders (*Holster Positions: Keyring*). It is not a gun holster: gripping it never takes or
+gives a gun, only the keys (with *Keys Open Doors by Hand*).
+
+Moving a gun to the other hand (*Move Gun at Watch (Use)*) follows the holsters' rules: sabers, the
+ShieldSaw, the cigarette and Zippo, fists / empty hands and Brutal Doom's off-hand dual copies never move,
+and a hand holding one of those blocks the move. Brutal Doom's Dual stays on its own key. While either
+hand is inside a holster, Use belongs to that holster and nothing moves.
 
 ## Features
 
@@ -66,14 +82,15 @@ default.
 | Tactical Rig | On | The whole mod. |
 | Grip Holsters | On | The grips holster and draw. |
 | Use Holsters | On | Use holsters and draws too. |
+| Move Gun at Watch (Use) | Option | While RSQ Gestures' watch check is up on a hand, Use moves that hand's gun to the other hand (a gun there swaps). Does nothing without RSQ Gestures. |
 | Reach | Standard | How big the holster spheres are: Tight / Standard / Easy. |
-| Holster Rings | Hand Nearby | The wireframe sphere on each holster: Never / Hand Nearby / Always. Green with your hand inside. |
+| Holster Rings | Hand Nearby | The wireframe sphere on each holster and the keyring: Never / Hand Nearby / Always. Green with your hand inside. |
 | Draw Pairs | Never | Bring Brutal Doom's off-hand copy along: Never / If Holstered as a Pair / Always. |
 | Seated | Option | The rig hangs from your seated eyes. This machine only. |
 | Measure My Height | - | Scales the rig to your eye height. |
-| Move Holsters by Hand | Option | Grip a sphere, carry it, let go: it is saved. |
+| Move Holsters by Hand | Option | Grip a sphere (a holster or the keyring), carry it, let go: it is saved. |
 | Mirror | While Moving Holsters | A copy of you about a metre out: Off / While Moving Holsters / Always. Only you see it. |
-| Holster Profiles | - | Save and load four layouts: Standing A (Blue), Standing B (Orange), Seated A (Purple), Seated B (Yellow). |
+| Holster Profiles | - | Save and load four layouts: Standing A (Blue), Standing B (Orange), Seated A (Purple), Seated B (Yellow). The keyring's place is in them; a profile saved before 2026-11-01 puts the keyring at its default. |
 | Torso | Option | A torso the holsters sit on, coloured by armour, breathing red at low health. |
 | Torso Style | Doom marine | Doom marine or Quake Grunt. |
 | Helmet | On | With the marine torso: a helmet only mirrors show. |
@@ -97,7 +114,7 @@ default.
 | Rig Options: Saber on Hip Too | Option | The saber also clips to the hips. |
 | Rig Options: Slow Motion After a Smoke | On | RSQ SlowMo starts as you spit the cigarette out (6 s at 25 %, on the *Cigarette* page). |
 | Rig Options: Refill Each Level | On | The cigarette pocket refills each level. |
-| Tuning and Debug: Holster Positions / Torso Fit / Cigarette | - | Sliders for each holster, the torso and helmet, and the cigarette. |
+| Tuning and Debug: Holster Positions / Torso Fit / Cigarette | - | Sliders for each holster and the keyring (its *Toward Off Hand* is mirrored for a left-handed layout), the torso and helmet, and the cigarette. |
 | Tuning and Debug: Throw Swing Speed (m/s) | 2.5 | How fast the hand must swing to throw a gun. |
 | Tuning and Debug: Thrown Gun Damage | 1.0 | Multiplier on thrown-gun hits. |
 | Tuning and Debug: Reset All | - | Resets every Tactical Rig setting. |
@@ -149,9 +166,22 @@ simulated rig.
     left hip at 70.2 instead of 77.2)**
 18. With RSQ Accessibility: Rumble Strength 0, reach into a holster: no rumble. 2: stronger.
     **(not yet headset-confirmed)**
+19. With RSQ Gestures: turn on *Move Gun at Watch (Use)*. Gun in the main hand, off hand empty: check your
+    watch with the main hand and press Use. The gun goes to the off hand; the main hand is empty. Check your
+    watch with the off hand and press Use: it comes back. Gun in both hands: the two swap. Turn the row off:
+    Use at the watch check does nothing. Off hand in a hip holster while you press Use: the holster acts,
+    no gun moves. **(not yet headset-confirmed; rig 11-01: plain Doom 2 pistol / shotgun across, back and
+    swapped both ways; Brutal Doom order Rifle and Shot_Gun across and back, Brutal Doom's hands in the
+    empty off hand; nothing with the row off or a hand in a holster)**
+20. Turn on *Holster Rings* Always: a sphere shows at the keyring. Turn on *Move Holsters by Hand*, grip the
+    keyring's sphere, carry it, let go: the keys hang there now. Save a holster profile, move the keyring
+    again, load the profile: it is back. **(not yet headset-confirmed; rig 11-01: moved by hand to 0.30
+    forward, 0.60 under the eyes; saved, moved, loaded back; an older profile put it at its default)**
 
 ## Works with
 
+- **RSQ Gestures:** its watch check is what *Move Gun at Watch (Use)* waits for (asked by name). Without
+  it there is no watch check and the row does nothing.
 - **RSQ SlowMo:** spitting out the cigarette starts slow motion (*Slow Motion After a Smoke*).
 - **RSQ Distance Grab:** doors are lifted there now, not here. A hand in a holster, or holding the
   cigarette or Zippo, does not distance-grab.
@@ -260,5 +290,7 @@ A thrown gun striking a body plays stock Doom's punch (doom2.wad DSPUNCH; SNDINF
 
 `RSQTR_RigService` (found by name): `rig.region` (the holster a hand is in, or -1), `rig.busy` (1 while a
 hand is in a holster, holds a Distance Grab door, the cigarette or the Zippo), `rig.drawtic` /
-`rig.drawn` (when that player last drew from a holster and what came out). This section is for modders,
-not for play.
+`rig.drawn` (when that player last drew from a holster and what came out). `rig.regionname` names place 8
+"Keyring"; `rig.region` answers 8 only while the keyring is carried in *Move Holsters by Hand*.
+Holster profiles (`rsqtr_profile1..4`, "f,l,u,rad|..." by place index) now fill index 8 with the keyring
+(its "l" is toward the off hand); it was empty before. This section is for modders, not for play.

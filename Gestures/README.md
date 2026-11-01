@@ -20,8 +20,8 @@ BD22_VR-Reloaded_2.0.3ha_hotfix.pk3 -> **RSQ_Gestures.pk3**
   `rsq_butt`, is set to): BD's own butt strike is the one. The slow-mo pulse and the F.E.A.R. Effect still
   follow BD's own butt strike when it lands (see Features).
 - Needs no other RSQ pk3 to load. Alone, it names gestures and does the gun butt shove. The slow-mo after
-  a shove needs **RSQ_SlowMo**; the F.E.A.R. Effect's points need **RSQ_Score**. The only other mod that
-  asks it something is **RSQ_GunCards** (the watch check).
+  a shove needs **RSQ_SlowMo**; the F.E.A.R. Effect's points need **RSQ_Score**. The other mods that ask
+  it something are **RSQ_GunCards** and **RSQ_TacticalRig** (both the watch check).
 - With Gun Butt Shove on (the default) it reads the hands every tic. With it off (or BD22 VR Reloaded
   loaded and Slow-Mo After a Shove off), nothing asking and both event switches off, it stops measuring.
 
@@ -148,6 +148,8 @@ Gestures is a shared service: other mods ask it, it does not change them.
 
 - **Read by RSQ_GunCards**: "inspect" (the watch check) shows the watch card and, on Inspect Gesture, the
   small card. With Watch Check Off, Gun Cards uses its own watch pose.
+- **Read by RSQ_TacticalRig**: "inspect", for its *Move Gun at Watch (Use)* option (off by default): Use
+  during the watch check moves that hand's gun to the other hand. Without Gestures that option does nothing.
 - **The shove's consumer is Gestures itself** (the gun butt shove). **Nothing reads "braced", "punch",
   "still" or the events from outside yet.** They are ready for other mods.
 - **Sends to RSQ_SlowMo** `rsm_pulse 300 35` after a landed butt shove (Slow-Mo After a Shove), and reads

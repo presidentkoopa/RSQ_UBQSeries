@@ -3,6 +3,7 @@
 user bool   rsqtr_on          = true;
 user bool   rsqtr_grip        = true;    // the grips draw and holster
 user bool   rsqtr_use         = true;    // Use draws and holsters too
+user bool   rsqtr_watch_move  = false;   // Use during RSQ Gestures' watch check moves that hand's gun to the other hand (a gun there swaps)
 user string rsqtr_keys_main   = "446";   // key codes that are the MAIN grip (446 KEY_PAD_LTRIGGER: only with vr_secondary_button_mappings 0)
 user string rsqtr_keys_off    = "443 436"; // key codes that are the OFF grip (443 KEY_PAD_RTHUMB, 436 KEY_PAD_DPAD_UP with the main grip held)
 user int    rsqtr_markers     = 1;       // region rings: 0 never, 1 when a hand is near, 2 always
@@ -30,13 +31,17 @@ nosave bool rsqtr_seated     = false;   // you play sitting down: the rig hangs 
 user string rsqtr_empty       = "";      // the weapon an empty hand holds (blank: the slot-1 weapon with the highest SelectionOrder, the fist)
 
 // The places (RSQTR_Region): metres from the head, in the body's frame (forward, left, up), and radius.
-// 0 1 hips, 4 5 shoulders, 9 10 saber spots; 2 3 6 7 8 are retired indices with no settings.
+// 0 1 hips, 3 the grenade spot (below), 4 5 shoulders, 6 7 chest, 8 the keyring, 9 10 saber spots; 2 is a
+// retired index with no settings. The keyring's "left" is toward the off hand (mirrored for a left-handed layout).
 user float rsqtr_r0_f = 0.00;  user float rsqtr_r0_l =  0.18; user float rsqtr_r0_u = -0.70; user float rsqtr_r0_rad = 0.14;
 user float rsqtr_r1_f = 0.00;  user float rsqtr_r1_l = -0.18; user float rsqtr_r1_u = -0.70; user float rsqtr_r1_rad = 0.14;
 user float rsqtr_r4_f = -0.08; user float rsqtr_r4_l =  0.18; user float rsqtr_r4_u = -0.10; user float rsqtr_r4_rad = 0.14;
 user float rsqtr_r5_f = -0.08; user float rsqtr_r5_l = -0.18; user float rsqtr_r5_u = -0.10; user float rsqtr_r5_rad = 0.14;
 user float rsqtr_r6_f =  0.10; user float rsqtr_r6_l =  0.12; user float rsqtr_r6_u = -0.46; user float rsqtr_r6_rad = 0.11;
 user float rsqtr_r7_f =  0.10; user float rsqtr_r7_l = -0.12; user float rsqtr_r7_u = -0.46; user float rsqtr_r7_rad = 0.11;
+// the keyring's place: this machine only (nosave: only this machine draws the ring and reads where it is), so it
+// adds nothing to the user settings' shared size limit
+nosave float rsqtr_r8_f = 0.14; nosave float rsqtr_r8_l = 0.13; nosave float rsqtr_r8_u = -0.70; nosave float rsqtr_r8_rad = 0.12;
 user float rsqtr_r9_f = 0.02;  user float rsqtr_r9_l =  0.21; user float rsqtr_r9_u = -0.84; user float rsqtr_r9_rad = 0.10;
 user float rsqtr_r10_f = 0.02; user float rsqtr_r10_l = -0.21; user float rsqtr_r10_u = -0.84; user float rsqtr_r10_rad = 0.10;
 
