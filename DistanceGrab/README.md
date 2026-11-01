@@ -1,7 +1,7 @@
 # RSQ Distance Grab
 
 Point at a thing across the room with your palm, pull it to your hand, carry it, throw it. Up close, the
-grip takes things, holds a monster in a headlock, swaps the guns in your two hands, lifts doors and
+grip takes things, holds a monster in a headlock, lifts doors and
 flips switches. Part of the Radiant Silvergun Quest series, for stock QuestZDoom 17.3 (script only, no
 engine changes). Most of the feel (the pull's arc and tumble, how thrown things fall, the carry's tip
 and sag) is ported from the owner's desktop RS_WorldHands.
@@ -15,7 +15,6 @@ doom2.wad -> brutal22test6.pk3 -> BD_VoxelPack.pk3 -> BD22_VR-Reloaded_2_0_3h.pk
 
 - **Plain Doom 2 without Brutal Doom:** works. Every Brutal Doom class is looked up by name and skipped
   when it is missing (policy.zs, near.zs). The body shield was rig-tested on plain Doom (DECISIONS D36).
-  Without Brutal Doom VR, an empty hand after a hand swap is the fist.
 - **Other RSQ pk3s needed:** none. It works alone.
 
 ## Setup
@@ -46,7 +45,6 @@ doom2.wad -> brutal22test6.pk3 -> BD_VoxelPack.pk3 -> BD22_VR-Reloaded_2_0_3h.pk
   to let go.
 - **Headlock:** off hand, grip on a living monster within reach. It is held in front of you for 3 s.
   Swing the off hand hard to throw it.
-- **Swap guns between hands:** controllers together, both palms up, squeeze a grip.
 - **Lift a door:** hand flat on a manual door, grip (or Use, or palm out against it), raise the hand.
 - **Flip a switch:** lay your palm, turned out, on the switch.
 
@@ -72,7 +70,6 @@ default.
 | What You Can Grab: Barrels, Weapons, Powerups, Ammo, Health, Armor, Keys, +1 Bonuses | On | Which kinds of thing the distance grab may pull. |
 | What You Can Grab: Corpses | Option | Pull and carry corpses (off since 10-31, owner's call). |
 | What You Can Grab: Walk-Up Grab | On | The grip with your palm on a thing takes it. |
-| What You Can Grab: Swap Hands (palms up, grip) | On | Swaps the guns in your two hands. |
 | What You Can Grab: Off-Hand Headlock | On | The off grip holds a living monster (up to demon weight) for 3 s. |
 | What You Can Grab: Headlock: Human Shield (hold until let go) | Option | The headlock lasts as long as you hold the grip, monster facing away. |
 | What You Can Grab: Headlock: Throw At (m/s, 0 = never) | 3.0 | Swing the off hand past this to throw the held monster. |
@@ -129,7 +126,8 @@ port.
 11. Swing a held barrel steadily through a monster. It is hurt and staggered, with a thud.
     **(not yet headset-confirmed)**
 12. Walk up to an item, palm on it, grip. It is taken. Let go of the grip.
-13. Controllers together, palms up, grip. Your two guns swap hands.
+13. (Swapping guns between hands was removed on 11-01: use the Tactical Rig, holster with one hand and draw
+    with the other.)
 14. Off hand, grip on an imp in reach. It freezes in front of you for 3 s; punch it with the main hand.
 15. Headlock again, then swing the off hand hard. The imp is thrown and hurts what it hits.
     **(not yet headset-confirmed; on the rig the 6.6 m/s toss was never seen hitting anything)**
@@ -164,9 +162,9 @@ port.
 
 ## Known limits / open issues
 
-- The grip is **eaten**: when something is in reach, the grip press goes to the walk-up grab, swap or
+- The grip is **eaten**: when something is in reach, the grip press goes to the walk-up grab or
   headlock, and anything else bound to that grip does not see it (D31, by design).
-- The walk-up grab, swap and headlock still fire on a hand holding the Tactical Rig's lit cigarette or
+- The walk-up grab and headlock still fire on a hand holding the Tactical Rig's lit cigarette or
   Zippo (D35, open).
 - Headlock weight uses Doom mass (imp 100, demon 400, baron 1000). A mod that changes monster mass
   changes what you can hold (D34).

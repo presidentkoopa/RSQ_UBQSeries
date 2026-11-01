@@ -3,10 +3,9 @@
 // the distance reach -- so the grip press is EATEN (InputProcess returns true) whenever one of them
 // takes it. A hand in a Tactical Rig holster is the rig's: holsters come before all of this.
 //
-//   SWAP HANDS   both controllers together (rsqdg_swap_m) and both rolled palm-up/sideways
-//                (|roll| >= rsqdg_swap_roll): either grip swaps the two hands' weapons. The off
-//                hand's grip takes the main hand's gun; the main hand's takes the off hand's. A hand
-//                with nothing to give gets its empty hand (the fist / Brutal Doom VR's hands).
+//   (SWAP HANDS was here until 11-01: controllers together + grip is exactly QuestZDoom's own two-hand
+//   latch on PCVR, which takes the press first, so it never worked in the owner's headset. Removed on his
+//   order: the Tactical Rig moves a gun between hands -- holster with one, draw with the other.)
 //   WALK-UP GRAB the grip with the palm within rsqdg_near_m of a thing takes it straight into the
 //                hand: a pickup is used (as a caught pull is, rsqdg_catch_takes), a barrel or corpse
 //                is carried until the grip is let go (moving: thrown), a door is lifted (door.zs).
@@ -33,8 +32,6 @@ class RSQDG_Near : EventHandler
 	Vector3 cPalm[MAXPLAYERS], cBody[MAXPLAYERS];
 	bool cHave[MAXPLAYERS];
 	double cPeak[MAXPLAYERS];
-	String offNext[MAXPLAYERS];
-	int offWait[MAXPLAYERS];
 
 	// ---- local (console player): read by InputProcess --------------------------------------
 	transient bool ready[2];
@@ -111,14 +108,6 @@ class RSQDG_Near : EventHandler
 		return false;
 	}
 
-	static bool SwapPose(PlayerPawn pmo, PlayerInfo p)
-	{
-		if (!On("rsqdg_swap", p, true)) return false;
-		if (RSQDG_Reach.Metres(pmo.AttackPos - pmo.OffhandPos) > RSQDG_Reach.Num("rsqdg_swap_m", p, 0.25)) return false;
-		double need = RSQDG_Reach.Num("rsqdg_swap_roll", p, 55.0);
-		return abs(RSQDG_Reach.NormDeg(pmo.AttackRoll)) >= need && abs(RSQDG_Reach.NormDeg(pmo.OffhandRoll)) >= need;
-	}
-
 	// The nearest thing the palm is touching: a pickup, barrel or corpse the grab's table allows, or
 	// (the off hand, rsqdg_collar) a living monster light enough to hold.
 	static Actor FindNear(PlayerPawn pmo, PlayerInfo p, int h)
@@ -174,7 +163,6 @@ class RSQDG_Near : EventHandler
 	override void WorldTick()
 	{
 		if (afterLoad) { afterLoad = false; ReleaseCollars(); }
-		TickSwaps();
 		TickCollars();
 		for (int n = 0; n < MAXPLAYERS; n++)
 		{
@@ -189,12 +177,11 @@ class RSQDG_Near : EventHandler
 		let pmo = p.mo;
 		let hold = RSQDG_Hold.Get();
 		let door = RSQDG_Door.Get();
-		bool swap = SwapPose(pmo, p) && HasSwap(p);
 		for (int h = 0; h < 2; h++)
 		{
 			if (RigBusy(pmo, h)) continue;     // holsters first
 			int k = consoleplayer * 2 + h;
-			ready[h] = swap || gripDown[k]
+			ready[h] = gripDown[k]
 				|| (door && On("rsqdg_door_grip", p, true) && door.Touching(h))
 				|| ((!hold || !hold.HandIsFull(h)) && FindNear(pmo, p, h) != null);
 		}
@@ -223,7 +210,6 @@ class RSQDG_Near : EventHandler
 		}
 		gripDown[k] = true;
 		if (pmo.health <= 0) return;
-		if (SwapPose(pmo, p) && HasSwap(p)) { DoSwap(n); return; }
 		let door = RSQDG_Door.Get();
 		if (door && n == consoleplayer && door.Touching(h)) return;   // door.zs takes the grip
 		if (hold && hold.HandIsFull(h)) return;
@@ -243,88 +229,6 @@ class RSQDG_Near : EventHandler
 		{
 			owns[k] = true;
 			if (feel) feel.OnCatch(h, a, p, false, RSQDG_Mass.Heft(a));
-		}
-	}
-
-	// ---- SWAP HANDS --------------------------------------------------------------------------
-	// A gun that can change hands: not a saber, shield, Force hand, empty-hand filler or fist.
-	static bool Movable(Weapon w)
-	{
-		if (!w) return false;
-		String c = w.GetClassName();
-		c = c.MakeLower();
-		if (c.IndexOf("ubqs_") == 0 || c.IndexOf("ssq_") == 0 || c == "rsq_hands") return false;
-		if (w.bMELEEWEAPON) return false;
-		let d = GetDefaultByType(w.GetClass());
-		return d && !d.bOffhandWeapon;       // an off-hand-only copy (BD VR's dual guns) stays put
-	}
-
-	static bool HasSwap(PlayerInfo p) { return Movable(p.ReadyWeapon) || Movable(p.OffhandWeapon); }
-
-	static Weapon EmptyHand(PlayerPawn pmo)
-	{
-		Weapon best = null;
-		for (let it = pmo.Inv; it; it = it.Inv)
-		{
-			let w = Weapon(it);
-			if (!w || w.bOffhandWeapon || Movable(w)) continue;
-			String c = w.GetClassName();
-			c = c.MakeLower();
-			if (c.IndexOf("ubqs_") == 0 || c.IndexOf("ssq_") == 0) continue;
-			bool found; int slot, idx;
-			[found, slot, idx] = pmo.player.weapons.LocateWeapon(w.GetClass());
-			if (!found || slot != 1) continue;
-			if (!best || w.SelectionOrder > best.SelectionOrder) best = w;
-		}
-		return best;
-	}
-
-	private void DoSwap(int n)
-	{
-		let p = players[n];
-		let pmo = p.mo;
-		Weapon mainGun = Movable(p.ReadyWeapon) ? p.ReadyWeapon : null;
-		Weapon offGun = Movable(p.OffhandWeapon) ? p.OffhandWeapon : null;
-		if (!mainGun && !offGun) return;
-		if (offGun)
-		{
-			p.SetPsprite(PSP_OFFHANDWEAPON, null);
-			p.OffhandWeapon = null;
-			offGun.bOffhandWeapon = false;
-			p.PendingWeapon = offGun;
-		}
-		else
-		{
-			let e = EmptyHand(pmo);
-			if (e) p.PendingWeapon = e;
-		}
-		String hands = "RSQ_Hands";        // Brutal Doom VR's empty off hand, null without it
-		class<Weapon> hc = hands;
-		String next = "";
-		if (mainGun) next = mainGun.GetClassName();
-		else if (hc) next = hands;
-		offNext[n] = next;
-		offWait[n] = 70;
-		pmo.A_StartSound("misc/w_pkup", CHAN_AUTO, CHANF_LOCAL, 0.5);
-	}
-
-	// Once the main hand has switched, raise the queued weapon into the off hand (as the rig does).
-	private void TickSwaps()
-	{
-		for (int n = 0; n < MAXPLAYERS; n++)
-		{
-			if (offNext[n] == "") continue;
-			let p = players[n];
-			if (!playeringame[n] || !p.mo || p.mo.health <= 0 || --offWait[n] <= 0) { offNext[n] = ""; continue; }
-			if (p.PendingWeapon != WP_NOCHANGE) continue;
-			class<Weapon> c = offNext[n];
-			offNext[n] = "";
-			if (!c) continue;
-			let w = Weapon(p.mo.FindInventory(c));
-			if (!w) { p.mo.GiveInventory(c, 1); w = Weapon(p.mo.FindInventory(c)); }
-			if (!w || w == p.ReadyWeapon) continue;
-			w.bOffhandWeapon = true;
-			if (p.OffhandWeapon != w) p.PendingWeapon = w;
 		}
 	}
 

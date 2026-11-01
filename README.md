@@ -7,13 +7,13 @@ changes: everything is ZScript and data. Ready-to-load pk3s are in [`pk3/`](pk3/
 any combination loads in any order. Brutal Doom VR Reloaded is the tested weapon set, but the series is not a
 Brutal Doom pack: each mod's README says what it does on plain Doom 2.
 
-**Each mod's README is its manual**: every feature with its exact menu row and default, the moves in VR, what
+**[WHO_OWNS_WHAT.md](WHO_OWNS_WHAT.md)** says which mod owns each mechanic. **Each mod's README is its manual**: every feature with its exact menu row and default, the moves in VR, what
 it does with the other mods, and a **Test it** checklist. Anything built on 2026-10-31 or later ran on a
 simulated headset only and is marked *not yet headset-confirmed* there.
 
 | | Mod | pk3 | What it is |
 |---|---|---|---|
-| ✋ | [DistanceGrab](DistanceGrab/) | `RSQ_DistanceGrab.pk3` | Palm out at a thing across the room, pull it to your hand, carry it, throw it. Up close the grip takes things, headlocks a monster, swaps the guns in your two hands, lifts doors, flips switches. |
+| ✋ | [DistanceGrab](DistanceGrab/) | `RSQ_DistanceGrab.pk3` | Palm out at a thing across the room, pull it to your hand, carry it, throw it. Up close the grip takes things, headlocks a monster, lifts doors, flips switches. |
 | 🛡️ | [ShieldSaw](ShieldSaw/) | `RSQ_ShieldSaw.pk3` | A shield (stowed at the small of your back by default) that blocks, bashes and turns shots back, and throws as a saw disc. id Software's shield saw (*Doom: The Dark Ages*), brought to Doom VR first by **Ermac**. |
 | ⚔️ | [QuestSaber](QuestSaber/) | `RSQ_Saber.pk3` | A lightsaber, and a second one for the off hand (on/off in the menu). Cut, stab, block, parry, deflect, throw, and the Force (also from an off-hand fist). |
 | 🎒 | [TacticalRig](TacticalRig/) | `RSQ_TacticalRig.pk3` | Six gun holsters (hips, chest, shoulders), a holster for each saber, a grenade spot, a keyring, gun throwing, a mirror, an optional torso and helmet, and Ermac's cigarette. Built on **Ermac's** Virtual Tactical Vest idea. |

@@ -41,9 +41,6 @@ user bool  rsqdg_bonuses  = true;    // the +1 health and armour bonuses (lowest
 // ---- THE GRIP UP CLOSE (near.zs, the owner 10-29) -------------------------
 user bool   rsqdg_near        = true;    // grip with the palm on a thing takes it (pickup used, barrel/corpse carried)
 user float  rsqdg_near_m      = 0.30;    // metres from the palm to the thing's body
-user bool   rsqdg_swap        = true;    // controllers together, palms up, grip: the two hands swap weapons
-user float  rsqdg_swap_m      = 0.25;    // metres between the controllers
-user float  rsqdg_swap_roll   = 55.0;    // degrees each wrist must be rolled (palm up / sideways)
 user bool   rsqdg_collar      = true;    // the off hand's grip holds a living monster (Headlock)
 user float  rsqdg_collar_mass = 400.0;   // the heaviest monster it can hold (Doom mass: imp 100, demon 400, baron 1000)
 user float  rsqdg_collar_secs = 3.0;     // how long it stays held before it breaks free
