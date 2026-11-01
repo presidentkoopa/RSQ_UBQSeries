@@ -1,11 +1,13 @@
-// RSQ_Whip's sounds, all generated (tools/gen_whip.py): no samples from anywhere.
-rsqwp/whip/crk1     RSWPCRK1
-rsqwp/whip/crk2     RSWPCRK2
-rsqwp/whip/crk3     RSWPCRK3
-$random rsqwp/whip/crack { rsqwp/whip/crk1 rsqwp/whip/crk2 rsqwp/whip/crk3 }
-rsqwp/whip/sw1      RSWPSWS1
+// RSQ_Whip's sounds (the owner, 2026-11-01): real recordings from Pixabay (Pixabay Content License,
+// royalty-free, no attribution required -- credited in CREDITS.txt anyway), and stock Doom.
+// The generated sounds (tools/gen_whip.py) are retired: the owner's rule is stock or real sounds only.
+rsqwp/whip/crk1     RSWPCRK1      // crack_heavy (Pixabay)
+rsqwp/whip/crk2     RSWPCRK2      // crack_light (Pixabay)
+$random rsqwp/whip/crack { rsqwp/whip/crk1 rsqwp/whip/crk2 }
+rsqwp/whip/sw1      RSWPSWS1      // three_whip_swishes (Pixabay), cut into three
 rsqwp/whip/sw2      RSWPSWS2
-$random rsqwp/whip/swish { rsqwp/whip/sw1 rsqwp/whip/sw2 }
-rsqwp/whip/unfurl   RSWPUNF
-rsqwp/hit           RSWPHIT
+rsqwp/whip/sw3      RSWPSWS3
+$random rsqwp/whip/swish { rsqwp/whip/sw1 rsqwp/whip/sw2 rsqwp/whip/sw3 }
+$alias rsqwp/whip/unfurl rsqwp/whip/swish
+rsqwp/hit           DSPUNCH       // stock Doom's punch (doom2.wad)
 $alias rsqwp/crack rsqwp/whip/crack

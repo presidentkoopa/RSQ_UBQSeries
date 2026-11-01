@@ -1,128 +1,177 @@
-# RSQ_TacticalRig — the Radiant Silvergun Quest Ermac Rig
+# RSQ Tactical Rig
 
-Guns holstered on your body, spots for the saber, a torso and helmet, a mirror, and Ermac's
-cigarette. For **stock QuestZDoom 17.3**: ZScript and lumps only, no engine changes. Part of the
-Radiant Silvergun Quest series ([RSQ_UBQSeries](https://github.com/presidentkoopa/RSQ_UBQSeries)).
+Guns holstered on your body. Reach to a hip, the chest or a shoulder and grip to put a gun away or draw
+it. Also: a grenade spot on the belt buckle, a keyring, throwing a gun away, saber spots, a mirror, an
+optional torso and helmet, and Ermac's cigarette (optional). Part of the Radiant Silvergun Quest series,
+for stock QuestZDoom 17.3 (script only, no engine changes). Built on Ermac's idea, his Virtual Tactical
+Vest for Doom VR; this is a new implementation that keeps the rig on your body, not your head.
 
-Built on **Ermac's** idea: his Virtual Tactical Vest for Doom VR. This is a new implementation
-that reads the real hand poses and keeps the rig on your body rather than your head.
+## Load order
+
+```
+doom2.wad -> brutal22test6.pk3 -> BD_VoxelPack.pk3 -> BD22_VR-Reloaded_2_0_3h.pk3
+          -> BD22_VR-Reloaded_2.0.3ha_hotfix.pk3 -> RSQ_TacticalRig.pk3   (from pk3/)
+```
+
+- **Plain Doom 2 without Brutal Doom:** loads and the holsters work (rig-tested on vanilla doom2 with the
+  series, 10-27). What needs Brutal Doom: the stored-gun pictures (only guns measured from the Brutal
+  Doom load order are shown), the grenade spot (it shows only when Brutal Doom's `HandGrenades` exists),
+  and Brutal Doom's empty hand (otherwise your empty hand is the fist).
+- **Other RSQ pk3s needed:** none. RSQ SlowMo is needed only for slow motion after a smoke; RSQ Saber
+  only for the saber spots.
+
+## Setup
+
+- **Menu:** Options -> Radiant Silvergun Options -> RSQ Tactical Rig.
+- **Buttons to bind:** none. The rig reads the controller grips directly, and Use works too (*Use
+  Holsters*).
+- If a grip does nothing: the grip key numbers are on *Tuning and Debug* as *Main Grip Keys* (446) and
+  *Off Grip Keys* (443 436). 446 is the main grip only with the engine's secondary button mappings off;
+  Use always works.
+- First time: stand straight, look ahead, and press *Measure My Height* on the front page. Playing
+  seated: turn on *Seated*.
+
+## What to do in VR
+
+- **Holster:** reach to a holster with a gun in your hand and squeeze the grip. The hand is left empty.
+- **Draw:** reach to a full holster with an empty hand and squeeze the grip.
+- **Swap:** grip at a full holster with a gun in hand. The two swap.
+- **Grenade:** grip at the belt buckle. The hand grenade comes to your main hand. Grip there again to get
+  your gun back.
+- **Throw a gun away:** swing the hand fast and grip, away from any holster. The gun flies and lands as a
+  pickup.
+- **Keys to a door (option):** grip at the keyring, hold the grip, touch the keys to a locked door.
+- **Move a holster (option):** turn on *Move Holsters by Hand*, grip inside a sphere, carry it, let go.
+- **Cigarette (option):** main hand grips at the left chest pocket; bring it to your mouth and pull the
+  trigger; off-hand trigger opens the Zippo; hold the flame to the tip; off-hand trigger again to smoke
+  and spit it out.
 
 ## Holsters
 
-Six gun holsters, **both hips**, **both sides of the chest** (cross-draw) and **both shoulders**, and two **saber spots** just below the
-hips (with RSQ_Saber loaded).
+Six gun holsters: left hip, right hip, left chest, right chest, left shoulder, right shoulder. Two saber
+spots just below the hips (with RSQ Saber). The grenade spot is on the belt buckle; the keyring hangs on
+the front of the belt, off-hand side. A holster holds exactly the gun you put there. Each hand holsters
+and draws its own gun. Brutal Doom's Dual keeps its own key (*Draw Pairs*: Never).
 
-- **A holster holds exactly the gun you put there**, one gun, never chosen for you.
-- **Holster:** reach to a holster with a gun in your hand and grip (or press Use). The gun goes
-  in and your hand is left empty (the fists; Brutal Doom's own fists with Brutal Doom). If the
-  holster already held a gun, the two **swap**: that one comes to your hand.
-- **Draw:** reach to a full holster with an empty hand and grip (or Use).
-- **Each hand holsters and draws its own gun.** The engine's own *switchhand* moves a gun
-  between your hands; the off hand then holsters it and draws into itself the same way.
-- **Dual is left to its own key** (Brutal Doom Quest's Dual): the rig does not move the off-hand
-  copy. *Draw Pairs* (Never by default) can bring it along again.
-- **Saber spots:** the main saber's spot is on your main-hand side's opposite hip (the left for
-  a right-hander), the second saber's on the other.
-- **Left-handed:** QuestZDoom's Control Scheme decides which controller is your main hand, and
-  everything a hand owns follows it (saber spots, the shield's shoulder, rumble, the mirror). With
-  RSQ_Accessibility, its Handedness sets that scheme and also mirrors what no hand owns: the
-  cigarette pocket and the way stored guns hang. Each saber shows in its spot whenever it is
-  not in its hand. A saber put on an empty holster goes to its own spot.
-- **Doors** are no longer the rig's: they moved to RSQ_DistanceGrab.
+## Features
 
-**Grenade spot** (the belt buckle): grip it with either hand and your pack's hand grenade comes to your main hand --
-with Brutal Doom VR, its VR grenade (the off hand pulls the pin, you throw it by hand). Grip it again to put it back
-and get your gun. Its light is your grenade count: green 2+, yellow 1, red none.
+Rows are on the front page unless a page is named. "On" = on by default (CVARINFO); "Option" = off by
+default.
 
-**Throw a gun away:** grip with the hand swinging fast, outside every holster: the gun flies from that hand and lands
-as a pickup you can take again (*Throw Swing Speed*). **A thrown gun that hits a monster hurts it** and staggers it
-(a flinch, a short freeze, a shove): harder the heavier the gun and the faster the throw. The weight is read off the gun
-itself (its pickup's size); *Thrown Guns Hurt*, *Thrown Gun Damage*.
+| Menu row | Default | What it does |
+|---|---|---|
+| Tactical Rig | On | The whole mod. |
+| Grip Holsters | On | The grips holster and draw. |
+| Use Holsters | On | Use holsters and draws too. |
+| Reach | Standard | How big the holster spheres are: Tight / Standard / Easy. |
+| Holster Rings | Hand Nearby | The wireframe sphere on each holster: Never / Hand Nearby / Always. Green with your hand inside. |
+| Draw Pairs | Never | Bring Brutal Doom's off-hand copy along: Never / If Holstered as a Pair / Always. |
+| Seated | Option | The rig hangs from your seated eyes. This machine only. |
+| Measure My Height | - | Scales the rig to your eye height. |
+| Move Holsters by Hand | Option | Grip a sphere, carry it, let go: it is saved. |
+| Mirror | While Moving Holsters | A copy of you about a metre out: Off / While Moving Holsters / Always. Only you see it. |
+| Holster Profiles | - | Save and load four layouts: Standing A (Blue), Standing B (Orange), Seated A (Purple), Seated B (Yellow). |
+| Torso | Option | A torso the holsters sit on, coloured by armour, breathing red at low health. |
+| Torso Style | Doom marine | Doom marine or Quake Grunt. |
+| Helmet | On | With the marine torso: a helmet only mirrors show. |
+| Cigarettes | Option | Ermac's cigarette pocket (3, refilled each level). |
+| Rig Options: Quick Swap | On | A gun in hand at a full holster swaps at once. |
+| Rig Options: Keep Holsters Between Levels | On | What each holster holds carries to the next level. |
+| Rig Options: Ammo Light on Holsters | On | A full holster's light: green, yellow (low or reload), red (empty). |
+| Rig Options: Ammo Count on Holsters | Option | Small digits above a full holster, in the ammo light's colour: its gun's rounds (the magazine for a gun that has one). |
+| Rig Options: New Guns Go to a Holster | Option | A gun you did not have goes into the first empty holster. |
+| Rig Options: Grenade Spot | On | The belt-buckle grenade spot. Its light is your grenade count: green 2+, yellow 1, red none. |
+| Rig Options: Throw Guns | On | A fast swing plus grip, outside a holster, throws the gun away. |
+| Rig Options: Thrown Guns Hurt | On | A thrown gun that hits a monster hurts and staggers it, by the gun's weight and the throw speed. |
+| Rig Options: Keyring | On | The keys you carry hang on a ring on your belt. |
+| Rig Options: Keys Open Doors by Hand | Option | Grip the ring to take the keys; touch them to a locked door to open it (the game's own key check). |
+| Rig Options: Show Stored Guns | On | The holstered gun shows at its holster. *Stored Gun Size*: Small / Standard / Large. |
+| Rig Options: Haptics | On | Rumble on holster and draw. |
+| Rig Options: Messages | Option | Text messages from the rig. |
+| Rig Options: Mirror Shows | Both | Front / Back / Both. |
+| Rig Options: Torso Fades Looking Down | On | The torso fades as you look down. |
+| Rig Options: Leave Shoulder to ShieldSaw | On | The off shoulder is left to RSQ ShieldSaw's shield while it hangs there. |
+| Rig Options: Saber on Hip Too | Option | The saber also clips to the hips. |
+| Rig Options: Slow Motion After a Smoke | On | RSQ SlowMo starts as you spit the cigarette out (6 s at 25 %, on the *Cigarette* page). |
+| Rig Options: Refill Each Level | On | The cigarette pocket refills each level. |
+| Tuning and Debug: Holster Positions / Torso Fit / Cigarette | - | Sliders for each holster, the torso and helmet, and the cigarette. |
+| Tuning and Debug: Throw Swing Speed (m/s) | 2.5 | How fast the hand must swing to throw a gun. |
+| Tuning and Debug: Thrown Gun Damage | 1.0 | Multiplier on thrown-gun hits. |
+| Tuning and Debug: Reset All | - | Resets every Tactical Rig setting. |
 
-**Keyring:** the keys you carry hang on a steel ring on the front of your belt, off-hand side, as the keys themselves.
-*Keys Open Doors by Hand* (off by default): grip the ring and the keys come into that hand while you hold the grip;
-touch them to a locked door and it opens, if one of them fits (the game's own lock check, and its own "you need a
-key" when none does).
+The throw debug log (`rsqtr_debug_throw`) is not on the menu.
 
-**Quick swap, kept holsters, ammo light, new guns to a holster:** see *Rig Options*.
-*Ammo Count on Holsters* (off by default): while a full holster's ring shows, its gun's rounds float just above it
-as a small number in the ammo light's colour (the magazine for a gun that has one).
+## Test it
 
-**Feedback:** a wireframe sphere shows each holster when a hand is near (or always; *Holster
-Rings*), green with your hand inside; its idle colour is the holster profile in use. The gun
-stored there shows as its pickup model, at a pistol's length on the hips and longer over the
-shoulders, hanging as worn (hips muzzle down; shoulders on the back, butt up). Only guns measured
-into the `RSQTRFIT` table (by `tools/measure_pickups.py`, for brutal22test6 -> BD_VoxelPack ->
-BD22Q) are shown. A sound and a rumble mark each holster and draw.
+Items marked **(not yet headset-confirmed)** were built on 2026-10-31 or later and only ran on the
+simulated rig.
 
-**Details:**
-- A hand acts only after it has been in a holster a moment (*Press Delay*, 3 tics), so a hand
-  passing through does nothing. A hand steadying the gun (the engine's two-handed grip) never
-  fires a holster.
-- The holsters stay on your **body**: looking around does not swing them, snap and smooth turns
-  carry them, and a head held turned past 35 degrees for 1 s counts as your body turning.
-- With RS_ShieldSawQ loaded, the off shoulder is left to the shield while it hangs there, unless
-  the ShieldSaw draws by its key only.
+1. Load the pack. Options -> Radiant Silvergun Options shows *RSQ Tactical Rig*. No script error.
+2. Press *Measure My Height* standing straight.
+3. Hold a gun, reach to the right hip. A sphere appears and turns green. Grip: the gun goes in, your hand
+   is empty, you hear a holster sound and feel a rumble. The gun shows hanging at the hip.
+4. Empty hand to the right hip, grip: the gun comes back.
+5. Try both chest holsters (cross-draw) and both shoulders. **(the chest pair is new on 10-31, not yet
+   headset-confirmed)**
+6. Holster the shotgun, walk to the next level. It is still in that holster (*Keep Holsters Between
+   Levels*). **(not yet headset-confirmed)**
+7. Grip at the belt buckle. The hand grenade comes to your main hand; the buckle light shows your count.
+   Grip there again: your gun is back. **(not yet headset-confirmed)**
+8. Walk and turn with a gun and the grip held normally. The gun must **not** be thrown.
+   **(not yet headset-confirmed)**
+9. Swing hard and grip, away from any holster, at an imp. The gun flies, hits, the imp flinches, freezes
+   briefly and is shoved; you hear Doom's punch. The gun lands as a pickup. **(not yet headset-confirmed)**
+10. Look down at the belt: your keys hang on a ring. Turn on *Keys Open Doors by Hand*, grip the ring,
+    touch the keys to a locked door. It opens if one fits; otherwise "you need a key".
+    **(not yet headset-confirmed)**
+11. Turn on *Ammo Count on Holsters*. Small digits float above a full holster while its ring shows.
+    **(not yet headset-confirmed)**
+12. Set *Mirror* to Always. Check a holstered gun in the mirror: does it look squashed? (open issue
+    below). **(not yet headset-confirmed)**
+13. Turn on *Torso*. Look down: the marine torso, green or blue with your armour, fading as you look
+    down. *Helmet* shows only in the mirror.
+14. Turn on *Cigarettes*. Main hand grips at the left chest pocket: the cigarette is in that hand, the
+    Zippo in the off hand. Bring it to your mouth, pull the main trigger: it stays at your mouth and your
+    gun is back. Off-hand trigger: the Zippo opens. Hold the flame to the tip: it lights. Off-hand trigger
+    again: it flares, you spit it out end over end, and (with RSQ SlowMo) the world slows for 6 s. The
+    butt smoulders where it lands and draws monsters. **(reworked 10-31, not yet headset-confirmed)**
+15. Turn on *Move Holsters by Hand*: grip a sphere, move it, let go. Turn it off to play.
 
-## Fit it to you
+## Works with
 
-- **Seated:** for playing sitting down. Standing, the rig hangs from the game's view height,
-  which stays put when you sit; seated, it hangs from your seated eyes (the highest your
-  headset has been lately, so leaning to reach does not pull the holsters down), and the torso
-  and helmet come down with it.
-- **Measure My Height** (stand straight, look ahead) scales the whole rig to your eye height.
-- **Move Holsters by Hand:** turn it on, grip in a sphere, carry it where your hand naturally
-  goes, let go; it's saved. Turn it off to play. *Holster Positions* has sliders for each.
-- **Holster Profiles:** four (Standing A blue, Standing B orange, Seated A purple, Seated B
-  yellow), each keeping every holster's position and size, on this machine only.
-- **Mirror:** a copy of you about a metre out (while moving holsters, or always), showing your
-  front, your back or both: the torso, the helmet, every holster, what it holds and your hands.
-  Only you see it.
+- **RSQ SlowMo:** spitting out the cigarette starts slow motion (*Slow Motion After a Smoke*).
+- **RSQ Distance Grab:** doors are lifted there now, not here. A hand in a holster, or holding the
+  cigarette or Zippo, does not distance-grab.
+- **RSQ Saber:** the two saber spots below the hips. *Saber on Hip Too* adds the hips.
+- **RSQ ShieldSaw:** the off shoulder is left to its stowed shield (*Leave Shoulder to ShieldSaw*).
+- **RSQ Accessibility:** Handedness also mirrors the cigarette pocket and how stored guns hang;
+  colour-blind holster colours; Photosensitive Mode; Gesture Ease; Text Size. Shared settings only act
+  with it loaded.
+- **Gun Bonsai VR patch:** some of its perks need the rig (and SlowMo).
 
-## Torso and helmet (optional)
+## Known limits / open issues
 
-- **Torso:** the Doom marine's (default) or Quake's Grunt, worn on the rig's body. Green or blue
-  with your armour, breathing red at low health, fading as you look down (*Torso Fades Looking
-  Down*). *Torso Fit* moves and sizes it.
-- **Helmet:** with the marine torso. It sits on your head and turns with it, and only mirrors
-  draw it (the rig's mirror, or a real mirror in a map): your own view never does.
-- **In a map's mirror,** with the torso on: the guns and hands you hold are shown too (a copy
-  of each, seen only in mirrors, posed as the game draws it in your hands), and the sprite
-  marine steps out of the mirror so you see one body. Guns and hands drawn as flat sprites are
-  not copied; Brutal Doom Quest's hands sit where your controller is (its per-gun hand moves
-  happen at draw time, where a mod cannot read them).
-
-## Ermac's cigarette (optional, off by default)
-
-Turn on **Cigarettes**. A pocket on your left chest (the right, left-handed) holds a few (3, refilled each level).
-
-- **Take one:** reach to the pocket and grip (or Use). Put it back the same way.
-- **Light it:** hold it at your mouth a moment. Or turn on *Zippo Lights It*: reach to the pocket
-  with your other hand and keep the grip held; the Zippo flicks open, and its flame on the tip at
-  your mouth lights it. Let go and it snaps shut.
-- **While it burns** (6 s) the world slows, if RSQ_SlowMo is loaded.
-- Ermac's originals: smoking heals you slowly under 35 health, and a butt flicked away (grip
-  again while swinging your hand) smoulders where it lands and draws monsters to it, and into
-  each other.
-
-## Install
-
-Load after your weapon pack. Tested order:
-`doom2.wad -> brutal22test6 -> BD_VoxelPack -> the series, any order`.
-Settings: **Options → Radiant Silvergun Options → RSQ Tactical Rig** (reset under *Tuning and Debug*).
-
-## For other mods
-
-`RSQTR_RigService` (a `Service`, found by name):
-- `GetInt("rig.region", "", hand)`: the holster a hand is in, or -1 (console player only).
-- `GetInt("rig.busy", "", hand, 0, pawn)`: 1 while a hand is in a holster, holds a Distance Grab
-  door, the cigarette or the Zippo (console player only). RSQ_DistanceGrab asks it.
-- `GetInt("rig.drawtic", "", 0, 0, pawn)` / `GetString("rig.drawn", "", 0, 0, pawn)`: when that
-  player last drew from a holster this map (or -1) and what came out. Synced, for any player.
+- **Holstered guns may look squashed** (a model flag was tried and backed out because it could not be
+  checked on the rig). Check in the mirror.
+- **The Zippo and cigarette sounds are generated** (tools/gen_sounds.py: open, light, close, cigarette
+  light, inhale, exhale). That goes against the stock-sounds-only rule; they have not been replaced.
+- SteamVR two-handed grip: a holster still takes the press, but a gun drawn into the off hand arrives only
+  when you let go of the grip (the engine holds it). Nothing happens on Quest today.
+- Only guns measured into the fit table show at a holster; the muzzle direction could not be read by eye
+  for several (BrutalSMG, Rocket_Launcher, Plasma_Gun, Unmaker, GrenadeLauncher, BFG10k, Railgun,
+  NukeLauncher, FlameCannon, HellishMissileLauncher, DSweap).
+- The second (off-hand) saber cannot be holstered.
+- Brutal Doom Quest's per-gun hand poses are not copied into the mirror.
+- Saved holster positions are kept over new defaults.
+- Seated mode and the mirror are per machine. Other players see your hand props at your body, not your
+  hand.
+- The rig has about 60 user settings; every loaded mod's user settings share one size limit.
+- Earlier docs said Ermac's cigarette heals you under 35 health and that a *Zippo Lights It* switch
+  exists. Neither is in the current code or menu.
 
 ## Credits
 
-See [CREDITS.txt](CREDITS.txt) (shipped in the pk3).
+From the old README, unchanged:
 
 - **Ermac**: the vest and the cigarette are his ideas (Virtual Tactical Vest). The cigarette,
   butt and smoke come from that mod, whose credits name him as their modeller; the cigarette's
@@ -143,3 +192,51 @@ See [CREDITS.txt](CREDITS.txt) (shipped in the pk3).
 - The Zippo and cigarette sounds are generated (`tools/gen_sounds.py`).
 - QuestZDoom: Emawind and Team Beef.
 - Sharing other people's work in this pack is the project owner's decision.
+
+RSQ_TacticalRig -- credits (from CREDITS.txt, unchanged):
+
+The Radiant Silvergun Quest Ermac Rig, part of the Radiant Silvergun Quest series. For stock QuestZDoom 17.3:
+ZScript and lumps only, no engine changes. The code is new, written for this pack.
+
+WHAT THIS PK3 SHIPS, AND WHOSE IT IS
+- Ermac (iAmErmac -- DoomVR co-designer; Rusted Legacy, DXR):
+  The idea: his Virtual Tactical Vest for Doom VR (body holsters, and the cigarette as a
+  tribute). From that mod: the cigarette, the butt and the smoke (models/rsqtr/rtcig*,
+  rtbutt.md3, graphics/RTCIGSMK.png); its credits name him as their modeller. The
+  cigarette's texture is an atlas shared with a Sketchfab cigarette-pack model (a real
+  brand's pack art, blanked out here).
+  The Zippo (models/rsqtr/rtzippo*, rtzipfl.md3): the voxel lighter from his ZBlood-VR,
+  credited to him there.
+- id Software:
+  The marine torso (models/rsqtr/rtmarine.iqm, rtmtor_*, rtmsho_*): the Doom Eternal Classic
+  Slayer, a rip shared on Sketchfab, cut to torso and shoulder pads and recoloured
+  green / blue / red in the project owner's RS_VRBody (its models/marine/PROVENANCE.md);
+  skins halved to 1024 here for the Quest.
+  The helmet (models/rsqtr/rthelm*): the Doom Eternal Classic Slayer's helmet, a rip,
+  prepared in RS_VRBody (its models/helmet/PROVENANCE.md): shell, visor, interior, with
+  green / blue / red skins.
+  The Quake torso (models/rsqtr/rttorso*): Quake's Grunt (Quake, 1996), cut into a torso by
+  Vittorio Romeo's original Quake VR mod and recoloured in RS_VRBody; converted here from
+  Quake's .mdl to MD3 (tools/mdl2md3.py).
+- The project owner (presidentkoopa):
+  The holster spheres (models/rsqtr/rtwire*), from his RS_Holsters.
+  Holster, draw and foley sounds (sounds/rsqtr/rthols*, rtdraw, rtfoly*), from his
+  RS_CombatFX effects library.
+- Generated for this pack:
+  The Zippo and cigarette sounds (rtzp*, rtcglite: tools/gen_sounds.py), the stored-gun
+  fit table RSQTRFIT (tools/measure_pickups.py), the placeholder sprites.
+- QuestZDoom (Emawind and Team Beef):
+  The engine, and the off-hand weapon and hand-pose script API the rig reads.
+
+SHARING
+- Free to share as part of the Radiant Silvergun Quest series. Borrowed assets keep their authors'
+  terms; sharing other people's work in this pack is the project owner's decision.
+
+A thrown gun striking a body plays stock Doom's punch (doom2.wad DSPUNCH; SNDINFO.txt).
+
+## For other mods
+
+`RSQTR_RigService` (found by name): `rig.region` (the holster a hand is in, or -1), `rig.busy` (1 while a
+hand is in a holster, holds a Distance Grab door, the cigarette or the Zippo), `rig.drawtic` /
+`rig.drawn` (when that player last drew from a holster and what came out). This section is for modders,
+not for play.

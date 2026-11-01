@@ -1,104 +1,131 @@
-# RSQ_SlowMo — the world slows, you don't
+# RSQ SlowMo
 
-Slow motion for **stock QuestZDoom 17.3**, in script: ZScript and lumps only, no
-engine changes. RS_SlowMo's design (made for the project owner's engine build) brought
-to Quest, with the same events and settings, plus enemy bullets you can see and dodge.
-Part of the Radiant Silvergun Quest series
-([RSQ_UBQSeries](https://github.com/presidentkoopa/RSQ_UBQSeries)).
+The world slows down, you don't. Monsters, their shots, falls and sounds near you run slower while you
+move at full speed. Enemy bullets become visible rounds you can step or lean away from, and (as an
+option) catch and throw back. Part of the Radiant Silvergun Quest series, for stock QuestZDoom 17.3
+(script only, no engine changes). The design is the owner's RS_SlowMo, brought to Quest.
 
-## How it works
+## Load order
 
-Stock 17.3 has no world clock to slow, so this mod slows each thing near you itself.
-Nothing freezes and stutters: every slowed thing still moves every tic, by less.
+```
+doom2.wad -> brutal22test6.pk3 -> BD_VoxelPack.pk3 -> BD22_VR-Reloaded_2_0_3h.pk3
+          -> BD22_VR-Reloaded_2.0.3ha_hotfix.pk3 -> RSQ_SlowMo.pk3   (from pk3/)
+```
 
-- **Motion:** speeds scale by the slow-motion factor and gravity by its square, so falls
-  and arcs slow exactly; a missile's speed scales so homing stays slowed; sliding on the
-  floor and pushes (thrusts, knockback, scripted kicks) scale too.
-- **Time:** every animation state lasts longer by the same factor, so monsters walk,
-  aim, fire and die at the slowed rate.
-- **Sound:** what a slowed thing is playing drops in pitch with it.
-- **You don't slow:** you, what you carry, and the series' own hand-held effects (the
-  grab's beam, the rig's props, the shield, the saber) stay on real time. Your own rockets do slow (menu).
-- Only things within range of a player are slowed (3000 map units by default).
+- **Plain Doom 2 without Brutal Doom:** works. Nothing in the code needs a Brutal Doom class. Without
+  Brutal Doom the bullet-catch ting and the drop clink are silent (they are Brutal Doom's casing sounds).
+- **Other RSQ pk3s needed:** none. It works alone.
+- If **Bullet Time X** or **RS_SlowMo** is loaded, this mod stands down (two slow-motion systems
+  compound). *Yield to Other Mods* under *Tuning and Debug* turns that off.
 
-## Dodgeable bullets (on by default)
+## Setup
 
-In slow motion an enemy's hitscan becomes a **visible round** on the same line, with the
-same damage, damage type and puff. It flies at about 14 m/s at the default depth.
-Step out of its way and it misses (a whiz or a crack as it passes your head); the
-ShieldSaw and the saber stop it like any projectile; when it hits, it hurts exactly as
-the shot would have, credited to the shooter, so monsters still fight each other over
-it. Brutal Doom's bullets (fired as fast projectiles) slow to the same speed. Your own
-shots leave a fading trail.
+- **Menu:** Options -> Radiant Silvergun Options -> RSQ SlowMo.
+- **Button to bind:** the first row of the mod's menu, *Slow Motion*, or Customize Controls -> section
+  "RSQ SlowMo" -> "Slow motion on/off". Optional: the wrist cross does the same.
+- The bullet catch reads the off-hand grip directly (no binding). Its key numbers are not on the menu.
 
-## Your body in slow motion
+## What to do in VR
 
-- **Lean out of a bullet's path** (on by default). QuestZDoom already moves you with your
-  head; leaning also tells the mod your body did not follow. A slowed enemy round that would
-  have clipped you on the side you leaned away from misses (the gate in the engine survey's
-  10_TIME §4.6, at a 1:1 lean). A round aimed at where your head is now still hits. Works for
-  this mod's rounds and Brutal Doom's slowed bullets. A lean held for more than a second or so
-  becomes your new stance and stops counting.
-- **Smooth walkers** (on by default). Monsters walk in steps (one step per animation frame), so a
-  slowed monster used to step, stand, step: about 4 times a second for Brutal Doom's demon at
-  the default depth. The nearest 12 walkers within 1024 units now cover each step a little every
-  tic and still arrive exactly where the engine put them, in time for the next one.
-- **Catch a bullet** (option, off by default). Hold the off hand's grip with that hand empty
-  (Brutal Doom VR's empty hand, or nothing in it) and close it on a slowed enemy round or Brutal
-  Doom bullet: it stops in your palm with a metal ting. Flick the hand (2.5 m/s, measured
-  against your body, so walking or turning is not a flick) and it flies back the way you flicked,
-  at full speed, as your bullet. Open the hand without a flick and it drops and clinks.
-- **Colour drain** (option, off by default). Colours fade a little while time is slowed (35% at
-  full depth): a post-process pass on each eye's view, desaturation only.
-- **Close-call slow-mo** (option, off by default; `rsqsm_closecall`). A rocket or fireball (an
-  enemy missile slower than 40 units a tic, so not a bullet) whose path will pass within your
-  width in the next 14 tics, within 400 units, sets off a short pulse (`rsqsm_closecall_ms`,
-  700 ms) so you can step aside. Once per missile.
-- **Head-bound rounds glow** (option, off by default; `rsqsm_headglow`, yours). A slowed enemy
-  round or Brutal Doom bullet whose course passes within 12 units of your eyes burns at full
-  strength and half again as big; the ones that will miss dim to 40%. It follows a lean.
-- **Wrist cross = 4 s burst** (option, off by default; `rsqsm_gesture_burst`, yours). The wrist
-  cross starts a 4-second pulse at the set depth instead of toggling slow motion.
+- **Start / stop slow motion:** press your bound key, or cross your wrists in front of your face and hold
+  them there a moment.
+- **Dodge a round:** step out of its line, or lean your head about 30 cm out of its path.
+- **Catch a round (option):** off hand empty, hold the grip and close the hand on a slowed round.
+- **Throw it back:** flick the hand (2.5 m/s) toward a monster.
+- **Drop it:** open the hand without a flick.
+- **Smoke (with RSQ Tactical Rig):** spitting out the cigarette starts 6 s of slow motion.
 
-## Starting it
+## Features
 
-- **A key:** Customize Controls → RSQ SlowMo → *Slow motion on/off*.
-- **A gesture:** cross your wrists in front of your face and hold a moment.
-- **Ermac's cigarette** (RSQ_TacticalRig): the world slows while it burns.
-- **Reloading** (optional, off by default): a short moment as you reload. Works with
-  Brutal Doom's reloads.
-- **Adrenaline** (optional, off by default): slow motion then costs adrenaline, earned
-  from kills, the hurt you take and near misses; it ends when the meter runs dry.
-- **Other mods:** `netevent rsm_pulse <hold ms> <depth %>`, RS_SlowMo's own event —
-  deeper wins, longer wins, eased by this mod's ramps. Also `rsm_toggle`, `rsm_on`,
-  `rsm_off` and `rsm_state` (prints the clock).
+All rows are on the front page except *Yield to Other Mods* and *Reset All* (under *Tuning and Debug*).
+"On" = on by default (CVARINFO); "Option" = off by default.
 
-## Settings
+| Menu row | Default | What it does |
+|---|---|---|
+| Slow Motion | (key) | Bind your toggle here. |
+| World Speed | Standard (0.25) | How slow the world gets: Light / Medium / Standard / Bullet Time. |
+| Ease In and Out | Standard | Snap / Standard / Gradual. |
+| Dodgeable Bullets | On | In slow motion an enemy's hitscan becomes a visible round, same damage. Brutal Doom's bullets slow to the same speed. |
+| Wrist Cross | On | Crossing your wrists in front of your face toggles slow motion. |
+| Reload Slowdown | Option | A reload buys a short moment of slow motion. |
+| Adrenaline | Option | Slow motion costs adrenaline, earned from kills, hurt and near misses. There is no meter on screen: a pickup sound when full, an "oof" when there is not enough. |
+| Haptics | On | Rumble on both hands when slow motion starts and ends; on the off hand for a catch and a throw-back. Needs the engine's quake haptics above 0. |
+| Lean Out of Bullets | On | Leaning out of a slowed round's path makes it miss. A lean held for about 2 s becomes your new stance and stops counting. |
+| Smooth Walkers | On | The nearest 12 walking monsters move a little every tic instead of stepping. |
+| Catch Bullets | Option | Catch a slowed round in the empty off hand, flick it back as your own bullet, or drop it. |
+| Color Drain | Option | Colours fade a little while time is slowed (35 % at full depth). |
+| Close-Call Slow-Mo | Option | A rocket or fireball about to hit you up close starts a short (0.7 s) slow-mo pulse. |
+| Head-Bound Rounds Glow | Option | A slowed round heading for your head glows brighter and bigger; ones that will miss dim. |
+| Wrist Cross = 4 s Burst | Option | The wrist cross starts a 4-second burst instead of toggling. |
+| Slow Own Missiles | On | Your own rockets slow too. |
+| Shot Trails | On | Your shots leave a fading trail. |
+| Missile Wakes | On | Slowed missiles leave a wake. |
+| Keep Adrenaline Between Levels | On | The meter carries to the next level. |
+| Yield to Other Mods (Tuning and Debug) | On | Stand down if Bullet Time X or RS_SlowMo is loaded. |
+| Reset All (Tuning and Debug) | - | Resets every SlowMo setting. |
 
-**Options → Radiant Silvergun Options → RSQ SlowMo**: how slow (`rsm_depth`, default 0.25), ease in and out
-(`rsm_ramp_in` / `rsm_ramp_out`), sound pitch, range, round speed, trails, wakes, the
-gesture, the reload moment, adrenaline, haptics, lean out of bullets (`rsqsm_lean`), smooth walkers
-(`rsqsm_smooth`), catch bullets (`rsqsm_catch`), colour drain (`rsqsm_drain`), and Reset All under
-*Tuning and Debug* (with the lean, walker, catch-reach, flick-speed and drain-amount numbers).
+Every other row under *Tuning and Debug* is a number for the features above.
 
-## With other slow-motion mods
+## Test it
 
-Two slow-motion systems compound and cannot see each other. If **Bullet Time X** or
-**RS_SlowMo** is loaded, this mod stands down and says so in the console
-(`rsm_yield 0` runs it anyway).
+Items marked **(not yet headset-confirmed)** were built on 2026-10-31 or later and only ran on the
+simulated rig (no sound, no haptics there).
 
-## Limits on stock 17.3
+1. Load the pack. Options -> Radiant Silvergun Options shows *RSQ SlowMo*. No script error.
+2. Bind *Slow Motion* and press it. The world slows to a quarter speed over a moment; you hear Doom's
+   power-up pickup sound. Press again: it eases back, with Doom's lift-stop sound.
+   **(the stock cues are not yet headset-confirmed)**
+3. Cross your wrists in front of your face and hold. Slow motion toggles.
+4. In slow motion, watch a walking demon close up. It glides instead of step, stand, step.
+   **(not yet headset-confirmed)**
+5. Let a zombieman shoot at you. A visible round flies at you. Step aside: it whizzes past.
+6. Again, but lean your head about 30 cm sideways out of its path without stepping. It misses.
+   **(not yet headset-confirmed)**
+7. Turn on *Catch Bullets*. Empty off hand, hold the grip, close it on a round. It stops in your palm
+   with a ting. Flick toward a monster: the round flies back and hurts it. Catch another and open the
+   hand gently: it drops with a clink. **(not yet headset-confirmed)**
+8. Turn on *Color Drain*. In slow motion colours fade a little. **Check both eyes** (the rig only saw
+   the left). **(not yet headset-confirmed)**
+9. Turn on *Close-Call Slow-Mo*. Let an imp's fireball come straight at you. Time slows briefly before it
+   hits. **(not yet headset-confirmed)**
+10. Turn on *Head-Bound Rounds Glow*. Rounds aimed at your head look brighter than ones that will miss.
+    **(not yet headset-confirmed; the difference was not readable on the rig)**
+11. Turn on *Wrist Cross = 4 s Burst*. The wrist cross gives 4 s of slow motion, then it eases back.
+    **(not yet headset-confirmed)**
+12. With RSQ Tactical Rig and its cigarettes on: smoke and spit one out. Slow motion lasts its full 6 s.
+    **(not yet headset-confirmed)**
+13. Fire your own Brutal Doom gun in slow motion. Your tracers move at world speed, not crawling.
+    **(not yet headset-confirmed)**
+14. Turn on *Adrenaline* with an empty meter and press the key. You hear "oof" and a low buzz; nothing
+    slows. Kill a few monsters and try again.
 
-- Doors, lifts and other moving floors and ceilings keep their speed.
-- Engine particles (some effects mods use them) keep their speed; actor-based effects slow.
-- Music and sounds not made by a slowed thing keep their pitch.
+## Works with
 
-## Install
+- **RSQ Tactical Rig:** spitting out the cigarette starts slow motion (its *Slow Motion After a Smoke*).
+- **RSQ Wheel:** the ring slows time while open, also while slow motion is easing out.
+- **RSQ Saber / RSQ ShieldSaw:** their perfect-parry / perfect-block slow-mo options pulse this clock.
+- **RSQ Score:** big kills ask for a short slow-mo pulse.
+- **RSQ Grapple, RSQ Whip:** read the world's speed so they slow with it.
+- **RSQ Miniboss:** can hold slow motion through its window.
+- **RSQ Accessibility:** Gesture Ease on the wrist cross, a floor on how fast slow motion may ease, and
+  other shared settings. Its Steady Hands is **not wired into the catch yet** (handoff task A).
+- **Gun Bonsai VR patch:** its slow-motion perks read and pulse this clock.
 
-Load after your weapon pack. Tested order:
-`doom2.wad -> brutal22test6 -> BD_VoxelPack -> the series, any order`.
+## Known limits / open issues
+
+- Doors, lifts and moving floors and ceilings keep their speed.
+- Engine particles keep their speed; actor-based effects slow.
+- Music, and sounds not made by a slowed thing, keep their pitch.
+- The near-miss whiz and crack are recordings from the owner's RS_Ballistics library, not stock Doom or
+  Brutal Doom sounds.
+- A thing let go of on the last tic of the ease-out should get its normal sound pitch back; this was read
+  from the code, not heard.
+- Bullets on a lean: Brutal Doom's own tracers going through the lean test were not rig-tested.
+- The Wheel stopping a slow motion you started yourself on close is a Wheel-side issue (its handoff).
 
 ## Credits
+
+From the old README, unchanged:
 
 - The design is RS_SlowMo's (the project owner's): its events, settings and the rule of
   standing down for another slow-motion mod.
@@ -111,19 +138,38 @@ Load after your weapon pack. Tested order:
 - What the pk3 ships and whose it is: [CREDITS.txt](CREDITS.txt).
 - QuestZDoom: Emawind and Team Beef.
 
+RSQ_SlowMo -- credits (from CREDITS.txt, unchanged):
+
+The world slows, you don't. Part of the Radiant Silvergun Quest series. For stock QuestZDoom 17.3:
+ZScript and lumps only, no engine changes. The code is new, written for this pack.
+
+WHAT THIS PK3 SHIPS, AND WHOSE IT IS
+- The project owner (presidentkoopa):
+  The design: RS_SlowMo's (made for his engine build): its events (rsm_pulse, rsm_toggle,
+  rsm_on, rsm_off, rsm_state), its settings and the rule of standing down for another
+  slow-motion mod.
+  The round's tracer mesh (models/rsqsm/btracer.obj, btracer.png) and the near-miss whiz
+  and crack recordings (sounds/rsqsm/smwhiz1-4, smcrak1-2): his RS_Ballistics library.
+- Generated for this pack:
+  The round's placeholder sprite (sprites/rsqsm/RSQRA0.png).
+- id Software (Doom), played by name from the IWAD, NOT shipped:
+  The clock's cues: DSGETPOW (slowing), DSPSTOP (back to speed), DSITEMUP (meter full),
+  DSNOWAY (not enough adrenaline). See SNDINFO.txt.
+- Brutal Doom (Sergeant Mark IV), played by name, NOT shipped:
+  A caught bullet's ting (weapons/casing1) and a dropped one's clink (weapons/casing): its
+  casing sounds. Without Brutal Doom loaded they are silent.
+- Bullet Time X (Xortts):
+  Nothing is taken from it: this mod only recognises it by class name so the two don't
+  compound.
+- QuestZDoom (Emawind and Team Beef):
+  The engine, and the hand-pose script API the gesture reads.
+
+SHARING
+- Free to share as part of the Radiant Silvergun Quest series.
 
 ## For other mods
 
-`RSQSM_Service` (a `Service`, found by name, e.g. `ServiceIterator.Find("RSQSM_Service")`).
-`GetInt` answers -1 when the clock is not running (the mod not loaded, or a request it doesn't know):
-
-| request | args | answer |
-|---|---|---|
-| `adrenaline.add` | `intArg` = amount | adds to the meter (0..100; only with *Adrenaline* on), returns the meter |
-| `adrenaline` | | the meter, 0..100 |
-| `slowmo.active` / `active` | | 1 while slow motion is doing something this tic (slowed or easing) and not stood down for another slow-motion mod, else 0 |
-| `scale` | | the world's speed now, in permille (1000 = not slowed) |
-
-The Gun Bonsai VR patch's slow-motion perks read `active`. A kill earns adrenaline from the
-killing blow's own source, so a hitscan kill counts (before, it named only its puff and earned
-nothing: measured, a pistol kill 0 -> 0; after, +12).
+`RSQSM_Service` (found by name). `GetInt` answers -1 when the clock is not running:
+`adrenaline.add` (intArg = amount), `adrenaline` (0..100), `slowmo.active` / `active` (1 while slowing or
+easing), `scale` (world speed in permille). Other mods can also ask for a pulse with the network event
+`rsm_pulse <hold ms> <depth %>` (deeper wins, longer wins). This section is for modders, not for play.

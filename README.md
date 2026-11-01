@@ -1,6 +1,7 @@
 # RSQ_UBQSeries — the Radiant Silvergun Quest series
 
-**Version 1.0 — 2026-10-27; menus and names 2026-10-28.** Ready-to-load pk3s are in [`pk3/`](pk3/).
+**Version 1.0 — 2026-10-27; menus and names 2026-10-28; picks and QoL rounds 2026-10-31; READMEs 2026-11-01.**
+Ready-to-load pk3s are in [`pk3/`](pk3/). **Every mod's own README has a "Test it" checklist** -- start there.
 
 Standalone add-ons for **Doom VR on the Quest 17.3 PCVR or Mobile**, all in one place: a distance grab, a
 shield-saw, a lightsaber, a tactical rig, slow motion, a laser sight, a grappling hook, HP bars and one
@@ -19,8 +20,8 @@ is ZScript and data lumps.
 | | Mod | pk3 | What it is |
 |---|---|---|---|
 | ✋ | [DistanceGrab](DistanceGrab/) | `RSQ_DistanceGrab.pk3` | Turn your palm out, flick, and pull items, guns, barrels and bodies to your hand. Then carry them, throw them, and hit things with them. Lift doors open by hand. |
-| 🛡️ | [ShieldSaw](ShieldSaw/) | `RSQ_ShieldSaw.pk3` | A shield on your off shoulder that blocks, bashes and turns shots back, and doubles as a throwable saw disc that hunts the targets you ring. id Software's shield saw from *Doom: The Dark Ages*, brought to Doom VR first by **Ermac** in Rusted Legacy. |
-| ⚔️ | [QuestSaber](QuestSaber/) | `RSQ_Saber.pk3` | A lightsaber (layered glowing shells that read as a solid beam), with a second one for the off hand on the Dual key. Cut, block, deflect, throw, and use the Force. |
+| 🛡️ | [ShieldSaw](ShieldSaw/) | `RSQ_ShieldSaw.pk3` | A shield (stowed at the small of your back by default) that blocks, bashes and turns shots back, and doubles as a throwable saw disc that hunts the targets you ring. id Software's shield saw from *Doom: The Dark Ages*, brought to Doom VR first by **Ermac** in Rusted Legacy. |
+| ⚔️ | [QuestSaber](QuestSaber/) | `RSQ_Saber.pk3` | A lightsaber (layered glowing shells that read as a solid beam), with a second one in the off hand from the start (Start With Dual Sabers). Cut, block, deflect, throw, and use the Force. |
 | 🎒 | [TacticalRig](TacticalRig/) | `RSQ_TacticalRig.pk3` | Guns holstered on your hips and shoulders, spots for the saber, a torso and helmet, a mirror, and Ermac's cigarette. Built on **Ermac's** Virtual Tactical Vest idea. |
 | ⏱️ | [SlowMo](SlowMo/) | `RSQ_SlowMo.pk3` | The world slows, you don't. Enemy bullets become rounds you can see and dodge. |
 | 🔴 | [LaserSight](LaserSight/) | `RSQ_LaserSight.pk3` | A laser from each gun's own barrel, in either hand, fading with distance, with a dot on whatever it hits. |
@@ -35,6 +36,35 @@ is ZScript and data lumps.
 | 🤲 | [Gestures](Gestures/) | `RSQ_Gestures.pk3` | What your hands are doing, for the other mods: hold the gun up and twist your wrist to inspect it (RSQ Gun Cards' watch card), thrust and pull, both hands down, thrown apart or palms out. Ported from RS_Gestures. Does nothing on its own. |
 | ♿ | [Accessibility](Accessibility/) | `RSQ_Accessibility.pk3` | One Accessibility menu for every series mod you load: colour-blind modes and handedness. |
 
+## Testing them one at a time
+
+Add **one mod per session** on top of your Brutal Doom order, play a map, go through that mod's
+**Test it** checklist (in its README), then add the next. Every mod works alone, so a problem you see
+belongs to the mod you just added. Features built on 2026-10-31 or later ran on a simulated headset
+only and are marked **not yet headset-confirmed** in each README; nothing about rumble could be felt there.
+
+A suggested order -- simple and visible first, the mods that read the others last:
+
+| # | Add | Why here |
+|---|---|---|
+| 1 | Accessibility | Handedness, colour-blind modes, Steady Hands, seated play: set once, every later mod reads it |
+| 2 | LaserSight | One visible thing per gun; quick to confirm the load order is right |
+| 3 | TacticalRig | Holsters; later mods (saber, ShieldSaw) hang on it |
+| 4 | DistanceGrab | Pull, carry, throw, doors, walk-up grip, hand swap, Headlock |
+| 5 | Saber | Then check it with the rig's saber holsters |
+| 6 | ShieldSaw | Then saber + shield together (saber over shield) |
+| 7 | Whip | |
+| 8 | Grapple | |
+| 9 | SlowMo | Then the saber's / shield's / rig's slow-mo options start doing something |
+| 10 | Gestures, then GunCards | GunCards' watch card comes from Gestures' wrist twist |
+| 11 | Wheel | |
+| 12 | HP Bars | Its frozen / held / hooked markers read the other mods |
+| 13 | Score | Combos need the tools above loaded to fire |
+| 14 | Miniboss | Best with Champions + LegenDoom Lite |
+| 15 | Gun Bonsai VR addon | Last, right after GunBonsai-0.10.6 |
+
+After that, the full set together.
+
 ---
 
 ## Install
@@ -44,7 +74,7 @@ is ZScript and data lumps.
    pack. The tested order is:
 
    ```
-   doom2.wad -> brutal22test6 -> BD_VoxelPack -> BD22_VR-Reloaded (1.99x-lb-r7-saveload or later)
+   doom2.wad -> brutal22test6 -> BD_VoxelPack -> BD22_VR-Reloaded_2_0_3h -> BD22_VR-Reloaded_2.0.3ha_hotfix
              -> (optional) Champions -> LegenDoom Lite -> any of the mods, in any order
              -> GunBonsai-0.10.6.pk3 -> RSQ_GunBonsaiVR.pk3 (last; only with Gun Bonsai)
    ```

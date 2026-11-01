@@ -13,6 +13,11 @@ pointed to: dylnli/rope (after Sebastian Lague) and chrischristakis/RopePhysics.
 The line a snag or a leash becomes (swing, reel, pump, climb hand over hand, let go, the monster slide) is
 RSQ_Grapple's core, forked and renamed (RSQWP_), with its measured pendulum and climbing.
 
-Look and sound are generated here, from nothing (tools/gen_whip.py): the plaited thong and wrapped handle skins
-(models/rsqwp/rsqwhip.png, rsqwhiph.png) on RSQ_Grapple's rope tube (rsqrope.md3, its tools/gen_rope.py), and
-the cracks, swishes, unfurl rustle and hit (sounds/RSWPCRK1-3, RSWPSWS1-2, RSWPUNF, RSWPHIT).
+The look is generated here, from nothing (tools/gen_whip.py): the plaited thong and wrapped handle skins
+(models/rsqwp/rsqwhip.png, rsqwhiph.png) on RSQ_Grapple's rope tube (rsqrope.md3, its tools/gen_rope.py).
+
+Sounds (2026-11-01, chosen by the owner): "crack_heavy", "crack_light" and "three_whip_swishes" from Pixabay
+(pixabay.com/sound-effects, Pixabay Content License: royalty-free, no attribution required; the authors'
+names were not recorded with the files). Converted to mono OGG, trimmed, the swishes cut into three
+(sounds/RSWPCRK1-2, RSWPSWS1-3). The unfurl is a swish; the hit is stock Doom's punch (DSPUNCH).
+The old generated sounds were removed.
