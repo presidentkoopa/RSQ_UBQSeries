@@ -1122,7 +1122,7 @@ class RSQWP_Whip : EventHandler
 			Crack(i, pmo, hand, at, roomTo / max(1.0, dist) * 30);
 			return;
 		}
-		Noise(pmo, 'crack', at);
+		Noise(pmo, 'crack', at, i);
 		RSQWP_Looks.Spark(at, 'crack');
 		Buzz(pmo, hand, 1.0, 5);
 		let inv = Inventory(v);
@@ -1564,7 +1564,7 @@ class RSQWP_Whip : EventHandler
 				bool knock = RSQWP_Util.Opt("rsqwp_whip_fireball_knock", 0) == 1;
 				if (knock) Knock(pmo, m, b - a);
 				else m.ExplodeMissile(null, null);
-				Noise(pmo, 'crack', at);
+				Noise(pmo, 'crack', at, i);
 				RSQWP_Looks.Spark(at, 'crack');
 				Buzz(pmo, hand, 0.8, 4);
 				if (RSQWP_Util.Flag("rsqwp_debug", false))
@@ -1662,7 +1662,7 @@ class RSQWP_Whip : EventHandler
 			reachFor[i] = lockOn[i];
 			reachPt[i] = lockOn[i] ? lockOn[i].pos + (0, 0, lockOn[i].height * 0.6) : lockAt[i];
 			reachTic[i] = REACH_TICS;
-			Noise(pmo, 'crack', at);
+			Noise(pmo, 'crack', at, i);
 			Buzz(pmo, hand, 1.0, 5);
 			if (RSQWP_Util.Flag("rsqwp_debug", false))
 			{
@@ -1674,7 +1674,7 @@ class RSQWP_Whip : EventHandler
 			return;
 		}
 
-		Noise(pmo, 'crack', at);
+		Noise(pmo, 'crack', at, i);
 		RSQWP_Looks.Spark(at, 'crack');
 		Buzz(pmo, hand, 1.0, 5);
 		bool dbg = RSQWP_Util.Flag("rsqwp_debug", false);
@@ -1793,7 +1793,7 @@ class RSQWP_Whip : EventHandler
 		h.struck = struck - h.hitDir * 0.5;
 		core.hooks[i] = h;
 		core.Latch(h, i);
-		Noise(pmo, 'crack', at);
+		Noise(pmo, 'crack', at, i);
 		Buzz(pmo, hand, 0.7, 6);
 		if (RSQWP_Util.Flag("rsqwp_debug", false))
 			Console.Printf("T_WPW %d SNAG t%d at (%.0f %.0f %.0f), %.0f above the hand -> core's rope", i, level.maptime, at.x, at.y, at.z, at.z - hand0.z);
@@ -1803,12 +1803,16 @@ class RSQWP_Whip : EventHandler
 
 	// ---- looks ------------------------------------------------------------------------------
 
-	// The whip's own sounds (gen_whip.py), at a point, through a tiny actor that carries them.
-	void Noise(PlayerPawn pmo, Name what, Vector3 at)
+	// The whip's sounds, at a point, through a tiny actor that carries them.
+	// LIGHT AND HEAVY CRACKS (the owner, 11-01: "I literally named a crack Light and Heavy, so maybe don't
+	// make them random"): the crack's hardness is the same CrackK the damage uses -- the tip's speed between
+	// the crack speed (rsqwp_whip_crack) and the full crack (rsqwp_whip_fullcrack) -- so the heavy crack is
+	// exactly a crack that hurts more than halfway. Snags and fireball swats follow the same rule.
+	void Noise(PlayerPawn pmo, Name what, Vector3 at, int i = -1)
 	{
 		String s;
 		double vol = 1.0;
-		if (what == 'crack') s = "rsqwp/whip/crack";
+		if (what == 'crack') s = (i >= 0 && i < NW && CrackK(i, crackV[i]) >= 0.5) ? "rsqwp/whip/crackheavy" : "rsqwp/whip/cracklight";
 		else if (what == 'swish') { s = "rsqwp/whip/swish"; vol = 0.7; }
 		else if (what == 'unfurl') { s = "rsqwp/whip/unfurl"; vol = 0.45; }
 		else if (what == 'hit') s = "rsqwp/hit";
