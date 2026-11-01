@@ -1,13 +1,183 @@
-# Gun Bonsai — Offhand / VR Support
+# RSQ Gun Bonsai VR
 
-Dual-wield support for [Gun Bonsai](https://github.com/ToxicFrog/doom-mods) 0.10.6
-on VR builds of GZDoom where the player holds a weapon in each hand.
+An addon for ToxicFrog's **Gun Bonsai 0.10.6** (guns level up and earn upgrades as you use them). Stock
+Gun Bonsai thinks you hold one gun. With a gun in each hand, this addon gives each hand its own XP, its own
+upgrades and its own HUD, and pays each gun for the damage it really did. It also adds upgrade paths for
+the series' tools (gloves, sabers and the Force, the ShieldSaw, Distance Grab, Tactical Rig, SlowMo,
+Grapple, two hands, the body), SuperPunchOut's boxing gloves with a Slappers Only mode, the owner's own
+Gun Bonsai screens, and an option to earn XP from RSQ Score's style points. Gun Bonsai itself is never
+changed: the addon's files load after it and take its place where needed.
 
-The pk3 is **`RSQ_GunBonsaiVR.pk3`** (it was `Gameplay_GB_VR_Offhand_Patch.0.10.6.pk3`; delete the
-old one). It needs Gun Bonsai 0.10.6 (ToxicFrog, not included): load it **right after**
-`GunBonsai-0.10.6.pk3`. Its settings are under **Options → Radiant Silvergun Options → RSQ Gun Bonsai
-VR** (Gun Bonsai's own menu stays where Gun Bonsai puts it, with Slappers Only and a link here at
-its bottom).
+Pk3: `pk3/RSQ_GunBonsaiVR.pk3` (it was `Gameplay_GB_VR_Offhand_Patch.0.10.6.pk3`; delete the old one).
+
+## Load order
+
+doom2.wad -> brutal22test6.pk3 -> BD_VoxelPack.pk3 -> BD22_VR-Reloaded_2_0_3h.pk3 ->
+BD22_VR-Reloaded_2.0.3ha_hotfix.pk3 -> (any other RSQ pk3s) -> **GunBonsai-0.10.6.pk3** ->
+**RSQ_GunBonsaiVR.pk3** (last)
+
+- Needs Gun Bonsai 0.10.6 by ToxicFrog (not included). Put it right before this pk3.
+- Needs no other RSQ pk3. Each series upgrade path is offered only while its mod is loaded.
+- Plain Doom 2 without Brutal Doom: the addon uses no Brutal Doom code and should work, but every recorded
+  run used the Brutal Doom order. Needs a dual-wield VR engine (QuestZDoom).
+- Other Gun Bonsai patches that replace the same files will clash with this one. Not recommended together.
+
+## Setup
+
+- In **Gun Bonsai's own options**, set its upgrade binding mode to **per weapon**. With a gun in each hand,
+  per-class binding thrashes; the addon warns once at start-up if it is not set.
+- Buttons: Gun Bonsai's own (its Show Info key opens the status and level-up screens; it can now reach a
+  level the off hand earned). Bind them where Gun Bonsai puts them in Customize Controls; their names are
+  Gun Bonsai's and are not in this repo. The addon adds no binds of its own.
+- Menu: Options -> Radiant Silvergun Options -> **RSQ Gun Bonsai VR** (numbers on its **Tuning and Debug**
+  page). Gun Bonsai's own options page also gets **Slappers Only** and a link to this page at its bottom.
+
+## What to do in VR
+
+- Shoot with either hand: each gun earns its own XP.
+- With the gloves on, punch: from a slow hand, throw it at least 15 cm and fast enough (2 m/s average for
+  the weakest punch, 7 m/s for full power).
+- Left-right-left punches and a punch as a monster winds up its attack feed the glove upgrades.
+
+## Features
+
+RSQ Gun Bonsai VR page:
+
+| Row | Default | What it does |
+|---|---|---|
+| Slappers Only | Option (off) | Boxing gloves on both hands, every gun put away, gun pickups vanish while it lasts. You keep the series' melee and the game's own melee. Off: your guns come back (no free ammo), each in the hand it was in. |
+| Start With Gloves | Option (off) | Hands you the boxing gloves at each level start. |
+| XP Source | Damage | Damage (Gun Bonsai's own) / Style (RSQ Score's bonus points become XP, split along the combo chain: the finishing tool 50 %, the setup tools 50 %, plus 10 % to the player bar) / Both. Style without RSQ Score acts as Damage. |
+| ShieldSaw Gauge | Option (off) | A third gauge, top centre, for the ShieldSaw while it rides on your shoulder. RSQ Score moves down to make room. |
+| Screen Skin | Mockup | Which screens draw Gun Bonsai: Gun Bonsai (its own) / Mockup (the owner's mockups) / Hex Rail / Terminal. |
+| Ammo And Health | On | With a skin: per-hand ammo, health, face and armour along the bottom (hides Brutal Doom's HUD under it). |
+
+Tuning and Debug page: Force Base Strength (0.6: an unlearned Force power works at this share), Punch Min
+Speed (2.0), Punch Full Speed (7.0), Punch Damage (10, doubled at full speed), First Star After (1), Star
+Every (2), Grapple XP (1.0), Style XP Scale (1.0), Style Player Share % (10), HUD Inset (0.04), HUD Size
+(1.0).
+
+Not on the menu: the dual HUD switch and the HUD positions (both on and set by default), and the
+start-up binding warning.
+
+Always on (no row):
+
+- **Two live weapons**: each hand has its own XP, upgrade tree and upgrade effects (the off hand's Rapid
+  Fire, Shield, Lightning and Bandoliers now run).
+- **Credit follows the gun**: shots, fragments, explosions, minions and burns pay the gun that fired them,
+  even after you switch or drop it. Two guns burning one monster each get their share.
+- **Two HUDs**: main hand top right, off hand top left, mirror images. Left-handed (RSQ_Accessibility's
+  Handedness, else QuestZDoom's scheme): swapped.
+- **A punch never lands through a wall** (a door, a step's face).
+- **Knockdown and Executioner** are sized by the health a monster started with (works on LegenDoom
+  legendaries and champions).
+- **Upgrade paths for the series** (offered when that weapon or the player levels):
+  - Gloves: Haymaker, One-Two, Star Punch, Counterpunch, Body Blow, Knockdown
+  - Sabers: Momentum, Riposte Edge, Piercing Return, Saber Throw, Chain Choke, Dual Harmony, Deflector;
+    the Force: Force Push, Force Pull, Force Choke, Force Jump
+  - ShieldSaw: Broadening, Lockstep, Ricochet, Meat Grinder, Hunter's Return, Bulwark, Rebound, Battering Ram
+  - Any melee: Lunge, Executioner, Adrenaline
+  - Player, each only while its mod is loaded: Distance Grab (Long Arm, Iron Grip, Heavy Hitter, Air Catch,
+    Powder Keg); Tactical Rig (Quick Draw, Pair Draw, Showdown with SlowMo); SlowMo (Marksman, Dodger,
+    Second Wind, Time Dilation); two hands (Akimbo, Crossfire, Alternator); the body (Evasion, Southpaw,
+    Steady Aim); Grapple (Long Line, Fast Reel, Heavy Haul, Get Over Here, Bowling, Barbed Claw, Slingshot,
+    Steady Line, Double Hook from player level 5).
+
+## Test it
+
+Load the order above (Gun Bonsai 0.10.6, then RSQ_GunBonsaiVR.pk3 last). Its handoff says it was never run
+on the owner's headset; nothing below is headset-confirmed.
+
+1. Start MAP01. Two Gun Bonsai gauges: top right (main hand), top left (off hand) once both hands hold guns.
+   With only one gun, one gauge, like stock Gun Bonsai.
+2. Shoot with the off-hand gun only: the top-left gauge's XP grows, the top-right does not.
+3. Swap guns between hands: each gun keeps its own level (credit follows the gun).
+4. Level the off-hand gun and press Gun Bonsai's Show Info: you can spend the off hand's level.
+5. The screens: the status and level-up screens use the Mockup skin. Screen Skin -> Gun Bonsai: Gun
+   Bonsai's own screens come back. Try Hex Rail and Terminal.
+6. Ammo And Health On (with a skin): ammo, health, face and armour along the bottom; Brutal Doom's HUD is
+   hidden under it. Screen Skin -> Gun Bonsai puts Brutal Doom's HUD back.
+7. Start With Gloves On, new level: gloves in both hands. Punch an imp: it takes damage; a fast punch more.
+8. Punch a monster through a closed door or from below a step's face: no damage. (wall check measured on
+   the rig 2026-10-31: not yet headset-confirmed)
+9. Slappers Only On: gloves on both hands, guns gone, gun pickups vanish. Off: guns back in the hands they
+   were in, no free ammo.
+10. XP Source -> Style, with RSQ_Score loaded: a plain kill pays little XP; a kill with bonus rows (a combo,
+    No-Look) pays more, split between the tools used.
+11. ShieldSaw Gauge On, with RSQ_ShieldSaw: a third gauge at top centre while the shield is on your
+    shoulder; RSQ Score's display moves down.
+12. With RSQ_Wheel: the data sheet shows the gun's Gun Bonsai level and upgrades. With RSQ_GunCards: the
+    watch card shows level, XP bar and upgrades. (service checked on the rig 2026-10-31: not yet
+    headset-confirmed)
+13. RSQ_Accessibility Handedness -> Left-Handed: the two gauges swap sides. Text Size 2: the screens' text
+    grows.
+
+## Works with
+
+- **Read by RSQ_Wheel and RSQ_GunCards**: a gun's level, XP and upgrades (RSQGB_Service).
+- **Read by RSQ_Saber, RSQ_ShieldSaw, RSQ_DistanceGrab, RSQ_Grapple** (and the Wheel / Gun Cards): their
+  upgrade levels (RSQ_MeleeUpgradeService). Without this addon each behaves as before (the ShieldSaw's
+  Double Block Radius option then still doubles the plate; with the addon the plate grows by Broadening).
+- **Read by RSQ_Score**: how far the ShieldSaw gauge reaches, so the score moves down.
+- **Reads RSQ_Score**: a kill's bonus points and combo chain (XP Source: Style).
+- **Reads RSQ_SlowMo**: is the world slowed; Adrenaline adds to SlowMo's meter.
+- **Reads RSQ_Grapple**: what the hook did, for hook XP and the Grapple paths.
+- **Reads RSQ_Accessibility**: Handedness (HUD sides), Colour Blind Mode (HUD and status screen), Text Size
+  (screens).
+- Tactical Rig draws pay the drawn gun like any shot.
+- Score-to-XP (Gun Bonsai's own setting): if on, keep Gun Bonsai's damage-to-XP at 0, or kills pay twice.
+
+## Known limits / open
+
+- **The owner's picks 52 Heavy Hands, 53 Return Fire, 54 Wall Splat and 55 Guard (all "Yes") are not in
+  the code or menu.**
+- Never run on the owner's headset (its handoff). The 2026-10-31 work (the RSQGB_Service rig check, the
+  punch wall check) is rig only.
+- How often Knockdown and Executioner fire on legendaries in real play is not measured.
+- Gun Bonsai's upgrade toggle / tune menu still addresses one weapon (its own protocol can only name one).
+- Both HUDs draw the player XP bar (it is in the frame art).
+- Credit for a shot in flight across a save / load or a level change is dropped (better than crediting
+  the wrong gun).
+- Screen Skin defaults to Mockup (on). The independent review asked for Gun Bonsai's own (off) unless the
+  owner chose it: the owner's call.
+- Removing the addon with a skin on leaves Brutal Doom's HUD type changed: pick your HUD again in Brutal
+  Doom's options.
+- A Distance Grab throw's points went to the main-hand gun on the rig; which hand wins in the headset is not
+  measured.
+- `readme.txt` (shipped in the pk3) still says the menu is "Options -> RSQ Upgrades"; the menu is
+  Options -> Radiant Silvergun Options -> RSQ Gun Bonsai VR.
+
+## Credits
+
+From the old README:
+
+> Gun Bonsai is by Rebecca "ToxicFrog" Kelly, MIT licensed. This is a derivative
+> work under the same terms.
+>
+> Gloves, punch reader and sounds from SuperPunchOut (presidentkoopa); glove mesh and fit by Ermac
+> (iAmErmac); sounds from Punch Out Doom (DerrickDavison) via Virtual Punch Out.
+>
+> vr patch conceptualized by PresidentKoopa, authored with agentic ai
+
+From the old README's screens section: "Screens designed by presidentkoopa." The gauge frame is Gun Bonsai's
+own HUD art; the screens write in Doom's own IWAD fonts.
+
+From `readme.txt`, unchanged:
+
+```
+CREDITS
+-------
+Gun Bonsai: Rebecca "ToxicFrog" Kelly, MIT. This patch and the melee upgrades:
+presidentkoopa, same terms. Gloves, punch reader and sounds: SuperPunchOut
+(presidentkoopa); the glove mesh and its fit are Ermac's (iAmErmac, PunchOutVR /
+Virtual Punch Out); punch, star and knockdown sounds from Punch Out Doom
+(DerrickDavison) through Virtual Punch Out; the count is the Super Punch-Out!!
+announcer, as SuperPunchOut ships it. Punch-Out!! is Nintendo's.
+```
+
+Gun Bonsai's MIT licence and the note on files derived from it: `COPYING.md`.
+
+## Appendix: for builders (the earlier README, unchanged)
 
 The patch ships replacement copies of nine Gun Bonsai source files at their
 original paths. GZDoom's later-lump-wins rule substitutes them; there is no
@@ -28,7 +198,7 @@ ca.ancilla.bonsai/upgrades/RapidFire.zsc    per-hand psprite, null guard
 Any file shipped here that is *not* actually modified should be deleted — an
 unchanged shadowed file is collision surface with other patches for no benefit.
 
-## Handoff (2026-10-27) -- read first
+### Handoff (2026-10-27) -- read first
 
 Not yet run on the owner's headset. Rig B = QZD 17.3 Linux, doom2 MAP01, the owner's order
 (brutal22test6 -> BD_VoxelPack -> BD22_VR-Reloaded r7 -> Champions -> LegenDoom Lite 4.2 -> the suite ->
@@ -84,7 +254,7 @@ round two (1b986bb); XP Source (49fd7c0, section below).
 - `rsq_ui_skin` defaults to 1 (the screens on). The independent review (10-27, item 1) asks for 0 unless
   the owner chose 1; 90e80f2 turned it back on after cee9be2 had shelved it. The owner's call.
 
-## RSQGB_Service: a gun's level and upgrades, for any mod (`rsq/zscript/service.zs`)
+### RSQGB_Service: a gun's level and upgrades, for any mod (`rsq/zscript/service.zs`)
 
 Asked by name (`ServiceIterator.Find("RSQGB_Service")`), so the asker needs no Gun Bonsai to compile.
 Pass the Weapon (either hand, the backpack, or a dropped one a record still names), or the pawn with
@@ -102,7 +272,7 @@ shin: all land. The clamp of the aim point to the monster's feet only blocks a f
 step top, where the step really is in the way; no change made. A fist pushed through the door to the far
 side still lands (the trace starts at the fist).
 
-## Suite upgrades (`rsq/`)
+### Suite upgrades (`rsq/`)
 
 New files only, compiled by a second ZSCRIPT lump (`zscript.txt` at the root): weapon upgrade paths
 for the boxing gloves, the sabers and the Force, the ShieldSaw and any melee weapon; player upgrade
@@ -116,7 +286,7 @@ pool for throws, score XP shared per kill, `HandOfShot`, the XP Source gate `RSQ
 per-monster credit `NoteStyleHit`, `GetShieldStats`), `HUD.zsc` (`DrawShield`), `EventHandler.zsc`
 (the shield gauge's one call) and `debug.zsc` (the pool in the hands dump).
 
-## XP Source: Damage, Style, Both (`rsq/zscript/stylexp.zs`)
+### XP Source: Damage, Style, Both (`rsq/zscript/stylexp.zs`)
 
 Options -> the suite upgrades' page -> **XP Source** (`rsq_xp_source`, server): **Damage** (Gun Bonsai's
 own, the default: nothing changes -- measured: the same 17 scripted kills left every weapon record, the
@@ -138,7 +308,7 @@ whip > ShieldSaw bash, style 66 -> ShieldSaw 33, pool 33 + 6.6; gun > saber cut 
 34.5 (pool), gun 17.25 (Shotgun), saber 17.25; four tools, style 66 -> finisher 33, three setups 11 each.
 The XP bars look exactly as before.
 
-## The ShieldSaw gauge (`rsq_hud_shield`, off by default)
+### The ShieldSaw gauge (`rsq_hud_shield`, off by default)
 
 Options -> the suite upgrades' page -> **ShieldSaw Gauge** (user). A third Gun Bonsai gauge -- the stock
 art, colours, bars and text, through the same `DrawHUD` the hand gauges use -- for the ShieldSaw while it
@@ -149,7 +319,7 @@ moves its display down by as far as the gauge reaches (`RSQ_HudService "shield.g
 nothing is drawn and nothing moves. It shows once the ShieldSaw has a Gun Bonsai record (it has been
 held, or has earned XP).
 
-## The screens (`rsq/ui/`)
+### The screens (`rsq/ui/`)
 
 The owner's Gun Bonsai mockups, drawn instead of Gun Bonsai's own HUD, status screen and level-up
 menus. Options: **RSQ Gun Bonsai VR** (Screen Skin, Ammo And Health; HUD inset and size under Tuning and Debug).
@@ -177,17 +347,9 @@ the remaining art; gun pictures come from `tools/rsqui_gunshots.py` (the gun's o
 rig, keyed and cropped into `graphics/rsqui/guns/<Class>.png`; a gun without one shows its icon or
 pickup sprite). The gauge frame is Gun Bonsai's own HUD art. Screens designed by presidentkoopa.
 
-## Known collisions
+### Known collisions
 
 Other Gun Bonsai patches that shadow the same files will silently clobber, or be
 clobbered by, this one. GunBonsai has a number of addons and patches which alter its main behavior. I would not recommend using any of those with this patch. Maybe load this last if you do, but expect problems.
 
-## Licence
-
-Gun Bonsai is by Rebecca "ToxicFrog" Kelly, MIT licensed. This is a derivative
-work under the same terms.
-
-Gloves, punch reader and sounds from SuperPunchOut (presidentkoopa); glove mesh and fit by Ermac
-(iAmErmac); sounds from Punch Out Doom (DerrickDavison) via Virtual Punch Out.
-
-vr patch conceptualized by PresidentKoopa, authored with agentic ai
+More detail (settings, diagnostics, claiming shots, who earns which XP): `readme.txt`.

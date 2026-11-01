@@ -1,4 +1,200 @@
-# RS_Score -- the Quest series version (RSQ_Score)
+# RSQ Score
+
+An arcade score for Doom. Every kill pays the monster's health in points. Bonuses add to that for how you
+got the kill: a spree, killing in the air, a melee finish, a thrown barrel, a combo of different tools on
+one monster, and many more. The score and its bar sit at the top right; the bonuses list under it as they
+land. Each map has a target; every time you cross it you get a reward (by default an extra life: you are
+caught at 1 HP instead of dying). Big moments ask RSQ_SlowMo for a short slow-motion pulse. It is the
+owner's RS_Score (built on ijon's Dakka scoring) brought to stock QuestZDoom 17.3.
+
+Pk3: `pk3/RSQ_Score.pk3`.
+
+## Load order
+
+doom2.wad -> brutal22test6.pk3 -> BD_VoxelPack.pk3 -> BD22_VR-Reloaded_2_0_3h.pk3 ->
+BD22_VR-Reloaded_2.0.3ha_hotfix.pk3 -> **RSQ_Score.pk3**
+
+- Works on plain Doom 2 without Brutal Doom (run on freedoom2 and doom2.wad on the rig). No monster class is
+  named. Brutal Doom's gore helpers do not count as kills.
+- Needs no other RSQ pk3 to work alone. The series' bonuses (saber, shield, grab, hook, rig, slow motion)
+  only fire when their mod is loaded; slow-motion pulses need RSQ_SlowMo.
+
+## Setup
+
+- No buttons to bind.
+- Menu: Options -> Radiant Silvergun Options -> **RSQ Score**. Numbers and Reset All are on its **Tuning
+  and Debug** page.
+
+## What to do in VR
+
+Nothing special: play. A few bonuses come from VR moves:
+
+- **No-Look**: shoot something 60 degrees or more away from where your head faces.
+- **Blind-fire**: hold the gun round a corner and hit something your eyes cannot see.
+- **Off-hand**: kill with the off hand's trigger alone.
+- **Two Guns**: kills from each hand's trigger within a second of each other.
+- **Punch combos** (with Gun Bonsai VR's gloves): left-right-left punches, a punch mid-attack.
+
+## Features
+
+Front page (RSQ Score):
+
+| Row | Default | What it does |
+|---|---|---|
+| Show Score | Yes | The score display on or off. |
+| Size | Standard | Small / Standard / Large. |
+| Place | Top Right | Top Right / Top Left / Top Centre / Bottom Right. |
+| Living Label | On | The word "Score:" slowly breathes and changes colour; warms toward gold before a reward. |
+| Target Reward | Life Every Time | What crossing the target pays: Ammo, Then Life / Life, Then Ammo / Ammo Only / Life Every Time / Nothing. |
+| New Map Keeps | Nothing | What survives a map change: Nothing / Total / Total and Rewards / Everything. |
+| Slow Motion Moments | On | A big moment asks RSQ_SlowMo for about a second of slow motion (needs RSQ_SlowMo). |
+| Bar Flash | On | The score line and bar flash when points land. |
+| Screen Flash | On | The whole view flashes a colour on a reward and when a life is spent. |
+
+Tuning and Debug page:
+
+| Row | Default | What it does |
+|---|---|---|
+| Size, Across, Down | 100, 85, 10 | Display size and place, by number. |
+| Bonus Display Time | 35 tics | How long a bonus row stays. |
+| Raised Monster Pay | 100 % | Base paid by a monster that was not on the map at the start (raised, spawned). 100 = full. |
+| Kill Bonus Cap | 300 | Bonuses on one kill add at most 3x its base (0 = no cap). |
+| Melee Bonus Cap | 0 | Cap on the melee family (0 = off). |
+| Slow Motion Cooldown | 6 s | Time between slow-motion moments. |
+| Slow Motion Style | 50 % | A kill in slow motion pays this share of its style, daring and melee bonuses again (Bullet Time). A plain kill in slow motion pays nothing more. |
+| Reset All | row | |
+
+Bonus families (colours in the list): **Efficiency**, **Style**, **Daring**, and the Quest series' **Melee**
+(steel blue). The full bonus list with what each pays is in the appendix.
+
+Not on the menu: the target's numbers (minimum, maximum, interval), ammo regen share, and the efficiency /
+style / daring caps.
+
+## Test it
+
+Load the order above plus RSQ_Score.pk3. Start MAP01.
+
+1. The word "Score:", a number and a bar show at the top right. "Score:" slowly breathes and shifts colour.
+2. Kill a zombieman: the number goes up by its health. Kill an imp: more.
+3. Kill several quickly: a Spree row appears under the score.
+4. Kill something while you are in the air (jump off a ledge): an Air row.
+5. Punch or kick something to death: Brawler (and with Brutal Doom's boots, Boot).
+6. Shoot something without looking at it (head turned well away): No-Look.
+7. Kill with only the off-hand gun: Off-hand.
+8. Keep killing until the bar fills: you get an extra life (a pip above the bar). Get killed: you are caught
+   at 1 HP with a sound and a short warm flash.
+9. Options -> Radiant Silvergun Options -> RSQ Score. Show Score -> No: the display goes. Back to Yes.
+10. Size and Place presets move and resize it.
+11. Screen Flash Off: no whole-view flash on a reward or a spent life.
+12. Change a map with New Map Keeps -> Total: the running total stays.
+13. Reset All (Tuning and Debug).
+
+With other mods (each needs the named pk3; none of these were headset-run):
+
+14. RSQ_SlowMo: a big moment (a Fatality, Swan Song, a 3-step combo...) slows the world for about a second.
+    Another one inside 6 s does not. A kill while slowed adds a Bullet Time row.
+15. RSQ_DistanceGrab: kill with a thrown barrel or clip: Thrown, Powder Keg.
+16. RSQ_ShieldSaw: a thrown disc kill: Hurled; a kill after a block: Riposte.
+17. RSQ_Saber: a saber kill after a Force pull: Pulled In.
+18. RSQ_Grapple: a kill while swinging on a rope: Swinging; a long roped crossing over a pit: Indiana Jones.
+19. RSQ_TacticalRig: a kill right after drawing from a holster: Quick Draw.
+20. Two different tools on one monster within 3 s (gun then saber): a combo row (2-Tool Combo, or a named
+    one like Lion Tamer).
+21. RSQ_Accessibility: Text Size 2 grows the display; Photosensitive Mode holds the label still and dims
+    the flashes; a colour-blind setting stops the label's colour cycle.
+22. Gun Bonsai + RSQ_GunBonsaiVR with ShieldSaw Gauge on: the score display moves down to make room.
+
+## Works with
+
+Score is a shared service: other mods send it awards and read its kills.
+
+- **Sends to Score**: RSQ_Grapple (Indiana Jones award), RSQ_Saber (Deflect, Remote Down awards),
+  RSQ_DistanceGrab (a headlock counts in the combo chain), RSQ_Miniboss (Thrall Slow Kill, Miniboss, Greedy
+  awards).
+- **Reads Score**: RSQ_GunBonsaiVR (XP Source: Style turns a kill's bonus points into weapon XP, split along
+  the combo chain).
+- **Score asks**, each by name and only when loaded: RSQ_Grapple, RSQ_ShieldSaw, RSQ_Saber,
+  RSQ_DistanceGrab (throws), RSQ_TacticalRig (draws), RSQ_SlowMo (is the world slowed?), RSQ_GunBonsaiVR
+  (the ShieldSaw gauge's room), RSQ_Accessibility (Text Size, Photosensitive Mode, Colour Blind Mode).
+- **Score sends** RSQ_SlowMo a slow-motion pulse on a big moment.
+- Champions and LegenDoom Lite: champion colours, mutations and legendaries pay their own Daring rows.
+- Gun Bonsai's own score-to-XP: if you turn it on, set Gun Bonsai's damage-to-XP to 0, or every kill pays
+  XP twice.
+
+## Known limits / open
+
+- **The owner's picks 57 (hit-stop on big kills) and 58 (score on the wrist) are not built.** Neither has
+  a menu row or code.
+- RSQ_Miniboss's awards (Thrall Slow Kill, Miniboss, Greedy) have no rows of their own in Score yet; they
+  pay onto the base row.
+- Never headset-run: the combo break of 3 s, Reeled In and Ping-Pong windows, Indiana Jones thresholds,
+  the proposed combo names and pays, the living label's colours in the lenses.
+- Not reachable yet: Bowling's second pin (a thrown body stops at the first thing it hits).
+- The two fonts are not licensed for distribution: this version is the owner's, not for the public hub.
+- The pk3 in `pk3/` was built 2026-10-29.
+
+## Credits
+
+From the old README:
+
+> The scoring design, the bonus taxonomy, the reward loop, the HUD layout and its
+> graphics are **ijon's**, from *Dakka* (<https://github.com/0dot0repeating/dakka>),
+> released under the WTFPL. This is a rebuild of those rules in ZScript, not a copy of
+> the code. See [CREDITS.md](CREDITS.md) for the full breakdown, including which
+> assets are **not** ours to redistribute.
+
+`CREDITS.md`, unchanged:
+
+> # RS_Score — credits
+>
+> **The scoring design is ijon's.** RS_Score is a ZScript rebuild of the score
+> system from *Dakka* / *Vanilla VR Dakka Points*, which is released under the
+> WTFPL. What came from there:
+>
+> - The bonus taxonomy — the thirteen bonuses and the three families they sit in
+>   (Efficiency, Style, Daring), and every number attached to them: the time
+>   windows, the thresholds, the multipliers.
+> - The reward loop — a per-map target score derived from a monster census, crossed
+>   repeatedly, alternating between ammo regeneration and an extra life.
+> - The HUD layout — the score line above a 120-pixel bar in a bracket, animated
+>   life pips above it, the breakdown stacking downward in family colours.
+> - The score HUD graphics: `SCOREBG1-4`, `SCOREBR1-4`, `SCOREBKT`, `HUD_LIF1-4`.
+>   ijon's own work, reused with credit.
+> - The two fonts, carried as `RSSCFON` and `RSSCFN2`. In *Dakka*'s credits the
+>   clean BIGFONT used for the score line is by **Blue Shadow** and the breakdown
+>   font is by **Jimmy**. They come with *Dakka*, a public repository, and are
+>   carried here with that credit (owner, 10-27: the score stays public).
+> - The colour definitions in `TEXTCOLO.txt`, renamed `RSScore_*` so that loading
+>   *Dakka* alongside this pack cannot have one definition win over the other.
+>
+> **Not carried across:** *Dakka*'s reward sounds (People Can Fly, *Painkiller*) and
+> its revival fire-and-explosion actors. The extra-life mechanic is implemented; the
+> spectacle is not.
+>
+> ## What is ours, and is not ijon's
+>
+> - The bonus registry — bonuses as classes contributed by whichever mod owns the
+>   fact they measure, rather than a fixed list in one file.
+> - The anti-farming rule (`rs_score_farmpercent`). *Dakka* paid full points for a
+>   resurrected monster, which made an Arch-vile an endless score fountain.
+> - The multiplier caps (`rs_score_cap_*`), all defaulting to off so that out of the
+>   box the arithmetic is *Dakka*'s exactly.
+> - Generalised ammo regeneration. *Dakka* regenerated a hardcoded list of its own
+>   eight ammo classes at fixed rates; this gives back a percentage of whatever ammo
+>   the player actually carries, so it works for any weapon set. The amounts are
+>   therefore **not** *Dakka*'s and cannot be.
+> - Measuring gravity from the actor rather than assuming it, so the Air bonus is
+>   right under a jump modifier, in low gravity and in water.
+>
+> ## The Quest series version
+>
+> The Brutal Doom kill rule, the Melee family, the physical bonuses, the suite bonuses, the
+> slow-motion moments, the menu and the light revival cue are the Quest series' (2026-10-27), built on
+> the owner's RS_Score (presidentkoopa), which is built on ijon's design. **Publishing:** this version is delivered to
+> the owner, not to the public series hub, because the fonts above are not licensed for distribution;
+> sharing it is the owner's decision.
+
+## Appendix: the full design notes (the earlier README, unchanged)
 
 This copy is the owner's RS_Score brought to **stock QuestZDoom 17.3** for the Radiant Silvergun Quest
 series: Brutal Doom compatible, a fourth bonus family for melee, a menu, and a light revival cue.
@@ -11,7 +207,7 @@ Written for **UZDXREMA**, a private GZDoom fork with a full OpenXR VR layer. It 
 no dependency on the fork's VR features and should load on stock GZDoom 4.10+, but
 that is untested.
 
-## What it does
+### What it does
 
 Every kill is worth the victim's spawn health. On top of that, thirteen bonuses each
 add a multiplier for *how* the kill happened, grouped into three families that the
@@ -36,7 +232,7 @@ Each map gets a target score computed from a census of every monster on it. Cros
 a multiple of that target pays a reward — by default an extra life, which holds you
 in buddha and catches you at 1 HP.
 
-## Adding your own bonus
+### Adding your own bonus
 
 A bonus ships from the mod that owns the fact it measures. RS_Score never needs to
 know your mod exists:
@@ -72,7 +268,7 @@ class MyMod_Handler : StaticEventHandler
 Bonuses are sorted by class name before use, so every machine in a network game sums
 them in the same order.
 
-## Switcharoo
+### Switcharoo
 
 Inert until a weapon says it fired. Call it from the weapon's own fire state, with a
 slot from 0–8 and a fire mode from 0–2:
@@ -81,7 +277,7 @@ slot from 0–8 and a fire mode from 0–2:
 RS_ScoreHandler.Switcharoo(self, 2, 0);   // slot 2, primary
 ```
 
-## Settings
+### Settings
 
 `rs_score_*`. The ones worth knowing:
 
@@ -94,7 +290,7 @@ RS_ScoreHandler.Switcharoo(self, 2, 0);   // slot 2, primary
 | `rs_score_cap_*` | 0 | per-family and total multiplier ceilings. 0 is off |
 | `rs_score_scale` / `_x` / `_y` | 100 / 85 / 10 | HUD size and position, per player |
 
-## Building
+### Building
 
 ```
 powershell -File build.ps1
@@ -103,7 +299,7 @@ powershell -File build.ps1
 Regenerates `RS_Score.pk3` from the sources, verifies every expected lump made it in,
 then compile-checks the result. `-NoCompileCheck` skips the last step.
 
-## Credit
+### Credit
 
 The scoring design, the bonus taxonomy, the reward loop, the HUD layout and its
 graphics are **ijon's**, from *Dakka* (<https://github.com/0dot0repeating/dakka>),
@@ -111,7 +307,7 @@ released under the WTFPL. This is a rebuild of those rules in ZScript, not a cop
 the code. See [CREDITS.md](CREDITS.md) for the full breakdown, including which
 assets are **not** ours to redistribute.
 
-## Quest version
+### Quest version
 
 Built and run on stock QuestZDoom 17.3 (`build.sh`), with brutal22test6 + BD_VoxelPack + BD22Q.
 
@@ -211,7 +407,7 @@ Built and run on stock QuestZDoom 17.3 (`build.sh`), with brutal22test6 + BD_Vox
   (`rs_score_screenflash`) turns every whole-view tint off.
 - ZScript header 4.14 (the engine's version), so no version warning.
 
-## The suite (10-27)
+### The suite (10-27)
 
 The suite is loaded over **any** base game, so Score has to make sense over all of them.
 
@@ -296,7 +492,7 @@ B): all of Score's per-tic work 0.004 ms a tic, the HUD 0.011-0.015 ms a frame w
 the spawn hook 0.0005 ms an actor (it now compares class pointers, not names, because Brutal Doom
 spawns hundreds of actors a second), 0.2-0.5 ms per scored kill (noisy rig).
 
-## The arcade layer (10-27): the hook and the combos across mods
+### The arcade layer (10-27): the hook and the combos across mods
 
 The suite's mods are tools for your hands; Score is the arcade room that pays for mixing them. No
 monster class is named: it works over vanilla, Brutal Doom, Champions, LegenDoom or any set.
@@ -369,7 +565,7 @@ whether 6 u/tic is the right "sent flying" line for the real Force push and BD k
 with a 20 u/tic shove); whether Indiana Jones' 192/64 thresholds catch real gaps on real maps and
 not stairs; the popup rows' text is the HUD's existing breakdown (no HUD change).
 
-## Boosted monsters (10-27): Champions and LegenDoom Lite
+### Boosted monsters (10-27): Champions and LegenDoom Lite
 
 The kill names what it killed (`zscript/rsscore/boost.zs`), read by inventory, cvar and lump NAME, so
 nothing links and every row pays 0 without the two mods. Daring family, charged against the per-kill
@@ -404,7 +600,7 @@ can be dormant, and register the class from your own `StaticEventHandler.OnRegis
 `RS_ScoreRegistry.RegisterBonus`. Extra bodies that are not kills: add the token to
 `RS_Boost.NotAKill`.
 
-## The combo system (10-27): the chain of tools on each monster
+### The combo system (10-27): the chain of tools on each monster
 
 Every monster keeps an ordered history of the **tools** that touched it (`zscript/rsscore/combo.zs`,
 the `RS_ComboLedger` level handler, saved with the level). A kill pays for the chain that led to it.
