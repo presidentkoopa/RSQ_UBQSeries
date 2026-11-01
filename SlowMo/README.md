@@ -100,6 +100,12 @@ simulated rig (no sound, no haptics there).
     knocked back. **(not yet headset-confirmed; rig: the pulse arrived, 300 ms at 35 %)**
 15. Turn on *Adrenaline* with an empty meter and press the key. You hear "oof" and a low buzz; nothing
     slows. Kill a few monsters and try again.
+16. With RSQ Accessibility (Steady Hands On, its default) and *Catch Bullets* on: catch a slowed round with the
+    off hand held still in its path; it is caught as before. Flick to throw it back: the throw is as quick as
+    without Accessibility. **(not yet headset-confirmed; rig: the hand the catch test uses shook 0.50 units
+    instead of 1.36 under a scripted 2 cm tremor, and matched the raw hand with Steady Hands Off)**
+17. With RSQ Accessibility: Rumble Strength 0.5, then start slow motion: the start rumble is half as strong;
+    0: none. **(not yet headset-confirmed; rig: start rumble 0.30 at 0.5, 0.60 at 1)**
 
 ## Works with
 
@@ -114,7 +120,10 @@ simulated rig (no sound, no haptics there).
 - **RSQ Grapple, RSQ Whip:** read the world's speed so they slow with it.
 - **RSQ Miniboss:** can hold slow motion through its window.
 - **RSQ Accessibility:** Gesture Ease on the wrist cross, a floor on how fast slow motion may ease, and
-  other shared settings. Its Steady Hands is **not wired into the catch yet** (handoff task A).
+  other shared settings. Also (2026-11-01, not yet headset-confirmed): Steady Hands smooths the off hand the
+  bullet catch tests against a round (only while it can catch: a held round rides the raw hand and the flick
+  that throws it back is raw); Rumble Strength scales every SlowMo rumble. SlowMo has no tap windows, so
+  Slower Taps changes nothing here.
 - **Gun Bonsai VR patch:** its slow-motion perks read and pulse this clock.
 
 ## Known limits / open issues

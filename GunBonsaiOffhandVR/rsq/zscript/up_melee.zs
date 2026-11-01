@@ -99,6 +99,13 @@ class RSQ_MeleeHandler : EventHandler
 			double upm = RSQM.UnitsPerMetre();
 			double zpm = upm / (level.pixelstretch > 0.1 ? level.pixelstretch : 1.2);   // map units a metre, upward
 			double eye = pmo.player.viewz;
+			// SEATED (RSQ_Accessibility's Seated Play, RSQGB_A11y.Seated / SeatDrop, asked by name). With QuestZDoom's
+			// vr_crouch_use_button on (its default) viewz is the PAWN's eye and stays put when you sit, while your eyes
+			// and hands drop (measured on the rig 2026-11-01: headset 1.6 -> 1.2 m, viewz 97 both times, hands 98.5 ->
+			// 87.2): seated hands at the face sat 0.35 m under viewz, below the box. So the box goes down with your eyes
+			// by Accessibility's measured drop. Standing, or without RSQ_Accessibility, the drop is 0: as before.
+			let cb = CVar.FindCVar("vr_crouch_use_button");
+			if ((!cb || cb.GetBool()) && RSQGB_A11y.Seated(pmo)) eye -= max(0.0, RSQGB_A11y.SeatDrop(pmo)) * zpm;
 			for (int h = 0; h < 2 && up; h++)
 			{
 				Vector3 hp; bool ok;

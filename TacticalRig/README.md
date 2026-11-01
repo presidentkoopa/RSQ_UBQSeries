@@ -143,6 +143,12 @@ simulated rig.
     grip: the second saber goes in and the off hand holds the Force (Brutal Doom Quest's fist, or the bare
     Force hand). Grip again: it comes back to the off hand. The main hand there does nothing.
     **(not yet headset-confirmed; rig: the saber's in / out events logged, 11-01)**
+17. With RSQ Accessibility, Seated Play Seated (or Auto once it has seen you sit), this mod's own *Seated* Off:
+    sit down. The holsters hang from your seated eyes, in reach, as with *Seated* On. Seated Play Standing:
+    as before. **(not yet headset-confirmed; rig: headset at 1.2 m, the rig hung from 90 instead of 97, the
+    left hip at 70.2 instead of 77.2)**
+18. With RSQ Accessibility: Rumble Strength 0, reach into a holster: no rumble. 2: stronger.
+    **(not yet headset-confirmed)**
 
 ## Works with
 
@@ -155,7 +161,11 @@ simulated rig.
 - **RSQ ShieldSaw:** the off shoulder is left to its stowed shield (*Leave Shoulder to ShieldSaw*).
 - **RSQ Accessibility:** Handedness also mirrors the cigarette pocket and how stored guns hang;
   colour-blind holster colours; Photosensitive Mode; Gesture Ease; Text Size. Shared settings only act
-  with it loaded.
+  with it loaded. Also (2026-11-01, not yet headset-confirmed): Seated Play turns on the seated rig (it hangs
+  from your seated eyes) whenever Accessibility says you are seated, as well as with this mod's own *Seated*
+  row; Rumble Strength scales every rig rumble. Steady Hands is not used: the holsters, pocket and key ring are
+  reach-in tests (where the hand is), not pointing, so they read the raw hand. The rig has no tap windows, so
+  Slower Taps changes nothing here.
 - **Gun Bonsai VR patch:** some of its perks need the rig (and SlowMo).
 
 ## Known limits / open issues

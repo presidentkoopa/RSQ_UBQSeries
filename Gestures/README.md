@@ -131,6 +131,16 @@ headset-confirmed.
 13. With RSQ_GunCards (Show Cards: Inspect Gesture, or the watch card): the watch check from step 2 shows
     the cards.
 14. Reset All on Tuning and Debug.
+15. With RSQ Accessibility, One-Handed On and the Off-Hand Modifier bound: hold the modifier and thrust your
+    main hand along where it points: "thrust (off)". Let go: "thrust (main)" again. While it is held the main
+    hand names nothing of its own. **(not yet headset-confirmed; rig: logged "thrust, off hand" with the
+    modifier held)**
+16. With RSQ Accessibility, Seated Play Seated (or Auto, sitting down): Fit Zones to My Body, Measure Me while
+    seated. The eyes it reports are about your standing height, not the chair's. **(not yet headset-confirmed)**
+17. With RSQ Accessibility, Slower Taps On, Two-Hand Events On: both hands down past the hips can be a little
+    less together and still count (180 ms apart instead of 120). **(not yet headset-confirmed)**
+18. With RSQ Accessibility: Rumble Strength 0, hold the watch check: no tick. 2: stronger.
+    **(not yet headset-confirmed)**
 
 ## Works with
 
@@ -150,7 +160,16 @@ Gestures is a shared service: other mods ask it, it does not change them.
 - **Reads RSQ_Grapple** (on the rope?) and **RSQ_Wheel** (ring open?) to stay quiet.
 - Left-handed (QuestZDoom's Left-Handed scheme, which RSQ_Accessibility's Handedness sets): "main" is
   always the gun hand.
-- Does not read RSQ_Accessibility (Gesture Ease does not reach it yet).
+- **Reads RSQ_Accessibility** by name (RSQA_Service and its settings; nothing changes without it). New
+  2026-11-01, not yet headset-confirmed:
+  - Handedness: followed already, through QuestZDoom's scheme (above).
+  - Off-Hand Modifier (One-Handed): while it is held the main controller plays the off hand, so the off hand's
+    thrust, pull, punch and watch check come from it; the main hand names nothing meanwhile.
+  - Seated Play: Measure Me while seated adds back how far your eyes are below standing. The zones are measured
+    from your eyes, so seated needs nothing else.
+  - Slower Taps: the two-hand "together" window x1.5. Gestures has no button taps.
+  - Rumble Strength: the watch-check tick and the butt shove's rumble.
+  - Gesture Ease and the gesture buttons do not reach Gestures yet.
 
 ## Known limits / open
 

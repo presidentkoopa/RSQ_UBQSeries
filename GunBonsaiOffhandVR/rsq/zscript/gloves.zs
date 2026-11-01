@@ -231,7 +231,7 @@ class RSQ_GloveHandler : EventHandler
 			st.approachTics = 0;
 			return;
 		}
-		// RETURN FIRE (pick 53): a glove moving at punch speed knocks back an enemy missile it meets
+		// HADOUKEN (pick 53, was Return Fire; class RSQ_Upgrade_ReturnFire): a glove moving at punch speed knocks back an enemy missile it meets
 		if (mps >= minSpeed && missiles.Size() > 0)
 		{
 			int rfLv = RSQM.LevelOn(g, "RSQ_Upgrade_ReturnFire");
@@ -338,11 +338,11 @@ class RSQ_GloveHandler : EventHandler
 		return false;
 	}
 
-	// ---- RETURN FIRE (pick 53) ----------------------------------------------------------------
+	// ---- HADOUKEN (pick 53, was Return Fire) ----------------------------------------------------------------
 	// Missiles are not in the blockmap (a projectile is +NOBLOCKMAP), so a blockmap query never finds them: the
 	// enemy missiles in the level are listed as they spawn (the ShieldSaw keeps the same list for the same reason).
 	Array<Actor> missiles;
-	Array<Actor> returned;      // missiles a glove sent back, and the Return Fire level that did it
+	Array<Actor> returned;      // missiles a glove sent back, and the Hadouken level that did it
 	Array<int> returnedLv;
 
 	override void WorldThingSpawned(WorldEvent e)
@@ -411,7 +411,7 @@ class RSQ_GloveHandler : EventHandler
 			missiles.Delete(i);
 			pmo.A_StartSound("rsq/punch", CHAN_AUTO, 0, 1.0);
 			RSQ_Buzz.Start(pmo, h, 0.8, 6);
-			if (RSQM.SVI("rsq_punch_debug", 0) != 0) { String fn = from.GetClassName(); Console.Printf("RSQ return fire: %s back at %s, speed %.1f", m.GetClassName(), fn, sp); }
+			if (RSQM.SVI("rsq_punch_debug", 0) != 0) { String fn = from.GetClassName(); Console.Printf("RSQ hadouken: %s back at %s, speed %.1f", m.GetClassName(), fn, sp); }
 		}
 		for (int i = returned.Size() - 1; i >= 0; i--) if (!returned[i]) { returned.Delete(i); returnedLv.Delete(i); }
 	}

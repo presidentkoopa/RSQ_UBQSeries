@@ -45,6 +45,12 @@ class RSQG_Pose
 	// this hand (0 main, 1 off) is the physical left controller
 	static clearscope bool IsLeft(int hand) { return (hand == 0) == MainIsLeft(); }
 
+	// THE CONTROLLER PLAYING A HAND'S PART (0 main, 1 off). RSQ_Accessibility's OFF-HAND MODIFIER (One-Handed on and
+	// its button held; RSQG_A11y.Ctrl asks RSQA_Service "swap" by name): the main controller plays the off hand's part,
+	// so the off hand's gestures come from it (RSQG_Handler.Update reads no main-hand gestures meanwhile). Without
+	// RSQ_Accessibility, or One-Handed off, every hand is its own controller, as before.
+	static clearscope int Src(PlayerPawn pmo, int hand) { return RSQG_A11y.Ctrl(pmo, hand); }
+
 	static clearscope bool PoseGood(PlayerPawn pmo, int hand)
 	{
 		if (!pmo || !pmo.player || !pmo.OverrideAttackPosDir) return false;
@@ -52,7 +58,7 @@ class RSQG_Pose
 		// hw_vrmodes.cpp writes both hands to the body): never a real pose, and a press read there fired from the
 		// chest (Quest teardown apply/01 2.1b; Gun Bonsai's gloves.zs already guards it).
 		if (pmo.AttackPos == pmo.OffhandPos) return false;
-		Vector3 h = hand == 0 ? pmo.AttackPos : pmo.OffhandPos;
+		Vector3 h = HandPos(pmo, hand);
 		if (h.x == 0 && h.y == 0 && h.z == 0) return false;   // never written (just loaded)
 		Vector3 d = h - pmo.Pos;
 		if (d.xy.Length() > ARM_MAX) return false;
@@ -62,7 +68,7 @@ class RSQG_Pose
 
 	static clearscope Vector3 HandPos(PlayerPawn pmo, int hand)
 	{
-		return hand == 0 ? pmo.AttackPos : pmo.OffhandPos;
+		return Src(pmo, hand) == 0 ? pmo.AttackPos : pmo.OffhandPos;
 	}
 
 	// the eyes, in the map
@@ -97,10 +103,10 @@ class RSQG_Pose
 		return (d.x * c + d.y * s, -d.x * s + d.y * c, d.z);
 	}
 
-	static clearscope double Roll(PlayerPawn pmo, int hand)  { return hand == 0 ? pmo.AttackRoll : pmo.OffhandRoll; }
-	static clearscope double Pitch(PlayerPawn pmo, int hand) { return hand == 0 ? pmo.AttackPitch : pmo.OffhandPitch; }
+	static clearscope double Roll(PlayerPawn pmo, int hand)  { return Src(pmo, hand) == 0 ? pmo.AttackRoll : pmo.OffhandRoll; }
+	static clearscope double Pitch(PlayerPawn pmo, int hand) { return Src(pmo, hand) == 0 ? pmo.AttackPitch : pmo.OffhandPitch; }
 	// the hand's yaw in engine degrees (the stored -90 restored)
-	static clearscope double Yaw(PlayerPawn pmo, int hand)   { return (hand == 0 ? pmo.AttackAngle : pmo.OffhandAngle) + 90; }
+	static clearscope double Yaw(PlayerPawn pmo, int hand)   { return (Src(pmo, hand) == 0 ? pmo.AttackAngle : pmo.OffhandAngle) + 90; }
 
 	// the way the hand points, in ROOM space (metric axes): the same basis RS_Gestures' HandForward uses
 	static clearscope Vector3 Forward(PlayerPawn pmo, int hand)

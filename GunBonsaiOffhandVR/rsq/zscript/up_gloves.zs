@@ -140,11 +140,11 @@ class RSQ_Upgrade_Knockdown : RSQ_Upgrade_Base
 	}
 }
 
-// ---- THE OWNER'S PICKS 52-54 (2026-10-31, all "Yes"): Heavy Hands, Return Fire, Wall Splat ------------
+// ---- THE OWNER'S PICKS 52-54 (2026-10-31, all "Yes"): Heavy Hands, Hadouken (was Return Fire), Wall Splat ------------
 // The picks page has only the names. What each is, as built, from the Quest teardown (rsq_questenginesurvey):
 //   HEAVY HANDS  surveys/01_MELEE.md 3.6 and 4.5: a landed blow stops the victim for a beat (freezetics:
 //                "3 is a tap, 6 is a heavy, 10 reads as a bug") and knocks it back along the swing.
-//   RETURN FIRE  the literal reading: a punch that meets an enemy's missile sends it back at whoever fired it
+//   HADOUKEN     (named Return Fire until 2026-11-01) the literal reading: a punch that meets an enemy's missile sends it back at whoever fired it
 //                (surveys/01_MELEE.md 4.11, deflecting with a moving blade, done with a moving glove).
 //   WALL SPLAT   surveys/01_MELEE.md 4.7, "wall bounce": a monster punched into a wall slams into it, hurts,
 //                bounces off and reels.
@@ -167,7 +167,9 @@ class RSQ_Upgrade_HeavyHands : RSQ_Upgrade_Base
 	}
 }
 
-// RETURN FIRE: punch an enemy's missile and it flies back at whoever fired it -- yours now, and harder.
+// HADOUKEN (the owner renamed it from Return Fire, 2026-11-01): punch an enemy's missile and it flies back at
+// whoever fired it -- yours now, and harder. The CLASS keeps its old name on purpose: Gun Bonsai keeps a learned
+// upgrade by its class name, so a save that has it keeps it. The name players see is language.rsq's.
 class RSQ_Upgrade_ReturnFire : RSQ_Upgrade_Base
 {
 	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return GloveInfo(info) && info.upgrades.Level(GetClassName()) < 4; }

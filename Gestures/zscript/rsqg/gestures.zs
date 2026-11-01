@@ -141,6 +141,9 @@ class RSQG_Handler : EventHandler
 	// BRACED: the latch, and since when (gametic, 0 = not braced or not measured)
 	int bracedSince;
 
+	// RSQ_Accessibility's Off-Hand Modifier as last seen (RSQG_Pose.Src): a change starts both hands' rings afresh
+	bool swapWas;
+
 	// BOTH HANDS (rsg_pair.zs, times in ms of gametic)
 	double downAt[2], downMps[2], apartAt[2], palmsAt[2], saidAt[3];
 	double palmsHeldFor;
@@ -273,8 +276,9 @@ class RSQG_Handler : EventHandler
 	void TickHand(PlayerPawn pmo, int h)
 	{
 		if (!Opt("rsqg_inspect_tick", 1)) return;
-		RSQG_Tick.Start(pmo, RSQG_Pose.IsLeft(h), Num("rsqg_tick_strength", 0.35), 3);
-		if (SwDebug() >= 1) Console.Printf("\c[Gold]rsqg: watch-check tick, %s hand (%s controller) (t%d)", HandName(h), RSQG_Pose.IsLeft(h) ? "left" : "right", level.maptime);
+		bool lc = RSQG_Pose.IsLeft(RSQG_Pose.Src(pmo, h));   // the controller playing that hand (the Off-Hand Modifier)
+		RSQG_Tick.Start(pmo, lc, Num("rsqg_tick_strength", 0.35), 3);
+		if (SwDebug() >= 1) Console.Printf("\c[Gold]rsqg: watch-check tick, %s hand (%s controller) (t%d)", HandName(h), lc ? "left" : "right", level.maptime);
 	}
 
 	// ---- BODY (GE3) ------------------------------------------------------------------------------------------
@@ -308,7 +312,11 @@ class RSQG_Handler : EventHandler
 	{
 		if (gametic < measureFrom || measureTill <= 0) return;
 		let adj = CVar.FindCVar("vr_height_adjust");
-		mEye = max(mEye, pmo.HmdPosition.y + (adj ? adj.GetFloat() : 0));
+		// RSQ_Accessibility's SEATED PLAY (RSQG_A11y.Seated / SeatDrop, by name): measured sitting down, the eyes are
+		// put back up by how far they sit below standing, so the zones are fitted to your standing body, not the chair.
+		// Without RSQ_Accessibility the drop is 0: as before.
+		double seatUp = RSQG_A11y.Seated(pmo) ? max(0.0, RSQG_A11y.SeatDrop(pmo)) : 0.0;
+		mEye = max(mEye, pmo.HmdPosition.y + (adj ? adj.GetFloat() : 0) + seatUp);
 		for (int h = 0; h < 2; h++)
 			if (live[h]) { Vector3 bh = RSQG_Pose.Body(pmo, h); mReach = max(mReach, bh.xy.Length()); }
 		if (gametic < measureTill - 1) return;
@@ -358,9 +366,20 @@ class RSQG_Handler : EventHandler
 		if (abs(Actor.DeltaAngle(prevAngle, pmo.Angle)) >= SNAP) { live[0] = false; live[1] = false; ringN[0] = 0; ringN[1] = 0; }
 		prevAngle = pmo.Angle;
 
+		// THE OFF-HAND MODIFIER (RSQ_Accessibility, One-Handed): while held the main controller plays the off hand
+		// (RSQG_Pose.Src), so the main hand has no gestures of its own; pressing or letting go jumps the off hand's
+		// pose from one controller to the other, which is no movement: both rings start again.
+		bool sw = RSQG_Pose.Src(pmo, 1) == 0;
+		if (sw != swapWas)
+		{
+			swapWas = sw;
+			for (int k = 0; k < 2; k++) { live[k] = false; ringN[k] = 0; pArmed[k] = false; PunchReset(k); }
+			if (SwDebug() >= 1) Console.Printf("\c[Gold]rsqg: off-hand modifier %s (t%d)", sw ? "held: the main controller plays the off hand" : "let go", level.maptime);
+		}
+
 		for (int h = 0; h < 2; h++)
 		{
-			if (!RSQG_Pose.PoseGood(pmo, h))
+			if (!RSQG_Pose.PoseGood(pmo, h) || (sw && h == 0))
 			{
 				live[h] = false; ringN[h] = 0;
 				SetInspect(h, 0);
@@ -994,7 +1013,9 @@ class RSQG_Handler : EventHandler
 		// GE1: climbing the rope or pointing at the Wheel: none of the three
 		if (quiet || !live[0] || !live[1]) { for (int h = 0; h < 2; h++) { downAt[h] = NEVER; apartAt[h] = NEVER; palmsAt[h] = NEVER; } palmsHeldFor = 0; palmsSaid = false; return; }
 		double now = NowMs();
-		double windowMs = max(Num("rsqg_two_window_ms", 120), 0);
+		// RSQ_Accessibility's SLOWER TAPS (RSQG_A11y.TapScale: x1.5 when on, x1 without it): the two hands' moment
+		// "together" is this series mod's one two-events-in-a-window test, so it gets the longer window too
+		double windowMs = max(Num("rsqg_two_window_ms", 120), 0) * RSQG_A11y.TapScale();
 		double ageMs = Num("rsqg_two_age", 180);
 		double repeatMs = max(Num("rsqg_two_repeat_ms", 500), 0);
 		double needDown = Num("rsqg_two_down_mps", 2.0);
@@ -1274,6 +1295,11 @@ class RSQG_Tick : Actor
 	static void Start(Actor who, bool leftController, double strength, int tics)
 	{
 		if (!who || !who.player || who.player != players[consoleplayer]) return;
+		// RUMBLE STRENGTH (RSQ_Accessibility's rsqa_rumble_scale, RSQG_A11y.Rumble: x0..2, 0 = none; 1 without it).
+		// Every Gestures rumble comes through here.
+		double rs = RSQG_A11y.Rumble();
+		if (rs <= 0) return;
+		strength *= rs;
 		let q = RSQG_Tick(Actor.Spawn("RSQG_Tick", who.pos));
 		if (!q) return;
 		q.feels = who;

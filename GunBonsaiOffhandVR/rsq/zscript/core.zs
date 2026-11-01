@@ -323,6 +323,11 @@ class RSQ_Buzz : Actor
 	static void Start(Actor who, int hand, double k, int tics)
 	{
 		if (!who || !who.player) return;
+		// RUMBLE STRENGTH (RSQ_Accessibility's rsqa_rumble_scale, RSQGB_A11y.Rumble: x0..2, 0 = none; 1 without it).
+		// Every rumble of this patch comes through here.
+		double rs = RSQGB_A11y.Rumble();
+		if (rs <= 0) return;
+		k *= rs;
 		bool lefty = false;
 		if (!multiplayer) { let cs = CVar.FindCVar("vr_control_scheme"); lefty = cs && cs.GetInt() >= 10; }
 		let q = RSQ_Buzz(Actor.Spawn("RSQ_Buzz", who.pos));

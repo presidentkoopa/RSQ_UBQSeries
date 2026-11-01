@@ -874,6 +874,11 @@ class RSQSM_Buzz : Actor
 		if (!who || !who.player || who.player != players[consoleplayer]) return;
 		let cv = CVar.GetCVar("rsqsm_haptics", who.player);
 		if (cv && !cv.GetBool()) return;
+		// RUMBLE STRENGTH (RSQ_Accessibility's rsqa_rumble_scale, RSQSM_A11y.Rumble: x0..2, 0 = none; 1 without it).
+		// Every SlowMo rumble comes through here.
+		double rs = RSQSM_A11y.Rumble();
+		if (rs <= 0) return;
+		strength *= rs;
 		let q = RSQSM_Buzz(Actor.Spawn("RSQSM_Buzz", who.pos));
 		if (!q) return;
 		let sch = CVar.FindCVar("vr_control_scheme");

@@ -326,7 +326,11 @@ class RSQSM_Body : EventHandler
 		// had already reached the pawn's box (measured: 12 of 12 rounds hit with the hand on their line).
 		if ((c && !c.bDestroyed) || armed)
 		{
-			Vector3 o = level.Vec3Diff(pmo.pos, hand);
+			// STEADY HANDS (RSQ_Accessibility's rsqa_steady, RSQSM_Steady): the CATCH TEST is aiming a hand at a
+			// round, so while the hand can catch it streams the smoothed off hand. Once a round is held the raw hand
+			// again: the round rides it, and the flick (this machine's own raw history above) stays raw.
+			Vector3 at = (c && !c.bDestroyed) ? hand : RSQSM_Steady.OffPos(pmo);
+			Vector3 o = level.Vec3Diff(pmo.pos, at);
 			EventHandler.SendNetworkEvent("rsqsm_hand", int(round(o.x * 16)), int(round(o.y * 16)), int(round(o.z * 16)));
 		}
 		if (c && !c.bDestroyed)
@@ -626,4 +630,19 @@ class RSQSM_RoundSpent : Actor
 	}
 
 	States { Spawn: RSQR A -1 Bright; Stop; }
+}
+
+// RSQSM_Steady -- RSQ_Accessibility's STEADY HANDS (rsqa_steady, on by default) for the bullet catch test only.
+// Asked through RSQA_Service by name in play scope (GetDouble first brings the filter up to this tic): nothing here
+// needs RSQ_Accessibility to load, and without it, or with Steady Hands off, it is the raw OffhandPos as before.
+// Read on the console player's machine only (LocalHand), whose hand it is; it leaves as rsqsm_hand like the raw one.
+class RSQSM_Steady play
+{
+	static Vector3 OffPos(Actor who)
+	{
+		let s = (who && who.player) ? RSQSM_A11y.Svc() : null;
+		if (!s) return who ? who.OffhandPos : (0, 0, 0);
+		int pn = who.PlayerNumber();
+		return (s.GetDouble("steady", "x", pn, 1), s.GetDouble("steady", "y", pn, 1), s.GetDouble("steady", "z", pn, 1));
+	}
 }

@@ -139,6 +139,15 @@ headset" in docs/HANDOFF_polish.md.
 22. Main-Hand Force Push Off: main alt lights the second blade instead. Brutal Doom Sword Becomes Saber Off (new
     map): Brutal Doom's sword is its own again. **(not yet headset-confirmed)**
 23. "Reset All" puts everything back.
+24. With RSQ Accessibility (Steady Hands On, its default): hold fire and point the saber at a far monster with
+    your hand held still. The gold diamond lands on the one you point at, not a neighbour. Raise the off hand at a
+    far imp: the grip outline holds on it. Steady Hands Off: as before. **(not yet headset-confirmed; rig: load
+    only)**
+25. With RSQ Accessibility: Rumble Strength 0, then cut a monster and clash: no rumble. Rumble Strength 2:
+    stronger. **(not yet headset-confirmed)**
+26. With RSQ Accessibility, Slower Taps On: hold fire, paint a monster, let go with the hand still, then press
+    fire again within about 1.5 s: the diamonds are still there (1 s without Slower Taps).
+    **(not yet headset-confirmed)**
 
 ## Works with
 
@@ -161,7 +170,13 @@ headset" in docs/HANDOFF_polish.md.
   Edge, Piercing Return, Saber Throw, Force Push / Pull / Choke / Jump levels, Chain Choke). Without the patch
   nothing changes.
 - **RSQ Accessibility:** one-handed Force buttons, Hold to Toggle for the Force, Gesture Ease, photosensitive
-  flashes, colour-blind outlines. Inert without it.
+  flashes, colour-blind outlines. Inert without it. Also (2026-11-01, not yet headset-confirmed):
+  - Steady Hands: pointing reads the smoothed hand: painting locks (fire held) and choosing what the Force
+    grips. Cuts, swings, throws, the Force push and pull stay on the raw hand. Where a deflected shot goes reads
+    your HEAD (where you look), not a hand, so Steady Hands does not touch it.
+  - Rumble Strength scales every saber rumble (0 = none).
+  - Slower Taps: the second press that picks your painted marks back up waits 1.5 s instead of 1 s.
+  - Seated Play: nothing to read; the saber has no height-from-floor test.
 
 ## Known limits / open issues
 

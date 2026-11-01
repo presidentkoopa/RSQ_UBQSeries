@@ -74,7 +74,7 @@ Always on (no row):
 - **Upgrade paths for the series** (offered when that weapon or the player levels):
   - Gloves: Haymaker, One-Two, Star Punch, Counterpunch, Body Blow, Knockdown, and the owner's picks 52-54
     (2026-11-01): **Heavy Hands** (a landed punch freezes the monster for a beat: 2 tics at level 1 up to 4, +2 for
-    a punch at half speed or more; and knocks it back 25% further a level; up to level 4), **Return Fire** (a punch
+    a punch at half speed or more; and knocks it back 25% further a level; up to level 4), **Hadouken** (renamed from Return Fire, 2026-11-01: a punch
     that meets a monster's missile sends it back at whoever fired it, 15% faster a level, and it hits for 150% at
     level 1, +25% a level; up to level 4), **Wall Splat** (a monster your punch knocks into a wall at 3 map units a
     tic or more takes 10 at level 1, +5 a level, up to double for a hard slam; it bounces off and reels; up to
@@ -128,11 +128,17 @@ rows. Rig-checked (logs) only: **not yet headset-confirmed**.
 14. Heavy Hands on the gloves: punch an imp. It stops dead for a beat, then flies back further than before.
 15. Wall Splat: punch an imp standing about a metre from a wall, toward the wall. It slams into the wall with a
     smash, bleeds, bounces off and reels.
-16. Return Fire: let an imp throw a fireball at you and punch it as it arrives. It flies back at the imp and
+16. Hadouken: let an imp throw a fireball at you and punch it as it arrives. It flies back at the imp and
     hurts it.
 17. Guard (empty hands, fists or the gloves): hold both fists up in front of your face and let a zombieman or imp
     hit you from in front. Both hands knock, you slide back a little and take less. Let a big hit land (a baron's
     claw): the guard breaks with a smash and you take it all. Hands down: no guard. A gun in either hand: no guard.
+18. With RSQ Accessibility, Seated Play Seated (or Auto once it has seen you sit): sit down and hold both fists
+    up at your face. The guard comes up as it does standing. **(not yet headset-confirmed; rig: headset at
+    1.2 m, fists 0.1 m under the eyes: "guard UP" seated, nothing with Seated Play Standing; standing without
+    Accessibility: "guard UP" as before)**
+19. With RSQ Accessibility: Rumble Strength 0, block with the guard: no knock. 2: stronger.
+    **(not yet headset-confirmed)**
 
 ## Works with
 
@@ -145,7 +151,9 @@ rows. Rig-checked (logs) only: **not yet headset-confirmed**.
 - **Reads RSQ_SlowMo**: is the world slowed; Adrenaline adds to SlowMo's meter.
 - **Reads RSQ_Grapple**: what the hook did, for hook XP and the Grapple paths.
 - **Reads RSQ_Accessibility**: Handedness (HUD sides), Colour Blind Mode (HUD and status screen), Text Size
-  (screens).
+  (screens). Also (2026-11-01, not yet headset-confirmed): Rumble Strength scales every rumble of this addon
+  (gloves, guard); Seated Play lowers the Guard box with your eyes (QuestZDoom keeps the view height where it
+  was when you sit, so seated fists at the face were below the box).
 - Tactical Rig draws pay the drawn gun like any shot.
 - Score-to-XP (Gun Bonsai's own setting): if on, keep Gun Bonsai's damage-to-XP at 0, or kills pay twice.
 
@@ -153,14 +161,14 @@ rows. Rig-checked (logs) only: **not yet headset-confirmed**.
 
 - **Picks 52-55: the picks page had only the names.** What each became (2026-11-01), from the Quest teardown
   (rsq_questenginesurvey): Heavy Hands = hit-stop plus knockback on a landed punch (surveys/01_MELEE.md 3.6, 4.5);
-  Return Fire = the literal reading, punching a missile back at its shooter (01_MELEE 4.11, a blade's deflect done
+  Hadouken (named Return Fire until 2026-11-01) = the literal reading, punching a missile back at its shooter (01_MELEE 4.11, a blade's deflect done
   by a glove; the name does not appear in the teardown); Wall Splat = the wall bounce (01_MELEE 4.7); Guard = the
   guard pose (01_MELEE 4.4, apply/02_MELEE_BUILD.md 2.2 and 5). If the owner meant something else, say which.
 - Guard's box is tighter than the teardown's (each hand within 0.35 m of the head across, 0.25 m below to 0.15 m
   above the eyes): the teardown's numbers counted the rig's resting hands at the chest as a guard. Two hands that
   close together may light QuestZDoom's two-hand steadying (apply/02_MELEE_BUILD.md 7); not seen with the gloves on
   the rig, not checked in the headset.
-- Return Fire only sees a monster's missiles (not hitscan bullets, not other players' shots).
+- Hadouken only sees a monster's missiles (not hitscan bullets, not other players' shots).
 - Wall Splat counts a line that stops the flight (a wall, or a ledge too high to step up), not another monster.
 - Never run on the owner's headset (its handoff). The 2026-10-31 work (the RSQGB_Service rig check, the
   punch wall check) is rig only.

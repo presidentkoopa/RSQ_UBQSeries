@@ -130,7 +130,10 @@ class RSQTR_Body play
 	{
 		let c = CVar.FindCVar("rsqtr_seated");
 		double h = pmo.HmdPosition.y;
-		seatOn = c && c.GetBool() && h > 0.3;     // no headset height read: the standing rule
+		// RSQ_Accessibility's SEATED PLAY (rsqa_seated: Standing / Seated / Auto, asked through RSQA_Service by name,
+		// RSQTR_A11y.Seated): when it says you are seated the rig hangs from your seated eyes too, as with this mod's
+		// own Seated row. Without RSQ_Accessibility it answers no, and only rsqtr_seated decides, as before.
+		seatOn = ((c && c.GetBool()) || RSQTR_A11y.Seated(pmo)) && h > 0.3;     // no headset height read: the standing rule
 		if (!seatOn) { seatEye = 0; seatLow = 0; return; }
 		seatLow = h < seatEye - SEAT_DROP ? seatLow + 1 : 0;
 		if (seatEye <= 0 || h > seatEye || seatLow > TICRATE) { seatEye = h; seatLow = 0; }
@@ -234,6 +237,11 @@ class RSQTR_Buzzer : Actor
 		if (!who || !who.player || who.player != players[consoleplayer]) return;
 		let cv = CVar.GetCVar("rsqtr_haptics", who.player);
 		if (cv && !cv.GetBool()) return;
+		// RUMBLE STRENGTH (RSQ_Accessibility's rsqa_rumble_scale, RSQTR_A11y.Rumble: x0..2, 0 = none; 1 without it).
+		// Every Tactical Rig rumble comes through here.
+		double rs = RSQTR_A11y.Rumble();
+		if (rs <= 0) return;
+		strength *= rs;
 		let q = RSQTR_Buzzer(Actor.Spawn("RSQTR_Buzzer", who.pos));
 		if (!q) return;
 		bool lefty = RSQTR_Body.LeftHanded();

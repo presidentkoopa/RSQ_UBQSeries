@@ -3,5 +3,6 @@ version "4.14"
 #include "zscript/rsqg/rsmenu.zs"   // Radiant Silvergun Options: the series' shared menu pieces (tools/rsmenu)
 // RSQ_Gestures -- what the hands are doing (inspect, thrust, both hands), for any series mod that asks,
 // through RSQG_Service. Ported from RS_Gestures (REMA) to stock QuestZDoom 17.3. No engine change.
+#include "zscript/rsqg/a11y.zs"   // RSQG_A11y: RSQ_Accessibility's settings, read by name (Accessibility/tools/a11y_template.zs)
 #include "zscript/rsqg/pose.zs"
 #include "zscript/rsqg/gestures.zs"

@@ -725,7 +725,7 @@ class UBQS_SaberBase : Weapon abstract
 			// With nothing marked the snap is still the whole decision, and nothing below this changed.
 			if (invoker.locks.Size() > 0 && invoker.UInt("ubqs_throw_on_lock", 1)) invoker.Throw();
 			else if (invoker.ThrowRelease(thr)) invoker.Throw();
-			else invoker.keepMarksUntil = level.maptime + 35;
+			else invoker.keepMarksUntil = level.maptime + UBQS_A11y.Tap(35);   // Slower Taps: x1.5
 			return ResolveState("AltDone");
 		}
 		invoker.Paint();
@@ -772,7 +772,10 @@ class UBQS_SaberBase : Weapon abstract
 		if (locks.Size() >= most || level.maptime - lastPaintTic < 3) return;
 		lastPaintTic = level.maptime;
 		Vector3 hp = HandPos();
-		double ha = HA(), hpit = HP();
+		// STEADY HANDS (RSQ_Accessibility's rsqa_steady, UBQS_Steady): painting is POINTING, so it reads the hand's
+		// smoothed direction; raw without RSQ_Accessibility or with Steady Hands off. The throw and the cuts stay raw.
+		int sh = bOffhandWeapon ? 1 : 0;
+		double ha = UBQS_Steady.Angle(owner, sh, "angle") + 90.0, hpit = -UBQS_Steady.Angle(owner, sh, "pitch");
 		Actor best = null;
 		double bestOff = UF("ubqs_lock_cone", 14.0);
 		double range = 1536.0;
@@ -2314,7 +2317,7 @@ class UBQS_SaberBase : Weapon abstract
 			double thr = UF("ubqs_throw_min", 1.5);
 			if (locks.Size() > 0 && UInt("ubqs_throw_on_lock", 1)) Throw();
 			else if (ThrowRelease(thr)) Throw();
-			else keepMarksUntil = level.maptime + 35;
+			else keepMarksUntil = level.maptime + UBQS_A11y.Tap(35);   // Slower Taps: x1.5
 		}
 		gripHeldWas = held;
 	}
@@ -3376,6 +3379,11 @@ class UBQS_Buzzer : Actor
 	static void Start(Actor who, bool offhand, double k, int tics, bool twice = false)
 	{
 		if (!who || !who.player) return;
+		// RUMBLE STRENGTH (RSQ_Accessibility's rsqa_rumble_scale, UBQS_A11y.Rumble: x0..2, 0 = none; 1 without it).
+		// Every saber rumble comes through here, so this one line scales them all.
+		double rs = UBQS_A11y.Rumble();
+		if (rs <= 0) return;
+		k *= rs;
 		// WHICH CONTROLLER. ubqs_lefty is userinfo, the same answer on every machine. Left at -1 (unset) in
 		// a single-player game, the engine's own vr_control_scheme decides -- a local cvar is safe when there
 		// is no other machine -- so a left-handed player is right without finding a setting. In a netgame
@@ -4816,7 +4824,9 @@ class UBQS_Force : Inventory
 	{
 		double maxMass = GripMass();
 		if (maxMass <= 0) return null;
-		Vector3 hp = OffPos(), aim = OffAim();
+		// STEADY HANDS (UBQS_Steady): picking what to grip is POINTING -- the Force hand's smoothed direction. Push,
+		// pull and the gesture speeds read the raw hand (OffAim / HandVel), as before.
+		Vector3 hp = OffPos(), aim = UBQS_Steady.Dir(owner, OffCtrl());
 		// ubqs_grip_range / ubqs_grip_cone: push and pull both had reach sliders and grip had NONE, and 12
 		// degrees at range is demanding for the fiddliest gesture in the mod -- this is the answer to "it never
 		// grabs the one I want". ubqs_grip_boss: bBoss was excluded outright, so raising the mass slider to
@@ -6601,12 +6611,85 @@ class UBQS_A11y
 		let s = Svc();
 		if (s) s.GetInt("vignette", "UBQS", who.PlayerNumber(), strength);
 	}
+	// ---- the QoL round (2026-10-31, RSQ_Accessibility zscript/rsqa_qol.zs) ----
+	// RUMBLE STRENGTH (AC2): multiply a rumble's strength by this (0 = none). Mods that rumble through
+	// RSQA_Buzz (the "ready" cue) are scaled already.
+	static clearscope double Rumble() { return clamp(F('rsqa_rumble_scale', 1.0), 0.0, 2.0); }
+	// SLOWER TAPS (AC7): a tap / double-tap window in tics, x1.5 when on
+	static clearscope double TapScale() { return I('rsqa_slow_taps') ? 1.5 : 1.0; }
+	static clearscope int Tap(int tics) { return int(tics * TapScale() + 0.5); }
+	// SEATED PLAY (AC3): is this player seated now, and how far (metres) the eyes are below standing
+	static clearscope bool Seated(Actor who)
+	{
+		if (!who || !who.player) return false;
+		let s = Svc();
+		return s && s.GetIntData("seated", "", who.PlayerNumber()) == 1;
+	}
+	static clearscope double SeatDrop(Actor who)
+	{
+		if (!who || !who.player) return 0;
+		let s = Svc();
+		return s ? s.GetDoubleData("seated.drop", "", who.PlayerNumber()) : 0;
+	}
+	// STEADY HANDS (AC6): a hand's smoothed pose (hand 0 main / 1 off), for pointing and aiming. With the
+	// setting off, or without RSQ_Accessibility, the raw pose. Pos in map units (world), Dir a unit vector.
+	static clearscope bool SteadyOn(Actor who)
+	{
+		let s = (who && who.player) ? Svc() : null;
+		return s && s.GetIntData("steady", "", who.PlayerNumber()) == 1;
+	}
+	static clearscope Vector3 SteadyPos(Actor who, int hand)
+	{
+		let s = (who && who.player) ? Svc() : null;
+		if (!s) return hand ? who.OffhandPos : who.AttackPos;
+		int pn = who.PlayerNumber();
+		return (s.GetDoubleData("steady", "x", pn, hand), s.GetDoubleData("steady", "y", pn, hand), s.GetDoubleData("steady", "z", pn, hand));
+	}
+	static clearscope Vector3 SteadyDir(Actor who, int hand)
+	{
+		let s = (who && who.player) ? Svc() : null;
+		if (!s)
+		{
+			double a = hand ? who.OffhandAngle : who.AttackAngle, p = hand ? who.OffhandPitch : who.AttackPitch;
+			return (cos(a + 90) * cos(p), sin(a + 90) * cos(p), sin(p));   // yaw - 90 and pitch-up, as the engine stores them
+		}
+		int pn = who.PlayerNumber();
+		return (s.GetDoubleData("steady", "dx", pn, hand), s.GetDoubleData("steady", "dy", pn, hand), s.GetDoubleData("steady", "dz", pn, hand));
+	}
+	static clearscope double SteadyAngle(Actor who, int hand, String comp)   // comp: angle, pitch or roll
+	{
+		let s = (who && who.player) ? Svc() : null;
+		if (!s) return comp ~== "angle" ? (hand ? who.OffhandAngle : who.AttackAngle) : comp ~== "pitch" ? (hand ? who.OffhandPitch : who.AttackPitch) : (hand ? who.OffhandRoll : who.AttackRoll);
+		return s.GetDoubleData("steady", comp, who.PlayerNumber(), hand);
+	}
+
 	// a lock / grab-ready cue on a hand (0 main, 1 off): a short rumble when Sound Cues has it
 	static play void Ready(Actor who, int hand)
 	{
 		if (!who || !who.player || !CueRumble()) return;
 		let s = Svc();
 		if (s) s.GetInt("ready", "", who.PlayerNumber(), hand);
+	}
+}
+
+// UBQS_Steady -- RSQ_Accessibility's STEADY HANDS (rsqa_steady, on by default) for POINTING only: where the
+// saber's hand paints locks (Paint) and what the Force hand would grip (FindGrip). Asked through RSQA_Service by
+// name in play scope (GetDouble, which first brings the filter up to this tic), so nothing here needs
+// RSQ_Accessibility to compile or load: without it, or with Steady Hands off, the raw hand exactly as before.
+// hand: 0 the main controller (Attack*), 1 the off one (Offhand*). Cuts, swings, throws and push stay raw.
+class UBQS_Steady play
+{
+	static double Angle(Actor who, int hand, String comp)   // comp: angle or pitch (engine degrees, as Attack*)
+	{
+		let s = (who && who.player) ? UBQS_A11y.Svc() : null;
+		if (!s) return comp ~== "angle" ? (hand ? who.OffhandAngle : who.AttackAngle) : (hand ? who.OffhandPitch : who.AttackPitch);
+		return s.GetDouble("steady", comp, who.PlayerNumber(), hand);
+	}
+	// the way the hand points, the saber's own basis (yaw + 90, pitch negated: UBQS_Force.OffAim)
+	static Vector3 Dir(Actor who, int hand)
+	{
+		double a = Angle(who, hand, "angle") + 90.0, p = -Angle(who, hand, "pitch");
+		return (cos(p) * cos(a), cos(p) * sin(a), -sin(p));
 	}
 }
 
