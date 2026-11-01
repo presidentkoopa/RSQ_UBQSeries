@@ -457,19 +457,22 @@ class RSQTR_Rig : EventHandler
 	String nadePrev[MAXPLAYERS];
 	static int Grenades(PlayerPawn pmo)
 	{
-		class<Inventory> ac = GRENADE_AMMO;
+		String an = GRENADE_AMMO;      // a run-time lookup: a const would be resolved at compile time and fail
+		class<Inventory> ac = an;      // without Brutal Doom (plain Doom 2: "Unknown class name")
 		return ac ? pmo.CountInv(ac) : 0;
 	}
 	static bool HasGrenadeWeapon()
 	{
-		class<Weapon> wc = GRENADE_WEAPON;
+		String wn = GRENADE_WEAPON;    // run-time, as above
+		class<Weapon> wc = wn;
 		return wc != null;
 	}
 	private void Nade(PlayerPawn pmo)
 	{
 		let p = pmo.player;
 		int n = pmo.PlayerNumber();
-		class<Weapon> wc = GRENADE_WEAPON;
+		String wn = GRENADE_WEAPON;    // run-time, as above
+		class<Weapon> wc = wn;
 		if (!wc) return;
 		let w = Weapon(pmo.FindInventory(wc));
 		if (p.ReadyWeapon && p.ReadyWeapon is wc)
@@ -1133,7 +1136,8 @@ class RSQTR_Rig : EventHandler
 			return;
 		}
 		// THE SECOND SABER'S HOLSTER: the saber itself takes it out to the off hand or puts it
-		// back (its ubqs_dual_out / ubqs_dual_in, the same thing its Dual key does).
+		// back (its ubqs_dual_out / ubqs_dual_in). The second saber is an off-hand weapon with no key of its
+		// own (the owner, 11-01), so this holster is the only way it is put away and drawn.
 		if (own.Size() == 1)
 		{
 			class<Weapon> sc = own[0];

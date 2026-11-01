@@ -5312,7 +5312,7 @@ class UBQS_GripGlow : Actor
 	}
 }
 
-// THE BARE FORCE HAND: with no off-hand saber (ubqs_dual off), the off hand holds nothing but the Force.
+// THE BARE FORCE HAND: with no off-hand saber (Second Saber Off, or holstered), the off hand holds nothing but the Force.
 // Its trigger and its alt are both the Force's gestures (UBQS_Force reads them).
 class UBQS_ForceHand : Weapon
 {
@@ -5638,7 +5638,10 @@ class UBQS_RemoteBolt : UBQS_Bolt
 // ==========================================================================================================
 // THE BRIDGE: their saber becomes this one -- on the map, in your inventory, in your hand
 // ==========================================================================================================
-// You put the second saber away with the Dual key (it stays away across levels until you bring it out).
+// The second saber is in its RSQ Tactical Rig holster (ubqs_dual_in). Carried on you, so it stays holstered
+// across a map change and in a savegame until the holster draws it (ubqs_dual_out). Dropped by the saber
+// itself when there is no holster to draw from (no Tactical Rig, or its rsqtr_on switch off) or the menu's
+// "Start With Dual Sabers" is Off, so the saber is never left stuck away.
 class UBQS_DualAway : Inventory
 {
 	Default { +INVENTORY.UNDROPPABLE +INVENTORY.UNTOSSABLE +INVENTORY.QUIET Inventory.MaxAmount 1; }
@@ -5695,15 +5698,17 @@ class UBQS_Bridge : EventHandler
 		return false;
 	}
 
-	// ONE DUAL SETTING ON THE MENU. ubqs_dual ("a second saber at all") duplicated ubqs_dual_mode 0, so the
-	// menu shows only the mode; an old config with ubqs_dual off is moved to mode 0 once, by the host (both
-	// are server settings). DualMode() still honours ubqs_dual either way.
+	// ONE DUAL SETTING ON THE MENU: ubqs_dual_mode, 2 On (a second saber in the off hand) or 0 Off. Old
+	// saved values are moved once, by the host (server settings): ubqs_dual off (an older switch) -> 0; the
+	// retired 1 (the old Dual key mode, whose second saber also started out) and anything else non-zero -> 2.
+	// DualMode() maps them the same way in case the host's write has not happened yet.
 	override void WorldLoaded(WorldEvent e)
 	{
 		if (consoleplayer != Net_Arbitrator) return;
 		let dc = CVar.FindCVar("ubqs_dual");
 		let mc = CVar.FindCVar("ubqs_dual_mode");
 		if (dc && mc && !dc.GetBool()) { mc.SetInt(0); dc.SetBool(true); }
+		if (mc && mc.GetInt() != 0 && mc.GetInt() != 2) mc.SetInt(2);
 	}
 
 	// THE TRAINING REMOTE: `netevent ubqs_remote` (the menu's button) summons one for you, or sends yours away
@@ -5747,11 +5752,6 @@ class UBQS_Bridge : EventHandler
 		if (e.Name ~== "ubqs_dual_out" || e.Name ~== "ubqs_dual_in")
 		{
 			if (e.Player >= 0 && e.Player < MAXPLAYERS && playeringame[e.Player]) SetDual(e.Player, e.Name ~== "ubqs_dual_out");
-			return;
-		}
-		if (e.Name ~== "ubqs_dual")
-		{
-			if (e.Player >= 0 && e.Player < MAXPLAYERS && playeringame[e.Player]) ToggleDual(e.Player);
 			return;
 		}
 		if (!(e.Name ~== "ubqs_remote")) return;
@@ -5814,12 +5814,13 @@ class UBQS_Bridge : EventHandler
 		return false;
 	}
 
-	// THE SECOND SABER, LIKE BRUTAL DOOM'S DUAL GUNS (the owner, 10-27). You carry two from the start;
-	// the Dual key -- Brutal Doom's own (+user3), or "Saber: second saber in / out" -- brings the second
-	// into your off hand or puts it away, while the saber is in your main hand. ubqs_dual_mode:
-	//   0 one saber only    1 the Dual key (default)    2 always out (the old way)
-	// "Put away" is remembered on you (UBQS_DualAway), so it holds across levels.
-	private bool u3Was[MAXPLAYERS];
+	// THE SECOND SABER IS A DEDICATED OFF-HAND WEAPON (the owner, 11-01: "No more second saber key. We have
+	// the on off second saber option, and with our holsters now, it has a dedicated holster slot."). There is
+	// no key: not ours, and Brutal Doom's own Dual key (+user3) no longer touches it. ubqs_dual_mode:
+	//   0 one saber only    2 the second saber in the off hand (default)    (1, the old Dual key mode, -> 2)
+	// With RSQ Tactical Rig, the off hand's grip on the second saber's holster puts it away and takes it out
+	// (ubqs_dual_in / ubqs_dual_out). "Put away" is remembered on you (UBQS_DualAway), so it holds across
+	// levels and saves. Without the rig there is no holster and the second saber stays in the off hand.
 
 	static bool IsFiller(Weapon w)
 	{
@@ -5828,36 +5829,35 @@ class UBQS_Bridge : EventHandler
 		return n ~== "RSQ_Hands" || n ~== "UBQS_ForceHand";
 	}
 
+	// 0 or 2, nothing else: the retired 1 and any stray value read as 2 (see WorldLoaded)
 	static int DualMode()
 	{
 		let dc = CVar.FindCVar("ubqs_dual");
 		if (dc && !dc.GetBool()) return 0;
 		let mc = CVar.FindCVar("ubqs_dual_mode");
-		return mc ? clamp(mc.GetInt(), 0, 2) : 1;
+		return (mc && mc.GetInt() == 0) ? 0 : 2;
 	}
 
-	void ToggleDual(int i)
+	// IS THERE A HOLSTER TO DRAW FROM? RSQ Tactical Rig loaded (by name: it need not be) and its master
+	// switch (rsqtr_on, the player's own) not off. With none, a holstered second saber comes back out.
+	static bool HolsterThere(PlayerInfo p)
 	{
-		let p = players[i];
-		let mo = p.mo;
-		if (!mo || mo.health <= 0 || DualMode() != 1) return;
-		if (!(p.ReadyWeapon is "UBQS_Saber")) return;      // the Dual key is the gun's otherwise
-		let off = Weapon(mo.FindInventory("UBQS_SaberOff"));
-		if (!off) return;
-		// by what the off hand actually holds: something else filled it (Brutal Doom Quest's hands take an
-		// off hand at the start of a level) -> bring the saber out
-		SetDual(i, p.OffhandWeapon != off);
+		String rn = "RSQTR_Rig";     // a variable, not a literal: a literal is resolved at compile time
+		class<StaticEventHandler> rc = rn;
+		if (!rc || !EventHandler.Find(rc)) return false;
+		let oc = CVar.GetCVar("rsqtr_on", p);
+		return !oc || oc.GetBool();
 	}
 
-	// out = true: the second saber into the off hand; false: put away. Also what RSQ_TacticalRig's
-	// second saber holster sends (ubqs_dual_out / ubqs_dual_in): no main-hand rule there, the holster
-	// is the saber's own place.
+	// out = true: the second saber into the off hand; false: put away. Sent by RSQ_TacticalRig's second
+	// saber holster (ubqs_dual_out / ubqs_dual_in): no main-hand rule there, the holster is the saber's own
+	// place, and it works whatever the main hand holds.
 	void SetDual(int i, bool out_)
 	{
 		let p = players[i];
 		let mo = p.mo;
 		if (!mo || mo.health <= 0 || DualMode() == 0) return;
-		if (!out_ && DualMode() == 2) return;              // "always out": nowhere to put it
+		if (!out_ && !HolsterThere(p)) return;             // no holster to put it in: it stays in the hand
 		let off = Weapon(mo.FindInventory("UBQS_SaberOff"));
 		if (!off) return;
 		if (out_)
@@ -5904,15 +5904,15 @@ class UBQS_Bridge : EventHandler
 
 	override void WorldTick()
 	{
-		// the Dual key, every tic (an edge must not be missed)
-		for (int k = 0; k < MAXPLAYERS; k++)
+		if ((level.maptime % 5) != 0) return;
+		// THE RETIRED DUAL KEY MODE (1) IS REWRITTEN HERE TOO, not only in WorldLoaded: a savegame restores
+		// its server cvars after WorldLoaded has run (measured: a save made with 1 loads still reading 1).
+		if (consoleplayer == Net_Arbitrator)
 		{
-			if (!playeringame[k] || !players[k].mo) continue;
-			bool u3 = (players[k].cmd.buttons & BT_USER3) != 0;
-			if (u3 && !u3Was[k] && On()) ToggleDual(k);
-			u3Was[k] = u3;
+			let mc = CVar.FindCVar("ubqs_dual_mode");
+			if (mc && mc.GetInt() != 0 && mc.GetInt() != 2) mc.SetInt(2);
 		}
-		if ((level.maptime % 5) != 0 || !On()) return;
+		if (!On()) return;
 		int dmode = DualMode();
 		bool dual = dmode != 0;
 		let stc = CVar.FindCVar("ubqs_start");
@@ -5968,7 +5968,16 @@ class UBQS_Bridge : EventHandler
 			// and there is no reason to hold one when it cannot do anything.
 			let fhc = CVar.FindCVar("ubqs_force_hand");
 			let fmc = CVar.FindCVar("ubqs_force");
-			bool wantOff = dual && (dmode == 2 || !p.mo.FindInventory("UBQS_DualAway"));
+			// HOLSTERED STAYS HOLSTERED until the holster draws it -- unless there is no longer a holster (rig
+			// unloaded or switched off) or the menu turned the second saber off: then the mark goes, and with
+			// the option on the saber comes straight back to the off hand.
+			// (raisedAt cleared so the off-hand raise below brings it up, by its usual rules)
+			if (p.mo.FindInventory("UBQS_DualAway") && (!dual || !HolsterThere(p)))
+			{
+				p.mo.TakeInventory("UBQS_DualAway", 1);
+				raisedAt[i] = 0;
+			}
+			bool wantOff = dual && !p.mo.FindInventory("UBQS_DualAway");
 			bool fhand = !wantOff && (!fhc || fhc.GetBool()) && (!fmc || fmc.GetInt() != 0);
 			if (fhand && p.mo.FindInventory("UBQS_Saber") && !p.mo.FindInventory("UBQS_ForceHand"))
 				p.mo.GiveInventory("UBQS_ForceHand", 1);
@@ -6001,8 +6010,8 @@ class UBQS_Bridge : EventHandler
 			// saber is going bananas, keeps appearing and disappearing when I switch weapons"). Brutal
 			// Doom Quest puts its hands in the off hand for its guns (to steady them), and this raise put
 			// the saber back: the two swapped it every ten tics (measured: rifle and shotgun alike). With
-			// that pack loaded the second saber comes out by itself only beside the first; the Dual key
-			// and the rig's saber holster still bring it out whenever you ask.
+			// that pack loaded the second saber comes out by itself only beside the first; the rig's
+			// second saber holster still brings it out whenever you ask.
 			String hn2 = "RSQ_Hands";
 			class<Weapon> hc2 = hn2;
 			bool gunHands = hc2 != null && !(p.ReadyWeapon is "UBQS_Saber");

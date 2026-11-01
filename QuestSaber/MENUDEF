@@ -8,6 +8,9 @@
 // that no longer exist, and the two it really stood for -- Damage and Size -- are now rows of their
 // own. Fifteen cvars are still live with no row here; they are listed and explained in CVARINFO.
 // Defaults are unchanged except ubqs_dual_mode (1 -> 2), so nobody's saved settings move.
+// 11-01 (worklist #14): two rows for behaviour that was on in code with no row or CVARINFO entry --
+// Main-Hand Force Push (ubqs_alt) and Brutal Doom Sword Becomes Saber (ubqs_bd_sword), both On, both in
+// Reset All. The Controls page lost its Second Saber key the same day.
 
 // ---- Radiant Silvergun Options (tools/rsmenu) ----------------------------------------------------
 // UNCHANGED, AND IT MUST STAY UNCHANGED. The series' one Options entry. Every series pk3 carries this
@@ -44,11 +47,10 @@ OptionValue "UBQS_Colors"
 	6, "Cyan"
 	7, "White"
 }
-// START WITH DUAL SABERS. 2 is both blades always out, 0 is one saber. The old value 1 -- the Dual
-// key brings the second out and puts it away, matched to Brutal Doom's +user3 -- is off the page but
-// still honoured by DualMode() (zscript.txt:5668-5673) and still has its bind in KEYCONF. That is
-// why ubqs_dual_mode's default moved to 2: an Option row shows nothing useful for a value that is
-// not in its list, and 1 was the old default.
+// START WITH DUAL SABERS. 2: the second saber is the off hand's weapon (it starts there; RSQ Tactical
+// Rig's off-hand holster puts it away and draws it). 0: one saber. The old value 1 -- the Dual key mode
+// -- was retired with the key (the owner, 11-01: "No more second saber key"); a saved 1 reads as 2 and
+// the host rewrites it to 2 (UBQS_Bridge.WorldLoaded and DualMode() in zscript.txt).
 OptionValue "UBQS_DualStart"
 {
 	2, "On"
@@ -92,6 +94,8 @@ OptionMenu "UBQS_Options"
 	Title "RSQ SABER"
 	Option "Sabers", "ubqs_on", "OnOff"
 	Option "Start With Dual Sabers", "ubqs_dual_mode", "UBQS_DualStart"
+	Option "Main-Hand Force Push", "ubqs_alt", "OnOff"
+	Option "Brutal Doom Sword Becomes Saber", "ubqs_bd_sword", "OnOff"
 	Slider "Damage", "ubqs_damage", 15, 60, 3, 0
 	Slider "Max Lock-On Targets", "ubqs_locks", 1, 5, 1, 0
 	StaticText " "
@@ -108,18 +112,18 @@ OptionMenu "UBQS_Options"
 	StaticText " "
 	Submenu "Controls", "UBQS_Keys"
 	StaticText " "
-	SafeCommand "Reset All", "resetcvar ubqs_on ubqs_dual_mode ubqs_damage ubqs_locks ubqs_color ubqs_size ubqs_color_off ubqs_size_off ubqs_lights_offhand ubqs_swing_cut ubqs_blade_width ubqs_hitstop ubqs_parry_slowmo ubqs_start ubqs_world_saber ubqs_lights ubqs_deflect_aim ubqs_deflect_lead ubqs_throw_min ubqs_force ubqs_force_jump ubqs_force_gesture ubqs_gesture_straight ubqs_saber_sound ubqs_haptics ubqs_lefty ubqs_remote_level ubqs_diag", "Reset all RSQ Saber settings?"
+	SafeCommand "Reset All", "resetcvar ubqs_on ubqs_dual_mode ubqs_alt ubqs_bd_sword ubqs_damage ubqs_locks ubqs_color ubqs_size ubqs_color_off ubqs_size_off ubqs_lights_offhand ubqs_swing_cut ubqs_blade_width ubqs_hitstop ubqs_parry_slowmo ubqs_start ubqs_world_saber ubqs_lights ubqs_deflect_aim ubqs_deflect_lead ubqs_throw_min ubqs_force ubqs_force_jump ubqs_force_gesture ubqs_gesture_straight ubqs_saber_sound ubqs_haptics ubqs_lefty ubqs_remote_level ubqs_diag", "Reset all RSQ Saber settings?"
 }
 
 // The SAME bind targets as Customize Controls (KEYCONF's aliases), so a key bound in either place
-// shows as bound in both. These four are the only inputs the mod has that are not the trigger, and
+// shows as bound in both. (The Second Saber key is gone, the owner 11-01: the second saber is an off-hand
+// weapon, put away and drawn at its Tactical Rig holster.) These three are the only inputs the mod has that are not the trigger, and
 // the second blade and the douse are reachable nowhere else -- so this page stays.
 // (The old duplicate "Summon / Dismiss Remote" Command row is gone: the Control row above it binds
 // the same alias.)
 OptionMenu "UBQS_Keys"
 {
 	Title "CONTROLS"
-	Control "Second Saber", "ubqs_dual_toggle"
 	Control "Second Blade", "ubqs_blade2_toggle"
 	Control "Blade On / Off", "ubqs_ignite_toggle"
 	Control "Training Remote", "ubqs_remote_toggle"

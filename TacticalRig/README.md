@@ -49,7 +49,10 @@ doom2.wad -> brutal22test6.pk3 -> BD_VoxelPack.pk3 -> BD22_VR-Reloaded_2_0_3h.pk
 ## Holsters
 
 Six gun holsters: left hip, right hip, left chest, right chest, left shoulder, right shoulder. Two saber
-spots just below the hips (with RSQ Saber). The grenade spot is on the belt buckle; the keyring hangs on
+spots just below the hips (with RSQ Saber): the main saber's on the main hand's side, drawn and put away
+by the main hand; the second saber's on the off hand's side, by the off hand. The second saber has no key
+of its own, so its spot is the only way to put it away and take it out; it stays away until drawn there
+(across map changes and saves). The grenade spot is on the belt buckle; the keyring hangs on
 the front of the belt, off-hand side. A holster holds exactly the gun you put there. Each hand holsters
 and draws its own gun. Brutal Doom's Dual keeps its own key (*Draw Pairs*: Never).
 
@@ -136,13 +139,19 @@ simulated rig.
     again: it flares, you spit it out end over end, and (with RSQ SlowMo) the world slows for 6 s. The
     butt smoulders where it lands and draws monsters. **(reworked 10-31, not yet headset-confirmed)**
 15. Turn on *Move Holsters by Hand*: grip a sphere, move it, let go. Turn it off to play.
+16. With RSQ Saber (Start With Dual Sabers On): off hand to the second saber's spot below the off-side hip,
+    grip: the second saber goes in and the off hand holds the Force (Brutal Doom Quest's fist, or the bare
+    Force hand). Grip again: it comes back to the off hand. The main hand there does nothing.
+    **(not yet headset-confirmed; rig: the saber's in / out events logged, 11-01)**
 
 ## Works with
 
 - **RSQ SlowMo:** spitting out the cigarette starts slow motion (*Slow Motion After a Smoke*).
 - **RSQ Distance Grab:** doors are lifted there now, not here. A hand in a holster, or holding the
   cigarette or Zippo, does not distance-grab.
-- **RSQ Saber:** the two saber spots below the hips. *Saber on Hip Too* adds the hips.
+- **RSQ Saber:** the two saber spots below the hips; the second saber's spot puts it away and draws it
+  (off hand). *Saber on Hip Too* adds the hips. With the rig's *Tactical Rig* switch Off, a put-away second
+  saber comes back to the off hand.
 - **RSQ ShieldSaw:** the off shoulder is left to its stowed shield (*Leave Shoulder to ShieldSaw*).
 - **RSQ Accessibility:** Handedness also mirrors the cigarette pocket and how stored guns hang;
   colour-blind holster colours; Photosensitive Mode; Gesture Ease; Text Size. Shared settings only act
@@ -160,7 +169,8 @@ simulated rig.
 - Only guns measured into the fit table show at a holster; the muzzle direction could not be read by eye
   for several (BrutalSMG, Rocket_Launcher, Plasma_Gun, Unmaker, GrenadeLauncher, BFG10k, Railgun,
   NukeLauncher, FlameCannon, HellishMissileLauncher, DSweap).
-- The second (off-hand) saber cannot be holstered.
+- The second saber's holster: rig-tested by its network events only (11-01), not yet with a real grip in
+  the headset.
 - Brutal Doom Quest's per-gun hand poses are not copied into the mirror.
 - Saved holster positions are kept over new defaults.
 - Seated mode and the mirror are per machine. Other players see your hand props at your body, not your
