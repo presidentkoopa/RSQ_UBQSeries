@@ -169,7 +169,10 @@ class RSQGC_GunCard : EventHandler
 	// are another pile and are NOT shown, owner). -1 when no such ammo exists (not Brutal Doom).
 	static int Grenades(PlayerPawn pmo)
 	{
-		class<Inventory> g = "GrenadeAmmo";
+		// a String first: a quoted class name is resolved when the script compiles, and without Brutal
+		// Doom that is a script error (found 11-01 on plain Doom 2); a String variable is looked up at run time
+		String gn = "GrenadeAmmo";
+		class<Inventory> g = gn;
 		if (!g) return -1;
 		let it = pmo.FindInventory(g);
 		return it ? it.Amount : 0;
