@@ -22,7 +22,7 @@ is ZScript and data lumps.
 | ✋ | [DistanceGrab](DistanceGrab/) | `RSQ_DistanceGrab.pk3` | Turn your palm out, flick, and pull items, guns, barrels and bodies to your hand. Then carry them, throw them, and hit things with them. Lift doors open by hand. |
 | 🛡️ | [ShieldSaw](ShieldSaw/) | `RSQ_ShieldSaw.pk3` | A shield (stowed at the small of your back by default) that blocks, bashes and turns shots back, and doubles as a throwable saw disc that hunts the targets you ring. id Software's shield saw from *Doom: The Dark Ages*, brought to Doom VR first by **Ermac** in Rusted Legacy. |
 | ⚔️ | [QuestSaber](QuestSaber/) | `RSQ_Saber.pk3` | A lightsaber (layered glowing shells that read as a solid beam), with a second one in the off hand from the start (Start With Dual Sabers). Cut, block, deflect, throw, and use the Force. |
-| 🎒 | [TacticalRig](TacticalRig/) | `RSQ_TacticalRig.pk3` | Guns holstered on your hips and shoulders, spots for the saber, a torso and helmet, a mirror, and Ermac's cigarette. Built on **Ermac's** Virtual Tactical Vest idea. |
+| 🎒 | [TacticalRig](TacticalRig/) | `RSQ_TacticalRig.pk3` | Six gun holsters (hips, chest, shoulders), a holster for each saber, a grenade spot, a torso and helmet, a mirror, and Ermac's cigarette. Built on **Ermac's** Virtual Tactical Vest idea. |
 | ⏱️ | [SlowMo](SlowMo/) | `RSQ_SlowMo.pk3` | The world slows, you don't. Enemy bullets become rounds you can see and dodge. |
 | 🔴 | [LaserSight](LaserSight/) | `RSQ_LaserSight.pk3` | A laser from each gun's own barrel, in either hand, fading with distance, with a dot on whatever it hits. |
 | 🪝 | [Grapple](Grapple/) | `RSQ_Grapple.pk3` | A grappling hook from either hand: swing across gaps, reel, climb hand over hand, slide or yank monsters to you, a whip. jpalomo's hook art and sound. |
@@ -120,118 +120,16 @@ After that, the full set together.
 
 ## What each one does, and how to use it
 
-### DistanceGrab
-- **Reach:** turn your palm out (roll your hand so the palm faces away). Whatever you could take
-  glows **amber**; once it's yours it glows **green**. A beam, a dot and the reach cone show where
-  you're pointing.
-- **Pull:** flick your wrist **up**. The thing flies to your hand: heavy things slower and lazier,
-  light ones snappier. Keep your hand open and you catch it.
-- **Carry and throw:** roll your palm back to let go, or snap your arm and let go to throw.
-  Thrown things hit with their weight; barrels can go off on a hard landing. Heavy loads slow you.
-- **Doors:** put a hand flat on a door, take hold (the grab's grip, Use or palm out) and lift.
-  Let go past 40% open and it finishes by itself; before that it drops shut. Locked doors need
-  their key. The door's own sound plays as fast as you lift it.
-- **Options worth knowing:** *Flight Path* Steer or Arc (a lob, with *Arc Height*), *Lock Delay*
-  (Gesture: amber before green), *Duck Under Doors* (Pull), *Voxel Flash* (Beam and Glow).
-- Stands down on a hand holding a melee weapon, the shield or the Force hand. An optional button
-  fallback is under Customize Controls → Distance Grab.
-
-### ShieldSaw
-- **Draw / stow:** reach to your off shoulder and press **Use**; press Use there again to put it
-  back. Or bind **Draw** and turn *Draw With Use* off: the key alone.
-- **Block:** shots that cross the shield's face are stopped or turned back (back at the shooter,
-  where you look, or off the face); fireballs are batted away before they reach you; blocked
-  melee staggers. Meet a shot with a moving shield for a **perfect block**.
-- **Bash:** shove the shield into an enemy.
-- **Rev:** hold the **off trigger**.
-- **Lock on:** hold **Use** (away from the shoulder) and sweep the shield over enemies, one ring
-  each. Or bind the off grip or any key to *ShieldSaw: lock on (hold)* and pick it in *Lock On
-  With*. Rings stay 5 s after you let go.
-- **Throw:** let go of the trigger while snapping your arm forward. It visits the ringed targets in
-  order and comes back; press the trigger again while it flies to call it back.
-- **BD22 Monsters** (option): for Brutal Doom's tougher monsters, it slices through up to
-  250 health and grinds up to 1200.
-- **Options** (RSQ ShieldSaw): drawing, lock-on and the throw button, *Shield Size*, *Throw Feel*,
-  *Block Assist* and *Damage* presets, where turned shots go, on the front page; the block and bash
-  switches under *Shield Options*; *Shield Fit*, *Throw and Disc*, *Lock-On*, *Block and Bash* and
-  *Mount Position* numbers under Tuning and Debug. With Gun Bonsai's VR patch it levels up: Broadening
-  grows the plate, Lockstep adds locks, and more ([ShieldSaw/README.md](ShieldSaw/README.md)).
-
-### QuestSaber
-- **The saber** is in weapon slot 1. Swing to cut; the blade blocks and deflects shots, and two
-  blades clash and lock. Against Brutal Doom it blocks on contact, as the ShieldSaw does: claws
-  and bites (Brutal Doom's invisible short-range missiles) are stopped and stagger the monster,
-  and its tracer bullets are turned back (*Blade Block Reach* sets how wide the blade blocks). It can be thrown (it comes back, or drops until you call it).
-- **The second saber:** the Dual key (Brutal Doom's own, or the saber's) brings it into the off hand
-  and puts it away; *Second Saber* can make it always out, or off.
-- **The Force** in the off hand: push, pull, grip and jump, by gesture.
-- **Keys** (Customize Controls → RSQ Saber): blade on/off, second blade, training
-  remote.
-- **Options** (RSQ Saber): the everyday choices on one page with *Size*, *Blade Look* (Quest /
-  Standard / PC VR / Film), *Swing Feel*, *Damage*, *Block Assist* and *Force Strength* presets;
-  switches under *Look and Sound*, *Combat* and *The Force*; keys under *Controls*; every number
-  under Tuning and Debug (Look, Swing and Cuts, Block and Deflect, Throwing, The Force, Sound and
-  Haptics, Training Remote, Beam Prediction).
-
-### TacticalRig
-- **Four gun holsters** (both hips, both shoulders) and, with the QuestSaber, **two saber spots**
-  below the hips. A holster holds exactly the gun you put there: grip (or Use) with a gun in your
-  hand to put it in (a full one swaps), grip with the hand empty to draw.
-- **Each hand holsters and draws its own gun**; the engine's *switchhand* moves guns between
-  hands. Dual is left to its own key.
-- The holsters stay on your body when you look around; turns carry them. A sphere shows a holster
-  when your hand is near; the gun stored there shows as its pickup model.
-- **Seated:** one switch for playing seated. The rig hangs from your seated head height instead
-  of the standing view height, and catches up if you stand.
-- **Fit it to you:** *Measure My Height*, *Move Holsters by Hand*, four *Holster Profiles*, and a
-  **mirror** that shows you wearing it, front and back.
-- **A torso** (optional): the Doom marine's (default) or Quake's Grunt, green or blue with your
-  armour, red at low health; with the marine, a **helmet** only mirrors show. It fades as you
-  look down.
-- **Mirror body:** with the torso on, map mirrors also show your held gun and both hands (Brutal
-  Doom Quest's own gun models, firing frames included), and hide the sprite marine so you see one
-  body. Flat sprite guns get no mirror copy.
-- **Ermac's cigarette** (off by default): a pocket on your left chest. Take one, hold it
-  at your mouth to light it (or light it with Ermac's Zippo in your other hand, an
-  option). While it burns the world slows (with SlowMo loaded); it heals you slowly
-  under 35 health, and a butt flicked away draws monsters into each other.
-
-### SlowMo
-- **Start it** with the key (Customize Controls → RSQ SlowMo), by crossing your wrists
-  in front of your face, with Ermac's cigarette, or (options) on reloading and with an
-  adrenaline meter earned from kills, hurts and near misses.
-- **The world slows, you don't:** monsters, missiles, gibs and effects near you move,
-  animate and sound slower; you, your guns and the series' hand effects stay real-time.
-- Other mods can read it through `RSQSM_Service` (`active`, `scale`, `adrenaline`,
-  `adrenaline.add`; see [SlowMo/README.md](SlowMo/README.md)).
-- **Dodgeable bullets:** enemy hitscans become visible rounds on the same line, with the
-  same damage. Sidestep them, block them with the shield, deflect them with the saber.
-  Brutal Doom's bullets slow to the same speed. Your shots leave trails.
-- Same events as RS_SlowMo (`rsm_pulse`, `rsm_toggle`, `rsm_on`, `rsm_off`), so other
-  mods can ask for a moment. Stands down if Bullet Time X is loaded.
+Each mod's own README is the manual: every feature with its exact menu row and default, the moves in VR,
+and a **Test it** checklist. Those READMEs were written from the code on 2026-11-01; the per-mod notes
+that used to sit here were from 1.0 (2026-10-27) and had gone stale (four holsters where there are six),
+so they were removed rather than kept wrong.
 
 ## They work together
 
-The mods never link against each other. Each checks for the others by name at run time, so
-a missing mod is simply never found:
-
-- The **grab stands down on a hand holding a melee weapon**, the shield or the Force hand, since
-  a swing is full of the grab's palm-out flick. A **QuestSaber hilt with its blade switched off can
-  grab**: the saber reports this through its `UBQS_SaberService` (`saber.lit`).
-- The ShieldSaw and the saber share the hands cleanly: saber in the main hand, shield in the off.
-- The **grab stands down on a hand the rig is using** (in a holster, holding the cigarette or the
-  Zippo): the rig reports this through `RSQTR_RigService` (`rig.busy`), and asks the grab's
-  `RSQDG_DoorService` whether a hand holds a door.
-- The **rig leaves the off shoulder to the ShieldSaw** while the shield hangs there, unless the
-  ShieldSaw's *Draw With Use* is off (its Draw key only): then the rig keeps it.
-- **Ermac's cigarette asks SlowMo for slow motion** through RS_SlowMo's own `rsm_pulse` event;
-  without SlowMo it is simply a cigarette.
-- **SlowMo's rounds** are ordinary projectiles to the shield and the saber, so they block and
-  deflect them.
-
-Rumble on all of them goes through the one route the Quest runtime honours: amplitude-shaped,
-fading, on the correct controller, and **only when something happens** (a hit, a block, a catch,
-a lock). Nothing buzzes constantly.
+The mods never link against each other: each looks the others up by name at run time, so any
+combination loads and a missing mod is simply never found. What each mod changes when another is
+loaded is in that mod's README, under **Works with**.
 
 ## Repository layout
 
@@ -269,15 +167,6 @@ Each folder carries its **full git history** from the repo it came from (merged 
 This needs `zip`. Each mod also keeps its original script (DistanceGrab uses
 `build.ps1` on Windows; ShieldSaw, TacticalRig and SlowMo use `build.sh`). `build_all.sh` packs
 exactly the same files.
-
-### LaserSight
-- **Rebuilt (2026-10-27).** Each gun's barrel and muzzle are measured from Brutal Doom Quest's own
-  gun models, for every resting pose and every firing frame, so the beam leaves the barrel and stays
-  on it in full-auto. A gun in each hand gets its own beam.
-- The beam fades out with distance; the **dot** stays on whatever it hits.
-- Melee weapons get nothing. Guns with no model to measure (sprite guns) get the dot only.
-- The beam hides during reloads and inspections (frames that move the gun more than 6 cm).
-- DistanceGrab's beam makes way for it (*Yield to Laser Sight*).
 
 ## Status (menus and names, 2026-10-28)
 
