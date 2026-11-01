@@ -105,9 +105,12 @@ class RSQA_QoL : EventHandler
 		if (comp == "angle") return Actor.Normalize180(an);
 		if (comp == "pitch") return pi;
 		if (comp == "roll") return Actor.Normalize180(Pick(on, b, mo, hand, 5));
-		if (comp == "dx") return cos(an) * cos(pi);
-		if (comp == "dy") return sin(an) * cos(pi);
-		if (comp == "dz") return -sin(pi);
+		// the engine stores AttackAngle as view yaw - 90 and AttackPitch positive UP (hw_vrmodes.cpp:443-444;
+		// DistanceGrab reach.zs): the hand's forward is (yaw + 90, pitch) with z = +sin (fixed 11-01: it was 90
+		// degrees off with the pitch flipped)
+		if (comp == "dx") return cos(an + 90) * cos(pi);
+		if (comp == "dy") return sin(an + 90) * cos(pi);
+		if (comp == "dz") return sin(pi);
 		return 0;
 	}
 

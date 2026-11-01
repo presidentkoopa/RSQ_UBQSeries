@@ -129,7 +129,7 @@ class @P@_A11y
 		if (!s)
 		{
 			double a = hand ? who.OffhandAngle : who.AttackAngle, p = hand ? who.OffhandPitch : who.AttackPitch;
-			return (cos(a) * cos(p), sin(a) * cos(p), -sin(p));
+			return (cos(a + 90) * cos(p), sin(a + 90) * cos(p), sin(p));   // yaw - 90 and pitch-up, as the engine stores them
 		}
 		int pn = who.PlayerNumber();
 		return (s.GetDoubleData("steady", "dx", pn, hand), s.GetDoubleData("steady", "dy", pn, hand), s.GetDoubleData("steady", "dz", pn, hand));
