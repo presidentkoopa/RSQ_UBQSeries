@@ -162,8 +162,8 @@ simulated rig.
 
 - **Holstered guns may look squashed** (a model flag was tried and backed out because it could not be
   checked on the rig). Check in the mirror.
-- **The Zippo and cigarette sounds are generated** (tools/gen_sounds.py: open, light, close, cigarette
-  light, inhale, exhale). That goes against the stock-sounds-only rule; they have not been replaced.
+- **Zippo and cigarette sounds (2026-11-01):** real recordings from Pixabay, picked by the owner (open, light,
+  close; the drag and the breath after it; the tip catching uses the Zippo's light). Not yet heard in the headset.
 - SteamVR two-handed grip: a holster still takes the press, but a gun drawn into the off hand arrives only
   when you let go of the grip (the engine holds it). Nothing happens on Quest today.
 - Only guns measured into the fit table show at a holster; the muzzle direction could not be read by eye
@@ -199,7 +199,8 @@ From the old README, unchanged:
   Converted here from Quake's .mdl to MD3.
 - The holster spheres are the project owner's, from his RS_Holsters.
 - Holster, draw and foley sounds: RS_CombatFX (the project owner's effects library).
-- The Zippo and cigarette sounds are generated (`tools/gen_sounds.py`).
+- The Zippo and cigarette sounds: Pixabay ("freesound_community"), "zippo-lighter-open-light-close" and
+  "cigarette-suck".
 - QuestZDoom: Emawind and Team Beef.
 - Sharing other people's work in this pack is the project owner's decision.
 
@@ -232,9 +233,10 @@ WHAT THIS PK3 SHIPS, AND WHOSE IT IS
   The holster spheres (models/rsqtr/rtwire*), from his RS_Holsters.
   Holster, draw and foley sounds (sounds/rsqtr/rthols*, rtdraw, rtfoly*), from his
   RS_CombatFX effects library.
+- Pixabay ("freesound_community", Pixabay Content License; chosen by the owner, 2026-11-01):
+  the Zippo and cigarette sounds (rtzpopen, rtzplite, rtzpclos, rtinhale, rtexhale).
 - Generated for this pack:
-  The Zippo and cigarette sounds (rtzp*, rtcglite: tools/gen_sounds.py), the stored-gun
-  fit table RSQTRFIT (tools/measure_pickups.py), the placeholder sprites.
+  The stored-gun fit table RSQTRFIT (tools/measure_pickups.py), the placeholder sprites.
 - QuestZDoom (Emawind and Team Beef):
   The engine, and the off-hand weapon and hand-pose script API the rig reads.
 

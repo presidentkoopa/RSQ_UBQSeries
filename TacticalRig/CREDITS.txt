@@ -28,9 +28,11 @@ WHAT THIS PK3 SHIPS, AND WHOSE IT IS
       The holster spheres (models/rsqtr/rtwire*), from his RS_Holsters.
       Holster, draw and foley sounds (sounds/rsqtr/rthols*, rtdraw, rtfoly*), from his
       RS_CombatFX effects library.
+  Pixabay ("freesound_community", Pixabay Content License; chosen by the owner, 2026-11-01)
+      The Zippo and cigarette sounds: "zippo-lighter-open-light-close" (rtzpopen, rtzplite,
+      rtzpclos) and "cigarette-suck" (rtinhale, rtexhale), trimmed and converted to mono OGG.
   Generated for this pack
-      The Zippo and cigarette sounds (rtzp*, rtcglite: tools/gen_sounds.py), the stored-gun
-      fit table RSQTRFIT (tools/measure_pickups.py), the placeholder sprites.
+      The stored-gun fit table RSQTRFIT (tools/measure_pickups.py), the placeholder sprites.
   QuestZDoom (Emawind and Team Beef)
       The engine, and the off-hand weapon and hand-pose script API the rig reads.
 
