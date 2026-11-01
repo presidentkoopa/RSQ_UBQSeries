@@ -67,12 +67,14 @@ After that, the full set together.
 2. Load them **after** your weapon set. The tested order:
 
    ```
-   doom2.wad -> brutal22test6 -> BD_VoxelPack -> BD22_VR-Reloaded_2_0_3h -> BD22_VR-Reloaded_2.0.3ha_hotfix
-             -> (optional) Champions -> LegenDoom Lite -> any RSQ mods, in any order
+   doom2.wad -> 01 brutal22test6 -> 02 BD22_VoxelPack -> 03 BD22_VR-Reloaded_2.0.3j
+             -> 04-07 XMVE Monster Expansion (BD22 versions) -> (optional) Champions -> LegenDoom Lite
+             -> any RSQ mods, in any order
              -> GunBonsai-0.10.6.pk3 -> RSQ_GunBonsaiVR.pk3 (last; only with Gun Bonsai)
    ```
 
-   The four "No sprites specified for voxel" errors at start-up are BD_VoxelPack's own.
+   02-07 are the BD22 VR Weapons repo's `pk3/` folder (RS_Brutal22WeaponsQ). The four "No sprites specified for
+   voxel" errors at start-up are the voxel pack's own.
 
 3. Settings: **Options -> Radiant Silvergun Options**. One row per RSQ mod you loaded:
 

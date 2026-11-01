@@ -14,8 +14,9 @@ The built pk3s live in `pk3/` and are committed. GitHub: https://github.com/pres
 ## 1. The owner's rules (non-negotiable)
 
 - **No engine changes.** Stock QuestZDoom 17.3; everything is ZScript, DECORATE, MODELDEF and data.
-- **Load order he plays (PCVR, SteamVR):** doom2.wad -> brutal22test6.pk3 -> BD_VoxelPack.pk3 ->
-  BD22_VR-Reloaded_2_0_3h.pk3 -> BD22_VR-Reloaded_2.0.3ha_hotfix.pk3 -> the RSQ pk3s.
+- **Load order he plays (PCVR, SteamVR), as of 2026-11-01:** doom2.wad -> 01 brutal22test6.pk3 -> the BD22 VR Weapons
+  repo's numbered `pk3/` folder (RS_Brutal22WeaponsQ: 02 BD22_VoxelPack, 03 BD22_VR-Reloaded_2.0.3j -- built from that
+  repo with `python build.py`, it is gitignored -- 04-07 XMVE Monster Expansion) -> the RSQ pk3s.
   Launch args he uses: `+vr_mode 10 +vid_preferbackend 0`.
 - **Zero script errors from our packs** in that load order before anything is called done. The 4
   "No sprites specified for voxel" errors from BD_VoxelPack's voxeldef are the parent's own; ignore them.
