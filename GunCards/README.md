@@ -15,7 +15,8 @@ BD22_VR-Reloaded_2.0.3ha_hotfix.pk3 -> **RSQ_GunCards.pk3**
 
 - Load it after your weapon pack. Needs no other RSQ pk3 to work alone.
 - Plain Doom 2 without Brutal Doom: should work (nothing in the code needs Brutal Doom), but no note says
-  it was run there. The grenade count reads Brutal Doom's hand grenades and is absent without it.
+  it was run there. The grenade count reads Brutal Doom's hand grenades; without them RSQ Grenade's (when that pk3
+  is loaded); absent with neither.
 - With **RSQ_Gestures** loaded, the watch check is its knuckles-up wrist twist. Without it, the watch check is
   the forearm across your chest, wrist in front of your face.
 
@@ -56,7 +57,7 @@ Always on (no row):
 - **+N on pickup**: picking up ammo shows "+N" in the reserve's place for a moment.
 - **RELOAD**: an empty magazine with rounds to load shows RELOAD instead of the count (on the watch card it
   replaces the MAGAZINE word).
-- **Grenades** on the watch card: Brutal Doom's hand grenades (not mines).
+- **Grenades** on the watch card: Brutal Doom's hand grenades (not mines), or RSQ Grenade's without Brutal Doom.
 - **Kills this level** on the watch card: this gun's kills on this level (a kill goes to the hand that fired
   last within a second).
 - **Status card**: watch check with an empty hand shows STATUS: health, armour, keys (cards on one line,
@@ -113,6 +114,9 @@ With other mods:
 ## Works with
 
 - **RSQ_Gestures** (read): the watch check ("inspect"). Watch Check Off there makes Gun Cards use its own pose.
+- **RSQ_Grenade** (read, 2026-11-01, by name): without Brutal Doom's grenades the GRENADES count is RSQ Grenade's
+  (rig `gren_gc_b`: 3, then 6 after a pack of three; on the Brutal Doom order it still reads Brutal Doom's,
+  `gren_gc_c`). Not yet headset-confirmed.
 - **RSQ_GunBonsaiVR** with Gun Bonsai 0.10.6 (read): level, XP and upgrades on the watch card.
 - **RSQ_Wheel**: the Wheel's Wrist Card stands down while Gun Cards' watch card is on; Gun Cards follows the
   Wheel's palette, font set and ring plate art; Small Card Colours can use the Wheel's palette.

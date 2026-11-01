@@ -1,0 +1,33 @@
+// RSQ Grenade -- sounds. Every one is the UAC Survival Pack's (JohnnyDoom; SOUNDS/grenade), renamed to QG* lumps so
+// no other mod's sounds are replaced. Volumes and roll-off are the pack's (SNDINFO.grenade).
+rsqgn/pin       QGPIN       // DSGRPIN  -- the pack's pin pull (weapons/grnpullpin); also its pickup sound
+rsqgn/toss      QGTOSS      // DSGRTOSS -- the pack's throw (weapons/grntoss)
+rsqgn/spoon     QGSPOON     // DSGRDROP -- the spoon flying off (the pack's weapons/grnbounce clink)
+rsqgn/bounce    QGBOUNCE    // GBOUNCE  -- the thrown grenade's bounce (J_ThrownGrenade's BounceSound)
+rsqgn/tick      QGTICK      // GPIN     -- one tick a red flash (RS_Grenade's fuse tick)
+rsqgn/farexpl   QGFAREXP    // FAREXPL  -- the distant blast
+
+$random rsqgn/explode { rsqgn/bang1 rsqgn/bang2 rsqgn/bang3 rsqgn/bang4 rsqgn/bang5 rsqgn/bang6 rsqgn/bang7 rsqgn/bang8 }
+rsqgn/bang1 QGBANG1
+rsqgn/bang2 QGBANG2
+rsqgn/bang3 QGBANG3
+rsqgn/bang4 QGBANG4
+rsqgn/bang5 QGBANG5
+rsqgn/bang6 QGBANG6
+rsqgn/bang7 QGBANG7
+rsqgn/bang8 QGBANG8
+$volume rsqgn/bang1 2.0
+$volume rsqgn/bang2 2.0
+$volume rsqgn/bang3 2.0
+$volume rsqgn/bang4 2.0
+$volume rsqgn/bang5 2.0
+$volume rsqgn/bang6 2.0
+$volume rsqgn/bang7 2.0
+$volume rsqgn/bang8 2.0
+$rolloff rsqgn/explode 1100 1600
+$limit rsqgn/explode 0
+$volume rsqgn/bounce 2.0
+$volume rsqgn/farexpl 0.5
+$rolloff rsqgn/farexpl 3200 5400
+$volume rsqgn/tick 0.6
+$limit rsqgn/tick 2

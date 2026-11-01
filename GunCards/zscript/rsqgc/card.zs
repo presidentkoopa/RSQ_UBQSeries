@@ -166,13 +166,15 @@ class RSQGC_GunCard : EventHandler
 	}
 
 	// GC4 Brutal Doom's GRENADE count (GrenadeAmmo, brutal22test6 actors/MISC/Ammo.dec: the hand grenades; the mines
-	// are another pile and are NOT shown, owner). -1 when no such ammo exists (not Brutal Doom).
+	// are another pile and are NOT shown, owner). Without Brutal Doom's, RSQ Grenade's own (RSQGN_Ammo, 11-01) when that
+	// pk3 is loaded. -1 when neither exists.
 	static int Grenades(PlayerPawn pmo)
 	{
 		// a String first: a quoted class name is resolved when the script compiles, and without Brutal
 		// Doom that is a script error (found 11-01 on plain Doom 2); a String variable is looked up at run time
 		String gn = "GrenadeAmmo";
 		class<Inventory> g = gn;
+		if (!g) { gn = "RSQGN_Ammo"; g = gn; }
 		if (!g) return -1;
 		let it = pmo.FindInventory(g);
 		return it ? it.Amount : 0;

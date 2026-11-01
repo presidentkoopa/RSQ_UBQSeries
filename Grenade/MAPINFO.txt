@@ -1,0 +1,6 @@
+// RSQ Grenade -- MAPINFO. RSQGN_Handler: the handling, the fuse, the throw, the start grenades (hand.zs);
+// RSQGN_Scatter: grenades scattered beside each map's items once per map (scatter.zs).
+GameInfo
+{
+	AddEventHandlers = "RSQGN_Handler", "RSQGN_Scatter"
+}

@@ -104,6 +104,12 @@ rm -f "$OUT/RSQ_Gestures.pk3"
 zip -q -r -X "$OUT/RSQ_Gestures.pk3" zscript.txt MAPINFO.txt CVARINFO.txt KEYCONF.txt MENUDEF.txt CREDITS.txt README.md zscript
 echo "built pk3/RSQ_Gestures.pk3"
 
+# Grenade: the VR hand grenade (its own on plain Doom; stands down for Brutal Doom VR's); tools/ stays out.
+cd "$HUB/Grenade"
+rm -f "$OUT/RSQ_Grenade.pk3"
+zip -q -r -X "$OUT/RSQ_Grenade.pk3" zscript.txt MAPINFO.txt CVARINFO.txt MENUDEF.txt MODELDEF.txt SNDINFO.txt CREDITS.txt README.md zscript models sounds sprites
+echo "built pk3/RSQ_Grenade.pk3"
+
 # RSQ_GunBonsaiVR (the Gun Bonsai Offhand VR patch): everything but the build script, notes, tools and git files (its build.ps1).
 # Needs Gun Bonsai 0.10.6 (ToxicFrog, not included) loaded just before it.
 cd "$HUB/GunBonsaiOffhandVR"

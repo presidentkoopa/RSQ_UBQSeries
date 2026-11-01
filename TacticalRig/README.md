@@ -15,8 +15,8 @@ doom2.wad -> brutal22test6.pk3 -> BD_VoxelPack.pk3 -> BD22_VR-Reloaded_2_0_3h.pk
 
 - **Plain Doom 2 without Brutal Doom:** loads and the holsters work (rig-tested on vanilla doom2 with the
   series, 10-27). What needs Brutal Doom: the stored-gun pictures (only guns measured from the Brutal
-  Doom load order are shown), the grenade spot (it shows only when Brutal Doom's `HandGrenades` exists),
-  and Brutal Doom's empty hand (otherwise your empty hand is the fist).
+  Doom load order are shown) and Brutal Doom's empty hand (otherwise your empty hand is the fist). The grenade
+  spot shows when Brutal Doom's `HandGrenades` exists, or (11-01) RSQ Grenade's own grenade without Brutal Doom.
 - **Other RSQ pk3s needed:** none. RSQ SlowMo is needed only for slow motion after a smoke; RSQ Saber
   only for the saber spots.
 
@@ -36,8 +36,8 @@ doom2.wad -> brutal22test6.pk3 -> BD_VoxelPack.pk3 -> BD22_VR-Reloaded_2_0_3h.pk
 - **Holster:** reach to a holster with a gun in your hand and squeeze the grip. The hand is left empty.
 - **Draw:** reach to a full holster with an empty hand and squeeze the grip.
 - **Swap:** grip at a full holster with a gun in hand. The two swap.
-- **Grenade:** grip at the belt buckle. The hand grenade comes to your main hand. Grip there again to get
-  your gun back.
+- **Grenade:** grip at the belt buckle. The hand grenade comes to your main hand (Brutal Doom's, or RSQ
+  Grenade's without Brutal Doom). Grip there again to get your gun back.
 - **Throw a gun away:** swing the hand fast and grip, away from any holster. The gun flies and lands as a
   pickup.
 - **Keys to a door (option):** grip at the keyring, hold the grip, touch the keys to a locked door.
@@ -100,7 +100,7 @@ default.
 | Rig Options: Ammo Light on Holsters | On | A full holster's light: green, yellow (low or reload), red (empty). |
 | Rig Options: Ammo Count on Holsters | Option | Small digits above a full holster, in the ammo light's colour: its gun's rounds (the magazine for a gun that has one). |
 | Rig Options: New Guns Go to a Holster | Option | A gun you did not have goes into the first empty holster. |
-| Rig Options: Grenade Spot | On | The belt-buckle grenade spot. Its light is your grenade count: green 2+, yellow 1, red none. |
+| Rig Options: Grenade Spot | On | The belt-buckle grenade spot: Brutal Doom's hand grenade, or RSQ Grenade's without Brutal Doom. Its light is your grenade count: green 2+, yellow 1, red none. |
 | Rig Options: Throw Guns | On | A fast swing plus grip, outside a holster, throws the gun away. |
 | Rig Options: Thrown Guns Hurt | On | A thrown gun that hits a monster hurts and staggers it, by the gun's weight and the throw speed. |
 | Rig Options: Keyring | On | The keys you carry hang on a ring on your belt. |
@@ -183,6 +183,11 @@ simulated rig.
 - **RSQ Gestures:** its watch check is what *Move Gun at Watch (Use)* waits for (asked by name). Without
   it there is no watch check and the row does nothing.
 - **RSQ SlowMo:** spitting out the cigarette starts slow motion (*Slow Motion After a Smoke*).
+- **RSQ Grenade** (2026-11-01, asked by name): without Brutal Doom's `HandGrenades`, the grenade spot hands out RSQ
+  Grenade's grenade the same way (grip at the buckle: the grenade to the main hand; grip again: your gun back) and
+  its light counts those grenades. Brutal Doom's comes first (with Brutal Doom VR loaded RSQ Grenade stands down).
+  Rig 11-01 (`gren_rig_b`, plain Doom 2): out at the buckle, the pistol back on the second grip; Brutal Doom order
+  (`gren_load_c2`): Brutal Doom's `HandGrenades` handed out as before. Not yet headset-confirmed.
 - **RSQ Distance Grab:** doors are lifted there now, not here. A hand in a holster, or holding the
   cigarette or Zippo, does not distance-grab.
 - **RSQ Saber:** the two saber spots below the hips; the second saber's spot puts it away and draws it

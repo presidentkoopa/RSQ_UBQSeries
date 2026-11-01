@@ -28,6 +28,7 @@ simulated headset only and is marked *not yet headset-confirmed* there.
 | 🏆 | [Score](Score/) | `RSQ_Score.pk3` | The arcade score: style bonuses, cross-mod combos, a map target and extra lives. The owner's RS_Score on ijon's Dakka scoring. |
 | 👹 | [Miniboss](Miniboss/) | `RSQ_Miniboss.pk3` | A miniboss each map fed by three thralls; kill a thrall to slow time, get greedy and every monster enrages. Rebuilt from Tartlman's Minibosses!. |
 | 🌳 | [GunBonsaiOffhandVR](GunBonsaiOffhandVR/) | `RSQ_GunBonsaiVR.pk3` | An addon for ToxicFrog's Gun Bonsai 0.10.6 (not included): each hand its own XP, upgrades and HUD, upgrade paths for the series' tools, boxing gloves. Loaded right after Gun Bonsai. |
+| 💣 | [Grenade](Grenade/) | `RSQ_Grenade.pk3` | A hand grenade worked by hand on plain Doom 2: the other hand (or your teeth) pulls the pin, throw it with your arm, cook it, watch it flash red. Brutal Doom VR's handling; stands down for BD22 VR's own grenade. |
 | ♿ | [Accessibility](Accessibility/) | `RSQ_Accessibility.pk3` | One settings page for the whole series: colour-blind, handedness, one-handed, comfort, cues, and one Reset for every mod. |
 
 ## Testing them one at a time
@@ -56,6 +57,7 @@ A suggested order -- simple and visible first, the mods that read the others las
 | 13 | Score | Combos need the tools above loaded to fire |
 | 14 | Miniboss | Best with Champions + LegenDoom Lite |
 | 15 | Gun Bonsai VR addon | Last, right after GunBonsai-0.10.6 |
+| 16 | Grenade | Plain Doom 2 only (with Brutal Doom VR it stands down); then with Tactical Rig's buckle and Gun Cards' count |
 
 After that, the full set together.
 
@@ -95,6 +97,7 @@ After that, the full set together.
    | Wheel | **RSQ Wheel** |
    | GunCards | **RSQ Gun Cards** |
    | Gestures | **RSQ Gestures** |
+   | Grenade | **RSQ Grenade** |
    | Accessibility | **Accessibility** |
 
    Every page has **Reset All** on its last page; Accessibility's Reset resets every series mod.

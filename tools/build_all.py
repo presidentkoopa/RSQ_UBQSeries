@@ -46,6 +46,8 @@ MODS = {
                      'sprites', 'graphics', 'voxels']),
     'Gestures':     ('RSQ_Gestures.pk3', 'list', ['zscript.txt', 'MAPINFO.txt', 'CVARINFO.txt', 'KEYCONF.txt', 'MENUDEF.txt',
                      'CREDITS.txt', 'README.md', 'zscript']),
+    'Grenade':      ('RSQ_Grenade.pk3', 'list', ['zscript.txt', 'MAPINFO.txt', 'CVARINFO.txt', 'MENUDEF.txt', 'MODELDEF.txt',
+                     'SNDINFO.txt', 'CREDITS.txt', 'README.md', 'zscript', 'models', 'sounds', 'sprites']),
     'GunBonsaiOffhandVR': ('RSQ_GunBonsaiVR.pk3', 'all', ['.git*', 'build.ps1', 'NOTES.md', 'tools/*', '*.pk3']),
 }
 

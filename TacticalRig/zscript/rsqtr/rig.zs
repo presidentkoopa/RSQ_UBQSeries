@@ -471,27 +471,47 @@ class RSQTR_Rig : EventHandler
 	// THE GRENADE SPOT. Grip it (either hand) and the weapon pack's own hand grenade comes to the MAIN hand -- with
 	// Brutal Doom VR that is its VR grenade: the off hand pulls the pin, you throw it by hand. Grip it again with the
 	// grenade in the hand and the gun you had comes back. The spot shows only when the pack has a hand grenade
-	// (GRENADE_WEAPON) and rsqtr_grenades is on; its light is the grenade count (green 2+, yellow 1, red none).
+	// (NadeWeapon: Brutal Doom's, else RSQ Grenade's) and rsqtr_grenades is on; its light is the grenade count (green 2+, yellow 1, red none).
+	// 2026-11-01: without Brutal Doom's grenade, RSQ Grenade's own (RSQGN_Grenade, its ammo RSQGN_Ammo) when that pk3
+	// is loaded, handed out the same way. Brutal Doom's comes first: with Brutal Doom VR loaded RSQ Grenade stands down.
 	const GRENADE_WEAPON = "HandGrenades";
 	const GRENADE_AMMO = "GrenadeAmmo";
+	const RSQ_GRENADE = "RSQGN_Grenade";
+	const RSQ_GRENADE_AMMO = "RSQGN_Ammo";
 	String nadePrev[MAXPLAYERS];
+	// The hand grenade the spot hands out ("" for none), and its ammo. Looked up from Strings at run time: a const
+	// or quoted class name would be resolved at compile time and fail without that pk3 ("Unknown class name").
+	static String NadeWeapon()
+	{
+		String wn = GRENADE_WEAPON;
+		class<Weapon> wc = wn;
+		if (wc) return wn;
+		wn = RSQ_GRENADE;
+		wc = wn;
+		return wc ? wn : "";
+	}
+	static String NadeAmmo()
+	{
+		String wn = NadeWeapon();
+		if (wn == GRENADE_WEAPON) return GRENADE_AMMO;
+		if (wn == RSQ_GRENADE) return RSQ_GRENADE_AMMO;
+		return "";
+	}
 	static int Grenades(PlayerPawn pmo)
 	{
-		String an = GRENADE_AMMO;      // a run-time lookup: a const would be resolved at compile time and fail
-		class<Inventory> ac = an;      // without Brutal Doom (plain Doom 2: "Unknown class name")
+		String an = NadeAmmo();        // run-time, as above
+		class<Inventory> ac = an;
 		return ac ? pmo.CountInv(ac) : 0;
 	}
 	static bool HasGrenadeWeapon()
 	{
-		String wn = GRENADE_WEAPON;    // run-time, as above
-		class<Weapon> wc = wn;
-		return wc != null;
+		return NadeWeapon() != "";
 	}
 	private void Nade(PlayerPawn pmo)
 	{
 		let p = pmo.player;
 		int n = pmo.PlayerNumber();
-		String wn = GRENADE_WEAPON;    // run-time, as above
+		String wn = NadeWeapon();      // run-time, as above
 		class<Weapon> wc = wn;
 		if (!wc) return;
 		let w = Weapon(pmo.FindInventory(wc));
@@ -1239,7 +1259,8 @@ class RSQTR_Rig : EventHandler
 	{
 		if (IsGrenadeRegion(r))
 		{
-			bool inHand = p.ReadyWeapon && p.ReadyWeapon.GetClassName() == GRENADE_WEAPON;
+			String nw = NadeWeapon();
+			bool inHand = p.ReadyWeapon && nw != "" && p.ReadyWeapon.GetClassName() == Name(nw);
 			if (inHand || Grenades(pmo) > 0) { EventHandler.SendNetworkEvent("rsqtr_nade"); RSQTR_Buzzer.Start(pmo, h, 0.55, 5); }
 			else
 			{

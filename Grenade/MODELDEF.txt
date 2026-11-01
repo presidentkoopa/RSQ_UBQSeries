@@ -1,0 +1,126 @@
+// RSQ Grenade -- Gomuz's grenade (nade.md3 and its skin, from the owner's BD22 VR Reloaded / RS_Grenade; identical
+// files), held and thrown. No hands are drawn: Brutal Doom owns hand poses, and on plain Doom the grenade is held at
+// the controller.
+//
+// MEASURED (Grenade/tools/md3info.py): 27 frames, 5 surfaces -- 0-1 the body, 2 the pin ring, 3-4 the spoon. Frames
+// 0-1 are the tail of Brutal Doom's draw animation (the body 20 units lower); frame 2 onward the body sits still with
+// ring and spoon on, so frame 2 is the one pose, and the ring and spoon are taken off by surface skin (BD22 VR's way),
+// never by changing frame (the body would jump). Frame 2's body centre: (28.53, -0.02, -1.28).
+
+// IN THE HAND: BD22 VR Reloaded's own placement of this mesh (its MODELDEF.rsq HandGrenades blocks, "grenade hand
+// (lane B): gun to the FBX hand, fit_nade.py"), unchanged, so the ring the other hand reaches for (hand.zs RING_*,
+// BD22 VR's measured point) is where it is drawn.
+//   QGNH A  ring in        QGNH B  pin out (ring hidden)        QGNH C  spoon gone too (cooking)
+//   QGNH D  cooking, the red flash (nade_red.png: this skin recoloured, tools/gen_red.py)
+Model RSQGN_Grenade
+{
+	Path "models/rsqgn"
+	Model 0 "nade.md3"
+	Skin 0 "nade.png"
+	Scale -0.92 0.92 0.92
+	Offset -12.075 -8.898 0.0
+	NoInterpolation
+	ZOffset 2.326
+	AngleOffset -18.317
+	PitchOffset -17.735
+	RollOffset 3.457
+	FrameIndex QGNH A 0 2
+}
+Model RSQGN_Grenade
+{
+	Path "models/rsqgn"
+	Model 0 "nade.md3"
+	SurfaceSkin 0 0 "nade.png"
+	SurfaceSkin 0 1 "nade.png"
+	SurfaceSkin 0 2 "rsqgn_clear.png"
+	SurfaceSkin 0 3 "nade.png"
+	SurfaceSkin 0 4 "nade.png"
+	Scale -0.92 0.92 0.92
+	Offset -12.075 -8.898 0.0
+	NoInterpolation
+	ZOffset 2.326
+	AngleOffset -18.317
+	PitchOffset -17.735
+	RollOffset 3.457
+	FrameIndex QGNH B 0 2
+}
+Model RSQGN_Grenade
+{
+	Path "models/rsqgn"
+	Model 0 "nade.md3"
+	SurfaceSkin 0 0 "nade.png"
+	SurfaceSkin 0 1 "nade.png"
+	SurfaceSkin 0 2 "rsqgn_clear.png"
+	SurfaceSkin 0 3 "rsqgn_clear.png"
+	SurfaceSkin 0 4 "rsqgn_clear.png"
+	Scale -0.92 0.92 0.92
+	Offset -12.075 -8.898 0.0
+	NoInterpolation
+	ZOffset 2.326
+	AngleOffset -18.317
+	PitchOffset -17.735
+	RollOffset 3.457
+	FrameIndex QGNH C 0 2
+}
+Model RSQGN_Grenade
+{
+	Path "models/rsqgn"
+	Model 0 "nade.md3"
+	SurfaceSkin 0 0 "nade_red.png"
+	SurfaceSkin 0 1 "nade_red.png"
+	SurfaceSkin 0 2 "rsqgn_clear.png"
+	SurfaceSkin 0 3 "rsqgn_clear.png"
+	SurfaceSkin 0 4 "rsqgn_clear.png"
+	Scale -0.92 0.92 0.92
+	Offset -12.075 -8.898 0.0
+	NoInterpolation
+	ZOffset 2.326
+	AngleOffset -18.317
+	PitchOffset -17.735
+	RollOffset 3.457
+	FrameIndex QGNH D 0 2
+}
+
+// THROWN: RS_Grenade's world size, 0.3 (the body 2.4 units across, 5.1 tall), which is the ACTOR's Scale (thrown.zs;
+// the engine multiplies the two, and the actor's also sizes the pack's sprite when models are off), frame 2 with the
+// ring and spoon gone. It tumbles by the actor's pitch and roll (USEACTORPITCH / USEACTORROLL) about its own centre:
+// the offset is scaled with the model, so Offset = -centre, plus 1.4 / 0.3 up, puts the body's centre 1.4 units above
+// the actor's origin, and it turns about that point (Rotation-Center, in map units), so lying on its side (pitch 90,
+// thrown.zs) it rests on the floor instead of half in it (the body's radius x 0.3 = 1.2 units).
+//   QGNT A  live        QGNT B  the red flash
+Model RSQGN_Thrown
+{
+	Path "models/rsqgn"
+	Model 0 "nade.md3"
+	SurfaceSkin 0 0 "nade.png"
+	SurfaceSkin 0 1 "nade.png"
+	SurfaceSkin 0 2 "rsqgn_clear.png"
+	SurfaceSkin 0 3 "rsqgn_clear.png"
+	SurfaceSkin 0 4 "rsqgn_clear.png"
+	Scale 1.0 1.0 1.0
+	Offset -28.53 0.02 5.947
+	NoInterpolation
+	USEACTORPITCH
+	USEACTORROLL
+	UseRotationCenter
+	Rotation-Center 0 0 1.4
+	FrameIndex QGNT A 0 2
+}
+Model RSQGN_Thrown
+{
+	Path "models/rsqgn"
+	Model 0 "nade.md3"
+	SurfaceSkin 0 0 "nade_red.png"
+	SurfaceSkin 0 1 "nade_red.png"
+	SurfaceSkin 0 2 "rsqgn_clear.png"
+	SurfaceSkin 0 3 "rsqgn_clear.png"
+	SurfaceSkin 0 4 "rsqgn_clear.png"
+	Scale 1.0 1.0 1.0
+	Offset -28.53 0.02 5.947
+	NoInterpolation
+	USEACTORPITCH
+	USEACTORROLL
+	UseRotationCenter
+	Rotation-Center 0 0 1.4
+	FrameIndex QGNT B 0 2
+}

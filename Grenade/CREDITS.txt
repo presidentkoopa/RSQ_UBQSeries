@@ -1,0 +1,43 @@
+RSQ Grenade -- credits
+======================
+
+The Radiant Silvergun Quest series' VR hand grenade, for stock QuestZDoom 17.3: ZScript and lumps only, no engine
+changes. The code is written for this pack (presidentkoopa's series); what it ports and what it ships is below.
+
+WHAT THIS PK3 SHIPS, AND WHOSE IT IS
+- UAC Survival Pack, by JohnnyDoom (forum.zdoom.org, topic t=47229; the copy the owner supplied,
+  UAC_SurvivalPack.pk3). Its hand grenade: original by Froon, Brutal Doom version by Saegiru, sprites by Pa1nki113r
+  (the credits at the head of its DECORATE.grenade).
+  From it, unchanged except for the lump names (renamed so no other mod's lumps are replaced):
+  - the sounds (sounds/rsqgn/): GBANG1-8 -> QGBANG1-8 (the blast), FAREXPL -> QGFAREXP (the distant blast),
+    DSGRPIN -> QGPIN (pin pull, pickup), DSGRTOSS -> QGTOSS (throw), DSGRDROP -> QGSPOON (the spoon flying off),
+    GBOUNCE -> QGBOUNCE (bounce), GPIN -> QGTICK (the fuse tick); volumes and roll-off from its SNDINFO.grenade.
+    The pack names no author for its individual sounds.
+  - the pickup sprites: JGNDD0 -> QGN1A0 (one grenade), MGRND0 -> QGN3A0 (a pack of three); the thrown grenade's
+    sprites JGRNA0-H0 -> QGNTA0-H0 (shown only with models off).
+  - the explosion's sprites (sprites/rsqgn/QGXP*, QGSM*, QGSK*, QGSC*, QGLR*, QGL2*, QGFL*: its JXPL, JSMO, JSPK,
+    JS17, JLNR, JL2N, JFLR) and the explosion itself (J_ThrownGrenade's XDeath, transcribed in the owner's RS_Grenade
+    rs_blast.zs and ported here as zscript/rsqgn/blast.zs).
+  - its ammo rules (carry 8, backpack +6 to 16, a single and a pack of three, their pickup messages) and its random
+    placement of grenades beside each map's items (randomuac.acs UAC_RandomItemSpawner), rewritten in ZScript.
+- Gomuz: the grenade model (models/rsqgn/nade.md3 and nade.png), "Grenade by Gomuz" in the owner's BD22 VR Weapons
+  credits; the same files as in his BD22 VR Reloaded and RS_Grenade. models/rsqgn/nade_red.png is that skin
+  recoloured red (tools/gen_red.py) for the fuse flash.
+- The project owner (presidentkoopa):
+  - The handling: his Brutal Doom 22 VR Reloaded grenade (RS_Brutal22WeaponsQ, zscript/rsg/grenade.zs) -- the off hand
+    pulls the ring, the trigger is the spoon, let go swinging to throw, let go still to cook, cook too long and it goes
+    off -- ported to this pack's own weapon, with its held-grenade placement (MODELDEF.rsq HandGrenades, lane B's
+    fit_nade.py) and its measured ring and body points. The clear surface skin (models/rsqgn/rsqgn_clear.png) is
+    that pack's rsr_clear.png.
+  - His RS_Grenade (rs_vrgrenade.zs, rs_blast.zs): pulling the pin at your mouth (the two-radius face route), the red
+    flash that speeds up with the fuse, the flight numbers (gravity 0.27, bounce 0.5 / 0.25, ground drag 0.82, the
+    tumble, the arc), the blast's damage (85 over 200, then 75 over 255) and its port of the pack's explosion.
+- Generated for this pack: the transparent placeholder sprites QGNHA0-D0 (the held grenade is drawn as a model only).
+- QuestZDoom (Emawind and Team Beef): the engine, and the off-hand weapon and hand-pose script API this reads.
+
+SOUNDS
+Every sound is the UAC Survival Pack's own recording. Nothing is synthesized.
+
+SHARING
+Free to share as part of the Radiant Silvergun Quest series. Borrowed assets keep their authors' terms; sharing other
+people's work in this pack is the project owner's decision.

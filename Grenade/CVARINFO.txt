@@ -1,0 +1,20 @@
+// RSQ Grenade -- settings. What each does (the menu carries no notes). Server: they change the game for everyone
+// (what is given, scattered, how the grenade flies and burns). User: how YOUR hands are read.
+server bool   rsqgn_on          = true;   // the whole mod (with Brutal Doom VR Reloaded loaded it stands down anyway)
+server int    rsqgn_start       = 3;      // grenades you start with (a new game, or after dying); 0-8
+server bool   rsqgn_scatter     = true;   // grenades scattered beside each map's items (the UAC Survival Pack's way)
+server int    rsqgn_singles     = 4;      // ...at most this many single grenades a map (the pack's uac_grenamt)
+server int    rsqgn_packs       = 2;      // ...at most this many packs of three a map (the pack's uac_grenpkamt)
+server float  rsqgn_fuse        = 3.0;    // seconds from the spoon flying off to the blast (RS_Grenade's rsvg_fuse)
+server float  rsqgn_gravity     = 0.27;   // the thrown grenade's gravity (1 = Doom's; 0.37 is earth's) (RS_Grenade)
+server float  rsqgn_bounce      = 0.5;    // speed kept off a floor (RS_Grenade, BD's HandGrenade)
+server float  rsqgn_wallbounce  = 0.25;   // speed kept off a wall (RS_Grenade)
+server float  rsqgn_friction    = 0.82;   // ground drag, per tic on the floor (1 = ice) (RS_Grenade)
+user   float  rsqgn_swing       = 2.5;    // m/s: let go faster than this and it is thrown, slower and the spoon flies (BD22 VR THROW_MIN)
+user   float  rsqgn_throw       = 1.0;    // throw strength: x the hand's own speed (RS_Grenade's rsvg_throw)
+user   float  rsqgn_lift        = 0.35;   // arc: this much of the throw's speed across the ground added upward (RS_Grenade)
+user   bool   rsqgn_face        = true;   // pull the pin with your teeth (RS_Grenade's face route)
+user   float  rsqgn_face_near   = 0.47;   // m from your eyes the grenade must be (RS_Grenade's 16 map units)
+user   float  rsqgn_face_far    = 0.71;   // m it must have been clear of your face before another (RS_Grenade's 24 map units)
+user   int    rsqgn_face_hold   = 12;     // tics it must stay at your face (RS_Grenade)
+user   bool   rsqgn_debug       = false;  // log the pin, the fuse, the flashes, the throw and the scatter to the console

@@ -25,6 +25,7 @@ Gestures** (Gun Bonsai VR then only levels it up). Until then nothing moves.
 | Mechanic | Home |
 |---|---|
 | Holsters (guns, sabers, grenade spot), keyring, gun throw, cigarette | Tactical Rig |
+| The hand grenade on plain Doom (pin by ring or teeth, throw by hand, cook, red fuse, grenades scattered per map); stands down for Brutal Doom VR's own grenade | Grenade (own pk3, owner-approved 11-01) |
 | Second saber's draw and stow | Tactical Rig holster + Saber (its dual on/off) |
 | Weapon picking by wheel | Wheel |
 | Ammo / status cards on the wrist | GunCards (watch check from Gestures) |
