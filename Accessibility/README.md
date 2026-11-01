@@ -9,8 +9,8 @@ Pk3: `pk3/RSQ_Accessibility.pk3`.
 
 ## Load order
 
-doom2.wad -> brutal22test6.pk3 -> BD_VoxelPack.pk3 -> BD22_VR-Reloaded_2_0_3h.pk3 ->
-BD22_VR-Reloaded_2.0.3ha_hotfix.pk3 -> **RSQ_Accessibility.pk3** (with any other RSQ pk3s, in any order)
+doom2.wad -> 01 brutal22test6 -> 02 BD22_VoxelPack -> 03 BD22_VR-Reloaded_2.0.3j -> 04-07 XMVE ->
+**RSQ_Accessibility.pk3** (with any other RSQ pk3s, in any order)
 
 - Works on plain Doom 2 without Brutal Doom.
 - Needs no other pk3 to load. On its own only a few rows do something you can see (Handedness, Sound
@@ -96,8 +96,12 @@ Load the order above plus RSQ_Accessibility.pk3. Add the mod named in a step whe
 14. One-Handed On, bind Grab Pull, load RSQ_DistanceGrab.pk3. The button does the wrist-flick pull.
 15. Load RSQ_GunCards.pk3 or RSQ_SlowMo.pk3, change some of their settings, then **Reset Every Series Mod**.
     Their settings go back to default; Accessibility's stay. (not yet headset-confirmed)
-16. Seated Play, Steady Hands, Slower Taps: no other mod reads these yet, so there is nothing to see.
-    (not yet headset-confirmed; see Known limits)
+16. Steady Hands (On by default), with RSQ_LaserSight loaded: hold the dot on a far wall. It shakes less than
+    with Steady Hands Off. (not yet headset-confirmed)
+17. Seated Play -> Seated (or Auto: Measure Standing Height standing, then sit down), with RSQ_TacticalRig loaded:
+    the holsters hang from your seated eyes, in reach. (not yet headset-confirmed)
+18. Slower Taps On, with RSQ_Wheel loaded: a slower double tap of the wheel button still brings the last gun
+    back. (not yet headset-confirmed)
 
 ## Works with
 
@@ -106,7 +110,7 @@ Accessibility is a shared service: other mods read it, it does not change them.
 - **Read by**: RSQ_DistanceGrab, RSQ_Gestures, RSQ_Grapple, RSQ_GunBonsaiVR, RSQ_LaserSight, RSQ_Saber,
   RSQ_Score, RSQ_ShieldSaw, RSQ_SlowMo, RSQ_TacticalRig, RSQ_HPBars, RSQ_Wheel, RSQ_Whip (each carries the
   series' helper that reads these settings only while this pk3 is loaded).
-- **Not read by**: RSQ_GunCards, RSQ_Miniboss.
+- **Not read by**: RSQ_GunCards, RSQ_Miniboss, RSQ_Grenade.
 - Wired 2026-11-01 (not yet headset-confirmed):
   - Steady Hands (aiming only, never swings or throws): Wheel pointing, Grapple fire aim and aim dot,
     LaserSight dot and grenade arc, DistanceGrab's lock cone, Whip lock/mark aim, ShieldSaw throw aim,

@@ -11,8 +11,8 @@ The look and sound are jpalomo's grappling hook by default. ZScript and data onl
 
 ## Load order
 
-doom2.wad -> brutal22test6.pk3 -> BD_VoxelPack.pk3 -> BD22_VR-Reloaded_2_0_3h.pk3 ->
-BD22_VR-Reloaded_2.0.3ha_hotfix.pk3 -> `RSQ_Grapple.pk3`
+doom2.wad -> 01 brutal22test6 -> 02 BD22_VoxelPack -> 03 BD22_VR-Reloaded_2.0.3j -> 04-07 XMVE ->
+`RSQ_Grapple.pk3`
 
 - **Needs no other RSQ pk3.**
 - **Plain Doom 2 without Brutal Doom:** works. Brutal Doom's hands class is checked by name only (for the free

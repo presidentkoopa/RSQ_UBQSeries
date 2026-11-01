@@ -9,8 +9,8 @@ the laser sight bundled with QuestZDoom; none of that one's code is used.
 ## Load order
 
 ```
-doom2.wad -> brutal22test6.pk3 -> BD_VoxelPack.pk3 -> BD22_VR-Reloaded_2_0_3h.pk3
-          -> BD22_VR-Reloaded_2.0.3ha_hotfix.pk3 -> RSQ_LaserSight.pk3   (from pk3/)
+doom2.wad -> 01 brutal22test6 -> 02 BD22_VoxelPack -> 03 BD22_VR-Reloaded_2.0.3j -> 04-07 XMVE
+          -> RSQ_LaserSight.pk3   (from pk3/)
 ```
 
 - **Plain Doom 2 without Brutal Doom:** loads (Brutal Doom classes are looked up by name). You get the dot

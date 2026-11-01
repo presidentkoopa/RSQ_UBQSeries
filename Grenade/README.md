@@ -17,7 +17,7 @@ Pk3: `pk3/RSQ_Grenade.pk3` (about 2 MB).
 
 ```
 doom2.wad -> RSQ_Grenade.pk3                                   (plain Doom 2: its own grenade)
-doom2.wad -> brutal22test6 -> 02 BD22_VoxelPack -> 03 BD22_VR-Reloaded_2.0.3j -> 04-07 XMVE -> RSQ_Grenade.pk3
+doom2.wad -> 01 brutal22test6 -> 02 BD22_VoxelPack -> 03 BD22_VR-Reloaded_2.0.3j -> 04-07 XMVE -> RSQ_Grenade.pk3
                                                                (Brutal Doom VR: it stands down, nothing of it shows)
 ```
 

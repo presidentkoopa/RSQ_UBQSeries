@@ -9,8 +9,8 @@ Pk3: `pk3/RSQ_HPBars.pk3`.
 
 ## Load order
 
-doom2.wad -> brutal22test6.pk3 -> BD_VoxelPack.pk3 -> BD22_VR-Reloaded_2_0_3h.pk3 ->
-BD22_VR-Reloaded_2.0.3ha_hotfix.pk3 -> **RSQ_HPBars.pk3**
+doom2.wad -> 01 brutal22test6 -> 02 BD22_VoxelPack -> 03 BD22_VR-Reloaded_2.0.3j -> 04-07 XMVE ->
+**RSQ_HPBars.pk3**
 
 - Works on plain Doom 2 without Brutal Doom (it was run on vanilla doom2 on the rig). No monster class
   is named in the code.
@@ -88,7 +88,7 @@ Load only the order above plus RSQ_HPBars.pk3. Start MAP01.
 
 With other series mods (each not yet headset-confirmed):
 
-14. RSQ_DistanceGrab: headlock a monster. A padlock shows right of its bar while you hold it.
+14. RSQ Melee: headlock a monster. A padlock shows right of its bar while you hold it.
 15. Any hit-stop (Saber, ShieldSaw, Whip, DistanceGrab, a thrown gun from Tactical Rig): a snowflake shows
     for the few tics the monster is frozen.
 16. RSQ_Grapple: hook a hurt monster. The hooked icon shows left of its bar; a yank's landing shows stunned.
@@ -104,7 +104,7 @@ With other series mods (each not yet headset-confirmed):
 - **RSQ_Grapple**: hooked and stunned icons (asked by name).
 - **RSQ_ShieldSaw**: locked icon.
 - **RSQ_Saber**: gripped icon.
-- **RSQ_DistanceGrab**: held padlock (read off the monster; nothing is asked).
+- **RSQ Melee**: held padlock for a headlocked monster (read off the monster; nothing is asked).
 - Any hit-stop from the series: frozen snowflake (read off the monster).
 - coldcite's Top HP Bars: taken over (his bars removed, his HUD options entry opens this menu).
 - Champions: a bar over a champion wearing its icon is lifted above the icon. LegenDoom Lite legendaries

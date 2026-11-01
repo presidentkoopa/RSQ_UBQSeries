@@ -13,8 +13,8 @@ jump gives a Force jump. A training remote is there for practice. ZScript and da
 
 ## Load order
 
-doom2.wad -> brutal22test6.pk3 -> BD_VoxelPack.pk3 -> BD22_VR-Reloaded_2_0_3h.pk3 ->
-BD22_VR-Reloaded_2.0.3ha_hotfix.pk3 -> `RSQ_Saber.pk3`
+doom2.wad -> 01 brutal22test6 -> 02 BD22_VoxelPack -> 03 BD22_VR-Reloaded_2.0.3j -> 04-07 XMVE ->
+`RSQ_Saber.pk3`
 
 - **Needs no other RSQ pk3.**
 - **Plain Doom 2 without Brutal Doom:** works. Brutal Doom's classes are looked up by name at run time, never
@@ -89,7 +89,8 @@ An old saved "Dual key mode" (ubqs_dual_mode 1) reads as On and is rewritten to 
 | Hit-Stop | Off (Option) | A cut freezes the monster: Light 3, Medium 4, Heavy 6 tics. |
 | Perfect Parry Slow-Mo | Option | A parry gives half a second of slow motion. Needs RSQ SlowMo. |
 
-Always on, no row: swept-arc cuts (a fast flick between two frames still cuts), the parry double knock, the stab.
+Always on, no row: swept-arc cuts (a fast flick between two frames still cuts), the parry double knock, the stab,
+the hum growing louder and higher on a hard swing.
 
 Deliberately not on the menu (CVARINFO lists them; they keep working at their defaults): start holding it
 (on), the world-drawn saber, light detail, where turned shots go (where you look), throw strength, the Force at
@@ -189,8 +190,6 @@ headset" in docs/HANDOFF_polish.md.
 - A blocked shot can carry on up to one tic past you before it is put back on the blade (not seen in runs).
 - The second saber's holster in the headset: only the network events were run on the rig (11-01), not a real
   grip on a real body.
-- RSQ Accessibility's Steady Hands is not read by this mod's code (the handoff lists saber deflect aim as still
-  to wire).
 - Not run in a netgame.
 
 ## Credits

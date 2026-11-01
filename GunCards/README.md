@@ -10,8 +10,8 @@ Pk3: `pk3/RSQ_GunCards.pk3` (about 13 MB).
 
 ## Load order
 
-doom2.wad -> brutal22test6.pk3 -> BD_VoxelPack.pk3 -> BD22_VR-Reloaded_2_0_3h.pk3 ->
-BD22_VR-Reloaded_2.0.3ha_hotfix.pk3 -> **RSQ_GunCards.pk3**
+doom2.wad -> 01 brutal22test6 -> 02 BD22_VoxelPack -> 03 BD22_VR-Reloaded_2.0.3j -> 04-07 XMVE ->
+**RSQ_GunCards.pk3**
 
 - Load it after your weapon pack. Needs no other RSQ pk3 to work alone.
 - Plain Doom 2 without Brutal Doom: should work (nothing in the code needs Brutal Doom), but no note says
@@ -69,7 +69,7 @@ Always on (no row):
 Placement page: Up / Down, Left / Right, In / Out for the small card; Up / Down, Left / Right (in the world)
 for the watch card; Size in the World.
 
-Tuning and Debug page: Both Guns on the Main Card (off), Panel (Ermac's 18 panels), Material (Glass),
+Tuning and Debug page: Both Guns on the Main Card (off), Panel (0 = each gun its own; 1-18 one of Ermac's panels for all), Material (Glass),
 Strength, Small Card Colours (Ermac's / Wheel Palette), AMMO / MAGAZINE Word (on), Low Ammo Colour (on),
 Low Below, Fade, the look and watch-check distances and timings (Watch Check Shows: Once It Is Held),
 Tilt: At Most, Hide at Eye: Within, Pickup +N Stays, Show Hand Numbers on Screen (off), Reset All.
@@ -110,6 +110,8 @@ With other mods:
 17. Gun Bonsai 0.10.6 + RSQ_GunBonsaiVR: the watch card shows the gun's level, XP bar and upgrades.
 18. RSQ_Wheel: with Watch Card on, the Wheel's own Wrist Card stands down. Draw in the World cards follow
     the Wheel's palette and font.
+19. RSQ_Grenade on plain Doom 2 (no Brutal Doom): the watch card's GRENADES is RSQ Grenade's count and goes up
+    when you pick up a pack. (not yet headset-confirmed)
 
 ## Works with
 

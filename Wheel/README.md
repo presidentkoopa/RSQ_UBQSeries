@@ -10,10 +10,10 @@ Pk3: `pk3/RSQ_Wheel.pk3`.
 
 ## Load order
 
-doom2.wad -> brutal22test6.pk3 -> BD_VoxelPack.pk3 -> BD22_VR-Reloaded_2_0_3h.pk3 ->
-BD22_VR-Reloaded_2.0.3ha_hotfix.pk3 -> **RSQ_Wheel.pk3**
+doom2.wad -> 01 brutal22test6 -> 02 BD22_VoxelPack -> 03 BD22_VR-Reloaded_2.0.3j -> 04-07 XMVE ->
+**RSQ_Wheel.pk3**
 
-- Works on plain Doom 2 without Brutal Doom (run on freedoom2 on the rig). With BD_VoxelPack the cards show
+- Works on plain Doom 2 without Brutal Doom (run on freedoom2 on the rig). With BD22_VoxelPack the cards show
   the guns' pickup voxels; without it they show flat icons.
 - Needs no other RSQ pk3 to work alone. Slowing time while the ring is open needs **RSQ_SlowMo**; without
   it time runs on unless you turn on Stop Time Without SlowMo.
@@ -96,7 +96,8 @@ Data Sheet page: Show Data Sheet (On), Weapon Stats (On), Track Kills and Accura
 This Level (Option, off), Gun Bonsai Level and Upgrades (On), Card When Pointing at a Gun (On), Compare With
 the Gun You Hold (On), and readers for other mods, all On and silent when the mod is absent: LegenDoom
 Rarity, LegenDoom Effects Row, DoomRL Arsenal Tier, DoomRL Mod Upgrades Row, Combined Arms Meters, Final
-Doomer Set, MetaDoom Demon Keys, ModelSwapper, Lithium, Lithium RPG Stats (ACS).
+Doomer Set, MetaDoom Demon Keys, ModelSwapper, Lithium, Lithium RPG Stats (ACS). Also read with no row (on,
+silent when absent): DOOM Infinite, Pandemonia (with Anarchy and Insurrection), Doomablo, Guncaster, BorderDoom.
 
 Always on (no row):
 
@@ -194,9 +195,8 @@ With other mods:
   was "not yet on a headset": gesture speeds and the wrist pose are first guesses.
 - SHARES names were cut to 10 characters after the rig check; check the sheet reads well.
 - Not run on the rig: the HOLSTER row with a gun really holstered, the Gun Bonsai rows.
-- No painted card faces, no room effects (laser fog, light sweep, floor marks), no mod-specific data rows for
-  Lithium, DOOM Infinite, Pandemonia and the like: these need the REMA engine. Their settings are not on the
-  menu on purpose.
+- No painted card faces, no room effects (laser fog, light sweep, floor marks): these need the REMA engine.
+  Their settings are not on the menu on purpose.
 - The ring is drawn per tic (35 a second), not per frame.
 - The RSQ_Accessibility wiring (Steady Hands, Seated Play, Slower Taps, Rumble Strength, 2026-11-01) ran on the
   simulated rig only (loads clean with and without it; a pick with Steady Hands on still took the gun).

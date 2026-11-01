@@ -13,8 +13,8 @@ climb and mantle over. ZScript and data only, no engine change.
 
 ## Load order
 
-doom2.wad -> brutal22test6.pk3 -> BD_VoxelPack.pk3 -> BD22_VR-Reloaded_2_0_3h.pk3 ->
-BD22_VR-Reloaded_2.0.3ha_hotfix.pk3 -> `RSQ_Whip.pk3`
+doom2.wad -> 01 brutal22test6 -> 02 BD22_VoxelPack -> 03 BD22_VR-Reloaded_2.0.3j -> 04-07 XMVE ->
+`RSQ_Whip.pk3`
 
 - **Needs no other RSQ pk3.** It carries its own copy of the rope code; RSQ Grapple is not needed. The two load
   together (separate binds, separate settings).
@@ -100,8 +100,8 @@ has not been run on your headset yet (HANDOFF.md).
 3. Swing slowly. The thong trails and droops. No crack.
 4. Lift and snap the forearm at a monster. You hear a crack where the tip arrives, and the monster flinches
    into pain.
-5. Crack damage by speed: a soft crack and a hard crack on the same monster. The hard one should hurt more.
-   **(not yet headset-confirmed)**
+5. Crack damage by speed: a soft crack and a hard crack on the same monster. The hard one should hurt more,
+   and you hear the heavy crack for it (the light crack for the soft one). **(not yet headset-confirmed)**
 6. Hold the trigger and point at a monster: a mark shows on it. Lift the whip for a crack while still pointing
    loosely: the mark should stay on the same monster. Alt-fire: the mark moves to the next one.
    **(not yet headset-confirmed)**

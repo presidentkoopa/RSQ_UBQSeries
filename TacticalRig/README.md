@@ -9,8 +9,8 @@ Vest for Doom VR; this is a new implementation that keeps the rig on your body, 
 ## Load order
 
 ```
-doom2.wad -> brutal22test6.pk3 -> BD_VoxelPack.pk3 -> BD22_VR-Reloaded_2_0_3h.pk3
-          -> BD22_VR-Reloaded_2.0.3ha_hotfix.pk3 -> RSQ_TacticalRig.pk3   (from pk3/)
+doom2.wad -> 01 brutal22test6 -> 02 BD22_VoxelPack -> 03 BD22_VR-Reloaded_2.0.3j -> 04-07 XMVE
+          -> RSQ_TacticalRig.pk3   (from pk3/)
 ```
 
 - **Plain Doom 2 without Brutal Doom:** loads and the holsters work (rig-tested on vanilla doom2 with the

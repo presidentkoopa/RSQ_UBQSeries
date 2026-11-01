@@ -13,8 +13,8 @@ and re-implements it as a standalone off-hand mod. No engine change, no player c
 
 ## Load order
 
-doom2.wad -> brutal22test6.pk3 -> BD_VoxelPack.pk3 -> BD22_VR-Reloaded_2_0_3h.pk3 ->
-BD22_VR-Reloaded_2.0.3ha_hotfix.pk3 -> `RSQ_ShieldSaw.pk3`
+doom2.wad -> 01 brutal22test6 -> 02 BD22_VoxelPack -> 03 BD22_VR-Reloaded_2.0.3j -> 04-07 XMVE ->
+`RSQ_ShieldSaw.pk3`
 
 - **Needs no other RSQ pk3.**
 - **Plain Doom 2 without Brutal Doom:** works. Brutal Doom's hands class is looked up by name at run time, never
@@ -97,6 +97,10 @@ Look and Sound page: Block Feedback (on), Positional Sound (on), Take It From (S
 Off Shoulder, Behind the Neck, Small of Back or Neck), Show Mount (When Needed), Shield on Back (off), Others
 See Shield (Netgame Only), Spin Direction (Normal).
 
+Tuning and Debug -> Throw and Disc -> Wall Bounces (3): a wall between the thrown disc and its next ringed
+target is bounced off (sparks off the wall); it turns to the target when it sees it again, else comes home.
+0: the first wall sends it home.
+
 Always on, no row: the bash's visible burst (a small flash and sparks at the body), and a bash never starts
 Brutal Doom's stealth-kill cutscene.
 
@@ -124,20 +128,24 @@ on the simulated rig (2026-10-31 onward).
     of the trigger while snapping your arm forward: it visits each ring, then comes back. Catch it.
 12. Throw again; press the off trigger while it flies: it comes back.
 13. Let go of the trigger with your arm still: nothing is thrown.
-14. Options, one at a time, then back off:
+14. Ring a monster round a corner and throw: the disc bounces off the wall in between (sparks), turns to the
+    ring and comes home. **(not yet headset-confirmed)**
+15. Take It From "Behind the Neck": reach behind your neck and press Use: it draws and puts back there.
+    "Small of Back or Neck": both spots answer. **(not yet headset-confirmed)**
+16. Options, one at a time, then back off:
     - Hit-Stop: a bashed monster freezes for a beat; so does one whose attack you perfectly blocked.
       **(not yet headset-confirmed)**
     - Perfect Block Slow-Mo: needs RSQ SlowMo loaded. A perfect block slows the world for half a second.
       **(not yet headset-confirmed)**
     - BD22 Monsters: a thrown disc cuts a Brutal Doom imp in two instead of grinding it.
-15. With RSQ Saber loaded: lit saber in the main hand, rest it across the shield's front. Block a fireball at
+17. With RSQ Saber loaded: lit saber in the main hand, rest it across the shield's front. Block a fireball at
     the plate's edge: blocks wider. Lift the blade off: back to normal. **(not yet headset-confirmed)**
-16. "Reset All" (Tuning and Debug) puts everything back.
-17. Load RSQ Accessibility (Steady Hands on). Hold the lock on one monster in a group: the rings go on the one
+18. "Reset All" (Tuning and Debug) puts everything back.
+19. Load RSQ Accessibility (Steady Hands on). Hold the lock on one monster in a group: the rings go on the one
     you point at without jumping to its neighbour. Steady Hands off: as before. **(not yet headset-confirmed)**
-18. Accessibility's Seated Play Seated, sitting down: reach over your shoulder (or behind your back): the shield
+20. Accessibility's Seated Play Seated, sitting down: reach over your shoulder (or behind your back): the shield
     is where your seated shoulder is. **(not yet headset-confirmed)**
-19. Accessibility's Rumble Strength 0: the shield's buzzes stop; 2: stronger. **(not yet headset-confirmed)**
+21. Accessibility's Rumble Strength 0: the shield's buzzes stop; 2: stronger. **(not yet headset-confirmed)**
 
 ## Works with
 

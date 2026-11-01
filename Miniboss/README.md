@@ -11,8 +11,8 @@ Pk3: `pk3/RSQ_Miniboss.pk3`.
 
 ## Load order
 
-doom2.wad -> brutal22test6.pk3 -> BD_VoxelPack.pk3 -> BD22_VR-Reloaded_2_0_3h.pk3 ->
-BD22_VR-Reloaded_2.0.3ha_hotfix.pk3 -> **RSQ_Miniboss.pk3** (after the other series pk3s and any monster
+doom2.wad -> 01 brutal22test6 -> 02 BD22_VoxelPack -> 03 BD22_VR-Reloaded_2.0.3j -> 04-07 XMVE ->
+**RSQ_Miniboss.pk3** (after the other series pk3s and any monster
 mods)
 
 - Works on plain Doom 2 without Brutal Doom (run on vanilla doom2 on the rig). No monster class is named.
