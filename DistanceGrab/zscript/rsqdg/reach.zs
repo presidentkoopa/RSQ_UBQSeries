@@ -259,6 +259,34 @@ class RSQDG_Reach
 		return (Ctrl(pmo, hand) == 0) ? pmo.AttackPos : pmo.OffhandPos;
 	}
 
+	// ---- STEADY HANDS (RSQ_Accessibility AC6, a11y.zs) ------------------------
+	//
+	// FOR THE CONE ONLY: what a hand POINTS at, and so what it locks. RSQ_Accessibility smooths both hands'
+	// poses (a 1-euro tremor filter) and offers them by service; a far item held under the hand keeps its
+	// lock instead of chattering between neighbours. NEVER for the throw (aim.zs PalmVelocity samples Palm),
+	// the catch, the carry or the palm gate's roll: those need the raw hand. The controller is the one
+	// playing the hand's part (Ctrl). Off, absent, or out of VR: exactly Palm / Dir.
+	static play bool SteadyOn(PlayerPawn pmo)
+	{
+		return pmo && pmo.player && pmo.OverrideAttackPosDir && RSQDG_A11y.SteadyOn(pmo);
+	}
+	static play Vector3 AimPalm(PlayerPawn pmo, int hand)
+	{
+		if (!SteadyOn(pmo)) return Palm(pmo, hand);
+		let s = RSQDG_A11y.Svc();
+		int pn = pmo.PlayerNumber(), c = Ctrl(pmo, hand);
+		// GetDouble (play) brings the filter up to this tic first
+		return (s.GetDouble("steady", "x", pn, c), s.GetDouble("steady", "y", pn, c), s.GetDouble("steady", "z", pn, c));
+	}
+	static play Vector3 AimDir(PlayerPawn pmo, int hand)
+	{
+		if (!SteadyOn(pmo)) return Dir(pmo, hand);
+		let s = RSQDG_A11y.Svc();
+		int pn = pmo.PlayerNumber(), c = Ctrl(pmo, hand);
+		// the engine's own numbers, filtered (yaw - 90, pitch up): Yaw / Pitch's sums
+		return Fwd(s.GetDouble("steady", "angle", pn, c) + 90, s.GetDouble("steady", "pitch", pn, c), 0);
+	}
+
 	// ---- units -------------------------------------------------------------
 	//
 	// 34 MAP UNITS PER METRE HORIZONTALLY, 28.333 VERTICALLY, and the asymmetry

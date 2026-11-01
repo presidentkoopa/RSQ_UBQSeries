@@ -160,6 +160,13 @@ With other mods:
     (not run on the rig: Gun Bonsai was not there).
 24. RSQ_GunCards with its Watch Card on: the Wheel's Wrist Card stands down.
 25. RSQ_Gestures: while the ring is open, Gestures names no thrusts or punches.
+26. Load RSQ_Accessibility (Steady Hands on). Point at a card and hold still: the highlight stays on that card and
+    does not flicker to its neighbour. Steady Hands off: as before. **(not yet headset-confirmed)**
+27. Accessibility's Slower Taps on: a tap a little longer than before still leaves the ring up, and a slower double
+    tap still brings the last gun back. **(not yet headset-confirmed)**
+28. Accessibility's Seated Play Seated, sitting down: the watch pose still shows the Wrist Card.
+    **(not yet headset-confirmed)**
+29. Accessibility's Rumble Strength 0: the ring's ticks stop. 2: stronger. **(not yet headset-confirmed)**
 
 ## Works with
 
@@ -171,7 +178,13 @@ With other mods:
   Wheel's palette, font set and ring plates.
 - **RSQ_Gestures** asks the Wheel whether it is open, and stays quiet while it is.
 - ModelSwapper: names the model a gun wears; the trigger on the sheet swaps to its Models page.
-- Does not read RSQ_Accessibility (Steady Hands is not wired into card pointing yet).
+- **RSQ_Accessibility** (read, by name; nothing changes without it):
+  - Steady Hands (on in Accessibility): the beam that points at cards, the other hand's compare aim and Card When
+    Pointing at a Gun use the smoothed hand. Reaching into a card, pulling a card out and throwing a gun back stay on
+    the raw hand. Steady Hands off: exactly as before.
+  - Seated Play: the Wrist Card's watch pose is measured from your seated eyes.
+  - Slower Taps: Hold to Pick, Double Tap: Last Gun and the Re-centre Window are 1.5x longer.
+  - Rumble Strength: every ring rumble x0 to x2 (0 = none).
 
 ## Known limits / open
 
@@ -185,7 +198,13 @@ With other mods:
   Lithium, DOOM Infinite, Pandemonia and the like: these need the REMA engine. Their settings are not on the
   menu on purpose.
 - The ring is drawn per tic (35 a second), not per frame.
-- Steady Hands (RSQ_Accessibility) is not wired into card pointing yet (Task A).
+- The RSQ_Accessibility wiring (Steady Hands, Seated Play, Slower Taps, Rumble Strength, 2026-11-01) ran on the
+  simulated rig only (loads clean with and without it; a pick with Steady Hands on still took the gun).
+- Smoother (owner's pick 40, 2026-11-01): the billboard groups and the colour cache are looked up by key instead of
+  scanned, and each card's basis is worked out once a tic and reused by the hit tests (camera-facing ones still turn
+  to each caller, as before). No behaviour change: on the rig 8100 ray and touch tests against a copy of the old code
+  matched exactly, and a scripted point-and-pick took the same gun. The cost of a tic with the ring open did not move
+  measurably on the rig (handler time 1.18 -> 1.24 ms, within run-to-run noise); one hit test got about 15% cheaper.
 
 ## Credits
 

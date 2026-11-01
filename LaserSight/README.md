@@ -102,6 +102,10 @@ simulated rig.
 14. Set *Show Range* to At the Dot. A number should show the distance. **(the text was never seen on the
     rig; check that it reads at all)**
 15. Turn on *Infrared Only*. The laser disappears until you pick up light amplification goggles.
+16. Load RSQ Accessibility (Steady Hands on). Hold the dot on a far wall: it shakes visibly less than with
+    Steady Hands off. A fast swing still puts the dot where you swung. **(not yet headset-confirmed; on the rig a
+    3-degree hand shake moved the dot 1.5 units on and 7.7 units off)**
+17. Loads on plain Doom 2 without Brutal Doom VR (a load error there was fixed on 2026-11-01).
 
 ## Works with
 
@@ -109,8 +113,9 @@ simulated rig.
   those hands (its *Yield to Laser Sight* row).
 - **RSQ Accessibility:** colour-blind colours per hand (a lock is then told by shape, not colour),
   Photosensitive Mode caps the pulses at 2.5 Hz, Cue Size on the dot, glow and arc, Text Size on the
-  readout. Shared settings only act with it loaded. Its Steady Hands is **not wired into the dot yet**
-  (handoff task A).
+  readout. Steady Hands (on in Accessibility): the dot (and a grenade's arc) is traced from the smoothed hand,
+  so it sits steadier on a far wall; the beam stays glued to the gun. Steady Hands off: as before. Rumble
+  Strength 0: no toggle tick (it is the engine's one fixed buzz). Shared settings only act with it loaded.
 - Other weapon packs can give their own muzzle points and colours through two services
   (`LaserMuzzleService`, `LaserColorService`). No RSQ mod provides them today.
 

@@ -34,7 +34,7 @@ class wr_Watch : EventHandler
 	private bool watching(PlayerPawn pmo, int h)
 	{
 		if (!pmo.OverrideAttackPosDir) return false;
-		Vector3 eye = (pmo.pos.xy, pmo.player.viewz);
+		Vector3 eye = (pmo.pos.xy, wr_Rig.eyeZ(pmo));   // seated: your eyes (Seated Play)
 		Vector3 hp = wr_Rig.handPos(pmo, h);
 		// true proportions: the engine shortens a hand's height above or below the eye by
 		// level.pixelstretch (wr_Rig.trueDelta), and this test is in real centimetres
@@ -155,7 +155,7 @@ class wr_Watch : EventHandler
 	// Over the wrist, nudged toward the eye so the forearm does not cut it, title on top.
 	private void place(PlayerPawn pmo, int h)
 	{
-		Vector3 eye = (pmo.pos.xy, pmo.player.viewz);
+		Vector3 eye = (pmo.pos.xy, wr_Rig.eyeZ(pmo));   // seated: your eyes (Seated Play)
 		Vector3 hp = wr_Rig.handPos(pmo, h);
 		Vector3 toEye = (eye - hp).Unit();
 		double sc0 = cv("wr_watch_scale", 0.6);

@@ -141,6 +141,10 @@ port.
 19. Turn *Hit-Stop (thrown hits)* to Beat. A monster hit by a throw freezes briefly.
     **(not yet headset-confirmed)**
 20. With RSQ Laser Sight loaded and a gun in the hand, the grab beam on that hand hides.
+21. Load RSQ Accessibility (Steady Hands on). Point at a far item and hold: the lock stays on it instead of
+    chattering. Throw something hard: it still flies where you threw. Steady Hands off: as before.
+    **(not yet headset-confirmed; on the rig a 3-degree hand shake moved the cone 0.6 degrees on, 3 off)**
+22. Accessibility's Rumble Strength 0: the grab's rumbles stop; 2: stronger. **(not yet headset-confirmed)**
 
 ## Works with
 
@@ -152,8 +156,10 @@ port.
   credited to you.
 - **RSQ Grapple:** can use this mod's grab buttons (its own setting).
 - **RSQ Accessibility:** colour-blind palette, Photosensitive Mode, Gesture Ease, Off-Hand Modifier,
-  Cue Size, vignette, sound cues. Shared settings only act with it loaded. Its Steady Hands is **not wired
-  into this mod yet** (handoff task A).
+  Cue Size, vignette, sound cues. Steady Hands (on in Accessibility): the aim cone that picks what to lock
+  (and the idle beam's far end) points from the smoothed hand; throws, catches, the carry and the palm gate
+  stay on the raw hand. Steady Hands off: as before. Rumble Strength scales the grab's rumble x0 to x2 (0 =
+  none; the pulse route's fixed buzz is only switched off at 0). Shared settings only act with it loaded.
 - **Gun Bonsai VR patch:** its grab perks (Long Arm, Iron Grip and others) grow this mod's settings.
 
 ## Known limits / open issues

@@ -84,6 +84,31 @@ class RSQGR_Util
 		return -pmo.Pitch;
 	}
 
+	// STEADY HANDS (RSQ_Accessibility AC6, a11y.zs): the hand's smoothed pose, for AIMING only -- where the hook is
+	// fired (input.zs SendPress) and the aim dot. Never the climb, the rope's pull, the lasso or the lash (they follow
+	// the raw hand). The controller is the one playing the hand's part (Ctrl). Any scope: RSQ_Accessibility's
+	// clearscope answer, brought up to date in its WorldTick (a press is read in ui scope after it). Off, absent, or
+	// a pose PoseGood refuses: exactly HandPos / HandYaw / HandPitch.
+	static clearscope bool SteadyOn(PlayerPawn pmo, int hand)
+	{
+		return PoseGood(pmo, hand) && RSQGR_A11y.SteadyOn(pmo);
+	}
+	static clearscope Vector3 AimPos(PlayerPawn pmo, int hand)
+	{
+		if (!SteadyOn(pmo, hand)) return HandPos(pmo, hand);
+		return RSQGR_A11y.SteadyPos(pmo, Ctrl(pmo, hand));
+	}
+	static clearscope double AimYaw(PlayerPawn pmo, int hand)
+	{
+		if (!SteadyOn(pmo, hand)) return HandYaw(pmo, hand);
+		return RSQGR_A11y.SteadyAngle(pmo, Ctrl(pmo, hand), "angle") + 90;   // the engine's yaw - 90, filtered
+	}
+	static clearscope double AimPitch(PlayerPawn pmo, int hand)
+	{
+		if (!SteadyOn(pmo, hand)) return HandPitch(pmo, hand);
+		return RSQGR_A11y.SteadyAngle(pmo, Ctrl(pmo, hand), "pitch");
+	}
+
 	// THE WORLD'S CLOCK. RSQ_SlowMo slows every thing near a player that is not the
 	// player's own (RSQSM_Service "scale", permille; -1 or absent = full speed). The
 	// player and this mod's own actors run in real time (its RealTime test passes any

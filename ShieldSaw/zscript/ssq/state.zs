@@ -121,7 +121,7 @@ class SSQ_Handler : EventHandler
 	{
 		let p = mo.player;
 		double a = mo.angle;
-		return mo.pos + (cos(a), sin(a), 0) * CM(UV(p, 'ssq_neck_fwd', -12.0)) + (0, 0, p.viewz - mo.pos.z + CM(UV(p, 'ssq_neck_up', -20.0)));
+		return mo.pos + (cos(a), sin(a), 0) * CM(UV(p, 'ssq_neck_fwd', -12.0)) + (0, 0, p.viewz - mo.pos.z + CM(UV(p, 'ssq_neck_up', -20.0)) - SeatUnits(mo));
 	}
 	// how far the hand is from where the shield is taken, in the units Reach() is in: with both back spots, the nearer
 	// one (the neck's smaller reach scaled up to match)
@@ -145,7 +145,28 @@ class SSQ_Handler : EventHandler
 		double a = mo.angle;
 		Vector3 f = (cos(a), sin(a), 0);
 		Vector3 l = (cos(a + 90), sin(a + 90), 0);
-		return mo.pos + f * fwd + l * side + (0, 0, p.viewz - mo.pos.z + up);
+		return mo.pos + f * fwd + l * side + (0, 0, p.viewz - mo.pos.z + up - SeatUnits(mo));
+	}
+
+	// SEATED PLAY (RSQ_Accessibility AC3, a11y.zs; the way RSQ TacticalRig's body.zs hangs its holsters from your seated
+	// eyes). The mount hangs from the pawn's eye (viewz), which stays at standing height while you sit (vr_crouch_use_button
+	// on, the default) though your shoulders and back drop with your eyes. So seated, it comes down by how far your eyes
+	// are below standing. The drop travels in the synced pose (SendPose, "ssq-pose" Args[2]) so every machine agrees; the
+	// sender sends 0 standing, with the crouch button off (viewz then follows your head already) or without Accessibility.
+	static clearscope double SeatUnits(PlayerPawn mo)
+	{
+		let h = Get();
+		if (!h || !mo || !mo.player) return 0;
+		int n = mo.PlayerNumber();
+		if (n < 0 || n >= MAXPLAYERS || !h.mPose[n] || h.mPose[n].seatCm <= 0) return 0;
+		return h.mPose[n].seatCm / 100.0 * SSQ_Hand.VU() / SSQ_Hand.PS(mo);
+	}
+	// this machine's own drop, for the pose it sends (centimetres, 0..255)
+	static int LocalSeatCm(PlayerPawn mo)
+	{
+		let cb = CVar.FindCVar('vr_crouch_use_button');
+		if (cb && !cb.GetBool()) return 0;
+		return clamp(int(SSQ_A11y.SeatDrop(mo) * 100.0 + 0.5), 0, 255);
 	}
 
 	// THE HOLSTERED POSE, DERIVED FROM THE MESH, not from hand-set offsets.
@@ -664,7 +685,7 @@ class SSQ_Handler : EventHandler
 		// hold what is already locked
 		for (int k = mLocks[i].Size() - 1; k >= 0; k--)
 		{
-			if (LockHolds(mo, pose.pos[0], pose.F, mLocks[i][k])) { mLockMiss[i][k] = 0; continue; }
+			if (LockHolds(mo, pose.pos[0], pose.A, mLocks[i][k])) { mLockMiss[i][k] = 0; continue; }   // A: Steady Hands' aim, or F
 			bool dead = !mLocks[i][k] || mLocks[i][k].health <= 0;
 			mLockMiss[i][k] = mLockMiss[i][k] + 1;
 			if (dead || mLockMiss[i][k] > grace) { mLocks[i].Delete(k); mLockMiss[i].Delete(k); }
@@ -678,7 +699,7 @@ class SSQ_Handler : EventHandler
 		if (mLocks[i].Size() < want && Level.maptime - mLastPaint[i] >= SVI('ssq_paint_every', 3))
 		{
 			Array<Actor> fresh;
-			SSQ_Disc.FindTargets(mo, pose.pos[0], pose.F, fresh);
+			SSQ_Disc.FindTargets(mo, pose.pos[0], pose.A, fresh);   // A: Steady Hands' aim, or F
 			for (int k = 0; k < fresh.Size(); k++)
 			{
 				let t = fresh[k];
@@ -1078,6 +1099,14 @@ class SSQ_Handler : EventHandler
 			[yaw, pitch, roll, grip] = SSQ_Hand.UnpackAng(e.Args[1]);
 			mPose[i].Push(mo.pos + SSQ_Hand.UnpackPos(e.Args[0]), mo.pos, mo.angle, yaw, pitch, roll, grip != 0, Level.maptime);
 			mPose[i].left = (e.Args[2] & 1) != 0;
+			// Args[2]: bit 0 left-handed; bits 1-20 the smoothed aim's yaw / pitch (10 bits each) with bit 21 saying it
+			// is there (Steady Hands on at the sender); bits 22-29 the sender's seat drop in cm (Seated Play)
+			if ((e.Args[2] >> 21) & 1)
+			{
+				double ay = ((e.Args[2] >> 1) & 0x3FF) / 1023.0 * 360.0, ap = ((e.Args[2] >> 11) & 0x3FF) / 1023.0 * 180.0 - 90.0;
+				mPose[i].A = (cos(ap) * cos(ay), cos(ap) * sin(ay), sin(ap));
+			}
+			mPose[i].seatCm = (e.Args[2] >> 22) & 0xFF;
 		}
 		else if (e.Name == "ssq-draw")
 		{
@@ -1310,14 +1339,31 @@ class SSQ_Handler : EventHandler
 		bool swapped = st == SS_STOWED && SSQ_A11y.Swapped(mo);
 		if (swapped) hand = mo.AttackPos;
 		bool nearMount = MountDist(mo, hand) <= Zone(p) * 1.5;
-		bool want = st != SS_STOWED || grip || nearMount;
+		// a changed seat drop is sent too, so the mount follows you sitting down even while nothing else needs the pose
+		int seatCm = LocalSeatCm(mo);
+		let mine = mPose[consoleplayer];
+		bool seatStale = mine && abs(seatCm - mine.seatCm) > 2;
+		bool want = st != SS_STOWED || grip || nearMount || seatStale;
 		if (!want) return;
 		Vector3 F = swapped ? SSQ_Hand.MainDir(mo, 0, 0) : SSQ_Hand.OffDir(mo, 0, 0);
 		Vector3 L = swapped ? SSQ_Hand.MainDir(mo, 90, 0) : SSQ_Hand.OffDir(mo, 90, 0);
 		double yaw = atan2(F.y, F.x);
 		double pitch = asin(clamp(F.z, -1, 1));
 		double roll = SSQ_Hand.RollOf(F, L);
-		EventHandler.SendNetworkEvent("ssq-pose", SSQ_Hand.PackPos(hand - mo.pos), SSQ_Hand.PackAng(yaw, pitch, roll, grip), LocalLeftHanded() ? 1 : 0);
+		int extra = (LocalLeftHanded() ? 1 : 0) | (seatCm << 22);
+		// STEADY HANDS (RSQ_Accessibility AC6, a11y.zs): the aim the locks and the throw's aim share is turned by how far
+		// the smoothed hand differs from the raw one (yaw and pitch), and sent beside the raw pose. Off / absent: not sent.
+		int ctl = swapped ? 0 : 1;
+		if (SSQ_A11y.SteadyOn(mo))
+		{
+			double ry = (ctl == 0 ? mo.AttackAngle : mo.OffhandAngle), rp = (ctl == 0 ? mo.AttackPitch : mo.OffhandPitch);
+			double ay = yaw + Actor.DeltaAngle(ry, SSQ_A11y.SteadyAngle(mo, ctl, "angle"));
+			double ap = clamp(pitch + (SSQ_A11y.SteadyAngle(mo, ctl, "pitch") - rp), -90.0, 90.0);
+			int iy = SSQ_Hand.ClampI(int(round((ay % 360.0 + 360.0) % 360.0 / 360.0 * 1023.0)), 0, 1023);
+			int ip = SSQ_Hand.ClampI(int(round((ap + 90.0) / 180.0 * 1023.0)), 0, 1023);
+			extra |= (iy << 1) | (ip << 11) | (1 << 21);
+		}
+		EventHandler.SendNetworkEvent("ssq-pose", SSQ_Hand.PackPos(hand - mo.pos), SSQ_Hand.PackAng(yaw, pitch, roll, grip), extra);
 	}
 
 }

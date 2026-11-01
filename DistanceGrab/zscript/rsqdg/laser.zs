@@ -403,13 +403,16 @@ class RSQDG_Laser : EventHandler
 			// Traced at the raw pitch, the line ran steeper than the hand and the
 			// cone around it (measured: 25.7 deg up drawn at 30.0).
 			double reach = RSQDG_Reach.Num("rsqdg_reach", p, 512.0);
-			Vector3 rd = RSQDG_Reach.Dir(pmo, h);
+			// Steady Hands (RSQ_Accessibility, reach.zs AimPalm / AimDir): the idle line ends where the CONE looks,
+			// from the smoothed hand, so the two cannot disagree. Off / absent: Palm and Dir, as before.
+			Vector3 rd = RSQDG_Reach.AimDir(pmo, h);
+			Vector3 ap = RSQDG_Reach.AimPalm(pmo, h);
 			Vector3 md = (rd.x, rd.y, rd.z / RSQDG_Reach.PIXELSTRETCH);
 			double mpit = -atan2(md.z, md.xy.Length());
 			FLineTraceData t;
-			bool hit = pmo.LineTrace(RSQDG_Reach.Yaw(pmo, h), reach * md.Length(), mpit,
-				TRF_ABSPOSITION | TRF_THRUACTORS, realPalm.z, realPalm.x, realPalm.y, t);
-			to = hit ? t.HitLocation : (realPalm + md * reach);
+			bool hit = pmo.LineTrace(RSQDG_Reach.SteadyOn(pmo) ? atan2(rd.y, rd.x) : RSQDG_Reach.Yaw(pmo, h), reach * md.Length(), mpit,
+				TRF_ABSPOSITION | TRF_THRUACTORS, ap.z, ap.x, ap.y, t);
+			to = hit ? t.HitLocation : (ap + md * reach);
 			to = LeadTo(h, to);
 		}
 		if (onThing) toPrimed[h] = false;   // a thing's middle does not slide

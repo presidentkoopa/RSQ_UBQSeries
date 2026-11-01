@@ -133,6 +133,11 @@ on the simulated rig (2026-10-31 onward).
 15. With RSQ Saber loaded: lit saber in the main hand, rest it across the shield's front. Block a fireball at
     the plate's edge: blocks wider. Lift the blade off: back to normal. **(not yet headset-confirmed)**
 16. "Reset All" (Tuning and Debug) puts everything back.
+17. Load RSQ Accessibility (Steady Hands on). Hold the lock on one monster in a group: the rings go on the one
+    you point at without jumping to its neighbour. Steady Hands off: as before. **(not yet headset-confirmed)**
+18. Accessibility's Seated Play Seated, sitting down: reach over your shoulder (or behind your back): the shield
+    is where your seated shoulder is. **(not yet headset-confirmed)**
+19. Accessibility's Rumble Strength 0: the shield's buzzes stop; 2: stronger. **(not yet headset-confirmed)**
 
 ## Works with
 
@@ -147,7 +152,10 @@ on the simulated rig (2026-10-31 onward).
   Rebound, Battering Ram, Ricochet, Meat Grinder, Hunter's Return. Without the patch nothing changes.
 - **Brutal Doom VR (BD22Q):** its off-hand hands give way to the shield; flick reload with a gun in the main
   hand and the shield in the off follows BD22Q's flick setting.
-- **RSQ Accessibility:** its comfort, colour-blind and gesture settings. Inert without it.
+- **RSQ Accessibility:** its comfort, colour-blind and gesture settings. Steady Hands (on in Accessibility):
+  painting locks and the aimed share of a throw use the smoothed hand; blocks, bashes and how hard you throw stay on
+  the raw hand. Seated Play: seated, the shoulder, back and neck mounts come down with your eyes. Rumble Strength
+  scales the shield's rumbles x0 to x2 (0 = none). Inert without it.
 
 ## Known limits / open issues
 
@@ -158,8 +166,8 @@ on the simulated rig (2026-10-31 onward).
 - A returned bullet is fired by a helper, so co-op friendly-fire rules do not apply to it, and Gun Bonsai cannot
   credit its damage.
 - Planting the shield in the floor: not built (owner said no).
-- RSQ Accessibility's Steady Hands is not read by this mod's code (the handoff lists ShieldSaw throw aim as
-  still to wire).
+- The RSQ Accessibility wiring (2026-11-01: Steady Hands, Seated Play, Rumble Strength) ran on the simulated rig only: it loads clean with
+  and without Accessibility, in the Brutal Doom order too. Its effect on this mod's aim was not measured on the rig.
 - Where Ermac's first shield mesh came from, and where the hand and sounds came from before Rusted Legacy, is
   not recorded.
 

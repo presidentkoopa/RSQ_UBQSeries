@@ -16,7 +16,8 @@ class RSQGR_Core : EventHandler
 	const NHOOK = MAXPLAYERS * 2;
 	// THE TAP WINDOW (owner's QoL pick GR8): a press released within rsqgr_tap_tics tics is a tap (let go); held
 	// longer it reels. Was the constant 8; the default stays 8.
-	static clearscope int TapTics() { return clamp(RSQGR_Util.Opt("rsqgr_tap_tics", 8), 1, 35); }
+	// RSQ_Accessibility's Slower Taps (AC7, a11y.zs): x1.5 (a server setting, so every machine agrees).
+	static clearscope int TapTics() { return RSQGR_A11y.Tap(clamp(RSQGR_Util.Opt("rsqgr_tap_tics", 8), 1, 35)); }
 
 	RSQGR_Hook hooks[NHOOK];
 	bool held[NHOOK];
@@ -219,11 +220,11 @@ class RSQGR_Core : EventHandler
 		for (int hand = 0; hand < 2; hand++)
 		{
 			if (hooks[consoleplayer * 2 + hand] || !RSQGR_Util.PoseGood(pmo, hand) || !RSQGR_Climb.HandFree(pmo, hand, true)) continue;
-			Vector3 org = RSQGR_Util.HandPos(pmo, hand);
+			Vector3 org = RSQGR_Util.AimPos(pmo, hand);   // the aim dot: Steady Hands, as the press fires
 			Vector2 fwd = Actor.AngleToVector(pmo.Angle, 1);
 			Vector3 rel = org - pmo.Pos;
 			if ((rel.xy dot fwd) < DOT_REACH) continue;
-			Vector3 dir = RSQGR_Util.MapDir(RSQGR_Util.HandYaw(pmo, hand), RSQGR_Util.HandPitch(pmo, hand));
+			Vector3 dir = RSQGR_Util.MapDir(RSQGR_Util.AimYaw(pmo, hand), RSQGR_Util.AimPitch(pmo, hand));
 			double range = max(64.0, RSQGR_Util.Num("rsqgr_range", 1024)) * RSQGR_Perks.Factor(pmo, 'range');
 			let tr = GetTracer();
 			tr.shooter = pmo;
@@ -408,6 +409,8 @@ class RSQGR_Core : EventHandler
 	{
 		if (!h || !h.owner || !h.owner.player || h.owner.Health <= 0) return;
 		if (!RSQGR_Util.Flag("rsqgr_thump", true)) return;
+		// RSQ_Accessibility's Rumble Strength: the thump is the engine's one fixed pulse, so only 0 changes it (none)
+		if (RSQGR_A11y.Rumble() <= 0) return;
 		if (level.maptime - h.lastThump < THUMP_GAP) return;
 		h.lastThump = level.maptime;
 		let pmo = h.owner;

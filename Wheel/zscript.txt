@@ -17,6 +17,7 @@ version "4.10"
 
 #include "zscript/wheel/rsmenu.zs"   // Radiant Silvergun Options: the series' shared menu pieces (tools/rsmenu)
 #include "zscript/wheel/wr_q_pallum.zs"
+#include "zscript/wheel/wr_a11y.zs"   // RSQ_Accessibility's settings, by name (Accessibility/tools/a11y_template.zs)
 #include "zscript/wheel/wr_q_shim.zs"
 #include "zscript/wheel/wr_q_look.zs"
 #include "zscript/wheel/wr_q_vox.zs"

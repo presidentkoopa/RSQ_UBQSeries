@@ -246,6 +246,9 @@ class RSQLS_Sight : EventHandler
 	private void Buzz(PlayerPawn pmo, int h)
 	{
 		if (!RSQLS_Hand.Flag("rsqls_haptics", pmo.player, true)) return;
+		// RUMBLE STRENGTH (RSQ_Accessibility AC2): this tick is the engine's fixed missile buzz (one strength), so the
+		// setting can only take it away: 0 is none. Any other value, and without RSQ_Accessibility, it buzzes as ever.
+		if (RSQLS_A11y.Rumble() <= 0) return;
 		pmo.SpawnPlayerMissile("RSQLS_Buzz", pmo.angle, noautoaim: true,
 			aimflags: (h == 1) ? ALF_ISOFFHAND : 0);
 	}
@@ -446,6 +449,10 @@ class RSQLS_Sight : EventHandler
 			[bdGot, bdAt, bdDir] = RSQLS_BDBore.Line(pmo, h, w);
 			if (bdGot) { muzzle = bdAt; dir = bdDir; }
 		}
+		// STEADY HANDS (RSQ_Accessibility, hand.zs Steadied): the dot's line from the smoothed hand. Off / absent: raw.
+		double aimYaw, aimPitch;
+		bool steady;
+		[steady, muzzle, dir, aimYaw, aimPitch] = RSQLS_Hand.Steadied(pmo, h, muzzle, dir);
 
 		// A THROWN WEAPON (grenades): once it has been seen firing, the line is
 		// the ballistic path its projectile will take, and the spot is where it
@@ -473,7 +480,7 @@ class RSQLS_Sight : EventHandler
 			double g = level.gravity * aGr * 0.00125;
 			Sector s0 = level.PointInSector(muzzle.xy);
 			if (s0) g *= s0.gravity;
-			Vector3 v = RSQLS_Hand.Fwd(RSQLS_Hand.Yaw(pmo, h) + aYw, RSQLS_Hand.Pitch(pmo, h) + aEl) * aSp;
+			Vector3 v = RSQLS_Hand.Fwd(aimYaw + aYw, aimPitch + aEl) * aSp;   // aimYaw / aimPitch: Yaw / Pitch, or steadied
 			Vector3 pos = muzzle;
 			hit = false;
 			ArcPush(muzzle);

@@ -333,6 +333,9 @@ class RSQDG_Feel : EventHandler
 	// a left-handed player's lock buzzes the hand that locked.
 	private void Emit(PlayerPawn pmo, double amp0, double amp1)
 	{
+		// RUMBLE STRENGTH (RSQ_Accessibility AC2, a11y.zs): both hands x0..2 (0 = none). 1 without it.
+		double rs = RSQDG_A11y.Rumble();
+		amp0 *= rs; amp1 *= rs;
 		lastAmp[0] = amp0;
 		lastAmp[1] = amp1;
 		if (amp0 <= 0.001 && amp1 <= 0.001) return;   // the last quake dies next tic
@@ -350,8 +353,8 @@ class RSQDG_Feel : EventHandler
 		double left  = leftHanded ? amp0 : amp1;
 
 		rumbleSpot.A_QuakeEx(
-			clamp(left, 0.0, 1.0) * AMP_TO_QUAKE,     // X -> left controller
-			clamp(right, 0.0, 1.0) * AMP_TO_QUAKE,    // Y -> right controller
+			clamp(left, 0.0, max(1.0, rs)) * AMP_TO_QUAKE,     // X -> left controller (cap 1, or Rumble Strength above it)
+			clamp(right, 0.0, max(1.0, rs)) * AMP_TO_QUAKE,    // Y -> right controller
 			0,                                        // Z: no haptic, only shake
 			2,                                        // see header: always countdown 1 at draw
 			0, TREMOR_RADIUS, "", QF_WAVE,
@@ -375,6 +378,8 @@ class RSQDG_Feel : EventHandler
 	private void Fire(int hand, PlayerPawn pmo)
 	{
 		if (!pmo) return;
+		// Rumble Strength: the pulse is the engine's one fixed buzz, so the setting can only take it away (0)
+		if (RSQDG_A11y.Rumble() <= 0) return;
 		pmo.LineAttack(pmo.angle, 0.1, 0, 1, 'None', "RSQDG_NullPuff",
 			LAF_NOINTERACT | ((hand == 1) ? LAF_ISOFFHAND : 0));
 		busyUntil[hand] = MSTime() + BUSY_MS;

@@ -14,7 +14,7 @@
 class RSQWP_Core : EventHandler
 {
 	const NHOOK = MAXPLAYERS * 2;
-	const TAP_TICS = 8;
+	const TAP_TICS = 8;   // RSQ_Accessibility's Slower Taps widens it x1.5 where it is read (RSQWP_A11y.Tap; a server setting)
 
 	RSQWP_Hook hooks[NHOOK];
 	bool held[NHOOK];
@@ -79,7 +79,7 @@ class RSQWP_Core : EventHandler
 		held[i] = false;
 		let h = hooks[i];
 		if (!h || !wasHeld || pressFired[i]) return;
-		if (level.maptime - pressTic[i] <= TAP_TICS
+		if (level.maptime - pressTic[i] <= RSQWP_A11y.Tap(TAP_TICS)
 			&& (h.phase == RSQWP_Hook.PH_LATCH || h.phase == RSQWP_Hook.PH_BITE))
 			LetGo(h, true);
 	}
@@ -374,7 +374,7 @@ class RSQWP_Core : EventHandler
 			// REEL: holding the bind takes the rope in. The press that fired keeps
 			// reeling the moment it latches (hold = zip); a new press reels only once
 			// it outlasts a tap, so a tap to let go does not tug first.
-			h.reelHeld = held[i] && (pressFired[i] || level.maptime - pressTic[i] > TAP_TICS);
+			h.reelHeld = held[i] && (pressFired[i] || level.maptime - pressTic[i] > RSQWP_A11y.Tap(TAP_TICS));
 			if (h.reelHeld)
 			{
 				h.ropeLen = min(h.ropeLen, d);

@@ -47,10 +47,11 @@ class RSQWP_Input : EventHandler
 			int yawd = 0;
 			if (RSQWP_Util.PoseGood(pmo, hand))
 			{
-				Vector3 h = RSQWP_Util.HandPos(pmo, hand);
+				// Steady Hands (RSQ_Accessibility, util.zs AimPos): the hook leaves along the smoothed aim. Off: the raw hand.
+				Vector3 h = RSQWP_Util.AimPos(pmo, hand);
 				Vector3 off = h - pmo.Pos;
-				double yaw = RSQWP_Util.HandYaw(pmo, hand);
-				double pit = RSQWP_Util.HandPitch(pmo, hand);
+				double yaw = RSQWP_Util.AimYaw(pmo, hand);
+				double pit = RSQWP_Util.AimPitch(pmo, hand);
 				yaw = yaw % 360.0; if (yaw < 0) yaw += 360.0;
 				yawd = clamp(int(yaw * 10 + 0.5), 0, 3599);
 				a1 = clamp(int(pit * 10 + (pit >= 0 ? 0.5 : -0.5)), -900, 900) + 1000;

@@ -175,10 +175,10 @@ class SSQ_Disc : Actor
 		if (hv.Length() > 0.01)
 		{
 			double bl = clamp(SSQ_Handler.SV('ssq_throw_blend', 0.7), 0.0, 1.0);
-			Vector3 mix = hv.Unit() * bl + pose.F * (1.0 - bl);
+			Vector3 mix = hv.Unit() * bl + pose.A * (1.0 - bl);   // the aim's share: Steady Hands' aim, or F (pose.zs A)
 			dir = mix.Length() > 0.001 ? mix.Unit() : hv.Unit();
 		}
-		else dir = pose.F;
+		else dir = pose.A;
 		sp = max(sp, SSQ_Handler.SV('ssq_speed_floor', 12.0));
 		Vector3 aim = dir;	// the lock cone opens along the throw, not along the controller
 		// LEAVE TOWARD THE FIRST RING. The steering blends only 22% of the wanted heading per

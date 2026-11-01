@@ -124,6 +124,10 @@ has not been run on your headset yet (HANDOFF.md).
       **(not yet headset-confirmed)**
 15. Bind Whip (Main) and switch to a gun. Hold the bind: the whip comes out of that hand. Release: it rolls up. Try Whip Style "Assist": a press throws a lash for you.
 16. "Reset All" on Tuning and Debug puts everything back.
+17. Load RSQ Accessibility (Steady Hands on). Hold the mark on one of two monsters standing close together: it
+    stays on that one. A crack still goes where you swing. Steady Hands off: as before.
+    **(not yet headset-confirmed)**
+18. Accessibility's Rumble Strength 0: the whip's buzzes stop; 2: stronger. **(not yet headset-confirmed)**
 
 ## Works with
 
@@ -134,7 +138,10 @@ has not been run on your headset yet (HANDOFF.md).
 - **RSQ HP Bars:** the hit-stop option shows HP Bars' frozen marker (it reads the monster's freeze, not the
   whip).
 - **RSQ Accessibility:** Hold to Toggle on the Whip binds (Real style becomes press out, press in), Gesture Ease
-  widens the rope grab reach, the colour-blind palette. All inert without Accessibility.
+  widens the rope grab reach, the colour-blind palette. Steady Hands (on in Accessibility): the lock and the
+  mark (what a crack flies to) and where a hook is fired use the smoothed hand; the lash, the crack, the lasso and
+  the climb stay on the raw hand. Slower Taps: the tap that lets go of a rope is 1.5x longer. Rumble Strength
+  scales the whip's rumbles x0 to x2 (0 = none). All inert without Accessibility.
 
 ## Known limits / open issues
 
@@ -147,8 +154,8 @@ has not been run on your headset yet (HANDOFF.md).
 - A missile blown up near you still hurts you; it keeps its shooter.
 - Snag reach is uneven: the same throw caught a lip from 30 units but not from 50+.
 - No RSQ Score, HP Bars or Gun Bonsai hooks (Grapple's service and perks were not copied).
-- RSQ Accessibility's Steady Hands is not read by this mod's code (the handoff lists Whip aim as still to
-  wire).
+- The RSQ Accessibility wiring (2026-11-01: Steady Hands, Slower Taps, Rumble Strength) ran on the simulated rig only: it loads clean with
+  and without Accessibility, in the Brutal Doom order too. Its effect on this mod's aim was not measured on the rig.
 - Not run: left-handed, Quest performance (desktop: about 0.15 ms a tic out, 0.25 lashing).
 
 ## Credits

@@ -1002,7 +1002,7 @@ class wr_Rig : EventHandler
 			if (mOpen)
 			{
 				// a second quick press on a ring a quick tap just opened: back to the last gun
-				int dbl = int(cv("wr_doubletap", 10.0));
+				int dbl = wr_A11y.Tap(int(cv("wr_doubletap", 10.0)));   // Slower Taps (RSQ_Accessibility AC7): x1.5
 				bool doubled = dbl > 0 && mTapTic > 0 && now - mTapTic <= dbl;
 				mPressOpened = false;
 				closeRig(doubled);
@@ -1018,7 +1018,7 @@ class wr_Rig : EventHandler
 		if (!mPressOpened || !mOpen) { mPressOpened = false; return; }
 		mPressOpened = false;
 		int held = now - mPressTic;
-		if (held >= int(cv("wr_hold_tics", 9.0)))
+		if (held >= wr_A11y.Tap(int(cv("wr_hold_tics", 9.0))))   // Slower Taps: a slower tap is still a tap
 		{
 			// a card under a hand takes it; the sheet, or nothing, just closes
 			bool onCard = mHovered != 0 && mHovered != mSheetHit && (mPage != PAGE_WEAPONS || HoveredClass() != null);
@@ -1044,7 +1044,7 @@ class wr_Rig : EventHandler
 		if (!eitherHand() || mPage != PAGE_WEAPONS || mHovered == 0) return null, 0;
 		int other = (mPokeHand == 1) ? 0 : 1;
 		int oid; Vector2 ouv;
-		[oid, ouv] = wr_BB.AimBillboard(handPos(pmo, other), handDir(pmo, other), POINTER_RANGE);
+		[oid, ouv] = wr_BB.AimBillboard(aimPos(pmo, other), aimDir(pmo, other), POINTER_RANGE);   // Steady Hands
 		double touchR = cv("wr_touch", 7.0) * cv("wr_scale", 1.0);
 		if (touchR > 0.0)
 		{
@@ -1159,7 +1159,7 @@ class wr_Rig : EventHandler
 
 		if (mOpen && mRigHand == hand)
 		{
-			int window = int(cv("wr_recenter_window", 10.0));
+			int window = wr_A11y.Tap(int(cv("wr_recenter_window", 10.0)));   // Slower Taps
 			if (window > 0 && mOpenTics <= window)
 			{
 				mHaveAnchor = false;
@@ -7852,7 +7852,7 @@ class wr_Rig : EventHandler
 	// for every hand as LaserTraceTargetMain/Off.
 	private static Actor laserTarget(PlayerPawn pmo, int hand)
 	{
-		Vector3 org = handPos(pmo, hand), dir = handDir(pmo, hand);
+		Vector3 org = aimPos(pmo, hand), dir = aimDir(pmo, hand);   // pointing: Steady Hands (aimPos)
 		FLineTraceData t;
 		pmo.LineTrace(atan2(dir.y, dir.x), 512, -asin(clamp(dir.z, -1.0, 1.0)), TRF_ABSPOSITION | TRF_ALLACTORS,
 			org.z, org.x, org.y, t);
@@ -7929,6 +7929,51 @@ class wr_Rig : EventHandler
 			p = -pmo.pitch;
 		}
 
+		double cp = cos(p);
+		return (cp * cos(y), cp * sin(y), sin(p));
+	}
+
+	// SEATED PLAY (RSQ_Accessibility AC3, wr_a11y.zs): where your eyes are, for tests measured from them (the wrist
+	// card's watch pose). Standing, the view height (player.viewz), as always. Seated, your eyes sit SeatDrop metres
+	// lower while viewz stays put (QuestZDoom keeps the pawn's eye at its ViewHeight while vr_crouch_use_button is on,
+	// the default; RSQ TacticalRig body.zs measured this), so the eye comes down by that much. With the button off
+	// the engine already moves viewz with your head, and nothing is added. Without RSQ_Accessibility: viewz.
+	static double eyeZ(PlayerPawn pmo)
+	{
+		if (!pmo || !pmo.player) return pmo ? pmo.pos.z + pmo.height * 0.9 : 0;
+		double z = pmo.player.viewz;
+		let cb = CVar.FindCVar("vr_crouch_use_button");
+		if (cb && !cb.GetBool()) return z;
+		double drop = wr_A11y.SeatDrop(pmo);
+		if (drop <= 0) return z;
+		let vu = CVar.FindCVar("vr_vunits_per_meter");
+		double upm = (vu && vu.GetFloat() > 0) ? vu.GetFloat() : 34.0;
+		double ps = level.pixelstretch > 0 ? level.pixelstretch : 1.2;
+		return z - drop * upm / ps;
+	}
+
+	// STEADY HANDS (RSQ_Accessibility AC6, wr_a11y.zs): the hand's smoothed pose, for POINTING at cards only -- the
+	// beam, what it lands on, the other hand's compare aim. Never for a touch, a pull-out or a throw-back snap (those
+	// read the raw hand above). Asked through RSQ_Accessibility's service by name (GetDouble brings its filter up to
+	// this tic); with the setting off, without that pk3, or without tracking: exactly handPos / handDir.
+	static bool steadyOn(PlayerPawn pmo)
+	{
+		return pmo && pmo.player && pmo.OverrideAttackPosDir && wr_A11y.SteadyOn(pmo);
+	}
+	static Vector3 aimPos(PlayerPawn pmo, int hand)
+	{
+		if (!steadyOn(pmo)) return handPos(pmo, hand);
+		let s = wr_A11y.Svc();
+		int pn = pmo.PlayerNumber(), h = (hand == 1) ? 1 : 0;
+		return (s.GetDouble("steady", "x", pn, h), s.GetDouble("steady", "y", pn, h), s.GetDouble("steady", "z", pn, h));
+	}
+	static Vector3 aimDir(PlayerPawn pmo, int hand)
+	{
+		if (!steadyOn(pmo)) return handDir(pmo, hand);
+		let s = wr_A11y.Svc();
+		int pn = pmo.PlayerNumber(), h = (hand == 1) ? 1 : 0;
+		// the smoothed angle and pitch are the engine's own numbers (yaw - 90, pitch up), filtered: handDir's sums
+		double y = s.GetDouble("steady", "angle", pn, h) + 90, p = s.GetDouble("steady", "pitch", pn, h);
 		double cp = cos(p);
 		return (cp * cos(y), cp * sin(y), sin(p));
 	}
@@ -8142,12 +8187,16 @@ class wr_Rig : EventHandler
 		// the beam unusable, and once the ring moved out in front of the hand and
 		// reach was amplified it was solving a problem that no longer existed.
 		Vector3 dir = handDir(pmo, mPokeHand);
+		// STEADY HANDS (RSQ_Accessibility AC6): the beam POINTS from the smoothed pose, so a hand held still on a card
+		// does not flicker the highlight between neighbours. The touch below (a fingertip in a card) and the pull /
+		// throw snaps stay on the raw hand. Without RSQ_Accessibility, or with Steady Hands off, these are org / dir.
+		Vector3 aimO = aimPos(pmo, mPokeHand), aimD = aimDir(pmo, mPokeHand);
 
 		int rayHit;
 		Vector2 uv;
 		// Finite range on purpose: unlimited means the ray leaves the room and
 		// can find another mod's billboard through a wall.
-		[rayHit, uv] = wr_BB.AimBillboard(org, dir, POINTER_RANGE);
+		[rayHit, uv] = wr_BB.AimBillboard(aimO, aimD, POINTER_RANGE);
 
 		// KEPT SEPARATELY from the selection below, and that separation is the
 		// whole fix. What the RAY hit and what is SELECTED are different
@@ -8242,7 +8291,7 @@ class wr_Rig : EventHandler
 		{
 			// Stop the beam at the card it found, so it reads as touching rather
 			// than passing through.
-			reach = distanceToHit(org, dir, rayHit);
+			reach = distanceToHit(aimO, aimD, rayHit);
 		}
 		else
 		{
@@ -8271,7 +8320,7 @@ class wr_Rig : EventHandler
 		// player's laser forever.
 		wr_VR.SetVRLaserRange(rayHit != 0 ? reach : 0);
 
-		decor(pmo, org, dir, reach, hit != 0);
+		decor(pmo, aimO, aimD, reach, hit != 0);
 		cardLight(pmo);
 
 
@@ -8352,7 +8401,7 @@ class wr_Rig : EventHandler
 		{
 			int other = (mPokeHand == 1) ? 0 : 1;
 			int oid; Vector2 ouv;
-			[oid, ouv] = wr_BB.AimBillboard(handPos(pmo, other), handDir(pmo, other), POINTER_RANGE);
+			[oid, ouv] = wr_BB.AimBillboard(aimPos(pmo, other), aimDir(pmo, other), POINTER_RANGE);   // Steady Hands
 			if (oid != 0 && oid != mHovered && oid != mSheetHit)
 			{
 				Class<Weapon> ca = HoveredClass();
@@ -8509,7 +8558,7 @@ class wr_Rig : EventHandler
 	{
 		Vector3 o = handPos(pmo, hand), d = handDir(pmo, hand);
 		int h; Vector2 uv;
-		[h, uv] = wr_BB.AimBillboard(o, d, POINTER_RANGE);
+		[h, uv] = wr_BB.AimBillboard(aimPos(pmo, hand), aimDir(pmo, hand), POINTER_RANGE);   // pointing: Steady Hands
 		if (h != 0) return true;
 		if (touchR <= 0.0) return false;
 		double td;

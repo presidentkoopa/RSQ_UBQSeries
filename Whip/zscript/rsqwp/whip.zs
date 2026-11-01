@@ -594,8 +594,9 @@ class RSQWP_Whip : EventHandler
 		int ph = 1 - hand;
 		if (lockHeld[i])
 		{
-			Vector3 org = RSQWP_Util.HandPos(pmo, ph);
-			Vector3 dir = RSQWP_Util.MapDir(RSQWP_Util.HandYaw(pmo, ph), RSQWP_Util.HandPitch(pmo, ph));
+			// the pointing hand's smoothed aim (Steady Hands, util.zs AimPos); off / absent: the raw hand
+			Vector3 org = RSQWP_Util.AimPos(pmo, ph);
+			Vector3 dir = RSQWP_Util.MapDir(RSQWP_Util.AimYaw(pmo, ph), RSQWP_Util.AimPitch(pmo, ph));
 			Actor was = lockOn[i];
 			bool wasLine = lockLine[i];
 			Actor best = null;
@@ -691,8 +692,9 @@ class RSQWP_Whip : EventHandler
 			lockOn[i] = null; lockLine[i] = false; lockLeft[i] = 0; markLine[i] = null; markNext[i] = false;
 			return;
 		}
-		Vector3 org = RSQWP_Util.HandPos(pmo, hand);
-		Vector3 dir = RSQWP_Util.MapDir(RSQWP_Util.HandYaw(pmo, hand), RSQWP_Util.HandPitch(pmo, hand));
+		// the whip hand's smoothed aim (Steady Hands, util.zs AimPos) picks the mark; off / absent: the raw hand
+		Vector3 org = RSQWP_Util.AimPos(pmo, hand);
+		Vector3 dir = RSQWP_Util.MapDir(RSQWP_Util.AimYaw(pmo, hand), RSQWP_Util.AimPitch(pmo, hand));
 		double prio = max(0.0, RSQWP_Util.Num("rsqwp_whip_prio", 256));
 		cA.Clear(); cL.Clear(); cPx.Clear(); cPy.Clear(); cPz.Clear(); cK.Clear();
 		let it = BlockThingsIterator.CreateFromPos(org.x, org.y, org.z, 64, LOCK_RANGE, false);
@@ -1826,6 +1828,8 @@ class RSQWP_Whip : EventHandler
 	void Buzz(PlayerPawn pmo, int hand, double amp, int tics)
 	{
 		if (!pmo || !pmo.player || pmo.player != players[consoleplayer]) return;
+		amp *= RSQWP_A11y.Rumble();   // RSQ_Accessibility's Rumble Strength x0..2 (0 = none); 1 without it
+		if (amp <= 0) return;
 		let q = RSQWP_WhipBuzz(Actor.Spawn("RSQWP_WhipBuzz", pmo.pos, NO_REPLACE));
 		if (!q) return;
 		let cv = CVar.FindCVar('vr_control_scheme');

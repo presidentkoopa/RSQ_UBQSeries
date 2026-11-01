@@ -141,6 +141,36 @@ class RSQLS_Hand
 		return l > 0 ? m / l : Dir(pmo, h);
 	}
 
+	// STEADY HANDS (RSQ_Accessibility AC6, a11y.zs): the DOT only. RSQ_Accessibility smooths each hand's pose (a
+	// 1-euro tremor filter) and offers it by service; the muzzle and barrel line this mod traced from the raw hand are
+	// carried, unchanged relative to the gun, from the raw hand's frame onto the smoothed one -- so every route above
+	// (a measured barrel, a muzzle table, Brutal Doom's bore) is smoothed the same way. The beam is a HUD model glued
+	// to the gun by the engine and is not touched. Returns false (and the inputs) with the setting off, without
+	// RSQ_Accessibility, or out of VR: exactly as before. Also the smoothed yaw / pitch, for the grenade arc.
+	static play bool, Vector3, Vector3, double, double Steadied(PlayerPawn pmo, int h, Vector3 muzzle, Vector3 dir)
+	{
+		double ry = Yaw(pmo, h), rp = Pitch(pmo, h);
+		if (!pmo.player || !pmo.OverrideAttackPosDir || !RSQLS_A11y.SteadyOn(pmo)) return false, muzzle, dir, ry, rp;
+		let s = RSQLS_A11y.Svc();
+		if (!s) return false, muzzle, dir, ry, rp;
+		int pn = pmo.PlayerNumber();
+		// GetDouble (play) brings RSQ_Accessibility's filter up to this tic first
+		Vector3 sg = (s.GetDouble("steady", "x", pn, h), s.GetDouble("steady", "y", pn, h), s.GetDouble("steady", "z", pn, h));
+		// the smoothed angles are the engine's own (yaw - 90, pitch up, roll), filtered: Yaw / Pitch / Roll's sums
+		double sy = s.GetDouble("steady", "angle", pn, h) + 90, sp = s.GetDouble("steady", "pitch", pn, h);
+		double sr = s.GetDouble("steady", "roll", pn, h), rr = Roll(pmo, h);
+		Vector3 rF = Fwd(ry, rp), rU = Up(ry, rp, rr), rS = Side(ry, rp, rr);
+		Vector3 sF = Fwd(sy, sp), sU = Up(sy, sp, sr), sS = Side(sy, sp, sr);
+		double ps = Ps();
+		// both turned in the ROOM (map Z stretched back by pixelstretch first, squashed again after)
+		Vector3 off = muzzle - Grip(pmo, h); off.z *= ps;
+		Vector3 o2 = sF * (off dot rF) + sU * (off dot rU) + sS * (off dot rS); o2.z /= ps;
+		Vector3 d = dir; d.z *= ps;
+		Vector3 d2 = sF * (d dot rF) + sU * (d dot rU) + sS * (d dot rS); d2.z /= ps;
+		double dl = d2.Length();
+		return true, sg + o2, dl > 0 ? d2 / dl : dir, sy, sp;
+	}
+
 	static double Num(String n, PlayerInfo p, double d) { let c = CVar.GetCVar(n, p); return c ? c.GetFloat() : d; }
 	static bool   Flag(String n, PlayerInfo p, bool d)  { let c = CVar.GetCVar(n, p); return c ? c.GetBool() : d; }
 	static int    Opt(String n, PlayerInfo p, int d)    { let c = CVar.GetCVar(n, p); return c ? c.GetInt() : d; }

@@ -64,6 +64,30 @@ class RSQWP_Util
 		return true;
 	}
 
+	// STEADY HANDS (RSQ_Accessibility AC6, a11y.zs): the hand's smoothed pose, for AIMING only -- the lock and the mark
+	// (whip.zs Lock / Mark: what a crack will fly to) and where a hook is fired (input.zs). Never the lash, the crack,
+	// the lasso, the climb or anything the handle does (the swing physics need the raw hand). The controller is the one
+	// playing the hand's part (Ctrl). Off, absent, or a pose PoseGood refuses: exactly HandPos / HandYaw / HandPitch.
+	static clearscope bool SteadyOn(PlayerPawn pmo, int hand)
+	{
+		return PoseGood(pmo, hand) && RSQWP_A11y.SteadyOn(pmo);
+	}
+	static clearscope Vector3 AimPos(PlayerPawn pmo, int hand)
+	{
+		if (!SteadyOn(pmo, hand)) return HandPos(pmo, hand);
+		return RSQWP_A11y.SteadyPos(pmo, Ctrl(pmo, hand));
+	}
+	static clearscope double AimYaw(PlayerPawn pmo, int hand)
+	{
+		if (!SteadyOn(pmo, hand)) return HandYaw(pmo, hand);
+		return RSQWP_A11y.SteadyAngle(pmo, Ctrl(pmo, hand), "angle") + 90;   // the engine's yaw - 90, filtered
+	}
+	static clearscope double AimPitch(PlayerPawn pmo, int hand)
+	{
+		if (!SteadyOn(pmo, hand)) return HandPitch(pmo, hand);
+		return RSQWP_A11y.SteadyAngle(pmo, Ctrl(pmo, hand), "pitch");
+	}
+
 	// Where the hand is, in the world. Body fallback: the shooting point.
 	static clearscope Vector3 HandPos(PlayerPawn pmo, int hand)
 	{

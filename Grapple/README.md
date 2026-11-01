@@ -109,6 +109,11 @@ the simulated rig (2026-10-31 onward).
 12. Tuning and Debug -> "Tap to Let Go (tics)": lower it to 3: a medium press now reels instead of letting go.
     **(not yet headset-confirmed)**
 13. "Reset All" puts everything back.
+14. Load RSQ Accessibility (Steady Hands on). Hold a hand still on a far wall spot and fire: the claw lands on that
+    spot. Steady Hands off: as before. **(not yet headset-confirmed)**
+15. Accessibility's Slower Taps on: a press a little longer than "Tap to Let Go" still lets go of the rope.
+    **(not yet headset-confirmed)**
+16. Accessibility's Rumble Strength 0: no bite thump. **(not yet headset-confirmed)**
 
 ## Works with
 
@@ -123,7 +128,10 @@ the simulated rig (2026-10-31 onward).
 - **RSQ Whip:** loads beside it; separate binds and settings.
 - **Gun Bonsai with the RSQ Gun Bonsai VR patch:** nine hook perks (Long Line, Fast Reel, Heavy Haul, Get Over
   Here, Bowling, Barbed Claw, Slingshot, Steady Line, Double Hook). Without the patch nothing changes.
-- **RSQ Accessibility:** Hold to Toggle on the hook binds, Gesture Ease, colour-blind cues. Inert without it.
+- **RSQ Accessibility:** Hold to Toggle on the hook binds, Gesture Ease, colour-blind cues. Steady Hands (on in
+  Accessibility): the hook is fired along the smoothed hand, and the aim dot follows it; the climb, the rope, the
+  lasso and the lash stay on the raw hand. Slower Taps: Tap to Let Go is 1.5x longer. Rumble Strength 0: no bite
+  thump (the thump is the engine's one fixed buzz, so other values leave it as it is). Inert without it.
 
 ## Known limits / open issues
 
@@ -133,8 +141,8 @@ the simulated rig (2026-10-31 onward).
 - The rope does not wrap round corners: it slips and lets go.
 - A monster dangling on the rope outside Lasso mode is dropped after about 1.5 s without progress.
 - jpalomo's art and sounds are slated for replacement (see Credits).
-- RSQ Accessibility's Steady Hands is not read by this mod's code (the handoff lists Grapple aim as still to
-  wire).
+- The RSQ Accessibility wiring (2026-11-01: Steady Hands, Slower Taps, Rumble Strength) ran on the simulated rig only: it loads clean with
+  and without Accessibility, in the Brutal Doom order too. Its effect on this mod's aim was not measured on the rig.
 - Not run: Cheello's Voxel Doom II, netplay.
 
 ## Credits

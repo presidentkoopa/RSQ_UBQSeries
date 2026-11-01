@@ -60,6 +60,16 @@ class wr_BBRec play
 	// own half-extent as a fraction of the billboard's -- or, for a glyph strip, cell size
 	Array<double> pOX, pOY, pSX, pSY;
 	Array<int>    pKind;     // 0 quad, 1 glyph strip
+
+	// THE BASIS, RESOLVED ONCE A TIC (pick 40 "smoother"; Quest teardown apply/07 8.3). A fixed-facing billboard's
+	// centre, half-extents and basis depend only on its own fields, its group and the tic (a group's grow/fold curve
+	// is a function of level.maptime), so the first resolve() of a tic is kept here and every later one that tic --
+	// the hit tests, then place() -- reads it back unchanged. cDirty: a setter touched pos/size/angles/group since.
+	// Camera-facing ones still resolve per call (they turn to the caller's eye, as before).
+	bool    cDirty;
+	int     cTic, cGver;
+	Vector3 cC, cR, cU, cN;
+	double  cHW, cHH, cYaw, cTilt, cRoll;
 }
 
 class wr_BBGroup play
@@ -68,6 +78,10 @@ class wr_BBGroup play
 	Vector3 origin;
 	double  from, to;
 	int     startTic, durTics;
+	int     ver;             // bumped by every change to origin or scale (the records' basis caches key on it)
+	int     sTic;            // groupScale()'s answer for tic sTic, while sOk
+	double  sVal;
+	bool    sOk;
 }
 
 class wr_BBQuad : Actor
@@ -119,7 +133,7 @@ class wr_BB : EventHandler
 
 	Map<int, wr_BBRec>   mRecs;
 	Array<wr_BBRec>      mList;         // same records, in creation order, for iteration
-	Array<wr_BBGroup>    mGroups;
+	Map<int, wr_BBGroup> mGroupMap;     // by id (was the Array mGroups, scanned from inside resolve(): apply/07 8.2a; a new name so an old save's array is not read as a map)
 	int mNextId, mNextGid, mOrder;
 
 	//----------------------------------------------------------------------
@@ -132,9 +146,8 @@ class wr_BB : EventHandler
 	}
 	private wr_BBGroup grp(int gid)
 	{
-		if (gid <= 0) return null;
-		for (int i = 0; i < mGroups.Size(); i++) if (mGroups[i].id == gid) return mGroups[i];
-		return null;
+		if (gid <= 0 || !mGroupMap.CheckKey(gid)) return null;
+		return mGroupMap.Get(gid);
 	}
 
 	//======================================================================
@@ -188,21 +201,21 @@ class wr_BB : EventHandler
 
 	static void MoveBillboard(int id, Vector3 pos)
 	{
-		let b = Get(); if (!b) return; let r = b.rec(id); if (r) r.pos = pos;
+		let b = Get(); if (!b) return; let r = b.rec(id); if (r) { r.pos = pos; r.cDirty = true; }
 	}
 	static void OrientBillboard(int id, double yaw, double tilt, int facing)
 	{
 		let b = Get(); if (!b) return; let r = b.rec(id); if (!r) return;
-		r.yaw = yaw; r.tilt = tilt; r.facing = facing;
+		r.yaw = yaw; r.tilt = tilt; r.facing = facing; r.cDirty = true;
 	}
 	static void RollBillboard(int id, double roll)
 	{
-		let b = Get(); if (!b) return; let r = b.rec(id); if (r) r.roll = roll;
+		let b = Get(); if (!b) return; let r = b.rec(id); if (r) { r.roll = roll; r.cDirty = true; }
 	}
 	static void ResizeBillboard(int id, double w, double h)
 	{
 		let b = Get(); if (!b) return; let r = b.rec(id); if (!r) return;
-		r.w = w; r.h = h;
+		r.w = w; r.h = h; r.cDirty = true;
 	}
 	static void SetBillboardAlpha(int id, double alpha)
 	{
@@ -218,31 +231,31 @@ class wr_BB : EventHandler
 		let b = Get(); if (!b) return 0;
 		let g = new("wr_BBGroup");
 		g.id = ++b.mNextGid; g.origin = origin; g.from = 1; g.to = 1; g.durTics = 0;
-		b.mGroups.Push(g);
+		b.mGroupMap.Insert(g.id, g);
 		return g.id;
 	}
 	static void SetBillboardGroup(int id, int gid)
 	{
-		let b = Get(); if (!b) return; let r = b.rec(id); if (r) r.group = gid;
+		let b = Get(); if (!b) return; let r = b.rec(id); if (r) { r.group = gid; r.cDirty = true; }
 	}
 	static void SetBillboardGroupScale(int gid, double scale)
 	{
 		let b = Get(); if (!b) return; let g = b.grp(gid); if (!g) return;
-		g.from = scale; g.to = scale; g.durTics = 0;
+		g.from = scale; g.to = scale; g.durTics = 0; g.ver++; g.sOk = false;
 	}
 	static void AnimateBillboardGroup(int gid, double from, double to, int tics)
 	{
 		let b = Get(); if (!b) return; let g = b.grp(gid); if (!g) return;
-		g.from = from; g.to = to; g.startTic = level.maptime; g.durTics = max(0, tics);
+		g.from = from; g.to = to; g.startTic = level.maptime; g.durTics = max(0, tics); g.ver++; g.sOk = false;
 	}
 	static void SetBillboardGroupOrigin(int gid, Vector3 origin)
 	{
-		let b = Get(); if (!b) return; let g = b.grp(gid); if (g) g.origin = origin;
+		let b = Get(); if (!b) return; let g = b.grp(gid); if (g) { g.origin = origin; g.ver++; }
 	}
 	static void RemoveBillboardGroup(int gid)
 	{
 		let b = Get(); if (!b) return;
-		for (int i = 0; i < b.mGroups.Size(); i++) if (b.mGroups[i].id == gid) { b.mGroups.Delete(i); break; }
+		if (gid > 0 && b.mGroupMap.CheckKey(gid)) b.mGroupMap.Remove(gid);
 	}
 
 	// Ray versus billboard: the nearest hittable one the ray crosses, and where (u left to
@@ -318,6 +331,7 @@ class wr_BB : EventHandler
 		r.flags = flags; r.text = text; r.alpha = 1.0; r.expire = expire;
 		r.order = ++mOrder;
 		r.lookDirty = true;
+		r.cDirty = true;
 		mRecs.Insert(r.id, r);
 		mList.Push(r);
 		return r.id;
@@ -352,6 +366,13 @@ class wr_BB : EventHandler
 	{
 		let g = grp(gid);
 		if (!g) return 1.0;
+		if (g.sOk && g.sTic == level.maptime) return g.sVal;   // once a tic (a pure function of the group and the tic)
+		double v = groupScaleAt(g);
+		g.sTic = level.maptime; g.sVal = v; g.sOk = true;
+		return v;
+	}
+	private double groupScaleAt(wr_BBGroup g)
+	{
 		if (g.durTics <= 0) return g.to;
 		double t = (level.maptime - g.startTic) / double(g.durTics);
 		if (t <= 0) return g.from;
@@ -370,6 +391,15 @@ class wr_BB : EventHandler
 	// it). Returns centre and half-extents and leaves the basis in mR/mU/mN.
 	private Vector3, double, double resolve(wr_BBRec r, Vector3 eye)
 	{
+		bool fixed = r.facing != BBF_CAMERAYAW && r.facing != BBF_CAMERA;
+		int gver = 0;
+		if (r.group) { let g0 = grp(r.group); gver = g0 ? g0.ver : -1; }
+		if (fixed && !r.cDirty && r.cTic == level.maptime && r.cGver == gver)
+		{
+			mR = r.cR; mU = r.cU; mN = r.cN;
+			mYaw = r.cYaw; mTilt = r.cTilt; mRoll = r.cRoll;
+			return r.cC, r.cHW, r.cHH;
+		}
 		Vector3 c = r.pos;
 		double s = 1.0;
 		if (r.group)
@@ -401,7 +431,14 @@ class wr_BB : EventHandler
 		mR = bR; mU = bU; mN = bR cross bU;
 		mYaw = useYaw; mTilt = useTilt; mRoll = useRoll;
 		double g = max(s, 0.01);
-		return c, r.w * 0.5 * g, r.h * 0.5 * g;
+		double hw = r.w * 0.5 * g, hh = r.h * 0.5 * g;
+		if (fixed)
+		{
+			r.cC = c; r.cHW = hw; r.cHH = hh; r.cR = bR; r.cU = bU; r.cN = mN;
+			r.cYaw = useYaw; r.cTilt = useTilt; r.cRoll = useRoll;
+			r.cTic = level.maptime; r.cGver = gver; r.cDirty = false;
+		}
+		return c, hw, hh;
 	}
 	double mYaw, mTilt, mRoll;
 
@@ -433,13 +470,13 @@ class wr_BB : EventHandler
 	// the wanted colour (TRNSLATE's %[0,0,0]:[r,g,b] ramp, built at run time), so a WAD graphic
 	// keeps its own shading -- the stone's grain, a glyph's edge -- and only its hue changes.
 	// Doom colours its fonts the same way. One translation per colour, kept for the session.
-	Array<int>            mTransKey;
+	Map<int, int>         mTransAt;     // packed colour -> index into mTransId (was a linear scan per part per tic: 8.2b)
 	Array<TranslationID>  mTransId;
 
 	TranslationID TransFor(color c)
 	{
 		int key = (c.r << 16) | (c.g << 8) | c.b;
-		for (int i = 0; i < mTransKey.Size(); i++) if (mTransKey[i] == key) return mTransId[i];
+		if (mTransAt.CheckKey(key)) return mTransId[mTransAt.Get(key)];
 		Translation t;
 		for (int k = 0; k < 256; k++)
 		{
@@ -453,7 +490,7 @@ class wr_BB : EventHandler
 		}
 		t.colors[0] = color(0, 0, 0, 0);   // index 0 is a patch's transparency; it must stay clear
 		TranslationID id = t.AddTranslation();
-		mTransKey.Push(key);
+		mTransAt.Insert(key, mTransId.Size());
 		mTransId.Push(id);
 		return id;
 	}
@@ -649,7 +686,7 @@ class wr_BB : EventHandler
 	// A level change destroys every actor; the records go with them.
 	override void WorldUnloaded(WorldEvent e)
 	{
-		mRecs.Clear(); mList.Clear(); mGroups.Clear();
+		mRecs.Clear(); mList.Clear(); mGroupMap.Clear();
 	}
 }
 
@@ -719,6 +756,8 @@ class wr_VR play
 	static void VRHaptic(int hand, double intensity, double durationMs)
 	{
 		let mo = players[consoleplayer].mo;
+		// RUMBLE STRENGTH (RSQ_Accessibility AC2, wr_a11y.zs): every ring rumble x0..2; 0 is none at all. 1 without it.
+		intensity *= wr_A11y.Rumble();
 		if (!mo || intensity <= 0) return;
 		// THE QUAKE ROUTE NEEDS vr_quake_haptic_level > 0 (r_utility.cpp:1085, a user cvar, 0.8 by default). Zeroed,
 		// every click, thump and warning of the ring went silent (Quest teardown apply/07 7.3, owner's pick 39). Then
@@ -745,7 +784,7 @@ class wr_VR play
 		bool mainIsRight = !LeftHanded();
 		q.feels = mo;
 		q.left = (hand == 0) ? !mainIsRight : mainIsRight;
-		q.amp = clamp(intensity, 0.05, 1.0);
+		q.amp = clamp(intensity, 0.05, max(1.0, wr_A11y.Rumble()));   // the old cap of 1, raised only by Rumble Strength above 1
 		q.total = clamp(int(durationMs * TICRATE / 1000.0 + 0.5), 1, 16);
 		q.tleft = q.total;
 	}
@@ -830,8 +869,8 @@ class wr_VRState : EventHandler
 			if (!active && !mBoth) { if (mBeam[hand]) mBeam[hand].bInvisible = true; continue; }
 			// the idle hand's dim beam stands down where RSQ_LaserSight already draws one
 			if (!active && laserBeamOn(hand)) { if (mBeam[hand]) mBeam[hand].bInvisible = true; continue; }
-			Vector3 org = wr_Rig.handPos(PlayerPawn(mo), hand);
-			Vector3 dir = wr_Rig.handDir(PlayerPawn(mo), hand);
+			Vector3 org = wr_Rig.aimPos(PlayerPawn(mo), hand);   // the beams point: Steady Hands (wr_Rig.aimPos)
+			Vector3 dir = wr_Rig.aimDir(PlayerPawn(mo), hand);
 			double len = active ? mLaserRange : 0;
 			if (!active)
 			{
@@ -882,7 +921,7 @@ class wr_VRState : EventHandler
 		b.A_SetRenderStyle(alpha, STYLE_AddStencil);
 		b.bInvisible = false;
 		// A ribbon along the ray, turned about it to face the eye.
-		Vector3 eye = (mo.pos.xy, mo.player.viewz);
+		Vector3 eye = (mo.pos.xy, wr_Rig.eyeZ(PlayerPawn(mo)));   // seated: your eyes (Seated Play)
 		Vector3 mid = org + dir * (len * 0.5);
 		Vector3 toEye = eye - mid;
 		Vector3 nrm = toEye - dir * (toEye dot dir);

@@ -238,12 +238,16 @@ class SSQ_FX abstract play
 	{
 		if (!mo || !mo.player) return;
 		if (SSQ_Handler.UVI(mo.player, 'ssq_feedback', 1) == 0) return;
+		// RSQ_Accessibility's Rumble Strength (AC2, a11y.zs): x0..2, 0 none; 1 without it
+		double rs = SSQ_A11y.Rumble();
+		strength *= rs;
+		if (strength <= 0) return;
 		bool left = !SSQ_Handler.LeftHanded(mo.player);
 		let q = SSQ_Buzzer(Actor.Spawn('SSQ_Buzzer', mo.pos));
 		if (!q) return;
 		q.feels = mo;
 		q.left = left;
-		q.amp = clamp(strength, 0.1, 1.0);
+		q.amp = clamp(strength, 0.1, max(1.0, rs));   // the old cap of 1, raised only by Rumble Strength above 1
 		q.total = clamp(tics, 1, 16);
 		q.tleft = q.total;
 		q.twice = twice;
