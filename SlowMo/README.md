@@ -96,7 +96,9 @@ simulated rig (no sound, no haptics there).
     **(not yet headset-confirmed)**
 13. Fire your own Brutal Doom gun in slow motion. Your tracers move at world speed, not crawling.
     **(not yet headset-confirmed)**
-14. Turn on *Adrenaline* with an empty meter and press the key. You hear "oof" and a low buzz; nothing
+14. With RSQ Gestures: shove the gun in your main hand into a zombieman. The world slows briefly as he is
+    knocked back. **(not yet headset-confirmed; rig: the pulse arrived, 300 ms at 35 %)**
+15. Turn on *Adrenaline* with an empty meter and press the key. You hear "oof" and a low buzz; nothing
     slows. Kill a few monsters and try again.
 
 ## Works with
@@ -105,6 +107,10 @@ simulated rig (no sound, no haptics there).
 - **RSQ Wheel:** the ring slows time while open, also while slow motion is easing out.
 - **RSQ Saber / RSQ ShieldSaw:** their perfect-parry / perfect-block slow-mo options pulse this clock.
 - **RSQ Score:** big kills ask for a short slow-mo pulse.
+- **RSQ Gestures:** a landed gun butt shove (or BD22 VR Reloaded's own butt strike, when it is loaded) asks
+  for a 300 ms pulse at 35 % (Gestures' *Slow-Mo After a Shove*, on by default; the row is in RSQ Gestures'
+  menu, not here). While that slow motion lasts, Gestures' F.E.A.R. Effect doubles shotgun gore. Nothing
+  changed in SlowMo for it. **(new 2026-11-01, not yet headset-confirmed)**
 - **RSQ Grapple, RSQ Whip:** read the world's speed so they slow with it.
 - **RSQ Miniboss:** can hold slow motion through its window.
 - **RSQ Accessibility:** Gesture Ease on the wrist cross, a floor on how fast slow motion may ease, and

@@ -21,10 +21,20 @@
 // And the QoL round (owner, 2026-10-31 afternoon):
 //   SHOVE     GE2, owner: "I want the BD gun-butt shove in our RSQ melee, it's awesome. It can still knock back
 //             instead of counting as a punch." A punch-shaped swing with a GUN in that hand (or both hands driving
-//             a gun together, or braced) is a shove: its own answer, never a punch. This only REPORTS it: the
-//             knock back is Brutal Doom VR's own (2.0.3h melee.zs: the long guns' butt strike lands BD22's
-//             KickAttack, Steadied + butt leading, rsq_butt, OFF by default; the pistol whip lands BD22's punch,
-//             rsq_pistol_whip, on), and nothing here hurts or pushes anything, so nothing collides with it.
+//             a gun together, or braced) is a shove: its own answer, never a punch.
+//   BUTT SHOVE (owner's #1, 2026-11-01): "I want the feature to exist in both mods, in BD22 it is staying how it is.
+//             Once we copy it into RSQ, we will have ours stand down when BD22 is loaded." The main hand's shove
+//             now HITS: BD22 VR Reloaded's butt strike (its melee.zs, rsq_butt), ported -- see ButtShove below for
+//             every number and where it came from. When BD22 VR Reloaded is loaded (found by class name through a
+//             String at run time) ours does nothing, whatever its rsq_butt says: its own strike is the one.
+//   SHOVE SLOW-MO (owner's #2; ON by default, owner 2026-11-01): a landed shove asks RSQ SlowMo for a short pulse (rsm_pulse). With BD22 VR
+//             Reloaded loaded, its own butt strike landing (a KickAttack fired by you within a quarter second of the
+//             shove gesture, with rsq_butt on and one of its long guns up) asks the same.
+//   F.E.A.R. EFFECT (owner 2026-11-01): "Butt-shove, slow mo shotgun blasts will produce 2x gore during that window,
+//             ensure rs Score recognizes that move and names it 'F.E.A.R. Effect'". While the slow motion that pulse
+//             started lasts, every shotgun hit of the shover's on a monster bleeds twice (the hit's own blood again,
+//             SpawnBlood + TraceBleed: the monster's own blood type, Brutal Doom's when it is loaded), and a kill by
+//             it pays RSQ Score's "F.E.A.R. Effect" award (RS_ScoreService "award"). See FEAR below.
 //   QUIET     GE1: while RSQ Grapple says you are on the rope ("climbing", "swinging", "reeling") or RSQ Wheel is open
 //             ("IsOpen"), and for RING tics after, no thrust, pull, punch, shove or two-hand event is read.
 //             Both asked by name through their services; neither mod is touched.
@@ -99,6 +109,19 @@ class RSQG_Handler : EventHandler
 	int shoveTic[2];
 	bool shoveTwo[2];
 	double shoveMps[2];
+	// BUTT SHOVE (#1): BD22 VR Reloaded is loaded (ours stands down); the last shove that struck (gametic)
+	bool bdq;
+	int lastButt;
+	// SHOVE SLOW-MO (#2) with BD22 VR Reloaded: its KickAttacks seen spawning (and when), the last one fired by
+	// you, and the last main-hand shove gesture with its butt strike possible (gametics, 0 = none / used)
+	Array<Actor> bdKicks;
+	Array<int> bdKickAt;
+	int bdKickTic, bdShoveTic;
+	// F.E.A.R. EFFECT: whose window is open (-1 none), until when at the latest, whether SlowMo has been seen slowing,
+	// and the monsters already paid for in it
+	int fearPn, fearTill, fearFrom;
+	bool fearSlow;
+	Array<Actor> fearPaid;
 
 	// QUIET (GE1): no impulse gestures until this gametic; why (1 rope climb, 2 the Wheel open)
 	int quietTill, quietWhy;
@@ -134,8 +157,19 @@ class RSQG_Handler : EventHandler
 
 	static double NowMs() { return gametic * 1000.0 / TICRATE; }
 
-	override void OnRegister() { ResetAll(); lastAsk = -1000; lastRun = -1; }
-	override void WorldLoaded(WorldEvent e) { ResetAll(); }
+	override void OnRegister() { ResetAll(); lastAsk = -1000; lastRun = -1; bdq = BD22QLoaded(); }
+	override void WorldLoaded(WorldEvent e) { ResetAll(); bdq = BD22QLoaded(); fearPn = -1; fearPaid.Clear(); bdKicks.Clear(); bdKickAt.Clear(); bdKickTic = 0; bdShoveTic = 0; }
+
+	// BD22 VR Reloaded (the owner's Brutal Doom VR mod), by class name through a String, so nothing here needs it to
+	// compile: RSVR_MeleeHandler is the handler that owns its butt strike (melee.zs:20), RSQ_Hands its off-hand fists
+	// (hands.zs:138). Both are in 2.0-b1m and 1.99x-lb-r7.
+	static bool BD22QLoaded()
+	{
+		static const String names[] = { "RSVR_MeleeHandler", "RSQ_Hands" };
+		for (int i = 0; i < names.Size(); i++)
+			if (Object.FindClass(names[i]) != null) return true;
+		return false;
+	}
 
 	void ResetAll()
 	{
@@ -168,7 +202,15 @@ class RSQG_Handler : EventHandler
 
 	bool Running(int dbg)
 	{
-		return gametic - lastAsk <= IDLE || SwSignals() || SwTwohand() || dbg == 1 || dbg == 2 || gametic < measureTill;
+		return gametic - lastAsk <= IDLE || SwSignals() || SwTwohand() || dbg == 1 || dbg == 2 || gametic < measureTill
+			|| ShoveWanted();
+	}
+
+	// the butt shove needs the hands read every tic: ours (on by default, not with BD22 VR Reloaded), or the
+	// slow-mo option watching BD22 VR Reloaded's own strike
+	bool ShoveWanted()
+	{
+		return bdq ? Opt("rsqg_shove_slowmo", 1) != 0 : Opt("rsqg_shove", 1) != 0;
 	}
 
 	// ---- QUIET (GE1): the rope and the Wheel, asked by name -----------------------------------------------
@@ -252,6 +294,8 @@ class RSQG_Handler : EventHandler
 
 	override void NetworkProcess(ConsoleEvent e)
 	{
+		if (e.Name ~== "rsqg_buttshove") { ButtShove(e); return; }
+		if (e.Name ~== "rsqg_fear") { FearOpen(e.Player, e.Args[0]); return; }
 		if (!(e.Name ~== "rsqg_measure") || e.Player != consoleplayer) return;
 		// two seconds to close the menu and stand (the game is paused while the menu is open), then one to measure
 		measureFrom = gametic + 2 * TICRATE;
@@ -293,6 +337,8 @@ class RSQG_Handler : EventHandler
 			if (lastRun >= 0) { ResetAll(); lastRun = -1; }
 		}
 		else Update();
+		if (bdq) WatchBDButt();
+		if (fearPn >= 0) FearTick();
 		// debug 3: what this costs a tic, idle or measuring (debug 3 alone does not wake it)
 		if (dbg >= 3)
 		{
@@ -571,6 +617,7 @@ class RSQG_Handler : EventHandler
 			pArmed[h] = false; PunchReset(h);
 			return;
 		}
+		Vector3 swing = pDir[h];   // the swing's travel, metres on the map's axes (the butt shove's direction)
 		pArmed[h] = false; PunchReset(h);
 		// a blade (the axe, the sword, the chainsaw: Brutal Doom VR swings them itself) is neither
 		if (carry == CARRY_BLADE)
@@ -580,12 +627,13 @@ class RSQG_Handler : EventHandler
 		}
 		if (carry == CARRY_GUN)
 		{
-			// THE SHOVE (GE2): its own answer, never a punch. The knock back is Brutal Doom VR's own.
+			// THE SHOVE (GE2): its own answer, never a punch. With the main hand it is the butt shove (#1).
 			shoveTic[h] = gametic; shoveTwo[h] = two; shoveMps[h] = avg;
 			if (SwSignals()) EventHandler.SendNetworkEvent("rsqg_shove", h, two ? 1 : 0, int(round(avg * 100)));
 			Say((two ? "two-hand shove (" : "shove (") .. HandName(h) .. ")");
 			if (SwDebug() >= 1)
 				Console.Printf("\c[Gold]rsqg: shove%s, %s hand, %.2f m/s, with %s (t%d)", two ? " (two hands)" : "", HandName(h), avg, CarryName(pmo, h), level.maptime);
+			if (h == 0) ShoveAct(pmo, two, avg, swing);
 			return;
 		}
 		int kind = Classify(u, face, rise);
@@ -596,6 +644,301 @@ class RSQG_Handler : EventHandler
 		if (SwDebug() >= 1)
 			Console.Printf("\c[Gold]rsqg: punch %s, %s hand, %.2f m/s, dir fwd %.2f lat %.2f up %.2f (t%d)", kn,
 				HandName(h), avg, u.xy dot face, u.x * face.y - u.y * face.x, u.z, level.maptime);
+	}
+
+	// ---- THE BUTT SHOVE (owner's #1, 2026-11-01) -----------------------------------------------------------
+	// BD22 VR Reloaded's butt strike (the owner's mod; its zscript/rsvr/melee.zs, 2.0-b1m and 1.99x-lb-r7 agree),
+	// ported. Every number is theirs or Brutal Doom's, parsed, with the line:
+	//   swing  BUTT_SWING 3.6 m/s (melee.zs:168): the shove must average this (rsqg_shove_mps; theirs is measured at
+	//          the stock's tip, ours at the hand: Gestures has no gun model to measure)
+	//   reach  BUTT_REACH 60 map units ahead along the way the swing moves, padded BUTT_PAD 12 (melee.zs:178-179:
+	//          BD22's own kick envelope, KickAttack Speed 30 x 2 tics + Radius 12); each body struck once per shove,
+	//          and only with a clear line from the hand (melee.zs Sweep / Clear)
+	//   blow   what it lands is BD22's KickAttack (melee.zs:851), here as plain damage: brutal22test6 Melee.dec:1727
+	//          KickAttack Damage 14, DamageType Kick; SuperKickAttack Damage 62 under the Berserk (:1841)
+	//   knock  the engine's own damage kickback (inflictor = you, so straight away from you), PLUS what Brutal Doom's
+	//          monsters do on a Kick (their Pain.Kick: A_FaceTarget, ThrustThing(angle + 180, back), ThrustThingZ up/4).
+	//          A Brutal Doom monster has that state and does it itself; a vanilla one gets the same numbers here
+	//          (KnockOf below). Nothing else is pushed beyond the engine's kickback.
+	//   sound  the swing: Brutal Doom's Melee/SwingStrong (melee.zs:661), or stock Doom's skeleton/swing without it;
+	//          a hit: Brutal Doom's Kick/flesh (KickAttack's XDeath), or stock Doom's punch (*fist, DSPUNCH) without it
+	//   wait   12 tics before the next (melee.zs:663 whooshWait)
+	//   alert  A_AlertMonsters(200) on a hit (KickAttack's XDeath)
+	// The gesture is read on this machine; the blow leaves as rsqg_buttshove (the series' netplay pattern): arg0 two
+	// hands, arg1 hundredths of m/s, arg2 the swing's direction (yaw degrees x 1000 + pitch + 90).
+	const BUTT_REACH = 60.0;
+	const BUTT_PAD = 12.0;
+	const BUTT_WAIT = 12;
+	const BUTT_DMG = 14;
+	const BUTT_DMG_ZERK = 62;
+	const BUTT_ALERT = 200.0;
+	const PULSE_DEPTH = 35;   // % world speed: RSQ Score's PULSE_DEPTH, which ShieldSaw's perfect block also asks
+
+	void ShoveAct(PlayerPawn pmo, bool two, double avg, Vector3 swing)
+	{
+		if (bdq)
+		{
+			// BD22 VR Reloaded is loaded: ours does nothing. Its own strike is watched for the slow-mo option only.
+			if (Opt("rsqg_shove_slowmo", 1) && BDButtPossible(pmo)) bdShoveTic = gametic;
+			if (SwDebug() >= 1) Console.Printf("\c[Gold]rsqg: butt shove stands down: BD22 VR Reloaded is loaded (t%d)", level.maptime);
+			return;
+		}
+		if (!Opt("rsqg_shove", 1)) return;
+		double need = Num("rsqg_shove_mps", 3.6);
+		if (avg < need)
+		{
+			if (SwDebug() >= 1) Console.Printf("\c[Gold]rsqg: butt shove too slow, %.2f m/s of %.2f (t%d)", avg, need, level.maptime);
+			return;
+		}
+		if (lastButt > 0 && gametic - lastButt < BUTT_WAIT) return;
+		lastButt = gametic;
+		// the swing's direction in map units (the vertical back out of metres: / pixelstretch)
+		Vector3 d = (swing.x, swing.y, swing.z / RSQG_Pose.Stretch());
+		if (d.Length() < 0.0001) d = (cos(pmo.Angle), sin(pmo.Angle), 0);
+		d = d.Unit();
+		int yaw = int(round(VectorAngle(d.x, d.y))) % 360;
+		if (yaw < 0) yaw += 360;
+		int pit = clamp(int(round(asin(clamp(d.z, -1, 1)))), -90, 90) + 90;
+		EventHandler.SendNetworkEvent("rsqg_buttshove", two ? 1 : 0, int(round(avg * 100)), yaw * 1000 + pit);
+	}
+
+	void ButtShove(ConsoleEvent e)
+	{
+		if (bdq || e.Player < 0 || e.Player >= MAXPLAYERS || !playeringame[e.Player]) return;
+		let pmo = players[e.Player].mo;
+		if (!pmo || pmo.health <= 0) return;
+		double yaw = e.Args[2] / 1000, pit = (e.Args[2] % 1000) - 90;
+		Vector3 d = (cos(yaw) * cos(pit), sin(yaw) * cos(pit), sin(pit));
+		// the hand (QuestZDoom writes it for the local player; anything else swings from the eyes)
+		Vector3 a = RSQG_Pose.PoseGood(pmo, 0) ? RSQG_Pose.HandPos(pmo, 0) : (pmo.pos.x, pmo.pos.y, pmo.player.viewz);
+		Vector3 b = a + d * BUTT_REACH;
+		pmo.A_StartSound(HasSound("Melee/SwingStrong") ? "Melee/SwingStrong" : "skeleton/swing", CHAN_WEAPON, CHANF_OVERLAP);
+
+		// who is in the envelope: the segment hand -> reach, padded, checked every 4 units (melee.zs Sweep's steps)
+		Vector3 c = (a + b) / 2;
+		double r = BUTT_REACH / 2 + BUTT_PAD;
+		int steps = int(BUTT_REACH / 4) + 1;
+		Array<Actor> struck;
+		let it = BlockThingsIterator.CreateFromPos(c.x, c.y, c.z - r, 2 * r, r, false);
+		while (it.Next())
+		{
+			Actor t = it.thing;
+			if (!t || t == pmo || t.player || !t.bSHOOTABLE || t.bFRIENDLY || t.bDORMANT || t.health <= 0) continue;
+			if (struck.Find(t) != struck.Size()) continue;
+			for (int i = 0; i <= steps; i++)
+			{
+				Vector3 q = a + (b - a) * (i / double(steps));
+				if (!Touches(t, q, BUTT_PAD)) continue;
+				Vector3 at = (t.pos.x, t.pos.y, clamp(q.z, t.pos.z + 1, t.pos.z + max(t.height - 1, 1)));
+				if (Clear(pmo, a, at)) struck.Push(t);
+				break;
+			}
+		}
+
+		int dmg = pmo.CountInv("PowerStrength") > 0 ? BUTT_DMG_ZERK : BUTT_DMG;
+		int landed = 0;
+		for (int i = 0; i < struck.Size(); i++)
+		{
+			Actor t = struck[i];
+			if (!t || t.health <= 0) continue;
+			bool bdPain = t.FindStateByString("Pain.Kick", true) != null;
+			t.DamageMobj(pmo, pmo, dmg, 'Kick');
+			landed++;
+			if (t && !t.bDestroyed && t.health > 0 && !bdPain) Knock(pmo, t);
+			if (SwDebug() >= 1)
+				Console.Printf("\c[Gold]rsqg: butt shove hit %s for %d%s, health %d, vel %.1f %.1f %.1f (t%d)", t.GetClassName(), dmg,
+					bdPain ? " (its own Pain.Kick knocks it)" : "", t ? t.health : 0, t ? t.vel.x : 0, t ? t.vel.y : 0, t ? t.vel.z : 0, level.maptime);
+		}
+		if (landed > 0)
+		{
+			if (HasSound("Kick/flesh") && struck[0] && !struck[0].bDestroyed) struck[0].A_StartSound("Kick/flesh", CHAN_AUTO);
+			else pmo.A_StartSound("*fist", CHAN_AUTO);
+			pmo.A_AlertMonsters(BUTT_ALERT);
+			RSQG_Tick.Start(pmo, RSQG_Pose.IsLeft(0), 0.6, 6);
+			// SHOVE SLOW-MO (#2): from the shover's own machine only, so a netgame gets one event
+			if (e.Player == consoleplayer) Pulse("our butt shove");
+		}
+		else if (SwDebug() >= 1) Console.Printf("\c[Gold]rsqg: butt shove, %.2f m/s%s: nothing in reach (t%d)", e.Args[1] / 100.0, e.Args[0] ? " (two hands)" : "", level.maptime);
+	}
+
+	// SHOVE SLOW-MO (#2): RSQ SlowMo's own pulse door (its README "For other mods"); absent SlowMo hears nothing
+	void Pulse(String why)
+	{
+		if (!Opt("rsqg_shove_slowmo", 1)) return;
+		int ms = clamp(Opt("rsqg_shove_slowmo_ms", 300), 30, 2000);
+		EventHandler.SendNetworkEvent("rsm_pulse", ms, PULSE_DEPTH);
+		// the F.E.A.R. window opens with it (synced: every machine keeps the same window)
+		EventHandler.SendNetworkEvent("rsqg_fear", int(ceil(ms * TICRATE / 1000.0)) + FEAR_CAP);
+		if (SwDebug() >= 1) Console.Printf("\c[Gold]rsqg: rsm_pulse %d ms at %d%% after %s (t%d)", ms, PULSE_DEPTH, why, level.maptime);
+	}
+
+	// Brutal Doom's Pain.Kick numbers (brutal22test6 actors/Enemies), on the vanilla monster each one replaces:
+	// ThrustThing(angle + 180, back) after A_FaceTarget (straight away from you) and ThrustThingZ(up x 4, added;
+	// the engine divides by 4, p_lnspec.cpp LS_ThrustThingZ). Pinkies, cacodemons, revenants, mancubi, arachnotrons,
+	// archviles, pain elementals and the bosses have no thrust there; they get the engine's kickback only.
+	static void KnockOf(Actor t, out double back, out double up)
+	{
+		back = 0; up = 0;
+		if (Descends(t, 'ZombieMan') || Descends(t, 'ShotgunGuy')) { back = 10; up = 30 / 4.; }   // Zombiemen.dec RifleZombie, Sergeants.dec ShotgunGuy1
+		else if (Descends(t, 'DoomImp')) { back = 5; up = 20 / 4.; }                               // Imps.dec Imp
+		else if (Descends(t, 'Spectre')) up = 30 / 4.;                                              // Spectre.dec Spectro
+		else if (Descends(t, 'HellKnight')) up = 5 / 4.;                                            // Knight.dec HellKnight2 (before the Baron: it inherits from it)
+		else if (Descends(t, 'ChaingunGuy') || Descends(t, 'BaronOfHell') || Descends(t, 'WolfensteinSS')) up = 15 / 4.;   // Comando.dec, Baron.dec, BWSS.dec
+	}
+	static bool Descends(Actor a, Name n)
+	{
+		for (class<Object> c = a.GetClass(); c; c = c.GetParentClass())
+			if (c.GetClassName() == n) return true;
+		return false;
+	}
+	static void Knock(PlayerPawn pmo, Actor t)
+	{
+		double back, up;
+		KnockOf(t, back, up);
+		if (back > 0) t.Thrust(back, pmo.AngleTo(t));
+		if (up > 0) t.vel.z += up;
+	}
+
+	static bool Touches(Actor t, Vector3 q, double pad)
+	{
+		if (q.z < t.pos.z - pad || q.z > t.pos.z + t.height + pad) return false;
+		double ddx = q.x - t.pos.x, ddy = q.y - t.pos.y, rr = t.radius + pad;
+		return ddx * ddx + ddy * ddy <= rr * rr;
+	}
+	// nothing solid between the hand and that point (melee.zs Clear)
+	static bool Clear(Actor mo, Vector3 from, Vector3 to)
+	{
+		Vector3 d = to - from;
+		double len = d.Length();
+		if (len < 1) return true;
+		FLineTraceData tr;
+		mo.LineTrace(VectorAngle(d.x, d.y), len, -asin(clamp(d.z / len, -1, 1)), TRF_ABSPOSITION | TRF_THRUACTORS, from.z, from.x, from.y, tr);
+		return tr.HitType == TRACE_HitNone || tr.HitType == TRACE_HitActor;
+	}
+	static bool HasSound(String n) { Sound s = n; return int(s) > 0; }
+
+	// ---- SHOVE SLOW-MO with BD22 VR Reloaded's own butt strike (#2) ------------------------------------------
+	// Its strike can be possible only with its rsq_butt on and one of its long guns up (melee.zs KindOf:403-421).
+	// It lands as BD22's KickAttack (SuperKickAttack under the Berserk), spawned at the body it struck and fired by
+	// you (melee.zs Launch: a.target = you). Its gun bash is RSQ_BashAttack (DECORATE.rsqbash), a different class,
+	// so it is not counted. A KickAttack of yours within RING tics of your main-hand shove gesture = its butt strike.
+	static bool BDButtPossible(PlayerPawn pmo)
+	{
+		let cb = CVar.FindCVar("rsq_butt");
+		if (!cb || cb.GetInt() == 0) return false;
+		let w = HandWeapon(pmo, 0);
+		if (!w) return false;
+		Name n = w.GetClassName();
+		return n == 'Rifle' || n == 'Shot_Gun' || n == 'SSG' || n == 'AssaultShotgun' || n == 'MP40' || n == 'BrutalSMG'
+			|| n == 'Machinegun' || n == 'MG42';
+	}
+	override void WorldThingSpawned(WorldEvent e)
+	{
+		if (!bdq || !e.Thing || !Opt("rsqg_shove_slowmo", 1)) return;
+		Name n = e.Thing.GetClassName();
+		if (n != 'KickAttack' && n != 'SuperKickAttack') return;
+		// its target is set just after it spawns (melee.zs Launch), so it is looked at from the next tic
+		bdKicks.Push(e.Thing);
+		bdKickAt.Push(gametic);
+	}
+	void WatchBDButt()
+	{
+		let pmo = Me();
+		for (int i = bdKicks.Size() - 1; i >= 0; i--)
+		{
+			Actor k = bdKicks[i];
+			if (k && pmo && k.target == pmo) bdKickTic = bdKickAt[i];
+			if (!k || k.target || gametic - bdKickAt[i] > 2) { bdKicks.Delete(i); bdKickAt.Delete(i); }
+		}
+		if (bdKickTic > 0 && bdShoveTic > 0 && abs(bdKickTic - bdShoveTic) <= RING)
+		{
+			if (SwDebug() >= 1) Console.Printf("\c[Gold]rsqg: BD22 VR Reloaded's butt strike landed (KickAttack t%d, shove t%d)", bdKickTic, bdShoveTic);
+			bdKickTic = 0; bdShoveTic = 0;
+			Pulse("BD22 VR Reloaded's butt strike");
+		}
+		// stale halves age out
+		if (bdKickTic > 0 && gametic - bdKickTic > RING) bdKickTic = 0;
+		if (bdShoveTic > 0 && gametic - bdShoveTic > RING) bdShoveTic = 0;
+	}
+
+	// ---- F.E.A.R. EFFECT (owner 2026-11-01) --------------------------------------------------------------------
+	// THE WINDOW is the slow motion the shove's pulse started: open from rsqg_fear (sent with the pulse), closed when
+	// RSQ SlowMo says it is no longer slowing or easing ("slowmo.active", RSQSM_Service) after it was, or if it never
+	// starts within FEAR_START tics (SlowMo absent, standing down, or the held toggle already on: no pulse, no window),
+	// and never longer than the pulse plus FEAR_CAP tics.
+	// SHOTGUN = Doom's Shotgun / SuperShotgun and anything inheriting or replacing them, and Brutal Doom's shotguns
+	// (Shot_Gun, SSG, AssaultShotgun: brutal22test6 actors/Weapons), all by name at run time.
+	// 2x GORE: each damaging hit (pellet, tracer) bleeds once more, the hit's own blood: SpawnBlood (the monster's
+	// BloodType, Brutal Doom's when it is loaded, stock Doom's otherwise) and TraceBleed (the wall and floor splats a
+	// hitscan hit leaves). No new art, no sounds.
+	// THE AWARD: a kill by such a hit pays FEAR_POINTS to RSQ Score's "F.E.A.R. Effect" row, once per monster.
+	const FEAR_CAP = 105;      // tics past the pulse's hold (3 s): the window can never stay open longer
+	const FEAR_START = 4;      // tics for SlowMo to start slowing before the window gives up
+	const FEAR_POINTS = 200;   // RSQ Score points: Grapple's Indiana Jones pays 150 + more for longer gaps
+	const FEAR_LABEL = "F.E.A.R. Effect";
+
+	void FearOpen(int pn, int tics)
+	{
+		if (pn < 0 || pn >= MAXPLAYERS || !playeringame[pn]) return;
+		fearPn = pn; fearFrom = gametic; fearTill = gametic + clamp(tics, 1, 175); fearSlow = false;
+		fearPaid.Clear();
+		if (SwDebug() >= 1) Console.Printf("\c[Gold]rsqg: F.E.A.R. window opens (t%d)", level.maptime);
+	}
+	void FearClose(String why)
+	{
+		if (SwDebug() >= 1) Console.Printf("\c[Gold]rsqg: F.E.A.R. window closes: %s (t%d)", why, level.maptime);
+		fearPn = -1; fearPaid.Clear();
+	}
+	transient Service svcSlowMo;
+	void FearTick()
+	{
+		if (gametic > fearTill) { FearClose("its cap"); return; }
+		if (!svcSlowMo) svcSlowMo = FindSvc("RSQSM_Service");
+		int act = svcSlowMo ? svcSlowMo.GetInt("slowmo.active") : -1;
+		if (act == 1) fearSlow = true;
+		else if (fearSlow) FearClose("slow motion is over");
+		else if (gametic - fearFrom > FEAR_START) FearClose("slow motion never started");
+	}
+	bool FearOn(Actor src) { return fearPn >= 0 && src && players[fearPn].mo == src && gametic <= fearTill; }
+
+	static bool IsShotgun(Weapon w)
+	{
+		if (!w) return false;
+		static const String names[] = { "Shotgun", "SuperShotgun", "Shot_Gun", "SSG", "AssaultShotgun" };
+		class<Actor> rep = Actor.GetReplacee(w.GetClass());
+		for (int i = 0; i < names.Size(); i++)
+		{
+			Name n = names[i];
+			if (Descends(w, n)) return true;
+			for (class<Object> c = rep; c; c = c.GetParentClass()) if (c.GetClassName() == n) return true;
+		}
+		return false;
+	}
+
+	override void WorldThingDamaged(WorldEvent e)
+	{
+		if (fearPn < 0) return;
+		let t = e.Thing;
+		if (!t || !t.bIsMonster || e.Damage <= 0 || e.DamageType == 'Kick' || !FearOn(e.DamageSource)) return;
+		let pmo = PlayerPawn(e.DamageSource);
+		if (!pmo || !pmo.player || !IsShotgun(pmo.player.ReadyWeapon)) return;
+		// 2x gore: the hit's own blood, once more
+		if (!t.bNoBlood)
+		{
+			Vector3 at = t.pos + (0, 0, t.height * 0.5);
+			if (e.Inflictor && e.Inflictor != pmo && t.Distance3D(e.Inflictor) < t.radius + t.height) at = e.Inflictor.pos;
+			t.SpawnBlood(at, pmo.AngleTo(t) + 180, e.Damage);
+			Actor bl = pmo;
+			if (e.Inflictor && e.Inflictor != pmo) bl = e.Inflictor;
+			t.TraceBleed(e.Damage, bl);
+		}
+		if (SwDebug() >= 2) Console.Printf("\c[Gold]rsqg: F.E.A.R. hit %s for %d, health %d (t%d)", t.GetClassName(), e.Damage, t.health, level.maptime);
+		if (t.health > 0 || fearPaid.Find(t) != fearPaid.Size()) return;
+		fearPaid.Push(t);
+		Service sc = FindSvc("RS_ScoreService");
+		int got = sc ? sc.GetInt("award", FEAR_LABEL, FEAR_POINTS, 0, pmo) : -1;
+		if (fearPn == consoleplayer) Say(FEAR_LABEL);
+		if (SwDebug() >= 1) Console.Printf("\c[Gold]rsqg: F.E.A.R. Effect, %s killed by %s -> RSQ Score %d (t%d)", t.GetClassName(), pmo.player.ReadyWeapon.GetClassName(), got, level.maptime);
 	}
 
 	// WHAT A HAND CARRIES (GE2), from the engine's public weapon slots: the main hand's ReadyWeapon, the off hand's

@@ -64,6 +64,17 @@ user float  rsqg_punch_rise      = 0.5;    // an uppercut: the swing's upward sh
 user float  rsqg_punch_window    = 300;    // "punch" answers the last punch for this long (ms)
 user float  rsqg_punch_together  = 0.6;    // the other hand moving the same way at this share of the speed = a two-hand shove, not a punch
 
+// ---- BUTT SHOVE (owner's #1 and #2, 2026-11-01) ----------------------------------------------------------
+// The main hand's shove (a gun in it) hits: BD22 VR Reloaded's butt strike, ported (gestures.zs ButtShove). On by
+// default. Stands down by itself when BD22 VR Reloaded is loaded (its own rsq_butt strike is the one).
+user bool   rsqg_shove           = true;
+user float  rsqg_shove_mps       = 3.6;    // the shove must average this to hit (BD22 VR Reloaded melee.zs BUTT_SWING 3.6)
+// On (owner 2026-11-01, was an Option): a landed butt shove (ours, or BD22 VR Reloaded's own when it is loaded) asks
+// RSQ SlowMo for a short pulse (rsm_pulse <ms> 35). Nothing hears it when SlowMo is not loaded. While that slow motion
+// lasts, shotgun hits bleed twice and a shotgun kill pays RSQ Score's "F.E.A.R. Effect" (gestures.zs FEAR).
+user bool   rsqg_shove_slowmo    = true;
+user int    rsqg_shove_slowmo_ms = 300;    // how long the pulse holds (ms; SlowMo eases in and out around it)
+
 // ---- QoL (2026-10-31) -----------------------------------------------------------------------------------
 // GE7: a small grey line low in the view names each gesture as it is recognised (inspect, jab / hook / uppercut,
 // shove, thrust / pull, the two-hand events), for tuning. Subtle (half-transparent, gone in 1.5 s), so on.
