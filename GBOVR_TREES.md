@@ -609,6 +609,17 @@ take a different one)
 | Shock Fist (new) | One-Two 1 | 1-3: the hit arcs to lv nearest monsters within 3 m for 40% + 10% lv of the punch, each staggered 8 tics | GBOVR | a beam (Random Sprite Rips) recoloured yellow, 2 frames a level | `arc` |
 | Fire Fist (new) | Heavy Hands 2 | 1-4: the monster burns 3 a half second for 2 + lv s; punching a burning monster flares it: +50% | GBOVR (its own burn, not Gun Bonsai's) | spark orange-red, fire frames | `burn` |
 
+**Elemental: BUILT 11-02 (L2, branch B), all in Gun Bonsai VR** (`up_fists.zs`; the freeze and the burn are new
+`RSQ_Dazed` states in `core.zs`: `IsFrozen` / `Freeze` / `Thaw`, `IsBurning` / `Ignite`; each element's own hits go
+through `RSQM.GloveHit`, a helper paid to the glove and marked Gun Bonsai PRI_NULL so no stock upgrade procs from it).
+Frozen = the engine's `freezetics` and its Ice translation; a boss gets Body Blow's winding at full factor instead.
+**Headless 11-02:** the four offered together once their parents were held, and learning one closed the other three
+on that glove only (main Frost, off Explosive; main Shock, off Fire). Frost: a demon frozen 52 tics, the next punch
+75 (30 x 2.5) and the freeze ended. Explosive: 4 imps within 80 units took 15 each, the one 400 away none. Shock: 10
+(half the punch) arced to the nearest imp. Fire: 3 every 17 tics, the flare punch 30 (20 x 1.5). **Look:** particles
+(white burst, ice shards, a yellow arc, flames) and stock sounds (rocket blast, Hexen's ice break, plasma hit) until the
+art pass; HP Bars' snowflake waits for item 7.
+
 **C. Combos** (the chain is read from Melee's `punch.chain` and a new `punch.kinds`, the last three kinds)
 
 | Node | Parent | Levels | Owns | Art | Score |

@@ -82,7 +82,13 @@ Always on (no row):
     name of Wall Splat) -> Knockdown; Heavy Hands 2 -> Body Blow (Body Blow 3 -> Knockdown); Heavy Hands -> Uppercut
     (an unlock: until it, a rising punch is a jab) -> Launcher (Uppercut 2) -> Juggle, Meteor (Launcher 2), Ground
     Pound (Launcher 3); Heavy Hands 2 -> Clear Out. Ground Pound and Clear Out need RSQ Gestures. Star Punch is no
-    longer offered (folded into Uppercut and Launcher; a save that has it keeps it).
+    longer offered (folded into Uppercut and Launcher; a save that has it keeps it). **B. Elemental** (one element per
+    glove: learning one closes the other three on that glove): Explosive Fist (after Haymaker; a punch at half speed or
+    more blasts round the hit, twice as wide under the Berserk), Frost Fist (after Body Blow; frozen solid in the Ice
+    colours, the next punch shatters it for x2.5 and up; a boss is slowed instead), Shock Fist (after One-Two; arcs to
+    the nearest monsters within 3 m for 50% of the punch and up, each staggered), Fire Fist (after Heavy Hands 2; burns
+    3 every half second, a punch on a burning monster flares x1.5). Their blasts, arcs and burns are paid to the glove.
+    The look is particles and stock sounds until the art pass.
   - Gloves (RSQ_Melee's), before the tree: Haymaker, One-Two, Star Punch, Counterpunch, Body Blow, Knockdown, and the owner's
     picks 52-54 (2026-11-01), whose moves RSQ_Melee does and whose numbers are here: **Heavy Hands** (a landed
     punch freezes the monster for a beat: 2 tics at level 1 up to 4, +2 for a punch at half speed or more; and

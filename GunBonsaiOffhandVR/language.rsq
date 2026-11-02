@@ -49,6 +49,19 @@ RSQ_Upgrade_GroundPound_TT = "Swing both fists down hard together: a shockwave @
 RSQ_Upgrade_ClearOut_Name = "Clear Out";
 RSQ_Upgrade_ClearOut_Desc = "Glove: two palms shove everything back.";
 RSQ_Upgrade_ClearOut_TT = "Thrust both palms forward together: everything in front of you within @range is shoved back hard, takes @dmg and staggers. Needs RSQ Gestures.";
+// B. Elemental (one element per glove)
+RSQ_Upgrade_ExplosiveFist_Name = "Explosive Fist";
+RSQ_Upgrade_ExplosiveFist_Desc = "Glove: hard punches blow up. One element per glove.";
+RSQ_Upgrade_ExplosiveFist_TT = "A punch at half speed or more blasts everything within @radius of the hit for @dmg (never you). Under the Berserk the blast is twice as wide. Learning it closes the other elements on this glove.";
+RSQ_Upgrade_FrostFist_Name = "Frost Fist";
+RSQ_Upgrade_FrostFist_Desc = "Glove: freeze them, then shatter them. One element per glove.";
+RSQ_Upgrade_FrostFist_TT = "A punch freezes the enemy solid for @time. Punch a frozen enemy to shatter the ice: @mult damage. A boss is slowed instead. Learning it closes the other elements on this glove.";
+RSQ_Upgrade_ShockFist_Name = "Shock Fist";
+RSQ_Upgrade_ShockFist_Desc = "Glove: the hit arcs to their friends. One element per glove.";
+RSQ_Upgrade_ShockFist_TT = "A punch arcs to the @n nearest enemies within 3 m of the hit, each taking @share of the punch and a stagger. Learning it closes the other elements on this glove.";
+RSQ_Upgrade_FireFist_Name = "Fire Fist";
+RSQ_Upgrade_FireFist_Desc = "Glove: set them alight. One element per glove.";
+RSQ_Upgrade_FireFist_TT = "A punch sets the enemy burning: @dmg every half second for @time. Punching a burning enemy flares it: @mult damage. Learning it closes the other elements on this glove.";
 
 RSQ_Upgrade_Lunge_Name = "Lunge";
 RSQ_Upgrade_Lunge_Desc = "Melee: step into the blow.";

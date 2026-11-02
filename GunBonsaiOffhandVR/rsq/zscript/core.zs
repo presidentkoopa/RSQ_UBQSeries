@@ -79,6 +79,30 @@ class RSQM play
 	// The first service of that name, or null.
 	static Service Svc(String name) { let it = ServiceIterator.Find(name); return it.Next(); }
 
+	// RSQ SCORE's combo ledger: this player's move `id` touched that monster ("touch", by name; nothing without it)
+	static void Touch(String id, Actor pawn, Actor victim)
+	{
+		if (!pawn || !pawn.player || !victim) return;
+		let s = Svc("RS_ScoreService");
+		if (s) s.GetInt("touch", id, pawn.PlayerNumber(), 0, victim);
+	}
+
+	// A GLOVE'S HIT THAT IS NOT A PUNCH (an element's blast, arc or burn, GBOVR_TREES.md 4.1 B): its inflictor, paid to
+	// that glove (Gun Bonsai's claim) and marked PRI_NULL so no other upgrade procs from it. Without a glove the pawn is the
+	// inflictor.
+	static Actor GloveHit(Actor pawn, Weapon glove, Vector3 at)
+	{
+		if (!pawn) return null;
+		if (!glove || !glove.owner) return pawn;
+		let a = Actor.Spawn("RSQ_GloveHit", at, NO_REPLACE);
+		if (!a) return pawn;
+		a.target = pawn;
+		a.weaponspecial = TFLV_Upgrade_PRI_NULL;
+		a.master = glove;
+		TFLV_VR_Attribution.Claim(a, glove, TFLV_VR_Attribution.HINT_MELEE);
+		return a;
+	}
+
 	// The hand that caused this damage (0 main, 1 off, -1 none), read without registering.
 	static int HandOf(Actor pawn, Actor shot)
 	{
@@ -361,9 +385,17 @@ class RSQ_MeleeUpgradeService : Service
 //   down      Knockdown: on the floor for a count, doing nothing
 //   disarmed  the Force pull's yank: no ranged attacks
 //   recent    damage dealt by the gloves in the last 2 s, for Knockdown
+//   frozen    Frost Fist: solid (the engine's freezetics), tinted ice; a boss is winded instead (11-02)
+//   burning   Fire Fist: this patch's own burn, paid to the glove that lit it (11-02)
 class RSQ_Dazed : Inventory
 {
 	int staggerUntil, windedUntil, downUntil, disarmUntil;
+	int frozenUntil, shatterTic;
+	bool tinted;
+	TranslationID oldTranslation;
+	int burnUntil, burnNext, burnDmg;
+	PlayerPawn burnBy;
+	Weapon burnGlove;
 	double windFactor;
 	int downCount, downNext;
 	Array<int> hitTic;
@@ -381,6 +413,37 @@ class RSQ_Dazed : Inventory
 
 	bool IsStaggered() { return level.maptime < staggerUntil || level.maptime < downUntil; }
 	bool IsDown() { return level.maptime < downUntil; }
+	bool IsFrozen() { return level.maptime < frozenUntil; }
+	bool IsBurning() { return level.maptime < burnUntil; }
+
+	// FROZEN (Frost Fist): nothing it does goes anywhere for `tics` (the engine's freezetics), drawn in the engine's Ice
+	// translation; a boss is slowed by half instead (Wind at full factor)
+	void Freeze(int tics)
+	{
+		if (!owner || owner.health <= 0 || tics <= 0) return;
+		if (owner.bBoss) { Wind(tics, 1.0); return; }
+		frozenUntil = max(frozenUntil, level.maptime + tics);
+		owner.freezetics = max(owner.freezetics, tics);
+		if (!tinted) { oldTranslation = owner.Translation; owner.A_SetTranslation('Ice'); tinted = true; }
+	}
+	void Thaw()
+	{
+		frozenUntil = 0;
+		if (owner) owner.freezetics = 0;
+		if (owner && tinted) owner.Translation = oldTranslation;
+		tinted = false;
+	}
+
+	// BURNING (Fire Fist): `dmg` every half second for `tics`, paid to the glove that lit it
+	void Ignite(PlayerPawn by, Weapon glove, int tics, int dmg)
+	{
+		if (!owner || owner.health <= 0) return;
+		if (!IsBurning()) burnNext = level.maptime + 17;
+		burnUntil = max(burnUntil, level.maptime + tics);
+		burnDmg = max(burnDmg, dmg);
+		burnBy = by;
+		burnGlove = glove;
+	}
 
 	// Hold it in its pain frame for `tics`. A monster with no Pain state is still held where it is.
 	void Stagger(int tics)
@@ -428,6 +491,22 @@ class RSQ_Dazed : Inventory
 		let mo = owner;
 		if (!mo || mo.health <= 0) return;
 		int now = level.maptime;
+		// the freeze is over (a frozen monster does not tick, so this runs on its first tic after): its own colours back
+		if (tinted && now >= frozenUntil) Thaw();
+		if (now < burnUntil)
+		{
+			if (now % 3 == 0) mo.A_SpawnParticle("FF7020", SPF_FULLBRIGHT, 14, 6, 0,
+				frandom[RSQFx](-mo.radius, mo.radius), frandom[RSQFx](-mo.radius, mo.radius), frandom[RSQFx](0, mo.height),
+				0, 0, frandom[RSQFx](0.5, 1.5), 0, 0, 0.02, 1.0, -0.06);
+			if (now >= burnNext)
+			{
+				burnNext = now + 17;
+				let hit = RSQM.GloveHit(burnBy, burnGlove, mo.pos + (0, 0, mo.height * 0.5));
+				mo.DamageMobj(hit ? hit : Actor(burnBy), burnBy, burnDmg, 'Fire', DMG_THRUSTLESS);
+				if (!mo || mo.health <= 0) return;
+			}
+		}
+		else burnDmg = 0;
 		if (now < downUntil)
 		{
 			// DOWN: frozen in its pain frame, nothing it does goes anywhere
@@ -507,4 +586,11 @@ class RSQ_Rammed : Inventory
 			if (!mo || mo.health <= 0) return;
 		}
 	}
+}
+
+// A glove's hit that is not a punch (RSQM.GloveHit): nothing but a name Gun Bonsai can pay to the glove.
+class RSQ_GloveHit : Actor
+{
+	Default { +NOINTERACTION +NOBLOCKMAP +NOSECTOR +NOGRAVITY +DONTSPLASH +NOTONAUTOMAP RenderStyle "None"; }
+	States { Spawn: TNT1 A 2; Stop; }
 }
