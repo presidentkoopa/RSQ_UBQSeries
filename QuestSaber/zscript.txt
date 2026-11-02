@@ -672,6 +672,15 @@ class UBQS_SaberBase : Weapon abstract
 	action void A_UBOn()
 	{
 		if (invoker.thrown || invoker.ignited) return;
+		// SECOND SABER STARTS PUT AWAY, WITH NO HOLSTER (ubqs_dual_start 0, no RSQ Tactical Rig): its first
+		// draw leaves the blade off -- a hilt in the off hand, which RSQ_DistanceGrab lets reach. The Blade
+		// On / Off key (or a throw and catch) lights it; any later draw lights it as usual.
+		if (invoker.startDark)
+		{
+			invoker.startDark = false;
+			invoker.doused = true;
+			return;
+		}
 		// It always lights when drawn. The `netevent ubqs_ignite` key (UBQS_Bridge.NetworkProcess -> Flick())
 		// is what douses and relights it by hand; there is no wrist flick any more.
 		invoker.doused = false;
@@ -913,6 +922,7 @@ class UBQS_SaberBase : Weapon abstract
 	// still run from Select, Deselect and Ready, so they were never orphaned -- only the by-hand dousing was.)
 	// A key is not a cvar, so this cannot go dead in anyone's ini.
 	bool doused;              // the blade is off; the hilt is in your hand
+	bool startDark;           // the first draw leaves the blade off (UBQS_Bridge, ubqs_dual_start 0, no holster)
 	int  igniteAnim;          // tics left of the blade running out (lighting) or in (dousing)
 	bool merged;              // off hand: KEPT -- A_UBShow, A_UBHoldBegin, A_UBAltFire, DetachFromOwner and
 	                          // UBQS_Force all read it
@@ -3106,7 +3116,7 @@ class UBQS_SaberBase : Weapon abstract
 		UBSP R 1 { A_UBShow(17); A_Lower(12); }
 		Loop;
 	Ready:
-		UBSP N 2 { A_UBShow(13); A_UBOn(); }
+		UBSP N 2 { A_UBOn(); A_UBShow(13); }
 		UBSP O 2 A_UBShow(14);
 		UBSP P 2 A_UBShow(15);
 		UBSP Q 2 A_UBShow(16);
@@ -5803,11 +5813,20 @@ class UBQS_Bridge : EventHandler
 			let who = players[e.Player].mo;
 			if (!who) return;
 			bool ign = e.Name ~== "ubqs_ignite";
+			// BLADE ON / OFF BRINGS BOTH BLADES TO ONE STATE: with any blade in hand off (the second saber
+			// starts with its blade off when there is no holster -- ubqs_dual_start), the press lights the
+			// dark ones; with all lit, it douses them all. A plain toggle each would leave them out of step.
+			bool anyDark = false;
+			for (let item = who.Inv; item; item = item.Inv)
+			{
+				let sb = UBQS_SaberBase(item);
+				if (sb && sb.InHand() && !sb.thrown && sb.doused) anyDark = true;
+			}
 			for (let item = who.Inv; item; item = item.Inv)
 			{
 				let sb = UBQS_SaberBase(item);
 				if (!sb || !sb.InHand() || sb.thrown) continue;
-				if (ign) sb.Flick();
+				if (ign) { if (!anyDark || sb.doused) sb.Flick(); }
 				else sb.ToggleBack();
 			}
 			return;
@@ -6023,7 +6042,24 @@ class UBQS_Bridge : EventHandler
 			if (p.ReadyWeapon is "UBQS_SaberOff" && mainSaber) p.PendingWeapon = mainSaber;
 			// THE SECOND SABER, for the off hand, while the server allows it and you carry the first
 			if (dual && p.mo.FindInventory("UBQS_Saber") && !p.mo.FindInventory("UBQS_SaberOff"))
+			{
 				p.mo.GiveInventory("UBQS_SaberOff", 1);
+				// "SECOND SABER STARTS" (ubqs_dual_start; the owner, 11-02: "Off saber not lit at start"). At the
+				// start -- a new game, or the first time it is given; never on a level change, since it is
+				// carried -- Put Away (0) holsters it with RSQ Tactical Rig (UBQS_DualAway: the off hand gets
+				// its empty hand, the holster draws it), and without the rig leaves its blade off for its first
+				// draw. In Hand (1) is the old behaviour: lit in the off hand.
+				let sc = CVar.FindCVar("ubqs_dual_start");
+				if (!sc || sc.GetInt() == 0)
+				{
+					if (HolsterThere(p)) p.mo.GiveInventory("UBQS_DualAway", 1);
+					else
+					{
+						let so = UBQS_SaberBase(p.mo.FindInventory("UBQS_SaberOff"));
+						if (so) so.startDark = true;
+					}
+				}
+			}
 			// THE FORCE goes with the saber; with no off-hand saber, the bare Force hand too (ubqs_force_hand)
 			if (p.mo.FindInventory("UBQS_Saber") && !p.mo.FindInventory("UBQS_Force")) p.mo.GiveInventory("UBQS_Force", 1);
 			// The UBQS_Force item is given either way, and sits inert while ubqs_force is 0, so the
@@ -6042,12 +6078,21 @@ class UBQS_Bridge : EventHandler
 			}
 			bool wantOff = dual && !p.mo.FindInventory("UBQS_DualAway");
 			bool fhand = !wantOff && (!fhc || fhc.GetBool()) && (!fmc || fmc.GetInt() != 0);
-			if (fhand && p.mo.FindInventory("UBQS_Saber") && !p.mo.FindInventory("UBQS_ForceHand"))
+			// A HOLSTERED SECOND SABER LEAVES THE OFF HAND EMPTY, as the holster's own put-away does (SetDual):
+			// Brutal Doom Quest's hands when that pack is there, the bare Force hand only without it. (Measured on
+			// the full order, 11-02: the Force hand got there first at tic 0, and RSQ_DistanceGrab counts it as a
+			// busy hand -- the off hand the owner wanted free at the start could not grab.)
+			String hn0 = "RSQ_Hands";
+			class<Weapon> hc0 = hn0;
+			bool bdHands = hc0 != null && p.mo.FindInventory("UBQS_DualAway") != null;   // DualAway: only while dual
+			if (bdHands && p.mo.FindInventory("UBQS_Saber") && !p.mo.FindInventory(hc0)) p.mo.GiveInventory(hc0, 1);
+			if (bdHands) fhand = true;
+			if (fhand && !bdHands && p.mo.FindInventory("UBQS_Saber") && !p.mo.FindInventory("UBQS_ForceHand"))
 				p.mo.GiveInventory("UBQS_ForceHand", 1);
 			// ONCE, not every 350 tics -- see the note above
 			if (fhand && p.OffhandWeapon == null && p.PendingWeapon == WP_NOCHANGE && raisedAt[i] == 0)
 			{
-				let fh = Weapon(p.mo.FindInventory("UBQS_ForceHand"));
+				Weapon fh = bdHands ? Weapon(p.mo.FindInventory(hc0)) : Weapon(p.mo.FindInventory("UBQS_ForceHand"));
 				if (fh && !(p.ReadyWeapon && p.ReadyWeapon.bTwoHanded))
 				{
 					// LATCHED ONLY ON A RAISE WE ACTUALLY MADE. Taken above the test, a two-handed main

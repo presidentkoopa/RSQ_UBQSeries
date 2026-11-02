@@ -25,6 +25,12 @@ server int   ubqs_dual_mode     = 2;      // "Start With Dual Sabers": 2 On (the
                                           // it), 0 Off (one saber). 1 was the old Dual key mode, RETIRED
                                           // 11-01 with the key: a saved 1 reads as 2 and the host
                                           // rewrites it to 2 (UBQS_Bridge.WorldLoaded / DualMode).
+server int   ubqs_dual_start    = 0;      // "Second Saber Starts" (owner 11-02): 0 Put Away -- at the start
+                                          // (a new game, or the first time the second saber is given)
+                                          // it goes into its RSQ Tactical Rig holster, or without the
+                                          // rig sits in the off hand with its blade off; 1 In Hand (lit
+                                          // in the off hand, as before). A NEW cvar, so no stale ini
+                                          // value. Never re-holsters on a level change.
 server float ubqs_damage        = 30.0;   // the cut. The menu runs 15-60, which is 0.5x to 2.0x of this
 user  int    ubqs_locks         = 5;      // lock-on targets; the code clamps 1-8, the menu offers 1-5
 

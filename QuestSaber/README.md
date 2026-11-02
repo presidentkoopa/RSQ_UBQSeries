@@ -27,17 +27,25 @@ doom2.wad -> 01 brutal22test6 -> 02 BD22_VoxelPack -> 03 BD22_VR-Reloaded_2.0.3j
 - **Menu:** Options -> Radiant Silvergun Options -> RSQ Saber. One page, plus a "Controls" page and
   "Reset All" at the bottom.
 - **You start holding it.** The saber is in slot 1. With "Start With Dual Sabers" On (default) the second saber
-  is your off hand's weapon: it starts in the off hand. There is no key for it. With RSQ Tactical Rig loaded,
-  grip its holster (on the off hand's side) with the OFF hand to put it away or take it out; it stays put away
-  until you draw it, across map changes and saves. Without the Tactical Rig (or with its "Tactical Rig" switch
-  Off) there is no holster and the second saber simply stays in the off hand. Off: one saber.
+  is your off hand's weapon. There is no key for it.
+- **Second Saber Starts: Put Away (default) / In Hand.** At the start (a new game, or the first time the second
+  saber is given), Put Away means:
+  - With RSQ Tactical Rig: it starts in its holster and the off hand is empty (Brutal Doom Quest's hands, or the
+    saber's bare Force hand without Brutal Doom). Grip the holster (off hand's side) with the OFF hand to draw
+    it, lit; grip again to put it away. Drawn or away, it stays that way across map changes and saves.
+  - Without the Tactical Rig (or its "Tactical Rig" switch Off) there is no holster: it starts in the off hand
+    with its blade OFF (a hilt). Light it with the Blade On / Off key, or throw it and it lights when caught.
+    Drawn again later (after a gun took the off hand), it lights as usual.
+
+  In Hand: as before, lit in the off hand at the start. Changing the row affects the next start, not a saber
+  you already carry.
 - **Binds (optional):** Options -> Customize Controls -> section **RSQ Saber**, or RSQ Saber -> Controls (the
   same three binds, shorter names):
 
 | Customize Controls name | Controls page name | Does |
 |---|---|---|
 | Second blade on / off | Second Blade | Lights the second blade on the sabers in hand: the staff twirls in your hand. |
-| Blade on / off (douse it) | Blade On / Off | Douses and relights the blades (the hilt stays in your hand). |
+| Blade on / off (douse it) | Blade On / Off | Douses and relights the blades in hand (the hilt stays). If one is off, the press lights it; if all are lit, it douses them all. |
 | Summon / dismiss training remote | Training Remote | A training drone that fires stings at you to deflect. |
 
 The Second Saber key is gone (the owner, 11-01), and Brutal Doom's own Dual key no longer touches the saber.
@@ -75,7 +83,8 @@ An old saved "Dual key mode" (ubqs_dual_mode 1) reads as On and is rewritten to 
 | Menu row | Default | What it does |
 |---|---|---|
 | Sabers | On | The saber at all. |
-| Start With Dual Sabers | On | The second saber is the off hand's weapon (starts there; the Tactical Rig holster puts it away and draws it). Off: one saber. |
+| Start With Dual Sabers | On | The second saber is the off hand's weapon (the Tactical Rig holster puts it away and draws it). Off: one saber. |
+| Second Saber Starts | Put Away | At the start: in its Tactical Rig holster, or without the rig in the off hand with the blade off. In Hand: lit in the off hand (the old way). |
 | Main-Hand Force Push | On | The main saber's alt trigger is a Force push. Off: it toggles the second blade. |
 | Brutal Doom Sword Becomes Saber | On | Brutal Doom's sword (pickups and the one you carry) is replaced by the saber. |
 | Damage | 30 | The cut's damage (15-60). |
@@ -105,7 +114,7 @@ the simulated rig (2026-10-31 onward). Older features were also logged as "not y
 headset" in docs/HANDOFF_polish.md.
 
 1. Menu: Radiant Silvergun Options -> RSQ Saber. All rows above are there.
-2. Start a map. A lit saber in each hand, hum on draw.
+2. Start a map with the saber in hand. A lit saber in the main hand, hum on draw. The second saber: see 20 and 21.
 3. Swing at an imp: it is cut. A slow wave does nothing. Walk and turn without swinging: no cuts.
 4. Flick the blade fast past a monster: it still cuts (swept arc). **(not yet headset-confirmed)**
 5. Stab: thrust straight at one monster in front of another. Only the first is hit, harder, not shoved.
@@ -134,11 +143,15 @@ headset" in docs/HANDOFF_polish.md.
     **(not yet headset-confirmed)**
 18. With a gun in the main hand and the off saber out, flick the gun down: it reloads.
 19. Brutal Doom's Dual key with the saber in the main hand: the second saber does not move.
-20. With RSQ Tactical Rig: grip the second saber's holster with the off hand: the saber goes away and the off
-    hand holds the Force (Brutal Doom Quest's fist, or the bare Force hand; off alt still does the Force). Change
-    map, and save and load: it stays away. Grip the holster again: it comes back to the off hand.
-    **(not yet headset-confirmed; rig: the network events and save/load logged, 11-01)**
-21. Without the Tactical Rig: the second saber stays in the off hand.
+20. With RSQ Tactical Rig, new game, Second Saber Starts Put Away: the second saber is in its holster and the off
+    hand is empty (it distance-grabs with Brutal Doom Quest's hands). Grip the holster with the off hand: it comes
+    out lit. Change map, and save and load: it stays out. Grip again: it goes away, and stays away across maps.
+    **(rig only, not headset-confirmed: logged 11-02 on doom2 and on the full order)**
+21. Without the Tactical Rig, new game, Put Away: the second saber is in the off hand with its blade off. Blade
+    On / Off key: it lights (with the main saber lit too, only the dark one lights). **(rig only, not
+    headset-confirmed, 11-02)**
+21b. Second Saber Starts In Hand, new game: lit in the off hand, with or without the rig, as before. **(rig only,
+    11-02)**
 22. Main-Hand Force Push Off: main alt lights the second blade instead. Brutal Doom Sword Becomes Saber Off (new
     map): Brutal Doom's sword is its own again. **(not yet headset-confirmed)**
 23. "Reset All" puts everything back.
@@ -169,7 +182,9 @@ headset" in docs/HANDOFF_polish.md.
 - **RSQ ShieldSaw:** rest the lit main blade across the front of the shield and the shield's block grows
   (ShieldSaw's "Saber Over Shield").
 - **RSQ SlowMo:** the Perfect Parry Slow-Mo option.
-- **RSQ DistanceGrab:** reaches with a doused hilt in hand, not with a lit one.
+- **RSQ DistanceGrab:** reaches with a doused hilt in hand, not with a lit one. Its rule also counts the saber's
+  bare Force hand as busy, so on Doom 2 without Brutal Doom a holstered second saber leaves an off hand that
+  holds the Force hand and does not grab; with Brutal Doom Quest the off hand holds its hands and grabs.
 - **RSQ Score:** the training remote's points, and saber bonuses (cuts, throws, Force, parries, riposte).
 - **RSQ HP Bars:** a monster in a Force grip shows the "gripped" marker; hit-stop shows the frozen marker.
 - **Gun Bonsai with the RSQ Gun Bonsai VR patch:** the saber levels up; melee upgrades (Momentum, Riposte

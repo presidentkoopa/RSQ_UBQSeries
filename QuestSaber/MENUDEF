@@ -56,6 +56,11 @@ OptionValue "UBQS_DualStart"
 	2, "On"
 	0, "Off"
 }
+OptionValue "UBQS_DualStartPlace"
+{
+	0, "Put Away"
+	1, "In Hand"
+}
 // THE FIVE BLADES THAT EXIST, AND THEIR REAL LENGTHS. ubqs_size is not continuous: ResolveSizeIdx
 // snaps it to the nearest of 0.70 0.85 1.00 1.15 1.30 (zscript.txt:30, :466-478), and the blade is
 // 26.0 map units times that (:851), which at vr_vunits_per_meter 34 (hw_vrmodes.cpp:94) is 54 65 76
@@ -94,6 +99,7 @@ OptionMenu "UBQS_Options"
 	Title "RSQ SABER"
 	Option "Sabers", "ubqs_on", "OnOff"
 	Option "Start With Dual Sabers", "ubqs_dual_mode", "UBQS_DualStart"
+	Option "Second Saber Starts", "ubqs_dual_start", "UBQS_DualStartPlace"
 	Option "Main-Hand Force Push", "ubqs_alt", "OnOff"
 	Option "Brutal Doom Sword Becomes Saber", "ubqs_bd_sword", "OnOff"
 	Slider "Damage", "ubqs_damage", 15, 60, 3, 0
@@ -112,7 +118,7 @@ OptionMenu "UBQS_Options"
 	StaticText " "
 	Submenu "Controls", "UBQS_Keys"
 	StaticText " "
-	SafeCommand "Reset All", "resetcvar ubqs_on ubqs_dual_mode ubqs_alt ubqs_bd_sword ubqs_damage ubqs_locks ubqs_color ubqs_size ubqs_color_off ubqs_size_off ubqs_lights_offhand ubqs_swing_cut ubqs_blade_width ubqs_hitstop ubqs_parry_slowmo ubqs_start ubqs_world_saber ubqs_lights ubqs_deflect_aim ubqs_deflect_lead ubqs_throw_min ubqs_force ubqs_force_jump ubqs_force_gesture ubqs_gesture_straight ubqs_saber_sound ubqs_haptics ubqs_lefty ubqs_remote_level ubqs_diag", "Reset all RSQ Saber settings?"
+	SafeCommand "Reset All", "resetcvar ubqs_on ubqs_dual_mode ubqs_dual_start ubqs_alt ubqs_bd_sword ubqs_damage ubqs_locks ubqs_color ubqs_size ubqs_color_off ubqs_size_off ubqs_lights_offhand ubqs_swing_cut ubqs_blade_width ubqs_hitstop ubqs_parry_slowmo ubqs_start ubqs_world_saber ubqs_lights ubqs_deflect_aim ubqs_deflect_lead ubqs_throw_min ubqs_force ubqs_force_jump ubqs_force_gesture ubqs_gesture_straight ubqs_saber_sound ubqs_haptics ubqs_lefty ubqs_remote_level ubqs_diag", "Reset all RSQ Saber settings?"
 }
 
 // The SAME bind targets as Customize Controls (KEYCONF's aliases), so a key bound in either place
