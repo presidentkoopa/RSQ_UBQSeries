@@ -208,11 +208,15 @@ on the simulated rig (2026-10-31 onward).
   **Throw:** under the patch a throw starts at **1 lock**; **Lockstep** adds one a level, to the Locks row (5) at
   level 4; **Ricochet** after it, then **Hunter's Return**, **Meat Grinder**; **Wall Bounces** (after Ricochet 2: the
   Wall Bounces row and one more a level); **Cleaver** (after Meat Grinder: cut in two at or under 100 / 140 / 200,
-  stuck and ground at or under 800 / 1000 / 1200; Brutal Doom's tiers rise by the same share). Block and Bash:
-  Broadening, Bulwark, Rebound, Battering Ram. Without the patch nothing changes.
+  stuck and ground at or under 800 / 1000 / 1200; Brutal Doom's tiers rise by the same share). **Block:**
+  Broadening, then Bulwark, then Rebound; **Back Plate** (after Broadening 2: the shield on your back blocks; 2 it
+  turns shots too -- replaces Block While Holstered under the patch); **Shield Wall** (after Bulwark 2: a perfect
+  block slows time 0.75 / 1 / 1.25 s -- replaces Perfect-Block Slow-Mo); **Reflect** (after Rebound 2: a returned
+  bullet x1.5, x2). Bash: Battering Ram. Without the patch nothing changes.
 - **Fixed 11-02:** the hand throw now bounces off walls (the Wall Bounces row only reached the One-Handed throw), and
   a monster under the cut-in-two tier is cut in two (the cut dealt only an ordinary hit, so a Doom imp took about 40
-  and lived).
+  and lived); a bullet the shield on your back stops goes back out (its trace started inside your own body, so your
+  own shield blocked it).
 - **Brutal Doom VR (BD22Q):** its off-hand hands give way to the shield; flick reload with a gun in the main
   hand and the shield in the off follows BD22Q's flick setting.
 - **RSQ Accessibility:** its comfort, colour-blind and gesture settings. Steady Hands (on in Accessibility):

@@ -207,7 +207,7 @@ class SSQ_Guard : Inventory
 			plateR = PlateRadius(saw && saw.Revved(), GrowK()) * BraceK(h, pnum);
 			return true;
 		}
-		if (st == SSQ_Handler.SS_STOWED && SSQ_Handler.SVI('ssq_guard_stowed', 0) != 0 && saw)
+		if (st == SSQ_Handler.SS_STOWED && saw && BackPlate(mo) > 0)
 		{
 			plateHeld = 0;
 			plateC = PlateCentre(mo, pose, true);
@@ -216,6 +216,26 @@ class SSQ_Guard : Inventory
 			return true;
 		}
 		return false;
+	}
+
+	// BACK PLATE (Gun Bonsai VR patch, GBOVR_TREES.md 4.3 Block): what a shield you are not holding does. 0 nothing, 1
+	// blocks, 2 blocks and turns shots (missiles and bullets) as a held one does. Without the patch Block While Holstered
+	// (ssq_guard_stowed) is both or neither, as before; under it the node replaces that row.
+	static int BackPlate(PlayerPawn mo)
+	{
+		if (!SSQ_Upg.On()) return SSQ_Handler.SVI('ssq_guard_stowed', 0) != 0 ? 2 : 0;
+		return clamp(SSQ_Upg.Lv(mo ? mo.FindInventory('SSQ_ShieldSaw') : null, "BackPlate"), 0, 2);
+	}
+	// the plate Plate() just found turns what it stops: always in the hand, on the back only at Back Plate 2
+	bool PlateTurns() { return plateHeld != 0 || BackPlate(PlayerPawn(Owner)) >= 2; }
+
+	// SHIELD WALL (Gun Bonsai VR patch): how long a perfect block slows time, ms (0 none). Without the patch the
+	// Perfect-Block Slow-Mo row's half second, as before; under it the node's levels (0.75 / 1 / 1.25 s) replace the row.
+	static int ShieldWallMs(PlayerPawn mo)
+	{
+		if (!SSQ_Upg.On()) return SSQ_Handler.SVI('ssq_perfect_slowmo', 0) != 0 ? 500 : 0;
+		int lv = SSQ_Upg.Lv(mo ? mo.FindInventory('SSQ_ShieldSaw') : null, "ShieldWall");
+		return lv > 0 ? int(SSQ_Upg.Num("ShieldWall.ms", lv, 0)) : 0;
 	}
 
 	// SABER OVER SHIELD (pick 15, surveys/07_SHIELDS_PARRY.md 4.12): while the player's lit saber rests across
@@ -292,6 +312,7 @@ class SSQ_Guard : Inventory
 
 		// blocked
 		newdamage = 0;
+		if (held == 0) SSQ_Upg.Touch("backplate", mo, source);	// Back Plate: the shield on your back took it
 		// the spark comes off the face on the attacker's side
 		Vector3 outward = ((A - C) dot n) >= 0 ? n : -n;
 
@@ -325,8 +346,10 @@ class SSQ_Guard : Inventory
 			// PERFECT-BLOCK SLOW MOTION (pick 14, off by default; apply/05_SLOWMO.md 8): half a second through
 			// RSQ SlowMo's own pulse, at the depth RS_Score's big kills use (Score handler.zs PULSE_DEPTH 35).
 			// Sent from the blocker's own machine only, so a netgame gets one event; absent SlowMo hears nothing.
-			if (SSQ_Handler.SVI('ssq_perfect_slowmo', 0) != 0 && mo.PlayerNumber() == consoleplayer)
-				EventHandler.SendNetworkEvent("rsm_pulse", 500, 35);
+			// Under the Gun Bonsai VR patch Shield Wall's levels decide it (ShieldWallMs).
+			int swMs = ShieldWallMs(mo);
+			if (swMs > 0 && mo.PlayerNumber() == consoleplayer)
+				EventHandler.SendNetworkEvent("rsm_pulse", swMs, 35);
 			if (SSQ_Handler.UVI(mo.player, 'ssq_debug', 0))
 				Console.Printf("ssq: perfect block of %s, hitstop %d slowmo %d", source.GetClassName(), SSQ_Handler.SVI('ssq_hitstop', 0), SSQ_Handler.SVI('ssq_perfect_slowmo', 0));
 		}
@@ -364,7 +387,7 @@ class SSQ_Guard : Inventory
 				if (away.Length() > 0) source.Thrust(SSQ_Handler.SV('ssq_stagger_push', 12.0) / 10.0 * (perfect ? 2.0 : 1.0), atan2(away.y, away.x));
 			}
 		}
-		if (kind == 0 && inflictor && (SSQ_Handler.SVI('ssq_deflect', 1) != 0 || perfect))
+		if (kind == 0 && inflictor && (SSQ_Handler.SVI('ssq_deflect', 1) != 0 || perfect) && PlateTurns())
 			Deflect(mo, inflictor, source, P, outward, perfect ? 1.6 : 1.0);
 	}
 
@@ -446,7 +469,7 @@ class SSQ_Guard : Inventory
 		// shield. The return is a trace of our own from the plate, so it uses the same aim rule
 		// as every other deflection (ssq_deflect_aim), and because it is ours it cannot be
 		// eaten by this same hook -- a player's shots are never tested.
-		if (SSQ_Handler.SVI('ssq_hitscan_return', 1) != 0 && damage > 0)
+		if (SSQ_Handler.SVI('ssq_hitscan_return', 1) != 0 && damage > 0 && PlateTurns())
 		{
 			Vector3 back = DeflectDir(mo, P, dir * max(dist, 1.0), outward, shooter, -PlateTravel());
 			double ang = atan2(back.y, back.x);
@@ -456,6 +479,9 @@ class SSQ_Guard : Inventory
 			// patch itself, which can see it; this return is traced by a helper the patch cannot credit.)
 			int rb = SSQ_Upg.Lv(mo.FindInventory('SSQ_ShieldSaw'), "Rebound");
 			if (rb > 0) dmg = int(dmg * (1.1 + 0.15 * rb));
+			// REFLECT (Gun Bonsai VR patch): a returned BULLET does x1.5, x2 on top of ssq_hitscan_damage
+			int rf = SSQ_Upg.Lv(mo.FindInventory('SSQ_ShieldSaw'), "Reflect");
+			if (rf > 0) { dmg = int(dmg * SSQ_Upg.Num("Reflect.mult", rf, 1.0)); SSQ_Upg.Touch("reflect.saw", mo, shooter); }
 			// With LAF_ABSPOSITION the engine reads the three offsets as LITERAL COORDINATES --
 			// tempos = (offsetforward, offsetside, sz), p_map.cpp:4875 -- so the forward and side
 			// slots carry X and Y. Passing 0,0 started this trace at the map origin.
@@ -484,7 +510,13 @@ class SSQ_Guard : Inventory
 				ric.master = mo.FindInventory('SSQ_ShieldSaw');
 				{ let upg = SSQ_Upg.Svc(); if (upg && ric.master) upg.GetInt("claim", "", 0, 0, ric); }
 				FTranslatedLineTarget hitT;
-				ric.LineAttack(ang, max(dist, 1024.0), pit, dmg, 'Hitscan', 'BulletPuff', LAF_ABSPOSITION, hitT, P.z, P.x, P.y);
+				// FROM OUTSIDE THE PLAYER'S OWN BOX. A shield on the back sits inside the player's box: a trace started
+				// there hit the player at once and the player's own guard ate it (measured 11-02 with the back plate:
+				// every returned bullet was blocked by the shield that returned it). Step the start out along the return.
+				Vector3 S = P;
+				if (abs(S.x - mo.pos.x) <= mo.radius && abs(S.y - mo.pos.y) <= mo.radius && S.z >= mo.pos.z && S.z <= mo.pos.z + mo.height)
+					S += back * (mo.radius * 2.9 + 2);
+				ric.LineAttack(ang, max(dist, 1024.0), pit, dmg, 'Hitscan', 'BulletPuff', LAF_ABSPOSITION, hitT, S.z, S.x, S.y);
 				// The helper vanishes in a tic: a monster it hit would chase nothing. Point the
 				// victim at the player who turned the shot. (Known limit: the engine credits the
 				// damage to the helper, so co-op friendly-fire rules do not see a player source.)
@@ -517,7 +549,7 @@ class SSQ_Guard : Inventory
 		if (SSQ_Handler.SVI('ssq_guard', 1) == 0 || SSQ_Handler.SVI('ssq_sweep', 1) == 0) return;
 		let mo = PlayerPawn(Owner);
 		if (!mo || !mo.player || mo.health <= 0) return;
-		if (!Plate()) return;
+		if (!Plate() || !PlateTurns()) return;	// the sweep only TURNS: a Back Plate 1 shield just blocks
 		Vector3 C = plateC, n = plateN;
 		double R = plateR + SSQ_Handler.CM(SSQ_Handler.SV('ssq_sweep_pad', 18.0));
 		double lead = clamp(SSQ_Handler.SV('ssq_sweep_lead', 3.0), 1.0, 6.0);

@@ -389,6 +389,51 @@ class FistsProbe : EventHandler
 			Console.Printf("FP shieldsaw throw: locks %d, wall bounces %d (hand throw) / %d (one-handed)", SSQ_Disc.WantLocks(p), d1.bounces, d2.bounces);
 			d1.Destroy(); d2.Destroy();
 		}
+		else if (e.Name ~== "fp_ssguard")
+		{
+			// the shield where it is now (on the back, headless): arg0 0 a fireball onto the plate along its own normal,
+			// through the guard's own AbsorbDamage; 1 an imp's 10-damage bullet at it, through the guard's own StopsHitscan
+			let h = SSQ_Handler.Get();
+			let g = SSQ_Guard(p.FindInventory("SSQ_Guard"));
+			if (!g || !h) { Console.Printf("FP shieldsaw guard: none"); return; }
+			bool has = g.Plate();
+			Console.Printf("FP shieldsaw guard: state %d, plate %s (held %d), back plate %d, turns %d, shield wall %d ms", h.StateOf(0),
+				has ? "yes" : "no", g.plateHeld, SSQ_Guard.BackPlate(p), has && g.PlateTurns(), SSQ_Guard.ShieldWallMs(p));
+			if (!has) return;
+			Vector3 C = g.plateC, n = g.plateN;
+			Vector3 mid = p.pos + (0, 0, p.height * 0.5);
+			Vector3 away = ((C - mid) dot n) >= 0 ? n : -n;
+			let imp = Actor.Spawn("DoomImp", C + away * (e.Args[1] > 0 ? e.Args[1] : 160) - (0, 0, 28));
+			if (!imp) return;
+			imp.freezetics = 70; imp.bNoGravity = true;
+			if (e.Args[0] == 0)
+			{
+				let ball = Actor.Spawn("DoomImpBall", C + away * 20);
+				if (!ball) return;
+				ball.target = imp; ball.vel = -away * 10;
+				int before = 0, after = 0;
+				let it = ThinkerIterator.Create("DoomImpBall");
+				Actor a;
+				while (a = Actor(it.Next())) if (a.target == p) before++;
+				int nd = 20;
+				g.AbsorbDamage(20, 'None', nd, ball, imp, 0);
+				it = ThinkerIterator.Create("DoomImpBall");
+				while (a = Actor(it.Next())) if (a.target == p) after++;
+				Console.Printf("FP shieldsaw guard: fireball onto the plate: 20 damage -> %d, turned back: %d", nd, after - before);
+				ball.Destroy();
+			}
+			else
+			{
+				Vector3 A = imp.pos + (0, 0, imp.height * 0.5);
+				Vector3 d = C - A;
+				double dist = d.Length();
+				int h0 = imp.health;
+				bool stopped = g.StopsHitscan(imp, A, d / dist, dist + 200, 10);
+				Console.Printf("FP shieldsaw guard: a 10-damage bullet at the plate: %s, the imp %d -> %d (imp %.0f from the plate, sees the player %d, in the level %d, player angle %.0f, out (%.2f %.2f %.2f))", stopped ? "STOPPED" : "not stopped", h0, imp.health,
+					dist, imp.CheckSight(p), level.IsPointInLevel(imp.pos), p.angle, away.x, away.y, away.z);
+			}
+			imp.Destroy();
+		}
 		else if (e.Name ~== "fp_sscut")
 		{
 			// a disc thrown at a frozen monster, hit through the disc's own SpecialMissileHit: cut, stuck, or glanced off

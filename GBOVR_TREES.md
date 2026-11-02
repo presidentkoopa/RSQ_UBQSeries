@@ -999,6 +999,19 @@ cut; Cleaver 3: Demon cut, Revenant and Baron stuck. Not provable headless: a re
 | Shield Wall (new) | Bulwark 2 | 1-3: a perfect block pulses slow motion 0.5 + 0.25 lv s through RSQ SlowMo (today's option becomes levels) | ShieldSaw asks SlowMo | SlowMo's own | - |
 | Reflect (new) | Rebound 2 | 1-2: returned BULLETS (the muzzle block's) do x1.5, x2 (`ssq_hitscan_damage` as base x level) | ShieldSaw | - | `reflect.saw` |
 
+**Block: BUILT 11-02 (L3).** Gun Bonsai VR: Bulwark and Rebound after their parents (cap 4), Back Plate, Shield Wall,
+Reflect. ShieldSaw (`SSQ_Guard`): `BackPlate()` (no patch: Block While Holstered, both or neither; under it the node:
+1 blocks, 2 also turns) gates the stowed plate, `PlateTurns()` gates the sweep, the missile return and the bullet
+return; `ShieldWallMs()` replaces the Perfect-Block Slow-Mo row under the patch (rsm_pulse 750 / 1000 / 1250 ms);
+Reflect multiplies the returned bullet after Rebound. Touches `backplate` and `reflect.saw`. **One more ShieldSaw bug
+found and fixed** (without the patch too, with Block While Holstered on): a bullet the shield on your back stopped was
+traced back from inside the player's own box, hit the player, and the player's own guard ate it; the start now steps
+out of the box along the return. **Headless 11-02** (`fp_ssguard`: a fireball or an imp's 10-damage bullet onto the
+plate along its normal, through the guard's own `AbsorbDamage` / `StopsHitscan`): no Back Plate, no plate; Back
+Plate 1 blocks the fireball (20 -> 0) and stops the bullet, turns neither; Back Plate 2 turns the fireball and returns
+the bullet: 10; Rebound 2: 14; Reflect 1: 21; Reflect 2: 28; Shield Wall 0 / 750 / 1250 ms at 0 / 1 / 3. Not provable
+headless: a perfect block (it needs a moving plate) and so the slow motion it sends.
+
 **Bash**
 
 | Node | Parent | Levels | Owns | Art | Score |

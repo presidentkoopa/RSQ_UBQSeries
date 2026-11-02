@@ -131,7 +131,8 @@ Always on (no row):
   - Sabers: Momentum, Riposte Edge, Piercing Return, Saber Throw, Chain Choke, Dual Harmony, Deflector;
     the Force: Force Push, Force Pull, Force Choke, Force Jump
   - ShieldSaw (GBOVR_TREES.md 4.3): Throw (Lockstep -> Ricochet -> Hunter's Return -> Meat Grinder -> Cleaver;
-    Ricochet 2 -> Wall Bounces; under the patch a throw starts at 1 lock), Bulwark, Rebound, Battering Ram, Broadening
+    Ricochet 2 -> Wall Bounces; under the patch a throw starts at 1 lock), Block (Broadening -> Bulwark -> Rebound;
+    Broadening 2 -> Back Plate; Bulwark 2 -> Shield Wall; Rebound 2 -> Reflect), Battering Ram
   - Any melee: Lunge, Executioner, Adrenaline
   - Player, each only while its mod is loaded: Distance Grab (Long Arm, Iron Grip, Heavy Hitter, Air Catch,
     Powder Keg); Tactical Rig (Quick Draw, Pair Draw, Showdown with SlowMo); SlowMo (Marksman, Dodger,

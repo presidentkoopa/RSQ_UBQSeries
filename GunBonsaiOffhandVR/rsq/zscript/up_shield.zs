@@ -54,15 +54,17 @@ class RSQ_Upgrade_Cleaver : RSQ_Upgrade_ShieldMarker
 	}
 }
 
-// BULWARK: a wider perfect-block window -- a slower plate still counts as meeting the shot.
+// BULWARK: a wider perfect-block window -- a slower plate still counts as meeting the shot. (4.3 Block, after Broadening 1)
 class RSQ_Upgrade_Bulwark : RSQ_Upgrade_ShieldMarker
 {
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return ShieldInfo(info) && Has(info, "Broadening") && LevelOf(info, "Bulwark") < 4; }
 	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("need", AsPercent(1.0 / (1.0 + 0.35 * level))); }
 }
 
-// REBOUND: shots the shield turns hit harder.
+// REBOUND: shots the shield turns hit harder. (After Bulwark 1)
 class RSQ_Upgrade_Rebound : RSQ_Upgrade_ShieldMarker
 {
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return ShieldInfo(info) && Has(info, "Bulwark") && LevelOf(info, "Rebound") < 4; }
 	static double Mult(uint lv) { return 1.1 + 0.15 * lv; }
 	override double ModifyDamageDealt(Actor pawn, Actor shot, Actor target, double damage, Name attacktype)
 	{
@@ -75,6 +77,31 @@ class RSQ_Upgrade_Rebound : RSQ_Upgrade_ShieldMarker
 		return damage * Mult(level);
 	}
 	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("mult", AsPercentIncrease(Mult(level))); }
+}
+
+// BACK PLATE (4.3 Block, after Broadening 2): the shield on your back blocks (1), and turns shots too (2). Under this
+// patch it replaces the ShieldSaw's Block While Holstered row. (SSQ_Guard.BackPlate)
+class RSQ_Upgrade_BackPlate : RSQ_Upgrade_ShieldMarker
+{
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return ShieldInfo(info) && Has(info, "Broadening", 2) && LevelOf(info, "BackPlate") < 2; }
+}
+
+// SHIELD WALL (4.3 Block, after Bulwark 2): a perfect block slows time 0.5 + 0.25 s a level through RSQ SlowMo. Under this
+// patch it replaces the ShieldSaw's Perfect-Block Slow-Mo row. (SSQ_Guard.ShieldWallMs)
+class RSQ_Upgrade_ShieldWall : RSQ_Upgrade_ShieldMarker
+{
+	static int Ms(uint lv) { return lv > 0 ? 500 + 250 * int(lv) : 0; }
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return ShieldInfo(info) && Has(info, "Bulwark", 2) && LevelOf(info, "ShieldWall") < 3; }
+	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("time", string.format("%.2f s", Ms(level) / 1000.0)); }
+}
+
+// REFLECT (4.3 Block, after Rebound 2): a bullet the shield stops and sends back does x1.5, x2 (on top of the ShieldSaw's
+// Returned Bullet Damage row, and of Rebound). (SSQ_Guard.StopsHitscan)
+class RSQ_Upgrade_Reflect : RSQ_Upgrade_ShieldMarker
+{
+	static double Mult(uint lv) { return 1.0 + 0.5 * min(int(lv), 2); }
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return ShieldInfo(info) && Has(info, "Rebound", 2) && LevelOf(info, "Reflect") < 2; }
+	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("mult", string.format("x%.1f", Mult(level))); }
 }
 
 // BATTERING RAM: a bashed monster flies into others, and the collision hurts both.

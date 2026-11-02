@@ -442,6 +442,8 @@ class RSQ_MeleeUpgradeService : Service
 			// the ShieldSaw tree (up_shield.zs)
 			if (stringArg == "Cleaver.fodder") return RSQ_Upgrade_Cleaver.Fodder(lv);
 			if (stringArg == "Cleaver.mid") return RSQ_Upgrade_Cleaver.Mid(lv);
+			if (stringArg == "ShieldWall.ms") return RSQ_Upgrade_ShieldWall.Ms(lv);
+			if (stringArg == "Reflect.mult") return RSQ_Upgrade_Reflect.Mult(lv);
 			// G. Gun hand, H. Taunt
 			if (stringArg == "PistolWhip.stagger") return RSQ_Upgrade_PistolWhip.Stagger(lv);
 			if (stringArg == "PistolWhip.mult") return RSQ_Upgrade_PistolWhip.Mult(lv);
