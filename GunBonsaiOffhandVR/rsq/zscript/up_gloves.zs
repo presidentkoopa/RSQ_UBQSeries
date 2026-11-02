@@ -54,10 +54,10 @@ class RSQ_Upgrade_Base : TFLV_Upgrade_BaseUpgrade
 	}
 }
 
-// HAYMAKER: the harder you throw it, the more each level adds.
+// HAYMAKER: the harder you throw it, the more each level adds. (Tree, 11-02: after Heavy Hands 1; 5 levels.)
 class RSQ_Upgrade_Haymaker : RSQ_Upgrade_Base
 {
-	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return GloveInfo(info); }
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return GloveInfo(info) && Has(info, "HeavyHands") && LevelOf(info, "Haymaker") < 5; }
 	static double Mult(uint lv, double power) { return 1.0 + lv * (0.15 + 0.35 * power); }
 	override double ModifyDamageDealt(Actor pawn, Actor shot, Actor target, double damage, Name attacktype)
 	{
@@ -92,9 +92,11 @@ class RSQ_Upgrade_OneTwo : RSQ_Upgrade_Base
 
 // STAR PUNCH: clean hits bank stars (SuperPunchOut's rule); an uppercut with the trigger held
 // spends one and launches what it hits.
+// NO LONGER OFFERED (GBOVR_TREES.md 2.1 #5 and 4.1 A, owner 11-02): folded into Uppercut and Launcher (up_fists.zs); the
+// star bank read as a second resource. The class stays so a save that learned it keeps it, and it still works there.
 class RSQ_Upgrade_StarPunch : RSQ_Upgrade_Base
 {
-	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return GloveInfo(info); }
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return false; }
 	static double Mult(uint lv) { return 1.5 + 0.5 * lv; }
 	override double ModifyDamageDealt(Actor pawn, Actor shot, Actor target, double damage, Name attacktype)
 	{
@@ -138,10 +140,10 @@ class RSQ_Upgrade_Counterpunch : RSQ_Upgrade_Base
 	}
 }
 
-// BODY BLOW: a hit below the chest winds it -- every move it makes is slower for a while.
+// BODY BLOW: a hit below the chest winds it -- every move it makes is slower for a while. (After Heavy Hands 2; 4 levels.)
 class RSQ_Upgrade_BodyBlow : RSQ_Upgrade_Base
 {
-	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return GloveInfo(info); }
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return GloveInfo(info) && Has(info, "HeavyHands", 2) && LevelOf(info, "BodyBlow") < 4; }
 	static int Tics(uint lv) { return 35 + 18 * lv; }
 	static double Factor(uint lv) { return min(0.4 + 0.15 * lv, 1.0); }
 	override void OnDamageDealt(Actor pawn, Actor shot, Actor target, int damage)
@@ -156,10 +158,14 @@ class RSQ_Upgrade_BodyBlow : RSQ_Upgrade_Base
 	}
 }
 
-// KNOCKDOWN: enough punishment inside two seconds puts it on the floor for a count.
+// KNOCKDOWN: enough punishment inside two seconds puts it on the floor for a count. (After Wallflower 2 or Body Blow 3;
+// 5 levels.)
 class RSQ_Upgrade_Knockdown : RSQ_Upgrade_Base
 {
-	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return GloveInfo(info); }
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info)
+	{
+		return GloveInfo(info) && (Has(info, "WallSplat", 2) || Has(info, "BodyBlow", 3)) && LevelOf(info, "Knockdown") < 5;
+	}
 	static double Share(uint lv) { return max(0.5 - 0.06 * lv, 0.15); }
 	static int Count(uint lv) { return min(2 + lv, 8); }
 	override void OnDamageDealt(Actor pawn, Actor shot, Actor target, int damage)
@@ -223,10 +229,11 @@ class RSQ_Upgrade_ReturnFire : RSQ_Upgrade_Base
 	}
 }
 
-// WALL SPLAT: a monster your punch knocks into a wall slams into it.
+// WALL SPLAT, shown as WALLFLOWER (the owner renamed it 11-02; the class keeps its name for saves): a monster your punch
+// knocks into a wall slams into it. (After Haymaker 2; 5 levels.)
 class RSQ_Upgrade_WallSplat : RSQ_Upgrade_Base
 {
-	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return GloveInfo(info) && info.upgrades.Level(GetClassName()) < 5; }
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return GloveInfo(info) && Has(info, "Haymaker", 2) && info.upgrades.Level(GetClassName()) < 5; }
 	// the slam: 5 + 5 a level at the slowest slam that counts (3 map units a tic), up to twice that at 6 or more
 	static int Damage(uint lv, double speed) { return int((5 + 5 * lv) * clamp(speed / 3.0, 1.0, 2.0)); }
 	static int Reel(uint lv) { return 10 + 5 * lv; }

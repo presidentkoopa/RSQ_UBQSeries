@@ -39,6 +39,7 @@ user bool   rsqg_twohand         = false;
 user bool   rsqg_two_down        = true;   // both hands swept down past the hips
 user bool   rsqg_two_apart       = true;   // both hands thrown apart from the chest
 user bool   rsqg_two_palms       = true;   // both palms held out
+user bool   rsqg_two_thrust      = true;   // both palms thrust forward together (RSQ Melee's Clear Out)
 user float  rsqg_two_window_ms   = 120;    // how far apart in time the two hands may move and still be one gesture
 user float  rsqg_two_age         = 180;    // each hand's fastest instant must be this fresh (ms; 0 = any in the last quarter second)
 user float  rsqg_two_repeat_ms   = 500;    // before the same two-hand gesture may fire again
@@ -54,7 +55,10 @@ user float  rsqg_two_hold_ms     = 400;    // palms: held this long
 // pointing up (fingers up), not pulling a trigger, and the hands side by side, not one behind the other
 // on a rifle.
 user float  rsqg_two_palms_pitch = 40;     // palms: each hand pointing at least this far up (degrees)
-user float  rsqg_two_palms_gap   = 0.25;   // palms: the hands at least this far apart sideways (metres)
+user float  rsqg_two_palms_gap   = 0.25;   // palms: the hands at least this far apart sideways (metres; thrust too)
+user float  rsqg_two_thrust_mps  = 2.5;    // thrust: each hand's speed forward, where you face
+user float  rsqg_two_thrust_frac = 0.6;    // thrust: how much of the speed must be forward (0..1)
+user float  rsqg_two_thrust_pitch = 20;    // thrust: each hand pointing at least this far up (degrees; a palm pushed out)
 
 // ---- PUNCH: jab / hook / uppercut (the gloves' reader, now RSQ Melee's gloves.zs, copied), answered whenever a mod asks
 // Never while braced or with both hands shoving together (a two-hand gun; Brutal Doom's butt-stroke push).

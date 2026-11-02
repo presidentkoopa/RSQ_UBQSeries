@@ -41,6 +41,7 @@ OptionMenu "RSQG_Options"
 	Option "  Both Hands Down", "rsqg_two_down", "OnOff"
 	Option "  Both Hands Apart", "rsqg_two_apart", "OnOff"
 	Option "  Both Palms Out", "rsqg_two_palms", "OnOff"
+	Option "  Both Palms Thrust", "rsqg_two_thrust", "OnOff"
 	StaticText " "
 	StaticText "Fit to my body: stand tall, arms straight", "gray"
 	StaticText "out to your sides, Measure Me, close the menu.", "gray"
@@ -84,6 +85,9 @@ OptionMenu "RSQG_Tuning"
 	Slider "Palms: Held (ms)", "rsqg_two_hold_ms", 100, 2000, 50, 0
 	Slider "Palms: Pointing Up (degrees)", "rsqg_two_palms_pitch", 0, 90, 5, 0
 	Slider "Palms: Apart Sideways (m)", "rsqg_two_palms_gap", 0.0, 0.8, 0.05, 2
+	Slider "Thrust: Speed (m/s)", "rsqg_two_thrust_mps", 0.5, 8.0, 0.1, 1
+	Slider "Thrust: How Straight", "rsqg_two_thrust_frac", 0.0, 1.0, 0.05, 2
+	Slider "Thrust: Pointing Up (degrees)", "rsqg_two_thrust_pitch", -30, 90, 5, 0
 	StaticText " "
 	StaticText "Punch (jab, hook, uppercut) and shove (a gun in hand)", "gold"
 	Slider "Punch Speed (m/s)", "rsqg_punch_mps", 0.5, 8.0, 0.1, 1

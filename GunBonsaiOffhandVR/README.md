@@ -77,7 +77,13 @@ Always on (no row):
 - **Knockdown and Executioner** are sized by the health a monster started with (works on LegenDoom
   legendaries and champions).
 - **Upgrade paths for the series** (offered when that weapon or the player levels):
-  - Gloves (RSQ_Melee's): Haymaker, One-Two, Star Punch, Counterpunch, Body Blow, Knockdown, and the owner's
+  - **Gloves: the Fists tree** (GBOVR_TREES.md 4.1, built branch by branch from 2026-11-02; each node is offered to a
+    glove only once that glove holds its parent). **A. Power:** Heavy Hands (root) -> Haymaker -> Wallflower (shown
+    name of Wall Splat) -> Knockdown; Heavy Hands 2 -> Body Blow (Body Blow 3 -> Knockdown); Heavy Hands -> Uppercut
+    (an unlock: until it, a rising punch is a jab) -> Launcher (Uppercut 2) -> Juggle, Meteor (Launcher 2), Ground
+    Pound (Launcher 3); Heavy Hands 2 -> Clear Out. Ground Pound and Clear Out need RSQ Gestures. Star Punch is no
+    longer offered (folded into Uppercut and Launcher; a save that has it keeps it).
+  - Gloves (RSQ_Melee's), before the tree: Haymaker, One-Two, Star Punch, Counterpunch, Body Blow, Knockdown, and the owner's
     picks 52-54 (2026-11-01), whose moves RSQ_Melee does and whose numbers are here: **Heavy Hands** (a landed
     punch freezes the monster for a beat: 2 tics at level 1 up to 4, +2 for a punch at half speed or more; and
     knocks it back 25% further a level; up to level 4), **Hadouken** (renamed from Return Fire, 2026-11-01: a punch

@@ -42,7 +42,12 @@ doom2.wad -> 01 brutal22test6 -> 02 BD22_VoxelPack -> 03 BD22_VR-Reloaded_2.0.3j
 - **Swat** (open palm): swing the palm through a monster's fireball (1.5 m/s or more): it is knocked aside.
 - **Hadouken** (fist, when it is on): punch a monster's fireball: it flies back at whoever fired it.
 - **Guard** (when it is on): both hands up at your face, no gun in either hand, and hold.
-- **Wall Splat** (when it is on): punch a monster toward a wall about a metre behind it.
+- **Wall Splat** (when it is on; Gun Bonsai VR calls it Wallflower): punch a monster toward a wall about a metre
+  behind it.
+- **Ground Pound** (when it is on; needs RSQ Gestures): swing both fists down hard together, past your hips, at
+  3 m/s or more.
+- **Clear Out** (when it is on; needs RSQ Gestures): thrust both palms forward together, side by side, nothing but
+  Melee's hands in either hand.
 - **Gun-butt shove:** with a gun in your main hand, shove it hard (3.6 m/s) at a monster within about 2 m.
 - **Headlock:** off hand on a living monster (within 30 cm), squeeze the grip. You hold it by the collar, its face at
   your hand, for 3 s; punch it with the other hand. Swing the off hand hard to throw it. Let go of the grip to drop it.
@@ -73,6 +78,8 @@ RSQ Melee page:
 | Hadouken | Option (off) | Without Gun Bonsai VR: a fist at punch speed that meets a monster's missile sends it back at whoever fired it, 15 % faster, hitting for 150 %. |
 | Wall Splat | Option (off) | Without Gun Bonsai VR: a monster your punch knocks into a wall at 3 map units a tic or more takes 10, up to 20 for a hard slam, bounces off and reels 15 tics. |
 | Heavy Hands | Option (off) | Without Gun Bonsai VR: a landed punch freezes the monster for 2 tics (4 at half speed or more) and knocks it 25 % further. |
+| Ground Pound | Option (off) | Without Gun Bonsai VR: both fists swung down together at 3 m/s (RSQ Gestures' "both hands down"): a shockwave 2.5 m round you hits for 30, pushes out and staggers 15 tics. Needs RSQ Gestures. |
+| Clear Out | Option (off) | Without Gun Bonsai VR: both palms thrust forward together (RSQ Gestures' "both palms thrust"): everything in a 90-degree wedge 2.5 m in front is shoved back hard, takes 15 and staggers 10 tics. Needs RSQ Gestures. |
 
 Tuning and Debug: **Punch Min Speed** (2.0 m/s), **Punch Full Speed** (7.0), **Punch Damage** (10, doubled at full
 speed), **Butt Shove Speed** (3.6), **Shove Slow-Mo Length** (300 ms), **Headlock: Reach** (0.30 m), **Headlock:
@@ -90,7 +97,13 @@ Always on (no row):
   eyes toward the blow, with stock Doom 2's tick, DSTINK). About a monster's head in size; **Hit Spark Size** (1.0,
   0.25 to 3) scales them all.
 - **The uppercut lifts:** up 5 to 9 map units a tic and back 2 to 5 (x 100 / mass; a BOSS x 0.3 more), held in its
-  pain for the flight. An imp goes about 0.9 m up.
+  pain for the flight. An imp goes about 0.9 m up. **With RSQ Gun Bonsai VR the uppercut is an unlock** (its Fists
+  tree, 2026-11-02): until a glove learns Uppercut, a rising punch from it lands as a jab and lifts nothing. Its
+  levels 2-3 and Launcher add lift; Launcher staggers the monster when it lands; Juggle re-lifts a monster you
+  launched with your next punch while it is in the air (2 s); Meteor hurts what a launched monster falls on, and it.
+- **Two-hand moves come from RSQ Gestures** as its network event `rsqg_pair` (0 both hands down: Ground Pound; 3 both
+  palms thrust: Clear Out). Gestures' Two-Hand Events row may stay off: a player who has either move keeps them read.
+  A Ground Pound, a Clear Out and a Meteor are paid to the glove (Gun Bonsai VR's claim) but are not punches.
 - **The Headlock holds the monster itself at your hand:** moved each tic to the off hand, its face at your hand's
   height, facing you, never into you (your radius + its radius + 2) or into a wall; each punch shows its pain frame
   for 6 tics with its pain sound and a spark at its face. No shrinking, no new art: any monster.
@@ -143,6 +156,9 @@ Rig results (scripted hands, logs and frames of 2026-11-02 under `/home/claude/s
   decided between the two (`near.dist` / `headlock.claim`).
 - **RSQ SlowMo:** the slow-mo after a shove (`rsm_pulse`) and `slowmo.active`.
 - **RSQ Score:** the Headlock touches "grab.hold" (its Headlock combo); the shotgun kill in the slow-mo pays an award.
+  The Fists tree's moves touch their hooks (GBOVR_TREES.md 4.1): hit.heavy, hit.body, punch.uppercut, launch, juggle,
+  meteor, pound, clearout.
+- **RSQ Gestures:** Ground Pound and Clear Out (`rsqg_pair`; Melee asks "pair.ago" to keep the two-hand events read).
 - **RSQ HP Bars:** a held monster shows the padlock.
 - **BD22 VR Reloaded:** the shove stands down; its own butt strike starts the slow-mo.
 - **RSQ Grapple / RSQ Wheel:** the shove is quiet on the rope or with the ring open.
@@ -152,7 +168,8 @@ Rig results (scripted hands, logs and frames of 2026-11-02 under `/home/claude/s
 Service for other mods: `ServiceIterator.Find("RSQML_Service")` -- "loaded", "punch.glove" / "punch.kind" /
 "punch.body" / "punch.counter" / "punch.star" / "punch.chain" / "punch.hand" (GetInt) and "punch.power" /
 "punch.speed" (GetDouble), objectArg the blow's inflictor; "guard" (pawn: tics up); "headlock.claim" (pawn);
-"headlock.holding" (monster).
+"headlock.holding" (monster); "launch.age" (monster, intArg the player: tics since that player launched it, while
+it is still in the air; -1 not).
 
 ## Known limits / open
 

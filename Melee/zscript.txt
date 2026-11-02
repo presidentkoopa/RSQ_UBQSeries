@@ -11,6 +11,8 @@ version "4.14"
 #include "zscript/rsqml/sparks.zs"    // the hit sparks (Capcom vs. SNK 2 art, tools/sparks.py)
 #include "zscript/rsqml/gloves.zs"
 #include "zscript/rsqml/splat.zs"
+#include "zscript/rsqml/launch.zs"    // the uppercut's launch: Launcher, Juggle, Meteor (GBOVR_TREES.md 4.1 A)
+#include "zscript/rsqml/twohand.zs"   // Ground Pound and Clear Out, read by RSQ Gestures (4.1 A)
 #include "zscript/rsqml/slappers.zs"
 #include "zscript/rsqml/guard.zs"
 #include "zscript/rsqml/shove.zs"

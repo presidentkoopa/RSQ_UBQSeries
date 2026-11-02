@@ -198,13 +198,17 @@ class RSQM play
 //                  doubleArg = how hard: Battering Ram turns it into a missile, if learned.
 //   "stagger"      objectArg = a monster, intArg = tics: held in its pain frame that long (RSQ_Dazed,
 //                  the one Executioner reads). RSQ_Grapple's hook upgrades and RSQ Melee's Wall Splat ask it. 1 done, 0 not.
+//   "knockdown"    objectArg = a monster (no boss), intArg = seconds: down for that count (RSQ_Dazed.KnockDown, the one
+//                  Knockdown uses). RSQ Melee's Ground Pound asks it. 1 done, 0 not.
 //   "is.melee"     stringArg = a weapon class name, objectArg = the pawn: 1 when Gun Bonsai's type inference calls a
 //                  weapon of that class this player has used melee (WeaponInfo.IsMelee, honouring BONSAIRC). RSQ Melee's
 //                  Slappers Only and Guard ask it.
 //   GetDouble "upgrade.num"  stringArg = "<move>.<number>", intArg = the level, doubleArg = the move's own measure:
 //                  the numbers of the moves RSQ Melee does for these upgrades (HeavyHands.freeze (punch power) /
 //                  .knock, Hadouken.mult / .speed, WallSplat.damage (slam speed, map units a tic) / .reel, Guard.soak /
-//                  .break). The formulas live in the upgrade classes.
+//                  .break; the Fists tree, up_fists.zs: Uppercut.lift, Launcher.lift / .stagger, Meteor.damage (fall
+//                  speed), GroundPound.radius / .damage / .speed, ClearOut.range / .damage / .push / .stagger). The
+//                  formulas live in the upgrade classes.
 class RSQ_MeleeUpgradeService : Service
 {
 	override int GetInt(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
@@ -279,6 +283,15 @@ class RSQ_MeleeUpgradeService : Service
 			d.Stagger(min(intArg, 350));
 			return 1;
 		}
+		if (request == "knockdown")
+		{
+			let mo = Actor(objectArg);
+			if (!mo || mo.health <= 0 || !mo.bIsMonster || mo.bBoss || intArg <= 0) return 0;
+			let d = RSQ_Dazed.On(mo);
+			if (!d || d.IsDown()) return 0;
+			d.KnockDown(min(intArg, 10));
+			return 1;
+		}
 		if (request == "is.melee")
 		{
 			let pawn = Actor(objectArg);
@@ -321,6 +334,18 @@ class RSQ_MeleeUpgradeService : Service
 			if (stringArg == "WallSplat.reel") return RSQ_Upgrade_WallSplat.Reel(lv);
 			if (stringArg == "Guard.soak") return RSQ_Upgrade_Guard.Soak(lv);
 			if (stringArg == "Guard.break") return RSQ_Upgrade_Guard.BreakAt(lv);
+			// the Fists tree (up_fists.zs), A. Power
+			if (stringArg == "Uppercut.lift") return RSQ_Upgrade_Uppercut.Lift(lv);
+			if (stringArg == "Launcher.lift") return RSQ_Upgrade_Launcher.Lift(lv);
+			if (stringArg == "Launcher.stagger") return RSQ_Upgrade_Launcher.Stagger(lv);
+			if (stringArg == "Meteor.damage") return RSQ_Upgrade_Meteor.Damage(lv, doubleArg);
+			if (stringArg == "GroundPound.radius") return RSQ_Upgrade_GroundPound.Radius(lv);
+			if (stringArg == "GroundPound.damage") return RSQ_Upgrade_GroundPound.Damage(lv);
+			if (stringArg == "GroundPound.speed") return RSQ_Upgrade_GroundPound.Speed();
+			if (stringArg == "ClearOut.range") return RSQ_Upgrade_ClearOut.Range(lv);
+			if (stringArg == "ClearOut.damage") return RSQ_Upgrade_ClearOut.Damage(lv);
+			if (stringArg == "ClearOut.push") return RSQ_Upgrade_ClearOut.Push(lv);
+			if (stringArg == "ClearOut.stagger") return RSQ_Upgrade_ClearOut.Stagger();
 			return 0;
 		}
 		return 0;

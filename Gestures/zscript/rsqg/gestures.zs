@@ -5,7 +5,8 @@
 //   POSE      one hand held a certain way: INSPECT (new here, the weapon cards' "show me"), STILL.
 //   IMPULSE   one hand moving fast along its own axis: THRUST (away), PULL (back). rsg_signals.zs.
 //   BOTH      a relationship between the two hands: both swept DOWN past the hips, thrown APART from
-//             the chest, both PALMS held out. rsg_pair.zs.
+//             the chest, both PALMS held out. rsg_pair.zs. And new here (2026-11-02, for RSQ Melee's Clear Out,
+//             GBOVR_TREES.md 4.1 A): both palms THRUST forward together, side by side.
 // And two answers new here (owner's picks 49 and 50, 2026-10-31):
 //   BRACED    the engine's two-hand grip latch, WF_TWOHANDSTABILIZED: ONE answer for every series mod
 //             instead of each testing the bit (Wheel, TacticalRig, LaserSight, Whip, ShieldSaw do today;
@@ -46,6 +47,9 @@
 //
 // COST. Nothing is measured unless a mod asked something in the last second (IDLE tics), or the
 // signals / two-hand events are switched on, or debug is: otherwise WorldTick is one comparison.
+// THE TWO-HAND EVENTS run while their switch is on OR while a mod has asked about them ("pair.ago") in the
+// last second (2026-11-02): a move built on one (RSQ Melee's Ground Pound and Clear Out, once learned) asks, so
+// it works without the player finding this menu. The switch stays off by default.
 //
 // NETPLAY (QZD has none; do not make it worse). The pose is local hardware, written for the camera
 // player only, so every answer is about the console player and 0 for anyone else. The detectors keep
@@ -65,6 +69,8 @@ class RSQG_Handler : EventHandler
 	const PAIR_DOWN  = 0;
 	const PAIR_APART = 1;
 	const PAIR_PALMS = 2;
+	const PAIR_THRUST = 3;   // both palms thrust forward together (2026-11-02)
+	const PAIR_KINDS = 4;
 
 	int lastAsk, lastRun;
 	double prevAngle;
@@ -122,7 +128,8 @@ class RSQG_Handler : EventHandler
 	bool swapWas;
 
 	// BOTH HANDS (rsg_pair.zs, times in ms of gametic)
-	double downAt[2], downMps[2], apartAt[2], palmsAt[2], saidAt[3];
+	double downAt[2], downMps[2], apartAt[2], palmsAt[2], thrustAt[2], thrustMps[2], saidAt[PAIR_KINDS];
+	int pairAsk;   // gametic a mod last asked about a two-hand event (keeps them read with the switch off)
 	double palmsHeldFor;
 	bool palmsSaid;
 
@@ -148,9 +155,10 @@ class RSQG_Handler : EventHandler
 			insState[h] = 0; insTics[h] = 0; insStateTics[h] = 0;
 			stillFor[h] = 0;
 			pArmed[h] = false; pTravel[h] = 0; pTics[h] = 0; pStale[h] = 0; pDir[h] = (0, 0, 0);
-			downAt[h] = NEVER; downMps[h] = 0; apartAt[h] = NEVER; palmsAt[h] = NEVER;
+			downAt[h] = NEVER; downMps[h] = 0; apartAt[h] = NEVER; palmsAt[h] = NEVER; thrustAt[h] = NEVER; thrustMps[h] = 0;
 		}
-		for (int k = 0; k < 3; k++) saidAt[k] = NEVER;
+		for (int k = 0; k < PAIR_KINDS; k++) saidAt[k] = NEVER;
+		pairAsk = -1000;
 		palmsHeldFor = 0; palmsSaid = false;
 		bracedSince = 0;
 	}
@@ -168,10 +176,12 @@ class RSQG_Handler : EventHandler
 	int SwSignals() { if (!cvSignals) cvSignals = CVar.FindCVar("rsqg_signals"); return cvSignals ? cvSignals.GetInt() : 0; }
 	int SwTwohand() { if (!cvTwohand) cvTwohand = CVar.FindCVar("rsqg_twohand"); return cvTwohand ? cvTwohand.GetInt() : 0; }
 	int SwDebug()   { if (!cvDebug) cvDebug = CVar.FindCVar("rsqg_debug"); return cvDebug ? cvDebug.GetInt() : 0; }
+	// the two-hand events are read: switched on, or a mod asked about them in the last second
+	bool TwoHandWanted() { return SwTwohand() || gametic - pairAsk <= IDLE; }
 
 	bool Running(int dbg)
 	{
-		return gametic - lastAsk <= IDLE || SwSignals() || SwTwohand() || dbg == 1 || dbg == 2 || gametic < measureTill;
+		return gametic - lastAsk <= IDLE || SwSignals() || TwoHandWanted() || dbg == 1 || dbg == 2 || gametic < measureTill;
 	}
 
 	// ---- QUIET (GE1): the rope and the Wheel, asked by name -----------------------------------------------
@@ -360,7 +370,7 @@ class RSQG_Handler : EventHandler
 		bool quiet = Quiet(pmo);
 		if (SwSignals() || SwDebug() > 0) Signals(pmo, quiet);
 		else { stillFor[0] = StillNow(0) ? stillFor[0] + 1 : 0; stillFor[1] = StillNow(1) ? stillFor[1] + 1 : 0; }
-		if (SwTwohand()) TwoHand(pmo, quiet);
+		if (TwoHandWanted()) TwoHand(pmo, quiet);
 
 		bool br = IsBraced(pmo.player);
 		if (br && bracedSince == 0) { bracedSince = gametic; if (SwDebug() >= 1) Console.Printf("\c[Gold]rsqg: braced (t%d)", level.maptime); }
@@ -673,7 +683,7 @@ class RSQG_Handler : EventHandler
 	void TwoHand(PlayerPawn pmo, bool quiet)
 	{
 		// GE1: climbing the rope or pointing at the Wheel: none of the three
-		if (quiet || !live[0] || !live[1]) { for (int h = 0; h < 2; h++) { downAt[h] = NEVER; apartAt[h] = NEVER; palmsAt[h] = NEVER; } palmsHeldFor = 0; palmsSaid = false; return; }
+		if (quiet || !live[0] || !live[1]) { for (int h = 0; h < 2; h++) { downAt[h] = NEVER; apartAt[h] = NEVER; palmsAt[h] = NEVER; thrustAt[h] = NEVER; } palmsHeldFor = 0; palmsSaid = false; return; }
 		double now = NowMs();
 		// RSQ_Accessibility's SLOWER TAPS (RSQG_A11y.TapScale: x1.5 when on, x1 without it): the two hands' moment
 		// "together" is this series mod's one two-events-in-a-window test, so it gets the longer window too
@@ -689,6 +699,13 @@ class RSQG_Handler : EventHandler
 		double frontM = Num("rsqg_two_front_m", 0.25) * hs;
 		// GE6: each event on its own switch (under Two-Hand Events)
 		bool doDown = Opt("rsqg_two_down", 1) != 0, doApart = Opt("rsqg_two_apart", 1) != 0, doPalms = Opt("rsqg_two_palms", 1) != 0;
+		// THRUST: each hand driven forward (where you face) at rsqg_two_thrust_mps, mostly forward, pointing up at least
+		// rsqg_two_thrust_pitch (a palm pushed out; QuestZDoom reads no fingers), above the hips, never braced on a gun
+		bool doThrust = Opt("rsqg_two_thrust", 1) != 0 && !IsBraced(pmo.player);
+		double needThrust = Num("rsqg_two_thrust_mps", 2.5);
+		double thrustFrac = clamp(Num("rsqg_two_thrust_frac", 0.6), 0, 1);
+		double thrustPitch = Num("rsqg_two_thrust_pitch", 20);
+		double fc = cos(pmo.Angle), fs = sin(pmo.Angle);
 		double holdMs = max(Num("rsqg_two_hold_ms", 400), 0);
 		double stillMps = Num("rsqg_still_mps", 0.3);
 
@@ -716,6 +733,14 @@ class RSQG_Handler : EventHandler
 
 			if (PalmOut(pmo, h, frontM, hipM, stillMps)) { if (palmsAt[h] <= NEVER) palmsAt[h] = now; }
 			else palmsAt[h] = NEVER;
+
+			double fwd = vel.x * fc + vel.y * fs;
+			if (doThrust && peakAt > NEVER && peakAt > saidAt[PAIR_THRUST] + SAME_PEAK && fwd >= needThrust && speed > 0.0001
+				&& fwd / speed >= thrustFrac && rel.z >= -hipM && Actor.Normalize180(RSQG_Pose.Pitch(pmo, h)) >= thrustPitch)
+			{
+				thrustAt[h] = peakAt;
+				thrustMps[h] = fwd;
+			}
 		}
 
 		double capMs = ageMs > 0 ? ageMs : RING * 1000.0 / TICRATE;
@@ -740,6 +765,10 @@ class RSQG_Handler : EventHandler
 		// side by side, not one behind the other on a rifle
 		Vector3 b0 = RSQG_Pose.Body(pmo, 0), b1 = RSQG_Pose.Body(pmo, 1);
 		bool apartEnough = abs(b0.y - b1.y) >= Num("rsqg_two_palms_gap", 0.25) * hs;
+		if (doThrust && apartEnough && Together(thrustAt[0], thrustAt[1], windowMs, now, liveMs))
+		{
+			if (Announce(PAIR_THRUST, min(thrustMps[0], thrustMps[1]), now, repeatMs)) { thrustAt[0] = NEVER; thrustAt[1] = NEVER; }
+		}
 		if (doPalms && palmsAt[0] > NEVER && palmsAt[1] > NEVER && apartEnough)
 		{
 			palmsHeldFor = (now - max(palmsAt[0], palmsAt[1])) / 1000.0;
@@ -757,13 +786,14 @@ class RSQG_Handler : EventHandler
 
 	bool Announce(int which, double mag, double now, double repeatMs)
 	{
-		if (which < 0 || which >= 3) return false;
+		if (which < 0 || which >= PAIR_KINDS) return false;
 		if (repeatMs > 0 && now - saidAt[which] < repeatMs) return false;
 		EventHandler.SendNetworkEvent("rsqg_pair", which, int(round(mag * 100)), 0);
 		saidAt[which] = now;
-		Say(which == 0 ? "both hands down" : which == 1 ? "both hands apart" : "both palms out");
+		static const String pairName[] = { "both hands down", "both hands apart", "both palms out", "both palms thrust" };
+		Say(pairName[which]);
 		if (SwDebug() >= 1)
-			Console.Printf("\c[Gold]rsqg: pair %s, %.2f (t%d)", which == 0 ? "both hands down" : which == 1 ? "both hands apart" : "both palms out", mag, level.maptime);
+			Console.Printf("\c[Gold]rsqg: pair %s, %.2f (t%d)", pairName[which], mag, level.maptime);
 		return true;
 	}
 
@@ -816,7 +846,8 @@ class RSQG_Handler : EventHandler
 	double ShoveAgoMs(int pn, int h) { if (!Asked(pn) || h < 0 || h > 1 || shoveTic[h] <= 0) return -1; return (gametic - shoveTic[h]) * 1000.0 / TICRATE; }
 	double LastShoveMps(int pn, int h) { if (!Asked(pn) || h < 0 || h > 1 || shoveTic[h] <= 0) return 0; return shoveMps[h]; }
 	int QuietNow(int pn)            { if (!Asked(pn)) return 0; return gametic < quietTill ? quietWhy : 0; }
-	double PairAgoMs(int pn, int k) { if (!Asked(pn) || k < 0 || k > 2 || saidAt[k] <= NEVER) return -1; return NowMs() - saidAt[k]; }
+	// asking also keeps the two-hand events read for the next second, with their switch off (TwoHandWanted)
+	double PairAgoMs(int pn, int k) { pairAsk = gametic; if (!Asked(pn) || k < 0 || k >= PAIR_KINDS || saidAt[k] <= NEVER) return -1; return NowMs() - saidAt[k]; }
 	double Hand(int pn, int h, int what)
 	{
 		let pmo = Asked(pn);
@@ -851,7 +882,7 @@ class RSQG
 // RSQG_Service -- ask by name, no compile dependency:
 //     let it = ServiceIterator.Find("RSQG_Service"); Service s;
 //     while (s = it.Next()) state = s.GetInt("inspect", "", hand);
-// intArg is the hand (0 main, 1 off) or, for "pair", the kind (0 down, 1 apart, 2 palms).
+// intArg is the hand (0 main, 1 off) or, for "pair", the kind (0 down, 1 apart, 2 palms, 3 palms thrust).
 // objectArg may be the asking PlayerPawn: anyone but the console player gets 0 (the pose is local).
 // -1 = unknown request.
 class RSQG_Service : Service
@@ -873,7 +904,7 @@ class RSQG_Service : Service
 		if (request ~== "inspect.any")  return RSQG_Handler.InspectOff() ? -1 : max(h.Inspect(pn, 0), h.Inspect(pn, 1));   // -1: the pose is switched off (GE5)
 		if (request ~== "still")        return h.StillTics(pn, intArg);               // tics the hand has been still
 		if (request ~== "thrust")       return int(round(h.Thrust(pn, intArg) * 100)); // hundredths m/s along the hand (- = pulling back)
-		if (request ~== "pair.ago")     return int(h.PairAgoMs(pn, intArg));          // ms since that two-hand gesture fired, -1 never
+		if (request ~== "pair.ago")     return int(h.PairAgoMs(pn, intArg));          // ms since that two-hand gesture fired, -1 never; asking keeps the two-hand events read
 		if (request ~== "palms")        return int(h.PalmsOutSeconds(pn) * 1000);     // ms both palms have been out
 		if (request ~== "mainleft")     return RSQG_Pose.MainIsLeft() ? 1 : 0;        // the main hand is the left controller
 		if (request ~== "braced")       return h.Braced(PnAny(objectArg));            // 1 while the two-hand grip latch is on

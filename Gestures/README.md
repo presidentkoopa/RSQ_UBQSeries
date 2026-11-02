@@ -44,6 +44,8 @@ BD22_VR-Reloaded_2.0.3ha_hotfix.pk3 -> **RSQ_Gestures.pk3**
 - **Both hands down**: sweep both hands down past your hips together.
 - **Both hands apart**: throw both hands outward from your chest.
 - **Both palms out**: both hands in front, pointing up, side by side, still, no trigger.
+- **Both palms thrust** (new 2026-11-02, for RSQ Melee's Clear Out): both hands driven forward together, where you
+  face, at 2.5 m/s or more, mostly forward, side by side, each pointing at least 20 degrees up, never braced on a gun.
 - **Measure Me**: stand tall, arms straight out to your sides, press the row, close the menu.
 
 ## Features
@@ -57,10 +59,11 @@ BD22_VR-Reloaded_2.0.3ha_hotfix.pk3 -> **RSQ_Gestures.pk3**
 | Watch Check Tick | On | A light tick in that hand's controller when the watch check is held. |
 | Show Gesture Names | On | A small grey line low in the view names each gesture as it is read (half see-through, gone in 1.5 s). |
 | Thrust and Pull Events | Option (off) | Sends thrust, pull, punch and shove events to other mods. |
-| Two-Hand Events | Option (off) | Sends the both-hands events. |
+| Two-Hand Events | Option (off) | Sends the both-hands events. Off, they are still read while a mod asks about them (RSQ Melee does, for a player who has Ground Pound or Clear Out). |
 | Both Hands Down | On | (Under Two-Hand Events) this one fires. |
 | Both Hands Apart | On | (Under Two-Hand Events) this one fires. |
 | Both Palms Out | On | (Under Two-Hand Events) this one fires. |
+| Both Palms Thrust | On | (Under Two-Hand Events) this one fires. Tuning: Thrust Speed (2.5 m/s), How Straight (0.6), Pointing Up (20 degrees). |
 | Fit Zones to My Body | Option (off) | Scales every zone from your measured eye height and reach (defaults assume eyes 1.60 m, reach 0.70 m). |
 | Measure Me | row | Two seconds after you close the menu, measures you for one second. |
 
@@ -216,7 +219,7 @@ PlayerPawn: anyone but the local player gets 0 (the hands are this machine's har
 | `GetInt "inspect.any"` | the larger of the two hands' states |
 | `GetInt "still"` | tics the hand has been still |
 | `GetInt "thrust"` | speed along the hand's pointing, hundredths of m/s (negative = pulling back), its fastest instant in the last quarter second |
-| `GetInt "pair.ago"` | `intArg` = 0 down, 1 apart, 2 palms: ms since it last fired, -1 never (needs Two-Hand Events) |
+| `GetInt "pair.ago"` | `intArg` = 0 down, 1 apart, 2 palms, 3 palms thrust: ms since it last fired, -1 never. Asking keeps the two-hand events read for a second, with Two-Hand Events off |
 | `GetInt "palms"` | ms both palms have been out (needs Two-Hand Events) |
 | `GetInt "mainleft"` | 1 when the main hand is the left controller |
 | `GetInt "braced"` | 1 while the two-hand grip latch is on (`objectArg` = the pawn; any player). Also from `GetIntUI` / `GetIntData` |
@@ -236,7 +239,7 @@ Unknown requests return -1. A mod loaded after this one may instead call the sta
 `RSQG.Braced(pmo)`, `RSQG.Punch(hand)`.
 
 **Events** (when switched on) have RS_Gestures' shape: `rsqg_thrust` / `rsqg_pull` arg0 hand, arg1 speed
-in hundredths of m/s; `rsqg_punch` arg0 hand, arg1 kind (0 jab, 1 hook, 2 uppercut), arg2 hundredths of m/s; `rsqg_shove` arg0 hand, arg1 two hands (0/1), arg2 hundredths of m/s; `rsqg_pair` arg0 which (0 down, 1 apart, 2 palms), arg1 hundredths of its own unit
+in hundredths of m/s; `rsqg_punch` arg0 hand, arg1 kind (0 jab, 1 hook, 2 uppercut), arg2 hundredths of m/s; `rsqg_shove` arg0 hand, arg1 two hands (0/1), arg2 hundredths of m/s; `rsqg_pair` arg0 which (0 down, 1 apart, 2 palms, 3 palms thrust), arg1 hundredths of its own unit
 (the slower hand's downward m/s, the gap's opening m/s, seconds out). They say what the hands did, not
 what it means. Apply them to `e.Player`.
 

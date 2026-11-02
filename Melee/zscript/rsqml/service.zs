@@ -14,6 +14,8 @@
 //   GetInt "headlock.claim"   objectArg = the pawn: 1 while the off-hand grip press is the Headlock's (Distance Grab
 //                             stands down for it); 0 not
 //   GetInt "headlock.holding" objectArg = a monster: 1 while a Headlock holds it
+//   GetInt "launch.age"       objectArg = a monster, intArg = a player number: tics since that player's uppercut launched
+//                             it, while it is still off the floor; -1 not (RSQ Gun Bonsai VR's Juggle, launch.zs)
 // RSQ Gun Bonsai VR's glove upgrades read "punch.*" in ModifyDamageDealt (the glove is the inflictor there).
 class RSQML_Service : Service
 {
@@ -46,6 +48,7 @@ class RSQML_Service : Service
 			let hl = RSQML_Headlock.Get();
 			return (hl && hl.ClaimNow(PlayerPawn(objectArg))) ? 1 : 0;
 		}
+		if (request == "launch.age") return RSQML_Launched.AgeFor(Actor(objectArg), intArg);
 		if (request == "headlock.holding")
 		{
 			let hl = RSQML_Headlock.Get();

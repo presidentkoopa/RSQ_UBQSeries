@@ -29,6 +29,8 @@ server bool  rsqml_guard = false;       // both fists up at your face soak a blo
 server bool  rsqml_hadouken = false;    // a punch knocks a monster's missile back at its shooter
 server bool  rsqml_wallsplat = false;   // a monster punched into a wall slams into it
 server bool  rsqml_heavyhands = false;  // a landed punch freezes the monster for a beat and knocks it further
+server bool  rsqml_groundpound = false; // both fists swung down together: a shockwave round you (needs RSQ Gestures)
+server bool  rsqml_clearout = false;    // both palms thrust forward together: everything in front shoved back (needs RSQ Gestures)
 
 // ---- THE GUN-BUTT SHOVE (shove.zs) -- user settings, as they were in RSQ Gestures --------------------------------
 // The main hand's shove with a gun in it hits (BD22 VR Reloaded's butt strike, ported). Stands down by itself when BD22

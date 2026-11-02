@@ -13,6 +13,7 @@ version "4.14"
 #include "rsq/zscript/killrewards.zs"  // Kill Rewards: SoM's bits on a kill, folded in (on by default)
 // (gloves.zs and slappers.zs: the punch, the gloves and Slappers Only moved to RSQ Melee on 2026-11-01)
 #include "rsq/zscript/up_gloves.zs"
+#include "rsq/zscript/up_fists.zs"     // the Fists tree's new nodes (GBOVR_TREES.md 4.1), branch by branch
 #include "rsq/zscript/up_melee.zs"
 #include "rsq/zscript/up_saber.zs"
 #include "rsq/zscript/up_shield.zs"

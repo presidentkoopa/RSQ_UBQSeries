@@ -26,9 +26,29 @@ RSQ_Upgrade_HeavyHands_TT = "A landed punch freezes the enemy for @soft (@hard f
 RSQ_Upgrade_ReturnFire_Name = "Hadouken";
 RSQ_Upgrade_ReturnFire_Desc = "Glove: punch a fireball back at whoever threw it.";
 RSQ_Upgrade_ReturnFire_TT = "A punch that meets an enemy's missile sends it back at its shooter, @speed as fast, and it hits for @mult.";
-RSQ_Upgrade_WallSplat_Name = "Wall Splat";
+RSQ_Upgrade_WallSplat_Name = "Wallflower";
 RSQ_Upgrade_WallSplat_Desc = "Glove: punch them into a wall and the wall hits too.";
 RSQ_Upgrade_WallSplat_TT = "An enemy your punch knocks into a wall takes @dmg (up to @max for a hard slam), bounces off and reels for @time.";
+
+// THE FISTS TREE, new nodes (GBOVR_TREES.md 4.1; up_fists.zs). A. Power.
+RSQ_Upgrade_Uppercut_Name = "Uppercut";
+RSQ_Upgrade_Uppercut_Desc = "Glove: a rising punch lifts them off their feet.";
+RSQ_Upgrade_Uppercut_TT = "Until this is learned a rising punch lands as a jab. An uppercut lifts what it hits: a half-speed one throws an imp about @high up.";
+RSQ_Upgrade_Launcher_Name = "Launcher";
+RSQ_Upgrade_Launcher_Desc = "Glove: what you uppercut stays helpless until it lands.";
+RSQ_Upgrade_Launcher_TT = "A launched enemy hangs in pain for the whole flight and staggers @time when it lands. Launches go higher: a half-speed one about @high.";
+RSQ_Upgrade_Juggle_Name = "Juggle";
+RSQ_Upgrade_Juggle_Desc = "Glove: keep them in the air.";
+RSQ_Upgrade_Juggle_TT = "Punch an enemy you launched while it is still in the air, within @time: @mult damage, and it goes up again.";
+RSQ_Upgrade_Meteor_Name = "Meteor";
+RSQ_Upgrade_Meteor_Desc = "Glove: what goes up comes down on someone.";
+RSQ_Upgrade_Meteor_TT = "An enemy you launched that falls onto another hurts them both for @dmg, plus how fast it was falling.";
+RSQ_Upgrade_GroundPound_Name = "Ground Pound";
+RSQ_Upgrade_GroundPound_Desc = "Glove: both fists down together shake the floor.";
+RSQ_Upgrade_GroundPound_TT = "Swing both fists down hard together: a shockwave @radius round you hits for @dmg. With Knockdown, enemies in it go down for a count of 2. Needs RSQ Gestures.";
+RSQ_Upgrade_ClearOut_Name = "Clear Out";
+RSQ_Upgrade_ClearOut_Desc = "Glove: two palms shove everything back.";
+RSQ_Upgrade_ClearOut_TT = "Thrust both palms forward together: everything in front of you within @range is shoved back hard, takes @dmg and staggers. Needs RSQ Gestures.";
 
 RSQ_Upgrade_Lunge_Name = "Lunge";
 RSQ_Upgrade_Lunge_Desc = "Melee: step into the blow.";

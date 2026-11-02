@@ -579,6 +579,26 @@ tree changes that. Each glove may carry one element.
 | Ground Pound (new) | Launcher 3 | 1-3: both fists swung down together at 3+ m/s (Gestures' "both hands down"): a shockwave 2 + 0.5 lv m round you for 20 + 10 lv; with Knockdown owned, non-bosses in it go down for a 2 count | Melee (the move), Gestures (the read) | dust ring (Random Sprite Rips), screen thump | `pound` |
 | Clear Out (new; owner 11-02) | Heavy Hands 2 | 1-3: both palms out, thrust forward together at 2.5+ m/s: everything in a 90-degree wedge 2 + 0.5 lv m in front is shoved back hard (Force Push's throw, by hand) for 10 + 5 lv and staggers 10 tics; empty hands or fists. Needs: a two-palm thrust read in Gestures (it has "both palms out" still, and a one-hand thrust) | Melee (the move), Gestures (the read) | a wide RS Combat FX shockwave, 3 frames a level | `clearout` |
 
+**Power: BUILT 11-02 (L2, branch A).** Gun Bonsai VR: the new nodes are in `rsq/zscript/up_fists.zs`, the existing
+ones in `up_gloves.zs` now take their parents and caps as above; Star Punch is no longer offered (kept for saves).
+Melee: the Uppercut unlock in `gloves.zs` Deliver; the launch marker (Launcher's landing stagger, Juggle's window,
+Meteor) in `launch.zs`; Ground Pound and Clear Out in `twohand.zs`, on RSQ Gestures' `rsqg_pair` (0 both hands down,
+3 both palms thrust, the latter new in Gestures). Gestures' two-hand events are also read while a mod asks
+("pair.ago"), so its Two-Hand Events row may stay off. Melee rows Ground Pound and Clear Out (off) play them at
+level 1 without Gun Bonsai VR. Score hooks: hit.heavy, hit.body, punch.uppercut, launch, juggle, meteor, pound,
+clearout. **Headless runs 11-02** (`tools/qzd_hidden_run.ps1`, QZD 17.3, doom2 + Melee + Gestures + Gun Bonsai 0.10.6 +
+GBOVR + a test-only probe that grants nodes and lands punches through Melee's own Deliver): parses, 0 warnings. The
+offer list follows the parents (nothing learned: Heavy Hands only of the Power nodes; Heavy Hands 2: + Haymaker, Body
+Blow, Uppercut, Clear Out; Launcher gone at its cap of 3). A rising punch without Uppercut landed as a jab, with it as
+an uppercut. Juggle: an off-hand jab 8 tics after the launch hit for 35 (20 x 1.75) and lifted it again; Launcher 3:
+"landed, staggered 40 tics". Meteor 2: the falling imp hit the one below for 47 each (30 + its fall speed 17). Ground
+Pound 1: a 2.5 m/s "both hands down" refused, 3.5 m/s hit 6 imps for 30 each, paid as `RSQML_GloveBlow`, Knockdown
+owned. Clear Out 1: 2 imps in front shoved for 15, the one behind untouched. **Not provable headless:** Gestures'
+reading of real hands (the thrust and the down are sent by the probe here), how any of it looks. **Art not yet
+done** (frames by level, the kiddolink launch bursts, the dust ring): its own pass. **For the owner:** at full levels
+the approved lifts stack (Uppercut 3 + Launcher 3, with Heavy Hands' knock): a full-power uppercut threw an imp up at
+30 map units a tic, about 16 m of air.
+
 **B. Elemental** (one element per glove; picking one closes the other three on that glove; the other glove may
 take a different one)
 
@@ -1082,7 +1102,7 @@ deals inside the claim bracket and `RSQWP_WhipWeapon` is typed melee; the thrown
 master and is claimed. 5 built: `rsq/zscript/killrewards.zs` (SoM's rules under `rsqgb_kr_*`, the plain page,
 Range mode's inverted chance fixed, the ammo bit reads the toucher not consoleplayer, bits read Scavenger / Rich
 Bits / Magnet by name once those nodes exist); the row "Kill Rewards: On". 6 partly: the Berserk x5 on a punch is
-in Melee; `punch.kinds` and the two-palm thrust wait for their nodes. 7 (HP Bars) waits for the new `RSQ_Dazed`
+in Melee; the two-palm thrust is in Gestures (11-02, with Power); `punch.kinds` waits for Combos. 7 (HP Bars) waits for the new `RSQ_Dazed`
 states. **Built 11-02 into pk3/RSQ_GunBonsaiVR, RSQ_Whip, RSQ_Grenade, RSQ_Melee; not run; not committed.**
 **Headless runs, 11-02 (owner: "you check it headless"; `tools/qzd_hidden_run.ps1`, the series' copy of his SPO
 runner without its SPO-only companion; QZD 17.3-m, doom2 + Melee, Whip, Grenade, Gun Bonsai 0.10.6, GBOVR last;

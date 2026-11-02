@@ -65,6 +65,47 @@ class RSQML play
 		return SVI(cvarName, 0) != 0 ? 1 : 0;
 	}
 
+	// THE LEVEL a glove has learned of a Gun Bonsai VR node that has no Melee row of its own (Launcher, Juggle, Meteor,
+	// and partners a move reads, like Knockdown): 0 without Gun Bonsai VR, or until learned.
+	static int GBLevel(Weapon glove, String short)
+	{
+		let gb = GB();
+		return (gb && glove) ? gb.GetInt("level", short, 0, 0, glove) : 0;
+	}
+
+	// A BASE MOVE THAT GUN BONSAI VR TURNS INTO AN UNLOCK (the Uppercut, GBOVR_TREES.md 4.1 A, owner 11-02): without Gun
+	// Bonsai VR it is always there (1); with it, that glove's level (0 until learned).
+	static int UnlockLevel(Weapon glove, String short)
+	{
+		let gb = GB();
+		if (!gb) return 1;
+		return glove ? gb.GetInt("level", short, 0, 0, glove) : 0;
+	}
+
+	// RSQ SCORE's combo ledger: this player's move `id` touched that monster (RS_ScoreService "touch", by name; nothing
+	// without RSQ Score). The ids are the Score hooks of GBOVR_TREES.md 4.1.
+	static void Touch(String id, Actor pawn, Actor victim)
+	{
+		if (!pawn || !pawn.player || !victim) return;
+		let s = Svc("RS_ScoreService");
+		if (s) s.GetInt("touch", id, pawn.PlayerNumber(), 0, victim);
+	}
+
+	// A GLOVE'S BLOW THAT IS NOT A PUNCH (a fall, a shockwave, a shove): its inflictor, a helper Gun Bonsai VR pays to that
+	// glove ("claim", the way Wall Splat's slam is paid), so the glove earns it while its punch upgrades -- which read the
+	// last punch off the glove itself -- do not count it as that punch again. Without Gun Bonsai VR, or a glove, the
+	// player is the inflictor.
+	static Actor Blow(PlayerPawn by, Weapon glove, Vector3 at)
+	{
+		if (!by) return null;
+		if (!glove || !glove.owner || !GB()) return by;
+		let hit = Actor.Spawn("RSQML_GloveBlow", at, NO_REPLACE);
+		if (!hit) return by;
+		hit.target = by;
+		Claim(hit, glove);
+		return hit;
+	}
+
 	// THE MOVE'S NUMBERS stay with the upgrade (Gun Bonsai VR's RSQ_Upgrade_* classes, "upgrade.num"). Without
 	// Gun Bonsai VR, fb: that upgrade's level 1, copied from its formula.
 	static double Num(String what, int lv, double param, double fb)
@@ -253,4 +294,11 @@ class RSQ_Buzz : Actor
 		A_QuakeEx(left ? a : 0.0, left ? 0.0 : a, 0, 2, 0, 8, "", QF_WAVE, 17.5, 17.5, 1);
 	}
 	States { Spawn: TNT1 A 20; Stop; }
+}
+
+// A glove's blow that is not a punch (RSQML.Blow): nothing but a name Gun Bonsai can pay to the glove.
+class RSQML_GloveBlow : Actor
+{
+	Default { +NOINTERACTION +NOBLOCKMAP +NOSECTOR +NOGRAVITY +DONTSPLASH +NOTONAUTOMAP RenderStyle "None"; }
+	States { Spawn: TNT1 A 2; Stop; }
 }
