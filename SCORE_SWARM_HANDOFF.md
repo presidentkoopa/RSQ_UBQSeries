@@ -15,8 +15,15 @@ already working in those mods, because GBOVR needs the same moments for its XP.
 > "'About 89 bonus checks' was based on like half the mods we have, we made a shitton more and this thing needs to
 > know about them."
 
-**The mission: Score must know the WHOLE series as it is now.** That means every RSQ mod, BD22 VR Reloaded and
-Gun Bonsai VR, and every move or moment a player can do in them.
+**The mission: Score must know every way to FIGHT and KILL in the series as it is now.** That means every RSQ
+mod, BD22 VR Reloaded and Gun Bonsai VR: every combat tool and combat move, so kills and kill combos made with them
+are recognised and paid.
+
+**Scope is combat only (the owner, 2026-11-02, emphatically).** Score is an arcade score for how you kill and
+fight. **Utility actions earn nothing:** holstering, drawing, lighting or smoking the cigarette, the Zippo, the
+keyring, moving guns between hands, reloading as such. They count only where they are part of a kill, as the
+existing Quick Draw does (a kill shot within a beat of a draw). If you are unsure whether something is combat, ask
+the owner; don't add it.
 
 ---
 
@@ -48,31 +55,34 @@ Gun Bonsai VR, and every move or moment a player can do in them.
   Melee's own: jab, hook, uppercut (lift), the open-palm swat, the fist/palm toggle, Hadouken (return a
   projectile), guard (block flash), wall splat, heavy hands, gun-butt shove + F.E.A.R. Effect, headlock (hold,
   punch, throw, human shield, breakout).
-- **RSQ Grenade:** nothing. Pin/teeth pull, cook, throw, cooked-in-hand, kills, scatter.
+- **RSQ Grenade:** nothing. Grenade kills, cooked-throw kills (a short fuse as part of the kill), multi-kills.
 - **RSQ Whip:** only a generic tool word "whip", nothing from the rebuilt Whip (`RSQWP_*`). It has a wind-up,
   heavy and light cracks, the pull, and Whip In.
-- **RSQ TacticalRig:** only Quick Draw and Hot Swap. Unknown: the cigarette ritual (in mouth, lit, smoke, flick,
-  slow-mo), the Zippo, holster draws by hand and region, the keyring, moving guns between hands.
-- **BD22 VR Reloaded** (the BD22 Weapons repo): hand reloads, pump, break-open, M203, pistol whip, gun bash, butt
-  strikes (partly), the axe/chainsaw/sword hand poses, dual wield, engine two-hand. Almost none are known.
+- **RSQ TacticalRig:** Quick Draw and Hot Swap (kills right after a draw or swap) exist. Check they still read the
+  rig correctly. The rig's utility features (cigarette, Zippo, keyring, holstering) are NOT scored.
+- **BD22 VR Reloaded** (the BD22 Weapons repo): its combat moves are pistol whip, gun bash, butt strikes (partly
+  known), axe/chainsaw/sword kills, and dual-wield kills. Almost none are known. (Hand reloads and the pump are
+  handling, not combat: not scored by themselves.)
 - **Gun Bonsai VR:** its upgrades and moves (and the redesigned paths from the GBOVR pass). Nothing is known.
-- **RSQ SlowMo:** the new per-source triggers (commit bae904e9f); its older "Bullet Time" link only.
-- **RSQ Miniboss, LaserSight, GunCards, Wheel, Gestures, HP Bars:** barely or not at all. Decide per mod whether
-  it has scorable moments.
-- **Mods Score does cover but which changed since 10-27:** QuestSaber (dual saber put-away, lock ring, Force on
-  the off fist), ShieldSaw (body-frame back/neck holsters, Take It From), Distance Grab (catches into the
-  grabbing hand, walk-up grab, refusal rules), Grapple (default pull vs Swing option). Re-check every existing
-  bonus against the current code.
+- **RSQ SlowMo:** Score's slow-motion kill bonus (to be renamed) must still read SlowMo correctly after its
+  rework (commit bae904e9f). Triggering slow-mo is not itself scored.
+- **RSQ Miniboss:** miniboss kills and awards; check them against the current Miniboss.
+- **LaserSight, GunCards, Wheel, HP Bars, Gestures, Accessibility:** these are not combat tools. Expect nothing to
+  score; only note one if it is truly part of a kill.
+- **Mods Score does cover but whose combat changed since 10-27:** QuestSaber (Force on the off fist, the dual
+  sabers), ShieldSaw, Distance Grab (throws), Grapple (the default pull vs the Swing option). Re-check every
+  existing combat bonus against the current code.
 
 ## 3. The plan
 
 1. **Inventory, read-only:** go mod by mod: every RSQ mod folder, the BD22 Weapons repo
    (`E:\DOOMWork\RS_Brutal22WeaponsQ`) and `GunBonsaiOffhandVR/`.
-   - List every move or moment a player can do. Give its name, when it happens in code (file and function),
-     and what facts are available (target, damage, speed, hold time, hand).
+   - List every COMBAT tool and move (anything that hits, hurts, kills or defends in a fight). Give its name,
+     where it lands in code (file and function), and what facts are available (target, damage, speed, hand).
    - Mark what Score catches today, what it catches wrongly (stale), and what it doesn't catch.
    - Output: `SCORE_EVENTS.md`.
-2. **One shared "moment" announcement for the series.** Each mod DECLARES its moves once by name at startup:
+2. **One shared combat-move announcement for the series.** Each mod DECLARES its combat moves once by name at
+   startup:
    id `melee.uppercut`, family `Melee`, plain name "Uppercut". It ANNOUNCES each moment as it happens:
    target, hand, strength.
    - **Mechanism:** a named service or netevent, found by name at run time, never a compile-time class
@@ -82,8 +92,8 @@ Gun Bonsai VR, and every move or moment a player can do in them.
      its own mod and no Score code.
    - Design the payload with netplay in mind; Score is play-scope.
 3. **Naming pass with the owner** (he insists names are deliberate):
-   - every move and every combo, including cross-mod chains (e.g. headlock → throw → grapple yank; cigarette
-     flick → slow-mo → Hadouken), with points per line;
+   - every combat move and every kill combo, including cross-mod chains (e.g. headlock → throw → grapple yank;
+     uppercut → whip crack kill), with points per line;
    - rename Score's "Bullet Time" bonus (the owner's decision);
    - the current combo names are proposals; put them in front of him too.
    
