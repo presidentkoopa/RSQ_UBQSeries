@@ -1,0 +1,1 @@
+wait 40; set rsqtr_cig 1; set rsqtr_messages 1; set trc_marks 1; wait 5; qz_rhand "-0.16 1.20 -0.12 30 0 0"; wait 12; +use; wait 3; -use; wait 30; qz_hmd "0 1.6 0 -25 0 0"; qz_rhand "0.25 1.2 -0.3 30 0 0"; qz_lhand "-0.04 1.42 -0.25 30 -20 0"; wait 10; +oh_attack; wait 3; -oh_attack; wait 40; echo TRC_Z_OPEN; wait 30; quit

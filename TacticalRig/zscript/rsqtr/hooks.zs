@@ -73,8 +73,9 @@ class RSQTR_RigService : Service
 			if (!local) return 0;
 			if (rig.HandBusy(h)) return 1;
 			let cig = RSQTR_Cig.Get();
-			// the cigarette in the main hand, the Zippo in the off hand (cig.zs)
-			if (cig && ((h == 0 && cig.phase[consoleplayer] == RSQTR_Cig.PH_HAND) || (h == 1 && cig.phase[consoleplayer] != RSQTR_Cig.PH_NONE))) return 1;
+			// the cigarette in the main hand, the Zippo in the off hand (cig.zs; a Zippo put away frees the off hand)
+			if (cig && ((h == 0 && cig.phase[consoleplayer] == RSQTR_Cig.PH_HAND)
+				|| (h == 1 && cig.phase[consoleplayer] != RSQTR_Cig.PH_NONE && players[consoleplayer].OffhandWeapon is "RSQTR_ZippoWeapon"))) return 1;
 			// a hand lifting a door (RSQ_DistanceGrab's doors, asked by name)
 			let dit = ServiceIterator.Find("RSQDG_DoorService");
 			Service ds;

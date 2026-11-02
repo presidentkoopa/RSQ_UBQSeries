@@ -18,7 +18,7 @@ user bool   rsqtr_messages    = false;
 user float  rsqtr_reach       = 1.0;     // scales every region's radius
 user bool   rsqtr_yield_shield = true;   // leave the off shoulder to RS_ShieldSawQ while its shield is stowed there
 user float  rsqtr_eye_m       = 0;       // your eye height in metres ("Measure my height"; 0 = the 1.62 m the defaults are made for)
-user int    rsqtr_pairs       = 0;       // the off-hand copy with a holstered gun: 0 never (Dual is its own key), 1 if it went away as a pair, 2 whenever you have both
+user int    rsqtr_pairs       = 0;       // retired 2026-11-02 (a holster draw is always one gun; Dual is its own key). Kept so old ini lines load.
 user bool   rsqtr_edit        = false;   // move the regions with your hands: grip in one, carry it, let go
 user int    rsqtr_mirror      = 1;       // a mirror in front of you: 0 off, 1 while moving the regions, 2 always
 user int    rsqtr_mirror_view = 2;       // the mirror shows 0 your front, 1 your back, 2 both side by side
@@ -61,6 +61,7 @@ user bool  rsqtr_cig_slowmo  = true;    // RSQ_SlowMo starts as it flicks out of
 user int   rsqtr_cig_depth   = 25;      // how slow, percent speed
 user int   rsqtr_cig_count   = 3;       // how many in the pocket
 user bool  rsqtr_cig_refill  = true;    // the pocket refills on a new level
+user float rsqtr_cig_mouth   = 1.0;     // Mouth Zone Size: scales the mouth zone's 0.08 m radius (0.5-1.5)
 
 // The torso (optional).
 user bool  rsqtr_vest       = false;   // wear a torso the holsters sit on

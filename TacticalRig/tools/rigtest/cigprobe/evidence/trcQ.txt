@@ -1,0 +1,33 @@
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 66:
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 72:
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 77:
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 892:
+trc: t70 weap main BrutalPistol off rsq_hands pend None | holsters L|R | | owned RSQ_Off_BrutalPistol BrutalPistol 
+trc: t105 weap main BrutalPistol off rsq_hands pend None | holsters L|R | | owned RSQ_Off_BrutalPistol BrutalPistol 
+TRC_Q0_PAIRS2_ONE_PISTOL_IN_HAND
+trc: t140 weap main BrutalPistol off rsq_hands pend None | holsters L|R | | owned RSQ_Off_BrutalPistol BrutalPistol 
+TRC_Q1_HOLSTERED
+trc: t175 weap main BrutalPistol off rsq_hands pend None | holsters L|R | | owned RSQ_Off_BrutalPistol BrutalPistol 
+trc: t188 weap main BrutalPistol off rsq_hands pend RSQWP_WhipWeapon | holsters L|R |BrutalPistol | owned RSQ_Off_BrutalPistol BrutalPistol 
+trc: t192 weap main RSQWP_WhipWeapon off rsq_hands pend None | holsters L|R |BrutalPistol | owned RSQ_Off_BrutalPistol BrutalPistol 
+trc: t210 weap main RSQWP_WhipWeapon off rsq_hands pend None | holsters L|R |BrutalPistol | owned RSQ_Off_BrutalPistol BrutalPistol 
+TRC_Q2_DRAWN
+trc: t245 weap main RSQWP_WhipWeapon off rsq_hands pend None | holsters L|R |BrutalPistol | owned RSQ_Off_BrutalPistol BrutalPistol 
+trc: t280 weap main RSQWP_WhipWeapon off rsq_hands pend None | holsters L|R |BrutalPistol | owned RSQ_Off_BrutalPistol BrutalPistol 
+trc: t293 weap main BrutalPistol off rsq_hands pend None | holsters L|R | | owned RSQ_Off_BrutalPistol BrutalPistol 
+trc: t315 weap main BrutalPistol off rsq_hands pend None | holsters L|R | | owned RSQ_Off_BrutalPistol BrutalPistol 
+TRC_Q3_BD_DUALPISTOLS
+trc: t340 weap main BrutalPistol off rsq_hands pend None | holsters L|R | | owned DualPistols RSQ_Off_BrutalPistol BrutalPistol 
+trc: t344 weap main DualPistols off rsq_hands pend None | holsters L|R | | owned DualPistols RSQ_Off_BrutalPistol 
+trc: t350 weap main DualPistols off rsq_hands pend None | holsters L|R | | owned DualPistols RSQ_Off_BrutalPistol 
+trc: t385 weap main DualPistols off rsq_hands pend None | holsters L|R | | owned DualPistols RSQ_Off_BrutalPistol 
+T_RIG holster t396: DualPistols (Brutal Doom's two-gun weapon) goes in as one BrutalPistol
+trc: t396 weap main DualPistols off rsq_hands pend RSQWP_WhipWeapon | holsters L|R |BrutalPistol | owned BrutalPistol DualPistols RSQ_Off_BrutalPistol 
+trc: t400 weap main RSQWP_WhipWeapon off rsq_hands pend None | holsters L|R |BrutalPistol | owned BrutalPistol DualPistols RSQ_Off_BrutalPistol 
+trc: t420 weap main RSQWP_WhipWeapon off rsq_hands pend None | holsters L|R |BrutalPistol | owned BrutalPistol DualPistols RSQ_Off_BrutalPistol 
+TRC_Q4_DUALPISTOLS_HOLSTERED
+trc: t455 weap main RSQWP_WhipWeapon off rsq_hands pend None | holsters L|R |BrutalPistol | owned BrutalPistol DualPistols RSQ_Off_BrutalPistol 
+trc: t462 weap main BrutalPistol off rsq_hands pend None | holsters L|R | | owned BrutalPistol RSQ_Off_BrutalPistol 
+trc: t490 weap main BrutalPistol off rsq_hands pend None | holsters L|R | | owned BrutalPistol RSQ_Off_BrutalPistol 
+TRC_Q5_DUALPISTOLS_DRAWN
+trc: t525 weap main BrutalPistol off rsq_hands pend None | holsters L|R | | owned BrutalPistol RSQ_Off_BrutalPistol 

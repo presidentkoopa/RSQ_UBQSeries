@@ -10,19 +10,28 @@
 //      hand (RSQTR_CigWeapon) and the Zippo in the off hand (RSQTR_ZippoWeapon). Grip at the pocket again: back in.
 //   1. FROM HERE ON USE IS THE CIGARETTE'S. Nothing else gets the press: no door, no switch (the engine's use is held
 //      off by keeping PlayerInfo.usedown set, p_user.cpp P_CheckUse), no holster, no watch move.
-//      Use with the cigarette hand in the MOUTH ZONE (MOUTH_R around Mouth(), in front of the eyes): it goes in the
-//      mouth and stays there, following the head; the main hand has its gun back.
-//      Use anywhere else: it is FLICKED away from you (a small arc, a tiny ember, the rig's own foley).
-//   2. In the mouth: OFF-HAND FIRE flicks the Zippo open and lit (again: shut). Bring its flame to the tip and press
-//      Use: it lights and you smoke (a glowing tip, smoke from the tip, a puff now and then). Use with the flame
-//      anywhere else does nothing; a cigarette in the mouth is never flicked by Use.
-//   3. Smoke for rsqtr_cig_smoke seconds (menu slider, 2 by default, 1 to 5 in half seconds).
+//      Use with the cigarette in the MOUTH ZONE (lips to just under the chin, the controller or the drawn filter;
+//      InMouthZone), or up to GRACE_TICS after it left the zone: it goes in the mouth and stays there, following the
+//      head; the main hand has its gun back. Use anywhere else: it is FLICKED away (a small arc, a tiny ember, the rig's
+//      foley). Entering the zone gives a cue first: a glow at the drawn tip, a light tick in that hand, a soft sound.
+//   2. In the mouth: OFF-HAND FIRE flicks the Zippo open and lit (again: shut). Bring its flame to the cigarette and
+//      press Use: it lights and you smoke (a glowing tip, smoke from the tip, a puff now and then). Use with the flame
+//      away does nothing.
+//   3. Smoke for rsqtr_cig_smoke seconds (menu slider, 2 by default, 1 to 5 in half seconds). Use while smoking ends it.
 //   4. It flicks out of the mouth (the same flick) and you exhale; RSQ_SlowMo starts (its "rsm_pulse" network event,
 //      asked by name; without RSQ_SlowMo the event goes nowhere and the ritual ends with the flick).
-//   CANCELS: the main hand switched away from the cigarette (another gun, a holster); the off hand taken from the
-//   Zippo for a second (another mod or the player); the Cigarettes row or the rig switched off: an unlit cigarette goes
-//   back in the pocket. Death: it is gone. A level change: an unlit one goes back in the pocket and the hands get their
-//   guns back (RSQTR_CigPack remembers them, since this handler is rebuilt on every map).
+//   EXITS FROM EVERY STATE (11-02, the owner's headset: "there is no way to switch off of the zippo"):
+//   - In the hand: Use at the mouth (in), Use elsewhere (flick), main grip at the pocket (back in), switch or holster
+//     the main hand's gun (back in the pocket).
+//   - The Zippo: off-hand fire opens / shuts it; the off hand's grip at any holster puts it away and gives the off hand
+//     its gun back (rsqtr_zipaway); the off hand switched to anything else (its weapon switch, switchhand, another mod)
+//     also puts it away. The cigarette stays where it is. The off hand's grip at the pocket brings the Zippo back.
+//   - In the mouth, unlit: Use with no Zippo in the off hand, or the main hand's grip at the mouth: back to the hand
+//     (rsqtr_cigunmouth), and from there the flick and the pocket work as before.
+//   - Smoking: the timer, or Use: the flick from the mouth.
+//   - Always: the Cigarettes row or the rig off (an unlit one back in the pocket, a lit one flicked), death (gone), a
+//     level change (an unlit one back in the pocket, the hands' guns back: RSQTR_CigPack remembers them, since this
+//     handler is rebuilt on every map).
 //
 // The idea is Ermac's: the cigarette, its butt and its smoke come from his Virtual Tactical Vest for Doom VR (its credits
 // name him as their modeller; the cigarette's texture is an atlas shared with a Sketchfab cigarette-pack model, its pack
@@ -39,27 +48,46 @@ class RSQTR_Cig : EventHandler
 	const POCKET_L = 0.16;
 	const POCKET_U = -0.25;
 	const POCKET_R = 0.09;
-	// THE MOUTH ZONE (metres, measured on the rig 11-02, README): its centre 0.07 forward of the eyes and 0.09 under them
-	// (the lips), a 0.15 sphere around it, and only in front of the eyes. The test point is the controller, which holds
-	// the cigarette's filter a few centimetres out (the baked pinch, tools/gen_handprops.py): a hand raised to the lips
-	// measured 0.05 from the centre, a hand at the chest 0.21 and the resting pose 0.40.
+	// WHERE THE CIGARETTE SITS IN THE MOUTH (the prop's centre; metres forward of the eyes and under them, in the head's
+	// frame). Ermac's mesh at MODELDEF scale 0.3 runs 0.034 m behind that centre (the filter, at the lips) to 0.050 m
+	// ahead (the burning end; tools/measure_handprops.py).
 	const MOUTH_F = 0.07;
 	const MOUTH_D = 0.09;
-	const MOUTH_R = 0.15;
-	const TIP_F = 0.07;          // the burning end at the mouth: 7 cm further out, 2 cm lower
-	const TIP_D = 0.02;
-	// THE FLAME: the Zippo stands in the fist with its top ~5 hand-cm over the controller (gen_handprops.py ZIP_FLOOR +
-	// ZIP_H); the flame is over that. The test point is the controller raised FLAME_UP, within FLAME_R of the tip.
-	const FLAME_UP = 0.06;
-	const FLAME_R = 0.12;
+	const TIP_F = 0.05;
+	const TIP_D = 0.007;         // the prop hangs 8 degrees down: 0.05 x sin 8
+	// THE MOUTH ZONE (11-02, after the owner's headset: "i can't get it in my mouth"). A capsule in the HEAD's frame (it
+	// turns and nods with the headset): from the lips (ZONE_A: 0.04 forward of the eyes, 0.06 under them) to just under
+	// the chin (ZONE_B: 0.08 forward, 0.19 under), ZONE_R round that line (x rsqtr_cig_mouth, Mouth Zone Size). With a
+	// real hand at the lips the controller is a palm's width below and in front of them (near the chin or lower), and
+	// the cigarette is drawn at the controller (its filter 0.5 cm forward, 2.8 left, 1.3 up of it), so BOTH the
+	// controller and the drawn filter are tested and the nearer counts. Measured on the rig (README): lips, chin and
+	// just below are in; the chest (0.30 under the eyes) and the pocket are out.
+	const ZONE_AF = 0.04;
+	const ZONE_AD = 0.06;
+	const ZONE_BF = 0.08;
+	const ZONE_BD = 0.19;
+	const ZONE_R = 0.08;
+	const GRACE_TICS = 10;       // a Use up to 0.3 s after the cigarette left the zone still puts it in the mouth
+	const GRACE_DWELL = 3;       // ...if it had been in the zone at least this many tics (a swing through does not count)
+	// THE DRAWN PROPS, MEASURED FROM THE MESHES (tools/measure_handprops.py: the baked md3 through the engine's own
+	// hand-model transform, r_data/models.cpp RenderHUDModel). md3 cm in the hand mesh's space; HandPoint turns them
+	// into the world. The cigarette's filter and burning end (rtcig_h.md3), the Zippo's flame centre (rtzipfl_h.md3).
+	const CIGF_X = 6.38;  const CIGF_Y = 2.73;  const CIGF_Z = 6.21;
+	const CIGT_X = 13.93; const CIGT_Y = 6.13;  const CIGT_Z = 7.36;
+	const FLAME_X = 4.86; const FLAME_Y = 0.67; const FLAME_Z = 8.31;
+	// THE LIGHT: the drawn flame within FLAME_R of the cigarette in the mouth (anywhere from its middle to the burning
+	// end). The flame is drawn 1 cm behind, 0.7 toward the inside and 3.5 cm over the off controller (it was guessed at
+	// 6 cm over until 11-02).
+	const FLAME_R = 0.13;
+	const USE_DEBOUNCE = 6;      // tics: a second Use edge this soon after one is the same press (key event + command)
+	const ZIP_GONE_TICS = 6;    // the off hand without the Zippo this long (switched, taken): the Zippo is away
 	const ZIP_LIT_TICS = 7;      // the lid opens over 6 tics, then the flame takes (RSQTR_ZippoWeapon Open)
 	const ZIP_AWAY_TICS = 12;    // after the tip catches: the Zippo shuts and goes away
 	const PUFF_TICS = 30;        // a puff from the mouth while smoking
 	// THE FLICK (map units a tic): from the mouth on the rig it first touched down 2.5 m out and came to rest by 3.5 m
 	const FLICK_SPEED = 2.6;
 	const FLICK_UP = 3.0;
-	const BUSY_TICS = 35;        // the off hand without the Zippo this long: the ritual is off
-	const SWITCH_TICS = 6;       // the main hand away from the cigarette this long: put back
+	const SWITCH_TICS = 6;      // the main hand away from the cigarette this long: put back
 
 	const PH_NONE = 0;
 	const PH_HAND = 1;           // in the hand
@@ -73,16 +101,21 @@ class RSQTR_Cig : EventHandler
 	int  zipTic[MAXPLAYERS];
 	int  smokeTics[MAXPLAYERS];  // how long this smoke lasts (rsqtr_cig_smoke when it was lit)
 	int  offGone[MAXPLAYERS];    // tics the off hand has been without the Zippo
+	bool zipAway[MAXPLAYERS];    // the Zippo put away (holstered, switched, taken): the off hand has its gun
 	int  mainGone[MAXPLAYERS];   // tics the main hand has been away from the cigarette (in the hand)
 	bool restore[MAXPLAYERS];    // a level change found the cigarette or the Zippo still in a hand
 	String prevMain[MAXPLAYERS], prevOff[MAXPLAYERS];
 	Actor mouthProp[MAXPLAYERS];
 	int  spitTic[MAXPLAYERS];    // when the last flick from the mouth was (the console player's SlowMo starts on it)
+	int  keyTic[MAXPLAYERS];     // when a key bound to +use last went down (InputProcess, below)
 
 	// ---- local (console player) ----------------------------------------------------
-	private transient bool gripWas, useWas, offFireWas;
-	private transient int spitSeen;
-	private transient Actor pocketMark;
+	private transient bool gripWas, offGripWas, useWas, offFireWas;
+	private transient int spitSeen, keySeen, useActTic;
+	private transient Actor pocketMark, cue;
+	private transient bool cueWas;           // the cigarette (or the flame) was in reach last tic
+	private transient int zoneIn, zoneLeft;  // tics in the zone; the tic it last left it
+	private transient int zoneLeftDwell;     // how long it had been in before it left
 
 	static RSQTR_Cig Get() { return RSQTR_Cig(EventHandler.Find("RSQTR_Cig")); }
 
@@ -104,7 +137,7 @@ class RSQTR_Cig : EventHandler
 	{
 		for (int i = 0; i < MAXPLAYERS; i++)
 		{
-			phase[i] = PH_NONE; zipOpen[i] = false; mouthProp[i] = null; spitTic[i] = -100; restore[i] = false;
+			phase[i] = PH_NONE; zipOpen[i] = false; zipAway[i] = false; mouthProp[i] = null; spitTic[i] = -100; restore[i] = false;
 			if (!playeringame[i] || !players[i].mo) continue;
 			let pmo = players[i].mo;
 			let p = players[i];
@@ -168,20 +201,68 @@ class RSQTR_Cig : EventHandler
 	// The cigarette's burning end at the mouth.
 	static Vector3 MouthTip(PlayerPawn pmo) { return FromEyes(pmo, MOUTH_F + TIP_F, MOUTH_D + TIP_D); }
 
-	// How far the main hand is from the mouth zone's centre (metres), and whether it is in the zone.
-	static double MouthDist(PlayerPawn pmo) { return RSQTR_Body.RoomMetres(RSQTR_Body.Hand(pmo, 0), Mouth(pmo)); }
-	static bool InMouthZone(PlayerPawn pmo)
+	// A POINT OF A PROP DRAWN IN A HAND: md3 cm (mx, my, mz) of the baked hand prop, through the engine's hand-model
+	// transform (tools/measure_handprops.py, from r_data/models.cpp RenderHUDModel and MODELDEF Scale -1 1 1 / Offset 0
+	// -24 -10): in the controller's frame forward ws*mx - 6, left +-ws*my (the off hand is mirrored), up ws*mz - 5 cm,
+	// then turned by the hand's yaw, pitch and roll as the engine turns the model (GetHandTransform).
+	// The turn is the renderer's own, as RSQ_LaserSight's hand.zs HudPoint does it (rig-proven there): GL axes (x, y up,
+	// z), the hand's yaw AttackAngle about y (the hand points AttackAngle + 90 in the map), pitch AttackPitch about x,
+	// roll -AttackRoll about z; map = (x, -z, y / pixelstretch) x vr_vunits_per_meter. The model point in that frame
+	// (cm): (-ws*my, ws*mz - 10, -ws*mx - 24) + (0, 5, 30), x mirrored on the off hand (GetWeaponTransform).
+	static Vector3 HandPoint(PlayerPawn pmo, int h, double mx, double my, double mz)
 	{
-		Vector3 d = RSQTR_Body.Hand(pmo, 0) - Eyes(pmo);
-		double fwd = (d.x * cos(pmo.angle) + d.y * sin(pmo.angle)) / RSQTR_Body.Upm();
-		return fwd > 0 && MouthDist(pmo) < MOUTH_R;
+		let wsv = CVar.FindCVar("vr_weaponScale");
+		double ws = wsv ? wsv.GetFloat() : 1.02;
+		Vector3 v = (-ws * my, ws * mz - 10 + 5, -ws * mx - 24 + 30) * 0.01;
+		let cs = CVar.FindCVar("vr_control_scheme");
+		bool rightHanded = !cs || cs.GetInt() < 10;
+		int idx = (h == 1) ? (rightHanded ? 0 : 1) : (rightHanded ? 1 : 0);
+		Weapon w = h == 0 ? pmo.player.ReadyWeapon : pmo.player.OffhandWeapon;
+		if (idx == 0 && !(w && w.bNoAutoReverse)) v.x = -v.x;
+		double yw = h == 0 ? pmo.AttackAngle : pmo.OffhandAngle;
+		double pt = h == 0 ? pmo.AttackPitch : pmo.OffhandPitch;
+		double rl = -(h == 0 ? pmo.AttackRoll : pmo.OffhandRoll);
+		v = (v.x * cos(rl) - v.y * sin(rl), v.x * sin(rl) + v.y * cos(rl), v.z);
+		v = (v.x, v.y * cos(pt) - v.z * sin(pt), v.y * sin(pt) + v.z * cos(pt));
+		v = (v.x * cos(yw) + v.z * sin(yw), v.y, -v.x * sin(yw) + v.z * cos(yw));
+		double vu = RSQTR_Body.Upm();
+		return RSQTR_Body.Hand(pmo, h) + (vu * v.x, -vu * v.z, vu * v.y / RSQTR_Body.Ps());
 	}
-	// The Zippo's flame (the off controller raised FLAME_UP) to the burning end, metres.
-	static double FlameDist(PlayerPawn pmo)
+	static Vector3 CigFilter(PlayerPawn pmo) { return HandPoint(pmo, 0, CIGF_X, CIGF_Y, CIGF_Z); }
+	static Vector3 CigTip(PlayerPawn pmo) { return HandPoint(pmo, 0, CIGT_X, CIGT_Y, CIGT_Z); }
+	static Vector3 Flame(PlayerPawn pmo) { return HandPoint(pmo, 1, FLAME_X, FLAME_Y, FLAME_Z); }
+
+	// Metres from a point to the zone's axis (lips to under the chin, in the head's frame).
+	static double ZoneDist(PlayerPawn pmo, Vector3 pt)
 	{
-		Vector3 f = RSQTR_Body.Hand(pmo, 1) + (0, 0, FLAME_UP * RSQTR_Body.Upm() / RSQTR_Body.Ps());
-		return RSQTR_Body.RoomMetres(f, MouthTip(pmo));
+		return SegDist(pt, FromEyes(pmo, ZONE_AF, ZONE_AD), FromEyes(pmo, ZONE_BF, ZONE_BD));
 	}
+	// Room metres from pt to the segment a-b (map points).
+	static double SegDist(Vector3 pt, Vector3 a, Vector3 b)
+	{
+		double ps = RSQTR_Body.Ps(), upm = RSQTR_Body.Upm();
+		Vector3 ab = b - a, ap = pt - a;
+		ab = (ab.x, ab.y, ab.z * ps) / upm;
+		ap = (ap.x, ap.y, ap.z * ps) / upm;
+		double ll = ab dot ab;
+		double t = ll > 0 ? clamp((ap dot ab) / ll, 0.0, 1.0) : 0.0;
+		return (ap - ab * t).Length();
+	}
+	static double ZoneRadius(PlayerPawn pmo) { return ZONE_R * clamp(RSQTR_Rig.Num("rsqtr_cig_mouth", pmo.player, 1.0), 0.5, 1.5); }
+	// The cigarette in the main hand against the zone: the nearer of the controller and the drawn filter (metres).
+	static double MouthDist(PlayerPawn pmo) { return min(ZoneDist(pmo, RSQTR_Body.Hand(pmo, 0)), ZoneDist(pmo, CigFilter(pmo))); }
+	static bool InMouthZone(PlayerPawn pmo) { return MouthDist(pmo) < ZoneRadius(pmo); }
+	// The main controller alone against the zone (pulling an unlit cigarette back out of the mouth with the main hand).
+	static bool HandAtMouth(PlayerPawn pmo) { return ZoneDist(pmo, RSQTR_Body.Hand(pmo, 0)) < ZoneRadius(pmo); }
+	// Other files: a main-hand grip here now pulls the unlit cigarette out of the mouth (rig.zs: so it is no gun throw).
+	static bool PullAtMouth(PlayerPawn pmo)
+	{
+		let c = Get();
+		int n = pmo ? pmo.PlayerNumber() : -1;
+		return c && n >= 0 && n < MAXPLAYERS && c.phase[n] == PH_MOUTH && HandAtMouth(pmo);
+	}
+	// The Zippo's drawn flame to the cigarette in the mouth (anywhere from the lips to the burning end), metres.
+	static double FlameDist(PlayerPawn pmo) { return SegDist(Flame(pmo), Mouth(pmo), MouthTip(pmo)); }
 	bool ZipBurning(int n) { return zipOpen[n] && level.maptime - zipTic[n] >= ZIP_LIT_TICS; }
 
 	// ---- the local loop ----------------------------------------------------------------
@@ -190,13 +271,32 @@ class RSQTR_Cig : EventHandler
 		Steps();
 
 		let p = players[consoleplayer];
-		if (!p || !p.mo || p.mo.health <= 0) { HideMark(); return; }
+		if (!p || !p.mo || p.mo.health <= 0) { HideMark(); HideCue(); return; }
 		let pmo = p.mo;
 		int n = consoleplayer;
-		bool useDown = (p.cmd.buttons & BT_USE) != 0;
+		// USE, EDGE-BASED: the rising edge of the key in this tic's command OR the unmodified one the input built
+		// (original_cmd), so a mod that clears BT_USE from the command for its own reasons cannot eat the press; the
+		// edge state is kept every tic, before anything can return early.
+		// A TAP SHORTER THAN A TIC never reaches the command at all: G_BuildTiccmd (g_game.cpp) only asks whether Use is
+		// held when it builds (FButtonStatus.bDown), so a press and release between two builds is lost -- more likely when
+		// the frame rate drops and several tics run per frame. So the key going down is caught too, as an input event
+		// (InputProcess: any key bound to +use, the controller's included), and counts as a press; one press is acted on
+		// once (USE_DEBOUNCE), whichever of the two arrives first.
+		bool useDown = ((p.cmd.buttons | p.original_cmd.buttons) & BT_USE) != 0;
 		bool useEdge = useDown && !useWas;
 		useWas = useDown;
-		if (!RSQTR_Rig.Flag("rsqtr_cig", p, false)) { HideMark(); return; }
+		bool keyEdge = keyTic[n] != keySeen && keyTic[n] >= level.maptime - 1;
+		keySeen = keyTic[n];
+		if (keyEdge && !useEdge && useDown) keyEdge = false;          // the command already holds it: the same press
+		if ((useEdge || keyEdge) && level.maptime - useActTic <= USE_DEBOUNCE) useEdge = keyEdge = false;
+		if (keyEdge && !useEdge && RSQTR_Rig.Flag("rsqtr_messages", p, false)) Console.Printf("T_CIG t%d Use caught as a key press (not in the command: a tap shorter than a tic)", level.maptime);
+		useEdge = useEdge || keyEdge;
+		if (useEdge) useActTic = level.maptime;
+		bool offGrip = false;
+		{ let rg = RSQTR_Rig.Get(); offGrip = rg && rg.gripDown[n * 2 + 1]; }
+		bool offGripEdge = offGrip && !offGripWas;
+		offGripWas = offGrip;
+		if (!RSQTR_Rig.Flag("rsqtr_cig", p, false)) { HideMark(); HideCue(); return; }
 		let rig = RSQTR_Rig.Get();
 		Vector3 pocket = Pocket(pmo);
 		bool msg = RSQTR_Rig.Flag("rsqtr_messages", p, false);
@@ -220,28 +320,85 @@ class RSQTR_Cig : EventHandler
 			else if (phase[n] == PH_HAND && gripEdge) EventHandler.SendNetworkEvent("rsqtr_cigback");
 		}
 
+		// THE ZONE, every tic the cigarette is in the hand: the cue on entering, and the grace after leaving
+		bool zipIn = p.OffhandWeapon is "RSQTR_ZippoWeapon";
+		bool inZone = false;
+		double zd = 9;
+		if (phase[n] == PH_HAND)
+		{
+			zd = MouthDist(pmo);
+			inZone = zd < ZoneRadius(pmo);
+			if (inZone) zoneIn++;
+			else if (zoneIn > 0) { zoneLeft = level.maptime; zoneLeftDwell = zoneIn; zoneIn = 0; }
+		}
+		else zoneIn = 0;
+
 		// USE IS THE CIGARETTE'S while it is out
 		if (useEdge && phase[n] == PH_HAND)
 		{
-			bool inZone = InMouthZone(pmo);
-			if (msg) Console.Printf("T_CIG use in hand: hand %.3f m from the mouth (zone %.2f) -> %s", MouthDist(pmo), MOUTH_R, inZone ? "mouth" : "flick");
-			EventHandler.SendNetworkEvent(inZone ? "rsqtr_ciglock" : "rsqtr_cigflick");
+			bool grace = !inZone && zoneLeftDwell >= GRACE_DWELL && level.maptime - zoneLeft <= GRACE_TICS;
+			bool toMouth = inZone || grace;
+			if (msg) Console.Printf("T_CIG use in hand t%d: %.3f m from the zone's axis (radius %.3f)%s -> %s", level.maptime, zd, ZoneRadius(pmo), grace ? String.Format(", left it %d tics ago (grace)", level.maptime - zoneLeft) : "", toMouth ? "mouth" : "flick");
+			EventHandler.SendNetworkEvent(toMouth ? "rsqtr_ciglock" : "rsqtr_cigflick");
+			zoneLeftDwell = 0;
 		}
 		else if (useEdge && phase[n] == PH_MOUTH)
 		{
-			bool zip = p.OffhandWeapon is "RSQTR_ZippoWeapon";
-			double fd = FlameDist(pmo);
-			bool ok = zip && ZipBurning(n) && fd < FLAME_R;
-			if (msg) Console.Printf("T_CIG use in mouth: zippo %s, flame %.3f m from the tip (reach %.2f) -> %s", !zip ? "not in hand" : (ZipBurning(n) ? "lit" : "shut"), fd, FLAME_R, ok ? "light" : "nothing");
-			if (ok) EventHandler.SendNetworkEvent("rsqtr_ciglight");
+			if (!zipIn)
+			{
+				// the off hand has no Zippo (put away): Use takes the unlit cigarette back out into the main hand
+				if (msg) Console.Printf("T_CIG use in mouth t%d: no Zippo in the off hand -> back to the hand", level.maptime);
+				EventHandler.SendNetworkEvent("rsqtr_cigunmouth");
+			}
+			else
+			{
+				double fd = FlameDist(pmo);
+				bool ok = ZipBurning(n) && fd < FLAME_R;
+				if (msg) Console.Printf("T_CIG use in mouth t%d: zippo %s, flame %.3f m from the cigarette (reach %.2f) -> %s", level.maptime, ZipBurning(n) ? "lit" : "shut", fd, FLAME_R, ok ? "light" : "nothing");
+				if (ok) EventHandler.SendNetworkEvent("rsqtr_ciglight");
+			}
+		}
+		else if (useEdge && phase[n] == PH_SMOKE)
+		{
+			// smoking: Use flicks it out now (the end of the smoke, slow motion as usual)
+			if (msg) Console.Printf("T_CIG use while smoking t%d -> flicked out now", level.maptime);
+			EventHandler.SendNetworkEvent("rsqtr_cigspit");
 		}
 
-		// off-hand fire: the Zippo open and lit / shut (not while smoking: it has gone away)
-		bool off = (p.cmd.buttons & BT_OFFHANDATTACK) != 0;
+		// the main hand's grip at the mouth: an unlit cigarette back out of the mouth into that hand
+		if (gripEdge && phase[n] == PH_MOUTH && HandAtMouth(pmo))
+		{
+			if (msg) Console.Printf("T_CIG main grip at the mouth t%d -> back to the hand", level.maptime);
+			EventHandler.SendNetworkEvent("rsqtr_cigunmouth");
+		}
+
+		// THE ZIPPO. Off-hand fire: open and lit / shut (in the hand or the mouth; not while smoking). The off hand's
+		// grip at the pocket with the Zippo put away: the Zippo back in the off hand.
+		bool off = ((p.cmd.buttons | p.original_cmd.buttons) & BT_OFFHANDATTACK) != 0;
 		bool offEdge = off && !offFireWas;
 		offFireWas = off;
-		if (offEdge && p.OffhandWeapon is "RSQTR_ZippoWeapon" && (phase[n] == PH_HAND || phase[n] == PH_MOUTH))
+		if (offEdge && zipIn && (phase[n] == PH_HAND || phase[n] == PH_MOUTH))
 			EventHandler.SendNetworkEvent("rsqtr_zipflick");
+		double dpo = RSQTR_Body.RoomMetres(RSQTR_Body.Hand(pmo, 1), pocket);
+		if (offGripEdge && dpo < POCKET_R && (phase[n] == PH_HAND || phase[n] == PH_MOUTH) && !zipIn && zipAway[n])
+		{
+			if (msg) Console.Printf("T_CIG off grip at the pocket t%d -> the Zippo back", level.maptime);
+			EventHandler.SendNetworkEvent("rsqtr_zipback");
+		}
+
+		// THE CUE, before Use is pressed: the cigarette in the zone (or, in the mouth, the lit flame in reach) -- a small
+		// glow at the drawn burning end, a light tick in that hand and a soft stock sound as it comes into reach
+		bool flameIn = phase[n] == PH_MOUTH && zipIn && ZipBurning(n) && FlameDist(pmo) < FLAME_R;
+		bool cueNow = inZone || flameIn;
+		if (cueNow && !cueWas)
+		{
+			RSQTR_Buzzer.Start(pmo, inZone ? 0 : 1, 0.15, 2);
+			pmo.A_StartSound("misc/i_pkup", CHAN_AUTO, CHANF_LOCAL, 0.3);
+			if (msg) Console.Printf("T_CIG cue on t%d: %s", level.maptime, inZone ? String.Format("in the mouth zone (%.3f m of %.3f)", zd, ZoneRadius(pmo)) : String.Format("flame in reach (%.3f m)", FlameDist(pmo)));
+		}
+		cueWas = cueNow;
+		if (cueNow) ShowCue(inZone ? CigTip(pmo) : MouthTip(pmo));
+		else HideCue();
 
 		// the flick from the mouth: RSQ_SlowMo starts with it (its "rsm_pulse <ms> <depth %>" network event, by name)
 		if (spitTic[n] != spitSeen && spitTic[n] == level.maptime)
@@ -274,6 +431,26 @@ class RSQTR_Cig : EventHandler
 		pocketMark.frame = nearest < POCKET_R ? 1 : 0;
 	}
 	private void HideMark() { if (pocketMark) pocketMark.bINVISIBLE = true; }
+
+	private void ShowCue(Vector3 at)
+	{
+		if (!cue) cue = Actor.Spawn("RSQTR_Cue", at);
+		if (!cue) return;
+		cue.SetOrigin(at, true);
+	}
+	private void HideCue() { if (cue) cue.Destroy(); cue = null; cueWas = false; }
+
+	// THE USE KEY AS AN INPUT EVENT, while the cigarette is out (see WorldTick: a tap shorter than a tic): a key whose
+	// binding holds +use going down sends one network event. The key is never eaten; the engine sees it as always.
+	override bool InputProcess(InputEvent e)
+	{
+		if (e.Type != InputEvent.Type_KeyDown) return false;
+		if (consoleplayer < 0 || consoleplayer >= MAXPLAYERS || phase[consoleplayer] == PH_NONE) return false;
+		String b = Bindings.GetBinding(e.KeyScan);
+		b = b.MakeLower();
+		if (b.IndexOf("+use") >= 0) EventHandler.SendNetworkEvent("rsqtr_cigkey");
+		return false;
+	}
 
 	// ---- every machine ----------------------------------------------------------------
 	private void SetPhase(int n, int ph)
@@ -313,6 +490,7 @@ class RSQTR_Cig : EventHandler
 		if (e.Name.Left(9) == "rsqtr_cig" || e.Name.Left(9) == "rsqtr_zip")
 			if (RSQTR_Rig.Flag("rsqtr_messages", p, false)) Console.Printf("T_CIG %s t%d phase %d", e.Name, level.maptime, phase[n]);
 
+		if (e.Name == "rsqtr_cigkey") { keyTic[n] = level.maptime; return; }
 		if (e.Name == "rsqtr_cigtake")
 		{
 			if (phase[n] != PH_NONE || Packs(pmo) <= 0) return;
@@ -326,7 +504,7 @@ class RSQTR_Cig : EventHandler
 			p.PendingWeapon = Weapon(pmo.FindInventory("RSQTR_CigWeapon"));
 			let rig = RSQTR_Rig.Get();
 			if (rig) rig.QueueOff(n, "RSQTR_ZippoWeapon");
-			zipOpen[n] = false;
+			zipOpen[n] = false; zipAway[n] = false;
 			SetPhase(n, PH_HAND);
 			p.usedown = true;      // from this tic the engine's use is held off (Steps keeps it so)
 			pmo.A_StartSound("rsqtr/radial", CHAN_AUTO, 0, 0.6);
@@ -363,6 +541,50 @@ class RSQTR_Cig : EventHandler
 			zipTic[n] = level.maptime;
 			pmo.A_StartSound(zipOpen[n] ? "rsqtr/zipopen" : "rsqtr/zipclose", CHAN_AUTO, 0, 0.8);
 			if (n == consoleplayer) RSQTR_Buzzer.Start(pmo, 1, 0.4, 4);
+		}
+		else if (e.Name == "rsqtr_zipaway")
+		{
+			// the Zippo put away (the off hand's grip at a holster, rig.zs Press): shut, out of the hand, the off hand's
+			// gun back; the cigarette stays where it is (hand or mouth)
+			if (phase[n] != PH_HAND && phase[n] != PH_MOUTH) return;
+			EndZippo(pmo, n);
+			zipAway[n] = true;
+			pmo.A_StartSound("rsqtr/holster", CHAN_AUTO, 0, 0.6);
+			if (n == consoleplayer) RSQTR_Buzzer.Start(pmo, 1, 0.4, 4);
+		}
+		else if (e.Name == "rsqtr_zipback")
+		{
+			// the Zippo back in the off hand (its grip at the pocket); what the off hand held is remembered for later
+			if ((phase[n] != PH_HAND && phase[n] != PH_MOUTH) || p.OffhandWeapon is "RSQTR_ZippoWeapon") return;
+			prevOff[n] = p.OffhandWeapon ? p.OffhandWeapon.GetClassName() : 'None';
+			if (prevOff[n] == "None") prevOff[n] = "";
+			if (!pmo.FindInventory("RSQTR_ZippoWeapon")) pmo.GiveInventory("RSQTR_ZippoWeapon", 1);
+			let rig = RSQTR_Rig.Get();
+			if (rig) rig.QueueOff(n, "RSQTR_ZippoWeapon");
+			zipAway[n] = false; zipOpen[n] = false; offGone[n] = 0;
+			SetPhase(n, phase[n]);
+			pmo.A_StartSound("rsqtr/draw", CHAN_AUTO, 0, 0.6);
+			if (n == consoleplayer) RSQTR_Buzzer.Start(pmo, 1, 0.4, 4);
+		}
+		else if (e.Name == "rsqtr_cigunmouth")
+		{
+			// an unlit cigarette back out of the mouth into the main hand (Use with no Zippo in the off hand, or the
+			// main hand's grip at the mouth); from there the flick and the pocket work as before
+			if (phase[n] != PH_MOUTH) return;
+			if (mouthProp[n]) mouthProp[n].Destroy();
+			mouthProp[n] = null;
+			prevMain[n] = p.ReadyWeapon && !(p.ReadyWeapon is "RSQTR_CigWeapon") ? p.ReadyWeapon.GetClassName() : 'None';
+			if (prevMain[n] == "None") prevMain[n] = "";
+			if (!pmo.FindInventory("RSQTR_CigWeapon")) pmo.GiveInventory("RSQTR_CigWeapon", 1);
+			p.PendingWeapon = Weapon(pmo.FindInventory("RSQTR_CigWeapon"));
+			SetPhase(n, PH_HAND);
+			pmo.A_StartSound("rsqtr/radial", CHAN_AUTO, 0, 0.4);
+			if (n == consoleplayer) RSQTR_Buzzer.Start(pmo, 0, 0.3, 3);
+		}
+		else if (e.Name == "rsqtr_cigspit")
+		{
+			if (phase[n] != PH_SMOKE) return;
+			Spit(pmo, n, true);
 		}
 		else if (e.Name == "rsqtr_ciglight")
 		{
@@ -453,17 +675,20 @@ class RSQTR_Cig : EventHandler
 				mainGone[n] = held ? 0 : mainGone[n] + 1;
 				if (mainGone[n] >= SWITCH_TICS) PutBack(pmo, n);
 			}
-			// THE ZIPPO HAND BUSY: the off hand holds something else (and the rig is not about to raise the Zippo)
-			if (phase[n] == PH_HAND || phase[n] == PH_MOUTH)
+			// THE ZIPPO SWITCHED AWAY: the off hand holds something else (its weapon switch, the engine's switchhand,
+			// another mod) and the rig is not about to raise the Zippo: the Zippo is away and the cigarette stays where it
+			// is (11-02; it used to go back in the pocket). The off hand's grip at the pocket brings the Zippo back.
+			if ((phase[n] == PH_HAND || phase[n] == PH_MOUTH) && !zipAway[n])
 			{
 				bool zipThere = p.OffhandWeapon is "RSQTR_ZippoWeapon";
 				bool zipComing = rig && rig.offNext[n] == "RSQTR_ZippoWeapon";
 				offGone[n] = (zipThere || zipComing) ? 0 : offGone[n] + 1;
 				if (zipOpen[n] && !zipThere) zipOpen[n] = false;
-				if (offGone[n] >= BUSY_TICS)
+				if (offGone[n] >= ZIP_GONE_TICS)
 				{
-					if (RSQTR_Rig.Flag("rsqtr_messages", p, false)) Console.Printf("T_CIG the off hand is busy: back in the pocket t%d", level.maptime);
-					PutBack(pmo, n);
+					if (RSQTR_Rig.Flag("rsqtr_messages", p, false)) Console.Printf("T_CIG the off hand switched to %s: the Zippo is away t%d", p.OffhandWeapon ? p.OffhandWeapon.GetClassName() : 'nothing', level.maptime);
+					zipAway[n] = true;
+					zipOpen[n] = false;
 				}
 			}
 			// SMOKING: the Zippo away, a puff now and then, then the flick from the mouth
@@ -477,7 +702,7 @@ class RSQTR_Cig : EventHandler
 			// out of the hands: away (never left in a weapon slot)
 			if (phase[n] != PH_HAND && !restore[n] && p.ReadyWeapon != pmo.FindInventory("RSQTR_CigWeapon") && p.PendingWeapon != pmo.FindInventory("RSQTR_CigWeapon"))
 				pmo.TakeInventory("RSQTR_CigWeapon", 999);
-			bool zipNeeded = phase[n] == PH_HAND || phase[n] == PH_MOUTH;
+			bool zipNeeded = (phase[n] == PH_HAND || phase[n] == PH_MOUTH) && !zipAway[n];
 			if (!zipNeeded && !restore[n] && p.OffhandWeapon != pmo.FindInventory("RSQTR_ZippoWeapon") && !(rig && rig.offNext[n] == "RSQTR_ZippoWeapon"))
 				pmo.TakeInventory("RSQTR_ZippoWeapon", 999);
 		}
@@ -498,10 +723,12 @@ class RSQTR_Cig : EventHandler
 		else
 		{
 			from = RSQTR_Body.Hand(pmo, 0);
+			// (the hand points AttackAngle + 90 in the map: hw_vrmodes.cpp writes viewYaw - 90)
+			double ha = pmo.AttackAngle + 90;
 			Vector2 away = from.xy - pmo.pos.xy;
-			dir = away.Length() > 2 ? away.Unit() : (cos(pmo.AttackAngle), sin(pmo.AttackAngle));
+			dir = away.Length() > 2 ? away.Unit() : (cos(ha), sin(ha));
 			// a little of where the hand points, so a flick goes the way the wrist goes
-			dir = (dir + (cos(pmo.AttackAngle), sin(pmo.AttackAngle)) * 0.5).Unit();
+			dir = (dir + (cos(ha), sin(ha)) * 0.5).Unit();
 		}
 		let b = RSQTR_Butt(Actor.Spawn(fromMouth ? "RSQTR_Butt" : "RSQTR_FlickedCig", from));
 		if (b)
@@ -891,6 +1118,32 @@ class RSQTR_CigLying : RSQTR_ButtLying
 	{
 	Spawn:
 		RSCF A -1;
+		Stop;
+	}
+}
+
+// THE CUE (local, the console player's): a small steady glow where the cigarette would catch -- at the drawn burning end
+// while the cigarette is in the mouth zone, at the tip in the mouth while the lit flame is in reach. Doom's bullet-puff
+// sprite, tiny and orange, with a faint light.
+class RSQTR_Cue : Actor
+{
+	Default
+	{
+		+NOINTERACTION +NOBLOCKMAP +NOGRAVITY +DONTSPLASH +NOTONAUTOMAP +FORCEXYBILLBOARD
+		RenderStyle "Add";
+		Alpha 0.85;
+		Scale 0.05;
+		Translation "0:255=%[0.00,0.00,0.00]:[1.00,0.55,0.15]";
+	}
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		A_AttachLight("rsqtr_cue", DynamicLight.PointLight, "FF8030", 3, 0, DYNAMICLIGHT.LF_ATTENUATE);
+	}
+	States
+	{
+	Spawn:
+		PUFF A -1 Bright;
 		Stop;
 	}
 }

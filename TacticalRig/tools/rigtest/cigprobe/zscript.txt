@@ -39,12 +39,49 @@ class RSQTRCigProbe : EventHandler
 		if ((ph != 0 && level.maptime % 5 == 0) || (useDown && level.maptime % 5 == 0))
 		{
 			Vector3 h = RSQTR_Cig.Eyes(mo), m = RSQTR_Cig.Mouth(mo);
-			Console.Printf("trc: t%d ph %d use %d usedown %d | head (%.1f %.1f %.1f) pitch %.0f mouth (%.1f %.1f %.1f) | main hand %.3f m from mouth, in zone %d | flame %.3f m from tip | zippo open %d lit %d off %s | main %s pend %s",
-				level.maptime, ph, useDown, p.usedown, h.x, h.y, h.z, mo.pitch, m.x, m.y, m.z, RSQTR_Cig.MouthDist(mo), RSQTR_Cig.InMouthZone(mo), RSQTR_Cig.FlameDist(mo),
-				c.zipOpen[0], c.ZipBurning(0), p.OffhandWeapon ? p.OffhandWeapon.GetClassName() : 'none',
+			Console.Printf("trc: t%d ph %d use %d usedown %d | head (%.1f %.1f %.1f) pitch %.0f mouth (%.1f %.1f %.1f) | zone: controller %.3f, drawn filter %.3f m from its axis (radius %.3f), in %d | flame %.3f m from the cigarette | zippo open %d lit %d away %d off %s | main %s pend %s",
+				level.maptime, ph, useDown, p.usedown, h.x, h.y, h.z, mo.pitch, m.x, m.y, m.z, RSQTR_Cig.ZoneDist(mo, mo.AttackPos), RSQTR_Cig.ZoneDist(mo, RSQTR_Cig.CigFilter(mo)), RSQTR_Cig.ZoneRadius(mo), RSQTR_Cig.InMouthZone(mo), RSQTR_Cig.FlameDist(mo),
+				c.zipOpen[0], c.ZipBurning(0), c.zipAway[0], p.OffhandWeapon ? p.OffhandWeapon.GetClassName() : 'none',
 				p.ReadyWeapon ? p.ReadyWeapon.GetClassName() : 'none', p.PendingWeapon && p.PendingWeapon != WP_NOCHANGE ? p.PendingWeapon.GetClassName() : 'none');
 			let mp = RSQTR_CigProp(c.mouthProp[0]);
 			if (mp) Console.Printf("trc: t%d mouth cigarette at (%.1f %.1f %.1f) burning %d sprite frame %d; smoke puffs alive %d", level.maptime, mp.pos.x, mp.pos.y, mp.pos.z, mp.burning, mp.frame, Count("RSQTR_Smoke"));
+		}
+		// trc_marks 1: dots at the COMPUTED drawn points (green: cigarette tip, red: filter, blue: Zippo flame) and a
+		// line every 5 tics of where the hands sit in the head's frame (metres forward / left / down of the eyes)
+		let mk = CVar.FindCVar('trc_marks');
+		if (mk && mk.GetInt() == 1)
+		{
+			if (!dots[0]) for (int k = 0; k < 3; k++) { dots[k] = Actor.Spawn("TRCDot", mo.pos); if (dots[k]) { dots[k].A_SetTranslation(k == 0 ? "TRCGreen" : (k == 1 ? "TRCRed" : "TRCBlue")); if (k == 2) dots[k].Scale *= 2.5; } }
+			if (dots[0]) dots[0].SetOrigin(RSQTR_Cig.CigTip(mo), true);
+			if (dots[1]) dots[1].SetOrigin(RSQTR_Cig.CigFilter(mo), true);
+			if (dots[2]) dots[2].SetOrigin(RSQTR_Cig.Flame(mo), true);
+		}
+		if (level.maptime % 5 == 0 && ph != 0)
+		{
+			Vector3 e = RSQTR_Cig.Eyes(mo);
+			Vector3 a = HeadFrame(mo, mo.AttackPos - e), f = HeadFrame(mo, RSQTR_Cig.CigFilter(mo) - e), t = HeadFrame(mo, RSQTR_Cig.CigTip(mo) - e), fl = HeadFrame(mo, RSQTR_Cig.Flame(mo) - e), o = HeadFrame(mo, mo.OffhandPos - e);
+			Console.Printf("trc: t%d head frame (fwd left down, m): main controller (%.3f %.3f %.3f) drawn filter (%.3f %.3f %.3f) drawn tip (%.3f %.3f %.3f) | off controller (%.3f %.3f %.3f) drawn flame (%.3f %.3f %.3f) | hand points %.0f from the head (AttackAngle+90), pitch %.0f roll %.0f",
+				level.maptime, a.x, a.y, a.z, f.x, f.y, f.z, t.x, t.y, t.z, o.x, o.y, o.z, fl.x, fl.y, fl.z, Actor.DeltaAngle(mo.angle, mo.AttackAngle + 90), mo.AttackPitch, mo.AttackRoll);
+		}
+		// trc_weap 1: the hands and every pistol / dual weapon owned, every 10 tics and on any change (the holster
+		// pair test, 11-02)
+		let wv = CVar.FindCVar('trc_weap');
+		if (wv && wv.GetInt() == 1)
+		{
+			String inv = "";
+			for (let it = mo.Inv; it; it = it.Inv)
+			{
+				let w = Weapon(it);
+				if (!w) continue;
+				String cn = w.GetClassName(); String lc = cn.MakeLower();
+				if (lc.IndexOf("pistol") >= 0 || lc.IndexOf("dual") >= 0 || lc.IndexOf("smg") >= 0) inv = inv .. cn .. " ";
+			}
+			let rg = RSQTR_Rig.Get();
+			String hol = rg ? rg.Content(mo, 0) .. "|" .. rg.Content(mo, 1) : "";
+			String now = String.Format("main %s off %s pend %s | holsters L|R %s | owned %s",
+				p.ReadyWeapon ? p.ReadyWeapon.GetClassName() : 'none', p.OffhandWeapon ? p.OffhandWeapon.GetClassName() : 'none',
+				p.PendingWeapon && p.PendingWeapon != WP_NOCHANGE ? p.PendingWeapon.GetClassName() : 'none', hol, inv);
+			if (now != lastWeap || level.maptime % 35 == 0) { Console.Printf("trc: t%d weap %s", level.maptime, now); lastWeap = now; }
 		}
 		// flicked cigarettes
 		if (level.maptime % 3 == 0)
@@ -127,6 +164,15 @@ class RSQTRCigProbe : EventHandler
 			}
 		}
 	}
+	Actor dots[3];
+	String lastWeap;
+	// a map offset as metres forward / left / down in the head's level frame
+	Vector3 HeadFrame(PlayerPawn mo, Vector3 d)
+	{
+		double u = RSQTR_Body.Upm();
+		double c = cos(mo.angle), s = sin(mo.angle);
+		return ((d.x * c + d.y * s) / u, (-d.x * s + d.y * c) / u, -d.z * RSQTR_Body.Ps() / u);
+	}
 	int Count(Name cls)
 	{
 		int k = 0;
@@ -135,3 +181,10 @@ class RSQTRCigProbe : EventHandler
 		return k;
 	}
 }
+
+class TRCDot : Actor
+{
+	Default { +NOINTERACTION +NOBLOCKMAP +NOGRAVITY +FORCEXYBILLBOARD RenderStyle "Add"; Scale 0.035; Alpha 1.0; }
+	States { Spawn: PUFF A -1 Bright; Stop; }
+}
+

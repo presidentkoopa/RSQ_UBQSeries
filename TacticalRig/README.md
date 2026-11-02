@@ -49,9 +49,21 @@ doom2.wad -> 01 brutal22test6 -> 02 BD22_VoxelPack -> 03 BD22_VR-Reloaded_2.0.3j
   keyring moves the same way.
 - **Cigarette (option):** main hand grips at the left chest pocket: the cigarette is in that hand, the Zippo in
   the off hand. **While it is out, Use is the cigarette's** (no doors, switches or holsters on Use). Bring it to
-  your mouth and press Use: it stays in your mouth. Press Use anywhere else: you flick it away. In the mouth:
-  off-hand trigger opens and lights the Zippo; bring the flame to the tip and press Use: it lights and you smoke
-  (*Smoke Time*, 2 s). Then it flicks out of your mouth and (with RSQ SlowMo) the world slows.
+  your mouth: a small glow at its tip, a light tick and a soft click say it is in reach. Press Use: it stays in
+  your mouth (a press up to 0.3 s after you left the spot still counts). Press Use anywhere else: you flick it
+  away. In the mouth: off-hand trigger opens and lights the Zippo, again shuts it; bring the flame to the
+  cigarette (the glow and tick again) and press Use: it lights and you smoke (*Smoke Time*, 2 s). Then it flicks
+  out of your mouth and (with RSQ SlowMo) the world slows. Ways out are below.
+
+**Cigarette: every way out** (11-02; rig only, not headset-confirmed)
+
+| You have | To get out |
+|---|---|
+| Cigarette in the hand | Use at the mouth (in), Use elsewhere (flick it), main grip at the pocket (back in), switch or holster the gun hand (back in the pocket) |
+| The Zippo in the off hand | Off-hand trigger: open / shut. Off-hand grip at any holster: the Zippo goes away and the off hand gets its gun back. Switching the off hand's weapon does the same. The cigarette stays where it is. Off-hand grip at the pocket: the Zippo comes back |
+| Cigarette in the mouth, unlit | Use with no Zippo in the off hand, or main grip at your mouth: back in the hand (then flick it or pocket it) |
+| Smoking | Wait (*Smoke Time*), or Use: it flicks out |
+| Anything | *Cigarettes* off or the rig off (unlit: back in the pocket), death (gone), next level (unlit: back in the pocket, guns back) |
 
 ## Holsters
 
@@ -60,8 +72,10 @@ spots just below the hips (with RSQ Saber): the main saber's on the main hand's 
 by the main hand; the second saber's on the off hand's side, by the off hand. The second saber has no key
 of its own, so its spot is the only way to put it away and take it out; it stays away until drawn there
 (across map changes and saves). The grenade spot is on the belt buckle. A holster holds exactly the gun
-you put there. Each hand holsters and draws its own gun. Brutal Doom's Dual keeps its own key (*Draw
-Pairs*: Never).
+you put there. Each hand holsters and draws its own gun. **One gun in, one gun out** (11-02): drawing from a
+holster gives that one gun, in the hand that drew it; the other one stays where it was (in its holster, or in
+the other hand). Brutal Doom's Dual keeps its own key. Brutal Doom's two-gun weapon (BD22's *DualPistols* and
+kin) goes into a holster as its single gun and comes out as one.
 
 The keyring is a spot of its own (2026-11-01): by default on the front of the belt, off-hand side (0.14 m
 forward, 0.13 m toward the off hand, 0.70 m under the eyes, sphere 0.12 m), where it always hung. It has a
@@ -87,7 +101,6 @@ default.
 | Move Gun at Watch (Use) | Option | While RSQ Gestures' watch check is up on a hand, Use moves that hand's gun to the other hand (a gun there swaps). Does nothing without RSQ Gestures. |
 | Reach | Standard | How big the holster spheres are: Tight / Standard / Easy. |
 | Holster Rings | Hand Nearby | The wireframe sphere on each holster and the keyring: Never / Hand Nearby / Always. Green with your hand inside. |
-| Draw Pairs | Never | Bring Brutal Doom's off-hand copy along: Never / If Holstered as a Pair / Always. |
 | Seated | Option | The rig hangs from your seated eyes. This machine only. |
 | Measure My Height | - | Scales the rig to your eye height. |
 | Move Holsters by Hand | Option | Grip a sphere (a holster or the keyring), carry it, let go: it is saved. |
@@ -116,7 +129,7 @@ default.
 | Rig Options: Saber on Hip Too | Option | The saber also clips to the hips. |
 | Rig Options: Slow Motion After a Smoke | On | RSQ SlowMo starts as the smoked cigarette flicks out of your mouth (6 s at 25 %, on the *Cigarette* page). |
 | Rig Options: Refill Each Level | On | The cigarette pocket refills each level. |
-| Tuning and Debug: Holster Positions / Torso Fit / Cigarette | - | Sliders for each holster and the keyring (its *Toward Off Hand* is mirrored for a left-handed layout), the torso and helmet, and the cigarette: *Smoke Time (s)* 1 to 5 in half seconds (2), *Slow Motion Seconds*, *Slow Motion Speed*, *Pack Size*. |
+| Tuning and Debug: Holster Positions / Torso Fit / Cigarette | - | Sliders for each holster and the keyring (its *Toward Off Hand* is mirrored for a left-handed layout), the torso and helmet, and the cigarette: *Mouth Zone Size* (1.0, 0.5 to 1.5: how far from the mouth still counts), *Smoke Time (s)* 1 to 5 in half seconds (2), *Slow Motion Seconds*, *Slow Motion Speed*, *Pack Size*. |
 | Tuning and Debug: Throw Swing Speed (m/s) | 2.5 | How fast the hand must swing to throw a gun. |
 | Tuning and Debug: Thrown Gun Damage | 1.0 | Multiplier on thrown-gun hits. |
 | Tuning and Debug: Reset All | - | Resets every Tactical Rig setting. |
@@ -154,39 +167,45 @@ simulated rig.
     down. *Helmet* shows only in the mirror.
 14. **The cigarette ritual** (2026-11-02; rig only, not headset-confirmed). Turn on *Cigarettes*.
     a. Main hand grips at the left chest pocket: the cigarette is in that hand, the Zippo in the off hand.
-    b. Stand at a door, hand out in front, press Use: the cigarette flicks away in a small arc with a spark
-       on it and lies where it lands; the door does **not** open. Press Use again (nothing out): it opens.
-    c. Take another. Bring the hand to your lips and press Use: it stays in your mouth, follows your head,
-       and your gun is back in that hand.
-    d. Press Use now: nothing happens (the Zippo is shut). Off-hand trigger: the Zippo opens and lights.
-       Use with the flame away from the tip: nothing. Flame to the tip (just in front of your mouth), Use:
-       the tip glows, smoke rises, you hear the drag; the Zippo shuts and goes away.
-    e. After *Smoke Time* (2 s; try 3.5) it flicks out of your mouth, you exhale, the butt smoulders where it
-       lands, and with RSQ SlowMo the world slows (6 s at 25 %). Without RSQ SlowMo it just ends there.
-    f. Cancels: take one and switch to another gun (or holster), or turn *Cigarettes* off, or let something
-       else take the off hand for a second: the unlit cigarette goes back in the pocket. Die: it is gone. Go
-       to the next level with one out: it is back in the pocket and your guns are back in your hands.
-    Rig 11-02 (frames and logs: `tools/rigtest/cigprobe`, `docs/cig_ritual_rig.png`): all of a-f on plain
-    Doom 2; a-e on the full load order with RSQ SlowMo (world speed 1000 -> 250 permille on the flick).
-15. Turn on *Move Holsters by Hand*: grip a sphere, move it, let go. Turn it off to play.
-16. With RSQ Saber (Start With Dual Sabers On): off hand to the second saber's spot below the off-side hip,
+    b. Stand at a door, hand out in front, press Use: the cigarette flicks away; the door does **not** open.
+    c. Take another. Bring your hand to your lips the way you really would (the controller ends up near your
+       chin): a glow at the tip, a tick, a click. Press Use: it stays in your mouth and your gun is back.
+       Try it lower (the controller a hand below the chin) and quickly (a tap): both should work. At your chest
+       there is no cue, and Use flicks it.
+    d. Off-hand trigger: the Zippo opens. Again: it shuts. Open it, then off-hand grip at a hip holster: the
+       Zippo goes away and the off hand has its gun (or hands) back; the cigarette is still in your mouth.
+    e. Press Use: the cigarette comes back to your hand. Put it back in your mouth. Off-hand grip at the pocket:
+       the Zippo is back. (Main grip at your mouth also takes the cigarette out.)
+    f. Open the Zippo, bring the flame up to the cigarette (glow and tick), press Use: it lights and you smoke.
+       After *Smoke Time* it flicks out of your mouth and with RSQ SlowMo the world slows.
+    g. Cancels: switch guns with it in your hand, turn *Cigarettes* off, die, go to the next level.
+    Rig 11-02 (`tools/rigtest/cigprobe`, scripts F (doom2), G (cue), H (full order with BD22 VR Reloaded 2.0.3l
+    and all RSQ pk3s), V/Z (drawn points); frames `docs/cig_zone_rig.png`): all of a-g with realistic poses,
+    world speed 1000 -> 250 permille on the flick. Haptics and sounds could not be felt or heard on the rig.
+15. **One gun out of a holster** (2026-11-02; not yet headset-confirmed). With two pistols (Brutal Doom VR's
+    off-hand copy, or BD22's dual pistols in hand): holster one at the hip, draw it. You get one pistol in that
+    hand; the off hand keeps what it had. Rig 11-02, full load order (`trc_scriptQ.txt`, `docs/holster_one_gun_rig.png`):
+    with the old *Draw Pairs* set to Always, one BrutalPistol; BD22's DualPistols went in as one BrutalPistol and
+    came out as one. (The *Draw Pairs* row is retired: Dual is its own key, the owner's rule of 10-27.)
+16. Turn on *Move Holsters by Hand*: grip a sphere, move it, let go. Turn it off to play.
+17. With RSQ Saber (Start With Dual Sabers On): off hand to the second saber's spot below the off-side hip,
     grip: the second saber goes in and the off hand holds the Force (Brutal Doom Quest's fist, or the bare
     Force hand). Grip again: it comes back to the off hand. The main hand there does nothing.
     **(not yet headset-confirmed; rig: the saber's in / out events logged, 11-01)**
-17. With RSQ Accessibility, Seated Play Seated (or Auto once it has seen you sit), this mod's own *Seated* Off:
+18. With RSQ Accessibility, Seated Play Seated (or Auto once it has seen you sit), this mod's own *Seated* Off:
     sit down. The holsters hang from your seated eyes, in reach, as with *Seated* On. Seated Play Standing:
     as before. **(not yet headset-confirmed; rig: headset at 1.2 m, the rig hung from 90 instead of 97, the
     left hip at 70.2 instead of 77.2)**
-18. With RSQ Accessibility: Rumble Strength 0, reach into a holster: no rumble. 2: stronger.
+19. With RSQ Accessibility: Rumble Strength 0, reach into a holster: no rumble. 2: stronger.
     **(not yet headset-confirmed)**
-19. With RSQ Gestures: turn on *Move Gun at Watch (Use)*. Gun in the main hand, off hand empty: check your
+20. With RSQ Gestures: turn on *Move Gun at Watch (Use)*. Gun in the main hand, off hand empty: check your
     watch with the main hand and press Use. The gun goes to the off hand; the main hand is empty. Check your
     watch with the off hand and press Use: it comes back. Gun in both hands: the two swap. Turn the row off:
     Use at the watch check does nothing. Off hand in a hip holster while you press Use: the holster acts,
     no gun moves. **(not yet headset-confirmed; rig 11-01: plain Doom 2 pistol / shotgun across, back and
     swapped both ways; Brutal Doom order Rifle and Shot_Gun across and back, Brutal Doom's hands in the
     empty off hand; nothing with the row off or a hand in a holster)**
-20. Turn on *Holster Rings* Always: a sphere shows at the keyring. Turn on *Move Holsters by Hand*, grip the
+21. Turn on *Holster Rings* Always: a sphere shows at the keyring. Turn on *Move Holsters by Hand*, grip the
     keyring's sphere, carry it, let go: the keys hang there now. Save a holster profile, move the keyring
     again, load the profile: it is back. **(not yet headset-confirmed; rig 11-01: moved by hand to 0.30
     forward, 0.60 under the eyes; saved, moved, loaded back; an older profile put it at its default)**
@@ -228,10 +247,21 @@ simulated rig.
 - **The cigarette's Use takeover** holds off the engine's use (doors, switches), the rig's Use holsters and the
   watch move. Hand-on-door systems in other mods (RSQ Distance Grab's and Brutal Doom VR's doors by hand) read
   the Use key themselves when a hand touches a door; they are not stood down.
-- **The mouth zone** (measured on the rig): a 0.15 m sphere around your lips (0.07 m in front of your eyes,
-  0.09 m below them, from the headset's real height), in front of your face only. The controller is tested: at
-  the lips it measured 0.055 m, at the chin 0.095 (in), at the chest 0.21 and at rest 0.40 (out). The flame
-  must be within 0.12 m of the tip.
+- **The mouth zone** (11-02, rig only, not headset-confirmed). Why it failed before: it was a 0.15 m ball around
+  a point 7 cm in front of the eyes and 9 cm under them, tested on the controller only. With a real hand at the
+  lips the controller sits a palm's width lower; a hand-below-the-chin pose (controller 0.23 m under the eyes)
+  measured 0.154 m out, so Use flicked the cigarette away. Very quick taps could also be lost (the engine only
+  sees Use if it is held when a tic is built). Now: a capsule from the lips (4 cm forward, 6 under the eyes) to
+  just under the chin (8 forward, 19 under), 0.08 m round it (x *Mouth Zone Size*), turning and nodding with
+  the headset; the nearer of the controller and the drawn filter counts; a Use key going down is caught as an
+  input event as well. Measured (distance / 0.080): controller at the lips 0.018, at the chin 0.023, a hand
+  lower 0.038 (all in); 28 cm under the eyes 0.080 (edge); chest 0.132, pocket 0.267, rest 0.331 (out).
+- **The drawn cigarette and flame are measured** (`tools/measure_handprops.py`: the baked meshes through the
+  engine's own hand-model transform; rig frames show the computed points on the drawn ones). The filter is
+  0.5 cm forward, 2.8 left, 1.3 up of the main controller; the flame 1 cm behind and 3.5 cm over the off
+  controller (the old estimate was 6 cm over). The flame lights within 0.13 m of the cigarette.
+- **Main grip at the mouth / the pocket** needs the main grip to reach the rig (*Main Grip Keys*, 446 only with
+  the engine's secondary button mappings off). Use always works for the mouth.
 - SteamVR two-handed grip: a holster still takes the press, but a gun drawn into the off hand arrives only
   when you let go of the grip (the engine holds it). Nothing happens on Quest today.
 - Only guns measured into the fit table show at a holster; the muzzle direction could not be read by eye

@@ -875,6 +875,29 @@ class RSQTR_Rig : EventHandler
 		String cls = HeldAs(pmo, w);
 		int n = pmo.PlayerNumber();
 		Weapon incoming = null;
+		// BRUTAL DOOM'S COMBINED DUAL (BD22's DualPistols and kin: one weapon that is two guns; selecting it takes the
+		// single gun out of the inventory, DualPistol.dec Select) GOES IN AS ONE GUN (the owner, 11-02: "storing a weapon
+		// for which i have two of ... causes me to instantly equip them both when i unholster just one"). The holster
+		// keeps the single gun, given back as BD22's own switch to single does (DualPistol.dec gives BrutalPistol), so
+		// drawing gives one; BD22's single Select takes the Dual item away itself, and its HasDual token stays for the Dual key.
+		if (IsGunRegion(r) && HoldsGun(pmo))
+		{
+			String single = SingleOf(pmo, cls);
+			if (single != "" && single != cls)
+			{
+				class<Weapon> sc = single;
+				if (sc && !pmo.FindInventory(sc))
+				{
+					let g = Weapon(Actor.Spawn(sc, pmo.pos, NO_REPLACE));
+					if (g) { g.AmmoGive1 = 0; g.AmmoGive2 = 0; if (!g.CallTryPickup(pmo)) g.Destroy(); }
+				}
+				if (sc && pmo.FindInventory(sc))
+				{
+					if (Flag("rsqtr_messages", p, false)) Console.Printf("T_RIG holster t%d: %s (Brutal Doom's two-gun weapon) goes in as one %s", level.maptime, cls, single);
+					cls = single;
+				}
+			}
+		}
 		if (IsSaberRegion(r))
 		{
 			Array<String> own;
@@ -895,23 +918,16 @@ class RSQTR_Rig : EventHandler
 				if (k != r && lastPut[n * RSQTR_Region.N + k] == cls) { lastPut[n * RSQTR_Region.N + k] = ""; lastPair[n * RSQTR_Region.N + k] = false; }
 		}
 		int slot = n * RSQTR_Region.N + r;
-		bool incomingPair = lastPair[slot];
 		lastPut[slot] = cls;
-		// A PAIR GOES AWAY TOGETHER. With the gun's own off-hand copy in the other hand (BD22Q's
-		// dual wield: RSQ_Off_<gun>, a subclass of the gun flagged OFFHANDWEAPON), both guns go
-		// on the holster and the off hand goes back to its empty hand.
+		// ONE GUN IN, ONE GUN OUT (11-02; Dual is its own key, the owner 10-27): the off hand is never touched here. Its
+		// copy of the gun (BD22 VR's RSQ_Off_<gun>) stays in the off hand if it is there.
 		let off = p.OffhandWeapon;
 		class<Weapon> wc = cls;
-		bool pair = off && wc && off is wc && off.GetClass() != wc;
-		lastPair[slot] = pair;
+		lastPair[slot] = off && wc && off is wc && off.GetClass() != wc;    // kept for the profiles' format only
 		if (incoming)
 		{
 			if (IsMovedGun(incoming)) incoming.bOffhandWeapon = false;
 			p.PendingWeapon = incoming;
-			int mode = Opt("rsqtr_pairs", p, 2);
-			let copy = OffCopy(pmo, incoming.GetClass());
-			if (copy && (mode == 2 || (mode == 1 && incomingPair))) QueueOff(n, copy.GetClassName());
-			else if (pair && mode != 0) QueueOff(n, OffEmptyName(pmo));
 			drawTic[n] = level.maptime + 1;
 			drawClass[n] = incoming.GetClassName();
 			pmo.A_StartSound("rsqtr/draw", CHAN_AUTO, CHANF_LOCAL, 0.8);   // a swap: the draw as well
@@ -920,7 +936,6 @@ class RSQTR_Rig : EventHandler
 		{
 			let empty = EmptyHand(pmo);
 			if (empty && empty != w) p.PendingWeapon = empty;
-			if (pair && Opt("rsqtr_pairs", p, 0) != 0) QueueOff(n, OffEmptyName(pmo));
 		}
 		pmo.A_StartSound("rsqtr/holster", CHAN_AUTO, CHANF_LOCAL, 0.8);
 	}
@@ -952,12 +967,9 @@ class RSQTR_Rig : EventHandler
 		if (w == p.OffhandWeapon) return;               // already in the other hand
 		if (IsMovedGun(w)) w.bOffhandWeapon = false;
 		if (p.ReadyWeapon != w) p.PendingWeapon = w;
-		// DRAWN AS A PAIR (the owner, 10-27: "call up the dual pistol or SMG from that holster"):
-		// rsqtr_pairs 2 whenever you own the gun's off-hand copy, 1 only if it went away as a pair,
-		// 0 never. The copy follows into the off hand once the main hand has switched.
-		int mode = Opt("rsqtr_pairs", p, 2);
-		let copy = OffCopy(pmo, wc);
-		if (copy && (mode == 2 || (mode == 1 && lastPair[slot]))) QueueOff(n, copy.GetClassName());
+		// ONE GUN, IN THE HAND THAT DREW IT (the owner, 11-02: "storing a weapon for which i have two of ... causes me to
+		// instantly equip them both when i unholster just one, this is a problem"). The off-hand copy is never brought
+		// along: Dual is its own key (the owner, 10-27). The Draw Pairs row (rsqtr_pairs) that did so is retired.
 		if (IsGunRegion(r)) { lastPut[slot] = ""; lastPair[slot] = false; }
 		drawTic[n] = level.maptime + 1;
 		drawClass[n] = w.GetClassName();
@@ -975,6 +987,38 @@ class RSQTR_Rig : EventHandler
 			if (w && w.bOffhandWeapon && w is wc && w.GetClass() != wc) return w;
 		}
 		return null;
+	}
+
+	// The single gun of Brutal Doom's combined two-gun weapon ("DualPistols" -> "BrutalPistol"), or "" if cls is not one.
+	// Found, not named: the parent of an off-hand copy you own whose name ends the same way (BD22 VR's RSQ_Off_<gun>),
+	// else a weapon class (not a copy, not CHEATNOTWEAPON) whose name ends in the Dual name's stem.
+	static String SingleOf(PlayerPawn pmo, String cls)
+	{
+		String low = cls.MakeLower();
+		if (low.IndexOf("dual") != 0) return "";
+		String stem = low.Mid(4);
+		if (stem.Length() > 1 && stem.Mid(stem.Length() - 1) == "s") stem = stem.Left(stem.Length() - 1);
+		if (stem.Length() < 3) return "";
+		for (let it = pmo.Inv; it; it = it.Inv)
+		{
+			let w = Weapon(it);
+			if (!w || !w.bOffhandWeapon) continue;
+			class<Weapon> pc = (class<Weapon>)(w.GetParentClass());
+			if (!pc) continue;
+			String pn = pc.GetClassName(); String pl = pn.MakeLower();
+			if (pl.IndexOf("dual") != 0 && pl.Length() >= stem.Length() && pl.Mid(pl.Length() - stem.Length()) == stem) return pn;
+		}
+		for (int i = 0; i < AllActorClasses.Size(); i++)
+		{
+			class<Weapon> c = (class<Weapon>)(AllActorClasses[i]);
+			if (!c) continue;
+			let d = GetDefaultByType(c);
+			if (!d || d.bOffhandWeapon || d.bCHEATNOTWEAPON) continue;
+			String cn = c.GetClassName(); String cl = cn.MakeLower();
+			if (cl.IndexOf("dual") == 0 || cl.Length() < stem.Length() || cl.Mid(cl.Length() - stem.Length()) != stem) continue;
+			return cn;
+		}
+		return "";
 	}
 
 	// What the off hand holds when it is empty: the pack's own hands weapon (BD22Q's RSQ_Hands).
@@ -1121,8 +1165,9 @@ class RSQTR_Rig : EventHandler
 			double handMs; Vector3 handV;
 			[handMs, handV] = SwingPeak(pmo, h, hp);
 			if (h == 0 && Flag("rsqtr_debug_throw", p, false)) Console.Printf("T_SWING t%d hand %.1f %.1f %.1f pawn %.1f %.1f peak %.2f grip %d", level.maptime, hp.x, hp.y, hp.z, pmo.Pos.x, pmo.Pos.y, handMs, gripOk && gripDown[n * 2 + h]);
+			// (a main-hand grip at the mouth with an unlit cigarette in it is the cigarette's pull, cig.zs, never a throw)
 			if (gripNow && !pressWas[h] && r < 0 && Flag("rsqtr_throw", p, true) && handMs >= Num("rsqtr_throw_speed", p, 2.5) && handMs < 20
-				&& (h == 0 ? HoldsGun(pmo) : OffHoldsGun(pmo)))
+				&& (h == 0 ? HoldsGun(pmo) : OffHoldsGun(pmo)) && !(h == 0 && RSQTR_Cig.PullAtMouth(pmo)))
 			{
 				Vector3 tv = handV * 1.6 + pmo.Vel;   // a throw carries on a little faster than the hand, and with you
 				EventHandler.SendNetworkEvent("rsqtr_throwat", int(hp.x * 8), int(hp.y * 8), int(hp.z * 8));
@@ -1258,6 +1303,13 @@ class RSQTR_Rig : EventHandler
 
 	private void Press(PlayerPawn pmo, PlayerInfo p, int h, int r, Vector3 hp)
 	{
+		// THE ZIPPO PUT AWAY (cig.zs, 11-02): the off hand's grip at any holster with the Zippo in it puts the Zippo away
+		// and gives the off hand its gun back; the cigarette stays where it is
+		if (h == 1 && p.OffhandWeapon is "RSQTR_ZippoWeapon")
+		{
+			EventHandler.SendNetworkEvent("rsqtr_zipaway");
+			return;
+		}
 		if (IsGrenadeRegion(r))
 		{
 			String nw = NadeWeapon();

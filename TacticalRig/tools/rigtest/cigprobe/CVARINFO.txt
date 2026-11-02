@@ -1,3 +1,5 @@
 server int trc_mode = 0;
 server int trc_steal = 0;
 server int trc_next = 0;
+server int trc_marks = 0;
+server int trc_weap = 0;
