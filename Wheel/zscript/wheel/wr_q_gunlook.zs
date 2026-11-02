@@ -2,8 +2,11 @@
 //
 //   A  each card washed in its gun's colour -- the colour RSQ Gun Cards gives that gun, so the two mods agree --
 //      with a bright rim, slot stripe and boxed slot number in it; ammo counts in the ammo type's colour.
-//   B  the hovered card's halo breathes in its colour, the beam's tip wears the series' lock-on mark, a thin
-//      light runs round the ring (brightest toward the hovered card), a spark sweeps round each card's edge.
+//   B  a halo in its colour behind the hovered card (it breathes only with wr_breathe, off by default), the beam's
+//      tip wears the series' lock-on mark, a spark sweeps round each card's edge.
+//      (2026-11-02, owner's headset: "some kind of hexagon wire around it and the whole thing changes size when i
+//      hover". The wire was a light drawn round the ring in straight strips, card to card: removed. The halo behind
+//      the ring no longer brightens or recolours on hover: nothing that spans the whole ring reacts to the hover.)
 //   C  the plates lit warm from the top in the gun's colour and cool toward the bottom, the data sheet's header
 //      a filled band in the hovered gun's colour, a soft halo behind the ring.
 //
@@ -94,9 +97,8 @@ extend class wr_Rig
 	Array<int> mGLChips;      // per card: the slot number's box
 	Array<int> mGLSparks;     // per card: the spark that sweeps round its edge
 	Array<int> mGLHalos;      // per card: wr_shimmer's soft idle halo (only made when wr_shimmer > 0)
-	Array<int> mGLRim;        // two per card: the light on the ring, card i's stretch either side of it
 	int mGLHover;             // the hovered card's halo
-	int mGLRingHalo;          // the halo behind the ring
+	int mGLRingHalo;          // the halo behind the ring (steady: never reacts to the hover)
 	int mGLMarkRing, mGLMarkCent;   // the lock-on mark at the beam's tip
 	int mGLSheetShadow;       // the data sheet name's shadow on its band
 	int mGLLitCard;           // the card the halo / mark were last set up for (-1 none)
@@ -138,7 +140,7 @@ extend class wr_Rig
 		glClear();
 		mGL = wr_GunLook.On();
 		mGLCB = wr_GunLook.CBMode();
-		mGLBreathe = cvBool("wr_breathe", true);
+		mGLBreathe = cvBool("wr_breathe", false);
 		mGLSweep = cvBool("wr_edge_sweep", true);
 		mGLPhoto = wr_A11y.Photo();
 		mGLShimmer = clamp(cv("wr_shimmer", 0.0), 0.0, 1.0);
@@ -192,16 +194,6 @@ extend class wr_Rig
 		wr_BB.SetBillboardLayer(mGLRingHalo, 0);
 		mGLMarkRing = glQuad("WRLKRB", COLOR_HOVER, true);
 		mGLMarkCent = glQuad("WRLKCB", 0xFFFFFF, true);
-		for (int i = 0; i < mIds.Size(); i++)
-		{
-			color c = i < mCardColor.Size() ? color(mCardColor[i]) : color(COLOR_IDLE);
-			for (int k = 0; k < 2; k++)
-			{
-				int id = glQuad("WREGLOW", mGLCB ? wr_GunLook.CBIdle() : c, true);
-				wr_BB.SetBillboardLayer(id, 0);
-				mGLRim.Push(id);
-			}
-		}
 	}
 
 	void glClear()
@@ -209,8 +201,7 @@ extend class wr_Rig
 		for (int i = 0; i < mGLChips.Size(); i++)  if (mGLChips[i])  wr_BB.RemoveBillboard(mGLChips[i]);
 		for (int i = 0; i < mGLSparks.Size(); i++) if (mGLSparks[i]) wr_BB.RemoveBillboard(mGLSparks[i]);
 		for (int i = 0; i < mGLHalos.Size(); i++)  if (mGLHalos[i])  wr_BB.RemoveBillboard(mGLHalos[i]);
-		for (int i = 0; i < mGLRim.Size(); i++)    if (mGLRim[i])    wr_BB.RemoveBillboard(mGLRim[i]);
-		mGLChips.Clear(); mGLSparks.Clear(); mGLHalos.Clear(); mGLRim.Clear();
+		mGLChips.Clear(); mGLSparks.Clear(); mGLHalos.Clear();
 		if (mGLHover)    wr_BB.RemoveBillboard(mGLHover);
 		if (mGLRingHalo) wr_BB.RemoveBillboard(mGLRingHalo);
 		if (mGLMarkRing) wr_BB.RemoveBillboard(mGLMarkRing);
@@ -223,7 +214,6 @@ extend class wr_Rig
 	void glFold()
 	{
 		fade(mGLHover, 0); fade(mGLRingHalo, 0); fade(mGLMarkRing, 0); fade(mGLMarkCent, 0);
-		for (int i = 0; i < mGLRim.Size(); i++) fade(mGLRim[i], 0);
 	}
 
 	// ---- per tic: brightness and position only ------------------------------------------------------------
@@ -292,7 +282,7 @@ extend class wr_Rig
 		int hc = cardIndexOf(mHovered);
 		double r = ringR * grow;
 
-		// the hovered card's halo, breathing in its colour
+		// the hovered card's halo in its colour; steady unless Hover Halo Breathes (wr_breathe, off by default)
 		if (mGLHover)
 		{
 			if (hc >= 0)
@@ -310,46 +300,15 @@ extend class wr_Rig
 			else fade(mGLHover, 0);
 		}
 
-		// the halo behind the ring, in the hovered gun's colour (recoloured when the hover changes)
+		// the halo behind the ring: steady, the same size, colour and strength whatever is hovered (the ring's own
+		// size never changes on a hover)
 		if (mGLRingHalo)
 		{
 			double d = (r + panelW * 1.1) * 2.0;
 			wr_BB.MoveBillboard(mGLRingHalo, centre + back * 4.0);
 			wr_BB.ResizeBillboard(mGLRingHalo, d, d);
 			wr_BB.OrientBillboard(mGLRingHalo, viewYaw + 180, 0, wr_BB.BBF_FIXED);
-			fade(mGLRingHalo, (hc >= 0 ? 0.45 : 0.20) * grow);
-		}
-
-		// the light on the ring: card i's stretch either side of it, brightest toward the hovered card, a slow
-		// ripple running round (12 degrees a tic; Photosensitive Mode half the speed, a smaller ripple)
-		if (mGLRim.Size() >= n * 2)
-		{
-			double hb = hc >= 0 ? bearingForIndex(hc, n) + roll : 0;
-			double half = 180.0 / n;
-			double thick = panelH * 0.16;
-			double rip = mGLPhoto ? 0.08 : 0.2, rs = mGLPhoto ? 6.0 : 12.0;
-			for (int i = 0; i < n; i++)
-			{
-				double b0 = bearingForIndex(i, n) + roll;
-				for (int k = 0; k < 2; k++)
-				{
-					int id = mGLRim[i * 2 + k];
-					double a1 = k == 0 ? b0 - half : b0, a2 = k == 0 ? b0 : b0 + half;
-					Vector3 p1 = centre + viewRight * (cos(a1) * r) + (0, 0, sin(a1) * r) + back * 1.5;
-					Vector3 p2 = centre + viewRight * (cos(a2) * r) + (0, 0, sin(a2) * r) + back * 1.5;
-					Vector3 d = p2 - p1;
-					wr_BB.MoveBillboard(id, (p1 + p2) * 0.5);
-					wr_BB.ResizeBillboard(id, d.Length() * 1.04, thick);
-					wr_BB.OrientBillboard(id, viewYaw + 180, 0, wr_BB.BBF_FIXED);
-					wr_BB.RollBillboard(id, atan2(d.z, d dot viewRight));
-					double am = (a1 + a2) * 0.5;
-					double dl = hc >= 0 ? Actor.deltaangle(am, hb) : 180;
-					double kk = hc >= 0 ? 0.30 + 0.70 * exp(-(dl / 40.0) * (dl / 40.0)) : 0.30;
-					double ripple = (1.0 - rip) + rip * sin(am * 3 - mOpenTics * rs);
-					fade(id, kk * ripple * grow);
-					if (mGLCB) wr_BB.UpdateBillboard(id, 0, (hc >= 0 && abs(dl) < 60) ? wr_GunLook.CBCould() : wr_GunLook.CBIdle());
-				}
-			}
+			fade(mGLRingHalo, 0.20 * grow);
 		}
 	}
 
@@ -373,8 +332,8 @@ extend class wr_Rig
 		}
 	}
 
-	// The hover moved onto card hc (-1: off the ring): the halo, mark and halo behind the ring take its colour,
-	// and sit behind / in front of that card. Once per change, never per tic.
+	// The hover moved onto card hc (-1: off the ring): the card's halo and the mark take its colour, and sit behind /
+	// in front of that card. Once per change, never per tic. The halo behind the ring stays as it is.
 	void glHoverChanged(int hc)
 	{
 		if (!mGL || hc == mGLLitCard) return;
@@ -382,7 +341,6 @@ extend class wr_Rig
 		if (hc < 0 || hc >= mCardColor.Size()) return;
 		color hue = glHue(mCardColor[hc]);
 		if (mGLHover)    { wr_BB.UpdateBillboard(mGLHover, 0, hue); if (hc < mPlates.Size()) wr_BB.SetBillboardLayerFrom(mGLHover, mPlates[hc], -10); }
-		if (mGLRingHalo) wr_BB.UpdateBillboard(mGLRingHalo, 0, mGLCB ? hue : color(mCardColor[hc]));
 		if (mGLMarkRing) { wr_BB.UpdateBillboard(mGLMarkRing, 0, hue); if (hc < mPlates.Size()) { wr_BB.SetBillboardLayerFrom(mGLMarkRing, mPlates[hc], 14); wr_BB.SetBillboardLayerFrom(mGLMarkCent, mPlates[hc], 15); } }
 	}
 }

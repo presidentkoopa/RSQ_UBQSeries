@@ -100,11 +100,12 @@ user bool wr_level_stats = false;
 user string wr_slot_order = "";
 // RSQ: THE COLOUR BY GUN LOOK (owner's pick 2026-11-02: mock-ups A, B and C together; zscript/wheel/wr_q_gunlook.zs).
 // wr_look2 1: each card in its gun's colour (RSQ Gun Cards' colour for it), the plates lit warm from the top, a
-// breathing halo on the hovered card, the series' lock-on mark at the beam's tip, a light round the ring, a halo
-// behind it, the sheet's header a band in the gun's colour. 0: the ring as it was before (Classic).
-// wr_breathe: the hovered card's halo (and the mark) breathe. wr_edge_sweep: a spark runs round each card's edge.
+// halo on the hovered card, the series' lock-on mark at the beam's tip, a steady halo behind the ring, the sheet's
+// header a band in the gun's colour. 0: the ring as it was before (Classic).
+// wr_breathe (option, off since 2026-11-02): the hovered card's halo (and the mark) breathe.
+// wr_edge_sweep: a spark runs round each card's edge.
 user bool wr_look2 = true;
-user bool wr_breathe = true;
+user bool wr_breathe = false;
 user bool wr_edge_sweep = true;
 
 // SCALE: vr_vunits_per_meter is 34, so one map unit is about 3cm. Every default
@@ -259,8 +260,9 @@ user bool  wr_bullettime = true;
 user float wr_stickdead  = 0.2;
 
 
-// How much the hovered card breathes. 0 holds it still.
-user float wr_pulse      = 0.10;
+// How much bigger the hovered card is (0.06 = 6%). It grows over a few tics and holds; it does not breathe
+// (2026-11-02). 0: the hovered card stays its size.
+user float wr_pulse      = 0.06;
 
 // How far in front of your hand the ring floats, along where you were aiming
 // when it opened. 34 units is about a metre. This is the number that decides

@@ -20,5 +20,5 @@ Unleashed holo HUD art in tools/card_art/, used with the owner's blessing (his d
 models/common). The cards on the guns that use the rest of that art are now their own mod, RSQ Gun Cards.
 
 The Card Look's lock-on mark (graphics/WRLKRB.png, WRLKCB.png) is the series' own, copied from RSQ ShieldSaw
-(sprites/SSQRB0.png, SSQCB0.png). Its other art (graphics/WREPLATG, WRECHIP, WREHALO, WREDISC, WREGLOW,
+(sprites/SSQRB0.png, SSQCB0.png). Its other art (graphics/WREPLATG, WRECHIP, WREHALO, WREDISC,
 WRESPARK, WRSHADE) is drawn by tools/gen_glow_art.py; its gun colours are measured from RSQ Gun Cards' panel art.

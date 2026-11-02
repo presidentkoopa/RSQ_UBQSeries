@@ -2978,6 +2978,32 @@ class wr_Rig : EventHandler
 		if (mSheetPlate == 0) return;
 
 		double ss = sheetScale();
+
+		int rowsShown = mSheetUsed;
+		if (rowsShown > int(mSheetRows.Size())) rowsShown = int(mSheetRows.Size());
+		int barsShown = int(mSheetBars.Size());
+
+		double usedFrac = SHEET_ROWS_TOP
+			+ (rowsShown + barsShown) * SHEET_ROW_FRAC * SHEET_ROW_PITCH
+			+ 0.04;   // a row's worth of daylight under the last line
+
+		// Never taller than authored, and never so short the title has nowhere to
+		// sit -- SHEET_ROWS_TOP is where the first row begins, so anything below
+		// that would draw the title off its own plate.
+		if (usedFrac > 1.0) usedFrac = 1.0;
+		if (usedFrac < SHEET_ROWS_TOP + 0.08) usedFrac = SHEET_ROWS_TOP + 0.08;
+
+		// RSQ (2026-11-02): FIT INSIDE THE RING. The ring no longer grows for a tall sheet (layout: it never
+		// changes on a hover), so a sheet taller than the hole in the middle -- half a card and the gap clear of
+		// the cards above and below -- scales itself down, text and all, until it fits. ringR 0 (the inspect
+		// sheet on a hand) has no ring to fit.
+		if (ringR > 0.0)
+		{
+			double halfH = panelH * SHEET_H_CARDS * ss * usedFrac * 0.5 * CARD_STRETCH;
+			double room  = ringR - panelH * (0.5 * CARD_STRETCH + SHEET_GAP_CARDS);
+			if (room > 0.0 && halfH > room) ss *= room / halfH;
+		}
+
 		double sw = panelW * SHEET_W_CARDS * ss;
 
 		// THE PLATE IS AS TALL AS ITS CONTENT, not as tall as the worst case.
@@ -2998,21 +3024,6 @@ class wr_Rig : EventHandler
 		// each. Thirty rows comes to 0.21 + 30*0.0204*1.3 = 1.006 -- the whole
 		// plate, which is what confirms these constants describe the real layout.
 		double shFull = panelH * SHEET_H_CARDS * ss;
-
-		int rowsShown = mSheetUsed;
-		if (rowsShown > int(mSheetRows.Size())) rowsShown = int(mSheetRows.Size());
-		int barsShown = int(mSheetBars.Size());
-
-		double usedFrac = SHEET_ROWS_TOP
-			+ (rowsShown + barsShown) * SHEET_ROW_FRAC * SHEET_ROW_PITCH
-			+ 0.04;   // a row's worth of daylight under the last line
-
-		// Never taller than authored, and never so short the title has nowhere to
-		// sit -- SHEET_ROWS_TOP is where the first row begins, so anything below
-		// that would draw the title off its own plate.
-		if (usedFrac > 1.0) usedFrac = 1.0;
-		if (usedFrac < SHEET_ROWS_TOP + 0.08) usedFrac = SHEET_ROWS_TOP + 0.08;
-
 		double sh = shFull * usedFrac;
 
 		// DEAD CENTRE, where the centre cell used to be. Zero degrees off the
@@ -3461,7 +3472,7 @@ class wr_Rig : EventHandler
 
 	// Geometry generation. Bump this whenever the numbers below change and every
 	// existing config picks them up once, automatically.
-	const CFG_VERSION = 25;
+	const CFG_VERSION = 26;
 
 	private void migrateConfig()
 	{
@@ -3476,6 +3487,10 @@ class wr_Rig : EventHandler
 		int from = stamp.GetInt();
 		// Gen 25 (owner 2026-10-31: "off by default"): the Wheel's own wrist card off; RSQ_GunCards has the watch card.
 		if (from < 25) setCv("wr_watch", 0);
+		// Gen 26 (owner's headset 2026-11-02: "the whole thing changes size when i hover over a weapon it's very
+		// jarring"): the hover halo's breathing off, and the hovered card's grow down to a steady 6% (it breathed
+		// 1.0x-1.2x). Saved configs held the old values, so the new defaults alone would not reach them.
+		if (from < 26) { setCv("wr_breathe", 0); setCv("wr_pulse", 0.06); }
 		stamp.SetInt(CFG_VERSION);
 	}
 
@@ -4656,8 +4671,10 @@ class wr_Rig : EventHandler
 				// a fifth on top of that is what closes the gap the spacing
 				// math just opened. Half the amplitude keeps the breathe
 				// readable without eating its own clearance.
-				double amp = cv("wr_pulse", 0.10) * 0.5;
-				spulse = 1.0 + amp + amp * sin(mHoverTics * PULSE_SPEED);
+				// RSQ (2026-11-02): steady, eased in over HOVER_EASE tics -- no breathing (owner: the size change on
+				// hover was "very jarring").
+				double amp = cv("wr_pulse", 0.06) * 0.5;
+				spulse = 1.0 + amp * min(1.0, (mHoverTics + 1) / double(HOVER_EASE));
 			}
 
 			double subAlpha = 1.0;
@@ -6420,32 +6437,11 @@ class wr_Rig : EventHandler
 		{
 			double sheetR = panelW * (SHEET_W_CARDS * sheetScale() * 0.5 + 0.5 + SHEET_GAP_CARDS);
 
-			// HEIGHT AS WELL AS WIDTH, and only width was ever considered.
-			//
-			// The ring is a circle of cards around a plate standing in the middle
-			// of it, so cards sit ABOVE and BELOW the sheet as well as beside it.
-			// Flooring the radius on half-width alone clears the three and nine
-			// oclock cards and does nothing for twelve and six -- which is exactly
-			// the sheet reaching up into the cards and swallowing them.
-			//
-			// Same content-driven height layoutSheet now draws, computed the same
-			// way from the same row count, so the two cannot drift: shrink the
-			// sheet and the ring closes in with it, grow it and the ring opens out.
-			int sRows = mSheetUsed;
-			if (sRows > int(mSheetRows.Size())) sRows = int(mSheetRows.Size());
-
-			double sFrac = SHEET_ROWS_TOP
-				+ (sRows + int(mSheetBars.Size())) * SHEET_ROW_FRAC * SHEET_ROW_PITCH
-				+ 0.04;
-			if (sFrac > 1.0) sFrac = 1.0;
-			if (sFrac < SHEET_ROWS_TOP + 0.08) sFrac = SHEET_ROWS_TOP + 0.08;
-
-			// CARD_STRETCH, because a card is drawn taller than it is authored and
-			// the clearance has to be measured against what is actually on screen.
-			double sheetHalfH = panelH * SHEET_H_CARDS * sheetScale() * sFrac * 0.5 * CARD_STRETCH;
-			double sheetRV = sheetHalfH + panelH * (0.5 * CARD_STRETCH + SHEET_GAP_CARDS);
-			if (sheetRV > sheetR) sheetR = sheetRV;
-
+			// RSQ (2026-11-02): WIDTH ONLY. The ring's floor used to follow the sheet's height too, and the sheet's
+			// height follows the hovered gun's row count -- so every hover resized the whole ring (rig: 11.01 with an
+			// eight-row sheet, 9.87 on a two-row one; owner's headset: "the whole thing changes size when i hover
+			// over a weapon"). The ring now never changes on a hover; a sheet too tall for the hole in the middle
+			// shrinks itself to fit (layoutSheet), so it still never reaches into the cards above and below it.
 			if (sheetR > ringR) ringR = sheetR;
 		}
 
@@ -6688,8 +6684,11 @@ class wr_Rig : EventHandler
 			double pulse = 1.0;
 			if (lit)
 			{
-				double amp = cv("wr_pulse", 0.10);
-				pulse = 1.0 + amp + amp * sin(mHoverTics * PULSE_SPEED);
+				// RSQ (2026-11-02, owner's headset: "the whole thing changes size when i hover over a weapon it's
+				// very jarring"): the hovered card grows a little and HOLDS, eased in over HOVER_EASE tics. It no
+				// longer breathes (it swung 1.0x-1.2x before).
+				double amp = cv("wr_pulse", 0.06);
+				pulse = 1.0 + amp * min(1.0, (mHoverTics + 1) / double(HOVER_EASE));
 			}
 
 			// FOCUS. Cards you are not pointing at step back.
@@ -9289,8 +9288,8 @@ class wr_Rig : EventHandler
 
 		mLight.SetOrigin(here, true);
 
-		double breathe = 1.0 + 0.12 * sin(mHoverTics * PULSE_SPEED);
-		int r1 = int(cv("wr_light_size", 44.0) * breathe);
+		// RSQ (2026-11-02): steady -- the lit patch of room no longer swells and shrinks with the hover.
+		int r1 = int(cv("wr_light_size", 44.0));
 
 		// Re-attached under the same id every tic, which is how the colour and
 		// radius change at all -- A_AttachLight replaces a light with a matching
@@ -10068,6 +10067,7 @@ class wr_Rig : EventHandler
 	// that budget. A row past it would not error -- it would silently draw
 	// into the room, same as before this grew.
 	const SHEET_ROW_POOL   = 28;
+	const HOVER_EASE       = 4;      // RSQ: tics the hovered card takes to grow to its steady size
 
 	const SHEET_BG     = 0x0E1016;
 	const SHEET_BG2    = 0x1B2030;

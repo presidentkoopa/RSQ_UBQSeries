@@ -8,7 +8,6 @@ Writes, into graphics/:
   WRECHIP.png   the slot number's box: bright rim, near-black fill
   WREHALO.png   a soft glow round a card's shape (drawn AddShaded, so the grey is the glow's strength)
   WREDISC.png   a soft round glow (the halo behind the ring)
-  WREGLOW.png   a thin soft bar (the light on the ring)
   WRESPARK.png  a soft spark (the sweep round a card's edge)
   WRLKRB.png / WRLKCB.png  the series' lock-on mark: ring and centre (RSQ ShieldSaw's SSQRB0 / SSQCB0, its
                 brightest frame, copied under the Wheel's own names)
@@ -78,11 +77,6 @@ grey_rgba(Image.fromarray(b.astype(np.uint8))).save(os.path.join(G, 'WREHALO.png
 yy, xx = np.mgrid[0:128, 0:128]; rr = np.hypot(xx - 63.5, yy - 63.5) / 63.5
 disc = np.clip(np.exp(-(rr / 0.55) ** 2) * 1.15 - 0.03, 0, 1) * (rr < 1)
 grey_rgba(Image.fromarray((disc * 255).astype(np.uint8))).save(os.path.join(G, 'WREDISC.png'))
-
-# ---- the ring light: a thin bright core in a soft band, full length (pieces butt end to end)
-yy = np.arange(16)[:, None].repeat(64, 1)
-bar = np.exp(-((yy - 7.5) / 2.6) ** 2) * 0.75 + np.exp(-((yy - 7.5) / 0.9) ** 2) * 0.25
-grey_rgba(Image.fromarray((np.clip(bar, 0, 1) * 255).astype(np.uint8))).save(os.path.join(G, 'WREGLOW.png'))
 
 # ---- the sweep's spark
 yy, xx = np.mgrid[0:32, 0:32]; rr = np.hypot(xx - 15.5, yy - 15.5) / 15.5

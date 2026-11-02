@@ -89,7 +89,7 @@ Picking page:
 | Re-centre Window (tics, 0 = off) | 10 | The same key again this soon re-centres the ring instead of closing it. |
 
 Ring and Cards page: Gun Models on Cards (On), Ammo Counts and Gauges (On), Ammo Readout (LED segments),
-Hover Halo Breathes (On), Edge Sweep (On), Colour Cards by Rarity (On), Mark Guns You Hold (On), Slot Number on Cards (On), Cards Face You (On),
+Hover Halo Breathes (Option, off), Edge Sweep (On), Colour Cards by Rarity (On), Mark Guns You Hold (On), Slot Number on Cards (On), Cards Face You (On),
 Crowded Slot Opens As (Fan), Flash When You Take a Gun (On), Spark Colour (Slot colour), Hovered Card
 Lights the Room (On), Background Stars (0 = off), Idle Shimmer (0), Taken Card Spins (360).
 
@@ -110,19 +110,26 @@ silent when absent): DOOM Infinite, Pandemonia (with Anarchy and Insurrection), 
   type's colour (Gun Cards' rule: bullets gold, shells red, rockets orange, cells cyan); a dry gun stays dry red.
 - **Lit stone.** The plates are lit warm from the top in the gun's colour and shade cool toward the bottom (both
   Ring Plates choices). The data sheet's header is a filled band in the hovered gun's colour with the name light on
-  it. A soft halo in that colour sits behind the ring.
-- **Motion and light.** The hovered card's halo breathes in its colour (Hover Halo Breathes). The beam's tip wears
-  the series' lock-on mark (RSQ ShieldSaw's: white centre, ring in the gun's colour). A thin light runs round the
-  ring in each card's colour, brightest toward the hovered card, with a slow ripple. A spark runs round each card's
-  edge (Edge Sweep). Idle Shimmer, above 0, gives every other card a slow soft halo too.
+  it. A faint soft halo sits behind the ring and never changes.
+- **Motion and light.** A halo in its colour sits behind the hovered card (it breathes only with Hover Halo
+  Breathes, off by default). The beam's tip wears the series' lock-on mark (RSQ ShieldSaw's: white centre, ring in
+  the gun's colour). A spark runs round each card's edge (Edge Sweep). Idle Shimmer, above 0, gives every other
+  card a slow soft halo too.
+- **A calm hover (2026-11-02, after the owner's headset report).** The ring never changes size or place when you
+  point at a card. Only the card you point at changes: it lights up in its colour, steps a little toward you and
+  grows 6% (Hovered Card Grows), easing in over 4 tics and then holding still. A data sheet too tall for the middle
+  of the ring shrinks to fit instead of pushing the ring out. Gone: the light that ran round the ring card to card
+  (the "hexagon wire"), the halo behind the ring brightening in the hovered gun's colour, and the hovered card and
+  its room light breathing. Saved settings are updated once on the first load (Hover Halo Breathes off, Hovered
+  Card Grows 0.06).
 - Colours are chosen when the ring opens or the hover changes; each tic only moves brightness and position.
 - **Colour Blind Mode** (RSQ Accessibility, read when the ring opens; also in the Classic look): every card goes
   neutral (the series' grey) and only the hovered card is coloured, in the series' highlight colour for that
   mode (amber for protanopia / deuteranopia, red for tritanopia, yellow for high contrast); so are the beam, the
-  room light, the halo, the mark, the sheet band and the light on the ring near the hovered card. The breathing,
-  sweep and mark stay: they carry the hover without colour.
-- **Photosensitive Mode** (RSQ Accessibility): the breathing and the sweep at 40% strength, the sweep at half
-  speed, the ring light's ripple smaller and slower.
+  room light, the card's halo, the mark and the sheet band. The sweep and mark stay: they carry the hover without
+  colour.
+- **Photosensitive Mode** (RSQ Accessibility): the breathing (when on) and the sweep at 40% strength, the sweep at
+  half speed.
 
 Always on (no row):
 
@@ -180,14 +187,16 @@ Card Look (2026-11-02, rig only: **not yet headset-confirmed**):
 
 30. Open the ring. Each card is in its gun's colour (pistol gold, shotgun red, chaingun white, rocket launcher
     green, plasma teal, BFG blue) with a boxed slot number in that colour; the counts are gold, red, orange, cyan.
-31. Point at a card: it lights up in its own colour, a halo behind it breathes, a diamond mark sits where the
-    beam meets it, the light on the ring is brightest beside it, the sheet's header is a band in its colour.
-32. A small spark runs round every card's edge. Edge Sweep off: gone. Hover Halo Breathes off: the halo holds still.
-33. Card Look -> Classic, reopen the ring: exactly as before.
-34. RSQ_GunCards loaded, its Card Colour -> By Ammo Type, reopen: the cards take the ammo colours, the same as
+31. Point at a card: it lights up in its own colour with a halo behind it, a diamond mark sits where the beam
+    meets it, the sheet's header is a band in its colour. No wire runs round the ring.
+32. Point at one card, then another: the ring stays exactly the same size and place; only the card you point at
+    grows a little and holds still.
+33. A small spark runs round every card's edge. Edge Sweep off: gone. Hover Halo Breathes on: the halo breathes.
+34. Card Look -> Classic, reopen the ring: the ring as it was before the Card Look (with the calm hover).
+35. RSQ_GunCards loaded, its Card Colour -> By Ammo Type, reopen: the cards take the ammo colours, the same as
     the gun cards on your wrist.
-35. RSQ_Accessibility, Colour Blind Mode -> Deuteranopia, reopen: grey cards; only the one you point at is amber.
-36. RSQ_Accessibility, Photosensitive Mode on: the halo's breathing and the sweep are fainter and slower.
+36. RSQ_Accessibility, Colour Blind Mode -> Deuteranopia, reopen: grey cards; only the one you point at is amber.
+37. RSQ_Accessibility, Photosensitive Mode on: the sweep is fainter and slower.
 
 With other mods:
 
@@ -249,7 +258,12 @@ With other mods:
   measurably on the rig (handler time 1.18 -> 1.24 ms, within run-to-run noise); one hit test got about 15% cheaper.
 
 - Card Look (2026-11-02) ran on the simulated rig only. Seen there in frames: the colours, plates, halo, mark,
-  ring light, sweep, sheet band, Colour Blind Mode and Classic. Not seen: how the breathing and sweep feel in a
+  sweep, sheet band, Colour Blind Mode and Classic.
+- Calm hover (2026-11-02) ran on the simulated rig only, **not headset-confirmed**: on doom2 and on the full BD
+  order the ring's radius, centre and every other card's size stayed the same across no hover and two different
+  hovered guns (before the fix an eight-row sheet moved the radius 9.87 -> 11.01 and the hovered card swung
+  1.0x-1.2x); frames show the wire and the halo swell gone. A crowded slot still fans out when you rest on it
+  (Open a fan): that is its own feature, not the ring resizing. Not seen: how the breathing and sweep feel in a
   headset (the rig dumps stills), and Photosensitive Mode's effect (numbers only). A custom palette (Palette row)
   does not recolour gun colours: they are Gun Cards' colours, not palette roles.
 
@@ -280,7 +294,7 @@ Unleashed holo HUD art in tools/card_art/, used with the owner's blessing (his d
 models/common). The cards on the guns that use the rest of that art are now their own mod, RSQ Gun Cards.
 
 The Card Look's lock-on mark (graphics/WRLKRB.png, WRLKCB.png) is the series' own, copied from RSQ ShieldSaw
-(sprites/SSQRB0.png, SSQCB0.png). Its other art (graphics/WREPLATG, WRECHIP, WREHALO, WREDISC, WREGLOW,
+(sprites/SSQRB0.png, SSQCB0.png). Its other art (graphics/WREPLATG, WRECHIP, WREHALO, WREDISC,
 WRESPARK, WRSHADE) is drawn by tools/gen_glow_art.py; its gun colours are measured from RSQ Gun Cards' panel art.
 ```
 
@@ -294,7 +308,7 @@ WRESPARK, WRSHADE) is drawn by tools/gen_glow_art.py; its gun colours are measur
 - `zscript/wheel/wr_q_gunlook.zs` -- the Card Look (Colour by Gun): Gun Cards' colours, and the ring's added parts
   (an `extend class wr_Rig`; the hooks in zscript.zs are marked `RSQ GL:`)
 - `zscript/wheel/wr_cb.zs` -- the series' colour-blind palette (`Accessibility/tools/gen_cb.sh wr`)
-- `tools/gen_glow_art.py` -- the Card Look's art (graded plate, slot box, halos, ring light, spark, the copied
+- `tools/gen_glow_art.py` -- the Card Look's art (graded plate, slot box, halos, spark, the copied
   lock-on mark) and its Gun Cards colour table
 - `tools/gen_assets.py` -- writes the quad models, TEXTURES and the palette table
 - `tools/rig/` -- the rig runner and probe (test only)
