@@ -253,6 +253,18 @@ class SSQ_Guard : Inventory
 		return lv > 0 ? int(SSQ_Upg.Num("ShieldWall.ms", lv, 0)) : 0;
 	}
 
+	// SPARTAN (Gun Bonsai VR patch, GBOVR_TREES.md 4.3, the Saber link): its level while the lit saber rests on the shield
+	// (Saber Over Shield, mBraced), else 0. 1: a shot the shield turns is PARRIED -- sent straight at whoever fired it,
+	// even with the Deflect row off; 2: a bash in that stance cuts as well.
+	static clearscope int Spartan(PlayerPawn mo)
+	{
+		if (!mo) return 0;
+		int pn = mo.PlayerNumber();
+		let h = SSQ_Handler.Get();
+		if (!h || pn < 0 || pn >= MAXPLAYERS || !h.mBraced[pn]) return 0;
+		return h.mSpartan[pn];
+	}
+
 	// ONE GRIND HIT: the Grind Damage row, and HUNGRY BLADES (Gun Bonsai VR patch) +2 a level (6 -> 8, 10, 12)
 	static int GrindDamage(PlayerPawn mo)
 	{
@@ -442,8 +454,12 @@ class SSQ_Guard : Inventory
 				if (away.Length() > 0) source.Thrust(SSQ_Handler.SV('ssq_stagger_push', 12.0) / 10.0 * (perfect ? 2.0 : 1.0), atan2(away.y, away.x));
 			}
 		}
-		if (kind == 0 && inflictor && (SSQ_Handler.SVI('ssq_deflect', 1) != 0 || perfect || revLv >= 2) && PlateTurns())
+		int spartan = Spartan(mo);
+		if (kind == 0 && inflictor && (SSQ_Handler.SVI('ssq_deflect', 1) != 0 || perfect || revLv >= 2 || spartan >= 1) && PlateTurns())
+		{
+			if (spartan >= 1) SSQ_Upg.Touch("spartan", mo, source);
 			Deflect(mo, inflictor, source, P, outward, perfect ? 1.6 : 1.0);
+		}
 	}
 
 	// HOW FAR THE PLATE ITSELF MOVED THIS TIC. The sweep tests a shot's path across several
@@ -683,6 +699,7 @@ class SSQ_Guard : Inventory
 	static Vector3 DeflectDir(PlayerPawn mo, Vector3 from, Vector3 vel, Vector3 n, Actor shooter, Vector3 swing = (0, 0, 0))
 	{
 		int aim = SSQ_Handler.SVI('ssq_deflect_aim', 3);
+		if (shooter && shooter.health > 0 && shooter != mo && Spartan(mo) >= 1) aim = 0;	// SPARTAN: parried, at the shooter
 		Vector3 d = (0, 0, 0);
 		if (aim == 3)
 		{
@@ -789,6 +806,21 @@ class SSQ_Guard : Inventory
 		SSQ_FX.Hit(t, mo, mo, dmg, 'Melee');
 		if (upg) upg.GetInt("credit.pop", "", 0, 0, saw);
 		if (!t) return;
+		// SPARTAN 2 (Gun Bonsai VR patch): the blade resting on the shield cuts what the bash strikes, as hard again,
+		// paid to the saber in the main hand (the cut is the blade's)
+		if (Spartan(mo) >= 2 && t.health > 0)
+		{
+			Weapon cutter = p ? p.ReadyWeapon : null;
+			String cutName = "";
+			if (cutter) cutName = cutter.GetClassName();
+			if (cutName.Left(10) != "UBQS_Saber") cutter = saw;
+			SSQ_Upg.Touch("spartan", mo, t);
+			if (upg && cutter) upg.GetInt("credit.push", "", 2, 0, cutter);
+			t.DamageMobj(mo, mo, dmg, 'Melee');
+			if (upg && cutter) upg.GetInt("credit.pop", "", 0, 0, cutter);
+			if (!t) return;
+			SSQ_FX.Sparks(mo, tc, n, 8);
+		}
 		// CLEAR SOME SPACE. The shove is away from the face, scaled by how hard you drove
 		// it, with a small lift under it so a body actually leaves the floor and lands
 		// somewhere else instead of sliding a few units and standing back up in your face.

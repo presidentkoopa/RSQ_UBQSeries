@@ -220,7 +220,9 @@ on the simulated rig (2026-10-31 onward).
   between). **Grind:** **Hungry Blades** (a grind hit 6 -> 8 / 10 / 12, a stuck disc 3 -> 4 / 5 / 6 a tic); **Rev
   Shield** (after it: a revving shield held up grinds what claws it; 2: turns a blocked shot even with the Deflect row
   off); **Buzzsaw Return** (after Hungry Blades 2: the disc coming home grinds what it passes for 65 / 80 / 95% of a
-  grind hit). Without the patch nothing changes.
+  grind hit). **Spartan** (the Saber link: after Broadening here and the saber's Deflector): with the lit blade resting
+  on the shield every shot the shield turns goes straight at its shooter, even with the Deflect row off; 2: a bash in
+  that stance cuts as well, paid to the saber. Without the patch nothing changes.
 - **Fixed 11-02:** the hand throw now bounces off walls (the Wall Bounces row only reached the One-Handed throw), and
   a monster under the cut-in-two tier is cut in two (the cut dealt only an ordinary hit, so a Doom imp took about 40
   and lived); a bullet the shield on your back stops goes back out (its trace started inside your own body, so your

@@ -1068,6 +1068,20 @@ of 8 (Buzzsaw 1), 11 (Buzzsaw 3). Not provable headless: a real claw on a held, 
 |---|---|---|---|---|---|
 | Spartan (new) | Broadening 1 and the saber's Deflector 1 | 1-2: the lit blade over the shield (x1.3 wider today) also PARRIES: a shot meeting the blade is turned at the shooter; 2: the shield's bash while the blade rests on it cuts too | ShieldSaw (reads the saber's level by name) | the blade's parry flash | `spartan` |
 
+**Spartan: BUILT 11-02 (L3).** Gun Bonsai VR: Spartan on the ShieldSaw's record, after Broadening 1 and Deflector 1 on
+either saber. ShieldSaw: `SSQ_Guard.Spartan(mo)` (its level only while braced, `mBraced`; the level kept per player
+in `SSQ_Handler.mSpartan` beside it); `DeflectDir` aims at the shooter when it applies (the block, the sweep, the
+bullet return); the block turns a missile for it even with Deflect off; level 2 in `Bash`: a second hit as hard,
+paid to the saber in the main hand (the ShieldSaw when there is none). **Call made here:** "cuts too" read as a second
+hit the size of the bash. **Headless 11-02** (`fp_ssparry`: a fireball straight onto the plate from an imp standing 60
+units aside; `fp_ssbash` braced): offered only after Broadening and the saber's Deflector; unbraced or unlearned the
+ball turned 28 degrees off its shooter (the mirror), braced with Spartan 1 0 degrees, and with Deflect off it was not
+turned at all until braced with Spartan; a braced bash at Spartan 2 landed 28 and 28 (60 -> 4), unbraced one 28. Not
+provable headless: the brace itself (the saber laid on the plate).
+
+**THE SHIELDSAW TREE IS BUILT (11-02):** every node of Throw, Block, Bash, Grind and Spartan. Owed: the headset for
+everything a hand does (throws, perfect blocks, bashes, the dash trigger, the brace), and the dash's and Charge's art.
+
 **Counts:** 22 nodes, 8 exist, 14 new. **Owner, 11-02: every ShieldSaw node kept; Shield Dash added on his word.**
 
 ### 4.4 Whip (own path, owner 11-02; branches Crack, Reach, Wrap, Lasso, Rope and the Fists link approved)

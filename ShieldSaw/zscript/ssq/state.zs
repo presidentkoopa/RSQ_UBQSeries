@@ -54,6 +54,7 @@ class SSQ_Handler : EventHandler
 	int   mLockSig[MAXPLAYERS];
 	// SABER OVER SHIELD (pick 15): the stance, as the player's own machine last said (netevent ssq-brace)
 	bool  mBraced[MAXPLAYERS];
+	int   mSpartan[MAXPLAYERS];	// SPARTAN (Gun Bonsai VR patch): each player's level, kept for SSQ_Guard.Spartan (clearscope)
 	transient int mBraceSent;	// this machine's last sent value + 1 (0 = nothing sent yet)
 	// THE BODY THE MOUNT HANGS ON (owner's headset, 11-02: "attached to helmet and not body"): the body's yaw,
 	// synced from each player's own machine (netevent ssq-body, BodyKeep). Until one arrives (or off VR): the
@@ -648,7 +649,12 @@ class SSQ_Handler : EventHandler
 	override void WorldTick()
 	{
 		// SHIELD SIZE (Gun Bonsai VR patch): each player's shield scale, kept here for SSQ_Guard.Scale (clearscope)
-		for (int sk = 0; sk < MAXPLAYERS; sk++) mSizeK[sk] = (playeringame[sk] && players[sk].mo) ? SSQ_Guard.SizeFor(players[sk].mo) : 1.0;
+		for (int sk = 0; sk < MAXPLAYERS; sk++)
+		{
+			bool here = playeringame[sk] && players[sk].mo;
+			mSizeK[sk] = here ? SSQ_Guard.SizeFor(players[sk].mo) : 1.0;
+			mSpartan[sk] = here ? SSQ_Upg.Lv(players[sk].mo.FindInventory('SSQ_ShieldSaw'), "Spartan") : 0;
+		}
 		if (!mMigrated) { mMigrated = true; MigrateLocks(); }
 		if (!score) score = new('SSQ_ScoreMemory');
 		PruneMissiles();

@@ -150,6 +150,17 @@ class RSQ_Upgrade_BuzzsawReturn : RSQ_Upgrade_ShieldMarker
 	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("share", AsPercent(Share(level))); }
 }
 
+// SPARTAN (4.3, the Saber link; after Broadening 1 here and Deflector 1 on a saber): with the lit blade resting on the shield
+// (Saber Over Shield) a shot the shield turns is parried -- straight at its shooter; 2: a bash in that stance cuts too,
+// paid to the saber. (SSQ_Guard.Spartan)
+class RSQ_Upgrade_Spartan : RSQ_Upgrade_ShieldMarker
+{
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info)
+	{
+		return ShieldInfo(info) && Has(info, "Broadening") && RSQ_Upgrade_SaberMarker.AnySaberHas(info.stats, "Deflector") && LevelOf(info, "Spartan") < 2;
+	}
+}
+
 // BACK PLATE (4.3 Block, after Broadening 2): the shield on your back blocks (1), and turns shots too (2). Under this
 // patch it replaces the ShieldSaw's Block While Holstered row. (SSQ_Guard.BackPlate)
 class RSQ_Upgrade_BackPlate : RSQ_Upgrade_ShieldMarker

@@ -463,7 +463,10 @@ class FistsProbe : EventHandler
 			if (!m || !saw) return;
 			Vector3 f = (cos(p.angle), sin(p.angle), 0);
 			int h0 = m.health;
+			let hh = SSQ_Handler.Get();
+			if (hh) hh.mBraced[0] = e.Args[2] == 1;	// arg2 1: the blade resting on the shield (Spartan 2)
 			SSQ_Guard.Bash(p, saw, m, p.pos + f * 30 + (0, 0, 40), f, e.Args[1]);
+			if (hh) hh.mBraced[0] = false;
 			Console.Printf("FP shieldsaw bash %s at %d u/s: %d -> %d, frozen %d tics (hit-stop), thrown %.1f u/tic", m.GetClassName(), e.Args[1], h0, m.health, m.freezetics, m.vel.xy.Length());
 			m.Destroy();
 		}
@@ -508,6 +511,40 @@ class FistsProbe : EventHandler
 			g.StartDash(p, (cos(p.angle), sin(p.angle), 0), lv, 120);
 			ssDashAt = level.maptime + 45;
 			Console.Printf("FP shieldsaw dash started at level %d: %.2f m to go", lv, g.dashLeft / SSQ_Handler.CM(100.0));
+		}
+		else if (e.Name ~== "fp_ssparry")
+		{
+			// SPARTAN: the blade resting on the shield (mBraced, set for this call), a fireball straight onto the plate from
+			// an imp standing arg0 units off to the side; where does the turned ball go? (needs the plate to turn: Back Plate 2)
+			let h = SSQ_Handler.Get();
+			let g = SSQ_Guard(p.FindInventory("SSQ_Guard"));
+			if (!g || !h || !g.Plate()) { Console.Printf("FP shieldsaw parry: no plate"); return; }
+			h.mBraced[0] = e.Args[1] == 1;
+			Vector3 C = g.plateC, n = g.plateN;
+			Vector3 mid = p.pos + (0, 0, p.height * 0.5);
+			Vector3 away = ((C - mid) dot n) >= 0 ? n : -n;
+			Vector3 side = (-away.y, away.x, 0);
+			let imp = Actor.Spawn("DoomImp", C + away * 120 + side * e.Args[0] - (0, 0, 28));
+			let ball = Actor.Spawn("DoomImpBall", C + away * 20);
+			if (!imp || !ball) return;
+			imp.freezetics = 70; imp.bNoGravity = true;
+			ball.target = imp; ball.vel = -away * 10;
+			int nd = 20;
+			g.AbsorbDamage(20, 'None', nd, ball, imp, 0);
+			Actor back = null;
+			let it = ThinkerIterator.Create("DoomImpBall");
+			Actor a;
+			while (a = Actor(it.Next())) if (a.target == p && a != ball) back = a;
+			if (!back) Console.Printf("FP shieldsaw parry (braced %d, Spartan %d, deflect row %d): not turned", h.mBraced[0], SSQ_Guard.Spartan(p), CVar.FindCVar('ssq_deflect').GetInt());
+			else
+			{
+				Vector3 toImp = (imp.pos + (0, 0, imp.height * 0.5) - back.pos).Unit();
+				Console.Printf("FP shieldsaw parry (braced %d, Spartan %d, deflect row %d): turned, %.0f degrees off the line to its shooter", h.mBraced[0], SSQ_Guard.Spartan(p),
+					CVar.FindCVar('ssq_deflect').GetInt(), acos(clamp(toImp dot back.vel.Unit(), -1, 1)));
+				back.Destroy();
+			}
+			ball.Destroy(); imp.Destroy();
+			h.mBraced[0] = false;
 		}
 		else if (e.Name ~== "fp_ssgrind")
 		{

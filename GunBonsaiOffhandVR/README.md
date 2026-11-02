@@ -134,7 +134,8 @@ Always on (no row):
     Ricochet 2 -> Wall Bounces; under the patch a throw starts at 1 lock), Block (Broadening -> Bulwark -> Rebound;
     Broadening 2 -> Back Plate; Bulwark 2 -> Shield Wall; Rebound 2 -> Reflect), Bash (Battering Ram -> Wall Slam ->
     Charge -> Shield Dash; Battering Ram -> Strike True (the ShieldSaw's, RSQ_Upgrade_BashHitStop); Battering Ram 2 ->
-    Shield Size), Grind (Hungry Blades -> Rev Shield; Hungry Blades 2 -> Buzzsaw Return)
+    Shield Size), Grind (Hungry Blades -> Rev Shield; Hungry Blades 2 -> Buzzsaw Return), Spartan (Broadening 1 and a
+    saber's Deflector 1)
   - Any melee: Lunge, Executioner, Adrenaline
   - Player, each only while its mod is loaded: Distance Grab (Long Arm, Iron Grip, Heavy Hitter, Air Catch,
     Powder Keg); Tactical Rig (Quick Draw, Pair Draw, Showdown with SlowMo); SlowMo (Marksman, Dodger,
