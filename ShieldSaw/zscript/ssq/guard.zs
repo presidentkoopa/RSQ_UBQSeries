@@ -253,6 +253,35 @@ class SSQ_Guard : Inventory
 		return lv > 0 ? int(SSQ_Upg.Num("ShieldWall.ms", lv, 0)) : 0;
 	}
 
+	// ONE GRIND HIT: the Grind Damage row, and HUNGRY BLADES (Gun Bonsai VR patch) +2 a level (6 -> 8, 10, 12)
+	static int GrindDamage(PlayerPawn mo)
+	{
+		int lv = SSQ_Upg.Lv(mo ? mo.FindInventory('SSQ_ShieldSaw') : null, "HungryBlades");
+		return SSQ_Handler.SVI('ssq_grind_damage', 6) + (lv > 0 ? int(SSQ_Upg.Num("HungryBlades.grind", lv, 0)) : 0);
+	}
+	// REV SHIELD (Gun Bonsai VR patch, GBOVR_TREES.md 4.3 Grind): its level while the shield is held up AND revving, else 0.
+	// 1: what claws the plate is ground (ClawGrind); 2: a blocked missile is turned even with the Deflect row off.
+	static int RevShield(PlayerPawn mo, int held)
+	{
+		if (held == 0 || !mo) return 0;
+		let saw = SSQ_ShieldSaw(mo.FindInventory('SSQ_ShieldSaw'));
+		if (!saw || !saw.Revved()) return 0;
+		return SSQ_Upg.Lv(saw, "RevShield");
+	}
+	// one grind hit on what clawed the plate, paid to the saw like the grind in HeldTick
+	static void ClawGrind(PlayerPawn mo, SSQ_ShieldSaw saw, Actor t)
+	{
+		if (!mo || !t || t.health <= 0) return;
+		let upg = SSQ_Upg.Svc();
+		SSQ_Upg.Touch("rev.block", mo, t);
+		if (upg && saw) upg.GetInt("credit.push", "", 2, 0, saw);
+		t.DamageMobj(mo, mo, GrindDamage(mo), 'Saw');
+		if (upg && saw) upg.GetInt("credit.pop", "", 0, 0, saw);
+		Vector3 at = t.pos + (0, 0, t.height * 0.5);
+		SSQ_FX.At(mo, at, "ssq/grind", CHAN_5, 0.9);
+		SSQ_FX.Sparks(mo, at, (0, 0, 1), 6);
+	}
+
 	// SABER OVER SHIELD (pick 15, surveys/07_SHIELDS_PARRY.md 4.12): while the player's lit saber rests across
 	// the plate's front the BLOCK is wider. The stance is decided on the player's own machine from the raw hand
 	// fields (SSQ_Handler.SendBrace) and arrives here as a network event, so every machine reads the same flag.
@@ -400,6 +429,9 @@ class SSQ_Guard : Inventory
 		}
 		if (fb) SSQ_FX.Sparks(mo, P, outward, (kind == 3 || perfect) ? 14 : 8);
 
+		int revLv = RevShield(mo, held);
+		if (revLv >= 1 && kind == 2 && source && !source.player)
+			ClawGrind(mo, SSQ_ShieldSaw(mo.FindInventory('SSQ_ShieldSaw')), source);
 		int melee = SSQ_Handler.SVI('ssq_melee', 2);
 		if (kind == 2 && source && (melee != 0 || perfect))
 		{
@@ -410,7 +442,7 @@ class SSQ_Guard : Inventory
 				if (away.Length() > 0) source.Thrust(SSQ_Handler.SV('ssq_stagger_push', 12.0) / 10.0 * (perfect ? 2.0 : 1.0), atan2(away.y, away.x));
 			}
 		}
-		if (kind == 0 && inflictor && (SSQ_Handler.SVI('ssq_deflect', 1) != 0 || perfect) && PlateTurns())
+		if (kind == 0 && inflictor && (SSQ_Handler.SVI('ssq_deflect', 1) != 0 || perfect || revLv >= 2) && PlateTurns())
 			Deflect(mo, inflictor, source, P, outward, perfect ? 1.6 : 1.0);
 	}
 
@@ -1001,7 +1033,7 @@ class SSQ_Guard : Inventory
 				// and lived must not be ground again next tic
 				if (gi < g.grindWho.Size()) g.grindWhen[gi] = mo.Level.maptime;
 				else { g.grindWho.Push(t); g.grindWhen.Push(mo.Level.maptime); }
-				int dmg = SSQ_Handler.SVI('ssq_grind_damage', 6);
+				int dmg = GrindDamage(mo);	// HUNGRY BLADES (Gun Bonsai VR patch) raises it
 				if (upg) upg.GetInt("credit.push", "", 2, 0, saw);
 				t.DamageMobj(mo, mo, dmg, 'Saw');
 				if (upg) upg.GetInt("credit.pop", "", 0, 0, saw);

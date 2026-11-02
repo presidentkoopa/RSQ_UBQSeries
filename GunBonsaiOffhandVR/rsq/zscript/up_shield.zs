@@ -125,6 +125,31 @@ class RSQ_Upgrade_ShieldDash : RSQ_Upgrade_ShieldMarker
 	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("m", string.format("%.0f m", Meters(level))); }
 }
 
+// HUNGRY BLADES (4.3 Grind, root): a grind hit 6 -> 8, 10, 12; an embedded disc 3 -> 4, 5, 6 a tic. (SSQ_Guard.GrindDamage,
+// SSQ_Disc's embed)
+class RSQ_Upgrade_HungryBlades : RSQ_Upgrade_ShieldMarker
+{
+	static int Grind(uint lv) { return 2 * int(lv); }
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return ShieldInfo(info) && LevelOf(info, "HungryBlades") < 3; }
+	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("g", string.format("%d", 6 + Grind(level))); fields.Insert("e", string.format("%d", 3 + level)); }
+}
+
+// REV SHIELD (4.3 Grind, after Hungry Blades 1): a revving shield held up grinds what claws it; 2: and turns a blocked
+// missile even with the ShieldSaw's Deflect row off. (SSQ_Guard.RevShield / ClawGrind)
+class RSQ_Upgrade_RevShield : RSQ_Upgrade_ShieldMarker
+{
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return ShieldInfo(info) && Has(info, "HungryBlades") && LevelOf(info, "RevShield") < 2; }
+}
+
+// BUZZSAW RETURN (4.3 Grind, after Hungry Blades 2): the disc coming home grinds what it passes for 50% + 15% a level of a
+// grind hit. (SSQ_Disc.SpecialMissileHit)
+class RSQ_Upgrade_BuzzsawReturn : RSQ_Upgrade_ShieldMarker
+{
+	static double Share(uint lv) { return lv > 0 ? 0.5 + 0.15 * int(lv) : 0; }
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return ShieldInfo(info) && Has(info, "HungryBlades", 2) && LevelOf(info, "BuzzsawReturn") < 3; }
+	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("share", AsPercent(Share(level))); }
+}
+
 // BACK PLATE (4.3 Block, after Broadening 2): the shield on your back blocks (1), and turns shots too (2). Under this
 // patch it replaces the ShieldSaw's Block While Holstered row. (SSQ_Guard.BackPlate)
 class RSQ_Upgrade_BackPlate : RSQ_Upgrade_ShieldMarker

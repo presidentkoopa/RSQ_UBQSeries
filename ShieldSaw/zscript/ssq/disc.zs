@@ -42,6 +42,8 @@ class SSQ_Disc : Actor
 	int bounces, bounceHold, blind;
 	int grinder;		// Meat Grinder
 	int cleaver;		// Cleaver: the hit tiers rise
+	int hungry;			// Hungry Blades: +1 a tic embedded
+	int buzz;			// Buzzsaw Return: grinds what it passes on the way home
 	int wallLv;			// Wall Bounces: walls added to ssq_bounces
 	int huntLeft, hunter;	// Hunter's Return: swerves left on this trip home, and the level
 	Actor huntT;
@@ -104,6 +106,8 @@ class SSQ_Disc : Actor
 		grinder = SSQ_Upg.Lv(saw, "MeatGrinder");
 		hunter = SSQ_Upg.Lv(saw, "HuntersReturn");
 		cleaver = SSQ_Upg.Lv(saw, "Cleaver");
+		hungry = SSQ_Upg.Lv(saw, "HungryBlades");
+		buzz = SSQ_Upg.Lv(saw, "BuzzsawReturn");
 		wallLv = SSQ_Upg.Lv(saw, "WallBounces");
 	}
 
@@ -394,7 +398,7 @@ class SSQ_Disc : Actor
 				embedTics--;
 				if (embedTics % 3 == 0)
 				{
-					embedIn.DamageMobj(self, thrower, int(SSQ_Handler.SVI('ssq_embed_dps', 3) * 3 * (grinder > 1 ? 1.0 + 0.25 * (grinder - 1) : 1.0)), 'Saw');
+					embedIn.DamageMobj(self, thrower, int((SSQ_Handler.SVI('ssq_embed_dps', 3) + hungry) * 3 * (grinder > 1 ? 1.0 + 0.25 * (grinder - 1) : 1.0)), 'Saw');
 					A_StartSound("ssq/grind", CHAN_5, 0, 0.8);
 					SSQ_FX.Sparks(self, pos, (0, 0, 1), 3);
 				}
@@ -518,6 +522,18 @@ class SSQ_Disc : Actor
 		if (victim.player && !deathmatch) return 1;
 		if (victim == lastHit && Level.maptime - lastHitTic < 6) return 1;
 		lastHit = victim; lastHitTic = Level.maptime;
+		// BUZZSAW RETURN (Gun Bonsai VR patch): on the way home, a share of a grind hit to each body it passes, on top of
+		// what the hit itself does
+		if (phase == PH_HOME && buzz > 0 && thrower)
+		{
+			int bz = int(SSQ_Guard.GrindDamage(thrower) * SSQ_Upg.Num("BuzzsawReturn.share", buzz, 0) + 0.5);
+			if (bz > 0)
+			{
+				SSQ_Upg.Touch("buzz.return", thrower, victim);
+				victim.DamageMobj(self, thrower, bz, 'Saw');
+				if (!victim || victim.health <= 0) return 1;
+			}
+		}
 
 		double scale = SSQ_Handler.SV('ssq_cut_damage', 1.0) * (1.0 + revFrac * SSQ_Handler.SV('ssq_rev_throw_bonus', 0.6));
 		int base = int((24 + random(0, 20)) * scale);

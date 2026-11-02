@@ -86,11 +86,19 @@ class FistsProbe : EventHandler
 	Vector3 ssDashFrom;
 	Actor ssDashImp;
 	int ssDashH0;
+	// a disc left stuck in a monster (fp_sscut arg1 1): read the monster again later
+	int ssCutAt, ssCutH0;
+	Actor ssCutMon;
 	override void WorldTick()
 	{
 		let p = P(); if (!p) return;
 		int t = level.maptime;
 		FxReport();
+		if (ssCutAt > 0 && t >= ssCutAt)
+		{
+			ssCutAt = 0;
+			Console.Printf("FP shieldsaw embedded grind: %s %d -> %d over the embed", ssCutMon ? ssCutMon.GetClassName() : 'gone', ssCutH0, ssCutMon ? ssCutMon.health : -1);
+		}
 		if (ssDashAt > 0 && t >= ssDashAt)
 		{
 			ssDashAt = 0;
@@ -501,6 +509,21 @@ class FistsProbe : EventHandler
 			ssDashAt = level.maptime + 45;
 			Console.Printf("FP shieldsaw dash started at level %d: %.2f m to go", lv, g.dashLeft / SSQ_Handler.CM(100.0));
 		}
+		else if (e.Name ~== "fp_ssgrind")
+		{
+			// the grind hit, and Rev Shield's claw grind on an imp with the saw revved
+			let saw = SSQ_ShieldSaw(p.FindInventory("SSQ_ShieldSaw"));
+			if (!saw) return;
+			saw.rev = 999;
+			let m = Put("DoomImp", 64);
+			if (!m) return;
+			int h0 = m.health;
+			int lv = SSQ_Guard.RevShield(p, 1);
+			if (lv >= 1) SSQ_Guard.ClawGrind(p, saw, m);
+			Console.Printf("FP shieldsaw grind hit %d; Rev Shield (held, revving) %d, not held %d; the clawing imp %d -> %d", SSQ_Guard.GrindDamage(p), lv, SSQ_Guard.RevShield(p, 0), h0, m.health);
+			saw.rev = 0;
+			m.Destroy();
+		}
 		else if (e.Name ~== "fp_sssize")
 		{
 			let saw = SSQ_ShieldSaw(p.FindInventory("SSQ_ShieldSaw"));
@@ -520,8 +543,16 @@ class FistsProbe : EventHandler
 			let d = SSQ_Disc(Actor.Spawn("SSQ_Disc", m.pos - dir * 30 + (0, 0, m.height * 0.5)));
 			if (!d) return;
 			d.Claim(saw); d.LaunchAlong(p, dir, 12, 90, 0);
+			if (e.Args[2] == 1) d.Home();	// on its way home (Buzzsaw Return)
 			int h0 = m.health;
 			d.SpecialMissileHit(m);
+			if (e.Args[1] == 1)
+			{
+				// keep it: the embed grinds on; read the monster 30 tics later
+				Console.Printf("FP shieldsaw disc into %s: %d -> %d, %s, left in", cls, h0, m.health, d.phase == SSQ_Disc.PH_EMBED ? "STUCK" : "not stuck");
+				ssCutMon = m; ssCutH0 = h0; ssCutAt = level.maptime + 30;
+				return;
+			}
 			String what = (!m || m.health <= 0) ? "CUT IN TWO" : d.phase == SSQ_Disc.PH_EMBED ? "STUCK, GRINDING" : "GLANCED OFF";
 			Console.Printf("FP shieldsaw disc into %s (spawn health %d): %d -> %d, %s", cls, m ? m.SpawnHealth() : -1, h0, m ? m.health : -1, what);
 			d.Destroy();

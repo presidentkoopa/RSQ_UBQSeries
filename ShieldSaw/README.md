@@ -217,7 +217,10 @@ on the simulated rig (2026-10-31 onward).
   bash while moving forward at 2 m/s or more -- stick or body -- strikes a wedge 1.5 / 2 / 2.5 m deep); **Shield Size**
   (after Battering Ram 2: Large, then Largest; the Shield Size row is the floor); **Shield Dash** (after Charge: thrust
   the shield forward hard with the stick pushed forward and you dash 3 / 4 / 5 m the way it faces, landing a bash; 2 s
-  between). Without the patch nothing changes.
+  between). **Grind:** **Hungry Blades** (a grind hit 6 -> 8 / 10 / 12, a stuck disc 3 -> 4 / 5 / 6 a tic); **Rev
+  Shield** (after it: a revving shield held up grinds what claws it; 2: turns a blocked shot even with the Deflect row
+  off); **Buzzsaw Return** (after Hungry Blades 2: the disc coming home grinds what it passes for 65 / 80 / 95% of a
+  grind hit). Without the patch nothing changes.
 - **Fixed 11-02:** the hand throw now bounces off walls (the Wall Bounces row only reached the One-Handed throw), and
   a monster under the cut-in-two tier is cut in two (the cut dealt only an ordinary hit, so a Doom imp took about 40
   and lived); a bullet the shield on your back stops goes back out (its trace started inside your own body, so your

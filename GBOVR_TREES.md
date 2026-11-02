@@ -1050,6 +1050,18 @@ throw sound for now).
 | Rev Shield (new) | Hungry Blades 1 | 1-2: a revving shield held up blocks AND grinds what touches the plate (a melee monster that claws it is ground); 2: and the blades turn a blocked missile | ShieldSaw | - | `rev.block` |
 | Buzzsaw Return (new) | Hungry Blades 2 | 1-3: a recalled disc grinds what it passes on the way home for 50% + 15% lv of a grind hit | ShieldSaw | - | `buzz.return` |
 
+**Grind: BUILT 11-02 (L3).** Gun Bonsai VR: Hungry Blades, Rev Shield, Buzzsaw Return. ShieldSaw: `SSQ_Guard.GrindDamage`
+(the Grind Damage row + 2 a level; the held grind, the claw grind and Buzzsaw Return all use it); the embedded disc's
+tick + 1 a level; `RevShield(mo, held)` (its level only while held up and revving) and `ClawGrind` in the block
+(a melee attacker on the plate is ground, paid to the saw); level 2 turns a blocked missile even with Deflect off;
+Buzzsaw Return in `SpecialMissileHit` on the way home, before the hit's own tier. Touches `rev.block`, `buzz.return`.
+**Call made here:** Rev Shield 2's "the blades turn a blocked missile" -- with the ShieldSaw's default Deflect row
+(Return to Sender) a blocked missile already turns, so level 2 only matters with that row off; read literally, not
+reinvented. **Headless 11-02** (`fp_ssgrind`, `fp_sscut` kept in / homeward): grind hit 6 -> 8 -> 12; Rev Shield 1
+only held and revving, the clawing imp 60 -> 52 (Hungry 1), -> 48 (Hungry 3); a disc stuck in a Hell Knight ground 63
+over the embed, 126 at Hungry Blades 3 (7 hits of 9, of 18); homeward into a Baron: one glance alone, then a second hit
+of 8 (Buzzsaw 1), 11 (Buzzsaw 3). Not provable headless: a real claw on a held, revving plate; Rev Shield 2's turn.
+
 **Spartan (the Saber link; needs both mods)**
 
 | Node | Parent | Levels | Owns | Art | Score |

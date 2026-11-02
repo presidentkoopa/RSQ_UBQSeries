@@ -450,6 +450,8 @@ class RSQ_MeleeUpgradeService : Service
 			if (stringArg == "Charge.reach") return RSQ_Upgrade_Charge.Reach(lv);
 			if (stringArg == "ShieldSize.scale") return RSQ_Upgrade_ShieldSize.Scale(lv);
 			if (stringArg == "ShieldDash.m") return RSQ_Upgrade_ShieldDash.Meters(lv);
+			if (stringArg == "HungryBlades.grind") return RSQ_Upgrade_HungryBlades.Grind(lv);
+			if (stringArg == "BuzzsawReturn.share") return RSQ_Upgrade_BuzzsawReturn.Share(lv);
 			// G. Gun hand, H. Taunt
 			if (stringArg == "PistolWhip.stagger") return RSQ_Upgrade_PistolWhip.Stagger(lv);
 			if (stringArg == "PistolWhip.mult") return RSQ_Upgrade_PistolWhip.Mult(lv);
