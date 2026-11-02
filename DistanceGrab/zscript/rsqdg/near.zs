@@ -246,8 +246,13 @@ class RSQDG_Near : EventHandler
 		if (inv && On("rsqdg_catch_takes", p, true))
 		{
 			double heft = RSQDG_Mass.Heft(a);
-			bool took; Actor res;
-			[took, res] = inv.CallTryPickup(pmo);
+			// through the flight's TakeInto, as a caught pull: a gun the walk-up grip takes goes to THIS hand
+			// (the first pass only did that for the distance catch, so an off-hand walk-up grab of a gun went
+			// to the main hand by the pickup's own auto-switch)
+			let fl = RSQDG_Flight.Get();
+			bool took = false;
+			if (fl) took = fl.TakeInto(h, inv, pmo, p);
+			else { Actor res; [took, res] = inv.CallTryPickup(pmo); }
 			if (took) { if (feel) feel.OnCatch(h, null, p, true, heft); return; }
 		}
 		if (hold && hold.Take(h, a, p))

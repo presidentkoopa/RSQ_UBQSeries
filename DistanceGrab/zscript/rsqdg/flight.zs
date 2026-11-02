@@ -380,19 +380,12 @@ class RSQDG_Flight : EventHandler
 				// whether it was a clip or a backpack that landed.
 				double heft = RSQDG_Mass.Heft(a);
 				String cname = a.GetClassName();
-				// WHAT WEAPONS YOU HAD before this pickup, so an off-hand catch can tell which gun it
-				// gave (a Brutal Doom floor gun is a CustomInventory that GIVES one: OffHandKeep).
-				Array<Weapon> hadW;
-				class<Inventory> icls = inv.GetClass();
-				if (hand == 1) for (let it = pmo.Inv; it; it = it.Inv) { let ow = Weapon(it); if (ow) hadW.Push(ow); }
-				bool took;
-				Actor result;
-				[took, result] = inv.CallTryPickup(pmo);
+				// THROUGH TakeInto: the pickup, then the gun it gave goes to THIS hand (HandKeep).
+				bool took = TakeInto(hand, inv, pmo, p);
 				if (took)
 				{
 					if (RSQDG_Reach.Flag("rsqdg_debug", p, false))
 						Console.Printf("[RSQDG] hand %d caught and USED %s", hand, cname);
-					if (hand == 1) OffHandKeep(pmo, p, hadW, icls);
 					flyActor[hand] = null;
 					flyTic[hand] = 0;
 					flyHold[hand] = 0;
@@ -441,64 +434,180 @@ class RSQDG_Flight : EventHandler
 		return false;
 	}
 
-	// ---- A GUN CAUGHT BY THE OFF HAND STAYS IN THE OFF HAND --------------------
+	// ---- A WEAPON GOES TO THE HAND THAT GRABBED IT ------------------------------
 	//
 	// The owner, 11-02: "if i grab a weapon with the offhand i want it to go there until i move it back
-	// to mainhand myself, or holster it." A weapon the OFF hand catches (and the pickup takes) goes INTO
-	// the off hand, through the engine's own off-hand slot: flagged bOffhandWeapon and raised through
-	// PendingWeapon, which QuestZDoom's BringUpWeapon puts on PSP_OFFHANDWEAPON (player.zs) -- the way
-	// RSQ_TacticalRig's DrawOff / QueueOff does it (copied, not linked). The pickup's own auto-switch to
-	// the main hand is cancelled. It stays there: nothing here moves it again; the rig's holsters, its
-	// watch move, or QuestZDoom's switchhand take it back.
-	//   Which gun: the one the pickup GAVE (a weapon you did not have before -- Brutal Doom's floor guns
-	//   are CustomInventory spawners that give one), else for a plain weapon pickup the copy you own.
-	//   Not: an off-hand-only weapon (class default bOffhandWeapon -- BD22 VR's dual copies, the saber's
-	//   second hilt), a melee weapon (BD22 VR moves its own axe, rsvr/axegrab.zs), a two-handed weapon,
-	//   one flagged NoHandSwitch, the saber or the ShieldSaw, or the gun already in the main hand.
-	//   Main-hand catches are unchanged.
-	// THE RAISE WAITS while the main hand is still switching, and for as long as QuestZDoom's two-hand
-	// latch is on (WF_TWOHANDSTABILIZED): an off-hand weapon raised while latched arrives invisible and
-	// dead (player.zs, p_pspr.cpp, hw_weapon.cpp -- the rig's TickPairs note). The latch is let go with
-	// the grip, so the gun arrives on release. A queued gun that is no longer yours is dropped.
+	// to mainhand myself, or holster it", and after the first pass failed in his headset ("they don't seem
+	// to always go into the hand i grab with"): a weapon grabbed with a hand goes to THAT hand. Both the
+	// distance catch (Catch) and the walk-up grip (near.zs) take a pickup through TakeInto.
+	//
+	// WHICH WEAPON THE PICKUP GAVE. A Brutal Doom floor gun is a CustomInventory (BDWeaponSpawner) whose
+	// Pickup state GIVES the gun (A_GiveInventory "Shot_Gun"), and when you already own that gun the
+	// pickup gives only ammo and no new weapon appears in the inventory. The first pass looked for a NEW
+	// weapon, so an owned gun went to no hand at all (it stayed wherever it was, usually the main hand),
+	// and a main-hand catch was left to the engine's pickup auto-switch, which does nothing for an owned
+	// gun and takes an owned gun that had once been in the off hand back to the OFF hand
+	// (inventory_util.zs: a weapon still flagged bOffhandWeapon is always raised there).
+	// THE FIX: RSQDG_PickupWatch, an item of ours put at the head of the player's inventory for the one
+	// CallTryPickup. Every item handed to a player passes the inventory chain's HandlePickup first
+	// (inventory.zs CallHandlePickup), so the watch sees each weapon the pickup gives -- owned or new,
+	// taken or refused -- by class, and declines it (returns false), so the pickup goes on unchanged.
+	//
+	// THEN, for that weapon (HandKeep):
+	//   off hand: into the off hand, through the engine's own off-hand slot -- flagged bOffhandWeapon and
+	//     raised through PendingWeapon, which QuestZDoom's BringUpWeapon puts on PSP_OFFHANDWEAPON
+	//     (player.zs) -- the way RSQ_TacticalRig's DrawOff / QueueOff does it (copied, not linked). The
+	//     pickup's own auto-switch to the main hand is cancelled. It stays there: nothing here moves it
+	//     again; the rig's holsters, its watch move, or QuestZDoom's switchhand take it back.
+	//   main hand: the main hand switches to it (an owned gun too). A stale bOffhandWeapon left on it from
+	//     an earlier off-hand stay is cleared first, or the engine would raise it in the off hand.
+	//   Not moved, and said why (Say): the same gun already in the OTHER hand (one weapon cannot be in both
+	//     hands -- QuestZDoom keeps one instance per class; BD22 VR's Dual key gives its own off-hand copy),
+	//     a melee weapon (BD22 VR moves its own axe by hand, rsvr/axegrab.zs, from our grab.event), an
+	//     off-hand-only or NoHandSwitch weapon, a two-handed weapon, the saber or the ShieldSaw.
+	// THE OFF-HAND RAISE WAITS while the main hand is still switching, and for as long as QuestZDoom's
+	// two-hand latch is on (WF_TWOHANDSTABILIZED): an off-hand weapon raised while latched arrives
+	// invisible and dead (player.zs, p_pspr.cpp, hw_weapon.cpp -- the rig's TickPairs note). The latch
+	// is let go with the grip, so the gun arrives on release. A queued gun that is no longer yours is dropped.
 	const OFF_WAIT = 70;                    // tics the raise waits for the main hand's switch (not the latch)
 	private Weapon offNext[MAXPLAYERS];
 	private int    offWait[MAXPLAYERS];
 
-	static bool OffHandable(PlayerInfo p, Weapon w)
+	// A short line on screen for a deliberate refusal or a weapon that could not go where it was grabbed.
+	// Once, not every tic a refused catch is retried: the same line again only after two seconds.
+	private transient String saidMsg;
+	private transient int saidTic;
+	void Say(PlayerInfo p, String msg)
 	{
-		if (!p || !w) return false;
+		if (!p || p != players[consoleplayer]) return;
+		if (msg == saidMsg && level.maptime - saidTic < 70) return;
+		saidMsg = msg; saidTic = level.maptime;
+		Console.Printf("Distance Grab: %s", msg);
+	}
+
+	static String WeaponName(Weapon w)
+	{
+		if (!w) return "that";
+		String t = w.GetTag();
+		if (t == "") t = w.GetClassName();
+		return t;
+	}
+
+	// May this weapon be moved between hands at all.
+	static String HandNo(Weapon w)
+	{
+		if (!w) return "not a weapon";
 		let d = GetDefaultByType(w.GetClass());
-		if (!d || d.bOffhandWeapon || d.bMELEEWEAPON || d.bTWOHANDED || d.bNOHANDSWITCH) return false;
-		if (w.bMELEEWEAPON || w.bTWOHANDED) return false;
+		if (d.bMELEEWEAPON || w.bMELEEWEAPON) return "a melee weapon (BD22 VR hands its own axe to the grabbing hand)";
+		if (d.bOffhandWeapon) return "an off-hand-only weapon";
+		if (d.bNOHANDSWITCH) return "a weapon that never changes hands (NoHandSwitch)";
+		if (d.bTWOHANDED || w.bTWOHANDED) return "a two-handed weapon (it takes both hands)";
 		String n = w.GetClassName();
 		n = n.MakeLower();
-		if (n.IndexOf("ubqs_") == 0 || n.IndexOf("ssq_") == 0 || n == "rsq_hands" || n == "fist") return false;
+		if (n.IndexOf("ubqs_") == 0 || n.IndexOf("ssq_") == 0 || n == "rsq_hands" || n == "fist") return "another mod's hand weapon";
+		return "";
+	}
+
+	static bool OffHandable(PlayerInfo p, Weapon w)
+	{
+		if (!p || !w || HandNo(w) != "") return false;
 		return w != p.ReadyWeapon && w != p.OffhandWeapon;
 	}
 
-	private void OffHandKeep(PlayerPawn pmo, PlayerInfo p, Array<Weapon> hadW, class<Inventory> icls)
+	// The pickup, watched: took or not, and the gun it gave goes to this hand.
+	bool TakeInto(int hand, Inventory inv, PlayerPawn pmo, PlayerInfo p)
 	{
-		Weapon w = null;
-		for (let it = pmo.Inv; it && !w; it = it.Inv)
+		if (!inv || !pmo || !p) return false;
+		Array<Weapon> had;
+		for (let it = pmo.Inv; it; it = it.Inv) { let ow = Weapon(it); if (ow) had.Push(ow); }
+		class<Inventory> icls = inv.GetClass();
+		let watch = RSQDG_PickupWatch(Actor.Spawn("RSQDG_PickupWatch"));
+		if (watch && !watch.CallTryPickup(pmo)) { watch.Destroy(); watch = null; }
+		// a plain weapon pickup (vanilla Shotgun) is itself the weapon; a CustomInventory spawner gives one
+		if (watch && (class<Weapon>)(icls)) watch.Note((class<Weapon>)(icls));
+		bool took;
+		Actor result;
+		[took, result] = inv.CallTryPickup(pmo);
+		Array<class<Weapon> > seen;
+		if (watch) { seen.Copy(watch.seen); watch.Destroy(); }
+		Weapon w = WhichGave(pmo, seen, had);
+		if (took) HandKeep(pmo, p, hand, w);
+		else if (w && RSQDG_Reach.Flag("rsqdg_catch_takes", p, true))
+		{
+			// THE ONE DELIBERATE REFUSAL HERE IS THE PICKUP'S OWN: you have this gun and its ammo is full, so
+			// the game will not take it. It stays in the hand as a thing to carry, drop or throw -- and says so.
+			Say(p, String.Format("%s: you have it and its ammo is full -- carried, not taken", WeaponName(w)));
+			if (RSQDG_Reach.Flag("rsqdg_trace", p, false))
+				Console.Printf("[RSQDG] hand %d refused -- the pickup refused %s (owned, ammo full)", hand, w.GetClassName());
+		}
+		return took;
+	}
+
+	// The gun the pickup gave: the exact class it handed over, else a weapon that was not there before,
+	// else a subclass of what it handed over (Brutal Doom's Purist guns subclass the plain ones).
+	static Weapon WhichGave(PlayerPawn pmo, Array<class<Weapon> > seen, Array<Weapon> had)
+	{
+		for (int i = 0; i < seen.Size(); i++)
+		{
+			let w = Weapon(pmo.FindInventory(seen[i]));
+			if (w && !GetDefaultByType(w.GetClass()).bOffhandWeapon) return w;
+		}
+		for (let it = pmo.Inv; it; it = it.Inv)
 		{
 			let nw = Weapon(it);
-			if (nw && hadW.Find(nw) == hadW.Size() && !nw.bOffhandWeapon) w = nw;
+			if (nw && had.Find(nw) == had.Size() && !GetDefaultByType(nw.GetClass()).bOffhandWeapon && !nw.bCHEATNOTWEAPON) return nw;
 		}
-		if (!w && icls && (class<Weapon>)(icls)) w = Weapon(pmo.FindInventory(icls));
-		if (!OffHandable(p, w))
+		for (int i = 0; i < seen.Size(); i++)
 		{
-			if (w && RSQDG_Reach.Flag("rsqdg_debug", p, false))
-				Console.Printf("[RSQDG] hand 1 caught %s: not a gun the off hand keeps", w.GetClassName());
+			let w = Weapon(pmo.FindInventory(seen[i], true));
+			if (w && !GetDefaultByType(w.GetClass()).bOffhandWeapon) return w;
+		}
+		return null;
+	}
+
+	void HandKeep(PlayerPawn pmo, PlayerInfo p, int hand, Weapon w)
+	{
+		if (!w || !p) return;
+		bool dbg = RSQDG_Reach.Flag("rsqdg_debug", p, false);
+		String no = HandNo(w);
+		if (no != "")
+		{
+			if (dbg) Console.Printf("[RSQDG] hand %d took %s: not moved between hands -- %s", hand, w.GetClassName(), no);
 			return;
 		}
-		// the pickup's auto-switch would take it into the MAIN hand: cancel that
-		if (p.PendingWeapon == w) p.PendingWeapon = WP_NOCHANGE;
 		int n = pmo.PlayerNumber();
 		if (n < 0 || n >= MAXPLAYERS) return;
-		offNext[n] = w;
-		offWait[n] = OFF_WAIT;
-		if (RSQDG_Reach.Flag("rsqdg_debug", p, false))
-			Console.Printf("[RSQDG] hand 1 caught %s: into the off hand", w.GetClassName());
+		if (hand == 1)
+		{
+			if (w == p.OffhandWeapon) { if (dbg) Console.Printf("[RSQDG] hand 1 took %s: already in the off hand", w.GetClassName()); return; }
+			if (w == p.ReadyWeapon)
+			{
+				Say(p, String.Format("%s is already in your main hand (one gun cannot be in both hands)", WeaponName(w)));
+				return;
+			}
+			// the pickup's auto-switch would take it into the MAIN hand: cancel that
+			if (p.PendingWeapon == w) p.PendingWeapon = WP_NOCHANGE;
+			offNext[n] = w;
+			offWait[n] = OFF_WAIT;
+			if (dbg) Console.Printf("[RSQDG] hand 1 caught %s: into the off hand", w.GetClassName());
+			return;
+		}
+		// the main hand
+		if (offNext[n] == w) offNext[n] = null;
+		if (w == p.OffhandWeapon)
+		{
+			Say(p, String.Format("%s is already in your off hand (one gun cannot be in both hands)", WeaponName(w)));
+			return;
+		}
+		if (w == p.ReadyWeapon)
+		{
+			if (p.PendingWeapon != WP_NOCHANGE && p.PendingWeapon != w) p.PendingWeapon = WP_NOCHANGE;
+			if (dbg) Console.Printf("[RSQDG] hand 0 took %s: already in the main hand", w.GetClassName());
+			return;
+		}
+		w.bOffhandWeapon = false;      // a stale flag from an earlier off-hand stay would raise it in the off hand
+		p.PendingWeapon = w;
+		if (dbg) Console.Printf("[RSQDG] hand 0 caught %s: into the main hand", w.GetClassName());
 	}
 
 	// every player, every tic (the playsim)
@@ -1064,5 +1173,33 @@ class RSQDG_Turn
 		// The middle should be straight above the origin; move the drawing by the
 		// difference.
 		return (-wx, -wy, u - y1);
+	}
+}
+
+// WHICH WEAPONS A PICKUP GIVES (RSQDG_Flight.TakeInto). Sits at the head of the player's inventory for exactly
+// one CallTryPickup: every item handed to the player passes the chain's HandlePickup first (inventory.zs
+// CallHandlePickup), so this sees each weapon -- the floor gun itself, or the one a Brutal Doom spawner's Pickup
+// state gives with A_GiveInventory, owned or new, taken or refused -- notes its class and declines it (false),
+// so the pickup carries on exactly as without it. Destroyed straight after; never saved, never seen.
+class RSQDG_PickupWatch : Inventory
+{
+	Array<class<Weapon> > seen;
+	Default
+	{
+		Inventory.MaxAmount 1;
+		+INVENTORY.UNDROPPABLE
+		+INVENTORY.UNTOSSABLE
+		+INVENTORY.QUIET
+		+INVENTORY.UNCLEARABLE
+	}
+	void Note(class<Weapon> c)
+	{
+		if (c && seen.Find(c) == seen.Size()) seen.Push(c);
+	}
+	override bool HandlePickup(Inventory item)
+	{
+		let w = Weapon(item);
+		if (w) Note(w.GetClass());
+		return false;
 	}
 }

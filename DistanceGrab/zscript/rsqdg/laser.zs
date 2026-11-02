@@ -317,13 +317,15 @@ class RSQDG_Laser : EventHandler
 			pip[h]  = Ensure(pip[h],  "RSQDG_Dot");
 			cone[h] = Ensure(cone[h], "RSQDG_ConeViz");
 			if (!beam[h] || !pip[h] || !cone[h]) continue;
-			// YIELD TO LASER SIGHT (G6, rsqdg_beam_yield): when RSQ_LaserSight is already drawing a
+			// YIELD TO LASER SIGHT (G6, rsqdg_ls_yield): when RSQ_LaserSight is already drawing a
 			// beam on this hand, the grab's beam stands down; the dot and the cone stay, since they say
 			// what the GRAB would take. OFF BY DEFAULT since 11-02 (the owner: "Laser sight doesn't seem
 			// to play well with DistanceGrab laser" -- he saw one laser and wants both: LaserSight's from
 			// the gun, the grab's from the hand). The two are separate actors and models (LaserSight's
 			// voxel rod on the gun, RSQDG_Beam here), so nothing else hides one for the other.
-			bool wb = wantBeam && !(RSQDG_Reach.Flag("rsqdg_beam_yield", p, false) && LaserOn(h));
+			// RENAMED from rsqdg_beam_yield (11-02, second pass): that cvar is archived, the owner's ini
+			// still held its old default (true), and the first pass's default change never reached him.
+			bool wb = wantBeam && !(RSQDG_Reach.Flag("rsqdg_ls_yield", p, false) && LaserOn(h));
 			DrawHand(h, pmo, p, aim, grab, fl, hold, wb, wantDot, wantCone);
 		}
 	}

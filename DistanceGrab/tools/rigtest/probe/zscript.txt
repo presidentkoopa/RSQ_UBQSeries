@@ -182,6 +182,27 @@ class RSQDGT_Probe : EventHandler
 					t, fe ? fe.Amp(0) : 0, fe ? fe.Amp(1) : 0, ho ? ho.Strain(0) : 0,
 					hd ? hd.pos.x : 0, hd ? hd.pos.y : 0, hd ? hd.pos.z : 0, hd ? hd.vel.Length() : 0,
 					bur ? bur.GetSpeedFactor() : 1.0, mo.vel.xy.Length(), aim ? RSQDG_Reach.Metres(aim.PalmVelocity(0)) * 35 : 0);
+			// T_HANDS (11-02): what each hand holds, the two-hand stand-down, and every beam drawn this tic --
+			// the grab's own (RSQDG_Beam, visible) and RSQ Laser Sight's (its service, per hand)
+			Actor tg1 = aim ? aim.TargetFor(1) : null;
+			Actor lk1 = gr ? gr.Locked(1) : null;
+			String pend = "-";
+			if (p.PendingWeapon != WP_NOCHANGE) { if (p.PendingWeapon) pend = p.PendingWeapon.GetClassName(); else pend = "null"; }
+			int dgb = 0;
+			let bi = ThinkerIterator.Create("RSQDG_Beam");
+			Actor ba;
+			while (ba = Actor(bi.Next())) if (!ba.bINVISIBLE) dgb++;
+			int ls0 = 0, ls1 = 0;
+			let si = ServiceIterator.Find("RSQLS_SightService");
+			Service sv;
+			while (sv = si.Next()) { ls0 = sv.GetInt("laser.beam", "", 0); ls1 = sv.GetInt("laser.beam", "", 1); }
+			Console.Printf("T_HANDS t%d ready=%s off=%s pend=%s two=%d latch=%d gap=%.2fm palmok1=%d target1=%s lock1=%s fly1=%s hold1=%s dgbeams=%d lsbeam0=%d lsbeam1=%d",
+				t, p.ReadyWeapon ? p.ReadyWeapon.GetClassName() : 'none', p.OffhandWeapon ? p.OffhandWeapon.GetClassName() : 'none',
+				pend,
+				RSQDG_Reach.TwoHanding(p), (p.WeaponState & WF_TWOHANDSTABILIZED) != 0, RSQDG_Reach.Metres(mo.AttackPos - mo.OffhandPos),
+				RSQDG_Reach.PalmOk(mo, p, 1), tg1 ? tg1.GetClassName() : 'none', lk1 ? lk1.GetClassName() : 'none',
+				(fl && fl.FlyingActor(1)) ? fl.FlyingActor(1).GetClassName() : 'none', (ho && ho.HeldBy(1)) ? ho.HeldBy(1).GetClassName() : 'none',
+				dgb, ls0, ls1);
 			Console.Printf("T_STATE t%d palm=(%.0f %.0f %.0f) yaw=%.0f pit=%.0f rol=%.0f good=%d palmok=%d armed=%d target=%s lock=%s fly=%s prog=%.2f hold=%s",
 				t, mo.AttackPos.x, mo.AttackPos.y, mo.AttackPos.z, RSQDG_Reach.Yaw(mo,0), RSQDG_Reach.Pitch(mo,0), RSQDG_Reach.Roll(mo,0),
 				aim && aim.PoseGood(), RSQDG_Reach.PalmOk(mo, p, 0), gr && gr.Held(0),

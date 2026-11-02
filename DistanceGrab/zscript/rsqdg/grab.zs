@@ -64,18 +64,52 @@ class RSQDG_Grab : EventHandler
 	// punch-speed stand-down ends, and the tic it was last measured
 	transient int punchUntil[2], punchSeen[2];
 	private transient bool tokLooked;
-	private transient class<Inventory> tokRifle, tokMelee;
+	private transient class<Inventory> tokRifle, tokMelee, tokAimed;
 	bool TwoHandToken(Actor mo)
 	{
 		if (!tokLooked)
 		{
 			tokLooked = true;
-			Name a = "RSQ_TwoHandRifle", b = "RSVR_MeleeTwo";
-			tokRifle = a; tokMelee = b;
+			// RSQ_TwoHandAimed: BD22 VR 2.0.3k/l's Two-Hand Aim (every two-handed gun); RSQ_TwoHandRifle: the
+			// same in 2.0.3j; RSVR_MeleeTwo: two hands on the axe or the sword
+			Name a = "RSQ_TwoHandRifle", b = "RSVR_MeleeTwo", c = "RSQ_TwoHandAimed";
+			tokRifle = a; tokMelee = b; tokAimed = c;
 		}
-		return mo && ((tokRifle && mo.CountInv(tokRifle) > 0) || (tokMelee && mo.CountInv(tokMelee) > 0));
+		return mo && ((tokRifle && mo.CountInv(tokRifle) > 0) || (tokMelee && mo.CountInv(tokMelee) > 0)
+			|| (tokAimed && mo.CountInv(tokAimed) > 0));
 	}
 	private transient bool twoSaid;
+
+	// EVERY STAND-DOWN SAYS WHY. A palm turned out on a hand that may not reach (two-handing, punch speed,
+	// gloves, the rig, a lit saber, a melee weapon ...): the refusal log (rsqdg_trace) says the reason when it
+	// changes. And a LASTING reason (the hand holds something: a lit saber, a melee weapon, another mod's hand,
+	// the gloves, the rig) is said ON SCREEN once the palm has been held out on it for half a second -- a
+	// deliberate reach, not a swing passing through the pose -- and then not again for ten seconds. The
+	// passing ones (two-handing, the punch-speed moment) stay in the log only: they end by themselves.
+	// (Found on the rig, 11-02: with RSQ_Saber loaded its second saber starts in the off hand, lit, by
+	// default -- ubqs_dual_mode 2 -- and that off hand never reached, with nothing on screen to say why.)
+	const BUSY_SAY_TICS = 18;
+	const BUSY_SAY_AGAIN = 350;
+	private transient String busySaid[2];
+	private transient int busyHeld[2], busyToldAt[2];
+	private transient String busyTold[2];
+	private void SayBusy(PlayerInfo p, PlayerPawn pmo, int h)
+	{
+		String bw = RSQDG_Reach.PalmPose(pmo, p, h) ? RSQDG_Reach.BusyWhy(p, h) : "";
+		if (bw != busySaid[h])
+		{
+			busySaid[h] = bw;
+			busyHeld[h] = 0;
+			if (bw != "" && RSQDG_Reach.Flag("rsqdg_trace", p, false))
+				Console.Printf("[RSQDG] t%d hand %d refused -- palm out, but %s", level.maptime, h, bw);
+		}
+		if (bw == "" || bw.IndexOf("two-handing") == 0 || bw.IndexOf("moved at punch") == 0) return;
+		if (++busyHeld[h] != BUSY_SAY_TICS) return;
+		if (bw == busyTold[h] && level.maptime - busyToldAt[h] < BUSY_SAY_AGAIN) return;
+		busyTold[h] = bw; busyToldAt[h] = level.maptime;
+		let fl = RSQDG_Flight.Get();
+		if (fl) fl.Say(p, String.Format("the %s hand does not reach -- %s", h == 0 ? "main" : "off", bw));
+	}
 
 	Actor Locked(int hand) const
 	{
@@ -258,7 +292,11 @@ class RSQDG_Grab : EventHandler
 			// refusal thirty-five times a second and buried everything else. A
 			// reason is reported when it CHANGES, which is when it is news.
 			if (why != lastWhy[hand] && RSQDG_Reach.Flag("rsqdg_trace", p, false))
-				Console.Printf("[RSQDG] hand %d refused -- %s", hand, why);
+			{
+				String more = "";
+				if (why == "nothing in the cone" && aim) more = RSQDG_Cone.Explain(p.mo, p, hand);
+				Console.Printf("[RSQDG] t%d hand %d refused -- %s%s", level.maptime, hand, why, more != "" ? " (nearest: " .. more .. ")" : "");
+			}
 			lastWhy[hand] = why;
 			return;
 		}
@@ -364,11 +402,12 @@ class RSQDG_Grab : EventHandler
 		{
 			twoSaid = two;
 			if (RSQDG_Reach.Flag("rsqdg_debug", p, false))
-				Console.Printf("[RSQDG] t%d two-handing %s (latch %d)", level.maptime, two ? "-- standing down" : "over -- back", (p.WeaponState & WF_TWOHANDSTABILIZED) != 0);
+				Console.Printf("[RSQDG] t%d two-handing %s", level.maptime, two ? "-- standing down: " .. RSQDG_Reach.TwoHandWhy(p) : "over -- back");
 		}
 
 		for (int h = 0; h < 2; h++)
 		{
+			if (poseGood) SayBusy(p, pmo, h);
 			if (two)
 			{
 				let hd2 = RSQDG_Hold.Get();

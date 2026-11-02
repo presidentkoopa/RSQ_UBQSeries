@@ -148,6 +148,48 @@ class RSQDG_Cone play
 		return best;
 	}
 
+	// WHY NOTHING WAS TAKEN (the refusal log only, rsqdg_trace; never on the hot path). Of the things
+	// near the hand's line -- within twice the reach and three times the spread -- the one closest to the
+	// line, and the first test it fails: outside the cone, beyond the reach, the policy (RSQDG_Policy
+	// .WhyNot), already flying or held, or behind a wall. "" when nothing is even near.
+	static String Explain(PlayerPawn pmo, PlayerInfo p, int hand)
+	{
+		double reach  = RSQDG_Reach.Num("rsqdg_reach",  p, 512.0);
+		double spread = RSQDG_Reach.Num("rsqdg_spread", p, 12.0);
+		if (reach <= 0 || spread <= 0) return "reach or spread is 0";
+		Vector3 origin = RSQDG_Reach.AimPalm(pmo, hand);
+		Vector3 pdir = RSQDG_Reach.AimDir(pmo, hand);
+		if (pdir.Length() < 1e-6) return "";
+		pdir = pdir.Unit();
+		let pol = RSQDG_Policy.Get();
+		let fl = RSQDG_Flight.Get();
+		let hold = RSQDG_Hold.Get();
+		Actor best = null; double bestAng = 1e9, bestDist = 0;
+		let it = BlockThingsIterator.CreateFromPos(origin.x, origin.y, origin.z, reach * 2, reach * 2, false);
+		while (it.Next())
+		{
+			Actor a = it.thing;
+			if (!a || a == pmo || a.bNOINTERACTION) continue;
+			if (!(a is "Inventory") && !a.bSHOOTABLE && !a.bSOLID && !a.bISMONSTER) continue;
+			Vector3 mid = (a.Pos.x, a.Pos.y, a.Pos.z + a.Height * 0.5);
+			Vector3 d = mid - origin;
+			Vector3 pd = (d.x, d.y, d.z * RSQDG_Reach.PIXELSTRETCH);
+			double dist = pd.Length();
+			if (dist < 0.01 || dist > reach * 2) continue;
+			double ang = acos(clamp((pd / dist) dot pdir, -1, 1));
+			if (ang > spread * 3 || ang >= bestAng) continue;
+			best = a; bestAng = ang; bestDist = dist;
+		}
+		if (!best) return "";
+		String who = best.GetClassName();
+		if (bestAng > spread) return String.Format("%s is %.1f deg off the hand's line (the cone is %.0f)", who, bestAng, spread);
+		if (bestDist > reach) return String.Format("%s is %.0f units away (reach %.0f)", who, bestDist, reach);
+		if ((fl && fl.IsFlying(best)) || (hold && hold.IsHeld(best))) return who .. " is already flying or held";
+		if (pol && !pol.Decide(best, pmo, p)) return who .. ": " .. pol.WhyNot(best, pmo, p);
+		if (RSQDG_Reach.Flag("rsqdg_sight", p, true) && !pmo.CheckSight(best)) return who .. " is behind a wall (Line of Sight)";
+		return who .. " should be takeable (it was not the cone's pick this tic)";
+	}
+
 	// WHAT MAY BE TAKEN is not this file's business any more -- see policy.zs.
 	// It used to be `bSPECIAL || (bSOLID && !bNOBLOCKMAP)`, which made every
 	// tech column and tree in a map pullable and a +1 bonus as wanted as a medikit.

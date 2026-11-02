@@ -319,6 +319,36 @@ class RSQDG_Policy : StaticEventHandler
 		return true;
 	}
 
+	// WHY Decide said no, for the refusal log only (rsqdg_trace). Walks Decide's tests in Decide's order.
+	String WhyNot(Actor a, PlayerPawn pmo, PlayerInfo p)
+	{
+		if (!a || !p) return "nothing";
+		if (a.bNOINTERACTION) return "it does not interact (NOINTERACTION)";
+		if (a.bMISSILE) return "it is a missile in flight";
+		if (a.player) return "it is a player";
+		if (a.Radius <= 0 || a.Height <= 0) return "it has no size";
+		if (a.bINVISIBLE || a.GetRenderStyle() == STYLE_None) return "it is invisible";
+		if (a.sprite == tnt1) return "it draws nothing (TNT1: a Brutal Doom spawner placeholder)";
+		if (!a.bISMONSTER && a.default.bSHOOTABLE && a.Health <= 0) return "it is dying";
+		if (a.bISMONSTER) return a.Health > 0 ? "a living monster (never pulled)" : "a corpse (What You Can Grab: Corpses is off)";
+		let inv = Inventory(a);
+		if (inv && inv.Owner) return "it is in someone's inventory";
+		let svc = RuleService();
+		if (svc)
+		{
+			bool known;
+			let r = svc.Match(a, known);
+			if (known) return r ? String.Format("its kind (%s) is switched off in What You Can Grab", r.category) : "its mod registered it as not grabbable";
+		}
+		Build();
+		int ri = RuleIndexFor(a.GetClass());
+		if (ri < 0) return "not a kind of thing the grab takes (no rule)";
+		let r = rules[ri];
+		if (!r.allow) return "refused by rule: " .. r.why;
+		if (!CategoryOn(r.category, p)) return String.Format("its kind (%s) is switched off in What You Can Grab", r.category);
+		return "allowed";
+	}
+
 	// ---- the question ----------------------------------------------------
 	//
 	// Null means no. The RULE comes back rather than a bool, so the caller gets

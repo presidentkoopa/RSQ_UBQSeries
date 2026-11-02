@@ -106,6 +106,13 @@ class RSQDG_Reach
 	static play bool PalmOk(PlayerPawn pmo, PlayerInfo p, int hand)
 	{
 		if (HandBusy(p, hand)) return false;
+		return PalmPose(pmo, p, hand);
+	}
+
+	// The pose half alone (palm turned out, hand raised), whoever else wants the hand: the refusal log
+	// asks it to tell "the palm was out but the hand stood down" from "the palm was not out".
+	static play bool PalmPose(PlayerPawn pmo, PlayerInfo p, int hand)
+	{
 		if (!Flag("rsqdg_palm", p, true)) return true;
 
 		// RSQ_Accessibility's Gesture Ease: the roll tolerance x1..x2 (30 -> 60 degrees) and the
@@ -140,34 +147,45 @@ class RSQDG_Reach
 	// is exactly the hand that should reach. rsqdg_yield 0 turns this off.
 	static play bool HandBusy(PlayerInfo p, int hand)
 	{
+		return BusyWhy(p, hand) != "";
+	}
+
+	// WHY a hand stands down ("" = it may reach), for HandBusy and the refusal log (rsqdg_trace).
+	static play String BusyWhy(PlayerInfo p, int hand)
+	{
 		// THE OFF-HAND MODIFIER (One-Handed): held, the main controller is playing the off hand's
 		// part -- so the main hand's own part stands down, and the off hand's part asks nothing
 		// about what either hand holds: holding the modifier IS the intent to reach.
-		if (p && p.mo && RSQDG_A11y.Swapped(p.mo)) return hand == 0;
-		if (!p) return false;
+		if (p && p.mo && RSQDG_A11y.Swapped(p.mo)) return hand == 0 ? "the Off-Hand Modifier has this controller" : "";
+		if (!p) return "";
 		// TWO-HANDING STANDS THE WHOLE GRAB DOWN (TwoHanding, below): both hands, whatever
 		// rsqdg_yield says. A hand already carrying something keeps its palm gate, so a held
 		// thing is not dropped because the other hand came near.
 		if (p.mo && TwoHanding(p))
 		{
 			let hd = RSQDG_Hold.Get();
-			if (!hd || !hd.HandIsFull(hand)) return true;
+			if (!hd || !hd.HandIsFull(hand))
+			{
+				String tw = TwoHandWhy(p);
+				if (tw == "") tw = "the 0.5 s after it ended";
+				return "two-handing: " .. tw;
+			}
 		}
-		if (!Flag("rsqdg_yield", p, true)) return false;
+		if (!Flag("rsqdg_yield", p, true)) return "";
 		// FIGHTING WITH THE HAND (the owner, 11-02: "punching in melee triggers distance grab, so when
 		// I'm in a bar fight I'm pulling all sorts of shit around me into the fight"): a hand wearing RSQ
 		// Melee's boxing gloves, or one that moved at punch speed in the last 0.75 s, does not arm the
 		// reach (MeleeHand, below). An idle empty hand turned palm out still reaches.
-		if (p.mo && MeleeHand(p, hand)) return true;
+		if (p.mo && MeleeHand(p, hand)) return Punching(p, hand) ? "moved at punch speed in the last 0.75 s" : "wearing RSQ Melee's gloves";
 		// RSQ_TacticalRig: a hand reaching into a holster or its radial, or holding a
 		// door, the cigarette or the Zippo, is the rig's. Asked by service name, so an
 		// absent rig gives no answer.
 		let rit = ServiceIterator.Find("RSQTR_RigService");
 		Service rs;
 		while (rs = rit.Next())
-			if (rs.GetInt("rig.busy", "", hand, 0, p.mo) == 1) return true;
+			if (rs.GetInt("rig.busy", "", hand, 0, p.mo) == 1) return "the Tactical Rig is using this hand";
 		Weapon w = (hand == 0) ? p.ReadyWeapon : p.OffhandWeapon;
-		if (!w) return false;
+		if (!w) return "";
 		// GetClassName can come back lower-cased (seen in the rig), so compare lower-cased.
 		String n = w.GetClassName();
 		n = n.MakeLower();
@@ -182,15 +200,15 @@ class RSQDG_Reach
 			let it = ServiceIterator.Find("UBQS_SaberService");
 			Service sv;
 			while (sv = it.Next())
-				if (sv.GetInt("saber.lit", "", hand, 0, p.mo) == 0) return false;
-			return true;
+				if (sv.GetInt("saber.lit", "", hand, 0, p.mo) == 0) return "";
+			return "a lit saber";
 		}
 		// THE BARE HAND IS AN EMPTY HAND, not a melee weapon to swing (the owner, 10-27: "I don't see
 		// distance grabbing working at all"): Brutal Doom's fists (Melee_Attacks, +MELEEWEAPON) are
 		// what the main hand holds once its gun is holstered, and the vanilla Fist the same. They reach.
-		if (n == "fist" || (w.bMELEEWEAPON && w.bCHEATNOTWEAPON)) return false;
-		if (w.bMELEEWEAPON) return true;
-		return n.IndexOf("ssq_") == 0 || n.IndexOf("ubqs_") == 0;
+		if (n == "fist" || (w.bMELEEWEAPON && w.bCHEATNOTWEAPON)) return "";
+		if (w.bMELEEWEAPON) return "holding a melee weapon (" .. w.GetClassName() .. ")";
+		return (n.IndexOf("ssq_") == 0 || n.IndexOf("ubqs_") == 0) ? "another mod's hand (" .. w.GetClassName() .. ")" : "";
 	}
 
 	// ---- TWO-HANDING (the owner, 11-02: "when I two hand a weapon sometimes I like to tilt it at an
@@ -204,32 +222,69 @@ class RSQDG_Reach
 	//     it from the C++ weaponStabilised on every psprite state change: the off grip pressed with the
 	//     controllers inside 0.50 m while vr_two_handed_weapons is on; released by letting go);
 	//   - BD22 VR's own two-hand tokens, asked by class name so nothing links against it:
-	//     RSQ_TwoHandRifle (its Two-Hand Aim on the Rifle) and RSVR_MeleeTwo (two hands on the axe or
-	//     the sword) -- the same three things BD22 VR's RSVR_VRHand.TwoHands reads;
-	//   - a gun (not melee, not the bare hand) in the main hand with the off hand inside rsqdg_steady_m
-	//     of it (0.5 m, the engine's own steadying distance; 0 turns this half off), unless a hand is
-	//     carrying something (Distance Grab's own two-hand carry).
+	//     RSQ_TwoHandAimed (2.0.3k/l: its Two-Hand Aim, the off grip pressed on a gun's drawn support point),
+	//     RSQ_TwoHandRifle (the same in 2.0.3j and older) and RSVR_MeleeTwo (two hands on the axe or the
+	//     sword) -- what BD22 VR's RSVR_VRHand.TwoHands reads;
+	//   - THE OFF HAND ON THE GUN, by where it is (11-02, second pass): a gun (not melee, not the bare
+	//     hand) in the main hand and the off controller in FRONT of
+	//     the gun hand along the barrel (TWO_HAND_NEAR to TWO_HAND_FAR metres) and within rsqdg_twohand_r
+	//     (0.2 m) of the barrel line. That is where a support hand is: BD22 VR measures its guns' drawn
+	//     support points 20-46 cm ahead of the main controller and 0-23 cm off the bore (rsq/twohand.zs
+	//     table). Whatever the off hand holds (RSQ_Saber's second saber starts there, lit, and a saber hand
+	//     laid on the gun is still steadying it). Unless a hand is carrying something (Distance Grab's own
+	//     two-hand carry).
+	//     WHAT IT REPLACED, and why: "the hands within rsqdg_steady_m (0.5 m) of each other". An off hand
+	//     raised palm out BESIDE the gun to reach is 30-45 cm from the gun hand, so that test called it
+	//     two-handing: no grab, and its beam hidden while Laser Sight's stayed -- the owner's "the lasers
+	//     still don't show at the same time" and part of "sometimes I can't get weapons" (rig, 11-02:
+	//     gap 0.35 m -> two=1, grab beams 0, laser beam 1). The rig's stock poses held the hands exactly
+	//     0.50 m apart, one hair outside the old test, which is why the first pass saw nothing wrong.
 	// And it STAYS down TWO_HAND_HOLD tics (0.5 s) after the last of those ends, so the moment the hands
 	// part while the gun is still canted does not arm the grab. The time is kept per player on
 	// RSQDG_Grab (twoUntil).
 	const TWO_HAND_HOLD = 18;
+	const TWO_HAND_NEAR = 0.05;
+	const TWO_HAND_FAR  = 0.70;
 
 	static play bool TwoHandRaw(PlayerInfo p)
 	{
-		if (!p || !p.mo) return false;
-		if (p.WeaponState & WF_TWOHANDSTABILIZED) return true;
+		return TwoHandWhy(p) != "";
+	}
+
+	// Why the player counts as two-handing ("" = not), for the stand-down and its log line.
+	static play String TwoHandWhy(PlayerInfo p)
+	{
+		if (!p || !p.mo) return "";
+		if (p.WeaponState & WF_TWOHANDSTABILIZED) return "QuestZDoom's two-hand grip";
 		let gr = RSQDG_Grab.Get();
-		if (gr && gr.TwoHandToken(p.mo)) return true;
+		if (gr && gr.TwoHandToken(p.mo)) return "BD22 VR's two-hand hold";
 		let w = p.ReadyWeapon;
-		if (!w || w.bMELEEWEAPON) return false;
+		if (!w || w.bMELEEWEAPON) return "";
 		String n = w.GetClassName();
 		n = n.MakeLower();
-		if (n == "fist" || n.IndexOf("ubqs_") == 0 || n.IndexOf("ssq_") == 0) return false;
-		double steady = Num("rsqdg_steady_m", p, 0.5);
-		if (steady <= 0) return false;
+		if (n == "fist" || n.IndexOf("ubqs_") == 0 || n.IndexOf("ssq_") == 0) return "";
+		double r = Num("rsqdg_twohand_r", p, 0.2);
+		if (r <= 0) return "";
 		let hd = RSQDG_Hold.Get();
-		if (hd && (hd.HandIsFull(0) || hd.HandIsFull(1))) return false;
-		return Metres(p.mo.AttackPos - p.mo.OffhandPos) < steady;
+		if (hd && (hd.HandIsFull(0) || hd.HandIsFull(1))) return "";
+		double along, side;
+		[along, side] = OnBarrel(p.mo);
+		if (along >= TWO_HAND_NEAR && along <= TWO_HAND_FAR && side <= r)
+			return String.Format("off hand on the gun (%.2f m ahead, %.2f m off the barrel)", along, side);
+		return "";
+	}
+
+	// The off controller in the gun's frame, room metres: how far AHEAD of the main controller along its
+	// aim, and how far from that line. Raw controllers (AttackPos / OffhandPos and the main hand's own
+	// aim), not the One-Handed swap: this is about the gun the main hand holds.
+	static play double, double OnBarrel(PlayerPawn pmo)
+	{
+		Vector3 d = pmo.OffhandPos - pmo.AttackPos;
+		Vector3 m = (d.x, d.y, d.z * PIXELSTRETCH) / UNITS_PER_METRE_XY;
+		Vector3 f = Fwd(pmo.AttackAngle + 90, pmo.AttackPitch, 0);
+		double along = m dot f;
+		double side = (m - f * along).Length();
+		return along, side;
 	}
 
 	static play bool TwoHanding(PlayerInfo p)

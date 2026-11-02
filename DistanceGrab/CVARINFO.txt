@@ -115,7 +115,13 @@ user int   rsqdg_lock_dwell = 0;
 // hand system (RS_ShieldSawQ, the QuestSaber's Force hand) does not reach: a
 // swing is full of the palm-out flick this mod listens for.
 user bool  rsqdg_yield    = true;
-user float rsqdg_steady_m = 0.5;    // metres: hands this close with a gun in the main hand are two-handing it; the grab stands down (0 off; the engine latch and BD22 VR's two-hand still count)
+// TWO-HANDING BY WHERE THE OFF HAND IS (reach.zs TwoHandRaw, 11-02 second pass): with a gun in the main hand, the off
+// controller IN FRONT of the gun hand (5 to 70 cm along the barrel) and within this many metres of the barrel line is on
+// the gun: the grab stands down. 0 = only the engine's two-hand latch and BD22 VR's two-hand tokens count.
+// A NEW NAME, NOT rsqdg_steady_m: that one was "the hands within 0.5 m of each other", which also caught an off hand
+// simply raised palm out beside the gun (hands 30-45 cm apart) and hid its beam; an archived cvar keeps its old value
+// in every player's ini, so the rule could only change under a new name.
+user float rsqdg_twohand_r = 0.2;
 user bool  rsqdg_lightup  = false;   // recolour the target itself (translation)
 user bool  rsqdg_glow     = true;    // light the target in its own silhouette
 user float rsqdg_glow_a   = 1.0;     // glow brightness multiplier
@@ -228,7 +234,11 @@ user float rsqdg_burden_kg   = 120.0;  // carrying this much halves your speed
 //   dot   one glow where the line lands, scaled to keep one apparent size
 //   cone  DXR's grab-reach cone: the exact volume the grab tests
 user bool  rsqdg_beam        = true;
-user bool  rsqdg_beam_yield  = false;  // hide the grab beam on a hand RSQ_LaserSight is already lighting (G6). OFF by default (owner 11-02: both lasers at once)
+// Hide the grab beam on a hand RSQ_LaserSight is already lighting (G6). OFF (owner 11-02: both lasers at once).
+// A NEW NAME (was rsqdg_beam_yield, default true until 11-02): user cvars are archived, so every ini that ever ran
+// the old pack still says rsqdg_beam_yield=true and changing its default changed nothing for those players. The
+// old name is no longer declared, so its stale ini line is ignored.
+user bool  rsqdg_ls_yield    = false;
 user float rsqdg_beam_w      = 1.0;    // width multiplier
 user float rsqdg_beam_a      = 0.8;
 user bool  rsqdg_dot         = true;
