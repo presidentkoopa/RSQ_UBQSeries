@@ -3,6 +3,8 @@ Gun Bonsai -- VR / Offhand Patch
 RSQ_GunBonsaiVR.pk3 (was Gameplay_GB_VR_Offhand_Patch.0.10.6.pk3 -- delete the old one).
 For Gun Bonsai 0.10.6 (ToxicFrog, not included). Load it right AFTER GunBonsai-0.10.6.pk3.
 Settings: Options -> Radiant Silvergun Options -> RSQ Gun Bonsai VR.
+The Berserk Meter's gauge (graphics/RSQGBGE, RSQGBGF) is coldcite's Top HP Bars health bar (2017, "Feel free to use
+this in your mods") stood on end and recoloured red (TopHPBars/tools/gen_gauges.py in the series repo).
 The boxing gloves, the punch, Slappers Only and the moves Guard, Hadouken, Wall Splat and Heavy Hands
 moved to RSQ Melee (RSQ_Melee.pk3) on 2026-11-01. Their upgrades stay here (same names, so a save keeps
 what you learned); load RSQ_Melee.pk3 for the gloves.

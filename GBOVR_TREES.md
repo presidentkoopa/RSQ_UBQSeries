@@ -795,10 +795,20 @@ Pound, Slam, Meteor), heavy (criticals, Three-Hit, Finisher, Headshot), whoosh (
 break (Hexen's), Backstab silent, Taunt the player's shout. **Headless:** every name resolves; the moves ran with no
 error. Not provable headless: how they sound (the gate runs with sound off).
 
+**HUD GAUGES (11-02, L2; the owner: "repurpose and recolor the TopHPBar as a hud element for SlowMo, arrange it
+vertically"):** `TopHPBars/tools/gen_gauges.py` stands coldcite's style-A bar on end (empty + a recoloured full fill
+per gauge). SlowMo (`gauge.zs`, `RSQSM_Gauge`): the adrenaline meter in cyan when Adrenaline is on (dim below
+Adrenaline to Start, a white tick at that line, pulsing while it is spent), and with Adrenaline off a gauge only while
+the world is slowed, filled by how slow; rows SlowMo Gauge (on), Gauge Side, Gauge Size. Gun Bonsai VR
+(`rsq/ui/gauges.zs`, `RSQUI_Gauges`): the Berserk Meter in red, one per glove that has it, on that hand's side, set in
+from the edge; it drains with the time left while the earned Berserk runs; row Berserk Meter Gauge (on). **Headless
+11-02:** a real screenshot from the hidden engine shows both: SlowMo's at 60 with its tick at 25, the Berserk Meter at
+60 of 300 after three punches.
+
 **THE FISTS TREE IS BUILT (11-02):** all nine branches, every kept node, each run in the engine headless. Not built:
 Catch and Bullet Time Fists (parked off, as designed). **Owed:** the art and sound pass (kiddolink bursts by level,
 CvS2 colourings, RS Combat FX sounds; today's looks are placeholders: particles, stock sounds, the existing sparks);
-the Berserk Meter on the HUD; HP Bars' new states (frozen, held, disarmed); the owner's headset for everything a hand
+HP Bars' new states (frozen, held, disarmed); the owner's headset for everything a hand
 does (Gestures' reads, the swings, the look).
 
 **Counts:** 42 nodes (38 + Reflect Guard, Absorb and Release, Critical Hits, Clear Out), 14 exist, 28 new, 2

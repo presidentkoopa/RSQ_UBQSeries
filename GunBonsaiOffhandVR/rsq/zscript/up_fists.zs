@@ -640,7 +640,7 @@ class RSQ_Upgrade_BerserkMeter : RSQ_Upgrade_Base
 		meter = 0;
 		pawn.GiveInventory("RSQ_EarnedStrength", 1);
 		let p = RSQ_EarnedStrength(pawn.FindInventory("RSQ_EarnedStrength"));
-		if (p) p.left = Tics(level);
+		if (p) { p.left = Tics(level); p.total = p.left; }
 		pawn.A_StartSound("misc/p_pkup", CHAN_AUTO, CHANF_OVERLAP, 1.0);
 		pawn.A_SetBlend("FF2020", 0.35, 18);
 		RSQM.Touch("berserk.earned", pawn, target);
@@ -655,7 +655,7 @@ class RSQ_Upgrade_BerserkMeter : RSQ_Upgrade_Base
 // it), but it runs out.
 class RSQ_EarnedStrength : PowerStrength
 {
-	int left;
+	int left, total;   // tics left, and what it started with (the gauge drains by them: rsq/ui/gauges.zs)
 	override void Tick()
 	{
 		Super.Tick();

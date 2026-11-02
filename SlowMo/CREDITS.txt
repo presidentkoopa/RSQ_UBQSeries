@@ -13,6 +13,9 @@ WHAT THIS PK3 SHIPS, AND WHOSE IT IS
       and crack recordings (sounds/rsqsm/smwhiz1-4, smcrak1-2): his RS_Ballistics library.
   Generated for this pack
       The round's placeholder sprite (sprites/rsqsm/RSQRA0.png).
+  coldcite (Top HP Bars 1.04, 2017: "Feel free to use this in your mods. You don't have to ask my permission!")
+      The SlowMo gauge (graphics/RSQSMGE, RSQSMGF) is his style-A health bar stood on end, the fill recoloured
+      cyan pixel by pixel (TopHPBars/tools/gen_gauges.py in the series repo).
   id Software (Doom), played by name from the IWAD, NOT shipped
       The clock's cues: DSGETPOW (slowing), DSPSTOP (back to speed), DSITEMUP (meter full),
       DSNOWAY (not enough adrenaline). See SNDINFO.txt.

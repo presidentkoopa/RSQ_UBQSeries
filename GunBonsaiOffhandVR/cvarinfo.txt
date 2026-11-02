@@ -72,6 +72,7 @@ server int rsq_stock_mode = 0;
 // ---- Kill Rewards (rsq/zscript/killrewards.zs; SoM's Universal Kill Rewards v1.0, folded in 2026-11-02) ----
 // Monsters burst into bits of health, armour and ammo when they die. On by default (the owner: bits from the start).
 server bool  rsqgb_kr_enabled   = true;
+user bool    rsqgb_berserk_gauge = true;   // the Berserk Meter's gauge, one per glove that has learned it
 server int   rsqgb_kr_mode      = 0;     // 0 By Health (spawn health / ratio, the owner's fountains), 1 Range (min..max)
 server int   rsqgb_kr_amount    = 1;     // Bits per Kill: 0 Few (1 per 20 health), 1 Standard (per 10), 2 Many (per 5), 3 Custom
 server int   rsqgb_kr_hp_ratio  = 10;    // Custom: health per bit (SoM's som_kr_hp_ratio)

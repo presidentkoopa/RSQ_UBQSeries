@@ -324,6 +324,12 @@ class FistsProbe : EventHandler
 			Put("DoomImp", 90); Put("DoomImp", 300, 100); Put("DoomImp", 200, -150);
 			EventHandler.SendNetworkEvent("rsqg_pair", 1, 300, 0);
 		}
+		else if (e.Name ~== "fp_adr")
+		{
+			let s = ServiceIterator.Find("RSQSM_Service").Next();
+			int now = s ? s.GetInt("adrenaline.add", "", e.Args[0]) : -1;
+			Console.Printf("FP adrenaline now %d", now);
+		}
 		else if (e.Name ~== "fp_sounds")
 		{
 			static const String SN[] = { "rsqml/fx/blast", "rsqml/fx/thud", "rsqml/fx/heavy", "rsqml/fx/whoosh", "rsqml/fx/release",

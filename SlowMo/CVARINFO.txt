@@ -40,6 +40,9 @@ server bool  rsqsm_smooth       = true;  // 27: nearby walkers move a little eve
 server float rsqsm_smooth_range = 1024;  // map units from a player
 server int   rsqsm_smooth_max   = 12;    // the nearest this many walkers
 user bool    rsqsm_drain        = false; // 28: colours drain while time is slowed (a post-process pass)
+user bool    rsqsm_gauge        = true;  // the SlowMo gauge on the HUD: the adrenaline meter, or how slow while it runs
+user int     rsqsm_gauge_side   = 0;     // 0 left, 1 right
+user float   rsqsm_gauge_size   = 1.0;   // x a third of the screen's height
 user float   rsqsm_drain_amt    = 0.35;  // how much colour goes at full depth, 0..1
 
 // ---- the owner's QoL round (2026-10-31): options, off by default

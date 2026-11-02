@@ -41,7 +41,8 @@ All rows are on the front page except the ones marked *Triggers* or *Tuning and 
 | World Speed | 0.25 | A slider from 0.05 (near-freeze) to 0.95 of normal speed. Every slow motion uses it unless another mod asks for its own speed. |
 | Ease In and Out | Standard | Snap / Standard / Gradual. |
 | Dodgeable Bullets | On | In slow motion an enemy's hitscan becomes a visible round, same damage. Brutal Doom's bullets slow to the same speed. |
-| Adrenaline | Option | Slow motion costs adrenaline, earned from kills, hurt and near misses. There is no meter on screen: a pickup sound when full, an "oof" when there is not enough. |
+| Adrenaline | Option | Slow motion costs adrenaline, earned from kills, hurt and near misses. The SlowMo Gauge shows the meter; a pickup sound when full, an "oof" when there is not enough. |
+| SlowMo Gauge | On | A vertical gauge at the side of your view (coldcite's Top HP Bars bar stood on end, in cyan). With Adrenaline on it is the meter: dim below Adrenaline to Start (a white tick marks that line), pulsing while slow motion spends it. With Adrenaline off it shows only while the world is slowed, filled by how slow. Gauge Side (Left / Right) beside it; Gauge Size on Tuning and Debug. |
 | Haptics | On | Rumble on both hands when slow motion starts and ends. Needs the engine's quake haptics above 0. |
 | Lean Out of Bullets | On | Leaning out of a slowed round's path makes it miss. A lean held for about 2 s becomes your new stance and stops counting. |
 | Smooth Walkers | On | The nearest 12 walking monsters move a little every tic instead of stepping. |

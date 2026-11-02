@@ -31,3 +31,4 @@ version "4.14"
 #include "rsq/ui/skin_a_menus.zs"
 #include "rsq/ui/skin_b.zs"
 #include "rsq/ui/skin_c.zs"
+#include "rsq/ui/gauges.zs"         // the Berserk Meter's gauge (coldcite's HP bar stood on end, 2026-11-02)

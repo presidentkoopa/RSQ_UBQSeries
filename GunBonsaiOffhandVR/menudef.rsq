@@ -48,6 +48,7 @@ OptionMenu "RSQ_MeleeOptions"
 {
 	Title "RSQ GUN BONSAI VR"
 	Option "$RSQ_MENU_STOCK", "rsq_stock_mode", "RSQ_StockModes"
+	Option "Berserk Meter Gauge", "rsqgb_berserk_gauge", "OnOff"
 	Option "$RSQ_MENU_XPSRC", "rsq_xp_source", "RSQ_XPSources"
 	Option "$RSQ_MENU_SHIELDGAUGE", "rsq_hud_shield", "OnOff"
 	StaticText " "
