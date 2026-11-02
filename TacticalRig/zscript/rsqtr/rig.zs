@@ -1077,7 +1077,8 @@ class RSQTR_Rig : EventHandler
 		int n = consoleplayer;
 		bool useDown = (p.cmd.buttons & BT_USE) != 0;
 		bool useEdge = useDown && !useWas;
-		bool usePress = Flag("rsqtr_use", p, true);
+		// WHILE THE CIGARETTE IS OUT, USE IS ITS (cig.zs): no holster, no watch move on a Use press
+		bool usePress = Flag("rsqtr_use", p, true) && !RSQTR_Cig.IsOut(n);
 		bool gripOk = Flag("rsqtr_grip", p, true);
 		bool editing = Flag("rsqtr_edit", p, false);
 

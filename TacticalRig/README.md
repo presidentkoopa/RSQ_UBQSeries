@@ -47,9 +47,11 @@ doom2.wad -> 01 brutal22test6 -> 02 BD22_VoxelPack -> 03 BD22_VR-Reloaded_2.0.3j
   swap). The hand left empty holds its empty hand (Brutal Doom's hands, or nothing / the fist).
 - **Move a holster (option):** turn on *Move Holsters by Hand*, grip inside a sphere, carry it, let go. The
   keyring moves the same way.
-- **Cigarette (option):** main hand grips at the left chest pocket; bring it to your mouth and pull the
-  trigger; off-hand trigger opens the Zippo; hold the flame to the tip; off-hand trigger again to smoke
-  and spit it out.
+- **Cigarette (option):** main hand grips at the left chest pocket: the cigarette is in that hand, the Zippo in
+  the off hand. **While it is out, Use is the cigarette's** (no doors, switches or holsters on Use). Bring it to
+  your mouth and press Use: it stays in your mouth. Press Use anywhere else: you flick it away. In the mouth:
+  off-hand trigger opens and lights the Zippo; bring the flame to the tip and press Use: it lights and you smoke
+  (*Smoke Time*, 2 s). Then it flicks out of your mouth and (with RSQ SlowMo) the world slows.
 
 ## Holsters
 
@@ -94,7 +96,7 @@ default.
 | Torso | Option | A torso the holsters sit on, coloured by armour, breathing red at low health. |
 | Torso Style | Doom marine | Doom marine or Quake Grunt. |
 | Helmet | On | With the marine torso: a helmet only mirrors show. |
-| Cigarettes | Option | Ermac's cigarette pocket (3, refilled each level). |
+| Cigarettes | Option | Ermac's cigarette pocket (3, refilled each level) and the ritual above. |
 | Rig Options: Quick Swap | On | A gun in hand at a full holster swaps at once. |
 | Rig Options: Keep Holsters Between Levels | On | What each holster holds carries to the next level. |
 | Rig Options: Ammo Light on Holsters | On | A full holster's light: green, yellow (low or reload), red (empty). |
@@ -112,9 +114,9 @@ default.
 | Rig Options: Torso Fades Looking Down | On | The torso fades as you look down. |
 | Rig Options: Leave Shoulder to ShieldSaw | On | The off shoulder is left to RSQ ShieldSaw's shield while it hangs there. |
 | Rig Options: Saber on Hip Too | Option | The saber also clips to the hips. |
-| Rig Options: Slow Motion After a Smoke | On | RSQ SlowMo starts as you spit the cigarette out (6 s at 25 %, on the *Cigarette* page). |
+| Rig Options: Slow Motion After a Smoke | On | RSQ SlowMo starts as the smoked cigarette flicks out of your mouth (6 s at 25 %, on the *Cigarette* page). |
 | Rig Options: Refill Each Level | On | The cigarette pocket refills each level. |
-| Tuning and Debug: Holster Positions / Torso Fit / Cigarette | - | Sliders for each holster and the keyring (its *Toward Off Hand* is mirrored for a left-handed layout), the torso and helmet, and the cigarette. |
+| Tuning and Debug: Holster Positions / Torso Fit / Cigarette | - | Sliders for each holster and the keyring (its *Toward Off Hand* is mirrored for a left-handed layout), the torso and helmet, and the cigarette: *Smoke Time (s)* 1 to 5 in half seconds (2), *Slow Motion Seconds*, *Slow Motion Speed*, *Pack Size*. |
 | Tuning and Debug: Throw Swing Speed (m/s) | 2.5 | How fast the hand must swing to throw a gun. |
 | Tuning and Debug: Thrown Gun Damage | 1.0 | Multiplier on thrown-gun hits. |
 | Tuning and Debug: Reset All | - | Resets every Tactical Rig setting. |
@@ -150,11 +152,22 @@ simulated rig.
     below). **(not yet headset-confirmed)**
 13. Turn on *Torso*. Look down: the marine torso, green or blue with your armour, fading as you look
     down. *Helmet* shows only in the mirror.
-14. Turn on *Cigarettes*. Main hand grips at the left chest pocket: the cigarette is in that hand, the
-    Zippo in the off hand. Bring it to your mouth, pull the main trigger: it stays at your mouth and your
-    gun is back. Off-hand trigger: the Zippo opens. Hold the flame to the tip: it lights. Off-hand trigger
-    again: it flares, you spit it out end over end, and (with RSQ SlowMo) the world slows for 6 s. The
-    butt smoulders where it lands and draws monsters. **(reworked 10-31, not yet headset-confirmed)**
+14. **The cigarette ritual** (2026-11-02; rig only, not headset-confirmed). Turn on *Cigarettes*.
+    a. Main hand grips at the left chest pocket: the cigarette is in that hand, the Zippo in the off hand.
+    b. Stand at a door, hand out in front, press Use: the cigarette flicks away in a small arc with a spark
+       on it and lies where it lands; the door does **not** open. Press Use again (nothing out): it opens.
+    c. Take another. Bring the hand to your lips and press Use: it stays in your mouth, follows your head,
+       and your gun is back in that hand.
+    d. Press Use now: nothing happens (the Zippo is shut). Off-hand trigger: the Zippo opens and lights.
+       Use with the flame away from the tip: nothing. Flame to the tip (just in front of your mouth), Use:
+       the tip glows, smoke rises, you hear the drag; the Zippo shuts and goes away.
+    e. After *Smoke Time* (2 s; try 3.5) it flicks out of your mouth, you exhale, the butt smoulders where it
+       lands, and with RSQ SlowMo the world slows (6 s at 25 %). Without RSQ SlowMo it just ends there.
+    f. Cancels: take one and switch to another gun (or holster), or turn *Cigarettes* off, or let something
+       else take the off hand for a second: the unlit cigarette goes back in the pocket. Die: it is gone. Go
+       to the next level with one out: it is back in the pocket and your guns are back in your hands.
+    Rig 11-02 (frames and logs: `tools/rigtest/cigprobe`, `docs/cig_ritual_rig.png`): all of a-f on plain
+    Doom 2; a-e on the full load order with RSQ SlowMo (world speed 1000 -> 250 permille on the flick).
 15. Turn on *Move Holsters by Hand*: grip a sphere, move it, let go. Turn it off to play.
 16. With RSQ Saber (Start With Dual Sabers On): off hand to the second saber's spot below the off-side hip,
     grip: the second saber goes in and the off hand holds the Force (Brutal Doom Quest's fist, or the bare
@@ -182,7 +195,9 @@ simulated rig.
 
 - **RSQ Gestures:** its watch check is what *Move Gun at Watch (Use)* waits for (asked by name). Without
   it there is no watch check and the row does nothing.
-- **RSQ SlowMo:** spitting out the cigarette starts slow motion (*Slow Motion After a Smoke*).
+- **RSQ SlowMo:** the smoked cigarette flicking out of your mouth starts slow motion (*Slow Motion After a
+  Smoke*), through RSQ SlowMo's `rsm_pulse <ms> <depth %>` network event (by name; nothing links). Without
+  RSQ SlowMo the event goes nowhere.
 - **RSQ Grenade** (2026-11-01, asked by name): without Brutal Doom's `HandGrenades`, the grenade spot hands out RSQ
   Grenade's grenade the same way (grip at the buckle: the grenade to the main hand; grip again: your gun back) and
   its light counts those grenades. Brutal Doom's comes first (with Brutal Doom VR loaded RSQ Grenade stands down).
@@ -208,7 +223,15 @@ simulated rig.
 - **Holstered guns may look squashed** (a model flag was tried and backed out because it could not be
   checked on the rig). Check in the mirror.
 - **Zippo and cigarette sounds (2026-11-01):** real recordings from Pixabay, picked by the owner (open, light,
-  close; the drag and the breath after it; the tip catching uses the Zippo's light). Not yet heard in the headset.
+  close; the drag and the breath after it; the tip catching uses the Zippo's light). The flick uses the rig's own
+  foley. Not yet heard in the headset.
+- **The cigarette's Use takeover** holds off the engine's use (doors, switches), the rig's Use holsters and the
+  watch move. Hand-on-door systems in other mods (RSQ Distance Grab's and Brutal Doom VR's doors by hand) read
+  the Use key themselves when a hand touches a door; they are not stood down.
+- **The mouth zone** (measured on the rig): a 0.15 m sphere around your lips (0.07 m in front of your eyes,
+  0.09 m below them, from the headset's real height), in front of your face only. The controller is tested: at
+  the lips it measured 0.055 m, at the chin 0.095 (in), at the chest 0.21 and at rest 0.40 (out). The flame
+  must be within 0.12 m of the tip.
 - SteamVR two-handed grip: a holster still takes the press, but a gun drawn into the off hand arrives only
   when you let go of the grip (the engine holds it). Nothing happens on Quest today.
 - Only guns measured into the fit table show at a holster; the muzzle direction could not be read by eye

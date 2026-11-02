@@ -1,0 +1,137 @@
+version "4.14"
+// TEST ONLY (never ships). Tactical Rig cigarette ritual probe.
+//   every tic: the cigarette's phase changes; every 5 tics while it is out: the hands against the mouth zone and the
+//   tip, the Zippo, the mouth prop, smoke; flicked cigarettes in flight; RSQ_SlowMo's answer (asked by name).
+//   trc_mode 1: stands the player in front of the nearest use-door and logs its ceiling (door opened or not).
+class RSQTRCigProbe : EventHandler
+{
+	bool useWas;
+	int lastPhase, lastActive, lastScale;
+	Line door;
+	int setup;
+	double ceil0;
+	override void WorldTick()
+	{
+		let p = players[0];
+		let mo = p.mo;
+		if (!mo) return;
+		let c = RSQTR_Cig.Get();
+		if (!c) return;
+		int ph = c.phase[0];
+		if (ph != lastPhase)
+		{
+			Console.Printf("trc: t%d phase %d -> %d  main %s off %s packs %d", level.maptime, lastPhase, ph,
+				p.ReadyWeapon ? p.ReadyWeapon.GetClassName() : 'none', p.OffhandWeapon ? p.OffhandWeapon.GetClassName() : 'none', RSQTR_Cig.Packs(mo));
+			lastPhase = ph;
+		}
+		bool useDown = (p.cmd.buttons & BT_USE) != 0;
+		if (p.cmd.buttons & BT_OFFHANDATTACK) Console.Printf("trc: t%d off-hand fire held", level.maptime);
+		if (useDown != useWas) Console.Printf("trc: t%d Use %s (phase %d, main %s, off %s)", level.maptime, useDown ? "pressed" : "released", ph, p.ReadyWeapon ? p.ReadyWeapon.GetClassName() : 'none', p.OffhandWeapon ? p.OffhandWeapon.GetClassName() : 'none');
+		useWas = useDown;
+		if (level.maptime % 35 == 0)
+		{
+			Vector3 h = RSQTR_Cig.Eyes(mo);
+			double u = RSQTR_Body.Upm();
+			Vector3 pk = c.Pocket(mo) - mo.AttackPos;
+			Vector3 a = (mo.AttackPos - h) / u, o = (mo.OffhandPos - h) / u;
+			Console.Printf("trc: t%d override %d main hand from the eyes (%.3f %.3f %.3f) m, off hand (%.3f %.3f %.3f) m (map x y, z unstretched x1.2), angle %.0f; packs %d, main hand %.3f m from the pocket, rsqtr_cig %d; pocket minus hand (%.1f %.1f %.1f) units", level.maptime, mo.OverrideAttackPosDir, a.x, a.y, a.z * 1.2, o.x, o.y, o.z * 1.2, mo.angle, RSQTR_Cig.Packs(mo), RSQTR_Body.RoomMetres(mo.AttackPos, c.Pocket(mo)), CVar.GetCVar("rsqtr_cig", p).GetInt(), pk.x, pk.y, pk.z);
+		}
+		if ((ph != 0 && level.maptime % 5 == 0) || (useDown && level.maptime % 5 == 0))
+		{
+			Vector3 h = RSQTR_Cig.Eyes(mo), m = RSQTR_Cig.Mouth(mo);
+			Console.Printf("trc: t%d ph %d use %d usedown %d | head (%.1f %.1f %.1f) pitch %.0f mouth (%.1f %.1f %.1f) | main hand %.3f m from mouth, in zone %d | flame %.3f m from tip | zippo open %d lit %d off %s | main %s pend %s",
+				level.maptime, ph, useDown, p.usedown, h.x, h.y, h.z, mo.pitch, m.x, m.y, m.z, RSQTR_Cig.MouthDist(mo), RSQTR_Cig.InMouthZone(mo), RSQTR_Cig.FlameDist(mo),
+				c.zipOpen[0], c.ZipBurning(0), p.OffhandWeapon ? p.OffhandWeapon.GetClassName() : 'none',
+				p.ReadyWeapon ? p.ReadyWeapon.GetClassName() : 'none', p.PendingWeapon && p.PendingWeapon != WP_NOCHANGE ? p.PendingWeapon.GetClassName() : 'none');
+			let mp = RSQTR_CigProp(c.mouthProp[0]);
+			if (mp) Console.Printf("trc: t%d mouth cigarette at (%.1f %.1f %.1f) burning %d sprite frame %d; smoke puffs alive %d", level.maptime, mp.pos.x, mp.pos.y, mp.pos.z, mp.burning, mp.frame, Count("RSQTR_Smoke"));
+		}
+		// flicked cigarettes
+		if (level.maptime % 3 == 0)
+		{
+			let it = ThinkerIterator.Create("RSQTR_Butt");
+			Actor a;
+			while (a = Actor(it.Next()))
+				Console.Printf("trc: t%d %s flying at (%.1f %.1f %.1f) vel (%.1f %.1f %.1f) pitch %.0f, %.0f units from the player, embers %d", level.maptime, a.GetClassName(), a.pos.x, a.pos.y, a.pos.z, a.vel.x, a.vel.y, a.vel.z, a.pitch, a.Distance2D(mo), Count("RSQTR_Ember"));
+		}
+		if (level.maptime % 35 == 0)
+		{
+			let it = ThinkerIterator.Create("RSQTR_ButtLying");
+			Actor a;
+			while (a = Actor(it.Next()))
+				Console.Printf("trc: t%d %s lying at (%.1f %.1f %.1f), %.0f units from the player, lure %d", level.maptime, a.GetClassName(), a.pos.x, a.pos.y, a.pos.z, a.Distance2D(mo), RSQTR_ButtLying(a).lure);
+		}
+		// RSQ_SlowMo, by name
+		let sit = ServiceIterator.Find("RSQSM_Service");
+		Service s;
+		int act = -2, sc = -2;
+		while (s = sit.Next()) { act = s.GetInt("slowmo.active", "", 0, 0, null); sc = s.GetInt("scale", "", 0, 0, null); }
+		if (act != lastActive || (act == 1 && level.maptime % 10 == 0 && sc != lastScale))
+		{
+			Console.Printf("trc: t%d slowmo service %s active %d world speed %d permille", level.maptime, act == -2 ? "absent" : "found", act, sc);
+			lastActive = act; lastScale = sc;
+		}
+		// trc_steal 1: another mod takes the off hand (the Zippo out of it), once
+		let st = CVar.FindCVar('trc_steal');
+		if (st && st.GetInt() == 1)
+		{
+			st.SetInt(0);
+			Console.Printf("trc: t%d the probe empties the off hand (was %s)", level.maptime, p.OffhandWeapon ? p.OffhandWeapon.GetClassName() : 'none');
+			p.SetPsprite(PSP_OFFHANDWEAPON, null); p.OffhandWeapon = null;
+		}
+		// trc_next 1: the next level, no intermission (the inventory carries over)
+		let nx = CVar.FindCVar('trc_next');
+		if (nx && nx.GetInt() == 1)
+		{
+			nx.SetInt(0);
+			Console.Printf("trc: t%d to the next level, phase %d, main %s off %s packs %d", level.maptime, ph, p.ReadyWeapon ? p.ReadyWeapon.GetClassName() : 'none', p.OffhandWeapon ? p.OffhandWeapon.GetClassName() : 'none', RSQTR_Cig.Packs(mo));
+			level.ChangeLevel(level.NextMap, 0, CHANGELEVEL_NOINTERMISSION);
+		}
+		if (level.maptime == 2 || level.maptime == 40)
+			Console.Printf("trc: t%d level %s start: phase %d main %s pend %s off %s packs %d", level.maptime, level.MapName, ph, p.ReadyWeapon ? p.ReadyWeapon.GetClassName() : 'none', p.PendingWeapon && p.PendingWeapon != WP_NOCHANGE ? p.PendingWeapon.GetClassName() : 'none', p.OffhandWeapon ? p.OffhandWeapon.GetClassName() : 'none', RSQTR_Cig.Packs(mo));
+		// trc_mode 1: the door
+		let cv = CVar.FindCVar('trc_mode');
+		if (cv && cv.GetInt() == 1)
+		{
+			if (!setup && level.maptime > 10)
+			{
+				setup = 1;
+				double best = 1e9;
+				for (int k = 0; k < level.Lines.Size(); k++)
+				{
+					let ln = level.Lines[k];
+					if (!ln.backsector || !(ln.activation & SPAC_Use)) continue;
+					if (ln.special != 12 && ln.special != 11 && ln.special != 202 && ln.special != 10 && ln.special != 105) continue;
+					if (ln.locknumber || ln.args[3] || (ln.special == 202 && ln.args[4])) continue;
+					Vector2 mid = ln.v1.p + ln.delta * 0.5;
+					double d = (mid - mo.pos.xy).Length();
+					if (d < best) { best = d; door = ln; }
+				}
+				if (door)
+				{
+					Vector2 mid = door.v1.p + door.delta * 0.5;
+					Vector2 nrm = (door.delta.y, -door.delta.x).Unit();
+					Vector2 at = mid + nrm * 24;
+					mo.SetOrigin((at.x, at.y, mo.pos.z), false);
+					mo.SetZ(mo.floorz);
+					mo.angle = atan2(-nrm.y, -nrm.x);
+					ceil0 = door.backsector.ceilingplane.ZatPoint(mid);
+					Console.Printf("trc: door line %d special %d at (%.0f %.0f), player at (%.0f %.0f) facing it, ceiling %.1f", door.Index(), door.special, mid.x, mid.y, mo.pos.x, mo.pos.y, ceil0);
+				}
+			}
+			if (door && level.maptime % 10 == 0)
+			{
+				Vector2 mid = door.v1.p + door.delta * 0.5;
+				double cz = door.backsector.ceilingplane.ZatPoint(mid);
+				Console.Printf("trc: t%d door ceiling %.1f (%s)", level.maptime, cz, cz > ceil0 + 1 ? "OPENING/OPEN" : "shut");
+			}
+		}
+	}
+	int Count(Name cls)
+	{
+		int k = 0;
+		let it = ThinkerIterator.Create(cls);
+		while (it.Next()) k++;
+		return k;
+	}
+}

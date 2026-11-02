@@ -1,0 +1,1 @@
+wait 40; set rsqtr_cig 1; set rsqtr_messages 1; wait 10; qz_rhand "-0.16 1.20 -0.12 30 0 0"; wait 12; echo TRC_TAKE; +use; wait 3; -use; wait 30; set trc_mode 1; qz_rhand "0.08 1.35 -0.35 30 0 0"; wait 50; echo TRC_USE_AT_DOOR_CIG_OUT; +use; wait 3; -use; wait 80; echo TRC_USE_AT_DOOR_NO_CIG; +use; wait 3; -use; wait 80; quit

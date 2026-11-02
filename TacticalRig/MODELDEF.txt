@@ -93,6 +93,28 @@ Model RSQTR_Butt
 	FrameIndex RSCB A 0 0
 }
 
+// The whole cigarette flicked from the hand (cig.zs RSQTR_FlickedCig), and lying where it lands.
+Model RSQTR_FlickedCig
+{
+	Path "models/rsqtr"
+	Model 0 "rtcig.md3"
+	Skin 0 "rtcig.jpg"
+	Scale 0.3 0.3 0.3
+	PitchOffset 22
+	USEACTORPITCH
+	FrameIndex RSCF A 0 0
+}
+
+Model RSQTR_CigLying
+{
+	Path "models/rsqtr"
+	Model 0 "rtcig.md3"
+	Skin 0 "rtcig.jpg"
+	Scale 0.3 0.3 0.3
+	PitchOffset 22
+	FrameIndex RSCF A 0 0
+}
+
 Model RSQTR_ButtLying
 {
 	Path "models/rsqtr"
