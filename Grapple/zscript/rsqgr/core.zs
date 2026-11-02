@@ -26,6 +26,12 @@ class RSQGR_Core : EventHandler
 	double worldScale;
 	transient RSQGR_Tracer tracer;
 
+	// SWING AND MOMENTUM (rsqgr_swing, owner 11-02: "go back to its OG functionality, pulling me to where I shot
+	// it. playing with momentum is nice and should be a toggle option"). Off (default): a wall rope pulls you
+	// straight to the claw and you stop there (Pull). On: the rope you hang and swing from, and the speed you
+	// keep after it (Swing's pendulum, KeepMomentum, the coast) -- exactly as 10-27..11-01.
+	clearscope static bool SwingMode() { return RSQGR_Util.Flag("rsqgr_swing", false); }
+
 	clearscope static RSQGR_Core Get() { return RSQGR_Core(EventHandler.Find("RSQGR_Core")); }
 
 	// The world's speed now (1 = not slowed). See RSQGR_Util.WorldScale.
@@ -130,7 +136,15 @@ class RSQGR_Core : EventHandler
 		// the coast is for a FLIGHT the rope gave (let go in the air, or while it was moving him): a let-go
 		// standing on the floor -- a monster pulled in, a slack rope -- leaves the stick's own feel alone
 		// (not a Split Pull's arrival on the floor: rig, it left the walk slow for the 18 coast tics)
-		if (h.owner && h.owner.player && RopeFlew(h.owner)) coastUntil[h.owner.PlayerNumber()] = level.maptime + COAST_TICS;
+		if (h.owner && h.owner.player && SwingMode() && RopeFlew(h.owner)) coastUntil[h.owner.PlayerNumber()] = level.maptime + COAST_TICS;
+		// NO MOMENTUM (Swing and Momentum off): letting go of a wall rope keeps none of the pull's speed -- you drop
+		// from where you are (the ledge hop below still lifts you over a lip). Before the perks: Slingshot (a swing
+		// perk) then has nothing to multiply.
+		if (h.phase == RSQGR_Hook.PH_LATCH && h.owner && !SwingMode())
+		{
+			h.owner.vel.xy = (0, 0);
+			h.owner.vel.z = min(h.owner.vel.z, 0.0);
+		}
 		RSQGR_Perks.OnLetGo(h, byPlayer);   // Barbed Claw's tear, Slingshot (perks.zs)
 		if (h.phase == RSQGR_Hook.PH_BITE && h.victim && h.owner && !h.heavy)
 			RSQGR_Monster.OnRelease(h.victim, h.owner, h.hand);
@@ -258,7 +272,7 @@ class RSQGR_Core : EventHandler
 			let h = hooks[pn * 2 + hand];
 			if (!h) continue;
 			bool grounded = pmo.Pos.z <= pmo.floorz + 0.5 || pmo.bOnMobj;
-			if (h.phase == RSQGR_Hook.PH_HOLD || (h.phase == RSQGR_Hook.PH_LATCH && (!grounded || h.reelHeld || h.gripHand >= 0)))
+			if (h.phase == RSQGR_Hook.PH_HOLD || (h.phase == RSQGR_Hook.PH_LATCH && (!grounded || h.reelHeld || h.gripHand >= 0 || (!SwingMode() && !h.arrived))))
 				k = 1;
 		}
 		if (k <= 0) return;
@@ -367,6 +381,10 @@ class RSQGR_Core : EventHandler
 		h.losBad = 0;
 		h.wasTaut = false;
 		h.slackMax = 0;
+		h.arrived = false;
+		h.pullSpeed = (h.ropeLen > 0.01) ? max(0.0, pmo.vel dot ((h.anchor - b) / h.ropeLen)) : 0.0;
+		h.bestDist = h.ropeLen;
+		h.noProgress = 0;
 		Thump(h, "latch");
 		if (RSQGR_Util.Opt("rsqgr_geo_mode", 0) == 1)
 		{
@@ -508,6 +526,13 @@ class RSQGR_Core : EventHandler
 	void KeepMomentum(PlayerPawn pmo, int pn)
 	{
 		if (!pmo || !pmo.player || RSQGR_Util.Num("rsqgr_momentum", 1) <= 0) return;
+		// Swing and Momentum off: the pull sets his velocity outright every tic (Pull), so nothing of the rope's
+		// needs the engine's keepmomentum; only Split Pull's draw keeps it, for its own tic
+		if (!SwingMode())
+		{
+			if (level.maptime - pulledTic[pn] <= 0) pmo.player.keepmomentum = true;
+			return;
+		}
 		bool holding = false;
 		for (int k = 0; k < 2; k++)
 		{
@@ -525,6 +550,7 @@ class RSQGR_Core : EventHandler
 
 	void Swing(PlayerPawn pmo, int pn)
 	{
+		if (!SwingMode()) { PullAll(pmo, pn); return; }
 		bool any = false;
 		bool truthTaken = false;
 		bool roped = false;
@@ -713,6 +739,103 @@ class RSQGR_Core : EventHandler
 		tracked[pn] = roped;
 		if (roped) { lastPos[pn] = pmo.Pos; lastSet[pn] = pmo.vel; }
 		KeepMomentum(pmo, pn);
+	}
+
+	// ---- the pull (Swing and Momentum off, the default) ---------------------------
+	//
+	// THE OG HOOK: fire, bite, and the rope reels you straight to where it bit. No pendulum, no slack, no
+	// speed kept after it. Each tic the rope SETS his velocity (never adds to it), straight at the claw,
+	// building up by PULL_ACCEL a tic to the reel's own top (rsqgr_reel_speed x 1.5, the cap a held reel
+	// already had; Swing Feel and Fast Reel scale it) and slowing into the stop, so the engine's own move
+	// carries it out with its own collision, and the stick does nothing meanwhile.
+	// It stops when the rope's body point is rsqgr_min_len from the claw, or when he can get no closer
+	// (a wall face, a monster's body, a floor): PULL_STALL tics without PULL_GAIN units nearer. Stopped on a
+	// floor, the rope lets go by itself; stopped in the air, he HANGS there on a rope of that length, still,
+	// until a tap lets go (with the ledge hop near a wall's top, as ever). Hanging, a held press takes the
+	// rope in and a hand on the rope climbs it, along the rope's line (no swing).
+	const PULL_ACCEL = 3.0;
+	const PULL_STALL = 4;
+	const PULL_GAIN = 0.5;
+
+	void PullAll(PlayerPawn pmo, int pn)
+	{
+		Vector3 vsum = (0, 0, 0);
+		int nv = 0;
+		for (int hand = 0; hand < 2; hand++)
+		{
+			int i = pn * 2 + hand;
+			let h = hooks[i];
+			if (!h || h.phase != RSQGR_Hook.PH_LATCH) continue;
+			if (!UpdateAnchor(h)) { LetGo(h, false); continue; }
+			bool set; Vector3 v;
+			[set, v] = Pull(h, pmo, pn, hand, i);
+			if (set) { vsum += v; nv++; }
+		}
+		// two ropes out: he goes between them (the average of the two pulls)
+		if (nv > 0) pmo.vel = vsum / nv;
+		tracked[pn] = nv > 0;
+		if (nv > 0) { lastPos[pn] = pmo.Pos; lastSet[pn] = pmo.vel; }
+		KeepMomentum(pmo, pn);
+	}
+
+	// returns whether the rope sets his velocity this tic, and to what
+	bool, Vector3 Pull(RSQGR_Hook h, PlayerPawn pmo, int pn, int hand, int i)
+	{
+		Vector3 a = h.anchor;
+		Vector3 b = AttachPoint(pmo);
+		Vector3 r = a - b;
+		double d = r.Length();
+		double minLen = RSQGR_Util.Num("rsqgr_min_len", 32);
+		double maxLen = h.range * 1.25;
+		double top = max(1.0, RSQGR_Util.Num("rsqgr_reel_speed", 12) * RSQGR_Perks.Factor(pmo, 'reel') * 1.5);
+		bool grounded = pmo.Pos.z <= pmo.floorz + 0.5 || pmo.bOnMobj;
+		h.slack = false;   // drawn taut, claw to hand
+		h.reelHeld = held[i] && (pressFired[i] || level.maptime - pressTic[i] > TapTics());
+		if (d > maxLen + 64) { LetGo(h, false); return false, (0, 0, 0); }
+		// the rope must see its claw, as a swing's must: three misses in a row (checked every 4 tics) let go
+		if (level.maptime % 4 == (pn + hand) % 4)
+		{
+			if (!Sees(pmo, b, a)) { if (++h.losBad >= 3) { LetGo(h, false); return false, (0, 0, 0); } }
+			else h.losBad = 0;
+		}
+		if (d < 0.01) return false, (0, 0, 0);
+		Vector3 n = r / d;   // toward the claw
+
+		if (!h.arrived)
+		{
+			if (d < h.bestDist - PULL_GAIN) { h.bestDist = d; h.noProgress = 0; }
+			else h.noProgress++;
+			if (d <= minLen + 1.0 || h.noProgress >= PULL_STALL)
+			{
+				h.arrived = true;
+				h.ropeLen = clamp(d, minLen, maxLen);
+				h.pullSpeed = 0;
+				Log(h, String.Format("arrive %.1f from the claw%s", d, grounded ? ", on the floor: lets go" : ", hangs"));
+				if (grounded) LetGo(h, false);
+				return true, (0, 0, 0);
+			}
+			h.pullSpeed = min(h.pullSpeed + PULL_ACCEL, top);
+			double s = min(h.pullSpeed, d - minLen);
+			if (h.phaseAge % 2 == 0) Log(h, "pull");
+			return true, n * s;
+		}
+
+		// ARRIVED: he hangs at the rope's length on its line. A held press takes the rope in; a hand on it climbs
+		// (Climb measures along the rope outward, the body's side: pull down = up it).
+		if (h.reelHeld) h.ropeLen = max(minLen, h.ropeLen - top / 1.5);
+		double climbStep = 0, along = 0;
+		bool climbing = Climb(h, pmo, pn, a, b, -n, d, minLen, maxLen, climbStep, along);
+		// lowered (or reeled down) onto a floor with no hand on it: the rope lets go
+		if (grounded && !h.reelHeld && h.gripHand < 0)
+		{
+			Log(h, "hanging rope reached the floor: lets go");
+			LetGo(h, false);
+			return true, (0, 0, 0);
+		}
+		double cap = climbing ? RSQGR_Util.Num("rsqgr_climb_cap", 8) : top;
+		double s = clamp(d - h.ropeLen, -cap, cap);
+		if (level.maptime % 2 == 0 || (climbing && climbStep != 0)) Log(h, (climbing && climbStep != 0) ? "climb" : h.reelHeld ? "reel" : (h.gripHand >= 0 ? "hold" : "hang"));
+		return true, n * s;
 	}
 
 	// ---- hand over hand (climb.zs says which hand may and where it is) -------------

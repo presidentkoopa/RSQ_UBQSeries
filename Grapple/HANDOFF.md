@@ -1,3 +1,34 @@
+# ==== the pull is the default; Swing and Momentum an option, 2026-11-02 (read first) ====
+
+Owner (verbatim): "grapple: I'd like it to go back to its OG functionality, pulling me to where I shot it. playing
+with momentum is nice and should be a toggle option." Rig only, not headset-confirmed (rig17 engine, doom2 IWAD,
+GRTEST map from tools/rigtest/build_probe.sh, `rsqgr_debug 1`).
+
+History, from git: RSQ_Grapple's own default was always the swing (skeleton 8b15f3543, `rsqgr_geo_mode 0` "swing
+(rope)"; a held firing press reeled you in). The only pull toward the hit point in the history is jpalomo's
+`Hook_HitWall` (jp_original/scripts/hook.acs, added d71832b9d): a one-off ThrustThing of 2D distance / 12 toward
+the hook plus z / 16, kept since 10-27 as "Wall Hook: Yank". The new default is a pull TO the point that stops
+there, which neither of those was exactly.
+
+## Done (measured)
+| what | measured |
+|---|---|
+| `rsqgr_swing` (menu "Swing and Momentum", off, in Reset All) | off: core.zs Swing -> PullAll/Pull; on: the old Swing, KeepMomentum, coast, unchanged code path |
+| Pull, wall 10 m | GRTEST, from (1450,512) at the east wall, claw (1791,512,116), rope 350.9: d 350.9 (t22) -> 342.4 -> 321.4 -> 288.4 -> 252.4 -> 216.4 -> 180.4 -> 144.4 -> 108.4 -> 72.4 -> 36.4 (t42) -> 32.0 arrive t43, then pos (1760,512,74.8) d 32.0 unchanged for 80+ tics. Top 17.8 u/tic (1.5 x reel 12), 21 tics. Same numbers in the owner's order (lo2 01-07 + Grapple) and with every RSQ pk3 but Gun Bonsai VR. |
+| Same input, Swing and Momentum on | press released after 2 tics: player stays at 1450 ("ground", rope paid out) -- today's; held 40 tics: reel 12 u/tic to L 32, then swing (log `swinghold`) |
+| Tap while hanging | let go t78 with vel (0,0,6) (the Ledge Hop), landed t99 |
+| Wall at waist height | pulled along the floor, arrive 32.3 at t42 "on the floor: lets go"; next tics keepmomentum 0, Speed 8.00 (normal walk) |
+| Ceiling over the pit | from ledge A, already falling at latch (z -44): pulled 635 units up to (936,512,451), arrive t66, hangs. Swing on, same shot: pendulum (turning x 1239 / 683, as before) |
+| Climb while hanging | lowered by hand L 32.0 -> 48.6 -> 65.1, climbed back 65.1 -> 48.4 -> 32.0, still between strokes |
+| Cyberdemon (heavy anchor) | pulled 340 -> 32.3, arrive on the floor, lets go |
+| Imp | slides as before (claw 420 -> 92, then drop at the stop) |
+| Script errors | none from our packs: plain doom2, lo2 order, lo2 + all RSQ pk3s except RSQ_GunBonsaiVR (it needs ToxicFrog's Gun Bonsai, not in lo2) |
+
+## Not done / open
+- Headset: the pull's speed and the still hang; whether a stop below a ledge lip needs a real mantle (only the tap's hop now).
+- Not rig-tested in pull mode: two ropes at once (the code averages the two pulls), whip snag (goes through Latch, so it pulls), Score's rope awards, Split Pull together with a wall rope.
+- One mode only: Calm Swing, Slack Rope Lets Go, Keep Momentum, the pump, the taut thump, Gun Bonsai Slingshot and Steady Line act only with Swing and Momentum on.
+
 # ==== QoL round, the owner's picks, 2026-10-31 afternoon (read first) ====
 
 Rig only, not headset-confirmed. Shared QZD 17.3 rig, BD order, GRTEST (`tools/rigtest/grq.sh`, probe rebuilt by

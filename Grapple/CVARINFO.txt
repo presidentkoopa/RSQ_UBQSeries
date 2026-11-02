@@ -1,7 +1,8 @@
 // RSQ_Grapple settings. All SERVER cvars (the host's world); none are user cvars.
 
 server bool   rsqgr_on            = true;   // the hook is available
-server int    rsqgr_geo_mode      = 0;      // hooking a wall: 0 swing (rope), 1 yank (jpalomo's pull)
+server int    rsqgr_geo_mode      = 0;      // hooking a wall: 0 the rope (a pull to the claw, or a swing with rsqgr_swing), 1 yank (jpalomo's thrust)
+server bool   rsqgr_swing         = false;  // Swing and Momentum (owner, 11-02): off = the rope pulls you straight to where the claw bit and you stop there; on = hang, swing, pump, keep your speed (the 10-27..11-01 behaviour)
 server float  rsqgr_speed         = 40;     // claw flight, map units per tic (JP: 40)
 server float  rsqgr_range         = 1024;   // how far the claw flies before it comes back
 server float  rsqgr_retract_speed = 64;     // the claw coming back

@@ -27,7 +27,7 @@ AddOptionMenu "RSQ_RSOptions"
 
 OptionValue "RSQGR_GeoModes"
 {
-	0, "Swing"
+	0, "Rope"
 	1, "Yank"
 }
 
@@ -63,6 +63,7 @@ OptionMenu "RSQGR_Options"
 	Title "RSQ GRAPPLE"
 	Option "Grapple", "rsqgr_on", "OnOff"
 	Option "Wall Hook", "rsqgr_geo_mode", "RSQGR_GeoModes"
+	Option "Swing and Momentum", "rsqgr_swing", "OnOff"
 	RSQGRPreset "Range", "RSQGR_P_Range"
 	RSQGRPreset "Swing Feel", "RSQGR_P_Swing"
 	Option "Rope Climbing", "rsqgr_climb", "OnOff"
