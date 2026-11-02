@@ -14,6 +14,7 @@ server bool   rsqwp_whip_lines    = true;   // the crack throws a switch (any us
 server bool   rsqwp_whip_fetch    = true;   // the crack flicks a loose pickup near it to you
 server bool   rsqwp_whip_leash    = true;   // Lock: a locked crack on a monster with the bind still held catches it and pulls it in
 server bool   rsqwp_whip_weapon   = true;   // every player carries the whip weapon (slot 1)
+user   int    rsqwp_whip_hand     = 0;      // Whip In: 0 the main hand, 1 the off hand (one whip, in that hand)
 server float  rsqwp_whip_prio     = 256;    // the whip weapon: switches, keys and powerups this close (map units, 256 = 8 m) are marked first
 server float  rsqwp_whip_light    = 400;    // the whip weapon's pull: up to this mass a monster is pulled off its feet to you
 server float  rsqwp_whip_heavy    = 1000;   // from this mass (and bosses) it cannot be pulled: the yank swings you to it

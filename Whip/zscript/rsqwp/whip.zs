@@ -44,6 +44,9 @@ class RSQWP_Whip : EventHandler
 	const GRAV = 0.30;           // room units / tic^2 (Doom's own 1.0 is for falling bodies, not leather)
 	const DAMP = 0.9995;         // per sub-step
 	const MAXSTEP = 11.0;        // most a link may move in one sub-step (a hand teleport cannot explode it)
+	const CALM_DAMP = 0.96;      // per sub-step while the hand is calm and nothing flies: an idle whip settles
+	const CALM_STEP = 1.2;       // and no link moves more than this a sub-step (room units)
+	const SETTLE_DAMP = 0.80;    // after a wrap lets go or a straighten (settle tics)
 
 	const ST_IDLE = 0;
 	const ST_OUT = 1;
@@ -123,6 +126,33 @@ class RSQWP_Whip : EventHandler
 	transient Array<double> cPx, cPy, cPz;
 	RSQWP_Rope wl[NW * NP];      // the drawn whip: piece 0 the handle, 1..NN the thong
 	transient RSQWP_Tracer tracer;
+	// THE BODY'S FRAME (owner 11-02: "whip fires on snap turn", "even just walking around with the whip it's going
+	// insane"). The thong was simulated in the world, so everything the BODY did reached it as a swing: walking dragged
+	// it, a snap turn swung the hand (and the handle) 45 degrees round the body in one tic. Now the chain is carried
+	// rigidly with the body every tic -- moved with the pawn and turned with the tracking space (Carry) -- before it is
+	// simulated, so only what the hand does RELATIVE TO THE BODY moves it (and only that counts toward a crack).
+	Vector3 bodyAt[NW];          // the pawn's position last tic (map)
+	bool    bodyHad[NW];
+	double  fkH0[MAXPLAYERS], fkH1[MAXPLAYERS];  // both controllers' world yaws last tic
+	Vector2 fkR0[MAXPLAYERS], fkR1[MAXPLAYERS];  // and where they were off the pawn (flat)
+	bool    fkHad[MAXPLAYERS];
+	double  frameTurn[MAXPLAYERS];               // how far the tracking space turned this tic (a snap or stick turn)
+	int     turnTic[MAXPLAYERS];                 // the last tic it turned
+	// THE DELIBERATE ATTACK (owner 11-02: "when we bring the whip back over our controller it needs to somehow go rigid
+	// and attack in a deliberate sense"). Deliberate() and Sim.
+	double  stiff[NW];           // 0 slack .. 1 rigid: the thong is pulled toward a straight line out of the handle
+	int     windTics[NW];        // tics the hand has been wound up (at or over the shoulder, the handle up and back)
+	int     windEnd[NW];         // the tic the wind-up was left (a swing may start within SWING_WAIT of it)
+	bool    swinging[NW];        // wound up and now driving forward: the thong follows the handle like a rod
+	bool    released[NW];        // the swing has let the thong go (its crack may come now)
+	double  swingPk[NW];         // the handle's fastest in this swing
+	int     settle[NW];          // tics of heavy damping left (a wrap let go, a straighten)
+	int     stuckTics[NW];       // tics in a row a link was found on the far side of a wall (Repair)
+	int     straightTic[NW];     // the last straighten (Repair)
+	int     tendTic[NW];         // the whip weapon tended this hand this tic (weapon.zs Tend); a weapon whip nobody tends is gone
+	int     handMoveAt[MAXPLAYERS];  // Whip In: the next tic the whip may be moved to its hand
+	RSQWP_LockRing markRing[NW]; // the lock mark (the series' diamond): gold ring ...
+	RSQWP_LockCentre markCen[NW];// ... white centre
 
 	static RSQWP_Whip Get() { return RSQWP_Whip(EventHandler.Find("RSQWP_Whip")); }
 
@@ -168,6 +198,12 @@ class RSQWP_Whip : EventHandler
 			lockHeld[i] = e.Args[1] != 0;
 			if (lockHeld[i]) lockLeft[i] = 35;
 		}
+		else if (e.Name ~== "rsqwp_hp0" || e.Name ~== "rsqwp_hp1")
+		{
+			int j = e.Player * 2 + (e.Name ~== "rsqwp_hp1" ? 1 : 0);
+			hpRel[j] = (e.Args[0] / 256.0, e.Args[1] / 256.0, e.Args[2] / 256.0);
+			hpTic[j] = level.maptime;
+		}
 		else if (e.Name ~== "rsqwp_ogrip")
 		{
 			offGripKey[e.Player] = e.Args[0] != 0;
@@ -192,7 +228,7 @@ class RSQWP_Whip : EventHandler
 		if (lassoOn[i]) return true;
 		if (!RSQWP_Util.PoseGood(pmo, 1)) return false;
 		double reach = RSQWP_Util.Num("rsqwp_lasso_reach", 0.30);
-		Vector3 off = ToRoom(RSQWP_Util.HandPos(pmo, 1));
+		Vector3 off = ToRoom(BodyHand(pmo, 1));
 		int o = i * NP;
 		double best = (off - hb[i]).Length();
 		for (int k = 0; k <= LASSO_K * 2 && k < NP; k++) best = min(best, (off - wp[o + k]).Length());
@@ -263,6 +299,8 @@ class RSQWP_Whip : EventHandler
 		Vector3 b, d;
 		[b, d] = Handle(i, pmo, hand);
 		hb[i] = b; hd[i] = d;
+		bodyAt[i] = pmo.pos; bodyHad[i] = true;
+		stiff[i] = 0; windTics[i] = 0; windEnd[i] = -100; swinging[i] = false; released[i] = false; swingPk[i] = 0; settle[i] = 0; stuckTics[i] = 0; straightTic[i] = -100;
 		if (fresh)
 		{
 			wext[i] = wmode[i] == 1 ? 1.0 : 0.08;     // Assist throws it straight out of the hand
@@ -302,7 +340,7 @@ class RSQWP_Whip : EventHandler
 	// the direction over the shoulder and down; Real is the controller as it is.
 	Vector3, Vector3 Handle(int i, PlayerPawn pmo, int hand)
 	{
-		Vector3 b = ToRoom(RSQWP_Util.HandPos(pmo, hand));
+		Vector3 b = ToRoom(BodyHand(pmo, hand));
 		double yaw = RSQWP_Util.HandYaw(pmo, hand);
 		double pit = RSQWP_Util.HandPitch(pmo, hand);
 		if (wmode[i] == 1) pit += AssistPitch(wage[i]);
@@ -371,6 +409,8 @@ class RSQWP_Whip : EventHandler
 			}
 		ArmPump();
 		Mantle();
+		TrackFrame();
+		WhipIn();
 		for (int i = 0; i < NW; i++)
 		{
 			if (wstate[i] == ST_IDLE)
@@ -379,8 +419,20 @@ class RSQWP_Whip : EventHandler
 			}
 			let pmo = wby[i];
 			if (!pmo || pmo.Health <= 0 || !RSQWP_Util.Flag("rsqwp_on", true)) { Halt(i); continue; }
+			// ONE WHIP (owner 11-02: "moving whip to offhand causes me to have one in each hand"). The engine's hand
+			// switch (PlayerPawn.SwitchWeaponHand: switchhand, Whip In, any mod's) moves the weapon by setting the hands'
+			// pointers -- the old hand's Deselect never runs, so PutAway never ran and that hand's whip kept simulating
+			// beside the new one. A weapon whip its weapon no longer tends (not in that hand any more) is gone.
+			if (byWeapon[i] && level.maptime - tendTic[i] > 1)
+			{
+				if (RSQWP_Util.Flag("rsqwp_debug", false)) Console.Printf("T_WPW %d gone t%d: the whip weapon is no longer in that hand", i, level.maptime);
+				Halt(i);
+				continue;
+			}
 			int hand = i & 1;
+			int pn = i / 2;
 			wage[i]++;
+			Carry(i, pmo, frameTurn[pn]);
 			if (wstate[i] == ST_OUT)
 			{
 				wext[i] = min(1.0, wext[i] + 0.16);
@@ -396,24 +448,26 @@ class RSQWP_Whip : EventHandler
 			[b, d] = Handle(i, pmo, hand);
 			// a hand that jumped (a teleport, a load: 24 room units a tic is 24 m/s, no arm does that):
 			// lay the whip out again from where it is, and it must not count as a lash
+			// (in the body's frame now -- Carry took the body's own move and turn out -- so this is the hand alone)
 			if ((b - hb[i]).Length() > 24)
 			{
-				Vector3 tip = b + d * HANDLEN;
-				for (int k = 0; k < NP; k++) { wp[i * NP + k] = tip + (0, 0, -1) * (wext[i] * wlen[i] / NN) * k; wq[i * NP + k] = wp[i * NP + k]; }
+				Straighten(i, b, d);
 				hb[i] = b; hd[i] = d;
 				handSpd[i] = 0; pend[i] = false;
 			}
 			for (int k = 0; k < NP; k++) wt[i * NP + k] = ToMap(wp[i * NP + k]);
 			// how hard the hand has driven the handle lately (its tip's speed, decaying): a crack
-			// needs the hand behind it -- a whip that only falls or settles never cracks
+			// needs the hand behind it -- a whip that only falls or settles never cracks. Relative to the body.
 			double hs = ((b + d * HANDLEN) - (hb[i] + hd[i] * HANDLEN)).Length();
 			handSpd[i] = max(handSpd[i] * 0.93, hs);
+			if (settle[i] > 0) settle[i]--;
+			Deliberate(i, pmo, hand, d, hs);
 			if (byWeapon[i]) Mark(i, pmo, hand); else Lock(i, pmo, hand);
 			Reach(i, pmo, hand);
 			HoldWrap(i, pmo, hand);
 			if (lassoOn[i])
 			{
-				lassoP1[i] = ToRoom(RSQWP_Util.HandPos(pmo, 1 - hand));
+				lassoP1[i] = ToRoom(BodyHand(pmo, 1 - hand));
 				if (!lassoWas[i]) lassoP0[i] = lassoP1[i];
 			}
 			Vector3 peakAt, peakVel;
@@ -428,13 +482,328 @@ class RSQWP_Whip : EventHandler
 			bool snagged = Collide(i, pmo, hand);
 			msCol += MSTimeF() - tA;
 			if (snagged) continue;     // snagged: core has it now
+			Mend(i, pmo, b, d);
 			Lash(i, pmo, hand, peakAt, peakVel);
 			if (wstate[i] == ST_IDLE) continue;
 			if (level.maptime <= lashUntil[i] && missiles.Size() && RSQWP_Util.Flag("rsqwp_whip_fireball", false)) Swat(i, pmo, hand);
+			UpdateMark(i);
 			tA = MSTimeF();
 			Draw(i);
 			msDraw += MSTimeF() - tA;
 		}
+	}
+
+	// ---- the body's frame -------------------------------------------------------------------------------------
+
+	// THE HAND AGAINST THE BODY, STEADY (rig 11-02: a still hand on a walking body moved 13 units up and down -- 46.2 to
+	// 33.3 over the pawn -- and once 5 sideways; the whip read it as the arm and cracked). AttackPos.z is written per
+	// rendered frame from the INTERPOLATED eye, view bob included (hw_openxrdevice.cpp: CenterEyePos.Z + the
+	// controller's height); input.zs found the same for climbing. So the machine with the hands measures each frame
+	// the controller against that same frame's eye (RenderEvent.ViewPos: height) and against the pawn (flat), and
+	// sends it (rsqwp_hp0 / rsqwp_hp1, 1/256 unit); the whip puts it back on the pawn and its steady eye height
+	// (SteadyEye: no bob, no step dip, no interpolation). Without a fresh one (2 tics), the engine's pose as before.
+	Vector3 hpRel[NW];
+	int     hpTic[NW];
+
+	// the eye's steady height over the pawn: what player.viewheight settles to (P_CalcHeight's defaultviewheight,
+	// real crouching included), without the dip a step or a landing puts in it for a few tics (rig: 41 -> 34 -> 41 on
+	// every stair, which moved a still hand 7 units and cracked the whip) and without the bob
+	static double SteadyEye(PlayerPawn pmo)
+	{
+		if (!pmo || !pmo.player) return 0;
+		return pmo.ViewHeight + pmo.player.crouchviewdelta;
+	}
+
+	Vector3 BodyHand(PlayerPawn pmo, int hand)
+	{
+		if (!pmo || !pmo.player) return RSQWP_Util.HandPos(pmo, hand);
+		int j = pmo.PlayerNumber() * 2 + (hand & 1);
+		if (level.maptime - hpTic[j] > 2 || !RSQWP_Util.PoseGood(pmo, hand)) return RSQWP_Util.HandPos(pmo, hand);
+		return pmo.pos + (hpRel[j].x, hpRel[j].y, SteadyEye(pmo) + hpRel[j].z);
+	}
+
+	override void RenderOverlay(RenderEvent e)
+	{
+		let p = players[consoleplayer];
+		if (!p || !p.mo || !p.mo.OverrideAttackPosDir) return;
+		let mo = p.mo;
+		int pn = consoleplayer;
+		if (wstate[pn * 2] == ST_IDLE && wstate[pn * 2 + 1] == ST_IDLE) return;
+		if (mo.AttackPos == mo.OffhandPos) return;      // the collapsed pose (a menu, a save): never a hand
+		for (int hand = 0; hand < 2; hand++)
+		{
+			Vector3 h = RSQWP_Util.Ctrl(mo, hand) == 0 ? mo.AttackPos : mo.OffhandPos;
+			Vector3 rel = (h.x - mo.pos.x, h.y - mo.pos.y, h.z - e.ViewPos.z);
+			if (abs(rel.x) > 200 || abs(rel.y) > 200 || abs(rel.z) > 200) continue;
+			EventHandler.SendNetworkEvent(hand ? "rsqwp_hp1" : "rsqwp_hp0", int(rel.x * 256), int(rel.y * 256), int(rel.z * 256));
+		}
+	}
+
+	const TURN_TOL = 1.5;        // degrees: both controllers' yaws moved by the same amount within this ...
+	const TURN_POS = 4.0;        // ... and both turned round the pawn by it within this (map units)
+
+	// THE TRACKING SPACE'S TURN THIS TIC. On QuestZDoom the pawn's angle follows the HEADSET, so it is not the
+	// turn: a head turn changes it and leaves the controllers where they were. A snap or stick turn turns the whole
+	// tracking space -- both controllers' yaws by the same amount AND both their places round the pawn by it, in the
+	// same tic. (The rig: the pawn's angle took the 45 one tic before the controllers did, so RSQ_Saber's way --
+	// the angle and both yaws together -- would have missed it; the controllers alone see it whole.) A real arm can
+	// only fool this by turning both wrists and both hands round the body by the same angle in one tic.
+	void TrackFrame()
+	{
+		for (int pn = 0; pn < MAXPLAYERS; pn++)
+		{
+			frameTurn[pn] = 0;
+			let pm = playeringame[pn] ? players[pn].mo : null;
+			if (!pm || !pm.OverrideAttackPosDir || pm.AttackPos == pm.OffhandPos) { fkHad[pn] = false; continue; }
+			double h0 = pm.AttackAngle, h1 = pm.OffhandAngle;
+			Vector2 r0 = pm.AttackPos.xy - pm.pos.xy, r1 = pm.OffhandPos.xy - pm.pos.xy;
+			if (fkHad[pn])
+			{
+				double d0 = Actor.DeltaAngle(fkH0[pn], h0), d1 = Actor.DeltaAngle(fkH1[pn], h1);
+				if (abs(d0) > 0.25 && abs(d0 - d1) < TURN_TOL
+					&& (Rot2(fkR0[pn], d0) - r0).Length() < TURN_POS && (Rot2(fkR1[pn], d0) - r1).Length() < TURN_POS)
+				{
+					frameTurn[pn] = (d0 + d1) * 0.5;
+					turnTic[pn] = level.maptime;
+					if (RSQWP_Util.Opt("rsqwp_debug", 0) >= 2) Console.Printf("T_WPW turn t%d player %d: %.1f deg (the tracking space)", level.maptime, pn, frameTurn[pn]);
+				}
+			}
+			fkH0[pn] = h0; fkH1[pn] = h1; fkR0[pn] = r0; fkR1[pn] = r1; fkHad[pn] = true;
+		}
+	}
+
+	static clearscope Vector2 Rot2(Vector2 v, double a)
+	{
+		double c = cos(a), s = sin(a);
+		return (v.x * c - v.y * s, v.x * s + v.y * c);
+	}
+	static clearscope Vector3 Xf(Vector3 p, Vector3 r0, Vector3 r1, double c, double s)
+	{
+		Vector3 d = p - r0;
+		return r1 + (d.x * c - d.y * s, d.x * s + d.y * c, d.z);
+	}
+
+	// CARRY THE WHIP WITH THE BODY: every node (now and a sub-step ago, so its speed comes along too), the handle,
+	// and the lasso's hold are moved with the pawn and turned round it by the tracking space's turn. Walking,
+	// a lift, a teleport, a snap turn or Brutal Doom moving you (a fatality) then put no motion into the thong at all.
+	void Carry(int i, PlayerPawn pmo, double turn)
+	{
+		Vector3 nowAt = pmo.pos;
+		if (!bodyHad[i]) { bodyAt[i] = nowAt; bodyHad[i] = true; return; }
+		Vector3 r0 = ToRoom(bodyAt[i]), r1 = ToRoom(nowAt);
+		bodyAt[i] = nowAt;
+		if (r0 == r1 && turn == 0) return;
+		double c = cos(turn), s = sin(turn);
+		int o = i * NP;
+		for (int k = 0; k < NP; k++)
+		{
+			wp[o + k] = Xf(wp[o + k], r0, r1, c, s);
+			wq[o + k] = Xf(wq[o + k], r0, r1, c, s);
+		}
+		hb[i] = Xf(hb[i], r0, r1, c, s);
+		hd[i] = (hd[i].x * c - hd[i].y * s, hd[i].x * s + hd[i].y * c, hd[i].z);
+		lassoP0[i] = Xf(lassoP0[i], r0, r1, c, s);
+		pkAt[i] = ToMap(Xf(ToRoom(pkAt[i]), r0, r1, c, s));
+	}
+
+	// ---- the deliberate attack ---------------------------------------------------------------------------------
+
+	const WIND_UP = 0.45;        // the handle at least this far up (sin of its pitch: ~27 degrees) ...
+	const WIND_AHEAD = 0.35;     // ... and pointing no further ahead than this (cos to the body's facing): up and back
+	const WIND_EYE = 14.0;       // ... with the hand no lower than this under the eyes (map units, ~40 cm): the shoulder
+	const WIND_TICS = 2;         // held this long, the thong stiffens
+	const WIND_RAMP = 0.12;      // stiffness gained a tic while wound up (the thong rises behind you over ~8 tics)
+	const WIND_STEP = 2.5;       // and no link moves more than this a sub-step while it rises (room units)
+	const SWING_GO = 2.5;        // the handle's tip this fast (room units a tic) after a wind-up: the swing
+	const SWING_WAIT = 10;       // a swing must start within this many tics of leaving the wind-up
+	const RELEASE = 0.55;        // the swing lets the thong go when the handle slows below this of its peak
+	const GUIDE = 0.30;          // per sub-step, how far a link is drawn toward the line at full stiffness ...
+	const GUIDE_TIP = 0.75;      // ... less toward the popper (the tip lags the rod and whips over at the release)
+
+	// THE WIND-UP stiffens the thong: the hand at or over the shoulder with the handle pointing up and back. Held
+	// WIND_TICS, the thong is drawn toward a straight line out of the handle (Sim: GUIDE, less toward the tip), so
+	// it rises behind you as one piece instead of flopping. THE SWING: from there the handle drives forward and the
+	// thong follows it like a rod, the tip lagging; when the handle slows (RELEASE of its peak) the thong is let go
+	// and the lag runs out through the tip -- the crack (Lash) -- then it goes slack and settles. Anything else
+	// (lowering the arm, a slow sweep) lets the stiffness go in a few tics. A wind-up also re-arms the crack.
+	void Deliberate(int i, PlayerPawn pmo, int hand, Vector3 d, double hs)
+	{
+		if (wmode[i] == 1 || lassoOn[i] || wrapOn[i] || reachTic[i] > 0 || wstate[i] != ST_OUT)
+		{
+			windTics[i] = 0; swinging[i] = false; stiff[i] = max(0.0, stiff[i] - 0.34);
+			return;
+		}
+		Vector3 hp = BodyHand(pmo, hand);
+		double eye = pmo.pos.z + (pmo.player ? SteadyEye(pmo) : pmo.Height * 0.8);
+		Vector2 fwd = Actor.AngleToVector(pmo.angle, 1);
+		bool wound = d.z >= WIND_UP && (d.xy dot fwd) <= WIND_AHEAD && hp.z >= eye - WIND_EYE;
+		if (wound)
+		{
+			windTics[i]++;
+			windEnd[i] = level.maptime;
+			swinging[i] = false;
+			released[i] = false;
+			swingPk[i] = 0;
+			if (windTics[i] >= WIND_TICS)
+			{
+				if (stiff[i] < 0.01 && RSQWP_Util.Flag("rsqwp_debug", false)) Console.Printf("T_WPW %d WIND-UP t%d: the thong stiffens", i, level.maptime);
+				stiff[i] = min(1.0, stiff[i] + WIND_RAMP);
+				armed[i] = true;
+			}
+			return;
+		}
+		bool wasWound = windTics[i] >= WIND_TICS;
+		windTics[i] = 0;
+		if (!swinging[i] && !released[i] && stiff[i] > 0.01 && level.maptime - windEnd[i] <= SWING_WAIT && hs >= SWING_GO)
+		{
+			swinging[i] = true;
+			swingPk[i] = hs;
+			if (RSQWP_Util.Flag("rsqwp_debug", false)) Console.Printf("T_WPW %d SWING t%d: hand %.1f", i, level.maptime, hs);
+		}
+		if (swinging[i])
+		{
+			swingPk[i] = max(swingPk[i], hs);
+			stiff[i] = min(1.0, stiff[i] + 0.25);
+			if (hs < swingPk[i] * RELEASE)
+			{
+				swinging[i] = false;
+				released[i] = true;
+				stiff[i] = 0.3;          // let go of the rod: the lag runs out through the tip
+				if (RSQWP_Util.Flag("rsqwp_debug", false)) Console.Printf("T_WPW %d RELEASE t%d: hand %.1f of peak %.1f", i, level.maptime, hs, swingPk[i]);
+			}
+			return;
+		}
+		// lowered without a swing, or the swing is over: slack again
+		stiff[i] = max(0.0, stiff[i] - ((wasWound || level.maptime - windEnd[i] <= SWING_WAIT) ? 0.08 : 0.3));
+	}
+
+	// ---- never inside geometry --------------------------------------------------------------------------------
+
+	const STUCK_MAX = 6;         // tics in a row with a link mended back out of a wall before the whip is laid out again
+
+	// MEND THE CHAIN (owner 11-02: "it sticks into geometry and wiggles like hell"). The sweeps in Collide stop a
+	// link that MOVES into a wall, but a link can also be PUT past one -- a wrap or a locked crack lays the outer half
+	// along the line to a monster (HoldWrap, Reach), the length shrinking back after a wrap drags links round a
+	// corner -- and then every tic the solver pulled it back through the wall and the sweep stopped it there: stuck,
+	// shaking. Each tic, from the handle's tip out, each link must be in sight of the one before; one that is not
+	// is put back on this side of what is between them, stopped. Stuck for STUCK_MAX tics in a row: the whip is laid
+	// out again from the hand (Straighten); stuck again soon after: it is paid out again from the hand (re-coiled).
+	void Mend(int i, PlayerPawn pmo, Vector3 b, Vector3 d)
+	{
+		int o = i * NP;
+		let tr = GetTracer();
+		tr.shooter = pmo;
+		// the handle's tip, from the body: a real hand can be through a wall, and then there is nothing to mend from
+		Vector3 a = ToMap(wp[o]);
+		Vector3 from = pmo.pos + (0, 0, pmo.Height * 0.5);
+		Vector3 fa = a - from;
+		double fl = fa.Length();
+		if (fl > 0.5 && tr.Trace(from, level.PointInSector(from.xy), fa / fl, fl, 0, RSQWP_Tracer.WALLMASK, true, pmo) && tr.Results.HitType != TRACE_HitNone && tr.Results.Distance < fl - 0.5)
+			return;
+		int mended = 0;
+		for (int k = 1; k < NP; k++)
+		{
+			Vector3 m = ToMap(wp[o + k]);
+			Vector3 am = m - a;
+			double l = am.Length();
+			if (l > 0.05)
+			{
+				Vector3 u = am / l;
+				if (tr.Trace(a, level.PointInSector(a.xy), u, l, 0, RSQWP_Tracer.WALLMASK, true, pmo) && tr.Results.HitType != TRACE_HitNone && tr.Results.Distance < l - 0.25)
+				{
+					m = a + u * max(0.0, tr.Results.Distance - 0.75);
+					wp[o + k] = ToRoom(m);
+					wq[o + k] = wp[o + k];
+					mended++;
+				}
+			}
+			a = m;
+		}
+		if (!mended) { stuckTics[i] = 0; return; }
+		stuckTics[i]++;
+		if (RSQWP_Util.Opt("rsqwp_debug", 0) >= 2) Console.Printf("T_WPW %d mend t%d: %d link(s) put back out of a wall (%d tics running)", i, level.maptime, mended, stuckTics[i]);
+		if (stuckTics[i] < STUCK_MAX) return;
+		bool again = level.maptime - straightTic[i] < 35;
+		if (again) wext[i] = min(wext[i], 0.08);     // stuck again straight after: pay it out from the hand again
+		Straighten(i, b, d);
+		straightTic[i] = level.maptime;
+		stuckTics[i] = 0;
+		if (RSQWP_Util.Flag("rsqwp_debug", false)) Console.Printf("T_WPW %d STRAIGHTEN t%d: links kept ending up in a wall%s", i, level.maptime, again ? " (again: re-coiled from the hand)" : "");
+	}
+
+	// Laid out again from the handle's tip, hanging, still; heavy damping for a few tics. The floor and walls are
+	// met by the next tic's Collide and Mend.
+	void Straighten(int i, Vector3 b, Vector3 d)
+	{
+		int o = i * NP;
+		Vector3 tip = b + d * HANDLEN;
+		double seg = max(0.5, wext[i] * wlen[i] / NN);
+		for (int k = 0; k < NP; k++) { wp[o + k] = tip + (0, 0, -seg * k); wq[o + k] = wp[o + k]; }
+		settle[i] = max(settle[i], 10);
+		stiff[i] = 0; swinging[i] = false;
+	}
+
+	// ---- one whip, in the hand you chose (Whip In) --------------------------------------------------------------
+
+	// WHIP IN (owner 11-02: "need option: Whip in: Mainhand / Offhand", rsqwp_whip_hand, a user setting). The whip
+	// weapon belongs to the chosen hand: out of both hands it is flagged for that hand, so selecting it (slot 1 in
+	// that hand, or `use`) brings it up there; held in the other hand, it is moved by the engine's own hand switch
+	// (PlayerPawn.SwitchWeaponHand), at most once a second. The old hand's whip goes (WorldTick2: untended).
+	void WhipIn()
+	{
+		for (int pn = 0; pn < MAXPLAYERS; pn++)
+		{
+			let pm = playeringame[pn] ? players[pn].mo : null;
+			if (!pm || !pm.player || pm.Health <= 0 || pm.player.playerstate != PST_LIVE) continue;
+			let wh = Weapon(pm.FindInventory("RSQWP_WhipWeapon"));
+			if (!wh) continue;
+			let cv = CVar.GetCVar("rsqwp_whip_hand", pm.player);
+			int want = cv ? clamp(cv.GetInt(), 0, 1) : 0;
+			let p = pm.player;
+			bool inMain = p.ReadyWeapon == wh, inOff = p.OffhandWeapon == wh;
+			if (!inMain && !inOff)
+			{
+				if (p.PendingWeapon != wh) wh.bOffhandWeapon = want == 1;
+				continue;
+			}
+			if ((want == 1 && inOff) || (want == 0 && inMain)) continue;
+			if (p.PendingWeapon != WP_NOCHANGE || level.maptime < handMoveAt[pn]) continue;
+			handMoveAt[pn] = level.maptime + 35;
+			wh.bNoHandSwitch = false;
+			pm.SwitchWeaponHand(want);
+			if (RSQWP_Util.Flag("rsqwp_debug", false))
+				Console.Printf("T_WPW Whip In t%d player %d: moved to the %s hand (main %s, off %s)", level.maptime, pn, want ? "off" : "main",
+					p.ReadyWeapon ? p.ReadyWeapon.GetClassName() : 'none', p.OffhandWeapon ? p.OffhandWeapon.GetClassName() : 'none');
+		}
+	}
+
+	// ---- the lock mark ------------------------------------------------------------------------------------------
+
+	// THE SERIES' LOCK DIAMOND (owner, approved): a white centre in a gold ring, over what a crack will fly to (the
+	// mark, or Lock's lock), 4 frames at 3 tics as RSQ Saber's UBQS_LockMark, scale 0.35 x RSQ Accessibility's Cue
+	// Size. The ring's gold goes through the colour-blind palette (the HAVE role: it is locked).
+	void UpdateMark(int i)
+	{
+		bool on = (lockOn[i] && !lockOn[i].bDestroyed) || lockLine[i];
+		if (!on || !wby[i]) { ClearMark(i); return; }
+		Vector3 at = lockOn[i] ? lockOn[i].pos + (0, 0, lockOn[i].height + 8) : lockAt[i];
+		double sc = 0.35 * RSQWP_A11y.Cue();
+		if (!markRing[i]) { markRing[i] = RSQWP_LockRing(Actor.Spawn("RSQWP_LockRing", at, NO_REPLACE)); if (markRing[i]) markRing[i].ClearInterpolation(); }
+		if (!markCen[i]) { markCen[i] = RSQWP_LockCentre(Actor.Spawn("RSQWP_LockCentre", at, NO_REPLACE)); if (markCen[i]) markCen[i].ClearInterpolation(); }
+		if (markRing[i])
+		{
+			markRing[i].SetOrigin(at, true);
+			markRing[i].scale = (sc, sc);
+			markRing[i].SetShade(RSQWP_CB.Pick(RSQWP_CB.CB_HAVE, RSQWP_LockRing.GOLD));
+		}
+		if (markCen[i]) { markCen[i].SetOrigin(at, true); markCen[i].scale = (sc, sc); }
+	}
+
+	void ClearMark(int i)
+	{
+		if (markRing[i]) markRing[i].Destroy();
+		if (markCen[i]) markCen[i].Destroy();
+		markRing[i] = null; markCen[i] = null;
 	}
 
 	// The thong, SUB sub-steps from last tic's handle to this tic's. Returns where the tip
@@ -445,8 +814,16 @@ class RSQWP_Whip : EventHandler
 		if (!invmSet) SetInvMass();
 		double seg = max(0.5, wext[i] * wlen[i] / NN);
 		// at rest (a still hand, a settled thong, nothing flying) three sub-steps are plenty
-		int subs = (handSpd[i] < 0.5 && tipSpd[i] < 1.0 && reachTic[i] <= 0 && wext[i] >= 1.0) ? 3 : SUB;
+		int subs = (handSpd[i] < 0.5 && tipSpd[i] < 1.0 && reachTic[i] <= 0 && wext[i] >= 1.0 && stiff[i] < 0.01) ? 3 : SUB;
 		double g = GRAV / (subs * subs);
+		// AN IDLE WHIP HANGS AND SETTLES (owner 11-02: "sloppy seizure"). With the hand calm and nothing flying, the
+		// thong is damped hard (CALM_DAMP a sub-step) and no link may move more than CALM_STEP a sub-step; after a wrap
+		// lets go or a straighten, harder still for a few tics (settle). A hand that moves, a wind-up, a throw, a wrap
+		// and the lasso get the free whip (DAMP, MAXSTEP) -- the crack needs it.
+		bool active = handSpd[i] >= 1.0 || stiff[i] > 0.01 || reachTic[i] > 0 || lassoOn[i] || wrapOn[i];
+		double damp = settle[i] > 0 ? SETTLE_DAMP : (active ? DAMP : CALM_DAMP);
+		double vcap = settle[i] > 0 ? CALM_STEP : (active ? MAXSTEP : CALM_STEP);
+		if (windTics[i] > 0) vcap = WIND_STEP;   // wound up: the thong RISES into its line, it is not flung there
 		double best = -1;
 		Vector3 bestAt = ToMap(wp[o + NN]), bestVel = (0, 0, 0);
 		for (int s = 1; s <= subs; s++)
@@ -459,33 +836,56 @@ class RSQWP_Whip : EventHandler
 			Vector3 anchor = base + dir * HANDLEN;
 			for (int k = 1; k < NP; k++)
 			{
-				Vector3 v = (wp[o + k] - wq[o + k]) * DAMP;
+				Vector3 v = (wp[o + k] - wq[o + k]) * damp;
 				double vl = v.Length();
-				if (vl > MAXSTEP) v *= MAXSTEP / vl;
+				if (vl > vcap) v *= vcap / vl;
 				wq[o + k] = wp[o + k];
 				wp[o + k] = wp[o + k] + v + (0, 0, -g);
 			}
 			wq[o] = wp[o];
 			wp[o] = anchor;
+			// THE LASSO (smoothed 11-02, owner: "grabbing with offhand and twirling works, but janky as hell"). The off hand
+			// holds the thong LASSO_K links out. Both ends of that inner piece were pinned (handle and off hand) while the
+			// solver also held its links to their length: hands further apart than those links fought it every pass
+			// (shaking), nearer let it fold. Now the inner piece is laid straight from the handle to the off hand, and
+			// only the thong beyond the off hand is solved, hanging from it.
+			Vector3 held = lassoP0[i] + (lassoP1[i] - lassoP0[i]) * t;
+			int k0 = lassoOn[i] ? LASSO_K : 0;
 			for (int it = 0; it < ITER; it++)
 			{
 				// the handle is rigid: the first link leaves it along the handle
-				Vector3 want = anchor + dir * seg;
-				wp[o + 1] = want;
-				for (int k = 0; k < NN; k++)
+				if (lassoOn[i])
+				{
+					for (int k = 1; k <= LASSO_K; k++) wp[o + k] = anchor + (held - anchor) * (double(k) / LASSO_K);
+				}
+				else
+				{
+					Vector3 want = anchor + dir * seg;
+					wp[o + 1] = want;
+				}
+				for (int k = k0; k < NN; k++)
 				{
 					Vector3 dd = wp[o + k + 1] - wp[o + k];
 					double l = dd.Length();
 					if (l < 0.0001) continue;
 					double diff = (l - seg) / l;
-					double w0 = k == 0 ? 0.0 : invm[k];
+					double w0 = (k == 0 || k == k0) ? 0.0 : invm[k];
 					double w1 = invm[k + 1];
 					double sum = w0 + w1;
 					wp[o + k] = wp[o + k] + dd * (diff * w0 / sum);
 					wp[o + k + 1] = wp[o + k + 1] - dd * (diff * w1 / sum);
 				}
-				// the lasso: the off hand holds the thong LASSO_K links out
-				if (lassoOn[i]) wp[o + LASSO_K] = lassoP0[i] + (lassoP1[i] - lassoP0[i]) * t;
+			}
+			// THE WIND-UP AND THE SWING (Deliberate): the thong drawn toward a straight line out of the handle, the
+			// popper least, so it rises as one piece and follows the handle like a rod, the tip lagging
+			if (stiff[i] > 0.01 && !lassoOn[i])
+			{
+				for (int k = 2; k < NP; k++)
+				{
+					double u = double(k) / NN;
+					Vector3 want = anchor + dir * (seg * k);
+					wp[o + k] = wp[o + k] + (want - wp[o + k]) * (stiff[i] * GUIDE * (1.0 - GUIDE_TIP * u));
+				}
 			}
 			Vector3 tv = (wp[o + NN] - wq[o + NN]) * subs;
 			double sp = tv.Length();
@@ -638,19 +1038,7 @@ class RSQWP_Whip : EventHandler
 			}
 			if ((lockOn[i] && lockOn[i] != was) || (lockLine[i] && !wasLine)) Buzz(pmo, ph, 0.3, 2);
 		}
-		// the mark: a small turning ring of sparks over the locked thing
-		if (level.maptime % 2 == 0 && (lockOn[i] || lockLine[i]))
-		{
-			Vector3 c = lockOn[i] ? lockOn[i].pos + (0, 0, lockOn[i].height + 6) : lockAt[i];
-			double r = lockOn[i] ? max(6.0, lockOn[i].radius * 0.8) : 6.0;
-			Vector3 off = c - pmo.pos;
-			for (int k = 0; k < 6; k++)
-			{
-				double a = level.maptime * 12 + k * 60;
-				pmo.A_SpawnParticle(lockLine[i] ? 0xFFE060 : 0xFF6030, SPF_FULLBRIGHT, 5, 3.0, 0,
-					off.x + cos(a) * r, off.y + sin(a) * r, off.z, 0, 0, 0.1);
-			}
-		}
+		// the mark: the series' lock diamond over the locked thing (UpdateMark, every tic)
 	}
 
 	// ---- the whip weapon: mark, pull, lasso (owner 2026-10-31) ---------------------------------
@@ -794,7 +1182,7 @@ class RSQWP_Whip : EventHandler
 				Console.Printf("T_WPW %d MARK t%d -> %s (%d of %d)", i, level.maptime,
 					lockOn[i] ? String.Format("%s", lockOn[i].GetClassName()) : (markLine[i] ? String.Format("line %d special %d", markLine[i].Index(), markLine[i].special) : "nothing"), pick + 1, n);
 		}
-		MarkRing(i, pmo);
+		// the mark itself is the series' lock diamond, drawn by UpdateMark every tic
 	}
 
 	// the marked thing is still one to crack, wherever the hand points now: a monster alive, a pickup not taken,
@@ -815,27 +1203,12 @@ class RSQWP_Whip : EventHandler
 		return false;
 	}
 
-	// the mark: a small turning ring of sparks over the marked thing (a switch: gold)
-	void MarkRing(int i, PlayerPawn pmo)
-	{
-		if (level.maptime % 2 != 0 || !(lockOn[i] || lockLine[i])) return;
-		Vector3 c = lockOn[i] ? lockOn[i].pos + (0, 0, lockOn[i].height + 6) : lockAt[i];
-		double r = lockOn[i] ? max(6.0, lockOn[i].radius * 0.8) : 6.0;
-		Vector3 off = c - pmo.pos;
-		for (int k = 0; k < 6; k++)
-		{
-			double a = level.maptime * 12 + k * 60;
-			pmo.A_SpawnParticle(lockLine[i] ? 0xFFE060 : 0xFF6030, SPF_FULLBRIGHT, 5, 3.0, 0,
-				off.x + cos(a) * r, off.y + sin(a) * r, off.z, 0, 0, 0.1);
-		}
-	}
-
 	// WRAPPED round a monster (a marked crack or a lasso landed on it): the thong stays laid out to it, and a pull
 	// back of the whip hand -- the hand going away from the monster, against the body, so walking does not count --
 	// yanks it when the pull ends (Yank: how hard is the pull's peak). Nothing in WRAP_TICS and it lets go.
 	void HoldWrap(int i, PlayerPawn pmo, int hand)
 	{
-		Vector3 hp = RSQWP_Util.HandPos(pmo, hand);
+		Vector3 hp = BodyHand(pmo, hand);
 		Vector3 off = hp - pmo.pos;
 		Vector3 d = off - pullOff[i];
 		bool had = pullHad[i];
@@ -858,7 +1231,11 @@ class RSQWP_Whip : EventHandler
 		{
 			double u = double(k - NN / 2) / (NN - NN / 2);
 			Vector3 want = ToRoom(hp) + roomTo * (0.5 + 0.5 * u);
-			wp[o + k] = wp[o + k] + (want - wp[o + k]) * 0.5;
+			// moved WITH its last place, so the lay-out puts no speed into the link (Verlet reads speed from the two:
+			// moving only the one flung the thong round when the wrap let go)
+			Vector3 dv = (want - wp[o + k]) * 0.5;
+			wp[o + k] = wp[o + k] + dv;
+			wq[o + k] = wq[o + k] + dv;
 		}
 		if (!had || d.Length() > 24) return;
 		Vector3 toV = (c - hp).Unit();
@@ -934,6 +1311,14 @@ class RSQWP_Whip : EventHandler
 	// ---- the leashed monster as a flail (owner's pick 9; teardown apply/01 4.2) --------------------
 
 	const FLAIL_AGAIN = 10;      // tics before the same monster can be smashed into again
+	// THE WHIP'S OWN DAMAGE TYPE (owner 11-02: "attacking enemy and bring it to me causes me to do a brutaldoom melee,
+	// this then bugs out the whip"). Every hurt was DamageType 'Melee', and Brutal Doom's monsters answer a 'Melee'
+	// hurt with their stealth kill: Pain.Melee / Death.Melee -> StealthKill -> A_GiveToTarget GoFatality, GoSpecial
+	// and SK<monster> to the player (brutal22test6 Imps.dec 343-348, 738-739, 1297-1305; XMVE's the same), and the
+	// player's Brutal Doom class then plays its fatality / execution (rig 11-02, the owner's order: a whip kill on an
+	// imp that had not seen you gave GoFatality + SKImp + GoSpecial and the player jumped into his fatality states).
+	// 'Whip' is a type no Brutal Doom or XMVE actor has a state or factor for: their plain Pain and Death, full damage.
+	static Name DmgType() { return 'Whip'; }
 
 	static bool HeavyThing(Actor v)
 	{
@@ -949,7 +1334,7 @@ class RSQWP_Whip : EventHandler
 		EndWrap(i);
 		wrapOn[i] = v; wrapUntil[i] = level.maptime + WRAP_TICS; pullHad[i] = false; pullPk[i] = 0;
 		wrapTic[i] = level.maptime; graceArm[i] = RSQWP_Util.Flag("rsqwp_whip_yankgrace", false);
-		Vector3 hp = RSQWP_Util.HandPos(pmo, hand);
+		Vector3 hp = BodyHand(pmo, hand);
 		Vector2 to = v.pos.xy - hp.xy;
 		flailL[i] = max(to.Length(), v.radius + 8);
 		flailOff[i] = Actor.DeltaAngle(RSQWP_Util.HandYaw(pmo, hand), atan2(to.y, to.x));
@@ -974,6 +1359,8 @@ class RSQWP_Whip : EventHandler
 		// what was borrowed goes back (monster.zs Restore: tics = 1, it goes on from its Pain frame)
 		if (flailPin[i] && v && !v.bDestroyed && v.Health > 0 && v.tics == -1) v.tics = 1;
 		flailPin[i] = false;
+		// the thong laid out to it comes back in calmly (settle: heavy damping while its length shrinks back)
+		if (v) settle[i] = max(settle[i], 12);
 	}
 
 	// Each tic of the wrap: the monster's place is the whip hand + the rope's length along the hand's yaw + the
@@ -1030,14 +1417,14 @@ class RSQWP_Whip : EventHandler
 		int dmg = clamp(int((spd - 8.0) * 0.8), 0, 40);
 		smashOn[i] = hit; smashTic[i] = level.maptime;
 		int hp0 = hit.Health;
-		if (dmg > 0) { RSQWP_Events.Whipped(hit, pmo); RSQWP_Perks.Hurt(hit, v, pmo, dmg, 'Melee'); }
+		if (dmg > 0) { RSQWP_Events.Whipped(hit, pmo); RSQWP_Perks.Hurt(hit, v, pmo, dmg, DmgType()); }
 		bool stag = false;
 		if (hit && !hit.bDestroyed && hit.Health > 0)
 		{
-			stag = hit.TriggerPainChance('Melee', true);
+			stag = hit.TriggerPainChance(DmgType(), true);
 			hit.vel.xy += dir * min(8.0, spd * 0.5);
 		}
-		if (dmg > 1 && v && !v.bDestroyed && v.Health > 0) { RSQWP_Events.Whipped(v, pmo); RSQWP_Perks.Hurt(v, null, pmo, dmg / 2, 'Melee'); }
+		if (dmg > 1 && v && !v.bDestroyed && v.Health > 0) { RSQWP_Events.Whipped(v, pmo); RSQWP_Perks.Hurt(v, null, pmo, dmg / 2, DmgType()); }
 		Noise(pmo, 'hit', hit ? hit.pos + (0, 0, hit.height * 0.5) : v.pos);
 		RSQWP_Looks.Spark(v ? v.pos + (0, 0, v.height * 0.5) : pmo.pos, 'flesh');
 		Buzz(pmo, hand, 0.7, 5);
@@ -1328,6 +1715,13 @@ class RSQWP_Whip : EventHandler
 		// whirling, wrapped round a monster, or flying out to one (Reach drags the outer links: rig 10-31, a lasso's
 		// throw cracked at 108 on its way out and the crack's speed then counted as the throw's): no crack
 		if (lassoOn[i] || wrapOn[i] || reachTic[i] > 0) { pend[i] = false; return; }
+		// a tic the tracking space turned (a snap or stick turn) never starts a crack (Carry already took the turn
+		// out of the thong; this is the belt to its braces)
+		if (wby[i] && turnTic[i / 2] == level.maptime) { pend[i] = false; return; }
+		// THE WIND-UP NEVER CRACKS (rig 11-02: the stiffening thong rising off the floor went 115 room units a tic and
+		// cracked three times before the swing). While wound up, or stiff with no swing yet, nothing cracks; the swing's
+		// crack comes as it drives and lets go (Deliberate).
+		if (windTics[i] > 0 || (stiff[i] > 0.01 && !swinging[i] && !released[i])) { pend[i] = false; return; }
 		if (sp >= crackSpd * 0.55 && !swished[i] && wext[i] > 0.7)
 		{
 			swished[i] = true;
@@ -1349,7 +1743,9 @@ class RSQWP_Whip : EventHandler
 			pend[i] = true; pkSpd[i] = sp; pkAt[i] = at; pkVel[i] = vel;
 			return;
 		}
-		if (!armed[i] && sp < rearm[i] && level.maptime - crackTic[i] >= 3) armed[i] = true;
+		// ONE SWING, ONE CRACK (owner 11-02: "attack in a deliberate sense"). The crack re-armed as soon as the tip fell
+		// to 70% of the last crack's speed, so a throw cracked two or three times (rig 11-02: 5 cracks in 2 swings).
+		// Now it re-arms only once the thong has calmed (under 45% of the crack speed for 3 tics) or on a new wind-up.
 		if (sp < crackSpd * 0.45) { if (++calm[i] >= 3) { armed[i] = true; swished[i] = false; } }
 		else calm[i] = 0;
 	}
@@ -1379,7 +1775,7 @@ class RSQWP_Whip : EventHandler
 				continue;
 			}
 			int hand = i & 1;
-			Vector3 off = RSQWP_Util.HandPos(pmo, hand) - pmo.pos;
+			Vector3 off = BodyHand(pmo, hand) - pmo.pos;
 			bool had = pumpHad[i];
 			Vector3 d = off - pumpOff[i];
 			pumpOff[i] = off; pumpHad[i] = true;
@@ -1504,7 +1900,7 @@ class RSQWP_Whip : EventHandler
 		int dmg = crack ? max(1, int(maxDmg * (0.25 + 0.75 * hk) + 0.5)) : int(maxDmg * 0.25 * clamp(spd / crackSpd, 0.15, 1.0) + 0.5);
 		if (maxDmg <= 0) dmg = 0;
 		int hp0 = v.Health;
-		if (dmg > 0) { RSQWP_Events.Whipped(v, pmo); RSQWP_Perks.Hurt(v, pmo, pmo, dmg, 'Melee'); }
+		if (dmg > 0) { RSQWP_Events.Whipped(v, pmo); RSQWP_Perks.Hurt(v, pmo, pmo, dmg, DmgType()); }
 		bool stunned = false;
 		if (crack && v && v.Health > 0 && v.bISMONSTER && RSQWP_Util.Flag("rsqwp_whip_stun", true))
 		{
@@ -1878,6 +2274,8 @@ class RSQWP_Whip : EventHandler
 		byWeapon[i] = false; lassoOn[i] = false; lassoWas[i] = false; markHeld[i] = false; markLine[i] = null;
 		wby[i] = null;
 		lockOn[i] = null; lockLine[i] = false; lockLeft[i] = 0; lockHeld[i] = false; reachTic[i] = 0; reachFor[i] = null;
+		stiff[i] = 0; swinging[i] = false; windTics[i] = 0; settle[i] = 0; stuckTics[i] = 0; bodyHad[i] = false;
+		ClearMark(i);
 		for (int k = 0; k < NP; k++)
 		{
 			if (wl[i * NP + k]) wl[i * NP + k].Destroy();
@@ -1935,4 +2333,56 @@ class RSQWP_WhipBuzz : Actor
 		A_QuakeEx(left ? a : 0.0, left ? 0.0 : a, 0, 2, 0, 8, "", QF_WAVE, 17.5, 17.5, 1);
 	}
 	States { Spawn: TNT1 A 40; Stop; }
+}
+
+// THE LOCK MARK: the series' lock diamond (owner, approved): a WHITE centre in a GOLD ring, 48x48, 4 frames at 3 tics,
+// as RSQ Saber's UBQS_LockMark (scale 0.35 x Cue Size, additive, fullbright, always facing you). The ring's art is
+// white and drawn AddShaded in gold (RSQWP_Whip.UpdateMark sets the shade, through the colour-blind palette); the
+// centre is drawn as it is. Placed every tic by RSQWP_Whip.UpdateMark; nothing of its own.
+class RSQWP_LockRing : Actor
+{
+	const GOLD = 0xFFD040;       // the series' gold (RSQ Score's GOLD)
+	Default
+	{
+		Scale 0.35;
+		Alpha 0.95;
+		RenderStyle "AddShaded";
+		StencilColor "FF D0 40";
+		+NOINTERACTION
+		+NOBLOCKMAP
+		+BRIGHT
+		+NOGRAVITY
+		+NOTONAUTOMAP
+		+FORCEXYBILLBOARD
+		+DONTSPLASH
+	}
+	States
+	{
+	Spawn:
+		WPKR ABCD 3 Bright;
+		Loop;
+	}
+}
+
+class RSQWP_LockCentre : Actor
+{
+	Default
+	{
+		Scale 0.35;
+		Alpha 0.95;
+		RenderStyle "Add";
+		+NOINTERACTION
+		+NOBLOCKMAP
+		+BRIGHT
+		+NOGRAVITY
+		+NOTONAUTOMAP
+		+FORCEXYBILLBOARD
+		+DONTSPLASH
+	}
+	States
+	{
+	Spawn:
+		WPKC ABCD 3 Bright;
+		Loop;
+	}
 }

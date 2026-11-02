@@ -1,0 +1,238 @@
+version "4.14"
+// TEST ONLY (never ships). Probes for RSQ Whip on the qzd17.3 rig (tools/rig17, /home/claude/g9/rig): drives the
+// rig's controller cvars (qz_rhand, qz_lhand, qz_rtrigger, qz_rstick, qz_lstick) per GAME TIC (console `wait` counts
+// frames), reads RSQWP_Whip's fields from outside and logs "whp_" lines. Start a scenario with `netevent whp_go`.
+//   1 SNAP TURN   hand still; a real 45-degree snap (right stick) at t80.        no crack; the rope settles
+//   2 WALK        hand still; left stick forward t80..t185 (3 s).               the tip stays near rest
+//   3 SWING       wind-up over the shoulder, then a forward swing (twice).      one crack per swing
+//   4 YANK        trigger marks a monster ahead, swing, wrap, pull back hard.   no Brutal Doom melee, no link in a wall
+//   5 HANDS       how many whips are out, and in which hand (every 10 tics)
+//   6 IDLE        hand still for the whole run (frames of the idle whip)
+class WHP_LinkTracer : LineTracer
+{
+	override ETraceStatus TraceCallback()
+	{
+		if (Results.HitType == TRACE_HitActor) return TRACE_Skip;
+		return TRACE_Stop;
+	}
+}
+
+class WHP_Probe : EventHandler
+{
+	int t0;
+	bool going;
+	int lastCracks[4];
+	int crackN, crackAt[16];
+	double preX, preY, preZ; int preN;
+	double maxDev, maxSpd, devAt[8];
+	int inWallMax, inWallTics;
+	String lastMain, lastOff;
+	transient WHP_LinkTracer lt;
+	int tokWas[15];
+	Vector3 l3a, l3b; int lassoN; double lassoAcc, lassoAccMax, lassoStr, lassoStrMax;
+
+	const R = "0.20 1.30 -0.30 20 0 0";
+
+	void Set(String cv, String v) { let c = CVar.FindCVar(cv); if (c) c.SetString(v); }
+	void SetF(String cv, double v) { let c = CVar.FindCVar(cv); if (c) c.SetFloat(v); }
+
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		let pmo = players[e.Player].mo; if (!pmo) return;
+		if (e.Name == "whp_go")
+		{
+			t0 = level.maptime; going = true; crackN = 0; preN = 0; preX = preY = preZ = 0; maxDev = 0; maxSpd = 0;
+			inWallMax = 0; inWallTics = 0;
+			for (int k = 0; k < 8; k++) devAt[k] = -1;
+			let w = RSQWP_Whip.Get();
+			for (int k = 0; k < 4; k++) lastCracks[k] = w ? w.cracks[k] : 0;
+			Console.Printf("whp_go t%d scen %d", level.maptime, CVar.FindCVar("whp_scen").GetInt());
+		}
+		else if (e.Name == "whp_summon")
+		{
+			// a0 class (0 imp, 1 zombieman, 2 demon), a1 distance, a2 angle off ahead
+			static const Name cls[] = { "DoomImp", "ZombieMan", "Demon" };
+			Vector2 f = Actor.AngleToVector(pmo.angle + e.Args[2], e.Args[1]);
+			let a = Actor.Spawn(cls[clamp(e.Args[0], 0, 2)], (pmo.pos.xy + f, pmo.pos.z), ALLOW_REPLACE);   // the load order's own monster (Brutal Doom's imp)
+			if (a) { a.angle = a.AngleTo(pmo) + 180; Console.Printf("whp_summon t%d %s at (%.0f %.0f %.0f) d %.0f", level.maptime, a.GetClassName(), a.pos.x, a.pos.y, a.pos.z, a.Distance2D(pmo)); }
+		}
+		else if (e.Name == "whp_tp")
+		{
+			pmo.SetOrigin((e.Args[0], e.Args[1], pmo.floorz), false);
+			pmo.SetOrigin((e.Args[0], e.Args[1], pmo.CurSector.floorplane.ZatPoint((e.Args[0], e.Args[1]))), false);
+			pmo.angle = e.Args[2]; pmo.vel = (0, 0, 0);
+			Console.Printf("whp_tp t%d pos(%.0f %.0f %.0f) ang %.0f", level.maptime, pmo.pos.x, pmo.pos.y, pmo.pos.z, pmo.angle);
+		}
+	}
+
+	// Brutal Doom's melee actors (and anything else a hand-melee mod spawns), fired by the player
+	override void WorldThingSpawned(WorldEvent e)
+	{
+		let a = e.Thing;
+		if (!a) return;
+		String n = a.GetClassName();
+		String l = n.MakeLower();
+		if (l.IndexOf("melee") >= 0 || l.IndexOf("kick") >= 0 || l.IndexOf("punch") >= 0 || l.IndexOf("strike") >= 0 || l.IndexOf("axeattack") >= 0 || l.IndexOf("bash") >= 0)
+			Console.Printf("whp_MELEE t%d %s spawned (target %s) at (%.0f %.0f %.0f)", level.maptime - t0, n, a.target ? a.target.GetClassName() : 'none', a.pos.x, a.pos.y, a.pos.z);
+	}
+	override void WorldThingDamaged(WorldEvent e)
+	{
+		if (e.Thing && e.Thing.bISMONSTER)
+			Console.Printf("whp_DMG t%d %s took %d (%s) by %s, hp %d", level.maptime - t0, e.Thing.GetClassName(), e.Damage, e.DamageType, e.Inflictor ? e.Inflictor.GetClassName() : 'none', e.Thing.health);
+	}
+
+	// hand keyframes: tic, x y z pitch yaw
+	static String Key(int t, out Array<double> k)
+	{
+		int rows = k.Size() / 6;
+		if (t <= k[0]) return String.Format("%.3f %.3f %.3f %.2f %.2f 0", k[1], k[2], k[3], k[4], k[5]);
+		for (int r = 0; r < rows - 1; r++)
+		{
+			double a = k[r * 6], b = k[(r + 1) * 6];
+			if (t >= a && t <= b)
+			{
+				double u = b > a ? (t - a) / (b - a) : 0;
+				double v[5];
+				for (int c = 0; c < 5; c++) v[c] = k[r * 6 + 1 + c] + (k[(r + 1) * 6 + 1 + c] - k[r * 6 + 1 + c]) * u;
+				return String.Format("%.3f %.3f %.3f %.2f %.2f 0", v[0], v[1], v[2], v[3], v[4]);
+			}
+		}
+		int l = (rows - 1) * 6;
+		return String.Format("%.3f %.3f %.3f %.2f %.2f 0", k[l + 1], k[l + 2], k[l + 3], k[l + 4], k[l + 5]);
+	}
+
+	// one deliberate crack: rest -> wind-up over the shoulder (hand up and back, handle pointing up-back) -> hold ->
+	// a fast forward swing to pointing forward and down -> follow-through -> rest. Starts at tic s.
+	static void SwingKeys(out Array<double> k, int s)
+	{
+		static const double SWK[] = {
+			0,  0.20, 1.30, -0.30,  20, 0,
+			14, 0.24, 1.78,  0.08, 150, 0,     // wound up: over the shoulder, handle up and back (120 deg up)
+			20, 0.24, 1.80,  0.10, 155, 0,
+			23, 0.22, 1.60, -0.35,  60, 0,     // the forward swing (4 tics)
+			25, 0.20, 1.40, -0.55,   0, 0,     // pointing forward and down
+			34, 0.20, 1.35, -0.50,  10, 0,
+			60, 0.20, 1.30, -0.30,  20, 0 };
+		for (int i = 0; i < SWK.Size(); i++) k.Push(i % 6 == 0 ? SWK[i] + s : SWK[i]);
+	}
+
+	ui int frames, lastG;
+	override void RenderOverlay(RenderEvent e)
+	{
+		frames++;
+		if (CVar.FindCVar("whp_log").GetInt() >= 3) Console.Printf("whp_F %d g%d", frames, gametic);
+	}
+
+	override void WorldTick()
+	{
+		let pmo = players[consoleplayer].mo; if (!pmo || !going) return;
+		let w = RSQWP_Whip.Get();
+		int sc = CVar.FindCVar("whp_scen").GetInt();
+		int t = level.maptime - t0;
+		int pn = consoleplayer;
+		String pose = R;
+		Array<double> k;
+		if (sc == 1)
+		{
+		}
+		else if (sc == 2)
+		{
+		}
+		else if (sc == 3)
+		{
+			SwingKeys(k, 60);
+			Array<double> k2; SwingKeys(k2, 160);
+			if (t < 150) pose = Key(t, k); else pose = Key(t, k2);
+		}
+		else if (sc == 4)
+		{
+			// trigger held from t20 (mark); a swing at t40 cracks and flies to the mark; trigger kept (the wrap);
+			// at t110 the hand pulls back hard (whp_pull metres in 4 tics); trigger let go at t170
+			if (t < 110) { SwingKeys(k, 40); pose = Key(t, k); }
+			else
+			{
+				double pb = CVar.FindCVar("whp_pull").GetFloat();
+				double u = clamp((t - 110) / 4.0, 0.0, 1.0);
+				pose = String.Format("0.20 1.30 %.3f 20 0 0", -0.40 + pb * u);
+			}
+		}
+
+		// ---- measure -------------------------------------------------------------------------------------
+		if (!w) return;
+		int i = pn * 2;
+		if (w.wstate[i] == 0 && w.wstate[i + 1] != 0) i++;
+		int nOut = (w.wstate[pn * 2] != 0) + (w.wstate[pn * 2 + 1] != 0);
+		for (int h = 0; h < 2; h++)
+		{
+			int j = pn * 2 + h;
+			if (w.cracks[j] < lastCracks[j]) lastCracks[j] = 0;
+			while (w.cracks[j] > lastCracks[j]) { lastCracks[j]++; if (crackN < 16) crackAt[crackN] = t; crackN++; Console.Printf("whp_CRACK t%d hand %d tip speed %.1f", t, h, w.crackV[j]); }
+		}
+		// Brutal Doom's fatality / stealth-kill / execution tokens on the player (its monsters give them on a 'Melee' hurt)
+		static const Name TOK[] = { "GoFatality", "GoSpecial", "SKImp", "SKZombieman", "SKShotgunguy", "ExecuteDownedImp", "ExecuteDownedEnemy", "Kicking", "Punching", "BDWeaponAction", "ImpFatality", "ImpFatality2", "ImpFatality3", "ImpFatality4", "GrabbedAImp" };
+		for (int q = 0; q < TOK.Size(); q++)
+		{
+			class<Inventory> tc = TOK[q];
+			int n = tc ? pmo.CountInv(tc) : 0;
+			if (n != tokWas[q]) { Console.Printf("whp_TOKEN t%d %s %d -> %d (player state %s)", t, TOK[q], tokWas[q], n, pmo.CurState ? String.Format("%d", pmo.CurState.DistanceTo(pmo.SpawnState)) : "?"); tokWas[q] = n; }
+		}
+		String mn = pmo.player.ReadyWeapon ? pmo.player.ReadyWeapon.GetClassName() : 'none';
+		String on = pmo.player.OffhandWeapon ? pmo.player.OffhandWeapon.GetClassName() : 'none';
+		if (mn != lastMain || on != lastOff) { Console.Printf("whp_WEAP t%d main %s off %s", t, mn, on); lastMain = mn; lastOff = on; }
+		if (sc == 5 && t % 10 == 0)
+			Console.Printf("whp_HANDS t%d whips out %d: main %d (byWeapon %d) off %d (byWeapon %d); main weapon %s, off weapon %s", t, nOut, w.wstate[pn * 2], w.byWeapon[pn * 2], w.wstate[pn * 2 + 1], w.byWeapon[pn * 2 + 1], mn, on);
+		if (w.wstate[i] == 0) return;
+		int o = i * RSQWP_Whip.NP;
+		// the tip in the body's frame (room units: forward, left, up). The frame's yaw is the still LEFT controller's
+		// (the rig turns the pawn's angle a tic before the controllers on a snap)
+		Vector3 tip = RSQWP_Whip.ToMap(w.wp[o + RSQWP_Whip.NN]);
+		Vector3 d = tip - pmo.pos;
+		double fy = pmo.OffhandAngle + 90;
+		double c = cos(fy), s = sin(fy);
+		Vector3 bf = (d.x * c + d.y * s, -d.x * s + d.y * c, d.z * RSQWP_Util.PS());
+		if (t >= 60 && t < 80) { preX += bf.x; preY += bf.y; preZ += bf.z; preN++; }
+		if (t >= 80 && preN > 0)
+		{
+			Vector3 pre = (preX / preN, preY / preN, preZ / preN);
+			double dev = (bf - pre).Length();
+			if (t < 200 || sc == 2) maxDev = max(maxDev, dev);
+			if (sc == 1 && t == 140) devAt[0] = dev;
+			if (sc == 1 && t == 200) devAt[1] = dev;
+			if (sc == 2 && t == 185) devAt[0] = dev;
+			if (sc == 2 && t == 250) devAt[1] = dev;
+			if (sc == 2 && t == 320) devAt[1 + 1] = dev;
+		}
+		if (t >= 80) maxSpd = max(maxSpd, w.tipSpd[i]);
+		// a link inside geometry: the segment from the previous link (the handle's tip for link 1) is blocked
+		if (!lt) lt = new("WHP_LinkTracer");
+		int blocked = 0;
+		for (int n = 1; n <= RSQWP_Whip.NN; n++)
+		{
+			Vector3 a = RSQWP_Whip.ToMap(w.wp[o + n - 1]), b = RSQWP_Whip.ToMap(w.wp[o + n]);
+			Vector3 ab = b - a; double l = ab.Length();
+			if (l < 0.01) continue;
+			if (lt.Trace(a, level.PointInSector(a.xy), ab / l, l, 0, Line.ML_BLOCKEVERYTHING | Line.ML_BLOCKPROJECTILE | Line.ML_BLOCKHITSCAN, true) && lt.Results.HitType != TRACE_HitNone && lt.Results.Distance < l - 0.6)
+				blocked++;
+		}
+		// the lasso's inner piece: link 3's acceleration (room units / tic^2: shaking) and the stretch of links 1..5
+		if (w.lassoOn[i])
+		{
+			Vector3 l3 = w.wp[o + 3];
+			if (lassoN >= 2) { double acc = (l3 - l3a * 2 + l3b).Length(); lassoAcc += acc; lassoAccMax = max(lassoAccMax, acc); }
+			double seg = w.wlen[i] / RSQWP_Whip.NN, str = 0;
+			for (int n = 1; n <= 5; n++) str = max(str, abs((w.wp[o + n] - w.wp[o + n - 1]).Length() - seg) / seg);
+			lassoStr += str; lassoStrMax = max(lassoStrMax, str);
+			l3b = l3a; l3a = l3; lassoN++;
+		}
+		if (t == 200 && lassoN > 2) Console.Printf("whp_LASSO %d tics held: link 3 accel mean %.2f max %.2f; inner stretch mean %.0f%% max %.0f%%", lassoN, lassoAcc / (lassoN - 2), lassoAccMax, 100 * lassoStr / lassoN, 100 * lassoStrMax);
+		if (blocked) { inWallTics++; inWallMax = max(inWallMax, blocked); }
+		if (CVar.FindCVar("whp_log").GetInt() >= 2 || (blocked && sc == 4))
+			Console.Printf("whp_T t%d tip body(%.1f %.1f %.1f) spd %.1f hand %.1f inwall %d out %d ang %.1f handyaw %.1f pos(%.0f %.0f) hand-body(%.1f %.1f %.1f) z %.1f vh %.1f", t, bf.x, bf.y, bf.z, w.tipSpd[i], w.handSpd[i], blocked, nOut, pmo.angle, pmo.AttackAngle + 90, pmo.pos.x, pmo.pos.y, pmo.AttackPos.x - pmo.pos.x, pmo.AttackPos.y - pmo.pos.y, pmo.AttackPos.z - pmo.pos.z, pmo.pos.z, pmo.player.viewheight);
+		if (t == 330 || (sc == 3 && t == 260) || (sc == 4 && t == 230))
+		{
+			Console.Printf("whp_SUM scen %d: cracks %d (at %d %d %d), tip body rest (%.1f %.1f %.1f), max dev %.1f, dev@1 %.1f dev@2 %.1f dev@3 %.1f, max tip speed after t80 %.1f, link-in-wall tics %d (max %d links), whips out %d",
+				sc, crackN, crackN > 0 ? crackAt[0] : -1, crackN > 1 ? crackAt[1] : -1, crackN > 2 ? crackAt[2] : -1,
+				preN ? preX / preN : 0., preN ? preY / preN : 0., preN ? preZ / preN : 0., maxDev, devAt[0], devAt[1], devAt[2], maxSpd, inWallTics, inWallMax, nOut);
+		}
+	}
+}

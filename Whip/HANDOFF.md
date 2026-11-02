@@ -1,5 +1,31 @@
 # HANDOFF -- RSQ_Whip (PROJECT WHIP), 2026-10-30
 
+## 2026-11-02: the owner's headset report, fixed on the rig (not headset-confirmed)
+Rig: qzd17.3 (tools/rig17 engine, /home/claude/g9/rig), probe `tools/rigtest/whp/` + `whp.sh` + `whp_scripts.py`
+(one tic per `wait 1` at vid_maxfps 35). The probe logs `whp_` lines. BEFORE = `git archive HEAD Whip`, AFTER =
+this tree. doom2 MAP01. "BD" = the owner's order with every committed RSQ pk3 except GunBonsaiVR.
+
+### Done (measured)
+| item | cause | fix | before -> after |
+|---|---|---|---|
+| snap turn fires it | the chain was simulated in the world: a snap swung the hand and handle 45 deg round the body in one tic | `Carry` moves and turns every node with the body. `TrackFrame` finds the tracking-space turn from both controllers: same yaw change, both turned round the pawn. The pawn's angle on the rig took the snap a tic before the controllers. Lash skips a turning tic | 4 snaps, hand still: cracks 5 -> 0, tip max speed 45.3 -> 0.3, tip drift (body frame) 166 -> 0.7 room units |
+| walking goes insane | the world-space chain was dragged along. AttackPos.z also follows the interpolated eye, view bob and the step dip (a still hand moved 33..52 over the pawn on MAP01's stairs) | `Carry`. `BodyHand`: the hand is measured per frame against that frame's eye (RenderOverlay -> rsqwp_hp0/1) and put back on `SteadyEye` (ViewHeight + crouchviewdelta). Calm damping 0.96 a sub-step and a step cap of 1.2 while the hand is calm | walk 3 s down and up stairs, hand still: cracks 1 -> 0, tip max deviation 139.9 -> 18.8 (the thong lying on the steps), link-in-wall tics 35 -> 0 |
+| deliberate attack | nothing scripted. After a crack it re-armed at 70% of the crack speed, so one throw cracked 2-3 times | `Deliberate`: wound up (handle >= 27 deg up, not forward, hand >= eye-14) for 2 tics, then the thong is guided to a line out of the handle (GUIDE 0.30, less toward the tip). The swing drives it like a rod and releases at 55% of peak. No crack while wound up. It re-arms only when calm or on a new wind-up | 2 scripted wind-up + swings: cracks 5 -> 2 (one per swing, tip 112 / 136) |
+| yank -> BD melee -> stuck | the whip's DamageType 'Melee': BD's monsters answer it with their stealth kill (Pain/Death.Melee -> StealthKill -> GoFatality, GoSpecial and SK<monster> given to the player). Also HoldWrap moved links without their Verlet history (flung on unwrap), and nothing got a link back out of a wall | `DmgType()` = 'Whip'. `Mend` traces the chain link to link each tic and puts any link past a wall back on this side. Stuck for 6 tics: `Straighten`; again within 35 tics: re-coil. HoldWrap moves wp and wq together. EndWrap settles for 12 tics | whip kill on an idle BD imp: GoFatality+SKImp+GoSpecial and the player jumps to his fatality state -> no token. Yank run (BD): link-in-wall tics 78 -> 0. Mended links: 152 -> 0 tics |
+| off-hand twirl jank | the inner piece was pinned at both hands and length-solved between them, so the solver fought itself | links 1..5 are laid straight from the handle to the off hand; only the thong beyond is solved | whirl 135 tics: link-3 accel mean 3.30 -> 1.86, max 12.8 -> 9.6. Let-go tip speed 28.3 -> 8.5 (still over LASSO_MIN 6; watch it) |
+| two whips | SwitchWeaponHand sets the hand pointers and skips Deselect, so PutAway never ran and the old hand's whip went on | `tendTic`: a weapon whip that its weapon no longer tends is halted. `WhipIn` + `rsqwp_whip_hand` (user, menu "Whip In", Main/Off, in Reset All) | switchhand 1: 2 whips for good -> 1 (at most a 2-tic overlap). Off Hand: 1 whip in the off hand for 300 tics on the BD order (BD's rsq_hands did not take it back) |
+| lock icon | particle rings | `RSQWP_LockRing` (WPKR, AddShaded, CB HAVE over gold FFD040) + `RSQWP_LockCentre` (WPKC), 0.35 x Cue, 4 frames x 3 tics, grAb 24,24 | frames: white diamond in a gold ring over the marked imp |
+| cost | | | swing run mean 0.19-0.38 ms/tic (before 0.20-0.35) |
+Script errors: plain doom2 0. BD order: only BD_VoxelPack's 4 voxeldef.
+
+### Not done / open
+- Nothing headset-tested. Not measured: the real arm's wind-up angles, real smooth turn, left-handed, Quest cost.
+- The exact owner trigger for "BD melee" was not reproduced in his words (an ALERTED monster yanked to you). The
+  'Melee' -> fatality hand-off was reproduced and is gone; whether it was his case: headset.
+- BD's off-hand fist (RSQ_Hands, fists.zs) still punches on a forward jab of the off hand during the lasso if
+  rsq_punch is on: that is BD's, not touched.
+
+
 Not run on the owner's headset. Rig: QZD 17.3 (RSQ_WeaponDepot tools/rig/bin), freedoom2 MAP01 and WHIPTEST
 (tools/rigtest/mkwhipmap.py: a ledge, a pit, a beam over it, a 96-unit block, a switch pillar). Hands driven per tic by
 tools/rigtest/whipprobe (the rig's qzt_rhand), runner tools/rigtest/whip.sh (BD=1 the owner's BD order, GRAPPLE=1 also

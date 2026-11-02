@@ -1,0 +1,5 @@
+user int    whp_scen = 0;     // 1 snap turn, 2 walk, 3 wind-up + swing, 4 yank (mark, crack, wrap, pull back), 5 off-hand count, 6 idle
+user int    whp_log  = 1;     // 2: every tic
+user float  whp_pull = 0.6;   // scenario 4: metres the hand is pulled back
+user int    whp_side = 0;     // scenario 4: summon angle (degrees off ahead)
+user int    whp_dist = 200;   // scenario 4: summon distance

@@ -26,6 +26,7 @@ OptionMenu "RSQWP_Options"
 	Title "RSQ WHIP"
 	Option "Whip", "rsqwp_on", "OnOff"
 	Option "Whip Weapon in Slot 1", "rsqwp_whip_weapon", "OnOff"
+	Option "Whip In", "rsqwp_whip_hand", "RSQWP_WhipHand"
 	Option "Whip Style", "rsqwp_whip_mode", "RSQWP_WhipModes"
 	Option "Whip Aim", "rsqwp_whip_aim", "RSQWP_WhipAims"
 	Option "Catch Edges (snag)", "rsqwp_whip_snag", "OnOff"
@@ -89,6 +90,11 @@ OptionMenu "RSQWP_Tuning"
 	SafeCommand "Reset All", "rsqwp_reset", "Reset all RSQ Whip settings?"
 }
 
+OptionValue "RSQWP_WhipHand"
+{
+	0, "Main Hand"
+	1, "Off Hand"
+}
 OptionValue "RSQWP_WhipModes"
 {
 	0, "Real (hold, crack it yourself)"

@@ -1,0 +1,1 @@
+GameInfo { AddEventHandlers = "WHP_Probe" }

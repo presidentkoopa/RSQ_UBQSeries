@@ -15,7 +15,8 @@
 //     headset, the Quest's too), or the engine's two-hand grip (SteamVR) -- and the off hand holds the thong; it
 //     whirls as fast as the off hand drives it (the same simulated whip, nothing canned). Let go of the grip and it flies out the way it was going, and ropes the monster nearest that way.
 //   * On a rope (the whip caught an edge): trigger held = reel in, alt-fire = let go.
-// Either hand: the off-hand copy reads the off-hand trigger and alt-fire (BT_OFFHANDATTACK / BT_OFFHANDALTATTACK).
+// Either hand, ONE whip: Whip In (rsqwp_whip_hand) picks the hand (whip.zs WhipIn); in the off hand it reads the off-hand
+// trigger and alt-fire (BT_OFFHANDATTACK / BT_OFFHANDALTATTACK).
 //
 // The hand is Brutal Doom VR's own (MODELDEF: its axe grip); while the whip is out it draws its own handle.
 
@@ -63,6 +64,7 @@ class RSQWP_WhipWeapon : Weapon
 		if (!pmo || !pmo.player || !w || !core || !RSQWP_Util.Flag("rsqwp_on", true)) return;
 		int hand = Hand();
 		int i = pmo.PlayerNumber() * 2 + hand;
+		w.tendTic[i] = level.maptime;     // this hand's whip is this weapon's (whip.zs: a weapon whip nobody tends is gone)
 		bool trig = TriggerHeld();
 		bool alt = AltHeld();
 		bool altPress = alt && !altWas;
