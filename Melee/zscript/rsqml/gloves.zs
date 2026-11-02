@@ -29,6 +29,8 @@ class RSQ_Glove : Weapon
 	bool   lastStar;      // a star punch
 	int    lastChain;     // One-Two: how many alternating hits in a row, this one included
 	int    lastHand;
+	int    lastKinds;     // Combos: this player's punches inside COMBO_TICS, oldest first, digits kind + 1 (jab, jab, hook = 112)
+	int    lastRun;       // Dempsey: alternating hooks in a row, this one included (0 not a hook)
 	// Star Punch's bank (SuperPunchOut's), kept on the main-hand glove so it is saved and kept across levels
 	int    bankStars, bankLanded;
 	int    wornTone;      // the BD22 VR skin tone this hand wears (RSQML_HandLook), 0 = as drawn
@@ -210,6 +212,25 @@ class RSQML_Gloves : StaticEventHandler
 	const TAP_TICS = 10;
 	// One-Two
 	int chainLastHand[MAXPLAYERS], chainLastTic[MAXPLAYERS], chainCount[MAXPLAYERS];
+	// COMBOS (GBOVR_TREES.md 4.1 C): the last three landed punches a player threw (kind, tic), oldest first, and the Dempsey
+	// run (alternating hooks, each inside DEMPSEY_TICS of the last)
+	int histKind[MAXPLAYERS * 3], histTic[MAXPLAYERS * 3];
+	int runCount[MAXPLAYERS], runHand[MAXPLAYERS], runTic[MAXPLAYERS];
+	const COMBO_TICS = 35;     // Three-Hit's "inside 1 s"
+	const DEMPSEY_TICS = 21;   // Dempsey's "each inside 0.6 s"
+
+	// push this punch, and return the punches inside COMBO_TICS as digits (kind + 1), oldest first
+	int NoteKind(int pn, int kind, int now)
+	{
+		int b = pn * 3;
+		histKind[b] = histKind[b + 1]; histTic[b] = histTic[b + 1];
+		histKind[b + 1] = histKind[b + 2]; histTic[b + 1] = histTic[b + 2];
+		histKind[b + 2] = kind; histTic[b + 2] = now;
+		int code = 0;
+		for (int i = 0; i < 3; i++)
+			if (histTic[b + i] > 0 && now - histTic[b + i] <= COMBO_TICS) code = code * 10 + histKind[b + i] + 1;
+		return code;
+	}
 
 	static RSQML_Gloves Get() { return RSQML_Gloves(StaticEventHandler.Find("RSQML_Gloves")); }
 
@@ -341,6 +362,13 @@ class RSQML_Gloves : StaticEventHandler
 		double minSpeed = RSQML.SV("rsqml_punch_min_speed", 2.0);   // spo_min_speed's default
 		double fullSpeed = RSQML.SV("rsqml_punch_full_speed", 7.0); // spo_full_speed's default
 		int rehit = RSQML.SVI("rsqml_punch_rehit", 6);               // spo_rehit_tics' default
+		// DEMPSEY (GBOVR_TREES.md 4.1 C): in a run of alternating hooks, a glove that has it re-arms faster
+		int dpn = pmo.PlayerNumber();
+		if (runCount[dpn] > 0 && level.maptime - runTic[dpn] <= DEMPSEY_TICS)
+		{
+			int dpLv = RSQML.GBLevel(g, "Dempsey");
+			if (dpLv > 0) rehit = min(rehit, int(RSQML.Num("Dempsey.rehit", dpLv, 0, 4)));
+		}
 		Vector3 v = st.vel;
 		v.z *= ps;
 		double mps = v.Length() / upm;
@@ -680,6 +708,13 @@ class RSQML_Gloves : StaticEventHandler
 		// UPPERCUT, AN UNLOCK under Gun Bonsai VR (GBOVR_TREES.md 4.1 A, owner 11-02): until that glove learns it a rising
 		// punch lands as a jab (the jab's spark, no lift). Without Gun Bonsai VR every glove uppercuts, as before.
 		if (g.lastKind == PK_UPPER && RSQML.UnlockLevel(g, "Uppercut") <= 0) g.lastKind = PK_JAB;
+		// COMBOS (4.1 C): the kinds inside a second (Three-Hit, Finisher), and the Dempsey run (alternating hooks)
+		g.lastKinds = NoteKind(pn, g.lastKind, now);
+		if (g.lastKind == PK_HOOK && runCount[pn] > 0 && runHand[pn] != h && now - runTic[pn] <= DEMPSEY_TICS) runCount[pn]++;
+		else runCount[pn] = g.lastKind == PK_HOOK ? 1 : 0;
+		runHand[pn] = h;
+		runTic[pn] = now;
+		g.lastRun = runCount[pn];
 		double upFrac = clamp((at.z - victim.pos.z) / max(victim.height, 1.0), 0.0, 1.0);
 		g.lastBody = g.lastKind != PK_UPPER && upFrac < 0.6;
 		g.lastCounter = RSQML.InAttack(victim);
@@ -805,6 +840,8 @@ class RSQML_Gloves : StaticEventHandler
 		// a new map: the chain and the pose history are this map's (the bank is on the glove, kept)
 		if (e.PlayerNumber < 0 || e.PlayerNumber >= MAXPLAYERS) return;
 		chainCount[e.PlayerNumber] = 0;
+		runCount[e.PlayerNumber] = 0;
+		for (int i = 0; i < 3; i++) { histKind[e.PlayerNumber * 3 + i] = 0; histTic[e.PlayerNumber * 3 + i] = 0; }
 		for (int h = 0; h < 2; h++) HandOf(e.PlayerNumber, h).prevValid = false;
 	}
 }

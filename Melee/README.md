@@ -113,7 +113,9 @@ Always on (no row):
 - **The Hadouken's window** (2026-11-02, see Known limits): the missile counts from 2.5 tics behind it to 2 tics ahead,
   and the reach is the hand plus at least 6 for the missile plus 6. An off hand holding a Headlock neither punches
   nor returns fireballs.
-- **One-Two, counters, body blows, Star Punch** are read on every punch for Gun Bonsai VR's glove upgrades.
+- **One-Two, counters, body blows, Star Punch** are read on every punch for Gun Bonsai VR's glove upgrades, and
+  (2026-11-02, its Combos) the last three kinds you landed inside a second (`punch.kinds`, jab, jab, hook = 112) and
+  the Dempsey run (alternating hooks, each inside 0.6 s, `punch.run`); in a run a glove with Dempsey re-arms faster.
 
 ## Test it
 
@@ -166,7 +168,7 @@ Rig results (scripted hands, logs and frames of 2026-11-02 under `/home/claude/s
 - **RSQ Accessibility:** Rumble Strength, Seated Play (the Guard's box), the Off-Hand Modifier.
 
 Service for other mods: `ServiceIterator.Find("RSQML_Service")` -- "loaded", "punch.glove" / "punch.kind" /
-"punch.body" / "punch.counter" / "punch.star" / "punch.chain" / "punch.hand" (GetInt) and "punch.power" /
+"punch.body" / "punch.counter" / "punch.star" / "punch.chain" / "punch.hand" / "punch.kinds" / "punch.run" (GetInt) and "punch.power" /
 "punch.speed" (GetDouble), objectArg the blow's inflictor; "guard" (pawn: tics up); "headlock.claim" (pawn);
 "headlock.holding" (monster); "launch.age" (monster, intArg the player: tics since that player launched it, while
 it is still in the air; -1 not).

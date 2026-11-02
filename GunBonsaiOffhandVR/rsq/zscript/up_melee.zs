@@ -226,14 +226,20 @@ class RSQ_Upgrade_Executioner : RSQ_Upgrade_Base
 		// touched 0.66 or 0.33, a Titan less the more monsters stand round it -- the execution sound
 		// played and it lived. So the same two steps are asked of a probe hit and the blow is
 		// scaled up by what comes through. Immune (nothing through): no execution.
-		int want = target.health + 1;
-		int got = target.ApplyDamageFactor(attacktype, target.GetModifiedDamage(attacktype, 1000, true, shot, pawn));
-		if (got <= 0) return damage;
-		double need = ceil(want * 1000.0 / got);
+		double need = KillBlow(pawn, shot, target, attacktype);
+		if (need <= 0) return damage;
 		target.A_StartSound("rsq/execute", CHAN_AUTO, 0, 1.0);
 		let h = RSQ_MeleeHandler.Get();
 		if (h && pawn && pawn.player) h.execTic[pawn.PlayerNumber()] = gametic;   // Adrenaline: an execution
 		return max(damage, need);
+	}
+	// the blow that kills it after what it resists (the probe above); 0 when it is immune. Finisher uses it too.
+	static double KillBlow(Actor pawn, Actor shot, Actor target, Name attacktype)
+	{
+		int want = target.health + 1;
+		int got = target.ApplyDamageFactor(attacktype, target.GetModifiedDamage(attacktype, 1000, true, shot, pawn));
+		if (got <= 0) return 0;
+		return ceil(want * 1000.0 / got);
 	}
 	override void GetTooltipFields(Dictionary fields, uint level)
 	{

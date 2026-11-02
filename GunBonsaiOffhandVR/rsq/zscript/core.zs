@@ -370,6 +370,8 @@ class RSQ_MeleeUpgradeService : Service
 			if (stringArg == "ClearOut.damage") return RSQ_Upgrade_ClearOut.Damage(lv);
 			if (stringArg == "ClearOut.push") return RSQ_Upgrade_ClearOut.Push(lv);
 			if (stringArg == "ClearOut.stagger") return RSQ_Upgrade_ClearOut.Stagger();
+			// C. Combos
+			if (stringArg == "Dempsey.rehit") return RSQ_Upgrade_Dempsey.Rehit(lv);
 			return 0;
 		}
 		return 0;

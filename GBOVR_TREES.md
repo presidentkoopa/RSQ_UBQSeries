@@ -629,6 +629,17 @@ art pass; HP Bars' snowflake waits for item 7.
 | Dempsey (new) | Three-Hit 1 | 1-3: alternating hooks each inside 0.6 s: the re-hit window shrinks 6 -> 4 -> 3 -> 2 tics so you can punch faster, and each hook in the run adds 10% lv | Melee (re-hit), GBOVR (damage) | sparks alternate blue and orange | `combo.dempsey` |
 | Finisher (new) | Three-Hit 2, needs Executioner owned | 1-3: the last hit of a 3+ chain on a staggered monster at 25% + 5% lv health or less kills it, full burst at 1.5x, a 300 ms slow-mo pulse (with SlowMo) | GBOVR (Executioner's rule) | the full burst, 1.5x | `finisher` |
 
+**Combos: BUILT 11-02 (L2, branch C).** Melee: `punch.kinds` (this player's landed punches inside 1 s, oldest first,
+digits kind + 1, so jab, jab, hook = 112) and `punch.run` (the Dempsey run: alternating hooks, each inside 21 tics) on
+`RSQML_Service`; in a run a glove with Dempsey re-arms at Dempsey.rehit. Gun Bonsai VR: Three-Hit, Dempsey, Finisher in
+`up_fists.zs`; Executioner's kill-after-resistance probe is now `RSQ_Upgrade_Executioner.KillBlow`, which Finisher uses.
+Finisher's "3+ chain" = One-Two's chain or three kinds inside a second, whichever is longer. **Headless 11-02:** the
+offer list followed the parents (Three-Hit at One-Two 2; Finisher only with Three-Hit 2 and Executioner). Jab, jab, hook
+on a demon: 20, 26, 64 (the hook 20 x One-Two 1.6 x Three-Hit 2.0). Four alternating hooks: 20, 28, 38, 49 (Dempsey's
++10% a hook on top of One-Two). Jab, jab, hook, jab on a Baron at 300: the fourth killed it (191), where Executioner 1
+alone (below 150) would not. **Not provable headless:** Dempsey's faster re-arm (the probe lands punches through
+Deliver, not the swing reader); the look (the hook's full spark, the Finisher's burst at 1.5x) waits for the art pass.
+
 **D. Counter** (defence turns into offence)
 
 | Node | Parent | Levels | Owns | Art | Score |

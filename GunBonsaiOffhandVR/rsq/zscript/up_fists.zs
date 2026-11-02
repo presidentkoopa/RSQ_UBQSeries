@@ -298,3 +298,84 @@ class RSQ_Upgrade_FireFist : RSQ_ElementUpgrade
 		fields.Insert("mult", AsPercentIncrease(FLARE));
 	}
 }
+
+// ---- C. COMBOS -----------------------------------------------------------------------------------------------------
+// The chain is RSQ Melee's: "punch.chain" (One-Two: alternating hands), "punch.kinds" (this player's punches inside a
+// second, oldest first, digits kind + 1: jab 1, hook 2, uppercut 3) and "punch.run" (Dempsey: alternating hooks).
+// One-Two (root) is in up_gloves.zs.
+class RSQ_ComboMath
+{
+	// how many punches "punch.kinds" holds (0 to 3)
+	static int Count(int kinds) { return kinds <= 0 ? 0 : kinds < 10 ? 1 : kinds < 100 ? 2 : 3; }
+}
+
+// THREE-HIT: jab, jab, hook inside a second -- the hook hits harder and staggers.
+class RSQ_Upgrade_ThreeHit : RSQ_Upgrade_Base
+{
+	const PATTERN = 112;   // jab, jab, hook
+	const STAGGER = 10;
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return GloveInfo(info) && Has(info, "OneTwo", 2) && LevelOf(info, "ThreeHit") < 3; }
+	static double Mult(uint lv) { return 1.5 + 0.25 * lv; }
+	static bool Landed(Actor shot) { return Punch(shot, "punch.kinds") == PATTERN; }
+	override double ModifyDamageDealt(Actor pawn, Actor shot, Actor target, double damage, Name attacktype)
+	{
+		return Landed(shot) ? damage * Mult(level) : damage;
+	}
+	override void OnDamageDealt(Actor pawn, Actor shot, Actor target, int damage)
+	{
+		if (!Landed(shot) || !Monster(target)) return;
+		RSQ_Dazed.On(target).Stagger(STAGGER);
+		RSQM.Touch("combo.3", pawn, target);
+	}
+	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("mult", AsPercentIncrease(Mult(level))); }
+}
+
+// DEMPSEY: alternating hooks, each inside 0.6 s -- each hook in the run hits harder, and in a run the glove re-arms
+// faster (RSQ Melee asks Dempsey.rehit).
+class RSQ_Upgrade_Dempsey : RSQ_Upgrade_Base
+{
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return GloveInfo(info) && Has(info, "ThreeHit") && LevelOf(info, "Dempsey") < 3; }
+	static int Rehit(uint lv) { return max(5 - int(lv), 2); }   // tics: 4, 3, 2 (6 without it)
+	static double Step(uint lv) { return 0.10 * lv; }
+	static double Mult(uint lv, int run) { return 1.0 + Step(lv) * max(run - 1, 0); }
+	override double ModifyDamageDealt(Actor pawn, Actor shot, Actor target, double damage, Name attacktype)
+	{
+		int run = Punch(shot, "punch.run");
+		return run >= 2 ? damage * Mult(level, run) : damage;
+	}
+	override void OnDamageDealt(Actor pawn, Actor shot, Actor target, int damage)
+	{
+		if (Punch(shot, "punch.run") >= 2 && target) RSQM.Touch("combo.dempsey", pawn, target);
+	}
+	override void GetTooltipFields(Dictionary fields, uint level)
+	{
+		fields.Insert("step", AsPercent(Step(level)));
+		fields.Insert("rehit", AsSeconds(Rehit(level)));
+	}
+}
+
+// FINISHER: the last hit of a chain of three or more on a staggered monster with little left kills it (Executioner's
+// rule, so it needs Executioner on this glove), with a slow-motion pulse (RSQ SlowMo).
+class RSQ_Upgrade_Finisher : RSQ_Upgrade_Base
+{
+	const PULSE_MS = 300;
+	const PULSE_DEPTH = 40;
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info)
+	{
+		return GloveInfo(info) && Has(info, "ThreeHit", 2) && Has(info, "Executioner") && LevelOf(info, "Finisher") < 3;
+	}
+	static double Share(uint lv) { return 0.25 + 0.05 * lv; }
+	override double ModifyDamageDealt(Actor pawn, Actor shot, Actor target, double damage, Name attacktype)
+	{
+		if (!IsGlove(shot) || !Monster(target) || target.bBoss) return damage;
+		int chain = max(Punch(shot, "punch.chain"), RSQ_ComboMath.Count(Punch(shot, "punch.kinds")));
+		if (chain < 3 || !RSQM.Staggered(target) || target.health > RSQM.StartHealth(target) * Share(level)) return damage;
+		double need = RSQ_Upgrade_Executioner.KillBlow(pawn, shot, target, attacktype);
+		if (need <= 0) return damage;
+		target.A_StartSound("rsq/execute", CHAN_AUTO, 0, 1.0);
+		RSQM.Pulse(PlayerPawn(pawn), PULSE_MS, PULSE_DEPTH);
+		RSQM.Touch("finisher", pawn, target);
+		return max(damage, need);
+	}
+	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("share", AsPercent(Share(level))); }
+}

@@ -8,6 +8,8 @@
 //   GetInt "punch.body"       1 landed below the chest            GetInt "punch.counter"  1 into an attack wind-up
 //   GetInt "punch.star"       1 a Star Punch                       GetInt "punch.chain"    One-Two: alternating hits in a row
 //   GetInt "punch.hand"       0 main, 1 off
+//   GetInt "punch.kinds"      this player's punches inside 1 s, oldest first, digits kind + 1 (jab, jab, hook = 112)
+//   GetInt "punch.run"        Dempsey: alternating hooks in a row, this one included (0 not a hook)
 //   GetDouble "punch.power"   0..1 between Punch Min Speed and Punch Full Speed; -1 not a glove
 //   GetDouble "punch.speed"   the swing's average, m/s; -1 not a glove
 //   GetInt "guard"            objectArg = the pawn: tics the Guard has been up (0 down)
@@ -33,6 +35,8 @@ class RSQML_Service : Service
 			if (request == "punch.star") return g.lastStar ? 1 : 0;
 			if (request == "punch.chain") return g.lastChain;
 			if (request == "punch.hand") return g.lastHand;
+			if (request == "punch.kinds") return g.lastKinds;
+			if (request == "punch.run") return g.lastRun;
 			return -1;
 		}
 		if (request == "guard")

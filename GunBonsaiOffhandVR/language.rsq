@@ -62,6 +62,16 @@ RSQ_Upgrade_ShockFist_TT = "A punch arcs to the @n nearest enemies within 3 m of
 RSQ_Upgrade_FireFist_Name = "Fire Fist";
 RSQ_Upgrade_FireFist_Desc = "Glove: set them alight. One element per glove.";
 RSQ_Upgrade_FireFist_TT = "A punch sets the enemy burning: @dmg every half second for @time. Punching a burning enemy flares it: @mult damage. Learning it closes the other elements on this glove.";
+// C. Combos
+RSQ_Upgrade_ThreeHit_Name = "Three-Hit";
+RSQ_Upgrade_ThreeHit_Desc = "Glove: jab, jab, hook.";
+RSQ_Upgrade_ThreeHit_TT = "Land jab, jab, hook inside a second, with either hand: the hook does @mult damage and staggers.";
+RSQ_Upgrade_Dempsey_Name = "Dempsey";
+RSQ_Upgrade_Dempsey_Desc = "Glove: weave hook after hook.";
+RSQ_Upgrade_Dempsey_TT = "Alternate hooks, left and right, each inside 0.6 s: every hook in the run adds @step damage, and the glove is ready again after @rehit.";
+RSQ_Upgrade_Finisher_Name = "Finisher";
+RSQ_Upgrade_Finisher_Desc = "Glove: end the combo, end the fight.";
+RSQ_Upgrade_Finisher_TT = "The last hit of a chain of three or more on a staggered enemy below @share health kills it, with a moment of slow motion (RSQ SlowMo). Needs Executioner on this glove.";
 
 RSQ_Upgrade_Lunge_Name = "Lunge";
 RSQ_Upgrade_Lunge_Desc = "Melee: step into the blow.";
