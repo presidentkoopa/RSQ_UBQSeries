@@ -172,7 +172,8 @@ class RSQ_Upgrade_ExplosiveFist : RSQ_ElementUpgrade
 			o.DamageMobj(hit, pawn, dmg, 'Melee', DMG_THRUSTLESS);
 			n++;
 		}
-		if (target) { target.A_StartSound("weapons/rocklx", CHAN_AUTO, CHANF_OVERLAP, 0.8); Burst(target, at, "FFF0D0", 14 + 4 * level, 3.0, 8); }
+		if (target) { target.A_StartSound("weapons/rocklx", CHAN_AUTO, CHANF_OVERLAP, 0.8); Burst(target, at, "FFF0D0", 6, 3.0, 8); }
+		RSQM.Burst("RSQML_BurstE", at, r / 64.0, RSQM.ByLevel(level, 4));
 		RSQM.Touch("fist.explosive", pawn, target);
 	}
 	override void GetTooltipFields(Dictionary fields, uint level)
@@ -196,7 +197,8 @@ class RSQ_Upgrade_FrostFist : RSQ_ElementUpgrade
 		if (!dz || !dz.IsFrozen()) return damage;
 		dz.Thaw();
 		dz.shatterTic = RSQM.Now();
-		Burst(target, target.pos + (0, 0, target.height * 0.5), "A0E0FF", 24, 4.0, 5);
+		Burst(target, target.pos + (0, 0, target.height * 0.5), "A0E0FF", 16, 4.0, 5);
+		RSQM.Burst("RSQML_BurstF", target.pos + (0, 0, target.height * 0.5), 1.0, RSQM.ByLevel(level, 4));
 		target.A_StartSound("misc/icebreak", CHAN_AUTO, CHANF_OVERLAP, 1.0);
 		RSQM.Touch("shatter", pawn, target);
 		return damage * Shatter(level);
@@ -259,6 +261,7 @@ class RSQ_Upgrade_ShockFist : RSQ_ElementUpgrade
 			o.DamageMobj(hit, pawn, dmg, 'Melee', DMG_THRUSTLESS);
 			if (o && o.health > 0) RSQ_Dazed.On(o).Stagger(STAGGER);
 			RSQM.Touch("arc", pawn, o);
+			if (o) RSQM.Burst("RSQML_BurstS", to, 0.6, RSQM.ByLevel(level, 3));
 		}
 		if (target) target.A_StartSound("weapons/plasmax", CHAN_AUTO, CHANF_OVERLAP, 0.7);
 	}
@@ -282,7 +285,8 @@ class RSQ_Upgrade_FireFist : RSQ_ElementUpgrade
 		if (!IsGlove(shot) || !Monster(target)) return damage;
 		let dz = RSQ_Dazed(target.FindInventory("RSQ_Dazed"));
 		if (!dz || !dz.IsBurning()) return damage;
-		Burst(target, target.pos + (0, 0, target.height * 0.5), "FF7020", 16, 3.0, 7);
+		Burst(target, target.pos + (0, 0, target.height * 0.5), "FF7020", 8, 3.0, 7);
+		RSQM.Burst("RSQML_BurstR", target.pos + (0, 0, target.height * 0.5), 0.75, RSQM.ByLevel(level, 4));
 		return damage * FLARE;
 	}
 	override void OnDamageDealt(Actor pawn, Actor shot, Actor target, int damage)
@@ -326,6 +330,7 @@ class RSQ_Upgrade_ThreeHit : RSQ_Upgrade_Base
 		if (!Landed(shot) || !Monster(target)) return;
 		RSQ_Dazed.On(target).Stagger(STAGGER);
 		RSQM.Touch("combo.3", pawn, target);
+		RSQM.Burst("RSQML_Burst1", target.pos + (0, 0, target.height * 0.6), 1.0, RSQM.ByLevel(level, 3));
 	}
 	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("mult", AsPercentIncrease(Mult(level))); }
 }
@@ -345,7 +350,11 @@ class RSQ_Upgrade_Dempsey : RSQ_Upgrade_Base
 	}
 	override void OnDamageDealt(Actor pawn, Actor shot, Actor target, int damage)
 	{
-		if (Punch(shot, "punch.run") >= 2 && target) RSQM.Touch("combo.dempsey", pawn, target);
+		if (Punch(shot, "punch.run") >= 2 && target)
+		{
+			RSQM.Touch("combo.dempsey", pawn, target);
+			RSQM.Burst("RSQML_Burst1", target.pos + (0, 0, target.height * 0.6), 0.75, RSQM.ByLevel(level, 3));
+		}
 	}
 	override void GetTooltipFields(Dictionary fields, uint level)
 	{
@@ -375,6 +384,7 @@ class RSQ_Upgrade_Finisher : RSQ_Upgrade_Base
 		target.A_StartSound("rsq/execute", CHAN_AUTO, 0, 1.0);
 		RSQM.Pulse(PlayerPawn(pawn), PULSE_MS, PULSE_DEPTH);
 		RSQM.Touch("finisher", pawn, target);
+		RSQM.Burst("RSQML_Burst5", target.pos + (0, 0, target.height * 0.6), 1.5, 0);
 		return max(damage, need);
 	}
 	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("share", AsPercent(Share(level))); }
@@ -601,6 +611,7 @@ class RSQ_Upgrade_BloodRush : RSQ_Upgrade_Base
 		if (!ab.CallTryPickup(pawn)) ab.Destroy();
 		pawn.A_SetBlend("FF2020", 0.25, 10);
 		RSQM.Touch("bloodrush", pawn, target);
+		if (target) RSQM.Burst("RSQML_BurstH", target.pos + (0, 0, target.height * 0.5), 1.0, RSQM.ByLevel(level, 3));
 	}
 	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("n", String.Format("%d", Armour(level))); }
 }
@@ -626,6 +637,7 @@ class RSQ_Upgrade_BerserkMeter : RSQ_Upgrade_Base
 		let p = RSQ_EarnedStrength(pawn.FindInventory("RSQ_EarnedStrength"));
 		if (p) p.left = Tics(level);
 		pawn.A_StartSound("misc/p_pkup", CHAN_AUTO, CHANF_OVERLAP, 1.0);
+		pawn.A_SetBlend("FF2020", 0.35, 18);
 		RSQM.Touch("berserk.earned", pawn, target);
 	}
 	override void GetTooltipFields(Dictionary fields, uint level)
@@ -732,6 +744,7 @@ class RSQ_Upgrade_CriticalHits : RSQ_CritPerk
 			Class<Actor> spark = "RSQML_SparkSuper";   // RSQ Melee's Super Spark, by name (none without it)
 			if (spark) Actor.Spawn(spark, at, NO_REPLACE);
 			target.A_StartSound("rsq/counter", CHAN_AUTO, CHANF_OVERLAP, 1.0);
+			RSQM.Burst("RSQML_Burst2", at, 1.5, 0);
 			RSQM.Touch("crit", pawn, target);
 			// Counterpunch on this glove: its stagger and multiplier stand, this one is not added on top
 			if (IsGlove(shot) && Punch(shot, "punch.counter") == 1 && GloveHas(pawn, shot, "Counterpunch")) return damage;
@@ -782,7 +795,11 @@ class RSQ_Upgrade_Headshot : RSQ_CritPerk
 		int now = RSQM.Now();
 		double m = Mult(level);
 		if (lastOn == target && lastTic == now) m = 1.0 + (m - 1.0) * 0.5;
-		else { Sparkle(target, target.pos + (0, 0, target.height * 0.9), "FF2020", 10); RSQM.Touch("headshot", pawn, target); }
+		else
+		{
+			RSQM.Burst("RSQML_BurstH", target.pos + (0, 0, target.height * 0.9), 0.75, RSQM.ByLevel(level, 3));
+			RSQM.Touch("headshot", pawn, target);
+		}
 		lastOn = target; lastTic = now;
 		return damage * m;
 	}
@@ -801,7 +818,7 @@ class RSQ_Upgrade_Backstab : RSQ_CritPerk
 		if (Actor.absangle(target.angle, target.AngleTo(pawn)) < BACK) return damage;
 		double d = damage * Mult(level);
 		if (d >= target.health) target.DeathSound = "";
-		Sparkle(target, target.pos + (0, 0, target.height * 0.6), "FFFFFF", 12);
+		RSQM.Burst("RSQML_Burst4", target.pos + (0, 0, target.height * 0.6), 1.0, RSQM.ByLevel(level, 3));
 		RSQM.Touch("backstab", pawn, target);
 		return d;
 	}

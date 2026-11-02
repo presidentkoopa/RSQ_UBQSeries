@@ -83,6 +83,7 @@ class RSQML_Launched : Inventory
 			if (RSQML.Debug() > 0) { String on = o.GetClassName(); Console.Printf("RSQML meteor: %s falls on %s at %.1f -> %d each", mo.GetClassName(), on, fall, dmg); }
 			mo.A_StartSound("rsqml/smash", CHAN_AUTO, 0, 1.0);
 			RSQML.Touch("meteor", by, o);
+			RSQML_Burst.At("RSQML_Burst5", (o.pos.x, o.pos.y, o.pos.z + o.height), 1.0, RSQML_Burst.ByLevel(mtLv, 3));
 			o.DamageMobj(inf, by, dmg, 'Melee', DMG_THRUSTLESS);
 			if (mo && mo.health > 0) mo.DamageMobj(inf, by, dmg, 'Melee', DMG_THRUSTLESS);
 			if (!mo || mo.health <= 0) return;

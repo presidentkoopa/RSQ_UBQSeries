@@ -87,6 +87,20 @@ class RSQM play
 		if (s) s.GetInt("touch", id, pawn.PlayerNumber(), 0, victim);
 	}
 
+	// A BURST (RSQ Melee's kiddolink bursts, sparks.zs RSQML_Burst, by class name: nothing without Melee). size x its 40
+	// map units (x Melee's Hit Spark Size), frames = how many play (0 all): ByLevel gives 3 at level 1, two more a level,
+	// the whole burst at the node's cap.
+	static void Burst(String cls, Vector3 at, double size = 1.0, int frames = 0)
+	{
+		Class<Actor> c = cls;
+		if (!c) return;
+		let a = Actor.Spawn(c, at, NO_REPLACE);
+		if (!a) return;
+		a.Scale *= size * clamp(SV("rsqml_spark_size", 1.0), 0.25, 3.0);
+		a.args[0] = frames;
+	}
+	static int ByLevel(int lv, int cap) { return lv >= cap ? 0 : clamp(1 + 2 * lv, 3, 9); }
+
 	// A GLOVE'S HIT THAT IS NOT A PUNCH (an element's blast, arc or burn, GBOVR_TREES.md 4.1 B): its inflictor, paid to
 	// that glove (Gun Bonsai's claim) and marked PRI_NULL so no other upgrade procs from it. Without a glove the pawn is the
 	// inflictor.

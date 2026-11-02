@@ -800,7 +800,8 @@ class RSQML_Gloves : StaticEventHandler
 		int rgLv = zerk ? RSQML.GBLevel(g, "Rage") : 0;
 		if (RSQML.Debug() > 0) { static const String kn[] = { "jab", "hook", "uppercut" }; Console.Printf("RSQML punch lands: %s, %.2f m/s, path %.2f %.2f %.2f m", kn[g.lastKind], avgMps, path.x, path.y, path.z); }
 		victim.SpawnBlood(at, VectorAngle(dir.x, dir.y), dmg);
-		RSQML_Spark.Punch(g.lastKind, RSQML_Spark.OnSkin(victim, at));   // a spark per kind of blow (sparks.zs)
+		RSQML_Spark.Punch(g.lastKind, RSQML_Spark.OnSkin(victim, at), dir, pmo, h);   // a spark per kind of blow, along the fist (sparks.zs)
+		if (juggle) RSQML_Burst.At("RSQML_Burst4", at, 0.75, RSQML_Burst.ByLevel(RSQML.GBLevel(g, "Juggle"), 3));
 		victim.DamageMobj(g, pmo, dmg, 'Melee', DMG_THRUSTLESS);
 		pmo.A_StartSound(g.lastStar ? "rsqml/star" : "rsqml/punch", CHAN_AUTO, 0, 1.0);
 		RSQ_Buzz.Start(pmo, h, 0.5 + 0.5 * g.lastPower + (g.lastStar ? 0.5 : 0.0), g.lastStar ? 10 : 5);
@@ -891,6 +892,8 @@ class RSQML_Gloves : StaticEventHandler
 		if (air >= 4) RSQML.Stagger(victim, air);
 		if (by)
 		{
+			// the lift's burst: the uppercut's level plays its frames (Launcher's adds to it)
+			if (upLv > 0) RSQML_Burst.At("RSQML_Burst3", victim.pos + (0, 0, victim.height * 0.5), 0.75, RSQML_Burst.ByLevel(upLv + lnLv, 6));
 			RSQML_Launched.Mark(victim, by, glove, lnLv, mtLv);
 			if (lnLv > 0) RSQML.Touch("launch", by, victim);
 		}

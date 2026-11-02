@@ -14,6 +14,27 @@ class FistsProbe : EventHandler
 		"Rage", "BloodRush", "BerserkMeter", "PistolWhip", "RifleButt", "Taunt", "CriticalHits", "Headshot", "Backstab"
 	};
 	bool punchHigh;
+	// the look: every spark and burst spawned, and how long each lived (frames by level)
+	Array<Actor> fx;
+	Array<String> fxName;
+	Array<int> fxBorn;
+
+	override void WorldThingSpawned(WorldEvent e)
+	{
+		let a = e.Thing;
+		if (!a || !(a is "RSQML_Spark")) return;
+		fx.Push(a); fxName.Push(a.GetClassName()); fxBorn.Push(level.maptime);
+	}
+	void FxReport()
+	{
+		for (int i = fx.Size() - 1; i >= 0; i--)
+		{
+			let a = fx[i];
+			if (a && level.maptime == fxBorn[i] + 1)
+				Console.Printf("FP fx t%d %s frames %d%s scale %.3f", fxBorn[i], fxName[i], a.args[0], a.bXFlip ? " MIRRORED" : "", a.Scale.x);
+			if (!a) { Console.Printf("FP fx %s lived %d tics", fxName[i], level.maptime - fxBorn[i]); fx.Delete(i); fxName.Delete(i); fxBorn.Delete(i); }
+		}
+	}
 	// the off hand on its own (the Headlock): where it is (forward, left of the pawn; up from viewz) and how it moves
 	int offMode, offLeft;
 	double offF, offS, offU, offVF, offVU;
@@ -62,6 +83,7 @@ class FistsProbe : EventHandler
 	{
 		let p = P(); if (!p) return;
 		int t = level.maptime;
+		FxReport();
 		if (t == 3) { p.GiveInventory("RSQ_Glove", 1); p.GiveInventory("RSQ_GloveOff", 1); p.player.PendingWeapon = Weapon(p.FindInventory("RSQ_Glove")); }
 		if (t == 30) { let o = Weapon(p.FindInventory("RSQ_GloveOff")); if (o && p.player.OffhandWeapon != o) p.player.PendingWeapon = o; }
 		if (t == 60) Console.Printf("FP t60 ready %s off %s", p.player.ReadyWeapon ? p.player.ReadyWeapon.GetClassName() : 'none', p.player.OffhandWeapon ? p.player.OffhandWeapon.GetClassName() : 'none');

@@ -780,6 +780,14 @@ stands, Counterpunch's multiplier instead of the critical's. A Three-Hit's third
 **Headless 11-02:** a punch into a demon's wind-up 35 (20 x 1.75), the next on the stunned demon 30 (20 x 1.5);
 Headshot 500 and Backstab 800 under an earned Berserk with Haymaker 2 (20 x 5 x 2 x 2.5, and x 4).
 
+**ART PASS (11-02, L2):** Melee `tools/bursts.py` builds ten burst sets from kiddolink's zip (MLK1-5 as drawn or white,
+MLKE/F/S/R/H for explosive, frost, shock, fire and red), `sparks.zs` `RSQML_Burst` plays them frames by level
+(`args[0]`; 3 at level 1, +2 a level, all at the cap), Gun Bonsai VR spawns them by name (`RSQM.Burst`). CvS2's angle
+variants 2-4 are in (`tools/sparks.py`), picked by the fist's travel. Where each burst goes is in Melee's README.
+**Headless 11-02:** a straight jab drew the 56-degree streak (mirrored for the off hand), a hook the 11-degree one, an
+uppercut the 79-degree one; the level-1 bursts (the lift, Three-Hit, the shatter, Parry) were gone after 9 tics, the
+full ones (Explosive Fist at its cap, a critical, the release, Reflect Guard 3) ran 16-18.
+
 **THE FISTS TREE IS BUILT (11-02):** all nine branches, every kept node, each run in the engine headless. Not built:
 Catch and Bullet Time Fists (parked off, as designed). **Owed:** the art and sound pass (kiddolink bursts by level,
 CvS2 colourings, RS Combat FX sounds; today's looks are placeholders: particles, stock sounds, the existing sparks);

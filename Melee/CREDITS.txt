@@ -42,11 +42,17 @@ MELEE'S HANDS (2026-11-02)
 
 HIT SPARKS (2026-11-02)
   Capcom vs. SNK 2 hit sparks, ripped and converted by Phantom.of.the.Server; property of Capcom, non-commercial.
-  (Normal, Special and Super Spark set 1, and the Guard sparks; credits/CvS2hitsparks_Readme.txt.)
+  (Normal, Special and Super Spark, all four angles of each, and the Guard sparks; credits/CvS2hitsparks_Readme.txt.)
   Random Sprite Rips, ripped by Phantom.of.the.Server: "This is just a compilation of some stuff I ripped for my
   chars along the time. Use it freely. The sprites are property of their respective game companies, so they cannot
   be used for any commercial purposes." (the Hadouken hit burst; credits/RandomSpriteRips_Readme.txt).
   Converted by Melee/tools/sparks.py (keyed, cropped, shrunk; nothing repainted).
+
+IMPACT BURSTS (2026-11-02)
+  "VFX Hit Impact" by kiddolink, a paid asset pack bought by presidentkoopa for this series (the five 96x96 impacts,
+  vfx_hit_effects-Sheet.png). Cropped and, for the elements, recoloured (mid tones to the element's colour, highlights
+  and alpha kept) by Melee/tools/bursts.py; nothing repainted. Used under the purchase's licence; not for re-sale or
+  redistribution as an asset pack.
   Sounds played by name, not shipped: stock Doom 2's DSTINK (the guard) and DSSKEPCH (the swat).
 
 The shared Radiant Silvergun Options menu is the series' tools/rsmenu; RSQ_Accessibility's settings are read

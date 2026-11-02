@@ -478,6 +478,7 @@ class RSQML_Headlock : StaticEventHandler
 		Weapon off = RSQML.OffGlove(pmo);
 		Actor inf = RSQML.Blow(pmo, off, a.pos);
 		RSQML.Touch("slam", pmo, a);
+		RSQML_Burst.At("RSQML_Burst5", a.pos + (0, 0, 4), 1.0, RSQML_Burst.ByLevel(lv, 3));
 		a.A_StartSound("rsqml/smash", CHAN_AUTO, CHANF_OVERLAP, 1.0);
 		RSQ_Buzz.Start(pmo, 1, 1.0, 10);
 		double r = RSQML.Num("Slam.radius", lv, 0, 1.5) * RSQML.UnitsPerMetre();

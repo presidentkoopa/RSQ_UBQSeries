@@ -152,6 +152,16 @@ class RSQML_Guard : StaticEventHandler
 		if (RSQML.Debug() > 0) Console.Printf("RSQML guard flash: %.1f %.1f %.1f from the eyes", d.x * 12, d.y * 12, d.z * 12);
 	}
 
+	// A PERFECT (Parry, Reflect Guard): kiddolink's white burst where the Guard flash is, frames by the node's level
+	static void Perfect(PlayerPawn pawn, Actor from, double size, int frames)
+	{
+		Vector3 eye = RSQML_Hands.EyePos(pawn);
+		Vector3 to = from ? from.pos + (0, 0, from.bMissile ? 0.0 : from.height * 0.5) : eye + (cos(pawn.angle), sin(pawn.angle), 0);
+		Vector3 d = level.Vec3Diff(eye, to);
+		if (d.Length() < 0.01) d = (cos(pawn.angle), sin(pawn.angle), 0);
+		RSQML_Burst.At("RSQML_Burst4", eye + d.Unit() * 14.0, size, frames);
+	}
+
 	// a blow on its way in: what is left of it (called from RSQML_Body's ModifyDamage, the player's own side)
 	int Soak(PlayerPawn pawn, int damage, Actor inflictor, Actor source, Name dtype = 'None')
 	{
@@ -187,6 +197,7 @@ class RSQML_Guard : StaticEventHandler
 				RSQML.Touch("parry", pawn, source);
 			}
 			Flash(pawn, from);
+			Perfect(pawn, from, 1.0, RSQML_Burst.ByLevel(paLv, 3));
 			RSQ_Buzz.Start(pawn, 0, 1.0, 8);
 			RSQ_Buzz.Start(pawn, 1, 1.0, 8);
 			if (absLv > 0) AddCharge(pn, absLv, damage);
@@ -199,6 +210,7 @@ class RSQML_Guard : StaticEventHandler
 		{
 			int back = int(round(damage * RSQML.Num("ReflectGuard.mult", rfLv, 0, 1.75)));
 			Flash(pawn, from);
+			Perfect(pawn, from, 0.6, 0);
 			RSQML.Touch("guard.reflect", pawn, source);
 			if (absLv > 0) AddCharge(pn, absLv, damage);
 			if (dbg) Console.Printf("RSQML guard: bullet of %d sent back at %s for %d", damage, source.GetClassName(), back);
@@ -268,6 +280,7 @@ class RSQML_Guard : StaticEventHandler
 		}
 		pmo.A_StartSound("rsqml/smash", CHAN_AUTO, CHANF_OVERLAP, 1.0);
 		RSQML_Spark.Guard(RSQML_Hands.EyePos(pmo) + (cos(pmo.angle), sin(pmo.angle), 0) * 12.0);
+		RSQML_Burst.At("RSQML_BurstE", pmo.pos + (0, 0, pmo.height * 0.5), 2.0, 0);
 		RSQ_Buzz.Start(pmo, 0, 1.0, 12);
 		RSQ_Buzz.Start(pmo, 1, 1.0, 12);
 		if (RSQML.Debug() > 0) Console.Printf("RSQML guard: RELEASE %d round you (%.0f units), %d hit", dmg, r, n);
@@ -295,6 +308,7 @@ class RSQML_Guard : StaticEventHandler
 			Vector3 at = eye + (d.Length() > 0.01 ? d.Unit() : (cos(pmo.angle), sin(pmo.angle), 0)) * 12.0;
 			gl.SendBack(pmo, m, from, at, 1.0, RSQML.Num("ReflectGuard.mult", lv, 0, 1.25), null, (cos(pmo.angle), sin(pmo.angle), 0));
 			Flash(pmo, m);
+			Perfect(pmo, m, 0.6, RSQML_Burst.ByLevel(lv, 3));
 			RSQML.Touch("guard.reflect", pmo, from);
 			int absLv = Node(pmo, "AbsorbRelease");
 			if (absLv > 0) AddCharge(pn, absLv, dmg);

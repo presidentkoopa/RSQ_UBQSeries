@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """sparks.py -- builds RSQ Melee's hit-spark sprites from the owner's staged art (tool only; never ships).
 
-    python3 Melee/tools/sparks.py [art root]     (default /mnt/user-data/uploads/Desktop)
+    python3 Melee/tools/sparks.py [art root]     (default /mnt/user-data/uploads/Desktop; on the owner's PC C:/Users/Command/Desktop)
 
 Source: Capcom vs. SNK 2 hit sparks and Random Sprite Rips, both ripped by Phantom.of.the.Server (credits:
 Melee/CREDITS.txt). The PCX files are paletted, index 0 = the magenta key (255,0,255). Each sequence is cropped to the
@@ -17,15 +17,22 @@ OUT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 
 MAX = 192
 LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
-# name, frames (glob or a sheet), world size of the long side in map units (34 a metre)
+# name, frames (glob or a sheet), world size of the long side in map units (34 a metre): the sizes sparks.zs draws
+# (about a monster's head; the owner, 11-02: "better, not bigger")
 SEQS = [
-    ('MLSN', 'CvS2hitsparks/NormalSpark/1/*.pcx', 44),    # jab / straight
-    ('MLSS', 'CvS2hitsparks/SpecialSpark/1/*.pcx', 50),   # hook / side swing, and the open-palm swat
-    ('MLSU', 'CvS2hitsparks/SuperSpark/1/*.pcx', 60),     # uppercut, and the Hadouken's return
-    ('MLGD', 'CvS2hitsparks/Guard/*.pcx', 18),            # the guard flash (drawn close to your face)
+    ('MLSN', 'CvS2hitsparks/NormalSpark/1/*.pcx', 14),    # jab / straight
+    ('MLSS', 'CvS2hitsparks/SpecialSpark/1/*.pcx', 16),   # hook / side swing, and the open-palm swat
+    ('MLSU', 'CvS2hitsparks/SuperSpark/1/*.pcx', 18),     # uppercut, and the Hadouken's return
+    ('MLGD', 'CvS2hitsparks/Guard/*.pcx', 8),             # the guard flash (drawn close to your face)
 ]
+# THE STREAK FOLLOWS THE FIST (2026-11-02). CvS2's "colours" 2-4 of each spark are the same streak at other angles:
+# measured on the art (the brightest pixels' principal axis), 1 = 79, 2 = 56, 3 = 34, 4 = 11 degrees, each falling to
+# the right. sparks.zs picks the one nearest the blow's travel as the puncher sees it, mirrored for the other diagonal.
+for kind, short, world in (('NormalSpark', 'N', 14), ('SpecialSpark', 'P', 16), ('SuperSpark', 'U', 18)):
+    for v in '234':
+        SEQS.append(('ML' + short + v, 'CvS2hitsparks/%s/%s/*.pcx' % (kind, v), world))
 # the Hadouken hit burst: one sheet, six frames in a row
-SHEETS = [('MLHD', 'RandomSpriteRips/xvsfryuhadoukenhit.pcx', 6, 30)]
+SHEETS = [('MLHD', 'RandomSpriteRips/xvsfryuhadoukenhit.pcx', 6, 12)]
 
 
 def keyed(im):

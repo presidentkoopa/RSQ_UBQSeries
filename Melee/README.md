@@ -97,6 +97,13 @@ Always on (no row):
   and adds half again to the knock (3); Pistol Whip and Rifle Butt act on the gun-butt shove (ours, or BD22 VR
   Reloaded's own strike for Pistol Whip, read as its Kick damage landing); Taunt answers RSQ Gestures' "both hands
   apart" when the Guard has no charge to release (the charge goes first), and doubles the next punch.
+- **The streak follows the fist** (2026-11-02, the owner: "better, not bigger"): each spark comes at four angles
+  (79, 56, 34, 11 degrees), and the one nearest the blow's travel as you see it is drawn, mirrored for the other
+  diagonal; a straight jab crosses the other hand's. **Impact bursts** (kiddolink's "VFX Hit Impact", the owner's
+  purchase) only on the moments that earn them, frames by level (3 at a node's level 1, two more a level, the whole
+  burst at its cap): the uppercut's lift, Juggle, Meteor, Ground Pound, Clear Out, Slam, Parry and Reflect Guard (white),
+  the Guard's release (white, 2x); Gun Bonsai VR's combos, criticals, Headshot, Backstab, Blood Rush and the four
+  elements spawn them too.
 - **Hit sparks** (Capcom vs. SNK 2's), one per blow, at the impact point: jab -> Normal Spark (orange), hook and the
   swat -> Special Spark (blue), uppercut and the Hadouken's return -> Super Spark (violet; the return adds the
   Hadouken hit burst from Random Sprite Rips), the guard taking a blow -> the Guard flash (blue, about 35 cm from your
