@@ -8,6 +8,9 @@ ubqs/wall3   sounds/ubqs/lsabhtw3.mp3
 $random ubqs/hit { ubqs/hit1 ubqs/hit2 ubqs/hit3 }
 $random ubqs/wall { ubqs/wall1 ubqs/wall2 ubqs/wall3 }
 ubqs/burn  sounds/ubqs/ubqs_burn.wav
+// Force Lightning's arc (Gun Bonsai VR's Saber tree, 2026-11-02): the owner's RS Ballistics well,
+// sounds/rsb/impact_electric/electro7.ogg, made mono 44.1 kHz
+ubqs/lightning sounds/ubqs/ubqs_lightning.ogg
 ubqs/drop  sounds/ubqs/ubqs_drop.wav
 ubqs/lock  sounds/ubqs/ubqs_lock.wav
 ubqs/crack  sounds/ubqs/ubqs_crack.wav

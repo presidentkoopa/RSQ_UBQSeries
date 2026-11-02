@@ -31,6 +31,7 @@ register
   RSQ_Upgrade_KyberAttunement RSQ_Upgrade_HighGround RSQ_Upgrade_PointTaken RSQ_Upgrade_RunThrough
   RSQ_Upgrade_ReturnToSender RSQ_Upgrade_GuidedReturn RSQ_Upgrade_Precognition
   RSQ_Upgrade_TwoSabers RSQ_Upgrade_DoubleBladed RSQ_Upgrade_CrossGuard RSQ_Upgrade_Clash
+  RSQ_Upgrade_ForceSensitive RSQ_Upgrade_ForceSpeed RSQ_Upgrade_ForceLightning
 ;
 
 # The gloves, the sabers and the ShieldSaw are melee weapons whatever they are seen to do: the

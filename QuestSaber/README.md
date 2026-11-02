@@ -204,7 +204,13 @@ headset" in docs/HANDOFF_polish.md.
   block). **Dual:** **Two Sabers** (the second saber is an unlock; Start With Dual Sabers still switches it off),
   **Double-Bladed** (the staff blade lights only once learned; 2 it cuts on the backswing at 75%; 3 the twirl cuts),
   **Assault** (Dual Harmony), **Cross Guard** (what the X stops goes back: straight, then at the shooter; 3 opening the
-  X shoves), **Clash** (bringing the blades together staggers everything within 3 m and up).
+  X shoves), **Clash** (bringing the blades together staggers everything within 3 m and up). **The Force:** under the
+  patch there is no Force until **Force Sensitive** is learned (then unlearned powers work at the patch's start share,
+  as before); Push, Pull, Grip (Force Choke) and Jump level as before; **Force Speed** (the Force hand held up and still
+  for a second with nothing to grip: slow motion for 3 s and up, through RSQ SlowMo); **Force Lightning** (turn the
+  Force hand palm-down -- QuestZDoom reads no fingers, so palm-down stands in for spread fingers -- aim it at a monster
+  for half a second, then flick: lightning pours into it for a second at 8 a tic and up, chaining to the nearest
+  others, 2 targets and up; RS Ballistics' electric arc).
 - **RSQ Accessibility:** one-handed Force buttons, Hold to Toggle for the Force, Gesture Ease, photosensitive
   flashes, colour-blind outlines. Inert without it. Also (2026-11-01, not yet headset-confirmed):
   - Steady Hands: pointing reads the smoothed hand: painting locks (fire held) and choosing what the Force

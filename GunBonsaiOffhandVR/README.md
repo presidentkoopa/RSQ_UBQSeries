@@ -126,7 +126,7 @@ Always on (no row):
     Barrage -> Returning Blade), Blade (Elegant Weapon = Momentum -> Aggressive Negotiations = Riposte Edge -> High
     Ground; Strike True; Kyber Attunement), Stab (Point Taken -> Run Through), Deflect (Deflector -> Return to Sender, Guided Return -> Piercing Return;
     Deflector 2 -> Precognition), Dual (Two Sabers -> Assault = Dual Harmony, Cross Guard -> Clash; Double-Bladed);
-    the Force follows.
+    the Force (Force Sensitive -> Push, Pull, Grip, Jump; Force Speed; Force Lightning after Push 2 and Grip 2).
     Chain Choke is no longer offered. Before the tree:
   - Sabers: Momentum, Riposte Edge, Piercing Return, Saber Throw, Chain Choke, Dual Harmony, Deflector;
     the Force: Force Push, Force Pull, Force Choke, Force Jump

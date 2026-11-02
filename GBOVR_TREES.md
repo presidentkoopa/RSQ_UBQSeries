@@ -921,6 +921,21 @@ the parents. Not provable headless: the backswing, the twirl, Cross Guard, Clash
 | Force Speed (new) | Force Sensitive 2 | 1-3: a Force gesture held still for a second starts slow motion for 2 + lv s through RSQ SlowMo (the SlowMo link) | Saber asks SlowMo `rsm_pulse` | SlowMo's own | `force.speed` |
 | Force Lightning (new power) | Force Push 2 and Force Grip 2 | 1-3: the off hand's alt with fingers spread (hand still, pointed at a monster for half a second, then a flick): a chain of lightning for 5 + 3 lv a tic over 1 s to lv + 1 targets. Needs: a new UBQS_Force power and its art (RS Ballistics' arc) | Saber | RS Ballistics arc, blue-white | `force.lightning` |
 
+**The Force: BUILT 11-02 (L3).** Gun Bonsai VR: Force Sensitive (the unlock), Push / Pull / Grip (Force Choke, shown
+as Force Grip) / Jump after it, Force Speed, Force Lightning. Saber (`UBQS_Force`): under the patch no Force at all
+until Force Sensitive (DoEffect and the main hand's Push both gate); Force Speed in `Gesture` after the grip search
+finds nothing for SPEED_HOLD tics (rsm_pulse from the player's own machine); Force Lightning a new power
+(`LightningAim`, `StartLightning`, `LightningTick`, particle `Arc`s, `ubqs/lightning` from RS Ballistics). **Calls made
+here, for the owner:** palm-down (roll past 60 degrees) stands in for "fingers spread" (QuestZDoom reads no fingers);
+palm-down suppresses grip, push and pull; Force Speed's parent "Force Sensitive 2" read as Force Sensitive and any power
+at level 2 (Force Sensitive has one level). **Headless 11-02:** the Force's own Push did nothing before Force
+Sensitive and threw an imp after it (60 -> 56, 11.7 a tic); Speed and Lightning offered after Push 2 and Grip 2;
+Lightning poured 8 a tic into two Barons for 35 tics (1000 -> 720 each); Force Speed started SlowMo ("active 1"). Not
+provable headless: the palm-down aim and the flick, the still-hand hold (they need a hand).
+
+**THE SABER TREE IS BUILT (11-02):** every kept node of Focus, Blade, Stab, Deflect, Dual and the Force. Owed: the
+headset for everything a hand or a blade's motion does.
+
 **Counts:** 27 nodes (28 with Double-Bladed, less Chain Choke), 9 exist, 18 new. Struck by the owner: the Rig
 link (Quick Ignite) and Chain Choke (`RSQ_Upgrade_ChainChoke` goes; a save that has it keeps a dead upgrade,
 which Gun Bonsai tolerates). Force Sensitive, Push, Pull, Grip, Jump, Speed and Lightning kept; Double-Bladed as

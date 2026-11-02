@@ -100,21 +100,27 @@ class RSQ_Upgrade_DualHarmony : RSQ_Upgrade_SaberMarker
 // the saber's own full strength and each level after adds to it -- and changes it:
 class RSQ_Upgrade_ForcePush : RSQ_Upgrade_SaberMarker
 {
+	// (4.2 The Force: after Force Sensitive, 4 levels)
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return SaberInfo(info) && AnySaberHas(info.stats, "ForceSensitive") && LevelOf(info, "ForcePush") < 4; }
 	// 2+: the cone opens 10 degrees a level. 3+: it is a shockwave all round you as well.
 	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("pwr", AsPercent(level <= 0 ? 0.6 : 1.0 + 0.15 * (level - 1))); }
 }
 class RSQ_Upgrade_ForcePull : RSQ_Upgrade_SaberMarker
 {
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return SaberInfo(info) && AnySaberHas(info.stats, "ForceSensitive") && LevelOf(info, "ForcePull") < 4; }
 	// 2+: what arrives is stunned. 3+: the pull yanks its weapon away (no ranged attacks).
 	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("pwr", AsPercent(level <= 0 ? 0.6 : 1.0 + 0.15 * (level - 1))); }
 }
+// (shown as FORCE GRIP since 11-02; the class keeps its name for saves)
 class RSQ_Upgrade_ForceChoke : RSQ_Upgrade_SaberMarker
 {
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return SaberInfo(info) && AnySaberHas(info.stats, "ForceSensitive") && LevelOf(info, "ForceChoke") < 4; }
 	// 2+: it lifts them and the grip crushes harder the longer you hold. 3+: it holds more than one.
 	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("pwr", AsPercent(level <= 0 ? 0.6 : 1.0 + 0.15 * (level - 1))); fields.Insert("n", string.format("%d", max(1, level - 1))); }
 }
 class RSQ_Upgrade_ForceJump : RSQ_Upgrade_SaberMarker
 {
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return SaberInfo(info) && AnySaberHas(info.stats, "ForceSensitive") && LevelOf(info, "ForceJump") < 3; }
 	// 2+: landing from a Force jump is a slam that throws everything near you.
 	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("pwr", AsPercent(level <= 0 ? 0.6 : 1.0 + 0.15 * (level - 1))); }
 }
@@ -253,4 +259,41 @@ class RSQ_Upgrade_Clash : RSQ_Upgrade_SaberMarker
 	static double Radius(uint lv) { return 2.0 + lv; }   // metres
 	static int Stagger() { return 20; }
 	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("radius", String.Format("%.0f m", Radius(level))); }
+}
+
+// ---- THE FORCE ----
+// FORCE SENSITIVE: under Gun Bonsai VR there is no Force until this is learned (an unlearned power then works at the
+// patch's start share, rsq_force_start, as before). Without the patch the Force is the saber's own, as always.
+class RSQ_Upgrade_ForceSensitive : RSQ_Upgrade_SaberMarker
+{
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return SaberInfo(info) && !AnySaberHas(info.stats, "ForceSensitive"); }
+}
+// FORCE SPEED: the Force hand held up and still for a second, with nothing to grip, starts slow motion (RSQ SlowMo).
+// (The tree's "Force Sensitive 2" read as Force Sensitive and any power at level 2: Force Sensitive has one level.)
+class RSQ_Upgrade_ForceSpeed : RSQ_Upgrade_SaberMarker
+{
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info)
+	{
+		if (!SaberInfo(info) || !AnySaberHas(info.stats, "ForceSensitive") || LevelOf(info, "ForceSpeed") >= 3) return false;
+		return AnySaberHas(info.stats, "ForcePush", 2) || AnySaberHas(info.stats, "ForcePull", 2)
+			|| AnySaberHas(info.stats, "ForceChoke", 2) || AnySaberHas(info.stats, "ForceJump", 2);
+	}
+	static double Secs(uint lv) { return 2.0 + lv; }
+	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("time", String.Format("%.0f s", Secs(level))); }
+}
+// FORCE LIGHTNING: the Force hand turned palm-down (QuestZDoom reads no fingers: palm-down stands in for "fingers
+// spread") and aimed at a monster for half a second, then flicked: lightning into it for a second, chaining on.
+class RSQ_Upgrade_ForceLightning : RSQ_Upgrade_SaberMarker
+{
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info)
+	{
+		return SaberInfo(info) && AnySaberHas(info.stats, "ForcePush", 2) && AnySaberHas(info.stats, "ForceChoke", 2) && LevelOf(info, "ForceLightning") < 3;
+	}
+	static int Damage(uint lv) { return 5 + 3 * lv; }    // a tic, for a second
+	static int Targets(uint lv) { return lv + 1; }
+	override void GetTooltipFields(Dictionary fields, uint level)
+	{
+		fields.Insert("dmg", String.Format("%d", Damage(level)));
+		fields.Insert("n", String.Format("%d", Targets(level)));
+	}
 }

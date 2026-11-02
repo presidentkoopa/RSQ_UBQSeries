@@ -4642,6 +4642,15 @@ class UBQS_Force : Inventory
 	int    upgTic;
 	bool   uLoaded;
 	int    uPush, uPull, uChoke, uJump, uChain;
+	// THE FORCE'S TREE (GBOVR_TREES.md 4.2): Force Sensitive (the unlock under the patch), Force Speed, Force Lightning
+	int    uFS, uSpeed, uLight;
+	Actor  lightAim, lightTarget;  // FORCE LIGHTNING: what the palm-down hand is aimed at, and what the bolt pours into
+	int    lightCharge, lightUntil, lightLv;
+	const  LIGHT_AIM = 17;         // tics aimed palm-down before a flick lets it go (half a second)
+	const  LIGHT_ROLL = 60.0;      // degrees of roll that read as palm-down
+	const  LIGHT_TICS = 35;        // how long it pours
+	const  LIGHT_CHAIN = 204.0;    // map units (6 m) from one link to the next
+	const  SPEED_HOLD = 35;        // FORCE SPEED: tics held up and still with nothing to grip
 	double uStart;
 	Array<Actor> extraGrip;       // Force Choke 3+: the others held with the first
 	Array<int>   extraNoGrav;
@@ -4743,6 +4752,13 @@ class UBQS_Force : Inventory
 		}
 		let p = owner.player;
 		UpgRefresh();
+		// FORCE SENSITIVE (Gun Bonsai VR): under the patch there is no Force until it is learned
+		if (uLoaded && uFS <= 0)
+		{
+			if (gripped) EndGrip(false);
+			AimTick(false);
+			return;
+		}
 		// the off hand's last four positions, less the body; a snap turn or teleport forgets them
 		h3 = h2; h2 = h1; h1 = h0;
 		{
@@ -4816,6 +4832,7 @@ class UBQS_Force : Inventory
 		SlamTick();
 		PulledTick();
 		UpgTicks();
+		LightningTick();
 		ForceJump(p);     // ubqs_force_jump is the only gate -- see ForceJump
 	}
 
@@ -4850,6 +4867,19 @@ class UBQS_Force : Inventory
 		// -g is the dead zone where a gesture does nothing at all and the player is told nothing. Exposed as
 		// the dot it is: the cosine of no round number of degrees is 0.55.
 		double gstr = UBQS_A11y.Low(clamp(FV("ubqs_gesture_straight", 0.55), 0.0, 1.0));
+		// FORCE LIGHTNING (Gun Bonsai VR): the hand turned palm-down (the stand-in for spread fingers: QuestZDoom reads no
+		// fingers) and aimed at a monster for LIGHT_AIM tics charges it; a flick lets it go. Palm-down, nothing else fires.
+		if (uLight > 0 && abs(Actor.Normalize180(OffRoll())) >= LIGHT_ROLL)
+		{
+			let t = LightningAim();
+			if (t && t == lightAim) lightCharge++;
+			else { lightAim = t; lightCharge = t ? 1 : 0; }
+			if (lightAim && lightCharge >= LIGHT_AIM && (level.maptime % 3) == 0) UBQS_FX.Fx(OffPos(), 'UXFH', 18, 1, 0.07, 0.8, 0xB8D8FF, 1.0);
+			if (lightAim && lightCharge >= LIGHT_AIM && sp >= thr) { StartLightning(lightAim); fired = true; }
+			return;
+		}
+		lightCharge = 0;
+		lightAim = null;
 		if (sp >= thr)
 		{
 			Vector3 u = hv / sp;
@@ -4864,7 +4894,14 @@ class UBQS_Force : Inventory
 		{
 			lastScan = level.maptime;
 			let t = FindGrip();
-			if (t) { StartGrip(t); fired = true; }
+			if (t) { StartGrip(t); fired = true; return; }
+		}
+		// FORCE SPEED (Gun Bonsai VR): held up and still for a second with nothing to grip, the world slows (RSQ SlowMo's
+		// rsm_pulse, sent from this player's own machine, as the perfect parry's is)
+		if (uSpeed > 0 && armTics >= SPEED_HOLD && sp < UBQS_A11y.Wide(FV("ubqs_grip_still", 1.5)))
+		{
+			fired = true;
+			ForceSpeed();
 		}
 	}
 
@@ -4888,6 +4925,8 @@ class UBQS_Force : Inventory
 	{
 		// the main hand reaches this through ForcePush(), never through DoEffect, so it needs its own gate
 		if (!owner || !IV("ubqs_force", 1)) return;
+		UpgRefresh();
+		if (uLoaded && uFS <= 0) return;   // FORCE SENSITIVE (Gun Bonsai VR): no Force until it is learned
 		if (level.maptime < pushReady) { owner.A_StartSound(UBQS_Font.Off(), CHAN_AUTO, 0, 0.25); return; }
 		pushReady = level.maptime + int(FV("ubqs_push_cooldown", 1.5) * 35);
 		// ubqs_push_cone: power and reach were both sliders and the SHAPE was baked at 80 degrees of total arc.
@@ -5306,7 +5345,7 @@ class UBQS_Force : Inventory
 		uLoaded = svc != null;
 		if (!svc)
 		{
-			uPush = 0; uPull = 0; uChoke = 0; uJump = 0; uChain = 0; uStart = 1.0;
+			uPush = 0; uPull = 0; uChoke = 0; uJump = 0; uChain = 0; uStart = 1.0; uFS = 0; uSpeed = 0; uLight = 0;
 			return;
 		}
 		uPush  = max(0, svc.GetInt("level", "ForcePush", 0, 0, owner));
@@ -5314,6 +5353,9 @@ class UBQS_Force : Inventory
 		uChoke = max(0, svc.GetInt("level", "ForceChoke", 0, 0, owner));
 		uJump  = max(0, svc.GetInt("level", "ForceJump", 0, 0, owner));
 		uChain = max(0, svc.GetInt("level", "ChainChoke", 0, 0, owner));
+		uFS    = max(0, svc.GetInt("level", "ForceSensitive", 0, 0, owner));
+		uSpeed = max(0, svc.GetInt("level", "ForceSpeed", 0, 0, owner));
+		uLight = max(0, svc.GetInt("level", "ForceLightning", 0, 0, owner));
 		uStart = clamp(svc.GetDouble("force.start"), 0.1, 1.0);
 		// WHO THE FORCE'S DAMAGE IS PAID TO: Gun Bonsai's VR patch follows this item's master to a
 		// weapon. The off-hand saber is the Force hand's; else the main one.
@@ -5323,6 +5365,104 @@ class UBQS_Force : Inventory
 	}
 	// a power's strength: exactly 1 without the patch; with it, the start share unlearned, full at
 	// level 1 and +15% each level after
+	// ---- THE FORCE'S TREE (Gun Bonsai VR, GBOVR_TREES.md 4.2) ---------------------------------------------------
+	double OffRoll() { return OffCtrl() == 0 ? owner.AttackRoll : owner.OffhandRoll; }
+	void ForceSpeed()
+	{
+		double secs = UBQS_Upg.Num("ForceSpeed.secs", uSpeed, 3.0);
+		if (owner.player == players[consoleplayer]) EventHandler.SendNetworkEvent("rsm_pulse", int(secs * 1000), 35);
+		owner.A_StartSound(UBQS_Font.On(), CHAN_AUTO, 0, 0.5, ATTN_NORM, 0.6);
+		Buzz();
+		UBQS_Upg.Touch("force.speed", owner, owner);
+		if (IV("ubqs_diag", 0) == 1) Console.Printf("ubqs force speed: %.0f s", secs);
+	}
+	// what the palm-down hand points at: any monster in the grip's cone and range (no weight limit: lightning holds nothing)
+	Actor LightningAim()
+	{
+		Vector3 hp = OffPos(), aim = UBQS_Steady.Dir(owner, OffCtrl());
+		double range = clamp(FV("ubqs_grip_range", 1024.0), 128.0, 1536.0);
+		double best = clamp(FV("ubqs_grip_cone", 12.0), 1.0, 60.0);
+		Actor pick = null;
+		let it = BlockThingsIterator.CreateFromPos(hp.x, hp.y, hp.z - range, range * 2.0, range, false);
+		while (it.Next())
+		{
+			Actor mo = it.thing;
+			if (!mo || mo == owner || !mo.bIsMonster || !mo.bShootable || mo.health <= 0 || mo.bFriendly) continue;
+			Vector3 to = level.Vec3Diff(hp, (mo.pos.xy, mo.pos.z + mo.height * 0.5));
+			double dist = to.Length();
+			if (dist < 1 || dist > range) continue;
+			double off = acos(clamp((to / dist) dot aim, -1.0, 1.0));
+			if (off >= best || !owner.CheckSight(mo, SF_IGNOREVISIBILITY)) continue;
+			best = off;
+			pick = mo;
+		}
+		return pick;
+	}
+	void StartLightning(Actor t)
+	{
+		lightTarget = t;
+		lightLv = uLight;
+		lightUntil = level.maptime + LIGHT_TICS;
+		lightCharge = 0;
+		owner.A_StartSound("ubqs/lightning", 23, CHANF_LOOPING, 0.9);
+		Buzz();
+		UBQS_Upg.Touch("force.lightning", owner, t);
+	}
+	// FORCE LIGHTNING: for LIGHT_TICS the bolt pours from the Force hand into its target and on to the nearest
+	// others (ForceLightning.targets in all, each within LIGHT_CHAIN of the last), ForceLightning.damage a tic each,
+	// paid to the saber this item's master is. Drawn as jittered blue-white particle arcs.
+	void LightningTick()
+	{
+		if (!lightTarget) return;
+		if (level.maptime >= lightUntil || lightTarget.health <= 0 || !owner)
+		{
+			lightTarget = null;
+			if (owner) owner.A_StopSound(23);
+			return;
+		}
+		int dmg = int(UBQS_Upg.Num("ForceLightning.damage", lightLv, 8));
+		int n = int(UBQS_Upg.Num("ForceLightning.targets", lightLv, 2));
+		Array<Actor> chain;
+		chain.Push(lightTarget);
+		while (chain.Size() < n)
+		{
+			Actor last = chain[chain.Size() - 1], best = null;
+			double bd = LIGHT_CHAIN;
+			let it = BlockThingsIterator.Create(last, LIGHT_CHAIN);
+			while (it.Next())
+			{
+				Actor mo = it.thing;
+				if (!mo || mo == owner || !mo.bIsMonster || !mo.bShootable || mo.health <= 0 || mo.bFriendly) continue;
+				if (chain.Find(mo) < chain.Size()) continue;
+				double d = last.Distance3D(mo);
+				if (d < bd) { bd = d; best = mo; }
+			}
+			if (!best) break;
+			chain.Push(best);
+		}
+		Vector3 from = OffPos();
+		for (int i = 0; i < chain.Size(); i++)
+		{
+			Actor c = chain[i];
+			if (!c) continue;
+			Vector3 to = (c.pos.xy, c.pos.z + c.height * 0.6);
+			Arc(from, to);
+			from = to;
+			c.DamageMobj(self, owner, dmg, 'Saber', DMG_THRUSTLESS);
+		}
+	}
+	void Arc(Vector3 a, Vector3 b)
+	{
+		Vector3 d = level.Vec3Diff(a, b);
+		double l = d.Length();
+		int steps = clamp(int(l / 10.0), 3, 40);
+		for (int s = 0; s <= steps; s++)
+		{
+			Vector3 p = a + d * (double(s) / steps) + (frandom[UBQSFx](-4, 4), frandom[UBQSFx](-4, 4), frandom[UBQSFx](-4, 4));
+			owner.A_SpawnParticle((s % 3) == 0 ? 0xFFFFFF : 0x9FCBFF, SPF_FULLBRIGHT, 3, 3.0, 0, p.x - owner.pos.x, p.y - owner.pos.y, p.z - owner.pos.z);
+		}
+	}
+
 	double FScale(int lv)
 	{
 		if (!uLoaded) return 1.0;

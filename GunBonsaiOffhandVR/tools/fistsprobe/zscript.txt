@@ -332,7 +332,8 @@ class FistsProbe : EventHandler
 			static const String SN[] = { "BattleMeditation", "SaberThrow", "SaberBarrage", "ReturningBlade", "Momentum",
 				"RiposteEdge", "StrikeTrue", "KyberAttunement", "HighGround", "PointTaken", "RunThrough", "ChainChoke",
 				"ReturnToSender", "GuidedReturn", "Precognition", "TwoSabers", "DoubleBladed", "CrossGuard", "Clash",
-				"Deflector", "DualHarmony", "PiercingReturn" };
+				"Deflector", "DualHarmony", "PiercingReturn",
+				"ForceSensitive", "ForcePush", "ForcePull", "ForceChoke", "ForceJump", "ForceSpeed", "ForceLightning" };
 			if (e.Args[0] == 0) { p.GiveInventory("UBQS_Saber", 1); p.player.PendingWeapon = Weapon(p.FindInventory("UBQS_Saber")); return; }
 			let sab = Weapon(p.FindInventory("UBQS_Saber"));
 			let st = TFLV_PerPlayerStats.GetStatsFor(p);
@@ -350,6 +351,42 @@ class FistsProbe : EventHandler
 			let sb = UBQS_SaberBase(sab);
 			Console.Printf("FP saber [stage %d] has:%s | offered:%s | size index %d | second saber carried: %s", e.Args[1], have, on, sb ? sb.SizeIdx() : -1,
 				p.FindInventory("UBQS_SaberOff") ? "yes" : "no");
+		}
+		else if (e.Name ~== "fp_force")
+		{
+			// arg0 0: the Force's own Push at an imp in front; 1: Force Lightning straight into one (and a second near it);
+			// 2: Force Speed
+			let f = UBQS_Force.Of(p);
+			if (!f) return;
+			f.UpgRefresh();
+			if (e.Args[0] == 0)
+			{
+				a1 = Put("DoomImp", 120);
+				int h0 = a1 ? a1.health : 0;
+				Vector3 d = (cos(p.angle), sin(p.angle), 0);
+				f.pushReady = 0;
+				f.Push(p.pos + (0, 0, 40), d);
+				Console.Printf("FP force push: imp health %d -> %d, speed %.1f (Force Sensitive %d)", h0, a1 ? a1.health : -1, a1 ? a1.vel.Length() : 0, f.uFS);
+			}
+			else if (e.Args[0] == 1)
+			{
+				a1 = Put("BaronOfHell", 200); a2 = Put("BaronOfHell", 240, 80);
+				if (a1) a1.freezetics = 60;
+				if (a2) a2.freezetics = 60;
+				f.StartLightning(a1);
+				Console.Printf("FP force lightning into %s (level %d)", a1 ? a1.GetClassName() : 'none', f.uLight);
+			}
+			else
+			{
+				f.ForceSpeed();
+				let s = ServiceIterator.Find("RSQSM_Service").Next();
+				Console.Printf("FP force speed sent (SlowMo active now %d)", s ? s.GetInt("active") : -1);
+			}
+		}
+		else if (e.Name ~== "fp_slowq")
+		{
+			let s = ServiceIterator.Find("RSQSM_Service").Next();
+			Console.Printf("FP t%d SlowMo active %d", level.maptime, s ? s.GetInt("active") : -1);
 		}
 		else if (e.Name ~== "fp_sabback")
 		{

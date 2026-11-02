@@ -436,6 +436,9 @@ class RSQ_MeleeUpgradeService : Service
 			if (stringArg == "DoubleBladed.back") return RSQ_Upgrade_DoubleBladed.Back();
 			if (stringArg == "Clash.radius") return RSQ_Upgrade_Clash.Radius(lv);
 			if (stringArg == "Clash.stagger") return RSQ_Upgrade_Clash.Stagger();
+			if (stringArg == "ForceSpeed.secs") return RSQ_Upgrade_ForceSpeed.Secs(lv);
+			if (stringArg == "ForceLightning.damage") return RSQ_Upgrade_ForceLightning.Damage(lv);
+			if (stringArg == "ForceLightning.targets") return RSQ_Upgrade_ForceLightning.Targets(lv);
 			// G. Gun hand, H. Taunt
 			if (stringArg == "PistolWhip.stagger") return RSQ_Upgrade_PistolWhip.Stagger(lv);
 			if (stringArg == "PistolWhip.mult") return RSQ_Upgrade_PistolWhip.Mult(lv);
