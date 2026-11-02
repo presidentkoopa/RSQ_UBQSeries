@@ -52,9 +52,15 @@ the owner; don't add it.
 ## 2. The gap (checked 2026-11-02 by grepping Score's code for each mod's name and service; start here, then verify)
 
 - **RSQ Melee** (created 2026-11-01): **zero** references to its service (`RSQML_*`). Its moves, none known as
-  Melee's own: jab, hook, uppercut (lift), the open-palm swat, the fist/palm toggle, Hadouken (return a
-  projectile), guard (block flash), wall splat, heavy hands, gun-butt shove + F.E.A.R. Effect, headlock (hold,
-  punch, throw, human shield, breakout).
+  Melee's own: jab, hook, uppercut (lift), the open-palm swat, Hadouken (return a projectile), guard (block
+  flash), wall splat, heavy hands, headlock (hold, punch, throw, human shield, breakout), and the gun-butt
+  shove + F.E.A.R. Effect (see the next bullet).
+- **ONE move, two sources: the gun-butt shove / butt strike.** RSQ Melee's gun-butt shove and BD22 VR Reloaded's
+  butt strike are the SAME move. Melee's shove stands down when BD22 VR is loaded, so exactly one is live, and the
+  slow-mo beat and F.E.A.R. Effect follow whichever fired. Score treats it as one move ("butt strike", one id)
+  whichever mod delivered it. Never count it twice and never give it two names. Apply the same rule to any other
+  move that exists in two mods with one standing down for the other: check WHO_OWNS_WHAT.md and each README's
+  "stands down" lines.
 - **RSQ Grenade:** nothing. Grenade kills, cooked-throw kills (a short fuse as part of the kill), multi-kills.
 - **RSQ Whip:** only a generic tool word "whip", nothing from the rebuilt Whip (`RSQWP_*`). It has a wind-up,
   heavy and light cracks, the pull, and Whip In.
