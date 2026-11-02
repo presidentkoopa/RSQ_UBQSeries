@@ -1,0 +1,3 @@
+// TEST ONLY.
+user int smf_mode = 1;    // 1 the fight; 2 Melee shove path; 3 time scale; 4 the named door
+user int smf_secs = 90;   // how long the fight lasts

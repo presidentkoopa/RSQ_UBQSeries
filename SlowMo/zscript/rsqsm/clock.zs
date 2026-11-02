@@ -30,9 +30,20 @@
 //                                             this mod's own ramps)
 //   netevent rsm_state                       (prints the clock)
 // and the same host settings: rsm_depth, rsm_ramp_in, rsm_ramp_out, rsm_yield.
+// AND A NAMED DOOR for other mods (2026-11-02, README "For other mods"):
+//   netevent rsqsm_start:<who> <hold ms> <speed %> <flags>   0 ms = 4 s, 0 % = the World Speed slider,
+//                                                            flags 1 = automatic (cooldown, its option)
+//   RSQSM_Service GetInt("start" | "start.auto", who, ms, speed 0..1) from synced play code.
+//
+// AUTOMATIC AND DELIBERATE (owner 2026-11-02: "it's firing all the fuckin time"). Every way in is a
+// TRIGGER with a name (Trigger below). A deliberate one -- the key, the wrist cross, the Wheel, a
+// named door without flag 1, Melee's shove, the cigarette, a perfect parry/block -- is never refused
+// for time. An automatic one -- Close-Call, Reload Slowdown, other mods' kill rewards, the miniboss
+// window -- needs its own option on and waits out rsqsm_auto_cooldown seconds after the last automatic
+// pulse ENDED. rsqsm_debug 1 logs each one: its name, the tic and what happened.
 //
 // STANDING DOWN. Two slow-motion systems compound and cannot see each other (the
-// lesson RS_SlowMo paid for). If Bullet Time X is loaded (by class name, reached
+// lesson RS_SlowMo paid for). If Xortts' BTX is loaded (by class name, reached
 // by string), or RS_SlowMo itself on an engine that has a world clock, this mod
 // does nothing and says so, unless rsm_yield is 0.
 //
@@ -48,6 +59,9 @@ class RSQSM_Clock : EventHandler
 	bool   on;               // the held toggle
 	int    pulseUntil;       // maptime the pulse holds until, 0 none
 	double pulseDepth;
+	String pulseSrc;         // the trigger that asked for the pulse running now (the last one let in)
+	bool   pulseAuto;        // ... and whether it was automatic
+	int    autoReady;        // maptime the next automatic trigger may start slow motion
 	double adr;              // the adrenaline meter, 0..100
 	bool   rival;            // decided once per map
 	RSQSM_Smooth smooth;     // the walkers' step-spreader (smooth.zs), made on first use
@@ -125,7 +139,7 @@ class RSQSM_Clock : EventHandler
 		rival = RivalLoaded();
 		if (e.IsSaveGame) return;
 		// A level never starts slowed (and nothing carries over: the arrays are empty).
-		on = false; target = 1; scale = 1; pulseUntil = 0; pulseDepth = 1;
+		on = false; target = 1; scale = 1; pulseUntil = 0; pulseDepth = 1; pulseSrc = ""; pulseAuto = false; autoReady = 0;
 		ClearAll();
 		// An EventHandler is rebuilt on every map, so the meter is carried on the player.
 		adr = 0;
@@ -139,7 +153,7 @@ class RSQSM_Clock : EventHandler
 		if (rival)
 		{
 			if (StoodDown())
-				Console.Printf("\c[Red]RSQ_SlowMo: another slow-motion mod is loaded (Bullet Time X or RS_SlowMo).\n"
+				Console.Printf("\c[Red]RSQ_SlowMo: another slow-motion mod is loaded (Xortts' BTX or RS_SlowMo).\n"
 					.."\c[Grey]  Two slow-motion systems compound and cannot see each other. RSQ_SlowMo has STOOD DOWN.\n"
 					.."  Set rsm_yield 0 to run anyway, or unload one.");
 			else
@@ -169,21 +183,80 @@ class RSQSM_Clock : EventHandler
 	}
 
 	// ---- the doors ---------------------------------------------------------------------
+	// THE PULSES THIS TIC FROM rsm_pulse, held until WorldTick (the same tic: every network event of a tic
+	// runs before the level ticks) so their sender can be told apart -- RS_SlowMo's door carries no name.
+	// Transient: nothing is pending across a save.
+	private transient Array<int> pendMs, pendDepth, pendWho;
+	private transient int pendTic;
+	private transient int fearTic[MAXPLAYERS];
+
 	override void NetworkProcess(ConsoleEvent e)
 	{
-		if (e.Name ~== "rsm_toggle")    Aim(!on, e.Player);
-		else if (e.Name ~== "rsm_on")   Aim(true, e.Player);
-		else if (e.Name ~== "rsm_off")  Aim(false, e.Player);
-		else if (e.Name ~== "rsm_pulse") Pulse(e.Args[0], e.Args[1]);
+		if (e.Name ~== "rsm_toggle")    Aim(!on, e.Player, e.Args[0] == 1 ? "wristcross" : "toggle");
+		else if (e.Name ~== "rsm_on")   Aim(true, e.Player, "rsm_on");
+		else if (e.Name ~== "rsm_off")  Aim(false, e.Player, "rsm_off");
+		else if (e.Name ~== "rsm_pulse")
+		{
+			if (pendTic != level.maptime) { pendTic = level.maptime; pendMs.Clear(); pendDepth.Clear(); pendWho.Clear(); }
+			pendMs.Push(e.Args[0]); pendDepth.Push(e.Args[1]); pendWho.Push(e.Player);
+		}
+		// RSQ Melee sends its F.E.A.R. window with the shove's pulse, from the same machine on the same tic
+		// (Melee shove.zs Pulse): seen by name, it marks that pulse as the shove (deliberate).
+		else if (e.Name ~== "rsqml_fear") { if (e.Player >= 0 && e.Player < MAXPLAYERS) fearTic[e.Player] = level.maptime; }
+		else if (e.Name ~== "rsqsm_start" || e.Name.Left(12) ~== "rsqsm_start:")
+		{
+			String who = e.Name.Length() > 12 ? e.Name.Mid(12) : "netevent";
+			bool isAuto = (e.Args[2] & 1) != 0;
+			double sp = e.Args[1] > 0 ? e.Args[1] / 100.0 : 0;
+			Start(who, e.Args[0], sp, isAuto, e.Player);
+		}
 		else if (e.Name ~== "rsqsm_burst") Burst(e.Player);
 		else if (e.Name ~== "rsm_state")
-			Console.Printf("slow motion: %s, scale %.2f heading for %.2f (depth %.2f), %d actors slowed, adrenaline %.0f%s%s",
+			Console.Printf("slow motion: %s, scale %.2f heading for %.2f (depth %.2f), %d actors slowed, adrenaline %.0f%s%s%s",
 				on ? "ON" : "off", scale, target, Depth(), act.Size(), adr,
-				pulseUntil > 0 ? String.Format(", pulse %.2f for %d tics", pulseDepth, pulseUntil - level.maptime) : "",
+				pulseUntil > 0 ? String.Format(", pulse %.2f for %d tics (%s)", pulseDepth, pulseUntil - level.maptime, pulseSrc) : "",
+				autoReady > level.maptime ? String.Format(", automatic triggers wait %.1f s", (autoReady - level.maptime) / double(TICRATE)) : "",
 				StoodDown() ? ", STOOD DOWN (rival loaded)" : "");
 	}
 
-	private void Aim(bool want, int who)
+	// WHO SENT AN rsm_pulse (RS_SlowMo's door has no name). Read from the callers' own code, 2026-11-02:
+	//   RSQ Melee shove            rsm_pulse <rsqml_shove_slowmo_ms> 35, then rsqml_fear the same tic  -> deliberate
+	//   RSQ Tactical Rig cigarette rsm_pulse <rsqtr_cig_secs x 1000> <rsqtr_cig_depth> (the sender's own) -> deliberate
+	//   RSQ Saber perfect parry, RSQ ShieldSaw perfect block: rsm_pulse 500 35 (their own options)      -> deliberate
+	//   RSQ Miniboss's slow window (RSQMB_Service "window" > 0, by name), re-sent each second            -> automatic
+	//   anything else: RSQ Score's big moments (600 35) and hit-stop (x 5), Gun Bonsai VR's perks       -> automatic
+	// A mod that wants its own name and rules uses the named door instead (rsqsm_start:<who>).
+	private void ResolvePulses()
+	{
+		if (pendTic != level.maptime) return;
+		for (int i = 0; i < pendMs.Size(); i++)
+		{
+			int ms = pendMs[i], dp = pendDepth[i], who = pendWho[i];
+			double depth = clamp(dp / 100.0, 0.05, 1.0);
+			bool okWho = who >= 0 && who < MAXPLAYERS && playeringame[who];
+			if (okWho && fearTic[who] == level.maptime) { Trigger("melee.shove", CAT_NONE, ms, depth, false, who); continue; }
+			if (ms == 500 && dp == 35) { Trigger("parry", CAT_NONE, ms, depth, false, who); continue; }
+			if (okWho)
+			{
+				let cs = CVar.GetCVar("rsqtr_cig_secs", players[who]);
+				let cd = CVar.GetCVar("rsqtr_cig_depth", players[who]);
+				if (cs && cd && ms == int(cs.GetFloat() * 1000) && dp == cd.GetInt()) { Trigger("smoke", CAT_NONE, ms, depth, false, who); continue; }
+			}
+			if (MinibossWindow() > 0) { Trigger("miniboss", CAT_MINIBOSS, ms, depth, true, who); continue; }
+			Trigger("othermod", CAT_OTHER, ms, depth, true, who);
+		}
+		pendMs.Clear(); pendDepth.Clear(); pendWho.Clear();
+	}
+
+	private transient bool mbLooked;
+	private transient Service mbSvc;
+	private int MinibossWindow()
+	{
+		if (!mbLooked) { mbLooked = true; let it = ServiceIterator.Find("RSQMB_Service"); mbSvc = it.Next(); }
+		return mbSvc ? mbSvc.GetInt("window") : 0;
+	}
+
+	private void Aim(bool want, int who, String why = "toggle")
 	{
 		if (StoodDown()) return;
 		if (want && Cv("rsqsm_adrenaline", 0) != 0 && adr < Cv("rsqsm_adr_min", 25))
@@ -194,6 +267,7 @@ class RSQSM_Clock : EventHandler
 				RSQSM_Buzz.Start(players[who].mo, 0, 0.25, 3);
 				players[who].mo.A_StartSound("*usefail", CHAN_AUTO, CHANF_LOCAL, 0.6);   // stock DSNOWAY (SNDINFO.txt)
 			}
+			Log(why, "refused: not enough adrenaline");
 			return;
 		}
 		bool was = on;
@@ -204,6 +278,7 @@ class RSQSM_Clock : EventHandler
 		// rumble with nothing ending (measured on the rig, bugfix pass 10-31: rsm_off with the clock
 		// off -> two rumble cues).
 		if (on == was) return;
+		Log(why, on ? String.Format("held ON at %d%%", int(Depth() * 100 + 0.5)) : "held off");
 		if (who >= 0 && who < MAXPLAYERS && playeringame[who] && players[who].mo)
 		{
 			players[who].mo.A_StartSound(on ? "rsqsm/in" : "rsqsm/out", CHAN_AUTO, 0, 0.8);
@@ -212,18 +287,74 @@ class RSQSM_Clock : EventHandler
 		}
 	}
 
-	// RS_SlowMo's pulse, same arguments and the same rules: hold `ms`, at `depthPct`
-	// percent speed; the ramps are this mod's; deeper wins and longer wins; the held
+	// ---- the triggers ---------------------------------------------------------------------------
+	enum ECat { CAT_NONE, CAT_CLOSECALL, CAT_RELOAD, CAT_OTHER, CAT_MINIBOSS }
+	static bool CatOn(int cat)
+	{
+		switch (cat)
+		{
+		case CAT_CLOSECALL: return Cv("rsqsm_closecall", 0) != 0;
+		case CAT_OTHER:     return Cv("rsqsm_auto_other", 1) != 0;
+		case CAT_MINIBOSS:  return Cv("rsqsm_auto_miniboss", 1) != 0;
+		}
+		return true;      // CAT_RELOAD: each player's own rsqsm_reload, checked where the reload is seen
+	}
+	double Cooldown() { return clamp(Cv("rsqsm_auto_cooldown", 25), 0.0, 120.0); }
+
+	void Log(String src, String what)
+	{
+		if (Cv("rsqsm_debug", 0) == 0) return;
+		Console.Printf("RSQ_SlowMo: trigger %s t%d: %s", src, level.maptime, what);
+	}
+
+	// ONE WAY IN FOR EVERY PULSE. A deliberate trigger is never refused for time; an automatic one needs its
+	// option and the cooldown -- except one that only stretches the pulse it started itself (the miniboss
+	// window re-asks each second). Answers whether it was let in.
+	bool Trigger(String src, int cat, int ms, double depth, bool isAuto, int who = -1)
+	{
+		if (StoodDown()) { Log(src, "refused: stood down (another slow-motion mod)"); return false; }
+		if (on) { Log(src, "not needed: slow motion is held on"); return false; }
+		if (isAuto)
+		{
+			if (!CatOn(cat)) { Log(src, "refused: its option is off"); return false; }
+			bool stretch = pulseUntil > 0 && pulseAuto && pulseSrc == src;
+			if (!stretch && level.maptime < autoReady)
+			{
+				Log(src, String.Format("refused: automatic cooldown, %.1f s left", (autoReady - level.maptime) / double(TICRATE)));
+				return false;
+			}
+		}
+		bool fresh = pulseUntil <= 0;
+		Pulse(ms, depth);
+		pulseSrc = src;
+		pulseAuto = isAuto;
+		if (isAuto) autoReady = max(autoReady, pulseUntil + int(Cooldown() * TICRATE));
+		Log(src, String.Format("%s %d ms at %d%% (%s), pulse until t%d", fresh ? "started" : "merged", ms, int(depth * 100 + 0.5),
+			isAuto ? "automatic" : "deliberate", pulseUntil));
+		return true;
+	}
+
+	// THE NAMED DOOR (netevent rsqsm_start:<who>, RSQSM_Service "start"): 0 ms = 4 s, speed 0 = the slider.
+	const START_MS = 4000;
+	bool Start(String who, int ms, double speed, bool isAuto, int sender = -1)
+	{
+		if (ms <= 0) ms = START_MS;
+		double depth = speed > 0 ? clamp(speed, 0.05, 1.0) : Depth();
+		return Trigger(who, isAuto ? CAT_OTHER : CAT_NONE, ms, depth, isAuto, sender);
+	}
+
+	// RS_SlowMo's pulse, same arguments and the same rules: hold `ms`, at `depth` of
+	// full speed; the ramps are this mod's; deeper wins and longer wins; the held
 	// toggle outranks it; both clamped so no caller can freeze the world for good.
 	// THE HOLD'S CAP IS 30 s, NOT 5. Ermac's cigarette (RSQ_TacticalRig rsqtr_cig_secs) asks for 6 s by
 	// default and up to 20 from its menu; a 5 s cap cut every one of those short (measured on the rig,
 	// bugfix pass 10-31: rsm_pulse 6000 25 held 175 tics, not 210).
 	const PULSE_MAX_MS = 30000;
-	private void Pulse(int ms, int depthPct)
+	private void Pulse(int ms, double depth)
 	{
 		if (StoodDown() || on) return;
 		int holdUntil = level.maptime + int(ceil(clamp(ms, 30, PULSE_MAX_MS) * TICRATE / 1000.0));
-		double depth = clamp(depthPct / 100.0, 0.05, 1.0);
+		depth = clamp(depth, 0.05, 1.0);
 		if (pulseUntil > 0)
 		{
 			pulseUntil = max(pulseUntil, holdUntil);
@@ -248,11 +379,11 @@ class RSQSM_Clock : EventHandler
 		if (adrOn && adr < Cv("rsqsm_adr_min", 25))
 		{
 			if (mo) { RSQSM_Buzz.Start(mo, 0, 0.25, 3); mo.A_StartSound("*usefail", CHAN_AUTO, CHANF_LOCAL, 0.6); }
+			Log("wristcross.burst", "refused: not enough adrenaline");
 			return;
 		}
 		if (adrOn) adr = max(0.0, adr - 100.0 * (BURST_MS / 1000.0) / max(1.0, Cv("rsqsm_adr_secs", 10)));
-		Pulse(BURST_MS, int(Depth() * 100 + 0.5));
-		Dev(String.Format("RSQ_SlowMo: wrist cross -> %d ms burst at %d%%, tic %d until tic %d", BURST_MS, int(Depth() * 100 + 0.5), level.maptime, pulseUntil));
+		Trigger("wristcross.burst", CAT_NONE, BURST_MS, Depth(), false, who);
 		if (mo)
 		{
 			mo.A_StartSound("rsqsm/in", CHAN_AUTO, 0, 0.8);
@@ -261,7 +392,7 @@ class RSQSM_Clock : EventHandler
 		}
 	}
 
-	// ---- SM2 close calls (owner's QoL option, rsqsm_closecall) -----------------------------
+	// ---- SM2 close calls (owner's QoL option, rsqsm_closecall; automatic) ------------------------
 	// A rocket or fireball about to hit a player up close sets off a short pulse, so he can step aside.
 	// "About to hit": its path relative to him (its velocity minus his) passes within his radius + its
 	// radius + 8 units of his body's axis, between his feet and head, within CC_TICS tics, and it is
@@ -306,60 +437,25 @@ class RSQSM_Clock : EventHandler
 				if (miss > mo.radius + m.radius + 8 || z < -m.height || z > mo.height + 8) continue;
 				ccWatch.Delete(i);
 				int ms = int(clamp(Cv("rsqsm_closecall_ms", 700), 100, 5000));
-				Pulse(ms, int(Depth() * 100 + 0.5));
-				Dev(String.Format("RSQ_SlowMo: close call at tic %d, %s %.1f tics from player %d (passes %.0f units off), pulse %d ms",
-					level.maptime, m.GetClassName(), t, p, miss, ms));
+				Trigger("closecall", CAT_CLOSECALL, ms, Depth(), true, p);
+				Dev(String.Format("RSQ_SlowMo: close call at tic %d, %s %.1f tics from player %d (passes %.0f units off)",
+					level.maptime, m.GetClassName(), t, p, miss));
 				break;
 			}
 		}
 	}
 
-	// ---- SM4 head-bound rounds glow (owner's QoL option, rsqsm_headglow, the local player's choice) ----
-	// A slowed enemy round (this mod's RSQSM_Round, or Brutal Doom's bullet slowed to the round speed) whose
-	// straight path passes within HEAD_R units of your eyes before it is past you burns at full strength
-	// and half again as long; one that will miss you dims to 40%. Rendering only (alpha and scale), so a
-	// local choice; it follows a lean (the course is checked every tic).
-	const HEAD_R = 12;
-	private void HeadGlow(Actor a)
-	{
-		let p = players[consoleplayer];
-		if (!p || !p.mo) return;
-		bool bound = false;
-		Vector3 d = level.Vec3Diff(a.pos, (p.mo.pos.xy, p.viewz));
-		Vector3 v = a.vel - p.mo.vel;
-		double vv = v dot v;
-		if (vv > 0.0001)
-		{
-			double t = (d dot v) / vv;
-			if (t > 0) bound = (d - v * t).Length() < HEAD_R;
-		}
-		SetGlow(a, bound ? 1 : 0);
-	}
-	// 1 head-bound, 0 will miss, -1 as it was made
-	private static void SetGlow(Actor a, int how)
-	{
-		let def = GetDefaultByType(a.GetClass());
-		Vector2 baseS = def.Scale;
-		if (a is "RSQSM_Round" && RSQSM_CB.Mode()) baseS *= 1.25;     // its colour-blind look (round.zs CBLook)
-		a.Alpha = how == 0 ? def.Alpha * 0.4 : def.Alpha;
-		a.Scale = how == 1 ? baseS * 1.5 : baseS;
-		a.bBRIGHT = how == 1 || def.bBRIGHT;
-	}
 	static void Dev(String s)
 	{
 		let dv = CVar.FindCVar("developer");
 		if (dv && dv.GetInt() >= 1) Console.Printf("%s", s);
 	}
-	bool IsEnemyBullet(Actor a)
-	{
-		return a.bMISSILE && a.radius <= 8 && !(a.target && a.target.player) && GetDefaultByType(a.GetClass()).Speed >= 40;
-	}
-
 	// ---- every tic ---------------------------------------------------------------------
 	override void WorldTick()
 	{
 		LocalGesture();
 		if (StoodDown()) return;
+		ResolvePulses();
 		CloseCalls();
 
 		// Where the clock is heading: the toggle, then a pulse, then full speed.
@@ -552,7 +648,6 @@ class RSQSM_Clock : EventHandler
 		double follow = clamp(CvLocal("rsm_sound_follow", 1.0), 0.0, 1.0);
 		bool doPitch = (++pitchTick % 4) == 0;
 		bool wakes = Cv("rsqsm_wakes", 1) != 0;
-		bool glow = CvLocal("rsqsm_headglow", 0) != 0;
 		for (int i = act.Size() - 1; i >= 0; i--)
 		{
 			Actor a = act[i];
@@ -626,7 +721,6 @@ class RSQSM_Clock : EventHandler
 					if (fr > 0 && fr < 1) { double k = fr ** (want - 1.0); a.vel.x *= k; a.vel.y *= k; }
 				}
 				if (doPitch) Repitch(a, 1.0 - (1.0 - want) * follow);
-				if (glow && (a is "RSQSM_Round" || IsEnemyBullet(a))) HeadGlow(a);
 				if (wakes && a.bMISSILE && (level.maptime + i) % 2 == 0) Wake(a);
 			}
 			else if (doPitch) Repitch(a, 1.0);
@@ -694,8 +788,6 @@ class RSQSM_Clock : EventHandler
 			a.Gravity = baseGrav[i];
 			if (a.tics > 0) a.tics = max(1, int(a.tics / r));
 		}
-		// a round let go at full speed burns as it was made (SM4 dims and brightens only while slowed)
-		if (a && !a.bDestroyed && (a is "RSQSM_Round" || IsEnemyBullet(a))) SetGlow(a, -1);
 		act.Delete(i); fac.Delete(i); baseGrav.Delete(i); baseSpeed.Delete(i); carry.Delete(i);
 		lastState.Delete(i); lastTics.Delete(i); lvx.Delete(i); lvy.Delete(i); lvz.Delete(i);
 	}
@@ -786,8 +878,8 @@ class RSQSM_Clock : EventHandler
 	// rises; a pickup only ever raises). The second catches Brutal Doom's reloads,
 	// which reach their animation through their own tokens and jumps rather than by
 	// playing on from "Reload" (measured: BD22 Rifle, magazine 20 -> 31, reserve 30 ->
-	// 19, while the Reload sequence check saw nothing). The BD22 set's immersive
-	// reloads, or anything else, can also call rsm_pulse directly.
+	// 19, while the Reload sequence check saw nothing). An automatic trigger: its option, the
+	// cooldown, and the World Speed slider's speed (Trigger).
 	private transient bool wasReloading[MAXPLAYERS];
 	private transient int  lastA1[MAXPLAYERS], lastA2[MAXPLAYERS];
 	private transient Weapon lastW[MAXPLAYERS];
@@ -811,7 +903,7 @@ class RSQSM_Clock : EventHandler
 					moved = (a2 > lastA2[n] && a1 < lastA1[n]) || (a1 > lastA1[n] && a2 < lastA2[n]);
 			}
 			if (reloadPrimed && ((r && !wasReloading[n]) || moved))
-				Pulse(int(CvP("rsqsm_reload_ms", p, 1200)), int(CvP("rsqsm_reload_depth", p, 40)));
+				Trigger("reload", CAT_RELOAD, int(CvP("rsqsm_reload_ms", p, 1200)), Depth(), true, n);
 			wasReloading[n] = r;
 			lastW[n] = w; lastA1[n] = a1; lastA2[n] = a2;
 		}
@@ -820,6 +912,12 @@ class RSQSM_Clock : EventHandler
 
 	// ---- the gesture (local; it only sends the toggle) ------------------------------------------
 	// Cross your wrists in front of your face and hold them there a moment.
+	// CROSSED, NOT ONLY CLOSE (2026-11-02). The test was "hands within 16 cm in front of the face", which a
+	// two-hand pistol grip and a hand reload both are: on the rig each toggled slow motion (poses 6 cm and
+	// 8 cm apart, the main hand on its own side; tools/rigtest/poses.txt, log before_poses). Crossed wrists put
+	// the main hand on the OFF hand's side of it: now the main hand must be at least CROSS_M across (the
+	// body's right axis; mirrored for a left-handed control scheme, vr_control_scheme >= 10).
+	const CROSS_M = 0.03;
 	private void LocalGesture()
 	{
 		let p = players[consoleplayer];
@@ -839,7 +937,10 @@ class RSQSM_Clock : EventHandler
 		// and shortens the hold (x1..x0.5); 0 / absent: exactly as tuned.
 		double ease = RSQSM_A11y.Ease();
 		double box = 1.0 + ease;
-		bool pose = together < RSQSM_A11y.Wide(CvP("rsqsm_gesture_gap", p, 0.16))
+		let sch = CVar.FindCVar("vr_control_scheme");
+		double across = ((a.x - b.x) * sin(pmo.angle) - (a.y - b.y) * cos(pmo.angle)) / 34.0;   // main right of off, metres
+		if (sch && sch.GetInt() >= 10) across = -across;
+		bool pose = together < RSQSM_A11y.Wide(CvP("rsqsm_gesture_gap", p, 0.16)) && across <= -CROSS_M
 			&& ahead > 0.12 / box && ahead < 0.6 * box && up > -0.40 * box && up < 0.15 * box;
 		if (!pose) { gestT = 0; gestArmed = true; return; }
 		if (!gestArmed) return;
@@ -847,7 +948,7 @@ class RSQSM_Clock : EventHandler
 		{
 			// SM7 (owner's QoL option, rsqsm_gesture_burst): a 4 s burst instead of the toggle
 			if (CvP("rsqsm_gesture_burst", p, 0) != 0) EventHandler.SendNetworkEvent("rsqsm_burst");
-			else EventHandler.SendNetworkEvent("rsm_toggle");
+			else EventHandler.SendNetworkEvent("rsm_toggle", 1);     // 1: the wrist cross (for the trigger log)
 			gestT = 0;
 			gestArmed = false;      // apart again before the next one
 			gestCool = 20;
@@ -920,8 +1021,14 @@ class RSQSM_AdrToken : Inventory
 // FOR OTHER MODS, found by name (nothing links): GetInt("adrenaline.add", "", points) adds to
 // the shared adrenaline meter (nothing while the meter is off) and answers the meter after it,
 // 0..100. GetInt("adrenaline") reads it. GetInt("slowmo.active") (or "active") is 1 while the world
-// is slowed (held, a pulse, or easing), 0 when not or stood down -- RSQ_Score's Bullet Time and the
+// is slowed (held, a pulse, or easing), 0 when not or stood down -- RSQ_Score's slow-motion bonus and the
 // Gun Bonsai VR patch's slow-motion perks read it; GetInt("scale") is the world's speed in permille.
+// START SLOW MOTION (2026-11-02): GetInt("start", who, ms, speed) -- deliberate, never refused for time --
+// or GetInt("start.auto", who, ms, speed) -- automatic: needs "Other Mods' Auto Slow-Mo" on and waits out
+// the cooldown. who: a name for the trigger log; ms: the hold (0 = 4 s); speed: the world's speed 0.05..1
+// (0 = the player's World Speed slider). Answers 1 let in, 0 refused. Call it from synced play code (the
+// same on every machine, e.g. a WorldTick or an actor's tic); from one machine's local code, send the
+// network event `rsqsm_start:<who> <ms> <speed %> <flags>` instead (flags 1 = automatic).
 // -1: unknown request.
 // The Gun Bonsai VR patch's Adrenaline upgrade charges it on melee kills.
 class RSQSM_Service : Service
@@ -940,6 +1047,8 @@ class RSQSM_Service : Service
 		// HELD OR PULSING, NOT JUST EASING BACK (owner 2026-10-31: the ring slows time even while slow motion eases out):
 		// 1 while something is still asking for slow motion (the held toggle or a pulse), 0 once it is only fading back
 		if (request ~== "running") return (!c.StoodDown() && c.target < 0.9999) ? 1 : 0;
+		if (request ~== "start" || request ~== "start.auto")
+			return c.Start(stringArg.Length() ? stringArg : "service", intArg, doubleArg, request ~== "start.auto") ? 1 : 0;
 		return -1;
 	}
 }

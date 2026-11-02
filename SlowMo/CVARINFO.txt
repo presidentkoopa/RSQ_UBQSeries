@@ -2,10 +2,10 @@
 // USER settings are yours. Same names as RS_SlowMo where they mean the same.
 
 // ---- the world's (RS_SlowMo's names)
-server float rsm_depth        = 0.25;   // how slow: 1 normal, 0.25 quarter speed
+server float rsm_depth        = 0.25;   // how slow: 0.05 near-freeze .. 0.95; 0.25 quarter speed (the World Speed slider; every trigger without its own)
 server float rsm_ramp_in      = 0.15;   // seconds to slow down over
 server float rsm_ramp_out     = 0.40;   // seconds to come back over
-server bool  rsm_yield        = true;   // stand down if Bullet Time X (or RS_SlowMo) is loaded
+server bool  rsm_yield        = true;   // stand down if Xortts' BTX (or RS_SlowMo) is loaded
 
 // ---- yours
 user float rsm_sound_follow   = 1.0;    // how far slowed things' sounds drop in pitch
@@ -28,9 +28,8 @@ server bool  rsqsm_adr_keep     = true;  // the meter carries over to the next l
 user bool  rsqsm_gesture        = true;  // cross your wrists in front of your face to toggle
 user float rsqsm_gesture_gap    = 0.16;  // how close the wrists, metres
 user int   rsqsm_gesture_hold   = 12;    // tics to hold the pose
-user bool  rsqsm_reload         = false; // a reload buys a moment of slow motion
+user bool  rsqsm_reload         = false; // a reload buys a moment of slow motion (automatic: the cooldown applies)
 user int   rsqsm_reload_ms      = 1200;
-user int   rsqsm_reload_depth   = 40;    // percent speed
 user bool  rsqsm_haptics        = true;
 
 // ---- the owner's picks from the Quest teardown (2026-10-31): the body in slow motion (body.zs, smooth.zs)
@@ -40,15 +39,18 @@ server float rsqsm_lean_secs    = 2.0;   // the baseline follows the head over t
 server bool  rsqsm_smooth       = true;  // 27: nearby walkers move a little every tic, not a step ~3 times a second (apply/05 §4)
 server float rsqsm_smooth_range = 1024;  // map units from a player
 server int   rsqsm_smooth_max   = 12;    // the nearest this many walkers
-user bool    rsqsm_catch        = false; // 25: an empty off hand with the grip held catches a slowed enemy bullet
-user float   rsqsm_catch_m      = 0.08;  // how close the hand must come, metres (the capsule between its last two samples)
-user float   rsqsm_flick        = 2.5;   // a flick this fast throws it back, metres a second (body frame)
-user string  rsqsm_catch_keys   = "443 436"; // the off-hand grip's raw keys (KEY_PAD_RTHUMB, KEY_PAD_DPAD_UP), as RSQ_DistanceGrab reads them
 user bool    rsqsm_drain        = false; // 28: colours drain while time is slowed (a post-process pass)
 user float   rsqsm_drain_amt    = 0.35;  // how much colour goes at full depth, 0..1
 
 // ---- the owner's QoL round (2026-10-31): options, off by default
-server bool  rsqsm_closecall    = false; // SM2: a rocket or fireball about to hit you up close sets off a short slow-mo pulse
+server bool  rsqsm_closecall    = false; // SM2: a rocket or fireball about to hit you up close sets off a short slow-mo pulse (automatic)
 server int   rsqsm_closecall_ms = 700;   // how long that pulse holds, ms (it eases in and out on the clock's own ramps)
-user bool    rsqsm_headglow     = false; // SM4: a slowed enemy round on course for your head glows; ones that will miss dim
 user bool    rsqsm_gesture_burst = false; // SM7: the wrist cross starts a 4 s slow-mo burst instead of toggling
+
+// ---- automatic triggers (owner 2026-11-02: "it's firing all the fuckin time"; clock.zs Trigger) -------
+// A deliberate start (the key, the wrist cross, the Wheel, Melee's shove, the cigarette, a perfect parry or
+// block, another mod's named door without the automatic flag) is never refused for time.
+server int   rsqsm_auto_cooldown = 25;   // seconds after an automatic pulse ends before the next automatic one may start (0 = none)
+server bool  rsqsm_auto_other    = true; // other mods' automatic pulses: RSQ Score's big moments, Gun Bonsai VR's perks, flagged named callers
+server bool  rsqsm_auto_miniboss = true; // RSQ Miniboss's slow window (it re-asks each second: one window counts once)
+server bool  rsqsm_debug         = false; // log every trigger to the console: its name, the tic, what happened

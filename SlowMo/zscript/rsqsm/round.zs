@@ -185,7 +185,7 @@ class RSQSM_Round : Actor
 	// The closest approach to each player's head: a whiz past, a crack close by.
 	private void NearMisses()
 	{
-		if (target && target.player) return;     // a caught round thrown back (RSQSM_Thrown) is yours
+		if (target && target.player) return;
 		for (int i = 0; i < MAXPLAYERS; i++)
 		{
 			if (!playeringame[i] || passed[i]) continue;
