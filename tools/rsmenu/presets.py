@@ -81,8 +81,6 @@ MODS = {
      'Small': {'rsqtr_icon_scale': 0.6}, 'Large': {'rsqtr_icon_scale': 1.5}}),
  ]),
  'SlowMo': ('MENUDEF.txt', 'CVARINFO.txt', [
-  ('RSQSM_P_Depth', ['Light', 'Medium', 'Standard', 'Bullet Time'], {
-     'Light': {'rsm_depth': 0.6}, 'Medium': {'rsm_depth': 0.4}, 'Bullet Time': {'rsm_depth': 0.1}}),
   ('RSQSM_P_Ease', ['Snap', 'Standard', 'Gradual'], {
      'Snap': {'rsm_ramp_in': 0.0, 'rsm_ramp_out': 0.0},
      'Gradual': {'rsm_ramp_in': 0.6, 'rsm_ramp_out': 1.2}}),
