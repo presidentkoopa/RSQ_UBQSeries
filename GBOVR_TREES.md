@@ -806,10 +806,10 @@ from the edge; it drains with the time left while the earned Berserk runs; row B
 60 of 300 after three punches.
 
 **THE FISTS TREE IS BUILT (11-02):** all nine branches, every kept node, each run in the engine headless. Not built:
-Catch and Bullet Time Fists (parked off, as designed). **Owed:** the art and sound pass (kiddolink bursts by level,
-CvS2 colourings, RS Combat FX sounds; today's looks are placeholders: particles, stock sounds, the existing sparks);
-HP Bars' new states (frozen, held, disarmed); the owner's headset for everything a hand
-does (Gestures' reads, the swings, the look).
+Catch and Bullet Time Fists (parked off, as designed). **Owed:** the owner's headset for everything a hand does (Gestures' reads, the swings) and for the look and sound.
+Done since (11-02): the art pass, the sound pass and the HUD gauges (above). HP Bars needed nothing for the Fists tree:
+it reads a monster's freezetics, so Frost Fist's freeze shows its snowflake and the Headlock its padlock already;
+"disarmed" is the Saber tree's (Force Pull).
 
 **Counts:** 42 nodes (38 + Reflect Guard, Absorb and Release, Critical Hits, Clear Out), 14 exist, 28 new, 2
 parked off. **Every Fists node was kept by the owner, 11-02** (Rig link on the Saber was his one strike so far).
