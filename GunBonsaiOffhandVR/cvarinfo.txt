@@ -86,6 +86,7 @@ server int   rsqgb_kr_ammo_mode = 0;     // Ammo Bits Give: 0 the gun in hand, 1
 server bool  rsqgb_kr_ammotype1 = true;  // which of a gun's two ammo types count (clip mods: SoM's readme)
 server bool  rsqgb_kr_ammotype2 = false;
 server float rsqgb_kr_magnet    = 0.0;   // Bits Fly to Me: metres, 0 = off (the Magnet node raises it)
+server noarchive bool rsqgb_kr_debug = false;   // Debug Log: one console line a kill (what burst into how many bits)
 server int   rsqgb_kr_min       = 1;     // Range mode (SoM's som_kr_min / max / rnd)
 server int   rsqgb_kr_max       = 3;
 server bool  rsqgb_kr_rnd       = true;

@@ -115,17 +115,22 @@ class RSQ_KRHandler : EventHandler
 		int sum = wh + wa + wm;
 		if (sum <= 0) return;
 		int chance = clamp(SVI("rsqgb_kr_chance", 100), 0, 100);
+		int nh = 0, na = 0, nm = 0;
 		for (int i = 0; i < num; ++i)
 		{
 			if (!a.bBoss && random[RSQKR](1, 100) > chance) continue;
 			int r = random[RSQKR](1, sum);
 			String cls;
-			if (r <= wh) cls = "RSQ_KRHealthBit";
-			else if (r <= wh + wa) cls = "RSQ_KRArmorBit";
-			else cls = "RSQ_KRAmmoBit";
+			if (r <= wh) { cls = "RSQ_KRHealthBit"; ++nh; }
+			else if (r <= wh + wa) { cls = "RSQ_KRArmorBit"; ++na; }
+			else { cls = "RSQ_KRAmmoBit"; ++nm; }
 			// SoM's throw: 32 up, 1-6 out and up, a random heading
 			a.A_SpawnItemEx(cls, 0, 0, 32, random[RSQKR](1, 6), 0, random[RSQKR](1, 6), random[RSQKR](0, 360));
 		}
+		// Debug Log (rsqgb_kr_debug, noarchive): one line a kill, the proof a run can grep for
+		if (SVB("rsqgb_kr_debug", false))
+			Console.Printf("RSQ KR t%d: %s (%d hp%s) burst into %d bits: %d health, %d armour, %d ammo", level.maptime, cn, a.SpawnHealth(),
+				a.bBoss ? ", boss" : "", nh + na + nm, nh, na, nm);
 	}
 }
 

@@ -1075,7 +1075,8 @@ blade dark), the whip cracks but does not lasso or snag, the grenade as today.
 
 **Status (11-02, local lane; nothing run yet, compile proof is the owner's):** 1 built as `rsq/zscript/stock.zs`
 (Gun Bonsai's own Register / Unregister on its registry, so the pruned names leave the pool everywhere; the row
-"Stock Gun Bonsai Upgrades: Silvergun / All", `rsq_stock_mode`). 2 built: `RSQ_Upgrade_Base.Has / PHas / Level`.
+"Stock Gun Bonsai Upgrades: Silvergun / All", `rsq_stock_mode`). 2 built: `RSQ_Upgrade_Base.Has / PHas / LevelOf` (first named Level, which the headless run caught: ZScript is
+case-insensitive and every upgrade has a `level` field).
 3 built: service "unlocked" / "punlocked" ("upgrade.num" entries come with each node). 4 built: the whip's `Hurt`
 deals inside the claim bracket and `RSQWP_WhipWeapon` is typed melee; the thrown grenade names `RSQGN_Grenade` as
 master and is claimed. 5 built: `rsq/zscript/killrewards.zs` (SoM's rules under `rsqgb_kr_*`, the plain page,
@@ -1083,9 +1084,15 @@ Range mode's inverted chance fixed, the ammo bit reads the toucher not consolepl
 Bits / Magnet by name once those nodes exist); the row "Kill Rewards: On". 6 partly: the Berserk x5 on a punch is
 in Melee; `punch.kinds` and the two-palm thrust wait for their nodes. 7 (HP Bars) waits for the new `RSQ_Dazed`
 states. **Built 11-02 into pk3/RSQ_GunBonsaiVR, RSQ_Whip, RSQ_Grenade, RSQ_Melee; not run; not committed.**
-What the compile check must show: "script parsing took" with no "Script error" from those four; on MAP01 the
-console line "RSQ Gun Bonsai VR: stock upgrades: Silvergun (N pruned)"; a kill bursts into bits; a whip hit and a
-grenade kill move their own weapon's XP (bonsai-debug,info).
+**Headless runs, 11-02 (owner: "you check it headless"; `tools/qzd_hidden_run.ps1`, the series' copy of his SPO
+runner without its SPO-only companion; QZD 17.3-m, doom2 + Melee, Whip, Grenade, Gun Bonsai 0.10.6, GBOVR last;
++vr_mode 0, no hands):** both runs "script parsing took ~790 ms", 0 warnings, 0 errors, every pack at its real
+lump count. The first attempt found 20 "Numeric type expected" errors from the helper named `Level` (fixed:
+`LevelOf`). Proven in the log: "stock upgrades: Silvergun (8 pruned)" on load, "All (8 restored)" within a second
+of `rsq_stock_mode 1`, "Silvergun (8 pruned)" again on `0`; Kill Rewards on MAP01's 21 kills: a 20-hp Zombieman
+burst into 2 bits, a 60-hp DoomImp into 6 (By Health, 1 per 10), the mix random 1:1:1. **Not provable headless:**
+the whip and grenade XP claims (their hits are hand-driven), the Berserk punch, bit pickup, the menus' look. Those
+are the owner's headset.
 
 1. The stock-upgrade row "Stock Gun Bonsai Upgrades: Silvergun / All" (section 3.13): a run-time append to
    `disabled_upgrades` for the hidden weapon upgrades on EVERY weapon info (guns too), and a strip of the four

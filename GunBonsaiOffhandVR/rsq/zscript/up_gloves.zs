@@ -44,8 +44,10 @@ class RSQ_Upgrade_Base : TFLV_Upgrade_BaseUpgrade
 		}
 		return false;
 	}
-	// the level this weapon's record holds of a node (0 = none), for a cap test: Level(info, "HeavyHands") < 4
-	static int Level(TFLV_WeaponInfo info, String shortName)
+	// the level this weapon's record holds of a node (0 = none), for a cap test: LevelOf(info, "HeavyHands") < 4.
+	// Not "Level": ZScript identifiers are case-insensitive, and every upgrade has a `level` field (the headless run
+	// of 11-02 found 20 "Numeric type expected" errors from that one name).
+	static int LevelOf(TFLV_WeaponInfo info, String shortName)
 	{
 		if (!info || !info.upgrades) return 0;
 		return int(info.upgrades.Level(RSQM.UpClass(shortName)));

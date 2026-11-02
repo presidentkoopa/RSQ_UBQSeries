@@ -157,7 +157,7 @@ Rig-checked (logs) only: **not yet headset-confirmed**.
   weapon as master), so both level like weapons and can carry the paths in GBOVR_TREES.md. The whip is typed
   melee in `bonsairc.rsq`.
 - **Service, for the owning mods**: `RSQ_MeleeUpgradeService` "unlocked" (a weapon node learned, level >= 1) and
-  "punlocked" (a player node), beside "level" and "plevel". `RSQ_Upgrade_Base.Has / PHas / Level` are how a
+  "punlocked" (a player node), beside "level" and "plevel". `RSQ_Upgrade_Base.Has / PHas / LevelOf` are how a
   tree node asks for its parent in `IsSuitableFor*`.
 - **Reads RSQ_Accessibility**: Handedness (HUD sides), Colour Blind Mode (HUD and status screen), Text Size
   (screens). Also (2026-11-01, not yet headset-confirmed): Rumble Strength scales every rumble of this addon

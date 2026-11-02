@@ -125,6 +125,7 @@ OptionMenu "RSQ_KillRewards"
 	Slider "$RSQ_MENU_KR_MIN", "rsqgb_kr_min", 1, 25, 1, 0
 	Slider "$RSQ_MENU_KR_MAX", "rsqgb_kr_max", 1, 25, 1, 0
 	Option "$RSQ_MENU_KR_RND", "rsqgb_kr_rnd", "OnOff"
+	Option "Debug Log", "rsqgb_kr_debug", "OnOff"
 }
 
 OptionMenu "RSQ_MeleeAdvanced"
