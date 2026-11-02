@@ -1,5 +1,9 @@
 # Local agent handoff: RSQ_UBQSeries on the owner's PC
 
+> **Update 2026-11-01 (0.9):** melee now lives in **RSQ_Melee** (punches, gloves, shove, Headlock, Guard,
+> Hadouken, Wall Splat, Heavy Hands); Gun Bonsai VR holds only the upgrades; Gestures only reads hands;
+> Distance Grab keeps objects. See WHO_OWNS_WHAT.md. Where this file says otherwise below, that is history.
+
 Written 2026-10-31 by the cloud lane, for a coding agent running on the owner's Windows PC (with a shell, the real
 QuestZDoom and his headset). Read all of it before touching anything.
 

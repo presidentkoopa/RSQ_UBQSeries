@@ -116,15 +116,26 @@ python3 tools/build_all.py Whip Wheel   # just those folders
 `build_all.sh` packs the same files. Each folder is one mod's source; most carry their full git history
 (`git log -- ShieldSaw/`). `tools/rig17/` is the headless QuestZDoom 17.3 used for testing (it never ships).
 
-## Status (2026-11-01)
+## Status: 0.9 (2026-11-01)
 
-- Everything loads together on the Brutal Doom order and on plain Doom 2 with no script errors from the
-  RSQ pk3s (simulated headset).
-- Built 2026-10-31 to 11-01 and **not yet headset-confirmed**: the owner's teardown picks and QoL rounds
-  (see [PICKS_2026-10-31.md](PICKS_2026-10-31.md)), the walk-up grip / Headlock, real whip sounds, and RSQ Melee
-  (11-01: the melee moves gathered into one pk3; checked on the simulated rig and the owner's load order only).
-- Nothing about rumble could be felt on the simulated headset.
-- Older release notes are in the git history.
+**0.9 is feature-complete for everything except the last two passes.** 18 mods; every one loads alone and
+together, on the owner's numbered Brutal Doom order and on plain Doom 2, with no script errors from the RSQ
+pk3s (simulated headset: play, save, load twice, map change).
+
+New since 1.0-pre (10-27 to 11-01): Whip, Wheel, GunCards, Gestures, RSQ Grenade and RSQ Melee; the owner's
+teardown and QoL picks; Accessibility wired through the series (Steady Hands, Seated Play, Slower Taps,
+Rumble Strength); the second saber as a dedicated off-hand weapon; real recorded sounds for the whip, Zippo
+and cigarette; every README rewritten from the code with a Test it list.
+
+**Before 1.0:**
+- The owner's headset pass through every README's Test it list. Everything built since 10-31 is marked
+  *not yet headset-confirmed*; no rumble has been felt yet.
+- The Gun Bonsai VR pass (naming, the melee upgrade path) and the Score pass, on the owner's orders.
+- The shipped holster presets (Standing A/B, Seated A/B) from the owner's own poses.
+
+**After 1.0:** a standalone flare, a shared rumble request for Rumble Backup, head smoothing for the saber's
+deflect, and the ideas listed in WHO_OWNS_WHAT.md's neighbours (RS Monsters, miniboss orbs, the Bulletstorm
+leash, Hook 1.0 leftovers).
 
 ## Credits
 
