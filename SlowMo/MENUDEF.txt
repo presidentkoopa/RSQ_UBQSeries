@@ -42,7 +42,6 @@ OptionMenu "RSQSM_Options"
 	RSQSMPreset "Ease In and Out", "RSQSM_P_Ease"
 	StaticText " "
 	Option "Dodgeable Bullets", "rsqsm_rounds", "OnOff"
-	Option "Wrist Cross", "rsqsm_gesture", "OnOff"
 	Option "Adrenaline", "rsqsm_adrenaline", "OnOff"
 	Option "Haptics", "rsqsm_haptics", "OnOff"
 	StaticText " "
@@ -51,18 +50,39 @@ OptionMenu "RSQSM_Options"
 	Option "Color Drain", "rsqsm_drain", "OnOff"
 	Option "Wrist Cross = 4 s Burst", "rsqsm_gesture_burst", "OnOff"
 	StaticText " "
-	StaticText "Automatic Slow-Mo (cooldown on Tuning and Debug)", 1
-	Option "Close-Call Slow-Mo", "rsqsm_closecall", "OnOff"
-	Option "Reload Slowdown", "rsqsm_reload", "OnOff"
-	Option "Other Mods' Auto Slow-Mo", "rsqsm_auto_other", "OnOff"
-	Option "Miniboss Window Slow-Mo", "rsqsm_auto_miniboss", "OnOff"
-	StaticText " "
 	Option "Slow Own Missiles", "rsqsm_slow_own", "OnOff"
 	Option "Shot Trails", "rsqsm_trails", "OnOff"
 	Option "Missile Wakes", "rsqsm_wakes", "OnOff"
 	Option "Keep Adrenaline Between Levels", "rsqsm_adr_keep", "OnOff"
 	StaticText " "
+	Submenu "Triggers", "RSQSM_Triggers"
 	Submenu "Tuning and Debug", "RSQSM_Debug"
+}
+
+// ---- Triggers: one on/off row for every way slow motion starts (owner 2026-11-02) -----------------------
+OptionMenu "RSQSM_Triggers"
+{
+	Title "TRIGGERS"
+	StaticText "Yours (never held back)", 1
+	Option "Manual Key", "rsqsm_trig_key", "OnOff"
+	Option "Wrist Cross", "rsqsm_gesture", "OnOff"
+	Option "Burst", "rsqsm_trig_burst", "OnOff"
+	Option "Wheel", "rsqsm_trig_wheel", "OnOff"
+	Option "Accessibility Button", "rsqsm_trig_a11y", "OnOff"
+	Option "Melee Shove", "rsqsm_trig_shove", "OnOff"
+	Option "Cigarette", "rsqsm_trig_smoke", "OnOff"
+	Option "Saber Parry", "rsqsm_trig_parry", "OnOff"
+	Option "ShieldSaw Block", "rsqsm_trig_block", "OnOff"
+	StaticText " "
+	StaticText "Automatic (wait out the cooldown)", 1
+	Option "Miniboss Window", "rsqsm_auto_miniboss", "OnOff"
+	Option "Close-Call", "rsqsm_closecall", "OnOff"
+	Option "Reload Slowdown", "rsqsm_reload", "OnOff"
+	Option "Score", "rsqsm_trig_score", "OnOff"
+	Option "Gun Bonsai VR", "rsqsm_trig_gbvr", "OnOff"
+	Option "Other / Unknown Mods", "rsqsm_auto_other", "OnOff"
+	StaticText " "
+	Slider "Auto Slow-Mo Cooldown (s)", "rsqsm_auto_cooldown", 0, 60, 5, 0
 }
 
 // ---- Tuning and Debug: every number ----------------------------------------------------------------
@@ -90,10 +110,9 @@ OptionMenu "RSQSM_Debug"
 	Slider "Smooth Walkers", "rsqsm_smooth_max", 1, 32, 1, 0
 	Slider "Color Drain Amount", "rsqsm_drain_amt", 0.05, 1.0, 0.05, 2
 	Slider "Close-Call Time (ms)", "rsqsm_closecall_ms", 300, 2000, 100, 0
-	Slider "Auto Slow-Mo Cooldown (s)", "rsqsm_auto_cooldown", 0, 60, 5, 0
 	StaticText " "
 	Option "Yield to Other Mods", "rsm_yield", "OnOff"
 	Option "Debug Log", "rsqsm_debug", "OnOff"
 	StaticText " "
-	SafeCommand "Reset All", "resetcvar rsm_depth rsm_ramp_in rsm_ramp_out rsm_yield rsm_sound_follow rsqsm_radius rsqsm_slow_own rsqsm_rounds rsqsm_round_speed rsqsm_trails rsqsm_wakes rsqsm_adrenaline rsqsm_adr_min rsqsm_adr_secs rsqsm_adr_kill rsqsm_adr_near rsqsm_adr_keep rsqsm_gesture rsqsm_gesture_gap rsqsm_gesture_hold rsqsm_reload rsqsm_reload_ms rsqsm_haptics rsqsm_lean rsqsm_lean_m rsqsm_lean_secs rsqsm_smooth rsqsm_smooth_range rsqsm_smooth_max rsqsm_drain rsqsm_drain_amt rsqsm_closecall rsqsm_closecall_ms rsqsm_gesture_burst rsqsm_auto_cooldown rsqsm_auto_other rsqsm_auto_miniboss rsqsm_debug", "Reset all RSQ SlowMo settings?"
+	SafeCommand "Reset All", "resetcvar rsm_depth rsm_ramp_in rsm_ramp_out rsm_yield rsm_sound_follow rsqsm_radius rsqsm_slow_own rsqsm_rounds rsqsm_round_speed rsqsm_trails rsqsm_wakes rsqsm_adrenaline rsqsm_adr_min rsqsm_adr_secs rsqsm_adr_kill rsqsm_adr_near rsqsm_adr_keep rsqsm_gesture rsqsm_gesture_gap rsqsm_gesture_hold rsqsm_reload rsqsm_reload_ms rsqsm_haptics rsqsm_lean rsqsm_lean_m rsqsm_lean_secs rsqsm_smooth rsqsm_smooth_range rsqsm_smooth_max rsqsm_drain rsqsm_drain_amt rsqsm_closecall rsqsm_closecall_ms rsqsm_gesture_burst rsqsm_auto_cooldown rsqsm_auto_other rsqsm_auto_miniboss rsqsm_trig_key rsqsm_trig_burst rsqsm_trig_wheel rsqsm_trig_a11y rsqsm_trig_shove rsqsm_trig_smoke rsqsm_trig_parry rsqsm_trig_block rsqsm_trig_score rsqsm_trig_gbvr rsqsm_debug", "Reset all RSQ SlowMo settings?"
 }

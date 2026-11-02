@@ -36,11 +36,13 @@
 //   RSQSM_Service GetInt("start" | "start.auto", who, ms, speed 0..1) from synced play code.
 //
 // AUTOMATIC AND DELIBERATE (owner 2026-11-02: "it's firing all the fuckin time"). Every way in is a
-// TRIGGER with a name (Trigger below). A deliberate one -- the key, the wrist cross, the Wheel, a
-// named door without flag 1, Melee's shove, the cigarette, a perfect parry/block -- is never refused
-// for time. An automatic one -- Close-Call, Reload Slowdown, other mods' kill rewards, the miniboss
-// window -- needs its own option on and waits out rsqsm_auto_cooldown seconds after the last automatic
-// pulse ENDED. rsqsm_debug 1 logs each one: its name, the tic and what happened.
+// TRIGGER with a name (Trigger below). A deliberate one -- the key, the wrist cross, the burst, the Wheel,
+// the Accessibility button, Melee's shove, the cigarette, a Saber parry, a ShieldSaw block -- is never
+// refused for time. An automatic one -- Close-Call, Reload Slowdown, Score, Gun Bonsai VR, other mods, the
+// miniboss window -- waits out rsqsm_auto_cooldown seconds after the last automatic pulse ENDED.
+// EVERY ONE HAS ITS OWN ON/OFF SWITCH (owner 2026-11-02: "everything has an on off switch"): CatOn below,
+// the Triggers page in MENUDEF. A switch only stops a START; turning slow motion off is never refused.
+// rsqsm_debug 1 logs each one: its name, the tic and what happened.
 //
 // STANDING DOWN. Two slow-motion systems compound and cannot see each other (the
 // lesson RS_SlowMo paid for). If Xortts' BTX is loaded (by class name, reached
@@ -192,8 +194,17 @@ class RSQSM_Clock : EventHandler
 
 	override void NetworkProcess(ConsoleEvent e)
 	{
-		if (e.Name ~== "rsm_toggle")    Aim(!on, e.Player, e.Args[0] == 1 ? "wristcross" : "toggle");
-		else if (e.Name ~== "rsm_on")   Aim(true, e.Player, "rsm_on");
+		// rsm_toggle's first argument says who: 1 the wrist cross, 2 this mod's key (KEYCONF). Bare, it is RSQ
+		// Accessibility's button when that mod is loaded (rsqa_core.zs sends it bare), else a key bound by hand.
+		if (e.Name ~== "rsm_toggle")
+		{
+			int a = e.Args[0];
+			if (a == 1) Aim(!on, e.Player, "wristcross", CAT_WRIST);
+			else if (a == 2 || !A11yLoaded()) Aim(!on, e.Player, "key", CAT_KEY);
+			else Aim(!on, e.Player, "a11y.button", CAT_A11Y);
+		}
+		// rsm_on: RSQ Wheel opening (the series' only sender, Wheel zscript.zs)
+		else if (e.Name ~== "rsm_on")   Aim(true, e.Player, "wheel", CAT_WHEEL);
 		else if (e.Name ~== "rsm_off")  Aim(false, e.Player, "rsm_off");
 		else if (e.Name ~== "rsm_pulse")
 		{
@@ -222,9 +233,13 @@ class RSQSM_Clock : EventHandler
 	// WHO SENT AN rsm_pulse (RS_SlowMo's door has no name). Read from the callers' own code, 2026-11-02:
 	//   RSQ Melee shove            rsm_pulse <rsqml_shove_slowmo_ms> 35, then rsqml_fear the same tic  -> deliberate
 	//   RSQ Tactical Rig cigarette rsm_pulse <rsqtr_cig_secs x 1000> <rsqtr_cig_depth> (the sender's own) -> deliberate
-	//   RSQ Saber perfect parry, RSQ ShieldSaw perfect block: rsm_pulse 500 35 (their own options)      -> deliberate
+	//   RSQ Saber perfect parry (ubqs_parry_slowmo), RSQ ShieldSaw perfect block (ssq_perfect_slowmo): both
+	//     rsm_pulse 500 35, told apart by whose option is on and what the sender holds (ParryOrBlock) -> deliberate
 	//   RSQ Miniboss's slow window (RSQMB_Service "window" > 0, by name), re-sent each second            -> automatic
-	//   anything else: RSQ Score's big moments (600 35) and hit-stop (x 5), Gun Bonsai VR's perks       -> automatic
+	//   RSQ Score (Score handler.zs): big moment 600 35; hit-stop (115 + rsm_ramp_in x 1000) 5            -> automatic
+	//   Gun Bonsai VR patch (up_melee.zs, up_suite.zs): Adrenaline min(300+150 lv, 1500) max(60-5 lv, 30);
+	//     Showdown 450/600/750 45; Time Dilation 400/550/700 at rsm_depth                                -> automatic
+	//   anything else: other / unknown mods                                                              -> automatic
 	// A mod that wants its own name and rules uses the named door instead (rsqsm_start:<who>).
 	private void ResolvePulses()
 	{
@@ -234,18 +249,69 @@ class RSQSM_Clock : EventHandler
 			int ms = pendMs[i], dp = pendDepth[i], who = pendWho[i];
 			double depth = clamp(dp / 100.0, 0.05, 1.0);
 			bool okWho = who >= 0 && who < MAXPLAYERS && playeringame[who];
-			if (okWho && fearTic[who] == level.maptime) { Trigger("melee.shove", CAT_NONE, ms, depth, false, who); continue; }
-			if (ms == 500 && dp == 35) { Trigger("parry", CAT_NONE, ms, depth, false, who); continue; }
+			if (okWho && fearTic[who] == level.maptime) { Trigger("melee.shove", CAT_SHOVE, ms, depth, false, who); continue; }
 			if (okWho)
 			{
 				let cs = CVar.GetCVar("rsqtr_cig_secs", players[who]);
 				let cd = CVar.GetCVar("rsqtr_cig_depth", players[who]);
-				if (cs && cd && ms == int(cs.GetFloat() * 1000) && dp == cd.GetInt()) { Trigger("smoke", CAT_NONE, ms, depth, false, who); continue; }
+				if (cs && cd && ms == int(cs.GetFloat() * 1000) && dp == cd.GetInt()) { Trigger("smoke", CAT_SMOKE, ms, depth, false, who); continue; }
+			}
+			if (ms == 500 && dp == 35)
+			{
+				int pb = ParryOrBlock(okWho ? who : -1);
+				if (pb == 1) { Trigger("saber.parry", CAT_PARRY, ms, depth, false, who); continue; }
+				if (pb == 2) { Trigger("shieldsaw.block", CAT_BLOCK, ms, depth, false, who); continue; }
+				if (pb == 3)
+				{
+					// both could have sent it (a saber in one hand, the ShieldSaw in the other): needs both switches
+					if (!CatOn(CAT_PARRY, who) || !CatOn(CAT_BLOCK, who)) { Log("parry.or.block", "refused: Saber Parry or ShieldSaw Block switch is off"); continue; }
+					Trigger("parry.or.block", CAT_PARRY, ms, depth, false, who); continue;
+				}
 			}
 			if (MinibossWindow() > 0) { Trigger("miniboss", CAT_MINIBOSS, ms, depth, true, who); continue; }
+			if (IsScorePulse(ms, dp)) { Trigger("score", CAT_SCORE, ms, depth, true, who); continue; }
+			if (IsBonsaiPulse(ms, dp)) { Trigger("gunbonsai", CAT_GBVR, ms, depth, true, who); continue; }
 			Trigger("othermod", CAT_OTHER, ms, depth, true, who);
 		}
 		pendMs.Clear(); pendDepth.Clear(); pendWho.Clear();
+	}
+
+	static bool Loaded(Name cn) { class<Object> c = cn; return c != null; }
+	static bool A11yLoaded() { return Loaded('RSQA_Menu'); }
+	static bool OptOn(Name n) { let c = CVar.FindCVar(n); return c && c.GetInt() != 0; }
+	static bool HoldsKind(int who, Name cn)
+	{
+		if (who < 0) return false;
+		class<Actor> c = cn;
+		if (!c) return false;
+		let p = players[who];
+		return (p.ReadyWeapon && p.ReadyWeapon is c) || (p.OffhandWeapon && p.OffhandWeapon is c);
+	}
+	// 500 ms at 35 %: 1 RSQ Saber's parry, 2 RSQ ShieldSaw's block, 3 could be either, 0 neither. A sender counts only
+	// with its mod loaded, its slow-mo option on, and (if a player is known) its weapon in one of his hands.
+	private int ParryOrBlock(int who)
+	{
+		bool sb = OptOn('ubqs_parry_slowmo') && Loaded('UBQS_SaberBase') && (who < 0 || HoldsKind(who, 'UBQS_SaberBase'));
+		bool ss = OptOn('ssq_perfect_slowmo') && Loaded('SSQ_ShieldSaw') && (who < 0 || HoldsKind(who, 'SSQ_ShieldSaw'));
+		return (sb ? 1 : 0) + (ss ? 2 : 0);
+	}
+	// RSQ Score's two pulses (Score handler.zs PULSE_MS/PULSE_DEPTH, HitStopMs/HITSTOP_DEPTH), with Score loaded
+	static bool IsScorePulse(int ms, int dp)
+	{
+		if (!Loaded('RS_ScoreHandler')) return false;
+		if (ms == 600 && dp == 35) return true;
+		let c = CVar.FindCVar("rsm_ramp_in");
+		return dp == 5 && ms == 115 + int(clamp(c ? c.GetFloat() : 0.0, 0.0, 1.0) * 1000);
+	}
+	// the Gun Bonsai VR patch's three perks that pulse (up_melee.zs Adrenaline, up_suite.zs Showdown, Time Dilation)
+	static bool IsBonsaiPulse(int ms, int dp)
+	{
+		if (!Loaded('RSQ_Upgrade_Adrenaline')) return false;
+		for (int lv = 1; lv <= 20; lv++)
+			if (ms == min(300 + 150 * lv, 1500) && dp == max(60 - 5 * lv, 30)) return true;
+		if (dp == 45 && (ms == 450 || ms == 600 || ms == 750)) return true;
+		let c = CVar.FindCVar("rsm_depth");
+		return (ms == 400 || ms == 550 || ms == 700) && dp == int(clamp(c ? c.GetFloat() : 0.25, 0.05, 0.95) * 100);
 	}
 
 	private transient bool mbLooked;
@@ -256,9 +322,11 @@ class RSQSM_Clock : EventHandler
 		return mbSvc ? mbSvc.GetInt("window") : 0;
 	}
 
-	private void Aim(bool want, int who, String why = "toggle")
+	private void Aim(bool want, int who, String why = "toggle", int cat = CAT_NONE)
 	{
 		if (StoodDown()) return;
+		// a switched-off trigger cannot START it; stopping is never refused
+		if (want && !on && !CatOn(cat, who)) { Log(why, String.Format("refused: its switch is off (%s)", CatName(cat))); return; }
 		if (want && Cv("rsqsm_adrenaline", 0) != 0 && adr < Cv("rsqsm_adr_min", 25))
 		{
 			// Not enough in the meter: a short, low buzz on the hand that asked.
@@ -288,16 +356,42 @@ class RSQSM_Clock : EventHandler
 	}
 
 	// ---- the triggers ---------------------------------------------------------------------------
-	enum ECat { CAT_NONE, CAT_CLOSECALL, CAT_RELOAD, CAT_OTHER, CAT_MINIBOSS }
-	static bool CatOn(int cat)
+	// ONE SWITCH PER TRIGGER (the Triggers page). User switches (the player's own inputs) are read for the
+	// player who sent it; server ones are the world's.
+	enum ECat { CAT_NONE, CAT_CLOSECALL, CAT_RELOAD, CAT_OTHER, CAT_MINIBOSS, CAT_KEY, CAT_WRIST, CAT_BURST, CAT_WHEEL,
+		CAT_A11Y, CAT_SHOVE, CAT_SMOKE, CAT_PARRY, CAT_BLOCK, CAT_SCORE, CAT_GBVR }
+	static double CvWho(String n, int who, double d)
+	{
+		return (who >= 0 && who < MAXPLAYERS && playeringame[who]) ? CvP(n, players[who], d) : Cv(n, d);
+	}
+	static bool CatOn(int cat, int who = -1)
 	{
 		switch (cat)
 		{
-		case CAT_CLOSECALL: return Cv("rsqsm_closecall", 0) != 0;
-		case CAT_OTHER:     return Cv("rsqsm_auto_other", 1) != 0;
+		case CAT_KEY:       return CvWho("rsqsm_trig_key", who, 1) != 0;
+		case CAT_WRIST:     return CvWho("rsqsm_gesture", who, 1) != 0;
+		case CAT_BURST:     return CvWho("rsqsm_trig_burst", who, 1) != 0;
+		case CAT_WHEEL:     return CvWho("rsqsm_trig_wheel", who, 1) != 0;
+		case CAT_A11Y:      return CvWho("rsqsm_trig_a11y", who, 1) != 0;
+		case CAT_SHOVE:     return Cv("rsqsm_trig_shove", 1) != 0;
+		case CAT_SMOKE:     return Cv("rsqsm_trig_smoke", 1) != 0;
+		case CAT_PARRY:     return Cv("rsqsm_trig_parry", 1) != 0;
+		case CAT_BLOCK:     return Cv("rsqsm_trig_block", 1) != 0;
 		case CAT_MINIBOSS:  return Cv("rsqsm_auto_miniboss", 1) != 0;
+		case CAT_CLOSECALL: return Cv("rsqsm_closecall", 0) != 0;
+		case CAT_RELOAD:    return CvWho("rsqsm_reload", who, 0) != 0;
+		case CAT_SCORE:     return Cv("rsqsm_trig_score", 1) != 0;
+		case CAT_GBVR:      return Cv("rsqsm_trig_gbvr", 1) != 0;
+		case CAT_OTHER:     return Cv("rsqsm_auto_other", 1) != 0;
 		}
-		return true;      // CAT_RELOAD: each player's own rsqsm_reload, checked where the reload is seen
+		return true;
+	}
+	static String CatName(int cat)
+	{
+		static const String names[] = { "-", "Close-Call", "Reload Slowdown", "Other / Unknown Mods", "Miniboss Window",
+			"Manual Key", "Wrist Cross", "Burst", "Wheel", "Accessibility Button", "Melee Shove", "Cigarette",
+			"Saber Parry", "ShieldSaw Block", "Score", "Gun Bonsai VR" };
+		return (cat >= 0 && cat < names.Size()) ? names[cat] : "?";
 	}
 	double Cooldown() { return clamp(Cv("rsqsm_auto_cooldown", 25), 0.0, 120.0); }
 
@@ -307,16 +401,16 @@ class RSQSM_Clock : EventHandler
 		Console.Printf("RSQ_SlowMo: trigger %s t%d: %s", src, level.maptime, what);
 	}
 
-	// ONE WAY IN FOR EVERY PULSE. A deliberate trigger is never refused for time; an automatic one needs its
-	// option and the cooldown -- except one that only stretches the pulse it started itself (the miniboss
-	// window re-asks each second). Answers whether it was let in.
+	// ONE WAY IN FOR EVERY PULSE. Every trigger needs its switch; a deliberate one is never refused for time; an
+	// automatic one also waits out the cooldown -- except one that only stretches the pulse it started itself (the
+	// miniboss window re-asks each second). Answers whether it was let in.
 	bool Trigger(String src, int cat, int ms, double depth, bool isAuto, int who = -1)
 	{
 		if (StoodDown()) { Log(src, "refused: stood down (another slow-motion mod)"); return false; }
 		if (on) { Log(src, "not needed: slow motion is held on"); return false; }
+		if (!CatOn(cat, who)) { Log(src, String.Format("refused: its switch is off (%s)", CatName(cat))); return false; }
 		if (isAuto)
 		{
-			if (!CatOn(cat)) { Log(src, "refused: its option is off"); return false; }
 			bool stretch = pulseUntil > 0 && pulseAuto && pulseSrc == src;
 			if (!stretch && level.maptime < autoReady)
 			{
@@ -335,12 +429,13 @@ class RSQSM_Clock : EventHandler
 	}
 
 	// THE NAMED DOOR (netevent rsqsm_start:<who>, RSQSM_Service "start"): 0 ms = 4 s, speed 0 = the slider.
+	// Both kinds come under the Other / Unknown Mods switch; only the automatic kind waits out the cooldown.
 	const START_MS = 4000;
 	bool Start(String who, int ms, double speed, bool isAuto, int sender = -1)
 	{
 		if (ms <= 0) ms = START_MS;
 		double depth = speed > 0 ? clamp(speed, 0.05, 1.0) : Depth();
-		return Trigger(who, isAuto ? CAT_OTHER : CAT_NONE, ms, depth, isAuto, sender);
+		return Trigger(who, CAT_OTHER, ms, depth, isAuto, sender);
 	}
 
 	// RS_SlowMo's pulse, same arguments and the same rules: hold `ms`, at `depth` of
@@ -376,6 +471,7 @@ class RSQSM_Clock : EventHandler
 		if (StoodDown() || on) return;
 		bool adrOn = Cv("rsqsm_adrenaline", 0) != 0;
 		Actor mo = (who >= 0 && who < MAXPLAYERS && playeringame[who]) ? players[who].mo : null;
+		if (!CatOn(CAT_BURST, who)) { Log("wristcross.burst", "refused: its switch is off (Burst)"); return; }
 		if (adrOn && adr < Cv("rsqsm_adr_min", 25))
 		{
 			if (mo) { RSQSM_Buzz.Start(mo, 0, 0.25, 3); mo.A_StartSound("*usefail", CHAN_AUTO, CHANF_LOCAL, 0.6); }
@@ -383,7 +479,7 @@ class RSQSM_Clock : EventHandler
 			return;
 		}
 		if (adrOn) adr = max(0.0, adr - 100.0 * (BURST_MS / 1000.0) / max(1.0, Cv("rsqsm_adr_secs", 10)));
-		Trigger("wristcross.burst", CAT_NONE, BURST_MS, Depth(), false, who);
+		Trigger("wristcross.burst", CAT_BURST, BURST_MS, Depth(), false, who);
 		if (mo)
 		{
 			mo.A_StartSound("rsqsm/in", CHAN_AUTO, 0, 0.8);
@@ -1024,8 +1120,8 @@ class RSQSM_AdrToken : Inventory
 // is slowed (held, a pulse, or easing), 0 when not or stood down -- RSQ_Score's slow-motion bonus and the
 // Gun Bonsai VR patch's slow-motion perks read it; GetInt("scale") is the world's speed in permille.
 // START SLOW MOTION (2026-11-02): GetInt("start", who, ms, speed) -- deliberate, never refused for time --
-// or GetInt("start.auto", who, ms, speed) -- automatic: needs "Other Mods' Auto Slow-Mo" on and waits out
-// the cooldown. who: a name for the trigger log; ms: the hold (0 = 4 s); speed: the world's speed 0.05..1
+// or GetInt("start.auto", who, ms, speed) -- automatic: waits out the cooldown. Both need the Triggers page's
+// "Other / Unknown Mods" switch on (rsqsm_auto_other). who: a name for the trigger log; ms: the hold (0 = 4 s); speed: the world's speed 0.05..1
 // (0 = the player's World Speed slider). Answers 1 let in, 0 refused. Call it from synced play code (the
 // same on every machine, e.g. a WorldTick or an actor's tic); from one machine's local code, send the
 // network event `rsqsm_start:<who> <ms> <speed %> <flags>` instead (flags 1 = automatic).

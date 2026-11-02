@@ -51,6 +51,20 @@ user bool    rsqsm_gesture_burst = false; // SM7: the wrist cross starts a 4 s s
 // A deliberate start (the key, the wrist cross, the Wheel, Melee's shove, the cigarette, a perfect parry or
 // block, another mod's named door without the automatic flag) is never refused for time.
 server int   rsqsm_auto_cooldown = 25;   // seconds after an automatic pulse ends before the next automatic one may start (0 = none)
-server bool  rsqsm_auto_other    = true; // other mods' automatic pulses: RSQ Score's big moments, Gun Bonsai VR's perks, flagged named callers
+server bool  rsqsm_auto_other    = true; // Triggers page "Other / Unknown Mods": an rsm_pulse no rule below recognises, and the named door (rsqsm_start, RSQSM_Service "start")
 server bool  rsqsm_auto_miniboss = true; // RSQ Miniboss's slow window (it re-asks each second: one window counts once)
 server bool  rsqsm_debug         = false; // log every trigger to the console: its name, the tic, what happened
+
+// ---- one switch per trigger (owner 2026-11-02: "everything has an on off switch"; clock.zs CatOn) -----------
+// The Triggers page. Older switches keep their names: rsqsm_gesture (Wrist Cross), rsqsm_closecall, rsqsm_reload,
+// rsqsm_auto_miniboss, rsqsm_auto_other (Other / Unknown Mods). A switch only stops a start, never a stop.
+user bool    rsqsm_trig_key      = true; // your bound Slow Motion key
+user bool    rsqsm_trig_burst    = true; // the wrist cross's 4 s burst (with Wrist Cross = 4 s Burst)
+user bool    rsqsm_trig_wheel    = true; // RSQ Wheel opening (rsm_on)
+user bool    rsqsm_trig_a11y     = true; // RSQ Accessibility's slow-motion button (a bare rsm_toggle while it is loaded)
+server bool  rsqsm_trig_shove    = true; // RSQ Melee's gun butt shove
+server bool  rsqsm_trig_smoke    = true; // RSQ Tactical Rig's cigarette
+server bool  rsqsm_trig_parry    = true; // RSQ Saber's perfect parry
+server bool  rsqsm_trig_block    = true; // RSQ ShieldSaw's perfect block
+server bool  rsqsm_trig_score    = true; // RSQ Score's big moment and hit-stop (automatic)
+server bool  rsqsm_trig_gbvr     = true; // Gun Bonsai VR patch's Adrenaline, Showdown and Time Dilation perks (automatic)

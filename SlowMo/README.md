@@ -32,7 +32,7 @@ doom2.wad -> 01 brutal22test6 -> 02 BD22_VoxelPack -> 03 BD22_VR-Reloaded_2.0.3j
 
 ## Features
 
-All rows are on the front page except the ones marked *Tuning and Debug*.
+All rows are on the front page except the ones marked *Triggers* or *Tuning and Debug*.
 "On" = on by default (CVARINFO); "Option" = off by default.
 
 | Menu row | Default | What it does |
@@ -41,27 +41,48 @@ All rows are on the front page except the ones marked *Tuning and Debug*.
 | World Speed | 0.25 | A slider from 0.05 (near-freeze) to 0.95 of normal speed. Every slow motion uses it unless another mod asks for its own speed. |
 | Ease In and Out | Standard | Snap / Standard / Gradual. |
 | Dodgeable Bullets | On | In slow motion an enemy's hitscan becomes a visible round, same damage. Brutal Doom's bullets slow to the same speed. |
-| Wrist Cross | On | Crossing your wrists in front of your face toggles slow motion. |
 | Adrenaline | Option | Slow motion costs adrenaline, earned from kills, hurt and near misses. There is no meter on screen: a pickup sound when full, an "oof" when there is not enough. |
 | Haptics | On | Rumble on both hands when slow motion starts and ends. Needs the engine's quake haptics above 0. |
 | Lean Out of Bullets | On | Leaning out of a slowed round's path makes it miss. A lean held for about 2 s becomes your new stance and stops counting. |
 | Smooth Walkers | On | The nearest 12 walking monsters move a little every tic instead of stepping. |
 | Color Drain | Option | Colours fade a little while time is slowed (35 % at full depth). |
 | Wrist Cross = 4 s Burst | Option | The wrist cross starts a 4-second burst instead of toggling. |
-| Close-Call Slow-Mo | Option | Automatic: a rocket or fireball about to hit you up close starts a short (0.7 s) pulse. |
-| Reload Slowdown | Option | Automatic: a reload buys a short moment of slow motion. |
-| Other Mods' Auto Slow-Mo | On | Automatic: RSQ Score's big moments and Gun Bonsai VR's perks may slow time. |
-| Miniboss Window Slow-Mo | On | Automatic: RSQ Miniboss's slow window after a thrall dies. |
 | Slow Own Missiles | On | Your own rockets slow too. |
 | Shot Trails | On | Your shots leave a fading trail. |
 | Missile Wakes | On | Slowed missiles leave a wake. |
 | Keep Adrenaline Between Levels | On | The meter carries to the next level. |
-| Auto Slow-Mo Cooldown (Tuning and Debug) | 25 s | After an automatic slow motion ends, the next automatic one waits this long. Your own starts are never held back. |
 | Yield to Other Mods (Tuning and Debug) | On | Stand down if Xortts' BTX or RS_SlowMo is loaded. |
 | Debug Log (Tuning and Debug) | Option | Every start, and every refused one, is written to the console with its name and tic. |
 | Reset All (Tuning and Debug) | - | Resets every SlowMo setting. |
 
 Every other row under *Tuning and Debug* is a number for the features above.
+
+### Triggers page
+
+One on/off row for every way slow motion starts. A row only stops a start; turning slow motion off
+always works. "Yours" are never held back; "Automatic" ones also wait out the cooldown.
+
+| Row | Default | Kind | Starts slow motion when |
+|---|---|---|---|
+| Manual Key | On | Yours | you press your bound *Slow Motion* key. |
+| Wrist Cross | On | Yours | you cross your wrists in front of your face (gun hand past the other). |
+| Burst | On | Yours | the wrist cross starts its 4 s burst (*Wrist Cross = 4 s Burst* on). |
+| Wheel | On | Yours | RSQ Wheel opens. |
+| Accessibility Button | On | Yours | you press RSQ Accessibility's slow-motion button. |
+| Melee Shove | On | Yours | an RSQ Melee gun butt shove lands. |
+| Cigarette | On | Yours | you spit out an RSQ Tactical Rig cigarette. |
+| Saber Parry | On | Yours | an RSQ Saber perfect parry (its own slow-mo option on). |
+| ShieldSaw Block | On | Yours | an RSQ ShieldSaw perfect block (its own slow-mo option on). |
+| Miniboss Window | On | Automatic | RSQ Miniboss's slow window opens after a thrall dies. |
+| Close-Call | Option | Automatic | a rocket or fireball is about to hit you up close (0.7 s). |
+| Reload Slowdown | Option | Automatic | you reload. |
+| Score | On | Automatic | RSQ Score's big moment or hit-stop. |
+| Gun Bonsai VR | On | Automatic | the Gun Bonsai VR patch's Adrenaline, Showdown or Time Dilation perk. |
+| Other / Unknown Mods | On | Automatic | any other mod's pulse, or a mod's named call (*For other mods*). |
+| Auto Slow-Mo Cooldown | 25 s | - | after an automatic slow motion ends, the next automatic one waits this long. |
+
+Saber Parry and ShieldSaw Block send the same pulse; SlowMo tells them apart by whose option is on and what
+is in your hands. With a saber in one hand and the ShieldSaw in the other it needs both rows on.
 
 ## Test it
 
@@ -85,7 +106,7 @@ simulated rig (no sound, no haptics there).
    **(not yet headset-confirmed)**
 8. Turn on *Color Drain*. In slow motion colours fade a little. **Check both eyes** (the rig only saw
    the left). **(not yet headset-confirmed)**
-9. Turn on *Close-Call Slow-Mo*. Let an imp's fireball come straight at you. Time slows briefly before it
+9. Turn on *Close-Call* (Triggers). Let an imp's fireball come straight at you. Time slows briefly before it
    hits. A second one within 25 s of the first slow motion ending does not slow time.
    **(not yet headset-confirmed)**
 10. Turn on *Wrist Cross = 4 s Burst*. The wrist cross gives 4 s of slow motion, then it eases back.
@@ -101,27 +122,29 @@ simulated rig (no sound, no haptics there).
     slows. Kill a few monsters and try again.
 15. With RSQ Accessibility: Rumble Strength 0.5, then start slow motion: the start rumble is half as strong;
     0: none. **(not yet headset-confirmed; rig: start rumble 0.30 at 0.5, 0.60 at 1)**
-16. *Debug Log* on (Tuning and Debug), then play: every automatic start or refusal shows in the console
+16. *Debug Log* on (Tuning and Debug), then play: every start or refusal shows in the console
     with its name and tic.
+17. Turn off one row on *Triggers* (e.g. *Score*): that source no longer slows time, the others still do;
+    a refusal shows in the Debug Log as "its switch is off". **(not yet headset-confirmed; rig 2026-11-02:
+    Score, Gun Bonsai VR, Cigarette, Melee Shove and Manual Key each refused when off while the rest started)**
 
 ## Works with
 
 - **RSQ Tactical Rig:** spitting out the cigarette starts slow motion (its *Slow Motion After a Smoke*);
-  deliberate, so the cooldown never holds it back.
-- **RSQ Wheel:** the ring slows time while open, also while slow motion is easing out.
+  deliberate, so the cooldown never holds it back. Row: *Cigarette*.
+- **RSQ Wheel:** the ring slows time while open, also while slow motion is easing out. Row: *Wheel*.
 - **RSQ Saber / RSQ ShieldSaw:** their perfect-parry / perfect-block slow-mo options pulse this clock
-  (deliberate: never held back).
-- **RSQ Score:** big kills ask for a short slow-mo pulse (automatic: *Other Mods' Auto Slow-Mo* and the
-  cooldown).
-- **RSQ Melee:** a landed gun butt shove asks for a 300 ms pulse at 35 % (its switch is in that mod, not
-  here). Deliberate: never held back. **(not yet headset-confirmed)**
+  (deliberate: never held back). Rows: *Saber Parry*, *ShieldSaw Block*.
+- **RSQ Score:** big kills ask for a short slow-mo pulse (automatic: row *Score* and the cooldown).
+- **RSQ Melee:** a landed gun butt shove asks for a 300 ms pulse at 35 % (row *Melee Shove*; that mod has
+  its own switch too). Deliberate: never held back. It stands down when BD22 VR Reloaded is loaded (Melee's rule). **(not yet headset-confirmed)**
 - **RSQ Grapple, RSQ Whip:** read the world's speed so they slow with it.
-- **RSQ Miniboss:** can hold slow motion through its window (automatic: *Miniboss Window Slow-Mo* and the
+- **RSQ Miniboss:** can hold slow motion through its window (automatic: row *Miniboss Window* and the
   cooldown; one window counts once).
-- **RSQ Accessibility:** Gesture Ease on the wrist cross, a floor on how fast slow motion may ease, and
+- **RSQ Accessibility:** its slow-motion button (row *Accessibility Button*), Gesture Ease on the wrist cross, a floor on how fast slow motion may ease, and
   other shared settings. Rumble Strength scales every SlowMo rumble (not yet headset-confirmed). SlowMo has
   no tap windows, so Slower Taps changes nothing here.
-- **Gun Bonsai VR patch:** its slow-motion perks read and pulse this clock (automatic, like Score's).
+- **Gun Bonsai VR patch:** its slow-motion perks read and pulse this clock (automatic: row *Gun Bonsai VR*).
 
 ## Known limits / open issues
 
@@ -188,8 +211,8 @@ EventHandler.SendNetworkEvent("rsqsm_start:<who>", ms, speedPct, flags);
 
 From the one machine that decided it (a hand gesture, a local test). `<who>` is your trigger's name (shown in
 the Debug Log); `ms` the hold (0 = 4 s); `speedPct` the world's speed in percent, 5-100 (0 = the player's
-World Speed slider); `flags` 1 = automatic (needs *Other Mods' Auto Slow-Mo* and waits out the cooldown),
-0 = deliberate (never held back). It eases in and out on the player's ramps. A held toggle outranks it.
+World Speed slider); `flags` 1 = automatic (waits out the cooldown), 0 = deliberate (never held back). Both need the
+*Other / Unknown Mods* row on. It eases in and out on the player's ramps. A held toggle outranks it.
 
 From synced play code (the same on every machine), the service does the same and answers 1 let in, 0 refused:
 
@@ -204,5 +227,7 @@ pulsing), `scale` (world speed in permille).
 
 **RS_SlowMo's old doors still work:** `rsm_toggle`, `rsm_on`, `rsm_off`, `rsm_pulse <hold ms> <speed %>`
 (deeper wins, longer wins). An `rsm_pulse` carries no name, so SlowMo tells the series' callers apart by what
-they send (clock.zs ResolvePulses): Melee's shove, the cigarette and a perfect parry/block are deliberate;
-anything else is automatic.
+they send (clock.zs ResolvePulses): Melee's shove, the cigarette, a Saber parry and a ShieldSaw block are
+deliberate; Miniboss, Score, Gun Bonsai VR and anything else are automatic. Each has its row on *Triggers*.
+`rsm_toggle 1` is the wrist cross, `rsm_toggle 2` the key; a bare `rsm_toggle` is RSQ Accessibility's button
+while that mod is loaded, else the key. `rsm_on` is the Wheel's.

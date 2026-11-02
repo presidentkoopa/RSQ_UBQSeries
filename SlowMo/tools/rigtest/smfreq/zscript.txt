@@ -14,6 +14,10 @@ version "4.14"
 //               the hands' gap each second, so a two-hand grip or a hand reload that toggles slow motion shows.
 //   smf_mode 6  OTHER MODS' rsm_pulse, as they send it: every 3 s RSQ Score's big-moment pulse (600 35) and,
 //               1.5 s later, a perfect parry's (500 35), for smf_secs.
+//   smf_mode 7  PER-TRIGGER SWITCHES: five 300-tic phases; each sends Score's pulse (600 35), a Gun Bonsai VR
+//               Adrenaline lv1 pulse (450 55), the cigarette's (rsqtr_cig_secs x 1000, rsqtr_cig_depth) and a real
+//               Melee shove. Phase 0 all on; then Score, Gun Bonsai VR, Cigarette, Melee Shove switched off in turn
+//               (only that one). Set rsqsm_auto_cooldown 0 and rsqsm_debug 1 in the console script.
 //   smf_mode 4  THE NAMED DOOR (another mod's call): rsqsm_start:<who> and the service, then the cooldown.
 // Lines: T_EVT every slow-mo door event seen; T_START when the clock leaves full speed (with the events of
 // that tic); T_SUM totals at the end.
@@ -151,6 +155,7 @@ class RSQSMF_Probe : EventHandler
 			if (t % 105 == 0) EventHandler.SendNetworkEvent("rsm_pulse", 600, 35);
 			if (t % 105 == 52) EventHandler.SendNetworkEvent("rsm_pulse", 500, 35);
 		}
+		if (m == 7) Switches(mo, t);
 		if (m == 5 && t % 35 == 0)
 		{
 			Vector3 a = mo.AttackPos, b = mo.OffhandPos;
@@ -177,6 +182,27 @@ class RSQSMF_Probe : EventHandler
 			shoves++;
 			Console.Printf("T_SHOVE t%d", t);
 		}
+	}
+
+	void Switches(PlayerPawn mo, int t)
+	{
+		static const String sw[] = { "", "rsqsm_trig_score", "rsqsm_trig_gbvr", "rsqsm_trig_smoke", "rsqsm_trig_shove" };
+		int ph = t / 300, k = t % 300;
+		if (ph > 4) return;
+		if (k == 1)
+		{
+			for (int i = 1; i < sw.Size(); i++) CVar.FindCVar(sw[i]).SetInt(i == ph ? 0 : 1);
+			Console.Printf("T_PHASE %d t%d: %s off", ph, t, ph ? sw[ph] : "nothing");
+		}
+		if (k == 40) EventHandler.SendNetworkEvent("rsm_pulse", 600, 35);
+		if (k == 110) EventHandler.SendNetworkEvent("rsm_pulse", 450, 55);
+		if (k == 180)
+		{
+			let cs = CVar.GetCVar("rsqtr_cig_secs", players[consoleplayer]);
+			let cd = CVar.GetCVar("rsqtr_cig_depth", players[consoleplayer]);
+			if (cs && cd) EventHandler.SendNetworkEvent("rsm_pulse", int(cs.GetFloat() * 1000), cd.GetInt());
+		}
+		Shove(mo, k, 300, 230);
 	}
 
 	// the actual time scale: a test fireball (no target, no gravity, constant speed) flying away from the pawn
