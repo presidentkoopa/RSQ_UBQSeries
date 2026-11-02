@@ -13,6 +13,44 @@ build it with `python build.py`.
 
 ---
 
+## 0. The mission (the owner's baseline, 2026-11-02; read this before anything else)
+
+The owner: "the coding team needs to take the concept of gunbonsai, and our current attempt at an offhand extension
+/ home for UBQS upgrades and design progression and gameplay paths to support the various systems that exist within
+the UBQS framework." He approved this reading of it as the baseline:
+
+Gun Bonsai stops being a gun-upgrade mod. It becomes the **progression spine for the whole UBQS series**. Our Gun
+Bonsai VR patch, today an off-hand extension with a pile of upgrades, grows into the one place where progression is
+designed.
+
+1. **It covers every system, not just melee.**
+   - Fists, sabers, ShieldSaw, whip, grenade and grapple.
+   - Distance Grab: heavier lifts, longer throws.
+   - TacticalRig: holsters, the cigarette.
+   - SlowMo: unlock it, lengthen it.
+   - Gestures, the Wheel, LaserSight, and Miniboss rewards.
+   - Anything in the framework a player could grow into gets a path.
+2. **It is design work, not a list of upgrades.**
+   - The team decides what a fresh player can do (you start with a punch), what each level opens, and which
+     paths branch from what.
+   - It also decides how one system feeds another. Examples: Distance Grab carries a bigger Headlock throw; a
+     Saber Force path leans on SlowMo; grapple is gated by player level.
+   - It is progression and gameplay paths across the series, designed as a whole, the way an RPG skill tree is.
+3. **Each move still lives in its own mod.** Melee owns punching and Distance Grab owns throwing. Gun Bonsai VR
+   owns when you get a move and how strong it is. Every mod still works alone without it.
+4. **What exists today gets judged, not just extended.** The current ~60 upgrades are a first attempt. The team
+   keeps what serves a path, reworks what doesn't, and cuts the rest.
+
+Everything below serves this. Where a later section reads narrower (weapon trees, melee first), this section wins.
+
+**Systems in scope.** Each RSQ mod in this repo, one folder each: Melee, QuestSaber, ShieldSaw, Whip, Grenade,
+Grapple, DistanceGrab, TacticalRig, SlowMo, Gestures, Wheel, LaserSight, GunCards, Miniboss and TopHPBars. Each gets
+a line in the design doc: it has a path, it feeds another system's path, or "no progression" with the reason.
+Accessibility is never gated: its features are never behind a level. Score is separate: it scores, and its pass is
+later.
+
+---
+
 ## 1. What the owner wants (his words, 2026-11-02)
 
 > "We start the game, we can punch. Once we level up the fist, we can unlock things to send us down paths. Does this
@@ -130,14 +168,21 @@ About 60 of our upgrades, registered in `bonsairc.rsq`, mostly in **one flat ran
 design doc (L0's output). Follow the rule "Discuss before new projects": propose, get his yes, then build.
 
 ### L0: audit and design doc (first)
-1. Map every existing upgrade (section 3) onto the owner's vision: keep it (and which tree and parent), merge it,
-   or cut it. Note what each does today in a single line, read from the code.
+1. Judge every existing upgrade (section 3) against section 0: keep it (and which path and parent), rework it, or
+   cut it. Note what each does today in a single line, read from the code.
+   Also list each in-scope system's current menu-row features that could become unlocks or levels.
 2. **Off-hand XP check:** GB credits XP to the current (main-hand) weapon.
    - Find out how our patch credits off-hand punches, the off saber and the off-hand whip.
    - Test with `netevent bonsai-debug,info` and real hits, on the rig and in the headset.
    - Per-hand trees depend on this answer.
-3. Write **`GBOVR_TREES.md`**: one tree each for Fists, Saber, ShieldSaw, Whip, Grenade and Grapple, plus
-   player-level unlocks. For every node give:
+3. Write **`GBOVR_TREES.md`**, the series progression design (section 0):
+   - first, a one-page overview: what a fresh player has; what player levels open; how the systems feed each
+     other (a diagram is welcome);
+   - then one tree per system in scope: Fists, Saber, ShieldSaw, Whip, Grenade and Grapple, plus Distance Grab,
+     TacticalRig, SlowMo, Gestures, Wheel, LaserSight, GunCards and Miniboss where they have a path;
+   - then player-level unlocks.
+   
+   For every node give:
    - its name;
    - its parent(s);
    - what each level does, in numbers;
@@ -180,7 +225,9 @@ design doc (L0's output). Follow the rule "Discuss before new projects": propose
 
 ### L2-L7: one tree per lane (after the owner approves its tree)
 These are L2 Fists, L3 Saber, L4 ShieldSaw, L5 Whip, L6 Grenade and L7 Grapple, in that order unless the owner
-says otherwise.
+says otherwise. Then one lane per further system the owner approves a path for: Distance Grab, TacticalRig,
+SlowMo, Gestures, Wheel, LaserSight, GunCards or Miniboss. Links between systems (e.g. Distance Grab feeding the
+Headlock throw) are built in the lane of the system that owns the move, through services by name.
 - The move itself goes in its owning mod. The unlock and the level go in Gun Bonsai VR.
 - Without Gun Bonsai VR, each mod keeps its current menu-row behaviour.
 
