@@ -1,7 +1,7 @@
 # RSQ Gestures
 
 Reads what your hands are doing and answers the other series mods when they ask: a watch check (gun held
-up, wrist twisted), a hand held still, a thrust or pull, a punch (jab, hook, uppercut), a gun-butt shove,
+up, the back of the wrist turned to your face), a hand held still, a thrust or pull, a punch (jab, hook, uppercut), a gun-butt shove,
 both hands down / apart / palms out, and whether you are braced (two-hand grip). It does nothing to the
 game by itself: it only reads hands and answers. It is a port of the owner's RS_Gestures (written for his
 REMA engine).
@@ -34,7 +34,9 @@ BD22_VR-Reloaded_2.0.3ha_hotfix.pk3 -> **RSQ_Gestures.pk3**
 ## What to do in VR
 
 - **Watch check**: hold the gun up in front of your face (upper chest to just above the eyes, within an
-  arm's length), twist your wrist knuckles-up past 45 degrees, hold a moment. Either hand.
+  arm's length) and turn the back of your wrist to your face, the side a watch sits on (not the pulse side),
+  at least 45 degrees, hold a moment. Either hand. Across the chest, as you would check a watch, is the pose
+  RSQ Gun Cards' watch card reads best in.
 - **Thrust / pull**: shove a hand fast along the way it points, or pull it straight back.
 - **Punch**: from a slow hand, throw it 15 cm toward where you face at about 2 m/s. Straight = jab, from
   the side = hook, rising = uppercut. Empty hand or fists.
@@ -48,7 +50,7 @@ BD22_VR-Reloaded_2.0.3ha_hotfix.pk3 -> **RSQ_Gestures.pk3**
 
 | Row | Default | What it does |
 |---|---|---|
-| Inspect Twist Way | Knuckles Up (watch) | Which way the wrist twists for the watch check: Either Way, Palm Up (pulse side), Knuckles Up (watch). Mirrored for the left hand. |
+| Inspect Twist Way | Back of Wrist (watch) | Which way the wrist turns for the watch check: Either Way, Pulse Side (palm up), Back of Wrist (watch). Mirrored for the left hand. (Renamed 2026-11-02 from Palm Up / Knuckles Up; same settings.) |
 | Inspect Twist (degrees) | 45 | Twist needed to start. |
 | Inspect Hold (tics) | 6 | How long the pose is held before it counts (35 tics = 1 s). |
 | Watch Check Off | Option (off) | Turns the watch check off; RSQ Gun Cards then uses its own watch pose. |
@@ -78,8 +80,10 @@ Load the order above plus RSQ_Gestures.pk3. The whole mod was built 2026-10-31: 
 headset-confirmed.
 
 1. Options -> Radiant Silvergun Options -> RSQ Gestures. Turn on **Thrust and Pull Events**.
-2. Hold a gun up in front of your face and twist knuckles-up. Hold it. You feel a light tick in that hand
-   and see "watch check (main)" low in the view. Try the off hand: "watch check (off)".
+2. Hold a gun up in front of your face and turn the back of your wrist to your face. Hold it. You feel a light
+   tick in that hand and see "watch check (main)" low in the view. Try the off hand: "watch check (off)".
+2a. Turn the wrist the other way, the pulse side to your face: no tick, no name, no watch card. **(not yet
+   headset-confirmed; rig 2026-11-02 below)**
 3. Turn on **Watch Check Off**. Repeat step 2: no tick, no name. Turn it off again.
 4. Turn off **Watch Check Tick**. Repeat step 2: name, no tick.
 5. Put the guns away (fists). Throw a straight punch: "jab (main)". A punch from the side: "hook". A rising
@@ -134,6 +138,28 @@ Gestures is a shared service: other mods ask it, it does not change them.
   - Slower Taps: the two-hand "together" window x1.5. Gestures has no button taps.
   - Rumble Strength: the watch-check tick.
   - Gesture Ease and the gesture buttons do not reach Gestures yet.
+
+## The watch check's direction, measured (2026-11-02)
+
+The owner reported "I look at the back of my wrist, not my pulse ... the card is upside down". The rig (QZD 17.3,
+the controller turned about its own pointing axis, stage roll + = its top to the right) gives, on plain Doom 2:
+
+| Pose | AttackRoll / OffhandRoll | Watch check |
+|---|---|---|
+| right hand, gun forward, back of the wrist up | -90 | held (2) |
+| right hand, gun forward, pulse side up | +90 | no |
+| right hand, across the chest, back of the wrist up | -90 | held (2) |
+| right hand, across the chest, pulse side up | +90 | no |
+| left hand, gun forward / across, back of the wrist up | +90 | held (2) |
+| left hand, gun forward / across, pulse side up | -90 | no |
+
+The same before and after the 2026-11-02 change: Gestures' direction (Back of Wrist, `rsqg_inspect_way` 2) was
+already the watch side, so its code did not change, only the menu words. On SteamVR (`+vr_mode 10`) the roll comes
+from `gl_openvr.cpp getMainHandAngles` instead of the OpenXR path; the gun model is turned by the same angle in
+both (`GetHandTransform`), and a numeric check of that code gives the same sign, so the direction holds there too
+(not headset-confirmed). What was upside down was RSQ Gun Cards' card (a constant half turn added 2026-10-31); see
+its README. If the watch check still answers to the pulse side for you, check Inspect Twist Way on the Gestures
+page: a saved Either Way or Pulse Side keeps answering to it.
 
 ## Known limits / open
 

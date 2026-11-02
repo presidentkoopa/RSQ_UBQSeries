@@ -11,7 +11,7 @@ user bool   rsqg_inspect_tick    = true;   // QoL GE4: a light tick in that hand
 user float  rsqg_tick_strength   = 0.35;   // ...its strength at the peak (0..1; the series' quake rumble, vr_quake_haptic_level scales it)
 user float  rsqg_inspect_twist   = 45;     // wrist twist (roll) needed to start, degrees either way
 user float  rsqg_inspect_untwist = 30;     // ...and below this it drops (less than the start: no flicker)
-user int    rsqg_inspect_way     = 2;      // 2 knuckles up, as you check a watch (owner 2026-10-31; rig: back of the hand toward the eyes); 1 palm up (pulse side); 0 either way. Mirrored for the left hand.
+user int    rsqg_inspect_way     = 2;      // 2 the back of the wrist to your face, as you check a watch (rig 2026-11-02: right AttackRoll -90 fires, +90 does not; left mirrored); 1 the pulse side; 0 either way
 user int    rsqg_inspect_hold    = 6;      // tics the pose must be held before it counts (35 tics = 1 second)
 user float  rsqg_inspect_low     = 0.30;   // lowest the hand may be, metres BELOW your eyes (upper chest)
 user float  rsqg_inspect_high    = 0.20;   // highest, metres ABOVE your eyes

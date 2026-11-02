@@ -3,8 +3,8 @@
 // Two cards, in Ermac's Force Unleashed style and art (CREDITS.txt):
 //   the small card   beside the wrist stub, right of it on the main hand, left of it on the off hand: his panel,
 //                    his AMMO / MAGAZINE word, the rounds in the gun big and the reserve small (this file)
-//   the watch card   check your watch knuckles up (RSQ Gestures' inspect; without it, the forearm across the chest)
-//                    and the full card lies flat on both sides of that wrist: the gun's name, MAGAZINE / RESERVE,
+//   the watch card   check your watch, the back of the wrist to your face (RSQ Gestures' inspect; without it, the
+//                    forearm across the chest) and the full card lies flat on the back-of-the-hand side of that wrist: the gun's name, MAGAZINE / RESERVE,
 //                    Gun Bonsai level, XP and upgrades (side.zs)
 // Each gun has its own colour (by weapon slot), or one simple colour for every card (rsqgc_color).
 //
@@ -379,8 +379,8 @@ class RSQGC_GunCard : EventHandler
 		return (to / d) dot look >= cos(cv("rsqgc_glance_cone", 30));
 	}
 
-	// CHECKING YOUR WATCH with this hand: RSQ Gestures' inspect when that mod is loaded (knuckles-up twist),
-	// otherwise the forearm across the chest, the wrist in front of the face.
+	// CHECKING YOUR WATCH with this hand: RSQ Gestures' inspect when that mod is loaded (the back of the wrist turned to
+	// the face), otherwise the forearm across the chest, the wrist in front of the face, the back of the wrist up.
 	private bool Watching(PlayerPawn pmo, int hand)
 	{
 		int g = Inspect(pmo, hand);
@@ -400,7 +400,15 @@ class RSQGC_GunCard : EventHandler
 		double yaw = (hand == 1 ? pmo.OffhandAngle : pmo.AttackAngle) + 90;
 		Vector2 hd = (cos(yaw), sin(yaw));
 		bool across = hd dot (cos(pmo.angle), sin(pmo.angle)) <= cos(55);
-		if (across) mInspectTill[hand] = level.maptime + ci("rsqgc_linger", 35);
+		// THE BACK OF THE WRIST to the face, not the pulse (2026-11-02; before, any twist counted): the gun's top turned
+		// in toward the body at least 45 degrees, AttackRoll <= -45 on the physical right controller. The engine reports
+		// the mirrored twist with the opposite sign on the left one (RSQ Gestures' InspectPose, rig: right -90 / left +90
+		// for the back of the hand up), so it is flipped there.
+		let cs = CVar.FindCVar("vr_control_scheme");
+		bool left = (hand == 0) == (cs && cs.GetInt() >= 10);
+		double rl = Actor.Normalize180(hand == 1 ? pmo.OffhandRoll : pmo.AttackRoll);
+		bool back = (left ? rl : -rl) >= 45;
+		if (across && back) mInspectTill[hand] = level.maptime + ci("rsqgc_linger", 35);
 		return level.maptime < mInspectTill[hand];
 	}
 
@@ -582,7 +590,7 @@ class RSQGC_GunCard : EventHandler
 			Actor owner = hand == 1 ? Actor(p.OffhandWeapon) : Actor(item);
 			if (stat && mShow[hand] > 0 && owner && !ci("rsqgc_world", 0))
 			{
-				// GC5: the status card, flat on both sides of the wrist like the watch card
+				// GC5: the status card, flat on the wrist like the watch card
 				World(hand).Hide(); ClearHand(p, hand);
 				DrawStatus(p, pmo, hand, owner);
 				continue;
@@ -602,7 +610,7 @@ class RSQGC_GunCard : EventHandler
 			World(hand).Hide();
 			if (full)
 			{
-				// the watch card: the full card flat on both sides of the wrist (side.zs). Always on: the small card
+				// the watch card: the full card flat on the back-of-the-hand side of the wrist (side.zs). Always on: the small card
 				// still shows as rsqgc_card says, beside it
 				DrawSide(p, pmo, hand, owner, w);
 				if (always && w && Wanted(pmo, hand)) Draw(p, pmo, hand, owner, w, other[hand], other[hand] != null);
@@ -634,42 +642,74 @@ class RSQGC_GunCard : EventHandler
 	}
 	private void DrawSide(PlayerInfo p, PlayerPawn pmo, int hand, Actor owner, Weapon w)
 	{
-		DrawSideOne(p, pmo, hand, owner, w, 0);
-		DrawSideOne(p, pmo, hand, owner, w, 1);
-	}
-	private void DrawSideOne(PlayerInfo p, PlayerPawn pmo, int hand, Actor owner, Weapon w, int side)
-	{
-		let c = SideOf(hand, side);
+		// one card, on the back-of-the-hand side; the palm side (side 1) faces away in a watch check (2026-11-02)
+		SideOf(hand, 1).Remove(p);
+		let c = SideOf(hand, 0);
 		bool mir = Mirrored(p, hand);
+		int rot = SideRot(pmo, hand);
 		int style = StyleFor(p, w);
 		string sig = Signature(pmo, w, 9, style) .. (mir ? " m" : "") .. String.Format(" c%d", ci("rsqgc_color", 0)) .. ExtraSig(pmo, hand, w);
-		if (sig != c.sig || c.mir != mir)
+		if (sig != c.sig || c.mir != mir || c.rot != rot)
 		{
-			c.sig = sig; c.mir = mir;
+			c.sig = sig; c.mir = mir; c.rot = rot;
 			c.Build(pmo, hand, w, CardColour(p, w), self);
 		}
 		c.Sync(p, owner, mShow[hand] * cv("rsqgc_alpha", 0.85), WatchNudge(true), self);
+	}
+
+	// WHICH WAY UP (2026-11-02, owner in the headset: "I look at the back of my wrist, not my pulse ... the card is upside
+	// down"). The watch card lies in the plane of the gun's side, its text along the gun; tools/gen_side.py bakes it twice:
+	// rot 0 reads upright when the gun's top points DOWN the screen (rig: the right hand across the chest, back of the
+	// wrist up, seen from the eyes above it; the same for the mirrored left hand), rot 1 is turned half round for when the
+	// top points UP the screen. So the turn comes from the pose: the gun's top (the hand's up axis, GetHandTransform's yaw,
+	// pitch, then roll, as TiltTo builds it) against the screen's up where the card is seen (world up with its part along
+	// the line of sight taken out; the head is not rolled). A margin keeps it from flickering when the top lies across
+	// the view (the forearm pointing away from you: the text then runs away from you either way).
+	int mRot[2];
+	int SideRot(PlayerPawn pmo, int hand)
+	{
+		if (!pmo.OverrideAttackPosDir || !pmo.player) return mRot[hand];
+		double hYaw = hand == 1 ? pmo.OffhandAngle : pmo.AttackAngle;
+		double hPitch = hand == 1 ? pmo.OffhandPitch : pmo.AttackPitch;
+		double rl = hand == 1 ? pmo.OffhandRoll : pmo.AttackRoll;
+		Vector3 rt0 = (cos(hYaw), sin(hYaw), 0);
+		Vector3 up0 = (sin(hPitch) * sin(hYaw), -sin(hPitch) * cos(hYaw), cos(hPitch));
+		Vector3 up = rt0 * sin(rl) + up0 * cos(rl);
+		Vector3 hp = hand == 1 ? pmo.OffhandPos : pmo.AttackPos;
+		Vector3 v = hp - (pmo.pos.xy, pmo.player.viewz);
+		v.z *= level.pixelstretch;
+		double d = v.Length();
+		if (d < 1) return mRot[hand];
+		v /= d;
+		Vector3 sUp = (0, 0, 1) - v * v.z;
+		double l = sUp.Length();
+		if (l < 0.05) return mRot[hand];   // looking straight down the line: keep what it was
+		double k = (up dot sUp) / l;
+		if (k > 0.15) mRot[hand] = 1;
+		else if (k < -0.15) mRot[hand] = 0;
+		if (ci("rsqgc_show_hands", 0) && level.maptime % 35 == 0)
+			Console.Printf("rsqgc: watch card hand %d: top on screen %.2f -> turn %d", hand, k, mRot[hand]);
+		return mRot[hand];
 	}
 
 	// ---- the status card (GC5) ----------------------------------------------------------------------------------
 	private void DrawStatus(PlayerInfo p, PlayerPawn pmo, int hand, Actor owner)
 	{
 		bool mir = Mirrored(p, hand);
+		int rot = SideRot(pmo, hand);
 		let arm = pmo.FindInventory("BasicArmor");
 		string keys = "";
 		for (let i = pmo.Inv; i; i = i.Inv) if (i is "Key") keys = keys .. i.GetClassName() .. ",";
 		string sig = String.Format("status %d %d %s %d %d/%d", pmo.Health, arm ? arm.Amount : 0, keys, Grenades(pmo), level.killed_monsters, level.total_monsters)
 			.. (mir ? " m" : "");
-		for (int side = 0; side < 2; side++)
+		SideOf(hand, 1).Remove(p);
+		let c = SideOf(hand, 0);
+		if (sig != c.sig || c.mir != mir || c.rot != rot)
 		{
-			let c = SideOf(hand, side);
-			if (sig != c.sig || c.mir != mir)
-			{
-				c.sig = sig; c.mir = mir;
-				c.BuildStatus(pmo, hand, 0x8A8A8A, self);
-			}
-			c.Sync(p, owner, mShow[hand] * cv("rsqgc_alpha", 0.85), WatchNudge(true), self);
+			c.sig = sig; c.mir = mir; c.rot = rot;
+			c.BuildStatus(pmo, hand, 0x8A8A8A, self);
 		}
+		c.Sync(p, owner, mShow[hand] * cv("rsqgc_alpha", 0.85), WatchNudge(true), self);
 	}
 
 	// ---- the small card ---------------------------------------------------------------------------------------

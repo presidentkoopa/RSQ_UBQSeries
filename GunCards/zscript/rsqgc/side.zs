@@ -1,5 +1,6 @@
-// side.zs -- RSQ Gun Cards: THE WATCH CARD (owner 2026-10-31 02:47 / 03:00): the full card, flat on each side of the
-// wrist, facing you when you check your watch knuckles up. The wrist is measured from Brutal Doom VR's hand mesh
+// side.zs -- RSQ Gun Cards: THE WATCH CARD (owner 2026-10-31 02:47 / 03:00): the full card, flat on the back-of-the-hand
+// side of the wrist, facing you when you check your watch (the back of the wrist turned to your face). Since 2026-11-02
+// the text is baked both ways up and card.zs SideRot picks the one that reads upright from the pose. The wrist is measured from Brutal Doom VR's hand mesh
 // (tools/gen_side.py). Every row and column is baked, so the text sits exactly where it was laid out: the runtime
 // only picks which glyph each spot shows and the panel height.
 //
@@ -10,6 +11,7 @@ class RSQGC_SideOp
 {
 	State st;
 	int col;       // tint 0xRRGGBB, -1 none
+	double y;      // the layer y offset that lifts the glyph to its row (RSQGC_SideStates.RowY; 0 for the panel)
 }
 
 class RSQGC_SideCard play
@@ -19,19 +21,21 @@ class RSQGC_SideCard play
 	Array<RSQGC_SideOp> ops;
 	string sig;
 	int hand;
-	int side;                   // 0 / 1: the two sides of the wrist
+	int side;                   // 0: the back-of-the-hand side of the wrist (the only one drawn since 2026-11-02; 1 is
+	                            // the palm side, kept only so old layers are cleared)
+	int rot;                    // 0 / 1: which way up the text is baked (tools/gen_side.py WHICH WAY UP; card.zs SideRot)
 	bool mir;
 	int laid;
 	int lastRow;
 
 	void Clear() { ops.Clear(); lastRow = 0; }
-	int Fam() { return side * 2 + (mir ? 1 : 0); }
+	int Fam() { return rot * 2 + (mir ? 1 : 0); }
 
-	private void Add(State s, int col)
+	private void Add(State s, int col, double y = 0)
 	{
 		if (!s) return;
 		let o = new("RSQGC_SideOp");
-		o.st = s; o.col = col;
+		o.st = s; o.col = col; o.y = y;
 		ops.Push(o);
 	}
 	// text on a row from column c0
@@ -42,7 +46,7 @@ class RSQGC_SideCard play
 		for (int i = 0; i < int(s.Length()) && c0 + i < n; i++)
 		{
 			int ch = s.ByteAt(i);
-			if (ch != 32) Add(RSQGC_SideStates.Glyph(row, Fam(), c0 + i, ch), col);
+			if (ch != 32) Add(RSQGC_SideStates.Glyph(row, Fam(), c0 + i, ch), col, RSQGC_SideStates.RowY(row, Fam()));
 		}
 		lastRow = max(lastRow, row);
 	}
@@ -72,8 +76,11 @@ class RSQGC_SideCard play
 			if (!ps) continue;
 			ps.bAddBob = false;
 			ps.bAddWeapon = false;
+			// the row: a turn about the pieces' far turning point (tools/gen_side.py HOW v3), plus the Up / Down slider
+			// scaled to move the card as far as it did; no slide between tics when a piece changes rows
 			ps.x = 0;
-			ps.y = 32 + up * 4;
+			double ny = 32 + o.y + up * 4 * RSQGC_SideStates.NUDGE_K;
+			if (ps.y != ny) { ps.y = ny; ps.oldy = ny; }
 			ps.alpha = alpha;
 			ps.Translation = o.col >= 0 ? TranslationID(gc.TransFor(o.col)) : TranslationID(0);
 		}

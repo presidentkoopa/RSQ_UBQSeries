@@ -446,7 +446,12 @@ class RSQG_Handler : EventHandler
 		double r = Actor.Normalize180(RSQG_Pose.Roll(pmo, h));
 		// one way and the other: the engine reports a mirrored twist with the opposite sign on the
 		// left controller (measured: right +60 stage roll reads +50, left -60 reads -50), so a
-		// one-way choice is flipped for the physical left hand
+		// one-way choice is flipped for the physical left hand.
+		// WHICH WAY IS THE WATCH (rsqg_inspect_way 2; re-measured 2026-11-02 on the rig, with the stage roll turning the
+		// controller about its own pointing axis, + = its top to the right): the back of the right wrist up to the eyes,
+		// gun forward or across the chest, reads AttackRoll -90 and is held; the pulse side up reads +90 and is not. The
+		// left hand: +90 back of the wrist (held), -90 pulse (not). AttackRoll has the same meaning on SteamVR (gl_openvr.cpp
+		// getMainHandAngles; the gun model is turned by the same angle in both, GetHandTransform).
 		double s = RSQG_Pose.IsLeft(h) ? -1 : 1;
 		int dir = Opt("rsqg_inspect_way", 0);
 		if (dir == 1) return r * s >= need;
