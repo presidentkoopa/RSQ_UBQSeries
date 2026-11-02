@@ -4,8 +4,8 @@ the rig exactly one frame a tic -- measured: whp_F frame n = gametic n+1). The r
 set from the console (a play-scope CVar.SetString on an engine cvar aborts), so the hand is driven here.
 
     python3 tools/rigtest/whp_scripts.py <scenario> [hand]     prints the script
-scenarios: snap walk swing yank hands idle mark"""
-import sys
+scenarios: snap walk swing yank hands idle mark sway jitter wall two"""
+import sys, math, random
 
 R = (0.20, 1.30, -0.30, 20, 0)
 OUT = (0.25, 1.40, -0.55, 30, 0)   # arm's length, the handle level
@@ -41,7 +41,7 @@ def pose(p, left=False):
 
 def pre(scen, extra=''):
     return ('vid_maxfps 35; wait 5; god; notarget; %s; %s; wait 70; %s use RSQWP_WhipWeapon; wait 60; rsqwp_debug 1; whp_scen %d; '
-            'netevent whp_go; ' % (pose(R), pose((0.20, 1.30, -0.30, 20, 0), True), extra, scen))
+            'whp_metric 1; netevent whp_go; ' % (pose(R), pose((0.20, 1.30, -0.30, 20, 0), True), extra, scen))
 
 
 def run(scen, hand='r'):
@@ -82,7 +82,7 @@ def run(scen, hand='r'):
             out.append(pose(p, left) + '; wait 1;')
     elif scen == 'lasso':
         # the left hand comes to the handle, grips at t15, whirls overhead (0.30 m circle, 14 tics a turn) to t150
-        import math
+
         out.append(pre(7))
         for t in range(210):
             if t == 15: out.append('qz_lgrip 1;')
@@ -97,7 +97,39 @@ def run(scen, hand='r'):
             out.append('qz_lhand "%.3f %.3f %.3f %.2f %.2f 0"; wait 1;' % (x, y, z, pi, yw))
     elif scen == 'idle':
         out.append(pre(6))
-        out.append('wait 200;')
+        for t in range(340): out.append('wait 1;')
+    elif scen == 'sway':
+        # a slow sweep: the arm swings +-40 degrees of yaw over 4 s (twice), the hand moving with it
+        out.append(pre(8))
+        for t in range(340):
+            a = 40 * math.sin(max(0, t - 60) * 2 * math.pi / 140) if t >= 60 else 0
+            x = 0.20 + 0.15 * math.sin(math.radians(-a))
+            out.append(pose((x, 1.35, -0.40, 5, a), left) + '; wait 1;')
+    elif scen == 'jitter':
+        # a jittery hand: the rest pose with noise (5 mm, 1.5 degrees a tic, seeded), then the same noisy wind-up + swing
+        rnd = random.Random(7)
+        out.append(pre(9))
+        ks1 = [(k[0] + 160,) + k[1:] for k in SWING]
+        for t in range(340):
+            p = key(t, ks1) if t >= 160 else R
+            n = [rnd.gauss(0, 0.005) for _ in range(3)] + [rnd.gauss(0, 1.5), rnd.gauss(0, 1.5)]
+            out.append(pose(tuple(p[c] + n[c] for c in range(5)), left) + '; wait 1;')
+    elif scen == 'two':
+        # TWO WHIPS (the cost): the weapon whip in the main hand and the Whip (Off) bind held; both hands wind up and
+        # swing (the off hand mirrored), twice; rsqwp_debug 3 logs the handler's ms a tic (T_WPWMS, every 70 tics)
+        out.append(pre(3, '+rsqwp_off; wait 10;').replace('rsqwp_debug 1', 'rsqwp_debug 3'))
+        ks1 = [(k[0] + 60,) + k[1:] for k in SWING]
+        ks2 = [(k[0] + 160,) + k[1:] for k in SWING]
+        for t in range(340):
+            p = key(t, ks1 if t < 150 else ks2)
+            out.append(pose(p) + '; ' + pose(p, True) + '; wait 1;')
+    elif scen == 'wall':
+        # stood 40 units from a wall, facing it: two deliberate swings into it
+        out.append(pre(10, 'netevent whp_facewall 40; wait 3;'))
+        ks1 = [(k[0] + 60,) + k[1:] for k in SWING]
+        ks2 = [(k[0] + 160,) + k[1:] for k in SWING]
+        for t in range(340):
+            out.append(pose(key(t, ks1 if t < 150 else ks2), left) + '; wait 1;')
     out.append('quit')
     return ' '.join(out)
 

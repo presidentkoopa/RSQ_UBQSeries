@@ -1,5 +1,101 @@
 # HANDOFF -- RSQ_Whip (PROJECT WHIP), 2026-10-30
 
+## 2026-11-02 (later): the thong's physics rebuilt on a research whip -- rig only, not headset-confirmed
+Owner (headset): "The whip is erratic ... i can't describe it more than that." He approved a rebuild on a validated
+whip model. Reference: Moses C. Nah, MIT Newman Lab, "Whip Project - Targeting with a Whip"
+(MosesAndLily/whip-project-targeting, BSD-3; models/3D_model_w_whip.xml): 25 nodes x 0.012 kg, 0.072 m links,
+2-DOF hinges k 0.242 N m/rad, c 0.092 N m s/rad, first joint free; MuJoCo 1e-4 s Euler.
+
+Rig: qzd17.3 (tools/rig17 engine), doom2 MAP01 (its start platform has a 50-unit drop just ahead: the thong lands
+over that lip in several runs, a good stress case). Probe `tools/rigtest/whp` with `whp_metric 1` (a `whp_M` line a
+tic; `2` dumps the chain), scenarios `whp_scripts.py idle sway walk snap swing jitter wall two`, metrics
+`whp_metrics.py` (`--from 30` for the static ones: the whip is drawn at t0 and falls ~15 tics). BEFORE = `git
+archive HEAD Whip`, same probe.
+
+### What made it erratic (measured, BEFORE)
+- **Regime switches.** Sim picked its damping (calm 0.96 / active 0.9995 / settle 0.80 a sub-step), its speed cap
+  (1.2 / 11 / 2.5 a sub-step) and its sub-steps (3 / 8) from the hand's speed every tic. Logged per tic: 10 switches
+  in the swing run, 33 in the jitter run (the hand's noise flipped calm/active 10+ times while just held), 22 in the
+  wall run. Entering the wind-up regime took the tip from 0.3 to 29.2 room units a tic in one tic; after the wall
+  hits the sub-steps flipped 3/8 every few tics with tip-speed jumps of x20-45. 3 -> 8 sub-steps also multiplied
+  every link's speed by 8/3 (Verlet keeps a per-sub-step move).
+- **No bend stiffness.** Only the wind-up's pull to the handle line; the chain had no shape of its own, so the
+  rigid rod either held (swing run: the thong a straight rod, frames) or flopped.
+- **The geometry response.** Collide stopped a link dead where the tic's straight sweep met a wall, floor or
+  ceiling, though the sub-steps' path was curved: the wall run ended stretched 30% on average (max 724%).
+- Per-tic hand jumps, linearly interpolated over the sub-steps: the handle's speed jumped at every tic's edge.
+
+### The new model (zscript/rsqwp/whip.zs Sim; prototype tools/whipsim_xpbd.py)
+- XPBD, **16 sub-steps x 2 length passes a tic, always** (no rest/active modes). Per sub-step: the handle moves
+  along its path; links integrate (air drag, gravity 0.2723 = 9.81 x 34 / 35^2 room/tic^2, the speed cap 150
+  room/tic, always on); the wind-up guide; the bend springs/dampers; lengths; floor/ceiling (each link's from its
+  last Collide, sliding keeps 0.6 of its speed a tic); a wall the link rests on (below).
+- **Bend (the reference):** C = p[j+1] - 2p[j] + p[j-1] at every joint. A driven free chain depends only on EI/lam
+  and c/k: EI = k l = 0.01742 N m^2, lam = 0.1667 kg/m, EI/lam = 0.1045 m^4/s^2 = **114.0 room^4/tic^2** (x 34^4 /
+  35^2); c/k = 0.3802 s = **13.31 tics**. Ours keeps the visible length (rsqwp_whip_reach 128 = 3.76 m + the 8-unit
+  handle) and 20 links of 6.4: a joint's omega^2 = 114 / 6.4^4 = 0.068 /tic^2. Uniform mass as the reference (the old
+  1 -> 1/34 taper is gone). The handle joint has the same spring (the reference's free first joint is its hand; ours
+  is the end of a rigid handle the thong is set into). Stiffness never above the full whip's (an uncoiling short
+  thong was a rigid rod).
+- **Damping default x0.25 of the reference** (rsqwp_whip_bend_damp): at x1 the off-hand lasso could not lift the
+  thong (whirl tip 2.7 room/tic, let-go 0.1: it dropped); x0.5 6.9, x0.25 7.6, x0.1 8.9 (the old model 22.5). Crack
+  and noisy hold were as clean at x0.25 as at x1; x0.1 began to double-peak a swing. The owner may set x1.
+- **Hand smoothing:** the hand followed critically damped (omega = 2 / rsqwp_whip_smooth, default 0.8 tics),
+  integrated per sub-step from last tic's raw pose to this tic's. Measured lag: **0.70 tics** (swing, sway, wall),
+  0.65 (jitter) -- under 1.
+- **One damping model** = the bend damper + linear air drag (rsqwp_whip_drag 1/s). CALM/SETTLE/MAXSTEP/WIND_STEP
+  and settle[] are gone. A length change (uncoil, roll up, reach, wrap) rescales the chain with its last places.
+- **Wind-up guide:** each link pulled to its place on the handle's line as an XPBD spring of 1.5 x stiff rad/tic
+  (less toward the tip), critically damped against the line's own motion (it was a per-sub-step fraction).
+- **Geometry, continuous:** a wall hit keeps the move along the wall (speed into it removed, along it x0.6) and the
+  link then RESTS on that wall: every sub-step keeps it on this side (WallSet/WallClear: the line, its normal, the
+  height band a two-sided line blocks; dropped 4 units clear or past the line's ends). Floor/ceiling crossings go to
+  the floor clamp, which removes speed into the floor. After Collide's stops, Carry's lifts (a turn or step put links
+  under a floor) and Mend's fixes, the chain is relaxed to length with links moving with their last places (Relax).
+  OpenAt: a link on a step's line takes the lowest floor round it. Mend: walls only; a segment bent round a lip or
+  corner by up to 6 units is left alone (Graze); a mended link is pushed out along the wall's normal.
+- New sliders (Tuning and Debug, Reset All): Leather Stiffness 1, Leather Damping 0.25, Whip Air Drag 1, Hand Smoothing 0.8.
+
+### Before -> after (rig, final code)
+| run | link error mean/max | tip max (room/tic) | flips/s | tip jerk RMS/max | KE max | mend tics | cracks |
+|---|---|---|---|---|---|---|---|
+| idle (t>=30) | 2.55/13.7% -> 0.04/0.04% | 0.3 -> 0.3 | 0 -> 0 | 0.00/0.06 -> 0.00/0.00 | 0.6 -> 0.1 | 0 -> 0 | 0 -> 0 |
+| sway (t>=30) | 0.66/1.4% -> 0.04/0.04% | 0.3 -> 0.3 | 0 -> 0 | 0.08/0.31 -> 0.10/0.43 | 2.8 -> 2.5 | 0 -> 0 | 0 -> 0 |
+| walk 3 s, hand still | 8.2/390% -> 0.19/7.6% | 35.2 -> 38.2 (one sub-step at a mend, MAP01 stairs) | 0.21 -> 0.21 | 4.69/62.6 -> 2.16/26.4 | 1322 -> 632 | 6 -> 1 | 0 -> 0 |
+| snap x4, hand still (t>=30) | 1.2/1.2% -> 0.05/0.05% | 0.3 -> 0.1 | 0 -> 0 | 0.00 -> 0.00 | 0.0 -> 2.0 | 0 -> 0 | 0 -> 0 |
+| swing (2 wind-up + crack) | 11.4/146% -> 1.6/76% | 112 -> 88 | 1.05 -> 0.26 | 16.8/111 -> 10.2/69.5 | 46668 -> 25303 | 1 -> 0 | 2 -> 2 |
+| jitter: noisy hold t30-157 | ~/17% -> 0.31% | 0.30 -> 0.26 | 0 -> 0 | 0.32/0.81 -> 0.43/1.08 | 10.3 -> 1.7 | 0 -> 0 | 0 -> 0 |
+| jitter: whole (+ noisy swing) | 6.2/80% -> 0.63/75% | 112 -> 91 | 0.62 -> 0.31 | 11.2/113 -> 7.5/77.3 | 46738 -> 25025 | 0 -> 0 | 1 -> 1 |
+| wall (40 units, 2 swings) | 35.7/724% -> 0.93/95% (stretch 30.4/724 -> 0.12/7.5%) | 165 -> 68 | 0.10 -> 0.31 | 9.3/61.6 -> 6.7/69.6 | 12013 -> 20584 | 2 -> 0 | 3 -> 2 |
+- **One crack per swing, one tip-speed peak:** swing windows BEFORE 2 peaks each (112 then 60, 6 tics apart),
+  AFTER 1 peak each (87, 80: heavy, CrackK >= 0.5); the noisy swing 2 maxima (91, 59) and one crack. Wall BEFORE 3
+  cracks (an extra 101 against the wall), AFTER 2. Yank BEFORE cracked again right after the yank; AFTER crack ->
+  wrap -> yank, once. Lasso: AFTER let go at 9.1, thrown (BEFORE 11.1); whirl tip mean 6.5 (BEFORE 22.5).
+- No energy blow-up (fastest node 82 room/tic, under the cap); no Straighten in the final runs.
+- Link-error maxima AFTER are links folded short where the thong piles at a wall or lip, and the 1-2 tics a crack's
+  tip falls past MAP01's start-platform lip (stretch, the long side, is the honest number).
+- The noisy hold's jerk RMS is a little higher (0.43 vs 0.32) because the old model clamped every link to 1.2 room
+  units a sub-step while calm; its tip still moves less (0.26 vs 0.30) and KE is 1.7 vs 10.3. An earlier run where
+  the thong lay on the floor gave 0.12 (where it lands at the draw varies run to run).
+- **Cost** (rsqwp_debug 3, desktop rig): one whip 0.40-0.45 ms/tic mean (before 0.24-0.35); **two whips** (weapon +
+  Whip (Off), both swinging) **0.79-0.92 ms mean, max 1.2-2.3** (before 0.48-0.72); sim 0.45-0.54 of it.
+- **Frames** (chase camera, behind): scratchpad `strip_B_windup.png`, `strip_B_crack.png` (before) and
+  `strip_A_windup.png`, `strip_A_crack.png` (after); windup t62-80, crack t81-94. Before: the thong a straight rod
+  through the crack. After: a loop rolls out along it (t83) and the tip whips over. The wind-up is above/behind the
+  chase camera and barely shows in either.
+- Script errors: doom2 + GunBonsai 0.10.6 + all 18 RSQ pk3s: 0. Full order (01, 02, 03 2.0.3m, 04-07, GunBonsai
+  0.10.6, all RSQ): 5, all 02_BD22_VoxelPack's own (4 voxeldef + DeathSphere_Vox). Every scenario run: 0.
+
+### Not done / open
+- Nothing headset-tested. Feel is the owner's call: reference leather, damping x0.25, smoothing 0.8, drag 1, guide 1.5.
+- **No crack without the wind-up** on the rig: the scripted sidearm/overhead snaps start with 2.5 m of thong on the
+  floor and peak 3-15 room/tic (prototype); the old tapered thong cracked them. The deliberate wind-up cracks.
+- The lasso whirls slower than before (6.5 vs 22.5 room/tic tip): it throws, but a let-go at a slow point of the
+  circle can drop (LASSO_MIN 6).
+- A Mend while walking (MAP01 stairs) still gives one sub-step jolt (38 internal).
+- Cost ~1.3x the old per whip; Quest not measured. tools/whipsim.py is the old model; whipsim_xpbd.py the new.
+- Not re-run after the rebuild: flail into others, snag/rope, Assist style, left-handed.
+
 ## 2026-11-02: the owner's headset report, fixed on the rig (not headset-confirmed)
 Rig: qzd17.3 (tools/rig17 engine, /home/claude/g9/rig), probe `tools/rigtest/whp/` + `whp.sh` + `whp_scripts.py`
 (one tic per `wait 1` at vid_maxfps 35). The probe logs `whp_` lines. BEFORE = `git archive HEAD Whip`, AFTER =

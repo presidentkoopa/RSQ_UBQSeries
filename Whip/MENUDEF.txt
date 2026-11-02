@@ -62,6 +62,10 @@ OptionMenu "RSQWP_Tuning"
 	Slider "Pulled Off Feet Up To (mass)", "rsqwp_whip_light", 50, 1000, 50, 0
 	Slider "Can't Be Pulled From (mass)", "rsqwp_whip_heavy", 200, 5000, 100, 0
 	Slider "Thickness", "rsqwp_rope_width", 0.2, 2.0, 0.1, 1
+	Slider "Leather Stiffness (x reference)", "rsqwp_whip_bend", 0.25, 4.0, 0.25, 2
+	Slider "Leather Damping (x reference)", "rsqwp_whip_bend_damp", 0.0, 4.0, 0.25, 2
+	Slider "Whip Air Drag", "rsqwp_whip_drag", 0.0, 4.0, 0.25, 2
+	Slider "Hand Smoothing (tics, 0 = off)", "rsqwp_whip_smooth", 0.0, 2.0, 0.1, 1
 	StaticText " "
 	Slider "Reel Speed", "rsqwp_reel_speed", 2, 30, 1, 0
 	Slider "Shortest Rope", "rsqwp_min_len", 16, 128, 8, 0

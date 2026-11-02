@@ -4,9 +4,11 @@
 
 ## What it is
 
-A bullwhip. The leather part is simulated as a chain of 20 links that get lighter toward the tip, so it hangs,
-trails and cracks from how you really move your arm. The chain moves with your body: walking, turning (snap or
-stick) and teleports carry it along without swinging it, so only your arm moves it. An idle whip hangs and settles.
+A bullwhip. The leather part is simulated as a chain of 20 links with the bend springs and dampers of a validated
+research whip (MIT's Whip Project, see Credits), so it hangs, trails and cracks from how you really move your arm.
+One model always: the same physics whether it hangs, swings or cracks (no calm/active modes). The chain moves with
+your body: walking, turning (snap or stick) and teleports carry it along without swinging it, so only your arm
+moves it. An idle whip hangs and settles.
 A lazy swing does not crack. Bring the whip back over your shoulder and it stiffens into a line behind you; swing
 forward and it follows your hand like a rod, then lets go: one crack per swing. A crack hurts and stuns a monster, throws a switch, and flicks a loose pickup to you. As a weapon
 in slot 1 it can also mark a target, fly to it, wrap round a monster, swing it into others, or yank it to you.
@@ -98,15 +100,24 @@ Always on, no row of its own:
   otherwise the Light one.
 - **The body's frame.** The whip is carried with your body. Snap turns, stick turns, walking, stairs and teleports
   do not swing it, and they never count toward a crack.
+- **One physics model (11-02 rebuild).** 16 sub-steps a tic, the reference whip's bend spring and damper at every
+  joint, links held to length, light air drag and a speed cap that is always on. The handle follows your hand
+  through a light smoothing filter (under one tic of lag), sub-step by sub-step, so per-tic hand jitter does not
+  kick the thong. Walls: a link that hits one slides along it and then rests against it; nothing switches modes.
 - **Wind-up and swing.** Over the shoulder the thong stiffens. A forward swing drives it like a rod and then lets
   it go. The wind-up never cracks by itself. After a crack the whip has to calm (or wind up again) before it can
   crack again.
-- **Never in walls.** Each tic every link must be in sight of the one before it. A link found past a wall is put
-  back on your side of it. If links keep ending up in walls, the whip is laid out again from your hand.
+- **Never in walls.** Each tic every link must be in sight of the one before it (a thong just bent over a ledge's
+  lip or a corner counts as in sight). A link found past a wall is put back on your side of it. If links keep
+  ending up in walls, the whip is laid out again from your hand.
 - **The lock mark** is the series' lock diamond: a white centre in a gold ring (the ring uses RSQ
   Accessibility's colour-blind palette; Cue Size scales it).
 - **Damage type "Whip".** It used to be Brutal Doom's "Melee", and Brutal Doom's monsters answer that by handing
   you a stealth-kill fatality. The whip no longer starts one.
+
+Tuning and Debug also has the physics sliders (11-02): **Leather Stiffness**
+(x reference, 1), **Leather Damping** (x reference, 0.25: at 1 the lasso cannot lift the thong), **Whip Air Drag** (1: it settles in about a second) and
+**Hand Smoothing** (0.8 tics; 0 = the raw hand).
 
 Not on the menu (deliberately): the lasso's test switch (rig only) and the off controller's grip key codes
 (default "443 436", the same codes RSQ DistanceGrab reads).
@@ -163,6 +174,10 @@ are the 11-02 fixes. They were measured on the rig only, so all of them are not 
     stays on that one. A crack still goes where you swing. Steady Hands off: as before.
     **(not yet headset-confirmed)**
 18. Accessibility's Rumble Strength 0: the whip's buzzes stop; 2: stronger. **(not yet headset-confirmed)**
+19. The 11-02 physics rebuild (rig only, not headset-confirmed): hold still: the whip hangs dead still. Shake your
+    hand a little: the thong does not twitch. Walk and snap turn: it comes along calmly. Wind up and crack: one
+    crack, the tip whips over in one clean stroke. Whip a nearby wall: the thong slides down it and lies at its
+    foot; no shaking, no extra cracks.
 
 ## Works with
 
@@ -183,6 +198,10 @@ are the 11-02 fixes. They were measured on the rig only, so all of them are not 
 - **Sounds (2026-11-01):** the cracks and swishes are real recordings from Pixabay, picked by the owner; the hit is
   stock Doom's punch. The old generated sounds are gone. Not yet heard in the headset.
 - The leather and handle skins are also generated here (CREDITS.txt).
+- **Physics rebuild 11-02: rig only, not headset-confirmed.** Without a wind-up, a swing that starts with the thong
+  lying on the floor does not crack on the rig (it did before, with the old lighter-toward-the-tip thong); the
+  deliberate wind-up cracks every time. The lasso whirls slower than before (it throws, but letting go at a slow
+  point of the circle can drop it). Leather Damping 1 (the reference's) makes the lasso too stiff to lift.
 - Never run on your headset. Feel numbers are guesses: crack speed, handle 24 cm, length 3.8 m, lock cone 7
   degrees, arm pump, mantle, lasso reach 0.30 m, flail speed. The 11-02 numbers are guesses too, tuned only on the
   rig's scripted swing: the wind-up pose (handle 27 deg up, no further forward than 70 deg off your facing, hand no
@@ -210,7 +229,12 @@ From CREDITS.txt, unchanged:
 Code: ZScript written for the Radiant Silvergun Quest series (presidentkoopa), for stock QuestZDoom 17.3 by
 Emawind84 and Team Beef. No engine change.
 
-The whip is simulated the way runevision (Rune Skovbo Johansen) describes Eye of the Temple's whip in his devlog
+The thong's physics (11-02) are built on Moses C. Nah's "Whip Project - Targeting with a Whip" (MIT Newman Lab,
+github.com/MosesAndLily/whip-project-targeting, BSD 3-Clause, Copyright (c) 2020 Moses C. Nah + MIT Newman Lab):
+its whip model's bend stiffness (0.242 N m/rad), damping (0.092 N m s/rad), link (0.072 m) and node mass
+(0.012 kg) are used, scaled to this whip's length and to tics (whip.zs). Its code is not included.
+
+The first version was simulated the way runevision (Rune Skovbo Johansen) describes Eye of the Temple's whip in his devlog
 "Trials and triumphs of whips and levers" (2017): a chain of links kept in arrays, a spring step between
 neighbours that pulls one more than the other because the whip thins toward the tip, and one sweep per link from
 where it was to where it is. The idea is his; the code is the series' own. Verlet rope references the owner

@@ -8,6 +8,12 @@ version "4.14"
 //   4 YANK        trigger marks a monster ahead, swing, wrap, pull back hard.   no Brutal Doom melee, no link in a wall
 //   5 HANDS       how many whips are out, and in which hand (every 10 tics)
 //   6 IDLE        hand still for the whole run (frames of the idle whip)
+//   8 SWAY        a slow sweep of the arm (whp_scripts.py sway)
+//   9 JITTER      a held hand with noise, then a noisy wind-up and swing (whp_scripts.py jitter)
+//  10 WALL        stood facing a wall (netevent whp_facewall), two swings into it
+// whp_metric 1: a "whp_M" line every tic (tools/rigtest/whp_metrics.py reads them): the tip in the body's frame, the
+// sim's tip speed, the worst link-length error, the chain's kinetic energy (body frame, unit masses), the fastest
+// node, Mend/Straighten, and the raw handle tip against the simulated one (the input filter's latency).
 class WHP_LinkTracer : LineTracer
 {
 	override ETraceStatus TraceCallback()
@@ -30,6 +36,7 @@ class WHP_Probe : EventHandler
 	transient WHP_LinkTracer lt;
 	int tokWas[15];
 	Vector3 l3a, l3b; int lassoN; double lassoAcc, lassoAccMax, lassoStr, lassoStrMax;
+	Vector3 bprev[64]; bool bHad;
 
 	const R = "0.20 1.30 -0.30 20 0 0";
 
@@ -55,6 +62,19 @@ class WHP_Probe : EventHandler
 			Vector2 f = Actor.AngleToVector(pmo.angle + e.Args[2], e.Args[1]);
 			let a = Actor.Spawn(cls[clamp(e.Args[0], 0, 2)], (pmo.pos.xy + f, pmo.pos.z), ALLOW_REPLACE);   // the load order's own monster (Brutal Doom's imp)
 			if (a) { a.angle = a.AngleTo(pmo) + 180; Console.Printf("whp_summon t%d %s at (%.0f %.0f %.0f) d %.0f", level.maptime, a.GetClassName(), a.pos.x, a.pos.y, a.pos.z, a.Distance2D(pmo)); }
+		}
+		else if (e.Name == "whp_facewall")
+		{
+			// stand a0 map units from the wall straight ahead (the pawn's facing), walking up to it
+			if (!lt) lt = new("WHP_LinkTracer");
+			Vector3 eye = pmo.pos + (0, 0, 40);
+			Vector3 f = (Actor.AngleToVector(pmo.angle, 1), 0);
+			if (lt.Trace(eye, level.PointInSector(eye.xy), f, 4000, 0, Line.ML_BLOCKEVERYTHING | Line.ML_BLOCKING, true) && lt.Results.HitType != TRACE_HitNone)
+			{
+				double go = lt.Results.Distance - e.Args[0];
+				if (go > 0) pmo.SetOrigin(pmo.pos + f * go, false);
+				Console.Printf("whp_facewall t%d wall was %.0f ahead, moved %.0f: now %.0f", level.maptime, lt.Results.Distance, go, e.Args[0]);
+			}
 		}
 		else if (e.Name == "whp_tp")
 		{
@@ -226,6 +246,39 @@ class WHP_Probe : EventHandler
 		}
 		if (t == 200 && lassoN > 2) Console.Printf("whp_LASSO %d tics held: link 3 accel mean %.2f max %.2f; inner stretch mean %.0f%% max %.0f%%", lassoN, lassoAcc / (lassoN - 2), lassoAccMax, 100 * lassoStr / lassoN, 100 * lassoStrMax);
 		if (blocked) { inWallTics++; inWallMax = max(inWallMax, blocked); }
+		if (CVar.FindCVar("whp_metric").GetInt())
+		{
+			double ke = 0, vmax = 0, lerr = 0, lstr = 0;
+			double seg = max(0.5, w.wext[i] * w.wlen[i] / RSQWP_Whip.NN);
+			for (int n = 0; n <= RSQWP_Whip.NN; n++)
+			{
+				Vector3 dn = RSQWP_Whip.ToMap(w.wp[o + n]) - pmo.pos;
+				Vector3 bn = (dn.x * c + dn.y * s, -dn.x * s + dn.y * c, dn.z * RSQWP_Util.PS());
+				if (bHad) { double v = (bn - bprev[n]).Length(); ke += 0.5 * v * v; vmax = max(vmax, v); }
+				bprev[n] = bn;
+				if (n > 0) { double le = ((w.wp[o + n] - w.wp[o + n - 1]).Length() - seg) / seg; lerr = max(lerr, abs(le)); lstr = max(lstr, le); }
+			}
+			bHad = true;
+			Vector3 rb, rd;
+			[rb, rd] = w.Handle(i, pmo, i & 1);
+			Vector3 rt = RSQWP_Whip.ToMap(rb + rd * RSQWP_Whip.HANDLEN) - pmo.pos;
+			Vector3 at = RSQWP_Whip.ToMap(w.wp[o]) - pmo.pos;
+			Vector3 rbf = (rt.x * c + rt.y * s, -rt.x * s + rt.y * c, rt.z * RSQWP_Util.PS());
+			Vector3 abf = (at.x * c + at.y * s, -at.x * s + at.y * c, at.z * RSQWP_Util.PS());
+			if (CVar.FindCVar("whp_metric").GetInt() >= 2)
+			{
+				String ch = "";
+				for (int n = 0; n <= RSQWP_Whip.NN; n++)
+				{
+					Vector3 mp = RSQWP_Whip.ToMap(w.wp[o + n]);
+					double ll = n > 0 ? (w.wp[o + n] - w.wp[o + n - 1]).Length() : 0;
+					ch.AppendFormat(" %d:(%.0f %.0f %.0f)%.1f", n, mp.x, mp.y, mp.z, ll);
+				}
+				Console.Printf("whp_C %d%s", t, ch);
+			}
+			Console.Printf("whp_M %d %d %.3f %.3f %.3f %.3f %.3f %.5f %.3f %.3f %d %d %d %.3f %.3f %.3f %.3f %.3f %.3f %d %.4f %.5f", t, level.maptime, bf.x, bf.y, bf.z, w.tipSpd[i], w.handSpd[i], lerr, ke, vmax,
+				w.stuckTics[i], w.straightTic[i], w.cracks[i], rbf.x, rbf.y, rbf.z, abf.x, abf.y, abf.z, blocked, w.tickMs, lstr);
+		}
 		if (CVar.FindCVar("whp_log").GetInt() >= 2 || (blocked && sc == 4))
 			Console.Printf("whp_T t%d tip body(%.1f %.1f %.1f) spd %.1f hand %.1f inwall %d out %d ang %.1f handyaw %.1f pos(%.0f %.0f) hand-body(%.1f %.1f %.1f) z %.1f vh %.1f", t, bf.x, bf.y, bf.z, w.tipSpd[i], w.handSpd[i], blocked, nOut, pmo.angle, pmo.AttackAngle + 90, pmo.pos.x, pmo.pos.y, pmo.AttackPos.x - pmo.pos.x, pmo.AttackPos.y - pmo.pos.y, pmo.AttackPos.z - pmo.pos.z, pmo.pos.z, pmo.player.viewheight);
 		if (t == 330 || (sc == 3 && t == 260) || (sc == 4 && t == 230))

@@ -4,7 +4,12 @@ RSQ_Whip -- credits
 Code: ZScript written for the Radiant Silvergun Quest series (presidentkoopa), for stock QuestZDoom 17.3 by
 Emawind84 and Team Beef. No engine change.
 
-The whip is simulated the way runevision (Rune Skovbo Johansen) describes Eye of the Temple's whip in his devlog
+The thong's physics (11-02) are built on Moses C. Nah's "Whip Project - Targeting with a Whip" (MIT Newman Lab,
+github.com/MosesAndLily/whip-project-targeting, BSD 3-Clause, Copyright (c) 2020 Moses C. Nah + MIT Newman Lab):
+its whip model's bend stiffness (0.242 N m/rad), damping (0.092 N m s/rad), link (0.072 m) and node mass
+(0.012 kg) are used, scaled to this whip's length and to tics (whip.zs). Its code is not included.
+
+The first version was simulated the way runevision (Rune Skovbo Johansen) describes Eye of the Temple's whip in his devlog
 "Trials and triumphs of whips and levers" (2017): a chain of links kept in arrays, a spring step between
 neighbours that pulls one more than the other because the whip thins toward the tip, and one sweep per link from
 where it was to where it is. The idea is his; the code is the series' own. Verlet rope references the owner
