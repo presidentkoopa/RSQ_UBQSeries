@@ -72,7 +72,7 @@ RSQ Melee page:
 | Gun Butt Shove | On | The main hand's shove with a gun hits: 14 damage (62 with the Berserk), knocked away from you, once every 12 tics. Stands down when BD22 VR Reloaded is loaded. |
 | Slow-Mo After a Shove | On | A landed butt shove (ours, or BD22 VR Reloaded's) asks RSQ SlowMo for a 300 ms pulse at 35 % world speed; while it lasts, every shotgun hit bleeds twice and a kill pays RSQ Score's award. Needs RSQ_SlowMo. |
 | Headlock | On | The off grip on a living monster holds it (up to demon weight, Doom mass 400) for 3 s. |
-| Headlock: Human Shield (hold until let go) | Option (off) | Held as long as you hold the grip (a minute at most), facing away. |
+| Headlock: Human Shield (hold until let go) | Option (off) | Held as long as you hold the grip (a minute at most), facing away. With RSQ Gun Bonsai VR this row does nothing: Human Shield is the off glove's upgrade, which also makes the held monster take the blows meant for you (level 2) and hurt more from them (level 3). |
 | Headlock Punch Extra Blood | On | Punching a monster you hold bleeds more: x1.3, x1.6, then x2.0. |
 | Start With Guard (Gun Bonsai VR) | Option (off) | With RSQ Gun Bonsai VR: the Guard at level 1 before it is learned (it still levels as an upgrade, and its tree's Counterpunch and Swat Back are offered on it). Without Gun Bonsai VR the Guard row is what turns it on. |
 | Guard | Option (off) | Without Gun Bonsai VR: both hands up at your face for 4 tics, no gun in either hand, and a blow from in front (within 55 degrees) does 60 % of its damage; you slide back a step. A blow of 35 or more breaks the guard: full damage, no guard for 0.4 s. |
@@ -163,6 +163,12 @@ Rig results (scripted hands, logs and frames of 2026-11-02 under `/home/claude/s
   meteor, pound, clearout.
 - **RSQ Gestures:** Ground Pound and Clear Out (`rsqg_pair`; Melee asks "pair.ago" to keep the two-hand events read),
   and the Guard's release ("both hands apart").
+- **The Headlock's tree** (RSQ Gun Bonsai VR, the off glove, 2026-11-02): Human Shield (see the row), Headlock Uppercut
+  (an uppercut on the monster you hold lets go and launches it 1.5 x higher, harder), Heavier Headlock (heavier
+  monsters; Distance Grab's Iron Grip adds 100 a level), Slam (the holding hand swung down at 3 m/s: into the floor
+  for a throw's blow x1.25 and up, 1.5 m round it staggers 15 tics), Throw Into (the throw's impact x1.25 and up, on
+  Distance Grab's flight or Melee's own toss, which also bends up to 12 degrees onto a monster), Chokehold (2 + level
+  every second held). Their blows are paid to the off glove.
 - **The Guard's tree** (RSQ Gun Bonsai VR player nodes, 2026-11-02): Parry (both guarding hands driven forward at
   1 m/s or more within 4 to 8 tics of a blow from in front: nothing through, the attacker knocked back and staggered;
   it counts while the Guard was up in that window, since the push carries the hands out of the Guard's box), Reflect

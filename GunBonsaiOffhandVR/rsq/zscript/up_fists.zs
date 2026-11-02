@@ -435,3 +435,86 @@ class RSQ_Upgrade_AbsorbRelease : RSQ_GuardPerk
 		fields.Insert("radius", RSQ_FistMath.Metres(Radius(level)));
 	}
 }
+
+// ---- E. GRAPPLER ---------------------------------------------------------------------------------------------------
+// The off hand's Headlock and its throw are RSQ Melee's base moves (headlock.zs). These grow it, offered only to the OFF
+// glove (the hand that grapples); Melee reads them from that glove wherever it is.
+class RSQ_GrappleUpgrade : RSQ_Upgrade_Base
+{
+	static bool OffGlove(TFLV_WeaponInfo info)
+	{
+		if (!GloveInfo(info)) return false;
+		String n = info.wpnClass;
+		return n ~== "RSQ_GloveOff" || n ~== "SPO_GloveOff";
+	}
+	// any glove of this player holds that node (Headlock Uppercut needs the other hand's Uppercut)
+	static bool AnyGloveHas(TFLV_PerPlayerStats stats, String shortName, int minLevel = 1)
+	{
+		if (!stats) return false;
+		for (int i = 0; i < stats.weapons.Size(); i++)
+		{
+			let w = stats.weapons[i];
+			if (GloveInfo(w) && Has(w, shortName, minLevel)) return true;
+		}
+		return false;
+	}
+	static bool Offer(TFLV_WeaponInfo info, String mine, String parent, int parentLv, int cap)
+	{
+		return OffGlove(info) && (parent == "" || Has(info, parent, parentLv)) && LevelOf(info, mine) < cap;
+	}
+}
+
+// HUMAN SHIELD (an unlock; RSQ Melee's row of that name is what plays it without Gun Bonsai VR): 1 the hold lasts as
+// long as the grip (a minute at most), turned to face away; 2 it takes the blows meant for you from its side; 3 x1.5.
+class RSQ_Upgrade_HumanShield : RSQ_GrappleUpgrade
+{
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return Offer(info, "HumanShield", "", 0, 3); }
+	static double Mult(uint lv) { return lv >= 3 ? 1.5 : 1.0; }
+}
+
+// HEADLOCK UPPERCUT: an uppercut on the monster you hold lets go and launches it higher, harder.
+class RSQ_Upgrade_HeadlockUppercut : RSQ_GrappleUpgrade
+{
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info)
+	{
+		return Offer(info, "HeadlockUppercut", "HumanShield", 1, 3) && AnyGloveHas(info.stats, "Uppercut");
+	}
+	static double Lift() { return 1.5; }
+	static double Mult(uint lv) { return 1.5 + 0.25 * lv; }
+	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("mult", AsPercentIncrease(Mult(level))); }
+}
+
+// HEAVIER HEADLOCK: heavier monsters can be held (Distance Grab's Iron Grip adds 100 a level on top).
+class RSQ_Upgrade_HeavierHeadlock : RSQ_GrappleUpgrade
+{
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return Offer(info, "HeavierHeadlock", "HumanShield", 1, 3); }
+	static double Mass(uint lv) { return 400.0 + 200.0 * lv; }   // 600 an Arachnotron, 800, 1000 a Baron or a Mancubus
+	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("mass", String.Format("%d", int(Mass(level)))); }
+}
+
+// SLAM: the off hand swung down hard while holding drives the monster into the floor; what stands round it staggers.
+class RSQ_Upgrade_Slam : RSQ_GrappleUpgrade
+{
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return Offer(info, "Slam", "HeavierHeadlock", 1, 3); }
+	static double Mult(uint lv) { return 1.0 + 0.25 * lv; }
+	static double Speed() { return 3.0; }
+	static double Radius() { return 1.5; }
+	static int Stagger() { return 15; }
+	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("mult", AsPercentIncrease(Mult(level))); }
+}
+
+// THROW INTO: a monster thrown out of the Headlock hits harder; Melee's own toss bends onto a monster.
+class RSQ_Upgrade_ThrowInto : RSQ_GrappleUpgrade
+{
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return Offer(info, "ThrowInto", "HumanShield", 2, 3); }
+	static double Mult(uint lv) { return 1.0 + 0.25 * lv; }
+	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("mult", AsPercentIncrease(Mult(level))); }
+}
+
+// CHOKEHOLD: a held monster is hurt every second.
+class RSQ_Upgrade_Chokehold : RSQ_GrappleUpgrade
+{
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return Offer(info, "Chokehold", "HumanShield", 2, 3); }
+	static int Damage(uint lv) { return 2 + lv; }
+	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("dmg", String.Format("%d", Damage(level))); }
+}

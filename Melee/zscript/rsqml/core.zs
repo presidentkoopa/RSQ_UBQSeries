@@ -73,6 +73,11 @@ class RSQML play
 		return (gb && glove) ? gb.GetInt("level", short, 0, 0, glove) : 0;
 	}
 
+	// THE GRAPPLER'S NODES (GBOVR_TREES.md 4.1 E) are learned by the OFF glove, the hand that grapples: read from that
+	// glove wherever it is (in hand or not). 0 without Gun Bonsai VR or until learned.
+	static Weapon OffGlove(Actor pawn) { return pawn ? Weapon(pawn.FindInventory("RSQ_GloveOff")) : null; }
+	static int GrappleLevel(Actor pawn, String short) { return GBLevel(OffGlove(pawn), short); }
+
 	// A BASE MOVE THAT GUN BONSAI VR TURNS INTO AN UNLOCK (the Uppercut, GBOVR_TREES.md 4.1 A, owner 11-02): without Gun
 	// Bonsai VR it is always there (1); with it, that glove's level (0 until learned).
 	static int UnlockLevel(Weapon glove, String short)

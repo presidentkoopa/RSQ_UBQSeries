@@ -309,6 +309,7 @@ class RSQML_Guard : StaticEventHandler
 // loaded; it does nothing on its own.
 class RSQML_Body : Inventory
 {
+	const SHIELD_ARC = 60.0;   // Human Shield: degrees either side of the held monster that it covers
 	Default { Inventory.MaxAmount 1; +INVENTORY.UNDROPPABLE +INVENTORY.UNTOSSABLE +INVENTORY.UNCLEARABLE +INVENTORY.QUIET }
 
 	static void Ensure(PlayerPawn pmo)
@@ -322,8 +323,35 @@ class RSQML_Body : Inventory
 		if (!pawn || damage <= 0) return;
 		if (passive)
 		{
+			// HUMAN SHIELD 2-3 (Gun Bonsai VR, the off glove): the monster you hold takes the blows meant for you from its
+			// side (within SHIELD_ARC of it), x1.5 at level 3
+			let hl = RSQML_Headlock.Get();
+			int pn = pawn.PlayerNumber();
+			Actor held = (hl && pn >= 0 && pn < MAXPLAYERS) ? hl.collar[pn] : null;
+			if (held && held.health > 0 && inflictor != held && source != held)
+			{
+				int hsLv = RSQML.GrappleLevel(pawn, "HumanShield");
+				Actor from = (inflictor && inflictor != source) ? inflictor : source;
+				if (hsLv >= 2 && from && Actor.absangle(pawn.AngleTo(from), pawn.AngleTo(held)) <= SHIELD_ARC)
+				{
+					int onIt = int(round(damage * RSQML.Num("HumanShield.mult", hsLv, 0, 1.0)));
+					if (RSQML.Debug() > 0) Console.Printf("RSQML human shield: %s took %d meant for you", held.GetClassName(), onIt);
+					RSQML.Touch("shield.human", pawn, held);
+					held.DamageMobj(inflictor, source, onIt, damageType, DMG_THRUSTLESS);
+					newdamage = 0;
+					return;
+				}
+			}
 			let g = RSQML_Guard.Get();
 			if (g) newdamage = g.Soak(pawn, damage, inflictor, source, damageType);
+			return;
+		}
+		// THROW INTO: a monster you threw out of the Headlock hits for its multiplier (headlock.zs RSQML_ThrownInto)
+		double ti = RSQML_ThrownInto.MultFor(inflictor, pawn);
+		if (ti > 0)
+		{
+			newdamage = int(round(damage * ti));
+			if (RSQML.Debug() > 0) Console.Printf("RSQML throw into: %d -> %d", damage, newdamage);
 			return;
 		}
 		// A MISSILE SENT BACK (Hadouken, Swat Back, Reflect Guard) hits for its multiplier (gloves.zs SendBack)

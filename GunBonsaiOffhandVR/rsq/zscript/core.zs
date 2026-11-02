@@ -379,6 +379,17 @@ class RSQ_MeleeUpgradeService : Service
 			if (stringArg == "ReflectGuard.mult") return RSQ_Upgrade_ReflectGuard.Mult(lv);
 			if (stringArg == "AbsorbRelease.cap") return RSQ_Upgrade_AbsorbRelease.ChargeCap(lv);
 			if (stringArg == "AbsorbRelease.radius") return RSQ_Upgrade_AbsorbRelease.Radius(lv);
+			// E. Grappler
+			if (stringArg == "HumanShield.mult") return RSQ_Upgrade_HumanShield.Mult(lv);
+			if (stringArg == "HeadlockUppercut.mult") return RSQ_Upgrade_HeadlockUppercut.Mult(lv);
+			if (stringArg == "HeadlockUppercut.lift") return RSQ_Upgrade_HeadlockUppercut.Lift();
+			if (stringArg == "HeavierHeadlock.mass") return RSQ_Upgrade_HeavierHeadlock.Mass(lv);
+			if (stringArg == "Slam.mult") return RSQ_Upgrade_Slam.Mult(lv);
+			if (stringArg == "Slam.speed") return RSQ_Upgrade_Slam.Speed();
+			if (stringArg == "Slam.radius") return RSQ_Upgrade_Slam.Radius();
+			if (stringArg == "Slam.stagger") return RSQ_Upgrade_Slam.Stagger();
+			if (stringArg == "ThrowInto.mult") return RSQ_Upgrade_ThrowInto.Mult(lv);
+			if (stringArg == "Chokehold.damage") return RSQ_Upgrade_Chokehold.Damage(lv);
 			return 0;
 		}
 		return 0;

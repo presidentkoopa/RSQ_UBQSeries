@@ -84,6 +84,25 @@ RSQ_Upgrade_ReflectGuard_Desc = "Guard: what hits the guard goes back.";
 RSQ_Upgrade_ReflectGuard_TT = "A missile that meets your raised Guard from in front flies back at its shooter, hitting for @mult. At level 3 a bullet does too.";
 RSQ_Upgrade_AbsorbRelease_Name = "Absorb and Release";
 RSQ_Upgrade_AbsorbRelease_Desc = "Guard: store the hits, then let them out.";
+// E. Grappler (the off glove)
+RSQ_Upgrade_HumanShield_Name = "Human Shield";
+RSQ_Upgrade_HumanShield_Desc = "Off glove: hold them as long as you grip, facing away.";
+RSQ_Upgrade_HumanShield_TT = "A Headlock lasts as long as you hold the grip (a minute at most), the monster turned to face away. Level 2: it takes the blows meant for you from its side. Level 3: those hurt it half again.";
+RSQ_Upgrade_HeadlockUppercut_Name = "Headlock Uppercut";
+RSQ_Upgrade_HeadlockUppercut_Desc = "Off glove: uppercut the one you hold into the air.";
+RSQ_Upgrade_HeadlockUppercut_TT = "An uppercut on the monster your off hand holds lets go and launches it half again as high, for @mult damage.";
+RSQ_Upgrade_HeavierHeadlock_Name = "Heavier Headlock";
+RSQ_Upgrade_HeavierHeadlock_Desc = "Off glove: grab bigger things.";
+RSQ_Upgrade_HeavierHeadlock_TT = "The Headlock holds monsters up to @mass in Doom's weight (Distance Grab's Iron Grip adds 100 a level).";
+RSQ_Upgrade_Slam_Name = "Slam";
+RSQ_Upgrade_Slam_Desc = "Off glove: drive them into the floor.";
+RSQ_Upgrade_Slam_TT = "Swing your holding hand down hard: the monster is driven into the floor for @mult of a throw's blow, and everything round it staggers.";
+RSQ_Upgrade_ThrowInto_Name = "Throw Into";
+RSQ_Upgrade_ThrowInto_Desc = "Off glove: throw them at their friends.";
+RSQ_Upgrade_ThrowInto_TT = "A monster you throw out of the Headlock hits what it flies into for @mult. Without Distance Grab the throw bends a little onto a monster ahead.";
+RSQ_Upgrade_Chokehold_Name = "Chokehold";
+RSQ_Upgrade_Chokehold_Desc = "Off glove: squeeze.";
+RSQ_Upgrade_Chokehold_TT = "A monster in your Headlock takes @dmg every second you hold it.";
 RSQ_Upgrade_AbsorbRelease_TT = "What your Guard takes builds a charge, up to @cap, draining slowly. Throw both hands apart to release it: everything within @radius takes the charge and is thrown back. Needs RSQ Gestures.";
 
 RSQ_Upgrade_Lunge_Name = "Lunge";

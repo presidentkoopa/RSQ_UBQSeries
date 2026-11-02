@@ -4,6 +4,12 @@
 //           the palm, holds it frozen in front of the hand for up to rsqml_headlock_secs, so the main hand can punch it.
 //           RSQ Score is told ("touch" grab.hold), and Score's "Headlock" combo (grab.hold > hands) pays.
 //   SHIELD  Human Shield (an option, off): held as long as the grip is (a minute at most), turned to face away from you.
+//           With RSQ Gun Bonsai VR it is the off glove's Human Shield node instead (GBOVR_TREES.md 4.1 E): level 1 that hold;
+//           2 it takes the shots meant for you from its side (guard.zs RSQML_Body); 3 those hurt it x1.5.
+//   THE GRAPPLER'S NODES (Gun Bonsai VR, the off glove): Heavier Headlock (heavier monsters, + Distance Grab's Iron Grip),
+//           Slam (the off hand swung DOWN hard while holding: the monster hits the floor, a shockwave round it),
+//           Throw Into (the throw hits harder; Melee's own toss bends onto a monster), Chokehold (a held monster is
+//           hurt every second), Headlock Uppercut (gloves.zs: an uppercut on the monster you hold launches it).
 //   THROW   swing the off hand hard while it holds one and it is thrown (the owner's pick 23): across the ground,
 //           within 60 degrees of where you face, past rsqml_headlock_throw m/s and then slowing (its peak passed, as a
 //           real throw lets go). It counts as rsqml_headlock_weight % of its weight. With RSQ Distance Grab loaded the
@@ -23,6 +29,7 @@
 class RSQML_Headlock : StaticEventHandler
 {
 	bool gripDown[MAXPLAYERS];
+	int holdStart[MAXPLAYERS];   // the tic the hold began (Chokehold's seconds)
 	Actor collar[MAXPLAYERS];
 	int collarEnd[MAXPLAYERS], collarPing[MAXPLAYERS];
 	int punches[MAXPLAYERS];      // blows the holder has landed on the held monster this hold (extra blood)
@@ -108,6 +115,14 @@ class RSQML_Headlock : StaticEventHandler
 		if (!ok) return null, -1;
 		double nearU = Num("rsqml_headlock_reach", 0.30) * RSQML.UnitsPerMetre();
 		double maxMass = Num("rsqml_headlock_mass", 400.0);
+		// HEAVIER HEADLOCK (Gun Bonsai VR, the off glove): its cap, with Distance Grab's Iron Grip adding on top
+		int hhLv = RSQML.GrappleLevel(pmo, "HeavierHeadlock");
+		if (hhLv > 0)
+		{
+			maxMass = max(maxMass, RSQML.Num("HeavierHeadlock.mass", hhLv, 0, 600));
+			let gb = RSQML.GB();
+			if (gb) maxMass += 100 * gb.GetInt("plevel", "IronGrip", 0, 0, pmo);
+		}
 		double ps = RSQML.Stretch();
 		Actor best = null;
 		double bestD = 1e9;
@@ -193,9 +208,10 @@ class RSQML_Headlock : StaticEventHandler
 		cHave[n] = false;
 		cPeak[n] = 0;
 		armN = 0;
-		bool shield = Flag("rsqml_headlock_shield", false);
+		bool shield = ShieldOn(pmo);
 		collarEnd[n] = level.maptime + (shield ? 60 * TICRATE : int(Num("rsqml_headlock_secs", 3.0) * TICRATE));
 		collarPing[n] = 0;
+		holdStart[n] = level.maptime;
 		punches[n] = 0;
 		flinchEnd[n] = 0;
 		holdInit[n] = false;
@@ -205,6 +221,21 @@ class RSQML_Headlock : StaticEventHandler
 		let dg = RSQML.Svc("RSQDG_ThrowService");
 		if (!dg || dg.GetInt("headlock.caught", "", n, 0, a) != 1) RSQ_Buzz.Start(pmo, 1, 0.5, 4);
 		if (RSQML.Debug() > 0) Console.Printf("RSQML headlock: holding %s (t%d)", a.GetClassName(), level.maptime);
+	}
+
+	// HUMAN SHIELD: with Gun Bonsai VR, the off glove's node; without it, the row
+	static bool ShieldOn(PlayerPawn pmo)
+	{
+		if (RSQML.GB()) return RSQML.GrappleLevel(pmo, "HumanShield") > 0;
+		return Flag("rsqml_headlock_shield", false);
+	}
+
+	// LET GO NOW (Headlock Uppercut): the hold ends and the freeze with it, so the blow can move it this tic
+	void LetGo(int n)
+	{
+		let a = collar[n];
+		EndCollar(n);
+		if (a) a.freezetics = 0;
 	}
 
 	private void EndCollar(int n)
@@ -236,6 +267,14 @@ class RSQML_Headlock : StaticEventHandler
 			// (a freezetics that stands still, with NOGRAVITY / FORCEINFIGHTING borrowed) as "held".
 			a.freezetics = 2;
 			Flinch(n, a);
+			// CHOKEHOLD (Gun Bonsai VR, the off glove): hurt every second it is held, paid to that glove
+			int chLv = RSQML.GrappleLevel(p.mo, "Chokehold");
+			if (chLv > 0 && level.maptime > holdStart[n] && (level.maptime - holdStart[n]) % TICRATE == 0)
+			{
+				RSQML.Touch("choke", p.mo, a);
+				a.DamageMobj(RSQML.Blow(p.mo, RSQML.OffGlove(p.mo), a.pos), p.mo, int(RSQML.Num("Chokehold.damage", chLv, 0, 3)), 'Melee', DMG_THRUSTLESS);
+				if (!a || a.health <= 0) { EndCollar(n); continue; }
+			}
 			// RSQ Score: "grab.hold" touched it (kept alive every 2 s so its 3 s chain gap never breaks it)
 			if (level.maptime >= collarPing[n])
 			{
@@ -277,7 +316,7 @@ class RSQML_Headlock : StaticEventHandler
 		at.z = clamp(at.z, a.floorz, max(a.floorz, a.ceilingz - a.height));
 		a.SetOrigin(at, true);
 		a.Vel = (0, 0, 0);
-		a.Angle = Flag("rsqml_headlock_shield", false) ? pmo.Angle : a.AngleTo(pmo);
+		a.Angle = ShieldOn(pmo) ? pmo.Angle : a.AngleTo(pmo);
 		return true;
 	}
 
@@ -335,6 +374,18 @@ class RSQML_Headlock : StaticEventHandler
 		cPalm[n] = hp;
 		cBody[n] = pmo.Pos;
 		cHave[n] = true;
+		// SLAM (Gun Bonsai VR, the off glove): the off hand swung DOWN hard while holding drives it into the floor
+		int slLv = RSQML.GrappleLevel(pmo, "Slam");
+		if (slLv > 0)
+		{
+			double armM = RSQML.Metres(arm);
+			double downM = -arm.z * RSQML.Stretch() / RSQML.UnitsPerMetre();
+			if (armM > 0.0001 && downM >= 0.7 * armM && armM * TICRATE >= RSQML.Num("Slam.speed", slLv, 0, 3.0))
+			{
+				Slam(n, pmo, a, armM * TICRATE, slLv);
+				return true;
+			}
+		}
 		double need = Num("rsqml_headlock_throw", 3.0);
 		if (need <= 0) return false;
 		double nowMps = RSQML.Metres(arm) * TICRATE;
@@ -358,6 +409,10 @@ class RSQML_Headlock : StaticEventHandler
 		// the body's run, the flight, the impact and the whoosh). The monster's Vel carries the hand's.
 		let dg = RSQML.Svc("RSQDG_ThrowService");
 		a.Vel = hand;
+		// THROW INTO (Gun Bonsai VR, the off glove): what it hits in this flight takes more (RSQML_ThrownInto, read by
+		// RSQML_Body, so Distance Grab's flight and Melee's own toss both count)
+		int tiLv = RSQML.GrappleLevel(pmo, "ThrowInto");
+		if (tiLv > 0) RSQML_ThrownInto.Mark(a, pmo, RSQML.Num("ThrowInto.mult", tiLv, 0, 1.25));
 		if (dg && dg.GetInt("headlock.throw", "", n, pct, a) == 1)
 		{
 			if (RSQML.Debug() > 0) Console.Printf("RSQML headlock: threw %s through Distance Grab (hand %.1f m/s)", a.GetClassName(), RSQML.Metres(hand) * TICRATE);
@@ -373,12 +428,71 @@ class RSQML_Headlock : StaticEventHandler
 		Vector3 v = hand * (armKg / (armKg + kg)) * 2.5 + pmo.Vel;
 		a.Vel = v;
 		double hitKg = realKg * ((armKg + kg) / (armKg + realKg)) ** 2;
+		// THROW INTO without Distance Grab (whose own aim assist does this there): bent up to BEND degrees onto the nearest
+		// monster ahead of the throw
+		if (tiLv > 0) a.Vel = BendOntoFoe(pmo, a, a.Vel);
 		RSQML_Tossed.Arm(a, pmo, max(1.0, hitKg));
 		a.A_StartSound("skeleton/swing", CHAN_AUTO, CHANF_OVERLAP, 0.8);
 		RSQ_Buzz.Start(pmo, 1, 0.6, 5);
 		if (RSQML.Debug() > 0) Console.Printf("RSQML headlock: tossed %s at %.1f m/s (counted as %.0f kg of its %.0f; hand %.1f m/s)", a.GetClassName(),
 			RSQML.Metres(v - pmo.Vel) * TICRATE, kg, realKg, RSQML.Metres(hand) * TICRATE);
 		return true;
+	}
+
+	// THROW INTO's bend: the throw turned onto the monster nearest its line within BEND degrees and BEND_RANGE
+	const BEND = 12.0;
+	const BEND_RANGE = 640.0;
+	static Vector3 BendOntoFoe(PlayerPawn pmo, Actor a, Vector3 v)
+	{
+		double sp = v.xy.Length();
+		if (sp < 1.0) return v;
+		double dir = VectorAngle(v.x, v.y);
+		Actor best = null;
+		double bestOff = BEND;
+		let it = BlockThingsIterator.Create(a, BEND_RANGE);
+		while (it.Next())
+		{
+			let o = it.thing;
+			if (o == a || !RSQML.IsFoe(pmo, o) || a.Distance2D(o) > BEND_RANGE) continue;
+			double off = Actor.absangle(dir, a.AngleTo(o));
+			if (off < bestOff) { bestOff = off; best = o; }
+		}
+		if (!best) return v;
+		double na = a.AngleTo(best);
+		if (RSQML.Debug() > 0) { String bn = best.GetClassName(); Console.Printf("RSQML throw into: bent %.1f degrees onto %s", bestOff, bn); }
+		return (cos(na) * sp, sin(na) * sp, v.z);
+	}
+
+	// SLAM: the held monster is driven into the floor under it -- the toss's blow x Slam.mult, paid to the off glove --
+	// and what stands within Slam.radius of it staggers
+	private void Slam(int n, PlayerPawn pmo, Actor a, double mps, int lv)
+	{
+		EndCollar(n);
+		a.freezetics = 0;
+		a.SetOrigin((a.pos.x, a.pos.y, a.floorz), true);
+		a.Vel = (0, 0, 0);
+		State pain = a.FindState("Pain");
+		if (pain) a.SetState(pain);
+		double pct = clamp(Num("rsqml_headlock_weight", 30.0), 1.0, 100.0) / 100.0;
+		int dmg = int(0.5 * max(1.0, a.Mass) * pct * mps * mps / RSQML_Tossed.J_PER_POINT * RSQML.Num("Slam.mult", lv, 0, 1.25));
+		Weapon off = RSQML.OffGlove(pmo);
+		Actor inf = RSQML.Blow(pmo, off, a.pos);
+		RSQML.Touch("slam", pmo, a);
+		a.A_StartSound("rsqml/smash", CHAN_AUTO, CHANF_OVERLAP, 1.0);
+		RSQ_Buzz.Start(pmo, 1, 1.0, 10);
+		double r = RSQML.Num("Slam.radius", lv, 0, 1.5) * RSQML.UnitsPerMetre();
+		int st = int(RSQML.Num("Slam.stagger", lv, 0, 15));
+		int k = 0;
+		let it = BlockThingsIterator.Create(a, r);
+		while (it.Next())
+		{
+			let o = it.thing;
+			if (o == a || !RSQML.IsFoe(pmo, o) || a.Distance2D(o) > r + o.radius) continue;
+			RSQML.Stagger(o, st);
+			k++;
+		}
+		if (RSQML.Debug() > 0) Console.Printf("RSQML slam: %s into the floor at %.1f m/s -> %d, %d staggered round it", a.GetClassName(), mps, dmg, k);
+		a.DamageMobj(inf, pmo, max(1, dmg), 'Melee', DMG_THRUSTLESS);
 	}
 
 	// HEADLOCK PUNCH EXTRA BLOOD (the owner, 11-01: "first punch 1.3 gore, second 1.6, third and beyond 2.0"):
@@ -398,6 +512,7 @@ class RSQML_Headlock : StaticEventHandler
 		flinchEnd[n] = level.maptime + FLINCH_TICS;
 		if (t.health > 0) Flinch(n, t);
 		if (t.bNoBlood || !Flag("rsqml_headlock_blood", true)) return;
+		if (e.Inflictor && e.Inflictor.GetClassName() == 'RSQML_GloveBlow') return;   // a Chokehold squeeze or a Slam, not a punch
 		punches[n]++;
 		double extra = punches[n] == 1 ? 0.3 : punches[n] == 2 ? 0.6 : 1.0;
 		int amt = max(1, int(e.Damage * extra + 0.5));
@@ -477,5 +592,38 @@ class RSQML_Tossed : Inventory
 		if (body && body != by && body.bShootable && body.health > 0) body.DamageMobj(mo, by, dmg, 'Melee');
 		if (mo && mo.health > 0) mo.DamageMobj(mo, by, dmg, 'Melee');
 		Destroy();
+	}
+}
+
+// THROW INTO (GBOVR_TREES.md 4.1 E): a monster thrown out of the Headlock carries this for its flight; whatever it hits
+// (and it) takes Throw Into's multiplier, applied by the thrower's RSQML_Body (guard.zs), so Distance Grab's flight and
+// Melee's own toss both count.
+class RSQML_ThrownInto : Inventory
+{
+	PlayerPawn by;
+	double mult;
+	int untilTic;
+	const LIFE = 70;
+	Default { Inventory.MaxAmount 1; +INVENTORY.UNDROPPABLE +INVENTORY.UNTOSSABLE }
+
+	static void Mark(Actor mo, PlayerPawn pawn, double mult)
+	{
+		if (!mo || !pawn) return;
+		let t = RSQML_ThrownInto(mo.FindInventory("RSQML_ThrownInto"));
+		if (!t) t = RSQML_ThrownInto(mo.GiveInventoryType("RSQML_ThrownInto"));
+		if (!t) return;
+		t.by = pawn; t.mult = mult; t.untilTic = level.maptime + LIFE;
+	}
+	// the multiplier for a blow this thrown monster deals for `by`, 0 if none
+	static double MultFor(Actor inflictor, Actor by)
+	{
+		if (!inflictor) return 0;
+		let t = RSQML_ThrownInto(inflictor.FindInventory("RSQML_ThrownInto"));
+		return (t && t.by == by && level.maptime <= t.untilTic) ? t.mult : 0;
+	}
+	override void DoEffect()
+	{
+		Super.DoEffect();
+		if (!owner || owner.health <= 0 || level.maptime > untilTic) Destroy();
 	}
 }

@@ -775,6 +775,12 @@ class RSQML_Gloves : StaticEventHandler
 		int jAge = RSQML.GBLevel(g, "Juggle") > 0 ? RSQML_Launched.AgeFor(victim, pn) : -1;
 		bool juggle = jAge >= 0 && jAge <= JUGGLE_TICS;
 		int dmg = int(RSQML.SV("rsqml_punch_damage", 10.0) * (1.0 + g.lastPower));
+		// HEADLOCK UPPERCUT (Gun Bonsai VR, the off glove's node; 4.1 E): an uppercut on the monster your off hand holds
+		// hits harder, lets go and launches it higher
+		let hlk = RSQML_Headlock.Get();
+		int huLv = 0;
+		if (g.lastKind == PK_UPPER && hlk && hlk.collar[pn] == victim) huLv = RSQML.GrappleLevel(pmo, "HeadlockUppercut");
+		if (huLv > 0) dmg = int(dmg * RSQML.Num("HeadlockUppercut.mult", huLv, 0, 1.75));
 		// THE BERSERK PACK (owner, 2026-11-02, GBOVR_TREES.md 4.1 F): x5 while you hold it (Doom's own fist is x10; the
 		// shove already reads it, shove.zs BUTT_DMG_ZERK). Before this a Berserk punch did the same 10 to 20.
 		if (pmo.CountInv("PowerStrength") > 0) dmg *= 5;
@@ -788,11 +794,17 @@ class RSQML_Gloves : StaticEventHandler
 		// has learned it, at its numbers (RSQ_Upgrade_HeavyHands.Knock / Freeze). Without: the Heavy Hands row
 		// (rsqml_heavyhands, off) at level 1's (knock +25%; 2 tics, 4 for a punch at half speed or more).
 		int hhLv = RSQML.MoveLevel(pmo, g, "HeavyHands", "rsqml_heavyhands");
+		if (huLv > 0 && victim && victim.health > 0)
+		{
+			hlk.LetGo(pn);
+			RSQML.Touch("headlock.launch", pmo, victim);
+			if (RSQML.Debug() > 0) Console.Printf("RSQML headlock uppercut: %s let go and launched (level %d)", victim.GetClassName(), huLv);
+		}
 		if (victim && victim.health > 0 && !victim.bDontThrust)
 		{
 			double kk = (2.0 + 6.0 * g.lastPower) * clamp(100.0 / max(victim.mass, 1.0), 0.08, 2.0);
 			if (hhLv > 0) kk *= RSQML.Num("HeavyHands.knock", hhLv, 0, 1.25);
-			if (g.lastKind == PK_UPPER || juggle) Launch(victim, toFoe, g.lastPower, hhLv, pmo, g);
+			if (g.lastKind == PK_UPPER || juggle) Launch(victim, toFoe, g.lastPower, hhLv, pmo, g, huLv > 0 ? RSQML.Num("HeadlockUppercut.lift", huLv, 0, 1.5) : 1.0);
 			else victim.vel += dir * kk;
 		}
 		if (hhLv > 0 && victim && victim.health > 0 && !victim.player)
@@ -843,14 +855,14 @@ class RSQML_Gloves : StaticEventHandler
 	// pain for the flight (no attacking from the air). Heavy Hands adds its 25 % as it does to any punch.
 	// THE FISTS TREE (GBOVR_TREES.md 4.1 A): Uppercut's levels 2-3 and Launcher add lift (map units a tic, before the
 	// weight); a glove's launch marks the monster for Launcher's landing stagger, Juggle and Meteor (launch.zs).
-	static void Launch(Actor victim, Vector2 toFoe, double power, int hhLv, PlayerPawn by = null, Weapon glove = null)
+	static void Launch(Actor victim, Vector2 toFoe, double power, int hhLv, PlayerPawn by = null, Weapon glove = null, double liftMult = 1.0)
 	{
 		double heavy = clamp(100.0 / max(victim.mass, 1.0), 0.1, 1.5);
 		if (victim.bBoss) heavy *= 0.3;
 		if (hhLv > 0) heavy *= RSQML.Num("HeavyHands.knock", hhLv, 0, 1.25);
 		int upLv = RSQML.GBLevel(glove, "Uppercut"), lnLv = RSQML.GBLevel(glove, "Launcher"), mtLv = RSQML.GBLevel(glove, "Meteor");
 		double extra = RSQML.Num("Uppercut.lift", upLv, 0, 0) + RSQML.Num("Launcher.lift", lnLv, 0, 0);
-		double up = (5.0 + 4.0 * power + extra) * heavy;
+		double up = (5.0 + 4.0 * power + extra) * heavy * liftMult;
 		victim.vel.z = max(victim.vel.z, up);
 		victim.vel.xy += toFoe * (2.0 + 3.0 * power) * heavy;
 		int air = int(2.0 * up);   // up and down again at gravity 1

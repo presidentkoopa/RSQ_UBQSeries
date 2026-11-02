@@ -682,6 +682,21 @@ now on SendBack, 37 (21 x 1.75). **Not provable headless:** real hands, the look
 | Throw Into (new) | Human Shield 2 | 1-3: the toss already hurts a body it hits (`RSQML_Tossed`); this makes it x (1 + 0.25 lv) and, with Distance Grab, bends the throw 12 degrees onto a monster | Melee, Distance Grab (aim) | smash (exists) | `throw.into` |
 | Chokehold (new, candidate) | Human Shield 2 | 1-3: a held monster takes 2 + lv a second and cannot attack while held | Melee | - | `choke` |
 
+**Grappler: BUILT 11-02 (L2, branch E).** Gun Bonsai VR: the six in `up_fists.zs` (`RSQ_GrappleUpgrade`), offered
+only to the off glove; Headlock Uppercut needs Uppercut on either glove. Melee reads them from the off glove
+(`RSQML.GrappleLevel`) wherever it is: Human Shield replaces the row under Gun Bonsai VR (`ShieldOn`), its level 2-3
+redirect in `RSQML_Body` (a blow from within 60 degrees of the held monster's side goes to it); Heavier Headlock in
+`FindMonster` (Iron Grip on top only with it learned); Slam and Throw Into in `ThrowSwing` (Throw Into marks the thrown
+monster, `RSQML_ThrownInto`, and `RSQML_Body` multiplies what it hits, so Distance Grab's flight counts too; the 12-degree
+bend is on Melee's own toss, Distance Grab having its own aim assist); Chokehold in `TickCollars`; Headlock Uppercut in
+`Deliver` (the damage is Melee's: the uppercut is the main glove's, so an off-glove node never sees that punch's
+damage). **Headless 11-02** (the probe moves the off hand through `RSQML_Sim` and presses the grip with Melee's own
+`rsqml_hgrip` event): offered on the off glove only, after their parents; Chokehold 3 a second; Human Shield 2: a 10 at
+you went to the held imp (you 5000 -> 5000); Headlock Uppercut 35 (20 x 1.75), let go, launched up 13.5 (9 x 1.5);
+a Baron (1000) not held at the default 400, held at Heavier Headlock 3; Slam at 4.9 m/s: 30; Throw Into: bent onto a
+monster, the impact 29 -> 36 on both. **Note:** Melee's own toss stops within about 2 m on the ground (friction), as
+before. **Not provable headless:** real hands, the look.
+
 **F. Berserk** (Doom's Berserk pack is the fists' power-up; today it does nothing to a punch)
 
 **Base, a Melee fix (owner, 11-02): while you hold the Berserk a punch does x5** (a full-power punch 100; Doom's

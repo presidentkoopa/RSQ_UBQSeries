@@ -98,6 +98,12 @@ Always on (no row):
     Release (player, Reflect Guard 2: what the Guard takes charges it; both hands thrown apart let it out round you;
     needs RSQ Gestures). On a glove, after the player's Guard: Counterpunch, Swat Back (the open palm's swat goes back
     at the shooter) -> Hadouken (after Swat Back or Counterpunch). Catch and Bullet Time Fists are designed and off.
+    **E. Grappler** (the off glove only, the hand that grapples; RSQ Melee's Headlock is the base): Human Shield (root;
+    replaces Melee's row: 1 held as long as the grip, facing away; 2 it takes the blows meant for you from its side;
+    3 x1.5) -> Headlock Uppercut (with Uppercut on either glove: an uppercut on the monster you hold lets go and
+    launches it, x1.75 and up), Heavier Headlock (600, 800, 1000 in Doom's weight, + Distance Grab's Iron Grip) ->
+    Slam (the holding hand swung down hard: driven into the floor, a shockwave staggers round it); Human Shield 2 ->
+    Throw Into (the thrown monster hits harder; without Distance Grab the toss bends onto a monster), Chokehold.
   - Gloves (RSQ_Melee's), before the tree: Haymaker, One-Two, Star Punch, Counterpunch, Body Blow, Knockdown, and the owner's
     picks 52-54 (2026-11-01), whose moves RSQ_Melee does and whose numbers are here: **Heavy Hands** (a landed
     punch freezes the monster for a beat: 2 tics at level 1 up to 4, +2 for a punch at half speed or more; and
