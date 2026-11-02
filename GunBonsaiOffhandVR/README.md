@@ -51,6 +51,8 @@ RSQ Gun Bonsai VR page:
 
 | Row | Default | What it does |
 |---|---|---|
+| Stock Gun Bonsai Upgrades | Silvergun | Silvergun: Gun Bonsai's own upgrades that do not mesh with the series are out of the pool everywhere (ours, the player, BD22's guns): Dark Harvest, Life / Armour / Ammo Leech (Kill Rewards covers them), Intuition (HP Bars does it), Juggler, Player Damage, Thorns. All: every stock upgrade back. Takes effect within a second; an upgrade a save already holds keeps working. (2026-11-02, not yet run.) |
+| Kill Rewards | On | Monsters burst into bits of health (25), armour (10) and ammo (5 rounds) when they die: SoM's Universal Kill Rewards, folded in (2026-11-02, not yet run). By Health: one bit per 10 health, x3 for a boss (a Cyberdemon: 1200 bits). Its page: Bits per Kill (Few / Standard / Many), Boss Fountain (x1 / x3 / x5), What Drops (Even Mix / Mostly Health / Armour / Ammo), Bits Vanish After (Never / 15 s / 30 s / 1 min), Ammo Bits Give (The Gun in Hand / Any Gun I Carry), Bits Fly to Me (m). SoM's raw numbers (Drop Mode, ratios, chance, the two ammo types, Range) sit under Tuning on the same page. |
 | XP Source | Damage | Damage (Gun Bonsai's own) / Style (RSQ Score's bonus points become XP, split along the combo chain: the finishing tool 50 %, the setup tools 50 %, plus 10 % to the player bar) / Both. Style without RSQ Score acts as Damage. |
 | ShieldSaw Gauge | Option (off) | A third gauge, top centre, for the ShieldSaw while it rides on your shoulder. RSQ Score moves down to make room. |
 | Screen Skin | Mockup | Which screens draw Gun Bonsai: Gun Bonsai (its own) / Mockup (the owner's mockups) / Hex Rail / Terminal. |
@@ -150,6 +152,13 @@ Rig-checked (logs) only: **not yet headset-confirmed**.
 - **Reads RSQ_Score**: a kill's bonus points and combo chain (XP Source: Style).
 - **Reads RSQ_SlowMo**: is the world slowed; Adrenaline adds to SlowMo's meter.
 - **Reads RSQ_Grapple**: what the hook did, for hook XP and the Grapple paths.
+- **RSQ_Whip and RSQ_Grenade (2026-11-02, not yet run)**: each pays its hits to its own weapon record through
+  this patch's service (the whip's `Hurt` inside the claim bracket; the thrown grenade claimed with the grenade
+  weapon as master), so both level like weapons and can carry the paths in GBOVR_TREES.md. The whip is typed
+  melee in `bonsairc.rsq`.
+- **Service, for the owning mods**: `RSQ_MeleeUpgradeService` "unlocked" (a weapon node learned, level >= 1) and
+  "punlocked" (a player node), beside "level" and "plevel". `RSQ_Upgrade_Base.Has / PHas / Level` are how a
+  tree node asks for its parent in `IsSuitableFor*`.
 - **Reads RSQ_Accessibility**: Handedness (HUD sides), Colour Blind Mode (HUD and status screen), Text Size
   (screens). Also (2026-11-01, not yet headset-confirmed): Rumble Strength scales every rumble of this addon
   (gloves, guard); Seated Play lowers the Guard box with your eyes (QuestZDoom keeps the view height where it

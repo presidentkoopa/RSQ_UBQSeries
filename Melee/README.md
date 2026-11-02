@@ -82,6 +82,8 @@ Heaviest** (400), **Headlock: Seconds** (3), **Headlock: Throw At** (3.0 m/s, 0 
 
 Always on (no row):
 
+- **The Berserk pack makes a punch x5** (2026-11-02, the owner's call; Doom's own fist is x10): a full-speed punch
+  does 100 while you hold it. Before this the pack did nothing to a punch. Not yet run.
 - **Hit sparks** (Capcom vs. SNK 2's), one per blow, at the impact point: jab -> Normal Spark (orange), hook and the
   swat -> Special Spark (blue), uppercut and the Hadouken's return -> Super Spark (violet; the return adds the
   Hadouken hit burst from Random Sprite Rips), the guard taking a blow -> the Guard flash (blue, about 35 cm from your

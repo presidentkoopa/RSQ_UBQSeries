@@ -34,9 +34,29 @@ class RSQWP_Perks
 	static play void OnBite(RSQWP_Hook h, Actor v) {}
 	static play void OnArrive(Actor v, PlayerPawn pmo) {}
 	static play void Bowl(Actor v, PlayerPawn pmo, Vector3 at, double step) {}
+	// Every point the whip deals goes through here. GUN BONSAI VR (2026-11-02, GBOVR_TREES.md section 1): the whip
+	// weapon earns it. Gun Bonsai credits a hit by its inflictor, and the whip's inflictors are the player (a crack),
+	// nothing (the swung monster's own hurt) or the swung monster (a flail smash), never RSQWP_WhipWeapon, so before
+	// the patch the XP went to whichever hand Gun Bonsai guessed. Now the hit is dealt inside the patch's claim
+	// bracket (RSQ_MeleeUpgradeService "credit.push" / "credit.pop", asked by name: no Gun Bonsai needed to compile,
+	// nothing happens without the patch), which pays damage by the player's own body to the weapon that opened it.
+	// The bracket covers an inflictor that is the player or nothing; a smash's inflictor is the swung monster, so
+	// inside the bracket that hit is dealt as the player's with no thrust (Smash does its own knock).
 	static play void Hurt(Actor v, Actor inflictor, Actor source, int dmg, Name kind)
 	{
-		if (v && v.Health > 0) v.DamageMobj(inflictor, source, dmg, kind);
+		if (!v || v.Health <= 0) return;
+		Weapon wh = null;
+		Service gb = null;
+		let pmo = PlayerPawn(source);
+		if (pmo)
+		{
+			wh = Weapon(pmo.FindInventory("RSQWP_WhipWeapon"));
+			if (wh) { let it = ServiceIterator.Find("RSQ_MeleeUpgradeService"); gb = it.Next(); }
+		}
+		bool bracket = gb && wh && gb.GetInt("credit.push", "", 0, 0, wh) == 1;
+		if (bracket && inflictor && inflictor != source) v.DamageMobj(source, source, dmg, kind, DMG_THRUSTLESS);
+		else v.DamageMobj(inflictor, source, dmg, kind);
+		if (bracket) gb.GetInt("credit.pop", "", 0, 0, wh);
 	}
 }
 

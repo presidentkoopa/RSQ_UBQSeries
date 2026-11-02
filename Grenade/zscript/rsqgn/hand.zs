@@ -331,6 +331,19 @@ class RSQGN_Handler : EventHandler
 		let g = RSQGN_Thrown(Actor.Spawn("RSQGN_Thrown", at, ALLOW_REPLACE));
 		if (!g) return;
 		g.target = pmo;
+		// GUN BONSAI VR (2026-11-02, GBOVR_TREES.md section 1): the grenade weapon earns this throw. Gun Bonsai sees
+		// the thrown grenade at its spawn, before target is set, so it registers nothing and would later guess a
+		// hand by position. Naming the weapon as master and claiming the actor through the patch's service (by
+		// name; nothing happens without it) pays the blast, its kills and anything it spawns to RSQGN_Grenade's
+		// own record, so the grenade levels like a weapon. master is otherwise unused by RSQGN_Thrown.
+		let gw = Weapon(pmo.FindInventory("RSQGN_Grenade"));
+		if (gw)
+		{
+			g.master = gw;
+			let it = ServiceIterator.Find("RSQ_MeleeUpgradeService");
+			Service gb = it.Next();
+			if (gb) gb.GetInt("claim", "", 0, 0, g);
+		}
 		g.Vel = throwVel[n];
 		g.angle = VectorAngle(g.Vel.x, g.Vel.y);
 		g.fuse = left;

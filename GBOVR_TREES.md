@@ -471,8 +471,9 @@ understand." "I would kill a boss or legendary champion and like 200 bits would 
 
 **What it does today** (`som_kr.txt`, read in full): on a monster's death, N bits burst out (spawned 32 up, thrown
 1-6 sideways and up, random heading). N: in **HP Ratio** mode, spawn health / 10 (x3 for a boss), at least 1; in
-**Range** mode, a random 1-3 (x3 boss). Each bit is health (1 point, red), armour (1, blue) or ammo (5 rounds of
-the gun in hand, or of any gun carried, green), weighted 1:1:1. Bits live forever unless a timer is set. Three BD
+**Range** mode, a random 1-3 (x3 boss). Each bit is health (25, red: SoM's readme says "a single point", his code
+says `Inventory.Amount 25`), armour (10 green armour, blue) or ammo (5 rounds of the gun in hand, or of any gun
+carried, green), weighted 1:1:1. Bits live forever unless a timer is set. Three BD
 boot-smear corpses are blacklisted. The fountains the owner loves are HP Ratio: a Cyberdemon gives 1200.
 (Range mode has a bug in the source: its chance test is inverted, so at 100% only bosses drop. HP Ratio is the
 mode that works and the one that is kept as base; Range mode is dropped from the menu, its cvars kept.)
@@ -529,11 +530,32 @@ the gun-butt shove does 14, 62 under the Berserk (`shove.zs:308`); **the punch d
 head.
 
 **Art and sound rule, every tree (owner, 11-02): RS Ballistics and RS Combat FX are the source for art and
-sounds, as a general rule** (the owner's own packs; Grapple already carries Combat FX and Ballistics look sets).
-kiddolink's impacts and the CvS2 sparks stay for the punch itself. Frames by level: the impact plays frames 1-3
-at level 1, +2 frames a level, the full set at the cap; elements recolour the same frames (frost blue, fire
-orange-red, shock yellow, explosive white). The spark's size follows Melee's Hit Spark Size slider; a capstone
-plays at 1.5x.
+sounds, as a general rule** (the owner's own packs, cloned at `E:\DOOMWork\RS_Ballistics` and `RS_CombatFX`).
+
+**The hit-art family (owner, 11-02, from the contact sheets in `GunBonsaiOffhandVR/docs/art/`):** three sources,
+three styles, so a rule, not a mix:
+- **CvS2 sparks are the blow itself**: jab (Normal Spark), hook and swat (Special), uppercut (Super), Guard
+  (Guard), as Melee ships them, all 15 frames (24 for Guard) already played. Small, about a monster's head.
+  "Jab, hook, uppercut and guard need work": the owner wants them better, not bigger; the unused CvS2 colourings
+  2-4 and the three Slash sets are the material for that (e.g. a colouring per hand, Slash for the saber).
+- **kiddolink's five impacts (paid; "I want that one in there for sure") are what a blow DOES, and only on the
+  moments that earn it**: combos (Three-Hit's third blow, Dempsey, Finisher), criticals, perfects (Parry, perfect
+  block), elemental fists and the launches. "I can't be seeing those for every damn punch." Recoloured per element
+  with the highlights kept white-hot (sheet 1), scaled 0.75x for a combo step up to 1.5x for a Finisher or
+  critical, and **frames by level**: a node at level 1 plays frames 1-3 of the burst, +2 a level, the full 9 at
+  the cap. 96 px, 9 frames each (not 10 as the handoff said).
+- **Hit Effect 01** (48 px pixel art) does not match either; not used.
+- **Candidate (owner, 11-02: "this whole bottom row is promising"):** the Thunder Force IV "Fire Leo 04 Rynex"
+  rip (Magma Dragoon, "credits not necessary"; Technosoft's art, same standing as the CvS2 rips): its bottom
+  row of shaded energy spheres in blue, white, orange and red. Fits Kill Rewards' bits (red health, blue
+  armour, a recolour for ammo), the Force Grip's held orb and the Freeze grenade's burst. Its path on disk is
+  needed when it is used.
+- **Two more candidates (owner, 11-02, pasted sheets):** a FIREBALL and FIREBALL COLLISION strip (orange burst,
+  about 11 collision frames): Fire Fist's flare and the Incendiary grenade; and a strip of dark spheres with blue
+  arcs crawling over them (12 frames, two flash frames): Shock Fist's arc, the Stun grenade, Force Lightning's
+  held charge. Paths on disk needed when used.
+- Sounds for all of the above from RS Combat FX / RS Ballistics, never from the example mods.
+The spark's size follows Melee's Hit Spark Size slider.
 
 **Two fists, two records, as today (owner, 11-02: "it was fine before").** Each hand earns XP from the damage it
 does, levels on its own and picks its own upgrades; a fist's upgrades apply to its own punches. Nothing in the
@@ -1050,6 +1072,20 @@ weapon at its base; bits from the first kill. No slow motion, no grapple, no For
 blade dark), the whip cracks but does not lasso or snag, the grenade as today.
 
 ## 6. L1 plumbing this design needs (the handoff's L1, updated)
+
+**Status (11-02, local lane; nothing run yet, compile proof is the owner's):** 1 built as `rsq/zscript/stock.zs`
+(Gun Bonsai's own Register / Unregister on its registry, so the pruned names leave the pool everywhere; the row
+"Stock Gun Bonsai Upgrades: Silvergun / All", `rsq_stock_mode`). 2 built: `RSQ_Upgrade_Base.Has / PHas / Level`.
+3 built: service "unlocked" / "punlocked" ("upgrade.num" entries come with each node). 4 built: the whip's `Hurt`
+deals inside the claim bracket and `RSQWP_WhipWeapon` is typed melee; the thrown grenade names `RSQGN_Grenade` as
+master and is claimed. 5 built: `rsq/zscript/killrewards.zs` (SoM's rules under `rsqgb_kr_*`, the plain page,
+Range mode's inverted chance fixed, the ammo bit reads the toucher not consoleplayer, bits read Scavenger / Rich
+Bits / Magnet by name once those nodes exist); the row "Kill Rewards: On". 6 partly: the Berserk x5 on a punch is
+in Melee; `punch.kinds` and the two-palm thrust wait for their nodes. 7 (HP Bars) waits for the new `RSQ_Dazed`
+states. **Built 11-02 into pk3/RSQ_GunBonsaiVR, RSQ_Whip, RSQ_Grenade, RSQ_Melee; not run; not committed.**
+What the compile check must show: "script parsing took" with no "Script error" from those four; on MAP01 the
+console line "RSQ Gun Bonsai VR: stock upgrades: Silvergun (N pruned)"; a kill bursts into bits; a whip hit and a
+grenade kill move their own weapon's XP (bonsai-debug,info).
 
 1. The stock-upgrade row "Stock Gun Bonsai Upgrades: Silvergun / All" (section 3.13): a run-time append to
    `disabled_upgrades` for the hidden weapon upgrades on EVERY weapon info (guns too), and a strip of the four

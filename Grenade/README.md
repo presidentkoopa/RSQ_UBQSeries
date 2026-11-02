@@ -67,7 +67,10 @@ Front page (RSQ Grenade). "On" = on by default (CVARINFO); "Option" = off by def
 | Pin With Your Teeth | On | Squeeze and hold the grenade at your face to pull the pin. |
 
 Always on (no row): carry 8 grenades, a backpack gives 6 and raises the carry to 16; the red flash and its tick;
-the blast credited to you (the kill, the obituary, the score).
+the blast credited to you (the kill, the obituary, the score). With RSQ Gun Bonsai VR loaded (2026-11-02): the
+blast and its kills are also paid to the grenade's own Gun Bonsai record (the thrown grenade names the grenade
+weapon as its master and is claimed through the patch's service, by name), so the grenade levels like a weapon.
+Not yet run.
 
 Tuning and Debug page:
 

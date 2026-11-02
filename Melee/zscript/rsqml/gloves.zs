@@ -705,6 +705,9 @@ class RSQML_Gloves : StaticEventHandler
 		// MeleeStrike2 (20) -- parsed from brutal22test6 Melee.dec -- so a glove runs 10 at the
 		// slowest punch that counts to 20 at a full-speed one.
 		int dmg = int(RSQML.SV("rsqml_punch_damage", 10.0) * (1.0 + g.lastPower));
+		// THE BERSERK PACK (owner, 2026-11-02, GBOVR_TREES.md 4.1 F): x5 while you hold it (Doom's own fist is x10; the
+		// shove already reads it, shove.zs BUTT_DMG_ZERK). Before this a Berserk punch did the same 10 to 20.
+		if (pmo.CountInv("PowerStrength") > 0) dmg *= 5;
 		if (RSQML.Debug() > 0) { static const String kn[] = { "jab", "hook", "uppercut" }; Console.Printf("RSQML punch lands: %s, %.2f m/s, path %.2f %.2f %.2f m", kn[g.lastKind], avgMps, path.x, path.y, path.z); }
 		victim.SpawnBlood(at, VectorAngle(dir.x, dir.y), dmg);
 		RSQML_Spark.Punch(g.lastKind, RSQML_Spark.OnSkin(victim, at));   // a spark per kind of blow (sparks.zs)

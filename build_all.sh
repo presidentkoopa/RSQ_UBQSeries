@@ -121,5 +121,5 @@ echo "built pk3/RSQ_Melee.pk3"
 # Needs Gun Bonsai 0.10.6 (ToxicFrog, not included) loaded just before it.
 cd "$HUB/GunBonsaiOffhandVR"
 rm -f "$OUT/RSQ_GunBonsaiVR.pk3"
-zip -q -r -X "$OUT/RSQ_GunBonsaiVR.pk3" . -x '.git*' 'build.ps1' 'NOTES.md' 'tools/*' '*.pk3'
+zip -q -r -X "$OUT/RSQ_GunBonsaiVR.pk3" . -x '.git*' 'build.ps1' 'NOTES.md' 'tools/*' 'docs/*' '*.pk3'
 echo "built pk3/RSQ_GunBonsaiVR.pk3"

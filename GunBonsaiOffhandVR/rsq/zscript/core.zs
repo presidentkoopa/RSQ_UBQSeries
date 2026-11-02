@@ -237,6 +237,19 @@ class RSQ_MeleeUpgradeService : Service
 			// a player upgrade's level; objectArg = the pawn (the grab and the rig ask this)
 			return RSQM.PLevel(Actor(objectArg), RSQM.UpClass(stringArg));
 		}
+		// "unlocked": 1 when the node is learned at all (level >= 1) on a Weapon's record or, with a pawn, on anything
+		// carried; "punlocked": the same for a player node. The owning mods ask these by name before they let a move
+		// happen under GBOVR (GBOVR_TREES.md section 6, item 3). Without this patch there is no service and the mod
+		// keeps its own menu-row behaviour.
+		if (request == "unlocked")
+		{
+			String uc = RSQM.UpClass(stringArg);
+			let w = Weapon(objectArg);
+			if (w) return RSQM.LevelOn(w, uc) >= 1 ? 1 : 0;
+			let a = Actor(objectArg);
+			return (a && RSQM.LevelAny(a, uc) >= 1) ? 1 : 0;
+		}
+		if (request == "punlocked") return RSQM.PLevel(Actor(objectArg), RSQM.UpClass(stringArg)) >= 1 ? 1 : 0;
 		if (request == "claim")
 		{
 			// objectArg = an actor a mod fired for a weapon, whose MASTER is that weapon: it, and

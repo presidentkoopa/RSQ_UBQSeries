@@ -194,7 +194,11 @@ are the 11-02 fixes. They were measured on the rig only, so all of them are not 
 - A knocked-away rocket can climb steeply and burst on the ceiling (only one crack style measured).
 - A missile blown up near you still hurts you; it keeps its shooter.
 - Snag reach is uneven: the same throw caught a lip from 30 units but not from 50+.
-- No RSQ Score, HP Bars or Gun Bonsai hooks (Grapple's service and perks were not copied).
+- No RSQ Score or HP Bars hooks (Grapple's service and perks were not copied). **Gun Bonsai (2026-11-02):** with RSQ
+  Gun Bonsai VR loaded, every point the whip deals is paid to the whip weapon's own record (its `Hurt` deals the
+  hit inside the patch's claim bracket, asked by name), so the whip levels like a weapon; the patch's BONSAIRC
+  types it melee. Without the patch nothing changes. A flail smash is then dealt as the player's hit without
+  thrust (the smash does its own knock). Not yet run.
 - The RSQ Accessibility wiring (2026-11-01: Steady Hands, Slower Taps, Rumble Strength) ran on the simulated rig only: it loads clean with
   and without Accessibility, in the Brutal Doom order too. Its effect on this mod's aim was not measured on the rig.
 - Not run: left-handed, Quest performance (desktop: about 0.15 ms a tic out, 0.25 lashing).

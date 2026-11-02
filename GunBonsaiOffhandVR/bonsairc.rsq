@@ -36,6 +36,13 @@ disable RSQ_Glove RSQ_GloveOff UBQS_Saber UBQS_SaberOff SSQ_ShieldSaw :
   TFLV_Upgrade_ElementalBeam TFLV_Upgrade_ElementalBlast TFLV_Upgrade_ElementalWave
 ;
 
+# RSQ Whip's weapon, when it is loaded: melee. Its hits are paid to it through the patch's claim bracket
+# (Whip/zscript/rsqwp/fx.zs Hurt); without this line a crack at range could teach it that it is a projectile
+# weapon. (RSQ Grenade's RSQGN_Grenade needs no type line: a thrown grenade is a projectile, as inferred.)
+ifdef RSQWP_WhipWeapon {
+  type RSQWP_WhipWeapon : MELEE ;
+}
+
 # SuperPunchOut's own gloves, when that pack is loaded too: the same.
 ifdef SPO_Glove {
   type SPO_Glove SPO_GloveOff : MELEE ;

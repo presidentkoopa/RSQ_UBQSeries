@@ -17,6 +17,39 @@ class RSQ_Upgrade_Base : TFLV_Upgrade_BaseUpgrade
 	static int Punch(Actor shot, String what) { let s = RSQM.Svc("RSQML_Service"); return (s && shot) ? s.GetInt(what, "", 0, 0, shot) : -1; }
 	static double PunchPower(Actor shot) { let s = RSQM.Svc("RSQML_Service"); return (s && shot) ? s.GetDouble("punch.power", "", 0, 0, shot) : -1; }
 	static bool IsGlove(Actor shot) { return Punch(shot, "punch.glove") == 1; }
+
+	// ---- PREREQUISITES (GBOVR_TREES.md section 6, item 2): how a tree node asks for its parent ---------------
+	// Has(info, "Haymaker", 2): this weapon's record holds RSQ_Upgrade_Haymaker at level 2 or more (and switched on).
+	// PHas(stats, "Guard"): the player's bag holds RSQ_Upgrade_Guard at level 1 or more. Both read the bag directly,
+	// as RSQM.LevelOn / PLevel do, so a node's IsSuitableFor* costs one pass over a short array.
+	static bool Has(TFLV_WeaponInfo info, String shortName, int minLevel = 1)
+	{
+		if (!info || !info.upgrades) return false;
+		String cls = RSQM.UpClass(shortName);
+		for (int i = 0; i < info.upgrades.upgrades.Size(); ++i)
+		{
+			let u = info.upgrades.upgrades[i];
+			if (u && u.enabled && u.GetClassName() == cls) return int(u.level) >= minLevel;
+		}
+		return false;
+	}
+	static bool PHas(TFLV_PerPlayerStats stats, String shortName, int minLevel = 1)
+	{
+		if (!stats || !stats.upgrades) return false;
+		String cls = RSQM.UpClass(shortName);
+		for (int i = 0; i < stats.upgrades.upgrades.Size(); ++i)
+		{
+			let u = stats.upgrades.upgrades[i];
+			if (u && u.enabled && u.GetClassName() == cls) return int(u.level) >= minLevel;
+		}
+		return false;
+	}
+	// the level this weapon's record holds of a node (0 = none), for a cap test: Level(info, "HeavyHands") < 4
+	static int Level(TFLV_WeaponInfo info, String shortName)
+	{
+		if (!info || !info.upgrades) return 0;
+		return int(info.upgrades.Level(RSQM.UpClass(shortName)));
+	}
 }
 
 // HAYMAKER: the harder you throw it, the more each level adds.
