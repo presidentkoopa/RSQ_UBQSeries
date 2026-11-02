@@ -1,0 +1,2 @@
+user int ssqb_log = 0;
+user int ssqb_imps = 0;

@@ -618,11 +618,70 @@ class SSQ_DiscTrail : Actor
 	}
 }
 
-// THE RING OVER A LOCKED TARGET. The art is the owner's own lock mark out of
-// RSQ_Saber (its UBLK frames), carried here under our own sprite name so the two
-// mods never share a lump and neither cares which loads first. It billboards and does not
-// turn with the world, which the old model mark did -- a diamond seen edge-on is nothing.
+// THE MARK OVER A LOCKED TARGET: the series' shared lock diamond (owner-approved, 2026-11-02), a GREEN outer ring
+// round a WHITE centre, 48x48, four frames (sprites SSQR = the ring, SSQC = the centre; ShieldSaw's own lumps, so no
+// two mods share one and neither cares which loads first). The ring is white art drawn AddShaded in the HAVE
+// colour of the colour-blind helper (SSQ_CB: green with no colour-blind mode; azure / cyan / magenta in the modes, so
+// the ring stays apart from the white centre); the centre is a second actor, drawn Add, unshaded, that follows the
+// ring's place, size, frame, alpha and visibility every tic. The two never overlap (no pixel is in both pictures).
+// It billboards and does not turn with the world -- a diamond seen edge-on is nothing.
 class SSQ_LockMark : Actor
+{
+	const GREEN = 0x20FF40;
+	Actor centre;
+	Default
+	{
+		+NOINTERACTION
+		+NOBLOCKMAP
+		+NOGRAVITY
+		+NOTONAUTOMAP
+		+FORCEXYBILLBOARD
+		RenderStyle "AddShaded";
+		Alpha 0.95;
+		// the size the art was drawn for: it is a 48x48 picture, drawn at 0.35. The rank multipliers in LocksTick
+		// are around THIS, not around 1.
+		Scale 0.35;
+	}
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		SetShade(SSQ_CB.Pick(SSQ_CB.CB_HAVE, GREEN));
+		Follow();
+	}
+	override void Tick()
+	{
+		Super.Tick();
+		if (bDestroyed) return;
+		SetShade(SSQ_CB.Pick(SSQ_CB.CB_HAVE, GREEN));	// a colour-blind change shows at once
+		Follow();
+	}
+	// the centre takes the ring's place and look. Movers set the ring's place before it ticks (LocksTick in
+	// WorldTick) or after (the disc's own Tick); either way the centre is at most a tic behind, then caught up.
+	void Follow()
+	{
+		if (!centre) centre = Spawn('SSQ_LockCentre', pos);
+		if (!centre) return;
+		if (centre.pos != pos) centre.SetOrigin(pos, true);
+		centre.scale = scale;
+		centre.alpha = alpha;
+		centre.frame = frame;
+		centre.bInvisible = bInvisible;
+	}
+	override void OnDestroy()
+	{
+		if (centre) centre.Destroy();
+		Super.OnDestroy();
+	}
+	States
+	{
+	Spawn:
+		SSQR ABCD 3 Bright;
+		Loop;
+	}
+}
+
+// the white centre of the lock diamond: posed by its SSQ_LockMark every tic, never on its own
+class SSQ_LockCentre : Actor
 {
 	Default
 	{
@@ -633,14 +692,12 @@ class SSQ_LockMark : Actor
 		+FORCEXYBILLBOARD
 		RenderStyle "Add";
 		Alpha 0.95;
-		// the size the art was drawn for: it is a 48x48 picture, and the saber draws it at
-		// 0.35. The rank multipliers in LocksTick are around THIS, not around 1.
 		Scale 0.35;
 	}
 	States
 	{
 	Spawn:
-		SSQK ABCD 3 Bright;
-		Loop;
+		SSQC A -1 Bright;	// the frame letter is copied from the ring every tic
+		Stop;
 	}
 }

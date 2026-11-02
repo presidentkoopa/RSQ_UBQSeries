@@ -1,6 +1,7 @@
 // RS_ShieldSawQ -- the three states, the shoulder mount, the loadout swap, and the input.
 //
-//   STOWED   on the mount over your off shoulder (a world prop, guarding your back)
+//   STOWED   on the mount: the small of your back, behind your neck or over your off shoulder
+//            (ssq_mount_spot), hung on your body, not your head (a world prop, guarding your back)
 //   DRAWN    in your off hand: SSQ_ShieldSaw is the off-hand weapon
 //   FLYING   thrown. Your previous off-hand weapon is already back, so you are never
 //            empty-handed. The disc comes home along the way it went; a hand near it on the
@@ -54,6 +55,20 @@ class SSQ_Handler : EventHandler
 	// SABER OVER SHIELD (pick 15): the stance, as the player's own machine last said (netevent ssq-brace)
 	bool  mBraced[MAXPLAYERS];
 	transient int mBraceSent;	// this machine's last sent value + 1 (0 = nothing sent yet)
+	// THE BODY THE MOUNT HANGS ON (owner's headset, 11-02: "attached to helmet and not body"): the body's yaw,
+	// synced from each player's own machine (netevent ssq-body, BodyKeep). Until one arrives (or off VR): the
+	// pawn's angle, as before.
+	double mBodyYaw[MAXPLAYERS];
+	bool   mBodyHave[MAXPLAYERS];
+	// ...and its height: the player's standing eyes (metres above the room floor, vr_height_adjust included), while
+	// the sender has vr_crouch_use_button on (the default; off, viewz already follows the eyes)
+	double mBodyEye[MAXPLAYERS];
+	bool   mBodyEyeOk[MAXPLAYERS];
+	// ...and the keeper on this machine, for its own console player only (re-primed from mBodyYaw on load)
+	transient double kYaw, kLastA, kLastH0, kLastH1, kLastC0, kLastC1, kPend, kSentYaw, kEye, kSentEye;
+	transient int kOffFor, kEyeLow, kSentEyeOk;
+	transient bool kSwinging, kPrimed, kSent;
+	transient Actor kMo;
 	// WALL SLAM (pick 12): bodies a bash threw, watched for the wall that stops them
 	Array<Actor>  mSlamWho;
 	Array<int>    mSlamBy, mSlamUntil;
@@ -108,44 +123,286 @@ class SSQ_Handler : EventHandler
 		return LocalLeftHanded();
 	}
 
-	// ---- the mount: a point over the off shoulder, relative to the body ----------------
-	// Forward is the pawn's yaw (the head's, in VR); up is from the eye (viewz, which the sim
-	// has for every player). The off side is the left for a right-handed scheme.
-	// ON YOUR BACK (owner 2026-10-31, ssq_mount_spot): 1 the handle low at the small of your back, reached behind your
-	// waist (clear of RSQ TacticalRig's hips, 0.30 m away); 2 behind your neck, at the top of the back between the rig's
-	// two shoulder holsters (0.21 m from each, a small grab); 3 either. 0 is the old mount over the off shoulder.
-	// On the back the rig keeps its off-shoulder holster.
+	// ---- the mount, hung on the BODY, not the head -----------------------------------------
+	// THE HEAD IS NOT THE BODY (owner's headset, 2026-11-02: "the saw seems to be attached to helmet and not body ...
+	// when I turn my head, the shield moves when stored"). The mount was placed off mo.angle, which in VR is the
+	// headset's yaw, from mo.pos, which QuestZDoom moves with the headset: so every look sideways swung a point
+	// 0.25-0.30 m behind you through an arc, out of the hand that was reaching for it, and the eyes orbiting the neck
+	// slid it a few cm more. Now:
+	//   YAW   the body's (BodyKeep below: the RSQ TacticalRig body.zs rule, copied so this mod works alone): a snap
+	//         or smooth turn shows as both controllers' yaws moving with the pawn's angle in the same tic and turns
+	//         the body; a head turn moves the angle alone and leaves it; a head held more than 35 degrees round for
+	//         1 s is taken as the body turning in the room and the body eases round (at most 3 degrees a tic).
+	//   PLACE the neck, not the eyes: the eyes sit ssq_neck_pivot (9 cm, an anatomical estimate, not measured) in
+	//         front of the neck the head turns on, so the point under the eyes is taken back along the HEAD's yaw to
+	//         the neck and out again along the BODY's: a head turn about the neck leaves it where it was.
+	//   UP    your standing eyes (EyeZ below), not the pawn's fixed 1.45 m eye (viewz) the hands are not measured from.
+	// Every offset below is from that point: your eyes as they are when you look straight ahead.
+	// Off VR the body is the pawn and nothing changed.
+	const BODY_TOL = 1.5;     // degrees: both controllers moved with the pawn = a turn of the tracking space (rig: TOL)
+	const BODY_SWING = 3.0;   // most degrees a tic the body eases round while it catches up (rig: SWING)
+	const BODY_STEEP = 78.0;  // head pitch past which the head's yaw is not trusted (rig: STEEP)
+	const BODY_TURN = 35.0;   // degrees the head must be held round ... (rig: rsqtr_body_turn default)
+	const BODY_TICS = 35;     // ... for this long before it counts as the body turning (rig: rsqtr_body_secs 1 s)
+
+	static clearscope double BodyYaw(PlayerPawn mo)
+	{
+		let h = Get();
+		int n = mo.PlayerNumber();
+		if (h && n >= 0 && n < MAXPLAYERS && h.mBodyHave[n]) return h.mBodyYaw[n];
+		return mo.angle;
+	}
+	// the point the body frame hangs from: your eyes, as they are when you look straight ahead
+	static clearscope Vector3 BodyEyes(PlayerPawn mo)
+	{
+		let p = mo.player;
+		double piv = CM(UV(p, 'ssq_neck_pivot', 9.0));
+		double ha = mo.angle, by = BodyYaw(mo);
+		return (mo.pos.x + (cos(by) - cos(ha)) * piv, mo.pos.y + (sin(by) - sin(ha)) * piv, EyeZ(mo));
+	}
+	// THE HEIGHT OF YOUR EYES, where the hands are measured from. The engine puts the hands at
+	//   viewz - DefaultViewHeight + (controller height + vr_height_adjust) * vr_vunits_per_meter / pixelstretch
+	// (hw_openxrdevice.cpp:595, stock QZD 17.3), but with vr_crouch_use_button on (the default) viewz itself is the
+	// pawn's fixed 41-unit eye, 1.45 m, whatever your height: so a mount hung from viewz sat (your eye height - 1.45 m)
+	// too LOW against your hands, about 0.15-0.25 m for a standing adult. Now it hangs from your standing eyes, kept as
+	// RSQ TacticalRig keeps your seated eyes (body.zs UpdateSeat): the highest the headset has been lately, easing down
+	// 2 cm a second, rising at once, and taken straight to the headset once it has stayed 0.20 m lower for a second
+	// (you sat or crouched down). So bending to reach behind you does not pull the mount down with your head, and
+	// sitting (RSQ_Accessibility's Seated Play or not) brings it down with you. Before the first body event, or with
+	// the crouch button off (viewz then follows your eyes already): viewz, less the seat drop, as before.
+	static clearscope double EyeZ(PlayerPawn mo)
+	{
+		let p = mo.player;
+		let h = Get();
+		int n = mo.PlayerNumber();
+		if (h && n >= 0 && n < MAXPLAYERS && h.mBodyEyeOk[n])
+			return p.viewz - mo.ViewHeight + h.mBodyEye[n] * SSQ_Hand.VU() / SSQ_Hand.PS(mo);
+		return p.viewz - SeatUnits(mo);
+	}
+	// a point f forward, l to the LEFT, u up from BodyEyes, all in MAP UNITS, in the body's frame
+	static clearscope Vector3 BodyAt(PlayerPawn mo, double f, double l, double u)
+	{
+		double by = BodyYaw(mo);
+		return BodyEyes(mo) + (cos(by) * f - sin(by) * l, sin(by) * f + cos(by) * l, u);
+	}
+	// a world point in the body's frame, in ROOM METRES: x forward, y toward the OFF side, z up
+	static clearscope Vector3 BodyLocal(PlayerPawn mo, Vector3 at)
+	{
+		Vector3 d = at - BodyEyes(mo);
+		double by = BodyYaw(mo), vu = SSQ_Hand.VU();
+		double f = (d.x * cos(by) + d.y * sin(by)) / vu;
+		double l = (-d.x * sin(by) + d.y * cos(by)) / vu;
+		return (f, LeftHanded(mo.player) ? -l : l, d.z * SSQ_Hand.PS(mo) / vu);
+	}
+
+	// THE BODY KEEPER: this machine's console player only (the controller yaws are written for the camera player
+	// alone), sent to every machine as netevent ssq-body so every sim hangs the mount in the same place.
+	void BodyKeep()
+	{
+		if (consoleplayer < 0 || !playeringame[consoleplayer]) return;
+		let p = players[consoleplayer];
+		let mo = p.mo;
+		if (!mo || !SSQ_Hand.InVR(mo)) return;
+		double a = mo.angle, h0 = mo.AttackAngle, h1 = mo.OffhandAngle;
+		// the standing eyes (EyeZ): the headset's height plus vr_height_adjust, metres above the room floor
+		let cb = CVar.FindCVar('vr_crouch_use_button');
+		let ha = CVar.FindCVar('vr_height_adjust');
+		double hy = mo.HmdPosition.y;
+		bool eyeOk = (!cb || cb.GetBool()) && hy > 0.3;	// no headset height read: viewz, as before
+		double eh = hy + (ha ? ha.GetFloat() : 0.0);
+		if (!eyeOk) { kEye = 0; kEyeLow = 0; }
+		else
+		{
+			kEyeLow = eh < kEye - 0.20 ? kEyeLow + 1 : 0;
+			if (kEye <= 0 || eh > kEye || kEyeLow > TICRATE) { kEye = eh; kEyeLow = 0; }
+			else kEye = max(eh, kEye - 0.02 / TICRATE);
+		}
+		if (!kPrimed || kMo != mo)
+		{
+			// a loaded save keeps the body it had; a new pawn (respawn) starts facing where it faces
+			kYaw = (!kPrimed && mBodyHave[consoleplayer]) ? mBodyYaw[consoleplayer] : a;
+			kLastA = a; kLastH0 = h0; kLastH1 = h1; kLastC0 = h0; kLastC1 = h1;
+			kPrimed = true; kMo = mo; kOffFor = 0; kSwinging = false; kPend = 0;
+			kSent = false;
+		}
+		else
+		{
+			double dA = Actor.DeltaAngle(kLastA, a);
+			double d0 = Actor.DeltaAngle(kLastH0, h0), d1 = Actor.DeltaAngle(kLastH1, h1);
+			// THE CONTROLLER YAWS ARE A TIC LATE. The engine writes them from doomYaw - playerYaw
+			// (hw_openxrdevice.cpp:589/603), and doomYaw is resampled from the camera a tic after the pawn's angle
+			// moves: measured on the rig, a 45-degree snap moved the angle at t45 and both controllers at t46, and
+			// a head turn of 4 degrees a tic read as the controllers turning -4 a tic while it lasted. So each
+			// controller's yaw plus the angle's own change this tic is its true yaw (c0, c1): a snap then shows in
+			// the same tic as the angle, and a head turn not at all. (The plain same-tic reading was tried beside
+			// it and read the end of every fast head turn as a turn: the late controllers catch up by exactly the
+			// head's last step.)
+			double c0 = h0 + dA, c1 = h1 + dA;
+			double e0 = Actor.DeltaAngle(kLastC0, c0), e1 = Actor.DeltaAngle(kLastC1, c1);
+			kLastA = a; kLastC0 = c0; kLastC1 = c1;
+			kLastH0 = h0; kLastH1 = h1;
+			// the tracking space turned (snap, smooth, a teleport's facing): both controllers moved WITH the head,
+			// by much the same (not the rig's plain |d - dA| < 1.5, which took any head turn slower than 1.5
+			// degrees a tic, controllers still, for a turn of the body) ...
+			// ... AND CONFIRMED A TIC LATER: the late raw yaws must then show that same step. In a tic the renderer
+			// skipped (no new frame: measured on the rig rendering under 35 fps) the controller yaws are stale and
+			// the correction above reads the previous head step as a turn; the next tic's raw yaws do not repeat it,
+			// so it is dropped. A turn is applied one tic late.
+			if (kPend != 0)
+			{
+				double pt = min(BODY_TOL, abs(kPend) * 0.5);
+				bool ok = abs(d0 - kPend) < pt && abs(d1 - kPend) < pt;
+				if (ok) kYaw += kPend;
+				if (UVI(p, 'ssq_debug', 0)) Console.Printf("ssq: body %s %.1f with the tracking space (controllers then %.1f %.1f)", ok ? "turns" : "holds, not", kPend, d0, d1);
+				kPend = 0;
+			}
+			double tol = min(BODY_TOL, abs(dA) * 0.5);
+			if (abs(dA) > 0.3 && abs(e0 - dA) < tol && abs(e1 - dA) < tol) kPend = dA;
+			// looking steeply down at yourself is not turning: the headset's yaw swings wildly there. And A HAND
+			// REACHING FOR THE MOUNT HOLDS THE BODY STILL (ShieldSaw's own addition to the rig's rule): you often
+			// look round toward the side you reach behind, for longer than a second, and the catch-up must not
+			// swing the mount out from under the hand
+			if (abs(mo.pitch) > BODY_STEEP || (mState[consoleplayer] != SS_FLYING && ZoneFrac(mo, mo.OffhandPos) <= ZoneK()))
+			{
+				kOffFor = 0; kSwinging = false;
+			}
+			else
+			{
+				double off = Actor.DeltaAngle(kYaw, a);
+				if (abs(off) > BODY_TURN) kOffFor++;
+				else if (!kSwinging) kOffFor = 0;
+				if (kOffFor > BODY_TICS) kSwinging = true;
+				if (kSwinging)
+				{
+					kYaw += clamp(off * 0.08, -BODY_SWING, BODY_SWING);
+					if (abs(off) < 4) { kSwinging = false; kOffFor = 0; }
+				}
+			}
+			kYaw = Actor.Normalize180(kYaw);
+		}
+		int eyeState = eyeOk ? 1 : 0;
+		if (kSent && abs(Actor.DeltaAngle(kSentYaw, kYaw)) < 0.25 && eyeState == kSentEyeOk && abs(kEye - kSentEye) < 0.01) return;
+		kSent = true;
+		kSentYaw = kYaw; kSentEye = kEye; kSentEyeOk = eyeState;
+		// args: the body's yaw in hundredths of a degree; the standing eyes in mm (0 = none: viewz)
+		EventHandler.SendNetworkEvent("ssq-body", int(round((kYaw % 360.0 + 360.0) % 360.0 * 100.0)), eyeOk ? clamp(int(round(kEye * 1000.0)), 1, 4000) : 0);
+	}
+
+	// ---- where you take it from (ssq_mount_spot, the "Take It From" row) -------------------------------------
+	//   0 OVER THE OFF SHOULDER: the old mount (the default until 2026-10-31), as it was, only turned with the body: 27 cm
+	//     behind and 12 cm to the off side of your eyes, 30 cm below the pawn's eye (viewz), a 30 cm sphere (cm as map
+	//     units, as it always was: 0.27 / 0.12 / 0.36 / 0.30 room metres).
+	//     RSQ TacticalRig leaves its off-shoulder holster to it (its hooks.zs ShieldOnShoulder: ssq_mount_spot 0).
+	//   1 THE SMALL OF YOUR BACK (default): a sphere centred 0.30 m behind your eyes, 0.10 m to the off side, 0.62 m
+	//     below them (belt height), radius 0.30 m, and only BEHIND THE HIP LINE: a hand less than 0.14 m behind your
+	//     eyes never takes it (the rig's hip holsters reach 0.14 m back at most).
+	//   2 BEHIND YOUR NECK: centred 0.22 m behind, 0.08 m to the off side, 0.18 m below your eyes, radius 0.26 m, and
+	//     only 0.06 m or more behind your eyes, so a reach over the off shoulder from the front lands in it.
+	//   3 either of 1 and 2.
+	// Room metres, body frame (BodyLocal). With RSQ TacticalRig loaded and its Use draw on, a hand inside one of the
+	// rig's holsters (its own places and sizes, read by name) is the rig's press, never the shield's.
+	const BACK_LINE = -0.14;   // m: in front of this, no back grab
+	const NECK_LINE = -0.06;   // m: in front of this, no neck grab
 	static clearscope int Spot(PlayerInfo p) { return clamp(UVI(p, 'ssq_mount_spot', 1), 0, 3); }
 	static clearscope bool OnBack(PlayerInfo p) { int s = Spot(p); return s == 1 || s == 3; }   // the handle low
-	static clearscope Vector3 NeckPos(PlayerPawn mo)
+
+	// the centre of a back spot in the body frame (metres; y toward the off side)
+	static clearscope Vector3 SpotCentre(PlayerInfo p, bool neck)
 	{
-		let p = mo.player;
-		double a = mo.angle;
-		return mo.pos + (cos(a), sin(a), 0) * CM(UV(p, 'ssq_neck_fwd', -12.0)) + (0, 0, p.viewz - mo.pos.z + CM(UV(p, 'ssq_neck_up', -20.0)) - SeatUnits(mo));
+		if (neck) return (UV(p, 'ssq_neck_fwd', -22.0), UV(p, 'ssq_neck_side', 8.0), UV(p, 'ssq_neck_up', -18.0)) / 100.0;
+		return (UV(p, 'ssq_back_fwd', -30.0), UV(p, 'ssq_back_side', 10.0), UV(p, 'ssq_back_up', -62.0)) / 100.0;
 	}
-	// how far the hand is from where the shield is taken, in the units Reach() is in: with both back spots, the nearer
-	// one (the neck's smaller reach scaled up to match)
-	static clearscope double MountDist(PlayerPawn mo, Vector3 hand)
+	static clearscope double SpotRadius(PlayerInfo p, bool neck)
+	{
+		return max(0.02, (neck ? UV(p, 'ssq_neck_reach', 26.0) : UV(p, 'ssq_back_reach', 30.0)) / 100.0);
+	}
+	// a back spot as a world point (the marker, and the shield when it is drawn on your back)
+	static clearscope Vector3 SpotPos(PlayerPawn mo, bool neck)
 	{
 		let p = mo.player;
-		double d = (hand - MountPos(mo)).Length();
-		if (Spot(p) != 3) return d;
-		double nr = max(0.01, CM(UV(p, 'ssq_neck_reach', 6.0)));
-		return min(d, (hand - NeckPos(mo)).Length() * Reach(p) / nr);
+		Vector3 c = SpotCentre(p, neck);
+		double vu = SSQ_Hand.VU();
+		return BodyAt(mo, c.x * vu, c.y * vu * (LeftHanded(p) ? -1 : 1), c.z * vu / SSQ_Hand.PS(mo));
+	}
+	static clearscope Vector3 NeckPos(PlayerPawn mo) { return SpotPos(mo, true); }
+
+	// HOW FAR INTO THE GRAB the hand is: <= 1 takes a Use press; up to ZoneK() the marker brightens and the pose is
+	// sent. With both back spots, the nearer.
+	static clearscope double ZoneFrac(PlayerPawn mo, Vector3 hand)
+	{
+		let p = mo.player;
+		int s = Spot(p);
+		if (s == 0) return (hand - MountPos(mo)).Length() / max(0.01, CM(UV(p, 'ssq_mount_reach', 30.0)));
+		Vector3 b = BodyLocal(mo, hand);
+		double best = 1e9;
+		if (s != 2) best = min(best, SpotFrac(mo, b, hand, false));
+		if (s != 1) best = min(best, SpotFrac(mo, b, hand, true));
+		return best;
+	}
+	static clearscope double SpotFrac(PlayerPawn mo, Vector3 b, Vector3 hand, bool neck)
+	{
+		let p = mo.player;
+		double r = SpotRadius(p, neck);
+		double d = (b - SpotCentre(p, neck)).Length() / r;
+		double line = neck ? NECK_LINE : BACK_LINE;
+		if (b.x > line) d = max(d, 1.0 + (b.x - line) / r);	// in front of the line: never a grab
+		if (d <= 1.0 && InRigHolster(mo, hand)) d = 1.01;	// inside a rig holster: its press, not ours
+		return d;
+	}
+	static clearscope bool InMount(PlayerPawn mo, Vector3 hand) { return ZoneFrac(mo, hand) <= 1.0; }
+	// the near zone, as a multiple of the grab; RSQ_Accessibility's Gesture Ease widens it x1..x2
+	static clearscope double ZoneK() { return SSQ_A11y.Wide(SV('ssq_zone_scale', 1.6)); }
+
+	// RSQ TACTICAL RIG'S HOLSTERS, by name only (no rig: none). Its places 0 1 3 4 5 6 7 9 10 (hips, grenades,
+	// shoulders, chest, saber spots; 2 is retired and the keyring is no Use holster), from its own cvars with its own
+	// defaults (TacticalRig CVARINFO), scaled by its eye-height scale and reach as its rig.zs Settings() does, in ITS
+	// frame: standing it hangs from the pawn's place at viewz (body.zs Head), seated from your seated eyes (taken here
+	// as viewz less the seat drop), turned by its own body yaw (the same rule as ours, so taken as ours).
+	static clearscope bool InRigHolster(PlayerPawn mo, Vector3 hand)
+	{
+		Name rn = 'RSQTR_Rig'; class<Object> rc = rn;
+		if (!rc) return false;
+		let p = mo.player;
+		let use = CVar.GetCVar('rsqtr_use', p);
+		if (!use || !use.GetBool()) return false;
+		static const int RS[] = { 0, 1, 3, 4, 5, 6, 7, 9, 10 };
+		static const double DF[] = { 0.00, 0.00, 0.12, -0.08, -0.08, 0.10, 0.10, 0.02, 0.02 };
+		static const double DL[] = { 0.18, -0.18, 0.00, 0.18, -0.18, 0.12, -0.12, 0.21, -0.21 };
+		static const double DU[] = { -0.70, -0.70, -0.62, -0.10, -0.10, -0.46, -0.46, -0.84, -0.84 };
+		static const double DR[] = { 0.14, 0.14, 0.08, 0.14, 0.14, 0.11, 0.11, 0.10, 0.10 };
+		let ec = CVar.GetCVar('rsqtr_eye_m', p);
+		double eye = ec ? ec.GetFloat() : 0;
+		double k = eye > 0.8 ? clamp(eye / 1.62, 0.7, 1.3) : 1.0;
+		let rr = CVar.GetCVar('rsqtr_reach', p);
+		double reach = (rr ? rr.GetFloat() : 1.0) * k;
+		double by = BodyYaw(mo), vu = SSQ_Hand.VU();
+		Vector3 d0 = hand - (mo.pos.x, mo.pos.y, p.viewz - SeatUnits(mo));
+		Vector3 b = ((d0.x * cos(by) + d0.y * sin(by)) / vu, (-d0.x * sin(by) + d0.y * cos(by)) / vu, d0.z * SSQ_Hand.PS(mo) / vu);
+		double left = b.y;	// the rig's places are left / right, not off / main
+		for (int j = 0; j < 9; j++)
+		{
+			int r = RS[j];
+			let cf = CVar.GetCVar(String.Format("rsqtr_r%d_f", r), p);
+			let cl = CVar.GetCVar(String.Format("rsqtr_r%d_l", r), p);
+			let cu = CVar.GetCVar(String.Format("rsqtr_r%d_u", r), p);
+			let cr = CVar.GetCVar(String.Format("rsqtr_r%d_rad", r), p);
+			Vector3 c = (cf ? cf.GetFloat() : DF[j], cl ? cl.GetFloat() : DL[j], cu ? cu.GetFloat() : DU[j]) * k;
+			double rad = (cr ? cr.GetFloat() : DR[j]) * reach;
+			if ((b.x - c.x, left - c.y, b.z - c.z).Length() <= rad) return true;
+		}
+		return false;
 	}
 
 	static clearscope Vector3 MountPos(PlayerPawn mo)
 	{
 		let p = mo.player;
-		if (Spot(p) == 2) return NeckPos(mo);
-		bool back = OnBack(p);
-		double side = back ? 0.0 : CM(UV(p, 'ssq_mount_side', 12.0)) * (LeftHanded(p) ? -1 : 1);
-		double fwd = back ? CM(UV(p, 'ssq_back_fwd', -25.0)) : CM(UV(p, 'ssq_mount_fwd', -27.0));
-		double up = back ? CM(UV(p, 'ssq_back_up', -50.0)) : CM(UV(p, 'ssq_mount_up', -30.0));
-		double a = mo.angle;
-		Vector3 f = (cos(a), sin(a), 0);
-		Vector3 l = (cos(a + 90), sin(a + 90), 0);
-		return mo.pos + f * fwd + l * side + (0, 0, p.viewz - mo.pos.z + up - SeatUnits(mo));
+		int s = Spot(p);
+		if (s == 2) return SpotPos(mo, true);
+		if (s != 0) return SpotPos(mo, false);
+		// over the off shoulder: the old numbers in the old units (cm as map units) and at the old height (from viewz,
+		// where the owner used it until 10-31), now turned with the body, not the head
+		Vector3 at = BodyAt(mo, CM(UV(p, 'ssq_mount_fwd', -27.0)), CM(UV(p, 'ssq_mount_side', 12.0)) * (LeftHanded(p) ? -1 : 1), 0);
+		return (at.x, at.y, p.viewz - SeatUnits(mo) + CM(UV(p, 'ssq_mount_up', -30.0)));
 	}
 
 	// SEATED PLAY (RSQ_Accessibility AC3, a11y.zs; the way RSQ TacticalRig's body.zs hangs its holsters from your seated
@@ -184,7 +441,7 @@ class SSQ_Handler : EventHandler
 	// differs between them, on a 58 cm disc.
 	static clearscope Vector3 MountPlateCentre(PlayerPawn mo)
 	{
-		double a = mo.angle;
+		double a = BodyYaw(mo);	// the body's facing, not the head's
 		// on the back the handle is LOW and the disc hangs above it: the forearm axis points down
 		Vector3 Fh = OnBack(mo.player) ? (0, 0, -1) : (0, 0, 1);
 		Vector3 Lh = (cos(a), sin(a), 0);			// forward
@@ -198,7 +455,7 @@ class SSQ_Handler : EventHandler
 
 	static clearscope Vector3 MountPlateNormal(PlayerPawn mo)
 	{
-		double a = mo.angle;
+		double a = BodyYaw(mo);
 		return (-cos(a), -sin(a), 0);	// -Lh: behind you
 	}
 
@@ -299,19 +556,8 @@ class SSQ_Handler : EventHandler
 		// Use at the mount is the draw / holster, not a lock
 		let pose = mPose[i];
 		if (!pose.Fresh(Level.maptime)) return true;
-		return MountDist(p.mo, pose.pos[0]) > Reach(p);
+		return !InMount(p.mo, pose.pos[0]);
 	}
-
-	static clearscope double Reach(PlayerInfo p)
-	{
-		int s = Spot(p);
-		if (s == 2) return CM(UV(p, 'ssq_neck_reach', 6.0));
-		return s ? CM(UV(p, 'ssq_back_reach', 10.0)) : CM(UV(p, 'ssq_mount_reach', 30.0));
-	}
-	// THE ZONE over the shoulder: larger than the grab reach, so the hand is inside it for tics
-	// before the finger can be at the grab point
-	// RSQ_Accessibility's Gesture Ease: the shoulder's zone x1..x2. 0 / absent: as set.
-	static clearscope double Zone(PlayerInfo p) { return SSQ_A11y.Wide(Reach(p) * SV('ssq_zone_scale', 1.6)); }
 
 	// ---- lifecycle ----------------------------------------------------------------
 	override void OnRegister()
@@ -326,16 +572,25 @@ class SSQ_Handler : EventHandler
 	static void Migrate()
 	{
 		let ver = CVar.FindCVar('ssq_cfgver');
-		if (!ver || ver.GetInt() >= 2) return;
+		if (!ver || ver.GetInt() >= 3) return;
 		int from = ver.GetInt();
-		// 2 (2026-10-31, owner: "it sends the projectile directly back to the attacker"): turned shots glance off the
-		// plate and follow your swing, unless an older config chose something other than the old default
-		let am = CVar.FindCVar('ssq_deflect_aim'); if (am && am.GetInt() == 1) am.SetInt(3);
-		if (from >= 1) { ver.SetInt(2); return; }
-		let pad = CVar.FindCVar('ssq_sweep_pad'); if (pad) pad.SetFloat(0.0);
-		let th = CVar.FindCVar('ssq_plate_thick'); if (th) th.SetFloat(4.0);
-		let ld = CVar.FindCVar('ssq_sweep_lead'); if (ld) ld.SetFloat(1.0);
-		ver.SetInt(2);
+		if (from < 2)
+		{
+			// 2 (2026-10-31, owner: "it sends the projectile directly back to the attacker"): turned shots glance off the
+			// plate and follow your swing, unless an older config chose something other than the old default
+			let am = CVar.FindCVar('ssq_deflect_aim'); if (am && am.GetInt() == 1) am.SetInt(3);
+			if (from < 1)
+			{
+				let pad = CVar.FindCVar('ssq_sweep_pad'); if (pad) pad.SetFloat(0.0);
+				let th = CVar.FindCVar('ssq_plate_thick'); if (th) th.SetFloat(4.0);
+				let ld = CVar.FindCVar('ssq_sweep_lead'); if (ld) ld.SetFloat(1.0);
+			}
+		}
+		// 3 (2026-11-02, owner: "cannot reach small of back or neck"): the back spots are room centimetres on the body
+		// now, with far larger grabs; whatever an older config saved under the old meaning goes back to the new defaults
+		static const Name spots[] = { 'ssq_back_fwd', 'ssq_back_up', 'ssq_back_reach', 'ssq_neck_fwd', 'ssq_neck_up', 'ssq_neck_reach' };
+		for (int k = 0; k < 6; k++) { let cv = CVar.FindCVar(spots[k]); if (cv) cv.ResetToDefault(); }
+		ver.SetInt(3);
 	}
 
 	override void PlayerEntered(PlayerEvent e) { Give(e.PlayerNumber); }
@@ -394,6 +649,7 @@ class SSQ_Handler : EventHandler
 		if (!mMigrated) { mMigrated = true; MigrateLocks(); }
 		if (!score) score = new('SSQ_ScoreMemory');
 		PruneMissiles();
+		BodyKeep();
 		SendPose();
 		SendBrace();
 		SlamTick();
@@ -461,16 +717,14 @@ class SSQ_Handler : EventHandler
 		let mo = p.mo;
 		let pose = mPose[i];
 		bool fresh = pose.Fresh(Level.maptime);
-		double dist = fresh ? MountDist(mo, pose.pos[0]) : 1e9;
-		bool atMount = dist <= Reach(p);
+		double dist = fresh ? ZoneFrac(mo, pose.pos[0]) : 1e9;
+		bool atMount = dist <= 1.0;
 		if (UVI(p, 'ssq_debug', 0))
 		{
-			// the hand relative to the headset, in cm: forward, to the off side, up
-			Vector3 rel = fresh ? pose.pos[0] - (mo.pos.x, mo.pos.y, p.viewz) : (0, 0, 0);
-			double a = mo.angle, k = 100.0 / SSQ_Hand.VU();
-			double f = (rel.x * cos(a) + rel.y * sin(a)) * k;
-			double l = (rel.x * cos(a + 90) + rel.y * sin(a + 90)) * k * (LeftHanded(p) ? -1 : 1);
-			Console.Printf("ssq: press p%d state %d fresh %d mountdist %.1f  hand from headset: fwd %.0f side %.0f up %.0f cm", i, mState[i], fresh, dist, f, l, rel.z * k);
+			// the hand in the body frame, in cm (room): forward, to the off side, up from your eyes looking ahead
+			Vector3 b = fresh ? BodyLocal(mo, pose.pos[0]) * 100.0 : (0, 0, 0);
+			Console.Printf("ssq: press p%d state %d fresh %d spot %d zone %.2f (<=1 takes it)  hand on the body: fwd %.0f off-side %.0f up %.0f cm  body yaw %.0f head %.0f",
+				i, mState[i], fresh, Spot(p), dist, b.x, b.y, b.z, BodyYaw(mo), mo.angle);
 		}
 		if (!atMount) return;
 		// the key route (ssq_shoulder_use off): the shoulder is not a grab, only the Draw key
@@ -735,7 +989,7 @@ class SSQ_Handler : EventHandler
 			// which in a headset at ten metres is nothing. The one the disc visits first is twice
 			// the size of the rest and fully lit, and it breathes so it reads as alive.
 			// High contrast (rsqa_colorblind 4): every mark fully lit and a fifth larger, the first
-			// breathing twice as deep -- the gold art carries no meaning of its own, rank is size.
+			// breathing twice as deep -- rank is size, never colour.
 			bool hc = SSQ_CB.Mode() == 4;
 			double pulse = 1.0 + (hc && k == 0 ? 0.24 : 0.12) * sin(Level.maptime * 9.0 + k * 40);
 			if (hc) pulse *= 1.2;
@@ -745,7 +999,7 @@ class SSQ_Handler : EventHandler
 			// little under twice the others, which is plenty to read at range without
 			// magnifying a 48-pixel picture into a dinner plate.
 			m.A_SetScale(0.35 * (k == 0 ? 1.8 : (k == 1 ? 1.3 : 1.0)) * pulse * SV('ssq_lock_mark_scale', 1.0) * SSQ_A11y.Cue());   // Cue Size
-			m.A_SetRenderStyle((k == 0 || hc) ? 1.0 : 0.85, STYLE_Add);
+			m.A_SetRenderStyle((k == 0 || hc) ? 1.0 : 0.85, STYLE_AddShaded);	// the ring; its centre copies the alpha
 			m.angle += (k == 0 ? 14 : 8);
 		}
 	}
@@ -907,9 +1161,11 @@ class SSQ_Handler : EventHandler
 		if (show)
 		{
 			mk.SetOrigin(mount, true);
-			mk.A_SetScale(Reach(p) * 0.4);
-			double d = pose.Fresh(Level.maptime) ? (pose.pos[0] - mount).Length() : 1e9;
-			mk.A_SetRenderStyle(d <= Reach(p) ? 0.9 : (d <= Zone(p) ? 0.5 : 0.2), STYLE_Add);
+			// sized as before for the shoulder (its 30 cm reach); the back spots, whose zones are far larger, keep the
+			// shoulder's size so the marker does not become a plate
+			mk.A_SetScale(CM(UV(p, 'ssq_mount_reach', 30.0)) * 0.4);
+			double d = pose.Fresh(Level.maptime) ? ZoneFrac(mo, pose.pos[0]) : 1e9;
+			mk.A_SetRenderStyle(d <= 1.0 ? 0.9 : (d <= ZoneK() ? 0.5 : 0.2), STYLE_Add);
 			mk.angle += 3;
 		}
 
@@ -926,7 +1182,7 @@ class SSQ_Handler : EventHandler
 		{
 			prop.bInvisible = UVI(p, 'ssq_stow_world', 0) == 0;	// owner's default: not drawn when stored
 			prop.SetOrigin(mount, true);
-			prop.angle = mo.angle + UV(p, 'ssq_mount_yaw', 0);
+			prop.angle = BodyYaw(mo) + UV(p, 'ssq_mount_yaw', 0);
 			prop.pitch = (OnBack(p) ? -MountPropPitch() : MountPropPitch()) + UV(p, 'ssq_mount_pitch', 0);
 			prop.roll  = MountPropRoll()  + UV(p, 'ssq_mount_roll', 0);
 			prop.A_SetScale(UV(p, 'ssq_mount_scale', 1.0) * SSQ_Guard.Scale());
@@ -1082,7 +1338,7 @@ class SSQ_Handler : EventHandler
 			(b & BT_ATTACK) != 0, (b & BT_ALTATTACK) != 0, (b & BT_OFFHANDATTACK) != 0, (b & BT_OFFHANDALTATTACK) != 0,
 			(p.WeaponState & WF_TWOHANDSTABILIZED) != 0, saw ? saw.rev : -1, mLocks[i].Size());
 		let pose = mPose[i];
-		String line3 = String.Format("pose fresh %d  mountdist %.1f  zone %d", pose.Fresh(Level.maptime), pose.Fresh(Level.maptime) ? (pose.pos[0] - MountPos(p.mo)).Length() : -1.0, mInZone[i]);
+		String line3 = String.Format("pose fresh %d  zone %.2f  body yaw %.0f head %.0f", pose.Fresh(Level.maptime), pose.Fresh(Level.maptime) ? ZoneFrac(p.mo, pose.pos[0]) : -1.0, BodyYaw(p.mo), p.mo.angle);
 		Screen.DrawText(SmallFont, Font.CR_GOLD, 8, 40, line1, DTA_VirtualWidth, 640, DTA_VirtualHeight, 400, DTA_KeepRatio, true);
 		Screen.DrawText(SmallFont, Font.CR_GOLD, 8, 50, line2, DTA_VirtualWidth, 640, DTA_VirtualHeight, 400, DTA_KeepRatio, true);
 		Screen.DrawText(SmallFont, Font.CR_GOLD, 8, 60, line3, DTA_VirtualWidth, 640, DTA_VirtualHeight, 400, DTA_KeepRatio, true);
@@ -1107,6 +1363,14 @@ class SSQ_Handler : EventHandler
 				mPose[i].A = (cos(ap) * cos(ay), cos(ap) * sin(ay), sin(ap));
 			}
 			mPose[i].seatCm = (e.Args[2] >> 22) & 0xFF;
+		}
+		else if (e.Name == "ssq-body")
+		{
+			// the body's yaw from the player's own machine (BodyKeep), in hundredths of a degree
+			mBodyYaw[i] = Actor.Normalize180(e.Args[0] / 100.0);
+			mBodyHave[i] = true;
+			mBodyEyeOk[i] = e.Args[1] > 0;
+			mBodyEye[i] = e.Args[1] / 1000.0;
 		}
 		else if (e.Name == "ssq-draw")
 		{
@@ -1338,7 +1602,7 @@ class SSQ_Handler : EventHandler
 		// Drawn, the plate is where the engine draws the off weapon: on the off controller.
 		bool swapped = st == SS_STOWED && SSQ_A11y.Swapped(mo);
 		if (swapped) hand = mo.AttackPos;
-		bool nearMount = MountDist(mo, hand) <= Zone(p) * 1.5;
+		bool nearMount = ZoneFrac(mo, hand) <= ZoneK() * 1.5;
 		// a changed seat drop is sent too, so the mount follows you sitting down even while nothing else needs the pose
 		int seatCm = LocalSeatCm(mo);
 		let mine = mPose[consoleplayer];

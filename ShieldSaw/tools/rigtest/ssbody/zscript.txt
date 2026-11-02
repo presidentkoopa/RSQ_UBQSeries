@@ -1,0 +1,41 @@
+version "4.14"
+// TEST ONLY (never ships). ShieldSaw body-frame probe (2026-11-02).
+//   ssqb_log 1: every 5 tics (and on any state change) the head yaw, the body yaw, the mount, the eye heights and
+//               where the off hand is in the body frame and in the grab.
+//   ssqb_imps 1: three imps 6-9 m ahead, spread, for the lock marks.
+class SSQBodyProbe : EventHandler
+{
+	int lastState;
+	bool spawned;
+	override void WorldTick()
+	{
+		let mo = players[0].mo;
+		if (!mo) return;
+		let h = SSQ_Handler.Get();
+		if (!h) return;
+		let ic = CVar.FindCVar('ssqb_imps');
+		if (ic && ic.GetInt() && !spawned && level.maptime > 10)
+		{
+			spawned = true;
+			for (int k = 0; k < 3; k++)
+			{
+				double a = mo.angle + (k - 1) * 12;
+				double d = 200 + 50 * k;
+				let imp = Actor.Spawn("DoomImp", mo.pos + (cos(a) * d, sin(a) * d, 0), ALLOW_REPLACE);
+				if (imp) { imp.angle = a + 180; Console.Printf("ssqb_ imp %d at (%.0f %.0f)", k, imp.pos.x, imp.pos.y); }
+			}
+		}
+		let lc = CVar.FindCVar('ssqb_log');
+		if (!lc || !lc.GetInt()) return;
+		int st = h.StateOf(0);
+		if (lc.GetInt() == 1 && level.maptime % 5 != 0 && st == lastState) return;
+		if (st != lastState) Console.Printf("ssqb_ t%d STATE %d -> %d", level.maptime, lastState, st);
+		lastState = st;
+		Vector3 m = SSQ_Handler.MountPos(mo);
+		Vector3 hand = mo.OffhandPos;
+		Vector3 b = SSQ_Handler.BodyLocal(mo, hand) * 100.0;
+		Console.Printf("ssqb_ t%d head %.1f oh %.1f mh %.1f body %.1f pawn (%.1f %.1f) mount (%.2f %.2f %.2f) eyeZ %.2f viewz %.2f hmdY %.3f hand body f %.0f off %.0f u %.0f cm zone %.2f state %d spot %d marks %d",
+			level.maptime, mo.angle, mo.OffhandAngle, mo.AttackAngle, SSQ_Handler.BodyYaw(mo), mo.pos.x, mo.pos.y, m.x, m.y, m.z, SSQ_Handler.EyeZ(mo), players[0].viewz, mo.HmdPosition.y,
+			b.x, b.y, b.z, SSQ_Handler.ZoneFrac(mo, hand), st, SSQ_Handler.Spot(players[0]), h.mLockMarks[0].Size());
+	}
+}

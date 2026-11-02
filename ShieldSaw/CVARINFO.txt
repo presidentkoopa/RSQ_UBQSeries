@@ -139,13 +139,21 @@ user float ssq_mount_up         = -30.0;
 user float ssq_mount_reach      = 30.0;
 server float ssq_zone_scale     = 1.6;    // the zone over the shoulder, as a multiple of the reach
 user int   ssq_mount_spot       = 1;      // where you take it from (owner 2026-10-31): 1 the small of your back, 2 behind your
-                                          // neck (between the rig's shoulder holsters), 3 either; 0 over the off shoulder (as before)
-user float ssq_neck_fwd         = -12.0;  // the neck grab: cm behind your eyes
-user float ssq_neck_up          = -20.0;  // and cm below them
-user float ssq_neck_reach       = 6.0;    // cm: how near it the hand must be (small: the shoulder holsters are either side)
-user float ssq_back_fwd         = -25.0;  // the back mount's handle: cm behind your eyes
-user float ssq_back_up          = -50.0;  // and cm below them (the small of the back; the same eye height the rig's hips hang from)
-user float ssq_back_reach       = 10.0;   // cm: how near the handle the hand must be
+                                          // neck, 3 either; 0 over the off shoulder (the old mount; back in the menu 2026-11-02)
+// THE BACK SPOTS (2026-11-02, owner: "cannot reach small of back or neck"): ROOM centimetres in the BODY's frame (it
+// follows your torso, not your head), from your eyes as they are when you look straight ahead; side is toward your
+// off hand. A press takes the shield within the reach of the centre, and only behind the line in state.zs (back 14 cm,
+// neck 6 cm behind your eyes). Was a 10 cm / 6 cm grab on a point that turned with your head.
+user float ssq_back_fwd         = -30.0;  // small of the back: cm behind your eyes
+user float ssq_back_side        = 10.0;   // and cm to the off side
+user float ssq_back_up          = -62.0;  // and cm below them (belt height; RSQ TacticalRig's hips hang 70 cm down)
+user float ssq_back_reach       = 30.0;   // cm: the grab's radius
+user float ssq_neck_fwd         = -22.0;  // behind the neck: cm behind your eyes
+user float ssq_neck_side        = 8.0;    // and cm to the off side (reached over the off shoulder)
+user float ssq_neck_up          = -18.0;  // and cm below them
+user float ssq_neck_reach       = 26.0;   // cm: the grab's radius
+user float ssq_neck_pivot       = 9.0;    // cm your eyes sit in front of the neck your head turns on (an estimate, not
+                                          // measured): the mount hangs from the neck so a head turn does not move it
 user int   ssq_stow_world       = 0;      // draw the shield on your back while it is stowed (owner: off, 2026-10-22)
 user float ssq_mount_yaw        = 0.0;
 user float ssq_mount_pitch      = 0.0;

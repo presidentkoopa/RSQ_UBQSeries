@@ -1,5 +1,47 @@
 # RSQ ShieldSaw — handoff
 
+## 2026-11-02: the mount hangs on the body; reachable back and neck; shoulder row; the shared lock diamond -- read first
+
+Owner's headset (verbatim): "Cannot reach small of back or neck, saw seems to be attached to helmet and not body when
+it comes for storage, when I turn my head, the shield moves when stored, let's bring back option for left shoulder
+holster, and try and fix this back of neck or lower back thing." Rig only (QZD 17.3 Linux), **not headset-confirmed**.
+Probe: `tools/rigtest/ssbody` (test only, log prefix `ssqb_`).
+
+**Done (measured on the rig):**
+- CAUSE 1, the head: `MountPos`/`NeckPos`/`MountPlateCentre`/`MountPlateNormal` and the stowed prop used `mo.angle`
+  (the headset's yaw) and `mo.pos` (moved with the headset). Now `BodyYaw`/`BodyEyes`/`BodyAt`/`BodyLocal` (state.zs):
+  the body keeper `BodyKeep` (RSQ TacticalRig body.zs rule, copied) runs for the console player and is synced as
+  `netevent ssq-body`; the point hangs from the neck (`ssq_neck_pivot` 9 cm, an estimate). Rig: head swept +-60 deg
+  at 4 deg/tic and 1 deg/tic, body yaw stayed 90, the mount moved <= 0.5 map units (1.4 cm) during the turn; three
+  45-degree snaps: body followed each; a 90-degree turn of head and hands in the room: followed.
+- CAUSE 1b, found on the way: the controller yaws are a tic LATE on QZD 17.3 (snap: pawn angle t45, both
+  controllers t46), so the rig's same-tic test never saw a snap. And its plain `|d - dA| < 1.5` took any head turn
+  slower than 1.5 deg/tic for a turn. Now: controller yaw + this tic's angle change, both controllers within
+  min(1.5, half the step), confirmed by the raw yaws the tic after (rejects tics the renderer skipped).
+- CAUSE 2, the height: hands are measured from your real eyes, but the mount hung from `viewz`, the pawn's fixed
+  41-unit eye (1.45 m; hw_openxrdevice.cpp:595): the old spots sat (eye height - 1.45 m) too low. Now `EyeZ` hangs
+  from the kept standing eyes (headset height + vr_height_adjust; TacticalRig's seated-eye rule), synced in the same
+  event; crouch button off: viewz as before. Rig: headset at 1.75 m, a hand 0.62 m below it drew.
+- CAUSE 3, the size: 10 cm (back) / 6 cm (neck) grabs. Now back r 0.30 m at (-0.30, +0.10 off, -0.62), behind
+  -0.14; neck r 0.26 m at (-0.22, +0.08 off, -0.18), behind -0.06 (room m, body frame, from the eyes). A hand inside
+  any TacticalRig holster (its cvars, read by name) is refused. Rig: all spots drew and stowed; front, beside the
+  hip, 8 cm behind the eyes, and the rig's left-shoulder holster (neck spot) refused; with the head 70 deg left for
+  60 tics the back drew (the catch-up waits while the off hand is in the zone).
+- Over the Off Shoulder: it was never removed (ssq_mount_spot 0 since f894ba873, 10-31, when the owner's pick made
+  the small of the back the default); the row was buried on Look and Sound. Moved to the front page; numbers and
+  height as before, turned with the body. Rig: drew and stowed, with and without TacticalRig.
+- Settings generation 3 resets the six old back/neck cvars once (their meaning changed). New: ssq_back_side,
+  ssq_neck_side, ssq_neck_pivot (menu + Reset All).
+- Lock mark: SSQ_LockMark = ring SSQR (AddShaded, SSQ_CB HAVE / green 0x20FF40) + SSQ_LockCentre SSQC (Add, white),
+  scale/rank/Cue Size kept; SSQK removed. Frames: green rings, white centres; Deuteranopia: azure rings.
+- Loads: plain doom2 and the owner's order (01-07) + TacticalRig: 0 script errors from ours (the 4 voxeldef lines
+  are BD_VoxelPack's). Save/load: no errors.
+
+**Not done / open:** nothing headset-checked. Snap detection rests on the measured one-tic lag; if a headset's frames
+line up differently, snaps fall back to the 35-deg/1 s catch-up. TacticalRig's body.zs has the same snap and
+slow-head-turn flaws and hangs from viewz (not changed: not this lane's folder). The uncommitted state.zs edit from
+the earlier lane (field declarations only) was kept and finished.
+
 ## 2026-10-31: owner's picks 12-15 and a bash you can see -- read first
 
 Rig only (QZD 17.3 Linux, doom2 MAP01, brutal22test6 -> BD_VoxelPack -> BD22_VR-Reloaded 2.0.3h + hotfix ->
