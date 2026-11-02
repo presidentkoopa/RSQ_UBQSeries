@@ -29,6 +29,7 @@ class RSQ_Glove : Weapon
 	bool   lastStar;      // a star punch
 	int    lastChain;     // One-Two: how many alternating hits in a row, this one included
 	int    lastHand;
+	int    lastHeight;    // where the glove met it, permille of its height from its feet (Headshot)
 	int    lastKinds;     // Combos: this player's punches inside COMBO_TICS, oldest first, digits kind + 1 (jab, jab, hook = 112)
 	int    lastRun;       // Dempsey: alternating hooks in a row, this one included (0 not a hook)
 	// Star Punch's bank (SuperPunchOut's), kept on the main-hand glove so it is saved and kept across levels
@@ -745,6 +746,7 @@ class RSQML_Gloves : StaticEventHandler
 		g.lastRun = runCount[pn];
 		double upFrac = clamp((at.z - victim.pos.z) / max(victim.height, 1.0), 0.0, 1.0);
 		g.lastBody = g.lastKind != PK_UPPER && upFrac < 0.6;
+		g.lastHeight = int(upFrac * 1000);
 		g.lastCounter = RSQML.InAttack(victim);
 
 		// ONE-TWO: the other hand, inside half a second, keeps the chain; the same hand or a gap
@@ -783,7 +785,19 @@ class RSQML_Gloves : StaticEventHandler
 		if (huLv > 0) dmg = int(dmg * RSQML.Num("HeadlockUppercut.mult", huLv, 0, 1.75));
 		// THE BERSERK PACK (owner, 2026-11-02, GBOVR_TREES.md 4.1 F): x5 while you hold it (Doom's own fist is x10; the
 		// shove already reads it, shove.zs BUTT_DMG_ZERK). Before this a Berserk punch did the same 10 to 20.
-		if (pmo.CountInv("PowerStrength") > 0) dmg *= 5;
+		// (any PowerStrength: Gun Bonsai VR's Berserk Meter gives a timed one, a subclass)
+		bool zerk = pmo.FindInventory("PowerStrength", true) != null;
+		if (zerk) dmg *= 5;
+		// TAUNT (Gun Bonsai VR's player node, twohand.zs): the next punch inside its window does double
+		let th = RSQML_TwoHand.Get();
+		if (th && th.tauntUntil[pn] >= now)
+		{
+			dmg *= 2;
+			th.tauntUntil[pn] = 0;
+			if (RSQML.Debug() > 0) Console.Printf("RSQML taunt: the punch doubled");
+		}
+		// RAGE (Gun Bonsai VR, 4.1 F) under the Berserk: 2 the hit-stop doubles, 3 the knock x1.5
+		int rgLv = zerk ? RSQML.GBLevel(g, "Rage") : 0;
 		if (RSQML.Debug() > 0) { static const String kn[] = { "jab", "hook", "uppercut" }; Console.Printf("RSQML punch lands: %s, %.2f m/s, path %.2f %.2f %.2f m", kn[g.lastKind], avgMps, path.x, path.y, path.z); }
 		victim.SpawnBlood(at, VectorAngle(dir.x, dir.y), dmg);
 		RSQML_Spark.Punch(g.lastKind, RSQML_Spark.OnSkin(victim, at));   // a spark per kind of blow (sparks.zs)
@@ -804,12 +818,14 @@ class RSQML_Gloves : StaticEventHandler
 		{
 			double kk = (2.0 + 6.0 * g.lastPower) * clamp(100.0 / max(victim.mass, 1.0), 0.08, 2.0);
 			if (hhLv > 0) kk *= RSQML.Num("HeavyHands.knock", hhLv, 0, 1.25);
+			if (rgLv >= 3) kk *= 1.5;
 			if (g.lastKind == PK_UPPER || juggle) Launch(victim, toFoe, g.lastPower, hhLv, pmo, g, huLv > 0 ? RSQML.Num("HeadlockUppercut.lift", huLv, 0, 1.5) : 1.0);
 			else victim.vel += dir * kk;
 		}
 		if (hhLv > 0 && victim && victim.health > 0 && !victim.player)
 		{
 			int ft = int(RSQML.Num("HeavyHands.freeze", hhLv, g.lastPower, g.lastPower >= 0.5 ? 4 : 2));
+			if (rgLv >= 2) ft *= 2;
 			victim.freezetics = max(victim.freezetics, ft);
 			if (RSQML.Debug() > 0) Console.Printf("RSQML heavy hands: %s frozen %d tics, vel %.1f", victim.GetClassName(), ft, victim.vel.xy.Length());
 		}

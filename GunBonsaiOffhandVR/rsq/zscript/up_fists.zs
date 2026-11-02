@@ -518,3 +518,292 @@ class RSQ_Upgrade_Chokehold : RSQ_GrappleUpgrade
 	static int Damage(uint lv) { return 2 + lv; }
 	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("dmg", String.Format("%d", Damage(level))); }
 }
+
+// ---- F. BERSERK ----------------------------------------------------------------------------------------------------
+// Doom's Berserk pack is the fists' power-up: a punch does x5 while you hold it (RSQ Melee, base). These grow it.
+class RSQ_BerserkMath
+{
+	// holding the Berserk: Doom's PowerStrength, or Berserk Meter's earned one (a subclass)
+	static bool On(Actor pawn) { return pawn && pawn.FindInventory("PowerStrength", true) != null; }
+}
+
+// RAGE: while the Berserk lasts every other node this glove has counts one level higher (2: and RSQ Melee doubles the
+// hit-stop; 3: and its knockback x1.5). The raise is done on the levels themselves, so RSQ Melee's moves and this
+// patch's own nodes all see it, and taken back the moment the Berserk ends or the glove leaves the hand; Has / LevelOf
+// look through it, so it never offers a child early.
+class RSQ_Upgrade_Rage : RSQ_Upgrade_Base
+{
+	bool raisedNow;
+	Array<String> raised;   // the classes this Rage raised
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return GloveInfo(info) && LevelOf(info, "Rage") < 3; }
+	bool Raises(TFLV_Upgrade_BaseUpgrade u) { return raisedNow && u && u != self && raised.Find(u.GetClassName()) < raised.Size(); }
+
+	private TFLV_WeaponInfo MyInfo(Actor owner)
+	{
+		let st = TFLV_PerPlayerStats.GetStatsFor(owner);
+		if (!st) return null;
+		for (int h = 0; h < 2; h++)
+		{
+			let info = st.GetInfoForHand(h);
+			if (info && info.upgrades && info.upgrades.upgrades.Find(self) < info.upgrades.upgrades.Size()) return info;
+		}
+		return null;
+	}
+	void Raise(TFLV_WeaponInfo info)
+	{
+		if (raisedNow || !info) return;
+		raised.Clear();
+		for (int i = 0; i < info.upgrades.upgrades.Size(); ++i)
+		{
+			let u = RSQ_Upgrade_Base(info.upgrades.upgrades[i]);
+			if (!u || u == self || !u.enabled) continue;
+			u.level++;
+			raised.Push(u.GetClassName());
+		}
+		raisedNow = true;
+	}
+	void Lower(TFLV_WeaponInfo info)
+	{
+		if (!raisedNow) return;
+		raisedNow = false;
+		if (info)
+			for (int i = 0; i < info.upgrades.upgrades.Size(); ++i)
+			{
+				let u = info.upgrades.upgrades[i];
+				if (u && u != self && raised.Find(u.GetClassName()) < raised.Size() && u.level > 1) u.level--;
+			}
+		raised.Clear();
+	}
+	override void Tick(Actor owner)
+	{
+		bool zerk = RSQ_BerserkMath.On(owner);
+		if (zerk == raisedNow) return;
+		let info = MyInfo(owner);
+		if (!info) return;
+		if (zerk) Raise(info); else Lower(info);
+	}
+	override void OnDeactivate(TFLV_PerPlayerStats stats, TFLV_WeaponInfo info) { Lower(info); }
+	override void GetTooltipFields(Dictionary fields, uint level) {}
+}
+
+// BLOOD RUSH (the owner reworked it 11-02: armour, not health -- Kill Rewards already drops health): a fist kill while
+// you hold the Berserk gives armour.
+class RSQ_Upgrade_BloodRush : RSQ_Upgrade_Base
+{
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return GloveInfo(info) && Has(info, "Rage") && LevelOf(info, "BloodRush") < 3; }
+	static int Armour(uint lv) { return 5 + 5 * lv; }
+	override void OnKill(PlayerPawn pawn, Actor shot, Actor target)
+	{
+		if (!pawn || !IsGlove(shot) || !RSQ_BerserkMath.On(pawn)) return;
+		let ab = BasicArmorBonus(Actor.Spawn("RSQ_BloodRushArmor", pawn.pos, NO_REPLACE));
+		if (!ab) return;
+		ab.SaveAmount = Armour(level);
+		if (!ab.CallTryPickup(pawn)) ab.Destroy();
+		pawn.A_SetBlend("FF2020", 0.25, 10);
+		RSQM.Touch("bloodrush", pawn, target);
+	}
+	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("n", String.Format("%d", Armour(level))); }
+}
+class RSQ_BloodRushArmor : BasicArmorBonus
+{
+	Default { Armor.SavePercent 33.335; Armor.MaxSaveAmount 200; +INVENTORY.ALWAYSPICKUP +INVENTORY.QUIET; Inventory.PickupMessage ""; }
+}
+
+// BERSERK METER: fist damage fills a meter; full, it gives a Berserk for a while without a pack.
+class RSQ_Upgrade_BerserkMeter : RSQ_Upgrade_Base
+{
+	const FULL = 300;
+	int meter;
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return GloveInfo(info) && Has(info, "Rage", 2) && LevelOf(info, "BerserkMeter") < 3; }
+	static int Tics(uint lv) { return 35 * (20 + 5 * lv); }
+	override void OnDamageDealt(Actor pawn, Actor shot, Actor target, int damage)
+	{
+		if (!IsGlove(shot) || !pawn || damage <= 0 || RSQ_BerserkMath.On(pawn)) return;
+		meter += damage;
+		if (meter < FULL) return;
+		meter = 0;
+		pawn.GiveInventory("RSQ_EarnedStrength", 1);
+		let p = RSQ_EarnedStrength(pawn.FindInventory("RSQ_EarnedStrength"));
+		if (p) p.left = Tics(level);
+		pawn.A_StartSound("misc/p_pkup", CHAN_AUTO, CHANF_OVERLAP, 1.0);
+		RSQM.Touch("berserk.earned", pawn, target);
+	}
+	override void GetTooltipFields(Dictionary fields, uint level)
+	{
+		fields.Insert("full", String.Format("%d", FULL));
+		fields.Insert("time", AsSeconds(Tics(level)));
+	}
+}
+// A Berserk earned by the meter: Doom's PowerStrength (so a punch, the shove and anything that asks for the Berserk sees
+// it), but it runs out.
+class RSQ_EarnedStrength : PowerStrength
+{
+	int left;
+	override void Tick()
+	{
+		Super.Tick();
+		if (--left <= 0) Destroy();
+	}
+}
+
+// ---- G. GUN HAND ---------------------------------------------------------------------------------------------------
+// The gun-butt shove is RSQ Melee's (with BD22 VR Reloaded loaded, its own strike). These are glove nodes (the Fists
+// tree); the shove reads the best of either glove.
+class RSQ_Upgrade_PistolWhip : RSQ_Upgrade_Base
+{
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return GloveInfo(info) && LevelOf(info, "PistolWhip") < 3; }
+	static int Stagger(uint lv) { return 10 * lv; }
+	static double Mult(uint lv) { return 1.25 + 0.25 * lv; }
+	override void GetTooltipFields(Dictionary fields, uint level)
+	{
+		fields.Insert("time", AsSeconds(Stagger(level)));
+		fields.Insert("mult", AsPercentIncrease(Mult(level)));
+	}
+}
+class RSQ_Upgrade_RifleButt : RSQ_Upgrade_Base
+{
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return GloveInfo(info) && Has(info, "PistolWhip", 2) && LevelOf(info, "RifleButt") < 3; }
+	static int Count(uint lv) { return 2 + lv; }
+	static double Speed() { return 4.0; }
+	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("count", String.Format("%d", Count(level))); }
+}
+
+// ---- H. TAUNT (a player node; RSQ Melee does it on RSQ Gestures' "both hands apart") --------------------------------
+class RSQ_Upgrade_Taunt : RSQ_Perk
+{
+	override int Cap() { return 3; }
+	override bool ModLoaded() { return RSQM.Svc("RSQML_Service") != null && RSQM.Svc("RSQG_Service") != null; }
+	static int Tics(uint lv) { return 35 * (2 + lv); }
+	static double Range() { return 10.0; }   // metres
+	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("time", AsSeconds(Tics(level))); }
+}
+
+// ---- I. CRITICAL HITS (player nodes; the owner's example, Mikk's Critical Shots, as a concept only) ------------------
+class RSQ_CritPerk : RSQ_Perk
+{
+	override int Cap() { return 3; }
+	// a melee blow: Melee's damage types, or an inflictor that is a weapon Gun Bonsai calls melee
+	static bool MeleeHit(Actor pawn, Actor shot, Name attacktype)
+	{
+		if (attacktype == 'Melee' || attacktype == 'Kick') return true;
+		let w = Weapon(shot);
+		if (!w) return false;
+		let st = TFLV_PerPlayerStats.GetStatsFor(pawn);
+		let info = st ? st.GetInfoFor(w) : null;
+		return info && info.IsMelee();
+	}
+	static void Sparkle(Actor at, Vector3 pos, Color c, int n)
+	{
+		for (int i = 0; i < n; i++)
+			at.A_SpawnParticle(c, SPF_FULLBRIGHT, 16, 6, 0, pos.x - at.pos.x, pos.y - at.pos.y, pos.z - at.pos.z,
+				frandom[RSQFx](-3, 3), frandom[RSQFx](-3, 3), frandom[RSQFx](-1, 3), 0, 0, -0.1, 1.0, -0.06);
+	}
+}
+
+// CRITICAL HITS: a hit landed during a monster's attack wind-up is a critical: harder, and it is stunned a second;
+// hits on a stunned monster land harder too; at most 3 criticals in 15 tics. Level 1 melee only; level 2 adds guns.
+// With Counterpunch on the punching glove the two stack once: the stun, and Counterpunch's own bigger multiplier. A
+// Three-Hit's third hit always counts as a critical.
+class RSQ_Upgrade_CriticalHits : RSQ_CritPerk
+{
+	const STUN = 35;
+	const BURST_MAX = 3;
+	const BURST_TICS = 15;
+	Array<int> critTics;
+	int lastCritTic;
+	Actor lastCrit;
+	static double Mult(uint lv) { return 1.5 + 0.25 * lv; }
+	static double Stunned(uint lv) { return 1.25 + 0.25 * lv; }
+	override double ModifyDamageDealt(Actor pawn, Actor shot, Actor target, double damage, Name attacktype)
+	{
+		if (!Monster(target)) return damage;
+		bool melee = MeleeHit(pawn, shot, attacktype);
+		if (!melee && level < 2) return damage;
+		int now = RSQM.Now();
+		let dz = RSQ_Dazed.On(target);
+		bool combo = IsGlove(shot) && Punch(shot, "punch.kinds") == RSQ_Upgrade_ThreeHit.PATTERN && Glove3Hit(pawn, shot);
+		if ((RSQM.InAttack(target) || combo) && Room(now))
+		{
+			critTics.Push(now);
+			lastCritTic = now;
+			lastCrit = target;
+			dz.critUntil = now + STUN;
+			Vector3 at = shot && shot != pawn && !IsGlove(shot) ? shot.pos : target.pos + (0, 0, target.height * 0.6);
+			Class<Actor> spark = "RSQML_SparkSuper";   // RSQ Melee's Super Spark, by name (none without it)
+			if (spark) Actor.Spawn(spark, at, NO_REPLACE);
+			target.A_StartSound("rsq/counter", CHAN_AUTO, CHANF_OVERLAP, 1.0);
+			RSQM.Touch("crit", pawn, target);
+			// Counterpunch on this glove: its stagger and multiplier stand, this one is not added on top
+			if (IsGlove(shot) && Punch(shot, "punch.counter") == 1 && GloveHas(pawn, shot, "Counterpunch")) return damage;
+			return damage * Mult(level);
+		}
+		if (dz.critUntil > now) return damage * Stunned(level);
+		return damage;
+	}
+	override void OnDamageDealt(Actor pawn, Actor shot, Actor target, int damage)
+	{
+		if (target && target == lastCrit && lastCritTic == RSQM.Now() && target.health > 0) RSQ_Dazed.On(target).Stagger(STUN);
+	}
+	bool Room(int now)
+	{
+		for (int i = critTics.Size() - 1; i >= 0; i--) if (now - critTics[i] >= BURST_TICS) critTics.Delete(i);
+		return critTics.Size() < BURST_MAX;
+	}
+	static bool GloveHas(Actor pawn, Actor shot, String shortName)
+	{
+		let st = TFLV_PerPlayerStats.GetStatsFor(pawn);
+		let w = Weapon(shot);
+		return st && w && Has(st.GetInfoFor(w), shortName);
+	}
+	static bool Glove3Hit(Actor pawn, Actor shot) { return GloveHas(pawn, shot, "ThreeHit"); }
+	override void GetTooltipFields(Dictionary fields, uint level)
+	{
+		fields.Insert("mult", AsPercentIncrease(Mult(level)));
+		fields.Insert("stun", AsPercentIncrease(Stunned(level)));
+	}
+}
+
+// HEADSHOT: a hit in the top fifth of a monster (a punch: where the glove met it; a gun: where the shot landed). The
+// pellets of one blast after the first count half.
+class RSQ_Upgrade_Headshot : RSQ_CritPerk
+{
+	const TOP = 0.8;
+	int lastTic;
+	Actor lastOn;
+	override bool IsSuitableForPlayer(TFLV_PerPlayerStats stats) { return Super.IsSuitableForPlayer(stats) && PHas(stats, "CriticalHits"); }
+	static double Mult(uint lv) { return 2.0 + 0.5 * lv; }
+	override double ModifyDamageDealt(Actor pawn, Actor shot, Actor target, double damage, Name attacktype)
+	{
+		if (!Monster(target) || target.height <= 0) return damage;
+		double frac = -1;
+		if (IsGlove(shot)) { int hh = Punch(shot, "punch.height"); if (hh >= 0) frac = hh / 1000.0; }
+		else if (shot && shot != pawn) frac = (shot.pos.z - target.pos.z) / target.height;
+		if (frac < TOP) return damage;
+		int now = RSQM.Now();
+		double m = Mult(level);
+		if (lastOn == target && lastTic == now) m = 1.0 + (m - 1.0) * 0.5;
+		else { Sparkle(target, target.pos + (0, 0, target.height * 0.9), "FF2020", 10); RSQM.Touch("headshot", pawn, target); }
+		lastOn = target; lastTic = now;
+		return damage * m;
+	}
+	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("mult", String.Format("x%.1f", Mult(level))); }
+}
+
+// BACKSTAB: a melee hit from behind (within 60 degrees of its back); a kill this way is silent.
+class RSQ_Upgrade_Backstab : RSQ_CritPerk
+{
+	const BACK = 120.0;   // degrees from where it faces to you
+	override bool IsSuitableForPlayer(TFLV_PerPlayerStats stats) { return Super.IsSuitableForPlayer(stats) && PHas(stats, "CriticalHits"); }
+	static double Mult(uint lv) { return 3.0 + lv; }
+	override double ModifyDamageDealt(Actor pawn, Actor shot, Actor target, double damage, Name attacktype)
+	{
+		if (!Monster(target) || !pawn || !MeleeHit(pawn, shot, attacktype)) return damage;
+		if (Actor.absangle(target.angle, target.AngleTo(pawn)) < BACK) return damage;
+		double d = damage * Mult(level);
+		if (d >= target.health) target.DeathSound = "";
+		Sparkle(target, target.pos + (0, 0, target.height * 0.6), "FFFFFF", 12);
+		RSQM.Touch("backstab", pawn, target);
+		return d;
+	}
+	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("mult", String.Format("x%d", int(Mult(level)))); }
+}

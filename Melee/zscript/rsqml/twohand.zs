@@ -19,6 +19,9 @@ class RSQML_TwoHand : StaticEventHandler
 	const POUND_STAGGER = 15;     // without Knockdown, what the shockwave does to what it hits
 	const POUND_HEIGHT = 64.0;    // map units above or below your feet that the shockwave still reaches
 	const WEDGE = 45.0;           // degrees either side of where you face
+	const TAUNT_STAGGER = 10;     // Taunt 3: what stands within TAUNT_NEAR m
+	const TAUNT_NEAR = 3.0;
+	int tauntUntil[MAXPLAYERS];   // Taunt: the next punch until this tic does double (gloves.zs Deliver)
 
 	static RSQML_TwoHand Get() { return RSQML_TwoHand(StaticEventHandler.Find("RSQML_TwoHand")); }
 
@@ -50,7 +53,7 @@ class RSQML_TwoHand : StaticEventHandler
 			int a, b;
 			[g, a] = Best(pmo, "GroundPound", "rsqml_groundpound");
 			[g, b] = Best(pmo, "ClearOut", "rsqml_clearout");
-			int c = RSQML_Guard.Node(pmo, "AbsorbRelease");
+			int c = max(RSQML_Guard.Node(pmo, "AbsorbRelease"), RSQML_Guard.Node(pmo, "Taunt"));
 			if (a <= 0 && b <= 0 && c <= 0) continue;
 			if (!looked) { gs = RSQML.Svc("RSQG_Service"); looked = true; }
 			if (!gs) return;
@@ -67,7 +70,12 @@ class RSQML_TwoHand : StaticEventHandler
 		if (!pmo || pmo.health <= 0) return;
 		if (e.Args[0] == 0) Pound(pmo, e.Args[1] / 100.0);
 		else if (e.Args[0] == 3) ClearOut(pmo, e.Args[1] / 100.0);
-		else if (e.Args[0] == 1) { let gd = RSQML_Guard.Get(); if (gd) gd.Release(pmo); }   // Absorb and Release (guard.zs)
+		else if (e.Args[0] == 1)
+		{
+			// both hands apart: the Guard's charge goes out if there is one (Absorb and Release, guard.zs), else a Taunt
+			let gd = RSQML_Guard.Get();
+			if (!gd || gd.Release(pmo) == 0) Taunt(pmo);
+		}
 	}
 
 	// a monster's push away from you, by its weight (a boss barely moves)
@@ -75,6 +83,36 @@ class RSQML_TwoHand : StaticEventHandler
 	{
 		double k = clamp(100.0 / max(o.mass, 1.0), 0.1, 1.5);
 		return o.bBoss ? k * 0.3 : k;
+	}
+
+	// TAUNT (Gun Bonsai VR's player node, GBOVR_TREES.md 4.1 H): empty hands or fists, both thrown apart: every monster
+	// within Taunt.range that can see you turns on you, and your next punch inside Taunt.tics does double; at level 3
+	// what stands within TAUNT_NEAR m staggers.
+	void Taunt(PlayerPawn pmo)
+	{
+		int lv = RSQML_Guard.Node(pmo, "Taunt");
+		if (lv <= 0) return;
+		let p = pmo.player;
+		if ((p.ReadyWeapon && !RSQ_Glove(p.ReadyWeapon)) || (p.OffhandWeapon && !RSQ_Glove(p.OffhandWeapon))) return;
+		int pn = pmo.PlayerNumber();
+		tauntUntil[pn] = level.maptime + int(RSQML.Num("Taunt.tics", lv, 0, 105));
+		double upm = RSQML.UnitsPerMetre();
+		double r = RSQML.Num("Taunt.range", lv, 0, 10.0) * upm;
+		int n = 0;
+		let it = BlockThingsIterator.Create(pmo, r);
+		while (it.Next())
+		{
+			let o = it.thing;
+			if (!RSQML.IsFoe(pmo, o) || pmo.Distance2D(o) > r || !o.CheckSight(pmo, SF_IGNOREVISIBILITY | SF_IGNOREWATERBOUNDARY)) continue;
+			o.target = pmo;
+			o.lastheard = pmo;
+			if (o.SeeState && (o.CurState == o.SpawnState || o.InStateSequence(o.CurState, o.SpawnState))) o.SetState(o.SeeState);
+			if (lv >= 3 && pmo.Distance2D(o) <= TAUNT_NEAR * upm) RSQML.Stagger(o, TAUNT_STAGGER);
+			RSQML.Touch("taunt", pmo, o);
+			n++;
+		}
+		pmo.A_StartSound("*pain100", CHAN_VOICE, CHANF_OVERLAP, 1.0);
+		if (RSQML.Debug() > 0) Console.Printf("RSQML taunt: level %d, %d turned on you, the next punch inside %d tics doubles", lv, n, tauntUntil[pn] - level.maptime);
 	}
 
 	void Pound(PlayerPawn pmo, double mps)

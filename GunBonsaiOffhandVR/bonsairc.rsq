@@ -25,6 +25,8 @@ register
   RSQ_Upgrade_SwatBack RSQ_Upgrade_Parry RSQ_Upgrade_ReflectGuard RSQ_Upgrade_AbsorbRelease
   RSQ_Upgrade_HumanShield RSQ_Upgrade_HeadlockUppercut RSQ_Upgrade_HeavierHeadlock RSQ_Upgrade_Slam
   RSQ_Upgrade_ThrowInto RSQ_Upgrade_Chokehold
+  RSQ_Upgrade_Rage RSQ_Upgrade_BloodRush RSQ_Upgrade_BerserkMeter RSQ_Upgrade_PistolWhip RSQ_Upgrade_RifleButt
+  RSQ_Upgrade_Taunt RSQ_Upgrade_CriticalHits RSQ_Upgrade_Headshot RSQ_Upgrade_Backstab
 ;
 
 # The gloves, the sabers and the ShieldSaw are melee weapons whatever they are seen to do: the

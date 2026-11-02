@@ -316,6 +316,17 @@ class RSQ_MeleeUpgradeService : Service
 			d.KnockDown(min(intArg, 10));
 			return 1;
 		}
+		// "whip.mark" (Pistol Whip, RSQ Melee's shove): objectArg = a monster, intArg = the player number, doubleArg = the
+		// multiplier: that player's next hit on it inside MARK_TICS lands harder (RSQ_Dazed.ModifyDamage). 1 done.
+		if (request == "whip.mark")
+		{
+			let mo = Actor(objectArg);
+			if (!mo || mo.health <= 0 || intArg < 0 || intArg >= MAXPLAYERS) return 0;
+			let d = RSQ_Dazed.On(mo);
+			if (!d) return 0;
+			d.Mark(intArg, doubleArg);
+			return 1;
+		}
 		if (request == "is.melee")
 		{
 			let pawn = Actor(objectArg);
@@ -390,6 +401,13 @@ class RSQ_MeleeUpgradeService : Service
 			if (stringArg == "Slam.stagger") return RSQ_Upgrade_Slam.Stagger();
 			if (stringArg == "ThrowInto.mult") return RSQ_Upgrade_ThrowInto.Mult(lv);
 			if (stringArg == "Chokehold.damage") return RSQ_Upgrade_Chokehold.Damage(lv);
+			// G. Gun hand, H. Taunt
+			if (stringArg == "PistolWhip.stagger") return RSQ_Upgrade_PistolWhip.Stagger(lv);
+			if (stringArg == "PistolWhip.mult") return RSQ_Upgrade_PistolWhip.Mult(lv);
+			if (stringArg == "RifleButt.count") return RSQ_Upgrade_RifleButt.Count(lv);
+			if (stringArg == "RifleButt.speed") return RSQ_Upgrade_RifleButt.Speed();
+			if (stringArg == "Taunt.tics") return RSQ_Upgrade_Taunt.Tics(lv);
+			if (stringArg == "Taunt.range") return RSQ_Upgrade_Taunt.Range();
 			return 0;
 		}
 		return 0;
@@ -411,6 +429,10 @@ class RSQ_Dazed : Inventory
 {
 	int staggerUntil, windedUntil, downUntil, disarmUntil;
 	int frozenUntil, shatterTic;
+	int critUntil;                     // Critical Hits: stunned by a critical until this tic
+	int markUntil, markPn, markUsed;   // Pistol Whip: that player's next hit lands harder until this tic
+	double markMult;
+	const MARK_TICS = 70;
 	bool tinted;
 	TranslationID oldTranslation;
 	int burnUntil, burnNext, burnDmg;
@@ -452,6 +474,25 @@ class RSQ_Dazed : Inventory
 		if (owner) owner.freezetics = 0;
 		if (owner && tinted) owner.Translation = oldTranslation;
 		tinted = false;
+	}
+
+	// PISTOL WHIP's mark (RSQ Melee's shove asks "whip.mark"): player pn's next hit inside MARK_TICS, the shove itself
+	// excepted, does x mult (every hit of that one tic: a shotgun's pellets)
+	void Mark(int pn, double mult)
+	{
+		markPn = pn;
+		markMult = mult;
+		markUntil = level.maptime + MARK_TICS;
+		markUsed = -1;
+	}
+	override void ModifyDamage(int damage, Name damageType, out int newdamage, bool passive, Actor inflictor, Actor source, int flags)
+	{
+		if (!passive || damage <= 0 || !source || !source.player || damageType == 'Kick') return;
+		int now = level.maptime;
+		if (now > markUntil || source.PlayerNumber() != markPn) return;
+		if (markUsed >= 0 && markUsed != now) { markUntil = 0; return; }
+		markUsed = now;
+		newdamage = int(round(damage * markMult));
 	}
 
 	// BURNING (Fire Fist): `dmg` every half second for `tics`, paid to the glove that lit it

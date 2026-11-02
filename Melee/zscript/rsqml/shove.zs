@@ -305,7 +305,7 @@ class RSQML_Shove : StaticEventHandler
 			}
 		}
 
-		int dmg = pmo.CountInv("PowerStrength") > 0 ? BUTT_DMG_ZERK : BUTT_DMG;
+		int dmg = pmo.FindInventory("PowerStrength", true) ? BUTT_DMG_ZERK : BUTT_DMG;
 		int landed = 0;
 		for (int i = 0; i < struck.Size(); i++)
 		{
@@ -315,6 +315,7 @@ class RSQML_Shove : StaticEventHandler
 			t.DamageMobj(pmo, pmo, dmg, 'Kick');
 			landed++;
 			if (t && !t.bDestroyed && t.health > 0 && !bdPain) Knock(pmo, t);
+			if (t && !t.bDestroyed && t.health > 0) GunHand(pmo, t, e.Args[1] / 100.0);
 			if (Dbg() >= 1)
 				Console.Printf("\c[Gold]rsqml: butt shove hit %s for %d%s, health %d, vel %.1f %.1f %.1f (t%d)", t.GetClassName(), dmg,
 					bdPain ? " (its own Pain.Kick knocks it)" : "", t ? t.health : 0, t ? t.vel.x : 0, t ? t.vel.y : 0, t ? t.vel.z : 0, level.maptime);
@@ -473,8 +474,42 @@ class RSQML_Shove : StaticEventHandler
 		return false;
 	}
 
+	// THE GUN HAND (Gun Bonsai VR's Fists tree, GBOVR_TREES.md 4.1 G; the best of either glove): PISTOL WHIP staggers
+	// what the shove hit longer and marks it, so the shover's next shot on it inside 2 s lands harder ("whip.mark");
+	// RIFLE BUTT: a shove at RifleButt.speed or more with a long gun (slot 3 and up) knocks a non-boss down for a count.
+	// mps < 0: Brutal Doom's own strike (BD22 VR Reloaded), whose speed is not ours to read: no Rifle Butt.
+	void GunHand(PlayerPawn pmo, Actor t, double mps)
+	{
+		let gb = RSQML.GB();
+		if (!gb || !pmo || !t || t.health <= 0) return;
+		int pwLv = gb.GetInt("level", "PistolWhip", 0, 0, pmo);
+		if (pwLv <= 0) return;
+		RSQML.Stagger(t, int(RSQML.Num("PistolWhip.stagger", pwLv, 0, 10)));
+		gb.GetInt("whip.mark", "", pmo.PlayerNumber(), RSQML.Num("PistolWhip.mult", pwLv, 0, 1.5), t);
+		RSQML.Touch("whip.pistol", pmo, t);
+		int rbLv = gb.GetInt("level", "RifleButt", 0, 0, pmo);
+		bool knocked = false;
+		if (rbLv > 0 && mps >= RSQML.Num("RifleButt.speed", rbLv, 0, 4.0) && !t.bBoss && LongGun(pmo))
+		{
+			knocked = gb.GetInt("knockdown", "", int(RSQML.Num("RifleButt.count", rbLv, 0, 3)), 0, t) == 1;
+			if (knocked) RSQML.Touch("butt.knockdown", pmo, t);
+		}
+		if (Dbg() >= 1) Console.Printf("\c[Gold]rsqml: gun hand: %s whipped (level %d)%s", t.GetClassName(), pwLv, knocked ? ", knocked down (rifle butt)" : "");
+	}
+	static bool LongGun(PlayerPawn pmo)
+	{
+		let w = pmo.player.ReadyWeapon;
+		if (!w) return false;
+		bool found; int slot, idx;
+		[found, slot, idx] = pmo.player.weapons.LocateWeapon(w.GetClass());
+		return found && slot >= 3;
+	}
+
 	override void WorldThingDamaged(WorldEvent e)
 	{
+		// BD22 VR Reloaded's own butt strike landing (its KickAttack: damage type Kick, from you): Pistol Whip's mark
+		if (bdq && e.DamageType == 'Kick' && e.Thing && e.Thing.bIsMonster && e.Thing.health > 0 && PlayerPawn(e.DamageSource))
+			GunHand(PlayerPawn(e.DamageSource), e.Thing, -1);
 		if (fearPn < 0) return;
 		let t = e.Thing;
 		if (!t || !t.bIsMonster || e.Damage <= 0 || e.DamageType == 'Kick' || !FearOn(e.DamageSource)) return;

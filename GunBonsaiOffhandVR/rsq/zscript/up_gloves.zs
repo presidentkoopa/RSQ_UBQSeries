@@ -29,9 +29,21 @@ class RSQ_Upgrade_Base : TFLV_Upgrade_BaseUpgrade
 		for (int i = 0; i < info.upgrades.upgrades.Size(); ++i)
 		{
 			let u = info.upgrades.upgrades[i];
-			if (u && u.enabled && u.GetClassName() == cls) return int(u.level) >= minLevel;
+			if (u && u.enabled && u.GetClassName() == cls) return int(u.level) - RageBump(info, u) >= minLevel;
 		}
 		return false;
+	}
+	// RAGE (GBOVR_TREES.md 4.1 F) raises a glove's other nodes by 1 while the Berserk lasts; what a node was LEARNED at
+	// is its level less that (so Rage never opens a child early). 1 when this node is raised now, else 0.
+	static int RageBump(TFLV_WeaponInfo info, TFLV_Upgrade_BaseUpgrade u)
+	{
+		if (!info || !info.upgrades || !u) return 0;
+		for (int i = 0; i < info.upgrades.upgrades.Size(); ++i)
+		{
+			let r = RSQ_Upgrade_Rage(info.upgrades.upgrades[i]);
+			if (r && r.Raises(u)) return 1;
+		}
+		return 0;
 	}
 	static bool PHas(TFLV_PerPlayerStats stats, String shortName, int minLevel = 1)
 	{
@@ -57,7 +69,13 @@ class RSQ_Upgrade_Base : TFLV_Upgrade_BaseUpgrade
 	static int LevelOf(TFLV_WeaponInfo info, String shortName)
 	{
 		if (!info || !info.upgrades) return 0;
-		return int(info.upgrades.Level(RSQM.UpClass(shortName)));
+		String cls = RSQM.UpClass(shortName);
+		for (int i = 0; i < info.upgrades.upgrades.Size(); ++i)
+		{
+			let u = info.upgrades.upgrades[i];
+			if (u && u.GetClassName() == cls) return int(u.level) - RageBump(info, u);
+		}
+		return 0;
 	}
 }
 

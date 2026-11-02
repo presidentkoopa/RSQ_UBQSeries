@@ -711,6 +711,16 @@ own fist is x10). No upgrade needed; the branch builds on the pack.
 Note: Doom's Berserk strength lasts the whole level once picked up (only the red fade decays), so "extend
 Berserk" is not a node; the meter is the way to earn one without a pack.
 
+**Berserk: BUILT 11-02 (L2, branch F).** Rage raises the glove's other nodes' levels by 1 while any PowerStrength is
+held (`RSQ_Upgrade_Rage.Tick`; taken back when it ends or the glove leaves the hand), so Melee's moves and Gun Bonsai
+VR's own nodes all see it; `Has` / `LevelOf` look through the raise, so it never opens a child early. Blood Rush follows
+the owner's 11-02 rework: **armour** (5 + 5 lv), not health. Berserk Meter: 300 points of that glove's fist damage
+without the Berserk give `RSQ_EarnedStrength` (a PowerStrength that runs out after 20 + 5 lv s); its meter is not on
+the HUD yet. Melee reads any PowerStrength for the x5. **Headless 11-02:** under PowerStrength Heavy Hands and Haymaker
+read 1 -> 2 and back after; Knockdown stayed unoffered (Body Blow 2 raised to 3 did not open it); a full punch 200
+(20 x 5 x Haymaker 2); Blood Rush gave 15 armour (its level 1 raised to 2 by Rage); the meter: 240 points no
+Berserk, 300 an earned one ("berserk yes, earned yes").
+
 **G. Gun hand** (the shove; with BD22 VR loaded the strike is BD's own and Melee only reads it landing)
 
 | Node | Parent | Levels | Owns | Art | Score |
@@ -718,11 +728,24 @@ Berserk" is not a node; the meter is the way to earn one without a pack.
 | Pistol Whip (new) | root | 1-3: a shove or BD's pistol whip staggers 10 lv tics longer, and the next shot on that monster inside 2 s does x1.25 + 0.25 lv | GBOVR (a mark on the monster, `ModifyDamageDealt`) | the mark: a brief white ring | `whip.pistol` |
 | Rifle Butt (new) | Pistol Whip 2 | 1-3: a shove with a long gun at 4+ m/s knocks a non-boss down for a 2 + lv count (Knockdown's count) | Melee (shove) asks GBOVR `stagger` / knockdown | the count | `butt.knockdown` |
 
+**Gun hand: BUILT 11-02 (L2, branch G). A call made here, for the owner to keep or change:** Pistol Whip and Rifle
+Butt are glove nodes (this table lists them in the Fists tree, not marked player), and the shove reads the best of
+either glove, since a gun is in hand when it lands. Pistol Whip's mark sits on the monster (`RSQ_Dazed.Mark`, its
+`ModifyDamage` on the victim's side, so a gun's shot sees it: one tic of hits, a blast's pellets all count). Rifle Butt:
+a long gun = weapon slot 3 and up; not on BD22 VR Reloaded's own strike (its speed is not ours to read).
+**Headless 11-02:** a 4.5 m/s shove with the pistol: "whipped (level 2)", the next pistol shot 26 (15 x 1.75); a 5 m/s
+shove with the shotgun: knocked down (Rifle Butt).
+
 **H. Taunt** (needs Gestures' two-hand events on; a player upgrade)
 
 | Node | Parent | Levels | Owns | Art | Score |
 |---|---|---|---|---|---|
 | Taunt (new) | root (player) | 1-3: "both hands apart" with empty hands or fists: monsters within 10 m turn on you, and your next punch inside 3, 4, 5 s does x2; at 3 monsters within 3 m also stagger 10 tics | Melee (the move), Gestures (the read) | a shout (stock Doom player sound), a pulse round you | `taunt` |
+
+**Taunt: BUILT 11-02 (L2, branch H).** A player node offered while RSQ Melee and RSQ Gestures are loaded; "both hands
+apart" releases the Guard's charge first if there is one, else it is a Taunt (Melee `twohand.zs`); the shout is the
+player's `*pain100` until the art and sound pass. **Headless 11-02:** 3 imps turned on you, the next punch doubled
+(60 = 20 x Haymaker 1.5 x 2).
 
 **I. Critical Hits (owner, 11-02: "consider the concept of critical hits as a player upgrade")**
 
@@ -747,6 +770,19 @@ RS Ballistics for sound and flash; the owner: "especially for melee, maybe in ge
 Overlap, on purpose: Counterpunch (a fist's node) is the same moment as a critical. With both learned they stack
 once (the critical's stun, Counterpunch's longer stagger and bigger multiplier), never twice (the example's
 "don't multiply" rule). A Finisher's blow and a Three-Hit's third hit always count as a critical.
+
+**Critical Hits: BUILT 11-02 (L2, branch I).** Player nodes (`RSQ_CritPerk`). A melee blow = Melee's damage types
+(Melee, Kick) or a weapon Gun Bonsai calls melee. The critical's flash is RSQ Melee's Super Spark (by name) and the
+counter sound until the art pass; Headshot red, Backstab white particles. Counterpunch on the punching glove: the stun
+stands, Counterpunch's multiplier instead of the critical's. A Three-Hit's third hit counts as a critical.
+**Headless 11-02:** a punch into a demon's wind-up 35 (20 x 1.75), the next on the stunned demon 30 (20 x 1.5);
+Headshot 500 and Backstab 800 under an earned Berserk with Haymaker 2 (20 x 5 x 2 x 2.5, and x 4).
+
+**THE FISTS TREE IS BUILT (11-02):** all nine branches, every kept node, each run in the engine headless. Not built:
+Catch and Bullet Time Fists (parked off, as designed). **Owed:** the art and sound pass (kiddolink bursts by level,
+CvS2 colourings, RS Combat FX sounds; today's looks are placeholders: particles, stock sounds, the existing sparks);
+the Berserk Meter on the HUD; HP Bars' new states (frozen, held, disarmed); the owner's headset for everything a hand
+does (Gestures' reads, the swings, the look).
 
 **Counts:** 42 nodes (38 + Reflect Guard, Absorb and Release, Critical Hits, Clear Out), 14 exist, 28 new, 2
 parked off. **Every Fists node was kept by the owner, 11-02** (Rig link on the Saber was his one strike so far).

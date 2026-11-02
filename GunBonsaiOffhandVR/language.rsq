@@ -84,6 +84,37 @@ RSQ_Upgrade_ReflectGuard_Desc = "Guard: what hits the guard goes back.";
 RSQ_Upgrade_ReflectGuard_TT = "A missile that meets your raised Guard from in front flies back at its shooter, hitting for @mult. At level 3 a bullet does too.";
 RSQ_Upgrade_AbsorbRelease_Name = "Absorb and Release";
 RSQ_Upgrade_AbsorbRelease_Desc = "Guard: store the hits, then let them out.";
+// F. Berserk
+RSQ_Upgrade_Rage_Name = "Rage";
+RSQ_Upgrade_Rage_Desc = "Glove: the Berserk makes everything you know stronger.";
+RSQ_Upgrade_Rage_TT = "While you hold the Berserk, every other upgrade this glove has counts one level higher. Level 2: the hit-stop doubles. Level 3: knockback half again.";
+RSQ_Upgrade_BloodRush_Name = "Blood Rush";
+RSQ_Upgrade_BloodRush_Desc = "Glove: berserk kills armour you.";
+RSQ_Upgrade_BloodRush_TT = "A fist kill while you hold the Berserk gives @n armour.";
+RSQ_Upgrade_BerserkMeter_Name = "Berserk Meter";
+RSQ_Upgrade_BerserkMeter_Desc = "Glove: earn a Berserk with your fists.";
+RSQ_Upgrade_BerserkMeter_TT = "Every @full points of fist damage (without the Berserk) gives you a Berserk for @time, no pack needed.";
+// G. Gun hand
+RSQ_Upgrade_PistolWhip_Name = "Pistol Whip";
+RSQ_Upgrade_PistolWhip_Desc = "Glove: crack them with the gun, then shoot.";
+RSQ_Upgrade_PistolWhip_TT = "A gun-butt shove staggers @time longer, and your next shot on that enemy within 2 s does @mult damage.";
+RSQ_Upgrade_RifleButt_Name = "Rifle Butt";
+RSQ_Upgrade_RifleButt_Desc = "Glove: a long gun's butt puts them down.";
+RSQ_Upgrade_RifleButt_TT = "A hard shove (4 m/s) with a long gun knocks an enemy down for a count of @count.";
+// H. Taunt
+RSQ_Upgrade_Taunt_Name = "Taunt";
+RSQ_Upgrade_Taunt_Desc = "Player: come on, then.";
+RSQ_Upgrade_Taunt_TT = "Throw both hands apart, empty or in fists: enemies within 10 m turn on you, and your next punch within @time does double. Level 3: those within 3 m also stagger. Needs RSQ Gestures.";
+// I. Critical Hits
+RSQ_Upgrade_CriticalHits_Name = "Critical Hits";
+RSQ_Upgrade_CriticalHits_Desc = "Player: hit them as they wind up.";
+RSQ_Upgrade_CriticalHits_TT = "A hit while an enemy winds up its attack is a critical: @mult damage and it is stunned for a second; hits on a stunned enemy do @stun. At most 3 criticals in under half a second. Level 1: melee only. Level 2: guns too.";
+RSQ_Upgrade_Headshot_Name = "Headshot";
+RSQ_Upgrade_Headshot_Desc = "Player: aim high.";
+RSQ_Upgrade_Headshot_TT = "A hit in the top fifth of an enemy (a punch: where your fist met it) does @mult damage. Later pellets of the same blast count half.";
+RSQ_Upgrade_Backstab_Name = "Backstab";
+RSQ_Upgrade_Backstab_Desc = "Player: from behind, quietly.";
+RSQ_Upgrade_Backstab_TT = "A melee hit from behind does @mult damage, and a kill this way makes no death cry.";
 // E. Grappler (the off glove)
 RSQ_Upgrade_HumanShield_Name = "Human Shield";
 RSQ_Upgrade_HumanShield_Desc = "Off glove: hold them as long as you grip, facing away.";

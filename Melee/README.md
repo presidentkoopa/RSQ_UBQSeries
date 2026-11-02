@@ -91,7 +91,12 @@ Heaviest** (400), **Headlock: Seconds** (3), **Headlock: Throw At** (3.0 m/s, 0 
 Always on (no row):
 
 - **The Berserk pack makes a punch x5** (2026-11-02, the owner's call; Doom's own fist is x10): a full-speed punch
-  does 100 while you hold it. Before this the pack did nothing to a punch. Not yet run.
+  does 100 while you hold it. Before this the pack did nothing to a punch. Any PowerStrength counts (Gun Bonsai VR's
+  Berserk Meter gives a timed one). Proven headless 11-02: a full punch under it did 200 with Haymaker 2.
+- **Gun Bonsai VR's Berserk, Gun hand and Taunt nodes** (2026-11-02): Rage under the Berserk doubles the hit-stop (2)
+  and adds half again to the knock (3); Pistol Whip and Rifle Butt act on the gun-butt shove (ours, or BD22 VR
+  Reloaded's own strike for Pistol Whip, read as its Kick damage landing); Taunt answers RSQ Gestures' "both hands
+  apart" when the Guard has no charge to release (the charge goes first), and doubles the next punch.
 - **Hit sparks** (Capcom vs. SNK 2's), one per blow, at the impact point: jab -> Normal Spark (orange), hook and the
   swat -> Special Spark (blue), uppercut and the Hadouken's return -> Super Spark (violet; the return adds the
   Hadouken hit burst from Random Sprite Rips), the guard taking a blow -> the Guard flash (blue, about 35 cm from your

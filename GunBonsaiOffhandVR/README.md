@@ -104,6 +104,16 @@ Always on (no row):
     launches it, x1.75 and up), Heavier Headlock (600, 800, 1000 in Doom's weight, + Distance Grab's Iron Grip) ->
     Slam (the holding hand swung down hard: driven into the floor, a shockwave staggers round it); Human Shield 2 ->
     Throw Into (the thrown monster hits harder; without Distance Grab the toss bends onto a monster), Chokehold.
+    **F. Berserk:** Rage (root: while you hold the Berserk every other node on that glove counts one level higher;
+    2 the hit-stop doubles; 3 knockback x1.5) -> Blood Rush (a fist kill under the Berserk gives 10 armour and up),
+    Berserk Meter (Rage 2: 300 points of fist damage give a Berserk of 25 s and up, no pack). **G. Gun hand** (glove
+    nodes; the shove reads the best of either glove): Pistol Whip (the gun-butt shove staggers longer and marks the
+    monster: your next shot on it inside 2 s x1.5 and up) -> Rifle Butt (Pistol Whip 2: a 4 m/s shove with a long gun
+    knocks it down for a count). **H. Taunt** (player; needs RSQ Gestures): both hands thrown apart, empty or in fists:
+    monsters within 10 m turn on you, your next punch inside 3 s and up does double. **I. Critical Hits** (player): a
+    hit during a monster's wind-up is a critical (x1.75 and up, stunned 1 s; hits on it then x1.5 and up; 3 in 15 tics
+    at most; level 1 melee only, 2 guns too) -> Headshot (the top fifth: x2.5 and up; a punch counts where the fist
+    met it; later pellets of one blast half), Backstab (melee from behind: x4 and up, a silent kill).
   - Gloves (RSQ_Melee's), before the tree: Haymaker, One-Two, Star Punch, Counterpunch, Body Blow, Knockdown, and the owner's
     picks 52-54 (2026-11-01), whose moves RSQ_Melee does and whose numbers are here: **Heavy Hands** (a landed
     punch freezes the monster for a beat: 2 tics at level 1 up to 4, +2 for a punch at half speed or more; and
