@@ -4,7 +4,9 @@
 // One gauge per glove that has learned Berserk Meter, on that hand's side (the main hand right, the off hand left), set
 // in from the edge so RSQ SlowMo's gauge at the very edge never covers it. It fills as that glove's fist damage does;
 // while the Berserk it earned runs, it drains with the time left and pulses. Hidden under a Berserk pack (the meter does
-// not fill then), and with the HUD (automap, screen size past 11). Rows: Berserk Meter Gauge (on).
+// not fill then), and with the HUD (automap, screen size past 11). Rows: Berserk Meter Gauge (on), Gauge Animation (on).
+// THE FILL IS ALIVE (owner, 11-02): tinted dark crimson to blood red to hot orange-white as it fills, an earned Berserk
+// burning orange; with Gauge Animation a band of light rises through it, its edge breathes, a full one glints.
 class RSQUI_Gauges : StaticEventHandler
 {
 	override void RenderOverlay(RenderEvent e)
@@ -20,8 +22,11 @@ class RSQUI_Gauges : StaticEventHandler
 		bool pack = !earned && pmo.FindInventory("PowerStrength", true);
 		if (pack) return;
 		TextureID te = TexMan.CheckForTexture("RSQGBGE", TexMan.Type_Any);
-		TextureID tf = TexMan.CheckForTexture("RSQGBGF", TexMan.Type_Any);
-		if (!te.IsValid() || !tf.IsValid()) return;
+		TextureID tw = TexMan.CheckForTexture("RSQGBGW", TexMan.Type_Any);
+		if (!te.IsValid() || !tw.IsValid()) return;
+		let av = CVar.GetCVar("rsqgb_gauge_anim", players[consoleplayer]);
+		bool anim = !av || av.GetBool();
+		double t = level.maptime + e.FracTic;
 
 		double sw = Screen.GetWidth(), sh = Screen.GetHeight();
 		let iv = CVar.FindCVar("rsq_ui_inset");
@@ -52,9 +57,65 @@ class RSQUI_Gauges : StaticEventHandler
 			else frac = clamp(double(bm.meter) / RSQ_Upgrade_BerserkMeter.FULL, 0.0, 1.0);
 			// the main hand's on the right, the off hand's on the left, each 2.5 gauge widths in from the edge
 			double x = hand == 0 ? sx + aw - w * 3.5 : sx + w * 2.5;
-			Screen.DrawTexture(te, false, x, y, DTA_DestWidthF, w, DTA_DestHeightF, h, DTA_Alpha, 0.9);
-			if (frac > 0.001)
-				Screen.DrawTexture(tf, false, x, y, DTA_DestWidthF, w, DTA_DestHeightF, h, DTA_Alpha, alpha, DTA_ClipTop, int(y + h * (1.0 - frac)));
+			// dark crimson empty, blood red half way, hot orange-white full; an earned Berserk burns orange as it drains
+			if (earned) RSQUI_GaugeLife.Draw(te, tw, x, y, w, h, frac, Color(255, 200, 60, 10), Color(255, 255, 120, 20), Color(255, 255, 220, 140), alpha, anim, t);
+			else RSQUI_GaugeLife.Draw(te, tw, x, y, w, h, frac, Color(255, 110, 10, 10), Color(255, 230, 40, 40), Color(255, 255, 190, 120), alpha, anim, t);
+		}
+	}
+}
+
+// THE GAUGE'S LIFE (the owner, 2026-11-02: "they can have some life to them, some colors, maybe some light optional
+// animation"). The fill is coldcite's blocks in white (gen_gauges.py's <NAME>W), tinted by the level: lo at empty, mid at
+// half, hi at full, so the colour moves as it fills. With the animation on: a band of light rises through the fill every
+// RISE tics, the fill's top edge breathes, and a full gauge glints. The same routine is in RSQ SlowMo (gauge.zs) and RSQ
+// Gun Bonsai VR (rsq/ui/gauges.zs): two mods that must each work alone, so it is copied, not shared.
+class RSQUI_GaugeLife ui
+{
+	const RISE = 52.0;   // tics for the band to climb the fill (1.5 s)
+	const SLICES = 8;    // the fill's colour steps up the gauge
+
+	static Color Mix(Color a, Color b, double k)
+	{
+		k = clamp(k, 0.0, 1.0);
+		return Color(255, int(a.r + (b.r - a.r) * k), int(a.g + (b.g - a.g) * k), int(a.b + (b.b - a.b) * k));
+	}
+	static Color ByLevel(Color lo, Color mid, Color hi, double f) { return f < 0.5 ? Mix(lo, mid, f * 2.0) : Mix(mid, hi, (f - 0.5) * 2.0); }
+
+	static void Draw(TextureID te, TextureID tw, double x, double y, double w, double h, double frac, Color lo, Color mid, Color hi, double alpha, bool anim, double t)
+	{
+		Screen.DrawTexture(te, false, x, y, DTA_DestWidthF, w, DTA_DestHeightF, h, DTA_Alpha, 0.9);
+		if (frac <= 0.001) return;
+		double top = y + h * (1.0 - frac);
+		// the fill in SLICES slices up the gauge, each tinted by its own height: the low colour at the bottom climbing to the
+		// level's colour at the top of the fill, so a fuller gauge shows more of the range
+		for (int i = 0; i < SLICES; i++)
+		{
+			double sliceBot = y + h * (1.0 - double(i) / SLICES), sliceTop = y + h * (1.0 - double(i + 1) / SLICES);
+			if (sliceBot <= top) break;
+			double mid01 = (i + 0.5) / SLICES;
+			Screen.DrawTexture(tw, false, x, y, DTA_DestWidthF, w, DTA_DestHeightF, h, DTA_Color, ByLevel(lo, mid, hi, min(mid01, frac)),
+				DTA_Alpha, alpha, DTA_ClipTop, int(max(top, sliceTop)), DTA_ClipBottom, int(ceil(sliceBot)));
+		}
+		if (!anim) return;
+		// the band: an eighth of the gauge tall, from the bottom up to the fill's top, light added on top of the fill
+		double ph = (t % RISE) / RISE;
+		double bh = h * 0.125;
+		double fillH = h * frac;
+		double bBot = y + h - (fillH + bh) * ph + bh;
+		double bTop = bBot - bh;
+		if (bBot > top)
+			Screen.DrawTexture(tw, false, x, y, DTA_DestWidthF, w, DTA_DestHeightF, h, DTA_Color, hi, DTA_Alpha, 0.45 * alpha,
+				DTA_LegacyRenderStyle, STYLE_Add, DTA_ClipTop, int(max(top, bTop)), DTA_ClipBottom, int(min(y + h, bBot)));
+		// the edge: a bright line where the fill stops, breathing
+		double glow = 0.55 + 0.45 * sin(t * 12.0);
+		Screen.DrawThickLine(int(x), int(top), int(x + w), int(top), max(1.0, h / 90.0), hi, int(255 * glow * alpha));
+		// full: the whole gauge glints, a short flash every couple of seconds
+		if (frac >= 0.999)
+		{
+			double g = sin(t * 5.0);
+			if (g > 0.8)
+				Screen.DrawTexture(tw, false, x, y, DTA_DestWidthF, w, DTA_DestHeightF, h, DTA_Color, hi, DTA_Alpha, (g - 0.8) * 2.5 * alpha,
+					DTA_LegacyRenderStyle, STYLE_Add);
 		}
 	}
 }

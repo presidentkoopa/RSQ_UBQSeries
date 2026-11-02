@@ -43,6 +43,7 @@ user bool    rsqsm_drain        = false; // 28: colours drain while time is slow
 user bool    rsqsm_gauge        = true;  // the SlowMo gauge on the HUD: the adrenaline meter, or how slow while it runs
 user int     rsqsm_gauge_side   = 0;     // 0 left, 1 right
 user float   rsqsm_gauge_size   = 1.0;   // x a third of the screen's height
+user bool    rsqsm_gauge_anim   = true;  // the gauge's light: a band rising through the fill, a breathing edge, a glint when full
 user float   rsqsm_drain_amt    = 0.35;  // how much colour goes at full depth, 0..1
 
 // ---- the owner's QoL round (2026-10-31): options, off by default
