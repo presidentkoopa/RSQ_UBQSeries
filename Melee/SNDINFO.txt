@@ -1,0 +1,14 @@
+// RSQ Melee -- the gloves' sounds, from SuperPunchOut (presidentkoopa), which took them from Punch Out Doom /
+// Virtual Punch Out (plspnch* as rsqpnch*, STAR, HITTHE). Full paths, under rsqml/, so nothing here can replace
+// Brutal Doom's own punch sounds or Gun Bonsai VR's.
+$random rsqml/punch { rsqml/punch1 rsqml/punch2 rsqml/punch3 rsqml/punch4 rsqml/punch5 rsqml/punch6 }
+rsqml/punch1	"sounds/rsqml/rsqpnch1.ogg"
+rsqml/punch2	"sounds/rsqml/rsqpnch2.ogg"
+rsqml/punch3	"sounds/rsqml/rsqpnch3.ogg"
+rsqml/punch4	"sounds/rsqml/rsqpnch4.ogg"
+rsqml/punch5	"sounds/rsqml/rsqpnch5.ogg"
+rsqml/punch6	"sounds/rsqml/rsqpnch6.ogg"
+rsqml/star		"sounds/rsqml/STAR.wav"
+rsqml/smash		"sounds/rsqml/HITTHE.wav"
+$limit rsqml/punch 4
+$limit rsqml/smash 2

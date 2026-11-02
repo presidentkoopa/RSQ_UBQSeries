@@ -13,7 +13,8 @@ simulated headset only and is marked *not yet headset-confirmed* there.
 
 | | Mod | pk3 | What it is |
 |---|---|---|---|
-| ✋ | [DistanceGrab](DistanceGrab/) | `RSQ_DistanceGrab.pk3` | Palm out at a thing across the room, pull it to your hand, carry it, throw it. Up close the grip takes things, headlocks a monster, lifts doors, flips switches. |
+| ✋ | [DistanceGrab](DistanceGrab/) | `RSQ_DistanceGrab.pk3` | Palm out at a thing across the room, pull it to your hand, carry it, throw it. Up close the grip takes things, lifts doors, flips switches. |
+| 🥊 | [Melee](Melee/) | `RSQ_Melee.pk3` | Fighting with your body: punches and SuperPunchOut's boxing gloves, Slappers Only, Guard, Hadouken, Wall Splat, Heavy Hands, the gun-butt shove with its slow-mo and the F.E.A.R. Effect, the off-hand Headlock. New 11-01 (moved from Gun Bonsai VR, Gestures, Distance Grab). |
 | 🛡️ | [ShieldSaw](ShieldSaw/) | `RSQ_ShieldSaw.pk3` | A shield (stowed at the small of your back by default) that blocks, bashes and turns shots back, and throws as a saw disc. id Software's shield saw (*Doom: The Dark Ages*), brought to Doom VR first by **Ermac**. |
 | ⚔️ | [QuestSaber](QuestSaber/) | `RSQ_Saber.pk3` | A lightsaber, and a second one for the off hand (on/off in the menu). Cut, stab, block, parry, deflect, throw, and the Force (also from an off-hand fist). |
 | 🎒 | [TacticalRig](TacticalRig/) | `RSQ_TacticalRig.pk3` | Six gun holsters (hips, chest, shoulders), a holster for each saber, a grenade spot, a keyring, gun throwing, a mirror, an optional torso and helmet, and Ermac's cigarette. Built on **Ermac's** Virtual Tactical Vest idea. |
@@ -23,11 +24,11 @@ simulated headset only and is marked *not yet headset-confirmed* there.
 | 🐍 | [Whip](Whip/) | `RSQ_Whip.pk3` | A simulated bullwhip: cracks from how you swing, stings and stuns, lassos and leashes monsters, throws switches, catches edges to swing and climb. |
 | 🎡 | [Wheel](Wheel/) | `RSQ_Wheel.pk3` | A weapon wheel for VR: a ring of weapon cards around your hand, point and let go (or reach in), a data sheet per gun. The owner's REMA wheel. |
 | 🃏 | [GunCards](GunCards/) | `RSQ_GunCards.pk3` | Ammo cards on your guns in Ermac's holo style; check your watch for the full card (or, empty-handed, health/armour/keys). |
-| 🤲 | [Gestures](Gestures/) | `RSQ_Gestures.pk3` | Reads your hands (watch check, thrust, pull, punch, gun-butt shove, braced) and answers the other mods. |
+| 🤲 | [Gestures](Gestures/) | `RSQ_Gestures.pk3` | Reads your hands (watch check, thrust, pull, punch, shove, braced) and answers the other mods. Does nothing to the game by itself. |
 | ❤️ | [TopHPBars](TopHPBars/) | `RSQ_HPBars.pk3` | coldcite's Top HP Bars with colour-blind sets, an overheal strip and icons for what the other mods are doing to a monster. |
 | 🏆 | [Score](Score/) | `RSQ_Score.pk3` | The arcade score: style bonuses, cross-mod combos, a map target and extra lives. The owner's RS_Score on ijon's Dakka scoring. |
 | 👹 | [Miniboss](Miniboss/) | `RSQ_Miniboss.pk3` | A miniboss each map fed by three thralls; kill a thrall to slow time, get greedy and every monster enrages. Rebuilt from Tartlman's Minibosses!. |
-| 🌳 | [GunBonsaiOffhandVR](GunBonsaiOffhandVR/) | `RSQ_GunBonsaiVR.pk3` | An addon for ToxicFrog's Gun Bonsai 0.10.6 (not included): each hand its own XP, upgrades and HUD, upgrade paths for the series' tools, boxing gloves. Loaded right after Gun Bonsai. |
+| 🌳 | [GunBonsaiOffhandVR](GunBonsaiOffhandVR/) | `RSQ_GunBonsaiVR.pk3` | An addon for ToxicFrog's Gun Bonsai 0.10.6 (not included): each hand its own XP, upgrades and HUD, upgrade paths for the series' tools (the gloves' and Guard need RSQ Melee). Loaded right after Gun Bonsai. |
 | 💣 | [Grenade](Grenade/) | `RSQ_Grenade.pk3` | A hand grenade worked by hand on plain Doom 2: the other hand (or your teeth) pulls the pin, throw it with your arm, cook it, watch it flash red. Brutal Doom VR's handling; stands down for BD22 VR's own grenade. |
 | ♿ | [Accessibility](Accessibility/) | `RSQ_Accessibility.pk3` | One settings page for the whole series: colour-blind, handedness, one-handed, comfort, cues, and one Reset for every mod. |
 
@@ -45,19 +46,21 @@ A suggested order -- simple and visible first, the mods that read the others las
 | 1 | Accessibility | Handedness, colour-blind modes, Steady Hands, seated play: set once, every later mod reads it |
 | 2 | LaserSight | One visible thing per gun; quick to confirm the load order is right |
 | 3 | TacticalRig | Holsters; later mods (saber, ShieldSaw) hang on it |
-| 4 | DistanceGrab | Pull, carry, throw, doors, walk-up grip, hand swap, Headlock |
-| 5 | Saber | Then check it with the rig's saber holsters |
-| 6 | ShieldSaw | Then saber + shield together (saber over shield) |
-| 7 | Whip | |
-| 8 | Grapple | |
-| 9 | SlowMo | Then the saber's / shield's / rig's slow-mo options start doing something |
-| 10 | Gestures, then GunCards | GunCards' watch card comes from Gestures' wrist twist |
-| 11 | Wheel | |
-| 12 | HP Bars | Its frozen / held / hooked markers read the other mods |
-| 13 | Score | Combos need the tools above loaded to fire |
-| 14 | Miniboss | Best with Champions + LegenDoom Lite |
-| 15 | Gun Bonsai VR addon | Last, right after GunBonsai-0.10.6 |
-| 16 | Grenade | Plain Doom 2 only (with Brutal Doom VR it stands down); then with Tactical Rig's buckle and Gun Cards' count |
+| 4 | DistanceGrab | Pull, carry, throw, doors, walk-up grip |
+| 5 | Melee | Punches and gloves, the gun-butt shove, the Headlock (its throw flies through Distance Grab's throw now) |
+| 6 | Saber | Then check it with the rig's saber holsters |
+| 7 | ShieldSaw | Then saber + shield together (saber over shield) |
+| 8 | Whip | |
+| 9 | Grapple | |
+| 10 | SlowMo | Then the saber's / shield's / rig's slow-mo options start doing something |
+| 11 | Gestures, then GunCards | GunCards' watch card comes from Gestures' wrist twist |
+| 12 | (Melee, again) | With SlowMo now loaded, recheck the shove's slow-mo and the F.E.A.R. Effect |
+| 13 | Wheel | |
+| 14 | HP Bars | Its frozen / held / hooked markers read the other mods |
+| 15 | Score | Combos need the tools above loaded to fire |
+| 16 | Miniboss | Best with Champions + LegenDoom Lite |
+| 17 | Gun Bonsai VR addon | Last, right after GunBonsai-0.10.6; with Melee loaded, Guard, Hadouken, Wall Splat, Heavy Hands become its upgrades |
+| 18 | Grenade | Plain Doom 2 only (with Brutal Doom VR it stands down); then with Tactical Rig's buckle and Gun Cards' count |
 
 After that, the full set together.
 
@@ -97,6 +100,7 @@ After that, the full set together.
    | Wheel | **RSQ Wheel** |
    | GunCards | **RSQ Gun Cards** |
    | Gestures | **RSQ Gestures** |
+   | Melee | **RSQ Melee** |
    | Grenade | **RSQ Grenade** |
    | Accessibility | **Accessibility** |
 
@@ -117,7 +121,8 @@ python3 tools/build_all.py Whip Wheel   # just those folders
 - Everything loads together on the Brutal Doom order and on plain Doom 2 with no script errors from the
   RSQ pk3s (simulated headset).
 - Built 2026-10-31 to 11-01 and **not yet headset-confirmed**: the owner's teardown picks and QoL rounds
-  (see [PICKS_2026-10-31.md](PICKS_2026-10-31.md)), the walk-up grip / hand swap / Headlock, real whip sounds.
+  (see [PICKS_2026-10-31.md](PICKS_2026-10-31.md)), the walk-up grip / Headlock, real whip sounds, and RSQ Melee
+  (11-01: the melee moves gathered into one pk3; checked on the simulated rig and the owner's load order only).
 - Nothing about rumble could be felt on the simulated headset.
 - Older release notes are in the git history.
 

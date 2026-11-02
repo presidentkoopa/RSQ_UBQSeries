@@ -12,10 +12,5 @@ for the RSQ Wheel's weapon cards.
 The hand reading follows RSQ_Grapple's (AttackPos / OffhandPos and the engine's angle conventions), and
 the shared Radiant Silvergun Options menu is the series' tools/rsmenu.
 
-The gun butt shove is BD22 VR Reloaded's butt shove (the owner's own mod; zscript/rsvr/melee.zs: the swing
-speed, reach, wait and the blow it lands), ported. Numbers taken from Brutal Doom (Sergeant Mark IV;
-brutal22test6.pk3): KickAttack's damage and alert range (Melee.dec) and the monsters' Pain.Kick thrusts
-(actors/Enemies). Sounds played by name, NOT shipped: Brutal Doom's Melee/SwingStrong and Kick/flesh when it
-is loaded, otherwise stock Doom's skeleton/swing and punch (id Software). The F.E.A.R. Effect's blood is
-each monster's own blood type (Brutal Doom's when it is loaded). Slow motion is RSQ_SlowMo's (rsm_pulse);
-the award is RSQ_Score's (RS_ScoreService).
+(The gun butt shove -- BD22 VR Reloaded's, with Brutal Doom's numbers and sounds -- its slow motion and the
+F.E.A.R. Effect moved to RSQ_Melee on 2026-11-01; their credits are in its CREDITS.txt.)

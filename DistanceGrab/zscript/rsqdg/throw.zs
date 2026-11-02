@@ -306,7 +306,7 @@ class RSQDG_Throw : EventHandler
 		return false;
 	}
 
-	// kg: what it counts as for the impact (near.zs ThrowSwing: a Headlock-thrown monster at rsqdg_collar_weight %);
+	// kg: what it counts as for the impact (HeadlockThrow below: a monster RSQ Melee's Headlock threw, at its weight %);
 	// 0 = its own MASSDEF / Doom-mass kilograms (mass.zs Kg)
 	void Watch(Actor a, Actor by, int hand, Vector2 body = (0, 0), double kg = 0)
 	{
@@ -792,6 +792,17 @@ class RSQDG_Throw : EventHandler
 //   GetInt("throw.blast",  "", 0, 0, object)   1: its throw set it off (or a thrown blast did)
 //   GetInt("throw.juggle", "", 0, 0, object)   times it was caught back out of the air first
 //   GetInt("hold.full",    "", hand, 0, pawn)  1 while that hand carries something
+// FOR RSQ MELEE'S HEADLOCK (moved there from near.zs on 2026-11-01), asked by name:
+//   GetInt("near.dist",    "", hand, 0, pawn)  -2 while that hand is ours already (grip pressed for us, carrying,
+//                                              a door, a rig holster); else map units from the palm to our nearest
+//                                              walk-up thing, -1 none. Melee takes the off-grip press only when its
+//                                              monster is nearer (near.zs; we ask it "headlock.claim" back).
+//   GetInt("headlock.throw", "", playerNumber, weight %, monster)  the monster Melee just let go of, its Vel the
+//                                              off hand's swing (map units a tic): thrown as a heavy thing is thrown
+//                                              from a hand -- the throw's strength, arm/(arm + its counted kg), the
+//                                              boost, aim assist, the body's run -- then watched to its impact (same
+//                                              blow as before the move). 1 done.
+//   GetInt("headlock.caught", "", playerNumber, 0, monster)  the catch's thud and tick in the off hand. 1 done.
 // A throw is remembered for ten seconds after the release. The hands, like the rest
 // of the grab, are the console player's own (hold.full is 0 for anyone else).
 class RSQDG_ThrowService : Service play
@@ -805,7 +816,65 @@ class RSQDG_ThrowService : Service play
 			let hold = RSQDG_Hold.Get();
 			return (hold && hold.HandIsFull(intArg & 1)) ? 1 : 0;
 		}
+		if (request ~== "near.dist")
+		{
+			let who = PlayerPawn(objectArg);
+			if (!who || who.player != players[consoleplayer]) return -1;
+			return int(RSQDG_Near.NearDist(who, intArg & 1));
+		}
+		if (request ~== "headlock.throw") return HeadlockThrow(intArg, doubleArg, Actor(objectArg)) ? 1 : 0;
+		if (request ~== "headlock.caught")
+		{
+			let a = Actor(objectArg);
+			if (!a || intArg < 0 || intArg >= MAXPLAYERS || !playeringame[intArg]) return 0;
+			let feel = RSQDG_Feel.Get();
+			if (!feel) return 0;
+			feel.OnCatch(1, a, players[intArg], false, RSQDG_Mass.Heft(a));
+			return 1;
+		}
 		let th = RSQDG_Throw.Get();
 		return th ? th.Ask(request, Actor(objectArg)) : -1;
+	}
+
+	// THROWING THE MONSTER RSQ MELEE'S HEADLOCK HELD (owner pick 23, 2026-10-31; was near.zs ThrowSwing until 11-01).
+	// Melee decides when (the off hand swung hard, peak passed) and hands the monster over with the hand's velocity in
+	// its Vel. From here it is thrown as a heavy object is thrown from a hand (hold.zs Release): times the throw's
+	// strength, times arm/(arm + its counted kilograms) -- a monster's kilograms are its Doom Mass (mass.zs) x Melee's
+	// Headlock Throw Weight % (BD's zombies are Mass 300, a knockback number, not a weight: D37) -- times the boost,
+	// onto a monster in the aim-assist cone if there is one, plus the body's run. Then the throw's own tracker watches
+	// it: when it is stopped by a wall or a body, what it hits takes the impact AND SO DOES IT, by the same joules.
+	static bool HeadlockThrow(int n, double pct, Actor a)
+	{
+		if (!a || a.Health <= 0 || n < 0 || n >= MAXPLAYERS || !playeringame[n] || !players[n].mo) return false;
+		let p = players[n];
+		let pmo = p.mo;
+		Vector3 hand = a.Vel;
+		Vector3 v = hand * RSQDG_Reach.Num("rsqdg_throw_scale", p, 1.0);
+		double realKg = RSQDG_Mass.Kg(a);
+		double kg = realKg * clamp(pct, 1.0, 100.0) / 100.0;
+		double armKg = max(1.0, RSQDG_Reach.Num("rsqdg_arm_kg", p, 30.0));
+		v *= armKg / (armKg + kg);
+		v *= max(0.0, RSQDG_Reach.Num("rsqdg_throw_boost", p, 2.5));
+		Vector3 body = pmo.Vel;
+		v = RSQDG_Hold.Assist(p, a, v) + body;
+		a.Vel = v;
+		double mps = RSQDG_Reach.Metres(v - body) * TICRATE;
+		if (RSQDG_Reach.Flag("rsqdg_debug", p, false))
+			Console.Printf("[RSQDG] Headlock (RSQ Melee): threw %s at %.1f m/s (counted as %.0f kg of its %.0f; hand %.1f m/s)", a.GetClassName(), mps,
+				kg, realKg, RSQDG_Reach.Metres(hand) * TICRATE);
+		let th = RSQDG_Throw.Get();
+		if (th)
+		{
+			th.Air(a, 0);
+			// SAME BLOW AS BEFORE (owner 2026-10-31: "back to old damage"): it flies faster, but the impact counts the
+			// weight that makes its energy what the full-weight throw had -- realKg x ((arm + kg) / (arm + realKg))^2
+			// (a BD zombie: 300 x (120/330)^2 = 40 kg at 6.6 m/s, the same ~56 as 300 kg at 2.4).
+			double hitKg = realKg * ((armKg + kg) / (armKg + realKg)) ** 2;
+			th.Watch(a, pmo, 1, body.xy, max(1.0, hitKg));
+		}
+		RSQDG_Feel.Whoosh(a, p, mps, RSQDG_Mass.Heft(a));
+		let feel = RSQDG_Feel.Get();
+		if (feel) feel.OnRelease(1, a, true);
+		return true;
 	}
 }

@@ -1,0 +1,82 @@
+// RSQ Melee -- MENUDEF
+// ---- Radiant Silvergun Options (tools/rsmenu) ----------------------------------------------------
+// The series' one Options entry. Every series pk3 carries this same block with its own prefix: the
+// parent is PROTECTED, so the first definition stays and later ones add nothing (QZD 17.3 merges a
+// protected option menu instead of replacing it); the link row removes any earlier copy of itself,
+// so Options shows one row however many series pk3s load. Each mod then adds its own row only.
+OptionMenu "RSQ_RSOptions" protected
+{
+	Class "RSQML_RSMenu"
+	Title "RADIANT SILVERGUN OPTIONS"
+}
+
+AddOptionMenu "OptionsMenu"
+{
+	RSQMLRSLink "Radiant Silvergun Options", "RSQ_RSOptions"
+}
+
+AddOptionMenu "RSQ_RSOptions"
+{
+	Submenu "RSQ Melee", "RSQML_Options"
+}
+// ----------------------------------------------------------------------------------------------------
+
+OptionMenu "RSQML_Options"
+{
+	Title "RSQ MELEE"
+	StaticText "Fighting with your body: punches and the", "gray"
+	StaticText "boxing gloves, the gun-butt shove, the Headlock.", "gray"
+	StaticText " "
+	Option "Slappers Only", "rsqml_slappers", "OnOff"
+	Option "Start With Gloves", "rsqml_gloves", "OnOff"
+	StaticText " "
+	StaticText "Gun butt shove: swing the gun in your main hand", "gray"
+	StaticText "at a monster. Stands down with BD22 VR Reloaded.", "gray"
+	Option "Gun Butt Shove", "rsqml_shove", "OnOff"
+	Option "Slow-Mo After a Shove", "rsqml_shove_slowmo", "OnOff"
+	StaticText " "
+	StaticText "Headlock: the off hand's grip on a monster.", "gray"
+	Option "Headlock", "rsqml_headlock", "OnOff"
+	Option "Headlock: Human Shield (hold until let go)", "rsqml_headlock_shield", "OnOff"
+	StaticText " "
+	StaticText "With RSQ Gun Bonsai VR these four are its", "gray"
+	StaticText "upgrades and these rows do nothing. Without it,", "gray"
+	StaticText "each row turns the move on at level 1.", "gray"
+	Option "Guard", "rsqml_guard", "OnOff"
+	Option "Hadouken", "rsqml_hadouken", "OnOff"
+	Option "Wall Splat", "rsqml_wallsplat", "OnOff"
+	Option "Heavy Hands", "rsqml_heavyhands", "OnOff"
+	StaticText " "
+	Submenu "Tuning and Debug", "RSQML_Tuning"
+}
+
+OptionMenu "RSQML_Tuning"
+{
+	Title "TUNING AND DEBUG"
+	StaticText "Punch (the gloves)", "gold"
+	Slider "Punch Min Speed", "rsqml_punch_min_speed", 0.5, 5.0, 0.25, 2
+	Slider "Punch Full Speed", "rsqml_punch_full_speed", 3.0, 12.0, 0.5, 1
+	Slider "Punch Damage", "rsqml_punch_damage", 2, 40, 1, 0
+	StaticText " "
+	StaticText "Gun butt shove", "gold"
+	Slider "Butt Shove Speed (m/s)", "rsqml_shove_mps", 1.0, 8.0, 0.1, 1
+	Slider "Shove Slow-Mo Length (ms)", "rsqml_shove_slowmo_ms", 100, 1000, 50, 0
+	StaticText " "
+	StaticText "Headlock", "gold"
+	Slider "Headlock: Reach (m)", "rsqml_headlock_reach", 0.1, 0.6, 0.05, 2
+	Slider "Headlock: Heaviest", "rsqml_headlock_mass", 50, 1000, 50, 0
+	Slider "Headlock: Seconds", "rsqml_headlock_secs", 1, 10, 0.5, 1
+	Slider "Headlock: Throw At (m/s, 0 = never)", "rsqml_headlock_throw", 0.0, 8.0, 0.25, 2
+	Slider "Headlock Throw Weight %", "rsqml_headlock_weight", 10, 100, 5, 0
+	StaticText " "
+	Option "Debug Log", "rsqml_debug", "RSQML_Debug"
+	StaticText " "
+	SafeCommand "Reset All", "resetcvar rsqml_slappers; resetcvar rsqml_gloves; resetcvar rsqml_punch_min_speed; resetcvar rsqml_punch_full_speed; resetcvar rsqml_punch_rehit; resetcvar rsqml_punch_uppercut_rise; resetcvar rsqml_punch_pad; resetcvar rsqml_punch_damage; resetcvar rsqml_guard; resetcvar rsqml_hadouken; resetcvar rsqml_wallsplat; resetcvar rsqml_heavyhands; resetcvar rsqml_shove; resetcvar rsqml_shove_mps; resetcvar rsqml_shove_slowmo; resetcvar rsqml_shove_slowmo_ms; resetcvar rsqml_headlock; resetcvar rsqml_headlock_reach; resetcvar rsqml_headlock_mass; resetcvar rsqml_headlock_secs; resetcvar rsqml_headlock_shield; resetcvar rsqml_headlock_throw; resetcvar rsqml_headlock_weight; resetcvar rsqml_keys_off; resetcvar rsqml_debug", "Reset all RSQ Melee settings?"
+}
+
+OptionValue "RSQML_Debug"
+{
+	0, "Off"
+	1, "Each Decision"
+	2, "Also Each F.E.A.R. Hit"
+}

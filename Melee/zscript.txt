@@ -1,0 +1,17 @@
+version "4.14"
+
+// RSQ Melee -- fighting with your body, for stock QuestZDoom 17.3 (ZScript and data only; no engine change).
+// The punch and SuperPunchOut's boxing gloves, Slappers Only, Guard, Hadouken, Wall Splat, Heavy Hands (from RSQ Gun
+// Bonsai VR), the gun-butt shove with its slow-mo and the F.E.A.R. Effect (from RSQ Gestures), the Headlock (from RSQ
+// Distance Grab). Needs no other RSQ pk3. See README.md.
+#include "zscript/rsqml/rsmenu.zs"   // Radiant Silvergun Options: the series' shared menu pieces (tools/rsmenu)
+#include "zscript/rsqml/a11y.zs"     // RSQML_A11y: RSQ_Accessibility's settings, read by name (Accessibility/tools/a11y_template.zs)
+#include "zscript/rsqml/core.zs"
+#include "zscript/rsqml/service.zs"
+#include "zscript/rsqml/gloves.zs"
+#include "zscript/rsqml/splat.zs"
+#include "zscript/rsqml/slappers.zs"
+#include "zscript/rsqml/guard.zs"
+#include "zscript/rsqml/shove.zs"
+#include "zscript/rsqml/headlock.zs"
+#include "zscript/rsqml/legacy.zs"

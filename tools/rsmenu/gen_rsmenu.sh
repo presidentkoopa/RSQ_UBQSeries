@@ -23,4 +23,5 @@ gen RSQWP  Whip/zscript/rsqwp/rsmenu.zs
 gen RSQGC  GunCards/zscript/rsqgc/rsmenu.zs
 gen RSQG   Gestures/zscript/rsqg/rsmenu.zs
 gen RSQGN  Grenade/zscript/rsqgn/rsmenu.zs
+gen RSQML  Melee/zscript/rsqml/rsmenu.zs
 gen RSQA   Accessibility/zscript/rsqa_rsmenu.zs

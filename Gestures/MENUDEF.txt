@@ -36,11 +36,6 @@ OptionMenu "RSQG_Options"
 	Option "Watch Check Tick", "rsqg_inspect_tick", "OnOff"
 	Option "Show Gesture Names", "rsqg_names", "OnOff"
 	StaticText " "
-	StaticText "Gun butt shove: swing the gun in your main hand", "gray"
-	StaticText "at a monster. Stands down with BD22 VR Reloaded.", "gray"
-	Option "Gun Butt Shove", "rsqg_shove", "OnOff"
-	Option "Slow-Mo After a Shove", "rsqg_shove_slowmo", "OnOff"
-	StaticText " "
 	Option "Thrust and Pull Events", "rsqg_signals", "OnOff"
 	Option "Two-Hand Events", "rsqg_twohand", "OnOff"
 	Option "  Both Hands Down", "rsqg_two_down", "OnOff"
@@ -96,8 +91,6 @@ OptionMenu "RSQG_Tuning"
 	Slider "Uppercut Rise", "rsqg_punch_rise", 0.2, 0.9, 0.05, 2
 	Slider "Punch Answered For (ms)", "rsqg_punch_window", 50, 1000, 50, 0
 	Slider "Two-Hand Shove Share", "rsqg_punch_together", 0.2, 1.0, 0.05, 2
-	Slider "Butt Shove Speed (m/s)", "rsqg_shove_mps", 1.0, 8.0, 0.1, 1
-	Slider "Shove Slow-Mo Length (ms)", "rsqg_shove_slowmo_ms", 100, 1000, 50, 0
 	StaticText " "
 	Slider "Watch Check Tick Strength", "rsqg_tick_strength", 0.05, 1.0, 0.05, 2
 	StaticText " "

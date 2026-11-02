@@ -1,10 +1,15 @@
 # RSQ Distance Grab
 
 Point at a thing across the room with your palm, pull it to your hand, carry it, throw it. Up close, the
-grip takes things, holds a monster in a headlock, lifts doors and
-flips switches. Part of the Radiant Silvergun Quest series, for stock QuestZDoom 17.3 (script only, no
+grip takes things, lifts doors and flips switches. Part of the Radiant Silvergun Quest series, for stock QuestZDoom 17.3 (script only, no
 engine changes). Most of the feel (the pull's arc and tumble, how thrown things fall, the carry's tip
 and sag) is ported from the owner's desktop RS_WorldHands.
+
+**Moved to RSQ Melee (2026-11-01):** the **Headlock** (the off hand's grip on a living monster, Human Shield,
+the headlock throw) is [RSQ_Melee](../Melee/)'s now, with its settings (`rsqml_headlock*`). Distance Grab
+keeps everything about objects. With both loaded, a monster thrown out of the Headlock still flies through
+this mod's throw (its strength, weight, boost, aim assist and impact), and the two never fight over a grip
+press: Melee takes it only when a monster is nearer the palm than anything this mod would take.
 
 ## Load order
 
@@ -14,7 +19,7 @@ doom2.wad -> brutal22test6.pk3 -> BD_VoxelPack.pk3 -> BD22_VR-Reloaded_2_0_3h.pk
 ```
 
 - **Plain Doom 2 without Brutal Doom:** works. Every Brutal Doom class is looked up by name and skipped
-  when it is missing (policy.zs, near.zs). The body shield was rig-tested on plain Doom (DECISIONS D36).
+  when it is missing (policy.zs). The body shield was rig-tested on plain Doom (DECISIONS D36).
 - **Other RSQ pk3s needed:** none. It works alone.
 
 ## Setup
@@ -43,8 +48,6 @@ doom2.wad -> brutal22test6.pk3 -> BD_VoxelPack.pk3 -> BD22_VR-Reloaded_2_0_3h.pk
 - **Hit with it:** swing a held barrel into a monster.
 - **Walk-up grab:** put your palm on a thing within about 30 cm and squeeze the grip. Let go of the grip
   to let go.
-- **Headlock:** off hand, grip on a living monster within reach. It is held in front of you for 3 s.
-  Swing the off hand hard to throw it.
 - **Lift a door:** hand flat on a manual door, grip (or Use, or palm out against it), raise the hand.
 - **Flip a switch:** lay your palm, turned out, on the switch.
 
@@ -70,10 +73,6 @@ default.
 | What You Can Grab: Barrels, Weapons, Powerups, Ammo, Health, Armor, Keys, +1 Bonuses | On | Which kinds of thing the distance grab may pull. |
 | What You Can Grab: Corpses | Option | Pull and carry corpses (off since 10-31, owner's call). |
 | What You Can Grab: Walk-Up Grab | On | The grip with your palm on a thing takes it. |
-| What You Can Grab: Off-Hand Headlock | On | The off grip holds a living monster (up to demon weight) for 3 s. |
-| What You Can Grab: Headlock: Human Shield (hold until let go) | Option | The headlock lasts as long as you hold the grip, monster facing away. |
-| What You Can Grab: Headlock: Throw At (m/s, 0 = never) | 3.0 | Swing the off hand past this to throw the held monster. |
-| What You Can Grab: Headlock Throw Weight % | 30 | A thrown monster counts as this share of its weight (lower = faster toss). |
 | What You Can Grab: Line of Sight | On | You cannot grab through a wall. |
 | What You Can Grab: Use Pickups on Catch | On | A caught pickup is used at once. Off: you carry it instead. |
 | What You Can Grab: Tip With Wrist | On | A held thing tips with your wrist. |
@@ -128,21 +127,18 @@ port.
 12. Walk up to an item, palm on it, grip. It is taken. Let go of the grip.
 13. (Swapping guns between hands was removed on 11-01: use the Tactical Rig, holster with one hand and draw
     with the other.)
-14. Off hand, grip on an imp in reach. It freezes in front of you for 3 s; punch it with the main hand.
-15. Headlock again, then swing the off hand hard. The imp is thrown and hurts what it hits.
-    **(not yet headset-confirmed; on the rig the 6.6 m/s toss was never seen hitting anything)**
-16. Turn on *Headlock: Human Shield*. The monster stays held, facing away, while you keep the grip.
-    **(not tested on the rig either; the off grip is a raw key there)**
-17. Hand flat on a manual door, grip, raise the hand. The door follows; let go past about 40 % and it
+14. (The Headlock, its throw and Human Shield are tested in RSQ_Melee's README. With RSQ_Melee loaded: a headlock
+    throw flies and lands like a thrown barrel here.)
+15. Hand flat on a manual door, grip, raise the hand. The door follows; let go past about 40 % and it
     opens fully, before that it drops shut. The door's own sound plays.
-18. Palm turned out on a wall switch. It flips once. **(not yet headset-confirmed)**
-19. Turn *Hit-Stop (thrown hits)* to Beat. A monster hit by a throw freezes briefly.
+16. Palm turned out on a wall switch. It flips once. **(not yet headset-confirmed)**
+17. Turn *Hit-Stop (thrown hits)* to Beat. A monster hit by a throw freezes briefly.
     **(not yet headset-confirmed)**
-20. With RSQ Laser Sight loaded and a gun in the hand, the grab beam on that hand hides.
-21. Load RSQ Accessibility (Steady Hands on). Point at a far item and hold: the lock stays on it instead of
+18. With RSQ Laser Sight loaded and a gun in the hand, the grab beam on that hand hides.
+19. Load RSQ Accessibility (Steady Hands on). Point at a far item and hold: the lock stays on it instead of
     chattering. Throw something hard: it still flies where you threw. Steady Hands off: as before.
     **(not yet headset-confirmed; on the rig a 3-degree hand shake moved the cone 0.6 degrees on, 3 off)**
-22. Accessibility's Rumble Strength 0: the grab's rumbles stop; 2: stronger. **(not yet headset-confirmed)**
+20. Accessibility's Rumble Strength 0: the grab's rumbles stop; 2: stronger. **(not yet headset-confirmed)**
 
 ## Works with
 
@@ -150,8 +146,10 @@ port.
 - **RSQ Tactical Rig:** a hand in a holster (or holding the cigarette or Zippo) does not distance-grab;
   the walk-up grip yields to a holster. The rig asks this mod whether a hand holds a door.
 - **RSQ Saber / RSQ ShieldSaw:** a hand holding them does not reach (*Not With Melee*).
-- **RSQ Score:** holding a monster in the headlock counts as a touch for its combos. Throws are
-  credited to you.
+- **RSQ Score:** throws are credited to you. (The Headlock's "grab.hold" touch is RSQ_Melee's now.)
+- **RSQ Melee:** its Headlock asks `near.dist` (which mod takes the off grip press) and hands a thrown monster
+  to `headlock.throw` (RSQDG_ThrowService); this mod asks it `headlock.claim` back. Without Melee, nothing
+  changes here.
 - **RSQ Grapple:** can use this mod's grab buttons (its own setting).
 - **RSQ Accessibility:** colour-blind palette, Photosensitive Mode, Gesture Ease, Off-Hand Modifier,
   Cue Size, vignette, sound cues. Steady Hands (on in Accessibility): the aim cone that picks what to lock
@@ -162,14 +160,11 @@ port.
 
 ## Known limits / open issues
 
-- The grip is **eaten**: when something is in reach, the grip press goes to the walk-up grab or
-  headlock, and anything else bound to that grip does not see it (D31, by design).
-- The walk-up grab and headlock still fire on a hand holding the Tactical Rig's lit cigarette or
-  Zippo (D35, open).
-- Headlock weight uses Doom mass (imp 100, demon 400, baron 1000). A mod that changes monster mass
-  changes what you can hold (D34).
-- Under Brutal Doom, monsters are heavy (BD zombies are mass 300), so headlock tosses are slow; *Headlock
-  Throw Weight %* is the dial (D37, D38). Feel not checked in the headset.
+- The grip is **eaten**: when something is in reach, the grip press goes to the walk-up grab, and
+  anything else bound to that grip does not see it (D31, by design).
+- The walk-up grab still fires on a hand holding the Tactical Rig's lit cigarette or Zippo (D35, open).
+- A monster held by an old (before 11-01) save's headlock keeps its borrowed no-gravity after loading with
+  this version (the hold moved to RSQ_Melee and this mod no longer releases it).
 - A held thing's roll direction has not been checked against the headset; it may tip the wrong way.
 - A lifted door may step at 35 Hz (a ceiling moved from script has no smoothing).
 - The *Rumble* route is felt only when the engine's quake haptics level is above 0.

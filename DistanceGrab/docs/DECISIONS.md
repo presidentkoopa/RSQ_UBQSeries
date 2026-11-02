@@ -741,3 +741,19 @@ own). Rig (picks_gen.py collar + picks_rig.sh, BD order, doom2 MAP01; the probe 
 Damage is kinetic energy, so the faster toss hits harder than before. Computed (not a rig hit): at the rig's own
 points per joule (56 for 864 J), a 6.6 m/s 90 kg zombie (1960 J) would land ~127. OPEN: feel in the headset; lower
 the % for a slower toss, or raise `rsqdg_throw_j` if the hits are too strong.
+
+## D39 — THE HEADLOCK MOVED TO RSQ MELEE. 2026-11-01.
+
+The owner's split (WHO_OWNS_WHAT.md): RSQ Melee owns fighting with your body, Distance Grab owns objects. The
+Headlock (D33, D34, D37, D38: the collar code in `near.zs`, its `rsqdg_collar*` settings, the "grab.hold" Score
+touch) is `Melee/zscript/rsqml/headlock.zs` now, its settings `rsqml_headlock*`. What stays here and why:
+- **The throw's flight.** A monster thrown out of the Headlock is handed back by name (`RSQDG_ThrowService`
+  `headlock.throw`, `throw.zs HeadlockThrow`): this mod's strength, arm weight, boost, aim assist, air and impact,
+  the D38 weight rule unchanged. Without this mod Melee tosses it itself with this mod's default numbers.
+- **One decider per grip press.** `near.zs` reads the raw grip keys and eats a press it takes (D31); Melee reads
+  the same keys. Melee takes an off-grip press only when its monster is nearer the palm than this mod's nearest
+  walk-up thing and the hand is not already ours (`near.dist`: -2 busy, else units, -1 none); this mod asks Melee
+  `headlock.claim` and stands down for that press. Both answers are computed the same tic from the same state.
+  Rig (plain Doom 2, simulated off hand): a barrel 2 units from the palm, an imp 4 → Melee 0, this mod ready;
+  the imp alone → Melee 1, this mod not ready (logs `mel_hl_dg2`).
+- D33's no-THRUACTORS and FORCEINFIGHTING reasoning and D34's mass gate went with the code (headlock.zs).

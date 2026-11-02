@@ -3,6 +3,9 @@ Gun Bonsai -- VR / Offhand Patch
 RSQ_GunBonsaiVR.pk3 (was Gameplay_GB_VR_Offhand_Patch.0.10.6.pk3 -- delete the old one).
 For Gun Bonsai 0.10.6 (ToxicFrog, not included). Load it right AFTER GunBonsai-0.10.6.pk3.
 Settings: Options -> Radiant Silvergun Options -> RSQ Gun Bonsai VR.
+The boxing gloves, the punch, Slappers Only and the moves Guard, Hadouken, Wall Splat and Heavy Hands
+moved to RSQ Melee (RSQ_Melee.pk3) on 2026-11-01. Their upgrades stay here (same names, so a save keeps
+what you learned); load RSQ_Melee.pk3 for the gloves.
 
 
 WHAT IT FIXES
@@ -155,10 +158,12 @@ SUITE UPGRADES (rsq/)
 Upgrade paths for the whole RSQ suite, added as new files. No elemental damage, nothing that is
 rate of fire, no new resource: each one grows a number the suite already has, or rewards something
 the player already does. Options: Options -> Radiant Silvergun Options -> RSQ Gun Bonsai VR (also at the bottom of Gun Bonsai's own
-options): Slappers Only, Start With Gloves, and Tuning.
+options): XP Source, ShieldSaw Gauge, the screens, and Tuning. (Slappers Only, Start With Gloves and the punch
+settings are RSQ Melee's page now.)
 
 WEAPON PATHS (offered when that weapon levels)
-  Gloves        Haymaker, One-Two, Star Punch, Counterpunch, Body Blow, Knockdown
+  Gloves        Haymaker, One-Two, Star Punch, Counterpunch, Body Blow, Knockdown, Heavy Hands, Hadouken,
+                Wall Splat (the gloves are RSQ Melee's; these read its punch by name)
   Sabers        Momentum, Riposte Edge, Piercing Return, Saber Throw, Chain Choke, Dual Harmony,
                 Deflector; the Force: Force Push, Force Pull, Force Choke, Force Jump
   ShieldSaw     Broadening (the plate grows to double), Lockstep (more locks), Ricochet, Meat
@@ -206,20 +211,9 @@ SCORE AS XP (Gun Bonsai's bonsai_score_to_xp_factor, e.g. with RSQ Score)
   RSQ Score: bonsai_score_to_xp_factor 1, bonsai_damage_to_xp_factor 0. The patch says so on the
   console when both are above 0.
 
-SLAPPERS ONLY (rsq_slappers, off by default). Turning it on puts the boxing gloves on both hands at
-once, puts every gun away, and makes gun pickups vanish while it lasts; a gun given later is put
-away within a quarter second. You keep the suite's melee and whatever the loaded game calls melee
-(flagged MELEEWEAPON, using no ammo, or melee by Gun Bonsai's own inference) -- no list of one
-mod's names. Ammo stays. Turning it off gives the guns back, with no free ammo, and the gun that was
-in your main hand (and what was in your off hand) back into it.
-
-THE GLOVES are SuperPunchOut's: the glove weapons, Ermac's glove mesh and fit, and
-SuperPunchOut's punch reader (a punch arms after 15 cm of travel and must average
-rsq_punch_min_speed; power is the average speed). Renamed RSQ_Glove / RSQ_GloveOff so
-they can sit beside SuperPunchOut itself. A punch does Brutal Doom's own 10 (its
-MeleeStrikeNormal) at the slowest that counts, up to 20 at full speed.
-A punch also needs a clear path from the glove to the body, so it no longer lands
-through a wall.
+SLAPPERS ONLY AND THE GLOVES moved to RSQ Melee on 2026-11-01 (its README). The glove upgrades here read
+the last punch through RSQ Melee's RSQML_Service by name; RSQ Melee asks this patch for upgrade levels
+and numbers (RSQ_MeleeUpgradeService "level", "plevel", "upgrade.num").
 
 CREDIT FOR SCRIPT DAMAGE. A mod whose damage names the player as its inflictor can bracket it:
     svc.GetInt("credit.push", "", hint, 0, weapon); target.DamageMobj(...);
@@ -231,8 +225,8 @@ FriendPlayer to the player, and calls svc.GetInt("claim", "", hint, 0, helper).
 CREDITS
 -------
 Gun Bonsai: Rebecca "ToxicFrog" Kelly, MIT. This patch and the melee upgrades:
-presidentkoopa, same terms. Gloves, punch reader and sounds: SuperPunchOut
-(presidentkoopa); the glove mesh and its fit are Ermac's (iAmErmac, PunchOutVR /
-Virtual Punch Out); punch, star and knockdown sounds from Punch Out Doom
-(DerrickDavison) through Virtual Punch Out; the count is the Super Punch-Out!!
-announcer, as SuperPunchOut ships it. Punch-Out!! is Nintendo's.
+presidentkoopa, same terms. Knockdown's sounds are from Punch Out Doom (DerrickDavison)
+through Virtual Punch Out via SuperPunchOut (presidentkoopa); the count is the Super
+Punch-Out!! announcer, as SuperPunchOut ships it. Punch-Out!! is Nintendo's. (The gloves,
+the punch reader and the punch and star sounds moved to RSQ Melee, which carries their
+credits: SuperPunchOut's, and Ermac's glove mesh and fit.)

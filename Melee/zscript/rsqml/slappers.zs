@@ -1,18 +1,19 @@
-// SLAPPERS ONLY (rsq_slappers, a server setting, off by default; Options -> Gun Bonsai -> RSQ
-// Suite Upgrades, and Options -> RSQ Suite Upgrades).
+// SLAPPERS ONLY (rsqml_slappers, a server setting, off by default; Options -> Radiant Silvergun Options -> RSQ
+// Melee). Moved from RSQ Gun Bonsai VR (rsq_slappers) on 2026-11-01; the stash and the pickup stand-in keep their
+// class names (a save may hold them).
 //
 // WHAT THE TOGGLE DOES:
 //   ON   at once (no need to wait for the next level): you are handed the boxing gloves and they
 //        are put on both hands; every gun you carry is put away in a stash; gun pickups become
 //        nothing while it lasts, and a gun handed to you later is stashed within a quarter second.
 //        You keep the suite's melee (gloves, sabers, ShieldSaw, Force hand) and whatever the loaded
-//        game itself calls melee (RSQM.IsSlapperClass: no list of one mod's names). Ammo stays.
+//        game itself calls melee (RSQML.IsSlapperClass: no list of one mod's names). Ammo stays.
 //        At each level start the same is done again.
 //   OFF  at once: the stashed guns come back -- with no free ammo (what you had is what you have)
 //        -- and the gun that was in your main hand goes back into it. The gloves stay in your
 //        inventory. Gun pickups the toggle removed from the current level do not come back.
 //
-// Outside it, rsq_gloves 1 hands you the gloves at the start of each level (default 0: never).
+// Outside it, rsqml_gloves 1 (Start With Gloves) hands you the gloves at the start of each level (default 0: never).
 class RSQ_NoPickup : Actor
 {
 	// what a gun pickup becomes: nothing, gone on its first tic
@@ -28,15 +29,17 @@ class RSQ_SlapperStash : Inventory
 	Default { Inventory.MaxAmount 1; +INVENTORY.UNDROPPABLE +INVENTORY.UNTOSSABLE +INVENTORY.UNCLEARABLE +INVENTORY.QUIET }
 }
 
-class RSQ_SlappersHandler : EventHandler
+class RSQML_Slappers : StaticEventHandler
 {
-	static bool On() { return RSQM.SVI("rsq_slappers", 0) != 0; }
+	static bool On() { return RSQML.SVI("rsqml_slappers", 0) != 0; }
 
 	int dueTic[MAXPLAYERS];
 	int equipStage[MAXPLAYERS], equipTic[MAXPLAYERS];     // putting the gloves on both hands
 	int restoreStage[MAXPLAYERS], restoreTic[MAXPLAYERS]; // giving the main gun back its hand
 	String restoreOff[MAXPLAYERS];
 	bool wasOn, seen;
+	// a save loaded (a static handler is never saved): read the toggle afresh, so a load is never a flip
+	override void WorldLoaded(WorldEvent e) { seen = false; for (int i = 0; i < MAXPLAYERS; i++) { equipStage[i] = 0; restoreStage[i] = 0; } }
 
 	override void CheckReplacement(ReplaceEvent e)
 	{
@@ -51,7 +54,7 @@ class RSQ_SlappersHandler : EventHandler
 	static bool IsGun(Class<Actor> c, Actor pawn = null)
 	{
 		let w = (Class<Weapon>)(c);
-		return w && !RSQM.IsSlapperClass(c, pawn);
+		return w && !RSQML.IsSlapperClass(c, pawn);
 	}
 
 	override void WorldThingSpawned(WorldEvent e)
@@ -77,7 +80,7 @@ class RSQ_SlappersHandler : EventHandler
 	override void WorldTick()
 	{
 		bool slap = On();
-		bool gloves = slap || RSQM.SVI("rsq_gloves", 0) != 0;
+		bool gloves = slap || RSQML.SVI("rsqml_gloves", 0) != 0;
 		// THE TOGGLE FLIPPED (a server cvar, read once a tic): act now, not at the next level
 		bool flipOn = seen && slap && !wasOn;
 		bool flipOff = seen && !slap && wasOn;
@@ -92,7 +95,7 @@ class RSQ_SlappersHandler : EventHandler
 				// such as the second saber is never stashed, so it is remembered here)
 				let off = pmo.player.OffhandWeapon;
 				let stash = StashOf(pmo);
-				if (stash && off && !RSQM.IsGloveName(off.GetClassName())) stash.offGun = off.GetClassName();
+				if (stash && off && !RSQML.IsGloveName(off.GetClassName())) stash.offGun = off.GetClassName();
 				GiveGloves(pmo); Strip(pmo); GiveKit(pmo); StartEquip(pn);
 			}
 			if (flipOff) Restore(pn, pmo);
@@ -191,7 +194,7 @@ class RSQ_SlappersHandler : EventHandler
 			for (let it = pmo.Inv; it && !g; it = it.Inv)
 			{
 				let w = Weapon(it);
-				if (w && !w.bOffhandWeapon && RSQM.IsSlapperClass(w.GetClass(), pmo)) g = w;
+				if (w && !w.bOffhandWeapon && RSQML.IsSlapperClass(w.GetClass(), pmo)) g = w;
 			}
 			if (g) { p.PendingWeapon = g; pmo.BringUpWeapon(); }
 		}

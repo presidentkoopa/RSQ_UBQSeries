@@ -1,0 +1,6 @@
+// RSQ Melee's handlers. All STATIC: never written into a save, so they are there on any save, including one made
+// before Melee existed (legacy.zs keeps the two old Gun Bonsai VR handler names loadable).
+GameInfo
+{
+	AddEventHandlers = "RSQML_Sim", "RSQML_Gloves", "RSQML_Slappers", "RSQML_Guard", "RSQML_Shove", "RSQML_Headlock"
+}

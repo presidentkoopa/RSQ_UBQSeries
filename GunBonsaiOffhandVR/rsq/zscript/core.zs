@@ -1,7 +1,9 @@
 // RSQ melee upgrades for Gun Bonsai -- the shared core.
 //
-// Gun Bonsai is Rebecca "ToxicFrog" Kelly's (MIT). The melee upgrade paths, the gloves'
-// punch reader and Slappers Only are presidentkoopa's (this patch, same terms).
+// Gun Bonsai is Rebecca "ToxicFrog" Kelly's (MIT). The melee upgrade paths are presidentkoopa's (this patch, same
+// terms). The gloves' punch reader, Slappers Only and the moves Guard, Hadouken, Wall Splat and Heavy Hands moved to
+// RSQ Melee on 2026-11-01: Melee asks this patch for upgrade levels and numbers (RSQ_MeleeUpgradeService below), and
+// the glove upgrades ask Melee about the last punch (RSQML_Service), both by name.
 //
 // HOW THE MODS TALK. No mod links to another: the saber (RSQ_Saber) and the
 // ShieldSaw ask RSQ_MeleeUpgradeService by NAME through ServiceIterator, and get 0 from
@@ -18,38 +20,8 @@ class RSQM play
 	static bool IsSaberName(String n) { return n ~== "UBQS_Saber" || n ~== "UBQS_SaberOff"; }
 	static bool IsShieldName(String n) { return n ~== "SSQ_ShieldSaw"; }
 
-	// WHAT SLAPPERS ONLY LETS YOU KEEP, in any base game -- no list of one mod's names. The suite's
-	// own melee (the gloves, the sabers, the ShieldSaw, the Force hand), and then anything the loaded
-	// game itself says is not a gun:
-	//   - flagged a melee weapon (+WEAPON.MELEEWEAPON: vanilla's fist and chainsaw, Brutal Doom's
-	//     fists and axe, most mods' knives);
-	//   - using no ammo at all (a hands weapon such as BD22Q's empty off hand, a sword, a joke weapon
-	//     like Brutal Doom's Dragonslayer);
-	//   - or, for a weapon this player has already used, Gun Bonsai's own type inference calling it
-	//     melee (WeaponInfo.IsMelee -- which also honours a BONSAIRC `type ... : MELEE` line).
-	static bool IsSlapperClass(Class<Actor> c, Actor pawn = null)
-	{
-		if (!c) return false;
-		String n = c.GetClassName();
-		if (IsGloveName(n) || IsSaberName(n) || IsShieldName(n) || n ~== "UBQS_ForceHand") return true;
-		let w = (Class<Weapon>)(c);
-		if (!w) return false;
-		let d = GetDefaultByType(w);
-		if (!d) return false;
-		if (d.bMeleeWeapon) return true;
-		if (!d.AmmoType1 && !d.AmmoType2) return true;
-		if (pawn)
-		{
-			let stats = TFLV_PerPlayerStats.GetStatsFor(pawn);
-			if (stats)
-				for (int i = 0; i < stats.weapons.Size(); ++i)
-				{
-					let info = stats.weapons[i];
-					if (info && info.wpn && info.wpn.GetClass() == w && info.IsMelee()) return true;
-				}
-		}
-		return false;
-	}
+	// (IsSlapperClass, what Slappers Only lets you keep, moved to RSQ Melee with Slappers Only on 2026-11-01; Melee asks
+	// "is.melee" below for Gun Bonsai's own type inference.)
 
 	// ---- levels ----------------------------------------------------------------------------
 	// The level of an RSQ upgrade on ONE weapon's Gun Bonsai record. 0 when the weapon has
@@ -225,7 +197,14 @@ class RSQM play
 //   "ram"          objectArg = a monster the ShieldSaw just bashed, intArg = player number,
 //                  doubleArg = how hard: Battering Ram turns it into a missile, if learned.
 //   "stagger"      objectArg = a monster, intArg = tics: held in its pain frame that long (RSQ_Dazed,
-//                  the one Executioner reads). RSQ_Grapple's hook upgrades ask it. 1 done, 0 not.
+//                  the one Executioner reads). RSQ_Grapple's hook upgrades and RSQ Melee's Wall Splat ask it. 1 done, 0 not.
+//   "is.melee"     stringArg = a weapon class name, objectArg = the pawn: 1 when Gun Bonsai's type inference calls a
+//                  weapon of that class this player has used melee (WeaponInfo.IsMelee, honouring BONSAIRC). RSQ Melee's
+//                  Slappers Only and Guard ask it.
+//   GetDouble "upgrade.num"  stringArg = "<move>.<number>", intArg = the level, doubleArg = the move's own measure:
+//                  the numbers of the moves RSQ Melee does for these upgrades (HeavyHands.freeze (punch power) /
+//                  .knock, Hadouken.mult / .speed, WallSplat.damage (slam speed, map units a tic) / .reel, Guard.soak /
+//                  .break). The formulas live in the upgrade classes.
 class RSQ_MeleeUpgradeService : Service
 {
 	override int GetInt(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
@@ -287,6 +266,19 @@ class RSQ_MeleeUpgradeService : Service
 			d.Stagger(min(intArg, 350));
 			return 1;
 		}
+		if (request == "is.melee")
+		{
+			let pawn = Actor(objectArg);
+			Class<Weapon> wc = stringArg;
+			let stats = pawn ? TFLV_PerPlayerStats.GetStatsFor(pawn) : null;
+			if (!stats || !wc) return 0;
+			for (int i = 0; i < stats.weapons.Size(); ++i)
+			{
+				let info = stats.weapons[i];
+				if (info && info.wpn && info.wpn.GetClass() == wc && info.IsMelee()) return 1;
+			}
+			return 0;
+		}
 		if (request == "ram")
 		{
 			let mo = Actor(objectArg);
@@ -305,52 +297,24 @@ class RSQ_MeleeUpgradeService : Service
 	{
 		// the Force's patch-only baseline: what an unlearned power is worth (rsq_force_start)
 		if (request == "force.start") return clamp(RSQM.SV("rsq_force_start", 0.6), 0.1, 1.0);
+		if (request == "upgrade.num")
+		{
+			int lv = max(intArg, 0);
+			if (stringArg == "HeavyHands.freeze") return RSQ_Upgrade_HeavyHands.Freeze(lv, doubleArg);
+			if (stringArg == "HeavyHands.knock") return RSQ_Upgrade_HeavyHands.Knock(lv);
+			if (stringArg == "Hadouken.mult") return RSQ_Upgrade_ReturnFire.Mult(lv);
+			if (stringArg == "Hadouken.speed") return RSQ_Upgrade_ReturnFire.Speed(lv);
+			if (stringArg == "WallSplat.damage") return RSQ_Upgrade_WallSplat.Damage(lv, doubleArg);
+			if (stringArg == "WallSplat.reel") return RSQ_Upgrade_WallSplat.Reel(lv);
+			if (stringArg == "Guard.soak") return RSQ_Upgrade_Guard.Soak(lv);
+			if (stringArg == "Guard.break") return RSQ_Upgrade_Guard.BreakAt(lv);
+			return 0;
+		}
 		return 0;
 	}
 }
 
-// ---- A RUMBLE on one controller -------------------------------------------------------------
-// The series' haptic route, as RSQ_Saber's UBQS_Buzzer does it: A_QuakeEx QF_WAVE,
-// re-issued each tic, X the left controller and Y the right. Local to its owner (tremor 8).
-class RSQ_Buzz : Actor
-{
-	Actor feels;
-	bool left;
-	double amp;
-	int total, leftTics;
-	Default { +NOINTERACTION +NOBLOCKMAP +NOSECTOR +NOGRAVITY +DONTSPLASH +NOTONAUTOMAP RenderStyle "None"; }
-
-	static void Start(Actor who, int hand, double k, int tics)
-	{
-		if (!who || !who.player) return;
-		// RUMBLE STRENGTH (RSQ_Accessibility's rsqa_rumble_scale, RSQGB_A11y.Rumble: x0..2, 0 = none; 1 without it).
-		// Every rumble of this patch comes through here.
-		double rs = RSQGB_A11y.Rumble();
-		if (rs <= 0) return;
-		k *= rs;
-		bool lefty = false;
-		if (!multiplayer) { let cs = CVar.FindCVar("vr_control_scheme"); lefty = cs && cs.GetInt() >= 10; }
-		let q = RSQ_Buzz(Actor.Spawn("RSQ_Buzz", who.pos));
-		if (!q) return;
-		q.feels = who;
-		q.left = (hand == 1) != lefty;
-		q.amp = clamp(k, 0.12, 1.0);
-		q.total = clamp(tics, 1, 16);
-		q.leftTics = q.total;
-	}
-
-	override void Tick()
-	{
-		Super.Tick();
-		if (bDestroyed) return;
-		if (!feels || leftTics <= 0) { Destroy(); return; }
-		SetOrigin(feels.pos, true);
-		double a = amp * leftTics / double(total) / 3.2;
-		leftTics--;
-		A_QuakeEx(left ? a : 0.0, left ? 0.0 : a, 0, 2, 0, 8, "", QF_WAVE, 17.5, 17.5, 1);
-	}
-	States { Spawn: TNT1 A 20; Stop; }
-}
+// (RSQ_Buzz, the rumble, moved to RSQ Melee with its name on 2026-11-01: its gloves and Guard were its only users.)
 
 // ---- WHAT A MONSTER CARRIES WHILE IT IS HURTING ---------------------------------------------
 // One token per monster holds every timed condition the melee upgrades put on it:

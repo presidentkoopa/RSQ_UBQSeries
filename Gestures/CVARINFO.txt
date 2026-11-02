@@ -56,7 +56,7 @@ user float  rsqg_two_hold_ms     = 400;    // palms: held this long
 user float  rsqg_two_palms_pitch = 40;     // palms: each hand pointing at least this far up (degrees)
 user float  rsqg_two_palms_gap   = 0.25;   // palms: the hands at least this far apart sideways (metres)
 
-// ---- PUNCH: jab / hook / uppercut (gloves.zs's reader, copied), answered whenever a mod asks -------------
+// ---- PUNCH: jab / hook / uppercut (the gloves' reader, now RSQ Melee's gloves.zs, copied), answered whenever a mod asks
 // Never while braced or with both hands shoving together (a two-hand gun; Brutal Doom's butt-stroke push).
 user float  rsqg_punch_mps       = 2.0;    // average speed over the swing for a punch (gloves.zs rsq_punch_min_speed)
 user int    rsqg_punch_rehit     = 6;      // tics before the same hand may punch again (rsq_punch_rehit)
@@ -64,16 +64,8 @@ user float  rsqg_punch_rise      = 0.5;    // an uppercut: the swing's upward sh
 user float  rsqg_punch_window    = 300;    // "punch" answers the last punch for this long (ms)
 user float  rsqg_punch_together  = 0.6;    // the other hand moving the same way at this share of the speed = a two-hand shove, not a punch
 
-// ---- BUTT SHOVE (owner's #1 and #2, 2026-11-01) ----------------------------------------------------------
-// The main hand's shove (a gun in it) hits: BD22 VR Reloaded's butt strike, ported (gestures.zs ButtShove). On by
-// default. Stands down by itself when BD22 VR Reloaded is loaded (its own rsq_butt strike is the one).
-user bool   rsqg_shove           = true;
-user float  rsqg_shove_mps       = 3.6;    // the shove must average this to hit (BD22 VR Reloaded melee.zs BUTT_SWING 3.6)
-// On (owner 2026-11-01, was an Option): a landed butt shove (ours, or BD22 VR Reloaded's own when it is loaded) asks
-// RSQ SlowMo for a short pulse (rsm_pulse <ms> 35). Nothing hears it when SlowMo is not loaded. While that slow motion
-// lasts, shotgun hits bleed twice and a shotgun kill pays RSQ Score's "F.E.A.R. Effect" (gestures.zs FEAR).
-user bool   rsqg_shove_slowmo    = true;
-user int    rsqg_shove_slowmo_ms = 300;    // how long the pulse holds (ms; SlowMo eases in and out around it)
+// (The gun-butt shove's blow, its slow-mo and the F.E.A.R. Effect moved to RSQ Melee on 2026-11-01, with their
+// settings: rsqg_shove, rsqg_shove_mps, rsqg_shove_slowmo, rsqg_shove_slowmo_ms are rsqml_shove* there.)
 
 // ---- QoL (2026-10-31) -----------------------------------------------------------------------------------
 // GE7: a small grey line low in the view names each gesture as it is recognised (inspect, jab / hook / uppercut,

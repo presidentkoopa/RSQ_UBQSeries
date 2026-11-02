@@ -31,7 +31,7 @@
 //   hook.bite      RSQ_Grapple's claw took it        hook.yank   the hook threw it (or a body it threw struck it)
 //   whip           the whip's crack
 //   grab.throw     something thrown with Distance Grab
-//   grab.hold      Distance Grab's off hand holding it (the walk-up grip on a living monster)
+//   grab.hold      the Headlock: the off hand's grip holding it (RSQ Melee since 11-01, Distance Grab before; same id)
 //   kick / punch / glove / blade / finisher   Brutal Doom's boots, fists (and the VR pistol whip), the
 //                  boxing gloves, an axe/chainsaw/sword, a fatality
 // A yank always follows a bite: "hook.bite, hook.yank" is ONE action for counting tools (ActionOf()).
@@ -71,7 +71,8 @@ class RS_ComboSeed play
 		reg.OwnCombo("Yo-Yo",           "force.pull > force.push > gun",        0.9);
 		reg.OwnCombo("Discus",          "shield.bash > force.push > shield.disc", 0.9);
 		// the owner, 10-29: "allow offhand to grab enemy up to a point so mainhand can punch them, have
-		// that be a score combo" -- Distance Grab's off-hand headlock, then a punch, kick or glove
+		// that be a score combo" -- the off-hand Headlock (RSQ Melee's since 11-01, touching "grab.hold"), then a
+		// punch, kick or glove
 		reg.OwnCombo("Headlock",        "grab.hold > hands",                    0.5);
 	}
 }

@@ -1,0 +1,48 @@
+// RSQ Melee settings (rsqml_). Moved 2026-11-01: from RSQ Gun Bonsai VR (rsq_slappers, rsq_gloves, rsq_punch_*), from
+// RSQ Gestures (rsqg_shove*), from RSQ Distance Grab (rsqdg_collar*). The old ones were removed from those mods.
+
+// ---- THE GLOVES AND THE PUNCH (gloves.zs, slappers.zs) -- server settings, as they were ------------------------
+// Slappers Only: on puts the boxing gloves on both hands at once and puts your guns away (gun pickups vanish); off gives them back.
+server bool  rsqml_slappers = false;
+// Start With Gloves: 1 hands you the boxing gloves at each level start.
+server int   rsqml_gloves = 0;
+// The gloves' punch reader (SuperPunchOut's own defaults: spo_min_speed, spo_full_speed, spo_rehit_tics,
+// spo_uppercut_rise) and reach past the glove's 9 cm radius, in map units.
+server float rsqml_punch_min_speed = 2.0;
+server float rsqml_punch_full_speed = 7.0;
+server int   rsqml_punch_rehit = 6;
+server float rsqml_punch_uppercut_rise = 0.5;
+server float rsqml_punch_pad = 4.0;
+// Brutal Doom's own punch is 10 (MeleeStrikeNormal); a full-speed glove doubles it.
+server float rsqml_punch_damage = 10.0;
+
+// ---- THE MOVES THAT ARE GUN BONSAI VR UPGRADES -------------------------------------------------------------------
+// With RSQ Gun Bonsai VR loaded each is earned as its upgrade and these rows do nothing. Without it, each row plays its
+// move at the upgrade's level 1. Off by default (Options).
+server bool  rsqml_guard = false;       // both fists up at your face soak a blow from in front
+server bool  rsqml_hadouken = false;    // a punch knocks a monster's missile back at its shooter
+server bool  rsqml_wallsplat = false;   // a monster punched into a wall slams into it
+server bool  rsqml_heavyhands = false;  // a landed punch freezes the monster for a beat and knocks it further
+
+// ---- THE GUN-BUTT SHOVE (shove.zs) -- user settings, as they were in RSQ Gestures --------------------------------
+// The main hand's shove with a gun in it hits (BD22 VR Reloaded's butt strike, ported). Stands down by itself when BD22
+// VR Reloaded is loaded (its own rsq_butt strike is the one).
+user bool    rsqml_shove = true;
+user float   rsqml_shove_mps = 3.6;     // the shove must average this to hit (BD22 VR Reloaded melee.zs BUTT_SWING 3.6)
+// A landed butt shove (ours, or BD22 VR Reloaded's own when it is loaded) asks RSQ SlowMo for a short pulse
+// (rsm_pulse <ms> 35). While that slow motion lasts: the F.E.A.R. Effect.
+user bool    rsqml_shove_slowmo = true;
+user int     rsqml_shove_slowmo_ms = 300;
+
+// ---- THE HEADLOCK (headlock.zs) -- user settings, as they were in RSQ Distance Grab -------------------------------
+user bool    rsqml_headlock = true;          // the off hand's grip holds a living monster
+user float   rsqml_headlock_reach = 0.30;    // metres from the palm to its body (Distance Grab's walk-up reach, rsqdg_near_m)
+user float   rsqml_headlock_mass = 400.0;    // the heaviest it can hold (Doom mass: imp 100, demon 400, baron 1000)
+user float   rsqml_headlock_secs = 3.0;      // how long it stays held before it breaks free
+user bool    rsqml_headlock_shield = false;  // HUMAN SHIELD: held as long as the grip is, turned to face away
+user float   rsqml_headlock_throw = 3.0;     // m/s: the off hand swung past this while it holds one throws it (0 = never)
+user float   rsqml_headlock_weight = 30.0;   // %: a thrown monster counts as this share of its weight
+user string  rsqml_keys_off = "443 436";     // the off grip's key codes (as RSQ Distance Grab and the Tactical Rig read them)
+
+// ---- debug --------------------------------------------------------------------------------------------------------
+user int     rsqml_debug = 0;                // 1: each decision to the console (punch, guard, shove, headlock); 2: also each F.E.A.R. hit

@@ -33,7 +33,7 @@ Nothing special: play. A few bonuses come from VR moves:
 - **Blind-fire**: hold the gun round a corner and hit something your eyes cannot see.
 - **Off-hand**: kill with the off hand's trigger alone.
 - **Two Guns**: kills from each hand's trigger within a second of each other.
-- **Punch combos** (with Gun Bonsai VR's gloves): left-right-left punches, a punch mid-attack.
+- **Punch combos** (with RSQ Melee's boxing gloves): left-right-left punches, a punch mid-attack.
 
 ## Features
 
@@ -99,7 +99,7 @@ New 2026-11-01 (rig-checked only, **not yet headset-confirmed**):
      comes back. Without RSQ_SlowMo: nothing.
 13c. With RSQ_Miniboss: a thrall killed in the slow window, the miniboss and a greedy kill each show their own row
      ("Thrall Slow Kill", "Miniboss", "Greedy", Daring colour) instead of adding to Base.
-13d. With RSQ_Gestures: a shotgun kill in the slow-motion window after a gun-butt shove shows "F.E.A.R. Effect"
+13d. With RSQ_Melee and RSQ_SlowMo: a shotgun kill in the slow-motion window after a gun-butt shove shows "F.E.A.R. Effect"
      (Style colour).
 
 With other mods (each needs the named pk3; none of these were headset-run):
@@ -122,9 +122,10 @@ With other mods (each needs the named pk3; none of these were headset-run):
 Score is a shared service: other mods send it awards and read its kills.
 
 - **Sends to Score**: RSQ_Grapple (Indiana Jones award), RSQ_Saber (Deflect, Remote Down awards),
-  RSQ_DistanceGrab (a headlock counts in the combo chain), RSQ_Miniboss (Thrall Slow Kill, Miniboss, Greedy
-  awards, each on its own Daring row), RSQ_Gestures (F.E.A.R. Effect, a Style row: a shotgun kill in the slow-motion
-  window after a gun-butt shove).
+  RSQ_Melee (its Headlock counts in the combo chain as "grab.hold", so the Headlock combo fires; F.E.A.R. Effect, a
+  Style row: a shotgun kill in the slow-motion window after a gun-butt shove; both moved there from RSQ_DistanceGrab
+  and RSQ_Gestures on 2026-11-01), RSQ_Miniboss (Thrall Slow Kill, Miniboss, Greedy awards, each on its own Daring
+  row).
 - **Reads Score**: RSQ_GunBonsaiVR (XP Source: Style turns a kill's bonus points into weapon XP, split along
   the combo chain).
 - **Score asks**, each by name and only when loaded: RSQ_Grapple, RSQ_ShieldSaw, RSQ_Saber,
@@ -474,8 +475,8 @@ an off-hand glove's kill counts. **Juggle replaces Skeet** (one fact, the body i
 **sent back** (Return to Sender) is no longer also judged as your own shot by No-Look, Blind-fire,
 Off-hand, Full Hands or Two Guns.
 
-Not built, and why: an uppercut finisher (the glove's punch kind is on the glove object, and the
-patch exposes no service for it); a catch thrown back at the thrower (Distance Grab catches no
+Not built, and why: an uppercut finisher (the glove's punch kind is on the glove object; since 2026-11-01
+RSQ Melee answers it, RSQML_Service "punch.kind", but no row reads it yet); a catch thrown back at the thrower (Distance Grab catches no
 missiles); a push off a ledge (Doom monsters take no falling damage).
 
 **Slow motion for big moments.** A kill that a bonus calls a big moment sends RSQ_SlowMo

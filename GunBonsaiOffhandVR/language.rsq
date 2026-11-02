@@ -1,8 +1,6 @@
 [en default]
 // Gun Bonsai VR patch -- the melee upgrades.
-RSQ_GLOVE_TAG = "Boxing Gloves";
-RSQ_GLOVE_PICKUP = "You put on the boxing gloves!";
-RSQ_GLOVE_OB = "%o was knocked out by %k.";
+// (RSQ_GLOVE_TAG / _PICKUP / _OB moved to RSQ Melee's LANGUAGE.txt with the gloves, 2026-11-01.)
 
 RSQ_Upgrade_Haymaker_Name = "Haymaker";
 RSQ_Upgrade_Haymaker_Desc = "Glove: the harder you swing, the more it hurts.";
@@ -187,14 +185,8 @@ RSQ_Upgrade_DoubleHook_Desc = "Grapple: hook two and slam them together.";
 RSQ_Upgrade_DoubleHook_TT = "With a monster on each hand's hook, they are dragged into each other: @dmg damage each, staggered for @time. Offered from player level 5.";
 
 RSQ_MENU_TITLE = "RSQ Gun Bonsai VR";
-RSQ_MENU_SLAPPERS = "Slappers Only";
-RSQ_MENU_SLAPPERS_TT = "On: the boxing gloves go on both hands at once, your guns are put away and gun pickups are gone. You keep the suite's melee and the game's own melee. Off: your guns come back.";
-RSQ_MENU_GLOVES = "Start With Gloves";
 RSQ_MENU_ADV = "Tuning and Debug";
 RSQ_MENU_FORCE_START = "Force Base Strength";
-RSQ_MENU_PUNCH_MIN = "Punch Min Speed";
-RSQ_MENU_PUNCH_FULL = "Punch Full Speed";
-RSQ_MENU_PUNCH_DMG = "Punch Damage";
 RSQ_MENU_STAR_FIRST = "First Star After";
 RSQ_MENU_STAR_EVERY = "Star Every";
 RSQ_MENU_HOOK_XP = "Grapple XP";

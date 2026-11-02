@@ -1,7 +1,7 @@
 // RSQ Gun Bonsai VR -- the patch's options: one short page under Radiant Silvergun Options (the
 // screens' four rows folded in), the numbers on Tuning and Debug. Gun Bonsai's own menu stays where
-// Gun Bonsai puts it; the patch adds Slappers Only and a way here at its bottom.
-// and in Gun Bonsai's own options, at the bottom: Slappers Only and the way in
+// Gun Bonsai puts it; the patch adds a way here at its bottom. (Slappers Only, Start With Gloves and the punch
+// sliders moved to RSQ Melee's page on 2026-11-01.)
 
 // ---- Radiant Silvergun Options (tools/rsmenu) ----------------------------------------------------
 // The series' one Options entry. Every series pk3 carries this same block with its own prefix: the
@@ -28,7 +28,6 @@ AddOptionMenu "RSQ_RSOptions"
 AddOptionMenu "GunBonsaiOptions"
 {
 	StaticText " "
-	Option "$RSQ_MENU_SLAPPERS", "rsq_slappers", "OnOff"
 	Submenu "$RSQ_MENU_TITLE", "RSQ_MeleeOptions"
 }
 
@@ -42,8 +41,6 @@ OptionValue "RSQ_XPSources"
 OptionMenu "RSQ_MeleeOptions"
 {
 	Title "RSQ GUN BONSAI VR"
-	Option "$RSQ_MENU_SLAPPERS", "rsq_slappers", "OnOff"
-	Option "$RSQ_MENU_GLOVES", "rsq_gloves", "OnOff"
 	Option "$RSQ_MENU_XPSRC", "rsq_xp_source", "RSQ_XPSources"
 	Option "$RSQ_MENU_SHIELDGAUGE", "rsq_hud_shield", "OnOff"
 	StaticText " "
@@ -57,9 +54,6 @@ OptionMenu "RSQ_MeleeAdvanced"
 {
 	Title "$RSQ_MENU_ADV"
 	Slider "$RSQ_MENU_FORCE_START", "rsq_force_start", 0.1, 1.0, 0.05, 2
-	Slider "$RSQ_MENU_PUNCH_MIN", "rsq_punch_min_speed", 0.5, 5.0, 0.25, 2
-	Slider "$RSQ_MENU_PUNCH_FULL", "rsq_punch_full_speed", 3.0, 12.0, 0.5, 1
-	Slider "$RSQ_MENU_PUNCH_DMG", "rsq_punch_damage", 2, 40, 1, 0
 	Slider "$RSQ_MENU_STAR_FIRST", "rsq_star_first", 0, 20, 1, 0
 	Slider "$RSQ_MENU_STAR_EVERY", "rsq_star_every", 0, 10, 1, 0
 	Slider "$RSQ_MENU_HOOK_XP", "rsq_hook_xp", 0, 3, 0.1, 1

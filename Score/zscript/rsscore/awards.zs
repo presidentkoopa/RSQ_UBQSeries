@@ -57,7 +57,7 @@ class RS_Award_Greedy : RS_ScoreBonus
 	override String DisplayName() const { return "Greedy"; }
 }
 
-// RSQ_Gestures: a shotgun kill in the slow-motion window after a gun-butt shove (the owner's name, spelt as he wrote it).
+// RSQ Melee (RSQ Gestures until 11-01): a shotgun kill in the slow-motion window after a gun-butt shove (the owner's name, spelt as he wrote it).
 class RS_Award_FEAR : RS_ScoreBonus
 {
 	override int Family() const { return FAM_STYLE; }

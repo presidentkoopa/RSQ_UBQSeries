@@ -1,0 +1,36 @@
+RSQ_Melee -- credits
+====================
+
+Code: ZScript for the Radiant Silvergun Quest series (presidentkoopa), for stock QuestZDoom 17.3 by
+Emawind84 and Team Beef. No engine change. Moved together on 2026-11-01 from three series mods; every line
+below comes with the code it credits.
+
+THE BOXING GLOVES AND THE PUNCH (from RSQ Gun Bonsai VR)
+  Gloves, punch reader and sounds from SuperPunchOut (presidentkoopa): the glove weapons, the Arcade punch
+  reader and ClassifyPunch, Star Punch's banking rule. The glove mesh and its fit are Ermac's (iAmErmac,
+  PunchOutVR / Virtual Punch Out); punch and star sounds from Punch Out Doom (DerrickDavison) through
+  Virtual Punch Out, as SuperPunchOut ships them. Punch-Out!! is Nintendo's.
+  A glove's punch is Brutal Doom's own fist numbers (MeleeStrikeNormal 10, MeleeStrike2 20; brutal22test6
+  Melee.dec), parsed, not shipped.
+  Guard, Hadouken (Return Fire), Wall Splat and Heavy Hands: the owner's picks 52-55; what each became is from
+  the Quest teardown (presidentkoopa's RSQ_QuestEngineSurvey: surveys/01_MELEE.md 3.6, 4.4, 4.5, 4.7, 4.11;
+  apply/02_MELEE_BUILD.md). Their upgrades and numbers stay in RSQ Gun Bonsai VR, an addon for Rebecca
+  "ToxicFrog" Kelly's Gun Bonsai (MIT).
+
+THE GUN-BUTT SHOVE, ITS SLOW-MO AND THE F.E.A.R. EFFECT (from RSQ Gestures)
+  The gun butt shove is BD22 VR Reloaded's butt shove (the owner's own mod; zscript/rsvr/melee.zs: the swing
+  speed, reach, wait and the blow it lands), ported. Numbers taken from Brutal Doom (Sergeant Mark IV;
+  brutal22test6.pk3): KickAttack's damage and alert range (Melee.dec) and the monsters' Pain.Kick thrusts
+  (actors/Enemies). Sounds played by name, NOT shipped: Brutal Doom's Melee/SwingStrong and Kick/flesh when it
+  is loaded, otherwise stock Doom's skeleton/swing and punch (id Software). The F.E.A.R. Effect's blood is
+  each monster's own blood type (Brutal Doom's when it is loaded). Slow motion is RSQ_SlowMo's (rsm_pulse);
+  the award is RSQ_Score's (RS_ScoreService). The swing reader is RSQ Gestures' punch reader (a port of
+  presidentkoopa's RS_Gestures), copied.
+
+THE HEADLOCK (from RSQ Distance Grab)
+  The Headlock, Human Shield and the headlock throw: RSQ Distance Grab's (presidentkoopa; its feel ported from
+  his desktop RS_WorldHands). Without Distance Grab, Melee's own toss uses Distance Grab's default throw
+  numbers and impact rule.
+
+The shared Radiant Silvergun Options menu is the series' tools/rsmenu; RSQ_Accessibility's settings are read
+through Accessibility/tools/a11y_template.zs.

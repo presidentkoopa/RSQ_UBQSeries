@@ -44,26 +44,14 @@ user bool rsq_hud_shield = false;
 server bool bonsai_vr_warn_binding = true;
 
 // ---- the melee upgrades (rsq/) -- all server settings ----
-// Slappers Only: on puts the boxing gloves on both hands at once and puts your guns away (gun pickups vanish); off gives them back.
-server bool rsq_slappers = false;
-// Outside Slappers Only: 1 hands you the boxing gloves at each level start.
-server int rsq_gloves = 0;
+// (Slappers Only, Start With Gloves and the punch reader's settings moved to RSQ Melee as rsqml_slappers,
+// rsqml_gloves, rsqml_punch_* on 2026-11-01.)
 // The Force with this patch loaded: an unlearned power works at this share of the saber's own.
 server float rsq_force_start = 0.6;
-// The gloves' punch reader (SuperPunchOut's own defaults: spo_min_speed, spo_full_speed,
-// spo_rehit_tics, spo_uppercut_rise) and reach past the glove's 9 cm radius, in map units.
-server float rsq_punch_min_speed = 2.0;
-server float rsq_punch_full_speed = 7.0;
-server int rsq_punch_rehit = 6;
-server float rsq_punch_uppercut_rise = 0.5;
-server float rsq_punch_pad = 4.0;
-// Brutal Doom's own punch is 10 (MeleeStrikeNormal); a full-speed glove doubles it.
-server float rsq_punch_damage = 10.0;
-// Star Punch banking, SuperPunchOut's `stars <first> <every>` (Soda Popinski's line).
+// Star Punch banking, SuperPunchOut's `stars <first> <every>` (Soda Popinski's line). RSQ Melee's punch reader reads
+// them by name while the glove has Star Punch.
 server int rsq_star_first = 1;
 server int rsq_star_every = 2;
-// The punch reader's decisions to the console.
-server bool rsq_punch_debug = false;
 
 // RSQ_Grapple's hook: XP for what it does (bites, yanks, swinging, kills it was in on) x this.
 server float rsq_hook_xp = 1.0;

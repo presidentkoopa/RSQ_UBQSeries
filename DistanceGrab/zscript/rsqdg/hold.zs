@@ -727,7 +727,7 @@ class RSQDG_Hold : EventHandler
 	// is turned onto it, and lobbed so the arc comes down on its middle at the speed you threw (the air's real
 	// gravity, throw.zs). The speed across the ground is yours; only the heading and the lob are corrected, the lob
 	// by no more than 0.6 of that speed either way.
-	// Static, and so callable for a thing no hand holds: the Headlock's throw (near.zs) bends its monster the same way.
+	// Static, and so callable for a thing no hand holds: RSQ Melee's Headlock throw (throw.zs HeadlockThrow) bends its monster the same way.
 	static Vector3 Assist(PlayerInfo p, Actor a, Vector3 v)
 	{
 		double cone = RSQDG_Reach.Num("rsqdg_throw_assist", p, 12.0);

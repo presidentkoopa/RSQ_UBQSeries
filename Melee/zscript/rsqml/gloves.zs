@@ -1,4 +1,5 @@
-// THE GLOVES -- SuperPunchOut's boxing gloves, as weapons for any Doom map.
+// THE GLOVES AND THE PUNCH -- SuperPunchOut's boxing gloves, as weapons for any Doom map (RSQ Melee; moved from
+// RSQ Gun Bonsai VR's rsq/zscript/gloves.zs on 2026-11-01).
 //
 // From SuperPunchOut (presidentkoopa): the glove weapons (spo_present.zs SPO_Glove /
 // SPO_GloveOff), their model and skins (models/spo, the mesh of Ermac's PunchOutVR glove and
@@ -7,8 +8,10 @@
 // consecutive tics, must average spo_min_speed over that travel, and its power is the average).
 // The boxer, the ring and the bout are not here.
 //
-// RENAMED RSQ_Glove / RSQ_GloveOff, so this patch and SuperPunchOut can both be loaded without
-// two classes of one name. The Gun Bonsai upgrades match either spelling (RSQM.IsGloveName).
+// RENAMED RSQ_Glove / RSQ_GloveOff, so this mod and SuperPunchOut can both be loaded without two classes of one
+// name. Moved here from RSQ Gun Bonsai VR on 2026-11-01 WITH THEIR NAMES: Gun Bonsai keeps a glove's XP and
+// upgrades by its class name, and a save holds the gloves by it. Gun Bonsai VR's glove upgrades read the last
+// punch through RSQML_Service ("punch.*", service.zs), never by linking to these classes.
 //
 // A glove draws nothing (TNT1) and fires nothing: a punch is the hand. Stock QuestZDoom draws
 // the READY weapon's model on the main controller and the OFFHAND weapon's on the other, so the
@@ -16,8 +19,8 @@
 
 class RSQ_Glove : Weapon
 {
-	// THE LAST PUNCH, as the reader saw it -- the upgrades read these in ModifyDamageDealt, where
-	// the only thing they are handed is this weapon as the inflictor.
+	// THE LAST PUNCH, as the reader saw it -- Gun Bonsai VR's upgrades read these (RSQML_Service "punch.*") in
+	// ModifyDamageDealt, where the only thing they are handed is this weapon as the inflictor.
 	double lastPower;     // 0..1 between spo_min_speed and spo_full_speed (SuperPunchOut's own scale)
 	double lastSpeed;     // m/s, the swing's average
 	int    lastKind;      // RSQ_GloveHandler.PK_JAB / PK_HOOK / PK_UPPER
@@ -26,6 +29,8 @@ class RSQ_Glove : Weapon
 	bool   lastStar;      // a star punch
 	int    lastChain;     // One-Two: how many alternating hits in a row, this one included
 	int    lastHand;
+	// Star Punch's bank (SuperPunchOut's), kept on the main-hand glove so it is saved and kept across levels
+	int    bankStars, bankLanded;
 
 	Default
 	{
@@ -89,7 +94,7 @@ class RSQ_PunchHand play
 	double prevYaw;
 }
 
-class RSQ_GloveHandler : EventHandler
+class RSQML_Gloves : StaticEventHandler
 {
 	enum EKind { PK_JAB, PK_HOOK, PK_UPPER }
 
@@ -105,13 +110,8 @@ class RSQ_GloveHandler : EventHandler
 	RSQ_PunchHand hands[MAXPLAYERS * 2];
 	// One-Two
 	int chainLastHand[MAXPLAYERS], chainLastTic[MAXPLAYERS], chainCount[MAXPLAYERS];
-	// Star Punch: SuperPunchOut's bank (rules.txt `maxstars 3`) and its landed-punch count
-	int stars[MAXPLAYERS], starLanded[MAXPLAYERS];
-	// a probe may hand the reader positions instead of the controllers (headless testing)
-	bool simOn[MAXPLAYERS * 2];
-	Vector3 simHand[MAXPLAYERS * 2];
 
-	static RSQ_GloveHandler Get() { return RSQ_GloveHandler(EventHandler.Find("RSQ_GloveHandler")); }
+	static RSQML_Gloves Get() { return RSQML_Gloves(StaticEventHandler.Find("RSQML_Gloves")); }
 
 	RSQ_PunchHand HandOf(int pn, int h)
 	{
@@ -126,16 +126,8 @@ class RSQ_GloveHandler : EventHandler
 		return RSQ_Glove(h == 0 ? pmo.player.ReadyWeapon : pmo.player.OffhandWeapon);
 	}
 
-	// The controller, or nothing: out of VR the engine writes both hands to the pawn's chest
-	// (hw_vrmodes.cpp SetUp), and two hands at one point is that fallback's signature.
-	Vector3, bool HandPos(PlayerPawn pmo, int h)
-	{
-		int i = pmo.PlayerNumber() * 2 + h;
-		if (simOn[i]) return simHand[i], true;
-		if (!pmo.OverrideAttackPosDir || !pmo.player.PlayInVR) return (0, 0, 0), false;
-		if (pmo.AttackPos == pmo.OffhandPos) return (0, 0, 0), false;
-		return (h == 0 ? pmo.AttackPos : pmo.OffhandPos), true;
-	}
+	// The controller, or nothing (RSQML_Hands.Pos: out of VR the engine writes both hands to the pawn's chest).
+	Vector3, bool HandPos(PlayerPawn pmo, int h) { Vector3 p; bool ok; [p, ok] = RSQML_Hands.Pos(pmo, h); return p, ok; }
 
 	// SuperPunchOut's ClassifyPunch (PunchOutVR core.zs), unchanged: from how the glove travelled
 	// against the line to the target -- not from where you look or how the controller is held.
@@ -161,6 +153,7 @@ class RSQ_GloveHandler : EventHandler
 			if (!playeringame[pn]) continue;
 			let pmo = players[pn].mo;
 			if (!pmo || pmo.health <= 0) continue;
+			RSQML_Body.Ensure(pmo);
 			for (int h = 0; h < 2; h++)
 			{
 				let g = GloveIn(pmo, h);
@@ -201,17 +194,17 @@ class RSQ_GloveHandler : EventHandler
 
 	private void Swing(PlayerPawn pmo, RSQ_Glove g, int h, RSQ_PunchHand st)
 	{
-		double upm = RSQM.UnitsPerMetre();
+		double upm = RSQML.UnitsPerMetre();
 		double ps = level.pixelstretch > 0.1 ? level.pixelstretch : 1.2;
-		double minSpeed = RSQM.SV("rsq_punch_min_speed", 2.0);   // spo_min_speed's default
-		double fullSpeed = RSQM.SV("rsq_punch_full_speed", 7.0); // spo_full_speed's default
-		int rehit = RSQM.SVI("rsq_punch_rehit", 6);               // spo_rehit_tics' default
+		double minSpeed = RSQML.SV("rsqml_punch_min_speed", 2.0);   // spo_min_speed's default
+		double fullSpeed = RSQML.SV("rsqml_punch_full_speed", 7.0); // spo_full_speed's default
+		int rehit = RSQML.SVI("rsqml_punch_rehit", 6);               // spo_rehit_tics' default
 		Vector3 v = st.vel;
 		v.z *= ps;
 		double mps = v.Length() / upm;
 		int now = level.maptime;
-		bool dbg = RSQM.SVI("rsq_punch_debug", 0) != 0;
-		if (dbg) Console.Printf("RSQ punch %s t%d %.2f m/s armed %d approach %.2f m in %d", h ? "L" : "R", now, mps, st.armed, st.approach, st.approachTics);
+		bool dbg = RSQML.Debug() > 0;
+		if (dbg) Console.Printf("RSQML punch %s t%d %.2f m/s armed %d approach %.2f m in %d", h ? "L" : "R", now, mps, st.armed, st.approach, st.approachTics);
 
 		if (!st.armed)
 		{
@@ -231,10 +224,12 @@ class RSQ_GloveHandler : EventHandler
 			st.approachTics = 0;
 			return;
 		}
-		// HADOUKEN (pick 53, was Return Fire; class RSQ_Upgrade_ReturnFire): a glove moving at punch speed knocks back an enemy missile it meets
+		// HADOUKEN (pick 53, was Return Fire; Gun Bonsai VR's upgrade class RSQ_Upgrade_ReturnFire): a glove moving at
+		// punch speed knocks back an enemy missile it meets. With Gun Bonsai VR: once that glove has learned it. Without:
+		// the Hadouken row (rsqml_hadouken, off), at level 1.
 		if (mps >= minSpeed && missiles.Size() > 0)
 		{
-			int rfLv = RSQM.LevelOn(g, "RSQ_Upgrade_ReturnFire");
+			int rfLv = RSQML.MoveLevel(pmo, g, "ReturnFire", "rsqml_hadouken");
 			if (rfLv > 0) ReturnFire(pmo, g, h, st, rfLv);
 		}
 		if (st.approach < ARM_M) return;
@@ -244,9 +239,9 @@ class RSQ_GloveHandler : EventHandler
 
 		// WHAT THE GLOVE WENT INTO between last tic and this one: a body's cylinder, the glove a
 		// sphere of SuperPunchOut's gloveradius (0.09 m) with a little reach.
-		double gr = 0.09 * upm + RSQM.SV("rsq_punch_pad", 4.0);
+		double gr = 0.09 * upm + RSQML.SV("rsqml_punch_pad", 4.0);
 		Actor victim = Contact(pmo, st.prevHand, st.hand, gr);
-		if (dbg) { String vn = "nothing"; if (victim) vn = victim.GetClassName(); Console.Printf("RSQ punch %s swing %.2f m/s avg -> %s", h ? "L" : "R", avg, vn); }
+		if (dbg) { String vn = "nothing"; if (victim) vn = victim.GetClassName(); Console.Printf("RSQML punch %s swing %.2f m/s avg -> %s", h ? "L" : "R", avg, vn); }
 		if (!victim) return;
 		Vector3 dir = st.vel;
 		if (dir.Length() < 0.001) dir = level.Vec3Diff(st.hand, victim.pos);
@@ -267,7 +262,7 @@ class RSQ_GloveHandler : EventHandler
 		while (it.Next())
 		{
 			Actor mo = it.thing;
-			if (!RSQM.IsFoe(pmo, mo)) continue;
+			if (!RSQML.IsFoe(pmo, mo)) continue;
 			// nearest approach of the glove's path this tic to the body's axis, in the plane
 			Vector2 c = mo.pos.xy;
 			Vector2 ab = b.xy - a.xy;
@@ -334,7 +329,7 @@ class RSQ_GloveHandler : EventHandler
 		bool stopped = pmo.LineTrace(VectorAngle(d.x, d.y), dist, VectorAngle(d.xy.Length(), -d.z),
 			TRF_ABSPOSITION | TRF_THRUACTORS, from.z, from.x, from.y, t);
 		if (!stopped && t.HitType == TRACE_HitNone) return true;
-		if (RSQM.SVI("rsq_punch_debug", 0) != 0) { String vn = mo.GetClassName(); Console.Printf("RSQ punch blocked: type %d at %.1f of %.1f to %s", t.HitType, t.Distance, dist, vn); }
+		if (RSQML.Debug() > 0) { String vn = mo.GetClassName(); Console.Printf("RSQML punch blocked: type %d at %.1f of %.1f to %s", t.HitType, t.Distance, dist, vn); }
 		return false;
 	}
 
@@ -344,6 +339,10 @@ class RSQ_GloveHandler : EventHandler
 	Array<Actor> missiles;
 	Array<Actor> returned;      // missiles a glove sent back, and the Hadouken level that did it
 	Array<int> returnedLv;
+
+	// a new map, or a save loaded: the lists were the old level's (a static handler is never saved)
+	override void WorldLoaded(WorldEvent e) { missiles.Clear(); returned.Clear(); returnedLv.Clear(); }
+	override void WorldUnloaded(WorldEvent e) { missiles.Clear(); returned.Clear(); returnedLv.Clear(); }
 
 	override void WorldThingSpawned(WorldEvent e)
 	{
@@ -384,7 +383,7 @@ class RSQ_GloveHandler : EventHandler
 
 	private void ReturnFire(PlayerPawn pmo, RSQ_Glove g, int h, RSQ_PunchHand st, int lv)
 	{
-		double gr = 0.09 * RSQM.UnitsPerMetre() + RSQM.SV("rsq_punch_pad", 4.0);
+		double gr = 0.09 * RSQML.UnitsPerMetre() + RSQML.SV("rsqml_punch_pad", 4.0);
 		for (int i = missiles.Size() - 1; i >= 0; i--)
 		{
 			let m = missiles[i];
@@ -395,7 +394,8 @@ class RSQ_GloveHandler : EventHandler
 			if (m.Distance3D(pmo) > 256) continue;
 			// the missile's path from last tic through the next (event handlers tick before the thinkers move it)
 			if (SegSegDist(st.prevHand, st.hand, m.pos - m.vel, m.pos + m.vel) > gr + m.radius + 4) continue;
-			double sp = max(m.Speed, m.vel.Length()) * RSQ_Upgrade_ReturnFire.Speed(lv);
+			// its speed x the upgrade's (Gun Bonsai VR's RSQ_Upgrade_ReturnFire.Speed; level 1, +15%, without it)
+			double sp = max(m.Speed, m.vel.Length()) * RSQML.Num("Hadouken.speed", lv, 0, 1.15);
 			Vector3 dir;
 			if (from && from.health > 0) dir = level.Vec3Diff(m.pos, from.pos + (0, 0, from.height * 0.5));
 			else dir = st.vel;
@@ -406,12 +406,13 @@ class RSQ_GloveHandler : EventHandler
 			m.vel = dir * sp;
 			m.angle = VectorAngle(dir.x, dir.y);
 			m.pitch = -asin(clamp(dir.z, -1.0, 1.0));
-			TFLV_VR_Attribution.Claim(m, g, TFLV_VR_Attribution.HINT_MELEE);
+			RSQML.Claim(m, g);         // Gun Bonsai VR pays it to that glove (its master is the glove); its hit is
+			                           // made harder by RSQML_Body (guard.zs) at the upgrade's number
 			returned.Push(m); returnedLv.Push(lv);
 			missiles.Delete(i);
-			pmo.A_StartSound("rsq/punch", CHAN_AUTO, 0, 1.0);
+			pmo.A_StartSound("rsqml/punch", CHAN_AUTO, 0, 1.0);
 			RSQ_Buzz.Start(pmo, h, 0.8, 6);
-			if (RSQM.SVI("rsq_punch_debug", 0) != 0) { String fn = from.GetClassName(); Console.Printf("RSQ hadouken: %s back at %s, speed %.1f", m.GetClassName(), fn, sp); }
+			if (RSQML.Debug() > 0) { String fn = from.GetClassName(); Console.Printf("RSQML hadouken: %s back at %s, speed %.1f", m.GetClassName(), fn, sp); }
 		}
 		for (int i = returned.Size() - 1; i >= 0; i--) if (!returned[i]) { returned.Delete(i); returnedLv.Delete(i); }
 	}
@@ -424,18 +425,18 @@ class RSQ_GloveHandler : EventHandler
 	}
 
 	// ---- A PUNCH LANDS ------------------------------------------------------------------------
-	// Everything a landed punch is, decided here and written onto the glove, then one
-	// DamageMobj with the glove as the inflictor: Gun Bonsai credits that glove (a weapon naming
-	// itself is its own claim) and the upgrades shape the number from what is written here.
+	// Everything a landed punch is, decided here and written onto the glove, then one DamageMobj with the glove as
+	// the inflictor: with Gun Bonsai VR loaded, Gun Bonsai credits that glove (a weapon naming itself is its own
+	// claim) and its glove upgrades shape the number from what is written here (asked through RSQML_Service).
 	// Public so a probe can land one without a controller.
 	void Deliver(PlayerPawn pmo, RSQ_Glove g, int h, Actor victim, double avgMps, Vector3 dir, Vector3 at)
 	{
 		if (!pmo || !g || !victim || victim.health <= 0) return;
 		int pn = pmo.PlayerNumber();
 		int now = level.maptime;
-		double minSpeed = RSQM.SV("rsq_punch_min_speed", 2.0);
-		double fullSpeed = RSQM.SV("rsq_punch_full_speed", 7.0);
-		double rise = RSQM.SV("rsq_punch_uppercut_rise", 0.5);   // spo_uppercut_rise's default
+		double minSpeed = RSQML.SV("rsqml_punch_min_speed", 2.0);
+		double fullSpeed = RSQML.SV("rsqml_punch_full_speed", 7.0);
+		double rise = RSQML.SV("rsqml_punch_uppercut_rise", 0.5);   // spo_uppercut_rise's default
 
 		Vector2 toFoe = victim.pos.xy - pmo.pos.xy;
 		double tl = toFoe.Length();
@@ -447,7 +448,7 @@ class RSQ_GloveHandler : EventHandler
 		g.lastKind = Classify(dir, toFoe, rise);
 		double upFrac = clamp((at.z - victim.pos.z) / max(victim.height, 1.0), 0.0, 1.0);
 		g.lastBody = g.lastKind != PK_UPPER && upFrac < 0.6;
-		g.lastCounter = RSQM.InAttack(victim);
+		g.lastCounter = RSQML.InAttack(victim);
 
 		// ONE-TWO: the other hand, inside half a second, keeps the chain; the same hand or a gap
 		// starts a new one
@@ -457,62 +458,70 @@ class RSQ_GloveHandler : EventHandler
 		chainLastTic[pn] = now;
 		g.lastChain = chainCount[pn];
 
-		// STAR PUNCH: an uppercut thrown with that hand's trigger squeezed, while a star is banked
-		// (SuperPunchOut's StarArmed, with the trigger standing in for the grip as its QZD seam does)
-		int starLv = RSQM.LevelOn(g, "RSQ_Upgrade_StarPunch");
+		// STAR PUNCH (a Gun Bonsai VR glove upgrade; nothing without it): an uppercut thrown with that hand's trigger
+		// squeezed, while a star is banked (SuperPunchOut's StarArmed, with the trigger standing in for the grip as its
+		// QZD seam does). The bank lives on the main-hand glove (saved, and kept across levels).
+		let gb = RSQML.GB();
+		int starLv = gb ? gb.GetInt("level", "StarPunch", 0, 0, g) : 0;
+		let bank = RSQ_Glove(pmo.FindInventory("RSQ_Glove"));
+		if (!bank) bank = g;
 		int btn = pmo.player.cmd.buttons;
 		bool squeeze = (btn & (h == 0 ? (BT_ATTACK | BT_ALTATTACK) : (BT_OFFHANDATTACK | BT_OFFHANDALTATTACK))) != 0;
-		g.lastStar = starLv > 0 && stars[pn] > 0 && g.lastKind == PK_UPPER && squeeze;
-		if (g.lastStar) stars[pn]--;
+		g.lastStar = starLv > 0 && bank.bankStars > 0 && g.lastKind == PK_UPPER && squeeze;
+		if (g.lastStar) bank.bankStars--;
 
 		// THE PUNCH: Brutal Doom's own fist is MeleeStrikeNormal (10) and its strong punch
 		// MeleeStrike2 (20) -- parsed from brutal22test6 Melee.dec -- so a glove runs 10 at the
 		// slowest punch that counts to 20 at a full-speed one.
-		int dmg = int(RSQM.SV("rsq_punch_damage", 10.0) * (1.0 + g.lastPower));
+		int dmg = int(RSQML.SV("rsqml_punch_damage", 10.0) * (1.0 + g.lastPower));
 		victim.SpawnBlood(at, VectorAngle(dir.x, dir.y), dmg);
 		victim.DamageMobj(g, pmo, dmg, 'Melee', DMG_THRUSTLESS);
-		pmo.A_StartSound(g.lastStar ? "rsq/star" : "rsq/punch", CHAN_AUTO, 0, 1.0);
+		pmo.A_StartSound(g.lastStar ? "rsqml/star" : "rsqml/punch", CHAN_AUTO, 0, 1.0);
 		RSQ_Buzz.Start(pmo, h, 0.5 + 0.5 * g.lastPower + (g.lastStar ? 0.5 : 0.0), g.lastStar ? 10 : 5);
-		// HEAVY HANDS (pick 52): the punch stops it for a beat and throws it further (up_gloves.zs)
-		int hhLv = RSQM.LevelOn(g, "RSQ_Upgrade_HeavyHands");
+		// HEAVY HANDS (pick 52): the punch stops it for a beat and throws it further. With Gun Bonsai VR: once that glove
+		// has learned it, at its numbers (RSQ_Upgrade_HeavyHands.Knock / Freeze). Without: the Heavy Hands row
+		// (rsqml_heavyhands, off) at level 1's (knock +25%; 2 tics, 4 for a punch at half speed or more).
+		int hhLv = RSQML.MoveLevel(pmo, g, "HeavyHands", "rsqml_heavyhands");
 		if (victim && victim.health > 0 && !victim.bDontThrust)
 		{
 			double kk = (2.0 + 6.0 * g.lastPower) * clamp(100.0 / max(victim.mass, 1.0), 0.08, 2.0);
-			if (hhLv > 0) kk *= RSQ_Upgrade_HeavyHands.Knock(hhLv);
+			if (hhLv > 0) kk *= RSQML.Num("HeavyHands.knock", hhLv, 0, 1.25);
 			victim.vel += dir * kk;
 		}
 		if (hhLv > 0 && victim && victim.health > 0 && !victim.player)
 		{
-			int ft = RSQ_Upgrade_HeavyHands.Freeze(hhLv, g.lastPower);
+			int ft = int(RSQML.Num("HeavyHands.freeze", hhLv, g.lastPower, g.lastPower >= 0.5 ? 4 : 2));
 			victim.freezetics = max(victim.freezetics, ft);
-			if (RSQM.SVI("rsq_punch_debug", 0) != 0) Console.Printf("RSQ heavy hands: %s frozen %d tics, vel %.1f", victim.GetClassName(), ft, victim.vel.xy.Length());
+			if (RSQML.Debug() > 0) Console.Printf("RSQML heavy hands: %s frozen %d tics, vel %.1f", victim.GetClassName(), ft, victim.vel.xy.Length());
 		}
-		// WALL SPLAT (pick 54): watched while it flies; a wall that stops it hurts it (up_gloves.zs RSQ_Splat)
-		int wsLv = RSQM.LevelOn(g, "RSQ_Upgrade_WallSplat");
+		// WALL SPLAT (pick 54): watched while it flies; a wall that stops it hurts it (splat.zs RSQ_Splat). With Gun
+		// Bonsai VR: once that glove has learned it. Without: the Wall Splat row (rsqml_wallsplat, off), at level 1.
+		int wsLv = RSQML.MoveLevel(pmo, g, "WallSplat", "rsqml_wallsplat");
 		if (wsLv > 0 && victim && victim.health > 0) RSQ_Splat.Arm(victim, pmo, g, wsLv);
 
 		// THE BANK, SuperPunchOut's rule (spo_boxer.zs TakeHit): a punch landed into an open
 		// window earns a star, and so does the starFirst-th landed punch and every starEvery-th
 		// after. The defaults are Soda Popinski's line, `stars 1 2` (sodapopinski.txt), capped at
 		// rules.txt's `maxstars 3`. Only a glove with Star Punch banks; a star spent does not.
+		// The two numbers are Gun Bonsai VR's settings (rsq_star_first / rsq_star_every, read by name).
 		if (starLv > 0 && !g.lastStar)
 		{
-			int first = RSQM.SVI("rsq_star_first", 1), every = RSQM.SVI("rsq_star_every", 2);
-			starLanded[pn]++;
+			int first = RSQML.SVI("rsq_star_first", 1), every = RSQML.SVI("rsq_star_every", 2);
+			bank.bankLanded++;
 			bool earn = g.lastCounter;
-			if (first > 0 && starLanded[pn] == first) earn = true;
-			if (every > 0 && starLanded[pn] > first && ((starLanded[pn] - first) % every) == 0) earn = true;
-			if (earn && stars[pn] < 3)
+			if (first > 0 && bank.bankLanded == first) earn = true;
+			if (every > 0 && bank.bankLanded > first && ((bank.bankLanded - first) % every) == 0) earn = true;
+			if (earn && bank.bankStars < 3)
 			{
-				stars[pn]++;
-				pmo.A_StartSound("rsq/star", CHAN_AUTO, 0, 0.5, ATTN_NORM, 1.5);
+				bank.bankStars++;
+				pmo.A_StartSound("rsqml/star", CHAN_AUTO, 0, 0.5, ATTN_NORM, 1.5);
 			}
 		}
 	}
 
 	override void PlayerEntered(PlayerEvent e)
 	{
-		// a new map: the chain and the pose history are this map's, the bank is kept
+		// a new map: the chain and the pose history are this map's (the bank is on the glove, kept)
 		if (e.PlayerNumber < 0 || e.PlayerNumber >= MAXPLAYERS) return;
 		chainCount[e.PlayerNumber] = 0;
 		for (int h = 0; h < 2; h++) HandOf(e.PlayerNumber, h).prevValid = false;
