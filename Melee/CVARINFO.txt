@@ -18,6 +18,7 @@ server float rsqml_punch_min_speed = 2.0;
 server float rsqml_punch_full_speed = 7.0;
 server int   rsqml_punch_rehit = 6;
 server float rsqml_punch_uppercut_rise = 0.5;
+server float rsqml_punch_lift_cap = 3.0;   // no launch (uppercut, Launcher, Juggle, Headlock Uppercut) higher than this, metres of air; 0 = no cap
 server float rsqml_punch_pad = 4.0;
 // Brutal Doom's own punch is 10 (MeleeStrikeNormal); a full-speed glove doubles it.
 server float rsqml_punch_damage = 10.0;

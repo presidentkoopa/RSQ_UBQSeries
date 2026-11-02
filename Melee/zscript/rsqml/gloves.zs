@@ -879,6 +879,12 @@ class RSQML_Gloves : StaticEventHandler
 		int upLv = RSQML.GBLevel(glove, "Uppercut"), lnLv = RSQML.GBLevel(glove, "Launcher"), mtLv = RSQML.GBLevel(glove, "Meteor");
 		double extra = RSQML.Num("Uppercut.lift", upLv, 0, 0) + RSQML.Num("Launcher.lift", lnLv, 0, 0);
 		double up = (5.0 + 4.0 * power + extra) * heavy * liftMult;
+		// THE CAP (owner, 2026-11-02: "cap it"): at full levels the lifts stack (Uppercut 3 + Launcher 3 with Heavy Hands'
+		// knock threw an imp up at 30 map units a tic, about 16 m of air). No launch goes higher than Uppercut Lift Cap
+		// (rsqml_punch_lift_cap, 3 m of air): the speed whose rise, at gravity 1 a tic, is that height (v^2 / 2 map units,
+		// the vertical x pixelstretch).
+		double capM = RSQML.SV("rsqml_punch_lift_cap", 3.0);
+		if (capM > 0) up = min(up, sqrt(2.0 * capM * RSQML.UnitsPerMetre() / RSQML.Stretch()));
 		victim.vel.z = max(victim.vel.z, up);
 		victim.vel.xy += toFoe * (2.0 + 3.0 * power) * heavy;
 		int air = int(2.0 * up);   // up and down again at gravity 1

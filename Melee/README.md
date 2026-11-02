@@ -107,6 +107,8 @@ Always on (no row):
   tree, 2026-11-02): until a glove learns Uppercut, a rising punch from it lands as a jab and lifts nothing. Its
   levels 2-3 and Launcher add lift; Launcher staggers the monster when it lands; Juggle re-lifts a monster you
   launched with your next punch while it is in the air (2 s); Meteor hurts what a launched monster falls on, and it.
+  **No launch goes higher than Uppercut Lift Cap** (Tuning, 3 m of air; 0 = no cap; the owner's call 2026-11-02, after
+  the stacked lifts threw an imp about 16 m).
 - **Two-hand moves come from RSQ Gestures** as its network event `rsqg_pair` (0 both hands down: Ground Pound; 3 both
   palms thrust: Clear Out). Gestures' Two-Hand Events row may stay off: a player who has either move keeps them read.
   A Ground Pound, a Clear Out and a Meteor are paid to the glove (Gun Bonsai VR's claim) but are not punches.

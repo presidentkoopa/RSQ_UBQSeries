@@ -597,7 +597,9 @@ owned. Clear Out 1: 2 imps in front shoved for 15, the one behind untouched. **N
 reading of real hands (the thrust and the down are sent by the probe here), how any of it looks. **Art not yet
 done** (frames by level, the kiddolink launch bursts, the dust ring): its own pass. **For the owner:** at full levels
 the approved lifts stack (Uppercut 3 + Launcher 3, with Heavy Hands' knock): a full-power uppercut threw an imp up at
-30 map units a tic, about 16 m of air.
+30 map units a tic, about 16 m of air. **Owner, 11-02: "cap it".** Melee's Tuning row Uppercut Lift Cap (`rsqml_punch_lift_cap`,
+3 m of air, 0 = no cap) bounds every launch (uppercut, Launcher, Juggle, Headlock Uppercut); headless: the same stack
+now launches at 13.0 (3 m), and 30.0 again with the cap at 0.
 
 **B. Elemental** (one element per glove; picking one closes the other three on that glove; the other glove may
 take a different one)

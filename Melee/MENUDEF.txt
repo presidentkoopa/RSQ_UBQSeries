@@ -67,6 +67,7 @@ OptionMenu "RSQML_Tuning"
 	Slider "Punch Min Speed", "rsqml_punch_min_speed", 0.5, 5.0, 0.25, 2
 	Slider "Punch Full Speed", "rsqml_punch_full_speed", 3.0, 12.0, 0.5, 1
 	Slider "Punch Damage", "rsqml_punch_damage", 2, 40, 1, 0
+	Slider "Uppercut Lift Cap (m of air)", "rsqml_punch_lift_cap", 0.0, 10.0, 0.5, 1
 	StaticText " "
 	StaticText "Gun butt shove", "gold"
 	Slider "Butt Shove Speed (m/s)", "rsqml_shove_mps", 1.0, 8.0, 0.1, 1
@@ -81,7 +82,7 @@ OptionMenu "RSQML_Tuning"
 	StaticText " "
 	Option "Debug Log", "rsqml_debug", "RSQML_Debug"
 	StaticText " "
-	SafeCommand "Reset All", "resetcvar rsqml_headlock_blood; resetcvar rsqml_hands_model; resetcvar rsqml_boxing; resetcvar rsqml_swat; resetcvar rsqml_slappers; resetcvar rsqml_gloves; resetcvar rsqml_punch_min_speed; resetcvar rsqml_punch_full_speed; resetcvar rsqml_punch_rehit; resetcvar rsqml_punch_uppercut_rise; resetcvar rsqml_punch_pad; resetcvar rsqml_punch_damage; resetcvar rsqml_guard; resetcvar rsqml_guard_start; resetcvar rsqml_hadouken; resetcvar rsqml_wallsplat; resetcvar rsqml_heavyhands; resetcvar rsqml_groundpound; resetcvar rsqml_clearout; resetcvar rsqml_shove; resetcvar rsqml_shove_mps; resetcvar rsqml_shove_slowmo; resetcvar rsqml_shove_slowmo_ms; resetcvar rsqml_headlock; resetcvar rsqml_headlock_reach; resetcvar rsqml_headlock_mass; resetcvar rsqml_headlock_secs; resetcvar rsqml_headlock_shield; resetcvar rsqml_headlock_throw; resetcvar rsqml_headlock_weight; resetcvar rsqml_keys_off; resetcvar rsqml_debug", "Reset all RSQ Melee settings?"
+	SafeCommand "Reset All", "resetcvar rsqml_headlock_blood; resetcvar rsqml_hands_model; resetcvar rsqml_boxing; resetcvar rsqml_swat; resetcvar rsqml_slappers; resetcvar rsqml_gloves; resetcvar rsqml_punch_min_speed; resetcvar rsqml_punch_full_speed; resetcvar rsqml_punch_rehit; resetcvar rsqml_punch_uppercut_rise; resetcvar rsqml_punch_lift_cap; resetcvar rsqml_punch_pad; resetcvar rsqml_punch_damage; resetcvar rsqml_guard; resetcvar rsqml_guard_start; resetcvar rsqml_hadouken; resetcvar rsqml_wallsplat; resetcvar rsqml_heavyhands; resetcvar rsqml_groundpound; resetcvar rsqml_clearout; resetcvar rsqml_shove; resetcvar rsqml_shove_mps; resetcvar rsqml_shove_slowmo; resetcvar rsqml_shove_slowmo_ms; resetcvar rsqml_headlock; resetcvar rsqml_headlock_reach; resetcvar rsqml_headlock_mass; resetcvar rsqml_headlock_secs; resetcvar rsqml_headlock_shield; resetcvar rsqml_headlock_throw; resetcvar rsqml_headlock_weight; resetcvar rsqml_keys_off; resetcvar rsqml_debug", "Reset all RSQ Melee settings?"
 }
 
 OptionValue "RSQML_HandsModel"
