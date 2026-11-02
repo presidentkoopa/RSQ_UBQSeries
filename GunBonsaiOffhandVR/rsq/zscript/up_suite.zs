@@ -33,11 +33,12 @@ class RSQ_Upgrade_Broadening : RSQ_Upgrade_ShieldMarker
 	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("r", AsPercentIncrease(1.0 + 0.2 * min(level, 5))); }
 }
 
-// LOCKSTEP: one more lock-on target a level (ssq_locks + level), up to three more.
+// LOCKSTEP (GBOVR_TREES.md 4.3 Throw, root): under this patch a throw starts at 1 lock; each level adds one, to the
+// ShieldSaw's Locks row (5) at level 4 (SSQ_Disc.WantLocks).
 class RSQ_Upgrade_Lockstep : RSQ_Upgrade_ShieldMarker
 {
-	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return ShieldInfo(info) && info.upgrades.Level(GetClassName()) < 3; }
-	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("n", string.format("%d", level)); }
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return ShieldInfo(info) && info.upgrades.Level(GetClassName()) < 4; }
+	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("n", string.format("%d", 1 + min(level, 4))); }
 }
 
 // ---- WEAPON: THE SABER -----------------------------------------------------------------------

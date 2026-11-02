@@ -41,6 +41,8 @@ class SSQ_Disc : Actor
 	// ringed target again as soon as it can see it; out of sight it keeps flying (and bouncing) for up to 2 s.
 	int bounces, bounceHold, blind;
 	int grinder;		// Meat Grinder
+	int cleaver;		// Cleaver: the hit tiers rise
+	int wallLv;			// Wall Bounces: walls added to ssq_bounces
 	int huntLeft, hunter;	// Hunter's Return: swerves left on this trip home, and the level
 	Actor huntT;
 	Array<Actor> hunted;
@@ -101,6 +103,18 @@ class SSQ_Disc : Actor
 		ricLeft = SSQ_Upg.Lv(saw, "Ricochet");
 		grinder = SSQ_Upg.Lv(saw, "MeatGrinder");
 		hunter = SSQ_Upg.Lv(saw, "HuntersReturn");
+		cleaver = SSQ_Upg.Lv(saw, "Cleaver");
+		wallLv = SSQ_Upg.Lv(saw, "WallBounces");
+	}
+
+	// LOCKSTEP (Gun Bonsai VR patch, GBOVR_TREES.md 4.3 Throw): without the patch a throw visits ssq_locks targets. Under
+	// it the Locks row is what Lockstep 4 reaches, one fewer for each level not learned, never under 1 (default 5: a
+	// throw starts at 1 lock and Lockstep 1-4 makes it 2-5). Locks off (0) stays off.
+	static int WantLocks(PlayerPawn mo)
+	{
+		int want = SSQ_Handler.SVI('ssq_locks', 5);
+		if (want <= 0 || !SSQ_Upg.On()) return max(want, 0);
+		return max(1, want - 4 + min(SSQ_Upg.Lv(mo ? mo.FindInventory('SSQ_ShieldSaw') : null, "Lockstep"), 4));
 	}
 
 	// RICOCHET: the wall it just hit turns it toward a new target instead of home
@@ -202,7 +216,6 @@ class SSQ_Disc : Actor
 
 	void LaunchAlong(PlayerPawn mo, Vector3 dir, double sp, double roll, int rev)
 	{
-		bounces = max(0, SSQ_Handler.SVI('ssq_bounces', 3)); bounceHold = 0; blind = 0;
 		thrower = mo;
 		int n = SSQ_Handler.SVI('ssq_rev_tics', 21);
 		revFrac = n > 0 ? clamp(rev / double(n), 0, 1) : 0;
@@ -211,6 +224,9 @@ class SSQ_Disc : Actor
 
 	void Begin(PlayerPawn mo, Vector3 dir, double sp, double roll, Vector3 aim)
 	{
+		// RICOCHET THROWS, both throws (the hand's Launch never set this before 11-02, so only the One-Handed throw
+		// bounced); WALL BOUNCES (Gun Bonsai VR patch) adds a wall a level
+		bounces = max(0, SSQ_Handler.SVI('ssq_bounces', 3)) + wallLv; bounceHold = 0; blind = 0;
 		target = mo;
 		cruise = sp;
 		vel = dir * sp;
@@ -231,9 +247,8 @@ class SSQ_Disc : Actor
 	static void FindTargets(PlayerPawn mo, Vector3 from, Vector3 aim, out Array<Actor> found)
 	{
 		found.Clear();
-		int want = SSQ_Handler.SVI('ssq_locks', 5);
+		int want = WantLocks(mo);	// LOCKSTEP (Gun Bonsai VR patch)
 		if (want <= 0) return;
-		want += SSQ_Upg.Lv(mo.FindInventory('SSQ_ShieldSaw'), "Lockstep");	// LOCKSTEP (Gun Bonsai VR patch)
 		double cone = SSQ_Handler.SV('ssq_lock_cone', 25.0);
 		double range = SSQ_Handler.SV('ssq_lock_range', 1200.0);
 		Array<Actor> cand; Array<double> score;
@@ -518,6 +533,13 @@ class SSQ_Disc : Actor
 		// through up to 250 (up to the revenant), stuck and grinding up to 1200 (to the baron),
 		// glancing off past that.
 		if (SSQ_Handler.SVI('ssq_bd22', 0) != 0) { fodder = BD22_FODDER; mid = BD22_MID; }
+		// CLEAVER (Gun Bonsai VR patch): the tiers rise by the same share whichever tiers are in force
+		int fodder0 = fodder, mid0 = mid;
+		if (cleaver > 0)
+		{
+			fodder = int(fodder * SSQ_Upg.Num("Cleaver.fodder", cleaver, 1.0));
+			mid = int(mid * SSQ_Upg.Num("Cleaver.mid", cleaver, 1.0));
+		}
 		bool wasLock = locks.Find(victim) < locks.Size();
 
 		// NOT THROUGH A BUDDHA: the bisect is DMG_FORCED, which the engine lets past a monster's BUDDHA
@@ -526,10 +548,13 @@ class SSQ_Disc : Actor
 		// buddha on purpose; they take the grind or the glance instead, ordinary damage.
 		if (tiers && !victim.bBoss && !victim.bBuddha && sh <= fodder)
 		{
-			// bisect: past the gib threshold every time
-			int gib = max(victim.health + abs(victim.GibHealth) + 1, base);
+			// bisect: past the gib threshold every time. GetGibHealth(), never the GibHealth field: the field is a
+			// sentinel unless a class sets it, and abs() of it made this sum smaller than base -- measured 11-02, a
+			// 60-health imp took 42 and lived, so nothing was ever cut in two
+			int gib = max(victim.health - victim.GetGibHealth() + 1, base);
 			bool ne = victim.bNoExtremeDeath;
 			victim.bNoExtremeDeath = false;
+			if (sh > fodder0) SSQ_Upg.Touch("cleave.saw", thrower, victim);	// cut in two only because of Cleaver
 			victim.DamageMobj(self, thrower, gib, 'Saw', DMG_FORCED);
 			if (victim && victim.health > 0) victim.bNoExtremeDeath = ne;
 			A_StartSound("ssq/hit", CHAN_5);
@@ -539,6 +564,7 @@ class SSQ_Disc : Actor
 		}
 		if (tiers && !victim.bBoss && sh <= mid && phase == PH_OUT)
 		{
+			if (sh > mid0) SSQ_Upg.Touch("cleave.saw", thrower, victim);	// ground only because of Cleaver
 			victim.DamageMobj(self, thrower, base, 'Saw');
 			if (victim && victim.health > 0)
 			{

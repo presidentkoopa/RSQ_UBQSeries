@@ -975,6 +975,19 @@ shield size Standard / Large / Largest; Double Block Radius option (replaced by 
 | Wall Bounces (new) | Ricochet 2 | 1-3: 3 bounces today -> 4, 5, 6 before the disc comes home | ShieldSaw (`Wall Bounces` as base + level) | - | - |
 | Cleaver (new) | Meat Grinder 1 | 1-3: the hit tiers rise: bisect at or under 70 -> 100, 140, 200; grind at or under 600 -> 800, 1000, 1200 (BD22 tiers scale the same) | ShieldSaw | BD's gib | `cleave.saw` |
 
+**Throw: BUILT 11-02 (L3).** Gun Bonsai VR: Lockstep (cap 4 now), Ricochet, Hunter's Return, Meat Grinder (each after
+its parent, cap 3), Wall Bounces, Cleaver. ShieldSaw: `SSQ_Disc.WantLocks` (under the patch the Locks row is what
+Lockstep 4 reaches, one fewer a missing level, never under 1; the held marks and the throw both use it); Wall Bounces
+in `Begin` (both throws); Cleaver's shares on whichever tiers are in force (`Cleaver.fodder` / `.mid`), touching
+`cleave.saw` when it alone made the cut or the grind. `SSQ_Upg` gained `On`, `Num`, `Touch` (the saber's three).
+**Two ShieldSaw bugs found by the gate and fixed** (they change the ShieldSaw without the patch too): the hand throw
+never set its wall bounces (only the One-Handed throw had them), and the cut in two dealt `health + abs(GibHealth)`
+-- the raw field, a sentinel -- so it was an ordinary hit: a 60-health imp took 42 and lived; now `GetGibHealth()`.
+**Headless 11-02** (the probe's `fp_ss`, `fp_ssthrow`, `fp_sscut`: a disc into a frozen monster through its own
+`SpecialMissileHit`): locks 1 -> 2 (Lockstep 1) -> 5 (Lockstep 4); bounces 3 -> 6 (Wall Bounces 3) on both throws;
+offers follow the parents; no Cleaver: imp cut in two, Lost Soul and Demon stuck, Baron glanced; Cleaver 1: Lost Soul
+cut; Cleaver 3: Demon cut, Revenant and Baron stuck. Not provable headless: a real throw's flight.
+
 **Block**
 
 | Node | Parent | Levels | Owns | Art | Score |

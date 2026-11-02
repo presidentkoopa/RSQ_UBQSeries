@@ -352,6 +352,63 @@ class FistsProbe : EventHandler
 			Console.Printf("FP saber [stage %d] has:%s | offered:%s | size index %d | second saber carried: %s", e.Args[1], have, on, sb ? sb.SizeIdx() : -1,
 				p.FindInventory("UBQS_SaberOff") ? "yes" : "no");
 		}
+		else if (e.Name ~== "fp_ss")
+		{
+			// THE SHIELDSAW TREE. arg0 1: print its offers and levels (arg1 = stage); 2: grant arg1's node (+arg2 levels)
+			static const String SSN[] = { "Lockstep", "Ricochet", "HuntersReturn", "MeatGrinder", "WallBounces", "Cleaver",
+				"Broadening", "Bulwark", "Rebound", "BackPlate", "ShieldWall", "Reflect",
+				"BatteringRam", "WallSlam", "StrikeTrue", "Charge", "ShieldSize", "ShieldDash",
+				"HungryBlades", "RevShield", "BuzzsawReturn", "Spartan" };
+			let saw = Weapon(p.FindInventory("SSQ_ShieldSaw"));
+			let st = TFLV_PerPlayerStats.GetStatsFor(p);
+			let info = (saw && st) ? st.GetInfoFor(saw) : null;
+			if (!info) { Console.Printf("FP shieldsaw: no record (carried: %s)", saw ? "yes" : "no"); return; }
+			if (e.Args[0] == 2) { String cls = "RSQ_Upgrade_" .. SSN[clamp(e.Args[1], 0, SSN.Size() - 1)]; info.upgrades.Add(cls, max(e.Args[2], 1)); Console.Printf("FP shieldsaw granted %s", cls); return; }
+			String on = "", have = "";
+			for (int i = 0; i < SSN.Size(); i++)
+			{
+				Class<TFLV_Upgrade_BaseUpgrade> c = "RSQ_Upgrade_" .. SSN[i];
+				if (!c) { on = on .. " ?" .. SSN[i]; continue; }
+				if (TFLV_Upgrade_BaseUpgrade(new(c)).IsSuitableForWeapon(info)) on = on .. " " .. SSN[i];
+				int lv = int(info.upgrades.Level("RSQ_Upgrade_" .. SSN[i]));
+				if (lv > 0) have = have .. String.Format(" %s%d", SSN[i], lv);
+			}
+			Console.Printf("FP shieldsaw [stage %d] has:%s | offered:%s", e.Args[1], have, on);
+		}
+		else if (e.Name ~== "fp_ssthrow")
+		{
+			// how many locks a throw takes, and the walls it may bounce off: through Begin (the hand throw's own step) and
+			// through LaunchAlong (the One-Handed throw)
+			let saw = Weapon(p.FindInventory("SSQ_ShieldSaw"));
+			Vector3 dir = (cos(p.angle), sin(p.angle), 0);
+			let d1 = SSQ_Disc(Actor.Spawn("SSQ_Disc", p.pos + (0, 0, 40) + dir * 24));
+			let d2 = SSQ_Disc(Actor.Spawn("SSQ_Disc", p.pos + (0, 0, 40) - dir * 24));
+			if (!d1 || !d2) return;
+			d1.Claim(saw); d1.Begin(p, dir, 12, 0, dir);
+			d2.Claim(saw); d2.LaunchAlong(p, dir, 12, 90, 0);
+			Console.Printf("FP shieldsaw throw: locks %d, wall bounces %d (hand throw) / %d (one-handed)", SSQ_Disc.WantLocks(p), d1.bounces, d2.bounces);
+			d1.Destroy(); d2.Destroy();
+		}
+		else if (e.Name ~== "fp_sscut")
+		{
+			// a disc thrown at a frozen monster, hit through the disc's own SpecialMissileHit: cut, stuck, or glanced off
+			static const String MON[] = { "LostSoul", "Demon", "BaronOfHell", "DoomImp", "HellKnight", "Revenant" };
+			let saw = Weapon(p.FindInventory("SSQ_ShieldSaw"));
+			String cls = MON[clamp(e.Args[0], 0, MON.Size() - 1)];
+			let m = Put(cls, 200);
+			if (!m) return;
+			m.freezetics = 70;
+			Vector3 dir = (cos(p.angle), sin(p.angle), 0);
+			let d = SSQ_Disc(Actor.Spawn("SSQ_Disc", m.pos - dir * 30 + (0, 0, m.height * 0.5)));
+			if (!d) return;
+			d.Claim(saw); d.LaunchAlong(p, dir, 12, 90, 0);
+			int h0 = m.health;
+			d.SpecialMissileHit(m);
+			String what = (!m || m.health <= 0) ? "CUT IN TWO" : d.phase == SSQ_Disc.PH_EMBED ? "STUCK, GRINDING" : "GLANCED OFF";
+			Console.Printf("FP shieldsaw disc into %s (spawn health %d): %d -> %d, %s", cls, m ? m.SpawnHealth() : -1, h0, m ? m.health : -1, what);
+			d.Destroy();
+			if (m && m.health > 0) m.Destroy();
+		}
 		else if (e.Name ~== "fp_force")
 		{
 			// arg0 0: the Force's own Push at an imp in front; 1: Force Lightning straight into one (and a second near it);

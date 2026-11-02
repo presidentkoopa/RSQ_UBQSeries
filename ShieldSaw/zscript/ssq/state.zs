@@ -931,8 +931,8 @@ class SSQ_Handler : EventHandler
 			return;
 		}
 
-		// LOCKSTEP (Gun Bonsai VR patch, asked by name): one more lock a level
-		int want = SVI('ssq_locks', 5) + SSQ_Upg.Lv(mo.FindInventory('SSQ_ShieldSaw'), "Lockstep");
+		// LOCKSTEP (Gun Bonsai VR patch, asked by name): the same count the throw uses
+		int want = SSQ_Disc.WantLocks(mo);
 		int grace = SVI('ssq_lock_grace', 105);
 		while (mLockMiss[i].Size() < mLocks[i].Size()) mLockMiss[i].Push(0);
 

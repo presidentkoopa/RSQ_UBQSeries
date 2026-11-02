@@ -159,4 +159,20 @@ class SSQ_Upg play
 		let s = Svc();
 		return s ? max(0, s.GetInt("level", upgrade, 0, 0, who)) : 0;
 	}
+	// the patch is loaded: the ShieldSaw tree (GBOVR_TREES.md 4.3) holds what it unlocks
+	static bool On() { return Svc() != null; }
+	// THE SHIELDSAW TREE'S NUMBERS live with the upgrades ("upgrade.num"); fb without the patch
+	static double Num(String what, int lv, double fb)
+	{
+		let s = Svc();
+		return s ? s.GetDouble("upgrade.num", what, lv, 0) : fb;
+	}
+	// RSQ Score's combo ledger, by name (nothing without it)
+	static void Touch(String id, Actor pawn, Actor victim)
+	{
+		if (!pawn || !pawn.player || !victim) return;
+		let it = ServiceIterator.Find("RS_ScoreService");
+		let s = it.Next();
+		if (s) s.GetInt("touch", id, pawn.PlayerNumber(), 0, victim);
+	}
 }

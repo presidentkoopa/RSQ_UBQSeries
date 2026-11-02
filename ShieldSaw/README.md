@@ -204,8 +204,15 @@ on the simulated rig (2026-10-31 onward).
   holster to the shield. With "Draw With Use" off the shoulder is the rig's.
 - **RSQ Score:** blocks, perfect blocks, turned shots and disc kills pay bonuses.
 - **RSQ HP Bars:** a locked monster shows the "locked" marker; hit-stop shows the frozen marker.
-- **Gun Bonsai with the RSQ Gun Bonsai VR patch:** the ShieldSaw levels up: Broadening, Lockstep, Bulwark,
-  Rebound, Battering Ram, Ricochet, Meat Grinder, Hunter's Return. Without the patch nothing changes.
+- **Gun Bonsai with the RSQ Gun Bonsai VR patch:** the ShieldSaw levels up (the tree: GBOVR_TREES.md 4.3).
+  **Throw:** under the patch a throw starts at **1 lock**; **Lockstep** adds one a level, to the Locks row (5) at
+  level 4; **Ricochet** after it, then **Hunter's Return**, **Meat Grinder**; **Wall Bounces** (after Ricochet 2: the
+  Wall Bounces row and one more a level); **Cleaver** (after Meat Grinder: cut in two at or under 100 / 140 / 200,
+  stuck and ground at or under 800 / 1000 / 1200; Brutal Doom's tiers rise by the same share). Block and Bash:
+  Broadening, Bulwark, Rebound, Battering Ram. Without the patch nothing changes.
+- **Fixed 11-02:** the hand throw now bounces off walls (the Wall Bounces row only reached the One-Handed throw), and
+  a monster under the cut-in-two tier is cut in two (the cut dealt only an ordinary hit, so a Doom imp took about 40
+  and lived).
 - **Brutal Doom VR (BD22Q):** its off-hand hands give way to the shield; flick reload with a gun in the main
   hand and the shield in the off follows BD22Q's flick setting.
 - **RSQ Accessibility:** its comfort, colour-blind and gesture settings. Steady Hands (on in Accessibility):

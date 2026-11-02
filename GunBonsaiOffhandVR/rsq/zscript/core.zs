@@ -439,6 +439,9 @@ class RSQ_MeleeUpgradeService : Service
 			if (stringArg == "ForceSpeed.secs") return RSQ_Upgrade_ForceSpeed.Secs(lv);
 			if (stringArg == "ForceLightning.damage") return RSQ_Upgrade_ForceLightning.Damage(lv);
 			if (stringArg == "ForceLightning.targets") return RSQ_Upgrade_ForceLightning.Targets(lv);
+			// the ShieldSaw tree (up_shield.zs)
+			if (stringArg == "Cleaver.fodder") return RSQ_Upgrade_Cleaver.Fodder(lv);
+			if (stringArg == "Cleaver.mid") return RSQ_Upgrade_Cleaver.Mid(lv);
 			// G. Gun hand, H. Taunt
 			if (stringArg == "PistolWhip.stagger") return RSQ_Upgrade_PistolWhip.Stagger(lv);
 			if (stringArg == "PistolWhip.mult") return RSQ_Upgrade_PistolWhip.Mult(lv);

@@ -130,7 +130,8 @@ Always on (no row):
     Chain Choke is no longer offered. Before the tree:
   - Sabers: Momentum, Riposte Edge, Piercing Return, Saber Throw, Chain Choke, Dual Harmony, Deflector;
     the Force: Force Push, Force Pull, Force Choke, Force Jump
-  - ShieldSaw: Broadening, Lockstep, Ricochet, Meat Grinder, Hunter's Return, Bulwark, Rebound, Battering Ram
+  - ShieldSaw (GBOVR_TREES.md 4.3): Throw (Lockstep -> Ricochet -> Hunter's Return -> Meat Grinder -> Cleaver;
+    Ricochet 2 -> Wall Bounces; under the patch a throw starts at 1 lock), Bulwark, Rebound, Battering Ram, Broadening
   - Any melee: Lunge, Executioner, Adrenaline
   - Player, each only while its mod is loaded: Distance Grab (Long Arm, Iron Grip, Heavy Hitter, Air Catch,
     Powder Keg); Tactical Rig (Quick Draw, Pair Draw, Showdown with SlowMo); SlowMo (Marksman, Dodger,
