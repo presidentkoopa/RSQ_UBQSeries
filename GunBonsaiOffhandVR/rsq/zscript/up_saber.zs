@@ -8,6 +8,19 @@
 class RSQ_Upgrade_SaberMarker : RSQ_Upgrade_Base
 {
 	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return SaberInfo(info); }
+	// the main saber's record (the X block and the blade lock are the main saber's; Two Sabers is learned there)
+	static bool MainSaber(TFLV_WeaponInfo info) { return SaberInfo(info) && info.wpnClass ~== "UBQS_Saber"; }
+	// either saber of this player holds that node
+	static bool AnySaberHas(TFLV_PerPlayerStats stats, String shortName, int minLevel = 1)
+	{
+		if (!stats) return false;
+		for (int i = 0; i < stats.weapons.Size(); i++)
+		{
+			let w = stats.weapons[i];
+			if (SaberInfo(w) && Has(w, shortName, minLevel)) return true;
+		}
+		return false;
+	}
 }
 
 // MOMENTUM, shown as ELEGANT WEAPON (GBOVR_TREES.md 4.2 Blade, root; the class keeps its name for saves): damage builds
@@ -35,9 +48,14 @@ class RSQ_Upgrade_RiposteEdge : RSQ_Upgrade_SaberMarker
 	}
 }
 
-// PIERCING RETURN: a returned bolt goes through the first body it meets (one more per level).
+// PIERCING RETURN: a returned bolt goes through the first body it meets (one more per level). (4.2 Deflect, after Return to
+// Sender 1 or Guided Return 1.)
 class RSQ_Upgrade_PiercingReturn : RSQ_Upgrade_SaberMarker
 {
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info)
+	{
+		return SaberInfo(info) && (Has(info, "ReturnToSender") || Has(info, "GuidedReturn")) && LevelOf(info, "PiercingReturn") < 3;
+	}
 	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("n", string.format("%d", level)); }
 }
 
@@ -57,9 +75,11 @@ class RSQ_Upgrade_ChainChoke : RSQ_Upgrade_SaberMarker
 	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("r", AsMeters(256 + 64 * level)); }
 }
 
-// DUAL HARMONY: cuts that alternate between your two sabers stack.
+// DUAL HARMONY, shown as ASSAULT (the owner renamed it 11-02; 4.2 Dual, after Two Sabers 1): cuts that alternate between
+// your two sabers stack.
 class RSQ_Upgrade_DualHarmony : RSQ_Upgrade_SaberMarker
 {
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return SaberInfo(info) && AnySaberHas(info.stats, "TwoSabers") && LevelOf(info, "DualHarmony") < 4; }
 	static double Mult(uint lv, int stack) { return 1.0 + 0.10 * lv * stack; }
 	override double ModifyDamageDealt(Actor pawn, Actor shot, Actor target, double damage, Name attacktype)
 	{
@@ -176,4 +196,61 @@ class RSQ_Upgrade_RunThrough : RSQ_Upgrade_SaberMarker
 	static int Tics(uint lv) { return int(17.5 + 8.75 * lv); }
 	static double Finish() { return 0.15; }
 	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("time", AsSeconds(Tics(level))); }
+}
+
+// ---- DEFLECT ----
+// Under Gun Bonsai VR a turned shot goes straight off the blade, like a mirror, until one of these is learned (the
+// "Where Turned Shots Go" setting is the saber's without the patch).
+// RETURN TO SENDER: a turned shot goes back at whoever fired it -- 1 when you are looking toward the shooter (within
+// Cone), 2 when it is anywhere in front of you, 3 always.
+class RSQ_Upgrade_ReturnToSender : RSQ_Upgrade_SaberMarker
+{
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return SaberInfo(info) && Has(info, "Deflector") && LevelOf(info, "ReturnToSender") < 3; }
+	static double Cone(uint lv) { return lv >= 3 ? 180.0 : lv == 2 ? 90.0 : 30.0; }
+	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("cone", level >= 3 ? "always" : String.Format("within %d degrees of where you look", int(Cone(level)))); }
+}
+// GUIDED RETURN: a turned shot goes where you look (help onto the enemy nearest your gaze); 2: where your off hand points.
+class RSQ_Upgrade_GuidedReturn : RSQ_Upgrade_SaberMarker
+{
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return SaberInfo(info) && Has(info, "Deflector") && LevelOf(info, "GuidedReturn") < 2; }
+}
+// PRECOGNITION: the blade parries at a slower swing (1 / (1 + 0.35 lv) of the speed) and blocks a wider line.
+class RSQ_Upgrade_Precognition : RSQ_Upgrade_SaberMarker
+{
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return SaberInfo(info) && Has(info, "Deflector", 2) && LevelOf(info, "Precognition") < 3; }
+	static double Speed(uint lv) { return 1.0 / (1.0 + 0.35 * lv); }
+	static double Width(uint lv) { return 1.5 + 0.5 * lv; }
+	override void GetTooltipFields(Dictionary fields, uint level)
+	{
+		fields.Insert("speed", AsPercent(Speed(level)));
+		fields.Insert("width", String.Format("%.1f", Width(level)));
+	}
+}
+
+// ---- DUAL ----
+// TWO SABERS: the second saber is an unlock under Gun Bonsai VR (the Start With Dual Sabers row still switches it off).
+class RSQ_Upgrade_TwoSabers : RSQ_Upgrade_SaberMarker
+{
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return MainSaber(info) && LevelOf(info, "TwoSabers") < 1; }
+}
+// DOUBLE-BLADED (the owner, 11-02: "second blade on the saber should be an unlock too"): 1 the saber's second blade can be
+// lit; 2 it cuts on the backswing (75%); 3 the twirl cuts all round you.
+class RSQ_Upgrade_DoubleBladed : RSQ_Upgrade_SaberMarker
+{
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return SaberInfo(info) && LevelOf(info, "DoubleBladed") < 3; }
+	static double Back() { return 0.75; }
+}
+// CROSS GUARD: the X (the two blades held crossed) turns what it stops: 1 straight back, 2 at the shooter, 3 and opening
+// the X pushes what is in front of you away.
+class RSQ_Upgrade_CrossGuard : RSQ_Upgrade_SaberMarker
+{
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return MainSaber(info) && Has(info, "TwoSabers") && LevelOf(info, "CrossGuard") < 3; }
+}
+// CLASH: bringing the two blades together releases a shockwave that staggers what stands round you.
+class RSQ_Upgrade_Clash : RSQ_Upgrade_SaberMarker
+{
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return MainSaber(info) && Has(info, "CrossGuard", 2) && LevelOf(info, "Clash") < 2; }
+	static double Radius(uint lv) { return 2.0 + lv; }   // metres
+	static int Stagger() { return 20; }
+	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("radius", String.Format("%.0f m", Radius(level))); }
 }

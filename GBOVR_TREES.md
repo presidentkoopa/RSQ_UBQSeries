@@ -880,6 +880,15 @@ spawn health. **Not provable headless** (both need a stab: a hand driven along t
 | Piercing Return (exists: `RSQ_Upgrade_PiercingReturn`) | Return to Sender 1 or Guided Return 1 | 1-3: a returned bolt passes through lv bodies | Saber | - | - |
 | Precognition (new: parry window) | Deflector 2 | 1-3: the blade counts as meeting the shot at a slower swing (1 / (1 + 0.35 lv) of the speed, Bulwark's rule) and the block width grows 1.5 -> 2.0 -> 2.5 | Saber | - | `parry.saber` |
 
+**Deflect: BUILT 11-02 (L3).** Gun Bonsai VR: Return to Sender, Guided Return, Precognition; Piercing Return after
+either. Saber: `BatBack` under the patch: mirror (aim 2) until learned; Guided Return aim 1 (2: the off hand's own
+pointing, new aim 3); Return to Sender aim 0 when the shooter is within its cone of your facing (30, 90, always) and
+wins over Guided. **Call made here:** the tree's "2: within 20 degrees of it even when you look away" read as a widening
+cone (30 -> 90 -> always). Precognition: `ParryGain` speed x 1/(1 + 0.35 lv); the blade width (`BladeWidth()`, all six
+reads) at least 1.5 + 0.5 lv. **Headless 11-02:** a fireball turned by the saber's own `BatBack` with the blade 45
+degrees across it: nothing learned 170 degrees off the shooter (the mirror); Guided Return 1 along your gaze (0);
+Return to Sender 3 at the shooter (0). Not provable headless: Precognition (a parry needs a swing).
+
 **Dual**
 
 | Node | Parent | Levels | Owns | Art | Score |
@@ -889,6 +898,16 @@ spawn health. **Not provable headless** (both need a stab: a hand driven along t
 | Assault (exists as Dual Harmony: `RSQ_Upgrade_DualHarmony`; renamed by the owner) | Two Sabers 1 | 1-4: cuts alternating between the two sabers stack +10% lv, up to 5 | GBOVR | - | `dual.chain` |
 | Cross Guard (new) | Two Sabers 1 | 1-3: the X block (exists, stops everything from in front) now also turns what it stops: 1 back the way it came, 2 at the shooter, 3 and the X releases a push when opened | Saber | the X flash | `crossguard` |
 | Clash (new: blade lock shock) | Cross Guard 2 | 1-2: a blade lock (the two blades brought together) releases a shockwave 2 + lv m that staggers | Saber | the lock's sparks, bigger | `clash` |
+
+**Dual: BUILT 11-02 (L3).** Gun Bonsai VR: Two Sabers and Cross Guard and Clash on the MAIN saber's record (the X and
+the lock are the main saber's), Double-Bladed on each saber's, Assault (Dual Harmony, renamed) after Two Sabers on
+either. Saber: the bridge gives the second saber only once Two Sabers is learned (per player); `ToggleBack` refuses the
+staff blade before Double-Bladed; the rear blade cuts from 2 at 75% (`CutLine` rear); the twirl's cut from 3 (it
+still turns shots); Cross Guard's return bolt (`CrossReturn`, the saber's own UBQS_Bolt) and its push on opening
+(`GuardPush` in `EndLock`); Clash's shockwave as a lock begins (`ClashWave`, Gun Bonsai VR's stagger by name). **Note:**
+the back blade's cut and the twirl's cut were the saber's own (the Uppercut pattern again). **Headless 11-02:** no
+second saber until Two Sabers, then it is given; the staff blade refused, then lit after Double-Bladed 1; offers follow
+the parents. Not provable headless: the backswing, the twirl, Cross Guard, Clash (they need the blades moved).
 
 **The Force**
 

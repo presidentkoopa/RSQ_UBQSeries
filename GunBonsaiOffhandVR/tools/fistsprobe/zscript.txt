@@ -330,7 +330,9 @@ class FistsProbe : EventHandler
 		{
 			// arg0 0: give and raise the saber; 1: print the saber tree's offers and levels; 2: grant arg1's node (+arg2 levels)
 			static const String SN[] = { "BattleMeditation", "SaberThrow", "SaberBarrage", "ReturningBlade", "Momentum",
-				"RiposteEdge", "StrikeTrue", "KyberAttunement", "HighGround", "PointTaken", "RunThrough", "ChainChoke" };
+				"RiposteEdge", "StrikeTrue", "KyberAttunement", "HighGround", "PointTaken", "RunThrough", "ChainChoke",
+				"ReturnToSender", "GuidedReturn", "Precognition", "TwoSabers", "DoubleBladed", "CrossGuard", "Clash",
+				"Deflector", "DualHarmony", "PiercingReturn" };
 			if (e.Args[0] == 0) { p.GiveInventory("UBQS_Saber", 1); p.player.PendingWeapon = Weapon(p.FindInventory("UBQS_Saber")); return; }
 			let sab = Weapon(p.FindInventory("UBQS_Saber"));
 			let st = TFLV_PerPlayerStats.GetStatsFor(p);
@@ -346,7 +348,32 @@ class FistsProbe : EventHandler
 				if (lv > 0) have = have .. String.Format(" %s%d", SN[i], lv);
 			}
 			let sb = UBQS_SaberBase(sab);
-			Console.Printf("FP saber [stage %d] has:%s | offered:%s | size index %d", e.Args[1], have, on, sb ? sb.SizeIdx() : -1);
+			Console.Printf("FP saber [stage %d] has:%s | offered:%s | size index %d | second saber carried: %s", e.Args[1], have, on, sb ? sb.SizeIdx() : -1,
+				p.FindInventory("UBQS_SaberOff") ? "yes" : "no");
+		}
+		else if (e.Name ~== "fp_sabback")
+		{
+			let sb = UBQS_SaberBase(p.FindInventory("UBQS_Saber"));
+			if (!sb) return;
+			bool was = sb.back;
+			sb.ToggleBack();
+			Console.Printf("FP staff blade: %s -> %s", was ? "lit" : "dark", sb.back ? "lit" : "dark");
+			if (sb.back) sb.ToggleBack();
+		}
+		else if (e.Name ~== "fp_sabbat")
+		{
+			// an imp off to the side fires at you; the saber's own BatBack turns the ball with the blade held upright
+			let sb = UBQS_SaberBase(p.FindInventory("UBQS_Saber"));
+			a1 = Put("DoomImp", 260, 200);
+			if (!a1 || !sb) return;
+			a1.freezetics = 100;
+			ball = a1.SpawnMissile(p, "DoomImpBall");
+			if (!ball) return;
+			ball.SetOrigin(p.pos + (cos(p.angle) * 40, sin(p.angle) * 40, 40), false);
+			sb.BatBack(ball, (cos(p.angle + 45), sin(p.angle + 45), 0));
+			double toImp = Actor.absangle(VectorAngle(ball.vel.x, ball.vel.y), ball.AngleTo(a1));
+			double toGaze = Actor.absangle(VectorAngle(ball.vel.x, ball.vel.y), p.angle);
+			Console.Printf("FP turned shot: %.0f degrees off the shooter, %.0f off your gaze", toImp, toGaze);
 		}
 		else if (e.Name ~== "fp_sabthrow")
 		{

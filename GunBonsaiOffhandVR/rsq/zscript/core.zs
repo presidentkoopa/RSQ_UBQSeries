@@ -430,6 +430,12 @@ class RSQ_MeleeUpgradeService : Service
 			if (stringArg == "PointTaken.speed") return RSQ_Upgrade_PointTaken.Speed();
 			if (stringArg == "RunThrough.tics") return RSQ_Upgrade_RunThrough.Tics(lv);
 			if (stringArg == "RunThrough.finish") return RSQ_Upgrade_RunThrough.Finish();
+			if (stringArg == "ReturnToSender.cone") return RSQ_Upgrade_ReturnToSender.Cone(lv);
+			if (stringArg == "Precognition.speed") return RSQ_Upgrade_Precognition.Speed(lv);
+			if (stringArg == "Precognition.width") return RSQ_Upgrade_Precognition.Width(lv);
+			if (stringArg == "DoubleBladed.back") return RSQ_Upgrade_DoubleBladed.Back();
+			if (stringArg == "Clash.radius") return RSQ_Upgrade_Clash.Radius(lv);
+			if (stringArg == "Clash.stagger") return RSQ_Upgrade_Clash.Stagger();
 			// G. Gun hand, H. Taunt
 			if (stringArg == "PistolWhip.stagger") return RSQ_Upgrade_PistolWhip.Stagger(lv);
 			if (stringArg == "PistolWhip.mult") return RSQ_Upgrade_PistolWhip.Mult(lv);

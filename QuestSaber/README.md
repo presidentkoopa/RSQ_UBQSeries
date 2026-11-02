@@ -198,6 +198,13 @@ headset" in docs/HANDOFF_polish.md.
   stab with your head moving forward at 0.8 m/s does x2.25 and up on top of the stab), **Run Through** (a stabbed
   monster is held frozen on the blade 0.75 s and up; draw the blade back out of one under 15% of its health and it
   dies). Saber Throw, Piercing Return and the Force as before; Chain Choke is no longer offered (the owner struck it).
+  **Deflect:** a turned shot goes straight off the blade until **Return to Sender** (home to the shooter: when you look
+  within 30 degrees of it, then 90, then always) or **Guided Return** (where you look, then where your off hand points)
+  is learned (they replace Where Turned Shots Go under the patch); **Precognition** (a parry at a slower swing, a wider
+  block). **Dual:** **Two Sabers** (the second saber is an unlock; Start With Dual Sabers still switches it off),
+  **Double-Bladed** (the staff blade lights only once learned; 2 it cuts on the backswing at 75%; 3 the twirl cuts),
+  **Assault** (Dual Harmony), **Cross Guard** (what the X stops goes back: straight, then at the shooter; 3 opening the
+  X shoves), **Clash** (bringing the blades together staggers everything within 3 m and up).
 - **RSQ Accessibility:** one-handed Force buttons, Hold to Toggle for the Force, Gesture Ease, photosensitive
   flashes, colour-blind outlines. Inert without it. Also (2026-11-01, not yet headset-confirmed):
   - Steady Hands: pointing reads the smoothed hand: painting locks (fire held) and choosing what the Force

@@ -124,7 +124,9 @@ Always on (no row):
     level 5)
   - **Sabers: the Saber tree** (GBOVR_TREES.md 4.2, from 2026-11-02): Focus (Battle Meditation -> Saber Throw, Saber
     Barrage -> Returning Blade), Blade (Elegant Weapon = Momentum -> Aggressive Negotiations = Riposte Edge -> High
-    Ground; Strike True; Kyber Attunement), Stab (Point Taken -> Run Through); Deflect, Dual and the Force follow.
+    Ground; Strike True; Kyber Attunement), Stab (Point Taken -> Run Through), Deflect (Deflector -> Return to Sender, Guided Return -> Piercing Return;
+    Deflector 2 -> Precognition), Dual (Two Sabers -> Assault = Dual Harmony, Cross Guard -> Clash; Double-Bladed);
+    the Force follows.
     Chain Choke is no longer offered. Before the tree:
   - Sabers: Momentum, Riposte Edge, Piercing Return, Saber Throw, Chain Choke, Dual Harmony, Deflector;
     the Force: Force Push, Force Pull, Force Choke, Force Jump

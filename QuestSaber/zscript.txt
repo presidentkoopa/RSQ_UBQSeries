@@ -414,6 +414,8 @@ class UBQS_SaberBase : Weapon abstract
 	// upgrades (lock-on targets, hit-stop, blade length) read the levels instead; without it they are what they were.
 	bool gbOn;
 	int  uBM, uBarrage, uReturning, uStrike, uKyber, uPoint, uRunThrough;
+	int  uRtS, uGuided, uPrecog, uDouble, uCross, uClash;
+	int  crossBoltTic;        // CROSS GUARD: one return bolt a tic
 	Actor impaled;            // RUN THROUGH: what is held on the blade, and until when
 	int   impaleUntil;
 	int  momTics, momQuiet;   // Momentum: tics the blade has kept moving, and tics it has been still
@@ -864,6 +866,13 @@ class UBQS_SaberBase : Weapon abstract
 	}
 	void ToggleBack()
 	{
+		// DOUBLE-BLADED (Gun Bonsai VR): the second blade is an unlock under the patch
+		UpgRefresh();
+		if (gbOn && uDouble <= 0 && !back)
+		{
+			Rumble(0.3, 2);
+			return;
+		}
 		back = !back;
 		if (owner) owner.A_StartSound(back ? UBQS_Font.On() : UBQS_Font.Off(), CHAN_WEAPON, 0, UF("ubqs_vol_ignite", 1.0));
 	}
@@ -1886,6 +1895,19 @@ class UBQS_SaberBase : Weapon abstract
 		uKyber    = UBQS_Upg.Lv(self, "KyberAttunement");
 		uPoint    = UBQS_Upg.Lv(self, "PointTaken");
 		uRunThrough = UBQS_Upg.Lv(self, "RunThrough");
+		uRtS      = UBQS_Upg.Lv(self, "ReturnToSender");
+		uGuided   = UBQS_Upg.Lv(self, "GuidedReturn");
+		uPrecog   = UBQS_Upg.Lv(self, "Precognition");
+		uDouble   = UBQS_Upg.Lv(self, "DoubleBladed");
+		uCross    = UBQS_Upg.Lv(self, "CrossGuard");
+		uClash    = UBQS_Upg.Lv(self, "Clash");
+	}
+	// THE BLADE'S WIDTH for a block (ubqs_blade_width), widened by Precognition (Gun Bonsai VR)
+	double BladeWidth(double cap = 24.0)
+	{
+		double w = clamp(UF("ubqs_blade_width", 1.5), 0.0, cap);
+		if (uPrecog > 0) w = max(w, UBQS_Upg.Num("Precognition.width", uPrecog, w));
+		return w;
 	}
 	// MOMENTUM: the blade moving at half the cut speed or more builds it; six still tics end it
 	private void MomentumTick(double eff, double cut)
@@ -1924,7 +1946,8 @@ class UBQS_SaberBase : Weapon abstract
 		if (sw.Length() < 0.01) sw = dir;
 		sw = sw.Unit();
 		CutLine(hand, dir, len, speed, sw, false);
-		if (back) CutLine(Pommel(), -dir, len, speed, sw, true);
+		// the second blade cuts too -- under Gun Bonsai VR from Double-Bladed 2, at its share (CutLine `rear`)
+		if (back && (!gbOn || uDouble >= 2)) CutLine(Pommel(), -dir, len, speed, sw, true);
 	}
 	// THE BLADE BETWEEN TWO TICS IS AN ARC, NOT A CHORD (Quest teardown apply/03 §2.2, surveys/01_MELEE §3.5).
 	// The blade turns about the wrist, so its tip travels a circle; a straight lerp of base and tip cuts
@@ -1995,6 +2018,7 @@ class UBQS_SaberBase : Weapon abstract
 		int    rate = max(UInt("ubqs_cut_rate", 8), 1);
 		double pad  = UF("ubqs_cut_pad", 3.0);
 		double dmg0 = UF("ubqs_damage", 30.0);
+		if (rear && gbOn) dmg0 *= UBQS_Upg.Num("DoubleBladed.back", uDouble, 0.75);   // DOUBLE-BLADED 2: the backswing's share
 		double mult = 1.0 + (clamp(speed / 20.0, 0.5, 2.0) - 1.0) * clamp(UF("ubqs_swing_scale", 1.0), 0.0, 1.0);
 		double vhit = UF("ubqs_vol_hit", 1.0);
 		bool   buzzc = UInt("ubqs_haptic_cut", 1) != 0;
@@ -2218,7 +2242,7 @@ class UBQS_SaberBase : Weapon abstract
 				if (mo.target == owner || mo is "UBQS_Thrown" || !UInt("ubqs_deflect", 1)) continue;
 				// where its path this tic crosses the disc's plane, and whether that is inside the disc
 				double a0 = c dot n, a1 = (c + mo.vel) dot n;
-				double bwd = clamp(UF("ubqs_blade_width", 1.5), 0.0, 24.0);
+				double bwd = BladeWidth();
 				if ((a0 > 0) == (a1 > 0) && min(abs(a0), abs(a1)) > mo.radius + bwd) continue;
 				double t = (abs(a0 - a1) > 0.001) ? clamp(a0 / (a0 - a1), 0.0, 1.0) : 0.0;
 				Vector3 hit = c + mo.vel * t;
@@ -2227,6 +2251,8 @@ class UBQS_SaberBase : Weapon abstract
 				continue;
 			}
 			if (!mo.bShootable || mo.health <= 0 || (mo.bFriendly && owner.player) || (mo.player && !deathmatch)) continue;
+			// DOUBLE-BLADED 3 (Gun Bonsai VR): the twirl cuts only once learned (it still turns shots)
+			if (gbOn && uDouble < 3) continue;
 			Vector3 mid = c + (0, 0, mo.height * 0.5);
 			double along = mid dot n;
 			if (abs(along) > mo.radius + 6.0) continue;
@@ -2263,7 +2289,7 @@ class UBQS_SaberBase : Weapon abstract
 		// turned two tics early, including ones that would have missed. Only he can say whether that now feels
 		// psychic. Read above the loop, not inside it.
 		double dlead = clamp(UF("ubqs_deflect_lead", 3.0), 1.0, 6.0);
-		double bw = clamp(UF("ubqs_blade_width", 1.5), 0.0, 24.0);
+		double bw = BladeWidth();
 		// THE MISSILES IN FLIGHT (UBQS_Memory.missiles). A projectile is +NOBLOCKMAP, so a BlockThingsIterator
 		// never returns one -- measured on QZD 17.3: an imp ball flew through a held blade and hit the player;
 		// only the block on contact (DamageMobj) ever turned a shot. Every missile is noted as it spawns.
@@ -2309,7 +2335,27 @@ class UBQS_SaberBase : Weapon abstract
 		if (sp <= 0) sp = 12;
 		Vector3 d = (0, 0, 0);
 		int aim = UInt("ubqs_deflect_aim", 1);
-		if (aim == 1)
+		// UNDER GUN BONSAI VR the setting is the Deflect nodes: straight off the blade until one is learned; Return to
+		// Sender home to the shooter (inside its cone of where you look; always at 3); Guided Return where you look
+		// (2: where your off hand points)
+		UpgRefresh();
+		if (gbOn)
+		{
+			aim = 2;
+			if (uGuided > 0) aim = uGuided >= 2 ? 3 : 1;
+			if (uRtS > 0 && shooter && shooter != owner && shooter.health > 0)
+			{
+				double cone = UBQS_Upg.Num("ReturnToSender.cone", uRtS, 30.0);
+				double off = abs(DeltaAngle(owner.angle, owner.AngleTo(shooter)));
+				if (cone >= 180.0 || off <= cone) { aim = 0; UBQS_Upg.Touch("return.sender", owner, shooter); }
+			}
+		}
+		if (aim == 3)
+		{
+			double oa = owner.OffhandAngle + 90.0, op = -owner.OffhandPitch;
+			d = (cos(op) * cos(oa), cos(op) * sin(oa), -sin(op));
+		}
+		else if (aim == 1)
 		{
 			// ubqs_deflect_assist: the aim help that puts a deflected shot onto an enemy. It happens to equal
 			// ubqs_lock_cone's default, which makes it LOOK linked to it -- it is not, and turning
@@ -2478,12 +2524,15 @@ class UBQS_SaberBase : Weapon abstract
 				// This is what makes WHERE you cross them matter.
 				// SABER WIDTH (owner 2026-10-31: "it is way too generous, like having a second shield. it needs to
 				// be saber width"): each crossed blade blocks only what crosses the blade itself (ubqs_blade_width)
-				double gw2 = clamp(UF("ubqs_blade_width", 1.5), 0.0, 48.0);
+				double gw2 = BladeWidth(48.0);
 				let og = Other();
 				bool inPath = gw2 <= 0.01 || BladeInPath(from, gw2) || (og && og.BladeInPath(from, gw2));
 				if (off < UF("ubqs_guard_arc", 100.0) && inPath)
 				{
 					newdamage = 0;
+					// CROSS GUARD (Gun Bonsai VR): what the X stops goes back (1 straight back, 2+ at whoever sent it)
+					UpgRefresh();
+					if (uCross > 0 && level.maptime != crossBoltTic) CrossReturn(from, source);
 					UBQS_Memory.Note(UBQS_Memory.M_BLOCKED, source);
 					owner.A_StartSound(UBQS_Font.Clash(), CHAN_AUTO, 0, UF("ubqs_vol_clash", 1.0));
 					double gfx = clamp(UF("ubqs_clash_fx", 1.0), 0.0, 3.0);
@@ -2522,7 +2571,7 @@ class UBQS_SaberBase : Weapon abstract
 		// over it would be unfeelable. ubqs_blade_guard 0 is exactly the old behaviour, roll and all.
 		// The roll also bailed out inside 96 units, so a claw was never blocked by anything but the cross
 		// guard. The geometric path has no distance floor: a blade across you stops a claw, which is right.
-		double gw = clamp(UF("ubqs_blade_width", 1.5), 0.0, 24.0);
+		double gw = BladeWidth();
 		if (gw > 0.01)
 		{
 			if (!BladeInPath(source, gw)) return;
@@ -2577,6 +2626,7 @@ class UBQS_SaberBase : Weapon abstract
 		bool ok = BladeBefore();
 		if (!ok) return 1.0;
 		double need = UF("ubqs_parry_speed", 6.0);
+		if (uPrecog > 0) need *= UBQS_Upg.Num("Precognition.speed", uPrecog, 1.0);   // PRECOGNITION (Gun Bonsai VR)
 		if (need <= 0.01 || shotDir.Length() < 0.001) return 1.0;
 		Vector3 now = BladeBase() + BladeDir() * BladeLen();
 		Vector3 step = (now - befTip) - bodyStep;
@@ -2691,7 +2741,7 @@ class UBQS_SaberBase : Weapon abstract
 	bool StopsHitscan(Actor sh, Vector3 from, Vector3 dir, double dist, int damage)
 	{
 		if (!Lit() || !owner || owner.health <= 0 || owner == sh || !sh) return false;
-		double gw = clamp(UF("ubqs_blade_width", 1.5), 0.0, 24.0);
+		double gw = BladeWidth();
 		if (gw <= 0.01) return false;
 		double len = BladeLen();
 		if (len < 1.0) return false;
@@ -2757,7 +2807,7 @@ class UBQS_SaberBase : Weapon abstract
 	private Array<int> stoppedTic;
 	bool ContactBlock(Actor inf, Actor src, int damage, int flags)
 	{
-		double gw = clamp(UF("ubqs_blade_width", 1.5), 0.0, 24.0);
+		double gw = BladeWidth();
 		if (gw <= 0.01 || !owner) return false;	// 0 = the old roll, which never touched a missile
 		for (int k = stopped.Size() - 1; k >= 0; k--)
 			if (!stopped[k] || level.maptime - stoppedTic[k] > 35) { stopped.Delete(k); stoppedTic.Delete(k); }
@@ -2861,6 +2911,71 @@ class UBQS_SaberBase : Weapon abstract
 			lockHalo.roll = 0;
 		}
 	}
+	// ---- THE DUAL NODES' MOVES (Gun Bonsai VR, GBOVR_TREES.md 4.2 Dual) -------------------------------------
+	// CROSS GUARD: a bolt back from where the X stopped something -- straight back the way it came at level 1, at
+	// whoever sent it from level 2. The saber's own return bolt (UBQS_Bolt), paid to this saber.
+	void CrossReturn(Actor from, Actor source)
+	{
+		crossBoltTic = level.maptime;
+		Vector3 at = guardAt;
+		Vector3 d = (0, 0, 0);
+		if (uCross >= 2 && source && source != owner && source.health > 0)
+			d = level.Vec3Diff(at, (source.pos.xy, source.pos.z + source.height * 0.55));
+		else if (from && from.bMissile && from.vel.Length() > 0.01) d = -from.vel;
+		else if (source) d = level.Vec3Diff(at, (source.pos.xy, source.pos.z + source.height * 0.55));
+		if (d.Length() < 0.001) return;
+		d = d.Unit();
+		let b = UBQS_Bolt(Actor.Spawn("UBQS_Bolt", at));
+		if (!b) return;
+		b.target = owner;
+		b.tracer = source;
+		b.master = self;
+		b.pierce = uPierce;
+		b.rgb = RgbNow();
+		b.vel = d * b.Speed;
+		b.angle = VectorAngle(d.x, d.y);
+		b.pitch = -asin(clamp(d.z, -1.0, 1.0));
+		UBQS_Upg.Touch("crossguard", owner, source);
+	}
+	// CROSS GUARD 3: the X opened shoves what stands in front of you (90 degrees, 3 m)
+	void GuardPush()
+	{
+		if (!owner) return;
+		double r = 3.0 * 34.0;
+		let it = BlockThingsIterator.Create(owner, r);
+		while (it.Next())
+		{
+			Actor mo = it.thing;
+			if (!mo || mo == owner || !mo.bShootable || mo.health <= 0 || !mo.bIsMonster || mo.bFriendly) continue;
+			if (owner.Distance2D(mo) > r + mo.radius || abs(DeltaAngle(owner.angle, owner.AngleTo(mo))) > 45.0) continue;
+			if (!mo.bDontThrust) mo.Thrust(12.0 * clamp(100.0 / max(mo.mass, 1.0), 0.1, 1.5), owner.AngleTo(mo));
+			mo.TriggerPainChance('Melee', true);
+		}
+		owner.A_StartSound(UBQS_Font.Clash(), CHAN_AUTO, 0, UF("ubqs_vol_clash", 1.0));
+	}
+	// CLASH: the blades brought together release a shockwave round you; what stands in it staggers (Gun Bonsai VR's
+	// stagger, by name)
+	void ClashWave()
+	{
+		if (!owner) return;
+		double r = UBQS_Upg.Num("Clash.radius", uClash, 3.0) * 34.0;
+		int st = int(UBQS_Upg.Num("Clash.stagger", uClash, 20));
+		let svc = UBQS_Upg.Svc();
+		let it = BlockThingsIterator.Create(owner, r);
+		int n = 0;
+		while (it.Next())
+		{
+			Actor mo = it.thing;
+			if (!mo || mo == owner || !mo.bShootable || mo.health <= 0 || !mo.bIsMonster || mo.bFriendly) continue;
+			if (owner.Distance2D(mo) > r + mo.radius) continue;
+			if (!mo.bDontThrust) mo.Thrust(6.0 * clamp(100.0 / max(mo.mass, 1.0), 0.1, 1.5), owner.AngleTo(mo));
+			if (svc) svc.GetInt("stagger", "", st, 0, mo); else mo.TriggerPainChance('Melee', true);
+			UBQS_Upg.Touch("clash", owner, mo);
+			n++;
+		}
+		if (UInt("ubqs_diag", 0) == 1) Console.Printf("ubqs clash wave: %d staggered within %.0f", n, r);
+	}
+
 	private void LockGlowOff()
 	{
 		if (lockCore) lockCore.Destroy();
@@ -2872,6 +2987,7 @@ class UBQS_SaberBase : Weapon abstract
 	{
 		LockGlowOff();
 		if (!inLock) return;
+		if (uCross >= 3) GuardPush();   // CROSS GUARD 3: opening the X shoves
 		inLock = false;
 		owner.A_StopSound(22);
 	}
@@ -2950,6 +3066,8 @@ class UBQS_SaberBase : Weapon abstract
 		{
 			inLock = true;
 			lockSince = level.maptime;
+			UpgRefresh();
+			if (uClash > 0) ClashWave();   // CLASH (Gun Bonsai VR): the lock's shockwave
 			nextSnap = level.maptime + random[UBQSFx](10, 18);
 			double hard = clamp(rel / 12.0, 0.6, 1.6);
 			owner.A_StartSound(UBQS_Font.Clash(), CHAN_AUTO, 0, 1.0 * vcl);
@@ -6081,7 +6199,7 @@ class UBQS_Bridge : EventHandler
 		}
 		if (!On()) return;
 		int dmode = DualMode();
-		bool dual = dmode != 0;
+		bool dualAll = dmode != 0;
 		let stc = CVar.FindCVar("ubqs_start");
 		bool start = !stc || stc.GetBool();
 		for (int i = 0; i < MAXPLAYERS; i++)
@@ -6092,6 +6210,9 @@ class UBQS_Bridge : EventHandler
 			// respawn (player.zs:1012) and only re-raises the main one, so a latch that survives death
 			// leaves you one-handed for the rest of the map.
 			if (p.health <= 0) { raisedAt[i] = 0; continue; }
+			// TWO SABERS (Gun Bonsai VR): under the patch the second saber is an unlock, learned on the main saber's
+			// record; the Start With Dual Sabers row still switches it off
+			bool dual = dualAll && (!UBQS_Upg.Svc() || UBQS_Upg.Lv(p.mo, "TwoSabers") > 0);
 			// THEIRS OUT, OURS IN: whatever their saber is, carried
 			bool swapped = false, held = false;
 			for (let item = p.mo.Inv; item; )
