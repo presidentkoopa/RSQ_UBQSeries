@@ -1,0 +1,339 @@
+version "4.14"
+// TEST ONLY (never ships): the Fists tree on the headless QZD 17.3 gate. Grants Gun Bonsai VR nodes to both gloves as a
+// level-up would, prints which Fists nodes each glove would be offered, lands punches through RSQ Melee's own Deliver
+// (public for probes), and sends RSQ Gestures' two-hand event as Gestures would. Every line it prints starts "FP ".
+class FistsProbe : EventHandler
+{
+	static const String NODES[] = {
+		"HeavyHands", "Haymaker", "BodyBlow", "Uppercut", "Launcher", "Juggle", "Meteor", "GroundPound", "ClearOut",
+		"WallSplat", "Knockdown", "StarPunch", "OneTwo", "Counterpunch", "ReturnFire",
+		"ExplosiveFist", "FrostFist", "ShockFist", "FireFist",
+		"Executioner", "ThreeHit", "Dempsey", "Finisher",
+		"Guard", "Parry", "ReflectGuard", "AbsorbRelease", "SwatBack",
+		"HumanShield", "HeadlockUppercut", "HeavierHeadlock", "Slam", "ThrowInto", "Chokehold", "Uppercut",
+		"Rage", "BloodRush", "BerserkMeter", "PistolWhip", "RifleButt", "Taunt", "CriticalHits", "Headshot", "Backstab"
+	};
+	bool punchHigh;
+	// the off hand on its own (the Headlock): where it is (forward, left of the pawn; up from viewz) and how it moves
+	int offMode, offLeft;
+	double offF, offS, offU, offVF, offVU;
+	Actor held, other;
+	// the Guard: 0 hands down (no sim), 1 hands up at the face, 2 the same pushed forward for PUSH tics
+	int guardMode, pushLeft;
+	double pushFwd;
+	Actor ball;
+	int swatAt, hadoAt;
+	// a queued sequence of punches on a1: kinds, alternating hands from the main, every SEQ_GAP tics
+	Array<int> seqKind;
+	int seqNext, seqHand;
+	const SEQ_GAP = 6;
+	Actor a1, a2;
+	int jugAt, mtAt;
+
+	PlayerPawn P() { return players[0].mo; }
+	Vector3 Ahead(double d, double side = 0)
+	{
+		let p = P();
+		double c = cos(p.angle), s = sin(p.angle);
+		return p.pos + (d * c - side * s, d * s + side * c, 0);
+	}
+	Actor Put(String cls, double d, double side = 0)
+	{
+		let a = Actor.Spawn(cls, Ahead(d, side), ALLOW_REPLACE);
+		if (a) { a.angle = a.AngleTo(P()); }
+		return a;
+	}
+	RSQ_Glove Glove(int h) { let p = P(); return RSQ_Glove(h == 0 ? p.player.ReadyWeapon : p.player.OffhandWeapon); }
+	TFLV_WeaponInfo Info(int h)
+	{
+		let g = Glove(h);
+		let st = TFLV_PerPlayerStats.GetStatsFor(P());
+		return (g && st) ? st.GetInfoFor(g) : null;
+	}
+
+	override void WorldThingDamaged(WorldEvent e)
+	{
+		if (!e.Thing || e.Thing.player) return;
+		String inf = e.Inflictor ? e.Inflictor.GetClassName() : 'none';
+		Console.Printf("FP t%d DAMAGED %s by %s: %d, health now %d, z %.0f", level.maptime, e.Thing.GetClassName(), inf, e.Damage, e.Thing.health, e.Thing.pos.z - e.Thing.floorz);
+	}
+
+	override void WorldTick()
+	{
+		let p = P(); if (!p) return;
+		int t = level.maptime;
+		if (t == 3) { p.GiveInventory("RSQ_Glove", 1); p.GiveInventory("RSQ_GloveOff", 1); p.player.PendingWeapon = Weapon(p.FindInventory("RSQ_Glove")); }
+		if (t == 30) { let o = Weapon(p.FindInventory("RSQ_GloveOff")); if (o && p.player.OffhandWeapon != o) p.player.PendingWeapon = o; }
+		if (t == 60) Console.Printf("FP t60 ready %s off %s", p.player.ReadyWeapon ? p.player.ReadyWeapon.GetClassName() : 'none', p.player.OffhandWeapon ? p.player.OffhandWeapon.GetClassName() : 'none');
+		let sim = RSQML_Sim.Get();
+		if (sim)
+		{
+			if (guardMode > 0 && pushLeft > 0) pushFwd += 2.0;
+			for (int h = 0; h < 2; h++)
+			{
+				sim.simOn[h] = guardMode > 0;
+				if (guardMode <= 0) continue;
+				Vector2 f = (cos(p.angle), sin(p.angle)), s = (-f.y, f.x);
+				double side = h == 0 ? -4.0 : 4.0;
+				Vector2 xy = p.pos.xy + f * pushFwd + s * side;
+				sim.simHand[h] = (xy.x, xy.y, p.player.viewz - 2);
+			}
+			if (pushLeft > 0) { pushLeft--; if (pushLeft == 0) Console.Printf("FP t%d push done, hands %.0f forward", t, pushFwd); }
+			if (offMode > 0)
+			{
+				if (offLeft > 0) { offF += offVF; offU += offVU; offLeft--; }
+				Vector2 f2 = (cos(p.angle), sin(p.angle)), s2 = (-f2.y, f2.x);
+				Vector2 xy2 = p.pos.xy + f2 * offF + s2 * offS;
+				sim.simOn[1] = true;
+				sim.simHand[1] = (xy2.x, xy2.y, p.player.viewz + offU);
+			}
+		}
+		if (swatAt > 0 && t == swatAt) { swatAt = 0; HandAcross(0); }
+		if (hadoAt > 0 && t == hadoAt) { hadoAt = 0; HandAcross(1); }
+		if (seqKind.Size() > 0 && t >= seqNext)
+		{
+			int k = seqKind[0]; seqKind.Delete(0);
+			if (a1 && a1.health > 0) Punch(seqHand, a1, k);
+			seqHand = 1 - seqHand;
+			seqNext = t + SEQ_GAP;
+		}
+		if (jugAt > 0 && t == jugAt)
+		{
+			jugAt = 0;
+			if (a1 && a1.health > 0) { Console.Printf("FP juggle: off-hand jab, launch.age %d, z %.0f", Svc().GetInt("launch.age", "", 0, 0, a1), a1.pos.z - a1.floorz); Punch(1, a1, 0); }
+		}
+		if (mtAt < 0 && a1 && a2 && a1.pos.z - a1.floorz > 90) { a2.SetOrigin((a1.pos.x, a1.pos.y, a2.floorz), false); a2.vel = (0, 0, 0); }
+		if (mtAt > 0 && t == mtAt)
+		{
+			mtAt = -1;
+			if (a1 && a2) { a1.vel.xy = (0, 0); a2.SetOrigin((a1.pos.x, a1.pos.y, a2.floorz), false); a2.vel = (0, 0, 0); Console.Printf("FP meteor: second imp moved under the first (first at z %.0f)", a1.pos.z - a1.floorz); }
+		}
+	}
+
+	Service Svc() { return ServiceIterator.Find("RSQML_Service").Next(); }
+
+	// a hand across the ball's path: 0 an open-palm swat (Melee's Swat), 1 a fist (Melee's ReturnFire at level 2)
+	void HandAcross(int how)
+	{
+		let p = P(); let g = Glove(0);
+		if (!ball || !g) { Console.Printf("FP across: no ball or glove"); return; }
+		Vector3 v = ball.vel; Vector2 s = (-v.y, v.x); double l = s.Length(); s = l > 0.01 ? s / l : (1, 0);
+		let st = new("RSQ_PunchHand");
+		st.prevHand = ball.pos + (s.x * 8, s.y * 8, 0);
+		st.hand = ball.pos - (s.x * 8, s.y * 8, 0);
+		st.vel = (-s.x * 120, -s.y * 120, 0);
+		Console.Printf("FP t%d %s across %s at %.0f from you", level.maptime, how == 0 ? "swat" : "fist", ball.GetClassName(), ball.Distance3D(p));
+		if (how == 0) RSQML_Gloves.Get().Swat(p, g, 0, st); else RSQML_Gloves.Get().ReturnFire(p, g, 0, st, 2);
+		Console.Printf("FP after: %s target %s, heading %.0f deg off the imp", ball.GetClassName(), ball.target ? ball.target.GetClassName() : 'none', a1 ? Actor.absangle(VectorAngle(ball.vel.x, ball.vel.y), ball.AngleTo(a1)) : -1.0);
+	}
+
+	// kind 0 jab, 2 uppercut, through Melee's own Deliver
+	void Punch(int h, Actor v, int kind)
+	{
+		let p = P(); let g = Glove(h);
+		if (!g || !v) { Console.Printf("FP punch: no glove %d or no target", h); return; }
+		Vector2 f = (cos(p.angle), sin(p.angle));
+		Vector3 dir, path;
+		if (kind == 2) { dir = (f.x * 0.3, f.y * 0.3, 0.95); path = (f.x * 0.05, f.y * 0.05, 0.3); }
+		else if (kind == 1) { Vector2 s = (-f.y, f.x); dir = (s.x * 0.95 + f.x * 0.3, s.y * 0.95 + f.y * 0.3, 0); path = (s.x * 0.3, s.y * 0.3, 0); }
+		else { dir = (f.x, f.y, 0); path = (f.x * 0.3, f.y * 0.3, 0); }
+		Vector3 at = v.pos + (-f.x * v.radius, -f.y * v.radius, v.height * (punchHigh ? 0.92 : 0.7));
+		RSQML_Gloves.Get().Deliver(p, g, h, v, 7.0, dir.Unit(), at, path);
+		Console.Printf("FP punch %s kind asked %d -> landed kind %d, %s health %d", h ? "L" : "R", kind, g.lastKind, v.GetClassName(), v.health);
+	}
+
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		let p = P(); if (!p) return;
+		if (e.Name ~== "fp_tree")
+		{
+			for (int h = 0; h < 2; h++)
+			{
+				let info = Info(h);
+				if (!info) { Console.Printf("FP tree %d: no record", h); continue; }
+				String on = "", have = "";
+				for (int i = 0; i < NODES.Size(); i++)
+				{
+					String cls = "RSQ_Upgrade_" .. NODES[i];
+					Class<TFLV_Upgrade_BaseUpgrade> c = cls;
+					if (!c) { on = on .. " ?" .. NODES[i]; continue; }
+					let u = TFLV_Upgrade_BaseUpgrade(new(c));
+					if (u.IsSuitableForWeapon(info)) on = on .. " " .. NODES[i];
+					int lv = int(info.upgrades.Level(cls));
+					if (lv > 0) have = have .. String.Format(" %s%d", NODES[i], lv);
+				}
+				Console.Printf("FP tree %s [stage %d] has:%s | offered:%s", h ? "L" : "R", e.Args[0], have, on);
+			}
+		}
+		else if (e.Name ~== "fp_grant")
+		{
+			String cls = "RSQ_Upgrade_" .. NODES[clamp(e.Args[0], 0, NODES.Size() - 1)];
+			// arg2: 0 both gloves, 1 the main glove only, 2 the off glove only
+			for (int h = 0; h < 2; h++) { if (e.Args[2] == 1 && h == 1) continue; if (e.Args[2] == 2 && h == 0) continue; let info = Info(h); if (info) info.upgrades.Add(cls, max(e.Args[1], 1)); }
+			Console.Printf("FP granted %s %d to %s", cls, max(e.Args[1], 1), e.Args[2] == 1 ? "the main glove" : e.Args[2] == 2 ? "the off glove" : "both gloves");
+		}
+		else if (e.Name ~== "fp_punch") { a1 = Put("DoomImp", 60); Punch(0, a1, e.Args[0]); }
+		else if (e.Name ~== "fp_pgrant")
+		{
+			String cls = "RSQ_Upgrade_" .. NODES[clamp(e.Args[0], 0, NODES.Size() - 1)];
+			let st = TFLV_PerPlayerStats.GetStatsFor(p);
+			if (st) st.upgrades.Add(cls, max(e.Args[1], 1));
+			Console.Printf("FP player granted %s %d", cls, max(e.Args[1], 1));
+		}
+		else if (e.Name ~== "fp_ptree")
+		{
+			let st = TFLV_PerPlayerStats.GetStatsFor(p);
+			String on = "";
+			static const String PN[] = { "Guard", "Parry", "ReflectGuard", "AbsorbRelease" };
+			for (int i = 0; i < PN.Size(); i++)
+			{
+				Class<TFLV_Upgrade_BaseUpgrade> c = "RSQ_Upgrade_" .. PN[i];
+				if (c && TFLV_Upgrade_BaseUpgrade(new(c)).IsSuitableForPlayer(st)) on = on .. " " .. PN[i];
+			}
+			Console.Printf("FP player tree [stage %d] offered:%s", e.Args[0], on);
+		}
+		else if (e.Name ~== "fp_hp") { p.health = p.player.health = 5000; }
+		else if (e.Name ~== "fp_guard") { guardMode = e.Args[0]; pushFwd = 4.0; pushLeft = e.Args[0] == 2 ? 3 : 0; }
+		else if (e.Name ~== "fp_soak")
+		{
+			// a blow straight into the Guard's Soak: arg0 damage, arg1 1 = a hitscan from an imp far off, else a claw from one near
+			a1 = Put("DoomImp", e.Args[1] == 1 ? 300 : 60);
+			let gd = RSQML_Guard.Get();
+			int left = gd.Soak(p, e.Args[0], a1, a1, e.Args[1] == 1 ? 'Hitscan' : 'Melee');
+			Console.Printf("FP t%d soak %d (%s) -> %d through; guard up %d tics, pushTic %d upTic %d, imp health %d, charge %.0f", level.maptime, e.Args[0], e.Args[1] == 1 ? "bullet" : "claw", left, gd.guardTics[0], gd.pushTic[0], gd.upTic[0], a1 ? a1.health : -1, gd.charge[0]);
+		}
+		else if (e.Name ~== "fp_fire")
+		{
+			// an imp 220 ahead fires a fireball at you; arg0: 1 swat it 4 tics later, 2 punch it back, 0 let it come
+			a1 = Put("DoomImp", 220);
+			if (a1) { a1.bFriendly = false; ball = a1.SpawnMissile(p, "DoomImpBall"); a1.freezetics = 70; }
+			if (e.Args[0] == 1) swatAt = level.maptime + 4;
+			if (e.Args[0] == 2) hadoAt = level.maptime + 4;
+			Console.Printf("FP fire: %s from %s", ball ? ball.GetClassName() : 'none', a1 ? a1.GetClassName() : 'none');
+		}
+		else if (e.Name ~== "fp_release")
+		{
+			Put("DoomImp", 60); Put("DoomImp", -60); Put("DoomImp", 0, 70);
+			let gd = RSQML_Guard.Get();
+			Console.Printf("FP release with charge %.0f", gd.charge[0]);
+			EventHandler.SendNetworkEvent("rsqg_pair", 1, 300, 0);
+		}
+		else if (e.Name ~== "fp_grab")
+		{
+			// arg0: 0 an imp, 1 a Baron; arg1 its distance ahead. The off hand goes to its near side, at its chest, and grips.
+			held = Put(e.Args[0] == 1 ? "BaronOfHell" : "DoomImp", e.Args[1]);
+			if (!held) return;
+			offMode = 1; offLeft = 0;
+			offF = e.Args[1] - held.radius - 3; offS = 4;
+			offU = (held.pos.z + held.height * 0.6) - p.player.viewz;
+			Console.Printf("FP grab: %s (mass %d) %d ahead, off hand at %.0f ahead", held.GetClassName(), held.mass, e.Args[1], offF);
+			EventHandler.SendNetworkEvent("rsqml_hgrip", 1);
+		}
+		else if (e.Name ~== "fp_letgo") { EventHandler.SendNetworkEvent("rsqml_hgrip", 0); offMode = 0; let sim = RSQML_Sim.Get(); if (sim) sim.simOn[1] = false; }
+		else if (e.Name ~== "fp_offmove") { offVF = e.Args[0] / 10.0; offVU = e.Args[1] / 10.0; offLeft = e.Args[2]; Console.Printf("FP off hand moving %.1f fwd %.1f up a tic for %d tics", offVF, offVU, offLeft); }
+		else if (e.Name ~== "fp_held")
+		{
+			let hl = RSQML_Headlock.Get();
+			Actor c = hl ? hl.collar[0] : null;
+			Console.Printf("FP t%d held: %s, health %d, player health %d", level.maptime, c ? c.GetClassName() : 'nothing', c ? c.health : -1, p.health);
+		}
+		else if (e.Name ~== "fp_shieldhit")
+		{
+			// a blow at you from an imp straight ahead (where the held monster is)
+			let hl = RSQML_Headlock.Get();
+			Actor c = hl ? hl.collar[0] : null;
+			other = Put("DoomImp", 300);
+			int before = p.health;
+			p.DamageMobj(other, other, e.Args[0], 'Hitscan');
+			Console.Printf("FP shield hit %d: player %d -> %d, held %s health %d", e.Args[0], before, p.health, c ? c.GetClassName() : 'nothing', c ? c.health : -1);
+		}
+		else if (e.Name ~== "fp_heldpunch")
+		{
+			let hl = RSQML_Headlock.Get();
+			Actor c = hl ? hl.collar[0] : null;
+			if (c) Punch(0, c, e.Args[0]); else Console.Printf("FP heldpunch: nothing held");
+			Console.Printf("FP after the punch: still held %s", hl && hl.collar[0] ? "yes" : "no");
+		}
+		else if (e.Name ~== "fp_target") { other = Put("DoomImp", e.Args[0], e.Args[1]); if (other) other.freezetics = 200; }
+		else if (e.Name ~== "fp_levels")
+		{
+			let gb = ServiceIterator.Find("RSQ_MeleeUpgradeService").Next();
+			let g = Glove(0);
+			Console.Printf("FP t%d levels on the main glove: HeavyHands %d Haymaker %d Rage %d; berserk %s, earned %s", level.maptime,
+				gb.GetInt("level", "HeavyHands", 0, 0, g), gb.GetInt("level", "Haymaker", 0, 0, g), gb.GetInt("level", "Rage", 0, 0, g),
+				p.FindInventory("PowerStrength", true) ? "yes" : "no", p.FindInventory("RSQ_EarnedStrength") ? "yes" : "no");
+			let tr = TFLV_PerPlayerStats.GetStatsFor(p).GetInfoFor(g);
+			Class<TFLV_Upgrade_BaseUpgrade> c = "RSQ_Upgrade_Knockdown";
+			Console.Printf("FP knockdown offered on the main glove: %s (it needs Body Blow 3 or Wallflower 2)", TFLV_Upgrade_BaseUpgrade(new(c)).IsSuitableForWeapon(tr) ? "yes" : "no");
+		}
+		else if (e.Name ~== "fp_armor") { Console.Printf("FP t%d armour %d, health %d", level.maptime, p.CountInv("BasicArmor"), p.health); }
+		else if (e.Name ~== "fp_gun")
+		{
+			// arg0: 1 a pistol, 2 a shotgun, 0 the gloves back
+			static const String GUNS[] = { "RSQ_Glove", "Pistol", "Shotgun" };
+			String gn = GUNS[clamp(e.Args[0], 0, 2)];
+			p.GiveInventory(gn, 1); p.GiveInventory("Clip", 50); p.GiveInventory("Shell", 20);
+			p.player.PendingWeapon = Weapon(p.FindInventory(gn));
+		}
+		else if (e.Name ~== "fp_shove")
+		{
+			// an imp just ahead, then Melee's own shove event (arg0 the speed, hundredths of m/s)
+			a1 = Put(e.Args[1] == 1 ? "Demon" : "DoomImp", 40);
+			if (a1) a1.freezetics = 3;
+			int yaw = int(Actor.Normalize180(p.angle) + 360) % 360;
+			EventHandler.SendNetworkEvent("rsqml_buttshove", 0, e.Args[0], yaw * 1000 + 90);
+			Console.Printf("FP shove at %d with %s", e.Args[0], p.player.ReadyWeapon ? p.player.ReadyWeapon.GetClassName() : 'none');
+		}
+		else if (e.Name ~== "fp_windup")
+		{
+			// arg0 1: the next punched imp is put in its Missile wind-up first; arg1 1: punched at the head; arg2 1: facing away
+			a1 = Put("Demon", 60);
+			if (!a1) return;
+			a1.health = 400;
+			if (e.Args[0] == 1) { State m = a1.FindState("Melee"); if (m) a1.SetState(m); a1.freezetics = 2; }
+			if (e.Args[2] == 1) a1.angle = a1.AngleTo(p) + 180;
+			punchHigh = e.Args[1] == 1;
+			Punch(0, a1, 0);
+			punchHigh = false;
+		}
+		else if (e.Name ~== "fp_again2") { if (a1) { punchHigh = e.Args[1] == 1; Punch(e.Args[0], a1, 0); punchHigh = false; } }
+		else if (e.Name ~== "fp_taunt")
+		{
+			Put("DoomImp", 90); Put("DoomImp", 300, 100); Put("DoomImp", 200, -150);
+			EventHandler.SendNetworkEvent("rsqg_pair", 1, 300, 0);
+		}
+		else if (e.Name ~== "fp_seq")
+		{
+			// arg0: the kinds as digits (kind + 1), oldest first (112 = jab, jab, hook); arg1: 1 = a Baron at arg2 health
+			a1 = Put(e.Args[1] == 1 ? "BaronOfHell" : "Demon", 70);
+			if (a1 && e.Args[2] > 0) a1.health = e.Args[2];
+			seqKind.Clear();
+			String ds = String.Format("%d", e.Args[0]);
+			for (int i = 0; i < ds.Length(); i++) seqKind.Push(ds.ByteAt(i) - 49);
+			seqHand = 0; seqNext = level.maptime;
+			Console.Printf("FP seq %s on %s (health %d)", ds, a1 ? a1.GetClassName() : 'none', a1 ? a1.health : 0);
+		}
+		else if (e.Name ~== "fp_hit") { a1 = Put(e.Args[1] == 1 ? "Demon" : "DoomImp", 60); Punch(e.Args[0], a1, 0); }
+		else if (e.Name ~== "fp_again") { if (a1) { Console.Printf("FP again: %s health %d, freezetics %d", a1.GetClassName(), a1.health, a1.freezetics); Punch(e.Args[0], a1, 0); } }
+		else if (e.Name ~== "fp_cluster") { a1 = Put("DoomImp", 60); Put("DoomImp", 75, 45); Put("DoomImp", 75, -45); Put("DoomImp", 110, 0); Put("DoomImp", 400, 0); Punch(e.Args[0], a1, 0); }
+		else if (e.Name ~== "fp_juggle") { a1 = Put("DoomImp", 60); Punch(0, a1, 2); jugAt = level.maptime + 8; }
+		else if (e.Name ~== "fp_meteor") { a1 = Put("DoomImp", 70); a2 = Put("DoomImp", 70, 120); Punch(0, a1, 2); mtAt = level.maptime + 6; }
+		else if (e.Name ~== "fp_pound")
+		{
+			Put("DoomImp", 60); Put("DoomImp", -60); Put("DoomImp", 0, 60); Put("Demon", 200);
+			EventHandler.SendNetworkEvent("rsqg_pair", 0, e.Args[0], 0);
+		}
+		else if (e.Name ~== "fp_clear")
+		{
+			Put("DoomImp", 60); Put("DoomImp", 70, 40); Put("DoomImp", -60);
+			EventHandler.SendNetworkEvent("rsqg_pair", 3, e.Args[0], 0);
+		}
+		else if (e.Name ~== "fp_clean")
+		{
+			let it = ThinkerIterator.Create("Actor");
+			Actor m; int n = 0;
+			while (m = Actor(it.Next())) if (m.bIsMonster && !m.player) { m.Destroy(); n++; }
+			Console.Printf("FP cleaned %d monsters", n);
+		}
+	}
+}
