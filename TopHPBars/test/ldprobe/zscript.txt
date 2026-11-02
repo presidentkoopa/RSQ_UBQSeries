@@ -1,0 +1,66 @@
+version "4.14"
+// TEST ONLY (never shipped: TopHPBars ships only its pk3/ folder). Does a LegenDoom candidate's bar give it away
+// before it turns? (owner 2026-11-02: "they show on legendary boosted champions before they turn").
+// A row of three imps, held still: 0 and 1 get LegenDoom's guaranteed legendary pickup (by name), 2 stays plain.
+// t60 every imp takes 20; t100 imp 0 takes 75 (down to half of its boosted health: LegenDoom turns it);
+// t140 every imp takes 10. Every 10 tics each imp: health, LegenDoom's two tokens, and its bar (none, or the
+// fill it draws, the overheal strip, the max it is drawn against).
+class RSQTHPLD_Probe : EventHandler
+{
+	Array<Actor> row;
+
+	static int Has(Actor a, String cn) { class<Inventory> c = cn; return (c && a.FindInventory(c)) ? 1 : 0; }
+
+	override void WorldTick()
+	{
+		let pmo = players[consoleplayer].mo;
+		if (!pmo) return;
+		int t = level.maptime;
+		if (t == 12)
+		{
+			for (int i = 0; i < 3; i++)
+			{
+				Vector3 sp = pmo.Vec3Angle(300, pmo.angle) + (cos(pmo.angle - 90), sin(pmo.angle - 90), 0) * (i - 1) * 80;
+				let a = Actor.Spawn("DoomImp", sp, ALLOW_REPLACE);
+				if (a) { a.angle = pmo.angle + 180; a.SetZ(a.floorz); }
+				row.Push(a);
+			}
+			String pk = "LDLegendaryMonsterPickupGuaranteed";
+			class<Inventory> pc = pk;
+			for (int i = 0; i < 2; i++) if (pc && row[i]) row[i].GiveInventory(pc, 1);
+			Console.Printf("THPLD t%d spawned 3 %s; LegenDoom pickup class %s", t, row[0] ? row[0].GetClassName() : 'none', pc ? "found" : "MISSING (no LegenDoom)");
+		}
+		if (t == 20) for (int i = 0; i < row.Size(); i++) if (row[i]) row[i].Deactivate(null);
+		if (t == 60) for (int i = 0; i < row.Size(); i++) Hit(i, 20);
+		if (t == 100) Hit(0, 75);
+		if (t == 140) for (int i = 0; i < row.Size(); i++) Hit(i, 10);
+		if (t >= 10 && t % 10 == 0 && t <= 180) Log(t);
+	}
+
+	void Hit(int i, int n)
+	{
+		let a = row[i];
+		if (!a || a.health <= 0) return;
+		bool d = a.bDormant; a.bDormant = false;
+		a.DamageMobj(pmoOf(), pmoOf(), n, 'None', DMG_NO_PAIN);
+		a.bDormant = d;
+		Console.Printf("THPLD t%d hit imp %d for %d -> hp %d", level.maptime, i, n, a.health);
+	}
+	static Actor pmoOf() { return players[consoleplayer].mo; }
+
+	void Log(int t)
+	{
+		let h = RSQTHP_Handler.Get();
+		for (int i = 0; i < row.Size(); i++)
+		{
+			let a = row[i];
+			if (!a) continue;
+			RSQTHP_Bar b = null;
+			if (h) for (int k = 0; k < h.bars.Size(); k++) if (h.bars[k] && h.bars[k].who == a) b = h.bars[k];
+			String bar = "no bar";
+			if (b) bar = String.Format("BAR fill %d/%d (%.0f%%) frame %c overheal strip %s length x%.2f lifted for a champion icon %d", b.lastHp, b.lastMax, 100.0 * b.lastHp / max(1, b.lastMax), 65 + b.frame, b.over ? "SHOWN" : "none", b.lenK, b.champ);
+			Console.Printf("THPLD t%d imp %d hp %d/%d token %d transformed %d | %s", t, i, a.health, a.SpawnHealth(),
+				Has(a, "LDLegendaryMonsterToken"), Has(a, "LDLegendaryMonsterTransformed"), bar);
+		}
+	}
+}

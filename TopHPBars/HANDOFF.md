@@ -4,6 +4,19 @@ Rig: rig A (`/home/claude/scratch/run17A.sh`, the real QZD 17.3 binary, zscript 
 Every number below was measured there; the logs and frames are under `test/evidence/` (copies) and
 the scratchpad (`frames/<run>/`, `logsA/<run>.log`). Test runner: `test/run.sh <name> <secs> "<console>" <order>`.
 
+## 2026-11-02: LegenDoom candidates no longer give themselves away -- read first
+
+Owner: "they show on legendary boosted champions before they turn, so they give themselves away." Cause (rig,
+real LegenDoom Lite 4.2): LegenDoom gives a picked monster LDLegendaryMonsterToken and sets 300 % health at once,
+no damage; the 16-tic poll took that for an overheal, so an unhurt candidate got a full bar with the overheal
+strip (180/60 at t20; a plain imp: none). Fix (handler.zs FullOf / LDCandidate, bar.zs): token and not yet
+LDLegendaryMonsterTransformed (both by name) -> drawn against its most health since picked; length by spawn
+health. Rig after, LDL 4.2, LD 3.0 and Champions dormant + booster + LDL: candidates no bar until hit, then
+160/180 plain (no strip, length x1.00 like the plain imp); on the turn at half health: 180/60 full strip
+(LDL) or Champions' own 225/225 (dormant mode). Without LegenDoom: unchanged. `test/ld.sh` (+ `test/ldprobe/`).
+Not headset-confirmed. The "Overheal, LegenDoom Lite" lines below are the old behaviour (bars on untouched
+legendaries), kept as history.
+
 ## QoL round 2026-10-31 (owner's picks HP1-HP4 options, HP6-HP9 on) -- read first
 
 Rig only, not headset-confirmed. QZD 17.3 rig, doom2 -> brutal22test6 -> BD_VoxelPack -> BD22_VR-Reloaded 2.0.3h ->

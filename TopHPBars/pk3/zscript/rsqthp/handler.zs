@@ -11,6 +11,16 @@
 //     healer's GiveBody) is caught by a poll that walks 1/16 of the tracked list each tic, so every
 //     monster is looked at once every 16 tics, for one native call and one compare.
 //
+// LEGENDOOM'S CANDIDATES DO NOT GIVE THEMSELVES AWAY (owner 2026-11-02: "they show on legendary boosted
+// champions before they turn"). LegenDoom (3.0 and Lite 4.2, LEGNDLIB.acs LDMonsterInit, read from the
+// pk3s) picks a monster by giving it LDLegendaryMonsterToken and at once sets its health to 300 %
+// (LD_legendaryhealth) with no damage; it TURNS at half of that, when LDLegendaryMonsterStatBoost gives
+// LDLegendaryMonsterTransformed and fills it again. The poll above read that 300 % as an overheal: an
+// unhurt candidate got a full bar with the overheal strip (rig, before: 180/60 at t20, a plain imp none).
+// Now a candidate (the token, not yet transformed: both looked up BY NAME, so nothing links to LegenDoom)
+// is drawn against the most health it has had since it was picked, as a plain monster against its spawn
+// health: no bar until it is hurt, then a plain bar, no strip. The moment it turns, the usual rules.
+//
 // COLDCITE'S OWN PK3 LOADED TOO. All our names differ (RSQTHP_ classes, rsqthp_ cvars, RSY/RS##
 // sprites), so both load without a clash. Two bars over every monster is what would clash, so this
 // handler TAKES OVER: when his item class (Z_MyTopHP) exists, it is taken off every monster and player
@@ -83,6 +93,7 @@ class RSQTHP_Handler : EventHandler
 	// ---- tracking ----------------------------------------------------------------------------
 	Array<Actor> mons;               // everything that may get a bar, polled 1/16 a tic
 	Array<RSQTHP_Bar> monBar;        // its bar, same index (so the poll never searches for it)
+	Array<int> monPeak;              // a LegenDoom candidate's most health seen (its "full"), same index
 	int pollAt;
 	Array<RSQTHP_Bar> bars;          // the bars alive (few: only damaged / overhealed things)
 
@@ -109,6 +120,19 @@ class RSQTHP_Handler : EventHandler
 	transient class<Inventory> ldToken, ldTransformed;
 	bool champIcons;
 	double champIconH;
+
+	// A LegenDoom candidate: picked (its token) and not turned yet. False without LegenDoom (no token class).
+	bool LDCandidate(Actor a)
+	{
+		if (!champChecked) CheckChampions();
+		return ldToken && a.FindInventory(ldToken) && !(ldTransformed && a.FindInventory(ldTransformed));
+	}
+	// What a bar is drawn against: the spawn health, or a candidate's most health since it was picked.
+	int FullOf(Actor a, int peak)
+	{
+		int mx = max(1, a.SpawnHealth());
+		return LDCandidate(a) ? max(mx, max(peak, a.health)) : mx;
+	}
 
 	// measuring (rsqthp_debug-free: the test harness reads these)
 	int spawnedBars;
@@ -311,13 +335,14 @@ class RSQTHP_Handler : EventHandler
 	{
 		mons.Push(a);
 		monBar.Push(null);
+		monPeak.Push(0);
 	}
 
 	override void WorldThingDamaged(WorldEvent e)
 	{
 		let a = e.Thing;
 		if (!a || a.health <= 0 || !Eligible(a)) return;
-		let b = Ensure(a);
+		let b = Ensure(a, false, a.health + max(0, e.Damage));
 		// a player's hit: the flash (HP7) and the chunk it took off (HP1)
 		Actor src = e.DamageSource;
 		if (!src && e.Inflictor) src = e.Inflictor.target;
@@ -347,6 +372,7 @@ class RSQTHP_Handler : EventHandler
 
 		// the poll: 1/16 of the list a tic
 		while (monBar.Size() < mons.Size()) monBar.Push(null);
+		while (monPeak.Size() < mons.Size()) monPeak.Push(0);
 		int n = mons.Size();
 		if (n == 0) return;
 		int k = (n + 15) / 16;
@@ -358,10 +384,16 @@ class RSQTHP_Handler : EventHandler
 			{
 				mons.Delete(pollAt);   // dead: a revive puts it back (WorldThingRevived)
 				monBar.Delete(pollAt);
+				monPeak.Delete(pollAt);
 				continue;
 			}
 			let b = monBar[pollAt];
-			if ((!b || b.who != a) && a.health != a.SpawnHealth()) monBar[pollAt] = Ensure(a);
+			if (!b || b.who != a)
+			{
+				int full = a.SpawnHealth();
+				if (ldToken && LDCandidate(a)) { monPeak[pollAt] = max(monPeak[pollAt], a.health); full = max(full, monPeak[pollAt]); }
+				if (a.health != full) monBar[pollAt] = Ensure(a, false, monPeak[pollAt]);
+			}
 			pollAt++;
 		}
 	}
@@ -432,22 +464,24 @@ class RSQTHP_Handler : EventHandler
 		}
 	}
 
-	// a bar for this thing, if it has none (aimed: the aim is on it this tic)
-	RSQTHP_Bar Ensure(Actor a, bool aimed = false)
+	// a bar for this thing, if it has none (aimed: the aim is on it this tic; peak: the most health it is known
+	// to have had, which a LegenDoom candidate's bar is drawn against)
+	RSQTHP_Bar Ensure(Actor a, bool aimed = false, int peak = 0)
 	{
 		if (!on) return null;
 		for (int i = bars.Size() - 1; i >= 0; i--)
 		{
 			let b = bars[i];
 			if (!b) { bars.Delete(i); continue; }
-			if (b.who == a) { if (aimed) b.aimTic = level.maptime; return b; }
+			if (b.who == a) { if (aimed) b.aimTic = level.maptime; b.peak = max(b.peak, peak); return b; }
 		}
 		let b = RSQTHP_Bar(Actor.Spawn("RSQTHP_Bar", a.Pos, NO_REPLACE));
 		if (!b) return null;
 		b.who = a;
 		b.h = self;
 		b.aimTic = aimed ? level.maptime : -AIM_LINGER - 1;
-		b.aimMade = aimed && a.health == a.SpawnHealth();
+		b.peak = max(peak, a.health);
+		b.aimMade = aimed && a.health >= FullOf(a, b.peak);
 		b.markPhase = spawnedBars & 3;
 		b.champ = WearsChampIcon(a);
 		b.Update();
@@ -515,6 +549,7 @@ class RSQTHP_Handler : EventHandler
 		bars.Clear();
 		mons.Clear();
 		monBar.Clear();
+		monPeak.Clear();
 		coldPending.Clear();
 	}
 }

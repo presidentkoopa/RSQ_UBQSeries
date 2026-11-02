@@ -61,6 +61,7 @@ class RSQTHP_Bar : Actor
 	int aimTic;             // Aimed Only: the last tic a hand's gun pointed at this bar's monster
 	bool aimMade;           // made only because it was aimed at (full health): goes when the aim has left
 	bool champ;             // carries Champions' icon: lifted above it
+	int peak;               // the most health seen: a LegenDoom candidate's bar is drawn against it (handler.zs FullOf)
 	// QoL round
 	const FADE = 6;          // HP9: tics to fade in
 	const CHUNK_HOLD = 17;   // HP1: tics the lost chunk stays lit (half a second)
@@ -132,7 +133,7 @@ class RSQTHP_Bar : Actor
 		// monster has no bar otherwise, and turning the option off must not leave full bars standing.
 		if (aimMade)
 		{
-			if (who.health != who.SpawnHealth()) aimMade = false;
+			if (who.health < h.FullOf(who, peak)) aimMade = false;
 			else if (!h.aimedOnly || level.maptime - aimTic > RSQTHP_Handler.AIM_LINGER) { Destroy(); return; }
 		}
 		Update();
@@ -144,14 +145,17 @@ class RSQTHP_Bar : Actor
 
 		// ---- the frame -------------------------------------------------------------------------
 		int hp = who.health;
-		int mx = max(1, who.SpawnHealth());
+		// a LegenDoom candidate (not turned yet) reads as a plain monster: drawn against its most health since it was
+		// picked, never as an overheal (handler.zs, LEGENDOOM'S CANDIDATES); everything else against its spawn health
+		if (hp > peak) peak = hp;
+		int mx = h.FullOf(who, peak);
 		bool inv = who.bInvulnerable;
 		bool al = h.ally && who.bFriendly && !who.player;     // Brutal Doom's marines switch FRIENDLY as they go
 		if (!built || hp != lastHp || mx != lastMax || inv != lastInv || h.ver != lastVer || al != lastAlly)
 		{
 			built = true; lastHp = hp; lastMax = mx; lastInv = inv; lastVer = h.ver; lastAlly = al;
 			BuildFrame(hp, mx, inv);
-			lenK = LenOf(mx);
+			lenK = LenOf(who.SpawnHealth());     // length by the monster's kind, never by a LegenDoom candidate's boost
 		}
 
 		// ---- the height ------------------------------------------------------------------------
@@ -180,7 +184,7 @@ class RSQTHP_Bar : Actor
 			camD = (cam.Pos.xy - Pos.xy).Length();
 			if (h.far > 1.0 && camD > 256) s *= 1.0 + (h.far - 1.0) * min(1.0, (camD - 256) / 768.0);
 		}
-		if (lenK <= 0) lenK = LenOf(mx);
+		if (lenK <= 0) lenK = LenOf(who.SpawnHealth());
 		Scale = (s * lenK, s);
 		bBright = h.bright || h.set == 4;
 

@@ -85,6 +85,10 @@ Load only the order above plus RSQ_HPBars.pk3. Start MAP01.
      grey chain link above that bar. Kill the miniboss: the thralls' links go. Rig frame 2026-11-01; **not yet
      headset-confirmed**. Like every bar, the mark needs the monster hurt first (an unhurt one has no bar).
 13. Reset All on Tuning and Debug. Everything goes back to the defaults above.
+13a. With LegenDoom (or LegenDoom Lite): a monster that will turn legendary has no bar until you hurt it, then
+     the same plain bar as its neighbours; when it turns (at half health) its bar fills again with the overheal
+     strip. Rig 2026-11-02, with the real LegenDoom Lite 4.2 and 3.0 pk3s and with Champions' dormant LegenDoom
+     mode (`test/ld.sh`); **not yet headset-confirmed**.
 
 With other series mods (each not yet headset-confirmed):
 
@@ -107,8 +111,10 @@ With other series mods (each not yet headset-confirmed):
 - **RSQ Melee**: held padlock for a headlocked monster (read off the monster; nothing is asked).
 - Any hit-stop from the series: frozen snowflake (read off the monster).
 - coldcite's Top HP Bars: taken over (his bars removed, his HUD options entry opens this menu).
-- Champions: a bar over a champion wearing its icon is lifted above the icon. LegenDoom Lite legendaries
-  (300 % health) show a full overheal strip and one diamond.
+- Champions: a bar over a champion wearing its icon is lifted above the icon.
+- LegenDoom (3.0 or Lite 4.2, read by name): a monster picked to become legendary looks like any other until it
+  turns -- no bar while unhurt, then a plain bar of the same length, no overheal strip. Once it turns, its 300 %
+  shows as a full overheal strip and one diamond (with Champions' dormant mode, as that champion).
 - RSQ_Miniboss (read, by name: RSQMB_Service "miniboss" / "thrall"): the crown and chain-link marks. Without it, no marks.
 
 ## Known limits / open
