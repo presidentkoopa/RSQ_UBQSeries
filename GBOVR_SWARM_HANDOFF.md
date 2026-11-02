@@ -46,8 +46,8 @@ Everything below serves this. Where a later section reads narrower (weapon trees
 **Systems in scope.** Each RSQ mod in this repo, one folder each: Melee, QuestSaber, ShieldSaw, Whip, Grenade,
 Grapple, DistanceGrab, TacticalRig, SlowMo, Gestures, Wheel, LaserSight, GunCards, Miniboss and TopHPBars. Each gets
 a line in the design doc: it has a path, it feeds another system's path, or "no progression" with the reason.
-Accessibility is never gated: its features are never behind a level. Score is separate: it scores, and its pass is
-later.
+Accessibility is never gated: its features are never behind a level. Score is separate and comes **last**: it has the
+most to read, so the owner wants it after everything else (owner, 2026-11-02). Don't touch Score in this pass.
 
 ---
 
@@ -80,7 +80,8 @@ keep stock Gun Bonsai.
 - **Gun Bonsai VR:** upgrades only, and only for the mods it detects. It unlocks and levels moves.
 - **The mods:** each move's code lives in its own mod (Melee owns fighting with the body, Distance Grab owns
   objects, and so on). Gun Bonsai VR turns those moves on and scales them, asked by name or through a service.
-- **Score:** scores only. Its pass comes after this one, and the owner gives the orders for it. Known item:
+- **Score:** scores only. Its pass is the last one, after this whole pass, because it has the most to read; the
+  owner gives the orders for it. Known item:
   rename Score's "Bullet Time" bonus.
 
 ---
