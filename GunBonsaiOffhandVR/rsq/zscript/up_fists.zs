@@ -172,7 +172,7 @@ class RSQ_Upgrade_ExplosiveFist : RSQ_ElementUpgrade
 			o.DamageMobj(hit, pawn, dmg, 'Melee', DMG_THRUSTLESS);
 			n++;
 		}
-		if (target) { target.A_StartSound("weapons/rocklx", CHAN_AUTO, CHANF_OVERLAP, 0.8); Burst(target, at, "FFF0D0", 6, 3.0, 8); }
+		if (target) { target.A_StartSound("rsqml/fx/blast", CHAN_AUTO, CHANF_OVERLAP, 0.9); Burst(target, at, "FFF0D0", 6, 3.0, 8); }
 		RSQM.Burst("RSQML_BurstE", at, r / 64.0, RSQM.ByLevel(level, 4));
 		RSQM.Touch("fist.explosive", pawn, target);
 	}
@@ -263,7 +263,7 @@ class RSQ_Upgrade_ShockFist : RSQ_ElementUpgrade
 			RSQM.Touch("arc", pawn, o);
 			if (o) RSQM.Burst("RSQML_BurstS", to, 0.6, RSQM.ByLevel(level, 3));
 		}
-		if (target) target.A_StartSound("weapons/plasmax", CHAN_AUTO, CHANF_OVERLAP, 0.7);
+		if (target) target.A_StartSound("rsqml/fx/zap", CHAN_AUTO, CHANF_OVERLAP, 0.9);
 	}
 	override void GetTooltipFields(Dictionary fields, uint level)
 	{
@@ -286,13 +286,16 @@ class RSQ_Upgrade_FireFist : RSQ_ElementUpgrade
 		let dz = RSQ_Dazed(target.FindInventory("RSQ_Dazed"));
 		if (!dz || !dz.IsBurning()) return damage;
 		Burst(target, target.pos + (0, 0, target.height * 0.5), "FF7020", 8, 3.0, 7);
+		target.A_StartSound("rsqml/fx/flare", CHAN_AUTO, CHANF_OVERLAP, 0.9);
 		RSQM.Burst("RSQML_BurstR", target.pos + (0, 0, target.height * 0.5), 0.75, RSQM.ByLevel(level, 4));
 		return damage * FLARE;
 	}
 	override void OnDamageDealt(Actor pawn, Actor shot, Actor target, int damage)
 	{
 		if (!IsGlove(shot) || !Monster(target)) return;
-		RSQ_Dazed.On(target).Ignite(PlayerPawn(pawn), Weapon(shot), Tics(level), TICK_DMG);
+		let dz = RSQ_Dazed.On(target);
+		if (!dz.IsBurning()) target.A_StartSound("rsqml/fx/ignite", CHAN_AUTO, CHANF_OVERLAP, 0.8);
+		dz.Ignite(PlayerPawn(pawn), Weapon(shot), Tics(level), TICK_DMG);
 		RSQM.Touch("burn", pawn, target);
 	}
 	override void GetTooltipFields(Dictionary fields, uint level)
@@ -331,6 +334,7 @@ class RSQ_Upgrade_ThreeHit : RSQ_Upgrade_Base
 		RSQ_Dazed.On(target).Stagger(STAGGER);
 		RSQM.Touch("combo.3", pawn, target);
 		RSQM.Burst("RSQML_Burst1", target.pos + (0, 0, target.height * 0.6), 1.0, RSQM.ByLevel(level, 3));
+		target.A_StartSound("rsqml/fx/heavy", CHAN_AUTO, CHANF_OVERLAP, 0.9);
 	}
 	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("mult", AsPercentIncrease(Mult(level))); }
 }
@@ -382,6 +386,7 @@ class RSQ_Upgrade_Finisher : RSQ_Upgrade_Base
 		double need = RSQ_Upgrade_Executioner.KillBlow(pawn, shot, target, attacktype);
 		if (need <= 0) return damage;
 		target.A_StartSound("rsq/execute", CHAN_AUTO, 0, 1.0);
+		target.A_StartSound("rsqml/fx/heavy", CHAN_AUTO, CHANF_OVERLAP, 1.0);
 		RSQM.Pulse(PlayerPawn(pawn), PULSE_MS, PULSE_DEPTH);
 		RSQM.Touch("finisher", pawn, target);
 		RSQM.Burst("RSQML_Burst5", target.pos + (0, 0, target.height * 0.6), 1.5, 0);
@@ -743,7 +748,7 @@ class RSQ_Upgrade_CriticalHits : RSQ_CritPerk
 			Vector3 at = shot && shot != pawn && !IsGlove(shot) ? shot.pos : target.pos + (0, 0, target.height * 0.6);
 			Class<Actor> spark = "RSQML_SparkSuper";   // RSQ Melee's Super Spark, by name (none without it)
 			if (spark) Actor.Spawn(spark, at, NO_REPLACE);
-			target.A_StartSound("rsq/counter", CHAN_AUTO, CHANF_OVERLAP, 1.0);
+			target.A_StartSound("rsqml/fx/heavy", CHAN_AUTO, CHANF_OVERLAP, 1.0);
 			RSQM.Burst("RSQML_Burst2", at, 1.5, 0);
 			RSQM.Touch("crit", pawn, target);
 			// Counterpunch on this glove: its stagger and multiplier stand, this one is not added on top
@@ -798,6 +803,7 @@ class RSQ_Upgrade_Headshot : RSQ_CritPerk
 		else
 		{
 			RSQM.Burst("RSQML_BurstH", target.pos + (0, 0, target.height * 0.9), 0.75, RSQM.ByLevel(level, 3));
+			target.A_StartSound("rsqml/fx/heavy", CHAN_AUTO, CHANF_OVERLAP, 0.7);
 			RSQM.Touch("headshot", pawn, target);
 		}
 		lastOn = target; lastTic = now;

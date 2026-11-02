@@ -788,6 +788,13 @@ variants 2-4 are in (`tools/sparks.py`), picked by the fist's travel. Where each
 uppercut the 79-degree one; the level-1 bursts (the lift, Three-Hit, the shatter, Parry) were gone after 9 tics, the
 full ones (Explosive Fist at its cap, a critical, the release, Reflect Guard 3) ran 16-18.
 
+**SOUND PASS (11-02, L2):** Melee `tools/fxsounds.py` pulls 21 files from RS Combat FX and RS Ballistics (its table is
+the pull record the Combat FX README asks for), mono 44.1 kHz, as `rsqml/fx/*`: blast (Explosive Fist), thud (Ground
+Pound, Slam, Meteor), heavy (criticals, Three-Hit, Finisher, Headshot), whoosh (Clear Out, the uppercut's lift), release
+(the Guard's release), clang (Parry, Reflect Guard), zap (Shock Fist), ignite and flare (Fire Fist). Kept: Frost's ice
+break (Hexen's), Backstab silent, Taunt the player's shout. **Headless:** every name resolves; the moves ran with no
+error. Not provable headless: how they sound (the gate runs with sound off).
+
 **THE FISTS TREE IS BUILT (11-02):** all nine branches, every kept node, each run in the engine headless. Not built:
 Catch and Bullet Time Fists (parked off, as designed). **Owed:** the art and sound pass (kiddolink bursts by level,
 CvS2 colourings, RS Combat FX sounds; today's looks are placeholders: particles, stock sounds, the existing sparks);

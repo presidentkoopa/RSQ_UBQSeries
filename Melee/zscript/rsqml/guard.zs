@@ -160,6 +160,7 @@ class RSQML_Guard : StaticEventHandler
 		Vector3 d = level.Vec3Diff(eye, to);
 		if (d.Length() < 0.01) d = (cos(pawn.angle), sin(pawn.angle), 0);
 		RSQML_Burst.At("RSQML_Burst4", eye + d.Unit() * 14.0, size, frames);
+		pawn.A_StartSound("rsqml/fx/clang", CHAN_AUTO, CHANF_OVERLAP, 1.0);
 	}
 
 	// a blow on its way in: what is left of it (called from RSQML_Body's ModifyDamage, the player's own side)
@@ -278,7 +279,7 @@ class RSQML_Guard : StaticEventHandler
 			o.vel.xy += (cos(a), sin(a)) * 12.0 * k;
 			o.vel.z += 4.0 * k;
 		}
-		pmo.A_StartSound("rsqml/smash", CHAN_AUTO, CHANF_OVERLAP, 1.0);
+		pmo.A_StartSound("rsqml/fx/release", CHAN_AUTO, CHANF_OVERLAP, 1.0);
 		RSQML_Spark.Guard(RSQML_Hands.EyePos(pmo) + (cos(pmo.angle), sin(pmo.angle), 0) * 12.0);
 		RSQML_Burst.At("RSQML_BurstE", pmo.pos + (0, 0, pmo.height * 0.5), 2.0, 0);
 		RSQ_Buzz.Start(pmo, 0, 1.0, 12);

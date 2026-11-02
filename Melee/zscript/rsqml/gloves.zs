@@ -893,7 +893,11 @@ class RSQML_Gloves : StaticEventHandler
 		if (by)
 		{
 			// the lift's burst: the uppercut's level plays its frames (Launcher's adds to it)
-			if (upLv > 0) RSQML_Burst.At("RSQML_Burst3", victim.pos + (0, 0, victim.height * 0.5), 0.75, RSQML_Burst.ByLevel(upLv + lnLv, 6));
+			if (upLv > 0)
+			{
+				RSQML_Burst.At("RSQML_Burst3", victim.pos + (0, 0, victim.height * 0.5), 0.75, RSQML_Burst.ByLevel(upLv + lnLv, 6));
+				victim.A_StartSound("rsqml/fx/whoosh", CHAN_AUTO, CHANF_OVERLAP, 0.8);
+			}
 			RSQML_Launched.Mark(victim, by, glove, lnLv, mtLv);
 			if (lnLv > 0) RSQML.Touch("launch", by, victim);
 		}

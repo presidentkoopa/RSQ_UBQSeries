@@ -16,3 +16,38 @@ $limit rsqml/smash 2
 // open palm's swat (DSSKEPCH, the revenant's slap).
 rsqml/guard		dstink
 rsqml/swat		dsskepch
+
+// THE FISTS TREE'S SOUNDS (2026-11-02), pulled from the owner's wells by Melee/tools/fxsounds.py (its table is the record
+// of where each came from: RS_CombatFX and RS_Ballistics), mono 44.1 kHz. RSQ Gun Bonsai VR plays them by name.
+$random rsqml/fx/blast   { rsqml/fx/blast1 rsqml/fx/blast2 rsqml/fx/blast3 }        // Explosive Fist
+$random rsqml/fx/thud    { rsqml/fx/thud1 rsqml/fx/thud2 }                         // Ground Pound, Slam, Meteor, a toss landing
+$random rsqml/fx/heavy   { rsqml/fx/heavy1 rsqml/fx/heavy2 rsqml/fx/heavy3 }        // criticals, Three-Hit, Finisher, Headshot
+$random rsqml/fx/whoosh  { rsqml/fx/whoosh1 rsqml/fx/whoosh2 rsqml/fx/whoosh3 }     // Clear Out, the uppercut's lift, a throw
+$random rsqml/fx/release { rsqml/fx/release1 rsqml/fx/release2 }                    // the Guard's release
+$random rsqml/fx/clang   { rsqml/fx/clang1 rsqml/fx/clang2 rsqml/fx/clang3 }        // Parry, Reflect Guard
+$random rsqml/fx/zap     { rsqml/fx/zap1 rsqml/fx/zap2 rsqml/fx/zap3 }              // Shock Fist
+rsqml/fx/blast1   "sounds/rsqml/fx/blast1.ogg"
+rsqml/fx/blast2   "sounds/rsqml/fx/blast2.ogg"
+rsqml/fx/blast3   "sounds/rsqml/fx/blast3.ogg"
+rsqml/fx/thud1    "sounds/rsqml/fx/thud1.ogg"
+rsqml/fx/thud2    "sounds/rsqml/fx/thud2.ogg"
+rsqml/fx/heavy1   "sounds/rsqml/fx/heavy1.ogg"
+rsqml/fx/heavy2   "sounds/rsqml/fx/heavy2.ogg"
+rsqml/fx/heavy3   "sounds/rsqml/fx/heavy3.ogg"
+rsqml/fx/whoosh1  "sounds/rsqml/fx/whoosh1.ogg"
+rsqml/fx/whoosh2  "sounds/rsqml/fx/whoosh2.ogg"
+rsqml/fx/whoosh3  "sounds/rsqml/fx/whoosh3.ogg"
+rsqml/fx/release1 "sounds/rsqml/fx/release1.ogg"
+rsqml/fx/release2 "sounds/rsqml/fx/release2.ogg"
+rsqml/fx/clang1   "sounds/rsqml/fx/clang1.ogg"
+rsqml/fx/clang2   "sounds/rsqml/fx/clang2.ogg"
+rsqml/fx/clang3   "sounds/rsqml/fx/clang3.ogg"
+rsqml/fx/zap1     "sounds/rsqml/fx/zap1.ogg"
+rsqml/fx/zap2     "sounds/rsqml/fx/zap2.ogg"
+rsqml/fx/zap3     "sounds/rsqml/fx/zap3.ogg"
+rsqml/fx/ignite   "sounds/rsqml/fx/ignite.ogg"                                        // Fire Fist: set alight
+rsqml/fx/flare    "sounds/rsqml/fx/flare.ogg"                                         // Fire Fist: a burning one punched
+$limit rsqml/fx/blast 3
+$limit rsqml/fx/zap 3
+$limit rsqml/fx/heavy 3
+$limit rsqml/fx/thud 3

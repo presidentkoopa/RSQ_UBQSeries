@@ -150,7 +150,7 @@ class RSQML_TwoHand : StaticEventHandler
 			}
 			if (!(kd && gb && !o.bBoss && gb.GetInt("knockdown", "", 2, 0, o) == 1)) RSQML.Stagger(o, POUND_STAGGER);
 		}
-		pmo.A_StartSound("rsqml/smash", CHAN_AUTO, CHANF_OVERLAP, 1.0);
+		pmo.A_StartSound("rsqml/fx/thud", CHAN_AUTO, CHANF_OVERLAP, 1.0);
 		RSQML_Burst.At("RSQML_Burst5", pmo.pos + (0, 0, 4), 1.5, RSQML_Burst.ByLevel(lv, 3));
 		pmo.A_QuakeEx(1, 1, 2, 8, 0, r, "", QF_SCALEDOWN);
 		RSQ_Buzz.Start(pmo, 0, 1.0, 10);
@@ -195,7 +195,7 @@ class RSQML_TwoHand : StaticEventHandler
 			}
 			RSQML.Stagger(o, st);
 		}
-		pmo.A_StartSound("rsqml/swat", CHAN_AUTO, CHANF_OVERLAP, 1.0);
+		pmo.A_StartSound("rsqml/fx/whoosh", CHAN_AUTO, CHANF_OVERLAP, 1.0);
 		RSQML_Burst.At("RSQML_Burst4", RSQML_Hands.EyePos(pmo) + (cos(pmo.angle), sin(pmo.angle), 0) * 40 - (0, 0, 10), 1.5, RSQML_Burst.ByLevel(lv, 3));
 		RSQ_Buzz.Start(pmo, 0, 0.8, 8);
 		RSQ_Buzz.Start(pmo, 1, 0.8, 8);

@@ -324,6 +324,14 @@ class FistsProbe : EventHandler
 			Put("DoomImp", 90); Put("DoomImp", 300, 100); Put("DoomImp", 200, -150);
 			EventHandler.SendNetworkEvent("rsqg_pair", 1, 300, 0);
 		}
+		else if (e.Name ~== "fp_sounds")
+		{
+			static const String SN[] = { "rsqml/fx/blast", "rsqml/fx/thud", "rsqml/fx/heavy", "rsqml/fx/whoosh", "rsqml/fx/release",
+				"rsqml/fx/clang", "rsqml/fx/zap", "rsqml/fx/ignite", "rsqml/fx/flare", "rsqml/fx/blast3", "rsqml/fx/zap1" };
+			String ok = "", bad = "";
+			for (int i = 0; i < SN.Size(); i++) { Sound s = SN[i]; if (int(s) > 0) ok = ok .. " " .. SN[i]; else bad = bad .. " " .. SN[i]; }
+			Console.Printf("FP sounds resolve:%s | MISSING:%s", ok, bad);
+		}
 		else if (e.Name ~== "fp_seq")
 		{
 			// arg0: the kinds as digits (kind + 1), oldest first (112 = jab, jab, hook); arg1: 1 = a Baron at arg2 health

@@ -81,7 +81,7 @@ class RSQML_Launched : Inventory
 			int dmg = int(RSQML.Num("Meteor.damage", mtLv, fall, 20 + fall));
 			Actor inf = RSQML.Blow(by, glove, mo.pos);
 			if (RSQML.Debug() > 0) { String on = o.GetClassName(); Console.Printf("RSQML meteor: %s falls on %s at %.1f -> %d each", mo.GetClassName(), on, fall, dmg); }
-			mo.A_StartSound("rsqml/smash", CHAN_AUTO, 0, 1.0);
+			mo.A_StartSound("rsqml/fx/thud", CHAN_AUTO, 0, 1.0);
 			RSQML.Touch("meteor", by, o);
 			RSQML_Burst.At("RSQML_Burst5", (o.pos.x, o.pos.y, o.pos.z + o.height), 1.0, RSQML_Burst.ByLevel(mtLv, 3));
 			o.DamageMobj(inf, by, dmg, 'Melee', DMG_THRUSTLESS);
