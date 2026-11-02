@@ -96,6 +96,12 @@ OptionValue wr_Readouts
 	2, "Lozenge badge"
 }
 
+OptionValue wr_CardLook
+{
+	1, "Colour by Gun"
+	0, "Classic"
+}
+
 OptionMenu wr_Options
 {
 	Title "RSQ WHEEL"
@@ -108,6 +114,10 @@ OptionMenu wr_Options
 	Option "Palette",                   "wr_palette",      "wr_Palettes"
 	Option "Font",                      "wr_fontset",      "wr_FontSets"
 	Option "Ring Plates",               "wr_ring_art",     "wr_RingArt"
+	// Colour by Gun: each card in its gun's colour (RSQ Gun Cards' colours), lit stone, halos, the lock-on mark,
+	// a light round the ring. Classic: the ring as it was. Colour Blind Mode (RSQ Accessibility): cards neutral,
+	// only the hovered one coloured.
+	Option "Card Look",                 "wr_look2",        "wr_CardLook"
 	Slider "Size",                      "wr_scale",        0.3, 3.0, 0.05, 2
 	StaticText " "
 	Option "Sound",                     "wr_sound",        "OnOff"
@@ -164,6 +174,8 @@ OptionMenu wr_Ring
 	Option "Gun Models on Cards",       "wr_models",       "OnOff"
 	Option "Ammo Counts and Gauges",    "wr_ammo",         "OnOff"
 	Option "Ammo Readout",              "wr_readout",      "wr_Readouts"
+	Option "Hover Halo Breathes",       "wr_breathe",      "OnOff"
+	Option "Edge Sweep",                "wr_edge_sweep",   "OnOff"
 	Option "Colour Cards by Rarity",    "wr_tier_color",   "OnOff"
 	Option "Mark Guns You Hold",        "wr_marker",       "OnOff"
 	Option "Slot Number on Cards",      "wr_slotnum",      "OnOff"

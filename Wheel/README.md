@@ -61,6 +61,7 @@ Front page (RSQ Wheel):
 | Palette | Standard | Standard, Doom, Hell, Tech. |
 | Font | Ermac's digits | Status bar numerals, small gold / grey numerals, DoomFont only, Ermac's digits. |
 | Ring Plates | Its own (Ermac style) | Or the status bar's stone. |
+| Card Look | Colour by Gun | Colour by Gun (below) or Classic (the ring as it was before 2026-11-02). |
 | Size | 1.0 | Ring size. |
 | Sound | On | The ring's sounds. |
 | Controller Rumble | 1.0 | Card ticks in the controller (QuestZDoom's own haptics switch still overrules it). |
@@ -88,7 +89,7 @@ Picking page:
 | Re-centre Window (tics, 0 = off) | 10 | The same key again this soon re-centres the ring instead of closing it. |
 
 Ring and Cards page: Gun Models on Cards (On), Ammo Counts and Gauges (On), Ammo Readout (LED segments),
-Colour Cards by Rarity (On), Mark Guns You Hold (On), Slot Number on Cards (On), Cards Face You (On),
+Hover Halo Breathes (On), Edge Sweep (On), Colour Cards by Rarity (On), Mark Guns You Hold (On), Slot Number on Cards (On), Cards Face You (On),
 Crowded Slot Opens As (Fan), Flash When You Take a Gun (On), Spark Colour (Slot colour), Hovered Card
 Lights the Room (On), Background Stars (0 = off), Idle Shimmer (0), Taken Card Spins (360).
 
@@ -98,6 +99,30 @@ the Gun You Hold (On), and readers for other mods, all On and silent when the mo
 Rarity, LegenDoom Effects Row, DoomRL Arsenal Tier, DoomRL Mod Upgrades Row, Combined Arms Meters, Final
 Doomer Set, MetaDoom Demon Keys, ModelSwapper, Lithium, Lithium RPG Stats (ACS). Also read with no row (on,
 silent when absent): DOOM Infinite, Pandemonia (with Anarchy and Insurrection), Doomablo, Guncaster, BorderDoom.
+
+### Colour by Gun (Card Look, on by default; owner's pick 2026-11-02, mock-ups A, B and C together)
+
+- **Each gun its own colour.** Every card is washed in its gun's colour, with a bright rim, slot stripe and a boxed
+  slot number in it. The colour is the one RSQ Gun Cards gives that gun (slot 2 gold, 3 red, 4 white, 5 green,
+  6 teal, 7 blue; measured from Gun Cards' own panel art by `tools/gen_glow_art.py`), and it follows Gun Cards'
+  Card Colour setting when Gun Cards is loaded (one colour for all, or By Ammo Type). A gun with a rarity tier keeps
+  its tier colour (Colour Cards by Rarity). Ammo counts, on the cards and the sheet's ammo row, are in the ammo
+  type's colour (Gun Cards' rule: bullets gold, shells red, rockets orange, cells cyan); a dry gun stays dry red.
+- **Lit stone.** The plates are lit warm from the top in the gun's colour and shade cool toward the bottom (both
+  Ring Plates choices). The data sheet's header is a filled band in the hovered gun's colour with the name light on
+  it. A soft halo in that colour sits behind the ring.
+- **Motion and light.** The hovered card's halo breathes in its colour (Hover Halo Breathes). The beam's tip wears
+  the series' lock-on mark (RSQ ShieldSaw's: white centre, ring in the gun's colour). A thin light runs round the
+  ring in each card's colour, brightest toward the hovered card, with a slow ripple. A spark runs round each card's
+  edge (Edge Sweep). Idle Shimmer, above 0, gives every other card a slow soft halo too.
+- Colours are chosen when the ring opens or the hover changes; each tic only moves brightness and position.
+- **Colour Blind Mode** (RSQ Accessibility, read when the ring opens; also in the Classic look): every card goes
+  neutral (the series' grey) and only the hovered card is coloured, in the series' highlight colour for that
+  mode (amber for protanopia / deuteranopia, red for tritanopia, yellow for high contrast); so are the beam, the
+  room light, the halo, the mark, the sheet band and the light on the ring near the hovered card. The breathing,
+  sweep and mark stay: they carry the hover without colour.
+- **Photosensitive Mode** (RSQ Accessibility): the breathing and the sweep at 40% strength, the sweep at half
+  speed, the ring light's ripple smaller and slower.
 
 Always on (no row):
 
@@ -151,6 +176,19 @@ Load the order above plus RSQ_Wheel.pk3. Start MAP01 and pick up a few guns.
 18. Palette and Font: each choice changes the ring at once.
 19. Reset All (Tuning and Debug).
 
+Card Look (2026-11-02, rig only: **not yet headset-confirmed**):
+
+30. Open the ring. Each card is in its gun's colour (pistol gold, shotgun red, chaingun white, rocket launcher
+    green, plasma teal, BFG blue) with a boxed slot number in that colour; the counts are gold, red, orange, cyan.
+31. Point at a card: it lights up in its own colour, a halo behind it breathes, a diamond mark sits where the
+    beam meets it, the light on the ring is brightest beside it, the sheet's header is a band in its colour.
+32. A small spark runs round every card's edge. Edge Sweep off: gone. Hover Halo Breathes off: the halo holds still.
+33. Card Look -> Classic, reopen the ring: exactly as before.
+34. RSQ_GunCards loaded, its Card Colour -> By Ammo Type, reopen: the cards take the ammo colours, the same as
+    the gun cards on your wrist.
+35. RSQ_Accessibility, Colour Blind Mode -> Deuteranopia, reopen: grey cards; only the one you point at is amber.
+36. RSQ_Accessibility, Photosensitive Mode on: the halo's breathing and the sweep are fainter and slower.
+
 With other mods:
 
 20. RSQ_SlowMo: opening the ring slows the world; closing it lets it go. Open it again while slow motion
@@ -176,7 +214,8 @@ With other mods:
 - **RSQ_TacticalRig** (read): HOLSTER row on the sheet.
 - **RSQ_GunBonsaiVR** (read, with Gun Bonsai 0.10.6): level, upgrades, BONSAI row, wrist card level.
 - **RSQ_GunCards**: when its watch card is on, the Wheel's Wrist Card stands down. Gun Cards follows the
-  Wheel's palette, font set and ring plates.
+  Wheel's palette, font set and ring plates. The Card Look follows Gun Cards' colours: its slot colours are measured
+  from Gun Cards' panel art, and its Card Colour setting (`rsqgc_color`, read by name) is honoured when loaded.
 - **RSQ_Gestures** asks the Wheel whether it is open, and stays quiet while it is.
 - ModelSwapper: names the model a gun wears; the trigger on the sheet swaps to its Models page.
 - **RSQ_Accessibility** (read, by name; nothing changes without it):
@@ -186,6 +225,9 @@ With other mods:
   - Seated Play: the Wrist Card's watch pose is measured from your seated eyes.
   - Slower Taps: Hold to Pick, Double Tap: Last Gun and the Re-centre Window are 1.5x longer.
   - Rumble Strength: every ring rumble x0 to x2 (0 = none).
+  - Colour Blind Mode (`rsqa_colorblind`, through `wr_CB` from `Accessibility/tools/cb_template.zs`): neutral cards,
+    the hovered one in the series' highlight colour (Card Look above).
+  - Photosensitive Mode (`rsqa_photosafe`, `wr_A11y.Photo`): the Card Look's breathing and sweep tamed.
 
 ## Known limits / open
 
@@ -206,9 +248,14 @@ With other mods:
   matched exactly, and a scripted point-and-pick took the same gun. The cost of a tic with the ring open did not move
   measurably on the rig (handler time 1.18 -> 1.24 ms, within run-to-run noise); one hit test got about 15% cheaper.
 
+- Card Look (2026-11-02) ran on the simulated rig only. Seen there in frames: the colours, plates, halo, mark,
+  ring light, sweep, sheet band, Colour Blind Mode and Classic. Not seen: how the breathing and sweep feel in a
+  headset (the rig dumps stills), and Photosensitive Mode's effect (numbers only). A custom palette (Palette row)
+  does not recolour gun colours: they are Gun Cards' colours, not palette roles.
+
 ## Credits
 
-`CREDITS.txt`, unchanged:
+`CREDITS.txt`:
 
 ```
 RSQ Wheel -- credits
@@ -231,6 +278,10 @@ Sounds (sounds/wr_*.ogg) came across with the wheel from REMA.
 The ring's own plates and digits (graphics/WRE*.png, tools/gen_ring_art.py) are drawn from Ermac's Force
 Unleashed holo HUD art in tools/card_art/, used with the owner's blessing (his doom-force-unleashed devbuild,
 models/common). The cards on the guns that use the rest of that art are now their own mod, RSQ Gun Cards.
+
+The Card Look's lock-on mark (graphics/WRLKRB.png, WRLKCB.png) is the series' own, copied from RSQ ShieldSaw
+(sprites/SSQRB0.png, SSQCB0.png). Its other art (graphics/WREPLATG, WRECHIP, WREHALO, WREDISC, WREGLOW,
+WRESPARK, WRSHADE) is drawn by tools/gen_glow_art.py; its gun colours are measured from RSQ Gun Cards' panel art.
 ```
 
 ## Appendix: for builders
@@ -240,6 +291,11 @@ models/common). The cards on the guns that use the rest of that art are now thei
 - `zscript/wheel/wr_q_look.zs` -- palettes and font sets; `WRPALS.txt`, `WRFONTS.txt` (any pk3 can add a
   palette or font set with its own WRPALS / WRFONTS lump)
 - `zscript/wheel/wr_q_watch.zs` -- the wrist card
+- `zscript/wheel/wr_q_gunlook.zs` -- the Card Look (Colour by Gun): Gun Cards' colours, and the ring's added parts
+  (an `extend class wr_Rig`; the hooks in zscript.zs are marked `RSQ GL:`)
+- `zscript/wheel/wr_cb.zs` -- the series' colour-blind palette (`Accessibility/tools/gen_cb.sh wr`)
+- `tools/gen_glow_art.py` -- the Card Look's art (graded plate, slot box, halos, ring light, spark, the copied
+  lock-on mark) and its Gun Cards colour table
 - `tools/gen_assets.py` -- writes the quad models, TEXTURES and the palette table
 - `tools/rig/` -- the rig runner and probe (test only)
 - `WHEEL_WORK_QUEUE.md` -- the owner's queued REMA wheel work (not started).

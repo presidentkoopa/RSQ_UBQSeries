@@ -65,6 +65,7 @@ Graphic "WRG094", 9, 7 { Patch "STCFN094", 1, 0 }
 Graphic "WRG095", 9, 7 { Patch "STCFN095", 1, 0 }
 Graphic "WRPLATE", 55, 21 { Patch "STBAR", -48, -1 }
 Graphic "WRSTONE", 32, 8 { Patch "STBAR", -60, -6 }
+Graphic "WRPLATG", 55, 21 { Patch "STBAR", -48, -1  Patch "WRSHADE", 0, 0 { Style Modulate } }   // RSQ GL: WRPLATE graded (tools/gen_glow_art.py)
 Graphic "WRD048", 14, 16 { Patch "STTNUM0", 0, 0 }
 Graphic "WRD049", 14, 16 { Patch "STTNUM1", 0, 0 }
 Graphic "WRD050", 14, 16 { Patch "STTNUM2", 0, 0 }

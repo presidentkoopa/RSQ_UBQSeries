@@ -21,6 +21,17 @@ Model wr_Beam
 	FrameIndex WRBQ A 0 0
 }
 
+// RSQ GL: the glows of the Colour by Gun look (drawn AddShaded, fullbright).
+Model wr_BBGlow
+{
+	Path "models/wrq"
+	Model 0 "quad.obj"
+	Skin 0 "WREHALO"
+	USEACTORPITCH
+	USEACTORROLL
+	FrameIndex WRBQ A 0 0
+}
+
 // One quad per character, 24 to a strip; each surface is skinned with a DoomFont cell.
 Model wr_BBStrip
 {

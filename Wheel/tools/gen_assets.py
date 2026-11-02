@@ -69,6 +69,7 @@ for c in range(33, 96):
 # translations the shim builds at run time colour them the way Doom colours its fonts.
 T.append('Graphic "WRPLATE", 55, 21 { Patch "STBAR", -48, -1 }')
 T.append('Graphic "WRSTONE", 32, 8 { Patch "STBAR", -60, -6 }')
+T.append('Graphic "WRPLATG", 55, 21 { Patch "STBAR", -48, -1  Patch "WRSHADE", 0, 0 { Style Modulate } }   // RSQ GL: WRPLATE graded (tools/gen_glow_art.py)')
 # The status bar's big numerals (STTNUM0..9, 14 wide with the minus and percent) for numbers.
 for dch, lump in [(str(i), 'STTNUM%d' % i) for i in range(10)] + [('-', 'STTMINUS'), ('%', 'STTPRCNT')]:
     T.append('Graphic "WRD%03d", 14, 16 { Patch "%s", 0, 0 }' % (ord(dch), lump))

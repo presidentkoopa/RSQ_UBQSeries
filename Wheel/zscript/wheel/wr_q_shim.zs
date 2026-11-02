@@ -52,6 +52,8 @@ class wr_BBRec play
 	double  alpha;
 	string  text;
 	int     expire;          // maptime it dies at, 0 = never
+	int     layer;           // RSQ GL: its step toward the viewer, when set (>= 0) instead of order % 64
+	bool    grade;           // RSQ GL: the graded plate, lit in its colour at the top and cool at the bottom (TransGrad)
 
 	// What the parts are showing; rebuilt when payload/data/text/colour change.
 	bool    lookDirty;
@@ -103,6 +105,8 @@ class wr_BBQuad : Actor
 	States { Spawn: WRBQ A -1; Stop; }
 }
 class wr_BBStrip : wr_BBQuad {}
+// RSQ GL: a glow quad (BBFL_SHADED), lit the same in a dark room as in a bright one.
+class wr_BBGlow : wr_BBQuad { Default { +BRIGHT } }
 
 //==========================================================================
 // The host: one EventHandler holding every billboard, registered AFTER wr_Rig so its
@@ -116,14 +120,18 @@ class wr_BB : EventHandler
 	{
 		BB_PANEL = 0, BB_TEXTURE = 1, BB_DIGITS = 2, BB_GLYPH = 3, BB_RING = 4, BB_BAR = 5,
 		BB_TEXT = 6, BB_SEGMENT = 7, BB_SEGLCD = 8, BB_SEAM = 9, BB_WG13 = 10,
-		BB_SDFPANEL = 11, BB_SDFHEX = 12, BB_SDFSTAR = 13, BB_NEON = 14
+		BB_SDFPANEL = 11, BB_SDFHEX = 12, BB_SDFSTAR = 13, BB_NEON = 14,
+		BB_SKIN = 15             // RSQ GL: one quad skinned with the texture named in text, coloured like a plate
 	}
 	enum EFacing { BBF_FIXED = 0, BBF_CAMERAYAW = 1, BBF_CAMERA = 2 }
 	enum EFlags
 	{
 		BBFL_PERSISTENT = 1, BBFL_ATTACHED = 2, BBFL_NODEPTH = 4, BBFL_VIEWLOCKED = 8,
 		BBFL_FOLLOWANGLE = 16, BBFL_NOHIT = 32, BBFL_VOID = 64, BBFL_HANDMAIN = 128,
-		BBFL_HANDOFF = 256, BBFL_FLIPU = 512, BBFL_STEREO = 1024, BBFL_AGED = 2048, BBFL_STEADY = 4096
+		BBFL_HANDOFF = 256, BBFL_FLIPU = 512, BBFL_STEREO = 1024, BBFL_AGED = 2048, BBFL_STEADY = 4096,
+		// RSQ GL: a glow -- drawn AddShaded in the billboard's colour (the texture's grey is its strength, so a
+		// soft edge stays soft and a colour change costs no translation)
+		BBFL_SHADED = 8192
 	}
 
 	const STRIP_CELLS = 24;
@@ -183,6 +191,24 @@ class wr_BB : EventHandler
 		let b = Get(); if (!b) return; let r = b.rec(id); if (r) r.col2 = col2;
 	}
 	static void SetBillboardProgress(int id, double t) {}
+	// RSQ GL: LAYERING THAT DOES NOT WRAP. A billboard sits LAYER_STEP x (order % 64) toward the viewer, so the
+	// 64th quad made lands behind the first. A glow or a box that must sit just behind or in front of one part of
+	// a card takes that part's step plus `steps` instead (no wrap between the two); SetBillboardLayer sets it outright.
+	static void SetBillboardLayerFrom(int id, int other, int steps)
+	{
+		let b = Get(); if (!b) return; let r = b.rec(id); let o = b.rec(other); if (!r || !o) return;
+		r.layer = max(0, (o.layer >= 0 ? o.layer : o.order % 64) + steps);
+	}
+	static void SetBillboardLayer(int id, int layer)
+	{
+		let b = Get(); if (!b) return; let r = b.rec(id); if (r) r.layer = max(0, layer);
+	}
+	// RSQ GL: the graded plate on (or off) for a plate billboard.
+	static void SetBillboardGrade(int id, bool on)
+	{
+		let b = Get(); if (!b) return; let r = b.rec(id); if (!r) return;
+		if (r.grade != on) { r.grade = on; r.lookDirty = true; }
+	}
 	static void SetBillboardFont(int id, int slot) {}
 
 	// Width a single line draws at this height: DoomFont cells are 9 x 7, one per character.
@@ -330,6 +356,7 @@ class wr_BB : EventHandler
 		r.facing = facing; r.payload = payload; r.data = data; r.col = col; r.col2 = col;
 		r.flags = flags; r.text = text; r.alpha = 1.0; r.expire = expire;
 		r.order = ++mOrder;
+		r.layer = -1;
 		r.lookDirty = true;
 		r.cDirty = true;
 		mRecs.Insert(r.id, r);
@@ -501,6 +528,35 @@ class wr_BB : EventHandler
 		if (recolour) a.Translation = TransFor(wr_Look.Col(c));   // the palette in force (wr_q_look.zs)
 	}
 
+	// RSQ GL: THE GRADED PLATE'S COLOUR. TransFor's ramp for the lit part of the plate, sliding into a cool dark
+	// blue as the plate's own grey falls toward its shaded bottom (WREPLATG / WRPLATG are graded top to bottom),
+	// so one translation gives a card lit warm from the top in its colour and cool toward the bottom (mock-up C).
+	// One per colour, kept for the session, like TransFor's.
+	const COOL_R = 16; const COOL_G = 28; const COOL_B = 60;
+	Map<int, int>         mGradAt;
+	Array<TranslationID>  mGradId;
+	TranslationID TransGrad(color c)
+	{
+		int key = (c.r << 16) | (c.g << 8) | c.b;
+		if (mGradAt.CheckKey(key)) return mGradId[mGradAt.Get(key)];
+		Translation t;
+		for (int k = 0; k < 256; k++)
+		{
+			double l = wr_PalLum.LUM[k] / 255.0;
+			double v = min(1.0, l * 2.2);
+			double g = min(255.0, l * 255.0 * 0.45);
+			double u = clamp((l - 0.10) / 0.42, 0.0, 1.0);
+			u = u * u * (3 - 2 * u);
+			double r0 = min(255.0, c.r * v + g), g0 = min(255.0, c.g * v + g), b0 = min(255.0, c.b * v + g);
+			t.colors[k] = color(255, int(COOL_R + (r0 - COOL_R) * u), int(COOL_G + (g0 - COOL_G) * u), int(COOL_B + (b0 - COOL_B) * u));
+		}
+		t.colors[0] = color(0, 0, 0, 0);
+		TranslationID id = t.AddTranslation();
+		mGradAt.Insert(key, mGradId.Size());
+		mGradId.Push(id);
+		return id;
+	}
+
 	private void setSkin(Actor a, string tex)
 	{
 		a.A_ChangeModel("", 0, "", "", 0, "", tex);
@@ -577,6 +633,7 @@ class wr_BB : EventHandler
 		let c = CVar.FindCVar("wr_ring_art");
 		bool sbar = c && c.GetInt() == 1;
 		if (ar > 4.0 || ar < 0.25) return sbar ? "WRSTONE" : "WRESTONE";
+		if (r.grade) return sbar ? "WRPLATG" : "WREPLATG";   // RSQ GL (tools/gen_glow_art.py, TEXTURES)
 		return sbar ? "WRPLATE" : "WREPLATE";
 	}
 
@@ -590,6 +647,12 @@ class wr_BB : EventHandler
 			// REMA passes TextureID.GetIndex() in data; the ring's call sites here pass the
 			// texture's NAME in text as well, since an index cannot be turned back into one.
 			let a = newPart(r, "wr_BBQuad", 0, 0, 1, 1, 0);
+			if (a && r.text != "") setSkin(a, r.text);
+			break;
+		}
+		case BB_SKIN:
+		{
+			let a = newPart(r, (r.flags & BBFL_SHADED) ? "wr_BBGlow" : "wr_BBQuad", 0, 0, 1, 1, 0);
 			if (a && r.text != "") setSkin(a, r.text);
 			break;
 		}
@@ -651,8 +714,9 @@ class wr_BB : EventHandler
 		double s = r.group ? groupScale(r.group) : 1.0;
 		bool hide = (s <= 0) || (r.alpha <= 0.001) || (hw <= 0.0005) || (hh <= 0.0005);
 		// later-made quads sit a hair nearer the viewer, so the label always wins over its plate
-		Vector3 lift = mN * (LAYER_STEP * (r.order % 64));
+		Vector3 lift = mN * (LAYER_STEP * (r.layer >= 0 ? r.layer : r.order % 64));
 		bool recolour = (r.payload != BB_TEXTURE);   // a weapon sprite keeps its own colours
+		bool shaded = (r.flags & BBFL_SHADED) != 0;  // RSQ GL: a glow
 		for (int p = 0; p < r.parts.Size(); p++)
 		{
 			let a = r.parts[p];
@@ -661,7 +725,17 @@ class wr_BB : EventHandler
 			a.bInvisible = false;
 			color pc = r.col;
 			if (r.payload == BB_BAR && p == 0) pc = color(r.col.r / 4, r.col.g / 4, r.col.b / 4);
-			Tint(a, pc, r.alpha, recolour);
+			if (shaded)
+			{
+				a.A_SetRenderStyle(r.alpha, STYLE_AddShaded);
+				a.SetShade(wr_Look.Col(pc));
+			}
+			else if (r.grade)
+			{
+				a.A_SetRenderStyle(r.alpha, STYLE_Translucent);
+				a.Translation = TransGrad(wr_Look.Col(pc));
+			}
+			else Tint(a, pc, r.alpha, recolour);
 			Vector3 at;
 			if (r.pKind[p] == 1)
 			{

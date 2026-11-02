@@ -1346,6 +1346,7 @@ class wr_Rig : EventHandler
 				wr_BB.AnimateBillboardGroup(mGroups[i], 1.0, 0.0, CLOSE_TICS);
 			}
 			if (mFanGroup != 0)    wr_BB.AnimateBillboardGroup(mFanGroup,    1.0, 0.0, CLOSE_TICS);
+			glFold();   // RSQ GL
 
 			mClosingTics = CLOSE_TICS;
 
@@ -1735,13 +1736,20 @@ class wr_Rig : EventHandler
 
 		string title = w ? ("" .. w.GetTag()) : "EMPTY";
 		color  tint  = w ? tierColorOf(w) : color(SHEET_DIM);
+		// RSQ GL: the header is a band in the gun's colour (Colour Blind Mode: the series' COULD colour) with the
+		// name light on it
+		color  titleCol = tint;
+		if (w && (mGL || mGLCB)) tint = mGLCB ? wr_GunLook.CBCould() : cardColorFor(w, glSlotOf(w));
+		titleCol = (mGL && w) ? color(0xFFF8EC) : tint;
 
 		if (mSheetTitle != 0)
 		{
 			wr_BB.SetBillboardText(mSheetTitle, title);
-			wr_BB.UpdateBillboard(mSheetTitle, 0, tint);
+			wr_BB.UpdateBillboard(mSheetTitle, 0, titleCol);
 		}
-		if (mSheetAccent != 0) wr_BB.UpdateBillboard(mSheetAccent, 0, tint);
+		if (mGLSheetShadow != 0) wr_BB.SetBillboardText(mGLSheetShadow, title);
+		// RSQ GL: the band a shade under the gun's colour, so the graded plate's light top lands on it
+		if (mSheetAccent != 0) wr_BB.UpdateBillboard(mSheetAccent, 0, (mGL && w) ? wr_GunLook.Scale(tint, 0.62) : tint);
 
 		if (w == null)
 		{
@@ -1846,7 +1854,7 @@ class wr_Rig : EventHandler
 			if (loaded < 0) loaded = 0;
 
 			sheetRow(String.Format("%s %d", atag, loaded),
-			         loaded == 0 ? color(COLOR_AMMO_DRY) : color(SHEET_HOT));
+			         loaded == 0 ? color(COLOR_AMMO_DRY) : ((mGL && !mGLCB && wr_GunLook.AmmoColour(w) >= 0) ? wr_GunLook.Rgb(wr_GunLook.AmmoColour(w)) : color(SHEET_HOT)));   // RSQ GL
 
 			// The reserve behind a magazine. Only where there IS a magazine --
 			// otherwise the loaded count already IS the reserve and printing
@@ -2854,6 +2862,20 @@ class wr_Rig : EventHandler
 			wr_BB.BBF_FIXED, wr_BB.BB_TEXT, 0,
 			SHEET_ACCENT, wr_BB.BBFL_NOHIT, 0, "");
 
+		// RSQ GL: the header band (the accent, graded, behind the name) and a shadow so the light name holds on it
+		if (mGL)
+		{
+			wr_BB.SetBillboardGrade(mSheetAccent, true);
+			mGLSheetShadow = wr_BB.AddBillboardPersistent(
+				(0, 0, 0), 3.5, 2.5, 0, 0,
+				wr_BB.BBF_FIXED, wr_BB.BB_TEXT, 0,
+				0x000000, wr_BB.BBFL_NOHIT, 0, "");
+			// layered from the sheet's plate so the three never trade places (wr_q_shim.zs SetBillboardLayerFrom)
+			wr_BB.SetBillboardLayerFrom(mSheetAccent, mSheetPlate, 1);
+			wr_BB.SetBillboardLayerFrom(mGLSheetShadow, mSheetPlate, 3);
+			wr_BB.SetBillboardLayerFrom(mSheetTitle, mSheetPlate, 5);
+		}
+
 		// THE ROW POOL, allocated once for the life of the ring.
 		//
 		// SHEET_ROW_POOL, not "as many as this weapon needs": rows are
@@ -2929,6 +2951,8 @@ class wr_Rig : EventHandler
 		if (mSheetPlate)  wr_BB.RemoveBillboard(mSheetPlate);
 		if (mSheetAccent) wr_BB.RemoveBillboard(mSheetAccent);
 		if (mSheetTitle)  wr_BB.RemoveBillboard(mSheetTitle);
+		if (mGLSheetShadow) wr_BB.RemoveBillboard(mGLSheetShadow);   // RSQ GL
+		mGLSheetShadow = 0;
 		if (mSheetHit)    wr_BB.RemoveBillboard(mSheetHit);
 		mSheetPlate = 0; mSheetAccent = 0; mSheetTitle = 0; mSheetHit = 0;
 
@@ -3036,6 +3060,20 @@ class wr_Rig : EventHandler
 		wr_BB.ResizeBillboard(mSheetTitle, sw * 0.9, titleH);
 		wr_BB.OrientBillboard(mSheetTitle, yaw, tilt, wr_BB.BBF_FIXED);
 
+		// RSQ GL: the accent becomes a filled band behind the name, the name's shadow just below and right of it
+		if (mGL)
+		{
+			wr_BB.MoveBillboard(mSheetAccent, centre + lift * 0.3 + (0, 0, top - shFull * 0.10));   // behind the name (the translucent sort goes by distance)
+			wr_BB.ResizeBillboard(mSheetAccent, sw * 0.94, titleH * 1.6);
+			if (mGLSheetShadow)
+			{
+				Vector3 sRight = (cos(yaw - 90), sin(yaw - 90), 0);
+				wr_BB.MoveBillboard(mGLSheetShadow, centre + lift * 0.65 + sRight * (titleH * 0.06) + (0, 0, top - shFull * 0.10 - titleH * 0.08));
+				wr_BB.ResizeBillboard(mGLSheetShadow, sw * 0.9, titleH);
+				wr_BB.OrientBillboard(mGLSheetShadow, yaw, tilt, wr_BB.BBF_FIXED);
+			}
+		}
+
 		// Rows march down from under the title on a fixed pitch. A pitch, not a
 		// division of the remaining space: the row height then does not change
 		// when a row is added, which is what keeps the sheet readable as the
@@ -3119,6 +3157,7 @@ class wr_Rig : EventHandler
 	// destroyPanels: see rebuildPage.
 	private void clearPanels()
 	{
+		glClear();   // RSQ GL
 		clearSheet();
 		clearStars();
 		clearCompare();
@@ -3955,7 +3994,7 @@ class wr_Rig : EventHandler
 			// colour even though its plate reads COLOR_DRY.
 			bool sdry = (cv("wr_ammo", 1.0) > 0.0 && ammoLoaded(held) == 0);
 			int shue  = int(cardColorFor(held, mCardSlots[cardIndex]));
-			int srest = sdry ? COLOR_DRY : shue;
+			int srest = sdry ? COLOR_DRY : (mGL ? int(glRest(shue)) : shue);   // RSQ GL
 			mSubColor.Push(shue);
 
 			// THE DROP SHADOW, same reason a main card has one: a dark plate
@@ -4002,6 +4041,7 @@ class wr_Rig : EventHandler
 				wr_BB.BBF_FIXED, plateKind(), plateShape(),
 				srest, wr_BB.BBFL_NOHIT, 0, "");
 			wr_BB.SetBillboardGradient(sid, sdry ? GRAD_DRY : GRAD_IDLE);
+			if (mGL) wr_BB.SetBillboardGrade(sid, true);   // RSQ GL
 			wr_BB.SetBillboardGroup(sid, mFanGroup);
 			mSubIds.Push(sid);
 			mSubBase.Push(srest);
@@ -4390,7 +4430,8 @@ class wr_Rig : EventHandler
 			// straight into the billboard, and for an SDF plate that word IS
 			// the corner radius and border width. Passing 0 on the first hover
 			// turned the card into a sharp, rimless rectangle for good.
-			wr_BB.UpdateBillboard(mPlates[card], plateShape(), lit ? COLOR_HOVER : rest);
+			wr_BB.UpdateBillboard(mPlates[card], plateShape(), lit ? int(glLit(mCardColor[card])) : rest);   // RSQ GL
+			if (mGL && card < mLabels.Size()) wr_BB.UpdateBillboard(mLabels[card], 0, lit ? 0xFFFFFF : COLOR_LABEL);
 
 			// The gradient's far end moves with the near end, or a lit card gets
 			// a gold top fading into the resting card's dark blue bottom.
@@ -4412,7 +4453,7 @@ class wr_Rig : EventHandler
 			// loaded one, in the exact place you are trying to tell clones
 			// apart.
 			int srest = (sub < mSubBase.Size()) ? mSubBase[sub] : COLOR_SUB;
-			wr_BB.UpdateBillboard(plate, plateShape(), lit ? COLOR_HOVER : srest);
+			wr_BB.UpdateBillboard(plate, plateShape(), lit ? int(glLit(sub < mSubColor.Size() ? color(mSubColor[sub]) : color(COLOR_HOVER))) : srest);   // RSQ GL
 			wr_BB.SetBillboardGradient(plate,
 				lit ? GRAD_HOVER : (srest == COLOR_DRY ? GRAD_DRY : GRAD_IDLE));
 		}
@@ -5138,6 +5179,9 @@ class wr_Rig : EventHandler
 	// -----------------------------------------------------------------
 	private static color cardColorFor(Weapon held, int slot)
 	{
+		// RSQ GL: Colour Blind Mode -- every card neutral (the series' IDLE grey); only the hovered one is coloured
+		if (wr_GunLook.CBMode()) return wr_GunLook.CBIdle();
+
 		if (held && cv("wr_tier_color", 1.0) > 0.0)
 		{
 			bool found; color tier;
@@ -5153,6 +5197,9 @@ class wr_Rig : EventHandler
 			[found, tier] = wr_CompatDoomablo.TierOf(held);
 			if (found) return tier;
 		}
+
+		// RSQ GL: Colour by Gun -- the colour RSQ Gun Cards gives this gun (wr_q_gunlook.zs)
+		if (wr_GunLook.On()) return wr_GunLook.GunColour(held, slot);
 
 		if (slot >= 1 && slot <= 9) return slotColor(slot);
 
@@ -5689,6 +5736,7 @@ class wr_Rig : EventHandler
 		// remainder. Lowering wr_subcards_max is also the way out, since a
 		// collapsed ring of slots cannot exceed nine.
 		bool canvasRing = cv("wr_canvas", 0.0) > 0.0 && mTypes.Size() <= FACE_POOL;
+		glBegin();   // RSQ GL: the look, Colour Blind Mode and Photosensitive Mode, read once for this ring
 
 		for (int i = 0; i < mTypes.Size(); ++i)
 		{
@@ -5721,7 +5769,7 @@ class wr_Rig : EventHandler
 			// not a hover state, so it is readable without pointing at anything.
 			let heldNow = Weapon(players[consoleplayer].mo.FindInventory(mTypes[i]));
 			int rest = (cv("wr_ammo", 1.0) > 0.0 && ammoLoaded(heldNow) == 0)
-			         ? COLOR_DRY : COLOR_IDLE;
+			         ? COLOR_DRY : int(glRest(mCardColor[i]));   // RSQ GL: washed in the gun's colour
 			mBaseColor.Push(rest);
 
 			// SAMPLED PLATE OR SOLVED ONE, and the caller picks.
@@ -5765,6 +5813,7 @@ class wr_Rig : EventHandler
 			// and give the card a top and a bottom -- which is most of what
 			// makes a rectangle read as a surface rather than as a hole.
 			wr_BB.SetBillboardGradient(plate, rest == COLOR_DRY ? GRAD_DRY : GRAD_IDLE);
+			if (mGL) wr_BB.SetBillboardGrade(plate, true);   // RSQ GL: lit warm from the top, cool toward the bottom
 			mPlates.Push(plate);
 
 			// The slot's colour, as a bar along the top edge.
@@ -5881,7 +5930,7 @@ class wr_Rig : EventHandler
 				aid = wr_BB.AddBillboardPersistent(
 					(0, 0, 0), 3.5, 2.5, 0, 0,
 					wr_BB.BBF_FIXED, readoutKind(), rounds,
-					rounds > 0 ? COLOR_AMMO : COLOR_AMMO_DRY,
+					glAmmo(heldNow, rounds),   // RSQ GL: the ammo type's colour
 					wr_BB.BBFL_NOHIT, 0, atext);
 			}
 			mAmmoW.Push(aw);
@@ -5951,7 +6000,7 @@ class wr_Rig : EventHandler
 				nid = wr_BB.AddBillboardPersistent(
 					(0, 0, 0), 0.8, 0.8, 0, 0,
 					wr_BB.BBF_FIXED, wr_BB.BB_DIGITS, mCardSlots[i],
-					COLOR_SLOTNUM, wr_BB.BBFL_NOHIT, 0, "");
+					mGL ? glTone(mCardColor[i]) : color(COLOR_SLOTNUM), wr_BB.BBFL_NOHIT, 0, "");   // RSQ GL
 			}
 			mSlotNums.Push(nid);
 
@@ -5983,7 +6032,7 @@ class wr_Rig : EventHandler
 				bid = wr_BB.AddBillboardPersistent(
 					(0, 0, 0), 3.5, 2.5, 0, 0,
 					wr_BB.BBF_FIXED, wr_BB.BB_TEXT, 0,
-					allDry ? color(COLOR_AMMO_DRY) : COLOR_STACK,
+					allDry ? color(COLOR_AMMO_DRY) : (mGL ? glTone(mCardColor[i]) : color(COLOR_STACK)),   // RSQ GL
 					wr_BB.BBFL_NOHIT, 0,
 					String.Format("+%d", mSlotCount[i] - 1));
 			}
@@ -6030,9 +6079,11 @@ class wr_Rig : EventHandler
 			if (nid != 0) wr_BB.SetBillboardGroup(nid, grp);
 			if (bid != 0) wr_BB.SetBillboardGroup(bid, grp);
 			if (aid != 0) wr_BB.SetBillboardGroup(aid, grp);
+			glCardParts(i, grp, nid, plate);   // RSQ GL: slot box, edge spark, idle halo
 			mCardX.Push(0); mCardY.Push(0); mCardZ.Push(0);
 			mGroups.Push(grp);
 		}
+		glRingParts();   // RSQ GL: hover halo, ring halo, lock-on mark, the light on the ring
 	}
 
 	//==========================================================================
@@ -6907,12 +6958,15 @@ class wr_Rig : EventHandler
 
 			// The fan hangs off whichever card opened it, so it is placed here
 			// where that card's position has just been worked out.
+			glCard(i, pos, viewRight, faceYaw, tilt, roll, lift, panelW, panelH, pulse, lit, cardAlpha);   // RSQ GL
+
 			if (i == mExpanded)
 			{
 				layoutExpansion(bearing, fanSpread(ringCount),
 				                pos, viewRight, faceYaw, tilt, panelW, panelH, cellW);
 			}
 		}
+		glRing(origin, viewRight, viewYaw, ringR, ringCount, handRoll, panelW, panelH, grow, eye);   // RSQ GL
 	}
 
 	// AttackPos/OffhandPos are only written while OverrideAttackPosDir is set.
@@ -8322,6 +8376,7 @@ class wr_Rig : EventHandler
 
 		decor(pmo, aimO, aimD, reach, hit != 0);
 		cardLight(pmo);
+		glMark(rayHit != 0 && rayHit == mHovered, aimO + aimD * reach, aimD);   // RSQ GL: the lock-on mark
 
 
 		// Committing is driven from InputProcess instead, so the fire press can
@@ -8609,7 +8664,7 @@ class wr_Rig : EventHandler
 	private color hoverColor() const
 	{
 		int card = cardIndexOf(mHovered);
-		if (card >= 0 && card < mCardColor.Size()) return mCardColor[card];
+		if (card >= 0 && card < mCardColor.Size()) return mGLCB ? wr_GunLook.CBCould() : color(mCardColor[card]);   // RSQ GL
 
 		// A fan card is still a card the beam is on. Without this the laser,
 		// the dust in it, the sweep and the fog all snapped back to idle blue
@@ -8617,7 +8672,7 @@ class wr_Rig : EventHandler
 		// place the room's colour is doing the most work, because a fan is
 		// where several near-identical weapons are being told apart.
 		int sub = subIndexOf(mHovered);
-		if (sub >= 0 && sub < mSubColor.Size()) return mSubColor[sub];
+		if (sub >= 0 && sub < mSubColor.Size()) return mGLCB ? wr_GunLook.CBCould() : color(mSubColor[sub]);   // RSQ GL
 
 		return COLOR_BEAM_IDLE;
 	}
@@ -9179,7 +9234,7 @@ class wr_Rig : EventHandler
 			if (card >= 0 && card < mCardX.Size() && card < mCardColor.Size())
 			{
 				here = cardPos(card);
-				lightHue = mCardColor[card];
+				lightHue = mGLCB ? wr_GunLook.CBCould() : color(mCardColor[card]);   // RSQ GL
 			}
 			else
 			{
@@ -9187,7 +9242,7 @@ class wr_Rig : EventHandler
 				if (sub >= 0 && sub < mSubX.Size() && sub < mSubColor.Size())
 				{
 					here = subPos(sub);
-					lightHue = mSubColor[sub];
+					lightHue = mGLCB ? wr_GunLook.CBCould() : color(mSubColor[sub]);   // RSQ GL
 				}
 				else resolved = false;
 			}
@@ -9348,6 +9403,7 @@ class wr_Rig : EventHandler
 		// their own visible billboard and recolour directly.
 		tintCard(mHovered, false);
 		tintCard(hit, true);
+		glHoverChanged(cardIndexOf(hit));   // RSQ GL: halo, mark and ring halo take the new card's colour
 
 		// Landing on a card, not leaving one. Firing on the way OUT as well would
 		// double every crossing, and sweeping the ring would sound like a zip.
