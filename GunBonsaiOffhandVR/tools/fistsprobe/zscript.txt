@@ -81,11 +81,23 @@ class FistsProbe : EventHandler
 		Console.Printf("FP t%d DAMAGED %s by %s: %d, health now %d, z %.0f", level.maptime, e.Thing.GetClassName(), inf, e.Damage, e.Thing.health, e.Thing.pos.z - e.Thing.floorz);
 	}
 
+	// the ShieldSaw's dash: where it started, when to read it, what stood at the end of it
+	int ssDashAt;
+	Vector3 ssDashFrom;
+	Actor ssDashImp;
+	int ssDashH0;
 	override void WorldTick()
 	{
 		let p = P(); if (!p) return;
 		int t = level.maptime;
 		FxReport();
+		if (ssDashAt > 0 && t >= ssDashAt)
+		{
+			ssDashAt = 0;
+			let g = SSQ_Guard(p.FindInventory("SSQ_Guard"));
+			Console.Printf("FP shieldsaw dash: moved %.2f m (%.0f units), the imp at the end %d -> %d, cooldown %d", (p.pos.xy - ssDashFrom.xy).Length() / SSQ_Handler.CM(100.0),
+				(p.pos.xy - ssDashFrom.xy).Length(), ssDashH0, ssDashImp ? ssDashImp.health : -1, g ? g.dashCool : -1);
+		}
 		if (t == 3) { p.GiveInventory("RSQ_Glove", 1); p.GiveInventory("RSQ_GloveOff", 1); p.player.PendingWeapon = Weapon(p.FindInventory("RSQ_Glove")); }
 		if (t == 30) { let o = Weapon(p.FindInventory("RSQ_GloveOff")); if (o && p.player.OffhandWeapon != o) p.player.PendingWeapon = o; }
 		if (t == 60) Console.Printf("FP t60 ready %s off %s", p.player.ReadyWeapon ? p.player.ReadyWeapon.GetClassName() : 'none', p.player.OffhandWeapon ? p.player.OffhandWeapon.GetClassName() : 'none');
@@ -357,7 +369,7 @@ class FistsProbe : EventHandler
 			// THE SHIELDSAW TREE. arg0 1: print its offers and levels (arg1 = stage); 2: grant arg1's node (+arg2 levels)
 			static const String SSN[] = { "Lockstep", "Ricochet", "HuntersReturn", "MeatGrinder", "WallBounces", "Cleaver",
 				"Broadening", "Bulwark", "Rebound", "BackPlate", "ShieldWall", "Reflect",
-				"BatteringRam", "WallSlam", "StrikeTrue", "Charge", "ShieldSize", "ShieldDash",
+				"BatteringRam", "WallSlam", "BashHitStop", "Charge", "ShieldSize", "ShieldDash",
 				"HungryBlades", "RevShield", "BuzzsawReturn", "Spartan" };
 			let saw = Weapon(p.FindInventory("SSQ_ShieldSaw"));
 			let st = TFLV_PerPlayerStats.GetStatsFor(p);
@@ -433,6 +445,67 @@ class FistsProbe : EventHandler
 					dist, imp.CheckSight(p), level.IsPointInLevel(imp.pos), p.angle, away.x, away.y, away.z);
 			}
 			imp.Destroy();
+		}
+		else if (e.Name ~== "fp_ssbash")
+		{
+			// SSQ_Guard.Bash on a frozen-free monster in front: arg0 monster (fp_sscut's list), arg1 how hard (units/sec)
+			static const String BM[] = { "LostSoul", "Demon", "BaronOfHell", "DoomImp", "HellKnight", "Revenant" };
+			let saw = SSQ_ShieldSaw(p.FindInventory("SSQ_ShieldSaw"));
+			let m = Put(BM[clamp(e.Args[0], 0, BM.Size() - 1)], 64);
+			if (!m || !saw) return;
+			Vector3 f = (cos(p.angle), sin(p.angle), 0);
+			int h0 = m.health;
+			SSQ_Guard.Bash(p, saw, m, p.pos + f * 30 + (0, 0, 40), f, e.Args[1]);
+			Console.Printf("FP shieldsaw bash %s at %d u/s: %d -> %d, frozen %d tics (hit-stop), thrown %.1f u/tic", m.GetClassName(), e.Args[1], h0, m.health, m.freezetics, m.vel.xy.Length());
+			m.Destroy();
+		}
+		else if (e.Name ~== "fp_ssslam")
+		{
+			// SSQ_Handler.Slam: an imp hits a wall at arg0 units a tic
+			let h = SSQ_Handler.Get();
+			let m = Put("DoomImp", 96);
+			if (!m || !h) return;
+			int h0 = m.health;
+			h.Slam(m, 0, (-cos(p.angle), -sin(p.angle)), e.Args[0]);
+			Console.Printf("FP shieldsaw wall slam at %d u/tic: %d -> %d, stunned %d tics", e.Args[0], h0, m.health, m.freezetics);
+			m.Destroy();
+		}
+		else if (e.Name ~== "fp_sscharge")
+		{
+			// SSQ_Guard.Charge with the stick at arg0 tenths of m/s forward: imps at 0.6, 1.2 (0.3 aside), 1.8 and 2.4 m
+			let saw = SSQ_ShieldSaw(p.FindInventory("SSQ_ShieldSaw"));
+			if (!saw) return;
+			double m = SSQ_Handler.CM(100.0);
+			Vector3 f = (cos(p.angle), sin(p.angle), 0);
+			Vector3 C = p.pos + f * 20 + (0, 0, 32);
+			Actor i1 = Put("DoomImp", 20 + 0.6 * m), i2 = Put("DoomImp", 20 + 1.2 * m, 0.3 * m), i3 = Put("DoomImp", 20 + 1.8 * m), i4 = Put("DoomImp", 20 + 2.4 * m);
+			p.vel.xy = f.xy * (e.Args[0] / 10.0) * m / TICRATE;
+			Array<Actor> none;
+			SSQ_Guard.Charge(p, saw, C, f, 120, none);
+			Console.Printf("FP shieldsaw charge at %.1f m/s (1 m = %.1f units): imps at 0.6 / 1.2 aside / 1.8 / 2.4 m: %d %d %d %d", e.Args[0] / 10.0, m,
+				i1 ? i1.health : -1, i2 ? i2.health : -1, i3 ? i3.health : -1, i4 ? i4.health : -1);
+			p.vel.xy = (0, 0);
+			if (i1) i1.Destroy(); if (i2) i2.Destroy(); if (i3) i3.Destroy(); if (i4) i4.Destroy();
+		}
+		else if (e.Name ~== "fp_ssdash")
+		{
+			// SSQ_Guard.StartDash at the learned level, an imp arg0 tenths of a metre ahead; read 45 tics later
+			let g = SSQ_Guard(p.FindInventory("SSQ_Guard"));
+			let saw = p.FindInventory("SSQ_ShieldSaw");
+			int lv = SSQ_Upg.Lv(saw, "ShieldDash");
+			if (!g) return;
+			ssDashImp = Put("DoomImp", e.Args[0] / 10.0 * SSQ_Handler.CM(100.0));
+			if (ssDashImp) { ssDashImp.freezetics = 60; ssDashH0 = ssDashImp.health; }
+			ssDashFrom = p.pos;
+			g.StartDash(p, (cos(p.angle), sin(p.angle), 0), lv, 120);
+			ssDashAt = level.maptime + 45;
+			Console.Printf("FP shieldsaw dash started at level %d: %.2f m to go", lv, g.dashLeft / SSQ_Handler.CM(100.0));
+		}
+		else if (e.Name ~== "fp_sssize")
+		{
+			let saw = SSQ_ShieldSaw(p.FindInventory("SSQ_ShieldSaw"));
+			Console.Printf("FP shieldsaw size: scale %.3f, plate radius %.1f units, held sprite %s", SSQ_Guard.Scale(0), SSQ_Guard.PlateRadius(false, 1.0, 0),
+				saw ? (saw.HeldSprite() == saw.GetSpriteIndex('SSH1') ? "SSH1" : saw.HeldSprite() == saw.GetSpriteIndex('SSH3') ? "SSH3" : saw.HeldSprite() == saw.GetSpriteIndex('SSH5') ? "SSH5" : "other") : "none");
 		}
 		else if (e.Name ~== "fp_sscut")
 		{

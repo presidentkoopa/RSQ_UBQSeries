@@ -444,6 +444,12 @@ class RSQ_MeleeUpgradeService : Service
 			if (stringArg == "Cleaver.mid") return RSQ_Upgrade_Cleaver.Mid(lv);
 			if (stringArg == "ShieldWall.ms") return RSQ_Upgrade_ShieldWall.Ms(lv);
 			if (stringArg == "Reflect.mult") return RSQ_Upgrade_Reflect.Mult(lv);
+			if (stringArg == "WallSlam.mult") return RSQ_Upgrade_WallSlam.Mult(lv);
+			if (stringArg == "WallSlam.stun") return RSQ_Upgrade_WallSlam.Stun(lv);
+			if (stringArg == "BashHitStop.tics") return RSQ_Upgrade_BashHitStop.Tics(lv);
+			if (stringArg == "Charge.reach") return RSQ_Upgrade_Charge.Reach(lv);
+			if (stringArg == "ShieldSize.scale") return RSQ_Upgrade_ShieldSize.Scale(lv);
+			if (stringArg == "ShieldDash.m") return RSQ_Upgrade_ShieldDash.Meters(lv);
 			// G. Gun hand, H. Taunt
 			if (stringArg == "PistolWhip.stagger") return RSQ_Upgrade_PistolWhip.Stagger(lv);
 			if (stringArg == "PistolWhip.mult") return RSQ_Upgrade_PistolWhip.Mult(lv);

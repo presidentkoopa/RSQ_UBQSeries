@@ -212,7 +212,12 @@ on the simulated rig (2026-10-31 onward).
   Broadening, then Bulwark, then Rebound; **Back Plate** (after Broadening 2: the shield on your back blocks; 2 it
   turns shots too -- replaces Block While Holstered under the patch); **Shield Wall** (after Bulwark 2: a perfect
   block slows time 0.75 / 1 / 1.25 s -- replaces Perfect-Block Slow-Mo); **Reflect** (after Rebound 2: a returned
-  bullet x1.5, x2). Bash: Battering Ram. Without the patch nothing changes.
+  bullet x1.5, x2). **Bash:** Battering Ram, then **Wall Slam** (+50% a level, stunned 10 + 10 tics a level longer)
+  and **Strike True** (a bash freezes them 4 / 5 / 6 tics -- replaces the Hit-Stop rows); **Charge** (after Wall Slam: a
+  bash while moving forward at 2 m/s or more -- stick or body -- strikes a wedge 1.5 / 2 / 2.5 m deep); **Shield Size**
+  (after Battering Ram 2: Large, then Largest; the Shield Size row is the floor); **Shield Dash** (after Charge: thrust
+  the shield forward hard with the stick pushed forward and you dash 3 / 4 / 5 m the way it faces, landing a bash; 2 s
+  between). Without the patch nothing changes.
 - **Fixed 11-02:** the hand throw now bounces off walls (the Wall Bounces row only reached the One-Handed throw), and
   a monster under the cut-in-two tier is cut in two (the cut dealt only an ordinary hit, so a Doom imp took about 40
   and lived); a bullet the shield on your back stops goes back out (its trace started inside your own body, so your

@@ -102,6 +102,7 @@ class SSQ_Handler : EventHandler
 	static clearscope double CM(double cm) { return cm * SSQ_Hand.VU() / 100.0; }
 
 	clearscope int StateOf(int pnum) { return mState[pnum]; }
+	double mSizeK[MAXPLAYERS];	// SHIELD SIZE: each player's scale from the patch (1 without it)
 	clearscope SSQ_Pose PoseOf(int pnum) { return mPose[pnum]; }
 
 	// LEFT-HANDED IS THE ENGINE'S SETTING, not ours: vr_control_scheme >= 10 (gl_openxrdevice.cpp:639).
@@ -446,7 +447,7 @@ class SSQ_Handler : EventHandler
 		Vector3 Fh = OnBack(mo.player) ? (0, 0, -1) : (0, 0, 1);
 		Vector3 Lh = (cos(a), sin(a), 0);			// forward
 		Vector3 Uh = Fh cross Lh;					// the player's left (shoulder) or right (back)
-		double k = SSQ_Guard.Scale();
+		double k = SSQ_Guard.Scale(mo.PlayerNumber());
 		return MountPos(mo)
 			+ Fh * (CM(SV('ssq_plate_f', -15.4)) * k)
 			+ Lh * (CM(SV('ssq_plate_l', -7.5)) * k)
@@ -646,6 +647,8 @@ class SSQ_Handler : EventHandler
 	// ---- the sim, once a tic, every machine ------------------------------------------
 	override void WorldTick()
 	{
+		// SHIELD SIZE (Gun Bonsai VR patch): each player's shield scale, kept here for SSQ_Guard.Scale (clearscope)
+		for (int sk = 0; sk < MAXPLAYERS; sk++) mSizeK[sk] = (playeringame[sk] && players[sk].mo) ? SSQ_Guard.SizeFor(players[sk].mo) : 1.0;
 		if (!mMigrated) { mMigrated = true; MigrateLocks(); }
 		if (!score) score = new('SSQ_ScoreMemory');
 		PruneMissiles();
@@ -703,7 +706,7 @@ class SSQ_Handler : EventHandler
 				Vector3 n = SSQ_Guard.PlateNormal(mo, ps, false);
 				Console.Printf("ssq: pose F(%.2f %.2f %.2f) L(%.2f %.2f %.2f) U(%.2f %.2f %.2f) hand(%.0f %.0f %.0f) C(%.0f %.0f %.0f) n(%.2f %.2f %.2f) R %.1f fresh %d",
 					ps.F.x, ps.F.y, ps.F.z, ps.L.x, ps.L.y, ps.L.z, ps.U.x, ps.U.y, ps.U.z,
-					ps.pos[0].x, ps.pos[0].y, ps.pos[0].z, C.x, C.y, C.z, n.x, n.y, n.z, SSQ_Guard.PlateRadius(false, SSQ_Guard.GrowFor(mo)), ps.Fresh(Level.maptime));
+					ps.pos[0].x, ps.pos[0].y, ps.pos[0].z, C.x, C.y, C.z, n.x, n.y, n.z, SSQ_Guard.PlateRadius(false, SSQ_Guard.GrowFor(mo), mo.PlayerNumber()), ps.Fresh(Level.maptime));
 			}
 			LocksTick(i);
 			Props(i);
@@ -1185,7 +1188,7 @@ class SSQ_Handler : EventHandler
 			prop.angle = BodyYaw(mo) + UV(p, 'ssq_mount_yaw', 0);
 			prop.pitch = (OnBack(p) ? -MountPropPitch() : MountPropPitch()) + UV(p, 'ssq_mount_pitch', 0);
 			prop.roll  = MountPropRoll()  + UV(p, 'ssq_mount_roll', 0);
-			prop.A_SetScale(UV(p, 'ssq_mount_scale', 1.0) * SSQ_Guard.Scale());
+			prop.A_SetScale(UV(p, 'ssq_mount_scale', 1.0) * SSQ_Guard.Scale(mo.PlayerNumber()));
 			prop.frame = 0;
 		}
 		else if (mState[i] == SS_DRAWN)
@@ -1266,7 +1269,7 @@ class SSQ_Handler : EventHandler
 				prop.angle = atan2(hF.y, hF.x);
 				prop.pitch = -asin(clamp(hF.z, -1, 1));
 				prop.roll = SSQ_Hand.RollOf(hF, hL);
-				prop.A_SetScale(SSQ_Guard.Scale());	// the world copy grows with the plate
+				prop.A_SetScale(SSQ_Guard.Scale(p.mo.PlayerNumber()));	// the world copy grows with the plate
 				prop.frame = saw ? saw.Frame() : 0;
 			}
 		}
@@ -1494,7 +1497,10 @@ class SSQ_Handler : EventHandler
 	void Slam(Actor v, int pnum, Vector2 nrm, double impact)
 	{
 		PlayerPawn mo = (pnum >= 0 && pnum < MAXPLAYERS && playeringame[pnum]) ? players[pnum].mo : null;
-		int dmg = int(clamp(impact * 2.0, 5, 40) * SV('ssq_slam_damage', 1.0));
+		// WALL SLAM (Gun Bonsai VR patch): +50% a level, and stunned 10 + 10 tics a level longer
+		int wsl = mo ? SSQ_Upg.Lv(mo.FindInventory('SSQ_ShieldSaw'), "WallSlam") : 0;
+		int dmg = int(clamp(impact * 2.0, 5, 40) * SV('ssq_slam_damage', 1.0) * (wsl > 0 ? SSQ_Upg.Num("WallSlam.mult", wsl, 1.0) : 1.0));
+		if (wsl > 0) SSQ_Upg.Touch("slam.saw", mo, v);
 		Vector3 at = v.pos + (-nrm.x * v.radius, -nrm.y * v.radius, v.height * 0.5);
 		int hp = v.health;
 		if (dmg > 0)
@@ -1516,7 +1522,7 @@ class SSQ_Handler : EventHandler
 		// a bash on an idle BD imp already does this, old pk3 and new, and the camera leaves the player). A wall
 		// must not add a second way in. Plain Pain also takes the stealth flag away.
 		v.TriggerPainChance('None', true);
-		v.freezetics = max(v.freezetics, clamp(SVI('ssq_slam_stun', 8), 0, 35));
+		v.freezetics = max(v.freezetics, clamp(SVI('ssq_slam_stun', 8), 0, 35) + (wsl > 0 ? int(SSQ_Upg.Num("WallSlam.stun", wsl, 0)) : 0));
 		if (!v.bDontThrust && v.Mass < 0x7FFFFFFF) v.vel.xy = nrm * impact * 0.45;
 	}
 
@@ -1559,7 +1565,7 @@ class SSQ_Handler : EventHandler
 		double a0 = SaberAlong(sz, 5.111, 6.091), a1 = SaberAlong(sz, 37.940, 45.216);
 		Vector3 C = SSQ_Guard.PlateCentre(mo, pose, false);
 		Vector3 n = SSQ_Guard.PlateNormal(mo, pose, false);
-		double R = SSQ_Guard.PlateRadius(false, 1.0);
+		double R = SSQ_Guard.PlateRadius(false, 1.0, mo.PlayerNumber());
 		double gap = CM(SV('ssq_brace_gap', 15.0));
 		int over = 0;
 		for (int s = 0; s <= 8; s++)

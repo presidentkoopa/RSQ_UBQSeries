@@ -1023,6 +1023,25 @@ headless: a perfect block (it needs a moving plate) and so the slow motion it se
 | Shield Size (new) | Battering Ram 2 | 1-2: Standard -> Large -> Largest (today's presets as levels; the menu preset is the floor) | ShieldSaw | the shield itself | - |
 | Shield Dash (new; owner 11-02: "some kind of movement dash forward so we can close and bash") | Charge 1 | 1-3: thrust the shield forward at 3+ m/s with the stick pushed forward: you dash 2 + lv m the way the shield faces and the thrust lands as a bash at the end; 2 s cooldown; stopped by walls and bodies. It moves the pawn as RSQ Grapple's pull does (eased, capped at the grapple's 30 units a tic), never the camera on its own | ShieldSaw | a Combat FX speed streak, the bash burst at the end | `dash.bash` |
 
+**Bash: BUILT 11-02 (L3).** Gun Bonsai VR: Battering Ram (cap 3 now), Wall Slam, Strike True (class
+`RSQ_Upgrade_BashHitStop`: the saber's Strike True has 3 / 4 / 6, this one 4 / 5 / 6, so one class could not show both),
+Charge, Shield Size, Shield Dash. ShieldSaw: the per-body bash lifted out of `HeldTick` into `SSQ_Guard.Bash` unchanged
+(Charge and the dash use it); `Charge` / `Wedge` (45-degree wedge ahead of the plate, in sight, each bashed; the
+forward speed is the stick along the plate or the patch's head speed); the dash (`StartDash` from `HeldTick` on the
+synced hand and `p.cmd.forwardmove`, `DashTick` in `SSQ_Guard.DoEffect`: velocity eased from 0.4 of what is left,
+6..30 units a tic, ends at a wall or a body (moved under a third of what it was sent), then a 1 m wedge bash and 70
+tics' cooldown); `HitStopTics` (no patch: the Hit-Stop rows; under it the node); `Slam` (Wall Slam's share and stun);
+`Scale(pnum)` (each player's Shield Size kept by `SSQ_Handler.WorldTick` in `mSizeK`, because the plate geometry is
+clearscope; the held sprite, the plate, the mount and the world copies all read it). Touches `charge`, `dash.bash`,
+`slam.saw`. **Headless 11-02** (`fp_ssbash`, `fp_ssslam`, `fp_sscharge`, `fp_ssdash`, `fp_sssize`, through the
+ShieldSaw's own functions; 1 m = 34 units): a bash on an imp at 120 u/s froze it 0, then 4 (Strike True 1), 6 (3); a
+wall slam at 8 u/tic did 16 and 8 tics, then 24 and 28 (Wall Slam 1); Charge 1 at 3 m/s struck imps at 0.6, 1.2 aside
+and 1.8 m and not 2.4, at 1 m/s none, Charge 3 all four; Shield Dash 1 moved 2.9 m and bashed the imp at the end (60 ->
+32), cooldown running; Shield Size 1.0 -> 1.25 (sprite SSH3, plate 9.9 -> 12.4 units) -> 1.5 (SSH5, 14.9). Not provable
+headless: the bash itself from a moving plate, the dash's trigger (a thrust), how the dash feels. **Owed:** the
+Combat FX speed streak and shockwave the tree names for the dash and Charge (they use the bash's own burst and the
+throw sound for now).
+
 **Grind**
 
 | Node | Parent | Levels | Owns | Art | Score |

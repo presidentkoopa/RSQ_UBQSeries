@@ -69,7 +69,7 @@ class SSQ_ShieldSaw : Weapon
 	{
 		let p = Owner ? Owner.player : null;
 		bool left = p ? SSQ_Handler.LeftHanded(p) : false;
-		double k = clamp(SSQ_Handler.SV('ssq_shield_scale', 1.0), 1.0, 1.5);
+		double k = SSQ_Guard.Scale(Owner ? Owner.PlayerNumber() : -1);	// SHIELD SIZE (Gun Bonsai VR patch) raises it
 		int step = clamp(int(floor((k - 1.0) / 0.125 + 0.5)), 0, 4);	// 1.0 1.125 1.25 1.375 1.5
 		static const Name rh[] = { 'SSH1', 'SSH2', 'SSH3', 'SSH4', 'SSH5' };
 		static const Name lh[] = { 'SSJ1', 'SSJ2', 'SSJ3', 'SSJ4', 'SSJ5' };

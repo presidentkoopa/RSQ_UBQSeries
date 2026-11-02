@@ -167,6 +167,12 @@ class SSQ_Upg play
 		let s = Svc();
 		return s ? s.GetDouble("upgrade.num", what, lv, 0) : fb;
 	}
+	// how fast the player's head is travelling, m/s (the patch measures it for Lunge); 0 without it
+	static double HeadMps(Actor who)
+	{
+		let s = Svc();
+		return s ? s.GetDouble("head.mps", "", 0, 0, who) : 0;
+	}
 	// RSQ Score's combo ledger, by name (nothing without it)
 	static void Touch(String id, Actor pawn, Actor victim)
 	{

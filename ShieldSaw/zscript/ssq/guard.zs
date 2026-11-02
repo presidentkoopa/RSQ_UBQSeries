@@ -84,9 +84,19 @@ class SSQ_Guard : Inventory
 	// further from the grip by the same factor it grows, so the offsets scale with the
 	// radius -- otherwise a bigger shield would sit in the same place and hang off the hand
 	// wrongly. 1.0 is the mesh as it is; 1.5 is half again, which is as far as it goes.
-	static clearscope double Scale()
+	// the whole shield, model and plate. SHIELD SIZE (Gun Bonsai VR patch): the Shield Size row is the floor and the node's
+	// levels raise it for that player, Large (1.25) at 1, Largest (1.5) at 2 -- read in play by SSQ_Handler (mSizeK), as
+	// this is clearscope. pnum -1: the row alone.
+	static clearscope double Scale(int pnum = -1)
 	{
-		return clamp(SSQ_Handler.SV('ssq_shield_scale', 1.0), 1.0, 1.5);
+		double k = clamp(SSQ_Handler.SV('ssq_shield_scale', 1.0), 1.0, 1.5);
+		if (pnum >= 0 && pnum < MAXPLAYERS) { let h = SSQ_Handler.Get(); if (h) k = max(k, h.mSizeK[pnum]); }
+		return k;
+	}
+	static double SizeFor(PlayerPawn mo)
+	{
+		int lv = SSQ_Upg.Lv(mo ? mo.FindInventory('SSQ_ShieldSaw') : null, "ShieldSize");
+		return lv > 0 ? SSQ_Upg.Num("ShieldSize.scale", lv, 1.0) : 1.0;
 	}
 
 	static clearscope Vector3 PlateCentre(PlayerPawn mo, SSQ_Pose pose, bool stowed)
@@ -94,7 +104,7 @@ class SSQ_Guard : Inventory
 		let p = mo.player;
 		if (stowed) return SSQ_Handler.MountPlateCentre(mo);
 		double s = Side(p);
-		double k = Scale();
+		double k = Scale(mo.PlayerNumber());
 		return pose.pos[0]
 			+ pose.F * (SSQ_Handler.CM(SSQ_Handler.SV('ssq_plate_f', -15.4)) * k)
 			+ pose.L * (SSQ_Handler.CM(SSQ_Handler.SV('ssq_plate_l', -7.5)) * s * k)
@@ -113,9 +123,9 @@ class SSQ_Guard : Inventory
 	// at level 5 (the owner, 10-27: "grow the shield over time from its default instead of
 	// doubling it in options"). Without the patch, ssq_block_double (Double Block Radius) still
 	// doubles it outright.
-	static clearscope double PlateRadius(bool blades, double grow = 1.0)
+	static clearscope double PlateRadius(bool blades, double grow = 1.0, int pnum = -1)
 	{
-		return SSQ_Handler.CM((SSQ_Handler.SV('ssq_plate_radius', 29.2) + (blades ? SSQ_Handler.SV('ssq_plate_blades', 6.0) : 0)) * Scale() * grow);
+		return SSQ_Handler.CM((SSQ_Handler.SV('ssq_plate_radius', 29.2) + (blades ? SSQ_Handler.SV('ssq_plate_blades', 6.0) : 0)) * Scale(pnum) * grow);
 	}
 
 	// the plate's width factor for this player, asked once a second (a service call by name)
@@ -186,6 +196,11 @@ class SSQ_Guard : Inventory
 
 	// which plate is up for this player right now, if any
 	Vector3 plateC, plateN; double plateR; int plateHeld;
+	// SHIELD DASH (Gun Bonsai VR patch): units still to go, the way, the bash it lands with, the cooldown
+	double dashLeft, dashSent, dashEff;
+	Vector2 dashDir;
+	Vector3 dashLast;
+	int dashTics, dashCool;
 	int lastSweepTic;
 
 	bool Plate()
@@ -204,7 +219,7 @@ class SSQ_Guard : Inventory
 			plateHeld = 1;
 			plateC = PlateCentre(mo, pose, false);
 			plateN = PlateNormal(mo, pose, false);
-			plateR = PlateRadius(saw && saw.Revved(), GrowK()) * BraceK(h, pnum);
+			plateR = PlateRadius(saw && saw.Revved(), GrowK(), pnum) * BraceK(h, pnum);
 			return true;
 		}
 		if (st == SSQ_Handler.SS_STOWED && saw && BackPlate(mo) > 0)
@@ -212,7 +227,7 @@ class SSQ_Guard : Inventory
 			plateHeld = 0;
 			plateC = PlateCentre(mo, pose, true);
 			plateN = PlateNormal(mo, pose, true);
-			plateR = PlateRadius(false, GrowK());
+			plateR = PlateRadius(false, GrowK(), pnum);
 			return true;
 		}
 		return false;
@@ -251,11 +266,19 @@ class SSQ_Guard : Inventory
 
 	// HIT-STOP (pick 13, off by default; surveys/01_MELEE.md 3.6): the monster stops dead for a beat --
 	// freezetics halts its whole Tick, movement and states. Never a player (their hands keep moving).
-	static void HitStop(Actor t)
+	static void HitStop(Actor t, PlayerPawn by = null)
 	{
 		if (!t || t.player || t.health <= 0) return;
-		if (SSQ_Handler.SVI('ssq_hitstop', 0) == 0) return;
-		t.freezetics = max(t.freezetics, clamp(SSQ_Handler.SVI('ssq_hitstop_tics', 4), 1, 10));
+		int tics = HitStopTics(by);
+		if (tics > 0) t.freezetics = max(t.freezetics, tics);
+	}
+	// STRIKE TRUE (Gun Bonsai VR patch; the class is RSQ_Upgrade_BashHitStop, the saber's own Strike True has other
+	// numbers): under the patch the node's 4 / 5 / 6 tics replace the Hit-Stop rows; without it the rows as before.
+	static int HitStopTics(PlayerPawn by)
+	{
+		if (!SSQ_Upg.On()) return SSQ_Handler.SVI('ssq_hitstop', 0) != 0 ? clamp(SSQ_Handler.SVI('ssq_hitstop_tics', 4), 1, 10) : 0;
+		int lv = SSQ_Upg.Lv(by ? by.FindInventory('SSQ_ShieldSaw') : null, "BashHitStop");
+		return lv > 0 ? int(SSQ_Upg.Num("BashHitStop.tics", lv, 0)) : 0;
 	}
 
 	// ---- the block ----------------------------------------------------------------------
@@ -342,7 +365,7 @@ class SSQ_Guard : Inventory
 		{ let sh = SSQ_Handler.Get(); if (sh && sh.score) sh.score.Blocked(source, perfect); }
 		if (perfect && source && Level.maptime != lastBlockTic)
 		{
-			HitStop(source);
+			HitStop(source, mo);
 			// PERFECT-BLOCK SLOW MOTION (pick 14, off by default; apply/05_SLOWMO.md 8): half a second through
 			// RSQ SlowMo's own pulse, at the depth RS_Score's big kills use (Score handler.zs PULSE_DEPTH 35).
 			// Sent from the blocker's own machine only, so a netgame gets one event; absent SlowMo hears nothing.
@@ -546,6 +569,7 @@ class SSQ_Guard : Inventory
 	override void DoEffect()
 	{
 		Super.DoEffect();
+		{ let dm = PlayerPawn(Owner); if (dm) DashTick(dm); }
 		if (SSQ_Handler.SVI('ssq_guard', 1) == 0 || SSQ_Handler.SVI('ssq_sweep', 1) == 0) return;
 		let mo = PlayerPawn(Owner);
 		if (!mo || !mo.player || mo.health <= 0) return;
@@ -719,6 +743,144 @@ class SSQ_Guard : Inventory
 	}
 
 	// ---- held: the grind, the bash, the debug ring (from SSQ_ShieldSaw's Ready tic) -------
+	// ONE BASH ON ONE BODY: HeldTick's, and Charge's and Shield Dash's (Gun Bonsai VR patch). `eff` is how hard, units/sec
+	// along the face; C and n the plate. What it was before 11-02, lifted out of HeldTick unchanged but for the hit-stop's
+	// player (Strike True is read off this player's ShieldSaw).
+	static void Bash(PlayerPawn mo, SSQ_ShieldSaw saw, Actor t, Vector3 C, Vector3 n, double eff)
+	{
+		if (!mo || !t) return;
+		let p = mo.player;
+		let upg = SSQ_Upg.Svc();
+		Vector3 tc = t.pos + (0, 0, t.height * 0.5);
+		int dmg = int(clamp(10 + 0.15 * eff, 10, 40) * SSQ_Handler.SV('ssq_bash_damage', 1.0));
+		if (upg) upg.GetInt("credit.push", "", 2, 0, saw);
+		SSQ_FX.Hit(t, mo, mo, dmg, 'Melee');
+		if (upg) upg.GetInt("credit.pop", "", 0, 0, saw);
+		if (!t) return;
+		// CLEAR SOME SPACE. The shove is away from the face, scaled by how hard you drove
+		// it, with a small lift under it so a body actually leaves the floor and lands
+		// somewhere else instead of sliding a few units and standing back up in your face.
+		// Anything too heavy to throw (NOBLOCKMAP, boss-flagged, DONTTHRUST) ignores it
+		// on its own, which is the behaviour we want anyway.
+		// AND SCALED BY WHAT YOU HIT. Thrust() adds velocity outright and ignores Mass, so a
+		// Cyberdemon (1000) left the plate exactly as fast as an imp (100) and the shove read
+		// as a scripted launch instead of as weight. The lift takes the same factor, so a
+		// heavy thing leans where a light one is thrown.
+		// Thrust() itself checks NO flag, so the comment above was a hope: a DONTTHRUST boss
+		// (a LegenDoom Lite legendary boss once risen) and a max-mass body (Champions' Bronze,
+		// Mass 0x7FFFFFFF, its way of saying "immovable") slid like anything else.
+		double mk = clamp(100.0 / max(t.mass, 1.0), 0.08, 2.0);
+		double knock = clamp(eff / 20.0, 4, 16) * SSQ_Handler.SV('ssq_bash_knock', 1.35) * mk;
+		if (!t.bDontThrust && t.Mass < 0x7FFFFFFF) t.Thrust(knock, atan2(n.y, n.x));
+		if (!t.bNoGravity && !t.bDontThrust && t.Mass < 0x7FFFFFFF)
+			t.vel.z += SSQ_Handler.SV('ssq_bash_lift', 2.5) * mk * (t.player ? 0.5 : 1.0);
+		SSQ_FX.At(mo, C + n * (t.radius * 0.5), "ssq/bash", CHAN_5);
+		SSQ_FX.Buzz(mo, 1.0, 8);
+		// A BASH THAT LANDS READS (owner 2026-10-31: "a little more visual feedback"). It had a sound and
+		// a buzz and nothing to see. At the body's face toward the plate: a burst scaled by how hard you
+		// drove it, thrown along the bash, and the flash and bloom the block already uses (dimmed and
+		// rate-limited by Photosensitive Mode inside Sparks / BashBurst).
+		// ON THE BODY, AT THE PLATE'S HEIGHT, never the floor (owner 2026-10-31: "is your shield bash visual that
+		// fire on the ground?" -- it was: the plate's normal tips down in a bash, and the point stepped back along
+		// it landed at the monster's feet). The face of the body toward you, across the ground only, at the height
+		// the plate struck, kept inside the body; the burst thrown level away from you.
+		if (SSQ_Handler.UVI(p, 'ssq_feedback', 1) != 0)
+		{
+			Vector2 fl = n.xy.Length() > 0.01 ? n.xy.Unit() : (cos(mo.angle), sin(mo.angle));
+			Vector3 hit = (tc.x - fl.x * t.radius * 0.8, tc.y - fl.y * t.radius * 0.8,
+				clamp(C.z, t.pos.z + t.height * 0.3, t.pos.z + t.height * 0.85));
+			SSQ_FX.BashBurst(mo, hit, (fl.x, fl.y, 0.15), eff);
+		}
+		if (SSQ_Handler.UVI(p, 'ssq_debug', 0))
+			Console.Printf("ssq: BASH %s eff %.0f u/s dmg %d knock %.1f", t.GetClassName(), eff, dmg, knock);
+		HitStop(t, mo);
+		// WALL SLAM (pick 12): watch where the shove takes it
+		let sh = SSQ_Handler.Get();
+		if (sh) sh.ArmSlam(t, mo.PlayerNumber());
+		// BATTERING RAM (Gun Bonsai): what was bashed is thrown into whatever stands behind it
+		if (upg && t.health > 0) upg.GetInt("ram", "", mo.PlayerNumber(), eff, t);
+	}
+
+	// CHARGE (Gun Bonsai VR patch, GBOVR_TREES.md 4.3 Bash): a bash while you move forward at 2 m/s or more -- the stick,
+	// or your body (the patch's own head speed, the one Lunge reads) -- strikes everything in the wedge ahead of the plate,
+	// 1 m + 0.5 m a level deep, each bashed as hard.
+	static void Charge(PlayerPawn mo, SSQ_ShieldSaw saw, Vector3 C, Vector3 n, double eff, Array<Actor> done)
+	{
+		int lv = SSQ_Upg.Lv(saw, "Charge");
+		if (lv <= 0 || !mo) return;
+		double m = SSQ_Handler.CM(100.0);
+		Vector2 f = n.xy.Length() > 0.01 ? n.xy.Unit() : (cos(mo.angle), sin(mo.angle));
+		double stick = (mo.vel.xy dot f) * TICRATE / m;
+		if (max(stick, SSQ_Upg.HeadMps(mo)) < 2.0) return;
+		Wedge(mo, saw, C, f, m * SSQ_Upg.Num("Charge.reach", lv, 1.0), eff, done, "charge");
+	}
+
+	// everything within `reach` ahead of C, inside 45 degrees of f, in sight and not already struck: bashed
+	static int Wedge(PlayerPawn mo, SSQ_ShieldSaw saw, Vector3 C, Vector2 f, double reach, double eff, Array<Actor> done, String touchId)
+	{
+		int n = 0;
+		Vector3 nf = (f.x, f.y, 0);
+		let it = BlockThingsIterator.CreateFromPos(C.x, C.y, C.z - reach, reach * 2.0, reach + 64, false);
+		while (it.Next())
+		{
+			let t = it.thing;
+			if (!t || t == mo || !t.bShootable || t.health <= 0) continue;
+			if (t.player && !deathmatch) continue;
+			if (t.bFriendly && !deathmatch) continue;
+			if (done.Find(t) < done.Size()) continue;
+			Vector2 d = t.pos.xy - C.xy;
+			double along = d dot f;
+			if (along < -t.radius || along > reach + t.radius) continue;
+			double side = abs(d.x * f.y - d.y * f.x);
+			if (side > max(along, 0.0) + t.radius) continue;
+			if (C.z < t.pos.z - 32 || C.z > t.pos.z + t.height + 32) continue;
+			if (!mo.CheckSight(t, SF_IGNOREVISIBILITY)) continue;
+			done.Push(t);
+			SSQ_Upg.Touch(touchId, mo, t);
+			Bash(mo, saw, t, C, nf, eff);
+			n++;
+		}
+		return n;
+	}
+
+	// SHIELD DASH (Gun Bonsai VR patch, the owner 11-02: "some kind of movement dash forward so we can close and bash"):
+	// 2 m + 1 m a level the way the shield faces, the pawn moved as RSQ Grapple's pull moves it (eased, capped at its 30
+	// units a tic), never the camera on its own; stopped by walls and bodies; the thrust lands as a bash at the end; 2 s
+	// before the next. Started from HeldTick (the synced hand), ticked here, so every machine moves it the same.
+	void StartDash(PlayerPawn mo, Vector3 n, int lv, double eff)
+	{
+		if (!mo) return;
+		dashDir = n.xy.Length() > 0.01 ? n.xy.Unit() : (cos(mo.angle), sin(mo.angle));
+		dashLeft = SSQ_Handler.CM(100.0) * SSQ_Upg.Num("ShieldDash.m", lv, 2.0);
+		dashEff = max(eff, SSQ_Handler.SV('ssq_bash_speed', 45.0) * 2.0);
+		dashTics = 0; dashSent = 0; dashLast = mo.pos;
+		SSQ_FX.At(mo, mo.pos + (0, 0, mo.height * 0.5), "ssq/throw", CHAN_6, 0.9, 1.2);
+	}
+	void DashTick(PlayerPawn mo)
+	{
+		if (dashCool > 0) dashCool--;
+		if (dashLeft <= 0) return;
+		if (dashTics > 0)
+		{
+			double moved = (mo.pos.xy - dashLast.xy).Length();
+			dashLeft -= moved;
+			if (moved < dashSent * 0.33) dashLeft = 0;	// a wall or a body stopped it
+		}
+		if (dashLeft <= 1 || dashTics > 35) { EndDash(mo); return; }
+		double sp = clamp(dashLeft * 0.4, 6.0, 30.0);
+		mo.vel.xy = dashDir * sp;
+		dashSent = sp; dashLast = mo.pos; dashTics++;
+	}
+	void EndDash(PlayerPawn mo)
+	{
+		dashLeft = 0; dashCool = 70;
+		mo.vel.xy *= 0.3;
+		let saw = SSQ_ShieldSaw(mo.FindInventory('SSQ_ShieldSaw'));
+		Vector3 C = mo.pos + (dashDir.x * mo.radius, dashDir.y * mo.radius, mo.height * 0.5);
+		Array<Actor> none;
+		Wedge(mo, saw, C, dashDir, SSQ_Handler.CM(100.0), dashEff, none, "dash.bash");
+	}
+
 	static void HeldTick(PlayerPawn mo, SSQ_ShieldSaw saw, SSQ_Pose pose)
 	{
 		if (!mo || !saw || !pose || !pose.Fresh(mo.Level.maptime)) return;
@@ -727,7 +889,7 @@ class SSQ_Guard : Inventory
 		let p = mo.player;
 		Vector3 C = PlateCentre(mo, pose, false);
 		Vector3 n = PlateNormal(mo, pose, false);
-		double R = PlateRadius(saw.Revved(), g.GrowK());
+		double R = PlateRadius(saw.Revved(), g.GrowK(), mo.PlayerNumber());
 
 		if (SSQ_Handler.UVI(p, 'ssq_debug_ring', 0) != 0) g.Ring(mo, C, n, R * BraceK(SSQ_Handler.Get(), mo.PlayerNumber()), pose);
 
@@ -753,6 +915,12 @@ class SSQ_Guard : Inventory
 		g.lastPushTic = mo.Level.maptime;
 		g.pushPath = g.pushPath * 0.75 + max(shove, 0.0);
 		double eff = max(shove, g.pushPath * clamp(SSQ_Handler.SV('ssq_bash_sustain', 0.6), 0.0, 1.0));
+		// SHIELD DASH (Gun Bonsai VR patch): the shield thrust forward at 3 m/s or more with the stick pushed forward
+		if (g.dashLeft <= 0 && g.dashCool <= 0 && p.cmd.forwardmove > 0 && shove >= 3.0 * SSQ_Handler.CM(100.0))
+		{
+			int dl = SSQ_Upg.Lv(saw, "ShieldDash");
+			if (dl > 0) g.StartDash(mo, n, dl, eff);
+		}
 		bool bashNow = SSQ_Handler.SVI('ssq_bash', 1) != 0 && g.bashCool == 0 && eff >= SSQ_Handler.SV('ssq_bash_speed', 45.0);
 		if (!grindNow && !bashNow) return;
 
@@ -782,6 +950,7 @@ class SSQ_Guard : Inventory
 		// shield), which leaves the VR patch nothing to tell the hands apart by -- measured, it paid the
 		// main-hand weapon. So the damage is bracketed: the patch pays whatever happens inside to the saw.
 		let upg = SSQ_Upg.Svc();
+		Array<Actor> struck;	// bashed this tic (Charge strikes the rest)
 		let it = BlockThingsIterator.Create(mo, bashR + 64);
 		while (it.Next())
 		{
@@ -843,56 +1012,14 @@ class SSQ_Guard : Inventory
 			}
 			if (bashNow && along > 0)
 			{
-				int dmg = int(clamp(10 + 0.15 * eff, 10, 40) * SSQ_Handler.SV('ssq_bash_damage', 1.0));
-				if (upg) upg.GetInt("credit.push", "", 2, 0, saw);
-				SSQ_FX.Hit(t, mo, mo, dmg, 'Melee');
-				if (upg) upg.GetInt("credit.pop", "", 0, 0, saw);
-				if (!t) continue;
-				// CLEAR SOME SPACE. The shove is away from the face, scaled by how hard you drove
-				// it, with a small lift under it so a body actually leaves the floor and lands
-				// somewhere else instead of sliding a few units and standing back up in your face.
-				// Anything too heavy to throw (NOBLOCKMAP, boss-flagged, DONTTHRUST) ignores it
-				// on its own, which is the behaviour we want anyway.
-				// AND SCALED BY WHAT YOU HIT. Thrust() adds velocity outright and ignores Mass, so a
-				// Cyberdemon (1000) left the plate exactly as fast as an imp (100) and the shove read
-				// as a scripted launch instead of as weight. The lift takes the same factor, so a
-				// heavy thing leans where a light one is thrown.
-				// Thrust() itself checks NO flag, so the comment above was a hope: a DONTTHRUST boss
-				// (a LegenDoom Lite legendary boss once risen) and a max-mass body (Champions' Bronze,
-				// Mass 0x7FFFFFFF, its way of saying "immovable") slid like anything else.
-				double mk = clamp(100.0 / max(t.mass, 1.0), 0.08, 2.0);
-				double knock = clamp(eff / 20.0, 4, 16) * SSQ_Handler.SV('ssq_bash_knock', 1.35) * mk;
-				if (!t.bDontThrust && t.Mass < 0x7FFFFFFF) t.Thrust(knock, atan2(n.y, n.x));
-				if (!t.bNoGravity && !t.bDontThrust && t.Mass < 0x7FFFFFFF)
-					t.vel.z += SSQ_Handler.SV('ssq_bash_lift', 2.5) * mk * (t.player ? 0.5 : 1.0);
-				SSQ_FX.At(mo, C + n * (t.radius * 0.5), "ssq/bash", CHAN_5);
-				SSQ_FX.Buzz(mo, 1.0, 8);
-				// A BASH THAT LANDS READS (owner 2026-10-31: "a little more visual feedback"). It had a sound and
-				// a buzz and nothing to see. At the body's face toward the plate: a burst scaled by how hard you
-				// drove it, thrown along the bash, and the flash and bloom the block already uses (dimmed and
-				// rate-limited by Photosensitive Mode inside Sparks / BashBurst).
-				// ON THE BODY, AT THE PLATE'S HEIGHT, never the floor (owner 2026-10-31: "is your shield bash visual that
-				// fire on the ground?" -- it was: the plate's normal tips down in a bash, and the point stepped back along
-				// it landed at the monster's feet). The face of the body toward you, across the ground only, at the height
-				// the plate struck, kept inside the body; the burst thrown level away from you.
-				if (SSQ_Handler.UVI(p, 'ssq_feedback', 1) != 0)
-				{
-					Vector2 fl = n.xy.Length() > 0.01 ? n.xy.Unit() : (cos(mo.angle), sin(mo.angle));
-					Vector3 hit = (tc.x - fl.x * t.radius * 0.8, tc.y - fl.y * t.radius * 0.8,
-						clamp(C.z, t.pos.z + t.height * 0.3, t.pos.z + t.height * 0.85));
-					SSQ_FX.BashBurst(mo, hit, (fl.x, fl.y, 0.15), eff);
-				}
+				Bash(mo, saw, t, C, n, eff);
+				struck.Push(t);
 				g.bashCool = 10;
-				if (SSQ_Handler.UVI(p, 'ssq_debug', 0))
-					Console.Printf("ssq: BASH %s eff %.0f u/s (shove %.0f, path %.0f) dmg %d knock %.1f", t.GetClassName(), eff, shove, g.pushPath, dmg, knock);
-				HitStop(t);
-				// WALL SLAM (pick 12): watch where the shove takes it
-				let sh = SSQ_Handler.Get();
-				if (sh) sh.ArmSlam(t, mo.PlayerNumber());
-				// BATTERING RAM (Gun Bonsai): what was bashed is thrown into whatever stands behind it
-				if (upg && t.health > 0) upg.GetInt("ram", "", mo.PlayerNumber(), eff, t);
 			}
 		}
+
+		// CHARGE (Gun Bonsai VR patch): a bash on the move strikes the wedge ahead as well
+		if (bashNow) Charge(mo, saw, C, n, eff, struck);
 
 		// AND THE LIST IS SWEPT UP HERE, so it cannot grow for a whole map: anything gone or
 		// dead, anything whose cooldown ran out long ago, and anything stamped in the future --
