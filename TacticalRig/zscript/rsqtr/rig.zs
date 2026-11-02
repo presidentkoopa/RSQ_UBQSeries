@@ -289,6 +289,16 @@ class RSQTR_Rig : EventHandler
 		return n.IndexOf("ubqs_saber") == 0;
 	}
 
+	// The series' own slot-1 tools are never an "empty hand" (owner 2026-11-02: on the full set the empty hand
+	// was the Whip, RSQWP_WhipWeapon, the highest SelectionOrder in slot 1). Whip, ShieldSaw, Grapple, Grenade.
+	static bool IsSeriesTool(Weapon w)
+	{
+		String n = w.GetClassName();
+		n = n.MakeLower();
+		return n.IndexOf("rsqwp_") == 0 || n.IndexOf("ssq_") == 0 || n.IndexOf("rsqgr_") == 0
+			|| n.IndexOf("rsqgn_") == 0 || n.IndexOf("rsq_grenade") == 0;
+	}
+
 	// The weapon an empty hand holds: a slot-1 weapon you own, the fist rather than
 	// the chainsaw (the higher SelectionOrder: Doom picks the chainsaw first).
 	// rsqtr_empty names one explicitly.
@@ -308,7 +318,7 @@ class RSQTR_Rig : EventHandler
 			let w = Weapon(it);
 			// CHEATNOTWEAPON is allowed here: Brutal Doom's own fists (Melee_Attacks, slot 1,
 			// SelectionOrder 3700) are one; otherwise the axe or the DSweap won.
-			if (!w || w.bOffhandWeapon || IsSaber(w)) continue;   // the saber is not an empty hand
+			if (!w || w.bOffhandWeapon || IsSaber(w) || IsSeriesTool(w)) continue;   // the saber is not an empty hand
 			bool found; int slot, idx;
 			[found, slot, idx] = pmo.player.weapons.LocateWeapon(w.GetClass());
 			if (!found || slot != 1) continue;
