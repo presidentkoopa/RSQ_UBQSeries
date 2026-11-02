@@ -187,9 +187,17 @@ headset" in docs/HANDOFF_polish.md.
   holds the Force hand and does not grab; with Brutal Doom Quest the off hand holds its hands and grabs.
 - **RSQ Score:** the training remote's points, and saber bonuses (cuts, throws, Force, parries, riposte).
 - **RSQ HP Bars:** a monster in a Force grip shows the "gripped" marker; hit-stop shows the frozen marker.
-- **Gun Bonsai with the RSQ Gun Bonsai VR patch:** the saber levels up; melee upgrades (Momentum, Riposte
-  Edge, Piercing Return, Saber Throw, Force Push / Pull / Choke / Jump levels, Chain Choke). Without the patch
-  nothing changes.
+- **Gun Bonsai with the RSQ Gun Bonsai VR patch:** the saber levels up through its Saber tree (GBOVR_TREES.md 4.2,
+  built from 2026-11-02; names a film-goer knows). **Without the patch nothing changes.** With it, some of the
+  saber's own options become levels: **Battle Meditation** (lock-on marks: 1, one more a level, 5 at level 4,
+  instead of the Lock-On Targets row), **Strike True** (hit-stop 3, 4, 6 tics instead of the Hit-Stop row),
+  **Kyber Attunement** (the blade's five lengths as levels; the Blade Length row is the shortest it gets), **Saber
+  Barrage** (the thrown saber cuts on its way home only once learned, for 65% of a cut and up), **Returning Blade**
+  (it flies its marks again before it comes home), **Elegant Weapon** (Momentum), **Aggressive Negotiations**
+  (Riposte Edge), **High Ground** (a cut on a monster below 25% and up cuts it apart; no bosses), **Point Taken** (a
+  stab with your head moving forward at 0.8 m/s does x2.25 and up on top of the stab), **Run Through** (a stabbed
+  monster is held frozen on the blade 0.75 s and up; draw the blade back out of one under 15% of its health and it
+  dies). Saber Throw, Piercing Return and the Force as before; Chain Choke is no longer offered (the owner struck it).
 - **RSQ Accessibility:** one-handed Force buttons, Hold to Toggle for the Force, Gesture Ease, photosensitive
   flashes, colour-blind outlines. Inert without it. Also (2026-11-01, not yet headset-confirmed):
   - Steady Hands: pointing reads the smoothed hand: painting locks (fire held) and choosing what the Force

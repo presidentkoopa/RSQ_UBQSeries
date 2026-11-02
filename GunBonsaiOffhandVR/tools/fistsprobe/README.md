@@ -14,7 +14,7 @@ $P='E:\DOOMWork\RSQ_UBQSeries\pk3'; $GB='<Gun Bonsai 0.10.6 pk3>'
 & tools\qzd_hidden_run.ps1 -Files "$P\RSQ_Melee.pk3","$P\RSQ_Gestures.pk3",$GB,"$P\RSQ_GunBonsaiVR.pk3",'<fistsprobe.pk3>' -Map MAP01 -WaitTics 105 -Commands @('rsqml_debug 1','netevent fp_hp','netevent fp_tree 0') -Tag fists
 ```
 
-Every line it prints starts `FP `; Melee's own lines with `rsqml_debug 1` start `RSQML`.
+It names the saber's classes (UBQS_SaberBase, UBQS_Thrown), so load RSQ_Saber.pk3 too. Saber events: `fp_sab` (0 give, 1 offers and levels, 2 grant), `fp_sabthrow` (two marks and the saber's own Throw), `fp_sabhit` (a hit paid to the saber). Every line it prints starts `FP `; Melee's own lines with `rsqml_debug 1` start `RSQML`.
 
 | Event | Args | What it does |
 |---|---|---|

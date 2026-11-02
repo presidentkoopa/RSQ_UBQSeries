@@ -832,6 +832,15 @@ Names: the display name is the Star Wars one; a node that exists keeps its class
 | Returning Blade (new) | Saber Barrage 1 | 1-2: the saber makes a second pass over its marks before coming home (2: a third) | Saber | - | `boomerang` |
 | Saber Throw (exists: `RSQ_Upgrade_SaberThrow`) | Battle Meditation 1 | 1-3: once its route is done the saber finds lv more enemies | Saber | - | `throw.extra` |
 
+**Focus: BUILT 11-02 (L3).** Gun Bonsai VR: Battle Meditation, Saber Barrage, Returning Blade (`up_saber.zs`); Saber
+Throw after Battle Meditation 1. Saber (`QuestSaber/zscript.txt`): `Paint` takes Battle Meditation's count under the
+patch; the thrown saber (`UBQS_Thrown`) carries `barrage` (-1 no patch: it cuts on the way home as always; 0 it does
+not; 1+ its share) and `passes` (Returning Blade: `RouteAlive`, round again). **Barrage was already the saber's own
+behaviour** (SpinCut runs in every lit phase, home included); under the patch it becomes the unlock, the way the
+Uppercut did. **Headless 11-02** (the probe marks two imps and calls the saber's own `Throw`): without Barrage, only
+route hits (phase 1, 45 each); with Barrage 1 and Returning Blade 1, the route twice and a cut on the way home for 19
+(30 x 0.65). Not provable headless: painting the marks (it needs a pointing hand).
+
 **Blade** (the forms)
 
 | Node | Parent | Levels | Owns | Art | Score |
@@ -842,12 +851,24 @@ Names: the display name is the Star Wars one; a node that exists keeps its class
 | Kyber Attunement (new: reach) | Elegant Weapon 2 | 1-4: the blade grows 54 -> 65 -> 76 -> 88 -> 99 cm (today's five presets as levels; the menu length is the floor) | Saber | the blade itself | - |
 | High Ground (new: sever) | Aggressive Negotiations 2 | 1-3: a cut on a monster at 20% + 5% lv of its health or less gibs it (bosses: no) | Saber | BD's gib or Doom's XDeath | `sever` |
 
+**Blade: BUILT 11-02 (L3).** Elegant Weapon and Aggressive Negotiations are Momentum and Riposte Edge renamed (classes
+kept), with their parents and caps; Strike True (the Hit-Stop row as levels under the patch), Kyber Attunement (the
+five lengths as levels, the row the floor: `ResolveSizeIdx`), High Ground (Gun Bonsai VR: past the gib health; note
+`GetGibHealth` is negative). **Headless 11-02:** offers follow the parents; Kyber 4 gave size index 4 (99 cm); High
+Ground cut a demon at 20 of 150 apart (-236), and one at 120 took an ordinary hit. Not provable headless: Strike True's
+freeze (it needs a swing).
+
 **Stab**
 
 | Node | Parent | Levels | Owns | Art | Score |
 |---|---|---|---|---|---|
 | Point Taken (new: lunge stab) | root | 1-3: a stab with the head moving forward at 0.8+ m/s does x2 + 0.25 lv (on top of the stab's x1.5) | Saber (reads head speed as Lunge does) | Combat FX pierce flash | `stab.lunge` |
 | Run Through (new: impale) | Point Taken 1 | 1-3: a stabbed monster is held on the blade 0.5 + 0.25 lv s (it cannot act; pulling the blade out finishes a monster under 15%) | Saber | the monster on the blade | `impale` |
+
+**Stab: BUILT 11-02 (L3).** Point Taken reads the head's speed from Gun Bonsai VR's new "head.mps" (the one Lunge
+reads); Run Through holds the stabbed monster frozen on the blade (`RunThroughTick`), released when the hold runs out,
+the tip leaves it, or the hand draws back along the blade at 2 units a tic or more, which finishes one under 15% of its
+spawn health. **Not provable headless** (both need a stab: a hand driven along the blade); they compile and load.
 
 **Deflect**
 

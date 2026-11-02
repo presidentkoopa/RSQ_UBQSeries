@@ -122,6 +122,10 @@ Always on (no row):
     level 1, +25% a level; up to level 4), **Wall Splat** (a monster your punch knocks into a wall at 3 map units a
     tic or more takes 10 at level 1, +5 a level, up to double for a hard slam; it bounces off and reels; up to
     level 5)
+  - **Sabers: the Saber tree** (GBOVR_TREES.md 4.2, from 2026-11-02): Focus (Battle Meditation -> Saber Throw, Saber
+    Barrage -> Returning Blade), Blade (Elegant Weapon = Momentum -> Aggressive Negotiations = Riposte Edge -> High
+    Ground; Strike True; Kyber Attunement), Stab (Point Taken -> Run Through); Deflect, Dual and the Force follow.
+    Chain Choke is no longer offered. Before the tree:
   - Sabers: Momentum, Riposte Edge, Piercing Return, Saber Throw, Chain Choke, Dual Harmony, Deflector;
     the Force: Force Push, Force Pull, Force Choke, Force Jump
   - ShieldSaw: Broadening, Lockstep, Ricochet, Meat Grinder, Hunter's Return, Bulwark, Rebound, Battering Ram

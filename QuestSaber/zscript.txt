@@ -410,6 +410,12 @@ class UBQS_SaberBase : Weapon abstract
 	// this saber's level in each (UBQS_Upg); without the patch every one reads 0 and nothing below
 	// changes anything. Read once a second, not per cut.
 	int  upgTic, uMomentum, uRiposte, uPierce, uThrow;
+	// THE SABER TREE (GBOVR_TREES.md 4.2, 2026-11-02). gbOn: the patch is loaded, so the saber's own options that became
+	// upgrades (lock-on targets, hit-stop, blade length) read the levels instead; without it they are what they were.
+	bool gbOn;
+	int  uBM, uBarrage, uReturning, uStrike, uKyber, uPoint, uRunThrough;
+	Actor impaled;            // RUN THROUGH: what is held on the blade, and until when
+	int   impaleUntil;
 	int  momTics, momQuiet;   // Momentum: tics the blade has kept moving, and tics it has been still
 	int  primedUntil;         // Riposte Edge: a block primes the next cut until this tic
 	int  lastFastTic;         // the last tic the blade was swung hard (a swung blade blocks surely)
@@ -494,6 +500,8 @@ class UBQS_SaberBase : Weapon abstract
 			double dd = abs(UBQS_Data.Size(i) - s);
 			if (dd < d) { d = dd; best = i; }
 		}
+		// KYBER ATTUNEMENT (Gun Bonsai VR): the five lengths as levels, the row's length the floor
+		if (uKyber > 0) best = max(best, min(uKyber, 4));
 		return best;
 	}
 	int ColIdx() { return clamp(UInt(bOffhandWeapon ? "ubqs_color_off" : "ubqs_color", 0), 0, UBQS_Data.NCOL - 1); }
@@ -773,7 +781,9 @@ class UBQS_SaberBase : Weapon abstract
 	int lastPaintTic;
 	void Paint()
 	{
-		int most = clamp(UInt("ubqs_locks", 5), 1, 8);
+		// BATTLE MEDITATION (Gun Bonsai VR): one mark, one more a level; the Lock-On Targets row without the patch
+		UpgRefresh();
+		int most = gbOn ? clamp(int(UBQS_Upg.Num("BattleMeditation.locks", uBM, 1 + uBM)), 1, 8) : clamp(UInt("ubqs_locks", 5), 1, 8);
 		// A DEAD LOCK IS NOT A LOCK. Its mark destroys itself and NextLeg skips it, but it still counted
 		// against ubqs_locks -- so killing what you painted mid-hold stopped you painting anything else.
 		for (int k = locks.Size() - 1; k >= 0; k--)
@@ -1100,6 +1110,7 @@ class UBQS_SaberBase : Weapon abstract
 		// EVERY per-tic cvar read that something hot needs is done HERE, once. UBQS_Data.F/I do an uncached
 		// CVar.GetCVar by string name, and SizeIdx() is reached from six or more places a tic.
 		cSize1 = ResolveSizeIdx() + 1;
+		RunThroughTick();
 		h3 = h2; h2 = h1; h1 = h0;
 		Vector3 bn = BodyAt(owner);
 		bodyStep = bn - bodyNow;
@@ -1867,6 +1878,14 @@ class UBQS_SaberBase : Weapon abstract
 		uRiposte  = UBQS_Upg.Lv(self, "RiposteEdge");
 		uPierce   = UBQS_Upg.Lv(self, "PiercingReturn");
 		uThrow    = UBQS_Upg.Lv(self, "SaberThrow");
+		gbOn      = UBQS_Upg.Svc() != null;
+		uBM       = UBQS_Upg.Lv(self, "BattleMeditation");
+		uBarrage  = UBQS_Upg.Lv(self, "SaberBarrage");
+		uReturning = UBQS_Upg.Lv(self, "ReturningBlade");
+		uStrike   = UBQS_Upg.Lv(self, "StrikeTrue");
+		uKyber    = UBQS_Upg.Lv(self, "KyberAttunement");
+		uPoint    = UBQS_Upg.Lv(self, "PointTaken");
+		uRunThrough = UBQS_Upg.Lv(self, "RunThrough");
 	}
 	// MOMENTUM: the blade moving at half the cut speed or more builds it; six still tics end it
 	private void MomentumTick(double eff, double cut)
@@ -1986,6 +2005,8 @@ class UBQS_SaberBase : Weapon abstract
 		bool   ripe = uRiposte > 0 && level.maptime <= primedUntil;
 		double um = UpgCutMult(ripe);
 		int    hstop = clamp(UInt("ubqs_hitstop", 0), 0, 10);   // pick 2, off by default (01_MELEE §3.6)
+		// STRIKE TRUE (Gun Bonsai VR): the Hit-Stop row's three settings as levels under the patch
+		if (gbOn) hstop = int(UBQS_Upg.Num("StrikeTrue.tics", uStrike, 0));
 		// THE BLADE WALKED THROUGH THE TIC, not tested where it happens to be now. A 90-unit blade crosses a
 		// 20-radius imp in well under a tic on a hard swing, so both samples could sit either side of the body
 		// and the swing passed clean through it -- the harder you swung, the more it missed. Deflect() has
@@ -2013,6 +2034,10 @@ class UBQS_SaberBase : Weapon abstract
 		double hlen = hstep.Length();
 		bool stab = lastOk && theta < STAB_CONE && hlen > 0.5 && (hstep dot dir) >= cos(STAB_CONE) * hlen;
 		Actor stabWho = null;
+		// POINT TAKEN (Gun Bonsai VR): a stab with the head driving forward hits harder
+		double ptMult = 1.0;
+		if (stab && uPoint > 0 && UBQS_Upg.HeadMps(owner) >= UBQS_Upg.Num("PointTaken.speed", uPoint, 0.8))
+			ptMult = UBQS_Upg.Num("PointTaken.mult", uPoint, 2.25);
 		let it = BlockThingsIterator.CreateFromPos(mid.x, mid.y, mid.z - reach, reach * 2.0, reach, false);
 		if (stab)
 		{
@@ -2052,7 +2077,8 @@ class UBQS_SaberBase : Weapon abstract
 			// only the cut never got it. Last of the per-victim tests, so it costs a sight check only for
 			// something the blade geometrically touched.
 			if (!stab && los && !owner.CheckSight(mo, SF_IGNOREVISIBILITY)) continue;   // (a stab's one was checked)
-			int dmg = int(dmg0 * mult * um * (stab ? STAB_MULT : 1.0));			// THE EFFECTS GO INSIDE THE BODY. `at` is the closest point on the blade, and the gate above
+			int dmg = int(dmg0 * mult * um * (stab ? STAB_MULT * ptMult : 1.0));
+			if (ptMult > 1.0) UBQS_Upg.Touch("stab.lunge", owner, mo);			// THE EFFECTS GO INSIDE THE BODY. `at` is the closest point on the blade, and the gate above
 			// allows a full radius plus ubqs_cut_pad of slack -- so on every cut that only just qualified,
 			// the flash, the spark burst and the smoke appeared in mid-air BESIDE the monster. Clamped
 			// laterally into the body and into its height, the way BD22's own cut does it.
@@ -2064,6 +2090,13 @@ class UBQS_SaberBase : Weapon abstract
 			at.z = clamp(at.z, mo.pos.z + 1.0, mo.pos.z + mo.height - 1.0);
 			CutFx(at, dir, mo, dmg);
 			mo.DamageMobj(self, owner, dmg, 'Saber', DMG_THRUSTLESS);
+			// RUN THROUGH (Gun Bonsai VR): a stabbed monster stays on the blade (RunThroughTick)
+			if (stab && uRunThrough > 0 && mo && !mo.bDestroyed && mo.health > 0 && !mo.player && !mo.bBoss)
+			{
+				impaled = mo;
+				impaleUntil = level.maptime + int(UBQS_Upg.Num("RunThrough.tics", uRunThrough, 26));
+				UBQS_Upg.Touch("impale", owner, mo);
+			}
 			// HIT-STOP (pick 2, ubqs_hitstop, off by default): what was cut freezes for a beat. freezetics stops
 			// its Tick outright, moves and states both (surveys/01_MELEE §3.6: 3 a tap, 4 the default, 6 heavy).
 			// Never on a player: their hands run outside the playsim.
@@ -2130,6 +2163,33 @@ class UBQS_SaberBase : Weapon abstract
 			UBQS_FX.Fx(p, 'UXPD', 18, 2, (0.11 + 0.045 * s) * bs * k, 0.55, -1, 1.035, false,
 				(frandom[UBQSFx](-0.22, 0.22), frandom[UBQSFx](-0.22, 0.22), frandom[UBQSFx](0.30, 0.75)),
 				true);
+		}
+	}
+
+	// RUN THROUGH (Gun Bonsai VR, GBOVR_TREES.md 4.2 Stab): what the stab ran through is held on the blade -- frozen, its
+	// state and its moves -- until the hold runs out or the blade comes out of it (the hand drawn back along the blade, or
+	// the tip leaving its body). Drawn out of one with little health left (RunThrough.finish of its spawn health), it dies.
+	const PULL_OUT = 2.0;     // map units a tic (about 2 m/s), the hand back along the blade
+	void RunThroughTick()
+	{
+		if (!impaled) return;
+		let mo = impaled;
+		if (mo.bDestroyed || mo.health <= 0 || !owner) { impaled = null; return; }
+		Vector3 dir = BladeDir();
+		Vector3 tip = BladeBase() + dir * BladeLen();
+		Vector3 gap = level.Vec3Diff((mo.pos.xy, mo.pos.z + mo.height * 0.5), tip);
+		bool inside = gap.xy.Length() < mo.radius + 16.0 && abs(gap.z) < mo.height * 0.5 + 16.0;
+		bool pulled = (HandVel() dot dir) < -PULL_OUT;
+		if (level.maptime < impaleUntil && inside && !pulled)
+		{
+			mo.freezetics = max(mo.freezetics, 2);
+			return;
+		}
+		impaled = null;
+		if (pulled && mo.health <= mo.GetSpawnHealth() * UBQS_Upg.Num("RunThrough.finish", uRunThrough, 0.15))
+		{
+			CutFx((mo.pos.xy, mo.pos.z + mo.height * 0.5), -dir, mo, mo.health);
+			mo.DamageMobj(self, owner, mo.health + 1, 'Saber', DMG_THRUSTLESS);
 		}
 	}
 
@@ -2952,6 +3012,11 @@ class UBQS_SaberBase : Weapon abstract
 		t.tracer = self;
 		UpgRefresh();
 		t.extraHops = uThrow;
+		// SABER BARRAGE / RETURNING BLADE (Gun Bonsai VR): the cut on the way home is an unlock under the patch (-1: no
+		// patch, it cuts as it always did), and the extra passes over the marks
+		t.barrage = gbOn ? uBarrage : -1;
+		t.passes = uReturning;
+		t.cutDmg = UF("ubqs_damage", 30.0);
 		t.col = ColIdx();
 		// THE SECOND BLADE LIGHTS AS IT LEAVES YOUR HAND (ubqs_throw_double): a staff spinning is the throw
 		t.dbl = back || UInt("ubqs_throw_double", 1);
@@ -3941,6 +4006,9 @@ class UBQS_Thrown : Actor
 	private Array<Actor> cutWho;
 	private Array<int>   cutWhen;
 	int    extraHops;         // SABER THROW (Gun Bonsai): enemies it still finds on its own when the route is done
+	int    barrage;           // SABER BARRAGE: -1 no patch (it cuts on the way home as always), 0 it does not, 1+ its level
+	int    passes;            // RETURNING BLADE: times it flies its marks again before it comes home
+	double cutDmg;            // a cut's base damage, for Barrage's share
 	private int    litRgb;
 	private int    litRad;
 
@@ -4013,9 +4081,22 @@ class UBQS_Thrown : Actor
 			if (t && t.health > 0 && t.bShootable) return;
 			leg++;
 		}
+		// RETURNING BLADE: round the marks again while any is still standing
+		if (passes > 0 && RouteAlive())
+		{
+			passes--;
+			leg = 0;
+			NextLeg(false);
+			return;
+		}
 		if (ExtraHop()) return;
 		ClearRoute();
 		Done();
+	}
+	private bool RouteAlive()
+	{
+		for (int i = 0; i < route.Size(); i++) if (route[i] && route[i].health > 0 && route[i].bShootable) return true;
+		return false;
 	}
 	// SABER THROW: the route is done (or a free throw ran out of range) -- fly on to the nearest
 	// enemy it can see that it has not already visited, while it has hops left
@@ -4244,6 +4325,9 @@ class UBQS_Thrown : Actor
 	// THE SPINNING BLADE: a disc as wide as the blade is long, around wherever it is
 	private void SpinCut()
 	{
+		// SABER BARRAGE (Gun Bonsai VR): on the way home it cuts only once learned, for its share of a cut
+		bool homeward = phase == PH_HOME || phase == PH_PULL;
+		if (homeward && barrage == 0) return;
 		double reach = bladeLen;
 		let it = BlockThingsIterator.Create(self, reach + 32.0);
 		while (it.Next())
@@ -4264,6 +4348,7 @@ class UBQS_Thrown : Actor
 			// ...). ubqs_dmg_thrown was a bare 1.5 -- the hardest-hitting attack in the mod, against the
 			// swing's 0.5-2.0 and the twirl's 0.8, with ubqs_damage moving all three together.
 			int dmg = int(UBQS_Data.F(master, "ubqs_damage", 30.0) * UBQS_Data.F(master, "ubqs_dmg_thrown", 1.5));
+			if (homeward && barrage > 0) { dmg = int(cutDmg * UBQS_Upg.Num("SaberBarrage.share", barrage, 0.65)); UBQS_Upg.Touch("barrage", master, mo); }
 			if (!mo.bNoBlood) mo.SpawnBlood((mo.pos.xy, mz), angle, dmg);
 			mo.DamageMobj(self, master, dmg, 'Saber', DMG_THRUSTLESS);
 			A_StartSound(mo.bNoBlood ? "ubqs/wall" : "ubqs/hit", CHAN_AUTO, 0, UBQS_Data.F(master, "ubqs_vol_hit", 1.0));
@@ -6475,6 +6560,26 @@ class UBQS_Upg play
 	{
 		let s = Svc();
 		return s ? max(0, s.GetInt("level", upgrade, 0, 0, who)) : 0;
+	}
+	// THE SABER TREE'S NUMBERS (GBOVR_TREES.md 4.2) live with the upgrades ("upgrade.num"); fb without the patch
+	static double Num(String what, int lv, double fb)
+	{
+		let s = Svc();
+		return s ? s.GetDouble("upgrade.num", what, lv, 0) : fb;
+	}
+	// how fast the player's head is travelling, m/s (the patch measures it for Lunge); 0 without it
+	static double HeadMps(Actor who)
+	{
+		let s = Svc();
+		return s ? s.GetDouble("head.mps", "", 0, 0, who) : 0;
+	}
+	// RSQ Score's combo ledger, by name (nothing without it)
+	static void Touch(String id, Actor pawn, Actor victim)
+	{
+		if (!pawn || !pawn.player || !victim) return;
+		let it = ServiceIterator.Find("RS_ScoreService");
+		let s = it.Next();
+		if (s) s.GetInt("touch", id, pawn.PlayerNumber(), 0, victim);
 	}
 }
 

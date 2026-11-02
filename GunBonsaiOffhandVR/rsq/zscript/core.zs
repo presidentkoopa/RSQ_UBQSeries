@@ -370,6 +370,13 @@ class RSQ_MeleeUpgradeService : Service
 
 	override double GetDouble(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
 	{
+		// how fast the player's head is travelling, m/s (RSQ_MeleeHandler, as Lunge reads it): the saber's Point Taken
+		if (request == "head.mps")
+		{
+			let h = RSQ_MeleeHandler.Get();
+			let a = Actor(objectArg);
+			return (h && a && a.player) ? h.headMps[a.PlayerNumber()] : 0;
+		}
 		// the Force's patch-only baseline: what an unlearned power is worth (rsq_force_start)
 		if (request == "force.start") return clamp(RSQM.SV("rsq_force_start", 0.6), 0.1, 1.0);
 		if (request == "upgrade.num")
@@ -415,6 +422,14 @@ class RSQ_MeleeUpgradeService : Service
 			if (stringArg == "Slam.stagger") return RSQ_Upgrade_Slam.Stagger();
 			if (stringArg == "ThrowInto.mult") return RSQ_Upgrade_ThrowInto.Mult(lv);
 			if (stringArg == "Chokehold.damage") return RSQ_Upgrade_Chokehold.Damage(lv);
+			// the Saber tree (up_saber.zs)
+			if (stringArg == "BattleMeditation.locks") return RSQ_Upgrade_BattleMeditation.Locks(lv);
+			if (stringArg == "SaberBarrage.share") return RSQ_Upgrade_SaberBarrage.Share(lv);
+			if (stringArg == "StrikeTrue.tics") return RSQ_Upgrade_StrikeTrue.Tics(lv);
+			if (stringArg == "PointTaken.mult") return RSQ_Upgrade_PointTaken.Mult(lv);
+			if (stringArg == "PointTaken.speed") return RSQ_Upgrade_PointTaken.Speed();
+			if (stringArg == "RunThrough.tics") return RSQ_Upgrade_RunThrough.Tics(lv);
+			if (stringArg == "RunThrough.finish") return RSQ_Upgrade_RunThrough.Finish();
 			// G. Gun hand, H. Taunt
 			if (stringArg == "PistolWhip.stagger") return RSQ_Upgrade_PistolWhip.Stagger(lv);
 			if (stringArg == "PistolWhip.mult") return RSQ_Upgrade_PistolWhip.Mult(lv);
