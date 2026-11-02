@@ -379,3 +379,59 @@ class RSQ_Upgrade_Finisher : RSQ_Upgrade_Base
 	}
 	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("share", AsPercent(Share(level))); }
 }
+
+// ---- D. COUNTER ----------------------------------------------------------------------------------------------------
+// Guard is the player's (up_suite.zs RSQ_Upgrade_Guard; RSQ Melee's row Start With Guard gives level 1 before it is
+// learned), and so are the three nodes that grow it: Parry, Reflect Guard, Absorb and Release (RSQ Melee's guard.zs
+// does each). Counterpunch, Swat Back and Hadouken are a glove's, on the player's Guard. Catch and Bullet Time Fists are
+// designed and parked off (owner, 11-02: no held model, no hand pose; Bullet Time Fists until seen in the headset).
+
+// SWAT BACK: the open palm's swat sends the missile back at its shooter instead of aside.
+class RSQ_Upgrade_SwatBack : RSQ_Upgrade_Base
+{
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return GloveInfo(info) && GuardOwned(info.stats) && LevelOf(info, "SwatBack") < 3; }
+	static double Mult(uint lv) { return 1.0 + 0.15 * lv; }
+	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("mult", AsPercent(Mult(level))); }
+}
+
+// A node that grows the Guard: the player's, offered while RSQ Melee is loaded, on its parent.
+class RSQ_GuardPerk : RSQ_Perk
+{
+	override int Cap() { return 3; }
+	override bool ModLoaded() { return RSQM.Svc("RSQML_Service") != null; }
+	virtual bool Parent(TFLV_PerPlayerStats stats) { return GuardOwned(stats); }
+	override bool IsSuitableForPlayer(TFLV_PerPlayerStats stats) { return Super.IsSuitableForPlayer(stats) && Parent(stats); }
+}
+
+// PARRY: a Guard whose hands are driven into the blow just before it lands takes nothing, and the attacker reels.
+class RSQ_Upgrade_Parry : RSQ_GuardPerk
+{
+	static int Window(uint lv) { return 2 + 2 * lv; }      // tics before the impact: 4, 6, 8
+	static int Stagger(uint lv) { return 17 + 9 * lv; }
+	override void GetTooltipFields(Dictionary fields, uint level)
+	{
+		fields.Insert("window", AsSeconds(Window(level)));
+		fields.Insert("time", AsSeconds(Stagger(level)));
+	}
+}
+
+// REFLECT GUARD: a missile that meets the raised Guard goes back at its shooter; at level 3 a bullet does too.
+class RSQ_Upgrade_ReflectGuard : RSQ_GuardPerk
+{
+	override bool Parent(TFLV_PerPlayerStats stats) { return PHas(stats, "Guard", 2); }
+	static double Mult(uint lv) { return 1.0 + 0.25 * lv; }
+	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("mult", AsPercent(Mult(level))); }
+}
+
+// ABSORB AND RELEASE: what the Guard takes charges it; both hands thrown apart (RSQ Gestures) let it out round you.
+class RSQ_Upgrade_AbsorbRelease : RSQ_GuardPerk
+{
+	override bool Parent(TFLV_PerPlayerStats stats) { return PHas(stats, "ReflectGuard", 2); }
+	static double ChargeCap(uint lv) { return 100.0 + 50.0 * lv; }
+	static double Radius(uint lv) { return 3.0 + lv; }    // metres
+	override void GetTooltipFields(Dictionary fields, uint level)
+	{
+		fields.Insert("cap", String.Format("%d", int(ChargeCap(level))));
+		fields.Insert("radius", RSQ_FistMath.Metres(Radius(level)));
+	}
+}

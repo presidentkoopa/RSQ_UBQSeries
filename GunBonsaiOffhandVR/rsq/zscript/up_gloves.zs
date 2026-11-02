@@ -44,6 +44,13 @@ class RSQ_Upgrade_Base : TFLV_Upgrade_BaseUpgrade
 		}
 		return false;
 	}
+	// THE PLAYER HAS THE GUARD at minLevel or more: learned, or (for level 1) RSQ Melee's Start With Guard row on
+	// (rsqml_guard_start, read by name). The Counter branch's nodes stand on it (GBOVR_TREES.md 4.1 D).
+	static bool GuardOwned(TFLV_PerPlayerStats stats, int minLevel = 1)
+	{
+		if (PHas(stats, "Guard", minLevel)) return true;
+		return minLevel <= 1 && RSQM.SVI("rsqml_guard_start", 0) != 0 && RSQM.Svc("RSQML_Service") != null;
+	}
 	// the level this weapon's record holds of a node (0 = none), for a cap test: LevelOf(info, "HeavyHands") < 4.
 	// Not "Level": ZScript identifiers are case-insensitive, and every upgrade has a `level` field (the headless run
 	// of 11-02 found 20 "Numeric type expected" errors from that one name).
@@ -116,10 +123,11 @@ class RSQ_Upgrade_StarPunch : RSQ_Upgrade_Base
 	}
 }
 
-// COUNTERPUNCH: hit it while it winds up an attack -- it reels, and the punch lands harder.
+// COUNTERPUNCH: hit it while it winds up an attack -- it reels, and the punch lands harder. (Tree, 11-02: after the
+// player's Guard; 4 levels.)
 class RSQ_Upgrade_Counterpunch : RSQ_Upgrade_Base
 {
-	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return GloveInfo(info); }
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return GloveInfo(info) && GuardOwned(info.stats) && LevelOf(info, "Counterpunch") < 4; }
 	static double Mult(uint lv) { return 1.25 + 0.25 * lv; }
 	static int Tics(uint lv) { return 17 + 9 * lv; }
 	override double ModifyDamageDealt(Actor pawn, Actor shot, Actor target, double damage, Name attacktype)
@@ -217,9 +225,13 @@ class RSQ_Upgrade_HeavyHands : RSQ_Upgrade_Base
 // whoever fired it -- yours now, and harder. The CLASS keeps its old name on purpose: Gun Bonsai keeps a learned
 // upgrade by its class name, so a save that has it keeps it. The name players see is language.rsq's. The returned
 // missile's harder hit is applied by RSQ Melee (its RSQML_Body), at Mult.
+// (Tree, 11-02: after Swat Back 1 or Counterpunch 1.)
 class RSQ_Upgrade_ReturnFire : RSQ_Upgrade_Base
 {
-	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return GloveInfo(info) && info.upgrades.Level(GetClassName()) < 4; }
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info)
+	{
+		return GloveInfo(info) && (Has(info, "SwatBack") || Has(info, "Counterpunch")) && info.upgrades.Level(GetClassName()) < 4;
+	}
 	static double Mult(uint lv) { return 1.25 + 0.25 * lv; }
 	static double Speed(uint lv) { return 1.0 + 0.15 * lv; }
 	override void GetTooltipFields(Dictionary fields, uint level)

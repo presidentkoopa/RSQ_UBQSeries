@@ -23,9 +23,41 @@ class RSQML_Guard : StaticEventHandler
 
 	int guardTics[MAXPLAYERS], guardBrokenUntil[MAXPLAYERS];
 
+	// THE GUARD'S TREE (GBOVR_TREES.md 4.1 D; Gun Bonsai VR player nodes after Guard, owner 11-02):
+	//   START WITH GUARD  row rsqml_guard_start: with Gun Bonsai VR, Guard at level 1 before it is learned
+	//   PARRY             hands driven INTO the blow (PARRY_MPS toward where you face, both hands) inside Parry.window tics
+	//                     before it lands: no damage, the attacker knocked back and staggered
+	//   REFLECT GUARD     a monster's missile about to hit the raised Guard from in front is sent back at its shooter
+	//                     (gloves.zs SendBack); at level 3 a bullet is too (its damage, at the shooter)
+	//   ABSORB / RELEASE  what the Guard takes charges it (up to AbsorbRelease.cap, draining 5 a second); RSQ Gestures'
+	//                     "both hands apart" (rsqg_pair 1, twohand.zs) throws it out round you
+	const PARRY_MPS = 1.0;
+	const PARRY_KNOCK = 8.0;
+	const DRAIN_PER_SEC = 5.0;
+	int pushTic[MAXPLAYERS];
+	int upTic[MAXPLAYERS];   // the last tic the Guard was up: a parry drives the hands out of the box, so it counts after
+	Vector3 pushPrev[MAXPLAYERS * 2];
+	bool pushOk[MAXPLAYERS * 2];
+	double charge[MAXPLAYERS];
+
 	static RSQML_Guard Get() { return RSQML_Guard(StaticEventHandler.Find("RSQML_Guard")); }
 
-	override void WorldLoaded(WorldEvent e) { for (int i = 0; i < MAXPLAYERS; i++) { guardTics[i] = 0; guardBrokenUntil[i] = 0; } }
+	override void WorldLoaded(WorldEvent e) { for (int i = 0; i < MAXPLAYERS; i++) { guardTics[i] = 0; guardBrokenUntil[i] = 0; pushTic[i] = -1000; charge[i] = 0; pushOk[i * 2] = false; pushOk[i * 2 + 1] = false; } }
+
+	// THE GUARD'S LEVEL: Gun Bonsai VR's (the player's), or the Guard row's level 1 without it; with Gun Bonsai VR and
+	// Start With Guard on, level 1 until it is learned
+	static int GuardLevel(PlayerPawn pmo)
+	{
+		int lv = RSQML.MoveLevel(pmo, null, "Guard", "rsqml_guard");
+		if (lv <= 0 && RSQML.GB() && RSQML.SVI("rsqml_guard_start", 0) != 0) lv = 1;
+		return lv;
+	}
+	// a player node of the Guard's tree (0 without Gun Bonsai VR: these have no row)
+	static int Node(PlayerPawn pmo, String short)
+	{
+		let gb = RSQML.GB();
+		return gb ? gb.GetInt("plevel", short, 0, 0, pmo) : 0;
+	}
 
 	override void WorldTick()
 	{
@@ -34,8 +66,14 @@ class RSQML_Guard : StaticEventHandler
 			if (!playeringame[pn] || !players[pn].mo || players[pn].mo.health <= 0) { guardTics[pn] = 0; continue; }
 			let pmo = players[pn].mo;
 			RSQML_Body.Ensure(pmo);
-			if (RSQML.MoveLevel(pmo, null, "Guard", "rsqml_guard") <= 0) { guardTics[pn] = 0; continue; }
+			if (charge[pn] > 0) charge[pn] = max(0.0, charge[pn] - DRAIN_PER_SEC / TICRATE);
+			if (GuardLevel(pmo) <= 0) { guardTics[pn] = 0; continue; }
 			Pose(pn, pmo);
+			if (guardTics[pn] >= HOLD)
+			{
+				int rfLv = Node(pmo, "ReflectGuard");
+				if (rfLv > 0) Reflect(pn, pmo, rfLv);
+			}
 		}
 	}
 
@@ -65,8 +103,27 @@ class RSQML_Guard : StaticEventHandler
 				if ((hp.xy - pmo.pos.xy).Length() > GUARD_XY_M * upm || dz < -GUARD_BELOW_M * zpm || dz > GUARD_ABOVE_M * zpm) up = false;
 			}
 		}
+		// PARRY's push: both hands driven forward (where you face) at PARRY_MPS or more this tic
+		double upm = RSQML.UnitsPerMetre();
+		Vector2 fwd = (cos(pmo.angle), sin(pmo.angle));
+		int pushing = 0;
+		for (int h = 0; h < 2; h++)
+		{
+			Vector3 hp; bool ok;
+			[hp, ok] = RSQML_Hands.Pos(pmo, h);
+			int i = pn * 2 + h;
+			if (ok && pushOk[i])
+			{
+				Vector3 v = (hp - pmo.pos) - (pushPrev[i] - pmo.Prev);
+				if ((v.xy dot fwd) * TICRATE / upm >= PARRY_MPS) pushing++;
+			}
+			pushPrev[i] = hp;
+			pushOk[i] = ok;
+		}
+		if (pushing == 2) pushTic[pn] = level.maptime;
 		int was = guardTics[pn];
 		guardTics[pn] = up ? min(was + 1, 1000) : 0;
+		if (guardTics[pn] >= HOLD) upTic[pn] = level.maptime;
 		if (RSQML.Debug() > 0 && (guardTics[pn] == HOLD || (was >= HOLD && !up)))
 			Console.Printf("RSQML guard: %s at t%d", up ? "UP" : "down", level.maptime);
 	}
@@ -96,11 +153,17 @@ class RSQML_Guard : StaticEventHandler
 	}
 
 	// a blow on its way in: what is left of it (called from RSQML_Body's ModifyDamage, the player's own side)
-	int Soak(PlayerPawn pawn, int damage, Actor inflictor, Actor source)
+	int Soak(PlayerPawn pawn, int damage, Actor inflictor, Actor source, Name dtype = 'None')
 	{
 		int pn = pawn.PlayerNumber();
-		if (pn < 0 || pn >= MAXPLAYERS || guardTics[pn] < HOLD || damage <= 0) return damage;
-		int lv = RSQML.MoveLevel(pawn, null, "Guard", "rsqml_guard");
+		if (pn < 0 || pn >= MAXPLAYERS || damage <= 0) return damage;
+		// PARRY's reach: driving the hands into the blow carries them out of the Guard's box, so a parry counts while the
+		// Guard was up within the parry window (both the push and the Guard), not only while it is up now
+		int paLv = Node(pawn, "Parry");
+		int paWin = paLv > 0 ? int(RSQML.Num("Parry.window", paLv, 0, 4)) : -1;
+		bool parry = paLv > 0 && level.maptime - pushTic[pn] <= paWin && level.maptime - upTic[pn] <= paWin;
+		if (guardTics[pn] < HOLD && !parry) return damage;
+		int lv = GuardLevel(pawn);
 		if (lv <= 0) return damage;
 		// where the blow came from: a missile from where it is, anything else from who struck (a hazard with no
 		// attacker -- slime, a crusher -- is not guarded)
@@ -108,6 +171,40 @@ class RSQML_Guard : StaticEventHandler
 		if (!from || from == pawn) return damage;
 		if (Actor.absangle(pawn.AngleTo(from), pawn.angle) > ARC) return damage;
 		bool dbg = RSQML.Debug() > 0;
+		int absLv = Node(pawn, "AbsorbRelease");
+		// PARRY: the hands went into the blow just before it landed: nothing gets through, the attacker reels
+		if (parry)
+		{
+			if (source && source != pawn && source.health > 0 && !source.player)
+			{
+				if (!source.bDontThrust)
+				{
+					double a = pawn.AngleTo(source);
+					double k = clamp(100.0 / max(source.mass, 1.0), 0.1, 1.5) * (source.bBoss ? 0.3 : 1.0);
+					source.vel.xy += (cos(a), sin(a)) * PARRY_KNOCK * k;
+				}
+				RSQML.Stagger(source, int(RSQML.Num("Parry.stagger", paLv, 0, 26)));
+				RSQML.Touch("parry", pawn, source);
+			}
+			Flash(pawn, from);
+			RSQ_Buzz.Start(pawn, 0, 1.0, 8);
+			RSQ_Buzz.Start(pawn, 1, 1.0, 8);
+			if (absLv > 0) AddCharge(pn, absLv, damage);
+			if (dbg) Console.Printf("RSQML guard: PARRY of %d from %s (pushed %d tics before)", damage, from.GetClassName(), level.maptime - pushTic[pn]);
+			return 0;
+		}
+		// REFLECT GUARD 3: a bullet (no missile) is sent back at whoever fired it
+		int rfLv = Node(pawn, "ReflectGuard");
+		if (rfLv >= 3 && from == source && source && source.health > 0 && !source.player && dtype != 'Melee' && pawn.Distance2D(source) > 96 && damage < RSQML.Num("Guard.break", lv, 0, 35))
+		{
+			int back = int(round(damage * RSQML.Num("ReflectGuard.mult", rfLv, 0, 1.75)));
+			Flash(pawn, from);
+			RSQML.Touch("guard.reflect", pawn, source);
+			if (absLv > 0) AddCharge(pn, absLv, damage);
+			if (dbg) Console.Printf("RSQML guard: bullet of %d sent back at %s for %d", damage, source.GetClassName(), back);
+			source.DamageMobj(pawn, pawn, back, 'Hitscan', DMG_THRUSTLESS);
+			return 0;
+		}
 		// the upgrade's numbers (Gun Bonsai VR's RSQ_Upgrade_Guard.BreakAt / Soak); level 1's without it
 		double brk = RSQML.Num("Guard.break", lv, 0, 35);
 		if (damage >= brk)
@@ -129,8 +226,80 @@ class RSQML_Guard : StaticEventHandler
 		RSQ_Buzz.Start(pawn, 1, 0.6, 6);
 		double k = RSQML.Num("Guard.soak", lv, 0, 0.6);
 		int left = int(round(damage * k));
+		if (absLv > 0) AddCharge(pn, absLv, damage - left);
 		if (dbg) Console.Printf("RSQML guard: soaked %d -> %d from %s", damage, left, from.GetClassName());
+		RSQML.Touch("guard", pawn, source);
 		return left;
+	}
+
+	// ABSORB: what the Guard took goes into the charge, up to the cap
+	void AddCharge(int pn, int lv, double amount)
+	{
+		if (amount <= 0) return;
+		charge[pn] = min(charge[pn] + amount, RSQML.Num("AbsorbRelease.cap", lv, 0, 150));
+		if (RSQML.Debug() > 0) Console.Printf("RSQML guard: charge %.0f", charge[pn]);
+	}
+
+	// RELEASE (RSQ Gestures' "both hands apart", twohand.zs): the charge goes out round you, each monster in reach takes
+	// it and is thrown back. 1 when there was a charge to throw.
+	int Release(PlayerPawn pmo)
+	{
+		int pn = pmo.PlayerNumber();
+		int lv = Node(pmo, "AbsorbRelease");
+		if (lv <= 0 || charge[pn] < 1) return 0;
+		int dmg = int(charge[pn]);
+		charge[pn] = 0;
+		double r = RSQML.Num("AbsorbRelease.radius", lv, 0, 4.0) * RSQML.UnitsPerMetre();
+		int n = 0;
+		let it = BlockThingsIterator.Create(pmo, r);
+		while (it.Next())
+		{
+			let o = it.thing;
+			if (!RSQML.IsFoe(pmo, o) || pmo.Distance2D(o) > r + o.radius) continue;
+			if (o.pos.z > pmo.pos.z + pmo.height + 32 || o.pos.z + o.height < pmo.pos.z - 32) continue;
+			n++;
+			RSQML.Touch("guard.release", pmo, o);
+			o.DamageMobj(pmo, pmo, dmg, 'Melee', DMG_THRUSTLESS);
+			if (!o || o.health <= 0 || o.bDontThrust) continue;
+			double a = pmo.AngleTo(o);
+			double k = clamp(100.0 / max(o.mass, 1.0), 0.1, 1.5) * (o.bBoss ? 0.3 : 1.0);
+			o.vel.xy += (cos(a), sin(a)) * 12.0 * k;
+			o.vel.z += 4.0 * k;
+		}
+		pmo.A_StartSound("rsqml/smash", CHAN_AUTO, CHANF_OVERLAP, 1.0);
+		RSQML_Spark.Guard(RSQML_Hands.EyePos(pmo) + (cos(pmo.angle), sin(pmo.angle), 0) * 12.0);
+		RSQ_Buzz.Start(pmo, 0, 1.0, 12);
+		RSQ_Buzz.Start(pmo, 1, 1.0, 12);
+		if (RSQML.Debug() > 0) Console.Printf("RSQML guard: RELEASE %d round you (%.0f units), %d hit", dmg, r, n);
+		return 1;
+	}
+
+	// REFLECT GUARD: a monster's missile about to hit you from in front, while the Guard is up, goes back at its shooter
+	void Reflect(int pn, PlayerPawn pmo, int lv)
+	{
+		let gl = RSQML_Gloves.Get();
+		if (!gl) return;
+		Vector3 eye = RSQML_Hands.EyePos(pmo);
+		for (int i = gl.missiles.Size() - 1; i >= 0; i--)
+		{
+			let m = gl.missiles[i];
+			if (!m || !m.bMissile || m.bDestroyed) continue;
+			let from = m.target;
+			if (!from || from.player || !from.bIsMonster || from.bFriendly) continue;
+			double reach = pmo.radius + m.radius + m.vel.Length() + 4;
+			if (pmo.Distance2D(m) > reach) continue;
+			if (m.pos.z + m.height < pmo.pos.z || m.pos.z > pmo.pos.z + pmo.height + 8) continue;
+			if (Actor.absangle(pmo.AngleTo(m), pmo.angle) > ARC) continue;
+			int dmg = m.GetMissileDamage(7, 1);   // the roll it would have hit you for (Doom's own: damage x 1-8)
+			Vector3 d = level.Vec3Diff(eye, m.pos);
+			Vector3 at = eye + (d.Length() > 0.01 ? d.Unit() : (cos(pmo.angle), sin(pmo.angle), 0)) * 12.0;
+			gl.SendBack(pmo, m, from, at, 1.0, RSQML.Num("ReflectGuard.mult", lv, 0, 1.25), null, (cos(pmo.angle), sin(pmo.angle), 0));
+			Flash(pmo, m);
+			RSQML.Touch("guard.reflect", pmo, from);
+			int absLv = Node(pmo, "AbsorbRelease");
+			if (absLv > 0) AddCharge(pn, absLv, dmg);
+			if (RSQML.Debug() > 0) { String fn = from.GetClassName(); Console.Printf("RSQML guard: REFLECT %s back at %s", m.GetClassName(), fn); }
+		}
 	}
 }
 
@@ -154,15 +323,14 @@ class RSQML_Body : Inventory
 		if (passive)
 		{
 			let g = RSQML_Guard.Get();
-			if (g) newdamage = g.Soak(pawn, damage, inflictor, source);
+			if (g) newdamage = g.Soak(pawn, damage, inflictor, source, damageType);
 			return;
 		}
-		// HADOUKEN: the returned missile hits for the upgrade's share (Gun Bonsai VR's RSQ_Upgrade_ReturnFire.Mult;
-		// level 1's 150% without it)
+		// A MISSILE SENT BACK (Hadouken, Swat Back, Reflect Guard) hits for its multiplier (gloves.zs SendBack)
 		let gl = RSQML_Gloves.Get();
-		int lv = gl ? gl.ReturnedLevel(inflictor) : 0;
-		if (lv <= 0) return;
-		newdamage = int(round(damage * RSQML.Num("Hadouken.mult", lv, 0, 1.5)));
-		if (RSQML.Debug() > 0) Console.Printf("RSQML hadouken hit: %d -> %d (level %d)", damage, newdamage, lv);
+		double mult = gl ? gl.MultOfReturned(inflictor) : 0;
+		if (mult <= 0) return;
+		newdamage = int(round(damage * mult));
+		if (RSQML.Debug() > 0) Console.Printf("RSQML returned missile hit: %d -> %d (x%.2f)", damage, newdamage, mult);
 	}
 }

@@ -305,7 +305,7 @@ class RSQML_Gloves : StaticEventHandler
 		if ((level.maptime & 7) == 0)
 		{
 			for (int i = missiles.Size() - 1; i >= 0; i--) if (!missiles[i] || !missiles[i].bMissile) missiles.Delete(i);
-			for (int i = returned.Size() - 1; i >= 0; i--) if (!returned[i] || !returned[i].bMissile) { returned.Delete(i); returnedLv.Delete(i); }
+			for (int i = returned.Size() - 1; i >= 0; i--) if (!returned[i] || !returned[i].bMissile) { returned.Delete(i); returnedMult.Delete(i); }
 		}
 		let hl = RSQML_Headlock.Get();
 		for (int pn = 0; pn < MAXPLAYERS; pn++)
@@ -526,12 +526,12 @@ class RSQML_Gloves : StaticEventHandler
 	// Missiles are not in the blockmap (a projectile is +NOBLOCKMAP), so a blockmap query never finds them: the
 	// enemy missiles in the level are listed as they spawn (the ShieldSaw keeps the same list for the same reason).
 	Array<Actor> missiles;
-	Array<Actor> returned;      // missiles a glove sent back, and the Hadouken level that did it
-	Array<int> returnedLv;
+	Array<Actor> returned;      // missiles sent back at their shooters (Hadouken, Swat Back, Reflect Guard), and what each hits for
+	Array<double> returnedMult;
 
 	// a new map, or a save loaded: the lists were the old level's (a static handler is never saved)
-	override void WorldLoaded(WorldEvent e) { missiles.Clear(); returned.Clear(); returnedLv.Clear(); }
-	override void WorldUnloaded(WorldEvent e) { missiles.Clear(); returned.Clear(); returnedLv.Clear(); }
+	override void WorldLoaded(WorldEvent e) { missiles.Clear(); returned.Clear(); returnedMult.Clear(); }
+	override void WorldUnloaded(WorldEvent e) { missiles.Clear(); returned.Clear(); returnedMult.Clear(); }
 
 	// Only a missile that can hurt: Brutal Doom's fireballs spawn three trail puffs a tic (ImpFireBallTrail1-3, missiles
 	// with the imp as their shooter and no damage), and its gore flies as missiles too. Listing those cost a scan each
@@ -542,11 +542,38 @@ class RSQML_Gloves : StaticEventHandler
 		if (m && m.bMissile && !(m.target && m.target.player) && m.GetMissileDamage(0, 1) > 0) missiles.Push(m);
 	}
 
-	int ReturnedLevel(Actor shot)
+	// what a missile sent back hits for (RSQML_Body), 0 when it was not sent back
+	double MultOfReturned(Actor shot)
 	{
 		if (!shot) return 0;
 		int k = returned.Find(shot);
-		return k < returned.Size() ? returnedLv[k] : 0;
+		return k < returned.Size() ? returnedMult[k] : 0;
+	}
+
+	// SEND A MISSILE BACK AT WHOEVER FIRED IT (Hadouken, Swat Back, Reflect Guard; GBOVR_TREES.md 4.1 D). It leaves from
+	// `at` (so it never starts inside you), toward its shooter's middle (or `fallback` if the shooter is gone), at its
+	// speed x speedMult. It is the player's now (it hurts monsters, not you), a homing missile homes on its shooter, it hits
+	// for dmgMult (RSQML_Body), and it is paid to `glove` when there is one (Gun Bonsai VR's claim).
+	void SendBack(PlayerPawn pmo, Actor m, Actor from, Vector3 at, double speedMult, double dmgMult, Weapon glove, Vector3 fallback)
+	{
+		double sp = max(m.Speed, m.vel.Length()) * speedMult;
+		Vector3 dir;
+		if (from && from.health > 0) dir = level.Vec3Diff(at, from.pos + (0, 0, from.height * 0.5));
+		else dir = fallback;
+		if (dir.Length() < 0.001) dir = -m.vel;
+		dir = dir.Unit();
+		Vector3 p = at + dir * (m.radius + 2);
+		m.SetOrigin((p.x, p.y, max(p.z, m.floorz)), true);
+		m.target = pmo;
+		m.tracer = from;
+		m.vel = dir * sp;
+		m.angle = VectorAngle(dir.x, dir.y);
+		m.pitch = -asin(clamp(dir.z, -1.0, 1.0));
+		if (glove) RSQML.Claim(m, glove);
+		returned.Push(m);
+		returnedMult.Push(dmgMult);
+		int k = missiles.Find(m);
+		if (k < missiles.Size()) missiles.Delete(k);
 	}
 
 	// Closest distance between segments p1-q1 and p2-q2 (Ericson, Real-Time Collision Detection 5.1.9).
@@ -587,7 +614,8 @@ class RSQML_Gloves : StaticEventHandler
 	const HADO_LAG = 2.5;
 	const HADO_LEAD = 2.0;
 
-	private void ReturnFire(PlayerPawn pmo, RSQ_Glove g, int h, RSQ_PunchHand st, int lv)
+	// public so a probe can test it without hands (as Deliver)
+	void ReturnFire(PlayerPawn pmo, RSQ_Glove g, int h, RSQ_PunchHand st, int lv)
 	{
 		double gr = 0.09 * RSQML.UnitsPerMetre() + RSQML.SV("rsqml_punch_pad", 4.0);
 		for (int i = missiles.Size() - 1; i >= 0; i--)
@@ -604,31 +632,17 @@ class RSQML_Gloves : StaticEventHandler
 			double miss = SegSegDist(st.prevHand, st.hand, m.pos - m.vel * HADO_LAG, m.pos + m.vel * HADO_LEAD);
 			if (RSQML.Debug() > 1) Console.Printf("RSQML hadouken test: %s %.1f from the glove's path (reach %.1f)", m.GetClassName(), miss, reach);
 			if (miss > reach) continue;
-			// its speed x the upgrade's (Gun Bonsai VR's RSQ_Upgrade_ReturnFire.Speed; level 1, +15%, without it)
-			double sp = max(m.Speed, m.vel.Length()) * RSQML.Num("Hadouken.speed", lv, 0, 1.15);
-			Vector3 dir;
-			if (from && from.health > 0) dir = level.Vec3Diff(m.pos, from.pos + (0, 0, from.height * 0.5));
-			else dir = st.vel;
-			if (dir.Length() < 0.001) dir = -m.vel;
-			dir = dir.Unit();
-			// it leaves from the glove, so it never starts inside you (the real one may already be at your chest)
-			Vector3 at = st.hand + dir * (m.radius + 2);
-			m.SetOrigin((at.x, at.y, max(at.z, m.floorz)), true);
-			m.target = pmo;            // the player's now: it hurts monsters, not you, and pays you
-			m.tracer = from;           // a homing missile homes on its shooter
-			m.vel = dir * sp;
-			m.angle = VectorAngle(dir.x, dir.y);
-			m.pitch = -asin(clamp(dir.z, -1.0, 1.0));
-			RSQML.Claim(m, g);         // Gun Bonsai VR pays it to that glove (its master is the glove); its hit is
-			                           // made harder by RSQML_Body (guard.zs) at the upgrade's number
-			returned.Push(m); returnedLv.Push(lv);
-			missiles.Delete(i);
+			// its speed x the upgrade's (Gun Bonsai VR's RSQ_Upgrade_ReturnFire.Speed / .Mult; level 1's +15% and 150%
+			// without it); it leaves from the glove, paid to that glove
+			double sp = RSQML.Num("Hadouken.speed", lv, 0, 1.15);
+			SendBack(pmo, m, from, st.hand, sp, RSQML.Num("Hadouken.mult", lv, 0, 1.5), g, st.vel);
+			RSQML.Touch("hadouken", pmo, from);
 			pmo.A_StartSound("rsqml/punch", CHAN_AUTO, 0, 1.0);
 			RSQ_Buzz.Start(pmo, h, 0.8, 6);
 			RSQML_Spark.Hadouken(st.hand);
-			if (RSQML.Debug() > 0) { String fn = from.GetClassName(); Console.Printf("RSQML hadouken: %s back at %s, speed %.1f (met %.1f from the glove's path)", m.GetClassName(), fn, sp, miss); }
+			if (RSQML.Debug() > 0) { String fn = "(gone)"; if (from) fn = from.GetClassName(); Console.Printf("RSQML hadouken: %s back at %s, speed x%.2f (met %.1f from the glove's path)", m.GetClassName(), fn, sp, miss); }
 		}
-		for (int i = returned.Size() - 1; i >= 0; i--) if (!returned[i]) { returned.Delete(i); returnedLv.Delete(i); }
+		for (int i = returned.Size() - 1; i >= 0; i--) if (!returned[i]) { returned.Delete(i); returnedMult.Delete(i); }
 	}
 
 	// THE SWAT (2026-11-02): the open palm moving at SWAT_MPS or more meets a monster's missile (the same window as the
@@ -637,9 +651,13 @@ class RSQML_Gloves : StaticEventHandler
 	// old way kept so it flies on past you, at its own speed. It is yours now (it hurts what it hits, never you). The
 	// Special spark, stock Doom's revenant slap (DSSKEPCH) and a knock in that hand. Not a Gun Bonsai upgrade: a base
 	// move, with its own row (Open-Palm Swat, on).
+	// SWAT BACK (GBOVR_TREES.md 4.1 D, a Gun Bonsai VR glove node after Guard): a glove that has it sends the swatted
+	// missile at its shooter instead of aside, at RSQ_Upgrade_SwatBack.Mult, paid to that glove. Public so a probe can test
+	// it without hands (as Deliver).
 	const SWAT_MPS = 1.5;
-	private void Swat(PlayerPawn pmo, RSQ_Glove g, int h, RSQ_PunchHand st)
+	void Swat(PlayerPawn pmo, RSQ_Glove g, int h, RSQ_PunchHand st)
 	{
+		int sbLv = RSQML.GBLevel(g, "SwatBack");
 		double gr = 0.09 * RSQML.UnitsPerMetre() + RSQML.SV("rsqml_punch_pad", 4.0);
 		for (int i = missiles.Size() - 1; i >= 0; i--)
 		{
@@ -651,6 +669,16 @@ class RSQML_Gloves : StaticEventHandler
 			double reach = gr + max(m.radius, 6.0) + 6.0;
 			double miss = SegSegDist(st.prevHand, st.hand, m.pos - m.vel * HADO_LAG, m.pos + m.vel * HADO_LEAD);
 			if (miss > reach) continue;
+			if (sbLv > 0 && from.health > 0)
+			{
+				SendBack(pmo, m, from, st.hand, 1.0, RSQML.Num("SwatBack.mult", sbLv, 0, 1.15), g, st.vel);
+				pmo.A_StartSound("rsqml/swat", CHAN_AUTO, CHANF_OVERLAP, 1.0);
+				RSQ_Buzz.Start(pmo, h, 0.6, 5);
+				RSQML_Spark.Swat(st.hand);
+				RSQML.Touch("swat.back", pmo, from);
+				if (RSQML.Debug() > 0) { String fn = from.GetClassName(); Console.Printf("RSQML swat back: %s at %s (level %d)", m.GetClassName(), fn, sbLv); }
+				continue;
+			}
 			double sp = max(m.vel.Length(), 1.0);
 			Vector3 inDir = m.vel / sp;
 			Vector3 lat = st.vel - inDir * (st.vel dot inDir);

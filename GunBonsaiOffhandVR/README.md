@@ -92,7 +92,12 @@ Always on (no row):
     jab, jab, hook inside a second, either hand: the hook x1.75 and up, staggers) -> Dempsey (alternating hooks each
     inside 0.6 s: +10% a hook in the run a level, the glove re-arms in 4, 3, 2 tics) and Finisher (Three-Hit 2 and
     Executioner on that glove: the last hit of a 3+ chain on a staggered monster below 30% kills it, with a slow-mo
-    pulse).
+    pulse). **D. Counter:** Guard (the player's; RSQ Melee's row Start With Guard gives level 1 before it is learned) ->
+    Parry (player: hands driven into the blow just before it lands: nothing through, the attacker reels), Reflect Guard
+    (player, Guard 2: a missile meeting the raised Guard goes back at its shooter; at 3 a bullet does too) -> Absorb and
+    Release (player, Reflect Guard 2: what the Guard takes charges it; both hands thrown apart let it out round you;
+    needs RSQ Gestures). On a glove, after the player's Guard: Counterpunch, Swat Back (the open palm's swat goes back
+    at the shooter) -> Hadouken (after Swat Back or Counterpunch). Catch and Bullet Time Fists are designed and off.
   - Gloves (RSQ_Melee's), before the tree: Haymaker, One-Two, Star Punch, Counterpunch, Body Blow, Knockdown, and the owner's
     picks 52-54 (2026-11-01), whose moves RSQ_Melee does and whose numbers are here: **Heavy Hands** (a landed
     punch freezes the monster for a beat: 2 tics at level 1 up to 4, +2 for a punch at half speed or more; and

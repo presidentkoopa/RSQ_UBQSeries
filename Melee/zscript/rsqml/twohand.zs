@@ -1,5 +1,6 @@
 // GROUND POUND and CLEAR OUT (GBOVR_TREES.md 4.1 A, Power; owner 11-02), the Fists tree's two-hand moves.
 //
+// (And "both hands apart", rsqg_pair 1: the Guard's Absorb and Release, guard.zs Release.)
 // RSQ GESTURES READS THE HANDS. On the machine that has them it sees "both hands down" and "both palms thrust" and sends
 // them as the network event rsqg_pair (arg0 the kind: 0 down, 3 palms thrust; arg1 the speed, hundredths of m/s), so the
 // move happens for that player in every game at once. Without RSQ Gestures neither move happens. Gestures' Two-Hand
@@ -49,10 +50,11 @@ class RSQML_TwoHand : StaticEventHandler
 			int a, b;
 			[g, a] = Best(pmo, "GroundPound", "rsqml_groundpound");
 			[g, b] = Best(pmo, "ClearOut", "rsqml_clearout");
-			if (a <= 0 && b <= 0) continue;
+			int c = RSQML_Guard.Node(pmo, "AbsorbRelease");
+			if (a <= 0 && b <= 0 && c <= 0) continue;
 			if (!looked) { gs = RSQML.Svc("RSQG_Service"); looked = true; }
 			if (!gs) return;
-			gs.GetInt("pair.ago", "", a > 0 ? 0 : 3, 0, pmo);
+			gs.GetInt("pair.ago", "", a > 0 ? 0 : b > 0 ? 3 : 1, 0, pmo);
 		}
 	}
 
@@ -65,6 +67,7 @@ class RSQML_TwoHand : StaticEventHandler
 		if (!pmo || pmo.health <= 0) return;
 		if (e.Args[0] == 0) Pound(pmo, e.Args[1] / 100.0);
 		else if (e.Args[0] == 3) ClearOut(pmo, e.Args[1] / 100.0);
+		else if (e.Args[0] == 1) { let gd = RSQML_Guard.Get(); if (gd) gd.Release(pmo); }   // Absorb and Release (guard.zs)
 	}
 
 	// a monster's push away from you, by its weight (a boss barely moves)

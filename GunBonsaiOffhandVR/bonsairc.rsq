@@ -22,6 +22,7 @@ register
   RSQ_Upgrade_GroundPound RSQ_Upgrade_ClearOut
   RSQ_Upgrade_ExplosiveFist RSQ_Upgrade_FrostFist RSQ_Upgrade_ShockFist RSQ_Upgrade_FireFist
   RSQ_Upgrade_ThreeHit RSQ_Upgrade_Dempsey RSQ_Upgrade_Finisher
+  RSQ_Upgrade_SwatBack RSQ_Upgrade_Parry RSQ_Upgrade_ReflectGuard RSQ_Upgrade_AbsorbRelease
 ;
 
 # The gloves, the sabers and the ShieldSaw are melee weapons whatever they are seen to do: the

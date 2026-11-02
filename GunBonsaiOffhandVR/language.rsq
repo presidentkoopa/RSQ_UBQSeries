@@ -72,6 +72,19 @@ RSQ_Upgrade_Dempsey_TT = "Alternate hooks, left and right, each inside 0.6 s: ev
 RSQ_Upgrade_Finisher_Name = "Finisher";
 RSQ_Upgrade_Finisher_Desc = "Glove: end the combo, end the fight.";
 RSQ_Upgrade_Finisher_TT = "The last hit of a chain of three or more on a staggered enemy below @share health kills it, with a moment of slow motion (RSQ SlowMo). Needs Executioner on this glove.";
+// D. Counter
+RSQ_Upgrade_SwatBack_Name = "Swat Back";
+RSQ_Upgrade_SwatBack_Desc = "Glove: the open palm returns to sender.";
+RSQ_Upgrade_SwatBack_TT = "An open palm that swats a missile sends it back at whoever fired it, hitting for @mult.";
+RSQ_Upgrade_Parry_Name = "Parry";
+RSQ_Upgrade_Parry_Desc = "Guard: meet the blow and it does nothing.";
+RSQ_Upgrade_Parry_TT = "Drive both guarding hands into a blow within @window of it landing: you take nothing, and the attacker is thrown back and reels for @time.";
+RSQ_Upgrade_ReflectGuard_Name = "Reflect Guard";
+RSQ_Upgrade_ReflectGuard_Desc = "Guard: what hits the guard goes back.";
+RSQ_Upgrade_ReflectGuard_TT = "A missile that meets your raised Guard from in front flies back at its shooter, hitting for @mult. At level 3 a bullet does too.";
+RSQ_Upgrade_AbsorbRelease_Name = "Absorb and Release";
+RSQ_Upgrade_AbsorbRelease_Desc = "Guard: store the hits, then let them out.";
+RSQ_Upgrade_AbsorbRelease_TT = "What your Guard takes builds a charge, up to @cap, draining slowly. Throw both hands apart to release it: everything within @radius takes the charge and is thrown back. Needs RSQ Gestures.";
 
 RSQ_Upgrade_Lunge_Name = "Lunge";
 RSQ_Upgrade_Lunge_Desc = "Melee: step into the blow.";

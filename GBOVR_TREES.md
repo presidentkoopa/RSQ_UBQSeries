@@ -654,6 +654,23 @@ Deliver, not the swing reader); the look (the hook's full spark, the Finisher's 
 | Catch (new, **Option, off**) | Hadouken 2 | 1-3: an open hand on a missile at under 1.5 m/s holds it 2 + lv s; thrown through Distance Grab's throw at x1.5 + 0.25 lv. Parked: needs a held model and a hand pose (owner, 11-02) | Melee, Distance Grab (throw) | - | `catch` |
 | Bullet Time Fists (new, **off until headset-seen**) | Hadouken 3, needs SlowMo | 1-3: in slow motion a punch through a slowed round (`RSQSM_Round`) returns it to its shooter at its own damage x1.5 + 0.5 lv. To check first: the round is a Projectile with the monster as target, so Hadouken's missile test may already see it | Melee | the streak turns round, Super Spark | `bullet.punch` |
 
+**Counter: BUILT 11-02 (L2, branch D).** Gun Bonsai VR: Swat Back (glove), Parry, Reflect Guard, Absorb and Release
+(player, `RSQ_GuardPerk`) in `up_fists.zs`; Counterpunch and Swat Back stand on the player's Guard (`GuardOwned`: learned,
+or Melee's Start With Guard row for level 1), Hadouken on Swat Back or Counterpunch. Melee: the row **Start With Guard
+(Gun Bonsai VR)**, off by default so nothing changes until it is turned on; `guard.zs` does Parry (both hands driven
+forward at 1 m/s inside Parry.window tics; **found headless: the push carries the hands out of the Guard's box, so the
+Guard had dropped by the time the blow landed; a parry now counts while the Guard was up within the same window**),
+Reflect Guard (missiles about to hit, from in front; at 3, a ranged non-melee hit more than 96 units off is sent back
+at its shooter at the same multiplier), Absorb and Release (charge = what got soaked, a parried blow, a reflected roll;
+released on Gestures' "both hands apart", rsqg_pair 1). One `SendBack` in `gloves.zs` now sends back every returned
+missile, and the returned list carries each one's damage multiplier. Catch and Bullet Time Fists: not built (parked
+off, as designed). **Headless 11-02** (the probe drives Melee's own controller stand-in, `RSQML_Sim`, to raise and
+push the Guard): the offer lists follow the parents (no Guard: no Counterpunch, Swat Back, Parry; Hadouken only after
+Swat Back); Guard 2 soaked 20 to 10; two blows during a push: 0 through, "PARRY"; a bullet from an imp 300 away: 0
+through, the imp took 18 (10 x 1.75); a fireball at the raised Guard went back and hit its frozen imp for 32 (18 x
+1.75); charge 65 released for 64 on both imps in reach; Swat Back sent a fireball back for 7 (6 x 1.15); the Hadouken,
+now on SendBack, 37 (21 x 1.75). **Not provable headless:** real hands, the look.
+
 **E. Grappler** (the off hand; the Headlock and its throw are base)
 
 | Node | Parent | Levels | Owns | Art | Score |

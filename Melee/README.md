@@ -74,6 +74,7 @@ RSQ Melee page:
 | Headlock | On | The off grip on a living monster holds it (up to demon weight, Doom mass 400) for 3 s. |
 | Headlock: Human Shield (hold until let go) | Option (off) | Held as long as you hold the grip (a minute at most), facing away. |
 | Headlock Punch Extra Blood | On | Punching a monster you hold bleeds more: x1.3, x1.6, then x2.0. |
+| Start With Guard (Gun Bonsai VR) | Option (off) | With RSQ Gun Bonsai VR: the Guard at level 1 before it is learned (it still levels as an upgrade, and its tree's Counterpunch and Swat Back are offered on it). Without Gun Bonsai VR the Guard row is what turns it on. |
 | Guard | Option (off) | Without Gun Bonsai VR: both hands up at your face for 4 tics, no gun in either hand, and a blow from in front (within 55 degrees) does 60 % of its damage; you slide back a step. A blow of 35 or more breaks the guard: full damage, no guard for 0.4 s. |
 | Hadouken | Option (off) | Without Gun Bonsai VR: a fist at punch speed that meets a monster's missile sends it back at whoever fired it, 15 % faster, hitting for 150 %. |
 | Wall Splat | Option (off) | Without Gun Bonsai VR: a monster your punch knocks into a wall at 3 map units a tic or more takes 10, up to 20 for a hard slam, bounces off and reels 15 tics. |
@@ -160,7 +161,15 @@ Rig results (scripted hands, logs and frames of 2026-11-02 under `/home/claude/s
 - **RSQ Score:** the Headlock touches "grab.hold" (its Headlock combo); the shotgun kill in the slow-mo pays an award.
   The Fists tree's moves touch their hooks (GBOVR_TREES.md 4.1): hit.heavy, hit.body, punch.uppercut, launch, juggle,
   meteor, pound, clearout.
-- **RSQ Gestures:** Ground Pound and Clear Out (`rsqg_pair`; Melee asks "pair.ago" to keep the two-hand events read).
+- **RSQ Gestures:** Ground Pound and Clear Out (`rsqg_pair`; Melee asks "pair.ago" to keep the two-hand events read),
+  and the Guard's release ("both hands apart").
+- **The Guard's tree** (RSQ Gun Bonsai VR player nodes, 2026-11-02): Parry (both guarding hands driven forward at
+  1 m/s or more within 4 to 8 tics of a blow from in front: nothing through, the attacker knocked back and staggered;
+  it counts while the Guard was up in that window, since the push carries the hands out of the Guard's box), Reflect
+  Guard (a monster's missile about to hit the raised Guard from in front goes back at its shooter; at level 3 a ranged
+  bullet does too), Absorb and Release (what the Guard takes charges it, draining 5 a second; "both hands apart" lets
+  it out round you). Swat Back (a glove's): the open palm's swat sends the missile back at its shooter. A missile sent
+  back -- Hadouken, Swat Back, Reflect Guard -- hits for its own multiplier (one SendBack in gloves.zs).
 - **RSQ HP Bars:** a held monster shows the padlock.
 - **BD22 VR Reloaded:** the shove stands down; its own butt strike starts the slow-mo.
 - **RSQ Grapple / RSQ Wheel:** the shove is quiet on the rope or with the ring open.
