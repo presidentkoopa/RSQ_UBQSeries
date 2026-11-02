@@ -1,6 +1,41 @@
-// THE GLOVES: SuperPunchOut's glove (glove.md3, byte-identical to Ermac's PunchOutVR glove) and Ermac's fit,
-// unchanged -- Scale -1.2 1.2 1.2, Offset 0 -10 -10, the same on both hands (the engine mirrors the off hand itself
-// on this render path). MODELDEF matches the exact class only, so the off-hand glove needs its own block.
+// RSQ MELEE'S HANDS (zscript/rsqml/gloves.zs RSQML_HandLook): one Ready state per look, each with its own sprite and
+// frame below, one sprite per block. The sprites' lumps are 1x1 transparent stand-ins (a weapon state whose sprite has
+// no lump aborted the VM in A_Raise on the rig).
+// MODELDEF matches the exact class only, so the off-hand weapon (RSQ_GloveOff) repeats every block.
+// One right-hand mesh draws both hands: QuestZDoom mirrors the off controller's model itself.
+//
+//   RMHE A  Ermac's hand (Rusted Legacy / Doom Force Unleashed, MIT), frame 1 = the fist, at Ermac's own fit
+//      (modeldefs/weapons/fist.txt: Scale -1 1 1, Offset 0 -24 -10)
+//   RMHE B  Ermac's hand, frame 0 = the relaxed open hand
+//      (models/rsqml/hand/hand.md3 is Ermac's hand.md3 cut to its frames 0 and 1 by tools/md3_frames.py)
+//   RMHF A  BD22 VR's FBX free hand (RS_Brutal22WeaponsQ src/models/rsq/fbx/fbx_oh_free_R.md3, frames 0 and 1 kept), its
+//      frame 1 = the fist, fitted in place of Ermac's fist (BD22 VR MODELDEF.rsq RSQ_Hands: the same Scale and Offset)
+//   RMHF B  the FBX hand, frame 0 = the relaxed open hand
+//   RMHG A  SuperPunchOut's boxing glove (glove.md3, byte-identical to Ermac's PunchOutVR glove) at Ermac's glove fit,
+//      unchanged: Scale -1.2 1.2 1.2, Offset 0 -10 -10
+// Every block uses model slot 0 (a block whose only model was slot 1 drew nothing of its own on the rig: the glove
+// showed instead). BD22 VR's skin tone (an A_ChangeModel skin override on slot 0) is put on only while the FBX look is
+// up, and taken off when another look comes up (RSQML_HandLook.Tone).
+Model RSQ_Glove
+{
+	Path "models/rsqml/hand"
+	Model 0 "hand.md3"
+	Skin 0 "hand.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex RMHE A 0 1
+	FrameIndex RMHE B 0 0
+}
+Model RSQ_Glove
+{
+	Path "models/rsqml/fbx"
+	Model 0 "fbx_hand.md3"
+	Skin 0 "fbx_hand.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex RMHF A 0 1
+	FrameIndex RMHF B 0 0
+}
 Model RSQ_Glove
 {
 	Path "models/rsqml"
@@ -8,7 +43,29 @@ Model RSQ_Glove
 	Skin 0 "glove.png"
 	Scale -1.2 1.2 1.2
 	Offset 0.0 -10.0 -10.0
+	FrameIndex RMHG A 0 0
 	FrameIndex TNT1 A 0 0
+}
+
+Model RSQ_GloveOff
+{
+	Path "models/rsqml/hand"
+	Model 0 "hand.md3"
+	Skin 0 "hand.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex RMHE A 0 1
+	FrameIndex RMHE B 0 0
+}
+Model RSQ_GloveOff
+{
+	Path "models/rsqml/fbx"
+	Model 0 "fbx_hand.md3"
+	Skin 0 "fbx_hand.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex RMHF A 0 1
+	FrameIndex RMHF B 0 0
 }
 Model RSQ_GloveOff
 {
@@ -17,5 +74,6 @@ Model RSQ_GloveOff
 	Skin 0 "glove.png"
 	Scale -1.2 1.2 1.2
 	Offset 0.0 -10.0 -10.0
+	FrameIndex RMHG A 0 0
 	FrameIndex TNT1 A 0 0
 }

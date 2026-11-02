@@ -1,0 +1,171 @@
+version "4.14"
+// TEST ONLY (never ships). RSQ Melee on the headless qzd17.3 rig with REAL hand poses: the console script moves the
+// rig's qz_rhand / qz_lhand (OpenXR stage space, metres: +x right, +y up, -z forward; pitch 30 = level) and the
+// engine turns them into AttackPos / OffhandPos exactly as a headset would. Play code may not write those cvars, so
+// the probe only stages monsters and missiles around the scripted hands, and logs. mlp_case picks the test.
+class MLProbe : EventHandler
+{
+	int caseNo;
+	Actor imp, ball, m2;
+	int lastHp, lastHp2;
+	Vector3 lastR, lastL;
+	Vector3 ballVel;
+	bool held, placed;
+
+	PlayerPawn P() { return players[0].mo; }
+	Vector3 Local(Vector3 world)
+	{
+		let p = P();
+		Vector3 d = world - p.pos;
+		double c = cos(p.angle), s = sin(p.angle);
+		return (d.x * c + d.y * s, -d.x * s + d.y * c, d.z);
+	}
+	Vector3 World(Vector3 loc)
+	{
+		let p = P();
+		double c = cos(p.angle), s = sin(p.angle);
+		return p.pos + (loc.x * c - loc.y * s, loc.x * s + loc.y * c, loc.z);
+	}
+	Actor Spawn1(String cls, double d, double side = 0, double up = 0)
+	{
+		let p = P();
+		let a = Actor.Spawn(cls, World((d, side, up)), ALLOW_REPLACE);
+		if (a) a.angle = a.AngleTo(p);
+		return a;
+	}
+	void Hp(Actor a, String tag, out int last)
+	{
+		if (!a) return;
+		if (a.health != last) { Console.Printf("MLP t%d %s %s health %d -> %d vel %.1f %.1f %.1f z %.1f", level.maptime, tag, a.GetClassName(), last, a.health, a.vel.x, a.vel.y, a.vel.z, a.pos.z - a.floorz); last = a.health; }
+	}
+
+	override void WorldThingDamaged(WorldEvent e)
+	{
+		if (!e.Thing || e.Thing.player) return;
+		String inf = e.Inflictor ? e.Inflictor.GetClassName() : 'none';
+		String src = e.DamageSource ? e.DamageSource.GetClassName() : 'none';
+		Console.Printf("MLP t%d DAMAGED %s by %s (source %s): %d %s, health now %d", level.maptime, e.Thing.GetClassName(), inf, src, e.Damage, e.DamageType, e.Thing.health);
+	}
+
+	override void WorldThingSpawned(WorldEvent e)
+	{
+		let m = e.Thing;
+		// a random spawner (XMVE's ImpSpawner) stands in for the class asked for: the monster it spawns is the one
+		if (m && m.bIsMonster && level.maptime >= 45 && level.maptime <= 48 && (!imp || !imp.bIsMonster)) { imp = m; lastHp = m.health; Console.Printf("MLP the monster is %s", m.GetClassName()); }
+		if (!m || !m.bMissile || !imp || m.target != imp || ball) return;
+		String cn = m.GetClassName();
+		if (cn.IndexOf("Trail") >= 0 || cn.IndexOf("TargetCheck") >= 0) return;
+		ball = m;
+		Console.Printf("MLP t%d %s fired %s speed %.1f radius %.0f", level.maptime, imp.GetClassName(), cn, m.vel.Length(), m.radius);
+	}
+
+	override void WorldTick()
+	{
+		let p = P(); if (!p) return;
+		int t = level.maptime;
+		caseNo = CVar.FindCVar("mlp_case").GetInt();
+		Vector3 r = Local(p.AttackPos), l = Local(p.OffhandPos);
+		if (CVar.FindCVar("mlp_log").GetInt() && (r != lastR || l != lastL))
+			Console.Printf("MLP t%d hands R %.1f %.1f %.1f  L %.1f %.1f %.1f (fwd left up from the pawn)  viewz rel %.1f", t, r.x, r.y, r.z, l.x, l.y, l.z, p.player.viewz - p.pos.z);
+		if (t == 3 && CVar.FindCVar("mlp_noglove").GetInt() == 0)
+		{
+			p.GiveInventory("RSQ_Glove", 1); p.GiveInventory("RSQ_GloveOff", 1);
+			p.player.PendingWeapon = Weapon(p.FindInventory("RSQ_Glove"));
+		}
+		if (t == 30 && CVar.FindCVar("mlp_nooff").GetInt() == 0 && CVar.FindCVar("mlp_noglove").GetInt() == 0) { let o = Weapon(p.FindInventory("RSQ_GloveOff")); if (o && p.player.OffhandWeapon != o) p.player.PendingWeapon = o; }
+		if (t == 40) Console.Printf("MLP t40 ready %s off %s", p.player.ReadyWeapon ? p.player.ReadyWeapon.GetClassName() : 'none', p.player.OffhandWeapon ? p.player.OffhandWeapon.GetClassName() : 'none');
+		if (caseNo == 1) Hado(p, t, r);
+		if (caseNo == 2) Target(p, t);
+		if (caseNo == 3) GuardCase(p, t);
+		if (caseNo == 4) HeadlockCase(p, t, r, l);
+		Hp(imp, "m1", lastHp); Hp(m2, "m2", lastHp2);
+		lastR = r; lastL = l;
+	}
+
+	// 2: a monster to punch: mlp_cls at mlp_dist ahead, mlp_side to the left, facing you, held still (freezetics) until
+	// it is hit; then its flight is logged
+	int hitT;
+	void Target(PlayerPawn p, int t)
+	{
+		if (t == 45)
+		{
+			imp = Spawn1(CVar.FindCVar("mlp_cls").GetString(), CVar.FindCVar("mlp_dist").GetFloat(), CVar.FindCVar("mlp_side").GetFloat());
+			if (imp && !imp.bIsMonster) imp = null;
+			if (imp) { lastHp = imp.health; imp.freezetics = 400; FLineTraceData tr; p.LineTrace(p.angle, 2048, 0, TRF_THRUACTORS, 32, 0, 0, tr);
+				Console.Printf("MLP target %s at %.0f, mass %d, room %.0f floor-to-ceiling, wall %.0f ahead", imp.GetClassName(), CVar.FindCVar("mlp_dist").GetFloat(), imp.mass, imp.ceilingz - imp.floorz, tr.Distance); }
+		}
+		if (imp && imp.health != lastHp && !hitT) { hitT = t; imp.freezetics = 0; }
+		if (imp && hitT && t - hitT <= 40)
+			Console.Printf("MLP t%d +%d %s height above floor %.1f vel %.1f %.1f %.1f state %s", t, t - hitT, imp.GetClassName(), imp.pos.z - imp.floorz, imp.vel.x, imp.vel.y, imp.vel.z, imp.InStateSequence(imp.CurState, imp.FindState("Pain")) ? "pain" : "other");
+	}
+
+	// 3: THE GUARD: a zombieman ahead, blows from him (and one big one) while the script holds both fists at the face
+	void GuardCase(PlayerPawn p, int t)
+	{
+		if (t == 45) { m2 = Spawn1("ZombieMan", 140); if (m2) m2.freezetics = 400; }
+		if (m2 && (t == 90 || t == 100 || t == 110))
+		{
+			int dmg = t == 110 ? 50 : 20;
+			int h0 = p.health;
+			let sv = ServiceIterator.Find("RSQML_Service").Next();
+			p.DamageMobj(m2, m2, dmg, 'Hitscan');
+			Console.Printf("MLP t%d guard %d tics up: %d from %s -> took %d", t, sv ? sv.GetInt("guard", "", 0, 0, p) : -1, dmg, m2.GetClassName(), h0 - p.health);
+			p.health = 100; p.player.health = 100;
+		}
+	}
+
+	// 4: THE HEADLOCK: a monster at the off palm, the grip (the network event the grip key sends), the off hand moved
+	// about by the script, then main-hand punches; where the held monster is against the off hand is logged
+	void HeadlockCase(PlayerPawn p, int t, Vector3 r, Vector3 l)
+	{
+		if (t == 45) { imp = Spawn1(CVar.FindCVar("mlp_cls").GetString(), CVar.FindCVar("mlp_dist").GetFloat(), CVar.FindCVar("mlp_side").GetFloat()); if (imp && !imp.bIsMonster) imp = null; if (imp) lastHp = imp.health; }
+		if (t == 60) EventHandler.SendNetworkEvent("rsqml_hgrip", 1);
+		if (imp && t >= 58 && t <= 200 && (t % 3) == 0)
+		{
+			Vector3 m = Local(imp.pos);
+			let sv = ServiceIterator.Find("RSQML_Service").Next();
+			Console.Printf("MLP t%d held %d: monster fwd %.1f left %.1f up %.1f (face %.1f), off hand %.1f %.1f %.1f, gap to you %.1f, facing you %.0f deg off, frame %s%c",
+				t, sv ? sv.GetInt("headlock.holding", "", 0, 0, imp) : -1, m.x, m.y, m.z, m.z + imp.height * 0.85, l.x, l.y, l.z,
+				m.xy.Length() - p.radius - imp.radius, abs(Actor.DeltaAngle(imp.angle, imp.AngleTo(p))), "", 65 + imp.frame);
+		}
+		if (t == 230) EventHandler.SendNetworkEvent("rsqml_hgrip", 0);
+	}
+
+	// 1: HADOUKEN against the imp's own attack (whatever DoomImp is in this load order: Brutal Doom's Imp fires FireBall_
+	// from its Missile state). The imp is put into its Missile state; its fireball is held still where it spawned until
+	// the scripted punch starts forward, then put on its own line mlp_dist out from the hand and let go.
+	void Hado(PlayerPawn p, int t, Vector3 r)
+	{
+		if (t == 45) { imp = Spawn1(CVar.FindCVar("mlp_cls").GetString(), 420); lastHp = imp.health; imp.target = p; Console.Printf("MLP imp is %s", imp.GetClassName()); }
+		if (t == 50 && imp) { imp.target = p; imp.angle = imp.AngleTo(p); imp.SetState(imp.MissileState); }
+		if (!ball) return;
+		if (!ball.bMissile || ball.bDestroyed) { Console.Printf("MLP t%d ball gone (target %s)", t, ball.target ? ball.target.GetClassName() : 'none'); ball = null; return; }
+		if (!placed)
+		{
+			if (!held) { ballVel = ball.vel; held = true; if (imp) imp.freezetics = 100000; }
+			ball.vel = (0, 0, 0);
+			// the punch: the hand moving forward more than 1.5 units this tic
+			if (r.x - lastR.x > 1.5 || (CVar.FindCVar("mlp_any").GetInt() && (r - lastR).Length() > 1.5))
+			{
+				double want = CVar.FindCVar("mlp_dist").GetFloat();
+				Vector3 dir = ballVel.Unit();
+				Vector3 at = p.AttackPos - dir * want;
+				if (CVar.FindCVar("mlp_aim").GetInt())
+				{
+					// on a line at the middle of your body (where a monster aims), 'want' out from your centre
+					Vector3 mid = p.pos + (0, 0, p.height * 0.5);
+					dir = (mid - imp.pos - (0, 0, 34)).Unit();
+					at = mid - dir * want;
+					ballVel = dir * ballVel.Length();
+				}
+				ball.SetOrigin(at, false);
+				ball.vel = ballVel;
+				placed = true;
+				Console.Printf("MLP t%d punch starts: ball put %.0f out on its line, vel %.1f", t, want, ballVel.Length());
+			}
+			return;
+		}
+		Console.Printf("MLP t%d ball %.0f from the hand, z rel %.1f, target %s, vel %.1f (%.1f %.1f %.1f)", t, (ball.pos - p.AttackPos).Length(), ball.pos.z - p.pos.z,
+			ball.target ? ball.target.GetClassName() : 'none', ball.vel.Length(), ball.vel.x, ball.vel.y, ball.vel.z);
+	}
+}

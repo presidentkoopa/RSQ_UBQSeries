@@ -1,0 +1,41 @@
+version "4.14"
+// TEST ONLY: grants Gun Bonsai upgrades (as a level-up would) so RSQ Melee's moves can be checked as upgrades.
+class MelGBProbe : EventHandler
+{
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		let p = players[e.Player].mo;
+		if (!p) return;
+		let stats = TFLV_PerPlayerStats.GetStatsFor(p);
+		if (!stats) { Console.Printf("MELGB no stats"); return; }
+		let gb = ServiceIterator.Find("RSQ_MeleeUpgradeService").Next();
+		if (e.Name ~== "melgb_glove")
+		{
+			let g = Weapon(p.FindInventory("RSQ_Glove"));
+			let info = g ? stats.GetInfoFor(g) : null;
+			if (!info) { Console.Printf("MELGB no glove record"); return; }
+			static const String ups[] = { "RSQ_Upgrade_HeavyHands", "RSQ_Upgrade_ReturnFire", "RSQ_Upgrade_WallSplat", "RSQ_Upgrade_Haymaker" };
+			for (int i = 0; i < ups.Size(); i++) info.upgrades.Add(ups[i], max(e.Args[0], 1));
+			Console.Printf("MELGB glove: HeavyHands %d ReturnFire %d WallSplat %d Haymaker %d", gb.GetInt("level", "HeavyHands", 0, 0, g),
+				gb.GetInt("level", "ReturnFire", 0, 0, g), gb.GetInt("level", "WallSplat", 0, 0, g), gb.GetInt("level", "Haymaker", 0, 0, g));
+		}
+		if (e.Name ~== "melgb_guard")
+		{
+			stats.upgrades.Add("RSQ_Upgrade_Guard", max(e.Args[0], 1));
+			Console.Printf("MELGB player: Guard %d", gb.GetInt("plevel", "Guard", 0, 0, p));
+		}
+		if (e.Name ~== "melgb_punch")
+		{
+			// a punch after a load (needs RSQ Melee): an imp in front, the main glove's Deliver, then what Gun Bonsai did
+			let g = Weapon(p.FindInventory("RSQ_Glove"));
+			String gn = "RSQML_Gloves"; Class<StaticEventHandler> gc = gn; let gl = gc ? StaticEventHandler.Find(gc) : null;
+			Console.Printf("MELGB after load: glove %s, in hand %s, Melee punch handler %s", g ? "carried" : "MISSING", p.player.ReadyWeapon ? p.player.ReadyWeapon.GetClassName() : 'none', gl ? "here" : "MISSING");
+		}
+		if (e.Name ~== "melgb_show")
+		{
+			let g = Weapon(p.FindInventory("RSQ_Glove"));
+			Console.Printf("MELGB levels now: glove HeavyHands %d ReturnFire %d WallSplat %d Haymaker %d, player Guard %d", g ? gb.GetInt("level", "HeavyHands", 0, 0, g) : -1,
+				g ? gb.GetInt("level", "ReturnFire", 0, 0, g) : -1, g ? gb.GetInt("level", "WallSplat", 0, 0, g) : -1, g ? gb.GetInt("level", "Haymaker", 0, 0, g) : -1, gb.GetInt("plevel", "Guard", 0, 0, p));
+		}
+	}
+}

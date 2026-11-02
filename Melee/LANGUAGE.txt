@@ -1,5 +1,5 @@
 [en default]
 // RSQ Melee -- the gloves (the keys kept from RSQ Gun Bonsai VR, where they were until 2026-11-01)
-RSQ_GLOVE_TAG = "Boxing Gloves";
-RSQ_GLOVE_PICKUP = "You put on the boxing gloves!";
+RSQ_GLOVE_TAG = "Melee Hands";
+RSQ_GLOVE_PICKUP = "Melee hands!";
 RSQ_GLOVE_OB = "%o was knocked out by %k.";

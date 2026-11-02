@@ -1,0 +1,9 @@
+server int mlp_case = 0;
+server int mlp_log = 0;
+server float mlp_dist = 40;
+server int mlp_noglove = 0;
+server string mlp_cls = "DoomImp";
+server int mlp_aim = 0;
+server float mlp_side = 0;
+server int mlp_nooff = 0;
+server int mlp_any = 0;

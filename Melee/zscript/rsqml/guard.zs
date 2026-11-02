@@ -80,6 +80,21 @@ class RSQML_Guard : StaticEventHandler
 		return true;
 	}
 
+	// THE GUARD FLASH (the owner's pick, 2026-11-02): where the blow is stopped -- between it and your face, 12 map
+	// units (35 cm) from your eyes toward whatever struck (a missile from where it is) -- the Guard spark (sparks.zs
+	// MLGD) and stock Doom 2's tick (DSTINK, as rsqml/guard).
+	static void Flash(PlayerPawn pawn, Actor from)
+	{
+		Vector3 eye = RSQML_Hands.EyePos(pawn);
+		Vector3 to = from ? from.pos + (0, 0, from.bMissile ? 0.0 : from.height * 0.5) : eye + (cos(pawn.angle), sin(pawn.angle), 0);
+		Vector3 d = level.Vec3Diff(eye, to);
+		if (d.Length() < 0.01) d = (cos(pawn.angle), sin(pawn.angle), 0);
+		d = d.Unit();
+		RSQML_Spark.Guard(eye + d * 12.0);
+		pawn.A_StartSound("rsqml/guard", CHAN_AUTO, CHANF_OVERLAP, 1.0);
+		if (RSQML.Debug() > 0) Console.Printf("RSQML guard flash: %.1f %.1f %.1f from the eyes", d.x * 12, d.y * 12, d.z * 12);
+	}
+
 	// a blow on its way in: what is left of it (called from RSQML_Body's ModifyDamage, the player's own side)
 	int Soak(PlayerPawn pawn, int damage, Actor inflictor, Actor source)
 	{
@@ -108,7 +123,8 @@ class RSQML_Guard : StaticEventHandler
 		double away = pawn.AngleTo(from) + 180;
 		pawn.vel.xy += (cos(away), sin(away)) * PUSH;
 		if (pawn.player) pawn.player.keepmomentum = true;   // a bare Vel write is erased next tic (player.zs)
-		pawn.A_StartSound("rsqml/punch", CHAN_AUTO, 0, 0.7);
+		Flash(pawn, from);
+		pawn.A_StartSound("rsqml/punch", CHAN_AUTO, 0, 0.5);
 		RSQ_Buzz.Start(pawn, 0, 0.6, 6);
 		RSQ_Buzz.Start(pawn, 1, 0.6, 6);
 		double k = RSQML.Num("Guard.soak", lv, 0, 0.6);

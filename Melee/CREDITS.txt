@@ -17,12 +17,12 @@ THE BOXING GLOVES AND THE PUNCH (from RSQ Gun Bonsai VR)
   apply/02_MELEE_BUILD.md). Their upgrades and numbers stay in RSQ Gun Bonsai VR, an addon for Rebecca
   "ToxicFrog" Kelly's Gun Bonsai (MIT).
 
-THE GUN-BUTT SHOVE, ITS SLOW-MO AND THE F.E.A.R. EFFECT (from RSQ Gestures)
+THE GUN-BUTT SHOVE AND ITS SLOW-MO (from RSQ Gestures)
   The gun butt shove is BD22 VR Reloaded's butt shove (the owner's own mod; zscript/rsvr/melee.zs: the swing
   speed, reach, wait and the blow it lands), ported. Numbers taken from Brutal Doom (Sergeant Mark IV;
   brutal22test6.pk3): KickAttack's damage and alert range (Melee.dec) and the monsters' Pain.Kick thrusts
   (actors/Enemies). Sounds played by name, NOT shipped: Brutal Doom's Melee/SwingStrong and Kick/flesh when it
-  is loaded, otherwise stock Doom's skeleton/swing and punch (id Software). The F.E.A.R. Effect's blood is
+  is loaded, otherwise stock Doom's skeleton/swing and punch (id Software). The shotgun window's blood is
   each monster's own blood type (Brutal Doom's when it is loaded). Slow motion is RSQ_SlowMo's (rsm_pulse);
   the award is RSQ_Score's (RS_ScoreService). The swing reader is RSQ Gestures' punch reader (a port of
   presidentkoopa's RS_Gestures), copied.
@@ -31,6 +31,23 @@ THE HEADLOCK (from RSQ Distance Grab)
   The Headlock, Human Shield and the headlock throw: RSQ Distance Grab's (presidentkoopa; its feel ported from
   his desktop RS_WorldHands). Without Distance Grab, Melee's own toss uses Distance Grab's default throw
   numbers and impact rule.
+
+MELEE'S HANDS (2026-11-02)
+  Hand model by Ermac (iAmErmac), Rusted Legacy / Doom Force Unleashed, MIT licence: models/hand/hand.md3 (its
+  frames 0 and 1, cut by Melee/tools/md3_frames.py) and hand.png, at Ermac's own fit (modeldefs/weapons/fist.txt).
+  The licence text: credits/Ermac_RustedLegacy_LICENSE.txt.
+  The FBX hand: BD22 VR's free hand (RS_Brutal22WeaponsQ, presidentkoopa: src/models/rsq/fbx/fbx_oh_free_R.md3,
+  frames 0 and 1, and fbx_hand.png), baked there from the owner's own hand model, at BD22 VR's fit. Its skin tones
+  are BD22 VR's own textures, read from BD22 VR's pk3 when it is loaded (none shipped here).
+
+HIT SPARKS (2026-11-02)
+  Capcom vs. SNK 2 hit sparks, ripped and converted by Phantom.of.the.Server; property of Capcom, non-commercial.
+  (Normal, Special and Super Spark set 1, and the Guard sparks; credits/CvS2hitsparks_Readme.txt.)
+  Random Sprite Rips, ripped by Phantom.of.the.Server: "This is just a compilation of some stuff I ripped for my
+  chars along the time. Use it freely. The sprites are property of their respective game companies, so they cannot
+  be used for any commercial purposes." (the Hadouken hit burst; credits/RandomSpriteRips_Readme.txt).
+  Converted by Melee/tools/sparks.py (keyed, cropped, shrunk; nothing repainted).
+  Sounds played by name, not shipped: stock Doom 2's DSTINK (the guard) and DSSKEPCH (the swat).
 
 The shared Radiant Silvergun Options menu is the series' tools/rsmenu; RSQ_Accessibility's settings are read
 through Accessibility/tools/a11y_template.zs.

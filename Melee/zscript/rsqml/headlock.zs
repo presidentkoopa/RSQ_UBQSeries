@@ -26,6 +26,9 @@ class RSQML_Headlock : StaticEventHandler
 	Actor collar[MAXPLAYERS];
 	int collarEnd[MAXPLAYERS], collarPing[MAXPLAYERS];
 	int punches[MAXPLAYERS];      // blows the holder has landed on the held monster this hold (extra blood)
+	int flinchEnd[MAXPLAYERS];    // the held monster shows its pain frame until this tic (a punch's flinch)
+	bool holdInit[MAXPLAYERS];
+	int heldSprite[MAXPLAYERS], heldFrame[MAXPLAYERS];   // the frame it was caught in: shown between flinches
 	// the throw: the off hand's last palm and body, the arm's recent top speed (m/s), and its last per-tic movements
 	Vector3 cPalm[MAXPLAYERS], cBody[MAXPLAYERS];
 	bool cHave[MAXPLAYERS];
@@ -44,6 +47,9 @@ class RSQML_Headlock : StaticEventHandler
 
 	static clearscope double Num(String n, double d) { let c = CVar.FindCVar(n); return c ? c.GetFloat() : d; }
 	static clearscope bool Flag(String n, bool d) { let c = CVar.FindCVar(n); return c ? c.GetBool() : d; }
+
+	// the player's off hand is holding someone (that hand grips: it neither punches nor returns fireballs)
+	bool HoldsAny(int n) { return n >= 0 && n < MAXPLAYERS && collar[n] != null; }
 
 	bool IsHolding(Actor a)
 	{
@@ -191,6 +197,10 @@ class RSQML_Headlock : StaticEventHandler
 		collarEnd[n] = level.maptime + (shield ? 60 * TICRATE : int(Num("rsqml_headlock_secs", 3.0) * TICRATE));
 		collarPing[n] = 0;
 		punches[n] = 0;
+		flinchEnd[n] = 0;
+		holdInit[n] = false;
+		heldSprite[n] = a.sprite;
+		heldFrame[n] = a.frame;
 		// the catch's feel: Distance Grab's thud and tick when it is loaded, else a knock in the off hand
 		let dg = RSQML.Svc("RSQDG_ThrowService");
 		if (!dg || dg.GetInt("headlock.caught", "", n, 0, a) != 1) RSQ_Buzz.Start(pmo, 1, 0.5, 4);
@@ -202,6 +212,7 @@ class RSQML_Headlock : StaticEventHandler
 		let a = collar[n];
 		collar[n] = null;
 		if (!a) return;
+		if (a.CurState) { a.sprite = a.CurState.sprite; a.frame = a.CurState.Frame; }   // its own frame again
 		let tok = RSQML_Held(a.FindInventory("RSQML_Held"));
 		if (tok) tok.GiveBack();
 		// nothing to unfreeze: freezetics counts itself down (p_mobj.cpp), so letting go IS the release
@@ -219,18 +230,12 @@ class RSQML_Headlock : StaticEventHandler
 			[hp, ok] = RSQML_Hands.Pos(p.mo, 1);
 			if (!ok) hp = (p.mo.pos.x, p.mo.pos.y, p.mo.player.viewz - 8);
 			if (n == consoleplayer && ok && ThrowSwing(n, p, a, hp)) continue;
-			Vector3 fw = RSQML_Hands.Dir(p.mo, 1);
-			Vector3 at = hp + fw * (a.Radius + 6.0);
-			at.z -= a.Height * 0.5;
-			if (RSQML.Metres(at - a.Pos) > 1.5) { EndCollar(n); continue; }   // torn away
-			if (!a.TryMove(at.xy, true)) { }
-			a.SetZ(max(a.floorz, at.z));
-			a.Vel = (0, 0, 0);
-			if (Flag("rsqml_headlock_shield", false)) a.Angle = p.mo.Angle;
+			if (!Hold(n, p.mo, a, hp)) { EndCollar(n); continue; }   // no room for it (a wall at your hand)
 			// freezetics, re-asserted every tic before the thinkers run: the monster's Tick returns early (no states,
 			// movement or AI) but it KEEPS its blockmap link, so it stays solid and shootable. RSQ HP Bars reads this
 			// (a freezetics that stands still, with NOGRAVITY / FORCEINFIGHTING borrowed) as "held".
 			a.freezetics = 2;
+			Flinch(n, a);
 			// RSQ Score: "grab.hold" touched it (kept alive every 2 s so its 3 s chain gap never breaks it)
 			if (level.maptime >= collarPing[n])
 			{
@@ -239,6 +244,61 @@ class RSQML_Headlock : StaticEventHandler
 				Service s;
 				while (s = sit.Next()) s.GetInt("touch", "grab.hold", n, 0, a);
 			}
+		}
+	}
+
+	// ---- THE HOLD ITSELF (2026-11-02; the owner's pick "real monster at hand": grabbed by the collar and sucker-punched
+	// in the face). The monster itself is moved each tic to the off hand: its face (85 % of its height) at the hand's
+	// height, its body just past the hand away from you, facing you (Human Shield: facing away). Never into you: at
+	// least your radius + its radius + 2 from your centre. Never into a wall: a trace from your centre at its middle
+	// stops it short of one (no room for it there and the hold ends). Moved with SetOrigin(moving), so the renderer
+	// interpolates it like anything that moves, eased 60 % of the way a tic so a shaky hand does not shake it. No
+	// shrinking, no sprite swap: any monster, no new art.
+	const FACE_FRAC = 0.85;
+	const EASE = 0.6;
+
+	private bool Hold(int n, PlayerPawn pmo, Actor a, Vector3 hp)
+	{
+		Vector2 away = hp.xy - pmo.pos.xy;
+		double ol = away.Length();
+		away = ol > 0.5 ? away / ol : (cos(pmo.angle), sin(pmo.angle));
+		double minD = pmo.radius + a.radius + 2.0;
+		double d = max(ol + a.radius * 0.5, minD);
+		double z = hp.z - a.height * FACE_FRAC;
+		// a wall between you and where it would go: it stops short (its radius off the wall)
+		FLineTraceData t;
+		double midZ = z + a.height * 0.5 - pmo.pos.z;
+		if (pmo.LineTrace(VectorAngle(away.x, away.y), d + a.radius, 0, TRF_THRUACTORS, midZ, 0, 0, t) && t.HitType != TRACE_HitNone)
+			d = min(d, t.Distance - a.radius - 1.0);
+		if (d < minD) return false;
+		Vector3 want = (pmo.pos.x + away.x * d, pmo.pos.y + away.y * d, z);
+		Vector3 at = holdInit[n] ? a.pos + (want - a.pos) * EASE : want;
+		holdInit[n] = true;
+		at.z = clamp(at.z, a.floorz, max(a.floorz, a.ceilingz - a.height));
+		a.SetOrigin(at, true);
+		a.Vel = (0, 0, 0);
+		a.Angle = Flag("rsqml_headlock_shield", false) ? pmo.Angle : a.AngleTo(pmo);
+		return true;
+	}
+
+	// THE FLINCH: a punch shows its pain frame for 6 tics -- the first drawn frame of its Pain sequence, put on the
+	// frozen monster (its state does not run: none of the pain state's code, Brutal Doom's or anyone's), then the frame
+	// it was caught in again. With its pain sound.
+	const FLINCH_TICS = 6;
+	private void Flinch(int n, Actor a)
+	{
+		if (level.maptime >= flinchEnd[n])
+		{
+			// back to the frame it was caught in (the engine's own pain reaction put the frozen monster in its Pain
+			// state, which it cannot leave while frozen: without this it would wince for the rest of the hold)
+			if (flinchEnd[n] > 0) { a.sprite = heldSprite[n]; a.frame = heldFrame[n]; flinchEnd[n] = 0; }
+			return;
+		}
+		State s = a.FindState("Pain");
+		int tnt = Actor.GetSpriteIndex('TNT1');
+		for (int i = 0; s && i < 12; i++, s = s.NextState)
+		{
+			if (s.sprite != tnt && s.Tics != 0) { a.sprite = s.sprite; a.frame = s.Frame; return; }
 		}
 	}
 
@@ -328,11 +388,16 @@ class RSQML_Headlock : StaticEventHandler
 	override void WorldThingDamaged(WorldEvent e)
 	{
 		let t = e.Thing;
-		if (!t || t.bNoBlood || e.Damage <= 0 || !Flag("rsqml_headlock_blood", true)) return;
+		if (!t || e.Damage <= 0) return;
 		let pmo = PlayerPawn(e.DamageSource);
 		if (!pmo || !pmo.player) return;
 		int n = pmo.PlayerNumber();
 		if (n < 0 || n >= MAXPLAYERS || collar[n] != t) return;
+		// the flinch (any blow of yours on the monster you hold), then the extra blood
+		if (flinchEnd[n] <= level.maptime) t.A_StartSound(t.PainSound, CHAN_VOICE);
+		flinchEnd[n] = level.maptime + FLINCH_TICS;
+		if (t.health > 0) Flinch(n, t);
+		if (t.bNoBlood || !Flag("rsqml_headlock_blood", true)) return;
 		punches[n]++;
 		double extra = punches[n] == 1 ? 0.3 : punches[n] == 2 ? 0.6 : 1.0;
 		int amt = max(1, int(e.Damage * extra + 0.5));

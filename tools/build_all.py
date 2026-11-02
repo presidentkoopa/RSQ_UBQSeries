@@ -49,7 +49,7 @@ MODS = {
     'Grenade':      ('RSQ_Grenade.pk3', 'list', ['zscript.txt', 'MAPINFO.txt', 'CVARINFO.txt', 'MENUDEF.txt', 'MODELDEF.txt',
                      'SNDINFO.txt', 'CREDITS.txt', 'README.md', 'zscript', 'models', 'sounds', 'sprites']),
     'Melee':        ('RSQ_Melee.pk3', 'list', ['zscript.txt', 'MAPINFO.txt', 'CVARINFO.txt', 'MENUDEF.txt', 'MODELDEF.txt',
-                     'SNDINFO.txt', 'LANGUAGE.txt', 'CREDITS.txt', 'README.md', 'zscript', 'models', 'sounds']),
+                     'SNDINFO.txt', 'LANGUAGE.txt', 'CREDITS.txt', 'README.md', 'zscript', 'models', 'sounds', 'sprites', 'credits']),
     'GunBonsaiOffhandVR': ('RSQ_GunBonsaiVR.pk3', 'all', ['.git*', 'build.ps1', 'NOTES.md', 'tools/*', '*.pk3']),
 }
 

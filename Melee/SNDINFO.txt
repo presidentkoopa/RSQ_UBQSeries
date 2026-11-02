@@ -12,3 +12,7 @@ rsqml/star		"sounds/rsqml/STAR.wav"
 rsqml/smash		"sounds/rsqml/HITTHE.wav"
 $limit rsqml/punch 4
 $limit rsqml/smash 2
+// Stock Doom 2 lumps under our own names (nothing shipped): the guard taking a blow (DSTINK, the chat tick) and the
+// open palm's swat (DSSKEPCH, the revenant's slap).
+rsqml/guard		dstink
+rsqml/swat		dsskepch

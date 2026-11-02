@@ -8,6 +8,7 @@ version "4.14"
 #include "zscript/rsqml/a11y.zs"     // RSQML_A11y: RSQ_Accessibility's settings, read by name (Accessibility/tools/a11y_template.zs)
 #include "zscript/rsqml/core.zs"
 #include "zscript/rsqml/service.zs"
+#include "zscript/rsqml/sparks.zs"    // the hit sparks (Capcom vs. SNK 2 art, tools/sparks.py)
 #include "zscript/rsqml/gloves.zs"
 #include "zscript/rsqml/splat.zs"
 #include "zscript/rsqml/slappers.zs"

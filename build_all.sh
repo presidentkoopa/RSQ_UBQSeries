@@ -114,7 +114,7 @@ echo "built pk3/RSQ_Grenade.pk3"
 # gun-butt shove, the Headlock); its explicit include list.
 cd "$HUB/Melee"
 rm -f "$OUT/RSQ_Melee.pk3"
-zip -q -r -X "$OUT/RSQ_Melee.pk3" zscript.txt MAPINFO.txt CVARINFO.txt MENUDEF.txt MODELDEF.txt SNDINFO.txt LANGUAGE.txt CREDITS.txt README.md zscript models sounds
+zip -q -r -X "$OUT/RSQ_Melee.pk3" zscript.txt MAPINFO.txt CVARINFO.txt MENUDEF.txt MODELDEF.txt SNDINFO.txt LANGUAGE.txt CREDITS.txt README.md zscript models sounds sprites credits
 echo "built pk3/RSQ_Melee.pk3"
 
 # RSQ_GunBonsaiVR (the Gun Bonsai Offhand VR patch): everything but the build script, notes, tools and git files (its build.ps1).

@@ -4,8 +4,14 @@
 // ---- THE GLOVES AND THE PUNCH (gloves.zs, slappers.zs) -- server settings, as they were ------------------------
 // Slappers Only: on puts the boxing gloves on both hands at once and puts your guns away (gun pickups vanish); off gives them back.
 server bool  rsqml_slappers = false;
-// Start With Gloves: 1 hands you the boxing gloves at each level start.
+// Start With Melee Hands: 1 hands you Melee's hands at each level start and brings them up in both hands.
 server int   rsqml_gloves = 0;
+// Melee Hands: 0 Auto (BD22 VR's FBX hand when RSQ's BD22 VR weapons mod is loaded, else Ermac's), 1 Ermac, 2 FBX.
+user int     rsqml_hands_model = 0;
+// Boxing Gloves: Melee's hands wear SuperPunchOut's boxing gloves (always fists: no open palm). Slappers Only wears them too.
+server bool  rsqml_boxing = false;
+// Open-Palm Swat: an open hand (tap that hand's fire) swung through a monster's missile knocks it aside.
+server bool  rsqml_swat = true;
 // The gloves' punch reader (SuperPunchOut's own defaults: spo_min_speed, spo_full_speed, spo_rehit_tics,
 // spo_uppercut_rise) and reach past the glove's 9 cm radius, in map units.
 server float rsqml_punch_min_speed = 2.0;
