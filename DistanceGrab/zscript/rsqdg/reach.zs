@@ -144,20 +144,24 @@ class RSQDG_Reach
 		// part -- so the main hand's own part stands down, and the off hand's part asks nothing
 		// about what either hand holds: holding the modifier IS the intent to reach.
 		if (p && p.mo && RSQDG_A11y.Swapped(p.mo)) return hand == 0;
-		if (!p || !Flag("rsqdg_yield", p, true)) return false;
+		if (!p) return false;
+		// TWO-HANDING STANDS THE WHOLE GRAB DOWN (TwoHanding, below): both hands, whatever
+		// rsqdg_yield says. A hand already carrying something keeps its palm gate, so a held
+		// thing is not dropped because the other hand came near.
+		if (p.mo && TwoHanding(p))
+		{
+			let hd = RSQDG_Hold.Get();
+			if (!hd || !hd.HandIsFull(hand)) return true;
+		}
+		if (!Flag("rsqdg_yield", p, true)) return false;
+		// FIGHTING WITH THE HAND (the owner, 11-02: "punching in melee triggers distance grab, so when
+		// I'm in a bar fight I'm pulling all sorts of shit around me into the fight"): a hand wearing RSQ
+		// Melee's boxing gloves, or one that moved at punch speed in the last 0.75 s, does not arm the
+		// reach (MeleeHand, below). An idle empty hand turned palm out still reaches.
+		if (p.mo && MeleeHand(p, hand)) return true;
 		// RSQ_TacticalRig: a hand reaching into a holster or its radial, or holding a
 		// door, the cigarette or the Zippo, is the rig's. Asked by service name, so an
 		// absent rig gives no answer.
-		// TWO-HANDING. A hand close to the other one while the main hand holds a gun is
-		// steadying it, and canting a steadied rifle to the side ("SWAT style") rolls
-		// both palms out -- the grab's own gesture (the owner's headset test, 10-27). So
-		// both hands stand down inside rsqdg_steady_m of each other (the engine's own
-		// two-hand steadying reaches 0.5 m).
-		if (p.mo && p.ReadyWeapon && !p.ReadyWeapon.bMELEEWEAPON)
-		{
-			double steady = Num("rsqdg_steady_m", p, 0.45);
-			if (steady > 0 && Metres(p.mo.AttackPos - p.mo.OffhandPos) < steady) return true;
-		}
 		let rit = ServiceIterator.Find("RSQTR_RigService");
 		Service rs;
 		while (rs = rit.Next())
@@ -187,6 +191,115 @@ class RSQDG_Reach
 		if (n == "fist" || (w.bMELEEWEAPON && w.bCHEATNOTWEAPON)) return false;
 		if (w.bMELEEWEAPON) return true;
 		return n.IndexOf("ssq_") == 0 || n.IndexOf("ubqs_") == 0;
+	}
+
+	// ---- TWO-HANDING (the owner, 11-02: "when I two hand a weapon sometimes I like to tilt it at an
+	// angle ... and that causes the distance lasers to fire. can we disable the distance grab when I
+	// am two handing? usually when I two hand I am dedicated to killing.") ----------------------------
+	//
+	// While two-handing, Distance Grab stands down COMPLETELY: no reach, no lock, no beam, no cone,
+	// no walk-up grip (HandBusy, RSQDG_Grab.WorldTick, RSQDG_Laser.WorldTick, RSQDG_Near). Two-handing
+	// is any of:
+	//   - QuestZDoom's own two-hand latch: player.WeaponState & WF_TWOHANDSTABILIZED (p_pspr.cpp sets
+	//     it from the C++ weaponStabilised on every psprite state change: the off grip pressed with the
+	//     controllers inside 0.50 m while vr_two_handed_weapons is on; released by letting go);
+	//   - BD22 VR's own two-hand tokens, asked by class name so nothing links against it:
+	//     RSQ_TwoHandRifle (its Two-Hand Aim on the Rifle) and RSVR_MeleeTwo (two hands on the axe or
+	//     the sword) -- the same three things BD22 VR's RSVR_VRHand.TwoHands reads;
+	//   - a gun (not melee, not the bare hand) in the main hand with the off hand inside rsqdg_steady_m
+	//     of it (0.5 m, the engine's own steadying distance; 0 turns this half off), unless a hand is
+	//     carrying something (Distance Grab's own two-hand carry).
+	// And it STAYS down TWO_HAND_HOLD tics (0.5 s) after the last of those ends, so the moment the hands
+	// part while the gun is still canted does not arm the grab. The time is kept per player on
+	// RSQDG_Grab (twoUntil).
+	const TWO_HAND_HOLD = 18;
+
+	static play bool TwoHandRaw(PlayerInfo p)
+	{
+		if (!p || !p.mo) return false;
+		if (p.WeaponState & WF_TWOHANDSTABILIZED) return true;
+		let gr = RSQDG_Grab.Get();
+		if (gr && gr.TwoHandToken(p.mo)) return true;
+		let w = p.ReadyWeapon;
+		if (!w || w.bMELEEWEAPON) return false;
+		String n = w.GetClassName();
+		n = n.MakeLower();
+		if (n == "fist" || n.IndexOf("ubqs_") == 0 || n.IndexOf("ssq_") == 0) return false;
+		double steady = Num("rsqdg_steady_m", p, 0.5);
+		if (steady <= 0) return false;
+		let hd = RSQDG_Hold.Get();
+		if (hd && (hd.HandIsFull(0) || hd.HandIsFull(1))) return false;
+		return Metres(p.mo.AttackPos - p.mo.OffhandPos) < steady;
+	}
+
+	static play bool TwoHanding(PlayerInfo p)
+	{
+		if (!p || !p.mo) return false;
+		let gr = RSQDG_Grab.Get();
+		int pn = p.mo.PlayerNumber();
+		bool raw = TwoHandRaw(p);
+		if (!gr || pn < 0 || pn >= MAXPLAYERS) return raw;
+		if (raw) gr.twoUntil[pn] = level.maptime + TWO_HAND_HOLD;
+		return raw || level.maptime < gr.twoUntil[pn];
+	}
+
+	// ---- A HAND THAT IS FIGHTING DOES NOT REACH (owner, 11-02) ----------------------------------------
+	//
+	// The rule, exactly:
+	//   1. a hand holding RSQ Melee's boxing gloves (its weapon's class name starts "RSQ_Glove": RSQ_Glove
+	//      in the main hand, RSQ_GloveOff in the off hand; matched by name, so nothing links against
+	//      RSQ Melee) never arms the reach;
+	//   2. a hand whose palm moved at PUNCH SPEED stands down for PUNCH_HOLD tics (0.75 s) after the
+	//      last such tic. Punch speed is RSQ Melee's own Punch Min Speed (rsqml_punch_min_speed, read
+	//      by name; 2.0 m/s, SuperPunchOut's spo_min_speed, without RSQ Melee). The speed is the palm's
+	//      own (RSQDG_Aim.PalmVelocity: the peak 2-tic speed over its short window, in the tracking frame,
+	//      so walking or turning is not a punch). This covers Brutal Doom's fists and any bare hand.
+	// Neither applies to a hand that already has something locked, in the air or in the hand: the
+	// flick, the catch and the throw are fast on purpose. rsqdg_yield ("Not With Melee") off turns both
+	// off. The time is kept per hand on RSQDG_Grab (punchUntil).
+	const PUNCH_HOLD = 26;
+
+	static play bool HandIdle(int hand)
+	{
+		let gr = RSQDG_Grab.Get();
+		let hd = RSQDG_Hold.Get();
+		let fl = RSQDG_Flight.Get();
+		return !(gr && gr.Locked(hand)) && !(hd && hd.HandIsFull(hand)) && !(fl && fl.Flying(hand));
+	}
+
+	static play bool Punching(PlayerInfo p, int hand)
+	{
+		let gr = RSQDG_Grab.Get();
+		let aim = RSQDG_Aim.Get();
+		if (!gr || !aim || (hand != 0 && hand != 1)) return false;
+		if (gr.punchSeen[hand] != level.maptime)
+		{
+			gr.punchSeen[hand] = level.maptime;
+			let cv = CVar.FindCVar("rsqml_punch_min_speed");
+			double need = cv ? cv.GetFloat() : 2.0;
+			if (need <= 0) need = 2.0;
+			double mps = Metres(aim.PalmVelocity(hand)) * TICRATE;
+			if (mps >= need)
+			{
+				if (level.maptime >= gr.punchUntil[hand] && Flag("rsqdg_debug", p, false))
+					Console.Printf("[RSQDG] t%d hand %d at punch speed (%.1f m/s >= %.1f): no reach for 0.75 s", level.maptime, hand, mps, need);
+				gr.punchUntil[hand] = level.maptime + PUNCH_HOLD;
+			}
+		}
+		return level.maptime < gr.punchUntil[hand];
+	}
+
+	static play bool MeleeHand(PlayerInfo p, int hand)
+	{
+		if (!HandIdle(hand)) return false;
+		Weapon w = (hand == 0) ? p.ReadyWeapon : p.OffhandWeapon;
+		if (w)
+		{
+			String n = w.GetClassName();
+			n = n.MakeLower();
+			if (n.IndexOf("rsq_glove") == 0) return true;
+		}
+		return Punching(p, hand);
 	}
 
 	// ---- the basis ----------------------------------------------------------

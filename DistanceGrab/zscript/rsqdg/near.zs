@@ -199,10 +199,14 @@ class RSQDG_Near : EventHandler
 		let pmo = p.mo;
 		let hold = RSQDG_Hold.Get();
 		let door = RSQDG_Door.Get();
+		bool two = RSQDG_Reach.TwoHanding(p);
 		for (int h = 0; h < 2; h++)
 		{
 			if (RigBusy(pmo, h)) continue;     // holsters first
 			int k = consoleplayer * 2 + h;
+			// TWO-HANDING (reach.zs TwoHanding): the off grip is steadying the gun, not reaching for
+			// what is next to it. A grip already held, or a hand already carrying, keeps what it has.
+			if (two && !gripDown[k] && (!hold || !hold.HandIsFull(h))) continue;
 			// a press RSQ Melee's Headlock takes is not ours (one mod decides; see the header)
 			ready[h] = gripDown[k]
 				|| (!MeleeClaims(pmo, h) && ((door && On("rsqdg_door_grip", p, true) && door.Touching(h))

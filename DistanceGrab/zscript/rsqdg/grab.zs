@@ -57,6 +57,26 @@ class RSQDG_Grab : EventHandler
 		return RSQDG_Grab(EventHandler.Find("RSQDG_Grab"));
 	}
 
+	// TWO-HANDING (reach.zs TwoHanding): the tic each player's stand-down ends, and BD22 VR's two-hand
+	// tokens, found by name once (null without BD22 VR, so nothing links against it).
+	int twoUntil[MAXPLAYERS];
+	// FIGHTING HANDS (reach.zs MeleeHand / Punching): per hand of this machine's player, the tic the
+	// punch-speed stand-down ends, and the tic it was last measured
+	transient int punchUntil[2], punchSeen[2];
+	private transient bool tokLooked;
+	private transient class<Inventory> tokRifle, tokMelee;
+	bool TwoHandToken(Actor mo)
+	{
+		if (!tokLooked)
+		{
+			tokLooked = true;
+			Name a = "RSQ_TwoHandRifle", b = "RSVR_MeleeTwo";
+			tokRifle = a; tokMelee = b;
+		}
+		return mo && ((tokRifle && mo.CountInv(tokRifle) > 0) || (tokMelee && mo.CountInv(tokMelee) > 0));
+	}
+	private transient bool twoSaid;
+
 	Actor Locked(int hand) const
 	{
 		return (hand == 0 || hand == 1) ? lockActor[hand] : null;
@@ -337,9 +357,29 @@ class RSQDG_Grab : EventHandler
 		let pmo = p.mo;
 		let aim = RSQDG_Aim.Get();
 		bool poseGood = aim && aim.PoseGood();
+		// TWO-HANDING: the grab stands down completely (reach.zs TwoHanding). A lock is let go WITHOUT
+		// a launch (a cant while locked is not a flick), and nothing arms until 0.5 s after the hands part.
+		bool two = RSQDG_Reach.TwoHanding(p);
+		if (two != twoSaid)
+		{
+			twoSaid = two;
+			if (RSQDG_Reach.Flag("rsqdg_debug", p, false))
+				Console.Printf("[RSQDG] t%d two-handing %s (latch %d)", level.maptime, two ? "-- standing down" : "over -- back", (p.WeaponState & WF_TWOHANDSTABILIZED) != 0);
+		}
 
 		for (int h = 0; h < 2; h++)
 		{
+			if (two)
+			{
+				let hd2 = RSQDG_Hold.Get();
+				if (!hd2 || !hd2.HandIsFull(h))
+				{
+					if (lockActor[h]) Unlock(h, p, "two-handing");
+					armed[h] = false; lease[h] = 0; altHeld[h] = false;
+					dwellOn[h] = null; dwellTics[h] = 0;
+					continue;
+				}
+			}
 			// ---- THE POSE, READ FRESH ------------------------------------
 			//
 			// This is the trigger. Palm out and the hand is reaching; palm back
@@ -454,6 +494,7 @@ class RSQDG_Grab : EventHandler
 
 	override void WorldLoaded(WorldEvent e)
 	{
+		for (int i = 0; i < MAXPLAYERS; i++) twoUntil[i] = 0;
 		lockActor[0] = null; lockActor[1] = null;
 		altHeld[0] = false; altHeld[1] = false;
 		armed[0] = false; armed[1] = false;

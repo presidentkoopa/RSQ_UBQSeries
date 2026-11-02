@@ -295,6 +295,10 @@ class RSQDG_Laser : EventHandler
 		let aim  = RSQDG_Aim.Get();
 		if (!aim || !aim.PoseGood()) { HideAll(); return; }
 
+		// TWO-HANDING: no beam, no dot, no cone on either hand (reach.zs TwoHanding; RSQDG_Grab lets the
+		// locks go). Asked here too, so the beam does not outlive the lock by the tic this runs first.
+		if (RSQDG_Reach.TwoHanding(p)) { HideAll(); return; }
+
 		let grab = RSQDG_Grab.Get();
 		let fl   = RSQDG_Flight.Get();
 		let hold = RSQDG_Hold.Get();
@@ -313,11 +317,13 @@ class RSQDG_Laser : EventHandler
 			pip[h]  = Ensure(pip[h],  "RSQDG_Dot");
 			cone[h] = Ensure(cone[h], "RSQDG_ConeViz");
 			if (!beam[h] || !pip[h] || !cone[h]) continue;
-			// TWO BEAMS FROM ONE HAND IS ONE TOO MANY (G6). When RSQ_LaserSight is
-			// already drawing on this hand, the grab's beam stands down; the dot and
-			// the cone stay, since they say what the GRAB would take. rsqdg_beam_yield 0
-			// keeps both.
-			bool wb = wantBeam && !(RSQDG_Reach.Flag("rsqdg_beam_yield", p, true) && LaserOn(h));
+			// YIELD TO LASER SIGHT (G6, rsqdg_beam_yield): when RSQ_LaserSight is already drawing a
+			// beam on this hand, the grab's beam stands down; the dot and the cone stay, since they say
+			// what the GRAB would take. OFF BY DEFAULT since 11-02 (the owner: "Laser sight doesn't seem
+			// to play well with DistanceGrab laser" -- he saw one laser and wants both: LaserSight's from
+			// the gun, the grab's from the hand). The two are separate actors and models (LaserSight's
+			// voxel rod on the gun, RSQDG_Beam here), so nothing else hides one for the other.
+			bool wb = wantBeam && !(RSQDG_Reach.Flag("rsqdg_beam_yield", p, false) && LaserOn(h));
 			DrawHand(h, pmo, p, aim, grab, fl, hold, wb, wantDot, wantCone);
 		}
 	}

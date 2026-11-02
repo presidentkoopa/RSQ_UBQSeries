@@ -380,6 +380,11 @@ class RSQDG_Flight : EventHandler
 				// whether it was a clip or a backpack that landed.
 				double heft = RSQDG_Mass.Heft(a);
 				String cname = a.GetClassName();
+				// WHAT WEAPONS YOU HAD before this pickup, so an off-hand catch can tell which gun it
+				// gave (a Brutal Doom floor gun is a CustomInventory that GIVES one: OffHandKeep).
+				Array<Weapon> hadW;
+				class<Inventory> icls = inv.GetClass();
+				if (hand == 1) for (let it = pmo.Inv; it; it = it.Inv) { let ow = Weapon(it); if (ow) hadW.Push(ow); }
 				bool took;
 				Actor result;
 				[took, result] = inv.CallTryPickup(pmo);
@@ -387,6 +392,7 @@ class RSQDG_Flight : EventHandler
 				{
 					if (RSQDG_Reach.Flag("rsqdg_debug", p, false))
 						Console.Printf("[RSQDG] hand %d caught and USED %s", hand, cname);
+					if (hand == 1) OffHandKeep(pmo, p, hadW, icls);
 					flyActor[hand] = null;
 					flyTic[hand] = 0;
 					flyHold[hand] = 0;
@@ -435,6 +441,90 @@ class RSQDG_Flight : EventHandler
 		return false;
 	}
 
+	// ---- A GUN CAUGHT BY THE OFF HAND STAYS IN THE OFF HAND --------------------
+	//
+	// The owner, 11-02: "if i grab a weapon with the offhand i want it to go there until i move it back
+	// to mainhand myself, or holster it." A weapon the OFF hand catches (and the pickup takes) goes INTO
+	// the off hand, through the engine's own off-hand slot: flagged bOffhandWeapon and raised through
+	// PendingWeapon, which QuestZDoom's BringUpWeapon puts on PSP_OFFHANDWEAPON (player.zs) -- the way
+	// RSQ_TacticalRig's DrawOff / QueueOff does it (copied, not linked). The pickup's own auto-switch to
+	// the main hand is cancelled. It stays there: nothing here moves it again; the rig's holsters, its
+	// watch move, or QuestZDoom's switchhand take it back.
+	//   Which gun: the one the pickup GAVE (a weapon you did not have before -- Brutal Doom's floor guns
+	//   are CustomInventory spawners that give one), else for a plain weapon pickup the copy you own.
+	//   Not: an off-hand-only weapon (class default bOffhandWeapon -- BD22 VR's dual copies, the saber's
+	//   second hilt), a melee weapon (BD22 VR moves its own axe, rsvr/axegrab.zs), a two-handed weapon,
+	//   one flagged NoHandSwitch, the saber or the ShieldSaw, or the gun already in the main hand.
+	//   Main-hand catches are unchanged.
+	// THE RAISE WAITS while the main hand is still switching, and for as long as QuestZDoom's two-hand
+	// latch is on (WF_TWOHANDSTABILIZED): an off-hand weapon raised while latched arrives invisible and
+	// dead (player.zs, p_pspr.cpp, hw_weapon.cpp -- the rig's TickPairs note). The latch is let go with
+	// the grip, so the gun arrives on release. A queued gun that is no longer yours is dropped.
+	const OFF_WAIT = 70;                    // tics the raise waits for the main hand's switch (not the latch)
+	private Weapon offNext[MAXPLAYERS];
+	private int    offWait[MAXPLAYERS];
+
+	static bool OffHandable(PlayerInfo p, Weapon w)
+	{
+		if (!p || !w) return false;
+		let d = GetDefaultByType(w.GetClass());
+		if (!d || d.bOffhandWeapon || d.bMELEEWEAPON || d.bTWOHANDED || d.bNOHANDSWITCH) return false;
+		if (w.bMELEEWEAPON || w.bTWOHANDED) return false;
+		String n = w.GetClassName();
+		n = n.MakeLower();
+		if (n.IndexOf("ubqs_") == 0 || n.IndexOf("ssq_") == 0 || n == "rsq_hands" || n == "fist") return false;
+		return w != p.ReadyWeapon && w != p.OffhandWeapon;
+	}
+
+	private void OffHandKeep(PlayerPawn pmo, PlayerInfo p, Array<Weapon> hadW, class<Inventory> icls)
+	{
+		Weapon w = null;
+		for (let it = pmo.Inv; it && !w; it = it.Inv)
+		{
+			let nw = Weapon(it);
+			if (nw && hadW.Find(nw) == hadW.Size() && !nw.bOffhandWeapon) w = nw;
+		}
+		if (!w && icls && (class<Weapon>)(icls)) w = Weapon(pmo.FindInventory(icls));
+		if (!OffHandable(p, w))
+		{
+			if (w && RSQDG_Reach.Flag("rsqdg_debug", p, false))
+				Console.Printf("[RSQDG] hand 1 caught %s: not a gun the off hand keeps", w.GetClassName());
+			return;
+		}
+		// the pickup's auto-switch would take it into the MAIN hand: cancel that
+		if (p.PendingWeapon == w) p.PendingWeapon = WP_NOCHANGE;
+		int n = pmo.PlayerNumber();
+		if (n < 0 || n >= MAXPLAYERS) return;
+		offNext[n] = w;
+		offWait[n] = OFF_WAIT;
+		if (RSQDG_Reach.Flag("rsqdg_debug", p, false))
+			Console.Printf("[RSQDG] hand 1 caught %s: into the off hand", w.GetClassName());
+	}
+
+	// every player, every tic (the playsim)
+	private void TickOffHand()
+	{
+		for (int n = 0; n < MAXPLAYERS; n++)
+		{
+			let w = offNext[n];
+			if (!w) continue;
+			let p = players[n];
+			if (!playeringame[n] || !p.mo || p.mo.health <= 0 || w.Owner != p.mo) { offNext[n] = null; continue; }
+			if (p.WeaponState & WF_TWOHANDSTABILIZED) continue;           // the latch: wait, however long
+			if (p.PendingWeapon != WP_NOCHANGE)                            // the main hand is still switching
+			{
+				if (--offWait[n] <= 0) offNext[n] = null;
+				continue;
+			}
+			offNext[n] = null;
+			if (!OffHandable(p, w)) continue;
+			w.bOffhandWeapon = true;
+			p.PendingWeapon = w;
+			if (RSQDG_Reach.Flag("rsqdg_debug", p, false))
+				Console.Printf("[RSQDG] %s raised into the off hand", w.GetClassName());
+		}
+	}
+
 	// ---- every exit goes through here --------------------------------------
 	private void Restore(int hand)
 	{
@@ -481,6 +571,7 @@ class RSQDG_Flight : EventHandler
 
 	override void WorldTick()
 	{
+		TickOffHand();
 		let p = players[consoleplayer];
 		if (!p || !p.mo) { AbortAll(); return; }
 		let pmo = p.mo;
@@ -940,8 +1031,8 @@ class RSQDG_Flight : EventHandler
 		}
 	}
 
-	override void WorldLoaded(WorldEvent e) { AbortAll(); }
-	override void WorldUnloaded(WorldEvent e) { AbortAll(); }
+	override void WorldLoaded(WorldEvent e) { AbortAll(); for (int i = 0; i < MAXPLAYERS; i++) offNext[i] = null; }
+	override void WorldUnloaded(WorldEvent e) { AbortAll(); for (int i = 0; i < MAXPLAYERS; i++) offNext[i] = null; }
 }
 
 // WHERE A TURNED VOXEL'S MIDDLE GOES, AND THE OFFSET THAT PUTS IT BACK.

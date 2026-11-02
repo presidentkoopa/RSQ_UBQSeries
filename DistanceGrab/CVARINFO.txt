@@ -115,7 +115,7 @@ user int   rsqdg_lock_dwell = 0;
 // hand system (RS_ShieldSawQ, the QuestSaber's Force hand) does not reach: a
 // swing is full of the palm-out flick this mod listens for.
 user bool  rsqdg_yield    = true;
-user float rsqdg_steady_m = 0.45;   // metres: hands this close with a gun in the main hand are two-handing it; neither grabs (0 off)
+user float rsqdg_steady_m = 0.5;    // metres: hands this close with a gun in the main hand are two-handing it; the grab stands down (0 off; the engine latch and BD22 VR's two-hand still count)
 user bool  rsqdg_lightup  = false;   // recolour the target itself (translation)
 user bool  rsqdg_glow     = true;    // light the target in its own silhouette
 user float rsqdg_glow_a   = 1.0;     // glow brightness multiplier
@@ -228,7 +228,7 @@ user float rsqdg_burden_kg   = 120.0;  // carrying this much halves your speed
 //   dot   one glow where the line lands, scaled to keep one apparent size
 //   cone  DXR's grab-reach cone: the exact volume the grab tests
 user bool  rsqdg_beam        = true;
-user bool  rsqdg_beam_yield  = true;   // hide the grab beam on a hand RSQ_LaserSight is already lighting (G6)
+user bool  rsqdg_beam_yield  = false;  // hide the grab beam on a hand RSQ_LaserSight is already lighting (G6). OFF by default (owner 11-02: both lasers at once)
 user float rsqdg_beam_w      = 1.0;    // width multiplier
 user float rsqdg_beam_a      = 0.8;
 user bool  rsqdg_dot         = true;

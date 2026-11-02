@@ -4290,9 +4290,81 @@ class UBQS_Thrown : Actor
 }
 
 // ---- THE LOCK MARK: a diamond over each enemy you painted ------------------------------------------------
+// The series' lock diamond (owner-approved mock-up, 2026-11-02): an outer RING in the CHOSEN BLADE COLOUR round a
+// WHITE CENTRE, 48x48, four frames. Sprites UBLR (the ring) and UBLC (the centre) are the saber's own lumps, so no
+// two mods share one and neither cares which loads first. The ring is white art drawn AddShaded and shaded every
+// tic with the colour of the saber that painted it (UBQS_SaberBase.RgbNow: ubqs_color for the main hand,
+// ubqs_color_off for the off hand), so a blade recoloured in the menu recolours its marks at once. The centre is a
+// second actor (UBQS_LockCentre), drawn Add and unshaded, that copies the ring's place, size, alpha, frame and
+// visibility every tic (ShieldSaw's SSQ_LockCentre pattern). Size: 0.35 x RSQ_Accessibility's Cue Size, as
+// before. Colour-blind play does not touch it (the blade colour is the player's own pick, as the blade is), and
+// it has no flash for Photosensitive Mode to tame: the same 4-frame, 3-tic loop it always had.
 class UBQS_LockMark : Actor
 {
 	Actor who;          // the saber it was painted for
+	Actor centre;       // its white centre (UBQS_LockCentre)
+	Default
+	{
+		Scale 0.35;
+		Alpha 0.95;
+		RenderStyle "AddShaded";
+		+NOINTERACTION
+		+NOBLOCKMAP
+		+BRIGHT
+		+NOGRAVITY
+		+NOTONAUTOMAP
+		+FORCEXYBILLBOARD
+	}
+	static void MarkFor(Actor saber, Actor target)
+	{
+		if (!target) return;
+		let m = UBQS_LockMark(Actor.Spawn("UBQS_LockMark", (target.pos.xy, target.pos.z + target.height + 8)));
+		if (m) { m.tracer = target; m.who = saber; m.scale *= UBQS_A11y.Cue(); m.Follow(); }   // Cue Size
+	}
+	static void ClearAll(Actor saber)
+	{
+		let it = ThinkerIterator.Create("UBQS_LockMark");
+		UBQS_LockMark m;
+		while (m = UBQS_LockMark(it.Next()))
+			if (!saber || m.who == saber) m.Destroy();
+	}
+	// the ring in its saber's blade colour, and the centre on it
+	void Follow()
+	{
+		let sb = UBQS_SaberBase(who);
+		SetShade(sb ? sb.RgbNow() : UBQS_Data.Rgb(0));
+		if (!centre) centre = Spawn("UBQS_LockCentre", pos);
+		if (!centre) return;
+		if (centre.pos != pos) centre.SetOrigin(pos, true);
+		centre.scale = scale;
+		centre.alpha = alpha;
+		centre.frame = frame;
+		centre.bInvisible = bInvisible;
+	}
+	override void Tick()
+	{
+		Super.Tick();
+		if (bDestroyed) return;
+		if (!who || !tracer || tracer.health <= 0) { Destroy(); return; }
+		SetOrigin((tracer.pos.xy, tracer.pos.z + tracer.height + 8), true);
+		Follow();
+	}
+	override void OnDestroy()
+	{
+		if (centre) centre.Destroy();
+		Super.OnDestroy();
+	}
+	States
+	{
+	Spawn:
+		UBLR ABCD 3 Bright;
+		Loop;
+	}
+}
+
+// the white centre of the saber's lock diamond: posed by its UBQS_LockMark every tic, never on its own
+class UBQS_LockCentre : Actor
+{
 	Default
 	{
 		Scale 0.35;
@@ -4305,30 +4377,11 @@ class UBQS_LockMark : Actor
 		+NOTONAUTOMAP
 		+FORCEXYBILLBOARD
 	}
-	static void MarkFor(Actor saber, Actor target)
-	{
-		if (!target) return;
-		let m = UBQS_LockMark(Actor.Spawn("UBQS_LockMark", (target.pos.xy, target.pos.z + target.height + 8)));
-		if (m) { m.tracer = target; m.who = saber; m.scale *= UBQS_A11y.Cue(); }   // Cue Size
-	}
-	static void ClearAll(Actor saber)
-	{
-		let it = ThinkerIterator.Create("UBQS_LockMark");
-		UBQS_LockMark m;
-		while (m = UBQS_LockMark(it.Next()))
-			if (!saber || m.who == saber) m.Destroy();
-	}
-	override void Tick()
-	{
-		Super.Tick();
-		if (!who || !tracer || tracer.health <= 0) { Destroy(); return; }
-		SetOrigin((tracer.pos.xy, tracer.pos.z + tracer.height + 8), true);
-	}
 	States
 	{
 	Spawn:
-		UBLK ABCD 3 Bright;
-		Loop;
+		UBLC A -1 Bright;	// the frame letter is copied from the ring every tic
+		Stop;
 	}
 }
 

@@ -51,7 +51,8 @@ An old saved "Dual key mode" (ubqs_dual_mode 1) reads as On and is rewritten to 
 - **Parry:** move the blade into the shot as it arrives. Double knock in the hand, white burst.
 - **Cross guard:** cross your two blades in front of you (an X or a +): nothing from in front gets through.
 - **Blade lock:** bring your two blades together: they clash and lock with a snarl and flashes.
-- **Mark and throw:** hold the trigger, sweep the hand over enemies (gold diamond on each). Let go: it flies to
+- **Mark and throw:** hold the trigger, sweep the hand over enemies (a diamond on each: a white centre in a ring of
+  that saber's blade colour, so the off-hand saber's marks wear its own colour). Let go: it flies to
   each in turn and comes back. With nothing marked, let go while snapping the hand forward to throw it straight.
   Let go with the hand still: nothing happens.
 - **Call it back:** trigger or alt while it is out of your hand.
@@ -114,7 +115,8 @@ headset" in docs/HANDOFF_polish.md.
    clash. **(not yet headset-confirmed)**
 8. Let an imp claw at you with the blade in its way: the claw is stopped and the imp reels.
 9. Cross both blades in front of you: shots from in front stop. Touch the blades together: clash and lock.
-10. Hold the trigger and sweep over three monsters: a gold diamond on each, a buzz each. Let go: the saber
+10. Hold the trigger and sweep over three monsters: a diamond on each (white centre, ring in the blade's
+    colour), a buzz each. Let go: the saber
     visits each, then comes home and relights in your hand.
 11. Throw with nothing marked: snap the hand forward and let go. Press the trigger again while it flies: it
     comes back.
@@ -141,7 +143,7 @@ headset" in docs/HANDOFF_polish.md.
     map): Brutal Doom's sword is its own again. **(not yet headset-confirmed)**
 23. "Reset All" puts everything back.
 24. With RSQ Accessibility (Steady Hands On, its default): hold fire and point the saber at a far monster with
-    your hand held still. The gold diamond lands on the one you point at, not a neighbour. Raise the off hand at a
+    your hand held still. The diamond lands on the one you point at, not a neighbour. Raise the off hand at a
     far imp: the grip outline holds on it. Steady Hands Off: as before. **(not yet headset-confirmed; rig: load
     only)**
 25. With RSQ Accessibility: Rumble Strength 0, then cut a monster and clash: no rumble. Rumble Strength 2:
@@ -149,6 +151,9 @@ headset" in docs/HANDOFF_polish.md.
 26. With RSQ Accessibility, Slower Taps On: hold fire, paint a monster, let go with the hand still, then press
     fire again within about 1.5 s: the diamonds are still there (1 s without Slower Taps).
     **(not yet headset-confirmed)**
+27. Lock marks wear the blade colour: set Main Blade Colour to red and Off Blade Colour to blue, paint a monster with each
+    saber. The main saber's diamond has a red ring, the off saber's a blue ring; both have a white centre.
+    Change the colour in the menu: marks already up recolour. **(not yet headset-confirmed; rig frames 11-02)**
 
 ## Works with
 

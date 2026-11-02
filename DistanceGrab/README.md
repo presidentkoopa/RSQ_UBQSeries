@@ -42,6 +42,17 @@ doom2.wad -> brutal22test6.pk3 -> BD_VoxelPack.pk3 -> BD22_VR-Reloaded_2_0_3h.pk
 - **Pull:** tip your wrist up sharply as you turn the palm back. The thing flies to your palm.
 - **Change your mind:** turn the palm back slowly. The lock lets go.
 - **Catch:** it lands in your palm. A pickup is used on the catch; a barrel (or corpse) is carried.
+  A gun you already own can be pulled too: the catch gives its ammo and the floor copy is used up (ammo
+  full: it stays in your hand as a thing to carry or drop, as before).
+- **Off-hand catch keeps the gun:** a gun caught by the OFF hand goes into the off hand and stays there
+  until you move it back to the main hand yourself (the Tactical Rig, or QuestZDoom's switch-hand) or
+  holster it. Main-hand catches switch the main hand as before.
+- **Two-handing stands it down:** while you two-hand a gun (the off hand within 50 cm of the gun hand,
+  QuestZDoom's two-hand grip, or BD22 VR's own two-hand hold) there is no reach, lock, beam, cone or
+  walk-up grab, and it stays off for half a second after the hands part, so canting the gun never fires it.
+- **Fighting hands stand it down:** a hand wearing RSQ Melee's boxing gloves never reaches, and a hand
+  that moves at punch speed does not reach for 0.75 s afterwards. An idle empty hand turned palm out
+  still reaches.
 - **Throw:** swing the arm forward. It lets go by itself as the swing slows. A wind-up never throws.
 - **Drop:** turn the palm back with the arm still.
 - **Two hands:** put the other, empty palm on a held thing. It gets lighter.
@@ -62,7 +73,7 @@ default.
 | Reach | Standard (512 units, about 15 m) | How far the grab reaches. Short / Standard / Long / Room. |
 | Aim | Standard (12 deg) | How precisely you must point. Precise / Standard / Generous. |
 | Gesture | Standard | How strict the palm and flick are. Relaxed / Standard / Strict. |
-| Not With Melee | On | A hand holding a saber, chainsaw, fist or another mod's hand system does not reach. |
+| Not With Melee | On | A hand holding a saber, chainsaw or another mod's hand system does not reach; nor a hand in RSQ Melee's gloves, or one that moved at punch speed (RSQ Melee's Punch Min Speed, 2 m/s without it) in the last 0.75 s. An idle bare hand or fist still reaches. |
 | Flight Path | WorldHands | How a pulled thing flies: Steer, Lob or WorldHands (the arc and tumble). |
 | Pull Speed | Standard | Gentle / Standard / Snappy. |
 | Throw Strength | Standard | Soft / Standard / Strong. |
@@ -80,7 +91,7 @@ default.
 | What You Can Grab: Duck Under Doors | On | A pull dips under a low doorway. |
 | What You Can Grab: Grip / Use / Palm Takes Door | On | The three ways to take hold of a door. |
 | What You Can Grab: Palm Flips Switches | On | A palm laid on a switch flips it. |
-| Beam and Feel: Yield to Laser Sight | On | Hides the grab beam on a hand RSQ Laser Sight is already lighting. |
+| Beam and Feel: Yield to Laser Sight | Option | Hides the grab beam on a hand RSQ Laser Sight is already lighting. Off (since 11-02): both beams show, the laser from the gun and the grab beam from the hand. |
 | Beam and Feel: Show When Idle | On | The beam shows even when it has found nothing. |
 | Beam and Feel: Dot / Reach Cone / Target Glow / Voxel Flash | On | The dot, the cone, the glow on the target, the flash on a voxel target. |
 | Beam and Feel: Recolour Target | Option | Recolours the target itself. |
@@ -91,6 +102,7 @@ default.
 | Catch and Carry: Barrel Blast: Thrown At (m/s) | 4 | A barrel thrown at least this hard goes off where it lands. |
 | Catch and Carry: Hit With What You Hold | On | A held thing swung into a monster hurts it. |
 | Catch and Carry: Hit-Stop (thrown hits) | Option (Off) | A monster hit by a thrown thing freezes 3, 4 or 6 tics. |
+| Gesture: Two-Hand Gap (m) | 0.5 | With a gun in the main hand and the off hand this close, you are two-handing: the grab stands down. 0 = only the engine's two-hand grip and BD22 VR's two-hand count. |
 | Catch and Carry: Two-Hand Lift | 2.0 | Two palms on a thing make it handle this many times lighter. |
 | Catch and Carry: Body Shield (held corpse/barrel) | On | A held corpse or barrel stops shots and fireballs. A barrel goes off. |
 | Catch and Carry: Sounds (whoosh, thud) | On | Stock Doom sounds: revenant swing on a throw, punch on a catch or landing. |
@@ -134,20 +146,41 @@ port.
 16. Palm turned out on a wall switch. It flips once. **(not yet headset-confirmed)**
 17. Turn *Hit-Stop (thrown hits)* to Beat. A monster hit by a throw freezes briefly.
     **(not yet headset-confirmed)**
-18. With RSQ Laser Sight loaded and a gun in the hand, the grab beam on that hand hides.
+18. With RSQ Laser Sight loaded and a gun in the hand, turn that palm out at an item: you see BOTH the laser
+    from the gun and the grab beam from the hand. Turn *Yield to Laser Sight* on: the grab beam on that hand
+    hides. **(not yet headset-confirmed; rig frames 11-02 on the BD order with the Shotgun)**
 19. Load RSQ Accessibility (Steady Hands on). Point at a far item and hold: the lock stays on it instead of
     chattering. Throw something hard: it still flies where you threw. Steady Hands off: as before.
     **(not yet headset-confirmed; on the rig a 3-degree hand shake moved the cone 0.6 degrees on, 3 off)**
 20. Accessibility's Rumble Strength 0: the grab's rumbles stop; 2: stronger. **(not yet headset-confirmed)**
+21. Pull a gun with the OFF hand (one you do not have, e.g. a Brutal Doom shotgun on the floor). It goes into
+    the off hand, and is still there after walking around for a while. Holster it or move it with the Tactical
+    Rig: that works as for any gun. A pull with the main hand switches the main hand as before.
+    **(not yet headset-confirmed; rig 11-02: Shotgun on Doom 2 and BD's Shot_Gun on the BD order, in the off
+    hand 5 s later)**
+22. Hold a gun, and pull a floor copy of a gun you already own. The ammo goes up and the copy is gone. With that
+    ammo full, the gun stays in your hand to carry or drop. **(not yet headset-confirmed; rig 11-02)**
+23. Two-hand a gun (off hand on it) and cant it sideways with both palms turned out at an item: no beam, no cone,
+    no lock. Squeeze the off grip near the gun and move the off hand away still squeezing: still nothing. Let
+    go and part the hands: about half a second later the beam comes back. **(not yet headset-confirmed; rig
+    11-02 with vr_two_handed_weapons on)**
+24. Punch the air a few times with an empty hand or Brutal Doom's fists, then turn that palm out at an item at
+    once: no beam and no lock for about 0.75 s, then it reaches. With RSQ Melee's boxing gloves on, that hand
+    never reaches. Hold an empty hand still, palm out: it reaches as before. **(not yet headset-confirmed; rig
+    11-02)**
 
 ## Works with
 
-- **RSQ Laser Sight:** with *Yield to Laser Sight* on, the grab beam hides on a hand the laser lights.
+- **RSQ Laser Sight:** both beams show (the laser from the gun, the grab beam from the hand). With *Yield to
+  Laser Sight* on, the grab beam hides on a hand the laser lights.
+- **Brutal Doom / BD22 VR Reloaded:** its floor guns (BDWeaponSpawner) pull, give their ammo when owned, and go
+  into the off hand on an off-hand catch. BD22 VR's two-hand tokens (RSQ_TwoHandRifle, RSVR_MeleeTwo) count as
+  two-handing (asked by name). Its own axe pull is left to it (melee weapons are not moved by this mod).
 - **RSQ Tactical Rig:** a hand in a holster (or holding the cigarette or Zippo) does not distance-grab;
   the walk-up grip yields to a holster. The rig asks this mod whether a hand holds a door.
 - **RSQ Saber / RSQ ShieldSaw:** a hand holding them does not reach (*Not With Melee*).
 - **RSQ Score:** throws are credited to you. (The Headlock's "grab.hold" touch is RSQ_Melee's now.)
-- **RSQ Melee:** its Headlock asks `near.dist` (which mod takes the off grip press) and hands a thrown monster
+- **RSQ Melee:** a hand in its boxing gloves does not reach; its Punch Min Speed is the punch speed above. Its Headlock asks `near.dist` (which mod takes the off grip press) and hands a thrown monster
   to `headlock.throw` (RSQDG_ThrowService); this mod asks it `headlock.claim` back. Without Melee, nothing
   changes here.
 - **RSQ Grapple:** can use this mod's grab buttons (its own setting).
@@ -169,6 +202,11 @@ port.
 - A lifted door may step at 35 Hz (a ceiling moved from script has no smoothing).
 - The *Rumble* route is felt only when the engine's quake haptics level is above 0.
 - No haptic of any kind was felt on the rig. Every rumble needs a hand on a controller.
+- A gun caught by the off hand while the main hand is still switching, or while QuestZDoom's two-hand grip is
+  latched, waits to be raised (the grip: until it is let go). Only the plain case was run on the rig.
+- An owned Brutal Doom floor gun caught by the off hand gives its ammo but does not move the gun to the off hand
+  (Brutal Doom's pickup gives ammo only, so there is no gun to move); a plain Doom gun you own does move.
+- With RSQ Melee's gloves on, that hand never distance-grabs.
 
 ## Credits
 
