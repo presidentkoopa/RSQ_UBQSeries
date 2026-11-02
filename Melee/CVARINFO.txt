@@ -41,6 +41,7 @@ user float   rsqml_headlock_mass = 400.0;    // the heaviest it can hold (Doom m
 user float   rsqml_headlock_secs = 3.0;      // how long it stays held before it breaks free
 user bool    rsqml_headlock_shield = false;  // HUMAN SHIELD: held as long as the grip is, turned to face away
 user float   rsqml_headlock_throw = 3.0;     // m/s: the off hand swung past this while it holds one throws it (0 = never)
+user bool    rsqml_headlock_blood = true;    // a held monster punched bleeds more: x1.3, x1.6, then x2.0 (owner 11-01)
 user float   rsqml_headlock_weight = 30.0;   // %: a thrown monster counts as this share of its weight
 user string  rsqml_keys_off = "443 436";     // the off grip's key codes (as RSQ Distance Grab and the Tactical Rig read them)
 

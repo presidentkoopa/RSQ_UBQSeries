@@ -14,7 +14,7 @@ simulated headset only and is marked *not yet headset-confirmed* there.
 | | Mod | pk3 | What it is |
 |---|---|---|---|
 | ✋ | [DistanceGrab](DistanceGrab/) | `RSQ_DistanceGrab.pk3` | Palm out at a thing across the room, pull it to your hand, carry it, throw it. Up close the grip takes things, lifts doors, flips switches. |
-| 🥊 | [Melee](Melee/) | `RSQ_Melee.pk3` | Fighting with your body: punches and SuperPunchOut's boxing gloves, Slappers Only, Guard, Hadouken, Wall Splat, Heavy Hands, the gun-butt shove with its slow-mo and the F.E.A.R. Effect, the off-hand Headlock. New 11-01 (moved from Gun Bonsai VR, Gestures, Distance Grab). |
+| 🥊 | [Melee](Melee/) | `RSQ_Melee.pk3` | Fighting with your body: punches, boxing gloves, Slappers Only, Guard, Hadouken, Wall Splat, Heavy Hands, the gun-butt shove, and the off-hand Headlock (hold a monster and punch it). |
 | 🛡️ | [ShieldSaw](ShieldSaw/) | `RSQ_ShieldSaw.pk3` | A shield (stowed at the small of your back by default) that blocks, bashes and turns shots back, and throws as a saw disc. id Software's shield saw (*Doom: The Dark Ages*), brought to Doom VR first by **Ermac**. |
 | ⚔️ | [QuestSaber](QuestSaber/) | `RSQ_Saber.pk3` | A lightsaber, and a second one for the off hand (on/off in the menu). Cut, stab, block, parry, deflect, throw, and the Force (also from an off-hand fist). |
 | 🎒 | [TacticalRig](TacticalRig/) | `RSQ_TacticalRig.pk3` | Six gun holsters (hips, chest, shoulders), a holster for each saber, a grenade spot, a keyring, gun throwing, a mirror, an optional torso and helmet, and Ermac's cigarette. Built on **Ermac's** Virtual Tactical Vest idea. |
@@ -54,7 +54,7 @@ A suggested order -- simple and visible first, the mods that read the others las
 | 9 | Grapple | |
 | 10 | SlowMo | Then the saber's / shield's / rig's slow-mo options start doing something |
 | 11 | Gestures, then GunCards | GunCards' watch card comes from Gestures' wrist twist |
-| 12 | (Melee, again) | With SlowMo now loaded, recheck the shove's slow-mo and the F.E.A.R. Effect |
+| 12 | (Melee, again) | With SlowMo now loaded, recheck the slow-mo after a shove |
 | 13 | Wheel | |
 | 14 | HP Bars | Its frozen / held / hooked markers read the other mods |
 | 15 | Score | Combos need the tools above loaded to fire |

@@ -68,6 +68,7 @@ RSQ Melee page:
 | Slow-Mo After a Shove | On | A landed butt shove (ours, or BD22 VR Reloaded's own when it is loaded) asks RSQ SlowMo for a 300 ms pulse at 35 % world speed. While that slow motion lasts: the **F.E.A.R. Effect** (every shotgun hit on a monster bleeds twice; a kill by it pays 200 to RSQ Score's "F.E.A.R. Effect"). Needs RSQ_SlowMo for the slow motion. |
 | Headlock | On | The off grip on a living monster holds it (up to demon weight, Doom mass 400) for 3 s. |
 | Headlock: Human Shield (hold until let go) | Option (off) | The headlock lasts as long as you hold the grip (a minute at most), the monster facing away. |
+| Headlock Punch Extra Blood | On | Punching a monster you hold bleeds more: x1.3 on the first punch, x1.6 on the second, x2.0 from the third on. |
 | Guard | Option (off) | Without Gun Bonsai VR: both hands up at your face for 4 tics, no gun in either hand, and a blow from in front (within 55 degrees) does 60 % of its damage; you slide back a step and both hands knock. A blow of 35 or more breaks the guard: full damage, no guard for 0.4 s. |
 | Hadouken | Option (off) | Without Gun Bonsai VR: a glove at punch speed that meets a monster's missile sends it back at whoever fired it, 15 % faster, and it hits for 150 %. |
 | Wall Splat | Option (off) | Without Gun Bonsai VR: a monster your punch knocks into a wall at 3 map units a tic or more takes 10, up to 20 for a hard slam (6 or more), bounces off and reels 15 tics. |
@@ -154,6 +155,8 @@ hands, plain Doom 2 MAP01, logs `mel_*` of 2026-11-01) are in brackets.
     not the imp. The imp alone: the Headlock. [`mel_hl_dg2`]
 16. Turn on *Headlock: Human Shield*. The monster stays held, facing away, while you keep the grip.
     **(not tested on the rig: the grip is a raw key there)**
+16a. Headlock a monster and punch it three times: each punch bleeds more than the last (x1.3, x1.6, x2.0). Turn
+    off *Headlock Punch Extra Blood*: normal blood. **(not yet headset-confirmed)**
 17. With RSQ_Score: hold a monster in the Headlock and punch it to death: the **Headlock** combo pays.
     [`mel_combo`: "Combo Chain[Headlock 0.50]", chain grab.hold>glove]
 18. With RSQ Gun Bonsai VR: the four rows do nothing until Gun Bonsai grants the upgrade; then the move works at

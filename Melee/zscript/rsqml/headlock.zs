@@ -25,6 +25,7 @@ class RSQML_Headlock : StaticEventHandler
 	bool gripDown[MAXPLAYERS];
 	Actor collar[MAXPLAYERS];
 	int collarEnd[MAXPLAYERS], collarPing[MAXPLAYERS];
+	int punches[MAXPLAYERS];      // blows the holder has landed on the held monster this hold (extra blood)
 	// the throw: the off hand's last palm and body, the arm's recent top speed (m/s), and its last per-tic movements
 	Vector3 cPalm[MAXPLAYERS], cBody[MAXPLAYERS];
 	bool cHave[MAXPLAYERS];
@@ -189,6 +190,7 @@ class RSQML_Headlock : StaticEventHandler
 		bool shield = Flag("rsqml_headlock_shield", false);
 		collarEnd[n] = level.maptime + (shield ? 60 * TICRATE : int(Num("rsqml_headlock_secs", 3.0) * TICRATE));
 		collarPing[n] = 0;
+		punches[n] = 0;
 		// the catch's feel: Distance Grab's thud and tick when it is loaded, else a knock in the off hand
 		let dg = RSQML.Svc("RSQDG_ThrowService");
 		if (!dg || dg.GetInt("headlock.caught", "", n, 0, a) != 1) RSQ_Buzz.Start(pmo, 1, 0.5, 4);
@@ -317,6 +319,27 @@ class RSQML_Headlock : StaticEventHandler
 		if (RSQML.Debug() > 0) Console.Printf("RSQML headlock: tossed %s at %.1f m/s (counted as %.0f kg of its %.0f; hand %.1f m/s)", a.GetClassName(),
 			RSQML.Metres(v - pmo.Vel) * TICRATE, kg, realKg, RSQML.Metres(hand) * TICRATE);
 		return true;
+	}
+
+	// HEADLOCK PUNCH EXTRA BLOOD (the owner, 11-01: "first punch 1.3 gore, second 1.6, third and beyond 2.0"):
+	// a blow the holder lands on the monster he is holding bleeds again -- the hit's own blood (SpawnBlood +
+	// TraceBleed, as the F.E.A.R. window does) -- sized by 0.3 of the blow on the first, 0.6 on the second, and a
+	// full second set from the third (the engine scales blood and wall splats by the damage it is given).
+	override void WorldThingDamaged(WorldEvent e)
+	{
+		let t = e.Thing;
+		if (!t || t.bNoBlood || e.Damage <= 0 || !Flag("rsqml_headlock_blood", true)) return;
+		let pmo = PlayerPawn(e.DamageSource);
+		if (!pmo || !pmo.player) return;
+		int n = pmo.PlayerNumber();
+		if (n < 0 || n >= MAXPLAYERS || collar[n] != t) return;
+		punches[n]++;
+		double extra = punches[n] == 1 ? 0.3 : punches[n] == 2 ? 0.6 : 1.0;
+		int amt = max(1, int(e.Damage * extra + 0.5));
+		Vector3 at = t.pos + (0, 0, t.height * 0.5);
+		t.SpawnBlood(at, pmo.AngleTo(t) + 180, amt);
+		t.TraceBleed(amt, pmo);
+		if (RSQML.Debug() > 0) Console.Printf("RSQML headlock: punch %d on %s, extra blood (t%d)", punches[n], t.GetClassName(), level.maptime);
 	}
 
 	override void WorldUnloaded(WorldEvent e) { for (int n = 0; n < MAXPLAYERS; n++) { if (collar[n]) EndCollar(n); gripDown[n] = false; } }
