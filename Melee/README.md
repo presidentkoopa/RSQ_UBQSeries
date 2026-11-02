@@ -85,7 +85,8 @@ Always on (no row):
 - **Hit sparks** (Capcom vs. SNK 2's), one per blow, at the impact point: jab -> Normal Spark (orange), hook and the
   swat -> Special Spark (blue), uppercut and the Hadouken's return -> Super Spark (violet; the return adds the
   Hadouken hit burst from Random Sprite Rips), the guard taking a blow -> the Guard flash (blue, about 35 cm from your
-  eyes toward the blow, with stock Doom 2's tick, DSTINK).
+  eyes toward the blow, with stock Doom 2's tick, DSTINK). About a monster's head in size; **Hit Spark Size** (1.0,
+  0.25 to 3) scales them all.
 - **The uppercut lifts:** up 5 to 9 map units a tic and back 2 to 5 (x 100 / mass; a BOSS x 0.3 more), held in its
   pain for the flight. An imp goes about 0.9 m up.
 - **The Headlock holds the monster itself at your hand:** moved each tic to the off hand, its face at your hand's

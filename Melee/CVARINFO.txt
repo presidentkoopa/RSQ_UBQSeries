@@ -51,5 +51,7 @@ user bool    rsqml_headlock_blood = true;    // a held monster punched bleeds mo
 user float   rsqml_headlock_weight = 30.0;   // %: a thrown monster counts as this share of its weight
 user string  rsqml_keys_off = "443 436";     // the off grip's key codes (as RSQ Distance Grab and the Tactical Rig read them)
 
+user float   rsqml_spark_size = 1.0;        // hit and guard sparks: x this (1.0 = about a monster's head)
+
 // ---- debug --------------------------------------------------------------------------------------------------------
 user int     rsqml_debug = 0;                // 1: each decision to the console (punch, guard, shove, headlock); 2: also each F.E.A.R. hit

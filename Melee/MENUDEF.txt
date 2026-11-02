@@ -52,6 +52,8 @@ OptionMenu "RSQML_Options"
 	Option "Wall Splat", "rsqml_wallsplat", "OnOff"
 	Option "Heavy Hands", "rsqml_heavyhands", "OnOff"
 	StaticText " "
+	Slider "Hit Spark Size", "rsqml_spark_size", 0.25, 3.0, 0.25, 2
+	StaticText " "
 	Submenu "Tuning and Debug", "RSQML_Tuning"
 }
 
