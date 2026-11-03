@@ -15,6 +15,61 @@
 class RSQ_HookPerk : RSQ_Perk
 {
 	override bool ModLoaded() { return RSQM.Has("RSQGR_Service") && RSQM.Has("RSQGR_Perks"); }
+	// GBOVR_TREES.md 4.6: the node this one hangs from ("" = the root) and at what level
+	virtual String Parent() { return "Grapple"; }
+	virtual int ParentLevel() { return 1; }
+	override bool IsSuitableForPlayer(TFLV_PerPlayerStats stats)
+	{
+		String p = Parent();
+		return Super.IsSuitableForPlayer(stats) && (p == "" || PHas(stats, p, ParentLevel()));
+	}
+}
+
+// THE GRAPPLE (the unlock, root): under this patch the hook fires only once this is learned. (RSQGR_Perks.Locked)
+class RSQ_Upgrade_Grapple : RSQ_HookPerk
+{
+	override String Parent() { return ""; }
+	override int Cap() { return 1; }
+}
+
+// MOMENTUM (the unlock, after Grapple): Swing and Momentum -- hang, swing, pump, keep your speed. Under this patch it is
+// RSQ Grapple's Swing and Momentum row. (RSQGR_Core.SwingMode)
+class RSQ_Upgrade_SwingMomentum : RSQ_HookPerk
+{
+	override int Cap() { return 1; }
+}
+
+// ZIP KICK (after Momentum and Slingshot or Steady Line at 2 -- the tree's "Momentum 2", Momentum having one level): arriving
+// on a monster via the rope at 3 m/s or more hurts it 10 + 10 lv, x your speed over 3 m/s (up to x3), and knocks it on.
+// (RSQGR_Perks.ZipTick)
+class RSQ_Upgrade_ZipKick : RSQ_HookPerk
+{
+	override int Cap() { return 3; }
+	override bool IsSuitableForPlayer(TFLV_PerPlayerStats stats)
+	{
+		return Super.IsSuitableForPlayer(stats) && PHas(stats, "SwingMomentum") && (PHas(stats, "Slingshot", 2) || PHas(stats, "SteadyLine", 2));
+	}
+	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("dmg", string.format("%d", 10 + 10 * level)); }
+}
+
+// SCORPION (after Get Over Here 2; needs RSQ Melee): a monster the hook brings to you is punched by an empty fist at full
+// power, x1 + 0.25 lv, as a counter. (RSQGR_Perks.OnArrive, RSQ Melee "autopunch")
+class RSQ_Upgrade_Scorpion : RSQ_HookPerk
+{
+	override String Parent() { return "GetOverHere"; }
+	override int ParentLevel() { return 2; }
+	override int Cap() { return 3; }
+	override bool ModLoaded() { return Super.ModLoaded() && RSQM.Has("RSQML_Service"); }
+	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("mult", string.format("x%.2f", 1.0 + 0.25 * level)); }
+}
+
+// TWIN LINES (after Long Line 2): a wall rope from each hand at once (under this patch one at a time without it); holding
+// one's reel pulls you toward that one; 2: letting one go flings you along the other. (RSQGR_Core Latch, PullAll, LetGo)
+class RSQ_Upgrade_TwinLines : RSQ_HookPerk
+{
+	override String Parent() { return "LongLine"; }
+	override int ParentLevel() { return 2; }
+	override int Cap() { return 2; }
 }
 
 // LONG LINE: the claw flies 20% further a level.
@@ -36,6 +91,7 @@ class RSQ_Upgrade_FastReel : RSQ_HookPerk
 // HEAVY HAUL: heavier and bigger things come to you; a boss on the line staggers.
 class RSQ_Upgrade_HeavyHaul : RSQ_HookPerk
 {
+	override String Parent() { return "FastReel"; }
 	override int Cap() { return 3; }
 	override void GetTooltipFields(Dictionary fields, uint level)
 	{
@@ -48,6 +104,7 @@ class RSQ_Upgrade_HeavyHaul : RSQ_HookPerk
 // GET OVER HERE: what the hook brings to you arrives staggered.
 class RSQ_Upgrade_GetOverHere : RSQ_HookPerk
 {
+	override String Parent() { return "HeavyHaul"; }
 	override int Cap() { return 3; }
 	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("time", AsSeconds(20 + 15 * level)); }
 }
@@ -55,6 +112,7 @@ class RSQ_Upgrade_GetOverHere : RSQ_HookPerk
 // BOWLING: what the hook brings to you strikes what is in its way, knocks it aside and comes on.
 class RSQ_Upgrade_Bowling : RSQ_HookPerk
 {
+	override String Parent() { return "GetOverHere"; }
 	override int Cap() { return 3; }
 	override void GetTooltipFields(Dictionary fields, uint level)
 	{
@@ -66,6 +124,7 @@ class RSQ_Upgrade_Bowling : RSQ_HookPerk
 // BARBED CLAW: the bite hurts, and tearing it out of a living monster hurts more.
 class RSQ_Upgrade_BarbedClaw : RSQ_HookPerk
 {
+	override String Parent() { return "LongLine"; }
 	override void GetTooltipFields(Dictionary fields, uint level)
 	{
 		fields.Insert("bite", string.format("%d", 4 + 4 * level));
@@ -76,6 +135,7 @@ class RSQ_Upgrade_BarbedClaw : RSQ_HookPerk
 // SLINGSHOT: letting go of a swing in the air carries you further.
 class RSQ_Upgrade_Slingshot : RSQ_HookPerk
 {
+	override String Parent() { return "SwingMomentum"; }
 	override int Cap() { return 3; }
 	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("r", AsPercentIncrease(1.0 + 0.10 * level)); }
 }
@@ -83,19 +143,18 @@ class RSQ_Upgrade_Slingshot : RSQ_HookPerk
 // STEADY LINE: hanging with the stick centred, the swing settles fast (a pump still pumps).
 class RSQ_Upgrade_SteadyLine : RSQ_HookPerk
 {
+	override String Parent() { return "SwingMomentum"; }
 	override int Cap() { return 3; }
 	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("x", string.format("x%d", 1 + 3 * level)); }
 }
 
-// DOUBLE HOOK: a monster on each hand's hook -- they are slammed into each other. Offered from
-// player level 5.
+// DOUBLE HOOK: a monster on each hand's hook -- they are slammed into each other. After Heavy Haul 2 (GBOVR_TREES.md 4.6;
+// it was "from player level 5" before the tree).
 class RSQ_Upgrade_DoubleHook : RSQ_HookPerk
 {
+	override String Parent() { return "HeavyHaul"; }
+	override int ParentLevel() { return 2; }
 	override int Cap() { return 3; }
-	override bool IsSuitableForPlayer(TFLV_PerPlayerStats stats)
-	{
-		return Super.IsSuitableForPlayer(stats) && stats.level >= 5;
-	}
 	override void GetTooltipFields(Dictionary fields, uint level)
 	{
 		fields.Insert("dmg", string.format("%d", 20 + 15 * level));

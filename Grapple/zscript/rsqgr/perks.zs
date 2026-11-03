@@ -19,6 +19,15 @@
 //   SteadyLine   hanging with the stick centred, the swing's air drag x(1 + 3 lv)
 //   DoubleHook   one monster on each hand's hook: they are slammed into each other,
 //                20 + 15 lv each and staggered 35 + 15 lv
+// GBOVR_TREES.md 4.6 (11-02) added:
+//   Grapple      THE UNLOCK: with the patch loaded the hook fires only once it is learned (core's Fire)
+//   Momentum     THE UNLOCK of Swing and Momentum: with the patch, this node is the rsqgr_swing row (SwingMode)
+//   ZipKick      arriving on a monster via the rope at 3 m/s or more hurts it 10 + 10 lv, x your speed over 3 m/s
+//                (up to x3), and knocks it on (ZipTick)
+//   Scorpion     a monster the hook brings to you is punched at full power by an empty fist, x1 + 0.25 lv, as a
+//                counter (RSQ Melee's "autopunch"; OnArrive)
+//   TwinLines    a wall rope from each hand at once: without it, under the patch, one at a time; 1 both, and holding
+//                one's reel pulls you toward that one (core's PullAll); 2 letting one go flings you along the other
 //
 // The stagger is the patch's own (RSQ_MeleeUpgradeService "stagger": its RSQ_Dazed, the one
 // the gloves, the Force pull and Executioner already use), so a hooked monster is a staggered
@@ -42,6 +51,13 @@ class RSQGR_Perks : EventHandler
 	transient int pkTic[MAXPLAYERS];
 	transient int lvLine[MAXPLAYERS], lvReel[MAXPLAYERS], lvHaul[MAXPLAYERS], lvGoh[MAXPLAYERS], lvBowl[MAXPLAYERS];
 	transient int lvBarb[MAXPLAYERS], lvSling[MAXPLAYERS], lvSteady[MAXPLAYERS], lvDouble[MAXPLAYERS];
+	transient int lvGrapple[MAXPLAYERS], lvMomentum[MAXPLAYERS], lvZip[MAXPLAYERS], lvScorp[MAXPLAYERS], lvTwin[MAXPLAYERS];
+	transient bool patchOn;		// the patch answers (the unlocks gate only then)
+	// ZIP KICK: the last tic a rope held this player, the speed he had a tic ago, and who it struck lately
+	int ropeTic[MAXPLAYERS];
+	double lastSpd[MAXPLAYERS];
+	Actor zkA[NLOG];
+	int zkTic[NLOG];
 
 	// ---- the ledger --------------------------------------------------------------------------
 	int xBites[MAXPLAYERS], xYanks[MAXPLAYERS], xKills[MAXPLAYERS], xKillHP[MAXPLAYERS], xSlams[MAXPLAYERS];
@@ -85,8 +101,35 @@ class RSQGR_Perks : EventHandler
 		case 'Slingshot':   return me.lvSling[pn];
 		case 'SteadyLine':  return me.lvSteady[pn];
 		case 'DoubleHook':  return me.lvDouble[pn];
+		case 'Grapple':     return me.lvGrapple[pn];
+		case 'Momentum':    return me.lvMomentum[pn];
+		case 'ZipKick':     return me.lvZip[pn];
+		case 'Scorpion':    return me.lvScorp[pn];
+		case 'TwinLines':   return me.lvTwin[pn];
 		}
 		return 0;
+	}
+
+	// AN UNLOCK'S STATE, clearscope (read from the cache WorldTick keeps fresh): -1 without the patch (the mod's own rows
+	// decide), else that player's level of it. 'Momentum' and 'TwinLines' are read here.
+	static clearscope int Gate(PlayerPawn pmo, Name what)
+	{
+		let me = Get();
+		if (!me || !me.patchOn || !pmo || !pmo.player) return -1;
+		int pn = pmo.PlayerNumber();
+		if (pn < 0 || pn >= MAXPLAYERS) return -1;
+		if (what == 'Momentum') return me.lvMomentum[pn];
+		if (what == 'TwinLines') return me.lvTwin[pn];
+		if (what == 'Grapple') return me.lvGrapple[pn];
+		return -1;
+	}
+	// THE GRAPPLE UNLOCK: with the patch loaded and the node not learned, the hook does not fire
+	static play bool Locked(PlayerPawn pmo)
+	{
+		let me = Get();
+		if (!me || !pmo || !pmo.player) return false;
+		me.Refresh(pmo.PlayerNumber(), pmo);
+		return me.patchOn && me.lvGrapple[pmo.PlayerNumber()] < 1;
 	}
 
 	void Refresh(int pn, PlayerPawn pawn)
@@ -95,9 +138,16 @@ class RSQGR_Perks : EventHandler
 		pkTic[pn] = level.maptime + 35;
 		lvLine[pn] = 0; lvReel[pn] = 0; lvHaul[pn] = 0; lvGoh[pn] = 0; lvBowl[pn] = 0;
 		lvBarb[pn] = 0; lvSling[pn] = 0; lvSteady[pn] = 0; lvDouble[pn] = 0;
+		lvGrapple[pn] = 0; lvMomentum[pn] = 0; lvZip[pn] = 0; lvScorp[pn] = 0; lvTwin[pn] = 0;
 		let it = ServiceIterator.Find("RSQ_MeleeUpgradeService");
 		let svc = it.Next();
+		patchOn = svc != null;
 		if (!svc) return;
+		lvGrapple[pn]  = max(0, svc.GetInt("plevel", "Grapple", 0, 0, pawn));
+		lvMomentum[pn] = max(0, svc.GetInt("plevel", "SwingMomentum", 0, 0, pawn));
+		lvZip[pn]      = max(0, svc.GetInt("plevel", "ZipKick", 0, 0, pawn));
+		lvScorp[pn]    = max(0, svc.GetInt("plevel", "Scorpion", 0, 0, pawn));
+		lvTwin[pn]     = max(0, svc.GetInt("plevel", "TwinLines", 0, 0, pawn));
 		lvLine[pn]   = max(0, svc.GetInt("plevel", "LongLine", 0, 0, pawn));
 		lvReel[pn]   = max(0, svc.GetInt("plevel", "FastReel", 0, 0, pawn));
 		lvHaul[pn]   = max(0, svc.GetInt("plevel", "HeavyHaul", 0, 0, pawn));
@@ -215,7 +265,9 @@ class RSQGR_Perks : EventHandler
 			if (moved > 64) moved = 0;   // a teleport, not a swing
 			lastPos[pn] = pmo.Pos;
 			hadPos[pn] = true;
+			Refresh(pn, pmo);   // once a second at most: SwingMode and the Twin Lines gate read the cache
 			if (!core) continue;
+			ZipTick(core, pmo, pn);
 			bool grounded = pmo.Pos.z <= pmo.floorz + 0.5 || pmo.bOnMobj;
 			for (int hand = 0; hand < 2; hand++)
 			{
@@ -236,6 +288,37 @@ class RSQGR_Perks : EventHandler
 			for (int s = 0; s < RSQGR_Flight.NFLY; s++)
 				if (fl.fph[s] != RSQGR_Flight.FP_NONE && fl.fa[s] && fl.fby[s]) Note(fl.fa[s], fl.fby[s]);
 		for (int k = 0; k < NSLAM; k++) if (slA[k] || slB[k]) StepSlam(k);
+	}
+
+	// ZIP KICK: the player was on a rope within the last 10 tics, moving 3 m/s or more a tic ago, and his move this tic
+	// was stopped by a monster (the players think before WorldTick, so BlockingMobj is this tic's): it is struck, hurt
+	// 10 + 10 lv x his speed over 3 m/s (up to x3) and knocked on along his way. Once a second per monster.
+	void ZipTick(RSQGR_Core core, PlayerPawn pmo, int pn)
+	{
+		for (int k = 0; k < 2; k++)
+		{
+			let hk = core.hooks[pn * 2 + k];
+			if (hk && hk.phase == RSQGR_Hook.PH_LATCH) ropeTic[pn] = level.maptime;
+		}
+		double was = lastSpd[pn];
+		lastSpd[pn] = pmo.vel.Length();
+		int lv = lvZip[pn];
+		if (lv <= 0 || level.maptime - ropeTic[pn] > 10) return;
+		let v = pmo.BlockingMobj;
+		if (!v || !v.bIsMonster || !v.bShootable || v.health <= 0 || v.bFriendly) return;
+		double ms = was * TICRATE / RSQGR_Util.Num("vr_vunits_per_meter", 34);
+		if (ms < 3.0) return;
+		for (int i = 0; i < NLOG; i++) if (zkA[i] == v && level.maptime - zkTic[i] < 35) return;
+		int slot = 0;
+		for (int i = 0; i < NLOG; i++) if (!zkA[i] || level.maptime - zkTic[i] >= 35) { slot = i; break; }
+		zkA[slot] = v; zkTic[slot] = level.maptime;
+		int dmg = int((10 + 10 * lv) * clamp(ms / 3.0, 1.0, 3.0));
+		Vector3 dir = pmo.vel.Length() > 0.1 ? pmo.vel.Unit() : (v.pos - pmo.pos).Unit();
+		Hurt(v, pmo, pmo, dmg, 'Melee', DMG_THRUSTLESS);
+		if (v && v.health > 0 && !v.bDontThrust) v.vel += dir * min(was, 20.0) * clamp(100.0 / max(v.Mass, 1), 0.1, 2.0);
+		let sc = ServiceIterator.Find("RS_ScoreService").Next();
+		if (sc && v) sc.GetInt("touch", "zip.kick", pn, 0, v);
+		if (RSQGR_Util.Flag("rsqgr_debug", false)) Console.Printf("T_GRP zip kick %s at %.1f m/s: %d", v ? v.GetClassName() : 'gone', ms, dmg);
 	}
 
 	// ---- the hooks the grapple calls ------------------------------------------------------------
@@ -317,6 +400,16 @@ class RSQGR_Perks : EventHandler
 	static play void OnArrive(Actor v, PlayerPawn pmo)
 	{
 		if (!v || !pmo || v.Health <= 0 || !v.bIsMonster) return;
+		// SCORPION (Gun Bonsai VR, 4.6): an empty fist punches it at full power as a counter (RSQ Melee's "autopunch")
+		int sc = Lv(pmo, 'Scorpion');
+		if (sc > 0)
+		{
+			let ml = ServiceIterator.Find("RSQML_Service").Next();
+			int done = ml ? ml.GetInt("autopunch", "", pmo.PlayerNumber(), 1.0 + 0.25 * sc, v) : 0;
+			if (done > 0) { let ss = ServiceIterator.Find("RS_ScoreService").Next(); if (ss && v) ss.GetInt("touch", "scorpion", pmo.PlayerNumber(), 0, v); }
+			if (RSQGR_Util.Flag("rsqgr_debug", false)) Console.Printf("T_GRP scorpion %s: punched %d", v ? v.GetClassName() : 'gone', done);
+			if (!v || v.Health <= 0) return;
+		}
 		int goh = Lv(pmo, 'GetOverHere');
 		if (goh <= 0) return;
 		int t = 20 + 15 * goh;

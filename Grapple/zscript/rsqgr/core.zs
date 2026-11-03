@@ -30,7 +30,12 @@ class RSQGR_Core : EventHandler
 	// it. playing with momentum is nice and should be a toggle option"). Off (default): a wall rope pulls you
 	// straight to the claw and you stop there (Pull). On: the rope you hang and swing from, and the speed you
 	// keep after it (Swing's pendulum, KeepMomentum, the coast) -- exactly as 10-27..11-01.
-	clearscope static bool SwingMode() { return RSQGR_Util.Flag("rsqgr_swing", false); }
+	// With the Gun Bonsai VR patch loaded the MOMENTUM unlock is this row, per player (perks.zs Gate).
+	clearscope static bool SwingMode(PlayerPawn pmo = null)
+	{
+		int g = RSQGR_Perks.Gate(pmo, 'Momentum');
+		return g < 0 ? RSQGR_Util.Flag("rsqgr_swing", false) : g >= 1;
+	}
 
 	clearscope static RSQGR_Core Get() { return RSQGR_Core(EventHandler.Find("RSQGR_Core")); }
 
@@ -96,6 +101,8 @@ class RSQGR_Core : EventHandler
 
 	void Fire(PlayerPawn pmo, int pn, int hand, Vector3 org, Vector3 dir)
 	{
+		// THE GRAPPLE UNLOCK (Gun Bonsai VR, GBOVR_TREES.md 4.6): with the patch loaded the hook fires once learned
+		if (RSQGR_Perks.Locked(pmo)) { if (RSQGR_Util.Flag("rsqgr_debug", false)) Console.Printf("T_GR p%d: the Grapple is not learned, no hook", pn); return; }
 		// A hand pushed through a wall would fire from behind it: if the line from the
 		// eye to the hand is blocked, the claw starts at the eye instead.
 		Vector3 eye = pmo.Pos + (0, 0, pmo.player.viewz - pmo.Pos.z);
@@ -136,16 +143,29 @@ class RSQGR_Core : EventHandler
 		// the coast is for a FLIGHT the rope gave (let go in the air, or while it was moving him): a let-go
 		// standing on the floor -- a monster pulled in, a slack rope -- leaves the stick's own feel alone
 		// (not a Split Pull's arrival on the floor: rig, it left the walk slow for the 18 coast tics)
-		if (h.owner && h.owner.player && SwingMode() && RopeFlew(h.owner)) coastUntil[h.owner.PlayerNumber()] = level.maptime + COAST_TICS;
+		if (h.owner && h.owner.player && SwingMode(h.owner) && RopeFlew(h.owner)) coastUntil[h.owner.PlayerNumber()] = level.maptime + COAST_TICS;
 		// NO MOMENTUM (Swing and Momentum off): letting go of a wall rope keeps none of the pull's speed -- you drop
 		// from where you are (the ledge hop below still lifts you over a lip). Before the perks: Slingshot (a swing
 		// perk) then has nothing to multiply.
-		if (h.phase == RSQGR_Hook.PH_LATCH && h.owner && !SwingMode())
+		if (h.phase == RSQGR_Hook.PH_LATCH && h.owner && !SwingMode(h.owner))
 		{
 			h.owner.vel.xy = (0, 0);
 			h.owner.vel.z = min(h.owner.vel.z, 0.0);
 		}
 		RSQGR_Perks.OnLetGo(h, byPlayer);   // Barbed Claw's tear, Slingshot (perks.zs)
+		// TWIN LINES 2 (Gun Bonsai VR): letting one wall rope go while the other holds flings him along the other
+		if (byPlayer && h.phase == RSQGR_Hook.PH_LATCH && !h.heavy && h.owner && h.owner.player && RSQGR_Perks.Gate(h.owner, 'TwinLines') >= 2)
+		{
+			let o = hooks[h.owner.PlayerNumber() * 2 + (1 - h.hand)];
+			if (o && o.phase == RSQGR_Hook.PH_LATCH && !o.heavy)
+			{
+				double cap = max(1.0, RSQGR_Util.Num("rsqgr_max_speed", 30));
+				Vector3 to = o.anchor - AttachPoint(h.owner);
+				if (to.Length() > 1) h.owner.vel += to.Unit() * cap * 0.6;
+				o.arrived = false; o.bestDist = 1e9; o.noProgress = 0; o.pullSpeed = cap; o.slingUntil = level.maptime + 35;
+				Log(o, "twin lines: flung along it");
+			}
+		}
 		if (h.phase == RSQGR_Hook.PH_BITE && h.victim && h.owner && !h.heavy)
 			RSQGR_Monster.OnRelease(h.victim, h.owner, h.hand);
 		// A hop off the top: let go within reach of a wall's latch while reeling and the
@@ -272,7 +292,7 @@ class RSQGR_Core : EventHandler
 			let h = hooks[pn * 2 + hand];
 			if (!h) continue;
 			bool grounded = pmo.Pos.z <= pmo.floorz + 0.5 || pmo.bOnMobj;
-			if (h.phase == RSQGR_Hook.PH_HOLD || (h.phase == RSQGR_Hook.PH_LATCH && (!grounded || h.reelHeld || h.gripHand >= 0 || (!SwingMode() && !h.arrived))))
+			if (h.phase == RSQGR_Hook.PH_HOLD || (h.phase == RSQGR_Hook.PH_LATCH && (!grounded || h.reelHeld || h.gripHand >= 0 || (!SwingMode(pmo) && !h.arrived))))
 				k = 1;
 		}
 		if (k <= 0) return;
@@ -401,6 +421,12 @@ class RSQGR_Core : EventHandler
 			Log(h, "yank");
 			return;
 		}
+		// TWIN LINES (Gun Bonsai VR): under the patch one wall rope at a time until it is learned -- this one takes over
+		if (!h.heavy && pmo && pmo.player && RSQGR_Perks.Gate(pmo, 'TwinLines') == 0)
+		{
+			let o = hooks[pmo.PlayerNumber() * 2 + (1 - h.hand)];
+			if (o && o != h && o.phase == RSQGR_Hook.PH_LATCH && !o.heavy) LetGo(o, false);
+		}
 		h.SetPhase(RSQGR_Hook.PH_LATCH);
 		Log(h, "latch");
 	}
@@ -528,7 +554,7 @@ class RSQGR_Core : EventHandler
 		if (!pmo || !pmo.player || RSQGR_Util.Num("rsqgr_momentum", 1) <= 0) return;
 		// Swing and Momentum off: the pull sets his velocity outright every tic (Pull), so nothing of the rope's
 		// needs the engine's keepmomentum; only Split Pull's draw keeps it, for its own tic
-		if (!SwingMode())
+		if (!SwingMode(pmo))
 		{
 			if (level.maptime - pulledTic[pn] <= 0) pmo.player.keepmomentum = true;
 			return;
@@ -550,7 +576,7 @@ class RSQGR_Core : EventHandler
 
 	void Swing(PlayerPawn pmo, int pn)
 	{
-		if (!SwingMode()) { PullAll(pmo, pn); return; }
+		if (!SwingMode(pmo)) { PullAll(pmo, pn); return; }
 		bool any = false;
 		bool truthTaken = false;
 		bool roped = false;
@@ -757,6 +783,7 @@ class RSQGR_Core : EventHandler
 	const PULL_STALL = 4;
 	const PULL_GAIN = 0.5;
 
+	Vector3 twinV[2];	// this tic's pull of each hand's rope (Twin Lines)
 	void PullAll(PlayerPawn pmo, int pn)
 	{
 		Vector3 vsum = (0, 0, 0);
@@ -769,9 +796,16 @@ class RSQGR_Core : EventHandler
 			if (!UpdateAnchor(h)) { LetGo(h, false); continue; }
 			bool set; Vector3 v;
 			[set, v] = Pull(h, pmo, pn, hand, i);
+			twinV[hand] = set ? v : (0, 0, 0);
 			if (set) { vsum += v; nv++; }
 		}
-		// two ropes out: he goes between them (the average of the two pulls)
+		// two ropes out: he goes between them (the average of the two pulls). TWIN LINES 1 (Gun Bonsai VR): holding one
+		// rope's reel and not the other's pulls him toward that one alone
+		if (nv == 2 && RSQGR_Perks.Gate(pmo, 'TwinLines') >= 1)
+		{
+			let h0 = hooks[pn * 2], h1 = hooks[pn * 2 + 1];
+			if (h0 && h1 && h0.reelHeld != h1.reelHeld) { vsum = h0.reelHeld ? twinV[0] : twinV[1]; nv = 1; }
+		}
 		if (nv > 0) pmo.vel = vsum / nv;
 		tracked[pn] = nv > 0;
 		if (nv > 0) { lastPos[pn] = pmo.Pos; lastSet[pn] = pmo.vel; }
@@ -788,6 +822,7 @@ class RSQGR_Core : EventHandler
 		double minLen = RSQGR_Util.Num("rsqgr_min_len", 32);
 		double maxLen = h.range * 1.25;
 		double top = max(1.0, RSQGR_Util.Num("rsqgr_reel_speed", 12) * RSQGR_Perks.Factor(pmo, 'reel') * 1.5);
+		if (level.maptime < h.slingUntil) top = max(top, RSQGR_Util.Num("rsqgr_max_speed", 30));	// TWIN LINES 2's fling
 		bool grounded = pmo.Pos.z <= pmo.floorz + 0.5 || pmo.bOnMobj;
 		h.slack = false;   // drawn taut, claw to hand
 		h.reelHeld = held[i] && (pressFired[i] || level.maptime - pressTic[i] > TapTics());

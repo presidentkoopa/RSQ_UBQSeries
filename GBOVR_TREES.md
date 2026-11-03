@@ -1326,6 +1326,26 @@ slides at 10, lasso follows at 24; Swing and Momentum off by default (pull to th
 | Scorpion (new; needs RSQ Melee) | Get Over Here 2 | 1-3: a yanked monster that arrives at an empty fist is punched at full power automatically, x1.0 + 0.25 lv, as a counter | Grapple asks Melee (`RSQML_Service`) | the Super Spark | `scorpion` |
 | Twin Lines (new) | Long Line 2 | 1-2: a hook from each hand on geometry at once: you hang between them and pull toward either; 2: letting one go slingshots you along the other | Grapple | two ropes | `twin.lines` |
 
+**BUILT 11-02 (L3), the whole Grapple tree.** Gun Bonsai VR (`up_hook.zs`): `RSQ_HookPerk` gained a parent (Grapple by
+default); Grapple (the unlock), Momentum (class `RSQ_Upgrade_SwingMomentum`: the saber's Elegant Weapon owns
+`RSQ_Upgrade_Momentum`), Zip Kick, Scorpion, Twin Lines; the nine that existed hang from the tree's parents (Double
+Hook's "player level 5" gate replaced by Heavy Haul 2). Grapple (`perks.zs`): the five new levels in the same once-a-
+second cache, kept fresh by its WorldTick so the clearscope reads (`Gate`) see them; `Locked` (core's `Fire` returns
+under the patch until Grapple is learned); `SwingMode(pmo)` is the Momentum node under the patch, the row without;
+`ZipTick` (on a rope in the last 10 tics, 3 m/s or more a tic ago, this tic's move stopped by a monster: 10 + 10 lv x
+speed over 3 m/s up to x3, knocked on, once a second a monster); Scorpion in `OnArrive` through RSQ Melee's new
+"autopunch" (`RSQML_Gloves.AutoPunch`: the empty fist's full-speed jab through `Deliver`, marked a counter, x the
+share); Twin Lines in `Latch` (0: the other wall rope lets go), `PullAll` (1: one reel held pulls toward that rope
+alone) and `LetGo` (2: 0.6 of the speed cap along the other rope, which pulls at the cap for a second). **Calls made
+here:** Zip Kick's parent "Momentum 2" read as Momentum and Slingshot or Steady Line at 2 (Momentum has one level, as
+Force Speed's parent was read); its "x your speed share" as your speed over 3 m/s, capped x3. **Headless 11-02**
+(`fp_gr`, `fp_grfire` through the core's Fire, `fp_grtwin` through Latch and LetGo, `fp_grzip` through ZipTick,
+`fp_grscorp` through OnArrive): no hook before Grapple, a hook after; offers follow the parents; Twin Lines 0 let the
+first wall rope go when the second latched, 1 kept both, 2 flung the player 18 u/tic when one was let go; Momentum turned
+swing mode on; Zip Kick 1 at 8 m/s did 53 and threw the imp; Scorpion 1 punched the arriving imp for 25 (a full-power
+20 x 1.25) before Get Over Here's stagger. Not provable headless: a real throw of the claw, a swing, the feel of the
+fling.
+
 **Counts:** 14 nodes, 9 exist, 5 new.
 
 ### 4.7 Distance Grab (Long Arm, Iron Grip, Heavy Hitter, Air Catch, Powder Keg; Dead Eye, Heavy Lift, Straight Pull, Body Shield approved; Corpse Grab, Catch, Pull Small struck)

@@ -150,8 +150,13 @@ the simulated rig (2026-10-31 onward).
 - **RSQ Gestures:** the rope is never read as a gesture.
 - **RSQ Whip:** loads beside it; separate binds and settings.
 - **Gun Bonsai with the RSQ Gun Bonsai VR patch:** nine hook perks (Long Line, Fast Reel, Heavy Haul, Get Over
-  Here, Bowling, Barbed Claw, Slingshot, Steady Line, Double Hook). Slingshot and Steady Line act on a swing, so
-  they do something only with Swing and Momentum on. Without the patch nothing changes.
+  Here, Bowling, Barbed Claw, Slingshot, Steady Line, Double Hook), now a tree (GBOVR_TREES.md 4.6): **Grapple** is an
+  unlock -- under the patch the hook fires only once it is learned -- and **Momentum** is the Swing and Momentum
+  option as an unlock; the nine hang from them (Double Hook after Heavy Haul 2, no longer "from player level 5").
+  New: **Zip Kick** (arrive on a monster by the rope at 3 m/s or more: 20 / 30 / 40, more the faster), **Scorpion**
+  (needs RSQ Melee: what the hook brings is punched by your empty fist at full power as a counter) and **Twin Lines**
+  (a wall rope from each hand; under the patch one at a time until it is learned; hold one's reel to pull toward
+  it; 2: let one go and you are flung along the other). Without the patch nothing changes.
 - **RSQ Accessibility:** Hold to Toggle on the hook binds, Gesture Ease, colour-blind cues. Steady Hands (on in
   Accessibility): the hook is fired along the smoothed hand, and the aim dot follows it; the climb, the rope, the
   lasso and the lash stay on the raw hand. Slower Taps: Tap to Let Go is 1.5x longer. Rumble Strength 0: no bite

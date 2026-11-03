@@ -41,6 +41,7 @@ class RSQGR_Hook : Actor
 	bool slack;           // the rope may hang slack this tic (off the ground or reeling)
 	// THE PULL (rsqgr_swing off, the default since 11-02): RSQGR_Core.Pull
 	bool arrived;         // the pull reached the claw (or could go no further): he hangs there
+	int slingUntil;       // TWIN LINES 2: the other rope was let go, this one pulls at the speed cap till then
 	double pullSpeed;     // the pull's speed now (it builds up to its top over a few tics)
 
 	// bite

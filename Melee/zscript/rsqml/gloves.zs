@@ -705,6 +705,31 @@ class RSQML_Gloves : StaticEventHandler
 		}
 	}
 
+	// A PUNCH NOBODY SWUNG (RSQML_Service "autopunch"): an empty fist -- the main hand's glove, else the off hand's -- lands
+	// a full-speed jab on `v` through Deliver, counted as a counter, its damage x mult. RSQ Grapple's Scorpion asks it
+	// (Gun Bonsai VR, GBOVR_TREES.md 4.6): a monster the hook brings is punched as it arrives. False: no empty fist.
+	double autoMult;
+	bool autoCounter;
+	bool AutoPunch(PlayerPawn pmo, Actor v, double mult)
+	{
+		if (!pmo || !pmo.player || !v || v.health <= 0) return false;
+		int h = -1;
+		RSQ_Glove g = null;
+		if (pmo.player.ReadyWeapon is "RSQ_Glove") { g = RSQ_Glove(pmo.player.ReadyWeapon); h = 0; }
+		else if (pmo.player.OffhandWeapon is "RSQ_Glove") { g = RSQ_Glove(pmo.player.OffhandWeapon); h = 1; }
+		if (!g) return false;
+		Vector3 from = pmo.OverrideAttackPosDir ? (h == 0 ? pmo.AttackPos : pmo.OffhandPos) : pmo.pos + (0, 0, pmo.height * 0.6);
+		Vector3 mid = v.pos + (0, 0, v.height * 0.6);
+		Vector3 dir = mid - from;
+		dir = dir.Length() > 0.1 ? dir.Unit() : (cos(pmo.angle), sin(pmo.angle), 0);
+		autoMult = max(mult, 0.1);
+		autoCounter = true;
+		Deliver(pmo, g, h, v, RSQML.SV("rsqml_punch_full_speed", 7.0), dir, mid - dir * v.radius);
+		autoMult = 0;
+		autoCounter = false;
+		return true;
+	}
+
 	// A swing that ended without touching anything breaks a One-Two.
 	void Whiff(PlayerPawn pmo, int h)
 	{
@@ -747,7 +772,7 @@ class RSQML_Gloves : StaticEventHandler
 		double upFrac = clamp((at.z - victim.pos.z) / max(victim.height, 1.0), 0.0, 1.0);
 		g.lastBody = g.lastKind != PK_UPPER && upFrac < 0.6;
 		g.lastHeight = int(upFrac * 1000);
-		g.lastCounter = RSQML.InAttack(victim);
+		g.lastCounter = RSQML.InAttack(victim) || autoCounter;
 
 		// ONE-TWO: the other hand, inside half a second, keeps the chain; the same hand or a gap
 		// starts a new one
@@ -799,6 +824,7 @@ class RSQML_Gloves : StaticEventHandler
 		// RAGE (Gun Bonsai VR, 4.1 F) under the Berserk: 2 the hit-stop doubles, 3 the knock x1.5
 		int rgLv = zerk ? RSQML.GBLevel(g, "Rage") : 0;
 		if (RSQML.Debug() > 0) { static const String kn[] = { "jab", "hook", "uppercut" }; Console.Printf("RSQML punch lands: %s, %.2f m/s, path %.2f %.2f %.2f m", kn[g.lastKind], avgMps, path.x, path.y, path.z); }
+		if (autoMult > 0) dmg = int(dmg * autoMult);	// AutoPunch's share
 		victim.SpawnBlood(at, VectorAngle(dir.x, dir.y), dmg);
 		RSQML_Spark.Punch(g.lastKind, RSQML_Spark.OnSkin(victim, at), dir, pmo, h);   // a spark per kind of blow, along the fist (sparks.zs)
 		if (juggle) RSQML_Burst.At("RSQML_Burst4", at, 0.75, RSQML_Burst.ByLevel(RSQML.GBLevel(g, "Juggle"), 3));

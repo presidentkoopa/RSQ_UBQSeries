@@ -19,6 +19,9 @@
 //   GetInt "headlock.holding" objectArg = a monster: 1 while a Headlock holds it
 //   GetInt "launch.age"       objectArg = a monster, intArg = a player number: tics since that player's uppercut launched
 //                             it, while it is still off the floor; -1 not (RSQ Gun Bonsai VR's Juggle, launch.zs)
+//   GetInt "autopunch"        objectArg = a monster, intArg = a player number, doubleArg = a damage share: that player's
+//                             empty fist punches it now, full power, as a counter (1 done, 0 no empty fist; RSQ Grapple's
+//                             Scorpion)
 // RSQ Gun Bonsai VR's glove upgrades read "punch.*" in ModifyDamageDealt (the glove is the inflictor there).
 class RSQML_Service : Service
 {
@@ -40,6 +43,16 @@ class RSQML_Service : Service
 			if (request == "punch.height") return g.lastHeight;
 			if (request == "punch.run") return g.lastRun;
 			return -1;
+		}
+		// "autopunch": objectArg = a monster, intArg = a player number, doubleArg = the damage share: that player's empty fist
+		// punches it now at full power, as a counter (RSQML_Gloves.AutoPunch). 1 done, 0 no empty fist. RSQ Grapple's
+		// Scorpion asks it.
+		if (request == "autopunch")
+		{
+			let v = Actor(objectArg);
+			let gl = RSQML_Gloves.Get();
+			if (!gl || !v || intArg < 0 || intArg >= MAXPLAYERS || !playeringame[intArg]) return 0;
+			return gl.AutoPunch(players[intArg].mo, v, doubleArg) ? 1 : 0;
 		}
 		if (request == "guard")
 		{

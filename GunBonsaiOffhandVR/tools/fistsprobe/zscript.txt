@@ -593,6 +593,89 @@ class FistsProbe : EventHandler
 				RSQGC_GunCard.FuseCount(p.player, 0), RSQGC_GunCard.FuseAmber(p.player) ? "amber" : "red");
 			gnCookAt = level.maptime + 2;
 		}
+		else if (e.Name ~== "fp_gr")
+		{
+			// THE GRAPPLE TREE (player nodes). arg0 1: offers and levels (arg1 stage); 2: grant arg1's node (+arg2 levels)
+			static const String GRN[] = { "Grapple", "LongLine", "FastReel", "BarbedClaw", "HeavyHaul", "GetOverHere", "Bowling",
+				"DoubleHook", "SwingMomentum", "Slingshot", "SteadyLine", "ZipKick", "Scorpion", "TwinLines" };
+			let st = TFLV_PerPlayerStats.GetStatsFor(p);
+			if (!st) return;
+			if (e.Args[0] == 2) { String cls = "RSQ_Upgrade_" .. GRN[clamp(e.Args[1], 0, GRN.Size() - 1)]; st.upgrades.Add(cls, max(e.Args[2], 1)); Console.Printf("FP grapple granted %s", cls); return; }
+			String on = "", have = "";
+			for (int i = 0; i < GRN.Size(); i++)
+			{
+				Class<TFLV_Upgrade_BaseUpgrade> c = "RSQ_Upgrade_" .. GRN[i];
+				if (!c) { on = on .. " ?" .. GRN[i]; continue; }
+				if (TFLV_Upgrade_BaseUpgrade(new(c)).IsSuitableForPlayer(st)) on = on .. " " .. GRN[i];
+				int lv = int(st.upgrades.Level("RSQ_Upgrade_" .. GRN[i]));
+				if (lv > 0) have = have .. String.Format(" %s%d", GRN[i], lv);
+			}
+			Console.Printf("FP grapple [stage %d] has:%s | offered:%s", e.Args[1], have, on);
+		}
+		else if (e.Name ~== "fp_grfire")
+		{
+			// the core's own Fire, from the eye straight ahead: did a hook come out?
+			let core = RSQGR_Core.Get();
+			if (!core) return;
+			if (core.hooks[0]) { core.hooks[0].Destroy(); core.hooks[0] = null; }
+			Vector3 f = (cos(p.angle), sin(p.angle), 0);
+			core.Fire(p, 0, 0, p.pos + (0, 0, 40), f);
+			Console.Printf("FP grapple fire: %s; swing mode %d, twin lines gate %d", core.hooks[0] ? "THE HOOK FLIES" : "nothing (locked)", RSQGR_Core.SwingMode(p), RSQGR_Perks.Gate(p, 'TwinLines'));
+			if (core.hooks[0]) { core.hooks[0].Destroy(); core.hooks[0] = null; }
+		}
+		else if (e.Name ~== "fp_grscorp")
+		{
+			// a 1000-health imp the hook has brought, through the perks' own OnArrive (a glove in the main hand)
+			let m = Put("DoomImp", 48);
+			if (!m) return;
+			m.health = 1000;
+			int h0 = m.health;
+			RSQGR_Perks.OnArrive(m, p);
+			Console.Printf("FP grapple arrive (hand %s): imp %d -> %d", p.player.ReadyWeapon ? p.player.ReadyWeapon.GetClassName() : 'none', h0, m.health);
+			m.Destroy();
+		}
+		else if (e.Name ~== "fp_grzip")
+		{
+			// the player was on a rope this tic, moving 8 m/s a tic ago, and an imp stopped him: the perks' own ZipTick
+			let pk = RSQGR_Perks.Get(); let core = RSQGR_Core.Get();
+			let m = Put("DoomImp", 40);
+			if (!pk || !core || !m) return;
+			m.health = 1000;
+			int h0 = m.health;
+			pk.ropeTic[0] = level.maptime;
+			pk.lastSpd[0] = 8.0 * 34 / TICRATE;
+			p.BlockingMobj = m;
+			pk.ZipTick(core, p, 0);
+			Console.Printf("FP grapple zip kick at 8 m/s: imp %d -> %d, thrown %.1f u/tic", h0, m.health, m.vel.Length());
+			p.BlockingMobj = null;
+			m.Destroy();
+		}
+		else if (e.Name ~== "fp_grtwin")
+		{
+			// a hook latched on a wall from each hand, through the core's own Latch; arg0 1: then let the off hand's go
+			let core = RSQGR_Core.Get();
+			if (!core) return;
+			Vector3 f = (cos(p.angle), sin(p.angle), 0), sd = (-f.y, f.x, 0);
+			for (int hand = 0; hand < 2; hand++)
+			{
+				if (core.hooks[hand]) { core.hooks[hand].Destroy(); core.hooks[hand] = null; }
+				let h = RSQGR_Hook(Actor.Spawn("RSQGR_Hook", p.pos + f * 160 + sd * (hand == 0 ? -60 : 60) + (0, 0, 120), NO_REPLACE));
+				if (!h) return;
+				h.owner = p; h.hand = hand; h.range = 1024; h.anchor = h.pos;
+				core.hooks[hand] = h;
+				core.Latch(h, hand);
+			}
+			let h0 = core.hooks[0], h1 = core.hooks[1];
+			Console.Printf("FP grapple twin: main %s, off %s", h0 && h0.phase == RSQGR_Hook.PH_LATCH ? "LATCHED" : "let go", h1 && h1.phase == RSQGR_Hook.PH_LATCH ? "LATCHED" : "let go");
+			if (e.Args[0] == 1 && h1 && h1.phase == RSQGR_Hook.PH_LATCH && h0 && h0.phase == RSQGR_Hook.PH_LATCH)
+			{
+				p.vel = (0, 0, 0);
+				core.LetGo(h1, true);
+				Console.Printf("FP grapple twin: off let go -> velocity %.1f u/tic, the main rope pulls at the cap until t%d (now t%d)", p.vel.Length(), h0.slingUntil, level.maptime);
+			}
+			for (int hand = 0; hand < 2; hand++) if (core.hooks[hand]) { core.hooks[hand].Destroy(); core.hooks[hand] = null; }
+			p.vel = (0, 0, 0);
+		}
 		else if (e.Name ~== "fp_gnstate")
 		{
 			// the carry (arg0 1: with a backpack), the fuse and Cook Sense's amber
@@ -899,7 +982,7 @@ class FistsProbe : EventHandler
 			Console.Printf("FP saber [stage %d] has:%s | offered:%s | size index %d | second saber carried: %s", e.Args[1], have, on, sb ? sb.SizeIdx() : -1,
 				p.FindInventory("UBQS_SaberOff") ? "yes" : "no");
 		}
-		else if (e.Name.Left(5) ~== "fp_ss" || e.Name.Left(5) ~== "fp_gn") TreeEvents(e, p);
+		else if (e.Name.Left(5) ~== "fp_ss" || e.Name.Left(5) ~== "fp_gn" || e.Name.Left(5) ~== "fp_gr") TreeEvents(e, p);
 		else if (e.Name ~== "fp_force")
 		{
 			// arg0 0: the Force's own Push at an imp in front; 1: Force Lightning straight into one (and a second near it);
