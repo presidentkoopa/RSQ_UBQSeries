@@ -60,7 +60,7 @@ nothing. Without Gun Bonsai VR each has a Melee row, off by default, that plays 
   butt strike. 14 damage (62 with the Berserk), knocked away from you, once every 12 tics. Stands down when BD22 VR
   Reloaded is loaded: its own strike is the one.
 - **Slow-Mo After a Shove:** a landed shove (ours, or BD22 VR Reloaded's) asks RSQ SlowMo for a short pulse of slow
-  motion (300 ms at 35 % world speed). What you do in that beat is RSQ Score's business (its F.E.A.R. Effect).
+  motion (300 ms at 35 % world speed).
 
 **The Headlock.**
 - The off hand's grip on a living monster within 30 cm holds it by the collar, its face at your hand, facing you, for
@@ -159,9 +159,7 @@ Options -> Radiant Silvergun Options -> **RSQ Melee**.
 - **BD22 VR (RS_Brutal22WeaponsQ):** Melee Hands' Auto shows its FBX hand, worn in its Hand Skin Tone.
 - **BD22 VR Reloaded:** the shove stands down; its own butt strike starts the slow motion.
 - **RSQ SlowMo:** the slow motion after a shove.
-- **RSQ Score:** the shove is named to it before the blow lands; what you do in the slow beat is Score's F.E.A.R. Effect.
-- **RSQ Score:** the Headlock is its Headlock combo; a shotgun kill in the shove's slow motion is its F.E.A.R. Effect
-  combo. Score asks Melee which hand sent a missile back.
+- **RSQ Score:** the Headlock is its Headlock combo; the shove is named to it before the blow lands.
 - **RSQ Distance Grab:** a thrown Headlock monster flies through its throw (strength, weight, aim assist, impact).
   The off grip press is decided between the two mods each tic, so they never both take it. Without it, Melee's own toss.
 - **RSQ Gestures:** Ground Pound and Clear Out come from its two-hand events; its Two-Hand Events row may stay off, a
