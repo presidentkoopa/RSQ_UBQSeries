@@ -97,6 +97,7 @@ class FistsProbe : EventHandler
 	int gnSkeetAt, gnWinAt;
 	// a kind set off among imps: when, which kind, the imps, whether each lost its target at some point
 	int gkAt, gkKind;
+	int gnCookAt;
 	Array<Actor> gkImps;
 	Array<int> gkLost, gkH0;
 	override void WorldTick()
@@ -126,6 +127,12 @@ class FistsProbe : EventHandler
 			Console.Printf("FP grenade bomblets went off: the Baron %d -> %d", gnBaronH0, gnBaron ? gnBaron.health : -1);
 			if (gnBaron) gnBaron.Destroy();
 			gnAt = 0;
+		}
+		if (gnCookAt > 0 && t == gnCookAt)
+		{
+			let h = RSQGN_Handler.Get();
+			if (h) { h.armed[0] = false; h.spoon[0] = false; }
+			gnCookAt = 0;
 		}
 		if (gkAt > 0)
 		{
@@ -575,6 +582,16 @@ class FistsProbe : EventHandler
 			g.target = p; g.fuse = 1; g.fuseTotal = 105; g.dmgMult = 1.0; g.kind = e.Args[0];
 			RSQGN_Kind.Claim(g, p);
 			gkAt = level.maptime; gkKind = e.Args[0];
+		}
+		else if (e.Name ~== "fp_gncook")
+		{
+			// the grenade in hand cooking for arg0 tics: what Gun Cards' own FuseCount reads (the card draws next tic)
+			let h = RSQGN_Handler.Get();
+			if (!h) return;
+			h.armed[0] = true; h.spoon[0] = true; h.cookTic[0] = level.maptime - e.Args[0];
+			Console.Printf("FP grenade cooking %d tics of %d: the card counts %d (%s)", e.Args[0], RSQGN_Handler.FuseTics(p),
+				RSQGC_GunCard.FuseCount(p.player, 0), RSQGC_GunCard.FuseAmber(p.player) ? "amber" : "red");
+			gnCookAt = level.maptime + 2;
 		}
 		else if (e.Name ~== "fp_gnstate")
 		{

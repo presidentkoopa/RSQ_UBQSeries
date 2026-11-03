@@ -1249,8 +1249,15 @@ and a 25 hit on a frozen imp did 50 and thawed it; Stun 71 (half); Smoke: the im
 Flash: no damage, every imp lost its target; Charm: all three FRIENDLY, attacking other monsters; Infight: all three on
 the nearest imp. Not provable headless: how each looks and sounds, the alt trigger in a hand. **Owed:** the Weapon
 Wheel's fan of kinds (the owner: later, its own step); the Rig's grenade-spot light in the kind's colour; the RS
-Combat FX art the table names (frost burst, fire, smoke, hazes) and the kinds' own sounds; Cook Sense 3 (no audio, the
-owner's word: a fuse count on the grenade's Gun Card proposed, waiting on his go).
+Combat FX art the table names (frost burst, fire, smoke, hazes) and the kinds' own sounds.
+
+**Cook Sense 3: BUILT 11-02 (owner: "I'd rather not have audio cues ... re-purpose the weapon card", then yes to the card).**
+No announcer: the grenade's small RSQ Gun Cards card counts the cooking fuse's whole seconds down, amber for the first
+half and red after (RSQGN_Service "fuse.count" / "fuse.amber", answered only at Cook Sense 3; Gun Cards `FuseCount`
+puts it in the big number and shows the card while cooking unless Show Cards is Off). Cook Sense reaches 3 only with
+RSQ Gun Cards loaded. **Headless 11-02** (`fp_gncook`): no count below level 3; at 3, 10 tics into a 105-tic fuse the
+card counted 3 in amber, at 80 and 100 tics 1 in red, and Gun Cards' own draw put each up. Not provable headless: how
+it reads on the wrist.
 
 | Impact (new) | Cook Sense 1 | 1: bursts on first contact, no fuse (thrown only; cooking it is the frag's job); 2: +15% damage | Grenade | RS Ballistics blast | `impact` |
 | Incendiary (new) | Big Bang 1 | 1-3: the blast leaves fire 3 + lv s over its radius, 5 a second to what stands in it | Grenade | RS Combat FX fire | `fire.nade` |

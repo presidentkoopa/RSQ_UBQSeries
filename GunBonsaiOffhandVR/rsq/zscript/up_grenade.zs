@@ -62,11 +62,12 @@ class RSQ_Upgrade_Bounce : RSQ_Upgrade_GrenadeMarker
 
 // ---- FUSE ----------------------------------------------------------------------------------------------------------
 
-// COOK SENSE (root): 1 a tick in the holding hand at each second of the fuse; 2 the flash runs amber, then red. (Level 3,
-// the spoken count, waits on its voice: capped at 2 until then.) (RSQGN_Handler.WorldTick, AmberAt)
+// COOK SENSE (root): 1 a tick in the holding hand at each second of the fuse; 2 the flash runs amber, then red; 3 the
+// grenade's RSQ Gun Cards card counts the seconds down, in the flash's colours (the owner, 11-02: no audio; offered only
+// with RSQ Gun Cards loaded). (RSQGN_Handler.WorldTick, AmberAt; RSQGN_Service "fuse.count"; Gun Cards FuseCount)
 class RSQ_Upgrade_CookSense : RSQ_Upgrade_GrenadeMarker
 {
-	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return GrenadeInfo(info) && LevelOf(info, "CookSense") < 2; }
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return GrenadeInfo(info) && LevelOf(info, "CookSense") < (RSQM.Has("RSQGC_CardItem") ? 3 : 2); }
 }
 
 // SHORT FUSE (after Cook Sense 1): fuse 3.0 -> 2.5, 2.0 s (the Fuse row less half a second a level). (FuseTics)

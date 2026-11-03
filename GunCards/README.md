@@ -61,6 +61,9 @@ Always on (no row):
 - **RELOAD**: an empty magazine with rounds to load shows RELOAD instead of the count (on the watch card it
   replaces the MAGAZINE word).
 - **Grenades** on the watch card: Brutal Doom's hand grenades (not mines), or RSQ Grenade's without Brutal Doom.
+- **The fuse count** (with RSQ Grenade and Gun Bonsai VR's Cook Sense 3): while RSQ Grenade's grenade cooks in your
+  hand, its small card shows the seconds left big, amber for the first half of the fuse and red after, and shows
+  while it cooks whatever Show Cards says (unless Off). Asked of RSQ Grenade by name; nothing without it.
 - **Kills this level** on the watch card: this gun's kills on this level (a kill goes to the hand that fired
   last within a second).
 - **Status card**: watch check with an empty hand shows STATUS: health, armour, keys (cards on one line,

@@ -180,6 +180,22 @@ class RSQGC_GunCard : EventHandler
 		return it ? it.Amount : 0;
 	}
 
+	// THE GRENADE'S FUSE COUNT (Gun Bonsai VR's Cook Sense 3, asked of RSQ Grenade by name): while the grenade in this hand
+	// cooks, its whole seconds left; -1 otherwise (or without RSQ Grenade). FuseAmber: the fuse's first half (amber, as the
+	// grenade's own flash), else red.
+	static int FuseCount(PlayerInfo p, int hand)
+	{
+		Weapon w = hand == 1 ? p.OffhandWeapon : p.ReadyWeapon;
+		if (!w || w.GetClassName() != 'RSQGN_Grenade' || !p.mo) return -1;
+		let s = ServiceIterator.Find("RSQGN_Service").Next();
+		return s ? s.GetInt("fuse.count", "", p.mo.PlayerNumber()) : -1;
+	}
+	static bool FuseAmber(PlayerInfo p)
+	{
+		let s = ServiceIterator.Find("RSQGN_Service").Next();
+		return s && p.mo && s.GetInt("fuse.amber", "", p.mo.PlayerNumber()) == 1;
+	}
+
 	// what the extra lines say, for the watch card's signature
 	string ExtraSig(PlayerPawn pmo, int hand, Weapon w)
 	{
@@ -567,6 +583,8 @@ class RSQGC_GunCard : EventHandler
 			// GC1 (Option): the small card hides while the gun is up at your eye
 			bool eyeHide = ci("rsqgc_hide_eye", 0) && AtEye(pmo, hand);
 			show[hand] = status[hand] || (watching[hand] ? w != null : (w && !eyeHide && Wanted(pmo, hand)));
+			// a cooking grenade's count shows whatever Show Cards says, unless it says Off
+			if (!show[hand] && w && ci("rsqgc_card", 1) > 0 && FuseCount(p, hand) >= 0) show[hand] = true;
 		}
 		// both guns on the main-hand small card (rsqgc_hands): the off hand's stands down. A host hand with nothing
 		// to count carries the other gun alone. A hand you are checking shows its watch card instead.
@@ -737,6 +755,14 @@ class RSQGC_GunCard : EventHandler
 			tDigits = TransFor(RSQGC_Look.Role(RSQGC_Look.R_AMMO));
 		}
 		int tLow = low && ci("rsqgc_lowwarn", 1) ? TransFor(RSQGC_Look.Role(RSQGC_Look.R_AMMO_DRY)) : -1;
+		// COOK SENSE 3: the cooking grenade's seconds left take the big number, amber then red
+		int fc = FuseCount(p, hand);
+		if (fc >= 0)
+		{
+			loaded = fc;
+			tLow = TransFor(FuseAmber(p) ? 0xFFB428 : 0xFF3020);
+			if (ci("rsqgc_debug_log", 0)) Console.Printf("rsqgc: fuse count %d (%s)", fc, FuseAmber(p) ? "amber" : "red");
+		}
 		TiltTo(pmo, hand, mir);
 		mCurTilt = hand;
 
