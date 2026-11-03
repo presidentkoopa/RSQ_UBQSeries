@@ -121,12 +121,16 @@ Brutal Doom's stealth-kill cutscene.
 All numbers are room metres in the BODY's frame, from your eyes as they are when you look straight ahead.
 "Off side" is toward your off hand (the left for a right-handed player).
 
-- **The body, not the head.** The spot turns with your body: a snap or smooth turn turns it; turning your head
-  does not. Your body turning in the room cannot be seen, so a head held more than 35 degrees round for over a
-  second is taken as the body turning and the spot eases round (at most 3 degrees a tic), the RSQ Tactical Rig's
-  rule. While your off hand is reaching into the zone that catch-up waits, so looking over your shoulder while
-  you reach does not move it. It hangs from your neck (your eyes sit about 9 cm in front of it: "Eyes to Neck",
-  an estimate), so turning your head about your neck does not slide it either.
+- **The body, not the head.** The spot turns with your body: every snap or smooth turn turns it by exactly the
+  turn (11-03; rig only, not headset-confirmed); turning your head does not, and looking down never does. Your
+  body turning in the room is seen from your head and both hands turning together, hands in front of you ("Body
+  Turns With Head and Hands", on, Mount page), and a head held more than 35 degrees round for over a second is
+  also taken as the body turning and the spot eases round (at most 3 degrees a tic): the RSQ Tactical Rig's rule.
+  While your off hand is reaching into the zone that head-held catch-up waits, so looking over your shoulder
+  while you reach does not move it. With RSQ Tactical Rig loaded the spot hangs on the rig's own body instead
+  ("Turn With the Tactical Rig", on), so the shield and the holsters always turn together. It hangs from your
+  neck (your eyes sit about 9 cm in front of it: "Eyes to Neck", an estimate), so turning your head about your
+  neck does not slide it either.
 - **The height is your eyes, not the game's.** It hangs from your standing eye height read from the headset (the
   highest it has been lately, easing down 2 cm a second; crouching or sitting for over a second takes it down to
   your head). The game's own eye height is a fixed 1.45 m whatever your height, which put the old spots 15-25 cm
@@ -204,6 +208,8 @@ on the simulated rig (2026-10-31 onward).
 - **RSQ Tactical Rig:** with the shield on your back (Take It From: back or neck) the rig keeps its off-shoulder
   holster, and a hand in any rig holster is the rig's press. Over the Off Shoulder: the rig leaves its off-shoulder
   holster to the shield. With "Draw With Use" off the shoulder is the rig's.
+  The shield's mount hangs on the rig's body (its `RSQTR_BodyService`, by name; "Turn With the Tactical Rig"), so
+  every snap, smooth turn and real turn carries the shield and the holsters together.
 - **RSQ Score:** blocks, perfect blocks, turned shots and disc kills pay bonuses.
 - **RSQ HP Bars:** a locked monster shows the "locked" marker; hit-stop shows the frozen marker.
 - **Gun Bonsai with the RSQ Gun Bonsai VR patch:** the ShieldSaw levels up (the tree: GBOVR_TREES.md 4.3).

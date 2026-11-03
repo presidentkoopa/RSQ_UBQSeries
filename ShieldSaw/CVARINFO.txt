@@ -154,6 +154,8 @@ user float ssq_neck_up          = -18.0;  // and cm below them
 user float ssq_neck_reach       = 26.0;   // cm: the grab's radius
 user float ssq_neck_pivot       = 9.0;    // cm your eyes sit in front of the neck your head turns on (an estimate, not
                                           // measured): the mount hangs from the neck so a head turn does not move it
+user int   ssq_body_hands       = 1;      // the body the shield hangs on turns at once when your head and both hands turn together (11-03)
+user int   ssq_rig_body         = 1;      // with RSQ TacticalRig loaded, the shield hangs on the rig's body: shield and holsters turn together (11-03)
 user int   ssq_stow_world       = 0;      // draw the shield on your back while it is stowed (owner: off, 2026-10-22)
 user float ssq_mount_yaw        = 0.0;
 user float ssq_mount_pitch      = 0.0;

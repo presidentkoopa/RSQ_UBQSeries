@@ -66,7 +66,8 @@ class SSQ_Handler : EventHandler
 	double mBodyEye[MAXPLAYERS];
 	bool   mBodyEyeOk[MAXPLAYERS];
 	// ...and the keeper on this machine, for its own console player only (re-primed from mBodyYaw on load)
-	transient double kYaw, kLastA, kLastH0, kLastH1, kLastC0, kLastC1, kPend, kSentYaw, kEye, kSentEye;
+	transient double kYaw, kLastA, kLastH0, kLastH1, kSentYaw, kEye, kSentEye;
+	transient SSQ_TurnKeeper kTurns;	// the body's turns with the tracking space (turnkeep.zs)
 	transient int kOffFor, kEyeLow, kSentEyeOk;
 	transient bool kSwinging, kPrimed, kSent;
 	transient Actor kMo;
@@ -132,8 +133,9 @@ class SSQ_Handler : EventHandler
 	// 0.25-0.30 m behind you through an arc, out of the hand that was reaching for it, and the eyes orbiting the neck
 	// slid it a few cm more. Now:
 	//   YAW   the body's (BodyKeep below: the RSQ TacticalRig body.zs rule, copied so this mod works alone): a snap
-	//         or smooth turn shows as both controllers' yaws moving with the pawn's angle in the same tic and turns
-	//         the body; a head turn moves the angle alone and leaves it; a head held more than 35 degrees round for
+	//         or smooth turn shows as both controllers' yaws moving with the pawn's angle (a tic or two apart:
+	//         SSQ_TurnKeeper, 11-03) and turns the body, as do the head and both hands turning together (ssq_body_hands);
+	//         a head turn moves the angle alone and leaves it; a head held more than 35 degrees round for
 	//         1 s is taken as the body turning in the room and the body eases round (at most 3 degrees a tic).
 	//   PLACE the neck, not the eyes: the eyes sit ssq_neck_pivot (9 cm, an anatomical estimate, not measured) in
 	//         front of the neck the head turns on, so the point under the eyes is taken back along the HEAD's yaw to
@@ -141,9 +143,9 @@ class SSQ_Handler : EventHandler
 	//   UP    your standing eyes (EyeZ below), not the pawn's fixed 1.45 m eye (viewz) the hands are not measured from.
 	// Every offset below is from that point: your eyes as they are when you look straight ahead.
 	// Off VR the body is the pawn and nothing changed.
-	const BODY_TOL = 1.5;     // degrees: both controllers moved with the pawn = a turn of the tracking space (rig: TOL)
 	const BODY_SWING = 3.0;   // most degrees a tic the body eases round while it catches up (rig: SWING)
 	const BODY_STEEP = 78.0;  // head pitch past which the head's yaw is not trusted (rig: STEEP)
+	const BODY_DOWN = 25.0;   // looking further down than this never starts or continues the catch-up (rig: rsqtr_body_down default, 11-03)
 	const BODY_TURN = 35.0;   // degrees the head must be held round ... (rig: rsqtr_body_turn default)
 	const BODY_TICS = 35;     // ... for this long before it counts as the body turning (rig: rsqtr_body_secs 1 s)
 
@@ -219,52 +221,54 @@ class SSQ_Handler : EventHandler
 			if (kEye <= 0 || eh > kEye || kEyeLow > TICRATE) { kEye = eh; kEyeLow = 0; }
 			else kEye = max(eh, kEye - 0.02 / TICRATE);
 		}
-		if (!kPrimed || kMo != mo)
+		// ON THE RIG'S BODY (ssq_rig_body, on; 11-03): with RSQ TacticalRig loaded the shield hangs on the rig's own body
+		// (asked by name, RSQTR_BodyService "body.yaw"), so the shield and the holsters turn together, every snap and
+		// every smooth turn, and never apart. Without the rig (or the row off) the keeper below, the rig's rule copied.
+		double rigYaw = 999;
+		if (UVI(p, 'ssq_rig_body', 1) != 0)
+		{
+			let it = ServiceIterator.Find('RSQTR_BodyService');
+			Service sv;
+			while (sv = it.Next()) { rigYaw = sv.GetDouble('body.yaw', '', 0, 0, mo); if (rigYaw != 999) break; }
+		}
+		if (rigYaw != 999)
+		{
+			kYaw = Actor.Normalize180(rigYaw);
+			kPrimed = false;	// the keeper starts again from here if the rig's body stops answering
+			kMo = mo;	// (and takes up the last yaw sent, as after a loaded save)
+		}
+		else if (!kPrimed || kMo != mo)
 		{
 			// a loaded save keeps the body it had; a new pawn (respawn) starts facing where it faces
 			kYaw = (!kPrimed && mBodyHave[consoleplayer]) ? mBodyYaw[consoleplayer] : a;
-			kLastA = a; kLastH0 = h0; kLastH1 = h1; kLastC0 = h0; kLastC1 = h1;
-			kPrimed = true; kMo = mo; kOffFor = 0; kSwinging = false; kPend = 0;
+			kLastA = a; kLastH0 = h0; kLastH1 = h1;
+			if (!kTurns) kTurns = new('SSQ_TurnKeeper');
+			kTurns.Prime(a, h0, h1);
+			kPrimed = true; kMo = mo; kOffFor = 0; kSwinging = false;
 			kSent = false;
 		}
 		else
 		{
-			double dA = Actor.DeltaAngle(kLastA, a);
-			double d0 = Actor.DeltaAngle(kLastH0, h0), d1 = Actor.DeltaAngle(kLastH1, h1);
-			// THE CONTROLLER YAWS ARE A TIC LATE. The engine writes them from doomYaw - playerYaw
-			// (hw_openxrdevice.cpp:589/603), and doomYaw is resampled from the camera a tic after the pawn's angle
-			// moves: measured on the rig, a 45-degree snap moved the angle at t45 and both controllers at t46, and
-			// a head turn of 4 degrees a tic read as the controllers turning -4 a tic while it lasted. So each
-			// controller's yaw plus the angle's own change this tic is its true yaw (c0, c1): a snap then shows in
-			// the same tic as the angle, and a head turn not at all. (The plain same-tic reading was tried beside
-			// it and read the end of every fast head turn as a turn: the late controllers catch up by exactly the
-			// head's last step.)
-			double c0 = h0 + dA, c1 = h1 + dA;
-			double e0 = Actor.DeltaAngle(kLastC0, c0), e1 = Actor.DeltaAngle(kLastC1, c1);
-			kLastA = a; kLastC0 = c0; kLastC1 = c1;
-			kLastH0 = h0; kLastH1 = h1;
-			// the tracking space turned (snap, smooth, a teleport's facing): both controllers moved WITH the head,
-			// by much the same (not the rig's plain |d - dA| < 1.5, which took any head turn slower than 1.5
-			// degrees a tic, controllers still, for a turn of the body) ...
-			// ... AND CONFIRMED A TIC LATER: the late raw yaws must then show that same step. In a tic the renderer
-			// skipped (no new frame: measured on the rig rendering under 35 fps) the controller yaws are stale and
-			// the correction above reads the previous head step as a turn; the next tic's raw yaws do not repeat it,
-			// so it is dropped. A turn is applied one tic late.
-			if (kPend != 0)
-			{
-				double pt = min(BODY_TOL, abs(kPend) * 0.5);
-				bool ok = abs(d0 - kPend) < pt && abs(d1 - kPend) < pt;
-				if (ok) kYaw += kPend;
-				if (UVI(p, 'ssq_debug', 0)) Console.Printf("ssq: body %s %.1f with the tracking space (controllers then %.1f %.1f)", ok ? "turns" : "holds, not", kPend, d0, d1);
-				kPend = 0;
-			}
-			double tol = min(BODY_TOL, abs(dA) * 0.5);
-			if (abs(dA) > 0.3 && abs(e0 - dA) < tol && abs(e1 - dA) < tol) kPend = dA;
+			// THE TRACKING SPACE TURNED (snap, smooth, a teleport's facing), or the head and both hands turned together in
+			// the room (ssq_body_hands): SSQ_TurnKeeper, the rig's rule (11-03). The controller yaws reach the script 0, 1
+			// or 2 tics after the pawn's angle (measured on the rig), so neither the plain same-tic reading nor the one-tic-
+			// late one kept here until 11-03 caught every snap: the owner's headset, "i can 360 around my torso and the
+			// shield doesn't move". Never paused: a snap while reaching for the shield still carries it round.
+			if (!kTurns) { kTurns = new('SSQ_TurnKeeper'); kTurns.Prime(kLastA, kLastH0, kLastH1); }
+			let sn = CVar.FindCVar('vr_snapTurn');
+			kYaw += kTurns.Step(a, h0, h1, mo.AttackPitch, mo.OffhandPitch, Level.maptime, sn ? sn.GetFloat() : 45.0);
+			kLastA = a; kLastH0 = h0; kLastH1 = h1;
+			// the head and both hands turned the same way in the room (ssq_body_hands): the body follows them (not while
+			// looking down). NOT held by a hand in the mount's zone: measured on the rig (11-03), a body left 100 degrees
+			// behind a real turn put the mount's zone where the off hand was, and that hold kept it there for good.
+			bool still = abs(mo.pitch) > BODY_STEEP || mo.pitch > BODY_DOWN;
+			kYaw += kTurns.With(kYaw, a, h0, h1, mo.AttackPitch, mo.OffhandPitch, !still && UVI(p, 'ssq_body_hands', 1) != 0);
+			if (mState[consoleplayer] != SS_FLYING && ZoneFrac(mo, mo.OffhandPos) <= ZoneK()) still = true;
 			// looking steeply down at yourself is not turning: the headset's yaw swings wildly there. And A HAND
 			// REACHING FOR THE MOUNT HOLDS THE BODY STILL (ShieldSaw's own addition to the rig's rule): you often
 			// look round toward the side you reach behind, for longer than a second, and the catch-up must not
 			// swing the mount out from under the hand
-			if (abs(mo.pitch) > BODY_STEEP || (mState[consoleplayer] != SS_FLYING && ZoneFrac(mo, mo.OffhandPos) <= ZoneK()))
+			if (still)
 			{
 				kOffFor = 0; kSwinging = false;
 			}
