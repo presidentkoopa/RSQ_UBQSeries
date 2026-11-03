@@ -1,0 +1,2 @@
+server noarchive int mbp_autobind = 0;     // tic at which the monster nearest the player is bound as a miniboss (0 = only by netevent)
+server noarchive int mbp_track = 0;        // 1: one MBP_T line a tic for the miniboss (pos, vel, hp)

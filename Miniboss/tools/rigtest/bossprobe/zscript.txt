@@ -1,0 +1,84 @@
+version "4.14"
+// TEST ONLY (never ships). RSQ Miniboss's "counts as a boss" switches on the headless qzd17.3 rig.
+//   netevent mbp_bind        the newest monster spawned (else the living one nearest the player) becomes a miniboss (RSQMB_Handler.Bind), with one
+//                            thrall: a ZombieMan spawned 160 behind the player and frozen (it only has to exist)
+//   netevent mbp_state       RSQMB_Service "bossfor" for each system, the boss's flags and health
+//   netevent mbp_killthrall  the thrall dies (the player the source)
+//   netevent mbp_kill        the miniboss takes a killing blow from the player
+//   netevent mbp_hurt <n>    the miniboss takes n from the player
+//   netevent mbp_morph       MorphMonster(Chicken) on the miniboss; logs whether it took
+// mbp_autobind <tic>: mbp_bind at that tic (for probes that spawn their own monster on a schedule).
+class MBP_Probe : EventHandler
+{
+	Actor boss, thr, last;
+	bool spawningThrall;
+	// the newest monster spawned (summon, a probe's own spawn) is the one bound; else the nearest
+	override void WorldThingSpawned(WorldEvent e) { if (e.Thing && e.Thing.bISMONSTER && !e.Thing.player && !spawningThrall) last = e.Thing; }
+	override void OnRegister() { SetOrder(2000); }
+
+	override void WorldTick()
+	{
+		int ab = CVar.FindCVar("mbp_autobind").GetInt();
+		if (ab > 0 && level.maptime == ab) Bind();
+		if (boss && CVar.FindCVar("mbp_track").GetInt() && players[0].mo)
+			Console.Printf("MBP_T t%d %s hp %d d2 %.1f vel %.2f %.2f %.2f", level.maptime, boss.GetClassName(), boss.health,
+				(boss.pos.xy - players[0].mo.pos.xy).Length(), boss.vel.x, boss.vel.y, boss.vel.z);
+	}
+
+	void Bind()
+	{
+		let p = players[0].mo; if (!p) return;
+		let h = RSQMB_Handler.Get(); if (!h) { Console.Printf("MBP no RSQMB_Handler"); return; }
+		Actor best = null; double bd = 1e9;
+		let it = ThinkerIterator.Create("Actor");
+		Actor a;
+		while (a = Actor(it.Next()))
+		{
+			if (!a.bISMONSTER || a.player || a.health <= 0 || a.FindInventory("RSQMB_Token", true)) continue;
+			double d = a.Distance3D(p);
+			if (d < bd) { bd = d; best = a; }
+		}
+		if (last && last.health > 0 && !last.FindInventory("RSQMB_Token", true)) { best = last; bd = last.Distance3D(p); }
+		if (!best) { Console.Printf("MBP no monster to bind"); return; }
+		Vector2 back = Actor.AngleToVector(p.angle, -160);
+		spawningThrall = true;
+		thr = Actor.Spawn("ZombieMan", (p.pos.xy + back, p.pos.z), ALLOW_REPLACE);
+		spawningThrall = false;
+		if (thr) thr.freezetics = 100000;
+		Array<Actor> th; if (thr) th.Push(thr);
+		boss = best;
+		h.Bind(boss, th);
+		Console.Printf("MBP bound t%d %s (hp %d spawn %d mass %d, %.0f away) thrall %s", level.maptime, boss.GetClassName(), boss.health, boss.SpawnHealth(), boss.Mass, bd, thr ? thr.GetClassName() : 'none');
+		Report();
+	}
+
+	void Report()
+	{
+		if (!boss) { Console.Printf("MBP state: no boss"); return; }
+		let sv = ServiceIterator.Find("RSQMB_Service").Next();
+		String o = "";
+		static const String sys[] = { "rewards", "ldhealth", "yank", "headlock" };
+		for (int i = 0; i < sys.Size(); i++) o = o .. String.Format(" %s=%d", sys[i], sv ? sv.GetInt("bossfor", sys[i], 0, 0, boss) : -9);
+		Console.Printf("MBP state t%d %s hp %d spawn %d bossfor%s | BOSS %d FULLVOLSEE %d FULLVOLDEATH %d DONTMORPH %d | miniboss %d legendary(LD token) %d",
+			level.maptime, boss.GetClassName(), boss.health, boss.SpawnHealth(), o, boss.bBOSS, boss.bFULLVOLSEE, boss.bFULLVOLDEATH, boss.bDONTMORPH,
+			sv ? sv.GetInt("miniboss", "", 0, 0, boss) : -9, HasNamed(boss, "LDLegendaryMonsterToken"));
+	}
+
+	static bool HasNamed(Actor a, String n) { class<Inventory> c = n; return a && c && a.FindInventory(c); }
+
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		let p = players[0].mo; if (!p) return;
+		if (e.Name == "mbp_bind") Bind();
+		else if (e.Name == "mbp_state") Report();
+		else if (e.Name == "mbp_killthrall") { if (thr) { thr.freezetics = 0; thr.DamageMobj(null, p, 100000, 'None'); Console.Printf("MBP t%d thrall killed: hp %d", level.maptime, thr.health); } }
+		else if (e.Name == "mbp_kill") { if (boss) { Console.Printf("MBP t%d killing %s (hp %d)", level.maptime, boss.GetClassName(), boss.health); boss.DamageMobj(null, p, 100000, 'None'); Console.Printf("MBP t%d after the blow: hp %d", level.maptime, boss.health); } }
+		else if (e.Name == "mbp_hurt") { if (boss) { int h0 = boss.health; boss.DamageMobj(null, p, e.Args[0], 'None'); Console.Printf("MBP t%d hurt %s by %d: hp %d -> %d", level.maptime, boss.GetClassName(), e.Args[0], h0, boss.health); } }
+		else if (e.Name == "mbp_morph")
+		{
+			if (!boss) return;
+			bool ok = boss.MorphMonster("Chicken", 0, 0, null, null);
+			Console.Printf("MBP t%d morph %s into Chicken: %s (DONTMORPH %d)", level.maptime, boss.GetClassName(), ok ? "MORPHED" : "refused", boss.bDONTMORPH);
+		}
+	}
+}

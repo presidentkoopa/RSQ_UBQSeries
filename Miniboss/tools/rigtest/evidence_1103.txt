@@ -1,0 +1,105 @@
+# RSQ Miniboss: Counts as a Boss switches -- rig only, not headset-confirmed (qzd17.3 rig, doom2, 2026-11-03)
+## Map-wide Roar + Can't Be Morphed (doom2 + Miniboss + bossprobe)
+MBP state t35 DoomImp hp 60 spawn 60 bossfor rewards=1 ldhealth=0 yank=1 headlock=1 | BOSS 0 FULLVOLSEE 0 FULLVOLDEATH 0 DONTMORPH 0 | miniboss 1 legendary(LD token) 0
+CASE_defaults_off
+MBP state t38 DoomImp hp 60 spawn 60 bossfor rewards=1 ldhealth=0 yank=1 headlock=1 | BOSS 0 FULLVOLSEE 0 FULLVOLDEATH 0 DONTMORPH 0 | miniboss 1 legendary(LD token) 0
+RSQMB flags set: boss 0 DoomImp FULLVOLSEE 1 FULLVOLDEATH 1 DONTMORPH 1 BOSS 0 (roar 1 nomorph 1; own 0 0 0)
+CASE_switches_on
+MBP state t41 DoomImp hp 60 spawn 60 bossfor rewards=1 ldhealth=0 yank=1 headlock=1 | BOSS 0 FULLVOLSEE 1 FULLVOLDEATH 1 DONTMORPH 1 | miniboss 1 legendary(LD token) 0
+MBP t41 morph DoomImp into Chicken: refused (DONTMORPH 1)
+RSQMB flags set: boss 0 DoomImp FULLVOLSEE 0 FULLVOLDEATH 0 DONTMORPH 0 BOSS 0 (roar 0 nomorph 0; own 0 0 0)
+CASE_switches_off_again
+MBP state t47 DoomImp hp 60 spawn 60 bossfor rewards=1 ldhealth=0 yank=1 headlock=1 | BOSS 0 FULLVOLSEE 0 FULLVOLDEATH 0 DONTMORPH 0 | miniboss 1 legendary(LD token) 0
+RSQMB flags set: boss 0 DoomImp FULLVOLSEE 1 FULLVOLDEATH 1 DONTMORPH 1 BOSS 0 (roar 1 nomorph 1; own 0 0 0)
+CASE_killed_with_switches_on
+RSQMB flags at death: boss 0 DoomImp FULLVOLSEE 0 FULLVOLDEATH 1 DONTMORPH 0 BOSS 0 (roar 0 nomorph 0; own 0 0 0)
+MBP state t54 DoomImp hp -99940 spawn 60 bossfor rewards=0 ldhealth=0 yank=0 headlock=0 | BOSS 0 FULLVOLSEE 0 FULLVOLDEATH 1 DONTMORPH 0 | miniboss 0 legendary(LD token) 0
+CASE_3s_after_death
+MBP state t164 DoomImp hp -99940 spawn 60 bossfor rewards=0 ldhealth=0 yank=0 headlock=0 | BOSS 0 FULLVOLSEE 0 FULLVOLDEATH 0 DONTMORPH 0 | miniboss 0 legendary(LD token) 0
+RSQMB flags set: boss 1 DoomImp FULLVOLSEE 1 FULLVOLDEATH 1 DONTMORPH 0 BOSS 0 (roar 1 nomorph 0; own 0 0 0)
+MBP state t171 DoomImp hp 60 spawn 60 bossfor rewards=1 ldhealth=0 yank=1 headlock=1 | BOSS 0 FULLVOLSEE 1 FULLVOLDEATH 1 DONTMORPH 0 | miniboss 1 legendary(LD token) 0
+CASE_nomorph_off_morph
+MBP t174 morph Chicken into Chicken: MORPHED (DONTMORPH 1)
+## Boss Kill Rewards (Gun Bonsai + RSQ_GunBonsaiVR, drop chance 50%: a boss always drops; imp 60 hp = 6 bits, x3 boss)
+CASE_rewards_on
+RSQ KR t41: DoomImp (60 hp, miniboss as boss) burst into 18 bits: 4 health, 8 armour, 6 ammo
+CASE_rewards_off
+RSQ KR t62: DoomImp (60 hp) burst into 4 bits: 2 health, 0 armour, 2 ammo
+## LegenDoom Boss Health (LegenDoom Lite 4.2: LD_legendaryhealth 300, LD_legendaryhealthboss 200; imp 60)
+CASE_ldhealth_on
+RSQMB LegenDoom boss health asked: DoomImp spawn 60 x 2 (boss 200%) not x 3 (300%): StartHealth 0 -> 40 for its ACS
+MBP state t35 DoomImp hp 60 spawn 40 bossfor rewards=1 ldhealth=0 yank=1 headlock=1 | BOSS 0 FULLVOLSEE 0 FULLVOLDEATH 0 DONTMORPH 0 | miniboss 1 legendary(LD token) 0
+RSQMB LegenDoom boss health: boss 0 DoomImp legendary 1 hp 120 (asked 120; StartHealth back to 0, SpawnHealth 60)
+MBP state t75 DoomImp hp 120 spawn 60 bossfor rewards=1 ldhealth=1 yank=1 headlock=1 | BOSS 0 FULLVOLSEE 0 FULLVOLDEATH 0 DONTMORPH 0 | miniboss 1 legendary(LD token) 1
+MBP_LD t75 boss 0 DoomImp hp 120 spawn 60: GBVR StartHealth 120, ShieldSaw TierHealth 240 (bossfor ldhealth 1)
+MBP t78 hurt DoomImp by 65: hp 120 -> 55
+MBP state t83 DoomImp hp 120 spawn 60 bossfor rewards=1 ldhealth=1 yank=1 headlock=1 | BOSS 0 FULLVOLSEE 0 FULLVOLDEATH 0 DONTMORPH 0 | miniboss 1 legendary(LD token) 1
+CASE_ldhealth_off
+MBP state t98 DoomImp hp 60 spawn 60 bossfor rewards=1 ldhealth=0 yank=1 headlock=1 | BOSS 0 FULLVOLSEE 0 FULLVOLDEATH 0 DONTMORPH 0 | miniboss 1 legendary(LD token) 0
+MBP state t138 DoomImp hp 180 spawn 60 bossfor rewards=1 ldhealth=0 yank=1 headlock=1 | BOSS 0 FULLVOLSEE 0 FULLVOLDEATH 0 DONTMORPH 0 | miniboss 1 legendary(LD token) 1
+MBP_LD t138 boss 0 DoomImp hp -99880 spawn 60: GBVR StartHealth 120, ShieldSaw TierHealth 60 (bossfor ldhealth 1)
+MBP_LD t138 boss 1 DoomImp hp 180 spawn 60: GBVR StartHealth 180, ShieldSaw TierHealth 360 (bossfor ldhealth 0)
+MBP t141 hurt DoomImp by 95: hp 180 -> 85
+MBP state t146 DoomImp hp 180 spawn 60 bossfor rewards=1 ldhealth=0 yank=1 headlock=1 | BOSS 0 FULLVOLSEE 0 FULLVOLDEATH 0 DONTMORPH 0 | miniboss 1 legendary(LD token) 1
+## Can't Be Yanked: Grapple (GRV room, imp 400 ahead; og fling = you fly to it, og throw / launch = it is thrown)
+CASE_noyank_on
+MBP state t35 DoomImp hp 60 spawn 60 bossfor rewards=1 ldhealth=0 yank=1 headlock=1 | BOSS 0 FULLVOLSEE 0 FULLVOLDEATH 0 DONTMORPH 0 | miniboss 1 lege
+T_GR t47 h0 og fling pos(1000.0 512.0 -0.0) vel(30.99 -0.76 2.25) claw(1380.0 503.5 37.0) L381.7 d381.7 segs63 ms0.055/0.032 scale1.00 grip-1 free01 h
+CASE_noyank_off
+MBP state t116 DoomImp hp 60 spawn 60 bossfor rewards=1 ldhealth=0 yank=0 headlock=1 | BOSS 0 FULLVOLSEE 0 FULLVOLDEATH 0 DONTMORPH 0 | miniboss 1 leg
+T_GRM og throw DoomImp f 400 b 128 zh 0 x1.00 -> vel(-33.000 0.000 0.000)
+T_GR t128 h0 og throw pos(1000.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(1380.0 503.5 37.0) L0.0 d1124.0 segs63 ms0.074/0.041 scale1.00 grip-1 free01 hof
+CASE_yankmode_noyank_on
+MBP state t197 DoomImp hp 60 spawn 60 bossfor rewards=1 ldhealth=0 yank=1 headlock=1 | BOSS 0 FULLVOLSEE 0 FULLVOLDEATH 0 DONTMORPH 0 | miniboss 1 leg
+T_GR t209 h0 og fling pos(1000.0 512.0 -0.0) vel(30.99 -0.76 2.25) claw(1380.0 503.5 37.0) L381.7 d381.7 segs63 ms0.050/0.034 scale1.00 grip-1 free01 
+CASE_yankmode_noyank_off
+MBP state t278 DoomImp hp 60 spawn 60 bossfor rewards=1 ldhealth=0 yank=0 headlock=1 | BOSS 0 FULLVOLSEE 0 FULLVOLDEATH 0 DONTMORPH 0 | miniboss 1 leg
+T_GRM launch DoomImp m=100 r=20 h=56 dist=348 T=23.9 arc=52 (want 52 room 448) tumble=1 voxel=0 scale=1.00
+T_GR t290 h0 bite pos(1000.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(1380.0 503.5 37.0) L0.0 d1124.0 segs63 ms0.050/0.033 scale1.00 grip-1 free01 hoff0.0
+T_GRM land DoomImp (arrived) after 24 tics speed 27.2 down 14.0 peak 52.1 dmg 4 at (1052.0 512.0 -0.0) floorz -0.0 fits 1
+## Can't Be Yanked: Whip yank, rsqmb_boss_noyank 1
+MBP state t78 DoomImp hp 60 spawn 60 bossfor rewards=1 ldhealth=0 yank=1 headlock=1 | BOSS 0 FULLVOLSEE 0 FULLVOLDEATH 0 DONTMORPH 0 | miniboss 1 lege
+MBP state t80 DoomImp hp 60 spawn 60 bossfor rewards=1 ldhealth=0 yank=1 headlock=1 | BOSS 0 FULLVOLSEE 0 FULLVOLDEATH 0 DONTMORPH 0 | miniboss 1 lege
+T_WPW 0 YANK t255 DoomImp mass 100 pull 4.9 (100%) heavy: you swing to it
+## Can't Be Yanked: Whip yank, rsqmb_boss_noyank 0
+MBP state t78 DoomImp hp 60 spawn 60 bossfor rewards=1 ldhealth=0 yank=0 headlock=1 | BOSS 0 FULLVOLSEE 0 FULLVOLDEATH 0 DONTMORPH 0 | miniboss 1 lege
+MBP state t80 DoomImp hp 60 spawn 60 bossfor rewards=1 ldhealth=0 yank=0 headlock=1 | BOSS 0 FULLVOLSEE 0 FULLVOLDEATH 0 DONTMORPH 0 | miniboss 1 lege
+T_WPW 0 YANK t255 DoomImp mass 100 pull 4.9 (100%) light: pulled
+## Can't Be Headlocked: Melee headlock (Melee probe case 4), rsqmb_boss_noheadlock 1
+      1 MBP state t50 DoomImp hp 60 spawn 60 bossfor rewards=1 ldhealth=0 yank=1 headlock=1 | BOSS 0 FULLVOLSEE 0 FULLVOLDEATH 0 DONTMORPH 0 | minibos
+      1 MLP t60 held 0: monster fwd 40.0 left -0.0 up 0.0 (face 47.6), off hand 11.9 5.1 34.0, gap to you 4.0, facing you 0 deg off, frame E
+      1 MLP t63 held 0: monster fwd 40.0 left -0.0 up 0.0 (face 47.6), off hand 11.9 5.1 34.0, gap to you 4.0, facing you 0 deg off, frame F
+      1 MLP t66 held 0: monster fwd 40.0 left -0.0 up 0.0 (face 47.6), off hand 11.9 5.1 34.0, gap to you 4.0, facing you 0 deg off, frame F
+     11 RSQML headlock: DoomImp is a miniboss, refused (Can't Be Headlocked)
+## Can't Be Headlocked: Melee headlock (Melee probe case 4), rsqmb_boss_noheadlock 0
+      1 MBP state t50 DoomImp hp 60 spawn 60 bossfor rewards=1 ldhealth=0 yank=1 headlock=0 | BOSS 0 FULLVOLSEE 0 FULLVOLDEATH 0 DONTMORPH 0 | minibos
+      1 MLP t60 held 0: monster fwd 40.0 left -0.0 up 0.0 (face 47.6), off hand 11.9 5.1 34.0, gap to you 4.0, facing you 0 deg off, frame E
+      1 MLP t63 held 1: monster fwd 34.9 left 15.0 up 0.0 (face 47.6), off hand 11.9 5.1 34.0, gap to you 2.0, facing you 0 deg off, frame E
+      1 MLP t66 held 1: monster fwd 34.9 left 15.0 up 0.0 (face 47.6), off hand 11.9 5.1 34.0, gap to you 2.0, facing you 0 deg off, frame E
+     11 RSQML headlock: DoomImp is a miniboss, allowed
+      1 RSQML headlock: holding DoomImp (t61)
+## Script errors (the 4 voxeldef lines are BD_VoxelPack's own)
+mb_flags: Script error 0 (voxeldef 0)
+mb_rewards: Script error 0 (voxeldef 0)
+mb_ld_gb: Script error 0 (voxeldef 0)
+mb_grapple: Script error 0 (voxeldef 0)
+mb_whip1: Script error 0 (voxeldef 0)
+mb_whip0: Script error 0 (voxeldef 0)
+mb_headlock1: Script error 0 (voxeldef 0)
+mb_headlock0: Script error 0 (voxeldef 0)
+lo_mb_alone: Script error 0 (voxeldef 0)
+lo_gb_alone: Script error 0 (voxeldef 0)
+lo_gb_allrsq: Script error 0 (voxeldef 0)
+lo_full: Script error 4 (voxeldef 4)
+## Load orders: miniboss chosen, killed by 'kill monsters'
+-- lo_mb_alone
+RSQMB boss 1 died (killer none) rage 0
+RSQMB boss 0 died (killer none) rage 0
+-- lo_gb_allrsq
+RSQMB boss 0 died (killer none) rage 0
+RSQ KR t65: DoomImp (60 hp, miniboss as boss) burst into 18 bits: 10 health, 5 armour, 3 ammo
+RSQMB boss 1 died (killer none) rage 0
+-- lo_full
+RSQMB boss 0 died (killer none) rage 0
+RSQ KR t65: Imp (80 hp, miniboss as boss) burst into 24 bits: 7 health, 10 armour, 7 ammo
+RSQMB boss 1 died (killer none) rage 0

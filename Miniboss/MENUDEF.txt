@@ -53,6 +53,14 @@ OptionMenu "RSQMB_Options"
 	Option "Effects", "rsqmb_fx", "OnOff"
 	Option "Score Awards", "rsqmb_score", "OnOff"
 	StaticText " "
+	StaticText "Counts as a Boss", 1
+	Option "Boss Kill Rewards", "rsqmb_boss_rewards", "OnOff"
+	Option "LegenDoom Boss Health", "rsqmb_boss_ldhealth", "OnOff"
+	Option "Can't Be Yanked", "rsqmb_boss_noyank", "OnOff"
+	Option "Can't Be Headlocked", "rsqmb_boss_noheadlock", "OnOff"
+	Option "Map-wide Roar", "rsqmb_boss_roar", "OnOff"
+	Option "Can't Be Morphed", "rsqmb_boss_nomorph", "OnOff"
+	StaticText " "
 	Submenu "Tuning and Debug", "RSQMB_Tuning"
 }
 
@@ -79,5 +87,5 @@ OptionMenu "RSQMB_Tuning"
 	StaticText " "
 	Option "Debug Lines", "rsqmb_debug", "OnOff"
 	StaticText " "
-	SafeCommand "Reset All", "resetcvar rsqmb_enabled rsqmb_per_map rsqmb_map_chance rsqmb_thralls rsqmb_radius rsqmb_legend_thralls rsqmb_inherit rsqmb_inherit_max rsqmb_lives rsqmb_shield rsqmb_invuln rsqmb_invuln_bonus rsqmb_revive rsqmb_slow rsqmb_slow_chain rsqmb_slow_max rsqmb_slow_depth rsqmb_greed rsqmb_rage_speed rsqmb_score rsqmb_fx rsqmb_fx_range", "Reset all RSQ Miniboss settings?"
+	SafeCommand "Reset All", "resetcvar rsqmb_enabled rsqmb_per_map rsqmb_map_chance rsqmb_thralls rsqmb_radius rsqmb_legend_thralls rsqmb_inherit rsqmb_inherit_max rsqmb_lives rsqmb_shield rsqmb_invuln rsqmb_invuln_bonus rsqmb_revive rsqmb_slow rsqmb_slow_chain rsqmb_slow_max rsqmb_slow_depth rsqmb_greed rsqmb_rage_speed rsqmb_score rsqmb_fx rsqmb_fx_range rsqmb_boss_rewards rsqmb_boss_ldhealth rsqmb_boss_roar rsqmb_boss_nomorph rsqmb_boss_noyank rsqmb_boss_noheadlock", "Reset all RSQ Miniboss settings?"
 }

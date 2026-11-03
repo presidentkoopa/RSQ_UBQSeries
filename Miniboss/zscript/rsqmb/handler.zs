@@ -36,7 +36,7 @@ class RSQMB_Handler : EventHandler
 	// ---- settings, read once a tic ---------------------------------------------------------------
 	transient int    cvTic;
 	transient double shield, invulSecs, invulBonus, rageSpeed, fxRange2;
-	transient bool   revive, fxOn, debug, greedOn, scoreOn;
+	transient bool   revive, fxOn, debug, greedOn, scoreOn, roarOn, noMorphOn;
 	transient int    slowTics, chainTics, maxTics, depthPct;
 
 	// ---- the cost meter (rsqmb_debug only): script time this mod spends, ms, since the last report
@@ -83,6 +83,8 @@ class RSQMB_Handler : EventHandler
 		rageSpeed  = clamp(CF('rsqmb_rage_speed', 2.0), 1.0, 4.0);
 		scoreOn    = CI('rsqmb_score', 1) != 0;
 		debug      = CI('rsqmb_debug', 0) != 0;
+		roarOn     = CI('rsqmb_boss_roar', 0) != 0;
+		noMorphOn  = CI('rsqmb_boss_nomorph', 0) != 0;
 		fxOn       = CLocal('rsqmb_fx', 1) != 0;
 		double fr  = CLocal('rsqmb_fx_range', 4000);
 		fxRange2   = fr * fr;
@@ -284,6 +286,9 @@ class RSQMB_Handler : EventHandler
 		int lifeBonus = Inherit(b, anyLegend);
 		b.lives = clamp(CI('rsqmb_lives', 3), 1, 9) + lifeBonus;
 		b.ownBuddha = mb.bBUDDHA;
+		b.ownFullSee = mb.bFULLVOLSEE; b.ownFullDeath = mb.bFULLVOLDEATH; b.ownDontMorph = mb.bDONTMORPH;
+		Refresh();
+		b.Flags(roarOn, noMorphOn, debug);
 		if (b.lives > 1) mb.bBUDDHA = true;
 		b.maxHP = mb.health;
 		bosses.Push(b);
@@ -348,9 +353,40 @@ class RSQMB_Handler : EventHandler
 		{
 			b.legendary = true;
 			b.powers.Push("Legendary");
-			if (!Has(mb, "LDLegendaryMonsterToken")) Give(mb, "LDLegendaryMonsterPickupGuaranteed");
+			if (!Has(mb, "LDLegendaryMonsterToken"))
+			{
+				LDBossHealth(b);
+				Give(mb, "LDLegendaryMonsterPickupGuaranteed");
+			}
 		}
 		return lifeBonus;
+	}
+
+	// LEGENDOOM BOSS HEALTH (rsqmb_boss_ldhealth, owner 2026-11-03). Where a miniboss's legendary health is set: not
+	// here. LegenDoom Lite's guaranteed pickup runs its ACS, LEGNDLIB.acs LDMonsterInit, which reads the monster's
+	// spawn health (APROP_SpawnHealth = StartHealth, or the class's health, x the skill) ONCE, multiplies it by
+	// LD_legendaryhealthboss / 100 if CheckFlag(BOSS) else LD_legendaryhealth / 100 (integer division of the
+	// percentage), sets that health, keeps the number in a script local and refills to it once at its half (the
+	// transform). The miniboss is never BOSS-flagged, so it would get LD_legendaryhealth. Without touching the flag,
+	// it is given the boss number by its spawn health: StartHealth is scaled by boss / normal for the tic or two
+	// until the ACS has read it (LDHealthDone puts it back), so the set health and the transform's refill are both
+	// spawn x LD_legendaryhealthboss / 100 (to within the rounding of one StartHealth point x the normal factor).
+	void LDBossHealth(RSQMB_Boss b)
+	{
+		if (CI('rsqmb_boss_ldhealth', 1) == 0) return;
+		let mb = b.mb;
+		int nm = CI('LD_legendaryhealth', 300) / 100, bm = CI('LD_legendaryhealthboss', 200) / 100;
+		int spawn = mb.SpawnHealth();
+		b.ldTarget = spawn * bm;
+		if (nm <= 0 || bm <= 0 || nm == bm) { b.ldBoss = true; return; }   // nothing to scale (0: LegenDoom's own result stands)
+		int own = mb.StartHealth;
+		int base = own > 0 ? own : GetDefaultByType(mb.GetClass()).health;
+		b.ldShOwn = own;
+		mb.StartHealth = max(1, int(round(base * double(bm) / nm)));
+		b.ldShPending = true;
+		b.ldShUntil = level.maptime + TICRATE;
+		if (debug) Console.Printf("RSQMB LegenDoom boss health asked: %s spawn %d x %d (boss %d%%) not x %d (%d%%): StartHealth %d -> %d for its ACS",
+			mb.GetClassName(), spawn, bm, CI('LD_legendaryhealthboss', 200), nm, CI('LD_legendaryhealth', 300), own, mb.StartHealth);
 	}
 
 	// ---- deaths and blows ------------------------------------------------------------------------

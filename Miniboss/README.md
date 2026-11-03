@@ -57,6 +57,20 @@ Front page (RSQ Miniboss):
 | Effects | On | The lines, orbs, ring, markers and sparks (particles only). |
 | Score Awards | On | Sends RSQ_Score: Thrall Slow Kill 100, Miniboss 500, Greedy 1000 (killed with thralls alive and no rage). |
 
+**Counts as a Boss** (same page, 2026-11-03). A miniboss never gets the engine's BOSS flag: that would switch off
+yanks, throws, the headlock, knockdowns, grenade charm/infight and Gun Bonsai's melee bonuses across the series. It
+counts as a boss only in the systems below, each on its own switch (all in Reset All). Every other boss check in the
+series is untouched: knockdowns, knockback, grenade charm/infight and Gun Bonsai melee bonuses treat it as any monster.
+
+| Row | Default | What it does |
+|---|---|---|
+| Boss Kill Rewards | On | RSQ Gun Bonsai VR's kill rewards treat it as a boss: the boss fountain (x3 bits, `rsqgb_kr_boss`) and every bit drops. |
+| LegenDoom Boss Health | On | When Miniboss makes it legendary (Inherit Powers, a legendary thrall), LegenDoom Lite gives it its boss legendary health (`LD_legendaryhealthboss`, 200 % by LegenDoom Lite's default) instead of the normal one (`LD_legendaryhealth`, 300 %). **Note: with LegenDoom Lite's defaults that is LESS health** (BD imp 80: 160, not 240). |
+| Can't Be Yanked | On | RSQ Grapple's and RSQ Whip's yank and throw refuse it as they refuse a boss: the hook or the whip pulls you to it instead. |
+| Can't Be Headlocked | On | RSQ Melee's headlock refuses it as it refuses a boss. |
+| Map-wide Roar | Off | Its sight and death sounds play at full volume across the map (FULLVOLSEE / FULLVOLDEATH); its own flags come back when it dies (the death flag 3 s later, after its scream). |
+| Can't Be Morphed | Off | DONTMORPH while it is a miniboss; its own flag back when it dies. |
+
 Tuning and Debug page:
 
 | Row | Default |
@@ -110,6 +124,13 @@ Built 2026-10-27; its handoff says it was never run on a headset.
 - Champions and LegenDoom Lite: powers inherited, thralls made legendary.
 - Other mods can ask it (RSQMB_Service): is this a miniboss / thrall, enraged, lives, invulnerable,
   shield, greed, window. RSQ_TopHPBars asks "miniboss" and "thrall" for its crown and chain-link marks (2026-11-01).
+- **Counts as a Boss, for other mods** (2026-11-03): `RSQMB_Service` `GetInt("bossfor", <system>, 0, 0, monster)`
+  answers 1 when the monster is a miniboss and that system's switch is on. Systems: `"rewards"` (a living miniboss,
+  or one that died this tic or the last, so a WorldThingDied handler gets it whichever runs first), `"yank"`,
+  `"headlock"` (a living miniboss), `"ldhealth"` (LegenDoom Lite gave it the boss legendary health because Miniboss
+  asked; stays 1 for that monster). Ask cheaply: first look for the `RSQMB_Ward` inventory by name, only then find
+  the service. Asked by: RSQ Gun Bonsai VR (kill rewards; its StartHealth for Knockdown / Executioner), RSQ ShieldSaw
+  (the disc's tier health), RSQ Grapple and RSQ Whip (yank), RSQ Melee (headlock). Each still loads and works alone.
 - Does not read RSQ_Accessibility.
 
 ## Known limits / open
@@ -119,6 +140,13 @@ Built 2026-10-27; its handoff says it was never run on a headset.
 - Open questions from the owner's notes: lives 3 in all (the original had 3 extra); greed counts even
   before any thrall died (4 s fuse); revived thralls come back at plain health; thrall kills by
   infighting open the window too (no award).
+
+- Counts as a Boss (2026-11-03): rig only, not headset-confirmed. Key lines: `tools/rigtest/evidence_1103.txt`
+  (`tools/rigtest/run_all.sh` reruns everything). LegenDoom Boss Health applies only when MINIBOSS makes it
+  legendary; a monster LegenDoom Lite made legendary on its own before it was chosen keeps the normal legendary
+  health (LegenDoom's ACS keeps that number in a script local, out of reach). Rounding: the boss number comes out
+  within one StartHealth point x (LD_legendaryhealth / 100) of exact (measured exact on a doom2 imp: 120). Built for
+  LegenDoom Lite 4.2's ACS (`LEGNDLIB.acs LDMonsterInit`); LegenDoom 3.0 was not tested.
 
 ## The owner's design and ideas (kept as written)
 
@@ -207,7 +235,7 @@ Load after the series. `RSQ_Miniboss.pk3` (`./build.sh`). Options -> Radiant Sil
 
 **Score** (`RS_ScoreService "award"`, by name, just the push): "Thrall Slow Kill" 100 (a thrall killed in the window), "Miniboss" 500, "Greedy" 1000 (killed with thralls alive and no rage). Score has a row of its own for each (2026-11-01).
 
-**For other mods**: `RSQMB_Service` (see `zscript/rsqmb/service.zs`): `miniboss`, `thrall`, `enraged`, `lives`, `invulnerable`, `shield`, `greed`, `window`, `living`, `legendary`; objects `boss` / `thrall`; string `powers`. Console: `netevent rsqmb_state`, `netevent rsqmb_choose`.
+**For other mods**: `RSQMB_Service` (see `zscript/rsqmb/service.zs`): `miniboss`, `thrall`, `enraged`, `lives`, `invulnerable`, `shield`, `greed`, `window`, `living`, `legendary`, `bossfor`; objects `boss` / `thrall`; string `powers`. Console: `netevent rsqmb_state`, `netevent rsqmb_choose`.
 
 **FX** (engine particles, 0 actors; the original warped 30 actors per thrall every tic): a dotted link per living thrall with white beads running INTO the miniboss, a marker over each thrall, a faint grey line to a dead thrall that will rise, one orb per life circling its head (the last one red and pulsing), a gold ring while invulnerable, a red spark rising off each enraged monster. Drawn only within 4000 units of you.
 

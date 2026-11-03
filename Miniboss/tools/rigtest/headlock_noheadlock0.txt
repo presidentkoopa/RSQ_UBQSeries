@@ -1,0 +1,1 @@
+rsqmb_enabled 0; rsqmb_debug 1; rsqmb_boss_noheadlock 0; mbp_autobind 50; rsqml_debug 2; mlp_case 4; mlp_dist 40; qz_lhand "-0.15 1.2 -0.35 30 0 0"; wait 140; quit

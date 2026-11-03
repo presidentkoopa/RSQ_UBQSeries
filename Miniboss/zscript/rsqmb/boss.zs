@@ -29,6 +29,16 @@ class RSQMB_Boss : Thinker
 	bool   done, enraged, greedArmed, greedy;
 	int    greedDeadline;
 	int    bornAt;
+	int    diedAt;               // the tic it died (Boss Kill Rewards counts a just-killed miniboss)
+
+	// COUNTS AS A BOSS (owner 2026-11-03): never the engine's BOSS flag; only the systems the owner picked, each on
+	// its own switch. The two flag-borne ones are written only while their switch is on, and put back after.
+	bool   ownFullSee, ownFullDeath, ownDontMorph;   // the monster's own flags, read when it was bound
+	bool   roarSet, noMorphSet;                       // our flags are on it now
+	int    deathFlagUntil;                            // FULLVOLDEATH outlives the death this long (its scream plays later)
+	bool   ldBoss;                                    // LegenDoom Lite gave it the boss legendary health (Miniboss did)
+	bool   ldShPending;                               // StartHealth is ours until LegenDoom Lite's ACS has read it
+	int    ldShOwn, ldShUntil, ldTarget;
 
 	enum EState { ST_ALIVE, ST_DEAD, ST_LOST }
 
@@ -68,7 +78,12 @@ class RSQMB_Boss : Thinker
 	// ---- every tic ------------------------------------------------------------------------------
 	override void Tick()
 	{
-		if (done || level.isFrozen()) return;
+		if (done)
+		{
+			if (deathFlagUntil > 0 && level.maptime >= deathFlagUntil) { deathFlagUntil = 0; if (mb) mb.bFULLVOLDEATH = ownFullDeath; }
+			return;
+		}
+		if (level.isFrozen()) return;
 		let h = H();
 		double t0 = (h && h.debug) ? MSTimeF() : 0;
 		Step(h);
@@ -79,7 +94,9 @@ class RSQMB_Boss : Thinker
 	{
 		if (!mb || mb.bDestroyed || mb.health <= 0) { if (h) h.BossDied(self, null); else done = true; return; }
 
+		if (ldShPending) LDHealthDone(h);
 		if (mb.health > maxHP) maxHP = mb.health;
+		if (h) Flags(h.roarOn, h.noMorphOn, h.debug);
 
 		// A life lost: BUDDHA held it at 1 hp.
 		if (lives > 1 && mb.health <= 1) LoseLife(h);
@@ -133,10 +150,67 @@ class RSQMB_Boss : Thinker
 		if (!any) reviveUntil = 0;
 	}
 
+	// ---- counts as a boss: the flag-borne switches ---------------------------------------------
+	// Map-wide Roar: FULLVOLSEE + FULLVOLDEATH (the sight and death sounds unattenuated, as a BOSS's are: p_enemy.cpp
+	// A_Look, actor.zs A_Scream). Can't Be Morphed: DONTMORPH (morph.zs MorphMonster refuses it). Written only on a
+	// change of the switch, so a flag someone else sets meanwhile is left alone while the switch stays put.
+	void Flags(bool roar, bool noMorph, bool dbg)
+	{
+		if (!mb) return;
+		bool changed = false;
+		if (roar != roarSet)
+		{
+			roarSet = roar;
+			mb.bFULLVOLSEE = roar || ownFullSee;
+			mb.bFULLVOLDEATH = roar || ownFullDeath;
+			changed = true;
+		}
+		if (noMorph != noMorphSet)
+		{
+			noMorphSet = noMorph;
+			mb.bDONTMORPH = noMorph || ownDontMorph;
+			changed = true;
+		}
+		if (changed && dbg) LogFlags("set");
+	}
+
+	void LogFlags(String why)
+	{
+		Console.Printf("RSQMB flags %s: boss %d %s FULLVOLSEE %d FULLVOLDEATH %d DONTMORPH %d BOSS %d (roar %d nomorph %d; own %d %d %d)",
+			why, idx, mb ? mb.GetClassName() : 'gone', mb && mb.bFULLVOLSEE, mb && mb.bFULLVOLDEATH, mb && mb.bDONTMORPH, mb && mb.bBOSS,
+			roarSet, noMorphSet, ownFullSee, ownFullDeath, ownDontMorph);
+	}
+
+	// LegenDoom Boss Health, the second half: LegenDoom Lite's ACS (LEGNDLIB.acs LDMonsterInit) has read our StartHealth
+	// (it gives LDLegendaryMonsterToken first thing, then sets the health, in one run): the monster's own goes back.
+	void LDHealthDone(RSQMB_Handler h)
+	{
+		String tk = "LDLegendaryMonsterToken";
+		class<Inventory> ct = tk;
+		bool got = ct && mb.FindInventory(ct);
+		if (!got && level.maptime < ldShUntil) return;
+		ldShPending = false;
+		mb.StartHealth = ldShOwn;
+		ldBoss = got;
+		if (h && h.debug)
+			Console.Printf("RSQMB LegenDoom boss health: boss %d %s legendary %d hp %d (asked %d; StartHealth back to %d, SpawnHealth %d)",
+				idx, mb.GetClassName(), got, mb.health, ldTarget, mb.StartHealth, mb.SpawnHealth());
+	}
+
 	// The miniboss is dead: the links break, the thralls are free monsters again.
 	void Finish()
 	{
 		done = true;
+		diedAt = level.maptime;
+		if (mb)
+		{
+			if (ldShPending) { ldShPending = false; mb.StartHealth = ldShOwn; }
+			// no longer a miniboss: its own flags back (the death sound's after its scream has had time to play)
+			if (noMorphSet) { noMorphSet = false; mb.bDONTMORPH = ownDontMorph; }
+			if (roarSet) { roarSet = false; mb.bFULLVOLSEE = ownFullSee; deathFlagUntil = level.maptime + 3 * TICRATE; }
+			let h = H();
+			if (h && h.debug) LogFlags("at death");
+		}
 		// Died with lives to spare (a telefrag or forced damage skips BUDDHA): give the monster its own
 		// BUDDHA back, or an Arch-vile raise would leave it unkillable (final review).
 		if (mb) mb.bBUDDHA = ownBuddha;

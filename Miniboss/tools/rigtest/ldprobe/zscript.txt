@@ -1,0 +1,19 @@
+version "4.14"
+// TEST ONLY (never ships; links RSQ_GunBonsaiVR and RSQ_ShieldSaw, so load it only with both). netevent mbp_ld: what
+// Gun Bonsai VR's RSQM.StartHealth and the ShieldSaw's SSQ_Disc.TierHealth read for the miniboss (RSQMB_Service "boss" 0..3).
+class MBP_LDProbe : EventHandler
+{
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		if (e.Name != "mbp_ld") return;
+		let sv = ServiceIterator.Find("RSQMB_Service").Next();
+		if (!sv) return;
+		for (int i = 0; i < 4; i++)
+		{
+			let b = Actor(sv.GetObject("boss", "", i));
+			if (!b) continue;
+			Console.Printf("MBP_LD t%d boss %d %s hp %d spawn %d: GBVR StartHealth %d, ShieldSaw TierHealth %d (bossfor ldhealth %d)",
+				level.maptime, i, b.GetClassName(), b.health, b.SpawnHealth(), RSQM.StartHealth(b), SSQ_Disc.TierHealth(b), sv.GetInt("bossfor", "ldhealth", 0, 0, b));
+		}
+	}
+}

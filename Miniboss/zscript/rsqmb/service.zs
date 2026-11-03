@@ -13,6 +13,16 @@
 //   window        tics left in the slow window (no object needed)
 //   living        its living thralls (miniboss or thrall: the set piece it belongs to)
 //   legendary     1 if it inherited legendary status
+//   bossfor       COUNTS AS A BOSS (owner 2026-11-03: never the engine's BOSS flag). stringArg names the system; 1 when
+//                 the monster is a miniboss AND that system's switch in the RSQ Miniboss menu is on, else 0:
+//                   "rewards"   Boss Kill Rewards (rsqmb_boss_rewards, on): a living miniboss, or one that died this
+//                               tic or the last (so a WorldThingDied handler gets it whichever runs first)
+//                   "yank"      Can't Be Yanked (rsqmb_boss_noyank, on): a living miniboss
+//                   "headlock"  Can't Be Headlocked (rsqmb_boss_noheadlock, on): a living miniboss
+//                   "ldhealth"  LegenDoom Boss Health (rsqmb_boss_ldhealth, on, read when it was made legendary):
+//                               LegenDoom Lite gave it the boss legendary health (spawn x LD_legendaryhealthboss / 100)
+//                               because Miniboss asked; stays 1 for that monster (dead or alive)
+//                 Cheap first test for callers: the monster carries "RSQMB_Ward" (by name); only then ask.
 // GetObject("boss", "", 0, 0, thrall) -> the thrall's miniboss; ("boss", "", n) -> the n-th miniboss.
 // GetObject("thrall", "", n, 0, miniboss) -> its n-th thrall (dead or alive), null past the end.
 // GetString("powers", "", 0, 0, miniboss) -> what it inherited, comma-separated.
@@ -60,6 +70,15 @@ class RSQMB_Service : Service
 		if (request ~== "greed") return (isBoss && b.greedArmed) ? 1 : 0;
 		if (request ~== "living") return (b && !b.done) ? b.Living() : 0;
 		if (request ~== "legendary") return (isBoss && b.legendary) ? 1 : 0;
+		if (request ~== "bossfor")
+		{
+			if (!b || !a || b.mb != a) return 0;
+			if (stringArg ~== "rewards") return (RSQMB_Handler.CI('rsqmb_boss_rewards', 1) && (!b.done || level.maptime - b.diedAt <= 1)) ? 1 : 0;
+			if (stringArg ~== "yank") return (RSQMB_Handler.CI('rsqmb_boss_noyank', 1) && isBoss) ? 1 : 0;
+			if (stringArg ~== "headlock") return (RSQMB_Handler.CI('rsqmb_boss_noheadlock', 1) && isBoss) ? 1 : 0;
+			if (stringArg ~== "ldhealth") return b.ldBoss ? 1 : 0;     // a fact about how its health was set: the switch decided it then
+			return 0;
+		}
 		return -1;
 	}
 	override int GetInt(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
