@@ -4,6 +4,46 @@ Rig: rig A (`/home/claude/scratch/run17A.sh`, the real QZD 17.3 binary, zscript 
 Every number below was measured there; the logs and frames are under `test/evidence/` (copies) and
 the scratchpad (`frames/<run>/`, `logsA/<run>.log`). Test runner: `test/run.sh <name> <secs> "<console>" <order>`.
 
+## 2026-11-03: Damage Numbers (damnums folded in, the 9999 fixed) -- read first
+
+Rig only, not headset-confirmed. Owner: fold Xaser Acheron's damnums (MIT, github.com/XaserAcheron/damnums v1.0.2,
+953673c) into HP Bars; "with brutal doom, when we kill a monster its corpse falls to the ground and i see a 9999 every
+single time". Rig: tools/rig17/run17.sh (real QZD 17.3), doom2.wad MAP01, probe `tools/rigprobe/zscript_dn.txt` +
+`run_dn.sh` (test only): spawns monsters one at a time, kills them with traced 20-damage hits (head hitboxes get hit
+too), logs every number with what it stood on, every ISMONSTER death. Evidence: `test/evidence/dmgnum_*`.
+
+The 9999, measured (full order: lo2 01, 02, 03 = BD22_VR-Reloaded 2.0.3p, 04-07, Gun Bonsai 0.10.6, every RSQ pk3, the
+old HP Bars, damnums; 32 BD monsters killed): damnums put its tracker on every ISMONSTER actor. Brutal Doom's
+HeadHitbox family (Head_Sys.dec: Health 9999, +ISMONSTER -COUNTKILL, A_Warp onto its master) calls A_Die when the body
+under it stops being shootable -- the kill, a dying/slumped body (DyingImp, ZombiemanLastStand2 ...) dropping. damnums
+then showed its whole 9999. 15 numbers of 9999 in 30 kills, each the same tic as a helper's death "by None":
+Dying_Headshot, SlumpedZMan_Headshot, Baron_/Knight_NobleHeadshot, MancuHeadshot, BonesHeadshot, NewCybersHitBox.
+Also 14 numbers of 1000 from BootSmearerRed (blood smear, ISMONSTER, 1000 hp) dying, and overkills showed the whole
+hit (imp on 10 hit for 25: 25). After (same run, new HP Bars, no damnums): 195 numbers, 0 of 9999, 0 on any helper or
+smearer (`dmgnum_dn_before_full.txt` / `dmgnum_dn_after_full.txt`, DNP_SUM / DNP_BIG lines). Overkill, doom2: imp on 10
+hit for 25 shows 10 (damnums 25); zombieman 20 hp one-shot for 25 shows 20 (`dmgnum_dn_over_*.txt`).
+
+Done (measured):
+- zscript/rsqthp/damnums/: damnums' DamNum (digits, physics, fade, statnum 88) and fonts kept as shipped, renamed
+  RSQTHP_DamNum*, driven by WorldThingDamaged (RSQTHP_DamNumHandler; no item on every monster, font read from defaults,
+  no font actor per number). Sum per target per tic like damnums' tracker, spawned next tic; Shotgun Spray per hit.
+  Skipped: HeadHitbox descendants + BootSmearer* + NewCybersHitBox by name, ISMONSTER -COUNTKILL 1000+ hp with a master
+  or NEVERTARGET, player bodies, hits on things already dead, Massacre / KillMe, a -COUNTKILL body ending itself with no
+  source and no inflictor. Number = min(damage, health it had left).
+- Only damnums' Doom Classic (default) and Doom Small fonts: 560 sprite frames (QC / QD; all 13 fonts would be 3,640).
+  Sprites, TEXTURES.rsqthpdn, TRNSLATE.rsqthp (RSQTHP_Dam*), LANGUAGE.rsqthp (RSQTHP_DMG_TYPECOLOR_*, damnums'
+  DAMNUM_TYPECOLOR_* also read). Names checked against every pk3 in the full order + doom2.wad: no clash.
+- Menu rows (frame `dmgnum_menu_rows.png`): Damage Numbers, Numbers For, Shotgun Spray, Number Font, Number Colour,
+  Number Motion, Damage Type Colours; all in Reset All (log `dmgnum_dn_reset.txt`: every row back to default).
+- Frames: doom2 (`dmgnum_doom2_numbers.png`), full order (`dmgnum_fullorder_numbers.png`), damnums also loaded =
+  two numbers per hit (`dmgnum_with_damnums_double.png`: ours cyan, damnums red 25 on the kill where ours says 10).
+- Damage Numbers Off: 0 numbers for 2 kills.
+- Script errors: doom2 + HP Bars 0; doom2 + Gun Bonsai + all RSQ pk3s 0; full order 4 (BD_VoxelPack voxeldef only).
+
+Not done / open: headset check (size and readability of the digits in VR, toss toward the console player's body).
+VisualThinker could draw digits with no sprite frames; not tried (unproven on the rig). On the rig the HP bars
+themselves did not show in these frames with the old pk3 either (same view), so no bar change is claimed either way.
+
 ## 2026-11-02: LegenDoom candidates no longer give themselves away -- read first
 
 Owner: "they show on legendary boosted champions before they turn, so they give themselves away." Cause (rig,

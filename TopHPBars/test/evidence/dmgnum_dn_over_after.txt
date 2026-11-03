@@ -1,0 +1,24 @@
+DNP_SPAWN t10 DoomImp -> DoomImp health 60
+DNP_TARGET t10 DoomImp health 60
+DNP_SHOT t18 at DoomImp (alive) head 0 dealt 25 hit None dist 186
+DNP_NUM t19 25 (2 digits) on DoomImp (ismonster 1 countkill 1 health 35 spawnhealth 60 master None)
+DNP_SHOT t22 at DoomImp (alive) head 1 dealt 25 hit DoomImp dist 186
+DNP_NUM t23 25 (2 digits) on DoomImp (ismonster 1 countkill 1 health 10 spawnhealth 60 master None)
+DNP_DIED t26 DoomImp countkill 1 health -15 spawnhealth 60 master None by THPDN_Gun
+DNP_SHOT t26 at DoomImp (dead) head 0 dealt 25 hit DoomImp dist 179
+DNP_NUM t27 10 (2 digits) on DoomImp (ismonster 1 countkill 1 health -15 spawnhealth 60 master None)
+DNP_SPAWN t70 DoomImp -> DoomImp health 60
+DNP_TARGET t70 DoomImp health 60
+DNP_SHOT t78 at DoomImp (alive) head 0 dealt 25 hit None dist 186
+DNP_NUM t79 25 (2 digits) on DoomImp (ismonster 1 countkill 1 health 35 spawnhealth 60 master None)
+DNP_SHOT t82 at DoomImp (alive) head 1 dealt 25 hit DoomImp dist 186
+DNP_NUM t83 25 (2 digits) on DoomImp (ismonster 1 countkill 1 health 10 spawnhealth 60 master None)
+DNP_DIED t86 DoomImp countkill 1 health -15 spawnhealth 60 master None by THPDN_Gun
+DNP_SHOT t86 at DoomImp (dead) head 0 dealt 25 hit DoomImp dist 186
+DNP_NUM t87 10 (2 digits) on DoomImp (ismonster 1 countkill 1 health -15 spawnhealth 60 master None)
+DNP_SPAWN t130 ZombieMan -> Zombieman health 20
+DNP_TARGET t130 Zombieman health 20
+DNP_DIED t138 Zombieman countkill 1 health -5 spawnhealth 20 master None by DoomPlayer
+DNP_SHOT t138 at Zombieman (dead) head 0 dealt 25 hit None dist 186
+DNP_NUM t139 20 (2 digits) on DoomImp (ismonster 1 countkill 1 health -15 spawnhealth 60 master None)
+DNP_SUM numbers 7 big(>=9999) 0 monster deaths 3 (counted kills 3)

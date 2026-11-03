@@ -1,0 +1,9 @@
+server noarchive string dnp_cls = "ZombieMan,ShotgunGuy,DoomImp";
+server noarchive int    dnp_slot = 60;
+server noarchive int    dnp_gap = 4;
+server noarchive int    dnp_dmg = 12;
+server noarchive float  dnp_dist = 180;
+server noarchive string dnp_num = "DamNum";
+server noarchive string dnp_pfx = "_C";
+server noarchive int    dnp_norep = 0;
+server noarchive int    dnp_shotlog = 1;

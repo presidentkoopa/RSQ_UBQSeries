@@ -1,0 +1,341 @@
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 66:
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 72:
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 77:
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 892:
+DNP_SPAWN t10 RifleZombie -> RifleZombie health 40
+DNP_TARGET t10 RifleZombie health 40
+DNP_NUM t19 20 (2 digits) on RifleZombie (ismonster 1 countkill 1 health 20 spawnhealth 40 master None)
+DNP_DIED t22 RifleZombie countkill 1 health 0 spawnhealth 40 master None by THPDN_Gun
+DNP_NUM t23 20 (2 digits) on RifleZombie (ismonster 1 countkill 1 health 0 spawnhealth 40 master None)
+DNP_DIED t50 BootSmearerRed countkill 0 health 0 spawnhealth 1000 master None by None
+DNP_SPAWN t74 RifleZombie -> RifleZombie health 40
+DNP_TARGET t74 RifleZombie health 40
+DNP_TARGET t76 PistolZombiePatch health 40
+DNP_NUM t83 20 (2 digits) on PistolZombiePatch (ismonster 1 countkill 1 health 20 spawnhealth 40 master None)
+DNP_DIED t86 PistolZombiePatch countkill 1 health 0 spawnhealth 40 master None by THPDN_Gun
+DNP_NUM t87 20 (2 digits) on PistolZombiePatch (ismonster 1 countkill 1 health 0 spawnhealth 40 master None)
+DNP_DIED t114 BootSmearerRed countkill 0 health 0 spawnhealth 1000 master None by None
+DNP_SPAWN t138 RifleZombie -> RifleZombie health 40
+DNP_TARGET t138 RifleZombie health 40
+DNP_TARGET t140 PistolZombiePatch health 40
+DNP_NUM t147 20 (2 digits) on PistolZombiePatch (ismonster 1 countkill 1 health 20 spawnhealth 40 master None)
+DNP_DIED t150 PistolZombiePatch countkill 1 health 0 spawnhealth 40 master None by THPDN_Gun
+DNP_NUM t151 20 (2 digits) on PistolZombiePatch (ismonster 1 countkill 1 health 0 spawnhealth 40 master None)
+DNP_DIED t177 BootSmearerRed countkill 0 health 0 spawnhealth 1000 master None by None
+DNP_SPAWN t202 RifleZombie -> RifleZombie health 40
+DNP_TARGET t202 RifleZombie health 40
+DNP_NUM t211 20 (2 digits) on RifleZombie (ismonster 1 countkill 1 health 20 spawnhealth 40 master None)
+DNP_DIED t214 RifleZombie countkill 1 health 0 spawnhealth 40 master None by THPDN_Gun
+DNP_NUM t215 20 (2 digits) on RifleZombie (ismonster 1 countkill 1 health 0 spawnhealth 40 master None)
+DNP_DIED t229 BootSmearerRed countkill 0 health 0 spawnhealth 1000 master None by None
+DNP_SPAWN t266 RifleZombie -> RifleZombie health 40
+DNP_TARGET t266 RifleZombie health 40
+DNP_TARGET t268 PistolZombiePatch health 40
+DNP_NUM t275 20 (2 digits) on PistolZombiePatch (ismonster 1 countkill 1 health 20 spawnhealth 40 master None)
+DNP_DIED t278 PistolZombiePatch countkill 1 health 0 spawnhealth 40 master None by THPDN_Gun
+DNP_NUM t279 20 (2 digits) on PistolZombiePatch (ismonster 1 countkill 1 health 0 spawnhealth 40 master None)
+DNP_DIED t305 BootSmearerRed countkill 0 health 0 spawnhealth 1000 master None by None
+DNP_SPAWN t330 RifleZombie -> RifleZombie health 40
+DNP_TARGET t330 RifleZombie health 40
+DNP_NUM t339 20 (2 digits) on RifleZombie (ismonster 1 countkill 1 health 20 spawnhealth 40 master None)
+DNP_DIED t342 RifleZombie countkill 1 health 0 spawnhealth 40 master None by THPDN_Gun
+DNP_NUM t343 20 (2 digits) on RifleZombie (ismonster 1 countkill 1 health 0 spawnhealth 40 master None)
+DNP_DIED t366 Dying_Headshot countkill 0 health 0 spawnhealth 9999 master DyingZombiemanNoArm by None
+DNP_DIED t369 BootSmearerRed countkill 0 health 0 spawnhealth 1000 master None by None
+DNP_SPAWN t394 ShotgunGuy1 -> ShotgunGuy1 health 40
+DNP_TARGET t394 ShotgunGuy1 health 40
+DNP_NUM t403 20 (2 digits) on ShotgunGuy1 (ismonster 1 countkill 1 health 20 spawnhealth 40 master None)
+DNP_DIED t406 ShotgunGuy1 countkill 1 health 0 spawnhealth 40 master None by THPDN_Gun
+DNP_NUM t407 20 (2 digits) on ShotgunGuy1 (ismonster 1 countkill 1 health 0 spawnhealth 40 master None)
+DNP_DIED t430 BootSmearerRed countkill 0 health 0 spawnhealth 1000 master None by None
+DNP_SPAWN t458 ShotgunGuy1 -> ShotgunGuy1 health 40
+DNP_TARGET t458 ShotgunGuy1 health 40
+DNP_NUM t467 20 (2 digits) on ShotgunGuy1 (ismonster 1 countkill 1 health 20 spawnhealth 40 master None)
+DNP_DIED t470 ShotgunGuy1 countkill 1 health 0 spawnhealth 40 master None by THPDN_Gun
+DNP_NUM t471 20 (2 digits) on ShotgunGuy1 (ismonster 1 countkill 1 health 0 spawnhealth 40 master None)
+DNP_DIED t483 BootSmearerRed countkill 0 health 0 spawnhealth 1000 master None by None
+DNP_SPAWN t522 ShotgunGuy1 -> ShotgunGuy1 health 40
+DNP_TARGET t522 ShotgunGuy1 health 40
+DNP_NUM t531 20 (2 digits) on ShotgunGuy1 (ismonster 1 countkill 1 health 20 spawnhealth 40 master None)
+DNP_DIED t534 ShotgunGuy1 countkill 1 health 0 spawnhealth 40 master None by THPDN_Gun
+DNP_NUM t535 20 (2 digits) on ShotgunGuy1 (ismonster 1 countkill 1 health 0 spawnhealth 40 master None)
+DNP_DIED t558 BootSmearerRed countkill 0 health 0 spawnhealth 1000 master None by None
+DNP_DIED t569 Dying_Headshot countkill 0 health 0 spawnhealth 9999 master DyingSergeant by None
+DNP_SPAWN t586 ShotgunGuy1 -> ShotgunGuy1 health 40
+DNP_TARGET t586 ShotgunGuy1 health 40
+DNP_NUM t595 20 (2 digits) on ShotgunGuy1 (ismonster 1 countkill 1 health 20 spawnhealth 40 master None)
+DNP_DIED t598 ShotgunGuy1 countkill 1 health 0 spawnhealth 40 master None by THPDN_Gun
+DNP_NUM t599 20 (2 digits) on ShotgunGuy1 (ismonster 1 countkill 1 health 0 spawnhealth 40 master None)
+DNP_DIED t622 BootSmearerRed countkill 0 health 0 spawnhealth 1000 master None by None
+DNP_SPAWN t650 ShotgunGuy1 -> ShotgunGuy1 health 40
+DNP_TARGET t650 ShotgunGuy1 health 40
+DNP_NUM t659 20 (2 digits) on ShotgunGuy1 (ismonster 1 countkill 1 health 20 spawnhealth 40 master None)
+DNP_DIED t662 ShotgunGuy1 countkill 1 health 0 spawnhealth 40 master None by THPDN_Gun
+DNP_NUM t663 20 (2 digits) on ShotgunGuy1 (ismonster 1 countkill 1 health 0 spawnhealth 40 master None)
+DNP_DIED t686 BootSmearerRed countkill 0 health 0 spawnhealth 1000 master None by None
+DNP_SPAWN t714 Imp -> Imp health 80
+DNP_TARGET t714 Imp health 80
+DNP_NUM t723 20 (2 digits) on Imp (ismonster 1 countkill 1 health 60 spawnhealth 80 master None)
+DNP_NUM t727 20 (2 digits) on Imp (ismonster 1 countkill 1 health 40 spawnhealth 80 master None)
+DNP_NUM t731 20 (2 digits) on Imp (ismonster 1 countkill 1 health 20 spawnhealth 80 master None)
+DNP_DIED t734 Imp countkill 1 health 0 spawnhealth 80 master None by BDoomer
+DNP_NUM t735 20 (2 digits) on Imp (ismonster 1 countkill 1 health 0 spawnhealth 80 master None)
+DNP_DIED t773 BootSmearerRed countkill 0 health 0 spawnhealth 1000 master None by None
+DNP_SPAWN t778 Imp -> Imp health 80
+DNP_TARGET t778 Imp health 80
+DNP_NUM t787 20 (2 digits) on Imp (ismonster 1 countkill 1 health 60 spawnhealth 80 master None)
+DNP_NUM t791 20 (2 digits) on Imp (ismonster 1 countkill 1 health 40 spawnhealth 80 master None)
+DNP_NUM t795 20 (2 digits) on Imp (ismonster 1 countkill 1 health 20 spawnhealth 80 master None)
+DNP_DIED t798 Imp countkill 1 health 0 spawnhealth 80 master None by BDoomer
+DNP_NUM t799 20 (2 digits) on Imp (ismonster 1 countkill 1 health 0 spawnhealth 80 master None)
+DNP_SPAWN t842 Imp -> Imp health 80
+DNP_TARGET t842 Imp health 80
+DNP_NUM t851 20 (2 digits) on Imp (ismonster 1 countkill 1 health 60 spawnhealth 80 master None)
+DNP_NUM t855 20 (2 digits) on Imp (ismonster 1 countkill 1 health 40 spawnhealth 80 master None)
+DNP_NUM t859 20 (2 digits) on Imp (ismonster 1 countkill 1 health 20 spawnhealth 80 master None)
+DNP_DIED t862 Imp countkill 1 health 0 spawnhealth 80 master None by BDoomer
+DNP_NUM t863 20 (2 digits) on Imp (ismonster 1 countkill 1 health 0 spawnhealth 80 master None)
+DNP_DIED t901 BootSmearerRed countkill 0 health 0 spawnhealth 1000 master None by None
+DNP_SPAWN t906 Imp -> Imp health 80
+DNP_TARGET t906 Imp health 80
+DNP_NUM t915 20 (2 digits) on Imp (ismonster 1 countkill 1 health 60 spawnhealth 80 master None)
+DNP_NUM t919 20 (2 digits) on Imp (ismonster 1 countkill 1 health 40 spawnhealth 80 master None)
+DNP_NUM t923 20 (2 digits) on Imp (ismonster 1 countkill 1 health 20 spawnhealth 80 master None)
+DNP_DIED t926 Imp countkill 1 health 0 spawnhealth 80 master None by BDoomer
+DNP_NUM t927 20 (2 digits) on Imp (ismonster 1 countkill 1 health 0 spawnhealth 80 master None)
+DNP_DIED t935 Dying_Headshot countkill 0 health 0 spawnhealth 9999 master DyingImpNoArm by None
+DNP_DIED t965 BootSmearerRed countkill 0 health 0 spawnhealth 1000 master None by None
+DNP_SPAWN t970 Imp -> Imp health 80
+DNP_TARGET t970 Imp health 80
+DNP_NUM t979 20 (2 digits) on Imp (ismonster 1 countkill 1 health 60 spawnhealth 80 master None)
+DNP_NUM t983 20 (2 digits) on Imp (ismonster 1 countkill 1 health 40 spawnhealth 80 master None)
+DNP_NUM t987 20 (2 digits) on Imp (ismonster 1 countkill 1 health 20 spawnhealth 80 master None)
+DNP_DIED t990 Imp countkill 1 health 0 spawnhealth 80 master None by BDoomer
+DNP_NUM t991 20 (2 digits) on Imp (ismonster 1 countkill 1 health 0 spawnhealth 80 master None)
+DNP_DIED t1023 BootSmearerRed countkill 0 health 0 spawnhealth 1000 master None by None
+DNP_SPAWN t1034 Imp -> Imp health 80
+DNP_TARGET t1034 Imp health 80
+DNP_NUM t1043 20 (2 digits) on Imp (ismonster 1 countkill 1 health 60 spawnhealth 80 master None)
+DNP_NUM t1047 20 (2 digits) on Imp (ismonster 1 countkill 1 health 40 spawnhealth 80 master None)
+DNP_NUM t1051 20 (2 digits) on Imp (ismonster 1 countkill 1 health 20 spawnhealth 80 master None)
+DNP_DIED t1054 Imp countkill 1 health 0 spawnhealth 80 master None by BDoomer
+DNP_NUM t1055 20 (2 digits) on Imp (ismonster 1 countkill 1 health 0 spawnhealth 80 master None)
+DNP_SPAWN t1098 ChaingunGuy1 -> ChaingunGuy1 health 80
+DNP_TARGET t1098 ChaingunGuy1 health 80
+DNP_NUM t1107 20 (2 digits) on ChaingunGuy1 (ismonster 1 countkill 1 health 60 spawnhealth 80 master None)
+DNP_NUM t1111 20 (2 digits) on ChaingunGuy1 (ismonster 1 countkill 1 health 40 spawnhealth 80 master None)
+DNP_NUM t1115 20 (2 digits) on ChaingunGuy1 (ismonster 1 countkill 1 health 20 spawnhealth 80 master None)
+DNP_DIED t1118 ChaingunGuy1 countkill 1 health 0 spawnhealth 80 master None by BDoomer
+DNP_NUM t1119 20 (2 digits) on ChaingunGuy1 (ismonster 1 countkill 1 health 0 spawnhealth 80 master None)
+DNP_SPAWN t1162 ChaingunGuy1 -> ChaingunGuy1 health 80
+DNP_TARGET t1162 ChaingunGuy1 health 80
+DNP_DIED t1170 Dying_Headshot countkill 0 health 0 spawnhealth 9999 master DyingImp by None
+DNP_NUM t1171 20 (2 digits) on ChaingunGuy1 (ismonster 1 countkill 1 health 60 spawnhealth 80 master None)
+DNP_NUM t1175 20 (2 digits) on ChaingunGuy1 (ismonster 1 countkill 1 health 40 spawnhealth 80 master None)
+DNP_NUM t1179 20 (2 digits) on ChaingunGuy1 (ismonster 1 countkill 1 health 20 spawnhealth 80 master None)
+DNP_DIED t1182 ChaingunGuy1 countkill 1 health 0 spawnhealth 80 master None by BDoomer
+DNP_NUM t1183 20 (2 digits) on ChaingunGuy1 (ismonster 1 countkill 1 health 0 spawnhealth 80 master None)
+DNP_SPAWN t1226 ChaingunGuy1 -> ChaingunGuy1 health 80
+DNP_TARGET t1226 ChaingunGuy1 health 80
+DNP_NUM t1235 20 (2 digits) on ChaingunGuy1 (ismonster 1 countkill 1 health 60 spawnhealth 80 master None)
+DNP_NUM t1239 20 (2 digits) on ChaingunGuy1 (ismonster 1 countkill 1 health 40 spawnhealth 80 master None)
+DNP_NUM t1243 20 (2 digits) on ChaingunGuy1 (ismonster 1 countkill 1 health 20 spawnhealth 80 master None)
+DNP_DIED t1246 ChaingunGuy1 countkill 1 health 0 spawnhealth 80 master None by BDoomer
+DNP_NUM t1247 20 (2 digits) on ChaingunGuy1 (ismonster 1 countkill 1 health 0 spawnhealth 80 master None)
+DNP_SPAWN t1290 BullDemon -> BullDemon health 200
+DNP_TARGET t1290 BullDemon health 200
+DNP_NUM t1299 20 (2 digits) on BullDemon (ismonster 1 countkill 1 health 180 spawnhealth 200 master None)
+DNP_NUM t1303 20 (2 digits) on BullDemon (ismonster 1 countkill 1 health 160 spawnhealth 200 master None)
+DNP_NUM t1307 20 (2 digits) on BullDemon (ismonster 1 countkill 1 health 140 spawnhealth 200 master None)
+DNP_NUM t1311 20 (2 digits) on BullDemon (ismonster 1 countkill 1 health 120 spawnhealth 200 master None)
+DNP_NUM t1315 20 (2 digits) on BullDemon (ismonster 1 countkill 1 health 100 spawnhealth 200 master None)
+DNP_NUM t1319 20 (2 digits) on BullDemon (ismonster 1 countkill 1 health 80 spawnhealth 200 master None)
+DNP_NUM t1323 20 (2 digits) on BullDemon (ismonster 1 countkill 1 health 60 spawnhealth 200 master None)
+DNP_NUM t1327 20 (2 digits) on BullDemon (ismonster 1 countkill 1 health 40 spawnhealth 200 master None)
+DNP_NUM t1331 20 (2 digits) on BullDemon (ismonster 1 countkill 1 health 20 spawnhealth 200 master None)
+DNP_DIED t1334 BullDemon countkill 1 health 0 spawnhealth 200 master None by BDoomer
+DNP_NUM t1335 20 (2 digits) on BullDemon (ismonster 1 countkill 1 health 0 spawnhealth 200 master None)
+DNP_DIED t1347 PoorPinkyLostHisArm countkill 0 health 0 spawnhealth 50 master None by None
+DNP_SPAWN t1354 BullDemon -> BullDemon health 200
+DNP_TARGET t1354 BullDemon health 200
+DNP_NUM t1363 20 (2 digits) on BullDemon (ismonster 1 countkill 1 health 180 spawnhealth 200 master None)
+DNP_NUM t1367 20 (2 digits) on BullDemon (ismonster 1 countkill 1 health 160 spawnhealth 200 master None)
+DNP_NUM t1371 20 (2 digits) on BullDemon (ismonster 1 countkill 1 health 140 spawnhealth 200 master None)
+DNP_NUM t1375 20 (2 digits) on BullDemon (ismonster 1 countkill 1 health 120 spawnhealth 200 master None)
+DNP_NUM t1379 20 (2 digits) on BullDemon (ismonster 1 countkill 1 health 100 spawnhealth 200 master None)
+DNP_NUM t1383 20 (2 digits) on BullDemon (ismonster 1 countkill 1 health 80 spawnhealth 200 master None)
+DNP_NUM t1387 20 (2 digits) on BullDemon (ismonster 1 countkill 1 health 60 spawnhealth 200 master None)
+DNP_NUM t1391 20 (2 digits) on BullDemon (ismonster 1 countkill 1 health 40 spawnhealth 200 master None)
+DNP_NUM t1395 20 (2 digits) on BullDemon (ismonster 1 countkill 1 health 20 spawnhealth 200 master None)
+DNP_DIED t1398 BullDemon countkill 1 health 0 spawnhealth 200 master None by BDoomer
+DNP_NUM t1399 20 (2 digits) on BullDemon (ismonster 1 countkill 1 health 0 spawnhealth 200 master None)
+DNP_SPAWN t1418 HellKnight2 -> HellKnight2 health 500
+DNP_TARGET t1418 HellKnight2 health 500
+DNP_NUM t1427 20 (2 digits) on HellKnight2 (ismonster 1 countkill 1 health 480 spawnhealth 500 master None)
+DNP_NUM t1433 40 (2 digits) on HellKnight2 (ismonster 1 countkill 1 health 440 spawnhealth 500 master None)
+DNP_NUM t1435 20 (2 digits) on HellKnight2 (ismonster 1 countkill 1 health 420 spawnhealth 500 master None)
+DNP_NUM t1439 20 (2 digits) on HellKnight2 (ismonster 1 countkill 1 health 400 spawnhealth 500 master None)
+DNP_NUM t1443 20 (2 digits) on HellKnight2 (ismonster 1 countkill 1 health 380 spawnhealth 500 master None)
+DNP_NUM t1449 40 (2 digits) on HellKnight2 (ismonster 1 countkill 1 health 340 spawnhealth 500 master None)
+DNP_NUM t1451 20 (2 digits) on HellKnight2 (ismonster 1 countkill 1 health 320 spawnhealth 500 master None)
+DNP_NUM t1457 40 (2 digits) on HellKnight2 (ismonster 1 countkill 1 health 280 spawnhealth 500 master None)
+DNP_NUM t1459 20 (2 digits) on HellKnight2 (ismonster 1 countkill 1 health 260 spawnhealth 500 master None)
+DNP_NUM t1463 20 (2 digits) on HellKnight2 (ismonster 1 countkill 1 health 240 spawnhealth 500 master None)
+DNP_NUM t1467 20 (2 digits) on HellKnight2 (ismonster 1 countkill 1 health 220 spawnhealth 500 master None)
+DNP_NUM t1471 20 (2 digits) on HellKnight2 (ismonster 1 countkill 1 health 200 spawnhealth 500 master None)
+DNP_NUM t1475 20 (2 digits) on HellKnight2 (ismonster 1 countkill 1 health 180 spawnhealth 500 master None)
+DNP_SPAWN t1482 HellKnight2 -> HellKnight2 health 500
+DNP_TARGET t1482 HellKnight2 health 500
+DNP_NUM t1481 40 (2 digits) on HellKnight2 (ismonster 1 countkill 1 health 140 spawnhealth 500 master None)
+DNP_NUM t1491 20 (2 digits) on HellKnight2 (ismonster 1 countkill 1 health 480 spawnhealth 500 master None)
+DNP_NUM t1497 40 (2 digits) on HellKnight2 (ismonster 1 countkill 1 health 100 spawnhealth 500 master None)
+DNP_NUM t1501 40 (2 digits) on HellKnight2 (ismonster 1 countkill 1 health 60 spawnhealth 500 master None)
+DNP_NUM t1503 20 (2 digits) on HellKnight2 (ismonster 1 countkill 1 health 460 spawnhealth 500 master None)
+DNP_NUM t1507 20 (2 digits) on HellKnight2 (ismonster 1 countkill 1 health 40 spawnhealth 500 master None)
+DNP_NUM t1513 40 (2 digits) on HellKnight2 (ismonster 1 countkill 1 health 420 spawnhealth 500 master None)
+DNP_NUM t1515 20 (2 digits) on HellKnight2 (ismonster 1 countkill 1 health 400 spawnhealth 500 master None)
+DNP_NUM t1521 40 (2 digits) on HellKnight2 (ismonster 1 countkill 1 health 360 spawnhealth 500 master None)
+DNP_NUM t1523 20 (2 digits) on HellKnight2 (ismonster 1 countkill 1 health 340 spawnhealth 500 master None)
+DNP_NUM t1527 20 (2 digits) on HellKnight2 (ismonster 1 countkill 1 health 320 spawnhealth 500 master None)
+DNP_NUM t1531 20 (2 digits) on HellKnight2 (ismonster 1 countkill 1 health 300 spawnhealth 500 master None)
+DNP_NUM t1537 40 (2 digits) on HellKnight2 (ismonster 1 countkill 1 health 260 spawnhealth 500 master None)
+DNP_NUM t1539 20 (2 digits) on HellKnight2 (ismonster 1 countkill 1 health 240 spawnhealth 500 master None)
+DNP_SPAWN t1546 BaronofHell2 -> BaronofHell2 health 1200
+DNP_TARGET t1546 BaronofHell2 health 1200
+DNP_NUM t1545 40 (2 digits) on HellKnight2 (ismonster 1 countkill 1 health 200 spawnhealth 500 master None)
+DNP_NUM t1555 150 (3 digits) on BaronofHell2 (ismonster 1 countkill 1 health 1050 spawnhealth 1200 master None)
+DNP_DIED t1560 HellKnight2 countkill 1 health -260 spawnhealth 500 master None by Knight_NobleHeadshot
+DNP_NUM t1561 40 (2 digits) on HellKnight2 (ismonster 1 countkill 1 health -260 spawnhealth 500 master None)
+DNP_DIED t1566 Knight_NobleHeadshot countkill 0 health 0 spawnhealth 9999 master HellKnight2 by None
+DNP_NUM t1567 150 (3 digits) on BaronofHell2 (ismonster 1 countkill 1 health 900 spawnhealth 1200 master None)
+DNP_NUM t1571 150 (3 digits) on HellKnight2 (ismonster 1 countkill 1 health 50 spawnhealth 500 master None)
+DNP_DIED t1576 HellKnight2 countkill 1 health -250 spawnhealth 500 master None by Knight_NobleHeadshot
+DNP_DIED t1578 Knight_NobleHeadshot countkill 0 health 0 spawnhealth 9999 master HellKnight2 by None
+DNP_NUM t1577 50 (2 digits) on HellKnight2 (ismonster 1 countkill 1 health -250 spawnhealth 500 master None)
+DNP_NUM t1579 150 (3 digits) on BaronofHell2 (ismonster 1 countkill 1 health 750 spawnhealth 1200 master None)
+DNP_DIED t1586 DyingHellKnightNoHead countkill 0 health -50 spawnhealth 100 master None by THPDN_Gun
+DNP_NUM t1585 300 (3 digits) on BaronofHell2 (ismonster 1 countkill 1 health 450 spawnhealth 1200 master None)
+DNP_NUM t1587 100 (3 digits) on DyingHellKnightNoHeadNoArm (ismonster 1 countkill 0 health 100 spawnhealth 100 master None)
+DNP_NUM t1591 150 (3 digits) on BaronofHell2 (ismonster 1 countkill 1 health 300 spawnhealth 1200 master None)
+DNP_DIED t1594 DyingHellKnightNoHeadNoArm countkill 0 health -50 spawnhealth 100 master None by THPDN_Gun
+DNP_NUM t1595 100 (3 digits) on DyingHellKnightNoHeadNoArm (ismonster 1 countkill 0 health -50 spawnhealth 100 master None)
+DNP_DIED t1600 BaronofHell2 countkill 1 health 0 spawnhealth 1200 master None by Baron_NobleHeadshot
+DNP_DIED t1602 Baron_NobleHeadshot countkill 0 health 0 spawnhealth 9999 master BaronofHell2 by None
+DNP_NUM t1601 300 (3 digits) on BaronofHell2 (ismonster 1 countkill 1 health 0 spawnhealth 1200 master None)
+DNP_SPAWN t1610 BaronofHell2 -> BaronofHell2 health 1200
+DNP_TARGET t1610 BaronofHell2 health 1200
+DNP_NUM t1619 150 (3 digits) on BaronofHell2 (ismonster 1 countkill 1 health 1050 spawnhealth 1200 master None)
+DNP_NUM t1625 300 (3 digits) on BaronofHell2 (ismonster 1 countkill 1 health 750 spawnhealth 1200 master None)
+DNP_NUM t1627 150 (3 digits) on BaronofHell2 (ismonster 1 countkill 1 health 600 spawnhealth 1200 master None)
+DNP_NUM t1631 150 (3 digits) on BaronofHell2 (ismonster 1 countkill 1 health 450 spawnhealth 1200 master None)
+DNP_DIED t1635 BootSmearerGreen countkill 0 health 0 spawnhealth 1000 master None by None
+DNP_NUM t1635 150 (3 digits) on BaronofHell2 (ismonster 1 countkill 1 health 300 spawnhealth 1200 master None)
+DNP_DIED t1640 BaronofHell2 countkill 1 health 0 spawnhealth 1200 master None by Baron_NobleHeadshot
+DNP_DIED t1642 Baron_NobleHeadshot countkill 0 health 0 spawnhealth 9999 master BaronofHell2 by None
+DNP_NUM t1641 300 (3 digits) on BaronofHell2 (ismonster 1 countkill 1 health 0 spawnhealth 1200 master None)
+DNP_SPAWN t1674 Mancubus -> Mancubus health 600
+DNP_TARGET t1674 Mancubus health 600
+DNP_NUM t1683 20 (2 digits) on Mancubus (ismonster 1 countkill 1 health 580 spawnhealth 600 master None)
+DNP_NUM t1687 20 (2 digits) on Mancubus (ismonster 1 countkill 1 health 560 spawnhealth 600 master None)
+DNP_NUM t1691 20 (2 digits) on Mancubus (ismonster 1 countkill 1 health 540 spawnhealth 600 master None)
+DNP_NUM t1695 20 (2 digits) on Mancubus (ismonster 1 countkill 1 health 520 spawnhealth 600 master None)
+DNP_NUM t1699 20 (2 digits) on Mancubus (ismonster 1 countkill 1 health 500 spawnhealth 600 master None)
+DNP_NUM t1703 20 (2 digits) on Mancubus (ismonster 1 countkill 1 health 480 spawnhealth 600 master None)
+DNP_NUM t1707 20 (2 digits) on Mancubus (ismonster 1 countkill 1 health 460 spawnhealth 600 master None)
+DNP_NUM t1711 20 (2 digits) on Mancubus (ismonster 1 countkill 1 health 440 spawnhealth 600 master None)
+DNP_NUM t1715 20 (2 digits) on Mancubus (ismonster 1 countkill 1 health 420 spawnhealth 600 master None)
+DNP_NUM t1719 20 (2 digits) on Mancubus (ismonster 1 countkill 1 health 400 spawnhealth 600 master None)
+DNP_NUM t1723 20 (2 digits) on Mancubus (ismonster 1 countkill 1 health 380 spawnhealth 600 master None)
+DNP_NUM t1727 20 (2 digits) on Mancubus (ismonster 1 countkill 1 health 360 spawnhealth 600 master None)
+DNP_NUM t1731 20 (2 digits) on Mancubus (ismonster 1 countkill 1 health 340 spawnhealth 600 master None)
+DNP_NUM t1735 20 (2 digits) on Mancubus (ismonster 1 countkill 1 health 320 spawnhealth 600 master None)
+DNP_SPAWN t1738 Mancubus -> Mancubus health 600
+DNP_TARGET t1738 Mancubus health 600
+DNP_NUM t1747 20 (2 digits) on Mancubus (ismonster 1 countkill 1 health 320 spawnhealth 600 master None)
+DNP_NUM t1751 20 (2 digits) on Mancubus (ismonster 1 countkill 1 health 320 spawnhealth 600 master None)
+DNP_NUM t1755 20 (2 digits) on Mancubus (ismonster 1 countkill 1 health 320 spawnhealth 600 master None)
+DNP_NUM t1759 20 (2 digits) on Mancubus (ismonster 1 countkill 1 health 320 spawnhealth 600 master None)
+DNP_NUM t1763 20 (2 digits) on Mancubus (ismonster 1 countkill 1 health 320 spawnhealth 600 master None)
+DNP_NUM t1767 20 (2 digits) on Mancubus (ismonster 1 countkill 1 health 320 spawnhealth 600 master None)
+DNP_NUM t1771 20 (2 digits) on Mancubus (ismonster 1 countkill 1 health 320 spawnhealth 600 master None)
+DNP_NUM t1775 20 (2 digits) on Mancubus (ismonster 1 countkill 1 health 320 spawnhealth 600 master None)
+DNP_NUM t1779 20 (2 digits) on Mancubus (ismonster 1 countkill 1 health 320 spawnhealth 600 master None)
+DNP_NUM t1783 20 (2 digits) on Mancubus (ismonster 1 countkill 1 health 320 spawnhealth 600 master None)
+DNP_NUM t1787 20 (2 digits) on Mancubus (ismonster 1 countkill 1 health 320 spawnhealth 600 master None)
+DNP_NUM t1791 20 (2 digits) on Mancubus (ismonster 1 countkill 1 health 320 spawnhealth 600 master None)
+DNP_NUM t1795 20 (2 digits) on Mancubus (ismonster 1 countkill 1 health 320 spawnhealth 600 master None)
+DNP_NUM t1799 20 (2 digits) on Mancubus (ismonster 1 countkill 1 health 320 spawnhealth 600 master None)
+DNP_SPAWN t1802 Revenant1 -> Revenant1 health 250
+DNP_TARGET t1802 Revenant1 health 250
+DNP_NUM t1811 20 (2 digits) on Revenant1 (ismonster 1 countkill 1 health 230 spawnhealth 250 master None)
+DNP_NUM t1815 20 (2 digits) on Mancubus (ismonster 1 countkill 1 health 320 spawnhealth 600 master None)
+DNP_NUM t1819 20 (2 digits) on Mancubus (ismonster 1 countkill 1 health 320 spawnhealth 600 master None)
+DNP_NUM t1820 97 (2 digits) on Revenant1 (ismonster 1 countkill 1 health 133 spawnhealth 250 master None)
+DNP_NUM t1823 20 (2 digits) on Revenant1 (ismonster 1 countkill 1 health 113 spawnhealth 250 master None)
+DNP_NUM t1827 20 (2 digits) on Mancubus (ismonster 1 countkill 1 health 320 spawnhealth 600 master None)
+DNP_NUM t1831 20 (2 digits) on Mancubus (ismonster 1 countkill 1 health 320 spawnhealth 600 master None)
+DNP_NUM t1835 20 (2 digits) on Revenant1 (ismonster 1 countkill 1 health 93 spawnhealth 250 master None)
+DNP_NUM t1839 20 (2 digits) on Mancubus (ismonster 1 countkill 1 health 320 spawnhealth 600 master None)
+DNP_NUM t1843 100 (3 digits) on Mancubus (ismonster 1 countkill 1 health 320 spawnhealth 600 master None)
+DNP_DIED t1846 Revenant1 countkill 1 health -7 spawnhealth 250 master None by BDoomer
+DNP_DIED t1846 BonesHeadshot countkill 0 health 0 spawnhealth 9999 master Revenant1 by None
+DNP_NUM t1844 80 (2 digits) on Revenant1 (ismonster 1 countkill 1 health 13 spawnhealth 250 master None)
+DNP_NUM t1847 13 (2 digits) on BaronofHell2 (ismonster 1 countkill 1 health 0 spawnhealth 1200 master None)
+DNP_SPAWN t1866 Revenant1 -> Revenant1 health 250
+DNP_TARGET t1866 Revenant1 health 250
+DNP_NUM t1873 97 (2 digits) on Revenant1 (ismonster 1 countkill 1 health 153 spawnhealth 250 master None)
+DNP_NUM t1875 20 (2 digits) on Revenant1 (ismonster 1 countkill 1 health 133 spawnhealth 250 master None)
+DNP_NUM t1879 20 (2 digits) on Mancubus (ismonster 1 countkill 1 health 320 spawnhealth 600 master None)
+DNP_NUM t1883 20 (2 digits) on Mancubus (ismonster 1 countkill 1 health 320 spawnhealth 600 master None)
+DNP_NUM t1884 80 (2 digits) on Revenant1 (ismonster 1 countkill 1 health 53 spawnhealth 250 master None)
+DNP_NUM t1887 20 (2 digits) on Revenant1 (ismonster 1 countkill 1 health 33 spawnhealth 250 master None)
+DNP_DIED t1892 Revenant1 countkill 1 health -7 spawnhealth 250 master None by BigFireBall
+DNP_DIED t1892 BonesHeadshot countkill 0 health 0 spawnhealth 9999 master Revenant1 by None
+DNP_NUM t1891 20 (2 digits) on Mancubus (ismonster 1 countkill 1 health 320 spawnhealth 600 master None)
+DNP_NUM t1893 33 (2 digits) on BaronofHell2 (ismonster 1 countkill 1 health 0 spawnhealth 1200 master None)
+DNP_SPAWN t1930 Arachnotron1 -> Arachnotron1 health 750
+DNP_TARGET t1930 Arachnotron1 health 750
+DNP_NUM t1939 20 (2 digits) on Arachnotron1 (ismonster 1 countkill 1 health 730 spawnhealth 750 master None)
+DNP_NUM t1943 20 (2 digits) on Mancubus (ismonster 1 countkill 1 health 320 spawnhealth 600 master None)
+DNP_NUM t1947 20 (2 digits) on Mancubus (ismonster 1 countkill 1 health 320 spawnhealth 600 master None)
+DNP_NUM t1948 80 (2 digits) on Arachnotron1 (ismonster 1 countkill 1 health 650 spawnhealth 750 master None)
+DNP_NUM t1951 20 (2 digits) on Arachnotron1 (ismonster 1 countkill 1 health 630 spawnhealth 750 master None)
+DNP_DIED t1954 Mancubus countkill 1 health 0 spawnhealth 600 master None by THPDN_Gun
+DNP_DIED t1954 MancuHeadshot countkill 0 health 0 spawnhealth 9999 master Mancubus by None
+DNP_NUM t1955 20 (2 digits) on Mancubus (ismonster 1 countkill 1 health 0 spawnhealth 600 master None)
+DNP_NUM t1959 20 (2 digits) on Mancubus (ismonster 1 countkill 1 health 300 spawnhealth 600 master None)
+DNP_NUM t1963 20 (2 digits) on Arachnotron1 (ismonster 1 countkill 1 health 610 spawnhealth 750 master None)
+DNP_NUM t1967 20 (2 digits) on Mancubus (ismonster 1 countkill 1 health 280 spawnhealth 600 master None)
+DNP_NUM t1971 20 (2 digits) on Mancubus (ismonster 1 countkill 1 health 260 spawnhealth 600 master None)
+DNP_NUM t1975 20 (2 digits) on Arachnotron1 (ismonster 1 countkill 1 health 590 spawnhealth 750 master None)
+DNP_NUM t1979 20 (2 digits) on Mancubus (ismonster 1 countkill 1 health 240 spawnhealth 600 master None)
+DNP_NUM t1983 20 (2 digits) on Mancubus (ismonster 1 countkill 1 health 220 spawnhealth 600 master None)
+DNP_NUM t1987 20 (2 digits) on Arachnotron1 (ismonster 1 countkill 1 health 570 spawnhealth 750 master None)
+DNP_NUM t1991 20 (2 digits) on Mancubus (ismonster 1 countkill 1 health 200 spawnhealth 600 master None)
+DNP_SPAWN t1994 TheCyberdemon -> TheCyberdemon health 5000
+DNP_TARGET t1994 TheCyberdemon health 5000
+DNP_NUM t2003 625 (3 digits) on TheCyberdemon (ismonster 1 countkill 1 health 4375 spawnhealth 5000 master None)
+DNP_NUM t2007 625 (3 digits) on TheCyberdemon (ismonster 1 countkill 1 health 3750 spawnhealth 5000 master None)
+DNP_DIED t2010 Mancubus countkill 1 health -425 spawnhealth 600 master None by THPDN_Gun
+DNP_DIED t2010 MancuHeadshot countkill 0 health 0 spawnhealth 9999 master Mancubus by None
+DNP_NUM t2011 200 (3 digits) on Mancubus (ismonster 1 countkill 1 health -425 spawnhealth 600 master None)
+DNP_NUM t2015 625 (3 digits) on TheCyberdemon (ismonster 1 countkill 1 health 3125 spawnhealth 5000 master None)
+DNP_NUM t2019 625 (3 digits) on TheCyberdemon (ismonster 1 countkill 1 health 2500 spawnhealth 5000 master None)
+DNP_NUM t2023 625 (3 digits) on TheCyberdemon (ismonster 1 countkill 1 health 1875 spawnhealth 5000 master None)
+DNP_NUM t2027 625 (3 digits) on TheCyberdemon (ismonster 1 countkill 1 health 1250 spawnhealth 5000 master None)
+DNP_NUM t2031 625 (3 digits) on TheCyberdemon (ismonster 1 countkill 1 health 625 spawnhealth 5000 master None)
+DNP_DIED t2034 TheCyberdemon countkill 1 health 0 spawnhealth 5000 master None by THPDN_Gun
+DNP_DIED t2035 NewCybersHitBox countkill 0 health 0 spawnhealth 9999 master TheCyberdemon by None
+DNP_NUM t2035 625 (3 digits) on TheCyberdemon (ismonster 1 countkill 1 health 0 spawnhealth 5000 master None)
+DNP_SUM numbers 195 big(>=9999) 0 monster deaths 63 (counted kills 31)
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 66:
+No sprites specified for voxel.
+--
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 72:
+No sprites specified for voxel.
+--
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 77:
+No sprites specified for voxel.
+--
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 892:
+No sprites specified for voxel.

@@ -1,0 +1,175 @@
+version "4.14"
+// TEST ONLY -- never shipped. Damage numbers (damnums by Xaser Acheron, and the copy folded into RSQ HP Bars) on the
+// QZD 17.3 rig. Measures every number that spawns and what it was spawned for.
+//   dnp_cls   comma list of monster classes, spawned one at a time dnp_dist ahead (ALLOW_REPLACE: Brutal Doom's own)
+//   dnp_slot  tics per monster; from 8 tics after it spawns the player fires a hitscan at it every dnp_gap tics
+//             (dnp_dmg 'Bullet'), every other shot at its head height, until it dies
+//   dnp_num   the digit class to watch ("DamNum" = damnums, "RSQTHP_DamNum" = ours)
+//   dnp_pfx   digit sprite prefixes to decode (comma list, e.g. "_C" for damnums' Doom font)
+// Logs: DNP_NUM (one line a number: value, owner class, its flags and health), DNP_DIED (every ISMONSTER death),
+// DNP_SUM at the end (numbers, numbers >= 9999, numbers larger than the health the owner had left).
+class THPDN_Probe : EventHandler
+{
+	Array<Actor> pend; Array<int> pendTic; Array<int> pendGrp;
+	Array<String> grpOwner; Array<int> grpHad; Array<int> grpVal; Array<int> grpTic; Array<int> grpCnt;
+	Vector3 lastPos; int lastTic; int lastGrp;
+	Actor cur, gun; int slot; int slotStart;
+	int nNum, nBig, nOver, nDied, nKills, grpBase;
+	static clearscope int CI(Name n) { let c = CVar.FindCVar(n); return c ? c.GetInt() : 0; }
+	static clearscope double CF(Name n) { let c = CVar.FindCVar(n); return c ? c.GetFloat() : 0; }
+	static clearscope String CS(Name n) { let c = CVar.FindCVar(n); return c ? c.GetString() : ""; }
+
+	int Dmg(Actor c) { return (c && c.SpawnHealth() >= 1000) ? c.SpawnHealth() / 8 : CI('dnp_dmg'); }
+
+	override void OnRegister() { lastTic = -1; slot = -1; }
+
+	override void WorldThingSpawned(WorldEvent e)
+	{
+		let a = e.Thing;
+		if (!a) return;
+		// the slot's monster: a spawner (XMVE's) hands over to the real one, so take the first COUNTKILL monster spawned
+		if (a.bIsMonster && a.bCountKill && slot >= 0 && level.maptime <= slotStart + 6 && (!cur || !cur.bCountKill || cur.health <= 0 || cur == a))
+		{
+			cur = a;
+			Console.Printf("DNP_TARGET t%d %s health %d", level.maptime, a.GetClassName(), a.health);
+		}
+		if (a.GetClassName() != CS('dnp_num')) return;
+		int t = level.maptime;
+		if (t != lastTic || (a.Pos - lastPos).Length() > 0.01)
+		{
+			// a new number: find what it was spawned for (damnums puts it at owner.pos + height - 16)
+			lastTic = t; lastPos = a.Pos;
+			Actor own = null;
+			let it = ThinkerIterator.Create("Actor");
+			// WorldThingSpawned comes at the digit's first tic (after PostBeginPlay), so its owner may have moved a tic's
+			// worth: the nearest monster / shootable / corpse within 48 units of where the number stands
+			Actor o, own2 = null;
+			double best = 48;
+			while (o = Actor(it.Next()))
+			{
+				if (o == a || !(o.bIsMonster || o.bShootable || o.bCorpse) || o.GetClassName() == CS('dnp_num')) continue;
+				double dd = (o.Pos + (0, 0, o.Height - 16) - a.Pos).Length();
+				if (dd < best) { own2 = o; best = dd; }
+			}
+			own = own2;
+			String desc = "unknown";
+			int had = 0;
+			if (own)
+			{
+				desc = String.Format("%s (ismonster %d countkill %d health %d spawnhealth %d master %s)", own.GetClassName(), own.bIsMonster,
+					own.bCountKill, own.health, own.SpawnHealth(), own.master ? own.master.GetClassName() : 'none');
+				had = own.health;
+			}
+			grpOwner.Push(desc); grpHad.Push(had); grpVal.Push(0); grpTic.Push(t); grpCnt.Push(0);
+			lastGrp = grpBase + grpOwner.Size() - 1;
+		}
+		pend.Push(a); pendTic.Push(t); pendGrp.Push(lastGrp);
+	}
+
+	override void WorldThingDied(WorldEvent e)
+	{
+		let a = e.Thing;
+		if (!a || !a.bIsMonster) return;
+		nDied++;
+		if (a.bCountKill) nKills++;
+		Console.Printf("DNP_DIED t%d %s countkill %d health %d spawnhealth %d master %s by %s", level.maptime, a.GetClassName(), a.bCountKill,
+			a.health, a.SpawnHealth(), a.master ? a.master.GetClassName() : 'none', e.Inflictor ? e.Inflictor.GetClassName() : 'none');
+	}
+
+	void Decode()
+	{
+		int t = level.maptime;
+		Array<String> pf; CS('dnp_pfx').Split(pf, ",");
+		for (int i = 0; i < pend.Size(); )
+		{
+			if (t - pendTic[i] < 2) { i++; continue; }
+			let a = pend[i];
+			int g = pendGrp[i] - grpBase;
+			if (a)
+			{
+				int place = 0;
+				for (int p = 0; p < pf.Size() && !place; p++)
+					for (int c = 1; c <= 7 && !place; c++)
+						for (int q = 1; q <= c; q++)
+							if (a.sprite == Actor.GetSpriteIndex(pf[p] .. c .. q)) { place = q; break; }
+				int v = a.frame;
+				int m = 1; for (int k = 1; k < place; k++) m *= 10;
+				if (g >= 0 && g < grpVal.Size()) { if (place) grpVal[g] += v * m; grpCnt[g]++; }
+			}
+			pend.Delete(i); pendTic.Delete(i); pendGrp.Delete(i);
+		}
+	}
+
+	void Flush(bool all)
+	{
+		int t = level.maptime;
+		while (grpOwner.Size() && (all || t - grpTic[0] >= 3))
+		{
+			int v = grpVal[0];
+			nNum++;
+			if (v >= 9999) nBig++;
+			// the owner's health after the hit is logged; had-left = value of health before = shown when the owner did not die
+			Console.Printf("DNP_NUM t%d %d (%d digits) on %s", grpTic[0], v, grpCnt[0], grpOwner[0]);
+			if (v >= 9999) Console.Printf("DNP_BIG t%d %d on %s", grpTic[0], v, grpOwner[0]);
+			grpOwner.Delete(0); grpHad.Delete(0); grpVal.Delete(0); grpTic.Delete(0); grpCnt.Delete(0); grpBase++;
+		}
+	}
+
+	override void WorldTick()
+	{
+		let pmo = players[consoleplayer].mo;
+		if (!pmo) return;
+		int t = level.maptime;
+		Decode();
+		Flush(false);
+		Array<String> cl; CS('dnp_cls').Split(cl, ",");
+		int sl = max(20, CI('dnp_slot'));
+		if (t >= 10)
+		{
+			int s = (t - 10) / sl;
+			if (s != slot && s < cl.Size())
+			{
+				slot = s; slotStart = t;
+				Vector2 fw = (cos(pmo.angle), sin(pmo.angle));
+				cur = Actor.Spawn(cl[s], (pmo.Pos.xy + fw * CF('dnp_dist'), pmo.Pos.z), CI('dnp_norep') ? NO_REPLACE : ALLOW_REPLACE);
+				if (cur) { cur.angle = pmo.angle + 180; cur.SetZ(cur.floorz); }
+				Console.Printf("DNP_SPAWN t%d %s -> %s health %d", t, cl[s], cur ? cur.GetClassName() : 'null', cur ? cur.health : 0);
+			}
+			if (s >= cl.Size() && t == 10 + cl.Size() * sl + 40)
+			{
+				Flush(true);
+				Console.Printf("DNP_SUM numbers %d big(>=9999) %d monster deaths %d (counted kills %d)", nNum, nBig, nDied, nKills);
+			}
+		}
+		int gp = max(1, CI('dnp_gap'));
+		if (cur && cur.health > 0 && t >= slotStart + 8 && (t - slotStart) % gp == 0)
+		{
+			bool head = ((t - slotStart) / gp) % 2 == 1;
+			double z = cur.Pos.z + (head ? cur.Height * 0.85 : cur.Height * 0.5);
+			Vector3 eye = pmo.Pos + (0, 0, pmo.player.viewheight);
+			Vector3 d = (cur.Pos.xy, z) - eye;
+			double pt = -atan2(d.z, d.xy.Length());
+			double an = atan2(d.y, d.x);
+			Actor puff; int dealt;
+			// QZD's VR build aims a player's LineAttack with the hand, so the shot comes from a stand-in at the eye
+			if (!gun) gun = Actor.Spawn("THPDN_Gun", eye);
+			gun.SetOrigin(eye + (d.xy.Unit() * (pmo.radius + 4), 0), false); gun.target = pmo;
+			if (((t - slotStart) / gp) % 3 == 2) { dealt = cur.DamageMobj(pmo, pmo, Dmg(cur), 'Bullet'); }
+			else
+			{
+				// a hitscan by hand: trace from the eye, damage what it hits first (head hitboxes too), as a bullet would
+				FLineTraceData tr;
+				gun.LineTrace(an, 2048, pt, TRF_THRUBLOCK, 0, 0, 0, tr);
+				if (tr.HitActor) { puff = tr.HitActor; dealt = tr.HitActor.DamageMobj(gun, pmo, Dmg(cur), 'Bullet'); }
+			}
+			if (CI('dnp_shotlog')) Console.Printf("DNP_SHOT t%d at %s (%s) head %d dealt %d hit %s dist %.0f", t, cur.GetClassName(), cur.health > 0 ? "alive" : "dead", head, dealt,
+				puff ? puff.GetClassName() : 'none', pmo.Distance3D(cur));
+		}
+	}
+}
+
+class THPDN_Gun : Actor
+{
+	Default { +NOBLOCKMAP; +NOGRAVITY; +NOINTERACTION; +INVISIBLE; Height 2; Radius 1; }
+	States { Spawn: TNT1 A -1; Stop; }
+}

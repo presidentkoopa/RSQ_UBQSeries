@@ -7,3 +7,6 @@ version "4.14"
 #include "zscript/rsqthp/handler.zs"
 #include "zscript/rsqthp/bar.zs"
 #include "zscript/rsqthp/voxels.zs"
+// Damage Numbers: damnums by Xaser Acheron (MIT), folded in 2026-11-03. See CREDITS.txt.
+#include "zscript/rsqthp/damnums/damnum.zs"
+#include "zscript/rsqthp/damnums/events.zs"

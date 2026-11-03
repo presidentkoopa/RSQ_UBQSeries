@@ -1,0 +1,16 @@
+DNP_SPAWN t10 DoomImp -> DoomImp health 60
+DNP_TARGET t10 DoomImp health 60
+DNP_NUM t19 25 (2 digits) on DoomImp (ismonster 1 countkill 1 health 35 spawnhealth 60 master None)
+DNP_NUM t23 25 (2 digits) on DoomImp (ismonster 1 countkill 1 health 10 spawnhealth 60 master None)
+DNP_DIED t26 DoomImp countkill 1 health -15 spawnhealth 60 master None by THPDN_Gun
+DNP_NUM t27 10 (2 digits) on DoomImp (ismonster 1 countkill 1 health -15 spawnhealth 60 master None)
+DNP_SPAWN t70 ShotgunGuy -> ShotgunGuy health 30
+DNP_TARGET t70 ShotgunGuy health 30
+DNP_NUM t79 25 (2 digits) on ShotgunGuy (ismonster 1 countkill 1 health 5 spawnhealth 30 master None)
+DNP_DIED t82 ShotgunGuy countkill 1 health -20 spawnhealth 30 master None by THPDN_Gun
+DNP_NUM t83 5 (1 digits) on DoomImp (ismonster 1 countkill 1 health -15 spawnhealth 60 master None)
+DNP_SPAWN t130 ZombieMan -> Zombieman health 20
+DNP_TARGET t130 Zombieman health 20
+DNP_DIED t138 Zombieman countkill 1 health -5 spawnhealth 20 master None by DoomPlayer
+DNP_NUM t139 20 (2 digits) on DoomImp (ismonster 1 countkill 1 health -15 spawnhealth 60 master None)
+DNP_SUM numbers 6 big(>=9999) 0 monster deaths 3 (counted kills 3)

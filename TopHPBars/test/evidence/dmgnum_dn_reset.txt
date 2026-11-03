@@ -1,0 +1,14 @@
+"rsqthp_dmg_spray" is "true" (default: "false")
+"rsqthp_dmg" is "false" (default: "true")
+DNP_SPAWN t10 ZombieMan -> Zombieman health 20
+DNP_TARGET t10 Zombieman health 20
+DNP_SHOT t18 at Zombieman (alive) head 0 dealt 12 hit None dist 186
+DNP_DIED t22 Zombieman countkill 1 health -4 spawnhealth 20 master None by THPDN_Gun
+DNP_SHOT t22 at Zombieman (dead) head 1 dealt 12 hit Zombieman dist 186
+"rsqthp_dmg" is "true" (default: "true")
+"rsqthp_dmg_all" is "false" (default: "false")
+"rsqthp_dmg_spray" is "false" (default: "false")
+"rsqthp_dmg_font" is "RSQTHP_DamNumFontClassic" (default: "RSQTHP_DamNumFontClassic")
+"rsqthp_dmg_physics" is "0" (default: "0")
+"rsqthp_dmg_colour" is "RSQTHP_DamDefault" (default: "RSQTHP_DamDefault")
+"rsqthp_dmg_types" is "true" (default: "true")

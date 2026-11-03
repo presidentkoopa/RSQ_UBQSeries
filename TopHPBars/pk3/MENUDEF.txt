@@ -43,6 +43,48 @@ OptionString "RSQTHP_P_Size"
 }
 // END PRESETS
 
+// Damage Numbers (damnums by Xaser Acheron, folded in 2026-11-03): its own choices, renamed
+OptionValue "RSQTHP_DmgFor"
+{
+	0, "Monsters Only"
+	1, "All Shootable"
+}
+OptionValue "RSQTHP_DmgPhysics"
+{
+	0, "Toss"
+	1, "Float"
+}
+OptionString "RSQTHP_DmgFonts"
+{
+	"RSQTHP_DamNumFontClassic", "Classic Doom"
+	"RSQTHP_DamNumFontSmall", "Classic Doom (small)"
+}
+OptionString "RSQTHP_DmgColours"
+{
+	"RSQTHP_DamDefault", "$C_DEFAULT"
+	"RSQTHP_DamBrick", "$C_BRICK"
+	"RSQTHP_DamTan", "$C_TAN"
+	"RSQTHP_DamGray", "$C_GRAY"
+	"RSQTHP_DamGreen", "$C_GREEN"
+	"RSQTHP_DamBrown", "$C_BROWN"
+	"RSQTHP_DamGold", "$C_GOLD"
+	"RSQTHP_DamRed", "$C_RED"
+	"RSQTHP_DamBlue", "$C_BLUE"
+	"RSQTHP_DamOrange", "$C_ORANGE"
+	"RSQTHP_DamWhite", "$C_WHITE"
+	"RSQTHP_DamYellow", "$C_YELLOW"
+	"RSQTHP_DamBlack", "$C_BLACK"
+	"RSQTHP_DamLightBlue", "$C_LIGHTBLUE"
+	"RSQTHP_DamCream", "$C_CREAM"
+	"RSQTHP_DamOlive", "$C_OLIVE"
+	"RSQTHP_DamDarkGreen", "$C_DARKGREEN"
+	"RSQTHP_DamDarkRed", "$C_DARKRED"
+	"RSQTHP_DamDarkBrown", "$C_DARKBROWN"
+	"RSQTHP_DamPurple", "$C_PURPLE"
+	"RSQTHP_DamDarkGray", "$C_DARKGRAY"
+	"RSQTHP_DamCyan", "$C_CYAN"
+}
+
 OptionMenu "RSQTHP_Options"
 {
 	Title "RSQ HP BARS"
@@ -59,6 +101,14 @@ OptionMenu "RSQTHP_Options"
 	Option "Ally Colour", "rsqthp_ally", "OnOff"
 	Option "Nearest 24 Only", "rsqthp_nearest", "OnOff"
 	Option "Distance Limit", "rsqthp_limit", "OnOff"
+	StaticText " "
+	Option "Damage Numbers", "rsqthp_dmg", "OnOff"
+	Option "Numbers For", "rsqthp_dmg_all", "RSQTHP_DmgFor"
+	Option "Shotgun Spray", "rsqthp_dmg_spray", "OnOff"
+	Option "Number Font", "rsqthp_dmg_font", "RSQTHP_DmgFonts"
+	Option "Number Colour", "rsqthp_dmg_colour", "RSQTHP_DmgColours"
+	Option "Number Motion", "rsqthp_dmg_physics", "RSQTHP_DmgPhysics"
+	Option "Damage Type Colours", "rsqthp_dmg_types", "OnOff"
 	StaticText " "
 	Submenu "Tuning and Debug", "RSQTHP_Tuning"
 }

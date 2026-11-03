@@ -6,7 +6,8 @@ for colour-blind eyes.
 
 A health bar floats over every monster you have hurt. It is coldcite's Top HP Bars 1.04, kept as he drew it,
 with colour-blind colour sets, a strip for health above 100 %, and small icons that show what the other
-series mods are doing to that monster (hooked, stunned, locked on, gripped, frozen, held, raised). It has no
+series mods are doing to that monster (hooked, stunned, locked on, gripped, frozen, held, raised). It also carries
+Xaser Acheron's damnums damage numbers, fixed for Brutal Doom (no 9999 over corpses). It has no
 buttons and asks nothing of your hands. It runs on stock QuestZDoom 17.3 in VR, on plain Doom 2 or with
 Brutal Doom, and needs no other RSQ pk3; the icons need the mods that drive them (see "Works with").
 
@@ -42,6 +43,16 @@ Pk3: `pk3/RSQ_HPBars.pk3`.
   brought it back.
 - Above the bar, with RSQ Miniboss: a gold crown over the miniboss, a chain link over each of its thralls.
 
+**Damage Numbers** (on). Xaser Acheron's damnums, built in: every hit on a monster throws up the damage it did in
+damnums' red Doom digits, tossed off the monster and fading, exactly as damnums draws them. Changed for Brutal Doom:
+- No number when Brutal Doom finishes a body: its head hitboxes (9999 health, riding a monster or a dying body) and
+  its boot smearers (1000) never show one, and a body that bleeds out or drops dead by itself shows nothing. That was
+  the 9999 over every corpse.
+- A number is never bigger than the health the monster had left: a 25 that kills an imp on 10 shows 10.
+- No number for a hit on a monster that was already dead, or for Massacre / Brutal Doom's KillMe clean-up.
+- **Do not load damnums alongside any more.** If it is loaded too, every hit shows two numbers (damnums' and these),
+  and damnums brings back the 9999s. Remove damnums from the load order.
+
 **Options, off until you turn them on.**
 - Aimed Only: a bar only over the monster either hand's gun points at, and for half a second after the aim
   leaves it. An unhurt monster you aim at gets its bar too.
@@ -66,6 +77,9 @@ its **Tuning and Debug** page.
 With **Aimed Only** on, point either hand's gun at a monster: its bar shows while you aim at it and for half
 a second after you look away. Point at an unhurt monster and it gets a bar too.
 
+Shoot a monster: the damage pops off it in red digits. Kill a Brutal Doom zombie: the last number is what it had left,
+and nothing shows when its body drops.
+
 With **Damage Chunk** on, hit a monster: a white block marks what the hit took off, holds half a second, then
 drains.
 
@@ -87,6 +101,13 @@ Options -> Radiant Silvergun Options -> **RSQ HP Bars**:
 | Ally Colour | Off | Friendly monsters get a blue bar. |
 | Nearest 24 Only | Off | Only the 24 bars nearest you are drawn. |
 | Distance Limit | Off | No bars farther than Limit Distance. |
+| Damage Numbers | On | damnums' damage numbers on hits. |
+| Numbers For | Monsters Only | Monsters Only, or All Shootable (barrels, shootable props; never your own body). |
+| Shotgun Spray | Off | One number per hit (each pellet) instead of one per monster per tic. |
+| Number Font | Classic Doom | Classic Doom or Classic Doom (small): damnums' two Doom fonts. |
+| Number Colour | Default | Default (the font's red) or any of damnums' 21 colours. |
+| Number Motion | Toss | Toss (thrown off and falling) or Float (rising straight up). |
+| Damage Type Colours | On | Fire orange, plasma cyan, explosions gold, ... (damnums' list); another mod can add its own. |
 
 **Tuning and Debug**:
 
@@ -96,7 +117,7 @@ Options -> Radiant Silvergun Options -> **RSQ HP Bars**:
 | Far Size | 2.0 | How much a bar grows at range, 1.0 (no growth) to 3.0. |
 | Height | 0.1 | How far above the sprite's top the bar sits, as a fraction of its height, -0.5 to 0.5. |
 | Limit Distance | 1536 | The Distance Limit cut-off, in map units, 256 to 4096. |
-| Reset All | | Puts every RSQ HP Bars setting back to its default (asks first). |
+| Reset All | | Puts every RSQ HP Bars setting back to its default, Damage Numbers' too (asks first). |
 
 ## Works with
 
@@ -119,6 +140,8 @@ Options -> Radiant Silvergun Options -> **RSQ HP Bars**:
   no bar while unhurt, then a plain bar of the same length, no overheal strip. Once it turns, its 300 %
   shows as a full bar, a full overheal strip and one diamond.
 - **RSQ GunBonsaiVR**: no node changes the bars.
+- **damnums**: built in (Damage Numbers). Do not load it as well: two numbers on every hit, and its 9999s on Brutal
+  Doom's corpses come back.
 
 ## Load order
 
@@ -133,8 +156,15 @@ after it.
   trail its cause by up to 4 tics.
 - "Your hit", for the flash and the chunk, is any player's hit (in single player: yours).
 - Lossvoise's flat retexture is not shipped (no permission).
+- Damage Numbers: rig only, not headset-confirmed (2026-11-03). Only damnums' two Doom fonts ship (560 sprite frames;
+  all 13 would be 3,640 in a load order already near the engine's 65,535). Damage changed without a hit (a script
+  setting health) shows no number. Numbers are a hit's damage as the engine reports it, so a Brutal Doom headshot that
+  its hitbox passes on to the monster shows on the monster.
 
 ## For other mods
+
+Damage Numbers colour a damage type from LANGUAGE: `RSQTHP_DMG_TYPECOLOR_<type> = "RSQTHP_Dam<colour>"`. A mod
+written for damnums (`DAMNUM_TYPECOLOR_<type> = "Dam<colour>"`) is read too.
 
 The bars ask other mods by name through `ServiceIterator`; nothing links. A mod can put the left-hand icons
 on a monster by defining a `Service` whose class name contains **`RSQTHP_Marker`** and answering `GetInt`
@@ -196,10 +226,38 @@ Top HP Bars was based on SpriteShadow by Nash Muhandes. SpriteShadow's repositor
 states no other terms. The pattern used from it -- a world sprite that follows its owner -- is
 rewritten here; no SpriteShadow code is copied.)
 
+Damage Numbers are damnums by Xaser Acheron (with contributions by Major Cooke; thanks in its source
+to Marrub and Zombie), github.com/XaserAcheron/damnums v1.0.2 (commit 953673c), folded in on
+2026-11-03 under this mod's names (RSQTHP_DamNum*, rsqthp_dmg_* cvars, RSQTHP_Dam* colours, sprites
+QC / QD). Its code, its Doom Classic and Doom Small digit art and digit-position sprite layout, its
+colour translations and damage-type colours are his; the changes are listed at the top of
+zscript/rsqthp/damnums/damnum.zs. Thank you, Xaser. damnums is released under the MIT License:
+
+    MIT License
+
+    Copyright (c) 2017 Xaser Acheron
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
+
 Not included, credited for the record:
   - Lossvoise's flat high-visibility retexture of Mere_Duke's custom version (zdoom forum
     t=56910) is NOT shipped: no permission yet (credit chain coldcite -> Mere_Duke -> Lossvoise).
-  - damnums by Xaser Acheron (MIT) is meant to be loaded alongside; nothing of it is bundled.
   - Champions and LegenDoom Lite: read by class / cvar name for compatibility (handler.zs); nothing of
     either is bundled.
 
