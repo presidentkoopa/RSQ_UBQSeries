@@ -142,6 +142,10 @@ OptionMenu "RSQ_MeleeAdvanced"
 	StaticText " "
 	Slider "HUD Inset", "rsq_ui_inset", 0.0, 0.25, 0.01, 2
 	Slider "HUD Size", "rsq_ui_hud_scale", 0.5, 2.0, 0.05, 2
+	StaticText " "
+	StaticText "Debug (testing every tree)", 1
+	Command "Debug: Add All", "netevent rsqgb_dbg_all"
+	Command "Debug: Add Incremental", "netevent rsqgb_dbg_step"
 }
 
 // The screens: Gun Bonsai's three menu names, pointed at the routers (rsq/ui/router.zs), which are

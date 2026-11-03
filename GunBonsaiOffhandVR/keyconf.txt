@@ -1,3 +1,6 @@
 // Gun Bonsai VR / Offhand Patch.
 // KEYCONF lumps are additive, so this does not disturb Gun Bonsai's own.
 alias bonsai-hands "netevent bonsai-debug,hands"
+// THE HEADSET PASS'S DEBUG (rsq/zscript/debuggrant.zs): every node of ours at its cap / one more level of each
+alias rsqgb_add_all "netevent rsqgb_dbg_all"
+alias rsqgb_add_step "netevent rsqgb_dbg_step"
