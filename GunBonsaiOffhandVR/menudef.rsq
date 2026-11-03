@@ -88,6 +88,7 @@ OptionValue "RSQ_KRMixes"
 OptionValue "RSQ_KRLives"
 {
 	0, "$RSQ_MENU_KR_NEVER"
+	7, "7 s"
 	15, "15 s"
 	30, "30 s"
 	60, "1 min"
@@ -119,9 +120,9 @@ OptionMenu "RSQ_KillRewards"
 	Option "$RSQ_MENU_KR_MODE", "rsqgb_kr_mode", "RSQ_KRModes"
 	Slider "$RSQ_MENU_KR_HPRATIO", "rsqgb_kr_hp_ratio", 1, 100, 1, 0
 	Slider "$RSQ_MENU_KR_CHANCE", "rsqgb_kr_chance", 0, 100, 5, 0
-	Slider "$RSQ_MENU_KR_RHEALTH", "rsqgb_kr_ratio_health", 0, 10, 1, 0
-	Slider "$RSQ_MENU_KR_RARMOUR", "rsqgb_kr_ratio_armor", 0, 10, 1, 0
-	Slider "$RSQ_MENU_KR_RAMMO", "rsqgb_kr_ratio_ammo", 0, 10, 1, 0
+	Slider "$RSQ_MENU_KR_RHEALTH", "rsqgb_kr_ratio_health", 0, 100, 5, 0
+	Slider "$RSQ_MENU_KR_RARMOUR", "rsqgb_kr_ratio_armor", 0, 100, 5, 0
+	Slider "$RSQ_MENU_KR_RAMMO", "rsqgb_kr_ratio_ammo", 0, 100, 5, 0
 	Option "$RSQ_MENU_KR_AT1", "rsqgb_kr_ammotype1", "OnOff"
 	Option "$RSQ_MENU_KR_AT2", "rsqgb_kr_ammotype2", "OnOff"
 	Slider "$RSQ_MENU_KR_MIN", "rsqgb_kr_min", 1, 25, 1, 0
