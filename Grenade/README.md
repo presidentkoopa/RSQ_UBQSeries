@@ -1,176 +1,155 @@
 # RSQ Grenade
 
+**The one thing:** a grenade you work with your hands: pull the pin with the other hand or your teeth, cook it,
+and throw it with your own arm.
+
 A hand grenade you work with your hands. The other hand pulls the ring (or you pull the pin with your teeth), the
 trigger is your grip on the spoon, and you throw it with your own arm: it leaves at the speed and in the direction
-you swung. Let go without swinging and the spoon flies off and the fuse burns in your hand (cooking); hold it too
-long and it goes off. While the fuse burns the grenade flashes red, faster and faster. Grenades lie scattered beside
-each map's items. Part of the Radiant Silvergun Quest series, for stock QuestZDoom 17.3 (script only, no engine
-changes).
-
-It is Brutal Doom VR Reloaded's grenade handling (the owner's own, from his BD22 VR) brought to plain Doom 2 with a
-grenade of its own, plus the teeth and the red fuse from his RS_Grenade. **With Brutal Doom VR Reloaded loaded it
-stands down** and BD22 VR's own grenade does everything.
-
-Pk3: `pk3/RSQ_Grenade.pk3` (about 2 MB).
-
-## Load order
-
-```
-doom2.wad -> RSQ_Grenade.pk3                                   (plain Doom 2: its own grenade)
-doom2.wad -> 01 brutal22test6 -> 02 BD22_VoxelPack -> 03 BD22_VR-Reloaded_2.0.3j -> 04-07 XMVE -> RSQ_Grenade.pk3
-                                                               (Brutal Doom VR: it stands down, nothing of it shows)
-```
-
-- **Plain Doom 2 without Brutal Doom:** this is what it is for (rig-tested on doom2.wad, 11-01).
-- **Brutal Doom VR Reloaded loaded:** nothing is given, spawned or shown. It recognises BD22 VR by its grenade
-  handler (`RSG_Handler`), looked up by name when the game runs. Brutal Doom without the VR Reloaded pack is not
-  recognised: then this grenade works beside Brutal Doom's own.
-- **Other RSQ pk3s needed:** none. Loads in any order with the rest of the series.
-
-## Setup
-
-- **Menu:** Options -> Radiant Silvergun Options -> **RSQ Grenade**. Numbers and Reset All are on its
-  **Tuning and Debug** page.
-- **Buttons to bind:** none. The grenade is in weapon **slot 9** (or RSQ Tactical Rig's belt buckle). It reads both
-  triggers directly.
-- It works in either hand: QuestZDoom's own switch-hand puts it in the off hand; then the main hand pulls the ring.
-
-## What to do in VR
-
-1. **Take it:** slot 9, or (with RSQ Tactical Rig) grip at the belt buckle.
-2. **Pin out, by the ring:** bring the other hand to the top of the grenade, pull that hand's trigger (you hear and
-   feel it take the ring), and pull the hand away (about 8 cm further): the pin is out. The ring disappears from
-   the grenade.
-   **Pin back in:** bring that hand back to the top and pull its trigger again (before the spoon has gone).
-3. **Pin out, with your teeth:** squeeze the grenade's trigger and hold the grenade at your face for about a third of
-   a second. To pull another pin that way, take it away from your face first (or let go of the trigger).
-4. **Squeeze:** hold the grenade's trigger. That is your hand on the spoon.
-5. **Throw:** swing and let go of the trigger mid-swing. It flies at your arm's speed (faster than 2.5 m/s counts as
-   a throw), bounces, rolls, settles and goes off when the fuse runs out (3 s from the spoon flying).
-6. **Cook:** let go of the trigger with the hand still. The spoon flies off (a clink) and the fuse burns in your
-   hand: the grenade flashes red, faster and faster, ticking each flash. Squeeze and let go again to throw it with
-   what is left of the fuse. Hold it too long and it goes off in your hand.
-7. Putting the grenade away (another weapon) with the pin out: the pin goes back in. With the fuse already burning,
-   it goes off.
+you swung. Let go without swinging and the spoon flies off and the fuse burns in your hand; hold it too long and
+it goes off. Grenades lie scattered beside each map's items. For stock QuestZDoom 17.3, in VR, on plain Doom 2.
+Needs no other RSQ mod. With Brutal Doom VR Reloaded loaded it stands down and BD22 VR's own grenade does
+everything. Script only, no engine change.
 
 ## Features
 
-Front page (RSQ Grenade). "On" = on by default (CVARINFO); "Option" = off by default.
+**The grenade.**
+- Weapon slot 9. Either hand can hold it: QuestZDoom's own switch-hand puts it in the off hand, and RSQ Tactical
+  Rig's belt buckle hands it out.
+- You start with 3 (a new game, or after dying). Carry 8; a backpack gives 6 and raises the carry to 16.
+- Grenades scattered through each map, beside the items already lying there: single grenades and green packs of
+  three, up to a cap a map.
+
+**The ritual.**
+- Pull the pin by the ring with the other hand, or with your teeth. The ring vanishes from the grenade when the
+  pin is out. Put the pin back in by taking the ring again.
+- The holding hand's trigger is your squeeze on the spoon. Let go mid-swing and it is thrown. Let go still and
+  the spoon flies off (a clink) and the fuse burns in your hand: cooking.
+- While the fuse burns the grenade flashes red, faster and faster, with a tick each flash.
+- Cook too long and it goes off in your hand. Put the grenade away with the pin out and the pin goes back in;
+  put it away with the fuse lit and it goes off.
+
+**The throw.**
+- It flies at your arm's speed, bounces off floors, walls and monsters, rolls, settles, and goes off when the
+  fuse runs out: 3 seconds from the spoon flying.
+- The blast is the UAC Survival Pack's full layered explosion. The kill, the obituary and the score are yours.
+
+## How to play
+
+No keys to bind. The grenade reads both triggers. Its menu is Options -> Radiant Silvergun Options -> RSQ
+Grenade.
+
+1. **Take it.** Press slot 9, or with RSQ Tactical Rig grip at the belt buckle. A grenade is in your hand, ring
+   and spoon on it.
+2. **Pin out, by the ring.** Bring the other hand to the top of the grenade and pull that hand's trigger. You
+   hear and feel it take the ring. Pull the hand away about 8 cm: the pin is out and the ring is gone.
+   To put the pin back in, bring that hand back to the top and pull its trigger again (before the spoon has gone).
+3. **Pin out, with your teeth.** Squeeze the grenade's trigger and hold the grenade at your face for about a
+   third of a second. To pull another pin that way, take it away from your face first, or let go of the trigger.
+4. **Squeeze.** Hold the grenade's trigger. That is your hand on the spoon.
+5. **Throw.** Swing your arm and let go of the trigger mid-swing. Faster than 2.5 m/s counts as a throw. It
+   flies, bounces, settles, flashes and goes off.
+6. **Cook.** Let go of the trigger with the hand still. The spoon flies off and the fuse burns in your hand,
+   flashing red faster and faster. Squeeze and let go again mid-swing to throw it with what is left of the fuse.
+   Hold it too long and it goes off in your hand.
+7. Throw your last grenade and the hand goes back to a gun.
+
+With Gun Bonsai VR loaded, the holding hand's alt trigger cycles the grenade kinds you have learned (until the
+spoon flies); the grenade wears its kind's colour.
+
+## Settings
+
+Options -> Radiant Silvergun Options -> RSQ Grenade.
 
 | Menu row | Default | What it does |
 |---|---|---|
 | Grenades | On | The whole mod. With Brutal Doom VR Reloaded loaded it does nothing anyway. |
-| Start With | 3 | Grenades you start with (a new game, or after dying); the grenade itself comes with them. Not with Brutal Doom VR. |
-| Scatter Grenades | On | Once per map, beside each item lying in the level, a roll: 5 in 126 drops a single grenade, 3 in 126 a pack of three (the UAC Survival Pack's way). |
+| Start With | 3 | Grenades you start with (a new game, or after dying). |
+| Scatter Grenades | On | Grenades scattered beside each map's items. |
 | Single Grenades a Map | 4 | At most this many single grenades scattered a map. |
-| Packs of Three a Map | 2 | At most this many packs scattered a map. |
+| Packs of Three a Map | 2 | At most this many packs of three scattered a map. |
 | Pin With Your Teeth | On | Squeeze and hold the grenade at your face to pull the pin. |
+| Your Own Fire Burns You | Auto (Brutal Doom: yes) | Whether the Incendiary grenade's burning ground hurts players. Auto: yes with Brutal Doom loaded, no on plain Doom. Yes / No override it. |
 
-Always on (no row): carry 8 grenades, a backpack gives 6 and raises the carry to 16; the red flash and its tick;
-the blast credited to you (the kill, the obituary, the score). With RSQ Gun Bonsai VR loaded (2026-11-02): the
-blast and its kills are also paid to the grenade's own Gun Bonsai record (the thrown grenade names the grenade
-weapon as its master and is claimed through the patch's service, by name), so the grenade levels like a weapon.
+**Tuning and Debug**
 
-**With RSQ Gun Bonsai VR (the Grenade tree, GBOVR_TREES.md 4.5; asked by name, `RSQGN_Upg`):** **Bandolier** (carry
-10 / 12 / 14 / 16, a backpack doubling it); **Scavenger** (after Bandolier: 6 + 3, 8 + 4, 10 + 5 scattered a map, the
-odds rising with them; 3: one Kill Rewards ammo bit in four is a grenade); **Strong Arm** (throw x1.25 / 1.5 / 1.75);
-**Flat Arc** (after Strong Arm: less lift and gravity, two levels); **Bounce** (after Strong Arm: wall bounce 0.4 /
-0.55 / 0.7); **Cook Sense** (a tick in the hand each second of a cooking fuse; 2: the flash runs amber, then red; 3, with RSQ Gun
-Cards: the grenade's card counts the seconds down in those colours);
-**Short Fuse** (after Cook Sense: 2.5 / 2.0 s); **Big Bang** (both blast radii +15% a level); **Frag** (after Big
-Bang: both damages +15% a level); **Cluster** (after Frag 2: 3 / 4 / 5 bomblets, 30 over 96 each, thrown 2-4 m and
-going off a second later); **Sticky** (after Frag: it sticks to the first monster it touches and rides it to the
-blast; 2: walls too). The blast that goes off in your hand takes the same numbers. **Teeth** (a pin pulled with your
-teeth counts for style; 2-3: the throw after it +15% / +30%); **Skeet** (after Strong Arm 2: shoot your own grenade
-in the air and it bursts there, x1.5 / 1.75 / 2.0); **Skeet Window** (after Skeet, needs RSQ SlowMo: eight tics after
-a throw time slows for 15 / 20 / 25 tics and the grenade glows; the **Skeet Window Slow-Mo** row turns the slow motion
-off); **Slow Burn** (after Cook Sense, needs RSQ SlowMo: a kill by a grenade cooked a second or more while time is
-slowed keeps it slowed 0.75 / 1 / 1.25 s more). **The kinds** (each an unlock; the frag is the base): **Impact**
-(orange, after Cook Sense: bursts on first contact; 2: +15%), **Incendiary** (amber, after Big Bang: fire over the
-blast's radius, 4 / 5 / 6 s), **Freeze** (sky blue, after Frag: no damage, frozen 3 / 4 / 5 s, a hard hit shatters
-it for double), **Stun** (violet, after Cook Sense: half damage, staggered 3 / 4 / 5 s), **Smoke** (grey, after Cook
-Sense 2: a cloud 4 / 5 / 6 m wide for 12 / 16 / 20 s that blinds whoever is in it or looks through it), **Flash**
-(white, after Cook Sense 2: no damage, stunned and blinded 3 / 4 / 5 s), **Charm** (pink, after Flash: they fight
-for you 15 / 20 / 25 s) and **Infight** (green, after Flash: they turn on each other 15 / 20 / 25 s; bosses are
-immune to both). **The holding hand's alt trigger cycles the kinds you own** (until the spoon flies); the grenade
-wears its kind's colour. Without the patch nothing changes.
-
-Tuning and Debug page:
-
-| Row | Default | What it does |
+| Menu row | Default | What it does |
 |---|---|---|
 | Fuse (s) | 3.00 | From the spoon flying off to the blast. |
 | Throw Speed (m/s) | 2.50 | Let go faster than this and it is thrown; slower and the spoon flies (cooking). |
-| Throw Strength | 1.00 | x your hand's own speed. |
+| Throw Strength | 1.00 | Times your hand's own speed. |
 | Arc | 0.35 | This much of the throw's speed across the ground is added upward. |
-| Gravity | 0.27 | The thrown grenade's (1 = Doom's own, about 2.7 times real; 0.37 is earth's). |
+| Gravity | 0.27 | The thrown grenade's gravity (1 = Doom's own; 0.37 is earth's). |
 | Floor Bounce | 0.50 | Speed kept off a floor. |
 | Wall Bounce | 0.25 | Speed kept off a wall. |
 | Ground Drag | 0.82 | Per tic on the floor (1 = ice). |
 | Teeth: At (m) | 0.47 | How close to your eyes the grenade must be. |
 | Teeth: Again Beyond (m) | 0.71 | How far it must have gone before the teeth take another pin. |
 | Teeth: Hold (tics) | 12 | How long it must stay there (35 tics = 1 s). |
+| Skeet Window Slow-Mo | On | Gun Bonsai VR's Skeet Window: its slow motion after a throw. Nothing without the node. |
 | Debug Log | Off | Prints the ring, the pin, the swing, the throw, each flash, the blast and the scatter to the console. |
 | Reset All | - | Resets every RSQ Grenade setting. |
 
-## Test it
-
-Everything here is new on 2026-11-01 and ran on the simulated rig only: **not yet headset-confirmed**. Nothing
-about rumble or sound could be checked there.
-
-1. Load plain Doom 2 and the pack. Options -> Radiant Silvergun Options shows *RSQ Grenade*. No script error.
-2. Press 9: a grenade is in your hand, ring and spoon on it.
-3. Off hand to the top of the grenade, off trigger, pull the hand away: the pin sound, a rumble in the off hand, the
-   ring is gone from the grenade.
-4. Off hand back to the top, off trigger: the pin goes back in (the sound again). Pull it out again.
-5. Squeeze the main trigger, swing at an imp and let go mid-swing: it flies, bounces, settles, flashes red faster
-   and faster, and after 3 s goes off. The imp is hurt or killed; the kill is yours.
-6. Next grenade: pin out, squeeze, let go with the hand still: a clink, the spoon is gone, it flashes red in your
-   hand. Squeeze and let go mid-swing: thrown with the rest of the fuse.
-7. Next grenade: pin out, let go still, keep holding: about 3 s later it goes off in your hand.
-8. Squeeze the trigger and hold the grenade at your mouth for a moment: the pin comes out (teeth).
-9. Walk round a map: grenades (a single, a green pack of three) lie beside other items; never more than 4 singles
-   and 2 packs. Walk over one: "You got a Type J Hand Grenade!" / "Picked up a pack of Type J Hand grenades!".
-10. Throw your last grenade: the hand goes back to your best gun.
-11. With RSQ Tactical Rig: grip at the belt buckle; the grenade comes to your main hand; grip there again: your gun
-    is back. With RSQ Gun Cards: the watch card's GRENADES count is this grenade's.
-12. Load the Brutal Doom VR order with this pack: no slot 9 grenade of ours, no grenades of ours on the floor; BD22
-    VR's grenade works as before (the rig's buckle hands out BD's HandGrenades).
-
-What the rig showed (11-01, plain doom2.wad MAP01, logs `gren_plain`, `gren_offhand`, `gren_scatter`,
-`gren_pickup3`, `gren_rig_b`, `gren_gc_b`, `gren_load_c2`): the ring pulled 24.9 cm (pin out at t66); a 7.2 m/s swing
-thrown, gone off 105 tics later, an imp and two zombiemen killed by `DoomPlayer` via `RSQGN_Thrown`; pin back in;
-cooked and gone off in the hand 105 tics after the spoon (85 + 75 damage to the player, credited to him); teeth at
-0.18 m after 12 tics; a cooked throw left with 67 of 105 tics; the flash period 16, 14, 12, 10, 9, 8, 7, 6, 5, 4, 4,
-3, 3, 3, 2 tics down the fuse; held in the off hand and thrown from it; scattered 0-4 singles and 0-2 packs on
-MAP01-13 (caps 1/1 on MAP15-17, none with the scatter off); a pack +3 and a single +1 walked over; backpack 3 -> 9, cap
-16; switched away with the pin out: kept, pin back in; switched away cooking: gone off (`gren_switch`). Frames looked at: the held grenade with the ring, without it, without the spoon, red; in the off hand (mirrored);
-thrown and flashing in the air, lying on its side, the blast; the two pickup sprites.
-
 ## Works with
 
-- **RSQ Tactical Rig:** its grenade spot on the belt buckle hands out this grenade when Brutal Doom's isn't there
-  (grip at the buckle: the grenade to the main hand; grip again: your gun back), and its light counts these
-  grenades.
-- **RSQ Gun Cards:** the watch card's GRENADES count is this grenade's when Brutal Doom's isn't there.
-- **Brutal Doom VR Reloaded:** stands down completely (see Load order).
-- Both are asked by name, so each mod still loads alone. Does not read RSQ Accessibility (Handedness, Steady Hands
-  and the off-hand modifier do not change the grenade; QuestZDoom's own left-handed schemes do, as for every gun).
+- **Brutal Doom VR Reloaded:** stands down completely. Recognised by its grenade handler (RSG_Handler) at run
+  time. Brutal Doom without the VR Reloaded pack is not recognised: then this grenade works beside Brutal Doom's
+  own.
+- **RSQ Tactical Rig:** the belt buckle hands out this grenade (grip at the buckle: the grenade to the main
+  hand; grip again: your gun back), and its grenade-spot light takes the colour of the kind in your hand.
+- **RSQ Gun Cards:** the grenade's card counts a cooking fuse down (Cook Sense 3).
+- **RSQ Wheel:** its grenade card offers the kinds you own.
+- **RSQ SlowMo:** Skeet Window pulses slow motion after a throw; Slow Burn re-pulses it on a kill by a cooked
+  grenade.
+- **RSQ Score:** the throw's facts (teeth, skeet, impact, a monster turned by Charm or Infight) are answered for
+  the scorer, and the nodes' touches are paid to it.
+- All asked by name, so each mod still loads alone. RSQ Accessibility is not read.
+
+**Gun Bonsai VR (RSQ_GunBonsaiVR):** the grenade levels like a weapon on its own record, and its tree is:
+**Bandolier** (carry 10 / 12 / 14 / 16, a backpack doubling it); **Scavenger** (more scattered a map; 3: a Kill
+Rewards ammo bit may be a grenade); **Strong Arm** (throw x1.25 / 1.5 / 1.75); **Flat Arc** (less lift and
+gravity); **Bounce** (wall bounce 0.4 / 0.55 / 0.7); **Cook Sense** (a tick in the hand each second of a cooking
+fuse; 2: the flash runs amber, then red; 3, with RSQ Gun Cards: the card counts the seconds down); **Short Fuse**
+(2.5 / 2.0 s); **Big Bang** (both blast radii +15% a level); **Frag** (both damages +15% a level); **Cluster**
+(3 / 4 / 5 bomblets thrown out of the blast, going off a second later); **Sticky** (sticks to the first monster
+it touches; 2: walls too); **Teeth** (a pin pulled with the teeth counts for style; 2-3: the throw after it +15% /
++30%); **Skeet** (shoot your own grenade in the air and it bursts there, harder); **Skeet Window** (needs RSQ
+SlowMo: a moment after a throw time slows and the grenade glows, a window to line up the shot); **Slow Burn**
+(needs RSQ SlowMo: a kill by a grenade cooked a second or more while time is slowed keeps it slowed). **The
+kinds**, each an unlock, the frag the base: **Impact** (orange: bursts on first contact), **Incendiary** (amber:
+fire over the blast's radius), **Freeze** (sky blue: no damage, frozen solid; a hard hit shatters it for double),
+**Stun** (violet: half damage, staggered), **Smoke** (grey: a cloud that makes whoever is in it or looks through
+it lose their target), **Flash** (white: no damage, stunned and blinded), **Charm** (pink: they fight for you)
+and **Infight** (green: they turn on each other; bosses are immune to both). The blast that goes off in your hand
+takes the same numbers and the held kind. Without the patch nothing changes.
+
+## Load order
+
+After Brutal Doom and the monster packs (it stands down for BD22 VR Reloaded), after Gun Bonsai and
+RSQ_GunBonsaiVR, beside the other RSQ pk3s in any order.
 
 ## Known limits
 
-- **Not yet headset-confirmed** (all of it). Sounds and rumble were not heard or felt on the rig.
-- With the grenade in the off hand, the main trigger that takes the ring also fires the main hand's gun. Pull the pin
-  with your teeth, or hold it in the main hand.
-- A throw is read from the fastest moment of the last fifth of a second: letting go still just after a fast move can
+- A throw is read from the fastest moment of the last seven tics: letting go still just after a fast move can
   still throw.
 - It goes off in your hand at your body, not exactly at the hand (every machine in a netgame has to agree where).
 - A new map puts a pulled pin back in quietly; a grenade cooking across a level change does not carry over.
 - Outside VR the grenade does nothing (the gestures need the controllers).
-- Brutal Doom 22 without BD22 VR Reloaded is not recognised as Brutal Doom VR: both grenades are then in the game.
-- The explosion is the UAC pack's full layered blast (about 120 short-lived effect actors). Watch frame time on the
-  Quest when several go off at once.
-- The scatter does not skip items at map height 0 the way the pack's ACS did (that was a test for "no position").
+- The explosion is about 120 short-lived effect actors. Watch frame time on the Quest when several go off at once.
+
+## For other mods
+
+`RSQGN_Service` (by name; absent is -1 / 0 / ""):
+- `cooked` (objectArg a thrown grenade): tics it cooked in the hand before the throw; -1 for anything else.
+- `teeth`, `skeet`, `impact` (objectArg a thrown grenade): 1 / 0; -1 if not a grenade.
+- `turned.by` (objectArg a monster): the player whose Charm or Infight grenade turned it; -1.
+- `kinds.owned` (intArg player): a bit per kind owned. `kind` (intArg player): the kind in hand. `kind.set`
+  (intArg player, doubleArg the kind): 1 when taken. `kind.colour` (intArg player), `kind.colour.of` (intArg a
+  kind): 0xRRGGBB, -1 the frag. GetString `kind.name` (intArg a kind): "Freeze Grenade".
+- `fuse.count` / `fuse.amber` (intArg player): whole seconds left on a cooking fuse / 1 in its first half; only
+  at Cook Sense 3, else -1.
+
+It asks by name: `RSQ_MeleeUpgradeService` ("level", "upgrade.num", "claim"), `RS_ScoreService` ("touch"), and
+sends the network event `rsm_pulse` to RSQ SlowMo.
 
 ## Credits
 
@@ -182,4 +161,5 @@ See `CREDITS.txt` (shipped). In short:
 - **Gomuz**: the grenade model.
 - **The project owner**: the handling (his BD22 VR Reloaded grenade) and his RS_Grenade (the teeth, the red fuse,
   the flight, the blast's damage).
+- The Gun Bonsai VR tree's effects and sounds: the owner's RS Combat FX and RS Ballistics libraries.
 - QuestZDoom: Emawind and Team Beef.
