@@ -65,6 +65,8 @@ Always on (no row):
 - **+N on pickup**: picking up ammo shows "+N" (green on the watch card) in the reserve's place for a moment.
 - **RELOAD**: an empty magazine with rounds to load shows RELOAD in red instead of the count (on the watch card it
   replaces the MAG word).
+- **The reserve in gold** on the small card (owner 2026-11-03 08:31), both fonts; "+N" stays green / white. With Small
+  Card Colours: Wheel Palette the palette's colour.
 - **The magazine's colour** (Low Ammo Colour, on): the magazine's count is green above half a magazine, yellow from
   half down to Low Below (a quarter), red at or below it; three clear steps, on the small card (both fonts) and the
   watch card. A gun without a magazine: red only when empty.
@@ -168,6 +170,8 @@ the wrist up):
 36. Small card, centred numbers (owner 08:20): the magazine count and the reserve (and "+N") stand in the middle of
     the card for 1, 2 and 3 digits, in both fonts; RELOAD where it was. (rig, `20261103_small_centred_jq.png`,
     `20261103_small_centred_er.png`: 16 / 120, 8 / 45, 4 / 8, RELOAD / 120)
+37. The small card's reserve is gold (0xFFB820, the richer of two golds tried on the rig) in JFO and Ermac's font.
+    (rig, `20261103_small_reserve_gold.png`)
 35. Show Gun Bonsai on Card on, with Gun Bonsai: LV bar and upgrades below KILLS. (rig, full order,
     `20261103_watch_gunbonsai_rows_full_order.png`)
 

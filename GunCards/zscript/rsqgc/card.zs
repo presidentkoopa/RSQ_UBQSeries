@@ -260,6 +260,7 @@ class RSQGC_GunCard : EventHandler
 	const MAG_GREEN = 0x50E050;
 	const MAG_YELLOW = 0xF0D030;
 	const MAG_RED = 0xFF5040;
+	const RESERVE_GOLD = 0xFFB820;   // the small card's reserve count (owner 08:31)
 	static int MagColour(Weapon w, int loaded)
 	{
 		if (!w || loaded < 0 || !ci("rsqgc_lowwarn", 1)) return -1;
@@ -951,7 +952,8 @@ class RSQGC_GunCard : EventHandler
 		// ammo for this gun is picked up
 		int plus = both ? 0 : PlusNow(hand);
 		if (plus > 0) Digits(p, 3, mir, base + P_SMALL, owner, "+" .. clamp(plus, 1, 99), true, alpha, tDigits);
-		else if (reserve >= 0) Digits(p, 3, mir, base + P_SMALL, owner, clamp(reserve, 0, 999).."", true, alpha, tDigits);
+		// THE RESERVE IN GOLD (owner 2026-11-03 08:31), both fonts; the Wheel palette (Small Card Colours) keeps its own
+		else if (reserve >= 0) Digits(p, 3, mir, base + P_SMALL, owner, clamp(reserve, 0, 999).."", true, alpha, tinted ? tDigits : TransFor(RESERVE_GOLD));
 		else for (int k = 0; k < RSQGC_CardStates.SLOTS; k++) Kill(p, base + P_SMALL + k);
 	}
 
