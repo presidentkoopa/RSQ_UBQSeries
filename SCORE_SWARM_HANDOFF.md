@@ -36,6 +36,11 @@ original: a one-off fling toward a wall or ceiling (never held there), and a one
 The rope pull, slide, swing and lasso are options, off by default. Re-check every Grapple row in the sheet (kills
 while hanging on the rope, Dismount, the slide-in rows, Indiana Jones) against the new default.
 
+**The Whip gained an aimed swing after the sheet was written (2026-11-03, commit 0332cad6f):** with the whip in
+hand, the other hand's alt-fire aims a ray, and a crack latches the whip to that wall or ceiling and swings you from
+it. Swings can be chained. In Step 1, add rows for kills made while on the aimed swing, right after letting go, and
+across a chain of swings. The code is in `Whip/zscript/rsqwp/swing.zs`.
+
 ## Step 1: expand the list (the owner wants more)
 
 - **Add rows to `NAMING_SHEET.csv`** in the same format, with a new stable id each.
