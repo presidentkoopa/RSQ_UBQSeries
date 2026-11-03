@@ -12,6 +12,8 @@
 //                    the next), 0 not
 //   "released"       tics since a rope let go of him while he was in the air; -1 none in the last 10 s
 //   "landed"         tics since he came down from a roped flight; -1 none in the last 10 s
+//   "swings"         latches one after another, each within 2 s of the last letting go (a chain of aimed swings), this
+//                    one included; 0 none running
 //   "rope.speed"     his speed while a latched rope holds him, map units a tic x 10; -1 not on a rope
 //   "released.speed" his speed when a rope last let go of him in the air, x 10; -1 none in the last 10 s
 // THE MONSTER (objectArg = the monster)
@@ -61,14 +63,18 @@ class RSQWP_Events : EventHandler
 	int  landTic[MAXPLAYERS];
 	bool flying[MAXPLAYERS];       // in the air, and the rope took part
 	bool inAir[MAXPLAYERS];
+	bool wasLatched[MAXPLAYERS];   // a rope was latched last tic
+	int  unlatchTic[MAXPLAYERS];   // the tic the last latch let go
+	int  swings[MAXPLAYERS];       // latches one after another, each within SWING_CHAIN of the last letting go
 	bool started;
+	const SWING_CHAIN = 70;
 
 	static RSQWP_Events Get() { return RSQWP_Events(EventHandler.Find("RSQWP_Events")); }
 
 	private void Start()
 	{
 		started = true;
-		for (int i = 0; i < MAXPLAYERS; i++) { relTic[i] = -100000; landTic[i] = -100000; relSpd[i] = 0; }
+		for (int i = 0; i < MAXPLAYERS; i++) { relTic[i] = -100000; landTic[i] = -100000; relSpd[i] = 0; unlatchTic[i] = -100000; swings[i] = 0; wasLatched[i] = false; }
 	}
 
 	// ======================================================== the calls from the whip (play)
@@ -182,6 +188,9 @@ class RSQWP_Events : EventHandler
 			if (!pmo || pmo.Health <= 0) { flying[pn] = false; inAir[pn] = false; wasRoped[pn] = false; continue; }
 			bool grounded = pmo.Pos.z <= pmo.floorz + 0.5 || pmo.bOnMobj || pmo.waterlevel >= 2;
 			bool latched = Latched(core, pn);
+			if (latched && !wasLatched[pn]) swings[pn] = (now - unlatchTic[pn] <= SWING_CHAIN) ? swings[pn] + 1 : 1;
+			if (!latched && wasLatched[pn]) unlatchTic[pn] = now;
+			wasLatched[pn] = latched;
 			bool roped = latched && !grounded;
 			if (wasRoped[pn] && !roped && !grounded) { relTic[pn] = now; relSpd[pn] = int(pmo.Vel.Length() * 10); }
 			wasRoped[pn] = roped;
@@ -223,6 +232,7 @@ class RSQWP_Events : EventHandler
 		{
 			int pn = pmo.PlayerNumber();
 			if (pn < 0 || pn >= MAXPLAYERS) return -1;
+			int now = level.maptime;
 			let core = RSQWP_Core(EventHandler.Find("RSQWP_Core"));
 			bool grounded = pmo.Pos.z <= pmo.floorz + 0.5 || pmo.bOnMobj;
 			bool latched = core && Latched(core, pn);
@@ -231,6 +241,7 @@ class RSQWP_Events : EventHandler
 			if (req ~== "released") return Since(relTic[pn]);
 			if (req ~== "landed") return Since(landTic[pn]);
 			if (req ~== "rope.speed") return latched ? int(pmo.Vel.Length() * 10) : -1;
+			if (req ~== "swings") return (latched || now - unlatchTic[pn] <= SWING_CHAIN) ? swings[pn] : 0;
 			if (req ~== "released.speed") return Since(relTic[pn]) >= 0 ? relSpd[pn] : -1;
 			return -1;
 		}
