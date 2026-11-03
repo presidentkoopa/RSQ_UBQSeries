@@ -61,11 +61,12 @@ class RSQTR_Rig : EventHandler
 	bool lastPair[MAXPLAYERS * RSQTR_Region.N];    // ...and it went away as a PAIR (one in each hand)
 	String offNext[MAXPLAYERS];                     // the off-hand weapon to raise once the main hand has switched
 	int offWait[MAXPLAYERS];
-	// The last draw from a holster, for a scorer's Quick Draw (RSQTR_RigService
-	// "rig.drawtic" / "rig.drawn"). Written in Draw(), which every machine runs from the
-	// same network event, so it is the same everywhere. drawTic is level.maptime + 1 (0 = none).
-	int drawTic[MAXPLAYERS];
-	String drawClass[MAXPLAYERS];
+	// The last draw from a holster, PER HAND (11-03: since 11-02 each hand draws its own gun, and a scorer judges the
+	// hand that fired), for a scorer's Quick Draw (RSQTR_RigService "rig.drawtic" / "rig.drawn", intArg the hand).
+	// Written in Draw() / DrawOff(), which every machine runs from the same network event, so it is the same
+	// everywhere. Index player * 2 + hand (0 main, 1 off); drawTic is level.maptime + 1 (0 = none).
+	int drawTic[MAXPLAYERS * 2];
+	String drawClass[MAXPLAYERS * 2];
 
 	// ---- local state (console player) -------------------------------------------
 	private transient RSQTR_Body body;
@@ -594,8 +595,8 @@ class RSQTR_Rig : EventHandler
 		nadePrev[n] = p.ReadyWeapon ? p.ReadyWeapon.GetClassName() : 'None';
 		if (nadePrev[n] == "None") nadePrev[n] = "";
 		p.PendingWeapon = w;
-		drawTic[n] = level.maptime + 1;
-		drawClass[n] = w.GetClassName();
+		drawTic[n * 2] = level.maptime + 1;
+		drawClass[n * 2] = w.GetClassName();
 		pmo.A_StartSound("rsqtr/draw", CHAN_AUTO, CHANF_LOCAL, 0.8);	if (Flag("rsqtr_messages", p, false)) Console.Printf("T_RIG grenade out t%d (had %s, %d grenades)", level.maptime, nadePrev[n], Grenades(pmo));
 	}
 
@@ -869,6 +870,8 @@ class RSQTR_Rig : EventHandler
 		w.bOffhandWeapon = true;
 		lastPut[pmo.PlayerNumber() * RSQTR_Region.N + r] = "";
 		QueueOff(pmo.PlayerNumber(), c);
+		drawTic[pmo.PlayerNumber() * 2 + 1] = level.maptime + 1;   // the off hand's draw, for a scorer
+		drawClass[pmo.PlayerNumber() * 2 + 1] = w.GetClassName();
 		pmo.A_StartSound("rsqtr/draw", CHAN_AUTO, CHANF_LOCAL, 0.8);
 	}
 
@@ -1053,8 +1056,8 @@ class RSQTR_Rig : EventHandler
 		{
 			if (IsMovedGun(incoming)) incoming.bOffhandWeapon = false;
 			p.PendingWeapon = incoming;
-			drawTic[n] = level.maptime + 1;
-			drawClass[n] = incoming.GetClassName();
+			drawTic[n * 2] = level.maptime + 1;
+			drawClass[n * 2] = incoming.GetClassName();
 			pmo.A_StartSound("rsqtr/draw", CHAN_AUTO, CHANF_LOCAL, 0.8);   // a swap: the draw as well
 		}
 		else
@@ -1096,8 +1099,8 @@ class RSQTR_Rig : EventHandler
 		// instantly equip them both when i unholster just one, this is a problem"). The off-hand copy is never brought
 		// along: Dual is its own key (the owner, 10-27). The Draw Pairs row (rsqtr_pairs) that did so is retired.
 		if (IsGunRegion(r)) { lastPut[slot] = ""; lastPair[slot] = false; }
-		drawTic[n] = level.maptime + 1;
-		drawClass[n] = w.GetClassName();
+		drawTic[n * 2] = level.maptime + 1;
+		drawClass[n * 2] = w.GetClassName();
 		pmo.A_StartSound("rsqtr/draw", CHAN_AUTO, CHANF_LOCAL, 0.8);
 	}
 

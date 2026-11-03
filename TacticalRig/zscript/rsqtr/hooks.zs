@@ -63,10 +63,11 @@ class RSQTR_RigService : Service
 		let who = PlayerPawn(objectArg);
 		bool local = !who || (who.player && who.player == players[consoleplayer]);
 		if (request == "rig.region") return local ? rig.HoverRegion(h) : -1;
+		// the last holster draw of that hand (intArg 0 main, 1 off), for a scorer's Quick Draw
 		if (request == "rig.drawtic")
 		{
 			int n = who ? who.PlayerNumber() : -1;
-			return (n >= 0 && n < MAXPLAYERS && rig.drawTic[n] > 0) ? rig.drawTic[n] - 1 : -1;
+			return (n >= 0 && n < MAXPLAYERS && rig.drawTic[n * 2 + h] > 0) ? rig.drawTic[n * 2 + h] - 1 : -1;
 		}
 		if (request == "rig.busy")
 		{
@@ -100,6 +101,6 @@ class RSQTR_RigService : Service
 		let who = PlayerPawn(objectArg);
 		if (!rig || !who || request != "rig.drawn") return "";
 		int n = who.PlayerNumber();
-		return (n >= 0 && n < MAXPLAYERS) ? rig.drawClass[n] : "";
+		return (n >= 0 && n < MAXPLAYERS) ? rig.drawClass[n * 2 + (intArg & 1)] : "";
 	}
 }
