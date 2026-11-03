@@ -1,0 +1,20 @@
+// RSQ Glow In The Dark -- settings. Server cvars (the host's settings, the same on every machine), saved
+// between sessions (1.1's were noarchive and reset every launch). Yes-style picks are on by default.
+// The 1.1 name each one replaces is given after it.
+
+server bool rsqgd_enabled = true;      // the whole mod (new: 1.1 had no master switch; its GLDEFS always ran)
+server bool rsqgd_planes = true;       // floor and ceiling glow on the walls of every sector   (1.1 color_toggle)
+server bool rsqgd_liquids = true;      // the owner's Glow list (liquids, slime, lava, screens, exit signs) glows
+                                       // in each flat's own colour                               (1.1: always on)
+server bool rsqgd_liquid_own = true;   // those flats keep their own colour under the floor/ceiling glow; off =
+                                       // 1.1 exactly (its floor/ceiling colour painted over them)
+server bool rsqgd_fixed = false;       // fixed colours below instead of random ones               (1.1 color_ovrand)
+server int rsqgd_height = 64;          // how far the glow reaches up/down the walls, map units    (1.1 height: it
+                                       // existed in 1.1's cvarinfo but its script always used 64)
+server int rsqgd_ceil_r = 135;         // fixed ceiling glow colour                                (1.1 color_red)
+server int rsqgd_ceil_g = 135;         //                                                          (1.1 color_green)
+server int rsqgd_ceil_b = 135;         //                                                          (1.1 color_blue)
+server int rsqgd_floor_r = 135;        // fixed floor glow colour                                  (1.1 color_redd)
+server int rsqgd_floor_g = 135;        //                                                          (1.1 color_greenn)
+server int rsqgd_floor_b = 135;        //                                                          (1.1 color_bluee)
+user int rsqgd_debug = 0;              // 1: one console line per map (sectors, groups, glowing flats, DarkDoomZ)

@@ -1,0 +1,51 @@
+// RSQ Glow In The Dark -- options. Options -> Radiant Silvergun Options -> RSQ Glow In The Dark.
+
+// ---- Radiant Silvergun Options (tools/rsmenu) ----------------------------------------------------
+// The series' one Options entry. Every series pk3 carries this same block with its own prefix: the
+// parent is PROTECTED, so the first definition stays and later ones add nothing (QZD 17.3 merges a
+// protected option menu instead of replacing it); the link row removes any earlier copy of itself,
+// so Options shows one row however many series pk3s load. Each mod then adds its own row only.
+OptionMenu "RSQ_RSOptions" protected
+{
+	Class "RSQGD_RSMenu"
+	Title "RADIANT SILVERGUN OPTIONS"
+}
+
+AddOptionMenu "OptionsMenu"
+{
+	RSQGDRSLink "Radiant Silvergun Options", "RSQ_RSOptions"
+}
+
+AddOptionMenu "RSQ_RSOptions"
+{
+	Submenu "RSQ Glow In The Dark", "RSQGD_Options"
+}
+// ----------------------------------------------------------------------------------------------------
+
+OptionMenu "RSQGD_Options"
+{
+	Title "RSQ GLOW IN THE DARK"
+	Option "Glow In The Dark", "rsqgd_enabled", "OnOff"
+	StaticText ""
+	Option "Floor and Ceiling Glow", "rsqgd_planes", "OnOff", "rsqgd_enabled"
+	Option "Liquids and Lit Flats Glow", "rsqgd_liquids", "OnOff", "rsqgd_enabled"
+	Option "Liquids Keep Their Own Colour", "rsqgd_liquid_own", "OnOff", "rsqgd_enabled"
+	Slider "Glow Height", "rsqgd_height", 8, 256, 8, 0, "rsqgd_enabled"
+	StaticText ""
+	Option "Fixed Colours (no random)", "rsqgd_fixed", "OnOff", "rsqgd_enabled"
+	StaticText ""
+	StaticText "Ceiling Glow", "gold"
+	Slider "Red", "rsqgd_ceil_r", 0, 255, 15, 0, "rsqgd_fixed"
+	Slider "Green", "rsqgd_ceil_g", 0, 255, 15, 0, "rsqgd_fixed"
+	Slider "Blue", "rsqgd_ceil_b", 0, 255, 15, 0, "rsqgd_fixed"
+	StaticText ""
+	StaticText "Floor Glow", "gold"
+	Slider "Red", "rsqgd_floor_r", 0, 255, 15, 0, "rsqgd_fixed"
+	Slider "Green", "rsqgd_floor_g", 0, 255, 15, 0, "rsqgd_fixed"
+	Slider "Blue", "rsqgd_floor_b", 0, 255, 15, 0, "rsqgd_fixed"
+	StaticText ""
+	StaticText "Changes show within a second. Random colours are drawn once per map.", "darkgray"
+	StaticText ""
+	Option "Debug Line in the Console", "rsqgd_debug", "OnOff"
+	SafeCommand "Reset All", "resetcvar rsqgd_enabled rsqgd_planes rsqgd_liquids rsqgd_liquid_own rsqgd_fixed rsqgd_height rsqgd_ceil_r rsqgd_ceil_g rsqgd_ceil_b rsqgd_floor_r rsqgd_floor_g rsqgd_floor_b rsqgd_debug", "Reset all RSQ Glow In The Dark settings?"
+}

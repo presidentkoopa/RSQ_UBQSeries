@@ -1,0 +1,9 @@
+server noarchive bool color_toggle = true;
+server noarchive bool color_ovrand = false;
+server noarchive int color_red = 135;
+server noarchive int color_green = 135;
+server noarchive int color_blue = 135;
+server noarchive int color_redd = 135;
+server noarchive int color_greenn = 135;
+server noarchive int color_bluee = 135;
+server noarchive int height = 64;

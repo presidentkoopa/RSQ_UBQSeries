@@ -1,0 +1,37 @@
+version "4.14"
+// TEST ONLY (never ships). Puts the player where a frame should be taken and logs glow state.
+//   netevent rsgdp_tp <x> <y> <angle>      teleport (z = floor) and face angle
+//   netevent rsgdp_dump                    log glow colour/height of the sector under the player and counts
+class RSGDP_Handler : EventHandler
+{
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		let mo = players[e.Player].mo;
+		if (!mo) return;
+		if (e.Name == "rsgdp_tp")
+		{
+			mo.SetOrigin((e.Args[0], e.Args[1], 0), false);
+			mo.SetZ(mo.floorz);
+			mo.angle = e.Args[2]; mo.pitch = 0;
+			mo.vel = (0, 0, 0);
+		}
+		else if (e.Name == "rsgdp_dump")
+		{
+			int on = 0, tex = 0, off = 0;
+			for (int i = 0; i < Level.Sectors.Size(); i++)
+			{
+				for (int p = 0; p < 2; p++)
+				{
+					int c = int(Level.Sectors[i].GetGlowColor(p));
+					if (c == 0) tex++; else if (c == -1) off++; else on++;
+				}
+			}
+			let s = mo.CurSector;
+			let it = ServiceIterator.Find("RSQGD_Service"); Service sv = it ? it.Next() : null;
+			if (sv) Console.Printf("[RSGDP] service: enabled %d liquid-sectors %d darkdoomz %d", sv.GetInt("enabled"), sv.GetInt("liquid", "", -1), sv.GetInt("darkdoomz"));
+			Console.Printf("[RSGDP] tic %d sector %d floor %s glow %06x h %.0f | ceil %s glow %06x h %.0f | planes colour %d flat-own %d off %d | light %d",
+				Level.maptime, s.Index(), TexMan.GetName(s.GetTexture(0)), int(s.GetGlowColor(0)) & 0xFFFFFF, s.GetGlowHeight(0),
+				TexMan.GetName(s.GetTexture(1)), int(s.GetGlowColor(1)) & 0xFFFFFF, s.GetGlowHeight(1), on, tex, off, s.lightlevel);
+		}
+	}
+}

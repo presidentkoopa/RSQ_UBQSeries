@@ -1,0 +1,30 @@
+OptionMenu "GlowInTheDarkOptions" 
+
+{
+	Title "GlowInTheDarkOptions"
+	StaticText ""
+	Option "Mod status", "color_toggle", OnOff
+	Option "Override randomization", "color_ovrand", OnOff
+	StaticText ""
+	StaticText ""
+	StaticText "Ceiling Glow"
+	StaticText ""
+	Slider "Color (r)", "color_red", 0, 255, 15, 0, "color_ovrand"
+	Slider "Color (g)", "color_green", 0, 255, 15, 0, "color_ovrand"
+	Slider "Color (b)", "color_blue", 0, 255, 15, 0, "color_ovrand"
+	StaticText ""
+	StaticText ""
+	StaticText "Floor Glow"
+	StaticText ""
+	Slider "Color (r)", "color_redd", 0, 255, 15, 0, "color_ovrand"
+	Slider "Color (g)", "color_greenn", 0, 255, 15, 0, "color_ovrand"
+	Slider "Color (b)", "color_bluee", 0, 255, 15, 0, "color_ovrand"
+	StaticText ""
+	StaticText ""
+	StaticText "Note: Changes will be applied after map restart", "gold"
+}
+
+AddOptionMenu "OptionsMenu"
+{
+    Submenu "GlowInTheDark Settings", "GlowInTheDarkOptions"
+}

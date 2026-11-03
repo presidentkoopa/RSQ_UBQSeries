@@ -1,0 +1,34 @@
+#library "ColorfulMaps"
+#include "zcommon.acs"
+
+#DEFINE MAX_SECTOR_TAG 99999
+#DEFINE MAX_SECTORS_PER_TIC 2500
+
+Script "MapColorizer" OPEN
+{ 
+	int CURRENT_SECTOR = 0;
+	int colred = GetCVAR("color_red");
+	int colgrn = GetCVAR("color_green");
+	int colblu = GetCVAR("color_blue");
+	int colrdd = GetCVAR("color_redd");
+	int colgnn = GetCVAR("color_greenn");
+	int colbee = GetCVAR("color_bluee");
+	if(!GetCVAR("color_toggle")) terminate;
+	while(true)
+	{
+		if(!GetCVAR("color_ovrand"))
+		{
+       			SetSectorGlow(CURRENT_SECTOR, true, random(25,255), random(25,255), random(25,255), 64);
+				SetSectorGlow(CURRENT_SECTOR, false, random(25,255), random(25,255), random(25,255), 64);
+		}
+		else
+		{
+       			SetSectorGlow(CURRENT_SECTOR, true, colred, colgrn, colblu, 64);
+				SetSectorGlow(CURRENT_SECTOR, false, colrdd, colgnn, colbee, 64);
+		}
+		CURRENT_SECTOR++;
+		if(CURRENT_SECTOR % MAX_SECTORS_PER_TIC) delay(1);
+		if(CURRENT_SECTOR == MAX_SECTOR_TAG) terminate;
+	}
+}
+	

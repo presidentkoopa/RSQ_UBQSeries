@@ -1,0 +1,4 @@
+GameInfo
+{
+	AddEventHandlers = "RSQGD_Handler"
+}

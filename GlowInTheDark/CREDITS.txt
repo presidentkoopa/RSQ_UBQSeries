@@ -1,0 +1,28 @@
+RSQ Glow In The Dark -- credits
+================================
+
+The owner's Glow In The Dark 1.1 (October 2021), rewritten in ZScript for stock QuestZDoom 17.3 (ZScript and lumps
+only, no engine changes). 1.1's own files are kept unmodified in the repo's original/ folder (not shipped).
+
+GLOW IN THE DARK 1.1 -- presidentkoopa (the project owner)
+  "Assembled and mostly written by PresidentKoopa." The idea, the menu, the floor/ceiling glow script as he modified
+  it, and the Glow list: every liquid in Doom, the HD liquids and Brutal Doom's splashes ("Which involved a lot of
+  typing. Ugh."). That list ships unchanged here as GLDEFS.txt.
+
+WALL GLOW -- after ColorfulMaps
+  1.1's floor/ceiling glow script was "extensively modified from a modified offshoot of ColorfulMaps (initially by
+  Solid_Head)", specifically Colorfulmaps_v3.pke aka "Lite" by NightFright (page 3 of the ZDoom forum thread,
+  https://forum.zdoom.org/viewtopic.php?t=66484&f=43). This pk3 carries no ACS; the ZScript is new, the behaviour is
+  theirs and the owner's.
+
+GLOWING LIQUIDS -- after GlowingLiquids
+  1.1's liquid glow was "built off of GlowingLiquids by Finder153"
+  (https://forum.zdoom.org/viewtopic.php?f=46&t=69911); its GLDEFS list was extensively added to by the owner.
+
+WRITTEN FOR THIS PACK
+  The ZScript (zscript/rsqgd): the map-start pass, the switches, the service. tools/gen_liquids.py.
+
+PLAYS WELL WITH (not bundled, not changed)
+  DarkDoomZ by Caligari87 (Dark Doom concept by Josh771). This mod never touches what DarkDoomZ changes (sector light
+  levels, fog density, its flashlight): it only writes the floor/ceiling glow of each sector.
+  1.1's readme also recommended MoreLights, Lights2.wad, Subtle Lights and SynthDoom Vol4.
