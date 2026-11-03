@@ -5,47 +5,52 @@
 // The owner, 10-27: the series' mods are tools for your hands; Score is the arcade room. His rules:
 //   * ORDER MATTERS ("whip, then bash" is not "bash, then whip");
 //   * the chain BREAKS after 3 SECONDS between moves (CHAIN_GAP);
-//   * GUNS COUNT as tools (every gun is the one tool "gun": swapping guns is Switcharoo's business);
+//   * GUNS COUNT as tools (every gun is the one action "gun": swapping guns is Switcharoo's business; a
+//     pattern may still name a class, gun.shotgun, when the move is that gun's);
 //   * named SIGNATURE combos come from a DATA TABLE (RegisterCombo below, any mod may add rows);
-//   * an unnamed chain still pays, as a generic 2-, 3- or 4-tool combo.
+//   * an unnamed chain still pays, as a generic chain (the one rule, COMBOS_MASTER section 2, 11-03).
 // Nothing names a monster class: the history is what happened to the body, on any monster set.
 //
+// THE VOCABULARY is tools.zs (RS_Tool): one id per move in the series, the groups a pattern may name, and
+// Classify, which reads what struck. The ids the mods send today are mapped onto it there (Canon), so a mod's
+// strings never have to change for Score to understand them.
+//
 // WHERE A TOUCH COMES FROM, nothing linked:
-//   a blow that lands (WorldThingDamaged, the player the source): classified by what struck, the same
-//                     facts the melee and physical families read (Classify below);
+//   a blow that lands (WorldThingDamaged, the player the source): classified by what struck;
 //   what does no damage, asked by name at the next blow or the death (Poll): RSQ_Grapple's "hooked" /
-//                     "hooked.by" / "yanked" / "struck", the saber's "pulled" / "gripped" / "blocked",
-//                     the ShieldSaw's "blocked" -- each answers "how long ago", so the order is kept;
+//                     "hooked.by" / "yanked" / "struck", the saber's "pulled" / "gripped" / "blocked" /
+//                     "perfect", the ShieldSaw's "blocked" / "perfect", the Whip's "wrapped" / "yanked" --
+//                     each answers "how long ago", so the order is kept;
 //   any other mod:    RS_ScoreService GetInt("touch", "<tool id>", playerNumber, 0, monster).
 //
-// THE TOOLS (ids; a pattern step may name a tool or a GROUP: its prefix -- "force", "shield", "hook",
-// "saber" -- or "melee", "hands", "any", or a group a mod registered with RegisterTool):
-//   gun            any shot of yours (a puff, a missile, a trace) that no other row claims
-//   rig.draw       a shot inside 42 tics of a Tactical Rig holster draw (Quick Draw's window)
-//   saber.cut      a lightsaber cut          saber.throw   the saber thrown
-//   saber.return   a shot the saber or the Force turned back      saber.block   the saber blocked its attack
-//   force.push     the Force push            force.pull    the Force pull     force.grip   the grip (choke, slam)
-//   shield.bash    the ShieldSaw's bash or revved grind in the hand
-//   shield.disc    the ShieldSaw thrown      shield.block  it blocked that monster's attack, or a shot it
-//                                                          turned back struck (block-return)
-//   hook.bite      RSQ_Grapple's claw took it        hook.yank   the hook threw it (or a body it threw struck it)
-//   whip           the whip's crack
-//   grab.throw     something thrown with Distance Grab
-//   grab.hold      the Headlock: the off hand's grip holding it (RSQ Melee since 11-01, Distance Grab before; same id)
-//   kick / punch / glove / blade / finisher   Brutal Doom's boots, fists (and the VR pistol whip), the
-//                  boxing gloves, an axe/chainsaw/sword, a fatality
-// A yank always follows a bite: "hook.bite, hook.yank" is ONE action for counting tools (ActionOf()).
+// TAGS ARE NOT TOOLS (11-03). An upgrade hook or a "how it landed" fact (hit.heavy, crit, cleave.saw, zip.kick,
+// skeet...) rides on the blow's run instead of opening a new one: a Heavy Hands body uppercut used to be a
+// 4-Tool Combo and a slow-motion moment by itself. A pattern step may require one (+tag).
+//
+// ONE BLOW, ONE MOVE. A mod names the move it deals (Melee's pound, clearout, shove; the Whip's tarzan; the
+// hook's zip) with a touch on the same tic as the blow, which lands as a plain 'Melee' / 'Kick' / bite. The name
+// and the guess merge (RS_Tool.Guess), so it never counts as two tools. THE CONTRACT: touch BEFORE the blow. A
+// kill is scored inside the blow (WorldThingDied runs inside DamageMobj), so a name sent after a killing blow
+// arrives too late for that kill's rows (it still joins the chain for the next one).
+//
+// A STEP MAY CARRY CONDITIONS: `gun.shotgun@slow` landed while the player's own slow motion was on;
+// `glove.upper+air` the victim was airborne; `+pb` point-blank; `+head` a BD22 headshot; `+<tag>` any tag on
+// the run. A pattern may end `| <filter>` on the victim (champ, armoured, legend, thrall, miniboss, a colour).
 //
 // NOTHING SCORES TWICE:
-//   * a named combo replaces the generic pay for the tools it names; the generic part pays only the
-//     tools past it (named "Lion Tamer" in a 3-tool chain: Lion Tamer + 3-Tool Combo minus 2-Tool);
+//   * one named row per kill, the best-paying match. It replaces the generic pay for the ACTIONS it names;
+//     the actions past it pay as generic (named "Lion Tamer" in a 3-tool chain: Lion Tamer + the step from 2
+//     to 3 tools), with the chain's breadth and tempo on that remainder only;
 //   * today's sequence rows are NAMED COMBOS BACKED BY THEIR OWN ROWS, kept with their measured pay:
 //     Reeled In (hook > melee), Ping-Pong (hook > a shove > hook), Fly Ball (hook yank > anything, in
 //     the air), Bowling (a body the hook threw > anything inside 1 s), Pulled In (Force pull > melee),
-//     Riposte / Perfect Riposte (block > anything). When one fires, the tools it covers come off the
-//     generic pay the same way, and a named combo from the table must name a tool they do not;
+//     Riposte / Perfect Riposte (block > anything). The tools they cover come off the generic pay the same
+//     way. A table combo covered entirely by such a row may still fire when it pays MORE than that row's
+//     base pay, and then pays only the difference (the kill earns the table combo's pay in total, never
+//     both; the row's own run bonus stays on top);
 //   * Variety (tools across a fight) and the melee Combo (kinds across kills) pay for mixing tools too:
 //     on a kill whose own chain pays, the chain replaces them;
+//   * a kill whose named row carries @slow gets no Bullet Time share for that row: the slow is in its pay;
 //   * the chain is one bonus, charged against the per-kill cap like any other; its breakdown rows are
 //     its parts (the named combo, the N-Tool Combo).
 // ============================================================================
@@ -54,8 +59,9 @@ class RS_ComboSeed play
 {
 	static void Names(out Array<String> into) { into.Push("RS_Bonus_Chain"); }
 
-	// THE DATA TABLE, Score's own rows. Proposed names -- the owner vetoes. "a > b" in order, the last
-	// step is the finishing blow, the steps before may have other tools between them (but no 3 s gap).
+	// THE DATA TABLE, Score's own rows. Proposed names -- the owner renames after 1.0 (11-03). "a > b" in
+	// order, the last step is the finishing blow, the steps before may have other tools between them (but no
+	// 3 s gap).
 	static void Combos(RS_ScoreRegistry reg)
 	{
 		reg.OwnCombo("Lion Tamer",      "whip > shield.bash",                   0.5);
@@ -74,81 +80,30 @@ class RS_ComboSeed play
 		// that be a score combo" -- the off-hand Headlock (RSQ Melee's since 11-01, touching "grab.hold"), then a
 		// punch, kick or glove
 		reg.OwnCombo("Headlock",        "grab.hold > hands",                    0.5);
-	}
-}
-
-// ---------------------------------------------------------------- the tools
-class RS_Tool play
-{
-	// what one tool counts as when the tools of a chain are counted: a yank is the bite's own follow-through
-	static String ActionOf(String t) { return t == "hook.yank" ? "hook.bite" : t; }
-
-	static bool IsMelee(String t)
-	{
-		return t == "saber.cut" || t == "saber.throw" || t == "shield.bash" || t == "shield.disc"
-			|| t == "blade" || t == "punch" || t == "glove" || t == "kick" || t == "finisher" || t == "whip"
-			|| t.Left(6) == "force.";
-	}
-
-	// does tool t answer to pattern step g
-	static bool InGroup(String t, String g)
-	{
-		if (g == "any" || t == g) return true;
-		if (g == "melee") return IsMelee(t);
-		if (g == "hands") return t == "kick" || t == "punch" || t == "glove";
-		int dp = t.IndexOf(".");
-		if (dp > 0 && t.Left(dp) == g) return true;
-		return RS_ScoreRegistry.ToolInGroup(t, g);
-	}
-
-	// WHAT STRUCK, for a blow a player dealt (src) to a monster (v). The melee family's facts (melee.zs
-	// KindOf, measured there), read for any blow and not only the killing one.
-	static String Classify(Actor v, Actor inf, Actor src, Name dt, int flags)
-	{
-		String icn = "";
-		if (inf) icn = inf.GetClassName();
-		int pn = src.PlayerNumber();
-		if (icn ~== "SSQ_Disc") return "shield.disc";
-		if (icn ~== "UBQS_Thrown") return "saber.throw";
-		if (icn ~== "UBQS_Force") return dt == 'Force' ? "force.grip" : "force.push";
-		if (icn ~== "UBQS_Bolt" || icn ~== "UBQS_RemoteBolt") return "saber.return";
-		// RSQ_Grapple's own blows: noted by its service before they land (asked only for a blow that
-		// could be one: every blow passes through here, a shotgun's twenty pellets a tic)
-		if (dt == 'Melee' && inf == src && RS_Grapple.Ask("whipped", v) == 0) return "whip";
-		if (dt == 'Melee' && !inf && (RS_Grapple.Ask("landing", v) == 0 || RS_Grapple.Ask("struck", v) == 0)) return "hook.yank";
-		bool shot = inf && (inf.bIsPuff || inf.bMissile);
-		if (!shot && RS_Grapple.Ask("hook.dealing", src) == 1) return "hook.bite";
-		if (inf && inf != src && !inf.bIsPuff && RS_Physical.AskGrab("throw.by", inf) == pn) return "grab.throw";
-		if (RS_Melee.IsGlove(inf)) return "glove";
-		// a shot sent back: turned by the shield, or a monster's missile now yours (the saber, the Force)
-		if (shot && inf != src && (RS_Melee.AskShield("returned", inf) >= 0 || RS_Melee.AskShield("returned", v) >= 0)) return "shield.block";
-		if (inf && inf.bMissile && RS_ScoreShots.BornOfMonster(inf)) return "saber.return";
-		if (dt == 'Fatality') return "finisher";
-		if (dt == 'Saber') return "saber.cut";
-		if (inf == src && RS_Melee.ShieldInHand(src) && (dt == 'Melee' || dt == 'Saw')) return "shield.bash";
-		if (dt == 'Saw' || dt == 'Cut') return "blade";
-		if (dt == 'Kick' || dt == 'HeadKick' || dt == 'Stomp') return "kick";
-		if (dt == 'Melee' || dt == 'ExtremePunches') return "punch";
-		// a shot. Inside Quick Draw's window after a holster draw, it is the draw's.
-		int t = RS_Physical.AskRig("rig.drawtic", src);
-		if (t >= 0 && level.maptime - t <= RS_Bonus_QuickDraw.WINDOW) return "rig.draw";
-		return "gun";
+		// F.E.A.R. EFFECT (the owner's name, spelt as he wrote it): a shotgun kill in the slow motion after a gun-butt
+		// shove. Was RSQ Melee's flat 200-point award (sheet C14); now a Style row on the kill's base, and the award
+		// label pays nothing (handler.zs AwardExternal).
+		reg.OwnCombo("F.E.A.R. Effect", "shove > gun.shotgun@slow",             0.5);
+		RS_ComboTable.Add(reg);   // the series' signature combos (combos.zs, 11-03)
 	}
 }
 
 // ---------------------------------------------------------------- the ledger
 // One level handler (MAPINFO): saved with the level, empty on a new map. Flat parallel arrays, one entry
-// per tool use run: victim, player, tool, the first and last tic of that run. A run is one tool used
-// again and again with nothing else between (a burst of shots is one "gun").
+// per tool use run: victim, player, tool, the first and last tic of that run, its condition bits and its tags.
+// A run is one tool used again and again with nothing else between (a burst of shots is one "gun").
 class RS_ComboLedger : EventHandler
 {
 	const CHAIN_GAP = 105;     // the owner: the chain breaks after 3 seconds between moves
+	const TEMPO = 70;          // the whole chain, first move to kill, inside 2 s: the generic part x1.25
 	const KEEP = 350;          // entries older than 10 s go
 	const MAXE = 384;
 
+	enum ELedgerCond { C_SLOW = 1, C_AIR = 2, C_PB = 4, C_HEAD = 8 }   // not ECond: it is the field eCond, case-insensitively
+
 	Array<Actor> eV;
-	Array<int> ePn, eFirst, eLast;
-	Array<String> eTool;
+	Array<int> ePn, eFirst, eLast, eCond;
+	Array<String> eTool, eTags;
 
 	// one poll per monster per player per tic
 	Array<Actor> pV;
@@ -165,7 +120,21 @@ class RS_ComboLedger : EventHandler
 		if (!src || !src.player) return;
 		int pn = src.PlayerNumber();
 		Poll(v, pn);
-		Touch(v, pn, RS_Tool.Classify(v, e.Inflictor, src, e.DamageType, e.DamageFlags), level.maptime);
+		String tool = RS_Tool.Classify(v, e.Inflictor, src, e.DamageType, e.DamageFlags);
+		Touch(v, pn, tool, level.maptime, CondOf(v, src, e.DamageType));
+		// Switcharoo (bonuses.zs): the gun that fired, read off the blow (BD22 VR's guns never call the old door)
+		if (tool.Left(3) == "gun" || tool == "rig.draw") RS_ScoreTracker.NoteFire(src, e.Inflictor);
+	}
+
+	// the facts about this blow a pattern step may ask for
+	int CondOf(Actor v, Actor src, Name dt)
+	{
+		int c = 0;
+		if (RS_Physical.SlowKind() == 1) c |= C_SLOW;                       // the player's own slow motion
+		if (RS_Melee.Airborne(v)) c |= C_AIR;
+		if (RS_ScoreEvent.MeasureEdgeGap(v, src) < RS_Bonus_PointBlank.DIST) c |= C_PB;
+		if (dt == 'Head' || dt == 'MinorHead' || dt == 'Headshot') c |= C_HEAD;
+		return c;
 	}
 
 	override void WorldTick()
@@ -180,7 +149,7 @@ class RS_ComboLedger : EventHandler
 
 	private void Drop(int k)
 	{
-		eV.Delete(k); ePn.Delete(k); eFirst.Delete(k); eLast.Delete(k); eTool.Delete(k);
+		eV.Delete(k); ePn.Delete(k); eFirst.Delete(k); eLast.Delete(k); eTool.Delete(k); eCond.Delete(k); eTags.Delete(k);
 	}
 
 	// the last entry of (v, pn), or -1
@@ -190,13 +159,51 @@ class RS_ComboLedger : EventHandler
 		return -1;
 	}
 
-	// A BLOW, now: the same tool as the last one carries the run on, another starts a new one.
-	void Touch(Actor v, int pn, String tool, int tic)
+	// A BLOW, now: the same tool as the last one carries the run on, another starts a new one. A tag rides
+	// on the newest run. A mod's own name for the blow that just landed replaces the guess (same tic).
+	void Touch(Actor v, int pn, String tool, int tic, int cond = 0)
 	{
 		if (!v || tool == "") return;
+		tool = RS_Tool.Canon(tool);
 		int j = LastOf(v, pn);
-		if (j >= 0 && eTool[j] == tool) { eLast[j] = max(eLast[j], tic); return; }
-		Append(v, pn, tool, tic, eV.Size());
+		if (RS_Tool.IsTag(tool))
+		{
+			if (j >= 0 && tic - eLast[j] <= CHAIN_GAP) AddTag(j, tool);
+			return;
+		}
+		if (j >= 0 && eTool[j] == tool) { eLast[j] = max(eLast[j], tic); eCond[j] |= cond; return; }
+		// the mod named the move BEFORE its blow landed (the contract: a kill by it then reads as that move, since
+		// the kill is scored inside the blow): the blow's guess is that move
+		if (j >= 0 && eLast[j] == tic && RS_Tool.Guess(tool) && !RS_Tool.Guess(eTool[j])) { eCond[j] |= cond; return; }
+		if (j >= 0 && eLast[j] == tic && RS_Tool.Guess(eTool[j]) && !RS_Tool.Guess(tool))
+		{
+			eTool[j] = tool; eCond[j] |= cond;
+			// the run before it was the same move (a pound's second blow): one run
+			int i = PrevOf(v, pn, j);
+			if (i >= 0 && eTool[i] == tool) { eLast[i] = max(eLast[i], tic); eCond[i] |= eCond[j]; if (eTags[j] != "") AddTags(i, eTags[j]); Drop(j); }
+			return;
+		}
+		Append(v, pn, tool, tic, eV.Size(), cond);
+	}
+
+	// the entry of (v, pn) before entry k, or -1
+	private int PrevOf(Actor v, int pn, int k)
+	{
+		for (int i = k - 1; i >= 0; i--) if (eV[i] == v && ePn[i] == pn) return i;
+		return -1;
+	}
+
+	private void AddTags(int k, String tags)
+	{
+		Array<String> a;
+		tags.Split(a, ",", TOK_SKIPEMPTY);
+		for (int i = 0; i < a.Size(); i++) AddTag(k, a[i]);
+	}
+
+	private void AddTag(int k, String tag)
+	{
+		if (RS_Tool.HasTag(eTags[k], tag)) return;
+		eTags[k] = eTags[k] == "" ? tag : eTags[k] .. "," .. tag;
 	}
 
 	// A FACT REPORTED AS "SO LONG AGO" (a bite, a pull, a block): it goes where its time puts it. Asked
@@ -229,14 +236,15 @@ class RS_ComboLedger : EventHandler
 			at = eV.Size();
 			for (int k = 0; k < eV.Size(); k++) if (eV[k] == v && ePn[k] == pn) { at = k; break; }
 		}
-		Append(v, pn, tool, tic, at);
+		Append(v, pn, tool, tic, at, 0);
 	}
 
-	private void Append(Actor v, int pn, String tool, int tic, int at)
+	private void Append(Actor v, int pn, String tool, int tic, int at, int cond)
 	{
 		if (eV.Size() >= MAXE) { Drop(0); at = max(0, at - 1); }
 		at = clamp(at, 0, eV.Size());
 		eV.Insert(at, v); ePn.Insert(at, pn); eTool.Insert(at, tool); eFirst.Insert(at, tic); eLast.Insert(at, tic);
+		eCond.Insert(at, cond); eTags.Insert(at, "");
 	}
 
 	// THE FACTS THAT DEAL NO DAMAGE, asked of each mod by name (absent mods answer -1).
@@ -247,26 +255,35 @@ class RS_ComboLedger : EventHandler
 		if (pTic != now) { pV.Clear(); pPn.Clear(); pTic = now; }
 		for (int k = 0; k < pV.Size(); k++) if (pV[k] == v && pPn[k] == pn) return;
 		pV.Push(v); pPn.Push(pn);
-		// RSQ_Grapple: the bite (counted from the release: 0 while on the line), the throw, a thrown
-		// body striking it (bowling)
+		// RSQ_Grapple: the bite (counted from the release: 0 while on the line; an anchor too heavy to come is
+		// hook.heavy), the throw, a thrown body striking it (bowling)
 		int t = RS_Grapple.Ask("hooked", v);
 		if (t >= 0 && RS_Grapple.Ask("hooked.by", v) == pn)
 		{
-			Note(v, pn, "hook.bite", now - t);
+			Note(v, pn, RS_Grapple.Ask("hooked.heavy", v) == 1 ? "hook.heavy" : "hook.bite", now - t);
 			int y = RS_Grapple.Ask("yanked", v);
 			if (y == 1 || y == 2) Note(v, pn, "hook.yank", y == 1 ? now : now - t);
 		}
 		t = RS_Grapple.Ask("struck", v);
 		if (t >= 0 && RS_Grapple.Ask("struck.by", v) == pn) Note(v, pn, "hook.yank", now - t);
-		// the saber: the Force pull, the grip held now, its block
+		// RSQ Whip's own rope: the wrap (counted from the release), the yank (it came to you)
+		t = RS_Whip.Ask("wrapped", v);
+		if (t >= 0 && RS_Whip.Ask("wrapped.by", v) == pn) Note(v, pn, "whip.wrap", now - t);
+		t = RS_Whip.Ask("yanked", v);
+		if (t >= 0 && RS_Whip.Ask("wrapped.by", v) == pn) Note(v, pn, "whip.yank", now - t);
+		// the saber: the Force pull, the grip held now, its block and its parry
 		t = AskSaber("pulled", v);
 		if (t >= 0) Note(v, pn, "force.pull", now - t);
 		if (AskSaber("gripped", v) == 1) Note(v, pn, "force.grip", now);
 		t = AskSaber("blocked", v);
 		if (t >= 0) Note(v, pn, "saber.block", now - t);
-		// the ShieldSaw's block
+		t = AskSaber("perfect", v);
+		if (t >= 0) Note(v, pn, "saber.parry", now - t);
+		// the ShieldSaw's block and its perfect block
 		t = RS_Melee.AskShield("blocked", v);
 		if (t >= 0) Note(v, pn, "shield.block", now - t);
+		t = RS_Melee.AskShield("perfect", v);
+		if (t >= 0) Note(v, pn, "shield.perfect", now - t);
 	}
 
 	static int AskSaber(String request, Actor about)
@@ -275,17 +292,41 @@ class RS_ComboLedger : EventHandler
 	}
 
 	// THE CHAIN that ended on v, for player pn, oldest first: walked back from the newest run while each
-	// gap is at most CHAIN_GAP, and the newest run must be at most CHAIN_GAP old.
-	void Chain(Actor v, int pn, out Array<String> steps)
+	// gap is at most CHAIN_GAP, and the newest run must be at most CHAIN_GAP old. `idx` are the ledger
+	// entries (for a step's conditions), `span` the tics from the chain's first move to now.
+	void Chain(Actor v, int pn, out Array<String> steps, out Array<int> idx, out int span)
 	{
-		steps.Clear();
+		steps.Clear(); idx.Clear(); span = 0;
 		Array<int> mine;
 		for (int k = 0; k < eV.Size(); k++) if (eV[k] == v && ePn[k] == pn) mine.Push(k);
 		int n = mine.Size();
 		if (n == 0 || level.maptime - eLast[mine[n - 1]] > CHAIN_GAP) return;
 		int from = n - 1;
 		while (from > 0 && eFirst[mine[from]] - eLast[mine[from - 1]] <= CHAIN_GAP) from--;
-		for (int k = from; k < n; k++) steps.Push(eTool[mine[k]]);
+		for (int k = from; k < n; k++) { steps.Push(eTool[mine[k]]); idx.Push(mine[k]); }
+		span = level.maptime - eFirst[mine[from]];
+	}
+
+	// does ledger entry k satisfy pattern step `step`
+	bool StepOk(int k, String step)
+	{
+		if (k < 0 || k >= eV.Size()) return false;
+		return RS_Tool.StepMatches(eTool[k], eCond[k], eTags[k], step);
+	}
+
+	// the tool of the newest run of (v, pn) when that run was touched this very tic, else "" (the kill
+	// reads its own blow back: melee.zs KindOf)
+	String ToolNow(Actor v, int pn)
+	{
+		int j = LastOf(v, pn);
+		return (j >= 0 && eLast[j] == level.maptime) ? eTool[j] : "";
+	}
+
+	// a tag on the newest run of (v, pn) inside the chain gap
+	bool TagNow(Actor v, int pn, String tag)
+	{
+		int j = LastOf(v, pn);
+		return j >= 0 && level.maptime - eLast[j] <= CHAIN_GAP && RS_Tool.HasTag(eTags[j], tag);
 	}
 
 	// for the debug line and the probe
@@ -293,8 +334,21 @@ class RS_ComboLedger : EventHandler
 	{
 		String s = "";
 		for (int k = 0; k < eV.Size(); k++)
-			if (eV[k] == v && ePn[k] == pn) s = s .. String.Format("%s%s@%d-%d", s == "" ? "" : " ", eTool[k], eFirst[k], eLast[k]);
+			if (eV[k] == v && ePn[k] == pn)
+				s = s .. String.Format("%s%s@%d-%d%s%s", s == "" ? "" : " ", eTool[k], eFirst[k], eLast[k],
+					eCond[k] ? String.Format("[c%d]", eCond[k]) : "", eTags[k] != "" ? "{" .. eTags[k] .. "}" : "");
 		return s;
+	}
+}
+
+// RSQ Whip's service (RSQWP_Service), asked by name: its rope, wrap and yank, the crack's weight. -1: not loaded,
+// or a Whip that does not answer it.
+class RS_Whip play
+{
+	static int Ask(String request, Object about, int arg = 0)
+	{
+		if (!about) return -1;
+		return RS_Svc.Int(RS_Svc.WHIP, request, arg, about);
 	}
 }
 
@@ -306,12 +360,12 @@ class RS_Combo play
 	{
 		if (ev.chainAsked) return;
 		ev.chainAsked = true;
-		ev.chain.Clear();
+		ev.chain.Clear(); ev.chainIdx.Clear(); ev.chainSpan = 0;
 		if (!ev.killer || ev.killerNum < 0 || !ev.victim) return;
 		let led = RS_ComboLedger.Get();
 		if (!led) return;
 		led.Poll(ev.victim, ev.killerNum);
-		led.Chain(ev.victim, ev.killerNum, ev.chain);
+		led.Chain(ev.victim, ev.killerNum, ev.chain, ev.chainIdx, ev.chainSpan);
 	}
 
 	// MIXING TOOLS IS PAID ONCE A KILL: when the kill's own chain mixed two or more tools (paid by the
@@ -336,30 +390,48 @@ class RS_Combo play
 		return seen.Size();
 	}
 
-	// the generic pay for N tools
-	static double Generic(int n)
+	// the mods the chain's tools came from
+	static int Mods(Array<String> steps)
+	{
+		Array<String> seen;
+		for (int k = 0; k < steps.Size(); k++)
+		{
+			String m = RS_Tool.ModOf(steps[k]);
+			bool had = false;
+			for (int j = 0; j < seen.Size(); j++) if (seen[j] == m) { had = true; break; }
+			if (!had) seen.Push(m);
+		}
+		return seen.Size();
+	}
+
+	// THE SCALE: what N actions in one chain are worth before any name (COMBOS_MASTER section 2)
+	static double Scale(int n)
 	{
 		if (n <= 1) return 0.0;
-		if (n == 2) return RS_Bonus_Chain.GEN2;
-		if (n == 3) return RS_Bonus_Chain.GEN3;
-		return RS_Bonus_Chain.GEN4;
+		if (n == 2) return 0.2;
+		if (n == 3) return 0.45;
+		if (n == 4) return 0.75;
+		if (n == 5) return 1.0;
+		return 1.2;
 	}
 
 	// Does the pattern (steps p[ps .. ps+pc-1]) match the chain? The last step must be the finishing
 	// blow; the others in order, anywhere before it. The chain positions used go into `used`.
-	static bool Match(RS_ScoreRegistry reg, int c, Array<String> chain, out Array<int> used)
+	static bool Match(RS_ScoreRegistry reg, int c, RS_ScoreEvent ev, out Array<int> used)
 	{
 		used.Clear();
 		int ps, pc; double m;
 		[ps, pc, m] = reg.ComboSteps(c);
-		int n = chain.Size();
+		int n = ev.chain.Size();
 		if (pc < 1 || n < 1) return false;
-		if (!RS_Tool.InGroup(chain[n - 1], reg.Step(ps + pc - 1))) return false;
+		let led = RS_ComboLedger.Get();
+		if (!led) return false;
+		if (!led.StepOk(ev.chainIdx[n - 1], reg.Step(ps + pc - 1))) return false;
 		used.Push(n - 1);
 		int at = n - 2;
 		for (int q = pc - 2; q >= 0; q--)
 		{
-			while (at >= 0 && !RS_Tool.InGroup(chain[at], reg.Step(ps + q))) at--;
+			while (at >= 0 && !led.StepOk(ev.chainIdx[at], reg.Step(ps + q))) at--;
 			if (at < 0) return false;
 			used.Push(at);
 			at--;
@@ -370,16 +442,17 @@ class RS_Combo play
 
 class RS_Bonus_Chain : RS_ScoreBonus
 {
-	const GEN2 = 0.2;
-	const GEN3 = 0.4;
-	const GEN4 = 0.6;
-	const NGEN = 3;            // rows 0..2: 2-, 3-, 4-Tool Combo; then one row per named combo
+	const NGEN = 5;            // rows 0..4: 2-, 3-, 4-, 5-, 6-Tool Combo; then one row per named combo
+	const BREADTH = 0.1;       // per mod past two in the chain, to BREADTH_MAX
+	const BREADTH_MAX = 0.3;
+	const TEMPO_MULT = 1.25;   // the whole chain inside RS_ComboLedger.TEMPO
 
 	// this kill's answer (the bonus is one shared object; the handler asks Evaluate, Supersedes and the
 	// row shares for one kill before the next)
 	int lastNamed;             // index into the registry's combo table, or -1
-	double lastNamedMult, lastGeneric;
-	int lastTools;
+	double lastNamedMult, lastGeneric, lastBreadth;
+	bool lastTempo, lastNamedSlow;
+	int lastTools, lastMods;
 
 	override int Family() const { return FAM_STYLE; }
 	override String DisplayName() const { return "Combo Chain"; }
@@ -387,9 +460,7 @@ class RS_Bonus_Chain : RS_ScoreBonus
 	override int RowCount() const { return NGEN + RS_ScoreRegistry.ComboCount(); }
 	override String RowName(int i) const
 	{
-		if (i == 0) return "2-Tool Combo";
-		if (i == 1) return "3-Tool Combo";
-		if (i == 2) return "4-Tool Combo";
+		if (i < NGEN) return String.Format("%d-Tool Combo", i + 2);
 		return RS_ScoreRegistry.ComboName(i - NGEN);
 	}
 	override double RowShare(int i) const
@@ -401,7 +472,7 @@ class RS_Bonus_Chain : RS_ScoreBonus
 	}
 
 	// THE ROWS THAT ARE ALREADY NAMED COMBOS (their own classes, their own measured pay): the setup step
-	// each one covers, as a pattern group.
+	// each one covers, as a pattern group, and its base pay (what a table combo covered by it must beat).
 	static String RowSetup(RS_ScoreBonus b)
 	{
 		if (b is "RS_Bonus_ReeledIn") return "hook";
@@ -412,28 +483,43 @@ class RS_Bonus_Chain : RS_ScoreBonus
 		if (b is "RS_Bonus_Riposte" || b is "RS_Bonus_PerfectRiposte") return "block";
 		return "";
 	}
+	static double RowBase(RS_ScoreBonus b)
+	{
+		if (b is "RS_Bonus_ReeledIn") return RS_Bonus_ReeledIn.MULT;
+		if (b is "RS_Bonus_PingPong") return RS_Bonus_PingPong.MULT;
+		if (b is "RS_Bonus_FlyBall") return RS_Bonus_FlyBall.MULT;
+		if (b is "RS_Bonus_Bowling") return RS_Bonus_Bowling.MULT;
+		if (b is "RS_Bonus_PulledIn") return RS_Bonus_PulledIn.MULT;
+		if (b is "RS_Bonus_PerfectRiposte") return RS_Bonus_PerfectRiposte.MULT;
+		if (b is "RS_Bonus_Riposte") return RS_Bonus_Riposte.MULT;
+		return 0.0;
+	}
 
 	override double Evaluate(RS_ScoreEvent ev)
 	{
-		lastNamed = -1; lastNamedMult = 0; lastGeneric = 0; lastTools = 0;
+		lastNamed = -1; lastNamedMult = 0; lastGeneric = 0; lastBreadth = 0; lastTools = 0; lastMods = 0;
+		lastTempo = false; lastNamedSlow = false;
 		if (!ev.killer || ev.killerNum < 0 || !ev.victim) return 0.0;
 		RS_Combo.ChainOf(ev);
 		int n = RS_Combo.Tools(ev.chain);
 		lastTools = n;
+		lastMods = RS_Combo.Mods(ev.chain);
 		if (n < 1) return 0.0;
 
 		// the tools some name already covers (as actions)
 		Array<String> covered;
 
 		// 1. the rows that are named combos already (their own classes, their own measured pay): here they
-		//    only cover tools
+		//    only cover tools, and set the pay a table combo under them must beat
 		Array<String> rowCov;
+		double rowBase = 0;
 		Array<RS_ScoreBonus> all;
 		RS_ScoreRegistry.GetBonuses(all);
 		for (int b = 0; b < all.Size(); b++)
 		{
 			String setup = RowSetup(all[b]);
 			if (setup == "" || all[b].Evaluate(ev) <= 0) continue;
+			rowBase = max(rowBase, RowBase(all[b]));
 			AddAction(rowCov, ev.chain[ev.chain.Size() - 1]);
 			// Ping-Pong is the whole rally: the bites and every shove between them
 			bool rally = all[b] is "RS_Bonus_PingPong";
@@ -441,7 +527,7 @@ class RS_Bonus_Chain : RS_ScoreBonus
 			for (int k = ev.chain.Size() - 2; k >= 0; k--)
 			{
 				String t = ev.chain[k];
-				if (setup == "block" ? (t == "shield.block" || t == "saber.block") : RS_Tool.InGroup(t, setup))
+				if (setup == "block" ? RS_Tool.InGroup(t, "block") : RS_Tool.InGroup(t, setup))
 				{
 					AddAction(rowCov, t);
 					first = k;
@@ -452,8 +538,8 @@ class RS_Bonus_Chain : RS_ScoreBonus
 		}
 		for (int k = 0; k < rowCov.Size(); k++) covered.Push(rowCov[k]);
 
-		// 2. the data table: the best-paying match -- one that names at least one tool those rows do not
-		//    already pay for (a kick inside a Ping-Pong rally is not also Gun Kata)
+		// 2. the data table: the best-paying match. One that names a tool those rows do not already pay for
+		//    pays whole; one they cover entirely pays only what it has past the row's base (B S9).
 		Array<int> used, bestUsed;
 		double best = 0;
 		let reg = RS_ScoreRegistry.Get();
@@ -462,18 +548,34 @@ class RS_Bonus_Chain : RS_ScoreBonus
 			int ps, pc; double m;
 			[ps, pc, m] = reg.ComboSteps(c);
 			if (m <= best) continue;
-			if (!RS_Combo.Match(reg, c, ev.chain, used)) continue;
+			String filter = reg.Filter(c);
+			if (filter != "" && !RS_Tool.VictimIs(ev.victim, filter)) continue;
+			if (!RS_Combo.Match(reg, c, ev, used)) continue;
 			bool fresh = false;
 			for (int k = 0; k < used.Size() && !fresh; k++) fresh = !Has(rowCov, RS_Tool.ActionOf(ev.chain[used[k]]));
-			if (!fresh) continue;
-			best = m; lastNamed = c; bestUsed.Copy(used);
+			double pay = fresh ? m : m - rowBase;
+			if (pay <= best) continue;
+			best = pay; lastNamed = c; bestUsed.Copy(used);
 		}
 		lastNamedMult = best;
 		for (int k = 0; k < bestUsed.Size(); k++) AddAction(covered, ev.chain[bestUsed[k]]);
+		if (lastNamed >= 0)
+		{
+			int ps, pc; double m;
+			[ps, pc, m] = reg.ComboSteps(lastNamed);
+			for (int q = 0; q < pc; q++) if (RS_Tool.StepIsSlow(reg.Step(ps + q))) lastNamedSlow = true;
+		}
 
-		// 3. the tools past what the names cover pay as a generic chain
+		// 3. the actions past what the names cover pay as a generic chain, with the chain's breadth (mods past
+		//    two) and tempo (the whole chain inside 2 s) on that remainder only
 		int cov = covered.Size();
-		lastGeneric = max(0.0, RS_Combo.Generic(n) - (cov >= 2 ? RS_Combo.Generic(min(cov, n)) : 0.0));
+		double gen = max(0.0, RS_Combo.Scale(n) - (cov >= 2 ? RS_Combo.Scale(min(cov, n)) : 0.0));
+		if (gen > 0)
+		{
+			lastBreadth = min(BREADTH_MAX, BREADTH * max(0, lastMods - 2));
+			lastTempo = ev.chainSpan <= RS_ComboLedger.TEMPO;
+			lastGeneric = (gen + lastBreadth) * (lastTempo ? TEMPO_MULT : 1.0);
+		}
 		return lastNamedMult + lastGeneric;
 	}
 
@@ -490,12 +592,12 @@ class RS_Bonus_Chain : RS_ScoreBonus
 		into.Push(act);
 	}
 
-	// a three-step signature combo, or four tools in one chain
+	// a signature combo of three steps or more, five actions in one chain, or four mods
 	override bool BigMoment(RS_ScoreEvent ev, double paid) const
 	{
 		if (paid <= 0) return false;
 		if (lastNamed >= 0 && RS_ScoreRegistry.ComboLength(lastNamed) >= 3) return true;
-		return lastTools >= 4;
+		return lastTools >= 5 || lastMods >= 4;
 	}
 
 	override void Commit(RS_ScoreEvent ev)
@@ -508,7 +610,7 @@ class RS_Bonus_Chain : RS_ScoreBonus
 	{
 		String s = "Combo Chain";
 		if (lastNamed >= 0) s = s .. "[" .. RS_ScoreRegistry.ComboName(lastNamed) .. String.Format(" %.2f", lastNamedMult) .. "]";
-		if (lastGeneric > 0) s = s .. String.Format("[%d-Tool %.2f]", lastTools, lastGeneric);
+		if (lastGeneric > 0) s = s .. String.Format("[%d-Tool %.2f%s%s]", lastTools, lastGeneric, lastBreadth > 0 ? String.Format(" mods%d+%.1f", lastMods, lastBreadth) : "", lastTempo ? " tempo" : "");
 		return s;
 	}
 }

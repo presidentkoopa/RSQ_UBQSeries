@@ -120,6 +120,24 @@ class RS_Boost play
 		return n;
 	}
 
+	// A VICTIM FILTER on a combo pattern ("... | champ", combo.zs; COMBOS_MASTER 1.6): the same facts, by name.
+	//   champ            an active champion         armoured   Bronze, Gold or Titan
+	//   legend           a LegenDoom legendary        legend.rising  one that has risen (transformed)
+	//   legend.dormant   one that has not risen yet   thrall / miniboss   RSQ Miniboss's tokens
+	//   <Colour>         that colour's champion token (Red, DarkRed, Bronze... as Champions names them)
+	static bool VictimIs(Actor v, String filter)
+	{
+		if (!v) return false;
+		if (filter ~== "champ") return ChampActive(v);
+		if (filter ~== "armoured" || filter ~== "armored") return ChampActive(v) && (Has(v, "champion_BronzeToken") || Has(v, "champion_GoldToken") || Has(v, "champion_TitanToken"));
+		if (filter ~== "legend") return Legendary(v);
+		if (filter ~== "legend.rising") return Legendary(v) && Transformed(v);
+		if (filter ~== "legend.dormant") return Legendary(v) && !Transformed(v);
+		if (filter ~== "thrall") return Has(v, "RSQMB_Thrall");
+		if (filter ~== "miniboss") return Has(v, "RSQMB_Ward");
+		return ChampActive(v) && Has(v, "champion_" .. filter .. "Token");
+	}
+
 	// Marks noted when something else dies first (RS_ScoreHandler.WorldThingDied -> NoteDeath): an
 	// Undying champion's heart names its master, and the heart is gone by the time the master dies.
 	static void NoteDeath(RS_ScoreHandler h, Actor dead)

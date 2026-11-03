@@ -88,6 +88,34 @@ class RS_ScoreTracker : Inventory
 	// So this stays inert until a weapon calls RS_ScoreHandler.Switcharoo().
 	private int lastFired[27];   // SCOREWEPS * SCOREFIREMODES
 
+	// SWITCHAROO'S EARS (11-03, sheet D3): no weapon in BD22 VR Reloaded calls the old door, so the fire is read off
+	// the blow the ledger hears (combo.zs WorldThingDamaged): the gun that fired (the class in the hand that fired, or
+	// the missile's own) and which trigger (0 main, 1 the off hand's, 2 alt fire). The last sixteen, newest last; a
+	// burst of the same gun and trigger is one entry, its tic moved on.
+	Array<String> fireWep;
+	Array<int> fireMode, fireTic;
+
+	static void NoteFire(Actor src, Actor inf)
+	{
+		let tr = RS_ScoreHandler.GetTracker(src);
+		let p = src ? src.player : null;
+		if (!tr || !p) return;
+		int b = p.cmd.buttons;
+		bool off = (b & BT_OFFHANDATTACK) && !(b & BT_ATTACK);
+		Weapon w = off ? p.OffhandWeapon : p.ReadyWeapon;
+		if (!w) w = p.ReadyWeapon;
+		String gun = "";   // not "name": identifiers are case-insensitive and Name is a type
+		if (w) gun = w.GetClassName();
+		else if (inf) gun = inf.GetClassName();
+		if (gun.Left(8) ~== "RSQ_Off_") gun = gun.Mid(8);
+		if (gun == "") return;
+		int mode = off ? 1 : ((b & BT_ALTATTACK) ? 2 : 0);
+		int n = tr.fireWep.Size();
+		if (n > 0 && tr.fireWep[n - 1] == gun && tr.fireMode[n - 1] == mode) { tr.fireTic[n - 1] = level.maptime + 1; return; }
+		if (n >= 16) { tr.fireWep.Delete(0); tr.fireMode.Delete(0); tr.fireTic.Delete(0); }
+		tr.fireWep.Push(gun); tr.fireMode.Push(mode); tr.fireTic.Push(level.maptime + 1);
+	}
+
 	// ---- the breakdown the HUD draws ---------------------------------------
 	// One row per bonus plus a Base row at index 0, sized by the handler. The value
 	// and the tic it was set on are play scope, because they are earned; how long a
@@ -232,6 +260,18 @@ class RS_ScoreTracker : Inventory
 
 			if (used) { weapons += 1; }
 		}
+
+		// the guns heard off the blows (NoteFire): distinct guns, distinct triggers, at or after the cutoff
+		Array<String> guns;
+		for (int k = 0; k < fireWep.Size(); k++)
+		{
+			if (fireTic[k] < cutoff) continue;
+			bool had = false;
+			for (int j = 0; j < guns.Size(); j++) if (guns[j] == fireWep[k]) { had = true; break; }
+			if (!had) guns.Push(fireWep[k]);
+			if (fireMode[k] >= 0 && fireMode[k] < SCOREFIREMODES) modeUsed[fireMode[k]] = 1;
+		}
+		weapons += guns.Size();
 
 		for (int f = 0; f < SCOREFIREMODES; f++)
 		{

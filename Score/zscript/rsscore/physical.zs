@@ -82,9 +82,11 @@ class RS_Physical play
 		return RS_Svc.Int(RS_Svc.GRAB, request, arg, about);
 	}
 
-	static int AskRig(String request, Actor who)
+	// the rig's answers, per hand (0 main, 1 off: since 11-02 each hand draws its own gun; an older rig answers the
+	// main hand whatever the hand asked)
+	static int AskRig(String request, Actor who, int hand = 0)
 	{
-		return RS_Svc.Int(RS_Svc.RIG, request, 0, who);
+		return RS_Svc.Int(RS_Svc.RIG, request, hand, who);
 	}
 
 	// RSQ_SlowMo's clock (RSQSM_Service): "slowmo.active" 1 while the world is slowed, 0 not.
@@ -92,6 +94,24 @@ class RS_Physical play
 	static int AskSlowMo(String request)
 	{
 		return RS_Svc.Int(RS_Svc.SLOWMO, request, 0, null);
+	}
+
+	// WHAT IS SLOWING THE WORLD (11-03, sheet C2): 0 nothing; 1 the player's own trigger (the key, the wrist cross, a
+	// shove, a parry: deliberate); 2 an automatic one (Score's own pulses, the miniboss window, Gun Bonsai VR's, a
+	// reload). A SlowMo that does not answer "trigger.auto" reads 1, as before.
+	static int SlowKind()
+	{
+		if (AskSlowMo("slowmo.active") != 1) return 0;
+		return AskSlowMo("trigger.auto") == 1 ? 2 : 1;
+	}
+
+	// the hand whose trigger is down now (a hitscan is this tic): 1 the off hand's alone, else 0 the main hand's
+	static int FiringHand(Actor src)
+	{
+		let p = src ? src.player : null;
+		if (!p) return 0;
+		int b = p.cmd.buttons;
+		return ((b & BT_OFFHANDATTACK) && !(b & BT_ATTACK)) ? 1 : 0;
 	}
 
 	// Which hand fired the killing shot: 1 the main hand's trigger alone, 2 the off hand's alone,
@@ -105,9 +125,21 @@ class RS_Physical play
 		return 0;
 	}
 
-	static String AskRigString(String request, Actor who)
+	static String AskRigString(String request, Actor who, int hand = 0)
 	{
-		return RS_Svc.Str(RS_Svc.RIG, request, who);
+		return RS_Svc.Str(RS_Svc.RIG, request, who, hand);
+	}
+
+	// the gun that made this shot kill, by the hand that fired it (sheet C8, D6: an off-hand kill was judged by the
+	// main gun): the weapon, and the hand (0 main, 1 off)
+	static Weapon, int KillingGun(RS_ScoreEvent ev, int kind)
+	{
+		let p = ev.killer ? ev.killer.player : null;
+		if (!p) return null, 0;
+		int h = ShotHand(ev, kind) == 2 ? 1 : 0;
+		Weapon w = h ? p.OffhandWeapon : p.ReadyWeapon;
+		if (!w) { w = p.ReadyWeapon; h = 0; }
+		return w, h;
 	}
 
 	// The inflictor is an object THIS killer threw with Distance Grab (recently).
@@ -445,11 +477,16 @@ class RS_Bonus_QuickDraw : RS_PhysicalBonus
 	override double Evaluate(RS_ScoreEvent ev)
 	{
 		let k = ev.killer;
-		if (!k || !k.player || !k.player.ReadyWeapon) return 0.0;
-		if (RS_Physical.ThrownBy(ev)) return 0.0;
-		int t = RS_Physical.AskRig("rig.drawtic", k);
+		if (!k || !k.player) return 0.0;
+		// a shot of the drawn gun (sheet C9: a saber cut or a grenade inside the window is not a gun draw)
+		int kind = RS_Physical.ShotKind(ev);
+		if (kind == RS_Physical.SHOT_NONE) return 0.0;
+		Weapon w; int hand;
+		[w, hand] = RS_Physical.KillingGun(ev, kind);
+		if (!w) return 0.0;
+		int t = RS_Physical.AskRig("rig.drawtic", k, hand);
 		if (t < 0 || level.maptime - t > WINDOW) return 0.0;
-		return (k.player.ReadyWeapon.GetClassName() == RS_Physical.AskRigString("rig.drawn", k)) ? MULT : 0.0;
+		return (w.GetClassName() == RS_Physical.AskRigString("rig.drawn", k, hand)) ? MULT : 0.0;
 	}
 }
 
@@ -617,14 +654,18 @@ class RS_Bonus_HotSwap : RS_PhysicalBonus
 	override double Evaluate(RS_ScoreEvent ev)
 	{
 		let k = ev.killer;
-		if (!k || !k.player || !k.player.ReadyWeapon || ev.ringOut) return 0.0;
-		if (RS_Physical.ThrownBy(ev)) return 0.0;
+		if (!k || !k.player || ev.ringOut) return 0.0;
+		int kind = RS_Physical.ShotKind(ev);
+		if (kind == RS_Physical.SHOT_NONE) return 0.0;
 		let n = RS_PhysicalNotes.Of(k);
 		if (!n || n.lastKillTic <= 0) return 0.0;
-		int t = RS_Physical.AskRig("rig.drawtic", k);
+		Weapon w; int hand;
+		[w, hand] = RS_Physical.KillingGun(ev, kind);
+		if (!w) return 0.0;
+		int t = RS_Physical.AskRig("rig.drawtic", k, hand);
 		if (t < 0 || level.maptime - t > WINDOW) return 0.0;
-		String now = k.player.ReadyWeapon.GetClassName();
-		if (now != RS_Physical.AskRigString("rig.drawn", k)) return 0.0;
+		String now = w.GetClassName();
+		if (now != RS_Physical.AskRigString("rig.drawn", k, hand)) return 0.0;
 		if (n.lastKillTic > t || t - n.lastKillTic > WINDOW) return 0.0;
 		return (n.lastKillWeapon != "" && n.lastKillWeapon != now) ? MULT : 0.0;
 	}
@@ -636,27 +677,48 @@ class RS_Bonus_HotSwap : RS_PhysicalBonus
 		if (!n || !k.player) return;
 		n.lastKillTic = level.maptime;
 		n.lastKillWeapon = "";
-		if (k.player.ReadyWeapon) n.lastKillWeapon = k.player.ReadyWeapon.GetClassName();
+		// the gun of a shot kill (by the hand that fired), else what the main hand holds
+		int kind = RS_Physical.ShotKind(ev);
+		Weapon w = null; int hand = 0;
+		if (kind != RS_Physical.SHOT_NONE) [w, hand] = RS_Physical.KillingGun(ev, kind);
+		if (!w) w = k.player.ReadyWeapon;
+		if (w) n.lastKillWeapon = w.GetClassName();
 	}
 }
 
 // Bullet Time: SLOW MOTION MULTIPLIES STYLE, IT IS NOT AN EASY MODE (the owner, 10-27). A kill while
-// RSQ_SlowMo has the world slowed (held, a reload's moment, an upgrade's pulse -- but not inside the
-// pulse this scorer itself asked for) pays rs_score_slowstyle percent (50) of what the kill's style,
-// daring and melee bonuses paid. A plain kill in slow motion pays nothing more. (It paid a flat 0.15
-// on every kill before.)
+// RSQ_SlowMo has the world slowed pays rs_score_slowstyle percent (50) of what the kill's style, daring and
+// melee bonuses paid. A plain kill in slow motion pays nothing more. (It paid a flat 0.15 on every kill before.)
+// 11-03 (sheet C2, C3, C4, the S1 rework): a slow motion the player STARTED (the key, the wrist cross, a shove, a
+// parry) pays the full share; an AUTOMATIC one (the miniboss window, Gun Bonsai VR's pulses, a reload) pays half;
+// Score's own pulses (a big moment, the hit-stop) pay nothing -- read from SlowMo's "trigger.auto" / "trigger.score"
+// when it answers them, else from Score's own memory of its last pulse as before. A named combo that carries @slow
+// is not shared again: the slow is in its pay. The name is the owner's to change (the sheet lists his options).
 class RS_Bonus_BulletTime : RS_PhysicalBonus
 {
+	const AUTO_SHARE = 0.5;
 	override int Family() const { return FAM_STYLE; }
 	override String DisplayName() const { return "Bullet Time"; }
 	override double Evaluate(RS_ScoreEvent ev) { return 0.0; }
 	override double AfterOthers(RS_ScoreEvent ev, Array<RS_ScoreBonus> all, Array<double> mults, int me)
 	{
-		if (!ev.killer || ev.ringOut || !RS_Grapple.SlowNow(ev)) return 0.0;
+		if (!ev.killer || ev.ringOut) return 0.0;
+		int kind = RS_Physical.SlowKind();
+		if (kind == 0) return 0.0;
+		if (RS_Physical.AskSlowMo("trigger.score") == 1) return 0.0;
+		// an older SlowMo cannot say whose pulse runs: Score's own memory of its last ask stands in
+		if (RS_Physical.AskSlowMo("trigger.auto") < 0 && ev.tracker && level.maptime <= ev.tracker.slowmoUntil) return 0.0;
+		double share = clamp(RS_ScoreHandler.CvarInt("rs_score_slowstyle", 50), 0, 200) / 100.0;
+		if (kind == 2) share *= AUTO_SHARE;
 		double sum = 0.0;
 		for (int b = 0; b < all.Size(); b++)
-			if (b != me && mults[b] > 0.0 && all[b].Family() != FAM_EFFICIENCY) sum += mults[b];
-		return sum * clamp(RS_ScoreHandler.CvarInt("rs_score_slowstyle", 50), 0, 200) / 100.0;
+		{
+			if (b == me || mults[b] <= 0.0 || all[b].Family() == FAM_EFFICIENCY) continue;
+			let ch = RS_Bonus_Chain(all[b]);
+			if (ch && ch.lastNamedSlow) continue;
+			sum += mults[b];
+		}
+		return sum * share;
 	}
 }
 

@@ -595,6 +595,9 @@ class RS_ScoreHandler : EventHandler
 		{
 			stopped = true;
 			hitstopReady[ev.killerNum] = level.maptime + HITSTOP_COOLDOWN;
+			// our own slow motion is not Bullet Time's (sheet C3): remembered here for a SlowMo that cannot say whose
+			// pulse runs (physical.zs RS_Bonus_BulletTime asks "trigger.score" first)
+			tr.slowmoUntil = max(tr.slowmoUntil, level.maptime + (HitStopMs() * 35) / 1000 + 20);
 			if (DebugOn()) Console.Printf("RS_Score: big kill (%s) -> hit-stop pulse %d ms at %d%%%s", why ? why.DisplayName() : "big monster", HitStopMs(), HITSTOP_DEPTH, RS_Physical.AskSlowMo("slowmo.active") < 0 ? " (no RSQ_SlowMo: nothing hears it)" : "");
 			if (ev.killerNum == consoleplayer) EventHandler.SendNetworkEvent("rsm_pulse", HitStopMs(), HITSTOP_DEPTH);
 		}
@@ -726,6 +729,10 @@ class RS_ScoreHandler : EventHandler
 	int AwardExternal(Actor who, String label, int points)
 	{
 		if (!who || !who.player || points <= 0) return -1;
+		// ROWS SCORE PAYS ITSELF NOW, on the kill's base (11-03): the flat award a mod still sends for one of them is
+		// taken (0) and not paid, so the move pays once. F.E.A.R. Effect: RSQ Melee's 200 -> the combo
+		// "shove > gun.shotgun@slow" (combo.zs).
+		if (label ~== "F.E.A.R. Effect") return 0;
 		let tr = GetTracker(who);
 		if (!tr) return -1;
 		EnsureRows(tr);

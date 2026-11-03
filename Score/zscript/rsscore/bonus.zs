@@ -123,7 +123,8 @@ class RS_ScoreRegistry : StaticEventHandler
 	private Array<String> m_comboName, m_comboPat;
 	private Array<double> m_comboMult;
 	private Array<int> cStart, cCount;
-	private Array<String> cSteps;
+	private Array<String> cSteps;     // a step: id[@slow][+cond]... (tools.zs StepMatches)
+	private Array<String> cFilter;    // the victim filter after "|", or ""
 	// tools another mod adds, with the groups a pattern may name them by ("melee,shield")
 	private Array<String> m_toolId, m_toolGroups;
 
@@ -242,6 +243,7 @@ class RS_ScoreRegistry : StaticEventHandler
 	int NumCombos() const { return cStart.Size(); }
 	int, int, double ComboSteps(int c) const { return cStart[c], cCount[c], m_comboMult[c]; }
 	String Step(int i) const { return cSteps[i]; }
+	String Filter(int c) const { return cFilter[c]; }
 	static int ComboCount() { let reg = Get(); return reg ? reg.cStart.Size() : 0; }
 	static String ComboName(int c) { let reg = Get(); return (reg && c >= 0 && c < reg.m_comboName.Size()) ? reg.m_comboName[c] : ""; }
 	static int ComboLength(int c) { let reg = Get(); return (reg && c >= 0 && c < reg.cCount.Size()) ? reg.cCount[c] : 0; }
@@ -268,8 +270,12 @@ class RS_ScoreRegistry : StaticEventHandler
 		}
 		for (int i = 0; i < m_comboName.Size(); i++)
 		{
-			Array<String> parts;
-			m_comboPat[i].Split(parts, ">", TOK_SKIPEMPTY);
+			// "a > b > c | filter": the filter (on the victim) comes off first
+			Array<String> halves, parts;
+			m_comboPat[i].Split(halves, "|", TOK_SKIPEMPTY);
+			cFilter.Push(halves.Size() > 1 ? Trim(halves[1]) : "");
+			String pat = halves.Size() > 0 ? halves[0] : "";
+			pat.Split(parts, ">", TOK_SKIPEMPTY);
 			cStart.Push(cSteps.Size());
 			int n = 0;
 			for (int k = 0; k < parts.Size(); k++)

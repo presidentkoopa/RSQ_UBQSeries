@@ -13,7 +13,7 @@ class RS_AwardSeed play
 		into.Push("RS_Award_ThrallSlowKill");
 		into.Push("RS_Award_Miniboss");
 		into.Push("RS_Award_Greedy");
-		into.Push("RS_Award_FEAR");
+		// RS_Award_FEAR went 11-03: F.E.A.R. Effect is the combo "shove > gun.shotgun@slow" (combo.zs), paid on the kill
 	}
 }
 
@@ -55,13 +55,6 @@ class RS_Award_Greedy : RS_ScoreBonus
 {
 	override int Family() const { return FAM_DARING; }
 	override String DisplayName() const { return "Greedy"; }
-}
-
-// RSQ Melee (RSQ Gestures until 11-01): a shotgun kill in the slow-motion window after a gun-butt shove (the owner's name, spelt as he wrote it).
-class RS_Award_FEAR : RS_ScoreBonus
-{
-	override int Family() const { return FAM_STYLE; }
-	override String DisplayName() const { return "F.E.A.R. Effect"; }
 }
 
 // The door for other mods: GetInt("award", label, points, 0, playerPawn). See RS_ScoreHandler.AwardExternal.

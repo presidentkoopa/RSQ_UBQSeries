@@ -14,6 +14,7 @@ version "4.14"
 #include "zscript/rsscore/event.zs"
 #include "zscript/rsscore/bonus.zs"
 #include "zscript/rsscore/svc.zs"
+#include "zscript/rsscore/tools.zs"    // the tool vocabulary: one id per move in the series, and what struck (11-03)
 #include "zscript/rsscore/bonuses.zs"
 #include "zscript/rsscore/melee.zs"
 #include "zscript/rsscore/physical.zs"
@@ -21,6 +22,7 @@ version "4.14"
 #include "zscript/rsscore/hook.zs"
 #include "zscript/rsscore/boost.zs"
 #include "zscript/rsscore/combo.zs"
+#include "zscript/rsscore/combos.zs"   // the signature combos, as data (11-03)
 #include "zscript/rsscore/handler.zs"
 #include "zscript/rsscore/hud.zs"
 #include "zscript/rsscore/wrist.zs"   // the score on the wrist (pick 58, option)

@@ -6,3 +6,4 @@
 # Scratch packs from build.ps1 -OutFile, and editor leftovers.
 *.bak
 *.bak-*
+tools/rigtest/last_run.txt

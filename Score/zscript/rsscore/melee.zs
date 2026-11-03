@@ -75,9 +75,16 @@ class RS_Melee play
 		MK_FIST,       // fists (and the VR pistol whip, which lands BD's punch)
 		MK_FINISH,     // a Brutal Doom fatality
 		MK_FORCE,      // the saber's Force: push, grip choke, a flung body's slam (inflictor UBQS_Force)
-		MK_BOOT,       // Brutal Doom's boots: Kick, HeadKick, Stomp (and the VR butt strike's kick)
-		MK_HOOK,       // RSQ_Grapple's throw: a hooked body's landing or strike, or what it struck (hook.zs)
-		MK_WHIP,       // RSQ_Grapple's whip crack
+		MK_BOOT,       // Brutal Doom's boots: Kick, HeadKick, Stomp
+		MK_HOOK,       // RSQ_Grapple's own blows: a hooked body's landing or strike, what it struck, the Zip Kick, the claw (hook.zs)
+		MK_WHIP,       // a whip's crack, flail or swing arrival (RSQ Whip; RSQ_Grapple's old whip)
+		// 11-03 (sheet S7, S8, S9, B S10, B S13, C7): the moves that landed as 'Melee' or 'Kick' from the pawn and read as
+		// punches or boots. Each is its own kind now, read back from the ledger's classification of the blow.
+		MK_SHOVE,      // the gun-butt shove, BD22 VR's butt strike, the pistol whip: one move, the gun hand
+		MK_POUND,      // Melee's two-fist Ground Pound, Clear Out, the Guard's release: a shockwave, not a fist
+		MK_THROW,      // a body or thing thrown by hand: the Headlock toss, a rig gun, a held object swung
+		MK_CHOKE,      // the Headlock's Chokehold
+		MK_GRENADE,    // a grenade's blast: not melee at all (no melee row pays it)
 	}
 
 	static int Kind(RS_ScoreEvent ev)
@@ -86,9 +93,39 @@ class RS_Melee play
 		return ev.meleeKind;
 	}
 
+	// ONE CLASSIFICATION, TWO READERS (11-03): the ledger classified the killing blow as it landed (tools.zs
+	// Classify, with the mod's own name for the move if it sent one on the same tic); the kill reads that tool
+	// back. Only a blow the ledger never saw (no player source, a death that came some other way) falls to the
+	// damage-type reading below.
+	static int KindFromTool(String t)
+	{
+		String pre = RS_Tool.Prefix(t);
+		if (t == "saber.cut" || t == "saber.stab" || t == "saber.spin" || t == "saber.clash") return MK_SABER;
+		if (t == "saber.throw") return MK_THROWN;
+		if (t == "shield.disc") return MK_DISC;
+		if (t == "shield.bash" || t == "shield.dash" || t == "shield.slam") return MK_BASH;
+		if (t == "shield.grind") return MK_GRIND;
+		if (pre == "blade") return MK_BLADE;
+		if (t == "punch" || pre == "glove" || t == "headlock.launch" || t == "headlock.slam") return MK_FIST;
+		if (t == "fatality") return MK_FINISH;
+		if (pre == "force" && t != "force.pull") return MK_FORCE;
+		if (t == "kick") return MK_BOOT;
+		if (pre == "hook") return MK_HOOK;
+		if (t == "whip.crack" || t == "whip.flail" || t == "whip.tarzan") return MK_WHIP;
+		if (t == "shove") return MK_SHOVE;
+		if (t == "pound" || t == "clearout" || t == "guard.release") return MK_POUND;
+		if (t == "headlock.throw" || t == "throw.gun" || t == "grab.swing") return MK_THROW;
+		if (t == "headlock.choke") return MK_CHOKE;
+		if (pre == "grenade") return MK_GRENADE;
+		return MK_NONE;   // a shot, a returned shot, a Distance Grab throw, a hold: not melee
+	}
+
 	private static int KindOf(RS_ScoreEvent ev)
 	{
 		if (!ev.killer || ev.ringOut) return MK_NONE;	// a Ring Out was struck by the level or a monster
+		let led = RS_ComboLedger.Get();
+		String tool = led ? led.ToolNow(ev.victim, ev.killerNum) : "";
+		if (tool != "") return KindFromTool(tool);
 		Name dt = ev.damageType;
 		String inf = "";
 		if (ev.inflictor) inf = ev.inflictor.GetClassName();
@@ -124,6 +161,26 @@ class RS_Melee play
 	{
 		let p = who ? who.player : null;
 		return p && p.OffhandWeapon && p.OffhandWeapon.GetClassName() == 'SSQ_ShieldSaw';
+	}
+
+	// THE SHAPE OF A FORCE JUMP'S LANDING (QuestSaber LandSlam), told from a flung body's slam: it strikes round a
+	// player standing on the floor, within its reach (96 + 32 a level past 2, here up to 288 units with the body's
+	// radius) and 64 units of height, and throws the body UP before it strikes (vel.z += half its push, at least 1).
+	// A flung body has stopped dead. (RS_Bonus_GroundPound's test, shared with the ledger's Classify, 11-03.)
+	static bool LandingShape(Actor k, Actor v)
+	{
+		if (!k || !v) return false;
+		if (k.pos.z > k.floorz + 1.0) return false;
+		if (abs(v.pos.z - k.pos.z) > 64.0 + 16.0) return false;
+		if (k.Distance2D(v) > 288.0 + v.radius) return false;
+		return v.bDontThrust || v.vel.z >= 0.9;
+	}
+
+	// a tag on the killing blow's run (the ledger keeps the mods' "how it landed" facts: hit.heavy, crit, wall...)
+	static bool Tagged(RS_ScoreEvent ev, String tag)
+	{
+		let led = RS_ComboLedger.Get();
+		return led && ev.victim && ev.killerNum >= 0 && led.TagNow(ev.victim, ev.killerNum, tag);
 	}
 
 	// Ask the ShieldSaw (if loaded) what it remembers. -1: nothing.
@@ -219,6 +276,10 @@ class RS_Melee play
 		if (inf && inf.bMissile && RS_ScoreShots.BornOfMonster(inf)) return true; // a monster's shot, now ours
 		if (inf && AskShield("returned", inf) >= 0) return true;
 		if (AskShield("returned", ev.victim) >= 0) return true;                // a returned bullet
+		// the ledger read the killing blow as a returned shot of any hand's: a Hadouken, a Swat, the Guard's reflect
+		// (Reflect Guard 3's bullet lands as your own hitscan: sheet S16), a whip return, a body shield's (11-03)
+		let led = RS_ComboLedger.Get();
+		if (led && ev.killerNum >= 0 && RS_Tool.InGroup(led.ToolNow(ev.victim, ev.killerNum), "return")) return true;
 		return false;
 	}
 
@@ -285,7 +346,7 @@ class RS_Bonus_Cleaved : RS_ScoreBonus
 	override double Evaluate(RS_ScoreEvent ev)
 	{
 		int k = RS_Melee.Kind(ev);
-		if (k == RS_Melee.MK_NONE || k == RS_Melee.MK_FINISH || k == RS_Melee.MK_HOOK) return 0.0;
+		if (k == RS_Melee.MK_NONE || k == RS_Melee.MK_FINISH || k == RS_Melee.MK_HOOK || k == RS_Melee.MK_GRENADE || k == RS_Melee.MK_THROW) return 0.0;
 		return RS_Melee.Gibbed(ev.victim) ? MULT : 0.0;
 	}
 }
@@ -410,7 +471,7 @@ class RS_Bonus_Combo : RS_ScoreBonus
 	override double Evaluate(RS_ScoreEvent ev)
 	{
 		int kind = RS_Melee.Kind(ev);
-		if (kind == RS_Melee.MK_NONE) return 0.0;
+		if (kind == RS_Melee.MK_NONE || kind == RS_Melee.MK_GRENADE) return 0.0;
 		if (RS_Combo.Mixed(ev)) return 0.0;   // this kill's own chain mixed its tools (combo.zs)
 		return min(MAXMULT, PER * (Distinct(ev, kind) - 1));
 	}
@@ -546,7 +607,7 @@ class RS_Bonus_Juggle : RS_ScoreBonus
 	override double Evaluate(RS_ScoreEvent ev)
 	{
 		int k = RS_Melee.Kind(ev);
-		if (k == RS_Melee.MK_NONE || k == RS_Melee.MK_FINISH) return 0.0;
+		if (k == RS_Melee.MK_NONE || k == RS_Melee.MK_FINISH || k == RS_Melee.MK_GRENADE) return 0.0;
 		if (!RS_Melee.Airborne(ev.victim)) return 0.0;
 		int since = RS_ScoreShots.Launched(ev.victim, ev.killer);
 		return (since >= 0 && since <= RS_Melee.LAUNCH_TICS) ? MULT : 0.0;
@@ -653,11 +714,7 @@ class RS_Bonus_GroundPound : RS_ScoreBonus
 		if (RS_Melee.Kind(ev) != RS_Melee.MK_FORCE || ev.damageType != 'Force') return false;
 		int fl = RS_ScoreShots.KillFlags(ev.victim);
 		if (fl < 0 || (fl & DMG_NO_PAIN)) return false;
-		let k = ev.killer, v = ev.victim;
-		if (k.pos.z > k.floorz + 1.0) return false;
-		if (abs(v.pos.z - k.pos.z) > 64.0 + 16.0) return false;
-		if (k.Distance2D(v) > 288.0 + v.radius) return false;
-		return v.bDontThrust || v.vel.z >= 0.9;
+		return RS_Melee.LandingShape(ev.killer, ev.victim);
 	}
 	override double Evaluate(RS_ScoreEvent ev) { return IsLanding(ev) ? MULT : 0.0; }
 	override bool Supersedes(RS_ScoreBonus other) const { return other is "RS_Bonus_Slammed"; }
@@ -772,7 +829,7 @@ class RS_MeleeMemory play
 		let tr = ev.tracker;
 		if (!tr) return;
 		int kind = RS_Melee.Kind(ev);
-		if (kind == RS_Melee.MK_NONE) return;
+		if (kind == RS_Melee.MK_NONE || kind == RS_Melee.MK_GRENADE) return;
 		for (int k = tr.comboKind.Size() - 1; k >= 0; k--)
 			if (level.maptime - tr.comboTic[k] > RS_Bonus_Combo.WINDOW) { tr.comboKind.Delete(k); tr.comboTic.Delete(k); }
 		if (tr.comboKind.Size() >= 16) { tr.comboKind.Delete(0); tr.comboTic.Delete(0); }
@@ -910,8 +967,9 @@ class RS_ScoreShots : EventHandler
 		if (v.health > 0)
 		{
 			String icn = inf ? inf.GetClassName() : 'None';
+			// what can send a body somewhere: the Force, a boot, a fist, a whip's crack (Ring Out, Juggle)
 			if (src && src.player && inf && (icn ~== "UBQS_Force"
-				|| e.DamageType == 'Kick' || e.DamageType == 'HeadKick' || e.DamageType == 'Melee'))
+				|| e.DamageType == 'Kick' || e.DamageType == 'HeadKick' || e.DamageType == 'Melee' || e.DamageType == 'Whip'))
 				NoteLaunch(v, src);
 			return;
 		}
@@ -1125,6 +1183,14 @@ class RS_ScoreShots : EventHandler
 		{
 			let by = RS_Grapple.AskActor("hooked.by", v);
 			if (by && by.player) return by;
+		}
+		// RSQ Whip's wrap or yank let go of it lately (sheet S18)
+		t = RS_Whip.Ask("wrapped", v);
+		if (t < 0) t = RS_Whip.Ask("yanked", v);
+		if (t >= 0 && t <= RS_Melee.LAUNCH_TICS)
+		{
+			int pn = RS_Whip.Ask("wrapped.by", v);
+			if (pn >= 0 && pn < MAXPLAYERS && playeringame[pn] && players[pn].mo) return players[pn].mo;
 		}
 		return null;
 	}

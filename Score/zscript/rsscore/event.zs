@@ -51,8 +51,11 @@ class RS_ScoreEvent play
 	// was sent back -- each of those a service lookup in the other mods. Asked once, kept here.
 	int meleeKind;           // RS_Melee.MK_*, or -1 not yet asked
 	int returned;            // 1 / 0, or -1 not yet asked
-	// the chain of tools that led to this kill, oldest first, the finishing blow last (combo.zs)
+	// the chain of tools that led to this kill, oldest first, the finishing blow last (combo.zs); the ledger
+	// entries behind each step (a step's conditions and tags), and the tics from its first move to the kill
 	Array<String> chain;
+	Array<int> chainIdx;
+	int chainSpan;
 	bool chainAsked;
 
 	// ---- this map's Untouchable thresholds ---------------------------------

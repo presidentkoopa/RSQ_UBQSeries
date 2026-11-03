@@ -191,22 +191,31 @@ class RS_Bonus_Curveball : RS_ScoreBonus
 // by damage type or by whatever fired last. The damage-type route is general and
 // stays; the weapon list is empty until a weapon pack declares one, because a
 // hardcoded weapon name here would be a favour to one mod.
+//
+// 11-03 (sheet D4): it was dead -- no BD22 attack deals 'Scrap', and BD22 always gives a type, so the slot fallback
+// never ran. The series' signature is BD22 VR's Super Shotgun fired point-blank: its barrel blast is its own damage
+// type, 'SSG' (SSG.dec, A_FireBullets with range 300). Reworked as "Coach Gun" (Daring, 0.25; the owner's name to
+// change). 'Scrap' still pays for a set that deals it.
 class RS_Bonus_Scrapping : RS_ScoreBonus
 {
 	const MULT = 0.125;
+	const COACH = 0.25;
 
-	override String DisplayName() const { return "Scrapping"; }
+	override int Family() const { return FAM_DARING; }
+	override String DisplayName() const { return "Coach Gun"; }
 
 	// SMult_Scrapping, both halves. Note the order: if a damage type was given at
 	// all, the damage type is the ONLY test -- the weapon-slot fallback is reached
 	// only when there is no damage type, which in this engine is rare.
 	override double Evaluate(RS_ScoreEvent ev)
 	{
+		if (!ev.killer || ev.ringOut) return 0.0;
 		String dt = ev.damageType;
 		bool haveType = (dt != "" && dt != "None");
 
 		if (haveType)
 		{
+			if (dt ~== "SSG") return COACH;
 			return (dt == "Scrap") ? MULT : 0.0;
 		}
 
@@ -304,6 +313,10 @@ class RS_Bonus_Brawler : RS_ScoreBonus
 		Entry("RSQ_GloveOff", "",                0.5,   0);
 		Entry("SPO_Glove",    "",                0.5,   0);
 		Entry("SPO_GloveOff", "",                0.5,   0);
+		// BD22 VR Reloaded's blades (sheet D2): its saw is Chain_saw, which replaces nothing (only the pickup
+		// replaces Chainsaw), and the axe had no entry -- the fists paid 0.5, the saw and the axe 0
+		Entry("Chain_saw",    "",                0.5,   0);
+		Entry("BrutalAxe",    "",                0.5,   0);
 	}
 
 	// THE WEAPON, BY ITS OWN NAME OR BY WHAT IT REPLACES. A weapon set renames the classes it
@@ -325,9 +338,13 @@ class RS_Bonus_Brawler : RS_ScoreBonus
 	override double Evaluate(RS_ScoreEvent ev)
 	{
 		if (!ev.killer) { return 0.0; }
-		// the grapple's throw and whip are not the fist in the hand (hook.zs pays them)
+		// what is not the fist (or blade) in the hand: the grapple's throw and the whip (hook.zs pays them); the
+		// gun-butt shove, a shockwave, a thrown body or gun, a choke, a grenade (11-03: each its own kind); and a
+		// shot, whatever the other hand holds (an off-hand gun kill with the gloves up is a shot)
 		int mk = RS_Melee.Kind(ev);
-		if (mk == RS_Melee.MK_HOOK || mk == RS_Melee.MK_WHIP) { return 0.0; }
+		if (mk == RS_Melee.MK_HOOK || mk == RS_Melee.MK_WHIP || mk == RS_Melee.MK_SHOVE || mk == RS_Melee.MK_POUND
+			|| mk == RS_Melee.MK_THROW || mk == RS_Melee.MK_CHOKE || mk == RS_Melee.MK_GRENADE) { return 0.0; }
+		if (RS_Physical.ShotKind(ev) != RS_Physical.SHOT_NONE) { return 0.0; }
 		if (!m_built) { BuildTable(); }
 
 		String dt = ev.damageType;

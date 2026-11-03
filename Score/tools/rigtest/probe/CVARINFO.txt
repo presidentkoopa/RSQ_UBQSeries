@@ -1,0 +1,2 @@
+// TEST ONLY (never ships). rsp_slowmo 1: the probe also runs the slow-motion case (load RSQ_SlowMo.pk3).
+server int rsp_slowmo = 0;
