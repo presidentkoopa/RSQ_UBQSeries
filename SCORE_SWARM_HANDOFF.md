@@ -31,6 +31,11 @@ Code: `Score/zscript/rsscore/`. The design notes are in `Score/README.md` (appen
 Every name in the sheet is a **placeholder**, every pay a starting guess, and nothing in it has been built or
 measured.
 
+**Grapple changed after the sheet was written (2026-11-03, commit 61543d021):** its default is now jpalomo's
+original: a one-off fling toward a wall or ceiling (never held there), and a one-off yank of a monster toward you.
+The rope pull, slide, swing and lasso are options, off by default. Re-check every Grapple row in the sheet (kills
+while hanging on the rope, Dismount, the slide-in rows, Indiana Jones) against the new default.
+
 ## Step 1: expand the list (the owner wants more)
 
 - **Add rows to `NAMING_SHEET.csv`** in the same format, with a new stable id each.

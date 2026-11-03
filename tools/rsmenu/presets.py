@@ -94,7 +94,7 @@ MODS = {
  ]),
  'Grapple': ('MENUDEF.txt', 'CVARINFO.txt', [
   ('RSQGR_P_Range', ['Short', 'Standard', 'Long'], {
-     'Short': {'rsqgr_range': 768}, 'Long': {'rsqgr_range': 3072}}),
+     'Short': {'rsqgr_range': 600}, 'Long': {'rsqgr_range': 3072}}),
   ('RSQGR_P_Swing', ['Floaty', 'Standard', 'Snappy'], {
      # how the rope carries you: reel, lean, top speed together
      'Floaty': {'rsqgr_reel_speed': 8, 'rsqgr_pump': 0.4, 'rsqgr_max_speed': 22, 'rsqgr_speed': 32},

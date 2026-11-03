@@ -40,7 +40,7 @@ OptionValue "RSQGR_RopeStyles"
 // PRESETS -- written by tools/rsmenu/presets.py (Standard = CVARINFO defaults); edit the script, not here
 OptionString "RSQGR_P_Range"
 {
-	"rsqgr_range 768", "Short"
+	"rsqgr_range 600", "Short"
 	"rsqgr_range 780", "Standard"
 	"rsqgr_range 3072", "Long"
 }
