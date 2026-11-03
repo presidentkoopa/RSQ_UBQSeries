@@ -53,6 +53,17 @@ class RSQGR_Hook : Actor
 	double bestDist;
 	int noProgress;
 
+	// THE ROPE ROUND A CORNER (owner 11-03; core.zs RopeSight): where the straight line from the body to the claw meets
+	// a wall, the rope BENDS there instead of letting go. pivx/y/z are the bends, the first nearest the claw, the last
+	// the one the body hangs from now (EffAnchor); ropeLen is the free length from that bend to the body.
+	Array<double> pivx, pivy, pivz;
+	int Pivots() const { return pivx.Size(); }
+	Vector3 Piv(int i) const { return (pivx[i], pivy[i], pivz[i]); }
+	Vector3 EffAnchor() const { return pivx.Size() > 0 ? Piv(pivx.Size() - 1) : anchor; }
+	Vector3 PrevAnchor() const { return pivx.Size() > 1 ? Piv(pivx.Size() - 2) : anchor; }
+	void PushPivot(Vector3 p) { pivx.Push(p.x); pivy.Push(p.y); pivz.Push(p.z); }
+	void PopPivot() { int n = pivx.Size(); if (n > 0) { pivx.Delete(n - 1); pivy.Delete(n - 1); pivz.Delete(n - 1); } }
+	void ClearPivots() { pivx.Clear(); pivy.Clear(); pivz.Clear(); }
 	Array<RSQGR_Rope> segs;     // cable look
 	Array<RSQGR_Link> links;    // chain look
 	transient bool hcLit;       // high contrast: claw and rope at full brightness (DrawRope)
@@ -209,20 +220,27 @@ class RSQGR_Hook : Actor
 			mainFrom = g;
 		}
 
-		Vector3 span = to - mainFrom;
+		// round the bends: the free length (hand to the nearest bend, or the claw) may sag; the wrapped lengths are taut
+		Vector3 first = (phase == PH_LATCH && Pivots() > 0) ? EffAnchor() : to;
+		Vector3 span = first - mainFrom;
 		double d = span.Length();
 		double sag = 0;
 		if (phase == PH_LATCH && slack && gripHand < 0)
 		{
 			// The rope's length is kept from the body's attach point, not the hand: the
 			// spare is measured there and the sag drawn from the hand with that spare.
-			double spare = ropeLen - (ClawPoint() - RSQGR_Core.AttachPoint(owner)).Length();
+			double spare = ropeLen - (first - RSQGR_Core.AttachPoint(owner)).Length();
 			if (spare > 0.5) sag = 0.5 * sqrt((d + spare) * (d + spare) - d * d);
 		}
 		else if (phase == PH_RETRACT) sag = d * 0.06;
 		sag = min(sag, 160);
 		int n = (sag > 1.5) ? clamp(int(d / 24) + 2, 4, max(1, RSQGR_Util.Opt("rsqgr_rope_segs", 12))) : 1;
-		AddArc(px, py, pz, mainFrom, to, sag, n);
+		AddArc(px, py, pz, mainFrom, first, sag, n);
+		if (phase == PH_LATCH && Pivots() > 0)
+		{
+			for (int i = Pivots() - 1; i >= 1; i--) AddArc(px, py, pz, Piv(i), Piv(i - 1), 0, 1);
+			AddArc(px, py, pz, Piv(0), to, 0, 1);
+		}
 
 		double total = 0;
 		for (int i = 1; i < px.Size(); i++)

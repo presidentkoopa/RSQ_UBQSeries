@@ -30,6 +30,8 @@ server bool   rsqgr_thump           = true;  // a thump in the hand when the hoo
 // the owner's QoL round (2026-10-31)
 server bool   rsqgr_calm            = true;  // GR1: hanging from the rope, the stick pulled back calms the swing (about a second)
 server bool   rsqgr_slack_letgo     = true;  // GR4: a rope lying slack on the floor for 3 s lets go by itself
+server bool   rsqgr_wrap            = true;  // the rope bends round a corner it swings past instead of letting go (core.zs RopeSight; owner 11-03)
+server bool   rsqgr_mantle          = true;  // hanging on a wall rope under a lip, the stick forward takes you up and over it (core.zs Mantle; owner 11-03)
 server int    rsqgr_tap_tics        = 8;     // GR8: a press released within this many tics is a tap (lets go); longer reels
 server bool   rsqgr_use_lines       = false; // GR5: the claw hitting a switch or a door uses it (the engine's Line.Activate) and comes back
 server bool   rsqgr_aim_dot         = false; // GR6: a faint dot where the claw would bite while an empty hand points

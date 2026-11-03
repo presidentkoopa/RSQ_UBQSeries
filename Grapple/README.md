@@ -27,6 +27,10 @@ and data only, no engine change.
   it.
 - A thump in the hand when the hook bites or the rope catches your fall (Hook Thump).
 - A rope lying slack on the floor for 3 seconds lets go by itself (Slack Rope Lets Go).
+- **The rope bends round corners** (Rope Wraps Corners): swing past a corner and the rope wraps it and you swing from
+  the bend; swing back and it straightens out again. Up to six bends.
+- **Mantle** (Mantle (Stick Forward)): hanging on a wall rope with a ledge within reach above you, push the stick
+  forward and you go up and over the lip.
 - Switches and doors the claw hits can be used (Hook Switches and Doors, off by default).
 - A faint aim dot where the claw would bite, shown while an empty hand points (Aim Dot, off by default).
 
@@ -106,6 +110,8 @@ on the Tuning and Debug page; Standard is the default.
 | Hook Thump | On | A thump in the hand when the hook bites or the rope catches your fall. |
 | Calm Swing (Stick Back) | On | Hanging, the stick pulled back calms the swing in about a second. |
 | Slack Rope Lets Go | On | A rope lying slack on the floor for 3 seconds lets go by itself. |
+| Rope Wraps Corners | On | The rope bends round a corner it swings past instead of letting go; it straightens again when the way is clear. |
+| Mantle (Stick Forward) | On | Hanging on a wall rope under a lip within reach, the stick forward takes you up and over it. |
 | Hook Switches and Doors | Off | The claw hitting a switch or door uses it and comes back. |
 | Aim Dot (Empty Hand) | Off | A faint dot where the claw would bite while an empty hand points. |
 | Rope Look | Chain | Chain (jpalomo's links) or Cable. |
@@ -198,10 +204,7 @@ Works on plain Doom 2 without Brutal Doom.
 - A boss, or anything over Heaviest Pulled, never comes; you are flung toward it instead. jpalomo's original
   threw even a Cyberdemon.
 - Rope mode: hanging, you stay where the pull stopped, at any angle. The stick does nothing during the pull or
-  the hang. Two ropes out at once pull you between their two points.
-- Rope mode: stopped against the face of a wall below its top, you hang there. The Ledge Hop is the only help
-  over a lip; there is no mantle.
-- The rope does not wrap round corners: swing round one and it slips and lets go.
+  the hang, except the Mantle. Two ropes out at once pull you between their two points.
 - The claw sprite is jpalomo's 15-unit claw: large right at the hand at launch.
 - jpalomo's art and sounds are slated for replacement (see Credits).
 

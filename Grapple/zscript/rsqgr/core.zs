@@ -179,6 +179,7 @@ class RSQGR_Core : EventHandler
 				h.owner.vel.z = max(h.owner.vel.z, hop);
 		}
 		h.victim = null;
+		h.ClearPivots();
 		h.SetPhase(RSQGR_Hook.PH_RETRACT);
 		Log(h, byPlayer ? "letgo" : "drop");
 	}
@@ -234,6 +235,7 @@ class RSQGR_Core : EventHandler
 				else if (h.phase == RSQGR_Hook.PH_HOLD) { if (h.phaseAge >= 16) LetGo(h, false); }
 			}
 			if (pmo && pmo.Health > 0) Swing(pmo, pn);
+			if (pmo && pmo.Health > 0) MantleTick(pmo, pn);
 			if (pmo && pmo.Health > 0 && RSQGR_A11y.Vignette() > 0) Comfort(pmo, pn);
 		}
 		AimDot();
@@ -424,6 +426,7 @@ class RSQGR_Core : EventHandler
 	{
 		let pmo = h.owner;
 		Vector3 b = AttachPoint(pmo);
+		h.ClearPivots();
 		h.ropeLen = (h.anchor - b).Length();
 		h.losBad = 0;
 		h.wasTaut = false;
@@ -698,7 +701,7 @@ class RSQGR_Core : EventHandler
 			if (!UpdateAnchor(h)) { LetGo(h, false); continue; }
 			any = true;
 
-			Vector3 a = h.anchor;
+			Vector3 a = h.EffAnchor();
 			Vector3 b = AttachPoint(pmo);
 			Vector3 r = b - a;
 			double d = r.Length();
@@ -755,8 +758,7 @@ class RSQGR_Core : EventHandler
 				else h.floorIdle = 0;
 				if (level.maptime % 4 == (pn + hand) % 4)
 				{
-					if (!Sees(pmo, b, a)) { if (++h.losBad >= 3) { LetGo(h, false); continue; } }
-					else h.losBad = 0;
+					if (!RopeSight(h, pmo, b, a)) { LetGo(h, false); continue; }
 				}
 				if (level.maptime % 2 == 0) Log(h, "ground");
 				continue;
@@ -876,13 +878,16 @@ class RSQGR_Core : EventHandler
 			CapSpeed(pmo);
 			roped = true;
 
-			// The rope must see its anchor. Swing round a corner and it slips: checked
-			// every 4 tics, three misses in a row let go.
+			// The rope must see its anchor -- or bend round what is in the way (RopeSight): checked every 4 tics, three
+			// misses in a row that nothing can be wrapped round let go.
 			if (level.maptime % 4 == (pn + hand) % 4)
 			{
-				if (!Sees(pmo, b, a)) { if (++h.losBad >= 3) { LetGo(h, false); continue; } }
-				else h.losBad = 0;
+				if (!RopeSight(h, pmo, b, a)) { LetGo(h, false); continue; }
 			}
+			// THE MANTLE from a swing-rope hang too (owner 11-03): hanging on a wall rope with a lip in reach, the stick forward
+			// goes up and over instead of pumping the swing (the pump has nothing to do against a wall face)
+			if (!grounded && h.anchorPlane == 0 && !h.heavy && h.gripHand < 0 && pmo.player.cmd.forwardmove > 3200 && Mantle(h, pmo, -n))
+				continue;
 			if (level.maptime % 2 == 0 || (climbing && climbStep != 0)) Log(h, (climbing && climbStep != 0) ? "climb" : h.reelHeld ? "reel" : (h.gripHand >= 0 ? "hold" : "swing"));
 		}
 		tracked[pn] = roped;
@@ -938,7 +943,7 @@ class RSQGR_Core : EventHandler
 	// returns whether the rope sets his velocity this tic, and to what
 	bool, Vector3 Pull(RSQGR_Hook h, PlayerPawn pmo, int pn, int hand, int i)
 	{
-		Vector3 a = h.anchor;
+		Vector3 a = h.EffAnchor();
 		Vector3 b = AttachPoint(pmo);
 		Vector3 r = a - b;
 		double d = r.Length();
@@ -950,11 +955,10 @@ class RSQGR_Core : EventHandler
 		h.slack = false;   // drawn taut, claw to hand
 		h.reelHeld = held[i] && (pressFired[i] || level.maptime - pressTic[i] > TapTics());
 		if (d > maxLen + 64) { LetGo(h, false); return false, (0, 0, 0); }
-		// the rope must see its claw, as a swing's must: three misses in a row (checked every 4 tics) let go
+		// the rope must see its claw, as a swing's must, or bend round what is in the way (RopeSight)
 		if (level.maptime % 4 == (pn + hand) % 4)
 		{
-			if (!Sees(pmo, b, a)) { if (++h.losBad >= 3) { LetGo(h, false); return false, (0, 0, 0); } }
-			else h.losBad = 0;
+			if (!RopeSight(h, pmo, b, a)) { LetGo(h, false); return false, (0, 0, 0); }
 		}
 		if (d < 0.01) return false, (0, 0, 0);
 		Vector3 n = r / d;   // toward the claw
@@ -990,6 +994,13 @@ class RSQGR_Core : EventHandler
 			LetGo(h, false);
 			return true, (0, 0, 0);
 		}
+		// THE MANTLE (owner 11-03; the README limit "stopped against the face of a wall below its top, you hang there"):
+		// hanging on a wall rope with a ledge within reach above, the stick pushed forward takes you up and over it.
+		if (RSQGR_Util.Opt("rsqgr_debug", 0) > 0 && level.maptime % 35 == 0)
+			Log(h, String.Format("hang: grounded %d plane %d heavy %d grip %d stick %d", grounded ? 1 : 0, h.anchorPlane, h.heavy ? 1 : 0, h.gripHand, pmo.player.cmd.forwardmove));
+		// (a quarter of the stick: a full stick at walk speed is 6400, at run 12800)
+		if (!grounded && h.anchorPlane == 0 && !h.heavy && h.gripHand < 0 && pmo.player.cmd.forwardmove > 3200 && Mantle(h, pmo, n))
+			return true, pmo.vel;
 		double cap = climbing ? RSQGR_Util.Num("rsqgr_climb_cap", 8) : top;
 		double s = clamp(d - h.ropeLen, -cap, cap);
 		if (level.maptime % 2 == 0 || (climbing && climbStep != 0)) Log(h, (climbing && climbStep != 0) ? "climb" : h.reelHeld ? "reel" : (h.gripHand >= 0 ? "hold" : "hang"));
@@ -1105,6 +1116,111 @@ class RSQGR_Core : EventHandler
 		// the hand with no radial speed of its own, so a stroke stops when the arm does
 		// instead of coasting on (rig: 27 units of overshoot after a stroke ended).
 		return true;
+	}
+
+	// THE ROPE ROUND A CORNER (owner 11-03). The rope ran straight from the body to the claw and had to see it: swing
+	// round a corner and it let go. Now the wall the straight line meets becomes a BEND the rope runs round: the bend is
+	// what the body hangs from (RSQGR_Hook.EffAnchor) for the swing and the pull, the length beyond it comes off the free
+	// length, and when the line from the body to the bend before it is clear again the rope straightens back and the
+	// length returns. The bend sits 6 units back from the wall toward the body, so the line to it is clear by
+	// construction. Up to MAX_PIV bends; rsqgr_wrap off is the old rule (let go). Returns whether the rope holds.
+	const MAX_PIV = 6;
+	bool RopeSight(RSQGR_Hook h, PlayerPawn pmo, Vector3 b, Vector3 a)
+	{
+		if (Sees(pmo, b, a))
+		{
+			h.losBad = 0;
+			while (h.Pivots() > 0 && Sees(pmo, b, h.PrevAnchor()))
+			{
+				double back = (h.EffAnchor() - h.PrevAnchor()).Length();
+				h.PopPivot();
+				h.ropeLen = min(h.ropeLen + back, h.range * 1.25);
+				Log(h, String.Format("rope straightens off a corner (%d left), %.0f let back out", h.Pivots(), back));
+			}
+			return true;
+		}
+		if (h.Pivots() < MAX_PIV && RSQGR_Util.Flag("rsqgr_wrap", true))
+		{
+			Vector3 dv = a - b;
+			double l = dv.Length();
+			if (l > 24)
+			{
+				let tr = GetTracer();
+				tr.shooter = pmo;
+				if (tr.Trace(b, level.PointInSector(b.xy), dv / l, l - 8, 0, RSQGR_Tracer.WALLMASK, true, pmo) && tr.Results.HitType != TRACE_HitNone)
+				{
+					Vector3 p = tr.Results.HitPos - (dv / l) * 6;
+					double seg = (a - p).Length();
+					if (seg > 8 && (p - b).Length() > 16)
+					{
+						h.PushPivot(p);
+						h.ropeLen = max(RSQGR_Util.Num("rsqgr_min_len", 32), h.ropeLen - seg);
+						h.losBad = 0;
+						Log(h, String.Format("rope wraps a corner (%d), %.0f taken up", h.Pivots(), seg));
+						return true;
+					}
+				}
+			}
+		}
+		return ++h.losBad < 3;
+	}
+
+	// THE MANTLE. From a hang on a wall rope (Pull, arrived): the lip the wall ends in must be within reach above the
+	// feet (up to 1.5 x your height) with the room to stand, found by the floor of the sector two radii past the wall
+	// along the rope's line. Then: the rope let go, a hop that tops the lip by a hand's breadth, a step onward -- the
+	// engine's own move carries you onto it. rsqgr_mantle off: the hang as before.
+	bool Mantle(RSQGR_Hook h, PlayerPawn pmo, Vector3 n)
+	{
+		if (!RSQGR_Util.Flag("rsqgr_mantle", true)) return false;
+		// past the wall along the claw's own flight (the rope's line may meet a diagonal wall at a slant): from the anchor,
+		// which sits a unit in front of the wall, a body's radius and a bit beyond it
+		Vector2 nh = h.dir.xy;
+		if (nh.Length() < 0.2) nh = n.xy;
+		if (nh.Length() < 0.2) return false;
+		nh = nh.Unit();
+		Vector2 over = h.anchor.xy + nh * (pmo.radius + 12);
+		Sector s = level.PointInSector(over);
+		if (!s) return false;
+		double fz = s.floorplane.ZatPoint(over);
+		double cz = s.ceilingplane.ZatPoint(over);
+		double rise = fz - pmo.Pos.z;
+		if (RSQGR_Util.Opt("rsqgr_debug", 0) > 0 && level.maptime % 8 == 0)
+			Log(h, String.Format("mantle? over %.0f %.0f floor %.0f ceil %.0f rise %.0f (max %.0f) stick %d", over.x, over.y, fz, cz, rise, pmo.Height * 1.5, pmo.player.cmd.forwardmove));
+		if (rise < 8 || rise > pmo.Height * 1.5 || cz - fz < pmo.Height) return false;
+		// and the way onto it must be open at lip height: a lip behind a solid wall is no lip (measured 11-03: the claw's
+		// wall was a wall of the lower floor; the body rose over the ledge's height and was stopped by it). A sight line
+		// from the body to the point over the lip, a head's height above the lip, through the wall's opening.
+		Vector3 eye = (pmo.Pos.xy, fz + 40.0);
+		Vector3 there = (over.x, over.y, fz + 40.0);
+		if (!Sees(pmo, eye, there))
+		{
+			if (RSQGR_Util.Opt("rsqgr_debug", 0) > 0 && level.maptime % 8 == 0) Log(h, "mantle? no: the way over the lip is walled");
+			return false;
+		}
+		LetGo(h, true);
+		double grav = max(0.1, level.gravity * pmo.Gravity / 800.0);
+		double vz = sqrt(2.0 * grav * (rise + 8.0));
+		// straight up first: a sideways push against the wall face dies on it (measured 11-03: the body rose over the lip and
+		// fell straight back). MantleTick pushes you onto the ledge once your feet are above it.
+		pmo.vel = (0, 0, max(vz, 4.0));
+		int pn = pmo.PlayerNumber();
+		mantleUntil[pn] = level.maptime + 40;
+		mantleDir[pn] = nh;
+		mantleZ[pn] = fz;
+		Log(h, String.Format("mantle: a lip %.0f up, hop %.1f", rise, vz));
+		return true;
+	}
+	// the mantle's follow-through (WorldTick): above the lip, a steady step onto it; landed on it, done
+	int mantleUntil[MAXPLAYERS];
+	Vector2 mantleDir[MAXPLAYERS];
+	double mantleZ[MAXPLAYERS];
+	void MantleTick(PlayerPawn pmo, int pn)
+	{
+		if (level.maptime >= mantleUntil[pn]) return;
+		bool grounded = pmo.Pos.z <= pmo.floorz + 0.5 || pmo.bOnMobj;
+		if (grounded && pmo.floorz >= mantleZ[pn] - 2) { mantleUntil[pn] = 0; if (RSQGR_Util.Opt("rsqgr_debug", 0) > 0) Console.Printf("T_GR t%d mantled onto the ledge at %.0f", level.maptime, pmo.floorz); return; }
+		if (pmo.Pos.z >= mantleZ[pn] - 2) pmo.vel.xy = mantleDir[pn] * 8.0;
+		else pmo.vel.xy = (0, 0);
 	}
 
 	// Follows a moving plane, a moving heavy monster; checks a wall is still there.
