@@ -1,0 +1,41 @@
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 66:
+No sprites specified for voxel.
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 72:
+No sprites specified for voxel.
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 77:
+No sprites specified for voxel.
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 892:
+No sprites specified for voxel.
+FP rig granted RSQ_Upgrade_Smoker
+FP rig granted RSQ_Upgrade_ChainSmoker
+TRC_SETUP_DONE
+trc: REP #99 t140 phase 0 | main None pend None off Shotgun offNext  | zippo open 0 | inv cig 0 zippo 0 | packs 33 | mouthprop 0 flying 0 lying 0 world-cigweapon 0 world-zippo 0 | drawn main-layer none off-layer Shotgun
+TRC_S1_FAST_GRIP_SWING_IN_HAND
+T_CIG rsqtr_cigtake t155 phase 0
+trc: REP #1 t199 phase 1 | main RSQTR_CigWeapon pend None off RSQTR_ZippoWeapon offNext  | zippo open 0 | inv cig 1 zippo 1 | packs 32 | mouthprop 0 flying 0 lying 0 world-cigweapon 0 world-zippo 0 | drawn main-layer RSQTR_CigWeapon off-layer RSQTR_ZippoWeapon
+trc: REP #2 t285 phase 1 | main RSQTR_CigWeapon pend None off RSQTR_ZippoWeapon offNext  | zippo open 0 | inv cig 1 zippo 1 | packs 32 | mouthprop 0 flying 0 lying 0 world-cigweapon 0 world-zippo 0 | drawn main-layer RSQTR_CigWeapon off-layer RSQTR_ZippoWeapon
+T_CIG rsqtr_cigback t300 phase 1
+TRC_S2_SWITCHHAND1_IN_HAND
+T_CIG rsqtr_cigtake t356 phase 0
+T_CIG end t399: the cigarette was moved to the off hand (switchhand) -> back in the pocket (unlit)
+trc: REP #3 t404 phase 0 | main Melee_Attacks pend None off Shotgun offNext  | zippo open 0 | inv cig 0 zippo 0 | packs 33 | mouthprop 0 flying 0 lying 0 world-cigweapon 0 world-zippo 0 | drawn main-layer Melee_Attacks off-layer Shotgun
+trc: REP #4 t464 phase 0 | main Melee_Attacks pend None off Shotgun offNext  | zippo open 0 | inv cig 0 zippo 0 | packs 33 | mouthprop 0 flying 0 lying 0 world-cigweapon 0 world-zippo 0 | drawn main-layer Melee_Attacks off-layer Shotgun
+TRC_S3_SWITCHHAND0_ZIPPO
+T_CIG rsqtr_cigtake t479 phase 0
+T_CIG end t522: the Zippo was moved to the main hand (switchhand) -> back in the pocket (unlit)
+trc: REP #5 t527 phase 0 | main Melee_Attacks pend None off Shotgun offNext  | zippo open 0 | inv cig 0 zippo 0 | packs 33 | mouthprop 0 flying 0 lying 0 world-cigweapon 0 world-zippo 0 | drawn main-layer Melee_Attacks off-layer Shotgun
+trc: REP #6 t587 phase 0 | main Melee_Attacks pend None off Shotgun offNext  | zippo open 0 | inv cig 0 zippo 0 | packs 33 | mouthprop 0 flying 0 lying 0 world-cigweapon 0 world-zippo 0 | drawn main-layer Melee_Attacks off-layer Shotgun
+TRC_S4_HIP_GRIP_IN_HAND
+T_CIG rsqtr_cigtake t602 phase 0
+T_CIG rsqtr_cigend t657 phase 1
+T_CIG end t657: the main hand's grip at a holster -> back in the pocket (unlit)
+trc: REP #7 t706 phase 0 | main Melee_Attacks pend None off Shotgun offNext  | zippo open 0 | inv cig 0 zippo 0 | packs 33 | mouthprop 0 flying 0 lying 0 world-cigweapon 0 world-zippo 0 | drawn main-layer Melee_Attacks off-layer Shotgun
+T_CIG rsqtr_cigtake t721 phase 0
+T_CIG rsqtr_cigend t776 phase 1
+T_CIG end t776: the main hand's grip at a holster -> back in the pocket (unlit)
+trc: REP #8 t825 phase 0 | main Melee_Attacks pend None off Shotgun offNext  | zippo open 0 | inv cig 0 zippo 0 | packs 33 | mouthprop 0 flying 0 lying 0 world-cigweapon 0 world-zippo 0 | drawn main-layer Melee_Attacks off-layer Shotgun
+TRC_S5_WEAPNEXT_IN_MOUTH
+T_CIG rsqtr_cigtake t840 phase 0
+T_CIG rsqtr_ciglock t893 phase 1
+T_CIG end t941: the main hand holding UBQS_Saber -> back in the pocket (unlit)
+trc: REP #9 t1020 phase 0 | main Melee_Attacks pend None off Shotgun offNext  | zippo open 0 | inv cig 0 zippo 0 | packs 33 | mouthprop 0 flying 0 lying 0 world-cigweapon 0 world-zippo 0 | drawn main-layer Melee_Attacks off-layer Shotgun

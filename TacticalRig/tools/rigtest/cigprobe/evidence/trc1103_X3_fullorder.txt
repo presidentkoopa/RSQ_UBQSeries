@@ -1,0 +1,79 @@
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 66:
+No sprites specified for voxel.
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 72:
+No sprites specified for voxel.
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 77:
+No sprites specified for voxel.
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 892:
+No sprites specified for voxel.
+FP rig granted RSQ_Upgrade_Smoker
+FP rig granted RSQ_Upgrade_ChainSmoker
+TRC_SETUP_DONE
+trc: REP #99 t140 phase 0 | main None pend None off Shotgun offNext  | zippo open 0 | inv cig 0 zippo 0 | packs 33 | mouthprop 0 flying 0 lying 0 world-cigweapon 0 world-zippo 0 | drawn main-layer none off-layer Shotgun
+TRC_LIT_MAIN_SWITCH_KEY_B
+T_CIG rsqtr_cigtake t155 phase 0
+T_CIG rsqtr_ciglock t208 phase 1
+T_CIG rsqtr_zipflick t256 phase 2
+T_CIG rsqtr_ciglight t299 phase 2
+T_CIG lit t299: smoking 175 tics (5.0 s)
+trc: REP #301 t321 phase 3 | main Melee_Attacks pend None off RSQTR_ZippoWeapon offNext  | zippo open 0 | inv cig 0 zippo 1 | packs 32 | mouthprop 1 flying 0 lying 0 world-cigweapon 0 world-zippo 0 | drawn main-layer Melee_Attacks off-layer RSQTR_ZippoWeapon
+T_CIG rsqtr_cigend t323 phase 3
+T_CIG end t324: the main hand holding UBQS_Saber -> flicked (lit)
+trc: REP #302 t370 phase 0 | main Melee_Attacks pend None off Shotgun offNext  | zippo open 0 | inv cig 0 zippo 0 | packs 32 | mouthprop 0 flying 0 lying 1 world-cigweapon 0 world-zippo 0 | drawn main-layer Melee_Attacks off-layer Shotgun
+TRC_LIT_OFF_SWITCH_KEY_Y
+T_CIG rsqtr_cigtake t403 phase 0
+T_CIG rsqtr_ciglock t456 phase 1
+T_CIG rsqtr_zipflick t504 phase 2
+T_CIG rsqtr_ciglight t547 phase 2
+T_CIG lit t547: smoking 175 tics (5.0 s)
+trc: REP #303 t569 phase 3 | main Melee_Attacks pend None off RSQTR_ZippoWeapon offNext  | zippo open 0 | inv cig 0 zippo 1 | packs 31 | mouthprop 1 flying 0 lying 1 world-cigweapon 0 world-zippo 0 | drawn main-layer Melee_Attacks off-layer RSQTR_ZippoWeapon
+T_CIG rsqtr_cigend t571 phase 3
+T_CIG end t573: a weapon switch key -> flicked (lit)
+trc: REP #304 t618 phase 0 | main Melee_Attacks pend None off Shotgun offNext  | zippo open 0 | inv cig 0 zippo 0 | packs 31 | mouthprop 0 flying 0 lying 2 world-cigweapon 0 world-zippo 0 | drawn main-layer Melee_Attacks off-layer Shotgun
+TRC_LIT_SWITCHHAND_1
+T_CIG rsqtr_cigtake t651 phase 0
+T_CIG rsqtr_ciglock t704 phase 1
+T_CIG rsqtr_zipflick t752 phase 2
+T_CIG rsqtr_ciglight t795 phase 2
+T_CIG lit t795: smoking 175 tics (5.0 s)
+trc: REP #305 t818 phase 3 | main Melee_Attacks pend None off RSQTR_ZippoWeapon offNext  | zippo open 0 | inv cig 0 zippo 1 | packs 30 | mouthprop 1 flying 0 lying 2 world-cigweapon 0 world-zippo 0 | drawn main-layer Melee_Attacks off-layer RSQTR_ZippoWeapon
+trc: REP #306 t864 phase 3 | main Melee_Attacks pend None off RSQTR_ZippoWeapon offNext  | zippo open 0 | inv cig 0 zippo 1 | packs 30 | mouthprop 1 flying 0 lying 2 world-cigweapon 0 world-zippo 0 | drawn main-layer Melee_Attacks off-layer RSQTR_ZippoWeapon
+TRC_LIT_SWITCHHAND_0
+T_CIG rsqtr_cigspit t897 phase 3
+trc: t898 slowmo service found active 1 world speed 809 permille
+trc: t900 slowmo service found active 1 world speed 428 permille
+trc: t910 slowmo service found active 1 world speed 250 permille
+trc: REP #307 t1063 phase 0 | main Melee_Attacks pend None off Shotgun offNext  | zippo open 0 | inv cig 0 zippo 0 | packs 30 | mouthprop 0 flying 0 lying 3 world-cigweapon 0 world-zippo 0 | drawn main-layer Melee_Attacks off-layer Shotgun
+trc: REP #308 t1110 phase 0 | main Shotgun pend None off rsq_hands offNext  | zippo open 0 | inv cig 0 zippo 0 | packs 30 | mouthprop 0 flying 0 lying 3 world-cigweapon 0 world-zippo 0 | drawn main-layer Shotgun off-layer rsq_hands
+trc: t1110 slowmo service found active 1 world speed 464 permille
+trc: t1118 slowmo service found active 0 world speed 1000 permille
+TRC_LIT_MAIN_HOLSTER
+T_CIG rsqtr_cigtake t1143 phase 0
+T_CIG rsqtr_ciglock t1196 phase 1
+T_CIG rsqtr_zipflick t1245 phase 2
+T_CIG rsqtr_ciglight t1287 phase 2
+T_CIG lit t1287: smoking 175 tics (5.0 s)
+trc: REP #309 t1309 phase 3 | main Shotgun pend None off RSQTR_ZippoWeapon offNext  | zippo open 0 | inv cig 0 zippo 1 | packs 29 | mouthprop 1 flying 0 lying 2 world-cigweapon 0 world-zippo 0 | drawn main-layer Shotgun off-layer RSQTR_ZippoWeapon
+trc: REP #309 t1310 phase 3 | main Shotgun pend None off RSQTR_ZippoWeapon offNext  | zippo open 0 | inv cig 0 zippo 1 | packs 29 | mouthprop 1 flying 0 lying 2 world-cigweapon 0 world-zippo 0 | drawn main-layer Shotgun off-layer RSQTR_ZippoWeapon
+T_CIG rsqtr_cigend t1322 phase 3
+T_CIG end t1322: the main hand's grip at a holster -> flicked (lit)
+trc: REP #310 t1376 phase 0 | main Shotgun pend None off rsq_hands offNext  | zippo open 0 | inv cig 0 zippo 0 | packs 29 | mouthprop 0 flying 0 lying 3 world-cigweapon 0 world-zippo 0 | drawn main-layer Shotgun off-layer rsq_hands
+TRC_LIT_OFF_HOLSTER
+T_CIG rsqtr_cigtake t1409 phase 0
+T_CIG rsqtr_ciglock t1462 phase 1
+T_CIG rsqtr_zipflick t1510 phase 2
+T_CIG rsqtr_ciglight t1553 phase 2
+T_CIG lit t1553: smoking 175 tics (5.0 s)
+trc: REP #311 t1575 phase 3 | main Shotgun pend None off RSQTR_ZippoWeapon offNext  | zippo open 0 | inv cig 0 zippo 1 | packs 28 | mouthprop 1 flying 0 lying 3 world-cigweapon 0 world-zippo 0 | drawn main-layer Shotgun off-layer RSQTR_ZippoWeapon
+T_CIG rsqtr_cigend t1589 phase 3
+T_CIG end t1589: the off hand's grip at a holster -> flicked (lit)
+trc: REP #312 t1642 phase 0 | main Shotgun pend None off rsq_hands offNext  | zippo open 0 | inv cig 0 zippo 0 | packs 28 | mouthprop 0 flying 0 lying 3 world-cigweapon 0 world-zippo 0 | drawn main-layer Shotgun off-layer rsq_hands
+TRC_LIT_OTHER_MOD_TAKES_OFF
+T_CIG rsqtr_cigtake t1675 phase 0
+T_CIG rsqtr_ciglock t1728 phase 1
+T_CIG rsqtr_zipflick t1776 phase 2
+T_CIG rsqtr_ciglight t1819 phase 2
+T_CIG lit t1819: smoking 175 tics (5.0 s)
+trc: REP #313 t1841 phase 3 | main Shotgun pend None off RSQTR_ZippoWeapon offNext  | zippo open 0 | inv cig 0 zippo 1 | packs 27 | mouthprop 1 flying 0 lying 2 world-cigweapon 0 world-zippo 0 | drawn main-layer Shotgun off-layer RSQTR_ZippoWeapon
+T_CIG end t1845: the off hand holding rsq_hands instead of the Zippo -> flicked (lit)
+trc: REP #314 t1888 phase 0 | main Shotgun pend None off rsq_hands offNext  | zippo open 0 | inv cig 0 zippo 0 | packs 27 | mouthprop 0 flying 0 lying 3 world-cigweapon 0 world-zippo 0 | drawn main-layer Shotgun off-layer rsq_hands

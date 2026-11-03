@@ -1,0 +1,32 @@
+trc: t0 slowmo service absent active -2 world speed -2 permille
+TRC_SETUP_DONE
+trc: REP #99 t115 phase 0 | main Chaingun pend None off Shotgun offNext  | zippo open 0 | inv cig 0 zippo 0 | packs 33 | mouthprop 0 flying 0 lying 0 world-cigweapon 0 world-zippo 0 | drawn main-layer Chaingun off-layer Shotgun
+TRC_S1_FAST_GRIP_SWING_IN_HAND
+T_CIG rsqtr_cigtake t130 phase 0
+trc: REP #1 t174 phase 1 | main RSQTR_CigWeapon pend None off RSQTR_ZippoWeapon offNext  | zippo open 0 | inv cig 1 zippo 1 | packs 32 | mouthprop 0 flying 0 lying 0 world-cigweapon 0 world-zippo 0 | drawn main-layer RSQTR_CigWeapon off-layer RSQTR_ZippoWeapon
+trc: REP #2 t260 phase 1 | main RSQTR_CigWeapon pend None off RSQTR_ZippoWeapon offNext  | zippo open 0 | inv cig 1 zippo 1 | packs 32 | mouthprop 0 flying 0 lying 0 world-cigweapon 0 world-zippo 0 | drawn main-layer RSQTR_CigWeapon off-layer RSQTR_ZippoWeapon
+T_CIG rsqtr_cigback t275 phase 1
+TRC_S2_SWITCHHAND1_IN_HAND
+T_CIG rsqtr_cigtake t331 phase 0
+T_CIG end t374: the cigarette was moved to the off hand (switchhand) -> back in the pocket (unlit)
+trc: REP #3 t379 phase 0 | main Chaingun pend None off Shotgun offNext  | zippo open 0 | inv cig 0 zippo 0 | packs 33 | mouthprop 0 flying 0 lying 0 world-cigweapon 0 world-zippo 0 | drawn main-layer Chaingun off-layer Shotgun
+trc: REP #4 t439 phase 0 | main Chaingun pend None off Shotgun offNext  | zippo open 0 | inv cig 0 zippo 0 | packs 33 | mouthprop 0 flying 0 lying 0 world-cigweapon 0 world-zippo 0 | drawn main-layer Chaingun off-layer Shotgun
+TRC_S3_SWITCHHAND0_ZIPPO
+T_CIG rsqtr_cigtake t454 phase 0
+T_CIG end t497: the Zippo was moved to the main hand (switchhand) -> back in the pocket (unlit)
+trc: REP #5 t502 phase 0 | main Chaingun pend None off Shotgun offNext  | zippo open 0 | inv cig 0 zippo 0 | packs 33 | mouthprop 0 flying 0 lying 0 world-cigweapon 0 world-zippo 0 | drawn main-layer Chaingun off-layer Shotgun
+trc: REP #6 t562 phase 0 | main Chaingun pend None off Shotgun offNext  | zippo open 0 | inv cig 0 zippo 0 | packs 33 | mouthprop 0 flying 0 lying 0 world-cigweapon 0 world-zippo 0 | drawn main-layer Chaingun off-layer Shotgun
+TRC_S4_HIP_GRIP_IN_HAND
+T_CIG rsqtr_cigtake t577 phase 0
+T_CIG rsqtr_cigend t632 phase 1
+T_CIG end t632: the main hand's grip at a holster -> back in the pocket (unlit)
+trc: REP #7 t681 phase 0 | main Chaingun pend None off Shotgun offNext  | zippo open 0 | inv cig 0 zippo 0 | packs 33 | mouthprop 0 flying 0 lying 0 world-cigweapon 0 world-zippo 0 | drawn main-layer Chaingun off-layer Shotgun
+T_CIG rsqtr_cigtake t696 phase 0
+T_CIG rsqtr_cigend t751 phase 1
+T_CIG end t751: the main hand's grip at a holster -> back in the pocket (unlit)
+trc: REP #8 t800 phase 0 | main Chaingun pend None off Shotgun offNext  | zippo open 0 | inv cig 0 zippo 0 | packs 33 | mouthprop 0 flying 0 lying 0 world-cigweapon 0 world-zippo 0 | drawn main-layer Chaingun off-layer Shotgun
+TRC_S5_WEAPNEXT_IN_MOUTH
+T_CIG rsqtr_cigtake t815 phase 0
+T_CIG rsqtr_ciglock t868 phase 1
+T_CIG end t916: the main hand switching to Fist -> back in the pocket (unlit)
+trc: REP #9 t995 phase 0 | main Chaingun pend None off Shotgun offNext  | zippo open 0 | inv cig 0 zippo 0 | packs 33 | mouthprop 0 flying 0 lying 0 world-cigweapon 0 world-zippo 0 | drawn main-layer Chaingun off-layer Shotgun

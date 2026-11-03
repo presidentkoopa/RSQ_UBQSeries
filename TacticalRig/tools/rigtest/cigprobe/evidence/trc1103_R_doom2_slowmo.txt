@@ -1,0 +1,50 @@
+TRC_SETUP_DONE
+trc: REP #99 t115 phase 0 | main Chaingun pend None off Shotgun offNext  | zippo open 0 | inv cig 0 zippo 0 | packs 33 | mouthprop 0 flying 0 lying 0 world-cigweapon 0 world-zippo 0 | drawn main-layer Chaingun off-layer Shotgun
+TRC_R_TAKE
+T_CIG rsqtr_cigtake t130 phase 0
+trc: REP #1 t174 phase 1 | main RSQTR_CigWeapon pend None off RSQTR_ZippoWeapon offNext  | zippo open 0 | inv cig 1 zippo 1 | packs 32 | mouthprop 0 flying 0 lying 0 world-cigweapon 0 world-zippo 0 | drawn main-layer RSQTR_CigWeapon off-layer RSQTR_ZippoWeapon
+TRC_R_MOUTH
+T_CIG rsqtr_ciglock t185 phase 1
+trc: REP #2 t232 phase 2 | main Chaingun pend None off RSQTR_ZippoWeapon offNext  | zippo open 0 | inv cig 0 zippo 1 | packs 32 | mouthprop 1 flying 0 lying 0 world-cigweapon 0 world-zippo 0 | drawn main-layer Chaingun off-layer RSQTR_ZippoWeapon
+TRC_R_LIGHT
+T_CIG rsqtr_zipflick t235 phase 2
+T_CIG rsqtr_ciglight t278 phase 2
+T_CIG lit t278: smoking 70 tics (2.0 s)
+trc: REP #3 t300 phase 3 | main Chaingun pend None off RSQTR_ZippoWeapon offNext  | zippo open 0 | inv cig 0 zippo 1 | packs 32 | mouthprop 1 flying 0 lying 0 world-cigweapon 0 world-zippo 0 | drawn main-layer Chaingun off-layer RSQTR_ZippoWeapon
+trc: t349 slowmo service found active 1 world speed 809 permille
+trc: t350 slowmo service found active 1 world speed 619 permille
+trc: t360 slowmo service found active 1 world speed 250 permille
+TRC_R_AFTER_FLICK
+trc: REP #4 t382 phase 0 | main Chaingun pend None off Shotgun offNext  | zippo open 0 | inv cig 0 zippo 0 | packs 32 | mouthprop 0 flying 1 lying 0 world-cigweapon 0 world-zippo 0 | drawn main-layer Chaingun off-layer Shotgun
+TRC_R_FLICK_FROM_HAND
+T_CIG rsqtr_cigtake t397 phase 0
+T_CIG rsqtr_cigflick t450 phase 1
+trc: REP #5 t492 phase 0 | main Chaingun pend None off Shotgun offNext  | zippo open 0 | inv cig 0 zippo 0 | packs 31 | mouthprop 0 flying 0 lying 2 world-cigweapon 0 world-zippo 0 | drawn main-layer Chaingun off-layer Shotgun
+TRC_R_POCKET
+T_CIG rsqtr_cigtake t507 phase 0
+trc: t560 slowmo service found active 1 world speed 392 permille
+T_CIG rsqtr_cigback t564 phase 1
+trc: t569 slowmo service found active 0 world speed 1000 permille
+trc: REP #6 t617 phase 0 | main Chaingun pend None off Shotgun offNext  | zippo open 0 | inv cig 0 zippo 0 | packs 31 | mouthprop 0 flying 0 lying 2 world-cigweapon 0 world-zippo 0 | drawn main-layer Chaingun off-layer Shotgun
+TRC_R_UNMOUTH
+T_CIG rsqtr_cigtake t632 phase 0
+T_CIG rsqtr_ciglock t685 phase 1
+T_CIG rsqtr_cigunmouth t745 phase 2
+trc: REP #7 t788 phase 1 | main RSQTR_CigWeapon pend None off RSQTR_ZippoWeapon offNext  | zippo open 0 | inv cig 1 zippo 1 | packs 30 | mouthprop 0 flying 0 lying 2 world-cigweapon 0 world-zippo 0 | drawn main-layer RSQTR_CigWeapon off-layer RSQTR_ZippoWeapon
+T_CIG rsqtr_cigflick t799 phase 1
+trc: REP #8 t841 phase 0 | main Chaingun pend None off Shotgun offNext  | zippo open 0 | inv cig 0 zippo 0 | packs 30 | mouthprop 0 flying 0 lying 3 world-cigweapon 0 world-zippo 0 | drawn main-layer Chaingun off-layer Shotgun
+TRC_R_CIGS_OFF_LIT
+T_CIG rsqtr_cigtake t856 phase 0
+T_CIG rsqtr_ciglock t909 phase 1
+T_CIG rsqtr_zipflick t957 phase 2
+T_CIG rsqtr_ciglight t1000 phase 2
+T_CIG lit t1000: smoking 70 tics (2.0 s)
+trc: REP #9 t1052 phase 0 | main Chaingun pend None off Shotgun offNext  | zippo open 0 | inv cig 0 zippo 0 | packs 29 | mouthprop 0 flying 1 lying 2 world-cigweapon 0 world-zippo 0 | drawn main-layer Chaingun off-layer Shotgun
+TRC_R_LEVEL_CHANGE_MOUTH
+T_CIG rsqtr_cigtake t1077 phase 0
+T_CIG rsqtr_ciglock t1130 phase 1
+trc: REP #10 t1177 phase 2 | main Chaingun pend None off RSQTR_ZippoWeapon offNext  | zippo open 0 | inv cig 0 zippo 1 | packs 28 | mouthprop 1 flying 0 lying 3 world-cigweapon 0 world-zippo 0 | drawn main-layer Chaingun off-layer RSQTR_ZippoWeapon
+trc: REP #11 t79 phase 0 | main Chaingun pend None off Shotgun offNext  | zippo open 0 | inv cig 0 zippo 0 | packs 20 | mouthprop 0 flying 0 lying 0 world-cigweapon 0 world-zippo 0 | drawn main-layer Chaingun off-layer Shotgun
+TRC_R_DEATH_HAND
+T_CIG rsqtr_cigtake t94 phase 0
+trc: REP #12 t178 phase 0 | main RSQTR_CigWeapon pend Chaingun off None offNext  | zippo open 0 | inv cig 1 zippo 0 | packs 19 | mouthprop 0 flying 0 lying 0 world-cigweapon 0 world-zippo 0 | drawn main-layer none off-layer none

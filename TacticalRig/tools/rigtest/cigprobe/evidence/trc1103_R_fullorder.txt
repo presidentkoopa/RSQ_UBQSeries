@@ -1,0 +1,67 @@
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 66:
+No sprites specified for voxel.
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 72:
+No sprites specified for voxel.
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 77:
+No sprites specified for voxel.
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 892:
+No sprites specified for voxel.
+FP rig granted RSQ_Upgrade_Smoker
+FP rig granted RSQ_Upgrade_ChainSmoker
+TRC_SETUP_DONE
+trc: REP #99 t140 phase 0 health 100 state 0 | main None pend None off Shotgun offNext  | zippo open 0 | inv cig 0 zippo 0 | packs 33 | mouthprop 0 flying 0 lying 0 world-cigweapon 0 world-zippo 0 | drawn main-layer none off-layer Shotgun
+TRC_R_TAKE
+T_CIG rsqtr_cigtake t155 phase 0
+trc: REP #1 t199 phase 1 health 100 state 0 | main RSQTR_CigWeapon pend None off RSQTR_ZippoWeapon offNext  | zippo open 0 | inv cig 1 zippo 1 | packs 32 | mouthprop 0 flying 0 lying 0 world-cigweapon 0 world-zippo 0 | drawn main-layer RSQTR_CigWeapon off-layer RSQTR_ZippoWeapon
+TRC_R_MOUTH
+T_CIG rsqtr_ciglock t210 phase 1
+trc: REP #2 t257 phase 2 health 100 state 0 | main Melee_Attacks pend None off RSQTR_ZippoWeapon offNext  | zippo open 0 | inv cig 0 zippo 1 | packs 32 | mouthprop 1 flying 0 lying 0 world-cigweapon 0 world-zippo 0 | drawn main-layer Melee_Attacks off-layer RSQTR_ZippoWeapon
+TRC_R_LIGHT
+T_CIG rsqtr_zipflick t261 phase 2
+T_CIG rsqtr_ciglight t304 phase 2
+T_CIG lit t304: smoking 70 tics (2.0 s)
+trc: REP #3 t325 phase 3 health 100 state 0 | main Melee_Attacks pend None off RSQTR_ZippoWeapon offNext  | zippo open 0 | inv cig 0 zippo 1 | packs 32 | mouthprop 1 flying 0 lying 0 world-cigweapon 0 world-zippo 0 | drawn main-layer Melee_Attacks off-layer RSQTR_ZippoWeapon
+trc: REP #3 t326 phase 3 health 100 state 0 | main Melee_Attacks pend None off RSQTR_ZippoWeapon offNext  | zippo open 0 | inv cig 0 zippo 1 | packs 32 | mouthprop 1 flying 0 lying 0 world-cigweapon 0 world-zippo 0 | drawn main-layer Melee_Attacks off-layer RSQTR_ZippoWeapon
+trc: t375 slowmo service found active 1 world speed 809 permille
+trc: t380 slowmo service found active 1 world speed 250 permille
+TRC_R_AFTER_FLICK
+trc: REP #4 t407 phase 0 health 100 state 0 | main Melee_Attacks pend None off Shotgun offNext  | zippo open 0 | inv cig 0 zippo 0 | packs 32 | mouthprop 0 flying 1 lying 0 world-cigweapon 0 world-zippo 0 | drawn main-layer Melee_Attacks off-layer Shotgun
+TRC_R_FLICK_FROM_HAND
+trc: REP #4 t408 phase 0 health 100 state 0 | main Melee_Attacks pend None off Shotgun offNext  | zippo open 0 | inv cig 0 zippo 0 | packs 32 | mouthprop 0 flying 1 lying 0 world-cigweapon 0 world-zippo 0 | drawn main-layer Melee_Attacks off-layer Shotgun
+T_CIG rsqtr_cigtake t422 phase 0
+T_CIG rsqtr_cigflick t475 phase 1
+TRC_R_POCKET
+trc: REP #5 t518 phase 0 health 100 state 0 | main Melee_Attacks pend None off Shotgun offNext  | zippo open 0 | inv cig 0 zippo 0 | packs 31 | mouthprop 0 flying 0 lying 2 world-cigweapon 0 world-zippo 0 | drawn main-layer Melee_Attacks off-layer Shotgun
+T_CIG rsqtr_cigtake t532 phase 0
+T_CIG rsqtr_cigback t589 phase 1
+trc: t590 slowmo service found active 1 world speed 678 permille
+trc: t595 slowmo service found active 0 world speed 1000 permille
+trc: REP #6 t642 phase 0 health 100 state 0 | main Melee_Attacks pend None off Shotgun offNext  | zippo open 0 | inv cig 0 zippo 0 | packs 31 | mouthprop 0 flying 0 lying 2 world-cigweapon 0 world-zippo 0 | drawn main-layer Melee_Attacks off-layer Shotgun
+TRC_R_UNMOUTH
+T_CIG rsqtr_cigtake t657 phase 0
+T_CIG rsqtr_ciglock t710 phase 1
+T_CIG rsqtr_cigunmouth t770 phase 2
+trc: REP #7 t813 phase 1 health 100 state 0 | main RSQTR_CigWeapon pend None off RSQTR_ZippoWeapon offNext  | zippo open 0 | inv cig 1 zippo 1 | packs 30 | mouthprop 0 flying 0 lying 2 world-cigweapon 0 world-zippo 0 | drawn main-layer RSQTR_CigWeapon off-layer RSQTR_ZippoWeapon
+T_CIG rsqtr_cigflick t824 phase 1
+TRC_R_CIGS_OFF_LIT
+trc: REP #8 t868 phase 0 health 100 state 0 | main Melee_Attacks pend None off Shotgun offNext  | zippo open 0 | inv cig 0 zippo 0 | packs 30 | mouthprop 0 flying 0 lying 3 world-cigweapon 0 world-zippo 0 | drawn main-layer Melee_Attacks off-layer Shotgun
+trc: REP #8 t869 phase 0 health 100 state 0 | main Melee_Attacks pend None off Shotgun offNext  | zippo open 0 | inv cig 0 zippo 0 | packs 30 | mouthprop 0 flying 0 lying 3 world-cigweapon 0 world-zippo 0 | drawn main-layer Melee_Attacks off-layer Shotgun
+T_CIG rsqtr_cigtake t881 phase 0
+T_CIG rsqtr_ciglock t934 phase 1
+T_CIG rsqtr_zipflick t983 phase 2
+T_CIG rsqtr_ciglight t1025 phase 2
+T_CIG lit t1025: smoking 70 tics (2.0 s)
+trc: REP #9 t1078 phase 3 health 100 state 0 | main Melee_Attacks pend None off RSQTR_ZippoWeapon offNext  | zippo open 0 | inv cig 0 zippo 1 | packs 29 | mouthprop 1 flying 0 lying 2 world-cigweapon 0 world-zippo 0 | drawn main-layer Melee_Attacks off-layer RSQTR_ZippoWeapon
+trc: REP #9 t1079 phase 3 health 100 state 0 | main Melee_Attacks pend None off RSQTR_ZippoWeapon offNext  | zippo open 0 | inv cig 0 zippo 1 | packs 29 | mouthprop 1 flying 0 lying 2 world-cigweapon 0 world-zippo 0 | drawn main-layer Melee_Attacks off-layer RSQTR_ZippoWeapon
+TRC_R_LEVEL_CHANGE_MOUTH
+trc: t1097 slowmo service found active 1 world speed 809 permille
+trc: t1100 slowmo service found active 1 world speed 250 permille
+T_CIG rsqtr_cigtake t1103 phase 0
+T_CIG rsqtr_ciglock t1156 phase 1
+trc: REP #10 t1202 phase 2 health 100 state 0 | main Melee_Attacks pend None off RSQTR_ZippoWeapon offNext  | zippo open 0 | inv cig 0 zippo 1 | packs 28 | mouthprop 1 flying 0 lying 3 world-cigweapon 0 world-zippo 0 | drawn main-layer Melee_Attacks off-layer RSQTR_ZippoWeapon
+trc: REP #11 t79 phase 0 health 100 state 0 | main RSQ_Glove pend None off RSQ_GloveOff offNext  | zippo open 0 | inv cig 0 zippo 0 | packs 20 | mouthprop 0 flying 0 lying 0 world-cigweapon 0 world-zippo 0 | drawn main-layer RSQ_Glove off-layer RSQ_GloveOff
+TRC_R_DEATH_HAND
+trc: REP #11 t80 phase 0 health 100 state 0 | main RSQ_Glove pend None off RSQ_GloveOff offNext  | zippo open 0 | inv cig 0 zippo 0 | packs 20 | mouthprop 0 flying 0 lying 0 world-cigweapon 0 world-zippo 0 | drawn main-layer RSQ_Glove off-layer RSQ_GloveOff
+T_CIG rsqtr_cigtake t95 phase 0
+trc: REP #12 t179 phase 0 health -999900 state 1 | main RSQTR_CigWeapon pend RSQ_Glove off None offNext  | zippo open 0 | inv cig 1 zippo 0 | packs 19 | mouthprop 0 flying 0 lying 0 world-cigweapon 0 world-zippo 0 | drawn main-layer none off-layer none
+trc: REP #12 t180 phase 0 health -999900 state 1 | main RSQTR_CigWeapon pend RSQ_Glove off None offNext  | zippo open 0 | inv cig 1 zippo 0 | packs 19 | mouthprop 0 flying 0 lying 0 world-cigweapon 0 world-zippo 0 | drawn main-layer none off-layer none

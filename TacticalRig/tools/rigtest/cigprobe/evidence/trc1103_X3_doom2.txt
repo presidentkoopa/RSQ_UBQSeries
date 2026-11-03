@@ -1,0 +1,70 @@
+trc: t0 slowmo service absent active -2 world speed -2 permille
+TRC_SETUP_DONE
+trc: REP #99 t115 phase 0 health 100 state 0 | main Chaingun pend None off Shotgun offNext  | zippo open 0 | inv cig 0 zippo 0 | packs 33 | mouthprop 0 flying 0 lying 0 world-cigweapon 0 world-zippo 0 | drawn main-layer Chaingun off-layer Shotgun
+TRC_LIT_MAIN_SWITCH_KEY_B
+T_CIG rsqtr_cigtake t130 phase 0
+T_CIG rsqtr_ciglock t183 phase 1
+T_CIG rsqtr_zipflick t231 phase 2
+T_CIG rsqtr_ciglight t274 phase 2
+T_CIG lit t274: smoking 175 tics (5.0 s)
+trc: REP #301 t296 phase 3 health 100 state 0 | main Chaingun pend None off RSQTR_ZippoWeapon offNext  | zippo open 0 | inv cig 0 zippo 1 | packs 32 | mouthprop 1 flying 0 lying 0 world-cigweapon 0 world-zippo 0 | drawn main-layer Chaingun off-layer RSQTR_ZippoWeapon
+T_CIG rsqtr_cigend t298 phase 3
+T_CIG end t299: the main hand switching to Fist -> flicked (lit)
+trc: REP #302 t345 phase 0 health 100 state 0 | main Chaingun pend None off Shotgun offNext  | zippo open 0 | inv cig 0 zippo 0 | packs 32 | mouthprop 0 flying 0 lying 1 world-cigweapon 0 world-zippo 0 | drawn main-layer Chaingun off-layer Shotgun
+TRC_LIT_OFF_SWITCH_KEY_Y
+T_CIG rsqtr_cigtake t378 phase 0
+T_CIG rsqtr_ciglock t431 phase 1
+T_CIG rsqtr_zipflick t479 phase 2
+T_CIG rsqtr_ciglight t522 phase 2
+T_CIG lit t522: smoking 175 tics (5.0 s)
+trc: REP #303 t544 phase 3 health 100 state 0 | main Chaingun pend None off RSQTR_ZippoWeapon offNext  | zippo open 0 | inv cig 0 zippo 1 | packs 31 | mouthprop 1 flying 0 lying 1 world-cigweapon 0 world-zippo 0 | drawn main-layer Chaingun off-layer RSQTR_ZippoWeapon
+T_CIG rsqtr_cigend t546 phase 3
+T_CIG end t548: a weapon switch key -> flicked (lit)
+trc: REP #304 t593 phase 0 health 100 state 0 | main Chaingun pend None off Shotgun offNext  | zippo open 0 | inv cig 0 zippo 0 | packs 31 | mouthprop 0 flying 0 lying 2 world-cigweapon 0 world-zippo 0 | drawn main-layer Chaingun off-layer Shotgun
+TRC_LIT_SWITCHHAND_1
+T_CIG rsqtr_cigtake t626 phase 0
+T_CIG rsqtr_ciglock t679 phase 1
+T_CIG rsqtr_zipflick t727 phase 2
+T_CIG rsqtr_ciglight t770 phase 2
+T_CIG lit t770: smoking 175 tics (5.0 s)
+trc: REP #305 t792 phase 3 health 100 state 0 | main Chaingun pend None off RSQTR_ZippoWeapon offNext  | zippo open 0 | inv cig 0 zippo 1 | packs 30 | mouthprop 1 flying 0 lying 1 world-cigweapon 0 world-zippo 0 | drawn main-layer Chaingun off-layer RSQTR_ZippoWeapon
+T_CIG end t794: the main hand holding Fist -> flicked (lit)
+trc: REP #306 t839 phase 0 health 100 state 0 | main Chaingun pend None off Shotgun offNext  | zippo open 0 | inv cig 0 zippo 0 | packs 30 | mouthprop 0 flying 0 lying 2 world-cigweapon 0 world-zippo 0 | drawn main-layer Chaingun off-layer Shotgun
+TRC_LIT_SWITCHHAND_0
+T_CIG rsqtr_cigtake t872 phase 0
+T_CIG rsqtr_ciglock t925 phase 1
+T_CIG rsqtr_zipflick t973 phase 2
+T_CIG rsqtr_ciglight t1016 phase 2
+T_CIG lit t1016: smoking 175 tics (5.0 s)
+trc: REP #307 t1038 phase 3 health 100 state 0 | main Chaingun pend None off RSQTR_ZippoWeapon offNext  | zippo open 0 | inv cig 0 zippo 1 | packs 29 | mouthprop 1 flying 0 lying 1 world-cigweapon 0 world-zippo 0 | drawn main-layer Chaingun off-layer RSQTR_ZippoWeapon
+T_CIG end t1039: the Zippo was moved to the main hand (switchhand) -> flicked (lit)
+trc: REP #308 t1085 phase 0 health 100 state 0 | main Chaingun pend None off Shotgun offNext  | zippo open 0 | inv cig 0 zippo 0 | packs 29 | mouthprop 0 flying 0 lying 2 world-cigweapon 0 world-zippo 0 | drawn main-layer Chaingun off-layer Shotgun
+TRC_LIT_MAIN_HOLSTER
+T_CIG rsqtr_cigtake t1118 phase 0
+T_CIG rsqtr_ciglock t1171 phase 1
+T_CIG rsqtr_zipflick t1219 phase 2
+T_CIG rsqtr_ciglight t1262 phase 2
+T_CIG lit t1262: smoking 175 tics (5.0 s)
+trc: REP #309 t1284 phase 3 health 100 state 0 | main Chaingun pend None off RSQTR_ZippoWeapon offNext  | zippo open 0 | inv cig 0 zippo 1 | packs 28 | mouthprop 1 flying 0 lying 2 world-cigweapon 0 world-zippo 0 | drawn main-layer Chaingun off-layer RSQTR_ZippoWeapon
+T_CIG rsqtr_cigend t1298 phase 3
+T_CIG end t1298: the main hand's grip at a holster -> flicked (lit)
+trc: REP #310 t1351 phase 0 health 100 state 0 | main Chaingun pend None off Shotgun offNext  | zippo open 0 | inv cig 0 zippo 0 | packs 28 | mouthprop 0 flying 0 lying 3 world-cigweapon 0 world-zippo 0 | drawn main-layer Chaingun off-layer Shotgun
+TRC_LIT_OFF_HOLSTER
+T_CIG rsqtr_cigtake t1384 phase 0
+T_CIG rsqtr_ciglock t1437 phase 1
+T_CIG rsqtr_zipflick t1485 phase 2
+T_CIG rsqtr_ciglight t1528 phase 2
+T_CIG lit t1528: smoking 175 tics (5.0 s)
+trc: REP #311 t1550 phase 3 health 100 state 0 | main Chaingun pend None off RSQTR_ZippoWeapon offNext  | zippo open 0 | inv cig 0 zippo 1 | packs 27 | mouthprop 1 flying 0 lying 3 world-cigweapon 0 world-zippo 0 | drawn main-layer Chaingun off-layer RSQTR_ZippoWeapon
+T_CIG rsqtr_cigend t1563 phase 3
+T_CIG end t1563: the off hand's grip at a holster -> flicked (lit)
+trc: REP #312 t1617 phase 0 health 100 state 0 | main Chaingun pend None off Shotgun offNext  | zippo open 0 | inv cig 0 zippo 0 | packs 27 | mouthprop 0 flying 0 lying 4 world-cigweapon 0 world-zippo 0 | drawn main-layer Chaingun off-layer Shotgun
+TRC_LIT_OTHER_MOD_TAKES_OFF
+T_CIG rsqtr_cigtake t1650 phase 0
+T_CIG rsqtr_ciglock t1703 phase 1
+T_CIG rsqtr_zipflick t1751 phase 2
+T_CIG rsqtr_ciglight t1794 phase 2
+T_CIG lit t1794: smoking 175 tics (5.0 s)
+trc: REP #313 t1816 phase 3 health 100 state 0 | main Chaingun pend None off RSQTR_ZippoWeapon offNext  | zippo open 0 | inv cig 0 zippo 1 | packs 26 | mouthprop 1 flying 0 lying 4 world-cigweapon 0 world-zippo 0 | drawn main-layer Chaingun off-layer RSQTR_ZippoWeapon
+T_CIG end t1820: the off hand holding nothing instead of the Zippo -> flicked (lit)
+trc: REP #314 t1863 phase 0 health 100 state 0 | main Chaingun pend None off Shotgun offNext  | zippo open 0 | inv cig 0 zippo 0 | packs 26 | mouthprop 0 flying 0 lying 4 world-cigweapon 0 world-zippo 0 | drawn main-layer Chaingun off-layer Shotgun

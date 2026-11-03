@@ -1,0 +1,33 @@
+# the pk3 BEFORE the 11-03 change (the probe of that time): the thrown cigarette lying in the world, the cigarette in the off hand, the Zippo in the main hand
+trc: t0 slowmo service absent active -2 world speed -2 permille
+TRC_SETUP_DONE
+trc: REP #99 t115 phase 0 | main Chaingun pend None off Shotgun offNext  | zippo open 0 | inv cig 0 zippo 0 | packs 3 | mouthprop 0 flying 0 lying 0 world-cigweapon 0 world-zippo 0 | drawn main-layer Chaingun off-layer Shotgun
+TRC_S1_FAST_GRIP_SWING_IN_HAND
+T_CIG rsqtr_cigtake t130 phase 0
+trc: REP #1 t174 phase 1 | main RSQTR_CigWeapon pend None off Shotgun offNext  | zippo open 0 | inv cig 1 zippo 0 | packs 2 | mouthprop 0 flying 0 lying 0 world-cigweapon 0 world-zippo 0 | drawn main-layer RSQTR_CigWeapon off-layer Shotgun
+T_RIG threw RSQTR_CigWeapon t187 from (-86 810 93) at 21.3 a tic -> RSQTR_CigWeapon
+trc: t194 STRAY a cigarette weapon lying in the world; 
+trc: REP #2 t260 phase 0 | main Chaingun pend None off Shotgun offNext  | zippo open 0 | inv cig 0 zippo 0 | packs 3 | mouthprop 0 flying 0 lying 0 world-cigweapon 1 world-zippo 0 | drawn main-layer Chaingun off-layer Shotgun
+TRC_S2_SWITCHHAND1_IN_HAND
+T_CIG rsqtr_cigtake t275 phase 0
+trc: t318 STRAY a cigarette weapon lying in the world; the cigarette drawn in the OFF hand; 
+trc: t323 STRAY a cigarette weapon lying in the world; 
+trc: REP #3 t323 phase 0 | main None pend Chaingun off None offNext  | zippo open 0 | inv cig 0 zippo 0 | packs 3 | mouthprop 0 flying 0 lying 0 world-cigweapon 1 world-zippo 0 | drawn main-layer none off-layer none
+trc: REP #4 t383 phase 0 | main Chaingun pend None off None offNext  | zippo open 0 | inv cig 0 zippo 0 | packs 3 | mouthprop 0 flying 0 lying 0 world-cigweapon 1 world-zippo 0 | drawn main-layer Chaingun off-layer none
+TRC_S3_SWITCHHAND0_ZIPPO
+T_CIG rsqtr_cigtake t398 phase 0
+trc: t441 STRAY a cigarette weapon lying in the world; the Zippo drawn in the MAIN hand; 
+trc: t446 STRAY a cigarette weapon lying in the world; 
+trc: REP #5 t446 phase 0 | main None pend Chaingun off None offNext  | zippo open 0 | inv cig 0 zippo 0 | packs 3 | mouthprop 0 flying 0 lying 0 world-cigweapon 1 world-zippo 0 | drawn main-layer none off-layer none
+trc: REP #6 t506 phase 0 | main Chaingun pend None off None offNext  | zippo open 0 | inv cig 0 zippo 0 | packs 3 | mouthprop 0 flying 0 lying 0 world-cigweapon 1 world-zippo 0 | drawn main-layer Chaingun off-layer none
+TRC_S4_HIP_GRIP_IN_HAND
+T_CIG rsqtr_cigtake t522 phase 0
+trc: REP #7 t626 phase 0 | main Chaingun pend None off None offNext  | zippo open 0 | inv cig 0 zippo 0 | packs 3 | mouthprop 0 flying 0 lying 0 world-cigweapon 1 world-zippo 0 | drawn main-layer Chaingun off-layer none
+T_CIG rsqtr_cigtake t640 phase 0
+trc: REP #8 t744 phase 0 | main Chaingun pend None off None offNext  | zippo open 0 | inv cig 0 zippo 0 | packs 3 | mouthprop 0 flying 0 lying 0 world-cigweapon 1 world-zippo 0 | drawn main-layer Chaingun off-layer none
+TRC_S5_WEAPNEXT_IN_MOUTH
+T_CIG rsqtr_cigtake t759 phase 0
+T_CIG rsqtr_ciglock t812 phase 1
+trc: t812 STRAY a cigarette weapon lying in the world; a cigarette drawn in the hand while it is in the mouth; 
+trc: t815 STRAY a cigarette weapon lying in the world; 
+trc: REP #9 t939 phase 2 | main Fist pend None off RSQTR_ZippoWeapon offNext  | zippo open 0 | inv cig 0 zippo 1 | packs 2 | mouthprop 1 flying 0 lying 0 world-cigweapon 1 world-zippo 0 | drawn main-layer Fist off-layer RSQTR_ZippoWeapon

@@ -1,0 +1,10 @@
+FP rig granted RSQ_Upgrade_Smoker
+FP rig granted RSQ_Upgrade_ChainSmoker
+TRC_SETUP_DONE
+trc: REP #99 t140 phase 0 health 100 state 0 | main Chaingun pend None off Shotgun offNext  | zippo open 0 | inv cig 0 zippo 0 | packs 33 | mouthprop 0 flying 0 lying 0 world-cigweapon 0 world-zippo 0 | drawn main-layer Chaingun off-layer Shotgun
+TRC_DEATH
+T_CIG rsqtr_cigtake t155 phase 0
+trc: REP #1 t197 phase 1 health 100 state 0 | main RSQTR_CigWeapon pend None off RSQTR_ZippoWeapon offNext  | zippo open 0 | inv cig 1 zippo 1 | packs 32 | mouthprop 0 flying 0 lying 0 world-cigweapon 0 world-zippo 0 | drawn main-layer RSQTR_CigWeapon off-layer RSQTR_ZippoWeapon
+trc: REP #4 t202 phase 0 health -999900 state 1 | main RSQTR_CigWeapon pend Chaingun off None offNext  | zippo open 0 | inv cig 1 zippo 0 | packs 32 | mouthprop 0 flying 0 lying 0 world-cigweapon 0 world-zippo 0 | drawn main-layer none off-layer none
+trc: REP #2 t239 phase 0 health -999900 state 1 | main RSQTR_CigWeapon pend Chaingun off None offNext  | zippo open 0 | inv cig 1 zippo 0 | packs 32 | mouthprop 0 flying 0 lying 0 world-cigweapon 0 world-zippo 0 | drawn main-layer none off-layer none
+trc: REP #3 t299 phase 0 health -999900 state 1 | main RSQTR_CigWeapon pend Chaingun off None offNext  | zippo open 0 | inv cig 1 zippo 0 | packs 32 | mouthprop 0 flying 0 lying 0 world-cigweapon 0 world-zippo 0 | drawn main-layer none off-layer none

@@ -50,20 +50,46 @@ doom2.wad -> 01 brutal22test6 -> 02 BD22_VoxelPack -> 03 BD22_VR-Reloaded_2.0.3j
 - **Cigarette (option):** main hand grips at the left chest pocket: the cigarette is in that hand, the Zippo in
   the off hand. **While it is out, Use is the cigarette's** (no doors, switches or holsters on Use). Bring it to
   your mouth: a small glow at its tip, a light tick and a soft click say it is in reach. Press Use: it stays in
-  your mouth (a press up to 0.3 s after you left the spot still counts). Press Use anywhere else: you flick it
-  away. In the mouth: off-hand trigger opens and lights the Zippo, again shuts it; bring the flame to the
-  cigarette (the glow and tick again) and press Use: it lights and you smoke (*Smoke Time*, 2 s). Then it flicks
-  out of your mouth and (with RSQ SlowMo) the world slows. Ways out are below.
+  your mouth (a press up to 0.3 s after you left the spot still counts) and your gun is back in that hand. Press
+  Use anywhere else: you flick it away. In the mouth: off-hand trigger opens and lights the Zippo, again shuts it;
+  bring the flame to the cigarette (the glow and tick again) and press Use: it lights and you smoke (*Smoke Time*,
+  2 s). Then it flicks out of your mouth, the Zippo goes away and (with RSQ SlowMo) the world slows.
 
-**Cigarette: every way out** (11-02; rig only, not headset-confirmed)
+**Cigarette: the two rules** (the owner, 11-03; rig only, not headset-confirmed)
 
-| You have | To get out |
+1. **Any switch ends it.** With the cigarette out (in your hand, in your mouth, or lit), any weapon switch or
+   holster in either hand ends it: the weapon switch keys of either hand, switchhand, either hand's grip at a
+   holster (that press does nothing else; the next one draws or puts away as always), a gun thrown, another mod
+   switching a weapon. An unlit cigarette goes back in the pocket, a lit one is flicked away, the Zippo goes,
+   and both hands get back the guns they had before the cigarette came out (switch again for a different gun).
+2. **The Zippo goes with the cigarette.** It comes out with it and stays until it ends; whenever the cigarette
+   ends, for any reason, the Zippo leaves the off hand and the off hand gets its gun back. Nothing of the
+   cigarette stays in a hand, and the cigarette is never a gun to the rig (it is not thrown or holstered).
+
+| You have | What you can do |
 |---|---|
-| Cigarette in the hand | Use at the mouth (in), Use elsewhere (flick it), main grip at the pocket (back in), switch or holster the gun hand (back in the pocket) |
-| The Zippo in the off hand | Off-hand trigger: open / shut. Off-hand grip at any holster: the Zippo goes away and the off hand gets its gun back. Switching the off hand's weapon does the same. The cigarette stays where it is. Off-hand grip at the pocket: the Zippo comes back |
-| Cigarette in the mouth, unlit | Use with no Zippo in the off hand, or main grip at your mouth: back in the hand (then flick it or pocket it) |
-| Smoking | Wait (*Smoke Time*), or Use: it flicks out |
-| Anything | *Cigarettes* off or the rig off (unlit: back in the pocket), death (gone), next level (unlit: back in the pocket, guns back) |
+| Cigarette in the hand | Use at the mouth (in), Use elsewhere (flick it), main grip at the pocket (back in) |
+| Cigarette in the mouth, unlit | Off-hand trigger: Zippo open / shut. Main grip at your mouth: back in the hand |
+| Zippo open at the cigarette | Use: it lights |
+| Smoking | Wait (*Smoke Time*), or Use: it flicks out (slow motion either way) |
+| Any of these | A switch or holster in either hand (rule 1), *Cigarettes* off, Gun Bonsai VR's Smoker taken away or the rig off (unlit: pocket, lit: flicked), death (gone), next level (unlit: pocket, guns back) |
+
+**The stray cigarette (11-03, rig).** "Sometimes the cigarette shows up here and there" had three causes, all
+reproduced on the rig before the fix (`tools/rigtest/cigprobe`, script S; `evidence/trc1103_S_before.txt`):
+the rig counted the cigarette in your hand as a gun, so a quick swing with the grip (reaching for the pocket fast)
+**threw it** and left the hand-held cigarette lying in the world as a pickup for good; **switchhand** moved the
+cigarette into the off hand (or the Zippo into the main hand), where it stayed drawn and the off hand lost its
+gun; and a grip at a holster **holstered** the cigarette there. Now the cigarette and the Zippo are never guns to
+the rig, switchhand ends the ritual at once, and a holster press ends it (rule 1). The old "Zippo put away alone"
+also lost the Zippo for good when the off hand held a gun (the off hand's lowering took longer than its 6-tic
+check), and its queued raise could be dropped after 2 s, leaving the Zippo in the hand with no cigarette.
+
+Rig 11-03 (rig only, not headset-confirmed): every exit above, for the cigarette in the hand, in the mouth and lit:
+the owner's switch keys (B / Y), switchhand 1 and 0, either hand's grip at a hip holster, another mod emptying the
+off hand. Each ended it, the count refunded when unlit, the Zippo gone, the hands back to the guns from before
+(doom2: chaingun / shotgun in the off hand; full order: BD's hands and the shotgun), and no cigarette, Zippo or
+mouth prop left (`evidence/trc1103_*.txt`). The whole ritual completes on doom2, with Gun Bonsai VR (Smoker granted)
+and on the full order, SlowMo's world speed 1000 -> 250 permille on the flick.
 
 ## Holsters
 
@@ -172,13 +198,15 @@ simulated rig.
        chin): a glow at the tip, a tick, a click. Press Use: it stays in your mouth and your gun is back.
        Try it lower (the controller a hand below the chin) and quickly (a tap): both should work. At your chest
        there is no cue, and Use flicks it.
-    d. Off-hand trigger: the Zippo opens. Again: it shuts. Open it, then off-hand grip at a hip holster: the
-       Zippo goes away and the off hand has its gun (or hands) back; the cigarette is still in your mouth.
-    e. Press Use: the cigarette comes back to your hand. Put it back in your mouth. Off-hand grip at the pocket:
-       the Zippo is back. (Main grip at your mouth also takes the cigarette out.)
+    d. Off-hand trigger: the Zippo opens. Again: it shuts. Main grip at your mouth: the cigarette is back in your
+       hand; put it in your mouth again.
+    e. Rule 1, in each state (in the hand, in the mouth, lit): press either hand's weapon switch, or grip a holster
+       with either hand. It ends: unlit back in the pocket (the count goes back up), lit flicked away; the Zippo is
+       gone and both hands hold what they held before. Nothing of the cigarette is left anywhere.
     f. Open the Zippo, bring the flame up to the cigarette (glow and tick), press Use: it lights and you smoke.
        After *Smoke Time* it flicks out of your mouth and with RSQ SlowMo the world slows.
-    g. Cancels: switch guns with it in your hand, turn *Cigarettes* off, die, go to the next level.
+    g. Cancels: turn *Cigarettes* off, die, go to the next level. Each time the Zippo is gone too.
+    Rig 11-03: d-g and the stray cigarette (scripts X1-X3, R, S; `gen_scripts_1103.py`; above).
     Rig 11-02 (`tools/rigtest/cigprobe`, scripts F (doom2), G (cue), H (full order with BD22 VR Reloaded 2.0.3l
     and all RSQ pk3s), V/Z (drawn points); frames `docs/cig_zone_rig.png`): all of a-g with realistic poses,
     world speed 1000 -> 250 permille on the flick. Haptics and sounds could not be felt or heard on the rig.

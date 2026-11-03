@@ -39,9 +39,9 @@ class RSQTRCigProbe : EventHandler
 		if ((ph != 0 && level.maptime % 5 == 0) || (useDown && level.maptime % 5 == 0))
 		{
 			Vector3 h = RSQTR_Cig.Eyes(mo), m = RSQTR_Cig.Mouth(mo);
-			Console.Printf("trc: t%d ph %d use %d usedown %d | head (%.1f %.1f %.1f) pitch %.0f mouth (%.1f %.1f %.1f) | zone: controller %.3f, drawn filter %.3f m from its axis (radius %.3f), in %d | flame %.3f m from the cigarette | zippo open %d lit %d away %d off %s | main %s pend %s",
+			Console.Printf("trc: t%d ph %d use %d usedown %d | head (%.1f %.1f %.1f) pitch %.0f mouth (%.1f %.1f %.1f) | zone: controller %.3f, drawn filter %.3f m from its axis (radius %.3f), in %d | flame %.3f m from the cigarette | zippo open %d lit %d seen %d off %s | main %s pend %s",
 				level.maptime, ph, useDown, p.usedown, h.x, h.y, h.z, mo.pitch, m.x, m.y, m.z, RSQTR_Cig.ZoneDist(mo, mo.AttackPos), RSQTR_Cig.ZoneDist(mo, RSQTR_Cig.CigFilter(mo)), RSQTR_Cig.ZoneRadius(mo), RSQTR_Cig.InMouthZone(mo), RSQTR_Cig.FlameDist(mo),
-				c.zipOpen[0], c.ZipBurning(0), c.zipAway[0], p.OffhandWeapon ? p.OffhandWeapon.GetClassName() : 'none',
+				c.zipOpen[0], c.ZipBurning(0), c.zipSeen[0], p.OffhandWeapon ? p.OffhandWeapon.GetClassName() : 'none',
 				p.ReadyWeapon ? p.ReadyWeapon.GetClassName() : 'none', p.PendingWeapon && p.PendingWeapon != WP_NOCHANGE ? p.PendingWeapon.GetClassName() : 'none');
 			let mp = RSQTR_CigProp(c.mouthProp[0]);
 			if (mp) Console.Printf("trc: t%d mouth cigarette at (%.1f %.1f %.1f) burning %d sprite frame %d; smoke puffs alive %d", level.maptime, mp.pos.x, mp.pos.y, mp.pos.z, mp.burning, mp.frame, Count("RSQTR_Smoke"));
@@ -83,6 +83,9 @@ class RSQTRCigProbe : EventHandler
 				p.PendingWeapon && p.PendingWeapon != WP_NOCHANGE ? p.PendingWeapon.GetClassName() : 'none', hol, inv);
 			if (now != lastWeap || level.maptime % 35 == 0) { Console.Printf("trc: t%d weap %s", level.maptime, now); lastWeap = now; }
 		}
+		StrayWatch(p, mo, c);
+		let rp = CVar.FindCVar('trc_rep');
+		if (rp && rp.GetInt() != 0) { Report(p, mo, c, String.Format("#%d", rp.GetInt())); rp.SetInt(0); }
 		// flicked cigarettes
 		if (level.maptime % 3 == 0)
 		{
@@ -162,6 +165,55 @@ class RSQTRCigProbe : EventHandler
 				double cz = door.backsector.ceilingplane.ZatPoint(mid);
 				Console.Printf("trc: t%d door ceiling %.1f (%s)", level.maptime, cz, cz > ceil0 + 1 ? "OPENING/OPEN" : "shut");
 			}
+		}
+	}
+	// trc_rep 1 (11-03, rule A/B scenarios): one line of everything the cigarette could leave behind; and every tic a
+	// STRAY watch: a cigarette / Zippo drawn or lying where the ritual does not put it
+	String lastStray;
+	int strayFor;
+	String LayerOf(PlayerInfo p, int id)
+	{
+		let ps = p.FindPSprite(id);
+		return (ps && ps.Caller) ? String.Format("%s", ps.Caller.GetClassName()) : "none";
+	}
+	int CountFree(Name cls)
+	{
+		int k = 0;
+		let it = ThinkerIterator.Create(cls);
+		Inventory a;
+		while (a = Inventory(it.Next())) if (!a.Owner) k++;
+		return k;
+	}
+	void Report(PlayerInfo p, PlayerPawn mo, RSQTR_Cig c, String tag)
+	{
+		let rig = RSQTR_Rig.Get();
+		Console.Printf("trc: REP %s t%d phase %d health %d state %d | main %s pend %s off %s offNext %s | zippo open %d | inv cig %d zippo %d | packs %d | mouthprop %d flying %d lying %d world-cigweapon %d world-zippo %d | drawn main-layer %s off-layer %s",
+			tag, level.maptime, c.phase[0], mo.health, p.playerstate, p.ReadyWeapon ? p.ReadyWeapon.GetClassName() : 'none',
+			p.PendingWeapon && p.PendingWeapon != WP_NOCHANGE ? p.PendingWeapon.GetClassName() : 'none',
+			p.OffhandWeapon ? p.OffhandWeapon.GetClassName() : 'none', rig ? rig.offNext[0] : "?", c.zipOpen[0],
+			mo.CountInv("RSQTR_CigWeapon"), mo.CountInv("RSQTR_ZippoWeapon"), RSQTR_Cig.Packs(mo),
+			Count("RSQTR_CigProp"), Count("RSQTR_Butt"), Count("RSQTR_ButtLying"), CountFree("RSQTR_CigWeapon"), CountFree("RSQTR_ZippoWeapon"),
+			LayerOf(p, PSP_WEAPON), LayerOf(p, PSP_OFFHANDWEAPON));
+	}
+	void StrayWatch(PlayerInfo p, PlayerPawn mo, RSQTR_Cig c)
+	{
+		int ph = c.phase[0];
+		String m = LayerOf(p, PSP_WEAPON), o = LayerOf(p, PSP_OFFHANDWEAPON);
+		String s = "";
+		if (CountFree("RSQTR_CigWeapon") > 0) s = s .. "a cigarette weapon lying in the world; ";
+		if (CountFree("RSQTR_ZippoWeapon") > 0) s = s .. "a Zippo weapon lying in the world; ";
+		if (Count("RSQTR_CigProp") > 0 && ph != 2 && ph != 3) s = s .. "a mouth cigarette with no cigarette in the mouth; ";
+		if (o ~== "RSQTR_CigWeapon") s = s .. "the cigarette drawn in the OFF hand; ";
+		if (m ~== "RSQTR_ZippoWeapon") s = s .. "the Zippo drawn in the MAIN hand; ";
+		if (ph == 0 && (m ~== "RSQTR_CigWeapon" || o ~== "RSQTR_ZippoWeapon")) s = s .. "cigarette/Zippo drawn with no cigarette out; ";
+		if (ph != 0 && ph != 1 && m ~== "RSQTR_CigWeapon") s = s .. "a cigarette drawn in the hand while it is in the mouth; ";
+		strayFor = s == "" ? 0 : strayFor + 1;
+		// a hand lowering a prop for a few tics after a switch is not a stray: only what lasts 8 tics is logged
+		String rep = strayFor >= 8 ? s : "";
+		if (rep != lastStray)
+		{
+			Console.Printf("trc: t%d STRAY %s", level.maptime, rep == "" ? "(none)" : rep);
+			lastStray = rep;
 		}
 	}
 	Actor dots[3];

@@ -805,7 +805,7 @@ class RSQTR_Rig : EventHandler
 	static bool HoldsGun(PlayerPawn pmo)
 	{
 		let w = pmo.player.ReadyWeapon;
-		if (!w || IsSaber(w)) return false;
+		if (!w || IsSaber(w) || RSQTR_Cig.IsProp(w)) return false;    // the cigarette is no gun (never thrown, never holstered)
 		let empty = EmptyHand(pmo);
 		return w != empty;
 	}
@@ -816,7 +816,7 @@ class RSQTR_Rig : EventHandler
 	// are not guns the rig moves (Dual is its own key).
 	static bool IsMovedGun(Weapon w)
 	{
-		if (!w || IsSaber(w)) return false;
+		if (!w || IsSaber(w) || RSQTR_Cig.IsProp(w)) return false;
 		let d = GetDefaultByType(w.GetClass());
 		return d && !d.bOffhandWeapon;
 	}
@@ -1433,11 +1433,13 @@ class RSQTR_Rig : EventHandler
 
 	private void Press(PlayerPawn pmo, PlayerInfo p, int h, int r, Vector3 hp)
 	{
-		// THE ZIPPO PUT AWAY (cig.zs, 11-02): the off hand's grip at any holster with the Zippo in it puts the Zippo away
-		// and gives the off hand its gun back; the cigarette stays where it is
-		if (h == 1 && p.OffhandWeapon is "RSQTR_ZippoWeapon")
+		// WITH THE CIGARETTE OUT, A HOLSTER ENDS IT (cig.zs rule A, the owner 11-03): either hand's grip at any holster
+		// ends the ritual (unlit: the pocket, lit: flicked, the Zippo gone, both hands' guns back) and does nothing else
+		// that press; the next press draws or puts away as always.
+		if (RSQTR_Cig.IsOut(pmo.PlayerNumber()))
 		{
-			EventHandler.SendNetworkEvent("rsqtr_zipaway");
+			EventHandler.SendNetworkEvent("rsqtr_cigend", h);
+			RSQTR_Buzzer.Start(pmo, h, 0.4, 4);
 			return;
 		}
 		if (IsGrenadeRegion(r))
