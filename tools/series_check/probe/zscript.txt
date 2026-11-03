@@ -1,0 +1,41 @@
+version "4.14"
+// SERIES CHECK PROBE (tools/series_check.py; loaded last, never ships). At tic 35 of the level it asks for every service
+// and event handler the series declares and prints RSQCHK lines the checker reads. It changes nothing.
+class RSQSeriesCheck : EventHandler
+{
+	int t0;
+	override void WorldLoaded(WorldEvent e) { t0 = level.maptime; }
+	override void WorldTick()
+	{
+		if (level.maptime - t0 != 35) return;
+		static const String services[] = { "RSQA_Service", "RSQDG_DoorService", "RSQDG_MassService", "RSQDG_GrabRuleService",
+			"RSQDG_ThrowService", "RSQG_Service", "RSQGR_Service", "RSQGN_Service", "RSQ_MeleeUpgradeService", "RSQGB_Service",
+			"RSQ_HudService", "RSQLS_SightService", "RSQML_Service", "RSQMB_Service", "UBQS_SaberService", "RS_ScoreService",
+			"SSQ_ScoreService", "RSQSM_Service", "RSQTR_RigService", "wr_RigService", "RSQWP_Service" };
+		int missing = 0;
+		for (int i = 0; i < services.Size(); i++)
+		{
+			let it = ServiceIterator.Find(services[i]);
+			Service s = it.Next();
+			if (!s) missing++;
+			Console.Printf("RSQCHK service %s %s", services[i], s ? "present" : "MISSING");
+		}
+		// one handler per mod (the series' own class names, 11-03)
+		static const String handlers[] = { "RSQA_Handler", "RSQDG_Throw", "RSQG_Handler", "RSQGR_Core", "RSQGN_Handler",
+			"RSQ_MeleeHandler", "RSQGC_GunCard", "RSQTHP_Handler", "RSQLS_Sight", "RSQML_Gloves", "RSQMB_Handler",
+			"UBQS_Memory", "RS_ScoreRegistry", "RS_ScoreHandler", "SSQ_Handler", "RSQSM_Clock", "RSQTR_Rig", "RSQTR_Cig",
+			"wr_Rig", "RSQWP_Core" };
+		for (int i = 0; i < handlers.Size(); i++)
+		{
+			Class<Object> c = (Class<Object>)(handlers[i]);
+			if (!c) { Console.Printf("RSQCHK handler %s (no such class: name guessed by the probe)", handlers[i]); continue; }
+			// a per-level handler, else a static one (RS_ScoreRegistry, Melee's gloves are StaticEventHandlers)
+			Object h = EventHandler.Find(handlers[i]);
+			if (!h) h = StaticEventHandler.Find(handlers[i]);
+			Console.Printf("RSQCHK handler %s %s", handlers[i], h ? "present" : "MISSING");
+		}
+		int players_in = 0;
+		for (int n = 0; n < MAXPLAYERS; n++) if (playeringame[n]) players_in++;
+		Console.Printf("RSQCHK done: %d services asked, %d missing, %d player(s)", services.Size(), missing, players_in);
+	}
+}
