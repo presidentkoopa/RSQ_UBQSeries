@@ -19,6 +19,21 @@ class MHP_Probe : EventHandler
 			if (w) { pmo.player.PendingWeapon = w; armed = true; }
 			Console.Printf("MHP t%d armed: %s", level.maptime, w ? "RSQ_Glove pending" : "NO GLOVE CLASS");
 		}
+		else if (e.Name ~== "mhp_fly")
+		{
+			// a monster's MISSILE at the player, by class name (the console: netevent mhp_fly, with mhp_class set first)
+			let cv = CVar.FindCVar("mhp_class");
+			String cn = cv ? cv.GetString() : "DoomImpBall";
+			Vector3 at = pmo.pos + (cos(pmo.angle) * 400, sin(pmo.angle) * 400, 0);   // 400 out: a 140-unit tracer takes 3 tics
+			if (!imp || imp.bDestroyed) imp = Actor.Spawn("DoomImp", at);
+			Vector3 from = at + (0, 0, 34);
+			let m = Actor.Spawn(cn, from);
+			if (!m) { Console.Printf("MHP no such class %s", cn); return; }
+			m.target = imp;
+			Vector3 d = level.Vec3Diff(from, pmo.pos + (0, 0, pmo.height * 0.5)).Unit();
+			m.vel = d * m.Speed; m.angle = VectorAngle(d.x, d.y);
+			Console.Printf("MHP t%d %s flies at the player: speed %.0f, radius %.0f, damage %d, missile %d", level.maptime, cn, m.Speed, m.radius, m.GetMissileDamage(0, 1), m.bMissile ? 1 : 0);
+		}
 		else if (e.Name ~== "mhp_shot")
 		{
 			Vector3 at = pmo.pos + (cos(pmo.angle) * 200, sin(pmo.angle) * 200, 0);
