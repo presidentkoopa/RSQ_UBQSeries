@@ -8,4 +8,5 @@ version "4.14"
 #include "zscript/rsqgn/hand.zs"
 #include "zscript/rsqgn/thrown.zs"
 #include "zscript/rsqgn/blast.zs"
+#include "zscript/rsqgn/kinds.zs"   // the grenade kinds (Gun Bonsai VR patch)
 #include "zscript/rsqgn/scatter.zs"

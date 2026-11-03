@@ -103,10 +103,11 @@ class RSQGN_Handler : EventHandler
 	int redUntil[MAXPLAYERS];
 	bool amber[MAXPLAYERS];		// COOK SENSE 2: this flash is amber (the first half of the fuse)
 	bool teethPin[MAXPLAYERS];	// TEETH (Gun Bonsai VR patch): this pin came out by the teeth
+	int kind[MAXPLAYERS];		// THE KINDS (Gun Bonsai VR patch, kinds.zs): the one in the hand, RSQGN_Kind's number
 	Vector3 throwAt[MAXPLAYERS], throwVel[MAXPLAYERS];
 
 	// ---- the console player's hands (local) ----
-	private transient bool ringHeld, grabPrev, trigPrev, faceReady;
+	private transient bool ringHeld, grabPrev, trigPrev, faceReady, altPrev;
 	private transient int faceTic, lastHand, waitUntil;
 	private transient bool waitArmed, waitSpoon;
 	private transient Vector3 lastRel[2], rawHand[2];
@@ -166,6 +167,7 @@ class RSQGN_Handler : EventHandler
 
 	// The held grenade's picture (weapon.zs A_RSQGNReady): 0 ring in, 1 pin out, 2 cooking, 3 cooking + red,
 	// 4 cooking + amber (Cook Sense 2).
+	static int KindOf(int n) { let h = Get(); return (h && n >= 0 && n < MAXPLAYERS) ? h.kind[n] : 0; }
 	static int HeldFrame(int n)
 	{
 		let h = Get();
@@ -245,7 +247,12 @@ class RSQGN_Handler : EventHandler
 			// the last grenade gone: the hand gets something else (BD22 VR 1.12: an empty grenade hand vanished)
 			if (!armed[n] && pmo.CountInv("RSQGN_Ammo") <= 0) Empty(pmo, h);
 		}
-		if (level.maptime % 17 == 0) for (int n = 0; n < MAXPLAYERS; n++) if (playeringame[n] && players[n].mo) Carry(players[n].mo);
+		if (level.maptime % 17 == 0) for (int n = 0; n < MAXPLAYERS; n++)
+		{
+			if (!playeringame[n] || !players[n].mo) continue;
+			Carry(players[n].mo);
+			if (!RSQGN_Kind.Owns(players[n].mo, kind[n])) kind[n] = RSQGN_Kind.FRAG;	// a kind no longer learned
+		}
 		let cp = players[consoleplayer].mo;
 		if (playeringame[consoleplayer] && cp) Local(cp);
 	}
@@ -293,8 +300,8 @@ class RSQGN_Handler : EventHandler
 	// is decides who it hurts, so every machine must agree); at that range it makes no difference.
 	void Boom(PlayerPawn pmo, int n, String why)
 	{
-		let b = Actor.Spawn("RSQGN_HandBlast", pmo.Pos + (0, 0, pmo.Height * 0.6), ALLOW_REPLACE);
-		if (b) b.target = pmo;
+		let b = RSQGN_HandBlast(Actor.Spawn("RSQGN_HandBlast", pmo.Pos + (0, 0, pmo.Height * 0.6), ALLOW_REPLACE));
+		if (b) { b.target = pmo; b.kind = RSQGN_Kind.Owns(pmo, kind[n]) ? kind[n] : RSQGN_Kind.FRAG; }
 		pmo.TakeInventory("RSQGN_Ammo", 1);
 		if (Debug(pmo.player)) Console.Printf("RSQGN boom in hand p%d t%d (%s)", n, level.maptime, why);
 		Reset(n);
@@ -352,6 +359,17 @@ class RSQGN_Handler : EventHandler
 		let p = players[n];
 		let pmo = p.mo;
 		if (!pmo || pmo.health <= 0) return;
+		if (e.Name == "rsqgn_kind")
+		{
+			if (spoon[n]) return;
+			int k = RSQGN_Kind.Next(pmo, kind[n]);
+			if (k == kind[n]) return;
+			kind[n] = k;
+			pmo.A_StartSound("rsqgn/bounce", CHAN_AUTO, CHANF_OVERLAP, 0.6, ATTN_NORM, 1.3);
+			RSQGN_Buzzer.Start(pmo, max(HandOf(p), 0), 0.3, 3);
+			if (Debug(p)) Console.Printf("RSQGN kind p%d t%d: %s", n, level.maptime, k == 0 ? "Frag" : RSQGN_Kind.Node(k));
+			return;
+		}
 		if (e.Name == "rsqgn_skeet")
 		{
 			// the grenade of this player's nearest the point its machine saw (within 32 units)
@@ -455,6 +473,8 @@ class RSQGN_Handler : EventHandler
 		if (tl >= 2) g.dmgMult *= RSQGN_Upg.Num("Teeth.mult", tl, 1.0);
 		g.skeetWin = RSQGN_Upg.Lv(pmo, "SkeetWindow");			// SKEET WINDOW
 		g.cooked = spoon[n] ? level.maptime - cookTic[n] : 0;	// SLOW BURN reads it (RSQGN_Service "cooked")
+		g.kind = RSQGN_Kind.Owns(pmo, kind[n]) ? kind[n] : RSQGN_Kind.FRAG;	// THE KINDS
+		if (g.kind == RSQGN_Kind.FLASH) g.bBright = true;
 		int fa = RSQGN_Upg.Lv(pmo, "FlatArc"), bo = RSQGN_Upg.Lv(pmo, "Bounce");
 		g.Gravity = clamp(SNum("rsqgn_gravity", 0.27) * (fa > 0 ? RSQGN_Upg.Num("FlatArc.gravity", fa, 1.0) : 1.0), 0.05, 1.0);	// FLAT ARC
 		g.BounceFactor = clamp(SNum("rsqgn_bounce", 0.5), 0.0, 0.9);
@@ -501,6 +521,11 @@ class RSQGN_Handler : EventHandler
 		grabPrev = grab;
 		bool trigUp = !trig && trigPrev;
 		trigPrev = trig;
+		// THE KINDS (Gun Bonsai VR patch): the holding hand's alt trigger cycles the kinds you own, until the spoon flies
+		bool alt = (btn & (h == 0 ? BT_ALTATTACK : BT_OFFHANDALTATTACK)) != 0;
+		bool altPress = alt && !altPrev;
+		altPrev = alt;
+		if (altPress && !spoon[n] && RSQGN_Kind.Next(pmo, kind[n]) != kind[n]) Send("rsqgn_kind");
 		if (!grab) ringHeld = false;
 		if (level.maptime < waitUntil && armed[n] == waitArmed && spoon[n] == waitSpoon) return;
 		waitUntil = 0;
@@ -686,6 +711,7 @@ class RSQGN_Handler : EventHandler
 // It went off in the hand: the same blast and damage as a thrown one, credited to its owner.
 class RSQGN_HandBlast : Actor
 {
+	int kind;	// THE KINDS: what went off in the hand
 	Default
 	{
 		+NOBLOCKMAP +NOGRAVITY +DONTSPLASH +NOTELEPORT
@@ -697,10 +723,7 @@ class RSQGN_HandBlast : Actor
 	States
 	{
 	Spawn:
-		TNT1 A 0 NoDelay A_StartSound("rsqgn/explode", CHAN_AUTO);
-		TNT1 A 0 A_StartSound("rsqgn/farexpl", CHAN_7);
-		TNT1 A 0 A_AlertMonsters;
-		TNT1 A 0 A_SpawnItemEx("RSQGN_Blast", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
+		TNT1 A 0 NoDelay { RSQGN_Kind.Look(self, kind); }
 		TNT1 A 1 { RSQGN_Thrown.Blast(self, target, 0, 1.0); }
 		TNT1 A 1 { RSQGN_Thrown.Blast(self, target, 1, 1.0); }
 		Stop;

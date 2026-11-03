@@ -158,3 +158,72 @@ class RSQ_Upgrade_SlowBurn : RSQ_Upgrade_GrenadeMarker
 	}
 	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("time", string.format("%.2fs", Ms(level) / 1000.0)); }
 }
+
+// ---- THE KINDS (each an unlock on the grenade's record; the frag is the base). RSQ Grenade's kinds.zs does them; the
+// holding hand's alt trigger cycles the ones you own. ---------------------------------------------------------------
+
+class RSQ_Upgrade_GrenadeKind : RSQ_Upgrade_GrenadeMarker
+{
+	virtual String Parent() { return ""; }
+	virtual int ParentLevel() { return 1; }
+	virtual int Cap() { return 3; }
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info)
+	{
+		String me = GetClassName();
+		return GrenadeInfo(info) && Has(info, Parent(), ParentLevel()) && LevelOf(info, me.Mid(12)) < Cap();
+	}
+	static int Secs(int base, int per, uint lv) { return base + per * max(int(lv), 1); }
+}
+
+// IMPACT (after Cook Sense 1): bursts on first contact, no fuse; 2: +15% damage.
+class RSQ_Upgrade_Impact : RSQ_Upgrade_GrenadeKind
+{
+	override String Parent() { return "CookSense"; }
+	override int Cap() { return 2; }
+	static double Mult(uint lv) { return lv >= 2 ? 1.15 : 1.0; }
+}
+// INCENDIARY (after Big Bang 1): the blast leaves fire over its radius for 3 + lv s, 5 a second to monsters in it.
+class RSQ_Upgrade_Incendiary : RSQ_Upgrade_GrenadeKind
+{
+	override String Parent() { return "BigBang"; }
+	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("s", string.format("%d", Secs(3, 1, level))); }
+}
+// FREEZE (after Frag 1): no blast damage; monsters inside freeze solid 2 + lv s (bosses slowed); a hard hit shatters, x2.
+class RSQ_Upgrade_Freeze : RSQ_Upgrade_GrenadeKind
+{
+	override String Parent() { return "Frag"; }
+	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("s", string.format("%d", Secs(2, 1, level))); }
+}
+// STUN (after Cook Sense 1): half the blast's damage; monsters inside are staggered 2 + lv s.
+class RSQ_Upgrade_Stun : RSQ_Upgrade_GrenadeKind
+{
+	override String Parent() { return "CookSense"; }
+	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("s", string.format("%d", Secs(2, 1, level))); }
+}
+// SMOKE (after Cook Sense 2): a cloud 3 + lv m wide for 8 + 4 lv s; monsters inside it, or whose line to their target
+// crosses it, lose that target every half second.
+class RSQ_Upgrade_Smoke : RSQ_Upgrade_GrenadeKind
+{
+	override String Parent() { return "CookSense"; }
+	override int ParentLevel() { return 2; }
+	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("m", string.format("%d", Secs(3, 1, level))); fields.Insert("s", string.format("%d", Secs(8, 4, level))); }
+}
+// FLASH (after Cook Sense 2): no damage; monsters inside are stunned 2 + lv s and lose their target.
+class RSQ_Upgrade_Flash : RSQ_Upgrade_GrenadeKind
+{
+	override String Parent() { return "CookSense"; }
+	override int ParentLevel() { return 2; }
+	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("s", string.format("%d", Secs(2, 1, level))); }
+}
+// CHARM (after Flash 1): monsters inside fight for you for 10 + 5 lv s; bosses immune.
+class RSQ_Upgrade_Charm : RSQ_Upgrade_GrenadeKind
+{
+	override String Parent() { return "Flash"; }
+	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("s", string.format("%d", Secs(10, 5, level))); }
+}
+// INFIGHT (after Flash 1): monsters inside turn on the nearest monster for 10 + 5 lv s; bosses immune.
+class RSQ_Upgrade_Infight : RSQ_Upgrade_GrenadeKind
+{
+	override String Parent() { return "Flash"; }
+	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("s", string.format("%d", Secs(10, 5, level))); }
+}

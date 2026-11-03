@@ -22,6 +22,8 @@ class RSQGN_Thrown : Actor
 	int skeetWin;		// SKEET WINDOW (Gun Bonsai VR patch): its level at the throw
 	int age, brightUntil;
 	int cooked;			// tics it cooked in the hand before the throw (SLOW BURN reads it)
+	int kind;			// THE KINDS (Gun Bonsai VR patch, kinds.zs)
+	Vector3 prevVel;
 
 	Default
 	{
@@ -59,9 +61,20 @@ class RSQGN_Thrown : Actor
 
 	override void Tick()
 	{
+		prevVel = vel;
 		Super.Tick();
 		if (bDestroyed || boomed || IsFrozen()) return;
 		if (sticky > 0) Stick();
+		// IMPACT (Gun Bonsai VR patch): it bursts on the first thing it touches -- a bounce (its velocity turned by more
+		// than its fall explains) or the floor -- once it is clear of the hand
+		if (kind == RSQGN_Kind.IMPACT && age >= 2 && (pos.z <= floorz + 0.5 || (vel - prevVel - (0, 0, -GetGravity())).Length() > 1.0))
+		{
+			RSQGN_Upg.Touch("impact", target, target);
+			Detonate();
+			return;
+		}
+		// the kind's own skin while it is not flashing
+		if (kind > 0 && !hot) { sprite = GetSpriteIndex(RSQGN_Kind.ThrownSprite(kind)); frame = 0; }
 		age++;
 		if (skeetWin > 0 && age == 8) SkeetWindow();
 		if (brightUntil > 0 && age >= brightUntil) { bBright = false; brightUntil = 0; }
@@ -182,6 +195,10 @@ class RSQGN_Thrown : Actor
 	Spawn:
 		QGNT A -1;
 		Stop;
+	// never entered: names the kinds' thrown sprites for MODELDEF.kinds.txt (Tick sets them)
+	KindSprites:
+		QGT1 A 0; QGT2 A 0; QGT3 A 0; QGT4 A 0; QGT5 A 0; QGT6 A 0; QGT7 A 0; QGT8 A 0;
+		Stop;
 	Hot:
 		QGNT B -1 Bright;
 		Stop;
@@ -194,10 +211,7 @@ class RSQGN_Thrown : Actor
 		Goto Boom;
 	Boom:
 		TNT1 A 0 A_NoBlocking;
-		TNT1 A 0 A_StartSound("rsqgn/explode", CHAN_AUTO);
-		TNT1 A 0 A_StartSound("rsqgn/farexpl", CHAN_7);
-		TNT1 A 0 A_AlertMonsters;
-		TNT1 A 0 A_SpawnItemEx("RSQGN_Blast", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RSQGN_Kind.Look(self, kind); }
 		TNT1 A 1 { RSQGN_Thrown.Blast(self, target, 0, dmgMult > 0 ? dmgMult : 1.0); }
 		TNT1 A 1 { RSQGN_Thrown.Blast(self, target, 1, dmgMult > 0 ? dmgMult : 1.0); }
 		Stop;
@@ -210,12 +224,18 @@ class RSQGN_Thrown : Actor
 	static void Blast(Actor at, Actor by, int part, double mult)
 	{
 		if (!at) return;
+		int k = RSQGN_Thrown(at) ? RSQGN_Thrown(at).kind : RSQGN_HandBlast(at) ? RSQGN_HandBlast(at).kind : 0;
 		int bb = RSQGN_Upg.Lv(by, "BigBang"), fr = RSQGN_Upg.Lv(by, "Frag");
-		double dk = (fr > 0 ? RSQGN_Upg.Num("Frag.mult", fr, 1.0) : 1.0) * mult;
+		// THE KINDS: each does its share of the frag's damage (stun half, freeze and the rest none) and its own thing
+		double dk = (fr > 0 ? RSQGN_Upg.Num("Frag.mult", fr, 1.0) : 1.0) * mult * RSQGN_Kind.DamageShare(by, k);
 		double rk = bb > 0 ? RSQGN_Upg.Num("BigBang.mult", bb, 1.0) : 1.0;
-		if (part == 0) at.A_Explode(int(85 * dk + 0.5), int(200 * rk + 0.5), XF_HURTSOURCE);
-		else at.A_Explode(int(75 * dk + 0.5), int(255 * rk + 0.5), XF_HURTSOURCE);
-		if (part == 1) Cluster(at, by);	// after both parts, so the blast does not shove its own bomblets
+		if (dk > 0)
+		{
+			if (part == 0) at.A_Explode(int(85 * dk + 0.5), int(200 * rk + 0.5), XF_HURTSOURCE);
+			else at.A_Explode(int(75 * dk + 0.5), int(255 * rk + 0.5), XF_HURTSOURCE);
+		}
+		if (part == 0) RSQGN_Kind.Effect(at, by, k, 200 * rk);
+		if (part == 1 && dk > 0) Cluster(at, by);	// after both parts, so the blast does not shove its own bomblets
 	}
 
 	// CLUSTER (Gun Bonsai VR patch): 2 + a level small bomblets thrown 2-4 m out round the blast, each fused a second

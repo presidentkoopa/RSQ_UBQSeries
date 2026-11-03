@@ -95,6 +95,10 @@ class FistsProbe : EventHandler
 	Vector3 gnAtPos;
 	int gnStickAt;
 	int gnSkeetAt, gnWinAt;
+	// a kind set off among imps: when, which kind, the imps, whether each lost its target at some point
+	int gkAt, gkKind;
+	Array<Actor> gkImps;
+	Array<int> gkLost, gkH0;
 	override void WorldTick()
 	{
 		let p = P(); if (!p) return;
@@ -122,6 +126,35 @@ class FistsProbe : EventHandler
 			Console.Printf("FP grenade bomblets went off: the Baron %d -> %d", gnBaronH0, gnBaron ? gnBaron.health : -1);
 			if (gnBaron) gnBaron.Destroy();
 			gnAt = 0;
+		}
+		if (gkAt > 0)
+		{
+			for (int i = 0; i < gkImps.Size(); i++) if (gkImps[i] && !gkImps[i].target) gkLost[i] = 1;
+			if (t == gkAt + 6 || t == gkAt + 40)
+			{
+				String s = "";
+				for (int i = 0; i < gkImps.Size(); i++)
+				{
+					let m = gkImps[i];
+					if (!m) { s = s .. " [gone]"; continue; }
+					let dz = m.FindInventory("RSQ_Dazed");
+					s = s .. String.Format(" [%d->%d frozen %d%s target %s%s%s lost %d]", gkH0[i], m.health, m.freezetics,
+						m.Translation == Translation.GetID('Ice') ? " ICE" : "", m.target ? m.target.GetClassName() : 'none',
+						m.bFriendly ? " FRIENDLY" : "", m.FindInventory("RSQGN_Infight") ? " INFIGHT" : "", gkLost[i]);
+				}
+				Console.Printf("FP grenade kind %d t+%d:%s", gkKind, t - gkAt, s);
+			}
+			if (t == gkAt + 40)
+			{
+				if (gkKind == 3 && gkImps.Size() > 0 && gkImps[0] && gkImps[0].health > 0)
+				{
+					int h0 = gkImps[0].health;
+					gkImps[0].DamageMobj(p, p, 25, 'None');
+					Console.Printf("FP grenade freeze: a 25 hit on a frozen imp: %d -> %d, frozen after %d", h0, gkImps[0] ? gkImps[0].health : -1, gkImps[0] ? gkImps[0].freezetics : -1);
+				}
+				for (int i = 0; i < gkImps.Size(); i++) if (gkImps[i]) gkImps[i].Destroy();
+				gkImps.Clear(); gkAt = 0;
+			}
 		}
 		if (gnSkeetAt > 0 && t == gnSkeetAt)
 		{
@@ -510,6 +543,39 @@ class FistsProbe : EventHandler
 			Console.Printf("FP grenade burn: cooked %d tics, slowed %d, zombiemen in the level %d", e.Args[0], RSQM.Slowed(), zs);
 		}
 		else if (e.Name ~== "fp_gnslow") { EventHandler.SendNetworkEvent("rsm_pulse", e.Args[0], 25); }
+		else if (e.Name ~== "fp_gnkind")
+		{
+			// arg0 0: cycle the kind through the handler's own event; 1: print it and the held sprite
+			let h = RSQGN_Handler.Get();
+			if (!h) return;
+			if (e.Args[0] == 0) { EventHandler.SendNetworkEvent("rsqgn_kind"); return; }
+			let psp = p.player.FindPSprite(PSP_WEAPON);
+			Console.Printf("FP grenade kind now %d (%s), held sprite %s", h.kind[0], h.kind[0] ? RSQGN_Kind.Node(h.kind[0]) : "Frag",
+				psp ? String.Format("%d (QGNH %d, this kind's %d)", psp.Sprite, Actor.GetSpriteIndex('QGNH'), Actor.GetSpriteIndex(RSQGN_Kind.HeldSprite(h.kind[0]))) : "none");
+		}
+		else if (e.Name ~== "fp_gnkb")
+		{
+			// one of your grenades of kind arg0 set off 200 ahead; imps 80 either side of it and one 150 beyond it whose
+			// target is you (Smoke's line test), all held still
+			Vector3 f = (cos(p.angle), sin(p.angle), 0), sd = (-f.y, f.x, 0);
+			Vector3 at = p.pos + f * 200 + (0, 0, 4);
+			gkImps.Clear(); gkLost.Clear(); gkH0.Clear();
+			static const double OFS[] = { 80, -80, 0 };
+			for (int i = 0; i < 3; i++)
+			{
+				Vector3 sp = i < 2 ? at + sd * OFS[i] : at + f * 150;
+				let m = Actor.Spawn("DoomImp", sp - (0, 0, 4));
+				if (!m) continue;
+				m.angle = m.AngleTo(p); m.target = p;
+				if (e.Args[1] == 1) m.health = 1000;
+				gkImps.Push(m); gkLost.Push(0); gkH0.Push(m.health);
+			}
+			let g = RSQGN_Thrown(Actor.Spawn("RSQGN_Thrown", at));
+			if (!g) return;
+			g.target = p; g.fuse = 1; g.fuseTotal = 105; g.dmgMult = 1.0; g.kind = e.Args[0];
+			RSQGN_Kind.Claim(g, p);
+			gkAt = level.maptime; gkKind = e.Args[0];
+		}
 		else if (e.Name ~== "fp_gnstate")
 		{
 			// the carry (arg0 1: with a backpack), the fuse and Cook Sense's amber

@@ -84,7 +84,15 @@ teeth counts for style; 2-3: the throw after it +15% / +30%); **Skeet** (after S
 in the air and it bursts there, x1.5 / 1.75 / 2.0); **Skeet Window** (after Skeet, needs RSQ SlowMo: eight tics after
 a throw time slows for 15 / 20 / 25 tics and the grenade glows; the **Skeet Window Slow-Mo** row turns the slow motion
 off); **Slow Burn** (after Cook Sense, needs RSQ SlowMo: a kill by a grenade cooked a second or more while time is
-slowed keeps it slowed 0.75 / 1 / 1.25 s more). Without the patch nothing changes.
+slowed keeps it slowed 0.75 / 1 / 1.25 s more). **The kinds** (each an unlock; the frag is the base): **Impact**
+(orange, after Cook Sense: bursts on first contact; 2: +15%), **Incendiary** (amber, after Big Bang: fire over the
+blast's radius, 4 / 5 / 6 s), **Freeze** (sky blue, after Frag: no damage, frozen 3 / 4 / 5 s, a hard hit shatters
+it for double), **Stun** (violet, after Cook Sense: half damage, staggered 3 / 4 / 5 s), **Smoke** (grey, after Cook
+Sense 2: a cloud 4 / 5 / 6 m wide for 12 / 16 / 20 s that blinds whoever is in it or looks through it), **Flash**
+(white, after Cook Sense 2: no damage, stunned and blinded 3 / 4 / 5 s), **Charm** (pink, after Flash: they fight
+for you 15 / 20 / 25 s) and **Infight** (green, after Flash: they turn on each other 15 / 20 / 25 s; bosses are
+immune to both). **The holding hand's alt trigger cycles the kinds you own** (until the spoon flies); the grenade
+wears its kind's colour. Without the patch nothing changes.
 
 Tuning and Debug page:
 

@@ -321,6 +321,19 @@ class RSQ_MeleeUpgradeService : Service
 			d.Stagger(min(intArg, 350));
 			return 1;
 		}
+		// "freeze": objectArg = a monster, intArg = tics, doubleArg = the shatter (0 none): frozen solid as the Frost Fist
+		// freezes (RSQ_Dazed.Freeze; a boss slowed by half), and with a shatter the next hard hit (20+) on it does that
+		// many times its damage and thaws it. RSQ Grenade's Freeze kind asks it. 1 done, 0 not.
+		if (request == "freeze")
+		{
+			let mo = Actor(objectArg);
+			if (!mo || mo.health <= 0 || !mo.bIsMonster || intArg <= 0) return 0;
+			let d = RSQ_Dazed.On(mo);
+			if (!d) return 0;
+			d.Freeze(min(intArg, 700));
+			if (doubleArg > 1 && d.IsFrozen()) d.shatterMult = max(d.shatterMult, doubleArg);
+			return 1;
+		}
 		if (request == "knockdown")
 		{
 			let mo = Actor(objectArg);
@@ -466,6 +479,7 @@ class RSQ_MeleeUpgradeService : Service
 			if (stringArg == "Teeth.mult") return RSQ_Upgrade_Teeth.Mult(lv);
 			if (stringArg == "Skeet.mult") return RSQ_Upgrade_Skeet.Mult(lv);
 			if (stringArg == "SkeetWindow.tics") return RSQ_Upgrade_SkeetWindow.Tics(lv);
+			if (stringArg == "Impact.mult") return RSQ_Upgrade_Impact.Mult(lv);
 			// G. Gun hand, H. Taunt
 			if (stringArg == "PistolWhip.stagger") return RSQ_Upgrade_PistolWhip.Stagger(lv);
 			if (stringArg == "PistolWhip.mult") return RSQ_Upgrade_PistolWhip.Mult(lv);
@@ -494,10 +508,12 @@ class RSQ_Dazed : Inventory
 {
 	int staggerUntil, windedUntil, downUntil, disarmUntil;
 	int frozenUntil, shatterTic;
+	double shatterMult;                // "freeze" with a shatter: the next hard hit on it while frozen does this many times
 	int critUntil;                     // Critical Hits: stunned by a critical until this tic
 	int markUntil, markPn, markUsed;   // Pistol Whip: that player's next hit lands harder until this tic
 	double markMult;
 	const MARK_TICS = 70;
+	const SHATTER_HIT = 20;            // what counts as a hard hit for the shatter
 	bool tinted;
 	TranslationID oldTranslation;
 	int burnUntil, burnNext, burnDmg;
@@ -552,6 +568,17 @@ class RSQ_Dazed : Inventory
 	}
 	override void ModifyDamage(int damage, Name damageType, out int newdamage, bool passive, Actor inflictor, Actor source, int flags)
 	{
+		// THE SHATTER ("freeze" with a shatter: RSQ Grenade's Freeze): a hard hit on it while frozen breaks the ice
+		if (passive && shatterMult > 1 && damage >= SHATTER_HIT && IsFrozen())
+		{
+			newdamage = int(round(damage * shatterMult));
+			shatterMult = 0;
+			shatterTic = level.maptime;
+			Thaw();
+			if (owner) owner.A_StartSound("misc/icebreak", CHAN_AUTO, CHANF_OVERLAP, 1.0);
+			return;
+		}
+		if (!IsFrozen()) shatterMult = 0;
 		if (!passive || damage <= 0 || !source || !source.player || damageType == 'Kick') return;
 		int now = level.maptime;
 		if (now > markUntil || source.PlayerNumber() != markPn) return;

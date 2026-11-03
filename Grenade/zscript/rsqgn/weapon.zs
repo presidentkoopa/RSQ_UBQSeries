@@ -80,7 +80,13 @@ class RSQGN_Grenade : Weapon
 		A_WeaponReady(WRF_NOFIRE);
 		if (!player || !player.mo) return;
 		let psp = player.FindPSprite(player.OffhandWeapon == invoker ? PSP_OFFHANDWEAPON : PSP_WEAPON);
-		if (psp) psp.Frame = RSQGN_Handler.HeldFrame(player.mo.PlayerNumber());
+		if (!psp) return;
+		int n = player.mo.PlayerNumber();
+		int f = RSQGN_Handler.HeldFrame(n);
+		psp.Frame = f;
+		// THE KINDS (Gun Bonsai VR patch): the held kind's skin, except while the fuse flashes (the frag's red and amber)
+		int k = RSQGN_Handler.KindOf(n);
+		psp.Sprite = GetSpriteIndex(f <= 2 ? RSQGN_Kind.HeldSprite(k) : 'QGNH');
 	}
 
 	States
@@ -104,6 +110,10 @@ class RSQGN_Grenade : Weapon
 	// never entered: names QGNH E (Cook Sense 2's amber flash) for MODELDEF; A_RSQGNReady writes the frame
 	AmberFrame:
 		QGNH E -1;
+		Stop;
+	// never entered: names the kinds' held sprites for MODELDEF.kinds.txt (A_RSQGNReady sets them)
+	KindFrames:
+		QGK1 ABC 0; QGK2 ABC 0; QGK3 ABC 0; QGK4 ABC 0; QGK5 ABC 0; QGK6 ABC 0; QGK7 ABC 0; QGK8 ABC 0;
 		Stop;
 	}
 }

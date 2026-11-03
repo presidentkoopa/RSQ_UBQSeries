@@ -206,7 +206,9 @@ Rig-checked (logs) only: **not yet headset-confirmed**.
   melee in `bonsairc.rsq`.
 - **The Grenade tree** (`up_grenade.zs`, GBOVR_TREES.md 4.5): Carry (Bandolier -> Scavenger), Throw (Strong Arm ->
   Flat Arc, Bounce), Fuse (Cook Sense -> Short Fuse), Blast (Big Bang -> Frag -> Cluster, Sticky), Style (Teeth;
-  Strong Arm 2 -> Skeet -> Skeet Window), Slow Burn (Cook Sense 1); the eight Kinds follow.
+  Strong Arm 2 -> Skeet -> Skeet Window), Slow Burn (Cook Sense 1), and the eight Kinds (Impact, Stun after Cook
+  Sense; Smoke, Flash after Cook Sense 2; Charm, Infight after Flash; Incendiary after Big Bang; Freeze after Frag).
+  The service gained "freeze" (RSQ_Dazed's freeze with an optional shatter: the next hard hit does that many times).
 - **Service, for the owning mods**: `RSQ_MeleeUpgradeService` "unlocked" (a weapon node learned, level >= 1) and
   "punlocked" (a player node), beside "level" and "plevel". `RSQ_Upgrade_Base.Has / PHas / LevelOf` are how a
   tree node asks for its parent in `IsSuitableFor*`.
