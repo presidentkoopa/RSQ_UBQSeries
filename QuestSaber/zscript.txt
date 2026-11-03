@@ -2263,6 +2263,7 @@ class UBQS_SaberBase : Weapon abstract
 			int dmg = int(dmg0);
 			Vector3 at = level.Vec3Offset(hand, mid);
 			if (!mo.bNoBlood) mo.SpawnBlood(at, VectorAngle(n.x, n.y), dmg);
+				UBQS_Upg.Touch("saber.spin", owner, mo);							// RSQ Score (11-03): the staff's spin is its own tool, named before the blow
 			mo.DamageMobj(self, owner, dmg, 'Saber', DMG_THRUSTLESS);
 			UBQS_Ping.At(owner, at, mo.bNoBlood ? "ubqs/wall" : "ubqs/hit", vhit);
 			if (i < cutWho.Size()) cutWhen[i] = level.maptime;
