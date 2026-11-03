@@ -53788,3 +53788,18 @@ Model UBQS_WorldSaberOff
 	FrameIndex K5WD T 0 19
 	FrameIndex K5WD U 0 20
 }
+
+// FORCE LIGHTNING'S BOLT (owner, 11-03): Distance Grab's beam mesh (its models/rsqdg/rsqbeam.md3, tools/gen_cone.py
+// there), authored along +Z: Scale.Y is its length, Scale.X its width; the skin is that beam's bell in blue-white.
+// One actor per hop of the bolt (UBQS_Force.Bolt). Hand-written, not from ubqs.py.
+Model UBQS_LightningBeam
+{
+	Path "models/ubqs"
+	Model 0 "ubqs_bolt.md3"
+	Skin 0 "ubqs_bolt.png"
+	Scale 1.0 1.0 1.0
+	USEACTORPITCH
+	USEACTORROLL
+	CORRECTPIXELSTRETCH
+	FrameIndex UBLT A 0 0
+}

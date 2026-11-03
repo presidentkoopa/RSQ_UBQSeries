@@ -4626,6 +4626,34 @@ class UBQS_LockCentre : Actor
 //                               it moves; let go mid-swing and it is FLUNG (and hurts when it hits).
 //   HOLD JUMP:                  a FORCE JUMP -- higher, and a floating fall while jump stays held.
 // ==========================================================================================================
+// FORCE LIGHTNING'S BOLT (the owner, 11-03: "distancegrab has some nice blue lasers... chain between enemies, spice it
+// up"): Distance Grab's beam mesh (three crossed planes round the bore, a soft bell: its models/rsqdg/rsqbeam.md3) in
+// the bolt's blue-white, one per hop, laid hand -> target -> target by UBQS_Force.Bolt. It writhes (the far end wanders
+// a little each tic), rolls and flickers, and the particle crackle rides on top, sparser. ubqs_lightning_beam 0: the
+// old particles alone.
+class UBQS_LightningBeam : Actor
+{
+	Default
+	{
+		+NOINTERACTION
+		+NOBLOCKMAP
+		+NOGRAVITY
+		+NOTELEPORT
+		+DONTSPLASH
+		+NOTONAUTOMAP
+		+BRIGHT
+		RenderStyle "Add";
+		Radius 1;
+		Height 1;
+	}
+	States
+	{
+	Spawn:
+		UBLT A -1 Bright;
+		Stop;
+	}
+}
+
 class UBQS_Force : Inventory
 {
 	int pushReady;
@@ -4662,6 +4690,7 @@ class UBQS_Force : Inventory
 	int    uPush, uPull, uChoke, uJump, uChain;
 	// THE FORCE'S TREE (GBOVR_TREES.md 4.2): Force Sensitive (the unlock under the patch), Force Speed, Force Lightning
 	int    uFS, uSpeed, uLight;
+	Array<Actor> lightBeams;        // FORCE LIGHTNING's bolt: one UBQS_LightningBeam per hop (Bolt / KillBeams)
 	Actor  lightAim, lightTarget;  // FORCE LIGHTNING: what the palm-out hand is aimed at, and what the bolt pours into
 	int    lightCharge, lightUntil, lightLv;
 	const  LIGHT_AIM = 17;         // tics aimed palm out before a flick lets it go (half a second)
@@ -5445,6 +5474,7 @@ class UBQS_Force : Inventory
 		{
 			lightTarget = null;
 			if (owner) owner.A_StopSound(23);
+			KillBeams();
 			return;
 		}
 		int dmg = int(UBQS_Upg.Num("ForceLightning.damage", lightLv, 8));
@@ -5473,21 +5503,67 @@ class UBQS_Force : Inventory
 			Actor c = chain[i];
 			if (!c) continue;
 			Vector3 to = (c.pos.xy, c.pos.z + c.height * 0.6);
+			Bolt(i, from, to);
 			Arc(from, to);
 			from = to;
 			UBQS_Upg.Touch("force.lightning", owner, c);						// RSQ Score (11-03): every struck monster, before the blow (the first alone was tagged, at the start)
 			c.DamageMobj(self, owner, dmg, 'Saber', DMG_THRUSTLESS);
 		}
+		KillBeams(chain.Size());   // a hop that fell off the chain takes its beam with it
+	}
+
+	// THE BOLT'S BEAM for hop i, from a to b (UBQS_LightningBeam): placed at a, laid along its UP axis toward a far end
+	// that wanders up to BOLT_WRITHE each tic, rolled at random, a width and an alpha that flicker.
+	const BOLT_L = 256.0;        // the mesh's authored length (Distance Grab's tools/gen_cone.py BEAM_L)
+	const BOLT_WRITHE = 6.0;
+	void Bolt(int i, Vector3 a, Vector3 b)
+	{
+		if (IV("ubqs_lightning_beam", 1) == 0) return;
+		while (lightBeams.Size() <= i) lightBeams.Push(null);
+		let bm = lightBeams[i];
+		if (!bm)
+		{
+			bm = Actor.Spawn("UBQS_LightningBeam", a, NO_REPLACE);
+			lightBeams[i] = bm;
+			if (!bm) return;
+		}
+		Vector3 end = b + (frandom[UBQSFx](-BOLT_WRITHE, BOLT_WRITHE), frandom[UBQSFx](-BOLT_WRITHE, BOLT_WRITHE), frandom[UBQSFx](-BOLT_WRITHE, BOLT_WRITHE));
+		Vector3 d = level.Vec3Diff(a, end);
+		double len = d.Length();
+		if (len < 2) { bm.bInvisible = true; return; }
+		bm.bInvisible = false;
+		bm.SetOrigin(a, false);
+		bm.Angle = VectorAngle(d.x, d.y);
+		bm.Pitch = -atan2(d.z, d.xy.Length()) + 90;   // the mesh lies along its UP axis (Distance Grab's beam does the same)
+		bm.Roll = frandom[UBQSFx](0, 360);
+		bm.Scale = (frandom[UBQSFx](0.45, 0.75), len / BOLT_L);
+		bm.Alpha = frandom[UBQSFx](0.55, 0.95);
+	}
+	void KillBeams(int keep = 0)
+	{
+		for (int k = lightBeams.Size() - 1; k >= keep; k--)
+		{
+			if (lightBeams[k]) lightBeams[k].Destroy();
+			lightBeams.Delete(k);
+		}
+	}
+	override void OnDestroy()
+	{
+		KillBeams();
+		Super.OnDestroy();
 	}
 	void Arc(Vector3 a, Vector3 b)
 	{
 		Vector3 d = level.Vec3Diff(a, b);
 		double l = d.Length();
-		int steps = clamp(int(l / 10.0), 3, 40);
+		// with the beam on (ubqs_lightning_beam), the crackle is sparser and bigger: sparks on a bolt, not the bolt itself
+		bool beam = IV("ubqs_lightning_beam", 1) != 0;
+		int steps = beam ? clamp(int(l / 24.0), 2, 16) : clamp(int(l / 10.0), 3, 40);
+		double size = beam ? 5.0 : 3.0;
 		for (int s = 0; s <= steps; s++)
 		{
 			Vector3 p = a + d * (double(s) / steps) + (frandom[UBQSFx](-4, 4), frandom[UBQSFx](-4, 4), frandom[UBQSFx](-4, 4));
-			owner.A_SpawnParticle((s % 3) == 0 ? 0xFFFFFF : 0x9FCBFF, SPF_FULLBRIGHT, 3, 3.0, 0, p.x - owner.pos.x, p.y - owner.pos.y, p.z - owner.pos.z);
+			owner.A_SpawnParticle((s % 3) == 0 ? 0xFFFFFF : 0x9FCBFF, SPF_FULLBRIGHT, 3, size, 0, p.x - owner.pos.x, p.y - owner.pos.y, p.z - owner.pos.z);
 		}
 	}
 

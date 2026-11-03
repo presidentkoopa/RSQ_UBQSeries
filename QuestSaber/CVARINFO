@@ -102,6 +102,8 @@ user  float  ubqs_throw_min     = 1.5;    // how hard a throw must be. Body-depe
                                           // not land is not -- so this one stays off the page
 server int   ubqs_force         = 1;      // the Force at all: push, pull, choke, jump
 server int   ubqs_force_jump    = 1;      // it changes how you move, so it is worth being able to stop
+server int   ubqs_lightning_beam = 1;     // (owner, 11-03) Force Lightning drawn as a beam per hop (Distance Grab's beam
+                                          // mesh, blue-white, writhing) with sparse crackle on top; 0: the particle arcs alone
 user  float  ubqs_force_gesture = 2.0;    // how sharp a push or pull gesture must be
 user  float  ubqs_gesture_straight = 0.55; // and how straight (a dot, not degrees -- 0.55 is not the
                                           // cosine of any round number)
