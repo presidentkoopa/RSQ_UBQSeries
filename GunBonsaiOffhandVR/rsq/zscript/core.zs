@@ -179,8 +179,8 @@ class RSQM play
 	// The class's own spawn health is the multiplier (a champion that was a legendary first already
 	// carries the 300 % in its StartHealth, so the larger of the two wins). Read by name; without
 	// LegenDoom Lite this is GetSpawnHealth.
-	// RSQ Miniboss, by name (nothing links): this miniboss was given LegenDoom Lite's BOSS legendary health
-	// (RSQMB_Service "bossfor" "ldhealth"). Without RSQ Miniboss: false.
+	// RSQ Miniboss, by name (nothing links): this miniboss was made legendary with the HIGHER of LegenDoom's boss and
+	// normal legendary health (RSQMB_Service "bossfor" "ldhealth"). Without RSQ Miniboss: false.
 	static bool MinibossLDBoss(Actor v)
 	{
 		String wn = "RSQMB_Ward";
@@ -198,9 +198,10 @@ class RSQM play
 		class<Inventory> ct = tk;
 		if (ct && v.FindInventory(ct))
 		{
-			// a miniboss RSQ Miniboss made legendary with its "LegenDoom Boss Health" on got the boss number (by name)
-			let cv = CVar.FindCVar((v.bBoss || MinibossLDBoss(v)) ? 'LD_legendaryhealthboss' : 'LD_legendaryhealth');
+			let cv = CVar.FindCVar(v.bBoss ? 'LD_legendaryhealthboss' : 'LD_legendaryhealth');
 			int pct = cv ? cv.GetInt() : 300;
+			// a miniboss RSQ Miniboss made legendary with its "LegenDoom: Best Health" on got the HIGHER of the two (by name)
+			if (!v.bBoss && MinibossLDBoss(v)) { let cb = CVar.FindCVar('LD_legendaryhealthboss'); pct = max(pct, cb ? cb.GetInt() : 200); }
 			let d = GetDefaultByType(v.GetClass());
 			int cls = d ? d.SpawnHealth() : sh;
 			sh = max(sh, cls * (pct / 100));      // the ACS's own integer arithmetic

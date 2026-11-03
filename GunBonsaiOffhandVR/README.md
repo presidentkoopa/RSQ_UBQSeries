@@ -223,8 +223,8 @@ Rig-checked (logs) only: **not yet headset-confirmed**.
   RSQ_Melee's own now.)
 - **Reads RSQ_Miniboss** (2026-11-03, by name): a miniboss counts as a BOSS for the kill rewards (the boss fountain,
   always drops) while Miniboss's "Boss Kill Rewards" switch is on (`RSQMB_Service` `bossfor` `"rewards"`, asked only
-  when the monster carries `RSQMB_Ward`); and StartHealth (Knockdown, Executioner) reads LegenDoom's boss legendary
-  percentage for a miniboss Miniboss gave the boss legendary health (`bossfor` `"ldhealth"`). Every other boss check
+  when the monster carries `RSQMB_Ward`); and StartHealth (Knockdown, Executioner) reads the HIGHER of LegenDoom's
+  boss and normal legendary percentage for a miniboss Miniboss made legendary that way (`bossfor` `"ldhealth"`). Every other boss check
   (the melee bonuses, Knockdown's boss rule) still reads the engine's BOSS flag only, so a miniboss gets them as any
   monster. Without RSQ_Miniboss: exactly as before. Rig only, not headset-confirmed.
 - Tactical Rig draws pay the drawn gun like any shot.
