@@ -4,6 +4,7 @@
 set -e
 cd "$(dirname "$0")"
 python3 tools/gen_art.py
+python3 tools/gen_dn_art.py
 rm -f RSQ_HPBars.pk3
 (cd pk3 && zip -q -r -X ../RSQ_HPBars.pk3 .)
 echo "built RSQ_HPBars.pk3"

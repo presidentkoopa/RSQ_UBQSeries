@@ -1,0 +1,70 @@
+MAP01 - Entryway
+DN2_SUM t0 made 0 totals 0 kills 0 heads 0 overkills 0 gains 0 peak glyphs 0 pool 0 stolen 0
+DN2_EV t2 player at -860,250,64 angle 90
+DN2_EV t10 spawn 0 DoomImp health 60
+DN2_EV t10 spawn 1 DoomImp health 60
+DN2_EV t10 slot 0 is DoomImp health 60
+DN2_EV t10 slot 1 is DoomImp health 60
+DN2_EV t12 slow motion on
+DN2_EV t40 hit 0 DoomImp for 14 (None): health 60 -> 46
+DN2_EV t40 hit 1 DoomImp for 14 (None): health 60 -> 46
+DN2 t41 #0 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 0.37 fk 1.00 alpha 1.00 clock 0.00 dist 100 frozen 0 hidden 0 slide 0.0 glyphs 2 at -883,335,58
+DN2 t41 #1 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 0.37 fk 1.00 alpha 1.00 clock 0.00 dist 100 frozen 0 hidden 0 slide 0.0 glyphs 2 at -837,335,58
+DN2 t42 #0 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.55 fk 1.00 alpha 1.00 clock 1.00 dist 100 frozen 0 hidden 0 slide 0.0 glyphs 2 at -883,335,58
+DN2 t42 #1 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.55 fk 1.00 alpha 1.00 clock 1.00 dist 100 frozen 0 hidden 0 slide 0.0 glyphs 2 at -837,335,58
+DN2 t43 #0 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.20 fk 1.00 alpha 1.00 clock 2.00 dist 100 frozen 0 hidden 0 slide 0.0 glyphs 2 at -883,335,58
+DN2 t43 #1 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.20 fk 1.00 alpha 1.00 clock 2.00 dist 100 frozen 0 hidden 0 slide 0.0 glyphs 2 at -837,335,58
+DN2 t44 #0 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.07 fk 1.00 alpha 1.00 clock 3.00 dist 100 frozen 0 hidden 0 slide 0.0 glyphs 2 at -883,335,58
+DN2 t44 #1 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.07 fk 1.00 alpha 1.00 clock 3.00 dist 100 frozen 0 hidden 0 slide 0.0 glyphs 2 at -837,335,58
+DN2 t45 #0 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.07 fk 1.00 alpha 1.00 clock 4.00 dist 100 frozen 0 hidden 0 slide 0.0 glyphs 2 at -883,335,58
+DN2 t45 #1 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.07 fk 1.00 alpha 1.00 clock 4.00 dist 100 frozen 0 hidden 0 slide 0.0 glyphs 2 at -837,335,58
+DN2 t46 #0 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.07 fk 1.00 alpha 1.00 clock 5.00 dist 99 frozen 0 hidden 0 slide 0.0 glyphs 2 at -883,335,59
+DN2 t46 #1 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.07 fk 1.00 alpha 1.00 clock 5.00 dist 99 frozen 0 hidden 0 slide 0.0 glyphs 2 at -837,335,59
+DN2 t47 #0 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.07 fk 1.00 alpha 1.00 clock 6.00 dist 99 frozen 0 hidden 0 slide 0.0 glyphs 2 at -883,335,59
+DN2 t47 #1 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.07 fk 1.00 alpha 1.00 clock 6.00 dist 99 frozen 0 hidden 0 slide 0.0 glyphs 2 at -837,335,59
+DN2 t48 #0 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.07 fk 1.00 alpha 1.00 clock 7.00 dist 99 frozen 0 hidden 0 slide 0.0 glyphs 2 at -883,335,60
+DN2 t48 #1 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.07 fk 1.00 alpha 1.00 clock 7.00 dist 99 frozen 0 hidden 0 slide 0.0 glyphs 2 at -837,335,60
+DN2 t49 #0 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.07 fk 1.00 alpha 1.00 clock 8.00 dist 99 frozen 0 hidden 0 slide 0.0 glyphs 2 at -883,335,60
+DN2 t49 #1 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.07 fk 1.00 alpha 1.00 clock 8.00 dist 99 frozen 0 hidden 0 slide 0.0 glyphs 2 at -837,335,60
+DN2 t50 #0 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.07 fk 1.00 alpha 1.00 clock 9.00 dist 99 frozen 0 hidden 0 slide 0.0 glyphs 2 at -883,335,60
+DN2 t50 #1 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.07 fk 1.00 alpha 1.00 clock 9.00 dist 99 frozen 0 hidden 0 slide 0.0 glyphs 2 at -837,335,60
+DN2 t51 #0 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.07 fk 1.00 alpha 1.00 clock 10.00 dist 99 frozen 0 hidden 0 slide 0.0 glyphs 2 at -883,335,61
+DN2 t51 #1 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.07 fk 1.00 alpha 1.00 clock 10.00 dist 99 frozen 0 hidden 0 slide 0.0 glyphs 2 at -837,335,61
+DN2 t52 #0 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.07 fk 1.00 alpha 1.00 clock 11.00 dist 98 frozen 0 hidden 0 slide 0.0 glyphs 2 at -883,335,61
+DN2 t52 #1 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.07 fk 1.00 alpha 1.00 clock 11.00 dist 98 frozen 0 hidden 0 slide 0.0 glyphs 2 at -837,335,61
+DN2 t53 #0 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.07 fk 1.00 alpha 1.00 clock 12.00 dist 98 frozen 0 hidden 0 slide 0.0 glyphs 2 at -883,335,62
+DN2 t53 #1 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.07 fk 1.00 alpha 1.00 clock 12.00 dist 98 frozen 0 hidden 0 slide 0.0 glyphs 2 at -837,335,62
+DN2 t54 #0 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.07 fk 1.00 alpha 1.00 clock 13.00 dist 98 frozen 0 hidden 0 slide 0.0 glyphs 2 at -883,335,62
+DN2 t54 #1 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.07 fk 1.00 alpha 1.00 clock 13.00 dist 98 frozen 0 hidden 0 slide 0.0 glyphs 2 at -837,335,62
+DN2 t55 #0 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.07 fk 1.00 alpha 1.00 clock 14.00 dist 98 frozen 0 hidden 0 slide 0.0 glyphs 2 at -883,335,62
+DN2 t55 #1 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.07 fk 1.00 alpha 1.00 clock 14.00 dist 98 frozen 0 hidden 0 slide 0.0 glyphs 2 at -837,335,62
+DN2 t56 #0 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.07 fk 1.00 alpha 1.00 clock 15.00 dist 98 frozen 0 hidden 0 slide 0.0 glyphs 2 at -883,335,63
+DN2 t56 #1 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.07 fk 1.00 alpha 1.00 clock 15.00 dist 98 frozen 0 hidden 0 slide 0.0 glyphs 2 at -837,335,63
+DN2 t57 #0 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.07 fk 1.00 alpha 1.00 clock 16.00 dist 97 frozen 0 hidden 0 slide 0.0 glyphs 2 at -883,335,63
+DN2 t57 #1 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.07 fk 1.00 alpha 1.00 clock 16.00 dist 97 frozen 0 hidden 0 slide 0.0 glyphs 2 at -837,335,63
+DN2 t58 #0 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.07 fk 1.00 alpha 1.00 clock 17.00 dist 97 frozen 0 hidden 0 slide 0.0 glyphs 2 at -883,335,64
+DN2 t58 #1 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.07 fk 1.00 alpha 1.00 clock 17.00 dist 97 frozen 0 hidden 0 slide 0.0 glyphs 2 at -837,335,64
+DN2 t59 #0 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.07 fk 1.00 alpha 1.00 clock 18.00 dist 97 frozen 0 hidden 0 slide 0.0 glyphs 2 at -883,335,64
+DN2 t59 #1 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.07 fk 1.00 alpha 1.00 clock 18.00 dist 97 frozen 0 hidden 0 slide 0.0 glyphs 2 at -837,335,64
+DN2 t60 #0 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.07 fk 1.00 alpha 0.92 clock 19.00 dist 97 frozen 0 hidden 0 slide 0.0 glyphs 2 at -883,335,64
+DN2 t60 #1 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.07 fk 1.00 alpha 0.92 clock 19.00 dist 97 frozen 0 hidden 0 slide 0.0 glyphs 2 at -837,335,64
+DN2 t61 #0 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.07 fk 1.00 alpha 0.83 clock 20.00 dist 97 frozen 0 hidden 0 slide 0.0 glyphs 2 at -883,335,65
+DN2 t61 #1 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.07 fk 1.00 alpha 0.83 clock 20.00 dist 97 frozen 0 hidden 0 slide 0.0 glyphs 2 at -837,335,65
+DN2 t62 #0 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.07 fk 1.00 alpha 0.75 clock 21.00 dist 97 frozen 0 hidden 0 slide 0.0 glyphs 2 at -883,335,65
+DN2 t62 #1 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.07 fk 1.00 alpha 0.75 clock 21.00 dist 97 frozen 0 hidden 0 slide 0.0 glyphs 2 at -837,335,65
+DN2 t63 #0 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.07 fk 1.00 alpha 0.67 clock 22.00 dist 96 frozen 0 hidden 0 slide 0.0 glyphs 2 at -883,335,66
+DN2 t63 #1 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.07 fk 1.00 alpha 0.67 clock 22.00 dist 96 frozen 0 hidden 0 slide 0.0 glyphs 2 at -837,335,66
+DN2 t64 #0 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.07 fk 1.00 alpha 0.58 clock 23.00 dist 96 frozen 0 hidden 0 slide 0.0 glyphs 2 at -883,335,66
+DN2 t64 #1 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.07 fk 1.00 alpha 0.58 clock 23.00 dist 96 frozen 0 hidden 0 slide 0.0 glyphs 2 at -837,335,66
+DN2 t65 #0 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.07 fk 1.00 alpha 0.50 clock 24.00 dist 96 frozen 0 hidden 0 slide 0.0 glyphs 2 at -883,335,66
+DN2 t65 #1 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.07 fk 1.00 alpha 0.50 clock 24.00 dist 96 frozen 0 hidden 0 slide 0.0 glyphs 2 at -837,335,66
+DN2 t66 #0 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.07 fk 1.00 alpha 0.42 clock 25.00 dist 96 frozen 0 hidden 0 slide 0.0 glyphs 2 at -883,335,67
+DN2 t66 #1 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.07 fk 1.00 alpha 0.42 clock 25.00 dist 96 frozen 0 hidden 0 slide 0.0 glyphs 2 at -837,335,67
+DN2 t67 #0 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.07 fk 1.00 alpha 0.33 clock 26.00 dist 96 frozen 0 hidden 0 slide 0.0 glyphs 2 at -883,335,67
+DN2 t67 #1 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.07 fk 1.00 alpha 0.33 clock 26.00 dist 96 frozen 0 hidden 0 slide 0.0 glyphs 2 at -837,335,67
+DN2 t68 #0 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.07 fk 1.00 alpha 0.25 clock 27.00 dist 96 frozen 0 hidden 0 slide 0.0 glyphs 2 at -883,335,68
+DN2 t68 #1 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.07 fk 1.00 alpha 0.25 clock 27.00 dist 96 frozen 0 hidden 0 slide 0.0 glyphs 2 at -837,335,68
+DN2 t69 #0 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.07 fk 1.00 alpha 0.17 clock 28.00 dist 96 frozen 0 hidden 0 slide 0.0 glyphs 2 at -883,335,68
+DN2 t69 #1 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.07 fk 1.00 alpha 0.17 clock 28.00 dist 96 frozen 0 hidden 0 slide 0.0 glyphs 2 at -837,335,68
+DN2 t70 #0 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.07 fk 1.00 alpha 0.08 clock 29.00 dist 95 frozen 0 hidden 0 slide 0.0 glyphs 2 at -883,335,68
+DN2 t70 #1 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.07 fk 1.00 alpha 0.08 clock 29.00 dist 95 frozen 0 hidden 0 slide 0.0 glyphs 2 at -837,335,68

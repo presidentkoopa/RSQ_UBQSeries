@@ -1,0 +1,3 @@
+DN2_EV t10 spawn 39 BaronOfHell health 1000
+DN2_COUNT t70 actors 129 (monsters alive 59, HP bars 40) visualthinkers 0 (our glyphs 0, showing 0) numbers 0 pool 0 free 0 peak 0 stolen 0
+DN2_SUM t100 made 0 totals 0 kills 0 heads 0 overkills 0 gains 0 peak glyphs 0 pool 0 stolen 0

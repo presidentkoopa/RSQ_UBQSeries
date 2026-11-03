@@ -1,0 +1,29 @@
+MAP01 - Entryway
+DN2_EV t2 player at -860,250,64 angle 90
+DN2_EV t5 player health 50
+DN2_EV t12 item Clip at 40 ahead
+DN2_EV t20 touch Clip: health 50
+DN2 t21 #0 gain live on DoomPlayer value 10 shown 0 x0 words 0 '+10' RSQTHP_DnAmmo scale 0.35 fk 1.00 alpha 1.00 clock 0.00 dist 80 frozen 0 hidden 0 slide 0.0 glyphs 3 at -850,290,36
+DN2 t22 #0 gain live on DoomPlayer value 10 shown 0 x0 words 0 '+10' RSQTHP_DnAmmo scale 1.44 fk 1.00 alpha 1.00 clock 1.00 dist 80 frozen 0 hidden 0 slide 0.0 glyphs 3 at -850,290,36
+DN2 t23 #0 gain live on DoomPlayer value 10 shown 0 x0 words 0 '+10' RSQTHP_DnAmmo scale 1.12 fk 1.00 alpha 1.00 clock 2.00 dist 80 frozen 0 hidden 0 slide 0.0 glyphs 3 at -850,290,36
+DN2 t24 #0 gain live on DoomPlayer value 10 shown 0 x0 words 0 '+10' RSQTHP_DnAmmo scale 1.00 fk 1.00 alpha 1.00 clock 3.00 dist 80 frozen 0 hidden 0 slide 0.0 glyphs 3 at -850,290,37
+DN2 t25 #0 gain live on DoomPlayer value 10 shown 0 x0 words 0 '+10' RSQTHP_DnAmmo scale 1.00 fk 1.00 alpha 1.00 clock 4.00 dist 79 frozen 0 hidden 0 slide 0.0 glyphs 3 at -850,290,37
+DN2 t26 #0 gain live on DoomPlayer value 10 shown 0 x0 words 0 '+10' RSQTHP_DnAmmo scale 1.00 fk 1.00 alpha 1.00 clock 5.00 dist 79 frozen 0 hidden 0 slide 0.0 glyphs 3 at -850,290,38
+DN2 t27 #0 gain live on DoomPlayer value 10 shown 0 x0 words 0 '+10' RSQTHP_DnAmmo scale 1.00 fk 1.00 alpha 1.00 clock 6.00 dist 78 frozen 0 hidden 0 slide 0.0 glyphs 3 at -850,290,38
+DN2 t28 #0 gain live on DoomPlayer value 10 shown 0 x0 words 0 '+10' RSQTHP_DnAmmo scale 1.00 fk 1.00 alpha 1.00 clock 7.00 dist 78 frozen 0 hidden 0 slide 0.0 glyphs 3 at -850,290,39
+DN2 t29 #0 gain fly on DoomPlayer value 10 shown 0 x0 words 0 '+10' RSQTHP_DnAmmo scale 1.00 fk 1.00 alpha 1.00 clock 8.00 dist 78 frozen 0 hidden 0 slide 0.0 glyphs 3 at -850,290,39
+DN2 t30 #0 gain fly on DoomPlayer value 10 shown 0 x0 words 0 '+10' RSQTHP_DnAmmo scale 0.96 fk 1.00 alpha 1.00 clock 9.00 dist 77 frozen 0 hidden 0 slide 0.0 glyphs 3 at -850,290,39
+DN2 t31 #0 gain fly on DoomPlayer value 10 shown 0 x0 words 0 '+10' RSQTHP_DnAmmo scale 0.93 fk 1.00 alpha 1.00 clock 10.00 dist 76 frozen 0 hidden 0 slide 0.0 glyphs 3 at -850,289,41
+DN2 t32 #0 gain fly on DoomPlayer value 10 shown 0 x0 words 0 '+10' RSQTHP_DnAmmo scale 0.89 fk 1.00 alpha 1.00 clock 11.00 dist 73 frozen 0 hidden 0 slide 0.0 glyphs 3 at -850,288,43
+DN2 t33 #0 gain fly on DoomPlayer value 10 shown 0 x0 words 0 '+10' RSQTHP_DnAmmo scale 0.85 fk 1.00 alpha 1.00 clock 12.00 dist 70 frozen 0 hidden 0 slide 0.0 glyphs 3 at -850,286,46
+DN2 t34 #0 gain fly on DoomPlayer value 10 shown 0 x0 words 0 '+10' RSQTHP_DnAmmo scale 0.81 fk 1.00 alpha 1.00 clock 13.00 dist 66 frozen 0 hidden 0 slide 0.0 glyphs 3 at -850,284,50
+DN2 t35 #0 gain fly on DoomPlayer value 10 shown 0 x0 words 0 '+10' RSQTHP_DnAmmo scale 0.78 fk 1.00 alpha 1.00 clock 14.00 dist 60 frozen 0 hidden 0 slide 0.0 glyphs 3 at -850,281,54
+DN2 t36 #0 gain fly on DoomPlayer value 10 shown 0 x0 words 0 '+10' RSQTHP_DnAmmo scale 0.74 fk 1.00 alpha 1.00 clock 15.00 dist 54 frozen 0 hidden 0 slide 0.0 glyphs 3 at -851,278,60
+DN2 t37 #0 gain fly on DoomPlayer value 10 shown 0 x0 words 0 '+10' RSQTHP_DnAmmo scale 0.70 fk 1.00 alpha 1.00 clock 16.00 dist 47 frozen 0 hidden 0 slide 0.0 glyphs 3 at -851,275,66
+DN2 t38 #0 gain fly on DoomPlayer value 10 shown 0 x0 words 0 '+10' RSQTHP_DnAmmo scale 0.66 fk 1.00 alpha 1.00 clock 17.00 dist 38 frozen 0 hidden 0 slide 0.0 glyphs 3 at -851,270,74
+DN2 t39 #0 gain fly on DoomPlayer value 10 shown 0 x0 words 0 '+10' RSQTHP_DnAmmo scale 0.63 fk 1.00 alpha 1.00 clock 18.00 dist 29 frozen 0 hidden 0 slide 0.0 glyphs 3 at -851,266,82
+DN2 t40 #0 gain fly on DoomPlayer value 10 shown 0 x0 words 0 '+10' RSQTHP_DnAmmo scale 0.59 fk 1.00 alpha 1.00 clock 19.00 dist 20 frozen 0 hidden 0 slide 0.0 glyphs 3 at -851,261,91
+DN2 t41 #0 gain land on DoomPlayer value 10 shown 0 x0 words 0 '+10' RSQTHP_DnAmmo scale 0.55 fk 1.00 alpha 1.00 clock 20.00 dist 11 frozen 0 hidden 0 slide 0.0 glyphs 3 at -852,255,101
+DN2 t42 #0 gain land on DoomPlayer value 10 shown 0 x0 words 0 '+10' RSQTHP_DnAmmo scale 0.55 fk 1.00 alpha 0.75 clock 21.00 dist 11 frozen 0 hidden 0 slide 0.0 glyphs 3 at -852,255,101
+DN2 t43 #0 gain land on DoomPlayer value 10 shown 0 x0 words 0 '+10' RSQTHP_DnAmmo scale 0.55 fk 1.00 alpha 0.50 clock 22.00 dist 11 frozen 0 hidden 0 slide 0.0 glyphs 3 at -852,255,101
+DN2 t44 #0 gain land on DoomPlayer value 10 shown 0 x0 words 0 '+10' RSQTHP_DnAmmo scale 0.55 fk 1.00 alpha 0.25 clock 23.00 dist 11 frozen 0 hidden 0 slide 0.0 glyphs 3 at -852,255,101

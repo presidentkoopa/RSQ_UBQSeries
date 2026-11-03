@@ -1,0 +1,17 @@
+MAP01 - Entryway
+DN2_SUM t0 made 0 totals 0 kills 0 heads 0 overkills 0 gains 0 peak glyphs 0 pool 0 stolen 0
+DN2_EV t2 player at -860,250,64 angle 90
+DN2_EV t10 spawn 0 DoomImp health 60
+DN2_EV t10 slot 0 is DoomImp health 60
+DN2_EV t20 hit 0 DoomImp for 14 (None): health 60 -> 46 (z 8.0 floor 8.0 top 55.0 height 56.0)
+DN2_EV t21 hands: override 1 main -851.5,260.2,100.8 angle 6.5 pitch -30.0 off -868.5,260.2,100.8 eye z 105.0 weapon Pistol
+DN2 t21 #0 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 0.37 fk 1.00 alpha 1.00 clock 0.00 dist 97 frozen 0 hidden 0 slide 0.0 glyphs 2 at -860,334,58
+DN2 t22 #0 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.55 fk 1.00 alpha 1.00 clock 1.00 dist 97 frozen 0 hidden 0 slide 0.0 glyphs 2 at -860,334,58
+DN2 t23 #0 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.20 fk 1.00 alpha 1.00 clock 2.00 dist 97 frozen 0 hidden 0 slide 0.0 glyphs 2 at -860,334,58
+DN2 t24 #0 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.07 fk 1.00 alpha 1.00 clock 3.00 dist 96 frozen 0 hidden 0 slide 0.0 glyphs 2 at -860,334,58
+DN2 t25 #0 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.07 fk 1.00 alpha 1.00 clock 4.00 dist 96 frozen 0 hidden 0 slide 0.0 glyphs 2 at -860,334,58
+DN2 t26 #0 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.07 fk 1.00 alpha 1.00 clock 5.00 dist 96 frozen 0 hidden 0 slide 0.0 glyphs 2 at -860,334,59
+DN2 t27 #0 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.07 fk 1.00 alpha 1.00 clock 6.00 dist 96 frozen 0 hidden 0 slide 0.0 glyphs 2 at -860,334,59
+DN2 t28 #0 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.07 fk 1.00 alpha 1.00 clock 7.00 dist 96 frozen 0 hidden 0 slide 0.0 glyphs 2 at -860,334,60
+DN2 t29 #0 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.07 fk 1.00 alpha 1.00 clock 8.00 dist 95 frozen 0 hidden 0 slide 0.0 glyphs 2 at -860,334,60
+DN2 t30 #0 hit live on DoomImp value 14 shown 0 x0 words 0 '14' RSQTHP_DnOrange scale 1.07 fk 1.00 alpha 1.00 clock 9.00 dist 95 frozen 0 hidden 0 slide 0.0 glyphs 2 at -860,334,60

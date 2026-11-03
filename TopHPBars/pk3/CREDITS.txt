@@ -38,10 +38,12 @@ rewritten here; no SpriteShadow code is copied.)
 
 Damage Numbers are damnums by Xaser Acheron (with contributions by Major Cooke; thanks in its source
 to Marrub and Zombie), github.com/XaserAcheron/damnums v1.0.2 (commit 953673c), folded in on
-2026-11-03 under this mod's names (RSQTHP_DamNum*, rsqthp_dmg_* cvars, RSQTHP_Dam* colours, sprites
-QC / QD). Its code, its Doom Classic and Doom Small digit art and digit-position sprite layout, its
-colour translations and damage-type colours are his; the changes are listed at the top of
-zscript/rsqthp/damnums/damnum.zs. Thank you, Xaser. damnums is released under the MIT License:
+2026-11-03 under this mod's names (rsqthp_dmg_* cvars, RSQTHP_Dam* colours). Its idea, its Doom Classic
+and Doom Small digit art (now textures graphics/rsqthpdn/RQNC* / RQND*, scaled up from its QC / QD
+sprites by tools/gen_dn_art.py), its colour translations, damage-type colours and its toss / float motion
+are his; the same day the drawing was rewritten (no digit actors and no sprites: one glyph texture per
+VisualThinker, zscript/rsqthp/damnums/glyphs.zs) and the owner's round added (events.zs header). Thank
+you, Xaser. damnums is released under the MIT License:
 
     MIT License
 
@@ -64,6 +66,17 @@ zscript/rsqthp/damnums/damnum.zs. Thank you, Xaser. damnums is released under th
     LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
+
+DAMAGE NUMBER FONTS (2026-11-03):
+  - JFO metal digits and letters (the default Number Font, and every word: HEADSHOT, OVERKILL, xN): JFO,
+    the JDUI font by Zedas, in the edit "JDUI Brutal Doom Ultimate Edition" by Blackmore1014 (ModDB:
+    https://www.moddb.com/addons/jdui-brutal-doom-ultimate-edition). tools/dn_art/jfo_big and jfo_small are
+    copied unchanged from RSQ Gun Cards' tools/card_art/jfo (JFO.pk3's Hires/BigFont/fontbNNN.png and
+    Hires/SmallFont/stcfnNNN.png); tools/gen_dn_art.py levels their grey and writes the PCVR and Quest
+    textures. NO REUSE LICENCE IS STATED for JFO / JDUI: permission should be asked of Zedas and
+    Blackmore1014 before any public release (the same note as Gun Cards' CREDITS).
+  - Ermac's digits (Number Font: Ermac): iamErmac's Force Unleashed holo HUD digits (digit_*.png), as RSQ Gun
+    Cards ships them with the owner's blessing (tools/dn_art/ermac, copied from GunCards/tools/card_art).
 
 Not included, credited for the record:
   - Lossvoise's flat high-visibility retexture of Mere_Duke's custom version (zdoom forum

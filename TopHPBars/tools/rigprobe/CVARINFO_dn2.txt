@@ -1,0 +1,12 @@
+server noarchive string dn2_spawn = "";
+server noarchive string dn2_hits = "";
+server noarchive string dn2_trace = "";
+server noarchive string dn2_freeze = "";
+server noarchive string dn2_pick = "";
+server noarchive string dn2_slow = "";
+server noarchive int    dn2_hp = 0;
+server noarchive int    dn2_rep = 0;
+server noarchive int    dn2_count = 0;
+server noarchive int    dn2_sum = 0;
+server noarchive int    dn2_glyphlog = 0;
+server noarchive string dn2_tele = "";

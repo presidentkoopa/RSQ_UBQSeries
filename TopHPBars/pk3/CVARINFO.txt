@@ -25,7 +25,22 @@ server float  rsqthp_limitdist = 1536;  // HP4: that distance, map units (Tuning
 server bool   rsqthp_dmg         = true;   // Damage Numbers on/off (dam_enabled)
 server bool   rsqthp_dmg_all     = false;  // Numbers For: 0 monsters only, 1 all shootable things (dam_shootable; never your own body)
 server bool   rsqthp_dmg_spray   = false;  // Shotgun Spray: one number per hit instead of one per target per tic (dam_spray)
-user   string rsqthp_dmg_font    = "RSQTHP_DamNumFontClassic"; // Number Font: Classic (damnums' Doom default) or Small (dam_fontclass)
-user   string rsqthp_dmg_colour  = "RSQTHP_DamDefault";        // Number Colour: Default = the font's (red) (dam_translation)
-user   int    rsqthp_dmg_physics = 0;      // Number Motion: 0 Toss, 1 Float (dam_physics)
-user   bool   rsqthp_dmg_types   = true;   // Damage Type Colours: fire orange, plasma cyan, ... (dam_usetypes)
+user   string rsqthp_dmg_colour  = "RSQTHP_DamDefault";        // Number Colour, when Colour by Hit Strength is off: Default = the font's (dam_translation)
+user   int    rsqthp_dmg_physics = 0;      // Number Motion, when Pop and Settle is off: 0 Toss, 1 Float (dam_physics)
+user   bool   rsqthp_dmg_types   = true;   // Damage Type Colours, when Colour by Hit Strength is off: fire orange, plasma cyan, ... (dam_usetypes)
+// The owner's round (2026-11-03 10:44, "I love all of this, let's get on it"): each part has its own row. Look only, so user cvars.
+user   int    rsqthp_dmg_face     = 0;     // Number Font: 0 JFO metal (default), 2 Ermac's digits, 3 Classic Doom, 4 Classic Doom (small) (damnums')
+user   int    rsqthp_dmg_q        = 0;     // Text Quality: 0 Quest (half-resolution glyphs), 1 PCVR
+user   bool   rsqthp_dmg_ramp     = true;  // Colour by Hit Strength: white / yellow / orange / red by the share of health the hit took
+user   bool   rsqthp_dmg_pop      = true;  // Pop and Settle: pops small, overshoots ~1.5x, snaps back, drifts up, fades
+user   bool   rsqthp_dmg_size     = true;  // Size by Hit: bigger hits (share of health) bigger numbers
+user   bool   rsqthp_dmg_grow     = true;  // Grow with Distance: HP Bars' Far Size curve (rsqthp_far) for the numbers too
+user   bool   rsqthp_dmg_total    = true;  // Running Total: hits on one monster add into one total beside its bar, with xN
+user   bool   rsqthp_dmg_slam     = true;  // Kill Slam: on the kill the number slams big, holds, breaks apart
+user   bool   rsqthp_dmg_overkill = true;  // Overkill Word: OVERKILL over the kill when the last hit went well past zero
+user   bool   rsqthp_dmg_head     = true;  // Headshot Word: HEADSHOT over Brutal Doom's head hits, bigger, crimson
+user   bool   rsqthp_dmg_comfort  = true;  // Out of Your Face: never nearer than ~1 m, off the aim line of either gun
+user   int    rsqthp_dmg_max      = 12;    // Most Numbers: only this many nearest numbers show (Quest default)
+user   bool   rsqthp_dmg_gains    = true;  // Gains on You: +health / +armour / +ammo rise from the pickup and fly to your wrist
+user   bool   rsqthp_dmg_hitstop  = true;  // Freeze in Hit-Stop: a number on a monster in a hit-stop holds until it ends
+user   int    rsqthp_dmg_slowmo   = 0;     // Numbers in Slow-Mo: 0 World Time (slow with the world), 1 Your Time

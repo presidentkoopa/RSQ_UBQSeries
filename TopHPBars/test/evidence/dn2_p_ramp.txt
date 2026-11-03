@@ -1,0 +1,91 @@
+MAP01 - Entryway
+DN2_SUM t0 made 0 totals 0 kills 0 heads 0 overkills 0 gains 0 peak glyphs 0 pool 0 stolen 0
+DN2_EV t2 player at -860,250,64 angle 90
+DN2_EV t10 spawn 0 BaronOfHell health 1000
+DN2_EV t10 spawn 1 BaronOfHell health 1000
+DN2_EV t10 spawn 2 BaronOfHell health 1000
+DN2_EV t10 spawn 3 BaronOfHell health 1000
+DN2_EV t10 slot 0 is BaronOfHell health 1000
+DN2_EV t10 slot 1 is BaronOfHell health 1000
+DN2_EV t10 slot 2 is BaronOfHell health 1000
+DN2_EV t10 slot 3 is BaronOfHell health 1000
+DN2_EV t20 hit 0 BaronOfHell for 30 (None): health 1000 -> 970
+DN2_EV t20 hit 1 BaronOfHell for 100 (None): health 1000 -> 900
+DN2_EV t20 hit 2 BaronOfHell for 250 (None): health 1000 -> 750
+DN2_EV t20 hit 3 BaronOfHell for 500 (None): health 1000 -> 500
+DN2_EV t20 hit-stop on 0: freezetics 300
+DN2_EV t20 hit-stop on 1: freezetics 300
+DN2_EV t20 hit-stop on 2: freezetics 300
+DN2_EV t20 hit-stop on 3: freezetics 300
+DN2 t21 #0 hit live on BaronOfHell value 30 shown 0 x0 words 0 '30' RSQTHP_DnWhite scale 0.70 fk 1.00 alpha 1.00 clock 0.00 dist 252 frozen 1 hidden 0 slide 0.0 glyphs 2 at -954,482,75
+DN2 t21 #1 hit live on BaronOfHell value 100 shown 0 x0 words 0 '100' RSQTHP_DnYellow scale 0.79 fk 1.00 alpha 1.00 clock 0.00 dist 234 frozen 1 hidden 0 slide 0.0 glyphs 3 at -891,480,75
+DN2 t21 #2 hit live on BaronOfHell value 250 shown 0 x0 words 0 '250' RSQTHP_DnOrange scale 0.98 fk 1.00 alpha 1.00 clock 0.00 dist 234 frozen 1 hidden 0 slide 0.0 glyphs 3 at -829,480,75
+DN2 t21 #3 hit live on BaronOfHell value 500 shown 0 x0 words 0 '500' RSQTHP_DnRed scale 1.15 fk 1.00 alpha 1.00 clock 0.00 dist 252 frozen 1 hidden 0 slide 0.0 glyphs 3 at -766,482,75
+DN2 t22 #0 hit live on BaronOfHell value 30 shown 0 x0 words 0 '30' RSQTHP_DnWhite scale 0.70 fk 1.00 alpha 1.00 clock 0.00 dist 252 frozen 1 hidden 0 slide 0.0 glyphs 2 at -954,482,75
+DN2 t22 #1 hit live on BaronOfHell value 100 shown 0 x0 words 0 '100' RSQTHP_DnYellow scale 0.79 fk 1.00 alpha 1.00 clock 0.00 dist 234 frozen 1 hidden 0 slide 0.0 glyphs 3 at -891,480,75
+DN2 t22 #2 hit live on BaronOfHell value 250 shown 0 x0 words 0 '250' RSQTHP_DnOrange scale 0.98 fk 1.00 alpha 1.00 clock 0.00 dist 234 frozen 1 hidden 0 slide 0.0 glyphs 3 at -829,480,75
+DN2 t22 #3 hit live on BaronOfHell value 500 shown 0 x0 words 0 '500' RSQTHP_DnRed scale 1.15 fk 1.00 alpha 1.00 clock 0.00 dist 252 frozen 1 hidden 0 slide 0.0 glyphs 3 at -766,482,75
+DN2 t23 #0 hit live on BaronOfHell value 30 shown 0 x0 words 0 '30' RSQTHP_DnWhite scale 0.70 fk 1.00 alpha 1.00 clock 0.00 dist 252 frozen 1 hidden 0 slide 0.0 glyphs 2 at -954,482,75
+DN2 t23 #1 hit live on BaronOfHell value 100 shown 0 x0 words 0 '100' RSQTHP_DnYellow scale 0.79 fk 1.00 alpha 1.00 clock 0.00 dist 234 frozen 1 hidden 0 slide 0.0 glyphs 3 at -891,480,75
+DN2 t23 #2 hit live on BaronOfHell value 250 shown 0 x0 words 0 '250' RSQTHP_DnOrange scale 0.98 fk 1.00 alpha 1.00 clock 0.00 dist 234 frozen 1 hidden 0 slide 0.0 glyphs 3 at -829,480,75
+DN2 t23 #3 hit live on BaronOfHell value 500 shown 0 x0 words 0 '500' RSQTHP_DnRed scale 1.15 fk 1.00 alpha 1.00 clock 0.00 dist 252 frozen 1 hidden 0 slide 0.0 glyphs 3 at -766,482,75
+DN2 t24 #0 hit live on BaronOfHell value 30 shown 0 x0 words 0 '30' RSQTHP_DnWhite scale 0.70 fk 1.00 alpha 1.00 clock 0.00 dist 252 frozen 1 hidden 0 slide 0.0 glyphs 2 at -954,482,75
+DN2 t24 #1 hit live on BaronOfHell value 100 shown 0 x0 words 0 '100' RSQTHP_DnYellow scale 0.79 fk 1.00 alpha 1.00 clock 0.00 dist 234 frozen 1 hidden 0 slide 0.0 glyphs 3 at -891,480,75
+DN2 t24 #2 hit live on BaronOfHell value 250 shown 0 x0 words 0 '250' RSQTHP_DnOrange scale 0.98 fk 1.00 alpha 1.00 clock 0.00 dist 234 frozen 1 hidden 0 slide 0.0 glyphs 3 at -829,480,75
+DN2 t24 #3 hit live on BaronOfHell value 500 shown 0 x0 words 0 '500' RSQTHP_DnRed scale 1.15 fk 1.00 alpha 1.00 clock 0.00 dist 252 frozen 1 hidden 0 slide 0.0 glyphs 3 at -766,482,75
+DN2 t25 #0 hit live on BaronOfHell value 30 shown 0 x0 words 0 '30' RSQTHP_DnWhite scale 0.70 fk 1.00 alpha 1.00 clock 0.00 dist 252 frozen 1 hidden 0 slide 0.0 glyphs 2 at -954,482,75
+DN2 t25 #1 hit live on BaronOfHell value 100 shown 0 x0 words 0 '100' RSQTHP_DnYellow scale 0.79 fk 1.00 alpha 1.00 clock 0.00 dist 234 frozen 1 hidden 0 slide 0.0 glyphs 3 at -891,480,75
+DN2 t25 #2 hit live on BaronOfHell value 250 shown 0 x0 words 0 '250' RSQTHP_DnOrange scale 0.98 fk 1.00 alpha 1.00 clock 0.00 dist 234 frozen 1 hidden 0 slide 0.0 glyphs 3 at -829,480,75
+DN2 t25 #3 hit live on BaronOfHell value 500 shown 0 x0 words 0 '500' RSQTHP_DnRed scale 1.15 fk 1.00 alpha 1.00 clock 0.00 dist 252 frozen 1 hidden 0 slide 0.0 glyphs 3 at -766,482,75
+DN2 t26 #0 hit live on BaronOfHell value 30 shown 0 x0 words 0 '30' RSQTHP_DnWhite scale 0.70 fk 1.00 alpha 1.00 clock 0.00 dist 252 frozen 1 hidden 0 slide 0.0 glyphs 2 at -954,482,75
+DN2 t26 #1 hit live on BaronOfHell value 100 shown 0 x0 words 0 '100' RSQTHP_DnYellow scale 0.79 fk 1.00 alpha 1.00 clock 0.00 dist 234 frozen 1 hidden 0 slide 0.0 glyphs 3 at -891,480,75
+DN2 t26 #2 hit live on BaronOfHell value 250 shown 0 x0 words 0 '250' RSQTHP_DnOrange scale 0.98 fk 1.00 alpha 1.00 clock 0.00 dist 234 frozen 1 hidden 0 slide 0.0 glyphs 3 at -829,480,75
+DN2 t26 #3 hit live on BaronOfHell value 500 shown 0 x0 words 0 '500' RSQTHP_DnRed scale 1.15 fk 1.00 alpha 1.00 clock 0.00 dist 252 frozen 1 hidden 0 slide 0.0 glyphs 3 at -766,482,75
+DN2 t27 #0 hit live on BaronOfHell value 30 shown 0 x0 words 0 '30' RSQTHP_DnWhite scale 0.70 fk 1.00 alpha 1.00 clock 0.00 dist 252 frozen 1 hidden 0 slide 0.0 glyphs 2 at -954,482,75
+DN2 t27 #1 hit live on BaronOfHell value 100 shown 0 x0 words 0 '100' RSQTHP_DnYellow scale 0.79 fk 1.00 alpha 1.00 clock 0.00 dist 234 frozen 1 hidden 0 slide 0.0 glyphs 3 at -891,480,75
+DN2 t27 #2 hit live on BaronOfHell value 250 shown 0 x0 words 0 '250' RSQTHP_DnOrange scale 0.98 fk 1.00 alpha 1.00 clock 0.00 dist 234 frozen 1 hidden 0 slide 0.0 glyphs 3 at -829,480,75
+DN2 t27 #3 hit live on BaronOfHell value 500 shown 0 x0 words 0 '500' RSQTHP_DnRed scale 1.15 fk 1.00 alpha 1.00 clock 0.00 dist 252 frozen 1 hidden 0 slide 0.0 glyphs 3 at -766,482,75
+DN2 t28 #0 hit live on BaronOfHell value 30 shown 0 x0 words 0 '30' RSQTHP_DnWhite scale 0.70 fk 1.00 alpha 1.00 clock 0.00 dist 252 frozen 1 hidden 0 slide 0.0 glyphs 2 at -954,482,75
+DN2 t28 #1 hit live on BaronOfHell value 100 shown 0 x0 words 0 '100' RSQTHP_DnYellow scale 0.79 fk 1.00 alpha 1.00 clock 0.00 dist 234 frozen 1 hidden 0 slide 0.0 glyphs 3 at -891,480,75
+DN2 t28 #2 hit live on BaronOfHell value 250 shown 0 x0 words 0 '250' RSQTHP_DnOrange scale 0.98 fk 1.00 alpha 1.00 clock 0.00 dist 234 frozen 1 hidden 0 slide 0.0 glyphs 3 at -829,480,75
+DN2 t28 #3 hit live on BaronOfHell value 500 shown 0 x0 words 0 '500' RSQTHP_DnRed scale 1.15 fk 1.00 alpha 1.00 clock 0.00 dist 252 frozen 1 hidden 0 slide 0.0 glyphs 3 at -766,482,75
+DN2 t29 #0 hit live on BaronOfHell value 30 shown 0 x0 words 0 '30' RSQTHP_DnWhite scale 0.70 fk 1.00 alpha 1.00 clock 0.00 dist 252 frozen 1 hidden 0 slide 0.0 glyphs 2 at -954,482,75
+DN2 t29 #1 hit live on BaronOfHell value 100 shown 0 x0 words 0 '100' RSQTHP_DnYellow scale 0.79 fk 1.00 alpha 1.00 clock 0.00 dist 234 frozen 1 hidden 0 slide 0.0 glyphs 3 at -891,480,75
+DN2 t29 #2 hit live on BaronOfHell value 250 shown 0 x0 words 0 '250' RSQTHP_DnOrange scale 0.98 fk 1.00 alpha 1.00 clock 0.00 dist 234 frozen 1 hidden 0 slide 0.0 glyphs 3 at -829,480,75
+DN2 t29 #3 hit live on BaronOfHell value 500 shown 0 x0 words 0 '500' RSQTHP_DnRed scale 1.15 fk 1.00 alpha 1.00 clock 0.00 dist 252 frozen 1 hidden 0 slide 0.0 glyphs 3 at -766,482,75
+DN2 t30 #0 hit live on BaronOfHell value 30 shown 0 x0 words 0 '30' RSQTHP_DnWhite scale 0.70 fk 1.00 alpha 1.00 clock 0.00 dist 252 frozen 1 hidden 0 slide 0.0 glyphs 2 at -954,482,75
+DN2 t30 #1 hit live on BaronOfHell value 100 shown 0 x0 words 0 '100' RSQTHP_DnYellow scale 0.79 fk 1.00 alpha 1.00 clock 0.00 dist 234 frozen 1 hidden 0 slide 0.0 glyphs 3 at -891,480,75
+DN2 t30 #2 hit live on BaronOfHell value 250 shown 0 x0 words 0 '250' RSQTHP_DnOrange scale 0.98 fk 1.00 alpha 1.00 clock 0.00 dist 234 frozen 1 hidden 0 slide 0.0 glyphs 3 at -829,480,75
+DN2 t30 #3 hit live on BaronOfHell value 500 shown 0 x0 words 0 '500' RSQTHP_DnRed scale 1.15 fk 1.00 alpha 1.00 clock 0.00 dist 252 frozen 1 hidden 0 slide 0.0 glyphs 3 at -766,482,75
+DN2 t31 #0 hit live on BaronOfHell value 30 shown 0 x0 words 0 '30' RSQTHP_DnWhite scale 0.70 fk 1.00 alpha 1.00 clock 0.00 dist 252 frozen 1 hidden 0 slide 0.0 glyphs 2 at -954,482,75
+DN2 t31 #1 hit live on BaronOfHell value 100 shown 0 x0 words 0 '100' RSQTHP_DnYellow scale 0.79 fk 1.00 alpha 1.00 clock 0.00 dist 234 frozen 1 hidden 0 slide 0.0 glyphs 3 at -891,480,75
+DN2 t31 #2 hit live on BaronOfHell value 250 shown 0 x0 words 0 '250' RSQTHP_DnOrange scale 0.98 fk 1.00 alpha 1.00 clock 0.00 dist 234 frozen 1 hidden 0 slide 0.0 glyphs 3 at -829,480,75
+DN2 t31 #3 hit live on BaronOfHell value 500 shown 0 x0 words 0 '500' RSQTHP_DnRed scale 1.15 fk 1.00 alpha 1.00 clock 0.00 dist 252 frozen 1 hidden 0 slide 0.0 glyphs 3 at -766,482,75
+DN2 t32 #0 hit live on BaronOfHell value 30 shown 0 x0 words 0 '30' RSQTHP_DnWhite scale 0.70 fk 1.00 alpha 1.00 clock 0.00 dist 252 frozen 1 hidden 0 slide 0.0 glyphs 2 at -954,482,75
+DN2 t32 #1 hit live on BaronOfHell value 100 shown 0 x0 words 0 '100' RSQTHP_DnYellow scale 0.79 fk 1.00 alpha 1.00 clock 0.00 dist 234 frozen 1 hidden 0 slide 0.0 glyphs 3 at -891,480,75
+DN2 t32 #2 hit live on BaronOfHell value 250 shown 0 x0 words 0 '250' RSQTHP_DnOrange scale 0.98 fk 1.00 alpha 1.00 clock 0.00 dist 234 frozen 1 hidden 0 slide 0.0 glyphs 3 at -829,480,75
+DN2 t32 #3 hit live on BaronOfHell value 500 shown 0 x0 words 0 '500' RSQTHP_DnRed scale 1.15 fk 1.00 alpha 1.00 clock 0.00 dist 252 frozen 1 hidden 0 slide 0.0 glyphs 3 at -766,482,75
+DN2 t33 #0 hit live on BaronOfHell value 30 shown 0 x0 words 0 '30' RSQTHP_DnWhite scale 0.70 fk 1.00 alpha 1.00 clock 0.00 dist 252 frozen 1 hidden 0 slide 0.0 glyphs 2 at -954,482,75
+DN2 t33 #1 hit live on BaronOfHell value 100 shown 0 x0 words 0 '100' RSQTHP_DnYellow scale 0.79 fk 1.00 alpha 1.00 clock 0.00 dist 234 frozen 1 hidden 0 slide 0.0 glyphs 3 at -891,480,75
+DN2 t33 #2 hit live on BaronOfHell value 250 shown 0 x0 words 0 '250' RSQTHP_DnOrange scale 0.98 fk 1.00 alpha 1.00 clock 0.00 dist 234 frozen 1 hidden 0 slide 0.0 glyphs 3 at -829,480,75
+DN2 t33 #3 hit live on BaronOfHell value 500 shown 0 x0 words 0 '500' RSQTHP_DnRed scale 1.15 fk 1.00 alpha 1.00 clock 0.00 dist 252 frozen 1 hidden 0 slide 0.0 glyphs 3 at -766,482,75
+DN2 t34 #0 hit live on BaronOfHell value 30 shown 0 x0 words 0 '30' RSQTHP_DnWhite scale 0.70 fk 1.00 alpha 1.00 clock 0.00 dist 252 frozen 1 hidden 0 slide 0.0 glyphs 2 at -954,482,75
+DN2 t34 #1 hit live on BaronOfHell value 100 shown 0 x0 words 0 '100' RSQTHP_DnYellow scale 0.79 fk 1.00 alpha 1.00 clock 0.00 dist 234 frozen 1 hidden 0 slide 0.0 glyphs 3 at -891,480,75
+DN2 t34 #2 hit live on BaronOfHell value 250 shown 0 x0 words 0 '250' RSQTHP_DnOrange scale 0.98 fk 1.00 alpha 1.00 clock 0.00 dist 234 frozen 1 hidden 0 slide 0.0 glyphs 3 at -829,480,75
+DN2 t34 #3 hit live on BaronOfHell value 500 shown 0 x0 words 0 '500' RSQTHP_DnRed scale 1.15 fk 1.00 alpha 1.00 clock 0.00 dist 252 frozen 1 hidden 0 slide 0.0 glyphs 3 at -766,482,75
+DN2 t35 #0 hit live on BaronOfHell value 30 shown 0 x0 words 0 '30' RSQTHP_DnWhite scale 0.70 fk 1.00 alpha 1.00 clock 0.00 dist 252 frozen 1 hidden 0 slide 0.0 glyphs 2 at -954,482,75
+DN2 t35 #1 hit live on BaronOfHell value 100 shown 0 x0 words 0 '100' RSQTHP_DnYellow scale 0.79 fk 1.00 alpha 1.00 clock 0.00 dist 234 frozen 1 hidden 0 slide 0.0 glyphs 3 at -891,480,75
+DN2 t35 #2 hit live on BaronOfHell value 250 shown 0 x0 words 0 '250' RSQTHP_DnOrange scale 0.98 fk 1.00 alpha 1.00 clock 0.00 dist 234 frozen 1 hidden 0 slide 0.0 glyphs 3 at -829,480,75
+DN2 t35 #3 hit live on BaronOfHell value 500 shown 0 x0 words 0 '500' RSQTHP_DnRed scale 1.15 fk 1.00 alpha 1.00 clock 0.00 dist 252 frozen 1 hidden 0 slide 0.0 glyphs 3 at -766,482,75
+DN2 t36 #0 hit live on BaronOfHell value 30 shown 0 x0 words 0 '30' RSQTHP_DnWhite scale 0.70 fk 1.00 alpha 1.00 clock 0.00 dist 252 frozen 1 hidden 0 slide 0.0 glyphs 2 at -954,482,75
+DN2 t36 #1 hit live on BaronOfHell value 100 shown 0 x0 words 0 '100' RSQTHP_DnYellow scale 0.79 fk 1.00 alpha 1.00 clock 0.00 dist 234 frozen 1 hidden 0 slide 0.0 glyphs 3 at -891,480,75
+DN2 t36 #2 hit live on BaronOfHell value 250 shown 0 x0 words 0 '250' RSQTHP_DnOrange scale 0.98 fk 1.00 alpha 1.00 clock 0.00 dist 234 frozen 1 hidden 0 slide 0.0 glyphs 3 at -829,480,75
+DN2 t36 #3 hit live on BaronOfHell value 500 shown 0 x0 words 0 '500' RSQTHP_DnRed scale 1.15 fk 1.00 alpha 1.00 clock 0.00 dist 252 frozen 1 hidden 0 slide 0.0 glyphs 3 at -766,482,75
+DN2 t37 #0 hit live on BaronOfHell value 30 shown 0 x0 words 0 '30' RSQTHP_DnWhite scale 0.70 fk 1.00 alpha 1.00 clock 0.00 dist 252 frozen 1 hidden 0 slide 0.0 glyphs 2 at -954,482,75
+DN2 t37 #1 hit live on BaronOfHell value 100 shown 0 x0 words 0 '100' RSQTHP_DnYellow scale 0.79 fk 1.00 alpha 1.00 clock 0.00 dist 234 frozen 1 hidden 0 slide 0.0 glyphs 3 at -891,480,75
+DN2 t37 #2 hit live on BaronOfHell value 250 shown 0 x0 words 0 '250' RSQTHP_DnOrange scale 0.98 fk 1.00 alpha 1.00 clock 0.00 dist 234 frozen 1 hidden 0 slide 0.0 glyphs 3 at -829,480,75
+DN2 t37 #3 hit live on BaronOfHell value 500 shown 0 x0 words 0 '500' RSQTHP_DnRed scale 1.15 fk 1.00 alpha 1.00 clock 0.00 dist 252 frozen 1 hidden 0 slide 0.0 glyphs 3 at -766,482,75
+DN2 t38 #0 hit live on BaronOfHell value 30 shown 0 x0 words 0 '30' RSQTHP_DnWhite scale 0.70 fk 1.00 alpha 1.00 clock 0.00 dist 252 frozen 1 hidden 0 slide 0.0 glyphs 2 at -954,482,75
+DN2 t38 #1 hit live on BaronOfHell value 100 shown 0 x0 words 0 '100' RSQTHP_DnYellow scale 0.79 fk 1.00 alpha 1.00 clock 0.00 dist 234 frozen 1 hidden 0 slide 0.0 glyphs 3 at -891,480,75
+DN2 t38 #2 hit live on BaronOfHell value 250 shown 0 x0 words 0 '250' RSQTHP_DnOrange scale 0.98 fk 1.00 alpha 1.00 clock 0.00 dist 234 frozen 1 hidden 0 slide 0.0 glyphs 3 at -829,480,75
+DN2 t38 #3 hit live on BaronOfHell value 500 shown 0 x0 words 0 '500' RSQTHP_DnRed scale 1.15 fk 1.00 alpha 1.00 clock 0.00 dist 252 frozen 1 hidden 0 slide 0.0 glyphs 3 at -766,482,75

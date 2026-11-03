@@ -1,0 +1,71 @@
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 66:
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 72:
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 77:
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 892:
+DN2_EV t10 spawn 0 ZombiemanSpawner@06_XMVE_MonsterExpansion_Doom2.pk3@decorate.txt health 1000
+DN2_EV t10 spawn 1 SergeantSpawner@06_XMVE_MonsterExpansion_Doom2.pk3@decorate.txt health 1000
+DN2_EV t11 slot 0 is RifleZombie health 40
+DN2_EV t11 slot 1 is ShotgunGuy1 health 40
+DN2_EV t21 hands: override 1 main -87.5,794.2,92.8 angle 0.0 pitch 0.0 off -104.5,794.2,92.8 eye z 100.0 weapon PuristPistol
+DN2_EV t30 died RifleZombie health -5
+DN2_EV t30 shot at RifleZombie (hitbox None) aim z 52 over its floor: health 40 -> -5, HitHead 1, hit RifleZombie
+DN2_EV t31 died ShotgunGuy1 health -5
+DN2_EV t31 shot at ShotgunGuy1 (hitbox None) aim z 52 over its floor: health 40 -> -5, HitHead 1, hit ShotgunGuy1
+DN2 t31 #0 hit live on RifleZombie value 40 shown 0 x0 words 1 '40HEADSHOT' RSQTHP_DnHead scale 0.56 fk 1.00 alpha 1.00 clock 0.00 dist 120 frozen 0 hidden 0 slide 0.0 glyphs 10 at -121,893,57
+DN2 t32 #0 hit live on RifleZombie value 40 shown 0 x0 words 1 '40HEADSHOT' RSQTHP_DnHead scale 2.48 fk 1.00 alpha 1.00 clock 1.00 dist 120 frozen 0 hidden 0 slide 0.0 glyphs 10 at -121,893,57
+DN2 t32 #1 hit live on ShotgunGuy1 value 40 shown 0 x0 words 1 '40HEADSHOT' RSQTHP_DnHead scale 0.56 fk 1.00 alpha 1.00 clock 0.00 dist 120 frozen 0 hidden 0 slide 0.0 glyphs 10 at -71,893,57
+DN2 t33 #0 hit live on RifleZombie value 40 shown 0 x0 words 1 '40HEADSHOT' RSQTHP_DnHead scale 1.79 fk 1.00 alpha 1.00 clock 2.00 dist 120 frozen 0 hidden 0 slide 0.0 glyphs 10 at -121,893,57
+DN2 t33 #1 hit live on ShotgunGuy1 value 40 shown 0 x0 words 1 '40HEADSHOT' RSQTHP_DnHead scale 2.48 fk 1.00 alpha 1.00 clock 1.00 dist 120 frozen 0 hidden 0 slide 0.0 glyphs 10 at -71,893,57
+DN2 t34 #0 hit slam on RifleZombie value 40 shown 0 x0 words 1 '40HEADSHOT' RSQTHP_DnHead scale 1.60 fk 1.00 alpha 1.00 clock 3.00 dist 119 frozen 0 hidden 0 slide 0.0 glyphs 10 at -121,893,57
+DN2 t34 #1 hit live on ShotgunGuy1 value 40 shown 0 x0 words 1 '40HEADSHOT' RSQTHP_DnHead scale 1.79 fk 1.00 alpha 1.00 clock 2.00 dist 120 frozen 0 hidden 0 slide 0.0 glyphs 10 at -71,893,57
+DN2 t35 #0 hit slam on RifleZombie value 40 shown 0 x0 words 1 '40HEADSHOT' RSQTHP_DnHead scale 2.08 fk 1.00 alpha 1.00 clock 4.00 dist 119 frozen 0 hidden 0 slide 0.0 glyphs 10 at -121,893,57
+DN2 t35 #1 hit slam on ShotgunGuy1 value 40 shown 0 x0 words 1 '40HEADSHOT' RSQTHP_DnHead scale 1.60 fk 1.00 alpha 1.00 clock 3.00 dist 119 frozen 0 hidden 0 slide 0.0 glyphs 10 at -71,893,57
+DN2 t36 #0 hit slam on RifleZombie value 40 shown 0 x0 words 1 '40HEADSHOT' RSQTHP_DnHead scale 2.56 fk 1.00 alpha 1.00 clock 5.00 dist 119 frozen 0 hidden 0 slide 0.0 glyphs 10 at -121,893,57
+DN2 t36 #1 hit slam on ShotgunGuy1 value 40 shown 0 x0 words 1 '40HEADSHOT' RSQTHP_DnHead scale 2.08 fk 1.00 alpha 1.00 clock 4.00 dist 119 frozen 0 hidden 0 slide 0.0 glyphs 10 at -71,893,57
+DN2 t37 #0 hit slam on RifleZombie value 40 shown 0 x0 words 1 '40HEADSHOT' RSQTHP_DnHead scale 2.56 fk 1.00 alpha 1.00 clock 6.00 dist 119 frozen 0 hidden 0 slide 0.0 glyphs 10 at -121,893,57
+DN2 t37 #1 hit slam on ShotgunGuy1 value 40 shown 0 x0 words 1 '40HEADSHOT' RSQTHP_DnHead scale 2.56 fk 1.00 alpha 1.00 clock 5.00 dist 119 frozen 0 hidden 0 slide 0.0 glyphs 10 at -71,893,57
+DN2 t38 #0 hit slam on RifleZombie value 40 shown 0 x0 words 1 '40HEADSHOT' RSQTHP_DnHead scale 2.56 fk 1.00 alpha 1.00 clock 7.00 dist 119 frozen 0 hidden 0 slide 0.0 glyphs 10 at -121,893,57
+DN2 t38 #1 hit slam on ShotgunGuy1 value 40 shown 0 x0 words 1 '40HEADSHOT' RSQTHP_DnHead scale 2.56 fk 1.00 alpha 1.00 clock 6.00 dist 119 frozen 0 hidden 0 slide 0.0 glyphs 10 at -71,893,57
+DN2 t39 #0 hit slam on RifleZombie value 40 shown 0 x0 words 1 '40HEADSHOT' RSQTHP_DnHead scale 2.56 fk 1.00 alpha 1.00 clock 8.00 dist 119 frozen 0 hidden 0 slide 0.0 glyphs 10 at -121,893,57
+DN2 t39 #1 hit slam on ShotgunGuy1 value 40 shown 0 x0 words 1 '40HEADSHOT' RSQTHP_DnHead scale 2.56 fk 1.00 alpha 1.00 clock 7.00 dist 119 frozen 0 hidden 0 slide 0.0 glyphs 10 at -71,893,57
+DN2 t40 #0 hit slam on RifleZombie value 40 shown 0 x0 words 1 '40HEADSHOT' RSQTHP_DnHead scale 2.56 fk 1.00 alpha 1.00 clock 9.00 dist 119 frozen 0 hidden 0 slide 0.0 glyphs 10 at -121,893,57
+DN2 t40 #1 hit slam on ShotgunGuy1 value 40 shown 0 x0 words 1 '40HEADSHOT' RSQTHP_DnHead scale 2.56 fk 1.00 alpha 1.00 clock 8.00 dist 119 frozen 0 hidden 0 slide 0.0 glyphs 10 at -71,893,57
+DN2 t41 #0 hit slam on RifleZombie value 40 shown 0 x0 words 1 '40HEADSHOT' RSQTHP_DnHead scale 2.56 fk 1.00 alpha 1.00 clock 10.00 dist 119 frozen 0 hidden 0 slide 0.0 glyphs 10 at -121,893,57
+DN2 t41 #1 hit slam on ShotgunGuy1 value 40 shown 0 x0 words 1 '40HEADSHOT' RSQTHP_DnHead scale 2.56 fk 1.00 alpha 1.00 clock 9.00 dist 119 frozen 0 hidden 0 slide 0.0 glyphs 10 at -71,893,57
+DN2 t42 #0 hit slam on RifleZombie value 40 shown 0 x0 words 1 '40HEADSHOT' RSQTHP_DnHead scale 2.56 fk 1.00 alpha 1.00 clock 11.00 dist 119 frozen 0 hidden 0 slide 0.0 glyphs 10 at -121,893,57
+DN2 t42 #1 hit slam on ShotgunGuy1 value 40 shown 0 x0 words 1 '40HEADSHOT' RSQTHP_DnHead scale 2.56 fk 1.00 alpha 1.00 clock 10.00 dist 119 frozen 0 hidden 0 slide 0.0 glyphs 10 at -71,893,57
+DN2 t43 #0 hit slam on RifleZombie value 40 shown 0 x0 words 1 '40HEADSHOT' RSQTHP_DnHead scale 2.56 fk 1.00 alpha 1.00 clock 12.00 dist 119 frozen 0 hidden 0 slide 0.0 glyphs 10 at -121,893,57
+DN2 t43 #1 hit slam on ShotgunGuy1 value 40 shown 0 x0 words 1 '40HEADSHOT' RSQTHP_DnHead scale 2.56 fk 1.00 alpha 1.00 clock 11.00 dist 119 frozen 0 hidden 0 slide 0.0 glyphs 10 at -71,893,57
+DN2 t44 #0 hit slam on RifleZombie value 40 shown 0 x0 words 1 '40HEADSHOT' RSQTHP_DnHead scale 2.56 fk 1.00 alpha 1.00 clock 13.00 dist 119 frozen 0 hidden 0 slide 0.0 glyphs 10 at -121,893,57
+DN2 t44 #1 hit slam on ShotgunGuy1 value 40 shown 0 x0 words 1 '40HEADSHOT' RSQTHP_DnHead scale 2.56 fk 1.00 alpha 1.00 clock 12.00 dist 119 frozen 0 hidden 0 slide 0.0 glyphs 10 at -71,893,57
+DN2 t45 #0 hit slam on RifleZombie value 40 shown 0 x0 words 1 '40HEADSHOT' RSQTHP_DnHead scale 2.56 fk 1.00 alpha 1.00 clock 14.00 dist 119 frozen 0 hidden 0 slide 0.0 glyphs 10 at -121,893,57
+DN2 t45 #1 hit slam on ShotgunGuy1 value 40 shown 0 x0 words 1 '40HEADSHOT' RSQTHP_DnHead scale 2.56 fk 1.00 alpha 1.00 clock 13.00 dist 119 frozen 0 hidden 0 slide 0.0 glyphs 10 at -71,893,57
+DN2 t46 #0 hit break on RifleZombie value 40 shown 0 x0 words 1 '40HEADSHOT' RSQTHP_DnHead scale 2.56 fk 1.00 alpha 1.00 clock 15.00 dist 119 frozen 0 hidden 0 slide 0.0 glyphs 10 at -121,893,57
+DN2 t46 #1 hit slam on ShotgunGuy1 value 40 shown 0 x0 words 1 '40HEADSHOT' RSQTHP_DnHead scale 2.56 fk 1.00 alpha 1.00 clock 14.00 dist 119 frozen 0 hidden 0 slide 0.0 glyphs 10 at -71,893,57
+DN2 t47 #0 hit break on RifleZombie value 40 shown 0 x0 words 1 '40HEADSHOT' RSQTHP_DnHead scale 2.56 fk 1.00 alpha 0.93 clock 16.00 dist 119 frozen 0 hidden 0 slide 0.0 glyphs 10 at -121,893,57
+DN2 t47 #1 hit break on ShotgunGuy1 value 40 shown 0 x0 words 1 '40HEADSHOT' RSQTHP_DnHead scale 2.56 fk 1.00 alpha 1.00 clock 15.00 dist 119 frozen 0 hidden 0 slide 0.0 glyphs 10 at -71,893,57
+DN2 t48 #0 hit break on RifleZombie value 40 shown 0 x0 words 1 '40HEADSHOT' RSQTHP_DnHead scale 2.56 fk 1.00 alpha 0.86 clock 17.00 dist 119 frozen 0 hidden 0 slide 0.0 glyphs 10 at -121,893,57
+DN2 t48 #1 hit break on ShotgunGuy1 value 40 shown 0 x0 words 1 '40HEADSHOT' RSQTHP_DnHead scale 2.56 fk 1.00 alpha 0.93 clock 16.00 dist 119 frozen 0 hidden 0 slide 0.0 glyphs 10 at -71,893,57
+DN2 t49 #0 hit break on RifleZombie value 40 shown 0 x0 words 1 '40HEADSHOT' RSQTHP_DnHead scale 2.56 fk 1.00 alpha 0.79 clock 18.00 dist 119 frozen 0 hidden 0 slide 0.0 glyphs 10 at -121,893,57
+DN2 t49 #1 hit break on ShotgunGuy1 value 40 shown 0 x0 words 1 '40HEADSHOT' RSQTHP_DnHead scale 2.56 fk 1.00 alpha 0.86 clock 17.00 dist 119 frozen 0 hidden 0 slide 0.0 glyphs 10 at -71,893,57
+DN2 t50 #0 hit break on RifleZombie value 40 shown 0 x0 words 1 '40HEADSHOT' RSQTHP_DnHead scale 2.56 fk 1.00 alpha 0.71 clock 19.00 dist 119 frozen 0 hidden 0 slide 0.0 glyphs 10 at -121,893,57
+DN2 t50 #1 hit break on ShotgunGuy1 value 40 shown 0 x0 words 1 '40HEADSHOT' RSQTHP_DnHead scale 2.56 fk 1.00 alpha 0.79 clock 18.00 dist 119 frozen 0 hidden 0 slide 0.0 glyphs 10 at -71,893,57
+DN2 t51 #0 hit break on RifleZombie value 40 shown 0 x0 words 1 '40HEADSHOT' RSQTHP_DnHead scale 2.56 fk 1.00 alpha 0.64 clock 20.00 dist 119 frozen 0 hidden 0 slide 0.0 glyphs 10 at -121,893,57
+DN2 t51 #1 hit break on ShotgunGuy1 value 40 shown 0 x0 words 1 '40HEADSHOT' RSQTHP_DnHead scale 2.56 fk 1.00 alpha 0.71 clock 19.00 dist 119 frozen 0 hidden 0 slide 0.0 glyphs 10 at -71,893,57
+DN2 t52 #0 hit break on RifleZombie value 40 shown 0 x0 words 1 '40HEADSHOT' RSQTHP_DnHead scale 2.56 fk 1.00 alpha 0.57 clock 21.00 dist 119 frozen 0 hidden 0 slide 0.0 glyphs 10 at -121,893,57
+DN2 t52 #1 hit break on ShotgunGuy1 value 40 shown 0 x0 words 1 '40HEADSHOT' RSQTHP_DnHead scale 2.56 fk 1.00 alpha 0.64 clock 20.00 dist 119 frozen 0 hidden 0 slide 0.0 glyphs 10 at -71,893,57
+DN2 t53 #0 hit break on RifleZombie value 40 shown 0 x0 words 1 '40HEADSHOT' RSQTHP_DnHead scale 2.56 fk 1.00 alpha 0.50 clock 22.00 dist 119 frozen 0 hidden 0 slide 0.0 glyphs 10 at -121,893,57
+DN2 t53 #1 hit break on ShotgunGuy1 value 40 shown 0 x0 words 1 '40HEADSHOT' RSQTHP_DnHead scale 2.56 fk 1.00 alpha 0.57 clock 21.00 dist 119 frozen 0 hidden 0 slide 0.0 glyphs 10 at -71,893,57
+DN2 t54 #0 hit break on RifleZombie value 40 shown 0 x0 words 1 '40HEADSHOT' RSQTHP_DnHead scale 2.56 fk 1.00 alpha 0.43 clock 23.00 dist 119 frozen 0 hidden 0 slide 0.0 glyphs 10 at -121,893,57
+DN2 t54 #1 hit break on ShotgunGuy1 value 40 shown 0 x0 words 1 '40HEADSHOT' RSQTHP_DnHead scale 2.56 fk 1.00 alpha 0.50 clock 22.00 dist 119 frozen 0 hidden 0 slide 0.0 glyphs 10 at -71,893,57
+DN2 t55 #0 hit break on RifleZombie value 40 shown 0 x0 words 1 '40HEADSHOT' RSQTHP_DnHead scale 2.56 fk 1.00 alpha 0.36 clock 24.00 dist 119 frozen 0 hidden 0 slide 0.0 glyphs 10 at -121,893,57
+DN2 t55 #1 hit break on ShotgunGuy1 value 40 shown 0 x0 words 1 '40HEADSHOT' RSQTHP_DnHead scale 2.56 fk 1.00 alpha 0.43 clock 23.00 dist 119 frozen 0 hidden 0 slide 0.0 glyphs 10 at -71,893,57
+DN2 t56 #0 hit break on RifleZombie value 40 shown 0 x0 words 1 '40HEADSHOT' RSQTHP_DnHead scale 2.56 fk 1.00 alpha 0.29 clock 25.00 dist 119 frozen 0 hidden 0 slide 0.0 glyphs 10 at -121,893,57
+DN2 t56 #1 hit break on ShotgunGuy1 value 40 shown 0 x0 words 1 '40HEADSHOT' RSQTHP_DnHead scale 2.56 fk 1.00 alpha 0.36 clock 24.00 dist 119 frozen 0 hidden 0 slide 0.0 glyphs 10 at -71,893,57
+DN2 t57 #0 hit break on RifleZombie value 40 shown 0 x0 words 1 '40HEADSHOT' RSQTHP_DnHead scale 2.56 fk 1.00 alpha 0.21 clock 26.00 dist 119 frozen 0 hidden 0 slide 0.0 glyphs 10 at -121,893,57
+DN2 t57 #1 hit break on ShotgunGuy1 value 40 shown 0 x0 words 1 '40HEADSHOT' RSQTHP_DnHead scale 2.56 fk 1.00 alpha 0.29 clock 25.00 dist 119 frozen 0 hidden 0 slide 0.0 glyphs 10 at -71,893,57
+DN2 t58 #0 hit break on RifleZombie value 40 shown 0 x0 words 1 '40HEADSHOT' RSQTHP_DnHead scale 2.56 fk 1.00 alpha 0.14 clock 27.00 dist 119 frozen 0 hidden 0 slide 0.0 glyphs 10 at -121,893,57
+DN2 t58 #1 hit break on ShotgunGuy1 value 40 shown 0 x0 words 1 '40HEADSHOT' RSQTHP_DnHead scale 2.56 fk 1.00 alpha 0.21 clock 26.00 dist 119 frozen 0 hidden 0 slide 0.0 glyphs 10 at -71,893,57
+DN2 t59 #0 hit break on RifleZombie value 40 shown 0 x0 words 1 '40HEADSHOT' RSQTHP_DnHead scale 2.56 fk 1.00 alpha 0.07 clock 28.00 dist 119 frozen 0 hidden 0 slide 0.0 glyphs 10 at -121,893,57
+DN2 t59 #1 hit break on ShotgunGuy1 value 40 shown 0 x0 words 1 '40HEADSHOT' RSQTHP_DnHead scale 2.56 fk 1.00 alpha 0.14 clock 27.00 dist 119 frozen 0 hidden 0 slide 0.0 glyphs 10 at -71,893,57
+DN2 t60 #0 hit break on ShotgunGuy1 value 40 shown 0 x0 words 1 '40HEADSHOT' RSQTHP_DnHead scale 2.56 fk 1.00 alpha 0.07 clock 28.00 dist 119 frozen 0 hidden 0 slide 0.0 glyphs 10 at -71,893,57

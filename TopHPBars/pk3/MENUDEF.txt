@@ -54,10 +54,29 @@ OptionValue "RSQTHP_DmgPhysics"
 	0, "Toss"
 	1, "Float"
 }
-OptionString "RSQTHP_DmgFonts"
+OptionValue "RSQTHP_DmgFonts"
 {
-	"RSQTHP_DamNumFontClassic", "Classic Doom"
-	"RSQTHP_DamNumFontSmall", "Classic Doom (small)"
+	0, "JFO Metal"
+	2, "Ermac"
+	3, "Classic Doom"
+	4, "Classic Doom (small)"
+}
+OptionValue "RSQTHP_DmgQuality"
+{
+	0, "Quest"
+	1, "PCVR"
+}
+OptionValue "RSQTHP_DmgSlowMo"
+{
+	0, "World Time"
+	1, "Your Time"
+}
+OptionValue "RSQTHP_DmgMax"
+{
+	6, "6"
+	12, "12"
+	24, "24"
+	48, "48"
 }
 OptionString "RSQTHP_DmgColours"
 {
@@ -105,10 +124,24 @@ OptionMenu "RSQTHP_Options"
 	Option "Damage Numbers", "rsqthp_dmg", "OnOff"
 	Option "Numbers For", "rsqthp_dmg_all", "RSQTHP_DmgFor"
 	Option "Shotgun Spray", "rsqthp_dmg_spray", "OnOff"
-	Option "Number Font", "rsqthp_dmg_font", "RSQTHP_DmgFonts"
+	Option "Number Font", "rsqthp_dmg_face", "RSQTHP_DmgFonts"
 	Option "Number Colour", "rsqthp_dmg_colour", "RSQTHP_DmgColours"
 	Option "Number Motion", "rsqthp_dmg_physics", "RSQTHP_DmgPhysics"
 	Option "Damage Type Colours", "rsqthp_dmg_types", "OnOff"
+	Option "Text Quality", "rsqthp_dmg_q", "RSQTHP_DmgQuality"
+	Option "Colour by Hit Strength", "rsqthp_dmg_ramp", "OnOff"
+	Option "Pop and Settle", "rsqthp_dmg_pop", "OnOff"
+	Option "Size by Hit", "rsqthp_dmg_size", "OnOff"
+	Option "Grow with Distance", "rsqthp_dmg_grow", "OnOff"
+	Option "Running Total", "rsqthp_dmg_total", "OnOff"
+	Option "Kill Slam", "rsqthp_dmg_slam", "OnOff"
+	Option "Overkill Word", "rsqthp_dmg_overkill", "OnOff"
+	Option "Headshot Word", "rsqthp_dmg_head", "OnOff"
+	Option "Out of Your Face", "rsqthp_dmg_comfort", "OnOff"
+	Option "Most Numbers", "rsqthp_dmg_max", "RSQTHP_DmgMax"
+	Option "Gains on You", "rsqthp_dmg_gains", "OnOff"
+	Option "Freeze in Hit-Stop", "rsqthp_dmg_hitstop", "OnOff"
+	Option "Numbers in Slow-Mo", "rsqthp_dmg_slowmo", "RSQTHP_DmgSlowMo"
 	StaticText " "
 	Submenu "Tuning and Debug", "RSQTHP_Tuning"
 }

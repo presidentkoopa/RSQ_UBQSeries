@@ -43,6 +43,37 @@ Front page (RSQ HP Bars):
 | Nearest 24 Only | Option (off) | Only the 24 bars nearest you are drawn. |
 | Distance Limit | Option (off) | No bars farther than the Limit Distance slider (Tuning). |
 
+Damage Numbers rows (same page; Xaser Acheron's damnums, folded in and rebuilt for VR on 2026-11-03; all
+rig only, not yet headset-confirmed):
+
+| Row | Default | What it does |
+|---|---|---|
+| Damage Numbers | On | The damage each hit did, in the world at the monster. |
+| Numbers For | Monsters Only | Or All Shootable (barrels, props; never your own body). |
+| Shotgun Spray | Option (off) | One number per pellet instead of one per monster per tic. |
+| Number Font | JFO Metal | JFO Metal, Ermac, Classic Doom, Classic Doom (small). Words (HEADSHOT, OVERKILL, xN) are always JFO. |
+| Number Colour | Default | Used only with Colour by Hit Strength off (damnums' 21 colours). |
+| Number Motion | Toss | Used only with Pop and Settle off (damnums' Toss or Float). |
+| Damage Type Colours | On | Used only with Colour by Hit Strength off (fire orange, plasma cyan, ...). |
+| Text Quality | Quest | Quest (half-resolution glyphs) or PCVR. |
+| Colour by Hit Strength | On | By the share of the monster's health the hit took: white under 5 %, yellow under 15 %, orange under 35 %, red above. |
+| Pop and Settle | On | Appears small, overshoots to about 1.5x, snaps back in 3 tics, drifts up, gone in about 0.9 s. |
+| Size by Hit | On | Bigger share of health, bigger number. |
+| Grow with Distance | On | Numbers grow with range (the bars' Far Size curve). |
+| Running Total | On | The second hit on a monster within 3 s starts one total beside its bar; each hit flies into it, it counts up, "xN" counts the hits. Fades after 3 s with no hit (Score's chain window). |
+| Kill Slam | On | On the kill the total slams to 1.6x, holds, then its digits break apart and fade. The number is the health really taken. No sprite behind it. |
+| Overkill Word | On | OVERKILL over a kill whose last hit went past zero by more than half the monster's health. |
+| Headshot Word | On | HEADSHOT over Brutal Doom's head hits, the number 1.25x bigger and crimson. |
+| Out of Your Face | On | Never nearer your eyes than about a metre; slid off either gun's aim line. |
+| Most Numbers | 12 | Only the nearest 6 / 12 / 24 / 48 show. |
+| Gains on You | On | +health (green), +armour (blue), +ammo (gold) rise from the pickup and fly to the wrist (ammo to its gun's hand, the rest to the off hand). |
+| Freeze in Hit-Stop | On | A number on a monster in a hit-stop stands still until it ends, then pops. |
+| Numbers in Slow-Mo | World Time | With RSQ_SlowMo: World Time (slow with the world) or Your Time. |
+
+Drawn with the engine's VisualThinkers from textures: no sprite frames, no actor per digit, one pool of at most
+160 glyphs that the engine never ticks. Do not load damnums as well (two numbers per hit, and its 9999s on Brutal
+Doom corpses come back).
+
 Always on (no row):
 
 - **Length by toughness**: tougher monsters get longer bars (a rifle zombie shortest, a Cyberdemon widest).
@@ -90,6 +121,15 @@ Load only the order above plus RSQ_HPBars.pk3. Start MAP01.
      strip. Rig 2026-11-02, with the real LegenDoom Lite 4.2 and 3.0 pk3s and with Champions' dormant LegenDoom
      mode (`test/ld.sh`); **not yet headset-confirmed**.
 
+Damage Numbers (rig only, not yet headset-confirmed):
+
+19. Shoot an imp once: a metal number pops at its head and fades. Shoot a Baron with a chaingun: the hits fly into
+    one total beside its bar, counting up with "x12". Kill it with a rocket: the total slams, OVERKILL over it,
+    and breaks apart.
+20. Brutal Doom: shoot a zombie in the head: HEADSHOT over a bigger crimson number.
+21. Get hurt, then walk over a stimpack and a clip: +10 green and +10 gold rise and fly to your wrists.
+22. Number Font and Text Quality: step through them on a held number (a hit-stop holds it still).
+
 With other series mods (each not yet headset-confirmed):
 
 14. RSQ Melee: headlock a monster. A padlock shows right of its bar while you hold it.
@@ -117,6 +157,11 @@ With other series mods (each not yet headset-confirmed):
   shows as a full overheal strip and one diamond (with Champions' dormant mode, as that champion).
 - RSQ_Miniboss (read, by name: RSQMB_Service "miniboss" / "thrall"): the crown and chain-link marks. Without it, no marks.
 
+- **RSQ_SlowMo** (asked by name: RSQSM_Service "active" / "scale"): damage numbers slow with the world, or not.
+- **RSQ GunCards** (found by name, not asked or changed): an ammo gain lands on that wrist where Gun Cards shows its
+  +N. Landing exactly on its card needs a hook from Gun Cards (see "Next").
+- **Score**: a running total fades on Score's 3 s chain window; Score is not asked.
+
 ## Known limits / open
 
 - Everything from 2026-10-31 (frozen, held, Aimed Only, the QoL round: length, flash, raised, fade in,
@@ -129,6 +174,18 @@ With other series mods (each not yet headset-confirmed):
 - Champions writes its boosted health as the start health, so a set-up champion reads 100 %, not overheal.
 - Lossvoise's flat retexture is not shipped (no permission).
 
+## Next (Damage Numbers, asked for, not built)
+
+- CRIT word and the magenta tier: after 2.0. The hook is in: `RSQTHP_DnService` `GetInt("crit", "", tics, 0,
+  monster)` marks that monster's hits for `tics` tics (default 2); nothing is drawn for a crit yet.
+- Backstab: not wanted (owner, 2026-11-03). 3D voxel tumbling numbers: not built.
+- Score payout names (a kill's points and best bonus rising from the body) and move colours (a number tinted by
+  the move that made it) need Score to answer by name, e.g. `RS_ScoreService GetString("kill.rows", ...)` and
+  `GetString("blow.last", "", player, 0, monster)`. Not built.
+- Gun Cards draws its card with the hand, so its world position is not readable: landing a gain exactly on its +N
+  needs a Gun Cards Service answering the card's world position per hand and whether its +N shows.
+- A number beside a bar near a wall can be hidden by the wall, like any sprite.
+
 ## Credits
 
 From the old README:
@@ -137,7 +194,11 @@ From the old README:
 
 > Lossvoise's flat retexture (of Mere_Duke's version; zdoom forum thread t=56910) is not used (owner, 10-28: no). The series ships coldcite's art and its own generated schemes only.
 
-`pk3/CREDITS.txt`, unchanged:
+Damage numbers: damnums by Xaser Acheron (MIT). Fonts: JFO, the JDUI font by Zedas in Blackmore1014's "JDUI Brutal
+Doom Ultimate Edition" edit (NO REUSE LICENCE STATED: ask Zedas and Blackmore1014 before any public release, as
+Gun Cards' CREDITS says); Ermac's Force Unleashed digits, as Gun Cards ships them. Full text in pk3/CREDITS.txt.
+
+`pk3/CREDITS.txt` (before the Damage Numbers):
 
 ```
 RSQ Top HP Bars -- credits

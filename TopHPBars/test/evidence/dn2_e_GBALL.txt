@@ -1,0 +1,67 @@
+MAP01 - Entryway
+DN2_SUM t0 made 0 totals 0 kills 0 heads 0 overkills 0 gains 0 peak glyphs 0 pool 0 stolen 0
+DN2_EV t5 player health 50
+DN2_EV t10 spawn 0 DoomImp health 60
+DN2_EV t10 spawn 1 BaronOfHell health 1000
+DN2_EV t10 spawn 2 Zombieman health 20
+DN2_EV t10 slot 0 is DoomImp health 60
+DN2_EV t10 slot 1 is BaronOfHell health 1000
+DN2_EV t10 slot 2 is Zombieman health 20
+DN2_EV t15 item Clip at 40 ahead
+DN2_EV t15 item Stimpack at 40 ahead
+DN2_EV t20 hit 1 BaronOfHell for 9 (None): health 1000 -> 991 (z 16.0 floor 16.0 top 72.0 height 64.0)
+DN2_EV t20 hit 2 Zombieman for 4 (head): health 20 -> 16 (z 8.0 floor 8.0 top 55.0 height 56.0)
+DN2_EV t21 hands: override 1 main -87.5,794.2,92.8 angle 0.0 pitch 0.0 off -104.5,794.2,92.8 eye z 97.0 weapon Pistol
+DN2 t21 #0 hit live on BaronOfHell value 9 shown 0 x0 words 0 '9' RSQTHP_DnWhite scale 0.25 fk 1.00 alpha 1.00 clock 0.00 dist 175 frozen 0 hidden 0 slide 0.0 glyphs 1 at -62,955,81
+DN2 t21 #1 hit live on Zombieman value 4 shown 0 x0 words 1 '4HEADSHOT' RSQTHP_DnHead scale 0.45 fk 1.00 alpha 1.00 clock 0.00 dist 130 frozen 0 hidden 0 slide 0.0 glyphs 9 at -96,908,58
+DN2_EV t23 hit 1 BaronOfHell for 9 (None): health 991 -> 982 (z 16.0 floor 16.0 top 72.0 height 64.0)
+DN2_EV t25 hit 2 Zombieman for 4 (head): health 16 -> 12 (z 8.0 floor 8.0 top 55.0 height 56.0)
+DN2_EV t26 hit 1 BaronOfHell for 9 (None): health 982 -> 973 (z 16.0 floor 16.0 top 70.0 height 64.0)
+DN2_EV t29 hit 1 BaronOfHell for 9 (None): health 973 -> 964 (z 16.0 floor 16.0 top 72.0 height 64.0)
+DN2_EV t30 hit 2 Zombieman for 4 (head): health 12 -> 8 (z 8.0 floor 8.0 top 55.0 height 56.0)
+DN2_EV t30 touch Clip: health 50
+DN2_EV t32 hit 1 BaronOfHell for 9 (None): health 964 -> 955 (z 16.0 floor 16.0 top 72.0 height 64.0)
+DN2_EV t32 touch Stimpack: health 50
+DN2_EV t35 hit 1 BaronOfHell for 9 (None): health 955 -> 946 (z 16.0 floor 16.0 top 73.0 height 64.0)
+DN2_EV t35 hit 2 Zombieman for 4 (head): health 8 -> 4 (z 8.0 floor 8.0 top 55.0 height 56.0)
+DN2_EV t38 hit 1 BaronOfHell for 9 (None): health 946 -> 937 (z 16.0 floor 16.0 top 70.0 height 64.0)
+DN2_EV t40 died Zombieman health 0
+DN2_EV t40 hit 2 Zombieman for 4 (head): health 4 -> 0 (z 8.0 floor 8.0 top 55.0 height 14.0)
+DN2_EV t41 hit 1 BaronOfHell for 9 (None): health 937 -> 928 (z 16.0 floor 16.0 top 70.0 height 64.0)
+DN2_EV t44 hit 1 BaronOfHell for 9 (None): health 928 -> 919 (z 16.0 floor 16.0 top 70.0 height 64.0)
+DN2_EV t45 hit-stop on 1: freezetics 10
+DN2_EV t47 hit 1 BaronOfHell for 9 (None): health 919 -> 910 (z 16.0 floor 16.0 top 70.0 height 64.0)
+DN2_EV t50 hit 1 BaronOfHell for 9 (None): health 910 -> 901 (z 16.0 floor 16.0 top 72.0 height 64.0)
+DN2_EV t50 died DoomImp health -80
+DN2_EV t50 hit 0 DoomImp for 140 (None): health 60 -> -80 (z 8.0 floor 8.0 top 59.0 height 14.0)
+DN2 t50 #0 hit live on BaronOfHell value 9 shown 0 x0 words 0 '9' RSQTHP_DnWhite scale 0.71 fk 1.00 alpha 0.08 clock 29.00 dist 174 frozen 0 hidden 0 slide 0.0 glyphs 1 at -62,955,92
+DN2 t50 #1 hit live on Zombieman value 4 shown 0 x0 words 1 '4HEADSHOT' RSQTHP_DnHead scale 1.29 fk 1.00 alpha 0.08 clock 29.00 dist 127 frozen 0 hidden 0 slide 0.0 glyphs 9 at -96,908,68
+DN2 t50 #2 total live on BaronOfHell value 90 shown 57 x7 words 0 '57X7' RSQTHP_DnYellow scale 0.81 fk 1.00 alpha 1.00 clock 26.00 dist 204 frozen 0 hidden 0 slide 0.0 glyphs 4 at -56,984,95
+DN2 t50 #3 total slam on Zombieman value 20 shown 20 x5 words 1 '20X5HEADSHOT' RSQTHP_DnHead scale 2.17 fk 1.00 alpha 1.00 clock 24.00 dist 162 frozen 0 hidden 0 slide 34.2 glyphs 12 at -96,934,36
+DN2 t50 #4 gain fly on DoomPlayer value 10 shown 0 x0 words 0 '+10' RSQTHP_DnAmmo scale 0.34 fk 1.00 alpha 1.00 clock 19.00 dist 15 frozen 0 hidden 0 slide 0.0 glyphs 3 at -89,795,89
+DN2 t50 #5 gain fly on DoomPlayer value 10 shown 0 x0 words 0 '+10' RSQTHP_DnHealth scale 0.46 fk 1.00 alpha 1.00 clock 17.00 dist 26 frozen 0 hidden 0 slide 0.0 glyphs 3 at -96,804,82
+DN2 t50 #6 hit fly on BaronOfHell value 9 shown 0 x0 words 0 '9' RSQTHP_DnWhite scale 0.67 fk 1.00 alpha 1.00 clock 8.00 dist 195 frozen 0 hidden 0 slide 0.0 glyphs 1 at -58,975,90
+DN2 t50 #7 hit fly on BaronOfHell value 9 shown 0 x0 words 0 '9' RSQTHP_DnWhite scale 0.71 fk 1.00 alpha 1.00 clock 5.00 dist 178 frozen 0 hidden 0 slide 0.0 glyphs 1 at -61,958,81
+DN2 t50 #8 hit live on BaronOfHell value 9 shown 0 x0 words 0 '9' RSQTHP_DnWhite scale 0.64 fk 1.00 alpha 1.00 clock 0.00 dist 175 frozen 1 hidden 0 slide 0.0 glyphs 1 at -62,955,79
+DN2_EV t53 hit 1 BaronOfHell for 9 (None): health 901 -> 892 (z 16.0 floor 16.0 top 72.0 height 64.0)
+DN2_EV t56 hit 1 BaronOfHell for 9 (None): health 892 -> 883 (z 16.0 floor 16.0 top 72.0 height 64.0)
+DN2_EV t59 hit 1 BaronOfHell for 9 (None): health 883 -> 874 (z 16.0 floor 16.0 top 73.0 height 64.0)
+DN2 t60 #0 total live on BaronOfHell value 126 shown 80 x9 words 0 '80X9' RSQTHP_DnYellow scale 0.88 fk 1.00 alpha 1.00 clock 36.00 dist 204 frozen 0 hidden 0 slide 0.0 glyphs 4 at -56,984,98
+DN2 t60 #1 total break on Zombieman value 20 shown 20 x5 words 1 '20X5HEADSHOT' RSQTHP_DnHead scale 2.17 fk 1.00 alpha 0.43 clock 34.00 dist 162 frozen 0 hidden 0 slide 34.2 glyphs 12 at -96,934,36
+DN2 t60 #2 gain land on DoomPlayer value 10 shown 0 x0 words 0 '+10' RSQTHP_DnHealth scale 0.28 fk 1.00 alpha 1.00 clock 27.00 dist 11 frozen 0 hidden 0 slide 0.0 glyphs 3 at -105,789,93
+DN2 t60 #3 hit fly on BaronOfHell value 9 shown 0 x0 words 0 '9' RSQTHP_DnWhite scale 0.71 fk 1.00 alpha 1.00 clock 6.00 dist 182 frozen 0 hidden 0 slide 0.0 glyphs 1 at -60,962,84
+DN2 t60 #4 hit fly on BaronOfHell value 9 shown 0 x0 words 0 '9' RSQTHP_DnWhite scale 0.71 fk 1.00 alpha 1.00 clock 6.00 dist 182 frozen 0 hidden 0 slide 0.0 glyphs 1 at -60,962,85
+DN2 t60 #5 hit slam on DoomImp value 60 shown 0 x0 words 2 '60OVERKILL' RSQTHP_DnRed scale 2.40 fk 1.00 alpha 1.00 clock 9.00 dist 135 frozen 0 hidden 0 slide 0.0 glyphs 10 at -129,909,60
+DN2 t60 #6 hit fly on BaronOfHell value 9 shown 0 x0 words 0 '9' RSQTHP_DnWhite scale 0.71 fk 1.00 alpha 1.00 clock 6.00 dist 182 frozen 0 hidden 0 slide 0.0 glyphs 1 at -60,962,85
+DN2 t60 #7 hit fly on BaronOfHell value 9 shown 0 x0 words 0 '9' RSQTHP_DnWhite scale 0.71 fk 1.00 alpha 1.00 clock 3.00 dist 175 frozen 0 hidden 0 slide 0.0 glyphs 1 at -62,955,81
+DN2 t60 #8 hit live on BaronOfHell value 9 shown 0 x0 words 0 '9' RSQTHP_DnWhite scale 0.25 fk 1.00 alpha 1.00 clock 0.00 dist 175 frozen 0 hidden 0 slide 0.0 glyphs 1 at -62,955,82
+DN2_EV t62 hit 1 BaronOfHell for 9 (None): health 874 -> 865 (z 16.0 floor 16.0 top 70.0 height 64.0)
+Game saved.
+DN2_EV t65 hit 1 BaronOfHell for 9 (None): health 865 -> 856 (z 16.0 floor 16.0 top 70.0 height 64.0)
+DN2_EV t68 hit 1 BaronOfHell for 9 (None): health 856 -> 847 (z 16.0 floor 16.0 top 70.0 height 64.0)
+MAP01 - Entryway
+DN2_EV t65 hit 1 BaronOfHell for 9 (None): health 865 -> 856 (z 16.0 floor 16.0 top 70.0 height 64.0)
+DN2_EV t68 hit 1 BaronOfHell for 9 (None): health 856 -> 847 (z 16.0 floor 16.0 top 70.0 height 64.0)
+MAP01 - Entryway
+DN2_EV t65 hit 1 BaronOfHell for 9 (None): health 865 -> 856 (z 16.0 floor 16.0 top 70.0 height 64.0)
+DN2_EV t68 hit 1 BaronOfHell for 9 (None): health 856 -> 847 (z 16.0 floor 16.0 top 70.0 height 64.0)

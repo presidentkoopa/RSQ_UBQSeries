@@ -1,5 +1,74 @@
 # RSQ_TopHPBars -- handoff (2026-10-27, branch agent-thp)
 
+## 2026-11-03 (afternoon): the owner's damage-number round -- read first
+
+Rig only, not headset-confirmed. Owner: "I love all of this, let's get on it"; "I like the numbers but not the
+sprites behind them"; "we don't use backstab at all, but I love the headshot and crit idea" (crits after 2.0).
+Rig: tools/rig17/run17.sh (real QZD 17.3), doom2.wad; probe `tools/rigprobe/zscript_dn2.txt` + `run_dn2.sh` (test
+only: scripted spawns, hits, real bullets, hit-stops, pickups, RSQ SlowMo's netevent; logs every number every tic).
+Evidence: `test/evidence/dn2_*` (frames as contact sheets, logs). Most runs teleport to MAP01's outdoor yard
+(-860, 250) so nothing is cut by walls.
+
+Done (measured):
+- **Drawing rewritten:** no digit actors and no sprites. Each glyph is a VisualThinker (glyphs.zs) holding a texture
+  from graphics/rsqthpdn (tools/gen_dn_art.py: 132 PNGs), on a non-ticking statnum, placed by one post-actor driver
+  thinker (statnum 125). One pool, 160 glyphs at most. **Sprite frames added: 0** (the pk3 has 655, all bars; the
+  morning's fold had 1,215: damnums' 560 are gone). Numbers survive a save and two loads (totals kept counting after
+  each load, e_* logs) and a map change (numbers on MAP01 and MAP02, m_* logs).
+- Bug found on the rig and fixed: a number at the monster's head stood in its sprite's plane and was hidden by the
+  sprite (first font run: the 123 inside the Baron). A hit's number now stands at the top of the head, radius + 6 in
+  front of the monster toward your eyes.
+- Bug found and fixed: gen_art.py clears graphics/rsqthp, so the glyphs live in their own folder (graphics/rsqthpdn);
+  build.sh runs gen_dn_art.py too.
+- **Fonts:** JFO Metal (default), Ermac, Classic Doom, Classic Doom (small); Text Quality Quest (32 px digits) / PCVR
+  (64 px). Frame `dn2_fonts_quest_vs_pcvr.png` (600 px eye, a 123 held by a hit-stop): all four fonts draw; at the
+  rig's resolution Quest and PCVR differ only slightly (judge in the headset).
+- **Ramp + size:** Barons hit for 30 / 100 / 250 / 500 (3 / 10 / 25 / 50 %): white 30 (scale 0.78), yellow 100
+  (0.88), orange 250 (1.09), red 500 (1.28) (`dn2_ramp_white_yellow_orange_red.png`, `dn2_p_ramp.txt`).
+- **Pop:** an imp hit for 14: scale 0.37 (t21) -> 1.55 (t22) -> 1.20 -> 1.07 (t24, settled), drifts up, fades from
+  0.5 s, gone at 0.9 s (`dn2_p_pop.txt`, `dn2_pop_sheet.png`). Single-tic frames of the pop could not be had: the
+  rig renders ~1 frame per 2 tics and stalls at very low i_timescale; the log carries the curve.
+- **Running total:** a Baron chaingunned 9 every 3 tics: from the 2nd hit one total beside its bar, hits fly in,
+  "151 x17" counting up, orange by share (`dn2_total_xN_kill_overkill_sheet.png`, `dn2_total_xN_and_slam_zoom.png`).
+- **Kill + OVERKILL:** the kill 600 past zero: the total slams to "1000 x16" (180 hits + 820 it had left; the real
+  health taken), OVERKILL over it, holds 12 tics, breaks apart and fades (same sheet). An imp killed 80 past zero (no
+  total): "60 OVERKILL". No sprite behind any number.
+- **HEADSHOT:** the exact signal, read from brutal22test6: a bullet's blood (Blood_*, BloodTypesMonsters.dec) landing
+  more than 46 above the floor runs ACS "Head_Shot" -> Thing_Damage2(0, 30, "Head") on the monster the same tic; head
+  hitboxes pass theirs with A_DamageMaster(.., "head"). Full order, real LineAttack bullets at a RifleZombie and a
+  ShotgunGuy1's heads: 6 + 30 Head + ..., killed: "HEADSHOT 40" crimson, bigger, slams and breaks
+  (`dn2_headshot_fullorder_sheet.png`, `dn2_p_head.txt`). Two kills 60 units apart overlap their slams.
+- **Out of your face:** the main hand aimed through a number: slid 4.7 -> 13.6 units off the aim line (comfort on),
+  0.0 (off) (`dn2_p_aim1.txt` / `dn2_p_aim0.txt`). MIN_EYE (36) never had to act in these tests (an imp 30 units
+  away put its number 50 from the eyes).
+- **Most Numbers / busy room:** 40 Barons, each hit every 4 tics: 130 numbers alive, 12 shown (default), 33 glyphs in
+  the pool, 0 stolen; at 48: 48 shown, 109 glyphs. Actors 129 with numbers on, 129 with them off (no actor is added);
+  monsters 59 alive, 40 HP bars (`dn2_p_busy*.txt`). A number beyond the cut gives its glyphs back to the pool.
+- **Gains:** health 50, stimpack +10 green, clip +10 gold, armour bonus +1 blue: rise from the pickup, fly to the
+  wrist (ammo to the main hand, the rest to the off hand) and shrink to ~7 cm (`dn2_gains_to_wrist_sheet.png`,
+  `dn2_p_gain.txt`; plain doom2 draws no hands on the rig, so the wrist is where AttackPos / OffhandPos are). With
+  RSQ_GunCards loaded the ammo gain fades into the wrist in 4 tics instead of holding 20 (`dn2_gain_guncards_sheet.png`).
+- **Hit-stop:** two imps hit at t20, the left one held 25 tics: it stands at 0.96 to t44, pops 1.55 at t45, settles
+  1.07; the other popped at once (`dn2_p_stop.txt`, `dn2_hitstop_sheet.png`).
+- **SlowMo:** RSQ_SlowMo on (netevent rsm_on): World Time clock 0.25 a tic (2.25 at 9 tics), Your Time 1 a tic
+  (`dn2_p_slow_w.txt`, `dn2_p_slow_y.txt`, `dn2_slowmo_world_sheet.png`).
+- **Rows** (14 new, all in Reset All): Text Quality, Colour by Hit Strength, Pop and Settle, Size by Hit, Grow with
+  Distance, Running Total, Kill Slam, Overkill Word, Headshot Word, Out of Your Face, Most Numbers, Gains on You,
+  Freeze in Hit-Stop, Numbers in Slow-Mo; Number Font now JFO Metal / Ermac / Classic Doom / Classic Doom (small).
+- **Script errors** (save, two loads; separate map-change runs): doom2 + HP Bars 0; doom2 + Gun Bonsai 0.10.6 + all 18
+  RSQ pk3s 0; full order (lo2 01, 02, 03 = 2.0.3p, 04-07, Gun Bonsai, all RSQ) 4, all BD_VoxelPack's voxeldef.
+
+Not done / open:
+- Headset: readability and size of the metal digits, Quest vs PCVR, the pop's feel, the wrist landing.
+- Gun Cards landing exactly on its +N needs a Gun Cards Service (card world position per hand, +N showing); not
+  asked of Gun Cards, not edited. README "Next".
+- Next (README): CRIT word / magenta (hook in: RSQTHP_DnService "crit"), Score payout names and move colours (need
+  Score answers by name), 3D voxel numbers. No backstab.
+- Totals beside a bar near a wall can be hidden by the wall (seen in the MAP01 corridor).
+- The owner restored every README at 12:07 (b11da6d86); the Damage Numbers rows and steps were added to that
+  restored README, nothing else in it changed.
+
+
 Rig: rig A (`/home/claude/scratch/run17A.sh`, the real QZD 17.3 binary, zscript 4.14.2), doom2.wad MAP01.
 Every number below was measured there; the logs and frames are under `test/evidence/` (copies) and
 the scratchpad (`frames/<run>/`, `logsA/<run>.log`). Test runner: `test/run.sh <name> <secs> "<console>" <order>`.
