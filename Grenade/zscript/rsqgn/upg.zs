@@ -56,6 +56,14 @@ class RSQGN_Service : Service
 			let g = RSQGN_Thrown(objectArg);
 			return g ? g.cooked : -1;
 		}
+		// "turned.by", objectArg = a monster: the player whose Infight or Charm grenade turned it (while it lasts), -1 not
+		// turned (RSQ Score's Civil War / Turncoat, 11-03: a kill by a monster you turned is yours, not everyone's Infighter)
+		if (request == "turned.by")
+		{
+			let a = Actor(objectArg);
+			let t = a ? RSQGN_Turned(a.FindInventory("RSQGN_Turned", true)) : null;
+			return t ? t.byPn : -1;
+		}
 		// THE WEAPON WHEEL'S FAN OF KINDS (RSQ Wheel, owner 11-02): "kinds.owned" intArg player -> a bit a kind (the frag's
 		// always), "kind" -> the kind in hand, "kind.set" intArg player, doubleArg the kind -> 1 when taken (owned, no pin
 		// pulled), "kind.colour.of" intArg a kind -> its colour (-1 the frag)
