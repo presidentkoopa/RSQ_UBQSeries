@@ -1,0 +1,10 @@
+# TEST ONLY. Script errors, 11-03, the final RSQ_TacticalRig.pk3 / RSQ_ShieldSaw.pk3 (doom2 MAP01: give all, both changed menus opened, a snap turn, a zombieman and an imp).
+# z_tr: doom2 + RSQ_TacticalRig alone. z_ss: doom2 + RSQ_ShieldSaw alone. z_gb: doom2 + Gun Bonsai 0.10.6 + all 18 RSQ pk3s.
+# z_full: doom2, brutal22test6, BD22_VoxelPack, BD22_VR-Reloaded_2.0.3p, XMVE 04-07, Gun Bonsai 0.10.6, all 18 RSQ pk3s (the 4 errors are BD_VoxelPack's voxeldef lines 66/72/77/892; the 1023 'other' are XMVE/BD unknown-class notes).
+z_tr rc=0 script errors: 0  VM aborts: 0  other: 0  map: 1
+z_ss rc=0 script errors: 0  VM aborts: 0  other: 0  map: 1
+z_gb rc=0 script errors: 0  VM aborts: 0  other: 0  map: 1
+z_full rc=0 script errors: 4  VM aborts: 0  other: 1023  map: 1
+full order script errors not from BD_VoxelPack's voxeldef: 0
+lines naming our packs with error/abort: 0
+# Every turn-probe run in after_*.txt: 0 script errors, 0 compile errors, 0 VM aborts.

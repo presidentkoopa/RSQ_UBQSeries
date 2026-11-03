@@ -1,0 +1,43 @@
+version "4.14"
+// TEST ONLY (never ships). Turns against the body (11-03, the owner: "i can 360 around my torso and the shield
+// doesn't move and the torso doesn't turn, or does sometimes"). Every tic: the pawn's angle, both controllers'
+// yaws, RSQ TacticalRig's body yaw and RSQ ShieldSaw's (its keeper's and the synced one). trt_frames 1 also prints
+// every rendered frame (the view yaw the renderer used and the controller yaws as written that frame).
+class RSQTRTurnProbe : EventHandler
+{
+	override void WorldTick()
+	{
+		let p = players[0];
+		let mo = p.mo;
+		if (!mo) return;
+		let rig = RSQTR_Rig.Get();
+		let ss = SSQ_Handler.Get();
+		double ry = rig ? rig.BodyYaw(mo) : 999;
+		double sy = ss ? SSQ_Handler.BodyYaw(mo) : 999;
+		double ky = ss ? ss.kYaw : 999;
+		// the tracking space's yaw (TEST ONLY: the rig's headset yaw is the qz_hmd cvar's fifth number): pawn less head
+		double trk = 999;
+		let hc = CVar.FindCVar('qz_hmd');
+		if (hc)
+		{
+			Array<String> f;
+			hc.GetString().Split(f, " ", TOK_SKIPEMPTY);
+			if (f.Size() >= 5) trk = Actor.Normalize180(mo.angle - f[4].ToDouble());
+		}
+		Console.Printf("trk t%d %.2f", level.maptime, trk);
+		Console.Printf("trt t%d a %.2f h0 %.2f h1 %.2f rig %.2f ssk %.2f ssq %.2f pitch %.1f", level.maptime, mo.angle, mo.AttackAngle, mo.OffhandAngle, ry, ky, sy, mo.pitch);
+		// TRQ BEGIN (dropped for PROBE=old: the 11-03 keeper's queues)
+		let b = rig ? rig.GetBody() : null;
+		if (b && b.turns && CVar.FindCVar('trt_queues').GetBool())
+			Console.Printf("trq t%d head %.2f hands %.2f owed %.2f with %d/%d hp %.1f %.1f turn %d settle %.2f", level.maptime, RSQTR_TurnKeeper.Sum(b.turns.hAmt), RSQTR_TurnKeeper.Sum(b.turns.cAmt), RSQTR_TurnKeeper.Sum(b.turns.lAmt) + RSQTR_TurnKeeper.Sum(b.turns.mAmt), b.turns.withFor, b.turns.withOn, mo.AttackPitch, mo.OffhandPitch, b.turns.tOn, b.turns.lastSettle);
+		// TRQ END
+	}
+	override void RenderOverlay(RenderEvent e)
+	{
+		let c = CVar.FindCVar('trt_frames');
+		if (!c || !c.GetBool()) return;
+		let mo = players[consoleplayer].mo;
+		if (!mo) return;
+		Console.Printf("trf g%d view %.2f h0 %.2f h1 %.2f", gametic, e.ViewAngle, mo.AttackAngle, mo.OffhandAngle);
+	}
+}

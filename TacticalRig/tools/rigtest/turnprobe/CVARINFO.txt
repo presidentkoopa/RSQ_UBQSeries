@@ -1,0 +1,2 @@
+user bool trt_frames = false;
+user bool trt_queues = false;

@@ -167,7 +167,8 @@ default.
 | Rig Options: Slow Motion After a Smoke | On | RSQ SlowMo starts as the smoked cigarette flicks out of your mouth (6 s at 25 %, on the *Cigarette* page). |
 | Rig Options: Refill Each Level | On | The cigarette pocket refills each level. |
 | Tuning and Debug: Holster Positions / Torso Fit / Cigarette | - | Sliders for each holster and the keyring (its *Toward Off Hand* is mirrored for a left-handed layout), the torso and helmet, and the cigarette: *Mouth Zone Size* (1.0, 0.5 to 1.5: how far from the mouth still counts), *Mouth Cigarette Forward* (0.12 m) and *Mouth Cigarette Down* (0.07 m: where the cigarette sits in your mouth, from your eyes; at these its lit tip is at the bottom-centre of your view), *Smoke Time (s)* 1 to 5 in half seconds (2), *Slow Motion Seconds*, *Slow Motion Speed*, *Pack Size*. |
-| Tuning and Debug: Body Turn Angle / Delay | 35 / 1 s | A head held turned further than this, this long, while looking level, is taken as your body turning: the torso and holsters ease round to it. Stick and snap turns always carry them. |
+| Rig Options: Torso Turns With Head and Hands | On | Your head and both hands (held in front of you) turned the same way turn the torso and the holsters with you: a real turn in the room carries the rig (11-03; rig only, not headset-confirmed). |
+| Tuning and Debug: Body Turn Angle / Delay | 35 / 1 s | A head held turned further than this, this long, while looking level, is taken as your body turning: the torso and holsters ease round to it. Every snap and smooth turn carries them by exactly the turn (11-03; rig only, not headset-confirmed). |
 | Tuning and Debug: Torso: Ignore Looking Down Past | 25 | Looking further down than this (degrees) never turns the torso: it neither counts toward the turn nor continues one (11-03, the owner's headset: "looking down and turning my head seems to turn the torso some"). |
 | Tuning and Debug: Throw Swing Speed (m/s) | 2.5 | How fast the hand must swing to throw a gun. |
 | Tuning and Debug: Thrown Gun Damage | 1.0 | Multiplier on thrown-gun hits. |
@@ -421,3 +422,5 @@ hand is in a holster, holds a Distance Grab door, the cigarette or the Zippo), `
 "Keyring"; `rig.region` answers 8 only while the keyring is carried in *Move Holsters by Hand*.
 Holster profiles (`rsqtr_profile1..4`, "f,l,u,rad|..." by place index) now fill index 8 with the keyring
 (its "l" is toward the off hand); it was empty before. This section is for modders, not for play.
+`RSQTR_BodyService` (found by name): `GetDouble("body.yaw", "", 0, 0, pawn)` is the body's heading in degrees (the
+console player's pawn only, brought up to date this tic first), or 999. RSQ ShieldSaw hangs its shield on it.

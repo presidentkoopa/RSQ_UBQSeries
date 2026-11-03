@@ -1,0 +1,26 @@
+version "4.14"
+// TEST ONLY (never ships). The turn probe for RSQ ShieldSaw loaded WITHOUT RSQ TacticalRig (its own keeper): the same
+// line as zscript.txt, the rig's yaw printed as 999.
+class RSQTRTurnProbe : EventHandler
+{
+	override void WorldTick()
+	{
+		let p = players[0];
+		let mo = p.mo;
+		if (!mo) return;
+		let ss = SSQ_Handler.Get();
+		double sy = ss ? SSQ_Handler.BodyYaw(mo) : 999;
+		double ky = ss ? ss.kYaw : 999;
+		// the tracking space's yaw (TEST ONLY: the rig's headset yaw is the qz_hmd cvar's fifth number): pawn less head
+		double trk = 999;
+		let hc = CVar.FindCVar('qz_hmd');
+		if (hc)
+		{
+			Array<String> f;
+			hc.GetString().Split(f, " ", TOK_SKIPEMPTY);
+			if (f.Size() >= 5) trk = Actor.Normalize180(mo.angle - f[4].ToDouble());
+		}
+		Console.Printf("trk t%d %.2f", level.maptime, trk);
+		Console.Printf("trt t%d a %.2f h0 %.2f h1 %.2f rig %.2f ssk %.2f ssq %.2f pitch %.1f", level.maptime, mo.angle, mo.AttackAngle, mo.OffhandAngle, 999.0, ky, sy, mo.pitch);
+	}
+}
