@@ -1,0 +1,12 @@
+adding res/qzdoom.pk3, 709 lumps
+adding res/game_support.pk3, 3308 lumps
+adding /home/claude/iwad/doom2/doom2.wad, 2919 lumps
+adding game_widescreen_gfx.pk3, 214 lumps
+adding /home/claude/RSQ_UBQSeries/pk3/RSQ_TacticalRig.pk3, 122 lumps
+adding /home/claude/scratch/trnade/trnprobe.pk3, 2 lumps
+trn: t0 weapon '' ammo '' count 0 live 0 | main Pistol off None | at the spot: NOTHING | spot from the eyes (0.000 0.120 -0.517) m, pitch 0
+trn: t35 weapon '' ammo '' count 0 live 0 | main Pistol off None | at the spot: NOTHING | spot from the eyes (0.000 0.120 -0.517) m, pitch 0
+trn: t55 weapon '' ammo '' count 0 live 0 | main Shotgun off None | at the spot: NOTHING | spot from the eyes (0.000 0.120 -0.517) m, pitch 0
+trn: t60 weapon '' ammo '' count 0 live 0 | main Shotgun off None | at the spot: RSQTR_Marker[spr931 A x4.760 d(-0.180 -0.120 -0.067)m] RSQTR_Marker[spr931 A x4.760 d(0.180 -0.120 -0.067)m] RSQTR_Marker[spr931 A x3.740 d(-0.120 -0.020 0.133)m] RSQTR_Marker[spr931 A x3.740 d(0.120 -0.020 0.133)m] RSQTR_Marker[spr931 A x4.080 d(-0.130 0.020 -0.067)m] | spot from the eyes (0.000 0.092 -0.517) m, pitc
+trn: t70 weapon '' ammo '' count 0 live 0 | main Shotgun off None | at the spot: RSQTR_Marker[spr931 A x4.760 d(-0.180 -0.120 -0.067)m] RSQTR_Marker[spr931 A x4.760 d(0.180 -0.120 -0.067)m] RSQTR_Marker[spr931 A x3.740 d(-0.120 -0.020 0.133)m] RSQTR_Marker[spr931 A x3.740 d(0.120 -0.020 0.133)m] RSQTR_Marker[spr931 A x4.080 d(-0.130 0.020 -0.067)m] | spot from the eyes (0.000 0.092 -0.517) m, pitc
+trn: t105 weapon '' ammo '' count 0 live 0 | main Shotgun off None | at the spot: RSQTR_Marker[spr931 A x4.760 d(-0.180 -0.120 -0.067)m] RSQTR_Marker[spr931 A x4.760 d(0.180 -0.120 -0.067)m] RSQTR_Marker[spr931 A x3.740 d(-0.120 -0.020 0.133)m] RSQTR_Marker[spr931 A x3.740 d(0.120 -0.020 0.133)m] RSQTR_Marker[spr931 A x4.080 d(-0.130 0.020 -0.067)m] | spot from the eyes (0.000 0.092 -0.517) m, pit

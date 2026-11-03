@@ -1,0 +1,56 @@
+adding res/qzdoom.pk3, 709 lumps
+adding res/game_support.pk3, 3308 lumps
+adding /home/claude/iwad/doom2/doom2.wad, 2919 lumps
+adding game_widescreen_gfx.pk3, 214 lumps
+adding /home/claude/scratch/lo2/01_brutal22test6.pk3, 22264 lumps
+adding /home/claude/scratch/lo2/01_brutal22test6.pk3:bddmmaps.wad, 130 lumps
+adding /home/claude/scratch/lo2/01_brutal22test6.pk3:bdhordemodemaps.wad, 65 lumps
+adding /home/claude/scratch/lo2/01_brutal22test6.pk3:bdpsxmaps.wad, 42 lumps
+adding /home/claude/RSQ_UBQSeries/pk3/RSQ_TacticalRig.pk3, 122 lumps
+adding /home/claude/scratch/trnade/trnprobe.pk3, 2 lumps
+trn: t0 weapon 'HandGrenades' ammo 'GrenadeAmmo' count 1 live 1 | main Rifle off None | at the spot: NOTHING | spot from the eyes (0.000 0.120 -0.517) m, pitch 0
+trn: t1 weapon 'HandGrenades' ammo 'GrenadeAmmo' count 1 live 1 | main Rifle off None | at the spot: RSQTR_NadeShow[spr883 I x0.276 d(0.000 0.000 -0.065)m] | spot from the eyes (0.000 0.120 -0.517) m, pitch 0
+trn: t35 weapon 'HandGrenades' ammo 'GrenadeAmmo' count 1 live 1 | main Rifle off None | at the spot: RSQTR_NadeShow[spr883 I x0.276 d(0.000 0.000 -0.065)m] | spot from the eyes (0.000 0.120 -0.517) m, pitch 0
+trn: t40 weapon 'HandGrenades' ammo 'GrenadeAmmo' count 0 live 1 | main Rifle off None | at the spot: NOTHING | spot from the eyes (0.000 0.120 -0.517) m, pitch 0
+TRN_ZERO
+trn: t70 weapon 'HandGrenades' ammo 'GrenadeAmmo' count 0 live 1 | main Rifle off None | at the spot: NOTHING | spot from the eyes (0.000 0.092 -0.517) m, pitch 70
+trn: t105 weapon 'HandGrenades' ammo 'GrenadeAmmo' count 0 live 1 | main Rifle off None | at the spot: NOTHING | spot from the eyes (0.000 0.092 -0.517) m, pitch 70
+TRN_ONE
+trn: t116 weapon 'HandGrenades' ammo 'GrenadeAmmo' count 1 live 1 | main Rifle off None | at the spot: RSQTR_NadeShow[spr883 I x0.276 d(0.000 0.000 -0.065)m] | spot from the eyes (0.000 0.092 -0.517) m, pitch 70
+trn: t140 weapon 'HandGrenades' ammo 'GrenadeAmmo' count 1 live 1 | main Rifle off None | at the spot: RSQTR_NadeShow[spr883 I x0.276 d(0.000 0.000 -0.065)m] | spot from the eyes (0.000 0.092 -0.517) m, pitch 70
+trn: t175 weapon 'HandGrenades' ammo 'GrenadeAmmo' count 1 live 1 | main Rifle off None | at the spot: RSQTR_NadeShow[spr883 I x0.276 d(0.000 0.000 -0.065)m] | spot from the eyes (0.000 0.092 -0.517) m, pitch 70
+TRN_THREE
+trn: t185 weapon 'HandGrenades' ammo 'GrenadeAmmo' count 3 live 1 | main Rifle off None | at the spot: RSQTR_NadeShow[spr883 I x0.276 d(0.000 0.000 -0.065)m] | spot from the eyes (0.000 0.092 -0.517) m, pitch 70
+trn: t210 weapon 'HandGrenades' ammo 'GrenadeAmmo' count 3 live 1 | main Rifle off None | at the spot: RSQTR_NadeShow[spr883 I x0.276 d(0.000 0.000 -0.065)m] | spot from the eyes (0.000 0.092 -0.517) m, pitch 70
+trn: t245 weapon 'HandGrenades' ammo 'GrenadeAmmo' count 3 live 1 | main Rifle off None | at the spot: RSQTR_NadeShow[spr883 I x0.276 d(0.000 0.000 -0.065)m] | spot from the eyes (0.000 0.092 -0.517) m, pitch 70
+TRN_INHAND
+T_RIG grenade out t256 (had Rifle, 3 grenades)
+trn: t260 weapon 'HandGrenades' ammo 'GrenadeAmmo' count 3 live 1 | main HandGrenades off None | at the spot: NOTHING | spot from the eyes (0.000 0.092 -0.517) m, pitch 70
+trn: t280 weapon 'HandGrenades' ammo 'GrenadeAmmo' count 3 live 1 | main HandGrenades off None | at the spot: NOTHING | spot from the eyes (0.000 0.092 -0.517) m, pitch 70
+trn: t315 weapon 'HandGrenades' ammo 'GrenadeAmmo' count 3 live 1 | main HandGrenades off None | at the spot: NOTHING | spot from the eyes (0.000 0.092 -0.517) m, pitch 70
+TRN_BACK
+trn: t328 weapon 'HandGrenades' ammo 'GrenadeAmmo' count 3 live 1 | main Rifle off None | at the spot: RSQTR_NadeShow[spr883 I x0.276 d(0.000 0.000 -0.065)m] | spot from the eyes (0.000 0.092 -0.517) m, pitch 70
+trn: t350 weapon 'HandGrenades' ammo 'GrenadeAmmo' count 3 live 1 | main Rifle off None | at the spot: RSQTR_NadeShow[spr883 I x0.276 d(0.000 0.000 -0.065)m] | spot from the eyes (0.000 0.092 -0.517) m, pitch 70
+trn: t385 weapon 'HandGrenades' ammo 'GrenadeAmmo' count 3 live 1 | main Rifle off None | at the spot: RSQTR_NadeShow[spr883 I x0.276 d(0.000 0.000 -0.065)m] | spot from the eyes (0.000 0.092 -0.517) m, pitch 70
+TRN_SWITCH_OFF
+trn: t420 weapon 'HandGrenades' ammo 'GrenadeAmmo' count 3 live 1 | main Rifle off None | at the spot: NOTHING | spot from the eyes (0.000 0.092 -0.517) m, pitch 70
+TRN_RINGS
+trn: t445 weapon 'HandGrenades' ammo 'GrenadeAmmo' count 3 live 1 | main Rifle off None | at the spot: RSQTR_NadeShow[spr883 I x0.276 d(0.000 0.000 -0.065)m] RSQTR_Marker[spr931 A x4.760 d(-0.180 -0.120 -0.067)m] RSQTR_Marker[spr931 A x4.760 d(0.180 -0.120 -0.067)m] RSQTR_Marker[spr931 A x2.720 d(0.000 0.000 0.000)m] RSQTR_Marker[spr931 A x3.740 d(-0.120 -0.020 0.133)m] RSQTR_Marker[spr931 A x3.74
+trn: t455 weapon 'HandGrenades' ammo 'GrenadeAmmo' count 3 live 1 | main Rifle off None | at the spot: RSQTR_NadeShow[spr883 I x0.276 d(0.000 0.000 -0.065)m] RSQTR_Marker[spr931 A x4.760 d(-0.180 -0.120 -0.067)m] RSQTR_Marker[spr931 A x4.760 d(0.180 -0.120 -0.067)m] RSQTR_Marker[spr931 A x2.720 d(0.000 0.000 0.000)m] RSQTR_Marker[spr931 A x3.740 d(-0.120 -0.020 0.133)m] RSQTR_Marker[spr931 A x3.74
+trn: t490 weapon 'HandGrenades' ammo 'GrenadeAmmo' count 3 live 1 | main Rifle off None | at the spot: RSQTR_NadeShow[spr883 I x0.276 d(0.000 0.000 -0.065)m] RSQTR_Marker[spr931 A x4.760 d(-0.180 -0.120 -0.067)m] RSQTR_Marker[spr931 A x4.760 d(0.180 -0.120 -0.067)m] RSQTR_Marker[spr931 A x2.720 d(0.000 0.000 0.000)m] RSQTR_Marker[spr931 A x3.740 d(-0.120 -0.020 0.133)m] RSQTR_Marker[spr931 A x3.74
+TRN_RINGS_ONE
+trn: t515 weapon 'HandGrenades' ammo 'GrenadeAmmo' count 1 live 1 | main Rifle off None | at the spot: RSQTR_NadeShow[spr883 I x0.276 d(0.000 0.000 -0.065)m] RSQTR_Marker[spr931 A x4.760 d(-0.180 -0.120 -0.067)m] RSQTR_Marker[spr931 A x4.760 d(0.180 -0.120 -0.067)m] RSQTR_Marker[spr931 A x2.720 d(0.000 0.000 0.000)m] RSQTR_Marker[spr931 A x3.740 d(-0.120 -0.020 0.133)m] RSQTR_Marker[spr931 A x3.74
+trn: t525 weapon 'HandGrenades' ammo 'GrenadeAmmo' count 1 live 1 | main Rifle off None | at the spot: RSQTR_NadeShow[spr883 I x0.276 d(0.000 0.000 -0.065)m] RSQTR_Marker[spr931 A x4.760 d(-0.180 -0.120 -0.067)m] RSQTR_Marker[spr931 A x4.760 d(0.180 -0.120 -0.067)m] RSQTR_Marker[spr931 A x2.720 d(0.000 0.000 0.000)m] RSQTR_Marker[spr931 A x3.740 d(-0.120 -0.020 0.133)m] RSQTR_Marker[spr931 A x3.74
+trn: t560 weapon 'HandGrenades' ammo 'GrenadeAmmo' count 1 live 1 | main Rifle off None | at the spot: RSQTR_NadeShow[spr883 I x0.276 d(0.000 0.000 -0.065)m] RSQTR_Marker[spr931 A x4.760 d(-0.180 -0.120 -0.067)m] RSQTR_Marker[spr931 A x4.760 d(0.180 -0.120 -0.067)m] RSQTR_Marker[spr931 A x2.720 d(0.000 0.000 0.000)m] RSQTR_Marker[spr931 A x3.740 d(-0.120 -0.020 0.133)m] RSQTR_Marker[spr931 A x3.74
+TRN_RINGS_ZERO
+trn: t575 weapon 'HandGrenades' ammo 'GrenadeAmmo' count 0 live 1 | main Rifle off None | at the spot: RSQTR_Marker[spr931 A x4.760 d(-0.180 -0.120 -0.067)m] RSQTR_Marker[spr931 A x4.760 d(0.180 -0.120 -0.067)m] RSQTR_Marker[spr931 A x2.720 d(0.000 0.000 0.000)m] RSQTR_Marker[spr931 A x3.740 d(-0.120 -0.020 0.133)m] RSQTR_Marker[spr931 A x3.740 d(0.120 -0.020 0.133)m] RSQTR_Marker[spr931 A x4.080 
+trn: t576 weapon 'HandGrenades' ammo 'GrenadeAmmo' count 0 live 1 | main Rifle off None | at the spot: RSQTR_Marker[spr931 A x4.760 d(-0.180 -0.120 -0.067)m] RSQTR_Marker[spr931 A x4.760 d(0.180 -0.120 -0.067)m] RSQTR_Marker[spr931 A x2.720 d(0.000 0.000 0.000)m] RSQTR_Marker[spr931 A x3.740 d(-0.120 -0.020 0.133)m] RSQTR_Marker[spr931 A x3.740 d(0.120 -0.020 0.133)m] RSQTR_Marker[spr931 A x4.080 
+trn: t584 weapon 'HandGrenades' ammo 'GrenadeAmmo' count 0 live 1 | main Rifle off None | at the spot: RSQTR_Marker[spr931 A x4.760 d(-0.180 -0.120 -0.067)m] RSQTR_Marker[spr931 A x4.760 d(0.180 -0.120 -0.067)m] RSQTR_Marker[spr931 A x2.720 d(0.000 0.000 0.000)m] RSQTR_Marker[spr931 A x3.740 d(-0.120 -0.020 0.133)m] RSQTR_Marker[spr931 A x3.740 d(0.120 -0.020 0.133)m] RSQTR_Marker[spr931 A x4.080 
+trn: t592 weapon 'HandGrenades' ammo 'GrenadeAmmo' count 0 live 1 | main Rifle off None | at the spot: RSQTR_Marker[spr931 A x4.760 d(-0.180 -0.120 -0.067)m] RSQTR_Marker[spr931 A x4.760 d(0.180 -0.120 -0.067)m] RSQTR_Marker[spr931 A x2.720 d(0.000 0.000 0.000)m] RSQTR_Marker[spr931 A x3.740 d(-0.120 -0.020 0.133)m] RSQTR_Marker[spr931 A x3.740 d(0.120 -0.020 0.133)m] RSQTR_Marker[spr931 A x4.080 
+trn: t595 weapon 'HandGrenades' ammo 'GrenadeAmmo' count 0 live 1 | main Rifle off None | at the spot: RSQTR_Marker[spr931 A x4.760 d(-0.180 -0.120 -0.067)m] RSQTR_Marker[spr931 A x4.760 d(0.180 -0.120 -0.067)m] RSQTR_Marker[spr931 A x2.720 d(0.000 0.000 0.000)m] RSQTR_Marker[spr931 A x3.740 d(-0.120 -0.020 0.133)m] RSQTR_Marker[spr931 A x3.740 d(0.120 -0.020 0.133)m] RSQTR_Marker[spr931 A x4.080 
+trn: t600 weapon 'HandGrenades' ammo 'GrenadeAmmo' count 0 live 1 | main Rifle off None | at the spot: RSQTR_Marker[spr931 A x4.760 d(-0.180 -0.120 -0.067)m] RSQTR_Marker[spr931 A x4.760 d(0.180 -0.120 -0.067)m] RSQTR_Marker[spr931 A x2.720 d(0.000 0.000 0.000)m] RSQTR_Marker[spr931 A x3.740 d(-0.120 -0.020 0.133)m] RSQTR_Marker[spr931 A x3.740 d(0.120 -0.020 0.133)m] RSQTR_Marker[spr931 A x4.080 
+trn: t608 weapon 'HandGrenades' ammo 'GrenadeAmmo' count 0 live 1 | main Rifle off None | at the spot: RSQTR_Marker[spr931 A x4.760 d(-0.180 -0.120 -0.067)m] RSQTR_Marker[spr931 A x4.760 d(0.180 -0.120 -0.067)m] RSQTR_Marker[spr931 A x2.720 d(0.000 0.000 0.000)m] RSQTR_Marker[spr931 A x3.740 d(-0.120 -0.020 0.133)m] RSQTR_Marker[spr931 A x3.740 d(0.120 -0.020 0.133)m] RSQTR_Marker[spr931 A x4.080 
+trn: t616 weapon 'HandGrenades' ammo 'GrenadeAmmo' count 0 live 1 | main Rifle off None | at the spot: RSQTR_Marker[spr931 A x4.760 d(-0.180 -0.120 -0.067)m] RSQTR_Marker[spr931 A x4.760 d(0.180 -0.120 -0.067)m] RSQTR_Marker[spr931 A x2.720 d(0.000 0.000 0.000)m] RSQTR_Marker[spr931 A x3.740 d(-0.120 -0.020 0.133)m] RSQTR_Marker[spr931 A x3.740 d(0.120 -0.020 0.133)m] RSQTR_Marker[spr931 A x4.080 
+trn: t624 weapon 'HandGrenades' ammo 'GrenadeAmmo' count 0 live 1 | main Rifle off None | at the spot: RSQTR_Marker[spr931 A x4.760 d(-0.180 -0.120 -0.067)m] RSQTR_Marker[spr931 A x4.760 d(0.180 -0.120 -0.067)m] RSQTR_Marker[spr931 A x2.720 d(0.000 0.000 0.000)m] RSQTR_Marker[spr931 A x3.740 d(-0.120 -0.020 0.133)m] RSQTR_Marker[spr931 A x3.740 d(0.120 -0.020 0.133)m] RSQTR_Marker[spr931 A x4.080 
+trn: t630 weapon 'HandGrenades' ammo 'GrenadeAmmo' count 0 live 1 | main Rifle off None | at the spot: RSQTR_Marker[spr931 A x4.760 d(-0.180 -0.120 -0.067)m] RSQTR_Marker[spr931 A x4.760 d(0.180 -0.120 -0.067)m] RSQTR_Marker[spr931 A x2.720 d(0.000 0.000 0.000)m] RSQTR_Marker[spr931 A x3.740 d(-0.120 -0.020 0.133)m] RSQTR_Marker[spr931 A x3.740 d(0.120 -0.020 0.133)m] RSQTR_Marker[spr931 A x4.080 
+trn: t632 weapon 'HandGrenades' ammo 'GrenadeAmmo' count 0 live 1 | main Rifle off None | at the spot: RSQTR_Marker[spr931 A x4.760 d(-0.180 -0.120 -0.067)m] RSQTR_Marker[spr931 A x4.760 d(0.180 -0.120 -0.067)m] RSQTR_Marker[spr931 A x2.720 d(0.000 0.000 0.000)m] RSQTR_Marker[spr931 A x3.740 d(-0.120 -0.020 0.133)m] RSQTR_Marker[spr931 A x3.740 d(0.120 -0.020 0.133)m] RSQTR_Marker[spr931 A x4.080 

@@ -151,6 +151,7 @@ default.
 | Rig Options: Ammo Count on Holsters | Option | Small digits above a full holster, in the ammo light's colour: its gun's rounds (the magazine for a gun that has one). |
 | Rig Options: New Guns Go to a Holster | Option | A gun you did not have goes into the first empty holster. |
 | Rig Options: Grenade Spot | On | The belt-buckle grenade spot: Brutal Doom's hand grenade, or RSQ Grenade's without Brutal Doom. Its light is your grenade count: green 2+, yellow 1, red none. |
+| Rig Options: Show Grenade in Holster | On | While you have a grenade and it is not in your hand, a grenade hangs at the grenade spot on the belt buckle, following the torso (11-03; rig only, not headset-confirmed; below). |
 | Rig Options: Throw Guns | On | A fast swing plus grip, outside a holster, throws the gun away. |
 | Rig Options: Main Hand Throws With Use | On | The main hand also throws on a Use press with that swing (its grip is the gun's own). |
 | Rig Options: Thrown Guns Hurt | On | A thrown gun that hits a monster hurts and staggers it, by the gun's weight and the throw speed. |
@@ -187,6 +188,21 @@ after; looking level the holsters are where they were to the hundredth of a unit
 10 cm), and the engine gives ZScript no headset roll, so a sideways head tilt is not taken out. Height is as before
 (the pawn's eye height, or the seated eyes), since neither follows a nod.
 
+**The grenade in its holster (owner 11-03 17:10: "When I have a grenade in my inventory I should see it in the
+designated grenade holster"; rig only, not headset-confirmed).** Why nothing showed: the spot drew no picture at all.
+A holster only ever shows the gun you put there (and only guns in the fit table; BD's grenade sprite was taken off the
+body on 10-27), the grenade spot never holds one, and what it did draw, its ring and count light, shows only with a
+hand within 2.5 ring radii (*Holster Rings: Hand Nearby*). The count was read from the right item all along (BD22's
+`GrenadeAmmo` on the Brutal Doom order, RSQ Grenade's `RSQGN_Ammo` without it; logged on both). Now, with one or more
+grenades and none in either hand (drawn, being drawn, or Brutal Doom's Purist grenade), a 13 cm grenade (x *Stored Gun
+Size*) hangs in the spot, ring and spoon toward you, its top leaning 35 degrees out so you see its side looking down.
+The mesh is found by name: BD22 VR Reloaded's (`models/bd/Grenade/nade.md3`; the BD voxel pack has no grenade voxel),
+else RSQ Grenade's (the same file), else the grenade ammo's pickup sprite (BD22 without BD22 VR: shown, but a sprite
+seen from straight above is thin). No count digits: tried, and from straight above they were edge-on, smeared or an
+unreadable blob on the rig, so the count stays the spot's light. Frames: `docs/grenade_holster_doom2_rig.png`,
+`docs/grenade_holster_fullorder_rig.png` (0, 1, 3 grenades, in hand, back, switch off, rings at 3 and 0); probe and logs
+`tools/rigtest/nadeprobe` (`evidence/trnD_before_1103.txt`: nothing at the spot with 1 and 3 grenades before).
+
 ## Test it
 
 Items marked **(not yet headset-confirmed)** were built on 2026-10-31 or later and only ran on the
@@ -203,6 +219,9 @@ simulated rig.
    Levels*). **(not yet headset-confirmed)**
 7. Grip at the belt buckle. The hand grenade comes to your main hand; the buckle light shows your count.
    Grip there again: your gun is back. **(not yet headset-confirmed)**
+   With a grenade in your inventory, look down at the buckle, hands away: a grenade hangs there. Take it out: the spot
+   is empty; put it back: it is there again. Throw your last one: nothing hangs there. **(11-03, rig only, not
+   headset-confirmed)**
 8. Walk and turn with a gun and the grip held normally. The gun must **not** be thrown.
    **(not yet headset-confirmed)**
 9. Swing hard and grip, away from any holster, at an imp. The gun flies, hits, the imp flinches, freezes

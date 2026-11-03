@@ -109,6 +109,7 @@ class RSQTR_Rig : EventHandler
 	transient Actor marker[RSQTR_Region.N];   // read by the mirror (mirror.zs)
 	transient Actor icon[RSQTR_Region.N];
 	transient Actor pip[RSQTR_Region.N];      // the ammo light in a full holster
+	transient Actor nadeShow;                 // the grenade at the grenade spot (DrawNade)
 	private transient int  buzzCool[2];
 	private transient bool offHeldSaid[MAXPLAYERS];   // said once per hold, why the off-hand raise is waiting (TickPairs)
 	private transient int  hoverT[2];          // tics the hand has been in its region
@@ -1713,7 +1714,47 @@ class RSQTR_Rig : EventHandler
 				}
 			}
 			else if (icon[r]) icon[r].bINVISIBLE = true;
+			if (IsGrenadeRegion(r)) DrawNade(pmo, p, at, live);
 		}
+	}
+
+	// ---- THE GRENADE IN ITS HOLSTER (owner 2026-11-03 17:10: "When I have a grenade in my inventory I should see it in
+	// the designated grenade holster") -------------------------------------------------------------------------------
+	// Before: the grenade spot drew no picture at all. Only Content() (a gun you put there) is ever shown at a holster,
+	// the grenade spot never has one, and the stored-gun picture shows only guns in the fit table (BD's grenade sprite
+	// was taken off the body on 10-27). What the spot did draw, its ring and its count light, shows only with a hand
+	// within 2.5 radii (Holster Rings: Hand Nearby). So with grenades in the inventory and the hands away: nothing.
+	// Now: while you have one or more grenades (Grenades(): BD22's GrenadeAmmo on the Brutal Doom order, RSQ Grenade's
+	// RSQGN_Ammo without it; the spot's own count, by name) and none is in either hand, a grenade hangs at the spot,
+	// following the torso (RegionAt, as the stored guns). Hidden at 0, in the hand (drawn or being drawn), with the spot
+	// off or claimed, or with rsqtr_nade_show off. The mesh is picked by name (RSQTR_NadeShow.Choose).
+	// NO COUNT DIGITS here (tried on the rig, 11-03, and taken out): the spot is almost straight under the eyes, so the
+	// holster digits' upright billboard is edge-on (2 pixels at 640), a forced-facing one came out a smeared wedge, and
+	// a flat one, even at twice the size, was an unreadable blob at 800. The count stays the spot's light (green 2+,
+	// yellow 1, red none) and the grenade itself (none shown at 0).
+	const NADE_M = 0.13;           // the grenade's height on the belt, metres (x Stored Gun Size), BD's chunky grenade
+	static bool NadeInHand(PlayerInfo p)
+	{
+		String wn = NadeWeapon();      // run-time, as NadeWeapon
+		class<Weapon> wc = wn;
+		if (!wc || !p) return false;
+		if (p.ReadyWeapon && p.ReadyWeapon is wc) return true;
+		if (p.OffhandWeapon && p.OffhandWeapon is wc) return true;
+		return p.PendingWeapon && p.PendingWeapon != WP_NOCHANGE && p.PendingWeapon is wc;
+	}
+	private void DrawNade(PlayerPawn pmo, PlayerInfo p, Vector3 at, bool live)
+	{
+		int cnt = live ? Grenades(pmo) : 0;
+		if (cnt <= 0 || NadeInHand(p) || !Flag("rsqtr_nade_show", p, true))
+		{
+			if (nadeShow) nadeShow.bINVISIBLE = true;
+			return;
+		}
+		if (!nadeShow) nadeShow = Actor.Spawn("RSQTR_NadeShow", at);
+		let g = RSQTR_NadeShow(nadeShow);
+		if (!g) return;
+		double by = (body && body.primed) ? body.yaw : pmo.angle;
+		g.Show(at, by, NADE_M * Num("rsqtr_icon_scale", p, 1.0), NadeAmmo());
 	}
 
 	// HOW A STORED GUN HANGS, the way it is worn (the owner's reference pictures, 10-27:
@@ -1764,6 +1805,7 @@ class RSQTR_Rig : EventHandler
 			if (icon[r]) icon[r].bINVISIBLE = true;
 			if (pip[r]) pip[r].bINVISIBLE = true;
 		}
+		if (nadeShow) nadeShow.bINVISIBLE = true;
 		for (int k = 0; k < 6; k++) HideAmmo(k);
 	}
 
@@ -1940,6 +1982,84 @@ class RSQTR_AmmoDigit : Actor
 		Radius 1; Height 1;
 	}
 	States { Spawn: RTNM A -1 Bright; Stop; }
+}
+
+// THE GRENADE IN ITS HOLSTER (rig.zs DrawNade). The mesh by name, first found: BD22 VR Reloaded's grenade
+// (models/bd/Grenade/nade.md3; the BD voxel pack has no grenade voxel), else RSQ Grenade's (models/rsqgn/nade.md3, the
+// same file, byte for byte), else the grenade ammo's own pickup sprite (BD22's GRND I without BD22 VR). MODELDEF
+// RSQTR_NadeShow centres frame 2 (ring and spoon on) on the actor: measured, Grenade/tools/md3info.py on both meshes:
+// frame 2's body centre (28.53, -0.02, -1.28), the body 17.01 units tall (-9.73 .. 7.28). Its own model (the wire
+// sphere, invisible skin) is only a carrier: A_ChangeModel swaps the mesh and skin in by path, so nothing is linked
+// and a missing pk3 only means the next choice.
+class RSQTR_NadeShow : Actor
+{
+	int how;                        // 0 not chosen yet, 1 BD22 VR's mesh, 2 RSQ Grenade's, 3 a sprite, 4 nothing
+	double sprH;                    // the sprite's height in pixels (3)
+	const BODY_H = 17.01;           // the mesh's body height in model units (frame 2)
+	const TILT = 35;                // degrees the top leans away from you (pitch, nose down = top out)
+	Default
+	{
+		+NOINTERACTION +NOBLOCKMAP +NOGRAVITY +NOTELEPORT +DONTSPLASH +NOTONAUTOMAP +BRIGHT
+		Radius 1; Height 1;
+	}
+	States { Spawn: RTGN A -1; Stop; }
+	private void Choose(String ammo)
+	{
+		if (Wads.CheckNumForFullName("models/bd/Grenade/nade.md3") >= 0 && Wads.CheckNumForFullName("models/bd/Grenade/nade.png") >= 0)
+		{
+			A_ChangeModel(GetClassName(), 0, "models/bd/Grenade", 'nade.md3', 0, "models/bd/Grenade", 'nade.png');
+			SetModelFlag(MDL_USEACTORPITCH);
+			how = 1;
+			return;
+		}
+		if (Wads.CheckNumForFullName("models/rsqgn/nade.md3") >= 0 && Wads.CheckNumForFullName("models/rsqgn/nade.png") >= 0)
+		{
+			A_ChangeModel(GetClassName(), 0, "models/rsqgn", 'nade.md3', 0, "models/rsqgn", 'nade.png');
+			SetModelFlag(MDL_USEACTORPITCH);
+			how = 2;
+			return;
+		}
+		// no mesh: the ammo's pickup sprite, the first visible frame of its Spawn state
+		class<Actor> c = ammo;
+		let d = c ? GetDefaultByType(c) : null;
+		State st = d ? d.SpawnState : null;
+		int tnt = GetSpriteIndex('TNT1');
+		for (int i = 0; i < 16 && st && st.sprite == tnt; i++) st = st.NextState;
+		if (st && st.sprite != tnt)
+		{
+			sprite = st.sprite; frame = st.Frame;
+			TextureID tx = st.GetSpriteTexture(0);
+			int w, h;
+			[w, h] = TexMan.GetSize(tx);
+			sprH = max(1, h);
+			how = 3;
+			return;
+		}
+		how = 4;
+	}
+	void Show(Vector3 at, double yaw, double metres, String ammo)
+	{
+		if (!how) Choose(ammo);
+		if (how == 4) { bINVISIBLE = true; return; }
+		double u = RSQTR_Body.Upm();
+		if (how == 3)
+		{
+			double s = metres * u / sprH;
+			Scale = (s, s);
+			SetOrigin(at - (0, 0, metres * u * 0.5), true);   // a sprite stands on its origin
+		}
+		else
+		{
+			double s = metres * u / BODY_H;
+			Scale = (s, s);
+			SetOrigin(at, true);                              // centred by MODELDEF
+			// ring and spoon toward you, its top leaning out from the belt (TILT): looking down at the buckle you see
+			// its side, not just its top
+			angle = yaw + 180;
+			pitch = TILT;
+		}
+		bINVISIBLE = false;
+	}
 }
 
 class RSQTR_AmmoPip : Actor

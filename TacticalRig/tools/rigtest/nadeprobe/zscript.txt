@@ -1,0 +1,48 @@
+version "4.14"
+// TEST ONLY (never ships). Tactical Rig grenade-holster probe (owner 2026-11-03: "When I have a grenade in my inventory
+// I should see it in the designated grenade holster").
+//   Every 35 tics and on any change: the grenade the spot hands out and its count (asked of the rig), the hands, and
+//   every VISIBLE rig actor within 0.3 m of the grenade spot (class, sprite, scale, where it sits from the spot), so a
+//   build without RSQTR_NadeShow (the one before the fix) logs what it draws there too. Class names are looked up at
+//   run time, so the probe loads with either build.
+class RSQTRNadeProbe : EventHandler
+{
+	String last;
+	override void WorldTick()
+	{
+		let p = players[0];
+		let mo = p.mo;
+		if (!mo) return;
+		let rg = RSQTR_Rig.Get();
+		if (!rg) return;
+		Vector3 at = rg.RegionAt(mo, RSQTR_Region.GRENADES);
+		double u = RSQTR_Body.Upm();
+		String seen = "";
+		static const String CLS[] = { "RSQTR_NadeShow", "RSQTR_Icon", "RSQTR_Marker", "RSQTR_AmmoPip", "RSQTR_AmmoDigit" };
+		for (int k = 0; k < CLS.Size(); k++)
+		{
+			String cn = CLS[k];
+			class<Actor> c = cn;
+			if (!c) continue;
+			let it = ThinkerIterator.Create(c);
+			Actor a;
+			while (a = Actor(it.Next()))
+			{
+				if (a.bINVISIBLE || a.GetClass() != c) continue;
+				Vector3 d = a.pos - at;
+				if (d.Length() / u > 0.3) continue;
+				seen = seen .. String.Format(" %s[spr%d %c x%.3f d(%.3f %.3f %.3f)m]", cn, a.sprite, 65 + a.frame, a.Scale.x, d.x / u, d.y / u, d.z / u);
+			}
+		}
+		if (seen == "") seen = " NOTHING";
+		String hands = String.Format("main %s off %s", p.ReadyWeapon ? p.ReadyWeapon.GetClassName() : 'none', p.OffhandWeapon ? p.OffhandWeapon.GetClassName() : 'none');
+		String now = String.Format("weapon '%s' ammo '%s' count %d live %d | %s | at the spot:%s", RSQTR_Rig.NadeWeapon(), RSQTR_Rig.NadeAmmo(), RSQTR_Rig.Grenades(mo), rg.RegionLive(mo, RSQTR_Region.GRENADES), hands, seen);
+		// the digits and pips blink / move: compare without the distances
+		if (now != last || level.maptime % 35 == 0)
+		{
+			Vector3 e = (mo.pos.xy, mo.player.viewz);
+			Console.Printf("trn: t%d %s | spot from the eyes (%.3f %.3f %.3f) m, pitch %.0f", level.maptime, now, (at.x - e.x) / u, (at.y - e.y) / u, (at.z - e.z) / u, mo.pitch);
+			last = now;
+		}
+	}
+}

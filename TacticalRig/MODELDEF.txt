@@ -264,3 +264,18 @@ Model RSQTR_RingShow
 	Scale 1.0 1.0 1.0
 	FrameIndex RTKR A 0 0
 }
+
+// THE GRENADE IN ITS HOLSTER (rig.zs DrawNade, RSQTR_NadeShow; owner 2026-11-03). A carrier only: the wire sphere with
+// the invisible skin; RSQTR_NadeShow swaps in the grenade mesh and skin by path (BD22 VR Reloaded's
+// models/bd/Grenade/nade.md3, else RSQ Grenade's models/rsqgn/nade.md3, the same file) with A_ChangeModel. Frame 2 (ring
+// and spoon on), its body centred on the actor: Offset = -(28.53, -0.02, -1.28), measured with Grenade/tools/md3info.py.
+Model RSQTR_NadeShow
+{
+	Path "models/rsqtr"
+	Model 0 "rtwire.obj"
+	Skin 0 "rtinvis.png"
+	Scale 1.0 1.0 1.0
+	Offset -28.53 0.02 1.28
+	NoInterpolation
+	FrameIndex RTGN A 0 2
+}
