@@ -39,7 +39,7 @@ class RS_ComboTable play
 		reg.OwnCombo("Slow Trap Shooter",  "glove.upper@slow > gun.shotgun",            0.55);
 		// the gun-butt shove (Melee's, BD22 VR's butt strike, the pistol whip: one tool)
 		reg.OwnCombo("Pistol Whip",        "shove > gun.pistol",                        0.5);
-		reg.OwnCombo("Breach",             "shove > gun.shotgun",                       0.5);
+		// no "shove > gun.shotgun" row without the slow motion: that is F.E.A.R. Effect's move (the owner, 11-03), and a twin name confuses it
 		reg.OwnCombo("Executioner",        "shove > gun+head",                          0.6);
 		reg.OwnCombo("Riot Shield",        "shove > shield.bash",                       0.5);
 		reg.OwnCombo("Make Room",          "shove > saber.cut",                         0.4);
