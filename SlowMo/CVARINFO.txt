@@ -42,7 +42,7 @@ server int   rsqsm_smooth_max   = 12;    // the nearest this many walkers
 user bool    rsqsm_drain        = false; // 28: colours drain while time is slowed (a post-process pass)
 user bool    rsqsm_gauge        = true;  // the SlowMo gauge on the HUD: the adrenaline meter, or how slow while it runs
 user int     rsqsm_gauge_side   = 0;     // 0 left, 1 right
-user float   rsqsm_gauge_size   = 1.0;   // x a third of the screen's height
+user float   rsqsm_gauge_size   = 1.5;   // x a third of the screen's height (1.5 from 11-03: 1.0 read too small in the headset)
 user bool    rsqsm_gauge_anim   = true;  // the gauge's light: a band rising through the fill, a breathing edge, a glint when full
 user float   rsqsm_drain_amt    = 0.35;  // how much colour goes at full depth, 0..1
 
