@@ -568,8 +568,9 @@ class wr_BB : EventHandler
 	// them; anything with a letter in it in DoomFont.
 	static bool AllNumeral(string t)
 	{
-		if (t.Length() == 0) return false;
-		for (int i = 0; i < t.Length(); i++)
+		int n = t.Length();   // (int: Length() is unsigned, and the compare below warned on every compile)
+		if (n == 0) return false;
+		for (int i = 0; i < n; i++)
 		{
 			int c = t.ByteAt(i);
 			if (!((c >= 48 && c <= 57) || c == 37 || c == 45)) return false;
