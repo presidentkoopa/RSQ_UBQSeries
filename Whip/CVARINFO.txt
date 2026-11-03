@@ -11,6 +11,7 @@ server bool   rsqwp_whip_snag     = true;   // a lash that catches an edge (beam
 server float  rsqwp_whip_above    = 16;     // how far above the hand an edge must be to snag
 server bool   rsqwp_swing         = true;   // Aimed Swing: the other hand's alt-fire aims a ray; a crack with it on a wall or ceiling swings from there (swing.zs)
 server float  rsqwp_swing_reach   = 9;      // Whip Swing Reach, metres (3..20): how far the aimed swing can anchor
+server bool   rsqwp_swing_ohfire  = true;   // Aim With Off-Hand Fire: whip in the main hand, off hand empty or a fist -- holding off-hand fire aims the ray (swing.zs)
 server bool   rsqwp_whip_lines    = true;   // the crack throws a switch (any use line) it lands on
 server bool   rsqwp_whip_fetch    = true;   // the crack flicks a loose pickup near it to you
 server bool   rsqwp_whip_leash    = true;   // Lock: a locked crack on a monster with the bind still held catches it and pulls it in
@@ -65,4 +66,4 @@ server float  rsqwp_slide_speed   = 10;     // a leashed monster slides to you t
 server float  rsqwp_slide_gap     = 16;     // and stops this far from you
 server float  rsqwp_retract_speed = 64;     // a let-go line coming back to the hand
 
-server int    rsqwp_debug         = 0;      // 1: log events (T_WP lines), 2: every tic, 3: cost (T_WPWMS)
+server int    rsqwp_debug         = 0;      // 1: log events (T_WP lines), 2: every tic, 3: cost (T_WPWMS), 5: the aimed swing's ray every tic (T_WPW RAY)

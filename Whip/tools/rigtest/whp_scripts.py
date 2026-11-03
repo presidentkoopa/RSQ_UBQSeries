@@ -171,7 +171,12 @@ def run(scen, hand='r'):
 
 
 # ---- THE AIMED SWING (swing.zs) on SWINGTST ------------------------------------------------------------------------
-SWINGS = ('aim', 'ceil', 'wallanchor', 'chain', 'refuse', 'snag')
+SWINGS = ('aim', 'ceil', 'wallanchor', 'chain', 'refuse', 'snag', 'ohold', 'ohceil', 'ohgun')
+# AIM WITH OFF-HAND FIRE (11-03): the off trigger pressed as the real controller presses it -- qz_ltrigger, which
+# QuestZDoom's input posts as KEY_LSHIFT (bound +oh_attack), so the key road the whip eats is the one tested (the
+# console's +oh_attack would set the button and skip it). qz_rgrip held + qz_ltrigger = KEY_LALT (+oh_altatk).
+# OFFW=fist|gun|none: what goes in the off hand first (Doom's Fist / the pistol, by the engine's switchhand); on the
+# BD order the off hand is Brutal Doom VR's own RSQ_Hands (its fist) without it.
 LREST = (-0.20, 1.30, -0.30, 20, 0)
 PITCH_FIX = 30.0   # the rig's controller pitch reads ~this much lower than the pose's (measured: 35 -> ~3, 45 -> ~13)
 RELEASE_CEIL = 92
@@ -190,8 +195,12 @@ def hmd(pitch, yaw):
 
 
 def pre_swing(extra=''):
-    return ('vid_maxfps 35; wait 5; map SWINGTST; wait 40; god; notarget; %s; %s; wait 70; use RSQWP_WhipWeapon; wait 60; '
-            'rsqwp_debug 1; whp_scen 11; whp_log 3; %s netevent whp_go; ' % (pose(R), pose(LREST, False).replace('qz_rhand', 'qz_lhand'), extra))
+    off = os.environ.get('OFFW', 'none')
+    first = {'fist': 'use Fist; wait 40; switchhand 1; wait 50; ', 'gun': 'give Pistol; use Pistol; wait 40; switchhand 1; wait 50; '}.get(off, '')
+    dbg = os.environ.get('WDBG', '1')
+    if os.environ.get('OHF'): extra = 'rsqwp_swing_ohfire %s; rsq_punch 1; ' % os.environ['OHF'] + extra   # OHF=0/1: the switch (and BD VR's off punch on)
+    return ('vid_maxfps 35; wait 5; map SWINGTST; wait 40; god; notarget; %s; %s; wait 70; %suse RSQWP_WhipWeapon; wait 60; '
+            'rsqwp_debug %s; whp_scen 11; whp_log 3; %s netevent whp_go; ' % (pose(R), pose(LREST, False).replace('qz_rhand', 'qz_lhand'), first, dbg, extra))
 
 
 def swing_scen(scen):
@@ -258,6 +267,34 @@ def swing_scen(scen):
                 cracks.append(rt - 14)    # the wind-up starts on the rope (14 tics up, held), the swing after the let-go
         at(CHAIN_REL[-1] + 40, '-oh_altatk')
         T = CHAIN_REL[-1] + 140
+    elif scen == 'ohold':
+        # the ray HELD on the off trigger: at A's middle facing east, the off hand up at A's ceiling (gold), the trigger
+        # held t5-t75 (2 s), let go (gone t75-t110); then in the sky yard, pointed up into the sky, held t120-t160 (red)
+        at(0, 'netevent whp_tp 200 512 0'); at(0, hmd(35, 0))
+        at(5, lpose(60)); at(5, 'qz_ltrigger 1')
+        at(75, 'qz_ltrigger 0')
+        at(112, 'netevent whp_tp 192 900 90'); at(113, lpose(45, 90)); at(113, hmd(30, 90))
+        at(120, 'qz_ltrigger 1'); at(160, 'qz_ltrigger 0')
+        T = 190
+    elif scen == 'ohceil':
+        # the crack latching from the off trigger's ray: 'ceil' with the off trigger held (t5-t60) instead of +oh_altatk
+        at(0, 'netevent whp_tp 378 512 0')
+        at(5, 'qz_ltrigger 1'); at(5, lpose(13))
+        cracks.append(20)
+        at(60, 'qz_ltrigger 0')
+        at(52, 'qz_lstick "0 1"'); at(55, 'qz_lstick "0 0"')
+        at(RELEASE_CEIL, '+altattack'); at(RELEASE_CEIL + 2, '-altattack')
+        T = 160
+    elif scen == 'ohgun':
+        # a gun in the off hand (OFFW=gun): the off trigger held t5-t75 fires it (no ray); then the other hand's alt-fire
+        # by its key (main grip + off trigger = KEY_LALT, +oh_altatk) held t100-t150 still aims the ray
+        at(0, 'netevent whp_tp 200 512 0'); at(0, hmd(20, 0))
+        at(5, lpose(40)); at(5, 'qz_ltrigger 1')
+        at(75, 'qz_ltrigger 0')
+        at(0, 'vr_secondary_button_mappings 1')    # the main grip as the shift (the rig's ini may have it off)
+        at(98, 'qz_rgrip 1'); at(100, 'qz_ltrigger 1')
+        at(150, 'qz_ltrigger 0'); at(152, 'qz_rgrip 0')
+        T = 180
     out = []
     for t in range(T):
         for c in ev.get(t, []): out.append(c + ';')

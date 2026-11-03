@@ -85,6 +85,10 @@ Pk3: `pk3/RSQ_Whip.pk3`.
   gold, crack as usual: the whip stretches out to the spot, latches, and gives you a small hop if you are
   standing. A ceiling gives the overhead swing; a wall a sideways or diagonal swing round a point beside you.
   While the ray is held that button is the whip's, so the gun in that hand does not alt-fire.
+- Aim With Off-Hand Fire: with the whip in the main hand and the off hand empty or a fist (no weapon, Brutal
+  Doom's fists, RSQ Saber's Force hand, RSQ Melee's gloves, Doom's Fist), holding the off hand's fire casts the
+  same ray, and it stays drawn until you let go. That press is the whip's, so the off fist does not punch (and
+  the Force hand does not reach). With a gun in the off hand, its fire shoots the gun and the alt-fire aims.
 - On a rope: trigger held reels in, alt-fire lets go. Push the stick to lean the swing; haul down on the whip
   in the air to pump it. Your speed carries on when you land (Keep Momentum on Landing).
 - The let-go is forgiven: you fly off at the fastest speed of your last 3 tics on the rope.
@@ -121,7 +125,7 @@ hand with the thong coiled at it. Whip In (Main Hand by default) says which hand
    you.
 7. **Rope.** Crack upward at a beam or a doorway top: it wraps and you hang. Trigger held reels you up. Push
    the stick to lean the swing. Alt-fire lets go: you fly, and keep your speed when you land.
-8. **Aimed swing.** With the whip out, hold the other hand's alt-fire and point at a ceiling or a wall: gold ray
+8. **Aimed swing.** With the whip out, hold the off hand's fire (off hand empty) or its alt-fire and point at a ceiling or a wall: gold ray
    and diamond. Wind up and crack: the whip stretches to the spot and you get a small hop. Step off a ledge and
    swing; let go on the upswing. Point at the next spot and crack again for a chain.
 9. **Climb and mantle.** On a rope, put a free hand on it with Grab Whip (Customize Controls, section RSQ Whip)
@@ -148,6 +152,7 @@ Options -> Radiant Silvergun Options -> **RSQ Whip**:
 | Catch Edges (snag) | On | A lash that catches an edge wraps round it and becomes a rope. |
 | Aimed Swing (other hand's alt-fire aims) | On | The other hand's alt-fire aims a ray; a crack with the ray gold swings you from that wall or ceiling. |
 | Whip Swing Reach (m) | 9 | How far the aimed swing can anchor, 3 to 20 m. |
+| Aim With Off-Hand Fire | On | Whip in the main hand, off hand empty or a fist: holding off-hand fire aims the ray (the fist does not punch). |
 | Throws Switches | On | A crack on a switch line uses it. |
 | Fetches Pickups | On | A crack flicks a loose pickup near it to you. |
 | Leash (Lock) | On | Lock aim: keep the bind held on a locked monster and it is pulled to you. |

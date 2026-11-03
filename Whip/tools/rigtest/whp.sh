@@ -13,7 +13,7 @@ B=${OUT:-/tmp/claude-0/-home-claude/01ebc270-3953-5301-831b-c73a8b1320ca/scratch
 NAME=$1; SECS=$2; SCRIPT=$3
 LO=${LO:-/home/claude/scratch/lo2}
 ( cd "$WSRC" && rm -f "$B/RSQ_Whip_test.pk3" && zip -q -r -X "$B/RSQ_Whip_test.pk3" zscript.txt MAPINFO.txt CVARINFO.txt KEYCONF.txt MENUDEF.txt SNDINFO.txt MODELDEF.txt zscript sprites sounds models )
-( cd "$HERE/whp" && rm -f "$B/whp.pk3" && zip -q -r -X "$B/whp.pk3" . )
+( cd "${PROBE:-$HERE/whp}" && rm -f "$B/whp.pk3" && zip -q -r -X "$B/whp.pk3" . )
 D="$B/shots/$NAME"; rm -rf "$D"; mkdir -p "$D"
 files=()
 [ -n "${BD:-}" ] && for f in "$LO"/0*.pk3; do files+=("$f"); done
@@ -21,10 +21,13 @@ for f in ${PRE:-}; do files+=("$f"); done
 ALLDIR=${ALLDIR:-$HUB/pk3}
 if [ -n "${ALL:-}" ]; then for f in "$ALLDIR"/RSQ_*.pk3; do case "$(basename "$f")" in RSQ_Whip.pk3) ;; RSQ_GunBonsaiVR.pk3) [ -n "${GB:-}" ] && files+=("$f");; *) files+=("$f");; esac; done; fi
 files+=("$B/RSQ_Whip_test.pk3" "$B/whp.pk3")
-sed -i -E '/^(rsqwp_|whp_)/d' /home/claude/g9/rig/config/qzdoom.ini 2>/dev/null
+# a private copy of the rig's ini (its controller binds: Shift=+oh_attack, Alt=+oh_altatk), so other lanes' runs on the
+# same rig never share this one's config
+CFG="$B/whp_qzdoom.ini"; [ -f "$CFG" ] || cp /home/claude/g9/rig/config/qzdoom.ini "$CFG"
+sed -i -E '/^(rsqwp_|whp_)/d' "$CFG" 2>/dev/null
 rm -f "$B/logs/$NAME.log"
 cd /home/claude/g9/rig && QZ_DUMP_DIR="$D" QZ_RES=${QZ_RES:-200} EGL_PLATFORM=surfaceless LIBGL_ALWAYS_SOFTWARE=1 LD_LIBRARY_PATH=/home/claude/g9/rig \
-  timeout "$SECS" ./qz -iwad ${IWAD:-/home/claude/iwad/doom2/doom2.wad} -file "${files[@]}" \
+  timeout "$SECS" ./qz -config "$CFG" -iwad ${IWAD:-/home/claude/iwad/doom2/doom2.wad} -file "${files[@]}" \
   -nosound -warp ${MAP:-1} -skill 3 +logfile "$B/logs/$NAME.log" "+$SCRIPT" > "$B/logs/$NAME.out" 2>&1
 rc=$?
 echo "load order: ${files[*]##*/}"

@@ -226,6 +226,13 @@ class WHP_Probe : EventHandler
 				t, level.maptime, pmo.pos.x, pmo.pos.y, pmo.pos.z, pmo.vel.x, pmo.vel.y, pmo.vel.z, pmo.vel.xy.Length(), pmo.vel.Length(), gr,
 				hk ? hk.phase : -1, hk ? hk.ropeLen : 0., hk ? (hk.anchor - RSQWP_Core.AttachPoint(pmo)).Length() : 0., hk ? hk.anchor.x : 0., hk ? hk.anchor.y : 0., hk ? hk.anchor.z : 0.,
 				w.aimHeld[wi], w.aimOk[wi], w.aimWhy[wi], ae.x, ae.y, ae.z, w.wstate[wi], w.cp[wi], pmo.player.cmd.buttons);
+			// AIM WITH OFF-HAND FIRE (11-03): which button holds the ray, the eaten keys, what the off hand holds, its
+			// ammo and whether its psprite is in its Fire states (a gun firing, a fist punching)
+			let ow = pmo.player.OffhandWeapon;
+			let osp = pmo.player.FindPSprite(PSP_OFFHANDWEAPON);
+			bool ofire = ow && osp && osp.CurState && ((ow.FindState("Fire") && osp.CurState.InStateSequence(ow.FindState("Fire"))) || (ow.FindState("Hold") && osp.CurState.InStateSequence(ow.FindState("Hold"))));
+			Console.Printf("whp_O %d by %d fire %d alt %d off %s ammo %d offfire %d free %d", t, w.aimBy[wi], w.aimFire[pn], w.aimBtn[pn], ow ? ow.GetClassName() : 'none',
+				ow && ow.Ammo1 ? ow.Ammo1.Amount : -1, ofire, RSQWP_Whip.OffFree(pmo.player));
 		}
 		if (sc == 5 && t % 10 == 0)
 			Console.Printf("whp_HANDS t%d whips out %d: main %d (byWeapon %d) off %d (byWeapon %d); main weapon %s, off weapon %s", t, nOut, w.wstate[pn * 2], w.byWeapon[pn * 2], w.wstate[pn * 2 + 1], w.byWeapon[pn * 2 + 1], mn, on);

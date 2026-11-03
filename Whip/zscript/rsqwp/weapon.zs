@@ -50,15 +50,22 @@ class RSQWP_WhipWeapon : Weapon
 		if (!owner || !owner.player) return false;
 		return (owner.player.cmd.buttons & (Hand() ? BT_OFFHANDATTACK : BT_ATTACK)) != 0;
 	}
-	// the OTHER hand's alt-fire: the aimed swing's ray (swing.zs). The button, or its key eaten by the whip (whip.zs AimKey).
-	bool AimHeld()
+	// What holds the aimed swing's ray (swing.zs): 1 the OTHER hand's alt-fire (the button, or its key eaten by the
+	// whip, whip.zs AimKey), 2 the off hand's FIRE with the whip in the main hand and the off hand empty or a fist
+	// (Aim With Off-Hand Fire: its key eaten the same way, or the button), 0 nothing.
+	int AimBy()
 	{
-		if (!owner || !owner.player) return false;
+		if (!owner || !owner.player) return 0;
 		let w = RSQWP_Whip.Get();
 		int pn = owner.PlayerNumber();
-		if (w && pn >= 0 && pn < MAXPLAYERS && w.aimBtn[pn]) return true;
-		return (owner.player.cmd.buttons & (Hand() ? BT_ALTATTACK : BT_OFFHANDALTATTACK)) != 0;
+		let p = owner.player;
+		if (Hand() == 0 && RSQWP_Whip.OffFireAims(p)
+			&& ((w && pn >= 0 && pn < MAXPLAYERS && w.aimFire[pn]) || (p.cmd.buttons & BT_OFFHANDATTACK)))
+			return 2;
+		if (w && pn >= 0 && pn < MAXPLAYERS && w.aimBtn[pn]) return 1;
+		return (p.cmd.buttons & (Hand() ? BT_ALTATTACK : BT_OFFHANDALTATTACK)) ? 1 : 0;
 	}
+	bool AimHeld() { return AimBy() != 0; }
 	bool AltHeld()
 	{
 		if (!owner || !owner.player) return false;
@@ -78,7 +85,8 @@ class RSQWP_WhipWeapon : Weapon
 		bool alt = AltHeld();
 		bool altPress = alt && !altWas;
 		altWas = alt;
-		w.aimHeld[i] = AimHeld();
+		w.aimBy[i] = AimBy();
+		w.aimHeld[i] = w.aimBy[i] != 0;
 		w.aimTic[i] = level.maptime;
 		let h = core.hooks[i];
 		// A CHAIN (swing.zs): let go of an aimed swing's rope (or any rope with the ray held) and the whip is back in the

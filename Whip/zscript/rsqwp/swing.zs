@@ -17,6 +17,24 @@
 // ceilings), any portal on the way (FLineTraceData.NumPortals, a line portal hit), floors, 3D middle textures and
 // polyobjects (their line's normal may not be the drawn face).
 //
+// AIM WITH OFF-HAND FIRE (owner 2026-11-03: "when offhand is empty / fist, holding offhand fire casts out a beam"):
+// with the whip in the MAIN hand and the off hand empty or a fist (OffFree: no weapon, Doom's Fist, Brutal Doom VR's
+// off hand RSQ_Hands, RSQ Saber's bare Force hand UBQS_ForceHand (what fills an empty off hand on the full set, rig
+// 11-03), Brutal Doom's fists Melee_Attacks, RSQ Melee's gloves, anything named a fist -- the series' own tests:
+// Saber's FistOff and IsBareHand, GunCards' EmptyHand, TacticalRig's OffEmptyName), HOLDING the off hand's FIRE casts the
+// same ray. Its key (+oh_attack: QuestZDoom posts the off trigger as KEY_LSHIFT, Quest and SteamVR alike) is eaten
+// with its release (whip.zs AimKey), so the off fist does not punch as well. A gun in the off hand fires as normal;
+// the other hand's alt-fire aims in every case, as before. Switch: rsqwp_swing_ohfire ("Aim With Off-Hand Fire").
+// With RSQ Saber's Force hand there, that press no longer holds the Force while the whip is out (its other button, the
+// off alt-fire, was already the whip's); Aim With Off-Hand Fire off gives it back.
+//
+// THE RAY THAT VANISHED (owner 11-03: "it disappears instantly instead of staying drawn"): the eaten key's state,
+// aimBtn, is one per PLAYER, but AimTick runs per HAND and cleared it whenever "this hand's weapon is gone" -- and the
+// hand that is not the whip's never has a weapon tending it, so every tic the off hand's slot cleared the whip hand's
+// key: the ray lived for the one tic of the press (the rig's console +oh_altatk sets the button, never the key, so
+// the old proof never took the key's road; its one key run logged the ray held 1 tic of 165). Now cleared only when
+// neither hand has the whip weapon.
+//
 // Netplay: like the mark (Mark), the aim reads the local hand pose in play; single player is exact.
 extend class RSQWP_Whip
 {
@@ -30,6 +48,8 @@ extend class RSQWP_Whip
 	bool    aimHeld[NW];         // the other hand's alt-fire is held (weapon.zs Tend: the button, or the eaten key)
 	int     aimTic[NW];          // the tic Tend last said so
 	bool    aimBtn[MAXPLAYERS];  // that key, eaten in InputProcess so the gun in that hand does not alt-fire too
+	bool    aimFire[MAXPLAYERS]; // the off hand's FIRE key, eaten while the off hand is empty or a fist (Aim With Off-Hand Fire)
+	int     aimBy[NW];           // which button holds the ray: 1 the other hand's alt-fire, 2 the off hand's fire
 	bool    aimShown[NW];
 	bool    aimOk[NW];           // this tic's ray ends on an anchor
 	Name    aimWhy[NW];          // what it hit: 'ceiling', 'wall', or why not
@@ -52,6 +72,25 @@ extend class RSQWP_Whip
 	// Whip Swing Reach, as map units of straight-line distance (34 room units a metre; RSQWP_Util.Metres)
 	static double SwingReachM() { return clamp(RSQWP_Util.Num("rsqwp_swing_reach", 9), 3.0, 20.0); }
 
+	// An EMPTY OFF HAND, as the series tests it (see the top): nothing in it, or a fist of any of the parents'.
+	static clearscope bool OffFree(PlayerInfo p)
+	{
+		if (!p) return false;
+		let off = p.OffhandWeapon;
+		if (!off) return true;
+		if (off is "Fist") return true;
+		String n = off.GetClassName();
+		n = n.MakeLower();
+		return n == "rsq_hands" || n == "ubqs_forcehand" || n == "melee_attacks" || n == "rsq_glove" || n == "rsq_gloveoff" || n.IndexOf("fist") >= 0;
+	}
+
+	// The off hand's FIRE aims the ray: the whip weapon in the main hand, the off hand free, the switches on.
+	static clearscope bool OffFireAims(PlayerInfo p)
+	{
+		return p && p.ReadyWeapon is "RSQWP_WhipWeapon" && OffFree(p) && RSQWP_Util.Flag("rsqwp_swing_ohfire", true)
+			&& RSQWP_Util.Flag("rsqwp_swing", true) && RSQWP_Util.Flag("rsqwp_on", true);
+	}
+
 	// ---- the aim, every tic -----------------------------------------------------------------------------------
 
 	void AimTick(int i)
@@ -65,7 +104,9 @@ extend class RSQWP_Whip
 		{
 			if (aimShown[i]) ClearAim(i);
 			aimOk[i] = false;
-			if (pmo && level.maptime - aimTic[i] > 1) aimBtn[pn] = false;   // the weapon is gone: no key stays held
+			// the whip weapon is gone from BOTH hands: no key stays held. (Not this hand's own tic: the hand without
+			// the whip is never tended, and clearing on it took the key away the tic after the press.)
+			if (pmo && level.maptime - aimTic[pn * 2] > 1 && level.maptime - aimTic[pn * 2 + 1] > 1) { aimBtn[pn] = false; aimFire[pn] = false; }
 			return;
 		}
 		int ah = 1 - hand;
@@ -144,14 +185,19 @@ extend class RSQWP_Whip
 			else Console.Printf("T_WPW %d AIM t%d INVALID: %s (%.1f m, portals %d)", i, level.maptime, why, aimM[i], d.NumPortals);
 		}
 		DrawAim(i, org, ok, ok ? at : hit, dir);
+		if (RSQWP_Util.Opt("rsqwp_debug", 0) == 5)
+			Console.Printf("T_WPW %d RAY t%d drawn by %s: %s %s, %.1f m, %d dots, diamond %s", i, level.maptime, aimBy[i] == 2 ? "off-hand fire" : "alt-fire",
+				ok ? "GOLD" : "RED", why, aimM[i], aimDots, aimRing[i] ? "on" : "none");
 	}
 
 	// The ray: a thin dotted line of full-bright particles from the hand to where it ends (gold: the whip would
 	// anchor there; red: it would not), and the series' diamond on the spot (gold ring and white centre) or a red
 	// ring where a refused ray ends. Colour-blind palette: COULD / IDLE.
+	int aimDots;
 	void DrawAim(int i, Vector3 org, bool ok, Vector3 end, Vector3 dir)
 	{
 		aimShown[i] = true;
+		aimDots = 0;
 		int col = ok ? RSQWP_CB.Pick(RSQWP_CB.CB_COULD, RSQWP_LockRing.GOLD) : RSQWP_CB.Pick(RSQWP_CB.CB_IDLE, AIM_RED);
 		Vector3 span = end - org;
 		double len = span.Length();
@@ -171,6 +217,7 @@ extend class RSQWP_Whip
 			{
 				p.pos = org + u * t;
 				level.SpawnParticle(p);
+				aimDots++;
 			}
 		}
 		double sc = 0.35 * RSQWP_A11y.Cue() * clamp(RSQWP_Util.Metres(span) / 5.0, 1.0, 3.0) * (ok ? 1.0 : 0.6);

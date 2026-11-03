@@ -1,5 +1,58 @@
 # HANDOFF -- RSQ_Whip (PROJECT WHIP), 2026-10-30
 
+## 2026-11-03: Aim With Off-Hand Fire, and the ray that vanished (owner 10:26) -- rig only, not headset-confirmed
+Owner: "when offhand is empty / fist, holding offhand fire casts out a beam marking where we will snag ... also the beam
+is bugged, it disappears instantly instead of staying drawn on offhand fire."
+
+### The bug (measured)
+`aimBtn` (the eaten alt-fire key) is one per player; `AimTick` runs per hand and cleared it when "this hand's weapon is
+gone". The hand without the whip is never tended, so every tic its slot cleared the whip hand's key: the ray lived 1
+tic after the press. The 0332cad6f proof drove the ray with the console's `+oh_altatk` (a button, not the key), so it
+never took the key's road; its one key run (`aimkey`) shows the ray held 1 tic of 165 in its own log. BEFORE (git
+archive HEAD, key route qz_rgrip + qz_ltrigger -> KEY_LALT): key held t269-t319, ray drawn 1 tic. AFTER: 51 tics.
+Fix: cleared only when neither hand has the whip weapon (swing.zs AimTick).
+
+### Done
+- swing.zs `OffFree` (empty off hand: none, Fist, RSQ_Hands, UBQS_ForceHand, Melee_Attacks, RSQ_Glove/RSQ_GloveOff,
+  any name with "fist": Saber FistOff/IsBareHand, GunCards EmptyHand, TacticalRig OffEmptyName) and `OffFireAims`
+  (whip in the main hand, off free, `rsqwp_swing_ohfire` and `rsqwp_swing` on). whip.zs AimKey eats `+oh_attack`
+  (QZD posts the off trigger as KEY_LSHIFT, Quest and SteamVR) press + release when OffFireAims, sends
+  `rsqwp_aimkey 1 1`; `aimFire[pn]`. weapon.zs `AimBy`: 2 off fire (key or BT_OFFHANDATTACK), 1 alt (as before).
+  A gun in the off hand: its fire is never eaten; the alt-fire route aims as before.
+- Menu "Aim With Off-Hand Fire" (`rsqwp_swing_ohfire`, server, on) after Whip Swing Reach; Reset All (58 cvars).
+- `rsqwp_debug 5`: a `T_WPW <i> RAY t<n> drawn by ...: GOLD/RED <why>, m, dots, diamond` line every tic drawn.
+- Rig kit: whp_scripts.py `ohold` / `ohceil` / `ohgun` (the off trigger by `qz_ltrigger`, the real key road; OFFW=
+  fist|gun, OHF=0/1, WDBG); probe `whp_O` line a tic; whp.sh uses a private ini copy (other lanes share the rig) and
+  PROBE= for a baseline probe.
+
+| run (SWINGTST, rsqwp_debug 5) | result |
+|---|---|
+| doom2, off hand empty, off trigger held t5-t75 then sky t120-t160 | RAY 70 tics GOLD Ceiling 6.2 m (18 dots, diamond), gone on release, 40 tics RED Sky |
+| doom2, Doom's Fist in the off hand, switch on / off | ray 70 + 40, Fist never in Fire / switch off: no ray, Fist punches (Fire 90 + 56 tics) |
+| BD order (2.0.3p), RSQ_Hands off, rsq_punch 1, switch on / off | ray 70 + 40, no MeleeStrike / off: MeleeStrikeNormal at t7 and t122 (it punched) |
+| full order + GunBonsai + all RSQ (off hand = UBQS_ForceHand) | ray 70 + 40, ForceHand never in Fire |
+| ohceil (crack while gold) | CAST t216 ceiling 8.7 m, flies 5; SWING LATCH rope 312, hop 6 (same as the alt-fire `ceil`) |
+| ohgun (OFFW=gun: Pistol in the off hand) | off trigger: pistol fired 5 rounds (70 -> 65), by 0, no ray; alt key (main grip + off trigger) t100-t150: ray 51 tics |
+
+Frames (rig, first person; m = maptime), scratchpad `/tmp/claude-0/-home-claude/01ebc270-3953-5301-831b-c73a8b1320ca/scratchpad/`:
+`strip_oh_empty_hold.png`, `strip_oh_fist_hold.png` (Doom Fist), `strip_oh_bdfists_hold.png` (BD order, RSQ_Hands),
+`strip_oh_fullset_forcehand_hold.png`: before the press none, ray in every frame across the 2 s hold, gone after the
+release, red into the sky. `strip_oh_ceil_cast.png`: ray, crack, thong to the ceiling, swing. `strip_oh_gun.png`: no
+ray while the off pistol fires (the pistol is out of the pitched-up view; the ammo count is the proof), ray on alt.
+Logs `whp/logs/` (ohold, ohold_fist, ohceil, ohgun, bd_ohold, full_ohold), `whpF0`, `whpBD0`, `whpB` (BEFORE).
+
+Script errors: doom2 + Whip 0 (MAP01 and SWINGTST). doom2 + GunBonsai 0.10.6 + all RSQ pk3s: 0. Full order (01,
+02, 03 2.0.3p, 04-07, GunBonsai, all RSQ): 4, all 02_BD22_VoxelPack's voxeldef.
+
+### Not done / open
+- Not headset-tested. On SteamVR the off trigger is KEY_LSHIFT as on Quest (gl_openvr.cpp 2021), not run there.
+- On the full set the empty off hand is RSQ Saber's UBQS_ForceHand; with the whip in the main hand its fire now aims
+  the ray, so the off trigger no longer holds the Force (the whip already took its alt-fire in 0332cad6f). Owner's
+  call; the switch off gives it back.
+- A rig ini with `vr_secondary_button_mappings=false` posts no KEY_LALT for main grip + off trigger; `ohgun` sets it.
+- Off fire by the console's `+oh_attack` (a button, not the key) also aims but is not eaten: the fist would punch too.
+
+
 ## 2026-11-03: Crack Knocks Enemies Back (owner's headset report 07:05) -- rig only, not headset-confirmed
 Owner: "Cracking an enemy and their not dying seems to cause them to be flung about the room, I'd like this disabled or
 put into an on/off switch."

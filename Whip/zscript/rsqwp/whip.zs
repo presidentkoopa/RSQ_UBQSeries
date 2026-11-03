@@ -345,8 +345,10 @@ class RSQWP_Whip : EventHandler
 		}
 		else if (e.Name ~== "rsqwp_aimkey")
 		{
-			aimBtn[e.Player] = e.Args[0] != 0;
-			if (RSQWP_Util.Flag("rsqwp_debug", false)) Console.Printf("T_WPW aim key %s t%d", aimBtn[e.Player] ? "down" : "up", level.maptime);
+			// a1: 0 the other hand's alt-fire, 1 the off hand's fire (Aim With Off-Hand Fire)
+			bool dn = e.Args[0] != 0;
+			if (e.Args[1] == 1) aimFire[e.Player] = dn; else aimBtn[e.Player] = dn;
+			if (RSQWP_Util.Flag("rsqwp_debug", false)) Console.Printf("T_WPW aim key (%s) %s t%d", e.Args[1] == 1 ? "off-hand fire" : "alt-fire", dn ? "down" : "up", level.maptime);
 		}
 		else if (e.Name ~== "rsqwp_ogrip")
 		{
@@ -431,16 +433,23 @@ class RSQWP_Whip : EventHandler
 		return false;
 	}
 
-	// THE AIMED SWING's button (swing.zs): the other hand's alt-fire while the whip weapon is in hand -- +oh_altatk
-	// with the whip in the main hand, +altattack with it in the off hand. Eaten here (press and its release), so the
-	// gun or the hand in that hand does not alt-fire as well; the whip hears it as rsqwp_aimkey. A release is eaten
-	// only when its press was.
-	ui bool aimEat;
-	ui int aimEatKey;
+	// THE AIMED SWING's buttons (swing.zs): the other hand's alt-fire while the whip weapon is in hand -- +oh_altatk
+	// with the whip in the main hand, +altattack with it in the off hand -- and (Aim With Off-Hand Fire) the off hand's
+	// FIRE, +oh_attack, with the whip in the main hand and the off hand empty or a fist (OffFireAims). Eaten here (press
+	// and its release), so the gun, the hand or the fist in that hand does not fire as well; the whip hears them as
+	// rsqwp_aimkey. A release is eaten only when its press was. A gun in the off hand: its fire is never eaten.
+	ui bool aimEat, fireEat;
+	ui int aimEatKey, fireEatKey;
 	ui bool AimKey(InputEvent e)
 	{
 		if (e.Type == InputEvent.Type_KeyUp)
 		{
+			if (fireEat && e.KeyScan == fireEatKey)
+			{
+				fireEat = false;
+				EventHandler.SendNetworkEvent("rsqwp_aimkey", 0, 1);
+				return true;
+			}
 			if (!aimEat || e.KeyScan != aimEatKey) return false;
 			aimEat = false;
 			EventHandler.SendNetworkEvent("rsqwp_aimkey", 0);
@@ -452,6 +461,15 @@ class RSQWP_Whip : EventHandler
 		int wh = (p.ReadyWeapon is "RSQWP_WhipWeapon") ? 0 : ((p.OffhandWeapon is "RSQWP_WhipWeapon") ? 1 : -1);
 		if (wh < 0) return false;
 		let b = Bindings.GetBinding(e.KeyScan);
+		if (wh == 0 && b ~== "+oh_attack")
+		{
+			if (!RSQWP_Whip.OffFireAims(p)) return false;     // a gun in the off hand: it fires
+			if (fireEat && e.KeyScan == fireEatKey) return true;   // a key repeat
+			fireEat = true;
+			fireEatKey = e.KeyScan;
+			EventHandler.SendNetworkEvent("rsqwp_aimkey", 1, 1);
+			return true;
+		}
 		if (!(b ~== (wh == 0 ? "+oh_altatk" : "+altattack"))) return false;
 		aimEat = true;
 		aimEatKey = e.KeyScan;
@@ -3237,7 +3255,7 @@ class RSQWP_Whip : EventHandler
 	override void WorldUnloaded(WorldEvent e)
 	{
 		for (int i = 0; i < NW; i++) { if (wstate[i] != ST_IDLE) Halt(i); ClearAim(i); casting[i] = false; }
-		for (int pn = 0; pn < MAXPLAYERS; pn++) aimBtn[pn] = false;
+		for (int pn = 0; pn < MAXPLAYERS; pn++) { aimBtn[pn] = false; aimFire[pn] = false; }
 	}
 }
 
