@@ -5882,32 +5882,67 @@ class UBQS_ForceHand : Weapon
 	Spawn:
 		TNT1 A -1;
 		Stop;
+	// WHICH MESH (ubqs_fhand_mesh, the owner 11-03): 0 Our Hand, BD22 VR's FBX hand in its magazine hold (sprite
+	// UBFG), ONE pose that never changes whatever the Force does; 1 Original, Ermac's hand (sprite UBFH).
+	// Each mesh has its OWN state chain, and a chain never hands over to the other sprite mid-state: a psprite
+	// model is interpolated toward its NEXT state's sprite, and Our Hand (model slot 7) next to Ermac's (slot
+	// 0) drew nothing at all while the Force was up (rig, 11-03: the hand vanished the tic alt went down when
+	// the sprite was swapped on the psprite instead).
 	Select:
+		UBFH A 0 A_UBFHPick("SelectFG");
+	SelectOrig:
 		UBFH A 1 A_Raise(20);
 		Loop;
+	SelectFG:
+		UBFG A 1 A_Raise(20);
+		Loop;
 	Deselect:
+		UBFH A 0 A_UBFHPick("DeselectFG");
+	DeselectOrig:
 		UBFH A 1 A_Lower(20);
 		Loop;
+	DeselectFG:
+		UBFG A 1 A_Lower(20);
+		Loop;
 	Ready:
+		UBFH A 0 A_UBFHPick("ReadyFG");
+	ReadyOrig:
 		UBFH A 1 A_UBFHReady();
+		Loop;
+	ReadyFG:
+		UBFG A 1 A_UBFHReadyFG();
 		Loop;
 	Fire:
 	AltFire:
+		UBFH A 0 A_UBFHPick("FireFG");
 		UBFH C 4 A_UBFHReady(false);
-		Goto Ready;
-	Register:
-		UBFH B 0;
-		Stop;
+		Goto ReadyOrig;
+	FireFG:
+		UBFG A 4;
+		Goto ReadyFG;
+	}
+	action State A_UBFHPick(StateLabel fg)
+	{
+		return UBQS_Data.I(self, "ubqs_fhand_mesh", 0) == 1 ? null : ResolveState(fg);
+	}
+	// OUR HAND: ready, and nothing else -- no frame changes
+	action State A_UBFHReadyFG()
+	{
+		if (UBQS_Data.I(self, "ubqs_fhand_mesh", 0) == 1) return ResolveState("ReadyOrig");
+		A_WeaponReady();
+		return null;
 	}
 	// ERMAC'S HAND (Rusted Legacy -- the owner, 10-01): relaxed at rest, OPEN while you reach with the Force,
 	// a clenched FIST while you hold something in a grip
-	action void A_UBFHReady(bool ready = true)
+	action State A_UBFHReady(bool ready = true)
 	{
+		if (ready && UBQS_Data.I(self, "ubqs_fhand_mesh", 0) != 1) return ResolveState("ReadyFG");
 		if (ready) A_WeaponReady();
 		let f = UBQS_Force(FindInventory("UBQS_Force"));
 		let psp = player.FindPSprite(PSP_OFFHANDWEAPON);
-		if (!psp) return;
+		if (!psp) return null;
 		psp.Frame = (f && f.gripped) ? 1 : ((f && f.armed) || !ready ? 2 : 0);
+		return null;
 	}
 }
 

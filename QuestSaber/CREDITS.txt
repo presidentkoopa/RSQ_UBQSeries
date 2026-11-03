@@ -12,6 +12,11 @@ BORROWED, WITH THANKS
         UXFH  the armed-hand flare                 (RSF7*)
       and the Force choke loop:
         ubqs/grip   built from monsters/RSELLOOP.ogg
+  BD22 VR Reloaded (RS_Brutal22WeaponsQ, the owner's)
+      models/ubqs/ubqs_fbxhand.md3 + fbx_hand.png -- the bare Force hand ("Our Hand", 11-03): BD22 VR's
+      FBX hand, its off-hand rifle-magazine hold (models/rsq/fbx/fbx_oh_hold_R.md3 frame 0), cut to that
+      one frame. Baked there from DXR models/hands/hand_final.fbx (the owner's private repo); that FBX's
+      author and licence are not recorded (tools/handfit/README.md in that repo). Not Ermac's mesh.
   QuestZDoom (Emawind)
       the engine this targets, and the off-hand weapon and AttackPos/Angle/Pitch/Roll script API
       the whole mod is built on.

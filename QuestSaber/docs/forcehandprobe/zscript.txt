@@ -1,0 +1,117 @@
+version "4.12"
+// FORCE HAND PROBE (test only, never ships). netevent fhp_arm: the saber in the main hand.
+// netevent fhp_imps: three imps 200-300 units ahead (held passive). Every tic: FHP line with the off hand.
+class FHP_Probe : EventHandler
+{
+	bool on; Array<Actor> imps; Vector3 lastOff; int lastFrame; String lastState;
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		let pmo = players[e.Player].mo;
+		if (!pmo) return;
+		if (e.Name ~== "fhp_arm")
+		{
+			let w = Weapon(pmo.GiveInventoryType("UBQS_Saber"));
+			if (!w) w = Weapon(pmo.FindInventory("UBQS_Saber"));
+			if (w) pmo.player.PendingWeapon = w;
+			on = true;
+			// the off hand empty: the second saber away (as a holstered one leaves it)
+			let so = Weapon(pmo.FindInventory("UBQS_SaberOff"));
+			if (so && e.Args[0] == 0)
+			{
+				if (pmo.player.OffhandWeapon == so) { pmo.player.SetPsprite(PSP_OFFHANDWEAPON, null); pmo.player.OffhandWeapon = null; }
+				pmo.RemoveInventory(so); so.Destroy();
+			}
+			Console.Printf("FHP t%d armed %s", level.maptime, w ? "yes" : "NO SABER");
+		}
+		else if (e.Name ~== "fhp_imps")
+		{
+			for (int i = 0; i < 3; i++)
+			{
+				double d = 180 + 60 * i, s = (i - 1) * 40;
+				Vector3 at = pmo.pos + (cos(pmo.angle) * d - sin(pmo.angle) * s, sin(pmo.angle) * d + cos(pmo.angle) * s, 0);
+				let m = Actor.Spawn("DoomImp", at);
+				if (m) { m.angle = m.AngleTo(pmo); m.bDormant = true; imps.Push(m); }
+			}
+			Console.Printf("FHP t%d imps %d", level.maptime, imps.Size());
+		}
+		else if (e.Name ~== "fhp_candhand")
+		{
+			let w = Weapon(pmo.FindInventory("FHP_Cand"));
+			if (!w) { w = Weapon(Actor.Spawn("FHP_Cand", pmo.pos)); if (w) w.AttachToOwner(pmo); }
+			if (!w) { Console.Printf("FHP candhand: no FHP_Cand"); return; }
+			let p = pmo.player;
+			if (p.OffhandWeapon) { p.SetPsprite(PSP_OFFHANDWEAPON, null); p.OffhandWeapon = null; }
+			w.bOffhandWeapon = true; p.PendingWeapon = w; pmo.BringUpWeapon();
+			Console.Printf("FHP t%d candhand up", level.maptime);
+		}
+		else if (e.Name ~== "fhp_lvl")
+		{
+			// GBOVR: set a saber upgrade level by name on the main saber's info (if Gun Bonsai is there)
+			Console.Printf("FHP lvl request %s", e.Args[0]);
+		}
+	}
+	override void WorldTick()
+	{
+		if (!on) return;
+		let p = players[consoleplayer];
+		let pmo = p.mo;
+		if (!pmo) return;
+		String rw = "none", ow = "none", ost = "-";
+		if (p.ReadyWeapon) rw = p.ReadyWeapon.GetClassName();
+		if (p.OffhandWeapon) ow = p.OffhandWeapon.GetClassName();
+		let psp = p.FindPSprite(PSP_OFFHANDWEAPON);
+		int fr = -1; double px = 0, py = 0;
+		String spn = "-"; if (psp) { spn = psp.Sprite == Actor.GetSpriteIndex('UBFG') ? "UBFG" : (psp.Sprite == Actor.GetSpriteIndex('UBFH') ? "UBFH" : (psp.Sprite == Actor.GetSpriteIndex('FHPC') ? "FHPC" : "other")); fr = psp.Frame; px = psp.x; py = psp.y; if (psp.CurState) ost = String.Format("%s", psp.CurState.DistanceTo(p.OffhandWeapon ? p.OffhandWeapon.FindState("Ready") : null) == 0 ? "Ready" : ""); }
+		let f = UBQS_Force(pmo.FindInventory("UBQS_Force"));
+		String fs = "noforce";
+		if (f)
+		{
+			Vector3 hv = f.HandVel();
+			String g = "none"; if (f.gripped) g = f.gripped.GetClassName();
+			fs = String.Format("L%d FS%d push%d pull%d choke%d light%d start%.2f armed%d fired%d armT%d grip %s pushReady %d hv %.2f",
+				f.uLoaded, f.uFS, f.uPush, f.uPull, f.uChoke, f.uLight, f.uStart, f.armed, f.fired, f.armTics, g, f.pushReady - level.maptime, hv.Length());
+		}
+		String pn = "-"; if (p.PendingWeapon != WP_NOCHANGE) { pn = "null"; if (p.PendingWeapon) pn = p.PendingWeapon.GetClassName(); }
+		Vector3 op = pmo.OffhandPos;
+		double jump = (op - lastOff).Length();
+		lastOff = op;
+		int b = p.cmd.buttons;
+		Console.Printf("FHP t%d rw %s ow %s pend %s spr %s fr %d psp %.1f %.1f off %.1f %.1f %.1f ang %.1f pit %.1f d %.1f btn oa%d oalt%d | %s",
+			level.maptime, rw, ow, pn, spn, fr, px, py,
+			op.x, op.y, op.z, pmo.OffhandAngle, pmo.OffhandPitch, jump, (b & BT_OFFHANDATTACK) != 0, (b & BT_OFFHANDALTATTACK) != 0, fs);
+		for (int i = 0; i < imps.Size(); i++)
+		{
+			let m = imps[i];
+			if (!m) continue;
+			if (m.vel.Length() > 0.5 || level.maptime % 35 == 0)
+				Console.Printf("FHP_IMP t%d #%d at %.1f %.1f %.1f vel %.1f hp %d", level.maptime, i, m.pos.x, m.pos.y, m.pos.z, m.vel.Length(), m.health);
+		}
+	}
+	override void WorldThingDamaged(WorldEvent e)
+	{
+		if (!e.Thing) return;
+		String inn = "?"; if (e.Inflictor) inn = e.Inflictor.GetClassName();
+		Console.Printf("FHP_DMG t%d %s dmg %d by %s type %s", level.maptime, e.Thing.GetClassName(), e.Damage, inn, e.DamageType);
+	}
+}
+
+// TEST ONLY: an off-hand weapon that draws one candidate pose (fhp_cand 0..6 = FHPC A..G)
+class FHP_Cand : Weapon
+{
+	Default { +WEAPON.OFFHANDWEAPON +WEAPON.NOALERT +WEAPON.AMMO_OPTIONAL +WEAPON.CHEATNOTWEAPON Weapon.SelectionOrder 9999; }
+	States
+	{
+	Spawn: TNT1 A -1; Stop;
+	Select: FHPC A 1 { A_FHPC(); A_Raise(20); } Loop;
+	Deselect: FHPC A 1 A_Lower(20); Loop;
+	Ready: FHPC A 1 { A_FHPC(); A_WeaponReady(); } Loop;
+	Fire: FHPC A 1 A_FHPC(); Goto Ready;
+	Reg: FHPC BCDEFG 0; Stop;
+	}
+	action void A_FHPC()
+	{
+		let psp = player.FindPSprite(PSP_OFFHANDWEAPON);
+		let c = CVar.FindCVar("fhp_cand");
+		if (psp && c) psp.Frame = clamp(c.GetInt(), 0, 6);
+	}
+}

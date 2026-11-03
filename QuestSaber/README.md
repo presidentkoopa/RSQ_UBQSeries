@@ -98,6 +98,7 @@ An old saved "Dual key mode" (ubqs_dual_mode 1) reads as On and is rewritten to 
 | Blade Block Width | 1.5 | How far off the blade's line a shot may pass and still be blocked. |
 | Hit-Stop | Off (Option) | A cut freezes the monster: Light 3, Medium 4, Heavy 6 tics. |
 | Perfect Parry Slow-Mo | Option | A parry gives half a second of slow motion. Needs RSQ SlowMo. |
+| Force Hand | Our Hand | The bare Force hand's mesh. Our Hand: BD22 VR Reloaded's FBX hand in its rifle-magazine hold, one steady pose that never opens or changes while you push, pull or grip (the Force's effects and the grip outline are unchanged). Shipped inside this pk3, so it works without BD22 VR; with BD22 VR loaded it takes BD22's Hand Skin Tone. Original: Ermac's hand, relaxed / open while the Force is up / a fist in a grip. **(rig only, not headset-confirmed)** |
 
 Always on, no row: swept-arc cuts (a fast flick between two frames still cuts), the parry double knock, the stab,
 the hum growing louder and higher on a hard swing.
@@ -246,6 +247,11 @@ BORROWED, WITH THANKS
         UXFH  the armed-hand flare                 (RSF7*)
       and the Force choke loop:
         ubqs/grip   built from monsters/RSELLOOP.ogg
+  BD22 VR Reloaded (RS_Brutal22WeaponsQ, the owner's)
+      models/ubqs/ubqs_fbxhand.md3 + fbx_hand.png -- the bare Force hand ("Our Hand", 11-03): BD22 VR's
+      FBX hand, its off-hand rifle-magazine hold (models/rsq/fbx/fbx_oh_hold_R.md3 frame 0), cut to that
+      one frame. Baked there from DXR models/hands/hand_final.fbx (the owner's private repo); that FBX's
+      author and licence are not recorded (tools/handfit/README.md in that repo). Not Ermac's mesh.
   QuestZDoom (Emawind)
       the engine this targets, and the off-hand weapon and AttackPos/Angle/Pitch/Roll script API
       the whole mod is built on.

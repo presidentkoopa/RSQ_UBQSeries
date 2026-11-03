@@ -40669,6 +40669,21 @@ Model UBQS_ForceHand
 	FrameIndex UBFH C 0 3
 }
 
+// OUR HAND (the owner, 11-03: "swap the mesh out for our fbx hand ... take it from how it holds magazine ammo"):
+// BD22 VR Reloaded's FBX hand, its off-hand rifle-magazine hold (fbx_oh_hold_R.md3 frame 0, RQHF A), cut to that
+// one frame (Melee/tools/md3_frames.py). Same Scale / Offset as BD22's own RSQ_Hands block, so it sits where BD22
+// draws it. Model SLOT 7 and Skin 7 "fbx_hand.png" on purpose: with BD22 VR loaded its Hand Skin Tone
+// (zscript/rsq/handtone.zs) finds this block by that text and tones this hand like every other FBX hand.
+Model UBQS_ForceHand
+{
+	Path "models/ubqs"
+	Model 7 "ubqs_fbxhand.md3"
+	Skin 7 "fbx_hand.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex UBFG A 7 0
+}
+
 Model UBQS_WorldSaber
 {
 	Path "models/ubqs"

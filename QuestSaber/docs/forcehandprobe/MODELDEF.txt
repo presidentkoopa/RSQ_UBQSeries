@@ -1,0 +1,24 @@
+// TEST ONLY: candidate poses of BD22 VR's FBX hand for the Force hand (never ships)
+Model FHP_Cand
+{
+	Path "models/fhp"
+	Model 0 "cand.md3"
+	Skin 0 "fhp_hand.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex FHPC A 0 0
+	FrameIndex FHPC B 0 1
+	FrameIndex FHPC C 0 2
+	FrameIndex FHPC D 0 3
+	FrameIndex FHPC E 0 4
+}
+Model FHP_Cand
+{
+	Path "models/fhp"
+	Model 0 "free.md3"
+	Skin 0 "fhp_hand.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex FHPC F 0 0
+	FrameIndex FHPC G 0 1
+}
