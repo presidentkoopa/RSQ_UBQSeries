@@ -690,7 +690,9 @@ starts clean. Big moment (SlowMo pulse): a three-step named combo, or four tools
 **For Gun Bonsai** (`RS_ScoreService`): `kill.serial` (intArg player), and for a serial (doubleArg)
 `kill.style` (the kill's bonus points: total less base, every family, Champions' and LegenDoom's
 rows included), `kill.base`, `GetString kill.chain` ("gun>whip>shield.bash", finisher last), `GetObject
-kill.victim`. The Gun Bonsai VR patch's XP Source: Style reads these.
+kill.victim`. The Gun Bonsai VR patch's XP Source: Style reads these. `kill.big` (objectArg the body): 1 when
+that kill was a big moment (the same call that sends the slow-motion moment), 0 not, -1 not kept; Gun Bonsai VR's
+Lucky Kill reads it.
 
 **Cost per blow (polish, 10-27, measured).** Every series question went through `ServiceIterator.Find`,
 which makes an iterator object and walks every service in the game, lower-casing and searching each name

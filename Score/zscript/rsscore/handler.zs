@@ -578,6 +578,8 @@ class RS_ScoreHandler : EventHandler
 			if (mults[b] <= 0.0) continue;
 			if (m_bonuses[b].BigMoment(ev, mults[b]) || RS_Melee.BigMoment(m_bonuses[b], mults[b])) why = m_bonuses[b];
 		}
+		// the kill's record says so (RecordKill ran just before this)
+		if (why) for (int k = kVictim.Size() - 1; k >= 0; k--) if (kVictim[k] == ev.victim) { kBig[k] = 1; break; }
 
 		// HIT-STOP ON BIG KILLS (owner's pick 57, an option, off: rs_score_hitstop). A big kill -- a big moment as
 		// above, or a monster of 400 spawn health or more (the Gun Bonsai VR patch's Adrenaline draws the "big
@@ -1053,6 +1055,7 @@ class RS_ScoreHandler : EventHandler
 	// sixteen are kept; a reader looks once a tic.
 	int killSerial;
 	Array<int> kSerial, kPn, kBase, kStyle;
+	Array<int> kBig;    // 1: this kill was a big moment (BigMomentPulse's own call), for "kill.big" (Gun Bonsai VR's Lucky Kill)
 	Array<String> kChain;
 	Array<Actor> kVictim;
 
@@ -1063,8 +1066,8 @@ class RS_ScoreHandler : EventHandler
 		String c = "";
 		for (int k = 0; k < ev.chain.Size(); k++) c = c .. (k ? ">" : "") .. ev.chain[k];
 		killSerial++;
-		if (kSerial.Size() >= 16) { kSerial.Delete(0); kPn.Delete(0); kBase.Delete(0); kStyle.Delete(0); kChain.Delete(0); kVictim.Delete(0); }
-		kSerial.Push(killSerial); kPn.Push(ev.killerNum); kBase.Push(ev.basePoints); kStyle.Push(max(0, total - ev.basePoints)); kChain.Push(c); kVictim.Push(ev.victim);
+		if (kSerial.Size() >= 16) { kSerial.Delete(0); kPn.Delete(0); kBase.Delete(0); kStyle.Delete(0); kChain.Delete(0); kVictim.Delete(0); kBig.Delete(0); }
+		kSerial.Push(killSerial); kPn.Push(ev.killerNum); kBase.Push(ev.basePoints); kStyle.Push(max(0, total - ev.basePoints)); kChain.Push(c); kVictim.Push(ev.victim); kBig.Push(0);
 		if (DebugOn()) Console.Printf("RS_Score: kill #%d p%d base %d style %d chain %s", killSerial, ev.killerNum, ev.basePoints, max(0, total - ev.basePoints), c);
 	}
 

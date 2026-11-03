@@ -115,6 +115,7 @@ class FistsProbe : EventHandler
 	Actor dgCorpse;
 	// a thrown gun (Gun Toss, Boomerang Gun): the gun, the imp, when to read them
 	Actor rgGun, rgImp;
+	Actor krBit; double krD0; int krAt;
 	int rgAt, rgH0;
 	int dgHits, dgNext, dgDone;
 	Array<Actor> gkImps;
@@ -874,6 +875,77 @@ class FistsProbe : EventHandler
 			b.leanX[0] = 0; b.leanY[0] = 0;
 			m.Destroy();
 		}
+		else if (e.Name ~== "fp_kr")
+		{
+			// THE KILL REWARDS PATH (player nodes). arg0 1: offers, levels and what the bits read; 2: grant arg1 (+arg2)
+			static const String KRN[] = { "BitScavenger", "RichBits", "Magnet", "LuckyKill" };
+			let st = TFLV_PerPlayerStats.GetStatsFor(p);
+			if (!st) return;
+			if (e.Args[0] == 2) { String cls = "RSQ_Upgrade_" .. KRN[clamp(e.Args[1], 0, KRN.Size() - 1)]; st.upgrades.Add(cls, max(e.Args[2], 1)); Console.Printf("FP kr granted %s", cls); return; }
+			String on = "", have = "";
+			for (int i = 0; i < KRN.Size(); i++)
+			{
+				Class<TFLV_Upgrade_BaseUpgrade> k = "RSQ_Upgrade_" .. KRN[i];
+				if (!k) { on = on .. " ?" .. KRN[i]; continue; }
+				if (TFLV_Upgrade_BaseUpgrade(new(k)).IsSuitableForPlayer(st)) on = on .. " " .. KRN[i];
+				int lv = int(st.upgrades.Level("RSQ_Upgrade_" .. KRN[i]));
+				if (lv > 0) have = have .. String.Format(" %s%d", KRN[i], lv);
+			}
+			Console.Printf("FP kr [stage %d] has:%s | offered:%s", e.Args[1], have, on);
+			Console.Printf("FP kr reads: scavenger %d, rich %d, magnet %d (%.1f m), lucky %d", RSQ_KRHandler.Perk(p, "BitScavenger"),
+				RSQ_KRHandler.Perk(p, "RichBits"), RSQ_KRHandler.Perk(p, "Magnet"), RSQ_KRHandler.MagnetM(p), RSQ_KRHandler.Perk(p, "LuckyKill"));
+		}
+		else if (e.Name ~== "fp_krkill")
+		{
+			// a 60-health imp 200 ahead killed by you; arg0 1: a critical landed on it first, 2: Score calls the kill big
+			let m = Put("DoomImp", 200);
+			if (!m) return;
+			if (e.Args[0] == 1) RSQM.Touch("crit", p, m);
+			m.DamageMobj(p, p, 1000, 'None');
+			if (e.Args[0] == 2)
+			{
+				let h = RS_ScoreHandler(EventHandler.Find("RS_ScoreHandler"));
+				int k = h ? h.kVictim.Find(m) : -1;
+				if (h && k < h.kVictim.Size()) { h.kBig[k] = 1; Console.Printf("FP kr: Score's record of the kill marked big"); }
+				else Console.Printf("FP kr: Score kept no record of the kill");
+			}
+		}
+		else if (e.Name ~== "fp_krbits")
+		{
+			// Rich Bits: a health, an armour and an ammo bit picked up from 1 health, no armour, the pistol in hand
+			p.health = p.player.health = 1;
+			let ar = BasicArmor(p.FindInventory("BasicArmor"));
+			if (ar) ar.Amount = 0;
+			let rw = p.player.ReadyWeapon;
+			let pw = Weapon(p.FindInventory("Pistol"));
+			if (!pw) pw = Weapon(p.GiveInventoryType("Pistol"));
+			p.player.ReadyWeapon = pw;
+			int c0 = p.CountInv("Clip");
+			let hb = Inventory(Actor.Spawn("RSQ_KRHealthBit", p.pos));
+			let ab = Inventory(Actor.Spawn("RSQ_KRArmorBit", p.pos));
+			let mb = Inventory(Actor.Spawn("RSQ_KRAmmoBit", p.pos));
+			if (hb) hb.CallTryPickup(p);
+			if (ab) ab.CallTryPickup(p);
+			if (mb) mb.CallTryPickup(p);
+			ar = BasicArmor(p.FindInventory("BasicArmor"));
+			Console.Printf("FP kr bits: health 1 -> %d, armour 0 -> %d, clips %d -> %d (weapon %s)", p.health, ar ? ar.Amount : -1, c0, p.CountInv("Clip"),
+				p.player.ReadyWeapon ? p.player.ReadyWeapon.GetClassName() : 'none');
+			p.player.ReadyWeapon = rw;
+			p.health = p.player.health = 5000;
+		}
+		else if (e.Name ~== "fp_krmag")
+		{
+			// a health bit arg0 units ahead (out of reach of a pickup), then how far it is after arg1 tics (fp_krmagd)
+			Vector3 s = (cos(p.angle), sin(p.angle), 0);
+			krBit = Actor.Spawn("RSQ_KRHealthBit", p.pos + s * e.Args[0]);
+			krD0 = krBit ? krBit.Distance3D(p) : -1;
+			krAt = level.maptime;
+		}
+		else if (e.Name ~== "fp_krmagd")
+		{
+			Console.Printf("FP kr magnet: a bit %.0f away is %s after %d tics", krD0, krBit ? String.Format("%.0f away", krBit.Distance3D(p)) : "picked up / gone", level.maptime - krAt);
+			if (krBit) krBit.Destroy();
+		}
 		else if (e.Name ~== "fp_fxcount")
 		{
 			String s = "";
@@ -1186,7 +1258,7 @@ class FistsProbe : EventHandler
 			Console.Printf("FP saber [stage %d] has:%s | offered:%s | size index %d | second saber carried: %s", e.Args[1], have, on, sb ? sb.SizeIdx() : -1,
 				p.FindInventory("UBQS_SaberOff") ? "yes" : "no");
 		}
-		else if (e.Name.Left(5) ~== "fp_ss" || e.Name.Left(5) ~== "fp_gn" || e.Name.Left(5) ~== "fp_gr" || e.Name.Left(5) ~== "fp_dg" || e.Name.Left(5) ~== "fp_rg" || e.Name.Left(5) ~== "fp_fx" || e.Name.Left(5) ~== "fp_sm") TreeEvents(e, p);
+		else if (e.Name.Left(5) ~== "fp_ss" || e.Name.Left(5) ~== "fp_gn" || e.Name.Left(5) ~== "fp_gr" || e.Name.Left(5) ~== "fp_dg" || e.Name.Left(5) ~== "fp_rg" || e.Name.Left(5) ~== "fp_fx" || e.Name.Left(5) ~== "fp_sm" || e.Name.Left(5) ~== "fp_kr") TreeEvents(e, p);
 		else if (e.Name ~== "fp_force")
 		{
 			// arg0 0: the Force's own Push at an imp in front; 1: Force Lightning straight into one (and a second near it);

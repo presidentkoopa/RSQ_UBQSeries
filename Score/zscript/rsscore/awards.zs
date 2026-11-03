@@ -99,10 +99,16 @@ class RS_ScoreService : Service
 		// WHAT A KILL EARNED IN STYLE (handler.zs RecordKill), for the Gun Bonsai VR patch:
 		//   "kill.serial" intArg player -> the newest kill serial (0 none this map)
 		//   "kill.style" / "kill.base"  intArg player, doubleArg serial -> points (-1: not kept)
+		//   "kill.big"   objectArg the body -> 1 its kill was a big moment (the slow-motion moment's call), 0 not, -1 not kept
 		if (request.Left(5) == "kill.")
 		{
 			let h = RS_ScoreHandler(EventHandler.Find("RS_ScoreHandler"));
 			if (!h) return -1;
+			if (request == "kill.big")
+			{
+				for (int b = h.kVictim.Size() - 1; b >= 0; b--) if (h.kVictim[b] == Actor(objectArg)) return h.kBig[b];
+				return -1;
+			}
 			if (request == "kill.serial") return h.LastKill(intArg);
 			int k = h.KillIndex(int(doubleArg));
 			if (k < 0 || h.kPn[k] != intArg) return -1;

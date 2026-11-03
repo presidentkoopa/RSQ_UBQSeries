@@ -508,9 +508,9 @@ mode that works and the one that is kept as base; Range mode is dropped from the
 
 | Node | Parent | Levels | Owns | Art | Score |
 |---|---|---|---|---|---|
-| Scavenger (new) | root (player) | 1-3: +25% bits a kill a level | GBOVR | more bits | - |
-| Rich Bits (new) | Scavenger 1 | 1-3: a health or armour bit is worth 2, 3, 4; an ammo bit 8, 11, 14 | GBOVR | bits glow brighter a level | - |
-| Magnet (new) | Scavenger 1 | 1-3: bits inside 2, 3, 4 m drift to your hand | GBOVR | a faint pull trail (Combat FX) | - |
+| Bit Scavenger (new; "Scavenger" is the grenade's) | root (player) | 1-3: +25% bits a kill a level | GBOVR | more bits | - |
+| Rich Bits (new) | Bit Scavenger 1 | 1-3: a health or armour bit is worth 2, 3, 4; an ammo bit 8, 11, 14 | GBOVR | bits glow brighter a level | - |
+| Magnet (new) | Bit Scavenger 1 | 1-3: bits inside 2, 3, 4 m drift to your hand | GBOVR | a faint pull trail (Combat FX) | - |
 | Lucky Kill (new) | Rich Bits 1 | 1-3: a kill that was a critical, a Finisher or a Score big moment drops double, triple, x4 | GBOVR (reads `crit`, `finisher`, Score) | a bigger burst | `lucky` |
 
 Sprites: SoM's three orbs (`ABITA0`, `HBITA0`, `MBITA0`) stay, recoloured by RS Combat FX's palette if the owner
@@ -1467,6 +1467,27 @@ second (`clock.zs` GbRefresh); without the patch every read is -1 and every row 
 - Marksman / Dodger now follow Deeper 1, Second Wind Cheaper 1, Time Dilation Marksman 1.
 
 ### 4.10 Kill Rewards (section 3.14; the four path nodes approved) and Critical Hits (section 4.1 I) are player nodes too.
+
+Critical Hits, Headshot and Backstab were built with the Fists tree (4.1 I). **Kill Rewards' path: BUILT 11-02.**
+`killrewards.zs` (the fold) already asked the nodes by name; built now: the four classes (`RSQ_KRPerk`), a once-a-second
+level cache (a Cyberdemon's fountain is 1200 bits, each reading every other tic), Magnet, Lucky Kill. Calls made:
+- **"Scavenger" is the grenade's weapon node** (class RSQ_Upgrade_Scavenger), so the path's is **Bit Scavenger**
+  (RSQ_Upgrade_BitScavenger). The name is one language string if you want another.
+- **Magnet did nothing before:** it multiplied the Bits Fly to Me row, which is off by default. Now 2 / 3 / 4 m, or
+  the row if it reaches further. **A pulled bit picks itself up on arrival:** the engine only picks an item up
+  when the player moves into it, so a bit pulled to a VR player standing still hovered there.
+- **Rich Bits' "glow brighter":** the killer's Rich Bits draws the bits 20% bigger a level (they already blink
+  bright). A real glow is art for later.
+- **Lucky Kill** counts a critical, Headshot, Backstab or Finisher that landed within a tic of the death (`RSQM.Touch`
+  marks the body, `RSQ_Dazed.luckyTic`), or RSQ Score calling the kill a big moment (new Score read `kill.big`). It is
+  decided a tic after the death (Score's handler may run after ours); the extra bits burst out with Melee's big
+  burst and the heavy hit sound.
+**Headless 11-02** (fistsprobe `fp_kr`, `fp_krkill`, `fp_krbits`, `fp_krmag`; RSQ Score loaded): a 60-health imp
+burst into 6 bits at level 0, 8 at Bit Scavenger 1, 11 at 3. Bits from 1 health / no armour / a pistol: +25, +10,
++5 rounds at level 0; +50, +20, +8 at Rich Bits 1. A bit 100 units ahead: still there after 30 tics at Magnet 0,
+picked up at Magnet 2 (3 m). Lucky Kill 2: a kill after a critical burst 22 more (x3), a kill Score marked big 22
+more, a plain kill none. The Score mark in the probe is set by hand on Score's record (its own big-moment call is
+the one its slow-motion moment has used all along).
 
 ## 5. The player pool, together
 

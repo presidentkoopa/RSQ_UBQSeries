@@ -83,6 +83,12 @@ class RSQM play
 	static void Touch(String id, Actor pawn, Actor victim)
 	{
 		if (!pawn || !pawn.player || !victim) return;
+		// a critical or a Finisher marks the body for Kill Rewards' Lucky Kill (killrewards.zs), Score or no Score
+		if (id == "crit" || id == "headshot" || id == "backstab" || id == "finisher")
+		{
+			let d = RSQ_Dazed.On(victim);
+			if (d) { d.luckyTic = level.maptime; d.luckyWhy = id; }
+		}
 		let s = Svc("RS_ScoreService");
 		if (s) s.GetInt("touch", id, pawn.PlayerNumber(), 0, victim);
 	}
@@ -510,6 +516,8 @@ class RSQ_Dazed : Inventory
 	int frozenUntil, shatterTic;
 	double shatterMult;                // "freeze" with a shatter: the next hard hit on it while frozen does this many times
 	int critUntil;                     // Critical Hits: stunned by a critical until this tic
+	int luckyTic;                      // Kill Rewards' Lucky Kill: the tic a critical or a Finisher last landed (RSQM.Touch)
+	String luckyWhy;
 	int markUntil, markPn, markUsed;   // Pistol Whip: that player's next hit lands harder until this tic
 	double markMult;
 	const MARK_TICS = 70;
