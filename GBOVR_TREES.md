@@ -72,7 +72,7 @@ goes), **rework** (what changes), **cut** (why). Levels are uncapped unless a ca
 | 6 | Knockdown | damage in 2 s >= (0.5 - 0.06 lv) of start health puts a non-boss down for a 2 + lv count (max 8) | **keep** | Power: capstone, after Wall Splat |
 | 7 | One-Two | alternating-hand hits inside 0.5 s add 15% x lv each, up to 4 | **keep** | Speed: root. Note: needs both hands, so it sits on whichever hand levels (see section 1) |
 | 8 | Counterpunch | a punch during the monster's wind-up does x(1.25 + 0.25 lv) and staggers 17 + 9 lv tics | **keep** | Counter: after Guard |
-| 9 | Hadouken (class `RSQ_Upgrade_ReturnFire`) | a punched missile returns at x(1.25 + 0.25 lv), 15% x lv faster; cap 4 | **keep** | Counter: after Counterpunch; the slow-mo projectile punch is its capstone (real projectiles only) |
+| 9 | Hadouken (class `RSQ_Upgrade_ReturnFire`) | a punched missile returns at x(1.25 + 0.25 lv), 15% x lv faster; cap 4 | **keep** | Counter: after Counterpunch; the slow-mo projectile punch is its capstone. **11-03:** a monster's BULLET too (WorldHitscanPreFired, a visible round sent back) |
 
 ### 2.2 Any melee weapon (fists, sabers, ShieldSaw: `info.IsMelee()`)
 

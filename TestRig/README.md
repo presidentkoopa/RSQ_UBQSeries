@@ -16,6 +16,8 @@ all reach the player's fields every series mod reads (`AttackPos` / `AttackAngle
 | `engine.patch` | The engine change: `src/rendering/gl/stereo3d/gl_openvr_fake.cpp` + `.h` (new: the fake OpenVR function tables, answering from cvars), a few lines in `gl_openvr.cpp` (take the fake tables when `-qzfake`, skip the compositor submit and the runtime shutdown), one line in `src/CMakeLists.txt`. `git apply TestRig/engine.patch` in the engine tree, then build. Default off: without `-qzfake` the engine is exactly as before. |
 | `probe/` + `probe.pk3` | `RSQPoseProbe`: `netevent rig_pose` prints the player's hand fields; `netevent rig_pose_every N` prints every N tics. |
 | `pose.py` | Turns "a hand F cm forward, L left, U up of the eye" into a `qz_rhand` string. |
+| `saberprobe/` + `.pk3` | `netevent sbt_arm` (the saber in hand), `netevent sbt_ball D Z` (an imp fireball at the player); logs its flight. |
+| `meleeprobe/` + `.pk3` | `netevent mhp_arm` (Melee's glove in hand), `netevent mhp_shot` (an imp fires one hitscan at the player two tics later); logs who got hurt. Swing the hand across the line with `qz_rhand` poses one tic apart (0.1 m a tic = 3.5 m/s). Proved Melee's bullet Hadouken 2026-11-03. |
 | `../tools/qzd_hidden_run.ps1 -Pose` | The hidden runner with the rig on: `vr_mode 10`, `-qzfake`, `vr_joy_mode 0`. |
 
 ## Build the engine with it
@@ -77,7 +79,9 @@ own frame reads `AttackPitch −89` as a blade pointing down-forward and raw 149
 blade across with yaw, or measure the tip in the SBX line first.) This is how the README limit "a blocked shot can
 carry on up to one tic past you" was retired.
 
-Repacking a probe after an edit: `python -c "import zipfile; z=zipfile.ZipFile('TestRig/saberprobe.pk3','w',8); [z.write('TestRig/saberprobe/'+f,f) for f in ('zscript.txt','MAPINFO.txt')]; z.close()"`.
+The packed `.pk3`s are not in git (the repo ignores pk3s outside `pk3/`): pack a probe from its folder before a run,
+e.g. `python -c "import zipfile; z=zipfile.ZipFile('TestRig/saberprobe.pk3','w',8); [z.write('TestRig/saberprobe/'+f,f) for f in ('zscript.txt','MAPINFO.txt')]; z.close()"`
+(the same for `probe/` and `meleeprobe/`).
 
 ## What it proves and what it cannot
 

@@ -1,0 +1,60 @@
+version "4.14"
+// MELEE BULLET PROBE (TestRig; never ships). Load after RSQ_Melee.pk3 with -Pose, rsqml_debug 1 and rsqml_hadouken 1.
+// `netevent mhp_arm` gives the player Melee's glove and raises it (a fist). `netevent mhp_shot` puts a DoomImp 200 units
+// in front and, two tics later (so the hand's velocity this tic is fresh), has it fire one hitscan at the player's middle
+// (10 damage) -- the WorldHitscanPreFired hook sees it as a monster's bullet. Swing the hand through the line meanwhile
+// (qz_rhand poses one tic apart). Read: "RSQML bullet hadouken" from Melee, MHP HURT lines (the player should take none;
+// the imp should take the returned shot).
+class MHP_Probe : EventHandler
+{
+	Actor imp; int fireTic; bool armed;
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		let pmo = players[e.Player].mo;
+		if (!pmo) return;
+		if (e.Name ~== "mhp_arm")
+		{
+			let w = Weapon(pmo.GiveInventoryType("RSQ_Glove"));
+			if (!w) w = Weapon(pmo.FindInventory("RSQ_Glove"));
+			if (w) { pmo.player.PendingWeapon = w; armed = true; }
+			Console.Printf("MHP t%d armed: %s", level.maptime, w ? "RSQ_Glove pending" : "NO GLOVE CLASS");
+		}
+		else if (e.Name ~== "mhp_shot")
+		{
+			Vector3 at = pmo.pos + (cos(pmo.angle) * 200, sin(pmo.angle) * 200, 0);
+			if (!imp || imp.bDestroyed) imp = Actor.Spawn("DoomImp", at);
+			if (imp) { imp.angle = imp.AngleTo(pmo); imp.target = pmo; fireTic = level.maptime + 2; }
+		}
+	}
+	override void WorldTick()
+	{
+		let pmo = players[consoleplayer].mo;
+		if (!pmo) return;
+		if (armed && level.maptime % 10 == 0)
+		{
+			let rw = pmo.player.ReadyWeapon;
+			String rwn = "none"; if (rw) rwn = rw.GetClassName();
+			Console.Printf("MHP t%d ready %s hand %.1f %.1f %.1f", level.maptime, rwn, pmo.AttackPos.x, pmo.AttackPos.y, pmo.AttackPos.z);
+		}
+		if (imp && !imp.bDestroyed && fireTic > 0 && level.maptime >= fireTic)
+		{
+			fireTic = 0;
+			Vector3 mid = pmo.pos + (0, 0, pmo.height * 0.5);
+			Vector3 from = imp.pos + (0, 0, imp.height * 0.5 + 8);
+			Vector3 d = level.Vec3Diff(from, mid).Unit();
+			double ang = atan2(d.y, d.x), pit = -asin(clamp(d.z, -1.0, 1.0));
+			Console.Printf("MHP t%d imp fires at the player (hp %d)", level.maptime, pmo.health);
+			FTranslatedLineTarget t;
+			imp.LineAttack(ang, 2048, pit, 10, 'Hitscan', 'BulletPuff', 0, t);
+			String hn = "nothing"; if (t.linetarget) hn = t.linetarget.GetClassName();
+			Console.Printf("MHP t%d the shot hit %s; player hp %d, imp hp %d", level.maptime, hn, pmo.health, imp.health);
+		}
+	}
+	override void WorldThingDamaged(WorldEvent e)
+	{
+		if (!e.Thing) return;
+		String src = "?"; if (e.DamageSource) src = e.DamageSource.GetClassName();
+		if (e.Thing.player) Console.Printf("MHP t%d PLAYER HURT %d by %s", level.maptime, e.Damage, src);
+		else if (e.Thing == imp) Console.Printf("MHP t%d IMP HURT %d by %s", level.maptime, e.Damage, src);
+	}
+}
