@@ -79,8 +79,9 @@ user bool wr_own_freeze = false;
 // its card over the wrist. wr_watch_scale sizes it.
 user bool  wr_watch = false;
 // RSQ: with either hand picking, a different gun's card under the other hand's beam turns the sheet
-// into a side-by-side comparison of the two.
-user bool  wr_twohand_compare = true;
+// into a side-by-side comparison of the two. Off by default (owner 2026-11-03: "the comparison card is nice,
+// but not needed"); the code stays for past 2.0, when dropped guns carry their own ammo and abilities.
+user bool  wr_twohand_compare = false;
 // RSQ: cards are things. With a hand in a card, snap it back toward you to pull that gun out into
 // the hand (wr_pull_speed); snap a hand holding a gun toward the ring to throw it back in -- the
 // hand takes its empty-hand weapon (wr_throw_speed). Map units per tic (1.5 is about 1.5 m/s); 0 off.
@@ -103,10 +104,11 @@ user string wr_slot_order = "";
 // halo on the hovered card, the series' lock-on mark at the beam's tip, a steady halo behind the ring, the sheet's
 // header a band in the gun's colour. 0: the ring as it was before (Classic).
 // wr_breathe (option, off since 2026-11-02): the hovered card's halo (and the mark) breathe.
-// wr_edge_sweep: a spark runs round each card's edge.
+// wr_edge_sweep (option, off since 2026-11-03, owner: "there is an animated square that runs around the cards,
+// I'd like that out"): a spark (a small square quad, WRESPARK) runs round each card's edge.
 user bool wr_look2 = true;
 user bool wr_breathe = false;
-user bool wr_edge_sweep = true;
+user bool wr_edge_sweep = false;
 
 // SCALE: vr_vunits_per_meter is 34, so one map unit is about 3cm. Every default
 // below is written as a real-world distance first and converted, because the
@@ -796,12 +798,13 @@ user bool  wr_inspect = true;
 user int   wr_inspect_dwell = 18;
 
 // The comparison rows -- how the weapon you are pointing at differs from the
-// one that hand is holding. Off leaves the plain readout with no deltas.
+// one that hand is holding. Off leaves the plain readout with no deltas. Off by default since 2026-11-03 (the
+// comparison card, owner: "nice, but not needed"): pointing at a floor gun shows its plain sheet.
 //
 // A delta is never drawn across a curse: subtracting a known number from a
 // hidden one and printing the result hands back exactly the value the curse
 // exists to hide.
-user bool  wr_inspect_delta = true;
+user bool  wr_inspect_delta = false;
 
 // This wheel's OWN kill/shot/accuracy/headshot tracker -- see
 // wr_stattracker.zs. Not a compat switch: nothing above this reads another

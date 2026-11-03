@@ -57,15 +57,17 @@ Pk3: `pk3/RSQ_Wheel.pk3`.
 - A calm hover: the ring never changes size or place when you point at a card. Only the hovered card
   changes: it lights up in its colour, steps a little toward you and grows a little, then holds still. A
   halo sits behind it (it breathes only with Hover Halo Breathes). The beam's tip wears the series' lock-on
-  mark. A spark runs round each card's edge (Edge Sweep). A sheet too tall for the ring shrinks to fit.
+  mark. A sheet too tall for the ring shrinks to fit. Option: a spark runs round each card's edge (Edge Sweep,
+  off).
 
 **The data sheet.** Rest the beam on a card:
 - Rounds loaded and in reserve, the gun's stats (damage, rate of fire, accuracy, pellets, magazine) where the
   gun's own mod tells them, and kills, shots and accuracy counted by the Wheel itself as you play, on every
   weapon from any mod. An option adds the same counts for this visit to this level.
 - SHARES: the other guns you carry on the same ammo.
-- Compare: one hand on each of two different cards, and the sheet compares them side by side.
-- Point at a gun on the floor and the sheet shows it, against what that hand holds.
+- Point at a gun on the floor and the sheet shows it.
+- Option, the comparison card (off): one hand on each of two different cards and the sheet compares them side
+  by side (Two Hands Compare); a gun on the floor against what that hand holds (Compare With the Gun You Hold).
 - GUN BONSAI: level, progress and upgrades, with Gun Bonsai and RSQ Gun Bonsai VR loaded.
 - HOLSTER: where the gun is holstered, with RSQ Tactical Rig.
 - Readers for other weapon mods, each silent when its mod is absent: LegenDoom rarity and effects, DoomRL
@@ -91,10 +93,11 @@ Wheel's menu has the same four rows.
 4. **Reach in.** Put your hand into a card and press Use, or pull the trigger. Snap the hand back toward you
    to pull the card out. Snap a hand that holds a gun toward the ring (not at a card) to throw the gun back:
    the hand goes empty.
-5. **Two at once.** One hand on each of two cards when you let go: each hand takes its own gun. Rest both on
-   two different cards first and the sheet compares them.
+5. **Two at once.** One hand on each of two cards when you let go: each hand takes its own gun. With Two Hands
+   Compare on, resting both on two different cards first makes the sheet compare them.
 6. **Read the sheet.** Rest the beam on a card and the sheet in the middle fills in. Point at a gun on the
-   floor and hold still a moment: its card comes up against the gun in that hand.
+   floor and hold still a moment: its card comes up (against the gun in that hand with Compare With the Gun
+   You Hold on).
 7. **Fans.** Rest the beam on a slot with several guns, or press Use on it: they fan out. On a fan card, hold
    the trigger, move onto another place in the fan, let go: the slot keeps that order.
 8. **Re-centre.** Press the same hand's key again just after opening and the ring re-centres instead of
@@ -130,7 +133,7 @@ Options -> Radiant Silvergun Options -> **RSQ Wheel**:
 
 | Menu row | Default | What it does |
 |---|---|---|
-| Two Hands Compare | On | Two different cards under two hands: a side-by-side sheet. |
+| Two Hands Compare | Off | Two different cards under two hands: a side-by-side sheet. |
 | Open on the Gun You Hold | Off | The ring opens with your gun's card under your hand. |
 | Wrist Card | Off | The watch pose shows that hand's gun card over the wrist. RSQ Gun Cards' watch card takes over when it is loaded and on. |
 | Open at Level Start | Off | The ring opens when a level starts. |
@@ -156,7 +159,7 @@ Options -> Radiant Silvergun Options -> **RSQ Wheel**:
 | Ammo Counts and Gauges | On | The count and the gauge under each name. |
 | Ammo Readout | LED segments | LED segments, LCD, punched out, or Lozenge badge. |
 | Hover Halo Breathes | Off | The halo behind the hovered card breathes. |
-| Edge Sweep | On | A spark runs round each card's edge. |
+| Edge Sweep | Off | A spark (a small square) runs round each card's edge. |
 | Colour Cards by Rarity | On | A gun with a rarity tier takes its tier colour. |
 | Mark Guns You Hold | On | A mark on the cards of the guns in your hands. |
 | Slot Number on Cards | On | The slot number on each card. |
@@ -169,7 +172,7 @@ Options -> Radiant Silvergun Options -> **RSQ Wheel**:
 | Idle Shimmer | 0 | A slow soft halo on every card, 0 to 1.0. |
 | Taken Card Spins (degrees) | 360 | How far the taken card spins, -720 to 720. |
 
-**Data Sheet** (every reader is on by default and silent when its mod is absent):
+**Data Sheet** (every mod reader is on by default and silent when its mod is absent):
 
 | Menu row | Default | What it does |
 |---|---|---|
@@ -179,7 +182,7 @@ Options -> Radiant Silvergun Options -> **RSQ Wheel**:
 | Kills and Accuracy This Level | Off | A LEVEL row with the same counts for this visit to this level. |
 | Gun Bonsai Level and Upgrades | On | With Gun Bonsai and RSQ Gun Bonsai VR loaded. |
 | Card When Pointing at a Gun | On | Point at a gun on the floor and the sheet shows it. |
-| Compare With the Gun You Hold | On | Against what that hand holds. |
+| Compare With the Gun You Hold | Off | The floor gun's card compares it with what that hand holds. |
 | LegenDoom Rarity | On | The gun's rarity, in its colour. |
 | LegenDoom Effects Row | On | Its legendary effects. |
 | DoomRL Arsenal Tier | On | The assembly tier. |
@@ -243,7 +246,7 @@ Options -> Radiant Silvergun Options -> **RSQ Wheel**:
 - **RSQ LaserSight**: with the ring up, the idle hand shows only the laser, not two beams.
 - **RSQ Tactical Rig**: a holstered gun's sheet has a HOLSTER row naming where it hangs.
 - **RSQ Gun Bonsai VR** (with Gun Bonsai): the sheet's GUN BONSAI level and upgrade rows, the comparison's
-  BONSAI row, the wrist card's level. No Gun Bonsai VR node changes the Wheel.
+  BONSAI row (when on), the wrist card's level. No Gun Bonsai VR node changes the Wheel.
 - **RSQ Gun Cards**: when its watch card is on, the Wheel's Wrist Card stands down. Gun Cards follows the
   Wheel's palette, font set and ring plates. The Card Look uses Gun Cards' colours and honours its Card
   Colour setting.
@@ -257,9 +260,9 @@ Options -> Radiant Silvergun Options -> **RSQ Wheel**:
   - Rumble Strength: every ring rumble x0 to x2 (0 = none).
   - Colour Blind Mode: every card goes neutral grey and only the hovered card is coloured, in the series'
     highlight colour for that mode (amber for protanopia and deuteranopia, red for tritanopia, yellow for
-    high contrast); so are the beam, the room light, the halo, the mark and the sheet band. The sweep and the
-    mark carry the hover without colour.
-  - Photosensitive Mode: the breathing (when on) and the sweep at 40 % strength, the sweep at half speed.
+    high contrast); so are the beam, the room light, the halo, the mark and the sheet band. The mark (and the
+    sweep, when on) carry the hover without colour.
+  - Photosensitive Mode: the breathing and the sweep (when on) at 40 % strength, the sweep at half speed.
 - **ModelSwapper**: Wheel: cycle main-hand model / off-hand model (no default keys) ask ModelSwapper to cycle
   the model on that hand.
 
@@ -303,6 +306,12 @@ The Wheel asks, by name: `RSQSM_Service` (`running`, `active`; events `rsm_on`, 
 (Gun Bonsai level and upgrades), `RSQGN_Service` (`kinds.owned`, `kind`, `kind.colour.of`, `kind.name`,
 `kind.set`), `RSQA_Service` (`steady`), and the cvars `rsqgc_watch`, `rsqgc_color`, `rsqa_colorblind`,
 `rsqa_photosafe`, `rsqa_rumble_scale` and ModelSwapper's `rs_fm_bridge_cmd_main` / `rs_fm_bridge_cmd_off`.
+
+## Future (past 2.0)
+
+- Enemies' dropped weapons carry their own ammo counts and abilities; weapons wear out, so you discard them and
+  pick up new ones; ammo limits level up. The comparison card (off since 2026-11-03, code kept) may come back for
+  that: it is the card that says whether the gun on the floor beats the one in your hand.
 
 ## Credits
 

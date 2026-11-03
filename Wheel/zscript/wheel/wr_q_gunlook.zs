@@ -141,7 +141,7 @@ extend class wr_Rig
 		mGL = wr_GunLook.On();
 		mGLCB = wr_GunLook.CBMode();
 		mGLBreathe = cvBool("wr_breathe", false);
-		mGLSweep = cvBool("wr_edge_sweep", true);
+		mGLSweep = cvBool("wr_edge_sweep", false);
 		mGLPhoto = wr_A11y.Photo();
 		mGLShimmer = clamp(cv("wr_shimmer", 0.0), 0.0, 1.0);
 		mGLLitCard = -1;

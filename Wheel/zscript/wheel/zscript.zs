@@ -3473,7 +3473,7 @@ class wr_Rig : EventHandler
 
 	// Geometry generation. Bump this whenever the numbers below change and every
 	// existing config picks them up once, automatically.
-	const CFG_VERSION = 26;
+	const CFG_VERSION = 27;
 
 	private void migrateConfig()
 	{
@@ -3492,6 +3492,10 @@ class wr_Rig : EventHandler
 		// jarring"): the hover halo's breathing off, and the hovered card's grow down to a steady 6% (it breathed
 		// 1.0x-1.2x). Saved configs held the old values, so the new defaults alone would not reach them.
 		if (from < 26) { setCv("wr_breathe", 0); setCv("wr_pulse", 0.06); }
+		// Gen 27 (owner 2026-11-03: "there is an animated square that runs around the cards, I'd like that out";
+		// "the comparison card is nice, but not needed"): Edge Sweep off, and the comparison card off on both
+		// routes (two hands on two cards, and a floor gun against the one in hand).
+		if (from < 27) { setCv("wr_edge_sweep", 0); setCv("wr_twohand_compare", 0); setCv("wr_inspect_delta", 0); }
 		stamp.SetInt(CFG_VERSION);
 	}
 
@@ -7195,7 +7199,7 @@ class wr_Rig : EventHandler
 		// a weapon, not a weapon, and none of the resolver's stats exist for
 		// it. So the trade card is a weapon-only path by construction.
 		bool wantCompare = (foundW != null && mine != null && mine != foundW
-		                    && cv("wr_inspect_delta", 1.0) > 0.0);
+		                    && cv("wr_inspect_delta", 0.0) > 0.0);
 
 		// Re-strung when the target changes, AND on a cadence while it does not.
 		//
@@ -8495,7 +8499,7 @@ class wr_Rig : EventHandler
 	private void tickTwoHand(PlayerPawn pmo)
 	{
 		Weapon a, b;
-		if (eitherHand() && cvBool("wr_twohand_compare", true) && mPage == PAGE_WEAPONS && mHovered != 0)
+		if (eitherHand() && cvBool("wr_twohand_compare", false) && mPage == PAGE_WEAPONS && mHovered != 0)
 		{
 			int other = (mPokeHand == 1) ? 0 : 1;
 			int oid; Vector2 ouv;
