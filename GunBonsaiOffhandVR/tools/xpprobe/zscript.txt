@@ -1,0 +1,280 @@
+version "4.14"
+// TEST ONLY (never ships): WHO EARNS THE XP. Logs every weapon record's Gun Bonsai XP (and the player pool) tic by tic,
+// so an action can be read as "this record rose by this much". Puts weapons straight into the hands, spawns frozen
+// targets, and calls the series' own damage code for the saber and the Force. Every line it prints starts "XPP ".
+// Set bonsai_base_level_cost high (e.g. 1000000) so no record levels up mid-test (a level-up resets XP).
+//   xpp_hands      main / off class from the cvars xpp_main / xpp_off ("" empty, "-" leave as it is)
+//   xpp_mark N     start counting action N (prints the totals of the action before)
+//   xpp_sum        print the totals since the last mark
+//   xpp_mon D S H  a frozen monster (xpp_mon_class) D ahead, S to the left, health H
+//   xpp_sabhit H   the saber's own cut form (DamageMobj(saber, you)) on a frozen demon at health H; arg1 1: the off saber
+//   xpp_sabthrow   the saber's own Throw at a frozen imp (health 30)
+//   xpp_sabbat     an imp's fireball turned back by the saber's own BatBack, at a 20-health imp
+//   xpp_force K    the Force (UBQS_Force) from the off hand: 0 Push at a 20-health imp; 1 Lightning into a 20-health
+//                  Baron; 2 Push turns an imp fireball back at a 20-health imp 600 away (out of the push's reach)
+//   xpp_grant N L  grant saber node N (SN below) L levels on UBQS_Saber's record
+class XPProbe : EventHandler
+{
+	static const String SN[] = { "ForceSensitive", "ForcePush", "ForcePull", "ForceChoke", "ForceJump", "ForceLightning", "Deflector", "SaberThrow", "TwoSabers" };
+	Array<TFLV_WeaponInfo> seen;
+	Array<double> last;
+	Array<double> acc;
+	double lastPool, accPool;
+	int lastPXP, accPXP;
+	int mark;
+	String markHands;
+	String dmgLine;
+	Actor ball, ballImp;
+	int ballAt;
+
+	PlayerPawn P() { return players[consoleplayer].mo; }
+	Vector3 Ahead(double d, double side = 0)
+	{
+		let p = P();
+		Vector3 f = (cos(p.angle), sin(p.angle), 0), l = (-sin(p.angle), cos(p.angle), 0);
+		return p.pos + f * d + l * side;
+	}
+	Actor Put(String cls, double d, double side = 0, int hp = 0)
+	{
+		let a = Actor.Spawn(cls, Ahead(d, side), ALLOW_REPLACE);
+		if (!a) return null;
+		a.angle = a.AngleTo(P());
+		a.freezetics = 400;
+		if (hp > 0) a.health = hp;
+		return a;
+	}
+	static String HandTag(TFLV_PerPlayerStats st, TFLV_WeaponInfo info)
+	{
+		int h = (info && info.wpn) ? st.HandHolding(info.wpn) : -1;
+		return h == 0 ? "M" : (h == 1 ? "O" : "-");
+	}
+	double Total(TFLV_WeaponInfo info) { return info.XP + info.level * 1000000.0; }
+
+	void Snap(bool print)
+	{
+		let p = P(); if (!p) return;
+		let st = TFLV_PerPlayerStats.GetStatsFor(p); if (!st) return;
+		String s = "";
+		for (int i = 0; i < st.weapons.Size(); i++)
+		{
+			let info = st.weapons[i];
+			if (!info) continue;
+			int k = seen.Find(info);
+			if (k >= seen.Size()) { seen.Push(info); last.Push(Total(info)); acc.Push(0); continue; }
+			double d = Total(info) - last[k];
+			if (abs(d) > 0.0001)
+			{
+				acc[k] += d;
+				s = s .. String.Format(" %s(%s) %+.2f", info.wpnClass, HandTag(st, info), d);
+			}
+			last[k] = Total(info);
+		}
+		double pool = st.poolXP + st.XP * 1000000.0;
+		if (abs(pool - lastPool) > 0.0001) { accPool += pool - lastPool; s = s .. String.Format(" POOL %+.2f", pool - lastPool); }
+		lastPool = pool;
+		if (print && (s != "" || dmgLine != ""))
+			Console.Printf("XPP t%d [%d]%s ||%s", level.maptime, mark, dmgLine, s == "" ? " no XP" : s);
+		dmgLine = "";
+	}
+
+	void Sum()
+	{
+		let p = P(); if (!p) return;
+		let st = TFLV_PerPlayerStats.GetStatsFor(p); if (!st) return;
+		String s = "";
+		for (int i = 0; i < seen.Size(); i++)
+		{
+			if (abs(acc[i]) < 0.0001 || !seen[i]) continue;
+			s = s .. String.Format(" %s(%s)=%.2f", seen[i].wpnClass, HandTag(st, seen[i]), acc[i]);
+		}
+		if (abs(accPool) > 0.0001) s = s .. String.Format(" POOL=%.2f", accPool);
+		Console.Printf("XPP SUM action %d (%s):%s", mark, markHands, s == "" ? " nothing" : s);
+	}
+
+	override void WorldTick()
+	{
+		Snap(true);
+		if (ball && ballAt > 0 && level.maptime - ballAt > 70) { ball = null; ballAt = 0; }
+	}
+
+	override bool WorldHitscanPreFired(WorldEvent e)
+	{
+		let cv = CVar.FindCVar("xpp_trace");
+		if (cv && cv.GetBool())
+			Console.Printf("XPP t%d trace by %s flags %d (offhand bit %d), ready %s off %s", level.maptime, e.Thing ? e.Thing.GetClassName() : 'none', e.AttackLineFlags,
+				(e.AttackLineFlags & LAF_ISOFFHAND) != 0, (e.Thing && e.Thing.player && e.Thing.player.ReadyWeapon) ? e.Thing.player.ReadyWeapon.GetClassName() : 'none',
+				(e.Thing && e.Thing.player && e.Thing.player.OffhandWeapon) ? e.Thing.player.OffhandWeapon.GetClassName() : 'none');
+		return false;
+	}
+	override void WorldThingSpawned(WorldEvent e)
+	{
+		let cv = CVar.FindCVar("xpp_trace");
+		if (!cv || !cv.GetBool() || !e.Thing) return;
+		if (e.Thing.target && e.Thing.target.player && !e.Thing.bIsMonster)
+		{
+			let st = TFLV_PerPlayerStats.GetStatsFor(PlayerPawn(e.Thing.target));
+			Console.Printf("XPP t%d spawned %s (target player, missile %d) hs%d", level.maptime, e.Thing.GetClassName(), e.Thing.bMissile, st ? st.hitscanStack.Size() : -1);
+		}
+	}
+	override void WorldThingDamaged(WorldEvent e)
+	{
+		if (!e.Thing || e.Thing.player) return;
+		if (!e.DamageSource || !e.DamageSource.player) return;
+		String inf = e.Inflictor ? e.Inflictor.GetClassName() : 'none';
+		String im = (e.Inflictor && e.Inflictor.master) ? e.Inflictor.master.GetClassName() : 'none';
+		let st = TFLV_PerPlayerStats.GetStatsFor(PlayerPawn(e.DamageSource));
+		String hs = "";
+		if (st)
+		{
+			let i0 = st.GetInfoForHand(0), i1 = st.GetInfoForHand(1);
+			hs = String.Format(" [hs%d top %s; infos M %s O %s]", st.hitscanStack.Size(),
+				(st.hitscanStack.Size() > 0 && st.hitscanStack[st.hitscanStack.Size() - 1]) ? st.hitscanStack[st.hitscanStack.Size() - 1].wpnClass : "-",
+				i0 ? i0.wpnClass : "-", i1 ? i1.wpnClass : "-");
+		}
+		dmgLine = dmgLine .. String.Format(" %s<-%s(m:%s) %d%s%s", e.Thing.GetClassName(), inf, im, e.Damage, e.Thing.health <= 0 ? " KILL" : "", hs);
+	}
+
+	void SetHand(PlayerPawn p, bool off, String cn)
+	{
+		if (cn == "-") return;
+		let pl = p.player;
+		if (cn == "")
+		{
+			if (off) { pl.SetPsprite(PSP_OFFHANDWEAPON, null); pl.OffhandWeapon = null; }
+			return;
+		}
+		class<Weapon> wc = cn;
+		if (!wc) { Console.Printf("XPP no class %s", cn); return; }
+		if (!p.FindInventory(wc)) p.GiveInventory(wc, 1);
+		let w = Weapon(p.FindInventory(wc));
+		if (!w) return;
+		if (off)
+		{
+			w.bOffhandWeapon = true;
+			pl.OffhandWeapon = w;
+			pl.SetPsprite(PSP_OFFHANDWEAPON, w.GetReadyState());
+		}
+		else
+		{
+			w.bOffhandWeapon = false;
+			pl.PendingWeapon = WP_NOCHANGE;
+			pl.ReadyWeapon = w;
+			pl.SetPsprite(PSP_WEAPON, w.GetReadyState());
+		}
+	}
+
+	TFLV_WeaponInfo SaberInfo(PlayerPawn p)
+	{
+		let sab = Weapon(p.FindInventory("UBQS_Saber"));
+		if (!sab) { p.GiveInventory("UBQS_Saber", 1); sab = Weapon(p.FindInventory("UBQS_Saber")); }
+		let st = TFLV_PerPlayerStats.GetStatsFor(p);
+		return (sab && st) ? st.GetOrCreateInfoFor(sab) : null;
+	}
+
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		let p = P();
+		if (!p) return;
+		if (e.Name ~== "xpp_hands")
+		{
+			let cm = CVar.FindCVar("xpp_main"), co = CVar.FindCVar("xpp_off");
+			p.GiveInventory("Clip", 200); p.GiveInventory("Shell", 50); p.GiveInventory("RocketAmmo", 20); p.GiveInventory("Cell", 200);
+			SetHand(p, false, cm ? cm.GetString() : "-");
+			SetHand(p, true, co ? co.GetString() : "-");
+			Console.Printf("XPP hands: main %s, off %s", p.player.ReadyWeapon ? p.player.ReadyWeapon.GetClassName() : 'none',
+				p.player.OffhandWeapon ? p.player.OffhandWeapon.GetClassName() : 'none');
+		}
+		else if (e.Name ~== "xpp_mark") { Sum(); Snap(false); mark = e.Args[0]; markHands = String.Format("main %s, off %s", p.player.ReadyWeapon ? p.player.ReadyWeapon.GetClassName() : 'none', p.player.OffhandWeapon ? p.player.OffhandWeapon.GetClassName() : 'none'); for (int i = 0; i < acc.Size(); i++) acc[i] = 0; accPool = 0; }
+		else if (e.Name ~== "xpp_sum") Sum();
+		else if (e.Name ~== "xpp_mon")
+		{
+			let cc = CVar.FindCVar("xpp_mon_class");
+			let a = Put(cc ? cc.GetString() : "ZombieMan", e.Args[0], e.Args[1], e.Args[2]);
+			Console.Printf("XPP monster %s at %d ahead %d left, health %d", a ? a.GetClassName() : 'none', e.Args[0], e.Args[1], a ? a.health : 0);
+		}
+		else if (e.Name ~== "xpp_grant")
+		{
+			let info = SaberInfo(p);
+			if (!info) return;
+			String cls = "RSQ_Upgrade_" .. SN[clamp(e.Args[0], 0, SN.Size() - 1)];
+			info.upgrades.Add(cls, max(e.Args[1], 1));
+			Console.Printf("XPP saber granted %s", cls);
+		}
+		else if (e.Name ~== "xpp_sabhit")
+		{
+			let sb = Weapon(p.FindInventory(e.Args[1] == 1 ? "UBQS_SaberOff" : "UBQS_Saber"));
+			let a = Put("Demon", 60, 0, max(e.Args[0], 1));
+			if (!a || !sb) { Console.Printf("XPP sabhit: no saber"); return; }
+			a.DamageMobj(sb, p, 10, 'Saber', DMG_THRUSTLESS);
+		}
+		else if (e.Name ~== "xpp_sabthrow")
+		{
+			let sb = UBQS_SaberBase(p.FindInventory("UBQS_Saber"));
+			if (!sb) return;
+			let a = Put("DoomImp", 160, 0, 30);
+			sb.locks.Clear(); sb.locks.Push(a);
+			sb.Throw();
+			Console.Printf("XPP saber thrown (thrown %s)", sb.thrown ? "yes" : "no");
+		}
+		else if (e.Name ~== "xpp_sabbat")
+		{
+			let sb = UBQS_SaberBase(p.FindInventory("UBQS_Saber"));
+			let a = Put("DoomImp", 260, 0, 20);
+			if (!a || !sb) return;
+			ball = a.SpawnMissile(p, "DoomImpBall");
+			if (!ball) return;
+			ball.SetOrigin(p.pos + (cos(p.angle) * 40, sin(p.angle) * 40, 40), false);
+			Vector3 bl = (cos(p.angle + 90), sin(p.angle + 90), 0);
+			sb.BatBack(ball, bl);
+			ballAt = level.maptime;
+			Console.Printf("XPP saber batted a ball (target now %s)", ball.target ? ball.target.GetClassName() : 'none');
+		}
+		else if (e.Name ~== "xpp_force")
+		{
+			let f = UBQS_Force(p.FindInventory("UBQS_Force"));
+			if (!f) { Console.Printf("XPP force: no UBQS_Force"); return; }
+			f.UpgRefresh();
+			Vector3 d = (cos(p.angle), sin(p.angle), 0);
+			if (e.Args[0] == 0)
+			{
+				Put("DoomImp", 120, 0, 5);
+				f.pushReady = 0;
+				f.Push(p.pos + (0, 0, 40), d);
+			}
+			else if (e.Args[0] == 1)
+			{
+				let a = Put("BaronOfHell", 200, 0, 20);
+				f.StartLightning(a);
+			}
+			else
+			{
+				// the shooter stands beyond the push's reach (448), so only its own ball, turned back, can hurt it
+				let a = Put("DoomImp", 600, 0, 20);
+				if (!a) return;
+				ball = a.SpawnMissile(p, "DoomImpBall");
+				if (!ball) return;
+				ball.SetOrigin(p.pos + (cos(p.angle) * 100, sin(p.angle) * 100, 40 - ball.height * 0.5), false);
+				// A stock fireball is NOBLOCKMAP, so the push's blockmap search never sees it (measured: "finds the
+				// ball: no"). Arg1 1 links it into the blockmap first, to measure who a TURNED shot pays.
+				if (e.Args[1] == 1) ball.A_ChangeLinkFlags(0);
+				f.pushReady = 0;
+				Vector3 hp = p.pos + (0, 0, 40);
+				let bit = BlockThingsIterator.CreateFromPos(hp.x, hp.y, hp.z - 448, 896, 448, false);
+				bool seenBall = false;
+				while (bit.Next()) if (bit.thing == ball) seenBall = true;
+				Console.Printf("XPP the push's own search finds the ball: %s", seenBall ? "yes" : "no");
+				f.Push(hp, d);
+				ballAt = level.maptime;
+				Console.Printf("XPP force push at a ball (target now %s; ball %.0f away, z %.0f, cooldown to %d, now %d)", ball.target ? ball.target.GetClassName() : 'none',
+					ball ? ball.Distance2D(p) : -1, ball ? ball.pos.z - p.pos.z : 0, f.pushReady, level.maptime);
+			}
+		}
+		else if (e.Name ~== "xpp_clean")
+		{
+			let it = ThinkerIterator.Create("Actor");
+			Actor m; int n = 0;
+			while (m = Actor(it.Next())) if ((m.bIsMonster && !m.player) || m.bMissile) { m.Destroy(); n++; }
+			Console.Printf("XPP cleaned %d", n);
+		}
+	}
+}

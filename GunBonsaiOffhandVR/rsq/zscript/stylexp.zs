@@ -17,7 +17,9 @@
 // WHERE EACH TOOL'S SHARE GOES, through the patch's existing paths:
 //   gun, rig.draw          the gun(s) that hit this monster (Gun Bonsai's own credit, noted per blow:
 //                          PerPlayerStats.NoteStyleHit); none noted -> the gun that got the kill
-//   saber.*, force.*       the saber (up_saber's path: UBQS_Saber / UBQS_SaberOff)
+//   saber.*                the saber (up_saber's path: UBQS_Saber / UBQS_SaberOff)
+//   force.*                the Force hand (UBQS_ForceHand; without one, the saber) -- 11-03: the Force is paid only
+//                          for the Force's own work, never a saber's or a gun's share
 //   shield.*               the ShieldSaw (up_shield)
 //   glove                  the boxing gloves (up_gloves)
 //   punch, kick, blade, finisher   the melee weapon that hit it (up_melee), else the pool
@@ -100,7 +102,7 @@ class RSQ_StyleXP : EventHandler
 				&& Sort(stats.lastKillInfo) == "gun") to.Push(stats.lastKillInfo);
 			if (to.Size() == 0) { let cur = stats.GetInfoForCurrentWeapon(); if (cur && Sort(cur) == "gun") to.Push(cur); }
 		}
-		else if (kind == "saber" || kind == "shield" || kind == "glove" || kind == "melee")
+		else if (kind == "saber" || kind == "force" || kind == "shield" || kind == "glove" || kind == "melee")
 		{
 			Hit(stats, victim, kind, to);
 			if (to.Size() == 0 && kind != "melee") { let info = Owned(stats, pmo, kind); if (info) to.Push(info); }
@@ -123,7 +125,8 @@ class RSQ_StyleXP : EventHandler
 	static String Kind(String tool)
 	{
 		if (tool == "gun" || tool == "rig.draw") return "gun";
-		if (tool.Left(6) == "saber." || tool.Left(6) == "force.") return "saber";
+		if (tool.Left(6) == "saber.") return "saber";
+		if (tool.Left(6) == "force.") return "force";
 		if (tool.Left(7) == "shield.") return "shield";
 		if (tool == "glove") return "glove";
 		if (tool == "punch" || tool == "kick" || tool == "blade" || tool == "finisher") return "melee";
@@ -135,7 +138,8 @@ class RSQ_StyleXP : EventHandler
 	{
 		if (!info) return "";
 		String n = info.wpnClass;
-		if (RSQM.IsSaberName(n) || n ~== "UBQS_ForceHand") return "saber";
+		if (n ~== "UBQS_ForceHand") return "force";
+		if (RSQM.IsSaberName(n)) return "saber";
 		if (RSQM.IsShieldName(n)) return "shield";
 		if (RSQM.IsGloveName(n)) return "glove";
 		if (info.IsMelee()) return "melee";
@@ -165,12 +169,14 @@ class RSQ_StyleXP : EventHandler
 			let w = Weapon(it);
 			if (!w) continue;
 			String n = w.GetClassName();
+			if (kind == "force") { if (n ~== "UBQS_ForceHand") { best = w; break; } continue; }
 			bool fits = (kind == "saber" && RSQM.IsSaberName(n)) || (kind == "shield" && RSQM.IsShieldName(n)) || (kind == "glove" && RSQM.IsGloveName(n));
 			if (!fits) continue;
 			// the one in a hand first, then the main-hand class (UBQS_Saber, RSQ_Glove) before its off-hand twin
 			if (pmo.player.ReadyWeapon == w || pmo.player.OffhandWeapon == w) { best = w; break; }
 			if (!best || n.IndexOf("Off") < 0) best = w;
 		}
+		if (!best && kind == "force") return stats.ForceInfo();   // no Force hand: the saber, where the Force is learned
 		return best ? stats.GetOrCreateInfoFor(best) : null;
 	}
 }

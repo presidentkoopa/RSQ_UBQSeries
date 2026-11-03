@@ -54,9 +54,14 @@ RSQ Gun Bonsai VR page:
 | Stock Gun Bonsai Upgrades | Silvergun | Silvergun: Gun Bonsai's own upgrades that do not mesh with the series are out of the pool everywhere (ours, the player, BD22's guns): Dark Harvest, Life / Armour / Ammo Leech (Kill Rewards covers them), Intuition (HP Bars does it), Juggler, Player Damage, Thorns. All: every stock upgrade back. Takes effect within a second; an upgrade a save already holds keeps working. (2026-11-02, not yet run.) |
 | Kill Rewards | On | Monsters burst into bits of health (25), armour (10) and ammo (5 rounds) when they die: SoM's Universal Kill Rewards, folded in (2026-11-02, not yet run). Defaults are the owner's own settings (2026-11-03): By Health, one bit per 10 spawn health, x3 for a boss (a Cyberdemon: 1200 bits, all of them drop), each other bit dropping at 50% (the chance is rolled once, per bit; Range had been rolling it twice, so 50% gave ~25%); the mix Custom 15 health / 20 armour / 65 ammo; ammo for any gun carried; bits vanish after 7 s. (Range, on the page: 1-3 bits a kill.) Its page: Bits per Kill (Few / Standard / Many), Boss Fountain (x1 / x3 / x5), What Drops (Even Mix / Mostly Health / Armour / Ammo), Bits Vanish After (Never / 7 s / 15 s / 30 s / 1 min), Ammo Bits Give (The Gun in Hand / Any Gun I Carry), Bits Fly to Me (m). SoM's raw numbers (Drop Mode, ratios 0-100, chance, the two ammo types, Range) sit under Tuning on the same page. No Reset All row: the menu's defaults are the cvar defaults above. Bits now lie ON the floor (2026-11-03, owner's report "invisible once they hit the floor": the three sprites had no offset, so a landed bit was drawn under the floor; now offset 5,15 and renamed KRBH / KRBA / KRBM, because BD22 VR's sniper already uses sprite RQKM). Rig only, not headset-confirmed. Legendary and champion monsters get the ordinary 1-3 bits (no BOSS flag); their showers are their own mods' loot, except a Champions Titan, which Champions makes BOSS, so it gets the boss fountain. |
 | XP Source | Damage | Damage (Gun Bonsai's own) / Style (RSQ Score's bonus points become XP, split along the combo chain: the finishing tool 50 %, the setup tools 50 %, plus 10 % to the player bar) / Both. Style without RSQ Score acts as Damage. |
+| Force Learns From the Saber | On | When the main saber earns XP (its cuts, its throw, the shots it bats back, the score its kills earn), the Force hand also gets a share of it, on top. Only the saber: no gun, tool or off-hand saber ever feeds the Force. (2026-11-03, rig only, not headset-confirmed.) |
+| Share (%) | 25 | That share, 0-100. |
 | ShieldSaw Gauge | Option (off) | A third gauge, top centre, for the ShieldSaw while it rides on your shoulder. RSQ Score moves down to make room. |
 | Screen Skin | Mockup | Which screens draw Gun Bonsai: Gun Bonsai (its own) / Mockup (the owner's mockups) / Hex Rail / Terminal. |
 | Ammo And Health | On | With a skin: per-hand ammo, health, face and armour along the bottom (hides Brutal Doom's HUD under it). |
+
+Reset All (bottom of the page, asks first): every row on this page, its Kill Rewards page and its Tuning page back to
+its default.
 
 Tuning and Debug page: Force Base Strength (0: an unlearned Force power does nothing; learned, levels 1-4 are 40 / 70 /
 100 / 130 % of the saber's own), First Star
@@ -145,6 +150,34 @@ Always on (no row):
     both hands up at your face, a blow from in front does 60% of its damage at level 1, 10% less a level, down to
     30% at level 4; a blow of 35 or more at level 1 (+10 a level) breaks the guard); Grapple (Long Line, Fast Reel, Heavy Haul, Get Over Here, Bowling, Barbed Claw, Slingshot,
     Steady Line, Double Hook from player level 5).
+
+## Who earns the XP (2026-11-03)
+
+The rule: **XP goes only to the weapon that did the damage, in the hand that holds it.** Nothing is paid for being
+in a hand. In plain words, per thing:
+
+- **A gun** (either hand): its own bullets, pellets, rockets, fragments, explosions and burns pay that gun. BD22 VR's
+  True Bullets (the round that flies the bullet's line) pay the gun whose trigger fired them.
+- **The saber**: its cuts, its throw and the shots it bats back pay that saber (the off-hand saber has its own record).
+- **The Force** (push, pull, grip, lightning, a flung body, the jump's landing, a shot the push turns back): only the
+  Force hand. Without a Force hand (its row off) the Force pays the saber, where the Force is learned.
+- **The Force never earns from anything else.** No gun kill, no tool and no off-hand saber pays it. The one
+  exception is the row above, **Force Learns From the Saber** (on, 25 %): when the main saber earns, the Force hand
+  gets that share as well.
+- **Gloves**: each glove its own punches. **Whip**, **ShieldSaw** (bash, grind, the blade, the returned bullet),
+  **Grenade** (the blast and what it sets off): their own records.
+- **Throws and the hook**: a Distance Grab throw (and a barrel it sets off), a Headlock throw and the Grapple's hook
+  pay the player bar, not a weapon. A gun thrown away (Tactical Rig) pays that gun's own record when it still has one,
+  else the player bar.
+- **When the source is unknown** (a script hit nobody named), the hand is guessed from where the shot is and which
+  hand is firing; the bare Force hand is never guessed, because it fires nothing.
+
+What was wrong before (measured on the rig, full load order, 11-03): a main-hand Rifle kill paid the Force hand when
+the Force hand was held out with its trigger down (BD22 VR's rounds fire their bullet themselves, so Gun Bonsai fell
+back to the guess); an off-hand BrutalPistol kill paid the main-hand Rifle; every Force blow paid whichever hand the
+guess picked (the main saber, or the off saber); a thrown gun's hit paid the gun in the main hand. All four are fixed.
+Measured on the rig, rig only, not headset-confirmed. The table and the probe: GBOVR_TREES.md section 1b,
+`tools/xpprobe/`.
 
 ## Test it
 

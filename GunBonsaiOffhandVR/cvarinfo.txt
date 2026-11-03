@@ -49,6 +49,10 @@ server bool bonsai_vr_warn_binding = true;
 // The Force with this patch loaded: an unlearned power works at this share of the saber's own. 0 (the default, owner
 // 11-03): it does nothing until its node is learned; then level 1-4 is 40 / 70 / 100 / 130 % of the saber's own.
 server float rsq_force_start = 0.0;
+// Force Learns From the Saber (owner 11-03): when the main saber (UBQS_Saber) earns XP, the Force hand
+// (UBQS_ForceHand) also gets this share of it, on top. Only the saber's XP: no gun, tool or off-hand saber feeds it.
+server bool rsq_force_learns = true;
+server int rsq_force_share = 25;
 // Star Punch banking, SuperPunchOut's `stars <first> <every>` (Soda Popinski's line). RSQ Melee's punch reader reads
 // them by name while the glove has Star Punch.
 server int rsq_star_first = 1;

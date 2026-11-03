@@ -1,0 +1,4 @@
+server string xpp_main = "-";
+server string xpp_off = "-";
+server string xpp_mon_class = "ZombieMan";
+server bool xpp_trace = false;

@@ -281,6 +281,70 @@ class TFLV_PerPlayerStats : Object play {
     return v >= 2 ? 2 : 1;
   }
 
+  // ==========================================================================
+  // RSQ PATCH (XP credit, owner 2026-11-03 17:47: "the Force seems to get points for mainhand kills ... it
+  // shouldn't get from other weapons"). THE FORCE IS PAID ONLY FOR ITS OWN DAMAGE.
+  //
+  // RSQ Saber's bare Force hand (UBQS_ForceHand) is a Weapon in the off hand that never hurts anything itself:
+  // every blow the Force lands is dealt by the Force item (UBQS_Force: push, pull, grip, lightning, the flung
+  // body, the jump's landing) as DamageMobj(theForce, you), and a shot the push turns back carries the Force as
+  // its master. Before this, none of that was recognised, so a Force blow fell to the hand guess (paid the main
+  // hand), and anything else the guess could not place could land on the Force hand. Now:
+  //   - damage whose inflictor is UBQS_Force, or whose master is this player's UBQS_Force, pays the Force hand's
+  //     record (UBQS_ForceHand; without one -- Force Hand row off -- the saber's, where the Force is learned);
+  //   - the hand guess never picks the Force hand (IsInertHand): it cannot have fired anything.
+  // Asked by class name, so this file needs no RSQ Saber to compile.
+  // by name at run time (a literal class name would be resolved at compile time, and RSQ Saber may not be loaded)
+  Inventory InvNamed(String n) const {
+    if (!owner) return null;
+    class<Inventory> c = n;
+    return c ? owner.FindInventory(c) : null;
+  }
+  static bool IsInertHand(Weapon w) {
+    return w && w.GetClassName() == 'UBQS_ForceHand';
+  }
+  bool IsForceCause(Actor shot) const {
+    if (!shot || !owner) return false;
+    if (shot.GetClassName() == 'UBQS_Force') { let iv = Inventory(shot); return iv && iv.owner == owner; }
+    let m = Inventory(shot.master);
+    return m && m.GetClassName() == 'UBQS_Force' && m.owner == owner;
+  }
+  // The Force hand's record (made if it has none), else the main saber's; null when the player has neither.
+  TFLV_WeaponInfo ForceInfo() {
+    if (!owner) return null;
+    Weapon fh = Weapon(InvNamed("UBQS_ForceHand"));
+    if (fh) return GetOrCreateInfoFor(fh);
+    Weapon sb = Weapon(InvNamed("UBQS_Saber"));
+    return sb ? GetOrCreateInfoFor(sb) : null;
+  }
+  // A gun thrown away (RSQ Tactical Rig) is a Weapon nobody owns: its hit pays that gun's own record when it
+  // still has one (the thrown actor is the same Weapon the record names), and the player pool when it has none.
+  bool IsLooseWeapon(Actor shot) const {
+    let w = Weapon(shot);
+    return w && !w.owner;
+  }
+
+  // FORCE LEARNS FROM THE SABER (the owner, 11-03: "We can give it a percentage of Lightsaber kills ... it would
+  // help the Force level up too"). rsq_force_learns (on) / rsq_force_share (25 %): whenever the MAIN saber's
+  // record (UBQS_Saber) earns XP -- its cuts, its throw, the shots it bats back, the score its kills earn -- the
+  // Force hand's record gets that share on top. Nothing else feeds it: no gun, no off-hand saber, no tool.
+  bool sharing;
+  void ShareSaberXP(TFLV_WeaponInfo info, double xp) {
+    if (sharing || !info || xp <= 0 || !owner || !(info.wpnClass ~== "UBQS_Saber")) return;
+    let on = CVar.FindCVar("rsq_force_learns");
+    if (on && !on.GetBool()) return;
+    let pc = CVar.FindCVar("rsq_force_share");
+    double pct = clamp(pc ? pc.GetInt() : 25, 0, 100);
+    if (pct <= 0) return;
+    Weapon fh = Weapon(InvNamed("UBQS_ForceHand"));
+    if (!fh) return;
+    let fi = GetOrCreateInfoFor(fh);
+    if (!fi || fi == info) return;
+    sharing = true;
+    fi.AddXP(xp * pct / 100.0);
+    sharing = false;
+  }
+
   void NoteStyleHit(Actor target, TFLV_WeaponInfo info) {
     if (!target || !info) return;
     for (int i = styleV.size() - 1; i >= 0; --i) {
@@ -783,6 +847,10 @@ class TFLV_PerPlayerStats : Object play {
     let info = GetInfoForHand(isOffhand ? 1 : 0);
     hitscanStack.push(info);
     hitscanHints.push(typeHint);
+    // RSQ PATCH (XP credit): stamp the hand's trace for TraceProvenance
+    int th = isOffhand ? 1 : 0;
+    traceTic[th] = gametic;
+    traceInfo[th] = info;
   }
 
   void PopHitscan() {
@@ -861,6 +929,9 @@ class TFLV_PerPlayerStats : Object play {
   int HandOfShot(Actor shot) const {
     if (!owner || !owner.player) return -1;
     if (IsSuiteHook()) return -1;
+    // RSQ PATCH (XP credit): the Force's blow is the Force hand's; a thrown gun is no hand's
+    if (IsForceCause(shot)) { let fh = InvNamed("UBQS_ForceHand"); return fh ? HandHolding(Weapon(fh)) : -1; }
+    if (IsLooseWeapon(shot)) return -1;
     let dotItem = TFLV_Upgrade_Dot(shot);
     if (dotItem && dotItem.credit) { let d = dotItem.credit.Dominant(); return d ? HandHolding(d.wpn) : -1; }
     if ((!shot || shot == owner) && claimStack.size() > 0) {
@@ -932,8 +1003,10 @@ class TFLV_PerPlayerStats : Object play {
     double sMain = 0, sOff = 0;
 
     // Only hands that actually hold something can have fired.
-    bool hasMain = WeaponForHand(0) != null;
-    bool hasOff  = WeaponForHand(1) != null;
+    // RSQ PATCH (XP credit): a hand holding the bare Force hand counts as empty here -- it fires nothing, and
+    // the Force's own blows are resolved by name before any guess (IsForceCause).
+    bool hasMain = WeaponForHand(0) != null && !IsInertHand(WeaponForHand(0));
+    bool hasOff  = WeaponForHand(1) != null && !IsInertHand(WeaponForHand(1));
     if (!hasOff) return 0, 1.0;
     if (!hasMain) return 1, 1.0;
 
@@ -980,6 +1053,36 @@ class TFLV_PerPlayerStats : Object play {
     return 1, sOff - sMain;
   }
 
+  // RSQ PATCH (XP credit, measured 2026-11-03 on the full order). BD22 VR Reloaded's True Bullets cancel the
+  // player's own hitscan (RSQ_PlayerRounds.WorldHitscanPreFired returns true) and spawn a ROUND
+  // (RSQ_PlayerRound, target = you) that flies the shot's line and fires the hitscan itself when it arrives,
+  // as LineAttack(..., LAF_TARGETISSOURCE) from the round. Gun Bonsai's bracket opened for your trace and closed
+  // before the round existed, and the round's own trace is not a player's, so every BD bullet hit fell to the
+  // hand guess: an off-hand BrutalPistol kill paid the main-hand Rifle (measured, t185), and while the off hand
+  // looked busy a main-hand kill could pay the off hand -- the bare Force hand, whose gauge is what the owner
+  // saw rise. Now:
+  //   - each trace a hand starts is stamped (PushHitscan); a round that comes to life in the SAME tic as one
+  //     hand's trace (and not the other's) is that hand's gun's (TraceProvenance). Both hands in one tic: the
+  //     hand guess, as before. Only RSQ_PlayerRound (asked by name): anything else born that tic -- a rocket from
+  //     the other hand, a punch's helper -- keeps its own rules.
+  //   - when a thing with a record fires a trace of its own (the round arriving), the bracket opens for its
+  //     record (TFLV_EventHandler.WorldHitscanPreFired), so the hit is paid to the gun that fired the round.
+  int traceTic[2];
+  TFLV_WeaponInfo traceInfo[2];
+  TFLV_VR_Provenance TraceProvenance(Actor thing) {
+    if (!thing || thing.GetClassName() != 'RSQ_PlayerRound') return null;
+    bool m = traceTic[0] == gametic && traceInfo[0] && traceInfo[0].wpn;
+    bool o = traceTic[1] == gametic && traceInfo[1] && traceInfo[1].wpn;
+    if (m == o) return null;
+    ++provClaims;
+    return RegisterProvenance(thing, traceInfo[m ? 0 : 1], 1.0, TFLV_VR_Attribution.HINT_HITSCAN);
+  }
+  void PushHitscanInfo(TFLV_WeaponInfo info, int typeHint) {
+    if (hitscanStack.size() >= HITSCAN_MAX_DEPTH) { hitscanStack.Delete(0); hitscanHints.Delete(0); }
+    hitscanStack.push(info);
+    hitscanHints.push(typeHint);
+  }
+
   // Resolve and register provenance for a freshly spawned projectile that
   // nobody claimed.
   TFLV_VR_Provenance ResolveSpawn(Actor shot) {
@@ -1015,6 +1118,26 @@ class TFLV_PerPlayerStats : Object play {
     // and is a reserved word.
     let dotItem = TFLV_Upgrade_Dot(shot);
     if (dotItem && dotItem.credit && !dotItem.credit.IsEmpty()) return dotItem.credit;
+
+    // RSQ PATCH (XP credit): the Force's own blow pays the Force hand, and nothing else does (IsForceCause).
+    if (IsForceCause(shot)) {
+      let finfo = ForceInfo();
+      if (!finfo) return null;
+      ++provClaims;
+      let fp = new("TFLV_VR_Provenance");
+      fp.Init(shot, TFLV_VR_Attribution.HINT_MELEE);
+      fp.Add(finfo, 1.0);
+      return fp;
+    }
+    // RSQ PATCH (XP credit): a thrown gun's hit pays that gun's record (null: none, the pool takes it upstream).
+    if (IsLooseWeapon(shot)) {
+      let linfo = GetInfoFor(Weapon(shot));
+      if (!linfo) return null;
+      let lp = new("TFLV_VR_Provenance");
+      lp.Init(shot, TFLV_VR_Attribution.HINT_MELEE);
+      lp.Add(linfo, 1.0);
+      return lp;
+    }
 
     // VR PATCH (melee upgrades): inside a claim bracket, damage dealt by the
     // player's own body belongs to the weapon that opened it. See claimStack.
@@ -1203,6 +1326,7 @@ class TFLV_PerPlayerStats : Object play {
     info.AddXP(xp);
     int hand = HandHolding(info.wpn);
     if (hand >= 0) lastXPHand = hand;
+    ShareSaberXP(info, xp);   // RSQ PATCH: Force Learns From the Saber
   }
 
   double GetXPForDamage(Actor target, uint damage) const {
@@ -1247,7 +1371,7 @@ class TFLV_PerPlayerStats : Object play {
 
     // VR PATCH (suite): a thrown object is no gun's. Its XP goes to the player
     // pool and no weapon's upgrades fire on it (see poolXP).
-    if (IsSuiteThrow(shot) || IsSuiteHook()) {
+    if (IsSuiteThrow(shot) || IsSuiteHook() || (IsLooseWeapon(shot) && !GetInfoFor(Weapon(shot)))) {
       ++provPooled;
       AddPoolXP(GetXPForDamage(target, damage));
       return;
@@ -1307,7 +1431,7 @@ class TFLV_PerPlayerStats : Object play {
     double w = target ? max(1, target.GetSpawnHealth()) : 1;
     // VR PATCH (suite): a throw's kill queues a pooled entry, so the score it
     // earns follows it to the pool instead of to the last gun that killed.
-    if (IsSuiteThrow(shot) || IsSuiteHook()) {
+    if (IsSuiteThrow(shot) || IsSuiteHook() || (IsLooseWeapon(shot) && !GetInfoFor(Weapon(shot)))) {
       QueueScoreKill(null, w);
       lastKillInfo = null;
       lastKillPooled = true;

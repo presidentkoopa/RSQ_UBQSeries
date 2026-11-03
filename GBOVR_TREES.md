@@ -52,6 +52,61 @@ decides whether that is wanted (two trees, or one tree read as the best of both 
 **Not done:** the live check the handoff asks for (`netevent bonsai-debug,info` after real off-hand hits). The
 local lane does not launch the game by the owner's rule; the rig or the owner's headset does that check.
 
+## 1b. Who earns the XP: the rules as they stand (2026-11-03, measured on the rig)
+
+Owner, 11-03 17:47: "the Force seems to get points for mainhand kills ... it shouldn't get from other weapons. Can we
+make sure the hands are getting XP correctly? Only for when they do damage." **The rule: XP goes only to the weapon
+that did the damage, in the hand that holds it.** Exception (owner's offer): **Force Learns From the Saber** (on,
+Share 25 %, rows on the Gun Bonsai VR page and in its new Reset All): when the main saber (`UBQS_Saber`) earns XP the
+Force hand (`UBQS_ForceHand`) also gets that share, on top; nothing else feeds the Force.
+
+How Gun Bonsai VR decides, in order (`PerPlayerStats.zsc` `ResolveCredit`; `HandOfShot` and `OnKill` read the same):
+1. a burn's own record (DoT);
+2. **the Force** (new): inflictor `UBQS_Force`, or a shot whose `master` is your `UBQS_Force` (the push sets it on a shot
+   it turns back, as `BatBack` sets the saber) -> the Force hand's record; without a Force hand, the main saber's;
+3. **a thrown gun** (new): a Weapon nobody owns (Tactical Rig) -> that gun's own record, else the player pool;
+4. the claim bracket (`credit.push`/`credit.pop`: ShieldSaw bash/grind/blade, the whip's hit);
+5. a claimed actor (`"claim"`: grenade, Melee's glove helpers, the ShieldSaw's returned bullet) or any registered record;
+6. the inflictor is one of your weapons (saber cuts, gloves) -> its record;
+7. inherited from target / master / tracer (rockets' blasts, fragments, a batted shot -> the saber);
+8. the hitscan bracket: a trace by you (its hand from the engine's off-hand bit) or **by a round of yours** (new: BD22
+   VR's True Bullets fire the bullet from `RSQ_PlayerRound`; the round is stamped at birth with the hand whose trace
+   it replaced, `TraceProvenance`);
+9. otherwise the guess (`ScoreHandFor`: position, aim, psprite, buttons); **the bare Force hand is never a candidate**
+   (new: `IsInertHand`). Throws (Distance Grab, Headlock) and the hook pay the player pool before any of this.
+
+Measured on the rig (`GunBonsaiOffhandVR/tools/xpprobe/` + the fists probe for the tools; XP per record, level cost set
+huge so nothing levels mid-test; "Force" = `UBQS_ForceHand` in the off hand; `ubqs_force_saber 0` so the Force hand
+can sit beside a gun, the hardest case). Full order: doom2 -> brutal22test6 -> BD_VoxelPack -> 03 2.0.3q -> all RSQ ->
+Gun Bonsai -> RSQ_GunBonsaiVR. Rig only, not headset-confirmed.
+
+| Action (main / off) | Before | After |
+|---|---|---|
+| Rifle kill (Rifle / Force) | Rifle 20 | Rifle 20, Force 0 |
+| Rifle kill, Force hand held out 0.8 m ahead with its trigger down | **Force 20**, Rifle 0 | Rifle 20, Force 0 |
+| Rocket kill (Rocket_Launcher / Force) | Rocket 20 | Rocket 20 |
+| Off-hand gun kill (Rifle / BrutalPistol) | **Rifle 14** | BrutalPistol 14 |
+| Saber cut kill (Saber / Force) | Saber 6.51 | Saber 6.51 + Force 1.63 (25 %) |
+| Saber throw kill | Saber 30 | Saber 30 + Force 7.5 |
+| Shot batted back by the saber | Saber 20 | Saber 20 + Force 5 |
+| Force push kill | **Saber 5** | Force 5 |
+| Force lightning kill (Baron) | **Saber 41.58** | Force 41.58 |
+| Shot turned back by the Force push | **Saber 20** | Force 20 |
+| Off saber cut (Saber / SaberOff) | SaberOff 6.51 | SaberOff 6.51 (no Force share) |
+| Main glove / off glove punch | Glove 20 / GloveOff 20 | same |
+| Whip crack / ShieldSaw bash / grenade blast | Whip 12 / ShieldSaw 40 / Grenade 296 | same |
+| Tactical Rig thrown gun (a gun with no record) | **Rifle (main) 60** | player pool 60 |
+| Melee butt shove (doom2 + all RSQ, Chaingun) | Chaingun 14 | Chaingun 14 (the gun that shoved) |
+
+doom2 + Gun Bonsai + Saber + GBVR (stock guns): the same, except the plain Doom guns were already right (their
+hitscan opens the bracket itself) and the Force hand did not rob the Chaingun there. Not driven on the rig, from code:
+Force grip and the flung body (same inflictor as lightning, `UBQS_Force`); Distance Grab throw / yank and the Headlock
+throw (`IsSuiteThrow` -> pool); the Grapple (`hook.dealing` -> pool; the probe's arrival dealt no damage).
+
+**Found, not an XP matter (Saber):** the Force push never turns a stock fireball: Doom's projectiles are NOBLOCKMAP and
+the push searches the blockmap (`UBQS_Force.Push`); measured "finds the ball: no". The probe links the ball into the
+blockmap to measure the credit. Left for the Saber lane / the owner.
+
 ---
 
 ## 2. The audit: every upgrade we ship today (L0 step 1)

@@ -326,15 +326,33 @@ class TFLV_EventHandler : StaticEventHandler {
           ? TFLV_VR_Attribution.HINT_MELEE : TFLV_VR_Attribution.HINT_HITSCAN;
         stats.PushHitscan((e.AttackLineFlags & LAF_ISOFFHAND) != 0, hint);
       }
+    } else {
+      // RSQ PATCH (XP credit): a thing of yours with a record firing its own trace (BD22 VR's round arriving):
+      // the bracket opens for that record. See PerPlayerStats.TraceProvenance.
+      let info = CarrierInfo(e.thing);
+      if (info) TFLV_PerPlayerStats.GetStatsFor(PlayerPawn(e.thing.target)).PushHitscanInfo(info, TFLV_VR_Attribution.HINT_HITSCAN);
     }
     return false;
   }
 
   override void WorldHitscanFired(WorldEvent e) {
     let pawn = PlayerPawn(e.thing);
-    if (!pawn) return;
+    if (!pawn) {
+      if (CarrierInfo(e.thing)) TFLV_PerPlayerStats.GetStatsFor(PlayerPawn(e.thing.target)).PopHitscan();
+      return;
+    }
     let stats = TFLV_PerPlayerStats.GetStatsFor(pawn);
     if (stats) stats.PopHitscan();
+  }
+
+  // RSQ PATCH (XP credit): the record of a non-player thing whose target is a player, when it has one.
+  TFLV_WeaponInfo CarrierInfo(Actor thing) {
+    if (!thing || !PlayerPawn(thing.target)) return null;
+    let stats = TFLV_PerPlayerStats.GetStatsFor(PlayerPawn(thing.target));
+    if (!stats) return null;
+    let prov = stats.FindProvenance(thing);
+    let info = prov ? prov.Dominant() : null;
+    return (info && info.wpn) ? info : null;
   }
 
   override bool WorldRailgunPreFired(WorldEvent e) {
@@ -372,7 +390,9 @@ class TFLV_EventHandler : StaticEventHandler {
       if (!owner && thing.tracer) owner = PlayerPawn(thing.tracer.target);
       if (owner) {
         let stats = TFLV_PerPlayerStats.GetStatsFor(owner);
-        if (stats) stats.InheritProvenance(thing);
+        // RSQ PATCH (XP credit): something of yours born in the tic one hand fired (BD22 VR's RSQ_PlayerRound)
+        // is that hand's gun's; see PerPlayerStats.TraceProvenance.
+        if (stats && !stats.InheritProvenance(thing) && PlayerPawn(thing.target)) stats.TraceProvenance(thing);
       }
     }
 

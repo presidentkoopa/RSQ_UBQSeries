@@ -51,6 +51,8 @@ OptionMenu "RSQ_MeleeOptions"
 	Option "Berserk Meter Gauge", "rsqgb_berserk_gauge", "OnOff"
 	Option "  Gauge Animation", "rsqgb_gauge_anim", "OnOff"
 	Option "$RSQ_MENU_XPSRC", "rsq_xp_source", "RSQ_XPSources"
+	Option "$RSQ_MENU_FORCE_LEARNS", "rsq_force_learns", "OnOff"
+	Slider "$RSQ_MENU_FORCE_SHARE", "rsq_force_share", 0, 100, 5, 0
 	Option "$RSQ_MENU_SHIELDGAUGE", "rsq_hud_shield", "OnOff"
 	StaticText " "
 	Option "$RSQ_MENU_KR", "rsqgb_kr_enabled", "OnOff"
@@ -60,6 +62,8 @@ OptionMenu "RSQ_MeleeOptions"
 	Option "Ammo And Health", "rsq_ui_bottom", "OnOff"
 	StaticText " "
 	Submenu "$RSQ_MENU_ADV", "RSQ_MeleeAdvanced"
+	StaticText " "
+	SafeCommand "$RSQ_MENU_RESETALL", "resetcvar rsq_stock_mode; resetcvar rsqgb_berserk_gauge; resetcvar rsqgb_gauge_anim; resetcvar rsq_xp_source; resetcvar rsq_force_learns; resetcvar rsq_force_share; resetcvar rsq_hud_shield; resetcvar rsqgb_kr_enabled; resetcvar rsqgb_kr_amount; resetcvar rsqgb_kr_boss; resetcvar rsqgb_kr_mix; resetcvar rsqgb_kr_life; resetcvar rsqgb_kr_ammo_mode; resetcvar rsqgb_kr_magnet; resetcvar rsqgb_kr_mode; resetcvar rsqgb_kr_hp_ratio; resetcvar rsqgb_kr_chance; resetcvar rsqgb_kr_ratio_health; resetcvar rsqgb_kr_ratio_armor; resetcvar rsqgb_kr_ratio_ammo; resetcvar rsqgb_kr_ammotype1; resetcvar rsqgb_kr_ammotype2; resetcvar rsqgb_kr_min; resetcvar rsqgb_kr_max; resetcvar rsqgb_kr_rnd; resetcvar rsqgb_kr_debug; resetcvar rsq_ui_skin; resetcvar rsq_ui_bottom; resetcvar rsq_force_start; resetcvar rsq_star_first; resetcvar rsq_star_every; resetcvar rsq_hook_xp; resetcvar rsq_xp_style_scale; resetcvar rsq_xp_style_player; resetcvar rsq_ui_inset; resetcvar rsq_ui_hud_scale", "$RSQ_MENU_RESETALL_Q"
 }
 
 // Kill Rewards, in plain words (the owner, 2026-11-02: "the menu I do not understand"). SoM's raw numbers are on
