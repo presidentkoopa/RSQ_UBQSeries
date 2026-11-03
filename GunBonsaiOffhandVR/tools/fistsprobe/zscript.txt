@@ -1587,7 +1587,10 @@ class FistsProbe : EventHandler
 			ball = a1.SpawnMissile(p, "DoomImpBall");
 			if (!ball) return;
 			ball.SetOrigin(p.pos + (cos(p.angle) * 40, sin(p.angle) * 40, 40), false);
-			sb.BatBack(ball, (cos(p.angle + 45), sin(p.angle + 45), 0));
+			// arg0 > 0: the blade across the ball's flight, turned arg0 degrees (its mirror goes 2 x arg0 off straight back)
+			Vector3 bl = (cos(p.angle + 45), sin(p.angle + 45), 0);
+			if (e.Args[0] > 0) { double th = VectorAngle(ball.vel.x, ball.vel.y) + 90 + e.Args[0]; bl = (cos(th), sin(th), 0); }
+			sb.BatBack(ball, bl);
 			double toImp = Actor.absangle(VectorAngle(ball.vel.x, ball.vel.y), ball.AngleTo(a1));
 			double toGaze = Actor.absangle(VectorAngle(ball.vel.x, ball.vel.y), p.angle);
 			Console.Printf("FP turned shot: %.0f degrees off the shooter, %.0f off your gaze", toImp, toGaze);

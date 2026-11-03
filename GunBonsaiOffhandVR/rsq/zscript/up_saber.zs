@@ -212,8 +212,14 @@ class RSQ_Upgrade_RunThrough : RSQ_Upgrade_SaberMarker
 class RSQ_Upgrade_ReturnToSender : RSQ_Upgrade_SaberMarker
 {
 	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return SaberInfo(info) && Has(info, "Deflector") && LevelOf(info, "ReturnToSender") < 3; }
-	static double Cone(uint lv) { return lv >= 3 ? 180.0 : lv == 2 ? 90.0 : 30.0; }
-	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("cone", level >= 3 ? "always" : String.Format("within %d degrees of where you look", int(Cone(level)))); }
+	// the tree read literally (owner 11-02): 1 within 30 degrees of where you look; 2 also when the turned shot would go
+	// within 20 degrees of its shooter, wherever you look; 3 always
+	static double Cone(uint lv) { return lv >= 3 ? 180.0 : 30.0; }
+	static double Mirror(uint lv) { return lv >= 2 ? 20.0 : 0.0; }
+	override void GetTooltipFields(Dictionary fields, uint level)
+	{
+		fields.Insert("cone", level >= 3 ? "always" : level == 2 ? "when you look at the shooter, or when the shot would pass within 20 degrees of it anyway" : "when you look at the shooter");
+	}
 }
 // GUIDED RETURN: a turned shot goes where you look (help onto the enemy nearest your gaze); 2: where your off hand points.
 class RSQ_Upgrade_GuidedReturn : RSQ_Upgrade_SaberMarker

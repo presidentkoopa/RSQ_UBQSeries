@@ -450,6 +450,7 @@ class RSQ_MeleeUpgradeService : Service
 			if (stringArg == "RunThrough.tics") return RSQ_Upgrade_RunThrough.Tics(lv);
 			if (stringArg == "RunThrough.finish") return RSQ_Upgrade_RunThrough.Finish();
 			if (stringArg == "ReturnToSender.cone") return RSQ_Upgrade_ReturnToSender.Cone(lv);
+			if (stringArg == "ReturnToSender.mirror") return RSQ_Upgrade_ReturnToSender.Mirror(lv);
 			if (stringArg == "Precognition.speed") return RSQ_Upgrade_Precognition.Speed(lv);
 			if (stringArg == "Precognition.width") return RSQ_Upgrade_Precognition.Width(lv);
 			if (stringArg == "DoubleBladed.back") return RSQ_Upgrade_DoubleBladed.Back();

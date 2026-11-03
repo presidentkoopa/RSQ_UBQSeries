@@ -2343,11 +2343,27 @@ class UBQS_SaberBase : Weapon abstract
 		{
 			aim = 2;
 			if (uGuided > 0) aim = uGuided >= 2 ? 3 : 1;
+			// RETURN TO SENDER (the tree read literally, owner 11-02): 1 home when you look at the shooter (its cone); 2 also
+			// when the shot, turned off the blade as a mirror, would go within 20 degrees of it, wherever you look; 3 always
 			if (uRtS > 0 && shooter && shooter != owner && shooter.health > 0)
 			{
 				double cone = UBQS_Upg.Num("ReturnToSender.cone", uRtS, 30.0);
 				double off = abs(DeltaAngle(owner.angle, owner.AngleTo(shooter)));
-				if (cone >= 180.0 || off <= cone) { aim = 0; UBQS_Upg.Touch("return.sender", owner, shooter); }
+				bool home = cone >= 180.0 || off <= cone;
+				double near = UBQS_Upg.Num("ReturnToSender.mirror", uRtS, 0.0);
+				if (!home && near > 0)
+				{
+					Vector3 v = mo.vel.Length() > 0.001 ? mo.vel.Unit() : (1, 0, 0);
+					Vector3 n = (blade cross (v cross blade));
+					Vector3 to = level.Vec3Diff(mo.pos, (shooter.pos.xy, shooter.pos.z + shooter.height * 0.5));
+					if (n.Length() > 0.001 && to.Length() > 0.001)
+					{
+						n = n.Unit();
+						Vector3 m = v - n * (2.0 * (v dot n));
+						home = acos(clamp(m dot to.Unit(), -1.0, 1.0)) <= near;
+					}
+				}
+				if (home) { aim = 0; UBQS_Upg.Touch("return.sender", owner, shooter); }
 			}
 		}
 		if (aim == 3)
@@ -4644,10 +4660,10 @@ class UBQS_Force : Inventory
 	int    uPush, uPull, uChoke, uJump, uChain;
 	// THE FORCE'S TREE (GBOVR_TREES.md 4.2): Force Sensitive (the unlock under the patch), Force Speed, Force Lightning
 	int    uFS, uSpeed, uLight;
-	Actor  lightAim, lightTarget;  // FORCE LIGHTNING: what the palm-down hand is aimed at, and what the bolt pours into
+	Actor  lightAim, lightTarget;  // FORCE LIGHTNING: what the palm-out hand is aimed at, and what the bolt pours into
 	int    lightCharge, lightUntil, lightLv;
-	const  LIGHT_AIM = 17;         // tics aimed palm-down before a flick lets it go (half a second)
-	const  LIGHT_ROLL = 60.0;      // degrees of roll that read as palm-down
+	const  LIGHT_AIM = 17;         // tics aimed palm out before a flick lets it go (half a second)
+	const  LIGHT_PITCH = 40.0;     // degrees up the off hand points to read as palm out (RSQ Gestures' rsqg_two_palms_pitch)
 	const  LIGHT_TICS = 35;        // how long it pours
 	const  LIGHT_CHAIN = 204.0;    // map units (6 m) from one link to the next
 	const  SPEED_HOLD = 35;        // FORCE SPEED: tics held up and still with nothing to grip
@@ -4867,9 +4883,11 @@ class UBQS_Force : Inventory
 		// -g is the dead zone where a gesture does nothing at all and the player is told nothing. Exposed as
 		// the dot it is: the cosine of no round number of degrees is 0.55.
 		double gstr = UBQS_A11y.Low(clamp(FV("ubqs_gesture_straight", 0.55), 0.0, 1.0));
-		// FORCE LIGHTNING (Gun Bonsai VR): the hand turned palm-down (the stand-in for spread fingers: QuestZDoom reads no
-		// fingers) and aimed at a monster for LIGHT_AIM tics charges it; a flick lets it go. Palm-down, nothing else fires.
-		if (uLight > 0 && abs(Actor.Normalize180(OffRoll())) >= LIGHT_ROLL)
+		// FORCE LIGHTNING (Gun Bonsai VR): the palm held OUT at a monster (owner 11-02; RSQ Gestures' palm-out: the hand
+		// pointing up, fingers up -- QuestZDoom reads no fingers) for LIGHT_AIM tics charges it; a flick lets it go. The
+		// aim is the line from your eyes through the palm. While the palm is out nothing else fires: Push is the thrust
+		// with the palm not out.
+		if (uLight > 0 && PalmOut())
 		{
 			let t = LightningAim();
 			if (t && t == lightAim) lightCharge++;
@@ -5377,9 +5395,15 @@ class UBQS_Force : Inventory
 		if (IV("ubqs_diag", 0) == 1) Console.Printf("ubqs force speed: %.0f s", secs);
 	}
 	// what the palm-down hand points at: any monster in the grip's cone and range (no weight limit: lightning holds nothing)
+	// the off hand held palm out: pointing up at least LIGHT_PITCH (the series' palm-out, RSQ Gestures' PalmOut)
+	bool PalmOut() { Vector3 a = OffAim(); return a.z >= sin(LIGHT_PITCH); }
 	Actor LightningAim()
 	{
-		Vector3 hp = OffPos(), aim = UBQS_Steady.Dir(owner, OffCtrl());
+		// the palm's line: from the eyes through the hand (a palm held up at a monster points the controller at the sky)
+		Vector3 hp = OffPos();
+		Vector3 eye = (owner.pos.xy, owner.player ? owner.player.viewz : owner.pos.z + 41.0);
+		Vector3 aim = hp - eye;
+		aim = aim.Length() > 0.01 ? aim.Unit() : ViewFwd();
 		double range = clamp(FV("ubqs_grip_range", 1024.0), 128.0, 1536.0);
 		double best = clamp(FV("ubqs_grip_cone", 12.0), 1.0, 60.0);
 		Actor pick = null;
