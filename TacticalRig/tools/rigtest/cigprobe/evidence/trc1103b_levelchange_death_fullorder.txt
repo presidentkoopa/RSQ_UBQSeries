@@ -1,0 +1,20 @@
+== level change, cigarette in the mouth (full order)
+trc: t2 level MAP01 start: phase 0 main PuristPistol pend None off UBQS_ForceHand packs 3
+trc: t40 level MAP01 start: phase 0 main PuristPistol pend None off UBQS_ForceHand packs 3
+TRC_LVL_MOUTH
+trc: REP #1 t185 phase 2 health 100 state 0 | main PuristShot_Gun pend None off RSQTR_ZippoWeapon offNext  | drawn main-layer PuristShot_Gun off-layer RSQTR_ZippoWeapon
+trc: t190 to the next level, phase 2, main PuristShot_Gun off RSQTR_ZippoWeapon packs 2
+trc: t0 to the next level, phase 0, main PuristShot_Gun off RSQTR_ZippoWeapon packs 3
+T_CIG exit t2 (the end: a level change): main PuristShot_Gun | off nothing
+T_CIG exit t2 (off hand done: a level change): main PuristShot_Gun | off rsq_hands
+trc: t2 level MAP03 start: phase 0 main PuristShot_Gun pend None off rsq_hands packs 3
+T_CIG exit t3 (the tic after: a level change): main PuristShot_Gun | off rsq_hands
+trc: t40 level MAP03 start: phase 0 main PuristShot_Gun pend None off rsq_hands packs 3
+trc: REP #2 t319 phase 0 health 100 state 0 | main PuristShot_Gun pend None off rsq_hands offNext  | drawn main-layer PuristShot_Gun off-layer rsq_hands
+== death, cigarette in the hand (full order)
+TRC_DEATH_HAND
+trc: REP #3 t466 phase 2 health 100 state 0 | main Shot_Gun pend None off RSQTR_ZippoWeapon offNext  | drawn main-layer Shot_Gun off-layer RSQTR_ZippoWeapon
+T_CIG exit t471 (the end: death): main Shot_Gun | off nothing
+T_CIG exit t471 (off hand done: death): main Shot_Gun | off nothing
+T_CIG exit t472 (the tic after: death): main Shot_Gun | off nothing
+trc: REP #4 t530 phase 0 health -999900 state 1 | main Shot_Gun pend None off None offNext  | drawn main-layer Shot_Gun off-layer none

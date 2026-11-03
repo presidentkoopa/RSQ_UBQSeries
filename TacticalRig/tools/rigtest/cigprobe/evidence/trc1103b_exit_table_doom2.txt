@@ -1,0 +1,30 @@
+== d2_E1.log
+HAND MAIN_NEXT_KEY               | a weapon switch key (next weapon, main hand) -> Fist -> back in the po | after: main RSQTR_CigWeapon -> Fist | off nothing              | +50: phase 0 main Fist off None 
+HAND MAIN_SLOT3_KEY              | the main hand switching to SuperShotgun -> back in the pocket (unlit)  | after: main RSQTR_CigWeapon -> SuperShotgun | off nothing      | +50: phase 0 main SuperShotgun off None 
+HAND OFF_NEXT_KEY                | a weapon switch key (next weapon, off hand) -> the switch already made | after: main RSQTR_CigWeapon -> Chaingun | off nothing          | +50: phase 0 main Chaingun off None 
+HAND SWITCHHAND_1                | the cigarette was moved to the off hand (switchhand) -> back in the po | after: main Chaingun | off nothing                             | +50: phase 0 main Chaingun off None 
+HAND SWITCHHAND_0                | the Zippo was moved to the main hand (switchhand) -> back in the pocke | after: main RSQTR_ZippoWeapon -> Chaingun | off nothing        | +50: phase 0 main Chaingun off None 
+HAND MAIN_HOLSTER_RIGHT_HIP      | the main hand's grip at a holster -> back in the pocket (unlit)        | after: main RSQTR_CigWeapon -> Shotgun | off nothing           | +50: phase 0 main Shotgun off None 
+HAND OFF_HOLSTER_LEFT_HIP        | the off hand's grip at a holster -> back in the pocket (unlit)         | after: main RSQTR_CigWeapon -> Chaingun | off nothing          | +50: phase 0 main Chaingun off None 
+HAND OTHER_MOD_EMPTIES_OFF       | the off hand holding nothing instead of the Zippo -> back in the pocke | after: main RSQTR_CigWeapon -> Chaingun | off nothing          | +50: phase 0 main Chaingun off None 
+HAND OTHER_MOD_SWITCHES_MAIN     | the main hand switching to Shotgun -> back in the pocket (unlit)       | after: main RSQTR_CigWeapon -> Shotgun | off nothing           | +50: phase 0 main Shotgun off None 
+== d2_E2.log
+MOUTH MAIN_NEXT_KEY              | the main hand switching to Fist -> back in the pocket (unlit)          | after: main Chaingun -> Fist | off nothing                     | +50: phase 0 main Fist off None 
+MOUTH MAIN_SLOT3_KEY             | the main hand switching to SuperShotgun -> back in the pocket (unlit)  | after: main Chaingun -> SuperShotgun | off nothing             | +50: phase 0 main SuperShotgun off None 
+MOUTH OFF_NEXT_KEY               | a weapon switch key (next weapon, off hand) -> the switch already made | after: main Chaingun | off nothing                             | +50: phase 0 main Chaingun off None 
+MOUTH SWITCHHAND_1               | the main hand holding Fist -> back in the pocket (unlit)               | after: main Fist | off Chaingun                                | +50: phase 0 main Fist off Chaingun 
+MOUTH SWITCHHAND_0               | the Zippo was moved to the main hand (switchhand) -> back in the pocke | after: main RSQTR_ZippoWeapon -> Fist | off nothing            | +50: phase 0 main Fist off None 
+MOUTH MAIN_HOLSTER_RIGHT_HIP     | the main hand's grip at a holster -> back in the pocket (unlit)        | after: main Chaingun -> Shotgun | off nothing                  | +50: phase 0 main Shotgun off None 
+MOUTH OFF_HOLSTER_LEFT_HIP       | the off hand's grip at a holster -> back in the pocket (unlit)         | after: main Chaingun | off SuperShotgun                        | +50: phase 0 main Chaingun off SuperShotgun 
+MOUTH OTHER_MOD_EMPTIES_OFF      | the off hand holding nothing instead of the Zippo -> back in the pocke | after: main Chaingun | off nothing                             | +50: phase 0 main Chaingun off None 
+MOUTH OTHER_MOD_SWITCHES_MAIN    | the main hand switching to Shotgun -> back in the pocket (unlit)       | after: main Chaingun -> Shotgun | off nothing                  | +50: phase 0 main Shotgun off None 
+== d2_E3.log
+LIT MAIN_NEXT_KEY                | the main hand switching to Fist -> back in the pocket (unlit)          | after: main Chaingun -> Fist | off nothing                     | +50: phase 0 main Fist off None 
+LIT MAIN_SLOT3_KEY               | the main hand switching to SuperShotgun -> flicked (lit)               | after: main Chaingun -> SuperShotgun | off nothing             | +50: phase 0 main SuperShotgun off None 
+LIT OFF_NEXT_KEY                 | a weapon switch key (next weapon, off hand) -> the switch already made | after: main Chaingun | off nothing                             | +50: phase 0 main Chaingun off None 
+LIT SWITCHHAND_1                 | the main hand holding Fist -> flicked (lit)                            | after: main Fist | off Chaingun                                | +50: phase 0 main Fist off Chaingun 
+LIT SWITCHHAND_0                 | the Zippo was moved to the main hand (switchhand) -> flicked (lit)     | after: main RSQTR_ZippoWeapon -> Fist | off nothing            | +50: phase 0 main Fist off None 
+LIT MAIN_HOLSTER_RIGHT_HIP       | the main hand's grip at a holster -> flicked (lit)                     | after: main Chaingun -> Shotgun | off nothing                  | +50: phase 0 main Shotgun off None 
+LIT OFF_HOLSTER_LEFT_HIP         | the off hand's grip at a holster -> flicked (lit)                      | after: main Chaingun | off SuperShotgun                        | +50: phase 0 main Chaingun off SuperShotgun 
+LIT OTHER_MOD_EMPTIES_OFF        | the off hand holding nothing instead of the Zippo -> flicked (lit)     | after: main Chaingun | off nothing                             | +50: phase 0 main Chaingun off None 
+LIT OTHER_MOD_SWITCHES_MAIN      | the main hand switching to Shotgun -> back in the pocket (unlit)       | after: main RSQTR_CigWeapon -> Shotgun | off nothing           | +50: phase 0 main Shotgun off None 

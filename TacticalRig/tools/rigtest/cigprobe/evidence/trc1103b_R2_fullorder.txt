@@ -1,0 +1,40 @@
+TRC_SETUP_DONE
+TRC_R_TAKE
+TRC_R_MOUTH
+TRC_R_LIGHT_SMOKED
+T_CIG lit t463: smoking 70 tics (2.0 s)
+T_CIG exit t533 (the end: smoked): main Rocket_Launcher | off nothing
+T_CIG exit t533 (off hand done: smoked): main Rocket_Launcher | off rsq_hands
+T_CIG exit t534 (the tic after: smoked): main Rocket_Launcher | off rsq_hands
+trc: t540 slowmo service found active 1 world speed 809 permille
+trc: t550 slowmo service found active 1 world speed 250 permille
+TRC_R_FLICK_FROM_HAND
+T_CIG exit t686 (the end: flicked from the hand): main RSQTR_CigWeapon -> Rocket_Launcher | off nothing
+T_CIG exit t686 (off hand done: flicked from the hand): main Rocket_Launcher | off nothing -> rsq_hands
+T_CIG exit t687 (the tic after: flicked from the hand): main Rocket_Launcher | off rsq_hands
+TRC_R_POCKET
+trc: t750 slowmo service found active 1 world speed 321 permille
+trc: t760 slowmo service found active 0 world speed 1000 permille
+T_CIG exit t775 (the end: back in the pocket): main RSQTR_CigWeapon -> Rocket_Launcher | off nothing
+T_CIG exit t775 (off hand done: back in the pocket): main Rocket_Launcher | off nothing -> rsq_hands
+T_CIG exit t776 (the tic after: back in the pocket): main Rocket_Launcher | off rsq_hands
+TRC_R_USE_WHILE_SMOKING
+T_CIG lit t901: smoking 175 tics (5.0 s)
+T_CIG exit t934 (the end: Use while smoking): main Rocket_Launcher | off nothing
+T_CIG exit t934 (off hand done: Use while smoking): main Rocket_Launcher | off rsq_hands
+T_CIG exit t935 (the tic after: Use while smoking): main Rocket_Launcher | off rsq_hands
+trc: t944 slowmo service found active 1 world speed 809 permille
+trc: t950 slowmo service found active 1 world speed 250 permille
+TRC_R_CIGS_OFF_LIT
+T_CIG lit t1044: smoking 175 tics (5.0 s)
+T_CIG exit t1069 (the end: Cigarettes off): main Rocket_Launcher | off nothing
+T_CIG exit t1069 (off hand done: Cigarettes off): main Rocket_Launcher | off rsq_hands
+T_CIG exit t1070 (the tic after: Cigarettes off): main Rocket_Launcher | off rsq_hands
+TRC_R_CIGS_OFF_HAND
+T_CIG exit t1147 (the end: Cigarettes off): main RSQTR_CigWeapon -> Rocket_Launcher | off nothing
+T_CIG exit t1147 (off hand done: Cigarettes off): main RSQTR_CigWeapon -> Rocket_Launcher | off rsq_hands
+T_CIG exit t1148 (the tic after: Cigarettes off): main Rocket_Launcher | off rsq_hands
+trc: t1160 slowmo service found active 1 world speed 749 permille
+trc: t1164 slowmo service found active 0 world speed 1000 permille
+TRC_R_LEVEL_CHANGE_MOUTH
+TRC_R_DEATH_HAND

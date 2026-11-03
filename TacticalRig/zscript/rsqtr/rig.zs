@@ -1287,13 +1287,15 @@ class RSQTR_Rig : EventHandler
 			double handMs; Vector3 handV;
 			[handMs, handV] = SwingPeak(pmo, h, hp);
 			if (h == 0 && Flag("rsqtr_debug_throw", p, false)) Console.Printf("T_SWING t%d hand %.1f %.1f %.1f pawn %.1f %.1f peak %.2f grip %d", level.maptime, hp.x, hp.y, hp.z, pmo.Pos.x, pmo.Pos.y, handMs, gripOk && gripDown[n * 2 + h]);
-			// (a main-hand grip at the mouth with an unlit cigarette in it is the cigarette's pull, cig.zs, never a throw)
+			// (a main-hand grip at the mouth with an unlit cigarette in it is the cigarette's pull, cig.zs, never a throw; nor is
+			// a main-hand press at the cigarette pocket, which takes one: 4fb3b1ca9's throw on Use threw the gun in the hand
+			// there, rig 11-03, T_THROWN on the same tic as the take)
 			// THE MAIN HAND THROWS ON USE TOO (owner, 11-03: its grip is the gun's own, so the swing-and-grip throw was the off
 			// hand's in practice): a Use press with the same fast swing, outside every holster (rsqtr_throw_use). The off hand
 			// throws on its grip as before. Use while the cigarette is out is the cigarette's (usePress is false then).
 			bool throwPress = (gripNow && !pressWas[h]) || (h == 0 && useEdge && usePress && Flag("rsqtr_throw_use", p, true));
 			if (throwPress && r < 0 && Flag("rsqtr_throw", p, true) && handMs >= Num("rsqtr_throw_speed", p, 2.5) && handMs < 20
-				&& (h == 0 ? HoldsGun(pmo) : OffHoldsGun(pmo)) && !(h == 0 && RSQTR_Cig.PullAtMouth(pmo)))
+				&& (h == 0 ? HoldsGun(pmo) : OffHoldsGun(pmo)) && !(h == 0 && (RSQTR_Cig.PullAtMouth(pmo) || RSQTR_Cig.AtPocket(pmo))))
 			{
 				Vector3 tv = handV * 1.6 + pmo.Vel;   // a throw carries on a little faster than the hand, and with you
 				EventHandler.SendNetworkEvent("rsqtr_throwat", int(hp.x * 8), int(hp.y * 8), int(hp.z * 8));
@@ -1429,14 +1431,16 @@ class RSQTR_Rig : EventHandler
 
 	private void Press(PlayerPawn pmo, PlayerInfo p, int h, int r, Vector3 hp)
 	{
-		// WITH THE CIGARETTE OUT, A HOLSTER ENDS IT (cig.zs rule A, the owner 11-03): either hand's grip at any holster
-		// ends the ritual (unlit: the pocket, lit: flicked, the Zippo gone, both hands' guns back) and does nothing else
-		// that press; the next press draws or puts away as always.
+		// WITH THE CIGARETTE OUT, A HOLSTER ENDS IT AND IS CARRIED OUT (cig.zs "the end", the owner 11-03): either hand's
+		// grip at a holster ends the ritual (unlit: the pocket, lit: flicked, the Zippo gone that tic), then the press does
+		// what it does with the hands as they are, in the events after the end's: a hand holding the cigarette (or the
+		// Zippo) is an empty hand, so it draws a full holster; the gun back in the main hand (cigarette in the mouth) goes
+		// in, or swaps. The grenade spot, the saber spots and the keyring only end it.
 		if (RSQTR_Cig.IsOut(pmo.PlayerNumber()))
 		{
 			EventHandler.SendNetworkEvent("rsqtr_cigend", h);
 			RSQTR_Buzzer.Start(pmo, h, 0.4, 4);
-			return;
+			if (!IsGunRegion(r)) return;
 		}
 		if (IsGrenadeRegion(r))
 		{

@@ -64,6 +64,8 @@ user int   rsqtr_cig_depth   = 25;      // how slow, percent speed
 user int   rsqtr_cig_count   = 3;       // how many in the pocket
 user bool  rsqtr_cig_refill  = true;    // the pocket refills on a new level
 user float rsqtr_cig_mouth   = 1.0;     // Mouth Zone Size: scales the mouth zone's 0.08 m radius (0.5-1.5)
+user float rsqtr_cig_mouth_f = 0.12;    // Mouth Cigarette Forward: metres from your eyes to the cigarette in your mouth (11-03: in view)
+user float rsqtr_cig_mouth_d = 0.07;    // Mouth Cigarette Down: metres under your eyes
 
 // The torso (optional).
 user bool  rsqtr_vest       = false;   // wear a torso the holsters sit on

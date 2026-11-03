@@ -1,0 +1,110 @@
+trc: t0 slowmo service absent active -2 world speed -2 permille
+TRC_SETUP_DONE
+TRC_HAND_MAIN_NEXT_KEY
+trc: REP #99 t266 phase 0 health 100 state 0 | main Chaingun pend None off None offNext  | drawn main-layer Chaingun off-layer none
+trc: REP #99 t267 phase 0 health 100 state 0 | main Chaingun pend None off None offNext  | drawn main-layer Chaingun off-layer none
+trc: REP #101 t367 phase 1 health 100 state 0 | main RSQTR_CigWeapon pend None off RSQTR_ZippoWeapon offNext  | drawn main-layer RSQTR_CigWeapon off-layer RSQTR_ZippoWeapon
+trc: REP #101 t368 phase 1 health 100 state 0 | main RSQTR_CigWeapon pend None off RSQTR_ZippoWeapon offNext  | drawn main-layer RSQTR_CigWeapon off-layer RSQTR_ZippoWeapon
+T_CIG end t371: a weapon switch key (next weapon, main hand) -> Fist -> back in the pocket (unlit)
+T_CIG exit t371 (the end: a weapon switch key (next weapon, main hand) -> Fist): main RSQTR_CigWeapon -> Fist | off nothing
+T_CIG exit t371 (off hand done: a weapon switch key (next weapon, main hand) -> Fist): main RSQTR_CigWeapon -> Fist | off nothing
+T_CIG exit t372 (the tic after: a weapon switch key (next weapon, main hand) -> Fist): main RSQTR_CigWeapon -> Fist | off nothing
+trc: REP #102 t375 phase 0 health 100 state 0 | main Fist pend None off None offNext  | drawn main-layer Fist off-layer none
+trc: REP #102 t376 phase 0 health 100 state 0 | main Fist pend None off None offNext  | drawn main-layer Fist off-layer none
+trc: REP #102 t377 phase 0 health 100 state 0 | main Fist pend None off None offNext  | drawn main-layer Fist off-layer none
+trc: REP #103 t424 phase 0 health 100 state 0 | main Fist pend None off None offNext  | drawn main-layer Fist off-layer none
+trc: REP #103 t425 phase 0 health 100 state 0 | main Fist pend None off None offNext  | drawn main-layer Fist off-layer none
+TRC_HAND_MAIN_SLOT3_KEY
+T_CIG end t535: the main hand switching to SuperShotgun -> back in the pocket (unlit)
+T_CIG exit t535 (the end: the main hand switching to SuperShotgun): main RSQTR_CigWeapon -> SuperShotgun | off nothing
+T_CIG exit t535 (off hand done: the main hand switching to SuperShotgun): main RSQTR_CigWeapon -> SuperShotgun | off nothing
+trc: REP #104 t535 phase 0 health 100 state 0 | main RSQTR_CigWeapon pend SuperShotgun off None offNext  | drawn main-layer RSQTR_CigWeapon off-layer none
+T_CIG exit t536 (the tic after: the main hand switching to SuperShotgun): main RSQTR_CigWeapon -> SuperShotgun | off nothing
+trc: REP #104 t536 phase 0 health 100 state 0 | main RSQTR_CigWeapon pend SuperShotgun off None offNext  | drawn main-layer RSQTR_CigWeapon off-layer none
+trc: REP #105 t541 phase 0 health 100 state 0 | main SuperShotgun pend None off None offNext  | drawn main-layer SuperShotgun off-layer none
+trc: REP #105 t542 phase 0 health 100 state 0 | main SuperShotgun pend None off None offNext  | drawn main-layer SuperShotgun off-layer none
+trc: REP #106 t592 phase 0 health 100 state 0 | main SuperShotgun pend None off None offNext  | drawn main-layer SuperShotgun off-layer none
+trc: REP #106 t593 phase 0 health 100 state 0 | main SuperShotgun pend None off None offNext  | drawn main-layer SuperShotgun off-layer none
+TRC_HAND_OFF_NEXT_KEY
+trc: REP #107 t700 phase 1 health 100 state 0 | main RSQTR_CigWeapon pend None off RSQTR_ZippoWeapon offNext  | drawn main-layer RSQTR_CigWeapon off-layer RSQTR_ZippoWeapon
+T_CIG end t704: a weapon switch key (next weapon, off hand) -> the switch already made -> back in the pocket (unlit)
+T_CIG exit t704 (the end: a weapon switch key (next weapon, off hand) -> the switch already made): main RSQTR_CigWeapon -> Chaingun | off nothing
+T_CIG exit t704 (off hand done: a weapon switch key (next weapon, off hand) -> the switch already made): main RSQTR_CigWeapon -> Chaingun | off nothing
+T_CIG exit t705 (the tic after: a weapon switch key (next weapon, off hand) -> the switch already made): main RSQTR_CigWeapon -> Chaingun | off nothing
+trc: REP #108 t708 phase 0 health 100 state 0 | main Chaingun pend None off None offNext  | drawn main-layer Chaingun off-layer none
+trc: REP #109 t758 phase 0 health 100 state 0 | main Chaingun pend None off None offNext  | drawn main-layer Chaingun off-layer none
+trc: REP #109 t759 phase 0 health 100 state 0 | main Chaingun pend None off None offNext  | drawn main-layer Chaingun off-layer none
+TRC_HAND_SWITCHHAND_1
+trc: REP #110 t867 phase 1 health 100 state 0 | main RSQTR_CigWeapon pend None off RSQTR_ZippoWeapon offNext  | drawn main-layer RSQTR_CigWeapon off-layer RSQTR_ZippoWeapon
+T_CIG end t868: the cigarette was moved to the off hand (switchhand) -> back in the pocket (unlit)
+T_CIG exit t868 (the end: the cigarette was moved to the off hand (switchhand)): main nothing -> Chaingun | off nothing
+T_CIG exit t868 (off hand done: the cigarette was moved to the off hand (switchhand)): main nothing -> Chaingun | off nothing
+T_CIG exit t869 (the tic after: the cigarette was moved to the off hand (switchhand)): main Chaingun | off nothing
+trc: REP #111 t872 phase 0 health 100 state 0 | main Chaingun pend None off None offNext  | drawn main-layer Chaingun off-layer none
+trc: REP #111 t873 phase 0 health 100 state 0 | main Chaingun pend None off None offNext  | drawn main-layer Chaingun off-layer none
+trc: REP #111 t874 phase 0 health 100 state 0 | main Chaingun pend None off None offNext  | drawn main-layer Chaingun off-layer none
+trc: REP #112 t922 phase 0 health 100 state 0 | main Chaingun pend None off None offNext  | drawn main-layer Chaingun off-layer none
+trc: REP #112 t923 phase 0 health 100 state 0 | main Chaingun pend None off None offNext  | drawn main-layer Chaingun off-layer none
+TRC_HAND_SWITCHHAND_0
+T_CIG end t1032: the Zippo was moved to the main hand (switchhand) -> back in the pocket (unlit)
+T_CIG exit t1032 (the end: the Zippo was moved to the main hand (switchhand)): main RSQTR_ZippoWeapon -> Chaingun | off nothing
+T_CIG exit t1032 (off hand done: the Zippo was moved to the main hand (switchhand)): main RSQTR_ZippoWeapon -> Chaingun | off nothing
+T_CIG exit t1033 (the tic after: the Zippo was moved to the main hand (switchhand)): main RSQTR_ZippoWeapon -> Chaingun | off nothing
+trc: REP #113 t1033 phase 0 health 100 state 0 | main RSQTR_ZippoWeapon pend Chaingun off None offNext  | drawn main-layer RSQTR_ZippoWeapon off-layer none
+trc: REP #113 t1034 phase 0 health 100 state 0 | main Chaingun pend None off None offNext  | drawn main-layer Chaingun off-layer none
+trc: REP #114 t1036 phase 0 health 100 state 0 | main Chaingun pend None off None offNext  | drawn main-layer Chaingun off-layer none
+trc: REP #114 t1037 phase 0 health 100 state 0 | main Chaingun pend None off None offNext  | drawn main-layer Chaingun off-layer none
+trc: REP #115 t1087 phase 0 health 100 state 0 | main Chaingun pend None off None offNext  | drawn main-layer Chaingun off-layer none
+TRC_HAND_MAIN_HOLSTER_RIGHT_HIP
+trc: REP #116 t1195 phase 1 health 100 state 0 | main RSQTR_CigWeapon pend None off RSQTR_ZippoWeapon offNext  | drawn main-layer RSQTR_CigWeapon off-layer RSQTR_ZippoWeapon
+T_CIG end t1208: the main hand's grip at a holster -> back in the pocket (unlit)
+T_CIG exit t1208 (the end: the main hand's grip at a holster): main RSQTR_CigWeapon -> Chaingun | off nothing
+T_CIG exit t1208 (off hand done: the main hand's grip at a holster): main RSQTR_CigWeapon -> Shotgun | off nothing
+T_CIG exit t1209 (the tic after: the main hand's grip at a holster): main RSQTR_CigWeapon -> Shotgun | off nothing
+trc: REP #117 t1220 phase 0 health 100 state 0 | main Shotgun pend None off None offNext  | drawn main-layer Shotgun off-layer none
+trc: REP #118 t1270 phase 0 health 100 state 0 | main Shotgun pend None off None offNext  | drawn main-layer Shotgun off-layer none
+TRC_HAND_OFF_HOLSTER_LEFT_HIP
+trc: REP #119 t1380 phase 1 health 100 state 0 | main RSQTR_CigWeapon pend None off RSQTR_ZippoWeapon offNext  | drawn main-layer RSQTR_CigWeapon off-layer RSQTR_ZippoWeapon
+T_CIG end t1393: the off hand's grip at a holster -> back in the pocket (unlit)
+T_CIG exit t1393 (the end: the off hand's grip at a holster): main RSQTR_CigWeapon -> Chaingun | off nothing
+T_CIG exit t1393 (off hand done: the off hand's grip at a holster): main RSQTR_CigWeapon -> Chaingun | off nothing
+T_CIG exit t1394 (the tic after: the off hand's grip at a holster): main RSQTR_CigWeapon -> Chaingun | off nothing
+trc: REP #120 t1405 phase 0 health 100 state 0 | main Chaingun pend None off None offNext  | drawn main-layer Chaingun off-layer none
+trc: REP #120 t1406 phase 0 health 100 state 0 | main Chaingun pend None off None offNext  | drawn main-layer Chaingun off-layer none
+trc: REP #121 t1455 phase 0 health 100 state 0 | main Chaingun pend None off None offNext  | drawn main-layer Chaingun off-layer none
+trc: REP #121 t1456 phase 0 health 100 state 0 | main Chaingun pend None off None offNext  | drawn main-layer Chaingun off-layer none
+TRC_HAND_OTHER_MOD_EMPTIES_OFF
+trc: REP #122 t1563 phase 1 health 100 state 0 | main RSQTR_CigWeapon pend None off RSQTR_ZippoWeapon offNext  | drawn main-layer RSQTR_CigWeapon off-layer RSQTR_ZippoWeapon
+T_CIG end t1567: the off hand holding nothing instead of the Zippo -> back in the pocket (unlit)
+T_CIG exit t1567 (the end: the off hand holding nothing instead of the Zippo): main RSQTR_CigWeapon -> Chaingun | off nothing
+T_CIG exit t1567 (off hand done: the off hand holding nothing instead of the Zippo): main RSQTR_CigWeapon -> Chaingun | off nothing
+T_CIG exit t1568 (the tic after: the off hand holding nothing instead of the Zippo): main RSQTR_CigWeapon -> Chaingun | off nothing
+trc: REP #123 t1568 phase 0 health 100 state 0 | main RSQTR_CigWeapon pend Chaingun off None offNext  | drawn main-layer RSQTR_CigWeapon off-layer none
+trc: REP #123 t1569 phase 0 health 100 state 0 | main RSQTR_CigWeapon pend Chaingun off None offNext  | drawn main-layer RSQTR_CigWeapon off-layer none
+trc: REP #124 t1618 phase 0 health 100 state 0 | main Chaingun pend None off None offNext  | drawn main-layer Chaingun off-layer none
+trc: REP #124 t1619 phase 0 health 100 state 0 | main Chaingun pend None off None offNext  | drawn main-layer Chaingun off-layer none
+TRC_HAND_OTHER_MOD_SWITCHES_MAIN
+trc: REP #125 t1728 phase 1 health 100 state 0 | main RSQTR_CigWeapon pend None off RSQTR_ZippoWeapon offNext  | drawn main-layer RSQTR_CigWeapon off-layer RSQTR_ZippoWeapon
+T_CIG end t1730: the main hand switching to Shotgun -> back in the pocket (unlit)
+T_CIG exit t1730 (the end: the main hand switching to Shotgun): main RSQTR_CigWeapon -> Shotgun | off nothing
+T_CIG exit t1730 (off hand done: the main hand switching to Shotgun): main RSQTR_CigWeapon -> Shotgun | off nothing
+T_CIG exit t1731 (the tic after: the main hand switching to Shotgun): main RSQTR_CigWeapon -> Shotgun | off nothing
+trc: REP #126 t1732 phase 0 health 100 state 0 | main RSQTR_CigWeapon pend Shotgun off None offNext  | drawn main-layer RSQTR_CigWeapon off-layer none
+trc: REP #126 t1733 phase 0 health 100 state 0 | main Shotgun pend None off None offNext  | drawn main-layer Shotgun off-layer none
+trc: REP #127 t1787 phase 0 health 100 state 0 | main Shotgun pend None off None offNext  | drawn main-layer Shotgun off-layer none
+trc: REP #127 t1788 phase 0 health 100 state 0 | main Shotgun pend None off None offNext  | drawn main-layer Shotgun off-layer none
+trc: REP #127 t1789 phase 0 health 100 state 0 | main Shotgun pend None off None offNext  | drawn main-layer Shotgun off-layer none
+trc: REP #127 t1790 phase 0 health 100 state 0 | main Shotgun pend None off None offNext  | drawn main-layer Shotgun off-layer none
+trc: REP #127 t1791 phase 0 health 100 state 0 | main Shotgun pend None off None offNext  | drawn main-layer Shotgun off-layer none
+trc: REP #127 t1792 phase 0 health 100 state 0 | main Shotgun pend None off None offNext  | drawn main-layer Shotgun off-layer none
+trc: REP #127 t1793 phase 0 health 100 state 0 | main Shotgun pend None off None offNext  | drawn main-layer Shotgun off-layer none
+trc: REP #127 t1794 phase 0 health 100 state 0 | main Shotgun pend None off None offNext  | drawn main-layer Shotgun off-layer none
+trc: REP #127 t1795 phase 0 health 100 state 0 | main Shotgun pend None off None offNext  | drawn main-layer Shotgun off-layer none
+trc: REP #127 t1796 phase 0 health 100 state 0 | main Shotgun pend None off None offNext  | drawn main-layer Shotgun off-layer none
+trc: REP #127 t1797 phase 0 health 100 state 0 | main Shotgun pend None off None offNext  | drawn main-layer Shotgun off-layer none
+trc: REP #127 t1798 phase 0 health 100 state 0 | main Shotgun pend None off None offNext  | drawn main-layer Shotgun off-layer none
+trc: REP #127 t1799 phase 0 health 100 state 0 | main Shotgun pend None off None offNext  | drawn main-layer Shotgun off-layer none
+trc: REP #127 t1800 phase 0 health 100 state 0 | main Shotgun pend None off None offNext  | drawn main-layer Shotgun off-layer none
+trc: REP #127 t1801 phase 0 health 100 state 0 | main Shotgun pend None off None offNext  | drawn main-layer Shotgun off-layer none
+trc: REP #127 t1802 phase 0 health 100 state 0 | main Shotgun pend None off None offNext  | drawn main-layer Shotgun off-layer none
+trc: REP #127 t1803 phase 0 health 100 state 0 | main Shotgun pend None off None offNext  | drawn main-layer Shotgun off-layer none

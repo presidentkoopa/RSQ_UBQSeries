@@ -1,0 +1,52 @@
+TRC_SETUP_DONE
+TRC_LIT_MAIN_NEXT_KEY
+T_CIG lit t453: smoking 175 tics (5.0 s)
+TRC_LIT_MAIN_SLOT3_KEY
+T_CIG exit t628 (the end: smoked): main Rocket_Launcher | off nothing
+T_CIG exit t628 (off hand done: smoked): main Rocket_Launcher | off rsq_hands
+T_CIG exit t629 (the tic after: smoked): main Rocket_Launcher | off rsq_hands
+trc: t639 slowmo service found active 1 world speed 809 permille
+trc: t640 slowmo service found active 1 world speed 619 permille
+trc: t650 slowmo service found active 1 world speed 250 permille
+TRC_LIT_OFF_NEXT_KEY
+T_CIG lit t849: smoking 175 tics (5.0 s)
+trc: t850 slowmo service found active 1 world speed 392 permille
+trc: t859 slowmo service found active 0 world speed 1000 permille
+TRC_LIT_SWITCHHAND_1
+T_CIG exit t1024 (the end: smoked): main Rocket_Launcher | off nothing
+T_CIG exit t1024 (off hand done: smoked): main Rocket_Launcher | off rsq_hands
+T_CIG exit t1025 (the tic after: smoked): main Rocket_Launcher | off rsq_hands
+trc: t1030 slowmo service found active 1 world speed 809 permille
+trc: t1040 slowmo service found active 1 world speed 250 permille
+TRC_LIT_SWITCHHAND_0
+trc: t1240 slowmo service found active 1 world speed 321 permille
+T_CIG lit t1246: smoking 175 tics (5.0 s)
+trc: t1250 slowmo service found active 0 world speed 1000 permille
+T_CIG end t1256: the Zippo was moved to the main hand (switchhand) -> flicked (lit)
+T_CIG exit t1256 (the end: the Zippo was moved to the main hand (switchhand)): main RSQTR_ZippoWeapon -> HandGrenades | off nothing
+T_CIG exit t1256 (off hand done: the Zippo was moved to the main hand (switchhand)): main RSQTR_ZippoWeapon -> HandGrenades | off rsq_hands
+T_CIG exit t1257 (the tic after: the Zippo was moved to the main hand (switchhand)): main HandGrenades | off rsq_hands
+TRC_LIT_MAIN_HOLSTER_RIGHT_HIP
+T_CIG lit t1435: smoking 175 tics (5.0 s)
+T_CIG end t1490: the main hand's grip at a holster -> flicked (lit)
+T_CIG exit t1490 (the end: the main hand's grip at a holster): main Rocket_Launcher | off nothing
+T_CIG exit t1490 (off hand done: the main hand's grip at a holster): main Rocket_Launcher -> Shot_Gun | off RSQ_Off_Shot_Gun
+T_CIG exit t1491 (the tic after: the main hand's grip at a holster): main Rocket_Launcher -> Shot_Gun | off RSQ_Off_Shot_Gun
+TRC_LIT_OFF_HOLSTER_LEFT_HIP
+T_CIG lit t1669: smoking 175 tics (5.0 s)
+T_CIG end t1729: the off hand's grip at a holster -> flicked (lit)
+T_CIG exit t1729 (the end: the off hand's grip at a holster): main Rocket_Launcher | off nothing
+T_CIG exit t1729 (off hand done: the off hand's grip at a holster): main Rocket_Launcher | off rsq_hands -> SSG
+T_CIG exit t1730 (the tic after: the off hand's grip at a holster): main Rocket_Launcher | off SSG
+TRC_LIT_OTHER_MOD_EMPTIES_OFF
+T_CIG lit t1911: smoking 175 tics (5.0 s)
+T_CIG end t1938: the off hand holding rsq_hands instead of the Zippo -> flicked (lit)
+T_CIG exit t1938 (the end: the off hand holding rsq_hands instead of the Zippo): main Rocket_Launcher | off rsq_hands
+T_CIG exit t1938 (off hand done: the off hand holding rsq_hands instead of the Zippo): main Rocket_Launcher | off rsq_hands
+T_CIG exit t1939 (the tic after: the off hand holding rsq_hands instead of the Zippo): main Rocket_Launcher | off rsq_hands
+TRC_LIT_OTHER_MOD_SWITCHES_MAIN
+T_CIG lit t2108: smoking 175 tics (5.0 s)
+T_CIG end t2135: the main hand holding Shot_Gun -> flicked (lit)
+T_CIG exit t2135 (the end: the main hand holding Shot_Gun): main Shot_Gun | off nothing
+T_CIG exit t2135 (off hand done: the main hand holding Shot_Gun): main Shot_Gun | off RSQ_Off_Shot_Gun
+T_CIG exit t2136 (the tic after: the main hand holding Shot_Gun): main Shot_Gun | off RSQ_Off_Shot_Gun

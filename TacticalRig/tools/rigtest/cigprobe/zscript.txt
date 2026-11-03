@@ -119,6 +119,19 @@ class RSQTRCigProbe : EventHandler
 			Console.Printf("trc: t%d the probe empties the off hand (was %s)", level.maptime, p.OffhandWeapon ? p.OffhandWeapon.GetClassName() : 'none');
 			p.SetPsprite(PSP_OFFHANDWEAPON, null); p.OffhandWeapon = null;
 		}
+		// trc_switch <class>: another mod switches the main hand to that weapon, once (11-03b)
+		let sw = CVar.FindCVar('trc_switch');
+		if (sw && sw.GetString() != "")
+		{
+			class<Weapon> wc = sw.GetString();
+			let w = wc ? Weapon(mo.FindInventory(wc)) : null;
+			Console.Printf("trc: t%d the probe switches the main hand to %s (owned %d)", level.maptime, sw.GetString(), w != null);
+			if (w) p.PendingWeapon = w;
+			sw.SetString("");
+		}
+		// trc_mpos <k>: where the mouth cigarette is, in the head's frame (11-03b, the ten placements)
+		let mpv = CVar.FindCVar('trc_mpos');
+		if (mpv && mpv.GetInt() != 0) { MouthPos(mo, c, mpv.GetInt()); camAsk = mpv.GetInt(); mpv.SetInt(0); }
 		// trc_next 1: the next level, no intermission (the inventory carries over)
 		let nx = CVar.FindCVar('trc_next');
 		if (nx && nx.GetInt() == 1)
@@ -215,6 +228,46 @@ class RSQTRCigProbe : EventHandler
 			Console.Printf("trc: t%d STRAY %s", level.maptime, rep == "" ? "(none)" : rep);
 			lastStray = rep;
 		}
+	}
+	// the mouth cigarette (centre and burning end) from the eyes, in the head's own frame (forward along the look,
+	// left, down across it: FromEyes' frame), and the prop's pitch against the head's
+	int camAsk;
+	clearscope Vector3 PitchedFrame(double ang, double pit, Vector3 d)
+	{
+		double u = RSQTR_Body.Upm(), ps = RSQTR_Body.Ps();
+		Vector3 r = (d.x / u, d.y / u, d.z * ps / u);
+		Vector3 F = (cos(pit) * cos(ang), cos(pit) * sin(ang), -sin(pit));
+		Vector3 L = (-sin(ang), cos(ang), 0);
+		Vector3 D = (-sin(pit) * cos(ang), -sin(pit) * sin(ang), -cos(pit));
+		return (r dot F, r dot L, r dot D);
+	}
+	void MouthPos(PlayerPawn mo, RSQTR_Cig c, int k)
+	{
+		let mp = RSQTR_CigProp(c.mouthProp[0]);
+		Vector3 e = RSQTR_Cig.Eyes(mo);
+		if (!mp) { Console.Printf("trc: MOUTHPOS #%d t%d no mouth cigarette (phase %d)", k, level.maptime, c.phase[0]); return; }
+		Vector3 a = PitchedFrame(mo.angle, mo.pitch, mp.pos - e), t = PitchedFrame(mo.angle, mo.pitch, mp.Tip() - e);
+		Console.Printf("trc: MOUTHPOS #%d t%d hmd (%.2f %.2f %.2f) pitch %.1f angle %.1f | centre fwd %.4f left %.4f down %.4f m | tip fwd %.4f left %.4f down %.4f m (%.1f deg under the look) | prop pitch - head pitch %.1f",
+			k, level.maptime, mo.HmdPosition.x, mo.HmdPosition.y, mo.HmdPosition.z, mo.pitch, mo.angle, a.x, a.y, a.z, t.x, t.y, t.z, atan2(t.z, t.x), mp.pitch - mo.pitch);
+	}
+	ui int camSeen;
+	override void RenderOverlay(RenderEvent e)
+	{
+		if (camAsk == camSeen) return;
+		camSeen = camAsk;
+		let c = RSQTR_Cig(EventHandler.Find("RSQTR_Cig"));
+		let mo = players[consoleplayer].mo;
+		if (!c || !mo) return;
+		let mp = RSQTR_CigProp(c.mouthProp[consoleplayer]);
+		if (!mp) return;
+		// the camera as the engine places it: the view's position plus the headset's height over the pawn's eye
+		// (hw_openxrdevice.cpp GetViewShift: hmd height - the default view height, vr_crouch_use_button on)
+		let ha = CVar.FindCVar("vr_height_adjust");
+		double sh = (mo.HmdPosition.y + (ha ? ha.GetFloat() : 0)) * RSQTR_Body.Upm() / RSQTR_Body.Ps() - mo.ViewHeight;
+		Vector3 cam = e.ViewPos + (0, 0, sh);
+		Vector3 ip = mp.Prev + (mp.Pos - mp.Prev) * e.FracTic;
+		Vector3 a = PitchedFrame(e.ViewAngle, e.ViewPitch, ip - cam);
+		Console.Printf("trc: CAMPOS #%d frac %.2f view angle %.1f pitch %.1f | centre from the rendered camera fwd %.4f left %.4f down %.4f m", camSeen, e.FracTic, e.ViewAngle, e.ViewPitch, a.x, a.y, a.z);
 	}
 	Actor dots[3];
 	String lastWeap;

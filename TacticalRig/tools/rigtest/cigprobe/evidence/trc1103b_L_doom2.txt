@@ -1,0 +1,29 @@
+trc: t0 slowmo service absent active -2 world speed -2 permille
+TRC_SETUP_DONE
+trc: REP #99 t267 phase 0 health 100 state 0 | main Chaingun pend None off None offNext  | drawn main-layer Chaingun off-layer none
+T_CIG cue on t326: in the mouth zone (0.018 m of 0.080)
+T_CIG use in hand t334: 0.018 m from the zone's axis (radius 0.080) -> mouth
+TRC_L_FIRE_AWAY_1
+T_CIG off-hand fire t385: in the mouth, flame 0.337 m from the cigarette's tip (reach 0.10) -> open
+TRC_L_FIRE_AWAY_2
+T_CIG off-hand fire t417: in the mouth, flame 0.337 m from the cigarette's tip (reach 0.10) -> shut
+trc: REP #1 t417 phase 2 health 100 state 0 | main Chaingun pend None off RSQTR_ZippoWeapon offNext  | drawn main-layer Chaingun off-layer RSQTR_ZippoWeapon
+trc: REP #1 t418 phase 2 health 100 state 0 | main Chaingun pend None off RSQTR_ZippoWeapon offNext  | drawn main-layer Chaingun off-layer RSQTR_ZippoWeapon
+trc: REP #1 t419 phase 2 health 100 state 0 | main Chaingun pend None off RSQTR_ZippoWeapon offNext  | drawn main-layer Chaingun off-layer RSQTR_ZippoWeapon
+TRC_L_USE_IN_MOUTH
+T_CIG cue on t448: flame at the tip (0.020 m)
+trc: REP #2 t448 phase 2 health 100 state 0 | main Chaingun pend None off RSQTR_ZippoWeapon offNext  | drawn main-layer Chaingun off-layer RSQTR_ZippoWeapon
+trc: REP #2 t449 phase 2 health 100 state 0 | main Chaingun pend None off RSQTR_ZippoWeapon offNext  | drawn main-layer Chaingun off-layer RSQTR_ZippoWeapon
+trc: REP #2 t450 phase 2 health 100 state 0 | main Chaingun pend None off RSQTR_ZippoWeapon offNext  | drawn main-layer Chaingun off-layer RSQTR_ZippoWeapon
+T_CIG use in mouth t466 -> nothing (the Zippo's trigger lights it)
+TRC_L_FIRE_AT_TIP
+T_CIG off-hand fire t490: in the mouth, flame 0.020 m from the cigarette's tip (reach 0.10) -> light
+trc: REP #3 t490 phase 2 health 100 state 0 | main Chaingun pend None off RSQTR_ZippoWeapon offNext  | drawn main-layer Chaingun off-layer RSQTR_ZippoWeapon
+trc: REP #3 t491 phase 2 health 100 state 0 | main Chaingun pend None off RSQTR_ZippoWeapon offNext  | drawn main-layer Chaingun off-layer RSQTR_ZippoWeapon
+T_CIG lit t492: smoking 175 tics (5.0 s)
+trc: REP #4 t525 phase 3 health 100 state 0 | main Chaingun pend None off RSQTR_ZippoWeapon offNext  | drawn main-layer Chaingun off-layer RSQTR_ZippoWeapon
+trc: REP #4 t526 phase 3 health 100 state 0 | main Chaingun pend None off RSQTR_ZippoWeapon offNext  | drawn main-layer Chaingun off-layer RSQTR_ZippoWeapon
+T_CIG exit t667 (the end: smoked): main Chaingun | off nothing
+T_CIG exit t667 (off hand done: smoked): main Chaingun | off nothing
+T_CIG slow motion asked: rsm_pulse 6000 25
+T_CIG exit t668 (the tic after: smoked): main Chaingun | off nothing

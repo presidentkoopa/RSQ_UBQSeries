@@ -1,0 +1,81 @@
+TRC_SETUP_DONE
+trc: REP #99 t265 phase 0 health 100 state 0 | main Chaingun pend None off None offNext  | drawn main-layer Chaingun off-layer none
+TRC_R_TAKE
+trc: REP #1 t326 phase 1 health 100 state 0 | main RSQTR_CigWeapon pend None off RSQTR_ZippoWeapon offNext  | drawn main-layer RSQTR_CigWeapon off-layer RSQTR_ZippoWeapon
+TRC_R_MOUTH
+T_CIG cue on t328: in the mouth zone (0.018 m of 0.080)
+T_CIG use in hand t338: 0.018 m from the zone's axis (radius 0.080) -> mouth
+trc: REP #2 t386 phase 2 health 100 state 0 | main Chaingun pend None off RSQTR_ZippoWeapon offNext  | drawn main-layer Chaingun off-layer RSQTR_ZippoWeapon
+TRC_R_LIGHT_SMOKED
+trc: REP #2 t387 phase 2 health 100 state 0 | main Chaingun pend None off RSQTR_ZippoWeapon offNext  | drawn main-layer Chaingun off-layer RSQTR_ZippoWeapon
+T_CIG cue on t388: flame at the tip (0.020 m)
+T_CIG off-hand fire t403: in the mouth, flame 0.020 m from the cigarette's tip (reach 0.10) -> light
+T_CIG lit t404: smoking 70 tics (2.0 s)
+T_CIG exit t474 (the end: smoked): main Chaingun | off nothing
+T_CIG exit t474 (off hand done: smoked): main Chaingun | off nothing
+T_CIG slow motion asked: rsm_pulse 6000 25
+T_CIG exit t475 (the tic after: smoked): main Chaingun | off nothing
+trc: t475 slowmo service found active 1 world speed 809 permille
+trc: t480 slowmo service found active 1 world speed 250 permille
+trc: REP #3 t518 phase 0 health 100 state 0 | main Chaingun pend None off None offNext  | drawn main-layer Chaingun off-layer none
+TRC_R_FLICK_FROM_HAND
+T_CIG use in hand t629: 0.550 m from the zone's axis (radius 0.080) -> flick
+T_CIG exit t631 (the end: flicked from the hand): main RSQTR_CigWeapon -> Chaingun | off nothing
+T_CIG exit t631 (off hand done: flicked from the hand): main RSQTR_CigWeapon -> Chaingun | off nothing
+T_CIG exit t632 (the tic after: flicked from the hand): main RSQTR_CigWeapon -> Chaingun | off nothing
+TRC_R_POCKET
+trc: REP #4 t674 phase 0 health 100 state 0 | main Chaingun pend None off None offNext  | drawn main-layer Chaingun off-layer none
+trc: REP #4 t675 phase 0 health 100 state 0 | main Chaingun pend None off None offNext  | drawn main-layer Chaingun off-layer none
+trc: t690 slowmo service found active 1 world speed 678 permille
+trc: t695 slowmo service found active 0 world speed 1000 permille
+T_CIG exit t746 (the end: back in the pocket): main RSQTR_CigWeapon -> Chaingun | off nothing
+T_CIG exit t746 (off hand done: back in the pocket): main RSQTR_CigWeapon -> Chaingun | off nothing
+T_CIG exit t747 (the tic after: back in the pocket): main RSQTR_CigWeapon -> Chaingun | off nothing
+trc: REP #5 t799 phase 0 health 100 state 0 | main Chaingun pend None off None offNext  | drawn main-layer Chaingun off-layer none
+TRC_R_USE_WHILE_SMOKING
+trc: REP #5 t800 phase 0 health 100 state 0 | main Chaingun pend None off None offNext  | drawn main-layer Chaingun off-layer none
+trc: REP #5 t801 phase 0 health 100 state 0 | main Chaingun pend None off None offNext  | drawn main-layer Chaingun off-layer none
+T_CIG cue on t860: in the mouth zone (0.018 m of 0.080)
+T_CIG use in hand t868: 0.018 m from the zone's axis (radius 0.080) -> mouth
+T_CIG cue on t918: flame at the tip (0.020 m)
+T_CIG off-hand fire t933: in the mouth, flame 0.020 m from the cigarette's tip (reach 0.10) -> light
+T_CIG lit t935: smoking 175 tics (5.0 s)
+T_CIG exit t969 (the end: Use while smoking): main Chaingun | off nothing
+T_CIG exit t969 (off hand done: Use while smoking): main Chaingun | off nothing
+T_CIG slow motion asked: rsm_pulse 6000 25
+T_CIG exit t970 (the tic after: Use while smoking): main Chaingun | off nothing
+trc: t970 slowmo service found active 1 world speed 809 permille
+trc: t980 slowmo service found active 1 world speed 250 permille
+trc: REP #6 t1013 phase 0 health 100 state 0 | main Chaingun pend None off None offNext  | drawn main-layer Chaingun off-layer none
+TRC_R_CIGS_OFF_LIT
+trc: REP #6 t1014 phase 0 health 100 state 0 | main Chaingun pend None off None offNext  | drawn main-layer Chaingun off-layer none
+T_CIG cue on t1074: in the mouth zone (0.018 m of 0.080)
+T_CIG use in hand t1083: 0.018 m from the zone's axis (radius 0.080) -> mouth
+T_CIG cue on t1132: flame at the tip (0.020 m)
+T_CIG off-hand fire t1147: in the mouth, flame 0.020 m from the cigarette's tip (reach 0.10) -> light
+T_CIG lit t1151: smoking 175 tics (5.0 s)
+trc: t1180 slowmo service found active 1 world speed 321 permille
+T_CIG exit t1183 (the end: Cigarettes off): main Chaingun | off nothing
+T_CIG exit t1183 (off hand done: Cigarettes off): main Chaingun | off nothing
+T_CIG exit t1184 (the tic after: Cigarettes off): main Chaingun | off nothing
+trc: t1190 slowmo service found active 0 world speed 1000 permille
+trc: REP #7 t1212 phase 0 health 100 state 0 | main Chaingun pend None off None offNext  | drawn main-layer Chaingun off-layer none
+TRC_R_CIGS_OFF_HAND
+T_CIG exit t1283 (the end: Cigarettes off): main RSQTR_CigWeapon -> Chaingun | off nothing
+T_CIG exit t1283 (off hand done: Cigarettes off): main RSQTR_CigWeapon -> Chaingun | off nothing
+T_CIG exit t1284 (the tic after: Cigarettes off): main RSQTR_CigWeapon -> Chaingun | off nothing
+trc: REP #8 t1313 phase 0 health 100 state 0 | main Chaingun pend None off None offNext  | drawn main-layer Chaingun off-layer none
+TRC_R_LEVEL_CHANGE_MOUTH
+T_CIG cue on t1384: in the mouth zone (0.018 m of 0.080)
+T_CIG use in hand t1392: 0.018 m from the zone's axis (radius 0.080) -> mouth
+trc: REP #9 t1442 phase 2 health 100 state 0 | main Chaingun pend None off RSQTR_ZippoWeapon offNext  | drawn main-layer Chaingun off-layer RSQTR_ZippoWeapon
+T_CIG exit t2 (the end: a level change): main Chaingun | off nothing
+T_CIG exit t2 (off hand done: a level change): main Chaingun | off nothing
+T_CIG exit t3 (the tic after: a level change): main Chaingun | off nothing
+trc: REP #10 t79 phase 0 health 100 state 0 | main Chaingun pend None off None offNext  | drawn main-layer Chaingun off-layer none
+TRC_R_DEATH_HAND
+trc: REP #10 t80 phase 0 health 100 state 0 | main Chaingun pend None off None offNext  | drawn main-layer Chaingun off-layer none
+T_CIG exit t141 (the end: death): main RSQTR_CigWeapon -> Chaingun | off nothing
+T_CIG exit t141 (off hand done: death): main RSQTR_CigWeapon -> Chaingun | off nothing
+T_CIG exit t142 (the tic after: death): main RSQTR_CigWeapon -> Chaingun | off nothing
+trc: REP #11 t180 phase 0 health -999900 state 1 | main RSQTR_CigWeapon pend Chaingun off None offNext  | drawn main-layer none off-layer none

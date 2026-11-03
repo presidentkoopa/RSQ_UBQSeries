@@ -1,0 +1,14 @@
+# error counts (Script error lines; the full order's 4 are BD_VoxelPack voxeldef 'No sprites specified for voxel')
+d2_alone: 0 script errors, 0 not voxeldef, 0 aborts
+d2_E1: 0 script errors, 0 not voxeldef, 0 aborts
+d2_E2: 0 script errors, 0 not voxeldef, 0 aborts
+d2_E3: 0 script errors, 0 not voxeldef, 0 aborts
+d2_R2: 0 script errors, 0 not voxeldef, 0 aborts
+d2_L: 0 script errors, 0 not voxeldef, 0 aborts
+d2_M_after: 0 script errors, 0 not voxeldef, 0 aborts
+gb_R2: 0 script errors, 0 not voxeldef, 0 aborts
+lo_E1_LO: 4 script errors, 0 not voxeldef, 0 aborts
+lo_E2_LO: 4 script errors, 0 not voxeldef, 0 aborts
+lo_E3_LO: 4 script errors, 0 not voxeldef, 0 aborts
+lo_R2_LO: 4 script errors, 0 not voxeldef, 0 aborts
+lo_LVL2: 4 script errors, 0 not voxeldef, 0 aborts

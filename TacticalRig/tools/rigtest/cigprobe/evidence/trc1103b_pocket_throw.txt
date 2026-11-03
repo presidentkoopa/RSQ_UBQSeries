@@ -1,0 +1,12 @@
+# 4fb3b1ca9 regression: Use at the cigarette pocket with a gun in the main hand threw the gun (the throw on Use). HEAD 886828f28 pk3, then the fix:
+== HEAD (before)
+trc: t107 Use pressed (phase 0, main Chaingun, off None)
+T_THROWN t108 Chaingun
+T_CIG rsqtr_cigtake t108 phase 0
+trc: t108 phase 0 -> 1  main RSQTR_CigWeapon off None packs 2
+trc: t155 Use pressed (phase 1, main RSQTR_CigWeapon, off RSQTR_ZippoWeapon)
+== after (RSQTR_Cig.AtPocket excludes the pocket from the throw)
+trc: t108 Use pressed (phase 0, main Chaingun, off None)
+T_CIG rsqtr_cigtake t109 phase 0
+trc: t109 phase 0 -> 1  main Chaingun off None packs 2
+(no T_THROWN)

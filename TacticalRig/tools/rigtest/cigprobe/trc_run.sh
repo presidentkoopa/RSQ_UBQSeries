@@ -5,6 +5,8 @@
 # cue, H the same on the full order, V / Z the computed drawn points (trc_marks 1), P / Q one gun out of a holster (trc_weap 1)).
 # 11-03: X1 / X2 / X3 every switch and holster with the cigarette in the hand / mouth / lit, R the whole ritual and its
 # other ends, S the stray-cigarette repro (gen_scripts_1103.py writes them; LO_* for the full order, GB_* with Gun Bonsai VR).
+# 11-03b (the final rules): E1-E3 every exit (hand / mouth / lit; _LO the full order), R2 the ritual and the other ends,
+# L lighting with the Zippo's trigger, M the mouth cigarette placed ten ways, FV frames from the eye (gen_scripts_1103b.py).
 # Trimmed logs of the runs: evidence/. Example: ./trc_run.sh trcA 500 "$(cat trc_scriptA.txt)"
 # env: EXTRA (pk3s before TacticalRig), TR (a TacticalRig pk3 other than pk3/, e.g. the one before a change), AFTER (pk3s after), EVERY (dump every n frames, 0 none), IWAD
 name=$1; secs=$2; script=$3

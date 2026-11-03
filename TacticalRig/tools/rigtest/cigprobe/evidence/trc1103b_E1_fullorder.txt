@@ -1,0 +1,46 @@
+TRC_SETUP_DONE
+TRC_HAND_MAIN_NEXT_KEY
+TRC_HAND_MAIN_SLOT3_KEY
+T_CIG end t485: the main hand holding Rocket_Launcher -> back in the pocket (unlit)
+T_CIG exit t485 (the end: the main hand holding Rocket_Launcher): main Rocket_Launcher | off nothing
+T_CIG exit t485 (off hand done: the main hand holding Rocket_Launcher): main Rocket_Launcher | off rsq_hands
+T_CIG exit t486 (the tic after: the main hand holding Rocket_Launcher): main Rocket_Launcher | off rsq_hands
+T_CIG end t566: the main hand holding SSG -> back in the pocket (unlit)
+T_CIG exit t566 (the end: the main hand holding SSG): main SSG | off nothing
+T_CIG exit t566 (off hand done: the main hand holding SSG): main SSG | off rsq_hands
+T_CIG exit t567 (the tic after: the main hand holding SSG): main SSG | off rsq_hands
+TRC_HAND_OFF_NEXT_KEY
+T_CIG end t716: a weapon switch key (next weapon, off hand) -> the switch already made -> back in the pocket (unlit)
+T_CIG exit t716 (the end: a weapon switch key (next weapon, off hand) -> the switch already made): main RSQTR_CigWeapon -> Rocket_Launcher | off nothing
+T_CIG exit t716 (off hand done: a weapon switch key (next weapon, off hand) -> the switch already made): main RSQTR_CigWeapon -> Rocket_Launcher | off rsq_hands
+T_CIG exit t717 (the tic after: a weapon switch key (next weapon, off hand) -> the switch already made): main Rocket_Launcher | off rsq_hands
+TRC_HAND_SWITCHHAND_1
+T_CIG end t861: the cigarette was moved to the off hand (switchhand) -> back in the pocket (unlit)
+T_CIG exit t861 (the end: the cigarette was moved to the off hand (switchhand)): main nothing -> Rocket_Launcher | off nothing
+T_CIG exit t861 (off hand done: the cigarette was moved to the off hand (switchhand)): main nothing -> Rocket_Launcher | off rsq_hands
+T_CIG exit t862 (the tic after: the cigarette was moved to the off hand (switchhand)): main Rocket_Launcher | off rsq_hands
+TRC_HAND_SWITCHHAND_0
+T_CIG end t1006: the Zippo was moved to the main hand (switchhand) -> back in the pocket (unlit)
+T_CIG exit t1006 (the end: the Zippo was moved to the main hand (switchhand)): main RSQTR_ZippoWeapon -> Rocket_Launcher | off nothing
+T_CIG exit t1006 (off hand done: the Zippo was moved to the main hand (switchhand)): main RSQTR_ZippoWeapon -> Rocket_Launcher | off rsq_hands
+T_CIG exit t1007 (the tic after: the Zippo was moved to the main hand (switchhand)): main Rocket_Launcher | off rsq_hands
+TRC_HAND_MAIN_HOLSTER_RIGHT_HIP
+T_CIG end t1189: the main hand's grip at a holster -> back in the pocket (unlit)
+T_CIG exit t1189 (the end: the main hand's grip at a holster): main RSQTR_CigWeapon -> Rocket_Launcher | off nothing
+T_CIG exit t1189 (off hand done: the main hand's grip at a holster): main Rocket_Launcher | off nothing -> rsq_hands
+T_CIG exit t1190 (the tic after: the main hand's grip at a holster): main Rocket_Launcher | off rsq_hands
+TRC_HAND_OFF_HOLSTER_LEFT_HIP
+T_CIG end t1374: the off hand's grip at a holster -> back in the pocket (unlit)
+T_CIG exit t1374 (the end: the off hand's grip at a holster): main RSQTR_CigWeapon -> Rocket_Launcher | off nothing
+T_CIG exit t1374 (off hand done: the off hand's grip at a holster): main Rocket_Launcher | off nothing -> rsq_hands
+T_CIG exit t1375 (the tic after: the off hand's grip at a holster): main Rocket_Launcher | off rsq_hands -> SSG
+TRC_HAND_OTHER_MOD_EMPTIES_OFF
+T_CIG end t1528: the off hand holding rsq_hands instead of the Zippo -> back in the pocket (unlit)
+T_CIG exit t1528 (the end: the off hand holding rsq_hands instead of the Zippo): main RSQTR_CigWeapon -> Rocket_Launcher | off rsq_hands
+T_CIG exit t1528 (off hand done: the off hand holding rsq_hands instead of the Zippo): main RSQTR_CigWeapon -> Rocket_Launcher | off rsq_hands
+T_CIG exit t1529 (the tic after: the off hand holding rsq_hands instead of the Zippo): main Rocket_Launcher | off nothing -> rsq_hands
+TRC_HAND_OTHER_MOD_SWITCHES_MAIN
+T_CIG end t1679: the main hand holding Shot_Gun -> back in the pocket (unlit)
+T_CIG exit t1679 (the end: the main hand holding Shot_Gun): main Shot_Gun | off nothing
+T_CIG exit t1679 (off hand done: the main hand holding Shot_Gun): main Shot_Gun | off RSQ_Off_Shot_Gun
+T_CIG exit t1680 (the tic after: the main hand holding Shot_Gun): main Shot_Gun | off RSQ_Off_Shot_Gun

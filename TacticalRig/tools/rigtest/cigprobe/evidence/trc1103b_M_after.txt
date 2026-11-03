@@ -1,0 +1,30 @@
+TRC_M_1
+trc: MOUTHPOS #1 t395 hmd (0.00 1.60 0.00) pitch 0.0 angle 90.0 | centre fwd 0.1200 left -0.0000 down 0.0700 m | tip fwd 0.1698 left -0.0000 down 0.0656 m (21.1 deg under the look) | prop pitch - head pitch -5.0
+trc: CAMPOS #1 frac 0.72 view angle 90.0 pitch 0.0 | centre from the rendered camera fwd 0.1200 left -0.0000 down 0.0700 m
+TRC_M_2
+trc: MOUTHPOS #2 t546 hmd (0.00 1.60 0.00) pitch 0.0 angle 90.0 | centre fwd 0.1200 left -0.0000 down 0.0700 m | tip fwd 0.1698 left -0.0000 down 0.0656 m (21.1 deg under the look) | prop pitch - head pitch -5.0
+trc: CAMPOS #2 frac 0.70 view angle 90.0 pitch 0.0 | centre from the rendered camera fwd 0.1200 left -0.0000 down 0.0700 m
+TRC_M_3
+trc: MOUTHPOS #3 t697 hmd (0.00 1.60 0.00) pitch 0.0 angle 90.0 | centre fwd 0.1200 left -0.0000 down 0.0700 m | tip fwd 0.1698 left -0.0000 down 0.0656 m (21.1 deg under the look) | prop pitch - head pitch -5.0
+trc: CAMPOS #3 frac 0.31 view angle 90.0 pitch 0.0 | centre from the rendered camera fwd 0.1200 left -0.0000 down 0.0700 m
+TRC_M_4
+trc: MOUTHPOS #4 t848 hmd (0.20 1.60 0.00) pitch 0.0 angle 90.0 | centre fwd 0.1200 left -0.0000 down 0.0700 m | tip fwd 0.1698 left -0.0000 down 0.0656 m (21.1 deg under the look) | prop pitch - head pitch -5.0
+trc: CAMPOS #4 frac 0.48 view angle 90.0 pitch 0.0 | centre from the rendered camera fwd 0.1200 left -0.0000 down 0.0700 m
+TRC_M_5
+trc: MOUTHPOS #5 t1000 hmd (0.00 1.35 0.00) pitch 0.0 angle 90.0 | centre fwd 0.1200 left -0.0000 down 0.0700 m | tip fwd 0.1698 left -0.0000 down 0.0656 m (21.1 deg under the look) | prop pitch - head pitch -5.0
+trc: CAMPOS #5 frac 0.08 view angle 90.0 pitch 0.0 | centre from the rendered camera fwd 0.1200 left -0.0000 down 0.0700 m
+TRC_M_6
+trc: MOUTHPOS #6 t1150 hmd (0.00 1.60 -0.12) pitch 0.0 angle 90.0 | centre fwd 0.1200 left -0.0000 down 0.0700 m | tip fwd 0.1698 left -0.0000 down 0.0656 m (21.1 deg under the look) | prop pitch - head pitch -5.0
+trc: CAMPOS #6 frac 0.60 view angle 90.0 pitch 0.0 | centre from the rendered camera fwd 0.1200 left -0.0000 down 0.0700 m
+TRC_M_7
+trc: MOUTHPOS #7 t1301 hmd (0.00 1.60 0.00) pitch -20.0 angle 90.0 | centre fwd 0.1200 left -0.0000 down 0.0700 m | tip fwd 0.1698 left -0.0000 down 0.0656 m (21.1 deg under the look) | prop pitch - head pitch -5.0
+trc: CAMPOS #7 frac 0.47 view angle 90.0 pitch -20.0 | centre from the rendered camera fwd 0.1200 left -0.0000 down 0.0700 m
+TRC_M_8
+trc: MOUTHPOS #8 t1452 hmd (0.00 1.60 0.00) pitch 15.0 angle 90.0 | centre fwd 0.1200 left -0.0000 down 0.0700 m | tip fwd 0.1698 left -0.0000 down 0.0656 m (21.1 deg under the look) | prop pitch - head pitch -5.0
+trc: CAMPOS #8 frac 0.08 view angle 90.0 pitch 15.0 | centre from the rendered camera fwd 0.1200 left -0.0000 down 0.0700 m
+TRC_M_9
+trc: MOUTHPOS #9 t1605 hmd (0.00 1.60 0.00) pitch 0.0 angle 130.0 | centre fwd 0.1200 left -0.0000 down 0.0700 m | tip fwd 0.1698 left -0.0000 down 0.0656 m (21.1 deg under the look) | prop pitch - head pitch -5.0
+trc: CAMPOS #9 frac 0.38 view angle 130.0 pitch 0.0 | centre from the rendered camera fwd 0.1200 left 0.0000 down 0.0700 m
+TRC_M_10
+trc: MOUTHPOS #10 t1754 hmd (0.00 1.60 0.00) pitch -65.0 angle 90.0 | centre fwd 0.1200 left 0.0000 down 0.0700 m | tip fwd 0.1698 left 0.0000 down 0.0656 m (21.1 deg under the look) | prop pitch - head pitch -5.0
+trc: CAMPOS #10 frac 0.31 view angle 90.0 pitch -65.0 | centre from the rendered camera fwd 0.1200 left 0.0000 down 0.0700 m

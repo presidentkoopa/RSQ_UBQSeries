@@ -1,0 +1,116 @@
+trc: t0 slowmo service absent active -2 world speed -2 permille
+TRC_SETUP_DONE
+TRC_MOUTH_MAIN_NEXT_KEY
+trc: REP #99 t270 phase 0 health 100 state 0 | main Chaingun pend None off None offNext  | drawn main-layer Chaingun off-layer none
+trc: REP #99 t271 phase 0 health 100 state 0 | main Chaingun pend None off None offNext  | drawn main-layer Chaingun off-layer none
+T_CIG cue on t366: in the mouth zone (0.018 m of 0.080)
+T_CIG use in hand t374: 0.018 m from the zone's axis (radius 0.080) -> mouth
+trc: REP #201 t425 phase 2 health 100 state 0 | main Chaingun pend None off RSQTR_ZippoWeapon offNext  | drawn main-layer Chaingun off-layer RSQTR_ZippoWeapon
+trc: REP #201 t426 phase 2 health 100 state 0 | main Chaingun pend None off RSQTR_ZippoWeapon offNext  | drawn main-layer Chaingun off-layer RSQTR_ZippoWeapon
+trc: REP #201 t427 phase 2 health 100 state 0 | main Chaingun pend None off RSQTR_ZippoWeapon offNext  | drawn main-layer Chaingun off-layer RSQTR_ZippoWeapon
+T_CIG end t428: the main hand switching to Fist -> back in the pocket (unlit)
+T_CIG exit t428 (the end: the main hand switching to Fist): main Chaingun -> Fist | off nothing
+T_CIG exit t428 (off hand done: the main hand switching to Fist): main Chaingun -> Fist | off nothing
+T_CIG exit t429 (the tic after: the main hand switching to Fist): main Chaingun -> Fist | off nothing
+trc: REP #202 t432 phase 0 health 100 state 0 | main Chaingun pend Fist off None offNext  | drawn main-layer Chaingun off-layer none
+trc: REP #202 t433 phase 0 health 100 state 0 | main Chaingun pend Fist off None offNext  | drawn main-layer Chaingun off-layer none
+trc: REP #203 t483 phase 0 health 100 state 0 | main Fist pend None off None offNext  | drawn main-layer Fist off-layer none
+trc: REP #203 t484 phase 0 health 100 state 0 | main Fist pend None off None offNext  | drawn main-layer Fist off-layer none
+TRC_MOUTH_MAIN_SLOT3_KEY
+T_CIG cue on t593: in the mouth zone (0.018 m of 0.080)
+T_CIG use in hand t600: 0.018 m from the zone's axis (radius 0.080) -> mouth
+trc: REP #204 t650 phase 2 health 100 state 0 | main Chaingun pend None off RSQTR_ZippoWeapon offNext  | drawn main-layer Chaingun off-layer RSQTR_ZippoWeapon
+trc: REP #204 t651 phase 2 health 100 state 0 | main Chaingun pend None off RSQTR_ZippoWeapon offNext  | drawn main-layer Chaingun off-layer RSQTR_ZippoWeapon
+T_CIG end t652: the main hand switching to SuperShotgun -> back in the pocket (unlit)
+T_CIG exit t652 (the end: the main hand switching to SuperShotgun): main Chaingun -> SuperShotgun | off nothing
+T_CIG exit t652 (off hand done: the main hand switching to SuperShotgun): main Chaingun -> SuperShotgun | off nothing
+T_CIG exit t653 (the tic after: the main hand switching to SuperShotgun): main Chaingun -> SuperShotgun | off nothing
+trc: REP #205 t658 phase 0 health 100 state 0 | main Chaingun pend SuperShotgun off None offNext  | drawn main-layer Chaingun off-layer none
+trc: REP #205 t659 phase 0 health 100 state 0 | main Chaingun pend SuperShotgun off None offNext  | drawn main-layer Chaingun off-layer none
+trc: REP #205 t660 phase 0 health 100 state 0 | main Chaingun pend SuperShotgun off None offNext  | drawn main-layer Chaingun off-layer none
+trc: REP #206 t707 phase 0 health 100 state 0 | main SuperShotgun pend None off None offNext  | drawn main-layer SuperShotgun off-layer none
+trc: REP #206 t708 phase 0 health 100 state 0 | main SuperShotgun pend None off None offNext  | drawn main-layer SuperShotgun off-layer none
+trc: REP #206 t709 phase 0 health 100 state 0 | main SuperShotgun pend None off None offNext  | drawn main-layer SuperShotgun off-layer none
+TRC_MOUTH_OFF_NEXT_KEY
+T_CIG cue on t820: in the mouth zone (0.018 m of 0.080)
+T_CIG use in hand t825: 0.018 m from the zone's axis (radius 0.080) -> mouth
+trc: REP #207 t877 phase 2 health 100 state 0 | main Chaingun pend None off RSQTR_ZippoWeapon offNext  | drawn main-layer Chaingun off-layer RSQTR_ZippoWeapon
+trc: REP #207 t878 phase 2 health 100 state 0 | main Chaingun pend None off RSQTR_ZippoWeapon offNext  | drawn main-layer Chaingun off-layer RSQTR_ZippoWeapon
+T_CIG end t879: a weapon switch key (next weapon, off hand) -> the switch already made -> back in the pocket (unlit)
+T_CIG exit t879 (the end: a weapon switch key (next weapon, off hand) -> the switch already made): main Chaingun | off nothing
+T_CIG exit t879 (off hand done: a weapon switch key (next weapon, off hand) -> the switch already made): main Chaingun | off nothing
+T_CIG exit t880 (the tic after: a weapon switch key (next weapon, off hand) -> the switch already made): main Chaingun | off nothing
+trc: REP #208 t884 phase 0 health 100 state 0 | main Chaingun pend None off None offNext  | drawn main-layer Chaingun off-layer none
+trc: REP #208 t885 phase 0 health 100 state 0 | main Chaingun pend None off None offNext  | drawn main-layer Chaingun off-layer none
+trc: REP #208 t886 phase 0 health 100 state 0 | main Chaingun pend None off None offNext  | drawn main-layer Chaingun off-layer none
+trc: REP #208 t887 phase 0 health 100 state 0 | main Chaingun pend None off None offNext  | drawn main-layer Chaingun off-layer none
+trc: REP #209 t932 phase 0 health 100 state 0 | main Chaingun pend None off None offNext  | drawn main-layer Chaingun off-layer none
+trc: REP #209 t933 phase 0 health 100 state 0 | main Chaingun pend None off None offNext  | drawn main-layer Chaingun off-layer none
+TRC_MOUTH_SWITCHHAND_1
+T_CIG cue on t1041: in the mouth zone (0.018 m of 0.080)
+T_CIG use in hand t1050: 0.018 m from the zone's axis (radius 0.080) -> mouth
+trc: REP #210 t1099 phase 2 health 100 state 0 | main Chaingun pend None off RSQTR_ZippoWeapon offNext  | drawn main-layer Chaingun off-layer RSQTR_ZippoWeapon
+T_CIG end t1100: the main hand holding Fist -> back in the pocket (unlit)
+T_CIG exit t1100 (the end: the main hand holding Fist): main Fist | off Chaingun
+T_CIG exit t1100 (off hand done: the main hand holding Fist): main Fist | off Chaingun
+trc: REP #210 t1100 phase 0 health 100 state 0 | main Fist pend None off Chaingun offNext  | drawn main-layer Fist off-layer Chaingun
+T_CIG exit t1101 (the tic after: the main hand holding Fist): main Fist | off Chaingun
+trc: REP #211 t1105 phase 0 health 100 state 0 | main Fist pend None off Chaingun offNext  | drawn main-layer Fist off-layer Chaingun
+trc: REP #212 t1154 phase 0 health 100 state 0 | main Fist pend None off Chaingun offNext  | drawn main-layer Fist off-layer Chaingun
+trc: REP #212 t1155 phase 0 health 100 state 0 | main Fist pend None off Chaingun offNext  | drawn main-layer Fist off-layer Chaingun
+TRC_MOUTH_SWITCHHAND_0
+T_CIG cue on t1263: in the mouth zone (0.018 m of 0.080)
+T_CIG use in hand t1271: 0.018 m from the zone's axis (radius 0.080) -> mouth
+trc: REP #213 t1321 phase 2 health 100 state 0 | main Fist pend None off RSQTR_ZippoWeapon offNext  | drawn main-layer Fist off-layer RSQTR_ZippoWeapon
+T_CIG end t1322: the Zippo was moved to the main hand (switchhand) -> back in the pocket (unlit)
+T_CIG exit t1322 (the end: the Zippo was moved to the main hand (switchhand)): main RSQTR_ZippoWeapon -> Fist | off nothing
+T_CIG exit t1322 (off hand done: the Zippo was moved to the main hand (switchhand)): main RSQTR_ZippoWeapon -> Fist | off nothing
+T_CIG exit t1323 (the tic after: the Zippo was moved to the main hand (switchhand)): main RSQTR_ZippoWeapon -> Fist | off nothing
+trc: REP #214 t1326 phase 0 health 100 state 0 | main Fist pend None off None offNext  | drawn main-layer Fist off-layer none
+trc: REP #215 t1376 phase 0 health 100 state 0 | main Fist pend None off None offNext  | drawn main-layer Fist off-layer none
+trc: REP #215 t1377 phase 0 health 100 state 0 | main Fist pend None off None offNext  | drawn main-layer Fist off-layer none
+TRC_MOUTH_MAIN_HOLSTER_RIGHT_HIP
+T_CIG cue on t1485: in the mouth zone (0.018 m of 0.080)
+T_CIG use in hand t1493: 0.018 m from the zone's axis (radius 0.080) -> mouth
+trc: REP #216 t1543 phase 2 health 100 state 0 | main Chaingun pend None off RSQTR_ZippoWeapon offNext  | drawn main-layer Chaingun off-layer RSQTR_ZippoWeapon
+T_CIG end t1556: the main hand's grip at a holster -> back in the pocket (unlit)
+T_CIG exit t1556 (the end: the main hand's grip at a holster): main Chaingun | off nothing
+T_CIG exit t1556 (off hand done: the main hand's grip at a holster): main Chaingun -> Shotgun | off nothing
+T_CIG exit t1557 (the tic after: the main hand's grip at a holster): main Chaingun -> Shotgun | off nothing
+trc: REP #217 t1569 phase 0 health 100 state 0 | main Chaingun pend Shotgun off None offNext  | drawn main-layer Chaingun off-layer none
+trc: REP #217 t1570 phase 0 health 100 state 0 | main Chaingun pend Shotgun off None offNext  | drawn main-layer Chaingun off-layer none
+trc: REP #217 t1571 phase 0 health 100 state 0 | main Shotgun pend None off None offNext  | drawn main-layer Shotgun off-layer none
+trc: REP #218 t1618 phase 0 health 100 state 0 | main Shotgun pend None off None offNext  | drawn main-layer Shotgun off-layer none
+TRC_MOUTH_OFF_HOLSTER_LEFT_HIP
+T_CIG cue on t1728: in the mouth zone (0.018 m of 0.080)
+T_CIG use in hand t1737: 0.018 m from the zone's axis (radius 0.080) -> mouth
+trc: REP #219 t1787 phase 2 health 100 state 0 | main Chaingun pend None off RSQTR_ZippoWeapon offNext  | drawn main-layer Chaingun off-layer RSQTR_ZippoWeapon
+trc: REP #219 t1788 phase 2 health 100 state 0 | main Chaingun pend None off RSQTR_ZippoWeapon offNext  | drawn main-layer Chaingun off-layer RSQTR_ZippoWeapon
+T_CIG end t1798: the off hand's grip at a holster -> back in the pocket (unlit)
+T_CIG exit t1798 (the end: the off hand's grip at a holster): main Chaingun | off nothing
+T_CIG exit t1798 (off hand done: the off hand's grip at a holster): main Chaingun | off nothing -> SuperShotgun
+T_CIG exit t1799 (the tic after: the off hand's grip at a holster): main Chaingun | off SuperShotgun
+trc: REP #220 t1811 phase 0 health 100 state 0 | main Chaingun pend None off SuperShotgun offNext  | drawn main-layer Chaingun off-layer SuperShotgun
+trc: REP #221 t1861 phase 0 health 100 state 0 | main Chaingun pend None off SuperShotgun offNext  | drawn main-layer Chaingun off-layer SuperShotgun
+TRC_MOUTH_OTHER_MOD_EMPTIES_OFF
+T_CIG cue on t1969: in the mouth zone (0.018 m of 0.080)
+T_CIG use in hand t1980: 0.018 m from the zone's axis (radius 0.080) -> mouth
+trc: REP #222 t2027 phase 2 health 100 state 0 | main Chaingun pend None off RSQTR_ZippoWeapon offNext  | drawn main-layer Chaingun off-layer RSQTR_ZippoWeapon
+T_CIG end t2031: the off hand holding nothing instead of the Zippo -> back in the pocket (unlit)
+T_CIG exit t2031 (the end: the off hand holding nothing instead of the Zippo): main Chaingun | off nothing
+T_CIG exit t2031 (off hand done: the off hand holding nothing instead of the Zippo): main Chaingun | off nothing
+T_CIG exit t2032 (the tic after: the off hand holding nothing instead of the Zippo): main Chaingun | off nothing
+trc: REP #223 t2032 phase 0 health 100 state 0 | main Chaingun pend None off None offNext  | drawn main-layer Chaingun off-layer none
+trc: REP #224 t2082 phase 0 health 100 state 0 | main Chaingun pend None off None offNext  | drawn main-layer Chaingun off-layer none
+trc: REP #224 t2083 phase 0 health 100 state 0 | main Chaingun pend None off None offNext  | drawn main-layer Chaingun off-layer none
+TRC_MOUTH_OTHER_MOD_SWITCHES_MAIN
+T_CIG cue on t2192: in the mouth zone (0.018 m of 0.080)
+T_CIG use in hand t2200: 0.018 m from the zone's axis (radius 0.080) -> mouth
+trc: REP #225 t2249 phase 2 health 100 state 0 | main Chaingun pend None off RSQTR_ZippoWeapon offNext  | drawn main-layer Chaingun off-layer RSQTR_ZippoWeapon
+T_CIG end t2252: the main hand switching to Shotgun -> back in the pocket (unlit)
+T_CIG exit t2252 (the end: the main hand switching to Shotgun): main Chaingun -> Shotgun | off nothing
+T_CIG exit t2252 (off hand done: the main hand switching to Shotgun): main Chaingun -> Shotgun | off nothing
+T_CIG exit t2253 (the tic after: the main hand switching to Shotgun): main Chaingun -> Shotgun | off nothing
+trc: REP #226 t2254 phase 0 health 100 state 0 | main Chaingun pend Shotgun off None offNext  | drawn main-layer Chaingun off-layer none
+trc: REP #226 t2255 phase 0 health 100 state 0 | main Chaingun pend Shotgun off None offNext  | drawn main-layer Chaingun off-layer none
+trc: REP #227 t2304 phase 0 health 100 state 0 | main Shotgun pend None off None offNext  | drawn main-layer Shotgun off-layer none

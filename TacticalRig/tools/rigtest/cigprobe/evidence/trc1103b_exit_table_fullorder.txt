@@ -1,0 +1,37 @@
+== lo_E1_LO.log
+HAND MAIN_NEXT_KEY               |                                                                        | after:                                                         | +50: phase 1 main RSQTR_CigWeapon off RSQTR_ZippoWeapon 
+HAND MAIN_SLOT3_KEY              | the main hand holding Rocket_Launcher -> back in the pocket (unlit)    | after: main Rocket_Launcher | off rsq_hands                    | +50:  
+HAND OFF_NEXT_KEY                | a weapon switch key (next weapon, off hand) -> the switch already made | after: main Rocket_Launcher | off rsq_hands                    | +50: phase 0 main Rocket_Launcher off rsq_hands 
+HAND SWITCHHAND_1                | the cigarette was moved to the off hand (switchhand) -> back in the po | after: main Rocket_Launcher | off rsq_hands                    | +50: phase 0 main Rocket_Launcher off rsq_hands 
+HAND SWITCHHAND_0                | the Zippo was moved to the main hand (switchhand) -> back in the pocke | after: main Rocket_Launcher | off rsq_hands                    | +50: phase 0 main Rocket_Launcher off rsq_hands 
+HAND MAIN_HOLSTER_RIGHT_HIP      | the main hand's grip at a holster -> back in the pocket (unlit)        | after: main Rocket_Launcher | off rsq_hands                    | +50: phase 0 main Rocket_Launcher off rsq_hands 
+HAND OFF_HOLSTER_LEFT_HIP        | the off hand's grip at a holster -> back in the pocket (unlit)         | after: main Rocket_Launcher | off rsq_hands -> SSG             | +50: phase 0 main Rocket_Launcher off SSG 
+HAND OTHER_MOD_EMPTIES_OFF       | the off hand holding rsq_hands instead of the Zippo -> back in the poc | after: main Rocket_Launcher | off nothing -> rsq_hands         | +50:  
+HAND OTHER_MOD_SWITCHES_MAIN     | the main hand holding Shot_Gun -> back in the pocket (unlit)           | after: main Shot_Gun | off RSQ_Off_Shot_Gun                    | +50: phase 1 main RSQTR_CigWeapon off RSQTR_ZippoWeapon 
+== lo_E2_LO.log
+MOUTH MAIN_NEXT_KEY              |                                                                        | after:                                                         | +50:  
+MOUTH MAIN_SLOT3_KEY             |                                                                        | after:                                                         | +50: phase 2 main Rocket_Launcher off RSQTR_ZippoWeapon 
+MOUTH OFF_NEXT_KEY               |                                                                        | after:                                                         | +50:  
+MOUTH SWITCHHAND_1               | the main hand holding HandGrenades -> back in the pocket (unlit)       | after: main HandGrenades | off Rocket_Launcher                 | +50: phase 0 main HandGrenades off Rocket_Launcher 
+MOUTH SWITCHHAND_0               | the Zippo was moved to the main hand (switchhand) -> back in the pocke | after: main HandGrenades | off rsq_hands                       | +50: phase 0 main HandGrenades off rsq_hands 
+MOUTH MAIN_HOLSTER_RIGHT_HIP     | the main hand's grip at a holster -> back in the pocket (unlit)        | after: main Rocket_Launcher -> Shot_Gun | off RSQ_Off_Shot_Gun | +50: phase 0 main Shot_Gun off RSQ_Off_Shot_Gun 
+MOUTH OFF_HOLSTER_LEFT_HIP       | the off hand's grip at a holster -> back in the pocket (unlit)         | after: main Rocket_Launcher | off rsq_hands                    | +50: phase 0 main Rocket_Launcher off rsq_hands 
+MOUTH OTHER_MOD_EMPTIES_OFF      | the off hand holding rsq_hands instead of the Zippo -> back in the poc | after: main Rocket_Launcher | off rsq_hands                    | +50:  
+MOUTH OTHER_MOD_SWITCHES_MAIN    | the main hand holding Shot_Gun -> back in the pocket (unlit)           | after: main Shot_Gun | off RSQ_Off_Shot_Gun                    | +50: phase 2 main Rocket_Launcher off RSQTR_ZippoWeapon 
+== lo_E3_LO.log
+LIT MAIN_NEXT_KEY                |                                                                        | after:                                                         | +50: phase 3 main Rocket_Launcher off RSQTR_ZippoWeapon 
+LIT MAIN_SLOT3_KEY               |                                                                        | after: main Rocket_Launcher | off rsq_hands                    | +50: phase 0 main Rocket_Launcher off rsq_hands 
+LIT OFF_NEXT_KEY                 |                                                                        | after:                                                         | +50: phase 3 main Rocket_Launcher off RSQTR_ZippoWeapon 
+LIT SWITCHHAND_1                 |                                                                        | after: main Rocket_Launcher | off rsq_hands                    | +50: phase 0 main HandGrenades off Rocket_Launcher 
+LIT SWITCHHAND_0                 | the Zippo was moved to the main hand (switchhand) -> flicked (lit)     | after: main HandGrenades | off rsq_hands                       | +50:  
+LIT MAIN_HOLSTER_RIGHT_HIP       | the main hand's grip at a holster -> flicked (lit)                     | after: main Rocket_Launcher -> Shot_Gun | off RSQ_Off_Shot_Gun | +50: phase 0 main Shot_Gun off RSQ_Off_Shot_Gun 
+LIT OFF_HOLSTER_LEFT_HIP         | the off hand's grip at a holster -> flicked (lit)                      | after: main Rocket_Launcher | off SSG                          | +50: phase 0 main Rocket_Launcher off SSG 
+LIT OTHER_MOD_EMPTIES_OFF        | the off hand holding rsq_hands instead of the Zippo -> flicked (lit)   | after: main Rocket_Launcher | off rsq_hands                    | +50: phase 3 main Rocket_Launcher off RSQTR_ZippoWeapon 
+LIT OTHER_MOD_SWITCHES_MAIN      | the main hand holding Shot_Gun -> flicked (lit)                        | after: main Shot_Gun | off RSQ_Off_Shot_Gun                    | +50:  
+== lo_KEYS.log
+HAND MAIN_NEXT_KEY               | a weapon switch key (next weapon, main hand) -> HandGrenades -> back i | after: main HandGrenades | off rsq_hands                       | +50: phase 0 main HandGrenades off rsq_hands 
+HAND MAIN_SLOT3_KEY              | the main hand holding SSG -> back in the pocket (unlit)                | after: main SSG | off rsq_hands                                | +50: phase 0 main SSG off rsq_hands 
+HAND OFF_NEXT_KEY                | a weapon switch key (next weapon, off hand) -> the switch already made | after: main Rocket_Launcher | off rsq_hands                    | +50: phase 0 main Rocket_Launcher off rsq_hands 
+MOUTH MAIN_NEXT_KEY              | the main hand holding HandGrenades -> back in the pocket (unlit)       | after: main HandGrenades | off rsq_hands                       | +50: phase 0 main HandGrenades off rsq_hands 
+MOUTH MAIN_SLOT3_KEY             | the main hand holding SSG -> back in the pocket (unlit)                | after: main SSG | off rsq_hands                                | +50: phase 0 main SSG off rsq_hands 
+MOUTH OFF_NEXT_KEY               | a weapon switch key (next weapon, off hand) -> the switch already made | after: main Rocket_Launcher | off rsq_hands                    | +50: phase 0 main Rocket_Launcher off rsq_hands 
