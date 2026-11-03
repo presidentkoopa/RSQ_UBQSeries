@@ -37,6 +37,18 @@ class RSQWP_Util
 		return c ? c.GetBool() : d;
 	}
 
+	// RSQ MINIBOSS, by name (nothing links; each mod still works alone): Miniboss wants this monster treated as a
+	// boss for one system (owner 2026-11-03: a miniboss never gets the engine's BOSS flag; each such system has its
+	// own switch in the RSQ Miniboss menu). Cheap first: it carries "RSQMB_Ward"; only then RSQMB_Service "bossfor".
+	static play bool MinibossAs(Actor v, String sys)
+	{
+		String wn = "RSQMB_Ward";
+		class<Inventory> wc = wn;
+		if (!v || !wc || !v.FindInventory(wc)) return false;
+		let sv = ServiceIterator.Find("RSQMB_Service").Next();
+		return sv && sv.GetInt("bossfor", sys, 0, 0, v) == 1;
+	}
+
 	// Map-space unit direction from a room yaw (degrees, engine sense restored)
 	// and a room pitch (positive up).
 	static clearscope Vector3 MapDir(double yaw, double pitchUp)

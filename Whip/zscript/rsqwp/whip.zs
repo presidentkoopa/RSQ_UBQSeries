@@ -1966,7 +1966,7 @@ class RSQWP_Whip : EventHandler
 		double s = clamp((peak - PULL_MIN) / (PULL_FULL - PULL_MIN), 0.0, 1.0);
 		double light = LightMass(pmo);
 		double heavyM = RSQWP_Util.Num("rsqwp_whip_heavy", 1000);
-		bool heavy = v.bBOSS || v.bDONTTHRUST || v.Mass >= heavyM;
+		bool heavy = v.bBOSS || v.bDONTTHRUST || v.Mass >= heavyM || RSQWP_Util.MinibossAs(v, "yank");   // RSQ Miniboss's "Can't Be Yanked"
 		Vector3 to = pmo.pos - v.pos;
 		double dist = to.xy.Length();
 		Vector2 u = dist > 0.01 ? to.xy / dist : (0, 0);
@@ -2025,7 +2025,7 @@ class RSQWP_Whip : EventHandler
 
 	static bool HeavyThing(Actor v)
 	{
-		return v.bBOSS || v.bDONTTHRUST || v.Mass >= RSQWP_Util.Num("rsqwp_whip_heavy", 1000);
+		return v.bBOSS || v.bDONTTHRUST || v.Mass >= RSQWP_Util.Num("rsqwp_whip_heavy", 1000) || RSQWP_Util.MinibossAs(v, "yank");
 	}
 
 	// The whip lands round a monster (a marked crack, or the lasso): it waits for the pull, and -- the flail --

@@ -232,6 +232,9 @@ are the 11-02 fixes. They were measured on the rig only, so all of them are not 
   Bola (the lasso ties 1-2 more monsters to its catch), Snag 2 (edges from the hand's height up), Mantle 2 (from a
   swing), Momentum 2-3 (the swing's cap 36 / 42), Tarzan (swing into a monster: hurt and knocked flat).
 - **RSQ Grapple:** loads beside it. Separate binds and settings. Not needed.
+- **RSQ Miniboss** (2026-11-03, by name): with Miniboss's "Can't Be Yanked" on (the default) a miniboss is heavy, as a
+  boss is: the yank swings you to it and the line anchors on it (`RSQMB_Service` `bossfor` `"yank"`). Rig only, not
+  headset-confirmed.
 - **RSQ DistanceGrab:** its grab binds take hold of the whip's rope ("Grips From Grab"). The lasso reads the
   same off-grip key codes DistanceGrab uses.
 - **RSQ SlowMo:** a leashed monster slides to you at the slowed world speed.
