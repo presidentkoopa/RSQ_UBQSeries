@@ -521,10 +521,9 @@ class RSQDG_Reach
 }
 
 
-// GUN BONSAI'S VR PATCH, ASKED BY NAME (RSQ_MeleeUpgradeService "plevel": a PLAYER upgrade's level).
-// A throw is no gun's, so the grab's perks are the player's own, and each grows one of the grab's
-// own settings for that player only. Without the patch every level is 0 and every factor 1: the
-// grab is exactly what it was. Levels are asked once a second per player and kept on RSQDG_Throw.
+// GUN BONSAI'S VR PATCH: THE GRAB HAS NO TREE (owner, 11-03; it did from 11-02 to 11-03). RSQDG_Throw.RefreshPerks
+// no longer asks the patch for anything, so every level here is 0 and every factor 1, with or without it: the grab is
+// its rows. The readers stay (a factor of 1, a level of 0) so the call sites keep their shape.
 //   Long Arm     rsqdg_reach         +15% a level
 //   Iron Grip    rsqdg_pull_kg       +50% a level (heavier things come easier), rsqdg_burden_kg +25%
 //   Heavy Hitter rsqdg_arm_kg        +25% a level (a heavy thing leaves the hand faster)
