@@ -54,7 +54,8 @@ With the whip weapon in hand:
 - Pull back hard: yank it. Light ones fly to you. Heavy ones (and bosses) pull you to them instead.
 - Lasso (whip in the main hand only): close your off hand on the handle or the thong (off controller there, grip
   pressed), whirl it, let go of the grip. It ropes the monster in that direction. The piece between your hands
-  is held straight; the rest hangs from the off hand.
+  is held straight; the rest hangs from the off hand. Circle the off hand and the loop is helped round fast; let
+  go anywhere on the circle and it flies out along the loop's path.
 - On a rope (the whip caught an edge): trigger held = reel in, alt-fire = let go.
 
 With the binds (Whip (Main)/(Off)):
@@ -104,6 +105,11 @@ Always on, no row of its own:
   joint, links held to length, light air drag and a speed cap that is always on. The handle follows your hand
   through a light smoothing filter (under one tic of lag), sub-step by sub-step, so per-tic hand jitter does not
   kick the thong. Walls: a link that hits one slides along it and then rests against it; nothing switches modes.
+- **The lasso's whirl (11-02, later).** While the off hand draws a circle with the lasso, the loop is helped round
+  with it (up to about 32 m/s at the tip) and the leather's damper and drag are eased off. The help comes in over
+  about 7 tics and goes out over 4, never all at once. Letting go throws along the loop's path at the whirl's
+  speed, from any point of the circle. A thrown lasso never cracks. Only the lasso gets this help: swings, cracks,
+  a held whip and walking are unchanged.
 - **Wind-up and swing.** Over the shoulder the thong stiffens. A forward swing drives it like a rod and then lets
   it go. The wind-up never cracks by itself. After a crack the whip has to calm (or wind up again) before it can
   crack again.
@@ -116,7 +122,7 @@ Always on, no row of its own:
   you a stealth-kill fatality. The whip no longer starts one.
 
 Tuning and Debug also has the physics sliders (11-02): **Leather Stiffness**
-(x reference, 1), **Leather Damping** (x reference, 0.25: at 1 the lasso cannot lift the thong), **Whip Air Drag** (1: it settles in about a second) and
+(x reference, 1), **Leather Damping** (x reference, 0.25), **Whip Air Drag** (1: it settles in about a second) and
 **Hand Smoothing** (0.8 tics; 0 = the raw hand).
 
 Not on the menu (deliberately): the lasso's test switch (rig only) and the off controller's grip key codes
@@ -154,8 +160,10 @@ are the 11-02 fixes. They were measured on the rig only, so all of them are not 
 8. Wrapped, pull back hard: an imp should fly to you. Try a heavy monster: you should be pulled toward it.
    Brutal Doom: no Brutal Doom melee or fatality starts when it arrives, and the whip does not stick in a wall.
    **(not yet headset-confirmed)**
-9. Lasso: off controller at the handle or the thong, press its grip. Whirl it with the off hand. Let go of the
-   grip toward a monster: it gets roped. **(not yet headset-confirmed)**
+9. Lasso: off controller at the handle or the thong, press its grip. Whirl it with the off hand: within about a
+   quarter of a second the loop swings round fast and flat. Let go of the grip as the loop heads toward a monster:
+   it gets roped. Let go at other points: it always flies out, never drops, never cracks.
+   **(rig only, not headset-confirmed)**
 10. Point at a switch and crack it: the switch is used. Crack near a loose pickup: it flies to you.
 11. Crack upward at a beam or a doorway top: it wraps and you hang on a rope. Trigger held reels you up.
     Push the stick to pump. Alt-fire to let go: you fly and keep your speed on landing.
@@ -200,8 +208,8 @@ are the 11-02 fixes. They were measured on the rig only, so all of them are not 
 - The leather and handle skins are also generated here (CREDITS.txt).
 - **Physics rebuild 11-02: rig only, not headset-confirmed.** Without a wind-up, a swing that starts with the thong
   lying on the floor does not crack on the rig (it did before, with the old lighter-toward-the-tip thong); the
-  deliberate wind-up cracks every time. The lasso whirls slower than before (it throws, but letting go at a slow
-  point of the circle can drop it). Leather Damping 1 (the reference's) makes the lasso too stiff to lift.
+  deliberate wind-up cracks every time. The lasso's whirl help (11-02, later) is rig only, not headset-confirmed:
+  its speed (32 m/s cap, the loop turning 1.25x the hand) and how round a circle it needs are guesses.
 - Never run on your headset. Feel numbers are guesses: crack speed, handle 24 cm, length 3.8 m, lock cone 7
   degrees, arm pump, mantle, lasso reach 0.30 m, flail speed. The 11-02 numbers are guesses too, tuned only on the
   rig's scripted swing: the wind-up pose (handle 27 deg up, no further forward than 70 deg off your facing, hand no

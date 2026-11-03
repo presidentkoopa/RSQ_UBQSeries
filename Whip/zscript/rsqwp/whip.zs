@@ -120,6 +120,12 @@ class RSQWP_Whip : EventHandler
 	double  pullPk[NW];          // the pull so far (its peak, map units a tic)
 	bool    lassoOn[NW], lassoWas[NW];
 	Vector3 lassoP0[NW], lassoP1[NW];   // the off hand holding the thong, last tic and now (room)
+	// THE WHIRL (11-02, owner: "most fun for the player"): the circle the off hand draws while it holds the lasso
+	double  lw[NW];              // the whirl assist, 0..1: ramps in while the hand circles, out after (never a flip)
+	Vector3 lc[NW];              // the circle's centre (room; carried with the body)
+	Vector3 lom[NW];             // its angular velocity (rad a tic, the axis by the right-hand rule)
+	double  lvw[NW];             // the tip's speed over the whirl (smoothed): what a let-go throws at
+	bool    lcHad[NW];
 	// owner's picks 2026-10-31 (teardown apply/08 3.1, apply/01 4.2 and 5.2, surveys/01_MELEE 3.6 and 4.11, 06_GRAB 4.6)
 	double  crackV[NW];          // the tip's speed at the last crack (room units a tic): the crack's damage and its lash's
 	bool    offGripKey[MAXPLAYERS];  // the off controller's grip key is down (raw key scan, rsqwp_keys_off): the Quest lasso
@@ -495,6 +501,7 @@ class RSQWP_Whip : EventHandler
 				lassoP1[i] = ToRoom(BodyHand(pmo, 1 - hand));
 				if (!lassoWas[i]) lassoP0[i] = lassoP1[i];
 			}
+			Whirl(i);
 			Vector3 peakAt, peakVel;
 			double tA = MSTimeF();
 			[peakAt, peakVel] = Sim(i, hb[i], hd[i], b, d);
@@ -632,6 +639,8 @@ class RSQWP_Whip : EventHandler
 		fd[i] = (fd[i].x * c - fd[i].y * s, fd[i].x * s + fd[i].y * c, fd[i].z);
 		fdv[i] = (fdv[i].x * c - fdv[i].y * s, fdv[i].x * s + fdv[i].y * c, fdv[i].z);
 		lassoP0[i] = Xf(lassoP0[i], r0, r1, c, s);
+		lc[i] = Xf(lc[i], r0, r1, c, s);
+		lom[i] = (lom[i].x * c - lom[i].y * s, lom[i].x * s + lom[i].y * c, lom[i].z);
 		pkAt[i] = ToMap(Xf(ToRoom(pkAt[i]), r0, r1, c, s));
 		// A TURN OR A STEP carried links lying on the floor into it (a thong draped over a ledge, turned with you,
 		// ends up under the ledge's top: rig 11-02, lifted by Collide and snapped back at 37 room units a tic). Such
@@ -987,7 +996,8 @@ class RSQWP_Whip : EventHandler
 		double bendK = clamp(RSQWP_Util.Num("rsqwp_whip_bend", 1.0), 0.05, 20.0);
 		// default x0.25 (rsqwp_whip_bend_damp): the reference's own damper (c/k 0.38 s) is for a whip driven only at
 		// its root; at x1 the off-hand lasso could not lift the 3.8 m thong off the floor (rig 11-02: whirl tip speed
-		// 2.7 room units a tic, x0.25 7.6); the crack and a held hand were as clean at x0.25, x0.1 began to double-peak
+		// 2.7 room units a tic, x0.25 7.6); the crack and a held hand were as clean at x0.25, x0.1 began to double-peak.
+		// (The lasso now has its own whirl help, Whirl: rig 11-02 later, 28.5 a tic at x1 as at x0.25.)
 		double dampK = clamp(RSQWP_Util.Num("rsqwp_whip_bend_damp", 0.25), 0.0, 20.0);
 		// at most as stiff as the whole whip's links: a thong still uncoiling has short links, and 1/seg^4 made it a
 		// rigid rod along the handle that flopped over as it paid out (rig 11-02)
@@ -995,8 +1005,24 @@ class RSQWP_Whip : EventHandler
 		double seg2 = segB * segB;
 		double wb2 = REF_EI_LAM * bendK / (seg2 * seg2);
 		double compl = 1.0 / (wb2 * h * h);
-		double gam = REF_C_K * dampK / bendK / h;
-		double drag = 1.0 - clamp(RSQWP_Util.Num("rsqwp_whip_drag", 1.0), 0.0, 10.0) / 35.0 * h;
+		// the whirl (Whirl, x lw): the damper and the drag eased off, and the loop helped round the hand's circle
+		double w = lw[i];
+		double loose = 1.0 - WHIRL_LOOSE * w;
+		double gam = REF_C_K * dampK * loose / bendK / h;
+		double drag = 1.0 - clamp(RSQWP_Util.Num("rsqwp_whip_drag", 1.0), 0.0, 10.0) * loose / 35.0 * h;
+		Vector3 wax = (0, 0, 0);
+		double wom = 0, wfe = 0;
+		int wk1 = NN;
+		if (w > 0.001 && lom[i].Length() > 0.001)
+		{
+			wax = lom[i].Unit();
+			// the loop turns with the hand (a little faster), its tip never over WHIRL_VMAX
+			double rmax = (NN - (lassoOn[i] ? LASSO_K : 0)) * seg + max(5.0, (lassoP1[i] - lc[i]).Length());
+			wom = min(lom[i].Length() * WHIRL_BOOST, WHIRL_VMAX / rmax);
+			wfe = w * (1.0 - exp(-WHIRL_G * h));
+			// let go and thrown, Reach lays the outer half out: the help goes out on the inner half only
+			if (reachTic[i] > 0) wk1 = NN / 2 - 1;
+		}
 		double cap = VMAX * h;
 		double fric = FRIC ** h;
 		// the hand followed critically damped: 2nd order, omega = 2 / lag (a steady motion trails by lag tics)
@@ -1043,6 +1069,21 @@ class RSQWP_Whip : EventHandler
 			{
 				Vector3 held = lassoP0[i] + (lassoP1[i] - lassoP0[i]) * t;
 				for (int k = 1; k <= LASSO_K; k++) wp[o + k] = anchor + (held - anchor) * (double(k) / LASSO_K);
+			}
+			// THE WHIRL: each free link eased toward its speed round the circle's axis (the tangent only: the loop's
+			// own turning holds it out, as a real one)
+			if (wfe > 0)
+			{
+				for (int k = k0 + 1; k <= wk1; k++)
+				{
+					Vector3 rel = wp[o + k] - lc[i];
+					Vector3 rho = rel - wax * (rel dot wax);
+					double pl = rho.Length();
+					if (pl < 0.5) continue;
+					Vector3 tt = (wax cross rho) / pl;
+					double cur = (wp[o + k] - wq[o + k]) dot tt;
+					wp[o + k] = wp[o + k] + tt * ((wom * pl * h - cur) * wfe);
+				}
 			}
 			// THE WIND-UP AND THE SWING (Deliberate): each link drawn to its place on the line out of the handle, as a
 			// spring of GUIDE_W x stiff (less toward the popper) critically damped against the line's own motion (XPBD),
@@ -1726,16 +1767,73 @@ class RSQWP_Whip : EventHandler
 				v ? v.GetClassName() : 'gone', hit ? hit.GetClassName() : 'gone', spd, dmg, hp0, hit ? hit.Health : 0, stag, dmg / 2);
 	}
 
+	// THE WHIRL (11-02; owner: "free to choose this for what is most fun for the player"). The rebuilt leather
+	// (MIT's damper) is right for a whip driven at its root, but a 0.3 m circle of the off hand could only swing the
+	// 2.8 m beyond it at 6.5 room units a tic (was 22.5), and a let-go at a slow point dropped it. The lasso is its own
+	// deliberate act, so while the off hand draws a circle the thong is helped round it:
+	//  - Whirl (a tic): the circle's centre (the hand's path averaged) and its angular velocity (the hand round that
+	//    centre, smoothed). How round and fast it is gives a target 0..1; lw ramps toward it (WHIRL_IN up, WHIRL_OUT
+	//    down a tic), so the help comes in and goes out over a few tics, never in one.
+	//  - Sim (a sub-step, x lw): every free link is eased toward turning with the hand's circle (its speed round the
+	//    axis, WHIRL_G a tic, the tip capped at WHIRL_VMAX), and the bend damper and the air drag are eased off by
+	//    WHIRL_LOOSE. Nothing else changes; at lw 0 (every swing, crack, hold, walk) the model is exactly as it was.
+	//  - LassoThrow: a let-go throws along the circle's tangent at the tip, at least as fast as the whirl was going.
+	const WHIRL_IN = 0.15;       // the assist gained a tic while the hand circles (full in ~7 tics, 0.2 s)
+	const WHIRL_OUT = 0.25;      // and lost a tic once it stops or lets go (4 tics)
+	const WHIRL_W0 = 0.06;       // the hand round its circle: no help under this (rad a tic: one turn in 3 s) ...
+	const WHIRL_W1 = 0.16;       // ... full help from this (one turn in 1.1 s)
+	const WHIRL_R0 = 2.0;        // and its circle's radius: none under this (room units, 6 cm) ...
+	const WHIRL_R1 = 5.0;        // ... full from this (15 cm)
+	const WHIRL_G = 0.5;         // how fast a link is brought to the circle's speed (a tic)
+	const WHIRL_VMAX = 32.0;     // the whirl's tip at most this fast (room units a tic, ~32 m/s; the old model's 22.5)
+	const WHIRL_BOOST = 1.25;    // the loop turns this much faster than the hand (a small circle flings a long loop)
+	const WHIRL_LOOSE = 0.6;     // at full whirl the bend damper and the air drag are this much weaker
+
+	void Whirl(int i)
+	{
+		double want = 0;
+		if (lassoOn[i])
+		{
+			Vector3 p = lassoP1[i];
+			if (!lcHad[i]) { lc[i] = p; lom[i] = (0, 0, 0); lvw[i] = 0; lcHad[i] = true; }
+			lc[i] += (p - lc[i]) * 0.1;
+			Vector3 r = p - lc[i];
+			double r2 = r dot r;
+			Vector3 om = r2 > 0.25 ? (r cross (p - lassoP0[i])) / r2 : (0, 0, 0);
+			lom[i] += (om - lom[i]) * 0.3;
+			double rr = sqrt(r2) / 0.85;   // the averaged centre trails a circle by ~15% of its radius
+			want = clamp((lom[i].Length() - WHIRL_W0) / (WHIRL_W1 - WHIRL_W0), 0.0, 1.0) * clamp((rr - WHIRL_R0) / (WHIRL_R1 - WHIRL_R0), 0.0, 1.0);
+			lvw[i] += (tipSpd[i] - lvw[i]) * 0.2;
+		}
+		// the let-go tic keeps its whirl for the throw (LassoThrow), then it goes out
+		if (lassoWas[i] && !lassoOn[i]) return;
+		if (want > lw[i]) lw[i] = min(want, lw[i] + WHIRL_IN);
+		else lw[i] = max(want, lw[i] - WHIRL_OUT);
+		if (lw[i] <= 0 && !lassoOn[i]) lcHad[i] = false;
+	}
+
 	// THE LASSO let go: the thong was whirling on the off hand; the grip let go, it flies on the way its tip was
-	// going (flat), to the monster nearest that way (within 25 degrees and twice the whip's length) and wraps round
-	// it, ready for the pull -- or out to full length if nothing is there. Too slow and it just drops.
+	// going (flat; whirling: along the circle's tangent at the tip, at least as fast as the whirl), to the monster
+	// nearest that way (within 25 degrees and twice the whip's length) and wraps round it, ready for the pull -- or
+	// out to full length if nothing is there. Not whirled and too slow, it just drops.
 	void LassoThrow(int i, PlayerPawn pmo, int hand)
 	{
 		int o = i * NP;
 		Vector3 tv = wp[o + NN] - ToRoom(wt[o + NN]);
 		double sp = tv.Length();
+		double w = lw[i];
+		if (w > 0.001 && lom[i].Length() > 0.001)
+		{
+			Vector3 ax = lom[i].Unit();
+			Vector3 rel = wp[o + NN] - lc[i];
+			Vector3 tt = ax cross (rel - ax * (rel dot ax));
+			double tl = tt.Length();
+			double ws = max(sp, lvw[i]);
+			if (tl > 0.001) tv = tt * (ws * w / tl) + tv * (1.0 - w);
+			sp = max(sp, w * lvw[i]);
+		}
 		if (RSQWP_Util.Flag("rsqwp_debug", false))
-			Console.Printf("T_WPW %d LASSO let go t%d tip speed %.1f%s", i, level.maptime, sp, sp < LASSO_MIN ? " (too slow: it drops)" : "");
+			Console.Printf("T_WPW %d LASSO let go t%d tip speed %.1f (whirl %.2f at %.1f)%s", i, level.maptime, sp, w, lvw[i], sp < LASSO_MIN ? " (too slow: it drops)" : "");
 		if (sp < LASSO_MIN || reachTic[i] > 0) return;
 		Vector3 dir = ToMap(tv);
 		if (dir.xy.Length() < 0.01) return;
@@ -1760,9 +1858,12 @@ class RSQWP_Whip : EventHandler
 		reachPt[i] = best ? best.pos + (0, 0, best.height * 0.6) : org + dir * (wlen[i] / RSQWP_Util.PS());
 		reachTic[i] = REACH_TICS;
 		crackV[i] = sp;              // it lands as hard as it was whirled
+		// a lasso is thrown, not cracked: Reach's flight is no crack (rig 11-02: one thrown into the air cracked where it
+		// landed, before and after the whirl), so the crack re-arms only once the thong has calmed (Lash)
+		armed[i] = false; pend[i] = false;
 		Noise(pmo, 'swish', org);
 		if (RSQWP_Util.Flag("rsqwp_debug", false))
-			Console.Printf("T_WPW %d LASSO thrown -> %s", i, best ? String.Format("%s", best.GetClassName()) : "the air");
+			Console.Printf("T_WPW %d LASSO thrown -> %s, %.0f deg off your facing", i, best ? String.Format("%s", best.GetClassName()) : "the air", Actor.DeltaAngle(pmo.angle, atan2(dir.y, dir.x)));
 	}
 
 	// A locked crack's flight: the thong pays out to the target over REACH_TICS (its length grows
@@ -2565,6 +2666,7 @@ class RSQWP_Whip : EventHandler
 		wstate[i] = ST_IDLE;
 		EndWrap(i);
 		byWeapon[i] = false; lassoOn[i] = false; lassoWas[i] = false; markHeld[i] = false; markLine[i] = null;
+		lw[i] = 0; lcHad[i] = false; lvw[i] = 0;
 		wby[i] = null;
 		lockOn[i] = null; lockLine[i] = false; lockLeft[i] = 0; lockHeld[i] = false; reachTic[i] = 0; reachFor[i] = null;
 		stiff[i] = 0; swinging[i] = false; windTics[i] = 0; stuckTics[i] = 0; bodyHad[i] = false;

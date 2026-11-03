@@ -1,5 +1,57 @@
 # HANDOFF -- RSQ_Whip (PROJECT WHIP), 2026-10-30
 
+## 2026-11-02 (latest): the lasso whirls fast and throws from anywhere -- rig only, not headset-confirmed
+Owner: make the lasso fun "regardless of cost to us". After the physics rebuild it whirled at 6.5 room units/tic
+(was 22.5) and a let-go at a slow point dropped it.
+
+### Done (measured; rig qzd17.3, doom2 MAP01, BEFORE = 9c32f28a8 via `git archive`, same probe)
+- **Whirl help** (whip.zs `Whirl`, Sim, `LassoThrow`): the off hand's circle is tracked each tic (its centre is the
+  hand's path averaged, its angular velocity is the hand around that centre, smoothed). How round and fast the
+  circle is gives a target 0..1, and `lw` ramps toward it (+0.15 a tic in, -0.25 out). Per sub-step x lw: every
+  free link is eased toward turning with the circle (WHIRL_G 0.5/tic, the loop at 1.25x the hand, tip capped at
+  32), and the bend damper and the drag are eased off by 60%. At lw 0 the model is exactly 9c32f28a8's.
+- **Let-go:** along the circle's tangent at the tip, at max(tip speed, lw x the whirl's smoothed tip speed).
+  The drop rule (LASSO_MIN 6) is unchanged for a lasso that was not whirled.
+- **No crack from a thrown lasso:** BEFORE, a lasso thrown into the air cracked where it landed: Reach's per-tic
+  move is read as a sub-step speed, 156 room/tic. It also does so AFTER (491) without this fix. A throw now
+  disarms the crack until the thong calms.
+- Rig: scenario `lasso0..lasso7` (whp_scripts.py: the 0.30 m overhead circle, 14 tics a turn, started k x 45 deg
+  on, so the t150 let-go is at 8 points of the circle); `tools/rigtest/lasso_metrics.py` reads them.
+
+| | BEFORE | AFTER |
+|---|---|---|
+| whirl tip speed, t40-149, mean (min), 8 runs | 2.5-6.3 (0.2-1.0) | 28.5-28.8 (20.1-25.2) |
+| let-go at 8 points: thrown | 5 of 8 (3 dropped at 2.4, 5.1, 5.6) | 8 of 8, at 30.8-31.7 |
+| throw direction (deg off facing) | not logged | -172, 123, 86, 46, 15, -20, -59, -111 (all round) |
+| tip out after let-go, max flat | 22-145 | 145-157 (the thong is 128 + handle) |
+| cracks after the let-go | 5 of 8 runs | 0 |
+| imp 220 ahead, let go at 15 deg | dropped (4.8) | thrown -> DoomImp, hit 6, WRAP, pinned |
+| Leather Damping x1 | lasso could not lift (2.7) | whirl 28.5, thrown |
+
+Ramp-in (lasso0, tip speed from the grip): 7.5 8.1 8.3 8.8 9.4 10.3 11.0 ... 18.1 25.4 25.0 22.1 ... 25.3 (no step).
+The 41 room/tic in the first tics after the grip comes from the latch pinning links 1-5. It was the same BEFORE.
+
+Unchanged (whp_metrics.py, BEFORE -> AFTER identical to the printed digit unless noted): idle, sway, snap
+(t>=30), walk, swing (2 cracks, peaks 87/80, one each), wall (2 cracks, 68/67): every column the same except ms.
+Jitter: lerr 0.63 -> 0.62%, wall tics 75 -> 78, KE 25035 -> 25038, same peaks and 1 crack. That is run-to-run noise:
+lw stays 0 there, so the code path is the same.
+
+Frames (chase camera, behind), scratchpad `/tmp/claude-0/-home-claude/01ebc270-3953-5301-831b-c73a8b1320ca/
+scratchpad/`: `strip_A_whirl.png` (frames 236-248, one turn: the loop flat and out, sweeping round overhead) vs
+`strip_B_whirl.png` (the thong hangs by the body); `strip_A_throw.png` (288-304: the let-go, the loop flies out to
+the imp ahead) vs `strip_B_throw.png` (dropped).
+
+Script errors: doom2 + GunBonsai 0.10.6 + all RSQ pk3s: 0. Full order (01, 02, 03 2.0.3n, 04-07, GunBonsai 0.10.6,
+all RSQ): 4, all 02_BD22_VoxelPack's own voxeldef. Every scenario run: 0.
+
+### Not done / open
+- Not headset-tested. Feel guesses: the 32 m/s cap, loop 1.25x the hand, help from 1 turn in 3 s (full at 1.1 s)
+  and a 6-15 cm circle, ramps 7/4 tics. Only the rig's perfect circle was tested; a real wobbly circle was not.
+- Reach's flight still reads a per-tic move as a sub-step speed (tip 100-490 room/tic in flight, BEFORE too).
+  The lasso no longer cracks from it. Not changed for the marked crack.
+- Cost while whirling not measured separately (about 15 extra vector ops per link per sub-step).
+
+
 ## 2026-11-02 (later): the thong's physics rebuilt on a research whip -- rig only, not headset-confirmed
 Owner (headset): "The whip is erratic ... i can't describe it more than that." He approved a rebuild on a validated
 whip model. Reference: Moses C. Nah, MIT Newman Lab, "Whip Project - Targeting with a Whip"
@@ -90,8 +142,7 @@ archive HEAD Whip`, same probe.
 - Nothing headset-tested. Feel is the owner's call: reference leather, damping x0.25, smoothing 0.8, drag 1, guide 1.5.
 - **No crack without the wind-up** on the rig: the scripted sidearm/overhead snaps start with 2.5 m of thong on the
   floor and peak 3-15 room/tic (prototype); the old tapered thong cracked them. The deliberate wind-up cracks.
-- The lasso whirls slower than before (6.5 vs 22.5 room/tic tip): it throws, but a let-go at a slow point of the
-  circle can drop (LASSO_MIN 6).
+- (Fixed in the section above: the lasso whirled slower than before and could drop.)
 - A Mend while walking (MAP01 stairs) still gives one sub-step jolt (38 internal).
 - Cost ~1.3x the old per whip; Quest not measured. tools/whipsim.py is the old model; whipsim_xpbd.py the new.
 - Not re-run after the rebuild: flail into others, snag/rope, Assist style, left-handed.

@@ -31,7 +31,7 @@ server bool   rsqwp_whip_yankgrace = false; // option: a wrap cannot be yanked f
 server int    rsqwp_whip_fireball_knock = 0; // Crack Fireballs: 0 the missile explodes where it is cracked, 1 it is knocked away along the crack and explodes away from you
 // the thong's physics (11-02, on the MIT reference whip: whip.zs)
 server float  rsqwp_whip_bend     = 1.0;    // bend stiffness, x the reference whip's leather (1 = the reference)
-server float  rsqwp_whip_bend_damp = 0.25;  // bend damping, x the reference whip's (1 = the reference; 0.25: at 1 the off-hand lasso cannot lift the thong)
+server float  rsqwp_whip_bend_damp = 0.25;  // bend damping, x the reference whip's (1 = the reference; 0.25 default)
 server float  rsqwp_whip_drag     = 1.0;    // air drag on the thong: share of its speed lost a second (1 = it settles in about a second)
 server float  rsqwp_whip_smooth   = 0.8;    // hand smoothing: the handle follows the hand this many tics behind on a steady motion (0 = raw)
 

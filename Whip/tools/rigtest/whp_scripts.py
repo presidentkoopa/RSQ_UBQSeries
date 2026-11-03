@@ -4,7 +4,7 @@ the rig exactly one frame a tic -- measured: whp_F frame n = gametic n+1). The r
 set from the console (a play-scope CVar.SetString on an engine cvar aborts), so the hand is driven here.
 
     python3 tools/rigtest/whp_scripts.py <scenario> [hand]     prints the script
-scenarios: snap walk swing yank hands idle mark sway jitter wall two"""
+scenarios: snap walk swing yank hands idle mark sway jitter wall two lasso lasso0..lasso7"""
 import sys, math, random
 
 R = (0.20, 1.30, -0.30, 20, 0)
@@ -80,8 +80,10 @@ def run(scen, hand='r'):
                 u = min(1.0, (t - 110) / 4.0)
                 p = (0.20, 1.30, -0.40 + pull * u, 20, 0)
             out.append(pose(p, left) + '; wait 1;')
-    elif scen == 'lasso':
-        # the left hand comes to the handle, grips at t15, whirls overhead (0.30 m circle, 14 tics a turn) to t150
+    elif scen.startswith('lasso'):
+        # the left hand comes to the handle, grips at t15, whirls overhead (0.30 m circle, 14 tics a turn) to t150.
+        # lasso0..lasso7: the circle started k x 45 degrees on, so the let-go at t150 is at that point of the circle
+        ph = 45.0 * int(scen[5:]) if scen[5:] else 0.0
 
         out.append(pre(7))
         for t in range(210):
@@ -90,7 +92,7 @@ def run(scen, hand='r'):
             if t < 10: lp = (-0.20, 1.20, -0.30, 0, 0)
             elif t < 20: lp = (0.20, 1.31, -0.50, 0, 0)
             elif t < 150:
-                th = (t - 20) * 360.0 / 14.0; r = min(0.30, 0.03 * (t - 20))
+                th = (t - 20) * 360.0 / 14.0 + ph; r = min(0.30, 0.03 * (t - 20))
                 lp = (0.15 + r * math.cos(math.radians(th)), 1.70, -0.45 + r * math.sin(math.radians(th)), 0, 0)
             else: lp = (-0.20, 1.20, -0.30, 0, 0)
             x, y, z, pi, yw = lp
