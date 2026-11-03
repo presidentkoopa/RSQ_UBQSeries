@@ -129,6 +129,22 @@ class SSQ_ScoreService : Service
 		if (request == "blocked") return h.score.SinceBlocked(a);
 		if (request == "returned") return h.score.WasReturned(a) ? 0 : -1;
 		if (request == "perfect") return h.score.SincePerfect(a);
+		// "grind.held": tics the grind in the hand has been on this monster (RSQ Score's Buzzsaw, 11-03); -1 not being ground
+		if (request == "grind.held")
+		{
+			if (!a) return -1;
+			for (int i = 0; i < MAXPLAYERS; i++)
+			{
+				if (!playeringame[i] || !players[i].mo) continue;
+				let g = SSQ_Guard(players[i].mo.FindInventory('SSQ_Guard'));
+				if (!g) continue;
+				int gi = g.grindWho.Find(a);
+				if (gi >= g.grindWho.Size() || gi >= g.grindStart.Size()) continue;
+				if (Level.maptime - g.grindWhen[gi] > 35) continue;
+				return Level.maptime - g.grindStart[gi];
+			}
+			return -1;
+		}
 		let d = SSQ_Disc(objectArg);
 		if (request == "thrown.leg") return d ? (d.phase == SSQ_Disc.PH_HOME ? 1 : 0) : -1;
 		if (request == "disc.grinding") return (d && d.phase == SSQ_Disc.PH_EMBED) ? 0 : -1;

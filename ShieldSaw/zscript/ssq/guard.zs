@@ -33,6 +33,7 @@ class SSQ_Guard : Inventory
 	// :1968-1969) and the disc caps its embed grind the same way for one victim (disc.zs:475).
 	Array<Actor> grindWho;
 	Array<int> grindWhen;
+	Array<int> grindStart;		// the tic the grind on that body began (RSQ Score's Buzzsaw, SSQ_ScoreService "grind.held")
 
 	Default
 	{
@@ -1075,8 +1076,13 @@ class SSQ_Guard : Inventory
 				// stamped BEFORE the damage: DamageMobj can destroy t (a gib leaves nothing to
 				// look up, and the line below already expects that), and a body that was hurt
 				// and lived must not be ground again next tic
-				if (gi < g.grindWho.Size()) g.grindWhen[gi] = mo.Level.maptime;
-				else { g.grindWho.Push(t); g.grindWhen.Push(mo.Level.maptime); }
+				if (gi < g.grindWho.Size())
+				{
+					while (g.grindStart.Size() < g.grindWho.Size()) g.grindStart.Push(mo.Level.maptime);
+					if (mo.Level.maptime - g.grindWhen[gi] > grindRate * 3) g.grindStart[gi] = mo.Level.maptime;   // a new grind, not the same one going on
+					g.grindWhen[gi] = mo.Level.maptime;
+				}
+				else { g.grindWho.Push(t); g.grindWhen.Push(mo.Level.maptime); g.grindStart.Push(mo.Level.maptime); }
 				int dmg = GrindDamage(mo);	// HUNGRY BLADES (Gun Bonsai VR patch) raises it
 				if (upg) upg.GetInt("credit.push", "", 2, 0, saw);
 				t.DamageMobj(mo, mo, dmg, 'Saw');
@@ -1108,7 +1114,7 @@ class SSQ_Guard : Inventory
 			Actor gw = g.grindWho[k];
 			int gt = g.grindWhen[k];
 			if (!gw || gw.health <= 0 || mo.Level.maptime - gt > 70 || mo.Level.maptime < gt)
-				{ g.grindWho.Delete(k); g.grindWhen.Delete(k); }
+				{ g.grindWho.Delete(k); g.grindWhen.Delete(k); if (k < g.grindStart.Size()) g.grindStart.Delete(k); }
 		}
 	}
 

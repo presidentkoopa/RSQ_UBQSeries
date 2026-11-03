@@ -1507,6 +1507,7 @@ class SSQ_Handler : EventHandler
 		int wsl = mo ? SSQ_Upg.Lv(mo.FindInventory('SSQ_ShieldSaw'), "WallSlam") : 0;
 		int dmg = int(clamp(impact * 2.0, 5, 40) * SV('ssq_slam_damage', 1.0) * (wsl > 0 ? SSQ_Upg.Num("WallSlam.mult", wsl, 1.0) : 1.0));
 		if (wsl > 0) SSQ_Upg.Touch("slam.saw", mo, v);
+		if (mo) SSQ_Upg.Touch("shield.slam", mo, v);   // RSQ Score (11-03): the wall slam is its own tool, named before its blow
 		Vector3 at = v.pos + (-nrm.x * v.radius, -nrm.y * v.radius, v.height * 0.5);
 		int hp = v.health;
 		if (dmg > 0)
