@@ -14,6 +14,11 @@ class RSQGN_Thrown : Actor
 	bool boomed;
 	bool hot;
 	bool hotAmber;		// COOK SENSE 2: this flash is amber
+	double dmgMult;		// the blast's share (1 unless a node raises it: Teeth, Skeet)
+	int sticky;			// STICKY (Gun Bonsai VR patch): its level at the throw
+	Actor stuckTo;		// the monster it is stuck to
+	Vector3 stuckOfs;
+	bool stuckWall;
 
 	Default
 	{
@@ -53,6 +58,7 @@ class RSQGN_Thrown : Actor
 	{
 		Super.Tick();
 		if (bDestroyed || boomed || IsFrozen()) return;
+		if (sticky > 0) Stick();
 
 		bool grounded = pos.z <= floorz + 0.25 || bOnMobj;		// on the floor, or come to rest on top of a monster
 		// AT REST IT IS NO LONGER A MISSILE. Doom's bounce switches itself off once a floor bounce comes back under
@@ -102,6 +108,42 @@ class RSQGN_Thrown : Actor
 		else Detonate();
 	}
 
+	// STICKY (Gun Bonsai VR patch, GBOVR_TREES.md 4.5 Blast): the first monster it touches holds it (2: or a wall), and it
+	// rides there until the fuse. A stuck-to monster that dies lets it fall.
+	void Stick()
+	{
+		if (stuckTo)
+		{
+			if (stuckTo.health <= 0 || stuckTo.bDestroyed) { stuckTo = null; bNoGravity = false; return; }
+			SetOrigin(stuckTo.pos + stuckOfs, true);
+			vel = (0, 0, 0);
+			return;
+		}
+		if (stuckWall) { vel = (0, 0, 0); return; }
+		double reach = radius + vel.Length() + 4;
+		let it = BlockThingsIterator.Create(self, reach + 64);
+		while (it.Next())
+		{
+			let t = it.thing;
+			if (!t || t == self || t == target || !t.bShootable || !t.bIsMonster || t.health <= 0) continue;
+			if (abs(t.pos.x - pos.x) > t.radius + reach || abs(t.pos.y - pos.y) > t.radius + reach) continue;
+			if (pos.z < t.pos.z - reach || pos.z > t.pos.z + t.height + reach) continue;
+			stuckTo = t;
+			// on its skin, not inside it: the side it came from, at the height it struck
+			Vector3 c = (t.pos.x, t.pos.y, clamp(pos.z, t.pos.z + 4, t.pos.z + t.height - 4));
+			Vector2 away = pos.xy - t.pos.xy;
+			if (away.Length() < 0.1) away = -vel.xy;
+			if (away.Length() < 0.1) away = (1, 0);
+			away = away.Unit() * (t.radius + 1);
+			stuckOfs = (c.x + away.x, c.y + away.y, c.z) - t.pos;
+			bMissile = false; bNoGravity = true; vel = (0, 0, 0);
+			A_StartSound("rsqgn/bounce", CHAN_6);
+			RSQGN_Upg.Touch("sticky", target, t);
+			return;
+		}
+		if (sticky >= 2 && BlockingLine) { stuckWall = true; bMissile = false; bNoGravity = true; vel = (0, 0, 0); A_StartSound("rsqgn/bounce", CHAN_6); }
+	}
+
 	void Detonate()
 	{
 		if (boomed) return;
@@ -134,8 +176,106 @@ class RSQGN_Thrown : Actor
 		TNT1 A 0 A_StartSound("rsqgn/farexpl", CHAN_7);
 		TNT1 A 0 A_AlertMonsters;
 		TNT1 A 0 A_SpawnItemEx("RSQGN_Blast", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
-		TNT1 A 1 A_Explode(85, 200, XF_HURTSOURCE);
-		TNT1 A 1 A_Explode(75, 255, XF_HURTSOURCE);
+		TNT1 A 1 { RSQGN_Thrown.Blast(self, target, 0, dmgMult > 0 ? dmgMult : 1.0); }
+		TNT1 A 1 { RSQGN_Thrown.Blast(self, target, 1, dmgMult > 0 ? dmgMult : 1.0); }
+		Stop;
+	}
+
+	// THE BLAST'S DAMAGE, for the thrown grenade and the one that goes off in the hand: the pack's two A_Explodes (85 over
+	// 200, then 75 over 255), called on `at` so the kill is `at`'s target's (the thrower). BIG BANG raises both radii
+	// +15% a level, FRAG both damages +15% a level (Gun Bonsai VR patch, read off `by`'s grenade); `mult` is the throw's
+	// own share. The second part throws CLUSTER's bomblets.
+	static void Blast(Actor at, Actor by, int part, double mult)
+	{
+		if (!at) return;
+		int bb = RSQGN_Upg.Lv(by, "BigBang"), fr = RSQGN_Upg.Lv(by, "Frag");
+		double dk = (fr > 0 ? RSQGN_Upg.Num("Frag.mult", fr, 1.0) : 1.0) * mult;
+		double rk = bb > 0 ? RSQGN_Upg.Num("BigBang.mult", bb, 1.0) : 1.0;
+		if (part == 0) at.A_Explode(int(85 * dk + 0.5), int(200 * rk + 0.5), XF_HURTSOURCE);
+		else at.A_Explode(int(75 * dk + 0.5), int(255 * rk + 0.5), XF_HURTSOURCE);
+		if (part == 1) Cluster(at, by);	// after both parts, so the blast does not shove its own bomblets
+	}
+
+	// CLUSTER (Gun Bonsai VR patch): 2 + a level small bomblets thrown 2-4 m out round the blast, each fused a second
+	static void Cluster(Actor at, Actor by)
+	{
+		int lv = RSQGN_Upg.Lv(by, "Cluster");
+		if (lv <= 0) return;
+		int n = int(RSQGN_Upg.Num("Cluster.count", lv, 0));
+		double m = RSQGN_Geo.Vu();
+		let gw = by ? Weapon(by.FindInventory("RSQGN_Grenade")) : null;
+		for (int i = 0; i < n; i++)
+		{
+			let b = RSQGN_Bomblet(Actor.Spawn("RSQGN_Bomblet", at.pos + (0, 0, 8), ALLOW_REPLACE));
+			if (!b) continue;
+			b.target = by;
+			if (gw)
+			{
+				b.master = gw;
+				let it = ServiceIterator.Find("RSQ_MeleeUpgradeService");
+				Service gb = it.Next();
+				if (gb) gb.GetInt("claim", "", 0, 0, b);
+			}
+			// evenly round, a little jitter (the grenade's own synced table, so every machine throws the same)
+			double a = i * 360.0 / n + random[RSQGN_Cluster](-20, 20);
+			double d = m * frandom[RSQGN_Cluster](2.0, 4.0);
+			double up = 4.0;
+			double g = b.GetGravity();	// its pull here, units a tic a tic
+			double h0 = max(b.pos.z - b.floorz, 0);
+			double t = (up + sqrt(up * up + 2 * g * h0)) / max(g, 0.01);	// tics until it reaches the floor
+			b.vel = (cos(a) * d / t, sin(a) * d / t, up);
+		}
+	}
+}
+
+// CLUSTER's bomblet (Gun Bonsai VR patch): a small bomb that lands and goes off a second after the blast, 30 over 96, its
+// kill the thrower's (target). The look is the pack's own secondary burst (RSQGN_BlastKaboom) and a flare.
+class RSQGN_Bomblet : Actor
+{
+	int fuse;
+	Default
+	{
+		Projectile;
+		-NOGRAVITY;
+		-BLOODSPLATTER;
+		Radius 2;
+		Height 2;
+		Gravity 0.5;
+		Damage 0;
+		Scale 0.15;
+		BounceType "Doom";
+		BounceFactor 0.15;
+		WallBounceFactor 0.2;
+		+BOUNCEONACTORS;
+		+ALLOWBOUNCEONACTORS;
+		BounceSound "rsqgn/bounce";
+		DamageType "Explosive";
+		Obituary "%o was popped by %k's grenade";
+	}
+	override void PostBeginPlay() { Super.PostBeginPlay(); fuse = TICRATE; }
+	override void Tick()
+	{
+		Super.Tick();
+		if (bDestroyed || IsFrozen()) return;
+		if (bMissile && (!bBOUNCEONWALLS || (pos.z <= floorz + 0.25 && abs(vel.z) < 0.6))) bMissile = false;
+		if (pos.z <= floorz + 0.25) { vel.x *= 0.45; vel.y *= 0.45; }	// it lands and stays near where it fell
+		if (fuse > 0 && --fuse == 0) SetStateLabel("Boom");
+	}
+	States
+	{
+	Spawn:
+		QGNT A -1;
+		Stop;
+	Death:
+		TNT1 A 0 { fuse = 0; }
+		Goto Boom;
+	Boom:
+		TNT1 A 0 A_NoBlocking;
+		TNT1 A 0 { bMissile = false; vel = (0, 0, 0); }
+		TNT1 A 0 A_StartSound("rsqgn/explode", CHAN_AUTO, 0, 0.6, ATTN_NORM, 1.4);
+		TNT1 A 0 A_SpawnItemEx("RSQGN_BlastKaboom", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
+		TNT1 A 0 A_SpawnItemEx("RSQGN_BlastFlareSpawner", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
+		TNT1 A 1 A_Explode(30, 96, XF_HURTSOURCE);
 		Stop;
 	}
 }

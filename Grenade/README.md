@@ -76,7 +76,10 @@ weapon as its master and is claimed through the patch's service, by name), so th
 odds rising with them; 3: one Kill Rewards ammo bit in four is a grenade); **Strong Arm** (throw x1.25 / 1.5 / 1.75);
 **Flat Arc** (after Strong Arm: less lift and gravity, two levels); **Bounce** (after Strong Arm: wall bounce 0.4 /
 0.55 / 0.7); **Cook Sense** (a tick in the hand each second of a cooking fuse; 2: the flash runs amber, then red);
-**Short Fuse** (after Cook Sense: 2.5 / 2.0 s). Without the patch nothing changes.
+**Short Fuse** (after Cook Sense: 2.5 / 2.0 s); **Big Bang** (both blast radii +15% a level); **Frag** (after Big
+Bang: both damages +15% a level); **Cluster** (after Frag 2: 3 / 4 / 5 bomblets, 30 over 96 each, thrown 2-4 m and
+going off a second later); **Sticky** (after Frag: it sticks to the first monster it touches and rides it to the
+blast; 2: walls too). The blast that goes off in your hand takes the same numbers. Without the patch nothing changes.
 
 Tuning and Debug page:
 

@@ -381,6 +381,8 @@ class RSQGN_Handler : EventHandler
 		g.angle = VectorAngle(g.Vel.x, g.Vel.y);
 		g.fuse = left;
 		g.fuseTotal = fuse;
+		g.dmgMult = 1.0;
+		g.sticky = RSQGN_Upg.Lv(pmo, "Sticky");	// STICKY (Gun Bonsai VR patch)
 		int fa = RSQGN_Upg.Lv(pmo, "FlatArc"), bo = RSQGN_Upg.Lv(pmo, "Bounce");
 		g.Gravity = clamp(SNum("rsqgn_gravity", 0.27) * (fa > 0 ? RSQGN_Upg.Num("FlatArc.gravity", fa, 1.0) : 1.0), 0.05, 1.0);	// FLAT ARC
 		g.BounceFactor = clamp(SNum("rsqgn_bounce", 0.5), 0.0, 0.9);
@@ -627,8 +629,8 @@ class RSQGN_HandBlast : Actor
 		TNT1 A 0 A_StartSound("rsqgn/farexpl", CHAN_7);
 		TNT1 A 0 A_AlertMonsters;
 		TNT1 A 0 A_SpawnItemEx("RSQGN_Blast", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
-		TNT1 A 1 A_Explode(85, 200, XF_HURTSOURCE);
-		TNT1 A 1 A_Explode(75, 255, XF_HURTSOURCE);
+		TNT1 A 1 { RSQGN_Thrown.Blast(self, target, 0, 1.0); }
+		TNT1 A 1 { RSQGN_Thrown.Blast(self, target, 1, 1.0); }
 		Stop;
 	}
 }

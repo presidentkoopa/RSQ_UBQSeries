@@ -460,6 +460,9 @@ class RSQ_MeleeUpgradeService : Service
 			if (stringArg == "FlatArc.gravity") return RSQ_Upgrade_FlatArc.Gravity(lv);
 			if (stringArg == "Bounce.wall") return RSQ_Upgrade_Bounce.Wall(lv);
 			if (stringArg == "ShortFuse.secs") return RSQ_Upgrade_ShortFuse.Secs(lv);
+			if (stringArg == "BigBang.mult") return RSQ_Upgrade_BigBang.Mult(lv);
+			if (stringArg == "Frag.mult") return RSQ_Upgrade_Frag.Mult(lv);
+			if (stringArg == "Cluster.count") return RSQ_Upgrade_Cluster.Count(lv);
 			// G. Gun hand, H. Taunt
 			if (stringArg == "PistolWhip.stagger") return RSQ_Upgrade_PistolWhip.Stagger(lv);
 			if (stringArg == "PistolWhip.mult") return RSQ_Upgrade_PistolWhip.Mult(lv);

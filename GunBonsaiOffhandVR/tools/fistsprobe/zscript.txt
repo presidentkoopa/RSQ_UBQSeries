@@ -89,11 +89,52 @@ class FistsProbe : EventHandler
 	// a disc left stuck in a monster (fp_sscut arg1 1): read the monster again later
 	int ssCutAt, ssCutH0;
 	Actor ssCutMon;
+	// a grenade set off by the probe: the Baron beside it, the grenade, when to read them
+	int gnAt, gnBaronH0;
+	Actor gnBaron, gnNade;
+	Vector3 gnAtPos;
+	int gnStickAt;
 	override void WorldTick()
 	{
 		let p = P(); if (!p) return;
 		int t = level.maptime;
 		FxReport();
+		if (gnAt > 0 && t == gnAt + 3)
+		{
+			int n = 0; double dmin = 1e9, dmax = 0;
+			let it = ThinkerIterator.Create("RSQGN_Bomblet");
+			Actor b;
+			while (b = Actor(it.Next())) { n++; }
+			Console.Printf("FP grenade blast: the Baron %d -> %d; bomblets thrown %d", gnBaronH0, gnBaron ? gnBaron.health : -1, n);
+			gnBaronH0 = gnBaron ? gnBaron.health : 0;
+		}
+		if (gnAt > 0 && t == gnAt + 30)
+		{
+			int n = 0; double dmin = 1e9, dmax = 0;
+			let it = ThinkerIterator.Create("RSQGN_Bomblet");
+			Actor b;
+			while (b = Actor(it.Next())) { n++; double d = (b.pos.xy - gnAtPos.xy).Length() / SSQ_Handler.CM(100.0); dmin = min(dmin, d); dmax = max(dmax, d); }
+			if (n > 0) Console.Printf("FP grenade bomblets landed: %d, %.1f to %.1f m from the blast", n, dmin, dmax);
+		}
+		if (gnAt > 0 && t == gnAt + 45)
+		{
+			Console.Printf("FP grenade bomblets went off: the Baron %d -> %d", gnBaronH0, gnBaron ? gnBaron.health : -1);
+			if (gnBaron) gnBaron.Destroy();
+			gnAt = 0;
+		}
+		if (gnStickAt > 0 && t == gnStickAt)
+		{
+			let g = RSQGN_Thrown(gnNade);
+			Console.Printf("FP grenade sticky: stuck to %s%s", g && g.stuckTo ? g.stuckTo.GetClassName() : 'nothing', g && g.stuckWall ? " (a wall)" : "");
+			if (g && g.stuckTo) { g.stuckTo.SetOrigin(g.stuckTo.pos + (0, 48, 0), false); }
+		}
+		if (gnStickAt > 0 && t == gnStickAt + 3)
+		{
+			let g = RSQGN_Thrown(gnNade);
+			if (g && g.stuckTo) Console.Printf("FP grenade sticky: the imp moved 48; the grenade %.1f units from it (it rides along)", (g.pos.xy - g.stuckTo.pos.xy).Length());
+			if (g) { if (g.stuckTo) g.stuckTo.Destroy(); g.Destroy(); }
+			gnStickAt = 0;
+		}
 		if (ssCutAt > 0 && t >= ssCutAt)
 		{
 			ssCutAt = 0;
@@ -375,6 +416,37 @@ class FistsProbe : EventHandler
 			if (!g) { Console.Printf("FP grenade throw: nothing thrown"); return; }
 			Console.Printf("FP grenade throw: leaves at %.2f u/tic (up %.2f), gravity %.3f, wall bounce %.2f, fuse %d of %d tics, master %s",
 				g.vel.xy.Length(), g.vel.z, g.Gravity, g.WallBounceFactor, g.fuse, g.fuseTotal, g.master ? g.master.GetClassName() : 'none');
+		}
+		else if (e.Name ~== "fp_gnboom")
+		{
+			// a grenade of yours set off 300 units ahead; a frozen Baron arg0 units beside it
+			Vector3 f = (cos(p.angle), sin(p.angle), 0);
+			gnAtPos = p.pos + f * 300 + (0, 0, 4);
+			gnBaron = Actor.Spawn("BaronOfHell", gnAtPos + (-f.y, f.x, 0) * e.Args[0] - (0, 0, 4));
+			if (gnBaron) { gnBaron.freezetics = 80; gnBaronH0 = gnBaron.health; }
+			let g = RSQGN_Thrown(Actor.Spawn("RSQGN_Thrown", gnAtPos));
+			if (!g) return;
+			g.target = p; g.master = p.FindInventory("RSQGN_Grenade");
+			g.fuse = 1; g.fuseTotal = 105; g.dmgMult = 1.0; g.vel = (0, 0, 0);
+			gnAt = level.maptime;
+		}
+		else if (e.Name ~== "fp_gnstick")
+		{
+			// thrown through the grenade's own Throw at a frozen imp 80 ahead (arg0 1: no imp, at a wall 2 m off to the side)
+			let h = RSQGN_Handler.Get();
+			if (!h) return;
+			Vector3 f = (cos(p.angle), sin(p.angle), 0);
+			Actor imp = null;
+			if (e.Args[0] == 0) { imp = Put("DoomImp", 80); if (imp) imp.freezetics = 60; }
+			h.armed[0] = true; h.spoon[0] = false;
+			h.throwAt[0] = p.pos + (0, 0, 40) + f * 16;
+			h.throwVel[0] = f * 8;
+			h.Throw(p, 0, 0, 5.0);
+			let it = ThinkerIterator.Create("RSQGN_Thrown");
+			RSQGN_Thrown a;
+			while (a = RSQGN_Thrown(it.Next())) if (a.target == p) gnNade = a;
+			gnStickAt = level.maptime + 12;
+			Console.Printf("FP grenade sticky thrown at level %d", gnNade ? RSQGN_Thrown(gnNade).sticky : -1);
 		}
 		else if (e.Name ~== "fp_gnstate")
 		{

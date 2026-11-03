@@ -76,3 +76,36 @@ class RSQ_Upgrade_ShortFuse : RSQ_Upgrade_GrenadeMarker
 	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return GrenadeInfo(info) && Has(info, "CookSense") && LevelOf(info, "ShortFuse") < 2; }
 	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("s", string.format("%.1f s", 3.0 - Secs(level))); }
 }
+
+// ---- BLAST (the frag's own numbers) -------------------------------------------------------------------------------
+
+// BIG BANG (root): both radii +15% a level (200 / 255 -> 290 / 370 at 3). (RSQGN_Thrown.Blast)
+class RSQ_Upgrade_BigBang : RSQ_Upgrade_GrenadeMarker
+{
+	static double Mult(uint lv) { return 1.0 + 0.15 * int(lv); }
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return GrenadeInfo(info) && LevelOf(info, "BigBang") < 3; }
+	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("r", AsPercentIncrease(Mult(level))); }
+}
+
+// FRAG (after Big Bang 1): both damages +15% a level (85 / 75 -> 123 / 109 at 3). (RSQGN_Thrown.Blast)
+class RSQ_Upgrade_Frag : RSQ_Upgrade_GrenadeMarker
+{
+	static double Mult(uint lv) { return 1.0 + 0.15 * int(lv); }
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return GrenadeInfo(info) && Has(info, "BigBang") && LevelOf(info, "Frag") < 3; }
+	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("d", AsPercentIncrease(Mult(level))); }
+}
+
+// CLUSTER (after Frag 2): the blast throws 2 + lv bomblets (30 over 96 each) 2-4 m out, fused 1 s. (RSQGN_Thrown.Cluster)
+class RSQ_Upgrade_Cluster : RSQ_Upgrade_GrenadeMarker
+{
+	static int Count(uint lv) { return lv > 0 ? 2 + int(lv) : 0; }
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return GrenadeInfo(info) && Has(info, "Frag", 2) && LevelOf(info, "Cluster") < 3; }
+	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("n", string.format("%d", Count(level))); }
+}
+
+// STICKY (after Frag 1): the grenade sticks to the first monster it touches (2: or a wall) and goes off there.
+// (RSQGN_Thrown.Stick)
+class RSQ_Upgrade_Sticky : RSQ_Upgrade_GrenadeMarker
+{
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return GrenadeInfo(info) && Has(info, "Frag") && LevelOf(info, "Sticky") < 2; }
+}

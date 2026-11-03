@@ -1197,6 +1197,19 @@ headless: a real throw, the hand tick, how the amber looks.
 | Cluster (new) | Frag 2 | 1-3: the blast throws 2 + lv small bomblets (30 over 96 each) 2-4 m out, fused 1 s | Grenade | RS Ballistics small blasts | `cluster` |
 | Sticky (new) | Frag 1 | 1-2: the grenade sticks to the first monster it touches (2: or wall); it goes off there | Grenade | - | `sticky` |
 
+**Blast: BUILT 11-02 (L3).** Gun Bonsai VR: Big Bang, Frag, Cluster, Sticky. Grenade: `RSQGN_Thrown.Blast` (the pack's two
+A_Explodes for the thrown grenade and the one in the hand alike, called on the grenade so the kill stays the
+thrower's; Big Bang's radius share, Frag's damage share, the throw's own `dmgMult` for the nodes that raise it);
+`Cluster` after both parts (thrown before the second part, the blast shoved its own bomblets out to 6 m); the new
+`RSQGN_Bomblet` (claimed for the grenade like the grenade; its look the pack's own secondary burst and a flare); `Stick`
+in the thrown grenade's tick (onto the monster's skin at the height it struck, rides it, falls if it dies; level 2 a
+wall it was stopped by). Touches `sticky`. **Headless 11-02** (`fp_gnboom`: one of your grenades set off 300 units
+ahead with a frozen Baron 150 aside; `fp_gnstick` through `Throw`): the Baron took 68, 97 (Big Bang 3), 140 (and Frag
+3); Cluster threw 3, then 5 bomblets that landed 2.2 to 4.4 m out and hurt the Baron 25 more; Sticky 1 stuck to an imp
+and stayed on it (21 units from its centre, its radius) when the imp was moved 48. Not provable headless: how the
+blast and bomblets look. **Owed:** a bigger blast picture with Big Bang, and the RS Ballistics small blasts the tree
+names for the bomblets.
+
 **Kinds** (owner, 11-02: "impact grenade, incendiary grenade, freeze grenade, stun grenade, smoke grenade, flash
 grenade, charm grenade, infight grenade; RS Ballistics and RS Combat FX have what we need"). Each kind is an
 unlock on the grenade's record; the frag is the base kind. **Choosing a kind (owner, 11-02): the grenade's alt
