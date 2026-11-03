@@ -1229,6 +1229,24 @@ class RSQSM_Service : Service
 		// HELD OR PULSING, NOT JUST EASING BACK (owner 2026-10-31: the ring slows time even while slow motion eases out):
 		// 1 while something is still asking for slow motion (the held toggle or a pulse), 0 once it is only fading back
 		if (request ~== "running") return (!c.StoodDown() && c.target < 0.9999) ? 1 : 0;
+		// FOR A SCORER (RSQ Score, 11-03; its sheet C2, C3): WHAT is slowing the world now. "trigger.auto": 1 an automatic
+		// trigger (one that waits out the cooldown: Score's own pulses, the miniboss window, Gun Bonsai VR's perks, a
+		// reload, an unknown mod), 0 a deliberate one (the key, the wrist cross, the burst, the Wheel, a shove, a parry,
+		// a block, the cigarette), -1 nothing slowing. The held toggle is deliberate; a pulse is whatever let it in; the
+		// ease back out keeps the answer of what ran. "trigger.score": 1 while the pulse running is Score's own (its big
+		// moment or hit-stop, ResolvePulses), 0 another's, -1 nothing slowing.
+		if (request ~== "trigger.auto")
+		{
+			if (c.StoodDown() || !c.Active()) return -1;
+			if (c.pulseUntil > level.maptime) return c.pulseAuto ? 1 : 0;
+			if (c.on) return 0;
+			return c.pulseAuto ? 1 : 0;
+		}
+		if (request ~== "trigger.score")
+		{
+			if (c.StoodDown() || !c.Active()) return -1;
+			return (c.pulseUntil > level.maptime && c.pulseSrc == "score") ? 1 : 0;
+		}
 		if (request ~== "start" || request ~== "start.auto")
 			return c.Start(stringArg.Length() ? stringArg : "service", intArg, doubleArg, request ~== "start.auto") ? 1 : 0;
 		return -1;
