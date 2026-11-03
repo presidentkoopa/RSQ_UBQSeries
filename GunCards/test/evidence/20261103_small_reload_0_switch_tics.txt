@@ -1,0 +1,13 @@
+gc4: BrutalPistol magazine BDPistolAmmo 0 / 16
+gc4: reserve 120
+rsqgc: hand 0 empty magazine: RELOAD at tic 37 (emptied at 37)
+rsqgc: hand 0 empty magazine: 0 at tic 89 (emptied at 37)
+gc4: reserve 0
+gc4: reserve 50
+gc4: BrutalPistol magazine BDPistolAmmo 8 / 16
+gc4: BrutalPistol magazine BDPistolAmmo 0 / 16
+rsqgc: hand 0 empty magazine: RELOAD at tic 208 (emptied at 208)
+rsqgc: hand 0 empty magazine: 0 at tic 260 (emptied at 208)
+rsqgc: hand 0 empty magazine: RELOAD at tic 312 (emptied at 208)
+rsqgc: hand 0 empty magazine: 0 at tic 364 (emptied at 208)
+rsqgc: hand 0 empty magazine: RELOAD at tic 416 (emptied at 208)

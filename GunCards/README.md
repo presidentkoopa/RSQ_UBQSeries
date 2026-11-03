@@ -64,7 +64,8 @@ Always on (no row):
 
 - **+N on pickup**: picking up ammo shows "+N" (green on the watch card) in the reserve's place for a moment.
 - **RELOAD**: an empty magazine with rounds to load shows RELOAD in red instead of the count (on the watch card it
-  replaces the MAG word).
+  replaces the MAG word). On the small card RELOAD and a red "0" take turns every 1.5 s (52 tics), starting on RELOAD
+  the moment it empties (owner 2026-11-03 09:42); empty with nothing to load shows the count as before.
 - **The reserve in gold** on the small card (owner 2026-11-03 08:31), both fonts; "+N" stays green / white. With Small
   Card Colours: Wheel Palette the palette's colour.
 - **The magazine's colour** (Low Ammo Colour, on): the magazine's count is green above half a magazine, yellow from
@@ -174,6 +175,9 @@ the wrist up):
     (rig, `20261103_small_reserve_gold.png`)
 38. AMMO / MAGAZINE Word off: the small card is shorter (the word's strip is gone, it ends just above the big count);
     the numbers and RELOAD stay where they were. Both fonts, every panel colour. (rig, `20261103_small_word_on_off.png`)
+39. Empty the magazine with rounds in reserve: the small card shows RELOAD, then "0" (red, centred), every 1.5 s, both
+    fonts, word on and off. (rig, `20261103_small_reload_0_alternating.png`; switch tics logged in
+    `20261103_small_reload_0_switch_tics.txt`: RELOAD at 208, 0 at 260, RELOAD at 312, 0 at 364 ...)
 35. Show Gun Bonsai on Card on, with Gun Bonsai: LV bar and upgrades below KILLS. (rig, full order,
     `20261103_watch_gunbonsai_rows_full_order.png`)
 

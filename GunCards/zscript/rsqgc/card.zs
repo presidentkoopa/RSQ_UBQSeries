@@ -260,7 +260,10 @@ class RSQGC_GunCard : EventHandler
 	const MAG_GREEN = 0x50E050;
 	const MAG_YELLOW = 0xF0D030;
 	const MAG_RED = 0xFF5040;
-	const RESERVE_GOLD = 0xFFB820;   // the small card's reserve count (owner 08:31)
+	const RESERVE_GOLD = 0xFFB820;
+	const RELOAD_FLIP = 52;   // tics between RELOAD and "0" on an empty magazine (1.5 s, owner 09:42)
+	int mEmptySince[2];       // 1 + the tic this hand's magazine emptied with rounds to load, 0 not empty
+	int mFlipWas[2];          // 1 + the phase shown last (0 RELOAD, 1 "0"), 0 none: for the debug log   // the small card's reserve count (owner 08:31)
 	static int MagColour(Weapon w, int loaded)
 	{
 		if (!w || loaded < 0 || !ci("rsqgc_lowwarn", 1)) return -1;
@@ -943,11 +946,22 @@ class RSQGC_GunCard : EventHandler
 		else Kill(p, base + P_LABEL);
 		// the big number, right-aligned in three slots; GC3: RELOAD in its place on an empty magazine with rounds to
 		// load (Ermac's lettering, tools/gen_cards.py), in the empty colour
-		if (HasMagazine(w) && loaded == 0 && Reserve(w) > 0)
+		// RELOAD AND 0 IN TURN (owner 2026-11-03 09:42): an empty magazine with rounds to load shows RELOAD, then a red "0"
+		// (centred like any count), switching every RELOAD_FLIP tics from the tic it emptied; empty with nothing to load
+		// shows the count as before
+		bool reloadNow = HasMagazine(w) && loaded == 0 && Reserve(w) > 0 && fc < 0;
+		if (!reloadNow) mEmptySince[hand] = 0;
+		else if (mEmptySince[hand] <= 0) mEmptySince[hand] = level.maptime + 1;
+		int flip = reloadNow ? ((level.maptime + 1 - mEmptySince[hand]) / RELOAD_FLIP) % 2 : 0;
+		if (reloadNow && flip + 1 != mFlipWas[hand] && ci("rsqgc_debug_log", 0))
+			Console.Printf("rsqgc: hand %d empty magazine: %s at tic %d (emptied at %d)", hand, flip ? "0" : "RELOAD", level.maptime, mEmptySince[hand] - 1);
+		mFlipWas[hand] = reloadNow ? flip + 1 : 0;
+		if (reloadNow && flip == 0)
 		{
 			for (int k = 1; k < RSQGC_CardStates.SLOTS; k++) Kill(p, base + P_BIG + k);
 			Put(p, base + P_BIG, Nth(RSQGC_CardStates.Piece(4, mir, 0, Depth()), ermac ? RSQGC_CardStates.ERMAC_RELOAD : q), owner, alpha, TransFor(MAG_RED));
 		}
+		else if (reloadNow) Digits(p, 2, mir, base + P_BIG, owner, "0", false, alpha, TransFor(MAG_RED));
 		else Digits(p, 2, mir, base + P_BIG, owner, clamp(loaded, 0, 999).."", false, alpha, tLow >= 0 ? tLow : tDigits);
 		// the small number: the reserve (or the other gun's rounds on a both-guns card); GC2: "+N" for a moment after
 		// ammo for this gun is picked up
