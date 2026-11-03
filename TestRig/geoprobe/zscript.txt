@@ -1,0 +1,38 @@
+version "4.14"
+// GEOMETRY SCAN (TestRig; never ships). `netevent geo_scan` prints a grid of floor heights round the player (every
+// 64 units, 9 x 9, "." where the point is in no sector or the ceiling is too low to stand), so a rig test can pick
+// a lip to mantle or a corner to swing round without a map viewer. `netevent geo_here` prints the player's sector.
+class GEO_Probe : EventHandler
+{
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		let pmo = players[e.Player].mo;
+		if (!pmo) return;
+		if (e.Name ~== "geo_here")
+		{
+			Console.Printf("GEO at %.0f %.0f %.0f ang %.0f floor %.0f ceil %.0f", pmo.pos.x, pmo.pos.y, pmo.pos.z, pmo.angle, pmo.floorz, pmo.ceilingz);
+		}
+		else if (e.Name ~== "geo_scan" || e.Name ~== "geo_scan_at")
+		{
+			// geo_scan STEP (round the player); geo_scan_at X Y STEP (round a point)
+			bool at = e.Name ~== "geo_scan_at";
+			int step = at ? (e.Args[2] > 0 ? e.Args[2] : 16) : (e.Args[0] > 0 ? e.Args[0] : 64);
+			Vector2 c = at ? (e.Args[0], e.Args[1]) : pmo.pos.xy;
+			Console.Printf("GEO scan round %.0f %.0f (step %d): rows are y from +%d to -%d, columns x from -%d to +%d", c.x, c.y, step, 4 * step, 4 * step, 4 * step, 4 * step);
+			for (int j = 4; j >= -4; j--)
+			{
+				String row = String.Format("GEO y%+5d:", j * step);
+				for (int i = -4; i <= 4; i++)
+				{
+					Vector2 p = c + (i * step, j * step);
+					Sector s = level.PointInSector(p);
+					if (!s) { row = row .. "    ."; continue; }
+					double fz = s.floorplane.ZatPoint(p), cz = s.ceilingplane.ZatPoint(p);
+					if (cz - fz < 56) row = row .. "    #";
+					else row = row .. String.Format("%5d", int(fz));
+				}
+				Console.Printf("%s", row);
+			}
+		}
+	}
+}
