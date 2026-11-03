@@ -55,7 +55,7 @@ class RSQTR_Keyring : EventHandler
 	private Vector3 KeysTick(PlayerPawn pmo, PlayerInfo p, RSQTR_Rig rig, Vector3 ringAt)
 	{
 		// (in Move Holsters by Hand the grip carries the ring instead)
-		if (!RSQTR_Rig.Unlock(p, 'KeysByHand', "rsqtr_key_doors", false) || RSQTR_Rig.Flag("rsqtr_edit", p, false)) { keysIn = 0; return ringAt; }
+		if (!RSQTR_Rig.Flag("rsqtr_key_doors", p, false) || RSQTR_Rig.Flag("rsqtr_edit", p, false)) { keysIn = 0; return ringAt; }
 		double grab = rig.RegionRadius(p, RSQTR_Region.KEYRING);     // metres from the hand to the ring that takes the keys (its sphere)
 		int n = consoleplayer;
 		for (int h = 0; h < 2; h++)
@@ -101,7 +101,7 @@ class RSQTR_Keyring : EventHandler
 		int n = e.Player;
 		if (n < 0 || n >= MAXPLAYERS || !playeringame[n]) return;
 		let pmo = players[n].mo;
-		if (!pmo || pmo.health <= 0 || !RSQTR_Rig.Unlock(players[n], 'KeysByHand', "rsqtr_key_doors", false)) return;
+		if (!pmo || pmo.health <= 0 || !RSQTR_Rig.Flag("rsqtr_key_doors", players[n], false)) return;
 		int li = e.Args[0];
 		if (li < 0 || li >= level.Lines.Size()) return;
 		Line ln = level.Lines[li];

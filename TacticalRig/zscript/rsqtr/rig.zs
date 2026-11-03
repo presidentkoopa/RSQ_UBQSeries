@@ -124,9 +124,11 @@ class RSQTR_Rig : EventHandler
 	static RSQTR_Rig Get() { return RSQTR_Rig(EventHandler.Find("RSQTR_Rig")); }
 
 	// ---- THE GUN BONSAI VR PATCH'S LEVELS (GBOVR_TREES.md 4.8), asked by name once a second per player ----------------
-	// Without the patch Gb is -1 and every row works as before. With it, Ammo Readout, Keys by Hand and Smoker are unlocks
-	// that take over their rows (Unlock); Chain Smoker adds to the pack; Gun Toss and Boomerang Gun act on a thrown gun.
-	transient int gbTic[MAXPLAYERS], gbAmmo[MAXPLAYERS], gbKeys[MAXPLAYERS], gbSmoker[MAXPLAYERS], gbChain[MAXPLAYERS];
+	// Without the patch Gb is -1 and every row works as before. With it, Smoker lengthens the smoke's slow motion and makes
+	// you untouchable through it (cig.zs); Chain Smoker adds to the pack; Gun Toss and Boomerang Gun act on a thrown gun.
+	// (Owner, 11-03: Ammo Count, Keys to Doors and Cigarettes are menu rows, never unlocks; the cigarette is yours from the
+	// start.)
+	transient int gbTic[MAXPLAYERS], gbSmoker[MAXPLAYERS], gbChain[MAXPLAYERS];
 	transient int gbToss[MAXPLAYERS], gbBoom[MAXPLAYERS];
 	transient bool gbOn;
 	void GbRefresh(int n)
@@ -136,11 +138,9 @@ class RSQTR_Rig : EventHandler
 		gbTic[n] = level.maptime + 35;
 		let svc = ServiceIterator.Find("RSQ_MeleeUpgradeService").Next();
 		gbOn = svc != null;
-		gbAmmo[n] = 0; gbKeys[n] = 0; gbSmoker[n] = 0; gbChain[n] = 0; gbToss[n] = 0; gbBoom[n] = 0;
+		gbSmoker[n] = 0; gbChain[n] = 0; gbToss[n] = 0; gbBoom[n] = 0;
 		if (!svc) return;
 		let pmo = players[n].mo;
-		gbAmmo[n]   = max(0, svc.GetInt("plevel", "AmmoReadout", 0, 0, pmo));
-		gbKeys[n]   = max(0, svc.GetInt("plevel", "KeysByHand", 0, 0, pmo));
 		gbSmoker[n] = max(0, svc.GetInt("plevel", "Smoker", 0, 0, pmo));
 		gbChain[n]  = max(0, svc.GetInt("plevel", "ChainSmoker", 0, 0, pmo));
 		gbToss[n]   = max(0, svc.GetInt("plevel", "GunToss", 0, 0, pmo));
@@ -155,20 +155,12 @@ class RSQTR_Rig : EventHandler
 		if (n < 0 || n >= MAXPLAYERS) return -1;
 		switch (what)
 		{
-		case 'AmmoReadout':  return me.gbAmmo[n];
-		case 'KeysByHand':   return me.gbKeys[n];
 		case 'Smoker':       return me.gbSmoker[n];
 		case 'ChainSmoker':  return me.gbChain[n];
 		case 'GunToss':      return me.gbToss[n];
 		case 'BoomerangGun': return me.gbBoom[n];
 		}
 		return -1;
-	}
-	// an unlock: the node under the patch, the row without it
-	static bool Unlock(PlayerInfo p, Name what, String row, bool def)
-	{
-		int g = Gb(p, what);
-		return g < 0 ? Flag(row, p, def) : g >= 1;
 	}
 	RSQTR_Body GetBody() const { return body; }
 	private transient RSQTR_Fit fitData;
@@ -1296,7 +1288,11 @@ class RSQTR_Rig : EventHandler
 			[handMs, handV] = SwingPeak(pmo, h, hp);
 			if (h == 0 && Flag("rsqtr_debug_throw", p, false)) Console.Printf("T_SWING t%d hand %.1f %.1f %.1f pawn %.1f %.1f peak %.2f grip %d", level.maptime, hp.x, hp.y, hp.z, pmo.Pos.x, pmo.Pos.y, handMs, gripOk && gripDown[n * 2 + h]);
 			// (a main-hand grip at the mouth with an unlit cigarette in it is the cigarette's pull, cig.zs, never a throw)
-			if (gripNow && !pressWas[h] && r < 0 && Flag("rsqtr_throw", p, true) && handMs >= Num("rsqtr_throw_speed", p, 2.5) && handMs < 20
+			// THE MAIN HAND THROWS ON USE TOO (owner, 11-03: its grip is the gun's own, so the swing-and-grip throw was the off
+			// hand's in practice): a Use press with the same fast swing, outside every holster (rsqtr_throw_use). The off hand
+			// throws on its grip as before. Use while the cigarette is out is the cigarette's (usePress is false then).
+			bool throwPress = (gripNow && !pressWas[h]) || (h == 0 && useEdge && usePress && Flag("rsqtr_throw_use", p, true));
+			if (throwPress && r < 0 && Flag("rsqtr_throw", p, true) && handMs >= Num("rsqtr_throw_speed", p, 2.5) && handMs < 20
 				&& (h == 0 ? HoldsGun(pmo) : OffHoldsGun(pmo)) && !(h == 0 && RSQTR_Cig.PullAtMouth(pmo)))
 			{
 				Vector3 tv = handV * 1.6 + pmo.Vel;   // a throw carries on a little faster than the hand, and with you
@@ -1789,7 +1785,7 @@ class RSQTR_Rig : EventHandler
 		int k = GunSlot(r);
 		if (k < 0) return;
 		int st = pw ? AmmoState(pw) : -1;
-		if (!pw || st < 0 || a <= 0.01 || !Unlock(p, 'AmmoReadout', "rsqtr_ammo_count", false)) { HideAmmo(k); return; }
+		if (!pw || st < 0 || a <= 0.01 || !Flag("rsqtr_ammo_count", p, false)) { HideAmmo(k); return; }
 		bool mag = pw.Ammo2 && pw.Ammo2 != pw.Ammo1;
 		int rounds = clamp(mag ? pw.Ammo2.Amount : pw.Ammo1.Amount, 0, 999);
 		static const int RGB[] = { 0x9CF09C, 0xFFC850, 0xFF5A5A };

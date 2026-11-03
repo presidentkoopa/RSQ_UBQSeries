@@ -115,6 +115,8 @@ class RSQTR_Cig : EventHandler
 	bool zipOpen[MAXPLAYERS];
 	int  zipTic[MAXPLAYERS];
 	int  smokeTics[MAXPLAYERS];  // how long this smoke lasts (rsqtr_cig_smoke when it was lit)
+	int  godUntil[MAXPLAYERS];   // Smoker (Gun Bonsai VR): untouchable until this tic, through the flick's slow motion
+	bool godWas[MAXPLAYERS];     // what bINVULNERABLE was before we set it (an invulnerability sphere keeps its own)
 	int  swGone[MAXPLAYERS];     // tics the hands have differed from what the ritual gave them (rule A)
 	bool zipSeen[MAXPLAYERS];    // the Zippo has reached the off hand since the cigarette came out
 	String mainWant[MAXPLAYERS]; // in the mouth / smoking: the gun the ritual gave the main hand back
@@ -310,7 +312,7 @@ class RSQTR_Cig : EventHandler
 		if (keyEdge && !useEdge && RSQTR_Rig.Flag("rsqtr_messages", p, false)) Console.Printf("T_CIG t%d Use caught as a key press (not in the command: a tap shorter than a tic)", level.maptime);
 		useEdge = useEdge || keyEdge;
 		if (useEdge) useActTic = level.maptime;
-		if (!RSQTR_Rig.Unlock(p, 'Smoker', "rsqtr_cig", false)) { HideMark(); HideCue(); return; }
+		if (!RSQTR_Rig.Flag("rsqtr_cig", p, false)) { HideMark(); HideCue(); return; }
 		let rig = RSQTR_Rig.Get();
 		Vector3 pocket = Pocket(pmo);
 		bool msg = RSQTR_Rig.Flag("rsqtr_messages", p, false);
@@ -406,7 +408,7 @@ class RSQTR_Cig : EventHandler
 			spitSeen = spitTic[n];
 			if (RSQTR_Rig.Flag("rsqtr_cig_slowmo", p, true))
 			{
-				int ms = int(RSQTR_Rig.Num("rsqtr_cig_secs", p, 6) * 1000);
+				int ms = int(SmokeSecs(p) * 1000);
 				int depth = RSQTR_Rig.Opt("rsqtr_cig_depth", p, 25);
 				EventHandler.SendNetworkEvent("rsm_pulse", ms, depth);
 				if (msg) Console.Printf("T_CIG slow motion asked: rsm_pulse %d %d", ms, depth);
@@ -706,6 +708,13 @@ class RSQTR_Cig : EventHandler
 			if (!pmo.FindInventory("RSQTR_CigPack") && pmo.health > 0)
 				pmo.SetInventory("RSQTR_CigPack", (RSQTR_Rig.Opt("rsqtr_cig_count", p, 3) + max(RSQTR_Rig.Gb(p, 'ChainSmoker'), 0)));
 
+			// Smoker's untouchable spell over: the flag back to what it was
+			if (godUntil[n] > 0 && (level.maptime >= godUntil[n] || pmo.health <= 0))
+			{
+				pmo.bINVULNERABLE = godWas[n];
+				godUntil[n] = 0;
+			}
+
 			// a level change found them still in a hand: the guns back, once the rig is up
 			if (restore[n] && level.maptime > 1)
 			{
@@ -728,7 +737,7 @@ class RSQTR_Cig : EventHandler
 					HandsBack(pmo, n);
 					SetPhase(n, PH_NONE);
 				}
-				else if (!RSQTR_Rig.Unlock(p, 'Smoker', "rsqtr_cig", false) || !RSQTR_Rig.Flag("rsqtr_on", p, true))
+				else if (!RSQTR_Rig.Flag("rsqtr_cig", p, false) || !RSQTR_Rig.Flag("rsqtr_on", p, true))
 				{
 					if (phase[n] == PH_SMOKE) Spit(pmo, n, false);
 					else PutBack(pmo, n);
@@ -843,7 +852,20 @@ class RSQTR_Cig : EventHandler
 		pmo.A_StartSound("rsqtr/exhale", CHAN_AUTO, 0, 0.9);
 		HandsBack(pmo, n);
 		if (slowmo) spitTic[n] = level.maptime;
+		// SMOKER (Gun Bonsai VR; owner, 11-03: "extend given slowmo and also allow godmode during it"): for the flick's slow
+		// motion nothing can hurt you. Levels 1-3; without the patch, or at 0, the smoke is as the rows say.
+		if (slowmo && RSQTR_Rig.Gb(pmo.player, 'Smoker') >= 1 && RSQTR_Rig.Flag("rsqtr_cig_slowmo", pmo.player, true))
+		{
+			if (godUntil[n] <= 0) godWas[n] = pmo.bINVULNERABLE;
+			godUntil[n] = level.maptime + int(SmokeSecs(pmo.player) * TICRATE);
+			pmo.bINVULNERABLE = true;
+		}
 		SetPhase(n, PH_NONE);
+	}
+	// how long the flick's slow motion runs: the Smoke Slow-Mo Seconds row, +2 s a Smoker level (6 -> 8, 10, 12)
+	static double SmokeSecs(PlayerInfo p)
+	{
+		return RSQTR_Rig.Num("rsqtr_cig_secs", p, 6) + 2.0 * max(RSQTR_Rig.Gb(p, 'Smoker'), 0);
 	}
 
 	// Smoke from the mouth, out where you face.

@@ -38,7 +38,8 @@ doom2.wad -> 01 brutal22test6 -> 02 BD22_VoxelPack -> 03 BD22_VR-Reloaded_2.0.3j
 - **Swap:** grip at a full holster with a gun in hand. The two swap.
 - **Grenade:** grip at the belt buckle. The hand grenade comes to your main hand (Brutal Doom's, or RSQ
   Grenade's without Brutal Doom). Grip there again to get your gun back.
-- **Throw a gun away:** swing the hand fast and grip, away from any holster. The gun flies and lands as a
+- **Throw a gun away:** swing the hand fast and grip, away from any holster (the main hand: swing fast and press Use,
+  since its grip is the gun's own; *Main Hand Throws With Use*, on). The gun flies and lands as a
   pickup.
 - **Keys to a door (option):** grip at the keyring, hold the grip, touch the keys to a locked door.
 - **Move a gun to the other hand (option, needs RSQ Gestures):** turn on *Move Gun at Watch (Use)*. Check
@@ -143,6 +144,7 @@ default.
 | Rig Options: New Guns Go to a Holster | Option | A gun you did not have goes into the first empty holster. |
 | Rig Options: Grenade Spot | On | The belt-buckle grenade spot: Brutal Doom's hand grenade, or RSQ Grenade's without Brutal Doom. Its light is your grenade count: green 2+, yellow 1, red none. |
 | Rig Options: Throw Guns | On | A fast swing plus grip, outside a holster, throws the gun away. |
+| Rig Options: Main Hand Throws With Use | On | The main hand also throws on a Use press with that swing (its grip is the gun's own). |
 | Rig Options: Thrown Guns Hurt | On | A thrown gun that hits a monster hurts and staggers it, by the gun's weight and the throw speed. |
 | Rig Options: Keyring | On | The keys you carry hang on a ring on your belt. |
 | Rig Options: Keys Open Doors by Hand | Option | Grip the ring to take the keys; touch them to a locked door to open it (the game's own key check). |
@@ -278,8 +280,9 @@ simulated rig.
   reach-in tests (where the hand is), not pointing, so they read the raw hand. The rig has no tap windows, so
   Slower Taps changes nothing here.
 - **Gun Bonsai VR patch:** the Gunslinger tree (GBOVR_TREES.md 4.8). Quick Draw -> Pair Draw, Showdown (Quick Draw 2);
-  **Ammo Readout**, **Keys by Hand** and **Smoker** are unlocks that take over the Ammo Count, Keys to Doors and
-  Cigarettes rows under the patch; **Chain Smoker** (after Smoker) adds 1 / 2 / 3 to the pack; **Gun Toss** makes a
+  **Smoker** (1-3): the flick's slow motion runs 2 s longer a level (6 -> 8, 10, 12) and nothing can hurt you while it
+  does; **Chain Smoker** (after Smoker) adds 1 / 2 / 3 to the pack. Ammo Count, Keys to Doors and Cigarettes stay
+  menu rows (owner, 11-03: never unlocks; the cigarette is yours from the start). **Gun Toss** makes a
   thrown gun hit x1.5 / 2.0 / 2.5 and stagger longer; **Boomerang Gun** (after Gun Toss 2): a thrown gun that hits flies
   back to the holster it came from (2: into your hand). Without the patch nothing changes.
 
