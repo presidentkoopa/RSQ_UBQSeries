@@ -30,10 +30,12 @@
 // printed as the string "A". We draw the texture. The anchor maths is unchanged, so
 // it lands in the same place.
 //
-// THE BAR FILL uses DTA_ClipLeft/DTA_ClipRight, which clip the DESTINATION -- the
-// same thing SetHudClipRect did. The texture is drawn whole, centred, and clipped
-// to [centerX - 60, centerX - 60 + barWidth]. Cropping the source instead would
-// differ the moment the art is not exactly 120 wide.
+// THE BAR FILL keeps [centerX - 60, centerX - 60 + barWidth] of the texture drawn
+// whole and centred -- the same thing SetHudClipRect did -- by cropping the source
+// with DTA_WindowLeftF/RightF measured from the texture's own left edge, so it holds
+// whatever the art's width. (2026-11-03: it was DTA_ClipLeft/ClipRight, which take
+// screen pixels, not these virtual units, and whose scissor misses the projected HUD
+// in VR. See DrawClipped.)
 //
 // UI SCOPE. The only file allowed to know whose screen this is, and it writes
 // nothing.
@@ -73,7 +75,7 @@ class RS_ScoreHUD : EventHandler
 		bool hideBonuses = UserInt(pln, "rs_score_bonustime", 35) == 0;
 
 		// ---- Score_Draw's coordinate space, transcribed ----------------------
-		int    d      = int(UserInt(pln, "rs_score_scale", 100) * RSSC_A11y.Text());   // RSQ_Accessibility's Text Size (1 = as set)
+		int    d      = int(UserInt(pln, "rs_score_scale", 150) * RSSC_A11y.Text());   // RSQ_Accessibility's Text Size (1 = as set)
 		double aspect = Screen.GetWidth() / double(Screen.GetHeight());
 
 		double screenwidth  = ScaleRes(SCREEN_X, d);
@@ -432,11 +434,19 @@ class RS_ScoreHUD : EventHandler
 
 		Vector2 size = TexMan.GetScaledSize(tex);
 
-		Screen.DrawTexture(tex, false, cx - size.x * 0.5, cy - size.y * 0.5,
+		// Cropped from the source (DTA_WindowLeftF / RightF, texels of the texture drawn at 1:1 in this virtual space), not
+		// clipped with DTA_ClipLeft / ClipRight (2026-11-03): those take SCREEN pixels, so the virtual bar edges passed
+		// here landed somewhere else on screen, and in VR the clip's scissor box stays in flat window pixels while the HUD
+		// is projected (v_2ddrawer.cpp:507-512, hw_draw2d.cpp:141-153), which cut the fill away. The window keeps exactly
+		// [clipLeft, clipRight] of the bar, in the same virtual units the rest of this HUD uses.
+		double left = cx - size.x * 0.5;
+		double wl = clamp(clipLeft - left, 0.0, size.x), wr = clamp(clipRight - left, 0.0, size.x);
+		if (wr <= wl) { return; }
+		Screen.DrawTexture(tex, false, left, cy - size.y * 0.5,
 			DTA_VirtualWidthF, vw, DTA_VirtualHeightF, vh, DTA_KeepRatio, true,
 			DTA_Alpha, alpha,
-			DTA_ClipLeft, int(clipLeft),
-			DTA_ClipRight, int(clipRight));
+			DTA_WindowLeftF, wl,
+			DTA_WindowRightF, wr);
 	}
 
 	// Score_ScaleRes: scale = middle(25, scale, 400); round(res * 100 / scale).

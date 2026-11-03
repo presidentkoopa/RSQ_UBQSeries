@@ -83,7 +83,7 @@ user bool rs_score_flash        = true;
 user bool rs_score_screenflash  = true;   // the whole-view colour flash on a reward and a revival (Quest series)
 user bool rs_score_alive        = true;   // the word "Score:" breathes and slowly changes colour (hud.zs LabelColor)
 user int  rs_score_bonustime    = 35;
-user int  rs_score_scale        = 100;
+user int  rs_score_scale        = 150;   // "Large" (from 11-03: 100 read too small in the headset)
 user int  rs_score_x            = 85;
 user int  rs_score_y            = 10;
 // THE SCORE ON THE WRIST (owner's pick 58, off): the running total in small gold digits above the off-hand controller

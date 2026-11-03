@@ -375,7 +375,7 @@ RS_ScoreHandler.Switcharoo(self, 2, 0);   // slot 2, primary
 | `rs_score_interval` | 5000 | rewards land on multiples of this |
 | `rs_score_farmpercent` | 100 | base paid by a monster that was not on the map at load. 100 is inert |
 | `rs_score_cap_*` | 0 | per-family and total multiplier ceilings. 0 is off |
-| `rs_score_scale` / `_x` / `_y` | 100 / 85 / 10 | HUD size and position, per player |
+| `rs_score_scale` / `_x` / `_y` | 150 / 85 / 10 | HUD size and position, per player |
 
 ### Building
 
