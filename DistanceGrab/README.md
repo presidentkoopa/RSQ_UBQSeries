@@ -228,8 +228,6 @@ After Brutal Doom, the monster packs and Gun Bonsai, with the other RSQ pk3s, in
 - The grip is eaten: when something is in reach, the grip press goes to the walk-up grab, and anything else
   bound to that grip does not see it.
 - The walk-up grab still fires on a hand holding the Tactical Rig's lit cigarette or Zippo.
-- Pull Speed's presets do not match the defaults: Standard sets Arc Speed to 15 while the default is 22, so the
-  row does not read Standard until you pick one.
 - A lifted door may step at 35 Hz (a ceiling moved from script has no smoothing).
 - The Rumble route is felt only when QuestZDoom's quake haptics level is above 0.
 - One gun cannot be in both hands: QuestZDoom keeps one weapon per class, so grabbing a copy of the gun the

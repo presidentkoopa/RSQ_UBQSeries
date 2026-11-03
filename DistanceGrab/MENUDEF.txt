@@ -68,7 +68,7 @@ OptionString "RSQDG_P_Gesture"
 OptionString "RSQDG_P_Pull"
 {
 	"rsqdg_flight_speed 8 rsqdg_path_speed 10", "Gentle"
-	"rsqdg_flight_speed 12.0 rsqdg_path_speed 15.0", "Standard"
+	"rsqdg_flight_speed 12.0 rsqdg_path_speed 22.0", "Standard"
 	"rsqdg_flight_speed 20 rsqdg_path_speed 24", "Snappy"
 }
 OptionString "RSQDG_P_Throw"
