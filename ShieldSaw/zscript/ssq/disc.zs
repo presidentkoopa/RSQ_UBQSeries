@@ -627,7 +627,17 @@ class SSQ_Disc : Actor
 		class<Inventory> ct = tk, cr = tr;
 		if (ct && v.FindInventory(ct) && !(cr && v.FindInventory(cr)))
 		{
-			let cv = CVar.FindCVar(v.bBoss ? 'LD_legendaryhealthboss' : 'LD_legendaryhealth');
+			// a miniboss RSQ Miniboss made legendary with its "LegenDoom Boss Health" on got the boss number:
+			// RSQMB_Service "bossfor" "ldhealth", by name (nothing links; without RSQ Miniboss, bBoss alone)
+			bool bossHp = v.bBoss;
+			String wn = "RSQMB_Ward";
+			class<Inventory> wc = wn;
+			if (!bossHp && wc && v.FindInventory(wc))
+			{
+				let sv = ServiceIterator.Find("RSQMB_Service").Next();
+				bossHp = sv && sv.GetInt("bossfor", "ldhealth", 0, 0, v) == 1;
+			}
+			let cv = CVar.FindCVar(bossHp ? 'LD_legendaryhealthboss' : 'LD_legendaryhealth');
 			int pct = cv ? cv.GetInt() : 300;
 			sh += v.SpawnHealth() * (pct / 100);      // the ACS's own integer arithmetic
 		}
