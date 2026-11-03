@@ -1,233 +1,209 @@
 # RSQ Grapple
 
-**The one thing:** fling the hook from either hand and it takes you to the wall, or takes the monster to you;
-turn on the swing, reel up, and put both hands on the rope.
+`pk3/RSQ_Grapple.pk3`. Part of the Radiant Silvergun Quest series, for stock QuestZDoom 17.3.
 
-A grappling hook that fires from either hand. Hook a wall, ceiling or floor and you are flung toward the
-claw; hook a monster and it is thrown to you. By default it behaves as jpalomo's jp_grapple did, number for
-number; options add a rope you hang from, swinging with momentum, climbing hand over hand, and monsters that
-slide in, fly in an arc or hang on a lasso. For stock QuestZDoom 17.3, in VR. Needs no other RSQ mod. ZScript
-and data only, no engine change.
+## What it is
+
+A grappling hook that fires from either hand. By default it is jpalomo's jp_grapple (THE OG, since 2026-11-03):
+hook a wall, ceiling or floor and you are flung toward the claw once, at his speed, and then let go -- your
+momentum and normal physics carry you on. Hook a monster and it is flung toward you once. The numbers are his
+ACS, converted exactly (rig: the same launch velocity to 0.001 and the same flight, tic for tic, as his own pk3).
+Options: a rope that pulls you to the claw and holds you there, "Swing and Momentum" (hang, swing across gaps,
+reel, tap to let go and fly on), climbing the rope hand over hand, and monsters that slide in, fly in an arc or
+hang on a lasso. The look and sound are jpalomo's by default. ZScript and data only, no engine change.
+
+## Load order
+
+doom2.wad -> 01 brutal22test6 -> 02 BD22_VoxelPack -> 03 BD22_VR-Reloaded_2.0.3j -> 04-07 XMVE ->
+`RSQ_Grapple.pk3`
+
+- **Needs no other RSQ pk3.**
+- **Plain Doom 2 without Brutal Doom:** works. Brutal Doom's hands class is checked by name only (for the free
+  hand that climbs). The handoff records rig runs on vanilla doom2 and on the full order.
+
+## Setup
+
+- **Menu:** Options -> Radiant Silvergun Options -> RSQ Grapple. Every number is on its "Tuning and Debug" page,
+  with "Reset All" at the bottom.
+- **Binds (you must bind these):** Options -> Customize Controls -> section **RSQ Grapple**:
+  - **Fire Hook (Main)** and **Fire Hook (Off)**: fire, reel, let go. No controller button is bound by
+    default (the owner's plan was the stick clicks).
+  - **Grab Rope (Main)** and **Grab Rope (Off)**: hold to take hold of the rope with that hand, to climb.
+    RSQ DistanceGrab's grab binds also work ("Grips From Grab", on).
+
+## What to do in VR
+
+- **Fire:** point the hand and press its Fire Hook. The claw flies where the hand points.
+- **Default (THE OG):** the claw flies at 40 units a tic and reaches 780 units (20 tics), as his did.
+  - **Wall, ceiling or floor:** the moment it bites you are thrown toward it: 1/12 of the flat distance per tic
+    toward the claw, plus about 1/16 of the height difference upward. 600 units away that is 48 u/tic (about
+    50 m/s). Nothing holds you after: you fly, hit what you hit, land and slide on with your speed. The claw stays
+    shut where it bit for 16 tics and comes back. Press again at any time to fire again.
+  - **Monster:** it is thrown toward you the same way (1/12 of the distance per tic; its height difference / 8 as
+    its vertical speed). Floor friction stops it about 0.9 of the way: in front of you.
+- **Wall Hook: Rope** (option): the rope pulls you straight to the claw and you stop just short of it (32 units),
+  hanging still; on a floor the rope lets go by itself. Tap to let go (you drop, keeping no speed; near the top of
+  a wall a small Ledge Hop). Hanging, climb the rope by hand or hold the button to reel in.
+- **Swing and Momentum on** (option, whatever Wall Hook says):
+  - **Reel:** hold the button. You are pulled up the rope.
+  - **Hang:** release. You swing on the rope.
+  - **Let go:** a quick tap of the same button. You fly on and keep your speed.
+  - **Pump the swing:** push the stick forward or sideways in time with the swing.
+  - **Calm the swing:** pull the stick back while hanging. The swing dies in about a second.
+- **Climb:** an empty hand on the rope, hold Grab Rope, pull down. Both hands can hold the rope.
+- **Miss:** press again while the claw is flying to call it back.
+- **Monster (Slide option):** hook it; it slides to you. Tap to let go of it.
+- **Lasso (option):** the hooked monster hangs at rope length and follows your arm. Swing it into others; flick
+  the arm hard to throw it.
 
 ## Features
 
-**The hook.**
-- Fires from whichever hand pressed, along where that hand points. One hook per hand; both can be out at once.
-- The claw flies at 40 units a tic and reaches 780 units, then comes back. Press again while it flies to
-  call it back.
-- **Wall Hook: OG** (default): the moment the claw bites a wall, ceiling or floor you are thrown toward it
-  once, jpalomo's way: your speed is the flat distance divided by 12, plus a lift from the height difference.
-  Nothing holds you after; you fly, land and carry on with your speed. The claw stays shut 16 tics and
-  comes back.
-- **Wall Hook: Rope**: the rope pulls you straight to the claw and you stop 32 units short, hanging still.
-  On a floor the rope lets go by itself. Tap to drop (you keep no speed); near the top of a wall the tap gives
-  a small Ledge Hop.
-- **Swing and Momentum** (option, works with either Wall Hook): hold to reel up the rope, release to hang and
-  swing, tap to let go and fly on with your speed. Pump the swing with the stick; pull the stick back to calm
-  it.
-- A thump in the hand when the hook bites or the rope catches your fall (Hook Thump).
-- A rope lying slack on the floor for 3 seconds lets go by itself (Slack Rope Lets Go).
-- **The rope bends round corners** (Rope Wraps Corners): swing past a corner and the rope wraps it and you swing from
-  the bend; swing back and it straightens out again. Up to six bends.
-- **Mantle** (Mantle (Stick Forward)): hanging on a wall rope with a ledge within reach above you, push the stick
-  forward and you go up and over the lip.
-- Switches and doors the claw hits can be used (Hook Switches and Doors, off by default).
-- A faint aim dot where the claw would bite, shown while an empty hand points (Aim Dot, off by default).
-
-**Climbing.**
-- Hanging on the rope, a free hand that takes hold of it climbs: pull down to go up, push up to lower
-  yourself. Both hands can hold the rope at once; the climb is their average.
-- Only an empty hand may climb, never a gun hand (Free Hand Only). With Brutal Doom's hands loaded, the fist
-  counts as empty; without it, an empty slot or the stock Fist does.
-
-**Monsters.**
-- **Monster Hook: OG** (default): a hooked monster is thrown toward you once, jpalomo's way; floor friction
-  stops it in front of you.
-- **Slide**: it slides to you along the floor and stops a short way off. Tap to let go of it.
-- **Yank**: it is thrown through the air to your feet in an arc, tumbling (Tumble: Spin, Flip, Both or Off).
-  Throw Damage hurts it on landing or striking something.
-- **Lasso**: it hangs at rope length and follows your arm. Swing it into others; a hard flick of the arm
-  throws it that way (Lasso Flick Throw).
-- A boss, or anything heavier than Heaviest Pulled, is an anchor: it does not come, you are flung toward it.
-- Split Pull by Weight (Slide only): you and the monster share the pull by weight.
-- A dangling monster that makes no progress toward you for about 1.5 seconds is dropped.
-
-**The whip.** Whip (off by default) makes the same binds crack a short whip instead of firing the claw: it
-hits the first thing in reach, knocks it into its pain state (Whip Stun), and if the tip meets something above
-the hand it wraps round it and becomes the rope (Whip Snag). This is the hook's own whip, not RSQ Whip.
-
-**Looks.** Rope Look: Chain (jpalomo's links) or Cable. Look: JP (jpalomo's sounds and claw), Combat FX or
-Ballistics (the claw flies as a tracer streak and throws sparks on a wall hit).
-
-## How to play
-
-Bind the keys first. Options -> Customize Controls -> section **RSQ Grapple**: **Fire Hook (Main)**,
-**Fire Hook (Off)**, **Grab Rope (Main)**, **Grab Rope (Off)**. Nothing is bound by default. The Grapple's menu
-is Options -> Radiant Silvergun Options -> RSQ Grapple.
-
-**Fire.** Point a hand at a wall and press its Fire Hook. The claw flies out along the chain. When it bites you
-are thrown at it; hit the wall, land, keep moving. Point high at a wall or at the ceiling over a pit and you
-go up and over in an arc. Point at the floor ahead and you slide to the claw. Press again at any time to fire
-again. Miss, and a second press while the claw flies calls it back.
-
-**Hook a monster.** Point at it and fire. It is thrown at you and slides to a stop in front of you. A boss or
-a very heavy monster does not come: you go to it instead.
-
-**Rope (Wall Hook: Rope).** Fire at a high wall. The rope pulls you straight up to the claw and you hang just
-short of it. Tap Fire Hook to drop. Hold it to reel in. Near the top of a wall, a tap hops you over the lip.
-
-**Swing and Momentum (turn it on in the menu).**
-1. Fire at something above you and step off the ledge. You hang and swing on the rope.
-2. Hold Fire Hook to reel up. Release to hang.
-3. Push the stick forward or sideways in time with the swing to pump it. Pull the stick back to calm it.
-4. Tap Fire Hook at the top of the swing: you let go and fly on with your speed.
-
-**Climb.** Hanging, reach an empty hand to the rope, hold Grab Rope, and pull down. Let go, reach up with the
-other hand, hold, pull. Both hands can hold at once. Push up to lower yourself. RSQ DistanceGrab's grab binds
-also take hold of the rope (Grips From Grab).
-
-**Lasso (Monster Hook: Lasso).** Hook a monster. It hangs at rope length and follows your arm. Sweep it into
-other monsters; both are hurt. Flick the arm hard to throw it. Tap to drop it.
-
-**Whip (Whip on).** Press Fire Hook: a short lash cracks from the hand along where it points. Hit a monster
-and it breaks off its attack. Crack it at a ledge or beam above you and it wraps on; then it is the rope,
-swing and reel as usual.
-
-## Settings
-
-Options -> Radiant Silvergun Options -> RSQ Grapple. Presets (Range, Swing Feel, Monster Pull) set the numbers
-on the Tuning and Debug page; Standard is the default.
+"On" = on by default (CVARINFO). "Option" = off by default.
 
 | Menu row | Default | What it does |
 |---|---|---|
 | Grapple | On | The hook at all. |
-| Wall Hook | OG | OG: a one-off fling toward the claw. Rope: pulled to the claw, stop and hang there. |
-| Swing and Momentum | Off | On: hang, swing, pump and keep your speed, whatever Wall Hook says. |
-| Range | Standard | Short (600), Standard (780), Long (3072). |
-| Swing Feel | Standard | Floaty, Standard, Snappy: claw speed, reel speed, swing lean and top speed. |
+| Wall Hook | OG | OG (jpalomo's one-off fling toward the claw) or Rope (pulled to the claw, you stop and hang there). |
+| Swing and Momentum | Option | On: the swing rope (hang, swing, pump, keep your speed), whatever Wall Hook says. |
+| Range | Standard | Preset: Short (768), Standard (780, the OG's reach), Long (3072). |
+| Swing Feel | Standard | Preset: Floaty, Standard, Snappy. Claw speed and the rope's reel; the Rope pull runs at 1.5x Reel Speed. |
 | Rope Climbing | On | A free hand on Grab Rope climbs the rope. |
 | Two Hands on the Rope | On | Both hands may hold the rope at once; the climb is their average. |
 | Hook Thump | On | A thump in the hand when the hook bites or the rope catches your fall. |
-| Calm Swing (Stick Back) | On | Hanging, the stick pulled back calms the swing in about a second. |
-| Slack Rope Lets Go | On | A rope lying slack on the floor for 3 seconds lets go by itself. |
-| Rope Wraps Corners | On | The rope bends round a corner it swings past instead of letting go; it straightens again when the way is clear. |
-| Mantle (Stick Forward) | On | Hanging on a wall rope under a lip within reach, the stick forward takes you up and over it. |
-| Hook Switches and Doors | Off | The claw hitting a switch or door uses it and comes back. |
-| Aim Dot (Empty Hand) | Off | A faint dot where the claw would bite while an empty hand points. |
+| Calm Swing (Stick Back) | On | Swing and Momentum only: stick back while hanging brakes the swing. |
+| Slack Rope Lets Go | On | Swing and Momentum only: a rope lying slack on the floor for 3 s lets go by itself. (The pull lets go as soon as it stops on a floor.) |
+| Hook Switches and Doors | Option | The claw hitting a switch or door uses it and comes back. |
+| Aim Dot (Empty Hand) | Option | A faint dot where the claw would bite while an empty hand points. |
 | Rope Look | Chain | Chain (jpalomo's links) or Cable. |
-| Monster Hook | OG | OG (thrown toward you once), Slide, Yank (through the air in an arc), Lasso (held at rope length). |
-| Monster Pull | Standard | Gentle, Standard, Strong: slide speed and the heaviest thing that comes. |
-| Split Pull by Weight | Off | Slide only: you and the monster share the pull by weight. |
-| Lasso Flick Throw | On | Lasso: a hard flick of the arm throws the held monster that way. |
+| Monster Hook | OG | OG (jpalomo's one-off throw toward you), Slide, Yank (thrown through the air in an arc) or Lasso (held at rope length). |
+| Monster Pull | Standard | Preset: Gentle, Standard, Strong (slide speed, and the heaviest thing that comes at all). |
+| Split Pull by Weight | Option | Slide only: you and the monster share the pull by weight: you go part of the way. |
+| Lasso Flick Throw | On | With Lasso: a hard flick of the arm throws the held monster that way. |
 | Tumble | Spin | Yank only: Off, Spin, Flip, Both. |
 | Throw Damage | On | Yank and Lasso: a thrown monster's landing or strike hurts it. |
-| Whip | Off | The hook binds crack a whip instead of firing the claw. |
-| Look | JP | JP, Combat FX or Ballistics: look and sound set. |
+| Whip | Option | The hook binds crack an older, simpler whip instead of firing the claw (not RSQ Whip). |
+| Look | JP | JP, Combat FX or Ballistics look and sound set. |
 | Score Stunts | On | A gap crossed on the rope pays RSQ Score's "Indiana Jones". |
 
-**Tuning and Debug** (every number; "Reset All" at the bottom puts everything back)
+On Tuning and Debug, also: "Keep Momentum" (on; only matters with Swing and Momentum on), "Tap to Let Go (tics)" (8), "Free Hand Only" (on: only an
+empty hand may climb, never a gun hand), "Grips From Grab" (on), "Whip Stun" and "Whip Snag" (on), "Debug Log".
 
-| Menu row | Default | What it does |
-|---|---|---|
-| Range | 780 | How far the claw reaches before it comes back. |
-| Hook Speed | 40 | Claw flight, units a tic. |
-| Reel Speed | 12 | Rope taken in per tic while the bind is held. |
-| Swing Lean | 0.25 | How hard the stick leans a swing. |
-| Top Speed | 30 | Speed cap on the rope and on a yank. |
-| Monster Pull | 10 | How fast a hooked monster slides to you. |
-| Heaviest Pulled | 1000 | Heavier than this (or a boss) is an anchor and does not come. |
-| Chain Links | 160 | Most chain links per rope. |
-| Link Size | 0.125 | Chain link size. |
-| Rope Pieces | 12 | Most pieces a slack rope is drawn in. |
-| Rope Thickness | 0.6 | Rope radius, map units. |
-| Shortest Rope | 32 | Shortest rope when reeled all the way in. |
-| Rope Height | 0.6 | Where the rope meets the body, as a fraction of your height. |
-| Air Drag | 0.002 | Share of swing speed lost per tic. |
-| Rope Friction | 0.025 | A constant loss that brings the swing to rest. |
-| Ledge Hop | 6 | Lift when letting go at the top of a wall. |
-| Keep Momentum | On | A swing keeps its speed when you land. |
-| Return Speed | 64 | The claw coming back. |
-| Tap to Let Go (tics) | 8 | A press released within this is a tap (let go); held longer, it reels. |
-| Stop Distance | 16 | How far from you a sliding monster stops. |
-| Free Hand Only | On | Only an empty hand may climb, never a gun hand. |
-| Grips From Grab | On | RSQ DistanceGrab's grab binds take hold of the rope too. |
-| Grab Reach | 16 | How near the rope the hand must be to take hold. |
-| Climb Speed Cap | 8 | Most the body moves per tic by the hand. |
-| Heaviest Thrown | 1000 | Heaviest monster the Yank throws; heavier slides. |
-| Throw Air | 0.27 | Gravity on a yanked monster once it flies on its own, times Doom's. |
-| Throw Turns | 1 | Whole tumbles over the flight. |
-| Throw Stun | 8 | Tics a yanked monster stays in its pain frame after landing. |
-| Lasso Speed | 24 | Fastest a held monster follows your arm. |
-| Whip Reach | 192 | Whip reach from the hand. |
-| Whip Damage | 12 | Whip damage. |
-| Whip Stun | On | A whip hit knocks the monster into its pain state. |
-| Whip Snag | On | The whip tip wraps round something above the hand and becomes the rope. |
-| Debug Log | Off | Log every hook tic to the console. |
+## Test it
+
+Load only the base order plus `RSQ_Grapple.pk3`. Steps marked **(not yet headset-confirmed)** were only run on
+the simulated rig (2026-10-31 onward).
+
+1. Bind Fire Hook (Main), Fire Hook (Off), Grab Rope (Main), Grab Rope (Off). Menu: Radiant Silvergun Options ->
+   RSQ Grapple shows the rows above.
+2. Open the menu, close it, then fire at once: the claw leaves from your hand, not your chest.
+   **(not yet headset-confirmed)**
+3. Fire at a high wall: the claw flies along the chain and bites. Hook Thump: a thump in that hand.
+   **(not yet headset-confirmed)**
+4. Default: fire at a wall about 10 m away at hand height: you are thrown at it fast (about 26 m/s at 10 m),
+   hop a little, hit it, and are free at once; nothing holds you. Same as jp_grapple. **(not yet headset-confirmed)**
+5. Default: fire at a wall high up, or at the ceiling over a pit: you are thrown up and toward it in an arc and
+   fall back under normal gravity, keeping your speed. **(not yet headset-confirmed)**
+6. Default: fire at the floor a few metres ahead: you slide toward the claw and stop by friction.
+   **(not yet headset-confirmed)**
+7. Wall Hook: Rope: fire at a high wall: you are pulled straight to it and hang 32 units short; tap to drop. An
+   empty hand on the rope with Grab Rope, push up: you lower yourself; pull down: you climb back.
+   **(not yet headset-confirmed)**
+7b. Turn on "Swing and Momentum". Hold the button: you reel up. Release: you hang and swing.
+8. Swing and Momentum on: step off a ledge on the rope: you swing across. Pump with the stick in time. Tap the
+   button at the top: you let go and fly on, keeping speed. After landing, walking is normal speed at once (no
+   slide). **(not yet headset-confirmed)**
+9. Swing and Momentum on, hanging and swinging, pull the stick back: the swing dies in about a second.
+   **(not yet headset-confirmed)**
+10. Rope or Swing, hanging: an empty hand on the rope with Grab Rope, pull down: you climb. Add the other hand: both
+    hold, the climb is their average. One hand still, the other shaking: no net climb. **(not yet headset-confirmed)**
+11. Swing and Momentum on: hook the floor and stand still: after 3 s the rope lets go by itself.
+    **(not yet headset-confirmed)**
+12. Fire at nothing far away: press again while it flies: it comes back.
+13. Default: hook an imp 10 m away: it is thrown at you and slides to a stop in front of you. A Cyberdemon (a boss,
+    too heavy): you are thrown toward it instead. **(not yet headset-confirmed)**
+14. Options, one at a time, then back to default:
+    - Monster Hook: Slide. A hooked imp slides to you and stops in front.
+    - Monster Hook: Yank. A hooked imp flies through the air in an arc, spins, lands in front of you.
+    - Monster Hook: Lasso. The imp hangs at rope length and follows your arm; sweep it into a zombie (both hurt).
+      Flick the arm hard: it is thrown that way. Tap: it drops. **(not yet headset-confirmed)**
+    - Split Pull by Weight: hook an imp: you both move, meeting in between; a heavier demon: you go most of the
+      way. **(not yet headset-confirmed)**
+    - Hook Switches and Doors: hook a switch: it is used and the claw comes back. (Doors not rig-tested.)
+      **(not yet headset-confirmed)**
+    - Aim Dot (Empty Hand): point an empty hand at a wall: a faint dot where the claw would bite.
+      **(not yet headset-confirmed)**
+    - Wall Hook: Rope (step 7).
+    - Rope Look: Cable. Look: Combat FX, Ballistics.
+15. Tuning and Debug -> "Tap to Let Go (tics)": lower it to 3: a medium press on a rope you hang from now reels
+    instead of letting go.
+    **(not yet headset-confirmed)**
+16. "Reset All" puts everything back.
+17. Load RSQ Accessibility (Steady Hands on). Hold a hand still on a far wall spot and fire: the claw lands on that
+    spot. Steady Hands off: as before. **(not yet headset-confirmed)**
+18. Accessibility's Slower Taps on: a press a little longer than "Tap to Let Go" still lets go of the rope.
+    **(not yet headset-confirmed)**
+19. Accessibility's Rumble Strength 0: no bite thump. **(not yet headset-confirmed)**
 
 ## Works with
 
-- **RSQ DistanceGrab:** its grab binds take hold of the rope (Grips From Grab). The Yank's arc is
-  DistanceGrab's flight path.
-- **RSQ SlowMo:** a sliding monster moves at the slowed world speed. Your own hook, rope and swing run in real
-  time.
-- **RSQ Score:** a gap crossed on the rope pays "Indiana Jones" (Score Stunts). Score also reads the hook's
-  events through RSQGR_Service (bites, rehooks after a monster was knocked away, bowling strikes).
-- **RSQ HP Bars:** reads "hooked" and "stunned" from RSQGR_Service for its markers over hooked and stunned
-  monsters.
-- **RSQ Miniboss:** with Miniboss's "Can't Be Yanked" on, a miniboss is too heavy to come, as a boss is: the
-  hook flings you to it.
-- **RSQ Melee:** needed by the Scorpion upgrade (below).
+- **RSQ DistanceGrab:** its grab binds take hold of the rope ("Grips From Grab"). The Yank arc is
+  DistanceGrab's flight path, ported.
+- **RSQ SlowMo:** a hooked monster slides at the slowed world speed; a yanked monster takes the same arc at any
+  speed. Your own swing runs in real time.
+- **RSQ Score:** "Indiana Jones" for a gap crossed on the rope (Score Stunts), plus hook bonuses (Reeled In,
+  Ping-Pong, Bowling and others). Score's rope awards were measured with the swing; with the pull they were not
+  checked.
+- **RSQ HP Bars:** "hooked" and "stunned" markers over hooked and yanked monsters.
+- **RSQ Gestures:** the rope is never read as a gesture.
 - **RSQ Whip:** loads beside it; separate binds and settings.
-- **RSQ Accessibility:** Hold to Toggle on the hook binds (press to fire and hold on, press again to let go).
-  Steady Hands fires the hook along the smoothed hand and the aim dot follows it; the climb, rope and lasso
-  stay on the raw hand. Slower Taps makes Tap to Let Go 1.5x longer. Gesture Ease widens Grab Reach. Rumble
-  Strength 0 removes the bite thump. One-Handed's Off-Hand Modifier fires the off hook from the main hand.
-  Colour-blind palette on its cues. Inert without it.
+- **RSQ Miniboss** (2026-11-03, by name): with Miniboss's "Can't Be Yanked" on (the default) a miniboss is too heavy
+  to come, as a boss is: the hook pulls you to it (`RSQMB_Service` `bossfor` `"yank"`). Rig only, not headset-confirmed.
+- **Gun Bonsai with the RSQ Gun Bonsai VR patch:** nine hook perks (Long Line, Fast Reel, Heavy Haul, Get Over
+  Here, Bowling, Barbed Claw, Slingshot, Steady Line, Double Hook), now a tree (GBOVR_TREES.md 4.6): **Grapple** is an
+  unlock -- under the patch the hook fires only once it is learned -- and **Momentum** is the Swing and Momentum
+  option as an unlock; the nine hang from them (Double Hook after Heavy Haul 2, no longer "from player level 5").
+  New: **Zip Kick** (arrive on a monster by the rope at 3 m/s or more: 20 / 30 / 40, more the faster), **Scorpion**
+  (needs RSQ Melee: what the hook brings is punched by your empty fist at full power as a counter) and **Twin Lines**
+  (after Momentum: a rope from each hand; you hang between them; hold one's reel and the other pays out, so you
+  are drawn to that one; 2: let one go and you are flung along the other). Without the patch nothing changes.
+  **Fast Reel** (11-03, "faster claw + harder yank"): the claw flies, and the OG fling and OG yank launch, 10% faster
+  a level (x1.4 at 4; the claw 40 -> 56 a tic). The yank's lift stays the OG's. No cap, as the OG has none: Long
+  Line 4 + Fast Reel 4 from 1380 flings you at 160 u/tic and the wall stops you (rig).
+  With the OG defaults: Get Over Here and Scorpion act when a thrown monster arrives in front of you; Bowling
+  strikes what is in its path; Double Hook pairs two monsters bitten within 16 tics; Barbed Claw tears when the
+  claw lets go; Zip Kick counts a fling as the rope. Slingshot, Steady Line and Twin Lines sit under Momentum (the
+  swing rope). Rig only, not headset-confirmed.
+- **RSQ Accessibility:** Hold to Toggle on the hook binds, Gesture Ease, colour-blind cues. Steady Hands (on in
+  Accessibility): the hook is fired along the smoothed hand, and the aim dot follows it; the climb, the rope, the
+  lasso and the lash stay on the raw hand. Slower Taps: Tap to Let Go is 1.5x longer. Rumble Strength 0: no bite
+  thump (the thump is the engine's one fixed buzz, so other values leave it as it is). Inert without it.
 
-**Gun Bonsai VR (RSQ_GunBonsaiVR):** with the patch loaded the hook fires only once the **Grapple** node is
-learned, and **Momentum** is the Swing and Momentum option as an unlock. From them hang Long Line (range +20% a
-level), Fast Reel (the claw, the OG fling and the OG throw 10% faster a level), Barbed Claw (the bite and the
-tear-out hurt), Heavy Haul (heavier and bigger things come; a boss on the line is staggered), Get Over Here
-(what arrives is staggered), Bowling (what arrives strikes what is in its way), Double Hook (a monster on each
-hook slammed together), Slingshot (letting go of a swing carries more speed), Steady Line (the hang settles
-faster), Zip Kick (arriving on a monster by the rope at 3 m/s or more hurts it), Scorpion (needs RSQ Melee:
-what the hook brings to you is punched by your empty fist as a counter) and Twin Lines (a wall rope from each
-hand at once; at 2, letting one go flings you along the other). Without the patch nothing changes.
+## Known limits / open issues
 
-## Load order
+- THE OG default (2026-11-03) ran on the simulated rig only, against jpalomo's own pk3 there
+  (test/evidence/og_1103.txt). Not felt in the headset yet.
+- One difference from the OG, on purpose: a boss, or anything over 1000 mass, is still an anchor (you are flung
+  toward it; Heavy Haul raises the limit). The OG throws even a Cyberdemon at you.
+- The OG's aim: his projectile climbed a few degrees less than the hand points (rig: 16.9 vs 20 degrees); ours flies
+  where the hand points. The fling from where it bites is his, exactly.
+- Rope mode: hanging, you stay where the pull stopped, at any angle (no swing, no sliding under the claw). Two
+  ropes out at once pull you between their two points. The stick does nothing during the pull or the hang.
+- Rope mode: stopped against the face of a wall below its top, you hang there; the tap's Ledge Hop (6 u/tic) is
+  the only help over a lip. There is no automatic mantle.
 
-After Brutal Doom and the monster packs, after Gun Bonsai and RSQ_GunBonsaiVR, beside the other RSQ pk3s.
-Works on plain Doom 2 without Brutal Doom.
-
-## Known limits
-
-- A boss, or anything over Heaviest Pulled, never comes; you are flung toward it instead. jpalomo's original
-  threw even a Cyberdemon.
-- Rope mode: hanging, you stay where the pull stopped, at any angle. The stick does nothing during the pull or
-  the hang, except the Mantle. Two ropes out at once pull you between their two points.
+- Feel not checked in the headset: reel speed, top speed, pump, the tap window, the brake, the 3 m/s lasso
+  flick, whether the aim dot is visible enough, the lasso at speed, the thump.
 - The claw sprite is jpalomo's 15-unit claw: large right at the hand at launch.
+- The rope does not wrap round corners: it slips and lets go.
+- A monster dangling on the rope outside Lasso mode is dropped after about 1.5 s without progress.
 - jpalomo's art and sounds are slated for replacement (see Credits).
-
-## For other mods
-
-`RSQGR_Service` (find it by name with `ServiceIterator`; absent is -1 / null). GetInt, objectArg the player's
-pawn (intArg hand, 0 main / 1 off, where it applies) or the monster:
-
-- Player: `hook.phase`, `swinging`, `reeling`, `climbing`, `airborne`, `released`, `landed`, `rope.speed`,
-  `released.speed`, `flight.dist`, `flight.drop`, `gaps`.
-- Monster: `hooked`, `hooked.by`, `hooked.heavy`, `bites`, `volleys`, `yanked`, `landing`, `struck`,
-  `struck.by`, `pin`, `whipped`, `stunned`.
-- Gun Bonsai VR's ledger (pawn): `xp.bites`, `xp.yanks`, `xp.kills`, `xp.killhp`, `xp.slams`, `xp.swing`,
-  `hook.dealing`.
-- GetObject: `hook.victim` (pawn, hand), `hooked.by` (monster), `struck.ball` (monster).
-
-Everything that hurts is noted before the blow lands, so a scorer reading inside WorldThingDied sees it.
-
-It asks other mods by name: `RS_ScoreService` ("award" Indiana Jones, "touch" scorpion), `RSQSM_Service`
-("scale"), `RSQMB_Service` ("bossfor" yank), `RSQA_Service`, `RSQ_MeleeUpgradeService` ("plevel", "stagger"),
-`RSQML_Service` ("autopunch").
+- The RSQ Accessibility wiring (2026-11-01: Steady Hands, Slower Taps, Rumble Strength) ran on the simulated rig only: it loads clean with
+  and without Accessibility, in the Brutal Doom order too. Its effect on this mod's aim was not measured on the rig.
+- Not run: Cheello's Voxel Doom II, netplay.
 
 ## Credits
+
+From CREDITS.txt, unchanged:
 
 The hook's art and sound are jpalomo's, from the grappling hook in his mod pack
 (jp_grapple.pk3, kept unmodified in jp_original/ of the source repo):
@@ -239,14 +215,14 @@ The hook's art and sound are jpalomo's, from the grappling hook in his mod pack
     Hook_HitEnemy thrusts (hook.acs) and his HookShot's flight, number for number.
 Thank you, jpalomo.
 
-SLATED FOR REPLACEMENT: this hook is the series' own rebuild, so its look and sound
+SLATED FOR REPLACEMENT (owner, 10-27): this hook is the series' own rebuild, so its look and sound
 should be ours too. jpalomo's art and sounds stay as the default until replacements are made from
 the owner's RS_CombatFX library (and other cleared sources); then the JP set becomes optional or goes.
 
 Code: ZScript written for the Radiant Silvergun Quest series (presidentkoopa), for
 stock QuestZDoom 17.3 by Emawind84 and Team Beef. No engine change.
 
-Monster side (the throw, the whip, the look sets):
+==== monster side (the throw, the whip, the look sets) ====
 The Yank is RSQ_DistanceGrab's WorldHands path ported number for number (its path,
 arc, timing, tumble, 0.27 air, MeasureArc, the voxel table and the voxel turn fix):
 the owner's RS_WorldHands design, as RSQ_DistanceGrab carries it.
@@ -259,6 +235,6 @@ Look sets (rsqgr_looks), all the owner's own libraries:
     mesh (models/bullet/btracer.obj/.png, shipped as models/rsqgr/btracer.*).
   - RSGBA0 is a 1x1 transparent placeholder: the sprite name the tracer mesh is bound to.
 
-`jp_original/` is the source material: jp_grapple.pk3 (the hook from jpalomo's mod pack, parent missing), kept
-unmodified for its art (OCLW/CCLW claw, tenda0) and sounds (dschain, dsswish, dspulchn, dsmtalht, dsmeatht). It
-is not loaded as-is.
+From the old README: `jp_original/` is the source material: jp_grapple.pk3 (the hook from jpalomo's mod pack,
+parent missing), kept unmodified for its art (OCLW/CCLW claw, tenda0) and sounds (dschain, dsswish, dspulchn,
+dsmtalht, dsmeatht). It is not loaded as-is.

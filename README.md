@@ -3,57 +3,87 @@
 VR add-ons for **Doom VR on stock QuestZDoom 17.3** (PCVR or Quest), one folder and one pk3 each. No engine
 changes: everything is ZScript and data. Ready-to-load pk3s are in [`pk3/`](pk3/).
 
-**Each mod works alone; together they make one arcade game.** They find each other by name at run time, so any
-combination loads, in any order among themselves. Brutal Doom VR Reloaded is the weapon set they are played with,
-but the series is not a Brutal Doom pack: each mod's README says what it does on plain Doom 2.
+**Each mod works alone; together they make one arcade game.** They find each other by name at run time, so
+any combination loads in any order. Brutal Doom VR Reloaded is the tested weapon set, but the series is not a
+Brutal Doom pack: each mod's README says what it does on plain Doom 2.
 
-**Each mod's README is its manual** — what it does, how you play it in VR, every menu row with its default, what it
-does with the other mods. [WHO_OWNS_WHAT.md](WHO_OWNS_WHAT.md) says which mod owns each mechanic.
+**[WHO_OWNS_WHAT.md](WHO_OWNS_WHAT.md)** says which mod owns each mechanic. **Each mod's README is its manual**: every feature with its exact menu row and default, the moves in VR, what
+it does with the other mods, and a **Test it** checklist. Anything built on 2026-10-31 or later ran on a
+simulated headset only and is marked *not yet headset-confirmed* there.
 
-## The mods
-
-Each mod has one thing it does that nothing else does. That is the first line of its README, and it is this column:
-
-| | Mod | pk3 | The one thing |
+| | Mod | pk3 | What it is |
 |---|---|---|---|
-| ✋ | [DistanceGrab](DistanceGrab/) | `RSQ_DistanceGrab.pk3` | Gravity gloves: palm out at a thing across the room and it flies into your hand; carry it, swing it, throw it, hide behind it. Yours from the start, no levelling. |
-| 🥊 | [Melee](Melee/) | `RSQ_Melee.pk3` | Your real swing is the punch: how fast you hit is how hard it lands, with uppercuts that lift, a gun-butt shove that slows time, a Hadouken that punches a fireball back at its shooter, and a Headlock you throw monsters out of. |
-| 🛡️ | [ShieldSaw](ShieldSaw/) | `RSQ_ShieldSaw.pk3` | Rev the shield, lock your targets, and throw it as a saw disc that cuts through them, grinds the one it sticks in, and comes back to your hand. id Software's shield saw (*Doom: The Dark Ages*), brought to Doom VR first by **Ermac**. |
-| ⚔️ | [QuestSaber](QuestSaber/) | `RSQ_Saber.pk3` | A blade that really blocks: it reads its own sweep against every shot in flight, so a bolt that crosses the blade is stopped and sent back where you look. And the Force from the off hand: push, pull, grip, jump, lightning. |
-| 🎒 | [TacticalRig](TacticalRig/) | `RSQ_TacticalRig.pk3` | Holsters on your real body: reach to a hip, your chest or a shoulder and the gun is there. And Ermac's cigarette: light it, take a drag, flick it, and time slows. |
-| ⏱️ | [SlowMo](SlowMo/) | `RSQ_SlowMo.pk3` | Slow motion with no engine change: every monster and every shot slows while your hands stay on real time, enemy bullets become rounds you can lean out of, and a Shootdodge leaps you through it. |
-| 🔴 | [LaserSight](LaserSight/) | `RSQ_LaserSight.pk3` | The laser comes out of the gun's real barrel in either hand, and the dot is where the shot truly lands (Brutal Doom VR's own shot line), with the grenade launcher's arc. |
-| 🪝 | [Grapple](Grapple/) | `RSQ_Grapple.pk3` | Fling the hook from either hand and it takes you to the wall, or takes the monster to you; turn on the swing, reel up, and put both hands on the rope. |
-| 🐍 | [Whip](Whip/) | `RSQ_Whip.pk3` | A real bullwhip, simulated: MIT Newman Lab's reference whip, run node for node as a position-based chain, so every crack, wrap and swing comes from how you actually move your arm. |
-| 🎡 | [Wheel](Wheel/) | `RSQ_Wheel.pk3` | A data sheet for every gun you own — ammo, kills, shots, accuracy, Gun Bonsai level, what the gun's own mod knows about it — on a wheel that works with any weapon set you load. |
-| 🃏 | [GunCards](GunCards/) | `RSQ_GunCards.pk3` | A holo ammo card riding the gun itself, and a glance at your watch brings up the whole card on the back of your wrist. |
-| 🤲 | [Gestures](Gestures/) | `RSQ_Gestures.pk3` | It reads how your real hands move — a watch check, a thrust, a punch and what kind, a gun-butt shove, both hands together — and every other mod in the series fights with that. |
-| ❤️ | [TopHPBars](TopHPBars/) | `RSQ_HPBars.pk3` | A health bar over every monster you hurt that also shows what each series mod is doing to it right now — hooked, stunned, locked, gripped, frozen, held, raised — in six colour sets, three built for colour-blind eyes. |
-| 🏆 | [Score](Score/) | `RSQ_Score.pk3` | Every move in the series is a word in one language, so a kill made with the whip, the shove and the shotgun in slow motion is one named combo that pays. |
-| 👹 | [Miniboss](Miniboss/) | `RSQ_Miniboss.pk3` | Every map has a miniboss fed by three thralls; kill a thrall and time slows, get greedy and the whole map enrages. Rebuilt from Tartlman's Minibosses!. |
-| 🌳 | [GunBonsaiOffhandVR](GunBonsaiOffhandVR/) | `RSQ_GunBonsaiVR.pk3` | Each hand earns its own XP, and every tool in the series has a tree to climb: the fists, the saber, the shield, the whip, the grenade, the hook, slow motion, the rig. An addon for ToxicFrog's Gun Bonsai 0.10.6 (not included), loaded right after it. |
-| 💣 | [Grenade](Grenade/) | `RSQ_Grenade.pk3` | A grenade you work with your hands: pull the pin with the other hand or your teeth, cook it, and throw it with your own arm. Stands down for BD22 VR's own grenade. |
-| ♿ | [Accessibility](Accessibility/) | `RSQ_Accessibility.pk3` | One settings page every mod in the series reads: handedness, seated play, Steady Hands, colour-blind colours, and one Reset for all of them. |
+| ✋ | [DistanceGrab](DistanceGrab/) | `RSQ_DistanceGrab.pk3` | Palm out at a thing across the room, pull it to your hand, carry it, throw it. Up close the grip takes things, lifts doors, flips switches. |
+| 🥊 | [Melee](Melee/) | `RSQ_Melee.pk3` | Fighting with your body: punches, boxing gloves, Slappers Only, Guard, Hadouken, Wall Splat, Heavy Hands, the gun-butt shove, and the off-hand Headlock (hold a monster and punch it). |
+| 🛡️ | [ShieldSaw](ShieldSaw/) | `RSQ_ShieldSaw.pk3` | A shield (stowed at the small of your back by default) that blocks, bashes and turns shots back, and throws as a saw disc. id Software's shield saw (*Doom: The Dark Ages*), brought to Doom VR first by **Ermac**. |
+| ⚔️ | [QuestSaber](QuestSaber/) | `RSQ_Saber.pk3` | A lightsaber, and a second one for the off hand (on/off in the menu). Cut, stab, block, parry, deflect, throw, and the Force (also from an off-hand fist). |
+| 🎒 | [TacticalRig](TacticalRig/) | `RSQ_TacticalRig.pk3` | Six gun holsters (hips, chest, shoulders), a holster for each saber, a grenade spot, a keyring, gun throwing, a mirror, an optional torso and helmet, and Ermac's cigarette. Built on **Ermac's** Virtual Tactical Vest idea. |
+| ⏱️ | [SlowMo](SlowMo/) | `RSQ_SlowMo.pk3` | The world slows, you don't. Enemy bullets become rounds you can step or lean away from, and (option) catch and throw back. |
+| 🔴 | [LaserSight](LaserSight/) | `RSQ_LaserSight.pk3` | A laser from each gun's own barrel, in either hand, with a dot where the shot lands (Brutal Doom VR 2.0's real shot line) and a grenade launcher's arc. |
+| 🪝 | [Grapple](Grapple/) | `RSQ_Grapple.pk3` | A grappling hook from either hand: swing, reel, climb hand over hand, two hands on the rope, yank monsters to you. jpalomo's hook art and sound. |
+| 🐍 | [Whip](Whip/) | `RSQ_Whip.pk3` | A simulated bullwhip: cracks from how you swing, stings and stuns, lassos and leashes monsters, throws switches, catches edges to swing and climb. |
+| 🎡 | [Wheel](Wheel/) | `RSQ_Wheel.pk3` | A weapon wheel for VR: a ring of weapon cards around your hand, point and let go (or reach in), a data sheet per gun. The owner's REMA wheel. |
+| 🃏 | [GunCards](GunCards/) | `RSQ_GunCards.pk3` | Ammo cards on your guns in Ermac's holo style; check your watch for the full card (or, empty-handed, health/armour/keys). |
+| 🤲 | [Gestures](Gestures/) | `RSQ_Gestures.pk3` | Reads your hands (watch check, thrust, pull, punch, shove, braced) and answers the other mods. Does nothing to the game by itself. |
+| ❤️ | [TopHPBars](TopHPBars/) | `RSQ_HPBars.pk3` | coldcite's Top HP Bars with colour-blind sets, an overheal strip and icons for what the other mods are doing to a monster. |
+| 🏆 | [Score](Score/) | `RSQ_Score.pk3` | The arcade score: style bonuses, cross-mod combos, a map target and extra lives. The owner's RS_Score on ijon's Dakka scoring. |
+| 👹 | [Miniboss](Miniboss/) | `RSQ_Miniboss.pk3` | A miniboss each map fed by three thralls; kill a thrall to slow time, get greedy and every monster enrages. Rebuilt from Tartlman's Minibosses!. |
+| 🌳 | [GunBonsaiOffhandVR](GunBonsaiOffhandVR/) | `RSQ_GunBonsaiVR.pk3` | An addon for ToxicFrog's Gun Bonsai 0.10.6 (not included): each hand its own XP, upgrades and HUD, upgrade paths for the series' tools (the gloves' and Guard need RSQ Melee). Loaded right after Gun Bonsai. |
+| 💣 | [Grenade](Grenade/) | `RSQ_Grenade.pk3` | A hand grenade worked by hand on plain Doom 2: the other hand (or your teeth) pulls the pin, throw it with your arm, cook it, watch it flash red. Brutal Doom VR's handling; stands down for BD22 VR's own grenade. |
+| ♿ | [Accessibility](Accessibility/) | `RSQ_Accessibility.pk3` | One settings page for the whole series: colour-blind, handedness, one-handed, comfort, cues, and one Reset for every mod. |
+
+## Testing them one at a time
+
+Add **one mod per session** on top of your Brutal Doom order, play a map, go through that mod's
+**Test it** checklist (in its README), then add the next. Every mod works alone, so a problem you see
+belongs to the mod you just added. Features built on 2026-10-31 or later ran on a simulated headset
+only and are marked **not yet headset-confirmed** in each README; nothing about rumble could be felt there.
+
+A suggested order -- simple and visible first, the mods that read the others last:
+
+| # | Add | Why here |
+|---|---|---|
+| 1 | Accessibility | Handedness, colour-blind modes, Steady Hands, seated play: set once, every later mod reads it |
+| 2 | LaserSight | One visible thing per gun; quick to confirm the load order is right |
+| 3 | TacticalRig | Holsters; later mods (saber, ShieldSaw) hang on it |
+| 4 | DistanceGrab | Pull, carry, throw, doors, walk-up grip |
+| 5 | Melee | Punches and gloves, the gun-butt shove, the Headlock (its throw flies through Distance Grab's throw now) |
+| 6 | Saber | Then check it with the rig's saber holsters |
+| 7 | ShieldSaw | Then saber + shield together (saber over shield) |
+| 8 | Whip | |
+| 9 | Grapple | |
+| 10 | SlowMo | Then the saber's / shield's / rig's slow-mo options start doing something |
+| 11 | Gestures, then GunCards | GunCards' watch card comes from Gestures' wrist twist |
+| 12 | (Melee, again) | With SlowMo now loaded, recheck the slow-mo after a shove |
+| 13 | Wheel | |
+| 14 | HP Bars | Its frozen / held / hooked markers read the other mods |
+| 15 | Score | Combos need the tools above loaded to fire |
+| 16 | Miniboss | Best with Champions + LegenDoom Lite |
+| 17 | Gun Bonsai VR addon | Last, right after GunBonsai-0.10.6; with Melee loaded, Guard, Hadouken, Wall Splat, Heavy Hands become its upgrades |
+| 18 | Grenade | Plain Doom 2 only (with Brutal Doom VR it stands down); then with Tactical Rig's buckle and Gun Cards' count |
+
+After that, the full set together.
+
+---
 
 ## Install
 
 1. Take the pk3s you want from [`pk3/`](pk3/).
-2. Load them **after** your weapon set and monster packs. The order the series is played with:
+2. Load them **after** your weapon set. The tested order:
 
    ```
-   doom2.wad -> 01 brutal22test6 -> 02 BD22_VoxelPack -> 03 BD22_VR-Reloaded (2.0.3p)
-             -> 04-07 XMVE Monster Expansion (BD22 versions)
-             -> LegenDoom Lite, Champions, your other gameplay mods
-             -> GunBonsai-0.10.6.pk3 -> RSQ_GunBonsaiVR.pk3 (only with Gun Bonsai, right after it)
-             -> the other RSQ mods, in any order
+   doom2.wad -> 01 brutal22test6 -> 02 BD22_VoxelPack -> 03 BD22_VR-Reloaded_2.0.3j
+             -> 04-07 XMVE Monster Expansion (BD22 versions) -> (optional) Champions -> LegenDoom Lite
+             -> any RSQ mods, in any order
+             -> GunBonsai-0.10.6.pk3 -> RSQ_GunBonsaiVR.pk3 (last; only with Gun Bonsai)
    ```
 
    02-07 are the BD22 VR Weapons repo's `pk3/` folder (RS_Brutal22WeaponsQ). The four "No sprites specified for
    voxel" errors at start-up are the voxel pack's own.
 
-3. Settings: **Options -> Radiant Silvergun Options**, one row per RSQ mod you loaded:
+3. Settings: **Options -> Radiant Silvergun Options**. One row per RSQ mod you loaded:
 
-   | Mod | Row |
+   | Mod | Row under Radiant Silvergun Options |
    |---|---|
    | QuestSaber | **RSQ Saber** |
    | ShieldSaw | **RSQ ShieldSaw** |
@@ -76,59 +106,69 @@ Each mod has one thing it does that nothing else does. That is the first line of
 
    Every page has **Reset All** on its last page; Accessibility's Reset resets every series mod.
 
-4. Keys: **Options -> Customize Controls**, one section per mod (Slow Motion and Shootdodge, the saber's ignite,
-   the shield's draw, the whip, the wheel, Gun Bonsai VR's level-up menu). The hand moves need no keys.
-
-## Trying them one at a time
-
-Add **one mod per session** on top of your weapon set, play a map, then add the next. Every mod works alone, so a
-problem you see belongs to the mod you just added. A good order, simple and visible first, the mods that read the
-others last: Accessibility, LaserSight, TacticalRig, DistanceGrab, Melee, Saber, ShieldSaw, Whip, Grapple, SlowMo,
-Gestures then GunCards, Wheel, HP Bars, Score, Miniboss, Gun Bonsai VR (right after Gun Bonsai), Grenade.
-
-## Building and checking
+## Building
 
 ```
-python tools/build_all.py              # every mod into pk3/
-python tools/build_all.py Whip Wheel   # just those folders
-python tools/series_check.py           # the sanity check: every service, request, event and class name the
-                                       # mods reach by string, then a headless run of the whole load order
+python3 tools/build_all.py              # every mod into pk3/
+python3 tools/build_all.py Whip Wheel   # just those folders
 ```
 
-Each folder is one mod's source and carries its git history (`git log -- ShieldSaw/`). `tools/qzd_hidden_run.ps1`
-runs the desktop QuestZDoom headless for checks; `tools/rig17/` is the Linux rig. None of it ships.
+`build_all.sh` packs the same files. Each folder is one mod's source; most carry their full git history
+(`git log -- ShieldSaw/`). `tools/rig17/` is the headless QuestZDoom 17.3 used for testing (it never ships).
+
+## Status: 0.9 (2026-11-01)
+
+**0.9 is feature-complete for everything except the last two passes.** 18 mods; every one loads alone and
+together, on the owner's numbered Brutal Doom order and on plain Doom 2, with no script errors from the RSQ
+pk3s (simulated headset: play, save, load twice, map change).
+
+New since 1.0-pre (10-27 to 11-01): Whip, Wheel, GunCards, Gestures, RSQ Grenade and RSQ Melee; the owner's
+teardown and QoL picks; Accessibility wired through the series (Steady Hands, Seated Play, Slower Taps,
+Rumble Strength); the second saber as a dedicated off-hand weapon; real recorded sounds for the whip, Zippo
+and cigarette; every README rewritten from the code with a Test it list.
+
+**Before 1.0:**
+- The owner's headset pass through every README's Test it list. Everything built since 10-31 is marked
+  *not yet headset-confirmed*; no rumble has been felt yet.
+- The Gun Bonsai VR pass (naming, the melee upgrade path) and the Score pass, on the owner's orders.
+- The shipped holster presets (Standing A/B, Seated A/B) from the owner's own poses.
+
+**After 1.0:** a standalone flare, a shared rumble request for Rumble Backup, head smoothing for the saber's
+deflect, and the ideas listed in WHO_OWNS_WHAT.md's neighbours (RS Monsters, miniboss orbs, the Bulletstorm
+leash, Hook 1.0 leftovers).
 
 ## Credits
 
-- **QuestZDoom**: Emawind and Team Beef. The engine, and the off-hand weapon and attack-pose script API all the mods
-  are built on.
-- **id Software**: the shield saw (*Doom: The Dark Ages*): its design, and the mesh Ermac ripped from the game; the
-  Doom Eternal Classic Slayer, whose torso the TacticalRig wears (a rip, prepared in the project owner's RS_VRBody)
-  and the Classic Slayer's helmet the rig's mirror shows (a rip, also prepared in RS_VRBody); and Quake's Grunt, its
-  other torso.
-- **Ermac**, co-designer of DoomVR ([Rusted Legacy](https://github.com/iAmErmac/rusted-legacy), DXR, RS_Main):
-  - Brought the shield saw to Doom VR first, in Rusted Legacy. In his words, he worked on two shield models: the
-    first took him about three days to make work, the second was a rip from the game whose parts he separated in a
-    day. Which of the ShieldSaw's two meshes is which is not recorded ([ShieldSaw/README.md](ShieldSaw/README.md)).
-    The ShieldSaw started from his version, with its hand model and sounds. His MIT licence covers his code, not the
-    ripped mesh.
+- **QuestZDoom**: Emawind and Team Beef. The engine, and the off-hand weapon and attack-pose script
+  API all the mods are built on.
+- **id Software**: the shield saw (*Doom: The Dark Ages*): its design, and the mesh Ermac ripped
+  from the game; the Doom Eternal Classic Slayer, whose torso the TacticalRig wears (a rip,
+  prepared in the project owner's RS_VRBody) and the Classic Slayer's helmet the rig's mirror shows
+  (a rip, also prepared in RS_VRBody); and Quake's Grunt, its other torso.
+- **Ermac**, co-designer of DoomVR ([Rusted Legacy](https://github.com/iAmErmac/rusted-legacy),
+  DXR, RS_Main):
+  - Brought the shield saw to Doom VR first, in Rusted Legacy. In his words, he worked on two
+    shield models: the first took him about three days to make work, the second was a rip from
+    the game whose parts he separated in a day. Which of the ShieldSaw's two meshes is which is
+    not recorded ([ShieldSaw/README.md](ShieldSaw/README.md)). The ShieldSaw started from his
+    version, with its hand model and sounds. His MIT licence covers his code, not the ripped mesh.
   - In the QuestSaber: the Force and impact FX sprites and the choke loop.
-  - **The TacticalRig is built on his Virtual Tactical Vest idea**, and the cigarette is his tribute idea: the
-    cigarette, butt and smoke come from that mod (its credits name him as their modeller; the cigarette's texture
-    atlas is shared with a Sketchfab pack model), and the Zippo is the voxel lighter from his ZBlood-VR, credited to
-    him there.
+  - **The TacticalRig is built on his Virtual Tactical Vest idea**, and the cigarette is his
+    tribute idea: the cigarette, butt and smoke come from that mod (its credits name him as their
+    modeller; the cigarette's texture atlas is shared with a Sketchfab pack model), and the Zippo
+    is the voxel lighter from his ZBlood-VR, credited to him there.
 - Sharing other people's work in this series is the project owner's decision. See
-  [ShieldSaw/README.md](ShieldSaw/README.md) and each mod's CREDITS.txt ([QuestSaber](QuestSaber/CREDITS.txt),
-  [TacticalRig](TacticalRig/CREDITS.txt), [DistanceGrab](DistanceGrab/CREDITS.txt), [SlowMo](SlowMo/CREDITS.txt)).
+  [ShieldSaw/README.md](ShieldSaw/README.md) and each mod's CREDITS.txt
+  ([QuestSaber](QuestSaber/CREDITS.txt), [TacticalRig](TacticalRig/CREDITS.txt),
+  [DistanceGrab](DistanceGrab/CREDITS.txt), [SlowMo](SlowMo/CREDITS.txt)).
 - **li-gnrcwpn**: the training remote's ready beep.
-- **Vittorio Romeo**: his original Quake VR mod cut Quake's Grunt into the torso the TacticalRig can wear.
-- **jpalomo**: the grapple's hook art and sound.
-- **coldcite**: Top HP Bars, which RSQ HP Bars is built on. **Tartlman**: Minibosses!, which RSQ Miniboss was rebuilt
-  from. **ToxicFrog**: Gun Bonsai, which RSQ Gun Bonsai VR is an addon for. **SoM**: Universal Kill Rewards, folded
-  into Gun Bonsai VR's player path with his permission. **ijon**: Dakka's scoring, the root of RSQ Score.
-- The project owner's libraries: RS_CombatFX (the rig's holster, draw and foley sounds), RS_Ballistics (SlowMo's
-  tracer mesh and near-miss whiz and crack), RS_SlowMo (SlowMo's design and events).
-- **Bullet Time X** (Xortts, CC BY-NC 4.0): SlowMo's Shootdodge and Slow Me Too follow its model (a forced jump, time
-  slowed until you land, the player's own movement divided with the world's), written here from scratch; nothing of
-  its code or assets is used, and SlowMo recognises it by class name so the two never run together.
-- Everything else (meshes, skins, code) was made for these mods.
+- **Vittorio Romeo**: his original Quake VR mod cut Quake's Grunt into the torso the
+  TacticalRig can wear.
+- The project owner's libraries: RS_CombatFX (the rig's holster, draw and foley sounds),
+  RS_Ballistics (SlowMo's tracer mesh and near-miss whiz and crack), RS_SlowMo (SlowMo's design
+  and events).
+- **Bullet Time X** (Xortts): nothing is taken from it; SlowMo only recognises it by class name
+  so the two don't compound.
+- Everything else (meshes, skins, code) was made for these mods. A few sounds are still generated here
+  (four saber sounds, the rig's Zippo and cigarette); they break the owner's stock-or-real rule and are
+  waiting for real recordings.

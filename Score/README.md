@@ -1,230 +1,789 @@
-# Score (RSQ Score)
+# RSQ Score
 
-**The one thing:** every move in the series is a word in one language, so a kill made with the whip, the shove
-and the shotgun in slow motion is one named combo that pays.
+An arcade score for Doom. Every kill pays the monster's health in points. Bonuses add to that for how you
+got the kill: a spree, killing in the air, a melee finish, a thrown barrel, a combo of different tools on
+one monster, and many more. The score and its bar sit at the top right; the bonuses list under it as they
+land. Each map has a target; every time you cross it you get a reward (by default an extra life: you are
+caught at 1 HP instead of dying). Big moments ask RSQ_SlowMo for a short slow-motion pulse. It is the
+owner's RS_Score (built on ijon's Dakka scoring) brought to stock QuestZDoom 17.3.
 
-An arcade score for Doom. Every kill pays the monster's health in points; bonuses add to that for how you got
-the kill, and a chain of different tools on one monster pays as a combo, named or not. The score and its bar sit
-at the top right with the bonuses listing under it as they land; each map has a target, and every time you cross
-it you get a reward (by default an extra life). For stock QuestZDoom 17.3, in VR. Needs no other mod: it works
-on plain Doom 2 and on Brutal Doom, and no monster class is named. The series' own rows (saber, shield, hook,
-whip, fists, grenade, grab, rig, slow motion, miniboss) fire only when their mod is loaded. Built on the owner's
-RS_Score, which is built on ijon's Dakka scoring.
-
-## Features
-
-**What pays.**
-- A kill pays the monster's spawn health as base points. Only real kills count: Brutal Doom's gore helpers and
-  Champions' clones pay nothing.
-- Bonuses are multipliers of that base, added together and applied once. On one kill they add at most three
-  times its base (Kill Bonus Cap).
-- Bonuses sit in five families, each its own colour in the list: **Efficiency** (Spree, Untouchable,
-  Infighter), **Style** (Switcharoo, Air, Curveball, Coach Gun, Darwin, Telefragged, and the VR and thrown
-  rows: No-Look, Off-hand, Two Guns, Thrown, Powder Keg, Stretched Second...), **Daring** (Brawler, Redline,
-  Swan Song, Point-Blank, Blind-fire, Quick Draw, Hot Swap, Swinging, Dismount, Indiana Jones, and the
-  Champions, LegenDoom and Miniboss rows), **Melee** (the series' hands and blades: Fatality, Cleaved, Hurled,
-  Boomerang, Shield Work, Choked, Lashed, Reeled In, Weapon Master, Multi-Kill...), and **Counterplay**
-  (defence turned into a kill: Riposte, Perfect Riposte, Return to Sender, Poetic Justice, Rally, Shield Wall,
-  Hold the Line, Back Off, Misdirection, Eyes in the Back).
-- Every row, what triggers it and what it pays: `ideas/NAMING_SHEET.csv` (its "status 11-03" column says
-  which are built). Names are proposals until the owner renames them.
-
-**Combos and chains.**
-- Every monster remembers the tools that touched it, in order. A kill pays for the chain that led to it.
-- Order matters. The chain breaks after 3 seconds between moves. Guns count as a tool.
-- Every move in the series has one name (the gun, the shotgun, a saber cut, a Force grip, the shield's disc, a
-  whip yank, the hook's zip, a thrown thing, a stun grenade, a holster draw, a lean...). A named combo is a
-  pattern of those moves, from a data table: Lion Tamer (whip, then shield bash), Clay Pigeon (Force push,
-  then gun), F.E.A.R. Effect (the owner's: a gun-butt shove, then a shotgun kill in the slow beat that follows; every shotgun hit in that beat bleeds twice, and the kill pays the combo), and well over two
-  hundred more. One named row per kill, the best-paying match.
-- An unnamed chain still pays: 2, 3, 4, 5 or 6 actions pay 0.2, 0.45, 0.75, 1.0 or 1.2 of the base; a chain
-  that mixes more than two mods pays a little more; the whole chain inside 2 seconds pays x1.25.
-- A pattern step can ask how it landed (in your own slow motion, in the air, point-blank, a headshot) and what
-  it landed on (a champion, a legendary, a thrall, the miniboss).
-
-**Slow motion.**
-- Stretched Second: a kill while RSQ SlowMo has the world slowed pays half of its style, daring and melee
-  bonuses again (Slow Motion Style). A slow motion you started yourself pays the full share; an automatic one
-  (the miniboss window, a Gun Bonsai VR pulse) half; Score's own pulses nothing. A plain kill in slow motion
-  pays nothing more. At 10 % speed or slower the share is x1.5.
-- Big moments (Fatality, Perfect Riposte, Swan Song, a three-step named combo, five actions in one chain, four
-  mods in one chain, and more) ask RSQ SlowMo for about a second of slow motion. At most one every 6 seconds.
-- Hit-Stop on Big Kills (option): a big kill stops the world for a beat before the slow motion follows.
-
-**The target and the reward.**
-- Each map gets a target from a census of its monsters. Every time you cross a multiple of it you get a
-  reward: by default an extra life. With a life in hand you are caught at 1 HP instead of dying, with a sound
-  and a short warm flash.
-- Other reward modes: ammo regeneration (a share of whatever ammo you carry), alternating with a life, or
-  nothing at all.
-
-**The HUD.**
-- The word "Score:", the number and a bar, with life pips above it and the bonuses listing under it as they
-  land, each in its family's colour. Small, Standard or Large; four places.
-- The Living Label: "Score:" slowly breathes and changes colour, warms toward gold before a reward and goes
-  white after a big combo.
-- Score on the Wrist (option, VR): the running total in small gold digits just above your off-hand controller.
-
-## How to play
-
-Nothing to bind: play. The score is at the top right; glance at it between fights. A few bonuses come from VR
-moves:
-
-- **No-Look:** shoot something 60 degrees or more away from where your head faces.
-- **Blind-fire:** hold the gun round a corner and hit something your eyes cannot see.
-- **Off-hand:** kill with the off hand's trigger alone. **Two Guns:** a kill from each hand's trigger within
-  a second of each other.
-- **Point-Blank:** kill from right up close. **Air:** kill while you are off the ground.
-- **Chains:** mix your tools on one monster inside 3 seconds and finish it. Whip it, bash it with the shield,
-  shoot it; Force-push it and shoot it in the air; shove it with the gun butt, cross your wrists for slow
-  motion and finish it with the shotgun. The row under the score names what you did.
-- **Counterplay:** block or parry a monster's attack with the shield or the saber, then kill it. Send a shot
-  back into the one that fired it.
-- **The target:** keep the bar filling. When it fills you get a life (a pip above the bar). Get killed with
-  one in hand and you are caught at 1 HP.
-
-## Settings
-
-Options -> Radiant Silvergun Options -> **RSQ Score**.
-
-| Menu row | Default | What it does |
-|---|---|---|
-| Show Score | Yes | The score display on or off. |
-| Size | Standard | Small / Standard / Large. Sets the Size number. |
-| Place | Top Right | Top Right / Top Left / Top Centre / Bottom Right. Sets Across and Down. |
-| Living Label | On | The word "Score:" slowly breathes and changes colour; warms toward gold before a reward. |
-| Target Reward | Life Every Time | What crossing the target pays: Ammo, Then Life / Life, Then Ammo / Ammo Only / Life Every Time / Nothing. |
-| New Map Keeps | Nothing | What survives a map change: Nothing / Total / Total and Rewards / Everything. |
-| Slow Motion Moments | On | A big moment asks RSQ SlowMo for about a second of slow motion. Nothing without SlowMo. |
-| Hit-Stop on Big Kills | Off | A big kill (a big moment, or a monster of 400 health or more) stops the world for a beat through RSQ SlowMo, then the slow motion follows. At most once a second, never while the world is already slowed. Nothing without SlowMo. |
-| Score on the Wrist | Off | The running score in small gold digits just above your off-hand controller (VR only). Hidden with Show Score -> No. |
-| Bar Flash | On | The score line and bar flash when points land. |
-| Screen Flash | On | The whole view flashes a colour on a reward and when a life is spent. |
-
-**Tuning and Debug** (submenu):
-
-| Menu row | Default | What it does |
-|---|---|---|
-| Size | 100 | Display size, by number. |
-| Across | 85 | Display place across the screen, by number. |
-| Down | 10 | Display place down the screen, by number. |
-| Bonus Display Time | 35 | How long a bonus row stays, in tics. |
-| Raised Monster Pay | 100 | % of base paid by a monster that was not on the map at the start (raised, spawned). 100 = full. |
-| Kill Bonus Cap | 300 | Bonuses on one kill add at most this % of its base (0 = no cap). |
-| Melee Bonus Cap | 0 | Cap on the Melee family, % (0 = off). |
-| Counterplay Bonus Cap | 0 | Cap on the Counterplay family, % (0 = off). |
-| Slow Motion Cooldown | 6 | Seconds between slow-motion moments. |
-| Slow Motion Style | 50 | A kill in slow motion pays this % of its style, daring and melee bonuses again (Stretched Second). |
-| Reset All | | Every RSQ Score setting back to its default. |
-
-Not on the menu (console or ini): the target's numbers (`rs_score_monstermin`, `rs_score_monstermax`,
-`rs_score_monsterscalar`, `rs_score_interval`), the ammo regen share (`rs_score_regenpercent`), and the
-Efficiency, Style and Daring caps (`rs_score_cap_efficiency`, `rs_score_cap_style`, `rs_score_cap_daring`).
-
-## Works with
-
-Score is a shared service: the series' mods name their moves to it, send it awards, and read its kills.
-
-- **RSQ SlowMo:** a big moment slows the world for about a second; a kill while the world is slowed pays
-  Stretched Second; Hit-Stop on Big Kills. Without SlowMo, nothing slows and Stretched Second never pays.
-- **RSQ Melee:** the fists' rows (Shoryuken, Liver Shot, Glass Jaw, Dempsey Roll, K.O....), the Headlock
-  combos, F.E.A.R. Effect.
-- **RSQ Saber:** the stab, the lunge, the impale, the staff spin, the Force rows, Deflect and Remote Down from
-  the training remote, Twin Blades, Pulled In.
-- **RSQ ShieldSaw:** Shield Work, Hurled, Boomerang, Ground Down, Riposte, Perfect Riposte, Shield Wall, Clean
-  Sweep, Bank Shot, Buzzsaw, Wall Splat.
-- **RSQ Grapple:** Reeled In, Ping-Pong, Bowling, Hard Landing, Fly Ball, Swinging, Dismount, Zip Kick, and
-  the Indiana Jones award for a roped crossing over a gap.
-- **RSQ Whip:** Lashed, Wrecking Ball, Tarzan, Stun Lock, Snap Kill, Chain Swing.
-- **RSQ Grenade:** Cooked, Airburst, Tagged, Cluster Bomb, Teeth, Trap Shot, Contact and the rest.
-- **RSQ DistanceGrab:** Thrown, Powder Keg, Air Catch, Body Blow, Hand-Me-Down, Full Hands, Clubbed.
-- **RSQ TacticalRig:** Quick Draw, Hot Swap, Iaido, Armory.
-- **RSQ Miniboss:** Thrall Slow Kill, Miniboss and Greedy on their own rows, paid as a share of the kill's base;
-  Chain Gang, Rage Quit, Riot Control, Severed.
-- **Champions** and **LegenDoom Lite** (not RSQ): champion colours, mutations and legendaries pay their own
-  Daring rows (a Gold Champion, a Legendary, Legend Denied, a Legendary Champion...).
-- **BD22 VR's guns:** Hold Streak, Double Tap, Hand Cannon, Headshot, Direct Hit, Danger Close, Rip and Tear
-  and more.
-- **RSQ Accessibility:** Text Size grows the display; Photosensitive Mode holds the label still and dims the
-  flashes; a colour-blind setting recolours the families and stops the label's colour cycle. Inert without it.
-- **RSQ Gun Bonsai VR:** its XP Source: Style turns a kill's bonus points into weapon XP, split along the combo
-  chain; its Lucky Kill reads which kills were big moments; with its ShieldSaw Gauge on, the score display
-  moves down to make room. Gun Bonsai VR has no Score nodes of its own.
-- **Gun Bonsai's own score-to-XP:** if you turn it on, set Gun Bonsai's damage-to-XP to 0, or every kill pays
-  XP twice.
+Pk3: `pk3/RSQ_Score.pk3`.
 
 ## Load order
 
-With the other RSQ pk3s, after Brutal Doom, the monster packs, Champions, LegenDoom and Gun Bonsai. Order
-among the RSQ pk3s does not matter: everything it talks to is found by name at run time.
+doom2.wad -> brutal22test6.pk3 -> the BD22 VR Reloaded pk3s (the RS_Brutal22WeaponsQ repo's numbered `pk3/`
+folder: the voxel pack, BD22_VR-Reloaded 2.0.3o, the XMVE monster expansions) -> the RSQ pk3s -> **RSQ_Score.pk3**
 
-## Known limits
+- Works on plain Doom 2 without Brutal Doom (run on freedoom2 and doom2.wad on the rig). No monster class is
+  named. Brutal Doom's gore helpers do not count as kills.
+- Needs no other RSQ pk3 to work alone. The series' bonuses (saber, shield, grab, hook, rig, slow motion)
+  only fire when their mod is loaded; slow-motion pulses need RSQ_SlowMo.
 
-- Bowling's second pin is not reachable yet: a thrown body stops at the first thing it hits.
-- The combo names and pays are proposals; the owner renames them after 1.0.
+## Setup
+
+- No buttons to bind.
+- Menu: Options -> Radiant Silvergun Options -> **RSQ Score**. Numbers and Reset All are on its **Tuning
+  and Debug** page.
+
+## What to do in VR
+
+Nothing special: play. A few bonuses come from VR moves:
+
+- **No-Look**: shoot something 60 degrees or more away from where your head faces.
+- **Blind-fire**: hold the gun round a corner and hit something your eyes cannot see.
+- **Off-hand**: kill with the off hand's trigger alone.
+- **Two Guns**: kills from each hand's trigger within a second of each other.
+- **Punch combos** (with RSQ Melee's boxing gloves): left-right-left punches, a punch mid-attack.
+
+## Features
+
+Front page (RSQ Score):
+
+| Row | Default | What it does |
+|---|---|---|
+| Show Score | Yes | The score display on or off. |
+| Size | Standard | Small / Standard / Large. |
+| Place | Top Right | Top Right / Top Left / Top Centre / Bottom Right. |
+| Living Label | On | The word "Score:" slowly breathes and changes colour; warms toward gold before a reward. |
+| Target Reward | Life Every Time | What crossing the target pays: Ammo, Then Life / Life, Then Ammo / Ammo Only / Life Every Time / Nothing. |
+| New Map Keeps | Nothing | What survives a map change: Nothing / Total / Total and Rewards / Everything. |
+| Slow Motion Moments | On | A big moment asks RSQ_SlowMo for about a second of slow motion (needs RSQ_SlowMo). |
+| Hit-Stop on Big Kills | Option (off) | A big kill (a big moment, or a monster of 400 health or more) stops the world for a beat: RSQ_SlowMo eases down to 5 % speed, holds about 4 tics, and eases back. At most once a second, never while the world is already slowed. With Slow Motion Moments on and a big moment, the slow motion follows the stop. Needs RSQ_SlowMo; nothing without it. |
+| Score on the Wrist | Option (off) | The running score in small gold digits just above your off-hand controller (VR only). Hidden with Show Score -> No. |
+| Bar Flash | On | The score line and bar flash when points land. |
+| Screen Flash | On | The whole view flashes a colour on a reward and when a life is spent. |
+
+Tuning and Debug page:
+
+| Row | Default | What it does |
+|---|---|---|
+| Size, Across, Down | 100, 85, 10 | Display size and place, by number. |
+| Bonus Display Time | 35 tics | How long a bonus row stays. |
+| Raised Monster Pay | 100 % | Base paid by a monster that was not on the map at the start (raised, spawned). 100 = full. |
+| Kill Bonus Cap | 300 | Bonuses on one kill add at most 3x its base (0 = no cap). |
+| Melee Bonus Cap | 0 | Cap on the melee family (0 = off). |
+| Counterplay Bonus Cap | 0 | Cap on the Counterplay family (0 = off). |
+| Slow Motion Cooldown | 6 s | Time between slow-motion moments. |
+| Slow Motion Style | 50 % | A kill in slow motion pays this share of its style, daring and melee bonuses again (Bullet Time). A plain kill in slow motion pays nothing more. |
+| Reset All | row | Includes Hit-Stop on Big Kills and Score on the Wrist. |
+
+Bonus families (colours in the list): **Efficiency**, **Style**, **Daring**, the Quest series' **Melee**
+(steel blue) and **Counterplay** (violet, 11-03: a block, a parry or a shot sent back turned into a kill). The full
+bonus list with what each pays is in the appendix.
+
+Not on the menu: the target's numbers (minimum, maximum, interval), ammo regen share, and the efficiency /
+style / daring caps.
+
+## Test it
+
+Load the order above plus RSQ_Score.pk3. Start MAP01.
+
+1. The word "Score:", a number and a bar show at the top right. "Score:" slowly breathes and shifts colour.
+2. Kill a zombieman: the number goes up by its health. Kill an imp: more.
+3. Kill several quickly: a Spree row appears under the score.
+4. Kill something while you are in the air (jump off a ledge): an Air row.
+5. Punch or kick something to death: Brawler (and with Brutal Doom's boots, Boot).
+6. Shoot something without looking at it (head turned well away): No-Look.
+7. Kill with only the off-hand gun: Off-hand.
+8. Keep killing until the bar fills: you get an extra life (a pip above the bar). Get killed: you are caught
+   at 1 HP with a sound and a short warm flash.
+9. Options -> Radiant Silvergun Options -> RSQ Score. Show Score -> No: the display goes. Back to Yes.
+10. Size and Place presets move and resize it.
+11. Screen Flash Off: no whole-view flash on a reward or a spent life.
+12. Change a map with New Map Keeps -> Total: the running total stays.
+13. Reset All (Tuning and Debug).
+
+New 2026-11-01 (rig-checked only, **not yet headset-confirmed**):
+
+13a. Score on the Wrist On: raise your off hand: gold digits of the score sit just above it, facing you, and
+     follow the hand. Off: gone. (Seen in a rig frame; the brightness in the lenses is not checked.)
+13b. Hit-Stop on Big Kills On, with RSQ_SlowMo: kill a baron or bigger: the world almost stops for a moment and
+     comes back. Without RSQ_SlowMo: nothing.
+13c. With RSQ_Miniboss: a thrall killed in the slow window, the miniboss and a greedy kill each show their own row
+     ("Thrall Slow Kill", "Miniboss", "Greedy", Daring colour) instead of adding to Base.
+13d. With RSQ_Melee and RSQ_SlowMo: a shotgun kill in the slow-motion window after a gun-butt shove shows "F.E.A.R. Effect"
+     (Style colour).
+
+With other mods (each needs the named pk3; none of these were headset-run):
+
+14. RSQ_SlowMo: a big moment (a Fatality, Swan Song, a 3-step combo...) slows the world for about a second.
+    Another one inside 6 s does not. A kill while slowed adds a Bullet Time row.
+15. RSQ_DistanceGrab: kill with a thrown barrel or clip: Thrown, Powder Keg.
+16. RSQ_ShieldSaw: a thrown disc kill: Hurled; a kill after a block: Riposte.
+17. RSQ_Saber: a saber kill after a Force pull: Pulled In.
+18. RSQ_Grapple: a kill while swinging on a rope: Swinging; a long roped crossing over a pit: Indiana Jones.
+19. RSQ_TacticalRig: a kill right after drawing from a holster: Quick Draw.
+20. Two different tools on one monster within 3 s (gun then saber): a combo row (2-Tool Combo, or a named
+    one like Lion Tamer).
+21. RSQ_Accessibility: Text Size 2 grows the display; Photosensitive Mode holds the label still and dims
+    the flashes; a colour-blind setting stops the label's colour cycle.
+22. Gun Bonsai + RSQ_GunBonsaiVR with ShieldSaw Gauge on: the score display moves down to make room.
+
+## Works with
+
+Score is a shared service: other mods send it awards and read its kills.
+
+- **Sends to Score**: RSQ_Grapple (Indiana Jones award), RSQ_Saber (Deflect, Remote Down awards),
+  RSQ_Melee (its Headlock counts in the combo chain as "grab.hold", so the Headlock combo fires; F.E.A.R. Effect, a
+  Style row: a shotgun kill in the slow-motion window after a gun-butt shove; both moved there from RSQ_DistanceGrab
+  and RSQ_Gestures on 2026-11-01), RSQ_Miniboss (Thrall Slow Kill, Miniboss, Greedy awards, each on its own Daring
+  row).
+- **Reads Score**: RSQ_GunBonsaiVR (XP Source: Style turns a kill's bonus points into weapon XP, split along
+  the combo chain).
+- **Score asks**, each by name and only when loaded: RSQ_Grapple, RSQ_ShieldSaw, RSQ_Saber,
+  RSQ_DistanceGrab (throws), RSQ_TacticalRig (draws), RSQ_SlowMo (is the world slowed?), RSQ_GunBonsaiVR
+  (the ShieldSaw gauge's room), RSQ_Accessibility (Text Size, Photosensitive Mode, Colour Blind Mode).
+- **Score sends** RSQ_SlowMo a slow-motion pulse on a big moment, and (Hit-Stop on Big Kills) a short deep one on a big kill.
+- Champions and LegenDoom Lite: champion colours, mutations and legendaries pay their own Daring rows.
+- Gun Bonsai's own score-to-XP: if you turn it on, set Gun Bonsai's damage-to-XP to 0, or every kill pays
+  XP twice.
+
+## The 11-03 build: the vocabulary, the chain rule, the rows
+
+Built from `Score/ideas/` (the naming sheet, COMBOS_MASTER.md) on 2026-11-03; rig only, not headset-confirmed. The
+sheet's "status 11-03" column says what each of its 1,170 rows became. `SCORE_SWARM_HANDOFF.md` is the state.
+
+**One tool vocabulary** (`zscript/rsscore/tools.zs`). Every move in the series is one id, `mod.move`: `glove.upper`,
+`shove`, `saber.cut`, `force.grip`, `shield.disc`, `whip.yank`, `hook.zip`, `grab.throw`, `grenade.stun`,
+`gun.shotgun`, `rig.draw`, `lean`... The ids the mods send today are mapped onto it there (no mod changed its
+strings). **Tags** (an upgrade hook, how it landed: `hit.heavy`, `crit`, `cleave.saw`, `zip.kick`...) ride on the
+blow's run and are never tools. `Classify` reads every blow once; the kill reads its own tool back out of the ledger
+(`melee.zs KindOf`), so the moves that used to read as punches or boots -- the gun-butt shove, Melee's pound and
+clear-out, a thrown body or gun, the Chokehold, a grenade, the hook's zip and claw, a hooked barrel, the Whip's crack
+-- are their own kinds. **The contract:** a mod names its move (`RS_ScoreService "touch"`) BEFORE the blow lands,
+since a kill is scored inside the blow.
+
+**The chain** (`combo.zs`): each run in the ledger carries condition bits (`@slow` the player's own slow motion,
+`+air`, `+pb`, `+head`) and tags; a pattern step is `id[@slow][+cond]`, a pattern may end `| filter` on the victim
+(`champ`, `armoured`, `legend`, `legend.rising`, `legend.dormant`, `thrall`, `miniboss`, a colour). One named row per
+kill, the best-paying match; it replaces the generic pay for the actions it names. **The generic rule:** 2/3/4/5/6
+actions 0.2 / 0.45 / 0.75 / 1.0 / 1.2, +0.1 a mod past two (to 0.3), x1.25 when the whole chain is inside 2 s. A table
+combo under a row that is a combo already (Reeled In, Ping-Pong, Fly Ball, Bowling, Pulled In, Riposte) fires when it
+pays more, for the difference. Big moment: a named row of 3 steps, 5 actions, or 4 mods.
+
+**The combos** (`combos.zs`, 215, plus the 14 in `combo.zs`): every pairing of the series' mods has a row; the
+"X into Y" filler is left to the generic rule. Names are proposals.
+
+**The rows** (`rows.zs`, 84, each with its sheet id in its comment): the fists (Shoryuken, Liver Shot, Glass Jaw,
+Textbook, Triple Threat, Dempsey Roll, Air Combo, Bouncer, Release, Toss, Piledriver, Cut Loose, Butt Stroke, K.O.,
+Shatter, Live Wire, Blast Radius); shared melee (Weapon Master, Giant Slayer, Death from Above, Juggler,
+Misdirection, Multi-Kill); the saber (Lunge, Impaled, Back Off, Double Throw); the ShieldSaw (Shield Dash, Bit Off
+More, Homecoming, Eyes in the Back, Hold the Line, Cleaver); the whip (Wrecking Ball, Tarzan, Stun Lock, Heavy Haul,
+Snap Kill); the hook (Hooked Keg, Boarding Party, Zip Kick, Scorpion); Distance Grab and the rig (Heavy Throw,
+Throwaway, Iaido, Pin Pulled, Armory); the grenade (Cooked, Airburst, Tagged, Hold My Beer, Cluster Bomb, Ice
+Breaker, Civil War, Blindside, Barbecue); BD22 VR's guns (Hold Streak, Double Tap, Hand Cannon, Headshot, Sights Up
+/ Glass, Direct Hit, Danger Close, Unmade, Rip and Tear, Tomahawk); Champions and LegenDoom (Immovable Object,
+Pop!, Pinata, Champion Streak, Too Close for Comfort, Glass Cannon, Fool's Gold, Heartbreaker, Champion Fatality,
+Rainbow, One-Tap Legend, Strike While It Rises, Legend Slayer); Miniboss (Chain Gang, Rage Quit, Riot Control,
+Severed; its flat awards now pay a share of the kill's base: 0.3 / 1.0 / 1.5); slow motion (Last Grain). Reworked in
+place: Counter pays every melee kind; Choked the Chokehold; Ground Pound Melee's pound; Return to Sender by the hand
+that sent it back (0.6 a punch, 0.5 the Guard, 0.55 a Return Crack); Bowling any thrown body; Lashed light / heavy;
+Swinging splits off Hanging Shot; Dismount needs speed; Bullet Time pays the player's own slow motion in full, an
+automatic one half, Score's own pulses nothing, x1.5 at 10 % or slower, and never a named row that carries `@slow`;
+Scrapping is Coach Gun (BD22's point-blank SSG blast); Brawler pays the Chain_saw and the BrutalAxe; Switcharoo hears
+the fire off the blow; Quick Draw and Hot Swap judge the hand that fired, and only a shot; F.E.A.R. Effect is the
+combo `shove > gun.shotgun@slow` (Melee's flat award is taken and not paid).
+
+**The second round (11-03 evening):** the saber names its stab (Run Through and the stab combos; its spin, lightning
+and slam are ready on Score's side and wait for three touches in the saber), the ShieldSaw answers `grind.held`
+(Buzzsaw) and names its wall slam (Wall Splat), Distance Grab names a held thing's swing (Clubbed), the Grenade answers
+teeth / skeet / impact (Teeth, Trap Shot, Contact), the Whip answers `swings` (Chain Swing). The slow-motion row is
+"Stretched Second". **A fifth family, Counterplay** (violet, letter C, `rs_score_cap_counter`): defence turned into a
+kill -- Riposte, Perfect Riposte, Return to Sender, Poetic Justice, Rally, Shield Wall, Hold the Line, Back Off,
+Misdirection, Eyes in the Back.
+
+**The mods' answers added for it:** SlowMo `trigger.auto` / `trigger.score`; Melee `shove` (named before its blow),
+`returned.by`, the `wall` tag; the Whip `RSQWP_Service` (`Whip/zscript/rsqwp/service.zs`); Grapple `rope.speed` /
+`released.speed` (and the Zip Kick named before its blow); the Rig's draws per hand; the Grenade `turned.by`.
+
+**Test it headless:** `powershell -ExecutionPolicy Bypass -File Score\tools\rigtest\run.ps1 -SlowMo -Extra
+<pk3,pk3>` packs the probe (`tools/rigtest/probe`, test only), runs doom2 + RSQ_Score (+ RSQ_SlowMo and the extra
+pk3s) on the hidden desktop engine, and writes `tools/rigtest/last_run.txt`: 23 scripted cases, each one's EXPECT
+line right above Score's own debug line for that kill. Add a case for any new row before claiming it.
+
+## Known limits / open
+
+- 11-03: the 13 open stale items and the rows not built are listed in `SCORE_SWARM_HANDOFF.md`; Headshot's damage
+  type names are unmeasured; the owner's full load order was not run (the BD22 pk3s were not on the build machine).
+
+- Picks 57 and 58 had only their names on the picks page; neither is described in the Quest teardown. Built as
+  read: 57 a hit-stop through RSQ_SlowMo's rsm_pulse (Score cannot freeze the world itself without SlowMo); 58 the
+  score as digits by the off-hand wrist.
+- Hit-stop: SlowMo eases every pulse in (rsm_ramp_in, 0.15 s) and out (0.4 s), so it is a sharp dip to 5 %
+  rather than a hard freeze: measured on the rig, 5 tics down, 6 tics at 5 %, 13 tics back up.
+- Score on the Wrist: drawn as billboard digits of Doom's own small font (the IWAD's STCFN glyphs), not a canvas
+  (a canvas draws black in VR on QZD 17.3). Seen on the rig's software renderer only; how bright it reads in the
+  headset is not checked. It follows the controller at 35 updates a second, so it can trail a fast hand.
+- Never headset-run: the combo break of 3 s, Reeled In and Ping-Pong windows, Indiana Jones thresholds,
+  the proposed combo names and pays, the living label's colours in the lenses.
+- Not reachable yet: Bowling's second pin (a thrown body stops at the first thing it hits).
 - The two fonts are not licensed for distribution: this version is the owner's, not for the public hub.
-
-## For other mods
-
-`RS_ScoreService`, found by name (`ServiceIterator.Find("RS_ScoreService")`). Nothing links.
-
-GetInt:
-- `touch` (string: the tool id; int: the player number; object: the monster): records that move on that
-  monster's chain. Send it BEFORE the blow lands: a kill is scored inside the blow.
-- `award` (string: the row's label; int: the points; object: the player): a flat award on a labelled row.
-  Returns the points paid.
-- `combo` (string: `"<name>|<pattern>"`; int: pay in permille), from `OnRegister`: adds a named combo.
-- `tool` (string: `"<id>|<groups,...>"`), from `OnRegister`: adds a tool id and the groups a pattern may name
-  it by.
-- `kill.serial` (int: player): the newest kill's serial. `kill.style` / `kill.base` (int: player; double:
-  serial): that kill's bonus points / base points. `kill.big` (object: the body): 1 if its kill was a big
-  moment.
-- `score`, `progress` (permille to the next reward), `lives`, `rewards` (object: the pawn), also through
-  `GetIntUI`, for a HUD that draws the score itself.
-
-GetString: `kill.chain` (int: player; double: serial): the chain, finishing blow last (`"gun>whip>shield.bash"`).
-GetObject: `kill.victim`.
-
-Linked: a bonus is a class (`RS_ScoreBonus`: `Family`, `DisplayName`, `Evaluate`, `Commit`, `AfterOthers`,
-`BigMoment`) registered from a `StaticEventHandler.OnRegister` with `RS_ScoreRegistry.RegisterBonus`;
-`RS_ScoreRegistry.RegisterCombo(name, pattern, mult)` and `RegisterTool(id, groups)` do what the service's
-`combo` and `tool` do. A monster-tier row subclasses `RS_ScoreTierRow`.
-
-Score asks, each by name and only when loaded: RSQ Grapple, RSQ ShieldSaw, RSQ Saber, RSQ DistanceGrab, RSQ
-TacticalRig, RSQ SlowMo, RSQ Whip, RSQ Melee, RSQ Grenade, RSQ Miniboss, RSQ Gun Bonsai VR (`RSQ_HudService`
-`shield.gauge.drop`) and RSQ Accessibility. It sends RSQ SlowMo `rsm_pulse` on a big moment and a big kill.
+- The pk3 in `pk3/` was built 2026-11-03.
 
 ## Credits
 
-The scoring design, the bonus taxonomy, the reward loop, the HUD layout and its graphics are **ijon's**, from
-*Dakka* (<https://github.com/0dot0repeating/dakka>), released under the WTFPL. This is a rebuild of those
-rules in ZScript, not a copy of the code. What came from there:
+From the old README:
 
-- The bonus taxonomy: the thirteen bonuses and the three families they sit in (Efficiency, Style, Daring),
-  and every number attached to them: the time windows, the thresholds, the multipliers.
-- The reward loop: a per-map target score derived from a monster census, crossed repeatedly, alternating
-  between ammo regeneration and an extra life.
-- The HUD layout: the score line above a 120-pixel bar in a bracket, animated life pips above it, the
-  breakdown stacking downward in family colours.
-- The score HUD graphics: `SCOREBG1-4`, `SCOREBR1-4`, `SCOREBKT`, `HUD_LIF1-4`. ijon's own work, reused with
-  credit.
-- The two fonts, carried as `RSSCFON` and `RSSCFN2`. In *Dakka*'s credits the clean BIGFONT used for the score
-  line is by **Blue Shadow** and the breakdown font is by **Jimmy**. They come with *Dakka*, a public
-  repository, and are carried here with that credit.
-- The colour definitions in `TEXTCOLO.txt`, renamed `RSScore_*` so that loading *Dakka* alongside this pack
-  cannot have one definition win over the other.
+> The scoring design, the bonus taxonomy, the reward loop, the HUD layout and its
+> graphics are **ijon's**, from *Dakka* (<https://github.com/0dot0repeating/dakka>),
+> released under the WTFPL. This is a rebuild of those rules in ZScript, not a copy of
+> the code. See [CREDITS.md](CREDITS.md) for the full breakdown, including which
+> assets are **not** ours to redistribute.
 
-Not carried across: *Dakka*'s reward sounds (People Can Fly, *Painkiller*) and its revival fire-and-explosion
-actors. The extra-life mechanic is implemented; the spectacle is not.
+`CREDITS.md`, unchanged:
 
-Ours, and not ijon's: the bonus registry (bonuses as classes contributed by whichever mod owns the fact they
-measure); the anti-farming rule (`rs_score_farmpercent`; *Dakka* paid full points for a resurrected monster);
-the multiplier caps (`rs_score_cap_*`); generalised ammo regeneration (a percentage of whatever ammo the player
-carries, so the amounts are not *Dakka*'s and cannot be); measuring gravity from the actor so the Air bonus
-is right under a jump modifier, in low gravity and in water.
+> # RS_Score — credits
+>
+> **The scoring design is ijon's.** RS_Score is a ZScript rebuild of the score
+> system from *Dakka* / *Vanilla VR Dakka Points*, which is released under the
+> WTFPL. What came from there:
+>
+> - The bonus taxonomy — the thirteen bonuses and the three families they sit in
+>   (Efficiency, Style, Daring), and every number attached to them: the time
+>   windows, the thresholds, the multipliers.
+> - The reward loop — a per-map target score derived from a monster census, crossed
+>   repeatedly, alternating between ammo regeneration and an extra life.
+> - The HUD layout — the score line above a 120-pixel bar in a bracket, animated
+>   life pips above it, the breakdown stacking downward in family colours.
+> - The score HUD graphics: `SCOREBG1-4`, `SCOREBR1-4`, `SCOREBKT`, `HUD_LIF1-4`.
+>   ijon's own work, reused with credit.
+> - The two fonts, carried as `RSSCFON` and `RSSCFN2`. In *Dakka*'s credits the
+>   clean BIGFONT used for the score line is by **Blue Shadow** and the breakdown
+>   font is by **Jimmy**. They come with *Dakka*, a public repository, and are
+>   carried here with that credit (owner, 10-27: the score stays public).
+> - The colour definitions in `TEXTCOLO.txt`, renamed `RSScore_*` so that loading
+>   *Dakka* alongside this pack cannot have one definition win over the other.
+>
+> **Not carried across:** *Dakka*'s reward sounds (People Can Fly, *Painkiller*) and
+> its revival fire-and-explosion actors. The extra-life mechanic is implemented; the
+> spectacle is not.
+>
+> ## What is ours, and is not ijon's
+>
+> - The bonus registry — bonuses as classes contributed by whichever mod owns the
+>   fact they measure, rather than a fixed list in one file.
+> - The anti-farming rule (`rs_score_farmpercent`). *Dakka* paid full points for a
+>   resurrected monster, which made an Arch-vile an endless score fountain.
+> - The multiplier caps (`rs_score_cap_*`), all defaulting to off so that out of the
+>   box the arithmetic is *Dakka*'s exactly.
+> - Generalised ammo regeneration. *Dakka* regenerated a hardcoded list of its own
+>   eight ammo classes at fixed rates; this gives back a percentage of whatever ammo
+>   the player actually carries, so it works for any weapon set. The amounts are
+>   therefore **not** *Dakka*'s and cannot be.
+> - Measuring gravity from the actor rather than assuming it, so the Air bonus is
+>   right under a jump modifier, in low gravity and in water.
+>
+> ## The Quest series version
+>
+> The Brutal Doom kill rule, the Melee family, the physical bonuses, the suite bonuses, the
+> slow-motion moments, the menu and the light revival cue are the Quest series' (2026-10-27), built on
+> the owner's RS_Score (presidentkoopa), which is built on ijon's design. **Publishing:** this version is delivered to
+> the owner, not to the public series hub, because the fonts above are not licensed for distribution;
+> sharing it is the owner's decision.
 
-The Quest series version: the Brutal Doom kill rule, the Melee and Counterplay families, the physical bonuses,
-the suite bonuses, the combo system, the slow-motion moments, the menu and the light revival cue are the Quest
-series', built on the owner's RS_Score (presidentkoopa), which is built on ijon's design. Publishing: this
-version is delivered to the owner, not to the public series hub, because the fonts above are not licensed for
-distribution; sharing it is the owner's decision. `CREDITS.md` holds the same credits.
+## Appendix: the full design notes (the earlier README, unchanged)
+
+This copy is the owner's RS_Score brought to **stock QuestZDoom 17.3** for the Radiant Silvergun Quest
+series: Brutal Doom compatible, a fourth bonus family for melee, a menu, and a light revival cue.
+What changed is listed under *Quest version* at the end; everything above it is the original.
+
+A scoring system for GZDoom: points for a kill, bonuses for how you got it, and a
+per-map target that pays out when you cross it.
+
+Written for **UZDXREMA**, a private GZDoom fork with a full OpenXR VR layer. It has
+no dependency on the fork's VR features and should load on stock GZDoom 4.10+, but
+that is untested.
+
+### What it does
+
+Every kill is worth the victim's spawn health. On top of that, thirteen bonuses each
+add a multiplier for *how* the kill happened, grouped into three families that the
+HUD colours differently:
+
+**Efficiency** — Spree (kills in quick succession), Untouchable (kills since you
+last took damage), Infighter (a monster killed another monster).
+
+**Style** — Switcharoo (you varied weapon or trigger), Air (killed while airborne,
+scaled by how high the jump reaches), Curveball (the victim never had line of sight
+to you), Scrapping (a signature weapon), Darwin (the monster killed itself),
+Telefrag.
+
+**Daring** — Brawler (melee), Redline (*your* health at 25 or below), Swan Song (the
+kill landed after you were already dead), Point-Blank (within 64 map units,
+measured box edge to box edge).
+
+The multipliers are summed and applied to the base once, so they stack additively
+rather than compounding.
+
+Each map gets a target score computed from a census of every monster on it. Crossing
+a multiple of that target pays a reward — by default an extra life, which holds you
+in buddha and catches you at 1 HP.
+
+### Adding your own bonus
+
+A bonus ships from the mod that owns the fact it measures. RS_Score never needs to
+know your mod exists:
+
+```
+class MyMod_Parried : RS_ScoreBonus
+{
+    override int Family() const { return FAM_EFFICIENCY; }
+    override String DisplayName() const { return "Parried"; }
+
+    override double Evaluate(RS_ScoreEvent ev)
+    {
+        // ev carries the victim, the killer, the inflictor, the damage type,
+        // the killer's health at the kill, box-edge distance, line of sight,
+        // and the tracker holding that player's counters.
+        return MyCondition(ev) ? 0.25 : 0.0;
+    }
+
+    // Anything worth remembering for next time. Called for every scored kill,
+    // not only the ones this bonus paid on.
+    override void Commit(RS_ScoreEvent ev) { }
+}
+
+class MyMod_Handler : StaticEventHandler
+{
+    override void OnRegister()
+    {
+        RS_ScoreRegistry.RegisterBonus("MyMod_Parried");
+    }
+}
+```
+
+Bonuses are sorted by class name before use, so every machine in a network game sums
+them in the same order.
+
+### Switcharoo
+
+Inert until a weapon says it fired. Call it from the weapon's own fire state, with a
+slot from 0–8 and a fire mode from 0–2:
+
+```
+RS_ScoreHandler.Switcharoo(self, 2, 0);   // slot 2, primary
+```
+
+### Settings
+
+`rs_score_*`. The ones worth knowing:
+
+| cvar | default | what it does |
+| --- | --- | --- |
+| `rs_score_rewardtypes` | 3 | 0 regen then life, alternating · 1 life first · 2 regen only · 3 a life every time · 4 no rewards |
+| `rs_score_startmode` | 0 | what survives a map change: 0 nothing · 1 the running total · 2 total and rewards · 3 everything |
+| `rs_score_interval` | 5000 | rewards land on multiples of this |
+| `rs_score_farmpercent` | 100 | base paid by a monster that was not on the map at load. 100 is inert |
+| `rs_score_cap_*` | 0 | per-family and total multiplier ceilings. 0 is off |
+| `rs_score_scale` / `_x` / `_y` | 100 / 85 / 10 | HUD size and position, per player |
+
+### Building
+
+```
+powershell -File build.ps1
+```
+
+Regenerates `RS_Score.pk3` from the sources, verifies every expected lump made it in,
+then compile-checks the result. `-NoCompileCheck` skips the last step.
+
+### Credit
+
+The scoring design, the bonus taxonomy, the reward loop, the HUD layout and its
+graphics are **ijon's**, from *Dakka* (<https://github.com/0dot0repeating/dakka>),
+released under the WTFPL. This is a rebuild of those rules in ZScript, not a copy of
+the code. See [CREDITS.md](CREDITS.md) for the full breakdown, including which
+assets are **not** ours to redistribute.
+
+### Quest version
+
+Built and run on stock QuestZDoom 17.3 (`build.sh`), with brutal22test6 + BD_VoxelPack + BD22Q.
+
+- **Only real kills score.** A kill is a monster the level counts (+COUNTKILL), plus Lost Souls.
+  Brutal Doom spawns helper actors flagged as monsters that "die" as effects play out: one
+  Brutal Doom imp (80 health) scored **1305** because a blood smear (BootSmearerRed, 1000 health)
+  died too. Now **80**, the same as the engine's own kill count. The census uses the same rule.
+- **A fourth family, Melee** (steel blue), for the series' VR melee. From damage types and
+  inflictors measured in Brutal Doom's actors, and the ShieldSaw's service, with no links:
+
+  | Bonus | Pays | For |
+  |---|---|---|
+  | Fatality | 0.5 | Brutal Doom's execution landed the kill |
+  | Cleaved | 0.3 | a melee kill that took the body apart (its extreme death) |
+  | Hurled | 0.3, +0.15 per earlier kill by the same throw (to 0.75) | the ShieldSaw or the saber thrown |
+  | Boomerang | 0.5 | a throw that already killed on its way out kills again on its way home |
+  | Ground Down | 0.3 | the thrown disc stuck in a monster too tough to cut through and ground it to death |
+  | Shield Work | 0.3 bash, 0.2 grind | the shield itself in the hand |
+  | Riposte | 0.4 | killed within 3 s of the shield blocking that monster's attack |
+  | Perfect Riposte | 0.7 (replaces Riposte) | the same after a PERFECT block (the plate met the attack) |
+  | Return to Sender | 0.4 | killed by a shot sent back: turned by the shield, the saber or the Force, or a returned bullet |
+  | Poetic Justice | 0.3 (on top) | ...and the shot killed the very monster that fired it |
+  | Heavy Swing | 0.15 blow 2, 0.3 blow 3 | BD22Q's VR swing stacks BD's attacks by swing power (2nd at 1.6, 3rd at 2.4); the 2nd or 3rd blow made the kill |
+  | Choked | 0.3 | the Force grip choked it to death |
+  | Slammed | 0.5 | a body flung from the Force grip died hitting something |
+  | Juggle | 0.3 | a melee or Force kill of a non-flyer in the air that your Force, a kick, a punch or a bash put there (top of a push, held in the grip) |
+  | Boot | 0.2 | Brutal Doom's boots: a kick, head kick or stomp |
+  | Combo | 0.1 per different melee move inside 4 s (to 0.4) | a jab, a saber cut, a Force kill, a kick, a saw throw... |
+
+  Tested on the rig: a disc throw through two imps paid Cleaved + Hurled 0.30, then 0.45; a
+  turned imp fireball paid Return to Sender; a kill after a shield block paid Riposte + Shield Work.
+  Second round (probe `mlprobe`, the owner's load order): Perfect Riposte 0.7 after a perfect block;
+  a fireball turned back into its shooter paid Return to Sender + Poetic Justice; the disc killed out,
+  then home (Boomerang 0.5, Hurled 0.45), and ground a BD imp (Ground Down); the saber thrown killed out,
+  then home (Boomerang, measured from its motion); BD22Q's axe stack killed on blow 2 (0.15) and 3
+  (0.3), not on blow 1; the Force choke, slam and a saber cut after (Combo 0.1); the saber's real Force
+  push lifted an imp 8 units and a cut at the top paid Juggle; a kick paid Boot.
+  Not measurable yet: a PULL does no damage and (on the rig) did not lift an imp, so "pulled, then cut on
+  arrival" needs the saber to report pulls; a saber block/parry riposte needs it to report blocks.
+  The melee family's big moments are listed in one place: `RS_Melee.BigMoment` (see *Slow motion*).
+  `rs_score_cap_melee` caps the family (0 off). The original thirteen are unchanged.
+- **Thrown things, the rig and VR feats** (`physical.zs`), in the three original families.
+  No hand pose is read anywhere (the pose exists on the local machine only): the facts are the
+  shot's own line, the head's facing (the pawn's angle and pitch, driven by the headset through
+  the replicated tic command), the fire buttons, Distance Grab's throw ledger
+  (`RSQDG_ThrowService`) and the Tactical Rig's last draw (`RSQTR_RigService`), both found by
+  name -- either mod absent, its bonuses simply never fire.
+
+  | Bonus | Family | Pays | For |
+  |---|---|---|---|
+  | Thrown | Style | 0.2, +0.03 per m/s of impact over 3 (to 0.5) | killed by something you threw with Distance Grab |
+  | Powder Keg | Style | 0.3, +0.2 per earlier kill by thrown blasts within 1 s (to 1.1) | killed by the blast of a barrel your throw set off, or one its blast set off |
+  | Air Catch | Daring | 1.0, +0.5 per extra catch (to 2.0) | the thrown thing was caught back out of the air and thrown again before it landed |
+  | Skeet | Style | 0.25 | the victim was 0.85 m+ off its floor (not a flyer, not on another body) |
+  | Quick Draw | Daring | 0.35 | killed with the gun you drew from a holster, within 42 tics of the draw |
+  | No-Look | Daring | 0.3 | the shot left 60 degrees or more from where your head faced |
+  | Blind-fire | Daring | 0.4 | your eye had no line to the victim and your hand did (direct hits; replaces No-Look) |
+  | Off-hand | Style | 0.2 | the off hand's trigger alone fired the killing shot |
+  | Full Hands | Style | 0.25 | a shot kill while a Distance Grab hand carries something |
+
+  Tested on rig B (QZD 17.3, the owner's load order + Gun Bonsai, `rs_score_debug 1`, a probe
+  map with a pillar): a barrel at 3.8 m/s paid Thrown 0.225, a clip at 14.4 m/s 0.5; one thrown
+  barrel into three imps paid Powder Keg 0.3 / 0.5 / 0.7 on one tic and 0.9 for a fourth imp
+  killed by a second barrel it set off, while a barrel the player SHOT paid nothing; a barrel
+  thrown up, caught mid-air and thrown again paid Air Catch 1.0 + Thrown; an imp falling from
+  120 units paid Skeet, a standing one did not; a shot 90 degrees off the head paid No-Look, a
+  straight one did not, a missile fired sideways paid it even after the head turned to follow;
+  behind the pillar a hitscan from 25 units beside the eye and a missile from there paid
+  Blind-fire, a visible imp did not, a missile from a gun pushed through the pillar did not;
+  BD22Q's off-hand rifle fired with `+oh_attack` paid Off-hand, the main rifle did not; a
+  shotgun drawn with the rig's own `rsqtr_draw` event (up 4 tics later) paid Quick Draw on the
+  kill 8 tics after the draw, not 160 tics later; a shot with a clip held paid Full Hands, with
+  the hand empty it did not.
+
+  **Big moments** (see *Slow motion*): Air Catch and Blind-fire always, Powder Keg from the third
+  kill of one blast.
+
+  **A missile's fire tic**: the head's facing and the buttons of the last 16 tics are kept on a
+  token (`RS_PhysicalNotes`, with the flags of the player's last blow, which tell a splash from a
+  direct hit). It is given at the player's first kill, so a missile kill before that reads "now".
+
+- **Gun Bonsai** (0.10.6 + RS_GunBonsai-Offhand-VR), measured on the same rig with two BD22Q
+  rifles: XP comes from score only when `bonsai_score_to_xp_factor` is above 0 (default **0**:
+  out of the box this pack's points give no XP at all). With score 1 and damage 0, an off-hand
+  kill paid 104 points and the off-hand rifle got 104 XP, the main-hand kill 90 and 90 -- the
+  addition routes each kill's score to the gun that made it. With **both** at 1 the guns got
+  114 / 100: damage XP and score XP together pay the kill twice (the base points ARE the
+  monster's health). **Set damage to 0 when score is on.** A Distance Grab throw's points went to
+  the main-hand rifle on the rig (Gun Bonsai's resolver scores the object to a hand; headless, both
+  hands sit at the pawn, so which hand wins in the headset is not measured).
+- **Options -> Score**: a menu (the original had none; a headset has no console), in BD22 VR
+  Weapons' style: one short page (Show Score, Size, Across, Down, Target Reward, New Map Keeps,
+  Slow Motion Moments) and a Tuning page (flashes, bonus time, raised-monster pay, the caps, the
+  slow-motion cooldown, Reset All).
+- **The revival**: Dakka's fire-and-explosion revival was never carried; a life spent is now a
+  sound and one short warm flash, no actors. *Flash the whole view on a reward or revival*
+  (`rs_score_screenflash`) turns every whole-view tint off.
+- ZScript header 4.14 (the engine's version), so no version warning.
+
+### The suite (10-27)
+
+The suite is loaded over **any** base game, so Score has to make sense over all of them.
+
+**What a kill is, and who made it** (tested on freedoom2 and the real doom2.wad with the suite, on
+brutal22test6 + BD_VoxelPack + BD22Q, and on a synthetic monster pack, `scratch/mpack`, that has
+the shapes gameplay mods use: a replacement without COUNTKILL, a monster that splits on death, a
+50,000-health gore helper flagged as a monster, a morph, a raise):
+
+- A replacement of a counted monster is a kill even if it dropped COUNTKILL. Brutal Doom's
+  WolfensteinSS is `EvilMarine` with no COUNTKILL: five killed paid nothing before, now they pay.
+  Helpers that replace nothing (BD's smears, `Dying_Headshot`, `DyingSergeant`; the mpack gore
+  helper) still pay nothing.
+- A monster killed in the tic it was born, by a monster, pays nothing: a Pain Elemental's Lost Soul
+  with no room is killed by the Elemental at once, and those paid every player Infighter (8 of 13
+  Lost Soul deaths in the vanilla sweep, 14 everyone-payments under BD). Now 0.
+- The killer is the killing blow's own damage source, not the victim's last target. A monster
+  chasing you that died in a crusher still had you as its target and was paid to you as your kill.
+- A morphed monster's death kills its original too; the pair pays once (was 63 + 11).
+- Sweep result, every kill scored exactly once: vanilla 110 counted kills -> 110 paid; BD 110
+  counted + 5 EvilMarine -> 115 paid; mpack 7 bodies -> 7 paid, the gore helper 0.
+
+**Suite bonuses**, each read from a fact the game already has, each silent when its mod is absent:
+
+| Bonus | Family | Pays | For |
+|---|---|---|---|
+| Pulled In | Melee | 0.3 | a melee kill within 2 s of the saber's Force pull (`UBQS_SaberService` "pulled") |
+| Twin Blades | Melee | 0.2 | a saber kill with a lit saber in each hand ("saber.lit") |
+| Rally | Melee | 0.2 per earlier, to 0.6 | sent-back shots killing one after another, each within 3 s |
+| Ring Out | Melee | 0.5 | a crusher, a pit or another monster killed it within 2 s of your Force, kick, punch or bash (you get the kill) |
+| Ground Pound | Melee | 0.3 (replaces Slammed) | the Force jump's landing (LandSlam) killed it |
+| Clean Sweep | Melee | 0.5 | the ShieldSaw thrown at 2+ locks killed the last of them, all dead |
+| Bank Shot | Melee | 0.4 | the ShieldSaw's Ricochet (a Gun Bonsai upgrade) rang a new lock at a wall and killed it |
+| Shield Wall | Melee | 0.25 | a kill while the shield in your hand blocked another monster inside the last second |
+| Counter | Melee | 0.3 | a punch killed it mid-attack (its Missile/Melee states, or it fired within half a second) |
+| Knockdown | Melee | 0.2 | a punch finished it while it reeled (its Pain state) |
+| Flurry | Melee | 0.15 per punch past 2, to 0.45 | a glove kill ending left-right-left punches, each within half a second |
+| Body Blow | Style | 0.3 | a corpse you threw with Distance Grab killed it |
+| Hand-Me-Down | Style | 0.3 | a weapon that fell out of a monster, thrown, killed it |
+| Hot Swap | Daring | 0.25 | a holster swap mid-fight: last kill with another gun at most 3 s before the draw, this kill at most 3 s after |
+| Bullet Time | Style | 50% of the kill's style/daring/melee bonuses | a kill while RSQ_SlowMo has the world slowed (not inside Score's own pulse); was a flat 0.15, see The arcade layer |
+| Two Guns | Style | 0.25 | a shot kill from one hand's trigger within a second of one from the other's |
+
+Also: **Brawler** now pays the boxing gloves as fists (0.5) and follows replacements, so Brutal
+Doom's fists (`Melee_Attacks`, which replaces Fist) pay it; it reads the striking weapon first, so
+an off-hand glove's kill counts. **Juggle replaces Skeet** (one fact, the body in the air). A shot
+**sent back** (Return to Sender) is no longer also judged as your own shot by No-Look, Blind-fire,
+Off-hand, Full Hands or Two Guns.
+
+Not built, and why: an uppercut finisher (the glove's punch kind is on the glove object; since 2026-11-01
+RSQ Melee answers it, RSQML_Service "punch.kind", but no row reads it yet); a catch thrown back at the thrower (Distance Grab catches no
+missiles); a push off a ledge (Doom monsters take no falling damage).
+
+**Slow motion for big moments.** A kill that a bonus calls a big moment sends RSQ_SlowMo
+`netevent rsm_pulse 600 35` (600 ms at 35% speed), from the earning player's machine only.
+Big moments: Fatality, Perfect Riposte, Poetic Justice, Boomerang, Slammed, Heavy Swing at full,
+Ring Out, Clean Sweep, Bank Shot, Rally from the fourth, Flurry at its top; Air Catch, Blind-fire,
+Powder Keg from the third; of the original thirteen, Swan Song, Telefragged, Air from 0.5 (a
+164-unit jump) and Redline at 5 HP or less. `rs_score_slowmo` (on) turns it off;
+`rs_score_slowmo_cooldown` (6 s) spaces them. Measured: a pulse slowed the world for about 38
+tics; a second big moment 40 tics later sent nothing; one 240 tics later did. Without SlowMo the
+event goes nowhere. Bullet Time needs SlowMo's `slowmo.active` answer (RSQ_SlowMo branch
+`agent-suite`); an older SlowMo still gets the pulses.
+
+**The cap on one kill** (`rs_score_cap_kill`, 300 = bonuses at most 3x base, on by default, the
+original's `rs_score_cap_total` renamed so an archived 0 cannot hide the new default). Measured
+with Gun Bonsai's score-to-XP at 1: Swan Song + Telefragged + Point-Blank on a 60-health imp paid
+306 points and 306 XP uncapped, 240 and 240 capped. The cap also holds on kills paid to every
+player (Infighter, Darwin).
+
+**Gun Bonsai, damage XP and score XP.** With both factors at 1 the same kill paid 300 XP: 240 from
+score plus 60 from damage, which is the monster's health a second time (the base points ARE its
+health). Keep `bonsai_damage_to_xp_factor` at 0 when score-to-XP is on.
+
+**Slappers Only.** A plain glove kill pays Brawler 0.5 (a plain gun kill pays nothing), and the
+gloves have Counter, Knockdown, Flurry, Juggle, Ring Out and Combo on top; the gun-only rows
+(No-Look, Blind-fire, Off-hand, Two Guns, Full Hands, Quick Draw, Hot Swap) are worth about the
+same in all. Measured with `rsq_slappers 1` on BD: jab 80 + 40, mid-attack 80 + 75.
+
+**The lives effect on Quest.** What is left of it costs nothing measurable: a life spent is one
+sound and one 20-tic tint, no actors. Measured in a Brutal Doom fight (30 imps, ~600 actors, rig
+B): all of Score's per-tic work 0.004 ms a tic, the HUD 0.011-0.015 ms a frame with lives held,
+the spawn hook 0.0005 ms an actor (it now compares class pointers, not names, because Brutal Doom
+spawns hundreds of actors a second), 0.2-0.5 ms per scored kill (noisy rig).
+
+### The arcade layer (10-27): the hook and the combos across mods
+
+The suite's mods are tools for your hands; Score is the arcade room that pays for mixing them. No
+monster class is named: it works over vanilla, Brutal Doom, Champions, LegenDoom or any set.
+Brutal Doom-specific scoring is later. RSQ_Grapple's facts come from its own `RSQGR_Service`
+(found by name; RSQ_Grapple branch `agent-svc`, its HANDOFF has the API); absent, every row here is
+silent and nothing else changes.
+
+**What already scored the suite, so nothing scores twice** (the table above, plus): saber --
+Pulled In (Force pull), Twin Blades, Riposte/Perfect Riposte, Return to Sender, Poetic Justice,
+Rally, Choked, Slammed, Ground Pound, Juggle, Hurled/Boomerang (thrown saber); ShieldSaw -- Shield
+Work, Hurled, Boomerang, Ground Down, Clean Sweep, Bank Shot, Shield Wall, Riposte; Distance Grab --
+Thrown, Powder Keg, Air Catch, Body Blow, Hand-Me-Down, Full Hands; Tactical Rig -- Quick Draw, Hot
+Swap; SlowMo -- Bullet Time, big-moment pulses; VR -- No-Look, Blind-fire, Off-hand, Two Guns;
+any melee -- Combo (distinct melee kinds in 4 s), Ring Out, Counter, Knockdown, Flurry, Boot,
+Cleaved, Fatality, Heavy Swing; awards (non-kills) -- Deflect, Remote Down (the saber's remote).
+The per-kill cap (`rs_score_cap_kill` 300) holds over all of it, these rows included.
+
+**New rows** (multipliers of the kill's base = the monster's spawn health; measured firing on rig E,
+vanilla doom2 and the full order, scripted scenarios on a test map, each fired once per kill):
+
+| Row | Family | Pays | For | Measured |
+|---|---|---|---|---|
+| Reeled In | Melee | 0.3, +0.15 per earlier one inside 4 s, to 0.75 (replaces Pulled In) | the hook brought it (it came, or you reeled to a heavy one) and a melee blow finished it within 2 s of the line letting go | imp 60: 0.30 (+18), next in chain 0.45; full order BD imp 80 +24 |
+| Ping-Pong | Style | 0.4, +0.2 per volley past one, to 1.0 | hooked, sent flying back AWAY (its own velocity, >= 6 u/tic), hooked again, killed by you | 2 volleys 0.60 (vanilla), 1 volley 0.40 (full order) |
+| Bowling | Style | 0.5, +0.25 per later pin of one throw, to 1.25 | a body your hook threw struck it and it died of that (or you finished it inside 1 s) | Baron struck by a yanked imp: 0.50 = +500 on base 1000 |
+| Hard Landing | Style | 0.3 | the throw's own landing / strike killed the hooked body | imp 0.30 (was Brawler 0.5 + Knockdown 0.2 as a "punch") |
+| Fly Ball | Style | 0.35 (replaces Skeet, Juggle) | killed in the air while your hook was throwing it | imp shot 6 tics into the yank: 0.35 |
+| Swinging | Daring | 0.35 (replaces Air) | a kill while a latched rope holds you off the ground | 0.35 both orders |
+| Dismount | Daring | 0.4 (replaces Air) | let go of a swing in the air, killed before landing (within 3 s) or within 1 s of landing | 0.40 in the air, 0.40 five tics after landing |
+| Lashed | Melee | 0.25 | the whip's crack killed it (was Brawler 0.5 with fists held) | 0.25 both orders |
+| Variety | Style | 0.15 per tool past two, to 0.6 | a kill that brings a NEW tool into the fight (kills each within 10 s): shot, saber, shield, hook, Distance Grab throw, holster draw, hands/blades | gun+saber+hook+hands: 0.15 at the 3rd, 0.30 at the 4th; repeats 0 |
+| Indiana Jones | Daring (award) | 150 + (dist-192)/2 points, to 500; once per gap per map | RSQ_Grapple: a roped flight left a floor, passed over one >= 64 lower than both ends, landed >= 192 units away in another sector | 429 / 427 points for a 751 / 747-unit crossing; second crossing "already paid"; after save/load x2 still paid; after a map change paid again |
+
+Big moments (SlowMo pulse): Reeled In from the 3rd of a chain, Ping-Pong at 2 volleys, Bowling
+always, Variety at 5 tools.
+
+**Fixed on the way**: RSQ_Grapple's own blows land as `'Melee'` with no inflictor (a thrown body)
+or the pawn as inflictor (the whip), and were read as punches -- Brawler 0.5 with fists held,
+Knockdown 0.2 (a thrown body is held in its Pain state), Counter, Cleaved. They are `MK_HOOK` /
+`MK_WHIP` now (`RS_Melee.KindOf` asks the service, which notes each blow before it lands), Brawler
+and Cleaved skip them. Measured before/after on the same scene: yank landing kill
+Brawler 0.5 + Knockdown 0.2 + Point-Blank -> Hard Landing 0.3 + Point-Blank; whip kill Brawler 0.5 ->
+Lashed 0.25. **Ring Out** now also credits the hooker for a monster the hook let go of in the last
+2 s that the level or another monster then killed (measured: 0.5, paid to the player, not to
+everyone).
+
+**Slow motion multiplies style, it is not an easy mode** (the owner). Bullet Time paid a flat 0.15
+for any kill in slow motion. It now pays `rs_score_slowstyle` percent (50, menu Tuning "Slow Motion
+Style") of the kill's style, daring and melee bonuses, and nothing on a plain kill (measured: Reeled
+In 0.3 + Point-Blank 0.1 under `rsm_on` -> Bullet Time 0.20; a plain shot under `rsm_on` -> 0). The
+new `AfterOthers` hook on `RS_ScoreBonus` (bonus.zs, called in the handler after the supersede pass,
+before the caps) is how a bonus reads the others' answers.
+
+**Monster mods** (the owner's order: Champions then LegenDoom Lite 4.2 after BD22Q, Champions'
+`champion_legendoom 1, champion_dormant 1, champion_booster 1`): base points are `GetSpawnHealth()`,
+so a LegenDoom legendary (health x3, StartHealth untouched) pays its class's base (BD imp 80 at
+240 health) and a Champions champion pays its StartHealth (a bronze imp 160); every multiplier is on
+that base and the 300 cap holds (measured with the cap at 50: the bonuses scaled to sum 0.50).
+No runaway. A legendary at low health transforms and refills (LegenDoom's own rule): a yank landing
+that "should" kill it does not, and nothing is paid until it really dies. Champions and LegenDoom
+only touch monsters placed on the map, not ones spawned later.
+
+**Not reachable yet**: Bowling's second pin -- a thrown body that strikes something is stopped dead
+(RSQ_Grapple monster.zs), so one throw strikes one thing; the pin count is there for when it can
+carry on. A path throw also hops over a monster shorter than its arc (its vertical move into a head
+is refused), so bowling happens against tall monsters or in the low first part of the arc.
+
+**Needs the headset**: whether Reeled In's 2 s and Ping-Pong's 5 s windows match real hook play;
+whether 6 u/tic is the right "sent flying" line for the real Force push and BD kicks (scripted here
+with a 20 u/tic shove); whether Indiana Jones' 192/64 thresholds catch real gaps on real maps and
+not stairs; the popup rows' text is the HUD's existing breakdown (no HUD change).
+
+### Boosted monsters (10-27): Champions and LegenDoom Lite
+
+The kill names what it killed (`zscript/rsscore/boost.zs`), read by inventory, cvar and lump NAME, so
+nothing links and every row pays 0 without the two mods. Daring family, charged against the per-kill
+cap like any other row, and only on a player's kill (an infight pays base + Infighter as always).
+
+| row | when | mult |
+|---|---|---|
+| `<Colour> Champion` (14 colours) | an active champion of that colour | 0.25 |
+| Bronze / Silver / Gold Champion | the rare three (weights 3 / 2 / 1 against 10) | 0.5 / 0.5 / 0.75 |
+| Titan, Undying | the mutation (Undying: its heart's death is noted first) | 0.5 |
+| Ghost, Balloon, Hybrid | the mutation (Hybrid: two colour tokens, or one at amount 2) | 0.25 |
+| Legendary | a LegenDoom Lite legendary that rose (half health, refilled), not a champion | 1.5 |
+| Legend Denied | a legendary killed before it rose (its 300 % gone inside one tic) | 0.75 |
+| Legendary Champion | risen AND an active champion -- the owner's "dormant boosted legendary champion" | 0.5 |
+
+No double pay with the base (measured, rig C): a champion's base is its StartHealth, which Champions
+sets after its own health change (a Bronze Titan imp: 780); a plain legendary's base is the class's (LegenDoom
+Lite's ACS raises health, not StartHealth), so Legendary is the big row; a legendary champion's
+StartHealth already holds LegenDoom's 300 % (dormant mode: Champions sets up on the transform, a Gold
+legendary imp's base is 1200 = 80 x 3 x 5; out of dormant mode a legendary spawned in play is boosted
+by LegenDoom first, a Bronze Titan imp 1740), so its row is the small one. In dormant mode a champion
+LegenDoom never transformed never had a power and pays as a plain monster.
+
+Champions' Indigo clones (`champion_CloneToken`) are not kills: Champions clears their COUNTKILL, and
+with Brutal Doom (whose classes replace counted monsters) each one paid a full base -- 80 per imp
+clone, measured; vanilla never paid them.
+
+THE HOOK for a later monster set (RS Monsters' 13 colour tiers and its EX tier): subclass
+`RS_ScoreTierRow`, answer `Token()` (the inventory class name the tier carries), `DisplayName()`,
+`Mult()`, `Group()` (one row per group per kill, highest Mult wins), override `Active(v)` if a tier
+can be dormant, and register the class from your own `StaticEventHandler.OnRegister` with
+`RS_ScoreRegistry.RegisterBonus`. Extra bodies that are not kills: add the token to
+`RS_Boost.NotAKill`.
+
+### The combo system (10-27): the chain of tools on each monster
+
+Every monster keeps an ordered history of the **tools** that touched it (`zscript/rsscore/combo.zs`,
+the `RS_ComboLedger` level handler, saved with the level). A kill pays for the chain that led to it.
+The owner's rules: **order matters**; the chain **breaks after 3 seconds** between moves (105 tics, from
+the end of one tool's run to the start of the next, and from the last move to the kill); **guns count**
+(every gun is the one tool `gun`; varying guns is Switcharoo's); named **signature combos come from a
+data table**; an unnamed chain still pays as a **generic 2-, 3- or 4-tool combo**. No monster class is
+named. The chain is one bonus (Style family) charged against the per-kill cap like any other; the
+breakdown shows its parts as text rows (`Lion Tamer`, `3-Tool Combo`); the display is otherwise untouched.
+
+**Tools** (read by name from the series' services and the blows themselves; an absent mod's tools never
+appear): `gun`, `rig.draw` (a shot inside Quick Draw's 42 tics after a Tactical Rig draw), `saber.cut`,
+`saber.throw`, `saber.return` (a shot the saber or the Force turned), `saber.block`, `force.push`,
+`force.pull`, `force.grip` (choke and slam), `shield.bash` (bash or revved grind), `shield.disc`,
+`shield.block` (the ShieldSaw blocked that monster, or a shot it turned struck it), `hook.bite`,
+`hook.yank` (the hook threw it, or a body it threw struck it), `whip`, `grab.throw` (Distance Grab),
+`kick`, `punch`, `glove`, `blade`, `finisher`. Blows are classified as they land (WorldThingDamaged);
+what deals no damage is asked of each mod as "how long ago" at the next blow or the death (the hook's
+`hooked`/`yanked`/`struck`, the saber's `pulled`/`gripped`/`blocked`, the shield's `blocked`), so the
+order is kept. A yank is the bite's own follow-through: bite + yank count as one tool.
+
+**Named combos** (the data table, `RS_ComboSeed.Combos`; names are PROPOSALS for the owner to veto).
+Pattern steps in order, the last is the finishing blow, steps before may have other tools between them.
+Measured on rig E (doom2, the suite + Gun Bonsai + the patch, scripted on a DoomImp, base 60), each
+fired once on its kill:
+
+| Combo | Pattern | Pays | Measured |
+|---|---|---|---|
+| Lion Tamer | whip > shield.bash | 0.5 | 0.50 (+30) |
+| Clay Pigeon | force.push > gun | 0.5 | 0.50 |
+| Sitting Duck | force.grip > gun | 0.5 | 0.50 |
+| Pull! | force.pull > gun | 0.5 | 0.50 |
+| Disc Jockey | force.push > shield.disc | 0.5 | 0.50 |
+| Gun Kata | hands (kick/punch/glove) > gun | 0.4 | 0.40 |
+| Fast Hands | melee > rig.draw | 0.5 | 0.50 |
+| Lasso | whip > hook.yank | 0.5 | 0.50 (with Hard Landing 0.30) |
+| Pitch and Slice | grab.throw > saber.cut | 0.5 | 0.50 |
+| Circus Act | whip > hook.yank > gun | 0.9 | 0.90 (Lasso not also paid) |
+| Yo-Yo | force.pull > force.push > gun | 0.9 | 0.90 (Pull!, Clay Pigeon not also paid) |
+| Discus | shield.bash > force.push > shield.disc | 0.9 | 0.90 |
+
+**Generic chains**: 2 tools 0.2, 3 tools 0.4, 4 or more 0.6 (measured 0.20 / 0.40 / 0.60, five tools
+0.60). The same tool three times: nothing. A 110-tic gap breaks the chain (nothing); 100 tics does not
+(0.20). Order: bash > whip is a 2-Tool Combo, not Lion Tamer. A named combo replaces the generic pay
+for the tools it names: gun > whip > bash paid Lion Tamer 0.50 + 3-Tool Combo 0.20 (= 0.4 - 0.2).
+
+**Today's rows folded in, pay kept.** Reeled In (hook > melee), Ping-Pong (hook > shove > hook), Fly
+Ball (yank > anything, airborne), Bowling (a thrown body's strike > anything), Pulled In (Force pull >
+melee), Riposte / Perfect Riposte (block > anything) are named combos backed by their own rows: they
+pay as before and the chain pays nothing more for the tools they cover; a table combo must name a tool
+they do not (a kick inside a Ping-Pong rally is not also Gun Kata). Measured: Riposte 0.40 (chain 0),
+Reeled In 0.30 (chain 0) and 0.45 second-in-a-row with a gun first (+ 3-Tool part 0.20), Ping-Pong 0.40
+one volley (chain 0), Pulled In 0.30, Hard Landing 0.30, Bowling 0.50 by the strike and 0.50 when a gun
+finished it inside 1 s (chain 0). Swinging, Dismount, Lashed and Indiana Jones are unchanged.
+**Changed, and why**: Variety (tools across a fight) and the melee Combo (kinds across kills) pay for
+mixing tools too, so on a kill whose own chain mixed two tools or more they stand down (they still
+remember the kill). Before, a Reeled In kill also paid Combo 0.10 + Variety 0.15; now Reeled In alone.
+
+**For other mods** (no link): `RS_ScoreRegistry.RegisterCombo(name, pattern, mult)` /
+`RegisterTool(id, groups)` from `OnRegister`, or by name through `RS_ScoreService`:
+`GetInt("combo", "<name>|<pattern>", permille)`, `GetInt("tool", "<id>|<groups>")`, and
+`GetInt("touch", "<tool id>", playerNumber, 0, monster)` to record a use. Measured: a probe mod's
+"kick > saber.cut" at 650 paid 0.65; a touch through the service entered the chain (rig.draw > cut 0.20).
+
+**Saved and carried**: a chain begun before a save and finished after a load paid (twice); a new map
+starts clean. Big moment (SlowMo pulse): a three-step named combo, or four tools.
+
+**For Gun Bonsai** (`RS_ScoreService`): `kill.serial` (intArg player), and for a serial (doubleArg)
+`kill.style` (the kill's bonus points: total less base, every family, Champions' and LegenDoom's
+rows included), `kill.base`, `GetString kill.chain` ("gun>whip>shield.bash", finisher last), `GetObject
+kill.victim`. The Gun Bonsai VR patch's XP Source: Style reads these. `kill.big` (objectArg the body): 1 when
+that kill was a big moment (the same call that sends the slow-motion moment), 0 not, -1 not kept; Gun Bonsai VR's
+Lucky Kill reads it.
+
+**Cost per blow (polish, 10-27, measured).** Every series question went through `ServiceIterator.Find`,
+which makes an iterator object and walks every service in the game, lower-casing and searching each name
+in the VM; the combo system asks several per blow (Classify) and per monster per tic (Poll). The services
+each name matches are now found once (`RS_ScoreRegistry.EnsureSvc`, `zscript/rsscore/svc.zs`) and asked
+directly; same services, same order, same answers. Rig B, the owner's full order, 18 Brutal Doom rifle
+zombies sprayed with Brutal Doom's own puffs (`ShotgunPuff` / `MachineGunBulletPuff`, 20 LineAttacks a tic
+for 10 s, ~5000 blows): Classify 29.6 -> 3.0 us a blow, Poll 56.4 -> 6.1 us a monster-tic, the whole
+damage-event chain (every handler of every mod loaded) 79.5 -> 29.0 us a blow, the worst tic 2.30 ->
+1.25 ms. The old and new lookups answered alike 3762 times out of 3762 (hook, shield, saber, rig, grab
+and SlowMo requests, SlowMo on). The HUD's and the accessibility helper's ui-scope lookups are unchanged
+(once per frame, not per blow).
+
+**The living word** (`rs_score_alive`, on; Options -> Score -> Living Label): only the word "Score:"
+moves: a slow pastel hue cycle (24 s), a breath (88-100 % every 4 s), warming toward gold in the last
+quarter before a reward (and breathing twice as fast), full white easing back over a second after a
+big combo. RSQ_Accessibility's Photosensitive Mode holds it still (only the slow warming); a colour-blind
+setting drops the hue and the warming and keeps the breath. The number, bar and rows are unchanged.
+
+**The ShieldSaw gauge** (the Gun Bonsai VR patch's `rsq_hud_shield`, off by default): while it is on,
+the whole display moves down by as far as that gauge reaches below the hand gauges' top
+(`RSQ_HudService "shield.gauge.drop"`, asked by name); off, or without the patch, nothing moves.
+
+**Needs the headset**: whether 3 s is the right break for real play with every tool; whether the
+proposed names and pays feel right; the touch timings of the real hook, Force pull and shield block
+(scripted here through the same service calls the mods make); the living word's colours in the lenses.

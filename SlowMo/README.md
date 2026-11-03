@@ -1,245 +1,190 @@
 # RSQ SlowMo
 
-**The one thing:** slow motion with no engine change: every monster and every shot slows while your hands stay on
-real time, enemy bullets become rounds you can lean out of, and a Shootdodge leaps you through it.
+The world slows down, you don't. Monsters, their shots, falls and sounds near you run slower while you
+move at full speed. Enemy bullets become visible rounds you can step or lean away from. Part of the Radiant Silvergun Quest series, for stock QuestZDoom 17.3
+(script only, no engine changes). The design is the owner's RS_SlowMo, brought to Quest.
 
-`pk3/RSQ_SlowMo.pk3`. Part of the Radiant Silvergun Quest series, for stock QuestZDoom 17.3, in VR.
+## Load order
 
-The world slows down, you don't. Monsters, their shots, falls and sounds near you run slower while your head and
-hands move at full speed. Enemy bullets become visible rounds you can step or lean away from. Script only, no engine
-changes; the design is the owner's RS_SlowMo, brought to Quest. It needs no other RSQ pk3 and works with plain Doom 2
-or Brutal Doom. If Xortts' BTX or RS_SlowMo is loaded it stands down, so two slow-motion systems never compound.
+```
+doom2.wad -> 01 brutal22test6 -> 02 BD22_VoxelPack -> 03 BD22_VR-Reloaded_2.0.3j -> 04-07 XMVE
+          -> RSQ_SlowMo.pk3   (from pk3/)
+```
+
+- **Plain Doom 2 without Brutal Doom:** works. Nothing in the code needs a Brutal Doom class.
+- **Other RSQ pk3s needed:** none. It works alone.
+- If **Xortts' BTX** or **RS_SlowMo** is loaded, this mod stands down (two slow-motion systems
+  compound). *Yield to Other Mods* under *Tuning and Debug* turns that off.
+
+## Setup
+
+- **Menu:** Options -> Radiant Silvergun Options -> RSQ SlowMo.
+- **Button to bind:** the first row of the mod's menu, *Slow Motion*, or Customize Controls -> section
+  "RSQ SlowMo" -> "Slow motion on/off". Optional: the wrist cross does the same.
+
+## What to do in VR
+
+- **Start / stop slow motion:** press your bound key, or cross your wrists in front of your face (your gun
+  hand past the other one) and hold them there a moment. Hands merely close together (a two-hand grip, a
+  hand reload) do nothing.
+- **Dodge a round:** step out of its line, or lean your head about 30 cm out of its path.
+- **Smoke (with RSQ Tactical Rig):** spitting out the cigarette starts 6 s of slow motion.
 
 ## Features
 
-**The clock.**
-- Press your Slow Motion key and the world slows to "World Speed" (a quarter speed by default); press again and it
-  eases back. Doom's power-up sound going in, the lift-stop sound coming out.
-- Everything near you is slowed, not frozen: every slowed thing still moves every tic, by the slowed amount, so
-  nothing stutters in the headset. Falls slow, missiles slow, sounds drop in pitch.
-- Nothing tracked is slowed: you, what you carry, and the series' hand-held things (the saber, the shield, the whip,
-  the grab) stay on real time.
-- Ease In and Out: Snap, Standard or Gradual.
-- Haptics: a rumble in both hands when slow motion starts and ends.
-
-**Shootdodge.** Press the Shootdodge key while standing on the ground: you leap the way the stick points (forward if
-it is centred) and the world slows to "Shootdodge World Speed" until you land. Your own dive hangs in the air by
-"Shootdodge Hang". It ends when you land, die, run out of adrenaline, or after 6 seconds.
-
-**Slow Me Too.** Your own walking, jumping and falling slow with the world, so a jump hangs and a step takes longer.
-Your head and hands are tracked and never slow. "Slow Me Too Strength" sets how much of the world's slowing you take.
-
-**Dodgeable Bullets.** In slow motion an enemy's hitscan does not land at once: it becomes a visible round leaving
-the same muzzle along the same line, same damage. Step out of its way and it misses. Near misses whiz and crack
-past you and buzz your hands. Brutal Doom's own bullets slow to the same speed. The ShieldSaw and the saber stop a
-round like any projectile.
-
-**Lean Out of Bullets.** Lean your head out of a slowed round's path and it misses. A lean held for about 2 seconds
-becomes your new stance and stops counting.
-
-**Adrenaline** (option). Slow motion costs adrenaline, earned from kills, from being hurt and from near misses. A
-pickup sound when the meter is full, an "oof" when there is not enough to start. The meter carries between levels.
-
-**The SlowMo Gauge.** A vertical gauge at the side of your view (coldcite's Top HP Bars bar stood on end, in cyan).
-With Adrenaline on it is the meter: dim below "Adrenaline to Start" (a white tick marks that line), pulsing while slow
-motion spends it. With Adrenaline off it shows only while the world is slowed, filled by how slow. Its colour moves
-as it fills, from deep blue through cyan to near white. Gauge Animation: a band of light rises through the fill, its
-top edge breathes, a full gauge glints.
-
-**Looks.**
-- Smooth Walkers: the nearest 12 walking monsters glide a little every tic instead of step, stand, step.
-- Color Drain (option): colours fade a little while time is slowed.
-- Shot Trails: your own shots leave a fading trail. Missile Wakes: slowed missiles leave a wake. Slow Own Missiles:
-  your own rockets slow too.
-
-**Triggers.** Every way slow motion can start has its own on/off row. Yours (the key, the wrist cross, the burst,
-the Wheel, the Accessibility button, a Melee shove, the cigarette, a Saber parry, a ShieldSaw block, the Shootdodge)
-are never held back. Automatic ones (Miniboss's window, Close-Call, Reload Slowdown, Score, Gun Bonsai VR, other mods)
-wait out the Auto Slow-Mo Cooldown after the last automatic one ends. A row only stops a start; turning slow motion
-off always works.
-
-**Close-Call** (option): a rocket or fireball about to hit you up close slows time for a moment. **Reload Slowdown**
-(option): a reload buys a moment of slow motion.
-
-**Returns, blocks and catches in slow motion.** A slowed shot is slowed in its speed and in its own Speed value
-together, and your blade, shield, whip and hands are never slowed. So when you block, deflect or punch a slowed shot
-it reads the shot as it is that moment, and a return (the saber's bat, a Melee send-back, the whip's crack) sends it
-off at the world's pace. Once it is your own missile it stays slowed with the world and goes back to full speed when
-the clock does. A shot that turns back on itself is a return and the clock leaves it alone.
-
-## How to play
-
-Bind two keys in Options -> Customize Controls, section **RSQ SlowMo**: **Slow motion on/off** and **Shootdodge**.
-The first two rows of the mod's own menu (Options -> Radiant Silvergun Options -> RSQ SlowMo) bind the same keys.
-
-1. **Slow the world.** Press Slow motion on/off. The world eases down to a quarter speed. Press it again to bring it
-   back.
-2. **Or cross your wrists.** Bring your gun hand across in front of your face, past your other hand, and hold them
-   there a moment. Slow motion toggles. Hands merely close together (a two-hand grip, a hand reload) do nothing. With
-   "Wrist Cross = 4 s Burst" on, the cross gives a 4-second burst instead.
-3. **Shootdodge.** Stand on the ground, push the stick the way you want to go (or leave it centred to go forward) and
-   press Shootdodge. You leap that way, the world drops to a tenth speed, and you hang in the air through the dive.
-   Shoot on the way. When you land, time comes back.
-4. **Dodge a round.** In slow motion a zombieman's bullet is a visible round flying at you. Step out of its line, or
-   lean your head sideways out of its path without stepping: it whizzes past.
-5. **Watch the gauge.** The cyan bar at the side of your view. With Adrenaline on it is your meter: kill, take hits
-   and dodge close to fill it; slow motion drains it. Below the white tick there is not enough to start.
-6. **Smoke** (with RSQ Tactical Rig): spit out the cigarette and the world slows for the smoke's own time.
-
-## Settings
-
-**RSQ SlowMo** (front page)
+All rows are on the front page except the ones marked *Triggers* or *Tuning and Debug*.
+"On" = on by default (CVARINFO); "Option" = off by default.
 
 | Menu row | Default | What it does |
 |---|---|---|
 | Slow Motion | (key) | Bind your toggle here. |
-| Shootdodge | (key) | Bind the dive here. |
-| World Speed | 0.25 | How slow, 0.05 (near-freeze) to 0.95. Every slow motion uses it unless another mod asks for its own. |
-| Ease In and Out | Standard | Snap, Standard or Gradual. |
-| Dodgeable Bullets | On | In slow motion an enemy's hitscan becomes a visible round, same damage. |
-| Adrenaline | Off | Slow motion costs adrenaline, earned from kills, hurt and near misses. |
-| Haptics | On | Rumble on both hands when slow motion starts and ends. |
-| Lean Out of Bullets | On | Leaning out of a slowed round's path makes it miss. |
-| Smooth Walkers | On | The nearest walking monsters move a little every tic instead of stepping. |
-| Color Drain | Off | Colours fade a little while time is slowed. |
-| SlowMo Gauge | On | The gauge at the side of your view: the meter, or how slow while it runs. |
-| Gauge Side | Left | Or Right. |
-| Gauge Animation | On | A band of light rising through the fill, a breathing edge, a glint when full. |
-| Wrist Cross = 4 s Burst | Off | The wrist cross starts a 4-second burst instead of toggling. |
-| Slow Me Too | On | Your own walking, jumping and falling slow with the world. Head and hands never. |
-| Slow Me Too Strength | 1.0 | How much of the world's slowing you take: 1 as slow as the world, 0.5 half, 0 none. |
+| Shootdodge | (key) | Bind the dive here (owner, 11-03, after Xortts' Bullet Time X): a press leaps you the way the stick points (forward if it is centred) and the world slows to *Shootdodge World Speed* until you land. Your own movement is slowed with it, so the dive hangs. |
+| World Speed | 0.25 | A slider from 0.05 (near-freeze) to 0.95 of normal speed. Every slow motion uses it unless another mod asks for its own speed. |
+| Ease In and Out | Standard | Snap / Standard / Gradual. |
+| Dodgeable Bullets | On | In slow motion an enemy's hitscan becomes a visible round, same damage. Brutal Doom's bullets slow to the same speed. |
+| Adrenaline | Option | Slow motion costs adrenaline, earned from kills, hurt and near misses. The SlowMo Gauge shows the meter; a pickup sound when full, an "oof" when there is not enough. |
+| SlowMo Gauge | On | A vertical gauge at the side of your view (coldcite's Top HP Bars bar stood on end, in cyan). With Adrenaline on it is the meter: dim below Adrenaline to Start (a white tick marks that line), pulsing while slow motion spends it. With Adrenaline off it shows only while the world is slowed, filled by how slow. Its colour moves as it fills (deep blue, cyan, near white). Gauge Animation (on): a band of light rises through the fill, its top edge breathes, a full gauge glints. Gauge Side (Left / Right) beside it; Gauge Size on Tuning and Debug. |
+| Haptics | On | Rumble on both hands when slow motion starts and ends. Needs the engine's quake haptics above 0. |
+| Lean Out of Bullets | On | Leaning out of a slowed round's path makes it miss. A lean held for about 2 s becomes your new stance and stops counting. |
+| Smooth Walkers | On | The nearest 12 walking monsters move a little every tic instead of stepping. |
+| Color Drain | Option | Colours fade a little while time is slowed (35 % at full depth). |
+| Wrist Cross = 4 s Burst | Option | The wrist cross starts a 4-second burst instead of toggling. |
+| Slow Me Too | On | Your own walking, jumping and falling slow with the world (Bullet Time X's feel). Head and hands are tracked and never slow. *Slow Me Too Strength* (1.0): how much of the world's slowing you take -- 1 as slow as the world, 0.5 half as slowed. |
 | Shootdodge World Speed | 0.10 | How slow the world is through a dive. |
 | Shootdodge Leap | 12 | The dive's thrust, map units a tic, on top of the jump (0 = the jump alone). |
-| Shootdodge Hang | 0.5 | How much of the world's slowing your own dive takes. 1 = as slow as the world (a jump hangs ten times as long at 10%); 0.5 = a dive of about 1.7 s; 0 = a normal jump. |
+| Shootdodge Hang | 0.5 | How much of the world's slowing your own dive takes. 1 = as slow as the world (at 10% a jump hangs ten times as long, 5 s); 0.5 = a dive of about 1.7 s; 0 = a normal jump's length. |
 | Slow Own Missiles | On | Your own rockets slow too. |
 | Shot Trails | On | Your shots leave a fading trail. |
 | Missile Wakes | On | Slowed missiles leave a wake. |
 | Keep Adrenaline Between Levels | On | The meter carries to the next level. |
+| Yield to Other Mods (Tuning and Debug) | On | Stand down if Xortts' BTX or RS_SlowMo is loaded. |
+| Debug Log (Tuning and Debug) | Option | Every start, and every refused one, is written to the console with its name and tic. |
+| Reset All (Tuning and Debug) | - | Resets every SlowMo setting. |
 
-**Triggers**
+Every other row under *Tuning and Debug* is a number for the features above.
 
-| Menu row | Default | Kind | Starts slow motion when |
+### Triggers page
+
+One on/off row for every way slow motion starts. A row only stops a start; turning slow motion off
+always works. "Yours" are never held back; "Automatic" ones also wait out the cooldown.
+
+| Row | Default | Kind | Starts slow motion when |
 |---|---|---|---|
-| Manual Key | On | Yours | you press your Slow Motion key. |
-| Shootdodge | On | Yours | you press your Shootdodge key while standing on the ground. |
-| Wrist Cross | On | Yours | you cross your wrists in front of your face. |
-| Burst | On | Yours | the wrist cross starts its 4 s burst ("Wrist Cross = 4 s Burst" on). |
+| Manual Key | On | Yours | you press your bound *Slow Motion* key. |
+| Shootdodge | On | Yours | you press your bound *Shootdodge* key while standing on the ground. |
+| Wrist Cross | On | Yours | you cross your wrists in front of your face (gun hand past the other). |
+| Burst | On | Yours | the wrist cross starts its 4 s burst (*Wrist Cross = 4 s Burst* on). |
 | Wheel | On | Yours | RSQ Wheel opens. |
 | Accessibility Button | On | Yours | you press RSQ Accessibility's slow-motion button. |
 | Melee Shove | On | Yours | an RSQ Melee gun butt shove lands. |
 | Cigarette | On | Yours | you spit out an RSQ Tactical Rig cigarette. |
 | Saber Parry | On | Yours | an RSQ Saber perfect parry (its own slow-mo option on). |
 | ShieldSaw Block | On | Yours | an RSQ ShieldSaw perfect block (its own slow-mo option on). |
-| Miniboss Window | On | Automatic | RSQ Miniboss's slow window opens. |
-| Close-Call | Off | Automatic | a rocket or fireball is about to hit you up close. |
-| Reload Slowdown | Off | Automatic | you reload. |
+| Miniboss Window | On | Automatic | RSQ Miniboss's slow window opens after a thrall dies. |
+| Close-Call | Option | Automatic | a rocket or fireball is about to hit you up close (0.7 s). |
+| Reload Slowdown | Option | Automatic | you reload. |
 | Score | On | Automatic | RSQ Score's big moment or hit-stop. |
 | Gun Bonsai VR | On | Automatic | the Gun Bonsai VR patch's Adrenaline, Showdown or Time Dilation perk. |
-| Other / Unknown Mods | On | Automatic | any other mod's pulse, or a mod's named call (see For other mods). |
-| Auto Slow-Mo Cooldown (s) | 25 | | After an automatic slow motion ends, the next automatic one waits this long. |
+| Other / Unknown Mods | On | Automatic | any other mod's pulse, or a mod's named call (*For other mods*). |
+| Auto Slow-Mo Cooldown | 25 s | - | after an automatic slow motion ends, the next automatic one waits this long. |
 
-Saber Parry and ShieldSaw Block send the same pulse; SlowMo tells them apart by whose option is on and what is in your
-hands. With a saber in one hand and the ShieldSaw in the other it needs both rows on.
+Saber Parry and ShieldSaw Block send the same pulse; SlowMo tells them apart by whose option is on and what
+is in your hands. With a saber in one hand and the ShieldSaw in the other it needs both rows on.
 
-**Tuning and Debug**
+## Test it
 
-| Menu row | Default | What it does |
-|---|---|---|
-| Ease In | 0.15 | Seconds to slow down over. |
-| Ease Out | 0.40 | Seconds to come back over. |
-| Range | 3000 | Map units around a player that slow. |
-| Sound Follows | 1.0 | How far slowed things' sounds drop in pitch. |
-| Round Speed | 14 | A dodgeable round's speed at the set depth, map units a tic. |
-| Wrist Gap | 0.16 | How close the wrists must be, metres. |
-| Wrist Hold | 12 | Tics to hold the cross. |
-| Reload Time | 1200 | Reload Slowdown's hold, ms. |
-| Adrenaline to Start | 25 | Needed to start slow motion. |
-| Full Meter Time | 10 | A full meter lasts this long, seconds. |
-| Adrenaline per Kill | 12 | Earned per kill. |
-| Adrenaline per Near Miss | 4 | Earned per near miss. |
-| Lean Needed (m) | 0.06 | How far the head must be off its baseline to count as a lean. |
-| Lean Baseline (s) | 2.0 | The baseline follows the head over this long. |
-| Smooth Range | 1024 | Map units from a player within which walkers are smoothed. |
-| Smooth Walkers | 12 | The nearest this many walkers. |
-| Color Drain Amount | 0.35 | How much colour goes at full depth. |
-| Gauge Size | 1.0 | The gauge's height, as a multiple. |
-| Close-Call Time (ms) | 700 | How long a Close-Call pulse holds. |
-| Yield to Other Mods | On | Stand down if Xortts' BTX or RS_SlowMo is loaded. |
-| Debug Log | Off | Every start, and every refused one, written to the console with its name and tic. |
-| Reset All | | Resets every RSQ SlowMo setting. |
+Items marked **(not yet headset-confirmed)** were built on 2026-10-31 or later and only ran on the
+simulated rig (no sound, no haptics there).
+
+1. Load the pack. Options -> Radiant Silvergun Options shows *RSQ SlowMo*. No script error.
+2. Bind *Slow Motion* and press it. The world slows to a quarter speed over a moment; you hear Doom's
+   power-up pickup sound. Press again: it eases back, with Doom's lift-stop sound.
+   **(the stock cues are not yet headset-confirmed)**
+3. Move *World Speed* to 0.05 and press the key: the world almost stops. At 0.95 it barely slows.
+   **(not yet headset-confirmed; rig: a test projectile flew at 0.050, 0.250 and 0.950 of its speed at
+   0.05, 0.25 and 0.95)**
+4. Cross your wrists in front of your face (gun hand past the other) and hold. Slow motion toggles. Then
+   hold a pistol two-handed, and reload by hand: nothing toggles. **(not yet headset-confirmed; rig: a
+   two-hand grip and a hand reload toggled it before 2026-11-02, now only crossed wrists do)**
+5. In slow motion, watch a walking demon close up. It glides instead of step, stand, step.
+   **(not yet headset-confirmed)**
+6. Let a zombieman shoot at you. A visible round flies at you. Step aside: it whizzes past.
+7. Again, but lean your head about 30 cm sideways out of its path without stepping. It misses.
+   **(not yet headset-confirmed)**
+8. Turn on *Color Drain*. In slow motion colours fade a little. **Check both eyes** (the rig only saw
+   the left). **(not yet headset-confirmed)**
+9. Turn on *Close-Call* (Triggers). Let an imp's fireball come straight at you. Time slows briefly before it
+   hits. A second one within 25 s of the first slow motion ending does not slow time.
+   **(not yet headset-confirmed)**
+10. Turn on *Wrist Cross = 4 s Burst*. The wrist cross gives 4 s of slow motion, then it eases back.
+    **(not yet headset-confirmed)**
+11. With RSQ Tactical Rig and its cigarettes on: smoke and spit one out. Slow motion lasts its full 6 s.
+    **(not yet headset-confirmed)**
+12. Fire your own Brutal Doom gun in slow motion. Your tracers move at world speed, not crawling.
+    **(not yet headset-confirmed)**
+13. With RSQ Melee: shove the gun in your main hand into a zombieman. The world slows briefly as he is
+    knocked back, every shove (no cooldown). **(not yet headset-confirmed; rig: 8 shoves 3 s apart, 8 pulses
+    of 300 ms at 35 %)**
+14. Turn on *Adrenaline* with an empty meter and press the key. You hear "oof" and a low buzz; nothing
+    slows. Kill a few monsters and try again.
+15. With RSQ Accessibility: Rumble Strength 0.5, then start slow motion: the start rumble is half as strong;
+    0: none. **(not yet headset-confirmed; rig: start rumble 0.30 at 0.5, 0.60 at 1)**
+16. *Debug Log* on (Tuning and Debug), then play: every start or refusal shows in the console
+    with its name and tic.
+17. Turn off one row on *Triggers* (e.g. *Score*): that source no longer slows time, the others still do;
+    a refusal shows in the Debug Log as "its switch is off". **(not yet headset-confirmed; rig 2026-11-02:
+    Score, Gun Bonsai VR, Cigarette, Melee Shove and Manual Key each refused when off while the rest started)**
 
 ## Works with
 
-- **RSQ Tactical Rig:** spitting out the cigarette starts slow motion for the smoke's own time. Row: Cigarette.
-- **RSQ Wheel:** the ring slows time while open, also while slow motion is easing out. Row: Wheel.
-- **RSQ Saber / RSQ ShieldSaw:** their perfect-parry and perfect-block slow-mo options pulse this clock. Rows: Saber
-  Parry, ShieldSaw Block.
-- **RSQ Score:** big moments and hit-stop ask for a short pulse (automatic). Row: Score. Score also reads what is
-  slowing the world to score it.
-- **RSQ Melee:** a landed gun butt shove asks for a short pulse (Melee has its own switch too). Row: Melee Shove.
+- **RSQ Tactical Rig:** spitting out the cigarette starts slow motion (its *Slow Motion After a Smoke*);
+  deliberate, so the cooldown never holds it back. Row: *Cigarette*.
+- **RSQ Wheel:** the ring slows time while open, also while slow motion is easing out. Row: *Wheel*.
+- **RSQ Saber / RSQ ShieldSaw:** their perfect-parry / perfect-block slow-mo options pulse this clock
+  (deliberate: never held back). Rows: *Saber Parry*, *ShieldSaw Block*.
+- **RSQ Score:** big kills ask for a short slow-mo pulse (automatic: row *Score* and the cooldown).
+- **RSQ Melee:** a landed gun butt shove asks for a 300 ms pulse at 35 % (row *Melee Shove*; that mod has
+  its own switch too). Deliberate: never held back. It stands down when BD22 VR Reloaded is loaded (Melee's rule). **(not yet headset-confirmed)**
 - **RSQ Grapple, RSQ Whip:** read the world's speed so they slow with it.
-- **RSQ Grenade:** its Skeet Window (a Gun Bonsai VR node) pulses slow motion while the grenade is in the air
-  (automatic; row Other / Unknown Mods).
-- **RSQ Miniboss:** holds slow motion through its window (automatic; one window counts once). Row: Miniboss Window.
-- **RSQ Accessibility:** its slow-motion button (row Accessibility Button), Gesture Ease on the wrist cross, a floor
-  on how fast slow motion may ease, Hold to Toggle, Photosensitive Mode, and Rumble Strength on every SlowMo rumble.
-  Inert without it.
+- **RSQ Miniboss:** can hold slow motion through its window (automatic: row *Miniboss Window* and the
+  cooldown; one window counts once).
+- **RSQ Accessibility:** its slow-motion button (row *Accessibility Button*), Gesture Ease on the wrist cross, a floor on how fast slow motion may ease, and
+  other shared settings. Rumble Strength scales every SlowMo rumble (not yet headset-confirmed). SlowMo has
+  no tap windows, so Slower Taps changes nothing here.
+- **Gun Bonsai VR patch:** its slow-motion perks read and pulse this clock (automatic: row *Gun Bonsai VR*).
+  With the patch, its SlowMo tree (GBOVR_TREES.md 4.9) shapes it: your own key, wrist cross, burst and accessibility
+  button work from the start (owner, 11-03; the *Slow Motion* unlock of 11-02 is gone); *Deeper* deepens it past your
+  World Speed (0.2, 0.15, 0.1; at level 0 your slider rules, as without the patch);
+  *Longer* stretches the burst (5, 6, 8 s) and the meter; *Cheaper* makes the meter go further; *Lean Dodge* replaces
+  the Lean Dodge row (level 2: a lean also dodges a monster's claw); *Matrix* forces the drain and trails while slowed.
+  Without the patch nothing changes.
 
-**Gun Bonsai with the RSQ Gun Bonsai VR patch:** its Adrenaline, Showdown and Time Dilation perks pulse this clock
-(row Gun Bonsai VR). Your own key, wrist cross, burst and Shootdodge work from the start. Deeper takes the world past
-your World Speed (0.2, 0.15, 0.1); Longer stretches the burst (5, 6, 8 s) and the meter; Cheaper makes the meter go
-further; Lean Dodge takes over the Lean Out of Bullets row (level 2: a lean also dodges a monster's claw); Matrix
-forces the colour drain and shot trails while slowed. Without the patch nothing changes.
+## Returns, blocks and catches in slow motion (owner's question, 11-03)
 
-## Load order
+Nothing to worry about, by design: a missile is slowed by scaling its velocity **and** its `Speed` together,
+and your blade, shield, whip and hands are tracked and never slowed. A deflect, block or punch reads the shot's
+velocity as it is this tic, and a return (Melee's SendBack, the saber's BatBack, the whip's crack) re-aims it
+from that slowed Speed, so it leaves at the world's pace; as your own missile it stays slowed (*Slow Own
+Missiles*) and goes back to full speed when the clock does. **One bug found and fixed 11-03:** the clock read a
+return faster than x1.0 (the blade's x1.2, Hadouken, Return Crack 2+) as a full-strength push and scaled its
+reversal -- at a quarter speed a reversed fireball came out still flying at you at 45% of its pace (measured
+headless). A velocity that turns back on itself is now a return and is left alone.
 
-After Brutal Doom, the monster packs and Gun Bonsai, with the other RSQ pk3s. Needs no other RSQ pk3; any order
-among them.
-
-## Known limits
+## Known limits / open issues
 
 - Doors, lifts and moving floors and ceilings keep their speed.
 - Engine particles keep their speed; actor-based effects slow.
 - Music, and sounds not made by a slowed thing, keep their pitch.
-- The near-miss whiz and crack are recordings from the owner's RS_Ballistics library, not stock Doom or Brutal Doom
-  sounds.
-- A Shootdodge needs you standing on the ground, not crouched, not swimming, on a map that allows jumping.
-
-## For other mods
-
-Nothing links: find things by name.
-
-**Start slow motion** (e.g. RSQ Tactical Rig's cigarette), from the one machine that decided it:
-
-```
-EventHandler.SendNetworkEvent("rsqsm_start:<who>", ms, speedPct, flags);
-```
-
-`<who>` is your trigger's name (shown in the Debug Log); `ms` the hold (0 = 4 s); `speedPct` the world's speed in
-percent, 5-100 (0 = the player's World Speed slider); `flags` 1 = automatic (waits out the cooldown), 0 = deliberate
-(never held back). Both need the Other / Unknown Mods row on. It eases in and out on the player's ramps. A held
-toggle outranks it.
-
-From synced play code, the service does the same and answers 1 let in, 0 refused:
-
-```
-let it = ServiceIterator.Find("RSQSM_Service"); let s = it.Next();
-if (s) s.GetInt("start", "<who>", ms, speed);        // speed 0.05-1.0, 0 = the slider; "start.auto" = automatic
-```
-
-**Read it:** `RSQSM_Service` `GetInt` answers -1 when the clock is not running: `adrenaline.add` (intArg = amount;
-answers the meter), `adrenaline` (0..100), `slowmo.active` / `active` (1 while slowing or easing), `running` (1 while
-held, pulsing or in a Shootdodge), `scale` (world speed in permille), `trigger.auto` (1 an automatic trigger is
-slowing the world, 0 a deliberate one, -1 nothing), `trigger.score` (1 while the running pulse is RSQ Score's own).
-
-**RS_SlowMo's doors still work:** `rsm_toggle`, `rsm_on`, `rsm_off`, `rsm_pulse <hold ms> <speed %>` (deeper wins,
-longer wins), `rsm_state` (prints the clock). An `rsm_pulse` carries no name, so SlowMo tells the series' callers
-apart by what they send: Melee's shove, the cigarette, a Saber parry and a ShieldSaw block are deliberate; Miniboss,
-Score, Gun Bonsai VR and anything else are automatic. Each has its row on Triggers. `rsm_toggle 1` is the wrist
-cross, `rsm_toggle 2` the key; a bare `rsm_toggle` is RSQ Accessibility's button while that mod is loaded, else the
-key. `rsm_on` is the Wheel's. `rsqsm_dodge` is the Shootdodge key.
+- The near-miss whiz and crack are recordings from the owner's RS_Ballistics library, not stock Doom or
+  Brutal Doom sounds.
+- A thing let go of on the last tic of the ease-out should get its normal sound pitch back; this was read
+  from the code, not heard.
+- Bullets on a lean: Brutal Doom's own tracers going through the lean test were not rig-tested.
+- The Wheel stopping a slow motion you started yourself on close is a Wheel-side issue (its handoff).
 
 ## Credits
+
+From the old README, unchanged:
 
 - The design is RS_SlowMo's (the project owner's): its events, settings and the rule of
   standing down for another slow-motion mod.
@@ -252,7 +197,7 @@ key. `rsm_on` is the Wheel's. `rsqsm_dodge` is the Shootdodge key.
 - What the pk3 ships and whose it is: [CREDITS.txt](CREDITS.txt).
 - QuestZDoom: Emawind and Team Beef.
 
-RSQ_SlowMo -- credits (from CREDITS.txt):
+RSQ_SlowMo -- credits (from CREDITS.txt, unchanged):
 
 The world slows, you don't. Part of the Radiant Silvergun Quest series. For stock QuestZDoom 17.3:
 ZScript and lumps only, no engine changes. The code is new, written for this pack.
@@ -266,9 +211,6 @@ WHAT THIS PK3 SHIPS, AND WHOSE IT IS
   and crack recordings (sounds/rsqsm/smwhiz1-4, smcrak1-2): his RS_Ballistics library.
 - Generated for this pack:
   The round's placeholder sprite (sprites/rsqsm/RSQRA0.png).
-- coldcite (Top HP Bars 1.04, 2017: "Feel free to use this in your mods. You don't have to ask my permission!"):
-  The SlowMo gauge (graphics/RSQSMGE, RSQSMGF) is his style-A health bar stood on end, the fill recoloured
-  cyan pixel by pixel (TopHPBars/tools/gen_gauges.py in the series repo).
 - id Software (Doom), played by name from the IWAD, NOT shipped:
   The clock's cues: DSGETPOW (slowing), DSPSTOP (back to speed), DSITEMUP (meter full),
   DSNOWAY (not enough adrenaline). See SNDINFO.txt.
@@ -280,3 +222,36 @@ WHAT THIS PK3 SHIPS, AND WHOSE IT IS
 
 SHARING
 - Free to share as part of the Radiant Silvergun Quest series.
+
+## For other mods
+
+This section is for modders, not for play. Nothing links: find things by name.
+
+**Start slow motion** (e.g. RSQ Tactical Rig's cigarette):
+
+```
+EventHandler.SendNetworkEvent("rsqsm_start:<who>", ms, speedPct, flags);
+```
+
+From the one machine that decided it (a hand gesture, a local test). `<who>` is your trigger's name (shown in
+the Debug Log); `ms` the hold (0 = 4 s); `speedPct` the world's speed in percent, 5-100 (0 = the player's
+World Speed slider); `flags` 1 = automatic (waits out the cooldown), 0 = deliberate (never held back). Both need the
+*Other / Unknown Mods* row on. It eases in and out on the player's ramps. A held toggle outranks it.
+
+From synced play code (the same on every machine), the service does the same and answers 1 let in, 0 refused:
+
+```
+let it = ServiceIterator.Find("RSQSM_Service"); let s = it.Next();
+if (s) s.GetInt("start", "<who>", ms, speed);        // speed 0.05-1.0, 0 = the slider; "start.auto" = automatic
+```
+
+**Read it:** `RSQSM_Service` `GetInt` answers -1 when the clock is not running: `adrenaline.add` (intArg = amount),
+`adrenaline` (0..100), `slowmo.active` / `active` (1 while slowing or easing), `running` (1 while held or
+pulsing), `scale` (world speed in permille).
+
+**RS_SlowMo's old doors still work:** `rsm_toggle`, `rsm_on`, `rsm_off`, `rsm_pulse <hold ms> <speed %>`
+(deeper wins, longer wins). An `rsm_pulse` carries no name, so SlowMo tells the series' callers apart by what
+they send (clock.zs ResolvePulses): Melee's shove, the cigarette, a Saber parry and a ShieldSaw block are
+deliberate; Miniboss, Score, Gun Bonsai VR and anything else are automatic. Each has its row on *Triggers*.
+`rsm_toggle 1` is the wrist cross, `rsm_toggle 2` the key; a bare `rsm_toggle` is RSQ Accessibility's button
+while that mod is loaded, else the key. `rsm_on` is the Wheel's.
