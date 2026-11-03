@@ -1404,6 +1404,10 @@ Line 2); Scorpion: an imp yanked from 400 arrives and the glove punches it 60 ->
 
 ### 4.7 Distance Grab (Long Arm, Iron Grip, Heavy Hitter, Air Catch, Powder Keg; Dead Eye, Heavy Lift, Straight Pull, Body Shield approved; Corpse Grab, Catch, Pull Small struck)
 
+**DROPPED 11-03 (owner: "Distance Grab should not be a tree. It's a needed player thing. Imagine if Half-Life Alyx made you
+level up the gravity gloves?").** None of these nodes is offered; the grab no longer asks the patch for them (its Body
+Shield row rules again). The table below is what was built on 11-02 and is kept for the record; the classes stay for saves.
+
 **Base numbers** (README): reach 512 units (15 m), aim 12 deg, throw aim assist 12 deg, two-hand lift x2.0,
 barrel blast at 4 m/s, pull gravity off, body shield on.
 
@@ -1450,11 +1454,9 @@ level, 2 s smoke, then 6 s of slow motion at 25%; ammo count on holsters (option
 | Quick Draw (exists) | root (player) | 1-5: the gun just drawn hits +10% a level for 1 s + 0.25 s a level | GBOVR | - | `quick.draw` |
 | Pair Draw (exists) | Quick Draw 1 | 1-3: a pair draw: both hands +8% a level for 2 s + 0.5 s a level | GBOVR | - | `pair.draw` |
 | Showdown (exists; needs SlowMo) | Quick Draw 2 | 1-3: a kill with the just-drawn gun inside 2 s pulses slow motion 0.3 + 0.15 lv s | GBOVR asks SlowMo | SlowMo's own | `showdown` |
-| Ammo Readout (new) | root | 1: the small digits above each full holster (today's option) | Rig | the digits (exist) | - |
 | Gun Toss (exists as a feature; levels new) | root | 1-3: a thrown gun hurts x1.0 -> 1.5, 2.0, 2.5 and staggers 10 lv tics longer | Rig (`Thrown Gun Damage` as base x level) | - | `gun.toss` |
 | Boomerang Gun (new) | Gun Toss 2 | 1: a thrown gun that hits a monster flies back to the holster it came from (2: to your hand) | Rig | the gun's return arc | `boomerang.gun` |
-| Keys by Hand (exists as an option; becomes the unlock) | root | 1: grip the keyring, touch the keys to a locked door | Rig | - | - |
-| Smoker (exists as an option; becomes the unlock) | root | 1: the cigarette pocket and its ritual, 3 a level; the smoke's 6 s slow motion as today | Rig | - | `smoke` |
+| Smoker (**11-03:** the cigarette is yours from the start; this levels it) | root | 1-3: the flick's slow motion 6 s -> 8, 10, 12, and nothing can hurt you while it runs | Rig | - | `smoke` |
 | Chain Smoker (new) | Smoker 1 | 1-3: pack 3 -> 4, 5, 6 a level | Rig (`Pack Size` as base + level) | - | - |
 | LaserSight: Target Lock (exists as a LaserSight feature, on; under GBOVR an unlock) | Quick Draw 1 | 1: the dot grows and pulses on a live monster; 2: the dot's colour changes on a monster | LaserSight (reads the level by name; without GBOVR as today) | the dot (exists) | - |
 | LaserSight: Headshot Reaction (exists as an option; under GBOVR an unlock) | Target Lock 1 | 1: the top fifth of a monster turns the dot the headshot colour (pulse on); 2: and a hit there counts as a Headshot for Critical Hits level 2 | LaserSight; GBOVR reads it | the dot (exists) | `headshot.cue` |
@@ -1476,7 +1478,7 @@ into the hand; a 10 gun hit did 10 without the dot or at Headshot Reaction 1, 25
 x2.5). Not provable headless: the laser's look, the ammo digits, the keys at a door, the cigarette ritual, a real
 gun throw and its flight home.
 
-**Counts:** 11 nodes, 3 exist as upgrades, 8 new (4 of them existing features or options made unlocks).
+**Counts:** 9 nodes (11-03: Ammo Readout and Keys by Hand dropped -- the owner: menu rows, never unlocks; Smoker is 1-3, no longer an unlock).
 
 ### 4.9 SlowMo (all ten approved)
 
@@ -1486,9 +1488,9 @@ automatic triggers wait a 25 s cooldown.
 
 | Node | Parent | Levels | Owns | Art | Score |
 |---|---|---|---|---|---|
-| Slow Motion (new: the unlock) | root (player) | 1: the key and the wrist cross work under GBOVR (other mods' pulses still fire; a pulse is theirs). Without GBOVR the mod is as today | SlowMo (reads `plevel` by name) | - | - |
-| Longer (new) | Slow Motion 1 | 1-3: the burst 4 -> 5, 6, 8 s; the meter's capacity +25% a level | SlowMo | - | - |
-| Deeper (new) | Slow Motion 1 | 1-3: world speed 0.5 at level 0 under GBOVR -> 0.35, 0.25 (today's), 0.1 | SlowMo | colour drain deepens with it | - |
+| ~~Slow Motion (the unlock)~~ | - | **DROPPED 11-03** (owner: the key and the wrist cross work from the start, "button press for X base seconds"; upgrade paths on top) | - | - | - |
+| Longer (new) | root (player) | 1-3: the burst 4 -> 5, 6, 8 s; the meter's capacity +25% a level | SlowMo | - | - |
+| Deeper (new) | root (player) | 1-3: world speed 0.5 at level 0 under GBOVR -> 0.35, 0.25 (today's), 0.1 | SlowMo | colour drain deepens with it | - |
 | Cheaper (new) | Longer 1 | 1-3: with the meter on, slow motion costs 20% less a level | SlowMo | - | - |
 | Marksman (exists) | Deeper 1 | 1-5: +8% a level to everything hit while slowed | GBOVR | - | - |
 | Dodger (exists) | Deeper 1 | 1-4: take 8% less a level while slowed | GBOVR | - | - |
@@ -1559,10 +1561,9 @@ gun-hand nodes on either glove; Return Crack = damage; Spartan's second hit; cor
 Everything offered at a player level-up (Gun Bonsai's own way: 4 random picks from the suitable pool; the owner
 accepts the dilution and prunes stock instead):
 
-- **Unlocks:** Slow Motion, Grapple, Momentum (grapple), Force Sensitive, Two Sabers, Double-Bladed, Smoker,
-  Keys by Hand, Human Shield, Lasso, Snag, Body Shield, Taunt, Critical Hits. (Saber and Whip unlocks sit on
+- **Unlocks:** Grapple, Momentum (grapple), Force Sensitive, Two Sabers, Double-Bladed, Human Shield, Lasso, Snag, Taunt, Critical Hits (11-03: Slow Motion and Body Shield dropped). (Saber and Whip unlocks sit on
   their weapon's record, not the player's: they are listed here only because they gate a whole branch.)
-- **Perks:** Guard, Evasion, Critical Hits' Headshot and Backstab; SlowMo's 9; Grapple's 13; Distance Grab's 8;
+- **Perks:** Guard, Evasion, Critical Hits' Headshot and Backstab; SlowMo's 9; Grapple's 13; (Distance Grab: none, 11-03);
   Gunslinger's 10; Kill Rewards' 4. About 45 of ours.
 - **Stock, shown:** Bandoliers, Blast Shaping, ECM, Hazard Suit, Tough As Nails. **Stock, hidden:** Intuition,
   Juggler, Player Damage, Thorns.

@@ -85,16 +85,14 @@ class RSQ_GrabPerk : RSQ_Perk
 	}
 }
 
-// THE DISTANCE GRAB TREE (GBOVR_TREES.md 4.7): each node after its parent
+// THE DISTANCE GRAB TREE (GBOVR_TREES.md 4.7) -- DROPPED (owner, 11-03: "Distance Grab should not be a tree. It's a needed
+// player thing. Imagine if Half-Life Alyx made you level up the gravity gloves"). None of its nodes is offered any more
+// and the grab no longer reads them; the classes stay for saves that hold them.
 class RSQ_GrabTreePerk : RSQ_GrabPerk
 {
 	virtual String Parent() { return ""; }
 	virtual int ParentLevel() { return 1; }
-	override bool IsSuitableForPlayer(TFLV_PerPlayerStats stats)
-	{
-		String pa = Parent();
-		return Super.IsSuitableForPlayer(stats) && (pa == "" || PHas(stats, pa, ParentLevel()));
-	}
+	override bool IsSuitableForPlayer(TFLV_PerPlayerStats stats) { return false; }
 }
 
 // LONG ARM: the grab reaches 15% further a level.
@@ -313,8 +311,9 @@ class RSQ_RigTreePerk : RSQ_RigPerk
 		return Super.IsSuitableForPlayer(stats) && (pa == "" || PHas(stats, pa, ParentLevel()));
 	}
 }
-// AMMO READOUT (root, the unlock): the small digits above each full holster (the rig's Ammo Count row under this patch).
-class RSQ_Upgrade_AmmoReadout : RSQ_RigTreePerk { override int Cap() { return 1; } }
+// AMMO READOUT and KEYS BY HAND: no longer offered (owner, 11-03: the rig's Ammo Count and Keys to Doors are menu rows,
+// never unlocks). The classes stay for saves that hold them; the rig no longer reads them.
+class RSQ_Upgrade_AmmoReadout : RSQ_RigTreePerk { override int Cap() { return 1; } override bool IsSuitableForPlayer(TFLV_PerPlayerStats stats) { return false; } }
 // GUN TOSS (root): a thrown gun hurts x1.5, 2.0, 2.5 and staggers 10 tics a level longer.
 class RSQ_Upgrade_GunToss : RSQ_RigTreePerk
 {
@@ -328,10 +327,15 @@ class RSQ_Upgrade_BoomerangGun : RSQ_RigTreePerk
 	override int ParentLevel() { return 2; }
 	override int Cap() { return 2; }
 }
-// KEYS BY HAND (root, the unlock): grip the keyring, touch the keys to a locked door (the rig's Keys to Doors row).
-class RSQ_Upgrade_KeysByHand : RSQ_RigTreePerk { override int Cap() { return 1; } }
-// SMOKER (root, the unlock): the cigarette pocket and its ritual, and the slow motion after (the rig's Cigarettes row).
-class RSQ_Upgrade_Smoker : RSQ_RigTreePerk { override int Cap() { return 1; } }
+class RSQ_Upgrade_KeysByHand : RSQ_RigTreePerk { override int Cap() { return 1; } override bool IsSuitableForPlayer(TFLV_PerPlayerStats stats) { return false; } }
+// SMOKER (root, 1-3; owner, 11-03: the cigarette is yours from the start, "if you level it up at all it should extend
+// given slowmo and also allow godmode during it"): the flick's slow motion runs 2 s longer a level (6 -> 8, 10, 12) and
+// nothing can hurt you while it does (the rig's cig.zs).
+class RSQ_Upgrade_Smoker : RSQ_RigTreePerk
+{
+	override int Cap() { return 3; }
+	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("secs", string.format("%d", 6 + 2 * level)); }
+}
 // CHAIN SMOKER (after Smoker 1): the pack 3 -> 4, 5, 6.
 class RSQ_Upgrade_ChainSmoker : RSQ_RigTreePerk
 {
@@ -366,7 +370,7 @@ class RSQ_SlowPerk : RSQ_Perk
 // THE SLOWMO TREE (GBOVR_TREES.md 4.9): each node after its parent. RSQ SlowMo reads the levels by name (its clock).
 class RSQ_SlowTreePerk : RSQ_SlowPerk
 {
-	virtual String Parent() { return "SlowMotion"; }
+	virtual String Parent() { return ""; }   // (11-03: Slow Motion is no unlock; Longer and Deeper are roots)
 	virtual int ParentLevel() { return 1; }
 	override bool IsSuitableForPlayer(TFLV_PerPlayerStats stats)
 	{
@@ -376,7 +380,9 @@ class RSQ_SlowTreePerk : RSQ_SlowPerk
 }
 // SLOW MOTION (the unlock, root): your own key, wrist cross, burst and accessibility button start slow motion only once
 // this is learned (other mods' pulses still fire).
-class RSQ_Upgrade_SlowMotion : RSQ_SlowTreePerk { override String Parent() { return ""; } override int Cap() { return 1; } }
+// SLOW MOTION, the unlock of your own key (11-02): DROPPED (owner, 11-03: the key works from the start, "button press for X
+// base seconds"). Never offered; the class stays for saves. SlowMo's clock no longer reads it.
+class RSQ_Upgrade_SlowMotion : RSQ_SlowTreePerk { override String Parent() { return ""; } override int Cap() { return 1; } override bool IsSuitableForPlayer(TFLV_PerPlayerStats stats) { return false; } }
 // LONGER (after Slow Motion): the burst 4 -> 5, 6, 8 s; a full meter lasts 25% longer a level.
 class RSQ_Upgrade_Longer : RSQ_SlowTreePerk
 {
