@@ -922,16 +922,24 @@ class RSQDG_Flight : EventHandler
 
 	// At launch: the time of flight from the distance, and the arc this route
 	// allows. All of it from rs_distance.zs RS_Pull.Start.
+	// how hard the flick that launched this pull was, over the threshold (grab.zs Resolve sets it before Launch; 0 for a
+	// launch with no flick): STRAIGHT PULL flattens a pull flicked at twice the threshold or more
+	double flickRatio;
+
 	private void StartPath(int hand, Actor a, Vector3 palm, PlayerInfo p)
 	{
 		Vector3 mid0 = MidOf(a);
 		double dist = (mid0 - palm).Length();
-		double upt = max(0.1, RSQDG_Reach.MetresToUnits(RSQDG_Reach.Num("rsqdg_path_speed", p, 15.0)) / TICRATE);
+		int sp = RSQDG_Perks.Level("StraightPull", p);
+		// STRAIGHT PULL 2 (Gun Bonsai VR): pulls 25% faster
+		double upt = max(0.1, RSQDG_Reach.MetresToUnits(RSQDG_Reach.Num("rsqdg_path_speed", p, 15.0) * (sp >= 2 ? 1.25 : 1.0)) / TICRATE);
 		double lo = max(1.0, RSQDG_Reach.Num("rsqdg_path_tmin", p, 6.0));
 		double hi = max(lo, RSQDG_Reach.Num("rsqdg_path_tmax", p, 70.0));
 		flyTotal[hand] = int(clamp(dist / upt, lo, hi));
 		flyFrom[hand] = mid0;
 		double want = dist * RSQDG_Reach.Num("rsqdg_path_arc", p, 0.15);
+		if (sp >= 1 && flickRatio >= 2.0) want = 0;	// STRAIGHT PULL (Gun Bonsai VR): a hard flick flies straight
+		flickRatio = 0;
 		double cap = MeasureArc(a, mid0, palm);
 		flyArcH[hand] = (cap < 0.0) ? want : min(want, cap);
 		a.Vel = (0, 0, 0);

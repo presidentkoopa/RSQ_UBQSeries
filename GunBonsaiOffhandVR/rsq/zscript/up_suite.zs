@@ -85,15 +85,28 @@ class RSQ_GrabPerk : RSQ_Perk
 	}
 }
 
+// THE DISTANCE GRAB TREE (GBOVR_TREES.md 4.7): each node after its parent
+class RSQ_GrabTreePerk : RSQ_GrabPerk
+{
+	virtual String Parent() { return ""; }
+	virtual int ParentLevel() { return 1; }
+	override bool IsSuitableForPlayer(TFLV_PerPlayerStats stats)
+	{
+		String pa = Parent();
+		return Super.IsSuitableForPlayer(stats) && (pa == "" || PHas(stats, pa, ParentLevel()));
+	}
+}
+
 // LONG ARM: the grab reaches 15% further a level.
-class RSQ_Upgrade_LongArm : RSQ_GrabPerk
+class RSQ_Upgrade_LongArm : RSQ_GrabTreePerk
 {
 	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("r", AsPercentIncrease(1.0 + 0.15 * level)); }
 }
 
 // IRON GRIP: heavier things come to the hand easier (+50% a level) and weigh you down less (+25%).
-class RSQ_Upgrade_IronGrip : RSQ_GrabPerk
+class RSQ_Upgrade_IronGrip : RSQ_GrabTreePerk
 {
+	override String Parent() { return "LongArm"; }
 	override void GetTooltipFields(Dictionary fields, uint level)
 	{
 		fields.Insert("kg", AsPercentIncrease(1.0 + 0.5 * level));
@@ -103,8 +116,9 @@ class RSQ_Upgrade_IronGrip : RSQ_GrabPerk
 
 // HEAVY HITTER: a thrown thing hits 15% harder a level, and a heavy one leaves the hand faster
 // (the arm counts 25% heavier a level in the grab's own arm/(arm + kg) throw).
-class RSQ_Upgrade_HeavyHitter : RSQ_GrabPerk
+class RSQ_Upgrade_HeavyHitter : RSQ_GrabTreePerk
 {
+	override String Parent() { return "IronGrip"; }
 	override int Cap() { return 5; }
 	static double Mult(uint lv) { return 1.0 + 0.15 * lv; }
 	override double ModifyDamageDealt(Actor pawn, Actor shot, Actor target, double damage, Name attacktype)
@@ -116,8 +130,9 @@ class RSQ_Upgrade_HeavyHitter : RSQ_GrabPerk
 
 // AIR CATCH: the catch window is 25% wider a level, and a thing caught back out of the air and
 // thrown again hits 20% harder a level.
-class RSQ_Upgrade_AirCatch : RSQ_GrabPerk
+class RSQ_Upgrade_AirCatch : RSQ_GrabTreePerk
 {
+	override String Parent() { return "HeavyHitter"; }
 	static double Mult(uint lv) { return 1.0 + 0.20 * lv; }
 	override double ModifyDamageDealt(Actor pawn, Actor shot, Actor target, double damage, Name attacktype)
 	{
@@ -133,8 +148,9 @@ class RSQ_Upgrade_AirCatch : RSQ_GrabPerk
 
 // POWDER KEG: the blast of a barrel a throw set off -- and of the barrels that blast sets off --
 // hits 15% harder a level.
-class RSQ_Upgrade_PowderKeg : RSQ_GrabPerk
+class RSQ_Upgrade_PowderKeg : RSQ_GrabTreePerk
 {
+	override String Parent() { return "HeavyHitter"; }
 	override int Cap() { return 5; }
 	static double Mult(uint lv) { return 1.0 + 0.15 * lv; }
 	override double ModifyDamageDealt(Actor pawn, Actor shot, Actor target, double damage, Name attacktype)
@@ -142,6 +158,42 @@ class RSQ_Upgrade_PowderKeg : RSQ_GrabPerk
 		return Blast(pawn, shot) ? damage * Mult(level) : damage;
 	}
 	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("mult", AsPercentIncrease(Mult(level))); }
+}
+
+// DEAD EYE (after Heavy Hitter 2): throw aim assist 12 -> 16, 20, 24 degrees. (RSQDG_Hold.Assist)
+class RSQ_Upgrade_DeadEye : RSQ_GrabTreePerk
+{
+	override String Parent() { return "HeavyHitter"; }
+	override int ParentLevel() { return 2; }
+	override int Cap() { return 3; }
+	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("deg", string.format("%d", 12 + 4 * level)); }
+}
+
+// HEAVY LIFT (after Iron Grip 2): two palms make a thing x2.0 -> 2.5, 3.0, 3.5 lighter. (RSQDG_Hold.EffKg)
+class RSQ_Upgrade_HeavyLift : RSQ_GrabTreePerk
+{
+	override String Parent() { return "IronGrip"; }
+	override int ParentLevel() { return 2; }
+	override int Cap() { return 3; }
+	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("x", string.format("x%.1f", 2.0 + 0.5 * level)); }
+}
+
+// STRAIGHT PULL (after Long Arm 2): 1 a pull you flick hard (twice the flick threshold) flies straight, no arc; 2 pulls are
+// 25% faster. (RSQDG_Flight.StartPath)
+class RSQ_Upgrade_StraightPull : RSQ_GrabTreePerk
+{
+	override String Parent() { return "LongArm"; }
+	override int ParentLevel() { return 2; }
+	override int Cap() { return 2; }
+}
+
+// BODY SHIELD (the unlock, after Iron Grip 1): 1 a held corpse or barrel stops shots and fireballs, and what it stops hurts
+// it (a barrel can go off in your hands; a corpse wears out); 2 a corpse lasts 50% more; 3 a fireball it stops goes back at
+// its shooter. Under this patch it replaces RSQ Distance Grab's Body Shield row. (RSQDG_Perks.Shield, RSQDG_Hold)
+class RSQ_Upgrade_BodyShield : RSQ_GrabTreePerk
+{
+	override String Parent() { return "IronGrip"; }
+	override int Cap() { return 3; }
 }
 
 // ---- PLAYER: RSQ TACTICAL RIG ----------------------------------------------------------------

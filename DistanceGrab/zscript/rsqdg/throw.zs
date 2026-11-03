@@ -36,14 +36,23 @@ class RSQDG_Throw : EventHandler
 {
 	// Gun Bonsai VR patch perks (RSQDG_Perks): levels per player, refreshed once a second
 	transient int pkTic[MAXPLAYERS], pkReach[MAXPLAYERS], pkGrip[MAXPLAYERS], pkHeave[MAXPLAYERS], pkCatch[MAXPLAYERS];
+	// GBOVR_TREES.md 4.7 (11-02): Dead Eye, Heavy Lift, Straight Pull, Body Shield (an unlock: pkOn says the patch answers)
+	transient int pkEye[MAXPLAYERS], pkLift[MAXPLAYERS], pkStraight[MAXPLAYERS], pkShield[MAXPLAYERS];
+	transient bool pkOn;
 	void RefreshPerks(int pn, Actor pawn)
 	{
 		if (pkTic[pn] > 0 && level.maptime < pkTic[pn] && level.maptime >= pkTic[pn] - 35) return;
 		pkTic[pn] = level.maptime + 35;
 		pkReach[pn] = 0; pkGrip[pn] = 0; pkHeave[pn] = 0; pkCatch[pn] = 0;
+		pkEye[pn] = 0; pkLift[pn] = 0; pkStraight[pn] = 0; pkShield[pn] = 0;
 		let it = ServiceIterator.Find("RSQ_MeleeUpgradeService");
 		let svc = it.Next();
+		pkOn = svc != null;
 		if (!svc) return;
+		pkEye[pn]      = max(0, svc.GetInt("plevel", "DeadEye", 0, 0, pawn));
+		pkLift[pn]     = max(0, svc.GetInt("plevel", "HeavyLift", 0, 0, pawn));
+		pkStraight[pn] = max(0, svc.GetInt("plevel", "StraightPull", 0, 0, pawn));
+		pkShield[pn]   = max(0, svc.GetInt("plevel", "BodyShield", 0, 0, pawn));
 		pkReach[pn] = max(0, svc.GetInt("plevel", "LongArm", 0, 0, pawn));
 		pkGrip[pn]  = max(0, svc.GetInt("plevel", "IronGrip", 0, 0, pawn));
 		pkHeave[pn] = max(0, svc.GetInt("plevel", "HeavyHitter", 0, 0, pawn));

@@ -193,7 +193,12 @@ port.
   (and the idle beam's far end) points from the smoothed hand; throws, catches, the carry and the palm gate
   stay on the raw hand. Steady Hands off: as before. Rumble Strength scales the grab's rumble x0 to x2 (0 =
   none; the pulse route's fixed buzz is only switched off at 0). Shared settings only act with it loaded.
-- **Gun Bonsai VR patch:** its grab perks (Long Arm, Iron Grip and others) grow this mod's settings.
+- **Gun Bonsai VR patch:** its grab perks grow this mod's settings, as a tree (GBOVR_TREES.md 4.7): Long Arm ->
+  Iron Grip -> Heavy Hitter -> Air Catch, Powder Keg; **Dead Eye** (after Heavy Hitter 2: throw aim assist 16 / 20 /
+  24 degrees), **Heavy Lift** (after Iron Grip 2: two palms x2.5 / 3.0 / 3.5 lighter), **Straight Pull** (after Long
+  Arm 2: a pull flicked hard flies straight; 2: pulls 25% faster), **Body Shield** (after Iron Grip: an unlock that
+  replaces the Body Shield row under the patch; a held corpse now wears out -- twice its spawn health, 60 at least,
+  then it falls apart; 2: half again; 3: a fireball it stops goes back at its shooter).
 
 ## Known limits / open issues
 

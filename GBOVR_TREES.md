@@ -1365,6 +1365,25 @@ barrel blast at 4 m/s, pull gravity off, body shield on.
 | Straight Pull (new) | Long Arm 2 | 1: a pull flies straight, no sag (Pull Gravity off is the default; this node makes WorldHands' arc a straight line for a pull you flick hard); 2: pulls are 25% faster | Distance Grab | - | - |
 | Body Shield (exists as an option; becomes the unlock) | Iron Grip 1 | 1: a held corpse or barrel stops shots and fireballs; **what it stops hurts it, so a barrel can go off in your hands** (owner, 11-02); 2: a corpse lasts 50% more; 3: a shot it stops is turned back | Distance Grab | - | `body.shield` |
 
+**BUILT 11-02 (L3), the whole Distance Grab tree.** Gun Bonsai VR (`up_suite.zs`): `RSQ_GrabTreePerk` (a parent each); the
+five that existed on the tree's parents; Dead Eye, Heavy Lift, Straight Pull, Body Shield. Distance Grab: the four new
+levels in `RSQDG_Throw`'s perk cache (`RSQDG_Perks.Level`, `Shield`, `PatchOn`); Dead Eye in `Assist` (+4 degrees a
+level, the row's 0 still off); Heavy Lift in the new `RSQDG_Hold.TwoHandK`; Straight Pull in `StartPath` (the arc zeroed
+for a flick at twice `rsqdg_flick_deg` or more -- grab.zs passes the ratio as `flickRatio`; level 2 the path speed
+x1.25); Body Shield replacing the row under the patch, and **a held corpse wears out** (owner: "what it stops hurts
+it"): given BUDDHA and 1000 health while held so hits register, its wear counted in `WorldThingDamaged`, spent it falls
+apart the next tic (`BreakSpent`), let go early it is given its death back (`worn`); level 3 turns a stopped fireball
+at its shooter in `ShieldTick`. **Calls made here:** a corpse's durability is twice its spawn health, at least 60
+(the tree gave no number); "a pull you flick hard" read as twice the flick threshold. **Headless 11-02** (`fp_dg`,
+`fp_dgassist` through `Assist` with MAP01's monsters cleared, `fp_dgpull` through the flight's own `Launch`,
+`fp_dgshield` through the hold's own `Take` and real hits): offers follow the parents; an imp 14 degrees off the
+throw: straight at Dead Eye 0, bent onto it at 1, one 20 off left straight; two hands x2.0 -> x3.0 (Heavy Lift 2); a
+300-unit pull: arc 75, then 0 for a x2.5 flick at Straight Pull 1 (75 still for a x1.2 flick), 14 -> 11 tics at 2;
+no shield before Body Shield, then a zombieman corpse took 60 and fell apart on the second 30 hit, 90 at level 2 (fell
+apart on the third), and let go after two hits it was a plain corpse again (health 0, no BUDDHA). Not provable
+headless: Body Shield 3's turned fireball (it needs a fireball crossing a held thing in a hand), a real flick and a
+real two-hand lift.
+
 **Counts:** 9 nodes, 5 exist, 4 new.
 
 ### 4.8 Tactical Rig: Gunslinger (Quick Draw, Pair Draw, Showdown; Ammo Readout, Gun Toss, Boomerang Gun, Keys by Hand, Smoker, Chain Smoker approved; Holsters-as-unlock, Quartermaster, Long Drag struck)

@@ -45,6 +45,11 @@
 class RSQDG_Hold : EventHandler
 {
 	private Actor held[2];
+	// BODY SHIELD under the patch: how much more a held corpse can take, and what it was before
+	int shieldLeft[2], savedHealth[2];
+	bool savedBuddha[2], savedNoPain[2];
+	bool worn[2];			// this hand's corpse was given the patch's durability (and must be given back its death)
+	Actor spent[2];			// worn out: falls apart at the next tic (never inside its own damage)
 
 	// ---- the borrowed state, one owner --------------------------------------
 	//
@@ -183,7 +188,23 @@ class RSQDG_Hold : EventHandler
 		// A BODY SHIELD (owner 2026-10-31): a held corpse stops bullets. A corpse is not shootable; while it is held it
 		// is, and with its health at or below 0 DamageMobj does nothing to it -- the bullet just stops there. A barrel
 		// is shootable already (and goes off when it is hit, held or not). Fireballs: ShieldTick.
-		if (Shieldy(a) && a.Health <= 0 && RSQDG_Reach.Flag("rsqdg_body_shield", p, true)) a.bSHOOTABLE = true;
+		if (Shieldy(a) && a.Health <= 0 && RSQDG_Perks.Shield(p) >= 1) a.bSHOOTABLE = true;
+		// BODY SHIELD under the Gun Bonsai VR patch (owner 11-02: "what it stops hurts it"): a held corpse wears out. It is
+		// given its spawn health twice over (60 at least; Body Shield 2 half again), held up by BUDDHA, and what it stops
+		// takes that down (WorldThingDamaged); spent, it falls apart. Without the patch a corpse stops shots for ever.
+		shieldLeft[hand] = 0;
+		worn[hand] = false;
+		if (a.bCORPSE && a.Health <= 0 && RSQDG_Perks.PatchOn() && RSQDG_Perks.Shield(p) >= 1)
+		{
+			worn[hand] = true;
+			savedHealth[hand] = a.Health;
+			savedBuddha[hand] = a.bBUDDHA;
+			savedNoPain[hand] = a.bNOPAIN;
+			shieldLeft[hand] = int(max(60, 2 * a.SpawnHealth()) * (RSQDG_Perks.Shield(p) >= 2 ? 1.5 : 1.0));
+			a.Health = 1000;
+			a.bBUDDHA = true;
+			a.bNOPAIN = true;
+		}
 
 		// Weightless while carried, pass-through so it does not fight your own
 		// collision cylinder, and not collectable by walking over your own hand.
@@ -303,6 +324,16 @@ class RSQDG_Hold : EventHandler
 
 	private void Forget(int hand)
 	{
+		// a worn corpse goes back to being dead
+		let a = held[hand];
+		if (a && worn[hand])
+		{
+			a.Health = savedHealth[hand];
+			a.bBUDDHA = savedBuddha[hand];
+			a.bNOPAIN = savedNoPain[hand];
+		}
+		worn[hand] = false;
+		shieldLeft[hand] = 0;
 		held[hand] = null;
 		SwingForget(hand);
 		two[hand] = false;
@@ -460,6 +491,7 @@ class RSQDG_Hold : EventHandler
 
 	override void WorldTick()
 	{
+		BreakSpent();
 		let p = players[consoleplayer];
 		if (!p || !p.mo) { DropAll(); return; }
 		let pmo = p.mo;
@@ -707,8 +739,15 @@ class RSQDG_Hold : EventHandler
 	private double EffKg(int h, Actor a, PlayerInfo p) const
 	{
 		double kg = RSQDG_Mass.Kg(a);
-		if ((h == 0 || h == 1) && two[h]) kg /= max(1.0, RSQDG_Reach.Num("rsqdg_two_hand", p, 2.0));
+		if ((h == 0 || h == 1) && two[h]) kg /= TwoHandK(p);
 		return kg;
+	}
+
+	// how many times lighter two palms make a thing: the Two Hands row, and HEAVY LIFT (Gun Bonsai VR) 0.5 more a level
+	// (x2.0 -> 2.5, 3.0, 3.5)
+	static double TwoHandK(PlayerInfo p)
+	{
+		return max(1.0, RSQDG_Reach.Num("rsqdg_two_hand", p, 2.0) + 0.5 * RSQDG_Perks.Level("HeavyLift", p));
 	}
 
 	// The other hand is empty and its palm is on the thing: within its body plus a quarter metre.
@@ -731,6 +770,7 @@ class RSQDG_Hold : EventHandler
 	static Vector3 Assist(PlayerInfo p, Actor a, Vector3 v)
 	{
 		double cone = RSQDG_Reach.Num("rsqdg_throw_assist", p, 12.0);
+		if (cone > 0) cone += 4.0 * RSQDG_Perks.Level("DeadEye", p);	// DEAD EYE (Gun Bonsai VR): 12 -> 16, 20, 24 degrees
 		double hs = v.xy.Length();
 		if (cone <= 0 || hs < 0.5 || !p.mo) return v;
 		double heading = VectorAngle(v.x, v.y);
@@ -787,9 +827,35 @@ class RSQDG_Hold : EventHandler
 			if (!flying[k] || !flying[k].bMISSILE) flying.Delete(k);
 	}
 
+	// a held corpse's wear (Body Shield under the patch): every hit it takes comes off what is left; spent, it falls apart
+	override void WorldThingDamaged(WorldEvent e)
+	{
+		for (int h = 0; h < 2; h++)
+		{
+			if (!held[h] || e.Thing != held[h] || shieldLeft[h] <= 0) continue;
+			shieldLeft[h] -= max(e.Damage, 1);
+			RSQDG_Events.Tell("hold.wear", h, held[h]);
+			if (shieldLeft[h] <= 0) spent[h] = held[h];
+		}
+	}
+	// a worn-out corpse: let go of it and it falls apart (WorldTick, the tic after the hit that spent it)
+	private void BreakSpent()
+	{
+		for (int h = 0; h < 2; h++)
+		{
+			Actor a = spent[h];
+			spent[h] = null;
+			if (!a) continue;
+			if (held[h] == a) Drop(h);
+			for (int i = 0; i < 4; i++) a.SpawnBlood(a.Pos + (frandom[RSQDG_Shield](-8, 8), frandom[RSQDG_Shield](-8, 8), a.Height * 0.5), random[RSQDG_Shield](0, 359), 20);
+			a.A_StartSound("misc/gibbed", CHAN_AUTO);
+			a.Destroy();
+		}
+	}
+
 	private void ShieldTick(PlayerPawn pmo, PlayerInfo p, int h, Actor a)
 	{
-		if (!Shieldy(a) || !RSQDG_Reach.Flag("rsqdg_body_shield", p, true)) return;
+		if (!Shieldy(a) || RSQDG_Perks.Shield(p) < 1) return;
 		if (savedShoot[h] && a.Health <= 0) return;   // a barrel that went off: its own blast is not stopped
 		let def = GetDefaultByType(a.GetClass());
 		double r = max(savedRadius[h], 14.0);
@@ -824,6 +890,16 @@ class RSQDG_Hold : EventHandler
 			m.SetOrigin((hx[i], hy[i], hz[i]), false);
 			Actor src = m.target;
 			if (a && a.bSHOOTABLE && a.Health > 0) a.DamageMobj(m, src, max(1, m.GetMissileDamage(7, 1)), m.DamageType);
+			// BODY SHIELD 3 (Gun Bonsai VR): the shot it stopped goes back at whoever fired it, as yours
+			if (m && src && src.health > 0 && src != pmo && RSQDG_Perks.Level("BodyShield", p) >= 3)
+			{
+				double sp = m.Vel.Length();
+				Vector3 to = (src.Pos + (0, 0, src.Height * 0.5)) - m.Pos;
+				if (to.Length() > 1) { m.Vel = to.Unit() * sp; m.angle = VectorAngle(to.x, to.y); m.target = pmo; }
+				let sc = ServiceIterator.Find("RS_ScoreService").Next();
+				if (sc) sc.GetInt("touch", "body.shield", pmo.PlayerNumber(), 0, src);
+				continue;
+			}
 			if (m) m.ExplodeMissile(null, a);
 			RSQDG_Events.Tell("hold.block", h, a);
 		}

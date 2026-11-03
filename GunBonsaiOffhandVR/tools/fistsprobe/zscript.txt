@@ -98,6 +98,8 @@ class FistsProbe : EventHandler
 	// a kind set off among imps: when, which kind, the imps, whether each lost its target at some point
 	int gkAt, gkKind;
 	int gnCookAt;
+	Actor dgCorpse;
+	int dgHits, dgNext, dgDone;
 	Array<Actor> gkImps;
 	Array<int> gkLost, gkH0;
 	override void WorldTick()
@@ -127,6 +129,24 @@ class FistsProbe : EventHandler
 			Console.Printf("FP grenade bomblets went off: the Baron %d -> %d", gnBaronH0, gnBaron ? gnBaron.health : -1);
 			if (gnBaron) gnBaron.Destroy();
 			gnAt = 0;
+		}
+		if (dgNext > 0 && t >= dgNext)
+		{
+			let hd = RSQDG_Hold.Get();
+			if (!dgCorpse) { Console.Printf("FP grab shield: after hit %d the corpse FELL APART (hand full %d)", dgDone, hd ? hd.HandIsFull(0) : -1); dgNext = 0; dgDone = 0; }
+			else if (dgDone >= dgHits)
+			{
+				if (hd && hd.HandIsFull(0)) hd.Drop(0);
+				Console.Printf("FP grab shield: let go after %d hits -- health %d, buddha %d", dgDone, dgCorpse.health, dgCorpse.bBUDDHA);
+				dgCorpse.Destroy(); dgNext = 0; dgDone = 0;
+			}
+			else
+			{
+				dgCorpse.DamageMobj(p, p, 30, 'None');
+				dgDone++;
+				if (dgCorpse) Console.Printf("FP grab shield: hit %d, health %d, %d left", dgDone, dgCorpse.health, hd ? hd.shieldLeft[0] : -1);
+				dgNext = t + 1;
+			}
 		}
 		if (gnCookAt > 0 && t == gnCookAt)
 		{
@@ -676,6 +696,65 @@ class FistsProbe : EventHandler
 			for (int hand = 0; hand < 2; hand++) if (core.hooks[hand]) { core.hooks[hand].Destroy(); core.hooks[hand] = null; }
 			p.vel = (0, 0, 0);
 		}
+		else if (e.Name ~== "fp_dg")
+		{
+			// THE DISTANCE GRAB TREE (player nodes). arg0 1: offers and levels; 2: grant arg1's node (+arg2)
+			static const String DGN[] = { "LongArm", "IronGrip", "HeavyHitter", "AirCatch", "PowderKeg", "DeadEye", "HeavyLift", "StraightPull", "BodyShield" };
+			let st = TFLV_PerPlayerStats.GetStatsFor(p);
+			if (!st) return;
+			if (e.Args[0] == 2) { String cls = "RSQ_Upgrade_" .. DGN[clamp(e.Args[1], 0, DGN.Size() - 1)]; st.upgrades.Add(cls, max(e.Args[2], 1)); Console.Printf("FP grab granted %s", cls); return; }
+			String on = "", have = "";
+			for (int i = 0; i < DGN.Size(); i++)
+			{
+				Class<TFLV_Upgrade_BaseUpgrade> c = "RSQ_Upgrade_" .. DGN[i];
+				if (!c) { on = on .. " ?" .. DGN[i]; continue; }
+				if (TFLV_Upgrade_BaseUpgrade(new(c)).IsSuitableForPlayer(st)) on = on .. " " .. DGN[i];
+				int lv = int(st.upgrades.Level("RSQ_Upgrade_" .. DGN[i]));
+				if (lv > 0) have = have .. String.Format(" %s%d", DGN[i], lv);
+			}
+			Console.Printf("FP grab [stage %d] has:%s | offered:%s | two hands x%.1f, shield %d", e.Args[1], have, on, RSQDG_Hold.TwoHandK(p.player), RSQDG_Perks.Shield(p.player));
+		}
+		else if (e.Name ~== "fp_dgassist")
+		{
+			// a barrel thrown straight ahead at 15 u/tic; an imp 300 away arg0 degrees off that line: the hold's own Assist
+			// (MAP01's own monsters removed first, so the imp is the only thing to bend onto)
+			let mi = ThinkerIterator.Create("Actor");
+			Actor mm;
+			while (mm = Actor(mi.Next())) if (mm.bIsMonster && !mm.player) mm.Destroy();
+			Vector3 f = (cos(p.angle), sin(p.angle), 0);
+			let b = Actor.Spawn("ExplosiveBarrel", p.pos + f * 48);
+			double a = p.angle + e.Args[0];
+			let m = Actor.Spawn("DoomImp", b.pos + (cos(a), sin(a), 0) * 300);
+			if (!b || !m) return;
+			m.freezetics = 10;
+			Vector3 v = RSQDG_Hold.Assist(p.player, b, f * 15);
+			Console.Printf("FP grab assist, imp %d degrees off: the throw now heads %.1f degrees off the line (%s)", e.Args[0], Actor.DeltaAngle(p.angle, VectorAngle(v.x, v.y)),
+				abs(Actor.DeltaAngle(p.angle, VectorAngle(v.x, v.y))) > 1 ? "BENT ONTO IT" : "straight");
+			b.Destroy(); m.Destroy();
+		}
+		else if (e.Name ~== "fp_dgpull")
+		{
+			// a barrel 300 ahead pulled by the flight's own Launch, flicked at arg0 tenths of the threshold (the path is logged)
+			let fl = RSQDG_Flight.Get();
+			Vector3 f = (cos(p.angle), sin(p.angle), 0);
+			let b = Actor.Spawn("ExplosiveBarrel", p.pos + f * 300);
+			if (!fl || !b) return;
+			fl.flickRatio = e.Args[0] / 10.0;
+			bool ok = fl.Launch(0, b, p, p.player);
+			Console.Printf("FP grab pull, flick x%.1f: launched %d", e.Args[0] / 10.0, ok);
+		}
+		else if (e.Name ~== "fp_dgshield")
+		{
+			// a zombieman killed in front of you and taken into the main hand (the hold's own Take); then arg0 hits of 30
+			let hd = RSQDG_Hold.Get();
+			Vector3 f = (cos(p.angle), sin(p.angle), 0);
+			let z = Actor.Spawn("ZombieMan", p.pos + f * 48);
+			if (!hd || !z) return;
+			z.DamageMobj(null, null, z.health, 'None');
+			bool took = hd.Take(0, z, p.player);
+			Console.Printf("FP grab shield: corpse %d taken %d, it can take %d more (health %d, buddha %d)", z.bCORPSE, took, hd.shieldLeft[0], z.health, z.bBUDDHA);
+			dgCorpse = z; dgHits = e.Args[0]; dgNext = level.maptime + 1;
+		}
 		else if (e.Name ~== "fp_gnstate")
 		{
 			// the carry (arg0 1: with a backpack), the fuse and Cook Sense's amber
@@ -982,7 +1061,7 @@ class FistsProbe : EventHandler
 			Console.Printf("FP saber [stage %d] has:%s | offered:%s | size index %d | second saber carried: %s", e.Args[1], have, on, sb ? sb.SizeIdx() : -1,
 				p.FindInventory("UBQS_SaberOff") ? "yes" : "no");
 		}
-		else if (e.Name.Left(5) ~== "fp_ss" || e.Name.Left(5) ~== "fp_gn" || e.Name.Left(5) ~== "fp_gr") TreeEvents(e, p);
+		else if (e.Name.Left(5) ~== "fp_ss" || e.Name.Left(5) ~== "fp_gn" || e.Name.Left(5) ~== "fp_gr" || e.Name.Left(5) ~== "fp_dg") TreeEvents(e, p);
 		else if (e.Name ~== "fp_force")
 		{
 			// arg0 0: the Force's own Push at an imp in front; 1: Force Lightning straight into one (and a second near it);
