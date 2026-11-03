@@ -1,143 +1,161 @@
-# RSQ HP Bars
+# Top HP Bars (RSQ HP Bars)
 
-A health bar floats over every monster you have hurt. It is coldcite's Top HP Bars 1.04, kept as he drew
-it, with colour-blind colour sets, a strip for health above 100 %, and small icons that show what the other
-series mods are doing to that monster (hooked, stunned, locked on, gripped, frozen, held). It has no buttons
-and asks nothing of your hands.
+**The one thing:** a health bar over every monster you hurt that also shows what each series mod is doing to it
+right now -- hooked, stunned, locked, gripped, frozen, held, raised -- in six colour sets, three of them built
+for colour-blind eyes.
+
+A health bar floats over every monster you have hurt. It is coldcite's Top HP Bars 1.04, kept as he drew it,
+with colour-blind colour sets, a strip for health above 100 %, and small icons that show what the other
+series mods are doing to that monster (hooked, stunned, locked on, gripped, frozen, held, raised). It has no
+buttons and asks nothing of your hands. It runs on stock QuestZDoom 17.3 in VR, on plain Doom 2 or with
+Brutal Doom, and needs no other RSQ pk3; the icons need the mods that drive them (see "Works with").
 
 Pk3: `pk3/RSQ_HPBars.pk3`.
 
-## Load order
-
-doom2.wad -> 01 brutal22test6 -> 02 BD22_VoxelPack -> 03 BD22_VR-Reloaded_2.0.3j -> 04-07 XMVE ->
-**RSQ_HPBars.pk3**
-
-- Works on plain Doom 2 without Brutal Doom (it was run on vanilla doom2 on the rig). No monster class
-  is named in the code.
-- Needs no other RSQ pk3 to work alone. The icons left of the bar need the mods that drive them (see
-  "Works with").
-- If coldcite's own Top HP Bars pk3 is also loaded, this one takes over: one bar per monster.
-
-## Setup
-
-- No buttons to bind (KEYCONF only holds the Reset All command).
-- Menu: Options -> Radiant Silvergun Options -> **RSQ HP Bars**. Sliders are on its
-  **Tuning and Debug** page.
-
 ## Features
 
-Front page (RSQ HP Bars):
+**The bar.**
+- A bar appears over a monster the moment it is hurt, and over a monster whose health changed without a hit
+  (a healer, a buff). An unhurt monster has no bar.
+- Six colour sets: Classic and Red (coldcite's two), Protanopia, Deuteranopia, Tritanopia, High Contrast.
+  The colour-blind sets also hatch and gently pulse the low band and put a dark line through the mid band,
+  so no colour is needed to read them. High Contrast adds a white rim and is always full bright.
+- Length by toughness: tougher monsters get longer bars (a zombieman shortest, a Cyberdemon widest).
+- Hit flash: the bar flashes white for one tic when your hit lands.
+- Fade in: a new bar fades in over about a sixth of a second.
+- Far Size: bars grow with distance (from 256 map units out to 1024), so they stay readable across a room
+  and are unchanged up close.
+- Bars sit on the real top of the sprite, on voxel monsters too, and follow a monster that is thrown,
+  yanked or tumbling without trailing a frame behind it.
+- A see-through monster gets a see-through bar (Allow Stealth).
+- An invulnerable monster's bar shows as XX.
 
-| Row | Default | What it does |
+**Overheal.**
+- A thin strip above the bar holds health over 100 %, one full health's worth per lap. Past one full strip,
+  small diamonds at its end count the extra laps (up to 4). It drains strip first, diamonds next, bar last.
+
+**Markers.** Small icons beside the bar, each a different shape so no colour is needed.
+- Left of the bar: hooked (a hook), stunned (a star), locked (a reticle), gripped. These come from the other
+  series mods (see "Works with").
+- Right of the bar: frozen (a snowflake) while a hit-stop holds the monster; held (a padlock) while a
+  Headlock (RSQ Melee) or human shield (RSQ Distance Grab) holds it; raised (an up arrow) for the rest of its life once an Arch-Vile has
+  brought it back.
+- Above the bar, with RSQ Miniboss: a gold crown over the miniboss, a chain link over each of its thralls.
+
+**Options, off until you turn them on.**
+- Aimed Only: a bar only over the monster either hand's gun points at, and for half a second after the aim
+  leaves it. An unhurt monster you aim at gets its bar too.
+- Damage Chunk: what your hit took off stays lit white for half a second, then drains to the new edge. Hits
+  while it is lit add to it.
+- Ally Colour: friendly monsters (allies, Brutal Doom's marines) get a blue bar.
+- Nearest 24 Only: only the 24 bars nearest you are drawn.
+- Distance Limit: no bars farther than the Limit Distance slider.
+
+**coldcite's own pk3.** If coldcite's Top HP Bars pk3 is also loaded, this one takes over: his bars are taken
+off every monster, and his HUD Options entry opens this menu. Turn HP Bars Off and his bars show again on
+everything that appears from then on.
+
+## How to play
+
+Nothing to bind, nothing to hold. Put the headset on, shoot a monster, and its bar appears above it. Look at
+a monster you have not hurt: no bar. Hurt a zombieman and a Baron: the Baron's bar is clearly longer.
+
+The settings are in Options -> Radiant Silvergun Options -> **RSQ HP Bars**. The sliders and Reset All are on
+its **Tuning and Debug** page.
+
+With **Aimed Only** on, point either hand's gun at a monster: its bar shows while you aim at it and for half
+a second after you look away. Point at an unhurt monster and it gets a bar too.
+
+With **Damage Chunk** on, hit a monster: a white block marks what the hit took off, holds half a second, then
+drains.
+
+## Settings
+
+Options -> Radiant Silvergun Options -> **RSQ HP Bars**:
+
+| Menu row | Default | What it does |
 |---|---|---|
 | HP Bars | On | Bars on or off. |
-| Colours | Classic | Classic, Red (coldcite's two), Protanopia, Deuteranopia, Tritanopia, High Contrast. The colour-blind sets also hatch and gently pulse the low band, put a dark line in the mid band, and High Contrast adds a white rim and is always full bright. |
-| Size | Standard | Small / Standard / Large. |
-| Full Bright | Option (off) | Bars ignore the room's light. |
+| Colours | Classic | Classic, Red, Protanopia, Deuteranopia, Tritanopia, High Contrast. RSQ Accessibility's Colour Blind Mode overrides this when it is set. |
+| Size | Standard | Small / Standard / Large (sets the Size slider to 0.15 / 0.3 / 0.5). |
+| Full Bright | Off | Bars ignore the room's light. High Contrast always does. |
 | Allow Stealth | On | A see-through monster gets a see-through bar. |
-| Overheal | On | A thin strip above the bar holds health over 100 %. Past one full strip, small diamonds at its end (up to 4). |
-| Markers | On | The icons: hooked / stunned / locked / gripped left of the bar; frozen (snowflake), held (padlock) and raised (purple up arrow) right of it; with RSQ_Miniboss, a gold crown above the miniboss's bar and a grey chain link above each of its thralls' bars. |
-| Aimed Only | Option (off) | A bar only over the monster either hand's gun points at, and for half a second after. An unhurt monster you aim at gets its bar too. |
-| Damage Chunk | Option (off) | What your hit took off stays lit white for half a second, then drains. |
-| Ally Colour | Option (off) | Friendly monsters get a blue bar. |
-| Nearest 24 Only | Option (off) | Only the 24 bars nearest you are drawn. |
-| Distance Limit | Option (off) | No bars farther than the Limit Distance slider (Tuning). |
+| Overheal | On | The strip above the bar for health over 100 %, with its diamonds. |
+| Markers | On | All the icons: hooked / stunned / locked / gripped, frozen / held / raised, crown / chain link. |
+| Aimed Only | Off | A bar only over the monster either hand's gun points at, and half a second after. |
+| Damage Chunk | Off | What your hit took off stays lit white for half a second, then drains. |
+| Ally Colour | Off | Friendly monsters get a blue bar. |
+| Nearest 24 Only | Off | Only the 24 bars nearest you are drawn. |
+| Distance Limit | Off | No bars farther than Limit Distance. |
 
-Always on (no row):
+**Tuning and Debug**:
 
-- **Length by toughness**: tougher monsters get longer bars (a rifle zombie shortest, a Cyberdemon widest).
-- **Hit flash**: the bar flashes white for one tic when you hit the monster.
-- **Raised marker**: a monster an Arch-Vile brings back gets its bar at once, with a purple up arrow
-  (shown with Markers on).
-- **Fade in**: a new bar fades in over about a sixth of a second.
-- Bars sit right on voxel monsters and on monsters thrown or tumbling (Grapple yanks).
-
-Tuning and Debug page: Size, Far Size (bars grow up to 2x at range), Height, Limit Distance (1536),
-Reset All.
-
-## Test it
-
-Load only the order above plus RSQ_HPBars.pk3. Start MAP01.
-
-1. Shoot an imp once. A bar appears over it. It fades in and flashes white on each hit (fade and flash:
-   not yet headset-confirmed).
-2. Hurt a zombieman and a Baron (or any big monster). The Baron's bar is clearly longer. (not yet
-   headset-confirmed)
-3. Look at a monster you have not hurt. It has no bar.
-4. Options -> Radiant Silvergun Options -> RSQ HP Bars -> Colours: step through all six. Each set changes
-   the bar at once. High Contrast has a white rim and stays bright in a dark room.
-5. Size: Small, then Large. The bars shrink and grow.
-6. Turn on **Damage Chunk**. Hit a monster: a white block stays on the bar for half a second, then drains.
-   (not yet headset-confirmed)
-7. Turn on **Aimed Only**. Only the monster your gun points at shows a bar. Point away: it goes within a
-   second. Point at an unhurt monster: it gets a bar. (not yet headset-confirmed)
-8. Turn on **Nearest 24 Only** in a big fight: far bars drop out once more than 24 show. (not yet
-   headset-confirmed)
-9. Turn on **Distance Limit**: far bars vanish. Move the Limit Distance slider on Tuning and Debug and
-   watch the cut-off move. (not yet headset-confirmed)
-10. **Ally Colour** needs a friendly monster (a Brutal Doom marine ally): its bar is blue. (not yet
-    headset-confirmed)
-11. Raised marker: let an Arch-Vile raise something. The raised monster gets a bar with a purple up arrow.
-    Brutal Doom's own imp leaves a separate corpse, so a BD monster may never show it; it showed on a
-    stock imp. (not yet headset-confirmed)
-12. Frozen and held markers need other mods (steps 14 and 15). (not yet headset-confirmed)
-12a. With RSQ_Miniboss (Markers on): hurt the miniboss: a gold crown above its bar. Hurt one of its thralls: a
-     grey chain link above that bar. Kill the miniboss: the thralls' links go. Rig frame 2026-11-01; **not yet
-     headset-confirmed**. Like every bar, the mark needs the monster hurt first (an unhurt one has no bar).
-13. Reset All on Tuning and Debug. Everything goes back to the defaults above.
-13a. With LegenDoom (or LegenDoom Lite): a monster that will turn legendary has no bar until you hurt it, then
-     the same plain bar as its neighbours; when it turns (at half health) its bar fills again with the overheal
-     strip. Rig 2026-11-02, with the real LegenDoom Lite 4.2 and 3.0 pk3s and with Champions' dormant LegenDoom
-     mode (`test/ld.sh`); **not yet headset-confirmed**.
-
-With other series mods (each not yet headset-confirmed):
-
-14. RSQ Melee: headlock a monster. A padlock shows right of its bar while you hold it.
-15. Any hit-stop (Saber, ShieldSaw, Whip, DistanceGrab, a thrown gun from Tactical Rig): a snowflake shows
-    for the few tics the monster is frozen.
-16. RSQ_Grapple: hook a hurt monster. The hooked icon shows left of its bar; a yank's landing shows stunned.
-17. RSQ_ShieldSaw: lock on. The locked icon shows. RSQ_Saber: Force-grip a hurt monster. The gripped icon
-    shows.
-18. RSQ_Accessibility: set Colour Blind Mode. It overrides the Colours row. Photosensitive Mode makes the
-    hit flash weaker (40 %) and no faster than about 2.5 a second.
+| Menu row | Default | What it does |
+|---|---|---|
+| Size | 0.3 | Bar size, 0.05 to 1.0. |
+| Far Size | 2.0 | How much a bar grows at range, 1.0 (no growth) to 3.0. |
+| Height | 0.1 | How far above the sprite's top the bar sits, as a fraction of its height, -0.5 to 0.5. |
+| Limit Distance | 1536 | The Distance Limit cut-off, in map units, 256 to 4096. |
+| Reset All | | Puts every RSQ HP Bars setting back to its default (asks first). |
 
 ## Works with
 
-- **RSQ_Accessibility** (read): Colour Blind Mode overrides Colours; Photosensitive Mode dims and slows the
-  hit flash; Cue Size scales the marker icons.
-- **RSQ_Grapple**: hooked and stunned icons (asked by name).
-- **RSQ_ShieldSaw**: locked icon.
-- **RSQ_Saber**: gripped icon.
-- **RSQ Melee**: held padlock for a headlocked monster (read off the monster; nothing is asked).
-- Any hit-stop from the series: frozen snowflake (read off the monster).
-- coldcite's Top HP Bars: taken over (his bars removed, his HUD options entry opens this menu).
-- Champions: a bar over a champion wearing its icon is lifted above the icon.
-- LegenDoom (3.0 or Lite 4.2, read by name): a monster picked to become legendary looks like any other until it
-  turns -- no bar while unhurt, then a plain bar of the same length, no overheal strip. Once it turns, its 300 %
-  shows as a full overheal strip and one diamond (with Champions' dormant mode, as that champion).
-- RSQ_Miniboss (read, by name: RSQMB_Service "miniboss" / "thrall"): the crown and chain-link marks. Without it, no marks.
+- **RSQ Accessibility**: Colour Blind Mode overrides Colours; Photosensitive Mode dims the hit flash to 40 %
+  and spaces flashes at least 14 tics apart; Cue Size scales the marker icons.
+- **RSQ Grapple**: the hooked icon while a monster is on the hook's line or flying from a yank; the stunned
+  icon for the yank's landing hold or a crack's pain.
+- **RSQ Whip**: the hooked icon on a monster the whip has wrapped or tied.
+- **RSQ ShieldSaw**: the locked icon on a monster with a lock-on ring.
+- **RSQ Saber**: the gripped icon on a monster held in a Force grip.
+- **RSQ Melee and RSQ DistanceGrab**: the held padlock on a monster in Melee's Headlock or held as Distance
+  Grab's human shield (read off the monster; nothing is asked).
+- **Any hit-stop from the series** (Saber, ShieldSaw, Whip, DistanceGrab, a thrown gun from Tactical Rig):
+  the frozen snowflake for the tics the monster is held (read off the monster).
+- **RSQ Miniboss**: the crown and the chain links. Without it, no marks.
+- **coldcite's Top HP Bars**: taken over (his bars removed, his HUD Options entry opens this menu).
+- **Champions**: a bar over a champion wearing its tier icon is lifted above the icon. In Champions' dormant
+  LegenDoom mode a champion that has not turned wears no icon, and its bar is not lifted.
+- **LegenDoom** (3.0 or Lite 4.2): a monster picked to become legendary looks like any other until it turns:
+  no bar while unhurt, then a plain bar of the same length, no overheal strip. Once it turns, its 300 %
+  shows as a full bar, a full overheal strip and one diamond.
+- **RSQ GunBonsaiVR**: no node changes the bars.
 
-## Known limits / open
+## Load order
 
-- Everything from 2026-10-31 (frozen, held, Aimed Only, the QoL round: length, flash, raised, fade in,
-  Damage Chunk, Ally Colour, Nearest 24, Distance Limit) ran on the simulated rig only.
-- The raised marker may never show on Brutal Doom's own monsters (BD leaves a separate corpse actor).
-- Frozen and held icons need a bar, so an unhurt monster shows neither.
-- The stunned icon can trail by up to 4 tics (bars ask every 4th tic; a stun lasts 8).
-- Readability at Quest resolution, the low-band pulse, and icon size at 2x were never judged in a headset.
-- "Your hit" for the flash and chunk is any player's hit (single-player: yours).
-- Champions writes its boosted health as the start health, so a set-up champion reads 100 %, not overheal.
+After Brutal Doom, the monster packs, LegenDoom, Champions and Gun Bonsai, with the other RSQ pk3s. Its place
+among the RSQ pk3s does not matter: the mods that drive its icons are found at run time, loaded before or
+after it.
+
+## Known limits
+
+- The frozen, held and raised icons are parts of a bar, so an unhurt monster shows none of them.
+- The hooked, stunned, locked, gripped, crown and chain-link icons are asked for every 4th tic, so one can
+  trail its cause by up to 4 tics.
+- "Your hit", for the flash and the chunk, is any player's hit (in single player: yours).
 - Lossvoise's flat retexture is not shipped (no permission).
+
+## For other mods
+
+The bars ask other mods by name through `ServiceIterator`; nothing links. A mod can put the left-hand icons
+on a monster by defining a `Service` whose class name contains **`RSQTHP_Marker`** and answering `GetInt`
+with `objectArg` = the monster, 1 or 0:
+
+- `"hooked"`, `"stunned"`, `"locked"`, `"gripped"`: the icon of that name.
+
+The bars also read, by name: `RSQGR_Service` (`"hooked"`, `"yanked"`, `"stunned"`), `SSQ_ScoreService`
+(`"locked"`), `UBQS_SaberService` (`"gripped"`), `RSQMB_Service` (`"miniboss"`, `"thrall"`), and RSQ
+Accessibility's `rsqa_colorblind`, `rsqa_photosafe` and `rsqa_cue_scale`.
 
 ## Credits
 
-From the old README:
+The series' version of **Top HP Bars 1.04 by coldcite** (based on SpriteShadow by Nash Muhandes). coldcite's
+header: "Feel free to use this in your mods. You don't have to ask my permission!" Credit coldcite and Nash in
+CREDITS.txt; check SpriteShadow's own terms before shipping.
 
-> The series' version of **Top HP Bars 1.04 by coldcite** (based on SpriteShadow by Nash Muhandes). coldcite's header: "Feel free to use this in your mods. You don't have to ask my permission!" Credit coldcite and Nash in CREDITS.txt; check SpriteShadow's own terms before shipping.
+Lossvoise's flat retexture (of Mere_Duke's version; zdoom forum thread t=56910) is not used. The series ships
+coldcite's art and its own generated schemes only.
 
-> Lossvoise's flat retexture (of Mere_Duke's version; zdoom forum thread t=56910) is not used (owner, 10-28: no). The series ships coldcite's art and its own generated schemes only.
-
-`pk3/CREDITS.txt`, unchanged:
+`pk3/CREDITS.txt`:
 
 ```
 RSQ Top HP Bars -- credits
@@ -188,5 +206,3 @@ Not included, credited for the record:
 Code: ZScript written for the Ultra Badass Quest series (presidentkoopa), for stock QuestZDoom 17.3
 by Emawind84 and Team Beef. No engine change.
 ```
-
-Builder notes (art, tests, internals) are in `HANDOFF.md`.
