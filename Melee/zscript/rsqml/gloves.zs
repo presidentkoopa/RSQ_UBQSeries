@@ -353,6 +353,7 @@ class RSQML_Gloves : StaticEventHandler
 		Vector3 d = loc - prev;
 		if (d.Length() > JUMP_UNITS * dt) return;
 		st.vel = d * (double(TICRATE) / dt);
+		CatchTick(pmo, g, h, st);
 		Swing(pmo, g, h, st);
 	}
 
@@ -392,7 +393,7 @@ class RSQML_Gloves : StaticEventHandler
 			st.path = (0, 0, 0);
 			return;
 		}
-		if (mps >= minSpeed && missiles.Size() > 0)
+		if (mps >= minSpeed && (missiles.Size() > 0 || rounds.Size() > 0))
 		{
 			int rfLv = RSQML.MoveLevel(pmo, g, "ReturnFire", "rsqml_hadouken");
 			if (rfLv > 0) ReturnFire(pmo, g, h, st, rfLv);
@@ -531,8 +532,11 @@ class RSQML_Gloves : StaticEventHandler
 	Array<double> returnedMult;
 
 	// a new map, or a save loaded: the lists were the old level's (a static handler is never saved)
-	override void WorldLoaded(WorldEvent e) { missiles.Clear(); returned.Clear(); returnedMult.Clear(); }
-	override void WorldUnloaded(WorldEvent e) { missiles.Clear(); returned.Clear(); returnedMult.Clear(); }
+	override void WorldLoaded(WorldEvent e) { missiles.Clear(); returned.Clear(); returnedMult.Clear(); rounds.Clear(); }
+	override void WorldUnloaded(WorldEvent e) { missiles.Clear(); returned.Clear(); returnedMult.Clear(); rounds.Clear(); }
+	// RSQ SlowMo's slowed rounds (an enemy's hitscan made visible in slow motion: Damage 0, it carries its own), for
+	// Bullet Time Fists; by class name (nothing without SlowMo)
+	Array<Actor> rounds;
 
 	// Only a missile that can hurt: Brutal Doom's fireballs spawn three trail puffs a tic (ImpFireBallTrail1-3, missiles
 	// with the imp as their shooter and no damage), and its gore flies as missiles too. Listing those cost a scan each
@@ -540,6 +544,7 @@ class RSQML_Gloves : StaticEventHandler
 	override void WorldThingSpawned(WorldEvent e)
 	{
 		let m = e.Thing;
+		if (m && m.bMissile && m.GetClassName() == 'RSQSM_Round') { if (!(m.target && m.target.player)) rounds.Push(m); return; }
 		if (m && m.bMissile && !(m.target && m.target.player) && m.GetMissileDamage(0, 1) > 0) missiles.Push(m);
 	}
 
@@ -643,7 +648,120 @@ class RSQML_Gloves : StaticEventHandler
 			RSQML_Spark.Hadouken(st.hand);
 			if (RSQML.Debug() > 0) { String fn = "(gone)"; if (from) fn = from.GetClassName(); Console.Printf("RSQML hadouken: %s back at %s, speed x%.2f (met %.1f from the glove's path)", m.GetClassName(), fn, sp, miss); }
 		}
+		// BULLET TIME FISTS (Gun Bonsai VR, GBOVR_TREES.md 4.1 D, a glove's after Hadouken 3; needs RSQ SlowMo): a punch
+		// through one of SlowMo's slowed rounds sends it home to its shooter at its own damage x1.5 + 0.5 lv (owner 11-02:
+		// on for the headset pass). The same meeting test as the Hadouken.
+		int btLv = RSQML.GBLevel(g, "BulletTimeFists");
+		if (btLv > 0)
+		{
+			for (int i = rounds.Size() - 1; i >= 0; i--)
+			{
+				let m = rounds[i];
+				if (!m || m.bDestroyed || !m.bMissile) { rounds.Delete(i); continue; }
+				let from = m.target;
+				if (!from || from.player || from.bFriendly) continue;
+				if (m.Distance3D(pmo) > 256) continue;
+				double reach = gr + max(m.radius, 6.0) + 6.0;
+				double miss = SegSegDist(st.prevHand, st.hand, m.pos - m.vel * HADO_LAG, m.pos + m.vel * HADO_LEAD);
+				if (miss > reach) continue;
+				SendBack(pmo, m, from, st.hand, 1.0, RSQML.Num("BulletTime.mult", btLv, 0, 2.0), g, st.vel);
+				rounds.Delete(i);
+				RSQML.Touch("bullet.punch", pmo, from);
+				pmo.A_StartSound("rsqml/punch", CHAN_AUTO, 0, 1.0);
+				RSQ_Buzz.Start(pmo, h, 0.8, 6);
+				RSQML_Spark.Hadouken(st.hand);
+				if (RSQML.Debug() > 0) { String fn = from.GetClassName(); Console.Printf("RSQML bullet time fists: a round back at %s (met %.1f from the glove's path)", fn, miss); }
+			}
+		}
 		for (int i = returned.Size() - 1; i >= 0; i--) if (!returned[i]) { returned.Delete(i); returnedMult.Delete(i); }
+	}
+
+	// CATCH (Gun Bonsai VR, GBOVR_TREES.md 4.1 D, a glove's after Hadouken 2; owner 11-02: built on the open hand, the
+	// gloves having only a fist and an open frame). An OPEN palm held nearly still (under SWAT_MPS) that a monster's missile
+	// reaches catches it -- only as it arrives at the palm, so catching is a matter of timing (the idea is RS_Hands'). It is
+	// held at the palm 2 + lv s and is yours (it cannot hurt you while held); the hand at punch speed throws it where the
+	// hand goes (helped onto a monster within 12 degrees of that line), hitting for x1.5 + 0.25 lv; held too long it goes off
+	// in your hand. Public so a probe can test it without hands (as Deliver).
+	Actor caught[MAXPLAYERS * 2];
+	int caughtTic[MAXPLAYERS * 2], caughtUntil[MAXPLAYERS * 2], caughtLv[MAXPLAYERS * 2];
+	void CatchTick(PlayerPawn pmo, RSQ_Glove g, int h, RSQ_PunchHand st)
+	{
+		int i = pmo.PlayerNumber() * 2 + h;
+		if (i < 0 || i >= MAXPLAYERS * 2) return;
+		double upm = RSQML.UnitsPerMetre();
+		double ps = level.pixelstretch > 0.1 ? level.pixelstretch : 1.2;
+		Vector3 v = st.vel;
+		v.z *= ps;
+		double mps = v.Length() / upm;
+		let m = caught[i];
+		if (m)
+		{
+			if (m.bDestroyed || !m.bMissile) { caught[i] = null; return; }
+			if (mps >= RSQML.SV("rsqml_punch_min_speed", 2.0) && level.maptime - caughtTic[i] > 6)
+			{
+				caught[i] = null;
+				Vector3 dir = st.vel.Length() > 0.01 ? st.vel.Unit() : (Actor.AngleToVector(pmo.angle, 1), 0);
+				Actor aim = CatchAim(pmo, st.hand, dir);
+				SendBack(pmo, m, aim, st.hand, 1.0, RSQML.Num("Catch.mult", caughtLv[i], 0, 1.75), g, dir);
+				RSQML.Touch("catch", pmo, aim);
+				pmo.A_StartSound("rsqml/swat", CHAN_AUTO, CHANF_OVERLAP, 1.0);
+				RSQ_Buzz.Start(pmo, h, 0.7, 5);
+				if (RSQML.Debug() > 0) Console.Printf("RSQML catch: %s thrown at %s", m.GetClassName(), aim ? String.Format("%s", aim.GetClassName()) : "where the hand went");
+				return;
+			}
+			if (level.maptime >= caughtUntil[i])
+			{
+				caught[i] = null;
+				m.vel = (0, 0, 0);
+				m.ExplodeMissile(null, null);
+				if (RSQML.Debug() > 0) Console.Printf("RSQML catch: held too long, it went off in your hand");
+				return;
+			}
+			m.SetOrigin(st.hand - (0, 0, m.height * 0.5), true);
+			m.vel = (0, 0, 0);
+			return;
+		}
+		int lv = RSQML.GBLevel(g, "Catch");
+		if (lv <= 0 || !PalmOpen(pmo, h) || mps >= SWAT_MPS) return;
+		double gr = 0.09 * upm + RSQML.SV("rsqml_punch_pad", 4.0);
+		for (int k = missiles.Size() - 1; k >= 0; k--)
+		{
+			let c = missiles[k];
+			if (!c || !c.bMissile || c.bDestroyed) continue;
+			let from = c.target;
+			if (!from || from.player || !from.bIsMonster || from.bFriendly) continue;
+			Vector3 to = st.hand - c.pos;
+			if (to.Length() > gr + max(c.radius, 6.0) + 6.0 || (to dot c.vel) < 0) continue;   // at the palm, still coming in
+			missiles.Delete(k);
+			c.target = pmo;
+			c.tracer = null;
+			c.vel = (0, 0, 0);
+			caught[i] = c; caughtTic[i] = level.maptime; caughtLv[i] = lv;
+			caughtUntil[i] = level.maptime + int(RSQML.Num("Catch.hold", lv, 0, 3.0) * TICRATE);
+			pmo.A_StartSound("rsqml/swat", CHAN_AUTO, CHANF_OVERLAP, 0.8, ATTN_NORM, 0.7);
+			RSQ_Buzz.Start(pmo, h, 0.6, 4);
+			if (RSQML.Debug() > 0) Console.Printf("RSQML catch: %s caught (level %d, held %d tics)", c.GetClassName(), lv, caughtUntil[i] - level.maptime);
+			return;
+		}
+	}
+	// the monster a caught missile is thrown at: the nearest one within 12 degrees of the throw's line, in sight
+	Actor CatchAim(PlayerPawn pmo, Vector3 from, Vector3 dir)
+	{
+		Actor best = null;
+		double bestA = 12.0;
+		let it = BlockThingsIterator.CreateFromPos(from.x, from.y, from.z, 64, 1024, false);
+		while (it.Next())
+		{
+			let a = it.thing;
+			if (!a || a.player || !a.bIsMonster || a.health <= 0 || a.bFriendly) continue;
+			Vector3 to = a.pos + (0, 0, a.height * 0.5) - from;
+			double d = to.Length();
+			if (d < 16 || d > 1024) continue;
+			double ang = acos(clamp((to / d) dot dir, -1.0, 1.0));
+			if (ang > bestA || !pmo.CheckSight(a, SF_IGNOREVISIBILITY)) continue;
+			best = a; bestA = ang;
+		}
+		return best;
 	}
 
 	// THE SWAT (2026-11-02): the open palm moving at SWAT_MPS or more meets a monster's missile (the same window as the

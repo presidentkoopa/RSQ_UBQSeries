@@ -425,6 +425,9 @@ class RSQ_MeleeUpgradeService : Service
 			if (stringArg == "Dempsey.rehit") return RSQ_Upgrade_Dempsey.Rehit(lv);
 			// D. Counter
 			if (stringArg == "SwatBack.mult") return RSQ_Upgrade_SwatBack.Mult(lv);
+			if (stringArg == "Catch.hold") return RSQ_Upgrade_Catch.Hold(lv);
+			if (stringArg == "Catch.mult") return RSQ_Upgrade_Catch.Mult(lv);
+			if (stringArg == "BulletTime.mult") return RSQ_Upgrade_BulletTimeFists.Mult(lv);
 			if (stringArg == "Parry.window") return RSQ_Upgrade_Parry.Window(lv);
 			if (stringArg == "Parry.stagger") return RSQ_Upgrade_Parry.Stagger(lv);
 			if (stringArg == "ReflectGuard.mult") return RSQ_Upgrade_ReflectGuard.Mult(lv);

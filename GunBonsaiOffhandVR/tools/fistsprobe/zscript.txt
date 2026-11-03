@@ -11,7 +11,8 @@ class FistsProbe : EventHandler
 		"Executioner", "ThreeHit", "Dempsey", "Finisher",
 		"Guard", "Parry", "ReflectGuard", "AbsorbRelease", "SwatBack",
 		"HumanShield", "HeadlockUppercut", "HeavierHeadlock", "Slam", "ThrowInto", "Chokehold", "Uppercut",
-		"Rage", "BloodRush", "BerserkMeter", "PistolWhip", "RifleButt", "Taunt", "CriticalHits", "Headshot", "Backstab"
+		"Rage", "BloodRush", "BerserkMeter", "PistolWhip", "RifleButt", "Taunt", "CriticalHits", "Headshot", "Backstab",
+		"Catch", "BulletTimeFists"
 	};
 	bool punchHigh;
 	Array<String> fxSeen;
@@ -118,6 +119,7 @@ class FistsProbe : EventHandler
 	Actor krBit; double krD0; int krAt;
 	int wpFly; Vector3 wpLast;
 	int ropeT;
+	RSQ_PunchHand ctSt; int ctT, ctThrowAt; Actor ctBall, ctImp; int ctH0;
 	int wtTend; Actor wtShooter, wtNear, wtBall; int wtH0, wtN0; Actor wtItem1, wtItem2;
 	int rgAt, rgH0;
 	int dgHits, dgNext, dgDone;
@@ -130,6 +132,7 @@ class FistsProbe : EventHandler
 		FxReport();
 		WhipFlight();
 		RopeLog(p);
+		CatchRun(p);
 		if (wtTend > 0)
 		{
 			// the whip weapon's hand kept tended and its trigger held (the mark), as weapon.zs does each tic
@@ -308,6 +311,31 @@ class FistsProbe : EventHandler
 	}
 
 	Service Svc() { return ServiceIterator.Find("RSQML_Service").Next(); }
+
+	// CATCH, through Melee's own CatchTick with a scripted hand: the palm held still 40 ahead at chest height, an imp's
+	// ball arriving at it; every tic the hand is passed in still until ctThrowAt (0: never), then thrown at the imp at 4 m/s
+	void CatchRun(PlayerPawn p)
+	{
+		if (ctT <= 0 || !ctSt) return;
+		let gl = RSQML_Gloves.Get();
+		let g = Glove(0);
+		if (!gl || !g) { ctT = 0; return; }
+		ctT++;
+		ctSt.prevHand = ctSt.hand;
+		if (ctThrowAt > 0 && ctT == ctThrowAt)
+		{
+			Vector3 to = ctImp ? (ctImp.pos + (0, 0, ctImp.height * 0.5) - ctSt.hand) : (cos(p.angle), sin(p.angle), 0);
+			ctSt.vel = to.Unit() * 136;     // 4 m/s, map units a second
+		}
+		else ctSt.vel = (0, 0, 0);
+		gl.CatchTick(p, g, 0, ctSt);
+		Actor held = gl.caught[p.PlayerNumber() * 2];
+		if (ctT % 10 == 0 || ctT == ctThrowAt + 1)
+			Console.Printf("FP catch t%d: ball %s, %s; the imp %d -> %d", ctT, ctBall ? (ctBall.bMissile ? "flying" : "burst") : "gone",
+				held ? String.Format("held at the palm (%.1f from it)", (held.pos + (0, 0, held.height * 0.5) - ctSt.hand).Length()) : "not held",
+				ctH0, ctImp ? ctImp.health : -1);
+		if (ctT > 160) ctT = 0;
+	}
 
 	// a hand across the ball's path: 0 an open-palm swat (Melee's Swat), 1 a fist (Melee's ReturnFire at level 2)
 	void HandAcross(int how)
@@ -1218,6 +1246,49 @@ class FistsProbe : EventHandler
 			Console.Printf("FP kr magnet: a bit %.0f away is %s after %d tics", krD0, krBit ? String.Format("%.0f away", krBit.Distance3D(p)) : "picked up / gone", level.maptime - krAt);
 			if (krBit) krBit.Destroy();
 		}
+		else if (e.Name ~== "fp_catch")
+		{
+			// arg0: the tic of the run the hand throws (0: it never does: held too long). An imp 300 ahead, frozen, its ball
+			// spawned 12 short of the open palm and coming at it
+			let gl = RSQML_Gloves.Get();
+			if (!gl) return;
+			gl.openPalm[p.PlayerNumber() * 2] = true;
+			ctImp = Put("DoomImp", 300); if (ctImp) { ctImp.health = 1000; ctImp.freezetics = 200; } ctH0 = 1000;
+			ctSt = new("RSQ_PunchHand");
+			Vector3 f = (cos(p.angle), sin(p.angle), 0);
+			ctSt.hand = p.pos + f * 40 + (0, 0, 36);
+			ctSt.prevHand = ctSt.hand;
+			ctBall = Actor.Spawn("DoomImpBall", ctSt.hand + f * 12 - (0, 0, 4));
+			if (ctBall) { ctBall.target = ctImp; ctBall.vel = -f * 2; }
+			ctThrowAt = e.Args[0]; ctT = 1;
+		}
+		else if (e.Name ~== "fp_btfpunch")
+		{
+			// a tic after fp_btf (Melee lists a missile on its spawn event, which comes after the probe's own event)
+			let gl = RSQML_Gloves.Get();
+			let g = Glove(0);
+			if (!gl || !g || !ball) return;
+			Console.Printf("FP btf: Melee lists %d rounds; the main glove has Bullet Time Fists %d", gl.rounds.Size(), RSQML.GBLevel(g, "BulletTimeFists"));
+			HandAcross(1);
+		}
+		else if (e.Name ~== "fp_btf")
+		{
+			// BULLET TIME FISTS: a slowed round (SlowMo's RSQSM_Round, spawned as its WorldHitscanPreFired does) from an imp
+			// 300 ahead coming at you, 40 ahead now; a fist across its path through Melee's own ReturnFire
+			let gl = RSQML_Gloves.Get();
+			let g = Glove(0);
+			if (!gl || !g) return;
+			Vector3 f = (cos(p.angle), sin(p.angle), 0);
+			a1 = Put("DoomImp", 300); if (!a1) return;
+			a1.health = 1000; a1.freezetics = 200;
+			ball = Actor.Spawn("RSQSM_Round", p.pos + f * 40 + (0, 0, 36));
+			if (!ball) return;
+			ball.target = a1;
+			ball.vel = -f * 4;
+			RSQSM_Round(ball).dmg = 10;
+			RSQSM_Round(ball).maxDist = 2048;   // a round leaves when it has flown its hitscan's range
+			ctImp = a1; ctH0 = 1000; ctBall = ball; ctThrowAt = -1; ctT = 1; ctSt = new("RSQ_PunchHand"); ctSt.hand = p.pos + (0, 0, 400);
+		}
 		else if (e.Name ~== "fp_fxcount")
 		{
 			String s = "";
@@ -1530,7 +1601,7 @@ class FistsProbe : EventHandler
 			Console.Printf("FP saber [stage %d] has:%s | offered:%s | size index %d | second saber carried: %s", e.Args[1], have, on, sb ? sb.SizeIdx() : -1,
 				p.FindInventory("UBQS_SaberOff") ? "yes" : "no");
 		}
-		else if (e.Name.Left(5) ~== "fp_ss" || e.Name.Left(5) ~== "fp_gn" || e.Name.Left(5) ~== "fp_gr" || e.Name.Left(5) ~== "fp_dg" || e.Name.Left(5) ~== "fp_rg" || e.Name.Left(5) ~== "fp_fx" || e.Name.Left(5) ~== "fp_sm" || e.Name.Left(5) ~== "fp_kr" || false) TreeEvents(e, p);
+		else if (e.Name.Left(5) ~== "fp_ss" || e.Name.Left(5) ~== "fp_gn" || e.Name.Left(5) ~== "fp_gr" || e.Name.Left(5) ~== "fp_dg" || e.Name.Left(5) ~== "fp_rg" || e.Name.Left(5) ~== "fp_fx" || e.Name.Left(5) ~== "fp_sm" || e.Name.Left(5) ~== "fp_kr" || e.Name.Left(5) ~== "fp_ca" || e.Name.Left(5) ~== "fp_bt") TreeEvents(e, p);
 		else if (e.Name.Left(5) ~== "fp_wp" || e.Name.Left(5) ~== "fp_wt") WhipEvents(e, p);
 		else if (e.Name ~== "fp_force")
 		{

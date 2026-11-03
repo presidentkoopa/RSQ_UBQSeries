@@ -399,13 +399,35 @@ class RSQ_Upgrade_Finisher : RSQ_Upgrade_Base
 // Guard is the player's (up_suite.zs RSQ_Upgrade_Guard; RSQ Melee's row Start With Guard gives level 1 before it is
 // learned), and so are the three nodes that grow it: Parry, Reflect Guard, Absorb and Release (RSQ Melee's guard.zs
 // does each). Counterpunch, Swat Back and Hadouken are a glove's, on the player's Guard. Catch and Bullet Time Fists are
-// designed and parked off (owner, 11-02: no held model, no hand pose; Bullet Time Fists until seen in the headset).
+// a glove's too, after Hadouken (owner 11-02: both built for the headset pass; Catch on the open-hand frame).
 
 // SWAT BACK: the open palm's swat sends the missile back at its shooter instead of aside.
 class RSQ_Upgrade_SwatBack : RSQ_Upgrade_Base
 {
 	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return GloveInfo(info) && GuardOwned(info.stats) && LevelOf(info, "SwatBack") < 3; }
 	static double Mult(uint lv) { return 1.0 + 0.15 * lv; }
+	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("mult", AsPercent(Mult(level))); }
+}
+
+// CATCH (after Hadouken 2): an open palm held still catches a missile as it reaches it, holds it 2 + lv s, and the
+// hand throws it at x1.5 + 0.25 lv. (RSQ Melee gloves.zs CatchTick)
+class RSQ_Upgrade_Catch : RSQ_Upgrade_Base
+{
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return GloveInfo(info) && Has(info, "ReturnFire", 2) && LevelOf(info, "Catch") < 3; }
+	static double Hold(uint lv) { return 2.0 + lv; }
+	static double Mult(uint lv) { return 1.5 + 0.25 * lv; }
+	override void GetTooltipFields(Dictionary fields, uint level)
+	{
+		fields.Insert("time", AsSeconds(int(Hold(level) * TICRATE)));
+		fields.Insert("mult", AsPercent(Mult(level)));
+	}
+}
+// BULLET TIME FISTS (after Hadouken 3; needs RSQ SlowMo): in slow motion a punch through a slowed round sends it home at
+// its own damage x1.5 + 0.5 lv. (RSQ Melee gloves.zs ReturnFire)
+class RSQ_Upgrade_BulletTimeFists : RSQ_Upgrade_Base
+{
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return GloveInfo(info) && Has(info, "ReturnFire", 3) && RSQM.Has("RSQSM_Clock") && LevelOf(info, "BulletTimeFists") < 3; }
+	static double Mult(uint lv) { return 1.5 + 0.5 * lv; }
 	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("mult", AsPercent(Mult(level))); }
 }
 
