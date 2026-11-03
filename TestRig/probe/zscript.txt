@@ -1,0 +1,29 @@
+version "4.14"
+// POSE PROBE (TestRig; never ships). Prints what the engine's VR path wrote onto the player each tic it is asked:
+// the hand positions and angles every series mod reads (AttackPos / AttackAngle / AttackPitch / AttackRoll, the
+// off hand's, OverrideAttackPosDir) and the view. `netevent rig_pose` prints one line; `rig_pose_every N` (a cvar
+// below) prints every N tics. Read the POSE lines in the log to prove a qz_* cvar moved the hand.
+class RSQPoseProbe : EventHandler
+{
+	int every;
+	override void WorldLoaded(WorldEvent e) { every = 0; }
+	void Line(String why)
+	{
+		let pmo = players[consoleplayer].mo;
+		if (!pmo) { Console.Printf("POSE %s: no player", why); return; }
+		Console.Printf("POSE %s t%d override %d  main %.1f %.1f %.1f ang %.1f pitch %.1f roll %.1f  off %.1f %.1f %.1f ang %.1f pitch %.1f  player %.1f %.1f %.1f yaw %.1f",
+			why, level.maptime, pmo.OverrideAttackPosDir ? 1 : 0,
+			pmo.AttackPos.x, pmo.AttackPos.y, pmo.AttackPos.z, pmo.AttackAngle, pmo.AttackPitch, pmo.AttackRoll,
+			pmo.OffhandPos.x, pmo.OffhandPos.y, pmo.OffhandPos.z, pmo.OffhandAngle, pmo.OffhandPitch,
+			pmo.pos.x, pmo.pos.y, pmo.pos.z, pmo.angle);
+	}
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		if (e.Name ~== "rig_pose") Line("asked");
+		else if (e.Name ~== "rig_pose_every") every = e.Args[0];
+	}
+	override void WorldTick()
+	{
+		if (every > 0 && level.maptime % every == 0) Line("tick");
+	}
+}

@@ -1,0 +1,70 @@
+version "4.14"
+// SABER BLOCK PROBE (TestRig; never ships). Load after RSQ_Saber.pk3 with -Pose and ubqs_diag 3 (the saber's own
+// SBX_* decision lines). `netevent sbt_arm` gives the player the saber and raises it (it lights on draw);
+// `netevent sbt_ball D Z` fires a DoomImpBall from D units in front at height Z (default 300, 40) straight at the
+// player, then logs SBT lines every tic: how far in front of the player it is, and whether it still flies at him.
+// With the blade posed across its path the sweep (Deflect) turns it and the SBT line flips to "going away".
+// PROVEN 2026-11-03: qz_rhand 0.3:1.0:-0.4:60:90:0 (a level blade held across the body at the ball's height) ->
+// SBX_DEFLECT ... near 4.17 need 7.50 -> DEFLECTED at 30 units out; the ball's target became the player, it flew
+// back at x1.2, the player was never hurt. (In the saber's own frame AttackPitch -89 points the blade DOWN-forward
+// and raw 149 points it back over the shoulder: pose a vertical blade with yaw, not pitch, or measure first.)
+class SBT_Probe : EventHandler
+{
+	Actor ball; int shotTic; bool armed;
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		let pmo = players[e.Player].mo;
+		if (!pmo) return;
+		if (e.Name ~== "sbt_arm")
+		{
+			let w = Weapon(pmo.GiveInventoryType("UBQS_Saber"));
+			if (!w) w = Weapon(pmo.FindInventory("UBQS_Saber"));
+			if (w) { pmo.player.PendingWeapon = w; armed = true; }
+			Console.Printf("SBT t%d armed: %s", level.maptime, w ? "UBQS_Saber pending" : "NO SABER CLASS");
+		}
+		else if (e.Name ~== "sbt_ball")
+		{
+			double d = e.Args[0] > 0 ? e.Args[0] : 300;
+			double z = e.Args[1] > 0 ? e.Args[1] : 40;
+			Vector3 at = pmo.pos + (cos(pmo.angle) * d, sin(pmo.angle) * d, z);
+			ball = Actor.Spawn("DoomImpBall", at);
+			let imp = Actor.Spawn("DoomImp", at + (cos(pmo.angle) * 64, sin(pmo.angle) * 64, 0));
+			if (ball)
+			{
+				ball.target = imp;
+				Vector3 dir = (level.Vec3Diff(at, pmo.pos + (0, 0, z))).Unit();
+				ball.vel = dir * ball.Speed;
+				ball.angle = VectorAngle(dir.x, dir.y);
+				shotTic = level.maptime;
+				Console.Printf("SBT t%d ball fired from %.0f units, height %.0f, speed %.1f, at the player", level.maptime, d, z, ball.Speed);
+			}
+		}
+	}
+	override void WorldTick()
+	{
+		let pmo = players[consoleplayer].mo;
+		if (!pmo) return;
+		if (armed && level.maptime % 10 == 0)
+		{
+			let rw = pmo.player.ReadyWeapon;
+			String rwn = "none"; if (rw) rwn = rw.GetClassName();
+			Console.Printf("SBT t%d ready weapon %s  hand %.1f %.1f %.1f ang %.1f pitch %.1f", level.maptime, rwn,
+				pmo.AttackPos.x, pmo.AttackPos.y, pmo.AttackPos.z, pmo.AttackAngle, pmo.AttackPitch);
+		}
+		if (ball && !ball.bDestroyed && level.maptime - shotTic <= 60)
+		{
+			Vector2 fwd = (cos(pmo.angle), sin(pmo.angle));
+			Vector3 dv = level.Vec3Diff(pmo.pos, ball.pos);
+			double along = dv.xy dot fwd;
+			bool atPlayer = (ball.vel.xy dot fwd) < 0;
+			String tn = "none"; if (ball.target) tn = ball.target.GetClassName();
+			Console.Printf("SBT t%d ball %.1f in front, z %.1f, target %s -> %s", level.maptime, along, ball.pos.z - pmo.pos.z,
+				tn, atPlayer ? "flying AT the player" : "going away");
+		}
+		else if (ball && ball.bDestroyed && shotTic > 0) { Console.Printf("SBT t%d ball gone", level.maptime); ball = null; }
+	}
+	override void WorldThingDamaged(WorldEvent e)
+	{
+		if (e.Thing && e.Thing.player) { String inn = "?"; if (e.Inflictor) inn = e.Inflictor.GetClassName(); Console.Printf("SBT t%d PLAYER HURT %d by %s", level.maptime, e.Damage, inn); }
+	}
+}

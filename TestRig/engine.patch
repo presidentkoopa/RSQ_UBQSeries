@@ -1,0 +1,434 @@
+diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
+index fdb7d71fd9..0244146c07 100644
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -979,6 +979,7 @@ set (PCH_SOURCES
+ 	g_statusbar/shared_sbar.cpp
+ 	rendering/2d/v_blend.cpp
+ 	rendering/gl/stereo3d/gl_openvr.cpp
++	rendering/gl/stereo3d/gl_openvr_fake.cpp
+ 	rendering/hwrenderer/hw_entrypoint.cpp
+ 	rendering/hwrenderer/hw_vertexbuilder.cpp
+ 	rendering/hwrenderer/doom_aabbtree.cpp
+diff --git a/src/rendering/gl/stereo3d/gl_openvr.cpp b/src/rendering/gl/stereo3d/gl_openvr.cpp
+index 09989c2fb4..688b404c67 100644
+--- a/src/rendering/gl/stereo3d/gl_openvr.cpp
++++ b/src/rendering/gl/stereo3d/gl_openvr.cpp
+@@ -66,6 +66,7 @@
+ #include "hwrenderer/scene/hw_drawinfo.h"
+ 
+ #include "gl_openvr.h"
++#include "gl_openvr_fake.h"	// -qzfake: the OpenVR runtime faked, poses from cvars (RSQ TestRig, 2026-11-03)
+ // #include "openvr_include.h"
+ #include <QzDoom/VrCommon.h>
+ 
+@@ -1105,6 +1106,25 @@ namespace s3d
+ 		mEyes[0] = &eyes[0];
+ 		mEyes[1] = &eyes[1];
+ 
++		// THE FAKE RUNTIME (-qzfake / QZ_FAKE=1; gl_openvr_fake.cpp): no openvr_api.dll, no SteamVR, no headset.
++		// The four tables answer from the qz_* cvars; everything below this constructor runs as it does with a real one.
++		if (QZ_FakeVR())
++		{
++			vrSystem = QZ_FakeSystem();
++			vrSystem->GetRecommendedRenderTargetSize(&sceneWidth, &sceneHeight);
++			leftEyeView->initialize(vrSystem);
++			rightEyeView->initialize(vrSystem);
++			vrCompositor = QZ_FakeCompositor();
++			vrOverlay = QZ_FakeOverlay();
++			vrOverlay->CreateOverlay((char*)"doomVROverlay", (char*)"doomVROverlay", &overlayHandle);
++			vrRenderModels = QZ_FakeRenderModels();
++			hmdWasFound = true;
++			crossHairDrawer->Clear();
++			haptics = new OpenVRHaptics(vrSystem);
++			Printf("qz_fake: OpenVR runtime faked; the headset and controllers are posed from qz_hmd / qz_rhand / qz_lhand\n");
++			return;
++		}
++
+ 		if (!IsOpenVRPresent()) return; // failed to load openvr API dynamically
+ 
+ 		if (!vr::VR_IsRuntimeInstalled()) return; // failed to find OpenVR implementation
+@@ -1386,7 +1406,7 @@ namespace s3d
+ 			if (vr_desktop_view != 1)
+ 				PresentEyeTexture(1, rightHalfScreen);
+ 		}
+-		if (doRenderToHmd)
++		if (doRenderToHmd && !QZ_FakeVR())
+ 		{
+ 			leftEyeView->submitFrame(vrCompositor, vrOverlay);
+ 			rightEyeView->submitFrame(vrCompositor, vrOverlay);
+@@ -2684,7 +2704,7 @@ namespace s3d
+ 	OpenVRMode::~OpenVRMode()
+ 	{
+ 		if (vrSystem != nullptr) {
+-			vr::VR_Shutdown();
++			if (!QZ_FakeVR()) vr::VR_Shutdown();
+ 			vrSystem = nullptr;
+ 			vrCompositor = nullptr;
+ 			vrOverlay = nullptr;
+diff --git a/src/rendering/gl/stereo3d/gl_openvr_fake.cpp b/src/rendering/gl/stereo3d/gl_openvr_fake.cpp
+new file mode 100644
+index 0000000000..3b45a0adea
+--- /dev/null
++++ b/src/rendering/gl/stereo3d/gl_openvr_fake.cpp
+@@ -0,0 +1,321 @@
++// gl_openvr_fake.cpp -- a FAKE OpenVR runtime for headless testing on Windows. See gl_openvr_fake.h.
++// (RSQ_UBQSeries/TestRig, 2026-11-03: the Windows twin of the Linux rig's glue, same cvar names.)
++
++#include <math.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <stdint.h>
++
++#include "c_cvars.h"
++#include "c_dispatch.h"
++#include "printf.h"
++#include "m_argv.h"
++#include "openvr_include.h"	// namespace openvr { #include "openvr_capi.h" }: the C function tables
++#include "gl_openvr_fake.h"
++
++using namespace openvr;
++
++// ---- the cvars (strings, read every frame; a script sets them with the console) ------------------------
++CVAR(String, qz_hmd,   "0 1.6 0 0 0 0",       0)
++CVAR(String, qz_rhand, "0.25 1.3 -0.3 60 0 0",  0)
++CVAR(String, qz_lhand, "-0.25 1.3 -0.3 60 0 0", 0)
++CVAR(Float,  qz_rtrigger, 0.f, 0)
++CVAR(Float,  qz_rgrip,    0.f, 0)
++CVAR(Float,  qz_ltrigger, 0.f, 0)
++CVAR(Float,  qz_lgrip,    0.f, 0)
++CVAR(Int,    qz_rbuttons, 0, 0)
++CVAR(Int,    qz_lbuttons, 0, 0)
++CVAR(String, qz_rstick, "0 0", 0)
++CVAR(String, qz_lstick, "0 0", 0)
++CVAR(Float,  qz_fov,   90.f,  0)	// the fake eye's vertical field of view, degrees
++CVAR(Float,  qz_ipd,   0.064f, 0)	// metres between the fake eyes
++CVAR(Int,    qz_fake_log, 0, 0)	// 1: print each haptic pulse the game asks for
++
++bool QZ_FakeVR()
++{
++	static int on = -1;
++	if (on < 0)
++	{
++		const char* env = getenv("QZ_FAKE");
++		on = (Args && Args->CheckParm("-qzfake")) || (env && atoi(env) != 0) ? 1 : 0;
++	}
++	return on == 1;
++}
++
++// ---- device indices: 0 the HMD, 1 the left controller, 2 the right ---------------------------------------
++static const TrackedDeviceIndex_t DEV_HMD = 0, DEV_LEFT = 1, DEV_RIGHT = 2;
++
++// ---- pose maths ---------------------------------------------------------------------------------------------
++// "x y z pitch yaw roll" -> an OpenVR device-to-absolute matrix (row-major 3x4: the rotation's columns are the
++// device's axes in stage space, the last column its position). R = Ry(yaw) * Rx(pitch) * Rz(-roll).
++// Numbers may be split by spaces, colons, slashes or semicolons ("0.25:1.3:-0.3:30:0:0"): a console line that
++// reaches the engine through a launcher's quoting (tools/qzd_hidden_run.ps1) cannot carry spaces inside a value.
++static void Unsplit(const char* s, char* out, size_t n)
++{
++	size_t i = 0;
++	for (; s && *s && i + 1 < n; s++) out[i++] = (*s == ':' || *s == '/' || *s == ';' || *s == ',') ? ' ' : *s;
++	out[i] = 0;
++}
++static void ParsePose(const char* s, float v[6], const float def[6])
++{
++	for (int i = 0; i < 6; i++) v[i] = def[i];
++	if (!s) return;
++	char buf[128]; Unsplit(s, buf, sizeof(buf));
++	sscanf(buf, "%f %f %f %f %f %f", &v[0], &v[1], &v[2], &v[3], &v[4], &v[5]);
++}
++
++static HmdMatrix34_t PoseMatrix(const float v[6])
++{
++	const float d2r = 3.14159265f / 180.f;
++	float p = v[3] * d2r, y = v[4] * d2r, r = -v[5] * d2r;
++	float cp = cosf(p), sp = sinf(p), cy = cosf(y), sy = sinf(y), cr = cosf(r), sr = sinf(r);
++	// Ry * Rx * Rz
++	float rx[3][3] = { {1, 0, 0}, {0, cp, -sp}, {0, sp, cp} };
++	float ry[3][3] = { {cy, 0, sy}, {0, 1, 0}, {-sy, 0, cy} };
++	float rz[3][3] = { {cr, -sr, 0}, {sr, cr, 0}, {0, 0, 1} };
++	float t[3][3], m[3][3];
++	for (int i = 0; i < 3; i++) for (int j = 0; j < 3; j++) { t[i][j] = 0; for (int k = 0; k < 3; k++) t[i][j] += rx[i][k] * rz[k][j]; }
++	for (int i = 0; i < 3; i++) for (int j = 0; j < 3; j++) { m[i][j] = 0; for (int k = 0; k < 3; k++) m[i][j] += ry[i][k] * t[k][j]; }
++	HmdMatrix34_t out;
++	for (int i = 0; i < 3; i++) { for (int j = 0; j < 3; j++) out.m[i][j] = m[i][j]; out.m[i][3] = v[i]; }
++	return out;
++}
++
++static void DevicePose(TrackedDeviceIndex_t dev, TrackedDevicePose_t* pose)
++{
++	static const float defHmd[6] = { 0, 1.6f, 0, 0, 0, 0 };
++	static const float defR[6] = { 0.25f, 1.3f, -0.3f, 60, 0, 0 };
++	static const float defL[6] = { -0.25f, 1.3f, -0.3f, 60, 0, 0 };
++	float v[6];
++	memset(pose, 0, sizeof(*pose));
++	if (dev == DEV_HMD) ParsePose(qz_hmd, v, defHmd);
++	else if (dev == DEV_RIGHT) ParsePose(qz_rhand, v, defR);
++	else if (dev == DEV_LEFT) ParsePose(qz_lhand, v, defL);
++	else return;	// not connected
++	pose->mDeviceToAbsoluteTracking = PoseMatrix(v);
++	pose->eTrackingResult = ETrackingResult_TrackingResult_Running_OK;
++	pose->bPoseIsValid = true;
++	pose->bDeviceIsConnected = true;
++}
++
++// ---- IVRSystem -------------------------------------------------------------------------------------------------
++static void OPENVR_FNTABLE_CALLTYPE F_GetRecommendedRenderTargetSize(uint32_t* w, uint32_t* h) { if (w) *w = 1024; if (h) *h = 1024; }
++
++static HmdMatrix44_t OPENVR_FNTABLE_CALLTYPE F_GetProjectionMatrix(EVREye eye, float zNear, float zFar)
++{
++	HmdMatrix44_t p; memset(&p, 0, sizeof(p));
++	float f = 1.f / tanf(qz_fov * 0.5f * 3.14159265f / 180.f);
++	p.m[0][0] = f; p.m[1][1] = f;
++	p.m[2][2] = (zFar + zNear) / (zNear - zFar);
++	p.m[2][3] = 2.f * zFar * zNear / (zNear - zFar);
++	p.m[3][2] = -1.f;
++	return p;
++}
++static void OPENVR_FNTABLE_CALLTYPE F_GetProjectionRaw(EVREye eye, float* l, float* r, float* t, float* b)
++{
++	float h = tanf(qz_fov * 0.5f * 3.14159265f / 180.f);
++	if (l) *l = -h; if (r) *r = h; if (t) *t = -h; if (b) *b = h;
++}
++static HmdMatrix34_t OPENVR_FNTABLE_CALLTYPE F_GetEyeToHeadTransform(EVREye eye)
++{
++	HmdMatrix34_t m; memset(&m, 0, sizeof(m));
++	m.m[0][0] = m.m[1][1] = m.m[2][2] = 1.f;
++	m.m[0][3] = (eye == EVREye_Eye_Left ? -0.5f : 0.5f) * qz_ipd;
++	return m;
++}
++static HmdMatrix34_t OPENVR_FNTABLE_CALLTYPE F_GetRawZeroPoseToStandingAbsoluteTrackingPose()
++{
++	HmdMatrix34_t m; memset(&m, 0, sizeof(m));
++	m.m[0][0] = m.m[1][1] = m.m[2][2] = 1.f;
++	return m;
++}
++static ETrackedDeviceClass OPENVR_FNTABLE_CALLTYPE F_GetTrackedDeviceClass(TrackedDeviceIndex_t dev)
++{
++	if (dev == DEV_HMD) return ETrackedDeviceClass_TrackedDeviceClass_HMD;
++	if (dev == DEV_LEFT || dev == DEV_RIGHT) return ETrackedDeviceClass_TrackedDeviceClass_Controller;
++	return ETrackedDeviceClass_TrackedDeviceClass_Invalid;
++}
++static ETrackedControllerRole OPENVR_FNTABLE_CALLTYPE F_GetControllerRoleForTrackedDeviceIndex(TrackedDeviceIndex_t dev)
++{
++	if (dev == DEV_LEFT) return ETrackedControllerRole_TrackedControllerRole_LeftHand;
++	if (dev == DEV_RIGHT) return ETrackedControllerRole_TrackedControllerRole_RightHand;
++	return ETrackedControllerRole_TrackedControllerRole_Invalid;
++}
++static TrackedDeviceIndex_t OPENVR_FNTABLE_CALLTYPE F_GetTrackedDeviceIndexForControllerRole(ETrackedControllerRole role)
++{
++	if (role == ETrackedControllerRole_TrackedControllerRole_LeftHand) return DEV_LEFT;
++	if (role == ETrackedControllerRole_TrackedControllerRole_RightHand) return DEV_RIGHT;
++	return k_unTrackedDeviceIndexInvalid;
++}
++static bool OPENVR_FNTABLE_CALLTYPE F_IsTrackedDeviceConnected(TrackedDeviceIndex_t dev) { return dev <= DEV_RIGHT; }
++static uint32_t OPENVR_FNTABLE_CALLTYPE F_GetStringTrackedDeviceProperty(TrackedDeviceIndex_t dev, ETrackedDeviceProperty prop, char* out, uint32_t size, ETrackedPropertyError* err)
++{
++	const char* s = dev == DEV_HMD ? "qz_fake_hmd" : "qz_fake_controller";
++	if (err) *err = ETrackedPropertyError_TrackedProp_Success;
++	uint32_t n = (uint32_t)strlen(s) + 1;
++	if (out && size > 0) { strncpy(out, s, size - 1); out[size - 1] = 0; }
++	return n;
++}
++static int32_t OPENVR_FNTABLE_CALLTYPE F_GetInt32TrackedDeviceProperty(TrackedDeviceIndex_t dev, ETrackedDeviceProperty prop, ETrackedPropertyError* err)
++{
++	if (err) *err = ETrackedPropertyError_TrackedProp_Success;
++	// axis 0 the thumbstick, axis 1 the trigger, axis 2 the grip (as a Touch / Index controller reports them)
++	if (prop == ETrackedDeviceProperty_Prop_Axis0Type_Int32) return EVRControllerAxisType_k_eControllerAxis_Joystick;
++	if (prop == ETrackedDeviceProperty_Prop_Axis1Type_Int32) return EVRControllerAxisType_k_eControllerAxis_Trigger;
++	if (prop == ETrackedDeviceProperty_Prop_Axis2Type_Int32) return EVRControllerAxisType_k_eControllerAxis_Trigger;
++	return 0;
++}
++static bool OPENVR_FNTABLE_CALLTYPE F_GetBoolTrackedDeviceProperty(TrackedDeviceIndex_t, ETrackedDeviceProperty, ETrackedPropertyError* err) { if (err) *err = ETrackedPropertyError_TrackedProp_Success; return false; }
++static float OPENVR_FNTABLE_CALLTYPE F_GetFloatTrackedDeviceProperty(TrackedDeviceIndex_t, ETrackedDeviceProperty, ETrackedPropertyError* err) { if (err) *err = ETrackedPropertyError_TrackedProp_Success; return 0.f; }
++static uint64_t OPENVR_FNTABLE_CALLTYPE F_GetUint64TrackedDeviceProperty(TrackedDeviceIndex_t, ETrackedDeviceProperty, ETrackedPropertyError* err) { if (err) *err = ETrackedPropertyError_TrackedProp_Success; return 0; }
++
++static bool OPENVR_FNTABLE_CALLTYPE F_GetControllerState(TrackedDeviceIndex_t dev, VRControllerState_t* st, uint32_t size)
++{
++	if (!st) return false;
++	memset(st, 0, sizeof(*st));
++	static uint32_t packet = 0;
++	st->unPacketNum = ++packet;
++	float trig, grip; int extra; const char* stick;
++	if (dev == DEV_RIGHT) { trig = qz_rtrigger; grip = qz_rgrip; extra = qz_rbuttons; stick = qz_rstick; }
++	else if (dev == DEV_LEFT) { trig = qz_ltrigger; grip = qz_lgrip; extra = qz_lbuttons; stick = qz_lstick; }
++	else return false;
++	float sx = 0, sy = 0; if (stick) { char buf[64]; Unsplit(stick, buf, sizeof(buf)); sscanf(buf, "%f %f", &sx, &sy); }
++	st->rAxis[0].x = sx; st->rAxis[0].y = sy;
++	st->rAxis[1].x = trig;
++	st->rAxis[2].x = grip;
++	uint64_t b = (uint64_t)(uint32_t)extra;
++	if (trig > 0.5f) b |= 1ull << EVRButtonId_k_EButton_SteamVR_Trigger;
++	if (grip > 0.5f) b |= 1ull << EVRButtonId_k_EButton_Grip;
++	if (fabsf(sx) > 0.01f || fabsf(sy) > 0.01f) st->ulButtonTouched |= 1ull << EVRButtonId_k_EButton_SteamVR_Touchpad;
++	st->ulButtonPressed = b;
++	st->ulButtonTouched |= b;
++	return true;
++}
++static void OPENVR_FNTABLE_CALLTYPE F_TriggerHapticPulse(TrackedDeviceIndex_t dev, uint32_t axis, unsigned short us)
++{
++	if (qz_fake_log) Printf("qz_fake: haptic pulse dev %u axis %u %u us\n", (unsigned)dev, (unsigned)axis, (unsigned)us);
++}
++static bool OPENVR_FNTABLE_CALLTYPE F_PollNextEvent(VREvent_t*, uint32_t) { return false; }
++static bool OPENVR_FNTABLE_CALLTYPE F_IsInputAvailable() { return true; }
++static HmdMatrix34_t OPENVR_FNTABLE_CALLTYPE F_GetSeatedZeroPose() { return F_GetRawZeroPoseToStandingAbsoluteTrackingPose(); }
++static void OPENVR_FNTABLE_CALLTYPE F_GetDeviceToAbsoluteTrackingPose(ETrackingUniverseOrigin, float, TrackedDevicePose_t* arr, uint32_t n)
++{
++	for (uint32_t i = 0; i < n; i++) DevicePose(i, &arr[i]);
++}
++
++// ---- IVRCompositor ---------------------------------------------------------------------------------------------
++static EVRCompositorError OPENVR_FNTABLE_CALLTYPE F_WaitGetPoses(TrackedDevicePose_t* render, uint32_t nr, TrackedDevicePose_t* game, uint32_t ng)
++{
++	for (uint32_t i = 0; i < nr; i++) DevicePose(i, &render[i]);
++	for (uint32_t i = 0; i < ng; i++) DevicePose(i, &game[i]);
++	return EVRCompositorError_VRCompositorError_None;
++}
++static EVRCompositorError OPENVR_FNTABLE_CALLTYPE F_Submit(EVREye, Texture_t*, VRTextureBounds_t*, EVRSubmitFlags) { return EVRCompositorError_VRCompositorError_None; }
++static void OPENVR_FNTABLE_CALLTYPE F_SetTrackingSpace(ETrackingUniverseOrigin) {}
++static ETrackingUniverseOrigin OPENVR_FNTABLE_CALLTYPE F_GetTrackingSpace() { return ETrackingUniverseOrigin_TrackingUniverseStanding; }
++static void OPENVR_FNTABLE_CALLTYPE F_ClearLastSubmittedFrame() {}
++static void OPENVR_FNTABLE_CALLTYPE F_PostPresentHandoff() {}
++
++// ---- IVRRenderModels: nothing loads, so the mode never draws a controller model --------------------------------
++static EVRRenderModelError OPENVR_FNTABLE_CALLTYPE F_LoadRenderModel_Async(char*, RenderModel_t**) { return EVRRenderModelError_VRRenderModelError_NotSupported; }
++static EVRRenderModelError OPENVR_FNTABLE_CALLTYPE F_LoadTexture_Async(TextureID_t, RenderModel_TextureMap_t**) { return EVRRenderModelError_VRRenderModelError_NotSupported; }
++static void OPENVR_FNTABLE_CALLTYPE F_FreeRenderModel(RenderModel_t*) {}
++static void OPENVR_FNTABLE_CALLTYPE F_FreeTexture(RenderModel_TextureMap_t*) {}
++
++// ---- IVROverlay: accepted and ignored ----------------------------------------------------------------------------
++static EVROverlayError OPENVR_FNTABLE_CALLTYPE F_CreateOverlay(char*, char*, VROverlayHandle_t* h) { if (h) *h = 1; return EVROverlayError_VROverlayError_None; }
++static EVROverlayError OPENVR_FNTABLE_CALLTYPE F_OverlayHandle(VROverlayHandle_t) { return EVROverlayError_VROverlayError_None; }
++static EVROverlayError OPENVR_FNTABLE_CALLTYPE F_OverlayFloat(VROverlayHandle_t, float) { return EVROverlayError_VROverlayError_None; }
++static EVROverlayError OPENVR_FNTABLE_CALLTYPE F_OverlayBounds(VROverlayHandle_t, VRTextureBounds_t*) { return EVROverlayError_VROverlayError_None; }
++static EVROverlayError OPENVR_FNTABLE_CALLTYPE F_OverlayTexture(VROverlayHandle_t, Texture_t*) { return EVROverlayError_VROverlayError_None; }
++static EVROverlayError OPENVR_FNTABLE_CALLTYPE F_OverlayRel(VROverlayHandle_t, TrackedDeviceIndex_t, HmdMatrix34_t*) { return EVROverlayError_VROverlayError_None; }
++static EVROverlayError OPENVR_FNTABLE_CALLTYPE F_OverlayAbs(VROverlayHandle_t, ETrackingUniverseOrigin, HmdMatrix34_t*) { return EVROverlayError_VROverlayError_None; }
++
++// ---- the tables -----------------------------------------------------------------------------------------------------
++// Each is zeroed, then only the members the mode calls are filled (gl_openvr.cpp, 2026-11-03: the list in
++// RSQ_UBQSeries/TestRig/README.md). A member the mode never calls stays null; a new call into the fake would
++// crash at once, which is the honest failure.
++VR_IVRSystem_FnTable* QZ_FakeSystem()
++{
++	static VR_IVRSystem_FnTable t; static bool made = false;
++	if (!made)
++	{
++		made = true; memset(&t, 0, sizeof(t));
++		t.GetRecommendedRenderTargetSize = F_GetRecommendedRenderTargetSize;
++		t.GetProjectionMatrix = F_GetProjectionMatrix;
++		t.GetProjectionRaw = F_GetProjectionRaw;
++		t.GetEyeToHeadTransform = F_GetEyeToHeadTransform;
++		t.GetRawZeroPoseToStandingAbsoluteTrackingPose = F_GetRawZeroPoseToStandingAbsoluteTrackingPose;
++		t.GetSeatedZeroPoseToStandingAbsoluteTrackingPose = F_GetSeatedZeroPose;
++		t.GetDeviceToAbsoluteTrackingPose = F_GetDeviceToAbsoluteTrackingPose;
++		t.GetTrackedDeviceClass = F_GetTrackedDeviceClass;
++		t.GetControllerRoleForTrackedDeviceIndex = F_GetControllerRoleForTrackedDeviceIndex;
++		t.GetTrackedDeviceIndexForControllerRole = F_GetTrackedDeviceIndexForControllerRole;
++		t.IsTrackedDeviceConnected = F_IsTrackedDeviceConnected;
++		t.GetStringTrackedDeviceProperty = F_GetStringTrackedDeviceProperty;
++		t.GetInt32TrackedDeviceProperty = F_GetInt32TrackedDeviceProperty;
++		t.GetBoolTrackedDeviceProperty = F_GetBoolTrackedDeviceProperty;
++		t.GetFloatTrackedDeviceProperty = F_GetFloatTrackedDeviceProperty;
++		t.GetUint64TrackedDeviceProperty = F_GetUint64TrackedDeviceProperty;
++		t.GetControllerState = F_GetControllerState;
++		t.TriggerHapticPulse = F_TriggerHapticPulse;
++		t.PollNextEvent = F_PollNextEvent;
++		t.IsInputAvailable = F_IsInputAvailable;
++	}
++	return &t;
++}
++VR_IVRCompositor_FnTable* QZ_FakeCompositor()
++{
++	static VR_IVRCompositor_FnTable t; static bool made = false;
++	if (!made)
++	{
++		made = true; memset(&t, 0, sizeof(t));
++		t.WaitGetPoses = F_WaitGetPoses;
++		t.Submit = F_Submit;
++		t.SetTrackingSpace = F_SetTrackingSpace;
++		t.GetTrackingSpace = F_GetTrackingSpace;
++		t.ClearLastSubmittedFrame = F_ClearLastSubmittedFrame;
++		t.PostPresentHandoff = F_PostPresentHandoff;
++	}
++	return &t;
++}
++VR_IVRRenderModels_FnTable* QZ_FakeRenderModels()
++{
++	static VR_IVRRenderModels_FnTable t; static bool made = false;
++	if (!made)
++	{
++		made = true; memset(&t, 0, sizeof(t));
++		t.LoadRenderModel_Async = F_LoadRenderModel_Async;
++		t.LoadTexture_Async = F_LoadTexture_Async;
++		t.FreeRenderModel = F_FreeRenderModel;
++		t.FreeTexture = F_FreeTexture;
++	}
++	return &t;
++}
++VR_IVROverlay_FnTable* QZ_FakeOverlay()
++{
++	static VR_IVROverlay_FnTable t; static bool made = false;
++	if (!made)
++	{
++		made = true; memset(&t, 0, sizeof(t));
++		t.CreateOverlay = F_CreateOverlay;
++		t.ShowOverlay = F_OverlayHandle;
++		t.HideOverlay = F_OverlayHandle;
++		t.ClearOverlayTexture = F_OverlayHandle;
++		t.SetOverlayWidthInMeters = F_OverlayFloat;
++		t.SetOverlayTextureBounds = F_OverlayBounds;
++		t.SetOverlayTexture = F_OverlayTexture;
++		t.SetOverlayTransformTrackedDeviceRelative = F_OverlayRel;
++		t.SetOverlayTransformAbsolute = F_OverlayAbs;
++	}
++	return &t;
++}
++
++// ---- a console line to see what the fake is doing ----------------------------------------------------------------
++CCMD(qz_fake_state)
++{
++	Printf("qz_fake: %s. hmd \"%s\" rhand \"%s\" lhand \"%s\" rtrig %.2f rgrip %.2f ltrig %.2f lgrip %.2f\n",
++		QZ_FakeVR() ? "ON (poses from the qz_* cvars)" : "off (-qzfake or QZ_FAKE=1 to turn on)",
++		*qz_hmd, *qz_rhand, *qz_lhand, *qz_rtrigger, *qz_rgrip, *qz_ltrigger, *qz_lgrip);
++}
+diff --git a/src/rendering/gl/stereo3d/gl_openvr_fake.h b/src/rendering/gl/stereo3d/gl_openvr_fake.h
+new file mode 100644
+index 0000000000..87ecf74e30
+--- /dev/null
++++ b/src/rendering/gl/stereo3d/gl_openvr_fake.h
+@@ -0,0 +1,33 @@
++// gl_openvr_fake.h -- a FAKE OpenVR runtime for headless testing on Windows (RSQ_UBQSeries/TestRig, 2026-11-03).
++//
++// The OpenVR mode (gl_openvr.cpp, vr_mode 10) talks to SteamVR through four C function tables. With
++// `-qzfake` on the command line (or the environment variable QZ_FAKE=1) it takes these tables instead,
++// which answer from console cvars, so the headset and both controllers can be posed from a script with no
++// runtime and no hardware -- the Windows twin of the Linux rig's qz_linux_glue.cpp (RSQ_WeaponDepot
++// tools/rig), with the same cvar names, so the rig's probes port over:
++//   qz_hmd   "x y z pitch yaw roll"   default "0 1.6 0 0 0 0"        (metres, degrees; OpenVR stage space:
++//   qz_rhand "x y z pitch yaw roll"   default "0.25 1.3 -0.3 60 0 0"   +X right, +Y up, -Z forward)
++//   qz_lhand "x y z pitch yaw roll"   default "-0.25 1.3 -0.3 60 0 0"
++//   qz_rtrigger / qz_rgrip / qz_ltrigger / qz_lgrip   0..1 (over 0.5 = pressed)
++//   qz_rbuttons / qz_lbuttons   extra raw OpenVR button bits (k_EButton_A = 1<<7, ApplicationMenu = 1<<1, ...)
++//   qz_rstick / qz_lstick "x y"   thumbstick axes
++// Pitch is about +X (positive = up), yaw about +Y (positive = left), roll about -Z. Numbers may also be split by
++// colons ("0.25:1.3:-0.3:60:0:0") so a value can pass through a launcher's quoting. A hand pitch of +60 aims the
++// in-game weapon LEVEL on this (OpenVR) path -- measured 2026-11-03: raw 30 read as AttackPitch -30, raw 0 as -60
++// (the Linux OpenXR glue's +30 does not carry over). Poses are read each render frame; read a result 2+ tics later.
++// Everything downstream of the tables -- AttackPos/Angle/Pitch/Roll, OffhandPos/..., the weapon and off-hand
++// transforms, haptics, the overlay -- is the mode's own code, untouched. Nothing changes without -qzfake.
++#pragma once
++
++namespace openvr {
++	struct VR_IVRSystem_FnTable;
++	struct VR_IVRCompositor_FnTable;
++	struct VR_IVROverlay_FnTable;
++	struct VR_IVRRenderModels_FnTable;
++}
++
++bool QZ_FakeVR();   // -qzfake on the command line, or QZ_FAKE=1 in the environment (decided once)
++openvr::VR_IVRSystem_FnTable* QZ_FakeSystem();
++openvr::VR_IVRCompositor_FnTable* QZ_FakeCompositor();
++openvr::VR_IVROverlay_FnTable* QZ_FakeOverlay();
++openvr::VR_IVRRenderModels_FnTable* QZ_FakeRenderModels();

@@ -36,7 +36,12 @@ param(
     [string[]] $Commands = @(),
     [string[]] $ExtraArgs = @(),
     [int] $Skill = 0,
-    [string] $Tag = 'run'
+    [string] $Tag = 'run',
+    # -Pose: the TestRig (TestRig/README.md). The engine runs its OpenVR mode on the FAKE runtime (-qzfake, vr_mode 10):
+    # the headset and both controllers are posed from the qz_hmd / qz_rhand / qz_lhand cvars, set with -ExtraArgs
+    # ('+qz_rhand', '"0.25 1.3 -0.3 30 0 0"') or from -Commands as the level runs. Needs the engine built with
+    # gl_openvr_fake.cpp (TestRig/engine.patch); without it -qzfake is ignored and vr_mode 10 finds no headset.
+    [switch] $Pose
 )
 $ErrorActionPreference = 'Stop'
 
@@ -147,7 +152,10 @@ function Invoke-Hidden([string] $argLine, [string] $outFile, [string] $logFile, 
 
 function Q([string] $s) { if ($s -match '[\s;]') { '"' + $s + '"' } else { $s } }
 $base = @('-iwad', (Q $iwad), '-config', (Q $cfg), '-file') + @($Files | ForEach-Object { Q $_ }) +
-        @('-nosound', '-nomusic', '-stdout', '+vr_mode', '0', '+vid_fullscreen', '0', '+i_pauseinbackground', '0')
+        @('-nosound', '-nomusic', '-stdout', '+vr_mode', $(if ($Pose) { '10' } else { '0' }), '+vid_fullscreen', '0', '+i_pauseinbackground', '0')
+# vr_joy_mode 0 is the legacy-input path, the only one that reads the fake controller state (and the only one that
+# recomputes the hands' offsets every frame, gl_openvr.cpp HandleControllerState); 1 is SteamVR Input, which needs SteamVR.
+if ($Pose) { $base += @('-qzfake', '+vid_preferbackend', '0', '+vr_joy_mode', '0') }
 if ($Skill -gt 0) { $base += @('-skill', "$Skill") }
 
 try {
@@ -171,7 +179,8 @@ foreach ($g in $guard) {
 }
 if (-not (Test-Path -LiteralPath $log)) { Write-Output "NO LOG written. stdout: $con"; exit 2 }
 $lines = @(Get-Content -LiteralPath $log)
-if ($lines | Where-Object { $_ -match 'I_StartupOpenXR' }) { Write-Warning "GUARD: the log shows I_StartupOpenXR -- vr_mode 0 did NOT hold" }
+if (-not $Pose -and ($lines | Where-Object { $_ -match 'I_StartupOpenXR' })) { Write-Warning "GUARD: the log shows I_StartupOpenXR -- vr_mode 0 did NOT hold" }
+if ($Pose -and -not ($lines | Where-Object { $_ -match 'qz_fake: OpenVR runtime faked' })) { Write-Warning "GUARD: -Pose asked but the log never says 'qz_fake: OpenVR runtime faked' (engine without the TestRig patch, or vr_mode 10 refused)" }
 # What loaded: the engine names every archive and its lump count. Match them against -Files or the gate is void.
 $lines | Where-Object { $_ -match '^adding ' } | ForEach-Object { Write-Output "  $_" }
 $failPattern = 'Script error|Execution could not continue|VM execution aborted|Unknown identifier|could not find|Unknown property'

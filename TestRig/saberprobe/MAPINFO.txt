@@ -1,0 +1,4 @@
+GameInfo
+{
+	AddEventHandlers = "SBT_Probe"
+}
