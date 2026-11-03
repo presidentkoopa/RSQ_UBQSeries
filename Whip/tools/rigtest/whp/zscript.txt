@@ -11,6 +11,7 @@ version "4.14"
 //   8 SWAY        a slow sweep of the arm (whp_scripts.py sway)
 //   9 JITTER      a held hand with noise, then a noisy wind-up and swing (whp_scripts.py jitter)
 //  10 WALL        stood facing a wall (netevent whp_facewall), two swings into it
+//  11 SWING       the aimed swing anchor on SWINGTST (tools/rigtest/mkswingmap.py; whp_scripts.py aim/ceil/wall/chain)
 // whp_metric 1: a "whp_M" line every tic (tools/rigtest/whp_metrics.py reads them): the tip in the body's frame, the
 // sim's tip speed, the worst link-length error, the chain's kinetic energy (body frame, unit masses), the fastest
 // node, Mend/Straighten, and the raw handle tip against the simulated one (the input filter's latency).
@@ -140,7 +141,7 @@ class WHP_Probe : EventHandler
 	override void RenderOverlay(RenderEvent e)
 	{
 		frames++;
-		if (CVar.FindCVar("whp_log").GetInt() >= 3) Console.Printf("whp_F %d g%d", frames, gametic);
+		if (CVar.FindCVar("whp_log").GetInt() >= 3) Console.Printf("whp_F %d g%d m%d", frames, gametic, level.maptime);
 	}
 
 	override void WorldTick()
@@ -199,6 +200,21 @@ class WHP_Probe : EventHandler
 		String mn = pmo.player.ReadyWeapon ? pmo.player.ReadyWeapon.GetClassName() : 'none';
 		String on = pmo.player.OffhandWeapon ? pmo.player.OffhandWeapon.GetClassName() : 'none';
 		if (mn != lastMain || on != lastOff) { Console.Printf("whp_WEAP t%d main %s off %s", t, mn, on); lastMain = mn; lastOff = on; }
+		// 11 SWING (the aimed swing anchor, swing.zs; whp_scripts.py aim / ceil / wall / chain / refuse): a whp_S line a tic --
+		// the body (pos, vel, flat and full speed, on the ground or not), the rope (phase, length, distance to the
+		// anchor), the aim (held, valid, why, where the ray ends) and the whip (state, links coiled)
+		if (sc == 11)
+		{
+			let core = RSQWP_Core.Get();
+			int wi = pn * 2;
+			let hk = core ? core.hooks[wi] : null;
+			bool gr = pmo.pos.z <= pmo.floorz + 0.5 || pmo.bOnMobj;
+			Vector3 ae = w.aimEnd[wi];
+			Console.Printf("whp_S %d %d pos %.1f %.1f %.1f vel %.2f %.2f %.2f hspd %.2f spd %.2f gr %d hook %d L %.1f d %.1f anc %.0f %.0f %.0f aim %d ok %d why %s end %.0f %.0f %.0f whip %d cp %.1f btn %x",
+				t, level.maptime, pmo.pos.x, pmo.pos.y, pmo.pos.z, pmo.vel.x, pmo.vel.y, pmo.vel.z, pmo.vel.xy.Length(), pmo.vel.Length(), gr,
+				hk ? hk.phase : -1, hk ? hk.ropeLen : 0., hk ? (hk.anchor - RSQWP_Core.AttachPoint(pmo)).Length() : 0., hk ? hk.anchor.x : 0., hk ? hk.anchor.y : 0., hk ? hk.anchor.z : 0.,
+				w.aimHeld[wi], w.aimOk[wi], w.aimWhy[wi], ae.x, ae.y, ae.z, w.wstate[wi], w.cp[wi], pmo.player.cmd.buttons);
+		}
 		if (sc == 5 && t % 10 == 0)
 			Console.Printf("whp_HANDS t%d whips out %d: main %d (byWeapon %d) off %d (byWeapon %d); main weapon %s, off weapon %s", t, nOut, w.wstate[pn * 2], w.byWeapon[pn * 2], w.wstate[pn * 2 + 1], w.byWeapon[pn * 2 + 1], mn, on);
 		if (w.wstate[i] == 0) return;

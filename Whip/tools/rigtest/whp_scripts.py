@@ -4,7 +4,8 @@ the rig exactly one frame a tic -- measured: whp_F frame n = gametic n+1). The r
 set from the console (a play-scope CVar.SetString on an engine cvar aborts), so the hand is driven here.
 
     python3 tools/rigtest/whp_scripts.py <scenario> [hand]     prints the script
-scenarios: snap walk swing coil yank hands idle mark sway jitter wall two lasso lasso0..lasso7"""
+scenarios: snap walk swing coil yank hands idle mark sway jitter wall two lasso lasso0..lasso7
+the aimed swing (swing.zs) on SWINGTST (mkswingmap.py; whp.sh with PRE=<the wad>): aim ceil wallanchor chain refuse snag"""
 import sys, math, random
 
 R = (0.20, 1.30, -0.30, 20, 0)
@@ -47,7 +48,10 @@ def pre(scen, extra=''):
 def run(scen, hand='r'):
     left = hand == 'l'
     out = []
-    if scen == 'snap':
+    if scen in SWINGS:
+        out.append(pre_swing())
+        out.extend(swing_scen(scen))
+    elif scen == 'snap':
         # the hand held out at arm's length, still; a 45-degree snap at t80 (then t120 back, t160, t200 back)
         out.append(pre(1).replace(pose(R), pose(OUT)))
         for t in range(340):
@@ -143,6 +147,104 @@ def run(scen, hand='r'):
             out.append(pose(key(t, ks1 if t < 150 else ks2), left) + '; wait 1;')
     out.append('quit')
     return ' '.join(out)
+
+
+# ---- THE AIMED SWING (swing.zs) on SWINGTST ------------------------------------------------------------------------
+SWINGS = ('aim', 'ceil', 'wallanchor', 'chain', 'refuse', 'snag')
+LREST = (-0.20, 1.30, -0.30, 20, 0)
+PITCH_FIX = 30.0   # the rig's controller pitch reads ~this much lower than the pose's (measured: 35 -> ~3, 45 -> ~13)
+RELEASE_CEIL = 92
+WALL_YAW = -11.0
+import os
+CHAIN_REL = [int(x) for x in os.environ.get('CHAIN_REL', '98 129 151').split()]       # the let-go tics (tuned on the rig)
+CHAIN_PITCH = [float(x) for x in os.environ.get('CHAIN_PITCH', '54 54 54').split()]  # the ray's pitch for each next cast
+
+
+def lpose(pitch, yaw=0.0, x=-0.20, y=1.40, z=-0.40):
+    return 'qz_lhand "%.3f %.3f %.3f %.2f %.2f 0"' % (x, y, z, pitch + PITCH_FIX, yaw)
+
+
+def hmd(pitch, yaw):
+    return 'qz_hmd "0 1.6 0 %.2f %.2f 0"' % (pitch, yaw)
+
+
+def pre_swing(extra=''):
+    return ('vid_maxfps 35; wait 5; map SWINGTST; wait 40; god; notarget; %s; %s; wait 70; use RSQWP_WhipWeapon; wait 60; '
+            'rsqwp_debug 1; whp_scen 11; whp_log 3; %s netevent whp_go; ' % (pose(R), pose(LREST, False).replace('qz_rhand', 'qz_lhand'), extra))
+
+
+def swing_scen(scen):
+    """tic-by-tic commands (ev), and the whip hand's crack windows (each a SWING from its start tic)"""
+    ev = {}
+    def at(t, c): ev.setdefault(t, []).append(c)
+    cracks = []
+    T = 240
+    if scen == 'aim':
+        # the ray, valid and refused: the pit's ceiling (valid), A's floor (floor), level east (out of reach), the
+        # pit's south wall (valid wall), the sky yard's ceiling (sky). The view turns with the ray (qz_hmd).
+        at(5, '+oh_altatk')
+        at(5, lpose(35)); at(40, lpose(-50)); at(70, lpose(2))
+        at(100, 'netevent whp_tp 360 200 0'); at(101, lpose(12, -60)); at(101, hmd(0, -60))
+        at(135, 'netevent whp_tp 192 900 0'); at(136, lpose(45, 90)); at(136, hmd(30, 90))
+        at(170, '-oh_altatk'); at(170, hmd(0, 0))
+        T = 200
+    elif scen == 'ceil':
+        # ceiling anchor -> hop -> swing -> release -> carried arc and landing. At the ledge's lip facing east, the ray
+        # on the pit's ceiling ~9 m out, one crack; a step off the lip (stick, 3 tics) after the latch; let go (the whip
+        # hand's alt-fire) on the upswing; land on M
+        at(0, 'netevent whp_tp 378 512 0')
+        at(5, '+oh_altatk'); at(5, lpose(13))
+        cracks.append(20)
+        at(60, '-oh_altatk')
+        at(52, 'qz_lstick "0 1"'); at(55, 'qz_lstick "0 0"')
+        at(RELEASE_CEIL, '+altattack'); at(RELEASE_CEIL + 2, '-altattack')
+        T = 220
+    elif scen == 'wallanchor':
+        # wall anchor -> a sideways arc: at the lip near the south wall, the ray on the wall to the right and ahead;
+        # a step off the lip after the latch; it swings round the point on the wall; let go late
+        at(0, 'netevent whp_tp 378 36 0')
+        at(5, '+oh_altatk'); at(5, lpose(6, WALL_YAW))
+        cracks.append(20)
+        at(60, '-oh_altatk')
+        at(64, 'qz_lstick "0 1"'); at(76, 'qz_lstick "0 0"')     # after the hop has landed: a step off the lip
+        at(200, '+altattack'); at(202, '-altattack')
+        T = 240
+    elif scen == 'snag':
+        # the old edge snag, no ray: stood under the A/P lintel (its edge at z 192, x 384), one wind-up and crack
+        at(0, 'netevent whp_tp 372 512 0')
+        cracks.append(20)
+        T = 120
+    elif scen == 'refuse':
+        # the ray held on the sky, then on the floor, and a crack each time: an ordinary crack, no rope
+        at(0, 'netevent whp_tp 192 900 0')
+        at(5, '+oh_altatk'); at(5, lpose(45, 90))
+        cracks.append(20)
+        at(100, 'netevent whp_tp 300 512 0'); at(100, lpose(-50))
+        cracks.append(110)
+        at(190, '-oh_altatk')
+        T = 200
+    elif scen == 'chain':
+        # swings across the 45 m pit: cast, step off, swing; on the upswing let go with the whip wound up (raised
+        # over the shoulder while still on the rope), crack again in the air at the next spot ahead, and so on
+        at(0, 'netevent whp_tp 378 512 0')
+        at(5, '+oh_altatk'); at(5, lpose(13))
+        cracks.append(20)
+        at(52, 'qz_lstick "0 1"'); at(55, 'qz_lstick "0 0"')
+        for k, rt in enumerate(CHAIN_REL):
+            at(rt, '+altattack'); at(rt + 2, '-altattack')
+            at(rt - 10, lpose(CHAIN_PITCH[k]))
+            if k < len(CHAIN_REL) - 1:
+                cracks.append(rt - 14)    # the wind-up starts on the rope (14 tics up, held), the swing after the let-go
+        at(CHAIN_REL[-1] + 40, '-oh_altatk')
+        T = CHAIN_REL[-1] + 140
+    out = []
+    for t in range(T):
+        for c in ev.get(t, []): out.append(c + ';')
+        p = R
+        for c in cracks:
+            if t >= c: p = key(t, [(k[0] + c,) + k[1:] for k in SWING])
+        out.append(pose(p) + '; wait 1;')
+    return out
 
 
 if __name__ == '__main__':

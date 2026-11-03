@@ -343,6 +343,11 @@ class RSQWP_Whip : EventHandler
 			hpRel[j] = (e.Args[0] / 256.0, e.Args[1] / 256.0, e.Args[2] / 256.0);
 			hpTic[j] = level.maptime;
 		}
+		else if (e.Name ~== "rsqwp_aimkey")
+		{
+			aimBtn[e.Player] = e.Args[0] != 0;
+			if (RSQWP_Util.Flag("rsqwp_debug", false)) Console.Printf("T_WPW aim key %s t%d", aimBtn[e.Player] ? "down" : "up", level.maptime);
+		}
 		else if (e.Name ~== "rsqwp_ogrip")
 		{
 			offGripKey[e.Player] = e.Args[0] != 0;
@@ -410,6 +415,7 @@ class RSQWP_Whip : EventHandler
 	{
 		if (e.Type != InputEvent.Type_KeyDown && e.Type != InputEvent.Type_KeyUp) return false;
 		ReadOffKey(e);
+		if (AimKey(e)) return true;
 		if (RSQWP_Util.Opt("rsqwp_whip_aim", 1) != 2) return false;
 		let b = Bindings.GetBinding(e.KeyScan);
 		if (!(b ~== "+altattack")) return false;
@@ -423,6 +429,34 @@ class RSQWP_Whip : EventHandler
 			return true;
 		}
 		return false;
+	}
+
+	// THE AIMED SWING's button (swing.zs): the other hand's alt-fire while the whip weapon is in hand -- +oh_altatk
+	// with the whip in the main hand, +altattack with it in the off hand. Eaten here (press and its release), so the
+	// gun or the hand in that hand does not alt-fire as well; the whip hears it as rsqwp_aimkey. A release is eaten
+	// only when its press was.
+	ui bool aimEat;
+	ui int aimEatKey;
+	ui bool AimKey(InputEvent e)
+	{
+		if (e.Type == InputEvent.Type_KeyUp)
+		{
+			if (!aimEat || e.KeyScan != aimEatKey) return false;
+			aimEat = false;
+			EventHandler.SendNetworkEvent("rsqwp_aimkey", 0);
+			return true;
+		}
+		if (!RSQWP_Util.Flag("rsqwp_swing", true) || !RSQWP_Util.Flag("rsqwp_on", true)) return false;
+		let p = players[consoleplayer];
+		if (!p || !p.mo || p.mo.Health <= 0) return false;
+		int wh = (p.ReadyWeapon is "RSQWP_WhipWeapon") ? 0 : ((p.OffhandWeapon is "RSQWP_WhipWeapon") ? 1 : -1);
+		if (wh < 0) return false;
+		let b = Bindings.GetBinding(e.KeyScan);
+		if (!(b ~== (wh == 0 ? "+oh_altatk" : "+altattack"))) return false;
+		aimEat = true;
+		aimEatKey = e.KeyScan;
+		EventHandler.SendNetworkEvent("rsqwp_aimkey", 1);
+		return true;
 	}
 
 	void Start(int i, PlayerPawn pmo, int hand, int mode)
@@ -446,6 +480,9 @@ class RSQWP_Whip : EventHandler
 		// out of the hand COILED (Assist throws it straight out at full length); taken up again while it was rolling
 		// up, it goes back to its rest coil from where it is
 		cgoal[i] = wmode[i] == 1 ? 0.0 : double(COIL_REST);
+		// a chain (swing.zs): let go of an aimed swing's rope and the thong comes straight off it, out, not coiled
+		if (outNow[i]) { cgoal[i] = 0; cp[i] = 0; cps[i] = 0; fresh = true; }
+		outNow[i] = false;
 		if (fresh)
 		{
 			cp[i] = cgoal[i]; cps[i] = 0; ch[i] = (0, 0);
@@ -549,6 +586,7 @@ class RSQWP_Whip : EventHandler
 		Mantle();
 		TrackFrame();
 		WhipIn();
+		for (int i = 0; i < NW; i++) AimTick(i);     // the aimed swing's ray (swing.zs): on a rope too
 		for (int i = 0; i < NW; i++)
 		{
 			if (wstate[i] == ST_IDLE)
@@ -664,7 +702,12 @@ class RSQWP_Whip : EventHandler
 		if (!p || !p.mo || !p.mo.OverrideAttackPosDir) return;
 		let mo = p.mo;
 		int pn = consoleplayer;
-		if (wstate[pn * 2] == ST_IDLE && wstate[pn * 2 + 1] == ST_IDLE) return;
+		// on a rope too (11-03): the arm pump reads the hand against the body (BodyHand), and without these the engine's
+		// AttackPos.z -- the interpolated eye's -- wobbled by a tic of the swing's vertical speed and read as hauls (rig:
+		// "haul 10.7" with the hand still, a 22 a tic swing pumped to the 30 cap)
+		let core = RSQWP_Core.Get();
+		bool roped = core && (core.hooks[pn * 2] || core.hooks[pn * 2 + 1]);
+		if (wstate[pn * 2] == ST_IDLE && wstate[pn * 2 + 1] == ST_IDLE && !roped) return;
 		if (mo.AttackPos == mo.OffhandPos) return;      // the collapsed pose (a menu, a save): never a hand
 		for (int hand = 0; hand < 2; hand++)
 		{
@@ -1523,7 +1566,8 @@ class RSQWP_Whip : EventHandler
 		Vector3 handAt = RSQWP_Util.HandPos(pmo, hand);
 		double handZ = handAt.z;
 		double hitSpd = RSQWP_Util.Num("rsqwp_whip_crack", 20) * 0.45;
-		bool snagOn = Unlock(pmo, G_SNAG, "rsqwp_whip_snag", true) && wstate[i] == ST_OUT;   // the Snag node under Gun Bonsai VR
+		bool snagOn = Unlock(pmo, G_SNAG, "rsqwp_whip_snag", true) && wstate[i] == ST_OUT && !casting[i]
+			&& !(aimOk[i] && aimHeld[i] && level.maptime - aimTic[i] <= 1);   // the Snag node under Gun Bonsai VR; not on the way to an aimed anchor, nor while the ray is on one (the crack goes there)
 		int nStop = 0;
 		int kc = int(cp[i]);
 		for (int k = 0; k < NP; k++) stopped[k] = k <= kc;
@@ -2292,6 +2336,7 @@ class RSQWP_Whip : EventHandler
 		reachTic[i]--;
 		if (reachTic[i] > 0) return;
 		// arrival
+		if (casting[i]) { casting[i] = false; SwingLatch(i, pmo, hand); return; }   // the aimed swing (swing.zs)
 		bool fromLasso = lassoed[i];
 		lassoed[i] = false;
 		Vector3 at = reachPt[i];
@@ -2912,6 +2957,8 @@ class RSQWP_Whip : EventHandler
 		cracks[i]++;
 		crackV[i] = tipSpd[i];       // the tip's speed at the peak (Lash): what this crack and its lash land with
 		lashUntil[i] = level.maptime + 8;
+		// THE AIMED SWING (swing.zs): the other hand's ray on a valid spot -- the crack sends the whip there to swing from
+		if (SwingCast(i, pmo, hand, at)) return;
 		if ((RSQWP_Util.Opt("rsqwp_whip_aim", 1) == 2 || byWeapon[i]) && (lockOn[i] || lockLine[i]) && lockLeft[i] > 0)
 		{
 			// LOCK: the crack sends the thong out to the target, however far (up to the lock's
@@ -3159,6 +3206,7 @@ class RSQWP_Whip : EventHandler
 		lw[i] = 0; lcHad[i] = false; lvw[i] = 0;
 		wby[i] = null;
 		lockOn[i] = null; lockLine[i] = false; lockLeft[i] = 0; lockHeld[i] = false; lock2[i] = null; reach2[i] = null; reachTic[i] = 0; reachFor[i] = null;
+		casting[i] = false;
 		stiff[i] = 0; swinging[i] = false; windTics[i] = 0; stuckTics[i] = 0; bodyHad[i] = false;
 		ClearMark(i);
 		for (int k = 0; k < NP; k++)
@@ -3170,7 +3218,8 @@ class RSQWP_Whip : EventHandler
 
 	override void WorldUnloaded(WorldEvent e)
 	{
-		for (int i = 0; i < NW; i++) if (wstate[i] != ST_IDLE) Halt(i);
+		for (int i = 0; i < NW; i++) { if (wstate[i] != ST_IDLE) Halt(i); ClearAim(i); casting[i] = false; }
+		for (int pn = 0; pn < MAXPLAYERS; pn++) aimBtn[pn] = false;
 	}
 }
 

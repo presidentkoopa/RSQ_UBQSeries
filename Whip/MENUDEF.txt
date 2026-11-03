@@ -30,6 +30,8 @@ OptionMenu "RSQWP_Options"
 	Option "Whip Style", "rsqwp_whip_mode", "RSQWP_WhipModes"
 	Option "Whip Aim", "rsqwp_whip_aim", "RSQWP_WhipAims"
 	Option "Catch Edges (snag)", "rsqwp_whip_snag", "OnOff"
+	Option "Aimed Swing (other hand's alt-fire aims)", "rsqwp_swing", "OnOff"
+	Slider "Whip Swing Reach (m)", "rsqwp_swing_reach", 3, 20, 0.5, 1
 	Option "Throws Switches", "rsqwp_whip_lines", "OnOff"
 	Option "Fetches Pickups", "rsqwp_whip_fetch", "OnOff"
 	Option "Leash (Lock)", "rsqwp_whip_leash", "OnOff"

@@ -50,6 +50,15 @@ class RSQWP_WhipWeapon : Weapon
 		if (!owner || !owner.player) return false;
 		return (owner.player.cmd.buttons & (Hand() ? BT_OFFHANDATTACK : BT_ATTACK)) != 0;
 	}
+	// the OTHER hand's alt-fire: the aimed swing's ray (swing.zs). The button, or its key eaten by the whip (whip.zs AimKey).
+	bool AimHeld()
+	{
+		if (!owner || !owner.player) return false;
+		let w = RSQWP_Whip.Get();
+		int pn = owner.PlayerNumber();
+		if (w && pn >= 0 && pn < MAXPLAYERS && w.aimBtn[pn]) return true;
+		return (owner.player.cmd.buttons & (Hand() ? BT_ALTATTACK : BT_OFFHANDALTATTACK)) != 0;
+	}
 	bool AltHeld()
 	{
 		if (!owner || !owner.player) return false;
@@ -69,7 +78,17 @@ class RSQWP_WhipWeapon : Weapon
 		bool alt = AltHeld();
 		bool altPress = alt && !altWas;
 		altWas = alt;
+		w.aimHeld[i] = AimHeld();
+		w.aimTic[i] = level.maptime;
 		let h = core.hooks[i];
+		// A CHAIN (swing.zs): let go of an aimed swing's rope (or any rope with the ray held) and the whip is back in the
+		// hand at once, its thong straight off the rope, so the next crack can come while you are still in the air
+		// (the line's reel-back is not waited for)
+		if (h && h.phase == RSQWP_Hook.PH_RETRACT && (h.aimed || w.aimHeld[i]))
+		{
+			h.Destroy(); core.hooks[i] = null; h = null;
+			w.outNow[i] = true;
+		}
 		if (h)
 		{
 			// on a rope: the trigger reels (a fresh press: the trigger that was marking does not reel at once),

@@ -1,5 +1,71 @@
 # HANDOFF -- RSQ_Whip (PROJECT WHIP), 2026-10-30
 
+## 2026-11-03: the aimed swing anchor (owner, approved 11-03) -- rig only, not headset-confirmed
+
+### Done (measured on the rig: qzd17.3 tools/rig17, doom2 + SWINGTST from tools/rigtest/mkswingmap.py, whp probe scen 11)
+- **swing.zs** (new, `extend class RSQWP_Whip`). The other hand's alt-fire is held while the whip weapon is in hand: in
+  weapon.zs Tend, from the button, or from its key (whip.zs AimKey eats `+oh_altatk`, or `+altattack` with the whip
+  in the off hand, plus its release, and sends `rsqwp_aimkey`). That casts a ray (LineTrace, TRF_ABSPOSITION |
+  TRF_THRUACTORS) as long as Whip Swing Reach (`rsqwp_swing_reach` 9 m, 3-20, room metres). It is drawn as a dotted
+  line of full-bright particles and the series' diamond: gold valid, red refused.
+  - Valid: a wall or a ceiling. Refused: out of reach, sky (a ceiling of the sky flat, or a sky upper wall), a
+    floor, NumPortals > 0 or a line portal, a polyobject (WALLF_POLYOBJ), a 3D middle texture, and "no room" (the
+    anchor point lands outside the open space).
+  - Normal (surveys/05 3.1): ceiling plane normal; for a wall, the line's right-hand normal, negated on the back.
+    Then it is checked against the hand: every rig hit logged "the survey's sign faces the hand", so it was never
+    flipped.
+  - The anchor sits 4 units off a ceiling (anchorPlane 2, it follows the plane). For a wall it is the body's radius
+    + 4 out, with the rope still drawn to the face. core.UpdateAnchor's wall check traces along -normal from struck.
+- **Cast:** Crack -> SwingCast, which runs first. The ray must be held and gold, or have been let go within 6 tics
+  with a gold spot. Reach then flies the thong there in 5-8 tics (`casting`), and SwingLatch builds core's hook
+  (`aimed`, `launch`, `fullLen`, `autoLen`). A crack with the ray red is an ordinary crack ("CAST refused: Sky").
+  The edge snag is off while the ray is gold, and while the thong is on its way.
+- **core.zs:**
+  - LAUNCH: the rope follows the body in until it first pulls in the air, so the hop or a step does not drop him
+    slack. Without it there was 200 units of free fall.
+  - Then the length it took in is paid back out at 8 a tic, on the way down only.
+  - TAKE-UP: only when the arc's bottom would not clear the floor under the anchor.
+  - GRACE: on a player's let-go in the air, the fastest of the last 3 tics' velocities (vHist).
+  - A wall rub gives back the speed lost along the wall it hangs from.
+- **Chain:** weapon.zs Tend. When an aimed rope (or any rope with the ray held) starts retracting, the hook is
+  dropped and the whip restarts uncoiled at once (`outNow`).
+- **Fix found on the way:** whip.zs RenderOverlay now also sends rsqwp_hp0/1 while roped. Without them, ArmPump read
+  AttackPos.z (the interpolated eye) and logged "haul 10.7" with the hand still, pumping a 22 swing to the 30 cap.
+  This applies to snag ropes too.
+- Menu: "Aimed Swing (other hand's alt-fire aims)" (`rsqwp_swing`, on) and "Whip Swing Reach (m)", both in Reset All
+  (gen_reset.py: 56 cvars).
+
+| rig run (whp_scripts.py, swing_metrics.py) | result |
+|---|---|
+| aim | ceiling VALID 3.5 m; floor INVALID; level east INVALID out of reach (9.0 m); south wall VALID 7.2 m, normal (0 1 0); sky yard INVALID Sky |
+| aimkey (the key route: qz_rgrip + qz_ltrigger -> KEY_LALT -> +oh_altatk) | "aim key down", ray valid, cmd.buttons 0 (eaten: the off hand's alt-fire never reached the game) |
+| ceil | cast 8.7 m, latch rope 312, hop 6; arc bottom 22.9 a tic (z -158); let go t93 at 22.6 (grace 21.6 -> 22.5, from 2 tics back); landed on M 467 units on, flat 22.2 kept on landing (22.2 20.2 18.3 ... friction) |
+| wallanchor | wall anchor 6.4 m beside-ahead; sideways arc along the wall, bottom 20.5 flat, back 12.3, 7.4; one rub 17.7 -> 9.2 |
+| chain (3 swings, 45 m pit) | ropes at x 684 / 1252 / 1660; each re-cast caught 16 tics (0.46 s) after the let-go; bottoms 22.9 / 19.1 / 14.3; let-go 20.5 / 16.2 / 14.2; landed on B at x 1932, 1554 units from the start |
+| refuse | ray on the sky + crack: "CAST refused: Sky", ordinary crack 45.3; floor + crack: refused, crack 44.8; no rope |
+| snag (WHIPTEST beam, no ray), BEFORE (git archive HEAD) / AFTER | SNAG t213 at (536 504 71), 29 above the hand / identical |
+| whp_metrics swing, wall, yank BEFORE / AFTER | cracks 42.5, 36.5 / 42.5, 36.4; wall 36.8, 37.4 / same; yank crack 42.3, WRAP t207, YANK t250 / same; KE, lerr, peaks equal |
+
+Frames, scratchpad `/tmp/claude-0/-home-claude/01ebc270-3953-5301-831b-c73a8b1320ca/scratchpad/`:
+- `strip_aim.png`: gold on the ceiling, red to the floor, red out of reach, gold on the wall, red into the sky.
+- `strip_ceil_cast.png`: the ray, the wind-up, the thong flying up.
+- `strip_ceil_swing.png`: chase camera from t60: the rope to the ceiling and the arc.
+- `strip_wall.png`, `strip_chain.png`, `strip_refuse.png`.
+
+Script errors:
+- doom2 + GunBonsai 0.10.6 + all RSQ pk3s: 0 (ceil ran the same; landing speed 0 there because Gun Bonsai VR makes
+  momentum a node).
+- Full order (01, 02, 03 2.0.3o from the BD22 repo, 04-07, GunBonsai 0.10.6, all RSQ): 4, all 02_BD22_VoxelPack's
+  voxeldef. The chain ran identically there.
+
+### Not done / open
+- Not headset-tested. Feel guesses: reach 9, hop 6, offsets, take-up 10, payout 8, grace 3, aim grace 6.
+- Rope wrapping round corners: planned (README), not built.
+- Portal, 3D-midtex and polyobject refusals were never run (no test map has them). The netplay aim is local-pose
+  only.
+- The rig needs PITCH_FIX 30 (its controller pitch reads about 30 degrees low) in whp_scripts.py lpose.
+- A chase camera (`chase`) moves the hand poses on the rig; turn it on only after the aim.
+
 ## 2026-11-02 (GBOVR pass): the recode reviewed, the owner's seven decisions -- Windows QZD 17.3 headless, not the rig
 A read-only review of the recode (MIT length) found numbers sized for the old 6.4-unit links. The owner decided all
 seven (11-02). Tested on the owner's Windows QZD 17.3 with the series probe (`GunBonsaiOffhandVR/tools/fistsprobe`,

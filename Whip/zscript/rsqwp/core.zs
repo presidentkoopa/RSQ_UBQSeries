@@ -14,7 +14,9 @@
 class RSQWP_Core : EventHandler
 {
 	const NHOOK = MAXPLAYERS * 2;
-	const TAP_TICS = 8;   // RSQ_Accessibility's Slower Taps widens it x1.5 where it is read (RSQWP_A11y.Tap; a server setting)
+	const TAP_TICS = 8;
+	const TAKEUP = 10.0;
+	const PAYOUT = 8.0;       // an aimed swing's launch: the length it followed him in, given back a tic on the way down      // an aimed swing's rope taken up on its own, map units a tic (swing.zs; the reel is 12)   // RSQ_Accessibility's Slower Taps widens it x1.5 where it is read (RSQWP_A11y.Tap; a server setting)
 
 	RSQWP_Hook hooks[NHOOK];
 	bool held[NHOOK];
@@ -110,6 +112,7 @@ class RSQWP_Core : EventHandler
 			if (hop > 0 && (h.anchor - b).Length() < RSQWP_Util.Num("rsqwp_min_len", 32) + 24 && h.anchor.z > h.owner.Pos.z)
 				h.owner.vel.z = max(h.owner.vel.z, hop);
 		}
+		if (byPlayer && h.phase == RSQWP_Hook.PH_LATCH && h.owner && !h.heavy) Grace(PlayerPawn(h.owner));
 		h.victim = null;
 		h.SetPhase(RSQWP_Hook.PH_RETRACT);
 		if (h.owner) Carry(PlayerPawn(h.owner));
@@ -127,6 +130,33 @@ class RSQWP_Core : EventHandler
 		if (!pmo || !pmo.player || !RSQWP_Whip.Unlock(pmo, RSQWP_Whip.G_MOMENTUM, "rsqwp_carry", true)) return;   // the Momentum node under Gun Bonsai VR
 		if (pmo.vel.xy.Length() < 2) return;
 		pmo.player.keepmomentum = true;
+	}
+
+	// THE RELEASE GRACE WINDOW (surveys/05_GRAPPLE_ROPES.md 4.2). Hands are read 35 times a second and a let-go lands
+	// late: the swing's speed of the last GRACE_TICS tics in the air is kept (vHist, Swing), and on a let-go the
+	// fastest of them is what he flies off with -- ~85 ms of grace for letting go at the bottom of the arc.
+	const GRACE_TICS = 3;
+	Vector3 vHist[MAXPLAYERS * 4];
+	int vHistN[MAXPLAYERS], vHistAt[MAXPLAYERS];
+	void Grace(PlayerPawn pmo)
+	{
+		if (!pmo || !pmo.player) return;
+		int pn = pmo.PlayerNumber();
+		if (pn < 0 || pn >= MAXPLAYERS || vHistN[pn] <= 0) return;
+		if (pmo.Pos.z <= pmo.floorz + 0.5 || pmo.bOnMobj) return;
+		Vector3 was = pmo.vel;
+		Vector3 best = was;
+		int from = -1;
+		for (int k = 0; k < min(GRACE_TICS, vHistN[pn]); k++)
+		{
+			Vector3 v = vHist[pn * 4 + ((vHistAt[pn] - k + 4) % 4)];
+			if (v.Length() > best.Length() + 0.01) { best = v; from = k; }
+		}
+		if (from >= 0) { pmo.vel = best; CapSpeed(pmo); }
+		if (RSQWP_Util.Flag("rsqwp_debug", false))
+			Console.Printf("T_WP t%d GRACE vel (%.1f %.1f %.1f) %.1f -> (%.1f %.1f %.1f) %.1f (%s)", level.maptime, was.x, was.y, was.z, was.Length(),
+				pmo.vel.x, pmo.vel.y, pmo.vel.z, pmo.vel.Length(), from < 0 ? "kept: no faster tic" : String.Format("from %d tic(s) back", from));
+		vHistN[pn] = 0;
 	}
 
 	void Drop(int i)
@@ -413,15 +443,46 @@ class RSQWP_Core : EventHandler
 				h.ropeLen = min(h.ropeLen, d);
 				h.ropeLen = max(minLen, h.ropeLen - RSQWP_Util.Num("rsqwp_reel_speed", 12) * RSQWP_Perks.Factor(pmo, 'reel'));
 			}
+			// TAKE-UP (swing.zs SwingLatch): an aimed swing's rope too long for its arc to clear the floor is taken in on
+			// its own, as a reel at TAKEUP a tic, to autoLen -- the swing that lifts a standing player. Then it is free.
+			bool takeUp = h.autoLen > 0 && h.ropeLen > h.autoLen + 0.5;
+			if (h.autoLen > 0 && !takeUp) h.autoLen = 0;
+			if (takeUp && !h.reelHeld)
+			{
+				h.ropeLen = min(h.ropeLen, d);
+				h.ropeLen = max(h.autoLen, h.ropeLen - TAKEUP);
+			}
+			bool reeling = h.reelHeld || takeUp;
+			// THE LAUNCH (swing.zs): an aimed swing's rope is taut from the latch, so the hop or a step toward the anchor
+			// does not leave it slack and drop him (rig: 200 units of free fall before it caught). Until it first pulls
+			// in the air (or a second), its length follows him in, never out; from then on it is the ordinary rope.
+			if (h.launch)
+			{
+				if (!grounded)
+				{
+					if (d < h.ropeLen - 1.0) h.ropeLen = max(minLen, d);
+					else if (h.phaseAge > 1) h.launch = false;
+				}
+				if (h.phaseAge > 35) h.launch = false;
+			}
+			// ... and once it pulls, the length it lost following him in is paid back out on the way down (never on the
+			// way up: lengthening a falling pendulum is what gravity's work goes into), so the arc still swings from
+			// the length it latched at (rig: a step off the lip toward the anchor took 312 down to 251 and the
+			// bottom of the arc 40 units higher). It stops at the bottom of the first arc.
+			else if (h.fullLen > h.ropeLen + 0.5 && !grounded && !h.reelHeld && h.gripHand < 0 && !takeUp)
+			{
+				if (pmo.vel.z < 0) h.ropeLen = min(h.fullLen, h.ropeLen + PAYOUT);
+				else h.fullLen = 0;
+			}
 			// CLIMB: a free hand on the grab bind, touching the rope, takes hold of it.
 			double climbStep = 0;
 			double along = 0;
 			bool climbing = Climb(h, pmo, pn, a, b, n, d, minLen, maxLen, climbStep, along);
 			bool pullUp = climbing && climbStep < 0;
 
-			h.slack = !grounded || h.reelHeld || h.gripHand >= 0;
+			h.slack = !grounded || reeling || h.gripHand >= 0;
 			if (d > maxLen + 64) { LetGo(h, false); continue; }
-			if (grounded && !h.reelHeld && !pullUp)
+			if (grounded && !reeling && !pullUp)
 			{
 				// On your feet the rope pays out and takes in with you, so stepping off a
 				// ledge swings at once from that length rather than dropping into slack.
@@ -447,7 +508,24 @@ class RSQWP_Core : EventHandler
 				if (tracked[pn])
 				{
 					Vector3 moved = pmo.Pos - lastPos[pn];
-					if (moved.Length() < 64) pmo.vel = moved + (pmo.vel - lastSet[pn]);
+					if (moved.Length() < 64)
+					{
+						Vector3 tv = moved + (pmo.vel - lastSet[pn]);
+						// AN AIMED SWING FROM A WALL rubs that wall (swing.zs): the arc dips toward the face it hangs
+						// from, and the engine's slide along it can stop him for a tic, which read as the swing's end
+						// (rig: 17.7 -> 4.6 along the wall in one tic). What the slide took ALONG that wall is given
+						// back; what went into it stays gone.
+						Vector3 toFace = h.struck - pmo.Pos;
+						Vector2 n2 = h.hitDir.xy;
+						if (h.aimed && h.anchorPlane == 0 && abs(h.hitDir.z) < 0.5 && n2.Length() > 0.5 && (toFace.xy dot n2.Unit()) < pmo.radius + 4)
+						{
+							n2 = n2.Unit();
+							Vector2 lost = lastSet[pn].xy - moved.xy;
+							Vector2 along = lost - n2 * (lost dot n2);
+							if (along.Length() > 1.0) tv.xy += along;
+						}
+						pmo.vel = tv;
+					}
 				}
 			}
 			Vector3 v = pmo.vel;
@@ -475,15 +553,15 @@ class RSQWP_Core : EventHandler
 				if (cl > cmax) corr *= cmax / cl;
 				v += corr;
 				double vl = v.Length();
-				if (!h.reelHeld && !climbing && d <= h.ropeLen + 1.0 && vl > 0.01) v *= vt / vl;
+				if (!reeling && !climbing && d <= h.ropeLen + 1.0 && vl > 0.01) v *= vt / vl;
 			}
 
 			// A reel pulls in at about its own speed, not faster: the correction above
 			// stacks on momentum and measured up to 29 u/tic reeling to a Cyberdemon.
-			if (h.reelHeld)
+			if (reeling)
 			{
 				double vin = -(v dot n);
-				double vmax = RSQWP_Util.Num("rsqwp_reel_speed", 12) * RSQWP_Perks.Factor(pmo, 'reel') * 1.5;
+				double vmax = (h.reelHeld ? RSQWP_Util.Num("rsqwp_reel_speed", 12) * RSQWP_Perks.Factor(pmo, 'reel') : TAKEUP) * 1.5;
 				if (vin > vmax) v += n * (vin - vmax);
 			}
 
@@ -543,10 +621,18 @@ class RSQWP_Core : EventHandler
 				if (!Sees(pmo, b, a)) { if (++h.losBad >= 3) { LetGo(h, false); continue; } }
 				else h.losBad = 0;
 			}
-			if (level.maptime % 2 == 0 || (climbing && climbStep != 0)) Log(h, (climbing && climbStep != 0) ? "climb" : h.reelHeld ? "reel" : (h.gripHand >= 0 ? "hold" : "swing"));
+			if (level.maptime % 2 == 0 || (climbing && climbStep != 0)) Log(h, (climbing && climbStep != 0) ? "climb" : h.reelHeld ? "reel" : takeUp ? "takeup" : (h.gripHand >= 0 ? "hold" : "swing"));
 		}
 		tracked[pn] = roped;
 		if (roped) { lastPos[pn] = pmo.Pos; lastSet[pn] = pmo.vel; }
+		// the release grace window's record: the speed the rope leaves him with, each tic in the air (Grace)
+		if (roped && !(pmo.Pos.z <= pmo.floorz + 0.5 || pmo.bOnMobj))
+		{
+			vHistAt[pn] = (vHistAt[pn] + 1) % 4;
+			vHist[pn * 4 + vHistAt[pn]] = pmo.vel;
+			vHistN[pn] = min(vHistN[pn] + 1, 4);
+		}
+		else vHistN[pn] = 0;
 	}
 
 	// ---- hand over hand (climb.zs says which hand may and where it is) -------------

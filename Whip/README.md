@@ -17,7 +17,8 @@ A lazy swing does not crack. Bring the whip back over your shoulder and it stiff
 forward and it follows your hand like a rod, then lets go: one crack per swing. A crack hurts and stuns a monster, throws a switch, and flicks a loose pickup to you. As a weapon
 in slot 1 it can also mark a target, fly to it, wrap round a monster, swing it into others, or yank it to you.
 A lash that catches an edge (a beam, a doorway top, a ledge lip) becomes a rope you can swing on, reel up,
-climb and mantle over. ZScript and data only, no engine change.
+climb and mantle over. **Aimed swing (11-03):** hold the other hand's alt-fire to aim a ray at a wall or a ceiling
+up to 9 m away, crack the whip, and it latches there and swings you. ZScript and data only, no engine change.
 
 ## Load order
 
@@ -61,6 +62,18 @@ With the whip weapon in hand:
   is held straight; the rest hangs from the off hand. Circle the off hand and the loop is helped round fast; let
   go anywhere on the circle and it flies out along the loop's path.
 - On a rope (the whip caught an edge): trigger held = reel in, alt-fire = let go.
+- **Aimed swing:** hold the OTHER hand's alt-fire (the off hand's, with the whip in the main hand). A thin dotted ray
+  comes out of that hand with the series' diamond where it ends: **gold** = the whip can anchor there (a wall or a
+  ceiling within Whip Swing Reach), **red** = it can't (out of reach, sky, a floor, a portal, a 3D middle texture or a
+  polyobject). With it gold, crack the whip as usual (wind up, swing). The whip stretches out to the spot, latches,
+  and gives you a small hop if you are standing. Then it is the normal rope: swing, reel, pump, climb, let go with
+  alt-fire, and keep your speed.
+  - Ceilings give the overhead swing. A wall gives a sideways or diagonal swing round a point beside you.
+  - **Chain swings:** keep the ray on the next spot while you swing, wind the whip up over your shoulder, let go
+    on the upswing and crack. The whip comes off the rope already uncoiled, so the next rope can catch you about half
+    a second after you let go.
+  - Your let-go is forgiven by up to 3 tics: you fly off at the fastest speed of the last 3 tics on the rope.
+  - While the ray is held, that button is taken by the whip, so the gun or hand in that hand does not alt-fire.
 
 With the binds (Whip (Main)/(Off)):
 - Whip Style "Real": hold the bind, the whip uncoils; crack it yourself; let go and it rolls up.
@@ -84,6 +97,8 @@ Front page of RSQ Whip. "On" = on by default (CVARINFO default). "Option" = off 
 | Whip Style | Real | For the binds: Real (hold, crack it yourself) or Assist (press, it cracks for you). |
 | Whip Aim | Assist | Free (hits what the tip touches), Assist (what is nearest the tip), Lock (other hand points, alt-fire holds; the crack flies to it). |
 | Catch Edges (snag) | On | A lash that catches an edge wraps round it and becomes a rope. |
+| Aimed Swing (other hand's alt-fire aims) | On | The other hand's alt-fire aims a ray, and a crack with the ray gold swings you from that wall or ceiling. |
+| Whip Swing Reach (m) | 9 | How far the aimed swing can anchor (3 to 20 m). |
 | Throws Switches | On | A crack on a switch line uses it. |
 | Fetches Pickups | On | A crack flicks a loose pickup near it to you. |
 | Leash (Lock) | On | Lock aim: keep the bind held on a locked monster and it is pulled to you. |
@@ -128,6 +143,12 @@ Always on, no row of its own:
 The whip's length is MIT's (no slider since the coil, 11-02). Tuning and Debug has the physics sliders (11-02): **Leather Stiffness**
 (x reference, 1), **Leather Damping** (x reference, 1), **Whip Air Drag** (1: it settles in about a second) and
 **Hand Smoothing** (0.8 tics; 0 = the raw hand).
+
+**Why Whip Swing Reach is 9 m (3 to 20):** a swing that starts almost level, at the full rope length L, reaches
+sqrt(2 g L) at the bottom (Doom's gravity is 1 map unit/tic^2). At 9 m (306 units) that is 24.7 units a tic. That
+falls in the target band of 22 to 26, under the engine's 30 cap (MAXMOVE), so good swings don't all clip to the same
+speed. On the rig a 312-unit rope bottomed at 22.9. 3 m still fits a normal Doom room with a 128-unit ceiling. Past
+about 13 m a level start reaches the 30 cap, so the 20 m end is for big outdoor maps, where a swing starts steeper.
 
 Not on the menu (deliberately): the lasso's test switch (rig only) and the off controller's grip key codes
 (default "443 436", the same codes RSQ DistanceGrab reads).
@@ -194,6 +215,11 @@ are the 11-02 fixes. They were measured on the rig only, so all of them are not 
     hand a little: the thong does not twitch. Walk and snap turn: it comes along calmly. Wind up and crack: one
     crack, the tip whips over in one clean stroke. Whip a nearby wall: the thong slides down it and lies at its
     foot; no shaking, no extra cracks.
+20. **Aimed swing (11-03, rig only, not headset-confirmed).** Hold the off hand's alt-fire with the whip out.
+    Point at a ceiling and a wall: gold ray and diamond. Point at the floor, at the sky, at a far wall: red. With it
+    gold, wind up and crack: the whip stretches to the spot and you get a small hop. Step off a ledge and swing. Let
+    go on the upswing and you keep the speed when you land. Do it again in the air on the next spot: a chain. Turn
+    "Aimed Swing" off: the off hand's alt-fire is the gun's again.
 
 ## Works with
 
@@ -218,6 +244,18 @@ are the 11-02 fixes. They were measured on the rig only, so all of them are not 
   scales the whip's rumbles x0 to x2 (0 = none). All inert without Accessibility.
 
 ## Known limits / open issues
+
+- **Aimed swing (11-03): rig only, not headset-confirmed.** Feel numbers are guesses: reach 9 m, hop 6, the
+  anchor 4 units off a ceiling (a wall: the body's radius + 4), the take-up 10 a tic, the 3-tic let-go grace.
+  - Netplay: the ray reads the local hand pose, as the mark does.
+  - A wall swing loses speed when the arc rubs the wall it hangs from. The rig went 17.7 -> 9.2 units a tic in one
+    tic; it went to 4.6 before the fix that gives back the speed along the wall.
+  - With RSQ Gun Bonsai VR loaded, keeping your speed on landing is the Momentum node. Without the node you stop
+    when you land (the existing rule).
+  - Portals, 3D middle textures and polyobjects are refused by code that was not run on the rig (no test map has
+    them).
+- **Planned, not built: rope wrapping** round corners and pillars (the survey's ninja rope, surveys/05 4.2, cost L).
+  Today a rope that loses sight of its anchor for 3 checks lets go.
 
 - **Sounds (2026-11-01):** the cracks and swishes are real recordings from Pixabay, picked by the owner; the hit is
   stock Doom's punch. The old generated sounds are gone. Not yet heard in the headset.

@@ -56,6 +56,10 @@ class RSQWP_Hook : Actor
 	double drawMs;        // last rope draw cost (rsqwp_debug)
 	bool whipped;         // the whip's tip, wrapped round an edge or a monster (whip.zs): drawn as the whip, no claw
 	Vector3 struck;       // a whip's: where it struck the wall (its anchor is on the edge's corner)
+	bool aimed;           // an aimed swing's anchor (swing.zs): off a wall or a ceiling, not an edge
+	double autoLen;       // the rope is taken up to this length on its own (a swing from the ground), 0 none
+	double fullLen;       // the length it latched at (an aimed swing): the launch's take-in is paid back out on the way down
+	bool launch;          // an aimed swing just latched: the rope follows him in until it first pulls (core.Swing)
 
 	Default
 	{
