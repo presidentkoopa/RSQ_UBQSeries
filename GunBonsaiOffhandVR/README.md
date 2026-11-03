@@ -61,7 +61,7 @@ RSQ Gun Bonsai VR page:
 Tuning and Debug page: Force Base Strength (0: an unlearned Force power does nothing; learned, levels 1-4 are 40 / 70 /
 100 / 130 % of the saber's own), First Star
 After (1), Star Every (2) (Star Punch's banking, read by RSQ_Melee's punch), Grapple XP (1.0), Style XP Scale
-(1.0), Style Player Share % (10), HUD Inset (0.04), HUD Size (1.0). (Slappers Only, Start With Gloves and
+(1.0), Style Player Share % (10), HUD Inset (0.04), HUD Size (1.5). (Slappers Only, Start With Gloves and
 Punch Min Speed / Full Speed / Damage are on RSQ Melee's page now.)
 
 Not on the menu: the dual HUD switch and the HUD positions (both on and set by default), and the

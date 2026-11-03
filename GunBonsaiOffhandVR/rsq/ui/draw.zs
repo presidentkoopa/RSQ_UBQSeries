@@ -68,7 +68,7 @@ class RSQUI_Pen ui
 		[sx, sy, sw, sh] = SafeArea();
 		// the mockup's top row (two gauges and the score) needs 660 units across: a near-square
 		// headset layer is narrower than the 16:9 mockup, so it scales by width there
-		u = min(sh / 540.0, sw / 660.0) * clamp(Setting("rsq_ui_hud_scale", 1.0), 0.4, 2.5);
+		u = min(sh / 540.0, sw / 660.0) * clamp(Setting("rsq_ui_hud_scale", 1.5), 0.4, 2.5);
 		ts = RSQGB_A11y.Text();
 		ox = sx; oy = sy;
 	}

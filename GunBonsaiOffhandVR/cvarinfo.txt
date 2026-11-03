@@ -99,7 +99,7 @@ server int rsq_ui_skin = 1;
 // The screens: HUD inset (fraction of each side kept clear, for the headset's edge of view),
 // HUD size, and the bottom row (per-hand ammo, health, face, armour).
 server float rsq_ui_inset = 0.04;
-server float rsq_ui_hud_scale = 1.0;
+server float rsq_ui_hud_scale = 1.5;   // 1.5 from 11-03: 1.0 read too small in the headset
 server bool rsq_ui_bottom = true;
 // What the skins changed in other mods' user cvars, to put back on skin 0 (-1 = nothing saved).
 server int rsq_ui_saved_scorehide = -1;

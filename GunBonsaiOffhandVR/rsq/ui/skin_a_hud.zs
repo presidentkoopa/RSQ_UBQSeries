@@ -149,9 +149,15 @@ class RSQUI_A_Skin : RSQUI_Skin
 			Screen.DrawTexture(bg, false, pen.X(ix), pen.Y(iy), DTA_DestWidthF, iw * pen.u, DTA_DestHeightF, ih * pen.u, DTA_TopLeft, true);
 			Screen.DrawTexture(bkt, false, pen.X(ix - 2 * k), pen.Y(iy - 1 * k), DTA_DestWidthF, 124 * k * pen.u, DTA_DestHeightF, ih * pen.u + 2 * k * pen.u, DTA_TopLeft, true);
 			double frac = data.progress / 1000.0;
-			if (frac > 0)
-				Screen.DrawTexture(fg, false, pen.X(ix), pen.Y(iy), DTA_DestWidthF, iw * pen.u, DTA_DestHeightF, ih * pen.u, DTA_TopLeft, true,
-					DTA_ClipRight, int(ceil(pen.X(ix + iw * frac))));
+			// the fill cropped from the source (DTA_WindowRightF, in texels), not clipped with DTA_ClipRight: in VR the clip's
+			// scissor box stays in flat window pixels while the HUD is projected, so it cut the fill away (see
+			// RSQUI_GaugeLife.Slab, gauges.zs). The window ends on the same screen column the clip did.
+			double fx = pen.X(ix), fw = iw * pen.u;
+			Vector2 fs = TexMan.GetScaledSize(fg);
+			double fe = min(ceil(pen.X(ix + iw * frac)), fx + fw);
+			if (frac > 0 && fe > fx)
+				Screen.DrawTexture(fg, false, fx, pen.Y(iy), DTA_DestWidthF, fw, DTA_DestHeightF, ih * pen.u, DTA_TopLeft, true,
+					DTA_WindowRightF, (fe - fx) / fw * fs.x);
 		}
 		else
 		{

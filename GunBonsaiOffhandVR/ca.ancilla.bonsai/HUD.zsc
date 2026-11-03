@@ -232,15 +232,13 @@ class TFLV_HUD : Object ui {
   // Draw a progress bar overlay using the given texture and colour, starting at
   // texture coordinate tx and with a maximum width of tw.
   void DrawProgressBar(TextureID texture, uint colour, double progress, uint tx, uint tw) {
-    // This is real nasty.
-    // tx and tw are given in HUD texture coordinate space, 1536x512.
-    // hudx is in framebuffer coordinate space, nominally 1536x512 but adjusted
-    // based on HUD scale and screen aspect ratio.
-    // The clipping plane needs to be configured in SCREEN coordinate space,
-    // for some demented reason.
-    // So we need to convert tx and tw into framebuffer coordinate
-    // So we convert everything into framebuffer coordinate space, then convert
-    // that into screen space, then cry for a while.
+    // VR PATCH (2026-11-03, the owner: bars "do not fill in vr"). Stock Gun Bonsai clipped the bar with
+    // DTA_ClipLeft/ClipRight at a SCREEN x. QuestZDoom turns a clip into a GL scissor box in flat window pixels
+    // (v_2ddrawer.cpp:507-512, hw_draw2d.cpp:141-153), but in VR the HUD's quads go through the HUD projection
+    // (gl_openvr.cpp:986-1046 getHUDProjection, vr_hud_scale/vr_hud_distance), so the box misses the bar and cuts the
+    // fill away. Here the bar is cropped from the source instead (DTA_WindowLeftF/RightF, in texels), which needs no
+    // scissor. The edge is stock Gun Bonsai's own screen column (the same uint maths, kept to the pixel), turned back
+    // into texels, so the flat look does not change.
     uint clip_at;
     if (mirror & HUD_MIRROR_H) {
       clip_at = hudx + HUD_WIDTH * scale * screenscale; // right edge of hud
@@ -248,14 +246,29 @@ class TFLV_HUD : Object ui {
     } else {
       clip_at = hudx + (tx + tw * progress) * scale * screenscale;
     }
-    clip_at *= screen.GetWidth()/float(fbw);
-    Screen.DrawTexture(
-        texture, false, hudx, hudy,
-        DTA_VirtualWidth, fbw, DTA_VirtualHeight, fbh, DTA_KeepRatio, true,
-        DTA_DestWidth, hudw, DTA_DestHeight, hudh,
-        DTA_Color, colour, DTA_Alpha, alpha,
-        (mirror & HUD_MIRROR_H) ? DTA_ClipLeft : DTA_ClipRight,
-        clip_at);
+    double sx = screen.GetWidth()/float(fbw);
+    clip_at *= sx;
+    Vector2 ts = TexMan.GetScaledSize(texture);
+    if (hudw <= 0 || sx <= 0) return;
+    // the clip's screen column, in texels of the bar's art (drawn at hudx..hudx+hudw virtual, sx screen px each)
+    double t = clamp((clip_at / sx - hudx) / hudw * ts.x, 0.0, ts.x);
+    if (mirror & HUD_MIRROR_H) {
+      if (t >= ts.x) return;
+      Screen.DrawTexture(
+          texture, false, hudx, hudy,
+          DTA_VirtualWidth, fbw, DTA_VirtualHeight, fbh, DTA_KeepRatio, true,
+          DTA_DestWidth, hudw, DTA_DestHeight, hudh,
+          DTA_Color, colour, DTA_Alpha, alpha,
+          DTA_WindowLeftF, t);
+    } else {
+      if (t <= 0) return;
+      Screen.DrawTexture(
+          texture, false, hudx, hudy,
+          DTA_VirtualWidth, fbw, DTA_VirtualHeight, fbh, DTA_KeepRatio, true,
+          DTA_DestWidth, hudw, DTA_DestHeight, hudh,
+          DTA_Color, colour, DTA_Alpha, alpha,
+          DTA_WindowRightF, t);
+    }
   }
 
   // We want the spike for each colour channel to sweep from 0 to 17, hold for 34,
