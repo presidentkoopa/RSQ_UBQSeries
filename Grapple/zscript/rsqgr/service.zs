@@ -16,6 +16,10 @@
 //   "released"     tics since a rope let go of him (his tap, or it slipped) while he was in the
 //                  air; -1 none in the last 10 s
 //   "landed"       tics since he came down from a roped flight; -1 none in the last 10 s
+//   "rope.speed"   his speed while a latched rope holds him, map units a tic x 10; -1 not latched
+//                  (RSQ Score, 11-03: hanging still on the default pull is not a swing)
+//   "released.speed" his speed when a rope last let go of him in the air, x 10; -1 none in 10 s
+//                  (RSQ Score: a plain drop off the pull is not a dismount)
 //   "flight.dist"  map units (2D) from where that flight left the floor to where it landed (the
 //                  last landing), or so far (in the air); -1 never
 //   "flight.drop"  how far below the lower of its two floors the deepest floor under it was; -1
@@ -108,6 +112,7 @@ class RSQGR_Events : EventHandler
 	// ---- the players ----
 	bool wasRoped[MAXPLAYERS];     // a latched rope held him in the air last tic
 	int  relTic[MAXPLAYERS];
+	int  relSpd[MAXPLAYERS];       // his speed x 10 when it let go
 	int  landTic[MAXPLAYERS];
 	bool flying[MAXPLAYERS];       // in the air, and the rope took part
 	bool inAir[MAXPLAYERS];
@@ -312,7 +317,7 @@ class RSQGR_Events : EventHandler
 				if (h && h.phase == RSQGR_Hook.PH_LATCH) latched = true;
 			}
 			bool roped = latched && !grounded;
-			if (wasRoped[pn] && !roped && !grounded) relTic[pn] = now;
+			if (wasRoped[pn] && !roped && !grounded) { relTic[pn] = now; relSpd[pn] = int(pmo.Vel.Length() * 10); }
 			wasRoped[pn] = roped;
 
 			if (grounded)
@@ -416,6 +421,16 @@ class RSQGR_Events : EventHandler
 				return 0;
 			}
 			if (req ~== "airborne") return (flying[pn] && !grounded) ? 1 : 0;
+			if (req ~== "rope.speed")
+			{
+				for (int k = 0; k < 2; k++)
+				{
+					let h = core ? core.hooks[pn * 2 + k] : null;
+					if (h && h.phase == RSQGR_Hook.PH_LATCH) return int(pmo.Vel.Length() * 10);
+				}
+				return -1;
+			}
+			if (req ~== "released.speed") return Since(relTic[pn]) >= 0 ? relSpd[pn] : -1;
 			if (req ~== "released") return Since(relTic[pn]);
 			if (req ~== "landed") return Since(landTic[pn]);
 			if (req ~== "flight.dist") return everFlew[pn] ? int(fDist[pn]) : -1;

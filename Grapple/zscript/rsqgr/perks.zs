@@ -320,10 +320,11 @@ class RSQGR_Perks : EventHandler
 		zkA[slot] = v; zkTic[slot] = level.maptime;
 		int dmg = int((10 + 10 * lv) * clamp(ms / 3.0, 1.0, 3.0));
 		Vector3 dir = pmo.vel.Length() > 0.1 ? pmo.vel.Unit() : (v.pos - pmo.pos).Unit();
-		Hurt(v, pmo, pmo, dmg, 'Melee', DMG_THRUSTLESS);
-		if (v && v.health > 0 && !v.bDontThrust) v.vel += dir * min(was, 20.0) * clamp(100.0 / max(v.Mass, 1), 0.1, 2.0);
+		// RSQ Score: named BEFORE the blow (a kill is scored inside it), so a kill by the kick is the hook's, not a punch (11-03)
 		let sc = ServiceIterator.Find("RS_ScoreService").Next();
 		if (sc && v) sc.GetInt("touch", "zip.kick", pn, 0, v);
+		Hurt(v, pmo, pmo, dmg, 'Melee', DMG_THRUSTLESS);
+		if (v && v.health > 0 && !v.bDontThrust) v.vel += dir * min(was, 20.0) * clamp(100.0 / max(v.Mass, 1), 0.1, 2.0);
 		if (RSQGR_Util.Flag("rsqgr_debug", false)) Console.Printf("T_GRP zip kick %s at %.1f m/s: %d", v ? v.GetClassName() : 'gone', ms, dmg);
 	}
 
