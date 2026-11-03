@@ -139,10 +139,25 @@ class RSQML_Headlock : StaticEventHandler
 			else if (hp.z > a.Pos.z + a.Height) vz = hp.z - (a.Pos.z + a.Height);
 			double d = sqrt(hz * hz + (vz * ps) ** 2);
 			if (d > nearU || d >= bestD) continue;
+			if (MinibossRefuses(a)) continue;     // RSQ Miniboss's "Can't Be Headlocked": as a boss
 			best = a;
 			bestD = d;
 		}
 		return best, best ? bestD : -1;
+	}
+
+	// RSQ MINIBOSS, by name (nothing links; Melee still works alone): a miniboss with Miniboss's "Can't Be Headlocked"
+	// on is refused as a boss is (owner 2026-11-03: a miniboss never gets the engine's BOSS flag). Cheap first: it
+	// carries "RSQMB_Ward"; only then RSQMB_Service "bossfor" "headlock".
+	static bool MinibossRefuses(Actor a)
+	{
+		String wn = "RSQMB_Ward";
+		class<Inventory> wc = wn;
+		if (!a || !wc || !a.FindInventory(wc)) return false;
+		let sv = ServiceIterator.Find("RSQMB_Service").Next();
+		bool no = sv && sv.GetInt("bossfor", "headlock", 0, 0, a) == 1;
+		if (Num("rsqml_debug", 0) >= 2) Console.Printf("RSQML headlock: %s is a miniboss, %s", a.GetClassName(), no ? "refused (Can't Be Headlocked)" : "allowed");
+		return no;
 	}
 
 	// IS THIS PRESS THE HEADLOCK'S (the console player's off hand), worked out now. Distance Grab asks it too.

@@ -172,6 +172,9 @@ Rig results (scripted hands, logs and frames of 2026-11-02 under `/home/claude/s
 - **RSQ Distance Grab:** a thrown Headlock monster flies through its throw (`headlock.throw`); the off grip press is
   decided between the two (`near.dist` / `headlock.claim`).
 - **RSQ SlowMo:** the slow-mo after a shove (`rsm_pulse`) and `slowmo.active`.
+- **RSQ Miniboss** (2026-11-03, by name): with Miniboss's "Can't Be Headlocked" on (the default) the headlock refuses a
+  miniboss, as it refuses a boss (`RSQMB_Service` `bossfor` `"headlock"`). Its punches, knockdowns and knockback treat
+  it as any monster. Rig only, not headset-confirmed.
 - **RSQ Score:** the Headlock touches "grab.hold" (its Headlock combo); the shotgun kill in the slow-mo pays an award.
   The Fists tree's moves touch their hooks (GBOVR_TREES.md 4.1): hit.heavy, hit.body, punch.uppercut, launch, juggle,
   meteor, pound, clearout.
