@@ -5026,6 +5026,7 @@ class UBQS_Force : Inventory
 				double sp = max(mo.Speed, mo.vel.Length());
 				Actor shooter = mo.target;
 				mo.target = owner;
+				if (!mo.master) mo.master = self;	// XP credit: paid to the Force hand (Gun Bonsai VR), as BatBack pays the saber
 				if (mo.bSeekerMissile) mo.tracer = shooter;
 				mo.vel = u * max(sp, 8.0);
 				mo.angle = VectorAngle(u.x, u.y);
