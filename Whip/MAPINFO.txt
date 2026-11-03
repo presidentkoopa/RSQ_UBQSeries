@@ -2,5 +2,5 @@
 // into network events; RSQWP_Whip is the whip itself.
 GameInfo
 {
-	AddEventHandlers = "RSQWP_Core", "RSQWP_Input", "RSQWP_Whip"
+	AddEventHandlers = "RSQWP_Core", "RSQWP_Input", "RSQWP_Whip", "RSQWP_Events"
 }

@@ -1973,6 +1973,7 @@ class RSQWP_Whip : EventHandler
 		String what;
 		if (!heavy)
 		{
+			RSQWP_Events.Yanked(v, pmo);   // for a scorer (service.zs): it came
 			bool isLight = v.Mass <= light;
 			double frac = isLight ? 0.25 + 0.65 * s : 0.08 + 0.3 * s;
 			double travel = max(0.0, dist - pmo.radius - v.radius - 16) * frac;
@@ -2037,6 +2038,7 @@ class RSQWP_Whip : EventHandler
 		// LASSO 2 (Gun Bonsai VR): a lassoed monster is held 50% longer
 		wrapLen[i] = (lasso && Gb(pmo, G_LASSO) >= 2) ? WRAP_TICS * 3 / 2 : WRAP_TICS;
 		wrapOn[i] = v; wrapUntil[i] = level.maptime + wrapLen[i]; pullHad[i] = false; pullPk[i] = 0;
+		RSQWP_Events.Wrapped(v, pmo);   // for a scorer (service.zs)
 		wrapTic[i] = level.maptime; graceArm[i] = RSQWP_Util.Flag("rsqwp_whip_yankgrace", false);
 		Vector3 hp = BodyHand(pmo, hand);
 		Vector2 to = v.pos.xy - hp.xy;
@@ -2122,6 +2124,7 @@ class RSQWP_Whip : EventHandler
 		BolaFree(i);
 		let v = wrapOn[i];
 		wrapOn[i] = null;
+		RSQWP_Events.Unwrapped(v);
 		// what was borrowed goes back (monster.zs Restore: tics = 1, it goes on from its Pain frame)
 		if (flailPin[i] && v && !v.bDestroyed && v.Health > 0 && v.tics == -1) v.tics = 1;
 		flailPin[i] = false;
@@ -2751,7 +2754,7 @@ class RSQWP_Whip : EventHandler
 		int sting = Gb(pmo, G_STING);
 		if (crack && sting > 0) { dmg = int(dmg * (1.0 + 0.25 * sting) + 0.5); Touch("crack", pmo, v); }
 		int hp0 = v.Health;
-		if (dmg > 0) { RSQWP_Events.Whipped(v, pmo); RSQWP_Perks.Hurt(v, pmo, pmo, dmg, DmgType()); }
+		if (dmg > 0) { RSQWP_Events.Whipped(v, pmo, crack ? hk : -1.0); RSQWP_Perks.Hurt(v, pmo, pmo, dmg, DmgType()); }
 		bool stunned = false;
 		if (crack && v && v.Health > 0 && v.bISMONSTER && RSQWP_Util.Flag("rsqwp_whip_stun", true))
 		{
@@ -2876,6 +2879,7 @@ class RSQWP_Whip : EventHandler
 		m.SetDamage(max(1, int(m.GetMissileDamage(7, 1) * (1.0 + 0.25 * lv) + 0.5)));
 		m.target = pmo;
 		m.tracer = null;
+		RSQWP_Events.Returned(m);   // for a scorer: this missile is a whip return now
 		Touch("crack.return", pmo, shooter);
 		knocked.Push(m); knockX.Push(m.pos.x); knockY.Push(m.pos.y); knockZ.Push(m.pos.z);
 		if (RSQWP_Util.Flag("rsqwp_debug", false))

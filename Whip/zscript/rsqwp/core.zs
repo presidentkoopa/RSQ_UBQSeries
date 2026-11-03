@@ -387,9 +387,9 @@ class RSQWP_Core : EventHandler
 			double share = clamp(sp / max(1.0, RSQWP_Whip.SwingCap(pmo)), 0.0, 1.0);
 			int dmg = max(1, int((10 + 10 * lv) * share + 0.5));
 			int hp0 = m.Health;
+			RSQWP_Whip.Touch("tarzan", pmo, m);   // RSQ Score: named BEFORE the blow, so a kill by it reads as the swing's (11-03)
 			RSQWP_Perks.Hurt(m, pmo, pmo, dmg, RSQWP_Whip.DmgType());
 			if (m && !m.bDestroyed && m.Health > 0) { RSQWP_Whip.Ask("knockdown", m, 1); m.vel.xy += pmo.vel.xy * 0.5; }
-			RSQWP_Whip.Touch("tarzan", pmo, m);
 			tzLast[pn] = m; tzTic[pn] = level.maptime;
 			if (RSQWP_Util.Flag("rsqwp_debug", false))
 				Console.Printf("T_WP TARZAN t%d %s at %.1f a tic (%.0f%% of the cap): %d, hp %d -> %d", level.maptime, m ? m.GetClassName() : 'gone', sp, share * 100, dmg, hp0, m ? m.Health : 0);

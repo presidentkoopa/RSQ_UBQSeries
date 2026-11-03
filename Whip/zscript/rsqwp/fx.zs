@@ -60,8 +60,3 @@ class RSQWP_Perks
 	}
 }
 
-class RSQWP_Events
-{
-	static play void Bitten(PlayerPawn by, Actor v, int hand, bool heavy) {}
-	static play void Whipped(Actor v, PlayerPawn by) {}
-}

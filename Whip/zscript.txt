@@ -8,6 +8,7 @@ version "4.14"
 #include "zscript/rsqwp/a11y.zs"
 #include "zscript/rsqwp/util.zs"
 #include "zscript/rsqwp/fx.zs"
+#include "zscript/rsqwp/service.zs"   // RSQWP_Service: what the whip is doing, for any mod that asks by name (11-03)
 #include "zscript/rsqwp/input.zs"
 #include "zscript/rsqwp/core.zs"
 #include "zscript/rsqwp/hook.zs"
