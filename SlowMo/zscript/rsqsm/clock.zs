@@ -1099,6 +1099,14 @@ class RSQSM_Clock : EventHandler
 		if (touching) d.z = 0;          // a landing or a bump on the ceiling
 		if (d.Length() <= 0.5) return;
 		if (a.bMISSILE && abs(a.vel.Length() - a.Speed) <= a.Speed * 0.05 + 0.01) return;
+		// A RETURN IS NOT A PUSH (owner 2026-11-03: "punching back a fireball"). A shot sent back -- Melee's punch and
+		// swat, the saber's blade, the whip's crack, the shield -- is re-aimed by its returner from its SLOWED Speed or
+		// velocity (Melee SendBack, the saber's BatBack: max(Speed, vel) x a multiplier), so it is already at the world's
+		// pace; only the 5% rule above let a x1.0 return through, and a faster one (Hadouken x1.25+, the blade's x1.2,
+		// Return Crack 2+) was read as a full-strength push and had its reversal scaled by f: at a quarter speed it
+		// came out still flying AT the player at 44% of its pace. A missile whose velocity turned back on itself
+		// (against what it carried) is a return: left as its returner set it.
+		if (a.bMISSILE && expect.Length() > 0.01 && (a.vel dot expect) < 0) return;
 		double vz = touching ? a.vel.z : expect.z + d.z * f;
 		a.vel = (expect.x + d.x * f, expect.y + d.y * f, vz);
 	}

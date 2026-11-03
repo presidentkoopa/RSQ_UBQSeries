@@ -159,6 +159,17 @@ simulated rig (no sound, no haptics there).
   the Lean Dodge row (level 2: a lean also dodges a monster's claw); *Matrix* forces the drain and trails while slowed.
   Without the patch nothing changes.
 
+## Returns, blocks and catches in slow motion (owner's question, 11-03)
+
+Nothing to worry about, by design: a missile is slowed by scaling its velocity **and** its `Speed` together,
+and your blade, shield, whip and hands are tracked and never slowed. A deflect, block or punch reads the shot's
+velocity as it is this tic, and a return (Melee's SendBack, the saber's BatBack, the whip's crack) re-aims it
+from that slowed Speed, so it leaves at the world's pace; as your own missile it stays slowed (*Slow Own
+Missiles*) and goes back to full speed when the clock does. **One bug found and fixed 11-03:** the clock read a
+return faster than x1.0 (the blade's x1.2, Hadouken, Return Crack 2+) as a full-strength push and scaled its
+reversal -- at a quarter speed a reversed fireball came out still flying at you at 45% of its pace (measured
+headless). A velocity that turns back on itself is now a return and is left alone.
+
 ## Known limits / open issues
 
 - Doors, lifts and moving floors and ceilings keep their speed.
