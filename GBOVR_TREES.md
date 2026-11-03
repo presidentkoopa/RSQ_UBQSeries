@@ -1523,6 +1523,22 @@ picked up at Magnet 2 (3 m). Lucky Kill 2: a kill after a critical burst 22 more
 more, a plain kill none. The Score mark in the probe is set by hand on Score's record (its own big-moment call is
 the one its slow-motion moment has used all along).
 
+### 4.11 Before the headset pass (owner 11-02 / 11-03: "nothing left on the table")
+
+Every open question was asked; his answers, all built and run headless (commits a73c6a96f through 96a3bc3ea):
+- **Debug:** Add All / Add Incremental (`rsq/zscript/debuggrant.zs`, menu Advanced, `rsqgb_add_all` / `rsqgb_add_step`).
+- **Whip:** fetched pickups are taken on arrival; Assist reaches 2.2x the length.
+- **Kill Rewards:** Bit Scavenger shows as **Gastropub**; Rich Bits drawn additive, brighter a level.
+- **Grenade:** `rsqgn_fire_self` (Auto: your own fire burns you with Brutal Doom / BD22 VR Reloaded). The two owed items:
+  the Rig's grenade light in the kind's colour, and the Weapon Wheel's **fan of kinds** (RSQ Wheel `addSubCard`).
+- **Saber:** Force Lightning is **palm out** (RSQ Gestures' palm-out, aimed along eyes-through-palm, the bolt from the hand);
+  Push only the thrust with the palm not out. Return to Sender read **literally** (2: the blade's mirror within 20 deg).
+- **Fists:** **Catch** and **Bullet Time Fists** built (they were designed and parked, never built).
+- **Distance Grab:** Straight Pull is **Snap Pull**: a hard flick pops into an arc 1.6x the pull's own, a fifth sooner.
+- **HP Bars** shows the trees' states: stunned (stagger, knockdown, a Critical's stun), hooked (the whip's wrap / Bola).
+Kept as built: SlowMo capacity = lasts longer; Lucky Kill's window; Quick Mark 3 pickups only; Bola light monsters;
+gun-hand nodes on either glove; Return Crack = damage; Spartan's second hit; corpse 2x health.
+
 ## 5. The player pool, together
 
 Everything offered at a player level-up (Gun Bonsai's own way: 4 random picks from the suitable pool; the owner
