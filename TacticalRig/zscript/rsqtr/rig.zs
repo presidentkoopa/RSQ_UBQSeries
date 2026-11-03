@@ -121,6 +121,54 @@ class RSQTR_Rig : EventHandler
 	ui bool keyState[2];
 
 	static RSQTR_Rig Get() { return RSQTR_Rig(EventHandler.Find("RSQTR_Rig")); }
+
+	// ---- THE GUN BONSAI VR PATCH'S LEVELS (GBOVR_TREES.md 4.8), asked by name once a second per player ----------------
+	// Without the patch Gb is -1 and every row works as before. With it, Ammo Readout, Keys by Hand and Smoker are unlocks
+	// that take over their rows (Unlock); Chain Smoker adds to the pack; Gun Toss and Boomerang Gun act on a thrown gun.
+	transient int gbTic[MAXPLAYERS], gbAmmo[MAXPLAYERS], gbKeys[MAXPLAYERS], gbSmoker[MAXPLAYERS], gbChain[MAXPLAYERS];
+	transient int gbToss[MAXPLAYERS], gbBoom[MAXPLAYERS];
+	transient bool gbOn;
+	void GbRefresh(int n)
+	{
+		if (n < 0 || n >= MAXPLAYERS || !playeringame[n] || !players[n].mo) return;
+		if (gbTic[n] > 0 && level.maptime < gbTic[n] && level.maptime >= gbTic[n] - 35) return;
+		gbTic[n] = level.maptime + 35;
+		let svc = ServiceIterator.Find("RSQ_MeleeUpgradeService").Next();
+		gbOn = svc != null;
+		gbAmmo[n] = 0; gbKeys[n] = 0; gbSmoker[n] = 0; gbChain[n] = 0; gbToss[n] = 0; gbBoom[n] = 0;
+		if (!svc) return;
+		let pmo = players[n].mo;
+		gbAmmo[n]   = max(0, svc.GetInt("plevel", "AmmoReadout", 0, 0, pmo));
+		gbKeys[n]   = max(0, svc.GetInt("plevel", "KeysByHand", 0, 0, pmo));
+		gbSmoker[n] = max(0, svc.GetInt("plevel", "Smoker", 0, 0, pmo));
+		gbChain[n]  = max(0, svc.GetInt("plevel", "ChainSmoker", 0, 0, pmo));
+		gbToss[n]   = max(0, svc.GetInt("plevel", "GunToss", 0, 0, pmo));
+		gbBoom[n]   = max(0, svc.GetInt("plevel", "BoomerangGun", 0, 0, pmo));
+	}
+	// that player's level of a node, -1 without the patch
+	static int Gb(PlayerInfo p, Name what)
+	{
+		let me = Get();
+		if (!me || !me.gbOn || !p || !p.mo) return -1;
+		int n = p.mo.PlayerNumber();
+		if (n < 0 || n >= MAXPLAYERS) return -1;
+		switch (what)
+		{
+		case 'AmmoReadout':  return me.gbAmmo[n];
+		case 'KeysByHand':   return me.gbKeys[n];
+		case 'Smoker':       return me.gbSmoker[n];
+		case 'ChainSmoker':  return me.gbChain[n];
+		case 'GunToss':      return me.gbToss[n];
+		case 'BoomerangGun': return me.gbBoom[n];
+		}
+		return -1;
+	}
+	// an unlock: the node under the patch, the row without it
+	static bool Unlock(PlayerInfo p, Name what, String row, bool def)
+	{
+		int g = Gb(p, what);
+		return g < 0 ? Flag(row, p, def) : g >= 1;
+	}
 	RSQTR_Body GetBody() const { return body; }
 	private transient RSQTR_Fit fitData;
 	RSQTR_Fit GetFit() { if (!fitData) fitData = RSQTR_Fit.Load(); return fitData; }
@@ -556,8 +604,9 @@ class RSQTR_Rig : EventHandler
 		if (!w || (h == 0 && !HoldsGun(pmo)) || (h == 1 && !OffHoldsGun(pmo))) return;
 		class<Weapon> wc = w.GetClass();
 		String cls = w.GetClassName();
+		int home = -1;	// BOOMERANG GUN: the holster it came from, to go back to
 		for (int k = 0; k < RSQTR_Region.N; k++)
-			if (lastPut[n * RSQTR_Region.N + k] == cls) { lastPut[n * RSQTR_Region.N + k] = ""; lastPair[n * RSQTR_Region.N + k] = false; }
+			if (lastPut[n * RSQTR_Region.N + k] == cls) { home = k; lastPut[n * RSQTR_Region.N + k] = ""; lastPair[n * RSQTR_Region.N + k] = false; }
 		// the hand goes empty first, so the engine is not left holding a gun that is gone
 		if (h == 0) { let empty = EmptyHand(pmo); if (empty && empty != w) p.PendingWeapon = empty; }
 		else EmptyOff(pmo);
@@ -578,7 +627,7 @@ class RSQTR_Rig : EventHandler
 			thrown.SetOrigin(throwAt[n], false);
 			thrown.vel = throwVel[n];
 			thrown.angle = atan2(throwVel[n].y, throwVel[n].x);
-			ArmThrown(thrown, n);
+			ArmThrown(thrown, n, home);
 		}
 		pmo.A_StartSound("rsqtr/radial", CHAN_AUTO, 0, 0.9);
 		if (Flag("rsqtr_messages", p, false)) Console.Printf("T_RIG threw %s t%d from (%.0f %.0f %.0f) at %.1f a tic -> %s", cls, level.maptime, throwAt[n].x, throwAt[n].y, throwAt[n].z, throwVel[n].Length(), thrown ? thrown.GetClassName() : 'nothing');
@@ -596,7 +645,7 @@ class RSQTR_Rig : EventHandler
 	// stealth-kill cutscene on an unaware monster), 3 tics frozen, a shove along the throw by weight and the
 	// victim's mass. The gun drops off it (06_GRAB 4.4: the velocity x -0.2).
 	Array<Actor>  thrownGun;
-	Array<int>    thrownBy, thrownUntil;
+	Array<int>    thrownBy, thrownUntil, thrownFrom;
 	Array<double> thrownW, thrownPX, thrownPY, thrownPZ;
 
 	static double GunWeight(Actor g)
@@ -609,12 +658,13 @@ class RSQTR_Rig : EventHandler
 		return area > 0 ? clamp(area / 756.0, 0.25, 3.0) : 1.0;
 	}
 
-	private void ArmThrown(Actor g, int n)
+	// public for a probe (as RSQ Melee's Deliver is): a gun that is flying, armed to hit as a thrown one
+	void ArmThrown(Actor g, int n, int home = -1)
 	{
 		if (!Flag("rsqtr_throw_hurt", players[n], true)) return;
-		if (thrownGun.Size() >= 16) { thrownGun.Delete(0); thrownBy.Delete(0); thrownUntil.Delete(0); thrownW.Delete(0); thrownPX.Delete(0); thrownPY.Delete(0); thrownPZ.Delete(0); }
+		if (thrownGun.Size() >= 16) DropThrown(0);
 		double w = GunWeight(g);
-		thrownGun.Push(g); thrownBy.Push(n); thrownUntil.Push(level.maptime + 70); thrownW.Push(w);
+		thrownGun.Push(g); thrownBy.Push(n); thrownUntil.Push(level.maptime + 70); thrownW.Push(w); thrownFrom.Push(home);
 		thrownPX.Push(g.pos.x); thrownPY.Push(g.pos.y); thrownPZ.Push(g.pos.z);
 		if (Flag("rsqtr_debug_throw", players[n], false)) Console.Printf("T_ARMED t%d %s weight %.2f (sprite) speed %.1f a tic", level.maptime, g.GetClassName(), w, g.vel.Length());
 	}
@@ -622,6 +672,7 @@ class RSQTR_Rig : EventHandler
 	private void DropThrown(int k)
 	{
 		thrownGun.Delete(k); thrownBy.Delete(k); thrownUntil.Delete(k); thrownW.Delete(k); thrownPX.Delete(k); thrownPY.Delete(k); thrownPZ.Delete(k);
+		if (k < thrownFrom.Size()) thrownFrom.Delete(k);
 	}
 
 	private void ThrownTick()
@@ -657,22 +708,79 @@ class RSQTR_Rig : EventHandler
 			}
 			if (!hit) continue;
 			double w = thrownW[k];
-			int dmg = int(clamp(spd * spd * w * 0.2 * Num("rsqtr_throw_damage", players[n], 1.0), 1, 60));
+			// GUN TOSS (Gun Bonsai VR): the hit x1.5, 2.0, 2.5 and a stagger 10 tics a level longer
+			int toss = max(Gb(players[n], 'GunToss'), 0);
+			double tk = toss >= 3 ? 2.5 : toss == 2 ? 2.0 : toss == 1 ? 1.5 : 1.0;
+			int dmg = int(clamp(spd * spd * w * 0.2 * Num("rsqtr_throw_damage", players[n], 1.0) * tk, 1, 60 * tk));
 			int hp = hit.health;
 			hit.DamageMobj(g, thrower, dmg, 'Melee');
+			if (toss > 0 && hit) { let sc = ServiceIterator.Find("RS_ScoreService").Next(); if (sc) sc.GetInt("touch", "gun.toss", n, 0, hit); }
 			if (hit && hit.health > 0)
 			{
 				hit.TriggerPainChance('None', true);
-				hit.freezetics = max(hit.freezetics, 3);
+				hit.freezetics = max(hit.freezetics, 3 + 10 * toss);
 				double mk = clamp(100.0 / max(hit.Mass, 1.0), 0.05, 2.0);
 				if (!hit.bDontThrust && hit.Mass < 0x7FFFFFFF) hit.Thrust(clamp(spd * w * 0.5, 1.0, 10.0) * mk, atan2(d.y, d.x));
 			}
 			if (Flag("rsqtr_debug_throw", players[n], false))
 				Console.Printf("T_HIT t%d %s hit %s at %.1f a tic, weight %.2f: dmg %d (hp %d -> %d)", level.maptime, g.GetClassName(), hit ? hit.GetClassName() : 'gone', spd, w, dmg, hp, hit ? hit.health : 0);
-			g.vel *= -0.2;
 			g.A_StartSound("rsqtr/gunhit", CHAN_AUTO, 0, 0.8);
+			// BOOMERANG GUN (Gun Bonsai VR): it flies back -- to the holster it came from (2: to your hand)
+			int boom = max(Gb(players[n], 'BoomerangGun'), 0);
+			if (boom > 0 && thrower) StartReturn(g, n, k < thrownFrom.Size() ? thrownFrom[k] : -1, boom);
+			else g.vel *= -0.2;
 			DropThrown(k);
 		}
+	}
+
+	// ---- BOOMERANG GUN (Gun Bonsai VR, GBOVR_TREES.md 4.8): the way back ---------------------------------------------
+	// The gun that hit flies back to its thrower (steered at his chest, no gravity, two seconds at most); arrived, it is
+	// taken back: into the holster it came from or the first empty gun holster (level 1), or into the main hand (level 2).
+	Array<Actor> retGun;
+	Array<int>   retBy, retFrom, retLv, retUntil;
+	private void StartReturn(Actor g, int n, int home, int lv)
+	{
+		if (!g) return;
+		g.bNoGravity = true;
+		retGun.Push(g); retBy.Push(n); retFrom.Push(home); retLv.Push(lv); retUntil.Push(level.maptime + 70);
+		if (Flag("rsqtr_debug_throw", players[n], false)) Console.Printf("T_BOOMERANG t%d %s comes back (level %d, from holster %d)", level.maptime, g.GetClassName(), lv, home);
+	}
+	private void ReturnTick()
+	{
+		for (int k = retGun.Size() - 1; k >= 0; k--)
+		{
+			let g = Inventory(retGun[k]);
+			int n = retBy[k];
+			let pmo = playeringame[n] ? players[n].mo : null;
+			if (!g || !pmo || pmo.health <= 0) { if (g) g.bNoGravity = false; DropReturn(k); continue; }
+			Vector3 to = pmo.pos + (0, 0, pmo.height * 0.6);
+			Vector3 d = to - g.pos;
+			if (g.Owner || d.Length() < 40 || level.maptime > retUntil[k]) { Arrive(g, pmo, n, retFrom[k], retLv[k]); DropReturn(k); continue; }
+			g.vel = d.Unit() * min(18.0, d.Length() * 0.4 + 6.0);
+		}
+	}
+	private void DropReturn(int k) { retGun.Delete(k); retBy.Delete(k); retFrom.Delete(k); retLv.Delete(k); retUntil.Delete(k); }
+	private void Arrive(Inventory g, PlayerPawn pmo, int n, int home, int lv)
+	{
+		let p = pmo.player;
+		String cls = g.GetClassName();
+		class<Weapon> wc = cls;
+		if (!g.Owner) { g.bNoGravity = false; if (!g.CallTryPickup(pmo)) return; }
+		let w = wc ? Weapon(pmo.FindInventory(wc)) : null;
+		if (!w) return;
+		if (lv >= 2) p.PendingWeapon = w;
+		else
+		{
+			if (p.PendingWeapon == w) p.PendingWeapon = WP_NOCHANGE;	// a pickup may want to switch to it: it goes to the holster
+			int r = -1;
+			if (home >= 0 && IsGunRegion(home) && Content(pmo, home) == "") r = home;
+			for (int k = 0; r < 0 && k < RSQTR_Region.N; k++) if (IsGunRegion(k) && Content(pmo, k) == "") r = k;
+			if (r >= 0) lastPut[n * RSQTR_Region.N + r] = cls;
+		}
+		let sc = ServiceIterator.Find("RS_ScoreService").Next();
+		if (sc) sc.GetInt("touch", "boomerang.gun", n, 0, pmo);
+		pmo.A_StartSound("rsqtr/radial", CHAN_AUTO, 0, 0.7);
+		if (Flag("rsqtr_debug_throw", p, false)) Console.Printf("T_BOOMERANG t%d %s back %s", level.maptime, cls, lv >= 2 ? "in the hand" : "in a holster");
 	}
 
 	// The gun in gun holster r for player n: what was put there, while you still own it.
@@ -1111,7 +1219,9 @@ class RSQTR_Rig : EventHandler
 	// ---- the local loop (console player) ----------------------------------------------
 	override void WorldTick()
 	{
+		for (int gn = 0; gn < MAXPLAYERS; gn++) GbRefresh(gn);
 		ThrownTick();
+		ReturnTick();
 		TickPairs();
 		TickLoadout();
 		if (afterLoad) { afterLoad = false; ClearLocalMarks(); }
@@ -1657,7 +1767,7 @@ class RSQTR_Rig : EventHandler
 		int k = GunSlot(r);
 		if (k < 0) return;
 		int st = pw ? AmmoState(pw) : -1;
-		if (!pw || st < 0 || a <= 0.01 || !Flag("rsqtr_ammo_count", p, false)) { HideAmmo(k); return; }
+		if (!pw || st < 0 || a <= 0.01 || !Unlock(p, 'AmmoReadout', "rsqtr_ammo_count", false)) { HideAmmo(k); return; }
 		bool mag = pw.Ammo2 && pw.Ammo2 != pw.Ammo1;
 		int rounds = clamp(mag ? pw.Ammo2.Amount : pw.Ammo1.Amount, 0, 999);
 		static const int RGB[] = { 0x9CF09C, 0xFFC850, 0xFF5A5A };

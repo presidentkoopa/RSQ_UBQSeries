@@ -235,7 +235,11 @@ simulated rig.
   row; Rumble Strength scales every rig rumble. Steady Hands is not used: the holsters, pocket and key ring are
   reach-in tests (where the hand is), not pointing, so they read the raw hand. The rig has no tap windows, so
   Slower Taps changes nothing here.
-- **Gun Bonsai VR patch:** some of its perks need the rig (and SlowMo).
+- **Gun Bonsai VR patch:** the Gunslinger tree (GBOVR_TREES.md 4.8). Quick Draw -> Pair Draw, Showdown (Quick Draw 2);
+  **Ammo Readout**, **Keys by Hand** and **Smoker** are unlocks that take over the Ammo Count, Keys to Doors and
+  Cigarettes rows under the patch; **Chain Smoker** (after Smoker) adds 1 / 2 / 3 to the pack; **Gun Toss** makes a
+  thrown gun hit x1.5 / 2.0 / 2.5 and stagger longer; **Boomerang Gun** (after Gun Toss 2): a thrown gun that hits flies
+  back to the holster it came from (2: into your hand). Without the patch nothing changes.
 
 ## Known limits / open issues
 

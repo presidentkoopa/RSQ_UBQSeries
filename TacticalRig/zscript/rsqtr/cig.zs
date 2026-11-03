@@ -141,7 +141,7 @@ class RSQTR_Cig : EventHandler
 			if (!playeringame[i] || !players[i].mo) continue;
 			let pmo = players[i].mo;
 			let p = players[i];
-			int count = RSQTR_Rig.Opt("rsqtr_cig_count", p, 3);
+			int count = (RSQTR_Rig.Opt("rsqtr_cig_count", p, 3) + max(RSQTR_Rig.Gb(p, 'ChainSmoker'), 0));
 			let tok = RSQTR_CigPack(pmo.FindInventory("RSQTR_CigPack"));
 			if (!tok) { pmo.SetInventory("RSQTR_CigPack", count); tok = RSQTR_CigPack(pmo.FindInventory("RSQTR_CigPack")); }
 			else
@@ -296,7 +296,7 @@ class RSQTR_Cig : EventHandler
 		{ let rg = RSQTR_Rig.Get(); offGrip = rg && rg.gripDown[n * 2 + 1]; }
 		bool offGripEdge = offGrip && !offGripWas;
 		offGripWas = offGrip;
-		if (!RSQTR_Rig.Flag("rsqtr_cig", p, false)) { HideMark(); HideCue(); return; }
+		if (!RSQTR_Rig.Unlock(p, 'Smoker', "rsqtr_cig", false)) { HideMark(); HideCue(); return; }
 		let rig = RSQTR_Rig.Get();
 		Vector3 pocket = Pocket(pmo);
 		bool msg = RSQTR_Rig.Flag("rsqtr_messages", p, false);
@@ -636,7 +636,7 @@ class RSQTR_Cig : EventHandler
 			// NO POCKET AT ALL: Brutal Doom clears the player's inventory as a level starts, after WorldLoaded gave the
 			// pocket (rig 11-02, the full load order: the pocket was empty and nothing came out). Give it again.
 			if (!pmo.FindInventory("RSQTR_CigPack") && pmo.health > 0)
-				pmo.SetInventory("RSQTR_CigPack", RSQTR_Rig.Opt("rsqtr_cig_count", p, 3));
+				pmo.SetInventory("RSQTR_CigPack", (RSQTR_Rig.Opt("rsqtr_cig_count", p, 3) + max(RSQTR_Rig.Gb(p, 'ChainSmoker'), 0)));
 
 			// a level change found them still in a hand: the guns back, once the rig is up
 			if (restore[n] && level.maptime > 1)
@@ -659,7 +659,7 @@ class RSQTR_Cig : EventHandler
 					zipOpen[n] = false;
 					SetPhase(n, PH_NONE);
 				}
-				else if (!RSQTR_Rig.Flag("rsqtr_cig", p, false) || !RSQTR_Rig.Flag("rsqtr_on", p, true))
+				else if (!RSQTR_Rig.Unlock(p, 'Smoker', "rsqtr_cig", false) || !RSQTR_Rig.Flag("rsqtr_on", p, true))
 				{
 					if (phase[n] == PH_SMOKE) Spit(pmo, n, false);
 					else PutBack(pmo, n);

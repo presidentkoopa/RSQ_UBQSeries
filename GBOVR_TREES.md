@@ -1405,6 +1405,23 @@ level, 2 s smoke, then 6 s of slow motion at 25%; ammo count on holsters (option
 | LaserSight: Target Lock (exists as a LaserSight feature, on; under GBOVR an unlock) | Quick Draw 1 | 1: the dot grows and pulses on a live monster; 2: the dot's colour changes on a monster | LaserSight (reads the level by name; without GBOVR as today) | the dot (exists) | - |
 | LaserSight: Headshot Reaction (exists as an option; under GBOVR an unlock) | Target Lock 1 | 1: the top fifth of a monster turns the dot the headshot colour (pulse on); 2: and a hit there counts as a Headshot for Critical Hits level 2 | LaserSight; GBOVR reads it | the dot (exists) | `headshot.cue` |
 
+**BUILT 11-02 (L3), the whole Gunslinger tree.** Gun Bonsai VR (`up_suite.zs`): Pair Draw and Showdown after Quick Draw;
+`RSQ_RigTreePerk` and the eight new nodes (`RSQ_LaserPerk` for the laser's two: they need RSQ LaserSight and, through Quick
+Draw, the rig); the Headshot node asks LaserSight "head.on" for a gun hit (shot == the shooter). RSQ Tactical Rig: `Gb` /
+`Unlock` (a once-a-second per-player cache, `GbRefresh` in WorldTick); Ammo Readout, Keys by Hand, Smoker take over
+their rows; Chain Smoker adds to `rsqtr_cig_count`; Gun Toss in `ThrownTick` (x1.5 / 2 / 2.5, the 60 cap scaled with
+it, freeze 3 + 10 a level); Boomerang Gun (`ThrowGun` remembers the holster, `StartReturn` / `ReturnTick` steer it home,
+`Arrive` takes it back: the holster it came from or the first empty one at 1, the main hand at 2; `ArmThrown` public
+for probes). RSQ LaserSight: `Lock` / `Recolor` / `Head` (clearscope over its own cache) replace the rows' reads;
+`dotHead` / `HeadOn` remember the head the dot sat on. **REMA port: local state** -- the console player's laser
+feeds damage through "head.on" (fine on QuestZDoom: no netplay, owner 11-02). **Headless 11-02** (`fp_rg`,
+`fp_rgthrow` through the rig's own `ArmThrown` and `ThrownTick`, `fp_rghead` with the dot set and a real hit):
+under the patch every unlock read 0 until learned, then 1; the pack 3 -> 5 (Chain Smoker 2); a thrown shotgun hit
+60, then 120 and froze the imp (Gun Toss 2); Boomerang Gun 1 brought it back into holster 4 (where it came from), 2
+into the hand; a 10 gun hit did 10 without the dot or at Headshot Reaction 1, 25 with the dot at 2 (the Headshot
+x2.5). Not provable headless: the laser's look, the ammo digits, the keys at a door, the cigarette ritual, a real
+gun throw and its flight home.
+
 **Counts:** 11 nodes, 3 exist as upgrades, 8 new (4 of them existing features or options made unlocks).
 
 ### 4.9 SlowMo (all ten approved)

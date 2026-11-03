@@ -796,6 +796,9 @@ class RSQ_Upgrade_Headshot : RSQ_CritPerk
 		double frac = -1;
 		if (IsGlove(shot)) { int hh = Punch(shot, "punch.height"); if (hh >= 0) frac = hh / 1000.0; }
 		else if (shot && shot != pawn) frac = (shot.pos.z - target.pos.z) / target.height;
+		// HEADSHOT REACTION 2 (RSQ LaserSight's node): a gun hit with the laser's dot on its head counts (the laser answers
+		// only at that level). REMA port: the laser's dot is local state.
+		if (frac < TOP && shot == pawn) { let ls = RSQM.Svc("RSQLS_SightService"); if (ls && ls.GetInt("head.on", "", 0, 0, target) == 1) frac = 1.0; }
 		if (frac < TOP) return damage;
 		int now = RSQM.Now();
 		double m = Mult(level);

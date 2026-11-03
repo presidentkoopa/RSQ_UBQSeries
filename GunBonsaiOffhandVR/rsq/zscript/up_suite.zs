@@ -263,6 +263,8 @@ class RSQ_Upgrade_QuickDraw : RSQ_RigPerk
 // 2 s + half a second a level.
 class RSQ_Upgrade_PairDraw : RSQ_RigPerk
 {
+	// GBOVR_TREES.md 4.8: after Quick Draw 1
+	override bool IsSuitableForPlayer(TFLV_PerPlayerStats stats) { return Super.IsSuitableForPlayer(stats) && PHas(stats, "QuickDraw"); }
 	override int Cap() { return 3; }
 	static int Window(uint lv) { return 70 + 17 * lv; }
 	static double Mult(uint lv) { return 1.0 + 0.08 * lv; }
@@ -283,6 +285,8 @@ class RSQ_Upgrade_PairDraw : RSQ_RigPerk
 // RSQ SlowMo (rsm_pulse). Needs the rig and SlowMo.
 class RSQ_Upgrade_Showdown : RSQ_RigPerk
 {
+	// GBOVR_TREES.md 4.8: after Quick Draw 2
+	override bool IsSuitableForPlayer(TFLV_PerPlayerStats stats) { return Super.IsSuitableForPlayer(stats) && PHas(stats, "QuickDraw", 2); }
 	override int Cap() { return 3; }
 	override bool ModLoaded() { return RSQM.Has("RSQTR_RigService") && RSQM.Has("RSQSM_Service"); }
 	static int Ms(uint lv) { return 300 + 150 * lv; }
@@ -297,6 +301,62 @@ class RSQ_Upgrade_Showdown : RSQ_RigPerk
 
 // ---- PLAYER: RSQ SLOWMO ----------------------------------------------------------------------
 // RSQSM_Service "active" (slow motion is doing something), "adrenaline.add", and rsm_pulse.
+
+// ---- THE REST OF THE GUNSLINGER TREE (GBOVR_TREES.md 4.8): the rig's own options as unlocks, and the gun throw --------
+class RSQ_RigTreePerk : RSQ_RigPerk
+{
+	virtual String Parent() { return ""; }
+	virtual int ParentLevel() { return 1; }
+	override bool IsSuitableForPlayer(TFLV_PerPlayerStats stats)
+	{
+		String pa = Parent();
+		return Super.IsSuitableForPlayer(stats) && (pa == "" || PHas(stats, pa, ParentLevel()));
+	}
+}
+// AMMO READOUT (root, the unlock): the small digits above each full holster (the rig's Ammo Count row under this patch).
+class RSQ_Upgrade_AmmoReadout : RSQ_RigTreePerk { override int Cap() { return 1; } }
+// GUN TOSS (root): a thrown gun hurts x1.5, 2.0, 2.5 and staggers 10 tics a level longer.
+class RSQ_Upgrade_GunToss : RSQ_RigTreePerk
+{
+	override int Cap() { return 3; }
+	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("mult", string.format("x%.1f", 1.0 + 0.5 * level)); }
+}
+// BOOMERANG GUN (after Gun Toss 2): a thrown gun that hits a monster flies back to the holster it came from (2: to your hand).
+class RSQ_Upgrade_BoomerangGun : RSQ_RigTreePerk
+{
+	override String Parent() { return "GunToss"; }
+	override int ParentLevel() { return 2; }
+	override int Cap() { return 2; }
+}
+// KEYS BY HAND (root, the unlock): grip the keyring, touch the keys to a locked door (the rig's Keys to Doors row).
+class RSQ_Upgrade_KeysByHand : RSQ_RigTreePerk { override int Cap() { return 1; } }
+// SMOKER (root, the unlock): the cigarette pocket and its ritual, and the slow motion after (the rig's Cigarettes row).
+class RSQ_Upgrade_Smoker : RSQ_RigTreePerk { override int Cap() { return 1; } }
+// CHAIN SMOKER (after Smoker 1): the pack 3 -> 4, 5, 6.
+class RSQ_Upgrade_ChainSmoker : RSQ_RigTreePerk
+{
+	override String Parent() { return "Smoker"; }
+	override int Cap() { return 3; }
+	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("n", string.format("%d", 3 + level)); }
+}
+// RSQ LASERSIGHT's two (they hang from Quick Draw, so they need the rig too)
+class RSQ_LaserPerk : RSQ_RigTreePerk
+{
+	override bool ModLoaded() { return Super.ModLoaded() && RSQM.Has("RSQLS_Sight"); }
+}
+// TARGET LOCK (after Quick Draw 1, the unlock): the dot grows and pulses on a live monster; 2 it turns the target colour.
+class RSQ_Upgrade_TargetLock : RSQ_LaserPerk
+{
+	override String Parent() { return "QuickDraw"; }
+	override int Cap() { return 2; }
+}
+// HEADSHOT REACTION (after Target Lock 1, the unlock): the top fifth of a monster turns the dot the headshot colour; 2 a gun
+// hit there counts as a Headshot (Critical Hits' node), asked of the laser ("head.on").
+class RSQ_Upgrade_HeadshotReaction : RSQ_LaserPerk
+{
+	override String Parent() { return "TargetLock"; }
+	override int Cap() { return 2; }
+}
 
 class RSQ_SlowPerk : RSQ_Perk
 {

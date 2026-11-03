@@ -109,6 +109,10 @@ simulated rig.
 
 ## Works with
 
+- **RSQ Gun Bonsai VR (with RSQ Tactical Rig):** **Target Lock** (after Quick Draw) and **Headshot Reaction** (after
+  Target Lock) are unlocks under the patch: they take over Target Lock (1), Target Recolour (2) and Headshot Reaction
+  (1); Headshot Reaction 2 makes a gun hit with your dot on a monster's head count for Critical Hits' Headshot (the
+  service answers "head.on"). Without the patch the rows as before.
 - **RSQ Distance Grab:** this mod tells it which hands have a live laser; the grab hides its own beam on
   those hands (its *Yield to Laser Sight* row).
 - **RSQ Accessibility:** colour-blind colours per hand (a lock is then told by shape, not colour),

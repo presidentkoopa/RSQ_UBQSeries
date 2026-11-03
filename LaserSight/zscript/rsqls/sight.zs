@@ -100,6 +100,35 @@ class RSQLS_Sight : EventHandler
 		let me = RSQLS_Sight(EventHandler.Find("RSQLS_Sight"));
 		return me ? me.beamMask : 0;
 	}
+	// ---- THE GUN BONSAI VR PATCH'S LEVELS (GBOVR_TREES.md 4.8), the console player's, once a second ------------------
+	// Target Lock and Headshot Reaction are unlocks under the patch: they take over rsqls_lock (1), rsqls_target_recolor
+	// (2) and rsqls_head (1). Without it the rows as before.
+	transient int gbTic, gbLock, gbHead;
+	transient bool gbOn;
+	void GbRefresh(PlayerPawn pmo)
+	{
+		if (gbTic > 0 && level.maptime < gbTic && level.maptime >= gbTic - 35) return;
+		gbTic = level.maptime + 35;
+		let svc = ServiceIterator.Find("RSQ_MeleeUpgradeService").Next();
+		gbOn = svc != null;
+		gbLock = svc ? max(0, svc.GetInt("plevel", "TargetLock", 0, 0, pmo)) : 0;
+		gbHead = svc ? max(0, svc.GetInt("plevel", "HeadshotReaction", 0, 0, pmo)) : 0;
+	}
+	static clearscope bool Lock(PlayerInfo p)    { let me = RSQLS_Sight(EventHandler.Find("RSQLS_Sight")); return (me && me.gbOn) ? me.gbLock >= 1 : RSQLS_Hand.Flag("rsqls_lock", p, true); }
+	static clearscope bool Recolor(PlayerInfo p) { let me = RSQLS_Sight(EventHandler.Find("RSQLS_Sight")); return (me && me.gbOn) ? me.gbLock >= 2 : RSQLS_Hand.Flag("rsqls_target_recolor", p, false); }
+	static clearscope bool Head(PlayerInfo p)    { let me = RSQLS_Sight(EventHandler.Find("RSQLS_Sight")); return (me && me.gbOn) ? me.gbHead >= 1 : RSQLS_Hand.Flag("rsqls_head", p, false); }
+	// HEADSHOT REACTION 2: the monster each hand's dot sat on the head of, and when. REMA port: local state (the console
+	// player's laser) feeding damage -- fine on QuestZDoom, which has no netplay (owner 11-02).
+	Actor dotHead[2];
+	int headTic[2];
+	static int HeadOn(Actor target)
+	{
+		let me = RSQLS_Sight(EventHandler.Find("RSQLS_Sight"));
+		if (!me || !target || !me.gbOn || me.gbHead < 2) return 0;
+		for (int h = 0; h < 2; h++) if (me.dotHead[h] == target && level.maptime - me.headTic[h] <= 1) return 1;
+		return 0;
+	}
+
 	static int LiveHands()
 	{
 		let me = RSQLS_Sight(EventHandler.Find("RSQLS_Sight"));
@@ -318,11 +347,11 @@ class RSQLS_Sight : EventHandler
 		}
 		if (handCol) c = CBHand(c, h, mode);
 
-		if (hostile && RSQLS_Hand.Flag("rsqls_lock", p, true) && RSQLS_Hand.Flag("rsqls_target_recolor", p, false)
+		if (hostile && Lock(p) && Recolor(p)
 			&& !RSQLS_CB.Mode())
 			c = RSQLS_Hand.Opt("rsqls_col_target", p, 0xFFE020);
 
-		if (head && RSQLS_Hand.Flag("rsqls_head", p, false))
+		if (head && Head(p))
 		{
 			int hc = RSQLS_Hand.Opt("rsqls_col_head", p, 0xFFFFFF);
 			if (RSQLS_Hand.Flag("rsqls_head_pulse", p, true))
@@ -343,6 +372,7 @@ class RSQLS_Sight : EventHandler
 		let p = players[consoleplayer];
 		if (!p || !p.mo) return;
 		let pmo = p.mo;
+		GbRefresh(pmo);
 
 		// Toggle feedback first, whatever else is going on.
 		for (int h = 0; h < 2; h++)
@@ -547,6 +577,7 @@ class RSQLS_Sight : EventHandler
 		// the body. What counts as a head is the gameplay mod's business; this
 		// only shows it (UZDXREMA's Headshot Reaction, as near as script gets).
 		bool head = hostile && t.HitLocation.z >= onWho.Pos.z + onWho.Height * 0.8;
+		if (head) { dotHead[h] = onWho; headTic[h] = level.maptime; }
 
 		int beamRgb = ColorOf(p, h, w, false, hostile, head);
 		int dotRgb  = ColorOf(p, h, w, true,  hostile, head);
@@ -573,7 +604,7 @@ class RSQLS_Sight : EventHandler
 			{
 				double litFade = RSQLS_Hand.Num("rsqls_beam_daylight", p, 0.35);
 				double a = RSQLS_Hand.Num("rsqls_beam_a", p, 0.8) * (1.0 - (1.0 - litFade) * lit);
-				if (hostile && RSQLS_Hand.Flag("rsqls_lock", p, true)) a *= 1.35;
+				if (hostile && Lock(p)) a *= 1.35;
 				bt.Show(p, h, w, row, gp, k, bt.Tint(beamRgb, a, fadeCm));
 				beamOn = true;
 			}
@@ -642,7 +673,7 @@ class RSQLS_Sight : EventHandler
 		// laser sight reads at roughly that), with a floor so it never shrinks to
 		// nothing up close.
 		double sc = RSQLS_Hand.Num("rsqls_spot_size", p, 1.0) * (0.03 + dist / 2000.0) * RSQLS_A11y.Cue();   // Cue Size (the glow follows)
-		if (hostile && RSQLS_Hand.Flag("rsqls_lock", p, true))
+		if (hostile && Lock(p))
 		{
 			// TARGET LOCK: it TIGHTENS onto the target and bites at the pulse rate.
 			double tighten = clamp(RSQLS_Hand.Num("rsqls_lock_tighten", p, 0.0), 0.0, 0.9);
@@ -916,6 +947,10 @@ class RSQLS_SightService : Service
 			return (RSQLS_Sight.LiveHands() >> (intArg & 1)) & 1;
 		if (request == "laser.beam")
 			return (RSQLS_Sight.BeamHands() >> (intArg & 1)) & 1;
+		// "head.on", objectArg = a monster: 1 when a dot of the console player sat on its head this tic or the last AND
+		// they have Gun Bonsai VR's Headshot Reaction 2 (its Headshot node counts a gun hit there)
+		if (request == "head.on")
+			return RSQLS_Sight.HeadOn(Actor(objectArg));
 		return -1;
 	}
 }
