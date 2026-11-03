@@ -6,8 +6,7 @@ monsters out of.
 
 Fighting with your body: Melee's own hands (Ermac's hand or BD22 VR's FBX hand, fist or open palm), the punch, the
 open-palm swat, SuperPunchOut's boxing gloves, Slappers Only, the Guard, the Hadouken, Wall Splat, Heavy Hands,
-Ground Pound, Clear Out, the gun-butt shove with its slow-motion beat and the F.E.A.R. Effect, and the off-hand
-Headlock with its throw. Each blow shows its own hit spark. For stock QuestZDoom 17.3, VR; script and data only, no
+Ground Pound, Clear Out, the gun-butt shove with its slow-motion beat, and the off-hand Headlock with its throw. Each blow shows its own hit spark. For stock QuestZDoom 17.3, VR; script and data only, no
 engine changes. Needs no other mod: everything works on plain Doom 2 alone. Best with RSQ Gun Bonsai VR (the moves
 grow into its trees), RSQ SlowMo (the shove's slow motion), RSQ Gestures (the two-hand moves) and RSQ Distance Grab
 (the Headlock throw).
@@ -56,14 +55,12 @@ Guard, Hadouken, Wall Splat, Heavy Hands, Ground Pound and Clear Out are Gun Bon
 loaded each works only once Gun Bonsai has granted it, at the learned level's numbers, and Melee's rows for them do
 nothing. Without Gun Bonsai VR each has a Melee row, off by default, that plays it at the upgrade's level 1.
 
-**The gun-butt shove and the F.E.A.R. Effect.**
+**The gun-butt shove.**
 - **Gun Butt Shove:** with a gun in your main hand, shove it hard at a monster within about 2 m: BD22 VR Reloaded's
   butt strike. 14 damage (62 with the Berserk), knocked away from you, once every 12 tics. Stands down when BD22 VR
   Reloaded is loaded: its own strike is the one.
 - **Slow-Mo After a Shove:** a landed shove (ours, or BD22 VR Reloaded's) asks RSQ SlowMo for a short pulse of slow
-  motion (300 ms at 35 % world speed).
-- **The F.E.A.R. Effect:** while that slow motion lasts, every shotgun hit of yours on a monster bleeds twice, and a
-  shotgun kill in it is RSQ Score's F.E.A.R. Effect.
+  motion (300 ms at 35 % world speed). What you do in that beat is RSQ Score's business (its F.E.A.R. Effect).
 
 **The Headlock.**
 - The off hand's grip on a living monster within 30 cm holds it by the collar, its face at your hand, facing you, for
@@ -103,8 +100,6 @@ No buttons to bind. Each hand's own fire is the fist / palm switch; the Headlock
   Everything in front is shoved back.
 - **Gun-butt shove:** with a gun in your main hand, drive it forward hard (3.6 m/s) into a monster within about 2 m. It
   is knocked away and, with RSQ SlowMo, the world slows for a beat.
-- **The F.E.A.R. Effect:** in that slow beat, shoot the monster with a shotgun. Every hit bleeds twice; the kill is the
-  F.E.A.R. Effect.
 - **Headlock:** put your off hand on a living monster (within 30 cm) and squeeze the grip. You hold it by the collar,
   its face at your hand, for 3 s. Punch it with the other hand.
 - **Throw it:** while you hold one, swing the off hand hard (3 m/s) across the ground toward where you face. It flies.
@@ -125,7 +120,7 @@ Options -> Radiant Silvergun Options -> **RSQ Melee**.
 | Slappers Only | Off | Boxing gloves on both hands, every gun put away, gun pickups vanish while it lasts. |
 | Start With Melee Hands | Off | Hands you Melee's hands at each level start and raises them in both hands. |
 | Gun Butt Shove | On | The main hand's shove with a gun hits. Stands down with BD22 VR Reloaded. |
-| Slow-Mo After a Shove | On | A landed butt shove asks RSQ SlowMo for a short pulse; the F.E.A.R. Effect runs while it lasts. |
+| Slow-Mo After a Shove | On | A landed butt shove asks RSQ SlowMo for a short pulse of slow motion. |
 | Headlock | On | The off hand's grip on a living monster holds it. |
 | Headlock: Human Shield (hold until let go) | Off | Held as long as the grip is, facing away. With RSQ Gun Bonsai VR this row does nothing: Human Shield is the off glove's upgrade. |
 | Headlock Punch Extra Blood | On | Punching a monster you hold bleeds more: x1.3, x1.6, then x2.0. |
@@ -162,8 +157,9 @@ Options -> Radiant Silvergun Options -> **RSQ Melee**.
   its upgrades; it pays a returned missile, a wall slam and the two-hand moves to the glove. Its glove upgrades read
   the last punch through Melee's service.
 - **BD22 VR (RS_Brutal22WeaponsQ):** Melee Hands' Auto shows its FBX hand, worn in its Hand Skin Tone.
-- **BD22 VR Reloaded:** the shove stands down; its own butt strike starts the slow motion and the F.E.A.R. Effect.
-- **RSQ SlowMo:** the slow motion after a shove, and whether it is still running for the F.E.A.R. Effect.
+- **BD22 VR Reloaded:** the shove stands down; its own butt strike starts the slow motion.
+- **RSQ SlowMo:** the slow motion after a shove.
+- **RSQ Score:** the shove is named to it before the blow lands; what you do in the slow beat is Score's F.E.A.R. Effect.
 - **RSQ Score:** the Headlock is its Headlock combo; a shotgun kill in the shove's slow motion is its F.E.A.R. Effect
   combo. Score asks Melee which hand sent a missile back.
 - **RSQ Distance Grab:** a thrown Headlock monster flies through its throw (strength, weight, aim assist, impact).
