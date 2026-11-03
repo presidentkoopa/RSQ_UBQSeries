@@ -362,30 +362,41 @@ class RSQMB_Handler : EventHandler
 		return lifeBonus;
 	}
 
-	// LEGENDOOM BOSS HEALTH (rsqmb_boss_ldhealth, owner 2026-11-03). Where a miniboss's legendary health is set: not
+	// LEGENDOOM: BEST HEALTH (rsqmb_boss_ldhealth, owner 2026-11-03: the HIGHER of LegenDoom's boss and normal legendary
+	// health; with LegenDoom Lite's defaults, 300 % normal vs 200 % boss, that is the normal 300 %). Where a miniboss's legendary health is set: not
 	// here. LegenDoom Lite's guaranteed pickup runs its ACS, LEGNDLIB.acs LDMonsterInit, which reads the monster's
 	// spawn health (APROP_SpawnHealth = StartHealth, or the class's health, x the skill) ONCE, multiplies it by
 	// LD_legendaryhealthboss / 100 if CheckFlag(BOSS) else LD_legendaryhealth / 100 (integer division of the
 	// percentage), sets that health, keeps the number in a script local and refills to it once at its half (the
 	// transform). The miniboss is never BOSS-flagged, so it would get LD_legendaryhealth. Without touching the flag,
-	// it is given the boss number by its spawn health: StartHealth is scaled by boss / normal for the tic or two
-	// until the ACS has read it (LDHealthDone puts it back), so the set health and the transform's refill are both
-	// spawn x LD_legendaryhealthboss / 100 (to within the rounding of one StartHealth point x the normal factor).
+	// it is given the better number by its spawn health: when the boss factor is the higher, StartHealth is scaled by
+	// boss / normal for the tic or two until the ACS has read it (LDHealthDone puts it back), so the set health and the
+	// transform's refill are both spawn x LD_legendaryhealthboss / 100 (to within the rounding of one StartHealth point
+	// x the normal factor). When the normal factor is the higher (or equal), LegenDoom's own result already is it.
 	void LDBossHealth(RSQMB_Boss b)
 	{
 		if (CI('rsqmb_boss_ldhealth', 1) == 0) return;
 		let mb = b.mb;
 		int nm = CI('LD_legendaryhealth', 300) / 100, bm = CI('LD_legendaryhealthboss', 200) / 100;
 		int spawn = mb.SpawnHealth();
-		b.ldTarget = spawn * bm;
-		if (nm <= 0 || bm <= 0 || nm == bm) { b.ldBoss = true; return; }   // nothing to scale (0: LegenDoom's own result stands)
+		int best = max(nm, bm);
+		b.ldTarget = spawn * best;
+		b.ldBoss = true;     // its legendary health is spawn x max(boss, normal) / 100: the readers' rule (RSQMB_Service "ldhealth")
+		if (nm <= 0 || best == nm)
+		{
+			// the normal factor is the better (or LegenDoom's 0): LegenDoom's own result stands, nothing to scale
+			if (debug) Console.Printf("RSQMB LegenDoom best health: %s spawn %d x %d (normal %d%%) >= boss x %d (%d%%): LegenDoom's own number",
+				mb.GetClassName(), spawn, nm, CI('LD_legendaryhealth', 300), bm, CI('LD_legendaryhealthboss', 200));
+			return;
+		}
+		b.ldBoss = false;    // set again by LDHealthDone once LegenDoom has given it
 		int own = mb.StartHealth;
 		int base = own > 0 ? own : GetDefaultByType(mb.GetClass()).health;
 		b.ldShOwn = own;
 		mb.StartHealth = max(1, int(round(base * double(bm) / nm)));
 		b.ldShPending = true;
 		b.ldShUntil = level.maptime + TICRATE;
-		if (debug) Console.Printf("RSQMB LegenDoom boss health asked: %s spawn %d x %d (boss %d%%) not x %d (%d%%): StartHealth %d -> %d for its ACS",
+		if (debug) Console.Printf("RSQMB LegenDoom best health asked: %s spawn %d x %d (boss %d%%) not x %d (%d%%): StartHealth %d -> %d for its ACS",
 			mb.GetClassName(), spawn, bm, CI('LD_legendaryhealthboss', 200), nm, CI('LD_legendaryhealth', 300), own, mb.StartHealth);
 	}
 

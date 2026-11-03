@@ -32,7 +32,7 @@ E=$T/evidence_1103.txt
 echo "# RSQ Miniboss: Counts as a Boss switches -- rig only, not headset-confirmed (qzd17.3 rig, doom2, $(date -u +%F))"
 echo "## Map-wide Roar + Can't Be Morphed (doom2 + Miniboss + bossprobe)"; grep -E "^CASE_|MBP (state|t.*morph)|RSQMB flags" $L/mb_flags.log | cut -c1-200
 echo "## Boss Kill Rewards (Gun Bonsai + RSQ_GunBonsaiVR, drop chance 50%: a boss always drops; imp 60 hp = 6 bits, x3 boss)"; grep -E "^CASE_|RSQ KR.*DoomImp" $L/mb_rewards.log
-echo "## LegenDoom Boss Health (LegenDoom Lite 4.2: LD_legendaryhealth 300, LD_legendaryhealthboss 200; imp 60)"; grep -E "^CASE_|RSQMB LegenDoom|MBP_LD|MBP t.*hurt|MBP state" $L/mb_ld_gb.log | cut -c1-170
+echo "## LegenDoom: Best Health (LegenDoom Lite 4.2, LD_legendaryhealth 300; boss 200 (default), then 400; imp 60: 300% = 180, 400% = 240)"; grep -E "^CASE_|RSQMB LegenDoom|MBP_LD|MBP t.*hurt|MBP state" $L/mb_ld_gb.log | cut -c1-170
 echo "## Can't Be Yanked: Grapple (GRV room, imp 400 ahead; og fling = you fly to it, og throw / launch = it is thrown)"; grep -E "^CASE_|T_GR t[0-9]+ h0 (og throw|og fling|bite)|T_GRM (og throw|launch|land)|MBP state" $L/mb_grapple.log | cut -c1-150
 for v in 1 0; do echo "## Can't Be Yanked: Whip yank, rsqmb_boss_noyank $v"; grep -E "MBP state|T_WPW .*YANK" $L/mb_whip$v.log | head -3 | cut -c1-150; done
 for v in 1 0; do echo "## Can't Be Headlocked: Melee headlock (Melee probe case 4), rsqmb_boss_noheadlock $v"; grep -E "MBP state|RSQML headlock|MLP t6[036] held" $L/mb_headlock$v.log | sort | uniq -c | cut -c1-150; done

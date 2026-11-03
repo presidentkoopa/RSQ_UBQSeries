@@ -19,9 +19,10 @@
 //                               tic or the last (so a WorldThingDied handler gets it whichever runs first)
 //                   "yank"      Can't Be Yanked (rsqmb_boss_noyank, on): a living miniboss
 //                   "headlock"  Can't Be Headlocked (rsqmb_boss_noheadlock, on): a living miniboss
-//                   "ldhealth"  LegenDoom Boss Health (rsqmb_boss_ldhealth, on, read when it was made legendary):
-//                               LegenDoom Lite gave it the boss legendary health (spawn x LD_legendaryhealthboss / 100)
-//                               because Miniboss asked; stays 1 for that monster (dead or alive)
+//                   "ldhealth"  LegenDoom: Best Health (rsqmb_boss_ldhealth, on, read when it was made legendary):
+//                               Miniboss made it legendary with spawn x max(LD_legendaryhealthboss, LD_legendaryhealth)
+//                               / 100 (the HIGHER of the two); stays 1 for that monster (dead or alive). A reader then
+//                               uses that max where it would use LD_legendaryhealth
 //                 Cheap first test for callers: the monster carries "RSQMB_Ward" (by name); only then ask.
 // GetObject("boss", "", 0, 0, thrall) -> the thrall's miniboss; ("boss", "", n) -> the n-th miniboss.
 // GetObject("thrall", "", n, 0, miniboss) -> its n-th thrall (dead or alive), null past the end.

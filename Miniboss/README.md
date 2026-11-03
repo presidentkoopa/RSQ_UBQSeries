@@ -65,7 +65,7 @@ series is untouched: knockdowns, knockback, grenade charm/infight and Gun Bonsai
 | Row | Default | What it does |
 |---|---|---|
 | Boss Kill Rewards | On | RSQ Gun Bonsai VR's kill rewards treat it as a boss: the boss fountain (x3 bits, `rsqgb_kr_boss`) and every bit drops. |
-| LegenDoom Boss Health | On | When Miniboss makes it legendary (Inherit Powers, a legendary thrall), LegenDoom Lite gives it its boss legendary health (`LD_legendaryhealthboss`, 200 % by LegenDoom Lite's default) instead of the normal one (`LD_legendaryhealth`, 300 %). **Note: with LegenDoom Lite's defaults that is LESS health** (BD imp 80: 160, not 240). |
+| LegenDoom: Best Health | On | When Miniboss makes it legendary (Inherit Powers, a legendary thrall), it gets the HIGHER of LegenDoom's boss legendary health (`LD_legendaryhealthboss`, 200 % by LegenDoom Lite's default) and its normal one (`LD_legendaryhealth`, 300 %). With the defaults that is the normal 300 % (BD imp 80: 240); raise the boss % above the normal and it gets that (400 %: 320). Off: the normal one, always. |
 | Can't Be Yanked | On | RSQ Grapple's and RSQ Whip's yank and throw refuse it as they refuse a boss: the hook or the whip pulls you to it instead. |
 | Can't Be Headlocked | On | RSQ Melee's headlock refuses it as it refuses a boss. |
 | Map-wide Roar | Off | Its sight and death sounds play at full volume across the map (FULLVOLSEE / FULLVOLDEATH); its own flags come back when it dies (the death flag 3 s later, after its scream). |
@@ -127,8 +127,8 @@ Built 2026-10-27; its handoff says it was never run on a headset.
 - **Counts as a Boss, for other mods** (2026-11-03): `RSQMB_Service` `GetInt("bossfor", <system>, 0, 0, monster)`
   answers 1 when the monster is a miniboss and that system's switch is on. Systems: `"rewards"` (a living miniboss,
   or one that died this tic or the last, so a WorldThingDied handler gets it whichever runs first), `"yank"`,
-  `"headlock"` (a living miniboss), `"ldhealth"` (LegenDoom Lite gave it the boss legendary health because Miniboss
-  asked; stays 1 for that monster). Ask cheaply: first look for the `RSQMB_Ward` inventory by name, only then find
+  `"headlock"` (a living miniboss), `"ldhealth"` (Miniboss made it legendary with spawn x the HIGHER of
+  `LD_legendaryhealthboss` and `LD_legendaryhealth` / 100; a reader uses that max; stays 1 for that monster). Ask cheaply: first look for the `RSQMB_Ward` inventory by name, only then find
   the service. Asked by: RSQ Gun Bonsai VR (kill rewards; its StartHealth for Knockdown / Executioner), RSQ ShieldSaw
   (the disc's tier health), RSQ Grapple and RSQ Whip (yank), RSQ Melee (headlock). Each still loads and works alone.
 - Does not read RSQ_Accessibility.
@@ -142,10 +142,10 @@ Built 2026-10-27; its handoff says it was never run on a headset.
   infighting open the window too (no award).
 
 - Counts as a Boss (2026-11-03): rig only, not headset-confirmed. Key lines: `tools/rigtest/evidence_1103.txt`
-  (`tools/rigtest/run_all.sh` reruns everything). LegenDoom Boss Health applies only when MINIBOSS makes it
+  (`tools/rigtest/run_all.sh` reruns everything). LegenDoom: Best Health applies only when MINIBOSS makes it
   legendary; a monster LegenDoom Lite made legendary on its own before it was chosen keeps the normal legendary
-  health (LegenDoom's ACS keeps that number in a script local, out of reach). Rounding: the boss number comes out
-  within one StartHealth point x (LD_legendaryhealth / 100) of exact (measured exact on a doom2 imp: 120). Built for
+  health (LegenDoom's ACS keeps that number in a script local, out of reach). Rounding: when the boss % is the higher, the
+  number comes out within one StartHealth point x (LD_legendaryhealth / 100) of exact (measured exact on a doom2 imp). Built for
   LegenDoom Lite 4.2's ACS (`LEGNDLIB.acs LDMonsterInit`); LegenDoom 3.0 was not tested.
 
 ## The owner's design and ideas (kept as written)

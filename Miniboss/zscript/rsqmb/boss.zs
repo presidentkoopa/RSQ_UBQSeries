@@ -36,7 +36,7 @@ class RSQMB_Boss : Thinker
 	bool   ownFullSee, ownFullDeath, ownDontMorph;   // the monster's own flags, read when it was bound
 	bool   roarSet, noMorphSet;                       // our flags are on it now
 	int    deathFlagUntil;                            // FULLVOLDEATH outlives the death this long (its scream plays later)
-	bool   ldBoss;                                    // LegenDoom Lite gave it the boss legendary health (Miniboss did)
+	bool   ldBoss;                                    // its legendary health is LegenDoom's best (max of boss, normal): Miniboss did it
 	bool   ldShPending;                               // StartHealth is ours until LegenDoom Lite's ACS has read it
 	int    ldShOwn, ldShUntil, ldTarget;
 
@@ -181,7 +181,7 @@ class RSQMB_Boss : Thinker
 			roarSet, noMorphSet, ownFullSee, ownFullDeath, ownDontMorph);
 	}
 
-	// LegenDoom Boss Health, the second half: LegenDoom Lite's ACS (LEGNDLIB.acs LDMonsterInit) has read our StartHealth
+	// LegenDoom: Best Health, the second half: LegenDoom Lite's ACS (LEGNDLIB.acs LDMonsterInit) has read our StartHealth
 	// (it gives LDLegendaryMonsterToken first thing, then sets the health, in one run): the monster's own goes back.
 	void LDHealthDone(RSQMB_Handler h)
 	{
@@ -193,7 +193,7 @@ class RSQMB_Boss : Thinker
 		mb.StartHealth = ldShOwn;
 		ldBoss = got;
 		if (h && h.debug)
-			Console.Printf("RSQMB LegenDoom boss health: boss %d %s legendary %d hp %d (asked %d; StartHealth back to %d, SpawnHealth %d)",
+			Console.Printf("RSQMB LegenDoom best health: boss %d %s legendary %d hp %d (asked %d; StartHealth back to %d, SpawnHealth %d)",
 				idx, mb.GetClassName(), got, mb.health, ldTarget, mb.StartHealth, mb.SpawnHealth());
 	}
 

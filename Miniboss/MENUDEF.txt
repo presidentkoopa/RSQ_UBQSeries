@@ -55,7 +55,7 @@ OptionMenu "RSQMB_Options"
 	StaticText " "
 	StaticText "Counts as a Boss", 1
 	Option "Boss Kill Rewards", "rsqmb_boss_rewards", "OnOff"
-	Option "LegenDoom Boss Health", "rsqmb_boss_ldhealth", "OnOff"
+	Option "LegenDoom: Best Health", "rsqmb_boss_ldhealth", "OnOff"
 	Option "Can't Be Yanked", "rsqmb_boss_noyank", "OnOff"
 	Option "Can't Be Headlocked", "rsqmb_boss_noheadlock", "OnOff"
 	Option "Map-wide Roar", "rsqmb_boss_roar", "OnOff"
