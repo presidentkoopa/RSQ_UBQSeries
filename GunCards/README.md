@@ -165,6 +165,9 @@ the wrist up):
     test of whether Quest's half resolution reads well)
 34. Magazine colour on the small card, JFO Quest, JFO PCVR and Ermac's font: 16/16 green, 8/16 yellow, 4/16 red,
     0/16 RELOAD red. (rig, `20261103_small_*_full_half_quarter_empty.png`); on the watch card 31/31 green, 13/31 yellow.
+36. Small card, centred numbers (owner 08:20): the magazine count and the reserve (and "+N") stand in the middle of
+    the card for 1, 2 and 3 digits, in both fonts; RELOAD where it was. (rig, `20261103_small_centred_jq.png`,
+    `20261103_small_centred_er.png`: 16 / 120, 8 / 45, 4 / 8, RELOAD / 120)
 35. Show Gun Bonsai on Card on, with Gun Bonsai: LV bar and upgrades below KILLS. (rig, full order,
     `20261103_watch_gunbonsai_rows_full_order.png`)
 
@@ -249,5 +252,6 @@ same far turns as v3, now named row ids (`side_states.zs` R_*). The key icons ar
 (a VOXELDEF voxel can only be turned about the vertical, so the real key voxels cannot lie on the card). No IWAD is
 needed to build any more. The small card (`gen_cards.py`): JFO words and digits at both qualities in the frames
 after Ermac's panels, Ermac's own words, RELOAD and digits kept for Small Card Font: Ermac.
-Counts (2026-11-03): Gun Cards 13,689 sprite frames (was ~7,400); the owner's whole order with every series pk3 and
-Gun Bonsai 52,011 of the engine's 65,535.
+The small card's numbers have five slots half a digit apart (centred, owner 08:20). Counts (2026-11-03): Gun Cards
+16,065 sprite frames (was ~7,400); the owner's whole order with every series pk3 and Gun Bonsai 54,387 of the
+engine's 65,535.

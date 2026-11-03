@@ -79,8 +79,8 @@ class RSQGC_GunCard : EventHandler
 	const PER_HAND = 20;       // main hand 1000300.., off hand 1000320..
 	const P_PANEL = 0;
 	const P_LABEL = 1;
-	const P_BIG = 2;           // 3 slots
-	const P_SMALL = 5;         // 3 slots
+	const P_BIG = 2;           // 5 slots (centred numbers, 2026-11-03)
+	const P_SMALL = 7;         // 5 slots
 
 	double mShow[2];           // 0..1 fade per hand
 	int mInspectTill[2];
@@ -958,12 +958,13 @@ class RSQGC_GunCard : EventHandler
 	private void Digits(PlayerInfo p, int kind, bool mir, int base, Actor owner, string s, bool small, double alpha, int trans)
 	{
 		int slots = RSQGC_CardStates.SLOTS;
-		int len = s.Length();
+		int len = min(s.Length(), (slots + 1) / 2);
+		int first = (slots - 1) / 2 - (len - 1);   // CENTRED (owner 08:20): the slots are half a digit apart
 		for (int k = 0; k < slots; k++)
 		{
-			// slot 0 is the leftmost; a short number sits on the right
-			int ci0 = k - (slots - len);
-			if (ci0 < 0) { Kill(p, base + k); continue; }
+			// slot 0 is the leftmost; digit i of the number stands in slot first + 2 i
+			int ci0 = (k - first) % 2 == 0 && k >= first ? (k - first) / 2 : -1;
+			if (ci0 < 0 || ci0 >= len) { Kill(p, base + k); continue; }
 			int ch = s.ByteAt(ci0);
 			int g = ch == 43 ? RSQGC_CardStates.GLYPH_PLUS : ch - 48;   // '+' (GC2)
 			// JFO: kind 2 / 3, frame Text Quality * GLYPHS + glyph; Ermac (Small Card Font): kind 5 / 6, frame glyph

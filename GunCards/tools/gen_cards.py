@@ -46,8 +46,10 @@ LABEL_S = 0.045                                   # Ermac's 88x12 labels: 4.0 x 
 BIG_S, SMALL_S = 0.13, 0.08                       # 12 px digits: 1.56 cm and 0.96 cm
 # slot centres relative to the card centre (X + = player's left, Z + = up)
 LABEL_AT = (0.0, 0.0, 1.75)
-BIG_AT = [(1.6, 0.0, -0.2), (0.0, 0.0, -0.2), (-1.6, 0.0, -0.2)]
-SMALL_AT = [(0.9, 0.0, -1.85), (0.0, 0.0, -1.85), (-0.9, 0.0, -1.85)]   # the other gun, on a both-hands card
+# CENTRED NUMBERS (owner 2026-11-03 08:20): five slots half a digit apart, so a 1-, 2- or 3-digit count sits in the
+# card's middle (slots 2 / 1, 3 / 0, 2, 4); RELOAD keeps its own place (RELOAD_AT)
+BIG_AT = [(1.6, 0.0, -0.2), (0.8, 0.0, -0.2), (0.0, 0.0, -0.2), (-0.8, 0.0, -0.2), (-1.6, 0.0, -0.2)]
+SMALL_AT = [(0.9, 0.0, -1.85), (0.45, 0.0, -1.85), (0.0, 0.0, -1.85), (-0.45, 0.0, -1.85), (-0.9, 0.0, -1.85)]   # the reserve (or the other gun, on a both-hands card)
 LABELS = ['ammo', 'magazine', 'chamber']
 LABEL_BOX = (4.0, 0.54)                           # cm: each JFO word fits the box Ermac's word filled
 GLYPHS = [str(d) for d in range(10)] + ['plus']   # JFO BigFont 0-9 and '+' (QoL GC2, "+N" on a pickup)
@@ -263,10 +265,10 @@ def main():
                             os.path.join(vdir, lump + '.kvx'), dy=dy)
         frame(spr, 'C', lump, RELOAD_S); line.append('C')
         states.append(('R%s%s' % (mc, dc), spr, line))
-        # Ermac's digits: Q<d><E|F><0..5> (E big, F small; mirror * 3 + slot), frames 0-9, '+'
+        # Ermac's digits: Q<d><E|F><0..9> (E big, F small; mirror * 5 + slot), frames 0-9, '+'
         for kind, slots, scale in (('E', BIG_AT, BIG_S), ('F', SMALL_AT, SMALL_S)):
             for si, sat in enumerate(slots):
-                spr = 'Q%s%s%d' % (dc, kind, m * 3 + si)
+                spr = 'Q%s%s%d' % (dc, kind, m * 5 + si)
                 line = []
                 for gi, g in enumerate(ERMAC_GLYPHS):
                     lump = 'wk%s%s%s%d%s' % (dc, kind.lower(), mc.lower(), si, g if len(g) == 1 else 'p')
@@ -274,10 +276,10 @@ def main():
                                         add(sat, (0, FRONT, 0)), m, os.path.join(vdir, lump + '.kvx'), dy=dy)
                     frame(spr, letters[gi], lump, scale); line.append(letters[gi])
                 states.append(('%s%s%d%s' % (kind, mc, si, dc), spr, line))
-        # digits: Q<d><B|S><0..5> (mirror * 3 + slot), frames q * 11 + glyph (JFO BigFont)
+        # digits: Q<d><B|S><0..9> (mirror * 5 + slot), frames q * 11 + glyph (JFO BigFont)
         for kind, slots, hcm in (('B', BIG_AT, BIG_S * 12), ('S', SMALL_AT, SMALL_S * 12)):
             for si, sat in enumerate(slots):
-                spr = 'Q%s%s%d' % (dc, kind, m * 3 + si)
+                spr = 'Q%s%s%d' % (dc, kind, m * 5 + si)
                 line = []
                 for qi, half in enumerate(QUALITIES):
                     for gi, g in enumerate(GLYPHS):
