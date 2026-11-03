@@ -70,7 +70,13 @@ Always on (no row): carry 8 grenades, a backpack gives 6 and raises the carry to
 the blast credited to you (the kill, the obituary, the score). With RSQ Gun Bonsai VR loaded (2026-11-02): the
 blast and its kills are also paid to the grenade's own Gun Bonsai record (the thrown grenade names the grenade
 weapon as its master and is claimed through the patch's service, by name), so the grenade levels like a weapon.
-Not yet run.
+
+**With RSQ Gun Bonsai VR (the Grenade tree, GBOVR_TREES.md 4.5; asked by name, `RSQGN_Upg`):** **Bandolier** (carry
+10 / 12 / 14 / 16, a backpack doubling it); **Scavenger** (after Bandolier: 6 + 3, 8 + 4, 10 + 5 scattered a map, the
+odds rising with them; 3: one Kill Rewards ammo bit in four is a grenade); **Strong Arm** (throw x1.25 / 1.5 / 1.75);
+**Flat Arc** (after Strong Arm: less lift and gravity, two levels); **Bounce** (after Strong Arm: wall bounce 0.4 /
+0.55 / 0.7); **Cook Sense** (a tick in the hand each second of a cooking fuse; 2: the flash runs amber, then red);
+**Short Fuse** (after Cook Sense: 2.5 / 2.0 s). Without the patch nothing changes.
 
 Tuning and Debug page:
 

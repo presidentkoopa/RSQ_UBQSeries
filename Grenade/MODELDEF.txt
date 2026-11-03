@@ -80,6 +80,25 @@ Model RSQGN_Grenade
 	RollOffset 3.457
 	FrameIndex QGNH D 0 2
 }
+// QGNH E: cooking, the AMBER flash (Cook Sense 2, Gun Bonsai VR patch: the first half of the fuse; tools/gen_red.py)
+Model RSQGN_Grenade
+{
+	Path "models/rsqgn"
+	Model 0 "nade.md3"
+	SurfaceSkin 0 0 "nade_amber.png"
+	SurfaceSkin 0 1 "nade_amber.png"
+	SurfaceSkin 0 2 "rsqgn_clear.png"
+	SurfaceSkin 0 3 "rsqgn_clear.png"
+	SurfaceSkin 0 4 "rsqgn_clear.png"
+	Scale -0.92 0.92 0.92
+	Offset -12.075 -8.898 0.0
+	NoInterpolation
+	ZOffset 2.326
+	AngleOffset -18.317
+	PitchOffset -17.735
+	RollOffset 3.457
+	FrameIndex QGNH E 0 2
+}
 
 // THROWN: RS_Grenade's world size, 0.3 (the body 2.4 units across, 5.1 tall), which is the ACTOR's Scale (thrown.zs;
 // the engine multiplies the two, and the actor's also sizes the pack's sprite when models are off), frame 2 with the
@@ -123,4 +142,23 @@ Model RSQGN_Thrown
 	UseRotationCenter
 	Rotation-Center 0 0 1.4
 	FrameIndex QGNT B 0 2
+}
+// QGNT C: the amber flash (Cook Sense 2)
+Model RSQGN_Thrown
+{
+	Path "models/rsqgn"
+	Model 0 "nade.md3"
+	SurfaceSkin 0 0 "nade_amber.png"
+	SurfaceSkin 0 1 "nade_amber.png"
+	SurfaceSkin 0 2 "rsqgn_clear.png"
+	SurfaceSkin 0 3 "rsqgn_clear.png"
+	SurfaceSkin 0 4 "rsqgn_clear.png"
+	Scale 1.0 1.0 1.0
+	Offset -28.53 0.02 5.947
+	NoInterpolation
+	USEACTORPITCH
+	USEACTORROLL
+	UseRotationCenter
+	Rotation-Center 0 0 1.4
+	FrameIndex QGNT C 0 2
 }

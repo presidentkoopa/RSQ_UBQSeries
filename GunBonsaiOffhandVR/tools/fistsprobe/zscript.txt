@@ -186,6 +186,315 @@ class FistsProbe : EventHandler
 		Console.Printf("FP punch %s kind asked %d -> landed kind %d, %s health %d", h ? "L" : "R", kind, g.lastKind, v.GetClassName(), v.health);
 	}
 
+	// the ShieldSaw and Grenade trees' events (a function of their own: NetworkProcess ran out of registers)
+	void TreeEvents(ConsoleEvent e, PlayerPawn p)
+	{
+		if (e.Name ~== "fp_ss")
+		{
+			// THE SHIELDSAW TREE. arg0 1: print its offers and levels (arg1 = stage); 2: grant arg1's node (+arg2 levels)
+			static const String SSN[] = { "Lockstep", "Ricochet", "HuntersReturn", "MeatGrinder", "WallBounces", "Cleaver",
+				"Broadening", "Bulwark", "Rebound", "BackPlate", "ShieldWall", "Reflect",
+				"BatteringRam", "WallSlam", "BashHitStop", "Charge", "ShieldSize", "ShieldDash",
+				"HungryBlades", "RevShield", "BuzzsawReturn", "Spartan" };
+			let saw = Weapon(p.FindInventory("SSQ_ShieldSaw"));
+			let st = TFLV_PerPlayerStats.GetStatsFor(p);
+			let info = (saw && st) ? st.GetInfoFor(saw) : null;
+			if (!info) { Console.Printf("FP shieldsaw: no record (carried: %s)", saw ? "yes" : "no"); return; }
+			if (e.Args[0] == 2) { String cls = "RSQ_Upgrade_" .. SSN[clamp(e.Args[1], 0, SSN.Size() - 1)]; info.upgrades.Add(cls, max(e.Args[2], 1)); Console.Printf("FP shieldsaw granted %s", cls); return; }
+			String on = "", have = "";
+			for (int i = 0; i < SSN.Size(); i++)
+			{
+				Class<TFLV_Upgrade_BaseUpgrade> c = "RSQ_Upgrade_" .. SSN[i];
+				if (!c) { on = on .. " ?" .. SSN[i]; continue; }
+				if (TFLV_Upgrade_BaseUpgrade(new(c)).IsSuitableForWeapon(info)) on = on .. " " .. SSN[i];
+				int lv = int(info.upgrades.Level("RSQ_Upgrade_" .. SSN[i]));
+				if (lv > 0) have = have .. String.Format(" %s%d", SSN[i], lv);
+			}
+			Console.Printf("FP shieldsaw [stage %d] has:%s | offered:%s", e.Args[1], have, on);
+		}
+		else if (e.Name ~== "fp_ssthrow")
+		{
+			// how many locks a throw takes, and the walls it may bounce off: through Begin (the hand throw's own step) and
+			// through LaunchAlong (the One-Handed throw)
+			let saw = Weapon(p.FindInventory("SSQ_ShieldSaw"));
+			Vector3 dir = (cos(p.angle), sin(p.angle), 0);
+			let d1 = SSQ_Disc(Actor.Spawn("SSQ_Disc", p.pos + (0, 0, 40) + dir * 24));
+			let d2 = SSQ_Disc(Actor.Spawn("SSQ_Disc", p.pos + (0, 0, 40) - dir * 24));
+			if (!d1 || !d2) return;
+			d1.Claim(saw); d1.Begin(p, dir, 12, 0, dir);
+			d2.Claim(saw); d2.LaunchAlong(p, dir, 12, 90, 0);
+			Console.Printf("FP shieldsaw throw: locks %d, wall bounces %d (hand throw) / %d (one-handed)", SSQ_Disc.WantLocks(p), d1.bounces, d2.bounces);
+			d1.Destroy(); d2.Destroy();
+		}
+		else if (e.Name ~== "fp_ssguard")
+		{
+			// the shield where it is now (on the back, headless): arg0 0 a fireball onto the plate along its own normal,
+			// through the guard's own AbsorbDamage; 1 an imp's 10-damage bullet at it, through the guard's own StopsHitscan
+			let h = SSQ_Handler.Get();
+			let g = SSQ_Guard(p.FindInventory("SSQ_Guard"));
+			if (!g || !h) { Console.Printf("FP shieldsaw guard: none"); return; }
+			bool has = g.Plate();
+			Console.Printf("FP shieldsaw guard: state %d, plate %s (held %d), back plate %d, turns %d, shield wall %d ms", h.StateOf(0),
+				has ? "yes" : "no", g.plateHeld, SSQ_Guard.BackPlate(p), has && g.PlateTurns(), SSQ_Guard.ShieldWallMs(p));
+			if (!has) return;
+			Vector3 C = g.plateC, n = g.plateN;
+			Vector3 mid = p.pos + (0, 0, p.height * 0.5);
+			Vector3 away = ((C - mid) dot n) >= 0 ? n : -n;
+			let imp = Actor.Spawn("DoomImp", C + away * (e.Args[1] > 0 ? e.Args[1] : 160) - (0, 0, 28));
+			if (!imp) return;
+			imp.freezetics = 70; imp.bNoGravity = true;
+			if (e.Args[0] == 0)
+			{
+				let ball = Actor.Spawn("DoomImpBall", C + away * 20);
+				if (!ball) return;
+				ball.target = imp; ball.vel = -away * 10;
+				int before = 0, after = 0;
+				let it = ThinkerIterator.Create("DoomImpBall");
+				Actor a;
+				while (a = Actor(it.Next())) if (a.target == p) before++;
+				int nd = 20;
+				g.AbsorbDamage(20, 'None', nd, ball, imp, 0);
+				it = ThinkerIterator.Create("DoomImpBall");
+				while (a = Actor(it.Next())) if (a.target == p) after++;
+				Console.Printf("FP shieldsaw guard: fireball onto the plate: 20 damage -> %d, turned back: %d", nd, after - before);
+				ball.Destroy();
+			}
+			else
+			{
+				Vector3 A = imp.pos + (0, 0, imp.height * 0.5);
+				Vector3 d = C - A;
+				double dist = d.Length();
+				int h0 = imp.health;
+				bool stopped = g.StopsHitscan(imp, A, d / dist, dist + 200, 10);
+				Console.Printf("FP shieldsaw guard: a 10-damage bullet at the plate: %s, the imp %d -> %d (imp %.0f from the plate, sees the player %d, in the level %d, player angle %.0f, out (%.2f %.2f %.2f))", stopped ? "STOPPED" : "not stopped", h0, imp.health,
+					dist, imp.CheckSight(p), level.IsPointInLevel(imp.pos), p.angle, away.x, away.y, away.z);
+			}
+			imp.Destroy();
+		}
+		else if (e.Name ~== "fp_ssbash")
+		{
+			// SSQ_Guard.Bash on a frozen-free monster in front: arg0 monster (fp_sscut's list), arg1 how hard (units/sec)
+			static const String BM[] = { "LostSoul", "Demon", "BaronOfHell", "DoomImp", "HellKnight", "Revenant" };
+			let saw = SSQ_ShieldSaw(p.FindInventory("SSQ_ShieldSaw"));
+			let m = Put(BM[clamp(e.Args[0], 0, BM.Size() - 1)], 64);
+			if (!m || !saw) return;
+			Vector3 f = (cos(p.angle), sin(p.angle), 0);
+			int h0 = m.health;
+			let hh = SSQ_Handler.Get();
+			if (hh) hh.mBraced[0] = e.Args[2] == 1;	// arg2 1: the blade resting on the shield (Spartan 2)
+			SSQ_Guard.Bash(p, saw, m, p.pos + f * 30 + (0, 0, 40), f, e.Args[1]);
+			if (hh) hh.mBraced[0] = false;
+			Console.Printf("FP shieldsaw bash %s at %d u/s: %d -> %d, frozen %d tics (hit-stop), thrown %.1f u/tic", m.GetClassName(), e.Args[1], h0, m.health, m.freezetics, m.vel.xy.Length());
+			m.Destroy();
+		}
+		else if (e.Name ~== "fp_ssslam")
+		{
+			// SSQ_Handler.Slam: an imp hits a wall at arg0 units a tic
+			let h = SSQ_Handler.Get();
+			let m = Put("DoomImp", 96);
+			if (!m || !h) return;
+			int h0 = m.health;
+			h.Slam(m, 0, (-cos(p.angle), -sin(p.angle)), e.Args[0]);
+			Console.Printf("FP shieldsaw wall slam at %d u/tic: %d -> %d, stunned %d tics", e.Args[0], h0, m.health, m.freezetics);
+			m.Destroy();
+		}
+		else if (e.Name ~== "fp_sscharge")
+		{
+			// SSQ_Guard.Charge with the stick at arg0 tenths of m/s forward: imps at 0.6, 1.2 (0.3 aside), 1.8 and 2.4 m
+			let saw = SSQ_ShieldSaw(p.FindInventory("SSQ_ShieldSaw"));
+			if (!saw) return;
+			double m = SSQ_Handler.CM(100.0);
+			Vector3 f = (cos(p.angle), sin(p.angle), 0);
+			Vector3 C = p.pos + f * 20 + (0, 0, 32);
+			Actor i1 = Put("DoomImp", 20 + 0.6 * m), i2 = Put("DoomImp", 20 + 1.2 * m, 0.3 * m), i3 = Put("DoomImp", 20 + 1.8 * m), i4 = Put("DoomImp", 20 + 2.4 * m);
+			p.vel.xy = f.xy * (e.Args[0] / 10.0) * m / TICRATE;
+			Array<Actor> none;
+			SSQ_Guard.Charge(p, saw, C, f, 120, none);
+			Console.Printf("FP shieldsaw charge at %.1f m/s (1 m = %.1f units): imps at 0.6 / 1.2 aside / 1.8 / 2.4 m: %d %d %d %d", e.Args[0] / 10.0, m,
+				i1 ? i1.health : -1, i2 ? i2.health : -1, i3 ? i3.health : -1, i4 ? i4.health : -1);
+			p.vel.xy = (0, 0);
+			if (i1) i1.Destroy(); if (i2) i2.Destroy(); if (i3) i3.Destroy(); if (i4) i4.Destroy();
+		}
+		else if (e.Name ~== "fp_ssdash")
+		{
+			// SSQ_Guard.StartDash at the learned level, an imp arg0 tenths of a metre ahead; read 45 tics later
+			let g = SSQ_Guard(p.FindInventory("SSQ_Guard"));
+			let saw = p.FindInventory("SSQ_ShieldSaw");
+			int lv = SSQ_Upg.Lv(saw, "ShieldDash");
+			if (!g) return;
+			ssDashImp = Put("DoomImp", e.Args[0] / 10.0 * SSQ_Handler.CM(100.0));
+			if (ssDashImp) { ssDashImp.freezetics = 60; ssDashH0 = ssDashImp.health; }
+			ssDashFrom = p.pos;
+			g.StartDash(p, (cos(p.angle), sin(p.angle), 0), lv, 120);
+			ssDashAt = level.maptime + 45;
+			Console.Printf("FP shieldsaw dash started at level %d: %.2f m to go", lv, g.dashLeft / SSQ_Handler.CM(100.0));
+		}
+		else if (e.Name ~== "fp_gn")
+		{
+			// THE GRENADE TREE. arg0 0: give the grenade and put it in the main hand; 1: offers and levels (arg1 stage);
+			// 2: grant arg1's node (+arg2 levels)
+			static const String GNN[] = { "Bandolier", "Scavenger", "StrongArm", "FlatArc", "Bounce", "CookSense", "ShortFuse",
+				"BigBang", "Frag", "Cluster", "Sticky",
+				"Impact", "Incendiary", "Freeze", "Stun", "Smoke", "Flash", "Charm", "Infight",
+				"Teeth", "Skeet", "SkeetWindow", "SlowBurn" };
+			if (e.Args[0] == 0) { p.GiveInventory("RSQGN_Grenade", 1); p.GiveInventory("RSQGN_Ammo", 8); p.player.PendingWeapon = Weapon(p.FindInventory("RSQGN_Grenade")); return; }
+			let gw = Weapon(p.FindInventory("RSQGN_Grenade"));
+			let st = TFLV_PerPlayerStats.GetStatsFor(p);
+			let info = (gw && st) ? st.GetInfoFor(gw) : null;
+			if (!info) { Console.Printf("FP grenade: no record (in hand: %s)", p.player.ReadyWeapon ? p.player.ReadyWeapon.GetClassName() : 'none'); return; }
+			if (e.Args[0] == 2) { String cls = "RSQ_Upgrade_" .. GNN[clamp(e.Args[1], 0, GNN.Size() - 1)]; info.upgrades.Add(cls, max(e.Args[2], 1)); Console.Printf("FP grenade granted %s", cls); return; }
+			String on = "", have = "";
+			for (int i = 0; i < GNN.Size(); i++)
+			{
+				Class<TFLV_Upgrade_BaseUpgrade> c = "RSQ_Upgrade_" .. GNN[i];
+				if (!c) { on = on .. " ?" .. GNN[i]; continue; }
+				if (TFLV_Upgrade_BaseUpgrade(new(c)).IsSuitableForWeapon(info)) on = on .. " " .. GNN[i];
+				int lv = int(info.upgrades.Level("RSQ_Upgrade_" .. GNN[i]));
+				if (lv > 0) have = have .. String.Format(" %s%d", GNN[i], lv);
+			}
+			Console.Printf("FP grenade [stage %d] has:%s | offered:%s", e.Args[1], have, on);
+		}
+		else if (e.Name ~== "fp_gnthrow")
+		{
+			// a throw through the grenade's own LaunchVel and Throw: a hand moving arg0 tenths of a unit a tic forward,
+			// level; arg1 1 cooked first for arg2 tics
+			let h = RSQGN_Handler.Get();
+			if (!h) return;
+			Vector3 f = (cos(p.angle), sin(p.angle), 0);
+			Vector3 tv = RSQGN_Handler.LaunchVel(p, f * (e.Args[0] / 10.0));
+			h.armed[0] = true;
+			h.spoon[0] = e.Args[1] == 1;
+			h.cookTic[0] = level.maptime - e.Args[2];
+			h.throwAt[0] = p.pos + (0, 0, p.height * 0.6) + f * 16;
+			h.throwVel[0] = tv;
+			h.Throw(p, 0, 0, 5.0);
+			RSQGN_Thrown g = null;
+			let it = ThinkerIterator.Create("RSQGN_Thrown");
+			RSQGN_Thrown a;
+			while (a = RSQGN_Thrown(it.Next())) if (a.target == p) g = a;
+			if (!g) { Console.Printf("FP grenade throw: nothing thrown"); return; }
+			Console.Printf("FP grenade throw: leaves at %.2f u/tic (up %.2f), gravity %.3f, wall bounce %.2f, fuse %d of %d tics, master %s",
+				g.vel.xy.Length(), g.vel.z, g.Gravity, g.WallBounceFactor, g.fuse, g.fuseTotal, g.master ? g.master.GetClassName() : 'none');
+		}
+		else if (e.Name ~== "fp_gnstate")
+		{
+			// the carry (arg0 1: with a backpack), the fuse and Cook Sense's amber
+			if (e.Args[0] == 1) p.GiveInventory("Backpack", 1);
+			RSQGN_Handler.Carry(p);
+			let am = Ammo(p.FindInventory("RSQGN_Ammo"));
+			int ft = RSQGN_Handler.FuseTics(p);
+			Console.Printf("FP grenade: carry %d (have %d), fuse %d tics, amber at 3/4 left %d, at 1/4 left %d", am ? am.MaxAmount : -1, am ? am.Amount : -1, ft,
+				RSQGN_Handler.AmberAt(p, ft * 3 / 4, ft), RSQGN_Handler.AmberAt(p, ft / 4, ft));
+			int cs, cp, ws, wp, sv;
+			[cs, cp, ws, wp, sv] = RSQGN_Scatter.Plan();
+			Console.Printf("FP grenade scatter plan: up to %d singles and %d packs a map, windows %d and %d of 126 (Scavenger %d)", cs, cp, sv > 0 ? ws : 5, sv > 0 ? wp : 3, sv);
+		}
+		else if (e.Name ~== "fp_gnbits")
+		{
+			// twenty Kill Rewards ammo bits picked up: how many were grenades (Scavenger 3)
+			Class<Inventory> bc = "RSQ_KRAmmoBit";
+			if (!bc) return;
+			int g0 = p.CountInv("RSQGN_Ammo");
+			p.TakeInventory("RSQGN_Ammo", g0);
+			// the bits pay the gun in hand: hold a pistol for this, so a grenade can only come from Scavenger
+			p.GiveInventory("Pistol", 1);
+			let was = p.player.ReadyWeapon;
+			p.player.ReadyWeapon = Weapon(p.FindInventory("Pistol"));
+			int c0 = p.CountInv("Clip");
+			for (int i = 0; i < 20; i++)
+			{
+				let b = Inventory(Actor.Spawn(bc, p.pos + (64, 0, 0)));
+				if (b) b.CallTryPickup(p);
+			}
+			Console.Printf("FP grenade: 20 ammo bits (a pistol in hand) gave %d grenades and %d bullets", p.CountInv("RSQGN_Ammo"), p.CountInv("Clip") - c0);
+			p.player.ReadyWeapon = was;
+			p.GiveInventory("RSQGN_Ammo", g0);
+		}
+		else if (e.Name ~== "fp_ssparry")
+		{
+			// SPARTAN: the blade resting on the shield (mBraced, set for this call), a fireball straight onto the plate from
+			// an imp standing arg0 units off to the side; where does the turned ball go? (needs the plate to turn: Back Plate 2)
+			let h = SSQ_Handler.Get();
+			let g = SSQ_Guard(p.FindInventory("SSQ_Guard"));
+			if (!g || !h || !g.Plate()) { Console.Printf("FP shieldsaw parry: no plate"); return; }
+			h.mBraced[0] = e.Args[1] == 1;
+			Vector3 C = g.plateC, n = g.plateN;
+			Vector3 mid = p.pos + (0, 0, p.height * 0.5);
+			Vector3 away = ((C - mid) dot n) >= 0 ? n : -n;
+			Vector3 side = (-away.y, away.x, 0);
+			let imp = Actor.Spawn("DoomImp", C + away * 120 + side * e.Args[0] - (0, 0, 28));
+			let ball = Actor.Spawn("DoomImpBall", C + away * 20);
+			if (!imp || !ball) return;
+			imp.freezetics = 70; imp.bNoGravity = true;
+			ball.target = imp; ball.vel = -away * 10;
+			int nd = 20;
+			g.AbsorbDamage(20, 'None', nd, ball, imp, 0);
+			Actor back = null;
+			let it = ThinkerIterator.Create("DoomImpBall");
+			Actor a;
+			while (a = Actor(it.Next())) if (a.target == p && a != ball) back = a;
+			if (!back) Console.Printf("FP shieldsaw parry (braced %d, Spartan %d, deflect row %d): not turned", h.mBraced[0], SSQ_Guard.Spartan(p), CVar.FindCVar('ssq_deflect').GetInt());
+			else
+			{
+				Vector3 toImp = (imp.pos + (0, 0, imp.height * 0.5) - back.pos).Unit();
+				Console.Printf("FP shieldsaw parry (braced %d, Spartan %d, deflect row %d): turned, %.0f degrees off the line to its shooter", h.mBraced[0], SSQ_Guard.Spartan(p),
+					CVar.FindCVar('ssq_deflect').GetInt(), acos(clamp(toImp dot back.vel.Unit(), -1, 1)));
+				back.Destroy();
+			}
+			ball.Destroy(); imp.Destroy();
+			h.mBraced[0] = false;
+		}
+		else if (e.Name ~== "fp_ssgrind")
+		{
+			// the grind hit, and Rev Shield's claw grind on an imp with the saw revved
+			let saw = SSQ_ShieldSaw(p.FindInventory("SSQ_ShieldSaw"));
+			if (!saw) return;
+			saw.rev = 999;
+			let m = Put("DoomImp", 64);
+			if (!m) return;
+			int h0 = m.health;
+			int lv = SSQ_Guard.RevShield(p, 1);
+			if (lv >= 1) SSQ_Guard.ClawGrind(p, saw, m);
+			Console.Printf("FP shieldsaw grind hit %d; Rev Shield (held, revving) %d, not held %d; the clawing imp %d -> %d", SSQ_Guard.GrindDamage(p), lv, SSQ_Guard.RevShield(p, 0), h0, m.health);
+			saw.rev = 0;
+			m.Destroy();
+		}
+		else if (e.Name ~== "fp_sssize")
+		{
+			let saw = SSQ_ShieldSaw(p.FindInventory("SSQ_ShieldSaw"));
+			Console.Printf("FP shieldsaw size: scale %.3f, plate radius %.1f units, held sprite %s", SSQ_Guard.Scale(0), SSQ_Guard.PlateRadius(false, 1.0, 0),
+				saw ? (saw.HeldSprite() == saw.GetSpriteIndex('SSH1') ? "SSH1" : saw.HeldSprite() == saw.GetSpriteIndex('SSH3') ? "SSH3" : saw.HeldSprite() == saw.GetSpriteIndex('SSH5') ? "SSH5" : "other") : "none");
+		}
+		else if (e.Name ~== "fp_sscut")
+		{
+			// a disc thrown at a frozen monster, hit through the disc's own SpecialMissileHit: cut, stuck, or glanced off
+			static const String MON[] = { "LostSoul", "Demon", "BaronOfHell", "DoomImp", "HellKnight", "Revenant" };
+			let saw = Weapon(p.FindInventory("SSQ_ShieldSaw"));
+			String cls = MON[clamp(e.Args[0], 0, MON.Size() - 1)];
+			let m = Put(cls, 200);
+			if (!m) return;
+			m.freezetics = 70;
+			Vector3 dir = (cos(p.angle), sin(p.angle), 0);
+			let d = SSQ_Disc(Actor.Spawn("SSQ_Disc", m.pos - dir * 30 + (0, 0, m.height * 0.5)));
+			if (!d) return;
+			d.Claim(saw); d.LaunchAlong(p, dir, 12, 90, 0);
+			if (e.Args[2] == 1) d.Home();	// on its way home (Buzzsaw Return)
+			int h0 = m.health;
+			d.SpecialMissileHit(m);
+			if (e.Args[1] == 1)
+			{
+				// keep it: the embed grinds on; read the monster 30 tics later
+				Console.Printf("FP shieldsaw disc into %s: %d -> %d, %s, left in", cls, h0, m.health, d.phase == SSQ_Disc.PH_EMBED ? "STUCK" : "not stuck");
+				ssCutMon = m; ssCutH0 = h0; ssCutAt = level.maptime + 30;
+				return;
+			}
+			String what = (!m || m.health <= 0) ? "CUT IN TWO" : d.phase == SSQ_Disc.PH_EMBED ? "STUCK, GRINDING" : "GLANCED OFF";
+			Console.Printf("FP shieldsaw disc into %s (spawn health %d): %d -> %d, %s", cls, m ? m.SpawnHealth() : -1, h0, m ? m.health : -1, what);
+			d.Destroy();
+			if (m && m.health > 0) m.Destroy();
+		}
+	}
+
 	override void NetworkProcess(ConsoleEvent e)
 	{
 		let p = P(); if (!p) return;
@@ -372,229 +681,7 @@ class FistsProbe : EventHandler
 			Console.Printf("FP saber [stage %d] has:%s | offered:%s | size index %d | second saber carried: %s", e.Args[1], have, on, sb ? sb.SizeIdx() : -1,
 				p.FindInventory("UBQS_SaberOff") ? "yes" : "no");
 		}
-		else if (e.Name ~== "fp_ss")
-		{
-			// THE SHIELDSAW TREE. arg0 1: print its offers and levels (arg1 = stage); 2: grant arg1's node (+arg2 levels)
-			static const String SSN[] = { "Lockstep", "Ricochet", "HuntersReturn", "MeatGrinder", "WallBounces", "Cleaver",
-				"Broadening", "Bulwark", "Rebound", "BackPlate", "ShieldWall", "Reflect",
-				"BatteringRam", "WallSlam", "BashHitStop", "Charge", "ShieldSize", "ShieldDash",
-				"HungryBlades", "RevShield", "BuzzsawReturn", "Spartan" };
-			let saw = Weapon(p.FindInventory("SSQ_ShieldSaw"));
-			let st = TFLV_PerPlayerStats.GetStatsFor(p);
-			let info = (saw && st) ? st.GetInfoFor(saw) : null;
-			if (!info) { Console.Printf("FP shieldsaw: no record (carried: %s)", saw ? "yes" : "no"); return; }
-			if (e.Args[0] == 2) { String cls = "RSQ_Upgrade_" .. SSN[clamp(e.Args[1], 0, SSN.Size() - 1)]; info.upgrades.Add(cls, max(e.Args[2], 1)); Console.Printf("FP shieldsaw granted %s", cls); return; }
-			String on = "", have = "";
-			for (int i = 0; i < SSN.Size(); i++)
-			{
-				Class<TFLV_Upgrade_BaseUpgrade> c = "RSQ_Upgrade_" .. SSN[i];
-				if (!c) { on = on .. " ?" .. SSN[i]; continue; }
-				if (TFLV_Upgrade_BaseUpgrade(new(c)).IsSuitableForWeapon(info)) on = on .. " " .. SSN[i];
-				int lv = int(info.upgrades.Level("RSQ_Upgrade_" .. SSN[i]));
-				if (lv > 0) have = have .. String.Format(" %s%d", SSN[i], lv);
-			}
-			Console.Printf("FP shieldsaw [stage %d] has:%s | offered:%s", e.Args[1], have, on);
-		}
-		else if (e.Name ~== "fp_ssthrow")
-		{
-			// how many locks a throw takes, and the walls it may bounce off: through Begin (the hand throw's own step) and
-			// through LaunchAlong (the One-Handed throw)
-			let saw = Weapon(p.FindInventory("SSQ_ShieldSaw"));
-			Vector3 dir = (cos(p.angle), sin(p.angle), 0);
-			let d1 = SSQ_Disc(Actor.Spawn("SSQ_Disc", p.pos + (0, 0, 40) + dir * 24));
-			let d2 = SSQ_Disc(Actor.Spawn("SSQ_Disc", p.pos + (0, 0, 40) - dir * 24));
-			if (!d1 || !d2) return;
-			d1.Claim(saw); d1.Begin(p, dir, 12, 0, dir);
-			d2.Claim(saw); d2.LaunchAlong(p, dir, 12, 90, 0);
-			Console.Printf("FP shieldsaw throw: locks %d, wall bounces %d (hand throw) / %d (one-handed)", SSQ_Disc.WantLocks(p), d1.bounces, d2.bounces);
-			d1.Destroy(); d2.Destroy();
-		}
-		else if (e.Name ~== "fp_ssguard")
-		{
-			// the shield where it is now (on the back, headless): arg0 0 a fireball onto the plate along its own normal,
-			// through the guard's own AbsorbDamage; 1 an imp's 10-damage bullet at it, through the guard's own StopsHitscan
-			let h = SSQ_Handler.Get();
-			let g = SSQ_Guard(p.FindInventory("SSQ_Guard"));
-			if (!g || !h) { Console.Printf("FP shieldsaw guard: none"); return; }
-			bool has = g.Plate();
-			Console.Printf("FP shieldsaw guard: state %d, plate %s (held %d), back plate %d, turns %d, shield wall %d ms", h.StateOf(0),
-				has ? "yes" : "no", g.plateHeld, SSQ_Guard.BackPlate(p), has && g.PlateTurns(), SSQ_Guard.ShieldWallMs(p));
-			if (!has) return;
-			Vector3 C = g.plateC, n = g.plateN;
-			Vector3 mid = p.pos + (0, 0, p.height * 0.5);
-			Vector3 away = ((C - mid) dot n) >= 0 ? n : -n;
-			let imp = Actor.Spawn("DoomImp", C + away * (e.Args[1] > 0 ? e.Args[1] : 160) - (0, 0, 28));
-			if (!imp) return;
-			imp.freezetics = 70; imp.bNoGravity = true;
-			if (e.Args[0] == 0)
-			{
-				let ball = Actor.Spawn("DoomImpBall", C + away * 20);
-				if (!ball) return;
-				ball.target = imp; ball.vel = -away * 10;
-				int before = 0, after = 0;
-				let it = ThinkerIterator.Create("DoomImpBall");
-				Actor a;
-				while (a = Actor(it.Next())) if (a.target == p) before++;
-				int nd = 20;
-				g.AbsorbDamage(20, 'None', nd, ball, imp, 0);
-				it = ThinkerIterator.Create("DoomImpBall");
-				while (a = Actor(it.Next())) if (a.target == p) after++;
-				Console.Printf("FP shieldsaw guard: fireball onto the plate: 20 damage -> %d, turned back: %d", nd, after - before);
-				ball.Destroy();
-			}
-			else
-			{
-				Vector3 A = imp.pos + (0, 0, imp.height * 0.5);
-				Vector3 d = C - A;
-				double dist = d.Length();
-				int h0 = imp.health;
-				bool stopped = g.StopsHitscan(imp, A, d / dist, dist + 200, 10);
-				Console.Printf("FP shieldsaw guard: a 10-damage bullet at the plate: %s, the imp %d -> %d (imp %.0f from the plate, sees the player %d, in the level %d, player angle %.0f, out (%.2f %.2f %.2f))", stopped ? "STOPPED" : "not stopped", h0, imp.health,
-					dist, imp.CheckSight(p), level.IsPointInLevel(imp.pos), p.angle, away.x, away.y, away.z);
-			}
-			imp.Destroy();
-		}
-		else if (e.Name ~== "fp_ssbash")
-		{
-			// SSQ_Guard.Bash on a frozen-free monster in front: arg0 monster (fp_sscut's list), arg1 how hard (units/sec)
-			static const String BM[] = { "LostSoul", "Demon", "BaronOfHell", "DoomImp", "HellKnight", "Revenant" };
-			let saw = SSQ_ShieldSaw(p.FindInventory("SSQ_ShieldSaw"));
-			let m = Put(BM[clamp(e.Args[0], 0, BM.Size() - 1)], 64);
-			if (!m || !saw) return;
-			Vector3 f = (cos(p.angle), sin(p.angle), 0);
-			int h0 = m.health;
-			let hh = SSQ_Handler.Get();
-			if (hh) hh.mBraced[0] = e.Args[2] == 1;	// arg2 1: the blade resting on the shield (Spartan 2)
-			SSQ_Guard.Bash(p, saw, m, p.pos + f * 30 + (0, 0, 40), f, e.Args[1]);
-			if (hh) hh.mBraced[0] = false;
-			Console.Printf("FP shieldsaw bash %s at %d u/s: %d -> %d, frozen %d tics (hit-stop), thrown %.1f u/tic", m.GetClassName(), e.Args[1], h0, m.health, m.freezetics, m.vel.xy.Length());
-			m.Destroy();
-		}
-		else if (e.Name ~== "fp_ssslam")
-		{
-			// SSQ_Handler.Slam: an imp hits a wall at arg0 units a tic
-			let h = SSQ_Handler.Get();
-			let m = Put("DoomImp", 96);
-			if (!m || !h) return;
-			int h0 = m.health;
-			h.Slam(m, 0, (-cos(p.angle), -sin(p.angle)), e.Args[0]);
-			Console.Printf("FP shieldsaw wall slam at %d u/tic: %d -> %d, stunned %d tics", e.Args[0], h0, m.health, m.freezetics);
-			m.Destroy();
-		}
-		else if (e.Name ~== "fp_sscharge")
-		{
-			// SSQ_Guard.Charge with the stick at arg0 tenths of m/s forward: imps at 0.6, 1.2 (0.3 aside), 1.8 and 2.4 m
-			let saw = SSQ_ShieldSaw(p.FindInventory("SSQ_ShieldSaw"));
-			if (!saw) return;
-			double m = SSQ_Handler.CM(100.0);
-			Vector3 f = (cos(p.angle), sin(p.angle), 0);
-			Vector3 C = p.pos + f * 20 + (0, 0, 32);
-			Actor i1 = Put("DoomImp", 20 + 0.6 * m), i2 = Put("DoomImp", 20 + 1.2 * m, 0.3 * m), i3 = Put("DoomImp", 20 + 1.8 * m), i4 = Put("DoomImp", 20 + 2.4 * m);
-			p.vel.xy = f.xy * (e.Args[0] / 10.0) * m / TICRATE;
-			Array<Actor> none;
-			SSQ_Guard.Charge(p, saw, C, f, 120, none);
-			Console.Printf("FP shieldsaw charge at %.1f m/s (1 m = %.1f units): imps at 0.6 / 1.2 aside / 1.8 / 2.4 m: %d %d %d %d", e.Args[0] / 10.0, m,
-				i1 ? i1.health : -1, i2 ? i2.health : -1, i3 ? i3.health : -1, i4 ? i4.health : -1);
-			p.vel.xy = (0, 0);
-			if (i1) i1.Destroy(); if (i2) i2.Destroy(); if (i3) i3.Destroy(); if (i4) i4.Destroy();
-		}
-		else if (e.Name ~== "fp_ssdash")
-		{
-			// SSQ_Guard.StartDash at the learned level, an imp arg0 tenths of a metre ahead; read 45 tics later
-			let g = SSQ_Guard(p.FindInventory("SSQ_Guard"));
-			let saw = p.FindInventory("SSQ_ShieldSaw");
-			int lv = SSQ_Upg.Lv(saw, "ShieldDash");
-			if (!g) return;
-			ssDashImp = Put("DoomImp", e.Args[0] / 10.0 * SSQ_Handler.CM(100.0));
-			if (ssDashImp) { ssDashImp.freezetics = 60; ssDashH0 = ssDashImp.health; }
-			ssDashFrom = p.pos;
-			g.StartDash(p, (cos(p.angle), sin(p.angle), 0), lv, 120);
-			ssDashAt = level.maptime + 45;
-			Console.Printf("FP shieldsaw dash started at level %d: %.2f m to go", lv, g.dashLeft / SSQ_Handler.CM(100.0));
-		}
-		else if (e.Name ~== "fp_ssparry")
-		{
-			// SPARTAN: the blade resting on the shield (mBraced, set for this call), a fireball straight onto the plate from
-			// an imp standing arg0 units off to the side; where does the turned ball go? (needs the plate to turn: Back Plate 2)
-			let h = SSQ_Handler.Get();
-			let g = SSQ_Guard(p.FindInventory("SSQ_Guard"));
-			if (!g || !h || !g.Plate()) { Console.Printf("FP shieldsaw parry: no plate"); return; }
-			h.mBraced[0] = e.Args[1] == 1;
-			Vector3 C = g.plateC, n = g.plateN;
-			Vector3 mid = p.pos + (0, 0, p.height * 0.5);
-			Vector3 away = ((C - mid) dot n) >= 0 ? n : -n;
-			Vector3 side = (-away.y, away.x, 0);
-			let imp = Actor.Spawn("DoomImp", C + away * 120 + side * e.Args[0] - (0, 0, 28));
-			let ball = Actor.Spawn("DoomImpBall", C + away * 20);
-			if (!imp || !ball) return;
-			imp.freezetics = 70; imp.bNoGravity = true;
-			ball.target = imp; ball.vel = -away * 10;
-			int nd = 20;
-			g.AbsorbDamage(20, 'None', nd, ball, imp, 0);
-			Actor back = null;
-			let it = ThinkerIterator.Create("DoomImpBall");
-			Actor a;
-			while (a = Actor(it.Next())) if (a.target == p && a != ball) back = a;
-			if (!back) Console.Printf("FP shieldsaw parry (braced %d, Spartan %d, deflect row %d): not turned", h.mBraced[0], SSQ_Guard.Spartan(p), CVar.FindCVar('ssq_deflect').GetInt());
-			else
-			{
-				Vector3 toImp = (imp.pos + (0, 0, imp.height * 0.5) - back.pos).Unit();
-				Console.Printf("FP shieldsaw parry (braced %d, Spartan %d, deflect row %d): turned, %.0f degrees off the line to its shooter", h.mBraced[0], SSQ_Guard.Spartan(p),
-					CVar.FindCVar('ssq_deflect').GetInt(), acos(clamp(toImp dot back.vel.Unit(), -1, 1)));
-				back.Destroy();
-			}
-			ball.Destroy(); imp.Destroy();
-			h.mBraced[0] = false;
-		}
-		else if (e.Name ~== "fp_ssgrind")
-		{
-			// the grind hit, and Rev Shield's claw grind on an imp with the saw revved
-			let saw = SSQ_ShieldSaw(p.FindInventory("SSQ_ShieldSaw"));
-			if (!saw) return;
-			saw.rev = 999;
-			let m = Put("DoomImp", 64);
-			if (!m) return;
-			int h0 = m.health;
-			int lv = SSQ_Guard.RevShield(p, 1);
-			if (lv >= 1) SSQ_Guard.ClawGrind(p, saw, m);
-			Console.Printf("FP shieldsaw grind hit %d; Rev Shield (held, revving) %d, not held %d; the clawing imp %d -> %d", SSQ_Guard.GrindDamage(p), lv, SSQ_Guard.RevShield(p, 0), h0, m.health);
-			saw.rev = 0;
-			m.Destroy();
-		}
-		else if (e.Name ~== "fp_sssize")
-		{
-			let saw = SSQ_ShieldSaw(p.FindInventory("SSQ_ShieldSaw"));
-			Console.Printf("FP shieldsaw size: scale %.3f, plate radius %.1f units, held sprite %s", SSQ_Guard.Scale(0), SSQ_Guard.PlateRadius(false, 1.0, 0),
-				saw ? (saw.HeldSprite() == saw.GetSpriteIndex('SSH1') ? "SSH1" : saw.HeldSprite() == saw.GetSpriteIndex('SSH3') ? "SSH3" : saw.HeldSprite() == saw.GetSpriteIndex('SSH5') ? "SSH5" : "other") : "none");
-		}
-		else if (e.Name ~== "fp_sscut")
-		{
-			// a disc thrown at a frozen monster, hit through the disc's own SpecialMissileHit: cut, stuck, or glanced off
-			static const String MON[] = { "LostSoul", "Demon", "BaronOfHell", "DoomImp", "HellKnight", "Revenant" };
-			let saw = Weapon(p.FindInventory("SSQ_ShieldSaw"));
-			String cls = MON[clamp(e.Args[0], 0, MON.Size() - 1)];
-			let m = Put(cls, 200);
-			if (!m) return;
-			m.freezetics = 70;
-			Vector3 dir = (cos(p.angle), sin(p.angle), 0);
-			let d = SSQ_Disc(Actor.Spawn("SSQ_Disc", m.pos - dir * 30 + (0, 0, m.height * 0.5)));
-			if (!d) return;
-			d.Claim(saw); d.LaunchAlong(p, dir, 12, 90, 0);
-			if (e.Args[2] == 1) d.Home();	// on its way home (Buzzsaw Return)
-			int h0 = m.health;
-			d.SpecialMissileHit(m);
-			if (e.Args[1] == 1)
-			{
-				// keep it: the embed grinds on; read the monster 30 tics later
-				Console.Printf("FP shieldsaw disc into %s: %d -> %d, %s, left in", cls, h0, m.health, d.phase == SSQ_Disc.PH_EMBED ? "STUCK" : "not stuck");
-				ssCutMon = m; ssCutH0 = h0; ssCutAt = level.maptime + 30;
-				return;
-			}
-			String what = (!m || m.health <= 0) ? "CUT IN TWO" : d.phase == SSQ_Disc.PH_EMBED ? "STUCK, GRINDING" : "GLANCED OFF";
-			Console.Printf("FP shieldsaw disc into %s (spawn health %d): %d -> %d, %s", cls, m ? m.SpawnHealth() : -1, h0, m ? m.health : -1, what);
-			d.Destroy();
-			if (m && m.health > 0) m.Destroy();
-		}
+		else if (e.Name.Left(5) ~== "fp_ss" || e.Name.Left(5) ~== "fp_gn") TreeEvents(e, p);
 		else if (e.Name ~== "fp_force")
 		{
 			// arg0 0: the Force's own Push at an imp in front; 1: Force Lightning straight into one (and a second near it);

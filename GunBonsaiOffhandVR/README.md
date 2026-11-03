@@ -204,6 +204,8 @@ Rig-checked (logs) only: **not yet headset-confirmed**.
   this patch's service (the whip's `Hurt` inside the claim bracket; the thrown grenade claimed with the grenade
   weapon as master), so both level like weapons and can carry the paths in GBOVR_TREES.md. The whip is typed
   melee in `bonsairc.rsq`.
+- **The Grenade tree** (`up_grenade.zs`, GBOVR_TREES.md 4.5): Carry (Bandolier -> Scavenger), Throw (Strong Arm ->
+  Flat Arc, Bounce), Fuse (Cook Sense -> Short Fuse); the rest of the tree follows.
 - **Service, for the owning mods**: `RSQ_MeleeUpgradeService` "unlocked" (a weapon node learned, level >= 1) and
   "punlocked" (a player node), beside "level" and "plevel". `RSQ_Upgrade_Base.Has / PHas / LevelOf` are how a
   tree node asks for its parent in `IsSuitableFor*`.

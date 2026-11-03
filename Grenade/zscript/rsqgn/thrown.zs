@@ -13,6 +13,7 @@ class RSQGN_Thrown : Actor
 	int flashNext, redUntil;
 	bool boomed;
 	bool hot;
+	bool hotAmber;		// COOK SENSE 2: this flash is amber
 
 	Default
 	{
@@ -90,10 +91,12 @@ class RSQGN_Thrown : Actor
 					Console.Printf("RSQGN flash thrown t%d period %d left %d at (%.0f %.0f %.0f)%s", level.maptime, per, fuse, pos.x, pos.y, pos.z, bMissile ? "" : " resting");
 			}
 			bool red = level.maptime < redUntil;
-			if (red != hot)
+			bool amb = red && RSQGN_Handler.AmberAt(target, fuse, fuseTotal);
+			if (red != hot || amb != hotAmber)
 			{
 				hot = red;
-				if (red) SetStateLabel("Hot"); else SetStateLabel("Spawn");
+				hotAmber = amb;
+				if (amb) SetStateLabel("HotAmber"); else if (red) SetStateLabel("Hot"); else SetStateLabel("Spawn");
 			}
 		}
 		else Detonate();
@@ -117,6 +120,9 @@ class RSQGN_Thrown : Actor
 		Stop;
 	Hot:
 		QGNT B -1 Bright;
+		Stop;
+	HotAmber:
+		QGNT C -1 Bright;
 		Stop;
 	// the engine sends a missile here when it cannot bounce (a damaging floor, its bounce count): it goes off
 	Death:

@@ -101,6 +101,10 @@ class RSQGN_Grenade : Weapon
 	Spawn:
 		QGN1 A -1;
 		Stop;
+	// never entered: names QGNH E (Cook Sense 2's amber flash) for MODELDEF; A_RSQGNReady writes the frame
+	AmberFrame:
+		QGNH E -1;
+		Stop;
 	}
 }
 

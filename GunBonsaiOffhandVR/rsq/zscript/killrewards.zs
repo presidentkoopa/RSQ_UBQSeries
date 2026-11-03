@@ -243,6 +243,18 @@ class RSQ_KRAmmoBit : Inventory
 		{
 			for (Inventory it = pmo.Inv; it; it = it.Inv) AmmoOf(Weapon(it), ammos);
 		}
+		// SCAVENGER 3 (the grenade's, GBOVR_TREES.md 4.5 Carry): one bit in four is a grenade instead (by name; nothing
+		// without RSQ Grenade)
+		{
+			let gw = Weapon(pmo.FindInventory("RSQGN_Grenade"));
+			Class<Inventory> gam = "RSQGN_Ammo";
+			if (gw && gam && RSQM.LevelOn(gw, "RSQ_Upgrade_Scavenger") >= 3 && random[RSQKR](0, 3) == 0)
+			{
+				pmo.GiveInventory(gam, 1);
+				GoAwayAndDie();
+				return true;
+			}
+		}
 		if (ammos.Size() > 0)
 		{
 			let am = ammos[random[RSQKR](0, ammos.Size() - 1)];

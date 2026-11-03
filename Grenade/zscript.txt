@@ -3,6 +3,7 @@ version "4.14"
 // RSQ_Grenade -- the Radiant Silvergun Quest series' VR hand grenade, for stock QuestZDoom 17.3 (ZScript and lumps
 // only, no engine changes). Its own grenade on plain Doom 2; stands down for Brutal Doom VR Reloaded's (hand.zs).
 #include "zscript/rsqgn/rsmenu.zs"   // Radiant Silvergun Options: the series' shared menu pieces (tools/rsmenu)
+#include "zscript/rsqgn/upg.zs"     // the Gun Bonsai VR patch's levels, asked by name
 #include "zscript/rsqgn/weapon.zs"
 #include "zscript/rsqgn/hand.zs"
 #include "zscript/rsqgn/thrown.zs"

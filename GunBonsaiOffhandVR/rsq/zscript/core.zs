@@ -452,6 +452,14 @@ class RSQ_MeleeUpgradeService : Service
 			if (stringArg == "ShieldDash.m") return RSQ_Upgrade_ShieldDash.Meters(lv);
 			if (stringArg == "HungryBlades.grind") return RSQ_Upgrade_HungryBlades.Grind(lv);
 			if (stringArg == "BuzzsawReturn.share") return RSQ_Upgrade_BuzzsawReturn.Share(lv);
+			// the Grenade tree (up_grenade.zs)
+			if (stringArg == "Bandolier.carry") return RSQ_Upgrade_Bandolier.Carry(lv);
+			if (stringArg == "Scavenger.share") return RSQ_Upgrade_Scavenger.Share(lv);
+			if (stringArg == "StrongArm.mult") return RSQ_Upgrade_StrongArm.Mult(lv);
+			if (stringArg == "FlatArc.lift") return RSQ_Upgrade_FlatArc.Lift(lv);
+			if (stringArg == "FlatArc.gravity") return RSQ_Upgrade_FlatArc.Gravity(lv);
+			if (stringArg == "Bounce.wall") return RSQ_Upgrade_Bounce.Wall(lv);
+			if (stringArg == "ShortFuse.secs") return RSQ_Upgrade_ShortFuse.Secs(lv);
 			// G. Gun hand, H. Taunt
 			if (stringArg == "PistolWhip.stagger") return RSQ_Upgrade_PistolWhip.Stagger(lv);
 			if (stringArg == "PistolWhip.mult") return RSQ_Upgrade_PistolWhip.Mult(lv);

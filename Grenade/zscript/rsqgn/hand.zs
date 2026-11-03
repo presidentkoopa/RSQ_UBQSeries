@@ -101,6 +101,7 @@ class RSQGN_Handler : EventHandler
 	int cookTic[MAXPLAYERS];
 	int flashNext[MAXPLAYERS];
 	int redUntil[MAXPLAYERS];
+	bool amber[MAXPLAYERS];		// COOK SENSE 2: this flash is amber (the first half of the fuse)
 	Vector3 throwAt[MAXPLAYERS], throwVel[MAXPLAYERS];
 
 	// ---- the console player's hands (local) ----
@@ -136,7 +137,14 @@ class RSQGN_Handler : EventHandler
 	static double SNum(String n, double d) { let c = CVar.FindCVar(n); return c ? c.GetFloat() : d; }
 	static bool Debug(PlayerInfo p) { return PFlag(p, "rsqgn_debug", false); }
 
-	static int FuseTics() { return int(clamp(SNum("rsqgn_fuse", 3.0), 0.5, 10.0) * TICRATE); }
+	// SHORT FUSE (Gun Bonsai VR patch): the Fuse row less 0.5 s a level, never under half a second
+	static int FuseTics(Actor who = null)
+	{
+		double s = clamp(SNum("rsqgn_fuse", 3.0), 0.5, 10.0);
+		int lv = RSQGN_Upg.Lv(who, "ShortFuse");
+		if (lv > 0) s = max(0.5, s - RSQGN_Upg.Num("ShortFuse.secs", lv, 0));
+		return int(s * TICRATE);
+	}
 
 	// the flash: every period tics, red for half of it; the period runs from 16 tics with the whole fuse left down to 2
 	// at the end, so the flashes come faster and faster
@@ -155,13 +163,20 @@ class RSQGN_Handler : EventHandler
 		return -1;
 	}
 
-	// The held grenade's picture (weapon.zs A_RSQGNReady): 0 ring in, 1 pin out, 2 cooking, 3 cooking + red.
+	// The held grenade's picture (weapon.zs A_RSQGNReady): 0 ring in, 1 pin out, 2 cooking, 3 cooking + red,
+	// 4 cooking + amber (Cook Sense 2).
 	static int HeldFrame(int n)
 	{
 		let h = Get();
 		if (!h || n < 0 || n >= MAXPLAYERS || !h.armed[n]) return 0;
 		if (!h.spoon[n]) return 1;
-		return level.maptime < h.redUntil[n] ? 3 : 2;
+		if (level.maptime >= h.redUntil[n]) return 2;
+		return h.amber[n] ? 4 : 3;
+	}
+	// COOK SENSE 2 (Gun Bonsai VR patch): with this much of the fuse left the flash is amber, after it red
+	static bool AmberAt(Actor who, int left, int total)
+	{
+		return total > 0 && left * 2 > total && RSQGN_Upg.Lv(who, "CookSense") >= 2;
 	}
 
 	// ---- the playsim ----------------------------------------------------------------------------------------------
@@ -219,15 +234,32 @@ class RSQGN_Handler : EventHandler
 			{
 				int cooked = level.maptime - cookTic[n];
 				if (cooked < 0) { cookTic[n] = level.maptime; cooked = 0; }	// BD22 VR: re-base, never latch
-				int fuse = FuseTics();
+				int fuse = FuseTics(pmo);
 				if (cooked >= fuse) { Boom(pmo, n, "cooked too long"); continue; }
 				Flash(pmo, n, fuse - cooked, fuse);
+				// COOK SENSE 1 (Gun Bonsai VR patch): a tick in the holding hand at each second of the fuse
+				if (cooked > 0 && cooked % TICRATE == 0 && RSQGN_Upg.Lv(pmo, "CookSense") >= 1) RSQGN_Buzzer.Start(pmo, h, 0.35, 3);
 			}
 			// the last grenade gone: the hand gets something else (BD22 VR 1.12: an empty grenade hand vanished)
 			if (!armed[n] && pmo.CountInv("RSQGN_Ammo") <= 0) Empty(pmo, h);
 		}
+		if (level.maptime % 17 == 0) for (int n = 0; n < MAXPLAYERS; n++) if (playeringame[n] && players[n].mo) Carry(players[n].mo);
 		let cp = players[consoleplayer].mo;
 		if (playeringame[consoleplayer] && cp) Local(cp);
+	}
+
+	// BANDOLIER (Gun Bonsai VR patch): the carry 8 + 2 a level, a backpack doubling whatever it is. Without the patch
+	// the ammo's own 8 / 16, untouched.
+	static void Carry(PlayerPawn pmo)
+	{
+		if (!RSQGN_Upg.On()) return;
+		let am = Ammo(pmo.FindInventory("RSQGN_Ammo"));
+		if (!am) return;
+		int lv = RSQGN_Upg.Lv(pmo, "Bandolier");
+		int cap = am.Default.MaxAmount + (lv > 0 ? int(RSQGN_Upg.Num("Bandolier.carry", lv, 0)) : 0);
+		if (pmo.FindInventory("BackpackItem", true)) cap *= 2;
+		am.MaxAmount = cap;
+		am.BackpackMaxAmount = max(am.BackpackMaxAmount, cap);
 	}
 
 	void Flash(PlayerPawn pmo, int n, int left, int total)
@@ -236,6 +268,7 @@ class RSQGN_Handler : EventHandler
 		int per = FlashPeriod(left, total);
 		redUntil[n] = level.maptime + max(1, per / 2);
 		flashNext[n] = level.maptime + per;
+		amber[n] = AmberAt(pmo, left, total);
 		pmo.A_StartSound("rsqgn/tick", CHAN_5, CHANF_OVERLAP, left < TICRATE ? 0.85 : 0.5);
 		if (Debug(pmo.player)) Console.Printf("RSQGN flash hand t%d period %d left %d", level.maptime, per, left);
 	}
@@ -312,7 +345,7 @@ class RSQGN_Handler : EventHandler
 
 	void Throw(PlayerPawn pmo, int n, int h, double ms)
 	{
-		int fuse = FuseTics();
+		int fuse = FuseTics(pmo);
 		int left = spoon[n] ? fuse - (level.maptime - cookTic[n]) : fuse;
 		left = max(left, 1);
 		Vector3 mid = pmo.Pos + (0, 0, pmo.Height * 0.6);
@@ -348,9 +381,10 @@ class RSQGN_Handler : EventHandler
 		g.angle = VectorAngle(g.Vel.x, g.Vel.y);
 		g.fuse = left;
 		g.fuseTotal = fuse;
-		g.Gravity = clamp(SNum("rsqgn_gravity", 0.27), 0.05, 1.0);
+		int fa = RSQGN_Upg.Lv(pmo, "FlatArc"), bo = RSQGN_Upg.Lv(pmo, "Bounce");
+		g.Gravity = clamp(SNum("rsqgn_gravity", 0.27) * (fa > 0 ? RSQGN_Upg.Num("FlatArc.gravity", fa, 1.0) : 1.0), 0.05, 1.0);	// FLAT ARC
 		g.BounceFactor = clamp(SNum("rsqgn_bounce", 0.5), 0.0, 0.9);
-		g.WallBounceFactor = clamp(SNum("rsqgn_wallbounce", 0.25), 0.0, 0.9);
+		g.WallBounceFactor = clamp(SNum("rsqgn_wallbounce", 0.25) + (bo > 0 ? RSQGN_Upg.Num("Bounce.wall", bo, 0) : 0), 0.0, 0.9);	// BOUNCE
 		pmo.A_StartSound("rsqgn/toss", CHAN_WEAPON, CHANF_OVERLAP);
 		if (!spoon[n]) pmo.A_StartSound("rsqgn/spoon", CHAN_AUTO, CHANF_OVERLAP);
 		RSQGN_Buzzer.Start(pmo, h, 0.6, 5);
@@ -480,15 +514,25 @@ class RSQGN_Handler : EventHandler
 			Console.Printf("RSQGN face t%d d=%.2f m near=%.2f far=%.2f held=%d/%d ready=%d", level.maptime, dist, near, far, faceTic, hold, faceReady);
 	}
 
+	// what leaves the hand for a hand velocity v (map units a tic): the strength, the lift, the run you were in.
+	// STRONG ARM and FLAT ARC (Gun Bonsai VR patch): the strength and the lift, read on the thrower's machine and sent
+	// with the throw like everything else in it.
+	static Vector3 LaunchVel(PlayerPawn pmo, Vector3 v)
+	{
+		let p = pmo.player;
+		int sa = RSQGN_Upg.Lv(pmo, "StrongArm"), fa = RSQGN_Upg.Lv(pmo, "FlatArc");
+		Vector3 tv = v * PNum(p, "rsqgn_throw", 1.0) * (sa > 0 ? RSQGN_Upg.Num("StrongArm.mult", sa, 1.0) : 1.0);
+		tv.z += tv.xy.Length() * PNum(p, "rsqgn_lift", 0.35) * (fa > 0 ? RSQGN_Upg.Num("FlatArc.lift", fa, 1.0) : 1.0);
+		return tv + pmo.Vel;
+	}
+
 	private void SendThrow(PlayerPawn pmo, int h, double ms, Vector3 v)
 	{
 		let p = pmo.player;
 		Vector3 at = RSQGN_Geo.Pos(pmo, h) + RSQGN_Geo.FromHand(pmo, h, (NADE_F, NADE_L, NADE_U));
 		// RS_Grenade's flight: the hand's own velocity (times a trim), and a lift of a fraction of its speed across the
 		// ground, so a hard throw arcs more than a gentle one; and the run you were in carries on with it
-		Vector3 tv = v * PNum(p, "rsqgn_throw", 1.0);
-		tv.z += tv.xy.Length() * PNum(p, "rsqgn_lift", 0.35);
-		tv += pmo.Vel;
+		Vector3 tv = LaunchVel(pmo, v);
 		Send("rsqgn_at", int(at.x * 8), int(at.y * 8), int(at.z * 8));
 		Send("rsqgn_v", int(tv.x * 100), int(tv.y * 100), int(tv.z * 100));
 		Send("rsqgn_throw", int(ms * 100));

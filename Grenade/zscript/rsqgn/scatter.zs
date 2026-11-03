@@ -19,8 +19,8 @@ class RSQGN_Scatter : EventHandler
 		if (!RSQGN_Handler.Active()) return;
 		let on = CVar.FindCVar("rsqgn_scatter");
 		if (on && !on.GetBool()) return;
-		int capS = clamp(int(RSQGN_Handler.SNum("rsqgn_singles", 4)), 0, 16);
-		int capP = clamp(int(RSQGN_Handler.SNum("rsqgn_packs", 2)), 0, 16);
+		int capS, capP, winS, winP, sv;
+		[capS, capP, winS, winP, sv] = Plan();
 
 		Array<Inventory> items;
 		let it = ThinkerIterator.Create("Inventory");
@@ -30,15 +30,34 @@ class RSQGN_Scatter : EventHandler
 			// armour and ammo objects the engine keeps at the map's origin (seen on the rig: HexenArmor, BasicArmor)
 			if (!i.Owner && i.bSpecial && !(i is "RSQGN_Ammo")) items.Push(i);
 
-		int s = 0, k = 0;
+		int s = 0, kp = 0;
 		for (int j = 0; j < items.Size(); j++)
 		{
 			int r = random[RSQGN_Scatter](0, 125);
-			if (r > 5 && r <= 10 && s < capS) { if (Drop("RSQGN_Ammo", items[j])) s++; }
-			else if (r > 17 && r <= 20 && k < capP) { if (Drop("RSQGN_Pack", items[j])) k++; }
+			if (sv > 0)
+			{
+				// Scavenger's wider windows (the same 126 rolls): singles below winS, packs in the winP after 13
+				if (r < winS && s < capS) { if (Drop("RSQGN_Ammo", items[j])) s++; }
+				else if (r >= 13 && r < 13 + winP && kp < capP) { if (Drop("RSQGN_Pack", items[j])) kp++; }
+			}
+			else if (r > 5 && r <= 10 && s < capS) { if (Drop("RSQGN_Ammo", items[j])) s++; }
+			else if (r > 17 && r <= 20 && kp < capP) { if (Drop("RSQGN_Pack", items[j])) kp++; }
 		}
 		if (players[consoleplayer].mo && RSQGN_Handler.Debug(players[consoleplayer]))
-			Console.Printf("RSQGN scatter %s: %d items rolled, %d single grenades (cap %d), %d packs (cap %d)", level.MapName, items.Size(), s, capS, k, capP);
+			Console.Printf("RSQGN scatter %s: %d items rolled, %d single grenades (cap %d), %d packs (cap %d)%s", level.MapName, items.Size(), s, capS, kp, capP, sv > 0 ? String.Format(", Scavenger %d", sv) : "");
+	}
+
+	// how many a map and the roll windows: the rows' caps; SCAVENGER (Gun Bonsai VR patch), the best level among the
+	// players, raises the caps and the odds by half a level (4 + 2 -> 6 + 3, 8 + 4, 10 + 5)
+	static int, int, int, int, int Plan()
+	{
+		int capS = clamp(int(RSQGN_Handler.SNum("rsqgn_singles", 4)), 0, 16);
+		int capP = clamp(int(RSQGN_Handler.SNum("rsqgn_packs", 2)), 0, 16);
+		int sv = 0;
+		for (int n = 0; n < MAXPLAYERS; n++) if (playeringame[n] && players[n].mo) sv = max(sv, RSQGN_Upg.Lv(players[n].mo, "Scavenger"));
+		double k = sv > 0 ? RSQGN_Upg.Num("Scavenger.share", sv, 1.0) : 1.0;
+		if (sv > 0) { capS = int(capS * k + 0.5); capP = int(capP * k + 0.5); }
+		return capS, capP, int(5 * k + 0.5), int(3 * k + 0.5), sv;
 	}
 
 	static bool Drop(class<Actor> c, Actor by)

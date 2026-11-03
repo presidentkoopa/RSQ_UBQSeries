@@ -1172,6 +1172,22 @@ names the weapon on the thrown actor (section 1). `RSQGN_Grenade` is a Weapon al
 | Cook Sense (new) | root | 1: a haptic tick in the hand at each second of the fuse; 2: the flash's colour runs amber -> red with the fuse; 3: the count is spoken (SPO's announcer, 3-2-1) | Grenade, Accessibility (rumble strength) | the flash (exists) | - |
 | Short Fuse (new) | Cook Sense 1 | 1-2: fuse 3.0 -> 2.5, 2.0 s | Grenade (`rsqgn_fuse` as base - level) | - | - |
 
+**Carry, Throw, Fuse: BUILT 11-02 (L3).** Gun Bonsai VR (`up_grenade.zs`): Bandolier, Scavenger, Strong Arm, Flat Arc,
+Bounce, Cook Sense, Short Fuse; Kill Rewards' ammo bit takes Scavenger 3. Grenade: `RSQGN_Upg` (the ShieldSaw's three,
+by name); `Carry` (the ammo's MaxAmount, doubled with a backpack; untouched without the patch); `RSQGN_Scatter.Plan`
+(the caps and the roll windows); `LaunchVel` (the throw's strength and lift, lifted out of the local `SendThrow` so it
+can be gated) and `Throw` (gravity, wall bounce); `FuseTics(who)`; Cook Sense's hand tick in `WorldTick`, its amber
+in `AmberAt` with a generated `nade_amber.png` (tools/gen_red.py) and frames QGNH E / QGNT C. **Calls made here:**
+Flat Arc and Bounce act on the rows as shares / additions, so a changed row keeps its shape; Scavenger raises the
+odds with the caps (the caps alone are rarely reached); **Cook Sense 3 (the spoken 3-2-1 in SPO's announcer) is not
+built: capped at 2 until the owner says where that voice comes from.** **Headless 11-02** (`fp_gn`, `fp_gnthrow`
+through `LaunchVel` and `Throw`, `fp_gnstate`, `fp_gnbits`): offers follow the parents; carry 8 -> 10 -> 16 -> 32 with
+a backpack; a 10 u/tic hand left at 10 then 12.5 (Strong Arm 1), lift 3.5 -> 4.37 -> 1.87 (Flat Arc 2), gravity 0.27 ->
+0.18, wall bounce 0.25 -> 0.7 (Bounce 3); the thrown grenade's master is RSQGN_Grenade; fuse 105 -> 70 tics (Short Fuse
+2), a cook of 20 tics left 50; amber in the first half only at Cook Sense 2; scatter 4 + 2 -> 6 + 3 -> 10 + 5, windows 5
+/ 3 -> 13 / 8 of 126; twenty ammo bits with a pistol in hand gave 0 grenades, then 6 (Scavenger 3). Not provable
+headless: a real throw, the hand tick, how the amber looks.
+
 **Blast** (the frag grenade's own numbers)
 
 | Node | Parent | Levels | Owns | Art | Score |
