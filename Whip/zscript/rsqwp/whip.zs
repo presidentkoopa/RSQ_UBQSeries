@@ -3271,3 +3271,22 @@ class RSQWP_LockCentre : Actor
 		Loop;
 	}
 }
+
+// RSQ HP BARS' MARKERS (owner 11-02): a monster the whip has wrapped (a marked crack, the lasso) or tied to it (Bola)
+// shows HP Bars' HOOKED mark (handler.zs MarkersOf asks every service whose name holds "RSQTHP_Marker").
+class RSQTHP_MarkerWhip : Service
+{
+	override int GetInt(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
+	{
+		if (request != "hooked") return 0;
+		let mo = Actor(objectArg);
+		let w = RSQWP_Whip.Get();
+		if (!mo || !w) return 0;
+		for (int i = 0; i < RSQWP_Whip.NW; i++)
+		{
+			if (w.wrapOn[i] == mo) return 1;
+			if (w.tied[i * 2] == mo || w.tied[i * 2 + 1] == mo) return 1;
+		}
+		return 0;
+	}
+}

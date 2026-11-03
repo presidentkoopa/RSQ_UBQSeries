@@ -759,3 +759,18 @@ class RSQ_GloveHit : Actor
 	Default { +NOINTERACTION +NOBLOCKMAP +NOSECTOR +NOGRAVITY +DONTSPLASH +NOTONAUTOMAP RenderStyle "None"; }
 	States { Spawn: TNT1 A 2; Stop; }
 }
+
+// RSQ HP BARS' MARKERS (owner 11-02: the new monster states on the bars). HP Bars asks every service whose name holds
+// "RSQTHP_Marker" (handler.zs MarkersOf) for hooked / stunned / locked / gripped. Ours answers STUNNED (its star) for a
+// monster held in its pain (RSQ_Dazed: a stagger, a knockdown) or stunned by a Critical; frozen shows already as the
+// snowflake (Freeze sets the freeze count HP Bars reads). Nothing is made on a monster to answer: no RSQ_Dazed, no star.
+class RSQTHP_MarkerGBVR : Service
+{
+	override int GetInt(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
+	{
+		if (request != "stunned") return 0;
+		let mo = Actor(objectArg);
+		let d = mo ? RSQ_Dazed(mo.FindInventory("RSQ_Dazed")) : null;
+		return (d && (d.IsStaggered() || level.maptime < d.critUntil)) ? 1 : 0;
+	}
+}
