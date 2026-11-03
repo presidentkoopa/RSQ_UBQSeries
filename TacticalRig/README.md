@@ -250,9 +250,6 @@ among them.
 ## Known limits
 
 - Holstered guns may look squashed. Check in the mirror.
-- Only guns measured into the fit table show at a holster; the muzzle direction could not be read by eye for several
-  (BrutalSMG, Rocket_Launcher, Plasma_Gun, Unmaker, GrenadeLauncher, BFG10k, Railgun, NukeLauncher, FlameCannon,
-  HellishMissileLauncher, DSweap).
 - The cigarette's Use takeover holds off the engine's use (doors, switches), the rig's Use holsters and the watch
   move. Hand-on-door systems in other mods (RSQ Distance Grab's and Brutal Doom VR's doors by hand) read the Use key
   themselves when a hand touches a door; they are not stood down.
