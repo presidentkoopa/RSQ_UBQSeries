@@ -1106,7 +1106,7 @@ claims its hits for `RSQWP_WhipWeapon` (section 1) and adds it to the `type : ME
 
 | Node | Parent | Levels | Owns | Art | Score |
 |---|---|---|---|---|---|
-| Long Thong (new) | root | 1-3: reach 128 -> 160, 192, 224 units (3.8 -> 6.7 m) | Whip (`rsqwp_whip_reach` as base + level) | the whip itself | - |
+| Long Thong (new) | root | 1-3: the thong x1.25, 1.5, 1.75 (MIT's 1.8 m -> 2.25, 2.7, 3.15 m; every link longer, the same 25) | Whip (`RSQWP_Whip.LongK`) | the whip itself | - |
 | Quick Mark (new) | Long Thong 1 | 1-3: pickups and switches are marked from 8 m -> 10, 12, 14 m; 3: two marks at once, the crack takes the nearer | Whip | - | - |
 
 **Wrap**

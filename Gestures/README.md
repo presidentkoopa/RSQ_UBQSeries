@@ -156,7 +156,6 @@ After Brutal Doom, the monster packs and Gun Bonsai, with the other RSQ pk3s, in
 
 - QuestZDoom gives no finger, grip or trigger travel. "Palms out" is read from the hands pointing up, side by
   side, no fire button.
-- Reset All does not reset Both Palms Thrust or its three Thrust numbers (Speed, How Straight, Pointing Up).
 - Gesture Ease and Accessibility's gesture buttons do not reach Gestures.
 - The drawn-shape matcher from RS_Gestures (shapes drawn in the air) is not ported.
 - Every answer is about the local player; anyone else gets 0.
