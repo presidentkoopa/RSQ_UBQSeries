@@ -102,6 +102,9 @@ user  float  ubqs_throw_min     = 1.5;    // how hard a throw must be. Body-depe
                                           // not land is not -- so this one stays off the page
 server int   ubqs_force         = 1;      // the Force at all: push, pull, choke, jump
 server int   ubqs_force_jump    = 1;      // it changes how you move, so it is worth being able to stop
+server bool  ubqs_force_saber   = true;   // (owner, 11-03 17:44) "Force Only With the Saber": the bare Force hand is in the off
+                                          // hand only while the saber is the main hand's; switch the saber away and the off
+                                          // hand gets the load order's empty hand (BD22 VR's RSQ_Hands, else nothing) that tic
 user  int    ubqs_fhand_mesh    = 0;      // (owner, 11-03) the bare Force hand's mesh: 0 Our Hand (BD22 VR Reloaded's FBX
                                           // hand in its rifle-magazine hold, one steady pose), 1 Original (Ermac's, open/fist)
 server int   ubqs_lightning_beam = 1;     // (owner, 11-03) Force Lightning drawn as a beam per hop (Distance Grab's beam

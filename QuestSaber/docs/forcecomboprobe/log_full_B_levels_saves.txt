@@ -1,0 +1,40 @@
+MAP01 - Entryway
+FCP t0 MAP01 main Melee_Attacks off none pend Rifle hp 100 offpsp none
+FCP t3 MAP01 main Rifle off none pend rsq_hands hp 100 offpsp none
+FCP t4 MAP01 main Rifle off rsq_hands pend - hp 100 offpsp drawn
+FCPSTEP saber_in
+UBQS COMBO t41 saber in: off rsq_hands -> UBQS_ForceHand
+FCP t41 MAP01 main UBQS_Saber off UBQS_ForceHand pend - hp 100 offpsp drawn
+FCPSTEP next_saber
+MAP02 - Underhalls
+FCP t0 MAP02 main UBQS_Saber off UBQS_ForceHand pend - hp 100 offpsp drawn
+FCPSTEP rifle
+UBQS COMBO t59 saber gone (main Rifle): off UBQS_ForceHand -> rsq_hands
+FCP t59 MAP02 main Rifle off rsq_hands pend - hp 100 offpsp drawn
+FCPSTEP next_rifle
+MAP03 - The Gantlet
+FCP t0 MAP03 main Rifle off rsq_hands pend - hp 100 offpsp drawn
+FCPSTEP saber
+UBQS COMBO t79 saber in: off rsq_hands -> UBQS_ForceHand
+FCP t79 MAP03 main UBQS_Saber off UBQS_ForceHand pend - hp 100 offpsp drawn
+FCPSTEP load_rifle
+MAP03 - The Gantlet
+FCP t59 MAP03 main Rifle off rsq_hands pend - hp 100 offpsp drawn
+FCPSTEP saber2
+UBQS COMBO t130 saber in: off rsq_hands -> UBQS_ForceHand
+FCP t130 MAP03 main UBQS_Saber off UBQS_ForceHand pend - hp 100 offpsp drawn
+FCPSTEP rifle2
+UBQS COMBO t219 saber gone (main Rifle): off UBQS_ForceHand -> rsq_hands
+FCP t219 MAP03 main Rifle off rsq_hands pend - hp 100 offpsp drawn
+FCPSTEP load_saber
+MAP03 - The Gantlet
+FCP t200 MAP03 main UBQS_Saber off UBQS_ForceHand pend - hp 100 offpsp drawn
+FCPSTEP wheel_direct
+UBQS COMBO t272 saber gone (main Rifle): off UBQS_ForceHand -> rsq_hands
+FCP t272 MAP03 main Rifle off rsq_hands pend - hp 100 offpsp drawn
+FCPSTEP saber3
+UBQS COMBO t311 saber in: off rsq_hands -> UBQS_ForceHand
+FCP t311 MAP03 main UBQS_Saber off UBQS_ForceHand pend - hp 100 offpsp drawn
+FCPSTEP death
+UBQS COMBO t381 saber gone (main UBQS_Saber): off UBQS_ForceHand -> rsq_hands
+FCP t381 MAP03 main UBQS_Saber off rsq_hands pend - hp 0 offpsp drawn

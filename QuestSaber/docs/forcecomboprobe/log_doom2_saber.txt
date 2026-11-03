@@ -1,0 +1,52 @@
+MAP01 - Entryway
+FCP t0 MAP01 main Pistol off none pend - hp 100 offpsp none
+FCP t40 MAP01 main Pistol off none pend UBQS_Saber hp 100 offpsp none
+UBQS COMBO t55 saber in: off None -> UBQS_ForceHand
+FCP t55 MAP01 main UBQS_Saber off UBQS_ForceHand pend - hp 100 offpsp drawn
+UBQS COMBO t110 saber gone (main UBQS_Saber): off UBQS_ForceHand -> None
+FCP t110 MAP01 main UBQS_Saber off none pend Shotgun hp 100 offpsp none
+FCP t121 MAP01 main Shotgun off none pend - hp 100 offpsp none
+FCP t180 MAP01 main Shotgun off none pend UBQS_Saber hp 100 offpsp none
+UBQS COMBO t195 saber in: off None -> UBQS_ForceHand
+FCP t195 MAP01 main UBQS_Saber off UBQS_ForceHand pend - hp 100 offpsp drawn
+FCP t250 MAP01 main UBQS_Saber off Pistol pend - hp 100 offpsp drawn
+FCP t320 MAP01 main UBQS_Saber off Pistol pend Shotgun hp 100 offpsp drawn
+FCP t331 MAP01 main Shotgun off Pistol pend - hp 100 offpsp drawn
+FCP t390 MAP01 main Shotgun off Pistol pend UBQS_Saber hp 100 offpsp drawn
+FCP t405 MAP01 main UBQS_Saber off Pistol pend - hp 100 offpsp drawn
+FCP t460 MAP01 main UBQS_Saber off Pistol pend Shotgun hp 100 offpsp drawn
+FCP t471 MAP01 main Shotgun off Pistol pend - hp 100 offpsp drawn
+UBQS COMBO t530 saber gone (main Shotgun): off UBQS_ForceHand -> None
+FCP t530 MAP01 main Shotgun off none pend - hp 100 offpsp none
+FCP t550 MAP01 main Shotgun off none pend UBQS_Saber hp 100 offpsp none
+UBQS COMBO t565 saber in: off None -> UBQS_ForceHand
+FCP t565 MAP01 main UBQS_Saber off UBQS_ForceHand pend - hp 100 offpsp drawn
+UBQS COMBO t620 saber gone (main Shotgun): off UBQS_ForceHand -> None
+FCP t620 MAP01 main Shotgun off none pend - hp 100 offpsp none
+FCP t660 MAP01 main Shotgun off none pend UBQS_Saber hp 100 offpsp none
+UBQS COMBO t675 saber in: off None -> UBQS_ForceHand
+FCP t675 MAP01 main UBQS_Saber off UBQS_ForceHand pend - hp 100 offpsp drawn
+MAP02 - Underhalls
+FCP t0 MAP02 main UBQS_Saber off UBQS_ForceHand pend - hp 100 offpsp drawn
+Game saved.
+UBQS COMBO t59 saber gone (main UBQS_Saber): off UBQS_ForceHand -> None
+FCP t59 MAP02 main UBQS_Saber off none pend Shotgun hp 100 offpsp none
+FCP t70 MAP02 main Shotgun off none pend - hp 100 offpsp none
+MAP03 - The Gantlet
+FCP t0 MAP03 main Shotgun off none pend - hp 100 offpsp none
+Game saved.
+Game saved.
+FCP t79 MAP03 main Shotgun off none pend UBQS_Saber hp 100 offpsp none
+UBQS COMBO t94 saber in: off None -> UBQS_ForceHand
+FCP t94 MAP03 main UBQS_Saber off UBQS_ForceHand pend - hp 100 offpsp drawn
+MAP03 - The Gantlet
+FCP t130 MAP03 main Shotgun off none pend UBQS_Saber hp 100 offpsp none
+UBQS COMBO t145 saber in: off None -> UBQS_ForceHand
+FCP t145 MAP03 main UBQS_Saber off UBQS_ForceHand pend - hp 100 offpsp drawn
+Game saved.
+UBQS COMBO t220 saber gone (main UBQS_Saber): off UBQS_ForceHand -> None
+FCP t220 MAP03 main UBQS_Saber off none pend Shotgun hp 100 offpsp none
+FCP t231 MAP03 main Shotgun off none pend - hp 100 offpsp none
+MAP03 - The Gantlet
+UBQS COMBO t272 saber gone (main UBQS_Saber): off UBQS_ForceHand -> None
+FCP t272 MAP03 main UBQS_Saber off none pend - hp 0 offpsp none

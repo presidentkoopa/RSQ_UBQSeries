@@ -6478,7 +6478,7 @@ class UBQS_Bridge : EventHandler
 		Weapon filler = hc ? Weapon(mo.FindInventory(hc)) : null;
 		if (hc && !filler) { mo.GiveInventory(hc, 1); filler = Weapon(mo.FindInventory(hc)); }
 		let fmc = CVar.FindCVar("ubqs_force");
-		if (!filler && (!fmc || fmc.GetInt() != 0))
+		if (!filler && (!fmc || fmc.GetInt() != 0) && ForceHandAllowed(p))   // ubqs_force_saber: never without the saber in the main hand
 		{
 			if (!mo.FindInventory("UBQS_ForceHand")) mo.GiveInventory("UBQS_ForceHand", 1);
 			filler = Weapon(mo.FindInventory("UBQS_ForceHand"));
@@ -6497,8 +6497,124 @@ class UBQS_Bridge : EventHandler
 		raisedAt[i] = level.maptime;     // and the auto-raise below does not undo it
 	}
 
+	// ---- THE FORCE ONLY WITH THE SABER (ubqs_force_saber, on; the owner, 11-03 17:44: "The Force only appears
+	// when we have the Saber in the main hand. The saber and the Force are a combo. When saber in hand, you can
+	// switch from the force hand to other weapons in the offhand if you want. But if you switch off the saber you
+	// switch off the Force too."). Measured before this (full order, 11-03): the 5-tic raise below put the bare
+	// Force hand into ANY empty off hand once a life, whatever the main hand held -- Gun Bonsai VR keeps the second
+	// saber locked, so nothing else claimed the slot -- and BD22 VR's own RSQ_Hands.Upkeep only fills an EMPTY off
+	// hand, so its hands (gun support, hand reloads, the rifle's launcher) never came: a new game started with the
+	// rifle and the Force. Now, every tic:
+	//   - the main hand is not the saber (or is leaving it: a main-hand weapon is pending) -> a Force hand in the off
+	//     hand becomes the load order's empty off hand THE SAME TIC (BD22 VR's RSQ_Hands when that class exists,
+	//     else nothing: RSQ Tactical Rig's OffEmptyName rule), and a Force hand on its way up is called off. A gun in
+	//     the off hand is left alone. This is also the backstop for every other picker (Wheel, holsters, saves).
+	//   - the saber has just come into the main hand -> an empty off hand (nothing, or RSQ_Hands) becomes the Force
+	//     hand, when the Force hand is what the saber's empty off hand is today (no second saber due there; with a
+	//     holstered second saber and BD22 VR loaded the off hand stays RSQ_Hands, as before). Only on that edge, so
+	//     the player may switch the off hand to anything else while the saber is held.
+	private bool comboSaber[MAXPLAYERS];
+
+	static bool ForceOnlyWithSaber()
+	{
+		let c = CVar.FindCVar("ubqs_force_saber");
+		return !c || c.GetBool();
+	}
+	// The saber is the main hand's weapon, and the main hand is not switching away from it.
+	static bool SaberMain(PlayerInfo p)
+	{
+		if (!p || !p.mo || p.mo.health <= 0 || p.playerstate != PST_LIVE) return false;
+		let pw = p.PendingWeapon;
+		if (pw != WP_NOCHANGE && pw && !pw.bOffhandWeapon && !(pw is "UBQS_Saber")) return false;
+		return p.ReadyWeapon is "UBQS_Saber";
+	}
+	// May the off hand hold the bare Force hand now?
+	static bool ForceHandAllowed(PlayerInfo p) { return !ForceOnlyWithSaber() || SaberMain(p); }
+
+	// Put w straight into the off hand (null: empty it), as RSQ Wheel's equipInstantly does: no PendingWeapon, so a
+	// main-hand switch in progress is not disturbed and the off hand changes this tic.
+	static void PutOff(PlayerInfo p, Weapon w)
+	{
+		if (w && p.ReadyWeapon != w)
+		{
+			w.bOffhandWeapon = true;
+			p.OffhandWeapon = w;
+			p.SetPsprite(PSP_OFFHANDWEAPON, w.GetReadyState());
+			return;
+		}
+		p.SetPsprite(PSP_OFFHANDWEAPON, null);
+		p.OffhandWeapon = null;
+	}
+	// The load order's own empty off hand: BD22 VR's RSQ_Hands (by name), or nothing.
+	static Weapon EmptyOffOf(PlayerPawn mo)
+	{
+		String hn = "RSQ_Hands";
+		class<Weapon> hc = hn;
+		if (!hc) return null;
+		let h = Weapon(mo.FindInventory(hc));
+		if (!h) { mo.GiveInventory(hc, 1); h = Weapon(mo.FindInventory(hc)); }
+		return h;
+	}
+	// Is the bare Force hand what the saber's empty off hand is (the 5-tic raise's own rule, below)?
+	static bool ForceHandIsEmpty(PlayerInfo p)
+	{
+		let mo = p.mo;
+		if (!On() || !mo.FindInventory("UBQS_Saber")) return false;
+		let fhc = CVar.FindCVar("ubqs_force_hand");
+		let fmc = CVar.FindCVar("ubqs_force");
+		if ((fhc && !fhc.GetBool()) || (fmc && fmc.GetInt() == 0)) return false;
+		bool dual = DualMode() != 0 && (!UBQS_Upg.Svc() || UBQS_Upg.Lv(mo, "TwoSabers") > 0);
+		bool away = mo.FindInventory("UBQS_DualAway") != null && HolsterThere(p);
+		if (dual && !away) return false;                   // the second saber is due in the off hand
+		String hn = "RSQ_Hands";
+		class<Weapon> hc = hn;
+		if (hc && away) return false;                      // holstered, with BD22 VR: its hands, as before
+		return true;
+	}
+
+	private void ForceCombo()
+	{
+		bool rule = ForceOnlyWithSaber();
+		for (int i = 0; i < MAXPLAYERS; i++)
+		{
+			if (!playeringame[i] || !players[i].mo) { comboSaber[i] = false; continue; }
+			let p = players[i];
+			let mo = p.mo;
+			bool sm = SaberMain(p);
+			bool was = comboSaber[i];
+			comboSaber[i] = sm;
+			if (!rule) continue;
+			if (!sm)
+			{
+				if (p.PendingWeapon is "UBQS_ForceHand") p.PendingWeapon = WP_NOCHANGE;
+				if (p.OffhandWeapon is "UBQS_ForceHand")
+				{
+					let e = EmptyOffOf(mo);
+					PutOff(p, e);
+					if (UBQS_Data.I(mo, "ubqs_diag", 0) == 4)
+						Console.Printf("UBQS COMBO t%d saber gone (main %s): off UBQS_ForceHand -> %s", level.maptime,
+							p.ReadyWeapon ? p.ReadyWeapon.GetClassName() : 'none', e ? e.GetClassName() : 'none');
+				}
+				continue;
+			}
+			if (was) continue;
+			// the saber has just come into the main hand
+			let off = p.OffhandWeapon;
+			if (off && !(off.GetClassName() == 'RSQ_Hands')) continue;   // a gun, a second saber, the Force hand: left
+			if (p.PendingWeapon != WP_NOCHANGE || !ForceHandIsEmpty(p)) continue;
+			if (!mo.FindInventory("UBQS_ForceHand")) mo.GiveInventory("UBQS_ForceHand", 1);
+			let fh = Weapon(mo.FindInventory("UBQS_ForceHand"));
+			if (!fh) continue;
+			PutOff(p, fh);
+			raisedAt[i] = level.maptime;
+			if (UBQS_Data.I(mo, "ubqs_diag", 0) == 4)
+				Console.Printf("UBQS COMBO t%d saber in: off %s -> UBQS_ForceHand", level.maptime, off ? off.GetClassName() : 'none');
+		}
+	}
+
 	override void WorldTick()
 	{
+		ForceCombo();
 		if ((level.maptime % 5) != 0) return;
 		// THE RETIRED DUAL KEY MODE (1) IS REWRITTEN HERE TOO, not only in WorldLoaded: a savegame restores
 		// its server cvars after WorldLoaded has run (measured: a save made with 1 loads still reading 1).
@@ -6606,7 +6722,8 @@ class UBQS_Bridge : EventHandler
 			if (fhand && !bdHands && p.mo.FindInventory("UBQS_Saber") && !p.mo.FindInventory("UBQS_ForceHand"))
 				p.mo.GiveInventory("UBQS_ForceHand", 1);
 			// ONCE, not every 350 tics -- see the note above
-			if (fhand && p.OffhandWeapon == null && p.PendingWeapon == WP_NOCHANGE && raisedAt[i] == 0)
+			// (ubqs_force_saber: only while the saber is the main hand's -- ForceCombo above)
+			if (fhand && p.OffhandWeapon == null && p.PendingWeapon == WP_NOCHANGE && raisedAt[i] == 0 && (bdHands || ForceHandAllowed(p)))
 			{
 				Weapon fh = bdHands ? Weapon(p.mo.FindInventory(hc0)) : Weapon(p.mo.FindInventory("UBQS_ForceHand"));
 				if (fh && !(p.ReadyWeapon && p.ReadyWeapon.bTwoHanded))

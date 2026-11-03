@@ -1,0 +1,62 @@
+MAP01 - Entryway
+FCP t0 MAP01 main Melee_Attacks off none pend Rifle hp 100 offpsp none
+FCP t3 MAP01 main Rifle off none pend rsq_hands hp 100 offpsp none
+FCP t4 MAP01 main Rifle off rsq_hands pend - hp 100 offpsp drawn
+B22 S 35 main Rifle off rsq_hands invr 1 wanted 1 mag 31 btn 0
+FCPSTEP saber_in
+UBQS COMBO t41 saber in: off rsq_hands -> UBQS_ForceHand
+FCP t41 MAP01 main UBQS_Saber off UBQS_ForceHand pend - hp 100 offpsp drawn
+B22 S 70 main UBQS_Saber off UBQS_ForceHand invr 1 wanted 0 mag -1 btn 0
+B22 S 105 main UBQS_Saber off UBQS_ForceHand invr 1 wanted 0 mag -1 btn 0
+FCPSTEP rifle_by_key
+UBQS COMBO t110 saber gone (main Rifle): off UBQS_ForceHand -> rsq_hands
+FCP t110 MAP01 main Rifle off rsq_hands pend - hp 100 offpsp drawn
+B22 S 140 main Rifle off rsq_hands invr 1 wanted 1 mag 31 btn 0
+FCPSTEP reload
+B22 S 175 main Rifle off rsq_hands invr 1 wanted 1 mag 29 btn 1
+rsr t208 gun 1: IDLE -> EMPTY
+rsr t208 sound Rifle/Reload1 (slot 5)
+rsr t208 gun 1: EMPTY -> DROP
+B22 S 210 main Rifle off rsq_hands invr 1 wanted 1 mag 1 btn 40
+rsr t212 gun 1: DROP -> EMPTY
+B22 S 245 main Rifle off rsq_hands invr 1 wanted 1 mag 1 btn 0
+rsr t251 gun 1: EMPTY -> CARRY
+B22 S 280 main Rifle off rsq_hands invr 1 wanted 1 mag 1 btn 4000000
+rsr t294 gun 1: CARRY -> INSERT
+rsr t295 sound Rifle/Reload2 (slot 5)
+rsr t295 gun 1: INSERT -> SEATED
+rsr t295 gun 1: SEATED -> DONE
+rsr t297 gun 1: DONE -> IDLE
+B22 S 315 main Rifle off rsq_hands invr 1 wanted 1 mag 31 btn 4000000
+B22 S 350 main Rifle off rsq_hands invr 1 wanted 1 mag 31 btn 0
+FCPSTEP m203
+B22 S 385 main Rifle off rsq_hands invr 1 wanted 1 mag 31 btn 0
+B22 S 420 main Rifle off rsq_hands invr 1 wanted 1 mag 31 btn 0
+rsm t441 pull 0.0 hand 0: latch
+rsm t441 pull 0.0 hand 0: took the tube
+B22 S 455 main Rifle off rsq_hands invr 1 wanted 1 mag 31 btn 6000100
+rsm t463 pull 11.0 hand 0: open
+rsm t474 pull 11.0 hand 0: let go of the tube
+rsm t490 pull 11.0 hand 1: took a round
+B22 S 490 main Rifle off rsq_hands invr 1 wanted 1 mag 31 btn 4000000
+B22 S 525 main Rifle off rsq_hands invr 1 wanted 1 mag 31 btn 4000000
+rsm t526 pull 11.0 hand 0: let the round go
+B22 S 560 main Rifle off rsq_hands invr 1 wanted 1 mag 31 btn 4000000
+B22 S 595 main Rifle off rsq_hands invr 1 wanted 1 mag 31 btn 0
+FCPSTEP saber_back
+B22 S 630 main Rifle off rsq_hands invr 1 wanted 1 mag 31 btn 0
+UBQS COMBO t632 saber in: off rsq_hands -> UBQS_ForceHand
+FCP t632 MAP01 main UBQS_Saber off UBQS_ForceHand pend - hp 100 offpsp drawn
+B22 S 665 main UBQS_Saber off UBQS_ForceHand invr 1 wanted 0 mag -1 btn 0
+FCPSTEP offgun
+B22 S 700 main UBQS_Saber off UBQS_ForceHand invr 1 wanted 0 mag -1 btn 0
+FCP t701 MAP01 main UBQS_Saber off BrutalPistol pend - hp 100 offpsp drawn
+B22 S 735 main UBQS_Saber off BrutalPistol invr 1 wanted 0 mag -1 btn 0
+FCPSTEP rifle_offgun
+B22 S 770 main UBQS_Saber off BrutalPistol invr 1 wanted 0 mag -1 btn 0
+FCP t773 MAP01 main Rifle off BrutalPistol pend - hp 100 offpsp drawn
+B22 S 805 main Rifle off BrutalPistol invr 1 wanted 0 mag 31 btn 0
+FCPSTEP saber_offgun
+FCP t831 MAP01 main UBQS_Saber off BrutalPistol pend - hp 100 offpsp drawn
+B22 S 840 main UBQS_Saber off BrutalPistol invr 1 wanted 0 mag -1 btn 0
+B22 S 875 main UBQS_Saber off BrutalPistol invr 1 wanted 0 mag -1 btn 0

@@ -1,0 +1,5 @@
+BEFORE (HEAD Saber pk3), full order new game:
+FCP t0 MAP01 main Rifle off UBQS_ForceHand pend - hp 100 offpsp drawn
+AFTER, full order new game:
+FCP t0 MAP01 main Rifle off none pend - hp 100 offpsp none
+FCP t1 MAP01 main Rifle off rsq_hands pend - hp 100 offpsp drawn

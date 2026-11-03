@@ -1,0 +1,79 @@
+version "4.10"
+// FORCE COMBO PROBE (test only, never ships; docs/ is not packed). 2026-11-03, "Force Only With the Saber".
+// One FCP line every tic the main hand, the off hand or the pending weapon changes (by name: loads on any order).
+// netevent fcp_saber: the saber into the main hand. fcp_main <n>: main hand -> weapon list entry n (see NAMES).
+// fcp_direct <n>: like the Wheel's instant equip (ReadyWeapon set directly). fcp_offgun <n>: a gun into the off
+// hand (flagged OFFHANDWEAPON and raised, as the Tactical Rig's holster does). fcp_offforce: try to raise the
+// Force hand into the off hand directly (another picker) -- the rule must take it back.
+class FCP_Probe : EventHandler
+{
+	transient String lastKey;   // transient: a loaded save prints its restored hands
+	static const String NAMES[] = { "Rifle", "Shotgun", "Pistol", "BrutalPistol", "Shot_Gun", "Chaingun", "Melee_Attacks" };
+	static Weapon Get(PlayerPawn pmo, String n)
+	{
+		class<Weapon> c = n;
+		if (!c) { Console.Printf("FCP no class %s", n); return null; }
+		let w = Weapon(pmo.FindInventory(c));
+		if (!w) { pmo.GiveInventory(c, 1); w = Weapon(pmo.FindInventory(c)); }
+		return w;
+	}
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		let pmo = players[e.Player].mo;
+		if (!pmo) return;
+		let p = pmo.player;
+		String n = NAMES[clamp(e.Args[0], 0, NAMES.Size() - 1)];
+		if (e.Name ~== "fcp_saber")
+		{
+			let w = Get(pmo, "UBQS_Saber");
+			if (w) p.PendingWeapon = w;
+			Console.Printf("FCP t%d ASK saber -> main", level.maptime);
+		}
+		else if (e.Name ~== "fcp_main")
+		{
+			let w = Get(pmo, n);
+			if (w) { w.bOffhandWeapon = false; p.PendingWeapon = w; }
+			Console.Printf("FCP t%d ASK %s -> main (switch)", level.maptime, n);
+		}
+		else if (e.Name ~== "fcp_direct")
+		{
+			let w = Get(pmo, n);
+			if (!w) return;
+			w.bOffhandWeapon = false; p.ReadyWeapon = w; p.PendingWeapon = WP_NOCHANGE; p.SetPsprite(PSP_WEAPON, w.GetReadyState());
+			Console.Printf("FCP t%d ASK %s -> main (instant, as the Wheel)", level.maptime, n);
+		}
+		else if (e.Name ~== "fcp_offgun")
+		{
+			let w = Get(pmo, n);
+			if (!w) return;
+			w.bOffhandWeapon = true; p.PendingWeapon = w; pmo.BringUpWeapon();
+			Console.Printf("FCP t%d ASK %s -> off", level.maptime, n);
+		}
+		else if (e.Name ~== "fcp_next")
+		{
+			Console.Printf("FCP t%d ASK level change (inventory kept, no intermission)", level.maptime);
+			level.ChangeLevel(level.NextMap, 0, CHANGELEVEL_NOINTERMISSION);
+		}
+		else if (e.Name ~== "fcp_offforce")
+		{
+			let w = Get(pmo, "UBQS_ForceHand");
+			if (!w) return;
+			w.bOffhandWeapon = true; p.OffhandWeapon = w; p.SetPsprite(PSP_OFFHANDWEAPON, w.GetReadyState());
+			Console.Printf("FCP t%d ASK UBQS_ForceHand -> off (direct, another picker)", level.maptime);
+		}
+	}
+	override void WorldLoaded(WorldEvent e) { if (e.IsSaveGame) { lastKey = ""; Console.Printf("FCP t%d savegame loaded", level.maptime); } }
+	override void WorldTick()
+	{
+		let p = players[consoleplayer];
+		if (!p.mo) return;
+		String rw = p.ReadyWeapon ? String.Format("%s", p.ReadyWeapon.GetClassName()) : "none";
+		String ow = p.OffhandWeapon ? String.Format("%s", p.OffhandWeapon.GetClassName()) : "none";
+		String pn = "-"; if (p.PendingWeapon != WP_NOCHANGE) pn = p.PendingWeapon ? String.Format("%s", p.PendingWeapon.GetClassName()) : "null";
+		String key = rw .. "|" .. ow .. "|" .. pn .. "|" .. p.health;
+		if (key == lastKey) return;
+		lastKey = key;
+		let ps = p.FindPSprite(PSP_OFFHANDWEAPON);
+		Console.Printf("FCP t%d %s main %s off %s pend %s hp %d offpsp %s", level.maptime, level.MapName, rw, ow, pn, p.health, ps && ps.CurState ? "drawn" : "none");
+	}
+}
