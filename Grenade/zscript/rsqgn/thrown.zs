@@ -211,7 +211,7 @@ class RSQGN_Thrown : Actor
 		Goto Boom;
 	Boom:
 		TNT1 A 0 A_NoBlocking;
-		TNT1 A 0 { RSQGN_Kind.Look(self, kind); }
+		TNT1 A 0 { RSQGN_Kind.Look(self, kind, target); }
 		TNT1 A 1 { RSQGN_Thrown.Blast(self, target, 0, dmgMult > 0 ? dmgMult : 1.0); }
 		TNT1 A 1 { RSQGN_Thrown.Blast(self, target, 1, dmgMult > 0 ? dmgMult : 1.0); }
 		Stop;
@@ -314,9 +314,9 @@ class RSQGN_Bomblet : Actor
 	Boom:
 		TNT1 A 0 A_NoBlocking;
 		TNT1 A 0 { bMissile = false; vel = (0, 0, 0); }
-		TNT1 A 0 A_StartSound("rsqgn/explode", CHAN_AUTO, 0, 0.6, ATTN_NORM, 1.4);
-		TNT1 A 0 A_SpawnItemEx("RSQGN_BlastKaboom", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
-		TNT1 A 0 A_SpawnItemEx("RSQGN_BlastFlareSpawner", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
+		// RS Ballistics' small blasts and RS Combat FX's RSE1 (tools/fxpull.py)
+		TNT1 A 0 A_StartSound(String.Format("rsqgn/fx/bomblet%d", random[RSQGN_Fx](1, 3)), CHAN_AUTO, 0, 0.9);
+		TNT1 A 0 A_SpawnItemEx("RSQGN_SmallBlast", 0, 0, 8, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
 		TNT1 A 1 A_Explode(30, 96, XF_HURTSOURCE);
 		Stop;
 	}

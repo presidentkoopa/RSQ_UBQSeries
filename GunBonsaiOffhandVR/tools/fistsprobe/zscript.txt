@@ -14,6 +14,8 @@ class FistsProbe : EventHandler
 		"Rage", "BloodRush", "BerserkMeter", "PistolWhip", "RifleButt", "Taunt", "CriticalHits", "Headshot", "Backstab"
 	};
 	bool punchHigh;
+	Array<String> fxSeen;
+	Array<int> fxN;
 	// the look: every spark and burst spawned, and how long each lived (frames by level)
 	Array<Actor> fx;
 	Array<String> fxName;
@@ -22,6 +24,18 @@ class FistsProbe : EventHandler
 	override void WorldThingSpawned(WorldEvent e)
 	{
 		let a = e.Thing;
+		// the trees' own art, counted by class as it spawns (fp_fxcount prints it)
+		if (a)
+		{
+			String cn = a.GetClassName();
+			if (cn.Left(6) == "RSQGN_" && (cn == "RSQGN_SmallBlast" || cn == "RSQGN_BigBlast" || cn == "RSQGN_FrostBurst" || cn == "RSQGN_Flame" || cn == "RSQGN_Puff" || cn == "RSQGN_Bloom" || cn == "RSQGN_Haze")
+				|| cn == "SSQ_ChargeWave" || cn == "SSQ_DashStreak")
+			{
+				int i = fxSeen.Find(cn);
+				if (i == fxSeen.Size()) { fxSeen.Push(cn); fxN.Push(0); }
+				fxN[i]++;
+			}
+		}
 		if (!a || !(a is "RSQML_Spark")) return;
 		fx.Push(a); fxName.Push(a.GetClassName()); fxBorn.Push(level.maptime);
 	}
@@ -818,6 +832,12 @@ class FistsProbe : EventHandler
 			ls.dotHead[0] = null;
 			m.Destroy();
 		}
+		else if (e.Name ~== "fp_fxcount")
+		{
+			String s = "";
+			for (int i = 0; i < fxSeen.Size(); i++) s = s .. String.Format(" %s %d", fxSeen[i], fxN[i]);
+			Console.Printf("FP fx spawned so far:%s", s);
+		}
 		else if (e.Name ~== "fp_gnstate")
 		{
 			// the carry (arg0 1: with a backpack), the fuse and Cook Sense's amber
@@ -1124,7 +1144,7 @@ class FistsProbe : EventHandler
 			Console.Printf("FP saber [stage %d] has:%s | offered:%s | size index %d | second saber carried: %s", e.Args[1], have, on, sb ? sb.SizeIdx() : -1,
 				p.FindInventory("UBQS_SaberOff") ? "yes" : "no");
 		}
-		else if (e.Name.Left(5) ~== "fp_ss" || e.Name.Left(5) ~== "fp_gn" || e.Name.Left(5) ~== "fp_gr" || e.Name.Left(5) ~== "fp_dg" || e.Name.Left(5) ~== "fp_rg") TreeEvents(e, p);
+		else if (e.Name.Left(5) ~== "fp_ss" || e.Name.Left(5) ~== "fp_gn" || e.Name.Left(5) ~== "fp_gr" || e.Name.Left(5) ~== "fp_dg" || e.Name.Left(5) ~== "fp_rg" || e.Name.Left(5) ~== "fp_fx") TreeEvents(e, p);
 		else if (e.Name ~== "fp_force")
 		{
 			// arg0 0: the Force's own Push at an imp in front; 1: Force Lightning straight into one (and a second near it);

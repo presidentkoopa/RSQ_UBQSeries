@@ -33,3 +33,7 @@ ssqwall1 ssqwall1
 ssqwall2 ssqwall2
 ssqwall3 ssqwall3
 $volume ssq/grind 0.9
+
+// GUN BONSAI VR'S SHIELDSAW TREE (tools/fxpull.py, the pull record): RS Combat FX and RS Ballistics
+ssq/dash         SSQDASH   // RS Combat FX sounds/melee/unsorted/SWING3.ogg: Shield Dash's whoosh
+ssq/charge       SSQCHRG   // RS Ballistics sounds/rsb/blast/roll1.ogg: Charge's rolling blast

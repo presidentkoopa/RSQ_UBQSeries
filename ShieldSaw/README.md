@@ -274,6 +274,9 @@ that holds it and the sounds come with Rusted Legacy's ShieldSaw; where they cam
 is not recorded here either.
 
 - Saw voice and block sparks come from RS_CombatFX (chainsaw archetype).
+- The Gun Bonsai VR tree's effects and sounds (Charge's shockwave SSQV, Shield Dash's streak SSQK and whoosh, Charge's
+  rolling blast): from the owner's wells RS Combat FX and RS Ballistics, one asset at a time; `tools/fxpull.py` is the
+  record of each pull.
 - **id Software** -- the shield saw itself, from *Doom: The Dark Ages*: its design, and the mesh
   Ermac ripped from the game.
 - **Ermac** ([Rusted Legacy](https://github.com/iAmErmac/rusted-legacy), MIT code) -- brought the

@@ -723,7 +723,7 @@ class RSQGN_HandBlast : Actor
 	States
 	{
 	Spawn:
-		TNT1 A 0 NoDelay { RSQGN_Kind.Look(self, kind); }
+		TNT1 A 0 NoDelay { RSQGN_Kind.Look(self, kind, target); }
 		TNT1 A 1 { RSQGN_Thrown.Blast(self, target, 0, 1.0); }
 		TNT1 A 1 { RSQGN_Thrown.Blast(self, target, 1, 1.0); }
 		Stop;

@@ -1038,9 +1038,9 @@ ShieldSaw's own functions; 1 m = 34 units): a bash on an imp at 120 u/s froze it
 wall slam at 8 u/tic did 16 and 8 tics, then 24 and 28 (Wall Slam 1); Charge 1 at 3 m/s struck imps at 0.6, 1.2 aside
 and 1.8 m and not 2.4, at 1 m/s none, Charge 3 all four; Shield Dash 1 moved 2.9 m and bashed the imp at the end (60 ->
 32), cooldown running; Shield Size 1.0 -> 1.25 (sprite SSH3, plate 9.9 -> 12.4 units) -> 1.5 (SSH5, 14.9). Not provable
-headless: the bash itself from a moving plate, the dash's trigger (a thrust), how the dash feels. **Owed:** the
-Combat FX speed streak and shockwave the tree names for the dash and Charge (they use the bash's own burst and the
-throw sound for now).
+headless: the bash itself from a moving plate, the dash's trigger (a thrust), how the dash feels. **Owed (paid 11-02):** the
+dash's speed streak (RS Combat FX RSS4, standing beside you along the dash) and whoosh, Charge's shockwave (RSEC, at the
+wedge's far end) and rolling blast (RS Ballistics roll1): ShieldSaw/tools/fxpull.py.
 
 **Grind**
 
@@ -1207,8 +1207,9 @@ wall it was stopped by). Touches `sticky`. **Headless 11-02** (`fp_gnboom`: one 
 ahead with a frozen Baron 150 aside; `fp_gnstick` through `Throw`): the Baron took 68, 97 (Big Bang 3), 140 (and Frag
 3); Cluster threw 3, then 5 bomblets that landed 2.2 to 4.4 m out and hurt the Baron 25 more; Sticky 1 stuck to an imp
 and stayed on it (21 units from its centre, its radius) when the imp was moved 48. Not provable headless: how the
-blast and bomblets look. **Owed:** a bigger blast picture with Big Bang, and the RS Ballistics small blasts the tree
-names for the bomblets.
+blast and bomblets look. **Owed (paid 11-02):** Big Bang's bigger fireball (RS Combat
+FX RSI9, scaled by level) and low end (RS Ballistics big1); the bomblets' small blasts (RSE1, RS Ballistics small1-3):
+Grenade/tools/fxpull.py.
 
 **Kinds** (owner, 11-02: "impact grenade, incendiary grenade, freeze grenade, stun grenade, smoke grenade, flash
 grenade, charm grenade, infight grenade; RS Ballistics and RS Combat FX have what we need"). Each kind is an
@@ -1248,8 +1249,12 @@ fuse; Frag 140 to the imps beside it; Incendiary the same and then burned; Freez
 and a 25 hit on a frozen imp did 50 and thawed it; Stun 71 (half); Smoke: the imps in the cloud lost their target;
 Flash: no damage, every imp lost its target; Charm: all three FRIENDLY, attacking other monsters; Infight: all three on
 the nearest imp. Not provable headless: how each looks and sounds, the alt trigger in a hand. **Owed:** the Weapon
-Wheel's fan of kinds (the owner: later, its own step); the Rig's grenade-spot light in the kind's colour; the RS
-Combat FX art the table names (frost burst, fire, smoke, hazes) and the kinds' own sounds.
+Wheel's fan of kinds (the owner: later, its own step); the Rig's grenade-spot light in the kind's colour.
+**Art paid 11-02** (Grenade/tools/fxpull.py): Freeze's frost burst (RS Combat FX ICEY), Incendiary's flames (RSI3),
+Smoke's puffs (RSK3, denser after a screenshot showed the first cloud too faint), Flash's white bloom (RSH0 in white),
+Charm's and Infight's hazes (RSK3 in pink / red); each kind's own sound from RS Ballistics (glass, flamer, hiss, blast)
+and RS Combat FX (the hammer thud). Seen in engine screenshots 11-02: the big fireball, the frost, the bloom, the pink
+haze, the flames, the smoke cloud.
 
 **Cook Sense 3: BUILT 11-02 (owner: "I'd rather not have audio cues ... re-purpose the weapon card", then yes to the card).**
 No announcer: the grenade's small RSQ Gun Cards card counts the cooking fuse's whole seconds down, amber for the first

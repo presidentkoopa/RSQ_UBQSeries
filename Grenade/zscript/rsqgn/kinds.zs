@@ -40,7 +40,7 @@ class RSQGN_Kind play
 	static bool Fireball(int k) { return k == FRAG || k == IMPACT || k == INCENDIARY; }
 
 	// THE LOOK AND THE SOUND of a blast, by kind (the thrown grenade's Boom and the one in the hand)
-	static void Look(Actor at, int k)
+	static void Look(Actor at, int k, Actor by = null)
 	{
 		at.A_AlertMonsters();
 		if (Fireball(k))
@@ -48,13 +48,32 @@ class RSQGN_Kind play
 			at.A_StartSound("rsqgn/explode", CHAN_AUTO);
 			at.A_StartSound("rsqgn/farexpl", CHAN_7);
 			at.A_SpawnItemEx("RSQGN_Blast", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
+			// BIG BANG: a bigger fireball over the frag's, and the blast's low end (RS Combat FX RSI9, RS Ballistics big1)
+			int bb = RSQGN_Upg.Lv(by, "BigBang");
+			if (bb > 0)
+			{
+				let b = Actor.Spawn("RSQGN_BigBlast", at.pos + (0, 0, 24));
+				if (b) b.A_SetScale(1.0 + 0.3 * bb);
+				at.A_StartSound("rsqgn/fx/bigbang", CHAN_6, CHANF_OVERLAP, 1.0, 0.5);
+			}
 			return;
 		}
 		static const int COL[] = { 0, 0, 0, 0x46BEFF, 0xAA50FF, 0x8C8C96, 0xFFFFFF, 0xFF6EBE, 0xFF3C3C };
-		static const double PITCH[] = { 1, 1, 1, 1.5, 0.6, 1.3, 1.8, 1.2, 0.9 };
-		at.A_StartSound("rsqgn/explode", CHAN_AUTO, 0, k == SMOKE ? 0.35 : 0.6, ATTN_NORM, PITCH[k]);
-		if (k == FLASH) at.A_SpawnItemEx("RSQGN_BlastFlareSpawner", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
-		Burst(at, COL[k], k == FLASH ? 60 : 36);
+		// each kind's own sound (RS Ballistics, RS Combat FX: tools/fxpull.py)
+		if (k == FREEZE) at.A_StartSound("rsqgn/fx/freeze", CHAN_AUTO);
+		else if (k == STUN) at.A_StartSound("rsqgn/fx/stun", CHAN_AUTO, 0, 1.0, ATTN_NORM, 0.8);
+		else if (k == SMOKE) at.A_StartSound("rsqgn/fx/smoke", CHAN_AUTO);
+		else if (k == FLASH) at.A_StartSound("rsqgn/fx/flash", CHAN_AUTO, 0, 1.0, ATTN_NORM, 1.5);
+		else at.A_StartSound("rsqgn/fx/turn", CHAN_AUTO);
+		if (k == FLASH) { at.A_SpawnItemEx("RSQGN_Bloom", 0, 0, 24, 0, 0, 0, 0, SXF_NOCHECKPOSITION); at.A_SpawnItemEx("RSQGN_BlastFlareSpawner", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION); }
+		if (k == FREEZE) for (int i = 0; i < 4; i++) at.A_SpawnItemEx("RSQGN_FrostBurst", frandom[RSQGN_Fx](-32, 32), frandom[RSQGN_Fx](-32, 32), frandom[RSQGN_Fx](8, 40), 0, 0, 0, 0, SXF_NOCHECKPOSITION);
+		if (k == CHARM || k == INFIGHT)
+			for (int i = 0; i < 5; i++)
+			{
+				let hz = Actor.Spawn("RSQGN_Haze", at.pos + (frandom[RSQGN_Fx](-64, 64), frandom[RSQGN_Fx](-64, 64), frandom[RSQGN_Fx](8, 48)));
+				if (hz) hz.SetShade(COL[k]);
+			}
+		if (k != SMOKE) Burst(at, COL[k], k == FLASH ? 60 : 36);
 	}
 
 	// a ring of coloured sparks, the kind's colour (STUN's ring, FREEZE's frost, CHARM's pink, INFIGHT's red)
@@ -108,6 +127,7 @@ class RSQGN_Kind play
 		Array<Actor> hit;
 		if (k == INCENDIARY)
 		{
+			at.A_StartSound("rsqgn/fx/fire", CHAN_AUTO);
 			let f = RSQGN_FireField(Actor.Spawn("RSQGN_FireField", at.pos, ALLOW_REPLACE));
 			if (f) { f.target = by; f.radius2 = r; f.left = (3 + lv) * TICRATE; Claim(f, by); }
 			return;
@@ -177,7 +197,7 @@ class RSQGN_FireField : Actor
 		if (left % 4 == 0)
 		{
 			double a = frandom[RSQGN_Fx](0, 360), d = sqrt(frandom[RSQGN_Fx](0, 1)) * radius2;
-			A_SpawnItemEx("RSQGN_BlastFlamesMedium", cos(a) * d, sin(a) * d, 2, 0, 0, frandom[RSQGN_Fx](0.5, 1.5), 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEPOSITION | SXF_ABSOLUTEANGLE);
+			A_SpawnItemEx("RSQGN_Flame", cos(a) * d, sin(a) * d, 2, 0, 0, frandom[RSQGN_Fx](0.3, 0.8), 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEPOSITION | SXF_ABSOLUTEANGLE);
 		}
 		if (left % 7 != 0) return;
 		let it = BlockThingsIterator.Create(self, radius2);
@@ -208,10 +228,10 @@ class RSQGN_Smoke : Actor
 		if (bDestroyed || IsFrozen()) return;
 		if (--left <= 0) { Destroy(); return; }
 		if (left % 17 != 0) return;
-		for (int i = 0; i < 2; i++)
+		for (int i = 0; i < 3; i++)	// three a pass, a dozen alive at most (each lives 60 tics)
 		{
 			double a = frandom[RSQGN_Fx](0, 360), d = sqrt(frandom[RSQGN_Fx](0, 1)) * cloud;
-			A_SpawnItemEx("RSQGN_BlastSmoke", cos(a) * d, sin(a) * d, frandom[RSQGN_Fx](4, 40), 0, 0, 0.3, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEPOSITION | SXF_ABSOLUTEANGLE);
+			A_SpawnItemEx("RSQGN_Puff", cos(a) * d, sin(a) * d, frandom[RSQGN_Fx](8, 48), 0, 0, 0.2, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEPOSITION | SXF_ABSOLUTEANGLE);
 		}
 		let it = BlockThingsIterator.Create(self, REACH);
 		while (it.Next())
@@ -311,4 +331,52 @@ class RSQGN_Infight : RSQGN_Turned
 		if (!owner) return;
 		if (!owner.target || owner.target.health <= 0 || owner.target.player) { owner.target = Nearest(); owner.LastHeard = owner.target; }
 	}
+}
+
+// ---- THE KINDS' OWN ART (RS Combat FX, pulled by tools/fxpull.py) -------------------------------------------------
+class RSQGN_FxBase : Actor
+{
+	Default { +NOINTERACTION +NOBLOCKMAP +NOGRAVITY +DONTSPLASH +FORCEXYBILLBOARD RenderStyle "Add"; }
+}
+// a bomblet's small blast (RSE1)
+class RSQGN_SmallBlast : RSQGN_FxBase
+{
+	Default { Scale 0.7; }
+	States { Spawn: QGB1 ABCDEFGHIJKLMNOPQRSTUVWXY 1 Bright; Stop; }
+}
+// Big Bang's fireball over the frag's (RSI9), scaled by its level at the blast
+class RSQGN_BigBlast : RSQGN_FxBase
+{
+	Default { Scale 1.2; Alpha 0.9; }
+	States { Spawn: QGBB EFGHIJKLMNO 2 Bright; Stop; }
+}
+// Freeze's frost burst (ICEY)
+class RSQGN_FrostBurst : RSQGN_FxBase
+{
+	Default { Scale 4.0; }
+	States { Spawn: QGIC ABCFGHI 3 Bright; Stop; }
+}
+// Incendiary's flames on the burning ground (RSI3)
+class RSQGN_Flame : RSQGN_FxBase
+{
+	Default { Scale 0.6; }
+	States { Spawn: QGFI ABCDEFGH 2 Bright; Stop; }
+}
+// Smoke's puffs (RSK3): soft, grey, a slow rise
+class RSQGN_Puff : RSQGN_FxBase
+{
+	Default { RenderStyle "Translucent"; Alpha 0.9; Scale 2.4; }
+	States { Spawn: QGCL ABCDEFGHIJKL 5; Stop; }
+}
+// Flash's bloom (RSH0), drawn pure white
+class RSQGN_Bloom : RSQGN_FxBase
+{
+	Default { RenderStyle "AddStencil"; StencilColor "FF FF FF"; Scale 3.0; }
+	States { Spawn: QGHF ABCDEFGHIJKLMNOPQRS 1 Bright; Stop; }
+}
+// Charm's and Infight's haze (RSK3 again, in the kind's colour)
+class RSQGN_Haze : RSQGN_FxBase
+{
+	Default { RenderStyle "AddStencil"; Alpha 0.5; Scale 2.2; }
+	States { Spawn: QGCL ABCDEFGHIJKL 3 Bright; Stop; }
 }

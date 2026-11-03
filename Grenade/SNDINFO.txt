@@ -31,3 +31,15 @@ $volume rsqgn/farexpl 0.5
 $rolloff rsqgn/farexpl 3200 5400
 $volume rsqgn/tick 0.6
 $limit rsqgn/tick 2
+
+// GUN BONSAI VR'S GRENADE TREE (tools/fxpull.py, the pull record): RS Ballistics and RS Combat FX
+rsqgn/fx/bomblet1    QGBOMB1   // RS Ballistics sounds/rsb/blast/small1.ogg: a bomblet goes off
+rsqgn/fx/bomblet2    QGBOMB2   // RS Ballistics sounds/rsb/blast/small2.ogg
+rsqgn/fx/bomblet3    QGBOMB3   // RS Ballistics sounds/rsb/blast/small3.ogg
+rsqgn/fx/bigbang     QGBIGB    // RS Ballistics sounds/rsb/blast/big1.ogg: Big Bang's low end
+rsqgn/fx/freeze      QGFREEZ   // RS Ballistics sounds/rsb/glass/winbrea.ogg: Freeze, the ice cracking out
+rsqgn/fx/fire        QGFIRE    // RS Ballistics sounds/rsb/flame/flamer_blast.ogg: Incendiary, the ground catching
+rsqgn/fx/smoke       QGSMOKE   // RS Ballistics sounds/rsb/flame/ft_lighthiss.ogg: Smoke, the hiss
+rsqgn/fx/flash       QGFLASH   // RS Ballistics sounds/rsb/blast/med1.ogg: Flash, the bang (played high)
+rsqgn/fx/stun        QGSTUN    // RS Combat FX sounds/melee/hammer/HAMRWAL.ogg: Stun, the dull thud
+rsqgn/fx/turn        QGCHARM   // RS Ballistics sounds/rsb/impact_electric/dsdevzap.ogg: Charm and Infight

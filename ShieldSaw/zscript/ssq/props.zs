@@ -119,3 +119,18 @@ class SSQ_BlastBloom : Actor
 		Stop;
 	}
 }
+
+// CHARGE'S SHOCKWAVE (Gun Bonsai VR's Charge): RS Combat FX's RSEC, a burst that opens into a ring (tools/fxpull.py).
+class SSQ_ChargeWave : Actor
+{
+	Default { +NOINTERACTION +NOBLOCKMAP +NOGRAVITY +DONTSPLASH +FORCEXYBILLBOARD RenderStyle "Add"; Alpha 0.7; Scale 0.8; }
+	States { Spawn: SSQV ABCDEFG 2 Bright; Stop; }
+}
+
+// SHIELD DASH'S SPEED STREAK (Gun Bonsai VR's Shield Dash): RS Combat FX's RSS4 A, a line along the dash beside you,
+// standing in the plane of the dash so it streaks past, fading in a few tics.
+class SSQ_DashStreak : Actor
+{
+	Default { +NOINTERACTION +NOBLOCKMAP +NOGRAVITY +DONTSPLASH +WALLSPRITE RenderStyle "Add"; Alpha 0.7; Scale 0.6; }
+	States { Spawn: SSQK A 1 Bright A_FadeOut(0.12); Wait; }
+}

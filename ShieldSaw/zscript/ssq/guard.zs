@@ -876,7 +876,11 @@ class SSQ_Guard : Inventory
 		Vector2 f = n.xy.Length() > 0.01 ? n.xy.Unit() : (cos(mo.angle), sin(mo.angle));
 		double stick = (mo.vel.xy dot f) * TICRATE / m;
 		if (max(stick, SSQ_Upg.HeadMps(mo)) < 2.0) return;
-		Wedge(mo, saw, C, f, m * SSQ_Upg.Num("Charge.reach", lv, 1.0), eff, done, "charge");
+		double reach = m * SSQ_Upg.Num("Charge.reach", lv, 1.0);
+		// the shockwave and its rolling blast (RS Combat FX, RS Ballistics: tools/fxpull.py)
+		Actor.Spawn("SSQ_ChargeWave", C + (f.x, f.y, 0) * reach);	// at the wedge's far end, not in your face
+		SSQ_FX.At(mo, C, "ssq/charge", CHAN_AUTO, 0.9);
+		Wedge(mo, saw, C, f, reach, eff, done, "charge");
 	}
 
 	// everything within `reach` ahead of C, inside 45 degrees of f, in sight and not already struck: bashed
@@ -918,7 +922,7 @@ class SSQ_Guard : Inventory
 		dashLeft = SSQ_Handler.CM(100.0) * SSQ_Upg.Num("ShieldDash.m", lv, 2.0);
 		dashEff = max(eff, SSQ_Handler.SV('ssq_bash_speed', 45.0) * 2.0);
 		dashTics = 0; dashSent = 0; dashLast = mo.pos;
-		SSQ_FX.At(mo, mo.pos + (0, 0, mo.height * 0.5), "ssq/throw", CHAN_6, 0.9, 1.2);
+		SSQ_FX.At(mo, mo.pos + (0, 0, mo.height * 0.5), "ssq/dash", CHAN_6, 1.0);
 	}
 	void DashTick(PlayerPawn mo)
 	{
@@ -933,6 +937,14 @@ class SSQ_Guard : Inventory
 		if (dashLeft <= 1 || dashTics > 35) { EndDash(mo); return; }
 		double sp = clamp(dashLeft * 0.4, 6.0, 30.0);
 		mo.vel.xy = dashDir * sp;
+		// the speed streaks, either side of you, standing along the dash
+		Vector2 sd = (-dashDir.y, dashDir.x);
+		for (int k = -1; k <= 1; k += 2)
+		{
+			Vector2 at = mo.pos.xy + sd * k * (mo.radius + random[SSQ_Fx](10, 30)) + dashDir * random[SSQ_Fx](0, 40);
+			let st = Actor.Spawn("SSQ_DashStreak", (at.x, at.y, mo.pos.z + mo.height * frandom[SSQ_Fx](0.3, 0.9)));
+			if (st) st.angle = atan2(dashDir.y, dashDir.x) + 90;
+		}
 		dashSent = sp; dashLast = mo.pos; dashTics++;
 	}
 	void EndDash(PlayerPawn mo)

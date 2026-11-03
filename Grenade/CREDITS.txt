@@ -36,7 +36,13 @@ WHAT THIS PK3 SHIPS, AND WHOSE IT IS
 - QuestZDoom (Emawind and Team Beef): the engine, and the off-hand weapon and hand-pose script API this reads.
 
 SOUNDS
-Every sound is the UAC Survival Pack's own recording. Nothing is synthesized.
+Every sound is the UAC Survival Pack's own recording. Nothing is synthesized. The Gun Bonsai VR tree's (below) are not.
+
+THE GRENADE TREE'S EFFECTS AND SOUNDS (Gun Bonsai VR patch, 2026-11-02)
+  From the owner's two wells, RS Combat FX and RS Ballistics (presidentkoopa's libraries), one asset at a time, under
+  this pack's own names (QGB1 QGBB QGIC QGFI QGCL QGHF; QGBOMB1-3 QGBIGB QGFREEZ QGFIRE QGSMOKE QGFLASH QGSTUN QGCHARM):
+  Grenade/tools/fxpull.py is the record of each pull (the well and the path); sounds converted to mono 44.1 kHz.
+  The kinds' skins (models/rsqgn/nade_<kind>.png) are Gomuz's nade.png recoloured by tools/gen_kinds.py.
 
 SHARING
 Free to share as part of the Radiant Silvergun Quest series. Borrowed assets keep their authors' terms; sharing other
