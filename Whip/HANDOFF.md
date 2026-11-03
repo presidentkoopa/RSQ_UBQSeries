@@ -1,5 +1,77 @@
 # HANDOFF -- RSQ_Whip (PROJECT WHIP), 2026-10-30
 
+## 2026-11-03: the beam wins, no bits, the off hand free while snagged, grip / jump start the swing, the reel is a climb (owner 11:20-12:06) -- rig only, not headset-confirmed
+Owner: "the offhand beam ... takes precedence over any actor-lock-on ... Once snagged ... we grab the whip with the offhand
+to get height and begin our swing, OR we press jump"; 11:35 "whip needs to not target bits"; 11:52 "slower whip reel in
+... supposed to simulate climbing"; 12:06 "whip has to prioritize traversal / offhand target first, then actors".
+
+### Done (measured: rig qzd17.3, SWINGTST, whp probe scen 11, `whp_scripts.py` beammon / bits / offgun / gripstart / jumpstart / reelclimb)
+- **Beam Wins Over Lock-On** (`rsqwp_swing_beamwins`, on; swing.zs BeamWins). The beam is ON while held (gold or red)
+  and for **35 tics (1 s)** after it is let go on a gold spot (`BEAM_MEMORY`; a beam whose last tic was red forgets).
+  While on, every actor path stands down: the trigger's mark (Mark, also while the thong flies), the LOCKED crack
+  (Crack), the edge snag (Crack WrapNear, Collide Snag), the crack's own target round the tip and its fetch (Crack:
+  no actor at all), a thrown lasso (flies into the air), the thong's lash/sting hits (Collide), and a monster still
+  wrapped lets go (Lash: a wrap blocks every crack). Gold: the crack casts to the spot; red: a plain crack (a switch
+  it lands on still throws). Off: the old 6-tic grace, no stand-down. Why it lost before: the cast took the ray only
+  6 tics after the release; a wind-up + crack takes longer, so a let-go beam fell through to the mark / lock.
+- **Not a target**: Kill Rewards bits by name (`NotATarget`: any class starting "RSQ_KR") in Mark, Lock, Crack's
+  target, Fetch, LassoThrow, Throw. Whip still loads alone.
+- **Off Hand Free While Snagged** (`rsqwp_swing_offfree`, on): nothing in Whip released on an off-hand switch (the
+  engine's PendingWeapon switch only drops that hand's weapon, player.zs CheckWeaponChange; Wheel's equipInstantly and
+  TacticalRig's DrawOff/QueueOff touch only the off hand). The switch now gives the old/strict choice: off = a gun
+  coming into the off hand lets an aimed swing's rope go (core.SwingWatch). An off-hand gun's fire is never eaten.
+- **The start waits**: an aimed latch FROM THE GROUND no longer hops or takes up by itself while a start is on (the
+  take-up is kept for the start). In the air it swings at once. One start per rope.
+  - **Grip** (`rsqwp_swing_grip`, on): aimed rope, off hand empty (OffFree), its grip pressed (raw key `rsqwp_keys_off`
+    or a grab bind) within **0.5 m of the whip hand or the rope**. Rope taken up the arc's need + **24 units (one
+    pull, 0.7 m) at 6 a tic**, hop 6; that press never becomes a climbing hold.
+  - **Jump** (`rsqwp_swing_jump`, on; any whip rope, any off hand): BT_JUMP's press. vel.z = max(vel.z, **Jump Lift
+    10**) -- the engine's floor jump that tic (JumpZ 8, already in vel) is never stacked on. **Jump Push 8** along where
+    you FACE, its part away from the anchor removed and the push kept whole along the rest, ADDED to the velocity you
+    had. Facing, because standing at a lip there is no tangent yet and you look where you mean to go.
+- **The reel is a climb**: `rsqwp_reel_climb` **3** a tic (~3 m/s; was `rsqwp_reel_speed` 12, renamed so a saved 12 in
+  the ini does not stay), eased in over 6 tics, slider 1-30. The perk factor is 1 (fx.zs); no Gun Bonsai node boosts
+  the reel. Fixed on the way: a reel now ends the launch's pay-back (rig: letting go of the trigger paid the whole
+  climb back out at 8 a tic).
+- Menu rows (after Aim With Off-Hand Fire): Beam Wins Over Lock-On, Off Hand Free While Snagged, Off-Hand Grip Starts
+  Swing, Jump Starts Swing, Jump Lift (0-20), Jump Push (0-20); Reset All 64 cvars (gen_reset.py).
+
+| rig run | result |
+|---|---|
+| (a) imp (can't walk) 100 ahead under the beam line, whip trigger marking it, beam let go 15 tics before the crack: switch OFF (old) | MARK DoomImp; `CRACK LOCKED -> DoomImp`, WRAP |
+| (a) same, switch ON (doom2; GB + all RSQ; full order) | MARK dropped at the beam; `CAST -> ceiling (546 519 188) 8.7 m (beam let go 16-20 tics ago)`, LATCH, imp untouched by the flight |
+| (a) beam held through the crack, full order | CAST (beam held), LATCH |
+| (a) red beam (floor) + marked imp: OFF / ON | LOCKED -> DoomImp / `plain crack, target None` (doom2 and full order) |
+| (f) no beam, trigger marking the imp | LOCKED -> DoomImp, WRAP (as today) |
+| (b) bits at 150-170, Clip 230, imp 260, trigger held: HEAD / new (GB + all RSQ; full order) | MARK RSQ_KRHealthBit, flown to and taken / MARK Clip, Clip fetched; an ammo bit 5 units from the Clip stays |
+| (b) plain crack with 3 bits + a Stimpack round the tip: HEAD / new | fetched 4 (all bits taken) / fetched 1 (the Stimpack) |
+| (c) snag, Pistol into the off hand at t60 (engine switch / Wheel instant), jump, off trigger t95-150 | `SNAGGED off hand now Pistol: the rope holds`; rope held t51-t198 (hook phase 1 every tic), pistol 50 -> 46 rounds while swinging; same on GB + all RSQ and full order |
+| (c) same, Off Hand Free While Snagged off | lets go at the switch (t60) |
+| (d) snag + left hand beside the right (0.09-0.10 m) closes | `START by GRIP: take-up 312 -> 288, vel.z 6`; swings, bottoms 17.6 / 15.6 (doom2; full order the same). Off hand 0.99 m away: "grip not taken" |
+| (e) snag + jump from the lip | `START by JUMP: vel (0 0 8.0) [engine's jump] -> (8.0 0 10.0)`; bottom 24.3 (step-off start: 18.9); let go t108 at 21.0 flat: landed x 1841 (986 flat), the step-off landed on M x 1066 (321) |
+| (e) jump in mid-swing (stepped off first) | vel (15.5 0.4 -9.3) 18.0, flat 15.5 -> (23.5 0.4 10.0) 25.5, flat 23.5: flat kept 100% + 8 |
+| reel (trigger held on the rope t130-t230) | rope 298 -> 32 at **3.0 a tic** after the ease (18 per 6 tics), ~3.1 m/s; stays 32 after the release (was paid back out) |
+| starts off (`ceil`, grip 0 jump 0) | hop 6 at the latch as before; swing, landed on M 403 on |
+
+Snag (`snag`, no beam): HEAD snagged the lintel 3 of 5 runs, new 0 of 8 -- every HEAD snag had a dropped rig frame
+during the forward swing (frame -> maptime map skips 2 tics, `whp_F`), the swing arriving faster; with clean frames HEAD
+did not snag either (rsqwp_debug 4: the same link hits, edge 1, below the speed). The no-beam path is unchanged code.
+
+Frames (rig, first person; m = maptime), scratchpad `/tmp/claude-0/-home-claude/01ebc270-3953-5301-831b-c73a8b1320ca/scratchpad/`:
+`strip_beamwins_cast.png` (diamond on the ceiling over the imp, no mark on it, the thong goes up), `strip_offgun.png`,
+`strip_grip.png`, `strip_jump.png`, and the chase-camera strips listed in the commit.
+Logs: scratchpad `whp/logs/` (bm_*, B_*, G_*, bits_*, offgun*, grip*, jump*, reel*, snag*).
+
+Script errors: doom2 + Whip 0 (MAP01 and SWINGTST). doom2 + GunBonsai 0.10.6 + all RSQ pk3s: 0. Full order (01, 02, 03
+2.0.3p, 04-07, GunBonsai, all RSQ): 4, all 02_BD22_VoxelPack's voxeldef. Every run.
+
+### Not done / open
+- Not headset-tested. Feel guesses: memory 1 s, grip reach 0.5 m, grip pull 24 at 6, Jump Lift 10, Jump Push 8, reel 3
+  with a 6-tic ease.
+- On SteamVR the off grip as a raw key (`rsqwp_keys_off` 443 436) is the Quest lasso's; not run there.
+- One jump swing does not reach B (x 1920) on SWINGTST; it clears M. The chain still crosses.
+- A jump in the air replaces a downward vel.z with the lift (the flat speed is kept whole).
+
 ## 2026-11-03: Aim With Off-Hand Fire, and the ray that vanished (owner 10:26) -- rig only, not headset-confirmed
 Owner: "when offhand is empty / fist, holding offhand fire casts out a beam marking where we will snag ... also the beam
 is bugged, it disappears instantly instead of staying drawn on offhand fire."

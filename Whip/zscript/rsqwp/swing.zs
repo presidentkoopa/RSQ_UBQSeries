@@ -5,7 +5,7 @@
 // may (a wall or a ceiling within Whip Swing Reach), red when it may not (out of reach, sky, a floor, a portal, a
 // 3D middle texture, a polyobject). With the ray on a valid spot, the whip hand's own deliberate crack (wind-up and
 // swing, unchanged) sends the whip there: it stretches out to the spot as a marked crack flies (Reach), latches,
-// gives a small hop if you are standing, and from then it is the rope every snag becomes (core.zs: pendulum, reel,
+// waits for its start if you are standing (grip or jump, below; both off: the old small hop), and from then it is the rope every snag becomes (core.zs: pendulum, reel,
 // pump, climb, let go, momentum kept).
 //
 // Anchor (surveys/05_GRAPPLE_ROPES.md 3.1): the trace gives no normal, so it is rebuilt -- a ceiling's from its
@@ -35,12 +35,43 @@
 // the old proof never took the key's road; its one key run logged the ray held 1 tic of 165). Now cleared only when
 // neither hand has the whip weapon.
 //
+// THE BEAM WINS (owner 2026-11-03: "the entire point of the offhand beam is that it takes precedence over any
+// actor-lock-on ... we use the offhand beam to mark where we snag the whip, and the whip crack snags that spot").
+// Switch rsqwp_swing_beamwins ("Beam Wins Over Lock-On", on). While the beam is ON -- held (gold or red), or let go
+// within BEAM_MEMORY (35 tics, 1 s) of a GOLD spot (a beam that ended red forgets its spot) -- the crack's every
+// other way to pick a target stands down (BeamWins): the trigger's MARK on a monster / pickup / switch (Mark), the
+// LOCKED crack that flies to it (Crack), the edge snag at the tip (Crack's WrapNear and Collide's Snag), the crack's
+// own target and fetch round the tip (Crack: no actor at all; owner 12:06 "traversal / offhand target first, then
+// actors"), a thrown lasso (it flies into the air), and a monster the whip is still WRAPPED round lets go (Lash: a
+// wrap blocks every crack). The thong flying to the spot strikes nothing on the way (Collide, casting). So the crack
+// goes to the gold spot, or, red, is a plain crack (a switch it lands on still throws). No beam: every path as before. Off: the old 6-tic grace, no stand-down.
+//
+// NOT A TARGET (owner 11:35: "whip needs to not target bits, just enemies, weapons, items, and our offhand traversal
+// marker"): RSQ Gun Bonsai VR's Kill Rewards bits (RSQ_KRHealthBit / ArmorBit / AmmoBit, any class named "RSQ_KR...")
+// by NAME (NotATarget), so the whip still loads alone: never marked, locked, fetched, lassoed or cracked onto.
+//
+// SNAGGED: THE ROPE HOLDS, THE OFF HAND IS FREE (rsqwp_swing_offfree, on). The engine's off-hand switch (slot keys,
+// `use`, RSQ TacticalRig's holster draw: PendingWeapon with the off-hand flag) and RSQ Wheel's instant equip touch the
+// off hand only; nothing of the whip lets go on them, and an off-hand gun's fire is never eaten (AimKey: only a free
+// off hand's). Off: a gun coming into the off hand of an aimed swing lets the rope go (core.SwingWatch).
+//
+// STARTING THE SWING (core.SwingStart, below). A latch FROM THE GROUND no longer hops or takes the rope up by itself
+// while either start is on: you stand on the rope until you start (or step off). Started once per rope:
+//   GRIP (rsqwp_swing_grip, on): an empty off hand closes (its grip key, or a grab bind) within GRIP_REACH (0.5 m) of
+//     the whip hand or the rope -- two hands on the whip. The rope is taken up GRIP_LIFT (24 units, 0.7 m: one hand-
+//     over-hand pull) more than the arc needs, at GRIP_PULL 6 a tic, with the old hop: you rise and swing from where
+//     you stood. That press never becomes a climbing hold (the next one does).
+//   JUMP (rsqwp_swing_jump, on; any off hand): +jump's press (BT_JUMP, its edge). Up: vel.z = max(vel.z, Jump Lift),
+//     so the engine's own floor jump that tic (JumpZ 8) is never stacked on (no double jump). Forward: Jump Push
+//     along where you FACE, the part pointing away from the anchor taken out (the rope would only eat it) and the push
+//     kept at full size along what is left -- added to the speed you had, all of it kept. Plus the arc's take-up.
 // Netplay: like the mark (Mark), the aim reads the local hand pose in play; single player is exact.
 extend class RSQWP_Whip
 {
 	const SWING_OFF = 4.0;       // the anchor this far off the surface, along its normal (map units)
 	const SWING_HOP = 6.0;       // a standing player is lifted this much on the latch (map units a tic; a jump is 8)
-	const AIM_GRACE = 6;         // the aim let go this many tics before the crack still casts (~0.17 s)
+	const AIM_GRACE = 6;         // the aim let go this many tics before the crack still casts (~0.17 s) -- Beam Wins off
+	const BEAM_MEMORY = 35;      // Beam Wins on: a gold spot is remembered this long after the beam is let go (1 s)
 	const AIM_STEP = 10.0;       // the dotted ray: a dot every this many map units ...
 	const AIM_FROM = 6.0;        // ... from this far out of the hand
 	const AIM_RED = 0xFF4030;    // the refused ray (the colour-blind palette's IDLE role takes it over)
@@ -51,6 +82,7 @@ extend class RSQWP_Whip
 	bool    aimFire[MAXPLAYERS]; // the off hand's FIRE key, eaten while the off hand is empty or a fist (Aim With Off-Hand Fire)
 	int     aimBy[NW];           // which button holds the ray: 1 the other hand's alt-fire, 2 the off hand's fire
 	bool    aimShown[NW];
+	int     aimBeamWas[NW];      // the beam's state last tic, for the log: 0 off, 1 held, 2 remembered
 	bool    aimOk[NW];           // this tic's ray ends on an anchor
 	Name    aimWhy[NW];          // what it hit: 'ceiling', 'wall', or why not
 	Vector3 aimEnd[NW];          // where the ray ends (map)
@@ -91,6 +123,30 @@ extend class RSQWP_Whip
 			&& RSQWP_Util.Flag("rsqwp_swing", true) && RSQWP_Util.Flag("rsqwp_on", true);
 	}
 
+	// ---- the beam wins -----------------------------------------------------------------------------------------
+
+	static bool BeamWinsOn() { return RSQWP_Util.Flag("rsqwp_swing_beamwins", true); }
+	int BeamMem() { return BeamWinsOn() ? BEAM_MEMORY : AIM_GRACE; }
+	bool BeamHeld(int i) { return aimHeld[i] && level.maptime - aimTic[i] <= 1; }
+	bool BeamMemory(int i) { return okTic[i] > 0 && level.maptime - okTic[i] <= BeamMem(); }
+
+	// The beam is on for this whip (held, or a gold spot let go of within BEAM_MEMORY) and Beam Wins Over Lock-On is on:
+	// no other target may be picked for the crack (see the top).
+	bool BeamWins(int i)
+	{
+		if (!BeamWinsOn() || !byWeapon[i] || !RSQWP_Util.Flag("rsqwp_swing", true) || !RSQWP_Util.Flag("rsqwp_on", true)) return false;
+		return BeamHeld(i) || BeamMemory(i);
+	}
+
+	// RSQ Gun Bonsai VR's Kill Rewards bits, by name (the whip loads without it): never a whip target.
+	static clearscope bool NotATarget(Actor a)
+	{
+		if (!a) return true;
+		String n = a.GetClassName();
+		n = n.MakeLower();
+		return n.IndexOf("rsq_kr") == 0;
+	}
+
 	// ---- the aim, every tic -----------------------------------------------------------------------------------
 
 	void AimTick(int i)
@@ -104,6 +160,11 @@ extend class RSQWP_Whip
 		{
 			if (aimShown[i]) ClearAim(i);
 			aimOk[i] = false;
+			// the beam's memory (Beam Wins): logged as it starts and as it ends
+			int bw = BeamWins(i) ? 2 : 0;
+			if (bw != aimBeamWas[i] && aimBeamWas[i] != 0 && RSQWP_Util.Flag("rsqwp_debug", false))
+				Console.Printf("T_WPW %d BEAM t%d %s", i, level.maptime, bw == 2 ? String.Format("let go: the gold spot is remembered %d tics", BeamMem()) : "off: every target path as before");
+			aimBeamWas[i] = bw;
 			// the whip weapon is gone from BOTH hands: no key stays held. (Not this hand's own tic: the hand without
 			// the whip is never tended, and clearing on it took the key away the tic after the press.)
 			if (pmo && level.maptime - aimTic[pn * 2] > 1 && level.maptime - aimTic[pn * 2 + 1] > 1) { aimBtn[pn] = false; aimFire[pn] = false; }
@@ -179,6 +240,10 @@ extend class RSQWP_Whip
 			okTic[i] = level.maptime; okAt[i] = at; okHit[i] = hit; okN[i] = n; okPlane[i] = plane;
 			okSec[i] = d.HitSector;
 		}
+		else if (BeamWinsOn()) okTic[i] = -100;   // the beam's last word is red: no gold spot is remembered
+		if (BeamWinsOn() && aimBeamWas[i] != 1 && RSQWP_Util.Flag("rsqwp_debug", false))
+			Console.Printf("T_WPW %d BEAM t%d on (held): lock-on, marks, edge snag and Assist's reach stand down", i, level.maptime);
+		aimBeamWas[i] = 1;
 		if (changed && RSQWP_Util.Flag("rsqwp_debug", false))
 		{
 			if (ok) Console.Printf("T_WPW %d AIM t%d VALID %s at (%.0f %.0f %.0f) %.1f m, normal (%.2f %.2f %.2f) (survey's sign %s), anchor (%.0f %.0f %.0f)", i, level.maptime, why, hit.x, hit.y, hit.z, aimM[i], n.x, n.y, n.z, nSurvey >= 0 ? "faces the hand" : "flipped", at.x, at.y, at.z);
@@ -252,14 +317,15 @@ extend class RSQWP_Whip
 	bool SwingCast(int i, PlayerPawn pmo, int hand, Vector3 at)
 	{
 		if (!byWeapon[i] || !RSQWP_Util.Flag("rsqwp_swing", true)) return false;
-		bool held = aimHeld[i] && level.maptime - aimTic[i] <= 1;
-		bool use = held ? aimOk[i] : (level.maptime - okTic[i] <= AIM_GRACE && okTic[i] > 0);
+		bool held = BeamHeld(i);
+		bool use = held ? aimOk[i] : BeamMemory(i);
 		if (!use)
 		{
 			if (held && RSQWP_Util.Flag("rsqwp_debug", false))
-				Console.Printf("T_WPW %d CAST t%d refused: %s (%.1f m) -- an ordinary crack", i, level.maptime, aimWhy[i], aimM[i]);
+				Console.Printf("T_WPW %d CAST t%d refused: %s (%.1f m) -- an ordinary crack%s", i, level.maptime, aimWhy[i], aimM[i], BeamWins(i) ? " (the beam still wins: no lock-on, no mark, no snag)" : "");
 			return false;
 		}
+		int memAge = level.maptime - okTic[i];
 		castAt[i] = okAt[i]; castHit[i] = okHit[i]; castN[i] = okN[i]; castSec[i] = okSec[i]; castPlane[i] = okPlane[i];
 		casting[i] = true;
 		okTic[i] = -100;                // one cast per aim
@@ -272,8 +338,9 @@ extend class RSQWP_Whip
 		Noise(pmo, 'crack', at, i);
 		Buzz(pmo, hand, 1.0, 5);
 		if (RSQWP_Util.Flag("rsqwp_debug", false))
-			Console.Printf("T_WPW %d CAST #%d t%d -> %s anchor (%.0f %.0f %.0f), %.1f m, flies %d tics", i, cracks[i], level.maptime,
-				castPlane[i] == 2 ? "ceiling" : "wall", castAt[i].x, castAt[i].y, castAt[i].z, RSQWP_Util.Metres(castAt[i] - h0), reachTic[i]);
+			Console.Printf("T_WPW %d CAST #%d t%d -> %s anchor (%.0f %.0f %.0f), %.1f m, flies %d tics (%s)", i, cracks[i], level.maptime,
+				castPlane[i] == 2 ? "ceiling" : "wall", castAt[i].x, castAt[i].y, castAt[i].z, RSQWP_Util.Metres(castAt[i] - h0), reachTic[i],
+				held ? "beam held" : String.Format("beam let go %d tics ago, remembered", memAge));
 		return true;
 	}
 
@@ -340,13 +407,145 @@ extend class RSQWP_Whip
 			double minLen = RSQWP_Util.Num("rsqwp_min_len", 32);
 			h.autoLen = (want >= minLen && want < h.ropeLen - 1) ? want : 0;
 			h.fullLen = h.autoLen > 0 ? 0 : h.ropeLen;
-			if (grounded) { hop = SWING_HOP; pmo.vel.z = max(pmo.vel.z, hop); }
+			// THE START WAITS (owner 11-03: snag, then grip or jump to begin): from the ground, with a start on, no hop
+			// and no take-up yet -- the take-up is kept for the start (core.SwingStart). In the air it swings at once.
+			if (grounded && RSQWP_Core.StartsOn())
+			{
+				h.startLen = h.autoLen;
+				h.autoLen = 0;
+				h.fullLen = h.ropeLen;
+				h.waiting = true;
+			}
+			else if (grounded) { hop = SWING_HOP; pmo.vel.z = max(pmo.vel.z, hop); }
 		}
 		Noise(pmo, 'crack', at, i);
 		Buzz(pmo, hand, 0.7, 6);
 		if (RSQWP_Util.Flag("rsqwp_debug", false))
-			Console.Printf("T_WPW %d SWING LATCH t%d %s at (%.0f %.0f %.0f), rope %.0f, take-up to %.0f, hop %.0f, player (%.0f %.0f %.0f) vel (%.1f %.1f %.1f)", i, level.maptime,
-				h.anchorPlane == 2 ? "ceiling" : "wall", h.anchor.x, h.anchor.y, h.anchor.z, h.ropeLen, h.autoLen, hop, pmo.pos.x, pmo.pos.y, pmo.pos.z, pmo.vel.x, pmo.vel.y, pmo.vel.z);
+			Console.Printf("T_WPW %d SWING LATCH t%d %s at (%.0f %.0f %.0f), rope %.0f, take-up to %.0f, hop %.0f, player (%.0f %.0f %.0f) vel (%.1f %.1f %.1f)%s", i, level.maptime,
+				h.anchorPlane == 2 ? "ceiling" : "wall", h.anchor.x, h.anchor.y, h.anchor.z, h.ropeLen, h.autoLen, hop, pmo.pos.x, pmo.pos.y, pmo.pos.z, pmo.vel.x, pmo.vel.y, pmo.vel.z,
+				h.waiting ? String.Format(" -- waiting for a start (grip / jump), its take-up %.0f", h.startLen) : "");
 		Halt(i);
+	}
+}
+
+// ---- the snagged state and the starts (core's side: it runs the rope, after the player's think) ---------------
+extend class RSQWP_Core
+{
+	const GRIP_LIFT = 24.0;      // a grip start takes the rope up this much more than the arc needs (map units, ~0.7 m): one pull
+	const GRIP_PULL = 6.0;       // ... at this pace a tic (a hand-over-hand pull, ~6 m/s for a few tics; the floor's take-up too)
+	const GRIP_REACH_M = 0.5;    // the off hand closes within this of the whip hand or the rope (metres)
+
+	bool jumpWas[MAXPLAYERS], gripWas[MAXPLAYERS], offFreeWas[MAXPLAYERS];
+	bool jumpEdge[MAXPLAYERS], gripEdge[MAXPLAYERS];
+
+	static bool StartsOn() { return RSQWP_Util.Flag("rsqwp_swing_grip", true) || RSQWP_Util.Flag("rsqwp_swing_jump", true); }
+
+	// once a tic per player (Swing): the jump press (BT_JUMP's edge) and the off hand's grip press (its key, or a grab bind)
+	void SwingInput(PlayerPawn pmo, int pn)
+	{
+		bool j = pmo.player && (pmo.player.cmd.buttons & BT_JUMP);
+		let w = RSQWP_Whip.Get();
+		bool g = grabHeld[pn * 2 + 1] || (w && w.offGripKey[pn]);
+		jumpEdge[pn] = j && !jumpWas[pn];
+		gripEdge[pn] = g && !gripWas[pn];
+		jumpWas[pn] = j; gripWas[pn] = g;
+	}
+
+	// OFF HAND FREE WHILE SNAGGED. On (the default): nothing here -- the off hand may take any gun. Off: an aimed swing's
+	// rope is let go the tic a gun (anything not an empty hand, swing.zs OffFree) comes into the off hand.
+	bool SwingWatch(RSQWP_Hook h, PlayerPawn pmo, int pn)
+	{
+		bool free = RSQWP_Whip.OffFree(pmo.player);
+		bool was = offFreeWas[pn];
+		offFreeWas[pn] = free;
+		if (h.phaseAge <= 1 || !h.whipped || free == was) return false;
+		if (RSQWP_Util.Flag("rsqwp_debug", false))
+			Console.Printf("T_WPW SNAGGED t%d off hand now %s: %s", level.maptime, pmo.player.OffhandWeapon ? pmo.player.OffhandWeapon.GetClassName() : 'none',
+				free ? "empty again" : (RSQWP_Util.Flag("rsqwp_swing_offfree", true) || !h.aimed ? "the rope holds (Off Hand Free While Snagged)" : "lets go (Off Hand Free While Snagged is off)"));
+		if (!free && h.aimed && !RSQWP_Util.Flag("rsqwp_swing_offfree", true)) { held[pn * 2 + h.hand] = false; LetGo(h, true); return true; }
+		return false;
+	}
+
+	// Is the off hand within GRIP_REACH_M of the whip hand or of the rope (the whip in both hands)?
+	bool GripNear(RSQWP_Hook h, PlayerPawn pmo, int pn, out double m)
+	{
+		m = 99;
+		bool ok; Vector3 off;
+		[ok, off] = RSQWP_Climb.HandOffset(pmo, pn, 1);
+		if (!ok) return false;
+		Vector3 hp = pmo.Pos + off;
+		Vector3 wh = RSQWP_Util.HandPos(pmo, h.hand);
+		double dh = RSQWP_Util.Metres(hp - wh);
+		double dr = RSQWP_Util.Metres(hp - (AttachPoint(pmo) + (h.anchor - AttachPoint(pmo)) * clamp(((hp - AttachPoint(pmo)) dot (h.anchor - AttachPoint(pmo))) / max(0.0001, (h.anchor - AttachPoint(pmo)) dot (h.anchor - AttachPoint(pmo))), 0.0, 1.0)));
+		m = min(dh, dr);
+		return m <= GRIP_REACH_M;
+	}
+
+	// THE START (see swing.zs's top): once per rope, by the off hand's grip (an aimed swing, the off hand empty) or by a
+	// jump (any whip rope, any off hand). True when it started this tic.
+	bool SwingStart(RSQWP_Hook h, PlayerPawn pmo, int pn, bool grounded, double minLen)
+	{
+		if (h.started || !h.whipped || h.heavy || h.victim || !pmo.player) return false;
+		bool jump = jumpEdge[pn] && RSQWP_Util.Flag("rsqwp_swing_jump", true);
+		double gm = 99;
+		bool grip = !jump && h.aimed && gripEdge[pn] && RSQWP_Util.Flag("rsqwp_swing_grip", true) && RSQWP_Whip.OffFree(pmo.player) && GripNear(h, pmo, pn, gm);
+		if (!jump && !grip)
+		{
+			if (gripEdge[pn] && h.aimed && RSQWP_Util.Flag("rsqwp_debug", false))
+				Console.Printf("T_WPW START t%d grip not taken: off hand %s, %.2f m from the whip", level.maptime, RSQWP_Whip.OffFree(pmo.player) ? "empty" : "holds a gun", gm);
+			return false;
+		}
+		h.started = true;
+		h.waiting = false;
+		Vector3 v0 = pmo.vel;
+		double len0 = h.ropeLen;
+		// the take-up: what the arc needs to clear the floor (kept from the latch), and a grip's GRIP_LIFT on top
+		double want = h.startLen;
+		if (grip)
+		{
+			double g = max(minLen, min(h.ropeLen, (h.anchor - AttachPoint(pmo)).Length()) - GRIP_LIFT);
+			want = want > 0 ? min(want, g) : g;
+		}
+		if (want >= minLen && want < h.ropeLen - 1) { h.autoLen = want; h.fullLen = 0; }
+		h.takeRate = grip ? GRIP_PULL : 0;
+		Vector3 fd = (0, 0, 0);
+		if (grip)
+		{
+			if (grounded) pmo.vel.z = max(pmo.vel.z, RSQWP_Whip.SWING_HOP);
+			// this press is the start, not a climbing hold (the next press climbs)
+			wantGrip[pn * 2 + 1] = false;
+			if (h.gripHand == 1) h.gripHand = -1;
+		}
+		else
+		{
+			double lift = clamp(RSQWP_Util.Num("rsqwp_swing_jumplift", 10), 0.0, 30.0);
+			double push = clamp(RSQWP_Util.Num("rsqwp_swing_jumppush", 8), 0.0, 30.0);
+			// up: never stacked on the engine's own floor jump of this tic (it has already set vel.z = JumpZ)
+			pmo.vel.z = max(pmo.vel.z, lift);
+			// forward: where you face, its part away from the anchor taken out, the push kept whole along the rest
+			Vector3 f = (Actor.AngleToVector(pmo.Angle, 1), 0);
+			Vector3 r = AttachPoint(pmo) - h.anchor;
+			double rl = r.Length();
+			if (rl > 1)
+			{
+				Vector3 n = r / rl;
+				double outw = f dot n;
+				if (outw > 0)
+				{
+					Vector3 t = f - n * outw;
+					if (t.Length() > 0.2) f = t.Unit();
+				}
+			}
+			fd = f;
+			pmo.vel += f * push;
+		}
+		CapSpeed(pmo);
+		Carry(pmo);
+		if (RSQWP_Util.Flag("rsqwp_debug", false))
+			Console.Printf("T_WPW START t%d by %s%s: rope %.0f, take-up to %.0f; vel (%.1f %.1f %.1f) %.1f flat %.1f -> (%.1f %.1f %.1f) %.1f flat %.1f; push dir (%.2f %.2f %.2f); off hand %s",
+				level.maptime, jump ? "JUMP" : "GRIP", grip ? String.Format(" (%.2f m from the whip)", gm) : (grounded ? " from the ground" : " in the air"), len0, h.autoLen,
+				v0.x, v0.y, v0.z, v0.Length(), v0.xy.Length(), pmo.vel.x, pmo.vel.y, pmo.vel.z, pmo.vel.Length(), pmo.vel.xy.Length(), fd.x, fd.y, fd.z,
+				pmo.player.OffhandWeapon ? pmo.player.OffhandWeapon.GetClassName() : 'none');
+		return true;
 	}
 }

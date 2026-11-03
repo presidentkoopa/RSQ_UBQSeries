@@ -33,6 +33,12 @@ OptionMenu "RSQWP_Options"
 	Option "Aimed Swing (other hand's alt-fire aims)", "rsqwp_swing", "OnOff"
 	Slider "Whip Swing Reach (m)", "rsqwp_swing_reach", 3, 20, 0.5, 1
 	Option "Aim With Off-Hand Fire", "rsqwp_swing_ohfire", "OnOff"
+	Option "Beam Wins Over Lock-On", "rsqwp_swing_beamwins", "OnOff"
+	Option "Off Hand Free While Snagged", "rsqwp_swing_offfree", "OnOff"
+	Option "Off-Hand Grip Starts Swing", "rsqwp_swing_grip", "OnOff"
+	Option "Jump Starts Swing", "rsqwp_swing_jump", "OnOff"
+	Slider "Jump Lift", "rsqwp_swing_jumplift", 0, 20, 1, 0
+	Slider "Jump Push", "rsqwp_swing_jumppush", 0, 20, 1, 0
 	Option "Throws Switches", "rsqwp_whip_lines", "OnOff"
 	Option "Fetches Pickups", "rsqwp_whip_fetch", "OnOff"
 	Option "Leash (Lock)", "rsqwp_whip_leash", "OnOff"
@@ -70,7 +76,7 @@ OptionMenu "RSQWP_Tuning"
 	Slider "Whip Air Drag", "rsqwp_whip_drag", 0.0, 4.0, 0.25, 2
 	Slider "Hand Smoothing (tics, 0 = off)", "rsqwp_whip_smooth", 0.0, 2.0, 0.1, 1
 	StaticText " "
-	Slider "Reel Speed", "rsqwp_reel_speed", 2, 30, 1, 0
+	Slider "Reel Speed", "rsqwp_reel_climb", 1, 30, 1, 0
 	Slider "Shortest Rope", "rsqwp_min_len", 16, 128, 8, 0
 	Slider "Top Speed", "rsqwp_max_speed", 10, 60, 1, 0
 	Slider "Swing Lean (stick)", "rsqwp_pump", 0.0, 1.0, 0.05, 2

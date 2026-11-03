@@ -409,11 +409,17 @@ class RSQWP_Core : EventHandler
 		if (cap > 0 && s > cap) pmo.vel *= cap / s;
 	}
 
+	// THE REEL'S RATE: Reel Speed (rsqwp_reel_climb) x the perk factor, eased in over REEL_EASE tics of holding
+	const REEL_EASE = 6;
+	static double ReelFull(PlayerPawn pmo) { return max(0.25, RSQWP_Util.Num("rsqwp_reel_climb", 3)) * RSQWP_Perks.Factor(pmo, 'reel'); }
+	static double ReelRate(RSQWP_Hook h, PlayerPawn pmo) { return ReelFull(pmo) * min(1.0, (h.reelTics + 1.0) / REEL_EASE); }
+
 	Vector3 lastPos[MAXPLAYERS], lastSet[MAXPLAYERS];   // where the rope left him, and how fast
 	bool tracked[MAXPLAYERS];
 
 	void Swing(PlayerPawn pmo, int pn)
 	{
+		SwingInput(pmo, pn);     // swing.zs: this tic's jump and off-grip presses (the starts)
 		bool any = false;
 		bool truthTaken = false;
 		bool roped = false;
@@ -434,16 +440,25 @@ class RSQWP_Core : EventHandler
 			bool grounded = pmo.Pos.z <= pmo.floorz + 0.5 || pmo.bOnMobj;
 			double minLen = RSQWP_Util.Num("rsqwp_min_len", 32);
 			double maxLen = h.range * 1.25;
+			// swing.zs: a gun into the off hand lets go only with Off Hand Free While Snagged off; grip / jump start the swing
+			if (SwingWatch(h, pmo, pn)) continue;
+			if (SwingStart(h, pmo, pn, grounded, minLen)) grounded = pmo.Pos.z <= pmo.floorz + 0.5 || pmo.bOnMobj;
 
 			// REEL: holding the bind takes the rope in. The press that fired keeps
 			// reeling the moment it latches (hold = zip); a new press reels only once
 			// it outlasts a tap, so a tap to let go does not tug first.
 			h.reelHeld = held[i] && (pressFired[i] || level.maptime - pressTic[i] > RSQWP_A11y.Tap(TAP_TICS));
+			// A CLIMB, NOT A WINCH (owner 11-03: "slower whip reel in, too fast now, supposed to simulate climbing"): Reel
+			// Speed (rsqwp_reel_climb, 3 a tic, ~3 m/s; it was 12) reached over REEL_EASE tics from the press
+			double reelRate = ReelRate(h, pmo);
 			if (h.reelHeld)
 			{
+				h.fullLen = 0;           // a reel chooses the length: the launch's pay-back is over (rig 11-03: it paid the climb back out)
+				h.reelTics++;
 				h.ropeLen = min(h.ropeLen, d);
-				h.ropeLen = max(minLen, h.ropeLen - RSQWP_Util.Num("rsqwp_reel_speed", 12) * RSQWP_Perks.Factor(pmo, 'reel'));
+				h.ropeLen = max(minLen, h.ropeLen - reelRate);
 			}
+			else h.reelTics = 0;
 			// TAKE-UP (swing.zs SwingLatch): an aimed swing's rope too long for its arc to clear the floor is taken in on
 			// its own, as a reel at TAKEUP a tic, to autoLen -- the swing that lifts a standing player. Then it is free.
 			bool takeUp = h.autoLen > 0 && h.ropeLen > h.autoLen + 0.5;
@@ -451,7 +466,7 @@ class RSQWP_Core : EventHandler
 			if (takeUp && !h.reelHeld)
 			{
 				h.ropeLen = min(h.ropeLen, d);
-				h.ropeLen = max(h.autoLen, h.ropeLen - TAKEUP);
+				h.ropeLen = max(h.autoLen, h.ropeLen - (h.takeRate > 0 ? h.takeRate : TAKEUP));
 			}
 			bool reeling = h.reelHeld || takeUp;
 			// THE LAUNCH (swing.zs): an aimed swing's rope is taut from the latch, so the hop or a step toward the anchor
@@ -549,7 +564,7 @@ class RSQWP_Core : EventHandler
 				// and keeps what the projection gives.
 				double vt = v.Length();
 				Vector3 corr = a + pa / pd * h.ropeLen - p;
-				double cmax = RSQWP_Util.Num("rsqwp_reel_speed", 12) * RSQWP_Perks.Factor(pmo, 'reel') + 8;
+				double cmax = ReelFull(pmo) + 8;
 				double cl = corr.Length();
 				if (cl > cmax) corr *= cmax / cl;
 				v += corr;
@@ -562,7 +577,7 @@ class RSQWP_Core : EventHandler
 			if (reeling)
 			{
 				double vin = -(v dot n);
-				double vmax = (h.reelHeld ? RSQWP_Util.Num("rsqwp_reel_speed", 12) * RSQWP_Perks.Factor(pmo, 'reel') : TAKEUP) * 1.5;
+				double vmax = (h.reelHeld ? max(reelRate, 1.0) : (h.takeRate > 0 ? h.takeRate : TAKEUP)) * 1.5;
 				if (vin > vmax) v += n * (vin - vmax);
 			}
 

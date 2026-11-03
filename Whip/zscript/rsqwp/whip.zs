@@ -654,6 +654,7 @@ class RSQWP_Whip : EventHandler
 			Deliberate(i, pmo, hand, d, hs);
 			if (byWeapon[i]) Mark(i, pmo, hand); else Lock(i, pmo, hand);
 			Reach(i, pmo, hand);
+			if (wstate[i] == ST_IDLE) continue;     // it latched (an aimed swing: SwingLatch halts it) -- the laid-out thong strikes nothing more
 			HoldWrap(i, pmo, hand);
 			CoilTic(i, hs);
 			if (lassoOn[i])
@@ -1585,7 +1586,7 @@ class RSQWP_Whip : EventHandler
 		double handZ = handAt.z;
 		double hitSpd = RSQWP_Util.Num("rsqwp_whip_crack", 20) * 0.45;
 		bool snagOn = Unlock(pmo, G_SNAG, "rsqwp_whip_snag", true) && wstate[i] == ST_OUT && !casting[i]
-			&& !(aimOk[i] && aimHeld[i] && level.maptime - aimTic[i] <= 1);   // the Snag node under Gun Bonsai VR; not on the way to an aimed anchor, nor while the ray is on one (the crack goes there)
+			&& !(aimOk[i] && aimHeld[i] && level.maptime - aimTic[i] <= 1) && !BeamWins(i);   // the Snag node under Gun Bonsai VR; not on the way to an aimed anchor, nor while the ray is on one (the crack goes there)
 		int nStop = 0;
 		int kc = int(cp[i]);
 		for (int k = 0; k < NP; k++) stopped[k] = k <= kc;
@@ -1610,7 +1611,9 @@ class RSQWP_Whip : EventHandler
 					// (not the monster it is wrapped round: the thong is laid along to it and would sting it every
 					// 12 tics of a swing -- rig 10-31, and each hurt broke its pin in Pain)
 					bool lash = level.maptime <= lashUntil[i] && spd >= hitSpd * 0.5;
-					if (tr.Results.HitActor != wrapOn[i])
+					// (nor while the thong flies to an aimed anchor, nor at all while the beam is on: the beam's crack goes to
+					// the spot, not to what the thong passes -- owner 12:06, "traversal / offhand target first, then actors")
+					if (tr.Results.HitActor != wrapOn[i] && !casting[i] && !BeamWins(i))
 						Hit(i, pmo, hand, tr.Results.HitActor, tr.Results.HitPos, lash ? crackV[i] : spd, lash);
 				}
 				// a floor or a ceiling crossed: the sub-steps already met it (flo/cei) and the clamp below puts the link on
@@ -1713,6 +1716,7 @@ class RSQWP_Whip : EventHandler
 			{
 				let a = it.thing;
 				if (!a || a == pmo || a.player || a.bDestroyed) continue;
+				if (NotATarget(a)) continue;     // Kill Rewards bits (swing.zs)
 				bool mon = a.bSHOOTABLE && !a.bNONSHOOTABLE && a.Health > 0 && !a.bMISSILE && !(a is "RSQWP_Rope");
 				let inv = Inventory(a);
 				bool item = inv && !inv.Owner && inv.bSPECIAL;
@@ -1782,7 +1786,10 @@ class RSQWP_Whip : EventHandler
 	// next. Let go of the trigger and the mark is lost. The next crack flies to it (Crack, Reach).
 	void Mark(int i, PlayerPawn pmo, int hand)
 	{
-		if (!markHeld[i])
+		// THE BEAM WINS (swing.zs): while it is on, the trigger marks nothing (and what was marked is let go)
+		if (BeamWins(i) && (lockOn[i] || markLine[i] || lockLine[i]) && RSQWP_Util.Flag("rsqwp_debug", false))
+			Console.Printf("T_WPW %d MARK t%d dropped: the beam wins (was %s)", i, level.maptime, lockOn[i] ? String.Format("%s", lockOn[i].GetClassName()) : "a line");
+		if (!markHeld[i] || BeamWins(i) || casting[i])
 		{
 			lockOn[i] = null; lockLine[i] = false; lockLeft[i] = 0; markLine[i] = null; markNext[i] = false; lock2[i] = null;
 			return;
@@ -1800,6 +1807,7 @@ class RSQWP_Whip : EventHandler
 			if (!a || a == pmo || a.player || a.bDestroyed) continue;
 			bool mon = a.bSHOOTABLE && !a.bNONSHOOTABLE && a.Health > 0 && !a.bMISSILE && a.bISMONSTER && !(a is "RSQWP_Rope");
 			if (a.bINVISIBLE || a.sprite == Actor.GetSpriteIndex('TNT1')) continue;   // a spawner or a marker, not a thing to see
+			if (NotATarget(a)) continue;     // Kill Rewards bits (swing.zs)
 			let inv = Inventory(a);
 			bool item = inv && !inv.Owner && inv.bSPECIAL;
 			if (!mon && !item) continue;
@@ -2307,13 +2315,18 @@ class RSQWP_Whip : EventHandler
 		while (it.Next())
 		{
 			let a = it.thing;
-			if (!a || a == pmo || a.player || a.Health <= 0 || !a.bSHOOTABLE || a.bNONSHOOTABLE || a.bMISSILE || !a.bISMONSTER) continue;
+			if (!a || a == pmo || a.player || a.Health <= 0 || !a.bSHOOTABLE || a.bNONSHOOTABLE || a.bMISSILE || !a.bISMONSTER || NotATarget(a)) continue;
 			Vector3 to = a.pos + (0, 0, a.height * 0.5) - org;
 			double d = to.xy.Length();
 			if (d < 8 || d > reach + a.radius) continue;
 			double ang = acos(clamp((to.xy / d) dot dir.xy, -1.0, 1.0)) - atan2(a.radius, d);
 			if (ang > bestA || !pmo.CheckSight(a, SF_IGNOREVISIBILITY | SF_IGNOREWATERBOUNDARY)) continue;
 			best = a; bestA = ang;
+		}
+		if (best && BeamWins(i))
+		{
+			if (RSQWP_Util.Flag("rsqwp_debug", false)) Console.Printf("T_WPW %d LASSO t%d not to %s: the beam wins", i, level.maptime, best.GetClassName());
+			best = null;
 		}
 		reachFor[i] = best;
 		reachPt[i] = best ? best.pos + (0, 0, best.height * 0.6) : org + dir * (wlen[i] / RSQWP_Util.PS());
@@ -2428,7 +2441,7 @@ class RSQWP_Whip : EventHandler
 		while (it.Next())
 		{
 			let a = it.thing;
-			if (!a || a == pmo || a.player || a.Health <= 0 || !a.bSHOOTABLE || a.bNONSHOOTABLE || a.bMISSILE || !a.bISMONSTER) continue;
+			if (!a || a == pmo || a.player || a.Health <= 0 || !a.bSHOOTABLE || a.bNONSHOOTABLE || a.bMISSILE || !a.bISMONSTER || NotATarget(a)) continue;
 			Vector3 to = a.pos + (0, 0, a.height * 0.5) - org;
 			double d = to.Length();
 			if (d < 8 || d > reach + a.radius) continue;
@@ -2590,6 +2603,11 @@ class RSQWP_Whip : EventHandler
 			Console.Printf("T_WPW %d t%d tip %.1f armed %d coil %.2f full %d hand %.1f pend %d tip(%.1f %.1f %.1f) ms %.3f", i, level.maptime, sp, armed[i], cp[i], fullTics[i], handSpd[i], pend[i], at.x, at.y, at.z, tickMs);
 		// whirling, wrapped round a monster, or flying out to one (Reach drags the outer links: rig 10-31, a lasso's
 		// throw cracked at 108 on its way out and the crack's speed then counted as the throw's): no crack
+		if (wrapOn[i] && BeamWins(i))
+		{
+			if (RSQWP_Util.Flag("rsqwp_debug", false)) Console.Printf("T_WPW %d WRAP t%d let go of %s: the beam wins", i, level.maptime, wrapOn[i].GetClassName());
+			EndWrap(i);
+		}
 		if (lassoOn[i] || wrapOn[i] || reachTic[i] > 0) { pend[i] = false; return; }
 		// a tic the tracking space turned (a snap or stick turn) never starts a crack (Carry already took the turn
 		// out of the thong; this is the belt to its braces)
@@ -2995,7 +3013,10 @@ class RSQWP_Whip : EventHandler
 		lashUntil[i] = level.maptime + 8;
 		// THE AIMED SWING (swing.zs): the other hand's ray on a valid spot -- the crack sends the whip there to swing from
 		if (SwingCast(i, pmo, hand, at)) return;
-		if ((RSQWP_Util.Opt("rsqwp_whip_aim", 1) == 2 || byWeapon[i]) && (lockOn[i] || lockLine[i]) && lockLeft[i] > 0)
+		// THE BEAM WINS (swing.zs BeamWins): the beam on and not gold -- no locked flight, no edge snag, no Assist reach
+		bool beam = BeamWins(i);
+		if (beam) { lockLeft[i] = 0; lockOn[i] = null; lockLine[i] = false; lock2[i] = null; markLine[i] = null; }
+		if (!beam && (RSQWP_Util.Opt("rsqwp_whip_aim", 1) == 2 || byWeapon[i]) && (lockOn[i] || lockLine[i]) && lockLeft[i] > 0)
 		{
 			// LOCK: the crack sends the thong out to the target, however far (up to the lock's
 			// range): it pays out over REACH_TICS and strikes on arrival (Reach)
@@ -3021,12 +3042,12 @@ class RSQWP_Whip : EventHandler
 		Buzz(pmo, hand, 1.0, 5);
 		bool dbg = RSQWP_Util.Flag("rsqwp_debug", false);
 		bool assist = RSQWP_Util.Opt("rsqwp_whip_aim", 1) == 1;
-		double reach = assist ? max(8.0, RSQWP_Util.Num("rsqwp_whip_assist", 40)) : 12.0;
+		double reach = (assist && !beam) ? max(8.0, RSQWP_Util.Num("rsqwp_whip_assist", 40)) : 12.0;
 		Vector3 vdir = vel.Length() > 0.01 ? ToMap(vel).Unit() : (0, 0, 0);
 
 		// a crack right by an EDGE above the hand (a beam's underside, a ledge's lip) wraps round it,
 		// as a tip hitting it would: the loop arriving next to a beam throws the popper over it
-		if (Unlock(pmo, G_SNAG, "rsqwp_whip_snag", true) && wstate[i] == ST_OUT && wmode[i] == 0)
+		if (!beam && Unlock(pmo, G_SNAG, "rsqwp_whip_snag", true) && wstate[i] == ST_OUT && wmode[i] == 0)
 		{
 			Vector3 h0 = RSQWP_Util.HandPos(pmo, hand);
 			if (at.z > h0.z + SnagAbove(pmo) && WrapNear(i, pmo, hand, at)) return;
@@ -3037,14 +3058,16 @@ class RSQWP_Whip : EventHandler
 		let mark = Actor.Spawn("RSQWP_WhipTip", at, NO_REPLACE);
 		Actor best = null;
 		double bestD = reach;
-		if (mark)
+		// (the beam on: no actor is the crack's target, not even one at the tip -- owner 12:06, "traversal / offhand
+		// target first, then actors")
+		if (mark && !beam)
 		{
 			let it = BlockThingsIterator.Create(mark, reach + 64);
 			while (it.Next())
 			{
 				let a = it.thing;
 				if (!a || a == pmo || a.player || a.Health <= 0 || !a.bSHOOTABLE || a.bNONSHOOTABLE || a.bMISSILE) continue;
-				if (a is "RSQWP_Rope" || a is "RSQWP_Hook" || a is "RSQWP_WhipTip") continue;
+				if (a is "RSQWP_Rope" || a is "RSQWP_Hook" || a is "RSQWP_WhipTip" || NotATarget(a)) continue;
 				// distance from the tip to the thing's body (a cylinder)
 				Vector2 dxy = a.pos.xy - at.xy;
 				double hd2 = max(0.0, dxy.Length() - a.radius);
@@ -3062,9 +3085,10 @@ class RSQWP_Whip : EventHandler
 		if (RSQWP_Util.Flag("rsqwp_whip_lines", true)) lines = Switches(pmo, at, reach);
 		// a loose pickup within reach is flicked to you
 		int fetched = 0;
-		if (RSQWP_Util.Flag("rsqwp_whip_fetch", true) && mark) fetched = Fetch(pmo, mark, reach * 1.5);
-		if (dbg) Console.Printf("T_WPW %d CRACK #%d t%d speed %.1f at (%.0f %.0f %.0f) %.0f from the hand: target %s, lines %d, fetched %d",
-			i, cracks[i], level.maptime, tipSpd[i], at.x, at.y, at.z, (at - ToMap(hb[i])).Length(), best ? best.GetClassName() : 'none', lines, fetched);
+		if (RSQWP_Util.Flag("rsqwp_whip_fetch", true) && mark && !beam) fetched = Fetch(pmo, mark, reach * 1.5);
+		if (dbg) Console.Printf("T_WPW %d CRACK #%d t%d speed %.1f at (%.0f %.0f %.0f) %.0f from the hand: target %s, lines %d, fetched %d%s",
+			i, cracks[i], level.maptime, tipSpd[i], at.x, at.y, at.z, (at - ToMap(hb[i])).Length(), best ? best.GetClassName() : 'none', lines, fetched,
+			beam ? " (the beam wins: a plain crack, no actor target, no fetch, lock, mark or snag)" : "");
 	}
 
 	// Lines with a use (or impact) special whose wall the tip is within reach of: thrown, as if
@@ -3119,7 +3143,7 @@ class RSQWP_Whip : EventHandler
 		while (it.Next())
 		{
 			let inv = Inventory(it.thing);
-			if (!inv || inv.Owner || !inv.bSPECIAL) continue;
+			if (!inv || inv.Owner || !inv.bSPECIAL || NotATarget(inv)) continue;
 			if ((inv.pos - mark.pos).Length() > reach) continue;
 			Vector3 to = (pmo.pos.x, pmo.pos.y, pmo.pos.z + pmo.height * 0.4) - inv.pos;
 			double T = 16;

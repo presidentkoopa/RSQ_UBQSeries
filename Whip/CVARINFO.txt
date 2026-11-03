@@ -12,6 +12,12 @@ server float  rsqwp_whip_above    = 16;     // how far above the hand an edge mu
 server bool   rsqwp_swing         = true;   // Aimed Swing: the other hand's alt-fire aims a ray; a crack with it on a wall or ceiling swings from there (swing.zs)
 server float  rsqwp_swing_reach   = 9;      // Whip Swing Reach, metres (3..20): how far the aimed swing can anchor
 server bool   rsqwp_swing_ohfire  = true;   // Aim With Off-Hand Fire: whip in the main hand, off hand empty or a fist -- holding off-hand fire aims the ray (swing.zs)
+server bool   rsqwp_swing_beamwins = true;  // Beam Wins Over Lock-On: while the off-hand beam is held (or a gold spot let go of within 1 s), the crack goes there and nothing else -- no mark, lock-on, edge snag or Assist reach (swing.zs)
+server bool   rsqwp_swing_offfree  = true;  // Off Hand Free While Snagged: a gun into the off hand never lets go of the rope. Off: it lets go of an aimed swing
+server bool   rsqwp_swing_grip     = true;  // Off-Hand Grip Starts Swing: snagged from the ground, an empty off hand closing on the whip takes the rope up and starts the swing
+server bool   rsqwp_swing_jump     = true;  // Jump Starts Swing: snagged, a jump lifts you and pushes you on where you face, keeping all your speed (once a rope)
+server float  rsqwp_swing_jumplift = 10;    // Jump Lift: the jump start's upward speed, map units a tic (the engine's jump is 8; never stacked on it)
+server float  rsqwp_swing_jumppush = 8;     // Jump Push: the jump start's push where you face, map units a tic, added to the speed you had
 server bool   rsqwp_whip_lines    = true;   // the crack throws a switch (any use line) it lands on
 server bool   rsqwp_whip_fetch    = true;   // the crack flicks a loose pickup near it to you
 server bool   rsqwp_whip_leash    = true;   // Lock: a locked crack on a monster with the bind still held catches it and pulls it in
@@ -39,7 +45,7 @@ server float  rsqwp_whip_drag     = 1.0;    // air drag on the thong: share of i
 server float  rsqwp_whip_smooth   = 0.8;    // hand smoothing: the handle follows the hand this many tics behind on a steady motion (0 = raw)
 
 // on the rope (a snag)
-server float  rsqwp_reel_speed    = 12;     // holding the bind takes in this much rope per tic
+server float  rsqwp_reel_climb    = 3;      // Reel Speed (owner 11-03: "supposed to simulate climbing"): rope taken in a tic while the trigger is held, after a 6-tic ease-in (~3 m/s). Renamed from rsqwp_reel_speed (12) so a saved 12 does not stay
 server float  rsqwp_min_len       = 32;     // shortest rope (reeled all the way in)
 server float  rsqwp_max_speed     = 30;     // speed cap on the rope
 server float  rsqwp_pump          = 0.25;   // how hard the movement stick leans a swing

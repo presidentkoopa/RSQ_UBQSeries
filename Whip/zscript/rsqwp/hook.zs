@@ -60,6 +60,11 @@ class RSQWP_Hook : Actor
 	double autoLen;       // the rope is taken up to this length on its own (a swing from the ground), 0 none
 	double fullLen;       // the length it latched at (an aimed swing): the launch's take-in is paid back out on the way down
 	bool launch;          // an aimed swing just latched: the rope follows him in until it first pulls (core.Swing)
+	bool waiting;         // an aimed swing latched from the ground waits for its start (swing.zs: grip or jump)
+	double startLen;      // the take-up kept for that start (the arc clears the floor), 0 none
+	bool started;         // this rope's one start (grip or jump) is spent
+	int reelTics;         // tics the reel has been held (its ease-in, core.ReelRate)
+	double takeRate;      // the take-up's pace a tic, 0 core's TAKEUP (a grip start: one hand-over-hand pull)
 
 	Default
 	{

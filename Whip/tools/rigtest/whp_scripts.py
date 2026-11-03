@@ -171,7 +171,8 @@ def run(scen, hand='r'):
 
 
 # ---- THE AIMED SWING (swing.zs) on SWINGTST ------------------------------------------------------------------------
-SWINGS = ('aim', 'ceil', 'wallanchor', 'chain', 'refuse', 'snag', 'ohold', 'ohceil', 'ohgun')
+SWINGS = ('aim', 'ceil', 'wallanchor', 'chain', 'refuse', 'snag', 'ohold', 'ohceil', 'ohgun',
+          'beammon', 'bits', 'offgun', 'gripstart', 'jumpstart', 'reelclimb')
 # AIM WITH OFF-HAND FIRE (11-03): the off trigger pressed as the real controller presses it -- qz_ltrigger, which
 # QuestZDoom's input posts as KEY_LSHIFT (bound +oh_attack), so the key road the whip eats is the one tested (the
 # console's +oh_attack would set the button and skip it). qz_rgrip held + qz_ltrigger = KEY_LALT (+oh_altatk).
@@ -198,6 +199,7 @@ def pre_swing(extra=''):
     off = os.environ.get('OFFW', 'none')
     first = {'fist': 'use Fist; wait 40; switchhand 1; wait 50; ', 'gun': 'give Pistol; use Pistol; wait 40; switchhand 1; wait 50; '}.get(off, '')
     dbg = os.environ.get('WDBG', '1')
+    if os.environ.get('XCMD'): extra = os.environ['XCMD'] + '; ' + extra    # XCMD="rsqwp_swing_beamwins 0": any cvars first
     if os.environ.get('OHF'): extra = 'rsqwp_swing_ohfire %s; rsq_punch 1; ' % os.environ['OHF'] + extra   # OHF=0/1: the switch (and BD VR's off punch on)
     return ('vid_maxfps 35; wait 5; map SWINGTST; wait 40; god; notarget; %s; %s; wait 70; %suse RSQWP_WhipWeapon; wait 60; '
             'rsqwp_debug %s; whp_scen 11; whp_log 3; %s netevent whp_go; ' % (pose(R), pose(LREST, False).replace('qz_rhand', 'qz_lhand'), first, dbg, extra))
@@ -295,6 +297,80 @@ def swing_scen(scen):
         at(98, 'qz_rgrip 1'); at(100, 'qz_ltrigger 1')
         at(150, 'qz_ltrigger 0'); at(152, 'qz_rgrip 0')
         T = 180
+    elif scen == 'beammon':
+        # THE BEAM WINS (11-03): on A facing east, an imp (can't walk) 100 ahead, just under the beam's line to the pit's
+        # ceiling. The whip trigger held (TRIG=1: the mark lands on the imp); the off trigger's beam held from t5 to
+        # BEAMREL (default: through the crack; 28 = let go 15 tics before it), pitched BEAMPITCH (13: the ceiling, gold;
+        # -50: the floor, red); BEAM=0: no beam at all (today's lock-on). One crack (wind-up from t20)
+        at(0, 'netevent whp_tp 240 512 0'); at(1, 'netevent whp_summon 0 100 0')
+        if os.environ.get('HMDP'): at(0, hmd(float(os.environ['HMDP']), 0))     # the view pitched up (frames: imp and ceiling)
+        if os.environ.get('TRIG', '1') == '1': at(3, 'qz_rtrigger 1'); at(150, 'qz_rtrigger 0')
+        if os.environ.get('BEAM', '1') == '1':
+            at(5, lpose(float(os.environ.get('BEAMPITCH', '13')))); at(5, 'qz_ltrigger 1')
+            at(int(os.environ.get('BEAMREL', '150')), 'qz_ltrigger 0')
+        cracks.append(20)
+        T = 130
+    elif scen == 'bits':
+        # NOT A TARGET (11-03): Kill Rewards bits nearer than anything else. Phase 1 (whip trigger held t3-t90): bits at
+        # 150-170 ahead, a Clip at 230 and an imp at 260 -- the mark goes nearest first; one crack (from t20) flies to it.
+        # Phase 2 (no trigger): bits and a Stimpack laid round where the tip cracks, a plain crack (from t110) fetches
+        at(0, 'netevent whp_tp 64 512 0')
+        for k, (c, d, a) in enumerate([(0, 150, 0), (1, 160, 4), (2, 170, -4), (3, 230, 6), (2, 236, 7)]): at(1 + k, 'netevent whp_item %d %d %d' % (c, d, a))
+        at(5, 'netevent whp_summon 0 260 0')
+        at(3, 'qz_rtrigger 1'); at(90, 'qz_rtrigger 0')
+        cracks.append(20)
+        # round where the tip cracks (rig: about 80 ahead, 68 up), held in the air: a health, armour and ammo bit, a Stimpack
+        for k, (c, d, a, z) in enumerate([(0, 78, 0, 70), (1, 84, 6, 64), (2, 72, -6, 74), (4, 80, 4, 68)]): at(100 + k, 'netevent whp_item %d %d %d' % (c + 100 * z, d, a))
+        cracks.append(110)
+        T = 200
+    elif scen == 'offgun':
+        # SNAGGED, THE OFF HAND FREE (11-03): the empty off hand's beam marks the pit's ceiling (t5-t30), the crack snags it;
+        # at t60 a Pistol goes into the OFF hand (OFFR=0 the engine's switch: slot key / use / TacticalRig's holster draw;
+        # 1 RSQ Wheel's instant equip); a jump at t75 starts the swing; the off trigger fires the pistol t95-t150 while
+        # hanging. OFFFREE=0: Off Hand Free While Snagged off (the rope should let go at the switch)
+        at(0, 'netevent whp_tp 378 512 0')
+        if os.environ.get('OFFFREE'): at(0, 'rsqwp_swing_offfree %s' % os.environ['OFFFREE'])
+        at(5, lpose(13)); at(5, 'qz_ltrigger 1'); at(30, 'qz_ltrigger 0')
+        cracks.append(20)
+        at(60, 'netevent whp_offgun %s' % os.environ.get('OFFR', '0'))
+        at(75, '+jump'); at(78, '-jump')
+        at(95, lpose(0)); at(95, 'qz_ltrigger 1'); at(150, 'qz_ltrigger 0')
+        T = 200
+    elif scen == 'gripstart':
+        # GRIP STARTS THE SWING (11-03): beam (t5-t30), crack, snag from the lip, waiting; the left hand comes to the
+        # right (the whip's handle) at t60 and closes (qz_lgrip) t70-t90; GRIPX: the left hand's x (default beside the
+        # right hand; -0.30 = far off: refused). Let go (the whip hand's alt-fire) at GREL (default never)
+        at(0, 'netevent whp_tp 378 512 0')
+        at(5, lpose(13)); at(5, 'qz_ltrigger 1'); at(30, 'qz_ltrigger 0')
+        cracks.append(20)
+        gx = float(os.environ.get('GRIPX', '0.12'))
+        at(60, lpose(20, 0, gx, 1.32, -0.32))
+        at(70, 'qz_lgrip 1'); at(90, 'qz_lgrip 0')
+        if os.environ.get('GREL'): g = int(os.environ['GREL']); at(g, '+altattack'); at(g + 2, '-altattack')
+        T = int(os.environ.get('GT', '200'))
+    elif scen == 'jumpstart':
+        # JUMP STARTS THE SWING (11-03): beam (t5-t30), crack, snag from the lip, waiting; +jump at t70; let go (the whip
+        # hand's alt-fire) at JREL on the upswing; STEP=1 instead steps off the lip (stick t70-t80, today's start)
+        at(0, 'netevent whp_tp 378 512 0')
+        at(5, lpose(13)); at(5, 'qz_ltrigger 1'); at(30, 'qz_ltrigger 0')
+        cracks.append(20)
+        if os.environ.get('STEP') == '1': at(70, 'qz_lstick "0 1"'); at(80, 'qz_lstick "0 0"')
+        else: at(70, '+jump'); at(73, '-jump')
+        ja = int(os.environ.get('JAIRT', '0'))     # STEP=1 JAIRT=n: stepped off, a jump in mid-swing at tic n (the speed kept)
+        if ja: at(ja, '+jump'); at(ja + 3, '-jump')
+        jr = int(os.environ.get('JREL', '0'))
+        if jr: at(jr, '+altattack'); at(jr + 2, '-altattack')
+        T = int(os.environ.get('JT', '260'))
+    elif scen == 'reelclimb':
+        # THE REEL AS A CLIMB (owner 11:52): snag the pit's ceiling, step off the lip (t70), hang; the whip trigger held
+        # t130-t230 reels in (Reel Speed, eased in); whp_S's L column is the rope's length a tic
+        at(0, 'netevent whp_tp 378 512 0')
+        at(5, lpose(13)); at(5, 'qz_ltrigger 1'); at(30, 'qz_ltrigger 0')
+        cracks.append(20)
+        at(70, 'qz_lstick "0 1"'); at(73, 'qz_lstick "0 0"')
+        at(130, 'qz_rtrigger 1'); at(230, 'qz_rtrigger 0')
+        T = 260
+    if os.environ.get('CHASE'): at(int(os.environ['CHASE']), 'chase')    # CHASE=n: the chase camera from tic n (frames; after the aim)
     out = []
     for t in range(T):
         for c in ev.get(t, []): out.append(c + ';')
