@@ -12,22 +12,23 @@
 //
 // WHAT HAPPENS. A monster dies (WorldThingDied, bIsMonster, not one of Brutal Doom's boot-smear corpses). N bits
 // burst out of it 32 units up, thrown 1-6 sideways and up on a random heading:
-//   N  Range (default since 2026-11-03, the owner's own SoM ini): a random 1-3, x the boss fountain (3) for a BOSS.
-//      By Health: spawn health / (10 at Standard) rounded, at least 1 (x boss).
+//   N  By Health (default; the owner 2026-11-03 10:16, after trying Range: "I dropped a cyber demon and it shot out
+//      1000 bits"): spawn health / (10 at Standard) rounded, at least 1, x the boss fountain (3) for a BOSS.
+//      Range: a random 1-3 (x boss).
 //   each bit rolls the drop chance (50%, SoM's som_kr_per; a boss always drops every bit), then its KIND by the mix
 //   (Custom 15 / 20 / 65): health (KRBH, 25 health), armour (KRBA, 10 green armour, up to 250), ammo (KRBM, 5 rounds
 //   of any gun you carry, or of the gun in your hand). Bits vanish after 7 s (SoM's 35 tics x 7; 0 = never). Bits Fly
 //   to Me pulls bits inside a radius toward you (0 = off; the Magnet node raises it).
 //   The chance is rolled ONCE, per bit, in both modes (2026-11-03). SoM had two: som_kr_chance (Range, per kill) and
 //   som_kr_per (per bit); the owner ran chance 100 / per 50, and this patch had been rolling its one chance twice in
-//   Range (50% gave ~25%). An ordinary kill now rolls 1-3 bits, each at 50%.
+//   Range (50% gave ~25%). An imp (60 hp) now rolls 6 bits, each at 50%; a boss drops all it rolls.
 // "Kill Rewards: On" (rsqgb_kr_enabled) is the owner's "on by default: yes" row: bits from the first kill, no
 // unlock. Off: no bits at all. The path nodes (Bit Scavenger, Rich Bits, Magnet, Lucky Kill) read their levels here by
 // name once they exist; at level 0 everything is as SoM shipped it.
 //
 // CVARS (all server; defaults are the owner's own SoM settings, 2026-11-03; the raw numbers live on Tuning and Debug):
 //   rsqgb_kr_enabled   bool   on
-//   rsqgb_kr_mode      0 By Health, 1 Range                                    (1)
+//   rsqgb_kr_mode      0 By Health, 1 Range                                    (0)
 //   rsqgb_kr_amount    0 Few (1 per 20 health), 1 Standard (per 10), 2 Many (per 5), 3 Custom (rsqgb_kr_hp_ratio)
 //   rsqgb_kr_hp_ratio  int    10      (Custom)
 //   rsqgb_kr_boss      int    3       x bits for a boss (1, 3, 5)
@@ -144,7 +145,7 @@ class RSQ_KRHandler : EventHandler
 		bool boss = BossHere(a);
 		int mult = boss ? max(0, SVI("rsqgb_kr_boss", 3)) : 1;
 		int num = 0;
-		if (SVI("rsqgb_kr_mode", 1) == 1)
+		if (SVI("rsqgb_kr_mode", 0) == 1)
 		{
 			// Range. The chance is rolled per bit in Burst only (2026-11-03: it was rolled here too, so 50% gave ~25%;
 			// SoM's per-kill som_kr_chance at the owner's 100 = no roll here).
