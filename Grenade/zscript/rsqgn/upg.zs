@@ -56,6 +56,15 @@ class RSQGN_Service : Service
 			let g = RSQGN_Thrown(objectArg);
 			return g ? g.cooked : -1;
 		}
+		// the throw's facts, for a scorer (RSQ Score, 11-03): objectArg = a thrown grenade -> 1 / 0, -1 not a grenade
+		if (request == "teeth" || request == "skeet" || request == "impact")
+		{
+			let g = RSQGN_Thrown(objectArg);
+			if (!g) return -1;
+			if (request == "teeth") return g.teeth ? 1 : 0;
+			if (request == "skeet") return g.skeet ? 1 : 0;
+			return g.impactHit ? 1 : 0;
+		}
 		// "turned.by", objectArg = a monster: the player whose Infight or Charm grenade turned it (while it lasts), -1 not
 		// turned (RSQ Score's Civil War / Turncoat, 11-03: a kill by a monster you turned is yours, not everyone's Infighter)
 		if (request == "turned.by")

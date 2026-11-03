@@ -22,6 +22,9 @@ class RSQGN_Thrown : Actor
 	int skeetWin;		// SKEET WINDOW (Gun Bonsai VR patch): its level at the throw
 	int age, brightUntil;
 	int cooked;			// tics it cooked in the hand before the throw (SLOW BURN reads it)
+	bool teeth;			// its pin came out by the teeth (RSQGN_Service "teeth", for a scorer)
+	bool skeet;			// it was shot out of the air (Skeet; "skeet")
+	bool impactHit;		// an Impact grenade that burst on what it touched ("impact")
 	int kind;			// THE KINDS (Gun Bonsai VR patch, kinds.zs)
 	Vector3 prevVel;
 
@@ -69,7 +72,7 @@ class RSQGN_Thrown : Actor
 		// than its fall explains) or the floor -- once it is clear of the hand
 		if (kind == RSQGN_Kind.IMPACT && age >= 2 && (pos.z <= floorz + 0.5 || (vel - prevVel - (0, 0, -GetGravity())).Length() > 1.0))
 		{
-			RSQGN_Upg.Touch("impact", target, target);
+			impactHit = true;   // for a scorer (RSQGN_Service "impact"); the old touch on the pawn went nowhere
 			Detonate();
 			return;
 		}

@@ -383,7 +383,7 @@ class RSQGN_Handler : EventHandler
 			{
 				int lv = RSQGN_Upg.Lv(pmo, "Skeet");
 				best.dmgMult *= lv > 0 ? RSQGN_Upg.Num("Skeet.mult", lv, 1.0) : 1.0;
-				RSQGN_Upg.Touch("skeet", pmo, best);
+				best.skeet = true;   // for a scorer (RSQGN_Service "skeet"); the old touch on the grenade went nowhere
 				if (Debug(p)) Console.Printf("RSQGN skeet p%d t%d: shot in the air at (%.0f %.0f %.0f), x%.2f", n, level.maptime, best.pos.x, best.pos.y, best.pos.z, best.dmgMult);
 				best.Detonate();
 			}
@@ -398,7 +398,7 @@ class RSQGN_Handler : EventHandler
 			if (armed[n] || pmo.CountInv("RSQGN_Ammo") <= 0) return;
 			armed[n] = true;
 			teethPin[n] = e.Args[0] == 1;
-			if (teethPin[n] && RSQGN_Upg.Lv(pmo, "Teeth") >= 1) RSQGN_Upg.Touch("teeth", pmo, pmo);	// TEETH 1: Score's
+			// TEETH 1 "pays Score": the thrown grenade carries it (Throw), answered by name
 			pmo.A_StartSound("rsqgn/pin", CHAN_WEAPON, CHANF_OVERLAP);
 			RSQGN_Buzzer.Start(pmo, e.Args[0] == 1 ? h : 1 - h, 0.6, 5);
 			if (Debug(p)) Console.Printf("RSQGN pin out p%d t%d by %s (hand %d)", n, level.maptime, e.Args[0] == 1 ? "teeth" : "ring", h);
@@ -472,6 +472,7 @@ class RSQGN_Handler : EventHandler
 		int tl = teethPin[n] ? RSQGN_Upg.Lv(pmo, "Teeth") : 0;
 		if (tl >= 2) g.dmgMult *= RSQGN_Upg.Num("Teeth.mult", tl, 1.0);
 		g.skeetWin = RSQGN_Upg.Lv(pmo, "SkeetWindow");			// SKEET WINDOW
+		g.teeth = teethPin[n];									// for a scorer (RSQGN_Service "teeth")
 		g.cooked = spoon[n] ? level.maptime - cookTic[n] : 0;	// SLOW BURN reads it (RSQGN_Service "cooked")
 		g.kind = RSQGN_Kind.Owns(pmo, kind[n]) ? kind[n] : RSQGN_Kind.FRAG;	// THE KINDS
 		if (g.kind == RSQGN_Kind.FLASH) g.bBright = true;
