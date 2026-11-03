@@ -16,6 +16,7 @@ physics metrics the 11-02 rebuild is judged by:
     python3 whp_metrics.py LOG [LOG ...]        one row each
     python3 whp_metrics.py --swings 60,160 LOG   also the per-swing windows (start tics, 60 tics each)
     python3 whp_metrics.py --from 30 LOG         only from tic 30 (the whip is drawn at t0 and falls for ~15 tics)
+    python3 whp_metrics.py --to 157 LOG          only up to tic 157 (e.g. the jitter run's noisy hold, before its swing)
 """
 import math, re, sys
 
@@ -63,8 +64,8 @@ def lag(rows):
     return bl if best is not None else float('nan')
 
 
-def metrics(rows, swings=(), t0=2):
-    rows = [r for r in rows if r['t'] >= t0]
+def metrics(rows, swings=(), t0=2, t1=10 ** 9):
+    rows = [r for r in rows if t0 <= r['t'] <= t1]
     if not rows:
         return None
     N = len(rows)
@@ -111,12 +112,13 @@ def row(name, m):
 
 if __name__ == '__main__':
     a = sys.argv[1:]
-    swings = (); t0 = 2
+    swings = (); t0 = 2; t1 = 10 ** 9
     while a and a[0].startswith('--'):
         if a[0] == '--swings': swings = tuple(int(x) for x in a[1].split(','))
         elif a[0] == '--from': t0 = int(a[1])
+        elif a[0] == '--to': t1 = int(a[1])
         a = a[2:]
     for p in a:
-        m = metrics(parse(p), swings, t0)
+        m = metrics(parse(p), swings, t0, t1)
         name = re.sub(r'\.log$', '', p.split('/')[-1])
         print(row(name, m) if m else '%-14s no whp_M lines' % name)

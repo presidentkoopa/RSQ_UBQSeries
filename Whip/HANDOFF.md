@@ -1,6 +1,61 @@
 # HANDOFF -- RSQ_Whip (PROJECT WHIP), 2026-10-30
 
-## 2026-11-02 (latest): the lasso whirls fast and throws from anywhere -- rig only, not headset-confirmed
+## 2026-11-02 (latest): MIT's length, held coiled, uncoils for the attack -- rig only, not headset-confirmed
+Owner (headset): "That whip looks hella long dude, almost like a noodle ... we hold it coiled ... shorten the length
+of it and extend it during the attack?" Decisions: length = MIT's exactly; coiled at rest; ramped uncoil/reel.
+
+### Done (whip.zs; measured on the rig, qzd17.3, doom2 MAP01, BEFORE = 9c32f28a8 via `git archive`, same probe)
+- **Length = the reference's** (parsed from 3D_model_w_whip.xml): 25 links x 0.072 m = 1.8 m (was 20 x 6.4 room =
+  3.76 m). LINK = 0.072 x 34 = 2.448 room units. The joint's omega^2 = 114 / 2.448^4 = 3.175 /tic^2 = the reference's
+  k/(m l^2) = 3890 /s^2; c/k 13.31 tics. **Leather Damping default x1 (the reference; was x0.25).** The Whip Length
+  slider and rsqwp_whip_reach are gone. `LenMult()` (1) is the one place a "super whip" would double the links.
+- **The coil** (`cp` links coiled, rate `cps`, goal `cgoal`; CoilTic, CoilAt, LayOut, Sim): at rest 21 links lie on a
+  30 cm loop hung from the handle's tip (facing you, inward, stepped along the heading), pinned to it; a 4-link tail
+  (0.29 m) is simulated. Goal 0 (all out) on the wind-up (windTics >= 2), a swing, the lasso grip, a wrap, a flight,
+  Assist; back to rest after 30 quiet tics (tip < 3, handle tip < 1.2, nothing going on); NN when put away (then
+  Halt). The rate accelerates toward the goal and slows to land on it: payout max 3.5 links/tic, 1.0/tic^2 (~10
+  tics); reel max 1.2, 0.25/tic^2 (17 tics measured). Payout unpins the coil's last link (it was moving with the
+  coil, so it goes on at that speed); reel draws the next free link onto its loop place over one link's reel time.
+  While reeling, free links are capped at 5 room/tic. The wind-up guide's line starts at the coil's end. The crack
+  needs 2 tics fully out. Collide/Mend/Carry skip the coil's links.
+- **Lasso:** uncoils on the grip; the off hand's 5-link piece is taken over 6 tics once the thong is out (`lb`).
+- Fixes found on the way: Relax 12 passes, alternating (short links); a link floor-lifted by under 3 units is no
+  longer held fixed in the relax (it left a link 7x long at MAP01's lip: swing lerr max 632% -> 61%); a tracking-space
+  turn now needs BOTH controllers turned (one hand's yaw noise passed as sub-degree turns and cancelled the jitter
+  run's crack).
+
+| run (whp_metrics.py) | BEFORE 9c32f28a8 | AFTER |
+|---|---|---|
+| idle t>=30: tip max / KE max | 0.3 / 0.1 | 0.0 / 0.0 |
+| walk 3 s, hand still: tip max / KE / jerk max / link-in-wall tics / tip max dev (body frame) | 38.2 / 632 / 26.4 / 195 / 80.8 | 0.0 / 0.0 / 0.0 / 0 / 0.1 |
+| snap x4: tip max / KE / dev | 0.1 / 2.0 / 9.9 | 0.0 / 0.0 / 0.1 |
+| jitter, noisy hold t30-157: tip max / KE / jerk RMS | 0.3 / 1.7 / 0.43 | 0.8 / 2.9 / 0.36 |
+| sway: tip max / KE | 0.3 / 2.5 | 0.6 / 3.0 |
+| swing (2 wind-ups): cracks, peaks | 2, 87 / 80 (1 peak each) | 2, 43 / 44 (1 peak each, heavy, k 0.74) |
+| swing: lerr mean / max | 1.64 / 75% | 1.41 / 61% |
+| jitter whole (noisy swing): cracks | 1 | 1 (peak 43) |
+| wall (2 swings): cracks | 2 | 2 (37 / 37, 1 peak each) |
+| yank: mark, crack, wrap, yank | yes | crack 42 -> DoomImp 60->50, WRAP, YANK light (no BD token) |
+| lasso0..7: thrown / whirl mean / cracks after | (HEAD: 8/8, 28.5) | 8/8, 25.6-26.8, 0; let-go 26.4-27.4, all round |
+| lasso grip: tip speed first tics | 41 jolt | 1.3, ramps to 21 by t40 |
+| two whips, ms/tic mean | 0.79-0.92 | 1.02-1.08 |
+- Coil run (`whp_scripts.py coil`): wind-up t70 -> UNCOIL, tip under 13.7 while paying out (no crack); crack t87 at
+  42.5; quiet -> REEL t172, tip max 8.4 while reeling (26 before the reel cap), coiled by t189.
+- Frames (chase camera behind, `coilv`: the arm 0.25 m further out), scratchpad
+  `/tmp/claude-0/-home-claude/01ebc270-3953-5301-831b-c73a8b1320ca/scratchpad/`: `strip_coil_idle.png` (coil + tail
+  still, frames 150-190), `strip_coil_uncoil.png` (205-217: the coil rises with the hand and pays out behind),
+  `strip_coil_crack.png` (218-226), `strip_coil_reel.png` (305-345: the thong drawn back, the coil re-forms).
+- Script errors: doom2 + GunBonsai 0.10.6 + all RSQ pk3s: 0. Full order (01, 02, 03 2.0.3n from the BD22 repo,
+  04-07, GunBonsai 0.10.6, all RSQ): 4, all 02_BD22_VoxelPack's voxeldef. Every scenario run: 0.
+
+### Not done / open
+- Not headset-tested. Feel guesses: tail 0.29 m, coil 30 cm, payout 0.3 s, quiet 0.86 s, reel 0.5 s, reel cap 5.
+- A swing without the wind-up never uncoils, so never cracks (owner's spec: the wind-up pays out).
+- The 1.8 m crack is about half the old tip speed; damage and the heavy/light split still use 20 / 50 (heavy at 43).
+- The lasso's held piece is not on its line while the coil pays out (6-10 tics); probe "inner stretch" 20% mean.
+- Not re-run: snag/rope, flail into others, Assist style, left-handed (the coil hangs inward per hand).
+
+## 2026-11-02 (later still): the lasso whirls fast and throws from anywhere -- rig only, not headset-confirmed
 Owner: make the lasso fun "regardless of cost to us". After the physics rebuild it whirled at 6.5 room units/tic
 (was 22.5) and a let-go at a slow point dropped it.
 

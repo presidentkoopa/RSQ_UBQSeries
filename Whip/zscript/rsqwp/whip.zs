@@ -36,9 +36,16 @@
 class RSQWP_Whip : EventHandler
 {
 	const NW = MAXPLAYERS * 2;
-	const NN = 20;               // links in the thong; node 0 is the handle's tip
+	// THE LENGTH (owner 11-02: "Length = MIT's exactly"): the reference whip's own 25 links of 0.072 m = 1.8 m of
+	// thong (3D_model_w_whip.xml: body_whip_node1..25, 0.0720 apart), in room units (34 a metre): a link is 2.448.
+	const NN = 25;               // links in the thong; node 0 is the handle's tip
 	const NP = NN + 1;
+	const LINK = 2.448;          // 0.072 m x 34 room units a metre
 	const HANDLEN = 8.0;          // the handle, map units (~24 cm)
+	// A longer whip later (owner: a doubled "super whip" maybe) is LenMult() 2: every link twice as long, the same 25
+	// nodes; the bend below (EI/lam over the link's length^4) and the coil's loop size follow the link by themselves.
+	static double LenMult() { return 1.0; }
+	static double WhipLen() { return NN * LINK * LenMult(); }
 
 	// THE MODEL (11-02). Room units (34 a metre; map z x 1.2) and tics (35 a second). Measured on the rig: tools/rigtest
 	// whp_metrics.py, HANDOFF.md.
@@ -49,10 +56,10 @@ class RSQWP_Whip : EventHandler
 	const FRIC = 0.6;            // a link lying on the floor keeps this share of its sliding speed a tic
 	// The reference whip (3D_model_w_whip.xml): 25 nodes of 0.012 kg, 0.072 m apart; 2-DOF hinges, k = 0.242 N m/rad,
 	// c = 0.092 N m s/rad. As a rod: bending rigidity EI = k l = 0.01742 N m^2, mass per length lam = 0.1667 kg/m,
-	// bending damping c l = 0.006624 N m^2 s. A free chain driven by the hand depends only on EI/lam and c/k, so ours
-	// (128 room units = 3.8 m long, 20 links) keeps the reference's leather and only its own length and link count:
-	//   EI/lam = 0.1045 m^4/s^2 x 34^4 / 35^2 = 114.0 room^4/tic^2  -> a joint's omega^2 = 114 / seg^4 (seg in room)
-	//   c/k    = 0.3802 s x 35              = 13.31 tics            -> the damper against the spring, per joint
+	// bending damping c l = 0.006624 N m^2 s. Ours is that chain node for node (25 links of 2.448 room units):
+	//   EI/lam = 0.1045 m^4/s^2 x 34^4 / 35^2 = 114.0 room^4/tic^2  -> a joint's omega^2 = 114 / 2.448^4 = 3.175 /tic^2,
+	//            which is the reference joint's own k / (m l^2) = 0.242 / (0.012 x 0.072^2) = 3890 /s^2 = 3.175 /tic^2
+	//   c/k    = 0.3802 s x 35              = 13.31 tics            -> the reference joint's damper against its spring
 	// The reference's first joint is free because it is the hand (its arm is the handle). Ours is the end of a rigid
 	// 24 cm handle the thong is set into, so it has the same spring and damper as every other joint.
 	const REF_EI_LAM = 114.0;
@@ -66,7 +73,7 @@ class RSQWP_Whip : EventHandler
 	int     wstate[NW];
 	int     wmode[NW];           // 0 real, 1 assist
 	int     wage[NW];
-	double  wext[NW];            // how much of the thong is paid out, 0..1
+	double  wext[NW];            // kept at 1 (11-02: the coil, cp, is what shortens the whip now; the probe reads it)
 	double  wlen[NW];            // the thong's full length, room units
 	Vector3 wp[NW * NP];         // nodes, room space, now
 	Vector3 wq[NW * NP];         // and one sub-step ago
@@ -180,6 +187,17 @@ class RSQWP_Whip : EventHandler
 	int     straightTic[NW];     // the last straighten (Repair)
 	int     tendTic[NW];         // the whip weapon tended this hand this tic (weapon.zs Tend); a weapon whip nobody tends is gone
 	int     handMoveAt[MAXPLAYERS];  // Whip In: the next tic the whip may be moved to its hand
+	// THE COIL (owner 11-02: "we hold it coiled ... shorten the length of it and extend it during the attack"). Not
+	// attacking, the inner links lie in a coil held at the handle (pinned to it, drawn as the thong) and only a short
+	// tail hangs live from the coil's end. A wind-up pays the coil out link by link at the handle's end; a quiet whip
+	// reels back in. cp is how many links are coiled (fractional), cps how fast that changes (links a tic, + = reeling
+	// in): it is accelerated toward its goal, never flipped, so neither the payout nor the reel ever starts in one tic.
+	double  cp[NW];              // links in the coil (0 = all out .. COIL_REST at rest .. NN rolled up)
+	double  cps[NW];             // its rate, links a tic
+	double  cgoal[NW];           // where it is going
+	int     quiet[NW];           // tics the whip has been quiet (no wind-up, no swing, the tip and hand slow)
+	Vector2 ch[NW];              // the coil's heading (flat, the handle's way): the coil hangs in that vertical plane
+	double  lb[NW];              // the lasso's hold: 0..1, how firmly the off hand's piece is held on its line
 	RSQWP_LockRing markRing[NW]; // the lock mark (the series' diamond): gold ring ...
 	RSQWP_LockCentre markCen[NW];// ... white centre
 
@@ -322,7 +340,8 @@ class RSQWP_Whip : EventHandler
 		wmode[i] = clamp(mode, 0, 1);
 		wstate[i] = ST_OUT;
 		wage[i] = 0;
-		wlen[i] = clamp(RSQWP_Util.Num("rsqwp_whip_reach", 128), 48, 320);
+		wlen[i] = WhipLen();
+		wext[i] = 1.0;
 		armed[i] = true; swished[i] = false; calm[i] = 0; cracks[i] = 0; pend[i] = false; rearm[i] = 0; crackTic[i] = -100; fullTics[i] = wmode[i] == 1 ? -100000 : 0; handSpd[i] = 0; lashUntil[i] = -100; reachTic[i] = 0; baseLen[i] = wlen[i];
 		for (int k = 0; k < 4; k++) { whit[i * 4 + k] = null; whitTic[i * 4 + k] = -1000; whitCrack[i * 4 + k] = false; }
 		Vector3 b, d;
@@ -331,21 +350,14 @@ class RSQWP_Whip : EventHandler
 		bodyAt[i] = pmo.pos; bodyHad[i] = true;
 		stiff[i] = 0; windTics[i] = 0; windEnd[i] = -100; swinging[i] = false; released[i] = false; swingPk[i] = 0; stuckTics[i] = 0; straightTic[i] = -100;
 		Follow(i, b, d);
+		quiet[i] = 0; lb[i] = 0;
+		// out of the hand COILED (Assist throws it straight out at full length); taken up again while it was rolling
+		// up, it goes back to its rest coil from where it is
+		cgoal[i] = wmode[i] == 1 ? 0.0 : double(COIL_REST);
 		if (fresh)
 		{
-			wext[i] = wmode[i] == 1 ? 1.0 : 0.08;     // Assist throws it straight out of the hand
-			// hanging from the handle: it uncoils under gravity and the hand's motion
-			Vector3 tip = b + d * HANDLEN;
-			Vector3 fall = (0, 0, -1);
-			double seg = wext[i] * wlen[i] / NN;
-			for (int k = 0; k < NP; k++)
-			{
-				wp[i * NP + k] = tip + fall * seg * k;
-				wq[i * NP + k] = wp[i * NP + k];
-				wt[i * NP + k] = ToMap(wp[i * NP + k]);
-				flo[i * NP + k] = -1e9; cei[i * NP + k] = 1e9; wln[i * NP + k] = null;
-			}
-			segWas[i] = seg;
+			cp[i] = cgoal[i]; cps[i] = 0; ch[i] = (0, 0);
+			LayOut(i, b, d);
 		}
 		Noise(pmo, 'unfurl', ToMap(b));
 		if (wmode[i] == 1) Throw(i, pmo, hand);
@@ -467,15 +479,11 @@ class RSQWP_Whip : EventHandler
 			Carry(i, pmo, frameTurn[pn]);
 			if (wstate[i] == ST_OUT)
 			{
-				wext[i] = min(1.0, wext[i] + 0.16);
-				if (wext[i] >= 1.0) fullTics[i]++;
+				// the crack waits for the whole thong: it cannot crack while it is still coiled or paying out
+				if (cp[i] <= 0.001) fullTics[i]++; else fullTics[i] = 0;
 				if (wmode[i] == 1 && wage[i] > 24) RollUp(i);
 			}
-			if (wstate[i] == ST_ROLL)
-			{
-				wext[i] -= 0.12;
-				if (wext[i] <= 0.06) { Halt(i); continue; }
-			}
+			if (wstate[i] == ST_ROLL && cp[i] >= NN - 0.001) { Halt(i); continue; }
 			Vector3 b, d;
 			[b, d] = Handle(i, pmo, hand);
 			// a hand that jumped (a teleport, a load: 24 room units a tic is 24 m/s, no arm does that):
@@ -496,6 +504,7 @@ class RSQWP_Whip : EventHandler
 			if (byWeapon[i]) Mark(i, pmo, hand); else Lock(i, pmo, hand);
 			Reach(i, pmo, hand);
 			HoldWrap(i, pmo, hand);
+			CoilTic(i, hs);
 			if (lassoOn[i])
 			{
 				lassoP1[i] = ToRoom(BodyHand(pmo, 1 - hand));
@@ -592,7 +601,9 @@ class RSQWP_Whip : EventHandler
 			if (fkHad[pn])
 			{
 				double d0 = Actor.DeltaAngle(fkH0[pn], h0), d1 = Actor.DeltaAngle(fkH1[pn], h1);
-				if (abs(d0) > 0.25 && abs(d0 - d1) < TURN_TOL
+				// both controllers turned (rig 11-02: one hand's yaw noise, the other still, passed as sub-degree "turns"
+				// that cancelled the noisy swing's crack)
+				if (abs(d0) > 0.25 && abs(d1) > 0.25 && d0 * d1 > 0 && abs(d0 - d1) < TURN_TOL
 					&& (Rot2(fkR0[pn], d0) - r0).Length() < TURN_POS && (Rot2(fkR1[pn], d0) - r1).Length() < TURN_POS)
 				{
 					frameTurn[pn] = (d0 + d1) * 0.5;
@@ -641,14 +652,16 @@ class RSQWP_Whip : EventHandler
 		lassoP0[i] = Xf(lassoP0[i], r0, r1, c, s);
 		lc[i] = Xf(lc[i], r0, r1, c, s);
 		lom[i] = (lom[i].x * c - lom[i].y * s, lom[i].x * s + lom[i].y * c, lom[i].z);
+		ch[i] = (ch[i].x * c - ch[i].y * s, ch[i].x * s + ch[i].y * c);
 		pkAt[i] = ToMap(Xf(ToRoom(pkAt[i]), r0, r1, c, s));
 		// A TURN OR A STEP carried links lying on the floor into it (a thong draped over a ledge, turned with you,
 		// ends up under the ledge's top: rig 11-02, lifted by Collide and snapped back at 37 room units a tic). Such
 		// links are lifted onto the floor here, with their last place, and the chain is held to length round them.
 		if (turn == 0 && abs(r1.z - r0.z) < 2) return;
 		int nLift = 0;
-		for (int k = 0; k < NP; k++) stopped[k] = false;
-		for (int k = 1; k < NP; k++)
+		int kc = int(cp[i]);
+		for (int k = 0; k < NP; k++) stopped[k] = k <= kc;
+		for (int k = kc + 1; k < NP; k++)
 		{
 			Vector3 m = ToMap(wp[o + k]);
 			double fz, cz;
@@ -662,6 +675,128 @@ class RSQWP_Whip : EventHandler
 			stopped[k] = true; nLift++;
 		}
 		if (nLift) Relax(i);
+	}
+
+	// ---- the coil ---------------------------------------------------------------------------------------------
+	//
+	// Held coiled, the thong's first links lie on a loop that hangs from the handle's tip (a circle of COIL_R in the
+	// vertical plane of the handle's heading, going forward and down from the tip, round under the hand, its loops
+	// stepped COIL_P to the side), pinned there and moved with the handle like the handle itself. The rest -- a tail
+	// of COIL_TAIL links -- is simulated as ever, hanging from the coil's end. Paying out unpins the coil's last link:
+	// it was on the coil, moving with it, so it goes on from exactly there at exactly that speed (no pop). Reeling in
+	// draws the free link next to the coil onto its place on the loop over the time it takes to reel one link, then
+	// pins it. Nothing else about the model changes: the same springs, dampers and sub-steps on whatever is free.
+	const COIL_TAIL = 4;          // links left hanging at rest: 4 x 7.2 cm = 0.29 m
+	const COIL_REST = NN - COIL_TAIL;
+	const COIL_R = 5.0;           // the loop's radius, room units (15 cm: a 30 cm coil), x LenMult
+	const COIL_A = 45.0;          // where the handle's tip sits on the loop (degrees from its top, toward the heading)
+	const COIL_P = 1.6;           // each loop's step to the side, room units
+	const PAY_MAX = 3.5;          // paying out: at most this many links a tic (8.6 room units a tic) ...
+	const PAY_ACC = 1.0;          // ... reached and left at this rate (links a tic a tic): 21 links out in ~10 tics (0.28 s)
+	const REEL_MAX = 1.2;         // reeling in after a quiet spell: at most this, links a tic ...
+	const REEL_ACC = 0.25;        // ... 17 links in in ~19 tics (0.55 s)
+	const REEL_CAP = 5.0;         // while it reels in, no free link faster than this (room units a tic): the hand guides
+	                              // it home (rig 11-02: uncapped, the dragged tail swung up into the coil at 26 a tic)
+	const ROLL_MAX = 3.5;         // put away (the holster, the bind let go): the rest rolled up this fast
+	const QUIET_TICS = 30;        // quiet this long (0.86 s) and it reels back into the coil ...
+	const QUIET_TIP = 3.0;        // ... quiet = the tip slower than this (room units a tic, ~3 m/s) ...
+	const QUIET_HAND = 1.2;       // ... and the handle's tip slower than this, no wind-up, swing, lasso, wrap or flight
+
+	// how many nodes after the handle's tip are pinned (the coil's, else the lasso's piece)
+	int Pinned(int i)
+	{
+		int c = int(cp[i]);
+		if (c > 0) return min(c, NN);
+		return lassoOn[i] ? LASSO_K : 0;
+	}
+
+	// a place on the coil, a links in from the handle's tip (fractional: the coil's end between two nodes). The loops
+	// face you (the plane across the handle's heading, so the eyes behind the hand see them round, not edge-on), hang
+	// toward the body (side +1: to the heading's left, inward for the right hand) and step forward along the heading
+	static Vector3 CoilAt(double a, Vector3 tip, Vector2 h, double seg, double side = 1.0)
+	{
+		double r = COIL_R * LenMult();
+		double dth = 2.0 * asin(min(0.95, seg / (2.0 * r)));
+		double ph = COIL_A + a * dth;
+		Vector3 sd = (-h.y * side, h.x * side, 0);
+		Vector3 c = tip - ((0, 0, cos(COIL_A)) + sd * sin(COIL_A)) * r;
+		return c + ((0, 0, cos(ph)) + sd * sin(ph)) * r + (h, 0) * (COIL_P * LenMult() * a * dth / 360.0);
+	}
+
+	// the coil hangs toward the body: to the heading's left in the right hand, to its right in the left
+	double CoilSide(int i)
+	{
+		let pmo = wby[i];
+		if (!pmo) return 1.0;
+		let cv = CVar.FindCVar('vr_control_scheme');
+		bool leftHanded = cv && cv.GetInt() >= 10;      // as Buzz: the main controller is the left one
+		return (RSQWP_Util.Ctrl(pmo, i & 1) == 0) != leftHanded ? 1.0 : -1.0;
+	}
+
+	// the coil's heading follows the handle's (flat) way, eased, and is kept while the handle points straight up or down
+	void CoilHeading(int i, Vector3 d)
+	{
+		Vector2 f = d.xy;
+		double fl = f.Length();
+		if (ch[i].Length() < 0.5) ch[i] = fl > 0.01 ? f / fl : (1, 0);
+		if (fl < 0.25 * max(0.001, d.Length())) return;
+		Vector2 n = ch[i] + (f / fl - ch[i]) * 0.35;
+		double nl = n.Length();
+		if (nl > 0.001) ch[i] = n / nl;
+	}
+
+	// THE COIL'S GOAL each tic: all out for a wind-up or a swing (the attack), a lasso, a wrap or a flight, an Assist
+	// lash; rolled up when put away; back to rest after QUIET_TICS of quiet; otherwise it stays where it is. Then its
+	// rate is eased toward the goal (accelerated, and slowed to arrive): never a step.
+	void CoilTic(int i, double hs)
+	{
+		bool attack = windTics[i] >= WIND_TICS || swinging[i] || (stiff[i] > 0.01 && !released[i]);
+		bool busy = lassoOn[i] || lassoWas[i] || wrapOn[i] || reachTic[i] > 0 || lw[i] > 0.01 || pend[i];
+		if (wstate[i] == ST_ROLL) cgoal[i] = NN;
+		else if (attack || busy || wmode[i] == 1) { cgoal[i] = 0; quiet[i] = 0; }
+		else
+		{
+			if (windTics[i] == 0 && stiff[i] < 0.01 && tipSpd[i] < QUIET_TIP && hs < QUIET_HAND) quiet[i]++;
+			else quiet[i] = 0;
+			if (quiet[i] >= QUIET_TICS && cgoal[i] < COIL_REST)
+			{
+				cgoal[i] = COIL_REST;
+				if (RSQWP_Util.Flag("rsqwp_debug", false)) Console.Printf("T_WPW %d REEL t%d: quiet %d tics, back into the coil", i, level.maptime, quiet[i]);
+			}
+		}
+		bool paying = cgoal[i] < cp[i];
+		double vmax = paying ? PAY_MAX : (wstate[i] == ST_ROLL ? ROLL_MAX : REEL_MAX);
+		double acc = paying ? PAY_ACC : (wstate[i] == ST_ROLL ? PAY_ACC : REEL_ACC);
+		double gap = cgoal[i] - cp[i];
+		// the speed that still stops on the goal (v^2 = 2 a d), signed
+		double want = (gap >= 0 ? 1 : -1) * min(vmax, sqrt(2.0 * acc * abs(gap)));
+		double was = cps[i];
+		if (cps[i] < want) cps[i] = min(want, cps[i] + acc);
+		else cps[i] = max(want, cps[i] - acc);
+		// it lands on the goal, never past it (a tic's step is cps)
+		if ((gap >= 0 && cps[i] > gap) || (gap <= 0 && cps[i] < gap)) cps[i] = gap;
+		if (cps[i] < -0.001 && was >= -0.001 && RSQWP_Util.Flag("rsqwp_debug", false)) Console.Printf("T_WPW %d UNCOIL t%d: paying out from %.1f to %.0f", i, level.maptime, cp[i], cgoal[i]);
+	}
+
+	// Laid out still: the coil's links on the coil, the rest hanging from its end (each link's last place = its place:
+	// no speed). Start, Straighten.
+	void LayOut(int i, Vector3 b, Vector3 d)
+	{
+		int o = i * NP;
+		Vector3 tip = b + d * HANDLEN;
+		double seg = max(0.5, wext[i] * wlen[i] / NN);
+		CoilHeading(i, d);
+		int c = int(cp[i]);
+		Vector3 at = tip;
+		for (int k = 0; k < NP; k++)
+		{
+			if (k <= c) at = k == 0 ? tip : CoilAt(k, tip, ch[i], seg, CoilSide(i));
+			else at += (0, 0, -seg);
+			wp[o + k] = at; wq[o + k] = at;
+			wt[o + k] = ToMap(at);
+			flo[o + k] = -1e9; cei[o + k] = 1e9; wln[o + k] = null;
+		}
+		segWas[i] = seg;
 	}
 
 	// ---- the deliberate attack ---------------------------------------------------------------------------------
@@ -751,16 +886,18 @@ class RSQWP_Whip : EventHandler
 		int o = i * NP;
 		let tr = GetTracer();
 		tr.shooter = pmo;
-		// the handle's tip, from the body: a real hand can be through a wall, and then there is nothing to mend from
-		Vector3 a = ToMap(wp[o]);
+		// the handle's tip (or the coil's end: the coil is held in the hand), from the body: a real hand can be through a
+		// wall, and then there is nothing to mend from
+		int kc = min(int(cp[i]), NN);
+		Vector3 a = ToMap(wp[o + kc]);
 		Vector3 from = pmo.pos + (0, 0, pmo.Height * 0.5);
 		Vector3 fa = a - from;
 		double fl = fa.Length();
 		if (fl > 0.5 && tr.Trace(from, level.PointInSector(from.xy), fa / fl, fl, 0, RSQWP_Tracer.WALLMASK, true, pmo) && tr.Results.HitType != TRACE_HitNone && tr.Results.Distance < fl - 0.5)
 			return;
 		int mended = 0;
-		for (int k = 0; k < NP; k++) stopped[k] = false;
-		for (int k = 1; k < NP; k++)
+		for (int k = 0; k < NP; k++) stopped[k] = k <= kc;
+		for (int k = kc + 1; k < NP; k++)
 		{
 			Vector3 m = ToMap(wp[o + k]);
 			Vector3 am = m - a;
@@ -814,7 +951,7 @@ class RSQWP_Whip : EventHandler
 		if (RSQWP_Util.Opt("rsqwp_debug", 0) >= 2) Console.Printf("T_WPW %d mend t%d: %d link(s) put back out of a wall (%d tics running)", i, level.maptime, mended, stuckTics[i]);
 		if (stuckTics[i] < STUCK_MAX) return;
 		bool again = level.maptime - straightTic[i] < 35;
-		if (again) wext[i] = min(wext[i], 0.08);     // stuck again straight after: pay it out from the hand again
+		if (again) { cp[i] = max(cp[i], double(COIL_REST)); cps[i] = 0; cgoal[i] = cp[i]; quiet[i] = 0; }     // stuck again straight after: back in the coil
 		Straighten(i, b, d);
 		straightTic[i] = level.maptime;
 		stuckTics[i] = 0;
@@ -863,11 +1000,7 @@ class RSQWP_Whip : EventHandler
 	// and walls are met by the next tic's Collide and Mend. The handle's path starts again at the hand.
 	void Straighten(int i, Vector3 b, Vector3 d)
 	{
-		int o = i * NP;
-		Vector3 tip = b + d * HANDLEN;
-		double seg = max(0.5, wext[i] * wlen[i] / NN);
-		for (int k = 0; k < NP; k++) { wp[o + k] = tip + (0, 0, -seg * k); wq[o + k] = wp[o + k]; flo[o + k] = -1e9; cei[o + k] = 1e9; wln[o + k] = null; }
-		segWas[i] = seg;
+		LayOut(i, b, d);
 		stiff[i] = 0; swinging[i] = false;
 		Follow(i, b, d);
 	}
@@ -975,18 +1108,18 @@ class RSQWP_Whip : EventHandler
 	{
 		int o = i * NP;
 		double seg = max(0.5, wext[i] * wlen[i] / NN);
-		// THE LENGTH CHANGED (uncoiling, rolling up, a reach or a wrap's rope coming back): every link and its last
-		// place are scaled together from the handle, so the change puts no jolt into the thong
+		// THE LENGTH CHANGED (a reach or a wrap's rope coming back): every link and its last place are scaled together
+		// from the handle, so the change puts no jolt into the thong
 		if (segWas[i] > 0.0001 && abs(seg - segWas[i]) > 0.0001)
 		{
 			double r = seg / segWas[i];
-			Vector3 ap = wp[o], aq = wq[o], cp = wp[o], cq = wq[o];
+			Vector3 ap = wp[o], aq = wq[o], cp2 = wp[o], cq = wq[o];
 			for (int k = 1; k < NP; k++)
 			{
 				Vector3 dp = wp[o + k] - ap, dq = wq[o + k] - aq;
 				ap = wp[o + k]; aq = wq[o + k];
-				cp = cp + dp * r; cq = cq + dq * r;
-				wp[o + k] = cp; wq[o + k] = cq;
+				cp2 = cp2 + dp * r; cq = cq + dq * r;
+				wp[o + k] = cp2; wq[o + k] = cq;
 			}
 		}
 		segWas[i] = seg;
@@ -994,13 +1127,9 @@ class RSQWP_Whip : EventHandler
 		// the bend: XPBD on C = p[j+1] - 2 p[j] + p[j-1] (|C| = seg x the bend angle); with equal links the masses
 		// cancel into the joint's own frequency (compl = 1 / (omega h)^2) and the damper's ratio (gam = c/k / h)
 		double bendK = clamp(RSQWP_Util.Num("rsqwp_whip_bend", 1.0), 0.05, 20.0);
-		// default x0.25 (rsqwp_whip_bend_damp): the reference's own damper (c/k 0.38 s) is for a whip driven only at
-		// its root; at x1 the off-hand lasso could not lift the 3.8 m thong off the floor (rig 11-02: whirl tip speed
-		// 2.7 room units a tic, x0.25 7.6); the crack and a held hand were as clean at x0.25, x0.1 began to double-peak.
-		// (The lasso now has its own whirl help, Whirl: rig 11-02 later, 28.5 a tic at x1 as at x0.25.)
-		double dampK = clamp(RSQWP_Util.Num("rsqwp_whip_bend_damp", 0.25), 0.0, 20.0);
-		// at most as stiff as the whole whip's links: a thong still uncoiling has short links, and 1/seg^4 made it a
-		// rigid rod along the handle that flopped over as it paid out (rig 11-02)
+		// the reference's own damper (x1, rsqwp_whip_bend_damp; owner 11-02: "the math is correct with MIT")
+		double dampK = clamp(RSQWP_Util.Num("rsqwp_whip_bend_damp", 1.0), 0.0, 20.0);
+		// at most as stiff as the whole whip's links (a reach or a wrap lengthens them; nothing makes them shorter)
 		double segB = max(seg, baseLen[i] / NN);
 		double seg2 = segB * segB;
 		double wb2 = REF_EI_LAM * bendK / (seg2 * seg2);
@@ -1010,31 +1139,45 @@ class RSQWP_Whip : EventHandler
 		double loose = 1.0 - WHIRL_LOOSE * w;
 		double gam = REF_C_K * dampK * loose / bendK / h;
 		double drag = 1.0 - clamp(RSQWP_Util.Num("rsqwp_whip_drag", 1.0), 0.0, 10.0) * loose / 35.0 * h;
+		// THE COIL this tic: from cp0 links coiled, at cps a tic (CoilTic); its heading eased from h0 to h1
+		double cp0 = cp[i], rate = cps[i];
+		double cs = CoilSide(i);
+		double cpEnd = clamp(cp0 + rate, 0.0, double(NN));
+		int cMin = int(min(cp0, cpEnd));
+		Vector2 h0 = ch[i];
+		CoilHeading(i, d1);
+		Vector2 h1 = ch[i];
+		// the lasso's hold comes in over 6 tics once the whole thong is out (it was pinned in one sub-step: a 41 room
+		// units a tic jolt as the grip closed, rig 11-02)
+		if (lassoOn[i] && cMin == 0) lb[i] = min(1.0, lb[i] + 1.0 / 6.0); else if (!lassoOn[i]) lb[i] = 0;
+		double hold = 0.04 + 0.96 * lb[i] * lb[i];
 		Vector3 wax = (0, 0, 0);
 		double wom = 0, wfe = 0;
 		int wk1 = NN;
+		int kp0 = Pinned(i);
 		if (w > 0.001 && lom[i].Length() > 0.001)
 		{
 			wax = lom[i].Unit();
 			// the loop turns with the hand (a little faster), its tip never over WHIRL_VMAX
-			double rmax = (NN - (lassoOn[i] ? LASSO_K : 0)) * seg + max(5.0, (lassoP1[i] - lc[i]).Length());
+			double rmax = (NN - kp0) * seg + max(5.0, (lassoP1[i] - lc[i]).Length());
 			wom = min(lom[i].Length() * WHIRL_BOOST, WHIRL_VMAX / rmax);
 			wfe = w * (1.0 - exp(-WHIRL_G * h));
 			// let go and thrown, Reach lays the outer half out: the help goes out on the inner half only
 			if (reachTic[i] > 0) wk1 = NN / 2 - 1;
 		}
-		double cap = VMAX * h;
+		double cap = (rate > 0 ? REEL_CAP : VMAX) * h;
 		double fric = FRIC ** h;
 		// the hand followed critically damped: 2nd order, omega = 2 / lag (a steady motion trails by lag tics)
 		double lag = RSQWP_Util.Num("rsqwp_whip_smooth", 0.8);
 		double om = lag >= 0.2 ? 2.0 / min(lag, 4.0) : 0.0;
 		Vector3 g = (0, 0, -GRAV * h * h);
-		int k0 = lassoOn[i] ? LASSO_K : 0;
 		bool guide = stiff[i] > 0.01 && !lassoOn[i];
 		Vector3 B = fb[i], BV = fv[i], D = fd[i], DV = fdv[i];
 		double pl = D.Length();
 		Vector3 pd = pl > 0.001 ? D / pl : d0;         // the handle's direction and tip a sub-step ago
 		Vector3 pa = wp[o];
+		double cpPrev = cp0;
+		Vector3 pE = cp0 > 0 ? CoilAt(cp0, pa, h0, seg, cs) : pa;   // the coil's end a sub-step ago
 		double best = -1;
 		Vector3 bestAt = ToMap(wp[o + NN]), bestVel = (0, 0, 0);
 		for (int s = 1; s <= SUB; s++)
@@ -1053,6 +1196,12 @@ class RSQWP_Whip : EventHandler
 			double dl = D.Length();
 			Vector3 dir = dl > 0.001 ? D / dl : d1;
 			Vector3 anchor = B + dir * HANDLEN;
+			double cpn = clamp(cp0 + rate * t, 0.0, double(NN));
+			int c = int(cpn);
+			Vector2 hv = h0 + (h1 - h0) * t;
+			double hvl = hv.Length();
+			hv = hvl > 0.001 ? hv / hvl : h1;
+			int kp = c > 0 ? c : (lassoOn[i] ? LASSO_K : 0);
 			for (int k = 1; k < NP; k++)
 			{
 				Vector3 v = (wp[o + k] - wq[o + k]) * drag;
@@ -1063,18 +1212,27 @@ class RSQWP_Whip : EventHandler
 			}
 			wq[o] = wp[o];
 			wp[o] = anchor;
+			// THE COIL: its links on the loop hanging from the handle's tip, moved with it (a link just let out of it goes
+			// on from its place on the loop at the loop's own speed: its last place was there too)
+			for (int k = 1; k <= c && k < NP; k++) wp[o + k] = CoilAt(k, anchor, hv, seg, cs);
+			Vector3 E = cpn > 0 ? CoilAt(cpn, anchor, hv, seg, cs) : anchor;
 			// THE LASSO (smoothed 11-02, owner: "grabbing with offhand and twirling works, but janky as hell"): the inner
-			// piece is laid straight from the handle to the off hand; only the thong beyond the off hand is free
-			if (lassoOn[i])
+			// piece is laid straight from the handle to the off hand; only the thong beyond the off hand is free. Held
+			// firmly only once the coil is out, and then over 6 tics (lb)
+			if (lassoOn[i] && c == 0)
 			{
 				Vector3 held = lassoP0[i] + (lassoP1[i] - lassoP0[i]) * t;
-				for (int k = 1; k <= LASSO_K; k++) wp[o + k] = anchor + (held - anchor) * (double(k) / LASSO_K);
+				for (int k = 1; k <= LASSO_K; k++)
+				{
+					Vector3 line = anchor + (held - anchor) * (double(k) / LASSO_K);
+					wp[o + k] = wq[o + k] + (line - wq[o + k]) * hold;
+				}
 			}
 			// THE WHIRL: each free link eased toward its speed round the circle's axis (the tangent only: the loop's
 			// own turning holds it out, as a real one)
 			if (wfe > 0)
 			{
-				for (int k = k0 + 1; k <= wk1; k++)
+				for (int k = kp + 1; k <= wk1; k++)
 				{
 					Vector3 rel = wp[o + k] - lc[i];
 					Vector3 rho = rel - wax * (rel dot wax);
@@ -1085,35 +1243,37 @@ class RSQWP_Whip : EventHandler
 					wp[o + k] = wp[o + k] + tt * ((wom * pl * h - cur) * wfe);
 				}
 			}
-			// THE WIND-UP AND THE SWING (Deliberate): each link drawn to its place on the line out of the handle, as a
-			// spring of GUIDE_W x stiff (less toward the popper) critically damped against the line's own motion (XPBD),
-			// so it rises as one piece and follows the handle like a rod, the tip lagging -- and never flung there
+			// THE WIND-UP AND THE SWING (Deliberate): each free link drawn to its place on the line out of the handle --
+			// out of the coil's end while it still pays out -- as a spring of GUIDE_W x stiff (less toward the popper)
+			// critically damped against the line's own motion (XPBD), so it rises as one piece and follows the handle like
+			// a rod, the tip lagging -- and never flung there
 			if (guide)
 			{
-				for (int k = 1; k < NP; k++)
+				for (int k = kp + 1; k < NP; k++)
 				{
 					double oh = GUIDE_W * stiff[i] * (1.0 - GUIDE_TIP * double(k) / NN) * h;
 					if (oh < 0.0001) continue;
 					double gg = 2.0 / oh;
-					Vector3 want = anchor + dir * (seg * k);
+					Vector3 want = E + dir * (seg * (k - cpn));
 					Vector3 cc = wp[o + k] - want;
-					Vector3 dc = (wp[o + k] - wq[o + k]) - (want - (pa + pd * (seg * k)));
+					Vector3 dc = (wp[o + k] - wq[o + k]) - (want - (pE + pd * (seg * (k - cpPrev))));
 					wp[o + k] = wp[o + k] - (cc + dc * gg) * (oh * oh / (1.0 + (1.0 + gg) * oh * oh));
 				}
 			}
 			// THE BEND (the reference's springs and dampers): the handle's joint first, against a fixed point one
-			// link back up the handle, then every joint of the thong
-			if (k0 == 0)
+			// link back up the handle, then every joint of the thong (the coil's last pinned link is the first free
+			// link's fixed neighbour)
+			if (kp == 0)
 			{
 				Vector3 pv = anchor - dir * seg, qv = pa - pd * seg;
 				Vector3 cc = wp[o + 1] - anchor * 2 + pv;
 				Vector3 dc = (wp[o + 1] - wq[o + 1]) - (anchor - pa) * 2 + (pv - qv);
 				wp[o + 1] = wp[o + 1] - (cc + dc * gam) / ((1.0 + gam) + compl);
 			}
-			for (int j = max(1, k0); j < NN; j++)
+			for (int j = max(1, kp); j < NN; j++)
 			{
-				double wa = j - 1 > k0 ? 1.0 : 0.0;
-				double wm = j > k0 ? 1.0 : 0.0;
+				double wa = j - 1 > kp ? 1.0 : 0.0;
+				double wm = j > kp ? 1.0 : 0.0;
 				Vector3 cc = wp[o + j + 1] - wp[o + j] * 2 + wp[o + j - 1];
 				Vector3 dc = (wp[o + j + 1] - wq[o + j + 1]) - (wp[o + j] - wq[o + j]) * 2 + (wp[o + j - 1] - wq[o + j - 1]);
 				Vector3 corr = (cc + dc * gam) / (-((1.0 + gam) * (wa + 4.0 * wm + 1.0) + compl));
@@ -1121,15 +1281,15 @@ class RSQWP_Whip : EventHandler
 				if (wm > 0) wp[o + j] = wp[o + j] - corr * 2;
 				wp[o + j + 1] = wp[o + j + 1] + corr;
 			}
-			// THE LENGTH: every link held to seg (equal masses; the handle's tip and the off hand's piece do not move)
+			// THE LENGTH: every link held to seg (equal masses; the handle's tip, the coil and the off hand's piece do not move)
 			for (int it = 0; it < ITER; it++)
 			{
-				for (int k = k0; k < NN; k++)
+				for (int k = kp; k < NN; k++)
 				{
 					Vector3 dd = wp[o + k + 1] - wp[o + k];
 					double l = dd.Length();
 					if (l < 0.0001) continue;
-					if (k > k0)
+					if (k > kp)
 					{
 						Vector3 c2 = dd * (0.5 * (l - seg) / l);
 						wp[o + k] = wp[o + k] + c2;
@@ -1138,8 +1298,17 @@ class RSQWP_Whip : EventHandler
 					else wp[o + k + 1] = wp[o + k + 1] - dd * ((l - seg) / l);
 				}
 			}
+			// REELING IN: the free link next to the coil is drawn onto its place on the loop, arriving as the coil
+			// reaches it (each sub-step it covers its share of what is left), then it is pinned there
+			if (rate > 0 && c < NN)
+			{
+				int n = c + 1;
+				double f = cpn - c, df = rate * h;
+				double frac = min(1.0, df / max(df, 1.0 - f + df));
+				wp[o + n] = wp[o + n] + (CoilAt(n, anchor, hv, seg, cs) - wp[o + n]) * frac;
+			}
 			// the floor and the ceiling each link last met (Collide): stopped there, sliding on the floor
-			for (int k = k0 + 1; k < NP; k++)
+			for (int k = kp + 1; k < NP; k++)
 			{
 				Vector3 p = wp[o + k];
 				if (p.z < flo[o + k])
@@ -1170,11 +1339,12 @@ class RSQWP_Whip : EventHandler
 					}
 				}
 			}
-			pa = anchor; pd = dir;
+			pa = anchor; pd = dir; pE = E; cpPrev = cpn;
 			Vector3 tv = (wp[o + NN] - wq[o + NN]) * SUB;
 			double sp = tv.Length();
 			if (sp > best) { best = sp; bestAt = ToMap(wp[o + NN]); bestVel = tv; }
 		}
+		cp[i] = cpEnd;
 		fb[i] = B; fv[i] = BV; fd[i] = D; fdv[i] = DV;
 		// never a broken number: a NaN anywhere (it cannot come from the model; belt and braces) lays the whip out again
 		Vector3 tp = wp[o + NN];
@@ -1183,19 +1353,21 @@ class RSQWP_Whip : EventHandler
 		return bestAt, bestVel;
 	}
 
-	// Floors, ceilings and walls, swept from where each link was at the start of the tic. The
-	// outer half of the thong also meets things (hits) and, fast and above the hand, snags.
 	// The chain held to length again round the links marked in stopped[] (they do not move); each moved link is moved
 	// with its last place, so the move is not turned into speed. After Collide's stops and Carry's lifts.
 	void Relax(int i)
 	{
 		int o = i * NP;
 		double seg = max(0.5, wext[i] * wlen[i] / NN);
-		int k0 = lassoOn[i] ? LASSO_K : 0;
-		for (int it = 0; it < 4; it++)
+		int k0 = Pinned(i);
+		// 12 passes, every other one from the tip back: the 25 short links of the reference whip carry a correction
+		// across the chain far more slowly than the old 20 long ones did (rig 11-02: 4 one-way passes left a link
+		// 7x long where the tip was stopped on MAP01's platform lip)
+		for (int it = 0; it < 12; it++)
 		{
-			for (int k = k0; k < NN; k++)
+			for (int kk = k0; kk < NN; kk++)
 			{
+				int k = (it & 1) ? NN - 1 - (kk - k0) : kk;
 				bool f0 = k > k0 && !stopped[k], f1 = !stopped[k + 1];
 				if (!f0 && !f1) continue;
 				Vector3 dd = wp[o + k + 1] - wp[o + k];
@@ -1209,6 +1381,9 @@ class RSQWP_Whip : EventHandler
 		}
 	}
 
+	// Floors, ceilings and walls, swept from where each link was at the start of the tic. The
+	// outer half of the thong also meets things (hits) and, fast and above the hand, snags.
+	// The coil's links are the handle's (held in the hand): not swept.
 	bool Collide(int i, PlayerPawn pmo, int hand)
 	{
 		int o = i * NP;
@@ -1219,8 +1394,9 @@ class RSQWP_Whip : EventHandler
 		double hitSpd = RSQWP_Util.Num("rsqwp_whip_crack", 20) * 0.45;
 		bool snagOn = RSQWP_Util.Flag("rsqwp_whip_snag", true) && wstate[i] == ST_OUT;
 		int nStop = 0;
-		for (int k = 0; k < NP; k++) stopped[k] = false;
-		for (int k = 1; k < NP; k++)
+		int kc = int(cp[i]);
+		for (int k = 0; k < NP; k++) stopped[k] = k <= kc;
+		for (int k = kc + 1; k < NP; k++)
 		{
 			Vector3 m = ToMap(wp[o + k]);
 			Vector3 m0 = wt[o + k];
@@ -1301,7 +1477,10 @@ class RSQWP_Whip : EventHandler
 				Vector3 r = ToRoom(m);
 				Vector3 v = wp[o + k] - wq[o + k];
 				wq[o + k] = r - (v.x * FRIC, v.y * FRIC, 0);   // drags along the floor
-				if (abs(r.z - wp[o + k].z) > 0.5) { stopped[k] = true; nStop++; }
+				// a link lifted onto a floor (or put under a ceiling) is held there for the relax only if it was moved
+				// much: one that just slid over a lip's corner is still the chain's to relax (rig 11-02: a link lifted 1.4 onto
+				// MAP01's platform lip and held there left the next one, stopped under the lip, a link 7x long)
+				if (abs(r.z - wp[o + k].z) > 3.0) { stopped[k] = true; nStop++; }
 				wp[o + k] = r;
 			}
 		}
@@ -2105,7 +2284,7 @@ class RSQWP_Whip : EventHandler
 		double crackSpd = max(4.0, RSQWP_Util.Num("rsqwp_whip_crack", 20));
 		double sp = tipSpd[i];
 		if (RSQWP_Util.Opt("rsqwp_debug", 0) >= 2)
-			Console.Printf("T_WPW %d t%d tip %.1f armed %d ext %.2f full %d hand %.1f pend %d tip(%.1f %.1f %.1f) ms %.3f", i, level.maptime, sp, armed[i], wext[i], fullTics[i], handSpd[i], pend[i], at.x, at.y, at.z, tickMs);
+			Console.Printf("T_WPW %d t%d tip %.1f armed %d coil %.2f full %d hand %.1f pend %d tip(%.1f %.1f %.1f) ms %.3f", i, level.maptime, sp, armed[i], cp[i], fullTics[i], handSpd[i], pend[i], at.x, at.y, at.z, tickMs);
 		// whirling, wrapped round a monster, or flying out to one (Reach drags the outer links: rig 10-31, a lasso's
 		// throw cracked at 108 on its way out and the crack's speed then counted as the throw's): no crack
 		if (lassoOn[i] || wrapOn[i] || reachTic[i] > 0) { pend[i] = false; return; }
@@ -2116,7 +2295,7 @@ class RSQWP_Whip : EventHandler
 		// cracked three times before the swing). While wound up, or stiff with no swing yet, nothing cracks; the swing's
 		// crack comes as it drives and lets go (Deliberate).
 		if (windTics[i] > 0 || (stiff[i] > 0.01 && !swinging[i] && !released[i])) { pend[i] = false; return; }
-		if (sp >= crackSpd * 0.55 && !swished[i] && wext[i] > 0.7)
+		if (sp >= crackSpd * 0.55 && !swished[i] && cp[i] <= 0.001)
 		{
 			swished[i] = true;
 			Noise(pmo, 'swish', at);
@@ -2132,7 +2311,7 @@ class RSQWP_Whip : EventHandler
 			Crack(i, pmo, hand, pkAt[i], pkVel[i]);
 			return;
 		}
-		if (armed[i] && sp >= crackSpd && fullTics[i] >= 4 && wstate[i] == ST_OUT && handSpd[i] >= 2.0)
+		if (armed[i] && sp >= crackSpd && fullTics[i] >= 2 && wstate[i] == ST_OUT && handSpd[i] >= 2.0)
 		{
 			pend[i] = true; pkSpd[i] = sp; pkAt[i] = at; pkVel[i] = vel;
 			return;

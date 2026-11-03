@@ -4,7 +4,7 @@ the rig exactly one frame a tic -- measured: whp_F frame n = gametic n+1). The r
 set from the console (a play-scope CVar.SetString on an engine cvar aborts), so the hand is driven here.
 
     python3 tools/rigtest/whp_scripts.py <scenario> [hand]     prints the script
-scenarios: snap walk swing yank hands idle mark sway jitter wall two lasso lasso0..lasso7"""
+scenarios: snap walk swing coil yank hands idle mark sway jitter wall two lasso lasso0..lasso7"""
 import sys, math, random
 
 R = (0.20, 1.30, -0.30, 20, 0)
@@ -97,6 +97,15 @@ def run(scen, hand='r'):
             else: lp = (-0.20, 1.20, -0.30, 0, 0)
             x, y, z, pi, yw = lp
             out.append('qz_lhand "%.3f %.3f %.3f %.2f %.2f 0"; wait 1;' % (x, y, z, pi, yw))
+    elif scen in ('coil', 'coilv'):
+        # THE COIL (11-02): held still and coiled (t0-59), one deliberate wind-up + crack (t60), then the hand still
+        # again so the whip goes quiet and reels back into the coil (to t259). coilv: the same with the arm 0.25 m
+        # further out to the side, so a chase camera behind the body sees the coil at the hand (frames)
+        dx = 0.25 if scen == 'coilv' else 0.0
+        out.append(pre(3).replace(pose(R), pose((R[0] + dx,) + R[1:])))
+        ks1 = [(k[0] + 60, k[1] + dx) + k[2:] for k in SWING]
+        for t in range(260):
+            out.append(pose(key(t, ks1), left) + '; wait 1;')
     elif scen == 'idle':
         out.append(pre(6))
         for t in range(340): out.append('wait 1;')

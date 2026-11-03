@@ -52,7 +52,6 @@ OptionMenu "RSQWP_Options"
 OptionMenu "RSQWP_Tuning"
 {
 	Title "TUNING AND DEBUG"
-	Slider "Whip Length", "rsqwp_whip_reach", 64, 256, 8, 0
 	Slider "Crack Speed (lower = easier)", "rsqwp_whip_crack", 10, 50, 1, 0
 	Slider "Damage (hardest crack)", "rsqwp_whip_damage", 0, 40, 2, 0
 	Slider "Hardest Crack Speed", "rsqwp_whip_fullcrack", 25, 120, 5, 0
