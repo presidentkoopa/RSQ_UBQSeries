@@ -28,6 +28,8 @@ class RSQGR_Hook : Actor
 	double traveled;
 	double speed;
 	double range;
+	Vector3 spawnPos;     // where it left the hand (THE OG POINT below counts its sub-steps from here)
+	Vector3 ogPoint;      // where jpalomo's HookShot would have come to rest for this hit (RSQGR_Core.OGPoint)
 
 	// latch
 	Vector3 anchor;

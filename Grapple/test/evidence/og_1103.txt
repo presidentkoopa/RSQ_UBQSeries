@@ -1,0 +1,127 @@
+# RSQ Grapple vs jpalomo's jp_grapple (THE OG), 2026-11-03. Rig only, not headset-confirmed.
+# rig17 (QZD 17.3 9afc750), doom2.wad, test room GRV (flat 2400x1024, floor 0, ceiling 512, east wall x=2400).
+# OG = jp_original/ packed as-is (decorate.txt, loadacs, acs/*.o, sounds, sprites), fired by giving its HookShooter.
+# Ours = pk3/RSQ_Grapple.pk3 with its defaults, fired by event rsqgr_press 0. Same hand pose (qz_rhand), same spots.
+# Kit: Grapple/tools/rigtest/og_1103/ (summ.py, arc.py, msumm.py read the logs).
+
+## Wall / ceiling / floor shots, OG (jp_grapple):
+wall200   fire t15 launch t20 (+5) player(2200.0,512.0,-0.0) claw(2385.2,503.5,36.8) 2D 185.4 | dv(14.982,-0.736,2.250) |dvxy| 15.00 | ACS on these: (14.982,-0.736,2.250) | km1 peak z 3.8 land t25 |vxy| 13
+wall400   fire t111 launch t121 (+10) player(2000.0,512.0,-0.0) claw(2385.2,503.5,36.8) 2D 385.3 | dv(31.990,-0.785,2.250) |dvxy| 32.00 | ACS on these: (31.990,-0.785,2.250) | km1 peak z 3.8 land t126 |vxy
+wall600   fire t207 launch t222 (+15) player(1800.0,512.0,-0.0) claw(2385.2,503.5,36.8) 2D 585.3 | dv(47.986,-1.178,2.250) |dvxy| 48.00 | ACS on these: (47.986,-1.178,2.250) | km1 peak z 3.8 land t227 |vxy
+wall780   fire t303 launch t322 (+19) player(1620.0,512.0,-0.0) claw(2385.2,503.5,36.8) 2D 765.2 | dv(62.981,-1.546,2.250) |dvxy| 63.00 | ACS on these: (62.981,-1.546,2.250) | km1 peak z 3.8 land t327 |vxy
+up20_600  fire t399 launch t414 (+15) player(1800.0,512.0,-0.0) claw(2389.2,503.5,212.4) 2D 589.2 | dv(48.985,-1.203,13.250) |dvxy| 49.00 | ACS on these: (48.985,-1.203,13.250) | km1 peak z 94.5 land t442 
+ceil60    fire t495 launch t509 (+14) player(1900.0,512.0,-0.0) claw(2232.0,503.5,498.0) 2D 332.1 | dv(26.967,-1.325,31.000) |dvxy| 27.00 | ACS on these: (26.967,-1.325,31.000) | km1 peak z 456.0 land t563
+floor25   fire t591 launch t594 (+3) player(1700.0,512.0,-0.0) claw(1808.1,503.5,-0.0) 2D 108.4 | dv(8.957,-0.882,0.000) |dvxy| 9.00 | ACS on these: (8.957,-0.882,-0.000) | km1 peak z -0.0 land t595 |vxy| 
+miss1000 NO LAUNCH 687
+
+## The same shots, ours:
+wall200   fire t15 launch t20 (+5) player(2200.0,512.0,-0.0) claw(2399.0,503.5,37.0) 2D 199.2 | dv(14.982,-0.736,2.250) |dvxy| 15.00 | ACS on these: (15.981,-0.785,2.250) | km1 peak z 3.8 land t25 |vxy| 13
+wall400   fire t113 launch t123 (+10) player(2000.0,512.0,-0.0) claw(2399.0,503.5,37.0) 2D 399.1 | dv(31.990,-0.785,2.250) |dvxy| 32.00 | ACS on these: (32.990,-0.810,2.250) | km1 peak z 3.8 land t128 |vxy
+wall600   fire t211 launch t226 (+15) player(1800.0,512.0,-0.0) claw(2399.0,503.5,37.0) 2D 599.1 | dv(47.986,-1.178,2.250) |dvxy| 48.00 | ACS on these: (48.985,-1.203,2.250) | km1 peak z 3.8 land t231 |vxy
+wall780   fire t309 launch t328 (+19) player(1620.0,512.0,-0.0) claw(2399.0,503.5,37.0) 2D 779.0 | dv(62.981,-1.546,2.250) |dvxy| 63.00 | ACS on these: (63.981,-1.571,2.250) | km1 peak z 3.8 land t333 |vxy
+up20_600  fire t407 launch t422 (+15) player(1800.0,512.0,-0.0) claw(2399.0,503.5,215.7) 2D 599.1 | dv(48.985,-1.203,13.250) |dvxy| 49.00 | ACS on these: (48.985,-1.203,13.500) | km1 peak z 94.5 land t450 
+ceil60    fire t505 launch t519 (+14) player(1900.0,512.0,-0.0) claw(2238.5,503.5,511.2) 2D 338.6 | dv(26.967,-1.325,31.000) |dvxy| 27.00 | ACS on these: (27.966,-1.374,31.750) | km1 peak z 456.0 land t573
+floor25   fire t603 launch t606 (+3) player(1700.0,512.0,-0.0) claw(1804.3,503.5,0.4) 2D 104.6 | dv(8.957,-0.882,0.000) |dvxy| 9.00 | ACS on these: (7.961,-0.784,-0.000) | km1 peak z -0.0 land t607 |vxy| 8
+miss1000 NO LAUNCH 701
+(ours' 'claw' column is where our claw sprite rests; the fling is computed from the OG POINT, where his HookShot would rest:)
+T_GR t20 og fling f 185 b 254 zh -37 -> vel(14.982 -0.736 2.250)
+T_GR t123 og fling f 385 b 255 zh -37 -> vel(31.990 -0.785 2.250)
+T_GR t226 og fling f 585 b 255 zh -37 -> vel(47.986 -1.178 2.250)
+T_GR t328 og fling f 765 b 255 zh -37 -> vel(62.981 -1.546 2.250)
+T_GR t422 og fling f 589 b 255 zh -213 -> vel(48.985 -1.203 13.250)
+T_GR t519 og fling f 329 b 254 zh -497 -> vel(26.967 -1.325 31.000)
+T_GR t606 og fling f 108 b 252 zh 0 -> vel(8.957 -0.882 0.000)
+
+## The player's track after the launch, OG vs ours, every tic until the next teleport:
+wall200   80 tics compared, max |OG-ours| over pos/vel 0.000; ours: lands +5 tics, |vxy| then 13.59, at +40 x 2383.9 |vxy| 0.00, keepmomentum 1 for 21 tics
+wall400   80 tics compared, max |OG-ours| over pos/vel 0.000; ours: lands +5 tics, |vxy| then 29.00, at +40 x 2383.8 |vxy| 0.00, keepmomentum 1 for 20 tics
+wall600   75 tics compared, max |OG-ours| over pos/vel 0.000; ours: lands +5 tics, |vxy| then 43.50, at +40 x 2383.7 |vxy| 0.00, keepmomentum 1 for 21 tics
+wall780   71 tics compared, max |OG-ours| over pos/vel 0.000; ours: lands +5 tics, |vxy| then 57.09, at +40 x 2383.6 |vxy| 0.00, keepmomentum 1 for 21 tics
+up20_600  75 tics compared, max |OG-ours| over pos/vel 0.000; ours: lands +28 tics, |vxy| then 0.00, at +40 x 2383.5 |vxy| 0.00, keepmomentum 1 for 14 tics
+ceil60    76 tics compared, max |OG-ours| over pos/vel 0.000; ours: lands +54 tics, |vxy| then 0.00, at +40 x 2383.6 |vxy| 0.72, keepmomentum 1 for 20 tics
+floor25   80 tics compared, max |OG-ours| over pos/vel 0.000; ours: lands +1 tics, |vxy| then 8.16, at +40 x 1786.5 |vxy| 0.00, keepmomentum 1 for 23 tics
+miss1000 -
+
+## Claw flight, a miss toward a wall 990 out (x per tic):
+OG:   1420.20 1460.20 1500.20 1540.20 1580.20 1620.20 1660.20 1700.20 1740.20 1780.20 1820.20 1860.20 1900.20 1940.20 1980.20 2020.20 2060.20 2100.20 2140.20 2180.20 
+ours: 1420.00 1460.00 1500.00 1540.00 1580.00 1620.00 1660.00 1700.00 1740.00 1780.00 1820.00 1860.00 1900.00 1940.00 1980.00 2020.00 2060.00 2100.00 2140.00 2180.00 2180.00  (then back)
+
+## Monster hook, OG:
+imp200     throw t19 mon(800.0,512.0,0.0) player(600.0,512.0,-0.0) 2D 200.0 | dv(-16.000,0.000) vz 0.000 | ACS: (-16.000,0.000) vz 0.000 | stopped t52 at 36.6 from you
+imp400     throw t110 mon(1000.0,512.0,0.0) player(600.0,512.0,-0.0) 2D 400.0 | dv(-33.000,0.000) vz 0.000 | ACS: (-33.000,0.000) vz 0.000 | stopped t170 at 49.0 from you
+imp600     throw t201 mon(1200.0,512.0,0.0) player(600.0,512.0,-0.0) 2D 600.0 | dv(-50.000,0.000) vz 0.000 | ACS: (-50.000,0.000) vz 0.000 | stopped t265 at 67.6 from you
+zombie300  throw t280 mon(900.0,512.0,0.0) player(600.0,512.0,-0.0) 2D 300.0 | dv(-25.000,0.000) vz 0.000 | ACS: (-25.000,0.000) vz 0.000 | stopped t327 at 36.2 from you
+demon300   throw t365 mon(900.0,512.0,0.0) player(600.0,512.0,-0.0) 2D 300.0 | dv(-25.000,0.000) vz 0.000 | ACS: (-25.000,0.000) vz 0.000 | stopped t396 at 47.2 from you
+caco_up120 throw t23 mon(950.0,512.0,120.0) player(600.0,512.0,-0.0) 2D 350.0 | dv(-29.000,0.000) vz -15.000 | ACS: (-29.000,0.000) vz -15.000 | stopped t34 at 62.7 from you
+cyber400   throw t110 mon(1000.0,512.0,0.0) player(600.0,512.0,-0.0) 2D 400.0 | dv(-33.000,0.000) vz 0.000 | ACS: (-33.000,0.000) vz 0.000 | stopped t149 at 56.4 from you
+
+## Monster hook, ours (Monster Hook: OG):
+imp200     throw t19 mon(800.0,512.0,0.0) player(600.0,512.0,-0.0) 2D 200.0 | dv(-16.000,0.000) vz 0.000 | ACS: (-16.000,0.000) vz 0.000 | stopped t52 at 36.6 from you
+imp400     throw t112 mon(1000.0,512.0,0.0) player(600.0,512.0,-0.0) 2D 400.0 | dv(-33.000,0.000) vz 0.000 | ACS: (-33.000,0.000) vz 0.000 | stopped t172 at 49.0 from you
+imp600     throw t205 mon(1200.0,512.0,0.0) player(600.0,512.0,-0.0) 2D 600.0 | dv(-50.000,0.000) vz 0.000 | ACS: (-50.000,0.000) vz 0.000 | stopped t269 at 67.6 from you
+zombie300  throw t286 mon(900.0,512.0,0.0) player(600.0,512.0,-0.0) 2D 300.0 | dv(-25.000,0.000) vz 0.000 | ACS: (-25.000,0.000) vz 0.000 | stopped t333 at 36.2 from you
+demon300   throw t373 mon(900.0,512.0,0.0) player(600.0,512.0,-0.0) 2D 300.0 | dv(-25.000,0.000) vz 0.000 | ACS: (-25.000,0.000) vz 0.000 | stopped t404 at 47.2 from you
+caco_up120 throw t23 mon(950.0,512.0,120.0) player(600.0,512.0,-0.0) 2D 350.0 | dv(-29.000,0.000) vz -15.000 | ACS: (-29.000,0.000) vz -15.000 | stopped t34 at 62.7 from you
+cyber400 NO THROW
+ourm.log:T_GRM og throw DoomImp f 200 b 128 zh 0 -> vel(-16.000 0.000 0.000)
+ourm.log:T_GRM og throw DoomImp f 400 b 128 zh 0 -> vel(-33.000 0.000 0.000)
+ourm.log:T_GRM og throw DoomImp f 600 b 128 zh 0 -> vel(-50.000 0.000 0.000)
+ourm.log:T_GRM og throw Zombieman f 300 b 128 zh 0 -> vel(-25.000 0.000 0.000)
+ourm.log:T_GRM og throw Demon f 300 b 128 zh 0 -> vel(-25.000 0.000 0.000)
+ourm2.log:T_GRM og throw Cacodemon f 350 b 128 zh -120 -> vel(-29.000 0.000 -15.000)
+ourm2.log:T_GR t112 og fling f 360 b 255 zh -37 -> vel(29.991 -0.736 2.250)
+(cyber400: a boss is still an anchor here, so you are flung toward it instead of it toward you: the one difference)
+
+## Gun Bonsai VR (GunBonsai 0.10.6 + every RSQ pk3), ours:
+SHOT_locked
+T_GR p0: the Grapple is not learned, no hook
+SHOT_goh_imp400
+T_GRM og throw DoomImp f 400 b 128 zh 0 -> vel(-33.000 0.000 0.000)
+T_GRP bite p0 h0 DoomImp mass 100 boss 0 heavy 0 (bites 1 yanks 0)
+T_GRM og DoomImp arrived after 31 tics, 66.4 from you
+T_GRP goh DoomImp arrives staggered 65 tics (1)
+SHOT_momentum_wall
+T_GR t286 h0 latch pos(1800.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(2399.0 503.5 211.8) L625.0 d625.0 segs111 ms0.093/0.0
+SHOT_bowling
+T_GRP kill p0 Zombieman hp 20 (kills 1)
+T_GRP bowl DoomImp -> Zombieman speed 18.3 dmg 24 hp 20 -> -4 shoved 0
+T_GRM og DoomImp comes on past Zombieman at 16.6
+T_GRM og DoomImp arrived after 52 tics, 73.7 from you
+SHOT_double
+T_GRP slam start DoomImp <-> DoomImp dist 224.0 lv 2
+T_GRP slam met after 6 tics: dmg 50 each, hp 60 -> 10 and 60 -> 10, staggered 65
+
+## Options still there (doom2 + Grapple):
+SHOT_rope_pull   (rsqgr_geo_mode 0)
+T_GR t30 h0 latch pos(1800.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(2399.0 503.5 215.7) L626.2 d626.2 segs111 ms
+T_GR t66 h0 arrive 32.0 from the claw, hangs pos(2368.5 503.9 172.6) vel(9.48 -0.13 1.92) claw(2399.0 503.5 21
+SHOT_swing   (rsqgr_swing 1; this press only let go of the pull rope still hanging from the shot before)
+SHOT_swing_with_og_row   (rsqgr_swing 1 with Wall Hook back on OG: the swing rope latches)
+T_GR t186 h0 latch pos(1800.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(2399.0 503.5 215.7) L626.2 d626.2 segs111 m
+SHOT_slide
+T_GR t258 h0 bite pos(600.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(980.0 503.5 37.0) L0.0 d789.5 segs63 ms0.050/
+SHOT_yank
+T_GR t336 h0 bite pos(600.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(980.0 503.5 37.0) L0.0 d789.5 segs63 ms0.051/
+T_GRM land DoomImp (arrived) after 24 tics speed 27.2 down 14.0 peak 52.1 dmg 4 at (652.0 512.0 -0.0) floorz -
+SHOT_lasso
+T_GRM lasso DoomImp m=100 len=390.0
+T_GR t414 h0 bite pos(600.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(980.0 503.5 37.0) L0.0 d789.5 segs63 ms0.052/
+SHOT_reset_wall   (after rsqgr_reset; this press let go of the lassoed imp still held)
+T_GRM land DoomImp (fell) after 98 tics speed 4.4 down 4.4 peak 35.2 dmg 0 at (1740.8 503.6 -0.0) floorz -0.0 
+SHOT_reset_monster
+T_GR t572 h0 og throw pos(600.0 512.0 -0.0) vel(0.00 0.00 0.00) claw(980.0 503.5 37.0) L0.0 d789.5 segs63 ms0.
+
+## Script errors
+og1: 0 (0 of them BD_VoxelPack's voxeldef)
+ours1: 0 (0 of them BD_VoxelPack's voxeldef)
+ourm: 0 (0 of them BD_VoxelPack's voxeldef)
+ogm: 0 (0 of them BD_VoxelPack's voxeldef)
+opts: 0 (0 of them BD_VoxelPack's voxeldef)
+gbm: 0 (0 of them BD_VoxelPack's voxeldef)
+gbm2: 0 (0 of them BD_VoxelPack's voxeldef)
+full: 4 (4 of them BD_VoxelPack's voxeldef)
+full = doom2 -> lo2 01, 02, 03_BD22_VR-Reloaded_2.0.3o (rs_brutal22weaponsq), 04-07 -> GunBonsai 0.10.6 -> every pk3/RSQ_*.pk3:
+T_GR t90 og fling f 585 b 255 zh -37 -> vel(47.986 -1.178 2.250)
+T_GR t167 og fling f 329 b 254 zh -497 -> vel(26.967 -1.325 31.000)
+T_GRM og throw DoomImp f 400 b 128 zh 0 -> vel(-33.000 0.000 0.000)
+T_GRP goh DoomImp arrives staggered 35 tics (1)

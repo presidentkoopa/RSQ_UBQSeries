@@ -27,8 +27,8 @@ AddOptionMenu "RSQ_RSOptions"
 
 OptionValue "RSQGR_GeoModes"
 {
+	1, "OG"
 	0, "Rope"
-	1, "Yank"
 }
 
 OptionValue "RSQGR_RopeStyles"
@@ -41,7 +41,7 @@ OptionValue "RSQGR_RopeStyles"
 OptionString "RSQGR_P_Range"
 {
 	"rsqgr_range 768", "Short"
-	"rsqgr_range 1024", "Standard"
+	"rsqgr_range 780", "Standard"
 	"rsqgr_range 3072", "Long"
 }
 OptionString "RSQGR_P_Swing"
@@ -138,6 +138,7 @@ OptionMenu "RSQGR_Tuning"
 
 OptionValue "RSQGR_MonsterModes"
 {
+	3, "OG"
 	0, "Slide"
 	1, "Yank"
 	2, "Lasso"

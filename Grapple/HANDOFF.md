@@ -1,3 +1,34 @@
+# ==== THE OG is the default: jpalomo's one-off fling (walls) and throw (monsters), 2026-11-03 (read first) ====
+
+Owner (11-03): "Grapple is too slow compared to the OG, and for some reason it sticks me to the wall or ceiling instead of
+letting me go and carrying my momentum LIKE THE OG DOES." Then: monsters too, "OG behavior to start then GB can take it
+wherever." Rig only, not headset-confirmed. Evidence: test/evidence/og_1103.txt; kit: tools/rigtest/og_1103/ (it also
+packs jp_original/ as-is, so his own hook runs on the rig beside ours).
+
+Why it was slow and sticky: the 11-02 default (Rope pull) SET the velocity every tic, ramping to 18 u/tic, then held you
+32 units from the claw. The old "Yank" row was close to his math but capped the result at rsqgr_max_speed 30 (his is
+nolimit: 48 u/tic at 600 units, 63 at 765), never set keepmomentum (his ThrustThing does: p_lnspec.cpp 1224, so the VR
+momentum wipe, player.zs 1374, does not stop him on landing), rounded the height with int() instead of his +0.5, and
+measured from the trace point instead of where his 10-radius projectile comes to rest.
+
+## Done (measured)
+| what | measured |
+|---|---|
+| Wall Hook: OG (rsqgr_geo_mode 1, default) | core.zs OGFling: his Hook_HitWall exactly (f = floor 2D, byte angle truncated, ZHeight rounded, f/12 added along it, -(ZHeight/4)/4 added to z, keepmomentum). OGPoint: where his HookShot rests (5-unit sub-steps from the hand, box 10 off a wall, 14 under a ceiling, first sub-step on a floor). 7 shots (walls at 185..765, a 20-degree shot, ceiling, floor) launch velocity = his to 0.001, on the same tic after the press; the player's track afterwards identical to his for 71-80 tics (pos and vel diff 0.000). Never held: keepmomentum 1 for 14-23 tics, then normal. |
+| Claw flight | first tic 10 units (P_CheckMissileSpawn's halving for a 16-radius shooter), then 40 a tic, trace 10 ahead (his box front); rsqgr_range 1024 -> 780. A miss: x 1420, 1460 ... 2180 over 20 tics, exactly his (ours 0.2 off: the hand offset is packed in half-units by input.zs). |
+| Monster Hook: OG (rsqgr_monster_mode 3, default) | monster.zs OGThrow: his Hook_HitEnemy exactly (distance rounded, toward the player, f/12 added, vel.z SET to (ZHeight/2)/4). Imp 200/400/600, zombieman, demon 300, cacodemon 120 up: same velocity as his to 0.001, same claw flight tics, stopped at the same spot (36.6 / 49.0 / 67.6 / 36.2 / 47.2 from you). The claw stays shut 16 tics where it bit, then returns. |
+| Bosses / over rsqgr_mass_max | still an anchor (TooHeavy, unchanged): with Wall Hook OG you are flung toward it (Cyberdemon at 400: 30 u/tic toward it). HIS throws the Cyberdemon at you (33 u/tic). Kept so Heavy Haul has a limit to raise; the owner's call. |
+| Gun Bonsai VR on the OG | Grapple unlock: unlearned, "not learned, no hook". Get Over Here 3: imp thrown from 400 "arrives staggered 65 tics" (RSQGR_Flight.StepOG: arrival = stops within radii + 32 of you, or within 48 more). Bowling 2: strikes a zombieman in the path (24 dmg, killed), its corpse (left solid by the RSQ set) shoved off the line, the imp "comes on" and arrives. Double Hook 2: two imps bitten on the same tic, "slam met after 6 tics: 50 each". Momentum learned: a wall shot latches the swing rope. Barbed Claw tears at the end of the 16 shut tics (PH_HOLD). Zip Kick counts a fling (core.flungTic) as the rope. |
+| Options kept | Wall Hook: Rope (pull, arrive 32 from the claw, hangs), Swing and Momentum (latches even with Wall Hook OG), Monster Hook Slide / Yank / Lasso all still run; Reset All gives OG / OG. |
+| Script errors | 0 on doom2 + Grapple; 0 with GunBonsai 0.10.6 + every RSQ pk3; full order (lo2 01, 02, 03_BD22_VR-Reloaded_2.0.3o, 04-07, GunBonsai, every RSQ pk3): only BD_VoxelPack's 4 voxeldef lines, and the same fling / throw numbers there. |
+
+## Not done / open
+- Headset: all of it.
+- His aim climbs a few degrees less than the hand (16.9 vs 20 degrees on the rig, P_SpawnPlayerMissile); ours goes where the hand points. Not copied.
+- Range preset: Short is still 768 (tools/rsmenu/presets.py line 97, outside this folder), now barely under Standard 780. Someone with that file should make Short ~600.
+- Gun Bonsai VR: Fast Reel still says "a hooked monster's slide": under the OG it only speeds the claw (and the rope modes). Twin Lines, Slingshot and Steady Line need a rope mode (Rope or Swing); Zip Kick already sits behind Momentum.
+- Score's rope awards ("Indiana Jones" gap crossings) were measured with the swing; with the fling not checked.
+
 # ==== the pull is the default; Swing and Momentum an option, 2026-11-02 (read first) ====
 
 Owner (verbatim): "grapple: I'd like it to go back to its OG functionality, pulling me to where I shot it. playing

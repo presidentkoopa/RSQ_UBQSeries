@@ -7,7 +7,8 @@ The hook's art and sound are jpalomo's, from the grappling hook in his mod pack
   - chain link tenda0 (the 40 px hires version), shipped here as RSGR
   - sounds dschain, dsswish, dspulchn, dsmtalht, dsmeatht, shipped here as
     RSGCHAIN, RSGSWISH, RSGPULCH, RSGMETAL, RSGMEAT
-  - the "Yank" wall mode reproduces his Hook_HitWall thrust (hook.acs).
+  - the OG wall and monster modes (the defaults) reproduce his Hook_HitWall and
+    Hook_HitEnemy thrusts (hook.acs) and his HookShot's flight, number for number.
 Thank you, jpalomo.
 
 SLATED FOR REPLACEMENT (owner, 10-27): this hook is the series' own rebuild, so its look and sound

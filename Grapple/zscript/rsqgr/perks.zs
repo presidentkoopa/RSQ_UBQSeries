@@ -281,7 +281,7 @@ class RSQGR_Perks : EventHandler
 					swingThis[i] += add;
 					xSwing[pn] += add;
 				}
-				if (h.victim && (h.phase == RSQGR_Hook.PH_BITE || h.phase == RSQGR_Hook.PH_LATCH)) Note(h.victim, pmo);
+				if (h.victim && (h.phase == RSQGR_Hook.PH_BITE || h.phase == RSQGR_Hook.PH_LATCH || h.phase == RSQGR_Hook.PH_HOLD)) Note(h.victim, pmo);
 			}
 		}
 		if (fl)
@@ -300,6 +300,10 @@ class RSQGR_Perks : EventHandler
 			let hk = core.hooks[pn * 2 + k];
 			if (hk && hk.phase == RSQGR_Hook.PH_LATCH) ropeTic[pn] = level.maptime;
 		}
+		// THE OG FLING counts as the rope (Wall Hook: OG, the default): a fling in the last 10 tics, or the flight it
+		// started still in the air
+		bool air = pmo.Pos.z > pmo.floorz + 0.5 && !pmo.bOnMobj;
+		if (level.maptime - core.flungTic[pn] <= 10 || (air && level.maptime - ropeTic[pn] <= 1 && core.flungTic[pn] > 0 && level.maptime - core.flungTic[pn] < 175)) ropeTic[pn] = level.maptime;
 		double was = lastSpd[pn];
 		lastSpd[pn] = pmo.vel.Length();
 		int lv = lvZip[pn];
@@ -359,7 +363,8 @@ class RSQGR_Perks : EventHandler
 		{
 			let core = RSQGR_Core.Get();
 			let o = core ? core.hooks[pn * 2 + (1 - h.hand)] : null;
-			if (o && o.phase == RSQGR_Hook.PH_BITE && !o.heavy && o.victim && o.victim != v && o.victim.Health > 0)
+			// (an OG throw's claw holds its victim for its 16 shut tics: PH_HOLD)
+			if (o && (o.phase == RSQGR_Hook.PH_BITE || o.phase == RSQGR_Hook.PH_HOLD) && !o.heavy && o.victim && o.victim != v && o.victim.Health > 0)
 				me.StartSlam(v, o.victim, pmo, dbl, h, o);
 		}
 	}
@@ -372,7 +377,7 @@ class RSQGR_Perks : EventHandler
 		bool dbg = RSQGR_Util.Flag("rsqgr_debug", false);
 		// BARBED CLAW: tearing it out of a living monster
 		let v = h.victim;
-		if (v && v.Health > 0 && v.bShootable && (h.phase == RSQGR_Hook.PH_BITE || (h.phase == RSQGR_Hook.PH_LATCH && h.heavy)))
+		if (v && v.Health > 0 && v.bShootable && (h.phase == RSQGR_Hook.PH_BITE || h.phase == RSQGR_Hook.PH_HOLD || (h.phase == RSQGR_Hook.PH_LATCH && h.heavy)))
 		{
 			int barb = Lv(pmo, 'BarbedClaw');
 			if (barb > 0)

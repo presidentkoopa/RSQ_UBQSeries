@@ -122,8 +122,9 @@ class RSQGR_Core : EventHandler
 		h.owner = pmo;
 		h.hand = hand;
 		h.dir = dir;
+		h.spawnPos = org;
 		h.speed = max(4.0, RSQGR_Util.Num("rsqgr_speed", 40)) * RSQGR_Perks.Factor(pmo, 'reel');     // Fast Reel (perks.zs)
-		h.range = max(64.0, RSQGR_Util.Num("rsqgr_range", 1024)) * RSQGR_Perks.Factor(pmo, 'range'); // Long Line
+		h.range = max(64.0, RSQGR_Util.Num("rsqgr_range", 780)) * RSQGR_Perks.Factor(pmo, 'range'); // Long Line
 		h.angle = atan2(dir.y, dir.x);
 		h.SetPhase(RSQGR_Hook.PH_FLY);
 		hooks[pn * 2 + hand] = h;
@@ -259,7 +260,7 @@ class RSQGR_Core : EventHandler
 			Vector3 rel = org - pmo.Pos;
 			if ((rel.xy dot fwd) < DOT_REACH) continue;
 			Vector3 dir = RSQGR_Util.MapDir(RSQGR_Util.AimYaw(pmo, hand), RSQGR_Util.AimPitch(pmo, hand));
-			double range = max(64.0, RSQGR_Util.Num("rsqgr_range", 1024)) * RSQGR_Perks.Factor(pmo, 'range');
+			double range = max(64.0, RSQGR_Util.Num("rsqgr_range", 780)) * RSQGR_Perks.Factor(pmo, 'range');
 			let tr = GetTracer();
 			tr.shooter = pmo;
 			if (!tr.Trace(org, level.PointInSector(org.xy), dir, range, TRACE_HitSky, RSQGR_Tracer.WALLMASK, false, pmo)) continue;
@@ -302,14 +303,28 @@ class RSQGR_Core : EventHandler
 
 	// ---- flight -----------------------------------------------------------------
 
+	// THE OG CLAW'S FLIGHT (jp_original decorate.txt HookShot: a FastProjectile, Speed 40, Radius 10, alive 10 frames x
+	// 2 tics). On its first tic P_CheckMissileSpawn puts it half its velocity ahead, halved again until under the
+	// shooter's radius (40 -> 20 -> 10 for a 16-radius player); then 40 a tic for 19 more tics: its centre goes 10, 50,
+	// ... 770, and its box (radius 10) meets a wall up to 780 out. Rig, his pk3: 1420.2, 1460.2 ... 2180.2 from a hand
+	// at 1410.2, 20 tics, gone. So: the same first step and speed, and the claw's trace looks OG_R ahead of its point
+	// (his box's front), so a wall is met on the very tic his box met it; rsqgr_range 780 is his reach.
+	const OG_R = 10.0;
+
 	void Fly(RSQGR_Hook h, int i)
 	{
-		double step = min(h.speed, h.range - h.traveled);
+		double step = h.speed;
+		if (h.traveled <= 0)
+		{
+			double rad = h.owner ? max(1.0, h.owner.radius) : 16.0;
+			while (step >= rad) step *= 0.5;
+		}
+		step = min(step, h.range - OG_R - h.traveled);
 		if (step <= 0) { LetGo(h, false); return; }
 		let tr = GetTracer();
 		tr.shooter = h.owner;
 		Vector3 p = h.Pos;
-		bool hit = tr.Trace(p, level.PointInSector(p.xy), h.dir, step, TRACE_HitSky, RSQGR_Tracer.WALLMASK, false, h.owner);
+		bool hit = tr.Trace(p, level.PointInSector(p.xy), h.dir, step + OG_R, TRACE_HitSky, RSQGR_Tracer.WALLMASK, false, h.owner);
 		int ht = tr.Results.HitType;
 		if (!hit || ht == TRACE_HitNone || ht == TRACE_CrossingPortal)
 		{
@@ -337,7 +352,18 @@ class RSQGR_Core : EventHandler
 			if (h.heavy)
 			{
 				h.anchor = v.Pos + h.victimOfs;
+				h.ogPoint = h.anchor;
 				Latch(h, i);
+			}
+			else if (RSQGR_Monster.OGMode())
+			{
+				// THE OG (Monster Hook: OG, the default since 11-03): jpalomo's Hook_HitEnemy, a one-off throw of the
+				// monster toward you (RSQGR_Monster.OGThrow). Nothing holds it after: the claw stays shut where it bit
+				// for his 16 tics (CCLW A 16) and comes back, as his did; the throw is the engine's physics from here.
+				h.SetPhase(RSQGR_Hook.PH_HOLD);
+				RSQGR_Monster.OnHooked(v, h.owner, h.hand, at);
+				Log(h, "og throw");
+				Thump(h, "bite");
 			}
 			else
 			{
@@ -370,6 +396,7 @@ class RSQGR_Core : EventHandler
 			if (ht == TRACE_HitCeiling) { h.anchorPlane = 2; h.planeOfs = h.anchor.z - h.anchorSec.ceilingplane.ZatPoint(h.anchor.xy); }
 			else if (ht == TRACE_HitFloor) { h.anchorPlane = 1; h.planeOfs = h.anchor.z - h.anchorSec.floorplane.ZatPoint(h.anchor.xy); }
 		}
+		h.ogPoint = OGPoint(h, ht, tr.Results.HitLine, at);
 		String s = RSQGR_Looks.Sound('hitwall');
 		if (s != "") h.A_StartSound(s, CHAN_VOICE);
 		RSQGR_Looks.Spark(at, 'wall');
@@ -406,19 +433,13 @@ class RSQGR_Core : EventHandler
 		h.bestDist = h.ropeLen;
 		h.noProgress = 0;
 		Thump(h, "latch");
-		if (RSQGR_Util.Opt("rsqgr_geo_mode", 0) == 1)
+		// THE OG (Wall Hook: OG, the default since 11-03; owner: "let me go and carry my momentum LIKE THE OG DOES").
+		// Swing and Momentum on (or Gun Bonsai VR's Momentum learned) is the swing rope instead, whatever this row says.
+		if (!SwingMode(pmo) && RSQGR_Util.Opt("rsqgr_geo_mode", 1) == 1)
 		{
-			// JP's yank, parsed from hook.acs Hook_HitWall + function.acs: ThrustThing
-			// toward the hook by (2D distance / 12), nolimit; ThrustThingZ "down" by
-			// (zdist/4)/4 added, with zdist = player z - hook z (integer units) --
-			// i.e. vel.z += (hook z - player z) / 16, upward when the hook is above.
-			Vector3 d = h.anchor - pmo.Pos;
-			double d2 = d.xy.Length();
-			if (d2 > 0.01) pmo.vel.xy += d.xy / d2 * (int(d2) / 12);
-			pmo.vel.z += (int(d.z) / 4) / 4.0;
-			CapSpeed(pmo);
+			OGFling(pmo, h.ogPoint);
 			h.SetPhase(RSQGR_Hook.PH_HOLD);
-			Log(h, "yank");
+			Log(h, "og fling");
 			return;
 		}
 		// TWIN LINES (Gun Bonsai VR): under the patch one wall rope at a time until it is learned -- this one takes over
@@ -429,6 +450,73 @@ class RSQGR_Core : EventHandler
 		}
 		h.SetPhase(RSQGR_Hook.PH_LATCH);
 		Log(h, "latch");
+	}
+
+	// ---- THE OG: jpalomo's jp_grapple, number for number ---------------------------------
+	//
+	// His Hook_HitWall (jp_original/scripts/hook.acs, helpers in function.acs), on the hook and the player:
+	//   f_Distance = Distance(hook, player)            VectorLength of the fixed XY difference, >> 16: floor
+	//   b_Angle    = ByteAngle(hook, player)           VectorAngle(hook - player) >> 8; AngleToACS is
+	//                                                  Normalized360().Q16(), a truncation: 256 steps, rounded down
+	//   ZHeight    = (ZDistance(player, hook) + 0.5) >> 16      round(player z - hook z)
+	//   ThrustThing(b_Angle, f_Distance / 12, True, player)
+	//   ThrustThingZ(0, ZHeight / 4, 1, player)
+	// What those do in QZD 17.3 (p_lnspec.cpp 1220-1290): ThrustThing sets player.keepmomentum and ADDS
+	// (f_Distance / 12) along BYTEANGLE(b_Angle) = b_Angle x 360/256 degrees, with no clamp (nolimit True);
+	// ThrustThingZ's thrust is arg1 / 4. units a tic, negated by "down" (1), ADDED when its 4th arg is not 0
+	// (his is the player's TID: not 0). ACS's / truncates toward zero, as ZScript's int / does. So:
+	//   vel.xy += (f / 12) x (cos, sin)(b x 1.40625),   vel.z += -((ZHeight / 4) / 4.)
+	// -- (hook z - player z) / 16 upward, roughly. He is never held after it: physics and his momentum carry on, and
+	// keepmomentum keeps the engine's VR momentum wipe (player.zs 1374) off him until he is nearly still, as for the OG.
+	// Measured against his own pk3 on the rig (Grapple/test/evidence/og_1103.txt): the same numbers to 0.001.
+	static void OGFling(PlayerPawn pmo, Vector3 hook)
+	{
+		if (!pmo || !pmo.player) return;
+		Vector2 dxy = hook.xy - pmo.Pos.xy;
+		int f = int(dxy.Length());
+		double ang = atan2(dxy.y, dxy.x);
+		if (ang < 0) ang += 360.0;
+		int b = (int(ang * (65536.0 / 360.0)) >> 8) & 255;
+		int zh = int(floor(pmo.Pos.z - hook.z + 0.5));
+		double th = b * (360.0 / 256.0);
+		pmo.player.keepmomentum = true;
+		pmo.vel.xy += (cos(th), sin(th)) * (f / 12);
+		pmo.vel.z += -((zh / 4) / 4.0);
+		let c = Get();
+		if (c) c.flungTic[pmo.PlayerNumber()] = level.maptime;
+		if (RSQGR_Util.Opt("rsqgr_debug", 0) >= 1)
+			Console.Printf("T_GR t%d og fling f %d b %d zh %d -> vel(%.3f %.3f %.3f)", level.maptime, f, b, zh, pmo.vel.x, pmo.vel.y, pmo.vel.z);
+	}
+	int flungTic[MAXPLAYERS];   // the last OG fling (Gun Bonsai VR's Zip Kick counts a fling as the rope)
+
+	// THE OG POINT: where his HookShot (a FastProjectile: radius 10, height 14, its z its bottom on the aim line) comes
+	// to rest for the hit our claw's trace found. FastProjectile.Tick moves in speed/8 sub-steps (8 while speed < 8 x
+	// radius: 5 units at 40) from where it left the hand, and stops on the last one whose box is clear: against a wall
+	// its box needs 10 x (|nx| + |ny|) along the wall's normal, under a ceiling its top (z + 14) must stay below it,
+	// and on a floor the first sub-step at or below it is set on it. Rig, his pk3: claw 14.8 short of a wall it met head-on, 14 under the
+	// ceiling, on the floor at a floor shot -- what this gives.
+	static Vector3 OGPoint(RSQGR_Hook h, int ht, Line ln, Vector3 at)
+	{
+		Vector3 d = h.dir;
+		double back = 0;
+		if (ht == TRACE_HitWall && ln)
+		{
+			Vector2 n = (ln.delta.y, -ln.delta.x);
+			if (n.Length() > 0.0001) n = n.Unit();
+			double c = 10.0 * (abs(n.x) + abs(n.y));
+			double k = abs(d.xy dot n);
+			back = k > 0.05 ? c / k : 0;
+		}
+		else if (ht == TRACE_HitCeiling)
+			back = d.z > 0.05 ? 14.0 / d.z : 0;
+		double sHit = (at - h.spawnPos) dot d;
+		double sub = max(1.0, h.speed / 8.0);
+		// a floor: the first sub-step at or under it explodes, put on the floor (FastProjectile's z check)
+		// (a box exactly touching the wall is refused too: 2385.2 against a wall at 2400 from 2210.2, not 2390.2)
+		double s = (ht == TRACE_HitFloor) ? ceil(sHit / sub) * sub : max(0.0, floor((sHit - back - 0.01) / sub) * sub);
+		Vector3 p = h.spawnPos + d * s;
+		if (ht == TRACE_HitFloor) p.z = at.z;
+		return p;
 	}
 
 	// ---- the thump (rsqgr_thump) ------------------------------------------------

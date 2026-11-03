@@ -1,10 +1,10 @@
 // RSQ_Grapple settings. All SERVER cvars (the host's world); none are user cvars.
 
 server bool   rsqgr_on            = true;   // the hook is available
-server int    rsqgr_geo_mode      = 0;      // hooking a wall: 0 the rope (a pull to the claw, or a swing with rsqgr_swing), 1 yank (jpalomo's thrust)
+server int    rsqgr_geo_mode      = 1;      // hooking a wall: 1 OG (jpalomo's one-off fling toward the claw, the default since 11-03), 0 the rope (a pull to the claw and stop); rsqgr_swing on = the swing rope either way
 server bool   rsqgr_swing         = false;  // Swing and Momentum (owner, 11-02): off = the rope pulls you straight to where the claw bit and you stop there; on = hang, swing, pump, keep your speed (the 10-27..11-01 behaviour)
 server float  rsqgr_speed         = 40;     // claw flight, map units per tic (JP: 40)
-server float  rsqgr_range         = 1024;   // how far the claw flies before it comes back
+server float  rsqgr_range         = 780;    // how far the claw reaches before it comes back (JP: a 10-radius box, 10 + 19 x 40 tics of flight)
 server float  rsqgr_retract_speed = 64;     // the claw coming back
 
 // the rope
@@ -51,7 +51,7 @@ server bool   rsqgr_score         = true;   // a gap crossed on the rope pays RS
 server int    rsqgr_debug         = 0;      // 1: log every hook tic to the console (T_GR lines)
 
 // ==== monster side (agent-monster: monster.zs, whip.zs, looks.zs) ====
-server int    rsqgr_monster_mode  = 0;      // a hooked monster: 0 slides to you (core's), 1 is yanked through the air (Distance Grab's arc), 2 lasso (held at rope length, follows your arm)
+server int    rsqgr_monster_mode  = 3;      // a hooked monster: 3 OG (jpalomo's one-off throw toward you, the default since 11-03), 0 slides to you, 1 is yanked through the air (Distance Grab's arc), 2 lasso (held at rope length, follows your arm)
 server float  rsqgr_lasso_speed   = 24;     // the lasso: fastest a held monster follows your arm (units per tic)
 server bool   rsqgr_lasso_flick   = true;   // GR7: with the lasso, a hard flick of the arm (3 m/s, body frame) throws the held monster that way
 server float  rsqgr_yank_mass     = 1000;   // heaviest thrown; heavier (but under rsqgr_mass_max) slides

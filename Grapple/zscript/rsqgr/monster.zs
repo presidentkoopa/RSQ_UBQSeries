@@ -7,8 +7,9 @@
 // Core already guards: the victim gone, out of range, no closer for 52 tics, the
 // player dead, a boss or anything over rsqgr_mass_max (an anchor; none of these run).
 //
-// TWO WAYS TO COME (rsqgr_monster_mode):
-//   0 Slide -- THE DEFAULT, the owner's: it slides to you along the floor. This is
+// HOW IT COMES (rsqgr_monster_mode):
+//   3 OG    -- THE DEFAULT since 11-03: jpalomo's one-off throw toward you (RSQGR_Monster.OGThrow).
+//   0 Slide -- the default until 11-03: it slides to you along the floor. This is
 //     core's stub, kept line for line (RSQGR_Monster.Slide below).
 //   1 Yank  -- it is thrown through the air to your feet in an arc: Distance Grab's
 //     WorldHands path (RSQ_DistanceGrab flight.zs, rsqdg_flight_mode 2), ported number
@@ -23,14 +24,48 @@
 // through the same code; what differs is only what those fields say.
 class RSQGR_Monster
 {
+	// THE OG (rsqgr_monster_mode 3, the default since 11-03; owner: "OG behavior to start then GB can take it wherever")
+	static clearscope bool OGMode() { return RSQGR_Util.Opt("rsqgr_monster_mode", 3) == 3; }
+
 	static play void OnHooked(Actor victim, PlayerPawn pmo, int hand, Vector3 hookPos)
 	{
 		if (!victim) return;
+		if (OGMode()) { OGThrow(victim, pmo); return; }
 		victim.vel.xy = (0, 0);
-		int mode = RSQGR_Util.Opt("rsqgr_monster_mode", 0);
+		int mode = RSQGR_Util.Opt("rsqgr_monster_mode", 3);
 		if (mode != 1 && mode != 2) return;
 		let fl = RSQGR_Flight.Get();
 		if (fl) fl.Launch(victim, pmo, hand, mode == 2);   // 2: the lasso (FP_LASSO below)
+	}
+
+	// THE OG THROW: jpalomo's Hook_HitEnemy (jp_original/scripts/hook.acs), on the monster (its activator after
+	// SetActivatorToTarget) and the player:
+	//   f_Distance = (FixedDistance(monster, player) + 0.5) >> 16     the 2D distance, ROUNDED (Hook_HitWall's floors)
+	//   b_Angle    = ByteAngle(player, monster)                       toward the player, 256 steps rounded down
+	//   ZHeight    = (ZDistance(player, monster) + 0.5) >> 16         round(player z - monster z)
+	//   ThrustThing(b_Angle, f_Distance / 12, True, 0)                ADDED along it, no clamp, mass ignored
+	//   ThrustThingZ(0, ZHeight / 2, 0, 0)                            "up", SET (4th arg 0): vel.z = (ZHeight / 2) / 4.
+	// Then nothing holds it: floor friction slows it (0.90625 a tic, so it slides about 0.89 of the way), it may act on
+	// the way as it pleases, as with the OG. What the series adds on top is only bookkeeping for Gun Bonsai VR's nodes
+	// (RSQGR_Flight's OG watch: Bowling on the way, Get Over Here / Scorpion when it arrives in front of you).
+	// A boss or anything over rsqgr_mass_max never gets here (core makes it an anchor, which the Wall Hook row flings
+	// you toward): the one place the default is not his, kept because Heavy Haul builds on that limit.
+	static play void OGThrow(Actor v, PlayerPawn pmo)
+	{
+		if (!v || !pmo) return;
+		Vector2 dxy = pmo.Pos.xy - v.Pos.xy;
+		int f = int(floor(dxy.Length() + 0.5));
+		double ang = atan2(dxy.y, dxy.x);
+		if (ang < 0) ang += 360.0;
+		int b = (int(ang * (65536.0 / 360.0)) >> 8) & 255;
+		int zh = int(floor(pmo.Pos.z - v.Pos.z + 0.5));
+		double th = b * (360.0 / 256.0);
+		v.vel.xy += (cos(th), sin(th)) * (f / 12);
+		v.vel.z = (zh / 2) / 4.0;
+		let fl = RSQGR_Flight.Get();
+		if (fl) fl.WatchOG(v, pmo);
+		if (RSQGR_Util.Opt("rsqgr_debug", 0) >= 1)
+			Console.Printf("T_GRM og throw %s f %d b %d zh %d -> vel(%.3f %.3f %.3f)", v.GetClassName(), f, b, zh, v.vel.x, v.vel.y, v.vel.z);
 	}
 
 	// On the lasso: held at the rope's length, not coming. Core skips its "no closer for 52 tics" guard
@@ -226,6 +261,70 @@ class RSQGR_Flight : EventHandler
 
 	static RSQGR_Flight Get() { return RSQGR_Flight(EventHandler.Find("RSQGR_Flight")); }
 
+	// THE OG WATCH (Monster Hook: OG). The throw is the engine's (RSQGR_Monster.OGThrow); this only watches it, for
+	// Gun Bonsai VR's nodes, which were built on the slide's arrival: Bowling strikes what stands where it will be
+	// next tic (the engine would stop it dead on that thing), and when it arrives in front of you -- within the slide's
+	// stop distance + 16, or stopped within 48 more of it -- Get Over Here staggers it and Scorpion punches it
+	// (RSQGR_Perks.OnArrive). Stopped further off (a wall, a short throw) or after 3 s: no arrival. Nothing is moved,
+	// nothing held. Without the patch the levels are 0 and all of this is a no-op.
+	const NOG = 16;
+	Actor oA[NOG];
+	PlayerPawn oBy[NOG];
+	int oAge[NOG];
+	Vector3 oLast[NOG];   // its velocity at the end of last tic
+
+	void WatchOG(Actor a, PlayerPawn by)
+	{
+		int k = -1;
+		for (int i = 0; i < NOG; i++) if (oA[i] == a) { k = i; break; }
+		if (k < 0) for (int i = 0; i < NOG; i++) if (!oA[i]) { k = i; break; }
+		if (k < 0) return;
+		oA[k] = a; oBy[k] = by; oAge[k] = 0; oLast[k] = a.vel;
+	}
+
+	void StepOG()
+	{
+		bool dbg = RSQGR_Util.Flag("rsqgr_debug", false);
+		for (int k = 0; k < NOG; k++)
+		{
+			let a = oA[k];
+			if (!a) continue;
+			let p = oBy[k];
+			if (a.bDestroyed || a.Health <= 0 || !p || p.Health <= 0 || ++oAge[k] > 105) { oA[k] = null; oBy[k] = null; continue; }
+			double spd = a.vel.xy.Length();
+			// ...AND IT COMES ON: a thing Bowling struck (dying but still solid, or not shoved clear) stopped it dead this
+			// tic; it gets its speed back (one tic of floor friction off), as the slide's own move tries again each tic.
+			// Rig: an imp thrown through a zombieman stopped 243 units out until this.
+			let pk = RSQGR_Perks.Get();
+			let blk = a.BlockingMobj;
+			if (pk && blk && blk != p && spd < oLast[k].xy.Length() * 0.5 && pk.Struck(a, blk))
+			{
+				// still in the way (a corpse some packs leave solid -- rig, the full RSQ set: a bowled zombieman's stayed
+				// solid; or one Bowling could not shove): pushed off the line to the side it leans, as Bowling shoves
+				Vector2 dir = oLast[k].xy.Length() > 0.01 ? oLast[k].xy.Unit() : (1, 0);
+				Vector2 rel = blk.Pos.xy - a.Pos.xy;
+				Vector2 side = (-dir.y, dir.x);
+				if ((rel dot side) < 0) side = -side;
+				double need = a.Radius + blk.Radius + 4 - abs(rel dot side);
+				if (!blk.bDontThrust && need > 0)
+					for (int t = 0; t < 3; t++) if (blk.TryMove(blk.Pos.xy + side * (need + 8 * t), 1)) break;
+				a.vel.xy = oLast[k].xy * 0.90625;
+				spd = a.vel.xy.Length();
+				if (dbg) Console.Printf("T_GRM og %s comes on past %s at %.1f", a.GetClassName(), blk.GetClassName(), spd);
+			}
+			oLast[k] = a.vel;
+			if (spd > 2.0) RSQGR_Perks.Bowl(a, p, MidOf(a) + a.vel, spd);   // Bowling (perks.zs): what is in its way next tic
+			double d = (a.Pos.xy - p.Pos.xy).Length();
+			double near = p.Radius + a.Radius + RSQGR_Util.Num("rsqgr_slide_gap", 16) + 16;
+			bool down = a.Pos.z <= a.floorz + 0.5 || a.bOnMobj || a.bNOGRAVITY;
+			bool arrived = d <= near || (oAge[k] > 2 && spd < 1.0 && down && d <= near + 48);
+			if (!arrived && !(oAge[k] > 2 && spd < 1.0 && down)) continue;
+			if (dbg) Console.Printf("T_GRM og %s %s after %d tics, %.1f from you", a.GetClassName(), arrived ? "arrived" : "stopped short", oAge[k], d);
+			oA[k] = null; oBy[k] = null;
+			if (arrived) RSQGR_Perks.OnArrive(a, p);   // Get Over Here, Scorpion (perks.zs)
+		}
+	}
+
 	int SlotOf(Actor a) const
 	{
 		if (!a) return -1;
@@ -325,7 +424,7 @@ class RSQGR_Flight : EventHandler
 			// at it (you just fired at it), so nothing jumps on the first tic
 			Vector3 hp = RSQGR_Util.HandPos(pmo, hand);
 			double minL = pmo.Radius + a.Radius + RSQGR_Util.Num("rsqgr_slide_gap", 16);
-			flen[s] = clamp((mid0 - hp).Length(), minL, max(minL, RSQGR_Util.Num("rsqgr_range", 1024)));
+			flen[s] = clamp((mid0 - hp).Length(), minL, max(minL, RSQGR_Util.Num("rsqgr_range", 780)));
 			tSpin[s] = 0; tFlip[s] = 0; ftum[s] = 0;
 			fkN[s] = 0;
 			fph[s] = FP_LASSO;
@@ -529,6 +628,7 @@ class RSQGR_Flight : EventHandler
 		bool dbg = RSQGR_Util.Flag("rsqgr_debug", false);
 		double t0 = dbg ? MSTimeF() : 0;
 		int busy = 0;
+		StepOG();
 		for (int s = 0; s < NFLY; s++)
 		{
 			if (fph[s] == FP_NONE) continue;
@@ -726,6 +826,7 @@ class RSQGR_Flight : EventHandler
 	// Let go of a thrown thing where it is, everything put back (Double Hook takes it over).
 	void Free(Actor a)
 	{
+		for (int k = 0; k < NOG; k++) if (oA[k] == a) { oA[k] = null; oBy[k] = null; }
 		int s = SlotOf(a);
 		if (s >= 0) Restore(s);
 	}

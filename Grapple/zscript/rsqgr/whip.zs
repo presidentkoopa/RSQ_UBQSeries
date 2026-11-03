@@ -175,7 +175,7 @@ class RSQGR_Whip : EventHandler
 		h.hand = hand;
 		h.dir = dir;
 		h.speed = max(4.0, RSQGR_Util.Num("rsqgr_speed", 40));
-		h.range = max(64.0, RSQGR_Util.Num("rsqgr_range", 1024));
+		h.range = max(64.0, RSQGR_Util.Num("rsqgr_range", 780));
 		h.angle = atan2(dir.y, dir.x);
 		h.traveled = tr.Results.Distance;
 		h.anchor = at - dir * 1.0;
