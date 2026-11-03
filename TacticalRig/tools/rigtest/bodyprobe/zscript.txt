@@ -1,0 +1,22 @@
+version "4.14"
+// TEST ONLY (never ships). The torso and holsters against the head (11-03): every 5 tics the head's pitch and yaw,
+// the body's yaw, the pawn's place and three holsters' world places (right hip, left hip, right chest), and on trb_rep
+// one labelled line of the same.
+class RSQTRBodyProbe : EventHandler
+{
+	override void WorldTick()
+	{
+		let p = players[0];
+		let mo = p.mo;
+		let rig = RSQTR_Rig.Get();
+		if (!mo || !rig) return;
+		let rp = CVar.FindCVar('trb_rep');
+		bool rep = rp && rp.GetInt() != 0;
+		if (level.maptime % 5 != 0 && !rep) return;
+		Vector3 h0 = rig.RegionAt(mo, 0), h1 = rig.RegionAt(mo, 1), c6 = rig.RegionAt(mo, 6);
+		Console.Printf("trb: %s t%d pitch %.1f angle %.1f bodyyaw %.1f off %.1f | pawn (%.2f %.2f) | hipR (%.2f %.2f %.2f) hipL (%.2f %.2f %.2f) chestR (%.2f %.2f %.2f)",
+			rep ? String.Format("REP#%d", rp.GetInt()) : "", level.maptime, mo.pitch, mo.angle, rig.BodyYaw(mo), Actor.DeltaAngle(rig.BodyYaw(mo), mo.angle),
+			mo.pos.x, mo.pos.y, h0.x, h0.y, h0.z, h1.x, h1.y, h1.z, c6.x, c6.y, c6.z);
+		if (rep) rp.SetInt(0);
+	}
+}

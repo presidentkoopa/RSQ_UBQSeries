@@ -151,16 +151,30 @@ default.
 | Rig Options: Messages | Option | Text messages from the rig. |
 | Rig Options: Mirror Shows | Both | Front / Back / Both. |
 | Rig Options: Torso Fades Looking Down | On | The torso fades as you look down. |
+| Rig Options: Holsters Hang From Neck | On | The rig hangs from a neck 10 cm behind and 10 cm under your eyes (estimated from the headset's place and pitch), not from the headset: nodding or looking down no longer slides the holsters forward; moving your whole body still moves them. Standing upright looking level the holsters are exactly where you set them. (11-03, rig only, not headset-confirmed.) |
 | Rig Options: Leave Shoulder to ShieldSaw | On | The off shoulder is left to RSQ ShieldSaw's shield while it hangs there. |
 | Rig Options: Saber on Hip Too | Option | The saber also clips to the hips. |
 | Rig Options: Slow Motion After a Smoke | On | RSQ SlowMo starts as the smoked cigarette flicks out of your mouth (6 s at 25 %, on the *Cigarette* page). |
 | Rig Options: Refill Each Level | On | The cigarette pocket refills each level. |
 | Tuning and Debug: Holster Positions / Torso Fit / Cigarette | - | Sliders for each holster and the keyring (its *Toward Off Hand* is mirrored for a left-handed layout), the torso and helmet, and the cigarette: *Mouth Zone Size* (1.0, 0.5 to 1.5: how far from the mouth still counts), *Smoke Time (s)* 1 to 5 in half seconds (2), *Slow Motion Seconds*, *Slow Motion Speed*, *Pack Size*. |
+| Tuning and Debug: Body Turn Angle / Delay | 35 / 1 s | A head held turned further than this, this long, while looking level, is taken as your body turning: the torso and holsters ease round to it. Stick and snap turns always carry them. |
+| Tuning and Debug: Torso: Ignore Looking Down Past | 25 | Looking further down than this (degrees) never turns the torso: it neither counts toward the turn nor continues one (11-03, the owner's headset: "looking down and turning my head seems to turn the torso some"). |
 | Tuning and Debug: Throw Swing Speed (m/s) | 2.5 | How fast the hand must swing to throw a gun. |
 | Tuning and Debug: Thrown Gun Damage | 1.0 | Multiplier on thrown-gun hits. |
 | Tuning and Debug: Reset All | - | Resets every Tactical Rig setting. |
 
 The throw debug log (`rsqtr_debug_throw`) is not on the menu.
+
+**The torso and looking down (11-03; rig only, not headset-confirmed).** Two causes of the torso moving under you: a
+look down at a side holster (45-60 degrees of pitch with the head turned) held a second counted as the body turning,
+since only past 78 degrees was looking down ignored; and the rig hung from the headset, which swings forward and down
+round your neck every time you nod. Measured on the rig (`tools/rigtest/bodyprobe`, `evidence/trb1103_*.txt`): the
+head 30 / 50 / 70 degrees down and held 60 degrees round for 2 s swung the body 53 degrees before, 0 after; a level look
+held round still turns it (90 -> 146.5 both times); a nod round a neck 10 cm behind and under the eyes moved the
+pawn 1.24 / 1.39 / 0.96 map units (3.6 / 4.1 / 2.8 cm) at 30 / 50 / 70 degrees and the holsters with it before, 0.00
+after; looking level the holsters are where they were to the hundredth of a unit. The neck is an estimate (10 cm and
+10 cm), and the engine gives ZScript no headset roll, so a sideways head tilt is not taken out. Height is as before
+(the pawn's eye height, or the seated eyes), since neither follows a nod.
 
 ## Test it
 

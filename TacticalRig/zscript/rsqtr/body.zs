@@ -19,7 +19,17 @@
 // Turning your actual body in the room cannot be seen (there is no body tracker), so a
 // head turned past rsqtr_body_turn degrees (35) and held rsqtr_body_secs (1 s) is taken as the
 // body turning, and the body eases round to it; small looks to the side, and anything while you
-// look steeply down, leave it.
+// look down (past rsqtr_body_down, 25 degrees), leave it.
+//
+// THE RIG HANGS FROM THE NECK, NOT THE FACE (rsqtr_neck, on; the owner, 11-03: "looking down and turning my head
+// seems to turn the torso some"). QuestZDoom moves the pawn with the headset, and a nod swings the headset forward
+// and down round the neck, so a rig hung from the headset slid forward every time you looked down at it. Across the
+// floor it now hangs from a neck NECK_BACK behind and NECK_DOWN under the eyes in the head's own frame (the pawn's
+// pitch is the headset's; the engine exposes no headset roll to ZScript, only HmdPosition, so a sideways head tilt
+// is not taken out). At level pitch the neck sits straight under-behind the eyes, so the anchor is exactly the old
+// one and every saved holster stays where it was set standing upright; only a nod is taken out. Height is unchanged
+// (the pawn's view height, or the seated eyes): player.viewz does not follow a nod at all with the engine's default
+// vr_crouch_use_button, and the seated eyes take the highest the headset has been lately.
 //
 // ROOM vs MAP: 34 map units per metre horizontally, 28.33 vertically (Doom's
 // pixels are 1.2 tall). Every offset here is given in metres and converted per
@@ -42,7 +52,9 @@ class RSQTR_Body play
 	}
 	const TOL = 1.5;           // degrees: both controllers moved with the pawn = a turn
 	const SWING = 3.0;         // most degrees per tic the body turns while it catches up (an ease, not a snap)
-	const STEEP = 78.0;        // degrees of head pitch past which the head's yaw is not trusted (near straight down)
+	const STEEP = 78.0;        // degrees of head pitch past which the head's yaw is not trusted (straight up or down)
+	const NECK_BACK = 0.10;    // metres: the neck pivot behind the eyes, in the head's frame (a first estimate)
+	const NECK_DOWN = 0.10;    // metres: and under them
 
 	double yaw;                // the body's heading, degrees
 	double lastA, lastH0, lastH1;
@@ -66,11 +78,14 @@ class RSQTR_Body play
 		double limit = RSQTR_Rig.Num("rsqtr_body_turn", p, 35.0);
 		int need = int(RSQTR_Rig.Num("rsqtr_body_secs", p, 1.0) * TICRATE);
 		double off = Actor.DeltaAngle(yaw, a);
-		// LOOKING DOWN AT YOURSELF IS NOT TURNING. With the head pitched steeply the
-		// headset's yaw swings wildly (the owner's headset, 10-27: "it keeps spinning all
-		// around me" looking at the rig), and in edit mode the body must hold still while
-		// regions are placed on it. Neither counts toward, nor continues, a swing.
-		if (abs(pmo.pitch) > STEEP || RSQTR_Rig.Flag("rsqtr_edit", p, false))
+		// LOOKING DOWN AT YOURSELF IS NOT TURNING (the owner, 11-03: "looking down and turning my head seems to turn the
+		// torso some"). A look down at a hip holster is 45-60 degrees of pitch, often with the head turned to that side,
+		// and until 11-03 only past 78 degrees was it ignored, so a look down at a side holster held a second swung the
+		// rig. Now any pitch more than rsqtr_body_down (25) below level pauses the catch-up: it neither counts toward a
+		// swing nor continues one. Steeply up the head's yaw is not trusted either; in edit mode the body holds still
+		// while regions are placed on it. Stick and snap turns (above) still carry the body.
+		double down = RSQTR_Rig.Num("rsqtr_body_down", p, 25.0);
+		if (pmo.pitch > down || abs(pmo.pitch) > STEEP || RSQTR_Rig.Flag("rsqtr_edit", p, false))
 		{
 			offFor = 0;
 			swinging = false;
@@ -181,7 +196,21 @@ class RSQTR_Body play
 		double fx = c * fwdMetres - s * leftMetres;
 		double fy = s * fwdMetres + c * leftMetres;
 		Vector3 h = (seatOn && pmo.player == players[consoleplayer]) ? SeatedHead(pmo) : Head(pmo);
-		return h + (fx * Upm(), fy * Upm(), upMetres * Upm() / Ps());
+		return h + NeckShift(pmo) + (fx * Upm(), fy * Upm(), upMetres * Upm() / Ps());
+	}
+
+	// THE NOD TAKEN OUT (rsqtr_neck, see the top): how far, along the floor, the neck is from where it would be at
+	// level pitch, the headset's place being the same. Eyes to neck in the head's frame is NECK_BACK back and NECK_DOWN
+	// down; looking down by t, that is -(NECK_BACK cos t + NECK_DOWN sin t) forward along the floor, against
+	// -NECK_BACK at level: so the shift is NECK_BACK (1 - cos t) - NECK_DOWN sin t along where the head faces (0 at
+	// level, -4 cm at 50 degrees down: the headset has come that far forward round the neck). Map units, no height.
+	static Vector3 NeckShift(PlayerPawn pmo)
+	{
+		if (!pmo.player || !RSQTR_Rig.Flag("rsqtr_neck", pmo.player, true)) return (0, 0, 0);
+		double t = clamp(pmo.pitch, -89, 89);
+		double f = NECK_BACK * (1 - cos(t)) - NECK_DOWN * sin(t);
+		double u = Upm();
+		return (cos(pmo.angle) * f * u, sin(pmo.angle) * f * u, 0);
 	}
 
 	// Distance in the ROOM between two map points, in metres.

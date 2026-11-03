@@ -1,0 +1,19 @@
+TRB_L_LEVEL_HELD_ROUND
+trb: REP#1 t100 pitch 0.0 angle 90.0 bodyyaw 90.0 off 0.0 | pawn (-96.00 784.00) | hipR (-102.12 784.00 77.17) hipL (-89.88 784.00 77.17) chestR (-100.08 787.40 83.97)
+trb: REP#2 t171 pitch 0.0 angle 150.0 bodyyaw 146.5 off 3.5 | pawn (-96.00 784.00) | hipR (-99.38 778.90 77.17) hipL (-92.62 789.10 77.17) chestR (-101.09 782.47 83.97)
+TRB_D30_DOWN_HELD_ROUND
+trb: REP#3 t272 pitch 0.0 angle 90.0 bodyyaw 93.4 off -3.4 | pawn (-96.00 784.00) | hipR (-102.11 783.63 77.17) hipL (-89.89 784.37 77.17) chestR (-100.28 787.15 83.97)
+trb: REP#5 t344 pitch 30.0 angle 150.0 bodyyaw 93.4 off 56.6 | pawn (-96.00 784.00) | hipR (-101.03 783.01 77.17) hipL (-88.81 783.74 77.17) chestR (-99.20 786.53 83.97)
+TRB_D50_DOWN_HELD_ROUND
+trb: REP#6 t445 pitch 0.0 angle 90.0 bodyyaw 93.4 off -3.4 | pawn (-96.00 784.00) | hipR (-102.11 783.63 77.17) hipL (-89.89 784.37 77.17) chestR (-100.28 787.15 83.97)
+trb: REP#8 t517 pitch 50.0 angle 150.0 bodyyaw 93.4 off 56.6 | pawn (-96.00 784.00) | hipR (-100.91 782.94 77.17) hipL (-88.69 783.67 77.17) chestR (-99.07 786.45 83.97)
+TRB_D70_DOWN_HELD_ROUND
+trb: REP#9 t618 pitch 0.0 angle 90.0 bodyyaw 93.4 off -3.4 | pawn (-96.00 784.00) | hipR (-102.11 783.63 77.17) hipL (-89.89 784.37 77.17) chestR (-100.28 787.15 83.97)
+trb: REP#11 t690 pitch 70.0 angle 150.0 bodyyaw 93.4 off 56.6 | pawn (-96.00 784.00) | hipR (-101.28 783.15 77.17) hipL (-89.06 783.89 77.17) chestR (-99.45 786.67 83.97)
+TRB_N_NOD
+trb: REP#12 t791 pitch 0.0 angle 90.0 bodyyaw 93.4 off -3.4 | pawn (-96.00 784.00) | hipR (-102.11 783.63 77.17) hipL (-89.89 784.37 77.17) chestR (-100.28 787.15 83.97)
+trb: REP#13 t812 pitch 0.0 angle 90.0 bodyyaw 93.4 off -3.4 | pawn (-96.00 784.00) | hipR (-102.11 783.63 77.17) hipL (-89.89 784.37 77.17) chestR (-100.28 787.15 83.97)
+trb: REP#14 t833 pitch 30.0 angle 90.0 bodyyaw 93.4 off -3.4 | pawn (-96.00 785.24) | hipR (-102.11 783.63 77.17) hipL (-89.89 784.37 77.17) chestR (-100.28 787.15 83.97)
+trb: REP#15 t854 pitch 50.0 angle 90.0 bodyyaw 93.4 off -3.4 | pawn (-96.00 785.39) | hipR (-102.11 783.63 77.17) hipL (-89.89 784.37 77.17) chestR (-100.28 787.15 83.97)
+trb: REP#16 t875 pitch 70.0 angle 90.0 bodyyaw 93.4 off -3.4 | pawn (-96.00 784.96) | hipR (-102.11 783.63 77.17) hipL (-89.89 784.37 77.17) chestR (-100.28 787.15 83.97)
+trb: REP#17 t896 pitch 0.0 angle 90.0 bodyyaw 93.4 off -3.4 | pawn (-96.00 784.00) | hipR (-102.11 783.63 77.17) hipL (-89.89 784.37 77.17) chestR (-100.28 787.15 83.97)

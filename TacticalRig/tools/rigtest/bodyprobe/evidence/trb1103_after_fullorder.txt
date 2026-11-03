@@ -1,0 +1,37 @@
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 66:
+No sprites specified for voxel.
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 72:
+No sprites specified for voxel.
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 77:
+No sprites specified for voxel.
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 892:
+No sprites specified for voxel.
+TRB_L_LEVEL_HELD_ROUND
+trb: REP#1 t100 pitch 0.0 angle 90.0 bodyyaw 90.0 off 0.0 | pawn (-96.00 784.00) | hipR (-102.12 784.00 80.17) hipL (-89.88 784.00 80.17) chestR (-100.08 787.40 86.97)
+trb: REP#1 t101 pitch 0.0 angle 90.0 bodyyaw 90.0 off 0.0 | pawn (-96.00 784.00) | hipR (-102.12 784.00 80.17) hipL (-89.88 784.00 80.17) chestR (-100.08 787.40 86.97)
+trb: REP#2 t173 pitch 0.0 angle 90.0 bodyyaw 146.5 off -56.5 | pawn (-96.00 784.00) | hipR (-99.38 778.90 80.17) hipL (-92.62 789.10 80.17) chestR (-101.09 782.47 86.97)
+trb: REP#2 t174 pitch 0.0 angle 90.0 bodyyaw 146.5 off -56.5 | pawn (-96.00 784.00) | hipR (-99.38 778.90 80.17) hipL (-92.62 789.10 80.17) chestR (-101.09 782.47 86.97)
+trb: REP#2 t175 pitch 0.0 angle 90.0 bodyyaw 146.5 off -56.5 | pawn (-96.00 784.00) | hipR (-99.38 778.90 80.17) hipL (-92.62 789.10 80.17) chestR (-101.09 782.47 86.97)
+TRB_D30_DOWN_HELD_ROUND
+trb: REP#3 t272 pitch 0.0 angle 90.0 bodyyaw 93.4 off -3.4 | pawn (-96.00 784.00) | hipR (-102.11 783.63 80.17) hipL (-89.89 784.37 80.17) chestR (-100.28 787.15 86.97)
+trb: REP#3 t273 pitch 0.0 angle 90.0 bodyyaw 93.4 off -3.4 | pawn (-96.00 784.00) | hipR (-102.11 783.63 80.17) hipL (-89.89 784.37 80.17) chestR (-100.28 787.15 86.97)
+trb: REP#5 t345 pitch 0.0 angle 90.0 bodyyaw 93.4 off -3.4 | pawn (-96.00 784.00) | hipR (-102.11 783.63 80.17) hipL (-89.89 784.37 80.17) chestR (-100.28 787.15 86.97)
+trb: REP#5 t346 pitch 0.0 angle 90.0 bodyyaw 93.4 off -3.4 | pawn (-96.00 784.00) | hipR (-102.11 783.63 80.17) hipL (-89.89 784.37 80.17) chestR (-100.28 787.15 86.97)
+TRB_D50_DOWN_HELD_ROUND
+trb: REP#6 t445 pitch 0.0 angle 90.0 bodyyaw 93.4 off -3.4 | pawn (-96.00 784.00) | hipR (-102.11 783.63 80.17) hipL (-89.89 784.37 80.17) chestR (-100.28 787.15 86.97)
+trb: REP#6 t446 pitch 0.0 angle 90.0 bodyyaw 93.4 off -3.4 | pawn (-96.00 784.00) | hipR (-102.11 783.63 80.17) hipL (-89.89 784.37 80.17) chestR (-100.28 787.15 86.97)
+trb: REP#8 t517 pitch 50.0 angle 150.0 bodyyaw 93.4 off 56.6 | pawn (-96.00 784.00) | hipR (-100.91 782.94 80.17) hipL (-88.69 783.67 80.17) chestR (-99.07 786.45 86.97)
+trb: REP#8 t518 pitch 50.0 angle 150.0 bodyyaw 93.4 off 56.6 | pawn (-96.00 784.00) | hipR (-100.91 782.94 80.17) hipL (-88.69 783.67 80.17) chestR (-99.07 786.45 86.97)
+TRB_D70_DOWN_HELD_ROUND
+trb: REP#9 t618 pitch 0.0 angle 90.0 bodyyaw 93.4 off -3.4 | pawn (-96.00 784.00) | hipR (-102.11 783.63 80.17) hipL (-89.89 784.37 80.17) chestR (-100.28 787.15 86.97)
+trb: REP#9 t619 pitch 0.0 angle 90.0 bodyyaw 93.4 off -3.4 | pawn (-96.00 784.00) | hipR (-102.11 783.63 80.17) hipL (-89.89 784.37 80.17) chestR (-100.28 787.15 86.97)
+trb: REP#11 t690 pitch 70.0 angle 150.0 bodyyaw 93.4 off 56.6 | pawn (-96.00 784.00) | hipR (-101.28 783.15 80.17) hipL (-89.06 783.89 80.17) chestR (-99.45 786.67 86.97)
+TRB_N_NOD
+trb: REP#12 t791 pitch 0.0 angle 90.0 bodyyaw 93.4 off -3.4 | pawn (-96.00 784.00) | hipR (-102.11 783.63 80.17) hipL (-89.89 784.37 80.17) chestR (-100.28 787.15 86.97)
+trb: REP#12 t792 pitch 0.0 angle 90.0 bodyyaw 93.4 off -3.4 | pawn (-96.00 784.00) | hipR (-102.11 783.63 80.17) hipL (-89.89 784.37 80.17) chestR (-100.28 787.15 86.97)
+trb: REP#13 t812 pitch 0.0 angle 90.0 bodyyaw 93.4 off -3.4 | pawn (-96.00 784.00) | hipR (-102.11 783.63 80.17) hipL (-89.89 784.37 80.17) chestR (-100.28 787.15 86.97)
+trb: REP#13 t813 pitch 0.0 angle 90.0 bodyyaw 93.4 off -3.4 | pawn (-96.00 784.00) | hipR (-102.11 783.63 80.17) hipL (-89.89 784.37 80.17) chestR (-100.28 787.15 86.97)
+trb: REP#14 t834 pitch 50.0 angle 90.0 bodyyaw 93.4 off -3.4 | pawn (-96.00 785.39) | hipR (-102.11 783.63 80.17) hipL (-89.89 784.37 80.17) chestR (-100.28 787.15 86.97)
+trb: REP#15 t854 pitch 50.0 angle 90.0 bodyyaw 93.4 off -3.4 | pawn (-96.00 785.39) | hipR (-102.11 783.63 80.17) hipL (-89.89 784.37 80.17) chestR (-100.28 787.15 86.97)
+trb: REP#16 t875 pitch 70.0 angle 90.0 bodyyaw 93.4 off -3.4 | pawn (-96.00 784.96) | hipR (-102.11 783.63 80.17) hipL (-89.89 784.37 80.17) chestR (-100.28 787.15 86.97)
+trb: REP#17 t896 pitch 0.0 angle 90.0 bodyyaw 93.4 off -3.4 | pawn (-96.00 784.00) | hipR (-102.11 783.63 80.17) hipL (-89.89 784.37 80.17) chestR (-100.28 787.15 86.97)
