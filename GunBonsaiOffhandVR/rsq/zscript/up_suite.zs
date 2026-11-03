@@ -363,9 +363,48 @@ class RSQ_SlowPerk : RSQ_Perk
 	override bool ModLoaded() { return RSQM.Has("RSQSM_Service"); }
 }
 
-// MARKSMAN: everything you hit while the world is slowed takes 8% more a level.
-class RSQ_Upgrade_Marksman : RSQ_SlowPerk
+// THE SLOWMO TREE (GBOVR_TREES.md 4.9): each node after its parent. RSQ SlowMo reads the levels by name (its clock).
+class RSQ_SlowTreePerk : RSQ_SlowPerk
 {
+	virtual String Parent() { return "SlowMotion"; }
+	virtual int ParentLevel() { return 1; }
+	override bool IsSuitableForPlayer(TFLV_PerPlayerStats stats)
+	{
+		String pa = Parent();
+		return Super.IsSuitableForPlayer(stats) && (pa == "" || PHas(stats, pa, ParentLevel()));
+	}
+}
+// SLOW MOTION (the unlock, root): your own key, wrist cross, burst and accessibility button start slow motion only once
+// this is learned (other mods' pulses still fire).
+class RSQ_Upgrade_SlowMotion : RSQ_SlowTreePerk { override String Parent() { return ""; } override int Cap() { return 1; } }
+// LONGER (after Slow Motion): the burst 4 -> 5, 6, 8 s; a full meter lasts 25% longer a level.
+class RSQ_Upgrade_Longer : RSQ_SlowTreePerk
+{
+	override int Cap() { return 3; }
+	override void GetTooltipFields(Dictionary fields, uint level) { static const int B[] = { 4, 5, 6, 8 }; fields.Insert("s", string.format("%d", B[clamp(int(level), 0, 3)])); }
+}
+// DEEPER (after Slow Motion): the world's speed while slowed 0.5 unlearned -> 0.35, 0.25, 0.1.
+class RSQ_Upgrade_Deeper : RSQ_SlowTreePerk
+{
+	override int Cap() { return 3; }
+	override void GetTooltipFields(Dictionary fields, uint level) { static const int D[] = { 50, 35, 25, 10 }; fields.Insert("pct", string.format("%d%%", D[clamp(int(level), 0, 3)])); }
+}
+// CHEAPER (after Longer 1): with the adrenaline meter on, slow motion costs 20% less a level.
+class RSQ_Upgrade_Cheaper : RSQ_SlowTreePerk
+{
+	override String Parent() { return "Longer"; }
+	override int Cap() { return 3; }
+	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("pct", string.format("%d%%", 20 * level)); }
+}
+// LEAN DODGE (the unlock, after Dodger 1): leaning out of a slowed round's path makes it miss; 2 a lean dodges a claw too.
+class RSQ_Upgrade_LeanDodge : RSQ_SlowTreePerk { override String Parent() { return "Dodger"; } override int Cap() { return 2; } }
+// MATRIX (after Deeper 3): the colour drain and the shot trails at full while slowed.
+class RSQ_Upgrade_Matrix : RSQ_SlowTreePerk { override String Parent() { return "Deeper"; } override int ParentLevel() { return 3; } override int Cap() { return 1; } }
+
+// MARKSMAN: everything you hit while the world is slowed takes 8% more a level.
+class RSQ_Upgrade_Marksman : RSQ_SlowTreePerk
+{
+	override String Parent() { return "Deeper"; }
 	override int Cap() { return 5; }
 	static double Mult(uint lv) { return 1.0 + 0.08 * lv; }
 	override double ModifyDamageDealt(Actor pawn, Actor shot, Actor target, double damage, Name attacktype)
@@ -376,8 +415,9 @@ class RSQ_Upgrade_Marksman : RSQ_SlowPerk
 }
 
 // DODGER: while the world is slowed you take 8% less a level (up to 32%).
-class RSQ_Upgrade_Dodger : RSQ_SlowPerk
+class RSQ_Upgrade_Dodger : RSQ_SlowTreePerk
 {
+	override String Parent() { return "Deeper"; }
 	static double Mult(uint lv) { return 1.0 - 0.08 * min(lv, 4); }
 	override double ModifyDamageReceived(Actor pawn, Actor shot, Actor attacker, double damage, Name attacktype)
 	{
@@ -387,16 +427,18 @@ class RSQ_Upgrade_Dodger : RSQ_SlowPerk
 }
 
 // SECOND WIND: every kill charges the adrenaline meter 3 more a level (when SlowMo's meter is on).
-class RSQ_Upgrade_SecondWind : RSQ_SlowPerk
+class RSQ_Upgrade_SecondWind : RSQ_SlowTreePerk
 {
+	override String Parent() { return "Cheaper"; }
 	override void OnKill(PlayerPawn pawn, Actor shot, Actor target) { RSQM.Charge(3 * level); }
 	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("n", string.format("%d", 3 * level)); }
 }
 
 // TIME DILATION: a kill while the world is slowed keeps it slowed: a pulse of 0.4 s + 0.15 s a level,
 // and 2 adrenaline a level back to pay for a held slow motion.
-class RSQ_Upgrade_TimeDilation : RSQ_SlowPerk
+class RSQ_Upgrade_TimeDilation : RSQ_SlowTreePerk
 {
+	override String Parent() { return "Marksman"; }
 	override int Cap() { return 3; }
 	static int Ms(uint lv) { return 250 + 150 * lv; }
 	override void OnKill(PlayerPawn pawn, Actor shot, Actor target)

@@ -832,6 +832,48 @@ class FistsProbe : EventHandler
 			ls.dotHead[0] = null;
 			m.Destroy();
 		}
+		else if (e.Name ~== "fp_sm")
+		{
+			// THE SLOWMO TREE (player nodes). arg0 1: offers, levels and what the clock reads now; 2: grant arg1 (+arg2)
+			static const String SMN[] = { "SlowMotion", "Longer", "Deeper", "Cheaper", "Marksman", "Dodger", "SecondWind",
+				"TimeDilation", "LeanDodge", "Matrix" };
+			let st = TFLV_PerPlayerStats.GetStatsFor(p);
+			let c = RSQSM_Clock.Get();
+			if (!st || !c) return;
+			if (e.Args[0] == 2) { String cls = "RSQ_Upgrade_" .. SMN[clamp(e.Args[1], 0, SMN.Size() - 1)]; st.upgrades.Add(cls, max(e.Args[2], 1)); Console.Printf("FP slowmo granted %s", cls); return; }
+			String on = "", have = "";
+			for (int i = 0; i < SMN.Size(); i++)
+			{
+				Class<TFLV_Upgrade_BaseUpgrade> k = "RSQ_Upgrade_" .. SMN[i];
+				if (!k) { on = on .. " ?" .. SMN[i]; continue; }
+				if (TFLV_Upgrade_BaseUpgrade(new(k)).IsSuitableForPlayer(st)) on = on .. " " .. SMN[i];
+				int lv = int(st.upgrades.Level("RSQ_Upgrade_" .. SMN[i]));
+				if (lv > 0) have = have .. String.Format(" %s%d", SMN[i], lv);
+			}
+			Console.Printf("FP slowmo [stage %d] has:%s | offered:%s", e.Args[1], have, on);
+			Console.Printf("FP slowmo reads: patch %d, depth %.2f, burst %d ms, meter lasts %.1f s, cost x%.2f, lean %d, claw item %d, matrix %d; on %d, scale %.2f, pulse %d tics, meter %.1f",
+				c.gbOn, c.Depth(), c.BurstMs(0), c.AdrSecs(), c.CostK(), RSQSM_Clock.LeanOn(0), p.FindInventory("RSQSM_ClawDodge") != null,
+				RSQSM_Clock.MatrixOn(), c.on, c.scale, c.pulseUntil > 0 ? c.pulseUntil - level.maptime : 0, c.adr);
+		}
+		else if (e.Name ~== "fp_smadr") { let c = RSQSM_Clock.Get(); if (c) c.adr = e.Args[0]; }
+		else if (e.Name ~== "fp_smclaw")
+		{
+			// an imp's claw (the imp its own inflictor) on you from 40 ahead, arg0 1: leaning 10 across its line
+			let b = RSQSM_Body(EventHandler.Find("RSQSM_Body"));
+			let m = Put("DoomImp", 40);
+			if (!b || !m) return;
+			m.freezetics = 5;
+			Vector2 f = (cos(p.angle), sin(p.angle));
+			b.leanX[0] = e.Args[0] == 1 ? -f.y * 10 : 0;
+			b.leanY[0] = e.Args[0] == 1 ? f.x * 10 : 0;
+			int h0 = p.health;
+			p.DamageMobj(m, m, 10, 'None');
+			let c = RSQSM_Clock.Get();
+			Console.Printf("FP slowmo claw (leaning %d, scale %.2f): a 10 claw took %d", e.Args[0], c ? c.scale : -1, h0 - p.health);
+			p.health = h0; p.player.health = h0;
+			b.leanX[0] = 0; b.leanY[0] = 0;
+			m.Destroy();
+		}
 		else if (e.Name ~== "fp_fxcount")
 		{
 			String s = "";
@@ -1144,7 +1186,7 @@ class FistsProbe : EventHandler
 			Console.Printf("FP saber [stage %d] has:%s | offered:%s | size index %d | second saber carried: %s", e.Args[1], have, on, sb ? sb.SizeIdx() : -1,
 				p.FindInventory("UBQS_SaberOff") ? "yes" : "no");
 		}
-		else if (e.Name.Left(5) ~== "fp_ss" || e.Name.Left(5) ~== "fp_gn" || e.Name.Left(5) ~== "fp_gr" || e.Name.Left(5) ~== "fp_dg" || e.Name.Left(5) ~== "fp_rg" || e.Name.Left(5) ~== "fp_fx") TreeEvents(e, p);
+		else if (e.Name.Left(5) ~== "fp_ss" || e.Name.Left(5) ~== "fp_gn" || e.Name.Left(5) ~== "fp_gr" || e.Name.Left(5) ~== "fp_dg" || e.Name.Left(5) ~== "fp_rg" || e.Name.Left(5) ~== "fp_fx" || e.Name.Left(5) ~== "fp_sm") TreeEvents(e, p);
 		else if (e.Name ~== "fp_force")
 		{
 			// arg0 0: the Force's own Push at an imp in front; 1: Force Lightning straight into one (and a second near it);

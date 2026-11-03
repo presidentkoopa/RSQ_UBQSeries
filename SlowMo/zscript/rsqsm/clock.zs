@@ -107,7 +107,88 @@ class RSQSM_Clock : EventHandler
 		if (!playeringame[consoleplayer]) return d;
 		return CvP(n, players[consoleplayer], d);
 	}
-	double Depth()   { return clamp(Cv("rsm_depth", 0.25), 0.05, 0.95); }
+	// DEEPER (Gun Bonsai VR, GBOVR_TREES.md 4.9): under the patch the world's speed is the node's -- 0.5 unlearned, then
+	// 0.35, 0.25, 0.1 (the best among the players); without it the World Speed row. curDepth keeps it for the drawing.
+	double Depth()
+	{
+		if (gbOn) { static const double D[] = { 0.5, 0.35, 0.25, 0.1 }; return D[clamp(GbMax('Deeper'), 0, 3)]; }
+		return clamp(Cv("rsm_depth", 0.25), 0.05, 0.95);
+	}
+	double curDepth;
+
+	// ---- THE GUN BONSAI VR PATCH'S LEVELS (GBOVR_TREES.md 4.9), asked by name once a second ----------------------------
+	// Without the patch Gb is -1 and every row is as it was. With it: SLOW MOTION is the unlock for your own key, wrist
+	// cross, burst and accessibility button (other mods' pulses still fire); LONGER, DEEPER, CHEAPER shape it; LEAN DODGE is
+	// the unlock of the lean (2: a lean dodges a claw too); MATRIX is the full look.
+	transient int gbTic;
+	transient bool gbOn;
+	transient int gbSM[MAXPLAYERS], gbLonger[MAXPLAYERS], gbDeeper[MAXPLAYERS], gbCheaper[MAXPLAYERS], gbLean[MAXPLAYERS], gbMatrix[MAXPLAYERS];
+	void GbRefresh()
+	{
+		if (gbTic > 0 && level.maptime < gbTic && level.maptime >= gbTic - 35) return;
+		gbTic = level.maptime + 35;
+		let svc = ServiceIterator.Find("RSQ_MeleeUpgradeService").Next();
+		gbOn = svc != null;
+		for (int n = 0; n < MAXPLAYERS; n++)
+		{
+			gbSM[n] = 0; gbLonger[n] = 0; gbDeeper[n] = 0; gbCheaper[n] = 0; gbLean[n] = 0; gbMatrix[n] = 0;
+			if (!svc || !playeringame[n] || !players[n].mo) continue;
+			let pmo = players[n].mo;
+			gbSM[n]      = max(0, svc.GetInt("plevel", "SlowMotion", 0, 0, pmo));
+			gbLonger[n]  = max(0, svc.GetInt("plevel", "Longer", 0, 0, pmo));
+			gbDeeper[n]  = max(0, svc.GetInt("plevel", "Deeper", 0, 0, pmo));
+			gbCheaper[n] = max(0, svc.GetInt("plevel", "Cheaper", 0, 0, pmo));
+			gbLean[n]    = max(0, svc.GetInt("plevel", "LeanDodge", 0, 0, pmo));
+			gbMatrix[n]  = max(0, svc.GetInt("plevel", "Matrix", 0, 0, pmo));
+			if (!pmo.FindInventory("RSQSM_ClawDodge")) pmo.GiveInventoryType("RSQSM_ClawDodge");
+		}
+	}
+	// a player's level of a node (-1 without the patch); who < 0: the best among the players
+	clearscope int Gb(int who, Name what)
+	{
+		if (!gbOn) return -1;
+		if (who < 0 || who >= MAXPLAYERS) return GbMax(what);
+		switch (what)
+		{
+		case 'SlowMotion': return gbSM[who];
+		case 'Longer':     return gbLonger[who];
+		case 'Deeper':     return gbDeeper[who];
+		case 'Cheaper':    return gbCheaper[who];
+		case 'LeanDodge':  return gbLean[who];
+		case 'Matrix':     return gbMatrix[who];
+		}
+		return -1;
+	}
+	clearscope int GbMax(Name what)
+	{
+		if (!gbOn) return -1;
+		int m = 0;
+		for (int n = 0; n < MAXPLAYERS; n++) if (playeringame[n]) m = max(m, Gb(n, what));
+		return m;
+	}
+	// SLOW MOTION, the unlock: your own triggers wait for it under the patch
+	bool Unlearned(int who, int cat)
+	{
+		if (!gbOn || (cat != CAT_KEY && cat != CAT_WRIST && cat != CAT_BURST && cat != CAT_A11Y)) return false;
+		return Gb(who, 'SlowMotion') < 1;
+	}
+	// LONGER: the burst 4 -> 5, 6, 8 s; a full meter lasts 25% longer a level. CHEAPER: the meter spent 20% slower a level.
+	int BurstMs(int who) { static const int B[] = { 4000, 5000, 6000, 8000 }; int l = Gb(who, 'Longer'); return l < 0 ? BURST_MS : B[clamp(l, 0, 3)]; }
+	double AdrSecs() { int l = GbMax('Longer'); return max(1.0, Cv("rsqsm_adr_secs", 10)) * (1.0 + 0.25 * max(l, 0)); }
+	double CostK() { int l = GbMax('Cheaper'); return 1.0 - 0.2 * clamp(l, 0, 3); }
+	// LEAN DODGE, the unlock (every machine reads it): the node under the patch, the Lean Dodge row without
+	static bool LeanOn(int n)
+	{
+		let c = Get();
+		int g = c ? c.Gb(n, 'LeanDodge') : -1;
+		return g < 0 ? Cv("rsqsm_lean", 1) != 0 : g >= 1;
+	}
+	// MATRIX: the colour drain and the shot trails at full while slowed, whatever their rows say
+	static clearscope bool MatrixOn()
+	{
+		let c = RSQSM_Clock(EventHandler.Find("RSQSM_Clock"));
+		return c && c.GbMax('Matrix') >= 1;
+	}
 	// RSQ_Accessibility's Min SlowMo Ease (rsqa_slowmo_ramp) is a floor under both: no ease
 	// shorter than it, so the world never lurches into or out of slow motion. 0 / absent: as set.
 	double RampIn()  { return max(max(0.0, Cv("rsm_ramp_in", 0.15)), RSQSM_A11y.SlowRamp()); }
@@ -327,6 +408,7 @@ class RSQSM_Clock : EventHandler
 		if (StoodDown()) return;
 		// a switched-off trigger cannot START it; stopping is never refused
 		if (want && !on && !CatOn(cat, who)) { Log(why, String.Format("refused: its switch is off (%s)", CatName(cat))); return; }
+		if (want && !on && Unlearned(who, cat)) { Log(why, "refused: Slow Motion is not learned (Gun Bonsai VR)"); return; }
 		if (want && Cv("rsqsm_adrenaline", 0) != 0 && adr < Cv("rsqsm_adr_min", 25))
 		{
 			// Not enough in the meter: a short, low buzz on the hand that asked.
@@ -472,14 +554,16 @@ class RSQSM_Clock : EventHandler
 		bool adrOn = Cv("rsqsm_adrenaline", 0) != 0;
 		Actor mo = (who >= 0 && who < MAXPLAYERS && playeringame[who]) ? players[who].mo : null;
 		if (!CatOn(CAT_BURST, who)) { Log("wristcross.burst", "refused: its switch is off (Burst)"); return; }
+		if (Unlearned(who, CAT_BURST)) { Log("wristcross.burst", "refused: Slow Motion is not learned (Gun Bonsai VR)"); return; }
+		int ms = BurstMs(who);
 		if (adrOn && adr < Cv("rsqsm_adr_min", 25))
 		{
 			if (mo) { RSQSM_Buzz.Start(mo, 0, 0.25, 3); mo.A_StartSound("*usefail", CHAN_AUTO, CHANF_LOCAL, 0.6); }
 			Log("wristcross.burst", "refused: not enough adrenaline");
 			return;
 		}
-		if (adrOn) adr = max(0.0, adr - 100.0 * (BURST_MS / 1000.0) / max(1.0, Cv("rsqsm_adr_secs", 10)));
-		Trigger("wristcross.burst", CAT_BURST, BURST_MS, Depth(), false, who);
+		if (adrOn) adr = max(0.0, adr - 100.0 * (ms / 1000.0) / AdrSecs() * CostK());
+		Trigger("wristcross.burst", CAT_BURST, ms, Depth(), false, who);
 		if (mo)
 		{
 			mo.A_StartSound("rsqsm/in", CHAN_AUTO, 0, 0.8);
@@ -549,6 +633,8 @@ class RSQSM_Clock : EventHandler
 	// ---- every tic ---------------------------------------------------------------------
 	override void WorldTick()
 	{
+		GbRefresh();
+		curDepth = Depth();
 		LocalGesture();
 		if (StoodDown()) return;
 		ResolvePulses();
@@ -939,7 +1025,7 @@ class RSQSM_Clock : EventHandler
 	private void Adrenaline()
 	{
 		if (Cv("rsqsm_adrenaline", 0) == 0 || !on) return;
-		adr -= 100.0 / max(1.0, Cv("rsqsm_adr_secs", 10) * TICRATE);
+		adr -= 100.0 / (AdrSecs() * TICRATE) * CostK();	// LONGER and CHEAPER (Gun Bonsai VR)
 		if (adr <= 0) { adr = 0; Aim(false, -1); }
 	}
 
@@ -1146,5 +1232,36 @@ class RSQSM_Service : Service
 		if (request ~== "start" || request ~== "start.auto")
 			return c.Start(stringArg.Length() ? stringArg : "service", intArg, doubleArg, request ~== "start.auto") ? 1 : 0;
 		return -1;
+	}
+}
+
+
+// LEAN DODGE 2 (Gun Bonsai VR, GBOVR_TREES.md 4.9): while the world is slowed, a monster's claw (a hit up close whose
+// inflictor is the monster itself) misses a player leaning across its line -- the lean the rounds already read (body.zs).
+// Inert without the patch (Gb -1) and below level 2.
+class RSQSM_ClawDodge : Inventory
+{
+	Default { Inventory.MaxAmount 1; +INVENTORY.UNDROPPABLE +INVENTORY.UNTOSSABLE +INVENTORY.UNCLEARABLE }
+	override void AbsorbDamage(int damage, Name damageType, out int newdamage, Actor inflictor, Actor source, int flags)
+	{
+		let pmo = PlayerPawn(Owner);
+		if (!pmo || !pmo.player || damage <= 0 || !source || source.player || inflictor != source || (flags & DMG_EXPLOSION)) return;
+		let c = RSQSM_Clock.Get();
+		if (!c || c.scale > 0.95 || c.Gb(pmo.PlayerNumber(), 'LeanDodge') < 2) return;
+		if (pmo.Distance2D(source) > source.radius + pmo.radius + 72) return;
+		let b = RSQSM_Body(EventHandler.Find("RSQSM_Body"));
+		if (!b) return;
+		int n = pmo.PlayerNumber();
+		Vector2 leanV = (b.leanX[n], b.leanY[n]);
+		if (leanV.Length() < 1) return;
+		Vector2 dir = (pmo.pos.xy - source.pos.xy);
+		if (dir.Length() < 0.01) return;
+		dir = dir.Unit();
+		double across = abs(dir.x * leanV.y - dir.y * leanV.x);
+		if (across < 2.0) return;	// leaning along the claw's line is no dodge
+		newdamage = 0;
+		let sc = ServiceIterator.Find("RS_ScoreService").Next();
+		if (sc) sc.GetInt("touch", "lean", n, 0, source);
+		if (RSQSM_Clock.Cv("rsqsm_debug", 0) != 0) Console.Printf("RSQ_SlowMo: leaned out of %s's claw (%.1f across its line)", source.GetClassName(), across);
 	}
 }

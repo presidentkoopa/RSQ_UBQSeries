@@ -146,6 +146,11 @@ simulated rig (no sound, no haptics there).
   other shared settings. Rumble Strength scales every SlowMo rumble (not yet headset-confirmed). SlowMo has
   no tap windows, so Slower Taps changes nothing here.
 - **Gun Bonsai VR patch:** its slow-motion perks read and pulse this clock (automatic: row *Gun Bonsai VR*).
+  With the patch, its SlowMo tree (GBOVR_TREES.md 4.9) takes over: your own key, wrist cross, burst and accessibility
+  button wait for *Slow Motion*; *Deeper* sets the world's speed (0.5, 0.35, 0.25, 0.1) instead of World Speed;
+  *Longer* stretches the burst (5, 6, 8 s) and the meter; *Cheaper* makes the meter go further; *Lean Dodge* replaces
+  the Lean Dodge row (level 2: a lean also dodges a monster's claw); *Matrix* forces the drain and trails while slowed.
+  Without the patch nothing changes.
 
 ## Known limits / open issues
 

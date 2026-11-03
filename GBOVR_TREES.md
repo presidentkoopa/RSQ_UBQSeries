@@ -1450,6 +1450,22 @@ automatic triggers wait a 25 s cooldown.
 
 **Counts:** 10 nodes, 5 exist, 5 new.
 
+**BUILT 11-02.** SlowMo's clock asks `plevel` for SlowMotion, Longer, Deeper, Cheaper, LeanDodge and Matrix once a
+second (`clock.zs` GbRefresh); without the patch every read is -1 and every row is as it was. Proven headless
+(fistsprobe `fp_sm`, `fp_smclaw`, `fp_smadr`; adrenaline meter on):
+- **Slow Motion:** unlearned, the key is refused ("Slow Motion is not learned"); learned, it holds ON at 50% (Deeper 0).
+  The unlock gates the key, wrist cross, burst and accessibility button only; other mods' pulses are untouched.
+- **Longer / Cheaper:** a 40-tic hold at level 0 spent 11.4 of the meter (10 s a meter); at Longer 3 + Cheaper 3 a
+  50-tic hold spent 3.3 (17.5 s a meter at x0.40). The burst at Longer 3 ran 8000 ms (pulse 280 tics) and cost 18.3.
+  Call made: "capacity +25%" is built as the meter lasting 25% longer a level (same thing, one number).
+- **Deeper 3:** held ON at 10%.
+- **Lean Dodge:** the lean (dodgeable rounds) reads the node under the patch. Level 2: an imp's claw at 10% speed did 0
+  leaning 10 across its line, 9 not leaning (Dodger 1's 8% off) and 10 at Lean Dodge 0. The claw dodge is the
+  `RSQSM_ClawDodge` item (AbsorbDamage), given to each player only under the patch.
+- **Matrix:** the drain at 0.85 or more and the shot trails on while slowed, whatever their rows; engine screenshot at
+  10% shows the world drained grey.
+- Marksman / Dodger now follow Deeper 1, Second Wind Cheaper 1, Time Dilation Marksman 1.
+
 ### 4.10 Kill Rewards (section 3.14; the four path nodes approved) and Critical Hits (section 4.1 I) are player nodes too.
 
 ## 5. The player pool, together

@@ -95,7 +95,7 @@ class RSQSM_Body : EventHandler
 		if (!p || !p.mo) return;
 		let pmo = p.mo;
 		int lx = 0, ly = 0;
-		if (pmo.OverrideAttackPosDir && pmo.health > 0 && RSQSM_Clock.Cv("rsqsm_lean", 1) != 0)
+		if (pmo.OverrideAttackPosDir && pmo.health > 0 && RSQSM_Clock.LeanOn(consoleplayer))
 		{
 			double hx = pmo.HmdPosition.x, hz = pmo.HmdPosition.z;
 			double k = 1.0 / max(1.0, RSQSM_Clock.Cv("rsqsm_lean_secs", 2.0) * TICRATE);
@@ -126,7 +126,7 @@ class RSQSM_Body : EventHandler
 	// hit (RSQSM_Round.SpecialMissileHit); other slowed bullets are let through by LeanPass.
 	bool LeanDodges(Actor round, Actor victim, bool quiet = false)
 	{
-		if (!victim || !victim.player || RSQSM_Clock.Cv("rsqsm_lean", 1) == 0) return false;
+		if (!victim || !victim.player || !RSQSM_Clock.LeanOn(victim.PlayerNumber())) return false;
 		int n = victim.PlayerNumber();
 		Vector2 leanV = (leanX[n], leanY[n]);
 		if (leanV.Length() < 1) return false;
@@ -158,11 +158,10 @@ class RSQSM_Body : EventHandler
 					&& LeanDodges(a, players[n].mo, true)) keep = true;
 			if (!keep) { a.bTHRUACTORS = false; passAct.Delete(i); }
 		}
-		if (RSQSM_Clock.Cv("rsqsm_lean", 1) == 0) return;
 		let clock = RSQSM_Clock.Get();
 		for (int n = 0; n < MAXPLAYERS; n++)
 		{
-			if (!playeringame[n] || !players[n].mo || (leanX[n] == 0 && leanY[n] == 0)) continue;
+			if (!playeringame[n] || !players[n].mo || (leanX[n] == 0 && leanY[n] == 0) || !RSQSM_Clock.LeanOn(n)) continue;
 			let pmo = players[n].mo;
 			for (int i = 0; i < bullets.Size(); i++)
 			{
@@ -199,13 +198,15 @@ class RSQSM_Body : EventHandler
 		let cv = CVar.GetCVar("rsqsm_drain", me);
 		let yv = CVar.FindCVar("rsm_yield");
 		bool stood = clock && clock.rival && (!yv || yv.GetBool());
-		if (cv && cv.GetBool() && clock && !stood)
+		bool matrix = RSQSM_Clock.MatrixOn();	// MATRIX (Gun Bonsai VR): the full drain while slowed, whatever the row says
+		if (((cv && cv.GetBool()) || matrix) && clock && !stood)
 		{
-			let dv = CVar.FindCVar("rsm_depth");
-			double depth = clamp(dv ? dv.GetFloat() : 0.25, 0.05, 0.95);
+			double depth = clamp(clock.curDepth > 0 ? clock.curDepth : 0.25, 0.05, 0.95);	// Deeper's, under the patch
 			double k = clamp((1.0 - clock.scale) / max(1.0 - depth, 0.05), 0.0, 1.0);
 			let ac = CVar.GetCVar("rsqsm_drain_amt", me);
-			amt = clamp(ac ? ac.GetFloat() : 0.35, 0.0, 1.0) * k;
+			double a = clamp(ac ? ac.GetFloat() : 0.35, 0.0, 1.0);
+			if (matrix) a = max(a, 0.85);
+			amt = a * k;
 		}
 		if (amt <= 0.003)
 		{
