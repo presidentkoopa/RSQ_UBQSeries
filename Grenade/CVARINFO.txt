@@ -17,4 +17,5 @@ user   bool   rsqgn_face        = true;   // pull the pin with your teeth (RS_Gr
 user   float  rsqgn_face_near   = 0.47;   // m from your eyes the grenade must be (RS_Grenade's 16 map units)
 user   float  rsqgn_face_far    = 0.71;   // m it must have been clear of your face before another (RS_Grenade's 24 map units)
 user   int    rsqgn_face_hold   = 12;     // tics it must stay at your face (RS_Grenade)
+user   bool   rsqgn_skeet_window = true;  // Gun Bonsai VR's Skeet Window: its slow motion after a throw (nothing without the node)
 user   bool   rsqgn_debug       = false;  // log the pin, the fuse, the flashes, the throw and the scatter to the console

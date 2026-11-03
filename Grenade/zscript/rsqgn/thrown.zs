@@ -19,6 +19,9 @@ class RSQGN_Thrown : Actor
 	Actor stuckTo;		// the monster it is stuck to
 	Vector3 stuckOfs;
 	bool stuckWall;
+	int skeetWin;		// SKEET WINDOW (Gun Bonsai VR patch): its level at the throw
+	int age, brightUntil;
+	int cooked;			// tics it cooked in the hand before the throw (SLOW BURN reads it)
 
 	Default
 	{
@@ -59,6 +62,9 @@ class RSQGN_Thrown : Actor
 		Super.Tick();
 		if (bDestroyed || boomed || IsFrozen()) return;
 		if (sticky > 0) Stick();
+		age++;
+		if (skeetWin > 0 && age == 8) SkeetWindow();
+		if (brightUntil > 0 && age >= brightUntil) { bBright = false; brightUntil = 0; }
 
 		bool grounded = pos.z <= floorz + 0.25 || bOnMobj;		// on the floor, or come to rest on top of a monster
 		// AT REST IT IS NO LONGER A MISSILE. Doom's bounce switches itself off once a floor bounce comes back under
@@ -142,6 +148,22 @@ class RSQGN_Thrown : Actor
 			return;
 		}
 		if (sticky >= 2 && BlockingLine) { stuckWall = true; bMissile = false; bNoGravity = true; vel = (0, 0, 0); A_StartSound("rsqgn/bounce", CHAN_6); }
+	}
+
+	// SKEET WINDOW (Gun Bonsai VR patch): eight tics after the throw slow motion kicks in for 10 + 5 tics a level (through
+	// RSQ SlowMo, from the thrower's own machine; the Skeet Window row turns it off) and the grenade draws full bright for
+	// that long: a window to line up the shot.
+	void SkeetWindow()
+	{
+		int tics = int(RSQGN_Upg.Num("SkeetWindow.tics", skeetWin, 0));
+		if (tics <= 0) return;
+		bBright = true;
+		brightUntil = age + tics;
+		if (target && target.player && target.PlayerNumber() == consoleplayer && RSQGN_Handler.PFlag(target.player, "rsqgn_skeet_window", true))
+		{
+			let d = CVar.FindCVar("rsm_depth");
+			EventHandler.SendNetworkEvent("rsm_pulse", tics * 1000 / TICRATE, int(clamp(d ? d.GetFloat() : 0.25, 0.05, 0.95) * 100));
+		}
 	}
 
 	void Detonate()

@@ -34,3 +34,18 @@ class RSQGN_Upg play
 		if (s) s.GetInt("touch", id, pawn.PlayerNumber(), 0, victim);
 	}
 }
+
+// WHAT THE GRENADE TELLS OTHER MODS, by name (Gun Bonsai VR's Slow Burn): "cooked", objectArg = a thrown grenade: the tics
+// it cooked in the hand before it was thrown (-1: not a thrown grenade).
+class RSQGN_Service : Service
+{
+	override int GetInt(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
+	{
+		if (request == "cooked")
+		{
+			let g = RSQGN_Thrown(objectArg);
+			return g ? g.cooked : -1;
+		}
+		return 0;
+	}
+}

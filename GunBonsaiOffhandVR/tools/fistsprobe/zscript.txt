@@ -94,6 +94,7 @@ class FistsProbe : EventHandler
 	Actor gnBaron, gnNade;
 	Vector3 gnAtPos;
 	int gnStickAt;
+	int gnSkeetAt, gnWinAt;
 	override void WorldTick()
 	{
 		let p = P(); if (!p) return;
@@ -121,6 +122,20 @@ class FistsProbe : EventHandler
 			Console.Printf("FP grenade bomblets went off: the Baron %d -> %d", gnBaronH0, gnBaron ? gnBaron.health : -1);
 			if (gnBaron) gnBaron.Destroy();
 			gnAt = 0;
+		}
+		if (gnSkeetAt > 0 && t == gnSkeetAt)
+		{
+			let g = RSQGN_Thrown(gnNade);
+			Console.Printf("FP grenade skeet: %s, its blast x%.2f", !g || g.boomed ? "SHOT, IT BURST IN THE AIR" : "still flying", g ? g.dmgMult : -1.0);
+			if (g && !g.boomed) g.Destroy();
+			gnSkeetAt = 0;
+		}
+		if (gnWinAt > 0 && t == gnWinAt)
+		{
+			let g = RSQGN_Thrown(gnNade);
+			Console.Printf("FP grenade skeet window: age %d, full bright %d", g ? g.age : -1, g ? g.bBright : -1);
+			if (g) g.Destroy();
+			gnWinAt = 0;
 		}
 		if (gnStickAt > 0 && t == gnStickAt)
 		{
@@ -405,6 +420,7 @@ class FistsProbe : EventHandler
 			Vector3 tv = RSQGN_Handler.LaunchVel(p, f * (e.Args[0] / 10.0));
 			h.armed[0] = true;
 			h.spoon[0] = e.Args[1] == 1;
+			h.teethPin[0] = e.Args[1] == 2;	// arg1 2: the pin came out by the teeth
 			h.cookTic[0] = level.maptime - e.Args[2];
 			h.throwAt[0] = p.pos + (0, 0, p.height * 0.6) + f * 16;
 			h.throwVel[0] = tv;
@@ -414,8 +430,8 @@ class FistsProbe : EventHandler
 			RSQGN_Thrown a;
 			while (a = RSQGN_Thrown(it.Next())) if (a.target == p) g = a;
 			if (!g) { Console.Printf("FP grenade throw: nothing thrown"); return; }
-			Console.Printf("FP grenade throw: leaves at %.2f u/tic (up %.2f), gravity %.3f, wall bounce %.2f, fuse %d of %d tics, master %s",
-				g.vel.xy.Length(), g.vel.z, g.Gravity, g.WallBounceFactor, g.fuse, g.fuseTotal, g.master ? g.master.GetClassName() : 'none');
+			Console.Printf("FP grenade throw: leaves at %.2f u/tic (up %.2f), gravity %.3f, wall bounce %.2f, fuse %d of %d tics, master %s, blast x%.2f, cooked %d",
+				g.vel.xy.Length(), g.vel.z, g.Gravity, g.WallBounceFactor, g.fuse, g.fuseTotal, g.master ? g.master.GetClassName() : 'none', g.dmgMult, g.cooked);
 		}
 		else if (e.Name ~== "fp_gnboom")
 		{
@@ -448,6 +464,52 @@ class FistsProbe : EventHandler
 			gnStickAt = level.maptime + 12;
 			Console.Printf("FP grenade sticky thrown at level %d", gnNade ? RSQGN_Thrown(gnNade).sticky : -1);
 		}
+		else if (e.Name ~== "fp_gnskeet")
+		{
+			// one of your grenades held in the air 200 ahead at the height you shoot from; your own LineAttack straight at it
+			Vector3 f = (cos(p.angle), sin(p.angle), 0);
+			double sz = p.height * 0.5 - p.Floorclip + p.AttackZOffset * p.player.crouchfactor;
+			let g = RSQGN_Thrown(Actor.Spawn("RSQGN_Thrown", p.pos + f * 200 + (0, 0, sz - 1.4)));
+			if (!g) return;
+			g.target = p; g.master = p.FindInventory("RSQGN_Grenade"); g.fuse = 200; g.fuseTotal = 200; g.dmgMult = 1.0;
+			g.bNoGravity = true; g.vel = (0, 0, 0);
+			gnNade = g;
+			p.LineAttack(p.angle, 2048, 0, 1, 'Hitscan', "BulletPuff");
+			gnSkeetAt = level.maptime + 3;
+		}
+		else if (e.Name ~== "fp_gnwin")
+		{
+			// a throw through Throw; read it nine tics later (the window opens at eight)
+			let h = RSQGN_Handler.Get();
+			if (!h) return;
+			Vector3 f = (cos(p.angle), sin(p.angle), 0);
+			h.armed[0] = true; h.spoon[0] = false;
+			h.throwAt[0] = p.pos + (0, 0, 40) + f * 16; h.throwVel[0] = f * 4 + (0, 0, 6);
+			h.Throw(p, 0, 0, 5.0);
+			let it = ThinkerIterator.Create("RSQGN_Thrown");
+			RSQGN_Thrown a;
+			while (a = RSQGN_Thrown(it.Next())) if (a.target == p) gnNade = a;
+			Console.Printf("FP grenade thrown: skeet window level %d, blast x%.2f", gnNade ? RSQGN_Thrown(gnNade).skeetWin : -1, gnNade ? RSQGN_Thrown(gnNade).dmgMult : -1.0);
+			gnWinAt = level.maptime + 9;
+		}
+		else if (e.Name ~== "fp_gnburn")
+		{
+			// a grenade that cooked arg0 tics, set off beside a 1-health zombieman (claimed for the grenade, as Throw does)
+			Vector3 f = (cos(p.angle), sin(p.angle), 0);
+			Vector3 at = p.pos + f * 300 + (0, 0, 4);
+			let z = Actor.Spawn("ZombieMan", at + (-f.y, f.x, 0) * 40 - (0, 0, 4));
+			if (z) { z.health = 1; z.freezetics = 30; }
+			let g = RSQGN_Thrown(Actor.Spawn("RSQGN_Thrown", at));
+			if (!g) return;
+			g.target = p; g.master = p.FindInventory("RSQGN_Grenade"); g.fuse = 1; g.fuseTotal = 105; g.dmgMult = 1.0; g.cooked = e.Args[0];
+			let svc = ServiceIterator.Find("RSQ_MeleeUpgradeService").Next();
+			if (svc) svc.GetInt("claim", "", 0, 0, g);
+			int zs = 0;
+			let zi = ThinkerIterator.Create("ZombieMan");
+			while (zi.Next()) zs++;
+			Console.Printf("FP grenade burn: cooked %d tics, slowed %d, zombiemen in the level %d", e.Args[0], RSQM.Slowed(), zs);
+		}
+		else if (e.Name ~== "fp_gnslow") { EventHandler.SendNetworkEvent("rsm_pulse", e.Args[0], 25); }
 		else if (e.Name ~== "fp_gnstate")
 		{
 			// the carry (arg0 1: with a backpack), the fuse and Cook Sense's amber
@@ -570,6 +632,7 @@ class FistsProbe : EventHandler
 	override void NetworkProcess(ConsoleEvent e)
 	{
 		let p = P(); if (!p) return;
+		if (e.Name ~== "rsm_pulse") Console.Printf("FP t%d saw rsm_pulse %d ms, depth %d", level.maptime, e.Args[0], e.Args[1]);
 		if (e.Name ~== "fp_tree")
 		{
 			for (int h = 0; h < 2; h++)

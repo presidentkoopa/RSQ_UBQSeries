@@ -463,6 +463,9 @@ class RSQ_MeleeUpgradeService : Service
 			if (stringArg == "BigBang.mult") return RSQ_Upgrade_BigBang.Mult(lv);
 			if (stringArg == "Frag.mult") return RSQ_Upgrade_Frag.Mult(lv);
 			if (stringArg == "Cluster.count") return RSQ_Upgrade_Cluster.Count(lv);
+			if (stringArg == "Teeth.mult") return RSQ_Upgrade_Teeth.Mult(lv);
+			if (stringArg == "Skeet.mult") return RSQ_Upgrade_Skeet.Mult(lv);
+			if (stringArg == "SkeetWindow.tics") return RSQ_Upgrade_SkeetWindow.Tics(lv);
 			// G. Gun hand, H. Taunt
 			if (stringArg == "PistolWhip.stagger") return RSQ_Upgrade_PistolWhip.Stagger(lv);
 			if (stringArg == "PistolWhip.mult") return RSQ_Upgrade_PistolWhip.Mult(lv);

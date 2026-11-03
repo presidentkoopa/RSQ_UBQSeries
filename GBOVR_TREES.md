@@ -1248,6 +1248,22 @@ cloud's radius, nothing per tic.
 
 (Return Pull struck, 11-02. Teeth, Skeet and Slow Burn kept.)
 
+**Style: BUILT 11-02 (L3).** Gun Bonsai VR: Teeth, Skeet, Skeet Window. Grenade: `teethPin` (the pin event's teeth flag;
+Teeth 1 touches `teeth`, 2-3 raise the throw's `dmgMult`); Skeet in `WorldHitscanPreFired` (the shooter's own machine
+tests both hands' rays, or the pawn's on a desktop, against its own grenades in the air within 10 units, and sends
+`rsqgn_skeet` with where it saw it; every machine bursts the nearest one, x1.25 + 0.25 a level; the shot itself is
+untouched); Skeet Window in the thrown grenade's tick (age 8: `bBright` for the window, `rsm_pulse` from the thrower's
+machine unless its new **Skeet Window Slow-Mo** row is off -- the tree's "an Option row too" read as that switch).
+**Headless 11-02** (`fp_gnthrow` with the teeth, `fp_gnskeet`: your grenade held in the air and your own
+`LineAttack` at it, `fp_gnwin`): a teeth throw x1.15 at Teeth 2, an ordinary one x1.00; without Skeet the shot passed it,
+with Skeet 1 it burst in the air at x1.50; Skeet Window 1 sent a 428 ms (15-tic) pulse at age 8 and drew the grenade
+full bright. Not provable headless: a VR hand's shot, how the window feels.
+
+**SlowMo link: BUILT 11-02 (L3).** Slow Burn on the grenade's record (`OnKill`: slowed, and the grenade's cook asked by
+name through the new `RSQGN_Service` "cooked"; the thrown grenade keeps `cooked`). **Headless 11-02** (`fp_gnburn`):
+with time slowed, a grenade cooked 40 tics killed three zombiemen (two were MAP01's own) and re-pulsed 750 ms once per
+kill; one cooked 10 tics re-pulsed nothing.
+
 **SlowMo link**
 
 | Node | Parent | Levels | Owns | Art | Score |

@@ -102,6 +102,7 @@ class RSQGN_Handler : EventHandler
 	int flashNext[MAXPLAYERS];
 	int redUntil[MAXPLAYERS];
 	bool amber[MAXPLAYERS];		// COOK SENSE 2: this flash is amber (the first half of the fuse)
+	bool teethPin[MAXPLAYERS];	// TEETH (Gun Bonsai VR patch): this pin came out by the teeth
 	Vector3 throwAt[MAXPLAYERS], throwVel[MAXPLAYERS];
 
 	// ---- the console player's hands (local) ----
@@ -209,6 +210,7 @@ class RSQGN_Handler : EventHandler
 	{
 		armed[n] = false;
 		spoon[n] = false;
+		teethPin[n] = false;
 		redUntil[n] = 0;
 		flashNext[n] = 0;
 	}
@@ -298,6 +300,50 @@ class RSQGN_Handler : EventHandler
 		Reset(n);
 	}
 
+	// SKEET (Gun Bonsai VR patch, GBOVR_TREES.md 4.5 Style): your own shot passing within 10 units (about 30 cm) of your
+	// own grenade in the air bursts it there, harder. Only the shooter's machine knows where VR hands point (the engine
+	// writes the pose for the camera player alone), so it tests both hands' rays and sends where the grenade was; every
+	// machine bursts the same one (rsqgn_skeet). The shot itself is untouched.
+	override bool WorldHitscanPreFired(WorldEvent e)
+	{
+		let pmo = PlayerPawn(e.Thing);
+		if (!pmo || !pmo.player || pmo.PlayerNumber() != consoleplayer || !Active()) return false;
+		if (RSQGN_Upg.Lv(pmo, "Skeet") <= 0) return false;
+		double dist = e.AttackDistance > 0 ? e.AttackDistance : 8192;
+		Vector3 a0, d0, a1, d1;
+		int rays = 1;
+		if (pmo.OverrideAttackPosDir)
+		{
+			a0 = pmo.AttackPos; d0 = RSQGN_Geo.Dir(pmo, 0, 0, 0);
+			a1 = pmo.OffhandPos; d1 = RSQGN_Geo.Dir(pmo, 1, 0, 0);
+			rays = 2;
+		}
+		else
+		{
+			double ca = cos(e.AttackPitch);
+			a0 = pmo.pos + (0, 0, pmo.height * 0.5 - pmo.Floorclip + pmo.AttackZOffset * pmo.player.crouchfactor + e.AttackZ);
+			d0 = (cos(e.AttackAngle) * ca, sin(e.AttackAngle) * ca, -sin(e.AttackPitch));
+		}
+		let it = ThinkerIterator.Create("RSQGN_Thrown");
+		RSQGN_Thrown g;
+		while (g = RSQGN_Thrown(it.Next()))
+		{
+			if (g.boomed || g.target != pmo || g.pos.z <= g.floorz + 2) continue;	// yours, and in the air
+			for (int r = 0; r < rays; r++)
+			{
+				Vector3 ra = r == 0 ? a0 : a1;
+				Vector3 rd = r == 0 ? d0 : d1;
+				Vector3 c = g.pos + (0, 0, 1.4) - ra;
+				double along = c dot rd;
+				if (along < 0 || along > dist) continue;
+				if ((c - rd * along).Length() > 10) continue;
+				EventHandler.SendNetworkEvent("rsqgn_skeet", int(g.pos.x * 8), int(g.pos.y * 8), int(g.pos.z * 8));
+				return false;
+			}
+		}
+		return false;
+	}
+
 	override void NetworkProcess(ConsoleEvent e)
 	{
 		if (e.IsManual || !Active()) return;
@@ -306,6 +352,25 @@ class RSQGN_Handler : EventHandler
 		let p = players[n];
 		let pmo = p.mo;
 		if (!pmo || pmo.health <= 0) return;
+		if (e.Name == "rsqgn_skeet")
+		{
+			// the grenade of this player's nearest the point its machine saw (within 32 units)
+			Vector3 at = (e.Args[0], e.Args[1], e.Args[2]) / 8.0;
+			RSQGN_Thrown best = null;
+			double bd = 32;
+			let it = ThinkerIterator.Create("RSQGN_Thrown");
+			RSQGN_Thrown g;
+			while (g = RSQGN_Thrown(it.Next())) if (!g.boomed && g.target == pmo && (g.pos - at).Length() < bd) { bd = (g.pos - at).Length(); best = g; }
+			if (best)
+			{
+				int lv = RSQGN_Upg.Lv(pmo, "Skeet");
+				best.dmgMult *= lv > 0 ? RSQGN_Upg.Num("Skeet.mult", lv, 1.0) : 1.0;
+				RSQGN_Upg.Touch("skeet", pmo, best);
+				if (Debug(p)) Console.Printf("RSQGN skeet p%d t%d: shot in the air at (%.0f %.0f %.0f), x%.2f", n, level.maptime, best.pos.x, best.pos.y, best.pos.z, best.dmgMult);
+				best.Detonate();
+			}
+			return;
+		}
 		int h = HandOf(p);
 		if (e.Name == "rsqgn_at") { throwAt[n] = (e.Args[0], e.Args[1], e.Args[2]) / 8.0; return; }
 		if (e.Name == "rsqgn_v") { throwVel[n] = (e.Args[0], e.Args[1], e.Args[2]) / 100.0; return; }
@@ -314,6 +379,8 @@ class RSQGN_Handler : EventHandler
 		{
 			if (armed[n] || pmo.CountInv("RSQGN_Ammo") <= 0) return;
 			armed[n] = true;
+			teethPin[n] = e.Args[0] == 1;
+			if (teethPin[n] && RSQGN_Upg.Lv(pmo, "Teeth") >= 1) RSQGN_Upg.Touch("teeth", pmo, pmo);	// TEETH 1: Score's
 			pmo.A_StartSound("rsqgn/pin", CHAN_WEAPON, CHANF_OVERLAP);
 			RSQGN_Buzzer.Start(pmo, e.Args[0] == 1 ? h : 1 - h, 0.6, 5);
 			if (Debug(p)) Console.Printf("RSQGN pin out p%d t%d by %s (hand %d)", n, level.maptime, e.Args[0] == 1 ? "teeth" : "ring", h);
@@ -383,6 +450,11 @@ class RSQGN_Handler : EventHandler
 		g.fuseTotal = fuse;
 		g.dmgMult = 1.0;
 		g.sticky = RSQGN_Upg.Lv(pmo, "Sticky");	// STICKY (Gun Bonsai VR patch)
+		// TEETH 2-3 (Gun Bonsai VR patch): the throw after a teeth pull hits harder
+		int tl = teethPin[n] ? RSQGN_Upg.Lv(pmo, "Teeth") : 0;
+		if (tl >= 2) g.dmgMult *= RSQGN_Upg.Num("Teeth.mult", tl, 1.0);
+		g.skeetWin = RSQGN_Upg.Lv(pmo, "SkeetWindow");			// SKEET WINDOW
+		g.cooked = spoon[n] ? level.maptime - cookTic[n] : 0;	// SLOW BURN reads it (RSQGN_Service "cooked")
 		int fa = RSQGN_Upg.Lv(pmo, "FlatArc"), bo = RSQGN_Upg.Lv(pmo, "Bounce");
 		g.Gravity = clamp(SNum("rsqgn_gravity", 0.27) * (fa > 0 ? RSQGN_Upg.Num("FlatArc.gravity", fa, 1.0) : 1.0), 0.05, 1.0);	// FLAT ARC
 		g.BounceFactor = clamp(SNum("rsqgn_bounce", 0.5), 0.0, 0.9);

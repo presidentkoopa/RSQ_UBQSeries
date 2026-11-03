@@ -109,3 +109,52 @@ class RSQ_Upgrade_Sticky : RSQ_Upgrade_GrenadeMarker
 {
 	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return GrenadeInfo(info) && Has(info, "Frag") && LevelOf(info, "Sticky") < 2; }
 }
+
+// ---- STYLE ---------------------------------------------------------------------------------------------------------
+
+// TEETH (root): 1 a pin pulled with your teeth pays Score's `teeth`; 2-3 and the throw that follows does +15%, +30%.
+// (RSQGN_Handler: teethPin, Throw)
+class RSQ_Upgrade_Teeth : RSQ_Upgrade_GrenadeMarker
+{
+	static double Mult(uint lv) { return lv >= 3 ? 1.30 : lv == 2 ? 1.15 : 1.0; }
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return GrenadeInfo(info) && LevelOf(info, "Teeth") < 3; }
+	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("mult", AsPercentIncrease(Mult(level))); }
+}
+
+// SKEET (after Strong Arm 2): shooting your own grenade in the air bursts it there at x1.25 + 0.25 a level.
+// (RSQGN_Handler.WorldHitscanPreFired, rsqgn_skeet)
+class RSQ_Upgrade_Skeet : RSQ_Upgrade_GrenadeMarker
+{
+	static double Mult(uint lv) { return lv > 0 ? 1.25 + 0.25 * int(lv) : 1.0; }
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return GrenadeInfo(info) && Has(info, "StrongArm", 2) && LevelOf(info, "Skeet") < 3; }
+	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("mult", string.format("x%.2f", Mult(level))); }
+}
+
+// SKEET WINDOW (after Skeet 1; needs RSQ SlowMo): eight tics after a throw, slow motion for 10 + 5 tics a level and the
+// grenade drawn full bright: a window to line up the shot. RSQ Grenade's Skeet Window row turns the slow motion off.
+// (RSQGN_Thrown.SkeetWindow)
+class RSQ_Upgrade_SkeetWindow : RSQ_Upgrade_GrenadeMarker
+{
+	static int Tics(uint lv) { return lv > 0 ? 10 + 5 * int(lv) : 0; }
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return GrenadeInfo(info) && Has(info, "Skeet") && LevelOf(info, "SkeetWindow") < 3; }
+	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("time", AsSeconds(Tics(level))); }
+}
+
+// ---- THE SLOWMO LINK -----------------------------------------------------------------------------------------------
+
+// SLOW BURN (after Cook Sense 1; needs RSQ SlowMo): a kill by a grenade that cooked a second or more, while the world is
+// slowed, re-pulses slow motion 0.5 + 0.25 s a level. (The cook is the grenade's, asked by name: RSQGN_Service "cooked".)
+class RSQ_Upgrade_SlowBurn : RSQ_Upgrade_GrenadeMarker
+{
+	static int Ms(uint lv) { return lv > 0 ? 500 + 250 * int(lv) : 0; }
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return GrenadeInfo(info) && Has(info, "CookSense") && LevelOf(info, "SlowBurn") < 3; }
+	override void OnKill(PlayerPawn pawn, Actor shot, Actor target)
+	{
+		if (!RSQM.Slowed() || !shot) return;
+		let s = RSQM.Svc("RSQGN_Service");
+		if (!s || s.GetInt("cooked", "", 0, 0, shot) < TICRATE) return;
+		RSQM.Touch("slow.burn", pawn, target);
+		RSQM.Pulse(pawn, Ms(level), int(clamp(RSQM.SV("rsm_depth", 0.25), 0.05, 0.95) * 100));
+	}
+	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("time", string.format("%.2fs", Ms(level) / 1000.0)); }
+}

@@ -79,7 +79,12 @@ odds rising with them; 3: one Kill Rewards ammo bit in four is a grenade); **Str
 **Short Fuse** (after Cook Sense: 2.5 / 2.0 s); **Big Bang** (both blast radii +15% a level); **Frag** (after Big
 Bang: both damages +15% a level); **Cluster** (after Frag 2: 3 / 4 / 5 bomblets, 30 over 96 each, thrown 2-4 m and
 going off a second later); **Sticky** (after Frag: it sticks to the first monster it touches and rides it to the
-blast; 2: walls too). The blast that goes off in your hand takes the same numbers. Without the patch nothing changes.
+blast; 2: walls too). The blast that goes off in your hand takes the same numbers. **Teeth** (a pin pulled with your
+teeth counts for style; 2-3: the throw after it +15% / +30%); **Skeet** (after Strong Arm 2: shoot your own grenade
+in the air and it bursts there, x1.5 / 1.75 / 2.0); **Skeet Window** (after Skeet, needs RSQ SlowMo: eight tics after
+a throw time slows for 15 / 20 / 25 tics and the grenade glows; the **Skeet Window Slow-Mo** row turns the slow motion
+off); **Slow Burn** (after Cook Sense, needs RSQ SlowMo: a kill by a grenade cooked a second or more while time is
+slowed keeps it slowed 0.75 / 1 / 1.25 s more). Without the patch nothing changes.
 
 Tuning and Debug page:
 
