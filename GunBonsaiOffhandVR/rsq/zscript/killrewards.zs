@@ -42,7 +42,13 @@
 //   rsqgb_kr_min / _max / _rnd   Range mode: 1, 3, on
 class RSQ_KRHandler : EventHandler
 {
-	static const String BLACKLIST[] = { "BootSmearerRed", "BootSmearerBlue", "BootSmearerGreen" };   // "Because Brutal Doom..." (SoM)
+	static const String BLACKLIST[] = { "BootSmearerRed", "BootSmearerBlue", "BootSmearerGreen",   // "Because Brutal Doom..." (SoM)
+		"NewCybersHitBox" };
+	// Brutal Doom's head hitboxes (owner 2026-11-03: yes): HeadHitbox is +ISMONSTER -COUNTKILL, 9999 hp, and dies with the
+	// monster it rides, so a BD Cyberdemon also burst its NewCybersHitBox (1000 bits rolled). Every class descended from
+	// one of these is skipped too (in brutal22test6: NewCybersHitBox, the Noble/Baron/Knight/Boss/Dying_Noble headshots,
+	// Dying_Headshot, Slumped*_Headshot, Vile_HeadHitbox, Mancu/Bones headshots, the SaciLol ones). By name: no BD, no effect.
+	static const String BLACKBASE[] = { "HeadHitbox" };
 
 	static int SVI(String n, int fb) { let c = CVar.FindCVar(n); return c ? c.GetInt() : fb; }
 	static double SV(String n, double fb) { let c = CVar.FindCVar(n); return c ? c.GetFloat() : fb; }
@@ -137,6 +143,7 @@ class RSQ_KRHandler : EventHandler
 		if (!a || !a.bIsMonster) return;
 		String cn = a.GetClassName();
 		for (int i = 0; i < BLACKLIST.Size(); ++i) if (cn == BLACKLIST[i]) return;
+		for (int i = 0; i < BLACKBASE.Size(); ++i) { class<Actor> bc = BLACKBASE[i]; if (bc && a is bc) return; }
 
 		// who killed it, for the path nodes (the killer's perks); nobody = SoM's plain numbers
 		Actor killer = (e.DamageSource && e.DamageSource.player) ? e.DamageSource : null;
