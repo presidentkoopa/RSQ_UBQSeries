@@ -92,7 +92,7 @@ goes), **rework** (what changes), **cut** (why). Levels are uncapped unless a ca
 | 16 | Deflector | a bolt the saber sent back hits +15% x lv; cap 5 | **keep** | Deflect: root |
 | 17 | Piercing Return | a returned bolt passes through lv bodies | **keep** | Deflect: after Deflector |
 | 18 | Saber Throw | the thrown saber finds lv more enemies on its route | **keep** | Throw: root |
-| 19 | Force Push | unlearned 60% (`rsq_force_start`); lv1 full, +15% a level; 2+ cone +10 deg a level; 3+ shockwave | **keep**, under a new "The Force" unlock root; rework the 60% baseline to 0% under GBOVR if the owner wants the Force earned | Force |
+| 19 | Force Push | **11-03:** off until learned (`rsq_force_start` 0); lv1-4 = 40 / 70 / 100 / 130 % of the saber's own; 2+ cone +10 deg a level; 3+ shockwave | **keep**, under "The Force" unlock root; the owner chose the Force earned (11-03) | Force |
 | 20 | Force Pull | same baseline; 2+ stuns what arrives; 3+ disarms (no ranged attacks) | **keep** | Force |
 | 21 | Force Choke | same baseline; 2+ lifts and crushes harder; 3+ holds lv-1 at once | **keep** | Force |
 | 22 | Chain Choke | a choke kill jumps the grip to the nearest enemy within 256 + 64 lv units | **keep** | Force: after Force Choke |
@@ -271,7 +271,8 @@ reload, second saber via the Rig holster, blade length and colour.
   an unlock) -> **Return to Sender** (to the shooter) -> **Parry Window** (Bulwark for sabers).
 - **Dual:** Second Blade (unlock) -> Dual Harmony -> **Cross Guard** (the X block becomes an unlock that also
   reflects) -> **Blade Lock Shock** (a blade lock releases a shockwave).
-- **The Force:** The Force (unlock; without it the powers are off, not at 60%) -> Push / Pull / Choke / Jump
+- **The Force:** The Force (unlock; without it the powers are off) -> Push / Pull / Choke / Jump (**11-03:** each power is
+  off until its own node is learned, then 40 / 70 / 100 / 130 % a level)
   (each its own node and levels, as today) -> Chain Choke -> **Force Speed** (a Force gesture starts slow motion:
   the SlowMo link) -> **Force Lightning** (new power; Needs: a new UBQS_Force power) -> **Force Repulse** (push
   level 3's shockwave as its own node).
@@ -874,7 +875,7 @@ spawn health. **Not provable headless** (both need a stab: a hand driven along t
 
 | Node | Parent | Levels | Owns | Art | Score |
 |---|---|---|---|---|---|
-| Deflector (exists: `RSQ_Upgrade_Deflector`; name kept, owner) | root | 1-5: a bolt the saber turns hits +15% lv | GBOVR (damage) | - | `deflect` |
+| Deflector (exists: `RSQ_Upgrade_Deflector`; name kept, owner) | root | **11-03, "block free, deflect earned":** until Deflector 1 the blade only STOPS a bolt (clash, sparks, it dies on the blade); 1-5: it is sent back and hits +15% lv | GBOVR (damage), the saber (the gate) | - | `deflect` |
 | Return to Sender (new) | Deflector 1 | 1-3: turned shots go to the shooter (today's "where turned shots go" option becomes this); 2: within 20 degrees of it even when you look away; 3: always | Saber | - | `return.sender` |
 | Guided Return (new: aimed) | Deflector 1 | 1-2: turned shots go where you look (the other option), 2: where the off hand points | Saber | - | - |
 | Piercing Return (exists: `RSQ_Upgrade_PiercingReturn`) | Return to Sender 1 or Guided Return 1 | 1-3: a returned bolt passes through lv bodies | Saber | - | - |

@@ -409,8 +409,8 @@ class RSQ_MeleeUpgradeService : Service
 			let a = Actor(objectArg);
 			return (h && a && a.player) ? h.headMps[a.PlayerNumber()] : 0;
 		}
-		// the Force's patch-only baseline: what an unlearned power is worth (rsq_force_start)
-		if (request == "force.start") return clamp(RSQM.SV("rsq_force_start", 0.6), 0.1, 1.0);
+		// the Force's patch-only baseline: what an unlearned power is worth (rsq_force_start; 0, the default: it is off)
+		if (request == "force.start") return clamp(RSQM.SV("rsq_force_start", 0.0), 0.0, 1.0);
 		if (request == "upgrade.num")
 		{
 			int lv = max(intArg, 0);

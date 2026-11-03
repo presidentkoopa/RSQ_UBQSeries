@@ -96,33 +96,34 @@ class RSQ_Upgrade_DualHarmony : RSQ_Upgrade_SaberMarker
 }
 
 // ---- THE FORCE (UBQS_Force: push, pull, choke, jump) -----------------------------------------
-// With this patch loaded an unlearned power starts weaker (rsq_force_start, 60%); level 1 is
-// the saber's own full strength and each level after adds to it -- and changes it:
+// With this patch loaded an unlearned power is OFF (rsq_force_start, 0; the owner, 11-03: "0 until learned, then 40%,
+// then 70%, 100%, 130%"): level 1 is 40% of the saber's own strength, level 3 is the saber's own, level 4 is past it,
+// and each level also changes the power:
 class RSQ_Upgrade_ForcePush : RSQ_Upgrade_SaberMarker
 {
 	// (4.2 The Force: after Force Sensitive, 4 levels)
 	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return SaberInfo(info) && AnySaberHas(info.stats, "ForceSensitive") && LevelOf(info, "ForcePush") < 4; }
 	// 2+: the cone opens 10 degrees a level. 3+: it is a shockwave all round you as well.
-	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("pwr", AsPercent(level <= 0 ? 0.6 : 1.0 + 0.15 * (level - 1))); }
+	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("pwr", AsPercent(level <= 0 ? 0.0 : 0.4 + 0.3 * (level - 1))); }
 }
 class RSQ_Upgrade_ForcePull : RSQ_Upgrade_SaberMarker
 {
 	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return SaberInfo(info) && AnySaberHas(info.stats, "ForceSensitive") && LevelOf(info, "ForcePull") < 4; }
 	// 2+: what arrives is stunned. 3+: the pull yanks its weapon away (no ranged attacks).
-	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("pwr", AsPercent(level <= 0 ? 0.6 : 1.0 + 0.15 * (level - 1))); }
+	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("pwr", AsPercent(level <= 0 ? 0.0 : 0.4 + 0.3 * (level - 1))); }
 }
 // (shown as FORCE GRIP since 11-02; the class keeps its name for saves)
 class RSQ_Upgrade_ForceChoke : RSQ_Upgrade_SaberMarker
 {
 	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return SaberInfo(info) && AnySaberHas(info.stats, "ForceSensitive") && LevelOf(info, "ForceChoke") < 4; }
 	// 2+: it lifts them and the grip crushes harder the longer you hold. 3+: it holds more than one.
-	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("pwr", AsPercent(level <= 0 ? 0.6 : 1.0 + 0.15 * (level - 1))); fields.Insert("n", string.format("%d", max(1, level - 1))); }
+	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("pwr", AsPercent(level <= 0 ? 0.0 : 0.4 + 0.3 * (level - 1))); fields.Insert("n", string.format("%d", max(1, level - 1))); }
 }
 class RSQ_Upgrade_ForceJump : RSQ_Upgrade_SaberMarker
 {
 	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return SaberInfo(info) && AnySaberHas(info.stats, "ForceSensitive") && LevelOf(info, "ForceJump") < 3; }
 	// 2+: landing from a Force jump is a slam that throws everything near you.
-	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("pwr", AsPercent(level <= 0 ? 0.6 : 1.0 + 0.15 * (level - 1))); }
+	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("pwr", AsPercent(level <= 0 ? 0.0 : 0.4 + 0.3 * (level - 1))); }
 }
 
 // ---- THE SABER TREE, new nodes (GBOVR_TREES.md 4.2; the owner kept every node, 11-02, names "Star-Warsy" at a

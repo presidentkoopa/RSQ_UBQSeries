@@ -58,7 +58,8 @@ RSQ Gun Bonsai VR page:
 | Screen Skin | Mockup | Which screens draw Gun Bonsai: Gun Bonsai (its own) / Mockup (the owner's mockups) / Hex Rail / Terminal. |
 | Ammo And Health | On | With a skin: per-hand ammo, health, face and armour along the bottom (hides Brutal Doom's HUD under it). |
 
-Tuning and Debug page: Force Base Strength (0.6: an unlearned Force power works at this share), First Star
+Tuning and Debug page: Force Base Strength (0: an unlearned Force power does nothing; learned, levels 1-4 are 40 / 70 /
+100 / 130 % of the saber's own), First Star
 After (1), Star Every (2) (Star Punch's banking, read by RSQ_Melee's punch), Grapple XP (1.0), Style XP Scale
 (1.0), Style Player Share % (10), HUD Inset (0.04), HUD Size (1.0). (Slappers Only, Start With Gloves and
 Punch Min Speed / Full Speed / Damage are on RSQ Melee's page now.)
