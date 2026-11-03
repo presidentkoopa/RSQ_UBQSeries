@@ -5301,6 +5301,7 @@ class UBQS_Force : Inventory
 		{
 			int dmg = int(slamLast * FV("ubqs_grip_slam", 3.0));
 			slamMo.A_StartSound("ubqs/drop", CHAN_AUTO, 0, 0.8, ATTN_NORM, 0.6);
+			UBQS_Upg.Touch("force.slam", owner, slamMo);						// RSQ Score (11-03): the fling's slam, named before the blow
 			slamMo.DamageMobj(self, owner, dmg, 'Force');
 			slamMo = null;
 			return;
@@ -5473,6 +5474,7 @@ class UBQS_Force : Inventory
 			Vector3 to = (c.pos.xy, c.pos.z + c.height * 0.6);
 			Arc(from, to);
 			from = to;
+			UBQS_Upg.Touch("force.lightning", owner, c);						// RSQ Score (11-03): every struck monster, before the blow (the first alone was tagged, at the start)
 			c.DamageMobj(self, owner, dmg, 'Saber', DMG_THRUSTLESS);
 		}
 	}
