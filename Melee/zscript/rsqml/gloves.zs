@@ -306,7 +306,7 @@ class RSQML_Gloves : StaticEventHandler
 		if ((level.maptime & 7) == 0)
 		{
 			for (int i = missiles.Size() - 1; i >= 0; i--) if (!missiles[i] || !missiles[i].bMissile) missiles.Delete(i);
-			for (int i = returned.Size() - 1; i >= 0; i--) if (!returned[i] || !returned[i].bMissile) { returned.Delete(i); returnedMult.Delete(i); }
+			for (int i = returned.Size() - 1; i >= 0; i--) if (!returned[i] || !returned[i].bMissile) { returned.Delete(i); returnedMult.Delete(i); retHand.Delete(i); }
 		}
 		let hl = RSQML_Headlock.Get();
 		for (int pn = 0; pn < MAXPLAYERS; pn++)
@@ -530,10 +530,18 @@ class RSQML_Gloves : StaticEventHandler
 	Array<Actor> missiles;
 	Array<Actor> returned;      // missiles sent back at their shooters (Hadouken, Swat Back, Reflect Guard), and what each hits for
 	Array<double> returnedMult;
+	Array<int> retHand;     // ... and which hand sent it: 0 a punch (Hadouken, a punched bullet, a catch), 1 Swat Back, 2 the Guard (RSQ Score reads it, "returned.by")
 
 	// a new map, or a save loaded: the lists were the old level's (a static handler is never saved)
-	override void WorldLoaded(WorldEvent e) { missiles.Clear(); returned.Clear(); returnedMult.Clear(); rounds.Clear(); }
-	override void WorldUnloaded(WorldEvent e) { missiles.Clear(); returned.Clear(); returnedMult.Clear(); rounds.Clear(); }
+	override void WorldLoaded(WorldEvent e) { missiles.Clear(); returned.Clear(); returnedMult.Clear(); retHand.Clear(); rounds.Clear(); }
+	override void WorldUnloaded(WorldEvent e) { missiles.Clear(); returned.Clear(); returnedMult.Clear(); retHand.Clear(); rounds.Clear(); }
+
+	// which hand sent this missile back: 0 a punch, 1 Swat Back, 2 the Guard; -1 not one of ours (RSQML_Service "returned.by")
+	int ReturnedHow(Actor shot)
+	{
+		int k = returned.Find(shot);
+		return k < returned.Size() ? retHand[k] : -1;
+	}
 	// RSQ SlowMo's slowed rounds (an enemy's hitscan made visible in slow motion: Damage 0, it carries its own), for
 	// Bullet Time Fists; by class name (nothing without SlowMo)
 	Array<Actor> rounds;
@@ -560,7 +568,7 @@ class RSQML_Gloves : StaticEventHandler
 	// `at` (so it never starts inside you), toward its shooter's middle (or `fallback` if the shooter is gone), at its
 	// speed x speedMult. It is the player's now (it hurts monsters, not you), a homing missile homes on its shooter, it hits
 	// for dmgMult (RSQML_Body), and it is paid to `glove` when there is one (Gun Bonsai VR's claim).
-	void SendBack(PlayerPawn pmo, Actor m, Actor from, Vector3 at, double speedMult, double dmgMult, Weapon glove, Vector3 fallback)
+	void SendBack(PlayerPawn pmo, Actor m, Actor from, Vector3 at, double speedMult, double dmgMult, Weapon glove, Vector3 fallback, int how = 0)
 	{
 		double sp = max(m.Speed, m.vel.Length()) * speedMult;
 		Vector3 dir;
@@ -578,6 +586,7 @@ class RSQML_Gloves : StaticEventHandler
 		if (glove) RSQML.Claim(m, glove);
 		returned.Push(m);
 		returnedMult.Push(dmgMult);
+		retHand.Push(how);
 		int k = missiles.Find(m);
 		if (k < missiles.Size()) missiles.Delete(k);
 	}
@@ -790,7 +799,7 @@ class RSQML_Gloves : StaticEventHandler
 			if (miss > reach) continue;
 			if (sbLv > 0 && from.health > 0)
 			{
-				SendBack(pmo, m, from, st.hand, 1.0, RSQML.Num("SwatBack.mult", sbLv, 0, 1.15), g, st.vel);
+				SendBack(pmo, m, from, st.hand, 1.0, RSQML.Num("SwatBack.mult", sbLv, 0, 1.15), g, st.vel, 1);
 				pmo.A_StartSound("rsqml/swat", CHAN_AUTO, CHANF_OVERLAP, 1.0);
 				RSQ_Buzz.Start(pmo, h, 0.6, 5);
 				RSQML_Spark.Swat(st.hand);

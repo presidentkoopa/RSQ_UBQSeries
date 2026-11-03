@@ -307,7 +307,7 @@ class RSQML_Guard : StaticEventHandler
 			int dmg = m.GetMissileDamage(7, 1);   // the roll it would have hit you for (Doom's own: damage x 1-8)
 			Vector3 d = level.Vec3Diff(eye, m.pos);
 			Vector3 at = eye + (d.Length() > 0.01 ? d.Unit() : (cos(pmo.angle), sin(pmo.angle), 0)) * 12.0;
-			gl.SendBack(pmo, m, from, at, 1.0, RSQML.Num("ReflectGuard.mult", lv, 0, 1.25), null, (cos(pmo.angle), sin(pmo.angle), 0));
+			gl.SendBack(pmo, m, from, at, 1.0, RSQML.Num("ReflectGuard.mult", lv, 0, 1.25), null, (cos(pmo.angle), sin(pmo.angle), 0), 2);
 			Flash(pmo, m);
 			Perfect(pmo, m, 0.6, RSQML_Burst.ByLevel(lv, 3));
 			RSQML.Touch("guard.reflect", pmo, from);

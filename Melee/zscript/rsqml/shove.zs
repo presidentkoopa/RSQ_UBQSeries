@@ -312,6 +312,10 @@ class RSQML_Shove : StaticEventHandler
 			Actor t = struck[i];
 			if (!t || t.health <= 0) continue;
 			bool bdPain = t.FindStateByString("Pain.Kick", true) != null;
+			// RSQ Score (11-03, its sheet S9 / C15): the blow lands as BD's kick; this names it the shove FIRST (a kill is
+			// scored inside the blow), the one tool for the gun-butt shove, BD22 VR's butt strike and the pistol whip, so a
+			// kill by it is no Boot and shove > gun has its own rows
+			RSQML.Touch("shove", pmo, t);
 			t.DamageMobj(pmo, pmo, dmg, 'Kick');
 			landed++;
 			if (t && !t.bDestroyed && t.health > 0 && !bdPain) Knock(pmo, t);
@@ -510,6 +514,13 @@ class RSQML_Shove : StaticEventHandler
 		// BD22 VR Reloaded's own butt strike landing (its KickAttack: damage type Kick, from you): Pistol Whip's mark
 		if (bdq && e.DamageType == 'Kick' && e.Thing && e.Thing.bIsMonster && e.Thing.health > 0 && PlayerPawn(e.DamageSource))
 			GunHand(PlayerPawn(e.DamageSource), e.Thing, -1);
+		// RSQ Score: BD22 VR's own butt strike (its KickAttack inside RING tics of your main-hand shove, WatchBDButt) is the
+		// same tool as our shove. Named here, after its blow, so it joins the chain for the next kill; a kill by the strike
+		// itself still reads as BD's kick (BD22 VR's own code lands it, and the kill is scored inside the blow).
+		if (bdq && e.DamageType == 'Kick' && e.Thing && e.Thing.bIsMonster && PlayerPawn(e.DamageSource) && e.Inflictor
+			&& (e.Inflictor.GetClassName() == 'KickAttack' || e.Inflictor.GetClassName() == 'SuperKickAttack')
+			&& bdShoveTic > 0 && abs(gametic - bdShoveTic) <= RING)
+			RSQML.Touch("shove", PlayerPawn(e.DamageSource), e.Thing);
 		if (fearPn < 0) return;
 		let t = e.Thing;
 		if (!t || !t.bIsMonster || e.Damage <= 0 || e.DamageType == 'Kick' || !FearOn(e.DamageSource)) return;
