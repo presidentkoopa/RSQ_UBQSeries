@@ -389,11 +389,11 @@ class RSQ_Upgrade_Longer : RSQ_SlowTreePerk
 	override int Cap() { return 3; }
 	override void GetTooltipFields(Dictionary fields, uint level) { static const int B[] = { 4, 5, 6, 8 }; fields.Insert("s", string.format("%d", B[clamp(int(level), 0, 3)])); }
 }
-// DEEPER (after Slow Motion): the world's speed while slowed 0.5 unlearned -> 0.35, 0.25, 0.1.
+// DEEPER (root; owner 11-03): at level 0 the player's own World Speed row (0.25 by default); learned, 0.2, 0.15, 0.1.
 class RSQ_Upgrade_Deeper : RSQ_SlowTreePerk
 {
 	override int Cap() { return 3; }
-	override void GetTooltipFields(Dictionary fields, uint level) { static const int D[] = { 50, 35, 25, 10 }; fields.Insert("pct", string.format("%d%%", D[clamp(int(level), 0, 3)])); }
+	override void GetTooltipFields(Dictionary fields, uint level) { static const int D[] = { 0, 20, 15, 10 }; fields.Insert("pct", level == 0 ? "your World Speed" : string.format("%d%%", D[clamp(int(level), 1, 3)])); }
 }
 // CHEAPER (after Longer 1): with the adrenaline meter on, slow motion costs 20% less a level.
 class RSQ_Upgrade_Cheaper : RSQ_SlowTreePerk

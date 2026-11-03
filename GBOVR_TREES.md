@@ -1490,7 +1490,7 @@ automatic triggers wait a 25 s cooldown.
 |---|---|---|---|---|---|
 | ~~Slow Motion (the unlock)~~ | - | **DROPPED 11-03** (owner: the key and the wrist cross work from the start, "button press for X base seconds"; upgrade paths on top) | - | - | - |
 | Longer (new) | root (player) | 1-3: the burst 4 -> 5, 6, 8 s; the meter's capacity +25% a level | SlowMo | - | - |
-| Deeper (new) | root (player) | 1-3: world speed 0.5 at level 0 under GBOVR -> 0.35, 0.25 (today's), 0.1 | SlowMo | colour drain deepens with it | - |
+| Deeper (new) | root (player) | 1-3: world speed 0.2, 0.15, 0.1 (**11-03:** at level 0 the player's World Speed row, 0.25 by default, as without the patch; it was 0.5) | SlowMo | colour drain deepens with it | - |
 | Cheaper (new) | Longer 1 | 1-3: with the meter on, slow motion costs 20% less a level | SlowMo | - | - |
 | Marksman (exists) | Deeper 1 | 1-5: +8% a level to everything hit while slowed | GBOVR | - | - |
 | Dodger (exists) | Deeper 1 | 1-4: take 8% less a level while slowed | GBOVR | - | - |
