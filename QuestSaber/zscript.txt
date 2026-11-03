@@ -415,6 +415,7 @@ class UBQS_SaberBase : Weapon abstract
 	bool gbOn;
 	int  uBM, uBarrage, uReturning, uStrike, uKyber, uPoint, uRunThrough;
 	int  uRtS, uGuided, uPrecog, uDouble, uCross, uClash;
+	int  uDeflector;		// Gun Bonsai VR: 0 = the blade STOPS a shot (block, free) but does not send it back (deflect, earned)
 	int  crossBoltTic;        // CROSS GUARD: one return bolt a tic
 	Actor impaled;            // RUN THROUGH: what is held on the blade, and until when
 	int   impaleUntil;
@@ -1897,6 +1898,7 @@ class UBQS_SaberBase : Weapon abstract
 		uRunThrough = UBQS_Upg.Lv(self, "RunThrough");
 		uRtS      = UBQS_Upg.Lv(self, "ReturnToSender");
 		uGuided   = UBQS_Upg.Lv(self, "GuidedReturn");
+		uDeflector = UBQS_Upg.Lv(self, "Deflector");
 		uPrecog   = UBQS_Upg.Lv(self, "Precognition");
 		uDouble   = UBQS_Upg.Lv(self, "DoubleBladed");
 		uCross    = UBQS_Upg.Lv(self, "CrossGuard");
@@ -2341,6 +2343,21 @@ class UBQS_SaberBase : Weapon abstract
 		// Sender home to the shooter (inside its cone of where you look; always at 3); Guided Return where you look
 		// (2: where your off hand points)
 		UpgRefresh();
+		// BLOCK FREE, DEFLECT EARNED (owner, 11-03): under Gun Bonsai VR, until Deflector 1 is learned the blade stops the
+		// shot -- the same clash, sparks and flash -- and it goes nowhere. Learned, it is sent back as below.
+		if (gbOn && uDeflector <= 0)
+		{
+			if (level.maptime != lastDeflectTic)
+			{
+				lastDeflectTic = level.maptime;
+				UBQS_Ping.At(owner, fxAt, UBQS_Font.Clash(), UF("ubqs_vol_clash", 1.0));
+			}
+			UBQS_Data.Sparks(fxAt, -mo.vel.Unit(), RgbNow(), 8);
+			FlashAt(fxAt, 64, 4);
+			UBQS_Memory.Note(UBQS_Memory.M_BLOCKED, mo.target);
+			mo.Destroy();   // stopped dead on the blade: no blast, no return
+			return;
+		}
 		if (gbOn)
 		{
 			aim = 2;
@@ -4976,6 +4993,8 @@ class UBQS_Force : Inventory
 		if (!owner || !IV("ubqs_force", 1)) return;
 		UpgRefresh();
 		if (uLoaded && uFS <= 0) return;   // FORCE SENSITIVE (Gun Bonsai VR): no Force until it is learned
+		UpgRefresh();
+		if (!Learned(uPush)) { Unlearned(); return; }   // Force Push not learned yet: nothing happens
 		if (level.maptime < pushReady) { owner.A_StartSound(UBQS_Font.Off(), CHAN_AUTO, 0, 0.25); return; }
 		pushReady = level.maptime + int(FV("ubqs_push_cooldown", 1.5) * 35);
 		// ubqs_push_cone: power and reach were both sliders and the SHAPE was baked at 80 degrees of total arc.
@@ -4985,8 +5004,7 @@ class UBQS_Force : Inventory
 		double range = FV("ubqs_push_range", 448.0), cone = clamp(FV("ubqs_push_cone", 40.0), 5.0, 90.0);
 		double pwr = FV("ubqs_push_power", 1.0);
 		double pdmg = FV("ubqs_push_damage", 8.0);
-		// Force Push (Gun Bonsai): weaker unlearned, full at 1, +15% a level after; 2+ opens the cone
-		UpgRefresh();
+		// Force Push (Gun Bonsai): FScale by level; 2+ opens the cone
 		pwr *= FScale(uPush);
 		pdmg *= FScale(uPush);
 		if (uLoaded && uPush <= 0) range *= 0.75;
@@ -5050,6 +5068,8 @@ class UBQS_Force : Inventory
 	// ---- PULL ------------------------------------------------------------------------------------------------
 	void Pull(Vector3 hp, Vector3 d)
 	{
+		UpgRefresh();
+		if (!Learned(uPull)) { Unlearned(); return; }   // Force Pull not learned yet: nothing happens
 		if (level.maptime < pushReady) { owner.A_StartSound(UBQS_Font.Off(), CHAN_AUTO, 0, 0.25); return; }
 		pushReady = level.maptime + int(FV("ubqs_push_cooldown", 1.5) * 35);
 		owner.A_StartSound("ubqs/pull", CHAN_AUTO, 0, 1.0 * FV("ubqs_vol_force", 1.0));
@@ -5066,7 +5086,7 @@ class UBQS_Force : Inventory
 		// today. Both read above the iterator.
 		double range = FV("ubqs_pull_range", 768.0), cone = clamp(FV("ubqs_pull_cone", 30.0), 5.0, 90.0);
 		double pwr = FV("ubqs_push_power", 1.0) * FV("ubqs_pull_power", 1.0);
-		// Force Pull (Gun Bonsai): weaker unlearned, full at 1, +15% a level after
+		// Force Pull (Gun Bonsai): FScale by level
 		pwr *= FScale(uPull);
 		if (uLoaded && uPull <= 0) range *= 0.75;
 		let it = BlockThingsIterator.CreateFromPos(hp.x, hp.y, hp.z - range, range * 2.0, range, false);
@@ -5208,6 +5228,7 @@ class UBQS_Force : Inventory
 	}
 	private void StartGrip(Actor mo)
 	{
+		if (!Learned(uChoke)) { Unlearned(); return; }   // Force Grip not learned yet: the hand closes on nothing
 		gripped = mo;
 		gripDist = clamp(level.Vec3Diff(OffPos(), mo.pos).Length(), 56.0, 320.0);
 		gripNoGrav = mo.bNoGravity;
@@ -5348,6 +5369,8 @@ class UBQS_Force : Inventory
 		bool forceOut = (p.ReadyWeapon is "UBQS_SaberBase") || (p.OffhandWeapon is "UBQS_SaberBase") || (p.OffhandWeapon is "UBQS_ForceHand");
 		if (!forceOut) { airTics = 0; boostOk = false; a11yJumped = false; return; }
 		bool jump = (p.cmd.buttons & BT_JUMP) != 0;
+		// Force Jump not learned yet (Gun Bonsai VR): an ordinary jump, no boost and no floating fall
+		if (!Learned(uJump)) { airTics = 0; boostOk = false; a11yJumped = false; slamArmed = false; return; }
 		if (p.onground)
 		{
 			a11yJumped = false;
@@ -5369,7 +5392,7 @@ class UBQS_Force : Inventory
 		// ubqs_jump_hold is the whole HEIGHT of a Force jump -- ubqs_jump_power only changes the rate inside the
 		// window, so a genuinely big leap needs this and not the power slider. ubqs_jump_float decouples the
 		// glide from the height: today raising the power makes you fall FASTER, which nothing said.
-		// Force Jump (Gun Bonsai): the hold window, which is the jump's height, weaker unlearned
+		// Force Jump (Gun Bonsai): the hold window, which is the jump's height, FScale by level
 		int jhold = max(int(max(IV("ubqs_jump_hold", 8), 1) * FScale(uJump) + 0.5), 1);
 		if (boostOk && owner.vel.z > 0 && airTics <= jhold)
 		{
@@ -5406,7 +5429,7 @@ class UBQS_Force : Inventory
 		uFS    = max(0, svc.GetInt("level", "ForceSensitive", 0, 0, owner));
 		uSpeed = max(0, svc.GetInt("level", "ForceSpeed", 0, 0, owner));
 		uLight = max(0, svc.GetInt("level", "ForceLightning", 0, 0, owner));
-		uStart = clamp(svc.GetDouble("force.start"), 0.1, 1.0);
+		uStart = clamp(svc.GetDouble("force.start"), 0.0, 1.0);   // 0 (the default): an unlearned power is off
 		// WHO THE FORCE'S DAMAGE IS PAID TO: Gun Bonsai's VR patch follows this item's master to a
 		// weapon. The off-hand saber is the Force hand's; else the main one.
 		Actor sb = owner.FindInventory("UBQS_SaberOff");
@@ -5567,11 +5590,19 @@ class UBQS_Force : Inventory
 		}
 	}
 
+	// A FORCE POWER'S STRENGTH BY ITS LEVEL (Gun Bonsai VR; owner, 11-03: "0 until learned, then 40%, then 70%, 100%,
+	// 130%"). Without the patch every power is the saber's own full strength. Under it an unlearned power is OFF
+	// (Learned() below), unless rsq_force_start is raised above 0 on its Tuning page; level 1 is 40% of the saber's
+	// own, level 3 is the saber's own, level 4 is past it.
 	double FScale(int lv)
 	{
 		if (!uLoaded) return 1.0;
-		return lv <= 0 ? uStart : 1.0 + 0.15 * (lv - 1);
+		return lv <= 0 ? uStart : 0.4 + 0.3 * (lv - 1);
 	}
+	// whether a Force power does anything at all: always without the patch; under it, once its node is learned
+	// (or rsq_force_start is above 0). An unlearned power's gesture plays the "off" click and nothing else.
+	bool Learned(int lv) { return !uLoaded || lv > 0 || uStart > 0.0; }
+	void Unlearned() { owner.A_StartSound(UBQS_Font.Off(), CHAN_AUTO, 0, 0.25); }
 	double GripMass()
 	{
 		double m = FV("ubqs_grip_mass", 600.0);
