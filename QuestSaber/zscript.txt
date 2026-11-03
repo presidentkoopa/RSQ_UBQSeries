@@ -2102,6 +2102,7 @@ class UBQS_SaberBase : Weapon abstract
 			// something the blade geometrically touched.
 			if (!stab && los && !owner.CheckSight(mo, SF_IGNOREVISIBILITY)) continue;   // (a stab's one was checked)
 			int dmg = int(dmg0 * mult * um * (stab ? STAB_MULT * ptMult : 1.0));
+			if (stab) UBQS_Upg.Touch("saber.stab", owner, mo);					// RSQ Score (11-03): the stab is its own tool, named BEFORE the blow (a kill is scored inside it)
 			if (ptMult > 1.0) UBQS_Upg.Touch("stab.lunge", owner, mo);			// THE EFFECTS GO INSIDE THE BODY. `at` is the closest point on the blade, and the gate above
 			// allows a full radius plus ubqs_cut_pad of slack -- so on every cut that only just qualified,
 			// the flash, the spark burst and the smoke appeared in mid-air BESIDE the monster. Clamped
