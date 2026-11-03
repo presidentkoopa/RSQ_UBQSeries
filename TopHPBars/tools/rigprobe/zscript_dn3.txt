@@ -1,0 +1,251 @@
+version "4.14"
+// TEST ONLY -- never shipped. The owner's damage-number round (2026-11-03) on the QZD 17.3 rig: drives scripted hits,
+// pickups, hit-stops and slow motion, and logs every number HP Bars' RSQTHP_DamNumHandler has in the air, every tic.
+//   dn3_spawn  "Class:fwd:side|..."           spawned at t10 ahead of the player (dn3_rep 1: Brutal Doom's replacement)
+//   dn3_hits   "tic:idx:dmg:type|..."         DamageMobj(player) on monster idx; dmg < 0: its health + |dmg| (a kill
+//                                             that goes |dmg| past zero); "rA-B/G:idx:dmg:type" repeats A..B every G
+//   dn3_trace  "rA-B/G:idx:dmg|..."           a traced hitscan from the eye at the monster's head height (Brutal Doom's
+//                                             HeadHitbox takes it: the real head signal), 'Bullet'
+//   dn3_freeze "tic:idx:tics|..."             a hit-stop: the monster's freezetics set (as every series hit-stop does)
+//   dn3_pick   "tic:Class:fwd:side:touch|..." an item spawned at tic, touched by the player at tic touch
+//   dn3_hp     the player's health at t5 (room for a health gain)
+//   dn3_slow   "on:off"                        netevent rsm_on / rsm_off at those tics (RSQ SlowMo)
+//   dn3_count  tic: actor / glyph census
+// Log lines: DN3 (one per number per tic), DN3_EV (events), DN3_SUM.
+class THPDN3_Probe : EventHandler
+{
+	Array<Actor> mons;
+	Array<double> monX, monY;
+
+	// XMVE's spawners hand over to the real monster: take the first counted monster that appears on a slot's spot
+	override void WorldThingSpawned(WorldEvent e)
+	{
+		let a = e.Thing;
+		if (!a || !a.bIsMonster || !a.bCountKill || level.maptime > 20) return;
+		for (int i = 0; i < mons.Size(); i++)
+		{
+			if (mons[i] && mons[i] != a && mons[i].bCountKill && mons[i].health > 0) continue;
+			if ((a.Pos.xy - (monX[i], monY[i])).Length() > 64) continue;
+			mons[i] = a;
+			Console.Printf("DN3_EV t%d slot %d is %s health %d", level.maptime, i, a.GetClassName(), a.health);
+			return;
+		}
+	}
+	Actor gun;
+	static clearscope int CI(Name n) { let c = CVar.FindCVar(n); return c ? c.GetInt() : 0; }
+	static clearscope String CS(Name n) { let c = CVar.FindCVar(n); return c ? c.GetString() : ""; }
+
+	// does a schedule entry fire at t? "17" or "rA-B/G"
+	static bool At(String s, int t)
+	{
+		if (s.Left(1) == "r")
+		{
+			Array<String> p; s.Mid(1).Split(p, "/");
+			Array<String> ab; p[0].Split(ab, "-");
+			int a = ab[0].ToInt(), b = ab[1].ToInt(), g = max(1, p[1].ToInt());
+			return t >= a && t <= b && (t - a) % g == 0;
+		}
+		return s.ToInt() == t;
+	}
+
+	// the targets never fight back (a hit makes the player their target; notarget then keeps them from finding him again)
+	void Calm()
+	{
+		for (int i = 0; i < mons.Size(); i++) if (mons[i] && mons[i].health > 0) { mons[i].target = null; mons[i].lastheard = null; mons[i].Speed = 0; mons[i].Vel.xy = (0, 0); }
+	}
+
+	static int HitHead(Actor m) { Name n = "HitHead"; class<Inventory> c = n; let i = c ? m.FindInventory(c) : null; return i ? i.Amount : 0; }
+
+	Actor Mon(int i) { return (i >= 0 && i < mons.Size()) ? mons[i] : null; }
+
+	Vector3 Ahead(PlayerPawn pmo, double fwd, double side)
+	{
+		Vector2 fw = (cos(pmo.angle), sin(pmo.angle)), rt = (cos(pmo.angle - 90), sin(pmo.angle - 90));
+		return (pmo.Pos.xy + fw * fwd + rt * side, pmo.Pos.z);
+	}
+
+	Array<Inventory> picks; Array<int> pickTouch;
+
+	override void WorldTick()
+	{
+		let pmo = PlayerPawn(players[consoleplayer].mo);
+		if (!pmo) return;
+		int t = level.maptime;
+		Array<String> L, F;
+		if (t == 2 && CS('dn3_tele') != "")
+		{
+			Array<String> tp; CS('dn3_tele').Split(tp, ":");
+			pmo.SetOrigin((tp[0].ToDouble(), tp[1].ToDouble(), 0), false);
+			pmo.SetZ(pmo.floorz); pmo.angle = tp[2].ToDouble();
+			Console.Printf("DN3_EV t%d player at %.0f,%.0f,%.0f angle %.0f", t, pmo.Pos.x, pmo.Pos.y, pmo.Pos.z, pmo.angle);
+		}
+		if (t == 5 && CI('dn3_hp') > 0) { pmo.A_SetHealth(CI('dn3_hp')); Console.Printf("DN3_EV t%d player health %d", t, pmo.health); }
+		if (t == 10)
+		{
+			CS('dn3_spawn').Split(L, "|", TOK_SKIPEMPTY);
+			for (int i = 0; i < L.Size(); i++)
+			{
+				F.Clear(); L[i].Split(F, ":");
+				let m = Actor.Spawn(F[0], Ahead(pmo, F[1].ToDouble(), F[2].ToDouble()), CI('dn3_rep') ? ALLOW_REPLACE : NO_REPLACE);
+				if (m) { m.angle = pmo.angle + 180; m.SetZ(m.floorz); }
+				mons.Push(m); Vector3 sp = Ahead(pmo, F[1].ToDouble(), F[2].ToDouble()); monX.Push(sp.x); monY.Push(sp.y);
+				Console.Printf("DN3_EV t%d spawn %d %s health %d", t, i, m ? m.GetClassName() : 'null', m ? m.health : 0);
+			}
+		}
+		L.Clear(); CS('dn3_hits').Split(L, "|", TOK_SKIPEMPTY);
+		for (int i = 0; i < L.Size(); i++)
+		{
+			F.Clear(); L[i].Split(F, ":");
+			if (!At(F[0], t)) continue;
+			let m = Mon(F[1].ToInt());
+			if (!m || m.health <= 0) continue;
+			int d = F[2].ToInt();
+			if (d < 0) d = m.health - d;
+			Name ty = F.Size() > 3 ? Name(F[3]) : 'None';
+			int had = m.health;
+			int dealt = m.DamageMobj(pmo, pmo, d, ty);
+			Console.Printf("DN3_EV t%d hit %d %s for %d (%s): health %d -> %d (z %.1f floor %.1f top %.1f height %.1f)", t, F[1].ToInt(), m.GetClassName(), d, ty, had, m.health,
+				m.Pos.z, m.floorz, RSQTHP_Bar.TopOf(m), m.Height);
+		}
+		L.Clear(); CS('dn3_trace').Split(L, "|", TOK_SKIPEMPTY);
+		for (int i = 0; i < L.Size(); i++)
+		{
+			F.Clear(); L[i].Split(F, ":");
+			if (!At(F[0], t)) continue;
+			let m = Mon(F[1].ToInt());
+			if (!m || m.health <= 0) continue;
+			Vector3 eye = pmo.Pos + (0, 0, pmo.player.viewheight);
+			double z = m.Pos.z + m.Height * 0.92;
+			// Brutal Doom's head hitbox rides its master at +50 (Head_Sys.dec A_Warp ... 50): aim at its middle when there
+			Actor hb = null;
+			let it = ThinkerIterator.Create("Actor");
+			Actor o;
+			while (o = Actor(it.Next())) if (o.master == m && o.GetClassName() != m.GetClassName() && o.bShootable && o.bIsMonster && !o.bCountKill) { hb = o; break; }
+			if (hb) z = hb.Pos.z + hb.Height * 0.5;
+			Vector3 dv = (m.Pos.xy, z) - eye;
+			double pt = -atan2(dv.z, dv.xy.Length()), an = atan2(dv.y, dv.x);
+			if (!gun) gun = Actor.Spawn("THPDN3_Gun", eye);
+			gun.SetOrigin(eye + (dv.xy.Unit() * (pmo.radius + 4), 0), false); gun.target = pmo;
+			// a real bullet (LineAttack): Brutal Doom's blood decides a head hit from where it lands (Blood_* z - floorz > 46
+			// -> ACS "Head_Shot" -> Thing_Damage2(0, 30, "Head")), and a HeadHitbox takes it where one rides the monster
+			int had = m.health;
+			Vector3 so = eye + (dv.xy.Unit() * (pmo.radius + 4), 0);
+			Actor pf; int dl; FTranslatedLineTarget vt;
+			[pf, dl] = gun.LineAttack(an, 4096, pt, F[2].ToInt(), 'Bullet', "BulletPuff", LAF_ABSPOSITION, vt, so.z, so.x, so.y);
+			Console.Printf("DN3_EV t%d shot at %s (hitbox %s) aim z %.0f over its floor: health %d -> %d, HitHead %d, hit %s", t, m.GetClassName(),
+				hb ? hb.GetClassName() : 'none', z - m.floorz, had, m.health, HitHead(m), vt.linetarget ? vt.linetarget.GetClassName() : 'none');
+		}
+		L.Clear(); CS('dn3_freeze').Split(L, "|", TOK_SKIPEMPTY);
+		for (int i = 0; i < L.Size(); i++)
+		{
+			F.Clear(); L[i].Split(F, ":");
+			if (!At(F[0], t)) continue;
+			let m = Mon(F[1].ToInt());
+			if (m) { m.freezetics = F[2].ToInt(); Console.Printf("DN3_EV t%d hit-stop on %d: freezetics %d", t, F[1].ToInt(), m.freezetics); }
+		}
+		L.Clear(); CS('dn3_pick').Split(L, "|", TOK_SKIPEMPTY);
+		for (int i = 0; i < L.Size(); i++)
+		{
+			F.Clear(); L[i].Split(F, ":");
+			if (!At(F[0], t)) continue;
+			let it = Inventory(Actor.Spawn(F[1], Ahead(pmo, F[2].ToDouble(), F[3].ToDouble()) + (0, 0, 0), NO_REPLACE));
+			if (it) { picks.Push(it); pickTouch.Push(F[4].ToInt()); }
+			Console.Printf("DN3_EV t%d item %s at %.0f ahead", t, it ? it.GetClassName() : 'null', F[2].ToDouble());
+		}
+		for (int i = picks.Size() - 1; i >= 0; i--)
+		{
+			if (!picks[i]) { picks.Delete(i); pickTouch.Delete(i); continue; }
+			if (t == pickTouch[i])
+			{
+				Console.Printf("DN3_EV t%d touch %s: health %d", t, picks[i].GetClassName(), pmo.health);
+				picks[i].Touch(pmo);
+				picks.Delete(i); pickTouch.Delete(i);
+			}
+		}
+		String sl = CS('dn3_slow');
+		if (sl != "")
+		{
+			Array<String> s2; sl.Split(s2, ":");
+			if (s2[0].ToInt() == t) { EventHandler.SendNetworkEvent("rsm_on"); Console.Printf("DN3_EV t%d slow motion on", t); }
+			if (s2.Size() > 1 && s2[1].ToInt() == t) { EventHandler.SendNetworkEvent("rsm_off"); Console.Printf("DN3_EV t%d slow motion off", t); }
+		}
+		L.Clear(); CS('dn3_lvl').Split(L, "|", TOK_SKIPEMPTY);
+		for (int i = 0; i < L.Size(); i++)
+		{
+			F.Clear(); L[i].Split(F, ":");
+			if (!At(F[0], t)) continue;
+			// Gun Bonsai's own network event, exactly as its Fanfare sends it
+			EventHandler.SendNetworkEvent("bonsai-level-up", F[1].ToInt(), F[2].ToInt());
+			Console.Printf("DN3_EV t%d bonsai-level-up %d %d", t, F[1].ToInt(), F[2].ToInt());
+		}
+		Calm();
+		if (t == 21) Console.Printf("DN3_EV t%d hands: override %d main %.1f,%.1f,%.1f angle %.1f pitch %.1f off %.1f,%.1f,%.1f eye z %.1f weapon %s", t, pmo.OverrideAttackPosDir,
+			pmo.AttackPos.x, pmo.AttackPos.y, pmo.AttackPos.z, pmo.AttackAngle, pmo.AttackPitch, pmo.OffhandPos.x, pmo.OffhandPos.y, pmo.OffhandPos.z, pmo.player.viewz,
+			pmo.player.ReadyWeapon ? pmo.player.ReadyWeapon.GetClassName() : 'none');
+		if (CI('dn3_count') > 0 && CI('dn3_count') == t) Census();
+		Report(t);
+	}
+
+	void Census()
+	{
+		int actors = 0, monsters = 0, bars = 0, vts = 0, glyphs = 0, glyphsLive = 0;
+		let it = ThinkerIterator.Create("Actor");
+		Actor a;
+		while (a = Actor(it.Next())) { actors++; if (a.bIsMonster && a.health > 0) monsters++; if (a is "RSQTHP_Bar") bars++; }
+		let h = RSQTHP_DamNumHandler.Get();
+		for (int st = 0; st < 128; st++)
+		{
+			let iv = ThinkerIterator.Create("VisualThinker", st);
+			Thinker v;
+			while (v = iv.Next()) { vts++; if (v is "RSQTHP_Glyph") { glyphs++; if (VisualThinker(v).Alpha > 0) glyphsLive++; } }
+		}
+		Console.Printf("DN3_COUNT t%d actors %d (monsters alive %d, HP bars %d) visualthinkers %d (our glyphs %d, showing %d) numbers %d pool %d free %d peak %d stolen %d",
+			level.maptime, actors, monsters, bars, vts, glyphs, glyphsLive, h ? h.nums.Size() : -1, h ? h.pool.Size() : -1, h ? h.freeG.Size() : -1,
+			h ? h.peakGlyphs : -1, h ? h.stolen : -1);
+	}
+
+	void Report(int t)
+	{
+		let h = RSQTHP_DamNumHandler.Get();
+		if (!h) return;
+		static const String KN[] = { "hit", "total", "gain", "banner", "tag" };
+		static const String SN[] = { "live", "kill", "fly", "land", "done" };
+		for (int i = 0; i < h.nums.Size(); i++)
+		{
+			let n = h.nums[i];
+			if (!n) continue;
+			String g = "";
+			for (int k = 0; k < n.gCode.Size(); k++) if (n.gCode[k]) g.AppendCharacter(n.gCode[k]);
+			// the first glyph: where the renderer draws it (Pos, Prev: it interpolates between them), its height in the world
+			// and in degrees from the eyes
+			String gs = "";
+			if (n.gl.Size() && n.gl[0])
+			{
+				let q = n.gl[0];
+				int tw, th; [tw, th] = TexMan.GetSize(q.Texture);
+				double wh = q.Scale.Y * th;
+				double dd = max(1.0, (q.Pos - h.eye).Length());
+				gs = String.Format("g0 pos %.2f,%.2f,%.2f prev %.2f,%.2f,%.2f off %.2f,%.2f h %.2f (%.2f deg) a %.2f tr %s",
+					q.Pos.x, q.Pos.y, q.Pos.z, q.Prev.x, q.Prev.y, q.Prev.z, q.Offset.x, q.Offset.y, wh, atan(wh / dd), q.Alpha, q.curTrans);
+			}
+			Console.Printf("DN3 t%d #%d %s %s on %s value %d shown %d x%d words %d '%s' fam %d alpha %.2f scale %.2f clock %.2f dist %.0f hidden %d glyphs %d arc %.1f/%.1f lane %d mode %d side %d %s",
+				t, i, KN[n.kind], SN[n.st], n.who ? n.who.GetClassName() : 'none', n.value, int(n.shown), n.hits, n.words, g,
+				n.fam, n.alpha, n.scaleNow, n.t, n.dist, n.hidden, n.gl.Size(), n.arcOut, n.arcUp, n.lane, n.totalMode, n.comboSide, gs);
+		}
+		if (t == CI('dn3_sum'))
+			Console.Printf("DN3_SUM t%d made %d totals %d kills %d heads %d overkills %d gains %d banners %d tags %d clamped %d peak glyphs %d pool %d stolen %d",
+				t, h.made, h.madeTotals, h.madeKills, h.madeHeads, h.madeOver, h.madeGains, h.madeBanners, h.madeTags, h.clamped, h.peakGlyphs, h.pool.Size(), h.stolen);
+	}
+
+	override void WorldThingDied(WorldEvent e)
+	{
+		if (e.Thing && e.Thing.bIsMonster && e.Thing.bCountKill)
+			Console.Printf("DN3_EV t%d died %s health %d", level.maptime, e.Thing.GetClassName(), e.Thing.health);
+	}
+}
+
+class THPDN3_Gun : Actor
+{
+	Default { +NOBLOCKMAP; +NOGRAVITY; +NOINTERACTION; +INVISIBLE; Height 2; Radius 1; }
+	States { Spawn: TNT1 A -1; Stop; }
+}

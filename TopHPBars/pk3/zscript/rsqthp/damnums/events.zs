@@ -11,38 +11,41 @@
 //   - a Brutal Doom body (ISMONSTER -COUNTKILL) ending itself with no source or inflictor (bleeding out, A_Die).
 // A number is never more than the health the target had left: an overkill shows the health it really lost.
 //
-// THE OWNER'S ROUND (2026-11-03 10:44, "I love all of this, let's get on it"), each with its own menu row:
-//  1 FONTS: JFO metal digits (default; JDUI by Zedas, edit by Blackmore1014, as Gun Cards ships them), Ermac's digits,
-//    damnums' two Classic Doom fonts; Text Quality Quest (half-resolution glyphs, default) / PCVR. All drawn with
-//    VisualThinkers (glyphs.zs): no sprite frames.
-//  2 COLOUR BY HIT STRENGTH: the share of the monster's health the hit took: under 5 % white, under 15 % yellow, under
-//    35 % orange, more red. Magenta (RSQTHP_DnCrit) is kept for crits, which come after 2.0; nothing uses it yet.
-//  3 POP AND SETTLE: appears at 0.35, overshoots to 1.35-1.55 (bigger hits more), snaps back to 1 by its 3rd tic, drifts
-//    up, fades from 0.5 s, gone at 0.9 s. A hit's number stands at the top of the head, in front of the sprite.
-//  4 SIZE BY HIT and GROW WITH DISTANCE (HP Bars' own Far Size curve: x1 to 256 units, x rsqthp_far at 1024).
-//  5 RUNNING TOTAL: the second hit on a monster within 3 s starts one total beside its HP bar (above the monster with no
-//    bar); each hit then flies into it, the total counts up and swells, "xN" counts the hits (pellets one by one). It
-//    fades out over the last 20 tics of Score's chain window: 105 tics with no hit (Score's CHAIN_GAP, combo.zs; the same
-//    3 s whether Score is loaded or not, so nothing is asked of it).
-//  6 THE KILL: the total (or the killing hit's number) slams to 1.6x, holds, then its glyphs break apart, spin and fade.
-//    The number is the health really taken; OVERKILL is a word over it when the last hit went past zero by more than
-//    half the monster's spawn health (and at least 10). No burst or spark behind it (owner: numbers yes, sprites no).
-//  7 HEADSHOT: Brutal Doom's head hits, as they reach the monster (brutal22test6, read from its code and measured on the
-//    rig with real bullets): a bullet's blood (Blood_* in BloodTypesMonsters.dec, Damagetype "Head") landing more
-//    than 46 above the floor runs ACS "Head_Shot" (Inputs.acs), which deals Thing_Damage2(0, 30, "Head") to the
-//    monster -- the same tic as the bullet, so the number is the bullet and the head bonus together. Head hitboxes
-//    (HeadHitbox, Head_Sys.dec) pass theirs on with A_DamageMaster(.., "head" / "decaptate" / ...), the hitbox the
-//    inflictor. Also 'MinorHead' / 'Headshot' (Score's test, combo.zs). The number is 1.25x bigger, crimson, with
-//    HEADSHOT over it. No BACKSTAB anywhere. CRIT: a hook only (RSQTHP_DnService "crit").
-//  8 OUT OF YOUR FACE: never nearer the eyes than MIN_EYE (about a metre); slid off either gun's aim line; only the
-//    Most Numbers nearest show.
-//  9 GAINS ON YOU: +health (green), +armour (blue), +ammo (gold) rise from what you picked up and fly to the wrist (ammo
-//    to the hand whose gun takes it, health and armour to the off hand). With RSQ Gun Cards loaded, ammo lands on its own
-//    +N there and fades into it (Gun Cards is not asked or changed: it shows its +N on the same pickup by itself).
-// 10 HIT-STOP AND SLOW-MO: a number made on a monster in a hit-stop (its freezetics counting, as every series hit-stop
-//    sets it) stands still at 0.9x, unpopped, until the hit-stop ends, then pops; a frozen level freezes them all. In RSQ
-//    SlowMo's slow motion (RSQSM_Service "active" / "scale", asked by name) they follow world time by default, or your
-//    time (Numbers in Slow-Mo).
+// THE OWNER'S DESIGN (2026-11-03 18:05-18:12, approved from animated mockups; references Borderlands 3 and Castlevania SotN):
+//  A COMBAT NUMBERS
+//   - Each hit's number is SMALL (the size of the icons beside the HP bar, twice the bar's scale; it does not grow with
+//     distance unless Grow with Distance is on). It pops at the hit with a white flash for 2-3 tics, snaps out with a small
+//     overshoot, arcs up and out -- successive hits on one monster alternate left / right and step outward, so they never
+//     overlap -- and is gone in 0.75 s. It appears on the side of the monster facing you and is kept clear of walls and
+//     the ceiling: traced from the monster to its spot, and along its whole arc, before it is shown (Clear of Walls).
+//   - Colour by damage type (BD22's bullets, shells, fire, plasma, explosives, melee, saws, the series' Saber and Force ...),
+//     with Castlevania-style colour cycling: a 4-shade ramp of its colour shifting every 2 tics, letter by letter.
+//   - THE RUNNING TOTAL sits centred above the HP bar from the chain's second hit: it rolls up like a counter and bounces on
+//     each hit. THE COMBO "xN" sits beside the bar. Both step colour per hit (white, yellow, orange, red by default), grow a
+//     little up to x5 and hold that size, shake a bit from x5, and cool down (colour drains, then fades) over RSQ Score's
+//     chain window: 105 tics without a hit (Score's CHAIN_GAP, combo.zs; the same 3 s with or without Score). A low ceiling
+//     puts the total beside the bar; a wall on the combo's side puts the combo on the other side.
+//   - THE KILL: the total punches once (OVERKILL above it when the last hit went past zero by more than half the monster's
+//     spawn health, at least 10), holds, then fades. With no total the killing hit's own number punches.
+//   - HEADSHOT (Brutal Doom's head hits, read from brutal22test6, measured 11-03: its blood landing above 46 runs ACS
+//     "Head_Shot" -> Thing_Damage2(0, 30, "Head"); head hitboxes pass "head" on): a gold word over a bigger number, a sharp
+//     jolt and gold / white colour cycling. CRIT: a hook only (RSQTHP_DnService "crit").
+//  B PLAYER LEVEL-UP (Gun Bonsai's network event "bonsai-level-up", first argument 0, second the new level -- sent by Gun
+//     Bonsai 0.10.6's PerPlayerStats.Fanfare and by RSQ Gun Bonsai VR's copy of it; read by name, nothing links): a band
+//     across the view, darker at the top and bottom, "LEVEL UP" scrolling across it -- in very fast, slow through the middle
+//     (readable about 0.45 s), fast out -- with "PLAYER LV n" and "+1 UPGRADE" trailing at their own speeds; 1.26 s in all.
+//     In VR it stands in the world about 2 m in front of your eyes (nearer if a wall is closer), follows your gaze lazily
+//     and faces you: both eyes see it at one depth, so it reads like a sign, not a smear on the lens. Optional: a short
+//     RSQ SlowMo pulse through the readable part (its network event "rsm_pulse", by name).
+//  C WEAPON LEVEL-UP (the same event, first argument 1): a small tag rises off the gun: the gun's name types in letter by
+//     letter (a white flash per letter), "LV n" stamps in with one punch, NEW UPGRADE flickers green; the border one steady
+//     colour; then it fades. The gun's name and hand come from RSQ Gun Bonsai VR's RSQGB_Service when it is there (by name),
+//     else from the gun in your main hand.
+//  D COLOURS: every element has its colour row with a Random choice (fresh random colours every time); the HP bars get a
+//     Cyan / Lavender / Orange scheme and Random (bar.zs). RSQ_Accessibility's colour-blind palette, when on, overrides the
+//     bars as before and swaps the default combo ramp for a safe one.
+// Kept from the morning round: fonts and Text Quality, gains on you, hit-stop and slow motion, out of your face, Most
+// Numbers. Drawn with VisualThinkers from textures (glyphs.zs): no sprite frames, one pool of at most 200 glyphs.
 class RSQTHP_DamNumHandler : EventHandler
 {
 	// ---- this tic's hits, one entry per target (per hit in Shotgun Spray) -------------------------------------------
@@ -57,14 +60,20 @@ class RSQTHP_DamNumHandler : EventHandler
 	Array<RSQTHP_Glyph> pool, freeG;
 	RSQTHP_DnFonts fonts;
 	RSQTHP_DnDriver driver;
-	const GLYPH_CAP = 160;          // every glyph of every number (a 3-digit hit is 3; a total with x12 is 6)
+	const GLYPH_CAP = 200;          // every glyph of every number (a 3-digit hit is 3; a banner about 30)
 	const MIN_EYE = 36.0;           // never nearer the eyes than this (34 map units to a metre: the series' figure)
-	const CHAIN_GAP = 105;          // Score's chain window (combo.zs CHAIN_GAP): a total fades out over its last 20 tics
-	const FADE_FROM = 85;
+	const CHAIN_GAP = 105;          // Score's chain window (combo.zs CHAIN_GAP)
+	const FADE_FROM = 85;           // a total fades over the window's last 20 tics ...
+	const DRAIN_FROM = 50;          // ... after its colour drains
+	const NCOL = 17;                // selectable palette colours (TRNSLATE RSQTHP_P<ii><s>); 17 is the cool-down grey
+	const GREY = 17;
+	const RND_CHOICE = 98;   // "Random" in the colour rows
+	const BANNER_DUR = 44;          // the player level-up band: 1.26 s
+	const TAG_DUR = 70;             // the weapon level-up tag: 2 s
 
 	// ---- running totals: per monster, its first hit (no total yet) or its total --------------------------------------
 	Array<Actor> tAct;
-	Array<int> tFirst, tFirstN, tFirstTic;
+	Array<int> tFirst, tFirstN, tFirstTic, tLane;
 	Array<RSQTHP_DnNum> tTot;
 
 	// ---- the crit hook (after 2.0) ------------------------------------------------------------------------------------
@@ -80,17 +89,20 @@ class RSQTHP_DamNumHandler : EventHandler
 	Vector3 pickPos;
 	int pickTic;
 
-	// ---- settings, once a tic -------------------------------------------------------------------------------------------
+	// ---- settings, every 8 tics ---------------------------------------------------------------------------------------
 	int face, q, slowMode, maxN;
-	bool ramp, pop, sizeBy, grow, total, slam, overkillW, headW, comfort, gains, hitstop;
-	double far, dtWorld;
+	bool pop, sizeBy, grow, total, slam, overkillW, headW, comfort, gains, hitstop;
+	bool combo, flash, cycle, shake, clear, lvlOn, lvlSlow, wpnOn, photo;
+	int hitCol, totCol, rampSel, headCol, bandCol, textCol, tagCol, cb;
+	double far, dtWorld, hitH, numSize, wordSize, landH;
 	int physics;
 	Name userColour;
 	bool typeColours, gunCards;
 	transient bool svcLooked;
 	transient Service smSvc;
+	transient Array<Name> palN;
 	// measuring (the rig probe reads these)
-	int made, madeTotals, madeKills, madeHeads, madeOver, madeGains, peakGlyphs, stolen;
+	int made, madeTotals, madeKills, madeHeads, madeOver, madeGains, peakGlyphs, stolen, madeBanners, madeTags, clamped;
 
 	static RSQTHP_DamNumHandler Get() { return RSQTHP_DamNumHandler(EventHandler.Find("RSQTHP_DamNumHandler")); }
 
@@ -121,7 +133,7 @@ class RSQTHP_DamNumHandler : EventHandler
 		return !IsHelper(a);
 	}
 
-	// Brutal Doom's head hit, as it reaches the monster (see the header, 7)
+	// Brutal Doom's head hit, as it reaches the monster (see the header)
 	static bool IsHead(WorldEvent e)
 	{
 		Name dt = e.DamageType;
@@ -156,19 +168,35 @@ class RSQTHP_DamNumHandler : EventHandler
 			who.Push(a); amt.Push(0); cnt.Push(0); over.Push(0); typ.Push(0);
 			hHead.Push(false); hKill.Push(false); hCrit.Push(false); px.Push(0); py.Push(0); pz.Push(0);
 		}
-		amt[i] += lost; cnt[i]++; typ[i] = ti;             // the last hit's type, like damnums
+		amt[i] += lost; cnt[i]++;
+		// the type that names the hit: a head hit's own type ("Head") says nothing of the gun, so the bullet's is kept
+		if (!head || typ[i] == 0 && cnt[i] == 1) typ[i] = ti;
 		if (head) hHead[i] = true;
 		if (crit) hCrit[i] = true;
 		if (killed) { hKill[i] = true; over[i] = max(over[i], ovr); }
-		// at the top of the head, and in FRONT of the monster's sprite (its radius + 6 toward your eyes): a number in the
-		// sprite's own plane is hidden by the sprite (rig frame p_font0q0, the first try: the 123 inside the Baron's head)
-		Vector3 p = a.pos + (0, 0, RSQTHP_Bar.TopOf(a) * 0.9);
+		// WHERE YOU HIT IT (owner 11-03 18:36: "a super tiny 20 appears from where I hit it"): the inflictor's spot -- a
+		// hitscan's puff (the engine hands a bullet's damage over with its puff, a temporary one when none shows), a
+		// missile where it struck -- when it is at the monster; else (melee, a script's damage) the monster's middle. A
+		// headshot stands at the top of the head. Then in FRONT of the sprite (a number in the sprite's own plane is hidden
+		// by it: rig frame p_font0q0, 11-03): out to the monster's radius + 3 on your side.
+		Vector3 p = a.pos + (0, 0, a.Height * 0.6);
+		let inf = e.Inflictor;
+		if (inf && inf != a && inf != e.DamageSource && (inf.Pos.xy - a.Pos.xy).Length() < a.radius + 40 && inf.Pos.z > a.Pos.z - 8 && inf.Pos.z < a.Pos.z + a.Height + 24)
+			p = inf.Pos;
+		// (a killing hit: the engine has already put it in its death frames, often short or lying down -- its standing height)
+		if (head) p = a.pos + (0, 0, killed ? GetDefaultByType(a.GetClass()).Height * 0.9 : RSQTHP_Bar.TopOf(a) * 0.9);
 		let pm = players[consoleplayer].mo;
 		if (pm)
 		{
 			Vector2 to = pm.Pos.xy - a.pos.xy;
 			double tl = to.Length();
-			if (tl > 1) p.xy += to / tl * min(a.radius + 6, tl * 0.5);
+			if (tl > 1)
+			{
+				Vector2 u = to / tl;
+				double front = (p.xy - a.pos.xy) dot u;
+				double want = min(a.radius + 3, tl * 0.5);
+				if (front < want) p.xy += u * (want - front);
+			}
 		}
 		px[i] = p.x; py[i] = p.y; pz[i] = p.z;
 	}
@@ -203,6 +231,62 @@ class RSQTHP_DamNumHandler : EventHandler
 	}
 
 	// ===================================================================================================================
+	// GUN BONSAI'S LEVEL-UPS, by name: its network event "bonsai-level-up" (args: 0 the player / 1 a gun, the new level).
+	// Gun Bonsai 0.10.6 sends it from PerPlayerStats.Fanfare and WeaponInfo.Fanfare (its flash and sound go with it); RSQ
+	// Gun Bonsai VR's copies send the same. Shown only on the machine of the player who levelled.
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		if (!(e.Name ~== "bonsai-level-up")) return;
+		if (e.Player != consoleplayer) return;
+		let pmo = PlayerPawn(players[consoleplayer].mo);
+		if (!pmo) return;
+		if (!fonts) fonts = new("RSQTHP_DnFonts");
+		ReadSettings();
+		if (e.Args[0] == 0) { if (lvlOn) Banner(pmo, e.Args[1]); }
+		else if (e.Args[0] == 1) { if (wpnOn) Tag(pmo, e.Args[1]); }
+	}
+
+	void Banner(PlayerPawn pmo, int lv)
+	{
+		for (int i = 0; i < nums.Size(); i++) if (nums[i] && nums[i].kind == RSQTHP_DnNum.K_BANNER) nums[i].Free(self);
+		let n = NewNum(RSQTHP_DnNum.K_BANNER, pmo, pmo.Pos);
+		n.level = lv;
+		n.fam = Pick(textCol);
+		n.famWord = Pick(bandCol);
+		n.alpha = 0;
+		madeBanners++;
+	}
+
+	void Tag(PlayerPawn pmo, int lv)
+	{
+		// which gun: RSQ Gun Bonsai VR's service (by name) knows each hand's level; the hand at (or one below, its level-up
+		// still pending) the new level. Without it: the main hand's gun.
+		int hand = 0;
+		String nm = "";
+		let it = ServiceIterator.Find("RSQGB_Service");
+		let sv = it.Next();
+		if (sv)
+		{
+			int l0 = sv.GetInt("level", "", 0, 0, pmo), l1 = sv.GetInt("level", "", 1, 0, pmo);
+			if (!(l0 == lv || l0 == lv - 1) && (l1 == lv || l1 == lv - 1)) hand = 1;
+			nm = sv.GetString("name", "", hand, 0, pmo);
+		}
+		if (nm == "")
+		{
+			Weapon w = hand == 1 ? pmo.player.OffhandWeapon : pmo.player.ReadyWeapon;
+			if (w) nm = w.GetTag();
+		}
+		if (nm == "") nm = "WEAPON";
+		for (int i = 0; i < nums.Size(); i++) if (nums[i] && nums[i].kind == RSQTHP_DnNum.K_TAG && nums[i].hand == hand) nums[i].Free(self);
+		let n = NewNum(RSQTHP_DnNum.K_TAG, pmo, HandPos(pmo, hand));
+		n.level = lv; n.label = nm; n.hand = hand;
+		n.fam = 3;                       // "LV n": gold, alive
+		n.famWord = Pick(tagCol);        // the border: one steady colour
+		n.alpha = 0;
+		madeTags++;
+	}
+
+	// ===================================================================================================================
 	// SETTINGS
 	static clearscope int CvI(Name n, int d) { let c = CVar.GetCvar(n, players[consoleplayer]); return c ? c.GetInt() : d; }
 	static clearscope String CvS(Name n, String d) { let c = CVar.GetCvar(n, players[consoleplayer]); return c ? c.GetString() : d; }
@@ -212,10 +296,9 @@ class RSQTHP_DamNumHandler : EventHandler
 		face = clamp(CvI('rsqthp_dmg_face', 0), 0, RSQTHP_DnFonts.F_COUNT - 1);
 		if (face == RSQTHP_DnFonts.F_SMALL) face = RSQTHP_DnFonts.F_JFO;
 		q = CvI('rsqthp_dmg_q', 0) ? 1 : 0;
-		ramp = CvI('rsqthp_dmg_ramp', 1) != 0;
 		pop = CvI('rsqthp_dmg_pop', 1) != 0;
-		sizeBy = CvI('rsqthp_dmg_size', 1) != 0;
-		grow = CvI('rsqthp_dmg_grow', 1) != 0;
+		sizeBy = CvI('rsqthp_dmg_size', 0) != 0;
+		grow = CvI('rsqthp_dmg_grow', 0) != 0;
 		total = CvI('rsqthp_dmg_total', 1) != 0;
 		slam = CvI('rsqthp_dmg_slam', 1) != 0;
 		overkillW = CvI('rsqthp_dmg_overkill', 1) != 0;
@@ -228,8 +311,34 @@ class RSQTHP_DamNumHandler : EventHandler
 		physics = CvI('rsqthp_dmg_physics', 0);
 		userColour = CvS('rsqthp_dmg_colour', "RSQTHP_DamDefault");
 		typeColours = CvI('rsqthp_dmg_types', 1) != 0;
+		combo = CvI('rsqthp_dn_combo', 1) != 0;
+		flash = CvI('rsqthp_dn_flash', 1) != 0;
+		cycle = CvI('rsqthp_dn_cycle', 1) != 0;
+		shake = CvI('rsqthp_dn_shake', 1) != 0;
+		clear = CvI('rsqthp_dn_clear', 1) != 0;
+		hitCol = CvI('rsqthp_dn_hitcol', -2);
+		totCol = CvI('rsqthp_dn_totcol', -1);
+		rampSel = CvI('rsqthp_dn_ramp', 0);
+		headCol = CvI('rsqthp_dn_headcol', 3);
+		lvlOn = CvI('rsqthp_lvl', 1) != 0;
+		lvlSlow = CvI('rsqthp_lvl_slow', 0) != 0;
+		wpnOn = CvI('rsqthp_lvl_wpn', 1) != 0;
+		bandCol = CvI('rsqthp_lvl_bandcol', 3);
+		textCol = CvI('rsqthp_lvl_textcol', 3);
+		tagCol = CvI('rsqthp_lvl_tagcol', 3);
+		photo = RSQTHP_A11y.Photo();
+		cb = 0; { Name rsqaN = "RSQA_Menu"; class<Object> rsqaC = rsqaN; if (rsqaC) cb = CvI('rsqa_colorblind', 0); }
 		let cf = CVar.FindCVar('rsqthp_far');
 		far = cf ? max(1.0, cf.GetFloat()) : 2.0;
+		// SIZES (owner's headset, 11-03 18:28-18:29: "they are fuckin huge", "super tiny stuff", "the text is also really, really
+		// damn big"): a hit's digits 2.5 map units tall at Number Size 1 (7 cm: 1.4 degrees at 3 m, 0.53 at 8 m, 0.21 at 20 m),
+		// never more than 1.8 degrees however near; words 0.42 of that at Word Size 1. On the wrist a gain lands at RSQ Gun
+		// Cards' small digits (0.7 x rsqgc_world_scale, read by name; 0.98 at its default 1.4).
+		numSize = clamp(CVar.FindCVar('rsqthp_dn_size') ? CVar.FindCVar('rsqthp_dn_size').GetFloat() : 1.0, 0.25, 4.0);
+		wordSize = clamp(CVar.FindCVar('rsqthp_dn_wordsize') ? CVar.FindCVar('rsqthp_dn_wordsize').GetFloat() : 1.0, 0.25, 4.0);
+		hitH = 2.5 * numSize;
+		let gcs = CVar.FindCVar('rsqgc_world_scale');
+		landH = 0.7 * (gcs ? clamp(gcs.GetFloat(), 0.3, 4.0) : 1.4);
 	}
 
 	// the speed of the world this tic: RSQ SlowMo's, asked by name (1 without it)
@@ -239,6 +348,108 @@ class RSQTHP_DamNumHandler : EventHandler
 		if (!smSvc || smSvc.GetInt("active") != 1) return 1.0;
 		int s = smSvc.GetInt("scale");
 		return s > 0 ? clamp(s / 1000.0, 0.02, 1.0) : 1.0;
+	}
+
+	// ===================================================================================================================
+	// THE PALETTE (tools/gen_dn_art.py writes TRNSLATE's RSQTHP_P<ii><s>: 17 colours + grey, 4 shades each, and the flash)
+	Name PalName(int fam, int shade)
+	{
+		if (palN.Size() == 0)
+		{
+			for (int i = 0; i <= GREY; i++)
+				for (int s = 0; s < 4; s++) palN.Push(String.Format("RSQTHP_P%02d%d", i, s));
+		}
+		if (shade >= 4) return 'RSQTHP_PFL';
+		return palN[clamp(fam, 0, GREY) * 4 + clamp(shade, 0, 3)];
+	}
+	Name FlashName() { return photo ? PalName(0, 3) : Name('RSQTHP_PFL'); }   // Photosensitive Mode: no full-white flash
+	// a menu choice -> a colour (Random: a fresh one each time it is asked)
+	static int Pick(int choice)
+	{
+		if (choice >= 0 && choice < NCOL) return choice;
+		return random[rsqthpdn](0, NCOL - 1);
+	}
+	// Castlevania's colour cycling: a short ramp shifting every 2 tics (4 with Photosensitive Mode), glyph by glyph
+	// (headset 11-03 18:28 "why are all of my damnums having a seizure?": every step is now at least 4 tics, 8 with
+	// Photosensitive Mode, and the shades are close together -- a slow shimmer, never a strobe; the white flash is never in it)
+	int Shade(int i, bool fast = false)
+	{
+		if (!cycle) return 1;
+		int per = photo ? 8 : (fast ? 4 : 5);
+		static const int R[] = { 1, 2, 3, 2 };
+		return R[(level.maptime / per + i) % 4];
+	}
+
+	// the combo ramps (MENUDEF "RSQTHP_Ramps"); colour-blind (RSQ_Accessibility) swaps the default for a safe one
+	void RampOf(int sel, out Array<int> r)
+	{
+		r.Clear();
+		if (sel == 0 && cb >= 1 && cb <= 2) sel = 10;          // protan / deutan: white, sky, yellow, magenta
+		else if (sel == 0 && cb == 3) sel = 11;                // tritan: white, cyan, pink, red
+		static const int RA[] = {
+			0, 2, 4, 5,       // 0 White Yellow Orange Red (the mockup)
+			13, 12, 9, 8,     // 1 Cyan Sky Lavender Magenta
+			15, 2, 4, 5,      // 2 Green Yellow Orange Red
+			0, 12, 11, 10,    // 3 Ice: White Sky Blue Purple
+			16, 3, 4, 6,      // 4 Lime Gold Orange Crimson
+			13, 9, 7, 4,      // 5 Cyan Lavender Pink Orange
+			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			0, 12, 2, 8,      // 10 colour-blind (protan / deutan)
+			0, 13, 7, 5       // 11 colour-blind (tritan)
+		};
+		if (sel < 0 || sel > 11 || (sel > 5 && sel < 10))
+		{
+			for (int k = 0; k < 4; k++) r.Push(random[rsqthpdn](0, NCOL - 1));
+			return;
+		}
+		for (int k = 0; k < 4; k++) r.Push(RA[sel * 4 + k]);
+	}
+
+	// a hit's colour by its damage type (Brutal Doom 22, BD22 VR Reloaded and the series' mods, read from their code)
+	static int TypeFam(Name dt)
+	{
+		switch (dt)
+		{
+		case 'Shotgun': case 'SSG': case 'MonsterShotgunBullet':
+			return 2;                                   // shells: yellow
+		case 'Fire': case 'Flames': case 'Burn': case 'HumanBBQ': case 'LavaSplash': case 'SfestFireball':
+			return 4;                                   // fire: orange
+		case 'GreenFire':
+			return 16;
+		case 'Plasma':
+			return 13;                                  // plasma: cyan
+		case 'Explosive': case 'ExplosiveImpact': case 'Explosives': case 'Explosion': case 'Explode': case 'Rocket':
+		case 'Blast': case 'Nuke': case 'Shrapnel': case 'BarrelExploded': case 'Landmine': case 'SfestExplode': case 'TankShell':
+			return 5;                                   // explosives: red
+		case 'Desintegrate': case 'Disintegrate': case 'BFG': case 'BFGSplash':
+			return 16;                                  // BFG: lime
+		case 'Railgun':
+			return 11;                                  // rail: blue
+		case 'Melee': case 'Kick': case 'HeadKick': case 'LowKick': case 'ExtremePunches': case 'ExtremeKicks': case 'SuperPunch':
+		case 'Stomp': case 'StompWall': case 'Trample': case 'HeavyTrample': case 'Extreme': case 'Punch': case 'Fist':
+			return 7;                                   // melee: pink
+		case 'Saw': case 'Cut': case 'Rip': case 'Chainsaw':
+			return 6;                                   // saws and blades: crimson
+		case 'Saber':
+			return 12;                                  // the series' Saber: sky
+		case 'Force':
+			return 9;                                   // the series' Force: lavender
+		case 'Ice':
+			return 12;
+		case 'Electric': case 'Lightning':
+			return 2;
+		case 'Poison': case 'PoisonCloud': case 'Gravity':
+			return 10;
+		}
+		return 0;                                       // bullets and the rest: white
+	}
+
+	static int StrengthFam(double share)
+	{
+		if (share < 0.05) return 0;
+		if (share < 0.15) return 2;
+		if (share < 0.35) return 4;
+		return 5;
 	}
 
 	// ===================================================================================================================
@@ -266,11 +477,16 @@ class RSQTHP_DamNumHandler : EventHandler
 	}
 	int LiveGlyphs() { return pool.Size() - freeG.Size(); }
 
-	void FreeAll()
+	void FreeAll(bool numbersOnly = false)
 	{
-		for (int i = 0; i < nums.Size(); i++) if (nums[i]) nums[i].Free(self);
-		nums.Clear();
-		tAct.Clear(); tFirst.Clear(); tFirstN.Clear(); tFirstTic.Clear(); tTot.Clear();
+		for (int i = 0; i < nums.Size(); i++)
+		{
+			let n = nums[i];
+			if (!n) continue;
+			if (numbersOnly && (n.kind == RSQTHP_DnNum.K_BANNER || n.kind == RSQTHP_DnNum.K_TAG)) continue;
+			n.Free(self);
+		}
+		tAct.Clear(); tFirst.Clear(); tFirstN.Clear(); tFirstTic.Clear(); tTot.Clear(); tLane.Clear();
 	}
 	void ClearPending()
 	{
@@ -288,28 +504,16 @@ class RSQTHP_DamNumHandler : EventHandler
 		return max(1, h ? h.FullOf(a, 0) : a.SpawnHealth());
 	}
 
-	// bigger hits bigger: by the share of the monster's health, with a floor from the raw damage (a 300 on a boss)
-	double HitSize(double share, int lost)
+	// Size by Hit (off by default: the owner's numbers are small and even): a little bigger for a bigger share
+	double HitSize(double share)
 	{
 		if (!sizeBy) return 1.0;
-		double s = 0.6 + 0.9 * clamp(log(1 + share * 12) / log(13), 0.0, 1.0);
-		s = max(s, 0.6 + 0.12 * log10(max(1, lost)));
-		return clamp(s, 0.6, 1.5);
+		return 0.85 + 0.4 * clamp(log(1 + share * 12) / log(13), 0.0, 1.0);
 	}
 
-	static Name RampOf(double share)
+	// damnums' colours (Hit Colours "damnums'"): the font's, the Number Colour row's, or the damage type's
+	Name DamnumsColour(Name dtype)
 	{
-		if (share < 0.05) return 'RSQTHP_DnWhite';
-		if (share < 0.15) return 'RSQTHP_DnYellow';
-		if (share < 0.35) return 'RSQTHP_DnOrange';
-		return 'RSQTHP_DnRed';
-	}
-
-	Name ColourOf(double share, Name dtype, bool head)
-	{
-		if (head && headW) return 'RSQTHP_DnHead';
-		if (ramp) return RampOf(share);
-		// Colour by Hit Strength off: damnums' rules -- the font's colour, the user's, or the damage type's
 		Name tr = (face == RSQTHP_DnFonts.F_CLASSIC || face == RSQTHP_DnFonts.F_CLASSIC_SMALL) ? 'RSQTHP_DamRed' : 'RSQTHP_DnRaw';
 		if (userColour != 'RSQTHP_DamDefault') tr = userColour;
 		if (typeColours && dtype != 'None')
@@ -332,17 +536,17 @@ class RSQTHP_DamNumHandler : EventHandler
 		return "";
 	}
 
-	// pop and settle: 0.35 -> peak (1.35 small hits .. 1.55 big) at tic 1 -> 1.12 -> 1.0 at tic 3
-	// (from: where it starts, 0.35; a number held in a hit-stop starts from 0.9, where it stood)
-	static double PopCurve(double t, double sz, double from = 0.35)
+	// the pop: 0.45 -> 1.25 (tic 1) -> 1.06 -> 1.0 by tic 3 (a number held in a hit-stop starts from 0.9)
+	static double PopCurve(double t, double from = 0.45)
 	{
-		double peak = 1.35 + 0.2 * clamp((sz - 0.6) / 0.9, 0.0, 1.0);
 		if (t <= 0) return from;
-		if (t <= 1) return from + (peak - from) * t;
-		if (t <= 2) return peak + (1.12 - peak) * (t - 1);
-		if (t <= 3) return 1.12 - 0.12 * (t - 2);
+		if (t <= 1) return from + (1.25 - from) * t;
+		if (t <= 2) return 1.25 + (1.06 - 1.25) * (t - 1);
+		if (t <= 3) return 1.06 - 0.06 * (t - 2);
 		return 1.0;
 	}
+	// the kill: one punch, then it settles
+	static double Punch(double e) { return 1.0 + 0.6 * exp(-max(0.0, e) / 4.0); }
 
 	// ===================================================================================================================
 	// MAKING NUMBERS
@@ -351,25 +555,32 @@ class RSQTHP_DamNumHandler : EventHandler
 		let n = new("RSQTHP_DnNum");
 		n.kind = kind; n.who = a; n.p0 = p; n.at = p; n.atPrev = p;
 		n.born = level.maptime; n.lastHit = level.maptime;
-		n.alpha = 1; n.scaleNow = 1; n.size = 1; n.popFrom = 0.35;
+		n.alpha = 1; n.scaleNow = 1; n.size = 1; n.popFrom = 0.45; n.comboSide = 1;
 		nums.Push(n);
 		return n;
 	}
 
-	RSQTHP_DnNum NewHit(Actor a, Vector3 p, int lost, int nh, bool head, bool kill, int ovr, Name dtype, bool crit)
+	RSQTHP_DnNum NewHit(Actor a, Vector3 p, int lost, int nh, bool head, bool kill, int ovr, Name dtype, bool crit, int lane)
 	{
 		double full = Full(a);
 		double share = lost / full;
 		let n = NewNum(RSQTHP_DnNum.K_HIT, a, p);
 		n.value = lost; n.nHits = nh;
 		n.head = head; n.crit = crit; n.kill = kill;
-		n.size = HitSize(share, lost);
-		if (head && headW) { n.size = min(1.6, n.size * 1.25); n.words |= RSQTHP_DnNum.W_HEAD; madeHeads++; }
+		n.size = HitSize(share);
+		n.lane = lane;
+		if (head && headW) { n.size *= 1.35; n.words |= RSQTHP_DnNum.W_HEAD; n.famWord = Pick(headCol); madeHeads++; }
 		if (kill && overkillW && ovr >= max(10, int(full * 0.5))) { n.words |= RSQTHP_DnNum.W_OVERKILL; madeOver++; }
-		n.trans = ColourOf(share, dtype, head);
-		n.jitX = frandom[rsqthpdn](-3.0, 3.0);
+		// its colour
+		if (head && headW) n.fam = n.famWord;
+		else if (hitCol == -2) n.fam = TypeFam(dtype);
+		else if (hitCol == -1) n.fam = StrengthFam(share);
+		else if (hitCol == -3) n.trans = DamnumsColour(dtype);
+		else n.fam = Pick(hitCol);
 		n.frozen = hitstop && a && a.freezetics > 0;
-		if (!pop)
+		if (pop && !(head && headW)) PlaceJet(n, a);
+		else if (pop) PlaceArc(n, a);
+		else
 		{
 			// damnums' toss (a kick toward the console player +-20 degrees, up 3-4, gravity 0.4) or float (up 1)
 			let pmo = players[consoleplayer].mo;
@@ -381,16 +592,139 @@ class RSQTHP_DamNumHandler : EventHandler
 		return n;
 	}
 
+	// ---- clear of walls and ceilings: where a hit's number may go ---------------------------------------------------
+	// Its arc: out along the view's right (side +-1, alternating per monster) and up. Traced before it is shown: the
+	// monster to its spot (a wall between: pulled back in front of it), its spot against the ceiling (lowered under it),
+	// and the whole arc on each side (shortened where it would meet a wall or the ceiling; the freer side wins when the
+	// planned one is blocked). The arc is in the world (the view's right when it was made), so a turn of the head never
+	// swings a number into a wall.
+	const ARC_OUT = 1.9;     // how far out, in digit heights (plus its lane)
+	const ARC_UP = 1.7;      // how far up
+	void PlaceArc(RSQTHP_DnNum n, Actor a)
+	{
+		let pmo = players[consoleplayer].mo;
+		double H = hitH * n.size;
+		int side = (n.lane & 1) ? -1 : 1;
+		double lane = (n.lane / 2) % 3;
+		double reach = H * (ARC_OUT + 0.55 * lane), up = H * (ARC_UP + 0.35 * lane);
+		double yaw = pmo ? (pmo.player.camera ? pmo.player.camera.Angle : pmo.Angle) : 0;
+		Vector3 r = (sin(yaw), -cos(yaw), 0);
+		n.arcR = r * side; n.arcOut = reach; n.arcUp = up;
+		if (!clear || !pmo) return;
+		double half = H * 0.7;          // half its height at the pop's peak, and a margin
+		Vector3 p = n.p0;
+		FLineTraceData d;
+		bool cl = false;
+		// 1. the monster to its spot
+		if (a)
+		{
+			Vector3 from = (a.Pos.xy, p.z);
+			Vector3 v = p - from;
+			double vl = v.Length();
+			if (vl > 1 && Trace(pmo, from, v / vl, vl + 2, d)) { p = from + v / vl * max(0.0, d.Distance - 3); cl = true; }
+		}
+		// 2. the ceiling over it (and its monster's: a low door frame)
+		double cz = level.PointInSector(p.xy).ceilingplane.ZAtPoint(p.xy);
+		if (a) cz = min(cz, a.ceilingz);
+		double fz = level.PointInSector(p.xy).floorplane.ZAtPoint(p.xy);
+		if (p.z + half > cz - 1) { p.z = max(fz + half, cz - 1 - half); cl = true; }
+		up = clamp(cz - 1 - half - p.z, 0.0, up);
+		// 3. the arc, each side
+		double best = -1, bestUp = 0, bestOut = 0; int bestSide = side;
+		for (int k = 0; k < 2; k++)
+		{
+			int s = k == 0 ? side : -side;
+			Vector3 v = r * s * (reach + H) + (0, 0, up + half);
+			double vl = v.Length();
+			double f = 1.0;
+			if (vl > 0.5 && Trace(pmo, p, v / vl, vl, d)) f = max(0.0, (d.Distance - 1.5) / vl);
+			double o = reach * f, u = up * f;
+			if (k == 0 && f >= 0.6) { best = o; bestUp = u; bestOut = o; bestSide = s; break; }
+			if (o > best) { best = o; bestUp = u; bestOut = o; bestSide = s; }
+		}
+		if (bestSide != side || bestOut < reach - 0.01 || bestUp < up - 0.01) cl = true;
+		n.p0 = p; n.at = p; n.atPrev = p;
+		n.arcR = r * bestSide; n.arcOut = bestOut; n.arcUp = bestUp;
+		if (cl) clamped++;
+	}
+	// ---- a normal hit: a little fountain jet (owner 11-03 18:36, "more like the little jets than the big jets") -------
+	// Launched up and out of the monster (a random direction around the side facing you, +-80 degrees), at a slightly
+	// different speed and angle each time so successive hits spray; gravity brings it over the top; it spins in the view
+	// at its own random speed (most a little, some a lot, either way); faded by 0.63 s. Clear of Walls: the launch is
+	// shortened so the jet's top stays under the ceiling and its path (to the top, then down to where it fades) misses
+	// every wall.
+	const JET_G = 0.09;          // gravity, map units per tic per tic
+	const JET_LIFE = 22;         // tics
+	void PlaceJet(RSQTHP_DnNum n, Actor a)
+	{
+		let pmo = players[consoleplayer].mo;
+		n.jet = true;
+		double towardYou = pmo ? atan2(pmo.Pos.y - n.p0.y, pmo.Pos.x - n.p0.x) : 0;
+		double ang = towardYou + frandom[rsqthpdn](-80, 80);
+		double hs = frandom[rsqthpdn](0.12, 0.34) * numSize;
+		double vz = frandom[rsqthpdn](0.85, 1.30) * numSize;     // with gravity x Number Size: the same timing at any size
+		n.vel = (cos(ang) * hs, sin(ang) * hs, vz);
+		n.jetPos = n.p0;
+		n.grav = numSize;
+		n.spin = (frandom[rsqthpdn](0, 1) < 0.7 ? frandom[rsqthpdn](0.5, 3.5) : frandom[rsqthpdn](7, 18)) * (random[rsqthpdn](0, 1) ? 1 : -1);
+		n.roll = frandom[rsqthpdn](-12, 12);
+		if (!clear || !pmo) return;
+		double H = hitH * n.size, half = H * 0.7;
+		Vector3 p = n.p0;
+		bool cl = false;
+		double cz = level.PointInSector(p.xy).ceilingplane.ZAtPoint(p.xy);
+		if (a) cz = min(cz, a.ceilingz);
+		double fz = level.PointInSector(p.xy).floorplane.ZAtPoint(p.xy);
+		if (p.z + half > cz - 1) { p.z = max(fz + half, cz - 1 - half); cl = true; }
+		// the top: vz^2 / 2g above the start, kept under the ceiling
+		double g = JET_G * n.grav;
+		double room = max(0.0, cz - 1 - half - p.z);
+		if (n.vel.z * n.vel.z / (2 * g) > room) { n.vel.z = sqrt(2 * g * room); cl = true; }
+		// its path: start -> top -> its end, each leg traced
+		double tTop = n.vel.z / g;
+		Vector3 top = p + (n.vel.xy * tTop, n.vel.z * n.vel.z / (2 * g));
+		double tl = JET_LIFE;
+		Vector3 fin = p + (n.vel.xy * tl, n.vel.z * tl - 0.5 * g * tl * tl);
+		fin.z = max(fin.z, fz + half);
+		FLineTraceData d;
+		Vector3 v = top - p;
+		double vl = v.Length();
+		double f = 1.0;
+		if (vl > 0.5 && Trace(pmo, p, v / vl, vl + half, d)) f = max(0.0, (d.Distance - half) / (vl + half));
+		v = fin - top; vl = v.Length();
+		if (f >= 1.0 && vl > 0.5 && Trace(pmo, top, v / vl, vl + half, d)) f = min(f, 0.5 + 0.5 * max(0.0, (d.Distance - half) / (vl + half)));
+		if (f < 1.0) { n.vel.x *= f; n.vel.y *= f; n.vel.z *= max(f, 0.35); cl = true; }
+		n.p0 = p; n.jetPos = p; n.at = p; n.atPrev = p;
+		if (cl) clamped++;
+	}
+
+	// a wall or plane along v from p, within dist (monsters do not count)
+	static bool Trace(Actor caller, Vector3 p, Vector3 v, double dist, out FLineTraceData d)
+	{
+		double ang = atan2(v.y, v.x), pit = -atan2(v.z, v.xy.Length());
+		return caller.LineTrace(ang, dist, pit, TRF_ABSPOSITION | TRF_THRUACTORS, p.z, p.x, p.y, d)
+			&& d.HitType != FLineTraceData.TRACE_HitNone && d.HitType != FLineTraceData.TRACE_HitActor;
+	}
+
 	int FindT(Actor a)
 	{
 		for (int i = tAct.Size() - 1; i >= 0; i--)
 		{
 			let tt = tTot[i];
 			bool stale = !tAct[i] || (tt ? (tt.st == RSQTHP_DnNum.S_DONE || tt.kill) : level.maptime - tFirstTic[i] > CHAIN_GAP);
-			if (stale) { tAct.Delete(i); tFirst.Delete(i); tFirstN.Delete(i); tFirstTic.Delete(i); tTot.Delete(i); continue; }
+			if (stale) { tAct.Delete(i); tFirst.Delete(i); tFirstN.Delete(i); tFirstTic.Delete(i); tTot.Delete(i); tLane.Delete(i); continue; }
 			if (tAct[i] == a) return i;
 		}
 		return -1;
+	}
+
+	// a monster's next lane (successive hits alternate sides and step outward); kept per monster for its chain
+	int LaneOf(Actor a)
+	{
+		if (!a) return 0;
+		int k = FindT(a);
+		if (k < 0) { tAct.Push(a); tFirst.Push(0); tFirstN.Push(0); tFirstTic.Push(level.maptime); tTot.Push(null); tLane.Push(0); k = tAct.Size() - 1; }
+		return tLane[k]++;
 	}
 
 	void ProcessPending()
@@ -402,56 +736,39 @@ class RSQTHP_DamNumHandler : EventHandler
 			int lost = amt[i];
 			bool kill = hKill[i], head = hHead[i];
 			Name dt = types[typ[i]];
-			if (!total || !a)
-			{
-				let n = NewHit(a, p, lost, cnt[i], head, kill, over[i], dt, hCrit[i]);
-				if (kill) madeKills++;
-				continue;
-			}
-			int k = FindT(a);
+			int lane = LaneOf(a);
+			bool chain = (total || combo) && a;
+			int k = chain ? FindT(a) : -1;
 			RSQTHP_DnNum tot = k >= 0 ? tTot[k] : null;
 			if (tot && level.maptime - tot.lastHit > CHAIN_GAP) tot = null;
-			if (kill)
+			if (kill) madeKills++;
+			// the hit's own number, always
+			let n = NewHit(a, p, lost, cnt[i], head, kill && !tot, kill && !tot ? over[i] : 0, dt, hCrit[i], lane);
+			if (!chain || k < 0) continue;
+			if (!tot && level.maptime - tFirstTic[k] <= CHAIN_GAP && tFirstN[k] > 0)
 			{
-				madeKills++;
-				if (tot)
-				{
-					// THE KILL ON A TOTAL: every hit in flight lands at once, the last one too; the total slams
-					tot.value += lost; tot.hits += cnt[i];
-					tot.arrived = tot.value; tot.shown = tot.value; tot.hitsShown = tot.hits;
-					for (int j = 0; j < nums.Size(); j++) if (nums[j] && nums[j].into == tot) nums[j].Free(self);
-					double full = Full(a);
-					if (head && headW) { tot.words |= RSQTHP_DnNum.W_HEAD; madeHeads++; }
-					if (overkillW && over[i] >= max(10, int(full * 0.5))) { tot.words |= RSQTHP_DnNum.W_OVERKILL; madeOver++; }
-					tot.kill = true; tot.lastHit = level.maptime;
-					tot.trans = (head && headW) ? Name('RSQTHP_DnHead') : (ramp ? RampOf(tot.value / full) : tot.trans);
-					if (slam) { tot.st = RSQTHP_DnNum.S_SLAM; tot.stT = tot.t; }
-				}
-				else NewHit(a, p, lost, cnt[i], head, true, over[i], dt, hCrit[i]);
-				if (k >= 0) { tAct.Delete(k); tFirst.Delete(k); tFirstN.Delete(k); tFirstTic.Delete(k); tTot.Delete(k); }
-				continue;
-			}
-			let n = NewHit(a, p, lost, cnt[i], head, false, 0, dt, hCrit[i]);
-			if (!tot && k >= 0 && level.maptime - tFirstTic[k] <= CHAIN_GAP)
-			{
-				// the second hit within the chain window: the total starts with the first hit in it
+				// the chain's second hit: the total starts with the first hit in it
 				tot = NewNum(RSQTHP_DnNum.K_TOTAL, a, p);
-				tot.value = tFirst[k]; tot.arrived = tFirst[k]; tot.shown = tFirst[k];
-				tot.hits = tFirstN[k]; tot.hitsShown = tFirstN[k];
-				tot.trans = ramp ? RampOf(tot.value / Full(a)) : n.trans;
+				tot.value = tFirst[k]; tot.shown = tFirst[k]; tot.hits = tFirstN[k];
+				RampOf(rampSel, tot.ramp);
+				tot.fam = totCol >= 0 ? Pick(totCol) : -1;
 				tTot[k] = tot;
 				madeTotals++;
 			}
 			if (tot)
 			{
-				tot.value += lost; tot.hits += cnt[i]; tot.lastHit = level.maptime;
-				n.into = tot; n.amount = lost;
-			}
-			else if (k < 0)
-			{
-				tAct.Push(a); tFirst.Push(lost); tFirstN.Push(cnt[i]); tFirstTic.Push(level.maptime); tTot.Push(null);
+				tot.value += lost; tot.hits += cnt[i]; tot.lastHit = level.maptime; tot.bumpT = tot.t;
+				if (kill)
+				{
+					// THE KILL ON A TOTAL: it punches once (OVERKILL above it), holds, fades
+					tot.shown = tot.value;
+					if (overkillW && over[i] >= max(10, int(Full(a) * 0.5))) { tot.words |= RSQTHP_DnNum.W_OVERKILL; madeOver++; }
+					tot.kill = true;
+					tot.st = RSQTHP_DnNum.S_KILL; tot.stT = tot.t;
+				}
 			}
 			else { tFirst[k] = lost; tFirstN[k] = cnt[i]; tFirstTic[k] = level.maptime; }
+			if (kill) { tAct.Delete(k); tFirst.Delete(k); tFirstN.Delete(k); tFirstTic.Delete(k); tTot.Delete(k); tLane.Delete(k); }
 		}
 		ClearPending();
 	}
@@ -492,7 +809,7 @@ class RSQTHP_DamNumHandler : EventHandler
 		}
 		let n = NewNum(RSQTHP_DnNum.K_GAIN, pmo, src0);
 		n.value = amount; n.gainKind = kind; n.hand = hand;
-		n.trans = kind == 0 ? Name('RSQTHP_DnHealth') : (kind == 1 ? Name('RSQTHP_DnArmour') : Name('RSQTHP_DnAmmo'));
+		n.fam = kind == 0 ? 15 : (kind == 1 ? 12 : 3);     // health green, armour sky, ammo gold
 		n.size = 1;
 		n.landOnCards = gunCards && kind == 2;     // Gun Cards shows +N for ammo only
 		madeGains++;
@@ -567,24 +884,34 @@ class RSQTHP_DamNumHandler : EventHandler
 	Vector3 eye;
 	Vector3 aimO0, aimD0, aimO1, aimD1;
 	bool aimOn0, aimOn1;
+	double camYaw, camPitch;
+	Vector3 camR, camU;         // the view's right and up
 
 	int readAt;
 	void Step()
 	{
-		// the settings, every 8 tics (18 cvar reads; a menu change shows within a quarter second)
+		// the settings, every 8 tics (a menu change shows within a quarter second)
 		if (level.maptime >= readAt || level.maptime < readAt - 8) { ReadSettings(); readAt = level.maptime + 8; }
 		if (!fonts) fonts = new("RSQTHP_DnFonts");
-		if (!rsqthp_dmg) { if (nums.Size()) FreeAll(); ClearPending(); return; }
+		bool dn = rsqthp_dmg;
+		if (!dn) { FreeAll(true); ClearPending(); gInit = false; }
 		bool lf = level.IsFrozen();
 		double sp = WorldSpeed();
 		dtWorld = lf ? 0 : (slowMode == 1 ? 1.0 : sp);
-		ProcessPending();
-		if (gains) TrackGains(); else gInit = false;
+		if (dn)
+		{
+			ProcessPending();
+			if (gains) TrackGains(); else gInit = false;
+		}
 
 		let p = players[consoleplayer];
 		let pmo = p.mo;
 		if (!pmo) return;
 		eye = (pmo.Pos.xy, p.viewz);
+		let cam = p.camera ? p.camera : Actor(pmo);
+		camYaw = cam.Angle; camPitch = cam.Pitch;
+		camR = (sin(camYaw), -cos(camYaw), 0);
+		camU = (sin(camPitch) * cos(camYaw), sin(camPitch) * sin(camYaw), cos(camPitch));
 		aimOn0 = false; aimOn1 = false;
 		if (comfort)
 		{
@@ -596,7 +923,7 @@ class RSQTHP_DamNumHandler : EventHandler
 		{
 			let n = nums[i];
 			if (!n || n.st == RSQTHP_DnNum.S_DONE) continue;
-			Advance(n, pmo);
+			Advance(n, pmo, lf);
 			if (n.st != RSQTHP_DnNum.S_DONE) Draw(n, pmo);
 		}
 		for (int i = nums.Size() - 1; i >= 0; i--) if (!nums[i] || nums[i].st == RSQTHP_DnNum.S_DONE) nums.Delete(i);
@@ -604,9 +931,11 @@ class RSQTHP_DamNumHandler : EventHandler
 	}
 
 	// ---- its clock and its state ----------------------------------------------------------------------------------
-	void Advance(RSQTHP_DnNum n, PlayerPawn pmo)
+	void Advance(RSQTHP_DnNum n, PlayerPawn pmo, bool levelFrozen)
 	{
 		double dt = n.drawn ? dtWorld : 0.0;      // its first tic is drawn at clock 0 (the pop's small start)
+		// the level-up displays run on your time (a slow-motion pulse never drags them out), and stand still in a menu
+		if (n.kind == RSQTHP_DnNum.K_BANNER || n.kind == RSQTHP_DnNum.K_TAG) dt = (n.drawn && !levelFrozen) ? 1.0 : 0.0;
 		if (n.frozen)
 		{
 			if (hitstop && n.who && n.who.freezetics > 0) { dt = 0; n.t = 0; n.popFrom = 0.9; }
@@ -619,11 +948,22 @@ class RSQTHP_DamNumHandler : EventHandler
 		case RSQTHP_DnNum.K_HIT:
 			if (n.st == RSQTHP_DnNum.S_LIVE)
 			{
-				if (pop)
+				if (pop && n.jet)
 				{
-					n.scaleNow = n.size * PopCurve(t, n.size, n.popFrom);
-					if (!n.frozen) n.rise = max(0.0, t - 2) * 0.4;
-					n.alpha = t < 18 ? 1.0 : 1.0 - (t - 18) / 12.0;
+					// the jet: ballistic, spinning, fading from tic 12
+					n.scaleNow = n.size * (t < 2 ? 0.6 + 0.4 * t / 2.0 : 1.0);
+					if (!n.frozen && !n.kill)
+					{
+						n.jetPos += n.vel * dt;
+						n.vel.z -= JET_G * n.grav * dt;
+						n.roll += n.spin * dt;
+					}
+					n.alpha = t < 12 ? 1.0 : 1.0 - (t - 12) / double(JET_LIFE - 12);
+				}
+				else if (pop)
+				{
+					n.scaleNow = n.size * PopCurve(t, n.popFrom);
+					n.alpha = t < 16 ? 1.0 : 1.0 - (t - 16) / 10.0;
 				}
 				else
 				{
@@ -632,51 +972,29 @@ class RSQTHP_DamNumHandler : EventHandler
 					n.tossX += n.tossVX * dt; n.tossY += n.tossVY * dt; n.tossZ += n.tossVZ * dt;
 					n.alpha = t < 10 ? 1.0 : 1.0 - (t - 10) * 0.05;
 				}
-				double join = n.head ? 10 : 3;
-				if (n.into && t >= join && !n.frozen)
-				{
-					n.st = RSQTHP_DnNum.S_FLY; n.stT = t;
-					n.flyAt = n.at; n.flyShift = n.jitX; n.flyScale = n.scaleNow;
-				}
-				else if (n.kill && slam && t >= 3 && !n.frozen) { n.st = RSQTHP_DnNum.S_SLAM; n.stT = t; }
+				if (n.kill && slam && t >= 3 && !n.frozen) { n.st = RSQTHP_DnNum.S_KILL; n.stT = t; }
 				else if (n.alpha <= 0 || t >= 40) n.Free(self);
 			}
-			else if (n.st == RSQTHP_DnNum.S_FLY)
-			{
-				let tot = n.into;
-				if (!tot || tot.st == RSQTHP_DnNum.S_DONE) { n.alpha -= 0.25 * max(dt, 0.25); if (n.alpha <= 0) n.Free(self); break; }
-				if (t - n.stT >= 6)
-				{
-					tot.arrived = min(tot.value, tot.arrived + n.amount);
-					tot.hitsShown = min(tot.hits, tot.hitsShown + n.nHits);
-					tot.bumpT = tot.t;
-					n.Free(self);
-				}
-			}
-			else Finale(n, t);
+			else if (n.st == RSQTHP_DnNum.S_KILL) Kill(n, t);
 			break;
 
 		case RSQTHP_DnNum.K_TOTAL:
 			if (n.st == RSQTHP_DnNum.S_LIVE)
 			{
-				if (n.shown < n.arrived) n.shown = min(double(n.arrived), n.shown + max(1.0, (n.arrived - n.shown) * 0.35) * max(dt, 0.0));
-				double sw = (n.t - n.bumpT < 2 && n.bumpT > 0) ? 1.25 : 1.0;
-				double full = Full(n.who);
-				n.size = HitSize(n.value / full, n.value) * 0.95;
-				if (ramp) n.trans = RampOf(n.shown / full);
-				n.scaleNow = n.size * sw * (t < 3 ? PopCurve(t, n.size) : 1.0);
+				// rolls up like a counter
+				if (n.shown < n.value) n.shown = min(double(n.value), n.shown + max(1.0, (n.value - n.shown) * 0.35) * max(dt, 0.0));
 				int age = level.maptime - n.lastHit;
 				n.alpha = age <= FADE_FROM ? 1.0 : 1.0 - double(age - FADE_FROM) / (CHAIN_GAP - FADE_FROM);
 				if (!n.who || n.who.health <= 0) n.alpha = min(n.alpha, 1.0 - (level.maptime - max(n.lastHit, n.born)) / 12.0);
 				if (n.alpha <= 0) n.Free(self);
 			}
-			else Finale(n, t);
+			else if (n.st == RSQTHP_DnNum.S_KILL) Kill(n, t);
 			break;
 
 		case RSQTHP_DnNum.K_GAIN:
 			if (n.st == RSQTHP_DnNum.S_LIVE)
 			{
-				n.scaleNow = PopCurve(t, 1.0);
+				n.scaleNow = PopCurve(t, 0.35);
 				n.rise = max(0.0, t - 2) * 0.6;
 				n.alpha = 1;
 				if (t >= 8) { n.st = RSQTHP_DnNum.S_FLY; n.stT = t; n.flyAt = n.at; n.flyScale = n.scaleNow; }
@@ -685,92 +1003,131 @@ class RSQTHP_DamNumHandler : EventHandler
 			{
 				// shrinks on the way in: on the wrist it is about 7 cm tall a forearm from your eyes, not a hand's width
 				double e = clamp((t - n.stT) / 12.0, 0.0, 1.0);
-				n.scaleNow = 1.0 - 0.72 * e;
+				n.scaleNow = 1.0 + (min(1.0, landH / hitH) - 1.0) * e;
 				if (e >= 1) { n.st = RSQTHP_DnNum.S_LAND; n.stT = t; }
 			}
 			else if (n.st == RSQTHP_DnNum.S_LAND)
 			{
 				double e = t - n.stT;
-				n.scaleNow = 0.28;
+				n.scaleNow = min(1.0, landH / hitH);
 				// with Gun Cards: fades into its own +N (4 tics); without: stays on the wrist a moment, then fades
 				double hold = n.landOnCards ? 0 : 20, fade = n.landOnCards ? 4 : 8;
 				n.alpha = e <= hold ? 1.0 : 1.0 - (e - hold) / fade;
 				if (n.alpha <= 0) n.Free(self);
 			}
 			break;
+
+		case RSQTHP_DnNum.K_BANNER:
+			n.alpha = clamp(min(t / 5.0, (BANNER_DUR - t) / 6.0), 0.0, 1.0);
+			// the slow-motion pulse, through the readable part (RSQ SlowMo's door, by name: rsm_pulse <ms> <depth %>)
+			if (lvlSlow && !n.slowSent && t >= BANNER_DUR / 2 - 8)
+			{
+				n.slowSent = true;
+				EventHandler.SendNetworkEvent("rsm_pulse", 500, 30);
+			}
+			if (t >= BANNER_DUR) n.Free(self);
+			break;
+
+		case RSQTHP_DnNum.K_TAG:
+			n.alpha = clamp(min(t / 4.0, (TAG_DUR - t) / 8.0), 0.0, 1.0);
+			if (t >= TAG_DUR) n.Free(self);
+			break;
 		}
 	}
 
-	// the kill: slam, hold, break apart
-	void Finale(RSQTHP_DnNum n, double t)
+	// the kill: one punch, a hold, a fade (no sprite, no burst)
+	void Kill(RSQTHP_DnNum n, double t)
 	{
 		double e = t - n.stT;
-		if (n.st == RSQTHP_DnNum.S_SLAM)
-		{
-			n.alpha = 1;
-			n.scaleNow = n.size * (e < 2 ? 1.0 + 0.3 * e : 1.6);
-			if (e >= 12) n.StartBreak();
-		}
-		else if (n.st == RSQTHP_DnNum.S_BREAK)
-		{
-			double dt = dtWorld;
-			for (int i = 0; i < n.bX.Size(); i++)
-			{
-				n.bX[i] += n.bVX[i] * dt;
-				n.bY[i] += n.bVY[i] * dt;
-				n.bVY[i] -= 0.14 * dt;
-				n.bRoll[i] += n.bSpin[i] * dt;
-			}
-			n.alpha = 1.0 - e / 14.0;
-			if (e >= 14) n.Free(self);
-		}
+		n.scaleNow = (n.kind == RSQTHP_DnNum.K_HIT ? n.size : 1.0) * Punch(e);
+		n.alpha = e < 14 ? 1.0 : 1.0 - (e - 14) / 10.0;
+		if (e >= 24) n.Free(self);
 	}
 
 	// ---- where it stands, and its glyphs ----------------------------------------------------------------------------
 	void Draw(RSQTHP_DnNum n, PlayerPawn pmo)
 	{
 		Vector3 at, prev;
-		double shift = n.jitX;
 		bool keepAway = true;
+		double base = 1.0;          // world units per layout unit
 		n.Layout(self);
+		double H = RSQTHP_DnFonts.BASEH[face];
+		// per part: where (view offsets, layout units), how big, how clear
+		double digX = 0, digY = 0, digK = 1, comX = 0, comY = 0, comK = 1, wordY = 0, jx = 0, jy = 0;
+		RSQTHP_Bar bar = null;
 		switch (n.kind)
 		{
 		case RSQTHP_DnNum.K_HIT:
-			if (n.st == RSQTHP_DnNum.S_FLY && n.into)
+		{
+			base = hitH / H;
+			if (!pop && n.st == RSQTHP_DnNum.S_LIVE) at = n.p0 + (n.tossX, n.tossY, n.tossZ);
+			else if (n.jet) at = n.jetPos;
+			else if (n.st == RSQTHP_DnNum.S_KILL || n.kill) at = n.p0;
+			else
 			{
-				let tot = n.into;
-				double e = clamp((n.t - n.stT) / 6.0, 0.0, 1.0);
-				e = e * e;
-				at = n.flyAt + (tot.at - n.flyAt) * e;
-				shift = n.flyShift + (tot.shiftX - n.flyShift) * e;
-				n.scaleNow = n.flyScale + (tot.scaleNow * 0.8 - n.flyScale) * e;
+				// the arc: snaps out, up and out (eased), then drifts down a touch as it fades
+				double t = n.t;
+				double eo = 1.0 - (1.0 - clamp(t / 14.0, 0.0, 1.0)) ** 2;
+				double eu = sin(clamp(t / 11.0, 0.0, 1.0) * 90.0);
+				double drop = max(0.0, t - 14) * 0.03 * hitH;
+				double o = n.arcOut * (0.25 + 0.75 * eo);
+				double u = max(0.0, n.arcUp * eu - drop);
+				at = n.p0 + n.arcR * o + (0, 0, u);
 			}
-			else if (!pop && n.st == RSQTHP_DnNum.S_LIVE) at = n.p0 + (n.tossX, n.tossY, n.tossZ);
-			else at = n.p0 + (0, 0, n.rise);
+			// HEADSHOT: a sharp jolt over its first tics
+			if (n.head && headW && n.t < 5)
+			{
+				static const double J[] = { 0.55, -0.4, 0.25, -0.12, 0.05 };
+				jx = J[clamp(int(n.t), 0, 4)] * H;
+			}
 			break;
+		}
 		case RSQTHP_DnNum.K_TOTAL:
 		{
-			// beside the monster's HP bar, its left edge just past the bar's right end (and past the bar's right-hand
-			// icon); above the monster when it has no bar
-			double barHalf = -1, up = 0, sy = 0;
-			RSQTHP_Bar b = BarOf(n.who);
-			if (n.who && b && !b.bInvisible)
+			// above its HP bar: the digits centred over it, the combo beside it (scaled with the bar, which grows with range)
+			bar = BarOf(n.who);
+			double sy = 0.3, up = 0, barHalf = -1;
+			if (n.who && bar && !bar.bInvisible)
 			{
-				sy = b.Scale.Y;
-				up = b.Pos.z - b.who.Pos.z + 5.5 * sy;
-				barHalf = 56 * b.Scale.X + (b.stat != null ? 26 * sy : 0) + 2.5;
+				sy = bar.Scale.Y;
+				up = bar.Pos.z - bar.who.Pos.z;
+				barHalf = 56 * bar.Scale.X + (bar.stat != null ? 26 * sy : 0) + 2.5;
 			}
-			else if (n.who) up = RSQTHP_Bar.TopOf(n.who) * 1.15 + 6;
-			// the kill: it stays where it stood (the bar goes and the body drops under it), growing about its centre
-			if (n.st == RSQTHP_DnNum.S_SLAM || n.st == RSQTHP_DnNum.S_BREAK || !n.who) { at = n.at - n.slide; shift = n.shiftX; break; }
+			else if (n.who) { up = RSQTHP_Bar.TopOf(n.who) * 1.15 + 6; let cs = CVar.FindCVar('rsqthp_scale'); sy = cs ? cs.GetFloat() : 0.3; }
+			base = hitH / H;        // no growth with range (headset 11-03): the total 1.2x a hit, the combo a word
+			double grw = 1.0 + 0.06 * min(n.hits, 5);
+			double ab = n.t - n.bumpT;
+			double bounce = (n.bumpT > 0 || n.hits > 0) && ab < 10 ? 1.0 + 0.25 * exp(-ab / 3.0) * cos(ab * 75.0) : 1.0;
+			bounce = 1.0 + (bounce - 1.0) * 0.6;       // calm: a small bounce
+			digK = 1.2 * grw * bounce;
+			comK = grw * bounce;
+			if (n.st == RSQTHP_DnNum.S_KILL) { digK = 1.2 * grw * Punch(n.t - n.stT); comK = grw; }
+			// the room: a low ceiling puts the total beside the bar, a wall on the combo's side moves the combo (every 8 tics)
+			if (n.who && n.st == RSQTHP_DnNum.S_LIVE && (level.maptime >= n.roomAt || !n.drawn)) Room(n, pmo, up, barHalf, base, H, digK, comK);
+			double bh = 5.5 * sy / base + 0.62 * H * digK;      // half the bar + half the digits, layout units
+			double gap = 0.18 * H;
+			double half = barHalf >= 0 ? barHalf / base : n.width * 0.5 * digK;
+			if (n.totalMode == 0) { digX = 0; digY = bh + gap; }
+			else if (n.totalMode == 1) { digX = -n.comboSide * (half + gap + n.width * 0.5 * digK); digY = 0; }
+			else { digX = 0; digY = -(bh + gap); }
+			comX = n.comboSide * (half + gap + n.comboW * 0.5 * comK); comY = 0;
+			if (barHalf < 0) { digY = 0; digX = 0; comX = n.width * 0.5 * digK + gap + n.comboW * 0.5 * comK; n.comboSide = 1; }
+			wordY = digY;
+			// a shake from x5 (and through the kill's punch)
+			if (shake && n.hits >= 5 && n.st == RSQTHP_DnNum.S_LIVE && level.maptime - n.lastHit < DRAIN_FROM)
+			{
+				// a smooth wobble (about 5 and 7 cycles a second, out of step), not a per-tic random jump
+				double amp = 0.05 * H * min(1.0, 0.5 + 0.1 * (n.hits - 5));
+				jx = amp * sin(n.t * 50.0); jy = amp * sin(n.t * 73.0 + 40.0);
+			}
+			if (n.st == RSQTHP_DnNum.S_KILL || !n.who) { at = n.at - n.slide; break; }
 			at = n.who.Pos + (0, 0, up);
-			n.shiftX = barHalf >= 0 ? barHalf + n.width * n.scaleNow * FarK(at) * 0.5 : 0;
-			shift = n.shiftX;
 			break;
 		}
 		case RSQTHP_DnNum.K_GAIN:
 		{
 			keepAway = false;
+			base = hitH / H;
 			Vector3 wr = WristOf(pmo, n.hand);
 			if (n.st == RSQTHP_DnNum.S_LIVE) at = n.p0 + (0, 0, n.rise);
 			else if (n.st == RSQTHP_DnNum.S_FLY)
@@ -780,14 +1137,56 @@ class RSQTHP_DamNumHandler : EventHandler
 				at = n.flyAt + (wr - n.flyAt) * e;
 			}
 			else at = wr;
-			shift = 0;
+			break;
+		}
+		case RSQTHP_DnNum.K_BANNER:
+		{
+			// 64 map units (about 2 m) along your gaze, nearer if a wall is closer; it follows your gaze lazily
+			keepAway = false;
+			double pit = clamp(camPitch, -25.0, 25.0);
+			Vector3 gz = (cos(pit) * cos(camYaw), cos(pit) * sin(camYaw), -sin(pit));
+			FLineTraceData d;
+			double bd = 64;
+			if (Trace(pmo, eye, gz, 72, d)) bd = clamp(d.Distance - 6, 16.0, 64.0);
+			n.bandD = bd;
+			Vector3 want = eye + gz * bd;
+			n.p0 = n.drawn ? n.p0 + (want - n.p0) * 0.3 : want;
+			at = n.p0;
+			base = (n.p0 - eye).Length() / 64.0 * wordSize;
+			break;
+		}
+		case RSQTHP_DnNum.K_TAG:
+		{
+			// rises off the gun and follows it (eased)
+			keepAway = false;
+			Vector3 want = HandPos(pmo, n.hand) + (0, 0, 3);
+			// never nearer the eyes than 22 (a hand brought up to the face): pushed out along your line to it
+			Vector3 ve = want - eye;
+			if (ve.Length() < 22) want = eye + (ve.Length() > 0.01 ? ve.Unit() : (cos(camYaw), sin(camYaw), 0)) * 22;
+			n.p0 = n.drawn ? n.p0 + (want - n.p0) * 0.4 : want;
+			double tt = min(1.0, n.t / 10.0);
+			double c1 = 1.70158, c3 = c1 + 1;
+			double eob = 1 + c3 * (tt - 1) ** 3 + c1 * (tt - 1) ** 2;
+			at = n.p0 + (0, 0, 5.0 * eob);
+			base = 0.6 * wordSize;     // RSQ Gun Cards' sizes: the name as its title (0.84), LV n as its big digits (1.68)
 			break;
 		}
 		}
 
 		// out of your face: off either gun's aim line (eased), and never nearer the eyes than MIN_EYE
-		double fk = FarK(at);
-		double S = n.scaleNow * fk;
+		double fk = (n.kind == RSQTHP_DnNum.K_HIT) ? FarK(at) : 1.0;
+		double S = n.scaleNow * fk * base;
+		if (n.kind == RSQTHP_DnNum.K_TOTAL || n.kind >= RSQTHP_DnNum.K_BANNER) S = fk * base;
+		if (n.kind <= RSQTHP_DnNum.K_GAIN)
+		{
+			// near you never more than 1.8 degrees tall (tan 1.8 = 0.0314); a gain on its way to your wrist never more than
+			// 2.5 degrees, the size RSQ Gun Cards' small digits measured on the rig beside it (p8_hands: its card's digits
+			// about 4.5 degrees at its hand, the reserve half that)
+			double dd = max(1.0, (at - eye).Length());
+			double tall = (n.kind == RSQTHP_DnNum.K_GAIN) ? hitH * n.scaleNow : hitH * (n.kind == RSQTHP_DnNum.K_TOTAL ? 1.2 : n.size);
+			double tanMax = (n.kind == RSQTHP_DnNum.K_GAIN && n.st != RSQTHP_DnNum.S_LIVE) ? 0.0437 : 0.0314;
+			if (tall > dd * tanMax) S *= dd * tanMax / tall;
+		}
 		if (keepAway && comfort)
 		{
 			Vector3 want = (0, 0, 0);
@@ -808,7 +1207,8 @@ class RSQTHP_DamNumHandler : EventHandler
 					want += dir * (need - d);
 				}
 			}
-			n.slide += (want - n.slide) * 0.5;
+			// eased slowly, and only for a real change: a tracked hand's tremor must not shake a number (headset 11-03)
+			if ((want - n.slide).Length() > 0.75) n.slide += (want - n.slide) * 0.12;
 			at += n.slide;
 			Vector3 v = at - eye;
 			double dl = v.Length();
@@ -820,6 +1220,7 @@ class RSQTHP_DamNumHandler : EventHandler
 		}
 		// the renderer slides each glyph from last tic's spot to this one's (a new number: no slide)
 		prev = n.drawn ? n.at : at;
+		bool first = !n.drawn;
 		n.drawn = true;
 		n.atPrev = n.at;
 		n.at = at;
@@ -838,28 +1239,162 @@ class RSQTHP_DamNumHandler : EventHandler
 			if (StealFor(n)) n.Fit(self);
 		}
 		double ps = level.pixelstretch;
-		double a = n.hidden ? 0 : clamp(n.alpha, 0.0, 1.0);
-		bool breaking = n.st == RSQTHP_DnNum.S_BREAK;
-		double drop = (n.st == RSQTHP_DnNum.S_SLAM) ? max(0.0, 1.0 - (n.t - n.stT) / 3.0) * 10.0 : 0;
+		double a = clamp(n.alpha, 0.0, 1.0);
+		Vector3 toEye = n.dist > 0.01 ? (at - eye) / n.dist : (0, 0, 0);
+		// the banner's lines scroll: in very fast, slow through the middle, fast out (x = K u^3, u from 1 to -1)
+		double u = 1.0 - 2.0 * n.t / BANNER_DUR;
+		double u3 = u * u * u;
 		int ng = min(n.gl.Size(), n.gCode.Size());
 		for (int i = 0; i < ng; i++)
 		{
 			let g = n.gl[i];
 			if (!g) continue;
+			int part = n.gPart[i];
+			double ox = 0, oy = 0, k = 1, depth = 0, ga = a;
 			double w, h;
-			TextureID tx = fonts.Glyph(n.gFont[i], q, n.gCode[i], w, h);
+			TextureID tx;
+			Name tr;
+			int tex = n.gTex[i];
+			bool newG = first;
+			// its texture
+			if (tex == RSQTHP_DnNum.T_GLYPH) tx = fonts.Glyph(n.gFont[i], q, n.gCode[i], w, h);
+			else
+			{
+				tx = TexMan.CheckForTexture(tex == RSQTHP_DnNum.T_BAND ? "RQNBAND" : (tex == RSQTHP_DnNum.T_TAGF ? "RQNTAGF" : "RQNTAGB"), TexMan.Type_Any);
+				int iw, ih; [iw, ih] = TexMan.GetSize(tx); w = iw; h = ih;
+			}
 			if (!tx.IsValid() || h <= 0) { g.Alpha = 0; continue; }
-			Name tr = n.gTrans[i] == 'None' ? n.trans : n.gTrans[i];
+			// its place
+			switch (n.kind)
+			{
+			case RSQTHP_DnNum.K_HIT:
+			case RSQTHP_DnNum.K_GAIN:
+				ox = jx; break;
+			case RSQTHP_DnNum.K_TOTAL:
+				if (part == RSQTHP_DnNum.P_COMBO)
+				{
+					if (!combo) { g.Alpha = 0; continue; }
+					ox = comX + jx; oy = comY + jy; k = comK;
+				}
+				else if (part == RSQTHP_DnNum.P_WORD) { ox = digX; oy = wordY; k = digK; }
+				else
+				{
+					if (!total) { g.Alpha = 0; continue; }
+					ox = digX + jx; oy = digY + jy; k = digK;
+				}
+				break;
+			case RSQTHP_DnNum.K_BANNER:
+				if (part == RSQTHP_DnNum.P_BG) { depth = 1.0; ga = a * 0.9; }
+				else if (part == RSQTHP_DnNum.P_DIG) ox = 120.0 * u3;
+				else if (part == RSQTHP_DnNum.P_SUB1) ox = 150.0 * u3;
+				else ox = 185.0 * u3;
+				if (part != RSQTHP_DnNum.P_BG) ga = 1.0;
+				break;
+			case RSQTHP_DnNum.K_TAG:
+				if (part == RSQTHP_DnNum.P_BG) depth = 0.25;
+				else if (part == RSQTHP_DnNum.P_BORDER) depth = 0.15;
+				else if (part == RSQTHP_DnNum.P_LV && n.t >= 6) k = 1.0 + 0.3 * exp(-(n.t - 6) / 3.0);
+				break;
+			}
+			// typed in: not there before its time; a white flash on arrival
+			bool flashNow = false;
+			if (n.gT0[i] >= 0)
+			{
+				if (n.t < n.gT0[i]) { g.Alpha = 0; g.Put(at, at); continue; }
+				if (n.t < n.gT0[i] + 2) flashNow = true;
+			}
+			// its colour
+			int fm = n.gFam[i] >= 0 ? n.gFam[i] : n.fam;
+			if (n.kind == RSQTHP_DnNum.K_TOTAL && n.gFam[i] < 0)
+			{
+				fm = n.fam >= 0 ? n.fam : (n.ramp.Size() >= 4 ? n.ramp[n.ComboStep()] : 0);
+			}
+			// calm by default (headset 11-03 18:29): plain hits, totals and gains hold one colour; the Castlevania life (flash,
+			// cycling, letters bobbing) is for HEADSHOTS (and crits later), and the level-up displays
+			bool headLife = n.kind == RSQTHP_DnNum.K_HIT && n.head && headW;
+			int sh = 1;
+			if (headLife) sh = Shade(i, true);
+			else if ((n.kind == RSQTHP_DnNum.K_BANNER && part == RSQTHP_DnNum.P_DIG) || (n.kind == RSQTHP_DnNum.K_TAG && part == RSQTHP_DnNum.P_LV)) sh = Shade(i);
+			if (n.kind == RSQTHP_DnNum.K_TAG && part == RSQTHP_DnNum.P_NEW) sh = ((int(n.t) / 3) & 1) ? 3 : 1;   // the green flicker
+			if (n.kind == RSQTHP_DnNum.K_TOTAL && n.st == RSQTHP_DnNum.S_LIVE)
+			{
+				// cooling down: the colour drains, then greys and fades
+				int age = level.maptime - n.lastHit;
+				if (age > FADE_FROM) { fm = GREY; sh = 1; }
+				else if (age > DRAIN_FROM) sh = 0;
+			}
+			if (headLife && flash && n.t < 2.5 && !n.frozen && !photo) flashNow = true;
+			// a headshot's letters bob, one after another (gentle: 0.1 of a digit, about 1.4 cycles a second)
+			if (headLife && cycle && !photo) oy += 0.1 * n.gH[i] * sin(n.t * 14.0 - i * 55.0);
+			if (tex == RSQTHP_DnNum.T_BAND) tr = PalName(n.famWord, 0);
+			else if (tex == RSQTHP_DnNum.T_TAGF) tr = 'RSQTHP_DnRaw';
+			else if (tex == RSQTHP_DnNum.T_TAGB) tr = PalName(n.famWord, 1);      // one steady colour
+			else if (flashNow) tr = FlashName();
+			else if (n.trans != 'None' && n.gFam[i] < 0 && n.kind == RSQTHP_DnNum.K_HIT) tr = n.trans;
+			else tr = PalName(fm, sh);
 			g.Look(tx, tr);
-			double sc = n.gH[i] * S / h;
-			g.Scale = (sc, sc);
-			double ox = shift + n.gX[i] * S, oy = n.gY[i] * S;
-			if (n.gY[i] > n.height * 0.5) oy += drop;      // a word drops in over a slamming number
-			if (breaking && i < n.bX.Size()) { ox += n.bX[i] * fk; oy += n.bY[i] * fk; g.SetRolling(true, n.bRoll[i]); }
-			g.Offset = (ox, -oy * ps);
-			g.Alpha = a;
-			g.Put(at, prev);
+			// its size
+			double sc = n.gH[i] * k * S / h;
+			if (tex == RSQTHP_DnNum.T_GLYPH) g.Scale = (sc, sc);
+			else
+			{
+				double ww = tex == RSQTHP_DnNum.T_BAND ? 210.0 : n.gW[i];
+				g.Scale = (ww * k * S / w, sc);
+			}
+			double gx = (ox + n.gX[i] * k) * S, gy = (oy + n.gY[i] * k) * S;
+			g.Alpha = ga;
+			if (n.jet && n.kind == RSQTHP_DnNum.K_HIT)
+			{
+				// a spinning jet: the whole number turns in the view (each glyph rolled, its column turned about the number's
+				// middle), placed in the world so the engine interpolates every glyph between tics
+				double cr = cos(n.roll), sr = sin(n.roll);
+				double rx = gx * cr - gy * sr, ry = gx * sr + gy * cr;
+				g.Offset = (0, 0);
+				g.SetRolling(true, n.roll);
+				Vector3 gp = at + camR * rx + camU * ry + toEye * (depth + i * 0.03) * S;
+				g.Put(gp, newG ? gp : g.Pos);
+				continue;
+			}
+			g.Offset = (gx, -gy * ps);
+			// each glyph a hair behind the one before it: see-through quads at one depth swap order as the head moves (flicker)
+			depth += i * 0.03;
+			Vector3 gp = at + toEye * depth * S;
+			g.Put(gp, newG ? gp : prev + toEye * depth * S);
 		}
+	}
+
+	// a total's room: under a low ceiling the total goes beside the bar, against a wall the combo goes to the other side
+	void Room(RSQTHP_DnNum n, PlayerPawn pmo, double up, double barHalf, double base, double H, double digK, double comK)
+	{
+		n.roomAt = level.maptime + 8;
+		if (!clear || !n.who) { n.totalMode = 0; n.comboSide = 1; return; }
+		Vector3 c = n.who.Pos + (0, 0, up);
+		Vector3 r = (sin(camYaw), -cos(camYaw), 0);
+		double half = barHalf >= 0 ? barHalf : n.width * 0.5 * digK * base;
+		double comboReach = half + (0.2 * H + n.comboW * comK) * base + 1;
+		FLineTraceData d;
+		bool rightBlocked = Trace(pmo, c, r, comboReach, d);
+		bool leftBlocked = Trace(pmo, c, -r, comboReach, d);
+		// ... or hidden from you behind a wall nearer than it (a doorway's edge between your eyes and that end of the bar)
+		if (!rightBlocked) rightBlocked = Hidden(pmo, c + r * comboReach);
+		if (!leftBlocked) leftBlocked = Hidden(pmo, c - r * comboReach);
+		int was = n.comboSide * 10 + n.totalMode;
+		n.comboSide = (rightBlocked && !leftBlocked) ? -1 : 1;
+		double cz = min(n.who.ceilingz, level.PointInSector(c.xy).ceilingplane.ZAtPoint(c.xy));
+		double topNeed = (5.5 * 0.3 + (0.18 + 1.24 * digK) * H * base) + 1;
+		if (c.z + topNeed <= cz) n.totalMode = 0;
+		else n.totalMode = ((n.comboSide == 1 && !leftBlocked) || (n.comboSide == -1 && !rightBlocked)) ? 1 : 2;
+		if (n.comboSide * 10 + n.totalMode != was) clamped++;
+	}
+
+	// is a spot hidden from your eyes by a wall?
+	bool Hidden(PlayerPawn pmo, Vector3 spot)
+	{
+		Vector3 v = spot - eye;
+		double vl = v.Length();
+		if (vl < 1) return false;
+		FLineTraceData d;
+		return Trace(pmo, eye, v / vl, vl - 1, d);
 	}
 
 	double FarK(Vector3 at)
@@ -894,12 +1429,12 @@ class RSQTHP_DamNumHandler : EventHandler
 		return true;
 	}
 
-	// only the Most Numbers nearest the eyes show (gains on you always do)
+	// only the Most Numbers nearest the eyes show (gains on you and the level-up displays always do)
 	void Cull()
 	{
 		Array<double> d;
 		for (int i = 0; i < nums.Size(); i++)
-			if (nums[i].kind != RSQTHP_DnNum.K_GAIN) d.Push(nums[i].dist);
+			if (nums[i].kind < RSQTHP_DnNum.K_GAIN || nums[i].kind == RSQTHP_DnNum.K_TOTAL) d.Push(nums[i].dist);
 		double cut = 1e12;
 		if (d.Size() > maxN)
 		{
@@ -915,8 +1450,11 @@ class RSQTHP_DamNumHandler : EventHandler
 		for (int i = 0; i < nums.Size(); i++)
 		{
 			let n = nums[i];
-			if (n.kind == RSQTHP_DnNum.K_GAIN) { n.hidden = false; continue; }
-			bool hide = n.dist > cut || (n.dist == cut && kept >= maxN);
+			if (n.kind >= RSQTHP_DnNum.K_GAIN) { n.hidden = false; continue; }
+			// a little give at the cut, so a number on the edge does not blink in and out as the head moves
+			double give = n.hidden ? 0 : 24;
+			bool hide = n.dist > cut + give || (n.dist == cut && kept >= maxN);
+			if (!hide && kept >= maxN + 2) hide = true;
 			if (!hide) kept++;
 			n.hidden = hide;
 		}
@@ -926,14 +1464,14 @@ class RSQTHP_DamNumHandler : EventHandler
 	{
 		ClearPending();
 		nums.Clear();
-		tAct.Clear(); tFirst.Clear(); tFirstN.Clear(); tFirstTic.Clear(); tTot.Clear();
+		tAct.Clear(); tFirst.Clear(); tFirstN.Clear(); tFirstTic.Clear(); tTot.Clear(); tLane.Clear();
 	}
 }
 
 // For other mods, by name (nothing links): RSQTHP_DnService.
 //   GetInt("crit", "", tics, 0, monster) -> 1: hits on that monster in the next `tics` tics (default 2) are marked as
-//   crits. Nothing is drawn for a crit yet: the CRIT word and the magenta tier (RSQTHP_DnCrit) come after 2.0, from a
-//   rebuilt Critical Shots (owner, 2026-11-03). -1: no Damage Numbers handler.
+//   crits. Nothing is drawn for a crit yet: the CRIT word comes after 2.0, from a rebuilt Critical Shots (owner,
+//   2026-11-03). -1: no Damage Numbers handler.
 class RSQTHP_DnService : Service
 {
 	override int GetInt(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)

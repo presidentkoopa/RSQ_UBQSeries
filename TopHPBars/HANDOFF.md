@@ -1,5 +1,62 @@
 # RSQ_TopHPBars -- handoff (2026-10-27, branch agent-thp)
 
+## 2026-11-03 (evening): the owner's approved design (mockups 18:05-18:12) + his headset reports (18:28-18:36) -- read first
+
+Rig only, not headset-confirmed. Probe `tools/rigprobe/zscript_dn3.txt` + `run_dn3.sh` (test only; adds `dn3_lvl
+"tic:kind:level"`, which sends Gun Bonsai's own `bonsai-level-up` event, and logs each number's first glyph: Pos, Prev,
+world height and degrees). Evidence: `test/evidence/dn3_*`.
+
+Done (measured):
+- **THE SEIZURE, found and fixed** (owner 18:28 "why are all of my damnums having a seizure?"). glyphs.zs `Put(Vector3 p,
+  Vector3 prev) { Prev = prev; ...}`: ZScript names are case-insensitive, the parameter hid the field and Prev was never
+  written. The renderer draws a VisualThinker at Prev + ticFrac * (Pos - Prev); Prev stayed at the spawn point, so every
+  frame (72-90 Hz) each number was drawn somewhere between where it was born and where it is. Rig log before: Prev stuck
+  at the spawn spot for the number's life, a total's Prev 4.4 units off its Pos every tic; after: Prev = last tic's Pos,
+  monotonic (`dn3_seizure_before.txt`, `dn3_motion_one_number_log.txt`). Also: colour steps at least 4 tics (8 with
+  Photosensitive Mode), close shades, no flash in any cycle; the aim-line slide eased 0.12 with a 0.75-unit dead band
+  (hand tremor no longer moves numbers); each glyph a hair behind the one before (no translucent sort flips); JFO advance
+  0.92 (no overlap); Most Numbers cut has 24 units of give (no blinking at the edge); the combo shake is a smooth wobble.
+- **Sizes** (18:28-18:29 "fuckin huge", "super tiny stuff", "the text is also really, really damn big"): hit digits 2.5
+  map units at Number Size 1 (7 cm; 1.4 deg at 3 m, 0.53 at 8 m, 0.21 at 20 m), never more than 1.8 deg however near; no
+  growth with range (Grow with Distance now off); words 0.42 of a digit at Word Size 1; total 1.2x a hit; the combo a word.
+  New sliders Number Size, Word Size. Gains at the wrist: never more than 2.5 deg (the rig measured 2.50 deg on landing,
+  `dn3_gain_log.txt`), smaller than RSQ Gun Cards' card digits beside it (`dn3_gain_vs_guncards_sheet.png`, world cards,
+  hands posed out with qz_rhand / qz_lhand). The weapon tag uses Gun Cards' sizes (name 0.78, LV 1.56 units).
+- **Normal hit = a little fountain jet** (18:36): appears at the inflictor (a bullet's puff, a missile's spot; real
+  LineAttack bullets on the rig spawned it at the puff), launched up and out (random +-80 deg around your side, varied
+  speed), gravity over the top, spins at its own random speed (70 % 0.5-3.5 deg/tic, 30 % 7-18, either way; the whole
+  number turns: glyphs rolled and their columns turned, placed in the world so they interpolate), gone at 0.63 s
+  (`dn3_jets_spin_sheet.png`, `dn3_motion_one_number_log.txt`). Calm: one colour, no flash.
+- **Headshot**: the only number with the Castlevania life (white flash 2-3 tics, slow gold/white shimmer, letters bobbing,
+  a jolt, 1.35x) (`dn3_headshot_sheet.png`: HEADSHOT 28 on a shotgun guy; HEADSHOT OVERKILL 60 on an imp). A killing head
+  hit stands at the monster's standing height (death frames are short).
+- **Total and combo**: total centred above the bar (rolls up, small bounce), xN beside the bar, colour steps
+  white/yellow/orange/red (x1-2, x3-4, x5, x6+), grow to x5, wobble from x5, drain then fade over Score's 105-tic window;
+  the kill punches once with OVERKILL above and fades (`dn3_spray_total_combo_kill.png`: 1000 x24 OVERKILL). Under a low
+  ceiling the total goes beside the bar (mode 1), a wall on the combo's side (or a wall between your eyes and that spot)
+  moves the combo to the other side (`dn3_room_log.txt`: mode 1 in MAP01 sector 28, mode 2 / side -1 in sector 52).
+- **Clear of Walls** for jets: the spot pulled out of walls, lowered under the ceiling, the launch shortened so the top stays
+  under the ceiling and both legs of the path miss walls (`clamped` counter). Frames of a jet meeting a ceiling were NOT
+  captured (the rig's teleports into MAP01's low sectors faced walls); `dn3_corridor_wall_sheet.png` is the corridor case.
+- **Player level-up**: band + scroll, measured x of LEVEL UP per frame 538 -> 304 (readable middle, about 7 frames) -> 8,
+  monotonic (`dn3_levelup_scroll_sheet.png`, `dn3_banner_log.txt`). World-anchored 64 units along your gaze (nearer if a
+  wall is), lazily following; real tics (a slow-mo pulse never drags it out).
+- **Weapon level-up**: tag at the gun, name typed with flashes, LV n one punch, NEW UPGRADE green flicker, border one
+  colour (`dn3_weapon_tag_and_gain_sheet.png`). Never nearer the eyes than 22 units.
+- **HP bars**: Colours 6 Cyan Lavender Orange, 7 Random, by translation of coldcite's Classic frames (0 new sprite frames)
+  (`dn3_bars_cyan_lavender_orange.png`: 90 % cyan, 55 % lavender, 25 % orange). Random everywhere: `dn3_random_colours_sheet.png`.
+- Rows added: Hit Colours (replaces Colour by Hit Strength), Combo Counter, Number Size, Word Size, Headshot Flash, Headshot
+  Cycling, Combo Shake, Clear of Walls, Total Colours, Combo Colours, Headshot Colour, Player Level-Up, Level-Up Slow-Mo,
+  Level-Up Band Colour, Level-Up Text Colour, Weapon Level-Up, Weapon Tag Border; all in Reset All.
+- Script errors: see the commit message (doom2 + HP Bars, doom2 + Gun Bonsai + all RSQ, full order with 03 = 2.0.3q; save,
+  two loads, map change, both bonsai-level-up events sent with `netevent`).
+
+Not done / open:
+- Headset: everything above. Gun Bonsai's real level-ups were not played to on the rig (the event was sent by the probe and
+  by `netevent`, exactly as Gun Bonsai's Fanfare sends it).
+- Level-Up Slow-Mo (rsm_pulse 500 30) not run with RSQ SlowMo on the rig.
+- CRIT: hook only.
+
 ## 2026-11-03 (afternoon): the owner's damage-number round -- read first
 
 Rig only, not headset-confirmed. Owner: "I love all of this, let's get on it"; "I like the numbers but not the

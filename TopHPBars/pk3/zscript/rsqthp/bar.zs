@@ -320,6 +320,7 @@ class RSQTHP_Bar : Actor
 		else f = 1 + (100 - int(pct / 5) * 5) / 5;   // 95 -> 2 ... 5 -> 20, floored to 5 % as his loop did
 		frame = f;
 		low = !inv && h.set >= 2 && pct < 40;
+		Tint(inv ? -1 : (pct >= 70 ? 0 : (pct >= 40 ? 1 : 2)));
 
 		// overheal
 		if (h.overheal && !inv && hp > mx)
@@ -333,6 +334,35 @@ class RSQTHP_Bar : Actor
 			if (over) { over.sprite = h.sprOver[h.set * 5 + pips]; over.frame = f20 - 1; }
 		}
 		else if (over) { over.Destroy(); over = null; }
+	}
+
+	// COLOURS 6 and 7 (the owner, 11-03: "I enjoy the green yellow red for the hp bars but I'd like a lavender, orange, cyan, or
+	// something similar"): coldcite's Classic frames through a palette translation per band (TRNSLATE RSQTHP_H<ii>: the frame's
+	// greys kept, the fill tinted by its brightness). 6: cyan full, lavender mid, orange low. 7 Random: each bar picks three
+	// fresh colours when it is made. The overheal strip and the icons keep their own colours. The colour-blind sets (and
+	// RSQ_Accessibility's palette, which overrides this row) are untouched.
+	int rndCol[3];
+	bool rndMade;
+	Name tintNow;
+	void Tint(int band)
+	{
+		Name want = 'None';
+		if (band >= 0 && sprite == h.sprMain[0] && (h.scheme == 6 || h.scheme == 7))
+		{
+			static const int COOL[] = { 13, 9, 4 };
+			int c = COOL[band];
+			if (h.scheme == 7)
+			{
+				if (!rndMade)
+				{
+					rndMade = true;
+					for (int i = 0; i < 3; i++) rndCol[i] = random[rsqthpbar](0, 16);
+				}
+				c = rndCol[band];
+			}
+			want = String.Format("RSQTHP_H%02d", c);
+		}
+		if (want != tintNow) { tintNow = want; A_SetTranslation(want); }
 	}
 
 	void SyncParts()

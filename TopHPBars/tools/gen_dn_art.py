@@ -71,7 +71,7 @@ def emit(font, q, code, im):
 def main():
     os.makedirs(OUT, exist_ok=True)
     for f in os.listdir(OUT):
-        if f.startswith('RQN'):
+        if f.startswith('RQN'):   # glyphs and panels
             os.remove(os.path.join(OUT, f))
     n = 0
     # JFO big and small
@@ -105,7 +105,73 @@ def main():
         for q, k in ((1, 4), (0, 2)):
             emit(font, q, code, crop_x(im.resize((im.width * k, im.height * k), Image.NEAREST)))
             n += 1
-    print('gen_dn_art: %d glyph textures in %s' % (n, OUT))
+    n += panels()
+    palette()
+    print('gen_dn_art: %d glyph and panel textures in %s; palette in TRNSLATE.rsqthp' % (n, OUT))
+
+
+# ---- the owner's design round (2026-11-03 18:05-18:12, approved from animated mockups) ----------------------------------
+# PALETTE: the selectable colours. Each has 4 shades for Castlevania-style colour cycling (shade 1 is the colour itself; 0
+# darker, 2 and 3 toward white); ramps from black, so the metal's shading stays. RSQTHP_P<ii><s>, ii = the menu's index
+# (MENUDEF OptionValue "RSQTHP_Col"), 17 = the cool-down grey (not selectable). RSQTHP_PFL is the arrival flash (white).
+# HP bars: RSQTHP_H<ii>, the same colours for coldcite's Classic frames: palette greys (80-111: the frame, the empty blocks)
+# are kept, everything else is tinted by its brightness (the Cyan / Lavender / Orange scheme and Random).
+PALETTE = [
+    ('White', (1.00, 1.00, 1.00)), ('Silver', (0.70, 0.74, 0.82)), ('Yellow', (1.00, 0.92, 0.22)),
+    ('Gold', (1.00, 0.74, 0.18)), ('Orange', (1.00, 0.48, 0.08)), ('Red', (1.00, 0.16, 0.10)),
+    ('Crimson', (0.86, 0.04, 0.26)), ('Pink', (1.00, 0.50, 0.76)), ('Magenta', (1.00, 0.18, 0.95)),
+    ('Lavender', (0.76, 0.60, 1.00)), ('Purple', (0.58, 0.24, 1.00)), ('Blue', (0.24, 0.40, 1.00)),
+    ('Sky', (0.44, 0.76, 1.00)), ('Cyan', (0.08, 0.95, 1.00)), ('Teal', (0.08, 0.80, 0.64)),
+    ('Green', (0.20, 1.00, 0.30)), ('Lime', (0.72, 1.00, 0.14)), ('Grey', (0.50, 0.50, 0.52)),
+]
+TRN = os.path.join(os.path.dirname(HERE), 'pk3', 'TRNSLATE.rsqthp')
+MARK0 = '// ---- PALETTE (tools/gen_dn_art.py; do not hand-edit) ----'
+MARK1 = '// ---- END PALETTE ----'
+
+
+def palette():
+    def mix(c, w, k):
+        return tuple(c[i] + (w - c[i]) * k for i in range(3))
+    def fmt(c):
+        return '[%.2f, %.2f, %.2f]' % c
+    L = [MARK0]
+    for i, (nm, c) in enumerate(PALETTE):
+        shades = [tuple(v * 0.84 for v in c), c, mix(c, 1.0, 0.2), mix(c, 1.0, 0.4)]   # close together: a shimmer, never a strobe
+        for s, sc in enumerate(shades):
+            k = 1.55
+            L.append('RSQTHP_P%02d%d = "0:255=%%[0,0,0]:%s"   // %s %d' % (i, s, fmt(tuple(v * k for v in sc)), nm, s))
+    L.append('RSQTHP_PFL = "0:255=%[0,0,0]:[2.40, 2.40, 2.40]"   // the arrival flash')
+    for i, (nm, c) in enumerate(PALETTE):
+        t = fmt(tuple(v * 2.1 for v in c))
+        L.append('RSQTHP_H%02d = "0:79=%%[0,0,0]:%s", "80:111=80:111", "112:255=%%[0,0,0]:%s"   // %s' % (i, t, t, nm))
+    L.append(MARK1)
+    s = open(TRN).read()
+    if MARK0 in s:
+        s = s[:s.index(MARK0)] + s[s.index(MARK1) + len(MARK1) + 1:]
+    open(TRN, 'w').write(s.rstrip('\n') + '\n' + '\n'.join(L) + '\n')
+
+
+def panels():
+    """the level-up band and the weapon tag's box (grey: tinted by a palette translation)"""
+    from PIL import ImageDraw
+    # BAND: darker at top and bottom, lighter in the centre (the owner's mockup); its ends fade out sideways
+    W, H = 256, 64
+    im = Image.new('RGBA', (W, H))
+    px = im.load()
+    for y in range(H):
+        v = 1 - abs(y + 0.5 - H / 2) / (H / 2)
+        g = int(255 * (0.12 + 0.45 * v))
+        for x in range(W):
+            e = min(1.0, min(x + 0.5, W - x - 0.5) / (W * 0.16))
+            px[x, y] = (g, g, g, int(255 * (0.45 + 0.33 * v) * e))
+    p = os.path.join(OUT, 'RQNBAND.png'); im.save(p, optimize=True); grab(p, W // 2, H // 2)
+    # TAG: a dark rounded box (no translation) and its border (white, tinted one steady colour)
+    W, H = 200, 72
+    f = Image.new('RGBA', (W, H)); ImageDraw.Draw(f).rounded_rectangle([1, 1, W - 2, H - 2], radius=12, fill=(14, 14, 18, 178))
+    p = os.path.join(OUT, 'RQNTAGF.png'); f.save(p, optimize=True); grab(p, W // 2, H // 2)
+    b = Image.new('RGBA', (W, H)); ImageDraw.Draw(b).rounded_rectangle([1, 1, W - 2, H - 2], radius=12, outline=(235, 235, 235, 255), width=4)
+    p = os.path.join(OUT, 'RQNTAGB.png'); b.save(p, optimize=True); grab(p, W // 2, H // 2)
+    return 3
 
 
 if __name__ == '__main__':

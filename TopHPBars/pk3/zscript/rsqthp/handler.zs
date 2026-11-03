@@ -227,10 +227,12 @@ class RSQTHP_Handler : EventHandler
 	}
 
 	// colour scheme -> art set
+	// 6 Cyan / Lavender / Orange and 7 Random (the owner, 11-03) draw coldcite's Classic frames through a palette translation
+	// per band (bar.zs BuildFrame): no new sprite frames
 	static int SetOf(int scheme)
 	{
-		static const int sets[] = { 0, 1, 2, 2, 3, 4 };
-		return sets[clamp(scheme, 0, 5)];
+		static const int sets[] = { 0, 1, 2, 2, 3, 4, 0, 0 };
+		return sets[clamp(scheme, 0, 7)];
 	}
 
 	void ReadSettings()
@@ -238,7 +240,7 @@ class RSQTHP_Handler : EventHandler
 		if (!cvFound) FindCVars();
 		if (!sprFound) FindSprites();
 		bool o = cOn ? cOn.GetBool() : true;
-		int sc = cScheme ? clamp(cScheme.GetInt(), 0, 5) : 0;
+		int sc = cScheme ? clamp(cScheme.GetInt(), 0, 7) : 0;
 		int cb = cCB ? cCB.GetInt() : 0;
 		if (cb >= 1 && cb <= 4) sc = cb + 1;        // 1 protan 2 deutan 3 tritan 4 high contrast
 		bool ov = cOver ? cOver.GetBool() : true;

@@ -1,0 +1,12 @@
+server noarchive string dn3_spawn = "";
+server noarchive string dn3_hits = "";
+server noarchive string dn3_trace = "";
+server noarchive string dn3_freeze = "";
+server noarchive string dn3_pick = "";
+server noarchive string dn3_slow = "";
+server noarchive int    dn3_hp = 0;
+server noarchive int    dn3_rep = 0;
+server noarchive int    dn3_count = 0;
+server noarchive int    dn3_sum = 0;
+server noarchive string dn3_tele = "";
+server noarchive string dn3_lvl = "";

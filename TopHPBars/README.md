@@ -31,7 +31,7 @@ Front page (RSQ HP Bars):
 | Row | Default | What it does |
 |---|---|---|
 | HP Bars | On | Bars on or off. |
-| Colours | Classic | Classic, Red (coldcite's two), Protanopia, Deuteranopia, Tritanopia, High Contrast. The colour-blind sets also hatch and gently pulse the low band, put a dark line in the mid band, and High Contrast adds a white rim and is always full bright. |
+| Colours | Classic | Classic, Red (coldcite's two), Protanopia, Deuteranopia, Tritanopia, High Contrast, Cyan Lavender Orange (cyan full, lavender mid, orange low), Random (each bar picks three fresh colours). The colour-blind sets also hatch and gently pulse the low band, put a dark line in the mid band, and High Contrast adds a white rim and is always full bright. |
 | Size | Standard | Small / Standard / Large. |
 | Full Bright | Option (off) | Bars ignore the room's light. |
 | Allow Stealth | On | A see-through monster gets a see-through bar. |
@@ -56,22 +56,37 @@ rig only, not yet headset-confirmed):
 | Number Motion | Toss | Used only with Pop and Settle off (damnums' Toss or Float). |
 | Damage Type Colours | On | Used only with Colour by Hit Strength off (fire orange, plasma cyan, ...). |
 | Text Quality | Quest | Quest (half-resolution glyphs) or PCVR. |
-| Colour by Hit Strength | On | By the share of the monster's health the hit took: white under 5 %, yellow under 15 %, orange under 35 %, red above. |
-| Pop and Settle | On | Appears small, overshoots to about 1.5x, snaps back in 3 tics, drifts up, gone in about 0.9 s. |
-| Size by Hit | On | Bigger share of health, bigger number. |
-| Grow with Distance | On | Numbers grow with range (the bars' Far Size curve). |
-| Running Total | On | The second hit on a monster within 3 s starts one total beside its bar; each hit flies into it, it counts up, "xN" counts the hits. Fades after 3 s with no hit (Score's chain window). |
-| Kill Slam | On | On the kill the total slams to 1.6x, holds, then its digits break apart and fade. The number is the health really taken. No sprite behind it. |
+| Hit Colours | By Damage Type | By Damage Type (bullets white, shells yellow, fire orange, explosives red, plasma cyan, BFG lime, rail blue, melee pink, saws crimson, Saber sky, Force lavender), By Hit Strength (white / yellow / orange / red by the share of health), damnums' (the Number Colour and Damage Type Colours rows), any of 17 colours, Random. |
+| Pop and Settle | On | A super tiny number appears where you hit (the bullet's puff, the missile's spot) and jets up and out of the monster like a small fountain, spinning at its own random speed (mostly a little, sometimes a lot), gone in 0.63 s. Off: damnums' Toss / Float. |
+| Size by Hit | Option (off) | Bigger share of health, a little bigger number (0.85x to 1.25x). |
+| Grow with Distance | Option (off) | Hit numbers grow with range (the bars' Far Size curve). Off: never. |
+| Running Total | On | From the second hit within 3 s, one total centred above the monster's bar: it rolls up like a counter and bounces a little on each hit, steps colour with the combo, grows a little to x5. Its colour drains, then it fades, 3 s after the last hit (Score's chain window). Under a low ceiling it goes beside the bar. |
+| Kill Slam | On | On the kill the total (or the killing hit) punches once, holds, fades. The number is the health really taken. No sprite behind it. |
 | Overkill Word | On | OVERKILL over a kill whose last hit went past zero by more than half the monster's health. |
-| Headshot Word | On | HEADSHOT over Brutal Doom's head hits, the number 1.25x bigger and crimson. |
+| Headshot Word | On | HEADSHOT over Brutal Doom's head hits: a number 1.35x bigger with a sharp jolt and the Castlevania life (white flash, a slow gold / white shimmer, its letters bobbing). |
 | Out of Your Face | On | Never nearer your eyes than about a metre; slid off either gun's aim line. |
 | Most Numbers | 12 | Only the nearest 6 / 12 / 24 / 48 show. |
 | Gains on You | On | +health (green), +armour (blue), +ammo (gold) rise from the pickup and fly to the wrist (ammo to its gun's hand, the rest to the off hand). |
 | Freeze in Hit-Stop | On | A number on a monster in a hit-stop stands still until it ends, then pops. |
 | Numbers in Slow-Mo | World Time | With RSQ_SlowMo: World Time (slow with the world) or Your Time. |
+| Combo Counter | On | "xN" beside the HP bar (the other side when a wall is on that side); shakes gently from x5. |
+| Number Size | 1.0 | Slider. 1 = a hit's digits 2.5 map units tall (about 7 cm: 1.4 degrees at 3 m, 0.5 at 8 m, 0.2 at 20 m), never more than 1.8 degrees however near. |
+| Word Size | 1.0 | Slider. HEADSHOT, OVERKILL, xN, the level-up band's text and the weapon tag. |
+| Headshot Flash | On | A headshot's number is white for its first 2-3 tics (never with RSQ_Accessibility's Photosensitive Mode). |
+| Headshot Cycling | On | The headshot's shimmer and bobbing letters (steps of 4 tics, 8 with Photosensitive Mode; never a strobe). |
+| Combo Shake | On | The total and the combo wobble a little from x5. |
+| Clear of Walls | On | Each hit's jet is traced before it shows: kept under the ceiling and out of walls. |
+| Total Colours | Follow Combo | Or one of 17 colours, or Random. |
+| Combo Colours | White Yellow Orange Red | The ramp the total and combo step through (x1-2, x3-4, x5, x6+): five ramps or Random (a fresh ramp each chain). With RSQ_Accessibility's colour-blind palette on, the default ramp becomes a safe one. |
+| Headshot Colour | Gold | 17 colours or Random. |
+| Player Level-Up | On | Gun Bonsai's player level-up: LEVEL UP scrolls across a band in front of you (in very fast, readable about 0.45 s in the middle, fast out; 1.26 s), with PLAYER LV n and +1 UPGRADE trailing. It stands about 2 m in front of your eyes (nearer if a wall is closer) and follows your gaze lazily. |
+| Level-Up Slow-Mo | Option (off) | A short RSQ SlowMo pulse through the readable part (needs RSQ_SlowMo). |
+| Level-Up Band Colour / Level-Up Text Colour | Gold | 17 colours or Random. |
+| Weapon Level-Up | On | Gun Bonsai's weapon level-up: a small tag rises off the gun (Gun Cards' size): the gun's name types in letter by letter with a white flash each, LV n stamps in with one punch, NEW UPGRADE flickers green, then it fades (2 s). |
+| Weapon Tag Border | Gold | One steady colour: 17 colours or Random. |
 
 Drawn with the engine's VisualThinkers from textures: no sprite frames, no actor per digit, one pool of at most
-160 glyphs that the engine never ticks. Do not load damnums as well (two numbers per hit, and its 9999s on Brutal
+200 glyphs that the engine never ticks. Do not load damnums as well (two numbers per hit, and its 9999s on Brutal
 Doom corpses come back).
 
 Always on (no row):
@@ -123,10 +138,11 @@ Load only the order above plus RSQ_HPBars.pk3. Start MAP01.
 
 Damage Numbers (rig only, not yet headset-confirmed):
 
-19. Shoot an imp once: a metal number pops at its head and fades. Shoot a Baron with a chaingun: the hits fly into
-    one total beside its bar, counting up with "x12". Kill it with a rocket: the total slams, OVERKILL over it,
-    and breaks apart.
-20. Brutal Doom: shoot a zombie in the head: HEADSHOT over a bigger crimson number.
+19. Shoot an imp once: a tiny number jets up out of where you hit it, spinning, and fades. Shoot a Baron with a
+    chaingun: one total rolls up above its bar, "x12" beside the bar, stepping white, yellow, orange, red. Kill it
+    with a rocket: the total punches once, OVERKILL over it, and fades.
+20. Brutal Doom: shoot a zombie in the head: HEADSHOT (gold) over a bigger number with a jolt, a white flash and a slow shimmer.
+20a. With Gun Bonsai: level a gun (the tag rises off it) and the player (the LEVEL UP band).
 21. Get hurt, then walk over a stimpack and a clip: +10 green and +10 gold rise and fly to your wrists.
 22. Number Font and Text Quality: step through them on a held number (a hit-stop holds it still).
 

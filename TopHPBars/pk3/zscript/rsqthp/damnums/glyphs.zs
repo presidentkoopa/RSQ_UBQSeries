@@ -19,10 +19,16 @@ class RSQTHP_Glyph : VisualThinker
 	Name curTrans;
 	bool rolling;
 
-	void Put(Vector3 p, Vector3 prev)
+	// THE SEIZURE (owner's headset, 2026-11-03 18:28: "why are all of my damnums having a seizure?"). This read
+	// `Put(Vector3 p, Vector3 prev) { Prev = prev; ...}`: ZScript names are case-insensitive, so the parameter hid the field
+	// and Prev was never written. Prev stayed where the glyph was first placed, and every rendered frame the engine drew it
+	// somewhere between its spawn point and its spot now (InterpolatedPosition: Prev + ticFrac * (Pos - Prev)): at 72-90 Hz
+	// each number swept from where it was born to where it is, 35 times a second. Measured on the rig (a_spray log: Prev
+	// stuck at the spawn point for a number's whole life), fixed here, measured again (Prev = last tic's spot).
+	void Put(Vector3 newPos, Vector3 lastPos)
 	{
-		Prev = prev;
-		Pos = p;
+		Prev = lastPos;
+		Pos = newPos;
 		UpdateSector();
 	}
 	void Hide() { Alpha = 0; }
@@ -57,7 +63,7 @@ class RSQTHP_DnFonts play
 	// a digit's height in the world at size 1, map units, and the advance as a share of a glyph's width (JFO's beveled
 	// cells overlap a little, as the mockups set them; the pixel fonts get a small gap)
 	static const double BASEH[] = { 9.0, 4.8, 8.0, 11.0, 6.5 };
-	static const double ADV[] = { 0.84, 0.80, 1.08, 1.02, 1.12 };
+	static const double ADV[] = { 0.92, 0.86, 1.08, 1.02, 1.12 };   // no two glyphs overlap much (overlapping see-through quads at one depth flicker in VR)
 
 	transient Array<TextureID> tex;
 	transient Array<double> tw, th;

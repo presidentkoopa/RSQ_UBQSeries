@@ -1,56 +1,76 @@
-// RSQ HP Bars -- Damage Numbers: one number in the air (a hit, a running total, a gain on you), laid out as glyphs.
-// Moved by RSQTHP_DamNumHandler.Step once a tic (no thinker of its own); its glyphs come from the handler's pool.
+// RSQ HP Bars -- Damage Numbers: one thing in the air (a hit, a running total with its combo, a gain on you, the player
+// level-up band, a weapon level-up tag), laid out as glyphs. Moved by RSQTHP_DamNumHandler.Step once a tic (no thinker of
+// its own); its glyphs come from the handler's pool.
+//
+// LAYOUT. Every glyph belongs to a PART (the digits, the combo "xN", a word, the band, a line of the tag ...). A glyph's x / y
+// / height are world units at size 1 about its part's centre; Draw places each part (where it stands, its own scale, alpha
+// and shake) and the handler's palette colours each glyph. A glyph can have its own appearance time (t0: the tag types its
+// letters in, each one flashing white on arrival).
 class RSQTHP_DnNum play
 {
-	enum EKind { K_HIT, K_TOTAL, K_GAIN }
-	enum EState { S_LIVE, S_FLY, S_SLAM, S_BREAK, S_LAND, S_DONE }
+	enum EKind { K_HIT, K_TOTAL, K_GAIN, K_BANNER, K_TAG }
+	enum EState { S_LIVE, S_KILL, S_FLY, S_LAND, S_DONE }
 	enum EWord { W_HEAD = 1, W_OVERKILL = 2 }
+	enum EPart { P_DIG, P_COMBO, P_WORD, P_SUB1, P_SUB2, P_BG, P_BORDER, P_NAME, P_LV, P_NEW }
+	enum ETex { T_GLYPH, T_BAND, T_TAGF, T_TAGB }
 
 	int kind, st;
 	Actor who;                  // the monster it is about (hits, totals)
 	int value;                  // the number shown (a total counts up to it)
-	double shown;               // a total's count-up
-	int arrived;                // a total: what has flown in so far (the count-up runs to it; a kill sets it to value)
-	int hits, hitsShown;        // a total's xN (true count, count shown)
+	double shown;               // a total's roll-up
+	int hits;                   // a total's combo (hits in the chain)
 	int nHits;                  // a hit: how many hits it stands for (pellets in one tic)
-	double bumpT;               // a total: the clock when a hit last flew in (it swells for 2 tics)
-	double rise;                // a hit / gain: how far it has drifted up
-	Vector3 flyAt; double flyShift, flyScale;   // where a flight began
+	double bumpT;               // a total: its clock at the last hit (the bounce)
 	int words;
 	bool kill, crit, head;      // crit: the after-2.0 hook (RSQTHP_DnService "crit"); nothing drawn for it yet
-	Name trans;                 // the digits' colour
-	double size;                // size by hit (1 = a plain hit)
+	int fam;                    // the digits' colour (palette index)
+	int famWord;                // a hit's word (HEADSHOT gold, OVERKILL red)
+	Array<int> ramp;            // a total: its combo colour ramp (4 steps), picked when the chain starts
+	Name trans;                 // damnums' colours (Hit Colours "damnums'") and the gains: a translation by name
+	double size;                // a hit: 1, x1.35 for a headshot (x Size by Hit)
 	double t;                   // its own clock, tics (world or your time in slow motion; stands still in a hit-stop)
 	double stT;                 // the clock when its state began
-	int born, lastHit;          // level tics: when made, a total's last hit (its 3 s chain)
+	int born, lastHit;          // level tics: when made, a total's last hit (its chain window)
 	bool frozen;                // held in a hit-stop: stands still, unpopped, until its monster's freezetics runs out
-	double popFrom;             // the pop's start size (0.35; 0.9 after a hit-stop held it)
+	double popFrom;             // the pop's start size (0.45; 0.9 after a hit-stop held it)
 	bool hidden;                // beyond the nearest N
-	int amount;                 // a hit flying into a total: what it adds on arrival
-	RSQTHP_DnNum into;          // ... and the total it flies into
 	int gainKind;               // a gain: 0 health, 1 armour, 2 ammo
-	int hand;                   // a gain: the hand it flies to
+	int hand;                   // a gain / a tag: the hand
 	bool landOnCards;           // a gain: RSQ Gun Cards is loaded and shows its own +N there
+	int level;                  // a banner / a tag: the level reached
+	String label;               // a tag: the gun's name
+	bool slowSent;              // a banner: its slow-motion pulse has gone out
+	bool jet;                   // a normal hit: launched as a little fountain jet (events.zs PlaceJet)
+	Vector3 vel, jetPos;        // ... its velocity and where it is (map units, per tic)
+	double spin, roll;          // ... its spin (degrees per tic) and roll
+	double grav;                // ... its gravity scale (Number Size)
 
 	// where it is
-	Vector3 p0;                 // a hit / gain: where it appeared; a total: unused (it stands on its monster's bar)
+	Vector3 p0;                 // a hit / gain: where it appeared; a banner / tag: where it is anchored (eased)
 	Vector3 at, atPrev;         // this tic's anchor and last tic's (glyph Pos / Prev)
-	double shiftX;              // sideways shift of the whole number, world units (a total beside the bar)
-	double jitX;                // a hit: a small sideways spread so stacked hits do not overlap exactly
+	Vector3 arcR;               // a hit: the world direction it arcs out along (the view's right when it was made, x side)
+	double arcOut, arcUp;       // a hit: how far out and up it may go (kept clear of walls and the ceiling)
+	int lane;                   // a hit: its lane (successive hits on one monster alternate sides and step outward)
+	double rise;                // a gain: how far it has drifted up
+	Vector3 flyAt; double flyScale;   // where a gain's flight began
 	Vector3 slide;              // pushed out of the aim line (eased)
 	double tossVX, tossVY, tossVZ, tossX, tossY, tossZ;   // Pop off: damnums' toss / float, integrated on its clock
 	double alpha, scaleNow, dist;
+	double bandD;               // a banner: its distance from the eyes (map units)
+	// a total: where its parts go (worked out from its bar and the room every few tics)
+	int comboSide;              // +1 right of the bar, -1 left (a wall on the right)
+	int totalMode;              // 0 centred above the bar, 1 beside it (a low ceiling), 2 under it
+	int roomAt;
 
-	// the layout, at size 1 (world units): one entry per glyph
+	// the layout: one entry per glyph
 	Array<RSQTHP_Glyph> gl;
-	Array<int> gCode, gFont;
-	Array<double> gX, gY, gH;   // centre and row height
-	Array<Name> gTrans;
-	Array<double> bX, bY, bVX, bVY, bVZ, bZ, bRoll, bSpin;   // breaking apart
-	double width, height;       // extent of the digits' row at size 1
+	Array<int> gCode, gFont, gPart, gFam, gTex;
+	Array<double> gX, gY, gH, gW, gT0;
+	double width, height;       // the digits' row at size 1
+	double comboW, comboH;      // the combo's row at size 1
 	int laidValue, laidHits, laidWords, laidFont, laidQ;
 	bool laidOut;
-	bool drawn;                 // drawn at least once (glyph Prev = last tic's spot)
+	bool drawn;
 
 	void Free(RSQTHP_DamNumHandler hnd)
 	{
@@ -59,93 +79,114 @@ class RSQTHP_DnNum play
 		st = S_DONE;
 	}
 
-	// what to draw: digits, then "xN" for a total, words above
-	void Layout(RSQTHP_DamNumHandler hnd)
+	void ClearLayout()
 	{
-		int v = kind == K_TOTAL ? int(shown) : value;
-		int hs = kind == K_TOTAL ? hitsShown : 0;
-		if (laidOut && v == laidValue && hs == laidHits && words == laidWords && hnd.face == laidFont && hnd.q == laidQ) return;
-		laidOut = true; laidValue = v; laidHits = hs; laidWords = words; laidFont = hnd.face; laidQ = hnd.q;
-		gCode.Clear(); gFont.Clear(); gX.Clear(); gY.Clear(); gH.Clear(); gTrans.Clear();
+		gCode.Clear(); gFont.Clear(); gPart.Clear(); gFam.Clear(); gTex.Clear();
+		gX.Clear(); gY.Clear(); gH.Clear(); gW.Clear(); gT0.Clear();
+	}
 
-		int font = hnd.face;
-		double H = RSQTHP_DnFonts.BASEH[font];
-		String s = String.Format("%d", max(0, v));
-		if (kind == K_GAIN) s = "+" .. s;
-		// the digits' row, centred on 0
+	void Add(int c, int f, double x, double y, double hh, int part, int fm = -1, double t0 = -1, int tex = T_GLYPH, double w = 0)
+	{
+		gCode.Push(c); gFont.Push(f); gX.Push(x); gY.Push(y); gH.Push(hh); gPart.Push(part); gFam.Push(fm); gT0.Push(t0);
+		gTex.Push(tex); gW.Push(w);
+	}
+
+	// one line of text centred on (cx, y): returns its width. step > 0 types it in, one letter every `step` tics from t0.
+	// Letters the font lacks (and spaces) keep their advance. Lower case is drawn upper case.
+	double AddText(RSQTHP_DamNumHandler hnd, String s, int font, double cx, double y, double H, int part, int fm = -1, double t0 = -1, double step = 0)
+	{
 		Array<int> rc; Array<int> rf; Array<double> rw;
-		double x = 0;
+		double tot = 0;
 		for (int i = 0; i < int(s.Length()); i++)
 		{
 			int c = s.ByteAt(i);
+			if (c >= 97 && c <= 122) c -= 32;
 			int f = font;
 			double w, gh;
 			TextureID tx = hnd.fonts.Glyph(f, hnd.q, c, w, gh);
-			if (!tx.IsValid() || gh <= 0) { f = RSQTHP_DnFonts.F_JFO; tx = hnd.fonts.Glyph(f, hnd.q, c, w, gh); }   // damnums' fonts have no "+"
-			if (!tx.IsValid() || gh <= 0) continue;
-			double ww = w * (H / gh);
-			rc.Push(c); rf.Push(f); rw.Push(ww);
-			x += ww * RSQTHP_DnFonts.ADV[f];
+			if ((!tx.IsValid() || gh <= 0) && f != RSQTHP_DnFonts.F_JFO) { f = RSQTHP_DnFonts.F_JFO; tx = hnd.fonts.Glyph(f, hnd.q, c, w, gh); }
+			if ((!tx.IsValid() || gh <= 0) && f != RSQTHP_DnFonts.F_SMALL) { f = RSQTHP_DnFonts.F_SMALL; tx = hnd.fonts.Glyph(f, hnd.q, c, w, gh); }
+			double ww = (tx.IsValid() && gh > 0) ? w * (H / gh) : 0;
+			double adv = ww > 0 ? ww * RSQTHP_DnFonts.ADV[f] : H * 0.45;
+			rc.Push(ww > 0 ? c : 0); rf.Push(f); rw.Push(adv);
+			tot += adv;
 		}
-		double rowW = x;
-		x = -rowW / 2;
+		double x = cx - tot / 2;
+		int k = 0;
 		for (int i = 0; i < rc.Size(); i++)
 		{
-			double adv = rw[i] * RSQTHP_DnFonts.ADV[rf[i]];
-			Add(rc[i], rf[i], x + adv / 2, 0, H, 'None');     // 'None': the number's own colour, read as it is drawn
-			x += adv;
+			if (rc[i]) Add(rc[i], rf[i], x + rw[i] / 2, y, H, part, fm, step > 0 ? t0 + k * step : t0);
+			if (rc[i]) k++;
+			x += rw[i];
 		}
-		width = rowW; height = H;
-		// a total's hit counter, small, after the digits and on their baseline
-		if (hs >= 2)
-		{
-			String cs = String.Format("X%d", hs);
-			double ch = H * 0.5;
-			double cx = rowW / 2 + H * 0.08;
-			for (int i = 0; i < int(cs.Length()); i++)
-			{
-				int c = cs.ByteAt(i);
-				double w, gh;
-				TextureID tx = hnd.fonts.Glyph(RSQTHP_DnFonts.F_SMALL, hnd.q, c, w, gh);
-				if (!tx.IsValid() || gh <= 0) continue;
-				double ww = w * (ch / gh), adv = ww * RSQTHP_DnFonts.ADV[RSQTHP_DnFonts.F_SMALL];
-				Add(c, RSQTHP_DnFonts.F_SMALL, cx + adv / 2, -H / 2 + ch / 2, ch, 'RSQTHP_DnCount');
-				cx += adv;
-			}
-			width = rowW + 2 * (cx - rowW / 2);      // keep it centred in the extent the comfort pass reads
-		}
-		// words above the digits, the top one first: HEADSHOT over OVERKILL
-		double wy = H / 2 + H * 0.12;
-		if (words & W_OVERKILL) wy = AddWord(hnd, "OVERKILL", wy, H, 'RSQTHP_DnOverkill');
-		if (words & W_HEAD) wy = AddWord(hnd, "HEADSHOT", wy, H, 'RSQTHP_DnHead');
+		return tot;
 	}
 
-	double AddWord(RSQTHP_DamNumHandler hnd, String wd, double y, double H, Name tr)
+	// what to draw
+	void Layout(RSQTHP_DamNumHandler hnd)
 	{
-		double rh = H * 0.5;
-		double tot = 0;
-		Array<double> ws;
-		for (int i = 0; i < int(wd.Length()); i++)
+		int v = kind == K_TOTAL ? int(shown) : value;
+		int hs = kind == K_TOTAL ? hits : 0;
+		if (laidOut && v == laidValue && hs == laidHits && words == laidWords && hnd.face == laidFont && hnd.q == laidQ) return;
+		if (laidOut && (kind == K_BANNER || kind == K_TAG) && hnd.q == laidQ) return;
+		laidOut = true; laidValue = v; laidHits = hs; laidWords = words; laidFont = hnd.face; laidQ = hnd.q;
+		ClearLayout();
+		int font = hnd.face;
+		double H = RSQTHP_DnFonts.BASEH[font];
+		switch (kind)
 		{
-			double w, gh;
-			hnd.fonts.Glyph(RSQTHP_DnFonts.F_SMALL, hnd.q, wd.ByteAt(i), w, gh);
-			double ww = gh > 0 ? w * (rh / gh) : 0;
-			ws.Push(ww);
-			tot += ww * RSQTHP_DnFonts.ADV[RSQTHP_DnFonts.F_SMALL];
-		}
-		double x = -tot / 2;
-		for (int i = 0; i < int(wd.Length()); i++)
+		case K_HIT:
+		case K_GAIN:
 		{
-			double adv = ws[i] * RSQTHP_DnFonts.ADV[RSQTHP_DnFonts.F_SMALL];
-			if (ws[i] > 0) Add(wd.ByteAt(i), RSQTHP_DnFonts.F_SMALL, x + adv / 2, y + rh / 2, rh, tr);
-			x += adv;
+			String s = String.Format("%d", max(0, v));
+			if (kind == K_GAIN) s = "+" .. s;
+			width = AddText(hnd, s, font, 0, 0, H, P_DIG);
+			height = H;
+			double wy = H / 2 + H * 0.12;
+			if (words & W_OVERKILL) wy = AddWord(hnd, "OVERKILL", wy, H, 5);
+			if (words & W_HEAD) wy = AddWord(hnd, "HEADSHOT", wy, H, famWord);
+			break;
 		}
+		case K_TOTAL:
+			// the digits (centred above the bar), the combo (beside it), OVERKILL over the digits; parts placed in Draw
+			width = AddText(hnd, String.Format("%d", max(0, v)), font, 0, 0, H, P_DIG);
+			height = H;
+			comboH = H * 0.62 * hnd.wordSize;     // a word: Word Size
+			comboW = 0;
+			if (hs >= 2) comboW = AddText(hnd, String.Format("X%d", hs), font, 0, 0, comboH, P_COMBO);
+			if (words & W_OVERKILL) AddWord(hnd, "OVERKILL", H / 2 + H * 0.12, H, 5);
+			break;
+		case K_BANNER:
+		{
+			// at 64 map units from the eyes, Word Size 1 (LEVEL UP 4.5 degrees tall, the lines under it 2 and 1.7); Draw
+			// scales it with its real distance (kept out of walls) and Word Size
+			Add(0, 0, 0, 0, 14, P_BG, -2, -1, T_BAND, 1.0);   // the band: width filled in by Draw (the view's width)
+			AddText(hnd, "LEVEL UP", RSQTHP_DnFonts.F_SMALL, 0, 1.7, 5.0, P_DIG);
+			AddText(hnd, String.Format("PLAYER LV %d", level), RSQTHP_DnFonts.F_SMALL, 0, -2.9, 2.2, P_SUB1, 0);
+			AddText(hnd, "+1 UPGRADE", RSQTHP_DnFonts.F_SMALL, 0, -5.3, 1.9, P_SUB2, 15);
+			width = 40; height = 14;
+			break;
+		}
+		case K_TAG:
+		{
+			// a small tag at the gun: its name typed in (a white flash per letter), "LV n" with one punch, NEW UPGRADE
+			double nw = AddText(hnd, label, RSQTHP_DnFonts.F_SMALL, 0, 2.3, 1.3, P_NAME, 0, 2, 1);
+			AddText(hnd, String.Format("LV %d", level), RSQTHP_DnFonts.F_JFO, 0, -0.2, 2.6, P_LV, -1, 6);
+			double uw = AddText(hnd, "NEW UPGRADE", RSQTHP_DnFonts.F_SMALL, 0, -2.6, 1.0, P_NEW, 15, 14, 1);
+			double bw = max(9.0, max(nw, uw) + 2.4);
+			Add(0, 0, 0, 0, 7.6, P_BG, -2, -1, T_TAGF, bw);
+			Add(0, 0, 0, 0, 7.6, P_BORDER, -1, -1, T_TAGB, bw);
+			width = bw; height = 7.6;
+			break;
+		}
+		}
+	}
+
+	double AddWord(RSQTHP_DamNumHandler hnd, String wd, double y, double H, int fm)
+	{
+		double rh = H * 0.42 * hnd.wordSize;
+		AddText(hnd, wd, RSQTHP_DnFonts.F_SMALL, 0, y + rh / 2, rh, P_WORD, fm);
 		return y + rh * 1.1;
-	}
-
-	void Add(int c, int f, double x, double y, double hh, Name tr)
-	{
-		gCode.Push(c); gFont.Push(f); gX.Push(x); gY.Push(y); gH.Push(hh); gTrans.Push(tr);
 	}
 
 	// fit the pool's glyphs to the layout; false: the pool is out of glyphs
@@ -162,19 +203,6 @@ class RSQTHP_DnNum play
 		return true;
 	}
 
-	// start breaking apart: every glyph flies off on its own, spinning, and fades
-	void StartBreak()
-	{
-		st = S_BREAK; stT = t;
-		bX.Clear(); bY.Clear(); bVX.Clear(); bVY.Clear(); bVZ.Clear(); bZ.Clear(); bRoll.Clear(); bSpin.Clear();
-		for (int i = 0; i < gCode.Size(); i++)
-		{
-			double side = gX[i] >= 0 ? 1 : -1;
-			bX.Push(0); bY.Push(0); bZ.Push(0); bRoll.Push(0);
-			bVX.Push(side * frandom[rsqthpdn](0.4, 1.4) + gX[i] * 0.06);
-			bVY.Push(frandom[rsqthpdn](0.6, 1.8));
-			bVZ.Push(0);
-			bSpin.Push(frandom[rsqthpdn](6, 16) * (frandom[rsqthpdn](0, 1) < 0.5 ? -1 : 1));
-		}
-	}
+	// a total's combo step (the mockup's ramp: x1-2, x3-4, x5, x6+)
+	int ComboStep() { return hits <= 2 ? 0 : (hits <= 4 ? 1 : (hits == 5 ? 2 : 3)); }
 }

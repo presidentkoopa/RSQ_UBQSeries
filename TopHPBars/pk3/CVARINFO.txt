@@ -2,7 +2,7 @@
 // actors, so every machine must see the same values). Defaults are coldcite's (size 0.3, height 0.1, not full bright, stealth followed).
 server bool   rsqthp_on       = true;   // bars on/off
 server int    rsqthp_scheme   = 0;      // 0 Classic (coldcite's A), 1 Red (coldcite's B), 2 Protanopia, 3 Deuteranopia,
-                                      // 4 Tritanopia, 5 High Contrast. RSQ_Accessibility's rsqa_colorblind, when
+                                      // 4 Tritanopia, 5 High Contrast, 6 Cyan / Lavender / Orange, 7 Random (11-03). RSQ_Accessibility's rsqa_colorblind, when
                                       // loaded and not Off, overrides this.
 server float  rsqthp_scale    = 0.3;    // bar size (coldcite's Scale)
 server float  rsqthp_far      = 2.0;    // size multiplier reached at range: 1 = off; grows from 256 to 1024 units
@@ -31,16 +31,33 @@ user   bool   rsqthp_dmg_types   = true;   // Damage Type Colours, when Colour b
 // The owner's round (2026-11-03 10:44, "I love all of this, let's get on it"): each part has its own row. Look only, so user cvars.
 user   int    rsqthp_dmg_face     = 0;     // Number Font: 0 JFO metal (default), 2 Ermac's digits, 3 Classic Doom, 4 Classic Doom (small) (damnums')
 user   int    rsqthp_dmg_q        = 0;     // Text Quality: 0 Quest (half-resolution glyphs), 1 PCVR
-user   bool   rsqthp_dmg_ramp     = true;  // Colour by Hit Strength: white / yellow / orange / red by the share of health the hit took
-user   bool   rsqthp_dmg_pop      = true;  // Pop and Settle: pops small, overshoots ~1.5x, snaps back, drifts up, fades
-user   bool   rsqthp_dmg_size     = true;  // Size by Hit: bigger hits (share of health) bigger numbers
-user   bool   rsqthp_dmg_grow     = true;  // Grow with Distance: HP Bars' Far Size curve (rsqthp_far) for the numbers too
-user   bool   rsqthp_dmg_total    = true;  // Running Total: hits on one monster add into one total beside its bar, with xN
-user   bool   rsqthp_dmg_slam     = true;  // Kill Slam: on the kill the number slams big, holds, breaks apart
+user   bool   rsqthp_dmg_pop      = true;  // Pop and Settle: white flash, snaps out (small overshoot), arcs up and out, fades (11-03 design)
+user   bool   rsqthp_dmg_size     = false; // Size by Hit: bigger hits (share of health) a little bigger (off: the owner's numbers are small, 11-03)
+user   bool   rsqthp_dmg_grow     = false; // Grow with Distance: HP Bars' Far Size curve for the hit numbers too (off: 11-03, "no growing")
+user   bool   rsqthp_dmg_total    = true;  // Running Total: a chain's hits roll up in one total centred above the monster's bar
+user   bool   rsqthp_dmg_slam     = true;  // Kill Slam: on the kill the total (or the killing hit) punches once, holds, fades
 user   bool   rsqthp_dmg_overkill = true;  // Overkill Word: OVERKILL over the kill when the last hit went well past zero
-user   bool   rsqthp_dmg_head     = true;  // Headshot Word: HEADSHOT over Brutal Doom's head hits, bigger, crimson
+user   bool   rsqthp_dmg_head     = true;  // Headshot Word: HEADSHOT over Brutal Doom's head hits, bigger, a jolt, gold / white cycling
 user   bool   rsqthp_dmg_comfort  = true;  // Out of Your Face: never nearer than ~1 m, off the aim line of either gun
 user   int    rsqthp_dmg_max      = 12;    // Most Numbers: only this many nearest numbers show (Quest default)
 user   bool   rsqthp_dmg_gains    = true;  // Gains on You: +health / +armour / +ammo rise from the pickup and fly to your wrist
 user   bool   rsqthp_dmg_hitstop  = true;  // Freeze in Hit-Stop: a number on a monster in a hit-stop holds until it ends
 user   int    rsqthp_dmg_slowmo   = 0;     // Numbers in Slow-Mo: 0 World Time (slow with the world), 1 Your Time
+// The owner's design (2026-11-03 18:05-18:12, approved from animated mockups). Look only, so user cvars; each part its own row.
+user   bool   rsqthp_dn_combo     = true;  // Combo Counter: "xN" beside the HP bar (steps colour, grows to x5, shakes from x5)
+user   bool   rsqthp_dn_flash     = true;  // Headshot Flash: a headshot's number is white for its first 2-3 tics (never with Photosensitive Mode)
+user   bool   rsqthp_dn_cycle     = true;  // Headshot Cycling: Castlevania-style life on headshots (a slow colour shimmer, letters bobbing)
+user   float  rsqthp_dn_size      = 1.0;   // Number Size: 1 = digits 2.5 map units tall (7 cm); never more than 1.8 degrees near you
+user   float  rsqthp_dn_wordsize  = 1.0;   // Word Size: HEADSHOT / OVERKILL / xN / the level-up text and tag
+user   bool   rsqthp_dn_shake     = true;  // Combo Shake: the total and the combo shake a little from x5
+user   bool   rsqthp_dn_clear     = true;  // Clear of Walls: numbers traced clear of walls and ceilings
+user   int    rsqthp_dn_hitcol    = -2;    // Hit Colours: -2 by damage type, -1 by hit strength, -3 damnums' (Number Colour row), 0-16 a colour, 98 Random
+user   int    rsqthp_dn_totcol    = -1;    // Total Colours: -1 follow the combo ramp, 0-16 a colour, 98 Random
+user   int    rsqthp_dn_ramp      = 0;     // Combo Colours: 0 White-Yellow-Orange-Red ... 5, 98 Random (a fresh ramp every chain)
+user   int    rsqthp_dn_headcol   = 3;     // Headshot Colour: 3 Gold; 0-16, 98 Random
+user   bool   rsqthp_lvl          = true;  // Player Level-Up: the LEVEL UP band (Gun Bonsai's bonsai-level-up 0)
+user   bool   rsqthp_lvl_slow     = false; // Level-Up Slow-Mo: a short RSQ SlowMo pulse through the readable part (rsm_pulse 500 30)
+user   bool   rsqthp_lvl_wpn      = true;  // Weapon Level-Up: the tag off the gun (Gun Bonsai's bonsai-level-up 1)
+user   int    rsqthp_lvl_bandcol  = 3;     // Level-Up Band colour: 3 Gold; 0-16, 98 Random
+user   int    rsqthp_lvl_textcol  = 3;     // Level-Up Text colour ("LEVEL UP"): 3 Gold; 0-16, 98 Random
+user   int    rsqthp_lvl_tagcol   = 3;     // Weapon Tag Border colour (one steady colour): 3 Gold; 0-16, 98 Random

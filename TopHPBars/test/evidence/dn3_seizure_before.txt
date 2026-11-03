@@ -1,0 +1,20 @@
+# BEFORE the fix (rig, 2026-11-03 ~18:35, a_spray run, doom2 + RSQ_HPBars): one hit number's first glyph, every tic.
+# "prev" (the glyph's Prev, what the renderer interpolates FROM each frame) never leaves the spawn point (74.60) while
+# "pos" moves on: every rendered frame drew the number somewhere between where it was born and where it is.
+clock 0.00 dist 124 g0 pos -858.81,370.00,74.60 prev -858.81,370.00,74.60
+clock 1.00 dist 124 g0 pos -858.32,370.00,75.20 prev -858.81,370.00,74.60
+clock 2.00 dist 124 g0 pos -857.87,370.00,75.80 prev -858.81,370.00,74.60
+clock 3.00 dist 123 g0 pos -857.45,370.00,76.37 prev -858.81,370.00,74.60
+clock 4.00 dist 123 g0 pos -857.07,370.00,76.90 prev -858.81,370.00,74.60
+clock 5.00 dist 123 g0 pos -856.72,370.00,77.38 prev -858.81,370.00,74.60
+clock 6.00 dist 123 g0 pos -856.41,370.00,77.81 prev -858.81,370.00,74.60
+# a running total, same run: prev stuck at 89.40, pos 85.0 -> it jumped 4.4 units every frame, 35 times a second
+t40 total g0 pos -860.00,400.00,85.01 prev -860.00,400.00,89.40
+t41 total g0 pos -860.00,400.00,85.01 prev -860.00,400.00,89.40
+t42 total g0 pos -860.00,400.00,85.00 prev -860.00,400.00,89.40
+# AFTER (same run, glyphs.zs Put fixed): prev = last tic's pos, monotonic
+clock 0.00 g0 pos -858.81,370.00,74.60 prev -858.81,370.00,74.60
+clock 1.00 g0 pos -858.32,370.00,75.20 prev -858.81,370.00,74.60
+clock 2.00 g0 pos -857.87,370.00,75.80 prev -858.32,370.00,75.20
+clock 3.00 g0 pos -857.45,370.00,76.37 prev -857.87,370.00,75.80
+clock 4.00 g0 pos -857.07,370.00,76.90 prev -857.45,370.00,76.37
