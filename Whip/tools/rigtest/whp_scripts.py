@@ -84,6 +84,27 @@ def run(scen, hand='r'):
                 u = min(1.0, (t - 110) / 4.0)
                 p = (0.20, 1.30, -0.40 + pull * u, 20, 0)
             out.append(pose(p, left) + '; wait 1;')
+    elif scen.startswith('crackhit'):
+        # KNOCKBACK CHECK (11-03): a monster summoned CH_DIST ahead (CH_CLS 0 imp, 1 zombieman, 2 demon); two plain
+        # wind-up + cracks into it (no trigger: no mark); 'crackhitm': the trigger held from t20 to t170 (the mark: the
+        # crack flies to it, wraps; the arm then sways +-40 deg, as a real arm moves after a crack)
+        import os
+        d = int(os.environ.get('CH_DIST', '64')); c = int(os.environ.get('CH_CLS', '0'))
+        held = scen == 'crackhitm'
+        off = scen == 'crackhito'   # the Whip (Off) bind in the left hand, the load order's own gun in the main hand
+        out.append(pre(12, 'netevent whp_summon %d %d 0;' % (c, d)))
+        if off: out[-1] = out[-1].replace('use RSQWP_WhipWeapon;', '+rsqwp_off; wait 10;')
+        ks1 = [(k[0] + 40,) + k[1:] for k in SWING]
+        ks2 = [(k[0] + 180,) + k[1:] for k in SWING]
+        for t in range(300):
+            if held and t == 20: out.append('qz_rtrigger 1;')
+            if held and t == 170: out.append('qz_rtrigger 0;')
+            if held and 100 <= t < 170:
+                a = 40 * math.sin((t - 100) * 2 * math.pi / 35)
+                p = (0.20 + 0.15 * math.sin(math.radians(-a)), 1.35, -0.40, 5, a)
+            else:
+                p = key(t, ks1 if t < 170 else ks2)
+            out.append(pose(p, left or off) + '; wait 1;')
     elif scen.startswith('lasso'):
         # the left hand comes to the handle, grips at t15, whirls overhead (0.30 m circle, 14 tics a turn) to t150.
         # lasso0..lasso7: the circle started k x 45 degrees on, so the let-go at t150 is at that point of the circle

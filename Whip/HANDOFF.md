@@ -1,5 +1,58 @@
 # HANDOFF -- RSQ_Whip (PROJECT WHIP), 2026-10-30
 
+## 2026-11-03: Crack Knocks Enemies Back (owner's headset report 07:05) -- rig only, not headset-confirmed
+Owner: "Cracking an enemy and their not dying seems to cause them to be flung about the room, I'd like this disabled or
+put into an on/off switch."
+
+### The cause (measured: rig qzd17.3, probe whp scen 12, `tools/rigtest/knock_runs.sh` + `knock_metrics.py`)
+The probe logs the summoned monster every tic (`whp_V`: pos, vel, hp); in scen 12 it has Speed 0, so it cannot walk.
+- **A marked crack wraps the monster** (the whip weapon with the trigger held: Mark -> Crack LOCKED -> Reach -> Hit ->
+  BeginWrap). The flail then PLACES it each tic at the rope's length on the arm's yaw, and the next arm move back
+  counts as the pull and yanks it. Arm swaying +-40 deg after the crack (crackhitm, BEFORE = HEAD): the imp swept 95
+  units side to side (up to ~17 a tic, by TryMove, so its vel reads 0), then a 45% yank threw it 74 units toward you
+  at 11 a tic, 58 units up. Same on the full order (VoidDarkImp, mass 105). This is the fling. It is NOT core's rope,
+  lasso or snag: the wrap is whip.zs's own (BeginWrap/HoldWrap/Flail/Yank).
+- **The engine's damage thrust** (Hit -> Hurt -> DamageMobj, player as inflictor): 0 with the whip weapon in the
+  main hand (its Kickback 0; ApplyKickback reads ReadyWeapon). With the Whip (Off) bind and a gun in the main hand it
+  is the gun's kickback: 1.5-1.9 a tic on an imp, ~9-12 units of slide on the full order. Small, but the same switch.
+- Not the cause: Gun Bonsai VR asks (none fired; GB on: no move), BD pain states (the BD imps' own -5 / -6.5 a tic
+  dodges show with the switch off too and without a hit).
+
+### Done
+- `rsqwp_whip_crackknock` (server bool, **off**), menu "Crack Knocks Enemies Back" (after Lasso), in Reset All
+  (gen_reset.py). Off: Hit passes DMG_THRUSTLESS (fx.zs Hurt has a flags argument now), and a crack's wrap (a marked
+  crack, Assist's) is not flailed: no placing it round you with the arm, no Pain pin. It still takes the damage, pain,
+  hit-stop, sparks and sound, still wraps, and **a pull back still yanks it** (the mark, the yank, Yank Grace and RSQ
+  Miniboss's Can't Be Yanked work as before). On: exactly the old code.
+- **The line drawn** (first cut stopped the marked crack wrapping at all; the coordinator/Miniboss lane: the deliberate
+  yank must stay): what is gone with the switch off is only what moves the monster without you asking -- the
+  engine's push and the arm dragging it round. A thrown LASSO's wrap (`wrapLas`) still flails. Not touched: the swing
+  kick, the flail smash, the fireball knock, the aimed swing, the Leash.
+
+| run (knock_metrics.py, 60 tics after each hit; scen 12 monster can't walk) | BEFORE (HEAD) | switch ON | switch OFF |
+|---|---|---|---|
+| doom2, marked crack on an imp, arm sways +-40 deg | WRAP, flail swept it 95.3 | WRAP, 95.3 | WRAP, moved 0.0 |
+| ... then the arm winds up for the next crack (reads as a pull) | YANK 45%, 73.8 at 11.04/tic | same | YANK 47%, 81.3 at 11.14 (the yank is kept) |
+| full order, same (BD imps) | WRAP, swept 95.3; yank 74.8 at 11.04 | swept 95.3; yank 74.8 | WRAP, no sweep (its only moves: BD's own imp leap, 10/tic, seen with no whip too) |
+| doom2, Whip (Off) + Pistol, plain crack: engine thrust | 1.50 / 1.88 a tic | 1.88 / 1.88 | 0.00 |
+| full order, Whip (Off) + BD fists | slid 8.8 / 11.6 | slid 12.5-22.8 | moved 0.0 |
+| yank scenario (mark, crack, pull back 0.6 m), doom2 / full | YANK 100% pulled | YANK 100% pulled | YANK 100% pulled, both |
+| RSQ Miniboss imp, Can't Be Yanked on / off (its whip_yank_noyank1/0.txt) | -- | -- | "heavy: you swing to it" / "light: pulled" |
+| doom2, lasso thrown at an imp | -- | WRAP, lifted (flail) | WRAP, lifted (flail) |
+- Scripts: `tools/rigtest/knock_runs.sh` (crackhitm, crackhito, lasso1i, switch 0/1, doom2 + full order),
+  `knock_runs2.sh` (yank 0/1, Miniboss noyank), `knock_metrics.py` (reads whp_V). Logs: scratchpad `whp/logs/`
+  B_* (HEAD), A_* (first cut), C_* (final).
+- Script errors: doom2 + Whip: 0. doom2 + GunBonsai 0.10.6 + all RSQ pk3s: 0. doom2 + RSQ_Miniboss + Whip: 0. Full
+  order (01, 02, 03 2.0.3p, 04-07, GunBonsai, all RSQ): 4, all 02_BD22_VoxelPack's voxeldef. Every run.
+
+### Not done / open
+- Not headset-tested: whether this was the owner's case (he may have held the trigger while cracking, which marks).
+- With the switch off, an arm moving back after a marked crack (a wind-up for the next one) still counts as the pull
+  and yanks it (81 units at 11/tic on the rig). If that is what he felt, Yank Grace (option) or a stricter pull is
+  the next step: his call.
+- On the full order the rig's lasso never gripped (grip key seen, no LASSO, with the switch on or off, the off
+  weapon UBQS_ForceHand): not caused by this change; not looked into.
+
 ## 2026-11-03: the aimed swing anchor (owner, approved 11-03) -- rig only, not headset-confirmed
 
 ### Done (measured on the rig: qzd17.3 tools/rig17, doom2 + SWINGTST from tools/rigtest/mkswingmap.py, whp probe scen 11)

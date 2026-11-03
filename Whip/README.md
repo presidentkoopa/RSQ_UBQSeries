@@ -104,6 +104,7 @@ Front page of RSQ Whip. "On" = on by default (CVARINFO default). "Option" = off 
 | Leash (Lock) | On | Lock aim: keep the bind held on a locked monster and it is pulled to you. |
 | Stun | On | A crack knocks a monster into pain (breaks off its attack). |
 | Lasso (off-hand grip) | On | Off hand on the thong with its grip down whirls it as a lasso. |
+| Crack Knocks Enemies Back | Option | A crack that doesn't kill knocks the monster about: the hit carries the engine's push, and a marked crack's wrap swings it round with your arm. Off: it takes the damage, pain and sparks and stays where it is; pull back and it is still yanked to you. A thrown lasso still swings it. |
 | Swing a Wrapped Monster (flail) | On | A wrapped or lassoed monster swings with your arm and smashes into others. |
 | Keep the Mark When You Lift | On | Lifting the whip for the crack does not move the mark; only alt-fire moves it. |
 | Yank Grace (no yank right after a wrap) | Option | No yank for about 1/3 s after a wrap, so the crack's follow-through does not yank. |
@@ -199,6 +200,9 @@ are the 11-02 fixes. They were measured on the rig only, so all of them are not 
     - Crack Fireballs Out of the Air: crack an imp's fireball: it bursts where cracked. Then set Cracked
       Fireballs and Rockets to "Knocked away": it flies off and bursts away from you.
       **(not yet headset-confirmed)**
+    - Crack Knocks Enemies Back: off (the default), mark a monster and crack it, then wave the arm: it stays put
+      (pain and sparks only); pull the hand back and it is yanked to you. On: it also swings round with the arm. A
+      thrown lasso swings it either way. **(rig only, not headset-confirmed)**
     - Yank Grace: after a wrap, the crack's own follow-through no longer yanks the monster at once.
       **(not yet headset-confirmed)**
 15. Bind Whip (Main) and switch to a gun. Hold the bind: the whip comes out of that hand. Release: it rolls up. Try Whip Style "Assist": a press throws a lash for you.

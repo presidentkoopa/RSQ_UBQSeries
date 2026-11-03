@@ -42,7 +42,8 @@ class RSQWP_Perks
 	// nothing happens without the patch), which pays damage by the player's own body to the weapon that opened it.
 	// The bracket covers an inflictor that is the player or nothing; a smash's inflictor is the swung monster, so
 	// inside the bracket that hit is dealt as the player's with no thrust (Smash does its own knock).
-	static play void Hurt(Actor v, Actor inflictor, Actor source, int dmg, Name kind)
+	// flags: DMG_THRUSTLESS from a crack or sting with Crack Knocks Enemies Back off (whip.zs Hit)
+	static play void Hurt(Actor v, Actor inflictor, Actor source, int dmg, Name kind, int flags = 0)
 	{
 		if (!v || v.Health <= 0) return;
 		Weapon wh = null;
@@ -55,7 +56,7 @@ class RSQWP_Perks
 		}
 		bool bracket = gb && wh && gb.GetInt("credit.push", "", 0, 0, wh) == 1;
 		if (bracket && inflictor && inflictor != source) v.DamageMobj(source, source, dmg, kind, DMG_THRUSTLESS);
-		else v.DamageMobj(inflictor, source, dmg, kind);
+		else v.DamageMobj(inflictor, source, dmg, kind, flags);
 		if (bracket) gb.GetInt("credit.pop", "", 0, 0, wh);
 	}
 }

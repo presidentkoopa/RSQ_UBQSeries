@@ -2023,6 +2023,14 @@ class RSQWP_Whip : EventHandler
 	// 'Whip' is a type no Brutal Doom or XMVE actor has a state or factor for: their plain Pain and Death, full damage.
 	static Name DmgType() { return 'Whip'; }
 
+	// CRACK KNOCKS ENEMIES BACK (option, owner 11-03, off). Off: a crack's wrap (a marked crack, Assist's) is not swung
+	// with the arm -- no flail placing it round you, no Pain pin -- it stays where it stands until a deliberate pull
+	// back yanks it (the yank, the mark and RSQ Miniboss's "Can't Be Yanked" work as before). Rig 11-03: the flail
+	// swept a cracked imp 95 units round the room with the arm. A thrown LASSO's wrap still flails: its own act.
+	static bool KnockOn() { return RSQWP_Util.Flag("rsqwp_whip_crackknock", false); }
+	bool wrapLas[NW];            // this wrap came from a thrown lasso (BeginWrap)
+	bool FlailOn(int i) { return RSQWP_Util.Flag("rsqwp_whip_flail", true) && (wrapLas[i] || KnockOn()); }
+
 	static bool HeavyThing(Actor v)
 	{
 		return v.bBOSS || v.bDONTTHRUST || v.Mass >= RSQWP_Util.Num("rsqwp_whip_heavy", 1000) || RSQWP_Util.MinibossAs(v, "yank");
@@ -2045,7 +2053,8 @@ class RSQWP_Whip : EventHandler
 		flailL[i] = max(to.Length(), v.radius + 8);
 		flailOff[i] = Actor.DeltaAngle(RSQWP_Util.HandYaw(pmo, hand), atan2(to.y, to.x));
 		flailPin[i] = false;
-		if (RSQWP_Util.Flag("rsqwp_whip_flail", true) && !HeavyThing(v) && v.Mass <= LightMass(pmo) && v.bISMONSTER)
+		wrapLas[i] = lasso;
+		if (FlailOn(i) && !HeavyThing(v) && v.Mass <= LightMass(pmo) && v.bISMONSTER)
 		{
 			State pain = v.FindState("Pain");
 			if (pain)
@@ -2140,7 +2149,7 @@ class RSQWP_Whip : EventHandler
 	// and half to the swung one, as Grapple's Impact splits it.
 	void Flail(int i, PlayerPawn pmo, int hand, Actor v, Vector3 hp)
 	{
-		if (!RSQWP_Util.Flag("rsqwp_whip_flail", true) || HeavyThing(v)) return;
+		if (!FlailOn(i) || HeavyThing(v)) return;
 		bool light = v.Mass <= LightMass(pmo);
 		// re-pinned every tic, as monster.zs does: a hurt (a smash's share, a gun) puts it back in Pain with tics
 		if (flailPin[i] && v.Health > 0)
@@ -2371,6 +2380,7 @@ class RSQWP_Whip : EventHandler
 			if (byWeapon[i] && v && v.Health > 0 && v.bISMONSTER)
 			{
 				// the whip weapon: it wraps round the monster and waits for the pull (HoldWrap), and swings with the arm
+				// (the flail: not for a crack's wrap with Crack Knocks Enemies Back off, BeginWrap / Flail)
 				BeginWrap(i, pmo, hand, v, fromLasso);
 			}
 			else if (v && v.Health > 0 && v.bISMONSTER && RSQWP_Util.Flag("rsqwp_whip_leash", true) && BindHeld(pmo, hand)) Leash(i, pmo, hand, v, at);
@@ -2754,7 +2764,11 @@ class RSQWP_Whip : EventHandler
 		int sting = Gb(pmo, G_STING);
 		if (crack && sting > 0) { dmg = int(dmg * (1.0 + 0.25 * sting) + 0.5); Touch("crack", pmo, v); }
 		int hp0 = v.Health;
-		if (dmg > 0) { RSQWP_Events.Whipped(v, pmo, crack ? hk : -1.0); RSQWP_Perks.Hurt(v, pmo, pmo, dmg, DmgType()); }
+		// CRACK KNOCKS ENEMIES BACK (option, owner 11-03, off): off, the hit carries no engine damage thrust. With the whip
+		// weapon in the main hand that is 0 anyway (its Kickback 0); the Whip (Off) bind with a gun in the main hand
+		// thrust by the GUN's kickback (ApplyKickback reads ReadyWeapon): rig 11-03, 1.75-1.9 a tic on an imp
+		int thr = KnockOn() ? 0 : DMG_THRUSTLESS;
+		if (dmg > 0) { RSQWP_Events.Whipped(v, pmo, crack ? hk : -1.0); RSQWP_Perks.Hurt(v, pmo, pmo, dmg, DmgType(), thr); }
 		bool stunned = false;
 		if (crack && v && v.Health > 0 && v.bISMONSTER && RSQWP_Util.Flag("rsqwp_whip_stun", true))
 		{
