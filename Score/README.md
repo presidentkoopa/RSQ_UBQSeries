@@ -35,7 +35,7 @@ RS_Score, which is built on ijon's Dakka scoring.
 - Every move in the series has one name (the gun, the shotgun, a saber cut, a Force grip, the shield's disc, a
   whip yank, the hook's zip, a thrown thing, a stun grenade, a holster draw, a lean...). A named combo is a
   pattern of those moves, from a data table: Lion Tamer (whip, then shield bash), Clay Pigeon (Force push,
-  then gun), F.E.A.R. Effect (a gun-butt shove, then a shotgun kill in your own slow motion), and well over two
+  then gun), F.E.A.R. Effect (the owner's: a gun-butt shove, then a shotgun kill in the slow beat that follows; every shotgun hit in that beat bleeds twice, and the kill pays the combo), and well over two
   hundred more. One named row per kill, the best-paying match.
 - An unnamed chain still pays: 2, 3, 4, 5 or 6 actions pay 0.2, 0.45, 0.75, 1.0 or 1.2 of the base; a chain
   that mixes more than two mods pays a little more; the whole chain inside 2 seconds pays x1.25.

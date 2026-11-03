@@ -17,7 +17,7 @@ Each mod has one thing it does that nothing else does. That is the first line of
 | | Mod | pk3 | The one thing |
 |---|---|---|---|
 | ✋ | [DistanceGrab](DistanceGrab/) | `RSQ_DistanceGrab.pk3` | Gravity gloves: palm out at a thing across the room and it flies into your hand; carry it, swing it, throw it, hide behind it. Yours from the start, no levelling. |
-| 🥊 | [Melee](Melee/) | `RSQ_Melee.pk3` | Your real swing is the punch: how fast you hit is how hard it lands, with uppercuts that lift, a gun-butt shove that slows time (the F.E.A.R. Effect), a Hadouken that punches a fireball back at its shooter, and a Headlock you throw monsters out of. |
+| 🥊 | [Melee](Melee/) | `RSQ_Melee.pk3` | Your real swing is the punch: how fast you hit is how hard it lands, with uppercuts that lift, a gun-butt shove that slows time, a Hadouken that punches a fireball back at its shooter, and a Headlock you throw monsters out of. |
 | 🛡️ | [ShieldSaw](ShieldSaw/) | `RSQ_ShieldSaw.pk3` | Rev the shield, lock your targets, and throw it as a saw disc that cuts through them, grinds the one it sticks in, and comes back to your hand. id Software's shield saw (*Doom: The Dark Ages*), brought to Doom VR first by **Ermac**. |
 | ⚔️ | [QuestSaber](QuestSaber/) | `RSQ_Saber.pk3` | A blade that really blocks: it reads its own sweep against every shot in flight, so a bolt that crosses the blade is stopped and sent back where you look. And the Force from the off hand: push, pull, grip, jump, lightning. |
 | 🎒 | [TacticalRig](TacticalRig/) | `RSQ_TacticalRig.pk3` | Holsters on your real body: reach to a hip, your chest or a shoulder and the gun is there. And Ermac's cigarette: light it, take a drag, flick it, and time slows. |
