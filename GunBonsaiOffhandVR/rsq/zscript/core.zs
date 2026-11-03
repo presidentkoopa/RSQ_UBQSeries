@@ -179,6 +179,17 @@ class RSQM play
 	// The class's own spawn health is the multiplier (a champion that was a legendary first already
 	// carries the 300 % in its StartHealth, so the larger of the two wins). Read by name; without
 	// LegenDoom Lite this is GetSpawnHealth.
+	// RSQ Miniboss, by name (nothing links): this miniboss was given LegenDoom Lite's BOSS legendary health
+	// (RSQMB_Service "bossfor" "ldhealth"). Without RSQ Miniboss: false.
+	static bool MinibossLDBoss(Actor v)
+	{
+		String wn = "RSQMB_Ward";
+		class<Inventory> wc = wn;
+		if (!v || !wc || !v.FindInventory(wc)) return false;
+		let sv = ServiceIterator.Find("RSQMB_Service").Next();
+		return sv && sv.GetInt("bossfor", "ldhealth", 0, 0, v) == 1;
+	}
+
 	static int StartHealth(Actor v)
 	{
 		if (!v) return 1;
@@ -187,7 +198,8 @@ class RSQM play
 		class<Inventory> ct = tk;
 		if (ct && v.FindInventory(ct))
 		{
-			let cv = CVar.FindCVar(v.bBoss ? 'LD_legendaryhealthboss' : 'LD_legendaryhealth');
+			// a miniboss RSQ Miniboss made legendary with its "LegenDoom Boss Health" on got the boss number (by name)
+			let cv = CVar.FindCVar((v.bBoss || MinibossLDBoss(v)) ? 'LD_legendaryhealthboss' : 'LD_legendaryhealth');
 			int pct = cv ? cv.GetInt() : 300;
 			let d = GetDefaultByType(v.GetClass());
 			int cls = d ? d.SpawnHealth() : sh;

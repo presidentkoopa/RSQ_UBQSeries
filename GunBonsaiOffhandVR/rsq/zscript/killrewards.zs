@@ -110,6 +110,21 @@ class RSQ_KRHandler : EventHandler
 		return 1, 1, 1;
 	}
 
+	// COUNTS AS A BOSS HERE: the engine's BOSS flag, or an RSQ Miniboss miniboss while Miniboss's "Boss Kill Rewards" is
+	// on (owner 2026-11-03: a miniboss never gets the BOSS flag). Asked by name, nothing links: the monster carries
+	// "RSQMB_Ward", then RSQMB_Service "bossfor" "rewards" says yes (it counts one that died this tic or the last, so
+	// the order of the two WorldThingDied handlers does not matter). Without RSQ Miniboss: bBoss alone, as before.
+	static bool BossHere(Actor a)
+	{
+		if (!a) return false;
+		if (a.bBoss) return true;
+		String wn = "RSQMB_Ward";
+		class<Inventory> wc = wn;
+		if (!wc || !a.FindInventory(wc)) return false;
+		let sv = ServiceIterator.Find("RSQMB_Service").Next();
+		return sv && sv.GetInt("bossfor", "rewards", 0, 0, a) == 1;
+	}
+
 	override void WorldThingDied(WorldEvent e)
 	{
 		if (!SVB("rsqgb_kr_enabled", true)) return;
@@ -122,12 +137,13 @@ class RSQ_KRHandler : EventHandler
 		Actor killer = (e.DamageSource && e.DamageSource.player) ? e.DamageSource : null;
 		if (!killer && a.target && a.target.player) killer = a.target;
 
-		int mult = a.bBoss ? max(0, SVI("rsqgb_kr_boss", 3)) : 1;
+		bool boss = BossHere(a);
+		int mult = boss ? max(0, SVI("rsqgb_kr_boss", 3)) : 1;
 		int num = 0;
 		if (SVI("rsqgb_kr_mode", 0) == 1)
 		{
 			// Range. SoM's chance test was inverted (random > chance), so at 100% only bosses ever dropped; fixed.
-			if (a.bBoss || random[RSQKR](1, 100) <= clamp(SVI("rsqgb_kr_chance", 100), 0, 100))
+			if (boss || random[RSQKR](1, 100) <= clamp(SVI("rsqgb_kr_chance", 100), 0, 100))
 			{
 				int lo = min(SVI("rsqgb_kr_min", 1), SVI("rsqgb_kr_max", 3)), hi = max(SVI("rsqgb_kr_min", 1), SVI("rsqgb_kr_max", 3));
 				num = SVB("rsqgb_kr_rnd", true) ? random[RSQKR](lo * mult, hi * mult) : hi * mult;
@@ -142,18 +158,18 @@ class RSQ_KRHandler : EventHandler
 		if (scav > 0) num = int(round(num * (1.0 + 0.25 * scav)));
 		if (num <= 0) return;
 		int nh, na, nm;
-		[nh, na, nm] = Burst(a, num, Perk(killer, "RichBits"));
+		[nh, na, nm] = Burst(a, num, Perk(killer, "RichBits"), boss);
 		// LUCKY KILL: decided next tic (RSQ Score calls a big moment in its own WorldThingDied, which may run after this one)
 		int lucky = Perk(killer, "LuckyKill");
-		if (lucky > 0) { luckyBody.Push(a); luckyBy.Push(killer); luckyNum.Push(num); luckyTic.Push(level.maptime); }
+		if (lucky > 0) { luckyBody.Push(a); luckyBy.Push(killer); luckyNum.Push(num); luckyTic.Push(level.maptime); luckyBoss.Push(boss); }
 		// Debug Log (rsqgb_kr_debug, noarchive): one line a kill, the proof a run can grep for
 		if (SVB("rsqgb_kr_debug", false))
 			Console.Printf("RSQ KR t%d: %s (%d hp%s) burst into %d bits: %d health, %d armour, %d ammo", level.maptime, cn, a.SpawnHealth(),
-				a.bBoss ? ", boss" : "", nh + na + nm, nh, na, nm);
+				a.bBoss ? ", boss" : (boss ? ", miniboss as boss" : ""), nh + na + nm, nh, na, nm);
 	}
 
 	// num bits out of a body, SoM's throw; Rich Bits (the killer's) draws them glowing (additive) a level
-	int, int, int Burst(Actor a, int num, int rich)
+	int, int, int Burst(Actor a, int num, int rich, bool boss = false)
 	{
 		int wh, wa, wm;
 		[wh, wa, wm] = Mix();
@@ -163,7 +179,7 @@ class RSQ_KRHandler : EventHandler
 		int nh = 0, na = 0, nm = 0;
 		for (int i = 0; i < num; ++i)
 		{
-			if (!a.bBoss && random[RSQKR](1, 100) > chance) continue;
+			if (!boss && !a.bBoss && random[RSQKR](1, 100) > chance) continue;
 			int r = random[RSQKR](1, sum);
 			String cls;
 			if (r <= wh) { cls = "RSQ_KRHealthBit"; ++nh; }
@@ -184,6 +200,7 @@ class RSQ_KRHandler : EventHandler
 	// luckyTic, set by RSQM.Touch); Score's is its own call ("kill.big"). Nothing without the node.
 	Array<Actor> luckyBody, luckyBy;
 	Array<int> luckyNum, luckyTic;
+	Array<bool> luckyBoss;
 	override void WorldTick()
 	{
 		for (int i = luckyBody.Size() - 1; i >= 0; i--)
@@ -191,13 +208,15 @@ class RSQ_KRHandler : EventHandler
 			if (level.maptime <= luckyTic[i]) continue;
 			Actor a = luckyBody[i], by = luckyBy[i];
 			int num = luckyNum[i], died = luckyTic[i];
+			bool boss = i < luckyBoss.Size() && luckyBoss[i];
 			luckyBody.Delete(i); luckyBy.Delete(i); luckyNum.Delete(i); luckyTic.Delete(i);
+			if (i < luckyBoss.Size()) luckyBoss.Delete(i);
 			if (!a || !by || !by.player) continue;
 			String why = LuckyWhy(a, died);
 			if (why == "") continue;
 			int lv = clamp(Perk(by, "LuckyKill"), 1, 3);
 			int nh, na, nm;
-			[nh, na, nm] = Burst(a, num * lv, Perk(by, "RichBits"));
+			[nh, na, nm] = Burst(a, num * lv, Perk(by, "RichBits"), boss);
 			RSQM.Burst("RSQML_Burst5", a.pos + (0, 0, a.height * 0.6), 1.5 + 0.5 * lv, 0);
 			a.A_StartSound("rsqml/fx/heavy", CHAN_AUTO, CHANF_OVERLAP, 1.0);
 			RSQM.Touch("lucky", by, a);
