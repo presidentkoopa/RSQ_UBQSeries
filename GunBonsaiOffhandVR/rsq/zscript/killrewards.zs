@@ -152,7 +152,7 @@ class RSQ_KRHandler : EventHandler
 				a.bBoss ? ", boss" : "", nh + na + nm, nh, na, nm);
 	}
 
-	// num bits out of a body, SoM's throw; Rich Bits (the killer's) draws them bigger a level
+	// num bits out of a body, SoM's throw; Rich Bits (the killer's) draws them glowing (additive) a level
 	int, int, int Burst(Actor a, int num, int rich)
 	{
 		int wh, wa, wm;
@@ -172,7 +172,8 @@ class RSQ_KRHandler : EventHandler
 			// SoM's throw: 32 up, 1-6 out and up, a random heading
 			bool ok; Actor bit;
 			[ok, bit] = a.A_SpawnItemEx(cls, 0, 0, 32, random[RSQKR](1, 6), 0, random[RSQKR](1, 6), random[RSQKR](0, 360));
-			if (bit && rich > 0) bit.scale *= 1.0 + 0.2 * rich;
+			// RICH BITS' LOOK (owner 11-02: "emissive", no lights): drawn additive, brighter and a little bigger a level
+			if (bit && rich > 0) { bit.A_SetRenderStyle(min(1.0, 0.7 + 0.1 * rich), STYLE_Add); bit.scale *= 1.0 + 0.1 * rich; }
 		}
 		return nh, na, nm;
 	}
@@ -362,7 +363,7 @@ class RSQ_KRPerk : RSQ_Perk
 		return Super.IsSuitableForPlayer(stats) && (pa == "" || PHas(stats, pa));
 	}
 }
-// BIT SCAVENGER (root): +25% bits a kill a level.
+// BIT SCAVENGER, shown as "Gastropub" (owner 11-02) (root): +25% bits a kill a level.
 class RSQ_Upgrade_BitScavenger : RSQ_KRPerk
 {
 	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("pct", string.format("%d%%", 25 * level)); }

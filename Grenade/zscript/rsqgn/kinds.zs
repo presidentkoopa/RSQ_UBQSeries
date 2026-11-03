@@ -38,6 +38,12 @@ class RSQGN_Kind play
 	}
 	// the frag's own fireball (frag, impact, incendiary); the rest have their own look
 	static bool Fireball(int k) { return k == FRAG || k == IMPACT || k == INCENDIARY; }
+	// each kind's colour (the owner's, GBOVR_TREES.md 4.5; the same as its skin, tools/gen_kinds.py); -1 the frag
+	static int Colour(int k)
+	{
+		static const int C[] = { -1, 0xFF7814, 0xFFC828, 0x46BEFF, 0xAA50FF, 0x8C8C96, 0xFFFFFF, 0xFF6EBE, 0x3CDC5A };
+		return (k >= 0 && k < COUNT) ? C[k] : -1;
+	}
 
 	// THE LOOK AND THE SOUND of a blast, by kind (the thrown grenade's Boom and the one in the hand)
 	static void Look(Actor at, int k, Actor by = null)
@@ -184,6 +190,24 @@ class RSQGN_Kind play
 
 // INCENDIARY: fire over the blast's radius for 3 + a level seconds, 5 a second to every monster standing in it
 // (monsters only: the blast itself already hurts its thrower). Its look is the pack's own flames, a few at a time.
+// YOUR OWN FIRE (owner 11-02: "in bd22, fire hurts you, but in vanilla, it should not ... an option to toggle"):
+// rsqgn_fire_self 0 Auto -- the burning ground hurts players too when Brutal Doom is loaded (its ExplosiveBarrel1,
+// the class RSQ DistanceGrab's policy.zs found in brutal22test6) or BD22 VR Reloaded (RSQ_HandTone); 1 always; 2 never.
+class RSQGN_FireRule play
+{
+	static bool SelfBurns()
+	{
+		let c = CVar.FindCVar("rsqgn_fire_self");
+		int v = c ? c.GetInt() : 0;
+		if (v == 1) return true;
+		if (v == 2) return false;
+		// looked up from Strings at run time: a quoted class name is resolved at compile time and fails without that mod
+		String n1 = "ExplosiveBarrel1", n2 = "RSQ_HandTone";
+		Class<Actor> bd = n1, bdvr = n2;
+		return bd != null || bdvr != null;
+	}
+}
+
 class RSQGN_FireField : Actor
 {
 	double radius2;
@@ -200,14 +224,16 @@ class RSQGN_FireField : Actor
 			A_SpawnItemEx("RSQGN_Flame", cos(a) * d, sin(a) * d, 2, 0, 0, frandom[RSQGN_Fx](0.3, 0.8), 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEPOSITION | SXF_ABSOLUTEANGLE);
 		}
 		if (left % 7 != 0) return;
+		bool selfToo = RSQGN_FireRule.SelfBurns();
 		let it = BlockThingsIterator.Create(self, radius2);
 		while (it.Next())
 		{
 			let t = it.thing;
-			if (!t || !t.bIsMonster || !t.bShootable || t.health <= 0) continue;
+			if (!t || !t.bShootable || t.health <= 0) continue;
+			if (!t.bIsMonster && !(t.player && selfToo)) continue;
 			if ((t.pos.xy - pos.xy).Length() > radius2 + t.radius || abs(t.pos.z - pos.z) > 48) continue;
 			t.DamageMobj(self, target, 1, 'Fire');
-			RSQGN_Upg.Touch("fire.nade", target, t);
+			if (t.bIsMonster) RSQGN_Upg.Touch("fire.nade", target, t);
 		}
 	}
 	States { Spawn: TNT1 A -1; Stop; }

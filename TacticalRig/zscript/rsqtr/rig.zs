@@ -525,6 +525,13 @@ class RSQTR_Rig : EventHandler
 	static bool IsGunRegion(int r) { return r == 0 || r == 1 || r == 4 || r == 5 || r == 6 || r == 7; }
 	static bool IsSaberRegion(int r) { return r == RSQTR_Region.SABER_L || r == RSQTR_Region.SABER_R; }
 	static bool IsGrenadeRegion(int r) { return r == RSQTR_Region.GRENADES; }
+	// the colour of RSQ Grenade's kind in this player's hand (its "kind.colour", by name; -1 the frag or no RSQ Grenade)
+	static int KindColour(PlayerPawn pmo)
+	{
+		if (!pmo || !pmo.player || NadeWeapon() != RSQ_GRENADE) return -1;
+		let s = ServiceIterator.Find("RSQGN_Service").Next();
+		return s ? s.GetInt("kind.colour", "", pmo.PlayerNumber()) : -1;
+	}
 
 	// THE GRENADE SPOT. Grip it (either hand) and the weapon pack's own hand grenade comes to the MAIN hand -- with
 	// Brutal Doom VR that is its VR grenade: the off hand pulls the pin, you throw it by hand. Grip it again with the
@@ -1642,6 +1649,16 @@ class RSQTR_Rig : EventHandler
 					q.Scale = (ps, ps);
 					q.bINVISIBLE = st == 2 && (level.maptime / 8) % 2 == 1;
 					q.Alpha = clamp(a + 0.2, 0.0, 1.0);
+					// THE KIND'S COLOUR (owner 11-02): with RSQ Grenade's kind in hand not the frag, the grenade spot glows in
+					// its colour; the count still reads -- empty is the small blinking light, one left pulses slowly
+					int kc = nades >= 0 ? KindColour(pmo) : -1;
+					if (kc >= 0)
+					{
+						q.A_SetRenderStyle(q.Alpha, STYLE_AddShaded);
+						q.SetShade(kc);
+						if (st == 1) q.Alpha *= 0.55 + 0.45 * sin(level.maptime * 9.0);
+					}
+					else if (q.GetRenderStyle() != STYLE_Add) q.A_SetRenderStyle(q.Alpha, STYLE_Add);
 				}
 			}
 			else if (pip[r]) pip[r].bINVISIBLE = true;

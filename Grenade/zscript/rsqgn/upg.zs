@@ -48,6 +48,14 @@ class RSQGN_Service : Service
 			let g = RSQGN_Thrown(objectArg);
 			return g ? g.cooked : -1;
 		}
+		// "kind.colour": intArg player -> the colour of the kind in that player's hand (the alt trigger's pick), -1 the frag
+		// (RSQ Tactical Rig tints its grenade spot's light with it)
+		if (request == "kind.colour")
+		{
+			int n = intArg;
+			if (n < 0 || n >= MAXPLAYERS || !playeringame[n]) return -1;
+			return RSQGN_Kind.Colour(RSQGN_Handler.KindOf(n));
+		}
 		if (request == "fuse.count" || request == "fuse.amber")
 		{
 			let h = RSQGN_Handler.Get();

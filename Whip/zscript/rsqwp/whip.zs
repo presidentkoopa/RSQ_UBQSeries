@@ -528,6 +528,7 @@ class RSQWP_Whip : EventHandler
 			for (int pn = 0; pn < MAXPLAYERS; pn++) offGripKey[pn] = false;
 		}
 		if (knocked.Size()) KnockedTick();
+		if (fetchItem.Size()) FetchTick();
 		if (missiles.Size() && level.maptime % 8 == 0)
 			for (int k = missiles.Size() - 1; k >= 0; k--)
 				if (!missiles[k] || missiles[k].bDestroyed || !missiles[k].bMISSILE) missiles.Delete(k);
@@ -2332,6 +2333,10 @@ class RSQWP_Whip : EventHandler
 		}
 	}
 
+	// ASSIST'S REACH (owner 11-02): 2.2x the whip's length, ~4 m for MIT's 1.8 m (it was 1.1x of the old 3.76 m whip,
+	// the same ~4 m) -- and further with Long Thong
+	const ASSIST_REACH_K = 2.2;
+
 	// ASSIST's lash: thrown for you, along where the hand points, the way a locked crack flies
 	// (Reach): to the monster nearest that line within 15 degrees and the whip's length (a
 	// little more), else to full length in the air, where it cracks (Crack: Assist's reach round
@@ -2340,7 +2345,7 @@ class RSQWP_Whip : EventHandler
 	{
 		Vector3 org = RSQWP_Util.HandPos(pmo, hand);
 		Vector3 dir = RSQWP_Util.MapDir(RSQWP_Util.HandYaw(pmo, hand), RSQWP_Util.HandPitch(pmo, hand));
-		double reach = wlen[i] * 1.1;
+		double reach = wlen[i] * ASSIST_REACH_K;
 		Actor best = null;
 		double bestA = 15.0;
 		let it = BlockThingsIterator.CreateFromPos(org.x, org.y, org.z, 64, reach, false);
@@ -3001,6 +3006,28 @@ class RSQWP_Whip : EventHandler
 		return n;
 	}
 
+	// A FETCHED PICKUP IS TAKEN WHEN IT REACHES YOU (owner 11-02): the engine picks an item up only when the player moves
+	// into it, so one landing on a VR player standing still lay at his feet. Within reach of the body it is touched
+	// (Inventory.Touch: the pickup's own sound, message and flash); after 2 s in the air it is left where it is.
+	Array<Inventory> fetchItem;
+	Array<PlayerPawn> fetchBy;
+	Array<int> fetchTic;
+	void FetchTick()
+	{
+		for (int n = fetchItem.Size() - 1; n >= 0; n--)
+		{
+			let inv = fetchItem[n];
+			let pmo = fetchBy[n];
+			bool done = !inv || inv.bDestroyed || inv.Owner || !pmo || pmo.Health <= 0 || level.maptime - fetchTic[n] > 70;
+			if (!done && pmo.Distance2D(inv) <= pmo.radius + inv.radius + 16 && inv.pos.z <= pmo.pos.z + pmo.height && inv.pos.z + inv.height >= pmo.pos.z - 8)
+			{
+				inv.Touch(pmo);
+				done = true;
+			}
+			if (done) { fetchItem.Delete(n); fetchBy.Delete(n); fetchTic.Delete(n); }
+		}
+	}
+
 	// Pickups lying loose near the crack fly to the player on an arc that lands on him.
 	int Fetch(PlayerPawn pmo, Actor mark, double reach)
 	{
@@ -3016,6 +3043,7 @@ class RSQWP_Whip : EventHandler
 			double g = level.gravity * inv.Gravity / 800.0;
 			if (inv.bNOGRAVITY) g = 0;
 			inv.vel = (to.x / T, to.y / T, to.z / T + 0.5 * g * T);
+			fetchItem.Push(inv); fetchBy.Push(pmo); fetchTic.Push(level.maptime);
 			n++;
 		}
 		return n;

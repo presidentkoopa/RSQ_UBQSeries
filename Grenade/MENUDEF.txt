@@ -34,6 +34,7 @@ OptionMenu "RSQGN_Options"
 	Slider "Packs of Three a Map", "rsqgn_packs", 0, 16, 1, 0
 	StaticText " "
 	Option "Pin With Your Teeth", "rsqgn_face", "OnOff"
+	Option "Your Own Fire Burns You", "rsqgn_fire_self", "RSQGN_FireSelf"
 	StaticText " "
 	Submenu "Tuning and Debug", "RSQGN_Tuning"
 }
@@ -59,4 +60,12 @@ OptionMenu "RSQGN_Tuning"
 	Option "Debug Log", "rsqgn_debug", "OnOff"
 	StaticText " "
 	SafeCommand "Reset All", "resetcvar rsqgn_on rsqgn_start rsqgn_scatter rsqgn_singles rsqgn_packs rsqgn_fuse rsqgn_gravity rsqgn_bounce rsqgn_wallbounce rsqgn_friction rsqgn_swing rsqgn_throw rsqgn_lift rsqgn_face rsqgn_face_near rsqgn_face_far rsqgn_face_hold rsqgn_skeet_window rsqgn_debug", "Reset all RSQ Grenade settings?"
+}
+
+
+OptionValue "RSQGN_FireSelf"
+{
+	0, "Auto (Brutal Doom: yes)"
+	1, "Yes"
+	2, "No"
 }
