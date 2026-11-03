@@ -562,7 +562,8 @@ class RSQGR_Core : EventHandler
 	static bool TooHeavy(RSQGR_Hook h, Actor v)
 	{
 		double mmax = RSQGR_Util.Num("rsqgr_mass_max", 1000) * RSQGR_Perks.Factor(h.owner, 'mass');   // Heavy Haul
-		return v.bBOSS || (mmax > 0 && v.Mass > mmax) || v.bDORMANT;
+		// an RSQ Miniboss miniboss with Miniboss's "Can't Be Yanked" on: an anchor, as a boss is
+		return v.bBOSS || (mmax > 0 && v.Mass > mmax) || v.bDORMANT || RSQGR_Util.MinibossAs(v, "yank");
 	}
 
 	void Bite(RSQGR_Hook h, int i)

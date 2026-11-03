@@ -351,6 +351,7 @@ class RSQGR_Flight : EventHandler
 	static bool Throwable(Actor a, PlayerPawn by = null)
 	{
 		if (!a || a.bDONTTHRUST || a.bBOSS) return false;
+		if (RSQGR_Util.MinibossAs(a, "yank")) return false;     // RSQ Miniboss's "Can't Be Yanked": as a boss
 		// Heavy Haul (perks.zs) raises all three for the thrower
 		double maxM = RSQGR_Util.Num("rsqgr_yank_mass", 1000) * RSQGR_Perks.Factor(by, 'mass');
 		if (maxM > 0 && a.Mass > maxM) return false;

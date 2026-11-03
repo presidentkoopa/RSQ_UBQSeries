@@ -156,6 +156,8 @@ the simulated rig (2026-10-31 onward).
 - **RSQ HP Bars:** "hooked" and "stunned" markers over hooked and yanked monsters.
 - **RSQ Gestures:** the rope is never read as a gesture.
 - **RSQ Whip:** loads beside it; separate binds and settings.
+- **RSQ Miniboss** (2026-11-03, by name): with Miniboss's "Can't Be Yanked" on (the default) a miniboss is too heavy
+  to come, as a boss is: the hook pulls you to it (`RSQMB_Service` `bossfor` `"yank"`). Rig only, not headset-confirmed.
 - **Gun Bonsai with the RSQ Gun Bonsai VR patch:** nine hook perks (Long Line, Fast Reel, Heavy Haul, Get Over
   Here, Bowling, Barbed Claw, Slingshot, Steady Line, Double Hook), now a tree (GBOVR_TREES.md 4.6): **Grapple** is an
   unlock -- under the patch the hook fires only once it is learned -- and **Momentum** is the Swing and Momentum
