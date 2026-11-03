@@ -38,6 +38,7 @@ All rows are on the front page except the ones marked *Triggers* or *Tuning and 
 | Menu row | Default | What it does |
 |---|---|---|
 | Slow Motion | (key) | Bind your toggle here. |
+| Shootdodge | (key) | Bind the dive here (owner, 11-03, after Xortts' Bullet Time X): a press leaps you the way the stick points (forward if it is centred) and the world slows to *Shootdodge World Speed* until you land. Your own movement is slowed with it, so the dive hangs. |
 | World Speed | 0.25 | A slider from 0.05 (near-freeze) to 0.95 of normal speed. Every slow motion uses it unless another mod asks for its own speed. |
 | Ease In and Out | Standard | Snap / Standard / Gradual. |
 | Dodgeable Bullets | On | In slow motion an enemy's hitscan becomes a visible round, same damage. Brutal Doom's bullets slow to the same speed. |
@@ -48,6 +49,10 @@ All rows are on the front page except the ones marked *Triggers* or *Tuning and 
 | Smooth Walkers | On | The nearest 12 walking monsters move a little every tic instead of stepping. |
 | Color Drain | Option | Colours fade a little while time is slowed (35 % at full depth). |
 | Wrist Cross = 4 s Burst | Option | The wrist cross starts a 4-second burst instead of toggling. |
+| Slow Me Too | On | Your own walking, jumping and falling slow with the world (Bullet Time X's feel). Head and hands are tracked and never slow. *Slow Me Too Strength* (1.0): how much of the world's slowing you take -- 1 as slow as the world, 0.5 half as slowed. |
+| Shootdodge World Speed | 0.10 | How slow the world is through a dive. |
+| Shootdodge Leap | 12 | The dive's thrust, map units a tic, on top of the jump (0 = the jump alone). |
+| Shootdodge Hang | 0.5 | How much of the world's slowing your own dive takes. 1 = as slow as the world (at 10% a jump hangs ten times as long, 5 s); 0.5 = a dive of about 1.7 s; 0 = a normal jump's length. |
 | Slow Own Missiles | On | Your own rockets slow too. |
 | Shot Trails | On | Your shots leave a fading trail. |
 | Missile Wakes | On | Slowed missiles leave a wake. |
@@ -66,6 +71,7 @@ always works. "Yours" are never held back; "Automatic" ones also wait out the co
 | Row | Default | Kind | Starts slow motion when |
 |---|---|---|---|
 | Manual Key | On | Yours | you press your bound *Slow Motion* key. |
+| Shootdodge | On | Yours | you press your bound *Shootdodge* key while standing on the ground. |
 | Wrist Cross | On | Yours | you cross your wrists in front of your face (gun hand past the other). |
 | Burst | On | Yours | the wrist cross starts its 4 s burst (*Wrist Cross = 4 s Burst* on). |
 | Wheel | On | Yours | RSQ Wheel opens. |
@@ -147,8 +153,8 @@ simulated rig (no sound, no haptics there).
   no tap windows, so Slower Taps changes nothing here.
 - **Gun Bonsai VR patch:** its slow-motion perks read and pulse this clock (automatic: row *Gun Bonsai VR*).
   With the patch, its SlowMo tree (GBOVR_TREES.md 4.9) shapes it: your own key, wrist cross, burst and accessibility
-  button work from the start (owner, 11-03; the *Slow Motion* unlock of 11-02 is gone); *Deeper* sets the world's speed
-  (0.5, 0.35, 0.25, 0.1) instead of World Speed;
+  button work from the start (owner, 11-03; the *Slow Motion* unlock of 11-02 is gone); *Deeper* deepens it past your
+  World Speed (0.2, 0.15, 0.1; at level 0 your slider rules, as without the patch);
   *Longer* stretches the burst (5, 6, 8 s) and the meter; *Cheaper* makes the meter go further; *Lean Dodge* replaces
   the Lean Dodge row (level 2: a lean also dodges a monster's claw); *Matrix* forces the drain and trails while slowed.
   Without the patch nothing changes.

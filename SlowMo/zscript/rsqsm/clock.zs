@@ -68,6 +68,13 @@ class RSQSM_Clock : EventHandler
 	bool   rival;            // decided once per map
 	RSQSM_Smooth smooth;     // the walkers' step-spreader (smooth.zs), made on first use
 
+	// ---- you, slowed (owner 2026-11-03: Xortts' Bullet Time X's model; SlowMe / Dodges below) -------
+	int    dodgeTic[MAXPLAYERS];   // maptime a shootdodge began, 0 none
+	double meK[MAXPLAYERS];        // the factor on this player's own movement now (1 = full speed)
+	double meGrav[MAXPLAYERS];     // his gravity before it was slowed
+	double meVx[MAXPLAYERS], meVy[MAXPLAYERS];   // his velocity as SlowMe left it (the momentum mode's thrust estimate)
+	private transient bool dodgePend[MAXPLAYERS];   // a Shootdodge key this tic (netevent rsqsm_dodge)
+
 	// ---- the slowed actors (parallel arrays) -----------------------------------
 	Array<Actor>  act;
 	Array<double> fac;       // the factor applied to it now
@@ -107,11 +114,11 @@ class RSQSM_Clock : EventHandler
 		if (!playeringame[consoleplayer]) return d;
 		return CvP(n, players[consoleplayer], d);
 	}
-	// DEEPER (Gun Bonsai VR, GBOVR_TREES.md 4.9): under the patch the world's speed is the node's -- 0.5 unlearned, then
-	// 0.35, 0.25, 0.1 (the best among the players); without it the World Speed row. curDepth keeps it for the drawing.
+	// DEEPER (Gun Bonsai VR, GBOVR_TREES.md 4.9; owner 11-03: the base is today's): at level 0 the World Speed row, as
+	// without the patch; learned, the node's -- 0.2, 0.15, 0.1 (the best among the players). curDepth keeps it for the drawing.
 	double Depth()
 	{
-		if (gbOn) { static const double D[] = { 0.5, 0.35, 0.25, 0.1 }; return D[clamp(GbMax('Deeper'), 0, 3)]; }
+		if (gbOn) { int l = GbMax('Deeper'); if (l >= 1) { static const double D[] = { 0.2, 0.15, 0.1 }; return D[clamp(l, 1, 3) - 1]; } }
 		return clamp(Cv("rsm_depth", 0.25), 0.05, 0.95);
 	}
 	double curDepth;
@@ -222,6 +229,7 @@ class RSQSM_Clock : EventHandler
 		// A level never starts slowed (and nothing carries over: the arrays are empty).
 		on = false; target = 1; scale = 1; pulseUntil = 0; pulseDepth = 1; pulseSrc = ""; pulseAuto = false; autoReady = 0;
 		ClearAll();
+		for (int i = 0; i < MAXPLAYERS; i++) { dodgeTic[i] = 0; meK[i] = 1; meGrav[i] = 0; meVx[i] = 0; meVy[i] = 0; }
 		// An EventHandler is rebuilt on every map, so the meter is carried on the player.
 		adr = 0;
 		if (Cv("rsqsm_adr_keep", 1) != 0)
@@ -251,6 +259,7 @@ class RSQSM_Clock : EventHandler
 		{
 			if (!playeringame[i] || !players[i].mo) continue;
 			let pmo = players[i].mo;
+			MeRestore(i);
 			let t = RSQSM_AdrToken(pmo.FindInventory("RSQSM_AdrToken"));
 			if (!t) t = RSQSM_AdrToken(pmo.GiveInventoryType("RSQSM_AdrToken"));
 			if (t) t.meter = adr;
@@ -284,6 +293,8 @@ class RSQSM_Clock : EventHandler
 		}
 		// rsm_on: RSQ Wheel opening (the series' only sender, Wheel zscript.zs)
 		else if (e.Name ~== "rsm_on")   Aim(true, e.Player, "wheel", CAT_WHEEL);
+		// the Shootdodge key (KEYCONF): the leap is made in WorldTick, after the engine's own player think of this tic
+		else if (e.Name ~== "rsqsm_dodge") { if (e.Player >= 0 && e.Player < MAXPLAYERS) dodgePend[e.Player] = true; }
 		else if (e.Name ~== "rsm_off")  Aim(false, e.Player, "rsm_off");
 		else if (e.Name ~== "rsm_pulse")
 		{
@@ -439,7 +450,7 @@ class RSQSM_Clock : EventHandler
 	// ONE SWITCH PER TRIGGER (the Triggers page). User switches (the player's own inputs) are read for the
 	// player who sent it; server ones are the world's.
 	enum ECat { CAT_NONE, CAT_CLOSECALL, CAT_RELOAD, CAT_OTHER, CAT_MINIBOSS, CAT_KEY, CAT_WRIST, CAT_BURST, CAT_WHEEL,
-		CAT_A11Y, CAT_SHOVE, CAT_SMOKE, CAT_PARRY, CAT_BLOCK, CAT_SCORE, CAT_GBVR }
+		CAT_A11Y, CAT_SHOVE, CAT_SMOKE, CAT_PARRY, CAT_BLOCK, CAT_SCORE, CAT_GBVR, CAT_DODGE }
 	static double CvWho(String n, int who, double d)
 	{
 		return (who >= 0 && who < MAXPLAYERS && playeringame[who]) ? CvP(n, players[who], d) : Cv(n, d);
@@ -449,6 +460,7 @@ class RSQSM_Clock : EventHandler
 		switch (cat)
 		{
 		case CAT_KEY:       return CvWho("rsqsm_trig_key", who, 1) != 0;
+		case CAT_DODGE:     return CvWho("rsqsm_trig_dodge", who, 1) != 0;
 		case CAT_WRIST:     return CvWho("rsqsm_gesture", who, 1) != 0;
 		case CAT_BURST:     return CvWho("rsqsm_trig_burst", who, 1) != 0;
 		case CAT_WHEEL:     return CvWho("rsqsm_trig_wheel", who, 1) != 0;
@@ -470,7 +482,7 @@ class RSQSM_Clock : EventHandler
 	{
 		static const String names[] = { "-", "Close-Call", "Reload Slowdown", "Other / Unknown Mods", "Miniboss Window",
 			"Manual Key", "Wrist Cross", "Burst", "Wheel", "Accessibility Button", "Melee Shove", "Cigarette",
-			"Saber Parry", "ShieldSaw Block", "Score", "Gun Bonsai VR" };
+			"Saber Parry", "ShieldSaw Block", "Score", "Gun Bonsai VR", "Shootdodge" };
 		return (cat >= 0 && cat < names.Size()) ? names[cat] : "?";
 	}
 	double Cooldown() { return clamp(Cv("rsqsm_auto_cooldown", 25), 0.0, 120.0); }
@@ -570,6 +582,141 @@ class RSQSM_Clock : EventHandler
 		}
 	}
 
+	// ---- SHOOTDODGE AND "SLOW ME TOO" (owner 2026-11-03: "it should work like this" -- Xortts' Bullet Time X) --------
+	// Bullet Time X's dodge: a key forces a jump, time slows while you are off the floor and comes back when you land;
+	// and the player's OWN movement is divided along with the world's. Here: netevent rsqsm_dodge (KEYCONF "Shootdodge")
+	// -> Dodges(), in WorldTick after the engine's player think of that tic (so the no-momentum VR move, which zeroes a
+	// grounded player's velocity every tic, cannot eat the leap on the tic it is made): the engine's own jump (CheckJump,
+	// its sound) plus a thrust the way the stick points (rsqsm_dodge_leap; forward with the stick centred) -> the clock
+	// heads for rsqsm_dodge_depth until he is on the ground again (player.onground), dead, out of adrenaline, or 6 s pass.
+	// Your own movement is slowed through a dodge whatever Slow Me Too says (that is the dive), by rsqsm_dodge_me of the
+	// world's slowing: at the world's full 10% a jump would hang ten times as long (measured headless 11-03: 5.2 s in
+	// the air), so the default is half (k = 0.1 ^ 0.5 = 0.32: a dive of about 1.7 s, Max Payne's).
+	// YOUR OWN MOVEMENT (rsqsm_me "Slow Me Too", rsqsm_me_ratio): the engine's MovePlayer resets the pawn's Speed every
+	// tic and, without vr_momentum, zeroes his velocity on the ground and thrusts the whole step anew, so nothing set on
+	// the pawn survives it. SlowMe instead scales what that tic PRODUCED, in WorldTick, before the pawn moves:
+	//   on the ground without momentum   the step the engine just thrust is scaled by k;
+	//   with momentum, or in the air     the thrust it just added is scaled; what he already carried (last tic's
+	//                                    velocity, less the floor's friction) is rescaled only when k changes;
+	//   vertically                       his velocity by k and his gravity by k squared, a slowed trajectory (the rule
+	//                                    the clock applies to everything else); a jump the engine or the dodge just
+	//                                    added is converted on the tic it happens.
+	// k = the clock's factor ^ rsqsm_me_ratio (1: as slow as the world; 0.5: half as slowed; 0: not at all). Head and
+	// hands are tracked and never slowed. Everything is put back when the clock is at full speed (MeRestore).
+	const DODGE_MAX_TICS = 6 * TICRATE;
+	double DodgeDepth() { return clamp(Cv("rsqsm_dodge_depth", 0.10), 0.05, 0.95); }
+	bool DodgeOn() { for (int n = 0; n < MAXPLAYERS; n++) if (dodgeTic[n] > 0) return true; return false; }
+	private void Dodges()
+	{
+		for (int n = 0; n < MAXPLAYERS; n++)
+		{
+			bool pend = dodgePend[n];
+			dodgePend[n] = false;
+			if (!playeringame[n] || !players[n].mo) { dodgeTic[n] = 0; continue; }
+			let p = players[n];
+			let pmo = p.mo;
+			if (dodgeTic[n] > 0)
+			{
+				int age = level.maptime - dodgeTic[n];
+				if (pmo.health <= 0 || age >= DODGE_MAX_TICS || (age >= 2 && p.onground))
+				{
+					Log("shootdodge", pmo.health <= 0 ? "ended: dead" : age >= DODGE_MAX_TICS ? "ended: 6 s" : "landed");
+					dodgeTic[n] = 0;
+				}
+				continue;
+			}
+			if (!pend) continue;
+			if (StoodDown()) { Log("shootdodge", "refused: stood down (another slow-motion mod)"); continue; }
+			if (!CatOn(CAT_DODGE, n)) { Log("shootdodge", "refused: its switch is off (Shootdodge)"); continue; }
+			if (pmo.health <= 0 || !p.onground || p.crouchfactor < 0.75 || pmo.waterlevel >= 2 || !level.IsJumpingAllowed())
+			{
+				Log("shootdodge", "refused: not standing on the ground (or no jumping here)");
+				continue;
+			}
+			if (Cv("rsqsm_adrenaline", 0) != 0 && adr < Cv("rsqsm_adr_min", 25))
+			{
+				RSQSM_Buzz.Start(pmo, 0, 0.25, 3);
+				pmo.A_StartSound("*usefail", CHAN_AUTO, CHANF_LOCAL, 0.6);
+				Log("shootdodge", "refused: not enough adrenaline");
+				continue;
+			}
+			// THE LEAP: the engine's own jump, then a thrust the way the stick points (forward if it is centred)
+			p.cmd.buttons |= BT_JUMP;
+			p.jumpTics = 0;
+			pmo.CheckJump();
+			double a = pmo.angle;
+			Vector2 fwd = (cos(a), sin(a)), right = (sin(a), -cos(a));
+			Vector2 st = (p.cmd.forwardmove, p.cmd.sidemove);
+			Vector2 dir = st.Length() > 1 ? (fwd * st.x + right * st.y).Unit() : fwd;
+			double leap = clamp(Cv("rsqsm_dodge_leap", 12), 0.0, 40.0);
+			pmo.vel.xy += dir * leap;
+			dodgeTic[n] = level.maptime;
+			pmo.A_StartSound("rsqsm/in", CHAN_AUTO, 0, 0.8);
+			RSQSM_Buzz.Start(pmo, 0, 0.6, 8);
+			RSQSM_Buzz.Start(pmo, 1, 0.6, 8);
+			Log("shootdodge", String.Format("leap %.0f units a tic the way the stick points, world to %d%%", leap, int(DodgeDepth() * 100 + 0.5)));
+		}
+	}
+	private void SlowMe()
+	{
+		bool momentum = true;
+		let mc = CVar.FindCVar("vr_momentum");
+		if (mc) momentum = mc.GetInt() != 0;
+		double ratio = clamp(Cv("rsqsm_me_ratio", 1.0), 0.0, 1.0);
+		for (int n = 0; n < MAXPLAYERS; n++)
+		{
+			if (!playeringame[n] || !players[n].mo) { meK[n] = 1; continue; }
+			let p = players[n];
+			let pmo = p.mo;
+			double k = 1.0;
+			if (scale < 0.9999 && !StoodDown())
+			{
+				if (dodgeTic[n] > 0) { double dr = clamp(Cv("rsqsm_dodge_me", 0.5), 0.0, 1.0); if (dr > 0) k = scale ** dr; }
+				else if (CvWho("rsqsm_me", n, 1) != 0 && ratio > 0) k = scale ** ratio;
+			}
+			double was = (meK[n] <= 0 || meK[n] > 1) ? 1.0 : meK[n];
+			if (k >= 0.9999)
+			{
+				if (was < 0.9999) MeRestore(n);
+				meVx[n] = pmo.vel.x; meVy[n] = pmo.vel.y;
+				continue;
+			}
+			if (was >= 0.9999) meGrav[n] = pmo.Gravity;   // the first slowed tic: remember his gravity
+			// HORIZONTAL
+			bool fresh = !momentum && p.onground && !p.keepmomentum;
+			if (fresh) pmo.vel.xy *= k;
+			else
+			{
+				double fric, mf;
+				[fric, mf] = pmo.GetFriction();
+				Vector2 kept = (meVx[n], meVy[n]) * (p.onground ? fric : 1.0) * (k / was);
+				Vector2 thrust = pmo.vel.xy - (meVx[n], meVy[n]) * (p.onground ? fric : 1.0);
+				pmo.vel.xy = kept + thrust * k;
+			}
+			// VERTICAL: a jump made this tic (CheckJump leaves jumpTics at -1) is converted whole; else what is in
+			// flight is rescaled when the factor moves
+			if (p.jumpTics == -1) pmo.vel.z *= k;
+			else if (abs(k - was) > 0.0001) pmo.vel.z *= k / was;
+			pmo.Gravity = meGrav[n] * k * k;
+			meK[n] = k;
+			meVx[n] = pmo.vel.x; meVy[n] = pmo.vel.y;
+		}
+	}
+	// his gravity back, his flight at full time
+	private void MeRestore(int n)
+	{
+		if (n < 0 || n >= MAXPLAYERS) return;
+		double was = (meK[n] <= 0 || meK[n] > 1) ? 1.0 : meK[n];
+		if (was < 0.9999 && playeringame[n] && players[n].mo)
+		{
+			let pmo = players[n].mo;
+			if (meGrav[n] > 0) pmo.Gravity = meGrav[n];
+			pmo.vel.z /= was;
+			if (!players[n].onground) pmo.vel.xy /= was;   // (a grounded player's step is the engine's again next tic)
+		}
+		meK[n] = 1;
+	}
+
 	// ---- SM2 close calls (owner's QoL option, rsqsm_closecall; automatic) ------------------------
 	// A rocket or fireball about to hit a player up close sets off a short pulse, so he can step aside.
 	// "About to hit": its path relative to him (its velocity minus his) passes within his radius + its
@@ -646,6 +793,9 @@ class RSQSM_Clock : EventHandler
 			else { pulseUntil = 0; target = 1; }
 		}
 		else target = 1;
+		// a shootdodge in flight pulls the clock to its own depth, under whatever else asks
+		Dodges();
+		if (DodgeOn()) target = min(target, DodgeDepth());
 
 		// Ease, never snap: each ramp is the time to cross the whole way.
 		if (scale != target)
@@ -662,6 +812,7 @@ class RSQSM_Clock : EventHandler
 
 		Adrenaline();
 		Reloads();
+		SlowMe();
 
 		bool running = Active();
 		if (!running && act.Size() == 0) return;
@@ -1022,9 +1173,9 @@ class RSQSM_Clock : EventHandler
 
 	private void Adrenaline()
 	{
-		if (Cv("rsqsm_adrenaline", 0) == 0 || !on) return;
+		if (Cv("rsqsm_adrenaline", 0) == 0 || (!on && !DodgeOn())) return;
 		adr -= 100.0 / (AdrSecs() * TICRATE) * CostK();	// LONGER and CHEAPER (Gun Bonsai VR)
-		if (adr <= 0) { adr = 0; Aim(false, -1); }
+		if (adr <= 0) { adr = 0; if (on) Aim(false, -1); for (int n = 0; n < MAXPLAYERS; n++) dodgeTic[n] = 0; }
 	}
 
 	// A KILL IS COUNTED WHERE THE DAMAGE NAMES ITS SOURCE. WorldThingDied only carries the inflictor,
@@ -1226,7 +1377,7 @@ class RSQSM_Service : Service
 		if (request ~== "scale") return int(clamp(c.scale, 0.0, 1.0) * 1000);
 		// HELD OR PULSING, NOT JUST EASING BACK (owner 2026-10-31: the ring slows time even while slow motion eases out):
 		// 1 while something is still asking for slow motion (the held toggle or a pulse), 0 once it is only fading back
-		if (request ~== "running") return (!c.StoodDown() && c.target < 0.9999) ? 1 : 0;
+		if (request ~== "running") return (!c.StoodDown() && (c.target < 0.9999 || c.DodgeOn())) ? 1 : 0;
 		// FOR A SCORER (RSQ Score, 11-03; its sheet C2, C3): WHAT is slowing the world now. "trigger.auto": 1 an automatic
 		// trigger (one that waits out the cooldown: Score's own pulses, the miniboss window, Gun Bonsai VR's perks, a
 		// reload, an unknown mod), 0 a deliberate one (the key, the wrist cross, the burst, the Wheel, a shove, a parry,
@@ -1236,6 +1387,7 @@ class RSQSM_Service : Service
 		if (request ~== "trigger.auto")
 		{
 			if (c.StoodDown() || !c.Active()) return -1;
+			if (c.DodgeOn()) return 0;                      // a shootdodge is his own (11-03)
 			if (c.pulseUntil > level.maptime) return c.pulseAuto ? 1 : 0;
 			if (c.on) return 0;
 			return c.pulseAuto ? 1 : 0;

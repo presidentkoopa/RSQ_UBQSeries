@@ -1,3 +1,5 @@
 alias rsqsm_toggle "netevent rsm_toggle 2"
 addkeysection "RSQ SlowMo" RSQSlowMo
 addmenukey "Slow motion on/off" rsqsm_toggle
+alias rsqsm_dodge "netevent rsqsm_dodge"
+addmenukey "Shootdodge" rsqsm_dodge
