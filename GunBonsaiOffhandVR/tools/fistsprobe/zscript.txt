@@ -1281,6 +1281,18 @@ class FistsProbe : EventHandler
 			if (w) w.Halt(0);
 			m.Destroy();
 		}
+		else if (e.Name ~== "fp_btkinds")
+		{
+			// THE WHEEL'S FAN OF KINDS, the grenade's side: what the Wheel asks RSQ Grenade (owned, in hand, set, colour, name)
+			let sv = ServiceIterator.Find("RSQGN_Service").Next();
+			if (!sv) return;
+			int n = p.PlayerNumber();
+			int m = sv.GetInt("kinds.owned", "", n), k0 = sv.GetInt("kind", "", n);
+			int ok = sv.GetInt("kind.set", "", n, 3), k1 = sv.GetInt("kind", "", n);
+			int bad = sv.GetInt("kind.set", "", n, 4), k2 = sv.GetInt("kind", "", n);
+			Console.Printf("FP grenade kinds for the wheel: owned mask %d, in hand %d; set Freeze -> %d (now %d, %s, colour %06x); set Stun (not owned) -> %d (now %d)",
+				m, k0, ok, k1, sv.GetString("kind.name", "", 3), sv.GetInt("kind.colour.of", "", 3), bad, k2);
+		}
 		else if (e.Name ~== "fp_btfpunch")
 		{
 			// a tic after fp_btf (Melee lists a missile on its spawn event, which comes after the probe's own event)

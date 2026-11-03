@@ -41,6 +41,14 @@ class RSQGN_Upg play
 // 1 for the fuse's first half (the amber flash), -1 otherwise (RSQ Gun Cards draws the count on the grenade's card).
 class RSQGN_Service : Service
 {
+	// "kind.name": intArg a kind -> "Freeze Grenade" (the Weapon Wheel's fan of kinds)
+	override String GetString(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
+	{
+		if (request != "kind.name") return "";
+		String n = RSQGN_Kind.Node(intArg);
+		return (n == "" ? "Frag" : n) .. " Grenade";
+	}
+
 	override int GetInt(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
 	{
 		if (request == "cooked")
@@ -48,6 +56,23 @@ class RSQGN_Service : Service
 			let g = RSQGN_Thrown(objectArg);
 			return g ? g.cooked : -1;
 		}
+		// THE WEAPON WHEEL'S FAN OF KINDS (RSQ Wheel, owner 11-02): "kinds.owned" intArg player -> a bit a kind (the frag's
+		// always), "kind" -> the kind in hand, "kind.set" intArg player, doubleArg the kind -> 1 when taken (owned, no pin
+		// pulled), "kind.colour.of" intArg a kind -> its colour (-1 the frag)
+		if (request == "kinds.owned" || request == "kind" || request == "kind.set")
+		{
+			let h = RSQGN_Handler.Get();
+			int n = intArg;
+			if (!h || n < 0 || n >= MAXPLAYERS || !playeringame[n] || !players[n].mo) return 0;
+			let pmo = players[n].mo;
+			if (request == "kind") return h.kind[n];
+			if (request == "kinds.owned") { int m = 0; for (int k = 0; k < RSQGN_Kind.COUNT; k++) if (RSQGN_Kind.Owns(pmo, k)) m |= 1 << k; return m; }
+			int want = int(doubleArg);
+			if (h.spoon[n] || !RSQGN_Kind.Owns(pmo, want)) return 0;
+			h.kind[n] = want;
+			return 1;
+		}
+		if (request == "kind.colour.of") return RSQGN_Kind.Colour(intArg);
 		// "kind.colour": intArg player -> the colour of the kind in that player's hand (the alt trigger's pick), -1 the frag
 		// (RSQ Tactical Rig tints its grenade spot's light with it)
 		if (request == "kind.colour")

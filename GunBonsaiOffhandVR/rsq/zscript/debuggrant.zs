@@ -26,13 +26,13 @@ class RSQ_DebugGrant : EventHandler
 			let w = Weapon(it);
 			if (!w) continue;
 			let info = st.GetOrCreateInfoFor(w);
-			if (info && infos.Find(info) == infos.Size()) infos.Push(info);
+			if (info && infos.Find(info) >= infos.Size()) infos.Push(info);
 		}
 		int added = 0;
 		for (int pass = 0; pass < passes; pass++)
 		{
 			int now = 0;
-			for (uint i = 0; i < reg.upgrades.Size(); i++)
+			for (int i = 0; i < int(reg.upgrades.Size()); i++)
 			{
 				let u = reg.upgrades[i];
 				if (!u) continue;

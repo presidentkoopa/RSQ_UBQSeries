@@ -432,6 +432,7 @@ class wr_Rig : EventHandler
 	Array<bool>   mSubLowAmmo;
 	Array<double> mSubLabelH;
 	Array<Class<Weapon> > mSubTypes;
+	Array<int> mSubKind;          // RSQ Grenade's kind on a fan card (-1 a weapon card): addSubCard
 	// A SUBCARD IS A CARD, PART TWO. mSubBase is the DRY-AWARE resting colour
 	// (COLOR_DRY when empty) -- correct for the plate, wrong for a light or a
 	// spark burst, which should glow the weapon's true hue even when the gun
@@ -3920,6 +3921,240 @@ class wr_Rig : EventHandler
 		feedback(Sound("wristrig/tick"), 0.25, 30);
 	}
 
+	// ONE FAN CARD, lifted out of expandSlot (11-02) so a card for a grenade KIND -- RSQ Grenade's, the owner's "fan of
+	// kinds" -- is built exactly as a weapon's: vcls the weapon it equips; kind -1 a plain weapon card, else RSQ Grenade's
+	// kind number (the card in that kind's colour and name; commitAs sets the kind).
+	private void addSubCard(PlayerPawn pmo, int cardIndex, Class<Weapon> vcls, int kind)
+	{
+		let held = Weapon(pmo.FindInventory(vcls));
+		if (held == null) return;
+
+		mSubTypes.Push(vcls);
+		mSubKind.Push(kind);
+
+		// A SUBCARD IS A CARD. It was not being treated as one.
+		//
+		// Everything the ring cards gained -- the solved plate, the dry
+		// colour, the slot stripe, the held marker, a fitted name -- the fan
+		// kept missing, so opening one dropped you from an instrument back
+		// to the flat panels this started as. And a fan is exactly where the
+		// extra information matters most: its entries are the SAME GUN in
+		// different states, so which one is dry and which one your other
+		// hand is holding is the entire question being asked.
+		// A CLONE CAN OUTRANK ITS SIBLING. Two _2-family instances of
+		// the same class can hold different RS tiers -- that is the
+		// entire point of owning more than one -- so this resolves
+		// PER INSTANCE rather than reusing the parent card's colour.
+		// Dry still overrides tier: which one is empty is the more
+		// urgent fact when the question is which to grab.
+		// shue COMPUTED UNCONDITIONALLY, not inside the ternary.
+		//
+		// The line this replaced was `srest = sdry ? COLOR_DRY :
+		// int(cardColorFor(...))` -- a ternary short-circuits, so on a
+		// dry weapon cardColorFor() never ran at all and there was no
+		// raw hue left anywhere to give a light or a spark burst. Main
+		// cards keep exactly this pair (mBaseColor the dry-aware resting
+		// fill, mCardColor the raw hue underneath it) for the same
+		// reason: a dry card's light still glows the weapon's true
+		// colour even though its plate reads COLOR_DRY.
+		bool sdry = (cv("wr_ammo", 1.0) > 0.0 && ammoLoaded(held) == 0);
+		int shue  = kind >= 0 ? KindColour(kind) : int(cardColorFor(held, mCardSlots[cardIndex]));
+		int srest = sdry ? COLOR_DRY : (mGL ? int(glRest(shue)) : shue);   // RSQ GL
+		mSubColor.Push(shue);
+
+		// THE DROP SHADOW, same reason a main card has one: a dark plate
+		// against a dark wall has almost no edge, and a fan sits in front
+		// of whatever the room happens to be exactly as much as the ring
+		// does.
+		int sshad = 0;
+		if (cv("wr_shadow", 0.5) > 0.0)
+		{
+			sshad = wr_BB.AddBillboardPersistent(
+				(0, 0, 0), 3.5, 2.5, 0, 0,
+				wr_BB.BBF_FIXED, plateKind(), plateShape(),
+				0x000000, wr_BB.BBFL_NOHIT, 0, "");
+			wr_BB.SetBillboardGroup(sshad, mFanGroup);
+		}
+		mSubShadows.Push(sshad);
+
+		// THE HIT QUAD IS NOT THE PICTURE -- the rule spawnPanels states and the
+		// ring obeys, which the fan never got.
+		//
+		// A billboard draws 1.2x taller than it is authored, so a quad that is
+		// both the plate and the target answers across only the middle 83% of
+		// what you can see: 8% dead at the top of every fan card and 8% at the
+		// bottom, with no horizontal margin at all where a ring card gets a
+		// twelfth of its width each side.
+		//
+		// Worse than merely missing, because InputProcess early-returns on
+		// mHovered == 0 WITHOUT consuming the press -- so aiming at a dead band
+		// and pulling the trigger fires the gun in your hand instead of taking
+		// the weapon. Audit finding #15 / #27.
+		//
+		// Created BEFORE the plate so it sits behind it in the billboard order,
+		// same as the ring's.
+		int shit = wr_BB.AddBillboardPersistent(
+			(0, 0, 0), 3.5, 2.5, 0, 0,
+			wr_BB.BBF_FIXED, plateKind(), plateShape(),
+			srest, 0, 0, "");
+		wr_BB.SetBillboardAlpha(shit, 0.0);
+		wr_BB.SetBillboardGroup(shit, mFanGroup);
+		mSubHits.Push(shit);
+
+		int sid = wr_BB.AddBillboardPersistent(
+			(0, 0, 0), 3.5, 2.5, 0, 0,
+			wr_BB.BBF_FIXED, plateKind(), plateShape(),
+			srest, wr_BB.BBFL_NOHIT, 0, "");
+		wr_BB.SetBillboardGradient(sid, sdry ? GRAD_DRY : GRAD_IDLE);
+		if (mGL) wr_BB.SetBillboardGrade(sid, true);   // RSQ GL
+		wr_BB.SetBillboardGroup(sid, mFanGroup);
+		mSubIds.Push(sid);
+		mSubBase.Push(srest);
+
+		// Position written every tic in layoutExpansion(); pre-sized here so
+		// the array exists before the first layout pass touches it.
+		mSubX.Push(0); mSubY.Push(0); mSubZ.Push(0);
+
+		// The parent slot's colour, so a fan reads as belonging to the card
+		// it came out of rather than as loose panels near it.
+		int sacc = wr_BB.AddBillboardPersistent(
+			(0, 0, 0), 3.5, 0.3, 0, 0,
+			wr_BB.BBF_FIXED, wr_BB.BB_PANEL, 0,
+			mCardColor[cardIndex], wr_BB.BBFL_NOHIT, 0, "");
+		wr_BB.SetBillboardGroup(sacc, mFanGroup);
+		mSubAccents.Push(sacc);
+
+		// Which hand already holds this one -- and in a fan of _2 clones
+		// that is the difference between "take it" and "swap hands".
+		int swhere = kind >= 0 ? 0 : heldWhere(vcls);   // a kind card is not a weapon you hold
+		int smid = 0;
+		if (swhere != 0 && cv("wr_marker", 1.0) > 0.0)
+		{
+			smid = wr_BB.AddBillboardPersistent(
+				(0, 0, 0), 0.6, 0.6, 0, 0,
+				wr_BB.BBF_FIXED, plateKind(), 15,
+				(swhere == 2) ? COLOR_MARK_OTHER : COLOR_MARK_MINE,
+				wr_BB.BBFL_NOHIT, 0, "");
+			wr_BB.SetBillboardGroup(smid, mFanGroup);
+		}
+		mSubMarks.Push(smid);
+
+		TextureID icon = iconFor(held);
+		double sw = ICON_W_FRAC, sh = ICON_H_FRAC;
+		// Braced deliberately: a bracketed multi-assign as an unbraced if body
+		// starts a statement with '[', which the parser reads as the start of
+		// an array rather than as a destructuring assignment.
+		if (icon.IsValid())
+		{
+			[sw, sh] = fitIcon(icon, ICON_W_FRAC, ICON_H_FRAC);
+		}
+
+		mSubIconW.Push(sw);
+		mSubIconH.Push(sh);
+
+		int siid = 0;
+		if (icon.IsValid())
+		{
+			siid = wr_BB.AddBillboardPersistent(
+				(0, 0, 0), 3.5, 2.5, 0, 0,
+				wr_BB.BBF_FIXED, wr_BB.BB_TEXTURE, 0,
+				0xFFFFFF, wr_BB.BBFL_NOHIT, 0, TexMan.GetName(icon));
+			wr_BB.SetBillboardGroup(siid, mFanGroup);
+		}
+		mSubIcons.Push(siid);
+
+		// The variants in a slot are the same GUN in different states, so the
+		// count under each is often the only thing telling them apart.
+		int srounds = ammoLoaded(held);
+		int said = 0;
+		double saw = AMMO_W_FRAC;
+		if (cv("wr_ammo", 1.0) > 0.0 && srounds >= 0)
+		{
+			// Same payload and same text rule as a ring card. A subcard is a
+			// weapon like any other and there is no reason for its readout
+			// to be a different thing.
+			string stext = ammoText(held, srounds);
+			saw = readoutAspect(stext);
+
+			said = wr_BB.AddBillboardPersistent(
+				(0, 0, 0), 3.5, 2.5, 0, 0,
+				wr_BB.BBF_FIXED, readoutKind(), srounds,
+				srounds > 0 ? COLOR_AMMO : COLOR_AMMO_DRY,
+				wr_BB.BBFL_NOHIT, 0, stext);
+			wr_BB.SetBillboardGroup(said, mFanGroup);
+		}
+		mSubAmmos.Push(said);
+		mSubAmmoW.Push(saw);
+
+		double sLoadFrac = ammoLoadedFrac(held);
+		mSubLowAmmo.Push(srounds > 0 && sLoadFrac >= 0.0
+			&& sLoadFrac < cv("wr_lowammo_frac", 0.25));
+
+		// The same proportion as a bar. A subcard is never canvas-painted
+		// (item 2 of the parity pass, deferred -- wr_canvas is off by
+		// default and this is the wr_canvas-off path either way), so
+		// there is no canvasFace flag to guard against here the way the
+		// main build's gauge does.
+		//
+		// shue, not srest -- a dry weapon's gauge still reads its true
+		// colour, matching cardLight()'s own choice for the same reason:
+		// the plate says "empty" already, the gauge saying it a second
+		// time in the wrong colour would just be noise.
+		int sgau = 0;
+		double sfrac = ammoLoadedFrac(held);
+		if (cv("wr_ammo", 1.0) > 0.0 && sfrac >= 0.0)
+		{
+			sgau = wr_BB.AddBillboardPersistent(
+				(0, 0, 0), 3.5, 0.35, 0, 0,
+				wr_BB.BBF_FIXED, wr_BB.BB_BAR, int(sfrac * 100.0 + 0.5),
+				shue, wr_BB.BBFL_NOHIT, 0, "");
+			wr_BB.SetBillboardGroup(sgau, mFanGroup);
+		}
+		mSubGauges.Push(sgau);
+
+		// Measured, like a ring card's. Clones tend to have the LONGEST
+		// names in a set -- "Plasma Rifle" becomes "Plasma Rifle Mk II" --
+		// so the fan is where an unfitted label overflows first.
+		string stag = wrapLabel(kind >= 0 ? KindName(kind) : held.GetTag(), panelWNow() * LABEL_FIT_FRAC, panelHNow());
+		int slid = wr_BB.AddBillboardPersistent(
+			(0, 0, 0), 3.5, 2.5, 0, 0,
+			wr_BB.BBF_FIXED, wr_BB.BB_TEXT, 0,
+			COLOR_LABEL, wr_BB.BBFL_NOHIT, 0, stag);
+		wr_BB.SetBillboardGroup(slid, mFanGroup);
+		mSubLabels.Push(slid);
+		mSubLabelH.Push(fitLabel(stag, panelWNow() * LABEL_FIT_FRAC, panelHNow()));
+	}
+
+	// RSQ GRENADE'S KINDS, asked by name (its RSQGN_Service; nothing without RSQ Grenade): every kind you own but the one
+	// in hand, and each kind's colour and name
+	static void GrenadeKinds(PlayerPawn pmo, out Array<int> kinds)
+	{
+		kinds.Clear();
+		let sv = ServiceIterator.Find("RSQGN_Service").Next();
+		if (!sv || !pmo || !pmo.player) return;
+		int n = pmo.PlayerNumber();
+		int mask = sv.GetInt("kinds.owned", "", n), cur = sv.GetInt("kind", "", n);
+		for (int k = 0; k < 16; ++k) if ((mask & (1 << k)) && k != cur) kinds.Push(k);
+	}
+	static int KindColour(int k)
+	{
+		let sv = ServiceIterator.Find("RSQGN_Service").Next();
+		int c = sv ? sv.GetInt("kind.colour.of", "", k) : -1;
+		return c >= 0 ? c : 0xC83C28;   // the frag: its own red
+	}
+	static String KindName(int k)
+	{
+		let sv = ServiceIterator.Find("RSQGN_Service").Next();
+		return sv ? sv.GetString("kind.name", "", k) : "Grenade";
+	}
+	// the kind on the hovered fan card (-1: a weapon card, or none)
+	int HoveredKind() const
+	{
+		if (!mOpen || mHovered == 0) return -1;
+		int sub = subIndexOf(mHovered);
+		return (sub >= 0 && sub < mSubKind.Size()) ? mSubKind[sub] : -1;
+	}
+
 	// Fans a slot's other weapons out of its card.
 	//
 	// OVERLAYS rather than replaces: the eight slot cards stay where they are,
@@ -3943,7 +4178,11 @@ class wr_Rig : EventHandler
 		// and dropped the raw first one out of the ring altogether.
 		promoteLastPicked(mCardSlots[cardIndex], variants);
 
-		if (variants.Size() < 2) return;
+		// RSQ Grenade's kinds (owner 11-02): the grenade's card opens a fan of the other kinds you own, alone in its slot too
+		Array<int> kinds;
+		Class<Weapon> nadeCls = null;
+		if (variants.Size() > 0 && variants[0].GetClassName() == 'RSQGN_Grenade') { nadeCls = variants[0]; GrenadeKinds(pmo, kinds); }
+		if (variants.Size() < 2 && kinds.Size() == 0) return;
 
 		mExpanded = cardIndex;
 
@@ -3975,205 +4214,9 @@ class wr_Rig : EventHandler
 		if (mFanGroup != 0) wr_BB.RemoveBillboardGroup(mFanGroup);
 		mFanGroup = wr_BB.AddBillboardGroup((0, 0, 0));
 
-		for (int i = 1; i < variants.Size(); ++i)
-		{
-			let held = Weapon(pmo.FindInventory(variants[i]));
-			if (held == null) continue;
-
-			mSubTypes.Push(variants[i]);
-
-			// A SUBCARD IS A CARD. It was not being treated as one.
-			//
-			// Everything the ring cards gained -- the solved plate, the dry
-			// colour, the slot stripe, the held marker, a fitted name -- the fan
-			// kept missing, so opening one dropped you from an instrument back
-			// to the flat panels this started as. And a fan is exactly where the
-			// extra information matters most: its entries are the SAME GUN in
-			// different states, so which one is dry and which one your other
-			// hand is holding is the entire question being asked.
-			// A CLONE CAN OUTRANK ITS SIBLING. Two _2-family instances of
-			// the same class can hold different RS tiers -- that is the
-			// entire point of owning more than one -- so this resolves
-			// PER INSTANCE rather than reusing the parent card's colour.
-			// Dry still overrides tier: which one is empty is the more
-			// urgent fact when the question is which to grab.
-			// shue COMPUTED UNCONDITIONALLY, not inside the ternary.
-			//
-			// The line this replaced was `srest = sdry ? COLOR_DRY :
-			// int(cardColorFor(...))` -- a ternary short-circuits, so on a
-			// dry weapon cardColorFor() never ran at all and there was no
-			// raw hue left anywhere to give a light or a spark burst. Main
-			// cards keep exactly this pair (mBaseColor the dry-aware resting
-			// fill, mCardColor the raw hue underneath it) for the same
-			// reason: a dry card's light still glows the weapon's true
-			// colour even though its plate reads COLOR_DRY.
-			bool sdry = (cv("wr_ammo", 1.0) > 0.0 && ammoLoaded(held) == 0);
-			int shue  = int(cardColorFor(held, mCardSlots[cardIndex]));
-			int srest = sdry ? COLOR_DRY : (mGL ? int(glRest(shue)) : shue);   // RSQ GL
-			mSubColor.Push(shue);
-
-			// THE DROP SHADOW, same reason a main card has one: a dark plate
-			// against a dark wall has almost no edge, and a fan sits in front
-			// of whatever the room happens to be exactly as much as the ring
-			// does.
-			int sshad = 0;
-			if (cv("wr_shadow", 0.5) > 0.0)
-			{
-				sshad = wr_BB.AddBillboardPersistent(
-					(0, 0, 0), 3.5, 2.5, 0, 0,
-					wr_BB.BBF_FIXED, plateKind(), plateShape(),
-					0x000000, wr_BB.BBFL_NOHIT, 0, "");
-				wr_BB.SetBillboardGroup(sshad, mFanGroup);
-			}
-			mSubShadows.Push(sshad);
-
-			// THE HIT QUAD IS NOT THE PICTURE -- the rule spawnPanels states and the
-			// ring obeys, which the fan never got.
-			//
-			// A billboard draws 1.2x taller than it is authored, so a quad that is
-			// both the plate and the target answers across only the middle 83% of
-			// what you can see: 8% dead at the top of every fan card and 8% at the
-			// bottom, with no horizontal margin at all where a ring card gets a
-			// twelfth of its width each side.
-			//
-			// Worse than merely missing, because InputProcess early-returns on
-			// mHovered == 0 WITHOUT consuming the press -- so aiming at a dead band
-			// and pulling the trigger fires the gun in your hand instead of taking
-			// the weapon. Audit finding #15 / #27.
-			//
-			// Created BEFORE the plate so it sits behind it in the billboard order,
-			// same as the ring's.
-			int shit = wr_BB.AddBillboardPersistent(
-				(0, 0, 0), 3.5, 2.5, 0, 0,
-				wr_BB.BBF_FIXED, plateKind(), plateShape(),
-				srest, 0, 0, "");
-			wr_BB.SetBillboardAlpha(shit, 0.0);
-			wr_BB.SetBillboardGroup(shit, mFanGroup);
-			mSubHits.Push(shit);
-
-			int sid = wr_BB.AddBillboardPersistent(
-				(0, 0, 0), 3.5, 2.5, 0, 0,
-				wr_BB.BBF_FIXED, plateKind(), plateShape(),
-				srest, wr_BB.BBFL_NOHIT, 0, "");
-			wr_BB.SetBillboardGradient(sid, sdry ? GRAD_DRY : GRAD_IDLE);
-			if (mGL) wr_BB.SetBillboardGrade(sid, true);   // RSQ GL
-			wr_BB.SetBillboardGroup(sid, mFanGroup);
-			mSubIds.Push(sid);
-			mSubBase.Push(srest);
-
-			// Position written every tic in layoutExpansion(); pre-sized here so
-			// the array exists before the first layout pass touches it.
-			mSubX.Push(0); mSubY.Push(0); mSubZ.Push(0);
-
-			// The parent slot's colour, so a fan reads as belonging to the card
-			// it came out of rather than as loose panels near it.
-			int sacc = wr_BB.AddBillboardPersistent(
-				(0, 0, 0), 3.5, 0.3, 0, 0,
-				wr_BB.BBF_FIXED, wr_BB.BB_PANEL, 0,
-				mCardColor[cardIndex], wr_BB.BBFL_NOHIT, 0, "");
-			wr_BB.SetBillboardGroup(sacc, mFanGroup);
-			mSubAccents.Push(sacc);
-
-			// Which hand already holds this one -- and in a fan of _2 clones
-			// that is the difference between "take it" and "swap hands".
-			int swhere = heldWhere(variants[i]);
-			int smid = 0;
-			if (swhere != 0 && cv("wr_marker", 1.0) > 0.0)
-			{
-				smid = wr_BB.AddBillboardPersistent(
-					(0, 0, 0), 0.6, 0.6, 0, 0,
-					wr_BB.BBF_FIXED, plateKind(), 15,
-					(swhere == 2) ? COLOR_MARK_OTHER : COLOR_MARK_MINE,
-					wr_BB.BBFL_NOHIT, 0, "");
-				wr_BB.SetBillboardGroup(smid, mFanGroup);
-			}
-			mSubMarks.Push(smid);
-
-			TextureID icon = iconFor(held);
-			double sw = ICON_W_FRAC, sh = ICON_H_FRAC;
-			// Braced deliberately: a bracketed multi-assign as an unbraced if body
-			// starts a statement with '[', which the parser reads as the start of
-			// an array rather than as a destructuring assignment.
-			if (icon.IsValid())
-			{
-				[sw, sh] = fitIcon(icon, ICON_W_FRAC, ICON_H_FRAC);
-			}
-
-			mSubIconW.Push(sw);
-			mSubIconH.Push(sh);
-
-			int siid = 0;
-			if (icon.IsValid())
-			{
-				siid = wr_BB.AddBillboardPersistent(
-					(0, 0, 0), 3.5, 2.5, 0, 0,
-					wr_BB.BBF_FIXED, wr_BB.BB_TEXTURE, 0,
-					0xFFFFFF, wr_BB.BBFL_NOHIT, 0, TexMan.GetName(icon));
-				wr_BB.SetBillboardGroup(siid, mFanGroup);
-			}
-			mSubIcons.Push(siid);
-
-			// The variants in a slot are the same GUN in different states, so the
-			// count under each is often the only thing telling them apart.
-			int srounds = ammoLoaded(held);
-			int said = 0;
-			double saw = AMMO_W_FRAC;
-			if (cv("wr_ammo", 1.0) > 0.0 && srounds >= 0)
-			{
-				// Same payload and same text rule as a ring card. A subcard is a
-				// weapon like any other and there is no reason for its readout
-				// to be a different thing.
-				string stext = ammoText(held, srounds);
-				saw = readoutAspect(stext);
-
-				said = wr_BB.AddBillboardPersistent(
-					(0, 0, 0), 3.5, 2.5, 0, 0,
-					wr_BB.BBF_FIXED, readoutKind(), srounds,
-					srounds > 0 ? COLOR_AMMO : COLOR_AMMO_DRY,
-					wr_BB.BBFL_NOHIT, 0, stext);
-				wr_BB.SetBillboardGroup(said, mFanGroup);
-			}
-			mSubAmmos.Push(said);
-			mSubAmmoW.Push(saw);
-
-			double sLoadFrac = ammoLoadedFrac(held);
-			mSubLowAmmo.Push(srounds > 0 && sLoadFrac >= 0.0
-				&& sLoadFrac < cv("wr_lowammo_frac", 0.25));
-
-			// The same proportion as a bar. A subcard is never canvas-painted
-			// (item 2 of the parity pass, deferred -- wr_canvas is off by
-			// default and this is the wr_canvas-off path either way), so
-			// there is no canvasFace flag to guard against here the way the
-			// main build's gauge does.
-			//
-			// shue, not srest -- a dry weapon's gauge still reads its true
-			// colour, matching cardLight()'s own choice for the same reason:
-			// the plate says "empty" already, the gauge saying it a second
-			// time in the wrong colour would just be noise.
-			int sgau = 0;
-			double sfrac = ammoLoadedFrac(held);
-			if (cv("wr_ammo", 1.0) > 0.0 && sfrac >= 0.0)
-			{
-				sgau = wr_BB.AddBillboardPersistent(
-					(0, 0, 0), 3.5, 0.35, 0, 0,
-					wr_BB.BBF_FIXED, wr_BB.BB_BAR, int(sfrac * 100.0 + 0.5),
-					shue, wr_BB.BBFL_NOHIT, 0, "");
-				wr_BB.SetBillboardGroup(sgau, mFanGroup);
-			}
-			mSubGauges.Push(sgau);
-
-			// Measured, like a ring card's. Clones tend to have the LONGEST
-			// names in a set -- "Plasma Rifle" becomes "Plasma Rifle Mk II" --
-			// so the fan is where an unfitted label overflows first.
-			string stag = wrapLabel(held.GetTag(), panelWNow() * LABEL_FIT_FRAC, panelHNow());
-			int slid = wr_BB.AddBillboardPersistent(
-				(0, 0, 0), 3.5, 2.5, 0, 0,
-				wr_BB.BBF_FIXED, wr_BB.BB_TEXT, 0,
-				COLOR_LABEL, wr_BB.BBFL_NOHIT, 0, stag);
-			wr_BB.SetBillboardGroup(slid, mFanGroup);
-			mSubLabels.Push(slid);
-			mSubLabelH.Push(fitLabel(stag, panelWNow() * LABEL_FIT_FRAC, panelHNow()));
-		}
+		for (int i = 1; i < variants.Size(); ++i) addSubCard(pmo, cardIndex, variants[i], -1);
+		// THE FAN OF KINDS (owner 11-02): the grenade's card fans out every other kind of RSQ Grenade you own
+		for (int k = 0; k < kinds.Size(); ++k) addSubCard(pmo, cardIndex, nadeCls, kinds[k]);
 
 		// THE CONSTELLATION'S LINES, one per star, hub to satellite.
 		//
@@ -4291,6 +4334,7 @@ class wr_Rig : EventHandler
 		mSubLowAmmo.Clear();
 		mSubLabelH.Clear();
 		mSubTypes.Clear();
+		mSubKind.Clear();
 		mExpanded = -1;
 		mCollapseGrace = 0;
 	}
@@ -9664,6 +9708,9 @@ class wr_Rig : EventHandler
 		// Same resolution HoveredClass() answers for anyone asking from
 		// outside -- pulled into one place so the two can never disagree
 		// about what a press is about to do.
+		// A KIND CARD (the fan of kinds): RSQ Grenade takes the kind (its "kind.set"), then the grenade is equipped as any card
+		int pickKind = HoveredKind();
+		if (pickKind >= 0) { let sv = ServiceIterator.Find("RSQGN_Service").Next(); if (sv) sv.GetInt("kind.set", "", pmo.PlayerNumber(), pickKind); }
 		Class<Weapon> want = HoveredClass();
 		if (want == null) return;
 
