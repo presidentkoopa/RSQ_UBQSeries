@@ -1,124 +1,85 @@
-# RSQ Score: handoff for the local coding swarm (the LAST pass before 1.0)
+# RSQ Score: handoff for the local coding swarm
 
-Written 2026-11-02 by the cloud lane, at the owner's request. Read `LOCAL_AGENT_HANDOFF.md` (rules, build, load
-order), `WHO_OWNS_WHAT.md` and `GBOVR_SWARM_HANDOFF.md` first. Run `git pull` before starting.
+Rewritten 2026-11-03; this replaces the earlier version. Read `LOCAL_AGENT_HANDOFF.md` first for the rules, the build
+and the load order. Run `git pull` before anything.
 
-**Order:** Score is LAST, after the whole Gun Bonsai VR pass. The owner: Score "has so much to read". Don't start
-Score's own code before he says so. The event lines in other mods (section 3) may be added while the GBOVR swarm is
-already working in those mods, because GBOVR needs the same moments for its XP.
+## What Score is
 
----
+RSQ Score is the arcade scoring for the whole RSQ series: every kill pays points, and how you killed pays more.
 
-## 0. The problem, in the owner's words
+- **History:** it came from ijon's Dakka mod (13 bonuses) and was rebuilt in ZScript. It grew to 89 bonuses and
+  13 named combos, written when the series was much smaller.
+- **The goal now:** Score must know every way to fight and kill in today's series. That means every combat move in
+  every RSQ mod, Gun Bonsai VR's upgrades, BD22 VR's weapons, Champions and LegenDoom Lite, Miniboss and SlowMo, and
+  the 2- and 3-tool combos between them.
+- **Score pays for fighting and killing only.** Utility actions (holstering, reloading, the cigarette, the Zippo)
+  never pay by themselves. They count only as part of a kill, the way Quick Draw pays for a kill shot right after a
+  draw.
+- **One move is one move,** whichever mod delivers it. Example: Melee's gun-butt shove, BD22's butt strike and its
+  pistol whip are the single tool `shove`.
 
-> "RS Score has a LOT it needs to be looking out for and doesn't know very much about them right now."
-> "'About 89 bonus checks' was based on like half the mods we have, we made a shitton more and this thing needs to
-> know about them."
+Code: `Score/zscript/rsscore/`. The design notes are in `Score/README.md` (appendix).
 
-**The mission: Score must know every way to FIGHT and KILL in the series as it is now.** That means every RSQ
-mod, BD22 VR Reloaded and Gun Bonsai VR: every combat tool and combat move, so kills and kill combos made with them
-are recognised and paid.
+## The material (all in `Score/ideas/`, committed)
 
-**Scope is combat only (the owner, 2026-11-02, emphatically).** Score is an arcade score for how you kill and
-fight. **Utility actions earn nothing:** holstering, drawing, lighting or smoking the cigarette, the Zippo, the
-keyring, moving guns between hands, reloading as such. They count only where they are part of a kill, as the
-existing Quick Draw does (a kill shot within a beat of a draw). If you are unsure whether something is combat, ask
-the owner; don't add it.
+| File | What it is |
+|---|---|
+| `NAMING_SHEET.csv` | **The master list.** 1,166 rows: 221 new bonuses, 41 reworks, 72 stale-or-bug fixes, 823 named combos and the generic combo rule. Columns: id, kind, mod or area, placeholder name, trigger, proposed pay, readable today / needs, owner name, keep/cut, notes. |
+| `COMBOS_MASTER.md` | The shared tool vocabulary (89 tool ids, plus tags), the generic combo rule, the opener × finisher matrix, every named chain, and section 5's flags (rows that can never fire, duplicate names, ideas present twice). |
+| `A_…`, `B_…`, `C_…`, `D_…md` | The four idea lanes' full write-ups, with the detection detail (file, function, facts) for every row. |
 
----
+Every name in the sheet is a **placeholder**, every pay a starting guess, and nothing in it has been built or
+measured.
 
-## 1. What Score is today (keep the good bones)
+## Step 1: expand the list (the owner wants more)
 
-`Score/` (`pk3/RSQ_Score.pk3`, about 6,600 lines in `zscript/rsscore/`; README appendix has the full design notes):
-- **Kill pay:** every kill pays the victim's spawn health. About 89 bonus classes each read one frozen
-  `RS_ScoreEvent` (event.zs) and add a multiplier. There are four families (Efficiency, Style, Daring, Melee).
-  There is a per-kill cap (`rs_score_cap_kill` 300).
-- **Combo ledger** (combo.zs): each monster keeps an ordered chain of TOOLS; 3 s breaks the chain; named combos come
-  from a data table (`RS_ComboSeed.Combos`), and their names are still **proposals the owner never approved**.
-  Unnamed chains pay as a generic 2-, 3- or 4-tool combo.
-- **Map target and rewards, display** (top right, bonus list, wrist score), and slow-mo moments and hit-stop
-  through RSQ_SlowMo.
-- **An extension route exists:** a mod can subclass `RS_ScoreBonus` and call `RS_ScoreRegistry.RegisterBonus`.
-  In practice almost every bonus was written inside Score.
-- **How it learns facts today:**
-  - it classifies blows itself in WorldThingDamaged;
-  - it asks each mod's service "how long ago" for non-damage moves;
-  - its tool list is hand-written (`gun`, `rig.draw`, `saber.cut`, `saber.throw`, `saber.return`, `saber.block`,
-    `force.push`, `force.pull`, `force.grip`, `shield.bash`, `shield.disc`, `shield.block`, `hook.bite`,
-    `hook.yank`, `whip`, `grab.throw`, `kick`, `punch`, `glove`, `blade`, `finisher`).
-  
-  It is a snapshot from about 2026-10-27.
+- **Add rows to `NAMING_SHEET.csv`** in the same format, with a new stable id each.
+- **Use the tool ids from `COMBOS_MASTER.md`.** If you need a new tool, add it to that vocabulary table, with the
+  mod that sends it.
+- **Ground every row in real code:** say where it lands and what facts exist, or what small answer a mod must add.
+  Mark it "readable today" or "needs".
+- **Merge near-duplicates** instead of adding copies.
+- Keep to fighting and killing. Utility actions count only as part of a kill.
+- Don't fill in "owner name" or "keep/cut": those columns are the owner's.
 
-## 2. The gap (checked 2026-11-02 by grepping Score's code for each mod's name and service; start here, then verify)
+## Step 2: the owner names and cuts
 
-- **RSQ Melee** (created 2026-11-01): **zero** references to its service (`RSQML_*`). Its moves, none known as
-  Melee's own: jab, hook, uppercut (lift), the open-palm swat, Hadouken (return a projectile), guard (block
-  flash), wall splat, heavy hands, headlock (hold, punch, throw, human shield, breakout), and the gun-butt
-  shove + F.E.A.R. Effect (see the next bullet).
-- **ONE move, two sources: the gun-butt shove / butt strike.** RSQ Melee's gun-butt shove and BD22 VR Reloaded's
-  butt strike are the SAME move. Melee's shove stands down when BD22 VR is loaded, so exactly one is live, and the
-  slow-mo beat and F.E.A.R. Effect follow whichever fired. Score treats it as one move ("butt strike", one id)
-  whichever mod delivered it. Never count it twice and never give it two names. Apply the same rule to any other
-  move that exists in two mods with one standing down for the other: check WHO_OWNS_WHAT.md and each README's
-  "stands down" lines.
-- **RSQ Grenade:** nothing. Grenade kills, cooked-throw kills (a short fuse as part of the kill), multi-kills.
-- **RSQ Whip:** only a generic tool word "whip", nothing from the rebuilt Whip (`RSQWP_*`). It has a wind-up,
-  heavy and light cracks, the pull, and Whip In.
-- **RSQ TacticalRig:** Quick Draw and Hot Swap (kills right after a draw or swap) exist. Check they still read the
-  rig correctly. The rig's utility features (cigarette, Zippo, keyring, holstering) are NOT scored.
-- **BD22 VR Reloaded** (the BD22 Weapons repo): its combat moves are pistol whip, gun bash, butt strikes (partly
-  known), axe/chainsaw/sword kills, and dual-wield kills. Almost none are known. (Hand reloads and the pump are
-  handling, not combat: not scored by themselves.)
-- **Gun Bonsai VR:** its upgrades and moves (and the redesigned paths from the GBOVR pass). Nothing is known.
-- **RSQ SlowMo:** Score's slow-motion kill bonus (to be renamed) must still read SlowMo correctly after its
-  rework (commit bae904e9f). Triggering slow-mo is not itself scored.
-- **RSQ Miniboss:** miniboss kills and awards; check them against the current Miniboss.
-- **LaserSight, GunCards, Wheel, HP Bars, Gestures, Accessibility:** these are not combat tools. Expect nothing to
-  score; only note one if it is truly part of a kill.
-- **Mods Score does cover but whose combat changed since 10-27:** QuestSaber (Force on the off fist, the dual
-  sabers), ShieldSaw, Distance Grab (throws), Grapple (the default pull vs the Swing option). Re-check every
-  existing combat bonus against the current code.
+The owner fills in "owner name" and "keep/cut" himself. Don't build anything until he says the sheet is ready. Ask
+him with answers to pick if anything in it is unclear.
 
-## 3. The plan
+## Step 3: build what he kept, in this order
 
-1. **Inventory, read-only:** go mod by mod: every RSQ mod folder, the BD22 Weapons repo
-   (`E:\DOOMWork\RS_Brutal22WeaponsQ`) and `GunBonsaiOffhandVR/`.
-   - List every COMBAT tool and move (anything that hits, hurts, kills or defends in a fight). Give its name,
-     where it lands in code (file and function), and what facts are available (target, damage, speed, hand).
-   - Mark what Score catches today, what it catches wrongly (stale), and what it doesn't catch.
-   - Output: `SCORE_EVENTS.md`.
-2. **One shared combat-move announcement for the series.** Each mod DECLARES its combat moves once by name at
-   startup:
-   id `melee.uppercut`, family `Melee`, plain name "Uppercut". It ANNOUNCES each moment as it happens:
-   target, hand, strength.
-   - **Mechanism:** a named service or netevent, found by name at run time, never a compile-time class
-     reference, so every mod still works alone. With Score absent, the announcement goes nowhere.
-   - **Gun Bonsai VR** listens to the same announcements for its "how you move" XP: one list, two listeners.
-   - **Score's tool list and combo ledger build themselves** from what is declared. A new move needs one line in
-     its own mod and no Score code.
-   - Design the payload with netplay in mind; Score is play-scope.
-3. **Naming pass with the owner** (he insists names are deliberate):
-   - every combat move and every kill combo, including cross-mod chains (e.g. headlock → throw → grapple yank;
-     uppercut → whip crack kill), with points per line;
-   - rename Score's "Bullet Time" bonus (the owner's decision);
-   - the current combo names are proposals; put them in front of him too.
-   
-   Ask with pickable answers, a few lines at a time.
-4. **Score listens:**
-   - wire the announcements in, and retire Score's own guessing wherever a mod now announces;
-   - keep the kill event, families, chains, caps, target and rewards and the display;
-   - keep the per-kill cap meaningful as the move count grows.
-5. **Re-verify every bonus** on the rig on the owner's full order, and show each firing (a log line per bonus per
-   scenario).
+1. **The stale-or-bug fixes (kind = stale-fix).** These make today's scoring honest:
+   - Score can't see the rebuilt Whip;
+   - Grapple perk kills, swung barrels and thrown rig guns pay as punches;
+   - BD22's grenade counts as a kick;
+   - grenades are invisible to combos;
+   - upgrade hooks count as extra tools on one blow;
+   - the slow-motion bonus pays automatic slow-mo and Score's own hit-stop;
+   - Brawler misses the chainsaw and axe;
+   - and the rest in the sheet.
+2. **The groundwork, from `COMBOS_MASTER.md`:**
+   - the shared tool ids;
+   - upgrade effects as tags, not tools;
+   - the `@slow` step, the `+air` / `+pb` / `+head` conditions and the `| filter` victim filters;
+   - one named combo per kill, the best one;
+   - the generic combo rule;
+   - the Reeled In change.
+3. **The small additions in each mod** that the "needs" rows ask for. Each row names the mod and the answer it must
+   give.
+   - Mods are found by name or service at run time, never by a compile-time class.
+   - Every mod still works alone.
+4. **The kept bonuses.**
+5. **The kept combos.** A combo is one row in Score's combo data table (`RS_ComboSeed.Combos` in `combo.zs`, or a
+   mod's own registered combo). Names come from the sheet, so a rename never needs code.
+6. **Rename the slow-motion bonus**, currently "Bullet Time". The owner picks the name; the sheet lists options.
 
-## 4. Rules
+For each step:
+- show it working on the rig: a log line for each bonus or combo firing in a scripted scenario;
+- zero script errors from our packs, on doom2 alone and on the owner's full load order;
+- commit per mod, only the pk3s you changed;
+- label anything VR-only "rig only, not headset-confirmed".
 
-As in `LOCAL_AGENT_HANDOFF.md`:
-- No engine changes.
-- Zero script errors from our packs on doom2 alone and on the full order.
-- Working means shown working; VR-only behaviour is "rig only, not headset-confirmed" until the owner says so.
-- New options: Yes defaults ON, Option defaults OFF.
-- No console steps for the owner.
-- Commit only the pk3s you changed.
-- Questions to the owner come with answers to pick.
-- Never wait silently; never tell him he stopped something.
+## Then
+
+The owner's headset pass on Score. Score is the last pass before RSQ 1.0.
