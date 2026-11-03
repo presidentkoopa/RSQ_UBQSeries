@@ -62,12 +62,14 @@ Tuning and Debug page:
 | Raised Monster Pay | 100 % | Base paid by a monster that was not on the map at the start (raised, spawned). 100 = full. |
 | Kill Bonus Cap | 300 | Bonuses on one kill add at most 3x its base (0 = no cap). |
 | Melee Bonus Cap | 0 | Cap on the melee family (0 = off). |
+| Counterplay Bonus Cap | 0 | Cap on the Counterplay family (0 = off). |
 | Slow Motion Cooldown | 6 s | Time between slow-motion moments. |
 | Slow Motion Style | 50 % | A kill in slow motion pays this share of its style, daring and melee bonuses again (Bullet Time). A plain kill in slow motion pays nothing more. |
 | Reset All | row | Includes Hit-Stop on Big Kills and Score on the Wrist. |
 
-Bonus families (colours in the list): **Efficiency**, **Style**, **Daring**, and the Quest series' **Melee**
-(steel blue). The full bonus list with what each pays is in the appendix.
+Bonus families (colours in the list): **Efficiency**, **Style**, **Daring**, the Quest series' **Melee**
+(steel blue) and **Counterplay** (violet, 11-03: a block, a parry or a shot sent back turned into a kill). The full
+bonus list with what each pays is in the appendix.
 
 Not on the menu: the target's numbers (minimum, maximum, interval), ammo regen share, and the efficiency /
 style / daring caps.
@@ -181,6 +183,14 @@ automatic one half, Score's own pulses nothing, x1.5 at 10 % or slower, and neve
 Scrapping is Coach Gun (BD22's point-blank SSG blast); Brawler pays the Chain_saw and the BrutalAxe; Switcharoo hears
 the fire off the blow; Quick Draw and Hot Swap judge the hand that fired, and only a shot; F.E.A.R. Effect is the
 combo `shove > gun.shotgun@slow` (Melee's flat award is taken and not paid).
+
+**The second round (11-03 evening):** the saber names its stab (Run Through and the stab combos; its spin, lightning
+and slam are ready on Score's side and wait for three touches in the saber), the ShieldSaw answers `grind.held`
+(Buzzsaw) and names its wall slam (Wall Splat), Distance Grab names a held thing's swing (Clubbed), the Grenade answers
+teeth / skeet / impact (Teeth, Trap Shot, Contact), the Whip answers `swings` (Chain Swing). The slow-motion row is
+"Stretched Second". **A fifth family, Counterplay** (violet, letter C, `rs_score_cap_counter`): defence turned into a
+kill -- Riposte, Perfect Riposte, Return to Sender, Poetic Justice, Rally, Shield Wall, Hold the Line, Back Off,
+Misdirection, Eyes in the Back.
 
 **The mods' answers added for it:** SlowMo `trigger.auto` / `trigger.score`; Melee `shove` (named before its blow),
 `returned.by`, the `wall` tag; the Whip `RSQWP_Service` (`Whip/zscript/rsqwp/service.zs`); Grapple `rope.speed` /

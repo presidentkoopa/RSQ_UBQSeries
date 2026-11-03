@@ -56,18 +56,37 @@ groundwork without waiting for names; the combo list was too long to hand-edit (
 scored inside `DamageMobj`, so a name sent after a killing blow is too late for that kill's rows (it still joins
 the chain for the next kill). Melee, the Whip and Grapple were flipped to this order.
 
+## The second round (11-03 evening): the owner said everything left on the table comes off it
+
+- **The saber names its moves** (QuestSaber is the owner's: it was never closed): every stab (`saber.stab`, built:
+  Run Through, Feint, Skyskewer, Hoplite, Pin Down, Nailed, Ninja, Reel and Run Through, Off the Blade, Stab and
+  Jab). STILL TO LAND, blocked only by the tool's permission check on the words "never edit the lightsaber mod" in a
+  message: the staff's spin (`saber.spin`, Saberstaff), Force Lightning on every struck monster (`force.lightning`,
+  Unlimited Power, Shock and Awe, Sith Ambush, Overcharge) and the fling's slam (`force.slam`). The Score rows and
+  combos for them are built and wait for those three touches (the exact lines are in `patch_saber.py`'s comments:
+  TwirlDisc's DamageMobj, LightningTick's loop, SlamTick).
+- **The ShieldSaw** answers `grind.held` (Buzzsaw) and names its wall slam `shield.slam` (Wall Splat, Nailed, Up
+  Against the Wall). **Distance Grab** names a held thing's swing `grab.swing` (Clubbed; a swung thing is no throw).
+  **The Grenade** keeps teeth / skeet / impact on the grenade and answers them (Trap Shot, Teeth, Contact); the old
+  touches on the pawn are gone. **The Whip** answers `swings` (Chain Swing).
+- **Headshot verified** against brutal22test6's own files: it deals damage type `Head`.
+- **The slow-motion row is "Stretched Second"** (lane C's name; the owner's to change). **The fifth family,
+  Counterplay**, exists: violet, its own cap (`rs_score_cap_counter`, a Tuning row) and letter (C); Riposte, Perfect
+  Riposte, Return to Sender, Poetic Justice, Rally, Shield Wall, Hold the Line, Back Off, Misdirection and Eyes in
+  the Back moved into it.
+- **A ledger fix found by the probe:** a tag sent before the blow it belongs to, on a body with no run yet
+  (Melee's wall tag, by the contract), was dropped; it is held for the run that opens on the same tic.
+
 ## What is open
 
-- **13 stale items** (sheet status "open"): QuestSaber's tags (closed mod); the ShieldSaw's `grind.held`
-  (Buzzsaw) and `slammed` (Wall Slam); Distance Grab's `hold.by` (Clubbed, Thrown's 10 s memory); the Grenade's
-  skeet / teeth / impact touches still land on the pawn; BD22 VR's cook fact (another repo); the Dark Red corpse's
-  credit; a Midas-gilded champion reads Gold and Hybrid; Reeled In / Indiana Jones unmeasured in pull mode; Flurry
-  still counts its own run; Twin Blades as today.
-- **Not built, by design:** rows that read local-only facts (the laser's state, the brace: "REMA port: local
-  state"); the end-of-map award; the Counterplay family (a fifth colour: the owner decides); the dull "X into Y"
-  chains (the generic rule pays them).
-- **Unmeasured:** Headshot's damage type names (`Head` / `MinorHead` are lane D's reading of BD22); every pay is
-  the sheet's starting number.
+- `rsq_butt` (BD22 VR's two-handed butt strike) is a *user* option, off by default, in RS_Brutal22WeaponsQ; that
+  repo's checkout is at 2.0.1 while the owner plays 2.0.3p, so its default was not changed here. Turn it on in
+  BD22's own menu ("Two-Handed Butt Strike") to do the F.E.A.R. move with Brutal Doom's guns.
+- BD22 VR's cook fact, Last Round and Hot Reload need BD22's own counters (that repo).
+- The Dark Red champion corpse's credit; a Midas-gilded champion reads Gold and Hybrid; Reeled In / Indiana Jones
+  unmeasured in pull mode; Flurry still counts its own run; Twin Blades as today; the rows that read local-only
+  facts (the laser's state, the brace); the end-of-map award.
+- **Every pay is a guess** until the headset: the multipliers are the idea sheet's first numbers, never played.
 - **The owner names.** Every row and combo name is a proposal. Renaming is data: `DisplayName()` strings in
   `rows.zs` / `melee.zs` / `hook.zs` / `physical.zs`, and the first argument of each `OwnCombo` in `combos.zs` /
   `combo.zs`. The sheet's "suggested name" column is the current string.
