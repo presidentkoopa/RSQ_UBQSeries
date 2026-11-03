@@ -98,7 +98,7 @@ class RSQWP_WhipWeapon : Weapon
 		bool test = RSQWP_Util.Opt("rsqwp_lasso_test", 0) > 0;
 		bool grip = hand == 0 && (latch || test || w.OffHandCloses(i, pmo));
 		bool was = w.lassoOn[i];
-		w.lassoOn[i] = grip && RSQWP_Util.Flag("rsqwp_whip_lasso", true);
+		w.lassoOn[i] = grip && RSQWP_Whip.Unlock(pmo, RSQWP_Whip.G_LASSO, "rsqwp_whip_lasso", true);   // the Lasso node under Gun Bonsai VR
 		if (w.lassoOn[i] && !was && RSQWP_Util.Flag("rsqwp_debug", false))
 			Console.Printf("T_WPW %d LASSO on t%d by %s", i, level.maptime, latch ? "the two-hand latch" : (test ? "rsqwp_lasso_test" : "the off hand at the thong, grip down"));
 	}

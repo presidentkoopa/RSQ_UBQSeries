@@ -124,7 +124,7 @@ class RSQWP_Core : EventHandler
 	// Core ticks before any thinker (WorldTick), so it holds on the tic it is set.
 	static void Carry(PlayerPawn pmo)
 	{
-		if (!pmo || !pmo.player || !RSQWP_Util.Flag("rsqwp_carry", true)) return;
+		if (!pmo || !pmo.player || !RSQWP_Whip.Unlock(pmo, RSQWP_Whip.G_MOMENTUM, "rsqwp_carry", true)) return;   // the Momentum node under Gun Bonsai VR
 		if (pmo.vel.xy.Length() < 2) return;
 		pmo.player.keepmomentum = true;
 	}
@@ -200,7 +200,7 @@ class RSQWP_Core : EventHandler
 				k = 1;
 		}
 		if (k <= 0) return;
-		double top = max(1.0, RSQWP_Util.Num("rsqwp_max_speed", 30));
+		double top = max(1.0, RSQWP_Whip.SwingCap(pmo));
 		RSQWP_A11y.Comfort(pmo, clamp(0.35 + 0.65 * pmo.vel.Length() / top, 0.35, 1.0));
 	}
 
@@ -333,6 +333,39 @@ class RSQWP_Core : EventHandler
 
 	// Where the rope meets the body: about the hands' height on a standing player,
 	// lower with him when he crouches (Height follows the crouch, VR's included).
+	// TARZAN (Gun Bonsai VR, GBOVR_TREES.md 4.4 Rope, after Momentum 2): swinging into a monster at 3 m/s or more hurts
+	// it 10 + 10 lv times your speed over the swing's cap, and knocks it flat (Gun Bonsai VR's "knockdown", a second);
+	// the same monster once a second. Nothing without the node.
+	Actor tzLast[MAXPLAYERS];
+	int tzTic[MAXPLAYERS];
+	void Tarzan(PlayerPawn pmo)
+	{
+		int lv = RSQWP_Whip.Gb(pmo, RSQWP_Whip.G_TARZAN);
+		if (lv <= 0 || !pmo.player) return;
+		int pn = pmo.PlayerNumber();
+		double sp = pmo.vel.Length();
+		if (sp < 3.0 * 34.0 / 35.0) return;
+		let it = BlockThingsIterator.Create(pmo, sp + 32);
+		while (it.Next())
+		{
+			let m = it.thing;
+			if (!m || m == pmo || m.player || !m.bISMONSTER || m.Health <= 0 || !m.bSHOOTABLE) continue;
+			if (m == tzLast[pn] && level.maptime - tzTic[pn] < 35) continue;
+			if (pmo.Distance2D(m) > pmo.radius + m.radius + sp) continue;
+			if (m.pos.z > pmo.pos.z + pmo.height || m.pos.z + m.height < pmo.pos.z - 8) continue;
+			if (((m.pos.xy - pmo.pos.xy) dot pmo.vel.xy) <= 0) continue;     // swinging INTO it
+			double share = clamp(sp / max(1.0, RSQWP_Whip.SwingCap(pmo)), 0.0, 1.0);
+			int dmg = max(1, int((10 + 10 * lv) * share + 0.5));
+			int hp0 = m.Health;
+			RSQWP_Perks.Hurt(m, pmo, pmo, dmg, RSQWP_Whip.DmgType());
+			if (m && !m.bDestroyed && m.Health > 0) { RSQWP_Whip.Ask("knockdown", m, 1); m.vel.xy += pmo.vel.xy * 0.5; }
+			RSQWP_Whip.Touch("tarzan", pmo, m);
+			tzLast[pn] = m; tzTic[pn] = level.maptime;
+			if (RSQWP_Util.Flag("rsqwp_debug", false))
+				Console.Printf("T_WP TARZAN t%d %s at %.1f a tic (%.0f%% of the cap): %d, hp %d -> %d", level.maptime, m ? m.GetClassName() : 'gone', sp, share * 100, dmg, hp0, m ? m.Health : 0);
+		}
+	}
+
 	static Vector3 AttachPoint(PlayerPawn pmo)
 	{
 		return pmo.Pos + (0, 0, pmo.Height * RSQWP_Util.Num("rsqwp_attach", 0.6));
@@ -340,7 +373,7 @@ class RSQWP_Core : EventHandler
 
 	static void CapSpeed(PlayerPawn pmo)
 	{
-		double cap = RSQWP_Util.Num("rsqwp_max_speed", 30);
+		double cap = RSQWP_Whip.SwingCap(pmo);     // Momentum 2-3 raise it (Gun Bonsai VR)
 		double s = pmo.vel.Length();
 		if (cap > 0 && s > cap) pmo.vel *= cap / s;
 	}
@@ -500,6 +533,7 @@ class RSQWP_Core : EventHandler
 			pmo.vel = v;
 			CapSpeed(pmo);
 			roped = true;
+			if (!grounded) Tarzan(pmo);
 			Carry(pmo);
 
 			// The rope must see its anchor. Swing round a corner and it slips: checked

@@ -20,6 +20,17 @@ Assist's throw and Reach's flight do run.
 - **`GRAZE_U` 6 -> 2.3** map units (about a link, as 6 was for 6.4-unit links).
 - Comment nits from the review (handSpd's merged comment, COIL_A's side, "21 links in").
 Not changed: Assist's throw reach (`Throw`: 1.1x the length, ~2 m, not in the decisions).
+- **Snag and the rope re-tested** (owner: before the Rope branch) on WHIPTEST: a crack just under the beam's edge
+  (z 72, 37 above the hand) became core's rope; stepped off the lip, you swung out to x 560 and back onto the ledge
+  (fell 17, not 512). A still player on the ground is stopped dead by QZD, so the probe put you just past the lip.
+
+### The Gun Bonsai VR Whip tree (GBOVR_TREES.md 4.4), built the same day
+`whip.zs` GbRefresh / Gb / Unlock (the levels by name once a second, -1 without the patch); `core.zs` Carry, CapSpeed,
+Comfort and Tarzan; `weapon.zs` the lasso. Probed headless (`fp_wt*`), numbers in GBOVR_TREES.md 4.4 BUILT. Fields
+renamed for ZScript's case-blind names: Bola's tied monsters are `tied[]`, not `bola[]`. Not run: a real swing, Mantle
+2 (a swing up to a lip), Lasso 2's longer hold in a real throw. Found on the way, not changed: a fetched pickup flies on
+an arc meant to land on you, and an item is picked up only when the player moves into it (QZD); in the probe the
+fetched items stopped 40-60 units short on MAP01. Headset: does a fetched pickup reach you and get taken.
 
 ## 2026-11-02 (latest): MIT's length, held coiled, uncoils for the attack -- rig only, not headset-confirmed
 Owner (headset): "That whip looks hella long dude, almost like a noodle ... we hold it coiled ... shorten the length

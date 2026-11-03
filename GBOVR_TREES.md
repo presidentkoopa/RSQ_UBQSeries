@@ -1143,6 +1143,40 @@ Reach nodes all kept.)
 Thong, Quick Mark, Heavy Yank, Lasso, Bola, Snag, Mantle, Momentum, Tarzan, Pull and Punch kept; Flail levels,
 Choke, Disarm, Rope Them In struck. 5 exist as options; all 16 are new as upgrades.
 
+**The recode, reviewed and fixed first (11-02, Whip/HANDOFF.md):** the whip is MIT's 1.8 m (25 links of 2.448 room
+units), so the base numbers above are old: reach is 1.8 m of thong + the handle, the crack's top is 43
+(`rsqwp_whip_hardcrack`, was 50), and the whip earns XP (fx.zs Hurt). The owner's seven decisions: Reach's speed
+bookkeeping fixed; hardest crack 43; a crack with 6 links or fewer still coiled; lasso catch reach 4x the length
+(7.2 m); the lasso's held piece where the off hand grips; GRAZE_U 2.3; Snag and the rope re-tested before the Rope
+branch (they work).
+
+**BUILT 11-02, the whole Whip tree** (15 classes; "Rope Them In" struck). Gun Bonsai VR `up_whip.zs`
+(`RSQ_Upgrade_WhipMarker`; Stun, Strike True and Momentum are `WhipStun`, `WhipStrikeTrue`, `WhipMomentum`: the plain
+names are other trees'). RSQ Whip reads the levels by name once a second (`whip.zs` GbRefresh); every move is the
+whip's. Calls made (owner 11-02 where marked):
+- **Long Thong** is a length (owner): x1.25 / 1.5 / 1.75 = 2.25 / 2.7 / 3.15 m, the coil's loops grow with it, and the
+  lasso's reach is 4x the length (owner: tied to length).
+- **Snag 2** (owner: "defer to your understanding"): edges from the hand's height up (the row's 16 above it at 1).
+- **Crack Shot 2-3** (owner): the blast is the missile's own damage, within 2 / 2.5 m.
+- **Quick Mark 3** (owner: arcade goofy is fine): a second pickup is marked too and one crack fetches both, the first
+  then the second in the same flight. Pickups only (not switches or monsters).
+- **Return Crack**'s x1 + 0.25 lv is the returned missile's damage; it flies at its shooter.
+- **Stun** asks Gun Bonsai VR's `stagger`; **Tarzan** its `knockdown` (1 s); **Pull and Punch** `stagger` for the
+  yank's flight (14 tics) + 17 + 9 lv, offered only with RSQ Melee.
+- **Bola** ties the nearest light monsters within 2.5 m of the lassoed one; they are placed beside it each tic and
+  fly with it on a yank.
+- **Momentum 2-3** raise the rope swing's cap only; the flail and the yank keep the row's 30.
+**Headless 11-02** (fistsprobe `fp_wt*`; the whip weapon's own record): at level 0 under the patch the lasso, snag,
+mantle, keep-speed and crack-shot rows read off; a crack at 43 did 12, no freeze, no hold; a cracked imp ball blew up
+and hurt nothing round it; an arachnotron (600) yanked staggers (medium, 1.5 a tic). With the nodes: a crack at 43 did
+24 (Sting 4), froze 6 tics (Strike True 3), held in pain 30 (Stun 2); Crack Shot 3: the ball blew up and the imp 40
+beside it took 15; the arachnotron flew (Heavy Yank 1, 3.5 a tic) staggered 49 tics (Pull and Punch 2); a mancubus
+(1000) swung you instead; a lassoed imp was held 105 tics (Lasso 2) with 2 more tied (Bola 2), all three flying at 6.3;
+Tarzan 2 at 20 a tic (cap 42) did 14 and knocked down, at 2 nothing; Long Thong 3: 3.15 m, lasso 12.6 m; Quick Mark 3:
+a medikit and a stimpack both marked, one crack sent the whip to both; Return Crack 2: the ball went back and hit its
+shooter (14); Snag 2 on WHIPTEST: an edge 12 above the hand snagged (at 1 it did not). Not run: any real swing,
+Mantle 2, Momentum's carry on landing, a real lasso throw.
+
 ### 4.5 Grenade (own weapon path, owner 11-02; branches Carry, Throw, Fuse, Blast, Style and the SlowMo link approved)
 
 **Base numbers** (`Grenade/CVARINFO.txt`, README): fuse 3.0 s; a throw at 2.5+ m/s, strength x1.0 of the hand, arc

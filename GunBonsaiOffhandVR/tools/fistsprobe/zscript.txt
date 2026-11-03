@@ -117,6 +117,8 @@ class FistsProbe : EventHandler
 	Actor rgGun, rgImp;
 	Actor krBit; double krD0; int krAt;
 	int wpFly; Vector3 wpLast;
+	int ropeT;
+	int wtTend; Actor wtShooter, wtNear, wtBall; int wtH0, wtN0; Actor wtItem1, wtItem2;
 	int rgAt, rgH0;
 	int dgHits, dgNext, dgDone;
 	Array<Actor> gkImps;
@@ -127,6 +129,14 @@ class FistsProbe : EventHandler
 		int t = level.maptime;
 		FxReport();
 		WhipFlight();
+		RopeLog(p);
+		if (wtTend > 0)
+		{
+			// the whip weapon's hand kept tended and its trigger held (the mark), as weapon.zs does each tic
+			let w = RSQWP_Whip(EventHandler.Find("RSQWP_Whip"));
+			if (w) { w.tendTic[0] = level.maptime; w.markHeld[0] = true; }
+			wtTend--;
+		}
 		if (gnAt > 0 && t == gnAt + 3)
 		{
 			int n = 0; double dmin = 1e9, dmax = 0;
@@ -343,6 +353,251 @@ class FistsProbe : EventHandler
 		Console.Printf("FP whip flight t%d: reach tics left %d, the tip moved %.1f, the sim reads %.1f (room units a tic)", level.maptime, w.reachTic[0], step, v);
 		wpLast = tip;
 		if (++wpFly > 14) wpFly = 0;
+	}
+
+	// THE ROPE SWING after a snag (fp_wpsnag 2): where you are every 4 tics, and whether the rope still holds you
+	void RopeLog(PlayerPawn p)
+	{
+		if (ropeT <= 0) return;
+		if (ropeT % 4 == 1)
+		{
+			let c = RSQWP_Core.Get();
+			let h = c ? c.hooks[0] : null;
+			Console.Printf("FP rope t%d: you at (%.0f %.0f %.0f) moving (%.1f %.1f %.1f), rope %s", level.maptime, p.pos.x, p.pos.y, p.pos.z,
+				p.vel.x, p.vel.y, p.vel.z, h ? String.Format("held, %.0f long", (h.pos - p.pos).Length()) : "gone");
+		}
+		if (++ropeT > 120) ropeT = 0;
+	}
+
+	// THE WHIP'S EVENTS (fp_wp*, fp_wt*): their own function, TreeEvents is at the register limit
+	void WhipEvents(ConsoleEvent e, PlayerPawn p)
+	{
+		if (false) {}
+		else if (e.Name ~== "fp_wp")
+		{
+			// THE WHIP'S FIXES (11-02). arg0 0: start the right-hand whip (arg1 mode, 1 Assist): its length and lasso reach;
+			// 1: the crack's damage at five tip speeds; 2: the lasso's held piece for an off hand 0.3 / 0.6 / 1.2 m out;
+			// 3: put arg1 links in the coil (then 4 reads how long it has been out enough to crack); 5: Assist's throw
+			let w = RSQWP_Whip(EventHandler.Find("RSQWP_Whip"));
+			if (!w) { Console.Printf("FP whip: no RSQWP_Whip"); return; }
+			int a = e.Args[0];
+			if (a == 0)
+			{
+				w.Start(0, p, 0, e.Args[1]);
+				Console.Printf("FP whip started: mode %d, length %.1f room units (%.2f m), lasso reach %.0f (%.1f m), coil %.1f -> %.1f",
+					w.wmode[0], w.wlen[0], w.wlen[0] / 34.0, w.LassoReach(0), w.LassoReach(0) / 34.0, w.cp[0], w.cgoal[0]);
+			}
+			else if (a == 1)
+			{
+				static const double SP[] = { 20, 30, 35, 43, 50 };
+				String s = "";
+				double full = RSQWP_Util.Opt("rsqwp_whip_damage", 12);
+				for (int k = 0; k < 5; k++)
+				{
+					double hk = w.CrackK(0, SP[k]);
+					s = s .. String.Format(" %.0f->%d", SP[k], max(1, int(full * (0.25 + 0.75 * hk) + 0.5)));
+				}
+				Console.Printf("FP whip crack damage by tip speed (full %.0f, fullcrack %.0f):%s", full, RSQWP_Util.Num("rsqwp_whip_hardcrack", 0), s);
+			}
+			else if (a == 2)
+			{
+				Vector3 b, d;
+				[b, d] = w.Handle(0, p, 0);
+				Vector3 tip = b + d * RSQWP_Whip.HANDLEN;
+				static const double M[] = { 0.3, 0.6, 1.2 };
+				String s = "";
+				for (int k = 0; k < 3; k++)
+				{
+					w.lassoP1[0] = tip + (0, 0, -1) * M[k] * 34.0;
+					s = s .. String.Format(" %.1f m->%d links", M[k], w.LassoHeld(0, b, d));
+				}
+				Console.Printf("FP whip lasso held piece:%s", s);
+			}
+			else if (a == 3) { w.cp[0] = e.Args[1]; w.cgoal[0] = e.Args[1]; }
+			else if (a == 4) Console.Printf("FP whip: %.1f links coiled, out enough to crack for %d tics", w.cp[0], w.fullTics[0]);
+			else if (a == 5)
+			{
+				w.Start(0, p, 0, 1);
+				w.Throw(0, p, 0);
+				wpLast = w.wp[RSQWP_Whip.NN];
+				wpFly = 1;
+				Console.Printf("FP whip: Assist's throw, %d tics of flight", w.reachTic[0]);
+			}
+		}
+		else if (e.Name ~== "fp_wpsnag")
+		{
+			// SNAG on WHIPTEST (Whip/tools/rigtest/whipprobe/maps): arg0 1: stand at the west ledge's lip facing the
+			// beam, start the whip all out and crack it just under the beam's west edge (z 72); 2: step off into the pit
+			let w = RSQWP_Whip(EventHandler.Find("RSQWP_Whip"));
+			if (!w) return;
+			if (e.Args[0] == 1)
+			{
+				p.SetOrigin((496, 512, 0), false);
+				p.angle = 0;
+				w.Start(0, p, 0, 0);
+				w.cp[0] = 0; w.cgoal[0] = 0;
+				w.Crack(0, p, 0, (534, 512, 70), (1, 0, 0) * 30);
+				let c = RSQWP_Core.Get();
+				let h = c ? c.hooks[0] : null;
+				Console.Printf("FP whip snag: a crack under the beam's edge -> %s (whip state %d)", h ? String.Format("ROPE at (%.0f %.0f %.0f)", h.pos.x, h.pos.y, h.pos.z) : "no rope", w.wstate[0]);
+			}
+			else if (e.Args[0] == 2) { p.SetOrigin((530, 512, 0), true); p.vel = (4, 0, 0); ropeT = 1; }   // just past the lip, over the pit (a still player on the ground is stopped dead)
+		}
+		else if (e.Name ~== "fp_wt")
+		{
+			// THE WHIP TREE. arg0 0: give the whip weapon and put it in hand; 1: offers, levels and every read; 2: grant arg1's
+			// node (+arg2 levels)
+			let w = RSQWP_Whip(EventHandler.Find("RSQWP_Whip"));
+			if (!w) return;
+			if (e.Args[0] == 0) { p.GiveInventory("RSQWP_WhipWeapon", 1); p.player.PendingWeapon = Weapon(p.FindInventory("RSQWP_WhipWeapon")); return; }
+			let wpn = Weapon(p.FindInventory("RSQWP_WhipWeapon"));
+			let st = TFLV_PerPlayerStats.GetStatsFor(p);
+			let info = (wpn && st) ? st.GetInfoFor(wpn) : null;
+			if (!info) { Console.Printf("FP whip tree: no record (carried: %s)", wpn ? "yes" : "no"); return; }
+			if (e.Args[0] == 2)
+			{
+				String cls = "RSQ_Upgrade_" .. RSQWP_Whip.GBN[clamp(e.Args[1], 0, RSQWP_Whip.G_N - 1)];
+				info.upgrades.Add(cls, max(e.Args[2], 1));
+				Console.Printf("FP whip tree granted %s", cls);
+				return;
+			}
+			String on = "", have = "";
+			for (int k = 0; k < RSQWP_Whip.G_N; k++)
+			{
+				Class<TFLV_Upgrade_BaseUpgrade> c = "RSQ_Upgrade_" .. RSQWP_Whip.GBN[k];
+				if (!c) { on = on .. " ?" .. RSQWP_Whip.GBN[k]; continue; }
+				if (TFLV_Upgrade_BaseUpgrade(new(c)).IsSuitableForWeapon(info)) on = on .. " " .. RSQWP_Whip.GBN[k];
+				int lv = int(info.upgrades.Level("RSQ_Upgrade_" .. RSQWP_Whip.GBN[k]));
+				if (lv > 0) have = have .. String.Format(" %s%d", RSQWP_Whip.GBN[k], lv);
+			}
+			Console.Printf("FP whip tree [stage %d] has:%s | offered:%s", e.Args[1], have, on);
+			String rd = "";
+			for (int k = 0; k < RSQWP_Whip.G_N; k++) rd = rd .. String.Format(" %d", RSQWP_Whip.Gb(p, k));
+			w.Start(0, p, 0, 0);
+			Console.Printf("FP whip tree reads:%s | length %.2f m, lasso reach %.1f m, light mass %.0f, snag above %.0f, swing cap %.0f; lasso %d, snag %d, mantle %d, keep speed %d, crack shot %d",
+				rd, w.wlen[0] / 34.0, w.LassoReach(0) / 34.0, RSQWP_Whip.LightMass(p), RSQWP_Whip.SnagAbove(p), RSQWP_Whip.SwingCap(p),
+				RSQWP_Whip.Unlock(p, RSQWP_Whip.G_LASSO, "rsqwp_whip_lasso", true), RSQWP_Whip.Unlock(p, RSQWP_Whip.G_SNAG, "rsqwp_whip_snag", true),
+				RSQWP_Whip.Unlock(p, RSQWP_Whip.G_MANTLE, "rsqwp_mantle", true), RSQWP_Whip.Unlock(p, RSQWP_Whip.G_MOMENTUM, "rsqwp_carry", true),
+				RSQWP_Whip.Unlock(p, RSQWP_Whip.G_CRACKSHOT, "rsqwp_whip_fireball", false));
+			w.Halt(0);
+		}
+		else if (e.Name ~== "fp_wtcrack")
+		{
+			// a crack at tip speed 43 on a 1000-health imp 60 ahead, by the whip's own Hit
+			let w = RSQWP_Whip(EventHandler.Find("RSQWP_Whip"));
+			let m = Put("DoomImp", 60);
+			if (!w || !m) return;
+			m.health = 1000;
+			w.Start(0, p, 0, 0);
+			w.Hit(0, p, 0, m, m.pos + (0, 0, 30), 43, true);
+			let d = RSQ_Dazed(m.FindInventory("RSQ_Dazed"));
+			Console.Printf("FP whip crack at 43: %d damage, frozen %d tics, held in pain %d tics", 1000 - m.health, m.freezetics, d ? d.staggerUntil - level.maptime : 0);
+			w.Halt(0);
+			m.Destroy();
+		}
+		else if (e.Name ~== "fp_wtmissile")
+		{
+			// an imp 400 ahead shoots; its ball, 60 ahead and coming at you, is cracked (the whip's own CrackMissile); a
+			// second 1000-health imp stands 40 beside the ball. fp_wtmissiled reports a few tics later
+			let w = RSQWP_Whip(EventHandler.Find("RSQWP_Whip"));
+			if (!w) return;
+			Vector3 f = (cos(p.angle), sin(p.angle), 0), s = (-sin(p.angle), cos(p.angle), 0);
+			wtShooter = Put("DoomImp", 400); wtNear = Put("DoomImp", 60, 40);
+			if (!wtShooter || !wtNear) return;
+			wtShooter.health = 1000; wtShooter.freezetics = 40; wtNear.health = 1000; wtNear.freezetics = 40;
+			wtH0 = 1000; wtN0 = 1000;
+			wtBall = Actor.Spawn("DoomImpBall", p.pos + f * 60 + (0, 0, 32));
+			if (!wtBall) return;
+			wtBall.target = wtShooter;
+			wtBall.vel = -f * wtBall.Speed;
+			bool sent = w.CrackMissile(p, wtBall, s * 10);
+			Console.Printf("FP whip cracked the ball: %s", sent ? String.Format("sent away, flying %.0f deg off the shooter's bearing", wtBall ? abs(Actor.DeltaAngle(VectorAngle(wtBall.vel.x, wtBall.vel.y), p.angle)) : -1.0) : "blown up");
+		}
+		else if (e.Name ~== "fp_wtmissiled")
+		{
+			Console.Printf("FP whip after the crack: the shooter %d -> %d, the imp beside the ball %d -> %d", wtH0, wtShooter ? wtShooter.health : -1, wtN0, wtNear ? wtNear.health : -1);
+			if (wtShooter) wtShooter.Destroy();
+			if (wtNear) wtNear.Destroy();
+		}
+		else if (e.Name ~== "fp_wtyank")
+		{
+			// a wrapped monster (arg0 0 imp, 1 arachnotron 600, 2 mancubus 1000; arg1 1: lassoed) 150 ahead, yanked as hard as
+			// a pull goes; with arg0 0 and arg1 1, two more imps stand by it for Bola
+			static const String YC[] = { "DoomImp", "Arachnotron", "Fatso" };
+			let w = RSQWP_Whip(EventHandler.Find("RSQWP_Whip"));
+			let m = Put(YC[clamp(e.Args[0], 0, 2)], 150);
+			if (!w || !m) return;
+			Actor b1 = null, b2 = null;
+			if (e.Args[0] == 0 && e.Args[1] == 1) { b1 = Put("DoomImp", 150, 40); b2 = Put("DoomImp", 150, -40); }
+			w.Start(0, p, 0, 0);
+			w.BeginWrap(0, p, 0, m, e.Args[1] == 1);
+			int n = (w.tied[0] ? 1 : 0) + (w.tied[1] ? 1 : 0);
+			int held = w.wrapLen[0];
+			w.Yank(0, p, 0, m, RSQWP_Whip.PULL_FULL);
+			let d = RSQ_Dazed(m.FindInventory("RSQ_Dazed"));
+			Console.Printf("FP whip yank %s (mass %d, lassoed %d): held %d tics, %d tied with it; flies at %.1f a tic toward you%s, staggered %d tics",
+				m.GetClassName(), m.Mass, e.Args[1], held, n, m.vel.xy.Length(), b1 ? String.Format(" (the tied ones %.1f, %.1f)", b1.vel.xy.Length(), b2 ? b2.vel.xy.Length() : -1.0) : "",
+				d ? max(0, d.staggerUntil - level.maptime) : 0);
+			w.Halt(0);
+			m.Destroy(); if (b1) b1.Destroy(); if (b2) b2.Destroy();
+		}
+		else if (e.Name ~== "fp_wttarzan")
+		{
+			// swinging (no rope needed for the test) at arg0 map units a tic into a 1000-health imp just ahead
+			let c = RSQWP_Core.Get();
+			let m = Put("DoomImp", 40);
+			if (!c || !m) return;
+			m.health = 1000;
+			p.vel = (cos(p.angle), sin(p.angle), 0) * e.Args[0];
+			c.Tarzan(p);
+			let d = RSQ_Dazed(m.FindInventory("RSQ_Dazed"));
+			Console.Printf("FP whip tarzan at %d a tic (cap %.0f): %d damage, knocked down %d", e.Args[0], RSQWP_Whip.SwingCap(p), 1000 - m.health, d ? d.downUntil > level.maptime : 0);
+			p.vel = (0, 0, 0);
+			m.Destroy();
+		}
+		else if (e.Name ~== "fp_wtqm")
+		{
+			// QUICK MARK (the whip weapon in hand, +attack held by the run): arg0 1 a medikit 100 ahead and a stimpack 150 ahead; 2 crack (it flies to
+			// the mark); 3 report where both went
+			let w = RSQWP_Whip(EventHandler.Find("RSQWP_Whip"));
+			if (!w) return;
+			if (e.Args[0] == 1)
+			{
+				wtItem1 = Put("Medikit", 100); wtItem2 = Put("Stimpack", 150);
+				p.health = p.player.health = 10;     // the whip weapon in hand marks while +attack is held (the run holds it)
+			}
+			else if (e.Args[0] == 2)
+			{
+				Console.Printf("FP whip marks: %s and %s", w.lockOn[0] ? String.Format("%s", w.lockOn[0].GetClassName()) : "nothing", w.lock2[0] ? String.Format("%s", w.lock2[0].GetClassName()) : "nothing");
+				w.Crack(0, p, 0, p.pos + (0, 0, 40), (cos(p.angle), sin(p.angle), 0) * 30);
+			}
+			else
+			{
+				Console.Printf("FP whip after one crack: health %d; the medikit %s, the stimpack %s", p.health,
+					(!wtItem1 || Inventory(wtItem1).Owner) ? "taken" : String.Format("%.0f away", wtItem1.Distance3D(p)),
+					(!wtItem2 || Inventory(wtItem2).Owner) ? "taken" : String.Format("%.0f away", wtItem2.Distance3D(p)));
+				p.health = p.player.health = 5000;
+			}
+		}
+		else if (e.Name ~== "fp_wtsnag")
+		{
+			// SNAG 2 on WHIPTEST: you at the lip, the hand raised arg0 units, a crack just under the beam's edge (z 72)
+			let w = RSQWP_Whip(EventHandler.Find("RSQWP_Whip"));
+			let c = RSQWP_Core.Get();
+			if (!w || !c) return;
+			if (c.hooks[0]) c.Drop(0);
+			p.SetOrigin((496, 512, 0), false);
+			p.angle = 0;
+			w.Start(0, p, 0, 0);
+			w.cp[0] = 0; w.cgoal[0] = 0;
+			p.player.viewz = p.pos.z + p.player.viewheight + e.Args[0];   // the hand (body fallback: the eyes - 8) raised arg0
+			Vector3 hp0 = RSQWP_Util.HandPos(p, 0);
+			double hz = hp0.z;
+			w.Crack(0, p, 0, (534, 512, 70), (1, 0, 0) * 30);
+			Console.Printf("FP whip snag with the hand at z %.0f (the edge %.0f above it, needs over %.0f): %s", hz, 70 - hz, RSQWP_Whip.SnagAbove(p), c.hooks[0] ? "ROPE" : "no rope");
+			if (c.hooks[0]) c.Drop(0);
+			w.Halt(0);
+		}
 	}
 
 	void TreeEvents(ConsoleEvent e, PlayerPawn p)
@@ -963,57 +1218,6 @@ class FistsProbe : EventHandler
 			Console.Printf("FP kr magnet: a bit %.0f away is %s after %d tics", krD0, krBit ? String.Format("%.0f away", krBit.Distance3D(p)) : "picked up / gone", level.maptime - krAt);
 			if (krBit) krBit.Destroy();
 		}
-		else if (e.Name ~== "fp_wp")
-		{
-			// THE WHIP'S FIXES (11-02). arg0 0: start the right-hand whip (arg1 mode, 1 Assist): its length and lasso reach;
-			// 1: the crack's damage at five tip speeds; 2: the lasso's held piece for an off hand 0.3 / 0.6 / 1.2 m out;
-			// 3: put arg1 links in the coil (then 4 reads how long it has been out enough to crack); 5: Assist's throw
-			let w = RSQWP_Whip(EventHandler.Find("RSQWP_Whip"));
-			if (!w) { Console.Printf("FP whip: no RSQWP_Whip"); return; }
-			int a = e.Args[0];
-			if (a == 0)
-			{
-				w.Start(0, p, 0, e.Args[1]);
-				Console.Printf("FP whip started: mode %d, length %.1f room units (%.2f m), lasso reach %.0f (%.1f m), coil %.1f -> %.1f",
-					w.wmode[0], w.wlen[0], w.wlen[0] / 34.0, w.LassoReach(0), w.LassoReach(0) / 34.0, w.cp[0], w.cgoal[0]);
-			}
-			else if (a == 1)
-			{
-				static const double SP[] = { 20, 30, 35, 43, 50 };
-				String s = "";
-				double full = RSQWP_Util.Opt("rsqwp_whip_damage", 12);
-				for (int k = 0; k < 5; k++)
-				{
-					double hk = w.CrackK(0, SP[k]);
-					s = s .. String.Format(" %.0f->%d", SP[k], max(1, int(full * (0.25 + 0.75 * hk) + 0.5)));
-				}
-				Console.Printf("FP whip crack damage by tip speed (full %.0f, fullcrack %.0f):%s", full, RSQWP_Util.Num("rsqwp_whip_hardcrack", 0), s);
-			}
-			else if (a == 2)
-			{
-				Vector3 b, d;
-				[b, d] = w.Handle(0, p, 0);
-				Vector3 tip = b + d * RSQWP_Whip.HANDLEN;
-				static const double M[] = { 0.3, 0.6, 1.2 };
-				String s = "";
-				for (int k = 0; k < 3; k++)
-				{
-					w.lassoP1[0] = tip + (0, 0, -1) * M[k] * 34.0;
-					s = s .. String.Format(" %.1f m->%d links", M[k], w.LassoHeld(0, b, d));
-				}
-				Console.Printf("FP whip lasso held piece:%s", s);
-			}
-			else if (a == 3) { w.cp[0] = e.Args[1]; w.cgoal[0] = e.Args[1]; }
-			else if (a == 4) Console.Printf("FP whip: %.1f links coiled, out enough to crack for %d tics", w.cp[0], w.fullTics[0]);
-			else if (a == 5)
-			{
-				w.Start(0, p, 0, 1);
-				w.Throw(0, p, 0);
-				wpLast = w.wp[RSQWP_Whip.NN];
-				wpFly = 1;
-				Console.Printf("FP whip: Assist's throw, %d tics of flight", w.reachTic[0]);
-			}
-		}
 		else if (e.Name ~== "fp_fxcount")
 		{
 			String s = "";
@@ -1326,7 +1530,8 @@ class FistsProbe : EventHandler
 			Console.Printf("FP saber [stage %d] has:%s | offered:%s | size index %d | second saber carried: %s", e.Args[1], have, on, sb ? sb.SizeIdx() : -1,
 				p.FindInventory("UBQS_SaberOff") ? "yes" : "no");
 		}
-		else if (e.Name.Left(5) ~== "fp_ss" || e.Name.Left(5) ~== "fp_gn" || e.Name.Left(5) ~== "fp_gr" || e.Name.Left(5) ~== "fp_dg" || e.Name.Left(5) ~== "fp_rg" || e.Name.Left(5) ~== "fp_fx" || e.Name.Left(5) ~== "fp_sm" || e.Name.Left(5) ~== "fp_kr" || e.Name.Left(5) ~== "fp_wp") TreeEvents(e, p);
+		else if (e.Name.Left(5) ~== "fp_ss" || e.Name.Left(5) ~== "fp_gn" || e.Name.Left(5) ~== "fp_gr" || e.Name.Left(5) ~== "fp_dg" || e.Name.Left(5) ~== "fp_rg" || e.Name.Left(5) ~== "fp_fx" || e.Name.Left(5) ~== "fp_sm" || e.Name.Left(5) ~== "fp_kr" || false) TreeEvents(e, p);
+		else if (e.Name.Left(5) ~== "fp_wp" || e.Name.Left(5) ~== "fp_wt") WhipEvents(e, p);
 		else if (e.Name ~== "fp_force")
 		{
 			// arg0 0: the Force's own Push at an imp in front; 1: Force Lightning straight into one (and a second near it);

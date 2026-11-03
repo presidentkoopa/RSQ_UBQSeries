@@ -197,6 +197,14 @@ are the 11-02 fixes. They were measured on the rig only, so all of them are not 
 
 ## Works with
 
+- **RSQ Gun Bonsai VR (its Whip tree, GBOVR_TREES.md 4.4):** the whip weapon levels up. Without it nothing changes.
+  With it, these rows become nodes learned on the whip: Lasso, Snag, Mantle, Keep the Swing's Speed, Crack Fireballs,
+  Knock Away (now Return Crack, aimed at the shooter) and Hit-Stop (Strike True, 3/4/6 tics). New: Sting (+25% crack
+  damage a level), Stun (the crack's pain held 10 + 10 lv tics), Crack Shot 2-3 (a cracked missile hurts round it by
+  its own damage), Long Thong (x1.25 / 1.5 / 1.75 length), Quick Mark (+2 m a level; 3: a second pickup marked, one
+  crack fetches both), Heavy Yank (light mass 600 / 800 / 1000), Pull and Punch (a yanked monster arrives staggered),
+  Bola (the lasso ties 1-2 more monsters to its catch), Snag 2 (edges from the hand's height up), Mantle 2 (from a
+  swing), Momentum 2-3 (the swing's cap 36 / 42), Tarzan (swing into a monster: hurt and knocked flat).
 - **RSQ Grapple:** loads beside it. Separate binds and settings. Not needed.
 - **RSQ DistanceGrab:** its grab binds take hold of the whip's rope ("Grips From Grab"). The lasso reads the
   same off-grip key codes DistanceGrab uses.

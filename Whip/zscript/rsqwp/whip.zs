@@ -90,6 +90,7 @@ class RSQWP_Whip : EventHandler
 	int     crackTic[NW];
 	int     fullTics[NW];        // tics the thong has been out enough to crack (CRACK_COILED links or fewer still coiled)
 	int     lk[NW];              // the lasso: how many links the off hand holds (where it gripped; LassoHeld)
+	bool    lassoed[NW];         // the flight under way is a lasso's throw (Reach: Lasso 2's longer hold, Bola)
 	double  handSpd[NW];         // the handle tip's recent speed, room units a tic (decays 7% a tic: the wave takes a third of a second to reach the tip)
 	Actor   whit[NW * 4];        // the last few things this lash has hit (once each per lash)
 	int     whitTic[NW * 4];
@@ -203,6 +204,96 @@ class RSQWP_Whip : EventHandler
 	RSQWP_LockCentre markCen[NW];// ... white centre
 
 	static RSQWP_Whip Get() { return RSQWP_Whip(EventHandler.Find("RSQWP_Whip")); }
+
+	// ---- THE GUN BONSAI VR PATCH'S WHIP TREE (GBOVR_TREES.md 4.4) ----------------------------------------------------
+	// The whip weapon's node levels, asked by name once a second (RSQ_MeleeUpgradeService "level", on the weapon's own
+	// record). Without the patch Gb is -1 everywhere and every row is as it was. With it, the rows the tree takes over
+	// (Lasso, Snag, Mantle, Keep the Swing's Speed, Crack Fireballs, knock away, hit-stop) are its nodes. Three class
+	// names carry "Whip" (WhipStun, WhipStrikeTrue, WhipMomentum): Stun, Strike True and Momentum are other trees'.
+	const G_STING = 0;
+	const G_STUN = 1;
+	const G_CRACKSHOT = 2;
+	const G_RETURN = 3;
+	const G_STRIKE = 4;
+	const G_LONG = 5;
+	const G_QUICK = 6;
+	const G_HEAVY = 7;
+	const G_LASSO = 8;
+	const G_BOLA = 9;
+	const G_SNAG = 10;
+	const G_MANTLE = 11;
+	const G_MOMENTUM = 12;
+	const G_TARZAN = 13;
+	const G_PULL = 14;
+	const G_N = 15;
+	static const String GBN[] = { "Sting", "WhipStun", "CrackShot", "ReturnCrack", "WhipStrikeTrue", "LongThong", "QuickMark",
+		"HeavyYank", "Lasso", "Bola", "Snag", "Mantle", "WhipMomentum", "Tarzan", "PullAndPunch" };
+	transient int gbTic;
+	transient bool gbOn;
+	transient int gbLv[MAXPLAYERS * 15];
+	void GbRefresh()
+	{
+		if (gbTic > 0 && level.maptime < gbTic && level.maptime >= gbTic - 35) return;
+		gbTic = level.maptime + 35;
+		let svc = ServiceIterator.Find("RSQ_MeleeUpgradeService").Next();
+		gbOn = svc != null;
+		for (int n = 0; n < MAXPLAYERS; n++)
+		{
+			Inventory w = (svc && playeringame[n] && players[n].mo) ? players[n].mo.FindInventory("RSQWP_WhipWeapon") : null;
+			for (int g = 0; g < G_N; g++) gbLv[n * G_N + g] = w ? max(0, svc.GetInt("level", GBN[g], 0, 0, w)) : 0;
+		}
+	}
+	// a player's level of a whip node: -1 without the patch, 0 for nobody
+	static int Gb(Actor pmo, int g)
+	{
+		let w = Get();
+		if (!w || !w.gbOn) return -1;
+		if (!pmo || !pmo.player) return 0;
+		return w.gbLv[pmo.PlayerNumber() * G_N + g];
+	}
+	// an option row the tree takes over: the row without the patch, the node learned with it
+	static bool Unlock(Actor pmo, int g, String cv, bool fb)
+	{
+		int l = Gb(pmo, g);
+		return l < 0 ? RSQWP_Util.Flag(cv, fb) : l >= 1;
+	}
+	static bool GbAny(int g)
+	{
+		for (int n = 0; n < MAXPLAYERS; n++) if (playeringame[n] && players[n].mo && Gb(players[n].mo, g) >= 1) return true;
+		return false;
+	}
+	// LONG THONG: the thong x1.25, 1.5, 1.75 (2.25, 2.7, 3.15 m); every link longer, the same 25
+	static double LongK(Actor pmo) { return 1.0 + 0.25 * clamp(Gb(pmo, G_LONG), 0, 3); }
+	// HEAVY YANK: the mass under which a yanked monster flies to you 400 -> 600, 800, 1000 (the Light Monster row's
+	// number when that is more)
+	static double LightMass(Actor pmo)
+	{
+		double l = RSQWP_Util.Num("rsqwp_whip_light", 400);
+		int h = Gb(pmo, G_HEAVY);
+		return h > 0 ? max(l, 400.0 + 200.0 * h) : l;
+	}
+	// SNAG 2: edges from the hand's height up snag (the Edge Height row, 16 above it, at level 1 and without the patch)
+	static double SnagAbove(Actor pmo) { return Gb(pmo, G_SNAG) >= 2 ? 0.0 : RSQWP_Util.Num("rsqwp_whip_above", 16); }
+	// MOMENTUM 2-3: the rope swing's speed cap 30 -> 36, 42 (the swing only: the flail and the yank keep the row's)
+	static double SwingCap(Actor pmo)
+	{
+		double c = RSQWP_Util.Num("rsqwp_max_speed", 30);
+		int l = Gb(pmo, G_MOMENTUM);
+		return l >= 2 ? c + 6.0 * (l - 1) : c;
+	}
+	// Gun Bonsai VR's "stagger" / "knockdown" (by name; nothing without it)
+	static void Ask(String req, Actor v, int n)
+	{
+		let s = ServiceIterator.Find("RSQ_MeleeUpgradeService").Next();
+		if (s && v) s.GetInt(req, "", n, 0, v);
+	}
+	// RSQ Score's combo ledger (by name; nothing without it)
+	static void Touch(String id, Actor pawn, Actor victim)
+	{
+		if (!pawn || !pawn.player || !victim) return;
+		let s = ServiceIterator.Find("RS_ScoreService").Next();
+		if (s) s.GetInt("touch", id, pawn.PlayerNumber(), 0, victim);
+	}
 
 	static clearscope Vector3 ToRoom(Vector3 m) { return (m.x, m.y, m.z * RSQWP_Util.PS()); }
 	static clearscope Vector3 ToMap(Vector3 r) { return (r.x, r.y, r.z / RSQWP_Util.PS()); }
@@ -341,7 +432,7 @@ class RSQWP_Whip : EventHandler
 		wmode[i] = clamp(mode, 0, 1);
 		wstate[i] = ST_OUT;
 		wage[i] = 0;
-		wlen[i] = WhipLen();
+		wlen[i] = WhipLen() * LongK(pmo);     // LONG THONG (Gun Bonsai VR)
 		wext[i] = 1.0;
 		armed[i] = true; swished[i] = false; calm[i] = 0; cracks[i] = 0; pend[i] = false; rearm[i] = 0; crackTic[i] = -100; fullTics[i] = wmode[i] == 1 ? -100000 : 0; handSpd[i] = 0; lashUntil[i] = -100; reachTic[i] = 0; baseLen[i] = wlen[i];
 		for (int k = 0; k < 4; k++) { whit[i * 4 + k] = null; whitTic[i * 4 + k] = -1000; whitCrack[i * 4 + k] = false; }
@@ -409,6 +500,7 @@ class RSQWP_Whip : EventHandler
 	override void WorldTick()
 	{
 		double t0 = MSTimeF();
+		GbRefresh();
 		WorldTick2();
 		tickMs = MSTimeF() - t0;
 		msSum += tickMs; msMax = max(msMax, tickMs); msN++;
@@ -425,7 +517,7 @@ class RSQWP_Whip : EventHandler
 	// BlockThingsIterator ever returns one); the list is pruned as they explode (MF_MISSILE cleared).
 	override void WorldThingSpawned(WorldEvent e)
 	{
-		if (e.Thing && e.Thing.bMISSILE && RSQWP_Util.Flag("rsqwp_whip_fireball", false)) missiles.Push(e.Thing);
+		if (e.Thing && e.Thing.bMISSILE && (gbOn ? GbAny(G_CRACKSHOT) : RSQWP_Util.Flag("rsqwp_whip_fireball", false))) missiles.Push(e.Thing);
 	}
 
 	void WorldTick2()
@@ -528,7 +620,7 @@ class RSQWP_Whip : EventHandler
 			Mend(i, pmo, b, d);
 			Lash(i, pmo, hand, peakAt, peakVel);
 			if (wstate[i] == ST_IDLE) continue;
-			if (level.maptime <= lashUntil[i] && missiles.Size() && RSQWP_Util.Flag("rsqwp_whip_fireball", false)) Swat(i, pmo, hand);
+			if (level.maptime <= lashUntil[i] && missiles.Size() && Unlock(pmo, G_CRACKSHOT, "rsqwp_whip_fireball", false)) Swat(i, pmo, hand);
 			UpdateMark(i);
 			tA = MSTimeF();
 			Draw(i);
@@ -727,15 +819,18 @@ class RSQWP_Whip : EventHandler
 	// a place on the coil, a links in from the handle's tip (fractional: the coil's end between two nodes). The loops
 	// face you (the plane across the handle's heading, so the eyes behind the hand see them round, not edge-on), hang
 	// toward the body (side +1: to the heading's left, inward for the right hand) and step forward along the heading
-	static Vector3 CoilAt(double a, Vector3 tip, Vector2 h, double seg, double side = 1.0)
+	static Vector3 CoilAt(double a, Vector3 tip, Vector2 h, double seg, double side = 1.0, double lm = 1.0)
 	{
-		double r = COIL_R * LenMult();
+		double r = COIL_R * LenMult() * lm;
 		double dth = 2.0 * asin(min(0.95, seg / (2.0 * r)));
 		double ph = COIL_A + a * dth;
 		Vector3 sd = (-h.y * side, h.x * side, 0);
 		Vector3 c = tip - ((0, 0, cos(COIL_A)) + sd * sin(COIL_A)) * r;
-		return c + ((0, 0, cos(ph)) + sd * sin(ph)) * r + (h, 0) * (COIL_P * LenMult() * a * dth / 360.0);
+		return c + ((0, 0, cos(ph)) + sd * sin(ph)) * r + (h, 0) * (COIL_P * LenMult() * lm * a * dth / 360.0);
 	}
+
+	// the coil's size follows the whip's own length (Long Thong: a longer thong coils in bigger loops)
+	double CoilK(int i) { return baseLen[i] / (NN * LINK * LenMult()); }
 
 	// the coil hangs toward the body: to the heading's left in the right hand, to its right in the left
 	double CoilSide(int i)
@@ -804,7 +899,7 @@ class RSQWP_Whip : EventHandler
 		Vector3 at = tip;
 		for (int k = 0; k < NP; k++)
 		{
-			if (k <= c) at = k == 0 ? tip : CoilAt(k, tip, ch[i], seg, CoilSide(i));
+			if (k <= c) at = k == 0 ? tip : CoilAt(k, tip, ch[i], seg, CoilSide(i), CoilK(i));
 			else at += (0, 0, -seg);
 			wp[o + k] = at; wq[o + k] = at;
 			wt[o + k] = ToMap(at);
@@ -1103,10 +1198,31 @@ class RSQWP_Whip : EventHandler
 			markRing[i].SetShade(RSQWP_CB.Pick(RSQWP_CB.CB_HAVE, RSQWP_LockRing.GOLD));
 		}
 		if (markCen[i]) { markCen[i].SetOrigin(at, true); markCen[i].scale = (sc, sc); }
+		// QUICK MARK 3's second mark
+		let b2 = lock2[i];
+		if (b2 && !b2.bDestroyed && !(Inventory(b2) && Inventory(b2).Owner))
+		{
+			Vector3 at2 = b2.pos + (0, 0, b2.height + 8);
+			if (!markRing2[i]) markRing2[i] = RSQWP_LockRing(Actor.Spawn("RSQWP_LockRing", at2, NO_REPLACE));
+			if (!markCen2[i]) markCen2[i] = RSQWP_LockCentre(Actor.Spawn("RSQWP_LockCentre", at2, NO_REPLACE));
+			if (markRing2[i]) { markRing2[i].SetOrigin(at2, true); markRing2[i].scale = (sc, sc); markRing2[i].SetShade(RSQWP_CB.Pick(RSQWP_CB.CB_HAVE, RSQWP_LockRing.GOLD)); }
+			if (markCen2[i]) { markCen2[i].SetOrigin(at2, true); markCen2[i].scale = (sc, sc); }
+		}
+		else ClearMark2(i);
+	}
+	Actor lock2[NW], reach2[NW];
+	RSQWP_LockRing markRing2[NW];
+	RSQWP_LockCentre markCen2[NW];
+	void ClearMark2(int i)
+	{
+		if (markRing2[i]) markRing2[i].Destroy();
+		if (markCen2[i]) markCen2[i].Destroy();
+		markRing2[i] = null; markCen2[i] = null;
 	}
 
 	void ClearMark(int i)
 	{
+		ClearMark2(i);
 		if (markRing[i]) markRing[i].Destroy();
 		if (markCen[i]) markCen[i].Destroy();
 		markRing[i] = null; markCen[i] = null;
@@ -1191,7 +1307,7 @@ class RSQWP_Whip : EventHandler
 		Vector3 pd = pl > 0.001 ? D / pl : d0;         // the handle's direction and tip a sub-step ago
 		Vector3 pa = wp[o];
 		double cpPrev = cp0;
-		Vector3 pE = cp0 > 0 ? CoilAt(cp0, pa, h0, seg, cs) : pa;   // the coil's end a sub-step ago
+		Vector3 pE = cp0 > 0 ? CoilAt(cp0, pa, h0, seg, cs, CoilK(i)) : pa;   // the coil's end a sub-step ago
 		double best = -1;
 		Vector3 bestAt = ToMap(wp[o + NN]), bestVel = (0, 0, 0);
 		for (int s = 1; s <= SUB; s++)
@@ -1228,8 +1344,8 @@ class RSQWP_Whip : EventHandler
 			wp[o] = anchor;
 			// THE COIL: its links on the loop hanging from the handle's tip, moved with it (a link just let out of it goes
 			// on from its place on the loop at the loop's own speed: its last place was there too)
-			for (int k = 1; k <= c && k < NP; k++) wp[o + k] = CoilAt(k, anchor, hv, seg, cs);
-			Vector3 E = cpn > 0 ? CoilAt(cpn, anchor, hv, seg, cs) : anchor;
+			for (int k = 1; k <= c && k < NP; k++) wp[o + k] = CoilAt(k, anchor, hv, seg, cs, CoilK(i));
+			Vector3 E = cpn > 0 ? CoilAt(cpn, anchor, hv, seg, cs, CoilK(i)) : anchor;
 			// THE LASSO (smoothed 11-02, owner: "grabbing with offhand and twirling works, but janky as hell"): the inner
 			// piece is laid straight from the handle to the off hand; only the thong beyond the off hand is free. Held
 			// firmly only once the coil is out, and then over 6 tics (lb)
@@ -1319,7 +1435,7 @@ class RSQWP_Whip : EventHandler
 				int n = c + 1;
 				double f = cpn - c, df = rate * h;
 				double frac = min(1.0, df / max(df, 1.0 - f + df));
-				wp[o + n] = wp[o + n] + (CoilAt(n, anchor, hv, seg, cs) - wp[o + n]) * frac;
+				wp[o + n] = wp[o + n] + (CoilAt(n, anchor, hv, seg, cs, CoilK(i)) - wp[o + n]) * frac;
 			}
 			// the floor and the ceiling each link last met (Collide): stopped there, sliding on the floor
 			for (int k = kp + 1; k < NP; k++)
@@ -1406,7 +1522,7 @@ class RSQWP_Whip : EventHandler
 		Vector3 handAt = RSQWP_Util.HandPos(pmo, hand);
 		double handZ = handAt.z;
 		double hitSpd = RSQWP_Util.Num("rsqwp_whip_crack", 20) * 0.45;
-		bool snagOn = RSQWP_Util.Flag("rsqwp_whip_snag", true) && wstate[i] == ST_OUT;
+		bool snagOn = Unlock(pmo, G_SNAG, "rsqwp_whip_snag", true) && wstate[i] == ST_OUT;   // the Snag node under Gun Bonsai VR
 		int nStop = 0;
 		int kc = int(cp[i]);
 		for (int k = 0; k < NP; k++) stopped[k] = k <= kc;
@@ -1444,7 +1560,7 @@ class RSQWP_Whip : EventHandler
 					[edge, ez] = Edge(tr, at);
 					if (RSQWP_Util.Opt("rsqwp_debug", 0) == 4 && k >= NN / 2)
 						Console.Printf("T_WPWC %d t%d link %d hit %d at (%.0f %.0f %.0f) spd %.1f edge %d ez %.0f handZ %.0f", i, level.maptime, k, tr.Results.HitType, at.x, at.y, at.z, spd, edge, ez, handZ);
-					if (snagOn && edge && k >= NN * 2 / 3 && spd >= hitSpd * 0.4 && at.z > handZ + RSQWP_Util.Num("rsqwp_whip_above", 16))
+					if (snagOn && edge && k >= NN * 2 / 3 && spd >= hitSpd * 0.4 && at.z > handZ + SnagAbove(pmo))
 					{
 						if (Snag(i, pmo, hand, (at.x, at.y, ez), dir, tr.Results.HitSector, at)) return true;
 					}
@@ -1605,13 +1721,14 @@ class RSQWP_Whip : EventHandler
 	{
 		if (!markHeld[i])
 		{
-			lockOn[i] = null; lockLine[i] = false; lockLeft[i] = 0; markLine[i] = null; markNext[i] = false;
+			lockOn[i] = null; lockLine[i] = false; lockLeft[i] = 0; markLine[i] = null; markNext[i] = false; lock2[i] = null;
 			return;
 		}
 		// the whip hand's smoothed aim (Steady Hands, util.zs AimPos) picks the mark; off / absent: the raw hand
 		Vector3 org = RSQWP_Util.AimPos(pmo, hand);
 		Vector3 dir = RSQWP_Util.MapDir(RSQWP_Util.AimYaw(pmo, hand), RSQWP_Util.AimPitch(pmo, hand));
-		double prio = max(0.0, RSQWP_Util.Num("rsqwp_whip_prio", 256));
+		// QUICK MARK (Gun Bonsai VR): pickups and switches marked 2 m further a level
+		double prio = max(0.0, RSQWP_Util.Num("rsqwp_whip_prio", 256)) + 68.0 * max(0, Gb(pmo, G_QUICK));
 		cA.Clear(); cL.Clear(); cPx.Clear(); cPy.Clear(); cPz.Clear(); cK.Clear();
 		let it = BlockThingsIterator.CreateFromPos(org.x, org.y, org.z, 64, LOCK_RANGE, false);
 		while (it.Next())
@@ -1703,6 +1820,11 @@ class RSQWP_Whip : EventHandler
 			lockLeft[i] = 35;
 		}
 		markKept[i] = pick == -2;
+		// QUICK MARK 3 (Gun Bonsai VR; owner 11-02, "one crack for both"): a pickup marked, the next pickup is marked too and
+		// the crack fetches both, the first and then the second in the same flight
+		lock2[i] = null;
+		if (Gb(pmo, G_QUICK) >= 3 && lockOn[i] is "Inventory")
+			for (int k = 0; k < n; k++) if (cA[k] && cA[k] != lockOn[i] && cA[k] is "Inventory") { lock2[i] = cA[k]; break; }
 		if (lockOn[i] != wasA || markLine[i] != wasL)
 		{
 			if (pick >= 0) Buzz(pmo, hand, 0.3, 2);
@@ -1744,10 +1866,11 @@ class RSQWP_Whip : EventHandler
 		let v = wrapOn[i];
 		if (!v) return;
 		// the trigger still held keeps hold of it (the flail); let go and it slips off WRAP_TICS later
-		if (markHeld[i] && RSQWP_Util.Flag("rsqwp_whip_flail", true)) wrapUntil[i] = max(wrapUntil[i], level.maptime + WRAP_TICS);
+		if (markHeld[i] && RSQWP_Util.Flag("rsqwp_whip_flail", true)) wrapUntil[i] = max(wrapUntil[i], level.maptime + max(wrapLen[i], WRAP_TICS));
 		if (v.bDestroyed || v.Health <= 0 || level.maptime > wrapUntil[i] || reachTic[i] > 0) { if (reachTic[i] <= 0) EndWrap(i); return; }
 		Flail(i, pmo, hand, v, hp);
 		if (!wrapOn[i] || v.bDestroyed || v.Health <= 0) { EndWrap(i); return; }
+		BolaTick(i, v);
 		Vector3 c = v.pos + (0, 0, v.height * 0.6);
 		Vector3 roomTo = ToRoom(c) - ToRoom(hp);
 		double dist = roomTo.Length();
@@ -1796,7 +1919,7 @@ class RSQWP_Whip : EventHandler
 	void Yank(int i, PlayerPawn pmo, int hand, Actor v, double peak)
 	{
 		double s = clamp((peak - PULL_MIN) / (PULL_FULL - PULL_MIN), 0.0, 1.0);
-		double light = RSQWP_Util.Num("rsqwp_whip_light", 400);
+		double light = LightMass(pmo);
 		double heavyM = RSQWP_Util.Num("rsqwp_whip_heavy", 1000);
 		bool heavy = v.bBOSS || v.bDONTTHRUST || v.Mass >= heavyM;
 		Vector3 to = pmo.pos - v.pos;
@@ -1817,6 +1940,12 @@ class RSQWP_Whip : EventHandler
 				State pain = v.FindState("Pain");
 				if (pain && !v.InStateSequence(v.CurState, pain)) v.SetState(pain);
 			}
+			if (isLight && v.Mass > RSQWP_Util.Num("rsqwp_whip_light", 400)) Touch("yank.heavy", pmo, v);
+			// PULL AND PUNCH (Gun Bonsai VR, after Heavy Yank 1): it arrives staggered 17 + 9 lv tics past its flight (RSQ
+			// Melee's Counterpunch reads a staggered monster), so the free hand's punch lands as a counter
+			int pp = Gb(pmo, G_PULL);
+			if (isLight && pp > 0 && v.bISMONSTER) { Ask("stagger", v, int(T) + 17 + 9 * pp); Touch("pull.punch", pmo, v); }
+			BolaYank(i, v.vel);
 			what = isLight ? "light: pulled" : "medium: staggers";
 		}
 		else
@@ -1857,17 +1986,19 @@ class RSQWP_Whip : EventHandler
 	// it is held at the rope's length from the whip hand, on the bearing it had from the hand's yaw. A light one
 	// (rsqwp_whip_light) is lifted off its feet: pinned in its Pain state (tics -1, monster.zs's way: it stays in
 	// the blockmap, shootable and movable, and nothing it was winding up fires in mid-swing) until it is let go.
-	void BeginWrap(int i, PlayerPawn pmo, int hand, Actor v)
+	void BeginWrap(int i, PlayerPawn pmo, int hand, Actor v, bool lasso = false)
 	{
 		EndWrap(i);
-		wrapOn[i] = v; wrapUntil[i] = level.maptime + WRAP_TICS; pullHad[i] = false; pullPk[i] = 0;
+		// LASSO 2 (Gun Bonsai VR): a lassoed monster is held 50% longer
+		wrapLen[i] = (lasso && Gb(pmo, G_LASSO) >= 2) ? WRAP_TICS * 3 / 2 : WRAP_TICS;
+		wrapOn[i] = v; wrapUntil[i] = level.maptime + wrapLen[i]; pullHad[i] = false; pullPk[i] = 0;
 		wrapTic[i] = level.maptime; graceArm[i] = RSQWP_Util.Flag("rsqwp_whip_yankgrace", false);
 		Vector3 hp = BodyHand(pmo, hand);
 		Vector2 to = v.pos.xy - hp.xy;
 		flailL[i] = max(to.Length(), v.radius + 8);
 		flailOff[i] = Actor.DeltaAngle(RSQWP_Util.HandYaw(pmo, hand), atan2(to.y, to.x));
 		flailPin[i] = false;
-		if (RSQWP_Util.Flag("rsqwp_whip_flail", true) && !HeavyThing(v) && v.Mass <= RSQWP_Util.Num("rsqwp_whip_light", 400) && v.bISMONSTER)
+		if (RSQWP_Util.Flag("rsqwp_whip_flail", true) && !HeavyThing(v) && v.Mass <= LightMass(pmo) && v.bISMONSTER)
 		{
 			State pain = v.FindState("Pain");
 			if (pain)
@@ -1876,12 +2007,74 @@ class RSQWP_Whip : EventHandler
 				if (v && !v.bDestroyed && v.Health > 0) { v.tics = -1; flailPin[i] = true; }
 			}
 		}
+		if (lasso) { Touch("lasso", pmo, v); Bola(i, pmo, v); }
 		if (RSQWP_Util.Flag("rsqwp_debug", false))
-			Console.Printf("T_WPW %d WRAP t%d %s mass %d at %.0f, bearing %.0f off the hand%s", i, level.maptime, v.GetClassName(), v.Mass, flailL[i], flailOff[i], flailPin[i] ? ", lifted (pinned in Pain)" : "");
+			Console.Printf("T_WPW %d WRAP t%d %s mass %d at %.0f, bearing %.0f off the hand%s, held %d tics", i, level.maptime, v.GetClassName(), v.Mass, flailL[i], flailOff[i], flailPin[i] ? ", lifted (pinned in Pain)" : "", wrapLen[i]);
+	}
+	int wrapLen[NW];
+
+	// BOLA (Gun Bonsai VR, GBOVR_TREES.md 4.4 Lasso, after Lasso 2): the lasso takes one more monster a level, the nearest
+	// light ones within 2.5 m of the first. They are tied to it (pinned in Pain, as the flail pins it), kept beside it as it
+	// swings, and fly with it on a yank.
+	const BOLA_R = 85.0;
+	Actor tied[NW * 2];
+	Vector3 tiedOff[NW * 2];
+	void Bola(int i, PlayerPawn pmo, Actor v)
+	{
+		int lv = Gb(pmo, G_BOLA);
+		if (lv <= 0 || !v) return;
+		double light = LightMass(pmo);
+		let it = BlockThingsIterator.Create(v, BOLA_R);
+		while (it.Next())
+		{
+			let a = it.thing;
+			if (!a || a == v || a == pmo || a.player || !a.bISMONSTER || a.Health <= 0 || HeavyThing(a) || a.Mass > light) continue;
+			if (v.Distance3D(a) > BOLA_R + a.radius) continue;
+			int slot = -1;
+			for (int k = 0; k < min(lv, 2); k++) if (!tied[i * 2 + k]) { slot = k; break; }
+			if (slot < 0) break;
+			tied[i * 2 + slot] = a;
+			tiedOff[i * 2 + slot] = a.pos - v.pos;
+			State pain = a.FindState("Pain");
+			if (pain)
+			{
+				if (!a.InStateSequence(a.CurState, pain)) a.SetState(pain);
+				if (a && !a.bDestroyed && a.Health > 0) a.tics = -1;
+			}
+		}
+		int n = (tied[i * 2] ? 1 : 0) + (tied[i * 2 + 1] ? 1 : 0);
+		if (n > 0) Touch("bola", pmo, v);
+		if (RSQWP_Util.Flag("rsqwp_debug", false)) Console.Printf("T_WPW %d BOLA t%d: %d more tied to %s", i, level.maptime, n, v.GetClassName());
+	}
+	// the tied ones keep beside the first (placed, never flung by velocity: monster.zs's SlowMo lesson)
+	void BolaTick(int i, Actor v)
+	{
+		for (int k = 0; k < 2; k++)
+		{
+			let a = tied[i * 2 + k];
+			if (!a) continue;
+			if (a.bDestroyed || a.Health <= 0) { tied[i * 2 + k] = null; continue; }
+			Vector2 off = tiedOff[i * 2 + k].xy;
+			double ol = off.Length();
+			Vector2 want = v.pos.xy + (ol > 0.01 ? off / ol * min(ol, v.radius + a.radius + 4) : (0, 0));
+			if (!a.TryMove(want, true)) a.TryMove((want.x, a.pos.y), true);
+			a.SetZ(max(a.floorz, v.pos.z));
+		}
+	}
+	void BolaYank(int i, Vector3 vel) { for (int k = 0; k < 2; k++) if (tied[i * 2 + k]) tied[i * 2 + k].vel = vel; }
+	void BolaFree(int i)
+	{
+		for (int k = 0; k < 2; k++)
+		{
+			let a = tied[i * 2 + k];
+			if (a && !a.bDestroyed && a.Health > 0 && a.tics == -1) a.tics = 1;
+			tied[i * 2 + k] = null;
+		}
 	}
 
 	void EndWrap(int i)
 	{
+		BolaFree(i);
 		let v = wrapOn[i];
 		wrapOn[i] = null;
 		// what was borrowed goes back (monster.zs Restore: tics = 1, it goes on from its Pain frame)
@@ -1900,7 +2093,7 @@ class RSQWP_Whip : EventHandler
 	void Flail(int i, PlayerPawn pmo, int hand, Actor v, Vector3 hp)
 	{
 		if (!RSQWP_Util.Flag("rsqwp_whip_flail", true) || HeavyThing(v)) return;
-		bool light = v.Mass <= RSQWP_Util.Num("rsqwp_whip_light", 400);
+		bool light = v.Mass <= LightMass(pmo);
 		// re-pinned every tic, as monster.zs does: a hurt (a smash's share, a gun) puts it back in Pain with tics
 		if (flailPin[i] && v.Health > 0)
 		{
@@ -2050,6 +2243,7 @@ class RSQWP_Whip : EventHandler
 		reachFor[i] = best;
 		reachPt[i] = best ? best.pos + (0, 0, best.height * 0.6) : org + dir * (wlen[i] / RSQWP_Util.PS());
 		reachTic[i] = REACH_TICS;
+		lassoed[i] = true;           // Lasso 2 and Bola read it on arrival (Reach)
 		crackV[i] = sp;              // it lands as hard as it was whirled
 		// a lasso is thrown, not cracked: Reach's flight is no crack (rig 11-02: one thrown into the air cracked where it
 		// landed, before and after the whirl), so the crack re-arms only once the thong has calmed (Lash)
@@ -2097,6 +2291,8 @@ class RSQWP_Whip : EventHandler
 		reachTic[i]--;
 		if (reachTic[i] > 0) return;
 		// arrival
+		bool fromLasso = lassoed[i];
+		lassoed[i] = false;
 		Vector3 at = reachPt[i];
 		let v = reachFor[i];
 		reachFor[i] = null;
@@ -2114,6 +2310,10 @@ class RSQWP_Whip : EventHandler
 		{
 			let mark = Actor.Spawn("RSQWP_WhipTip", inv.pos, NO_REPLACE);
 			if (mark) Fetch(pmo, mark, 8 + inv.radius);
+			// QUICK MARK 3: on to the second mark in the same crack
+			let nx = Inventory(reach2[i]);
+			reach2[i] = null;
+			if (nx && !nx.bDestroyed && !nx.Owner) { reachFor[i] = nx; reachPt[i] = nx.pos + (0, 0, nx.height * 0.6); reachTic[i] = REACH_TICS; }
 		}
 		else if (v && v.Health > 0)
 		{
@@ -2122,7 +2322,7 @@ class RSQWP_Whip : EventHandler
 			if (byWeapon[i] && v && v.Health > 0 && v.bISMONSTER)
 			{
 				// the whip weapon: it wraps round the monster and waits for the pull (HoldWrap), and swings with the arm
-				BeginWrap(i, pmo, hand, v);
+				BeginWrap(i, pmo, hand, v, fromLasso);
 			}
 			else if (v && v.Health > 0 && v.bISMONSTER && RSQWP_Util.Flag("rsqwp_whip_leash", true) && BindHeld(pmo, hand)) Leash(i, pmo, hand, v, at);
 		}
@@ -2405,7 +2605,6 @@ class RSQWP_Whip : EventHandler
 	{
 		let core = RSQWP_Core.Get();
 		if (!core) return;
-		bool on = RSQWP_Util.Flag("rsqwp_mantle", true);
 		for (int pn = 0; pn < MAXPLAYERS; pn++)
 		{
 			if (!playeringame[pn]) continue;
@@ -2425,7 +2624,9 @@ class RSQWP_Whip : EventHandler
 				}
 				continue;
 			}
-			if (!on) continue;
+			// the Mantle node under Gun Bonsai VR (2: from a swing too), the row without
+			int mlv = Gb(pmo, G_MANTLE);
+			if (mlv < 0 ? !RSQWP_Util.Flag("rsqwp_mantle", true) : mlv < 1) continue;
 			for (int hand = 0; hand < 2; hand++)
 			{
 				int i = pn * 2 + hand;
@@ -2443,7 +2644,9 @@ class RSQWP_Whip : EventHandler
 				if (top <= pmo.pos.z + 4) continue;                       // nothing to climb onto
 				// reeled or climbed up to it: the lip at his chest
 				// (or reeled all the way in: the rope at its shortest, the lip just over his head)
-				bool reached = (pmo.pos.z + pmo.height * 0.7 >= top && (pmo.pos.xy - h.anchor.xy).Length() <= pmo.radius + 28)
+				// (MANTLE 2: or swung up to it -- in the air, the lip at the chest, within an arm and a stride of the anchor)
+				bool reached = (mlv >= 2 && pmo.pos.z > pmo.floorz + 1 && pmo.pos.z + pmo.height * 0.7 >= top && (pmo.pos.xy - h.anchor.xy).Length() <= pmo.radius + 56)
+					|| (pmo.pos.z + pmo.height * 0.7 >= top && (pmo.pos.xy - h.anchor.xy).Length() <= pmo.radius + 28)
 					|| ((RSQWP_Core.AttachPoint(pmo) - h.anchor).Length() <= RSQWP_Util.Num("rsqwp_min_len", 32) + 10 && top - pmo.pos.z <= pmo.height + 24);
 				// or a free hand laid on the lip
 				bool grabbed = false;
@@ -2494,6 +2697,9 @@ class RSQWP_Whip : EventHandler
 		double hk = CrackK(i, spd);
 		int dmg = crack ? max(1, int(maxDmg * (0.25 + 0.75 * hk) + 0.5)) : int(maxDmg * 0.25 * clamp(spd / crackSpd, 0.15, 1.0) + 0.5);
 		if (maxDmg <= 0) dmg = 0;
+		// STING (Gun Bonsai VR): a crack does 25% more a level
+		int sting = Gb(pmo, G_STING);
+		if (crack && sting > 0) { dmg = int(dmg * (1.0 + 0.25 * sting) + 0.5); Touch("crack", pmo, v); }
 		int hp0 = v.Health;
 		if (dmg > 0) { RSQWP_Events.Whipped(v, pmo); RSQWP_Perks.Hurt(v, pmo, pmo, dmg, DmgType()); }
 		bool stunned = false;
@@ -2505,12 +2711,18 @@ class RSQWP_Whip : EventHandler
 		}
 		// HIT-STOP (option, owner's pick 10; surveys/01_MELEE 3.6): the cracked monster freezes for a beat --
 		// 3 tics for the lightest crack ("a tap") to 6 for the hardest ("a heavy"); 10 reads as a bug.
+		// STRIKE TRUE (Gun Bonsai VR): the option becomes levels, 3 / 4 / 6 tics whatever the crack
 		int frz = 0;
-		if (crack && v && !v.bDestroyed && v.Health > 0 && v.bISMONSTER && RSQWP_Util.Flag("rsqwp_whip_hitstop", false))
+		int stl = Gb(pmo, G_STRIKE);
+		if (crack && v && !v.bDestroyed && v.Health > 0 && v.bISMONSTER && (stl > 0 || (stl < 0 && RSQWP_Util.Flag("rsqwp_whip_hitstop", false))))
 		{
-			frz = int(3 + 3 * hk + 0.5);
+			static const int ST[] = { 0, 3, 4, 6 };
+			frz = stl > 0 ? ST[clamp(stl, 1, 3)] : int(3 + 3 * hk + 0.5);
 			v.freezetics = max(v.freezetics, frz);
 		}
+		// STUN (Gun Bonsai VR): the pain a crack causes is held 10 + 10 lv tics
+		int sn = Gb(pmo, G_STUN);
+		if (crack && stunned && sn > 0 && v && !v.bDestroyed && v.Health > 0) { Ask("stagger", v, 10 + 10 * sn); Touch("crack.stun", pmo, v); }
 		String s = RSQWP_Looks.Sound('hitflesh');
 		if (s != "") { let c = Actor.Spawn("RSQWP_WhipTip", at, NO_REPLACE); if (c) c.A_StartSound(s, CHAN_VOICE, 0, crack ? 1.0 : 0.6); }
 		if (crack) RSQWP_Looks.Spark(at, 'flesh');
@@ -2554,9 +2766,7 @@ class RSQWP_Whip : EventHandler
 				if (d > m.radius + 4) continue;
 				let cls = m.GetClassName();
 				Vector3 at = m.pos;
-				bool knock = RSQWP_Util.Opt("rsqwp_whip_fireball_knock", 0) == 1;
-				if (knock) Knock(pmo, m, b - a);
-				else m.ExplodeMissile(null, null);
+				bool knock = CrackMissile(pmo, m, b - a);
 				Noise(pmo, 'crack', at, i);
 				RSQWP_Looks.Spark(at, 'crack');
 				Buzz(pmo, hand, 0.8, 4);
@@ -2571,6 +2781,55 @@ class RSQWP_Whip : EventHandler
 				break;
 			}
 		}
+	}
+
+	// A CRACKED MISSILE. Without the patch: knocked away (rsqwp_whip_fireball_knock 1) or blown up where it is. Under the
+	// Gun Bonsai VR patch (GBOVR_TREES.md 4.4 Crack): RETURN CRACK sends it back at its shooter (its damage x1 + 0.25 lv);
+	// else it blows up, and CRACK SHOT 2-3 hurts what stands within 2 / 2.5 m of it by the missile's own damage (owner
+	// 11-02). True when it was sent away rather than blown up.
+	bool CrackMissile(PlayerPawn pmo, Actor m, Vector3 sweep)
+	{
+		int ret = Gb(pmo, G_RETURN);
+		if (ret > 0) { ReturnTo(pmo, m, ret); return true; }
+		if (ret < 0 && RSQWP_Util.Opt("rsqwp_whip_fireball_knock", 0) == 1) { Knock(pmo, m, sweep); return true; }
+		int cs = Gb(pmo, G_CRACKSHOT);
+		int md = cs >= 2 ? m.GetMissileDamage(7, 1) : 0;
+		Vector3 at = m.pos;
+		Actor shooter = m.target;
+		m.ExplodeMissile(null, null);
+		if (cs > 0) Touch("crack.shot", pmo, shooter);
+		if (md > 0)
+		{
+			double r = 34.0 * (1.0 + 0.5 * cs);
+			let c = Actor.Spawn("RSQWP_WhipTip", at, NO_REPLACE);
+			if (c) { c.target = pmo; c.A_Explode(md, int(r), 0, false, int(r)); }
+			if (RSQWP_Util.Flag("rsqwp_debug", false)) Console.Printf("T_WPW CRACK SHOT t%d: %d round it within %.0f", level.maptime, md, r);
+		}
+		return false;
+	}
+
+	// RETURN CRACK: the missile goes back at the monster that shot it, harder a level; it is yours now (target = you: it
+	// does not hit you, it hits its shooter) and a seeker stops seeking you
+	void ReturnTo(PlayerPawn pmo, Actor m, int lv)
+	{
+		Actor shooter = m.target;
+		double spd = max(m.vel.Length(), m.Speed);
+		Vector3 dir = m.vel.Length() > 0.001 ? -m.vel.Unit() : (Actor.AngleToVector(pmo.angle, 1), 0);
+		if (shooter && !shooter.bDestroyed && shooter.Health > 0)
+		{
+			Vector3 to = shooter.pos + (0, 0, shooter.height * 0.5) - m.pos;
+			if (to.Length() > 0.001) dir = to.Unit();
+		}
+		m.vel = dir * spd;
+		m.angle = VectorAngle(dir.x, dir.y);
+		m.pitch = -asin(clamp(dir.z, -1.0, 1.0));
+		m.SetDamage(max(1, int(m.GetMissileDamage(7, 1) * (1.0 + 0.25 * lv) + 0.5)));
+		m.target = pmo;
+		m.tracer = null;
+		Touch("crack.return", pmo, shooter);
+		knocked.Push(m); knockX.Push(m.pos.x); knockY.Push(m.pos.y); knockZ.Push(m.pos.z);
+		if (RSQWP_Util.Flag("rsqwp_debug", false))
+			Console.Printf("T_WPW RETURN CRACK t%d %s back at %s, damage %d", level.maptime, m.GetClassName(), shooter ? String.Format("%s", shooter.GetClassName()) : "nothing", m.GetMissileDamage(0, 1));
 	}
 
 	// CRACKED ROCKETS, knock away (rsqwp_whip_fireball_knock 1, owner 2026-10-31: "knock away and explode"): the cracked
@@ -2663,6 +2922,8 @@ class RSQWP_Whip : EventHandler
 				Console.Printf("T_WPW %d CRACK #%d t%d LOCKED -> %s at %.0f units", i, cracks[i], level.maptime,
 					lockOn[i] ? lockOn[i].GetClassName() : 'line', (reachPt[i] - h0).Length());
 			}
+			reach2[i] = (lockOn[i] is "Inventory") ? lock2[i] : null;
+			lock2[i] = null;
 			lockLeft[i] = 0; lockOn[i] = null; lockLine[i] = false;
 			return;
 		}
@@ -2677,10 +2938,10 @@ class RSQWP_Whip : EventHandler
 
 		// a crack right by an EDGE above the hand (a beam's underside, a ledge's lip) wraps round it,
 		// as a tip hitting it would: the loop arriving next to a beam throws the popper over it
-		if (RSQWP_Util.Flag("rsqwp_whip_snag", true) && wstate[i] == ST_OUT && wmode[i] == 0)
+		if (Unlock(pmo, G_SNAG, "rsqwp_whip_snag", true) && wstate[i] == ST_OUT && wmode[i] == 0)
 		{
 			Vector3 h0 = RSQWP_Util.HandPos(pmo, hand);
-			if (at.z > h0.z + RSQWP_Util.Num("rsqwp_whip_above", 16) && WrapNear(i, pmo, hand, at)) return;
+			if (at.z > h0.z + SnagAbove(pmo) && WrapNear(i, pmo, hand, at)) return;
 		}
 
 		// the thing it cracks on: nearest the tip within reach (Free: touching it), and the tip
@@ -2869,7 +3130,7 @@ class RSQWP_Whip : EventHandler
 		byWeapon[i] = false; lassoOn[i] = false; lassoWas[i] = false; markHeld[i] = false; markLine[i] = null;
 		lw[i] = 0; lcHad[i] = false; lvw[i] = 0;
 		wby[i] = null;
-		lockOn[i] = null; lockLine[i] = false; lockLeft[i] = 0; lockHeld[i] = false; reachTic[i] = 0; reachFor[i] = null;
+		lockOn[i] = null; lockLine[i] = false; lockLeft[i] = 0; lockHeld[i] = false; lock2[i] = null; reach2[i] = null; reachTic[i] = 0; reachFor[i] = null;
 		stiff[i] = 0; swinging[i] = false; windTics[i] = 0; stuckTics[i] = 0; bodyHad[i] = false;
 		ClearMark(i);
 		for (int k = 0; k < NP; k++)
