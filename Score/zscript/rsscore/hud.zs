@@ -391,6 +391,7 @@ class RS_ScoreHUD : EventHandler
 		if (color == "RSScore_Style")      return "S";
 		if (color == "RSScore_Daring")     return "D";
 		if (color == "RSScore_Melee")      return "M";
+		if (color == "RSScore_Counter")    return "C";   // the fifth family, Counterplay (11-03)
 		return "";
 	}
 

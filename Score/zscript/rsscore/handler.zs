@@ -522,6 +522,7 @@ class RS_ScoreHandler : EventHandler
 		famCap[RS_ScoreBonus.FAM_STYLE]      = CvarInt("rs_score_cap_style",      0) / 100.0;
 		famCap[RS_ScoreBonus.FAM_DARING]     = CvarInt("rs_score_cap_daring",     0) / 100.0;
 		famCap[RS_ScoreBonus.FAM_MELEE]      = CvarInt("rs_score_cap_melee",      0) / 100.0;
+		famCap[RS_ScoreBonus.FAM_COUNTER]    = CvarInt("rs_score_cap_counter",    0) / 100.0;
 
 		for (int f = 0; f < RS_ScoreBonus.FAM_COUNT; f++)
 		{

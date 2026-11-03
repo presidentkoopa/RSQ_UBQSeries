@@ -42,6 +42,7 @@ class RS_ScoreBonus play
 		FAM_STYLE,
 		FAM_DARING,
 		FAM_MELEE,		// the Quest series' fourth (melee.zs): not in the original
+		FAM_COUNTER,	// the fifth (11-03): defence turned into a kill -- Riposte, Return to Sender, Rally, the parries
 		FAM_COUNT
 	}
 
@@ -98,6 +99,7 @@ class RS_ScoreBonus play
 			case FAM_EFFICIENCY: return "RSScore_Efficiency";
 			case FAM_DARING:     return "RSScore_Daring";
 			case FAM_MELEE:      return "RSScore_Melee";
+			case FAM_COUNTER:    return "RSScore_Counter";
 			default:             return "RSScore_Style";
 		}
 	}

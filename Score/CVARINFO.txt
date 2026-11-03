@@ -50,6 +50,7 @@ server int  rs_score_cap_efficiency  = 0;
 server int  rs_score_cap_style       = 0;
 server int  rs_score_cap_daring      = 0;
 server int  rs_score_cap_melee       = 0;   // the Quest series' fourth family (melee.zs)
+server int  rs_score_cap_counter     = 0;   // the fifth, Counterplay (11-03): defence turned into a kill
 // (the total cap, rs_score_cap_total in the original, is rs_score_cap_kill below)
 // THE TOTAL CAP IS ON, at 300 (the Quest series' choice, not the original's 0): the bonuses on one
 // kill add at most three times its base. With the series' families there are some forty bonuses that

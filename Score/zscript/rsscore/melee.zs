@@ -114,7 +114,8 @@ class RS_Melee play
 		if (t == "whip.crack" || t == "whip.flail" || t == "whip.tarzan") return MK_WHIP;
 		if (t == "shove") return MK_SHOVE;
 		if (t == "pound" || t == "clearout" || t == "guard.release") return MK_POUND;
-		if (t == "headlock.throw" || t == "throw.gun" || t == "grab.swing") return MK_THROW;
+		if (t == "headlock.throw" || t == "throw.gun") return MK_THROW;
+		if (t == "grab.swing") return MK_FIST;   // a held thing swung into it: a blow of the arm (Clubbed, rows.zs)
 		if (t == "headlock.choke") return MK_CHOKE;
 		if (pre == "grenade") return MK_GRENADE;
 		return MK_NONE;   // a shot, a returned shot, a Distance Grab throw, a hold: not melee
@@ -411,7 +412,7 @@ class RS_Bonus_Riposte : RS_ScoreBonus
 {
 	const MULT   = 0.4;
 	const WINDOW = 105;
-	override int Family() const { return FAM_MELEE; }
+	override int Family() const { return FAM_COUNTER; }
 	override String DisplayName() const { return "Riposte"; }
 	override double Evaluate(RS_ScoreEvent ev)
 	{
@@ -426,7 +427,7 @@ class RS_Bonus_Riposte : RS_ScoreBonus
 class RS_Bonus_PerfectRiposte : RS_ScoreBonus
 {
 	const MULT = 0.7;
-	override int Family() const { return FAM_MELEE; }
+	override int Family() const { return FAM_COUNTER; }
 	override String DisplayName() const { return "Perfect Riposte"; }
 	override double Evaluate(RS_ScoreEvent ev)
 	{
@@ -445,7 +446,7 @@ class RS_Bonus_ReturnToSender : RS_ScoreBonus
 	const PUNCH = 0.6;    // a Hadouken, a Swat Back (sheet M17, M18: harder than a block)
 	const GUARD = 0.5;    // the Guard's reflect (M19)
 	const WHIP = 0.55;    // a Return Crack (W9)
-	override int Family() const { return FAM_MELEE; }
+	override int Family() const { return FAM_COUNTER; }
 	override String DisplayName() const { return "Return to Sender"; }
 	override double Evaluate(RS_ScoreEvent ev)
 	{
@@ -505,7 +506,7 @@ class RS_Bonus_Combo : RS_ScoreBonus
 class RS_Bonus_PoeticJustice : RS_ScoreBonus
 {
 	const MULT = 0.3;
-	override int Family() const { return FAM_MELEE; }
+	override int Family() const { return FAM_COUNTER; }
 	override String DisplayName() const { return "Poetic Justice"; }
 	override double Evaluate(RS_ScoreEvent ev)
 	{
@@ -685,7 +686,7 @@ class RS_Bonus_Rally : RS_ScoreBonus
 {
 	const PER = 0.2;
 	const WINDOW = 105;
-	override int Family() const { return FAM_MELEE; }
+	override int Family() const { return FAM_COUNTER; }
 	override String DisplayName() const { return "Rally"; }
 	private int Earlier(RS_ScoreEvent ev)
 	{
@@ -780,7 +781,7 @@ class RS_Bonus_ShieldWall : RS_ScoreBonus
 	const MULT = 0.25;
 	const WINDOW = 35;
 	const REACH = 2048;
-	override int Family() const { return FAM_MELEE; }
+	override int Family() const { return FAM_COUNTER; }
 	override String DisplayName() const { return "Shield Wall"; }
 	override double Evaluate(RS_ScoreEvent ev)
 	{

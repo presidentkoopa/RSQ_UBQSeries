@@ -125,7 +125,8 @@ class RS_Tool play
 	{
 		String pre = Prefix(t);
 		return t == "punch" || t == "kick" || t == "glove" || pre == "gun" || pre == "blade"
-			|| t == "whip.crack" || t == "hook.bite" || t == "shield.bash" || t == "grenade.frag";
+			|| t == "whip.crack" || t == "hook.bite" || t == "shield.bash" || t == "grenade.frag"
+			|| t == "force.push" || t == "grab.throw" || t == "saber.cut";
 	}
 
 	static bool IsMelee(String t)

@@ -173,6 +173,18 @@ class RSPProbe : EventHandler
 		if (t == 895) Hit(m, p, 200, 'Whip');
 		if (t == 900) Spawned();
 		if (t == 905) Hit(m, p, 200, 'Whip');
-		if (t == 930) Say(String.Format("DONE %d cases", cases));
+		// 24. the saber names a stab before its 'Saber' blow
+		if (t == 930) { Scene(24, "a stab kill (named saber.stab, then 'Saber')", "Run Through 0.250; chain saber.stab"); Spawned(); }
+		if (t == 935) { Touch("saber.stab", m); Hit(m, p, 200, 'Saber'); }
+		// 25. Melee's wall tag on a 'Melee' blow
+		if (t == 960) { Scene(25, "a wall-splat kill (tag wall, then 'Melee')", "Wall Splat 0.400"); Spawned(); }
+		if (t == 965) { Touch("wall", m); Hit(m, p, 200, 'Melee'); }
+		// 26. Distance Grab names a held barrel's swing before its blow
+		if (t == 990) { Scene(26, "a held barrel swung into it (grab.swing, then 'Melee' from the barrel)", "Clubbed 0.300, NO Brawler, NO Thrown; chain grab.swing"); Spawned(); }
+		if (t == 995) { Touch("grab.swing", m); let b = Actor.Spawn("ExplosiveBarrel", m.pos + (40, 0, 0), NO_REPLACE); if (b) { Hit(m, b, 200, 'Melee'); b.Destroy(); } }
+		// 27. the grenade's skeet fact rides its blast (the service's answer, tagged by the ledger; here the tag itself)
+		if (t == 1020) { Scene(27, "a grenade blast tagged skeet", "Trap Shot 0.600 (a big moment)"); Spawned(); }
+		if (t == 1025) { let b = Actor.Spawn("RSQGN_Thrown", m.pos, NO_REPLACE); if (b) { b.target = p; Hit(m, b, 5, 'None', DMG_EXPLOSION); Touch("skeet", m); Hit(m, b, 200, 'None', DMG_EXPLOSION); b.Destroy(); } }
+		if (t == 1050) Say(String.Format("DONE %d cases", cases));
 	}
 }

@@ -380,6 +380,7 @@ class RS_Bonus_Thrown : RS_PhysicalBonus
 	override double Evaluate(RS_ScoreEvent ev)
 	{
 		if (!RS_Physical.ThrownBy(ev)) return 0.0;
+		if (RS_Melee.KillTool(ev) == "grab.swing") return 0.0;   // held and swung, not thrown (Clubbed, rows.zs; sheet B S11)
 		if (RS_Physical.AskGrab("throw.blast", ev.inflictor) == 1) return 0.0;   // Powder Keg's
 		int cms = RS_Physical.AskGrab("throw.cms", ev.inflictor);
 		double mps = cms > 0 ? cms / 100.0 : 0.0;
@@ -699,7 +700,7 @@ class RS_Bonus_BulletTime : RS_PhysicalBonus
 	const AUTO_SHARE = 0.5;
 	const NEAR_FREEZE = 100;   // SlowMo's "scale", permille of full speed
 	override int Family() const { return FAM_STYLE; }
-	override String DisplayName() const { return "Bullet Time"; }
+	override String DisplayName() const { return "Stretched Second"; }   // was "Bullet Time" (sheet C1): lane C's proposal, the owner's to change
 	override double Evaluate(RS_ScoreEvent ev) { return 0.0; }
 	override double AfterOthers(RS_ScoreEvent ev, Array<RS_ScoreBonus> all, Array<double> mults, int me)
 	{

@@ -28,7 +28,7 @@ if ($SlowMo) { $files += (Join-Path $repo 'pk3\RSQ_SlowMo.pk3') }
 if ($Extra) { $files += ($Extra -split ',' | ForEach-Object { $_.Trim() } | Where-Object { $_ }) }
 $files += $probe
 $args = @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', (Join-Path $repo 'tools\qzd_hidden_run.ps1'),
-    '-Files', ($files -join ','), '-Map', 'MAP01', '-WaitTics', '950', '-TimeoutSec', '180', '-Tag', 'score_probe')
+    '-Files', ($files -join ','), '-Map', 'MAP01', '-WaitTics', '1080', '-TimeoutSec', '200', '-Tag', 'score_probe')
 $out = & powershell @args 2>&1
 $code = $LASTEXITCODE
 $out | ForEach-Object { Write-Output $_ }

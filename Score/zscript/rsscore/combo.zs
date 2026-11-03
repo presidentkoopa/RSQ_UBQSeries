@@ -109,6 +109,12 @@ class RS_ComboLedger : EventHandler
 	Array<Actor> pV;
 	Array<int> pPn;
 	int pTic;
+	// a tag sent BEFORE the blow it belongs to, on a body with no run yet (Melee's wall tag comes first, by the
+	// contract): held for the run that opens on the same tic
+	Array<Actor> hV;
+	Array<int> hPn;
+	Array<String> hTag;
+	int hTic;
 
 	static RS_ComboLedger Get() { return RS_ComboLedger(EventHandler.Find("RS_ComboLedger")); }
 
@@ -122,6 +128,14 @@ class RS_ComboLedger : EventHandler
 		Poll(v, pn);
 		String tool = RS_Tool.Classify(v, e.Inflictor, src, e.DamageType, e.DamageFlags);
 		Touch(v, pn, tool, level.maptime, CondOf(v, src, e.DamageType));
+		// a grenade's blast carries the throw's facts (RSQGN_Service, 11-03): tags on the run
+		if (RS_Tool.Prefix(tool) == "grenade" && e.Inflictor)
+		{
+			if (RS_Svc.Int(RS_Svc.GRENADE, "teeth", 0, e.Inflictor) == 1) Touch(v, pn, "teeth", level.maptime);
+			if (RS_Svc.Int(RS_Svc.GRENADE, "skeet", 0, e.Inflictor) == 1) Touch(v, pn, "skeet", level.maptime);
+			if (RS_Svc.Int(RS_Svc.GRENADE, "impact", 0, e.Inflictor) == 1) Touch(v, pn, "impact", level.maptime);
+			if (RS_Svc.Int(RS_Svc.GRENADE, "cooked", 0, e.Inflictor) >= 35) Touch(v, pn, "cooked", level.maptime);
+		}
 		// Switcharoo (bonuses.zs): the gun that fired, read off the blow (BD22 VR's guns never call the old door)
 		if (tool.Left(3) == "gun" || tool == "rig.draw") RS_ScoreTracker.NoteFire(src, e.Inflictor);
 	}
@@ -169,12 +183,13 @@ class RS_ComboLedger : EventHandler
 		if (RS_Tool.IsTag(tool))
 		{
 			if (j >= 0 && tic - eLast[j] <= CHAIN_GAP) AddTag(j, tool);
+			else Hold(v, pn, tool, tic);
 			return;
 		}
-		if (j >= 0 && eTool[j] == tool) { eLast[j] = max(eLast[j], tic); eCond[j] |= cond; eHits[j]++; return; }
+		if (j >= 0 && eTool[j] == tool) { eLast[j] = max(eLast[j], tic); eCond[j] |= cond; eHits[j]++; TakeHeld(j, v, pn, tic); return; }
 		// the mod named the move BEFORE its blow landed (the contract: a kill by it then reads as that move, since
 		// the kill is scored inside the blow): the blow's guess is that move
-		if (j >= 0 && eLast[j] == tic && RS_Tool.Guess(tool) && !RS_Tool.Guess(eTool[j])) { eCond[j] |= cond; eHits[j]++; return; }
+		if (j >= 0 && eLast[j] == tic && RS_Tool.Guess(tool) && !RS_Tool.Guess(eTool[j])) { eCond[j] |= cond; eHits[j]++; TakeHeld(j, v, pn, tic); return; }
 		if (j >= 0 && eLast[j] == tic && RS_Tool.Guess(eTool[j]) && !RS_Tool.Guess(tool))
 		{
 			eTool[j] = tool; eCond[j] |= cond;
@@ -184,6 +199,21 @@ class RS_ComboLedger : EventHandler
 			return;
 		}
 		Append(v, pn, tool, tic, eV.Size(), cond);
+		TakeHeld(LastOf(v, pn), v, pn, tic);
+	}
+
+	private void Hold(Actor v, int pn, String tag, int tic)
+	{
+		if (hTic != tic) { hV.Clear(); hPn.Clear(); hTag.Clear(); hTic = tic; }
+		hV.Push(v); hPn.Push(pn); hTag.Push(tag);
+	}
+
+	// the tags held for (v, pn) this tic go onto entry k
+	private void TakeHeld(int k, Actor v, int pn, int tic)
+	{
+		if (k < 0 || hTic != tic) return;
+		for (int i = hV.Size() - 1; i >= 0; i--)
+			if (hV[i] == v && hPn[i] == pn) { AddTag(k, hTag[i]); hV.Delete(i); hPn.Delete(i); hTag.Delete(i); }
 	}
 
 	// the entry of (v, pn) before entry k, or -1

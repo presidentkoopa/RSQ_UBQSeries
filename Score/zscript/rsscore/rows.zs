@@ -44,7 +44,11 @@ class RS_RowSeed play
 			"RS_Row_GlassCannon", "RS_Row_FoolsGold", "RS_Row_Heartbreaker", "RS_Row_ChampionFatality", "RS_Row_Rainbow",
 			"RS_Row_OneTapLegend", "RS_Row_StrikeWhileItRises", "RS_Row_LegendSlayer",
 			"RS_Row_ChainGang", "RS_Row_RageQuit", "RS_Row_RiotControl", "RS_Row_Severed",
-			"RS_Row_LastGrain"
+			"RS_Row_LastGrain",
+			// the second round (the facts the mods answer since 11-03 evening)
+			"RS_Row_RunThrough", "RS_Row_Saberstaff", "RS_Row_UnlimitedPower", "RS_Row_ClashBreak",
+			"RS_Row_Buzzsaw", "RS_Row_WallSplat", "RS_Row_Clubbed", "RS_Row_TrapShot", "RS_Row_Teeth", "RS_Row_Contact",
+			"RS_Row_ChainSwing"
 		};
 		for (int i = 0; i < rows.Size(); i++) into.Push(rows[i]);
 	}
@@ -369,7 +373,7 @@ class RS_Row_Juggler : RS_ScoreBonus
 class RS_Row_Misdirection : RS_ScoreBonus
 {
 	const MULT = 0.25;
-	override int Family() const { return FAM_MELEE; }
+	override int Family() const { return FAM_COUNTER; }
 	override String DisplayName() const { return "Misdirection"; }
 	override double Evaluate(RS_ScoreEvent ev)
 	{
@@ -463,7 +467,7 @@ class RS_Row_Impaled : RS_ScoreBonus
 class RS_Row_BackOff : RS_ScoreBonus
 {
 	const MULT = 0.5;
-	override int Family() const { return FAM_MELEE; }
+	override int Family() const { return FAM_COUNTER; }
 	override String DisplayName() const { return "Back Off"; }
 	override double Evaluate(RS_ScoreEvent ev) { return (RS_Melee.Returned(ev) && RS_Melee.Tagged(ev, "crossguard")) ? MULT : 0.0; }
 	override bool Supersedes(RS_ScoreBonus other) const { return other is "RS_Bonus_ReturnToSender"; }
@@ -531,7 +535,7 @@ class RS_Row_Homecoming : RS_ScoreBonus
 class RS_Row_EyesInTheBack : RS_ScoreBonus
 {
 	const MULT = 0.5;
-	override int Family() const { return FAM_MELEE; }
+	override int Family() const { return FAM_COUNTER; }
 	override String DisplayName() const { return "Eyes in the Back"; }
 	override double Evaluate(RS_ScoreEvent ev) { return (ev.killer && RS_Rows.ChainTag(ev, "backplate")) ? MULT : 0.0; }
 }
@@ -544,7 +548,7 @@ class RS_Row_HoldTheLine : RS_ScoreBonus
 	const MAXMULT = 0.55;
 	const WINDOW = 70;
 	const REACH = 2048;
-	override int Family() const { return FAM_MELEE; }
+	override int Family() const { return FAM_COUNTER; }
 	override String DisplayName() const { return "Hold the Line"; }
 	override double Evaluate(RS_ScoreEvent ev)
 	{
@@ -1357,6 +1361,134 @@ class RS_Row_Severed : RS_ScoreBonus
 		let tr = ev.tracker;
 		if (!tr || !ev.killer || !RS_Boost.Has(ev.victim, "RSQMB_Ward")) return 0.0;
 		return (tr.thrallTic > 0 && level.maptime - tr.thrallTic <= WINDOW) ? MULT : 0.0;
+	}
+}
+
+// ================================================================================ the second round (11-03 evening)
+
+// S-1 Run Through: a stab kills it (the saber names every stab, saber.stab). Lunge pays the lunging one instead.
+class RS_Row_RunThrough : RS_ScoreBonus
+{
+	const MULT = 0.25;
+	override int Family() const { return FAM_MELEE; }
+	override String DisplayName() const { return "Run Through"; }
+	override double Evaluate(RS_ScoreEvent ev) { return RS_Rows.Tool(ev) == "saber.stab" ? MULT : 0.0; }
+}
+
+// S-6 Saberstaff: the staff's back blade or its spin kills it (saber.spin); more bodies in one spin are Multi-Kill's.
+class RS_Row_Saberstaff : RS_ScoreBonus
+{
+	const MULT = 0.3;
+	override int Family() const { return FAM_MELEE; }
+	override String DisplayName() const { return "Saberstaff"; }
+	override double Evaluate(RS_ScoreEvent ev) { return RS_Rows.Tool(ev) == "saber.spin" ? MULT : 0.0; }
+}
+
+// S-11 Unlimited Power: Force Lightning kills it (force.lightning, every struck monster); the chain's extra bodies are Multi-Kill's.
+class RS_Row_UnlimitedPower : RS_ScoreBonus
+{
+	const MULT = 0.35;
+	override int Family() const { return FAM_MELEE; }
+	override String DisplayName() const { return "Unlimited Power"; }
+	override double Evaluate(RS_ScoreEvent ev) { return RS_Rows.Tool(ev) == "force.lightning" ? MULT : 0.0; }
+}
+
+// S-14 Clash Break: a monster staggered by your blade-lock shockwave (the saber's clash tag) is killed within 3 s.
+class RS_Row_ClashBreak : RS_ScoreBonus
+{
+	const MULT = 0.35;
+	override int Family() const { return FAM_MELEE; }
+	override String DisplayName() const { return "Clash Break"; }
+	override double Evaluate(RS_ScoreEvent ev) { return (ev.killer && RS_Rows.ChainTag(ev, "clash")) ? MULT : 0.0; }
+}
+
+// D10 Buzzsaw: a grind kill on something that took at least 1.5 s of grinding in the hand (the ShieldSaw's "grind.held").
+// Replaces Shield Work's grind pay.
+class RS_Row_Buzzsaw : RS_ScoreBonus
+{
+	const MULT = 0.3;
+	const HELD = 52;
+	override int Family() const { return FAM_MELEE; }
+	override String DisplayName() const { return "Buzzsaw"; }
+	override double Evaluate(RS_ScoreEvent ev)
+	{
+		if (RS_Melee.Kind(ev) != RS_Melee.MK_GRIND) return 0.0;
+		return RS_Melee.AskShield("grind.held", ev.victim) >= HELD ? MULT : 0.0;
+	}
+	override bool Supersedes(RS_ScoreBonus other) const { return other is "RS_Bonus_ShieldWork"; }
+}
+
+// X2 Wall Splat: a monster you knocked into a wall dies of the wall: a punch (Melee's wall tag) or a shield bash (the
+// ShieldSaw's shield.slam blow). A big moment when the wall kills a monster of 400+ base.
+class RS_Row_WallSplat : RS_ScoreBonus
+{
+	const MULT = 0.4;
+	override int Family() const { return FAM_MELEE; }
+	override String DisplayName() const { return "Wall Splat"; }
+	override double Evaluate(RS_ScoreEvent ev)
+	{
+		if (!ev.killer) return 0.0;
+		return (RS_Melee.Tagged(ev, "wall") || RS_Rows.Tool(ev) == "shield.slam") ? MULT : 0.0;
+	}
+	override bool BigMoment(RS_ScoreEvent ev, double paid) const { return paid > 0 && ev.victimSpawnHealth >= 400; }
+}
+
+// B D1 Clubbed: a thing you were HOLDING, swung into a monster, killed it (Distance Grab names it, grab.swing); a corpse more.
+class RS_Row_Clubbed : RS_ScoreBonus
+{
+	const MULT = 0.3;
+	const CORPSE = 0.1;
+	override int Family() const { return FAM_MELEE; }
+	override String DisplayName() const { return "Clubbed"; }
+	override double Evaluate(RS_ScoreEvent ev)
+	{
+		if (RS_Rows.Tool(ev) != "grab.swing") return 0.0;
+		let inf = ev.inflictor;
+		return MULT + ((inf && inf.bIsMonster && inf.health <= 0) ? CORPSE : 0.0);
+	}
+}
+
+// N4 Trap Shot: your grenade, shot by you in the air, killed (the grenade's skeet fact).
+class RS_Row_TrapShot : RS_ScoreBonus
+{
+	const MULT = 0.6;
+	override int Family() const { return FAM_STYLE; }
+	override String DisplayName() const { return "Trap Shot"; }
+	override double Evaluate(RS_ScoreEvent ev) { return (RS_Melee.Kind(ev) == RS_Melee.MK_GRENADE && RS_Melee.Tagged(ev, "skeet")) ? MULT : 0.0; }
+	override bool BigMoment(RS_ScoreEvent ev, double paid) const { return paid > 0; }
+}
+
+// N17 Teeth: a grenade whose pin you pulled with your teeth killed.
+class RS_Row_Teeth : RS_ScoreBonus
+{
+	const MULT = 0.15;
+	override int Family() const { return FAM_STYLE; }
+	override String DisplayName() const { return "Teeth"; }
+	override double Evaluate(RS_ScoreEvent ev) { return (RS_Melee.Kind(ev) == RS_Melee.MK_GRENADE && RS_Melee.Tagged(ev, "teeth")) ? MULT : 0.0; }
+}
+
+// N7 Contact: an Impact grenade burst on what it touched and killed it.
+class RS_Row_Contact : RS_ScoreBonus
+{
+	const MULT = 0.4;
+	override int Family() const { return FAM_STYLE; }
+	override String DisplayName() const { return "Contact"; }
+	override double Evaluate(RS_ScoreEvent ev) { return (RS_Melee.Kind(ev) == RS_Melee.MK_GRENADE && RS_Melee.Tagged(ev, "impact")) ? MULT : 0.0; }
+}
+
+// Chain Swing (the Whip's aimed swing, sheet bn_w_swing3): a kill while the second or later of swings latched one
+// after another carries you (the Whip's "swings"). On Swinging.
+class RS_Row_ChainSwing : RS_ScoreBonus
+{
+	const PER = 0.2;
+	const MAXMULT = 0.8;
+	override int Family() const { return FAM_DARING; }
+	override String DisplayName() const { return "Chain Swing"; }
+	override double Evaluate(RS_ScoreEvent ev)
+	{
+		if (!ev.killer || ev.ringOut || RS_Whip.Ask("swinging", ev.killer) != 1) return 0.0;
+		int n = RS_Whip.Ask("swings", ev.killer);
+		return n >= 2 ? min(MAXMULT, PER * (n - 1)) : 0.0;
 	}
 }
 

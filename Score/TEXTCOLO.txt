@@ -158,3 +158,28 @@ RSScore_Melee_HC
 	#3F3F33 #5F5F4C 0  24
 	#BFBF99 #FFFFCC 25 255
 }
+
+// The fifth family, Counterplay (11-03): violet. Defence turned into a kill.
+RSScore_Counter
+{
+	#301040 #482060 0  24
+	#B070D0 #E0A0FF 25 255
+}
+
+RSScore_Counter_PD
+{
+	#262626 #393939 0  24
+	#727272 #999999 25 255
+}
+
+RSScore_Counter_T
+{
+	#3F333F #5F4C5F 0  24
+	#BF99BF #FFCCFF 25 255
+}
+
+RSScore_Counter_HC
+{
+	#3F3F33 #5F5F4C 0  24
+	#BFBF99 #FFFFCC 25 255
+}

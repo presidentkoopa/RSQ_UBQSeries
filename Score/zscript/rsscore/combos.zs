@@ -37,6 +37,8 @@ class RS_ComboTable play
 		reg.OwnCombo("Jedi Jab",           "glove > force.push",                        0.4);
 		reg.OwnCombo("Punch and Pitch",    "glove > shield.disc",                       0.4);
 		reg.OwnCombo("Slow Trap Shooter",  "glove.upper@slow > gun.shotgun",            0.55);
+		reg.OwnCombo("Feint",              "glove.jab > saber.stab",                    0.45);
+		reg.OwnCombo("Skyskewer",          "glove.upper > saber.stab",                  0.55);
 		// the gun-butt shove (Melee's, BD22 VR's butt strike, the pistol whip: one tool)
 		reg.OwnCombo("Pistol Whip",        "shove > gun.pistol",                        0.5);
 		// no "shove > gun.shotgun" row without the slow motion: that is F.E.A.R. Effect's move (the owner, 11-03), and a twin name confuses it
@@ -69,6 +71,7 @@ class RS_ComboTable play
 		reg.OwnCombo("Slam and Blam",      "grab.hold > headlock.slam > gun.shotgun",   0.9);
 		reg.OwnCombo("Clay Toss",          "headlock.throw > gun.shotgun",              0.5);
 		reg.OwnCombo("Ground and Pound",   "headlock.slam > glove",                     0.5);
+		reg.OwnCombo("Pin Down",           "headlock.slam > saber.stab",                0.55);
 		// the taunt, the two-fist pound, the clear-out
 		reg.OwnCombo("Come Get Some",      "taunt > hands",                             0.4);
 		reg.OwnCombo("Come Closer",        "taunt > gun.shotgun",                       0.5);
@@ -106,6 +109,11 @@ class RS_ComboTable play
 		reg.OwnCombo("Scoundrel",          "force.push > saber.throw > gun.pistol",     0.9);
 		reg.OwnCombo("Push-Pull",          "force.push > force.pull > saber.cut",       0.9);
 		reg.OwnCombo("Time Slash",         "force.push@slow > saber.cut",               0.55);
+		reg.OwnCombo("Off the Blade",      "saber.stab > force.push",                   0.5);
+		reg.OwnCombo("Stab and Jab",       "saber.stab > glove",                        0.4);
+		reg.OwnCombo("Shock and Awe",      "force.lightning > glove",                   0.5);
+		reg.OwnCombo("Sith Ambush",        "force.lightning > saber.cut",               0.5);
+		reg.OwnCombo("Overcharge",         "force.lightning > gun.energy",              0.5);
 
 		// ---- the ShieldSaw ----
 		reg.OwnCombo("Riot Control",       "shield.bash > gun.shotgun",                 0.5);
@@ -131,6 +139,9 @@ class RS_ComboTable play
 		reg.OwnCombo("Vibranium",          "shield.disc > shield.dash > glove",         0.9);
 		reg.OwnCombo("Sawblade Send-Off",  "shield.grind > force.push > shield.disc",   0.9);
 		reg.OwnCombo("Turnabout",          "block > hook",                              0.5);
+		reg.OwnCombo("Hoplite",            "shield.bash > saber.stab",                  0.55);
+		reg.OwnCombo("Nailed",             "shield.slam > saber.stab",                  0.55);
+		reg.OwnCombo("Up Against the Wall", "shield.slam > glove",                      0.5);
 
 		// ---- the whip (RSQ Whip): the crack, the flail, the lasso, the swing, the wrap, the yank ----
 		reg.OwnCombo("Ringmaster",         "whip > hook > shield.bash",                 1.0);
@@ -142,7 +153,7 @@ class RS_ComboTable play
 		reg.OwnCombo("Crack of Doom",      "whip.crack > any | legend.dormant",         0.6);
 		reg.OwnCombo("Bullet Ballet",      "whip.crack@slow > gun",                     0.9);
 		reg.OwnCombo("Tetherball",         "whip.flail > glove",                        0.5);
-		reg.OwnCombo("Batting Practice",   "whip.flail > shield.disc",                  0.5);
+		reg.OwnCombo("Tetherball Disc",    "whip.flail > shield.disc",                  0.5);
 		reg.OwnCombo("Rope-a-Dope",        "whip.lasso > glove",                        0.5);
 		reg.OwnCombo("Rodeo",              "whip.lasso > gun",                          0.45);
 		reg.OwnCombo("Hogtie",             "whip.lasso > saber.cut",                    0.5);
@@ -169,6 +180,7 @@ class RS_ComboTable play
 		reg.OwnCombo("Into the Blades",    "whip.yank > shield.grind",                  0.55);
 		reg.OwnCombo("Yank and Launch",    "whip.yank > glove.upper > gun.shotgun",     0.9);
 		reg.OwnCombo("Ringside",           "whip.yank > grab.hold > glove",             0.9);
+		reg.OwnCombo("Reel and Run Through", "whip.yank > saber.stab",                  0.55);
 
 		// ---- the hook (RSQ Grapple): the bite brings it, the yank throws it, the zip brings you ----
 		reg.OwnCombo("Fish Out of Water",  "hook > glove.upper",                        0.6);
@@ -227,6 +239,8 @@ class RS_ComboTable play
 		reg.OwnCombo("Swat Team",          "grenade.flash > hook > gun.shotgun",        1.0);
 		reg.OwnCombo("Breach and Clear",   "grenade.flash > shield.dash > gun.shotgun", 0.9);
 		reg.OwnCombo("Out of the Smoke",   "grenade.smoke > melee",                     0.5);
+		reg.OwnCombo("Ninja",              "grenade.smoke > saber.stab",                0.55);
+		reg.OwnCombo("Batting Practice",   "grab.swing > gun",                          0.4);
 		reg.OwnCombo("Ghost Hold",         "grenade.smoke > grab.hold > blade",         1.0);
 		reg.OwnCombo("Pin Cushion",        "grenade.sticky > gun",                      0.45);
 		reg.OwnCombo("Hot Potato",         "grenade.sticky > hook > grenade",           1.2);
