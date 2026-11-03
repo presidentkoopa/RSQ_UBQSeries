@@ -199,8 +199,8 @@ on the simulated rig (2026-10-31 onward).
 - **RSQ Saber:** saber in the main hand, shield in the off. Saber Over Shield widens the block. Either load
   order, either absent.
 - **RSQ SlowMo:** the Perfect Block Slow-Mo option.
-- **RSQ Miniboss** (2026-11-03, by name): the disc's tier health reads LegenDoom's boss legendary percentage for a
-  miniboss that Miniboss gave the boss legendary health (`RSQMB_Service` `bossfor` `"ldhealth"`). Rig only.
+- **RSQ Miniboss** (2026-11-03, by name): the disc's tier health reads the HIGHER of LegenDoom's boss and normal
+  legendary percentage for a miniboss Miniboss made legendary that way (`RSQMB_Service` `bossfor` `"ldhealth"`). Rig only.
 - **RSQ Tactical Rig:** with the shield on your back (Take It From: back or neck) the rig keeps its off-shoulder
   holster, and a hand in any rig holster is the rig's press. Over the Off Shoulder: the rig leaves its off-shoulder
   holster to the shield. With "Draw With Use" off the shoulder is the rig's.
