@@ -1,12 +1,13 @@
 # RSQ Gun Cards
 
-Small ammo cards on your guns, in Ermac's Force Unleashed holo style. A small card sits beside the wrist
+Small ammo cards on your guns, on Ermac's Force Unleashed holo panels. A small card sits beside the wrist
 of each gun: rounds in the gun big, reserve small. Check your watch with a gun in hand (the back of the wrist
-turned to your face) and a full card lies flat on the back of that wrist, the way up you read it: the gun's
-name, magazine and reserve, grenades, kills this level, and (with Gun Bonsai) its level and upgrades. Check
-your watch with an empty hand and you get a status card: health, armour, keys.
+turned to your face) and a full card lies flat on the back of that wrist, the way up you read it. What it shows is
+your pick (Watch Card Shows): the Weapon card (MAG / RESERVE, grenades, this gun's kills this level), the Status
+card (health, armour, the map's keys, grenades) or both on one card. Check your watch with an empty hand and you
+always get the Status card. All text is JFO ("our font", 2026-11-03), at Quest or PCVR quality.
 
-Pk3: `pk3/RSQ_GunCards.pk3` (about 3.3 MB).
+Pk3: `pk3/RSQ_GunCards.pk3` (about 14 MB since 2026-11-03: JFO at two qualities; it was 3.3 MB).
 
 ## Load order
 
@@ -51,34 +52,50 @@ Front page (RSQ Gun Cards):
 | Show Cards | Always | The small card: Off / Always / When You Look at the Gun / Inspect Gesture (needs RSQ_Gestures; without it acts like When You Look at the Gun) / On Reload (while that hand's reload is held, then about a second). |
 | Card Colour | Each Gun Its Own | Each gun its own colour by weapon slot, By Ammo Type (bullets gold, shells red, rockets and grenades orange, cells cyan, fuel green), or one colour for all. |
 | Watch Card | When I Check My Watch | Off / When I Check My Watch / Always On. |
+| Watch Card Shows | Weapon Card | Weapon Card (MAG / RESERVE, the counts, GRENADES, KILLS) / Status Card (H / A, health and armour, the key icons, G:n) / Both on One Card (MAG / RESERVE, the counts, H and A, the key icons, G:n). An empty hand always shows the Status Card. (2026-11-03) |
+| Show Gun Bonsai on Card | Option (off) | With Gun Bonsai: the gun's level, XP bar and upgrades below the Weapon card. |
+| Text Quality | Quest | Quest: JFO's glyphs at half resolution (a quarter of the voxels). PCVR: full resolution. Same size on the card. |
+| Small Card Font | JFO | JFO, or Ermac's own words and digits (Option). The colours work the same with both. |
 | Draw in the World | Option (off) | Cards drawn in the world at the hand, so no gun covers them (they can trail a fast hand). Off: drawn with the hand, no lag. |
 | Tilt to Your Eyes | Option (off) | The small card turns toward your eyes (up to 20 degrees); it also swings a few cm round the wrist as it turns. |
 | Hide at Your Eye | Option (off) | The small card hides while the gun is up at your eye. |
 
 Always on (no row):
 
-- **+N on pickup**: picking up ammo shows "+N" in the reserve's place for a moment.
-- **RELOAD**: an empty magazine with rounds to load shows RELOAD instead of the count (on the watch card it
-  replaces the MAGAZINE word).
+- **+N on pickup**: picking up ammo shows "+N" (green on the watch card) in the reserve's place for a moment.
+- **RELOAD**: an empty magazine with rounds to load shows RELOAD in red instead of the count (on the watch card it
+  replaces the MAG word).
+- **The magazine's colour** (Low Ammo Colour, on): the magazine's count is green above half a magazine, yellow from
+  half down to Low Below (a quarter), red at or below it; three clear steps, on the small card (both fonts) and the
+  watch card. A gun without a magazine: red only when empty.
+- **The key icons** (Status and Both cards): BD22_VoxelPack's own keys (keycards by Ghostpilot, skulls by Voxelbro)
+  when it is loaded, Freedoom's status-bar keys otherwise; lit when held, dark grey when not. **Only the kinds this
+  map has**: a keycard map shows the three keycards and no skulls, a skull map the skulls, a map with both all six,
+  a map with no keys no icons (G:n alone). The map is scanned when it starts: keys lying in the level (Brutal Doom's
+  GLRedCard etc. spawners count), keys a monster or spawner drops, line locks that name a keycard or a skull; a key
+  that appears later (dropped, spawned by a script, picked up) adds its kind. Doom-format doors accept either kind,
+  so with only those the keycards show. Other keys (no red / yellow / blue in the name) count as "+N" if there is
+  room.
 - **Grenades** on the watch card: Brutal Doom's hand grenades (not mines), or RSQ Grenade's without Brutal Doom.
 - **The fuse count** (with RSQ Grenade and Gun Bonsai VR's Cook Sense 3): while RSQ Grenade's grenade cooks in your
   hand, its small card shows the seconds left big, amber for the first half of the fuse and red after, and shows
   while it cooks whatever Show Cards says (unless Off). Asked of RSQ Grenade by name; nothing without it.
 - **Kills this level** on the watch card: this gun's kills on this level (a kill goes to the hand that fired
   last within a second).
-- **Status card**: watch check with an empty hand shows STATUS: health, armour, keys (cards on one line,
-  skulls on the next), grenades, the level's kills. Only when Draw in the World is off.
+- **Status card**: watch check with an empty hand shows H / A, health (red at 25 or less) and armour (blue) big,
+  the key icons and G:n. Only when Draw in the World is off. (Before 2026-11-03 it had a STATUS title, letter keys
+  and the level's kills; the owner's design has no title row.)
 - **Which way up**: the watch and status cards read upright from where you look: the text turns half round
   when the gun's top points up instead of down where you see the card (2026-11-02).
 - **Room light**: cards are lit like the gun, dim in a dark room.
-- **Low ammo**: the count turns the empty colour when the magazine is at or below a quarter.
 - Left-handed (QuestZDoom's left-handed schemes) works: the cards follow the hands.
 
 Placement page: Up / Down, Left / Right, In / Out for the small card; Up / Down, Left / Right (in the world)
 for the watch card; Size in the World.
 
 Tuning and Debug page: Both Guns on the Main Card (off), Panel (0 = each gun its own; 1-18 one of Ermac's panels for all), Material (Glass),
-Strength, Small Card Colours (Ermac's / Wheel Palette), AMMO / MAGAZINE Word (on), Low Ammo Colour (on),
+Strength, Small Card Colours (Ermac's / Wheel Palette), AMMO / MAGAZINE Word (on), Low Ammo Colour (on), Key Icons
+(on), Only This Map's Keys (on; off shows all six key slots),
 Low Below, Fade, the look and watch-check distances and timings (Watch Check Shows: Once It Is Held),
 Tilt: At Most, Hide at Eye: Within, Pickup +N Stays, Show Hand Numbers on Screen (off; it also prints which way
 up the watch card is turned, once a second), Reset All.
@@ -127,6 +144,29 @@ on the watch check). Rig only, **none of these is headset-confirmed yet**:
 25. Placement -> watch card Up / Down: the card moves about as far per step as before (it now leans less).
 26. RSQ Gestures' Watch Check Off: the forearm across the chest with the back of the wrist up shows the card;
     the pulse side up does not. (rig)
+
+The 2026-11-03 design (owner, from the mockups): rig only, **not headset-confirmed**. Frames in
+`test/evidence/20261103_*.png` (BD22 VR order with 03 = BD22_VR-Reloaded 2.0.3p, right hand across the chest, back of
+the wrist up):
+
+27. Watch Card Shows -> Weapon Card: MAG / RESERVE small, the counts big, GRENADES n orange, KILLS n red, no title.
+    (rig, Quest and PCVR: `20261103_watch_weapon_status.png`)
+28. Watch Card Shows -> Status Card with a gun: H / A, health and armour (blue) big, the key icons, G:n. (rig)
+29. Watch Card Shows -> Both on One Card: MAG / RESERVE, the counts, H 100 / A n (blue), the key icons, G:n. (rig,
+    `20261103_watch_both_empty.png`)
+30. Watch check with an empty hand: always the Status card, whatever Watch Card Shows says. (rig, both qualities,
+    and the left hand: `20261103_watch_left_hand_status.png`)
+31. The key row by map (`20261103_watch_keys_by_map.png`): MAP01 no keys: no icons, G:n alone; MAP01 after picking
+    up a red keycard: three keycard slots, red lit; MAP02 (keycards only): three keycards, no skulls; MAP08 (skulls
+    only): three skulls in the keycards' place; MAP17 (both): all six. Rig log: "keys on MAP02: keycards 1 skulls 0
+    (things 2)", MAP08 "keycards 0 skulls 1 (things 2)", MAP17 "keycards 1 skulls 1 (things 3)".
+32. Without the voxel pack (plain Doom 2): Freedoom's key icons. (rig, `20261103_watch_freedoom_keys_plain_doom2.png`)
+33. Text Quality Quest / PCVR: the same card, PCVR's glyphs at twice the resolution. (rig; the headset is the real
+    test of whether Quest's half resolution reads well)
+34. Magazine colour on the small card, JFO Quest, JFO PCVR and Ermac's font: 16/16 green, 8/16 yellow, 4/16 red,
+    0/16 RELOAD red. (rig, `20261103_small_*_full_half_quarter_empty.png`); on the watch card 31/31 green, 13/31 yellow.
+35. Show Gun Bonsai on Card on, with Gun Bonsai: LV bar and upgrades below KILLS. (rig, full order,
+    `20261103_watch_gunbonsai_rows_full_order.png`)
 
 With other mods:
 
@@ -180,30 +220,11 @@ With other mods:
 
 ## Credits
 
-`CREDITS.txt`, unchanged:
-
-```
-RSQ Gun Cards -- credits
-========================
-
-The cards are Ermac's Force Unleashed holo HUD, used with the owner's blessing: the ammo panels
-(ammo_bg*.png), the AMMO / MAGAZINE / CHAMBER words and the digits (digit_*.png) in tools/card_art/ are his
-art, from his doom-force-unleashed devbuild (models/common). We turn them into voxels; the design is his.
-graphics/GCEDIG*.png and GCEPLATE.png (the cards drawn in the world) are made from the same art.
-
-Code: ZScript written for the Radiant Silvergun Quest series (presidentkoopa), for stock QuestZDoom 17.3 by
-Emawind and Team Beef. No engine change. Moved out of RSQ Wheel (the owner's RS_WeaponSelectionSystem port),
-whose look reader, Gun Bonsai reader and billboards it carries its own copies of.
-
-The watch card's letters are the IWAD's DoomFont (STCFN033-095), read from Freedoom (BSD) when the voxels are
-built (tools/gen_side.py --iwad freedoom2.wad); the cards in the world use the loaded IWAD's DoomFont and
-status bar by lump name.
-
-Gun Bonsai is ToxicFrog's; the watch card only reads it, through RSQ Gun Bonsai VR's service, when loaded.
-```
-
-From the old README: "The cards on your guns, for Doom VR on stock QuestZDoom 17.3. Ermac's Force Unleashed
-art (CREDITS.txt)."
+See `CREDITS.txt`. In short: Ermac's Force Unleashed panels (and his words and digits for Small Card Font: Ermac);
+**JFO**, the JDUI font by **Zedas** in **Blackmore1014**'s edit "JDUI Brutal Doom Ultimate Edition"
+(https://www.moddb.com/addons/jdui-brutal-doom-ultimate-edition) for all card text (**no reuse licence is stated:
+ask permission before a public release**); BD22_VoxelPack's key voxels (keycards by Ghostpilot, skulls by Voxelbro)
+and Freedoom's status-bar keys (BSD) for the key icons; Gun Bonsai is ToxicFrog's (read only).
 
 ## Appendix: how it draws (for builders)
 
@@ -220,3 +241,13 @@ forearm; the layer's y turns it up to its row (`side_states.zs` ROW_Y), the Up /
 rot from the pose. Each piece has at most 16 colours, each filling an aligned 4 x 4 block of the voxel's 16 x 16
 palette texture, so texture filtering does not mix a glyph's colour with its neighbours; glyphs keep all their
 pixels (the voxel is scaled, not the picture).
+
+The watch card since 2026-11-03 (`gen_side.py` v4, the owner's design): JFO glyphs from `tools/card_art/jfo/`
+(`tools/jfo.py`), each baked at every unit of a grid (small font 25 units of 3.6 card px, a glyph two units and a
+narrow one one; big digits 13 units of 6.9 px), per set (small / big x Quest / PCVR) and family; the rows are the
+same far turns as v3, now named row ids (`side_states.zs` R_*). The key icons are baked front views at their slots
+(a VOXELDEF voxel can only be turned about the vertical, so the real key voxels cannot lie on the card). No IWAD is
+needed to build any more. The small card (`gen_cards.py`): JFO words and digits at both qualities in the frames
+after Ermac's panels, Ermac's own words, RELOAD and digits kept for Small Card Font: Ermac.
+Counts (2026-11-03): Gun Cards 13,689 sprite frames (was ~7,400); the owner's whole order with every series pk3 and
+Gun Bonsai 52,011 of the engine's 65,535.

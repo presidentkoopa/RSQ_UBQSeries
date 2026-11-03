@@ -4,14 +4,25 @@ RSQ Gun Cards -- credits
 The cards are Ermac's Force Unleashed holo HUD, used with the owner's blessing: the ammo panels
 (ammo_bg*.png), the AMMO / MAGAZINE / CHAMBER words and the digits (digit_*.png) in tools/card_art/ are his
 art, from his doom-force-unleashed devbuild (models/common). We turn them into voxels; the design is his.
-graphics/GCEDIG*.png and GCEPLATE.png (the cards drawn in the world) are made from the same art.
+Since 2026-11-03 his panels stay on the small card and his words and digits are its "Small Card Font: Ermac"
+option (the default font is JFO, below). graphics/GCEDIG*.png and GCEPLATE.png (the cards drawn in the world)
+are made from the same art.
+
+THE TEXT (2026-11-03, the owner's "our font"): JFO, the JDUI font by Zedas, in the edit "JDUI Brutal Doom
+Ultimate Edition" by Blackmore1014 (ModDB: https://www.moddb.com/addons/jdui-brutal-doom-ultimate-edition).
+tools/card_art/jfo/ holds the glyphs used, copied unchanged from JFO.pk3 (Hires/SmallFont/stcfnNNN.png and
+Hires/BigFont/fontbNNN.png); the tools turn them into voxels. NO REUSE LICENCE IS STATED for JFO / JDUI:
+permission should be asked of Zedas and Blackmore1014 before any public release.
+
+THE KEY ICONS on the watch card: BD22_VoxelPack's own key voxels seen from the front (tools/card_art/keys/vp_*.png,
+from Voxels/Keys/RKEYA / YKEYA / BKEYA.kvx, keycards by Ghostpilot, and RSKUA / YSKUA / BSKUA.kvx, skull keys by
+Voxelbro, per the voxel pack's Credits.txt), shown when the voxel pack is loaded; without it, Freedoom's status-bar
+keys (tools/card_art/keys/fd_*.png, STKEYS0-5 from freedoom2.wad, BSD licence).
 
 Code: ZScript written for the Radiant Silvergun Quest series (presidentkoopa), for stock QuestZDoom 17.3 by
 Emawind and Team Beef. No engine change. Moved out of RSQ Wheel (the owner's RS_WeaponSelectionSystem port),
 whose look reader, Gun Bonsai reader and billboards it carries its own copies of.
 
-The watch card's letters are the IWAD's DoomFont (STCFN033-095), read from Freedoom (BSD) when the voxels are
-built (tools/gen_side.py --iwad freedoom2.wad); the cards in the world use the loaded IWAD's DoomFont and
-status bar by lump name.
+The cards in the world (Draw in the World) use the loaded IWAD's DoomFont and status bar by lump name.
 
 Gun Bonsai is ToxicFrog's; the watch card only reads it, through RSQ Gun Bonsai VR's service, when loaded.

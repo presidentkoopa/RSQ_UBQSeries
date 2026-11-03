@@ -254,6 +254,166 @@ class RSQGC_GunCard : EventHandler
 		return w.Ammo1.Amount;
 	}
 
+	// THE MAGAZINE'S COLOUR (owner 2026-11-03, under Low Ammo Colour): green above half a magazine, yellow from half down
+	// to Low Below (rsqgc_lowammo_frac, a quarter), red at or below it; three clear steps. A gun with no magazine: red when
+	// empty, else no colour (its "cap" is the backpack's). -1: no colour (the count's own white).
+	const MAG_GREEN = 0x50E050;
+	const MAG_YELLOW = 0xF0D030;
+	const MAG_RED = 0xFF5040;
+	static int MagColour(Weapon w, int loaded)
+	{
+		if (!w || loaded < 0 || !ci("rsqgc_lowwarn", 1)) return -1;
+		if (loaded == 0) return MAG_RED;
+		if (!HasMagazine(w)) return -1;
+		int cap = LoadedCap(w);
+		if (cap <= 0) return -1;
+		if (loaded <= cap * cv("rsqgc_lowammo_frac", 0.25)) return MAG_RED;
+		if (loaded * 2 <= cap) return MAG_YELLOW;
+		return MAG_GREEN;
+	}
+	static int ArmorOf(PlayerPawn pmo)
+	{
+		let arm = pmo.FindInventory("BasicArmor");
+		return arm ? arm.Amount : 0;
+	}
+	// Text Quality (owner 2026-11-03): 0 Quest (JFO at half resolution), 1 PCVR (full)
+	static int Quality() { return clamp(ci("rsqgc_text_q", 0), 0, 1); }
+
+	// ---- THE KEYS (owner 2026-11-03: "I'd like to be able to know if a map uses skull keys or not so we don't confuse
+	// the player") -------------------------------------------------------------------------------------------------------
+	// A key by its class name, as the status card always read them: red / yellow / blue in the name, "skull" in it for a
+	// skull. 0-2 the red / yellow / blue keycard, 3-5 the skulls, -1 another key.
+	static int KeyType(string cn)
+	{
+		cn = cn.MakeLower();
+		int c = -1;
+		if (cn.IndexOf("red") >= 0) c = 0;
+		else if (cn.IndexOf("yellow") >= 0 || cn.IndexOf("gold") >= 0) c = 1;
+		else if (cn.IndexOf("blue") >= 0) c = 2;
+		if (c < 0) return -1;
+		return cn.IndexOf("skull") >= 0 ? c + 3 : c;
+	}
+	// the keys held: a bit per KeyType, and how many other keys
+	static int, int HeldKeys(PlayerPawn pmo)
+	{
+		int mask = 0, others = 0;
+		for (let i = pmo.Inv; i; i = i.Inv)
+		{
+			if (!(i is "Key")) continue;
+			int t = KeyType(i.GetClassName());
+			if (t < 0) others++; else mask |= 1 << t;
+		}
+		return mask, others;
+	}
+	// which key art: 0 the voxel pack's own keys (BD22_VoxelPack's Voxels/Keys loaded), 1 Freedoom's (shipped with us)
+	transient int mKeyArt;
+	transient bool mKeyArtSet;
+	static int KeyArt()
+	{
+		let gc = Get();
+		if (gc && gc.mKeyArtSet) return gc.mKeyArt;
+		int a = (Wads.CheckNumForFullName("voxels/keys/rkeya.kvx") >= 0 || Wads.CheckNumForFullName("Voxels/Keys/RKEYA.kvx") >= 0) ? 0 : 1;
+		if (gc) { gc.mKeyArt = a; gc.mKeyArtSet = true; }
+		return a;
+	}
+	// THE MAP'S KEYS: which kinds (keycards, skulls) this map has, scanned when the map starts (WorldLoaded): keys lying in
+	// the level, keys any monster or spawner can drop (its DropItem list), locks on lines that name a keycard (1-3) or a
+	// skull (4-6); and kept up to date: a key spawned later (WorldThingSpawned: dropped, or spawned by a script), a monster
+	// spawned later with a key to drop, and the keys in the player's inventory. Doom-format doors take either kind (locks
+	// 129-131), so they only say "a key of that colour": with nothing else found they show the keycards.
+	bool mMapCards, mMapSkulls, mMapEither, mScanned;
+	int mScanThings, mScanDrops, mScanLocks;
+	// a key lying in the level: a Key, or a pickup that gives one by its name (Brutal Doom places its keys with
+	// GLRedCard etc., CustomInventory spawners: brutal22test6 actors/KeyPLacement.dec)
+	static bool KeyLike(Actor a)
+	{
+		let inv = Inventory(a);
+		if (!inv || inv.Owner) return false;
+		if (a is "Key") return true;
+		string cn = a.GetClassName();
+		cn = cn.MakeLower();
+		return cn.IndexOf("card") >= 0 || cn.IndexOf("skull") >= 0 || cn.IndexOf("key") >= 0;
+	}
+	private void NoteKey(string cn, int how)
+	{
+		int t = KeyType(cn);
+		if (t < 0) return;
+		bool was = t >= 3 ? mMapSkulls : mMapCards;
+		if (t >= 3) mMapSkulls = true; else mMapCards = true;
+		if (how == 0) mScanThings++; else if (how == 1) mScanDrops++;
+		if (ci("rsqgc_debug_log", 0) > 1) Console.Printf("rsqgc: key found %s (%s)", cn, how == 0 ? "in the level" : "a drop");
+		if (!was && mScanned && ci("rsqgc_debug_log", 0)) Console.Printf("rsqgc: keys: %s on this map from now (%s)", t >= 3 ? "skulls" : "keycards", cn);
+	}
+	private void NoteDrops(Actor a)
+	{
+		for (let di = a.GetDropItems(); di; di = di.Next)
+		{
+			if (di.Name == 'None') continue;
+			class<Actor> c = di.Name;
+			if (!c || !(c is "Inventory")) continue;
+			string cn = di.Name;
+			cn = cn.MakeLower();
+			if ((c is "Key") || cn.IndexOf("card") >= 0 || cn.IndexOf("skull") >= 0) NoteKey(di.Name, 1);
+		}
+	}
+	void ScanMap()
+	{
+		mScanned = false;
+		let it = ThinkerIterator.Create("Actor");
+		Actor a;
+		while (a = Actor(it.Next()))
+		{
+			if (a is "Inventory") { if (KeyLike(a)) NoteKey(a.GetClassName(), 0); continue; }
+			if (a.bIsMonster || a is "RandomSpawner") NoteDrops(a);
+		}
+		for (int i = 0; i < level.lines.Size(); i++)
+		{
+			let l = level.lines[i];
+			int lk = l.locknumber;
+			int sp = l.special;
+			if (!lk)
+			{
+				if (sp == 13) lk = l.args[3];                       // Door_LockedRaise
+				else if (sp == 83 || sp == 85 || sp == 202) lk = l.args[4];   // ACS_LockedExecute(Door), Generic_Door
+			}
+			if (lk >= 1 && lk <= 3) { mMapCards = true; mScanLocks++; }
+			else if (lk >= 4 && lk <= 6) { mMapSkulls = true; mScanLocks++; }
+			else if (lk >= 129 && lk <= 134) mMapEither = true;
+		}
+		mScanned = true;
+		if (ci("rsqgc_debug_log", 0))
+			Console.Printf("rsqgc: keys on %s: keycards %d skulls %d either %d (things %d, drops %d, locks %d)", level.MapName,
+				mMapCards, mMapSkulls, mMapEither, mScanThings, mScanDrops, mScanLocks);
+	}
+	override void WorldLoaded(WorldEvent e) { ScanMap(); }
+	override void WorldThingSpawned(WorldEvent e)
+	{
+		let a = e.Thing;
+		if (!a || !mScanned) return;
+		if (a is "Inventory") { if (KeyLike(a)) NoteKey(a.GetClassName(), 0); }
+		else if (a.bIsMonster) NoteDrops(a);
+	}
+	// what the key row shows: (keycards, skulls). Only This Map's Keys off: both.
+	bool, bool MapKeys(PlayerPawn pmo)
+	{
+		if (!ci("rsqgc_keys_map", 1)) return true, true;
+		if (!mScanned) ScanMap();
+		int mask, others;
+		[mask, others] = HeldKeys(pmo);
+		bool cards = mMapCards || (mask & 7), skulls = mMapSkulls || (mask & 56);
+		if (!cards && !skulls && mMapEither) cards = true;
+		return cards, skulls;
+	}
+	// everything the key row and the health / armour rows say, for the cards' signatures
+	string StatusSig(PlayerPawn pmo)
+	{
+		int mask, others;
+		[mask, others] = HeldKeys(pmo);
+		bool c, k;
+		[c, k] = MapKeys(pmo);
+		return String.Format(" st%d %d k%d %d %d%d a%d g%d s%d", pmo.Health, ArmorOf(pmo), mask, others, c, k, KeyArt(), Grenades(pmo), ci("rsqgc_keys", 1));
+	}
+
 	// Gun Bonsai's colour codes (the colour it gives an upgrade's name), to RGB
 	static int ColourOf(string code)
 	{
@@ -630,7 +790,10 @@ class RSQGC_GunCard : EventHandler
 			{
 				// the watch card: the full card flat on the back-of-the-hand side of the wrist (side.zs). Always on: the small card
 				// still shows as rsqgc_card says, beside it
-				DrawSide(p, pmo, hand, owner, w);
+				// Watch Card Shows (owner 2026-11-03): 0 the Weapon card, 1 the Status card, 2 both on one card
+				int shows = ci("rsqgc_watch_shows", 0);
+				if (shows == 1) DrawStatus(p, pmo, hand, owner);
+				else DrawSide(p, pmo, hand, owner, w, shows);
 				if (always && w && Wanted(pmo, hand)) Draw(p, pmo, hand, owner, w, other[hand], other[hand] != null);
 				else ClearHand(p, hand);
 				continue;
@@ -658,7 +821,7 @@ class RSQGC_GunCard : EventHandler
 		if (!mSide2[hand]) { mSide2[hand] = new("RSQGC_SideCard"); mSide2[hand].hand = hand; mSide2[hand].side = 1; }
 		return mSide2[hand];
 	}
-	private void DrawSide(PlayerInfo p, PlayerPawn pmo, int hand, Actor owner, Weapon w)
+	private void DrawSide(PlayerInfo p, PlayerPawn pmo, int hand, Actor owner, Weapon w, int shows)
 	{
 		// one card, on the back-of-the-hand side; the palm side (side 1) faces away in a watch check (2026-11-02)
 		SideOf(hand, 1).Remove(p);
@@ -666,11 +829,13 @@ class RSQGC_GunCard : EventHandler
 		bool mir = Mirrored(p, hand);
 		int rot = SideRot(pmo, hand);
 		int style = StyleFor(p, w);
-		string sig = Signature(pmo, w, 9, style) .. (mir ? " m" : "") .. String.Format(" c%d", ci("rsqgc_color", 0)) .. ExtraSig(pmo, hand, w);
+		int q = Quality();
+		string sig = Signature(pmo, w, 9, style) .. (mir ? " m" : "") .. String.Format(" c%d q%d v%d b%d w%d %.2f", ci("rsqgc_color", 0), q, shows, ci("rsqgc_watch_bonsai", 0), ci("rsqgc_lowwarn", 1), cv("rsqgc_lowammo_frac", 0.25))
+			.. ExtraSig(pmo, hand, w) .. (shows == 2 ? StatusSig(pmo) : "");
 		if (sig != c.sig || c.mir != mir || c.rot != rot)
 		{
-			c.sig = sig; c.mir = mir; c.rot = rot;
-			c.Build(pmo, hand, w, CardColour(p, w), self);
+			c.sig = sig; c.mir = mir; c.rot = rot; c.quality = q;
+			c.Build(pmo, hand, w, CardColour(p, w), self, shows);
 		}
 		c.Sync(p, owner, mShow[hand] * cv("rsqgc_alpha", 0.85), WatchNudge(true), self);
 	}
@@ -715,16 +880,13 @@ class RSQGC_GunCard : EventHandler
 	{
 		bool mir = Mirrored(p, hand);
 		int rot = SideRot(pmo, hand);
-		let arm = pmo.FindInventory("BasicArmor");
-		string keys = "";
-		for (let i = pmo.Inv; i; i = i.Inv) if (i is "Key") keys = keys .. i.GetClassName() .. ",";
-		string sig = String.Format("status %d %d %s %d %d/%d", pmo.Health, arm ? arm.Amount : 0, keys, Grenades(pmo), level.killed_monsters, level.total_monsters)
-			.. (mir ? " m" : "");
+		int q = Quality();
+		string sig = "status" .. StatusSig(pmo) .. String.Format(" q%d", q) .. (mir ? " m" : "");
 		SideOf(hand, 1).Remove(p);
 		let c = SideOf(hand, 0);
 		if (sig != c.sig || c.mir != mir || c.rot != rot)
 		{
-			c.sig = sig; c.mir = mir; c.rot = rot;
+			c.sig = sig; c.mir = mir; c.rot = rot; c.quality = q;
 			c.BuildStatus(pmo, hand, 0x8A8A8A, self);
 		}
 		c.Sync(p, owner, mShow[hand] * cv("rsqgc_alpha", 0.85), WatchNudge(true), self);
@@ -738,10 +900,6 @@ class RSQGC_GunCard : EventHandler
 		double alpha = mShow[hand] * cv("rsqgc_alpha", 0.85);
 
 		int loaded = Loaded(w);
-		int cap = LoadedCap(w);
-		// low: a magazine below rsqgc_lowammo_frac of a full one; any other gun only when it is empty (its 'cap' is
-		// the backpack's, so a fraction of it means nothing)
-		bool low = loaded == 0 || (HasMagazine(w) && cap > 0 && loaded <= cap * cv("rsqgc_lowammo_frac", 0.25));
 		// the magazine big, the reserve small under it (owner 02:47); on a both-guns card the small row is the other gun
 		int reserve = both ? (other ? Loaded(other) : -1) : Reserve(w);
 
@@ -754,7 +912,15 @@ class RSQGC_GunCard : EventHandler
 			tPanel = TransFor(RSQGC_Look.Role(RSQGC_Look.R_SHEET_ACCENT));
 			tDigits = TransFor(RSQGC_Look.Role(RSQGC_Look.R_AMMO));
 		}
-		int tLow = low && ci("rsqgc_lowwarn", 1) ? TransFor(RSQGC_Look.Role(RSQGC_Look.R_AMMO_DRY)) : -1;
+		// JFO (2026-11-03): the digits and the word are drawn white / light grey unless the Wheel palette tints them; the
+		// magazine's count green / yellow / red (MagColour, under Low Ammo Colour)
+		// SMALL CARD FONT (owner 07:58, rsqgc_small_font): 0 JFO, 1 Ermac's lettering and digits in their own colours
+		bool ermac = ci("rsqgc_small_font", 0) == 1;
+		if (tDigits < 0 && !ermac) tDigits = TransFor(0xF0F0F0);
+		int tLabel = tPanel >= 0 || ermac ? tPanel : TransFor(0xC8C8C8);
+		int mc = MagColour(w, loaded);
+		int tLow = mc >= 0 ? TransFor(mc) : -1;
+		int q = Quality();
 		// COOK SENSE 3: the cooking grenade's seconds left take the big number, amber then red
 		int fc = FuseCount(p, hand);
 		if (fc >= 0)
@@ -771,14 +937,14 @@ class RSQGC_GunCard : EventHandler
 		Put(p, base + P_PANEL, Nth(RSQGC_CardStates.Piece(0, mir, 0, Depth()), style), owner, alpha, tPanel);
 		// the word: MAGAZINE on a gun with one, AMMO otherwise
 		int lab = HasMagazine(w) ? 1 : 0;
-		if (ci("rsqgc_label", 1)) Put(p, base + P_LABEL, Nth(RSQGC_CardStates.Piece(1, mir, 0, Depth()), lab), owner, alpha, tPanel);
+		if (ci("rsqgc_label", 1)) Put(p, base + P_LABEL, Nth(RSQGC_CardStates.Piece(1, mir, 0, Depth()), ermac ? RSQGC_CardStates.ERMAC_LABEL + lab : q * RSQGC_CardStates.LABELS + lab), owner, alpha, tLabel);
 		else Kill(p, base + P_LABEL);
 		// the big number, right-aligned in three slots; GC3: RELOAD in its place on an empty magazine with rounds to
 		// load (Ermac's lettering, tools/gen_cards.py), in the empty colour
 		if (HasMagazine(w) && loaded == 0 && Reserve(w) > 0)
 		{
 			for (int k = 1; k < RSQGC_CardStates.SLOTS; k++) Kill(p, base + P_BIG + k);
-			Put(p, base + P_BIG, RSQGC_CardStates.Piece(4, mir, 0, Depth()), owner, alpha, tLow >= 0 ? tLow : tDigits);
+			Put(p, base + P_BIG, Nth(RSQGC_CardStates.Piece(4, mir, 0, Depth()), ermac ? RSQGC_CardStates.ERMAC_RELOAD : q), owner, alpha, TransFor(MAG_RED));
 		}
 		else Digits(p, 2, mir, base + P_BIG, owner, clamp(loaded, 0, 999).."", false, alpha, tLow >= 0 ? tLow : tDigits);
 		// the small number: the reserve (or the other gun's rounds on a both-guns card); GC2: "+N" for a moment after
@@ -800,7 +966,9 @@ class RSQGC_GunCard : EventHandler
 			if (ci0 < 0) { Kill(p, base + k); continue; }
 			int ch = s.ByteAt(ci0);
 			int g = ch == 43 ? RSQGC_CardStates.GLYPH_PLUS : ch - 48;   // '+' (GC2)
-			Put(p, base + k, Nth(RSQGC_CardStates.Piece(kind, mir, k, Depth()), g), owner, alpha, trans);
+			// JFO: kind 2 / 3, frame Text Quality * GLYPHS + glyph; Ermac (Small Card Font): kind 5 / 6, frame glyph
+			if (ci("rsqgc_small_font", 0) == 1) Put(p, base + k, Nth(RSQGC_CardStates.Piece(kind + 3, mir, k, Depth()), g), owner, alpha, trans);
+			else Put(p, base + k, Nth(RSQGC_CardStates.Piece(kind, mir, k, Depth()), Quality() * RSQGC_CardStates.GLYPHS + g), owner, alpha, trans);
 		}
 	}
 

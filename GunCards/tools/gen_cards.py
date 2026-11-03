@@ -22,10 +22,15 @@ every piece has a mirrored twin (picture flipped, X negated) and the card code p
 The card can be nudged at run time: the layer's x / y turn the model about its origin (1 unit = 1/4
 degree, about 0.11 cm at the card), which is how rsqgc_side / rsqgc_up move it without new voxels.
 
-Ermac's art: CREDITS.txt. Run again after changing the art or the layout; the output is deterministic.
+Ermac's art (the panels): CREDITS.txt. Since 2026-11-03 (owner: "JFO fonts for everything now") every word and digit
+is JFO (tools/jfo.py: the AMMO / MAGAZINE / CHAMBER word and RELOAD from its SmallFont, the counts and '+' from its
+BigFont digits), at the two Text Qualities (Quest: half-resolution glyphs, PCVR: full), in the same places and sizes
+as Ermac's were. Ermac's panels stay. Run again after changing the art or the layout; the output is deterministic.
 """
 import argparse, os, struct, sys
 from PIL import Image
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import jfo
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)   # the GunCards folder
@@ -44,12 +49,16 @@ LABEL_AT = (0.0, 0.0, 1.75)
 BIG_AT = [(1.6, 0.0, -0.2), (0.0, 0.0, -0.2), (-1.6, 0.0, -0.2)]
 SMALL_AT = [(0.9, 0.0, -1.85), (0.0, 0.0, -1.85), (-0.9, 0.0, -1.85)]   # the other gun, on a both-hands card
 LABELS = ['ammo', 'magazine', 'chamber']
-GLYPHS = [str(d) for d in range(10)] + ['o', 'g', 'd', 'plus']   # digit_o / digit_g / digit_d as Ermac drew them;
-                                                              # digit_plus (QoL GC2, "+N" on a pickup) drawn below
-                                                              # in his digit style
+LABEL_BOX = (4.0, 0.54)                           # cm: each JFO word fits the box Ermac's word filled
+GLYPHS = [str(d) for d in range(10)] + ['plus']   # JFO BigFont 0-9 and '+' (QoL GC2, "+N" on a pickup)
+QUALITIES = (True, False)                         # Text Quality 0 Quest (half resolution), 1 PCVR: frames q * n + k
 # RELOAD (QoL GC3) in the big number's place on an empty magazine: one word piece, Ermac's lettering (reload.png,
 # made below from his own letters), centred where the three big digits are
-RELOAD_S = 0.062                                  # 72 x 12 px: 4.5 x 0.74 cm (the three big slots span 4.8 cm)
+RELOAD_BOX = (4.5, 0.74)                          # cm, as Ermac's RELOAD (the three big slots span 4.8 cm)
+RELOAD_S = 0.062                                  # Ermac's RELOAD: 72 x 12 px, 4.5 x 0.74 cm
+# SMALL CARD FONT (owner 2026-11-03 07:58): JFO by default, Ermac's own lettering and digits as the option. Ermac's frames
+# follow JFO's in the label (frames 6-8) and RELOAD (frame 2) sprites; his digits have sprites of their own (Q<d>E / F).
+ERMAC_GLYPHS = [str(d) for d in range(10)] + ['plus']
 RELOAD_AT = (0.0, 0.0, -0.2)
 # QoL GC8 (owner, 2026-10-31): the cards take the room's light. A HUD model is lit by the player's sector unless its
 # state is Bright (hw_weapon.cpp GetWeaponLighting), so the generated states carry no Bright.
@@ -149,6 +158,38 @@ def card_piece(png, w, h, scale, local, mirror, out, alpha_cut=60, dy=0.0):
     return len(vox)
 
 
+def jfo_piece(im, scale, local, mirror, out, dy=0.0, cut=100):
+    """card_piece for a JFO image at its own resolution: scale = cm per image pixel, centred at CARD + local"""
+    w, h = im.size
+    if mirror: im = im.transpose(Image.FLIP_LEFT_RIGHT)
+    # 16 colours (the runtime tints JFO by brightness), each an aligned 4 x 4 block of the voxel's 16 x 16 palette texture
+    # as on the watch card (gen_side.py block_palette): texture filtering cannot mix a glyph's shades with the padding
+    q = im.convert('RGB').quantize(16)
+    raw = q.getpalette()[:16 * 3]
+    pal = [(0, 0, 0)] * 256
+    idx = {}
+    for k in range(len(raw) // 3):
+        bx, by = k % 4, k // 4
+        for yy in range(4):
+            for xx in range(4): pal[(by * 4 + yy) * 16 + bx * 4 + xx] = tuple(raw[3 * k:3 * k + 3])
+        idx[k] = (by * 4 + 1) * 16 + bx * 4 + 1
+    vox = {}
+    for y in range(h):
+        for x in range(w):
+            if im.getpixel((x, y))[3] >= cut: vox[(x, 0, y)] = idx[q.getpixel((x, y))]
+    lx, ly, lz = local
+    if mirror: lx = -lx
+    X, Y, Z = CARD[0] + lx, CARD[1] + ly + dy, CARD[2] + lz
+    piv = (w / 2.0 + X / scale, 0.5 + Y / scale, h / 2.0 + Z / scale)
+    write_kvx(out, vox, (w, 1, h), piv, pal)
+    return len(vox)
+
+
+def fit(im, box):
+    """cm per pixel that fits the image in a (w, h) cm box"""
+    return min(box[0] / im.size[0], box[1] / im.size[1])
+
+
 def add(a, b): return tuple(x + y for x, y in zip(a, b))
 
 
@@ -163,7 +204,7 @@ def main():
     ap.add_argument('--art', default=os.path.join(HERE, 'card_art'))
     a = ap.parse_args()
     art = a.art
-    extra_art(art)
+    extra_art(art)   # Ermac-style RELOAD / '+' for the Ermac font option (Small Card Font: Ermac)
     vdir = os.path.join(ROOT, 'voxels'); os.makedirs(vdir, exist_ok=True)
     sdir = os.path.join(ROOT, 'sprites', 'wk'); os.makedirs(sdir, exist_ok=True)
     for f in os.listdir(vdir):
@@ -192,32 +233,60 @@ def main():
                                 os.path.join(vdir, lump + '.kvx'), dy=dy)
             frame(spr, letters[s], lump, PANEL_S); line.append(letters[s])
         states.append(('P%s%s' % (mc, dc), spr, line))
-        # labels: Q<d>L<N|M>
+        # labels: Q<d>L<N|M>, frames q * 3 + k (JFO words)
         spr = 'Q' + dc + 'L' + mc
         line = []
-        for k, name in enumerate(LABELS):
-            lump = 'wk%sl%s%d' % (dc, mc.lower(), k)
+        for qi, half in enumerate(QUALITIES):
+            for k, name in enumerate(LABELS):
+                im = jfo.word(name.upper(), half)
+                sc = fit(im, LABEL_BOX)
+                lump = 'wk%sl%s%d' % (dc, mc.lower(), qi * 3 + k)
+                count += jfo_piece(im, sc, add(LABEL_AT, (0, FRONT, 0)), m, os.path.join(vdir, lump + '.kvx'), dy=dy)
+                frame(spr, letters[qi * 3 + k], lump, sc); line.append(letters[qi * 3 + k])
+        for k, name in enumerate(LABELS):   # Ermac's words, frames 6-8
+            lump = 'wk%sl%s%d' % (dc, mc.lower(), 6 + k)
             count += card_piece(os.path.join(art, name + '.png'), 88, 12, LABEL_S,
                                 add(LABEL_AT, (0, FRONT, 0)), m, os.path.join(vdir, lump + '.kvx'), dy=dy)
-            frame(spr, letters[k], lump, LABEL_S); line.append(letters[k])
+            frame(spr, letters[6 + k], lump, LABEL_S); line.append(letters[6 + k])
         states.append(('L%s%s' % (mc, dc), spr, line))
-        # RELOAD (GC3): Q<d>R<N|M>, one frame
+        # RELOAD (GC3): Q<d>R<N|M>, frame A Quest, B PCVR
         spr = 'Q' + dc + 'R' + mc
-        lump = 'wk%sr%s' % (dc, mc.lower())
+        line = []
+        for qi, half in enumerate(QUALITIES):
+            im = jfo.word('RELOAD', half)
+            sc = fit(im, RELOAD_BOX)
+            lump = 'wk%sr%s%d' % (dc, mc.lower(), qi)
+            count += jfo_piece(im, sc, add(RELOAD_AT, (0, FRONT, 0)), m, os.path.join(vdir, lump + '.kvx'), dy=dy)
+            frame(spr, letters[qi], lump, sc); line.append(letters[qi])
+        lump = 'wk%sr%s2' % (dc, mc.lower())   # Ermac's RELOAD, frame C
         count += card_piece(os.path.join(art, 'reload.png'), 72, 12, RELOAD_S, add(RELOAD_AT, (0, FRONT, 0)), m,
                             os.path.join(vdir, lump + '.kvx'), dy=dy)
-        frame(spr, 'A', lump, RELOAD_S)
-        states.append(('R%s%s' % (mc, dc), spr, ['A']))
-        # digits: Q<d><B|S><0..5> (mirror * 3 + slot)
-        for kind, slots, scale in (('B', BIG_AT, BIG_S), ('S', SMALL_AT, SMALL_S)):
+        frame(spr, 'C', lump, RELOAD_S); line.append('C')
+        states.append(('R%s%s' % (mc, dc), spr, line))
+        # Ermac's digits: Q<d><E|F><0..5> (E big, F small; mirror * 3 + slot), frames 0-9, '+'
+        for kind, slots, scale in (('E', BIG_AT, BIG_S), ('F', SMALL_AT, SMALL_S)):
             for si, sat in enumerate(slots):
                 spr = 'Q%s%s%d' % (dc, kind, m * 3 + si)
                 line = []
-                for gi, g in enumerate(GLYPHS):
-                    lump = 'wk%s%s%s%d%s' % (dc, kind.lower(), mc.lower(), si, g if len(g) == 1 else 'p')   # 8 chars at most
+                for gi, g in enumerate(ERMAC_GLYPHS):
+                    lump = 'wk%s%s%s%d%s' % (dc, kind.lower(), mc.lower(), si, g if len(g) == 1 else 'p')
                     count += card_piece(os.path.join(art, 'digit_%s.png' % g), 12, 12, scale,
                                         add(sat, (0, FRONT, 0)), m, os.path.join(vdir, lump + '.kvx'), dy=dy)
                     frame(spr, letters[gi], lump, scale); line.append(letters[gi])
+                states.append(('%s%s%d%s' % (kind, mc, si, dc), spr, line))
+        # digits: Q<d><B|S><0..5> (mirror * 3 + slot), frames q * 11 + glyph (JFO BigFont)
+        for kind, slots, hcm in (('B', BIG_AT, BIG_S * 12), ('S', SMALL_AT, SMALL_S * 12)):
+            for si, sat in enumerate(slots):
+                spr = 'Q%s%s%d' % (dc, kind, m * 3 + si)
+                line = []
+                for qi, half in enumerate(QUALITIES):
+                    for gi, g in enumerate(GLYPHS):
+                        im = jfo.glyph('big', 43 if g == 'plus' else ord(g), half)[0]
+                        sc = hcm / im.size[1]
+                        k = qi * len(GLYPHS) + gi
+                        lump = 'wk%s%s%s%d%s' % (dc, kind.lower(), mc.lower(), si, ('%x' % k) if k < 16 else chr(ord('g') + k - 16))   # 8 chars at most
+                        count += jfo_piece(im, sc, add(sat, (0, FRONT, 0)), m, os.path.join(vdir, lump + '.kvx'), dy=dy)
+                        frame(spr, letters[k], lump, sc); line.append(letters[k])
                 states.append(('%s%s%d%s' % (kind, mc, si, dc), spr, line))
 
     # VOXELDEF block
@@ -239,7 +308,7 @@ def main():
          '\tDefault { +WEAPON.CHEATNOTWEAPON +WEAPON.NOAUTOSWITCHTO Weapon.SelectionOrder 99999; }',
          '\tconst STYLES = %d;   // Ermac ammo_bg %s, in that order' % (len(bgs), ' '.join(map(str, bgs))),
          '\tconst LABELS = %d;' % len(LABELS),
-         '\tconst GLYPHS = %d;   // 0-9, then o, g, d, + (GLYPH_PLUS)' % len(GLYPHS),
+         '\tconst GLYPHS = %d;   // 0-9, then + (GLYPH_PLUS); frame q * GLYPHS + glyph (q: Text Quality)' % len(GLYPHS),
          '\tconst GLYPH_PLUS = %d;' % GLYPHS.index('plus'),
          '\tconst SLOTS = %d;' % len(BIG_AT),
          '\tStates', '\t{']
@@ -248,7 +317,10 @@ def main():
         for fr in frames: z.append('\t\t%s %s -1%s;' % (spr, fr, BRIGHT))
         z.append('\t\tStop;')
     z += ['\t}', '',
-          '\t// The first state of a piece. kind 0 panel, 1 label, 2 big digit, 3 small digit, 4 RELOAD; slot for digits.',
+          '\t// The first state of a piece. kind 0 panel, 1 label (JFO q * 3 + word, Ermac 6 + word), 2 big digit, 3 small digit',
+          '\t// (JFO, q * GLYPHS + glyph), 4 RELOAD (JFO q, Ermac 2), 5 / 6 Ermac big / small digit; slot for digits.',
+          '\tconst ERMAC_LABEL = 6;',
+          '\tconst ERMAC_RELOAD = 2;',
           '\t// (FindState wants a constant label, hence the table.)',
           '\t// depth: which of the baked DEPTHS (rsqgc_in), 0..%d, %d is where the owner placed it.' % (len(DEPTHS) - 1, DEPTHS.index(0.0)),
           '\tconst DEPTHS = %d;' % len(DEPTHS),
@@ -259,7 +331,7 @@ def main():
           '\t\tint k = depth * 1000 + kind * 100 + (mirrored ? 10 : 0) + slot;',
           '\t\tswitch (k)', '\t\t{']
     for label, spr, frames in states:
-        kind = {'P': 0, 'L': 1, 'B': 2, 'S': 3, 'R': 4}[label[0]]
+        kind = {'P': 0, 'L': 1, 'B': 2, 'S': 3, 'R': 4, 'E': 5, 'F': 6}[label[0]]
         mir = 1 if label[1] == 'M' else 0
         dep = int(label[-1])
         slot = int(label[2:-1]) if len(label) > 3 else 0

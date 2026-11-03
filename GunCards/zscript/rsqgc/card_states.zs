@@ -5,8 +5,8 @@ class RSQGC_CardStates : Weapon
 	Default { +WEAPON.CHEATNOTWEAPON +WEAPON.NOAUTOSWITCHTO Weapon.SelectionOrder 99999; }
 	const STYLES = 18;   // Ermac ammo_bg 1 2 3 4 5 6 7 8 9 11 12 13 14 15 16 17 18 19, in that order
 	const LABELS = 3;
-	const GLYPHS = 14;   // 0-9, then o, g, d, + (GLYPH_PLUS)
-	const GLYPH_PLUS = 13;
+	const GLYPHS = 11;   // 0-9, then + (GLYPH_PLUS); frame q * GLYPHS + glyph (q: Text Quality)
+	const GLYPH_PLUS = 10;
 	const SLOTS = 3;
 	States
 	{
@@ -34,9 +34,95 @@ class RSQGC_CardStates : Weapon
 		Q0LN A -1;
 		Q0LN B -1;
 		Q0LN C -1;
+		Q0LN D -1;
+		Q0LN E -1;
+		Q0LN F -1;
+		Q0LN G -1;
+		Q0LN H -1;
+		Q0LN I -1;
 		Stop;
 	RN0:
 		Q0RN A -1;
+		Q0RN B -1;
+		Q0RN C -1;
+		Stop;
+	EN00:
+		Q0E0 A -1;
+		Q0E0 B -1;
+		Q0E0 C -1;
+		Q0E0 D -1;
+		Q0E0 E -1;
+		Q0E0 F -1;
+		Q0E0 G -1;
+		Q0E0 H -1;
+		Q0E0 I -1;
+		Q0E0 J -1;
+		Q0E0 K -1;
+		Stop;
+	EN10:
+		Q0E1 A -1;
+		Q0E1 B -1;
+		Q0E1 C -1;
+		Q0E1 D -1;
+		Q0E1 E -1;
+		Q0E1 F -1;
+		Q0E1 G -1;
+		Q0E1 H -1;
+		Q0E1 I -1;
+		Q0E1 J -1;
+		Q0E1 K -1;
+		Stop;
+	EN20:
+		Q0E2 A -1;
+		Q0E2 B -1;
+		Q0E2 C -1;
+		Q0E2 D -1;
+		Q0E2 E -1;
+		Q0E2 F -1;
+		Q0E2 G -1;
+		Q0E2 H -1;
+		Q0E2 I -1;
+		Q0E2 J -1;
+		Q0E2 K -1;
+		Stop;
+	FN00:
+		Q0F0 A -1;
+		Q0F0 B -1;
+		Q0F0 C -1;
+		Q0F0 D -1;
+		Q0F0 E -1;
+		Q0F0 F -1;
+		Q0F0 G -1;
+		Q0F0 H -1;
+		Q0F0 I -1;
+		Q0F0 J -1;
+		Q0F0 K -1;
+		Stop;
+	FN10:
+		Q0F1 A -1;
+		Q0F1 B -1;
+		Q0F1 C -1;
+		Q0F1 D -1;
+		Q0F1 E -1;
+		Q0F1 F -1;
+		Q0F1 G -1;
+		Q0F1 H -1;
+		Q0F1 I -1;
+		Q0F1 J -1;
+		Q0F1 K -1;
+		Stop;
+	FN20:
+		Q0F2 A -1;
+		Q0F2 B -1;
+		Q0F2 C -1;
+		Q0F2 D -1;
+		Q0F2 E -1;
+		Q0F2 F -1;
+		Q0F2 G -1;
+		Q0F2 H -1;
+		Q0F2 I -1;
+		Q0F2 J -1;
+		Q0F2 K -1;
 		Stop;
 	BN00:
 		Q0B0 A -1;
@@ -53,6 +139,14 @@ class RSQGC_CardStates : Weapon
 		Q0B0 L -1;
 		Q0B0 M -1;
 		Q0B0 N -1;
+		Q0B0 O -1;
+		Q0B0 P -1;
+		Q0B0 Q -1;
+		Q0B0 R -1;
+		Q0B0 S -1;
+		Q0B0 T -1;
+		Q0B0 U -1;
+		Q0B0 V -1;
 		Stop;
 	BN10:
 		Q0B1 A -1;
@@ -69,6 +163,14 @@ class RSQGC_CardStates : Weapon
 		Q0B1 L -1;
 		Q0B1 M -1;
 		Q0B1 N -1;
+		Q0B1 O -1;
+		Q0B1 P -1;
+		Q0B1 Q -1;
+		Q0B1 R -1;
+		Q0B1 S -1;
+		Q0B1 T -1;
+		Q0B1 U -1;
+		Q0B1 V -1;
 		Stop;
 	BN20:
 		Q0B2 A -1;
@@ -85,6 +187,14 @@ class RSQGC_CardStates : Weapon
 		Q0B2 L -1;
 		Q0B2 M -1;
 		Q0B2 N -1;
+		Q0B2 O -1;
+		Q0B2 P -1;
+		Q0B2 Q -1;
+		Q0B2 R -1;
+		Q0B2 S -1;
+		Q0B2 T -1;
+		Q0B2 U -1;
+		Q0B2 V -1;
 		Stop;
 	SN00:
 		Q0S0 A -1;
@@ -101,6 +211,14 @@ class RSQGC_CardStates : Weapon
 		Q0S0 L -1;
 		Q0S0 M -1;
 		Q0S0 N -1;
+		Q0S0 O -1;
+		Q0S0 P -1;
+		Q0S0 Q -1;
+		Q0S0 R -1;
+		Q0S0 S -1;
+		Q0S0 T -1;
+		Q0S0 U -1;
+		Q0S0 V -1;
 		Stop;
 	SN10:
 		Q0S1 A -1;
@@ -117,6 +235,14 @@ class RSQGC_CardStates : Weapon
 		Q0S1 L -1;
 		Q0S1 M -1;
 		Q0S1 N -1;
+		Q0S1 O -1;
+		Q0S1 P -1;
+		Q0S1 Q -1;
+		Q0S1 R -1;
+		Q0S1 S -1;
+		Q0S1 T -1;
+		Q0S1 U -1;
+		Q0S1 V -1;
 		Stop;
 	SN20:
 		Q0S2 A -1;
@@ -133,6 +259,14 @@ class RSQGC_CardStates : Weapon
 		Q0S2 L -1;
 		Q0S2 M -1;
 		Q0S2 N -1;
+		Q0S2 O -1;
+		Q0S2 P -1;
+		Q0S2 Q -1;
+		Q0S2 R -1;
+		Q0S2 S -1;
+		Q0S2 T -1;
+		Q0S2 U -1;
+		Q0S2 V -1;
 		Stop;
 	PM0:
 		Q0PM A -1;
@@ -158,9 +292,95 @@ class RSQGC_CardStates : Weapon
 		Q0LM A -1;
 		Q0LM B -1;
 		Q0LM C -1;
+		Q0LM D -1;
+		Q0LM E -1;
+		Q0LM F -1;
+		Q0LM G -1;
+		Q0LM H -1;
+		Q0LM I -1;
 		Stop;
 	RM0:
 		Q0RM A -1;
+		Q0RM B -1;
+		Q0RM C -1;
+		Stop;
+	EM00:
+		Q0E3 A -1;
+		Q0E3 B -1;
+		Q0E3 C -1;
+		Q0E3 D -1;
+		Q0E3 E -1;
+		Q0E3 F -1;
+		Q0E3 G -1;
+		Q0E3 H -1;
+		Q0E3 I -1;
+		Q0E3 J -1;
+		Q0E3 K -1;
+		Stop;
+	EM10:
+		Q0E4 A -1;
+		Q0E4 B -1;
+		Q0E4 C -1;
+		Q0E4 D -1;
+		Q0E4 E -1;
+		Q0E4 F -1;
+		Q0E4 G -1;
+		Q0E4 H -1;
+		Q0E4 I -1;
+		Q0E4 J -1;
+		Q0E4 K -1;
+		Stop;
+	EM20:
+		Q0E5 A -1;
+		Q0E5 B -1;
+		Q0E5 C -1;
+		Q0E5 D -1;
+		Q0E5 E -1;
+		Q0E5 F -1;
+		Q0E5 G -1;
+		Q0E5 H -1;
+		Q0E5 I -1;
+		Q0E5 J -1;
+		Q0E5 K -1;
+		Stop;
+	FM00:
+		Q0F3 A -1;
+		Q0F3 B -1;
+		Q0F3 C -1;
+		Q0F3 D -1;
+		Q0F3 E -1;
+		Q0F3 F -1;
+		Q0F3 G -1;
+		Q0F3 H -1;
+		Q0F3 I -1;
+		Q0F3 J -1;
+		Q0F3 K -1;
+		Stop;
+	FM10:
+		Q0F4 A -1;
+		Q0F4 B -1;
+		Q0F4 C -1;
+		Q0F4 D -1;
+		Q0F4 E -1;
+		Q0F4 F -1;
+		Q0F4 G -1;
+		Q0F4 H -1;
+		Q0F4 I -1;
+		Q0F4 J -1;
+		Q0F4 K -1;
+		Stop;
+	FM20:
+		Q0F5 A -1;
+		Q0F5 B -1;
+		Q0F5 C -1;
+		Q0F5 D -1;
+		Q0F5 E -1;
+		Q0F5 F -1;
+		Q0F5 G -1;
+		Q0F5 H -1;
+		Q0F5 I -1;
+		Q0F5 J -1;
+		Q0F5 K -1;
 		Stop;
 	BM00:
 		Q0B3 A -1;
@@ -177,6 +397,14 @@ class RSQGC_CardStates : Weapon
 		Q0B3 L -1;
 		Q0B3 M -1;
 		Q0B3 N -1;
+		Q0B3 O -1;
+		Q0B3 P -1;
+		Q0B3 Q -1;
+		Q0B3 R -1;
+		Q0B3 S -1;
+		Q0B3 T -1;
+		Q0B3 U -1;
+		Q0B3 V -1;
 		Stop;
 	BM10:
 		Q0B4 A -1;
@@ -193,6 +421,14 @@ class RSQGC_CardStates : Weapon
 		Q0B4 L -1;
 		Q0B4 M -1;
 		Q0B4 N -1;
+		Q0B4 O -1;
+		Q0B4 P -1;
+		Q0B4 Q -1;
+		Q0B4 R -1;
+		Q0B4 S -1;
+		Q0B4 T -1;
+		Q0B4 U -1;
+		Q0B4 V -1;
 		Stop;
 	BM20:
 		Q0B5 A -1;
@@ -209,6 +445,14 @@ class RSQGC_CardStates : Weapon
 		Q0B5 L -1;
 		Q0B5 M -1;
 		Q0B5 N -1;
+		Q0B5 O -1;
+		Q0B5 P -1;
+		Q0B5 Q -1;
+		Q0B5 R -1;
+		Q0B5 S -1;
+		Q0B5 T -1;
+		Q0B5 U -1;
+		Q0B5 V -1;
 		Stop;
 	SM00:
 		Q0S3 A -1;
@@ -225,6 +469,14 @@ class RSQGC_CardStates : Weapon
 		Q0S3 L -1;
 		Q0S3 M -1;
 		Q0S3 N -1;
+		Q0S3 O -1;
+		Q0S3 P -1;
+		Q0S3 Q -1;
+		Q0S3 R -1;
+		Q0S3 S -1;
+		Q0S3 T -1;
+		Q0S3 U -1;
+		Q0S3 V -1;
 		Stop;
 	SM10:
 		Q0S4 A -1;
@@ -241,6 +493,14 @@ class RSQGC_CardStates : Weapon
 		Q0S4 L -1;
 		Q0S4 M -1;
 		Q0S4 N -1;
+		Q0S4 O -1;
+		Q0S4 P -1;
+		Q0S4 Q -1;
+		Q0S4 R -1;
+		Q0S4 S -1;
+		Q0S4 T -1;
+		Q0S4 U -1;
+		Q0S4 V -1;
 		Stop;
 	SM20:
 		Q0S5 A -1;
@@ -257,6 +517,14 @@ class RSQGC_CardStates : Weapon
 		Q0S5 L -1;
 		Q0S5 M -1;
 		Q0S5 N -1;
+		Q0S5 O -1;
+		Q0S5 P -1;
+		Q0S5 Q -1;
+		Q0S5 R -1;
+		Q0S5 S -1;
+		Q0S5 T -1;
+		Q0S5 U -1;
+		Q0S5 V -1;
 		Stop;
 	PN1:
 		Q1PN A -1;
@@ -282,9 +550,95 @@ class RSQGC_CardStates : Weapon
 		Q1LN A -1;
 		Q1LN B -1;
 		Q1LN C -1;
+		Q1LN D -1;
+		Q1LN E -1;
+		Q1LN F -1;
+		Q1LN G -1;
+		Q1LN H -1;
+		Q1LN I -1;
 		Stop;
 	RN1:
 		Q1RN A -1;
+		Q1RN B -1;
+		Q1RN C -1;
+		Stop;
+	EN01:
+		Q1E0 A -1;
+		Q1E0 B -1;
+		Q1E0 C -1;
+		Q1E0 D -1;
+		Q1E0 E -1;
+		Q1E0 F -1;
+		Q1E0 G -1;
+		Q1E0 H -1;
+		Q1E0 I -1;
+		Q1E0 J -1;
+		Q1E0 K -1;
+		Stop;
+	EN11:
+		Q1E1 A -1;
+		Q1E1 B -1;
+		Q1E1 C -1;
+		Q1E1 D -1;
+		Q1E1 E -1;
+		Q1E1 F -1;
+		Q1E1 G -1;
+		Q1E1 H -1;
+		Q1E1 I -1;
+		Q1E1 J -1;
+		Q1E1 K -1;
+		Stop;
+	EN21:
+		Q1E2 A -1;
+		Q1E2 B -1;
+		Q1E2 C -1;
+		Q1E2 D -1;
+		Q1E2 E -1;
+		Q1E2 F -1;
+		Q1E2 G -1;
+		Q1E2 H -1;
+		Q1E2 I -1;
+		Q1E2 J -1;
+		Q1E2 K -1;
+		Stop;
+	FN01:
+		Q1F0 A -1;
+		Q1F0 B -1;
+		Q1F0 C -1;
+		Q1F0 D -1;
+		Q1F0 E -1;
+		Q1F0 F -1;
+		Q1F0 G -1;
+		Q1F0 H -1;
+		Q1F0 I -1;
+		Q1F0 J -1;
+		Q1F0 K -1;
+		Stop;
+	FN11:
+		Q1F1 A -1;
+		Q1F1 B -1;
+		Q1F1 C -1;
+		Q1F1 D -1;
+		Q1F1 E -1;
+		Q1F1 F -1;
+		Q1F1 G -1;
+		Q1F1 H -1;
+		Q1F1 I -1;
+		Q1F1 J -1;
+		Q1F1 K -1;
+		Stop;
+	FN21:
+		Q1F2 A -1;
+		Q1F2 B -1;
+		Q1F2 C -1;
+		Q1F2 D -1;
+		Q1F2 E -1;
+		Q1F2 F -1;
+		Q1F2 G -1;
+		Q1F2 H -1;
+		Q1F2 I -1;
+		Q1F2 J -1;
+		Q1F2 K -1;
 		Stop;
 	BN01:
 		Q1B0 A -1;
@@ -301,6 +655,14 @@ class RSQGC_CardStates : Weapon
 		Q1B0 L -1;
 		Q1B0 M -1;
 		Q1B0 N -1;
+		Q1B0 O -1;
+		Q1B0 P -1;
+		Q1B0 Q -1;
+		Q1B0 R -1;
+		Q1B0 S -1;
+		Q1B0 T -1;
+		Q1B0 U -1;
+		Q1B0 V -1;
 		Stop;
 	BN11:
 		Q1B1 A -1;
@@ -317,6 +679,14 @@ class RSQGC_CardStates : Weapon
 		Q1B1 L -1;
 		Q1B1 M -1;
 		Q1B1 N -1;
+		Q1B1 O -1;
+		Q1B1 P -1;
+		Q1B1 Q -1;
+		Q1B1 R -1;
+		Q1B1 S -1;
+		Q1B1 T -1;
+		Q1B1 U -1;
+		Q1B1 V -1;
 		Stop;
 	BN21:
 		Q1B2 A -1;
@@ -333,6 +703,14 @@ class RSQGC_CardStates : Weapon
 		Q1B2 L -1;
 		Q1B2 M -1;
 		Q1B2 N -1;
+		Q1B2 O -1;
+		Q1B2 P -1;
+		Q1B2 Q -1;
+		Q1B2 R -1;
+		Q1B2 S -1;
+		Q1B2 T -1;
+		Q1B2 U -1;
+		Q1B2 V -1;
 		Stop;
 	SN01:
 		Q1S0 A -1;
@@ -349,6 +727,14 @@ class RSQGC_CardStates : Weapon
 		Q1S0 L -1;
 		Q1S0 M -1;
 		Q1S0 N -1;
+		Q1S0 O -1;
+		Q1S0 P -1;
+		Q1S0 Q -1;
+		Q1S0 R -1;
+		Q1S0 S -1;
+		Q1S0 T -1;
+		Q1S0 U -1;
+		Q1S0 V -1;
 		Stop;
 	SN11:
 		Q1S1 A -1;
@@ -365,6 +751,14 @@ class RSQGC_CardStates : Weapon
 		Q1S1 L -1;
 		Q1S1 M -1;
 		Q1S1 N -1;
+		Q1S1 O -1;
+		Q1S1 P -1;
+		Q1S1 Q -1;
+		Q1S1 R -1;
+		Q1S1 S -1;
+		Q1S1 T -1;
+		Q1S1 U -1;
+		Q1S1 V -1;
 		Stop;
 	SN21:
 		Q1S2 A -1;
@@ -381,6 +775,14 @@ class RSQGC_CardStates : Weapon
 		Q1S2 L -1;
 		Q1S2 M -1;
 		Q1S2 N -1;
+		Q1S2 O -1;
+		Q1S2 P -1;
+		Q1S2 Q -1;
+		Q1S2 R -1;
+		Q1S2 S -1;
+		Q1S2 T -1;
+		Q1S2 U -1;
+		Q1S2 V -1;
 		Stop;
 	PM1:
 		Q1PM A -1;
@@ -406,9 +808,95 @@ class RSQGC_CardStates : Weapon
 		Q1LM A -1;
 		Q1LM B -1;
 		Q1LM C -1;
+		Q1LM D -1;
+		Q1LM E -1;
+		Q1LM F -1;
+		Q1LM G -1;
+		Q1LM H -1;
+		Q1LM I -1;
 		Stop;
 	RM1:
 		Q1RM A -1;
+		Q1RM B -1;
+		Q1RM C -1;
+		Stop;
+	EM01:
+		Q1E3 A -1;
+		Q1E3 B -1;
+		Q1E3 C -1;
+		Q1E3 D -1;
+		Q1E3 E -1;
+		Q1E3 F -1;
+		Q1E3 G -1;
+		Q1E3 H -1;
+		Q1E3 I -1;
+		Q1E3 J -1;
+		Q1E3 K -1;
+		Stop;
+	EM11:
+		Q1E4 A -1;
+		Q1E4 B -1;
+		Q1E4 C -1;
+		Q1E4 D -1;
+		Q1E4 E -1;
+		Q1E4 F -1;
+		Q1E4 G -1;
+		Q1E4 H -1;
+		Q1E4 I -1;
+		Q1E4 J -1;
+		Q1E4 K -1;
+		Stop;
+	EM21:
+		Q1E5 A -1;
+		Q1E5 B -1;
+		Q1E5 C -1;
+		Q1E5 D -1;
+		Q1E5 E -1;
+		Q1E5 F -1;
+		Q1E5 G -1;
+		Q1E5 H -1;
+		Q1E5 I -1;
+		Q1E5 J -1;
+		Q1E5 K -1;
+		Stop;
+	FM01:
+		Q1F3 A -1;
+		Q1F3 B -1;
+		Q1F3 C -1;
+		Q1F3 D -1;
+		Q1F3 E -1;
+		Q1F3 F -1;
+		Q1F3 G -1;
+		Q1F3 H -1;
+		Q1F3 I -1;
+		Q1F3 J -1;
+		Q1F3 K -1;
+		Stop;
+	FM11:
+		Q1F4 A -1;
+		Q1F4 B -1;
+		Q1F4 C -1;
+		Q1F4 D -1;
+		Q1F4 E -1;
+		Q1F4 F -1;
+		Q1F4 G -1;
+		Q1F4 H -1;
+		Q1F4 I -1;
+		Q1F4 J -1;
+		Q1F4 K -1;
+		Stop;
+	FM21:
+		Q1F5 A -1;
+		Q1F5 B -1;
+		Q1F5 C -1;
+		Q1F5 D -1;
+		Q1F5 E -1;
+		Q1F5 F -1;
+		Q1F5 G -1;
+		Q1F5 H -1;
+		Q1F5 I -1;
+		Q1F5 J -1;
+		Q1F5 K -1;
 		Stop;
 	BM01:
 		Q1B3 A -1;
@@ -425,6 +913,14 @@ class RSQGC_CardStates : Weapon
 		Q1B3 L -1;
 		Q1B3 M -1;
 		Q1B3 N -1;
+		Q1B3 O -1;
+		Q1B3 P -1;
+		Q1B3 Q -1;
+		Q1B3 R -1;
+		Q1B3 S -1;
+		Q1B3 T -1;
+		Q1B3 U -1;
+		Q1B3 V -1;
 		Stop;
 	BM11:
 		Q1B4 A -1;
@@ -441,6 +937,14 @@ class RSQGC_CardStates : Weapon
 		Q1B4 L -1;
 		Q1B4 M -1;
 		Q1B4 N -1;
+		Q1B4 O -1;
+		Q1B4 P -1;
+		Q1B4 Q -1;
+		Q1B4 R -1;
+		Q1B4 S -1;
+		Q1B4 T -1;
+		Q1B4 U -1;
+		Q1B4 V -1;
 		Stop;
 	BM21:
 		Q1B5 A -1;
@@ -457,6 +961,14 @@ class RSQGC_CardStates : Weapon
 		Q1B5 L -1;
 		Q1B5 M -1;
 		Q1B5 N -1;
+		Q1B5 O -1;
+		Q1B5 P -1;
+		Q1B5 Q -1;
+		Q1B5 R -1;
+		Q1B5 S -1;
+		Q1B5 T -1;
+		Q1B5 U -1;
+		Q1B5 V -1;
 		Stop;
 	SM01:
 		Q1S3 A -1;
@@ -473,6 +985,14 @@ class RSQGC_CardStates : Weapon
 		Q1S3 L -1;
 		Q1S3 M -1;
 		Q1S3 N -1;
+		Q1S3 O -1;
+		Q1S3 P -1;
+		Q1S3 Q -1;
+		Q1S3 R -1;
+		Q1S3 S -1;
+		Q1S3 T -1;
+		Q1S3 U -1;
+		Q1S3 V -1;
 		Stop;
 	SM11:
 		Q1S4 A -1;
@@ -489,6 +1009,14 @@ class RSQGC_CardStates : Weapon
 		Q1S4 L -1;
 		Q1S4 M -1;
 		Q1S4 N -1;
+		Q1S4 O -1;
+		Q1S4 P -1;
+		Q1S4 Q -1;
+		Q1S4 R -1;
+		Q1S4 S -1;
+		Q1S4 T -1;
+		Q1S4 U -1;
+		Q1S4 V -1;
 		Stop;
 	SM21:
 		Q1S5 A -1;
@@ -505,6 +1033,14 @@ class RSQGC_CardStates : Weapon
 		Q1S5 L -1;
 		Q1S5 M -1;
 		Q1S5 N -1;
+		Q1S5 O -1;
+		Q1S5 P -1;
+		Q1S5 Q -1;
+		Q1S5 R -1;
+		Q1S5 S -1;
+		Q1S5 T -1;
+		Q1S5 U -1;
+		Q1S5 V -1;
 		Stop;
 	PN2:
 		Q2PN A -1;
@@ -530,9 +1066,95 @@ class RSQGC_CardStates : Weapon
 		Q2LN A -1;
 		Q2LN B -1;
 		Q2LN C -1;
+		Q2LN D -1;
+		Q2LN E -1;
+		Q2LN F -1;
+		Q2LN G -1;
+		Q2LN H -1;
+		Q2LN I -1;
 		Stop;
 	RN2:
 		Q2RN A -1;
+		Q2RN B -1;
+		Q2RN C -1;
+		Stop;
+	EN02:
+		Q2E0 A -1;
+		Q2E0 B -1;
+		Q2E0 C -1;
+		Q2E0 D -1;
+		Q2E0 E -1;
+		Q2E0 F -1;
+		Q2E0 G -1;
+		Q2E0 H -1;
+		Q2E0 I -1;
+		Q2E0 J -1;
+		Q2E0 K -1;
+		Stop;
+	EN12:
+		Q2E1 A -1;
+		Q2E1 B -1;
+		Q2E1 C -1;
+		Q2E1 D -1;
+		Q2E1 E -1;
+		Q2E1 F -1;
+		Q2E1 G -1;
+		Q2E1 H -1;
+		Q2E1 I -1;
+		Q2E1 J -1;
+		Q2E1 K -1;
+		Stop;
+	EN22:
+		Q2E2 A -1;
+		Q2E2 B -1;
+		Q2E2 C -1;
+		Q2E2 D -1;
+		Q2E2 E -1;
+		Q2E2 F -1;
+		Q2E2 G -1;
+		Q2E2 H -1;
+		Q2E2 I -1;
+		Q2E2 J -1;
+		Q2E2 K -1;
+		Stop;
+	FN02:
+		Q2F0 A -1;
+		Q2F0 B -1;
+		Q2F0 C -1;
+		Q2F0 D -1;
+		Q2F0 E -1;
+		Q2F0 F -1;
+		Q2F0 G -1;
+		Q2F0 H -1;
+		Q2F0 I -1;
+		Q2F0 J -1;
+		Q2F0 K -1;
+		Stop;
+	FN12:
+		Q2F1 A -1;
+		Q2F1 B -1;
+		Q2F1 C -1;
+		Q2F1 D -1;
+		Q2F1 E -1;
+		Q2F1 F -1;
+		Q2F1 G -1;
+		Q2F1 H -1;
+		Q2F1 I -1;
+		Q2F1 J -1;
+		Q2F1 K -1;
+		Stop;
+	FN22:
+		Q2F2 A -1;
+		Q2F2 B -1;
+		Q2F2 C -1;
+		Q2F2 D -1;
+		Q2F2 E -1;
+		Q2F2 F -1;
+		Q2F2 G -1;
+		Q2F2 H -1;
+		Q2F2 I -1;
+		Q2F2 J -1;
+		Q2F2 K -1;
 		Stop;
 	BN02:
 		Q2B0 A -1;
@@ -549,6 +1171,14 @@ class RSQGC_CardStates : Weapon
 		Q2B0 L -1;
 		Q2B0 M -1;
 		Q2B0 N -1;
+		Q2B0 O -1;
+		Q2B0 P -1;
+		Q2B0 Q -1;
+		Q2B0 R -1;
+		Q2B0 S -1;
+		Q2B0 T -1;
+		Q2B0 U -1;
+		Q2B0 V -1;
 		Stop;
 	BN12:
 		Q2B1 A -1;
@@ -565,6 +1195,14 @@ class RSQGC_CardStates : Weapon
 		Q2B1 L -1;
 		Q2B1 M -1;
 		Q2B1 N -1;
+		Q2B1 O -1;
+		Q2B1 P -1;
+		Q2B1 Q -1;
+		Q2B1 R -1;
+		Q2B1 S -1;
+		Q2B1 T -1;
+		Q2B1 U -1;
+		Q2B1 V -1;
 		Stop;
 	BN22:
 		Q2B2 A -1;
@@ -581,6 +1219,14 @@ class RSQGC_CardStates : Weapon
 		Q2B2 L -1;
 		Q2B2 M -1;
 		Q2B2 N -1;
+		Q2B2 O -1;
+		Q2B2 P -1;
+		Q2B2 Q -1;
+		Q2B2 R -1;
+		Q2B2 S -1;
+		Q2B2 T -1;
+		Q2B2 U -1;
+		Q2B2 V -1;
 		Stop;
 	SN02:
 		Q2S0 A -1;
@@ -597,6 +1243,14 @@ class RSQGC_CardStates : Weapon
 		Q2S0 L -1;
 		Q2S0 M -1;
 		Q2S0 N -1;
+		Q2S0 O -1;
+		Q2S0 P -1;
+		Q2S0 Q -1;
+		Q2S0 R -1;
+		Q2S0 S -1;
+		Q2S0 T -1;
+		Q2S0 U -1;
+		Q2S0 V -1;
 		Stop;
 	SN12:
 		Q2S1 A -1;
@@ -613,6 +1267,14 @@ class RSQGC_CardStates : Weapon
 		Q2S1 L -1;
 		Q2S1 M -1;
 		Q2S1 N -1;
+		Q2S1 O -1;
+		Q2S1 P -1;
+		Q2S1 Q -1;
+		Q2S1 R -1;
+		Q2S1 S -1;
+		Q2S1 T -1;
+		Q2S1 U -1;
+		Q2S1 V -1;
 		Stop;
 	SN22:
 		Q2S2 A -1;
@@ -629,6 +1291,14 @@ class RSQGC_CardStates : Weapon
 		Q2S2 L -1;
 		Q2S2 M -1;
 		Q2S2 N -1;
+		Q2S2 O -1;
+		Q2S2 P -1;
+		Q2S2 Q -1;
+		Q2S2 R -1;
+		Q2S2 S -1;
+		Q2S2 T -1;
+		Q2S2 U -1;
+		Q2S2 V -1;
 		Stop;
 	PM2:
 		Q2PM A -1;
@@ -654,9 +1324,95 @@ class RSQGC_CardStates : Weapon
 		Q2LM A -1;
 		Q2LM B -1;
 		Q2LM C -1;
+		Q2LM D -1;
+		Q2LM E -1;
+		Q2LM F -1;
+		Q2LM G -1;
+		Q2LM H -1;
+		Q2LM I -1;
 		Stop;
 	RM2:
 		Q2RM A -1;
+		Q2RM B -1;
+		Q2RM C -1;
+		Stop;
+	EM02:
+		Q2E3 A -1;
+		Q2E3 B -1;
+		Q2E3 C -1;
+		Q2E3 D -1;
+		Q2E3 E -1;
+		Q2E3 F -1;
+		Q2E3 G -1;
+		Q2E3 H -1;
+		Q2E3 I -1;
+		Q2E3 J -1;
+		Q2E3 K -1;
+		Stop;
+	EM12:
+		Q2E4 A -1;
+		Q2E4 B -1;
+		Q2E4 C -1;
+		Q2E4 D -1;
+		Q2E4 E -1;
+		Q2E4 F -1;
+		Q2E4 G -1;
+		Q2E4 H -1;
+		Q2E4 I -1;
+		Q2E4 J -1;
+		Q2E4 K -1;
+		Stop;
+	EM22:
+		Q2E5 A -1;
+		Q2E5 B -1;
+		Q2E5 C -1;
+		Q2E5 D -1;
+		Q2E5 E -1;
+		Q2E5 F -1;
+		Q2E5 G -1;
+		Q2E5 H -1;
+		Q2E5 I -1;
+		Q2E5 J -1;
+		Q2E5 K -1;
+		Stop;
+	FM02:
+		Q2F3 A -1;
+		Q2F3 B -1;
+		Q2F3 C -1;
+		Q2F3 D -1;
+		Q2F3 E -1;
+		Q2F3 F -1;
+		Q2F3 G -1;
+		Q2F3 H -1;
+		Q2F3 I -1;
+		Q2F3 J -1;
+		Q2F3 K -1;
+		Stop;
+	FM12:
+		Q2F4 A -1;
+		Q2F4 B -1;
+		Q2F4 C -1;
+		Q2F4 D -1;
+		Q2F4 E -1;
+		Q2F4 F -1;
+		Q2F4 G -1;
+		Q2F4 H -1;
+		Q2F4 I -1;
+		Q2F4 J -1;
+		Q2F4 K -1;
+		Stop;
+	FM22:
+		Q2F5 A -1;
+		Q2F5 B -1;
+		Q2F5 C -1;
+		Q2F5 D -1;
+		Q2F5 E -1;
+		Q2F5 F -1;
+		Q2F5 G -1;
+		Q2F5 H -1;
+		Q2F5 I -1;
+		Q2F5 J -1;
+		Q2F5 K -1;
 		Stop;
 	BM02:
 		Q2B3 A -1;
@@ -673,6 +1429,14 @@ class RSQGC_CardStates : Weapon
 		Q2B3 L -1;
 		Q2B3 M -1;
 		Q2B3 N -1;
+		Q2B3 O -1;
+		Q2B3 P -1;
+		Q2B3 Q -1;
+		Q2B3 R -1;
+		Q2B3 S -1;
+		Q2B3 T -1;
+		Q2B3 U -1;
+		Q2B3 V -1;
 		Stop;
 	BM12:
 		Q2B4 A -1;
@@ -689,6 +1453,14 @@ class RSQGC_CardStates : Weapon
 		Q2B4 L -1;
 		Q2B4 M -1;
 		Q2B4 N -1;
+		Q2B4 O -1;
+		Q2B4 P -1;
+		Q2B4 Q -1;
+		Q2B4 R -1;
+		Q2B4 S -1;
+		Q2B4 T -1;
+		Q2B4 U -1;
+		Q2B4 V -1;
 		Stop;
 	BM22:
 		Q2B5 A -1;
@@ -705,6 +1477,14 @@ class RSQGC_CardStates : Weapon
 		Q2B5 L -1;
 		Q2B5 M -1;
 		Q2B5 N -1;
+		Q2B5 O -1;
+		Q2B5 P -1;
+		Q2B5 Q -1;
+		Q2B5 R -1;
+		Q2B5 S -1;
+		Q2B5 T -1;
+		Q2B5 U -1;
+		Q2B5 V -1;
 		Stop;
 	SM02:
 		Q2S3 A -1;
@@ -721,6 +1501,14 @@ class RSQGC_CardStates : Weapon
 		Q2S3 L -1;
 		Q2S3 M -1;
 		Q2S3 N -1;
+		Q2S3 O -1;
+		Q2S3 P -1;
+		Q2S3 Q -1;
+		Q2S3 R -1;
+		Q2S3 S -1;
+		Q2S3 T -1;
+		Q2S3 U -1;
+		Q2S3 V -1;
 		Stop;
 	SM12:
 		Q2S4 A -1;
@@ -737,6 +1525,14 @@ class RSQGC_CardStates : Weapon
 		Q2S4 L -1;
 		Q2S4 M -1;
 		Q2S4 N -1;
+		Q2S4 O -1;
+		Q2S4 P -1;
+		Q2S4 Q -1;
+		Q2S4 R -1;
+		Q2S4 S -1;
+		Q2S4 T -1;
+		Q2S4 U -1;
+		Q2S4 V -1;
 		Stop;
 	SM22:
 		Q2S5 A -1;
@@ -753,6 +1549,14 @@ class RSQGC_CardStates : Weapon
 		Q2S5 L -1;
 		Q2S5 M -1;
 		Q2S5 N -1;
+		Q2S5 O -1;
+		Q2S5 P -1;
+		Q2S5 Q -1;
+		Q2S5 R -1;
+		Q2S5 S -1;
+		Q2S5 T -1;
+		Q2S5 U -1;
+		Q2S5 V -1;
 		Stop;
 	PN3:
 		Q3PN A -1;
@@ -778,9 +1582,95 @@ class RSQGC_CardStates : Weapon
 		Q3LN A -1;
 		Q3LN B -1;
 		Q3LN C -1;
+		Q3LN D -1;
+		Q3LN E -1;
+		Q3LN F -1;
+		Q3LN G -1;
+		Q3LN H -1;
+		Q3LN I -1;
 		Stop;
 	RN3:
 		Q3RN A -1;
+		Q3RN B -1;
+		Q3RN C -1;
+		Stop;
+	EN03:
+		Q3E0 A -1;
+		Q3E0 B -1;
+		Q3E0 C -1;
+		Q3E0 D -1;
+		Q3E0 E -1;
+		Q3E0 F -1;
+		Q3E0 G -1;
+		Q3E0 H -1;
+		Q3E0 I -1;
+		Q3E0 J -1;
+		Q3E0 K -1;
+		Stop;
+	EN13:
+		Q3E1 A -1;
+		Q3E1 B -1;
+		Q3E1 C -1;
+		Q3E1 D -1;
+		Q3E1 E -1;
+		Q3E1 F -1;
+		Q3E1 G -1;
+		Q3E1 H -1;
+		Q3E1 I -1;
+		Q3E1 J -1;
+		Q3E1 K -1;
+		Stop;
+	EN23:
+		Q3E2 A -1;
+		Q3E2 B -1;
+		Q3E2 C -1;
+		Q3E2 D -1;
+		Q3E2 E -1;
+		Q3E2 F -1;
+		Q3E2 G -1;
+		Q3E2 H -1;
+		Q3E2 I -1;
+		Q3E2 J -1;
+		Q3E2 K -1;
+		Stop;
+	FN03:
+		Q3F0 A -1;
+		Q3F0 B -1;
+		Q3F0 C -1;
+		Q3F0 D -1;
+		Q3F0 E -1;
+		Q3F0 F -1;
+		Q3F0 G -1;
+		Q3F0 H -1;
+		Q3F0 I -1;
+		Q3F0 J -1;
+		Q3F0 K -1;
+		Stop;
+	FN13:
+		Q3F1 A -1;
+		Q3F1 B -1;
+		Q3F1 C -1;
+		Q3F1 D -1;
+		Q3F1 E -1;
+		Q3F1 F -1;
+		Q3F1 G -1;
+		Q3F1 H -1;
+		Q3F1 I -1;
+		Q3F1 J -1;
+		Q3F1 K -1;
+		Stop;
+	FN23:
+		Q3F2 A -1;
+		Q3F2 B -1;
+		Q3F2 C -1;
+		Q3F2 D -1;
+		Q3F2 E -1;
+		Q3F2 F -1;
+		Q3F2 G -1;
+		Q3F2 H -1;
+		Q3F2 I -1;
+		Q3F2 J -1;
+		Q3F2 K -1;
 		Stop;
 	BN03:
 		Q3B0 A -1;
@@ -797,6 +1687,14 @@ class RSQGC_CardStates : Weapon
 		Q3B0 L -1;
 		Q3B0 M -1;
 		Q3B0 N -1;
+		Q3B0 O -1;
+		Q3B0 P -1;
+		Q3B0 Q -1;
+		Q3B0 R -1;
+		Q3B0 S -1;
+		Q3B0 T -1;
+		Q3B0 U -1;
+		Q3B0 V -1;
 		Stop;
 	BN13:
 		Q3B1 A -1;
@@ -813,6 +1711,14 @@ class RSQGC_CardStates : Weapon
 		Q3B1 L -1;
 		Q3B1 M -1;
 		Q3B1 N -1;
+		Q3B1 O -1;
+		Q3B1 P -1;
+		Q3B1 Q -1;
+		Q3B1 R -1;
+		Q3B1 S -1;
+		Q3B1 T -1;
+		Q3B1 U -1;
+		Q3B1 V -1;
 		Stop;
 	BN23:
 		Q3B2 A -1;
@@ -829,6 +1735,14 @@ class RSQGC_CardStates : Weapon
 		Q3B2 L -1;
 		Q3B2 M -1;
 		Q3B2 N -1;
+		Q3B2 O -1;
+		Q3B2 P -1;
+		Q3B2 Q -1;
+		Q3B2 R -1;
+		Q3B2 S -1;
+		Q3B2 T -1;
+		Q3B2 U -1;
+		Q3B2 V -1;
 		Stop;
 	SN03:
 		Q3S0 A -1;
@@ -845,6 +1759,14 @@ class RSQGC_CardStates : Weapon
 		Q3S0 L -1;
 		Q3S0 M -1;
 		Q3S0 N -1;
+		Q3S0 O -1;
+		Q3S0 P -1;
+		Q3S0 Q -1;
+		Q3S0 R -1;
+		Q3S0 S -1;
+		Q3S0 T -1;
+		Q3S0 U -1;
+		Q3S0 V -1;
 		Stop;
 	SN13:
 		Q3S1 A -1;
@@ -861,6 +1783,14 @@ class RSQGC_CardStates : Weapon
 		Q3S1 L -1;
 		Q3S1 M -1;
 		Q3S1 N -1;
+		Q3S1 O -1;
+		Q3S1 P -1;
+		Q3S1 Q -1;
+		Q3S1 R -1;
+		Q3S1 S -1;
+		Q3S1 T -1;
+		Q3S1 U -1;
+		Q3S1 V -1;
 		Stop;
 	SN23:
 		Q3S2 A -1;
@@ -877,6 +1807,14 @@ class RSQGC_CardStates : Weapon
 		Q3S2 L -1;
 		Q3S2 M -1;
 		Q3S2 N -1;
+		Q3S2 O -1;
+		Q3S2 P -1;
+		Q3S2 Q -1;
+		Q3S2 R -1;
+		Q3S2 S -1;
+		Q3S2 T -1;
+		Q3S2 U -1;
+		Q3S2 V -1;
 		Stop;
 	PM3:
 		Q3PM A -1;
@@ -902,9 +1840,95 @@ class RSQGC_CardStates : Weapon
 		Q3LM A -1;
 		Q3LM B -1;
 		Q3LM C -1;
+		Q3LM D -1;
+		Q3LM E -1;
+		Q3LM F -1;
+		Q3LM G -1;
+		Q3LM H -1;
+		Q3LM I -1;
 		Stop;
 	RM3:
 		Q3RM A -1;
+		Q3RM B -1;
+		Q3RM C -1;
+		Stop;
+	EM03:
+		Q3E3 A -1;
+		Q3E3 B -1;
+		Q3E3 C -1;
+		Q3E3 D -1;
+		Q3E3 E -1;
+		Q3E3 F -1;
+		Q3E3 G -1;
+		Q3E3 H -1;
+		Q3E3 I -1;
+		Q3E3 J -1;
+		Q3E3 K -1;
+		Stop;
+	EM13:
+		Q3E4 A -1;
+		Q3E4 B -1;
+		Q3E4 C -1;
+		Q3E4 D -1;
+		Q3E4 E -1;
+		Q3E4 F -1;
+		Q3E4 G -1;
+		Q3E4 H -1;
+		Q3E4 I -1;
+		Q3E4 J -1;
+		Q3E4 K -1;
+		Stop;
+	EM23:
+		Q3E5 A -1;
+		Q3E5 B -1;
+		Q3E5 C -1;
+		Q3E5 D -1;
+		Q3E5 E -1;
+		Q3E5 F -1;
+		Q3E5 G -1;
+		Q3E5 H -1;
+		Q3E5 I -1;
+		Q3E5 J -1;
+		Q3E5 K -1;
+		Stop;
+	FM03:
+		Q3F3 A -1;
+		Q3F3 B -1;
+		Q3F3 C -1;
+		Q3F3 D -1;
+		Q3F3 E -1;
+		Q3F3 F -1;
+		Q3F3 G -1;
+		Q3F3 H -1;
+		Q3F3 I -1;
+		Q3F3 J -1;
+		Q3F3 K -1;
+		Stop;
+	FM13:
+		Q3F4 A -1;
+		Q3F4 B -1;
+		Q3F4 C -1;
+		Q3F4 D -1;
+		Q3F4 E -1;
+		Q3F4 F -1;
+		Q3F4 G -1;
+		Q3F4 H -1;
+		Q3F4 I -1;
+		Q3F4 J -1;
+		Q3F4 K -1;
+		Stop;
+	FM23:
+		Q3F5 A -1;
+		Q3F5 B -1;
+		Q3F5 C -1;
+		Q3F5 D -1;
+		Q3F5 E -1;
+		Q3F5 F -1;
+		Q3F5 G -1;
+		Q3F5 H -1;
+		Q3F5 I -1;
+		Q3F5 J -1;
+		Q3F5 K -1;
 		Stop;
 	BM03:
 		Q3B3 A -1;
@@ -921,6 +1945,14 @@ class RSQGC_CardStates : Weapon
 		Q3B3 L -1;
 		Q3B3 M -1;
 		Q3B3 N -1;
+		Q3B3 O -1;
+		Q3B3 P -1;
+		Q3B3 Q -1;
+		Q3B3 R -1;
+		Q3B3 S -1;
+		Q3B3 T -1;
+		Q3B3 U -1;
+		Q3B3 V -1;
 		Stop;
 	BM13:
 		Q3B4 A -1;
@@ -937,6 +1969,14 @@ class RSQGC_CardStates : Weapon
 		Q3B4 L -1;
 		Q3B4 M -1;
 		Q3B4 N -1;
+		Q3B4 O -1;
+		Q3B4 P -1;
+		Q3B4 Q -1;
+		Q3B4 R -1;
+		Q3B4 S -1;
+		Q3B4 T -1;
+		Q3B4 U -1;
+		Q3B4 V -1;
 		Stop;
 	BM23:
 		Q3B5 A -1;
@@ -953,6 +1993,14 @@ class RSQGC_CardStates : Weapon
 		Q3B5 L -1;
 		Q3B5 M -1;
 		Q3B5 N -1;
+		Q3B5 O -1;
+		Q3B5 P -1;
+		Q3B5 Q -1;
+		Q3B5 R -1;
+		Q3B5 S -1;
+		Q3B5 T -1;
+		Q3B5 U -1;
+		Q3B5 V -1;
 		Stop;
 	SM03:
 		Q3S3 A -1;
@@ -969,6 +2017,14 @@ class RSQGC_CardStates : Weapon
 		Q3S3 L -1;
 		Q3S3 M -1;
 		Q3S3 N -1;
+		Q3S3 O -1;
+		Q3S3 P -1;
+		Q3S3 Q -1;
+		Q3S3 R -1;
+		Q3S3 S -1;
+		Q3S3 T -1;
+		Q3S3 U -1;
+		Q3S3 V -1;
 		Stop;
 	SM13:
 		Q3S4 A -1;
@@ -985,6 +2041,14 @@ class RSQGC_CardStates : Weapon
 		Q3S4 L -1;
 		Q3S4 M -1;
 		Q3S4 N -1;
+		Q3S4 O -1;
+		Q3S4 P -1;
+		Q3S4 Q -1;
+		Q3S4 R -1;
+		Q3S4 S -1;
+		Q3S4 T -1;
+		Q3S4 U -1;
+		Q3S4 V -1;
 		Stop;
 	SM23:
 		Q3S5 A -1;
@@ -1001,6 +2065,14 @@ class RSQGC_CardStates : Weapon
 		Q3S5 L -1;
 		Q3S5 M -1;
 		Q3S5 N -1;
+		Q3S5 O -1;
+		Q3S5 P -1;
+		Q3S5 Q -1;
+		Q3S5 R -1;
+		Q3S5 S -1;
+		Q3S5 T -1;
+		Q3S5 U -1;
+		Q3S5 V -1;
 		Stop;
 	PN4:
 		Q4PN A -1;
@@ -1026,9 +2098,95 @@ class RSQGC_CardStates : Weapon
 		Q4LN A -1;
 		Q4LN B -1;
 		Q4LN C -1;
+		Q4LN D -1;
+		Q4LN E -1;
+		Q4LN F -1;
+		Q4LN G -1;
+		Q4LN H -1;
+		Q4LN I -1;
 		Stop;
 	RN4:
 		Q4RN A -1;
+		Q4RN B -1;
+		Q4RN C -1;
+		Stop;
+	EN04:
+		Q4E0 A -1;
+		Q4E0 B -1;
+		Q4E0 C -1;
+		Q4E0 D -1;
+		Q4E0 E -1;
+		Q4E0 F -1;
+		Q4E0 G -1;
+		Q4E0 H -1;
+		Q4E0 I -1;
+		Q4E0 J -1;
+		Q4E0 K -1;
+		Stop;
+	EN14:
+		Q4E1 A -1;
+		Q4E1 B -1;
+		Q4E1 C -1;
+		Q4E1 D -1;
+		Q4E1 E -1;
+		Q4E1 F -1;
+		Q4E1 G -1;
+		Q4E1 H -1;
+		Q4E1 I -1;
+		Q4E1 J -1;
+		Q4E1 K -1;
+		Stop;
+	EN24:
+		Q4E2 A -1;
+		Q4E2 B -1;
+		Q4E2 C -1;
+		Q4E2 D -1;
+		Q4E2 E -1;
+		Q4E2 F -1;
+		Q4E2 G -1;
+		Q4E2 H -1;
+		Q4E2 I -1;
+		Q4E2 J -1;
+		Q4E2 K -1;
+		Stop;
+	FN04:
+		Q4F0 A -1;
+		Q4F0 B -1;
+		Q4F0 C -1;
+		Q4F0 D -1;
+		Q4F0 E -1;
+		Q4F0 F -1;
+		Q4F0 G -1;
+		Q4F0 H -1;
+		Q4F0 I -1;
+		Q4F0 J -1;
+		Q4F0 K -1;
+		Stop;
+	FN14:
+		Q4F1 A -1;
+		Q4F1 B -1;
+		Q4F1 C -1;
+		Q4F1 D -1;
+		Q4F1 E -1;
+		Q4F1 F -1;
+		Q4F1 G -1;
+		Q4F1 H -1;
+		Q4F1 I -1;
+		Q4F1 J -1;
+		Q4F1 K -1;
+		Stop;
+	FN24:
+		Q4F2 A -1;
+		Q4F2 B -1;
+		Q4F2 C -1;
+		Q4F2 D -1;
+		Q4F2 E -1;
+		Q4F2 F -1;
+		Q4F2 G -1;
+		Q4F2 H -1;
+		Q4F2 I -1;
+		Q4F2 J -1;
+		Q4F2 K -1;
 		Stop;
 	BN04:
 		Q4B0 A -1;
@@ -1045,6 +2203,14 @@ class RSQGC_CardStates : Weapon
 		Q4B0 L -1;
 		Q4B0 M -1;
 		Q4B0 N -1;
+		Q4B0 O -1;
+		Q4B0 P -1;
+		Q4B0 Q -1;
+		Q4B0 R -1;
+		Q4B0 S -1;
+		Q4B0 T -1;
+		Q4B0 U -1;
+		Q4B0 V -1;
 		Stop;
 	BN14:
 		Q4B1 A -1;
@@ -1061,6 +2227,14 @@ class RSQGC_CardStates : Weapon
 		Q4B1 L -1;
 		Q4B1 M -1;
 		Q4B1 N -1;
+		Q4B1 O -1;
+		Q4B1 P -1;
+		Q4B1 Q -1;
+		Q4B1 R -1;
+		Q4B1 S -1;
+		Q4B1 T -1;
+		Q4B1 U -1;
+		Q4B1 V -1;
 		Stop;
 	BN24:
 		Q4B2 A -1;
@@ -1077,6 +2251,14 @@ class RSQGC_CardStates : Weapon
 		Q4B2 L -1;
 		Q4B2 M -1;
 		Q4B2 N -1;
+		Q4B2 O -1;
+		Q4B2 P -1;
+		Q4B2 Q -1;
+		Q4B2 R -1;
+		Q4B2 S -1;
+		Q4B2 T -1;
+		Q4B2 U -1;
+		Q4B2 V -1;
 		Stop;
 	SN04:
 		Q4S0 A -1;
@@ -1093,6 +2275,14 @@ class RSQGC_CardStates : Weapon
 		Q4S0 L -1;
 		Q4S0 M -1;
 		Q4S0 N -1;
+		Q4S0 O -1;
+		Q4S0 P -1;
+		Q4S0 Q -1;
+		Q4S0 R -1;
+		Q4S0 S -1;
+		Q4S0 T -1;
+		Q4S0 U -1;
+		Q4S0 V -1;
 		Stop;
 	SN14:
 		Q4S1 A -1;
@@ -1109,6 +2299,14 @@ class RSQGC_CardStates : Weapon
 		Q4S1 L -1;
 		Q4S1 M -1;
 		Q4S1 N -1;
+		Q4S1 O -1;
+		Q4S1 P -1;
+		Q4S1 Q -1;
+		Q4S1 R -1;
+		Q4S1 S -1;
+		Q4S1 T -1;
+		Q4S1 U -1;
+		Q4S1 V -1;
 		Stop;
 	SN24:
 		Q4S2 A -1;
@@ -1125,6 +2323,14 @@ class RSQGC_CardStates : Weapon
 		Q4S2 L -1;
 		Q4S2 M -1;
 		Q4S2 N -1;
+		Q4S2 O -1;
+		Q4S2 P -1;
+		Q4S2 Q -1;
+		Q4S2 R -1;
+		Q4S2 S -1;
+		Q4S2 T -1;
+		Q4S2 U -1;
+		Q4S2 V -1;
 		Stop;
 	PM4:
 		Q4PM A -1;
@@ -1150,9 +2356,95 @@ class RSQGC_CardStates : Weapon
 		Q4LM A -1;
 		Q4LM B -1;
 		Q4LM C -1;
+		Q4LM D -1;
+		Q4LM E -1;
+		Q4LM F -1;
+		Q4LM G -1;
+		Q4LM H -1;
+		Q4LM I -1;
 		Stop;
 	RM4:
 		Q4RM A -1;
+		Q4RM B -1;
+		Q4RM C -1;
+		Stop;
+	EM04:
+		Q4E3 A -1;
+		Q4E3 B -1;
+		Q4E3 C -1;
+		Q4E3 D -1;
+		Q4E3 E -1;
+		Q4E3 F -1;
+		Q4E3 G -1;
+		Q4E3 H -1;
+		Q4E3 I -1;
+		Q4E3 J -1;
+		Q4E3 K -1;
+		Stop;
+	EM14:
+		Q4E4 A -1;
+		Q4E4 B -1;
+		Q4E4 C -1;
+		Q4E4 D -1;
+		Q4E4 E -1;
+		Q4E4 F -1;
+		Q4E4 G -1;
+		Q4E4 H -1;
+		Q4E4 I -1;
+		Q4E4 J -1;
+		Q4E4 K -1;
+		Stop;
+	EM24:
+		Q4E5 A -1;
+		Q4E5 B -1;
+		Q4E5 C -1;
+		Q4E5 D -1;
+		Q4E5 E -1;
+		Q4E5 F -1;
+		Q4E5 G -1;
+		Q4E5 H -1;
+		Q4E5 I -1;
+		Q4E5 J -1;
+		Q4E5 K -1;
+		Stop;
+	FM04:
+		Q4F3 A -1;
+		Q4F3 B -1;
+		Q4F3 C -1;
+		Q4F3 D -1;
+		Q4F3 E -1;
+		Q4F3 F -1;
+		Q4F3 G -1;
+		Q4F3 H -1;
+		Q4F3 I -1;
+		Q4F3 J -1;
+		Q4F3 K -1;
+		Stop;
+	FM14:
+		Q4F4 A -1;
+		Q4F4 B -1;
+		Q4F4 C -1;
+		Q4F4 D -1;
+		Q4F4 E -1;
+		Q4F4 F -1;
+		Q4F4 G -1;
+		Q4F4 H -1;
+		Q4F4 I -1;
+		Q4F4 J -1;
+		Q4F4 K -1;
+		Stop;
+	FM24:
+		Q4F5 A -1;
+		Q4F5 B -1;
+		Q4F5 C -1;
+		Q4F5 D -1;
+		Q4F5 E -1;
+		Q4F5 F -1;
+		Q4F5 G -1;
+		Q4F5 H -1;
+		Q4F5 I -1;
+		Q4F5 J -1;
+		Q4F5 K -1;
 		Stop;
 	BM04:
 		Q4B3 A -1;
@@ -1169,6 +2461,14 @@ class RSQGC_CardStates : Weapon
 		Q4B3 L -1;
 		Q4B3 M -1;
 		Q4B3 N -1;
+		Q4B3 O -1;
+		Q4B3 P -1;
+		Q4B3 Q -1;
+		Q4B3 R -1;
+		Q4B3 S -1;
+		Q4B3 T -1;
+		Q4B3 U -1;
+		Q4B3 V -1;
 		Stop;
 	BM14:
 		Q4B4 A -1;
@@ -1185,6 +2485,14 @@ class RSQGC_CardStates : Weapon
 		Q4B4 L -1;
 		Q4B4 M -1;
 		Q4B4 N -1;
+		Q4B4 O -1;
+		Q4B4 P -1;
+		Q4B4 Q -1;
+		Q4B4 R -1;
+		Q4B4 S -1;
+		Q4B4 T -1;
+		Q4B4 U -1;
+		Q4B4 V -1;
 		Stop;
 	BM24:
 		Q4B5 A -1;
@@ -1201,6 +2509,14 @@ class RSQGC_CardStates : Weapon
 		Q4B5 L -1;
 		Q4B5 M -1;
 		Q4B5 N -1;
+		Q4B5 O -1;
+		Q4B5 P -1;
+		Q4B5 Q -1;
+		Q4B5 R -1;
+		Q4B5 S -1;
+		Q4B5 T -1;
+		Q4B5 U -1;
+		Q4B5 V -1;
 		Stop;
 	SM04:
 		Q4S3 A -1;
@@ -1217,6 +2533,14 @@ class RSQGC_CardStates : Weapon
 		Q4S3 L -1;
 		Q4S3 M -1;
 		Q4S3 N -1;
+		Q4S3 O -1;
+		Q4S3 P -1;
+		Q4S3 Q -1;
+		Q4S3 R -1;
+		Q4S3 S -1;
+		Q4S3 T -1;
+		Q4S3 U -1;
+		Q4S3 V -1;
 		Stop;
 	SM14:
 		Q4S4 A -1;
@@ -1233,6 +2557,14 @@ class RSQGC_CardStates : Weapon
 		Q4S4 L -1;
 		Q4S4 M -1;
 		Q4S4 N -1;
+		Q4S4 O -1;
+		Q4S4 P -1;
+		Q4S4 Q -1;
+		Q4S4 R -1;
+		Q4S4 S -1;
+		Q4S4 T -1;
+		Q4S4 U -1;
+		Q4S4 V -1;
 		Stop;
 	SM24:
 		Q4S5 A -1;
@@ -1249,6 +2581,14 @@ class RSQGC_CardStates : Weapon
 		Q4S5 L -1;
 		Q4S5 M -1;
 		Q4S5 N -1;
+		Q4S5 O -1;
+		Q4S5 P -1;
+		Q4S5 Q -1;
+		Q4S5 R -1;
+		Q4S5 S -1;
+		Q4S5 T -1;
+		Q4S5 U -1;
+		Q4S5 V -1;
 		Stop;
 	PN5:
 		Q5PN A -1;
@@ -1274,9 +2614,95 @@ class RSQGC_CardStates : Weapon
 		Q5LN A -1;
 		Q5LN B -1;
 		Q5LN C -1;
+		Q5LN D -1;
+		Q5LN E -1;
+		Q5LN F -1;
+		Q5LN G -1;
+		Q5LN H -1;
+		Q5LN I -1;
 		Stop;
 	RN5:
 		Q5RN A -1;
+		Q5RN B -1;
+		Q5RN C -1;
+		Stop;
+	EN05:
+		Q5E0 A -1;
+		Q5E0 B -1;
+		Q5E0 C -1;
+		Q5E0 D -1;
+		Q5E0 E -1;
+		Q5E0 F -1;
+		Q5E0 G -1;
+		Q5E0 H -1;
+		Q5E0 I -1;
+		Q5E0 J -1;
+		Q5E0 K -1;
+		Stop;
+	EN15:
+		Q5E1 A -1;
+		Q5E1 B -1;
+		Q5E1 C -1;
+		Q5E1 D -1;
+		Q5E1 E -1;
+		Q5E1 F -1;
+		Q5E1 G -1;
+		Q5E1 H -1;
+		Q5E1 I -1;
+		Q5E1 J -1;
+		Q5E1 K -1;
+		Stop;
+	EN25:
+		Q5E2 A -1;
+		Q5E2 B -1;
+		Q5E2 C -1;
+		Q5E2 D -1;
+		Q5E2 E -1;
+		Q5E2 F -1;
+		Q5E2 G -1;
+		Q5E2 H -1;
+		Q5E2 I -1;
+		Q5E2 J -1;
+		Q5E2 K -1;
+		Stop;
+	FN05:
+		Q5F0 A -1;
+		Q5F0 B -1;
+		Q5F0 C -1;
+		Q5F0 D -1;
+		Q5F0 E -1;
+		Q5F0 F -1;
+		Q5F0 G -1;
+		Q5F0 H -1;
+		Q5F0 I -1;
+		Q5F0 J -1;
+		Q5F0 K -1;
+		Stop;
+	FN15:
+		Q5F1 A -1;
+		Q5F1 B -1;
+		Q5F1 C -1;
+		Q5F1 D -1;
+		Q5F1 E -1;
+		Q5F1 F -1;
+		Q5F1 G -1;
+		Q5F1 H -1;
+		Q5F1 I -1;
+		Q5F1 J -1;
+		Q5F1 K -1;
+		Stop;
+	FN25:
+		Q5F2 A -1;
+		Q5F2 B -1;
+		Q5F2 C -1;
+		Q5F2 D -1;
+		Q5F2 E -1;
+		Q5F2 F -1;
+		Q5F2 G -1;
+		Q5F2 H -1;
+		Q5F2 I -1;
+		Q5F2 J -1;
+		Q5F2 K -1;
 		Stop;
 	BN05:
 		Q5B0 A -1;
@@ -1293,6 +2719,14 @@ class RSQGC_CardStates : Weapon
 		Q5B0 L -1;
 		Q5B0 M -1;
 		Q5B0 N -1;
+		Q5B0 O -1;
+		Q5B0 P -1;
+		Q5B0 Q -1;
+		Q5B0 R -1;
+		Q5B0 S -1;
+		Q5B0 T -1;
+		Q5B0 U -1;
+		Q5B0 V -1;
 		Stop;
 	BN15:
 		Q5B1 A -1;
@@ -1309,6 +2743,14 @@ class RSQGC_CardStates : Weapon
 		Q5B1 L -1;
 		Q5B1 M -1;
 		Q5B1 N -1;
+		Q5B1 O -1;
+		Q5B1 P -1;
+		Q5B1 Q -1;
+		Q5B1 R -1;
+		Q5B1 S -1;
+		Q5B1 T -1;
+		Q5B1 U -1;
+		Q5B1 V -1;
 		Stop;
 	BN25:
 		Q5B2 A -1;
@@ -1325,6 +2767,14 @@ class RSQGC_CardStates : Weapon
 		Q5B2 L -1;
 		Q5B2 M -1;
 		Q5B2 N -1;
+		Q5B2 O -1;
+		Q5B2 P -1;
+		Q5B2 Q -1;
+		Q5B2 R -1;
+		Q5B2 S -1;
+		Q5B2 T -1;
+		Q5B2 U -1;
+		Q5B2 V -1;
 		Stop;
 	SN05:
 		Q5S0 A -1;
@@ -1341,6 +2791,14 @@ class RSQGC_CardStates : Weapon
 		Q5S0 L -1;
 		Q5S0 M -1;
 		Q5S0 N -1;
+		Q5S0 O -1;
+		Q5S0 P -1;
+		Q5S0 Q -1;
+		Q5S0 R -1;
+		Q5S0 S -1;
+		Q5S0 T -1;
+		Q5S0 U -1;
+		Q5S0 V -1;
 		Stop;
 	SN15:
 		Q5S1 A -1;
@@ -1357,6 +2815,14 @@ class RSQGC_CardStates : Weapon
 		Q5S1 L -1;
 		Q5S1 M -1;
 		Q5S1 N -1;
+		Q5S1 O -1;
+		Q5S1 P -1;
+		Q5S1 Q -1;
+		Q5S1 R -1;
+		Q5S1 S -1;
+		Q5S1 T -1;
+		Q5S1 U -1;
+		Q5S1 V -1;
 		Stop;
 	SN25:
 		Q5S2 A -1;
@@ -1373,6 +2839,14 @@ class RSQGC_CardStates : Weapon
 		Q5S2 L -1;
 		Q5S2 M -1;
 		Q5S2 N -1;
+		Q5S2 O -1;
+		Q5S2 P -1;
+		Q5S2 Q -1;
+		Q5S2 R -1;
+		Q5S2 S -1;
+		Q5S2 T -1;
+		Q5S2 U -1;
+		Q5S2 V -1;
 		Stop;
 	PM5:
 		Q5PM A -1;
@@ -1398,9 +2872,95 @@ class RSQGC_CardStates : Weapon
 		Q5LM A -1;
 		Q5LM B -1;
 		Q5LM C -1;
+		Q5LM D -1;
+		Q5LM E -1;
+		Q5LM F -1;
+		Q5LM G -1;
+		Q5LM H -1;
+		Q5LM I -1;
 		Stop;
 	RM5:
 		Q5RM A -1;
+		Q5RM B -1;
+		Q5RM C -1;
+		Stop;
+	EM05:
+		Q5E3 A -1;
+		Q5E3 B -1;
+		Q5E3 C -1;
+		Q5E3 D -1;
+		Q5E3 E -1;
+		Q5E3 F -1;
+		Q5E3 G -1;
+		Q5E3 H -1;
+		Q5E3 I -1;
+		Q5E3 J -1;
+		Q5E3 K -1;
+		Stop;
+	EM15:
+		Q5E4 A -1;
+		Q5E4 B -1;
+		Q5E4 C -1;
+		Q5E4 D -1;
+		Q5E4 E -1;
+		Q5E4 F -1;
+		Q5E4 G -1;
+		Q5E4 H -1;
+		Q5E4 I -1;
+		Q5E4 J -1;
+		Q5E4 K -1;
+		Stop;
+	EM25:
+		Q5E5 A -1;
+		Q5E5 B -1;
+		Q5E5 C -1;
+		Q5E5 D -1;
+		Q5E5 E -1;
+		Q5E5 F -1;
+		Q5E5 G -1;
+		Q5E5 H -1;
+		Q5E5 I -1;
+		Q5E5 J -1;
+		Q5E5 K -1;
+		Stop;
+	FM05:
+		Q5F3 A -1;
+		Q5F3 B -1;
+		Q5F3 C -1;
+		Q5F3 D -1;
+		Q5F3 E -1;
+		Q5F3 F -1;
+		Q5F3 G -1;
+		Q5F3 H -1;
+		Q5F3 I -1;
+		Q5F3 J -1;
+		Q5F3 K -1;
+		Stop;
+	FM15:
+		Q5F4 A -1;
+		Q5F4 B -1;
+		Q5F4 C -1;
+		Q5F4 D -1;
+		Q5F4 E -1;
+		Q5F4 F -1;
+		Q5F4 G -1;
+		Q5F4 H -1;
+		Q5F4 I -1;
+		Q5F4 J -1;
+		Q5F4 K -1;
+		Stop;
+	FM25:
+		Q5F5 A -1;
+		Q5F5 B -1;
+		Q5F5 C -1;
+		Q5F5 D -1;
+		Q5F5 E -1;
+		Q5F5 F -1;
+		Q5F5 G -1;
+		Q5F5 H -1;
+		Q5F5 I -1;
+		Q5F5 J -1;
+		Q5F5 K -1;
 		Stop;
 	BM05:
 		Q5B3 A -1;
@@ -1417,6 +2977,14 @@ class RSQGC_CardStates : Weapon
 		Q5B3 L -1;
 		Q5B3 M -1;
 		Q5B3 N -1;
+		Q5B3 O -1;
+		Q5B3 P -1;
+		Q5B3 Q -1;
+		Q5B3 R -1;
+		Q5B3 S -1;
+		Q5B3 T -1;
+		Q5B3 U -1;
+		Q5B3 V -1;
 		Stop;
 	BM15:
 		Q5B4 A -1;
@@ -1433,6 +3001,14 @@ class RSQGC_CardStates : Weapon
 		Q5B4 L -1;
 		Q5B4 M -1;
 		Q5B4 N -1;
+		Q5B4 O -1;
+		Q5B4 P -1;
+		Q5B4 Q -1;
+		Q5B4 R -1;
+		Q5B4 S -1;
+		Q5B4 T -1;
+		Q5B4 U -1;
+		Q5B4 V -1;
 		Stop;
 	BM25:
 		Q5B5 A -1;
@@ -1449,6 +3025,14 @@ class RSQGC_CardStates : Weapon
 		Q5B5 L -1;
 		Q5B5 M -1;
 		Q5B5 N -1;
+		Q5B5 O -1;
+		Q5B5 P -1;
+		Q5B5 Q -1;
+		Q5B5 R -1;
+		Q5B5 S -1;
+		Q5B5 T -1;
+		Q5B5 U -1;
+		Q5B5 V -1;
 		Stop;
 	SM05:
 		Q5S3 A -1;
@@ -1465,6 +3049,14 @@ class RSQGC_CardStates : Weapon
 		Q5S3 L -1;
 		Q5S3 M -1;
 		Q5S3 N -1;
+		Q5S3 O -1;
+		Q5S3 P -1;
+		Q5S3 Q -1;
+		Q5S3 R -1;
+		Q5S3 S -1;
+		Q5S3 T -1;
+		Q5S3 U -1;
+		Q5S3 V -1;
 		Stop;
 	SM15:
 		Q5S4 A -1;
@@ -1481,6 +3073,14 @@ class RSQGC_CardStates : Weapon
 		Q5S4 L -1;
 		Q5S4 M -1;
 		Q5S4 N -1;
+		Q5S4 O -1;
+		Q5S4 P -1;
+		Q5S4 Q -1;
+		Q5S4 R -1;
+		Q5S4 S -1;
+		Q5S4 T -1;
+		Q5S4 U -1;
+		Q5S4 V -1;
 		Stop;
 	SM25:
 		Q5S5 A -1;
@@ -1497,6 +3097,14 @@ class RSQGC_CardStates : Weapon
 		Q5S5 L -1;
 		Q5S5 M -1;
 		Q5S5 N -1;
+		Q5S5 O -1;
+		Q5S5 P -1;
+		Q5S5 Q -1;
+		Q5S5 R -1;
+		Q5S5 S -1;
+		Q5S5 T -1;
+		Q5S5 U -1;
+		Q5S5 V -1;
 		Stop;
 	PN6:
 		Q6PN A -1;
@@ -1522,9 +3130,95 @@ class RSQGC_CardStates : Weapon
 		Q6LN A -1;
 		Q6LN B -1;
 		Q6LN C -1;
+		Q6LN D -1;
+		Q6LN E -1;
+		Q6LN F -1;
+		Q6LN G -1;
+		Q6LN H -1;
+		Q6LN I -1;
 		Stop;
 	RN6:
 		Q6RN A -1;
+		Q6RN B -1;
+		Q6RN C -1;
+		Stop;
+	EN06:
+		Q6E0 A -1;
+		Q6E0 B -1;
+		Q6E0 C -1;
+		Q6E0 D -1;
+		Q6E0 E -1;
+		Q6E0 F -1;
+		Q6E0 G -1;
+		Q6E0 H -1;
+		Q6E0 I -1;
+		Q6E0 J -1;
+		Q6E0 K -1;
+		Stop;
+	EN16:
+		Q6E1 A -1;
+		Q6E1 B -1;
+		Q6E1 C -1;
+		Q6E1 D -1;
+		Q6E1 E -1;
+		Q6E1 F -1;
+		Q6E1 G -1;
+		Q6E1 H -1;
+		Q6E1 I -1;
+		Q6E1 J -1;
+		Q6E1 K -1;
+		Stop;
+	EN26:
+		Q6E2 A -1;
+		Q6E2 B -1;
+		Q6E2 C -1;
+		Q6E2 D -1;
+		Q6E2 E -1;
+		Q6E2 F -1;
+		Q6E2 G -1;
+		Q6E2 H -1;
+		Q6E2 I -1;
+		Q6E2 J -1;
+		Q6E2 K -1;
+		Stop;
+	FN06:
+		Q6F0 A -1;
+		Q6F0 B -1;
+		Q6F0 C -1;
+		Q6F0 D -1;
+		Q6F0 E -1;
+		Q6F0 F -1;
+		Q6F0 G -1;
+		Q6F0 H -1;
+		Q6F0 I -1;
+		Q6F0 J -1;
+		Q6F0 K -1;
+		Stop;
+	FN16:
+		Q6F1 A -1;
+		Q6F1 B -1;
+		Q6F1 C -1;
+		Q6F1 D -1;
+		Q6F1 E -1;
+		Q6F1 F -1;
+		Q6F1 G -1;
+		Q6F1 H -1;
+		Q6F1 I -1;
+		Q6F1 J -1;
+		Q6F1 K -1;
+		Stop;
+	FN26:
+		Q6F2 A -1;
+		Q6F2 B -1;
+		Q6F2 C -1;
+		Q6F2 D -1;
+		Q6F2 E -1;
+		Q6F2 F -1;
+		Q6F2 G -1;
+		Q6F2 H -1;
+		Q6F2 I -1;
+		Q6F2 J -1;
+		Q6F2 K -1;
 		Stop;
 	BN06:
 		Q6B0 A -1;
@@ -1541,6 +3235,14 @@ class RSQGC_CardStates : Weapon
 		Q6B0 L -1;
 		Q6B0 M -1;
 		Q6B0 N -1;
+		Q6B0 O -1;
+		Q6B0 P -1;
+		Q6B0 Q -1;
+		Q6B0 R -1;
+		Q6B0 S -1;
+		Q6B0 T -1;
+		Q6B0 U -1;
+		Q6B0 V -1;
 		Stop;
 	BN16:
 		Q6B1 A -1;
@@ -1557,6 +3259,14 @@ class RSQGC_CardStates : Weapon
 		Q6B1 L -1;
 		Q6B1 M -1;
 		Q6B1 N -1;
+		Q6B1 O -1;
+		Q6B1 P -1;
+		Q6B1 Q -1;
+		Q6B1 R -1;
+		Q6B1 S -1;
+		Q6B1 T -1;
+		Q6B1 U -1;
+		Q6B1 V -1;
 		Stop;
 	BN26:
 		Q6B2 A -1;
@@ -1573,6 +3283,14 @@ class RSQGC_CardStates : Weapon
 		Q6B2 L -1;
 		Q6B2 M -1;
 		Q6B2 N -1;
+		Q6B2 O -1;
+		Q6B2 P -1;
+		Q6B2 Q -1;
+		Q6B2 R -1;
+		Q6B2 S -1;
+		Q6B2 T -1;
+		Q6B2 U -1;
+		Q6B2 V -1;
 		Stop;
 	SN06:
 		Q6S0 A -1;
@@ -1589,6 +3307,14 @@ class RSQGC_CardStates : Weapon
 		Q6S0 L -1;
 		Q6S0 M -1;
 		Q6S0 N -1;
+		Q6S0 O -1;
+		Q6S0 P -1;
+		Q6S0 Q -1;
+		Q6S0 R -1;
+		Q6S0 S -1;
+		Q6S0 T -1;
+		Q6S0 U -1;
+		Q6S0 V -1;
 		Stop;
 	SN16:
 		Q6S1 A -1;
@@ -1605,6 +3331,14 @@ class RSQGC_CardStates : Weapon
 		Q6S1 L -1;
 		Q6S1 M -1;
 		Q6S1 N -1;
+		Q6S1 O -1;
+		Q6S1 P -1;
+		Q6S1 Q -1;
+		Q6S1 R -1;
+		Q6S1 S -1;
+		Q6S1 T -1;
+		Q6S1 U -1;
+		Q6S1 V -1;
 		Stop;
 	SN26:
 		Q6S2 A -1;
@@ -1621,6 +3355,14 @@ class RSQGC_CardStates : Weapon
 		Q6S2 L -1;
 		Q6S2 M -1;
 		Q6S2 N -1;
+		Q6S2 O -1;
+		Q6S2 P -1;
+		Q6S2 Q -1;
+		Q6S2 R -1;
+		Q6S2 S -1;
+		Q6S2 T -1;
+		Q6S2 U -1;
+		Q6S2 V -1;
 		Stop;
 	PM6:
 		Q6PM A -1;
@@ -1646,9 +3388,95 @@ class RSQGC_CardStates : Weapon
 		Q6LM A -1;
 		Q6LM B -1;
 		Q6LM C -1;
+		Q6LM D -1;
+		Q6LM E -1;
+		Q6LM F -1;
+		Q6LM G -1;
+		Q6LM H -1;
+		Q6LM I -1;
 		Stop;
 	RM6:
 		Q6RM A -1;
+		Q6RM B -1;
+		Q6RM C -1;
+		Stop;
+	EM06:
+		Q6E3 A -1;
+		Q6E3 B -1;
+		Q6E3 C -1;
+		Q6E3 D -1;
+		Q6E3 E -1;
+		Q6E3 F -1;
+		Q6E3 G -1;
+		Q6E3 H -1;
+		Q6E3 I -1;
+		Q6E3 J -1;
+		Q6E3 K -1;
+		Stop;
+	EM16:
+		Q6E4 A -1;
+		Q6E4 B -1;
+		Q6E4 C -1;
+		Q6E4 D -1;
+		Q6E4 E -1;
+		Q6E4 F -1;
+		Q6E4 G -1;
+		Q6E4 H -1;
+		Q6E4 I -1;
+		Q6E4 J -1;
+		Q6E4 K -1;
+		Stop;
+	EM26:
+		Q6E5 A -1;
+		Q6E5 B -1;
+		Q6E5 C -1;
+		Q6E5 D -1;
+		Q6E5 E -1;
+		Q6E5 F -1;
+		Q6E5 G -1;
+		Q6E5 H -1;
+		Q6E5 I -1;
+		Q6E5 J -1;
+		Q6E5 K -1;
+		Stop;
+	FM06:
+		Q6F3 A -1;
+		Q6F3 B -1;
+		Q6F3 C -1;
+		Q6F3 D -1;
+		Q6F3 E -1;
+		Q6F3 F -1;
+		Q6F3 G -1;
+		Q6F3 H -1;
+		Q6F3 I -1;
+		Q6F3 J -1;
+		Q6F3 K -1;
+		Stop;
+	FM16:
+		Q6F4 A -1;
+		Q6F4 B -1;
+		Q6F4 C -1;
+		Q6F4 D -1;
+		Q6F4 E -1;
+		Q6F4 F -1;
+		Q6F4 G -1;
+		Q6F4 H -1;
+		Q6F4 I -1;
+		Q6F4 J -1;
+		Q6F4 K -1;
+		Stop;
+	FM26:
+		Q6F5 A -1;
+		Q6F5 B -1;
+		Q6F5 C -1;
+		Q6F5 D -1;
+		Q6F5 E -1;
+		Q6F5 F -1;
+		Q6F5 G -1;
+		Q6F5 H -1;
+		Q6F5 I -1;
+		Q6F5 J -1;
+		Q6F5 K -1;
 		Stop;
 	BM06:
 		Q6B3 A -1;
@@ -1665,6 +3493,14 @@ class RSQGC_CardStates : Weapon
 		Q6B3 L -1;
 		Q6B3 M -1;
 		Q6B3 N -1;
+		Q6B3 O -1;
+		Q6B3 P -1;
+		Q6B3 Q -1;
+		Q6B3 R -1;
+		Q6B3 S -1;
+		Q6B3 T -1;
+		Q6B3 U -1;
+		Q6B3 V -1;
 		Stop;
 	BM16:
 		Q6B4 A -1;
@@ -1681,6 +3517,14 @@ class RSQGC_CardStates : Weapon
 		Q6B4 L -1;
 		Q6B4 M -1;
 		Q6B4 N -1;
+		Q6B4 O -1;
+		Q6B4 P -1;
+		Q6B4 Q -1;
+		Q6B4 R -1;
+		Q6B4 S -1;
+		Q6B4 T -1;
+		Q6B4 U -1;
+		Q6B4 V -1;
 		Stop;
 	BM26:
 		Q6B5 A -1;
@@ -1697,6 +3541,14 @@ class RSQGC_CardStates : Weapon
 		Q6B5 L -1;
 		Q6B5 M -1;
 		Q6B5 N -1;
+		Q6B5 O -1;
+		Q6B5 P -1;
+		Q6B5 Q -1;
+		Q6B5 R -1;
+		Q6B5 S -1;
+		Q6B5 T -1;
+		Q6B5 U -1;
+		Q6B5 V -1;
 		Stop;
 	SM06:
 		Q6S3 A -1;
@@ -1713,6 +3565,14 @@ class RSQGC_CardStates : Weapon
 		Q6S3 L -1;
 		Q6S3 M -1;
 		Q6S3 N -1;
+		Q6S3 O -1;
+		Q6S3 P -1;
+		Q6S3 Q -1;
+		Q6S3 R -1;
+		Q6S3 S -1;
+		Q6S3 T -1;
+		Q6S3 U -1;
+		Q6S3 V -1;
 		Stop;
 	SM16:
 		Q6S4 A -1;
@@ -1729,6 +3589,14 @@ class RSQGC_CardStates : Weapon
 		Q6S4 L -1;
 		Q6S4 M -1;
 		Q6S4 N -1;
+		Q6S4 O -1;
+		Q6S4 P -1;
+		Q6S4 Q -1;
+		Q6S4 R -1;
+		Q6S4 S -1;
+		Q6S4 T -1;
+		Q6S4 U -1;
+		Q6S4 V -1;
 		Stop;
 	SM26:
 		Q6S5 A -1;
@@ -1745,6 +3613,14 @@ class RSQGC_CardStates : Weapon
 		Q6S5 L -1;
 		Q6S5 M -1;
 		Q6S5 N -1;
+		Q6S5 O -1;
+		Q6S5 P -1;
+		Q6S5 Q -1;
+		Q6S5 R -1;
+		Q6S5 S -1;
+		Q6S5 T -1;
+		Q6S5 U -1;
+		Q6S5 V -1;
 		Stop;
 	PN7:
 		Q7PN A -1;
@@ -1770,9 +3646,95 @@ class RSQGC_CardStates : Weapon
 		Q7LN A -1;
 		Q7LN B -1;
 		Q7LN C -1;
+		Q7LN D -1;
+		Q7LN E -1;
+		Q7LN F -1;
+		Q7LN G -1;
+		Q7LN H -1;
+		Q7LN I -1;
 		Stop;
 	RN7:
 		Q7RN A -1;
+		Q7RN B -1;
+		Q7RN C -1;
+		Stop;
+	EN07:
+		Q7E0 A -1;
+		Q7E0 B -1;
+		Q7E0 C -1;
+		Q7E0 D -1;
+		Q7E0 E -1;
+		Q7E0 F -1;
+		Q7E0 G -1;
+		Q7E0 H -1;
+		Q7E0 I -1;
+		Q7E0 J -1;
+		Q7E0 K -1;
+		Stop;
+	EN17:
+		Q7E1 A -1;
+		Q7E1 B -1;
+		Q7E1 C -1;
+		Q7E1 D -1;
+		Q7E1 E -1;
+		Q7E1 F -1;
+		Q7E1 G -1;
+		Q7E1 H -1;
+		Q7E1 I -1;
+		Q7E1 J -1;
+		Q7E1 K -1;
+		Stop;
+	EN27:
+		Q7E2 A -1;
+		Q7E2 B -1;
+		Q7E2 C -1;
+		Q7E2 D -1;
+		Q7E2 E -1;
+		Q7E2 F -1;
+		Q7E2 G -1;
+		Q7E2 H -1;
+		Q7E2 I -1;
+		Q7E2 J -1;
+		Q7E2 K -1;
+		Stop;
+	FN07:
+		Q7F0 A -1;
+		Q7F0 B -1;
+		Q7F0 C -1;
+		Q7F0 D -1;
+		Q7F0 E -1;
+		Q7F0 F -1;
+		Q7F0 G -1;
+		Q7F0 H -1;
+		Q7F0 I -1;
+		Q7F0 J -1;
+		Q7F0 K -1;
+		Stop;
+	FN17:
+		Q7F1 A -1;
+		Q7F1 B -1;
+		Q7F1 C -1;
+		Q7F1 D -1;
+		Q7F1 E -1;
+		Q7F1 F -1;
+		Q7F1 G -1;
+		Q7F1 H -1;
+		Q7F1 I -1;
+		Q7F1 J -1;
+		Q7F1 K -1;
+		Stop;
+	FN27:
+		Q7F2 A -1;
+		Q7F2 B -1;
+		Q7F2 C -1;
+		Q7F2 D -1;
+		Q7F2 E -1;
+		Q7F2 F -1;
+		Q7F2 G -1;
+		Q7F2 H -1;
+		Q7F2 I -1;
+		Q7F2 J -1;
+		Q7F2 K -1;
 		Stop;
 	BN07:
 		Q7B0 A -1;
@@ -1789,6 +3751,14 @@ class RSQGC_CardStates : Weapon
 		Q7B0 L -1;
 		Q7B0 M -1;
 		Q7B0 N -1;
+		Q7B0 O -1;
+		Q7B0 P -1;
+		Q7B0 Q -1;
+		Q7B0 R -1;
+		Q7B0 S -1;
+		Q7B0 T -1;
+		Q7B0 U -1;
+		Q7B0 V -1;
 		Stop;
 	BN17:
 		Q7B1 A -1;
@@ -1805,6 +3775,14 @@ class RSQGC_CardStates : Weapon
 		Q7B1 L -1;
 		Q7B1 M -1;
 		Q7B1 N -1;
+		Q7B1 O -1;
+		Q7B1 P -1;
+		Q7B1 Q -1;
+		Q7B1 R -1;
+		Q7B1 S -1;
+		Q7B1 T -1;
+		Q7B1 U -1;
+		Q7B1 V -1;
 		Stop;
 	BN27:
 		Q7B2 A -1;
@@ -1821,6 +3799,14 @@ class RSQGC_CardStates : Weapon
 		Q7B2 L -1;
 		Q7B2 M -1;
 		Q7B2 N -1;
+		Q7B2 O -1;
+		Q7B2 P -1;
+		Q7B2 Q -1;
+		Q7B2 R -1;
+		Q7B2 S -1;
+		Q7B2 T -1;
+		Q7B2 U -1;
+		Q7B2 V -1;
 		Stop;
 	SN07:
 		Q7S0 A -1;
@@ -1837,6 +3823,14 @@ class RSQGC_CardStates : Weapon
 		Q7S0 L -1;
 		Q7S0 M -1;
 		Q7S0 N -1;
+		Q7S0 O -1;
+		Q7S0 P -1;
+		Q7S0 Q -1;
+		Q7S0 R -1;
+		Q7S0 S -1;
+		Q7S0 T -1;
+		Q7S0 U -1;
+		Q7S0 V -1;
 		Stop;
 	SN17:
 		Q7S1 A -1;
@@ -1853,6 +3847,14 @@ class RSQGC_CardStates : Weapon
 		Q7S1 L -1;
 		Q7S1 M -1;
 		Q7S1 N -1;
+		Q7S1 O -1;
+		Q7S1 P -1;
+		Q7S1 Q -1;
+		Q7S1 R -1;
+		Q7S1 S -1;
+		Q7S1 T -1;
+		Q7S1 U -1;
+		Q7S1 V -1;
 		Stop;
 	SN27:
 		Q7S2 A -1;
@@ -1869,6 +3871,14 @@ class RSQGC_CardStates : Weapon
 		Q7S2 L -1;
 		Q7S2 M -1;
 		Q7S2 N -1;
+		Q7S2 O -1;
+		Q7S2 P -1;
+		Q7S2 Q -1;
+		Q7S2 R -1;
+		Q7S2 S -1;
+		Q7S2 T -1;
+		Q7S2 U -1;
+		Q7S2 V -1;
 		Stop;
 	PM7:
 		Q7PM A -1;
@@ -1894,9 +3904,95 @@ class RSQGC_CardStates : Weapon
 		Q7LM A -1;
 		Q7LM B -1;
 		Q7LM C -1;
+		Q7LM D -1;
+		Q7LM E -1;
+		Q7LM F -1;
+		Q7LM G -1;
+		Q7LM H -1;
+		Q7LM I -1;
 		Stop;
 	RM7:
 		Q7RM A -1;
+		Q7RM B -1;
+		Q7RM C -1;
+		Stop;
+	EM07:
+		Q7E3 A -1;
+		Q7E3 B -1;
+		Q7E3 C -1;
+		Q7E3 D -1;
+		Q7E3 E -1;
+		Q7E3 F -1;
+		Q7E3 G -1;
+		Q7E3 H -1;
+		Q7E3 I -1;
+		Q7E3 J -1;
+		Q7E3 K -1;
+		Stop;
+	EM17:
+		Q7E4 A -1;
+		Q7E4 B -1;
+		Q7E4 C -1;
+		Q7E4 D -1;
+		Q7E4 E -1;
+		Q7E4 F -1;
+		Q7E4 G -1;
+		Q7E4 H -1;
+		Q7E4 I -1;
+		Q7E4 J -1;
+		Q7E4 K -1;
+		Stop;
+	EM27:
+		Q7E5 A -1;
+		Q7E5 B -1;
+		Q7E5 C -1;
+		Q7E5 D -1;
+		Q7E5 E -1;
+		Q7E5 F -1;
+		Q7E5 G -1;
+		Q7E5 H -1;
+		Q7E5 I -1;
+		Q7E5 J -1;
+		Q7E5 K -1;
+		Stop;
+	FM07:
+		Q7F3 A -1;
+		Q7F3 B -1;
+		Q7F3 C -1;
+		Q7F3 D -1;
+		Q7F3 E -1;
+		Q7F3 F -1;
+		Q7F3 G -1;
+		Q7F3 H -1;
+		Q7F3 I -1;
+		Q7F3 J -1;
+		Q7F3 K -1;
+		Stop;
+	FM17:
+		Q7F4 A -1;
+		Q7F4 B -1;
+		Q7F4 C -1;
+		Q7F4 D -1;
+		Q7F4 E -1;
+		Q7F4 F -1;
+		Q7F4 G -1;
+		Q7F4 H -1;
+		Q7F4 I -1;
+		Q7F4 J -1;
+		Q7F4 K -1;
+		Stop;
+	FM27:
+		Q7F5 A -1;
+		Q7F5 B -1;
+		Q7F5 C -1;
+		Q7F5 D -1;
+		Q7F5 E -1;
+		Q7F5 F -1;
+		Q7F5 G -1;
+		Q7F5 H -1;
+		Q7F5 I -1;
+		Q7F5 J -1;
+		Q7F5 K -1;
 		Stop;
 	BM07:
 		Q7B3 A -1;
@@ -1913,6 +4009,14 @@ class RSQGC_CardStates : Weapon
 		Q7B3 L -1;
 		Q7B3 M -1;
 		Q7B3 N -1;
+		Q7B3 O -1;
+		Q7B3 P -1;
+		Q7B3 Q -1;
+		Q7B3 R -1;
+		Q7B3 S -1;
+		Q7B3 T -1;
+		Q7B3 U -1;
+		Q7B3 V -1;
 		Stop;
 	BM17:
 		Q7B4 A -1;
@@ -1929,6 +4033,14 @@ class RSQGC_CardStates : Weapon
 		Q7B4 L -1;
 		Q7B4 M -1;
 		Q7B4 N -1;
+		Q7B4 O -1;
+		Q7B4 P -1;
+		Q7B4 Q -1;
+		Q7B4 R -1;
+		Q7B4 S -1;
+		Q7B4 T -1;
+		Q7B4 U -1;
+		Q7B4 V -1;
 		Stop;
 	BM27:
 		Q7B5 A -1;
@@ -1945,6 +4057,14 @@ class RSQGC_CardStates : Weapon
 		Q7B5 L -1;
 		Q7B5 M -1;
 		Q7B5 N -1;
+		Q7B5 O -1;
+		Q7B5 P -1;
+		Q7B5 Q -1;
+		Q7B5 R -1;
+		Q7B5 S -1;
+		Q7B5 T -1;
+		Q7B5 U -1;
+		Q7B5 V -1;
 		Stop;
 	SM07:
 		Q7S3 A -1;
@@ -1961,6 +4081,14 @@ class RSQGC_CardStates : Weapon
 		Q7S3 L -1;
 		Q7S3 M -1;
 		Q7S3 N -1;
+		Q7S3 O -1;
+		Q7S3 P -1;
+		Q7S3 Q -1;
+		Q7S3 R -1;
+		Q7S3 S -1;
+		Q7S3 T -1;
+		Q7S3 U -1;
+		Q7S3 V -1;
 		Stop;
 	SM17:
 		Q7S4 A -1;
@@ -1977,6 +4105,14 @@ class RSQGC_CardStates : Weapon
 		Q7S4 L -1;
 		Q7S4 M -1;
 		Q7S4 N -1;
+		Q7S4 O -1;
+		Q7S4 P -1;
+		Q7S4 Q -1;
+		Q7S4 R -1;
+		Q7S4 S -1;
+		Q7S4 T -1;
+		Q7S4 U -1;
+		Q7S4 V -1;
 		Stop;
 	SM27:
 		Q7S5 A -1;
@@ -1993,6 +4129,14 @@ class RSQGC_CardStates : Weapon
 		Q7S5 L -1;
 		Q7S5 M -1;
 		Q7S5 N -1;
+		Q7S5 O -1;
+		Q7S5 P -1;
+		Q7S5 Q -1;
+		Q7S5 R -1;
+		Q7S5 S -1;
+		Q7S5 T -1;
+		Q7S5 U -1;
+		Q7S5 V -1;
 		Stop;
 	PN8:
 		Q8PN A -1;
@@ -2018,9 +4162,95 @@ class RSQGC_CardStates : Weapon
 		Q8LN A -1;
 		Q8LN B -1;
 		Q8LN C -1;
+		Q8LN D -1;
+		Q8LN E -1;
+		Q8LN F -1;
+		Q8LN G -1;
+		Q8LN H -1;
+		Q8LN I -1;
 		Stop;
 	RN8:
 		Q8RN A -1;
+		Q8RN B -1;
+		Q8RN C -1;
+		Stop;
+	EN08:
+		Q8E0 A -1;
+		Q8E0 B -1;
+		Q8E0 C -1;
+		Q8E0 D -1;
+		Q8E0 E -1;
+		Q8E0 F -1;
+		Q8E0 G -1;
+		Q8E0 H -1;
+		Q8E0 I -1;
+		Q8E0 J -1;
+		Q8E0 K -1;
+		Stop;
+	EN18:
+		Q8E1 A -1;
+		Q8E1 B -1;
+		Q8E1 C -1;
+		Q8E1 D -1;
+		Q8E1 E -1;
+		Q8E1 F -1;
+		Q8E1 G -1;
+		Q8E1 H -1;
+		Q8E1 I -1;
+		Q8E1 J -1;
+		Q8E1 K -1;
+		Stop;
+	EN28:
+		Q8E2 A -1;
+		Q8E2 B -1;
+		Q8E2 C -1;
+		Q8E2 D -1;
+		Q8E2 E -1;
+		Q8E2 F -1;
+		Q8E2 G -1;
+		Q8E2 H -1;
+		Q8E2 I -1;
+		Q8E2 J -1;
+		Q8E2 K -1;
+		Stop;
+	FN08:
+		Q8F0 A -1;
+		Q8F0 B -1;
+		Q8F0 C -1;
+		Q8F0 D -1;
+		Q8F0 E -1;
+		Q8F0 F -1;
+		Q8F0 G -1;
+		Q8F0 H -1;
+		Q8F0 I -1;
+		Q8F0 J -1;
+		Q8F0 K -1;
+		Stop;
+	FN18:
+		Q8F1 A -1;
+		Q8F1 B -1;
+		Q8F1 C -1;
+		Q8F1 D -1;
+		Q8F1 E -1;
+		Q8F1 F -1;
+		Q8F1 G -1;
+		Q8F1 H -1;
+		Q8F1 I -1;
+		Q8F1 J -1;
+		Q8F1 K -1;
+		Stop;
+	FN28:
+		Q8F2 A -1;
+		Q8F2 B -1;
+		Q8F2 C -1;
+		Q8F2 D -1;
+		Q8F2 E -1;
+		Q8F2 F -1;
+		Q8F2 G -1;
+		Q8F2 H -1;
+		Q8F2 I -1;
+		Q8F2 J -1;
+		Q8F2 K -1;
 		Stop;
 	BN08:
 		Q8B0 A -1;
@@ -2037,6 +4267,14 @@ class RSQGC_CardStates : Weapon
 		Q8B0 L -1;
 		Q8B0 M -1;
 		Q8B0 N -1;
+		Q8B0 O -1;
+		Q8B0 P -1;
+		Q8B0 Q -1;
+		Q8B0 R -1;
+		Q8B0 S -1;
+		Q8B0 T -1;
+		Q8B0 U -1;
+		Q8B0 V -1;
 		Stop;
 	BN18:
 		Q8B1 A -1;
@@ -2053,6 +4291,14 @@ class RSQGC_CardStates : Weapon
 		Q8B1 L -1;
 		Q8B1 M -1;
 		Q8B1 N -1;
+		Q8B1 O -1;
+		Q8B1 P -1;
+		Q8B1 Q -1;
+		Q8B1 R -1;
+		Q8B1 S -1;
+		Q8B1 T -1;
+		Q8B1 U -1;
+		Q8B1 V -1;
 		Stop;
 	BN28:
 		Q8B2 A -1;
@@ -2069,6 +4315,14 @@ class RSQGC_CardStates : Weapon
 		Q8B2 L -1;
 		Q8B2 M -1;
 		Q8B2 N -1;
+		Q8B2 O -1;
+		Q8B2 P -1;
+		Q8B2 Q -1;
+		Q8B2 R -1;
+		Q8B2 S -1;
+		Q8B2 T -1;
+		Q8B2 U -1;
+		Q8B2 V -1;
 		Stop;
 	SN08:
 		Q8S0 A -1;
@@ -2085,6 +4339,14 @@ class RSQGC_CardStates : Weapon
 		Q8S0 L -1;
 		Q8S0 M -1;
 		Q8S0 N -1;
+		Q8S0 O -1;
+		Q8S0 P -1;
+		Q8S0 Q -1;
+		Q8S0 R -1;
+		Q8S0 S -1;
+		Q8S0 T -1;
+		Q8S0 U -1;
+		Q8S0 V -1;
 		Stop;
 	SN18:
 		Q8S1 A -1;
@@ -2101,6 +4363,14 @@ class RSQGC_CardStates : Weapon
 		Q8S1 L -1;
 		Q8S1 M -1;
 		Q8S1 N -1;
+		Q8S1 O -1;
+		Q8S1 P -1;
+		Q8S1 Q -1;
+		Q8S1 R -1;
+		Q8S1 S -1;
+		Q8S1 T -1;
+		Q8S1 U -1;
+		Q8S1 V -1;
 		Stop;
 	SN28:
 		Q8S2 A -1;
@@ -2117,6 +4387,14 @@ class RSQGC_CardStates : Weapon
 		Q8S2 L -1;
 		Q8S2 M -1;
 		Q8S2 N -1;
+		Q8S2 O -1;
+		Q8S2 P -1;
+		Q8S2 Q -1;
+		Q8S2 R -1;
+		Q8S2 S -1;
+		Q8S2 T -1;
+		Q8S2 U -1;
+		Q8S2 V -1;
 		Stop;
 	PM8:
 		Q8PM A -1;
@@ -2142,9 +4420,95 @@ class RSQGC_CardStates : Weapon
 		Q8LM A -1;
 		Q8LM B -1;
 		Q8LM C -1;
+		Q8LM D -1;
+		Q8LM E -1;
+		Q8LM F -1;
+		Q8LM G -1;
+		Q8LM H -1;
+		Q8LM I -1;
 		Stop;
 	RM8:
 		Q8RM A -1;
+		Q8RM B -1;
+		Q8RM C -1;
+		Stop;
+	EM08:
+		Q8E3 A -1;
+		Q8E3 B -1;
+		Q8E3 C -1;
+		Q8E3 D -1;
+		Q8E3 E -1;
+		Q8E3 F -1;
+		Q8E3 G -1;
+		Q8E3 H -1;
+		Q8E3 I -1;
+		Q8E3 J -1;
+		Q8E3 K -1;
+		Stop;
+	EM18:
+		Q8E4 A -1;
+		Q8E4 B -1;
+		Q8E4 C -1;
+		Q8E4 D -1;
+		Q8E4 E -1;
+		Q8E4 F -1;
+		Q8E4 G -1;
+		Q8E4 H -1;
+		Q8E4 I -1;
+		Q8E4 J -1;
+		Q8E4 K -1;
+		Stop;
+	EM28:
+		Q8E5 A -1;
+		Q8E5 B -1;
+		Q8E5 C -1;
+		Q8E5 D -1;
+		Q8E5 E -1;
+		Q8E5 F -1;
+		Q8E5 G -1;
+		Q8E5 H -1;
+		Q8E5 I -1;
+		Q8E5 J -1;
+		Q8E5 K -1;
+		Stop;
+	FM08:
+		Q8F3 A -1;
+		Q8F3 B -1;
+		Q8F3 C -1;
+		Q8F3 D -1;
+		Q8F3 E -1;
+		Q8F3 F -1;
+		Q8F3 G -1;
+		Q8F3 H -1;
+		Q8F3 I -1;
+		Q8F3 J -1;
+		Q8F3 K -1;
+		Stop;
+	FM18:
+		Q8F4 A -1;
+		Q8F4 B -1;
+		Q8F4 C -1;
+		Q8F4 D -1;
+		Q8F4 E -1;
+		Q8F4 F -1;
+		Q8F4 G -1;
+		Q8F4 H -1;
+		Q8F4 I -1;
+		Q8F4 J -1;
+		Q8F4 K -1;
+		Stop;
+	FM28:
+		Q8F5 A -1;
+		Q8F5 B -1;
+		Q8F5 C -1;
+		Q8F5 D -1;
+		Q8F5 E -1;
+		Q8F5 F -1;
+		Q8F5 G -1;
+		Q8F5 H -1;
+		Q8F5 I -1;
+		Q8F5 J -1;
+		Q8F5 K -1;
 		Stop;
 	BM08:
 		Q8B3 A -1;
@@ -2161,6 +4525,14 @@ class RSQGC_CardStates : Weapon
 		Q8B3 L -1;
 		Q8B3 M -1;
 		Q8B3 N -1;
+		Q8B3 O -1;
+		Q8B3 P -1;
+		Q8B3 Q -1;
+		Q8B3 R -1;
+		Q8B3 S -1;
+		Q8B3 T -1;
+		Q8B3 U -1;
+		Q8B3 V -1;
 		Stop;
 	BM18:
 		Q8B4 A -1;
@@ -2177,6 +4549,14 @@ class RSQGC_CardStates : Weapon
 		Q8B4 L -1;
 		Q8B4 M -1;
 		Q8B4 N -1;
+		Q8B4 O -1;
+		Q8B4 P -1;
+		Q8B4 Q -1;
+		Q8B4 R -1;
+		Q8B4 S -1;
+		Q8B4 T -1;
+		Q8B4 U -1;
+		Q8B4 V -1;
 		Stop;
 	BM28:
 		Q8B5 A -1;
@@ -2193,6 +4573,14 @@ class RSQGC_CardStates : Weapon
 		Q8B5 L -1;
 		Q8B5 M -1;
 		Q8B5 N -1;
+		Q8B5 O -1;
+		Q8B5 P -1;
+		Q8B5 Q -1;
+		Q8B5 R -1;
+		Q8B5 S -1;
+		Q8B5 T -1;
+		Q8B5 U -1;
+		Q8B5 V -1;
 		Stop;
 	SM08:
 		Q8S3 A -1;
@@ -2209,6 +4597,14 @@ class RSQGC_CardStates : Weapon
 		Q8S3 L -1;
 		Q8S3 M -1;
 		Q8S3 N -1;
+		Q8S3 O -1;
+		Q8S3 P -1;
+		Q8S3 Q -1;
+		Q8S3 R -1;
+		Q8S3 S -1;
+		Q8S3 T -1;
+		Q8S3 U -1;
+		Q8S3 V -1;
 		Stop;
 	SM18:
 		Q8S4 A -1;
@@ -2225,6 +4621,14 @@ class RSQGC_CardStates : Weapon
 		Q8S4 L -1;
 		Q8S4 M -1;
 		Q8S4 N -1;
+		Q8S4 O -1;
+		Q8S4 P -1;
+		Q8S4 Q -1;
+		Q8S4 R -1;
+		Q8S4 S -1;
+		Q8S4 T -1;
+		Q8S4 U -1;
+		Q8S4 V -1;
 		Stop;
 	SM28:
 		Q8S5 A -1;
@@ -2241,10 +4645,21 @@ class RSQGC_CardStates : Weapon
 		Q8S5 L -1;
 		Q8S5 M -1;
 		Q8S5 N -1;
+		Q8S5 O -1;
+		Q8S5 P -1;
+		Q8S5 Q -1;
+		Q8S5 R -1;
+		Q8S5 S -1;
+		Q8S5 T -1;
+		Q8S5 U -1;
+		Q8S5 V -1;
 		Stop;
 	}
 
-	// The first state of a piece. kind 0 panel, 1 label, 2 big digit, 3 small digit, 4 RELOAD; slot for digits.
+	// The first state of a piece. kind 0 panel, 1 label (JFO q * 3 + word, Ermac 6 + word), 2 big digit, 3 small digit
+	// (JFO, q * GLYPHS + glyph), 4 RELOAD (JFO q, Ermac 2), 5 / 6 Ermac big / small digit; slot for digits.
+	const ERMAC_LABEL = 6;
+	const ERMAC_RELOAD = 2;
 	// (FindState wants a constant label, hence the table.)
 	// depth: which of the baked DEPTHS (rsqgc_in), 0..8, 4 is where the owner placed it.
 	const DEPTHS = 9;
@@ -2258,6 +4673,12 @@ class RSQGC_CardStates : Weapon
 		case 0: return d.FindState("PN0");
 		case 100: return d.FindState("LN0");
 		case 400: return d.FindState("RN0");
+		case 500: return d.FindState("EN00");
+		case 501: return d.FindState("EN10");
+		case 502: return d.FindState("EN20");
+		case 600: return d.FindState("FN00");
+		case 601: return d.FindState("FN10");
+		case 602: return d.FindState("FN20");
 		case 200: return d.FindState("BN00");
 		case 201: return d.FindState("BN10");
 		case 202: return d.FindState("BN20");
@@ -2267,6 +4688,12 @@ class RSQGC_CardStates : Weapon
 		case 10: return d.FindState("PM0");
 		case 110: return d.FindState("LM0");
 		case 410: return d.FindState("RM0");
+		case 510: return d.FindState("EM00");
+		case 511: return d.FindState("EM10");
+		case 512: return d.FindState("EM20");
+		case 610: return d.FindState("FM00");
+		case 611: return d.FindState("FM10");
+		case 612: return d.FindState("FM20");
 		case 210: return d.FindState("BM00");
 		case 211: return d.FindState("BM10");
 		case 212: return d.FindState("BM20");
@@ -2276,6 +4703,12 @@ class RSQGC_CardStates : Weapon
 		case 1000: return d.FindState("PN1");
 		case 1100: return d.FindState("LN1");
 		case 1400: return d.FindState("RN1");
+		case 1500: return d.FindState("EN01");
+		case 1501: return d.FindState("EN11");
+		case 1502: return d.FindState("EN21");
+		case 1600: return d.FindState("FN01");
+		case 1601: return d.FindState("FN11");
+		case 1602: return d.FindState("FN21");
 		case 1200: return d.FindState("BN01");
 		case 1201: return d.FindState("BN11");
 		case 1202: return d.FindState("BN21");
@@ -2285,6 +4718,12 @@ class RSQGC_CardStates : Weapon
 		case 1010: return d.FindState("PM1");
 		case 1110: return d.FindState("LM1");
 		case 1410: return d.FindState("RM1");
+		case 1510: return d.FindState("EM01");
+		case 1511: return d.FindState("EM11");
+		case 1512: return d.FindState("EM21");
+		case 1610: return d.FindState("FM01");
+		case 1611: return d.FindState("FM11");
+		case 1612: return d.FindState("FM21");
 		case 1210: return d.FindState("BM01");
 		case 1211: return d.FindState("BM11");
 		case 1212: return d.FindState("BM21");
@@ -2294,6 +4733,12 @@ class RSQGC_CardStates : Weapon
 		case 2000: return d.FindState("PN2");
 		case 2100: return d.FindState("LN2");
 		case 2400: return d.FindState("RN2");
+		case 2500: return d.FindState("EN02");
+		case 2501: return d.FindState("EN12");
+		case 2502: return d.FindState("EN22");
+		case 2600: return d.FindState("FN02");
+		case 2601: return d.FindState("FN12");
+		case 2602: return d.FindState("FN22");
 		case 2200: return d.FindState("BN02");
 		case 2201: return d.FindState("BN12");
 		case 2202: return d.FindState("BN22");
@@ -2303,6 +4748,12 @@ class RSQGC_CardStates : Weapon
 		case 2010: return d.FindState("PM2");
 		case 2110: return d.FindState("LM2");
 		case 2410: return d.FindState("RM2");
+		case 2510: return d.FindState("EM02");
+		case 2511: return d.FindState("EM12");
+		case 2512: return d.FindState("EM22");
+		case 2610: return d.FindState("FM02");
+		case 2611: return d.FindState("FM12");
+		case 2612: return d.FindState("FM22");
 		case 2210: return d.FindState("BM02");
 		case 2211: return d.FindState("BM12");
 		case 2212: return d.FindState("BM22");
@@ -2312,6 +4763,12 @@ class RSQGC_CardStates : Weapon
 		case 3000: return d.FindState("PN3");
 		case 3100: return d.FindState("LN3");
 		case 3400: return d.FindState("RN3");
+		case 3500: return d.FindState("EN03");
+		case 3501: return d.FindState("EN13");
+		case 3502: return d.FindState("EN23");
+		case 3600: return d.FindState("FN03");
+		case 3601: return d.FindState("FN13");
+		case 3602: return d.FindState("FN23");
 		case 3200: return d.FindState("BN03");
 		case 3201: return d.FindState("BN13");
 		case 3202: return d.FindState("BN23");
@@ -2321,6 +4778,12 @@ class RSQGC_CardStates : Weapon
 		case 3010: return d.FindState("PM3");
 		case 3110: return d.FindState("LM3");
 		case 3410: return d.FindState("RM3");
+		case 3510: return d.FindState("EM03");
+		case 3511: return d.FindState("EM13");
+		case 3512: return d.FindState("EM23");
+		case 3610: return d.FindState("FM03");
+		case 3611: return d.FindState("FM13");
+		case 3612: return d.FindState("FM23");
 		case 3210: return d.FindState("BM03");
 		case 3211: return d.FindState("BM13");
 		case 3212: return d.FindState("BM23");
@@ -2330,6 +4793,12 @@ class RSQGC_CardStates : Weapon
 		case 4000: return d.FindState("PN4");
 		case 4100: return d.FindState("LN4");
 		case 4400: return d.FindState("RN4");
+		case 4500: return d.FindState("EN04");
+		case 4501: return d.FindState("EN14");
+		case 4502: return d.FindState("EN24");
+		case 4600: return d.FindState("FN04");
+		case 4601: return d.FindState("FN14");
+		case 4602: return d.FindState("FN24");
 		case 4200: return d.FindState("BN04");
 		case 4201: return d.FindState("BN14");
 		case 4202: return d.FindState("BN24");
@@ -2339,6 +4808,12 @@ class RSQGC_CardStates : Weapon
 		case 4010: return d.FindState("PM4");
 		case 4110: return d.FindState("LM4");
 		case 4410: return d.FindState("RM4");
+		case 4510: return d.FindState("EM04");
+		case 4511: return d.FindState("EM14");
+		case 4512: return d.FindState("EM24");
+		case 4610: return d.FindState("FM04");
+		case 4611: return d.FindState("FM14");
+		case 4612: return d.FindState("FM24");
 		case 4210: return d.FindState("BM04");
 		case 4211: return d.FindState("BM14");
 		case 4212: return d.FindState("BM24");
@@ -2348,6 +4823,12 @@ class RSQGC_CardStates : Weapon
 		case 5000: return d.FindState("PN5");
 		case 5100: return d.FindState("LN5");
 		case 5400: return d.FindState("RN5");
+		case 5500: return d.FindState("EN05");
+		case 5501: return d.FindState("EN15");
+		case 5502: return d.FindState("EN25");
+		case 5600: return d.FindState("FN05");
+		case 5601: return d.FindState("FN15");
+		case 5602: return d.FindState("FN25");
 		case 5200: return d.FindState("BN05");
 		case 5201: return d.FindState("BN15");
 		case 5202: return d.FindState("BN25");
@@ -2357,6 +4838,12 @@ class RSQGC_CardStates : Weapon
 		case 5010: return d.FindState("PM5");
 		case 5110: return d.FindState("LM5");
 		case 5410: return d.FindState("RM5");
+		case 5510: return d.FindState("EM05");
+		case 5511: return d.FindState("EM15");
+		case 5512: return d.FindState("EM25");
+		case 5610: return d.FindState("FM05");
+		case 5611: return d.FindState("FM15");
+		case 5612: return d.FindState("FM25");
 		case 5210: return d.FindState("BM05");
 		case 5211: return d.FindState("BM15");
 		case 5212: return d.FindState("BM25");
@@ -2366,6 +4853,12 @@ class RSQGC_CardStates : Weapon
 		case 6000: return d.FindState("PN6");
 		case 6100: return d.FindState("LN6");
 		case 6400: return d.FindState("RN6");
+		case 6500: return d.FindState("EN06");
+		case 6501: return d.FindState("EN16");
+		case 6502: return d.FindState("EN26");
+		case 6600: return d.FindState("FN06");
+		case 6601: return d.FindState("FN16");
+		case 6602: return d.FindState("FN26");
 		case 6200: return d.FindState("BN06");
 		case 6201: return d.FindState("BN16");
 		case 6202: return d.FindState("BN26");
@@ -2375,6 +4868,12 @@ class RSQGC_CardStates : Weapon
 		case 6010: return d.FindState("PM6");
 		case 6110: return d.FindState("LM6");
 		case 6410: return d.FindState("RM6");
+		case 6510: return d.FindState("EM06");
+		case 6511: return d.FindState("EM16");
+		case 6512: return d.FindState("EM26");
+		case 6610: return d.FindState("FM06");
+		case 6611: return d.FindState("FM16");
+		case 6612: return d.FindState("FM26");
 		case 6210: return d.FindState("BM06");
 		case 6211: return d.FindState("BM16");
 		case 6212: return d.FindState("BM26");
@@ -2384,6 +4883,12 @@ class RSQGC_CardStates : Weapon
 		case 7000: return d.FindState("PN7");
 		case 7100: return d.FindState("LN7");
 		case 7400: return d.FindState("RN7");
+		case 7500: return d.FindState("EN07");
+		case 7501: return d.FindState("EN17");
+		case 7502: return d.FindState("EN27");
+		case 7600: return d.FindState("FN07");
+		case 7601: return d.FindState("FN17");
+		case 7602: return d.FindState("FN27");
 		case 7200: return d.FindState("BN07");
 		case 7201: return d.FindState("BN17");
 		case 7202: return d.FindState("BN27");
@@ -2393,6 +4898,12 @@ class RSQGC_CardStates : Weapon
 		case 7010: return d.FindState("PM7");
 		case 7110: return d.FindState("LM7");
 		case 7410: return d.FindState("RM7");
+		case 7510: return d.FindState("EM07");
+		case 7511: return d.FindState("EM17");
+		case 7512: return d.FindState("EM27");
+		case 7610: return d.FindState("FM07");
+		case 7611: return d.FindState("FM17");
+		case 7612: return d.FindState("FM27");
 		case 7210: return d.FindState("BM07");
 		case 7211: return d.FindState("BM17");
 		case 7212: return d.FindState("BM27");
@@ -2402,6 +4913,12 @@ class RSQGC_CardStates : Weapon
 		case 8000: return d.FindState("PN8");
 		case 8100: return d.FindState("LN8");
 		case 8400: return d.FindState("RN8");
+		case 8500: return d.FindState("EN08");
+		case 8501: return d.FindState("EN18");
+		case 8502: return d.FindState("EN28");
+		case 8600: return d.FindState("FN08");
+		case 8601: return d.FindState("FN18");
+		case 8602: return d.FindState("FN28");
 		case 8200: return d.FindState("BN08");
 		case 8201: return d.FindState("BN18");
 		case 8202: return d.FindState("BN28");
@@ -2411,6 +4928,12 @@ class RSQGC_CardStates : Weapon
 		case 8010: return d.FindState("PM8");
 		case 8110: return d.FindState("LM8");
 		case 8410: return d.FindState("RM8");
+		case 8510: return d.FindState("EM08");
+		case 8511: return d.FindState("EM18");
+		case 8512: return d.FindState("EM28");
+		case 8610: return d.FindState("FM08");
+		case 8611: return d.FindState("FM18");
+		case 8612: return d.FindState("FM28");
 		case 8210: return d.FindState("BM08");
 		case 8211: return d.FindState("BM18");
 		case 8212: return d.FindState("BM28");

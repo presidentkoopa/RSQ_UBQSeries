@@ -5,6 +5,10 @@
 user int    rsqgc_card = 1;            // the small card: 0 off, 1 always, 2 when you look at the gun, 3 inspect gesture (RSQ Gestures), 4 on reload (that hand's reload held, then rsqgc_linger)
 user int    rsqgc_color = 0;           // card colour: 0 each gun its own, 1 white 2 grey 3 red 4 gold 5 green 6 blue 7 cyan 8 purple 9 orange 10 pink, 11 by ammo type (QoL GC6)
 user int    rsqgc_watch = 1;           // the watch card, the full card on both sides of the wrist: 0 off, 1 when you check your watch, 2 always
+user int    rsqgc_watch_shows = 0;     // what the watch card shows with a gun (owner 2026-11-03): 0 the Weapon card, 1 the Status card, 2 both on one card (an empty hand always shows the Status card)
+user int    rsqgc_watch_bonsai = 0;    // Option: 1 = Gun Bonsai's level, XP and upgrades below the Weapon card (with Gun Bonsai)
+user int    rsqgc_small_font = 0;      // Option: the small card's font: 0 JFO, 1 Ermac's (his digits and words; the colours work the same)
+user int    rsqgc_text_q = 0;          // Text Quality: 0 Quest (JFO glyphs at half resolution, a quarter of the voxels), 1 PCVR (full resolution)
 user int    rsqgc_world = 0;           // 1: the cards drawn in the world at the hand (no gun can cover them; may trail a fast hand)
 user int    rsqgc_hide_eye = 0;        // QoL GC1 (Option): 1 = the small card hides while the gun is up at your eye (sights or a scope)
 user int    rsqgc_tilt = 0;            // 1: the small card turns toward your eyes every tic (it swings a little round the wrist as it turns)
@@ -24,7 +28,9 @@ user int    rsqgc_look = 1;            // 0 solid, 1 glass, 2 glow
 user float  rsqgc_alpha = 0.85;        // how solid glass / glow is
 user int    rsqgc_tint = 0;            // the small card's colours: 0 Ermac's own, 1 the Wheel's palette (Standard without it)
 user int    rsqgc_label = 1;           // the AMMO / MAGAZINE word
-user int    rsqgc_lowwarn = 1;         // the count turns the empty colour when low
+user int    rsqgc_lowwarn = 1;         // the magazine's count green above half, yellow down to rsqgc_lowammo_frac, red at or below it (and empty)
+user int    rsqgc_keys = 1;            // the key icons on the Status / Both card (lit when held, dark grey when not)
+user int    rsqgc_keys_map = 1;        // only the key kinds this map has (keycards, skulls), scanned when the map starts; 0 = always all six
 user float  rsqgc_lowammo_frac = 0.25; // low: a magazine at or below this share of a full one (any gun: empty)
 user int    rsqgc_fade = 4;            // tics to fade in or out
 user float  rsqgc_glance_reach = 0.7;  // "when you look at the gun": the gun within this many metres of the eyes
