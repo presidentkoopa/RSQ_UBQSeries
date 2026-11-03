@@ -117,9 +117,9 @@ class RSQSM_Clock : EventHandler
 	double curDepth;
 
 	// ---- THE GUN BONSAI VR PATCH'S LEVELS (GBOVR_TREES.md 4.9), asked by name once a second ----------------------------
-	// Without the patch Gb is -1 and every row is as it was. With it: SLOW MOTION is the unlock for your own key, wrist
-	// cross, burst and accessibility button (other mods' pulses still fire); LONGER, DEEPER, CHEAPER shape it; LEAN DODGE is
-	// the unlock of the lean (2: a lean dodges a claw too); MATRIX is the full look.
+	// Without the patch Gb is -1 and every row is as it was. With it: LONGER, DEEPER, CHEAPER shape your slow motion (the key
+	// and the rest work from the start, owner 11-03); LEAN DODGE is the unlock of the lean (2: a lean dodges a claw too);
+	// MATRIX is the full look.
 	transient int gbTic;
 	transient bool gbOn;
 	transient int gbSM[MAXPLAYERS], gbLonger[MAXPLAYERS], gbDeeper[MAXPLAYERS], gbCheaper[MAXPLAYERS], gbLean[MAXPLAYERS], gbMatrix[MAXPLAYERS];
@@ -166,12 +166,10 @@ class RSQSM_Clock : EventHandler
 		for (int n = 0; n < MAXPLAYERS; n++) if (playeringame[n]) m = max(m, Gb(n, what));
 		return m;
 	}
-	// SLOW MOTION, the unlock: your own triggers wait for it under the patch
-	bool Unlearned(int who, int cat)
-	{
-		if (!gbOn || (cat != CAT_KEY && cat != CAT_WRIST && cat != CAT_BURST && cat != CAT_A11Y)) return false;
-		return Gb(who, 'SlowMotion') < 1;
-	}
+	// SLOW MOTION was the unlock of your own triggers under the patch (11-02). DROPPED (owner, 11-03: the key, the wrist cross,
+	// the burst and the accessibility button work from the start; the levels only lengthen and deepen it). Nothing is ever
+	// unlearned now; the function stays at its call sites.
+	bool Unlearned(int who, int cat) { return false; }
 	// LONGER: the burst 4 -> 5, 6, 8 s; a full meter lasts 25% longer a level. CHEAPER: the meter spent 20% slower a level.
 	int BurstMs(int who) { static const int B[] = { 4000, 5000, 6000, 8000 }; int l = Gb(who, 'Longer'); return l < 0 ? BURST_MS : B[clamp(l, 0, 3)]; }
 	double AdrSecs() { int l = GbMax('Longer'); return max(1.0, Cv("rsqsm_adr_secs", 10)) * (1.0 + 0.25 * max(l, 0)); }
