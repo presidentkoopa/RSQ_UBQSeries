@@ -162,12 +162,15 @@ the simulated rig (2026-10-31 onward).
   option as an unlock; the nine hang from them (Double Hook after Heavy Haul 2, no longer "from player level 5").
   New: **Zip Kick** (arrive on a monster by the rope at 3 m/s or more: 20 / 30 / 40, more the faster), **Scorpion**
   (needs RSQ Melee: what the hook brings is punched by your empty fist at full power as a counter) and **Twin Lines**
-  (a wall rope from each hand; under the patch one at a time until it is learned; hold one's reel to pull toward
-  it; 2: let one go and you are flung along the other). Without the patch nothing changes.
-  With the OG defaults (11-03): Get Over Here and Scorpion act when a thrown monster comes to a stop in front of
-  you; Bowling strikes what is in its path, shoves it aside and the monster comes on; Double Hook pairs two
-  monsters bitten within 16 tics; Barbed Claw tears when the claw lets go after its 16 shut tics; Zip Kick counts
-  a fling as the rope. Twin Lines, Slingshot and Steady Line act on ropes (Rope or Swing). Rig only.
+  (after Momentum: a rope from each hand; you hang between them; hold one's reel and the other pays out, so you
+  are drawn to that one; 2: let one go and you are flung along the other). Without the patch nothing changes.
+  **Fast Reel** (11-03, "faster claw + harder yank"): the claw flies, and the OG fling and OG yank launch, 10% faster
+  a level (x1.4 at 4; the claw 40 -> 56 a tic). The yank's lift stays the OG's. No cap, as the OG has none: Long
+  Line 4 + Fast Reel 4 from 1380 flings you at 160 u/tic and the wall stops you (rig).
+  With the OG defaults: Get Over Here and Scorpion act when a thrown monster arrives in front of you; Bowling
+  strikes what is in its path; Double Hook pairs two monsters bitten within 16 tics; Barbed Claw tears when the
+  claw lets go; Zip Kick counts a fling as the rope. Slingshot, Steady Line and Twin Lines sit under Momentum (the
+  swing rope). Rig only, not headset-confirmed.
 - **RSQ Accessibility:** Hold to Toggle on the hook binds, Gesture Ease, colour-blind cues. Steady Hands (on in
   Accessibility): the hook is fired along the smoothed hand, and the aim dot follows it; the climb, the rope, the
   lasso and the lash stay on the raw hand. Slower Taps: Tap to Let Go is 1.5x longer. Rumble Strength 0: no bite

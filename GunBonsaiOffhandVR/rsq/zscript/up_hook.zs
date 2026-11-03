@@ -63,12 +63,12 @@ class RSQ_Upgrade_Scorpion : RSQ_HookPerk
 	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("mult", string.format("x%.2f", 1.0 + 0.25 * level)); }
 }
 
-// TWIN LINES (after Long Line 2): a wall rope from each hand at once (under this patch one at a time without it); holding
-// one's reel pulls you toward that one; 2: letting one go flings you along the other. (RSQGR_Core Latch, PullAll, LetGo)
+// TWIN LINES (after Momentum; owner 11-03: it needs a rope, and the OG default has none -- it was under Long Line 2): a wall
+// rope from each hand at once (under this patch one at a time without it); you hang between them, holding one's reel
+// takes that one in; 2: letting one go flings you along the other. (RSQGR_Core Latch, Swing, LetGo)
 class RSQ_Upgrade_TwinLines : RSQ_HookPerk
 {
-	override String Parent() { return "LongLine"; }
-	override int ParentLevel() { return 2; }
+	override String Parent() { return "SwingMomentum"; }
 	override int Cap() { return 2; }
 }
 
@@ -82,10 +82,12 @@ class RSQ_Upgrade_LongLine : RSQ_HookPerk
 	}
 }
 
-// FAST REEL: reeling in, the claw's flight and a hooked monster's slide, 15% faster a level.
+// FAST REEL: FASTER CLAW + HARDER YANK (owner 11-03; it was the monster slide's speed, no longer the default): the claw
+// flies, and the OG fling toward a wall and the OG yank of a monster launch, 10% faster a level (x1.4 at 4). The rope
+// modes' reel and slide too. (RSQGR_Perks.Factor 'reel': core's Fire and OGFling, monster.zs OGThrow)
 class RSQ_Upgrade_FastReel : RSQ_HookPerk
 {
-	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("r", AsPercentIncrease(1.0 + 0.15 * level)); }
+	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("r", AsPercentIncrease(1.0 + 0.10 * level)); }
 }
 
 // HEAVY HAUL: heavier and bigger things come to you; a boss on the line staggers.

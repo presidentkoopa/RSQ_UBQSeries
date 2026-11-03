@@ -133,7 +133,7 @@ class RSQGR_Core : EventHandler
 		if (s != "") h.A_StartSound(s, CHAN_WEAPON);
 		s = RSQGR_Looks.Sound('loop');
 		if (s != "") h.A_StartSound(s, CHAN_BODY, CHANF_LOOPING, 0.6);
-		Log(h, "fire");
+		Log(h, String.Format("fire speed %.1f range %.0f", h.speed, h.range));
 	}
 
 	// ---- let go -----------------------------------------------------------------
@@ -479,13 +479,17 @@ class RSQGR_Core : EventHandler
 		int b = (int(ang * (65536.0 / 360.0)) >> 8) & 255;
 		int zh = int(floor(pmo.Pos.z - hook.z + 0.5));
 		double th = b * (360.0 / 256.0);
+		// FAST REEL (Gun Bonsai VR, owner 11-03 "faster claw + harder yank"): his whole thrust x(1 + 0.1 lv), its direction
+		// unchanged; 1 without the patch. No clamp, as his ThrustThing has none (nolimit): the engine's own MAXMOVE 30
+		// clamp still applies where it does for him (water, crouched, COMPATF_WALLRUN: p_mobj.cpp 2096-2105).
+		double k = RSQGR_Perks.Factor(pmo, 'reel');
 		pmo.player.keepmomentum = true;
-		pmo.vel.xy += (cos(th), sin(th)) * (f / 12);
-		pmo.vel.z += -((zh / 4) / 4.0);
+		pmo.vel.xy += (cos(th), sin(th)) * (f / 12) * k;
+		pmo.vel.z += -((zh / 4) / 4.0) * k;
 		let c = Get();
 		if (c) c.flungTic[pmo.PlayerNumber()] = level.maptime;
 		if (RSQGR_Util.Opt("rsqgr_debug", 0) >= 1)
-			Console.Printf("T_GR t%d og fling f %d b %d zh %d -> vel(%.3f %.3f %.3f)", level.maptime, f, b, zh, pmo.vel.x, pmo.vel.y, pmo.vel.z);
+			Console.Printf("T_GR t%d og fling f %d b %d zh %d x%.2f -> vel(%.3f %.3f %.3f)", level.maptime, f, b, zh, k, pmo.vel.x, pmo.vel.y, pmo.vel.z);
 	}
 	int flungTic[MAXPLAYERS];   // the last OG fling (Gun Bonsai VR's Zip Kick counts a fling as the rope)
 
@@ -662,12 +666,29 @@ class RSQGR_Core : EventHandler
 		if (moving || level.maptime < coastUntil[pn]) pmo.player.keepmomentum = true;
 	}
 
+	const TWIN_SAG = 32.0;
 	void Swing(PlayerPawn pmo, int pn)
 	{
 		if (!SwingMode(pmo)) { PullAll(pmo, pn); return; }
 		bool any = false;
 		bool truthTaken = false;
 		bool roped = false;
+		// TWO ROPES (Twin Lines): each one's reel may take in only what the body really came nearer to it. Two anchors
+		// further apart than the two ropes would let the reel run on regardless (rig 11-03: one rope reeled to 88 with the
+		// body 277 from its claw, the other holding it; the two corrections then fought and pinned him to the ceiling)
+		// TWIN LINES 1 (Gun Bonsai VR) on the swing rope: one reel held and not the other, the other pays out as he goes,
+		// so he is drawn to the one he reels (as PullAll's pull toward that one alone)
+		int latched = 0;
+		bool reeling[2];
+		for (int k = 0; k < 2; k++)
+		{
+			let hk = hooks[pn * 2 + k];
+			reeling[k] = false;
+			if (!hk || hk.phase != RSQGR_Hook.PH_LATCH) continue;
+			latched++;
+			reeling[k] = held[pn * 2 + k] && (pressFired[pn * 2 + k] || level.maptime - pressTic[pn * 2 + k] > TapTics());
+		}
+		bool payOut = latched == 2 && reeling[0] != reeling[1] && RSQGR_Perks.Gate(pmo, 'TwinLines') >= 1;
 		for (int hand = 0; hand < 2; hand++)
 		{
 			int i = pn * 2 + hand;
@@ -692,9 +713,22 @@ class RSQGR_Core : EventHandler
 			h.reelHeld = held[i] && (pressFired[i] || level.maptime - pressTic[i] > TapTics());
 			if (h.reelHeld)
 			{
+				double rs = RSQGR_Util.Num("rsqgr_reel_speed", 12) * RSQGR_Perks.Factor(pmo, 'reel');
 				h.ropeLen = min(h.ropeLen, d);
-				h.ropeLen = max(minLen, h.ropeLen - RSQGR_Util.Num("rsqgr_reel_speed", 12) * RSQGR_Perks.Factor(pmo, 'reel'));
+				h.ropeLen = max(minLen, h.ropeLen - rs);
+				if (latched == 2 && !payOut)
+				{
+					h.ropeLen = max(h.ropeLen, min(d - rs, maxLen));
+					// and the two together stay long enough to hang from: TWIN_SAG more than the anchors are apart
+					let o = hooks[pn * 2 + (1 - hand)];
+					if (o && o != h && o.phase == RSQGR_Hook.PH_LATCH)
+						h.ropeLen = max(h.ropeLen, min((a - o.anchor).Length() - o.ropeLen + TWIN_SAG, maxLen));
+				}
 			}
+			// Twin Lines 1: pays out -- a tic's reel ahead of where he is (the other's reel draws him at up to 1.5 x it a tic),
+			// so this one never holds him back from it
+			else if (payOut && h.gripHand < 0)
+				h.ropeLen = clamp(max(h.ropeLen, d + 1.5 * RSQGR_Util.Num("rsqgr_reel_speed", 12) * RSQGR_Perks.Factor(pmo, 'reel') + 2), minLen, maxLen);
 			// CLIMB: a free hand on the grab bind, touching the rope, takes hold of it.
 			double climbStep = 0;
 			double along = 0;

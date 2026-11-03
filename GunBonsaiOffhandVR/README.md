@@ -200,10 +200,10 @@ Rig-checked (logs) only: **not yet headset-confirmed**.
 - **Reads RSQ_Score**: a kill's bonus points and combo chain (XP Source: Style).
 - **Reads RSQ_SlowMo**: is the world slowed; Adrenaline adds to SlowMo's meter.
 - **Reads RSQ_Grapple**: what the hook did, for hook XP and the Grapple paths.
-- **The Grapple tree** (`up_hook.zs`, GBOVR_TREES.md 4.6): Grapple (the unlock) -> Long Line -> Barbed Claw, Twin Lines
-  (Long Line 2); Fast Reel -> Heavy Haul -> Get Over Here -> Bowling, Scorpion (Get Over Here 2); Heavy Haul 2 -> Double
-  Hook; Momentum (`RSQ_Upgrade_SwingMomentum`: the saber's Momentum has the plain name) -> Slingshot, Steady Line;
-  Zip Kick.
+- **The Grapple tree** (`up_hook.zs`, GBOVR_TREES.md 4.6): Grapple (the unlock) -> Long Line -> Barbed Claw; Fast Reel
+  (faster claw + harder yank, 10% a level) -> Heavy Haul -> Get Over Here -> Bowling, Scorpion (Get Over Here 2); Heavy
+  Haul 2 -> Double Hook; Momentum (`RSQ_Upgrade_SwingMomentum`: the saber's Momentum has the plain name) -> Slingshot,
+  Steady Line, Twin Lines (moved here 11-03: it needs the rope); Zip Kick.
 - **RSQ_Whip and RSQ_Grenade (2026-11-02, not yet run)**: each pays its hits to its own weapon record through
   this patch's service (the whip's `Hurt` inside the claim bracket; the thrown grenade claimed with the grenade
   weapon as master), so both level like weapons and can carry the paths in GBOVR_TREES.md. The whip is typed

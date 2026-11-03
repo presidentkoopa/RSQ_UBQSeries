@@ -7,7 +7,8 @@
 //
 // WHAT EACH LEVEL DOES HERE (the patch only stores, offers and shows them):
 //   LongLine     the claw flies 20% further a level                      (Fire: range)
-//   FastReel     reel, claw flight and a monster's slide 15% faster a level
+//   FastReel     FASTER CLAW + HARDER YANK (owner 11-03): the claw's flight, the OG fling (Wall Hook: OG) and the OG
+//                yank (Monster Hook: OG) 10% faster a level, 4 levels (x1.4); the rope modes' reel and slide too
 //   HeavyHaul    the mass limits x(1 + 0.5 lv), the yank's size limits +15% a level; a boss
 //                (or anything too heavy to come) bitten is staggered 10 + 10 lv tics, once
 //                per 3 s per monster
@@ -46,6 +47,7 @@ class RSQGR_Perks : EventHandler
 	const INVOLVED_TICS = 105;
 	const SWING_CAP = 1280.0;
 	const NSLAM = 8;
+	const REEL_STEP = 0.10;   // Fast Reel, a level (owner 11-03: "faster claw + harder yank"; was 0.15 of the slide)
 
 	// ---- levels (transient: asked again on the first use after a load) --------------------
 	transient int pkTic[MAXPLAYERS];
@@ -165,7 +167,7 @@ class RSQGR_Perks : EventHandler
 		switch (what)
 		{
 		case 'range': return 1.0 + 0.20 * Lv(pmo, 'LongLine');
-		case 'reel':  return 1.0 + 0.15 * Lv(pmo, 'FastReel');
+		case 'reel':  return 1.0 + REEL_STEP * Lv(pmo, 'FastReel');   // Fast Reel: claw, fling, yank (and the rope modes)
 		case 'mass':  return 1.0 + 0.50 * Lv(pmo, 'HeavyHaul');
 		case 'size':  return 1.0 + 0.15 * Lv(pmo, 'HeavyHaul');
 		}

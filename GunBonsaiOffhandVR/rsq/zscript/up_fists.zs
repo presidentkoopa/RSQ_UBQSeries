@@ -768,7 +768,8 @@ class RSQ_Upgrade_CriticalHits : RSQ_CritPerk
 			lastCrit = target;
 			dz.critUntil = now + STUN;
 			Vector3 at = shot && shot != pawn && !IsGlove(shot) ? shot.pos : target.pos + (0, 0, target.height * 0.6);
-			Class<Actor> spark = "RSQML_SparkSuper";   // RSQ Melee's Super Spark, by name (none without it)
+			String sparkName = "RSQML_SparkSuper";   // through a String: a literal is checked at compile time (an error without RSQ Melee)
+			Class<Actor> spark = sparkName;          // RSQ Melee's Super Spark, by name (none without it)
 			if (spark) Actor.Spawn(spark, at, NO_REPLACE);
 			target.A_StartSound("rsqml/fx/heavy", CHAN_AUTO, CHANF_OVERLAP, 1.0);
 			RSQM.Burst("RSQML_Burst2", at, 1.5, 0);

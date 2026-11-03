@@ -60,12 +60,15 @@ class RSQGR_Monster
 		int b = (int(ang * (65536.0 / 360.0)) >> 8) & 255;
 		int zh = int(floor(pmo.Pos.z - v.Pos.z + 0.5));
 		double th = b * (360.0 / 256.0);
-		v.vel.xy += (cos(th), sin(th)) * (f / 12);
+		// FAST REEL (Gun Bonsai VR, owner 11-03 "faster claw + harder yank"): the throw toward you x(1 + 0.1 lv); the lift
+		// stays his (it is what brings it up to your height: scaled, it would sail over you). 1 without the patch.
+		double k = RSQGR_Perks.Factor(pmo, 'reel');
+		v.vel.xy += (cos(th), sin(th)) * (f / 12) * k;
 		v.vel.z = (zh / 2) / 4.0;
 		let fl = RSQGR_Flight.Get();
 		if (fl) fl.WatchOG(v, pmo);
 		if (RSQGR_Util.Opt("rsqgr_debug", 0) >= 1)
-			Console.Printf("T_GRM og throw %s f %d b %d zh %d -> vel(%.3f %.3f %.3f)", v.GetClassName(), f, b, zh, v.vel.x, v.vel.y, v.vel.z);
+			Console.Printf("T_GRM og throw %s f %d b %d zh %d x%.2f -> vel(%.3f %.3f %.3f)", v.GetClassName(), f, b, zh, k, v.vel.x, v.vel.y, v.vel.z);
 	}
 
 	// On the lasso: held at the rope's length, not coming. Core skips its "no closer for 52 tics" guard

@@ -1352,7 +1352,7 @@ slides at 10, lasso follows at 24; Swing and Momentum off by default (pull to th
 |---|---|---|---|---|---|
 | Grapple (new: the unlock) | root (player) | 1: the hook fires at all under GBOVR (without GBOVR the mod is as today) | Grapple | - | - |
 | Long Line (exists) | Grapple 1 | 1-4: range +20% a level | Grapple | - | - |
-| Fast Reel (exists) | Grapple 1 | 1-4: reel and slide +15% a level | Grapple | - | - |
+| Fast Reel (exists; **11-03: "Faster claw + harder yank"**) | Grapple 1 | 1-4: the claw's flight and the OG fling and yank launch +10% a level (the rope modes' reel and slide too) | Grapple | - | - |
 | Barbed Claw (exists) | Long Line 1 | 1-4: the bite 4 + 4 lv, the tear-out 6 + 6 lv | Grapple | - | `bite` |
 | Heavy Haul (exists) | Fast Reel 1 | 1-3: heavier (+50%) and bigger (+15%) things come; a boss on the line staggers 10 + 10 lv | Grapple | - | `haul` |
 | Get Over Here (exists) | Heavy Haul 1 | 1-3: what arrives is staggered 20 + 15 lv tics | Grapple asks GBOVR `stagger` | - | `goh` |
@@ -1363,7 +1363,7 @@ slides at 10, lasso follows at 24; Swing and Momentum off by default (pull to th
 | Steady Line (exists) | Momentum 1 | 1-3: the hang settles x(1 + 3 lv) faster | Grapple | - | - |
 | Zip Kick (new) | Momentum 2 | 1-3: arriving on a monster via the rope at 3+ m/s hurts it 10 + 10 lv x your speed share and knocks it back | Grapple | a Combat FX impact | `zip.kick` |
 | Scorpion (new; needs RSQ Melee) | Get Over Here 2 | 1-3: a yanked monster that arrives at an empty fist is punched at full power automatically, x1.0 + 0.25 lv, as a counter | Grapple asks Melee (`RSQML_Service`) | the Super Spark | `scorpion` |
-| Twin Lines (new) | Long Line 2 | 1-2: a hook from each hand on geometry at once: you hang between them and pull toward either; 2: letting one go slingshots you along the other | Grapple | two ropes | `twin.lines` |
+| Twin Lines (new) | **Momentum 1** (11-03; was Long Line 2) | 1-2: a hook from each hand on geometry at once: you hang between them and pull toward either; 2: letting one go slingshots you along the other | Grapple | two ropes | `twin.lines` |
 
 **BUILT 11-02 (L3), the whole Grapple tree.** Gun Bonsai VR (`up_hook.zs`): `RSQ_HookPerk` gained a parent (Grapple by
 default); Grapple (the unlock), Momentum (class `RSQ_Upgrade_SwingMomentum`: the saber's Elegant Weapon owns
@@ -1384,6 +1384,20 @@ first wall rope go when the second latched, 1 kept both, 2 flung the player 18 u
 swing mode on; Zip Kick 1 at 8 m/s did 53 and threw the imp; Scorpion 1 punched the arriving imp for 25 (a full-power
 20 x 1.25) before Get Over Here's stagger. Not provable headless: a real throw of the claw, a swing, the feel of the
 fling.
+
+**OWNER 11-03, three fixes after the default became jpalomo's OG (Grapple commit 61543d021).** (1) **Fast Reel** sped up
+the monster slide, no longer the default; it is now **"Faster claw + harder yank"**: `RSQGR_Perks.Factor('reel')` =
+1 + 0.10 lv (was 0.15), read by the claw (core's Fire), the OG fling (`OGFling`: his whole thrust, direction kept) and
+the OG yank (monster.zs `OGThrow`: the throw toward you; the lift stays his, or it would sail over you). No cap, as his
+ThrustThing has none (nolimit); the engine's MAXMOVE 30 clamp applies only in water, crouched or under
+COMPATF_WALLRUN (p_mobj.cpp 2096-2105), for his and ours alike. (2) **Twin Lines** needs a rope, so it hangs from
+**Momentum** (the swing unlock). Made to work there: two ropes reeled together stay at least 32 longer than their
+anchors are apart (they used to reel on regardless and pin him to the ceiling), and with Twin Lines 1 one reel held
+pays the other out, so he is drawn to the reeled one. (3) **Scorpion** already fired on the OG yank's arrival
+(RSQGR_Flight.StepOG calls OnArrive); tested. Rig (Grapple/test/evidence/gb_1103.txt), not headset-confirmed:
+claw 40 -> 56 a tic; fling from 600: 48.0 -> 67.2 u/tic, at the wall in 10 tics instead of 20; imp yanked from 400:
+33.0 -> 46.2, arrives in 13 tics instead of 31; Twin Lines offered only once Momentum is learned (not after Long
+Line 2); Scorpion: an imp yanked from 400 arrives and the glove punches it 60 -> 35 (20 x 1.25).
 
 **Counts:** 14 nodes, 9 exist, 5 new.
 

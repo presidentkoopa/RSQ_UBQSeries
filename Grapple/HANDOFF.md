@@ -1,3 +1,22 @@
+# ==== Gun Bonsai VR on the OG: Fast Reel, Twin Lines, Scorpion, 2026-11-03 evening (read first) ====
+
+Owner (11-03), three fixes to the Grapple tree after the OG became the default. Rig only, not headset-confirmed.
+Evidence: test/evidence/gb_1103.txt; kit: tools/rigtest/gb_1103/ (evidence.sh reruns all of it).
+
+## Done (measured)
+| what | measured |
+|---|---|
+| Fast Reel = "Faster claw + harder yank" | perks.zs Factor('reel') = 1 + 0.10 lv (was 0.15), 4 levels. Read by the claw (Fire), OGFling (his whole thrust, direction kept), OGThrow (the throw toward you; the lift stays his) and, as before, the rope modes' reel and slide. FR 0 -> 4: claw 40 -> 56 a tic (shot to fling 15 -> 11 tics); fling from 600: vel 47.99 -> 67.18 u/tic, at the wall in 20 -> 10 tics, stops there (x 2383.5); imp from 400: 33.0 -> 46.2, arrives 31 -> 13 tics (stops against you, 44 off). Same numbers in the full order. |
+| Engine limit | no cap, as his ThrustThing has none (nolimit): MAXMOVE 30 clamps only in water, crouched or COMPATF_WALLRUN (p_mobj.cpp 2096-2105, survey 02_VEHICLES), his and ours alike. Hardest the tree gives, Long Line 4 + Fast Reel 4 from 1380: 159.6 u/tic, stopped by the wall at 2383.5, no tunnelling. |
+| Twin Lines under Momentum | parent SwingMomentum (up_hook.zs). Offers (Gun Bonsai's own IsSuitableForPlayer): not after Long Line 2, offered once Momentum is learned. Momentum only: the second ceiling rope drops the first. Fixed in core.zs Swing: two ropes reeled together used to reel on regardless (one rope 88 long with the body 277 from its claw) and pinned him to the ceiling; now each reel takes in only what the body came nearer, and the two stay TWIN_SAG 32 longer than the anchors are apart: he hangs between them (z ~400, ropes 198.5 + 227.3, anchors 394 apart). Twin Lines 1: one reel held pays the other out, so he is drawn to that one (198 -> 66 while the other paid out 227 -> 374). Twin Lines 2: tapping one off flings him 16.7 u/tic along the other, past its anchor, then he swings on it. |
+| Scorpion on the OG yank | already wired (RSQGR_Flight.StepOG -> OnArrive); nothing assumed the slide. RSQ Melee's glove in hand: no Scorpion, imp arrives hp 60; Scorpion 1: "scorpion DoomImp: punched 1", hp 60 -> 35 (20 x 1.25), knocked back; with Fast Reel 4 from 400 and 600 too. |
+| Gun Bonsai VR load fix | it failed to compile without RSQ Grenade (killrewards.zs) and without RSQ Melee (up_fists.zs): class names given as literals. Now through Strings; doom2 -> GunBonsai -> RSQ_GunBonsaiVR alone: 0 errors. |
+| Script errors | 0 from our packs: doom2 + Grapple; doom2 + GunBonsai + GBVR; doom2 + GunBonsai + every RSQ pk3; full order (lo2 01, 02, 03 2.0.3o, 04-07, GunBonsai, every RSQ pk3): only BD_VoxelPack's 4 voxeldef lines. |
+
+## Not done / open
+- Headset: all of it (the fling at x1.4 may feel like a lot; 10% a level is the owner's to tune).
+- Twin Lines in the Rope mode without Momentum (geo_mode 0) still works through PullAll, but under the patch it can no longer be learned without Momentum.
+
 # ==== THE OG is the default: jpalomo's one-off fling (walls) and throw (monsters), 2026-11-03 (read first) ====
 
 Owner (11-03): "Grapple is too slow compared to the OG, and for some reason it sticks me to the wall or ceiling instead of
@@ -26,7 +45,7 @@ measured from the trace point instead of where his 10-radius projectile comes to
 - Headset: all of it.
 - His aim climbs a few degrees less than the hand (16.9 vs 20 degrees on the rig, P_SpawnPlayerMissile); ours goes where the hand points. Not copied.
 - Range preset: Short is still 768 (tools/rsmenu/presets.py line 97, outside this folder), now barely under Standard 780. Someone with that file should make Short ~600.
-- Gun Bonsai VR: Fast Reel still says "a hooked monster's slide": under the OG it only speeds the claw (and the rope modes). Twin Lines, Slingshot and Steady Line need a rope mode (Rope or Swing); Zip Kick already sits behind Momentum.
+- (done 11-03 evening, above) Gun Bonsai VR: Fast Reel and Twin Lines.
 - Score's rope awards ("Indiana Jones" gap crossings) were measured with the swing; with the fling not checked.
 
 # ==== the pull is the default; Swing and Momentum an option, 2026-11-02 (read first) ====

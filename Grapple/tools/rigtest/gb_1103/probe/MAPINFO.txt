@@ -1,0 +1,1 @@
+GameInfo { AddEventHandlers = "GBP_Probe" }

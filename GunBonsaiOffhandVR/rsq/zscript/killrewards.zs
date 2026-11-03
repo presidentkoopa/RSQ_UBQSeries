@@ -330,8 +330,11 @@ class RSQ_KRAmmoBit : Inventory
 		// SCAVENGER 3 (the grenade's, GBOVR_TREES.md 4.5 Carry): one bit in four is a grenade instead (by name; nothing
 		// without RSQ Grenade)
 		{
-			let gw = Weapon(pmo.FindInventory("RSQGN_Grenade"));
-			Class<Inventory> gam = "RSQGN_Ammo";
+			// names through Strings: a literal is checked when the pack compiles, and without RSQ Grenade that is an error
+			String gwn = "RSQGN_Grenade", gamn = "RSQGN_Ammo";
+			Class<Inventory> gwc = gwn;
+			Class<Inventory> gam = gamn;
+			let gw = gwc ? Weapon(pmo.FindInventory(gwc)) : null;
 			if (gw && gam && RSQM.LevelOn(gw, "RSQ_Upgrade_Scavenger") >= 3 && random[RSQKR](0, 3) == 0)
 			{
 				pmo.GiveInventory(gam, 1);
