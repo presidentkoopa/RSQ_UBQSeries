@@ -88,8 +88,9 @@ class RSQWP_Whip : EventHandler
 	double  pkSpd[NW], rearm[NW];
 	Vector3 pkAt[NW], pkVel[NW];
 	int     crackTic[NW];
-	int     fullTics[NW];
-	double  handSpd[NW];         // the handle tip's recent speed, room units a tic (decays 7% a tic: the wave takes a third of a second to reach the tip)        // tics the thong has been fully out (it cannot crack while it uncoils)
+	int     fullTics[NW];        // tics the thong has been out enough to crack (CRACK_COILED links or fewer still coiled)
+	int     lk[NW];              // the lasso: how many links the off hand holds (where it gripped; LassoHeld)
+	double  handSpd[NW];         // the handle tip's recent speed, room units a tic (decays 7% a tic: the wave takes a third of a second to reach the tip)
 	Actor   whit[NW * 4];        // the last few things this lash has hit (once each per lash)
 	int     whitTic[NW * 4];
 	bool    whitCrack[NW * 4];
@@ -278,7 +279,7 @@ class RSQWP_Whip : EventHandler
 		Vector3 off = ToRoom(BodyHand(pmo, 1));
 		int o = i * NP;
 		double best = (off - hb[i]).Length();
-		for (int k = 0; k <= LASSO_K * 2 && k < NP; k++) best = min(best, (off - wp[o + k]).Length());
+		for (int k = 0; k < NP; k++) best = min(best, (off - wp[o + k]).Length());
 		double m = best / 34.0;      // room units to metres, as RSQWP_Util.Metres counts them
 		if (m > reach) return false;
 		if (RSQWP_Util.Flag("rsqwp_debug", false)) Console.Printf("T_WPW %d LASSO grip t%d: the off hand %.2f m from the thong (%s)", i, level.maptime, m, offGripKey[pn] ? "grip key" : "grab bind");
@@ -479,8 +480,9 @@ class RSQWP_Whip : EventHandler
 			Carry(i, pmo, frameTurn[pn]);
 			if (wstate[i] == ST_OUT)
 			{
-				// the crack waits for the whole thong: it cannot crack while it is still coiled or paying out
-				if (cp[i] <= 0.001) fullTics[i]++; else fullTics[i] = 0;
+				// the crack waits for most of the thong (owner 11-02: a fast throw peaked while the last links still paid out
+				// and never cracked; the whole thong out for 2 tics made the earliest crack ~0.34 s after the wind-up)
+				if (cp[i] <= CRACK_COILED) fullTics[i]++; else fullTics[i] = 0;
 				if (wmode[i] == 1 && wage[i] > 24) RollUp(i);
 			}
 			if (wstate[i] == ST_ROLL && cp[i] >= NN - 0.001) { Halt(i); continue; }
@@ -508,7 +510,7 @@ class RSQWP_Whip : EventHandler
 			if (lassoOn[i])
 			{
 				lassoP1[i] = ToRoom(BodyHand(pmo, 1 - hand));
-				if (!lassoWas[i]) lassoP0[i] = lassoP1[i];
+				if (!lassoWas[i]) { lassoP0[i] = lassoP1[i]; lk[i] = LassoHeld(i, b, d); }
 			}
 			Whirl(i);
 			Vector3 peakAt, peakVel;
@@ -689,12 +691,14 @@ class RSQWP_Whip : EventHandler
 	const COIL_TAIL = 4;          // links left hanging at rest: 4 x 7.2 cm = 0.29 m
 	const COIL_REST = NN - COIL_TAIL;
 	const COIL_R = 5.0;           // the loop's radius, room units (15 cm: a 30 cm coil), x LenMult
-	const COIL_A = 45.0;          // where the handle's tip sits on the loop (degrees from its top, toward the heading)
+	const COIL_A = 45.0;          // where the handle's tip sits on the loop (degrees from its top, toward the side it hangs to)
 	const COIL_P = 1.6;           // each loop's step to the side, room units
+	const CRACK_COILED = 6.0;     // a crack may come with this many links still coiled (19 of 25 out): ~6 tics into the
+	                              // payout, not ~10 (owner 11-02, "crack while paying out")
 	const PAY_MAX = 3.5;          // paying out: at most this many links a tic (8.6 room units a tic) ...
 	const PAY_ACC = 1.0;          // ... reached and left at this rate (links a tic a tic): 21 links out in ~10 tics (0.28 s)
 	const REEL_MAX = 1.2;         // reeling in after a quiet spell: at most this, links a tic ...
-	const REEL_ACC = 0.25;        // ... 17 links in in ~19 tics (0.55 s)
+	const REEL_ACC = 0.25;        // ... 21 links in in ~19 tics (0.55 s)
 	const REEL_CAP = 5.0;         // while it reels in, no free link faster than this (room units a tic): the hand guides
 	                              // it home (rig 11-02: uncapped, the dragged tail swung up into the coil at 26 a tic)
 	const ROLL_MAX = 3.5;         // put away (the holster, the bind let go): the rest rolled up this fast
@@ -707,7 +711,17 @@ class RSQWP_Whip : EventHandler
 	{
 		int c = int(cp[i]);
 		if (c > 0) return min(c, NN);
-		return lassoOn[i] ? LASSO_K : 0;
+		return lassoOn[i] ? lk[i] : 0;
+	}
+
+	// THE LASSO'S HELD PIECE (rescaled 11-02): as many links as lie between the handle's tip and where the off hand took
+	// hold, 3 to LASSO_K. It was a fixed 5, a 0.94 m piece of 6.4-unit links; with MIT's 2.448 that was 0.36 m, and an
+	// off hand further out stretched links 1-5 to reach it (the review: "inner stretch 20%").
+	int LassoHeld(int i, Vector3 b, Vector3 d)
+	{
+		double seg = max(0.5, wext[i] * wlen[i] / NN);
+		double reach = (lassoP1[i] - (b + d * HANDLEN)).Length();
+		return clamp(int(reach / seg + 0.5), 3, LASSO_K);
 	}
 
 	// a place on the coil, a links in from the handle's tip (fractional: the coil's end between two nodes). The loops
@@ -986,7 +1000,7 @@ class RSQWP_Whip : EventHandler
 	// (a line's end) by up to GRAZE_U, so Mend leaves it alone. Mending it collapsed the thong onto the lip and the next
 	// tic snapped it back (rig 11-02: a thong lying over a step's lip, the tip jerked 83 units up at 257 room
 	// units a tic). A thong lying over an edge is bent round it; Collide's sweeps keep its links out of the wall.
-	const GRAZE_U = 6.0;          // map units (a 6.4-unit link bent over a corner cuts it by up to about half a link)
+	const GRAZE_U = 2.3;          // map units: about a link (6.0 when a link was 6.4; rescaled 11-02 for MIT's 2.448)
 	static bool Graze(RSQWP_Tracer tr, Vector3 at)
 	{
 		Line l = tr.Results.HitLine;
@@ -1201,7 +1215,7 @@ class RSQWP_Whip : EventHandler
 			Vector2 hv = h0 + (h1 - h0) * t;
 			double hvl = hv.Length();
 			hv = hvl > 0.001 ? hv / hvl : h1;
-			int kp = c > 0 ? c : (lassoOn[i] ? LASSO_K : 0);
+			int kp = c > 0 ? c : (lassoOn[i] ? lk[i] : 0);
 			for (int k = 1; k < NP; k++)
 			{
 				Vector3 v = (wp[o + k] - wq[o + k]) * drag;
@@ -1222,9 +1236,9 @@ class RSQWP_Whip : EventHandler
 			if (lassoOn[i] && c == 0)
 			{
 				Vector3 held = lassoP0[i] + (lassoP1[i] - lassoP0[i]) * t;
-				for (int k = 1; k <= LASSO_K; k++)
+				for (int k = 1; k <= lk[i]; k++)
 				{
-					Vector3 line = anchor + (held - anchor) * (double(k) / LASSO_K);
+					Vector3 line = anchor + (held - anchor) * (double(k) / lk[i]);
 					wp[o + k] = wq[o + k] + (line - wq[o + k]) * hold;
 				}
 			}
@@ -1562,7 +1576,7 @@ class RSQWP_Whip : EventHandler
 	const WRAP_TICS = 70;        // how long the whip stays wrapped round a monster waiting for the pull
 	const PULL_MIN = 1.5;        // the hand going back from the target, map units a tic (~1.5 m/s): a tug
 	const PULL_FULL = 4.0;       // ~4 m/s: a violent pull, the full yank
-	const LASSO_K = 5;           // the link the off hand holds
+	const LASSO_K = 13;          // at most this many links in the off hand's piece (0.94 m, the old piece's length)
 	const LASSO_MIN = 6.0;       // the tip's speed (room units a tic) a let-go must have to fly
 	const YANK_GRACE = 12;       // rsqwp_whip_yankgrace: tics after a wrap before a pull can yank (~1/3 s)
 
@@ -2018,7 +2032,7 @@ class RSQWP_Whip : EventHandler
 		if (dir.xy.Length() < 0.01) return;
 		dir = (dir.xy.Unit(), 0);
 		Vector3 org = RSQWP_Util.HandPos(pmo, hand);
-		double reach = min(LOCK_RANGE, wlen[i] * 2);
+		double reach = LassoReach(i);
 		Actor best = null;
 		double bestA = 25.0;
 		let it = BlockThingsIterator.CreateFromPos(org.x, org.y, org.z, 64, reach, false);
@@ -2045,6 +2059,11 @@ class RSQWP_Whip : EventHandler
 			Console.Printf("T_WPW %d LASSO thrown -> %s, %.0f deg off your facing", i, best ? String.Format("%s", best.GetClassName()) : "the air", Actor.DeltaAngle(pmo.angle, atan2(dir.y, dir.x)));
 	}
 
+	// THE LASSO'S CATCH REACH (owner 11-02): tied to the whip's length at 4x -- 7.2 m for MIT's 1.8 m, more with a
+	// longer whip -- under the lock's range (15 m). It was 2x, which halved to 3.6 m when the whip became 1.8 m.
+	const LASSO_REACH_K = 4.0;
+	double LassoReach(int i) { return min(LOCK_RANGE, wlen[i] * LASSO_REACH_K); }
+
 	// A locked crack's flight: the thong pays out to the target over REACH_TICS (its length grows
 	// to the distance and the outer links are drawn along the line to it, the physics doing the
 	// rest), and strikes there: a monster takes the full crack (and, with the whip bind still
@@ -2069,8 +2088,11 @@ class RSQWP_Whip : EventHandler
 		{
 			double u = double(k - NN / 2) / (NN - NN / 2);
 			Vector3 want = ToRoom(org) + roomTo * (f * (0.5 + 0.5 * u));
-			wq[o + k] = wp[o + k];
-			wp[o + k] = wp[o + k] + (want - wp[o + k]) * 0.6;
+			// the move is this tic's, so the link's last sub-step is a sixteenth of it behind: the sim reads speed as
+			// (wp - wq) x SUB (11-02 review: wq = the old place read a tic's move as a sub-step's, 100-490 room/tic)
+			Vector3 mv = (want - wp[o + k]) * 0.6;
+			wp[o + k] = wp[o + k] + mv;
+			wq[o + k] = wp[o + k] - mv / SUB;
 		}
 		reachTic[i]--;
 		if (reachTic[i] > 0) return;
@@ -2295,7 +2317,7 @@ class RSQWP_Whip : EventHandler
 		// cracked three times before the swing). While wound up, or stiff with no swing yet, nothing cracks; the swing's
 		// crack comes as it drives and lets go (Deliberate).
 		if (windTics[i] > 0 || (stiff[i] > 0.01 && !swinging[i] && !released[i])) { pend[i] = false; return; }
-		if (sp >= crackSpd * 0.55 && !swished[i] && cp[i] <= 0.001)
+		if (sp >= crackSpd * 0.55 && !swished[i] && cp[i] <= CRACK_COILED)
 		{
 			swished[i] = true;
 			Noise(pmo, 'swish', at);
@@ -2311,7 +2333,7 @@ class RSQWP_Whip : EventHandler
 			Crack(i, pmo, hand, pkAt[i], pkVel[i]);
 			return;
 		}
-		if (armed[i] && sp >= crackSpd && fullTics[i] >= 2 && wstate[i] == ST_OUT && handSpd[i] >= 2.0)
+		if (armed[i] && sp >= crackSpd && fullTics[i] >= 1 && wstate[i] == ST_OUT && handSpd[i] >= 2.0)
 		{
 			pend[i] = true; pkSpd[i] = sp; pkAt[i] = at; pkVel[i] = vel;
 			return;
@@ -2465,7 +2487,7 @@ class RSQWP_Whip : EventHandler
 		double crackSpd = max(4.0, RSQWP_Util.Num("rsqwp_whip_crack", 20));
 		double maxDmg = RSQWP_Util.Opt("rsqwp_whip_damage", 12);
 		// A HARDER CRACK HURTS MORE (owner's pick 6; teardown apply/08 3.1 and apply/01 2.4): the crack's damage
-		// is the tip's speed at the crack between the crack speed (k 0: a quarter) and rsqwp_whip_fullcrack (k 1:
+		// is the tip's speed at the crack between the crack speed (k 0: a quarter) and rsqwp_whip_hardcrack (k 1:
 		// all of rsqwp_whip_damage, now the top end). Assist throws the lash for you: always the top. A sting (a fast
 		// link, no crack) stays under the softest crack: that quarter, times its speed over the crack speed (rig, 10-31:
 		// the old sting, up to half, out-hurt a soft crack's quarter -- 6 against 3).
@@ -2502,7 +2524,7 @@ class RSQWP_Whip : EventHandler
 	{
 		if (wmode[i] == 1) return 1.0;
 		double lo = max(4.0, RSQWP_Util.Num("rsqwp_whip_crack", 20));
-		double hi = max(lo + 1.0, RSQWP_Util.Num("rsqwp_whip_fullcrack", 50));
+		double hi = max(lo + 1.0, RSQWP_Util.Num("rsqwp_whip_hardcrack", 43));
 		return clamp((spd - lo) / (hi - lo), 0.0, 1.0);
 	}
 
@@ -2777,7 +2799,7 @@ class RSQWP_Whip : EventHandler
 	// The whip's sounds, at a point, through a tiny actor that carries them.
 	// LIGHT AND HEAVY CRACKS (the owner, 11-01: "I literally named a crack Light and Heavy, so maybe don't
 	// make them random"): the crack's hardness is the same CrackK the damage uses -- the tip's speed between
-	// the crack speed (rsqwp_whip_crack) and the full crack (rsqwp_whip_fullcrack) -- so the heavy crack is
+	// the crack speed (rsqwp_whip_crack) and the full crack (rsqwp_whip_hardcrack) -- so the heavy crack is
 	// exactly a crack that hurts more than halfway. Snags and fireball swats follow the same rule.
 	void Noise(PlayerPawn pmo, Name what, Vector3 at, int i = -1)
 	{

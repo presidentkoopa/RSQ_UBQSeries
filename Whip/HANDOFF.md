@@ -1,5 +1,26 @@
 # HANDOFF -- RSQ_Whip (PROJECT WHIP), 2026-10-30
 
+## 2026-11-02 (GBOVR pass): the recode reviewed, the owner's seven decisions -- Windows QZD 17.3 headless, not the rig
+A read-only review of the recode (MIT length) found numbers sized for the old 6.4-unit links. The owner decided all
+seven (11-02). Tested on the owner's Windows QZD 17.3 with the series probe (`GunBonsaiOffhandVR/tools/fistsprobe`,
+`fp_wp`), which calls the whip's own functions; that engine cannot move a VR hand, so **no swing was run** (the Linux
+rig's `qz_rhand` cvars are not on that build). With no tracked hand the whip holds the handle at the eyes, so
+Assist's throw and Reach's flight do run.
+- **Reach's speed bookkeeping fixed** (`Reach`): the link's last sub-step is set a sixteenth of the tic's move
+  behind, so the sim reads the move as a per-tic speed. Assist's throw: the sim read 3-11 room/tic while the tip
+  moved 10-25 a tic (was 100-490).
+- **Hardest crack 50 -> 43**, and the cvar renamed `rsqwp_whip_hardcrack` (every archived cvar is written to the ini,
+  so a saved 50 would have stayed). Damage by tip speed 20/30/35/43/50: 3/7/9/12/12 (was 3/6/8/10/12).
+- **A crack with the last links still paying out** (`CRACK_COILED` 6: 19 of 25 out, 1 tic): about 6 tics into the
+  payout, not ~10. Probed: 5 links coiled -> ready; 7 -> not. Whether a fast real throw now cracks: headset.
+- **The lasso's catch reach** = 4x the whip's length (`LassoReach`, `LASSO_REACH_K`): 7.2 m (was 2x: 3.6 m).
+- **The lasso's held piece** = the links between the handle's tip and where the off hand took hold (`LassoHeld`, 3 to
+  `LASSO_K` 13 = 0.94 m, the old piece): 0.3 m -> 4 links, 0.6 m -> 8, 1.2 m -> 13. The grip may take the thong
+  anywhere along it. A fixed 5 (0.36 m now) stretched links 1-5 toward an off hand further out.
+- **`GRAZE_U` 6 -> 2.3** map units (about a link, as 6 was for 6.4-unit links).
+- Comment nits from the review (handSpd's merged comment, COIL_A's side, "21 links in").
+Not changed: Assist's throw reach (`Throw`: 1.1x the length, ~2 m, not in the decisions).
+
 ## 2026-11-02 (latest): MIT's length, held coiled, uncoils for the attack -- rig only, not headset-confirmed
 Owner (headset): "That whip looks hella long dude, almost like a noodle ... we hold it coiled ... shorten the length
 of it and extend it during the attack?" Decisions: length = MIT's exactly; coiled at rest; ramped uncoil/reel.
