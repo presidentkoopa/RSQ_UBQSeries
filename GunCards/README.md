@@ -172,6 +172,8 @@ the wrist up):
     `20261103_small_centred_er.png`: 16 / 120, 8 / 45, 4 / 8, RELOAD / 120)
 37. The small card's reserve is gold (0xFFB820, the richer of two golds tried on the rig) in JFO and Ermac's font.
     (rig, `20261103_small_reserve_gold.png`)
+38. AMMO / MAGAZINE Word off: the small card is shorter (the word's strip is gone, it ends just above the big count);
+    the numbers and RELOAD stay where they were. Both fonts, every panel colour. (rig, `20261103_small_word_on_off.png`)
 35. Show Gun Bonsai on Card on, with Gun Bonsai: LV bar and upgrades below KILLS. (rig, full order,
     `20261103_watch_gunbonsai_rows_full_order.png`)
 

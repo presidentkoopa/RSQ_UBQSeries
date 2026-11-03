@@ -187,6 +187,25 @@ def jfo_piece(im, scale, local, mirror, out, dy=0.0, cut=100):
     return len(vox)
 
 
+SHORT_TOP = 0.9                                   # cm above the card's middle: the short panel's top (big count top 0.58)
+SHORT_H = int(round((SHORT_TOP + PANEL_H * PANEL_S / 2.0) / PANEL_S))   # 33 px of the 48
+SHORT_BORDER = 4                                  # px of the panel's top edge kept
+_short_dir = None
+def short_panel(png):
+    """the panel at 48 x 48, its top SHORT_BORDER rows kept and the rows under them cut so it is SHORT_H tall; written
+    to a scratch file for card_piece (which reads a path)"""
+    global _short_dir
+    import tempfile
+    if _short_dir is None: _short_dir = tempfile.mkdtemp(prefix='rsqgc_short_')
+    im = Image.open(png).convert('RGBA').resize((PANEL_W, PANEL_H), Image.LANCZOS)
+    out = Image.new('RGBA', (PANEL_W, SHORT_H), (0, 0, 0, 0))
+    out.alpha_composite(im.crop((0, 0, PANEL_W, SHORT_BORDER)), (0, 0))
+    out.alpha_composite(im.crop((0, PANEL_H - (SHORT_H - SHORT_BORDER), PANEL_W, PANEL_H)), (0, SHORT_BORDER))
+    path = os.path.join(_short_dir, os.path.basename(png))
+    out.save(path)
+    return path
+
+
 def fit(im, box):
     """cm per pixel that fits the image in a (w, h) cm box"""
     return min(box[0] / im.size[0], box[1] / im.size[1])
@@ -235,6 +254,18 @@ def main():
                                 os.path.join(vdir, lump + '.kvx'), dy=dy)
             frame(spr, letters[s], lump, PANEL_S); line.append(letters[s])
         states.append(('P%s%s' % (mc, dc), spr, line))
+        # SHORT panels (owner 2026-11-03 08:40: with the AMMO / MAGAZINE word off the card loses the word's strip):
+        # sprite Q<d>T<N|M>, the same panels with their top border kept and the strip under it cut out, so the card
+        # ends SHORT_TOP cm above its middle (just above the big count); everything else stays where it is
+        spr = 'Q' + dc + 'T' + mc
+        line = []
+        for s_, bg in enumerate(bgs):
+            lump = 'wk%st%s%02d' % (dc, mc.lower(), bg)
+            sp = short_panel(os.path.join(art, 'ammo_bg%d.png' % bg))
+            count += card_piece(sp, PANEL_W, SHORT_H, PANEL_S, (0, 0, (SHORT_TOP - PANEL_H * PANEL_S / 2.0) / 2.0), m,
+                                os.path.join(vdir, lump + '.kvx'), dy=dy)
+            frame(spr, letters[s_], lump, PANEL_S); line.append(letters[s_])
+        states.append(('T%s%s' % (mc, dc), spr, line))
         # labels: Q<d>L<N|M>, frames q * 3 + k (JFO words)
         spr = 'Q' + dc + 'L' + mc
         line = []
@@ -320,7 +351,8 @@ def main():
         z.append('\t\tStop;')
     z += ['\t}', '',
           '\t// The first state of a piece. kind 0 panel, 1 label (JFO q * 3 + word, Ermac 6 + word), 2 big digit, 3 small digit',
-          '\t// (JFO, q * GLYPHS + glyph), 4 RELOAD (JFO q, Ermac 2), 5 / 6 Ermac big / small digit; slot for digits.',
+          '\t// (JFO, q * GLYPHS + glyph), 4 RELOAD (JFO q, Ermac 2), 5 / 6 Ermac big / small digit, 7 the short panel',
+          '\t// (no word); slot for digits.',
           '\tconst ERMAC_LABEL = 6;',
           '\tconst ERMAC_RELOAD = 2;',
           '\t// (FindState wants a constant label, hence the table.)',
@@ -333,7 +365,7 @@ def main():
           '\t\tint k = depth * 1000 + kind * 100 + (mirrored ? 10 : 0) + slot;',
           '\t\tswitch (k)', '\t\t{']
     for label, spr, frames in states:
-        kind = {'P': 0, 'L': 1, 'B': 2, 'S': 3, 'R': 4, 'E': 5, 'F': 6}[label[0]]
+        kind = {'P': 0, 'L': 1, 'B': 2, 'S': 3, 'R': 4, 'E': 5, 'F': 6, 'T': 7}[label[0]]
         mir = 1 if label[1] == 'M' else 0
         dep = int(label[-1])
         slot = int(label[2:-1]) if len(label) > 3 else 0

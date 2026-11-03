@@ -935,7 +935,8 @@ class RSQGC_GunCard : EventHandler
 
 		// the panel
 		int style = StyleFor(p, w);
-		Put(p, base + P_PANEL, Nth(RSQGC_CardStates.Piece(0, mir, 0, Depth()), style), owner, alpha, tPanel);
+		// with the AMMO / MAGAZINE word off the panel is the short one (owner 08:40): no empty strip, the numbers stay put
+		Put(p, base + P_PANEL, Nth(RSQGC_CardStates.Piece(ci("rsqgc_label", 1) ? 0 : 7, mir, 0, Depth()), style), owner, alpha, tPanel);
 		// the word: MAGAZINE on a gun with one, AMMO otherwise
 		int lab = HasMagazine(w) ? 1 : 0;
 		if (ci("rsqgc_label", 1)) Put(p, base + P_LABEL, Nth(RSQGC_CardStates.Piece(1, mir, 0, Depth()), ermac ? RSQGC_CardStates.ERMAC_LABEL + lab : q * RSQGC_CardStates.LABELS + lab), owner, alpha, tLabel);
