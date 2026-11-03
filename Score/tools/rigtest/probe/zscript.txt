@@ -8,10 +8,11 @@ version "4.14"
 // A dummy that stands in for RSQ Grenade's blast by NAME (Score classifies by class name): never load this probe with
 // RSQ_Grenade.pk3.
 class RSQGN_HandBlast : Actor { Default { +NOINTERACTION +NOBLOCKMAP } States { Spawn: TNT1 A -1; Stop; } }
+class RSQGN_Thrown : Actor { Default { +NOINTERACTION +NOBLOCKMAP } States { Spawn: TNT1 A -1; Stop; } }
 
 class RSPProbe : EventHandler
 {
-	Actor m;
+	Actor m, m2;
 	int cases;
 
 	PlayerPawn P() { return players[0].mo; }
@@ -89,11 +90,11 @@ class RSPProbe : EventHandler
 		if (t == 146) { Touch("pound", m); Hit(m, p, 200, 'Melee'); }
 
 		// 5. a grenade blast (RSQ Grenade's HandBlast by name), then a gun: two tools
-		if (t == 180) { Scene(5, "grenade blast, then a gun kill", "Combo Chain 2-Tool 0.25; chain grenade.frag>gun"); Spawned(); }
-		if (t == 185) { let b = Actor.Spawn("RSQGN_HandBlast", m.pos, NO_REPLACE); if (b) b.target = p; Hit(m, b, 5, 'None', DMG_EXPLOSION); if (b) b.Destroy(); }
+		if (t == 180) { Scene(5, "grenade blast, then a gun kill", "Combo Chain[Mop Up 0.30]; chain grenade.frag>gun"); Spawned(); }
+		if (t == 185) { let b = Actor.Spawn("RSQGN_Thrown", m.pos, NO_REPLACE); if (b) b.target = p; Hit(m, b, 5, 'None', DMG_EXPLOSION); if (b) b.Destroy(); }
 		if (t == 190) Hit(m, p, 200, 'Hitscan');
-		if (t == 220) { Scene(6, "grenade blast kill", "NO Boot, NO Brawler, NO Cleaved, NO Juggle; chain grenade.frag"); Spawned(); }
-		if (t == 225) { let b = Actor.Spawn("RSQGN_HandBlast", m.pos, NO_REPLACE); if (b) b.target = p; Hit(m, b, 200, 'None', DMG_EXPLOSION); if (b) b.Destroy(); }
+		if (t == 220) { Scene(6, "grenade blast kill", "NO Boot, NO Brawler, NO Cleaved, NO Juggle, NO Hold My Beer; chain grenade.frag"); Spawned(); }
+		if (t == 225) { let b = Actor.Spawn("RSQGN_Thrown", m.pos, NO_REPLACE); if (b) b.target = p; Hit(m, b, 200, 'None', DMG_EXPLOSION); if (b) b.Destroy(); }
 
 		// 7. RSQ Whip's crack ('Whip' from the pawn): Lashed, not Brawler; then crack > gun
 		if (t == 260) { Scene(7, "whip crack kill", "Lashed 0.250, NO Brawler; chain whip.crack"); Spawned(); }
@@ -118,7 +119,7 @@ class RSPProbe : EventHandler
 		if (t == 445) { Say("ready " .. Ready()); Shoot(m, 300); }
 
 		// 12. the generic rule: whip > kick > pound > shotgun inside 2 s: Gun Kata names kick+gun, the rest is generic with breadth and tempo
-		if (t == 480) { Scene(12, "whip, kick, pound, shotgun kill in 15 tics", "Combo Chain[Gun Kata 0.40][4-Tool 0.94 mods4+0.2 tempo] = 1.3375, a big moment; chain whip.crack>kick>pound>gun.shotgun"); Spawned("DoomImp"); }
+		if (t == 480) { Scene(12, "whip, kick, pound, shotgun kill in 15 tics", "Combo Chain[Door Kick 0.50][4-Tool 0.94 mods4+0.2 tempo] = 1.4375 (Door Kick: kick > gun.shotgun+pb, over Gun Kata), a big moment; chain whip.crack>kick>pound>gun.shotgun"); Spawned("DoomImp"); }
 		if (t == 485) Hit(m, p, 5, 'Whip');
 		if (t == 490) Hit(m, p, 5, 'Kick');
 		if (t == 495) { Hit(m, p, 5, 'Melee'); Touch("pound", m); }
@@ -141,11 +142,37 @@ class RSPProbe : EventHandler
 		if (smIt.Next() != null)
 		{
 			if (t == 600) { Say("slow motion ON (key)"); EventHandler.SendNetworkEvent("rsm_toggle", 2); }
-			if (t == 620) { Scene(14, "in the player's slow motion: shove, then shotgun kill", "Combo Chain[F.E.A.R. Effect 0.50], Bullet Time 0.050 (half of Point-Blank 0.1, not the chain); chain shove>gun.shotgun"); Spawned(); }
+			if (t == 620) { Scene(14, "in the player's slow motion: shove, then shotgun kill", "Combo Chain[F.E.A.R. Effect 0.60] (over Breach 0.5), Bullet Time 0.050 (half of Point-Blank 0.1, not the chain); chain shove>gun.shotgun"); Spawned(); }
 			if (t == 625) { Touch("shove", m); Hit(m, p, 5, 'Kick'); }
 			if (t == 630) Shoot(m, 300);
 			if (t == 660) { Say("slow motion OFF"); EventHandler.SendNetworkEvent("rsm_toggle", 2); }
 		}
-		if (t == 680) Say(String.Format("DONE %d cases", cases));
+		// ---- the 11-03 rows ----
+		// 17. the Headlock Slam: Melee names it (slam), then its 'Melee' blow
+		if (t == 700) { Scene(17, "headlock slam kill", "Piledriver 0.500 (a big moment), NO Brawler; chain headlock.slam"); Spawned(); }
+		if (t == 705) { Touch("slam", m); Hit(m, p, 200, 'Melee'); }
+		// 18. a grenade going off in the hand (the HandBlast is the inflictor), the player alive after
+		if (t == 730) { Scene(18, "hand blast kill, player alive", "Hold My Beer 0.800; chain grenade.frag"); Spawned(); }
+		if (t == 735) { let b = Actor.Spawn("RSQGN_HandBlast", p.pos, NO_REPLACE); if (b) { b.target = p; Hit(m, b, 200, 'None', DMG_EXPLOSION); b.Destroy(); } }
+		// 19. one blast, two bodies: the second kill by the same inflictor pays Multi-Kill
+		if (t == 760) { Scene(19, "one blast kills two", "second kill: Multi-Kill 0.200; NO Hold My Beer"); Spawned(); m2 = Spawn1("ZombieMan", 140); }
+		if (t == 765) { let b = Actor.Spawn("RSQGN_Thrown", m.pos, NO_REPLACE); if (b) { b.target = p; Hit(m, b, 200, 'None', DMG_EXPLOSION); Hit(m2, b, 200, 'None', DMG_EXPLOSION); b.Destroy(); } }
+		// 20. Miniboss's flat award arrives on the kill's tic: it pays a share of that kill's base instead (1.0 x 20)
+		if (t == 790) { Scene(20, "a kill, then the award 'Miniboss' 500", "RS_Score: +20 more on the Miniboss row (1.0 x base 20), not +500"); Spawned(); }
+		if (t == 795) { Hit(m, p, 200, 'Hitscan'); let s = Score(); if (s) Say(String.Format("award Miniboss 500 -> paid %d", s.GetInt("award", "Miniboss", 500, 0, p))); }
+		// 21. a melee kill on a Baron: Giant Slayer
+		if (t == 820) { Scene(21, "punch kills a Baron (the shotgun is up: no Brawler)", "Giant Slayer 0.500"); Spawned("BaronOfHell"); }
+		if (t == 825) Hit(m, p, 2000, 'Melee');
+		// 22. a headshot damage type on the killing shot
+		if (t == 850) { Scene(22, "a 'Head' hitscan kill", "Headshot 0.250"); Spawned(); }
+		if (t == 855) Hit(m, p, 200, 'Head');
+		// 23. three whip kills in a row: the third pays Weapon Master
+		if (t == 880) { Scene(23, "three whip kills in a row", "third kill: Weapon Master 0.100; NO Multi-Kill (separate cracks)"); Spawned(); }
+		if (t == 885) Hit(m, p, 200, 'Whip');
+		if (t == 890) Spawned();
+		if (t == 895) Hit(m, p, 200, 'Whip');
+		if (t == 900) Spawned();
+		if (t == 905) Hit(m, p, 200, 'Whip');
+		if (t == 930) Say(String.Format("DONE %d cases", cases));
 	}
 }

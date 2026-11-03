@@ -697,6 +697,7 @@ class RS_Bonus_HotSwap : RS_PhysicalBonus
 class RS_Bonus_BulletTime : RS_PhysicalBonus
 {
 	const AUTO_SHARE = 0.5;
+	const NEAR_FREEZE = 100;   // SlowMo's "scale", permille of full speed
 	override int Family() const { return FAM_STYLE; }
 	override String DisplayName() const { return "Bullet Time"; }
 	override double Evaluate(RS_ScoreEvent ev) { return 0.0; }
@@ -709,6 +710,8 @@ class RS_Bonus_BulletTime : RS_PhysicalBonus
 		// an older SlowMo cannot say whose pulse runs: Score's own memory of its last ask stands in
 		if (RS_Physical.AskSlowMo("trigger.auto") < 0 && ev.tracker && level.maptime <= ev.tracker.slowmoUntil) return 0.0;
 		double share = clamp(RS_ScoreHandler.CvarInt("rs_score_slowstyle", 50), 0, 200) / 100.0;
+		int sc = RS_Physical.AskSlowMo("scale");
+		if (sc >= 0 && sc <= NEAR_FREEZE) share *= 1.5;   // the world at 10 % or slower (sheet S2 "Near-Freeze")
 		if (kind == 2) share *= AUTO_SHARE;
 		double sum = 0.0;
 		for (int b = 0; b < all.Size(); b++)

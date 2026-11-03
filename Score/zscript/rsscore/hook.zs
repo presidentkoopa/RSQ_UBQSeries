@@ -148,6 +148,10 @@ class RS_Bonus_Bowling : RS_ScoreBonus
 	override double Evaluate(RS_ScoreEvent ev)
 	{
 		if (!ev.victim || ev.killerNum < 0) return 0.0;
+		// a body thrown by hand struck it (11-03, sheet X4): the Headlock toss (Distance Grab carrying it, or Melee's own),
+		// a monster swung on the whip -- the body is the blow's inflictor and it is not the victim
+		String t0 = RS_Melee.KillTool(ev);
+		if ((t0 == "headlock.throw" || t0 == "whip.flail") && ev.inflictor && ev.inflictor != ev.victim && ev.inflictor.bIsMonster) return MULT;
 		int t = RS_Grapple.Ask("struck", ev.victim);
 		if (t < 0 || t > WINDOW || RS_Grapple.Ask("struck.by", ev.victim) != ev.killerNum) return 0.0;
 		int pin = max(1, RS_Grapple.Ask("pin", ev.victim));

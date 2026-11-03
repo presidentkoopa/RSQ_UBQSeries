@@ -297,6 +297,7 @@ class RS_Tool play
 		// a live monster thrown by hand (sheet S8, B S13): out of the Headlock (RSQ Melee's own toss, or Distance Grab
 		// carrying it), striking something -- or itself, its own landing -- as 'Melee' with the body as the inflictor
 		if (dt == 'Melee' && inf && inf != src && inf.bIsMonster && inf.health > 0) return "headlock.throw";
+		if (dt == 'Melee' && !inf && RS_Physical.AskGrab("throw.by", v) == pn) return "headlock.throw";   // its own landing, Distance Grab carrying it
 		// a thing thrown with Distance Grab (an object)
 		if (inf && inf != src && !inf.bIsPuff && RS_Physical.AskGrab("throw.by", inf) == pn) return "grab.throw";
 		if (RS_Melee.IsGlove(inf)) return GloveKind(inf);

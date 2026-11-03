@@ -83,7 +83,7 @@ class RS_ComboSeed play
 		// F.E.A.R. EFFECT (the owner's name, spelt as he wrote it): a shotgun kill in the slow motion after a gun-butt
 		// shove. Was RSQ Melee's flat 200-point award (sheet C14); now a Style row on the kill's base, and the award
 		// label pays nothing (handler.zs AwardExternal).
-		reg.OwnCombo("F.E.A.R. Effect", "shove > gun.shotgun@slow",             0.5);
+		reg.OwnCombo("F.E.A.R. Effect", "shove > gun.shotgun@slow",             0.6);   // over Breach (0.5): the slow is in its pay
 		RS_ComboTable.Add(reg);   // the series' signature combos (combos.zs, 11-03)
 	}
 }
@@ -102,7 +102,7 @@ class RS_ComboLedger : EventHandler
 	enum ELedgerCond { C_SLOW = 1, C_AIR = 2, C_PB = 4, C_HEAD = 8 }   // not ECond: it is the field eCond, case-insensitively
 
 	Array<Actor> eV;
-	Array<int> ePn, eFirst, eLast, eCond;
+	Array<int> ePn, eFirst, eLast, eCond, eHits;   // eHits: blows in the run (a burst's pellets count one each)
 	Array<String> eTool, eTags;
 
 	// one poll per monster per player per tic
@@ -149,7 +149,7 @@ class RS_ComboLedger : EventHandler
 
 	private void Drop(int k)
 	{
-		eV.Delete(k); ePn.Delete(k); eFirst.Delete(k); eLast.Delete(k); eTool.Delete(k); eCond.Delete(k); eTags.Delete(k);
+		eV.Delete(k); ePn.Delete(k); eFirst.Delete(k); eLast.Delete(k); eTool.Delete(k); eCond.Delete(k); eTags.Delete(k); eHits.Delete(k);
 	}
 
 	// the last entry of (v, pn), or -1
@@ -171,16 +171,16 @@ class RS_ComboLedger : EventHandler
 			if (j >= 0 && tic - eLast[j] <= CHAIN_GAP) AddTag(j, tool);
 			return;
 		}
-		if (j >= 0 && eTool[j] == tool) { eLast[j] = max(eLast[j], tic); eCond[j] |= cond; return; }
+		if (j >= 0 && eTool[j] == tool) { eLast[j] = max(eLast[j], tic); eCond[j] |= cond; eHits[j]++; return; }
 		// the mod named the move BEFORE its blow landed (the contract: a kill by it then reads as that move, since
 		// the kill is scored inside the blow): the blow's guess is that move
-		if (j >= 0 && eLast[j] == tic && RS_Tool.Guess(tool) && !RS_Tool.Guess(eTool[j])) { eCond[j] |= cond; return; }
+		if (j >= 0 && eLast[j] == tic && RS_Tool.Guess(tool) && !RS_Tool.Guess(eTool[j])) { eCond[j] |= cond; eHits[j]++; return; }
 		if (j >= 0 && eLast[j] == tic && RS_Tool.Guess(eTool[j]) && !RS_Tool.Guess(tool))
 		{
 			eTool[j] = tool; eCond[j] |= cond;
 			// the run before it was the same move (a pound's second blow): one run
 			int i = PrevOf(v, pn, j);
-			if (i >= 0 && eTool[i] == tool) { eLast[i] = max(eLast[i], tic); eCond[i] |= eCond[j]; if (eTags[j] != "") AddTags(i, eTags[j]); Drop(j); }
+			if (i >= 0 && eTool[i] == tool) { eLast[i] = max(eLast[i], tic); eCond[i] |= eCond[j]; eHits[i] += eHits[j]; if (eTags[j] != "") AddTags(i, eTags[j]); Drop(j); }
 			return;
 		}
 		Append(v, pn, tool, tic, eV.Size(), cond);
@@ -244,7 +244,7 @@ class RS_ComboLedger : EventHandler
 		if (eV.Size() >= MAXE) { Drop(0); at = max(0, at - 1); }
 		at = clamp(at, 0, eV.Size());
 		eV.Insert(at, v); ePn.Insert(at, pn); eTool.Insert(at, tool); eFirst.Insert(at, tic); eLast.Insert(at, tic);
-		eCond.Insert(at, cond); eTags.Insert(at, "");
+		eCond.Insert(at, cond); eTags.Insert(at, ""); eHits.Insert(at, 1);
 	}
 
 	// THE FACTS THAT DEAL NO DAMAGE, asked of each mod by name (absent mods answer -1).
@@ -328,6 +328,12 @@ class RS_ComboLedger : EventHandler
 		int j = LastOf(v, pn);
 		return j >= 0 && level.maptime - eLast[j] <= CHAIN_GAP && RS_Tool.HasTag(eTags[j], tag);
 	}
+
+	// a tag on ledger entry k (a chain step), and the entry's blows and span (rows.zs reads them)
+	bool TagAt(int k, String tag) { return k >= 0 && k < eV.Size() && RS_Tool.HasTag(eTags[k], tag); }
+	int HitsAt(int k) { return (k >= 0 && k < eV.Size()) ? eHits[k] : 0; }
+	int SpanAt(int k) { return (k >= 0 && k < eV.Size()) ? eLast[k] - eFirst[k] : 0; }
+	int CondAt(int k) { return (k >= 0 && k < eV.Size()) ? eCond[k] : 0; }
 
 	// for the debug line and the probe
 	String Describe(Actor v, int pn)

@@ -247,17 +247,8 @@ class RS_ScoreHandler : EventHandler
 		return RS_ScoreTracker(mo.FindInventory("RS_ScoreTracker"));
 	}
 
-	// Taking a hit ends an Untouchable run. A NODAMAGE player keeps it, which is
-	// what stops a scripted hit or a cutscene from wiping the streak.
-	override void WorldThingDamaged(WorldEvent e)
-	{
-		if (!e.Thing || !e.Thing.player) { return; }
-		if (e.Damage <= 0) { return; }
-		if (e.Thing.bNoDamage) { return; }
-
-		let tr = GetTracker(e.Thing);
-		if (tr) { tr.ResetUntouchable(); }
-	}
+	// Taking a hit ends an Untouchable run (WorldThingDamaged, below with the boost marks). A NODAMAGE player keeps it,
+	// which is what stops a scripted hit or a cutscene from wiping the streak.
 
 	// ------------------------------------------------------------------ kills
 
@@ -318,6 +309,16 @@ class RS_ScoreHandler : EventHandler
 
 		bool selfKill  = killer && (killer == victim);
 		bool monsterOn = killer && !selfKill && !killer.player && killer.bIsMonster && !killer.bFriendly;
+		// CIVIL WAR / TURNCOAT (11-03, sheet N13, N14): a monster the player's Infight or Charm grenade turned made the
+		// kill: his, not everyone's Infighter (a charmed one is friendly, so it reads as a friendly monster's kill)
+		Actor turner = null;
+		if (killer && !selfKill && !killer.player && killer.bIsMonster)
+		{
+			int by = RS_Svc.Int(RS_Svc.GRENADE, "turned.by", 0, killer);
+			if (by >= 0 && by < MAXPLAYERS && playeringame[by] && players[by].mo) turner = players[by].mo;
+		}
+		bool turncoat = false;
+		if (turner && !pusher) { pusher = turner; turncoat = true; }
 
 		if (pusher) { selfKill = false; monsterOn = false; playerKill = true; killer = pusher; }
 
@@ -326,7 +327,8 @@ class RS_ScoreHandler : EventHandler
 		let ev = RS_ScoreEvent.Create(victim, playerKill ? killer : null, e.Inflictor, victim.DamageTypeReceived);
 		ev.selfInflicted    = selfKill;
 		ev.monsterOnMonster = monsterOn;
-		ev.ringOut          = pusher != null;
+		ev.ringOut          = pusher != null && !turncoat;
+		ev.turncoat         = turncoat;
 		ev.utKillsNeeded    = utKillsNeeded;
 		ev.utHPNeeded       = utHPNeeded;
 
@@ -369,17 +371,39 @@ class RS_ScoreHandler : EventHandler
 	// champion's heart names its master). Saved with the level; dead entries are dropped as it grows.
 	Array<Actor> m_markV;
 	Array<Name>  m_markWhy;
+	Array<int>   m_markTic;
 	void Mark(Actor v, Name why)
 	{
 		if (!v || Marked(v, why)) return;
-		for (int i = m_markV.Size() - 1; i >= 0; i--) if (!m_markV[i]) { m_markV.Delete(i); m_markWhy.Delete(i); }
+		for (int i = m_markV.Size() - 1; i >= 0; i--) if (!m_markV[i]) { m_markV.Delete(i); m_markWhy.Delete(i); m_markTic.Delete(i); }
 		m_markV.Push(v);
 		m_markWhy.Push(why);
+		m_markTic.Push(level.maptime);
 	}
 	bool Marked(Actor v, Name why)
 	{
 		for (int i = 0; i < m_markV.Size(); i++) if (m_markV[i] == v && m_markWhy[i] == why) return true;
 		return false;
+	}
+	// tics since the mark, or -1
+	int MarkedSince(Actor v, Name why)
+	{
+		for (int i = 0; i < m_markV.Size(); i++) if (m_markV[i] == v && m_markWhy[i] == why) return level.maptime - m_markTic[i];
+		return -1;
+	}
+	static RS_ScoreHandler Get() { return RS_ScoreHandler(EventHandler.Find("RS_ScoreHandler")); }
+
+	// A LEGENDARY'S RISE (rows.zs Strike While It Rises): the first blow seen on a risen legendary marks the rise -- the
+	// refill and the transform come together, and the next hit is soon after. A kill within 2 s of the mark pays.
+	override void WorldThingDamaged(WorldEvent e)
+	{
+		let v = e.Thing;
+		if (v && v.bIsMonster && !v.player && RS_Boost.Transformed(v) && !Marked(v, 'risen')) Mark(v, 'risen');
+		if (!v || !v.player) { return; }
+		if (e.Damage <= 0) { return; }
+		if (v.bNoDamage) { return; }
+		let tr = GetTracker(v);
+		if (tr) { tr.ResetUntouchable(); }
 	}
 
 	// The bodies paid this tic (the morph pair above). Cleared on the next tic that pays.
@@ -733,6 +757,19 @@ class RS_ScoreHandler : EventHandler
 		// taken (0) and not paid, so the move pays once. F.E.A.R. Effect: RSQ Melee's 200 -> the combo
 		// "shove > gun.shotgun@slow" (combo.zs).
 		if (label ~== "F.E.A.R. Effect") return 0;
+		// RSQ MINIBOSS'S AWARDS AS MULTIPLIERS (sheet C6): Thrall Slow Kill 100, Miniboss 500 and Greedy 1000 were the same
+		// on an imp and a Cyberdemon and sat outside the per-kill cap. The award comes on the tic of the kill it is for:
+		// it pays a share of THAT kill's base instead (0.3 / 1.0 / 1.5), on its own row as before.
+		double mult = 0;
+		if (label ~== "Thrall Slow Kill") mult = 0.3;
+		else if (label ~== "Miniboss") mult = 1.0;
+		else if (label ~== "Greedy") mult = 1.5;
+		if (mult > 0)
+		{
+			int pn = who.PlayerNumber();
+			int k = KillIndex(LastKill(pn));
+			if (k >= 0 && kTic[k] == level.maptime) points = max(1, int(round(kBase[k] * mult)));
+		}
 		let tr = GetTracker(who);
 		if (!tr) return -1;
 		EnsureRows(tr);
@@ -1061,7 +1098,7 @@ class RS_ScoreHandler : EventHandler
 	// Champions' and LegenDoom's rows included), and the chain of tools, finishing blow last. The last
 	// sixteen are kept; a reader looks once a tic.
 	int killSerial;
-	Array<int> kSerial, kPn, kBase, kStyle;
+	Array<int> kSerial, kPn, kBase, kStyle, kTic;
 	Array<int> kBig;    // 1: this kill was a big moment (BigMomentPulse's own call), for "kill.big" (Gun Bonsai VR's Lucky Kill)
 	Array<String> kChain;
 	Array<Actor> kVictim;
@@ -1073,8 +1110,8 @@ class RS_ScoreHandler : EventHandler
 		String c = "";
 		for (int k = 0; k < ev.chain.Size(); k++) c = c .. (k ? ">" : "") .. ev.chain[k];
 		killSerial++;
-		if (kSerial.Size() >= 16) { kSerial.Delete(0); kPn.Delete(0); kBase.Delete(0); kStyle.Delete(0); kChain.Delete(0); kVictim.Delete(0); kBig.Delete(0); }
-		kSerial.Push(killSerial); kPn.Push(ev.killerNum); kBase.Push(ev.basePoints); kStyle.Push(max(0, total - ev.basePoints)); kChain.Push(c); kVictim.Push(ev.victim); kBig.Push(0);
+		if (kSerial.Size() >= 16) { kSerial.Delete(0); kPn.Delete(0); kBase.Delete(0); kStyle.Delete(0); kChain.Delete(0); kVictim.Delete(0); kBig.Delete(0); kTic.Delete(0); }
+		kSerial.Push(killSerial); kPn.Push(ev.killerNum); kBase.Push(ev.basePoints); kStyle.Push(max(0, total - ev.basePoints)); kChain.Push(c); kVictim.Push(ev.victim); kBig.Push(0); kTic.Push(level.maptime);
 		if (DebugOn()) Console.Printf("RS_Score: kill #%d p%d base %d style %d chain %s", killSerial, ev.killerNum, ev.basePoints, max(0, total - ev.basePoints), c);
 	}
 

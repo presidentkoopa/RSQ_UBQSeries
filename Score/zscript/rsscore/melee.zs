@@ -176,6 +176,13 @@ class RS_Melee play
 		return v.bDontThrust || v.vel.z >= 0.9;
 	}
 
+	// the killing blow's tool, as the ledger classified it ("" when it never saw the blow)
+	static String KillTool(RS_ScoreEvent ev)
+	{
+		let led = RS_ComboLedger.Get();
+		return (led && ev.victim && ev.killerNum >= 0) ? led.ToolNow(ev.victim, ev.killerNum) : "";
+	}
+
 	// a tag on the killing blow's run (the ledger keeps the mods' "how it landed" facts: hit.heavy, crit, wall...)
 	static bool Tagged(RS_ScoreEvent ev, String tag)
 	{
@@ -435,9 +442,20 @@ class RS_Bonus_PerfectRiposte : RS_ScoreBonus
 class RS_Bonus_ReturnToSender : RS_ScoreBonus
 {
 	const MULT = 0.4;
+	const PUNCH = 0.6;    // a Hadouken, a Swat Back (sheet M17, M18: harder than a block)
+	const GUARD = 0.5;    // the Guard's reflect (M19)
+	const WHIP = 0.55;    // a Return Crack (W9)
 	override int Family() const { return FAM_MELEE; }
 	override String DisplayName() const { return "Return to Sender"; }
-	override double Evaluate(RS_ScoreEvent ev) { return RS_Melee.Returned(ev) ? MULT : 0.0; }
+	override double Evaluate(RS_ScoreEvent ev)
+	{
+		if (!RS_Melee.Returned(ev)) return 0.0;
+		String t = RS_Melee.KillTool(ev);
+		if (t == "hadouken" || t == "swat") return PUNCH;
+		if (t == "guard.reflect") return GUARD;
+		if (t == "whip.return") return WHIP;
+		return MULT;
+	}
 }
 
 // Combo: kills by different melee moves close together -- a jab, then a saber cut, then the
@@ -572,6 +590,7 @@ class RS_Bonus_Choked : RS_ScoreBonus
 	override String DisplayName() const { return "Choked"; }
 	override double Evaluate(RS_ScoreEvent ev)
 	{
+		if (RS_Melee.Kind(ev) == RS_Melee.MK_CHOKE) return MULT;   // the Headlock's Chokehold (11-03, sheet X3)
 		if (RS_Melee.Kind(ev) != RS_Melee.MK_FORCE || ev.damageType != 'Force') return 0.0;
 		int fl = RS_ScoreShots.KillFlags(ev.victim);
 		return (fl >= 0 && (fl & DMG_NO_PAIN)) ? MULT : 0.0;
@@ -716,7 +735,11 @@ class RS_Bonus_GroundPound : RS_ScoreBonus
 		if (fl < 0 || (fl & DMG_NO_PAIN)) return false;
 		return RS_Melee.LandingShape(ev.killer, ev.victim);
 	}
-	override double Evaluate(RS_ScoreEvent ev) { return IsLanding(ev) ? MULT : 0.0; }
+	override double Evaluate(RS_ScoreEvent ev)
+	{
+		if (RS_Melee.Kind(ev) == RS_Melee.MK_POUND && RS_Melee.KillTool(ev) == "pound") return MULT;   // Melee's two-fist pound (11-03, sheet X1)
+		return IsLanding(ev) ? MULT : 0.0;
+	}
 	override bool Supersedes(RS_ScoreBonus other) const { return other is "RS_Bonus_Slammed"; }
 }
 
@@ -786,7 +809,10 @@ class RS_Bonus_Counter : RS_ScoreBonus
 	override String DisplayName() const { return "Counter"; }
 	override double Evaluate(RS_ScoreEvent ev)
 	{
-		if (RS_Melee.Kind(ev) != RS_Melee.MK_FIST) return 0.0;
+		// 11-03 (sheet X7): any melee blow, not only a punch -- a cut, a stab, a bash, a grind, a crack, the disc
+		int k = RS_Melee.Kind(ev);
+		if (k == RS_Melee.MK_NONE || k == RS_Melee.MK_GRENADE || k == RS_Melee.MK_THROW || k == RS_Melee.MK_FINISH) return 0.0;
+		if (RS_Melee.IsGlove(ev.inflictor) && RS_Svc.Int(RS_Svc.MELEE, "punch.counter", 0, ev.inflictor) == 1) return MULT;   // the glove's own wind-up read
 		return (RS_Melee.InAttack(ev.victim) || RS_ScoreShots.FiredWithin(ev.victim, 18)) ? MULT : 0.0;
 	}
 }
@@ -871,6 +897,7 @@ class RS_ScoreShots : EventHandler
 	Actor killVictim;          // the last blow that brought something to 0 health
 	Actor kSource;             // ...who dealt it (the engine's damage source; null: the level)
 	int kFlags, killTic, killStack;
+	int kBefore;               // its health before that blow (the blow's damage, added back)
 
 	// monsters that died lately, and the weapons that fell out of them (Hand-Me-Down)
 	Array<Actor> deadV, drops;
@@ -976,6 +1003,7 @@ class RS_ScoreShots : EventHandler
 		killVictim = v;
 		kSource = src;
 		kFlags = e.DamageFlags;
+		kBefore = v.health + e.Damage;
 		killTic = level.maptime;
 		killStack = (swVictim == v && swTic == level.maptime) ? swCount : 0;
 	}
@@ -1239,6 +1267,14 @@ class RS_ScoreShots : EventHandler
 		let h = Get();
 		if (!h || pn < 0 || pn >= MAXPLAYERS || h.glTic[pn] != level.maptime) return 0;
 		return h.glRun[pn];
+	}
+
+	// the victim's health before the blow that killed it this tic, or -1 (a one-blow kill: at or above its spawn health)
+	static int HealthBefore(Actor v)
+	{
+		let h = Get();
+		if (!h || !v || h.killVictim != v || h.killTic != level.maptime) return -1;
+		return h.kBefore;
 	}
 
 	// the damage flags of the blow that killed v this tic, or -1

@@ -160,6 +160,7 @@ class RS_ScoreRegistry : StaticEventHandler
 		RS_HookSeed.Names(more);        // hook.zs: the grappling hook and the combos across mods
 		RS_BoostSeed.Names(more);       // boost.zs: what was killed -- Champions' tiers, LegenDoom's legendaries
 		RS_ComboSeed.Names(more);       // combo.zs: the chain of tools that led to the kill
+		RS_RowSeed.Names(more);         // rows.zs: the 11-03 rows (the sheet's kept bonuses)
 		for (int k = 0; k < more.Size(); k++) Own(more[k]);
 		RS_ComboSeed.Combos(self);      // combo.zs: Score's own rows of the combo table
 	}

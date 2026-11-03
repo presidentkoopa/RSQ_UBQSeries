@@ -55,6 +55,26 @@ class RS_ScoreTracker : Inventory
 	int   varTic;
 	int   bigComboTic;       // a big combo landed (combo.zs): the HUD's word breathes brighter
 
+	// ---- the 11-03 rows (rows.zs) ------------------------------------------
+	String wmMod;            // Weapon Master: the melee mod of the last run of kills, and the run
+	int    wmCount, wmTic;
+	Actor  mkInf;            // Multi-Kill: the last kill's inflictor, its tool, the tic, kills so far
+	String mkTool;
+	int    mkTic, mkCount;
+	int    holdStart[2];     // Hold Streak: the tic each hand's trigger went down (0 up), kills in the hold
+	int    holdKills[2];
+	int    champTic, champCount;   // Champion Streak
+	int    legendTic;        // Legend Slayer: the last legendary kill
+	int    cgTic, cgCount;   // Chain Gang: thrall kills in one slow window
+	int    thrallTic;        // Severed: the last thrall kill
+	Actor  thrownKillInf;    // Double Throw: the last thrown-saber kill's inflictor
+	int    thrownKillTic;
+	int    colourMask;       // Rainbow: the champion colours killed this map (bit per token)
+	int    rainbowPaid;      // ...and which of its three awards have paid (bits)
+	Array<String> armWep;    // Armory: the guns drawn and killing lately
+	Array<int> armTic;
+	int    hkCount, hkTic;   // Hooked Keg: kills by hooked barrels one after another
+
 	// ---- slow motion for big moments (handler.zs BigMomentPulse) -------------
 	int slowmoReady;         // no pulse before this tic (rs_score_slowmo_cooldown)
 	int slowmoUntil;         // our own last pulse is still slowing the world until about here
@@ -181,6 +201,14 @@ class RS_ScoreTracker : Inventory
 		if (!owner || !owner.player) { return; }
 
 		UpdateAir();
+		// Hold Streak (rows.zs): a trigger held from one tic to the next is one hold
+		int b = owner.player.cmd.buttons;
+		for (int h = 0; h < 2; h++)
+		{
+			bool down = h == 0 ? (b & BT_ATTACK) != 0 : (b & BT_OFFHANDATTACK) != 0;
+			if (down && holdStart[h] == 0) { holdStart[h] = level.maptime; holdKills[h] = 0; }
+			if (!down) holdStart[h] = 0;
+		}
 	}
 
 	// MEASURE THE GRAVITY, DO NOT ASSUME IT. Predicting the apex with HeightFromJumpZ

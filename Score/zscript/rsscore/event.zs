@@ -45,6 +45,8 @@ class RS_ScoreEvent play
 	bool monsterOnMonster;   // Infighter
 	bool selfInflicted;      // Darwin
 	bool ringOut;            // Ring Out: the level or a monster killed it, and a player's push put it there
+	bool turncoat;           // Civil War / Turncoat: a monster the killer's grenade turned made the kill (11-03)
+	int  healthBefore;       // the victim's health before the killing blow (RS_ScoreShots), or -1 unknown
 
 	// ---- answers worked out once per kill (melee.zs) -------------------------
 	// Twenty bonuses ask what KIND of melee kill this was, and the shot bonuses ask whether the shot
@@ -85,6 +87,7 @@ class RS_ScoreEvent play
 		// back to a box overlap plus a million points of damage where it did not. We
 		// have the damage type, so we use it.
 		ev.telefragged = (damageType == 'Telefrag');
+		ev.healthBefore = RS_ScoreShots.HealthBefore(victim);
 
 		if (killer && killer.player)
 		{
