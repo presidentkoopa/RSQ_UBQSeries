@@ -190,7 +190,6 @@ Bonsai). Order among the RSQ pk3s does not matter: everything it talks to is fou
 ## Known limits
 
 - The saber's models and its sounds are slated for replacement (see Credits).
-- A blocked shot can carry on up to one tic past you before it is put back on the blade.
 - Not run in a netgame.
 
 ## For other mods
