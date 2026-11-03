@@ -58,6 +58,8 @@ IMPACT BURSTS (2026-11-02)
   and alpha kept) by Melee/tools/bursts.py; nothing repainted. Used under the purchase's licence; not for re-sale or
   redistribution as an asset pack.
   Sounds played by name, not shipped: stock Doom 2's DSTINK (the guard) and DSSKEPCH (the swat).
+  The round a bullet comes back as (models/rsqml/btracer.obj, btracer.png; its placeholder sprite RMLRA0): the tracer
+  mesh of the project owner's RS_Ballistics library, as RSQ SlowMo ships it.
 
 The shared Radiant Silvergun Options menu is the series' tools/rsmenu; RSQ_Accessibility's settings are read
 through Accessibility/tools/a11y_template.zs.

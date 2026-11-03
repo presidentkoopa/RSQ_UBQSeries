@@ -77,3 +77,15 @@ Model RSQ_GloveOff
 	FrameIndex RMHG A 0 0
 	FrameIndex TNT1 A 0 0
 }
+
+// The round sent back by the Hadouken or the swat (gloves.zs RSQML_Round): RS_Ballistics' tracer mesh (80 x 7 units
+// along X), scaled to a 14-unit streak, as RSQ SlowMo draws its round.
+Model RSQML_Round
+{
+	Path "models/rsqml"
+	Model 0 "btracer.obj"
+	Skin 0 "btracer.png"
+	Scale 0.18 0.18 0.18
+	USEACTORPITCH
+	FrameIndex RMLR A 0 0
+}

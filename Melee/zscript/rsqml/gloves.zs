@@ -556,6 +556,92 @@ class RSQML_Gloves : StaticEventHandler
 		if (m && m.bMissile && !(m.target && m.target.player) && m.GetMissileDamage(0, 1) > 0) missiles.Push(m);
 	}
 
+	// ---- BULLETS (owner 11-03; the README limit "the swat and the Hadouken see a monster's missiles only"). A bullet is
+	// no actor: P_LineAttack traces, damages and is gone in one call. Stock QZD 17.3 fires WorldHitscanPreFired BEFORE the
+	// trace (the saber's and the shield's blocks use it; p_map.cpp:4718), and returning true cancels the shot outright.
+	// The event names the shooter, its muzzle and its aim; the shot's ray is tested against the glove's path this tic
+	// exactly as a missile's path is (SegSegDist, the Hadouken's reach), and the hand must sit BETWEEN the shooter and
+	// this player (the shield's rule), so a shot passing on its way elsewhere is not ours. Then: an open palm at swat
+	// speed knocks it away (with Swat Back, back at its shooter); a fist at punch speed with the Hadouken sends it back.
+	// "Back" is a round of our own (RSQML_Round, SlowMo's tracer mesh): it flies from the hand at the shooter's middle and
+	// does the shot's damage x the move's multiplier on what it meets, paid to that glove (Claim).
+	// rsqml_bullets (Fists and Palms Meet Bullets, on) switches the whole thing; the swat and Hadouken rows and nodes gate
+	// it as they gate missiles.
+	override bool WorldHitscanPreFired(WorldEvent e)
+	{
+		Actor sh = e.Thing;
+		if (!sh || sh.player || e.Damage <= 0 || !sh.bIsMonster || sh.bFriendly) return false;
+		if (RSQML.SVI("rsqml_bullets", 1) == 0) return false;
+		double ca = cos(e.AttackPitch);
+		Vector3 dir = (ca * cos(e.AttackAngle), ca * sin(e.AttackAngle), -sin(e.AttackPitch));
+		// the muzzle, by P_LineAttack's own formula (the saber's reading of it): Center() - Floorclip + 8 + sz for a
+		// non-player; LAF_OVERRIDEZ measures from the feet
+		double mz = ((e.AttackLineFlags & LAF_OVERRIDEZ) ? 0.0 : (sh.height * 0.5 - sh.Floorclip + 8.0)) + e.AttackZ;
+		Vector3 from = (sh.pos.xy, sh.pos.z + mz);
+		double dist = e.AttackDistance > 0 ? e.AttackDistance : 2048.0;
+		Vector3 to = from + dir * dist;
+		double upm = RSQML.UnitsPerMetre();
+		double reach = 0.09 * upm + RSQML.SV("rsqml_punch_pad", 4.0) + 6.0;
+		double minSpeed = RSQML.SV("rsqml_punch_min_speed", 2.0);
+		for (int pn = 0; pn < MAXPLAYERS; pn++)
+		{
+			if (!playeringame[pn] || !players[pn].mo || players[pn].mo == sh) continue;
+			let pmo = players[pn].mo;
+			if (pmo.health <= 0) continue;
+			for (int h = 0; h < 2; h++)
+			{
+				let g = GloveIn(pmo, h);
+				if (!g) continue;
+				let st = HandOf(pn, h);
+				if (!st.prevValid) continue;
+				double mps = st.vel.Length() / upm;
+				bool open = PalmOpen(pmo, h);
+				if (open ? (mps < SWAT_MPS || RSQML.SVI("rsqml_swat", 1) == 0) : mps < minSpeed) continue;
+				double miss = SegSegDist(st.prevHand, st.hand, from, to);
+				if (miss > reach) continue;
+				Vector3 centre = pmo.pos + (0, 0, pmo.height * 0.5);
+				double along = (st.hand - from) dot dir;
+				if (along < 0 || along > (centre - from).Length() + pmo.radius * 2) continue;
+				int lv = open ? RSQML.GBLevel(g, "SwatBack") : RSQML.MoveLevel(pmo, g, "ReturnFire", "rsqml_hadouken");
+				if (!open && lv <= 0) continue;   // a fist without the Hadouken is a fist: the bullet goes where it was going
+				bool back = lv > 0 && sh.health > 0;
+				if (back)
+				{
+					double mult = open ? RSQML.Num("SwatBack.mult", lv, 0, 1.15) : RSQML.Num("Hadouken.mult", lv, 0, 1.5);
+					ReturnBullet(pmo, g, st.hand, sh, e.Damage, mult, open);
+				}
+				pmo.A_StartSound(open ? "rsqml/swat" : "rsqml/punch", CHAN_AUTO, CHANF_OVERLAP, 1.0);
+				RSQ_Buzz.Start(pmo, h, open ? 0.6 : 0.8, open ? 5 : 6);
+				if (open) RSQML_Spark.Swat(st.hand); else RSQML_Spark.Hadouken(st.hand);
+				if (back) RSQML.Touch(open ? "swat.back" : "hadouken", pmo, sh);
+				if (RSQML.Debug() > 0) Console.Printf("RSQML bullet %s: %s's %d-damage shot %s (hand %.1f m/s, %.1f from its path, reach %.1f)",
+					open ? "swat" : "hadouken", sh.GetClassName(), e.Damage, back ? "sent back" : "knocked away", mps, miss, reach);
+				return true;
+			}
+		}
+		return false;
+	}
+	// THE ROUND SENT BACK (RSQML_Round below; owner 11-03: "if you need to generate a bullet, there might be one in RS
+	// Ballistics" -- SlowMo's tracer mesh, his RS_Ballistics library). A visible round, fast (56 units a tic), from the
+	// hand at the shooter's middle, that does the shot's damage x the move's multiplier on whatever it meets: yours
+	// (target), paid to that glove (Claim), and listed as a returned shot so RSQ Score reads "returned.by" on its kill.
+	private void ReturnBullet(PlayerPawn pmo, RSQ_Glove g, Vector3 at, Actor sh, int damage, double mult, bool byPalm)
+	{
+		Vector3 aim = level.Vec3Diff(at, sh.pos + (0, 0, sh.height * 0.5));
+		if (aim.Length() < 1.0) return;
+		aim = aim.Unit();
+		let r = RSQML_Round(Actor.Spawn("RSQML_Round", at));
+		if (!r) return;
+		r.target = pmo;
+		r.FriendPlayer = pmo.PlayerNumber() + 1;   // Gun Bonsai counts it as this player's
+		RSQML.Claim(r, g);                         // ... and pays it to that glove
+		r.dmg = max(1, damage);   // the base: the move's multiplier is applied by the returned-shot hook (MultOfReturned), as for a missile
+		r.vel = aim * r.Speed;
+		r.angle = VectorAngle(aim.x, aim.y);
+		r.pitch = -asin(clamp(aim.z, -1.0, 1.0));
+		returned.Push(r); returnedMult.Push(mult); retHand.Push(byPalm ? 1 : 0);
+	}
+
 	// what a missile sent back hits for (RSQML_Body), 0 when it was not sent back
 	double MultOfReturned(Actor shot)
 	{
@@ -1065,5 +1151,56 @@ class RSQML_Gloves : StaticEventHandler
 		runCount[e.PlayerNumber] = 0;
 		for (int i = 0; i < 3; i++) { histKind[e.PlayerNumber * 3 + i] = 0; histTic[e.PlayerNumber * 3 + i] = 0; }
 		for (int h = 0; h < 2; h++) HandOf(e.PlayerNumber, h).prevValid = false;
+	}
+}
+
+// THE ROUND SENT BACK (WorldHitscanPreFired above): a monster's bullet, made a thing you can see fly home. SlowMo's
+// RSQSM_Round's shape (its tracer mesh, RS_Ballistics'); it does its damage itself on what it meets (SpecialMissileHit:
+// the engine's own missile rules -- same species, infighting -- are skipped), passes its owner and anything not
+// shootable, and dies on a wall.
+class RSQML_Round : Actor
+{
+	int dmg;
+	Default
+	{
+		Projectile;
+		Radius 2;
+		Height 2;
+		Speed 56;
+		Damage 0;
+		DamageType "Hitscan";
+		RenderStyle "Add";
+		+NOTELEPORT
+		+DONTSPLASH
+		-ACTIVATEPCROSS
+		-ACTIVATEIMPACT
+	}
+	override void BeginPlay()
+	{
+		Super.BeginPlay();
+		A_SetRenderStyle(1.0, STYLE_AddShaded);
+		Scale = (1.25, 1.25);
+	}
+	override int SpecialMissileHit(Actor victim)
+	{
+		if (victim == target) return 1;
+		if (!victim.bSHOOTABLE) return 1;
+		if ((victim.bSPECTRAL && !bSPECTRAL) || (victim.bGHOST && bTHRUGHOST)) return 1;
+		int done = victim.DamageMobj(self, target, dmg, DamageType, DMG_USEANGLE, angle);
+		if (done > 0 && !victim.bNOBLOOD && !victim.bINVULNERABLE && !victim.bDORMANT)
+		{
+			victim.SpawnBlood(pos, angle + 180, done);
+			victim.TraceBleed(done, self);
+		}
+		return 0;
+	}
+	States
+	{
+	Spawn:
+		RMLR A -1 Bright;
+		Stop;
+	Death:
+		TNT1 A 1;
+		Stop;
 	}
 }

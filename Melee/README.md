@@ -38,6 +38,10 @@ grow into its trees), RSQ SlowMo (the shove's slow motion), RSQ Gestures (the tw
 - **Open-Palm Swat:** an open palm swung through a monster's missile (1.5 m/s or more) knocks it aside.
 - **Hadouken:** a fist at punch speed that meets a monster's missile sends it back at whoever fired it, 15 % faster,
   hitting for 150 %.
+- **Bullets too (Fists and Palms Meet Bullets):** a monster's bullet is no missile, so it is met the instant it is
+  fired: a hand swinging through its line between the shooter and you stops it -- the swat knocks it away, the
+  Hadouken sends a round straight back at the shooter, one you can watch fly, for 150 % of its damage (Swat Back does
+  the same for the palm).
 - **Guard:** both hands up at your face, no gun in either hand, and a blow from in front (within 55 degrees) does
   60 % of its damage; you slide back a step. A blow of 35 or more breaks the guard: full damage, no guard for 0.4 s.
 
@@ -117,6 +121,7 @@ Options -> Radiant Silvergun Options -> **RSQ Melee**.
 | Melee Hands | Auto (FBX with BD22 VR) | Auto: BD22 VR's FBX hand when RSQ's BD22 VR weapons mod is loaded, else Ermac's. Or Ermac / FBX (BD22 VR). |
 | Boxing Gloves | Off | Melee's hands wear SuperPunchOut's boxing gloves: always fists (no open palm, no swat). |
 | Open-Palm Swat | On | An open palm swung through a monster's missile knocks it aside. |
+| Fists and Palms Meet Bullets | On | A monster's bullet met by a swinging hand is stopped: swatted away, or sent back by the Hadouken. |
 | Slappers Only | Off | Boxing gloves on both hands, every gun put away, gun pickups vanish while it lasts. |
 | Start With Melee Hands | Off | Hands you Melee's hands at each level start and raises them in both hands. |
 | Gun Butt Shove | On | The main hand's shove with a gun hits. Stands down with BD22 VR Reloaded. |
@@ -188,7 +193,6 @@ among them. RSQ Gun Bonsai VR loads right after Gun Bonsai.
 
 ## Known limits
 
-- The swat and the Hadouken see a monster's missiles only, not hitscan bullets.
 - With RSQ Gun Bonsai VR loaded, the six upgrade rows do nothing until Gun Bonsai grants the move; without it each
   plays level 1.
 - Ground Pound and Clear Out need RSQ Gestures; without it neither happens.

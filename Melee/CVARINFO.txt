@@ -12,6 +12,7 @@ user int     rsqml_hands_model = 0;
 server bool  rsqml_boxing = false;
 // Open-Palm Swat: an open hand (tap that hand's fire) swung through a monster's missile knocks it aside.
 server bool  rsqml_swat = true;
+server bool  rsqml_bullets = true;      // a monster's BULLET met by the hand: the open-palm swat knocks it away, the Hadouken sends it back (gloves.zs WorldHitscanPreFired)
 // The gloves' punch reader (SuperPunchOut's own defaults: spo_min_speed, spo_full_speed, spo_rehit_tics,
 // spo_uppercut_rise) and reach past the glove's 9 cm radius, in map units.
 server float rsqml_punch_min_speed = 2.0;
