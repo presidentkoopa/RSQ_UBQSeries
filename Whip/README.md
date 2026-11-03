@@ -282,7 +282,12 @@ are the 11-02 fixes. They were measured on the rig only, so all of them are not 
 - A knocked-away rocket can climb steeply and burst on the ceiling (only one crack style measured).
 - A missile blown up near you still hurts you; it keeps its shooter.
 - Snag reach is uneven: the same throw caught a lip from 30 units but not from 50+.
-- No RSQ Score or HP Bars hooks (Grapple's service and perks were not copied). **Gun Bonsai (2026-11-02):** with RSQ
+- RSQ Score (2026-11-03): `RSQWP_Service` (`zscript/rsqwp/service.zs`) answers a scorer the rope under the player
+  (swinging, airborne, released, landed, rope.speed, released.speed), the monster's crack (whipped, crack.k), wrap
+  (wrapped, wrapped.by), yank and flail, and a Return Crack's missile; the crack and the Tarzan swing are named before
+  their blows land. The touch ids this mod sends (crack, lasso, bola, tarzan, crack.shot, crack.return, pull.punch,
+  yank.heavy, crack.stun) are mapped onto Score's vocabulary on Score's side. No HP Bars hooks (Grapple's perks were
+  not copied). **Gun Bonsai (2026-11-02):** with RSQ
   Gun Bonsai VR loaded, every point the whip deals is paid to the whip weapon's own record (its `Hurt` deals the
   hit inside the patch's claim bracket, asked by name), so the whip levels like a weapon; the patch's BONSAIRC
   types it melee. Without the patch nothing changes. A flail smash is then dealt as the player's hit without

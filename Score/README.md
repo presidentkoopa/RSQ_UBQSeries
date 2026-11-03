@@ -11,8 +11,8 @@ Pk3: `pk3/RSQ_Score.pk3`.
 
 ## Load order
 
-doom2.wad -> brutal22test6.pk3 -> BD_VoxelPack.pk3 -> BD22_VR-Reloaded_2_0_3h.pk3 ->
-BD22_VR-Reloaded_2.0.3ha_hotfix.pk3 -> **RSQ_Score.pk3**
+doom2.wad -> brutal22test6.pk3 -> the BD22 VR Reloaded pk3s (the RS_Brutal22WeaponsQ repo's numbered `pk3/`
+folder: the voxel pack, BD22_VR-Reloaded 2.0.3o, the XMVE monster expansions) -> the RSQ pk3s -> **RSQ_Score.pk3**
 
 - Works on plain Doom 2 without Brutal Doom (run on freedoom2 and doom2.wad on the rig). No monster class is
   named. Brutal Doom's gore helpers do not count as kills.
@@ -136,7 +136,65 @@ Score is a shared service: other mods send it awards and read its kills.
 - Gun Bonsai's own score-to-XP: if you turn it on, set Gun Bonsai's damage-to-XP to 0, or every kill pays
   XP twice.
 
+## The 11-03 build: the vocabulary, the chain rule, the rows
+
+Built from `Score/ideas/` (the naming sheet, COMBOS_MASTER.md) on 2026-11-03; rig only, not headset-confirmed. The
+sheet's "status 11-03" column says what each of its 1,170 rows became. `SCORE_SWARM_HANDOFF.md` is the state.
+
+**One tool vocabulary** (`zscript/rsscore/tools.zs`). Every move in the series is one id, `mod.move`: `glove.upper`,
+`shove`, `saber.cut`, `force.grip`, `shield.disc`, `whip.yank`, `hook.zip`, `grab.throw`, `grenade.stun`,
+`gun.shotgun`, `rig.draw`, `lean`... The ids the mods send today are mapped onto it there (no mod changed its
+strings). **Tags** (an upgrade hook, how it landed: `hit.heavy`, `crit`, `cleave.saw`, `zip.kick`...) ride on the
+blow's run and are never tools. `Classify` reads every blow once; the kill reads its own tool back out of the ledger
+(`melee.zs KindOf`), so the moves that used to read as punches or boots -- the gun-butt shove, Melee's pound and
+clear-out, a thrown body or gun, the Chokehold, a grenade, the hook's zip and claw, a hooked barrel, the Whip's crack
+-- are their own kinds. **The contract:** a mod names its move (`RS_ScoreService "touch"`) BEFORE the blow lands,
+since a kill is scored inside the blow.
+
+**The chain** (`combo.zs`): each run in the ledger carries condition bits (`@slow` the player's own slow motion,
+`+air`, `+pb`, `+head`) and tags; a pattern step is `id[@slow][+cond]`, a pattern may end `| filter` on the victim
+(`champ`, `armoured`, `legend`, `legend.rising`, `legend.dormant`, `thrall`, `miniboss`, a colour). One named row per
+kill, the best-paying match; it replaces the generic pay for the actions it names. **The generic rule:** 2/3/4/5/6
+actions 0.2 / 0.45 / 0.75 / 1.0 / 1.2, +0.1 a mod past two (to 0.3), x1.25 when the whole chain is inside 2 s. A table
+combo under a row that is a combo already (Reeled In, Ping-Pong, Fly Ball, Bowling, Pulled In, Riposte) fires when it
+pays more, for the difference. Big moment: a named row of 3 steps, 5 actions, or 4 mods.
+
+**The combos** (`combos.zs`, 215, plus the 14 in `combo.zs`): every pairing of the series' mods has a row; the
+"X into Y" filler is left to the generic rule. Names are proposals.
+
+**The rows** (`rows.zs`, 84, each with its sheet id in its comment): the fists (Shoryuken, Liver Shot, Glass Jaw,
+Textbook, Triple Threat, Dempsey Roll, Air Combo, Bouncer, Release, Toss, Piledriver, Cut Loose, Butt Stroke, K.O.,
+Shatter, Live Wire, Blast Radius); shared melee (Weapon Master, Giant Slayer, Death from Above, Juggler,
+Misdirection, Multi-Kill); the saber (Lunge, Impaled, Back Off, Double Throw); the ShieldSaw (Shield Dash, Bit Off
+More, Homecoming, Eyes in the Back, Hold the Line, Cleaver); the whip (Wrecking Ball, Tarzan, Stun Lock, Heavy Haul,
+Snap Kill); the hook (Hooked Keg, Boarding Party, Zip Kick, Scorpion); Distance Grab and the rig (Heavy Throw,
+Throwaway, Iaido, Pin Pulled, Armory); the grenade (Cooked, Airburst, Tagged, Hold My Beer, Cluster Bomb, Ice
+Breaker, Civil War, Blindside, Barbecue); BD22 VR's guns (Hold Streak, Double Tap, Hand Cannon, Headshot, Sights Up
+/ Glass, Direct Hit, Danger Close, Unmade, Rip and Tear, Tomahawk); Champions and LegenDoom (Immovable Object,
+Pop!, Pinata, Champion Streak, Too Close for Comfort, Glass Cannon, Fool's Gold, Heartbreaker, Champion Fatality,
+Rainbow, One-Tap Legend, Strike While It Rises, Legend Slayer); Miniboss (Chain Gang, Rage Quit, Riot Control,
+Severed; its flat awards now pay a share of the kill's base: 0.3 / 1.0 / 1.5); slow motion (Last Grain). Reworked in
+place: Counter pays every melee kind; Choked the Chokehold; Ground Pound Melee's pound; Return to Sender by the hand
+that sent it back (0.6 a punch, 0.5 the Guard, 0.55 a Return Crack); Bowling any thrown body; Lashed light / heavy;
+Swinging splits off Hanging Shot; Dismount needs speed; Bullet Time pays the player's own slow motion in full, an
+automatic one half, Score's own pulses nothing, x1.5 at 10 % or slower, and never a named row that carries `@slow`;
+Scrapping is Coach Gun (BD22's point-blank SSG blast); Brawler pays the Chain_saw and the BrutalAxe; Switcharoo hears
+the fire off the blow; Quick Draw and Hot Swap judge the hand that fired, and only a shot; F.E.A.R. Effect is the
+combo `shove > gun.shotgun@slow` (Melee's flat award is taken and not paid).
+
+**The mods' answers added for it:** SlowMo `trigger.auto` / `trigger.score`; Melee `shove` (named before its blow),
+`returned.by`, the `wall` tag; the Whip `RSQWP_Service` (`Whip/zscript/rsqwp/service.zs`); Grapple `rope.speed` /
+`released.speed` (and the Zip Kick named before its blow); the Rig's draws per hand; the Grenade `turned.by`.
+
+**Test it headless:** `powershell -ExecutionPolicy Bypass -File Score\tools\rigtest\run.ps1 -SlowMo -Extra
+<pk3,pk3>` packs the probe (`tools/rigtest/probe`, test only), runs doom2 + RSQ_Score (+ RSQ_SlowMo and the extra
+pk3s) on the hidden desktop engine, and writes `tools/rigtest/last_run.txt`: 23 scripted cases, each one's EXPECT
+line right above Score's own debug line for that kill. Add a case for any new row before claiming it.
+
 ## Known limits / open
+
+- 11-03: the 13 open stale items and the rows not built are listed in `SCORE_SWARM_HANDOFF.md`; Headshot's damage
+  type names are unmeasured; the owner's full load order was not run (the BD22 pk3s were not on the build machine).
 
 - Picks 57 and 58 had only their names on the picks page; neither is described in the Quest teardown. Built as
   read: 57 a hit-stop through RSQ_SlowMo's rsm_pulse (Score cannot freeze the world itself without SlowMo); 58 the
@@ -150,7 +208,7 @@ Score is a shared service: other mods send it awards and read its kills.
   the proposed combo names and pays, the living label's colours in the lenses.
 - Not reachable yet: Bowling's second pin (a thrown body stops at the first thing it hits).
 - The two fonts are not licensed for distribution: this version is the owner's, not for the public hub.
-- The pk3 in `pk3/` was built 2026-10-29.
+- The pk3 in `pk3/` was built 2026-11-03.
 
 ## Credits
 

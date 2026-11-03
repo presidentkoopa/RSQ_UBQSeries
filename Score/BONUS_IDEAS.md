@@ -1,6 +1,11 @@
 # Bonus ideas
 
-A backlog, not a plan. Nothing here is built and nothing here is approved.
+A backlog, not a plan. **Superseded 2026-11-03** by `ideas/NAMING_SHEET.csv` (its "status 11-03" column says what
+each idea became). Of the items below: Chain is Multi-Kill, Skeet exists (Juggle, Fly Ball and Air Combo replace it),
+One Shot is Hand Cannon / Glass Cannon / One-Tap Legend (the one-blow fact), Pistol-whip is the tool `shove` (Butt
+Stroke, Pistol Whip), Bash is Shield Work, Parried is Riposte / Perfect Riposte, Bullet Time and Interrupted (Counter)
+are built, Reload: Dry and Tactical are Last Round and Hot Reload in the sheet (not built: BD22 VR's facts). The rest
+is still a backlog.
 
 Everything below keeps the existing shape: a multiplier on the base points for *how*
 a kill happened, in one of the three families, computable from facts available at the
