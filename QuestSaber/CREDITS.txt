@@ -26,12 +26,10 @@ BORROWED, WITH THANKS
       ubqs/rbeep -- the training remote's ready beep, from the plasma rifle's alt-fire alert
       (weapons/plasrifle/PLBEEP).
 
-MODELS AND SOUNDS (the project owner, 10-28)
-  The saber models come from Sketchfab, sourced at the same time and from the same site as the
-  owner's Star Wars 3D weapon models. Their authors and licences are not recorded here yet.
-  The sounds come from the same place as the owner's RS lightsaber; their source is not recorded.
-  SLATED FOR REPLACEMENT (owner, 10-28): the models and those sounds are to be replaced with assets
-  from a named, credited source (with a recorded licence), since their authors can't be traced.
+MODELS AND SOUNDS (the project owner, 11-04: they ship as they are)
+  The saber model is believed to come from Star Wars Jedi Outcast (Raven Software / LucasArts), and
+  the saber sounds from a lightsaber soundfont library. Their individual authors, and the path they
+  took into this mod, are not recorded.
   The blade and glow shapes and the generated sounds are this pack's own.
   Force Lightning's arc (sounds/ubqs/ubqs_lightning.ogg, 2026-11-02): the owner's RS Ballistics well,
   sounds/rsb/impact_electric/electro7.ogg, made mono 44.1 kHz.

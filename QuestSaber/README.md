@@ -161,8 +161,8 @@ Runs alone. It finds the others by name:
 - **BD22 VR Reloaded** (the owner's mod): the Force hand and the hilt hand (its FBX hand in the magazine hold), and
   its skin. The FBX's original author and licence are not recorded.
 - **li-gnrcwpn**: the training remote's ready beep.
-- The saber models come from Sketchfab, and the saber sounds from the same source as the owner's RS lightsaber. Their
-  authors and licences are not recorded, and they are slated for replacement with credited assets.
+- The saber model is believed to come from *Star Wars Jedi Outcast* (Raven Software / LucasArts), and the saber sounds
+  from a lightsaber soundfont library. Their individual authors, and the path they took into this mod, are not recorded.
 - **QuestZDoom** (Emawind): the engine, and the off-hand weapon and hand-pose API the whole mod is built on.
 
 Free to share as part of the Radiant Silvergun Quest series. Borrowed assets keep their authors' terms.
