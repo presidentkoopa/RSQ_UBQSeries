@@ -1,0 +1,138 @@
+# TEST ONLY. Stick turns + recenter (11-03 18:56), qzd17.3 rig, doom2 MAP01 (MAP02 after the level change). Rig only, not headset-confirmed.
+# AFTER, RSQ ShieldSaw alone (its own SSQ_TurnKeeper; the 'rig' column is empty).
+== shieldsaw alone recreach @90: script errors 0, VM aborts 0
+TRT_REACH_SNAP             pawn    -0.00 trk    +0.00 | rig    +0.00 (most   0.00, ends    +nan vs head) | shield    +0.00 (most   0.00, ends   +0.00 vs head) | recenters rig 0 ss 0 | closest mean gap 0.249 m, hover -1/-1
+TRT_REACH_SMOOTH           pawn    -0.00 trk    +0.00 | rig    +0.00 (most   0.00, ends    +nan vs head) | shield    +0.00 (most  75.00, ends   +0.00 vs head) | recenters rig 0 ss 0 | closest mean gap 0.250 m, hover -1/-1
+TRT_END                    pawn    +0.00 trk    +0.00 | rig    +0.00 (most   0.00, ends    +nan vs head) | shield    +0.00 (most   0.00, ends   +0.00 vs head) | recenters rig 0 ss 0 | closest mean gap 0.308 m, hover -1/-1
+== shieldsaw alone recroom @90: script errors 0, VM aborts 0
+TRT_ROOM90                 pawn   +89.98 trk    -0.02 | rig    +0.00 (most   0.00, ends    +nan vs head) | shield    +0.00 (most   0.00, ends  -89.98 vs head) | recenters rig 0 ss 0 | closest mean gap 0.308 m, hover -1/-1
+TRT_RECENTER_GESTURE       pawn    +0.00 trk    +0.00 | rig    +0.00 (most   0.00, ends    +nan vs head) | shield   +89.98 (most  89.98, ends   +0.00 vs head) | recenters rig 0 ss 1 | closest mean gap 0.070 m, hover -1/-1
+TRT_SNAP_AFTER             pawn   -45.00 trk   -45.00 | rig    +0.00 (most   0.00, ends    +nan vs head) | shield   -45.00 (most  45.00, ends   +0.00 vs head) | recenters rig 0 ss 0 | closest mean gap 0.308 m, hover -1/-1
+TRT_ROOM_BACK              pawn   -89.98 trk    +0.02 | rig    +0.00 (most   0.00, ends    +nan vs head) | shield    +0.00 (most   0.00, ends  +89.98 vs head) | recenters rig 0 ss 0 | closest mean gap 0.308 m, hover -1/-1
+TRT_KEY                    pawn    +0.00 trk    +0.00 | rig    +0.00 (most   0.00, ends    +nan vs head) | shield   -89.98 (most  89.98, ends   +0.00 vs head) | recenters rig 0 ss 1 | closest mean gap 0.308 m, hover -1/-1
+TRT_END                    pawn    +0.00 trk    +0.00 | rig    +0.00 (most   0.00, ends    +nan vs head) | shield    +0.00 (most   0.00, ends   +0.00 vs head) | recenters rig 0 ss 0 | closest mean gap 0.308 m, hover -1/-1
+== shieldsaw alone rechold @90: script errors 0, VM aborts 0
+TRT_HOLSTER_ONE_HAND       pawn    +0.00 trk    +0.00 | rig    +0.00 (most   0.00, ends    +nan vs head) | shield    +0.00 (most   0.00, ends   +0.00 vs head) | recenters rig 0 ss 0 | closest mean gap 0.308 m, hover -1/-1
+TRT_CHEST_GRIP_HELD        pawn    +0.00 trk    +0.00 | rig    +0.00 (most   0.00, ends    +nan vs head) | shield    +0.00 (most   0.00, ends   +0.00 vs head) | recenters rig 0 ss 1 | closest mean gap 0.070 m, hover -1/-1
+TRT_CHEST_SHORT            pawn    +0.00 trk    +0.00 | rig    +0.00 (most   0.00, ends    +nan vs head) | shield    +0.00 (most   0.00, ends   +0.00 vs head) | recenters rig 0 ss 0 | closest mean gap 0.070 m, hover -1/-1
+TRT_CHEST_USE_HELD         pawn    +0.00 trk    +0.00 | rig    +0.00 (most   0.00, ends    +nan vs head) | shield    +0.00 (most   0.00, ends   +0.00 vs head) | recenters rig 0 ss 0 | closest mean gap 0.070 m, hover -1/-1
+TRT_BOTH_CHEST_HOLSTERS    pawn    +0.00 trk    +0.00 | rig    +0.00 (most   0.00, ends    +nan vs head) | shield    +0.00 (most   0.00, ends   +0.00 vs head) | recenters rig 0 ss 1 | closest mean gap 0.157 m, hover -1/-1
+TRT_ROOM60                 pawn   +59.99 trk    -0.01 | rig    +0.00 (most   0.00, ends    +nan vs head) | shield    +0.00 (most   0.00, ends  -59.99 vs head) | recenters rig 0 ss 0 | closest mean gap 0.308 m, hover -1/-1
+TRT_CHEST_POSE             pawn    +0.00 trk    +0.00 | rig    +0.00 (most   0.00, ends    +nan vs head) | shield   +59.99 (most  59.99, ends   +0.00 vs head) | recenters rig 0 ss 1 | closest mean gap 0.070 m, hover -1/-1
+TRT_END                    pawn    +0.00 trk    +0.00 | rig    +0.00 (most   0.00, ends    +nan vs head) | shield    +0.00 (most   0.00, ends   +0.00 vs head) | recenters rig 0 ss 0 | closest mean gap 0.308 m, hover -1/-1
+== shieldsaw alone reclife @90: script errors 0, VM aborts 0
+TRT_ROOM90A                pawn   +89.98 trk    -0.02 | rig    +0.00 (most   0.00, ends    +nan vs head) | shield    +0.00 (most   0.00, ends  -89.98 vs head) | recenters rig 0 ss 0 | closest mean gap 0.308 m, hover -1/-1
+TRT_SAVELOAD               pawn    +0.00 trk    +0.00 | rig    +0.00 (most   0.00, ends    +nan vs head) | shield   +89.98 (most  89.98, ends   +0.00 vs head) | recenters rig 0 ss 0 | closest mean gap 0.308 m, hover -1/-1
+TRT_ROOM90B                pawn   +89.99 trk    -0.01 | rig    +0.00 (most   0.00, ends    +nan vs head) | shield    +0.00 (most   0.00, ends  -89.99 vs head) | recenters rig 0 ss 0 | closest mean gap 0.308 m, hover -1/-1
+TRT_MAPCHANGE              pawn    +0.03 trk    +0.03 | rig    +0.00 (most   0.00, ends    +nan vs head) | shield   +90.02 (most  90.02, ends   +0.00 vs head) | recenters rig 0 ss 0 | closest mean gap 0.000 m, hover -1/-1
+TRT_ROOM90C                pawn   +89.98 trk    -0.02 | rig    +0.00 (most   0.00, ends    +nan vs head) | shield    +0.00 (most   0.00, ends  -89.98 vs head) | recenters rig 0 ss 0 | closest mean gap 0.308 m, hover -1/-1
+TRT_RESPAWN                pawn   -89.98 trk   -89.98 | rig    +0.00 (most   0.00, ends    +nan vs head) | shield    +0.00 (most   0.00, ends   +0.00 vs head) | recenters rig 0 ss 0 | closest mean gap 0.000 m, hover -1/-1
+TRT_END                    pawn    +0.00 trk    +0.00 | rig    +0.00 (most   0.00, ends    +nan vs head) | shield    +0.00 (most   0.00, ends   +0.00 vs head) | recenters rig 0 ss 0 | closest mean gap 0.308 m, hover -1/-1
+
+# the turn battery, ShieldSaw alone
+== g4 snap @90 fps: script errors 0, compile errors 0, VM aborts 0
+  TRT_SNAP_R1          trk   -45.00 rig     0.00 shield   -45.00 | pawn step -45.00, rig +0.00, shield -45.00
+  TRT_SNAP_R2          trk   -45.00 rig     0.00 shield   -45.00 | pawn step -45.00, rig +0.00, shield -45.00
+  TRT_SNAP_R3          trk   -45.00 rig     0.00 shield   -45.00 | pawn step -45.00, rig +0.00, shield -45.00
+  TRT_SNAP_R4          trk   -45.00 rig     0.00 shield   -45.00 | pawn step -45.00, rig +0.00, shield -45.00
+  TRT_SNAP_R5          trk   -45.01 rig     0.00 shield   -45.00 | pawn step -45.01, rig +0.00, shield -45.00
+  TRT_SNAP_R6          trk   -45.00 rig     0.00 shield   -45.00 | pawn step -45.00, rig +0.00, shield -45.00
+  TRT_SNAP_R7          trk   -45.00 rig     0.00 shield   -45.00 | pawn step -45.00, rig +0.00, shield -45.00
+  TRT_SNAP_R8          trk   -45.00 rig     0.00 shield   -45.00 | pawn step -45.00, rig +0.00, shield -45.00
+  TRT_SNAP_L1          trk    45.00 rig     0.00 shield    45.00 | pawn step +45.00, rig +0.00, shield +45.00
+  TRT_SNAP_L2          trk    45.00 rig     0.00 shield    45.00 | pawn step +45.00, rig +0.00, shield +45.00
+  TRT_SNAP_L3          trk    45.00 rig     0.00 shield    45.00 | pawn step +45.00, rig +0.00, shield +45.00
+  TRT_SNAP_L4          trk    45.00 rig     0.00 shield    45.00 | pawn step +45.00, rig +0.00, shield +45.00
+  TRT_SNAP_L5          trk    45.01 rig     0.00 shield    45.00 | pawn step +45.01, rig +0.00, shield +45.00
+  TRT_SNAP_L6          trk    45.00 rig     0.00 shield    45.00 | pawn step +45.00, rig +0.00, shield +45.00
+  TRT_SNAP_L7          trk    45.00 rig     0.00 shield    45.00 | pawn step +45.00, rig +0.00, shield +45.00
+  TRT_SNAP_L8          trk    45.00 rig     0.00 shield    45.00 | pawn step +45.00, rig +0.00, shield +45.00
+== g4 snapj @90 fps: script errors 0, compile errors 0, VM aborts 0
+  TRT_SNAP_R1          trk   -45.30 rig     0.00 shield   -45.00 | pawn step -45.00, rig +0.00, shield -45.00
+  TRT_SNAP_R2          trk   -44.80 rig     0.00 shield   -45.00 | pawn step -45.10, rig +0.00, shield -45.00
+  TRT_SNAP_R3          trk   -44.61 rig     0.00 shield   -45.00 | pawn step -44.50, rig +0.00, shield -45.00
+  TRT_SNAP_R4          trk   -45.40 rig     0.00 shield   -45.00 | pawn step -45.41, rig +0.00, shield -45.00
+  TRT_SNAP_R5          trk   -44.50 rig     0.00 shield   -45.00 | pawn step -44.80, rig +0.00, shield -45.00
+  TRT_SNAP_R6          trk   -45.70 rig     0.00 shield   -45.00 | pawn step -45.30, rig +0.00, shield -45.00
+  TRT_SNAP_R7          trk   -44.19 rig     0.00 shield   -45.00 | pawn step -44.91, rig +0.00, shield -45.00
+  TRT_SNAP_R8          trk   -45.60 rig     0.00 shield   -45.00 | pawn step -45.00, rig +0.00, shield -45.00
+  TRT_SNAP_L1          trk    45.60 rig     0.00 shield    45.00 | pawn step +44.60, rig +0.00, shield +45.00
+  TRT_SNAP_L2          trk    44.70 rig     0.00 shield    45.00 | pawn step +44.91, rig +0.00, shield +45.00
+  TRT_SNAP_L3          trk    44.90 rig     0.00 shield    45.00 | pawn step +44.29, rig +0.00, shield +45.00
+  TRT_SNAP_L4          trk    45.00 rig     0.00 shield    45.00 | pawn step +45.10, rig +0.00, shield +45.00
+  TRT_SNAP_L5          trk    44.51 rig     0.00 shield    45.00 | pawn step +44.61, rig +0.00, shield +45.00
+  TRT_SNAP_L6          trk    45.61 rig     0.00 shield    45.00 | pawn step +45.41, rig +0.00, shield +45.00
+  TRT_SNAP_L7          trk    44.39 rig     0.00 shield    45.00 | pawn step +44.90, rig +0.00, shield +45.00
+  TRT_SNAP_L8          trk    45.60 rig     0.00 shield    45.00 | pawn step +45.30, rig +0.00, shield +45.00
+== g4 smooth @90 fps: script errors 0, compile errors 0, VM aborts 0
+  TRT_SMOOTH_R         trk  -374.91 rig     0.00 (r-t +374.91) shield  -374.91 (s-t +0.00)
+  TRT_SMOOTH_L         trk   374.91 rig     0.00 (r-t -374.91) shield   374.91 (s-t -0.00)
+== g4 smoothj @90 fps: script errors 0, compile errors 0, VM aborts 0
+  TRT_SMOOTH_R         trk  -364.85 rig     0.00 (r-t +364.85) shield  -364.70 (s-t +0.15)
+  TRT_SMOOTH_L         trk   375.03 rig     0.00 (r-t -375.03) shield   376.30 (s-t +1.27)
+== g4 room @90 fps: script errors 0, compile errors 0, VM aborts 0
+  TRT_ROOM_L           rig     0.00 shield     0.00 | rig trails hands at most 360.0 deg (1.97 s at their 5.2 deg/tic), within 1.5 deg not in segment after they stop; shield not in segment
+  TRT_ROOM_R           rig     0.00 shield     0.00 | rig trails hands at most 360.0 deg (2.03 s at their 5.1 deg/tic), within 1.5 deg not in segment after they stop; shield not in segment
+== g4 room2 @90 fps: script errors 0, compile errors 0, VM aborts 0
+  TRT_ROOM2_L          rig     0.00 shield     0.00 | rig trails hands at most 360.0 deg (2.00 s at their 5.1 deg/tic), within 1.5 deg not in segment after they stop; shield not in segment
+  TRT_ROOM2_R          rig     0.00 shield     0.00 | rig trails hands at most 360.0 deg (2.00 s at their 5.1 deg/tic), within 1.5 deg not in segment after they stop; shield not in segment
+== g4 look @90 fps: script errors 0, compile errors 0, VM aborts 0
+  TRT_LOOK_DOWN_HIP    trk    -0.00 rig     0.00 (r-t +0.00) shield     0.00 (s-t +0.00)
+  TRT_LOOK_LEVEL_60    trk     0.00 rig     0.00 (r-t +0.00) shield     0.00 (s-t +0.00)
+== g4 lookj @90 fps: script errors 0, compile errors 0, VM aborts 0
+  TRT_LOOK_DOWN_HIP    trk    -5.30 rig     0.00 (r-t +5.30) shield     0.00 (s-t +5.30)
+  TRT_LOOK_DOWN_SNAP1  trk   -39.70 rig     0.00 shield   -45.00 | pawn step -45.00, rig +0.00, shield -45.00
+  TRT_LOOK_DOWN_SNAP2  trk   -45.00 rig     0.00 shield   -45.00 | pawn step -45.00, rig +0.00, shield -45.00
+== g4 snap @35 fps: script errors 0, compile errors 0, VM aborts 0
+  TRT_SNAP_R1          trk   -45.00 rig     0.00 shield   -45.00 | pawn step -45.00, rig +0.00, shield -45.00
+  TRT_SNAP_R2          trk   -45.00 rig     0.00 shield   -45.00 | pawn step -45.00, rig +0.00, shield -45.00
+  TRT_SNAP_R3          trk   -45.00 rig     0.00 shield   -45.00 | pawn step -45.00, rig +0.00, shield -45.00
+  TRT_SNAP_R4          trk   -45.00 rig     0.00 shield   -45.00 | pawn step -45.00, rig +0.00, shield -45.00
+  TRT_SNAP_R5          trk   -45.01 rig     0.00 shield   -45.00 | pawn step -45.01, rig +0.00, shield -45.00
+  TRT_SNAP_R6          trk   -45.00 rig     0.00 shield   -45.00 | pawn step -45.00, rig +0.00, shield -45.00
+  TRT_SNAP_R7          trk   -45.00 rig     0.00 shield   -45.00 | pawn step -45.00, rig +0.00, shield -45.00
+  TRT_SNAP_R8          trk   -45.00 rig     0.00 shield   -45.00 | pawn step -45.00, rig +0.00, shield -45.00
+  TRT_SNAP_L1          trk    45.00 rig     0.00 shield    45.00 | pawn step +45.00, rig +0.00, shield +45.00
+  TRT_SNAP_L2          trk    45.00 rig     0.00 shield    45.00 | pawn step +45.00, rig +0.00, shield +45.00
+  TRT_SNAP_L3          trk    45.00 rig     0.00 shield    45.00 | pawn step +45.00, rig +0.00, shield +45.00
+  TRT_SNAP_L4          trk    45.00 rig     0.00 shield    45.00 | pawn step +45.00, rig +0.00, shield +45.00
+  TRT_SNAP_L5          trk    45.01 rig     0.00 shield    45.00 | pawn step +45.01, rig +0.00, shield +45.00
+  TRT_SNAP_L6          trk    45.00 rig     0.00 shield    45.00 | pawn step +45.00, rig +0.00, shield +45.00
+  TRT_SNAP_L7          trk    45.00 rig     0.00 shield    45.00 | pawn step +45.00, rig +0.00, shield +45.00
+  TRT_SNAP_L8          trk    45.00 rig     0.00 shield    45.00 | pawn step +45.00, rig +0.00, shield +45.00
+== g4 snapj @35 fps: script errors 0, compile errors 0, VM aborts 0
+  TRT_SNAP_R1          trk   -45.30 rig     0.00 shield   -45.00 | pawn step -45.00, rig +0.00, shield -45.00
+  TRT_SNAP_R2          trk   -44.80 rig     0.00 shield   -45.00 | pawn step -45.10, rig +0.00, shield -45.00
+  TRT_SNAP_R3          trk   -44.61 rig     0.00 shield   -45.00 | pawn step -44.50, rig +0.00, shield -45.00
+  TRT_SNAP_R4          trk   -45.40 rig     0.00 shield   -45.00 | pawn step -45.41, rig +0.00, shield -45.00
+  TRT_SNAP_R5          trk   -44.50 rig     0.00 shield   -45.00 | pawn step -44.80, rig +0.00, shield -45.00
+  TRT_SNAP_R6          trk   -45.70 rig     0.00 shield   -45.00 | pawn step -45.30, rig +0.00, shield -45.00
+  TRT_SNAP_R7          trk   -44.19 rig     0.00 shield   -45.00 | pawn step -44.91, rig +0.00, shield -45.00
+  TRT_SNAP_R8          trk   -45.60 rig     0.00 shield   -45.00 | pawn step -45.00, rig +0.00, shield -45.00
+  TRT_SNAP_L1          trk    45.60 rig     0.00 shield    45.00 | pawn step +44.60, rig +0.00, shield +45.00
+  TRT_SNAP_L2          trk    44.70 rig     0.00 shield    45.00 | pawn step +44.91, rig +0.00, shield +45.00
+  TRT_SNAP_L3          trk    44.90 rig     0.00 shield    45.00 | pawn step +44.29, rig +0.00, shield +45.00
+  TRT_SNAP_L4          trk    45.00 rig     0.00 shield    45.00 | pawn step +45.10, rig +0.00, shield +45.00
+  TRT_SNAP_L5          trk    44.51 rig     0.00 shield    45.00 | pawn step +44.61, rig +0.00, shield +45.00
+  TRT_SNAP_L6          trk    45.61 rig     0.00 shield    45.00 | pawn step +45.41, rig +0.00, shield +45.00
+  TRT_SNAP_L7          trk    44.39 rig     0.00 shield    45.00 | pawn step +44.90, rig +0.00, shield +45.00
+  TRT_SNAP_L8          trk    45.60 rig     0.00 shield    45.00 | pawn step +45.30, rig +0.00, shield +45.00
+== g4 smooth @35 fps: script errors 0, compile errors 0, VM aborts 0
+  TRT_SMOOTH_R         trk  -354.92 rig     0.00 (r-t +354.92) shield  -354.92 (s-t +0.00)
+  TRT_SMOOTH_L         trk   359.92 rig     0.00 (r-t -359.92) shield   359.92 (s-t -0.00)
+== g4 smoothj @35 fps: script errors 0, compile errors 0, VM aborts 0
+  TRT_SMOOTH_R         trk  -149.90 rig     0.00 (r-t +149.90) shield  -149.60 (s-t +0.30)
+  TRT_SMOOTH_L         trk   150.09 rig     0.00 (r-t -150.09) shield   149.30 (s-t -0.79)
+== g4 room @35 fps: script errors 0, compile errors 0, VM aborts 0
+  TRT_ROOM_L           rig     0.00 shield     0.00 | rig trails hands at most 360.0 deg (2.03 s at their 5.1 deg/tic), within 1.5 deg not in segment after they stop; shield not in segment
+  TRT_ROOM_R           rig     0.00 shield     0.00 | rig trails hands at most 360.0 deg (2.06 s at their 5.0 deg/tic), within 1.5 deg not in segment after they stop; shield not in segment
+== g4 room2 @35 fps: script errors 0, compile errors 0, VM aborts 0
+  TRT_ROOM2_L          rig     0.00 shield     0.00 | rig trails hands at most 360.0 deg (1.86 s at their 5.5 deg/tic), within 1.5 deg not in segment after they stop; shield not in segment
+  TRT_ROOM2_R          rig     0.00 shield     0.00 | rig trails hands at most 360.0 deg (2.00 s at their 5.1 deg/tic), within 1.5 deg not in segment after they stop; shield not in segment
+== g4 look @35 fps: script errors 0, compile errors 0, VM aborts 0
+  TRT_LOOK_DOWN_HIP    trk    -0.00 rig     0.00 (r-t +0.00) shield     0.00 (s-t +0.00)
+  TRT_LOOK_LEVEL_60    trk     0.00 rig     0.00 (r-t +0.00) shield     0.00 (s-t +0.00)
+== g4 lookj @35 fps: script errors 0, compile errors 0, VM aborts 0
+  TRT_LOOK_DOWN_HIP    trk    -5.30 rig     0.00 (r-t +5.30) shield     0.00 (s-t +5.30)
+  TRT_LOOK_DOWN_SNAP1  trk   -39.69 rig     0.00 shield   -45.00 | pawn step -45.00, rig +0.00, shield -45.00
+  TRT_LOOK_DOWN_SNAP2  trk   -45.00 rig     0.00 shield   -45.00 | pawn step -45.00, rig +0.00, shield -45.00

@@ -23,8 +23,9 @@ doom2.wad -> 01 brutal22test6 -> 02 BD22_VoxelPack -> 03 BD22_VR-Reloaded_2.0.3j
 ## Setup
 
 - **Menu:** Options -> Radiant Silvergun Options -> RSQ Tactical Rig.
-- **Buttons to bind:** none. The rig reads the controller grips directly, and Use works too (*Use
-  Holsters*).
+- **Buttons to bind:** none needed. The rig reads the controller grips directly, and Use works too (*Use
+  Holsters*). Optional: **Recenter Torso** (Options -> Customize Controls -> section *RSQ Tactical Rig*, or the row
+  on the rig's own page) turns the torso to where you look.
 - If a grip does nothing: the grip key numbers are on *Tuning and Debug* as *Main Grip Keys* (446) and
   *Off Grip Keys* (443 436). 446 is the main grip only with the engine's secondary button mappings off;
   Use always works.
@@ -35,6 +36,11 @@ doom2.wad -> 01 brutal22test6 -> 02 BD22_VoxelPack -> 03 BD22_VR-Reloaded_2.0.3j
 
 - **Holster:** reach to a holster with a gun in your hand and squeeze the grip. The hand is left empty.
 - **Draw:** reach to a full holster with an empty hand and squeeze the grip.
+- **Recenter the torso:** hold both controllers against your chest for about half a second, without pressing
+  anything. You hear a soft click and feel a tick in both hands: the torso and every holster now face where your
+  head faces. Do this after you physically turn round in your room (the torso turns only with snap and smooth turns,
+  never on its own); the bound key *Recenter Torso* does the same. It also recenters on its own at every map start,
+  level change, loaded save and respawn.
 - **Swap:** grip at a full holster with a gun in hand. The two swap.
 - **Grenade:** grip at the belt buckle. The hand grenade comes to your main hand (Brutal Doom's, or RSQ
   Grenade's without Brutal Doom). Grip there again to get your gun back.
@@ -141,6 +147,8 @@ default.
 | Move Holsters by Hand | Option | Grip a sphere (a holster or the keyring), carry it, let go: it is saved. |
 | Mirror | While Moving Holsters | A copy of you about a metre out: Off / While Moving Holsters / Always. Only you see it. |
 | Holster Profiles | - | Save and load four layouts: Standing A (Blue), Standing B (Orange), Seated A (Purple), Seated B (Yellow). The keyring's place is in them; a profile saved before 2026-11-01 puts the keyring at its default. |
+| Recenter: Both Hands to Chest | On | Both controllers held against your chest (each within 0.20 m of a point 0.12 m in front of and 0.30 m under your eyes, measured in the direction you look) for 0.4 s, with no grip, Use or trigger pressed: the torso turns to where your head faces, with a soft click and a tick in both hands. With the torso already facing within 20 degrees of your head, a hand inside any holster also stops it (so it cannot fire while you draw from the chest holsters). After it fires, move a hand away before it can fire again. (11-03; rig only, not headset-confirmed.) |
+| Recenter Torso | - | The same as a key: bind it here or in Customize Controls (section *RSQ Tactical Rig*). |
 | Torso | Option | A torso the holsters sit on, coloured by armour, breathing red at low health. |
 | Torso Style | Doom marine | Doom marine or Quake Grunt. |
 | Helmet | On | With the marine torso: a helmet only mirrors show. |
@@ -168,14 +176,32 @@ default.
 | Rig Options: Slow Motion After a Smoke | On | RSQ SlowMo starts as the smoked cigarette flicks out of your mouth (6 s at 25 %, on the *Cigarette* page). |
 | Rig Options: Refill Each Level | On | The cigarette pocket refills each level. |
 | Tuning and Debug: Holster Positions / Torso Fit / Cigarette | - | Sliders for each holster and the keyring (its *Toward Off Hand* is mirrored for a left-handed layout), the torso and helmet, and the cigarette: *Mouth Zone Size* (1.0, 0.5 to 1.5: how far from the mouth still counts), *Mouth Cigarette Forward* (0.12 m) and *Mouth Cigarette Down* (0.07 m: where the cigarette sits in your mouth, from your eyes; at these its lit tip is at the bottom-centre of your view), *Smoke Time (s)* 1 to 5 in half seconds (2), *Slow Motion Seconds*, *Slow Motion Speed*, *Pack Size*. |
-| Rig Options: Torso Turns With Head and Hands | On | Your head and both hands (held in front of you) turned the same way turn the torso and the holsters with you: a real turn in the room carries the rig (11-03; rig only, not headset-confirmed). |
-| Tuning and Debug: Body Turn Angle / Delay | 35 / 1 s | A head held turned further than this, this long, while looking level, is taken as your body turning: the torso and holsters ease round to it. Every snap and smooth turn carries them by exactly the turn (11-03; rig only, not headset-confirmed). |
+| Rig Options: Torso Turns With Head and Hands | Option | Your head and both hands (held in front of you) turned the same way turn the torso and the holsters with you. OFF since 11-03 18:56: it is a guess, and reaching both hands to the side while looking there turned the torso 90 degrees (the owner's headset). |
+| Rig Options: Torso Catches Up With Head | Option | A head held turned further than *Body Turn Angle*, for *Body Turn Delay*, while looking level, eases the torso round to it. OFF since 11-03 18:56 (a guess too). |
+| Tuning and Debug: Body Turn Angle / Delay | 35 / 1 s | Used only with *Torso Catches Up With Head* on. Every snap and smooth turn carries the torso by exactly the turn whatever these say (11-03; rig only, not headset-confirmed). |
 | Tuning and Debug: Torso: Ignore Looking Down Past | 25 | Looking further down than this (degrees) never turns the torso: it neither counts toward the turn nor continues one (11-03, the owner's headset: "looking down and turning my head seems to turn the torso some"). |
 | Tuning and Debug: Throw Swing Speed (m/s) | 2.5 | How fast the hand must swing to throw a gun. |
 | Tuning and Debug: Thrown Gun Damage | 1.0 | Multiplier on thrown-gun hits. |
 | Tuning and Debug: Reset All | - | Resets every Tactical Rig setting. |
 
 The throw debug log (`rsqtr_debug_throw`) is not on the menu.
+
+**Stick turns + recenter (the owner's choice, 11-03 18:56; rig only, not headset-confirmed).** The owner's headset:
+"I am constantly finding myself with the torso 90 degrees turned when it should be facing forward, this makes the
+holsters useless". The torso guessed a body turn from the head and hands (head and both hands turning together, and a
+head held round for a second), and reaching to the side for a holster while looking there is exactly that. Now the
+torso (holsters, torso model, helmet, and RSQ ShieldSaw's shield on it) turns ONLY with the tracking space: with snap
+turning (*vr_snapTurn* over 10, the engine's default 45) only a snap turns it, by exactly the snap; with smooth turning
+the 11-03 step matcher carries it. A real turn in the room leaves it until you recenter (above). Measured on the rig
+(`tools/rigtest/turnprobe`, `gen_rec_script.py`, `rec_check.py`; `evidence/recenter_*.txt`): reaching
+both hands 75-95 degrees out to one side while looking 90 degrees there swung the torso 75 degrees before (snap
+turning), 0.00 after; 16 snaps right then left exact (45.00 each) at 90 and 35 fps, also with a live head and hands and
+while looking down; a smooth 360 0.00 off (with sway within 0.8); a real 360 in the room leaves the torso at 0.00; a real
+90 left it 89.98 off until both hands went to the chest (0.07 m from the chest point) for 0.4 s: one recenter, 0.00 off,
+and the next snap exact; the key's command recentered a real 90 back to 0.00; seated with the torso facing the head, a
+one-handed chest-holster draw, both hands at the chest with a grip held, with Use held, for only 0.3 s, and both hands in
+both chest holsters (and in the pose) for 1.1 s: no recenter; a loaded save, a level change and a respawn each left the
+torso 0.00 from the head after a real 90. RSQ ShieldSaw's shield on it: the same to the hundredth. Script errors: 0.
 
 **The torso and looking down (11-03; rig only, not headset-confirmed).** Two causes of the torso moving under you: a
 look down at a side holster (45-60 degrees of pitch with the head turned) held a second counted as the body turning,
@@ -286,6 +312,14 @@ simulated rig.
     keyring's sphere, carry it, let go: the keys hang there now. Save a holster profile, move the keyring
     again, load the profile: it is back. **(not yet headset-confirmed; rig 11-01: moved by hand to 0.30
     forward, 0.60 under the eyes; saved, moved, loaded back; an older profile put it at its default)**
+22. **Stick turns + recenter** (11-03 18:56; rig only, not headset-confirmed). Turn on *Torso* and look down.
+    a. Reach both hands out to one side while looking there, hold, come back: the torso does not turn.
+    b. Snap turn round in a full circle and back: the torso turns with every snap and ends facing forward.
+    c. Physically turn round 90 degrees in your room: the torso stays where it was. Hold both controllers to
+       your chest for half a second: click, tick in both hands, the torso faces where you look.
+    d. Draw from a chest holster with one hand: no click. Hands to your chest with a grip held: no click.
+    e. Bind *Recenter Torso*, turn round in the room, press it: the torso faces where you look.
+    f. Turn round in the room, then load a save / go to the next level / die and respawn: the torso faces you.
 
 ## Works with
 
@@ -320,6 +354,13 @@ simulated rig.
   back to the holster it came from (2: into your hand). Without the patch nothing changes.
 
 ## Known limits / open issues
+
+- **Smooth turning and the torso (11-03 18:56).** With snap turning only a snap turns the torso. With smooth
+  turning (*vr_snapTurn* 10 or less) the engine adds the stick's turn to the headset's yaw before ZScript sees
+  either, so a smooth turn and the head and both hands turning together look the same: on the rig, reaching both
+  hands 75-95 degrees out to the side while looking 90 degrees there turned the torso 75 degrees (as far as the hand
+  that turned least) and held it there while the reach was held; it came back as the hands came back. Snap turning
+  has no such case (0.00). Play with snap turning, or recenter after such a reach.
 
 - **Holstered guns may look squashed** (a model flag was tried and backed out because it could not be
   checked on the rig). Check in the mirror.
@@ -443,3 +484,5 @@ Holster profiles (`rsqtr_profile1..4`, "f,l,u,rad|..." by place index) now fill 
 (its "l" is toward the off hand); it was empty before. This section is for modders, not for play.
 `RSQTR_BodyService` (found by name): `GetDouble("body.yaw", "", 0, 0, pawn)` is the body's heading in degrees (the
 console player's pawn only, brought up to date this tic first), or 999. RSQ ShieldSaw hangs its shield on it.
+`GetDouble("body.recenter", "", 0, 0, pawn)` recenters it (to the head's facing, with the click and the tick) and
+answers the new heading (11-03; RSQ ShieldSaw's own Recenter Torso key uses it).

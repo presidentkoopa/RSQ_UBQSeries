@@ -16,12 +16,17 @@
 // below, 11-03); a head turn moves the angle alone. Looking around leaves the rig where
 // it is; turns carry it, every one, exactly.
 //
-// Turning your actual body in the room cannot be seen (there is no body tracker), but the
-// head and BOTH hands turning together can: with rsqtr_body_hands (on) the body turns with
-// them at once (RSQTR_TurnKeeper). And a head turned past rsqtr_body_turn degrees (35) and
-// held rsqtr_body_secs (1 s) is still taken as the body turning, and the body eases round to
-// it; small looks to the side, and anything while you look down (past rsqtr_body_down, 25
-// degrees), leave it.
+// STICK TURNS + RECENTER (the owner's choice, 11-03 18:56, after "I am constantly finding myself with the torso 90
+// degrees turned when it should be facing forward, this makes the holsters useless"): the body turns ONLY with the
+// tracking space (snap and smooth turns) and NEVER guesses a turn from the head or hands. Turning your actual body in
+// the room cannot be seen (there is no body tracker); reaching both hands to the side while looking there looked
+// exactly like it and swung the torso 90 degrees. So a real turn in the room leaves the torso where it was until you
+// RECENTER it (RSQTR_Rig.RecenterTick, rig.zs): both hands held to your chest (rsqtr_recenter_hands, on), the bound
+// key "Recenter Torso" (rsqtr_recenter), and on its own at map start, respawn, level change and a loaded save.
+// The two old guesses stay as options, both OFF: "Torso Turns With Head and Hands" (rsqtr_body_hands: head and both
+// hands turning together) and "Torso Catches Up With Head" (rsqtr_body_catch: a head turned past rsqtr_body_turn
+// degrees, 35, held rsqtr_body_secs, 1 s, eases the body round); neither acts while you look down (past
+// rsqtr_body_down, 25 degrees).
 //
 // THE RIG HANGS FROM THE NECK, NOT THE FACE (rsqtr_neck, on; the owner, 11-03: "looking down and turning my head
 // seems to turn the torso some"). QuestZDoom moves the pawn with the headset, and a nod swings the headset forward
@@ -79,10 +84,12 @@ class RSQTR_Body play
 		let p = pmo.player;
 		double down = RSQTR_Rig.Num("rsqtr_body_down", p, 25.0);
 		bool still = pmo.pitch > down || abs(pmo.pitch) > STEEP || RSQTR_Rig.Flag("rsqtr_edit", p, false);
-		// The head and both hands turned the same way in the room (rsqtr_body_hands): the body follows them.
-		yaw += turns.With(yaw, a, h0, h1, pmo.AttackPitch, pmo.OffhandPitch, !still && RSQTR_Rig.Flag("rsqtr_body_hands", p, true));
+		// The head and both hands turned the same way in the room (rsqtr_body_hands, OFF since 11-03 18:56: it is a
+		// guess, and reaching to the side for holsters while looking there made it): the body follows them.
+		yaw += turns.With(yaw, a, h0, h1, pmo.AttackPitch, pmo.OffhandPitch, !still && RSQTR_Rig.Flag("rsqtr_body_hands", p, false));
 
-		// A head held far round for long enough: the body has turned in the room.
+		// A head held far round for long enough (rsqtr_body_catch, OFF since 11-03 18:56): the body has turned in the room.
+		if (!RSQTR_Rig.Flag("rsqtr_body_catch", p, false)) { offFor = 0; swinging = false; return; }
 		double limit = RSQTR_Rig.Num("rsqtr_body_turn", p, 35.0);
 		int need = int(RSQTR_Rig.Num("rsqtr_body_secs", p, 1.0) * TICRATE);
 		double off = Actor.DeltaAngle(yaw, a);
@@ -110,6 +117,31 @@ class RSQTR_Body play
 			yaw += clamp(off * 0.08, -SWING, SWING);
 			if (abs(off) < 4) { swinging = false; offFor = 0; }
 		}
+	}
+
+	// RECENTER (11-03 18:56): the body faces where the head faces, yaw only, from this tic on. The keeper starts again
+	// from here, so nothing it was still waiting on (a snap's controllers, a turn being settled) moves it afterwards.
+	int recentered;            // how many times (the turn probe reads it)
+	void Recenter(PlayerPawn pmo)
+	{
+		yaw = pmo.angle;
+		if (!turns) turns = new("RSQTR_TurnKeeper");
+		turns.Prime(pmo.angle, pmo.AttackAngle, pmo.OffhandAngle);
+		offFor = 0; swinging = false; primed = true;
+		recentered++;
+	}
+
+	// THE RECENTER POSE (rsqtr_recenter_hands): where a hand is against the chest point, in ROOM METRES, in the HEAD's
+	// frame (forward, left, up), from your live eyes (the headset's own height: the hands are placed from it) with the
+	// nod taken out (NeckShift). The head's frame, not the body's: the gesture is for a torso turned away from you, and a
+	// chest point on that torso would be off to your side.
+	static Vector3 HeadLocal(PlayerPawn pmo, Vector3 at)
+	{
+		Vector3 e = (pmo.pos.x, pmo.pos.y, pmo.HmdPosition.y > 0.3 ? RoomFloor(pmo) + EyeUnits(pmo, pmo.HmdPosition.y) : (pmo.player ? pmo.player.viewz : pmo.pos.z + 41));
+		e += NeckShift(pmo);
+		Vector3 d = at - e;
+		double c = cos(pmo.angle), s = sin(pmo.angle), u = Upm();
+		return ((d.x * c + d.y * s) / u, (-d.x * s + d.y * c) / u, d.z * Ps() / u);
 	}
 
 	// The head in the world: the pawn's place (QuestZDoom moves the pawn with the
@@ -270,6 +302,13 @@ class RSQTR_Body play
 // old body 10 degrees off (ShieldSaw's 220-365), a real turn in the room left it 12-25 degrees short, and looking
 // down at a hip holster while swinging the head slid it 13-18 degrees.
 //
+// 11-03 18:56 (the owner: "I am constantly finding myself with the torso 90 degrees turned"): WITH SNAP TURNING (vr_snapTurn
+// over 10) ONLY SNAPS TURN THE BODY; the step matching and settling below run only for SMOOTH turning, where the stick
+// turns the view a little every frame and nothing else can carry the body. (A smooth turn and a rigid turn of head and
+// both hands in the room look the same to ZScript: the engine folds the stick's turn into the headset's yaw before the
+// script sees either, VR_GetMove, so with smooth turning a head-and-hands turn that agrees within the tolerances below
+// can still be taken as one.) TURNING WITH HEAD AND HANDS is OFF by default.
+//
 // NOW, three parts:
 //   SNAPS (ViewJump): a head step of a snap's size in one tic waits for the controllers' matching step and the body
 //   turns by exactly vr_snapTurn.
@@ -282,7 +321,7 @@ class RSQTR_Body play
 //   degrees). A controller pointed steeply up or down (YAW_PITCH) has no yaw to go by and shares nothing.
 //   SETTLING (below): the totals of every turn put right what the steps missed.
 //
-// TURNING WITH HEAD AND HANDS (rsqtr_body_hands, on; the owner's ask, 11-03: a real 360 in the room must carry the rig):
+// TURNING WITH HEAD AND HANDS (rsqtr_body_hands, OFF since 11-03 18:56; the owner's ask, 11-03 13:00: a real 360 in the room must carry the rig):
 // hands held in front of you mark where your body faces. When the head AND both controllers (each held within HAND_PITCH
 // of level, so a hand hanging down or in a holster never counts) all face more than START_AT degrees to the same side of
 // the body for DWELL tics, the body turns to the nearest of the three, up to CHASE degrees a tic, until it is within
@@ -374,6 +413,16 @@ class RSQTR_TurnKeeper play
 		// exactly still). Under load the rig rendered one frame in 9 tics, and every wait counted in tics ran out.
 		if (abs(d0) > 0.0001 || abs(d1) > 0.0001) frames++;
 		double j = ViewJump(dA, d0, d1, now, snap);
+		// SNAP TURNING (vr_snapTurn over 10: the engine has no smooth turn then, hw_openxrdevice / VrInputDefault.cpp 269):
+		// the tracking space turns ONLY by snaps, so only a snap turns the body, by exactly vr_snapTurn (ViewJump). No
+		// step matching and no settling: those read the head and hands turning together as a turn, and reaching both hands
+		// to the side while looking there turned the torso 90 degrees (the owner's headset, 11-03 18:56).
+		if (snap > 10)
+		{
+			hAmt.Clear(); hEnd.Clear(); cAmt.Clear(); cEnd.Clear(); tOn = false;
+			Note(j);
+			return j;
+		}
 		// A CONTROLLER POINTED STEEPLY UP OR DOWN HAS NO YAW TO GO BY (measured on the rig: a hand held down at a hip
 		// holster read yaws swinging through 180 degrees while it moved a few centimetres). Its steps match nothing; a
 		// snap still needs only the other controller (ViewJump).
@@ -601,18 +650,21 @@ class RSQTR_TurnKeeper play
 // THE BODY FOR OTHER MODS (11-03): RSQ ShieldSaw hangs its shield on this body when both are loaded, so the shield and
 // the holsters turn together, every snap. Found by name: GetDouble("body.yaw", "", 0, 0, pawn) is the body's heading in
 // degrees for the console player's pawn, brought up to date this tic first (whichever event handler asks first); any
-// other pawn, or a body not yet started, answers 999.
+// other pawn, or a body not yet started, answers 999. GetDouble("body.recenter", ...) recenters it (11-03 18:56).
 class RSQTR_BodyService : Service
 {
 	override double GetDouble(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
 	{
-		if (request != "body.yaw") return 999;
+		if (request != "body.yaw" && request != "body.recenter") return 999;
 		let pmo = PlayerPawn(objectArg);
 		let rig = RSQTR_Rig.Get();
 		if (!rig || !pmo || !pmo.player || pmo.player != players[consoleplayer]) return 999;
 		let b = rig.GetBody();
 		if (!b) return 999;
 		b.Update(pmo);
+		// "body.recenter" (11-03 18:56): RSQ ShieldSaw's own Recenter key, with the shield on this body, recenters it here
+		// (with the click and the tick); answers the new heading
+		if (request == "body.recenter") { rig.DoRecenter(pmo); return b.yaw; }
 		return b.primed ? b.yaw : 999;
 	}
 }

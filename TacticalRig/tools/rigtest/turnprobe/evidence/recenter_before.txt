@@ -1,0 +1,10 @@
+# TEST ONLY. Stick turns + recenter (11-03 18:56), qzd17.3 rig, doom2 MAP01 (MAP02 after the level change). Rig only, not headset-confirmed.
+# BEFORE: the owner's case (recreach) on the pk3s pushed 11-03 13:03 (e86df1198 / 1cb86be4b).
+== BEFORE (pushed 11-03 13:03 pk3s) rig+shield recreach @90: script errors 0
+TRT_REACH_SNAP             pawn    -0.00 trk    +0.00 | rig    +0.00 (most  75.00, ends   +0.00 vs head) | shield    +0.00 (most  75.00, ends   +0.00 vs head) | recenters rig 0 ss 0 | closest mean gap -1.000 m, hover 
+TRT_REACH_SMOOTH           pawn    -0.00 trk    +0.00 | rig    +0.00 (most  75.00, ends   +0.00 vs head) | shield    +0.00 (most  75.00, ends   +0.00 vs head) | recenters rig 0 ss 0 | closest mean gap -1.000 m, hover 
+TRT_END                    pawn    +0.00 trk    +0.00 | rig    +0.00 (most   0.00, ends   +0.00 vs head) | shield    +0.00 (most   0.00, ends   +0.00 vs head) | recenters rig 0 ss 0 | closest mean gap -1.000 m, hover 
+== BEFORE shieldsaw alone recreach @90: script errors 0
+TRT_REACH_SNAP             pawn    -0.00 trk    +0.00 | rig    +0.00 (most   0.00, ends    +nan vs head) | shield    +0.00 (most  75.00, ends   +0.00 vs head) | recenters rig 0 ss 0 | closest mean gap -1.000 m, hover 
+TRT_REACH_SMOOTH           pawn    -0.00 trk    +0.00 | rig    +0.00 (most   0.00, ends    +nan vs head) | shield    +0.00 (most  75.00, ends   +0.00 vs head) | recenters rig 0 ss 0 | closest mean gap -1.000 m, hover 
+TRT_END                    pawn    +0.00 trk    +0.00 | rig    +0.00 (most   0.00, ends    +nan vs head) | shield    +0.00 (most   0.00, ends   +0.00 vs head) | recenters rig 0 ss 0 | closest mean gap -1.000 m, hover 

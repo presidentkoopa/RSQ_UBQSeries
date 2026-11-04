@@ -5,6 +5,11 @@ version "4.14"
 // every rendered frame (the view yaw the renderer used and the controller yaws as written that frame).
 class RSQTRTurnProbe : EventHandler
 {
+	// TEST ONLY: a level change with no intermission (the tally screen waits for a press the console script cannot time)
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		if (e.Name == "trt_nextmap") level.ChangeLevel("MAP02", 0, CHANGELEVEL_NOINTERMISSION);
+	}
 	override void WorldTick()
 	{
 		let p = players[0];
@@ -26,6 +31,15 @@ class RSQTRTurnProbe : EventHandler
 		}
 		Console.Printf("trk t%d %.2f", level.maptime, trk);
 		Console.Printf("trt t%d a %.2f h0 %.2f h1 %.2f rig %.2f ssk %.2f ssq %.2f pitch %.1f", level.maptime, mo.angle, mo.AttackAngle, mo.OffhandAngle, ry, ky, sy, mo.pitch);
+		// TRR BEGIN (dropped for PROBE=old: the recenter, 11-03 18:56)
+		// RECENTER (11-03 18:56): each recenter, each hand from the chest point (metres) and in the head's frame, the holster each hand is in
+		if (rig && mo.player == players[consoleplayer])
+		{
+			Vector3 l0 = RSQTR_Body.HeadLocal(mo, mo.AttackPos), l1 = RSQTR_Body.HeadLocal(mo, mo.OffhandPos);
+			let bb = rig.GetBody();
+			Console.Printf("trr t%d rec %d gap %.3f %.3f hover %d %d main %.3f %.3f %.3f off %.3f %.3f %.3f ssrec %d", level.maptime, bb ? bb.recentered : -1, rig.recGap[0], rig.recGap[1], rig.HoverRegion(0), rig.HoverRegion(1), l0.x, l0.y, l0.z, l1.x, l1.y, l1.z, ss ? ss.kRecentered : -1);
+		}
+		// TRR END
 		// TRQ BEGIN (dropped for PROBE=old: the 11-03 keeper's queues)
 		let b = rig ? rig.GetBody() : null;
 		if (b && b.turns && CVar.FindCVar('trt_queues').GetBool())

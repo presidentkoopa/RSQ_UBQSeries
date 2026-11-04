@@ -1,0 +1,5 @@
+// RSQ Tactical Rig keys (11-03): RECENTER TORSO turns the torso (holsters, torso model, helmet, and RSQ ShieldSaw's
+// shield on it) to where your head faces. Bind it in Options > Customize Controls, or on the rig's own page.
+alias rsqtr_recenter "netevent rsqtr_recenter"
+addkeysection "RSQ Tactical Rig" rsqtr_keys
+addmenukey "Recenter Torso" rsqtr_recenter

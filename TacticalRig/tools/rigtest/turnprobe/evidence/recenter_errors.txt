@@ -1,0 +1,8 @@
+# TEST ONLY. Stick turns + recenter (11-03 18:56), qzd17.3 rig, doom2 MAP01 (MAP02 after the level change). Rig only, not headset-confirmed.
+# Script errors, final pk3s: give all, the rig's and ShieldSaw's changed menus and Customize Controls opened, both Recenter commands, a snap, a zombieman and an imp.
+# e_tr doom2 + TacticalRig alone; e_ss doom2 + ShieldSaw alone; e_gb doom2 + Gun Bonsai 0.10.6 + all 20 RSQ pk3s in pk3/; e_full doom2, brutal22test6, BD22_VoxelPack, BD22_VR-Reloaded_2.0.3q, XMVE 04-07, Gun Bonsai 0.10.6, all 20 RSQ pk3s.
+e_tr rc=0 script errors: 0  VM aborts: 0  map: 1  lines naming our packs with error/abort: 0
+e_ss rc=0 script errors: 0  VM aborts: 0  map: 1  lines naming our packs with error/abort: 0
+e_gb rc=0 script errors: 0  VM aborts: 0  map: 1  lines naming our packs with error/abort: 0
+e_full rc=0 script errors: 4  VM aborts: 0  map: 1  lines naming our packs with error/abort: 0
+the 4 in e_full are BD_VoxelPack's voxeldef.txt lines 66/72/77/892; lines naming our packs with error/abort: 0

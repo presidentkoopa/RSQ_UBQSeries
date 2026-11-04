@@ -3,6 +3,11 @@ version "4.14"
 // line as zscript.txt, the rig's yaw printed as 999.
 class RSQTRTurnProbe : EventHandler
 {
+	// TEST ONLY: a level change with no intermission (the tally screen waits for a press the console script cannot time)
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		if (e.Name == "trt_nextmap") level.ChangeLevel("MAP02", 0, CHANGELEVEL_NOINTERMISSION);
+	}
 	override void WorldTick()
 	{
 		let p = players[0];
@@ -22,5 +27,8 @@ class RSQTRTurnProbe : EventHandler
 		}
 		Console.Printf("trk t%d %.2f", level.maptime, trk);
 		Console.Printf("trt t%d a %.2f h0 %.2f h1 %.2f rig %.2f ssk %.2f ssq %.2f pitch %.1f", level.maptime, mo.angle, mo.AttackAngle, mo.OffhandAngle, 999.0, ky, sy, mo.pitch);
+		// TRR BEGIN (dropped for PROBE=ssold)
+		if (ss) Console.Printf("trr t%d rec %d gap %.3f %.3f hover -1 -1 main 0 0 0 off 0 0 0 ssrec %d", level.maptime, -1, ss.kRecGap[0], ss.kRecGap[1], ss.kRecentered);
+		// TRR END
 	}
 }

@@ -437,6 +437,12 @@ class RSQTR_Rig : EventHandler
 			if (n == consoleplayer) Profile(pmo, e.Args[0], e.Name == "rsqtr_prof_save");
 			return;
 		}
+		// "Recenter Torso" (KEYCONF rsqtr_recenter, 11-03 18:56): the body is this machine's own, so only its player's
+		if (e.Name == "rsqtr_recenter")
+		{
+			if (n == consoleplayer && pmo) DoRecenter(pmo);
+			return;
+		}
 		if (!pmo || pmo.health <= 0) return;
 		if (e.Name == "rsqtr_holster_off") { HolsterOff(pmo, e.Args[0]); return; }
 		if (e.Name == "rsqtr_draw_off") { DrawOff(pmo, e.Args[0]); return; }
@@ -1340,7 +1346,76 @@ class RSQTR_Rig : EventHandler
 		// after the holsters: a Use press with a hand in a holster was the holster's (WatchMove stands down)
 		WatchMove(pmo, p, useEdge);
 		useWas = useDown;
+		RecenterTick(pmo, p, n);
 		DrawMarkers(pmo, p);
+	}
+
+	// ---- RECENTER (the owner's choice, 11-03 18:56: "Stick turns + recenter") ---------------------------------------
+	// The torso turns only with snap and smooth turns (body.zs), so after a real turn in the room it is put back in
+	// front of you by hand: BOTH HANDS TO THE CHEST (rsqtr_recenter_hands, on), both controllers held against your
+	// chest for REC_HOLD tics, or the bound key "Recenter Torso" (rsqtr_recenter). Either turns the torso to where your
+	// head faces (yaw only), with a soft click and a short tick in both hands. On its own, silently, at map start, a
+	// level change and a loaded save (the body is this level's and transient: a new one starts facing the head) and at
+	// a respawn (PlayerRespawned).
+	// THE POSE, in the HEAD's frame from your live eyes (RSQTR_Body.HeadLocal), room metres: each controller within
+	// REC_RAD of the chest point REC_F forward, on the centre line, REC_U down. Measured on the rig (turnprobe, 11-03):
+	// controllers held against the sternum (0.12 m in front of and 0.30 m under the eyes, 0.07 m either side of the
+	// centre) read 0.12 forward, +-0.07 left, -0.30 up. The ready pose (0.25 to the side, 0.30 forward, 0.30 down) is
+	// 0.31 m out; hands at the hips 0.4 m out.
+	// IT CANNOT FIRE WHILE DRAWING FROM A CHEST HOLSTER: it wants BOTH hands there, no grip held (rsqtr_grip's keys)
+	// and no Use or fire button, and (with the torso within REC_NEAR of the head) neither hand inside any holster, all
+	// for the whole hold; and once it fired, a hand must leave the pose before it can fire again.
+	const REC_F = 0.12;
+	const REC_U = -0.30;
+	const REC_RAD = 0.20;
+	const REC_HOLD = 14;      // tics (0.4 s)
+	const REC_NEAR = 20.0;    // degrees: a torso this close to the head's facing has its holsters in place (below)
+	private transient int recFor;
+	private transient bool recDone;
+	transient double recGap[2];       // each hand's distance from the chest point, metres (the turn probe reads it)
+
+	void RecenterTick(PlayerPawn pmo, PlayerInfo p, int n)
+	{
+		bool inPose = true;
+		for (int h = 0; h < 2; h++)
+		{
+			Vector3 l = RSQTR_Body.HeadLocal(pmo, RSQTR_Body.Hand(pmo, h));
+			recGap[h] = (l.x - REC_F, l.y, l.z - REC_U).Length();
+			if (recGap[h] > REC_RAD) inPose = false;
+		}
+		if (!inPose) { recFor = 0; recDone = false; return; }
+		int bt = p.cmd.buttons;
+		// a hand in a holster counts only while the torso already faces within REC_NEAR of the head: then the holsters are
+		// where they belong and a hand at one is drawing (and a recenter would move nothing anyway); with the torso turned
+		// away they hang somewhere else, and measured on the rig (turnprobe, 11-03) the off hand at the chest was in the
+		// off shoulder holster of a torso left 90 degrees round, which blocked the very recenter it needed
+		bool near = body && body.primed && abs(Actor.DeltaAngle(body.yaw, pmo.angle)) < REC_NEAR;
+		bool busy = (near && (hoverR[0] >= 0 || hoverR[1] >= 0)) || gripDown[n * 2] || gripDown[n * 2 + 1]
+			|| (bt & (BT_USE | BT_ATTACK | BT_ALTATTACK | BT_OFFHANDATTACK | BT_OFFHANDALTATTACK)) != 0;
+		if (busy || recDone || !Flag("rsqtr_recenter_hands", p, true)) { recFor = 0; return; }
+		if (++recFor < REC_HOLD) return;
+		recFor = 0;
+		recDone = true;
+		DoRecenter(pmo);
+	}
+
+	// the torso to the head's facing, with the click and the tick (the gesture, the key, RSQ ShieldSaw's key)
+	void DoRecenter(PlayerPawn pmo)
+	{
+		if (!pmo || !pmo.player || pmo.player != players[consoleplayer]) return;
+		if (!body) body = new("RSQTR_Body");
+		body.Recenter(pmo);
+		// a soft click: Doom's own switch sound (doom2.wad DSSWTCHN), quiet, heard only here
+		pmo.A_StartSound("switches/normbutn", CHAN_AUTO, CHANF_LOCAL, 0.3);
+		RSQTR_Buzzer.Start(pmo, 0, 0.3, 3);
+		RSQTR_Buzzer.Start(pmo, 1, 0.3, 3);
+		if (Flag("rsqtr_messages", pmo.player, false)) pmo.A_Print("Torso recentered", 0, RSQTR_A11y.PrintFont());
+	}
+
+	// a respawn: the new pawn's torso faces where its head does
+	override void PlayerRespawned(PlayerEvent e)
+	{
+		if (e.PlayerNumber == consoleplayer && body) body.primed = false;
 	}
 
 	// Saved settings outlive new defaults (a user cvar keeps its stored value), so a setting
@@ -1390,6 +1465,14 @@ class RSQTR_Rig : EventHandler
 				if (u && abs(u.GetFloat() + 0.38) < 0.001) u.SetFloat(-0.46);
 			}
 			ver.SetInt(5);
+		}
+		// settings version 6 (11-03 18:56, "Stick turns + recenter"): the torso never guesses a turn from the head or
+		// hands, so "Torso Turns With Head and Hands" goes off (it was on from 11-03 13:00) whatever was saved
+		if (ver && ver.GetInt() < 6)
+		{
+			let bh = CVar.FindCVar("rsqtr_body_hands");
+			if (bh) bh.SetBool(false);
+			ver.SetInt(6);
 		}
 	}
 
@@ -1866,6 +1949,7 @@ class RSQTR_Rig : EventHandler
 	override void WorldLoaded(WorldEvent e)
 	{
 		hoverR[0] = -1; hoverR[1] = -1;
+		if (body) body.primed = false;     // a new map: the torso starts facing where the head faces (RECENTER)
 		afterLoad = false;
 		if (!e.IsSaveGame) RestoreLoadout();
 	}
@@ -1967,6 +2051,7 @@ class RSQTR_Rig : EventHandler
 		editHand = -1; editRegion = -1;
 		hoverR[0] = -1; hoverR[1] = -1;
 		afterLoad = true;
+		if (body) body.primed = false;     // a loaded save: the torso starts facing where the head faces (RECENTER)
 	}
 }
 
