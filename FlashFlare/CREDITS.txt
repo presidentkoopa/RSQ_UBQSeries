@@ -1,7 +1,7 @@
 RSQ FnF (Flash and Flare) -- credits
 =====================================
 
-The Radiant Silvergun Quest series' VR road flare (and, later, flashlight), for stock QuestZDoom 17.3: ZScript and lumps
+The Radiant Silvergun Quest series' VR road flare and flashlight, for stock QuestZDoom 17.3: ZScript and lumps
 only, no engine changes. The code is written for this pack (presidentkoopa's series).
 
 WHAT THIS PK3 SHIPS, AND WHOSE IT IS
@@ -27,8 +27,14 @@ WHAT THIS PK3 SHIPS, AND WHOSE IT IS
   it never stands in for BD_VoxelPack's own. The pack's voxel authors, as its Credits.txt names them: Ghostpilot,
   DooMAD, Monfriez, DooMGoaT, Exl (its ZDoom fork, offset utility), Scott_AW (Strip2Voxel), ReaperMan, 4mer, phi108,
   Conrad RDW, Voxelbro, zedas.
+- The flashlight (tools/gen_torch.py): the hand is Brutal Doom 22 VR Reloaded's (the owner's mod) shotgun pump / forend
+  support hand, models/rsq/fbx/fbx_s192_L.md3 frame 1, copied as models/rsqff/rsqff_pumphand.md3 (moved, not turned) with
+  its skin fbx_hand.png, drawn in BD22 VR's own off-hand MODELDEF placement. The flashlight itself, its beam cones, their
+  skins and the hotspot sprite are generated for this pack. Ideas from Ermac's VR-Flashlight (github.com/iAmErmac,
+  base code SuaveSteve's "Steve's Flashlight": a spot light that follows the controller) and DarkDoomz (Caligari87,
+  zlib: a spot light's look); none of their code or assets is used.
 - Sounds otherwise: stock Doom sounds by their own names (SNDINFO.txt aliases): the platform stop (landing), the item
-  pickup (pocket).
+  pickup (pocket), the switch (the flashlight's click).
 
 IDEAS AND NUMBERS FROM
 - saegiru's Emergency Flare (UDV Survival Flares, part of JohnnyDoom's UAC Survival Pack; DECORATE.flares,

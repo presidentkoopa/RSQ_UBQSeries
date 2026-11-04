@@ -5,7 +5,7 @@ A road flare you pull from your chest, strike with a flick of the wrist, and thr
 Status: 0.99 — played and confirmed working in the headset; refinement and bug fixing ongoing.
 
 Part of the Radiant Silvergun Quest series for stock QuestZDoom 17.3. ZScript only, no engine changes. The flare is
-built; a flashlight is planned.
+built; the flashlight is new (rig only, not headset-confirmed).
 
 **Dynamic lights must be on** in the engine's video settings. The flare's light is a real dynamic light; with them off
 you get the flame and sparks but no light.
@@ -47,6 +47,17 @@ and the throw is measured against your body, so walking and turning never count 
   flare burns out, the last one that went dark lights again.
 - Subdued Light: twice the radius at half the brightness, for a softer look.
 
+**The flashlight** (rig only, not headset-confirmed)
+- On a clip on your chest, on your off hand's own side. Grip there with the off hand: it comes out switched on. That
+  hand's trigger turns it off and on. Grip at the clip again to put it back.
+- Held in Brutal Doom 22 VR Reloaded's shotgun-pump support hand, drawn where your off hand is.
+- One real spot light from the lens, plus a beam you can see in the air. The beam stops where it meets a wall or a
+  monster, and a soft spot shows where it lands, even past the light's reach.
+- Beam size, colour and quality are menu rows. One light per flashlight; Quest quality keeps the range short.
+- One thing in the off hand at a time: take a flare and the flashlight goes away. Put the flare back and the
+  flashlight comes back, on or off as it was.
+- With DarkDoomz loaded, its own flashlight switches off while yours is on.
+
 **Supply**
 - You start a new game with 2 flares, and get them back after dying. You carry up to 24.
 - Boxes of 6 turn up beside a map's items, up to 2 a map: saegiru's flare box (with voxels on, a voxel box with
@@ -73,6 +84,9 @@ and the throw is measured against your body, so walking and turning never count 
 | Light by trigger | Off-hand trigger | With Light It By on Trigger or Strike or Trigger |
 | Throw | Swing the off hand faster than 2 m/s, then grip or off-hand trigger | Leaves at 1.25x your hand's speed, with a little arc and your walking speed added |
 | Drop | Grip with the hand still, away from the pocket | Lies at your feet, burning |
+| Take the flashlight | Off hand at the clip (your off hand's side of your chest), grip | Clip: 0.10 m forward, 0.17 m toward your off hand, 0.22 m under your eyes; reach 0.12 m. Comes out on |
+| Flashlight on / off | The flashlight hand's trigger | A click |
+| Put the flashlight back | Off hand at the clip, grip | |
 | Flare holster (with RSQ Tactical Rig) | Off hand at the Rig's flare holster on your off-hand hip, grip | Takes or puts back an unlit flare, the same flares as the pocket. A lit one cannot go back: the grip drops it, burning. Shown there while you carry one |
 
 - The flare is always in the off hand. With QuestZDoom's left-handed setting the pocket moves to the other side of
@@ -101,6 +115,11 @@ Options → Radiant Silvergun Options → RSQ FnF (Flash and Flare)
 | Boxes a Map | 2 | Most boxes in one map (0-8) |
 | Pocket Refills Each Level | Off | Tops the pocket up at each new level |
 | Pocket Refills To | 4 | ...to this many (1-24) |
+| Flashlight | On | The flashlight on its clip |
+| Beam Size | Medium | Narrow (6/14 degrees), Medium (10/22), Wide (16/32) |
+| Beam Colour | Warm White | Warm White, the series' 17 colours, or Random (a new one each time you switch it on) |
+| Beam Quality | Quest | Quest: range 448, a one-layer beam, the trace every 2nd tic. PCVR: 640, a two-layer beam, a little dust. High: 896, more dust |
+| DarkDoomz Flashlight Stands Down | On | While yours is on, DarkDoomz's flashlight is switched off with its own toggle |
 
 **Tuning and Debug**
 
@@ -117,6 +136,10 @@ Options → Radiant Silvergun Options → RSQ FnF (Flash and Flare)
 | Pocket Toward Main Hand (m) | 0.15 | ...toward your main hand's side |
 | Pocket Height (m) | -0.28 | ...under the eyes |
 | Pocket Reach (m) | 0.11 | How near the hand must be |
+| Flashlight Clip Forward (m) | 0.10 | The clip, forward of the chest line |
+| Flashlight Clip Toward Off Hand (m) | 0.17 | ...toward your off hand's side |
+| Flashlight Clip Height (m) | -0.22 | ...under the eyes |
+| Flashlight Clip Reach (m) | 0.12 | How near the hand must be |
 | Debug Log | Off | Flare lines in the console |
 | Reset All | | Every setting back to default |
 
@@ -131,14 +154,17 @@ Runs alone. It finds the others by name:
   flare. The two pockets sit on opposite sides: the Rig's cigarettes on your off-hand side, flares on your main-hand
   side. Without the Rig, the pocket follows snap and stick turns and eases under your head while you look ahead.
 - **Brutal Doom 22 VR Reloaded**: when the flare leaves your hand, the off hand gets BD22 VR's empty hands back (on
-  plain Doom the off hand is simply empty). Its Hand Skin Tone tones the hand holding the flare.
+  plain Doom the off hand is simply empty). Its Hand Skin Tone tones the hand holding the flare or the flashlight.
+- **DarkDoomz**: its flashlight is switched off with its own toggle while yours is on (Stands Down row). Its darkness
+  is left alone. The flashlight clip also hangs on RSQ Tactical Rig's body, and a Rig holster can take it by name.
 
 ## Credits and licence
 
 - **presidentkoopa** (project owner): the flare model (Flare.blend with its FlareTexture and FlareTip textures),
   read from the .blend and turned into the in-hand, lying and box models, scaled to a 22.5 cm road flare. The code.
 - **Brutal Doom 22 VR Reloaded** (the owner's mod): the FBX hand, its off-hand magazine hold and skin, drawn in BD22
-  VR's own off-hand placement.
+  VR's own off-hand placement; its shotgun-pump support hand holds the flashlight.
+- **Ermac** (VR-Flashlight, base code by SuaveSteve) and **Caligari87** (DarkDoomz): ideas for the flashlight only.
 - **saegiru's Emergency Flare** (UDV Survival Flares, part of the UAC Survival Pack by JohnnyDoom, forum.zdoom.org t=47229):
   the box and lying-flare sprites and the strike, burning and burnout sounds (renamed), and the numbers: a box of 6,
   carry 24, the red-orange colour, the raised light, boxes rolled beside a map's items, a thrown flare that bounces and
@@ -147,7 +173,8 @@ Runs alone. It finds the others by name:
   "FLARE" and a latch added). The pack's voxel authors, as its credits name them: Ghostpilot, DooMAD, Monfriez,
   DooMGoaT, Exl, Scott_AW, ReaperMan, 4mer, phi108, Conrad RDW, Voxelbro, zedas.
 - **id Software**: the stock Doom sounds played by name.
-- Generated for this pack: the glowing end, flame, spark and smoke pictures, the clear skin and placeholder sprites.
+- Generated for this pack: the glowing end, flame, spark and smoke pictures, the clear skin and placeholder sprites,
+  the flashlight model, its beam cones and the hotspot.
 - **QuestZDoom** (Emawind and Team Beef): the engine, and its off-hand weapon and hand-pose API.
 
 Free to share as part of the Radiant Silvergun Quest series. Borrowed assets keep their authors' terms; sharing other

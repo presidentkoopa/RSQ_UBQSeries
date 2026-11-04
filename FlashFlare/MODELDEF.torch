@@ -1,0 +1,122 @@
+// RSQ FnF -- THE FLASHLIGHT's models (tools/gen_torch.py; zscript/rsqff/torch.zs). A lump of its own beside MODELDEF.txt.
+
+// IN THE OFF HAND (RSQFF_Torch): the flashlight baked in Brutal Doom 22 VR Reloaded's shotgun pump / forend support hand
+// (fbx_s192_L.md3 frame 1, moved so its gripped cylinder sits where the flare's hold grips; tools/gen_torch.py), in MODEL
+// SLOT 7 with Skin 7 "fbx_hand.png" so BD22 VR's Hand Skin Tone tones it. Scale / Offset are BD22 VR's own off-hand block's
+// (its RSQ_Hands draws this same mesh with them), as the flare's are. Surfaces of torch_h.md3: 0 body, 1 lens, 2 glow.
+// A in the hand
+Model RSQFF_Torch
+{
+	Path "models/rsqff"
+	Model 0 "torch_h.md3"
+	SurfaceSkin 0 0 "torch.png"
+	SurfaceSkin 0 1 "torchlens.png"
+	SurfaceSkin 0 2 "clear.png"
+	Model 7 "rsqff_pumphand.md3"
+	Skin 7 "fbx_hand.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex QFFT A 0 0
+	FrameIndex QFFT A 7 0
+}
+// C no hand drawn (Show Hand off)
+Model RSQFF_Torch
+{
+	Path "models/rsqff"
+	Model 0 "torch_h.md3"
+	SurfaceSkin 0 0 "torch.png"
+	SurfaceSkin 0 1 "torchlens.png"
+	SurfaceSkin 0 2 "clear.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex QFFT C 0 0
+}
+// D the glowing lens alone, the overlay layer drawn full bright while it is on
+Model RSQFF_Torch
+{
+	Path "models/rsqff"
+	Model 0 "torch_h.md3"
+	SurfaceSkin 0 0 "clear.png"
+	SurfaceSkin 0 1 "clear.png"
+	SurfaceSkin 0 2 "torchglow.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex QFFT D 0 0
+}
+
+// THE VISIBLE BEAM (RSQFF_TorchCone): along model +Z, turned by the actor's pitch (pitch + 90), drawn in real proportions
+// (CORRECTPIXELSTRETCH: the beam's real direction), both faces (seen from inside too). Frame = length (A-Z). QFFC: the Quest
+// cone (one layer); QFFK: two layers (PCVR, High). Skin: white with the fade in its alpha; the actor's AddStencil shade is
+// the colour.
+Model RSQFF_TorchCone
+{
+	Path "models/rsqff"
+	Model 0 "cone_lo.md3"
+	Skin 0 "cone.png"
+	Scale 1.0 1.0 1.0
+	USEACTORPITCH
+	DONTCULLBACKFACES
+	CORRECTPIXELSTRETCH
+	FrameIndex QFFC A 0 0
+	FrameIndex QFFC B 0 1
+	FrameIndex QFFC C 0 2
+	FrameIndex QFFC D 0 3
+	FrameIndex QFFC E 0 4
+	FrameIndex QFFC F 0 5
+	FrameIndex QFFC G 0 6
+	FrameIndex QFFC H 0 7
+	FrameIndex QFFC I 0 8
+	FrameIndex QFFC J 0 9
+	FrameIndex QFFC K 0 10
+	FrameIndex QFFC L 0 11
+	FrameIndex QFFC M 0 12
+	FrameIndex QFFC N 0 13
+	FrameIndex QFFC O 0 14
+	FrameIndex QFFC P 0 15
+	FrameIndex QFFC Q 0 16
+	FrameIndex QFFC R 0 17
+	FrameIndex QFFC S 0 18
+	FrameIndex QFFC T 0 19
+	FrameIndex QFFC U 0 20
+	FrameIndex QFFC V 0 21
+	FrameIndex QFFC W 0 22
+	FrameIndex QFFC X 0 23
+	FrameIndex QFFC Y 0 24
+	FrameIndex QFFC Z 0 25
+}
+Model RSQFF_TorchCone
+{
+	Path "models/rsqff"
+	Model 0 "cone_hi.md3"
+	Skin 0 "cone.png"
+	Scale 1.0 1.0 1.0
+	USEACTORPITCH
+	DONTCULLBACKFACES
+	CORRECTPIXELSTRETCH
+	FrameIndex QFFK A 0 0
+	FrameIndex QFFK B 0 1
+	FrameIndex QFFK C 0 2
+	FrameIndex QFFK D 0 3
+	FrameIndex QFFK E 0 4
+	FrameIndex QFFK F 0 5
+	FrameIndex QFFK G 0 6
+	FrameIndex QFFK H 0 7
+	FrameIndex QFFK I 0 8
+	FrameIndex QFFK J 0 9
+	FrameIndex QFFK K 0 10
+	FrameIndex QFFK L 0 11
+	FrameIndex QFFK M 0 12
+	FrameIndex QFFK N 0 13
+	FrameIndex QFFK O 0 14
+	FrameIndex QFFK P 0 15
+	FrameIndex QFFK Q 0 16
+	FrameIndex QFFK R 0 17
+	FrameIndex QFFK S 0 18
+	FrameIndex QFFK T 0 19
+	FrameIndex QFFK U 0 20
+	FrameIndex QFFK V 0 21
+	FrameIndex QFFK W 0 22
+	FrameIndex QFFK X 0 23
+	FrameIndex QFFK Y 0 24
+	FrameIndex QFFK Z 0 25
+}

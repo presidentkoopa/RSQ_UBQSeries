@@ -274,7 +274,7 @@ def main():
     radial(8, [(0, (255, 255, 230, 255)), (0.5, (255, 200, 90, 255)), (1.0, (0, 0, 0, 255))]).save(os.path.join(G, 'RQFSPRK.png'))
     radial(32, [(0, (120, 110, 105, 150)), (0.6, (100, 95, 92, 70)), (1.0, (90, 90, 90, 0))], alpha=True).save(os.path.join(G, 'RQFSMOK.png'))
     # placeholders for the model-only sprites
-    for nm in ('QFFHA0', 'QFFHB0', 'QFFHC0', 'QFFHD0', 'QFFHE0', 'QFFHF0', 'QFFWA0', 'QFFWB0', 'QFFWC0', 'QFFBA0'):
+    for nm in ('QFFHA0', 'QFFHB0', 'QFFHC0', 'QFFHD0', 'QFFHE0', 'QFFHF0', 'QFFWA0', 'QFFWB0', 'QFFWC0'):   # QFFBA0: gen_flarebox.py
         Image.new('RGBA', (4, 4), (0, 0, 0, 0)).save(os.path.join(S, nm + '.png'))
     print('wrote models/rsqff, graphics/rsqff, sprites/rsqff')
 

@@ -224,6 +224,6 @@ for a few tics after a butt shove (SlowMo `rsm_pulse`); maybe extra gore/effects
 New pk3 `pk3/RSQ_FnF.pk3` (source folder `FlashFlare/`, build target `FlashFlare` in tools/build_all.py; the owner asked
 for it by name, 11-03 19:08 / 19:43). Load it with the other RSQ pk3s, any order. Menu: Radiant Silvergun Options ->
 RSQ FnF (Flash and Flare). The road flare is built (rig only, not headset-confirmed: `FlashFlare/README.md`); the
-flashlight is a proposal only (`FlashFlare/docs/FLASHLIGHT_PROPOSAL.md`). Debug cvar: `rsqff_debug 1`. Needs dynamic
+flashlight is built too (11-03, the proposal's B+: `FlashFlare/zscript/rsqff/torch.zs`, `FlashFlare/docs/FLASHLIGHT_PROPOSAL.md`; rig only, not headset-confirmed). Debug cvar: `rsqff_debug 1`. Needs dynamic
 lights on (`gl_lights`). Spec only, not built: a flare / flashlight holster on the LEFT hip (mirror of the planned whip
 holster on the right hip, a bit behind and outside the saber holster, same height).

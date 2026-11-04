@@ -39,6 +39,12 @@ OptionMenu "RSQFF_Options"
 	Option "Pocket Refills Each Level", "rsqff_pocket", "OnOff"
 	Slider "Pocket Refills To", "rsqff_pocket_n", 1, 24, 1, 0
 	StaticText " "
+	Option "Flashlight", "rsqff_fl_on", "OnOff"
+	Option "Beam Size", "rsqff_fl_size", "RSQFF_BeamSize"
+	Option "Beam Colour", "rsqff_fl_color", "RSQFF_BeamColour"
+	Option "Beam Quality", "rsqff_fl_quality", "RSQFF_BeamQuality"
+	Option "DarkDoomz Flashlight Stands Down", "rsqff_fl_ddz", "OnOff"
+	StaticText " "
 	Submenu "Tuning and Debug", "RSQFF_Tuning"
 }
 
@@ -59,15 +65,58 @@ OptionMenu "RSQFF_Tuning"
 	Slider "Pocket Height (m)", "rsqff_pocket_u", -0.90, 0.10, 0.01, 2
 	Slider "Pocket Reach (m)", "rsqff_pocket_r", 0.04, 0.30, 0.01, 2
 	StaticText " "
+	Slider "Flashlight Clip Forward (m)", "rsqff_fl_clip_f", -0.10, 0.40, 0.01, 2
+	Slider "Flashlight Clip Toward Off Hand (m)", "rsqff_fl_clip_l", -0.40, 0.40, 0.01, 2
+	Slider "Flashlight Clip Height (m)", "rsqff_fl_clip_u", -0.90, 0.10, 0.01, 2
+	Slider "Flashlight Clip Reach (m)", "rsqff_fl_clip_r", 0.04, 0.30, 0.01, 2
+	StaticText " "
 	Option "Debug Log", "rsqff_debug", "OnOff"
 	StaticText " "
-	SafeCommand "Reset All", "resetcvar rsqff_on rsqff_radius rsqff_cap rsqff_flicker rsqff_subdued rsqff_burn rsqff_sparks rsqff_smoke rsqff_sound rsqff_start rsqff_scatter rsqff_boxes rsqff_pocket rsqff_pocket_n rsqff_light_by rsqff_strike rsqff_swing rsqff_throw rsqff_lift rsqff_hand rsqff_pocket_f rsqff_pocket_l rsqff_pocket_u rsqff_pocket_r rsqff_keys_off rsqff_debug", "Reset all RSQ FnF settings?"
+	SafeCommand "Reset All", "resetcvar rsqff_on rsqff_radius rsqff_cap rsqff_flicker rsqff_subdued rsqff_burn rsqff_sparks rsqff_smoke rsqff_sound rsqff_start rsqff_scatter rsqff_boxes rsqff_pocket rsqff_pocket_n rsqff_light_by rsqff_strike rsqff_swing rsqff_throw rsqff_lift rsqff_hand rsqff_pocket_f rsqff_pocket_l rsqff_pocket_u rsqff_pocket_r rsqff_keys_off rsqff_debug rsqff_fl_on rsqff_fl_size rsqff_fl_color rsqff_fl_quality rsqff_fl_ddz rsqff_fl_clip_f rsqff_fl_clip_l rsqff_fl_clip_u rsqff_fl_clip_r", "Reset all RSQ FnF settings?"
 }
 
 OptionString "RSQFF_Preset"
 {
 	"rsqff_radius 140 rsqff_cap 3 rsqff_flicker 4", "Quest"
 	"rsqff_radius 220 rsqff_cap 6 rsqff_flicker 3", "PCVR"
+}
+
+OptionValue "RSQFF_BeamSize"
+{
+	0, "Narrow"
+	1, "Medium"
+	2, "Wide"
+}
+
+OptionValue "RSQFF_BeamQuality"
+{
+	0, "Quest"
+	1, "PCVR"
+	2, "High"
+}
+
+// the series' colour list (VisualRewards RSQTHP_Col) with a warm white first, the default
+OptionValue "RSQFF_BeamColour"
+{
+	20, "Warm White"
+	0, "White"
+	1, "Silver"
+	2, "Yellow"
+	3, "Gold"
+	4, "Orange"
+	5, "Red"
+	6, "Crimson"
+	7, "Pink"
+	8, "Magenta"
+	9, "Lavender"
+	10, "Purple"
+	11, "Blue"
+	12, "Sky"
+	13, "Cyan"
+	14, "Teal"
+	15, "Green"
+	16, "Lime"
+	98, "Random"
 }
 
 OptionValue "RSQFF_LightBy"

@@ -1,4 +1,10 @@
-# RSQ FnF: the flashlight (proposal, nothing built yet)
+# RSQ FnF: the flashlight (proposal; B+ built 11-03 on the owner's yes, see below)
+
+> **Built (owner 11-03 20:38: "I support the flashlight proposal. Allow for selectable size, color, and quality.")**: B+ as
+> recommended, in `zscript/rsqff/torch.zs` and `tools/gen_torch.py`, with Beam Size, Beam Colour, Beam Quality and
+> DarkDoomz Flashlight Stands Down rows. Taken from a clip on the off hand's side of the chest (no holster needed; a
+> Tactical Rig holster can take it by name). Not built: the battery, the Harris-hold flip, Mount on Gun. Rig only, not
+> headset-confirmed. Where this file differs from the code, the code and README are right.
 
 For the owner to pick from. Everything below about the engine is read from QuestZDoom 17.3's source
 (`/home/claude/g9/src/qzd`, tag qzd17.3) and named file by file. Ermac's flashlight was read in full from his repo

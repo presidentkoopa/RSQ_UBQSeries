@@ -6,3 +6,4 @@ rsqff/burn    QFFBURN                // his FLRBURN: the burning (looped, quiet)
 rsqff/out     QFFOUT                 // his FLROUT: burnt out
 $alias rsqff/bounce  plats/pt1_stop  // DSPSTOP: a dull knock as it lands
 $alias rsqff/take    misc/i_pkup     // DSITEMUP: out of the pocket / back in
+$alias rsqff/click   switches/normbutn  // DSSWTCHN: the flashlight's switch
