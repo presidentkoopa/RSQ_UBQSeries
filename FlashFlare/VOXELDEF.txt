@@ -1,0 +1,8 @@
+// RSQ FnF -- the box of flares as a voxel (sprite QFFX A, RSQFF_Box). voxels/QFFBOX.kvx is BD_VoxelPack's ammo box
+// (DooMAD's AMMOA) made into saegiru's flare box FBOXA0 by tools/gen_flarebox.py. Scale and spin are BD_VoxelPack's own
+// for its ammo box; the actor's Scale 0.7 (saegiru's FlareBox) applies on top, as it does to the sprite.
+QFFXA = "QFFBOX"
+{
+	Scale = 0.35
+	Spin = 25
+}

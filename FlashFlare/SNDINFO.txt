@@ -1,6 +1,8 @@
-// RSQ FlashFlare -- sounds. Every one is a stock Doom sound by its own name (no file shipped, nothing synthesized):
-// saegiru's flare sounds came with no licence, so they are not used.
-$alias rsqff/strike  vile/firestrt   // DSFLAMST: the flare catching
-$alias rsqff/burn    vile/firecrkl   // DSFLAME: the burning crackle (looped, quiet)
+// RSQ FlashFlare -- sounds. Nothing synthesized. The strike, the burning and the burnout are saegiru's flare sounds (the
+// UDV Survival Flares in JohnnyDoom's UAC Survival Pack; renamed, unchanged: sounds/rsqff/, CREDITS.txt); the rest are
+// stock Doom sounds by their own names.
+rsqff/strike  QFFSTRT                // his FLRSTRT: the flare catching
+rsqff/burn    QFFBURN                // his FLRBURN: the burning (looped, quiet)
+rsqff/out     QFFOUT                 // his FLROUT: burnt out
 $alias rsqff/bounce  plats/pt1_stop  // DSPSTOP: a dull knock as it lands
 $alias rsqff/take    misc/i_pkup     // DSITEMUP: out of the pocket / back in

@@ -502,23 +502,47 @@ class RSQFF_Handler : EventHandler
 	}
 
 	// ================================================================ start, pocket, boxes
-	override void PlayerEntered(PlayerEvent e) { Equip(e.PlayerNumber); }
-	override void PlayerRespawned(PlayerEvent e) { Equip(e.PlayerNumber); }
+	override void PlayerEntered(PlayerEvent e) { Equip(e.PlayerNumber, false); }
+	override void PlayerRespawned(PlayerEvent e) { Equip(e.PlayerNumber, true); }
 
-	private void Equip(int n)
+	// START WITH: at a new game, and after a death. A death without netplay restarts the map with a new player whose inventory
+	// is the class's own (RSQFF_Given goes too), so PlayerEntered fills the pocket again (rig, 11-03: 1 left, died with Start
+	// With set to 3, back to 3; the owner, 11-03 20:38: "flares come back after death"). A respawn in place (netplay, or a map
+	// that allows it) may keep RSQFF_Given, so PlayerRespawned fills it too.
+	private void Equip(int n, bool respawn)
 	{
+		Migrate();
 		let pmo = players[n].mo;
 		if (!pmo || !On()) return;
-		if (!pmo.FindInventory("RSQFF_Given"))
+		bool first = !pmo.FindInventory("RSQFF_Given");
+		if (!first && !respawn) return;
+		if (first) pmo.GiveInventory("RSQFF_Given", 1);
+		int want = clamp(int(SNum("rsqff_start", 2)), 0, 24);
+		if (pmo.CountInv("RSQFF_Ammo") < want) pmo.SetInventory("RSQFF_Ammo", want);
+	}
+
+	// SETTINGS VERSION (rsqff_cfgver, the series' way: RSQ Tactical Rig's rsqtr_cfgver, the Wheel's wr_cfgver). A saved
+	// setting outlives a new default, so one still at its OLD default is moved to the new one, once.
+	//   1 (owner 11-03 20:26: "start with 2"): Start With 4 -> 2.
+	const CFG_VERSION = 1;
+	private transient bool migrated;
+	private void Migrate()
+	{
+		if (migrated) return;
+		migrated = true;
+		let ver = CVar.FindCVar("rsqff_cfgver");
+		if (!ver || ver.GetInt() >= CFG_VERSION) return;
+		if (ver.GetInt() < 1)
 		{
-			pmo.GiveInventory("RSQFF_Given", 1);
-			int want = clamp(int(SNum("rsqff_start", 4)), 0, 24);
-			if (pmo.CountInv("RSQFF_Ammo") < want) pmo.SetInventory("RSQFF_Ammo", want);
+			let st = CVar.FindCVar("rsqff_start");
+			if (st && st.GetInt() == 4) st.SetInt(2);
 		}
+		ver.SetInt(CFG_VERSION);
 	}
 
 	override void WorldLoaded(WorldEvent e)
 	{
+		Migrate();
 		if (e.IsSaveGame || e.IsReopen || !On()) return;
 		// THE POCKET (rsqff_pocket, off): topped up at each new level
 		if (SNum("rsqff_pocket", 0) > 0)

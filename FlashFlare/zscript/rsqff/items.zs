@@ -2,7 +2,10 @@
 //
 // AMMO, saegiru's way (his Emergency Flare, DECORATE.flares FlareBox, parsed): a box gives 6, you carry 24 at most. His box
 // was a usable inventory item that fired a flare from the face; here a flare comes out of your chest pocket by hand.
-// The pickup is the owner's flare model, three in a bundle (box.md3), not his sprite.
+// The pickups (11-03, the owner: "use the UDV Survival Flares pack's art"): the box is his box sprite FBOXA0 (QFFX A, at
+// his FlareBox's scale 0.7) and, with voxels on, a voxel of the same box (voxels/QFFBOX.kvx, VOXELDEF.txt). One flare is
+// his lying flare FLRLA0 (QFFB A, at his flare's scale 0.5) and, with models on, the owner's flare model, three in a
+// bundle (box.md3; MODELDEF's scale makes up for the actor's 0.5).
 
 class RSQFF_Ammo : Ammo
 {
@@ -13,6 +16,7 @@ class RSQFF_Ammo : Ammo
 		Ammo.BackpackAmount 0;
 		Ammo.BackpackMaxAmount 24;
 		Inventory.PickupMessage "Picked up a road flare.";
+		Scale 0.5;
 		+INVENTORY.IGNORESKILL;
 		Tag "Flares";
 	}
@@ -30,16 +34,18 @@ class RSQFF_Box : RSQFF_Ammo
 	{
 		Inventory.Amount 6;
 		Inventory.PickupMessage "Picked up a box of road flares!";
+		Scale 0.7;
 	}
 	States
 	{
 	Spawn:
-		QFFB A -1;
+		QFFX A -1;
 		Stop;
 	}
 }
 
-// given once, so "Start With" fills the pocket at a new game (and after dying), never on every map
+// given once, so "Start With" fills the pocket at a new game, never on every map. After a death the new player has none, so
+// the pocket is filled again (and RSQFF_Handler.PlayerRespawned fills it on a respawn in place, which may keep this).
 class RSQFF_Given : Inventory
 {
 	Default { +INVENTORY.UNDROPPABLE +INVENTORY.UNTOSSABLE +INVENTORY.UNCLEARABLE Inventory.MaxAmount 1; }

@@ -115,24 +115,16 @@ Model RSQFF_Flare
 	FrameIndex QFFW C 0 0
 }
 
-// THE PICKUPS: a bundle of three flares (box.md3) for a box of 6, and for a single one.
-Model RSQFF_Box
-{
-	Path "models/rsqff"
-	Model 0 "box.md3"
-	SurfaceSkin 0 0 "flare.png"
-	SurfaceSkin 0 1 "flaretip.png"
-	Scale 0.40 0.40 0.40
-	ZOffset 0.6
-	FrameIndex QFFB A 0 0
-}
+// THE SINGLE FLARE PICKUP: a bundle of three flares (box.md3). The actor is drawn at saegiru's 0.5 (for its sprite, models
+// off), and the engine multiplies a model's scale and offset by the actor's: 0.80 and 1.2 here draw it as 0.40 and 0.6 did.
+// The box of 6 has no model: it is saegiru's box sprite and, with voxels on, its voxel (VOXELDEF.txt).
 Model RSQFF_Ammo
 {
 	Path "models/rsqff"
 	Model 0 "box.md3"
 	SurfaceSkin 0 0 "flare.png"
 	SurfaceSkin 0 1 "flaretip.png"
-	Scale 0.40 0.40 0.40
-	ZOffset 0.6
+	Scale 0.80 0.80 0.80
+	ZOffset 1.2
 	FrameIndex QFFB A 0 0
 }

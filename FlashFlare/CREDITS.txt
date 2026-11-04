@@ -13,18 +13,33 @@ WHAT THIS PK3 SHIPS, AND WHOSE IT IS
   Drawn in BD22 VR's own off-hand MODELDEF placement, as RSQ Saber's Force hand does.
 - Generated for this pack (tools/gen_flare.py): the glowing end (ember.png), the flame, spark and smoke particle
   pictures (graphics/rsqff/), the clear skin and the transparent placeholder sprites.
-- Sounds: none shipped. The pack plays stock Doom sounds by their own names (SNDINFO.txt aliases): the arch-vile's
-  flame start (strike), its crackle (burning), the platform stop (landing), the item pickup (pocket).
+- UDV Survival Flares (saegiru's Emergency Flare), part of the UAC Survival Pack by JohnnyDoom (forum.zdoom.org, topic
+  t=47229; the copies the owner supplied, Gameplay_UDV_Survival_Flares.pk3 and UAC_SurvivalPack.pk3). From it, unchanged
+  except for the lump names (renamed so no other mod's lumps are replaced):
+  - the box sprite FBOXA0 -> QFFXA0 (the box of 6; offsets 14 16, as shipped) and the lying flare FLRLA0 -> QFFBA0 (one
+    flare; offsets set to 11 11, its bottom centre). Drawn at his scales (FlareBox 0.7, the flare 0.5).
+  - the sounds (sounds/rsqff/): FLRSTRT -> QFFSTRT (the strike), FLRBURN -> QFFBURN (the burning, looped), FLROUT ->
+    QFFOUT (burnt out). The pack names no author for its individual sounds.
+- BD_VoxelPack (the owner's load order, 02_BD22_VoxelPack.pk3; its Credits.txt): DooMAD's "Ammo Box" voxel
+  (Voxels/Ammo/AMMOA.kvx) made into the flare box voxel voxels/QFFBOX.kvx by tools/gen_flarebox.py: its bullet belt and
+  open lid flap taken off, the lid closed, the two panels of each side made one, recoloured to saegiru's FBOXA0 (its
+  shading kept), "FLARE" and a latch put on its long sides. Shown under its own sprite name, QFFX A (VOXELDEF.txt), so
+  it never stands in for BD_VoxelPack's own. The pack's voxel authors, as its Credits.txt names them: Ghostpilot,
+  DooMAD, Monfriez, DooMGoaT, Exl (its ZDoom fork, offset utility), Scott_AW (Strip2Voxel), ReaperMan, 4mer, phi108,
+  Conrad RDW, Voxelbro, zedas.
+- Sounds otherwise: stock Doom sounds by their own names (SNDINFO.txt aliases): the platform stop (landing), the item
+  pickup (pocket).
 
 IDEAS AND NUMBERS FROM
 - saegiru's Emergency Flare (UDV Survival Flares, part of JohnnyDoom's UAC Survival Pack; DECORATE.flares,
   GLDEFS.flares, randomuac.acs): a box of 6, carry 24; the red-orange light (colour 1.0 0.3 0.0) raised off the floor;
   boxes rolled beside a map's items (0-5 of 126, up to a cap a map); a thrown flare that bounces and lies burning, with
-  sparks. His sprites and sounds are NOT used: the copy supplied carries no licence or readme saying they may be reused.
+  sparks. His sprites and sounds are shipped (above).
 - The project owner's RSQ Grenade (the hand's throw speed measured against the body, the flight and the settling) and
   RSQ Tactical Rig (the body the pocket hangs on, the hand-prop point transform HandPoint, the off-hand raise, the grip
   keys) -- copied under this pack's prefix, not linked.
 - QuestZDoom (Emawind and Team Beef): the engine, its off-hand weapon and hand-pose script API.
 
 SHARING
-Free to share as part of the Radiant Silvergun Quest series. Borrowed assets keep their authors' terms.
+Free to share as part of the Radiant Silvergun Quest series. Borrowed assets keep their authors' terms; sharing other
+people's work in this pack is the project owner's decision.

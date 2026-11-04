@@ -37,7 +37,7 @@ and the throw is measured against your body, so walking and turning never count 
 - Unlit flares go back in the pocket by hand. Anything else that takes the off hand (another weapon, death, a new
   level) puts an unlit flare back in the pocket and lets a lit one fall where your hand was, still burning.
 - Flame and sparks off the burning end; an optional thin smoke trail.
-- Stock Doom sounds: the arch-vile's flame catching for the strike, its crackle for the burn, a dull knock on landing.
+- saegiru's flare sounds for the strike, the burn and the burnout; a stock Doom knock on landing.
 - The hand holding it is Brutal Doom 22 VR Reloaded's hand, drawn in its off-hand place (it can be hidden).
 
 **Light that stays cheap**
@@ -48,8 +48,9 @@ and the throw is measured against your body, so walking and turning never count 
 - Subdued Light: twice the radius at half the brightness, for a softer look.
 
 **Supply**
-- You start a new game with 4 flares. You carry up to 24.
-- Boxes of 6 turn up beside a map's items, up to 2 a map.
+- You start a new game with 2 flares, and get them back after dying. You carry up to 24.
+- Boxes of 6 turn up beside a map's items, up to 2 a map: saegiru's flare box (a voxel box with voxels on, his box
+  sprite with voxels off). A single flare lying about is his lying-flare sprite (with models on, three flares in a bundle).
 - Optional: the pocket tops up at each new level (off by default).
 
 ## How To Play
@@ -93,8 +94,8 @@ Options → Radiant Silvergun Options → RSQ FnF (Flash and Flare)
 | Show Hand | On | Draw the hand holding the flare |
 | Sparks | On | Sparks off the burning end |
 | Smoke | Off | A thin smoke trail |
-| Sounds | On | Strike, crackle and landing sounds |
-| Start With | 4 | Flares at a new game (0-24) |
+| Sounds | On | Strike, burning, burnout and landing sounds |
+| Start With | 2 | Flares at a new game and after dying (0-24) |
 | Boxes in Levels | On | Boxes of 6 beside a map's items |
 | Boxes a Map | 2 | Most boxes in one map (0-8) |
 | Pocket Refills Each Level | Off | Tops the pocket up at each new level |
@@ -135,11 +136,12 @@ Runs alone. It finds the others by name:
   read from the .blend and turned into the in-hand, lying and box models, scaled to a 22.5 cm road flare. The code.
 - **Brutal Doom 22 VR Reloaded** (the owner's mod): the FBX hand, its off-hand magazine hold and skin, drawn in BD22
   VR's own off-hand placement.
-- **saegiru's Emergency Flare** (UDV Survival Flares, part of JohnnyDoom's UAC Survival Pack): ideas and numbers only.
-  A box of 6, carry 24, the red-orange colour, the raised light, boxes rolled beside a map's items, a thrown flare that
-  bounces and lies burning with sparks. His sprites and sounds are not used: the copy supplied carries no licence for
-  reuse.
-- **id Software**: the stock Doom sounds played by name (no sound files shipped).
+- **saegiru's Emergency Flare** (UDV Survival Flares, part of JohnnyDoom's UAC Survival Pack, forum.zdoom.org t=47229):
+  the box and lying-flare sprites and the strike, burning and burnout sounds (renamed), and the numbers: a box of 6,
+  carry 24, the red-orange colour, the raised light, boxes rolled beside a map's items, a thrown flare that bounces and
+  lies burning with sparks.
+- **BD_VoxelPack** (DooMAD's ammo box voxel): made into the flare box voxel, recoloured to saegiru's box.
+- **id Software**: the stock Doom sounds played by name.
 - Generated for this pack: the glowing end, flame, spark and smoke pictures, the clear skin and placeholder sprites.
 - **QuestZDoom** (Emawind and Team Beef): the engine, and its off-hand weapon and hand-pose API.
 

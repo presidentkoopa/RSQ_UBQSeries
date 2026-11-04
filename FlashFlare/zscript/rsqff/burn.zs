@@ -75,6 +75,7 @@ class RSQFF_Burner : Actor
 		spent = true;
 		LightOff();
 		A_StopSound(CHAN_BODY);
+		if (SFlag("rsqff_sound", true)) A_StartSound("rsqff/out", CHAN_BODY, 0, 0.5, 1.4);
 		Smoke(6, true);
 	}
 
