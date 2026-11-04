@@ -44,3 +44,27 @@ Found while rewriting the READMEs from the code (11-03 evening). None fixed yet;
 13. Stale comments: wr_q_gunlook.zs header still describes the Edge Sweep (off by default); KEYCONF `[`/`]` comment
     talks about UZDXREMA's binds. Per-gun rumble weight only applies through the quake-rumble route; with QZD's
     quake haptic level 0 every card gets the same pulse.
+
+## DistanceGrab
+14. "Grab Main Hand" / "Grab Off Hand" bind rows and the G/H binds only work with Button Fallback on (off by
+    default); neither menu nor bind rows say so.
+15. Main-hand walk-up grab reads raw key 446, which per near.zs is only sent with `vr_secondary_button_mappings` off;
+    with it on, the walk-up grab probably never fires. Measure.
+16. KEYCONF comment names the section "Distance Grab" (it is "RSQ Distance Grab"); `rsqdg_path_tmin/tmax`,
+    `air_flutter`, `air_maxtics`, `keys_main/off` have no rows despite "every cvar keeps its row".
+17. Dead code: Gun Bonsai VR has no grab tree any more; Dead Eye, Heavy Lift, Straight Pull, Body Shield 3 can never
+    run. Remove or leave documented.
+
+## Grapple
+18. With Gun Bonsai VR loaded, the hook does nothing until the Grapple node is learned, with no on-screen message.
+    Add a short message ("Learn Grapple in Gun Bonsai").
+19. Rope Climbing, Two Hands, Mantle, Wraps Corners, Slack Rope Lets Go, ledge hop, tap-to-let-go only work in Rope
+    mode or with Swing on; Calm Swing only with Swing on. The menu doesn't say so (menu redesign).
+20. `rsqgr_whip_above`, `rsqgr_yank_radius`, `rsqgr_yank_height` have no rows; CREDITS.txt carries a "SLATED FOR
+    REPLACEMENT" dev note.
+
+## Gestures
+21. "Thrust and Pull Events" gates punch/shove/thrust/pull events no RSQ mod listens to (only Melee's two-hand
+    event is used): no effect anywhere.
+22. Loaded alone it shows nothing (Show Gesture Names, on by default, has nothing to show).
+23. RSQ_Gestures.pk3 still carries the old README: rebuild once the hands lane's Gestures changes are committed.
