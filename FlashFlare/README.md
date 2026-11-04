@@ -2,7 +2,7 @@
 
 A road flare you pull from your chest, strike with a flick of the wrist, and throw into the dark.
 
-Status: 0.99 — tested on the development rig; headset testing in progress.
+Status: 0.99 — played and confirmed working in the headset; refinement and bug fixing ongoing.
 
 Part of the Radiant Silvergun Quest series for stock QuestZDoom 17.3. ZScript only, no engine changes. The flare is
 built; a flashlight is planned.
