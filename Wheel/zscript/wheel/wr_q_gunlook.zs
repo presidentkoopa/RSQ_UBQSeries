@@ -3,7 +3,8 @@
 //   A  each card washed in its gun's colour -- the colour RSQ Gun Cards gives that gun, so the two mods agree --
 //      with a bright rim, slot stripe and boxed slot number in it; ammo counts in the ammo type's colour.
 //   B  a halo in its colour behind the hovered card (it breathes only with wr_breathe, off by default), the beam's
-//      tip wears the series' lock-on mark, a spark sweeps round each card's edge.
+//      tip wears the series' lock-on mark; a spark sweeping round each card's edge is the Edge Sweep option
+//      (wr_edge_sweep, off by default since 2026-11-03, owner: "I'd like that out").
 //      (2026-11-02, owner's headset: "some kind of hexagon wire around it and the whole thing changes size when i
 //      hover". The wire was a light drawn round the ring in straight strips, card to card: removed. The halo behind
 //      the ring no longer brightens or recolours on hover: nothing that spans the whole ring reacts to the hover.)

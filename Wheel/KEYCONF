@@ -15,20 +15,12 @@ addkeysection "RSQ Wheel" RSQWheel
 
 // -- the ring itself.
 //
-// THE ONLY DEFAULT BINDS IN THIS PACKAGE, and they are inherited rather than
-// chosen -- everything above is deliberately unbound. They are kept because
-// dropping them would silently change the wheel's out-of-box behaviour during
-// what is meant to be a packaging change.
+// The default binds in this package: LThumb (Hold, Point, Release) and [ / ] (main / off hand
+// ring, inherited from REMA's wheel). Everything further down is unbound.
 //
-// THEY COLLIDE, and it is worth knowing exactly how. UZDXREMA's own
-// engine/commonbinds.txt binds '[' to invprev and ']' to invnext, so on a
-// desktop profile these two lines do nothing at all: FKeyBindings::DefaultBind
-// refuses a key that is already bound and prints "Key already bound" rather
-// than overwriting it. On the VR profiles (engine/vr/commonbinds.txt,
-// vr/defbind0.txt, vr/defbind3.txt) inventory prev/next live on pgup/pgdn,
-// mwheel and the dpad, the brackets are free, and these DO take. So the wheel
-// opens on [ and ] in VR and appears unbound on a desktop config -- which is
-// the right way round for a VR mod, but is not obvious from the file.
+// A defaultbind never overwrites a key that is already bound (FKeyBindings::DefaultBind
+// refuses it), so where the engine's or another mod's defaults already use [ or ], these two
+// lines do nothing and the binds are made in Controls instead.
 // RSQ: HOLD, POINT, RELEASE. One button: hold it, point either hand at a card, let go to take it;
 // tap it to leave the ring up; tap twice to go back to the last gun. Left thumbstick click by
 // default (nothing in brutal22test6, BD22 VR-Reloaded 2.0.3h or its hotfix binds it; a key

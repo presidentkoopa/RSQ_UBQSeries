@@ -60,7 +60,8 @@ user int  wr_hold_tics = 9;
 user string wr_palette = "Standard";
 
 // RSQ: each card's tick on landing is shaped by the gun's weight (its slot): 0 is REMA's one tick
-// for every card, 1 full. wr_follow: turn more than this many degrees away from the ring and it
+// for every card, 1 full. Only through QuestZDoom's quake rumble (vr_quake_haptic_level above 0); at 0
+// the ring falls back to the LineAttack pulse, which is the same for every card (wr_q_shim.zs VRHaptic). wr_follow: turn more than this many degrees away from the ring and it
 // swings round to sit ahead again (0: it stays where it opened, as in REMA).
 user float wr_weight_feel = 1.0;
 user float wr_follow = 45.0;

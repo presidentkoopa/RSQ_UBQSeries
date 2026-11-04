@@ -9566,7 +9566,9 @@ class wr_Rig : EventHandler
 		// RSQ: EACH GUN HAS ITS OWN WEIGHT IN THE HAND. The tick on landing is shaped by the gun
 		// under it -- a light short tick on a pistol, a long heavy one on a BFG -- so the ring
 		// can be learned by feel. Weight is the slot (1 light .. 9 heavy), the one size measure
-		// every weapon set shares. wr_weight_feel 0 gives every card REMA's one tick.
+		// every weapon set shares. wr_weight_feel 0 gives every card REMA's one tick. The shape only
+		// reaches the hand through the quake rumble (vr_quake_haptic_level > 0); at 0 wr_VR.VRHaptic
+		// sends the engine's flat LineAttack pulse, the same for every card.
 		if (hit != 0)
 		{
 			double amp = 0.22, ms = 30;

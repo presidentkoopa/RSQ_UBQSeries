@@ -162,7 +162,8 @@ OptionMenu wr_Pick
 	Slider "Ring Follows Past (degrees, 0 = off)", "wr_follow", 0, 120, 5, 0
 	// Tics, 35 a second (this row used to say seconds and show tics).
 	Slider "Folds After (tics)",        "wr_locktics",     35, 700, 35, 0
-	Slider "Fold Warning (tics, 0 = off)", "wr_warn_tics", 0, 105, 35, 0
+	// Steps of 5 so the default (25 tics) sits on the scale (it stepped by 35 and could never get back to 25).
+	Slider "Fold Warning (tics, 0 = off)", "wr_warn_tics", 0, 105, 5, 0
 	// The same hand's key again this soon after opening re-centres the ring instead of closing it.
 	Slider "Re-centre Window (tics, 0 = off)", "wr_recenter_window", 0, 35, 5, 0
 }
