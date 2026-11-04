@@ -1,0 +1,94 @@
+FFP t50: 0 burners, 0 lights on; pocket 4; off hand None
+T1_TAKE
+RSQFF take t61: a flare in the off hand (had nothing), 3 left in the pocket
+FFP t71: 0 burners, 0 lights on; pocket 3; off hand RSQFF_Held
+T2_STRIKE
+RSQFF strike t102: 3.50 m/s down (3.52 m/s in all, needs 1.40 down)
+RSQFF light t103: struck by a flick, burns 60 s
+RSQFF lights t105: 1 burning, 1 giving light (cap 3, radius 140), peak 1
+RSQFF lights t140: 1 burning, 1 giving light (cap 3, radius 140), peak 1
+FFP flare RSQFF_HeldLight at (-98 796 100) pitch 0 burnLeft 2053 dark 0 light 1 spent 0
+FFP t150: 1 burners, 1 lights on; pocket 3; off hand RSQFF_Held
+T3_LOOK
+RSQFF lights t175: 1 burning, 1 giving light (cap 3, radius 140), peak 1
+T4_THROW
+RSQFF thrown t198 at (-100 801 99), 6.21 m/s, vel (0.0 7.4 2.9) a tic
+RSQFF lights t210: 1 burning, 1 giving light (cap 3, radius 140), peak 1
+RSQFF lights t245: 1 burning, 1 giving light (cap 3, radius 140), peak 1
+RSQFF lights t280: 1 burning, 1 giving light (cap 3, radius 140), peak 1
+FFP flare RSQFF_Flare at (-100 1081 24) pitch -4 burnLeft 1922 dark 0 light 1 spent 0
+FFP t281: 1 burners, 1 lights on; pocket 3; off hand None
+T5_CAP
+RSQFF take t292: a flare in the off hand (had nothing), 11 left in the pocket
+RSQFF light t315: struck by the trigger, burns 60 s
+RSQFF lights t315: 2 burning, 1 giving light (cap 3, radius 140), peak 2
+RSQFF lights t350: 2 burning, 2 giving light (cap 3, radius 140), peak 2
+RSQFF thrown t358 at (-108 801 99), 6.21 m/s, vel (0.0 7.4 2.9) a tic
+RSQFF lights t385: 2 burning, 2 giving light (cap 3, radius 140), peak 2
+RSQFF take t407: a flare in the off hand (had nothing), 10 left in the pocket
+RSQFF lights t420: 2 burning, 2 giving light (cap 3, radius 140), peak 2
+RSQFF light t431: struck by the trigger, burns 60 s
+RSQFF lights t455: 3 burning, 3 giving light (cap 3, radius 140), peak 3
+RSQFF thrown t474 at (-91 801 99), 6.21 m/s, vel (0.0 7.4 2.9) a tic
+RSQFF lights t490: 3 burning, 3 giving light (cap 3, radius 140), peak 3
+RSQFF take t522: a flare in the off hand (had nothing), 9 left in the pocket
+RSQFF lights t525: 3 burning, 3 giving light (cap 3, radius 140), peak 3
+RSQFF light t546: struck by the trigger, burns 60 s
+RSQFF budget t546: cap 3, the oldest (lit t103) goes dark
+RSQFF lights t560: 4 burning, 4 giving light (cap 3, radius 140), peak 3
+FFP flare RSQFF_Flare at (-100 1081 24) pitch -4 burnLeft 1615 dark 1 light 0 spent 0
+FFP flare RSQFF_Flare at (-108 1100 24) pitch -4 burnLeft 1827 dark 0 light 1 spent 0
+FFP flare RSQFF_Flare at (-102 1067 16) pitch -4 burnLeft 1943 dark 0 light 1 spent 0
+FFP flare RSQFF_HeldLight at (-98 796 101) pitch 0 burnLeft 2058 dark 0 light 1 spent 0
+FFP t588: 4 burners, 3 lights on; pocket 9; off hand RSQFF_Held
+T6_PCVR
+RSQFF lights t595: 4 burning, 4 giving light (cap 6, radius 220), peak 4
+FFP flare RSQFF_Flare at (-100 1081 24) pitch -4 burnLeft 1594 dark 0 light 1 spent 0
+FFP flare RSQFF_Flare at (-108 1100 24) pitch -4 burnLeft 1806 dark 0 light 1 spent 0
+FFP flare RSQFF_Flare at (-102 1067 16) pitch -4 burnLeft 1922 dark 0 light 1 spent 0
+FFP flare RSQFF_HeldLight at (-98 796 101) pitch 0 burnLeft 2037 dark 0 light 1 spent 0
+FFP t609: 4 burners, 4 lights on; pocket 9; off hand RSQFF_Held
+RSQFF budget t629: cap 3, the oldest (lit t103) goes dark
+RSQFF lights t630: 4 burning, 4 giving light (cap 3, radius 140), peak 4
+T7_DROP
+RSQFF thrown t641 at (-98 795 97), 0.00 m/s, vel (0.0 0.0 0.0) a tic
+RSQFF lights t665: 4 burning, 3 giving light (cap 3, radius 140), peak 4
+T8_BURNOUT
+FFP flare RSQFF_Flare at (-100 1081 24) pitch -4 burnLeft 1531 dark 1 light 0 spent 0
+FFP flare RSQFF_Flare at (-108 1100 24) pitch -4 burnLeft 1743 dark 0 light 1 spent 0
+FFP flare RSQFF_Flare at (-102 1067 16) pitch -4 burnLeft 1859 dark 0 light 1 spent 0
+FFP flare RSQFF_Flare at (-98 795 56) pitch -4 burnLeft 1974 dark 0 light 1 spent 0
+FFP t672: 4 burners, 3 lights on; pocket 9; off hand None
+RSQFF take t681: a flare in the off hand (had nothing), 8 left in the pocket
+RSQFF lights t700: 4 burning, 3 giving light (cap 3, radius 140), peak 4
+RSQFF light t705: struck by the trigger, burns 5 s
+RSQFF budget t705: cap 3, the oldest (lit t315) goes dark
+RSQFF lights t735: 5 burning, 3 giving light (cap 3, radius 140), peak 4
+RSQFF lights t770: 5 burning, 3 giving light (cap 3, radius 140), peak 4
+RSQFF lights t805: 5 burning, 3 giving light (cap 3, radius 140), peak 4
+RSQFF lights t840: 5 burning, 3 giving light (cap 3, radius 140), peak 4
+FFP flare RSQFF_Flare at (-100 1081 24) pitch -4 burnLeft 1346 dark 1 light 0 spent 0
+FFP flare RSQFF_Flare at (-108 1100 24) pitch -4 burnLeft 1558 dark 1 light 0 spent 0
+FFP flare RSQFF_Flare at (-102 1067 16) pitch -4 burnLeft 1674 dark 0 light 1 spent 0
+FFP flare RSQFF_Flare at (-98 795 56) pitch -4 burnLeft 1789 dark 0 light 1 spent 0
+FFP flare RSQFF_HeldLight at (-98 796 101) pitch 0 burnLeft 23 dark 0 light 1 spent 0
+FFP t857: 5 burners, 3 lights on; pocket 8; off hand RSQFF_Held
+RSQFF lights t875: 5 burning, 3 giving light (cap 3, radius 140), peak 4
+RSQFF burnt out in the hand t881 at (-98 796 101), 0.00 m/s, vel (0.0 0.0 0.0) a tic
+RSQFF lights t910: 4 burning, 3 giving light (cap 3, radius 140), peak 4
+T9_BACK
+FFP flare RSQFF_Flare at (-100 1081 24) pitch -4 burnLeft 1287 dark 1 light 0 spent 0
+FFP flare RSQFF_Flare at (-108 1100 24) pitch -4 burnLeft 1499 dark 0 light 1 spent 0
+FFP flare RSQFF_Flare at (-102 1067 16) pitch -4 burnLeft 1615 dark 0 light 1 spent 0
+FFP flare RSQFF_Flare at (-98 795 56) pitch -4 burnLeft 1730 dark 0 light 1 spent 0
+FFP flare RSQFF_Flare at (-98 796 56) pitch -4 burnLeft 0 dark 0 light 0 spent 1
+FFP t916: 5 burners, 3 lights on; pocket 8; off hand None
+RSQFF take t925: a flare in the off hand (had nothing), 7 left in the pocket
+RSQFF back t942: in the pocket again (8)
+RSQFF lights t945: 4 burning, 3 giving light (cap 3, radius 140), peak 4
+FFP flare RSQFF_Flare at (-100 1081 24) pitch -4 burnLeft 1249 dark 1 light 0 spent 0
+FFP flare RSQFF_Flare at (-108 1100 24) pitch -4 burnLeft 1461 dark 0 light 1 spent 0
+FFP flare RSQFF_Flare at (-102 1067 16) pitch -4 burnLeft 1577 dark 0 light 1 spent 0
+FFP flare RSQFF_Flare at (-98 795 56) pitch -4 burnLeft 1692 dark 0 light 1 spent 0
+FFP flare RSQFF_Flare at (-98 796 56) pitch -4 burnLeft 0 dark 0 light 0 spent 1
+FFP t954: 5 burners, 3 lights on; pocket 8; off hand None

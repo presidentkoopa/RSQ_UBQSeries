@@ -1,0 +1,6 @@
+// RSQ FlashFlare -- sounds. Every one is a stock Doom sound by its own name (no file shipped, nothing synthesized):
+// saegiru's flare sounds came with no licence, so they are not used.
+$alias rsqff/strike  vile/firestrt   // DSFLAMST: the flare catching
+$alias rsqff/burn    vile/firecrkl   // DSFLAME: the burning crackle (looped, quiet)
+$alias rsqff/bounce  plats/pt1_stop  // DSPSTOP: a dull knock as it lands
+$alias rsqff/take    misc/i_pkup     // DSITEMUP: out of the pocket / back in

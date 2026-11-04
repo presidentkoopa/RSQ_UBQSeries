@@ -1,0 +1,138 @@
+// RSQ FlashFlare -- the owner's flare (Flare.blend, his flare.zip; models/rsqff/flare*.md3 by tools/gen_flare.py).
+// Surfaces of flare.md3 / flare_h.md3: 0 the body, 1 the striker cap, 2 the glowing burning end (ember).
+
+// THE FLARE IN THE OFF HAND (RSQFF_Held). The hand is Brutal Doom 22 VR Reloaded's FBX off-hand rifle-magazine hold
+// (fbx_oh_hold_R.md3 frame 0, its RQHF A; the owner, 11-03 19:25: hand poses hold tools as cylinders, the flare in the
+// magazine hold), one frame, in MODEL SLOT 7 with Skin 7 "fbx_hand.png": with BD22 VR loaded its Hand Skin Tone
+// (zscript/rsq/handtone.zs) finds this block by that text and tones this hand like every other FBX hand (as RSQ Saber's
+// Force hand does). The flare is baked along the cylinder that hold grips (tools/fit_grip.py). Scale / Offset are BD22
+// VR's own off-hand block's (RSQ_Hands), so it sits where BD22 VR draws its off hand.
+// A unlit, in the hand
+Model RSQFF_Held
+{
+	Path "models/rsqff"
+	Model 0 "flare_h.md3"
+	SurfaceSkin 0 0 "flare.png"
+	SurfaceSkin 0 1 "flaretip.png"
+	SurfaceSkin 0 2 "clear.png"
+	Model 7 "rsqff_fbxhand.md3"
+	Skin 7 "fbx_hand.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex QFFH A 0 0
+	FrameIndex QFFH A 7 0
+}
+// B lit: the cap is off (the glowing end is the overlay E, full bright)
+Model RSQFF_Held
+{
+	Path "models/rsqff"
+	Model 0 "flare_h.md3"
+	SurfaceSkin 0 0 "flare.png"
+	SurfaceSkin 0 1 "clear.png"
+	SurfaceSkin 0 2 "clear.png"
+	Model 7 "rsqff_fbxhand.md3"
+	Skin 7 "fbx_hand.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex QFFH B 0 0
+	FrameIndex QFFH B 7 0
+}
+// C / D: the same with no hand drawn (Show Hand off)
+Model RSQFF_Held
+{
+	Path "models/rsqff"
+	Model 0 "flare_h.md3"
+	SurfaceSkin 0 0 "flare.png"
+	SurfaceSkin 0 1 "flaretip.png"
+	SurfaceSkin 0 2 "clear.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex QFFH C 0 0
+}
+Model RSQFF_Held
+{
+	Path "models/rsqff"
+	Model 0 "flare_h.md3"
+	SurfaceSkin 0 0 "flare.png"
+	SurfaceSkin 0 1 "clear.png"
+	SurfaceSkin 0 2 "clear.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex QFFH D 0 0
+}
+// E: only the burning end, the overlay layer drawn full bright over B / D
+Model RSQFF_Held
+{
+	Path "models/rsqff"
+	Model 0 "flare_h.md3"
+	SurfaceSkin 0 0 "clear.png"
+	SurfaceSkin 0 1 "clear.png"
+	SurfaceSkin 0 2 "ember.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex QFFH E 0 0
+}
+
+// THROWN / LYING (RSQFF_Flare): the flare in map units (cm x 0.34: 34 units a metre), its axis along the actor's facing,
+// pitched by the actor (it tumbles in the air and lies with the burning end a touch up). W A burning, B spent, C unlit.
+Model RSQFF_Flare
+{
+	Path "models/rsqff"
+	Model 0 "flare.md3"
+	SurfaceSkin 0 0 "flare.png"
+	SurfaceSkin 0 1 "clear.png"
+	SurfaceSkin 0 2 "ember.png"
+	Scale 0.34 0.34 0.34
+	ZOffset 0.45
+	USEACTORPITCH
+	USEACTORROLL
+	FrameIndex QFFW A 0 0
+}
+Model RSQFF_Flare
+{
+	Path "models/rsqff"
+	Model 0 "flare.md3"
+	SurfaceSkin 0 0 "flare.png"
+	SurfaceSkin 0 1 "clear.png"
+	SurfaceSkin 0 2 "clear.png"
+	Scale 0.34 0.34 0.34
+	ZOffset 0.45
+	USEACTORPITCH
+	USEACTORROLL
+	FrameIndex QFFW B 0 0
+}
+Model RSQFF_Flare
+{
+	Path "models/rsqff"
+	Model 0 "flare.md3"
+	SurfaceSkin 0 0 "flare.png"
+	SurfaceSkin 0 1 "flaretip.png"
+	SurfaceSkin 0 2 "clear.png"
+	Scale 0.34 0.34 0.34
+	ZOffset 0.45
+	USEACTORPITCH
+	USEACTORROLL
+	FrameIndex QFFW C 0 0
+}
+
+// THE PICKUPS: a bundle of three flares (box.md3) for a box of 6, and for a single one.
+Model RSQFF_Box
+{
+	Path "models/rsqff"
+	Model 0 "box.md3"
+	SurfaceSkin 0 0 "flare.png"
+	SurfaceSkin 0 1 "flaretip.png"
+	Scale 0.40 0.40 0.40
+	ZOffset 0.6
+	FrameIndex QFFB A 0 0
+}
+Model RSQFF_Ammo
+{
+	Path "models/rsqff"
+	Model 0 "box.md3"
+	SurfaceSkin 0 0 "flare.png"
+	SurfaceSkin 0 1 "flaretip.png"
+	Scale 0.40 0.40 0.40
+	ZOffset 0.6
+	FrameIndex QFFB A 0 0
+}

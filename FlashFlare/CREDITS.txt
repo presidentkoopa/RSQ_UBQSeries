@@ -1,0 +1,30 @@
+RSQ FnF (Flash and Flare) -- credits
+=====================================
+
+The Radiant Silvergun Quest series' VR road flare (and, later, flashlight), for stock QuestZDoom 17.3: ZScript and lumps
+only, no engine changes. The code is written for this pack (presidentkoopa's series).
+
+WHAT THIS PK3 SHIPS, AND WHOSE IT IS
+- The flare model: the project owner's flare (Flare.blend with FlareTexture.png and FlareTip.png, from his flare.zip),
+  read straight from the .blend by tools/blendread.py and turned into models/rsqff/flare.md3, flare_h.md3 and box.md3
+  by tools/gen_flare.py (scaled to a 22.5 cm road flare). Its skins are those two textures, resized.
+- The hand: Brutal Doom 22 VR Reloaded's FBX hand (the owner's mod, RS_Brutal22WeaponsQ): its off-hand rifle-magazine
+  hold (models/rsq/fbx/fbx_oh_hold_R.md3 frame 0) as models/rsqff/rsqff_fbxhand.md3, and its skin fbx_hand.png (resized).
+  Drawn in BD22 VR's own off-hand MODELDEF placement, as RSQ Saber's Force hand does.
+- Generated for this pack (tools/gen_flare.py): the glowing end (ember.png), the flame, spark and smoke particle
+  pictures (graphics/rsqff/), the clear skin and the transparent placeholder sprites.
+- Sounds: none shipped. The pack plays stock Doom sounds by their own names (SNDINFO.txt aliases): the arch-vile's
+  flame start (strike), its crackle (burning), the platform stop (landing), the item pickup (pocket).
+
+IDEAS AND NUMBERS FROM
+- saegiru's Emergency Flare (UDV Survival Flares, part of JohnnyDoom's UAC Survival Pack; DECORATE.flares,
+  GLDEFS.flares, randomuac.acs): a box of 6, carry 24; the red-orange light (colour 1.0 0.3 0.0) raised off the floor;
+  boxes rolled beside a map's items (0-5 of 126, up to a cap a map); a thrown flare that bounces and lies burning, with
+  sparks. His sprites and sounds are NOT used: the copy supplied carries no licence or readme saying they may be reused.
+- The project owner's RSQ Grenade (the hand's throw speed measured against the body, the flight and the settling) and
+  RSQ Tactical Rig (the body the pocket hangs on, the hand-prop point transform HandPoint, the off-hand raise, the grip
+  keys) -- copied under this pack's prefix, not linked.
+- QuestZDoom (Emawind and Team Beef): the engine, its off-hand weapon and hand-pose script API.
+
+SHARING
+Free to share as part of the Radiant Silvergun Quest series. Borrowed assets keep their authors' terms.

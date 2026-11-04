@@ -1,0 +1,5 @@
+// RSQ FlashFlare -- RSQFF_Handler: the pocket, the hands, the throw, the light budget, boxes in the levels.
+GameInfo
+{
+	AddEventHandlers = "RSQFF_Handler"
+}
