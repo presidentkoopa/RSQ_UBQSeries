@@ -90,4 +90,29 @@ def ALL(lefty):
     b += 'use RSQWP_WhipWeapon; wait 40; echo TRH_ALL_WHIP_IN_HAND; wait 40; use UBQS_Saber; wait 40; echo TRH_ALL_SABER_IN_HAND; wait 40; '
     b += 'use Shotgun; wait 40; set rsqtr_cig 0; echo TRH_ALL_CIG_OFF; wait 40; '
     return b
+# POUCH / POUCHL / POUCH_BDALONE (owner 11-03 20:46, the ammo pouch): on the Brutal Doom order (eyes 1.55 m: the BD pawn
+# stands 0.10 higher), a Rifle emptied and its magazine dropped (+reload), then the off hand pressed (off trigger, Grab Ammo
+# With: trigger) at the buckle, the off hip, the off chest holster, the flare holster and the pouch; then a Shot_Gun with a
+# shell fired, a press at the buckle and at the pouch. rsr_debug logs every take or refusal. Frames: the pouch looked at.
+def POUCH(lefty):
+    E = 1.55
+    s = -1 if lefty else 1
+    def X(v): return '%.2f' % (v * s)
+    lo = 'qz_lhand' if not lefty else 'qz_rhand'          # the OFF controller
+    rest = REST_L if not lefty else REST_R
+    spots = [('BUCKLE', '0.00 %.2f -0.12' % (E - 0.62)), ('OFF_HIP', '%s %.2f 0.00' % (X(-0.18), E - 0.70)),
+             ('OFF_CHEST', '%s %.2f -0.10' % (X(-0.12), E - 0.46)), ('FLARE_HOLSTER', '%s %.2f 0.06' % (X(-0.30), E - 0.84)),
+             ('POUCH', '%s %.2f -0.16' % (X(-0.13), E - 0.61))]
+    b = ('wait 60; god; notarget; puristmode false; con_notifytime 0; vr_control_scheme %d; vr_secondary_button_mappings 0; rsr_reload 1; rsr_grab_with 0; '
+         'rsr_debug 1; set rsqtr_messages 1; set rsqtr_markers 2; %s; %s; give Rifle; give Clip2 400; use Rifle; wait 80; '
+         '+attack; wait 12; -attack; wait 25; +reload; wait 4; -reload; wait 40; ' % (10 if lefty else 0, REST_R, REST_L))
+    trig = 'qz_ltrigger' if not lefty else 'qz_rtrigger'
+    for nm, pos in spots:
+        b += 'echo TRH_P_MAG_AT_%s; %s "%s 30 0 0"; wait 12; %s 1; wait 12; %s 0; wait 8; %s; wait 25; ' % (nm, lo, pos, trig, trig, rest)
+    b += 'give Shot_Gun; give AmmoShell 20; use Shot_Gun; wait 80; +attack; wait 6; -attack; wait 40; '
+    for nm, pos in [spots[0], spots[4]]:
+        b += 'echo TRH_P_SHELL_AT_%s; %s "%s 30 0 0"; wait 12; %s 1; wait 12; %s 0; wait 8; %s; wait 25; ' % (nm, lo, pos, trig, trig, rest)
+    b += 'use Rifle; wait 60; qz_hmd "0 1.6 0 -70 %d 0"; echo TRH_P_LOOK; wait 40; ' % (20 if lefty else -20)
+    return b
+write('POUCH', POUCH(False)); write('POUCHL', POUCH(True))
 write('F', F(False)); write('FL', F(True)); write('W', W(False)); write('WL', W(True)); write('ALL', ALL(False)); write('ALLL', ALL(True))

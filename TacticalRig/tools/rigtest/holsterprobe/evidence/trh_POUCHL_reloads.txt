@@ -1,0 +1,20 @@
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 66:
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 72:
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 77:
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 892:
+TRH_P_MAG_AT_BUCKLE
+rsr t233 gun 1: the rig's pouch only: the off hand is not in it
+TRH_P_MAG_AT_OFF_HIP
+rsr t291 gun 1: the rig's pouch only: the off hand is not in it
+TRH_P_MAG_AT_OFF_CHEST
+rsr t347 gun 1: the rig's pouch only: the off hand is not in it
+TRH_P_MAG_AT_FLARE_HOLSTER
+rsr t404 gun 1: the rig's pouch only: the off hand is not in it
+TRH_P_MAG_AT_POUCH
+rsr t461 gun 1: the rig's pouch gives a magazine
+rsr t461 gun 1: EMPTY -> CARRY
+TRH_P_SHELL_AT_BUCKLE
+rsp t645 gun 1 PUMPING/EMPTY: the rig's pouch only: the off hand is not in it
+TRH_P_SHELL_AT_POUCH
+rsp t701 gun 1 PUMPING/CARRY: took a shell 54 cm from the gun hand (no reload needed)
+TRH_P_LOOK

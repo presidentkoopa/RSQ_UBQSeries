@@ -1,0 +1,17 @@
+# 11-03 script-error sweep (qzd17.3 rig): give shotgun/whip/saber, whip in hand, main menu opened. Each changed mod alone on doom2; doom2 + Gun Bonsai 0.10.6 + every RSQ pk3; the full order lo2 01-07 with 03 = BD22 VR-Reloaded 2.0.3u + Gun Bonsai + every RSQ pk3; BD22 2.0.3u alone on its order.
+sw_RSQ_DistanceGrab.log: 0 script errors (0 of them BD_VoxelPack's voxeldef)
+sw_RSQ_FnF.log: 0 script errors (0 of them BD_VoxelPack's voxeldef)
+sw_RSQ_ShieldSaw.log: 0 script errors (0 of them BD_VoxelPack's voxeldef)
+sw_RSQ_TacticalRig.log: 0 script errors (0 of them BD_VoxelPack's voxeldef)
+sw_RSQ_Whip.log: 0 script errors (0 of them BD_VoxelPack's voxeldef)
+sw_gb_allrsq.log: 0 script errors (0 of them BD_VoxelPack's voxeldef)
+sw_full.log: 4 script errors (4 of them BD_VoxelPack's voxeldef)
+   Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 66:
+   Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 72:
+   Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 77:
+   Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 892:
+sw_bdalone.log: 4 script errors (4 of them BD_VoxelPack's voxeldef)
+   Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 66:
+   Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 72:
+   Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 77:
+   Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 892:

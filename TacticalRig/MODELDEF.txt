@@ -292,3 +292,17 @@ Model RSQTR_NadeShow
 	NoInterpolation
 	FrameIndex RTGN A 0 2
 }
+
+// THE AMMO POUCH on the belt (RSQTR_PouchShow, rig.zs DrawPouch): tools/gen_pouch.py, map units at scale 1 (5 x 8 x 10 cm),
+// centred, X out from the belt.
+Model RSQTR_PouchShow
+{
+	Path "models/rsqtr"
+	Model 0 "rtpouch.md3"
+	Skin 0 "rtpouch.png"
+	Scale 1.0 1.0 1.0
+	USEACTORPITCH
+	USEACTORROLL
+	CORRECTPIXELSTRETCH
+	FrameIndex RTGN A 0 0
+}

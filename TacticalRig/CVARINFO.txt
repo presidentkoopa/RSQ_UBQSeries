@@ -59,6 +59,10 @@ user bool   rsqtr_whip_holster = true;   // RSQ Whip's whip has its own holster 
 user bool   rsqtr_flare_holster = true;  // RSQ FnF's flares have their own holster on the off hand's hip (the same flares as its pocket)
 nosave bool rsqtr_whip_show   = true;    // the whip hangs coiled at its holster while it is in neither hand
 nosave bool rsqtr_flare_show  = true;    // a flare hangs at its holster while you carry one
+// 13 the ammo pouch (owner 11-03 20:46), left of the buckle (toward the off hand): BD22 VR's reloads take from it only
+nosave float rsqtr_r13_f = 0.16; nosave float rsqtr_r13_l = 0.13; nosave float rsqtr_r13_u = -0.61; nosave float rsqtr_r13_rad = 0.045;
+user bool   rsqtr_pouch       = true;    // the ammo pouch: Brutal Doom 22 VR's hand reloads take magazines, shells and rounds from it only
+nosave bool rsqtr_pouch_show  = true;    // the pouch drawn on the belt, with a light for the gun in hand's reserve
 
 user int    rsqtr_profile_active = 1;     // the holster profile in use: its colour on the spheres (1 blue, 2 orange, 3 purple, 4 yellow)
 // Profiles are this machine's alone (nosave: never sent to other players). As user settings they

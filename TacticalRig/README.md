@@ -94,6 +94,7 @@ here (the body, the holsters, the torso that follows your turns) is worked out i
 | Grenade | Either hand at the belt buckle, grip | Again with the grenade in hand: your gun comes back |
 | Saber | Main hand at the main-side saber spot, off hand at the other | Needs RSQ Saber; a saber put on any empty holster goes to its own spot |
 | Whip | The whip's hand at the whip holster, grip (or Use): put away, or drawn | Needs RSQ Whip. Main-hand hip, 8 cm behind and 9 cm outside the saber spot, same height; the hand RSQ Whip's Whip In names. Never goes in a gun holster: a draw from another holster, the weapon wheel or a slot key leaves it in its own; a whip put on an empty gun holster goes home |
+| Ammo pouch | Off hand in the pouch left of the belt buckle, press as Brutal Doom 22 VR's reload asks (grip, trigger or Use) | With BD22 VR's "Ammo From the Rig's Pouch Only" on, a reload's magazine, shell or round comes only from here; 0.16 m forward, 0.13 m toward the off hand, 0.61 m down, size 0.045 |
 | Flare | Off hand at the flare holster, grip: an unlit flare comes up; grip with an unlit flare: it goes back | Needs RSQ FnF; the mirror of the whip holster on the off-hand hip, the same flares as FnF's chest pocket. A lit flare cannot go in (FnF's rule: the grip drops it at your feet, burning). An off-hand draw from another holster puts an unlit flare back here, lets a lit one fall |
 | Recenter torso | Both controllers against your chest (within 0.20 m of a point 0.30 m under your eyes) for 0.4 s | No grip, Use or fire held; let go before doing it again |
 | Recenter Torso key | Bindable: Customize Controls → RSQ Tactical Rig, or the rig's own page | |
@@ -170,6 +171,8 @@ Options → Radiant Silvergun Options → RSQ Tactical Rig
 | Show Whip in Holster | On | The whip hangs coiled there while it is in neither hand |
 | Flare Holster | On | RSQ FnF's flares have their own holster on the off-hand hip |
 | Show Flare in Holster | On | A flare hangs there while you carry one |
+| Ammo Pouch | On | A pouch left of the belt buckle (off-hand side): with Brutal Doom 22 VR, hand reloads take magazines, shells and rounds from it only |
+| Show Ammo Pouch | On | The pouch on the belt, its light the reserve of the gun in your hand (green, yellow, red) |
 | Slow Motion After a Smoke | On | RSQ SlowMo when the cigarette is flicked |
 | Refill Each Level | On | The pocket refills |
 | Show Cigarettes in Pocket | On | The cigarettes left in the pocket stand in it on your chest |

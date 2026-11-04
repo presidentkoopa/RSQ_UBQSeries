@@ -26,14 +26,15 @@ class RSQTR_Region
 	// profile saved before the chest pair has them empty: they keep the values they had. One saved
 	// before the keyring had index 8 (then retired, the lower back) empty: loading it puts the keyring
 	// back at its default (Profile).
-	const N = 13;
-	static const String NAMES[] = { "Left hip", "Right hip", "", "Grenades", "Left shoulder", "Right shoulder", "Left chest", "Right chest", "Keyring", "Left saber", "Right saber", "Whip", "Flare" };
+	const N = 14;
+	static const String NAMES[] = { "Left hip", "Right hip", "", "Grenades", "Left shoulder", "Right shoulder", "Left chest", "Right chest", "Keyring", "Left saber", "Right saber", "Whip", "Flare", "Ammo pouch" };
 	const SABER_L = 9;
 	const GRENADES = 3;
 	const KEYRING = 8;
 	const SABER_R = 10;
 	const WHIP = 11;
 	const FLARE = 12;
+	const POUCH = 13;
 	static bool Retired(int r) { return r == 2; }
 
 	// Defaults, metres from the head in the body frame: forward, left, up, radius (0: retired).
@@ -55,10 +56,17 @@ class RSQTR_Region
 	// a little, and the nearest centre wins (WorldTick), so each is found by reaching a hand's width past the saber.
 	// Their "left" is TOWARD A HAND (as the keyring's): the whip's toward the MAIN hand, the flare's toward the OFF hand
 	// (Settings turns it into the body's left for the engine's handedness, LeftHanded, as the saber spots follow it).
-	static const double DF[] = {  0.00,  0.00, 0,  0.12, -0.08, -0.08,  0.10,  0.10,  0.14,  0.02,  0.02, -0.06, -0.06 };
-	static const double DL[] = {  0.18, -0.18, 0,  0.00,  0.18, -0.18,  0.12, -0.12,  0.13,  0.21, -0.21,  0.30,  0.30 };
-	static const double DU[] = { -0.70, -0.70, 0, -0.62, -0.10, -0.10, -0.46, -0.46, -0.70, -0.84, -0.84, -0.84, -0.84 };
-	static const double DR[] = {  0.14,  0.14, 0,  0.08,  0.14,  0.14,  0.11,  0.11,  0.12,  0.10,  0.10,  0.09,  0.09 };
+	// 13 THE AMMO POUCH (owner 2026-11-03 20:46: "a dedicated ammo pouch ... directly to the left of the belt-buckle grenade
+	// spot, at about buckle height, spaced so it never overlaps the buckle or the left-hip flare holster"): for Brutal Doom
+	// 22 VR's hand reloads, which take their magazines, shells and rounds ONLY here while the rig answers (its "pouch.at").
+	// Searched against every place near it (a 1 cm grid, the spot with the most room within 4 cm of the buckle's height and
+	// 4 cm of its depth): 0.16 forward, 0.13 toward the off hand, 0.61 under the eyes, radius 0.045 -- 0.011 m clear of the
+	// buckle, 0.005 of the off hip, 0.007 of the off chest holster, 0.276 of the flare holster. Its "left" is toward the OFF
+	// hand (the engine's handedness, LeftHanded: the reload's hand), so a left-hander's is beside the buckle on the right.
+	static const double DF[] = {  0.00,  0.00, 0,  0.12, -0.08, -0.08,  0.10,  0.10,  0.14,  0.02,  0.02, -0.06, -0.06,  0.16 };
+	static const double DL[] = {  0.18, -0.18, 0,  0.00,  0.18, -0.18,  0.12, -0.12,  0.13,  0.21, -0.21,  0.30,  0.30,  0.13 };
+	static const double DU[] = { -0.70, -0.70, 0, -0.62, -0.10, -0.10, -0.46, -0.46, -0.70, -0.84, -0.84, -0.84, -0.84, -0.61 };
+	static const double DR[] = {  0.14,  0.14, 0,  0.08,  0.14,  0.14,  0.11,  0.11,  0.12,  0.10,  0.10,  0.09,  0.09, 0.045 };
 }
 
 class RSQTR_Rig : EventHandler
@@ -212,6 +220,7 @@ class RSQTR_Rig : EventHandler
 		bool lh = RSQTR_Body.LeftHanded();
 		if (!lh) cL[RSQTR_Region.WHIP] = -cL[RSQTR_Region.WHIP];
 		if (lh) cL[RSQTR_Region.FLARE] = -cL[RSQTR_Region.FLARE];
+		if (lh) cL[RSQTR_Region.POUCH] = -cL[RSQTR_Region.POUCH];
 	}
 
 	// Where region r is, in the world, for this player.
@@ -416,6 +425,18 @@ class RSQTR_Rig : EventHandler
 		Service s;
 		while (s = it.Next()) return s.GetInt(what, "", pmo.PlayerNumber(), 0, pmo);
 		return -1;
+	}
+
+	// ---- THE AMMO POUCH (owner 2026-11-03 20:46) ---------------------------------------------------------------------------
+	// Live with Ammo Pouch on (rsqtr_pouch) and Brutal Doom 22 VR loaded (its RSQ_Hands, by name: the pouch is for its hand
+	// reloads). Published as RSQTR_RigService "pouch.at": 1 the hand is in the pouch, 0 it is not, -1 no pouch (off, no BD22
+	// VR, the rig off or out of VR) -- then BD22 VR keeps its own rule. Pressing in it does nothing of the rig's own.
+	static bool PouchOn(PlayerInfo p) { return Flag("rsqtr_pouch", p, true) && OffEmptyName(p ? p.mo : null) != ""; }
+	transient bool rigLive;          // the rig ran this tic (on, alive, in VR): hover is meaningful
+	int PouchAt(PlayerPawn pmo, int h)
+	{
+		if (!pmo || !rigLive || !PouchOn(pmo.player)) return -1;
+		return hoverR[h & 1] == RSQTR_Region.POUCH ? 1 : 0;
 	}
 
 	// The weapon an empty hand holds: a slot-1 weapon you own, the fist rather than
@@ -1356,6 +1377,7 @@ class RSQTR_Rig : EventHandler
 		// controllers -- both collapse to one point -- and a hand "in" a holster there held the rig busy for good,
 		// standing every other mod's grip down with it.
 		bool on = pmo.health > 0 && Flag("rsqtr_on", p, true) && pmo.OverrideAttackPosDir;
+		rigLive = on;
 		if (!on) { HideAll(); return; }
 
 		int n = consoleplayer;
@@ -1593,7 +1615,7 @@ class RSQTR_Rig : EventHandler
 		double f, l, u;
 		BodyOffsets(pmo, editAt, f, l, u);
 		if (r == RSQTR_Region.KEYRING && RSQTR_Body.LayoutLeft()) l = -l;     // its "left" is toward the off hand
-		if ((r == RSQTR_Region.WHIP && !RSQTR_Body.LeftHanded()) || (r == RSQTR_Region.FLARE && RSQTR_Body.LeftHanded())) l = -l;   // toward a hand
+		if ((r == RSQTR_Region.WHIP && !RSQTR_Body.LeftHanded()) || ((r == RSQTR_Region.FLARE || r == RSQTR_Region.POUCH) && RSQTR_Body.LeftHanded())) l = -l;   // toward a hand
 		CVar.FindCVar(String.Format("rsqtr_r%d_f", r)).SetFloat(f);
 		CVar.FindCVar(String.Format("rsqtr_r%d_l", r)).SetFloat(l);
 		CVar.FindCVar(String.Format("rsqtr_r%d_u", r)).SetFloat(u);
@@ -1616,6 +1638,7 @@ class RSQTR_Rig : EventHandler
 		else if (r == RSQTR_Region.KEYRING) { if (!Flag("rsqtr_keyring", pmo.player, true)) return false; }
 		else if (r == RSQTR_Region.WHIP) { if (!WhipHolsterOn(pmo.player)) return false; }
 		else if (r == RSQTR_Region.FLARE) { if (!FlareHolsterOn(pmo.player)) return false; }
+		else if (r == RSQTR_Region.POUCH) { if (!PouchOn(pmo.player)) return false; }
 		else if (!IsGunRegion(r)) return false;      // a retired index (RSQTR_Region.Retired)
 		return !RSQTR_Hooks.Claimed(pmo, r);
 	}
@@ -1652,6 +1675,7 @@ class RSQTR_Rig : EventHandler
 			}
 			return;
 		}
+		if (r == RSQTR_Region.POUCH) return;     // the pouch is Brutal Doom VR's: its reload reads "pouch.at" (no rig action here)
 		if (r == RSQTR_Region.WHIP) { WhipPress(pmo, p, h); return; }
 		if (r == RSQTR_Region.FLARE) { FlarePress(pmo, p, h); return; }
 		Array<String> own;
@@ -1962,6 +1986,7 @@ class RSQTR_Rig : EventHandler
 				if (put != "" && fitT.Find(put) < 0) put = "";
 			}
 			if (r == RSQTR_Region.WHIP || r == RSQTR_Region.FLARE) { DrawStowed(pmo, p, r, at, live); continue; }
+			if (r == RSQTR_Region.POUCH) { DrawPouch(pmo, p, at, live); continue; }
 			if (icons && live && put != "")
 			{
 				if (!icon[r]) icon[r] = Actor.Spawn("RSQTR_Icon", at);
@@ -2021,6 +2046,53 @@ class RSQTR_Rig : EventHandler
 		if (whip) { a.angle = by; a.pitch = 0; a.roll = -side * STOW_WHIP_ROLL; }
 		else { a.angle = by; a.pitch = -(90 - STOW_FLARE_LEAN); a.roll = 0; }
 		a.bINVISIBLE = false;
+	}
+
+	// ---- THE POUCH ON THE BELT (Show Ammo Pouch, rsqtr_pouch_show): a small canvas pouch (models/rsqtr/rtpouch.md3,
+	// tools/gen_pouch.py, 5 x 8 x 10 cm) at the pouch place, facing out from the body, and on its flap a light for the
+	// gun in the main hand's RESERVE (the ammo a reload takes): green two magazines or more (a gun without a magazine: a
+	// quarter of its carry or more), yellow less, red and blinking none, nothing for a gun with no ammo. Held in icon[]
+	// (the mirror copies it) and pip[] (the holsters' light).
+	const POUCH_LIGHT_M = 0.011;     // the light's radius, metres
+	static int ReserveState(Weapon w)
+	{
+		if (!w || !w.Ammo1) return -1;
+		bool mag = w.Ammo2 && w.Ammo2 != w.Ammo1;
+		int have = w.Ammo1.Amount;
+		int need = mag ? 2 * max(1, w.Ammo2.MaxAmount) : max(1, w.Ammo1.MaxAmount / 4);
+		if (have <= 0) return 2;
+		return have >= need ? 0 : 1;
+	}
+	private void DrawPouch(PlayerPawn pmo, PlayerInfo p, Vector3 at, bool live)
+	{
+		int r = RSQTR_Region.POUCH;
+		if (!live || !Flag("rsqtr_pouch_show", p, true))
+		{
+			if (icon[r]) icon[r].bINVISIBLE = true;
+			if (pip[r]) pip[r].bINVISIBLE = true;
+			return;
+		}
+		double by = (body && body.primed) ? body.yaw : pmo.angle;
+		if (icon[r] && !(icon[r] is "RSQTR_PouchShow")) { icon[r].Destroy(); icon[r] = null; }
+		if (!icon[r]) icon[r] = Actor.Spawn("RSQTR_PouchShow", at);
+		let a = icon[r];
+		if (a) { a.SetOrigin(at, true); a.angle = by; a.pitch = 0; a.roll = 0; a.bINVISIBLE = false; }
+		int st = ReserveState(p.ReadyWeapon);
+		if (st < 0) { if (pip[r]) pip[r].bINVISIBLE = true; return; }
+		double u = RSQTR_Body.Upm();
+		// on the flap, at its front top edge: 1.6 cm out from the pouch's middle, 5.8 cm up (the flap's top is at 5.4), so it
+		// shows looking down at your belt (rig frames, 11-03: on the flap's front face it was hidden from above)
+		Vector3 lp = at + (cos(by) * 0.016 * u, sin(by) * 0.016 * u, 0.058 * u / RSQTR_Body.Ps());
+		if (!pip[r]) pip[r] = Actor.Spawn("RSQTR_AmmoPip", lp);
+		let q = pip[r];
+		if (!q) return;
+		q.SetOrigin(lp, true);
+		q.frame = st;
+		double ps = POUCH_LIGHT_M * u;      // (red is told apart by its blink, not by a smaller size: on the belt it vanished)
+		q.Scale = (ps, ps);
+		q.Alpha = 0.95;
+		if (q.GetRenderStyle() != STYLE_Add) q.A_SetRenderStyle(q.Alpha, STYLE_Add);
+		q.bINVISIBLE = st == 2 && (level.maptime / 8) % 2 == 1;
 	}
 
 	// ---- THE GRENADE IN ITS HOLSTER (owner 2026-11-03 17:10: "When I have a grenade in my inventory I should see it in
@@ -2263,7 +2335,7 @@ class RSQTR_Rig : EventHandler
 		Actor a;
 		while (a = Actor(it.Next()))
 			if (a is "RSQTR_Marker" || a is "RSQTR_Icon" || a is "RSQTR_TorsoPart" || a is "RSQTR_MarinePart" || a is "RSQTR_HelmetPart" || a is "RSQTR_HeldShow" || a is "RSQTR_AmmoDigit"
-				|| a.GetClassName() == 'RSQWP_Stowed' || a.GetClassName() == 'RSQFF_Stowed' || a is "RSQTR_CigStowed" || a is "RSQTR_NadeShow"
+				|| a.GetClassName() == 'RSQWP_Stowed' || a.GetClassName() == 'RSQFF_Stowed' || a is "RSQTR_CigStowed" || a is "RSQTR_NadeShow" || a is "RSQTR_PouchShow"
 				|| a.special2 == RSQTR_MirrorView.MIRROR_MARK) a.Destroy();
 	}
 
@@ -2373,6 +2445,17 @@ class RSQTR_NadeShow : Actor
 		}
 		bINVISIBLE = false;
 	}
+}
+
+// THE POUCH ON THE BELT (rig.zs DrawPouch): its mesh, centred, facing out from the body. Local, never in play.
+class RSQTR_PouchShow : Actor
+{
+	Default
+	{
+		+NOINTERACTION +NOBLOCKMAP +NOGRAVITY +NOTELEPORT +DONTSPLASH +NOTONAUTOMAP
+		Radius 1; Height 1;
+	}
+	States { Spawn: RTGN A -1; Stop; }
 }
 
 class RSQTR_AmmoPip : Actor

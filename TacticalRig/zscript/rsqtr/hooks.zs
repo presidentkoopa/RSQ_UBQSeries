@@ -11,6 +11,7 @@
 //
 // Other mods can ask the rig what it holds, through RSQTR_RigService:
 //   GetInt("rig.region", "", hand)          region the hand is in, or -1
+//   GetInt("pouch.at", "", hand, 0, pawn)   1 the hand is in the ammo pouch, 0 not, -1 no pouch (BD22 VR's reloads)
 //   GetInt("rig.busy", "", hand, 0, pawn)   1 while the hand is in a holster,
 //                                           holds a Distance Grab door, the cigarette or the Zippo
 // The hands are known on the console player's own machine only, so both answers are
@@ -64,6 +65,14 @@ class RSQTR_RigService : Service
 		let who = PlayerPawn(objectArg);
 		bool local = !who || (who.player && who.player == players[consoleplayer]);
 		if (request == "rig.region") return local ? rig.HoverRegion(h) : -1;
+		// THE AMMO POUCH (11-03): 1 that hand is in the pouch, 0 it is not, -1 no pouch (Ammo Pouch off, no BD22 VR, the rig
+		// off or out of VR, or another player's pawn: the hands are known here only) -- Brutal Doom 22 VR's reloads ask it
+		if (request == "pouch.at")
+		{
+			if (!local) return -1;
+			let pm = who ? who : players[consoleplayer].mo;
+			return rig.PouchAt(pm, h);
+		}
 		// the last holster draw of that hand (intArg 0 main, 1 off), for a scorer's Quick Draw
 		if (request == "rig.drawtic")
 		{
