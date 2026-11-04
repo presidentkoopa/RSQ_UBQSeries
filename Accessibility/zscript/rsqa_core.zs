@@ -492,10 +492,13 @@ class RSQA_MenuMode : StaticEventHandler
 	ui int applied;
 	ui bool started;
 
+	// Every series front page (from each mod's MENUDEF; RSQ_MeleeOptions is RSQ Gun Bonsai VR's page,
+	// RSQML_Options is RSQ Melee's). A page whose mod is not loaded has no descriptor and is skipped.
 	static const Name FRONT[] = {
 		'UBQS_Options', 'SSQ_Options', 'RSQTR_Options', 'RSQDG_Options', 'RSQSM_Options',
-		'RSQLS_Options', 'RSQGR_Options', 'RSQ_MeleeOptions', 'RSQUI_Options', 'RSQSC_Options',
-		'RSQTHP_Options'
+		'RSQLS_Options', 'RSQGR_Options', 'RSQ_MeleeOptions', 'RSQSC_Options', 'RSQTHP_Options',
+		'RSQMB_Options', 'RSQML_Options', 'RSQWP_Options', 'wr_Options', 'RSQGN_Options',
+		'RSQGD_Options', 'RSQFF_Options', 'RSQG_Options', 'RSQGC_Options'
 	};
 
 	override void UiTick()
@@ -521,11 +524,14 @@ class RSQA_MenuMode : StaticEventHandler
 			copy.rows.Copy(desc.mItems);
 			copies.Push(copy);
 		}
+		// A hub page (no setting of its own: only links and commands, e.g. RSQ VisualRewards) keeps its
+		// section links in Simple, since they are its everyday pages; only its Tuning / Debug link goes.
+		bool hub = IsHub(copy.rows);
 		Array<OptionMenuItem> rows;
 		for (int i = 0; i < copy.rows.Size(); i++)
 		{
 			let it = copy.rows[i];
-			if (simple && Niche(it)) continue;
+			if (simple && Niche(it) && (!hub || IsTuning(it))) continue;
 			// no two spacers in a row, none first
 			if (simple && IsSpacer(it) && (rows.Size() == 0 || IsSpacer(rows[rows.Size() - 1]))) continue;
 			rows.Push(it);
@@ -541,13 +547,35 @@ class RSQA_MenuMode : StaticEventHandler
 		return it is "OptionMenuItemStaticText" && !it.Selectable() && (it.mLabel == " " || it.mLabel == "");
 	}
 
+	static ui bool IsHub(Array<OptionMenuItem> rows)
+	{
+		for (int i = 0; i < rows.Size(); i++)
+		{
+			let it = rows[i];
+			if (!it || !it.Selectable()) continue;
+			if (it is "OptionMenuItemSubmenu") continue;   // links, and (Safe)Commands, which are Submenus underneath
+			return false;
+		}
+		return true;
+	}
+
+	static ui bool IsTuning(OptionMenuItem it)
+	{
+		String l = it.mLabel;
+		l = l.MakeLower();
+		return l.IndexOf("tuning") >= 0 || l.IndexOf("debug") >= 0;
+	}
+
 	static ui bool Niche(OptionMenuItem it)
 	{
 		let sm = OptionMenuItemSubmenu(it);
 		if (!sm || it is "OptionMenuItemCommand") return false;   // a (Safe)Command is a Submenu underneath
+		// Each series mod's menu-name prefix (lower case; from the mods' MENUDEFs). "rsq_melee" is RSQ Gun
+		// Bonsai VR's (RSQ_MeleeOptions / RSQ_MeleeAdvanced), "rsq_killrewards" RSQ VisualRewards' Kill Rewards.
 		static const String SERIES[] = {
-			"ubqs_", "ssq_", "rsqtr_", "rsqdg_", "rsqsm_", "rsqls_", "rsqgr_", "rsq_melee", "rsqui_",
-			"rsqsc_", "rsqthp_", "tophpbars_"
+			"ubqs_", "ssq_", "rsqtr_", "rsqdg_", "rsqsm_", "rsqls_", "rsqgr_", "rsq_melee", "rsqsc_",
+			"rsqthp_", "tophpbars_", "rsq_killrewards", "rsqmb_", "rsqml_", "rsqwp_", "wr_", "rsqgn_",
+			"rsqgd_", "rsqff_", "rsqg_", "rsqgc_"
 		};
 		String to = sm.GetAction();
 		to = to.MakeLower();
