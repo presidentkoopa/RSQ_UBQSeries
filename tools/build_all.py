@@ -22,7 +22,7 @@ PACK_LIST_FILES = ['zscript.txt', 'MAPINFO.txt', 'CVARINFO.txt', 'TRNSLATE.txt',
 #   'sub' : everything inside a subfolder
 MODS = {
     'DistanceGrab': ('RSQ_DistanceGrab.pk3', 'list', PACK_LIST_FILES + ['zscript', 'graphics', 'sprites', 'sounds', 'models/rsqdg']),
-    'TacticalRig':  ('RSQ_TacticalRig.pk3', 'list', PACK_LIST_FILES + ['zscript', 'graphics', 'sprites', 'sounds', 'models/rsqtr']),
+    'TacticalRig':  ('RSQ_TacticalRig.pk3', 'list', PACK_LIST_FILES + ['README.md', 'zscript', 'graphics', 'sprites', 'sounds', 'models/rsqtr']),
     'SlowMo':       ('RSQ_SlowMo.pk3', 'list', PACK_LIST_FILES + ['zscript', 'graphics', 'sprites', 'sounds', 'models/rsqsm']),
     'ShieldSaw':    ('RSQ_ShieldSaw.pk3', 'all', ['docs/*', 'tools/*', '*.sh', '.gitignore', 'HANDOFF.md']),
     'QuestSaber':   ('RSQ_Saber.pk3', 'all', ['docs/*', '.gitignore']),

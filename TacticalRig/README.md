@@ -55,6 +55,14 @@ here (the body, the holsters, the torso that follows your turns) is worked out i
 - Keyring beside it: every key you carry hangs from a ring on your belt, swaying as you move.
 - Optional: take the keys off the ring and touch them to a locked door to open it (off by default).
 - Two saber spots below the hips for RSQ Saber's hilts, each on its own hand's side.
+- A whip holster on your main-hand hip for RSQ Whip, the whip hanging coiled there whenever it is out of your hand.
+  It never ends up in a gun holster.
+- A flare holster on your off-hand hip for RSQ FnF, sharing its chest pocket's flares, with a flare hanging there
+  while you carry one.
+- An ammo pouch just left of the buckle for Brutal Doom 22 VR's hand reloads: reach into it for the magazine, shell
+  or round. Its light shows the reserve of the gun in your hand (green, yellow, red).
+- The cigarettes left in your pocket stand in it on your chest, and the mirror shows your grenade, cigarettes and
+  RSQ ShieldSaw's shield along with your holsters.
 
 **Throw your gun**
 - Swing hard and press: the gun leaves your hand, flies with your swing and lands as a pickup.
@@ -83,6 +91,8 @@ here (the body, the holsters, the torso that follows your turns) is worked out i
 6. Turn your body in the room with your gun up, and feel the holsters come round after you. If they ever end up
    off to one side, put both controllers on your chest for a moment.
 7. Holsters not where your hands fall? Turn on Move Holsters by Hand and drag them.
+8. Playing BD22 VR Reloaded? When a reload asks for a magazine, reach your off hand into the ammo pouch just left of
+   your belt buckle; its light tells you how much reserve the gun in your hand has left.
 
 ## Controls
 
@@ -93,9 +103,9 @@ here (the body, the holsters, the torso that follows your turns) is worked out i
 | Throw a gun | Swing the hand fast (2.5 m/s) outside every holster, then grip, or Use with the main hand | Lands as a pickup you can take again |
 | Grenade | Either hand at the belt buckle, grip | Again with the grenade in hand: your gun comes back |
 | Saber | Main hand at the main-side saber spot, off hand at the other | Needs RSQ Saber; a saber put on any empty holster goes to its own spot |
-| Whip | The whip's hand at the whip holster, grip (or Use): put away, or drawn | Needs RSQ Whip. Main-hand hip, 8 cm behind and 9 cm outside the saber spot, same height; the hand RSQ Whip's Whip In names. Never goes in a gun holster: a draw from another holster, the weapon wheel or a slot key leaves it in its own; a whip put on an empty gun holster goes home |
-| Ammo pouch | Off hand in the pouch left of the belt buckle, press as Brutal Doom 22 VR's reload asks (grip, trigger or Use) | With BD22 VR's "Ammo From the Rig's Pouch Only" on, a reload's magazine, shell or round comes only from here; 0.16 m forward, 0.13 m toward the off hand, 0.61 m down, size 0.045 |
-| Flare | Off hand at the flare holster, grip: an unlit flare comes up; grip with an unlit flare: it goes back | Needs RSQ FnF; the mirror of the whip holster on the off-hand hip, the same flares as FnF's chest pocket. A lit flare cannot go in (FnF's rule: the grip drops it at your feet, burning). An off-hand draw from another holster puts an unlit flare back here, lets a lit one fall |
+| Whip | The whip's hand at the whip holster (main-hand hip), grip or Use | Needs RSQ Whip; draws or puts away. A whip put on an empty gun holster goes home |
+| Flare | Off hand at the flare holster (off-hand hip), grip | Needs RSQ FnF; an unlit flare comes up or goes back. A lit one cannot go in |
+| Ammo pouch | Off hand in the pouch left of the buckle, press as BD22 VR's reload asks | With BD22 VR's pouch-only setting on, reloads take ammo only from here |
 | Recenter torso | Both controllers against your chest (within 0.20 m of a point 0.30 m under your eyes) for 0.4 s | No grip, Use or fire held; let go before doing it again |
 | Recenter Torso key | Bindable: Customize Controls → RSQ Tactical Rig, or the rig's own page | |
 | Move a holster | Move Holsters by Hand on: grip inside a ring, carry it, let go | The keyring moves the same way |
@@ -184,9 +194,9 @@ Stored Gun Turn (0), Flip These Guns (blank), Mirror Distance (1.0 m), Body Turn
 (1.0 s) for Torso Catches Up With Head, Torso: Ignore Looking Down Past (25 degrees), Press Delay (3 tics), Throw
 Swing Speed (2.5 m/s), Thrown Gun Damage (1.0), Main Grip Keys (446), Off Grip Keys (443 436), Reset All. Sub pages:
 - Holster Positions: forward, left, up and size in metres from your eyes for every holster, the grenade spot, the
-  keyring, both saber spots, the whip holster and the flare holster (their side value is toward the main hand for the
-  whip, toward the off hand for the flare: 0.06 m back, 0.30 m out, 0.84 m down, size 0.09). Hips 0.70 m down, 0.18 m out; chest 0.46 down, 0.12 out, 0.10 forward; shoulders
-  0.10 down, 0.18 out, 0.08 back.
+  keyring, both saber spots, the whip and flare holsters and the ammo pouch. Hips 0.70 m down, 0.18 m out; chest 0.46
+  down, 0.12 out, 0.10 forward; shoulders 0.10 down, 0.18 out, 0.08 back; whip and flare 0.84 down, 0.30 out, 0.06
+  back; pouch 0.61 down, 0.13 toward the off hand, 0.16 forward.
 - Torso Fit: Height (-0.20 m), Forward (-0.04 m), Size (1.0), Helmet Height (0), Low Health Glow (under 35).
 - Cigarette: Mouth Zone Size (1.0), Mouth Cigarette Forward (0.12 m), Mouth Cigarette Down (0.07 m), Smoke Time
   (2 s), Slow Motion Seconds (6), Slow Motion Speed (25%), Pack Size (3).
@@ -202,13 +212,15 @@ Runs alone on any load order. It finds the rest by name:
 - **RSQ Saber**: the two saber spots appear, and holster and draw both hilts.
 - **RSQ ShieldSaw**: its shield hangs on this torso and turns with it; its Recenter key recenters both. The off
   shoulder is left to the stowed shield.
+- **RSQ Whip**: its whip holster and the coiled whip shown there. **RSQ FnF**: its flare holster, sharing the
+  pocket's flares, and its pocket hangs on this torso.
 - **RSQ Gestures**: the watch-check gun move.
 - **RSQ SlowMo**: the slow motion after a smoke.
 - **RSQ Accessibility**: Seated Play, handedness, rumble strength, text size and colour-blind ring colours apply here.
 - **RSQ Distance Grab** leaves a hand alone while it is in a holster or holds the cigarette or Zippo; **RSQ Melee**'s
   Headlock waits while your off hand is in a holster.
-- **RSQ Wheel** marks where a gun is holstered; **RSQ Score** reads holster draws for its quick-draw bonus; **RSQ
-  FlashFlare** hangs its pocket on this torso.
+- **RSQ Wheel** marks where a gun is holstered; **RSQ Score** reads holster draws for its quick-draw bonus; and the hand reloads of **BD22 VR
+  Reloaded** take ammo from the pouch when its pouch-only setting is on.
 - **Gun Bonsai + RSQ Gun Bonsai VR**: Gun Toss makes thrown guns hit harder and stagger longer; Boomerang Gun flies a
   thrown gun back to its holster, or to your hand at level 2; Smoker lengthens the smoke's slow motion and makes you
   untouchable through it; Chain Smoker adds cigarettes to the pack.
