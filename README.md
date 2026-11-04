@@ -8,6 +8,31 @@ headset check pending (each mod's README lists them). A full headset pass takes 
 
 By presidentkoopa, with ideas and assets from Ermac and the people credited below.
 
+## The series at a glance
+
+| | Mod | pk3 | In one line |
+|---|---|---|---|
+| 🎒 | [Tactical Rig](TacticalRig/) | `RSQ_TacticalRig.pk3` | Holsters on your real body, a torso that turns with you, an ammo pouch, Ermac's cigarette. |
+| 🤲 | [Gestures](Gestures/) | `RSQ_Gestures.pk3` | Reads your hands for the other mods: watch check, thrust, shove, both hands together. |
+| ♿ | [Accessibility](Accessibility/) | `RSQ_Accessibility.pk3` | One-handed, seated, left-handed, colour-blind and comfort options for the whole series. |
+| ⚔️ | [Saber](QuestSaber/) | `RSQ_Saber.pk3` | A lightsaber that cuts with your real swing, turns bolts, flies to marked enemies; the Force in your other hand. |
+| 🛡️ | [ShieldSaw](ShieldSaw/) | `RSQ_ShieldSaw.pk3` | Block, bash and grind with a buzzsaw shield, then throw it through your targets and catch it. |
+| 🥊 | [Melee](Melee/) | `RSQ_Melee.pk3` | It knows which punch you threw: jabs, hooks, uppercuts, palm swats, gun-butt shoves, headlocks. |
+| 🐍 | [Whip](Whip/) | `RSQ_Whip.pk3` | A simulated bullwhip that cracks from your wrist, wraps monsters and swings you across the room. |
+| 💣 | [Grenade](Grenade/) | `RSQ_Grenade.pk3` | Pull the pin with your hand or your teeth, cook it, throw it with your arm, shoot it out of the air. |
+| 🔥 | [FnF (Flash and Flare)](FlashFlare/) | `RSQ_FnF.pk3` | Strike a road flare with a flick and throw it; a chest-clip flashlight with a visible beam. |
+| 🪝 | [Grapple](Grapple/) | `RSQ_Grapple.pk3` | A hook in each hand: fling yourself across the map, climb the rope, drag monsters to you. |
+| ✋ | [Distance Grab](DistanceGrab/) | `RSQ_DistanceGrab.pk3` | Palm out, flick your wrist, and anything across the room flies into your hand. |
+| 🔴 | [Laser Sight](LaserSight/) | `RSQ_LaserSight.pk3` | A laser from every gun's real barrel in both hands, the dot where the shot will land. |
+| ⏱️ | [SlowMo](SlowMo/) | `RSQ_SlowMo.pk3` | The world slows, you don't: watch enemy rounds come and lean out of their way. |
+| 🏆 | [Score](Score/) | `RSQ_Score.pk3` | An arcade scorer: every kill pays for how you did it, every tool chains into combos. |
+| 👹 | [Miniboss](Miniboss/) | `RSQ_Miniboss.pk3` | Each level crowns a champion fed by thralls, and dares you to go for the head first. |
+| ❤️ | [VisualRewards](VisualRewards/) | `RSQ_VisualRewards.pk3` | HP bars, damage numbers in the room, level-up moments, monsters that burst into loot. |
+| 🃏 | [Gun Cards](GunCards/) | `RSQ_GunCards.pk3` | Holo ammo cards on your guns; check your watch for health, armour and keys. |
+| 🎡 | [Wheel](Wheel/) | `RSQ_Wheel.pk3` | A weapon ring in the air: point at a gun with either hand and it's in that hand. |
+| 🌈 | [Glow In The Dark](GlowInTheDark/) | `RSQ_GlowInTheDark.pk3` | Rooms lit in their own colours, breathing liquids, 35 looks, a map that reacts to you. |
+| 🌳 | [Gun Bonsai VR](GunBonsaiOffhandVR/) | `RSQ_GunBonsaiVR.pk3` | Each hand earns its own XP and upgrades in Gun Bonsai, with 170+ body-built upgrades. |
+
 ## Why this is new
 
 QuestZDoom 17.3 is the engine that runs Doom on the Quest and on PC VR. To a mod it gives two hand positions and
