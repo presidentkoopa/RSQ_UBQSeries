@@ -162,6 +162,7 @@ lets your main hand reach for the shield, and the Shield Throw and Flick Reload 
 | Positional Sound | On | Contacts heard where they happen. |
 | Show Mount | When Needed | Never, When Needed, Always: the marker at the grab point. |
 | Shield on Back | Off | Draw the stowed shield on your back. |
+| Shield on the Rig | On | With RSQ Tactical Rig loaded, the stowed shield is drawn where it hangs on the rig, whatever Shield on Back says. |
 | Others See Shield | Netgame Only | Only Me, Everyone, Netgame Only. |
 | Spin Direction | Normal | Flip if the disc spins the wrong way. |
 

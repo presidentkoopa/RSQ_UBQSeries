@@ -159,6 +159,7 @@ user int   ssq_body_catch       = 0;      // a head held 35 degrees round for 1 
 user int   ssq_recenter_hands   = 1;      // both hands held to your chest for 0.4 s turn the body to where your head faces (11-03)
 user int   ssq_rig_body         = 1;      // with RSQ TacticalRig loaded, the shield hangs on the rig's body: shield and holsters turn together (11-03)
 user int   ssq_stow_world       = 0;      // draw the shield on your back while it is stowed (owner: off, 2026-10-22)
+user int   ssq_stow_rig         = 1;      // with RSQ Tactical Rig loaded, the stowed shield is drawn on the rig's body (owner 11-03 20:51)
 user float ssq_mount_yaw        = 0.0;
 user float ssq_mount_pitch      = 0.0;
 user float ssq_mount_roll       = 0.0;

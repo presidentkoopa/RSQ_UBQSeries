@@ -1281,7 +1281,11 @@ class SSQ_Handler : EventHandler
 		// the plate's +L side -- the side your arm is on -- forward into your back.
 		if (mState[i] == SS_STOWED)
 		{
-			prop.bInvisible = UVI(p, 'ssq_stow_world', 0) == 0;	// owner's default: not drawn when stored
+			// owner's default: not drawn when stored (ssq_stow_world, 10-22) -- EXCEPT ON RSQ TACTICAL RIG'S BODY (owner 11-03
+			// 20:51: "the torso rig will need to always show ... shieldsaw"): with the rig loaded (RSQTR_BodyService, by name)
+			// and Shield on the Rig on (ssq_stow_rig), the stowed shield is drawn where it hangs, turning with the rig's torso
+			bool onRig = UVI(p, 'ssq_stow_rig', 1) != 0 && ServiceIterator.Find('RSQTR_BodyService').Next() != null;
+			prop.bInvisible = UVI(p, 'ssq_stow_world', 0) == 0 && !onRig;
 			prop.SetOrigin(mount, true);
 			prop.angle = BodyYaw(mo) + UV(p, 'ssq_mount_yaw', 0);
 			prop.pitch = (OnBack(p) ? -MountPropPitch() : MountPropPitch()) + UV(p, 'ssq_mount_pitch', 0);
