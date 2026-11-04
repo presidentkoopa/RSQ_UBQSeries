@@ -1,110 +1,146 @@
 # RSQ FnF (Flash and Flare)
 
-A road flare you use with your hands. Reach your off hand across to the pocket on your chest and grip: a flare is in
-that hand while your gun hand keeps its gun. Flick it down hard to strike it (or pull that hand's trigger), and it
-sputters, catches and burns red. Hold it up to see, or throw it with a real swing of your arm: it tumbles, bounces and
-lies on the floor burning, lighting the room, until it burns out. A flashlight comes later (see
-`docs/FLASHLIGHT_PROPOSAL.md`). Part of the Radiant Silvergun Quest series, for stock QuestZDoom 17.3 (script only, no
-engine changes). Built for the Quest first.
+A road flare you pull from your chest, strike with a flick of the wrist, and throw into the dark.
 
-**Rig only, not headset-confirmed.** Everything below was checked on the simulated headset (scripted hand poses), not
-yet in a real one.
+Status: 0.99 — tested on the development rig; headset testing in progress.
 
-Pk3: `pk3/RSQ_FnF.pk3` (about 0.3 MB). Source folder: `FlashFlare/`.
+Part of the Radiant Silvergun Quest series for stock QuestZDoom 17.3. ZScript only, no engine changes. The flare is
+built; a flashlight is planned.
 
-## Load order
+**Dynamic lights must be on** in the engine's video settings. The flare's light is a real dynamic light; with them off
+you get the flame and sparks but no light.
 
-```
-doom2.wad -> RSQ_FnF.pk3                                        (on its own)
-doom2.wad -> 01 brutal22test6 -> 02 BD22_VoxelPack -> 03 BD22_VR-Reloaded -> 04-07 XMVE -> Gun Bonsai -> RSQ pk3s (RSQ_FnF.pk3 among them)
-```
+## Standout feature: strike it like the real thing
 
-- Needs nothing else. Loads in any order with the rest of the series.
-- **With RSQ Tactical Rig:** the pocket hangs on the Rig's body, so it turns with your holsters; a grip with the off
-  hand inside one of the Rig's places is the Rig's, never the pocket's.
-- **With Brutal Doom 22 VR Reloaded:** when the flare leaves your off hand you get BD22's empty hand back, and BD22's
-  Hand Skin Tone colours the hand holding the flare.
+Reach your off hand across to the pocket on your chest and grip. An unlit flare is in your hand, cap on, and your
+main hand still has its gun. Flick the flare hand sharply down, the way you strike a real road flare. It catches with
+a burst of sparks, sputters for a moment, then settles into a flickering red-orange burn that lights the
+room around you. The light sits on the burning end you see in your hand and follows it as you move.
 
-## Setup
+Swing your arm and press, and the flare leaves your hand at your arm's own speed and direction. It tumbles end over
+end, bounces off the floor and walls, slides to a stop, and lies there burning. Light a corridor ahead of you, toss
+one into a dark room before you go in, or leave a trail behind you.
 
-- **Menu:** Options -> Radiant Silvergun Options -> **RSQ FnF (Flash and Flare)**. Numbers, the pocket's place and
-  Reset All are on its **Tuning and Debug** page.
-- **Buttons to bind:** none. It reads the off-hand grip and trigger directly.
-- **Dynamic lights must be on** in QuestZDoom's video options (`gl_lights`), or the flare gives no light.
-
-## What to do in VR
-
-1. **Take a flare:** reach your off hand across to the pocket on your chest (the gun hand's side, a palm under your
-   collarbone) and press grip. You feel a tick and the flare is in your hand, cap on. If the gun hand is near (the
-   engine's two-hand steadying), the flare comes up the moment you let go of the grip.
-2. **Put it back:** grip at the pocket again with an unlit flare.
-3. **Strike it:** a sharp flick of the flare hand straight down (faster than 1.4 m/s downward), like striking a road
-   flare's cap. Or pull that hand's trigger. It catches with a burst of sparks and a strong buzz, sputters for about
-   two thirds of a second, then burns.
-4. **Hold it** to light the way. The light sits on the burning end you see.
-5. **Throw it:** swing your arm and press grip (or the trigger) during the swing (faster than 2 m/s). It leaves at your
-   hand's speed and direction. Walking or turning is not a swing: the speed is measured against your body.
-6. **Drop it:** press grip with the hand still (away from the pocket): it falls at your feet, burning.
-7. It burns 60 seconds (Burn Time), dies away over its last two seconds, and the spent flare lies dark for ten seconds.
-   Burnt out in your hand, your hand lets it fall.
-
-Taken away any other way (another weapon or mod takes your off hand, you die, a new level): an unlit flare goes back in
-the pocket; a lit one falls where your hand was, still burning.
+All of it is ZScript on a stock engine: the pocket hangs on your body, the strike is read from your hand's motion,
+and the throw is measured against your body, so walking and turning never count as a swing.
 
 ## Features
 
-Front page. "On" = on by default; "Option" = off by default.
+**The flare**
+- Taken from a chest pocket by the off hand. The main hand keeps its gun the whole time.
+- Lit by a downward flick, by the off-hand trigger, or either (your choice).
+- A sputter on the strike, then a flickering burn: the light's size and colour shift a little every few tics.
+- Burns 60 seconds by default, in your hand or on the floor, and dies away over its last two seconds.
+- Burnt out in your hand, the spent flare drops. A spent flare lies dark for 10 seconds, then is gone.
+- Thrown flares bounce off floors, walls and monsters, then lie burning. They hurt nothing.
+- Drop one at your feet: grip with the hand still.
+- Unlit flares go back in the pocket by hand. Anything else that takes the off hand (another weapon, death, a new
+  level) puts an unlit flare back in the pocket and lets a lit one fall where your hand was, still burning.
+- Flame and sparks off the burning end; an optional thin smoke trail.
+- Stock Doom sounds: the arch-vile's flame catching for the strike, its crackle for the burn, a dull knock on landing.
+- The hand holding it is Brutal Doom 22 VR Reloaded's hand, drawn in its off-hand place (it can be hidden).
 
-| Menu row | Default | What it does |
+**Light that stays cheap**
+- One light per flare, no shadow map, re-set only on a flicker step.
+- A cap on how many flares give light at once (3 on the Quest preset, 6 on PCVR). Light one more and the oldest lying
+  flare fades dark over half a second and burns on as flame and sparks. The one in your hand goes dark last. When a
+  flare burns out, the last one that went dark lights again.
+- Subdued Light: twice the radius at half the brightness, for a softer look.
+
+**Supply**
+- You start a new game with 4 flares. You carry up to 24.
+- Boxes of 6 turn up beside a map's items, up to 2 a map.
+- Optional: the pocket tops up at each new level (off by default).
+
+## How To Play
+
+1. Add RSQ_FnF.pk3 to your load order. Make sure dynamic lights are on. Play in VR: the flare is taken by hand only.
+2. Bring your off hand across your chest toward your main-hand side, on your upper chest, and grip.
+   You hear the pickup sound and feel a tick. The pocket has no marker: if nothing happens, move a little and grip
+   again, or move the pocket under Tuning and Debug.
+3. Flick the flare hand down hard. Too gentle? Pull the off-hand trigger instead, or lower Strike Speed Down.
+4. Hold it up and walk. Then swing and grip to throw it ahead of you.
+5. Out of flares, the game tells you "No flares left". Look for boxes beside the map's items.
+
+## Controls
+
+| Action | How (VR) | Notes |
 |---|---|---|
-| Flares | On | The whole mod. |
-| Light Preset | Quest | **Quest**: radius 140, at most 3 lit at once, flicker every 4 tics. **PCVR**: radius 220, 6 lit, every 3 tics. Shows "Custom" when the Tuning numbers match neither. |
-| Subdued Light | Option | Double the radius at half the brightness: a softer, wider glow. |
-| Burn Time (s) | 60 | How long a flare burns (10-180). |
-| Light It By | Strike or Trigger | Strike (flick down) only, the trigger only, or either. |
-| Show Hand | On | Draws the hand holding the flare (Brutal Doom 22 VR's FBX hand, its magazine hold). Off: the flare alone. |
-| Sparks | On | Sparks off the burning end (a burst when struck). |
-| Smoke | Option | A thin smoke trail. |
-| Sounds | On | The strike and a quiet burning crackle (stock Doom sounds). |
-| Start With | 4 | Flares in the pocket at a new game and after dying. |
-| Boxes in Levels | On | Boxes of 6 lie beside some of a map's items (saegiru's / the UAC Survival Pack's way). |
-| Boxes a Map | 2 | At most this many boxes a map. |
-| Pocket Refills Each Level | Option | Tops the pocket up at each new level. |
-| Pocket Refills To | 4 | ...to this many. |
+| Take a flare | Off hand at the chest pocket, grip | Pocket: 0.12 m forward, 0.15 m toward your main hand, 0.28 m under your eyes; reach 0.11 m |
+| Put it back | Off hand at the pocket with an unlit flare, grip | |
+| Strike it | Flick the flare hand down at 1.4 m/s or more | With Light It By on Strike or Strike or Trigger |
+| Light by trigger | Off-hand trigger | With Light It By on Trigger or Strike or Trigger |
+| Throw | Swing the off hand faster than 2 m/s, then grip or off-hand trigger | Leaves at 1.25x your hand's speed, with a little arc and your walking speed added |
+| Drop | Grip with the hand still, away from the pocket | Lies at your feet, burning |
 
-Always on (no row): carry 24 flares; a box gives 6.
+- The flare is always in the off hand. With QuestZDoom's left-handed setting the pocket moves to the other side of
+  your chest, still toward your main hand.
+- The off-hand grip is read from the keys the engine sends for it (443, or 436 while the main grip is held).
+- If the engine is steadying a gun with both hands when you grip at the pocket, the flare comes up the moment you
+  let go of the grip.
 
-**Tuning and Debug:** Light Radius, Most Lit at Once, Flicker Step; Strike Speed Down, Throw Speed, Throw Strength,
-Arc; the pocket's place (Forward, Toward Main Hand, Height, Reach); Debug Log; Reset All.
+## Menu
 
-## The light budget (why it is cheap)
+Options → Radiant Silvergun Options → RSQ FnF (Flash and Flare)
 
-- **One light per flare.** A plain point light with no shadow map, attached to the flare itself (never a spot light).
-- **The flicker is a step, not a pulse.** The size and colour change every 4 tics (Quest) or 3 (PCVR) by a few percent;
-  only the strike's sputter changes every 2 tics. Each step re-sets the one light; nothing is re-made every frame.
-- **A hard cap.** At most 3 (Quest) / 6 (PCVR) flares give light at once, a flare in your hand counted. Light one more
-  and the oldest flare on the floor goes dark over half a second and burns on as flame and sparks only. When one burns
-  out, the one that went dark last lights again.
-- **Flame, sparks and smoke are particles,** not actors.
-- On the rig, with 5 flares burning (4 on the floor, 1 in the hand) on the Quest preset, never more than 3 lights were
-  on (`docs/rig/light_log.txt`).
+| Row | Default | What it does |
+|---|---|---|
+| Flares | On | The whole mod |
+| Light Preset | Quest | Quest: radius 140, 3 lit at once, flicker every 4 tics. PCVR: 220, 6, 3 |
+| Subdued Light | Off | Double radius, half brightness |
+| Burn Time (s) | 60 | How long a flare burns (10-180) |
+| Light It By | Strike or Trigger | Strike (flick down), Trigger, or Strike or Trigger |
+| Show Hand | On | Draw the hand holding the flare |
+| Sparks | On | Sparks off the burning end |
+| Smoke | Off | A thin smoke trail |
+| Sounds | On | Strike, crackle and landing sounds |
+| Start With | 4 | Flares at a new game (0-24) |
+| Boxes in Levels | On | Boxes of 6 beside a map's items |
+| Boxes a Map | 2 | Most boxes in one map (0-8) |
+| Pocket Refills Each Level | Off | Tops the pocket up at each new level |
+| Pocket Refills To | 4 | ...to this many (1-24) |
 
-## Proof (rig only, not headset-confirmed)
+**Tuning and Debug**
 
-Frames in `docs/rig/` (doom2 MAP01, the map darkened by a test probe): `01_taken_unlit`, `02_struck_sputter`,
-`03_burning_held`, `04_head_turned`, `05_thrown_arc`, `06_lying_lit`, `07_cap3_three_lights_plus_held`,
-`08_pcvr_preset`, `09_pcvr_subdued`, `10_burning_out_in_hand`. The log of the same run: `docs/rig/light_log.txt`.
+| Row | Default | What it does |
+|---|---|---|
+| Light Radius | 140 | The light's radius, map units |
+| Most Lit at Once | 3 | Flares giving light at the same time |
+| Flicker Step (tics) | 4 | How often the light's size and colour change |
+| Strike Speed Down (m/s) | 1.4 | How hard the downward flick must be |
+| Throw Speed (m/s) | 2.0 | How fast the hand must move for a press to throw |
+| Throw Strength | 1.25 | Throw speed as a multiple of the hand's |
+| Arc | 0.25 | Share of the throw's speed added upward |
+| Pocket Forward (m) | 0.12 | The pocket, forward of the chest line |
+| Pocket Toward Main Hand (m) | 0.15 | ...toward your main hand's side |
+| Pocket Height (m) | -0.28 | ...under the eyes |
+| Pocket Reach (m) | 0.11 | How near the hand must be |
+| Debug Log | Off | Flare lines in the console |
+| Reset All | | Every setting back to default |
 
-Script errors from our packs: 0 with doom2 + RSQ_FnF alone; 0 with doom2 + Gun Bonsai + every RSQ pk3; 0 in the full
-order (only BD_VoxelPack's own 4 voxeldef lines).
+## Works with
 
-## Not yet known / open
+Runs alone. It finds the others by name:
+- **RSQ Tactical Rig**: the pocket hangs on the Rig's torso and turns with its holsters (stick turns, followed room
+  turns, recenters). While your off hand is in one of the Rig's holsters, the grip belongs to the Rig, never the
+  pocket. The Rig never holsters or throws the flare. The two pockets sit on opposite sides: the Rig's cigarettes on
+  your off-hand side, flares on your main-hand side. Without the Rig, the pocket follows snap and stick turns and eases
+  under your head while you look ahead.
+- **Brutal Doom 22 VR Reloaded**: when the flare leaves your hand, the off hand gets BD22 VR's empty hands back (on
+  plain Doom the off hand is simply empty). Its Hand Skin Tone tones the hand holding the flare.
 
-- Nothing about the headset is known yet: the strike's feel (1.4 m/s down), the pocket's place on a real body, the
-  throw's strength, the haptics (nothing can be felt on the rig).
-- In two of six full-order rig runs, one frame showed the lit flare's flame and light in the hand but not the hand and
-  flare model (the psprite was there, frame B); not seen again in four runs since. Watch for a held flare that
-  vanishes in the headset.
-- A grip at the pocket with the gun hand within 0.5 m makes the engine steady the gun for that press (its two-hand
-  hold); the flare waits for the grip to let go. Other mods that act on the off-hand grip (Distance Grab's aim) may also
-  see that press.
+## Credits and licence
+
+- **presidentkoopa** (project owner): the flare model (Flare.blend with its FlareTexture and FlareTip textures),
+  read from the .blend and turned into the in-hand, lying and box models, scaled to a 22.5 cm road flare. The code.
+- **Brutal Doom 22 VR Reloaded** (the owner's mod): the FBX hand, its off-hand magazine hold and skin, drawn in BD22
+  VR's own off-hand placement.
+- **saegiru's Emergency Flare** (UDV Survival Flares, part of JohnnyDoom's UAC Survival Pack): ideas and numbers only.
+  A box of 6, carry 24, the red-orange colour, the raised light, boxes rolled beside a map's items, a thrown flare that
+  bounces and lies burning with sparks. His sprites and sounds are not used: the copy supplied carries no licence for
+  reuse.
+- **id Software**: the stock Doom sounds played by name (no sound files shipped).
+- Generated for this pack: the glowing end, flame, spark and smoke pictures, the clear skin and placeholder sprites.
+- **QuestZDoom** (Emawind and Team Beef): the engine, and its off-hand weapon and hand-pose API.
+
+Free to share as part of the Radiant Silvergun Quest series. Borrowed assets keep their authors' terms.
