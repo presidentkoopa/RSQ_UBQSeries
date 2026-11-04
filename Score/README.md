@@ -134,6 +134,10 @@ Score is a shared service: other mods send it awards and read its kills.
   RSQ_DistanceGrab (throws), RSQ_TacticalRig (draws), RSQ_SlowMo (is the world slowed?), RSQ_GunBonsaiVR
   (the ShieldSaw gauge's room), RSQ_Accessibility (Text Size, Photosensitive Mode, Colour Blind Mode).
 - **Score sends** RSQ_SlowMo a slow-motion pulse on a big moment, and (Hit-Stop on Big Kills) a short deep one on a big kill.
+- **RSQ_SlowMo's Real-Time Countdown bar** (11-03) sits under Score's bar: SlowMo asks where the bar is by name
+  (`RS_ScoreService` GetIntUI `hud.cx`, `hud.bar.bottom`, `hud.bar.w`: screen pixels), and while that bar's row is on the
+  combo rows start just below it (Score asks `RSQSM_Service` GetIntUI `countdown.bottom`). Without SlowMo, or with its
+  bar off, the rows sit where they always did. **(rig only, not headset-confirmed)**
 - Champions and LegenDoom Lite: champion colours, mutations and legendaries pay their own Daring rows.
 - Gun Bonsai's own score-to-XP: if you turn it on, set Gun Bonsai's damage-to-XP to 0, or every kill pays
   XP twice.

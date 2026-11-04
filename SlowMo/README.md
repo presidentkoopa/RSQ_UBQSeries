@@ -44,6 +44,7 @@ All rows are on the front page except the ones marked *Triggers* or *Tuning and 
 | Dodgeable Bullets | On | In slow motion an enemy's hitscan becomes a visible round, same damage. Brutal Doom's bullets slow to the same speed. |
 | Adrenaline | Option | Slow motion costs adrenaline, earned from kills, hurt and near misses. The SlowMo Gauge shows the meter; a pickup sound when full, an "oof" when there is not enough. |
 | SlowMo Gauge | On | A vertical gauge at the side of your view (coldcite's Top HP Bars bar stood on end, in cyan). With Adrenaline on it is the meter: dim below Adrenaline to Start (a white tick marks that line), pulsing while slow motion spends it. With Adrenaline off it shows only while the world is slowed, filled by how slow. Its colour moves as it fills (deep blue, cyan, near white). Gauge Animation (on): a band of light rises through the fill, its top edge breathes, a full gauge glints. Gauge Side (Left / Right) beside it; Gauge Size on Tuning and Debug. |
+| Real-Time Countdown Bar | On | (owner, 11-03) A green horizontal bar under RSQ Score's bar, above its combo rows (without Score, in the same spot). It shows only while time is slowed by something other than your own slow motion (a mod's pulse: a kill moment, the Miniboss window, the cigarette, Gun Bonsai VR, Score, Melee's shove, a parry or block, close-call, reload) and holds the real time left until full speed: it empties evenly to zero as the world comes back, then fades. A pulse that makes it last longer refills it, with a glint. Your key, wrist cross, burst, the Wheel, the Accessibility button and the shootdodge never show it. *Bar Animation* (on): a light band sweeps along it, the end of the fill breathes, a refill glints. *Bar Size* (1.5) and *Bar Colour* (Green; the series' palette or Random, a fresh colour each time) beside it. With RSQ Accessibility: the colour-blind palette's colour, no glint and a still edge in Photosensitive Mode, and Text Size scales it. **(rig only, not headset-confirmed)** |
 | Haptics | On | Rumble on both hands when slow motion starts and ends. Needs the engine's quake haptics above 0. |
 | Lean Out of Bullets | On | Leaning out of a slowed round's path makes it miss. A lean held for about 2 s becomes your new stance and stops counting. |
 | Smooth Walkers | On | The nearest 12 walking monsters move a little every tic instead of stepping. |
@@ -134,6 +135,11 @@ simulated rig (no sound, no haptics there).
 17. Turn off one row on *Triggers* (e.g. *Score*): that source no longer slows time, the others still do;
     a refusal shows in the Debug Log as "its switch is off". **(not yet headset-confirmed; rig 2026-11-02:
     Score, Gun Bonsai VR, Cigarette, Melee Shove and Manual Key each refused when off while the rest started)**
+18. With RSQ Score loaded, get slowed by something that is not you (a Score big kill, the Miniboss window, a cigarette): a
+    green bar appears under the score bar and empties to zero as the world comes back to full speed, then fades. A second
+    pulse while it runs refills it with a glint. Press your own *Slow Motion* key: no bar. **(rig only, not
+    headset-confirmed; rig 11-03: `netevent rsm_pulse 4000 25` showed it from 151 tics left to zero, a second pulse 71
+    tics in refilled it, the key showed nothing, in the flat frame and in the VR eye at vr_hud_scale 0.25 and 1.0)**
 
 ## Works with
 
@@ -142,7 +148,9 @@ simulated rig (no sound, no haptics there).
 - **RSQ Wheel:** the ring slows time while open, also while slow motion is easing out. Row: *Wheel*.
 - **RSQ Saber / RSQ ShieldSaw:** their perfect-parry / perfect-block slow-mo options pulse this clock
   (deliberate: never held back). Rows: *Saber Parry*, *ShieldSaw Block*.
-- **RSQ Score:** big kills ask for a short slow-mo pulse (automatic: row *Score* and the cooldown).
+- **RSQ Score:** big kills ask for a short slow-mo pulse (automatic: row *Score* and the cooldown). The Real-Time
+  Countdown bar sits under Score's bar (asked by name, `RS_ScoreService` GetIntUI `hud.cx` / `hud.bar.bottom`), and Score
+  starts its combo rows below the bar while the bar's row is on (it asks `RSQSM_Service` `countdown.bottom`).
 - **RSQ Melee:** a landed gun butt shove asks for a 300 ms pulse at 35 % (row *Melee Shove*; that mod has
   its own switch too). Deliberate: never held back. It stands down when BD22 VR Reloaded is loaded (Melee's rule). **(not yet headset-confirmed)**
 - **RSQ Grapple, RSQ Whip:** read the world's speed so they slow with it.
@@ -247,7 +255,9 @@ if (s) s.GetInt("start", "<who>", ms, speed);        // speed 0.05-1.0, 0 = the 
 
 **Read it:** `RSQSM_Service` `GetInt` answers -1 when the clock is not running: `adrenaline.add` (intArg = amount),
 `adrenaline` (0..100), `slowmo.active` / `active` (1 while slowing or easing), `running` (1 while held or
-pulsing), `scale` (world speed in permille).
+pulsing), `scale` (world speed in permille), `countdown` (tics of real time until full speed while a slow not of the
+player's own choosing runs; -1 none). From a HUD, `GetIntUI("countdown")` the same, and `GetIntUI("countdown.bottom")`
+the screen row just under the countdown bar's slot (-1 when its row is off).
 
 **RS_SlowMo's old doors still work:** `rsm_toggle`, `rsm_on`, `rsm_off`, `rsm_pulse <hold ms> <speed %>`
 (deeper wins, longer wins). An `rsm_pulse` carries no name, so SlowMo tells the series' callers apart by what

@@ -65,6 +65,18 @@ class RSQSM_Clock : EventHandler
 	bool   pulseAuto;        // ... and whether it was automatic
 	int    autoReady;        // maptime the next automatic trigger may start slow motion
 	double adr;              // the adrenaline meter, 0..100
+	// ---- THE REAL-TIME COUNTDOWN (owner 2026-11-03 19:06; countdown.zs draws it) ------------------------------
+	// Shown while time is slowed by something OTHER than the player's own slow motion: his key, the wrist cross, its
+	// burst, the Wheel, the Accessibility button and the shootdodge are HIS (OwnCat); every other trigger (a mod's
+	// rsm_pulse, the named door, close-call, reload) is FORCED. Set when a forced trigger is let in (Trigger), cleared
+	// when the world is at full speed again, when he holds slow motion on himself, or when only his dodge still slows it.
+	bool   cdOn;             // a forced slow is running (or easing back out)
+	double cdLeft;           // tics of REAL time (level.maptime is never slowed) until the world is at full speed
+	double cdTotal;          // what a full bar holds: cdLeft when it last started or refilled
+	int    cdHoldEnd;        // the hold's projected end last tic (a later one is a refill)
+	int    cdStartTic;       // maptime the bar appeared (also seeds Random colour)
+	int    cdRefillTic;      // maptime of the last refill (the glint)
+	int    cdEndTic;         // maptime it reached zero (the fade)
 	bool   rival;            // decided once per map
 	RSQSM_Smooth smooth;     // the walkers' step-spreader (smooth.zs), made on first use
 
@@ -228,6 +240,7 @@ class RSQSM_Clock : EventHandler
 		if (e.IsSaveGame) return;
 		// A level never starts slowed (and nothing carries over: the arrays are empty).
 		on = false; target = 1; scale = 1; pulseUntil = 0; pulseDepth = 1; pulseSrc = ""; pulseAuto = false; autoReady = 0;
+		cdOn = false; cdLeft = 0; cdTotal = 0; cdHoldEnd = 0; cdStartTic = 0; cdRefillTic = 0; cdEndTic = 0;
 		ClearAll();
 		for (int i = 0; i < MAXPLAYERS; i++) { dodgeTic[i] = 0; meK[i] = 1; meGrav[i] = 0; meVx[i] = 0; meVy[i] = 0; }
 		// An EventHandler is rebuilt on every map, so the meter is carried on the player.
@@ -431,7 +444,7 @@ class RSQSM_Clock : EventHandler
 		}
 		bool was = on;
 		on = want;
-		if (on) pulseUntil = 0;     // the toggle outranks a pulse
+		if (on) { pulseUntil = 0; CountdownEnd("held on by the player"); }     // the toggle outranks a pulse (and the countdown: it is his now)
 		// A CUE ONLY FOR A CHANGE. An rsm_off to a clock already off (the Wheel closing after the
 		// adrenaline meter refused its rsm_on; a meter that ran dry) played the way-out sound and
 		// rumble with nothing ending (measured on the rig, bugfix pass 10-31: rsm_off with the clock
@@ -514,6 +527,7 @@ class RSQSM_Clock : EventHandler
 		Pulse(ms, depth);
 		pulseSrc = src;
 		pulseAuto = isAuto;
+		if (!OwnCat(cat)) CountdownStart(src);
 		if (isAuto) autoReady = max(autoReady, pulseUntil + int(Cooldown() * TICRATE));
 		Log(src, String.Format("%s %d ms at %d%% (%s), pulse until t%d", fresh ? "started" : "merged", ms, int(depth * 100 + 0.5),
 			isAuto ? "automatic" : "deliberate", pulseUntil));
@@ -580,6 +594,68 @@ class RSQSM_Clock : EventHandler
 			RSQSM_Buzz.Start(mo, 0, 0.6, 8);
 			RSQSM_Buzz.Start(mo, 1, 0.6, 8);
 		}
+	}
+
+	// ---- THE REAL-TIME COUNTDOWN (owner 2026-11-03 19:06: "count down whenever we slow time outside of player choice --
+	// this would help the player understand when they will be back in real time") ------------------------------------------
+	// HIS OWN slow motion is the SlowMo controls: the key, the wrist cross and its burst, the Wheel, the Accessibility button,
+	// the shootdodge (the held toggle and the dodge never come through Trigger at all). Everything else is FORCED on him.
+	static bool OwnCat(int cat)
+	{
+		return cat == CAT_KEY || cat == CAT_WRIST || cat == CAT_BURST || cat == CAT_WHEEL || cat == CAT_A11Y || cat == CAT_DODGE;
+	}
+	private void CountdownStart(String src)
+	{
+		if (cdOn) return;          // already counting: a later end is a refill, seen by CountdownTick
+		cdOn = true;
+		cdStartTic = level.maptime;
+		cdHoldEnd = 0;
+		cdTotal = 0;
+		Log(src, "countdown bar: forced slow motion, counting down to real time");
+	}
+	private void CountdownEnd(String why)
+	{
+		if (!cdOn) return;
+		cdOn = false;
+		cdLeft = 0;
+		cdEndTic = level.maptime;
+		Log("countdown", String.Format("countdown bar: gone (%s)", why));
+	}
+	// THE TIME LEFT, in real tics: what is left of the hold, then the ease back out from the depth the clock will be at
+	// when the hold ends (the ease covers the whole way 0..1 in RampOut seconds, so from scale s it takes (1 - s) of it).
+	// Both fall by one a tic, so the bar empties evenly into the ease and reaches zero as the world reaches full speed.
+	// The miniboss window re-asks each second for what is left of it: its hold is the window's end, not the next second.
+	private void CountdownTick()
+	{
+		if (!cdOn) return;
+		if (on) { CountdownEnd("held on by the player"); return; }
+		double rampOut = RampOut() * TICRATE;
+		int holdEnd = pulseUntil;
+		if (pulseUntil > 0 && pulseSrc == "miniboss") holdEnd = max(holdEnd, level.maptime + MinibossWindow());
+		if (holdEnd > level.maptime)
+		{
+			// the depth when the hold ends: the target, unless the ease in cannot reach it by then
+			double rin = RampIn() * TICRATE;
+			double atEnd = rin > 0.001 ? max(pulseDepth, scale - (holdEnd - level.maptime) / rin) : pulseDepth;
+			cdLeft = (holdEnd - level.maptime) + (1.0 - atEnd) * rampOut;
+		}
+		else
+		{
+			if (DodgeOn()) { CountdownEnd("only his shootdodge slows it now"); return; }
+			cdLeft = (1.0 - scale) * rampOut;
+			if (scale >= 0.9999 || cdLeft <= 0.0) { CountdownEnd("real time"); return; }
+		}
+		// a hold that now ends later (by more than the tic a ms-to-tic rounding can move it) refills the bar
+		if (cdTotal <= 0) cdTotal = max(cdLeft, 1.0);
+		else if (holdEnd > cdHoldEnd + 1 && cdHoldEnd > 0)
+		{
+			cdTotal = max(cdLeft, 1.0);
+			cdRefillTic = level.maptime;
+			Log(pulseSrc, String.Format("countdown bar: refilled, %.1f s to real time", cdLeft / TICRATE));
+		}
+		cdTotal = max(cdTotal, cdLeft);
+		if (holdEnd > 0) cdHoldEnd = max(cdHoldEnd, holdEnd);
+		if (Cv("rsqsm_debug", 0) >= 2) Console.Printf("RSQ_SlowMo: countdown t%d left %.1f of %.1f tics (scale %.2f)", level.maptime, cdLeft, cdTotal, scale);
 	}
 
 	// ---- SHOOTDODGE AND "SLOW ME TOO" (owner 2026-11-03: "it should work like this" -- Xortts' Bullet Time X) --------
@@ -813,6 +889,7 @@ class RSQSM_Clock : EventHandler
 		Adrenaline();
 		Reloads();
 		SlowMe();
+		CountdownTick();
 
 		bool running = Active();
 		if (!running && act.Size() == 0) return;
@@ -1407,6 +1484,24 @@ class RSQSM_Service : Service
 		}
 		if (request ~== "start" || request ~== "start.auto")
 			return c.Start(stringArg.Length() ? stringArg : "service", intArg, doubleArg, request ~== "start.auto") ? 1 : 0;
+		// THE REAL-TIME COUNTDOWN (countdown.zs): tics of real time until full speed while a slow NOT of the player's own
+		// choosing runs, -1 when none
+		if (request ~== "countdown") return c.cdOn ? int(ceil(c.cdLeft)) : -1;
+		return -1;
+	}
+	// FROM A HUD (ui scope). "countdown": as above. "countdown.bottom": the screen pixel row just under the countdown bar's
+	// slot while its row is on (RSQ Score moves its combo rows below it, by name), -1 when the bar is switched off.
+	override int GetIntUI(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
+	{
+		let c = RSQSM_Clock(EventHandler.Find("RSQSM_Clock"));
+		if (request ~== "countdown") return (c && c.cdOn) ? int(ceil(c.cdLeft)) : -1;
+		if (request ~== "countdown.bottom")
+		{
+			if (!c || (c.rival && RSQSM_Gauge.SCv("rsm_yield", 1) != 0) || !RSQSM_Countdown.Enabled()) return -1;
+			double x, y, w, h;
+			[x, y, w, h] = RSQSM_Countdown.Rect();
+			return int(ceil(y + h));
+		}
 		return -1;
 	}
 }

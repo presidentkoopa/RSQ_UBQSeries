@@ -74,30 +74,8 @@ class RS_ScoreHUD : EventHandler
 		// hideBonuses = (bonustime == 0) | hideScore
 		bool hideBonuses = UserInt(pln, "rs_score_bonustime", 35) == 0;
 
-		// ---- Score_Draw's coordinate space, transcribed ----------------------
-		int    d      = int(UserInt(pln, "rs_score_scale", 150) * RSSC_A11y.Text());   // RSQ_Accessibility's Text Size (1 = as set)
-		double aspect = Screen.GetWidth() / double(Screen.GetHeight());
-
-		double screenwidth  = ScaleRes(SCREEN_X, d);
-		double screenheight = ScaleRes(SCREEN_Y, d);
-		double widewidth    = screenheight * aspect;
-
-		double compressRatio = max(1.0, aspect / (16.0 / 9.0));
-		screenwidth *= compressRatio;
-
-		double centerX = ScaledCoord(UserInt(pln, "rs_score_x", 85), widewidth,    PAD_WIDTH,  widewidth - screenwidth);
-		double centerY = ScaledCoord(UserInt(pln, "rs_score_y", 10), screenheight, PAD_HEIGHT, 0);
-		// THE SHIELDSAW'S GAUGE (the Gun Bonsai VR patch, rsq_hud_shield, off by default) takes the top
-		// middle; while it is on, the whole display -- line, bar, lives, breakdown -- moves down by as far
-		// as that gauge reaches below the hand gauges' top (asked by name: RSQ_HudService). Off, or
-		// without the patch, nothing moves.
-		centerY += screenheight * GaugeShift();
-
-		// The original draws into SetHudSize(screenwidth, screenheight) while its X
-		// coordinates were measured against widewidth. That asymmetry IS the
-		// compensation; reproduce it rather than tidy it.
-		double vw = screenwidth;
-		double vh = screenheight;
+		double centerX, centerY, vw, vh;
+		[centerX, centerY, vw, vh] = Layout(pln);
 
 		// flash = flashscore && gotPoints, where gotPoints is a one-tic pulse on the
 		// tic points landed. The message it posted held 0.05s then faded 0.15s.
@@ -110,6 +88,64 @@ class RS_ScoreHUD : EventHandler
 		DrawLives(tr, vw, vh, centerX, centerY);
 
 		if (!hideBonuses) { DrawBreakdown(tr, handler, pln, vw, vh, centerX, centerY); }
+	}
+
+	// ---- Score_Draw's coordinate space, transcribed: the display's centre and its virtual size ----------------
+	// (a static so RS_ScoreService's "hud.*" reads give other HUDs the same answer: RSQ SlowMo's countdown bar)
+	static ui double, double, double, double Layout(int pln)
+	{
+		int    d      = int(SUserInt(pln, "rs_score_scale", 150) * RSSC_A11y.Text());   // RSQ_Accessibility's Text Size (1 = as set)
+		double aspect = Screen.GetWidth() / double(Screen.GetHeight());
+
+		double screenwidth  = SScaleRes(SCREEN_X, d);
+		double screenheight = SScaleRes(SCREEN_Y, d);
+		double widewidth    = screenheight * aspect;
+
+		double compressRatio = max(1.0, aspect / (16.0 / 9.0));
+		screenwidth *= compressRatio;
+
+		double centerX = SScaledCoord(SUserInt(pln, "rs_score_x", 85), widewidth,    PAD_WIDTH,  widewidth - screenwidth);
+		double centerY = SScaledCoord(SUserInt(pln, "rs_score_y", 10), screenheight, PAD_HEIGHT, 0);
+		// THE SHIELDSAW'S GAUGE (the Gun Bonsai VR patch, rsq_hud_shield, off by default) takes the top
+		// middle; while it is on, the whole display -- line, bar, lives, breakdown -- moves down by as far
+		// as that gauge reaches below the hand gauges' top (asked by name: RSQ_HudService). Off, or
+		// without the patch, nothing moves.
+		centerY += screenheight * GaugeShift();
+
+		// The original draws into SetHudSize(screenwidth, screenheight) while its X
+		// coordinates were measured against widewidth. That asymmetry IS the
+		// compensation; reproduce it rather than tidy it.
+		return centerX, centerY, screenwidth, screenheight;
+	}
+
+	// FOR ANOTHER HUD, in screen pixels (RS_ScoreService GetIntUI): "hud.cx" the display's centre, "hud.bar.bottom" the bar's
+	// bottom edge (its bracket, 8 tall, centred 13 under the centre), "hud.bar.w" the bar's width. DTA_KeepRatio maps the
+	// virtual space straight onto the screen (v_draw.cpp VirtualToRealCoords with handleaspect off), so it is a plain scale.
+	static ui int LayoutPx(String request)
+	{
+		int pln = consoleplayer;
+		if (pln < 0 || pln >= MAXPLAYERS || !playeringame[pln]) return -1;
+		double cx, cy, vw, vh;
+		[cx, cy, vw, vh] = Layout(pln);
+		double W = Screen.GetWidth(), H = Screen.GetHeight();
+		if (request == "hud.cx") return int(cx * W / vw);
+		if (request == "hud.bar.bottom") return int(ceil((cy + 17) * H / vh));
+		if (request == "hud.bar.w") return int(BARWIDTH * W / vw);
+		return -1;
+	}
+
+	// RSQ SLOWMO'S REAL-TIME COUNTDOWN BAR (owner 2026-11-03 19:06: "below the score bar but above where the combos appear")
+	// sits under the bar while its row is on; the combo rows start below it (asked by name: RSQSM_Service
+	// "countdown.bottom", screen pixels). Answers how far down, in this HUD's virtual units, the rows must move; 0 when
+	// SlowMo is not loaded, its bar is switched off, or there is room already.
+	static ui double CountdownShift(double rowsTop, double vh)
+	{
+		let s = ServiceIterator.Find("RSQSM_Service").Next();
+		if (!s) return 0.0;
+		int px = s.GetIntUI("countdown.bottom", "", 0, 0, null);
+		if (px <= 0) return 0.0;
+		double need = px * vh / Screen.GetHeight() + 2;
+		return max(0.0, need - rowsTop);
 	}
 
 	// ------------------------------------------------------------ the number
@@ -254,6 +290,7 @@ class RS_ScoreHUD : EventHandler
 
 		double half = fnt.GetHeight() * 0.5;
 		double bonusY = cy + 26;
+		bonusY += CountdownShift(bonusY - half, vh);   // below RSQ SlowMo's countdown bar, while its row is on
 		int offset = 0;
 
 		double hold = (showTics / 35.0) - 0.5;
@@ -375,7 +412,7 @@ class RS_ScoreHUD : EventHandler
 
 	// the share of the screen's height the display moves down while the Gun Bonsai VR patch's ShieldSaw
 	// gauge is on (how far it reaches below the hand gauges' top, RSQ_HudService "shield.gauge.drop"); 0 off or without the patch
-	private ui double GaugeShift()
+	static ui double GaugeShift()
 	{
 		let it = ServiceIterator.Find("RSQ_HudService");
 		let s = it.Next();
@@ -450,7 +487,7 @@ class RS_ScoreHUD : EventHandler
 	}
 
 	// Score_ScaleRes: scale = middle(25, scale, 400); round(res * 100 / scale).
-	private ui double ScaleRes(int res, int scale)
+	static ui double SScaleRes(int res, int scale)
 	{
 		scale = clamp(scale, 25, 400);
 		return round(res * 100.0 / scale);
@@ -459,7 +496,7 @@ class RS_ScoreHUD : EventHandler
 	// Score_ScaledCoord, with the downshift term the first pass dropped:
 	//   saferange = range - (range > padding ? padding : 0)
 	//   saferange * (clamp(pos,0,100)/100) + (range - saferange)/2 - downshift/2
-	private ui double ScaledCoord(int pos, double range, double padding, double downshift)
+	static ui double SScaledCoord(int pos, double range, double padding, double downshift)
 	{
 		double safe = range - ((range > padding) ? padding : 0.0);
 		return safe * (clamp(pos, 0, 100) / 100.0)
@@ -470,6 +507,12 @@ class RS_ScoreHUD : EventHandler
 	private ui int ServerInt(String name, int fallback)
 	{
 		let cv = CVar.FindCVar(name);
+		return cv ? cv.GetInt() : fallback;
+	}
+
+	static ui int SUserInt(int pln, String name, int fallback)
+	{
+		let cv = CVar.GetCVar(name, players[pln]);
 		return cv ? cv.GetInt() : fallback;
 	}
 

@@ -1,4 +1,4 @@
 GameInfo
 {
-	AddEventHandlers = "RSQSM_Clock", "RSQSM_Shots", "RSQSM_Body", "RSQSM_Gauge"
+	AddEventHandlers = "RSQSM_Clock", "RSQSM_Shots", "RSQSM_Body", "RSQSM_Gauge", "RSQSM_Countdown"
 }

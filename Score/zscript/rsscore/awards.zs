@@ -139,6 +139,8 @@ class RS_ScoreService : Service
 	// the same reads from a HUD or menu (ui scope)
 	override int GetIntUI(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
 	{
+		// where the display is on screen, for another HUD (RSQ SlowMo's countdown bar sits under the bar): hud.zs LayoutPx
+		if (request == "hud.cx" || request == "hud.bar.bottom" || request == "hud.bar.w") return RS_ScoreHUD.LayoutPx(request);
 		return Read(request, Actor(objectArg));
 	}
 

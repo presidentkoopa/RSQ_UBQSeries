@@ -45,6 +45,12 @@ user int     rsqsm_gauge_side   = 0;     // 0 left, 1 right
 user float   rsqsm_gauge_size   = 1.5;   // x a third of the screen's height (1.5 from 11-03: 1.0 read too small in the headset)
 user bool    rsqsm_gauge_anim   = true;  // the gauge's light: a band rising through the fill, a breathing edge, a glint when full
 user float   rsqsm_drain_amt    = 0.35;  // how much colour goes at full depth, 0..1
+// the Real-Time Countdown bar (owner 2026-11-03 19:06; countdown.zs): while time is slowed by something other than your own
+// slow motion, a green bar under RSQ Score's bar counts down the real time until full speed
+user bool    rsqsm_cdbar        = true;  // Real-Time Countdown Bar
+user bool    rsqsm_cdbar_anim   = true;  // Bar Animation: the sweeping band, the breathing edge, the refill glint
+user float   rsqsm_cdbar_size   = 1.5;   // Bar Size: x a third of the screen's height long (1.5: the series' VR default)
+user int     rsqsm_cdbar_color  = 15;    // Bar Colour: the series palette (RSQSM_CdColors), 15 Green, 98 Random (fresh each time)
 
 // ---- the owner's QoL round (2026-10-31): options, off by default
 server bool  rsqsm_closecall    = false; // SM2: a rocket or fireball about to hit you up close sets off a short slow-mo pulse (automatic)

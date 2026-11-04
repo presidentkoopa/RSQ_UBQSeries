@@ -52,6 +52,10 @@ OptionMenu "RSQSM_Options"
 	Option "SlowMo Gauge", "rsqsm_gauge", "OnOff"
 	Option "Gauge Side", "rsqsm_gauge_side", "RSQSM_GaugeSides"
 	Option "Gauge Animation", "rsqsm_gauge_anim", "OnOff"
+	Option "Real-Time Countdown Bar", "rsqsm_cdbar", "OnOff"
+	Option "Bar Animation", "rsqsm_cdbar_anim", "OnOff"
+	Slider "Bar Size", "rsqsm_cdbar_size", 0.5, 2.5, 0.1, 1
+	Option "Bar Colour", "rsqsm_cdbar_color", "RSQSM_CdColors"
 	Option "Wrist Cross = 4 s Burst", "rsqsm_gesture_burst", "OnOff"
 	StaticText " "
 	Option "Slow Me Too", "rsqsm_me", "OnOff"
@@ -126,11 +130,34 @@ OptionMenu "RSQSM_Debug"
 	Option "Yield to Other Mods", "rsm_yield", "OnOff"
 	Option "Debug Log", "rsqsm_debug", "OnOff"
 	StaticText " "
-	SafeCommand "Reset All", "resetcvar rsm_depth rsm_ramp_in rsm_ramp_out rsm_yield rsm_sound_follow rsqsm_radius rsqsm_slow_own rsqsm_rounds rsqsm_round_speed rsqsm_trails rsqsm_wakes rsqsm_adrenaline rsqsm_adr_min rsqsm_adr_secs rsqsm_adr_kill rsqsm_adr_near rsqsm_adr_keep rsqsm_gesture rsqsm_gesture_gap rsqsm_gesture_hold rsqsm_reload rsqsm_reload_ms rsqsm_haptics rsqsm_lean rsqsm_lean_m rsqsm_lean_secs rsqsm_smooth rsqsm_smooth_range rsqsm_smooth_max rsqsm_drain rsqsm_drain_amt rsqsm_gauge rsqsm_gauge_side rsqsm_gauge_size rsqsm_gauge_anim rsqsm_closecall rsqsm_closecall_ms rsqsm_gesture_burst rsqsm_auto_cooldown rsqsm_auto_other rsqsm_auto_miniboss rsqsm_trig_key rsqsm_trig_dodge rsqsm_dodge_depth rsqsm_dodge_leap rsqsm_dodge_me rsqsm_me rsqsm_me_ratio rsqsm_trig_burst rsqsm_trig_wheel rsqsm_trig_a11y rsqsm_trig_shove rsqsm_trig_smoke rsqsm_trig_parry rsqsm_trig_block rsqsm_trig_score rsqsm_trig_gbvr rsqsm_debug", "Reset all RSQ SlowMo settings?"
+	SafeCommand "Reset All", "resetcvar rsm_depth rsm_ramp_in rsm_ramp_out rsm_yield rsm_sound_follow rsqsm_radius rsqsm_slow_own rsqsm_rounds rsqsm_round_speed rsqsm_trails rsqsm_wakes rsqsm_adrenaline rsqsm_adr_min rsqsm_adr_secs rsqsm_adr_kill rsqsm_adr_near rsqsm_adr_keep rsqsm_gesture rsqsm_gesture_gap rsqsm_gesture_hold rsqsm_reload rsqsm_reload_ms rsqsm_haptics rsqsm_lean rsqsm_lean_m rsqsm_lean_secs rsqsm_smooth rsqsm_smooth_range rsqsm_smooth_max rsqsm_drain rsqsm_drain_amt rsqsm_gauge rsqsm_gauge_side rsqsm_gauge_size rsqsm_gauge_anim rsqsm_cdbar rsqsm_cdbar_anim rsqsm_cdbar_size rsqsm_cdbar_color rsqsm_closecall rsqsm_closecall_ms rsqsm_gesture_burst rsqsm_auto_cooldown rsqsm_auto_other rsqsm_auto_miniboss rsqsm_trig_key rsqsm_trig_dodge rsqsm_dodge_depth rsqsm_dodge_leap rsqsm_dodge_me rsqsm_me rsqsm_me_ratio rsqsm_trig_burst rsqsm_trig_wheel rsqsm_trig_a11y rsqsm_trig_shove rsqsm_trig_smoke rsqsm_trig_parry rsqsm_trig_block rsqsm_trig_score rsqsm_trig_gbvr rsqsm_debug", "Reset all RSQ SlowMo settings?"
 }
 
 OptionValue "RSQSM_GaugeSides"
 {
 	0, "Left"
 	1, "Right"
+}
+
+// the Real-Time Countdown bar's colours: the palette the series' new colour rows share (VisualRewards RSQTHP_Col)
+OptionValue "RSQSM_CdColors"
+{
+	0, "White"
+	1, "Silver"
+	2, "Yellow"
+	3, "Gold"
+	4, "Orange"
+	5, "Red"
+	6, "Crimson"
+	7, "Pink"
+	8, "Magenta"
+	9, "Lavender"
+	10, "Purple"
+	11, "Blue"
+	12, "Sky"
+	13, "Cyan"
+	14, "Teal"
+	15, "Green"
+	16, "Lime"
+	98, "Random"
 }
