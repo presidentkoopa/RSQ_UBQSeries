@@ -20,9 +20,17 @@ WTFPL. What came from there:
 - The colour definitions in `TEXTCOLO.txt`, renamed `RSScore_*` so that loading
   *Dakka* alongside this pack cannot have one definition win over the other.
 
-**Not carried across:** *Dakka*'s reward sounds (People Can Fly, *Painkiller*) and
-its revival fire-and-explosion actors. The extra-life mechanic is implemented; the
-spectacle is not.
+- The six score sounds in `sounds/score/` (`points_reward`, `points_fullheal`,
+  `point_revive`, `points_ammoregen`, `points_ammoregen_start`, `points_fizzle`):
+  *Dakka*'s own files, byte for byte (same names and sizes, same git blob hashes as
+  `pk3/sounds/score/` in *Dakka*'s repository, github.com/0dot0repeating/dakka,
+  checked 2026-11-04). They came in with RS_Score's first commit (29e9ca3,
+  2026-10-03). *Dakka*'s CREDITS.txt gives them as "Score reward sounds: People Can
+  Fly, in Painkiller": they are *Painkiller*'s sounds, and *Dakka*'s WTFPL does not
+  list them among the files it covers.
+
+**Not carried across:** *Dakka*'s revival fire-and-explosion actors. The extra-life
+mechanic is implemented; the spectacle is not.
 
 ## What is ours, and is not ijon's
 
@@ -43,6 +51,5 @@ spectacle is not.
 
 The Brutal Doom kill rule, the Melee family, the physical bonuses, the suite bonuses, the
 slow-motion moments, the menu and the light revival cue are the Quest series' (2026-10-27), built on
-the owner's RS_Score (presidentkoopa), which is built on ijon's design. **Publishing:** this version is delivered to
-the owner, not to the public series hub, because the fonts above are not licensed for distribution;
-sharing it is the owner's decision.
+the owner's RS_Score (presidentkoopa), which is built on ijon's design. It is published with the series, the two
+fonts above shipping with credit to Blue Shadow and Jimmy (owner's decision).

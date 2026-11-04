@@ -200,7 +200,7 @@ RSQ Score runs on its own: on plain Doom, every classic bonus works. Every other
 - **presidentkoopa** (project owner): RS_Score, the registry, the anti-farming rule, the caps, the generalised
   ammo regeneration and the gravity-aware Air bonus. The Quest series version adds the Brutal Doom kill rule, the Melee
   and Counterplay families, the physical, suite and combo bonuses, the slow-motion moments, the menu and the light revival cue.
-- *Dakka*'s reward sounds and its revival effects are not carried across.
+- The six score sounds in `sounds/score/` are *Dakka*'s files (byte for byte), which *Dakka* credits to People Can
+  Fly, *Painkiller*. *Dakka*'s revival effects are not carried across.
 
-**Publishing:** the fonts are not licensed for distribution. This version is the owner's, and sharing it is his
-decision. See [CREDITS.md](CREDITS.md).
+The fonts ship with credit to Blue Shadow and Jimmy (owner's decision). See [CREDITS.md](CREDITS.md).

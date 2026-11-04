@@ -992,7 +992,8 @@ class RS_Row_HandCannon : RS_ScoreBonus
 }
 
 // D Headshot: the killing blow was a headshot (its damage type, BD22's Head / MinorHead: the ledger's +head). The
-// Ruger and the Moonlight pay more. UNMEASURED: the damage type names are lane D's reading of the pack.
+// Ruger and the Moonlight pay more. The damage type names were checked against brutal22test6's own files (its
+// headshot damage types are Head and MinorHead, re-checked 2026-11-04; SCORE_SWARM_HANDOFF.md).
 class RS_Row_Headshot : RS_ScoreBonus
 {
 	const MULT = 0.25;
