@@ -92,3 +92,20 @@ Found while rewriting the READMEs from the code (11-03 evening). None fixed yet;
 ## Repo hygiene
 36. `git pull --rebase --autostash` in the shared checkout can race another lane's write and leave the tree
     mid-rebase (happened once 11-03, restored by hand; backup ref `refs/backup/readme-lane-autostash` can go).
+
+## Accessibility
+37. "Menus: Simple" uses a stale list (rsqa_core.zs `RSQA_MenuMode` FRONT, `Niche()` SERIES): with Simple on,
+    VisualRewards loses HP Bars / Damage Numbers / Level-Up / Tuning (only Kill Rewards + Reset All left); Melee is
+    listed as `RSQ_MeleeOptions` / `rsq_melee` (real page `RSQML_Options`), so Simple skips it; Miniboss, Whip,
+    Wheel, Grenade, Glow In The Dark, FnF, Gestures, Gun Cards missing. Fix the lists.
+38. The shared rsmenu template's `Rank()` also names `RSQ_MeleeOptions`: Melee sorts as "unknown" on Radiant
+    Silvergun Options (cosmetic; the template is copied into every mod).
+
+## Miniboss
+39. CVARINFO comment on `rsqmb_boss_rewards` still says Gun Bonsai VR's kill rewards (now VisualRewards).
+
+## ShieldSaw
+40. No CREDITS.txt; the pk3 ships id Software's ripped mesh (licence note needed).
+41. Stale comments: state.zs input summary (lock-on/throw now Use / off trigger); CVARINFO `ssq_perfect` "faster
+    return" (really 1.6x faster turned shot + doubled shove).
+42. RSQ_ShieldSaw.pk3 still carries the old README: rebuild once the hands lane's ShieldSaw changes are committed.
