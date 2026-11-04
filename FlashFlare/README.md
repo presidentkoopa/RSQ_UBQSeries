@@ -49,8 +49,8 @@ and the throw is measured against your body, so walking and turning never count 
 
 **Supply**
 - You start a new game with 2 flares, and get them back after dying. You carry up to 24.
-- Boxes of 6 turn up beside a map's items, up to 2 a map: saegiru's flare box (a voxel box with voxels on, his box
-  sprite with voxels off). A single flare lying about is his lying-flare sprite (with models on, three flares in a bundle).
+- Boxes of 6 turn up beside a map's items, up to 2 a map: saegiru's flare box (with voxels on, a voxel box with
+  "FLARE" on its sides; his box sprite with voxels off). A single flare lying about is his lying-flare sprite (with models on, three flares in a bundle).
 - Optional: the pocket tops up at each new level (off by default).
 
 ## How To Play
@@ -124,10 +124,12 @@ Options → Radiant Silvergun Options → RSQ FnF (Flash and Flare)
 
 Runs alone. It finds the others by name:
 - **RSQ Tactical Rig**: the pocket hangs on the Rig's torso and turns with its holsters (stick turns, followed room
-  turns, recenters). While your off hand is in one of the Rig's holsters, the grip belongs to the Rig, never the
-  pocket. The Rig never holsters or throws the flare. The two pockets sit on opposite sides: the Rig's cigarettes on
-  your off-hand side, flares on your main-hand side. Without the Rig, the pocket follows snap and stick turns and eases
-  under your head while you look ahead.
+  turns, recenters). The Rig adds a flare holster on your off-hand hip that holds the same flares as the pocket, with
+  a flare model hanging there while you carry one. While your off hand is in one of the Rig's holsters, the grip
+  belongs to the Rig, never the pocket, and a fast reach down to a holster is never read as a strike. Drawing a gun
+  into the off hand from a holster puts an unlit flare back (a lit one falls, burning). The Rig never throws the
+  flare. The two pockets sit on opposite sides: the Rig's cigarettes on your off-hand side, flares on your main-hand
+  side. Without the Rig, the pocket follows snap and stick turns and eases under your head while you look ahead.
 - **Brutal Doom 22 VR Reloaded**: when the flare leaves your hand, the off hand gets BD22 VR's empty hands back (on
   plain Doom the off hand is simply empty). Its Hand Skin Tone tones the hand holding the flare.
 
@@ -137,13 +139,16 @@ Runs alone. It finds the others by name:
   read from the .blend and turned into the in-hand, lying and box models, scaled to a 22.5 cm road flare. The code.
 - **Brutal Doom 22 VR Reloaded** (the owner's mod): the FBX hand, its off-hand magazine hold and skin, drawn in BD22
   VR's own off-hand placement.
-- **saegiru's Emergency Flare** (UDV Survival Flares, part of JohnnyDoom's UAC Survival Pack, forum.zdoom.org t=47229):
+- **saegiru's Emergency Flare** (UDV Survival Flares, part of the UAC Survival Pack by JohnnyDoom, forum.zdoom.org t=47229):
   the box and lying-flare sprites and the strike, burning and burnout sounds (renamed), and the numbers: a box of 6,
   carry 24, the red-orange colour, the raised light, boxes rolled beside a map's items, a thrown flare that bounces and
   lies burning with sparks.
-- **BD_VoxelPack** (DooMAD's ammo box voxel): made into the flare box voxel, recoloured to saegiru's box.
+- **BD_VoxelPack**: DooMAD's "Ammo Box" voxel, made into the flare box voxel (lid closed, recoloured to saegiru's box,
+  "FLARE" and a latch added). The pack's voxel authors, as its credits name them: Ghostpilot, DooMAD, Monfriez,
+  DooMGoaT, Exl, Scott_AW, ReaperMan, 4mer, phi108, Conrad RDW, Voxelbro, zedas.
 - **id Software**: the stock Doom sounds played by name.
 - Generated for this pack: the glowing end, flame, spark and smoke pictures, the clear skin and placeholder sprites.
 - **QuestZDoom** (Emawind and Team Beef): the engine, and its off-hand weapon and hand-pose API.
 
-Free to share as part of the Radiant Silvergun Quest series. Borrowed assets keep their authors' terms.
+Free to share as part of the Radiant Silvergun Quest series. Borrowed assets keep their authors' terms; sharing other
+people's work in this pack is the project owner's decision.
