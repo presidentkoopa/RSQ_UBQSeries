@@ -39,7 +39,7 @@ server float ssq_cruise_max     = 34.0;   // units/tic it will wind up to
 server int   ssq_home_patience  = 105;    // tics of returning before it ignores geometry and flies straight home
 server float ssq_catch_radius   = 24.0;   // hand within this of the returning disc = caught
 server bool  ssq_catch          = true;   // back in hand on return
-server bool  ssq_perfect        = true;   // meeting a shot with a moving plate: faster return, always staggers, rings bright
+server bool  ssq_perfect        = true;   // meeting a shot with a moving plate: the turned shot leaves 1.6x faster, a melee attacker always staggers and is shoved twice as far, a double knock and a higher ring
 server float ssq_perfect_speed  = 25.0;   // units/sec the plate must be moving INTO the attack: a parry flick, arm only
 server int   ssq_crumb_every    = 4;      // tics between breadcrumbs on the way out
 

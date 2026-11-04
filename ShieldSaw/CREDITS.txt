@@ -1,0 +1,17 @@
+RSQ ShieldSaw -- credits
+========================
+
+The same credits as README.md's "Credits and licence".
+
+- id Software: the shield saw itself, the weapon of Doom: The Dark Ages (2025): its design, and the mesh Ermac
+  ripped from the game.
+- Ermac (iAmErmac), Rusted Legacy (https://github.com/iAmErmac/rusted-legacy): brought the shield saw to Doom VR
+  first, and this mod started from his version. His two shield models (one built by him, one a game rip whose parts
+  he separated), the hand model and the sounds come from it. His Rusted Legacy code is MIT
+  (models/hand/LICENSE_RustedLegacy_MIT.txt); that licence does not make id Software's ripped mesh MIT. Which of the
+  two shipped shield meshes is which, and where the hand and sounds came from before Rusted Legacy, is not recorded.
+- RS Combat FX and RS Ballistics (the owner's effect libraries): the saw voice and block sparks (chainsaw
+  archetype), and Gun Bonsai VR's Shield Dash and Charge effects and sounds.
+- QuestZDoom (Emawind, Team Beef): the engine and its off-hand weapon and hand-pose support.
+- presidentkoopa: this standalone version, its design, its headset testing and the direction of every change.
+  Code written for this pack.

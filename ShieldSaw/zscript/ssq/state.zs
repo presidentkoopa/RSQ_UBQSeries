@@ -7,15 +7,19 @@
 //            empty-handed. The disc comes home along the way it went; a hand near it on the
 //            way back catches it (DRAWN), otherwise it lands on the mount (STOWED).
 //
-// THE INPUT (owner, 2026-10-22 04:08), all synced usercmd bits, nothing to bind:
-//   off hand AT THE MOUNT by the off shoulder + USE  -> the shield is in the hand (whatever was
+// THE INPUT, all synced usercmd bits, nothing to bind by default:
+//   off hand AT THE MOUNT (ssq_mount_spot; the small of the back by default) + USE
+//                                                     -> the shield is in the hand (whatever was
 //                                                        there steps aside and comes back after)
-//   off PRIMARY held                                  -> the saw revs
-//   off SECONDARY held                                -> lock-on: rings over what you aim at
-//   off SECONDARY released, arm moving               -> throw, at the ringed targets in order
-//   off SECONDARY released, arm still                -> nothing; it stays in the hand
-//   off SECONDARY pressed while it flies              -> recall
-//   USE at the mount again                            -> back on the shoulder
+//   USE held away from the mount                      -> lock-on: rings over what you aim at
+//                                                        (ssq_lock_input 0; 1 the ShieldSaw lock key,
+//                                                        2 the throw trigger too: LockHeld)
+//   off TRIGGER held                                  -> the saw revs (ssq_lock_button picks which off
+//                                                        button is the trigger: SecHeld)
+//   off TRIGGER released, arm moving forward          -> throw, at the ringed targets in order
+//   off TRIGGER released, arm still                   -> nothing; it stays in the hand
+//   off TRIGGER pressed while it flies                -> recall
+//   USE at the mount again                            -> back on the mount
 //   hand near the returning disc (Back in Hand on Return) -> caught
 // The decision runs here, in WorldTick, from the SYNCED pose (pose.zs). No wait on the grab.
 
