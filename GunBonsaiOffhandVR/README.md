@@ -1,505 +1,202 @@
 # RSQ Gun Bonsai VR
 
-An addon for ToxicFrog's **Gun Bonsai 0.10.6** (guns level up and earn upgrades as you use them). Stock
-Gun Bonsai thinks you hold one gun. With a gun in each hand, this addon gives each hand its own XP, its own
-upgrades and its own HUD, and pays each gun for the damage it really did. It also adds upgrade paths for
-the series' tools (gloves, sabers and the Force, the ShieldSaw, Distance Grab, Tactical Rig, SlowMo,
-Grapple, two hands, the body), the owner's own Gun Bonsai screens, and an option to earn XP from RSQ
-Score's style points. Gun Bonsai itself is never changed: the addon's files load after it and take its
-place where needed.
+Two hands, two guns, two careers: Gun Bonsai rebuilt so each hand earns its own XP and grows its own upgrades, with
+more than 170 new upgrades built around what you do with your body.
 
-**Moved to RSQ Melee (2026-11-01):** SuperPunchOut's boxing gloves, the punch, Slappers Only, Start With
-Gloves and the moves Guard, Hadouken, Wall Splat and Heavy Hands now live in [RSQ_Melee](../Melee/). This
-addon keeps their **upgrades** (Gun Bonsai offering them, their levels, their numbers) under the same class
-names, so a save keeps what you learned. With RSQ_Melee loaded the glove upgrades work as before; without
-it there are no gloves and none is offered (nor Guard).
+Status: 0.99 — played and confirmed working in the headset; refinement and bug fixing ongoing.
 
-**Moved to RSQ VisualRewards (2026-11-03):** Kill Rewards (SoM's bits on a kill, the `rsqgb_kr_*` settings, its menu
-page) now lives in [RSQ_VisualRewards](../VisualRewards/). Use this addon's pk3 from 2026-11-03 or later: an older
-one still holds Kill Rewards and clashes with VisualRewards. This addon keeps the four path nodes (Bit Scavenger,
-Rich Bits, Magnet, Lucky Kill) under the same class names; VisualRewards reads their levels by name, and they are
-offered only while VisualRewards is loaded. Without VisualRewards: no Kill Rewards, and Gun Bonsai VR works as
-before (rig, 2026-11-03).
+Gun Bonsai (by ToxicFrog) levels up your weapons as you use them. It was made for one gun at a time. In VR you hold two,
+throw punches, swing sabers, throw grenades and grab monsters by the throat. This patch teaches Gun Bonsai all of that,
+on stock QuestZDoom 17.3, in ZScript alone. No engine changes.
 
-Pk3: `pk3/RSQ_GunBonsaiVR.pk3` (it was `Gameplay_GB_VR_Offhand_Patch.0.10.6.pk3`; delete the old one).
+## Standout feature: XP follows the shot, not the hand
 
-## Load order
+Hold a shotgun in your right hand and a pistol in your left. Fire both into the same crowd. Each gun gets paid for
+exactly the damage it did, and only its own upgrades fire on its own rounds.
 
-doom2.wad -> brutal22test6.pk3 -> BD_VoxelPack.pk3 -> BD22_VR-Reloaded_2_0_3h.pk3 ->
-BD22_VR-Reloaded_2.0.3ha_hotfix.pk3 -> (any other RSQ pk3s) -> **GunBonsai-0.10.6.pk3** ->
-**RSQ_GunBonsaiVR.pk3** (last)
+The patch tracks where every shot came from:
 
-- Needs Gun Bonsai 0.10.6 by ToxicFrog (not included). Put it right before this pk3.
-- Needs no other RSQ pk3. Each series upgrade path is offered only while its mod is loaded (the glove
-  upgrades and Guard with RSQ_Melee; the Kill Rewards path with RSQ_VisualRewards).
-- Plain Doom 2 without Brutal Doom: the addon uses no Brutal Doom code and should work, but every recorded
-  run used the Brutal Doom order. Needs a dual-wield VR engine (QuestZDoom).
-- Other Gun Bonsai patches that replace the same files will clash with this one. Not recommended together.
+- A bullet is bracketed from trigger pull to impact, so the gun that fired it is known even when twenty pellets
+  from one hand and a burst from the other land in the same tic.
+- A rocket, its fragments, its explosion and anything those spawn all remember the gun that started the chain.
+- A burn or poison keeps billing the gun that applied it, even after you drop that gun.
+- When nothing else can tell, both hands are scored on position, aim direction, firing animation and trigger, and the
+  hand with the strongest case wins.
+- When two guns both hurt the same monster in one hit, the XP is split by share. Upgrade effects only come from the
+  gun that did most of it.
 
-## Setup
-
-- In **Gun Bonsai's own options**, set its upgrade binding mode to **per weapon**. With a gun in each hand,
-  per-class binding thrashes; the addon warns once at start-up if it is not set.
-- Buttons: Gun Bonsai's own (its Show Info key opens the status and level-up screens; it can now reach a
-  level the off hand earned). Bind them where Gun Bonsai puts them in Customize Controls; their names are
-  Gun Bonsai's and are not in this repo. The addon adds no binds of its own.
-- Menu: Options -> Radiant Silvergun Options -> **RSQ Gun Bonsai VR** (numbers on its **Tuning and Debug**
-  page). Gun Bonsai's own options page also gets a link to this page at its bottom.
-
-## What to do in VR
-
-- Shoot with either hand: each gun earns its own XP.
-- With RSQ_Melee's gloves on, punch (its README): left-right-left punches and a punch as a monster winds
-  up its attack feed the glove upgrades.
+Then it goes further. A Distance Grab throw and the grappling hook are not guns, so their XP goes to your player level
+instead of to whatever you happen to be holding. A thrown gun pays itself. A lightsaber cut pays the saber that made
+it. A ShieldSaw bash pays the shield. Brutal Doom VR Reloaded's travelling bullets pay the hand that fired them.
 
 ## Features
 
-RSQ Gun Bonsai VR page:
+**Two hands, end to end**
+- Every weapon in either hand has its own Gun Bonsai record: its own XP bar, level and upgrades.
+- Two HUD gauges: main hand top right, off hand top left. With one weapon you see one gauge, on its own side.
+- Upgrades on both guns run at once. Defensive upgrades on either hand fire when you are hurt.
+- The level-up key spends the main hand's level first, then the off hand's, then the player's. With nothing to spend,
+  each press shows the next hand.
+- Turning an upgrade on or off, or tuning it, acts on the hand the status screen is showing.
+
+**New upgrade trees** (offered only while the mod they belong to is loaded)
+- **Fists**, per glove: Power, Elements, Combos, Counters, Grappler (off glove only), Berserk, Gun Hand.
+- **Saber**: Focus, Blade, Stab, Deflect, Dual and the Force.
+- **ShieldSaw**: Throw, Block, Bash and Grind.
+- **Grenade**: Carry, Throw, Fuse, Blast, Style, a SlowMo link and eight grenade kinds.
+- **Whip**: Crack, Reach, Wrap, Lasso and Rope.
+- **Player trees**: Two Hands, Body, Guard, Critical Hits, Taunt, Grapple, Gunslinger, Laser Sight, SlowMo and Kill
+  Rewards.
+- **Any melee weapon**: Lunge, Executioner, Adrenaline.
+- Nodes open in order: a child is offered only once its parent reaches the level it asks for.
+
+**XP your way**
+- **XP Source**: Damage (Gun Bonsai's own), Style (RSQ Score's style points become XP, split along the combo that
+  set up the kill), or Both.
+- **Force Learns From the Saber**: the Force hand takes a share of what the main saber earns. The Force is otherwise
+  paid only for its own blows.
+- Score-to-XP, if you turn it on in Gun Bonsai, pays the gun that made each kill.
+
+**A cleaner pool**
+- **Silvergun** stock mode drops eight stock upgrades that clash with the series (Dark Harvest, the three Leeches,
+  Intuition, Juggler, Player Damage, Thorns). **All** brings them back. Upgrades a save already holds keep working.
+- No elemental damage and no rate-of-fire upgrades on the gloves, sabers, ShieldSaw or whip. In VR the rewards are for
+  how you move.
+
+**Screens built for the headset**
+- Three redrawn looks for the gauges, the status screen and the level-up cards (Mockup, Hex Rail, Terminal), or Gun
+  Bonsai's own.
+- An optional bottom row with each hand's magazine and reserve, plus health, face and armour.
+- A Berserk Meter gauge per glove that has learned it: fills dark crimson to hot orange-white, then burns while the
+  Berserk it earned runs.
+- An optional ShieldSaw gauge, top centre, while the shield rides on your shoulder.
+
+## How To Play
+
+1. Load Gun Bonsai 0.10.6, then this pack straight after it. Add any other RSQ mods you like.
+2. Open Options → Customize Controls → Gun Bonsai and bind **Display Info** to a controller button.
+3. In Gun Bonsai's own options, set the upgrade binding mode to **individual weapon**. With a gun in each hand, this
+   keeps each gun's record its own. The patch prints a console warning at startup if it is set otherwise.
+4. Pick up a gun in each hand and fight. Watch both corner gauges fill.
+5. When a gauge fills, press Display Info. Choose one of the cards with the thumbstick and confirm.
+6. Every weapon level-up also counts toward your player level. Player levels offer the player trees: Two Hands, Body,
+   Guard and the rest.
+
+**Mastering it**
+- Dual-wield on purpose. Akimbo pays when both guns fire together. Crossfire pays when each hand is on a different
+  target. Alternator pays left, right, left.
+- Give each glove its own job. Each fist is a separate record, so the left can take Frost Fist while the right takes
+  Explosive Fist. Only the off glove can learn the Grappler branch.
+- Move your head. Evasion cuts damage while your head is moving fast. Steady Aim pays for a still head. Lunge pays
+  for stepping into a melee blow.
+- Some moves become things you earn. With this patch loaded, the uppercut, the second saber, the saber's second blade,
+  the Force, the lasso, the Human Shield hold and the grappling hook start locked, and each opens when you learn its
+  node.
+
+### The two-hand and off-hand trees
+
+| Tree | Where it lives | What it rewards |
+|---|---|---|
+| Two Hands (player) | Akimbo, Crossfire, Alternator | Guns only. Akimbo: +6% a level (5 levels) while both hands fired in the last third of a second. Crossfire: +10% a level on a hit when your other hand hit a different, living target in the last second. Alternator: each hit with the other hand's gun inside two thirds of a second adds +4% a level, up to four in a row. |
+| Southpaw (player) | Body | Whatever your off hand holds hits +6% harder a level. |
+| One-Two, Three-Hit, Dempsey (each glove) | Fists: Combos | Alternate left and right to chain punches. A miss or a pause breaks it. |
+| Ground Pound, Clear Out (each glove) | Fists: Power | Both fists swung down hard together, or both palms thrust forward. Needs RSQ Gestures. |
+| Grappler (off glove only) | Fists: Grappler | Human Shield, Headlock Uppercut, Heavier Headlock, Slam, Throw Into, Chokehold. They grow RSQ Melee's off-hand Headlock. |
+| Guard (player) | Guard, Parry, Reflect Guard, Absorb and Release | Both hands up at your face. Parry: drive both guarding hands into a blow just before it lands. |
+| Two Sabers (main saber) | Saber: Dual | Unlocks the off-hand saber. Then Assault (alternating blades stack damage), Cross Guard (the crossed X turns shots) and Clash (blades together send out a shockwave). |
+| Lasso (whip) | Whip: Lasso | Take the whip in your off hand to whirl it as a lasso. Bola takes several monsters at once. |
+| Twin Lines, Double Hook (player) | Grapple | A rope from each hand at once; a monster on each hook slammed into each other. |
+
+## Controls
+
+The patch reads no buttons of its own. Every move belongs to the mod that owns it; this pack decides what each move
+has learned and who gets paid for it.
+
+| Action | How (VR) | Notes |
+|---|---|---|
+| Spend a level / open the status screen | Display Info, bound to a controller button | Keyboard I by default. Spends main hand, then off hand, then player levels. With nothing pending, each press shows the next hand. |
+| Pick a level-up card | Thumbstick left/right or up/down, then confirm | Keyboard 1-9 picks directly. Back refuses the level, which costs that level's XP (Gun Bonsai's rule). |
+| Browse the status screen | Thumbstick up/down | On an upgrade: left/right changes its level, confirm toggles it. On a gun: right or confirm steps into its upgrades, left into the player's. |
+| Earn XP with one hand | Fire, swing or punch with that hand | Credited to that hand's weapon. |
+| Ground Pound | Both fists swung down together at 3 m/s or more each | Glove node; needs RSQ Melee and RSQ Gestures. |
+| Clear Out | Both palms thrust forward together | Glove node; needs RSQ Melee and RSQ Gestures. |
+| Taunt | Throw both hands apart, empty or in fists | Player node; needs RSQ Melee and RSQ Gestures. |
+| Evasion / Steady Aim / Lunge | Head moving at 1.2 m/s or more / head under 0.2 m/s / head moving faster than 0.5 m/s | Read from your headset's movement. |
+| Left-handed play | Set handedness in RSQ Accessibility, or QuestZDoom's Control Scheme | Gun Bonsai's own gauges swap sides so the main hand's is on the main hand's side. |
+
+## Menu
+
+Options → Radiant Silvergun Options → RSQ Gun Bonsai VR. The same page is linked at the bottom of Gun Bonsai's own
+options.
 
 | Row | Default | What it does |
 |---|---|---|
-| Stock Gun Bonsai Upgrades | Silvergun | Silvergun: Gun Bonsai's own upgrades that do not mesh with the series are out of the pool everywhere (ours, the player, BD22's guns): Dark Harvest, Life / Armour / Ammo Leech (Kill Rewards covers them), Intuition (HP Bars does it), Juggler, Player Damage, Thorns. All: every stock upgrade back. Takes effect within a second; an upgrade a save already holds keeps working. (2026-11-02, not yet run.) |
-| Kill Rewards | (moved) | **Moved to RSQ VisualRewards on 2026-11-03** (`RSQ_VisualRewards.pk3`, with the HP bars and damage numbers): the bits, every `rsqgb_kr_*` setting (same names, so your settings stay), its menu page and SoM's credit. This addon keeps the Kill Rewards **path** (Bit Scavenger "Gastropub", Rich Bits, Magnet, Lucky Kill), offered only while VisualRewards is loaded. |
-| XP Source | Damage | Damage (Gun Bonsai's own) / Style (RSQ Score's bonus points become XP, split along the combo chain: the finishing tool 50 %, the setup tools 50 %, plus 10 % to the player bar) / Both. Style without RSQ Score acts as Damage. |
-| Force Learns From the Saber | On | When the main saber earns XP (its cuts, its throw, the shots it bats back, the score its kills earn), the Force hand also gets a share of it, on top. Only the saber: no gun, tool or off-hand saber ever feeds the Force. (2026-11-03, rig only, not headset-confirmed.) |
-| Share (%) | 25 | That share, 0-100. |
-| ShieldSaw Gauge | Option (off) | A third gauge, top centre, for the ShieldSaw while it rides on your shoulder. RSQ Score moves down to make room. |
-| Screen Skin | Mockup | Which screens draw Gun Bonsai: Gun Bonsai (its own) / Mockup (the owner's mockups) / Hex Rail / Terminal. |
-| Ammo And Health | On | With a skin: per-hand ammo, health, face and armour along the bottom (hides Brutal Doom's HUD under it). |
+| Stock Gun Bonsai Upgrades | Silvergun | Silvergun leaves eight clashing stock upgrades out of the pool. All offers every stock upgrade. |
+| Berserk Meter Gauge | On | A gauge for each glove that has learned Berserk Meter. |
+| Gauge Animation | On | A band of light rises through the fill, its edge breathes, a full gauge glints. |
+| XP Source | Damage | Damage, Style (RSQ Score's style points) or Both. Style without RSQ Score acts as Damage. |
+| Force Learns From the Saber | On | The Force hand also gets a share of the main saber's XP. |
+| Share (%) | 25 | That share. |
+| ShieldSaw Gauge | Off | A third gauge, top centre, while the ShieldSaw rides on your shoulder. |
+| Screen Skin | Mockup | Gun Bonsai, Mockup, Hex Rail or Terminal. |
+| Ammo And Health | On | With a skin on: a bottom row with each hand's ammo, plus health, face and armour. |
+| Reset All | | Puts every row on this page and on Tuning and Debug back to its default. |
 
-Reset All (bottom of the page, asks first): every row on this page and its Tuning page back to its default (Kill
-Rewards' settings are reset from RSQ VisualRewards' page since 2026-11-03).
+**Tuning and Debug**
 
-Tuning and Debug page: Force Base Strength (0: an unlearned Force power does nothing; learned, levels 1-4 are 40 / 70 /
-100 / 130 % of the saber's own), First Star
-After (1), Star Every (2) (Star Punch's banking, read by RSQ_Melee's punch), Grapple XP (1.0), Style XP Scale
-(1.0), Style Player Share % (10), HUD Inset (0.04), HUD Size (1.5). (Slappers Only, Start With Gloves and
-Punch Min Speed / Full Speed / Damage are on RSQ Melee's page now.)
-
-Not on the menu: the dual HUD switch and the HUD positions (both on and set by default), and the
-start-up binding warning.
-
-Always on (no row):
-
-- **Two live weapons**: each hand has its own XP, upgrade tree and upgrade effects (the off hand's Rapid
-  Fire, Shield, Lightning and Bandoliers now run).
-- **Credit follows the gun**: shots, fragments, explosions, minions and burns pay the gun that fired them,
-  even after you switch or drop it. Two guns burning one monster each get their share.
-- **Two HUDs**: main hand top right, off hand top left, mirror images. Left-handed (RSQ_Accessibility's
-  Handedness, else QuestZDoom's scheme): swapped.
-- **Knockdown and Executioner** are sized by the health a monster started with (works on LegenDoom
-  legendaries and champions).
-- **Upgrade paths for the series** (offered when that weapon or the player levels):
-  - **Gloves: the Fists tree** (GBOVR_TREES.md 4.1, built branch by branch from 2026-11-02; each node is offered to a
-    glove only once that glove holds its parent). **A. Power:** Heavy Hands (root) -> Haymaker -> Wallflower (shown
-    name of Wall Splat) -> Knockdown; Heavy Hands 2 -> Body Blow (Body Blow 3 -> Knockdown); Heavy Hands -> Uppercut
-    (an unlock: until it, a rising punch is a jab) -> Launcher (Uppercut 2) -> Juggle, Meteor (Launcher 2), Ground
-    Pound (Launcher 3); Heavy Hands 2 -> Clear Out. Ground Pound and Clear Out need RSQ Gestures. Star Punch is no
-    longer offered (folded into Uppercut and Launcher; a save that has it keeps it). **B. Elemental** (one element per
-    glove: learning one closes the other three on that glove): Explosive Fist (after Haymaker; a punch at half speed or
-    more blasts round the hit, twice as wide under the Berserk), Frost Fist (after Body Blow; frozen solid in the Ice
-    colours, the next punch shatters it for x2.5 and up; a boss is slowed instead), Shock Fist (after One-Two; arcs to
-    the nearest monsters within 3 m for 50% of the punch and up, each staggered), Fire Fist (after Heavy Hands 2; burns
-    3 every half second, a punch on a burning monster flares x1.5). Their blasts, arcs and burns are paid to the glove.
-    The look is particles and stock sounds until the art pass. **C. Combos:** One-Two (root) -> Three-Hit (One-Two 2;
-    jab, jab, hook inside a second, either hand: the hook x1.75 and up, staggers) -> Dempsey (alternating hooks each
-    inside 0.6 s: +10% a hook in the run a level, the glove re-arms in 4, 3, 2 tics) and Finisher (Three-Hit 2 and
-    Executioner on that glove: the last hit of a 3+ chain on a staggered monster below 30% kills it, with a slow-mo
-    pulse). **D. Counter:** Guard (the player's; RSQ Melee's row Start With Guard gives level 1 before it is learned) ->
-    Parry (player: hands driven into the blow just before it lands: nothing through, the attacker reels), Reflect Guard
-    (player, Guard 2: a missile meeting the raised Guard goes back at its shooter; at 3 a bullet does too) -> Absorb and
-    Release (player, Reflect Guard 2: what the Guard takes charges it; both hands thrown apart let it out round you;
-    needs RSQ Gestures). On a glove, after the player's Guard: Counterpunch, Swat Back (the open palm's swat goes back
-    at the shooter) -> Hadouken (after Swat Back or Counterpunch). Catch and Bullet Time Fists are designed and off.
-    **E. Grappler** (the off glove only, the hand that grapples; RSQ Melee's Headlock is the base): Human Shield (root;
-    replaces Melee's row: 1 held as long as the grip, facing away; 2 it takes the blows meant for you from its side;
-    3 x1.5) -> Headlock Uppercut (with Uppercut on either glove: an uppercut on the monster you hold lets go and
-    launches it, x1.75 and up), Heavier Headlock (600, 800, 1000 in Doom's weight, + Distance Grab's Iron Grip) ->
-    Slam (the holding hand swung down hard: driven into the floor, a shockwave staggers round it); Human Shield 2 ->
-    Throw Into (the thrown monster hits harder; without Distance Grab the toss bends onto a monster), Chokehold.
-    **F. Berserk:** Rage (root: while you hold the Berserk every other node on that glove counts one level higher;
-    2 the hit-stop doubles; 3 knockback x1.5) -> Blood Rush (a fist kill under the Berserk gives 10 armour and up),
-    Berserk Meter (Rage 2: 300 points of fist damage give a Berserk of 25 s and up, no pack). **G. Gun hand** (glove
-    nodes; the shove reads the best of either glove): Pistol Whip (the gun-butt shove staggers longer and marks the
-    monster: your next shot on it inside 2 s x1.5 and up) -> Rifle Butt (Pistol Whip 2: a 4 m/s shove with a long gun
-    knocks it down for a count). **H. Taunt** (player; needs RSQ Gestures): both hands thrown apart, empty or in fists:
-    monsters within 10 m turn on you, your next punch inside 3 s and up does double. **I. Critical Hits** (player): a
-    hit during a monster's wind-up is a critical (x1.75 and up, stunned 1 s; hits on it then x1.5 and up; 3 in 15 tics
-    at most; level 1 melee only, 2 guns too) -> Headshot (the top fifth: x2.5 and up; a punch counts where the fist
-    met it; later pellets of one blast half), Backstab (melee from behind: x4 and up, a silent kill).
-  - Gloves (RSQ_Melee's), before the tree: Haymaker, One-Two, Star Punch, Counterpunch, Body Blow, Knockdown, and the owner's
-    picks 52-54 (2026-11-01), whose moves RSQ_Melee does and whose numbers are here: **Heavy Hands** (a landed
-    punch freezes the monster for a beat: 2 tics at level 1 up to 4, +2 for a punch at half speed or more; and
-    knocks it back 25% further a level; up to level 4), **Hadouken** (renamed from Return Fire, 2026-11-01: a punch
-    that meets a monster's missile sends it back at whoever fired it, 15% faster a level, and it hits for 150% at
-    level 1, +25% a level; up to level 4), **Wall Splat** (a monster your punch knocks into a wall at 3 map units a
-    tic or more takes 10 at level 1, +5 a level, up to double for a hard slam; it bounces off and reels; up to
-    level 5)
-  - **Sabers: the Saber tree** (GBOVR_TREES.md 4.2, from 2026-11-02): Focus (Battle Meditation -> Saber Throw, Saber
-    Barrage -> Returning Blade), Blade (Elegant Weapon = Momentum -> Aggressive Negotiations = Riposte Edge -> High
-    Ground; Strike True; Kyber Attunement), Stab (Point Taken -> Run Through), Deflect (Deflector -> Return to Sender, Guided Return -> Piercing Return;
-    Deflector 2 -> Precognition), Dual (Two Sabers -> Assault = Dual Harmony, Cross Guard -> Clash; Double-Bladed);
-    the Force (Force Sensitive -> Push, Pull, Grip, Jump; Force Speed; Force Lightning after Push 2 and Grip 2).
-    Chain Choke is no longer offered. Before the tree:
-  - Sabers: Momentum, Riposte Edge, Piercing Return, Saber Throw, Chain Choke, Dual Harmony, Deflector;
-    the Force: Force Push, Force Pull, Force Choke, Force Jump
-  - ShieldSaw (GBOVR_TREES.md 4.3): Throw (Lockstep -> Ricochet -> Hunter's Return -> Meat Grinder -> Cleaver;
-    Ricochet 2 -> Wall Bounces; under the patch a throw starts at 1 lock), Block (Broadening -> Bulwark -> Rebound;
-    Broadening 2 -> Back Plate; Bulwark 2 -> Shield Wall; Rebound 2 -> Reflect), Bash (Battering Ram -> Wall Slam ->
-    Charge -> Shield Dash; Battering Ram -> Strike True (the ShieldSaw's, RSQ_Upgrade_BashHitStop); Battering Ram 2 ->
-    Shield Size), Grind (Hungry Blades -> Rev Shield; Hungry Blades 2 -> Buzzsaw Return), Spartan (Broadening 1 and a
-    saber's Deflector 1)
-  - Any melee: Lunge, Executioner, Adrenaline
-  - Player, each only while its mod is loaded: Distance Grab (Long Arm, Iron Grip, Heavy Hitter, Air Catch,
-    Powder Keg); Tactical Rig (Quick Draw, Pair Draw, Showdown with SlowMo); SlowMo (Marksman, Dodger,
-    Second Wind, Time Dilation); two hands (Akimbo, Crossfire, Alternator); the body (Evasion, Southpaw,
-    Steady Aim; and pick 55 (2026-11-01) **Guard** (the move is RSQ_Melee's, offered while it is loaded):
-    both hands up at your face, a blow from in front does 60% of its damage at level 1, 10% less a level, down to
-    30% at level 4; a blow of 35 or more at level 1 (+10 a level) breaks the guard); Grapple (Long Line, Fast Reel, Heavy Haul, Get Over Here, Bowling, Barbed Claw, Slingshot,
-    Steady Line, Double Hook from player level 5).
-
-## Who earns the XP (2026-11-03)
-
-The rule: **XP goes only to the weapon that did the damage, in the hand that holds it.** Nothing is paid for being
-in a hand. In plain words, per thing:
-
-- **A gun** (either hand): its own bullets, pellets, rockets, fragments, explosions and burns pay that gun. BD22 VR's
-  True Bullets (the round that flies the bullet's line) pay the gun whose trigger fired them.
-- **The saber**: its cuts, its throw and the shots it bats back pay that saber (the off-hand saber has its own record).
-- **The Force** (push, pull, grip, lightning, a flung body, the jump's landing, a shot the push turns back): only the
-  Force hand. Without a Force hand (its row off) the Force pays the saber, where the Force is learned.
-- **The Force never earns from anything else.** No gun kill, no tool and no off-hand saber pays it. The one
-  exception is the row above, **Force Learns From the Saber** (on, 25 %): when the main saber earns, the Force hand
-  gets that share as well.
-- **Gloves**: each glove its own punches. **Whip**, **ShieldSaw** (bash, grind, the blade, the returned bullet),
-  **Grenade** (the blast and what it sets off): their own records.
-- **Throws and the hook**: a Distance Grab throw (and a barrel it sets off), a Headlock throw and the Grapple's hook
-  pay the player bar, not a weapon. A gun thrown away (Tactical Rig) pays that gun's own record when it still has one,
-  else the player bar.
-- **When the source is unknown** (a script hit nobody named), the hand is guessed from where the shot is and which
-  hand is firing; the bare Force hand is never guessed, because it fires nothing.
-
-What was wrong before (measured on the rig, full load order, 11-03): a main-hand Rifle kill paid the Force hand when
-the Force hand was held out with its trigger down (BD22 VR's rounds fire their bullet themselves, so Gun Bonsai fell
-back to the guess); an off-hand BrutalPistol kill paid the main-hand Rifle; every Force blow paid whichever hand the
-guess picked (the main saber, or the off saber); a thrown gun's hit paid the gun in the main hand. All four are fixed.
-Measured on the rig, rig only, not headset-confirmed. The table and the probe: GBOVR_TREES.md section 1b,
-`tools/xpprobe/`.
-
-## Test it
-
-Load the order above (Gun Bonsai 0.10.6, then RSQ_GunBonsaiVR.pk3 last). Its handoff says it was never run
-on the owner's headset; nothing below is headset-confirmed.
-
-1. Start MAP01. Two Gun Bonsai gauges: top right (main hand), top left (off hand) once both hands hold guns.
-   With only one gun, one gauge, like stock Gun Bonsai.
-2. Shoot with the off-hand gun only: the top-left gauge's XP grows, the top-right does not.
-3. Swap guns between hands: each gun keeps its own level (credit follows the gun).
-4. Level the off-hand gun and press Gun Bonsai's Show Info: you can spend the off hand's level.
-5. The screens: the status and level-up screens use the Mockup skin. Screen Skin -> Gun Bonsai: Gun
-   Bonsai's own screens come back. Try Hex Rail and Terminal.
-6. Ammo And Health On (with a skin): ammo, health, face and armour along the bottom; Brutal Doom's HUD is
-   hidden under it. Screen Skin -> Gun Bonsai puts Brutal Doom's HUD back.
-7. (The gloves, the punch through a wall and Slappers Only are tested in RSQ_Melee's README now.)
-8. XP Source -> Style, with RSQ_Score loaded: a plain kill pays little XP; a kill with bonus rows (a combo,
-    No-Look) pays more, split between the tools used.
-9. ShieldSaw Gauge On, with RSQ_ShieldSaw: a third gauge at top centre while the shield is on your
-    shoulder; RSQ Score's display moves down.
-10. With RSQ_Wheel: the data sheet shows the gun's Gun Bonsai level and upgrades. With RSQ_GunCards: the
-    watch card shows level, XP bar and upgrades. (service checked on the rig 2026-10-31: not yet
-    headset-confirmed)
-11. RSQ_Accessibility Handedness -> Left-Handed: the two gauges swap sides. Text Size 2: the screens' text
-    grows.
-
-The owner's picks 52-55 (2026-11-01), with RSQ_Melee loaded (it does the moves; this addon offers them and
-sets their numbers). Offered at a level-up like the others (the three glove ones when the gloves level, Guard when
-the player levels) and work once learned; RSQ Melee's own rows for them do nothing while this addon is loaded.
-Rig-checked (logs) only: **not yet headset-confirmed**.
-
-12. Heavy Hands on the gloves: punch an imp. It stops dead for a beat, then flies back further than before.
-13. Wall Splat: punch an imp standing about a metre from a wall, toward the wall. It slams into the wall with a
-    smash, bleeds, bounces off and reels.
-14. Hadouken: let an imp throw a fireball at you and punch it as it arrives. It flies back at the imp and
-    hurts it.
-15. Guard (empty hands, fists or the gloves): hold both fists up in front of your face and let a zombieman or imp
-    hit you from in front. Both hands knock, you slide back a little and take less. Let a big hit land (a baron's
-    claw): the guard breaks with a smash and you take it all. Hands down: no guard. A gun in either hand: no guard.
-16. With RSQ Accessibility (Seated Play, Rumble Strength): RSQ_Melee's README; it reads them for the Guard now.
+| Row | Default | What it does |
+|---|---|---|
+| Force Base Strength | 0.00 | How strong an unlearned Force power is, as a share of the saber's own. At 0 a power does nothing until learned. |
+| First Star After | 1 | Star Punch timing. Star Punch is no longer offered; this only affects saves that already learned it. |
+| Star Every | 2 | As above. |
+| Grapple XP | 1.0 | Multiplies the XP the grappling hook earns for your player level. |
+| Style XP Scale | 1.0 | XP per style point, when XP Source is Style or Both. |
+| Style Player Share % | 10 | The extra share of style XP paid to your player level. |
+| HUD Inset | 0.04 | How much of each screen edge the skins keep clear. |
+| HUD Size | 1.50 | Size of the skins' in-play HUD. |
+| Debug: Add All | | Gives every node of this patch at its cap, on the player and every weapon carried. For testing. |
+| Debug: Add Incremental | | One level of every node offered right now. Press again to climb. For testing. |
 
 ## Works with
 
-- **RSQ_Melee** (the gloves, the punch, Slappers Only, Guard, Hadouken, Wall Splat, Heavy Hands since 2026-11-01):
-  it asks RSQ_MeleeUpgradeService for upgrade levels ("level", "plevel"), their numbers ("upgrade.num"), Gun
-  Bonsai's melee inference ("is.melee"), "stagger" and "claim" (a returned fireball or a wall slam paid to the
-  glove); the glove upgrades ask RSQ_Melee's RSQML_Service about the last punch ("punch.power", "punch.chain",
-  "punch.star", "punch.counter", "punch.body", "punch.glove"). Both by name.
-- **Read by RSQ_Wheel and RSQ_GunCards**: a gun's level, XP and upgrades (RSQGB_Service).
-- **Read by RSQ_Saber, RSQ_ShieldSaw, RSQ_DistanceGrab, RSQ_Grapple** (and the Wheel / Gun Cards): their
-  upgrade levels (RSQ_MeleeUpgradeService). Without this addon each behaves as before (the ShieldSaw's
-  Double Block Radius option then still doubles the plate; with the addon the plate grows by Broadening).
-- **Read by RSQ_Score**: how far the ShieldSaw gauge reaches, so the score moves down.
-- **Reads RSQ_Score**: a kill's bonus points and combo chain (XP Source: Style).
-- **Reads RSQ_SlowMo**: is the world slowed; Adrenaline adds to SlowMo's meter.
-- **Reads RSQ_Grapple**: what the hook did, for hook XP and the Grapple paths.
-- **The Grapple tree** (`up_hook.zs`, GBOVR_TREES.md 4.6): Grapple (the unlock) -> Long Line -> Barbed Claw; Fast Reel
-  (faster claw + harder yank, 10% a level) -> Heavy Haul -> Get Over Here -> Bowling, Scorpion (Get Over Here 2); Heavy
-  Haul 2 -> Double Hook; Momentum (`RSQ_Upgrade_SwingMomentum`: the saber's Momentum has the plain name) -> Slingshot,
-  Steady Line, Twin Lines (moved here 11-03: it needs the rope); Zip Kick.
-- **RSQ_Whip and RSQ_Grenade (2026-11-02, not yet run)**: each pays its hits to its own weapon record through
-  this patch's service (the whip's `Hurt` inside the claim bracket; the thrown grenade claimed with the grenade
-  weapon as master), so both level like weapons and can carry the paths in GBOVR_TREES.md. The whip is typed
-  melee in `bonsairc.rsq`.
-- **The Grenade tree** (`up_grenade.zs`, GBOVR_TREES.md 4.5): Carry (Bandolier -> Scavenger), Throw (Strong Arm ->
-  Flat Arc, Bounce), Fuse (Cook Sense -> Short Fuse), Blast (Big Bang -> Frag -> Cluster, Sticky), Style (Teeth;
-  Strong Arm 2 -> Skeet -> Skeet Window), Slow Burn (Cook Sense 1), and the eight Kinds (Impact, Stun after Cook
-  Sense; Smoke, Flash after Cook Sense 2; Charm, Infight after Flash; Incendiary after Big Bang; Freeze after Frag).
-  The service gained "freeze" (RSQ_Dazed's freeze with an optional shatter: the next hard hit does that many times).
-- **Service, for the owning mods**: `RSQ_MeleeUpgradeService` "unlocked" (a weapon node learned, level >= 1) and
-  "punlocked" (a player node), beside "level" and "plevel". For RSQ VisualRewards' Kill Rewards (2026-11-03): "plevel"
-  for the four path nodes, GetString "kr.lucky" (why a kill was lucky) and "kr.luckyfx" (Lucky Kill's burst, thump
-  and Score touch). Asks back `RSQVR_Service` "kr.loaded" before it offers the path. `RSQ_Upgrade_Base.Has / PHas / LevelOf` are how a
-  tree node asks for its parent in `IsSuitableFor*`.
-- **Reads RSQ_Accessibility**: Handedness (HUD sides), Colour Blind Mode (HUD and status screen), Text Size
-  (screens). Also (2026-11-01, not yet headset-confirmed): Rumble Strength scales every rumble of this addon
-  (gloves, guard); Seated Play lowers the Guard box with your eyes (QuestZDoom keeps the view height where it
-  was when you sit, so seated fists at the face were below the box). (Those two reads for the gloves and Guard are
-  RSQ_Melee's own now.)
-- **Reads RSQ_Miniboss** (2026-11-03, by name): (the kill rewards' miniboss-as-boss rule, `RSQMB_Service` `bossfor`
-  `"rewards"`, moved to RSQ VisualRewards with Kill Rewards); StartHealth (Knockdown, Executioner) reads the HIGHER of LegenDoom's
-  boss and normal legendary percentage for a miniboss Miniboss made legendary that way (`bossfor` `"ldhealth"`). Every other boss check
-  (the melee bonuses, Knockdown's boss rule) still reads the engine's BOSS flag only, so a miniboss gets them as any
-  monster. Without RSQ_Miniboss: exactly as before. Rig only, not headset-confirmed.
-- Tactical Rig draws pay the drawn gun like any shot.
-- Score-to-XP (Gun Bonsai's own setting): if on, keep Gun Bonsai's damage-to-XP at 0, or kills pay twice.
+- **Gun Bonsai 0.10.6 is required**, loaded before this pack. This pack replaces some of its files by path, so the
+  order matters. Gun Bonsai itself is not modified.
+- **RSQ Melee**: the Fists tree, Lunge, Executioner and Adrenaline on the gloves, and the Guard and Taunt nodes. The
+  Guard branch also opens if Melee's Start With Guard is on.
+- **RSQ Gestures**: Ground Pound, Clear Out, Taunt and Absorb and Release are done through its two-hand gestures.
+- **RSQ QuestSaber**: the saber and Force trees. The second saber, the second blade and the Force become things you
+  learn.
+- **RSQ ShieldSaw**: its tree, and the optional shoulder gauge.
+- **RSQ Grenade** and **RSQ Whip**: their trees. Thrown grenades are paid to the grenade.
+- **RSQ Grapple**: its player tree. The hook starts locked and opens when you learn Grapple. Its XP goes to your
+  player level.
+- **RSQ Distance Grab**: throws, and the blasts they set off, pay your player level instead of a gun.
+- **RSQ Tactical Rig**: the Gunslinger tree (Quick Draw, Pair Draw, Gun Toss, Boomerang Gun, Smoker, Chain Smoker).
+  A thrown gun pays its own record. With **RSQ Laser Sight** too: Target Lock and Headshot Reaction.
+- **RSQ SlowMo**: its tree, plus Showdown, Adrenaline, Finisher and the other slow-motion moments.
+- **RSQ Score**: XP Source Style. While a skin is on, Score's own score line is hidden and the skin shows it instead.
+- **RSQ VisualRewards**: the Kill Rewards tree (Gastropub, Rich Bits, Magnet, Lucky Kill), offered only while it is
+  loaded. Its weapon level-up tag rises off the gun that levelled, in whichever hand.
+- **RSQ Wheel**: shows each gun's level and progress.
+- **RSQ Accessibility**: Photosensitive Mode dims the level-up flash. Its handedness setting moves the gauges.
+- **Brutal Doom / BD22 VR Reloaded**: bullets that travel before they hit are still paid to the hand that fired them.
+  With a skin and Ammo And Health on, Brutal Doom's full-screen HUD is swapped for the skin's bottom row. Set Screen
+  Skin back to Gun Bonsai before removing this pack to restore it.
+- **LegenDoom Lite, Champions, RSQ Miniboss**: Knockdown, Executioner and Finisher measure a monster against the
+  boosted health it really started with.
+- **SuperPunchOut**: its gloves count as melee weapons.
 
-## Known limits / open
+## Credits and licence
 
-- Picks 52-55: what each move became, and its limits (Guard's box, Hadouken seeing missiles only, Wall Splat
-  counting walls only): RSQ_Melee's README.
-- Never run on the owner's headset (its handoff). The 2026-10-31 work (the RSQGB_Service rig check, the
-  punch wall check) is rig only.
-- How often Knockdown and Executioner fire on legendaries in real play is not measured.
-- Gun Bonsai's upgrade toggle / tune menu still addresses one weapon (its own protocol can only name one).
-- Both HUDs draw the player XP bar (it is in the frame art).
-- Credit for a shot in flight across a save / load or a level change is dropped (better than crediting
-  the wrong gun).
-- Screen Skin defaults to Mockup (on). The independent review asked for Gun Bonsai's own (off) unless the
-  owner chose it: the owner's call.
-- Removing the addon with a skin on leaves Brutal Doom's HUD type changed: pick your HUD again in Brutal
-  Doom's options.
-- A Distance Grab throw's points went to the main-hand gun on the rig; which hand wins in the headset is not
-  measured.
-
-## Credits
-
-From the old README:
-
-> Gun Bonsai is by Rebecca "ToxicFrog" Kelly, MIT licensed. This is a derivative
-> work under the same terms.
->
-> Gloves, punch reader and sounds from SuperPunchOut (presidentkoopa); glove mesh and fit by Ermac
-> (iAmErmac); sounds from Punch Out Doom (DerrickDavison) via Virtual Punch Out.
->
-> (2026-11-01: the gloves, the punch reader and the punch and star sounds moved to RSQ_Melee, whose
-> credits carry these lines. Knockdown's sound and the count stay here.)
->
-> vr patch conceptualized by PresidentKoopa, authored with agentic ai
-
-From the old README's screens section: "Screens designed by presidentkoopa." The gauge frame is Gun Bonsai's
-own HUD art; the screens write in Doom's own IWAD fonts.
-
-From `readme.txt`, unchanged:
-
-```
-CREDITS
--------
-Gun Bonsai: Rebecca "ToxicFrog" Kelly, MIT. This patch and the melee upgrades:
-presidentkoopa, same terms. Gloves, punch reader and sounds: SuperPunchOut
-(presidentkoopa); the glove mesh and its fit are Ermac's (iAmErmac, PunchOutVR /
-Virtual Punch Out); punch, star and knockdown sounds from Punch Out Doom
-(DerrickDavison) through Virtual Punch Out; the count is the Super Punch-Out!!
-announcer, as SuperPunchOut ships it. Punch-Out!! is Nintendo's.
-```
-
-Gun Bonsai's MIT licence and the note on files derived from it: `COPYING.md`.
-
-## Appendix: for builders (the earlier README, unchanged)
-
-The patch ships replacement copies of nine Gun Bonsai source files at their
-original paths. GZDoom's later-lump-wins rule substitutes them; there is no
-patching step. Everything else in Gun Bonsai is untouched.
-
-```
-ca.ancilla.bonsai/PerPlayerStats.zsc        two live infos, provenance registry, Claim API
-ca.ancilla.bonsai/EventHandler.zsc          dual HUD render, hitscan bracket, offhand ShowInfo
-ca.ancilla.bonsai/WeaponInfo.zsc            cross-hand rebind guard
-ca.ancilla.bonsai/WeaponTypeInference.zsc   type hints from claimed shots
-ca.ancilla.bonsai/HUD.zsc                   per-hand anchoring
-ca.ancilla.bonsai/debug.zsc                 bonsai-debug,hands
-ca.ancilla.bonsai/upgrades/Dot.zsc          proportional burn credit
-ca.ancilla.bonsai/upgrades/Juggler.zsc      both hands
-ca.ancilla.bonsai/upgrades/RapidFire.zsc    per-hand psprite, null guard
-```
-
-Any file shipped here that is *not* actually modified should be deleted — an
-unchanged shadowed file is collision surface with other patches for no benefit.
-
-**2026-11-01:** `rsq/zscript/gloves.zs` and `slappers.zs` and the Guard pose referred to below moved to
-RSQ_Melee (`Melee/zscript/rsqml/gloves.zs`, `slappers.zs`, `guard.zs`, `splat.zs`); `rsq_punch_debug` is
-`rsqml_debug` there. The notes below are kept as they were written.
-
-### Handoff (2026-10-27) -- read first
-
-Not yet run on the owner's headset. Rig B = QZD 17.3 Linux, doom2 MAP01, the owner's order
-(brutal22test6 -> BD_VoxelPack -> BD22_VR-Reloaded r7 -> Champions -> LegenDoom Lite 4.2 -> the suite ->
-GunBonsai-0.10.6 -> this patch). Probe `pol/kdprobe` in the session scratchpad (real BD imps, LegenDoom
-Lite's guaranteed legendary pickup, the upgrade objects called with level 1).
-
-**Done, measured**
-- *Knockdown and Executioner size against the health the monster STARTED with* (`RSQM.StartHealth`,
-  branch `agent-polish`): Champions' StartHealth as before, and for a LegenDoom Lite legendary
-  (transformed or not) the class's spawn health x `LD_legendaryhealth` / 100 (the ACS's own integer
-  arithmetic, the ShieldSaw's TierHealth rule), the larger winning. Knockdown level 1 (share 0.44),
-  damage in 5s until down: plain imp 40 -> 40; untransformed legendary imp (240 hp) 40 -> **110**;
-  transformed legendary (refilled to 240) 40 -> **110**. A legendary champion (StartHealth already 240)
-  stays 240, not 720. Executioner level 1 on a transformed legendary at 30 hp: no execution before
-  (threshold 12), executed now (threshold 36).
-- *Executioner after the victim's damage factors* (1f32468, `agent-compat`) still holds with the change:
-  an imp taking half (DamageFactor 0.5) at 10 hp, staggered: blow 5 -> 22, 11 dealt, dead.
-- *Brutal Doom's HUD type* (8b4b24f): the skins hide BD's HUD with `bd_sbartype` 5, a type BD knows;
-  full order + save/load twice + map change: no `Unknown item type sbartype0` line (0 in the log).
-
-**Done earlier today, recorded in commits** (their own numbers, not re-measured here): melee upgrade
-paths, gloves, Slappers Only and the claim bracket (0f2f48d); Adrenaline charges SlowMo's meter
-(b9f142e, rig: two charges of 10 read 20); suite upgrade paths for the ShieldSaw, saber, grab, rig,
-SlowMo, hands and body (a460f51); punch and swing sounds renamed so they no longer replace BD's own
-(a1ae4fb); COPYING.md (f357289); the screens and their fonts (e9b7eb8, d64248c, 90e80f2); left-handed
-dual HUD reflected (6973ddb); Grapple player perks (fcf0a7a); colour-blind HUD (4bdd8c7); accessibility
-round two (1b986bb); XP Source (49fd7c0, section below).
-
-**Done 2026-10-30, not measured -- wall occlusion on the punch contact test**
-- *A punch no longer lands through a wall* (`rsq/zscript/gloves.zs`, `RSQ_GloveHandler.ClearPath`
-  at `:310`, called from `Contact` at `:268`). `BlockThingsIterator` is a blockmap query and never
-  looks at a linedef, so the broad phase returned a body on the far side of a thin wall and the
-  nearest-approach test only measured distance; `02_MELEE_BUILD.md` §2.3 named this as the live
-  bug to fix first. The narrow phase is one `LineTrace` per candidate the nearest-approach test
-  would otherwise accept, `TRF_ABSPOSITION` from the glove's contact point to the body's axis at
-  the height it met it, `TRF_THRUACTORS` so the player's own body, the victim and any third
-  monster between them are all transparent and only geometry can stop it. `CheckSight` was
-  rejected: it starts at the actor's eyes and cannot be told where to start, and it rolls the
-  playsim RNG on an invisible target. No Z conversion -- a hand pose is an absolute map position
-  already (the pixelstretch division is inside the weapon transform), which is why the existing
-  `p.z` vs `mo.pos.z` test is right as it stands. Nothing else moved: Score needs no change,
-  because a punch that does not land is not scored.
-- Cost: zero traces on a tic no swing passes the arm/approach gate; on the tic one does, one trace
-  per foe overlapping that glove's sphere that improves on the best candidate so far -- one in
-  practice, per hand.
-- **Not compiled.** There is no build in this working tree; the first real check is the headset.
-  `rsq_punch_debug 1` prints `RSQ punch blocked: type <HitType> at <dist> of <dist> to <class>`
-  on a rejection, which is how to prove the trace fired at all.
-
-**Not done / headset**: how often Knockdown and Executioner fire on legendaries in real play.
-
-**Open**
-- `rsq_ui_skin` defaults to 1 (the screens on). The independent review (10-27, item 1) asks for 0 unless
-  the owner chose 1; 90e80f2 turned it back on after cee9be2 had shelved it. The owner's call.
-
-### RSQGB_Service: a gun's level and upgrades, for any mod (`rsq/zscript/service.zs`)
-
-Asked by name (`ServiceIterator.Find("RSQGB_Service")`), so the asker needs no Gun Bonsai to compile.
-Pass the Weapon (either hand, the backpack, or a dropped one a record still names), or the pawn with
-intArg 0 main / 1 off hand. `GetInt` "level", "xp", "xp.next", "xp.permille", "count", "hand";
-`GetString` "upgrades" = `Name:level:max:Class:on:Colour|...` (Gun Bonsai's own display name without
-its colour code, then the code's colour) and "name". Read-only: no Gun Bonsai method is called.
-RSQ Wheel's sheet uses it. Rig (2026-10-31, owner's order + gb 0.10.6): Rifle "HE Shots:2:2:...|Searing
-Inscription:1:1:TFLV_Upgrade_IncendiaryShots:1:ORANGE|...", off-hand Shotgun's five, a dropped Rifle's three.
-
-**Punch wall occlusion, measured 2026-10-31** (rig, simulated glove, `rsq_punch_debug 1`, a Demon at
-36 units): behind a 4-unit closed door, fist on the near face: blocked (`type 3 at 1.0 of 36.0`), no
-damage; same distances in the open: lands (150 -> 137); monster on a 24-unit step, fist 5 units below the
-step top: blocked by the step's face (`type 3 at 1.0 of 36.3`); fist at the step top, 2 above, at the
-shin: all land. The clamp of the aim point to the monster's feet only blocks a fist that is below the
-step top, where the step really is in the way; no change made. A fist pushed through the door to the far
-side still lands (the trace starts at the fist).
-
-### Suite upgrades (`rsq/`)
-
-New files only, compiled by a second ZSCRIPT lump (`zscript.txt` at the root): weapon upgrade paths
-for the boxing gloves, the sabers and the Force, the ShieldSaw and any melee weapon; player upgrade
-paths for Distance Grab, the Tactical Rig, SlowMo, the two hands and the body (each offered only
-while its mod is loaded); **Slappers Only**. See `readme.txt` for the list, who earns which XP, and
-the score-as-XP settings. The saber, the ShieldSaw and the grab ask `RSQ_MeleeUpgradeService` for
-their levels by name; nothing links to anything.
-
-The changes to shadowed files: `PerPlayerStats.zsc` (the claim bracket `claimStack`, the player
-pool for throws, score XP shared per kill, `HandOfShot`, the XP Source gate `RSQ_XPSource` and the
-per-monster credit `NoteStyleHit`, `GetShieldStats`), `HUD.zsc` (`DrawShield`), `EventHandler.zsc`
-(the shield gauge's one call) and `debug.zsc` (the pool in the hands dump).
-
-### XP Source: Damage, Style, Both (`rsq/zscript/stylexp.zs`)
-
-Options -> the suite upgrades' page -> **XP Source** (`rsq_xp_source`, server): **Damage** (Gun Bonsai's
-own, the default: nothing changes -- measured: the same 17 scripted kills left every weapon record, the
-pool and the player XP identical to master), **Style**, **Both**. Style needs RSQ Score (asked by name);
-without it Style reads as Damage.
-
-With **Style** a kill's style points -- RSQ Score's bonus rows for that kill, the total less the base,
-Champions' and LegenDoom Lite's rows included -- become XP (x `rsq_xp_style_scale`, 1.0), split along
-its combo chain (RSQ Score's `kill.chain`, the finishing blow last): the **finisher's tool 50 %**, the
-**setup tools share 50 %** equally (a chain of one tool: the finisher takes it all), and on top
-`rsq_xp_style_player` (10 %) to the player pool. Damage pays no XP; the stock score-to-XP and the
-hook's action XP stand down (they would pay the same kill again). **Both** keeps damage XP and adds the
-style. Each share goes down the patch's existing paths: a gun to the gun(s) Gun Bonsai credited with
-hitting that monster (`PerPlayerStats.NoteStyleHit`), the saber and the Force to the saber (up_saber),
-the shield's tools to the ShieldSaw (up_shield), the gloves to the gloves (up_gloves), a punch, kick,
-blade or finisher to the melee weapon that hit it (up_melee), the hook, the whip and a grab throw to the
-player pool (up_hook's and the grab's perks are player upgrades). Measured (imp, base 60):
-whip > ShieldSaw bash, style 66 -> ShieldSaw 33, pool 33 + 6.6; gun > saber cut > kick, style 69 -> kick
-34.5 (pool), gun 17.25 (Shotgun), saber 17.25; four tools, style 66 -> finisher 33, three setups 11 each.
-The XP bars look exactly as before.
-
-### The ShieldSaw gauge (`rsq_hud_shield`, off by default)
-
-Options -> the suite upgrades' page -> **ShieldSaw Gauge** (user). A third Gun Bonsai gauge -- the stock
-art, colours, bars and text, through the same `DrawHUD` the hand gauges use -- for the ShieldSaw while it
-rides on the shoulder (stowed or thrown; in a hand, that hand's gauge shows it), centred at the top
-between the two hand gauges, just under their bars (22 % of a hand gauge's height down), scaled to fit
-the gap (90 % of it, between half and full size of a hand gauge; `TFLV_HUD.ShieldScale`). RSQ Score
-moves its display down by as far as the gauge reaches (`RSQ_HudService "shield.gauge.drop"`). Off,
-nothing is drawn and nothing moves. It shows once the ShieldSaw has a Gun Bonsai record (it has been
-held, or has earned XP).
-
-### The screens (`rsq/ui/`)
-
-The owner's Gun Bonsai mockups, drawn instead of Gun Bonsai's own HUD, status screen and level-up
-menus. Options: **RSQ Gun Bonsai VR** (Screen Skin, Ammo And Health; HUD inset and size under Tuning and Debug).
-
-```
-rsq_ui_skin       0 Gun Bonsai's own, 1 Mockup (the recreation), 2 Hex Rail, 3 Terminal
-rsq_ui_inset      fraction of each screen edge kept clear (the headset's edge of view)
-rsq_ui_hud_scale  HUD size
-rsq_ui_bottom     per-hand ammo, health, face and armour along the bottom
-```
-
-How it hooks Gun Bonsai: `RSQUI_Handler` draws the skin's HUD round Gun Bonsai's own XP gauges, which
-draw themselves (no Gun Bonsai HUD code is skipped any more: d64248c). Gun Bonsai opens its menus by name, and this
-patch's MENUDEF points those three names at routers (`rsq/ui/router.zs`) that are Gun Bonsai's own
-menus with skin 0 and open the skin's screen otherwise. No other Gun Bonsai file is shadowed.
-
-RS Score's display and Gun Bonsai's XP gauges draw themselves, untouched. With the bottom row on, a
-skin sets Brutal Doom's `bd_sbartype` to 5 (a type Brutal Doom knows but draws nothing for; its
-fullscreen HUD would sit under the row). It is put back when the skin is set to 0. Remove the patch
-with a skin on and it stays as set: pick your HUD again in Brutal Doom's options (or `bd_sbartype 1`).
-
-The screens write in Doom's own fonts from the IWAD (SmallFont, BigFont, NewSmallFont; owner, 10-27:
-"just use the doom fonts"); the baked OFL fonts were removed in d64248c. `tools/rsqui_bake.py` makes
-the remaining art; gun pictures come from `tools/rsqui_gunshots.py` (the gun's own model on the test
-rig, keyed and cropped into `graphics/rsqui/guns/<Class>.png`; a gun without one shows its icon or
-pickup sprite). The gauge frame is Gun Bonsai's own HUD art. Screens designed by presidentkoopa.
-
-### Known collisions
-
-Other Gun Bonsai patches that shadow the same files will silently clobber, or be
-clobbered by, this one. GunBonsai has a number of addons and patches which alter its main behavior. I would not recommend using any of those with this patch. Maybe load this last if you do, but expect problems.
-
-More detail (settings, diagnostics, claiming shots, who earns which XP): `readme.txt`.
+- **Gun Bonsai** © 2022 Rebecca "ToxicFrog" Kelly, MIT licence. The files under `ca.ancilla.bonsai/` are derived from
+  Gun Bonsai 0.10.6; the skins draw Gun Bonsai's own gauge frame art. The full licence is in `COPYING.md`.
+- `sprites/ui/hud.xcf` © 2022 Sungraphica (sungraphica.itch.io), as noted in `COPYING.md`.
+- **Sounds** from SuperPunchOut (presidentkoopa), which took them from Punch Out Doom (DerrickDavison) via Virtual Punch Out, and the
+  Super Punch-Out!! announcer's count.
+- **Berserk Meter gauge art**: coldcite's Top HP Bars bar, stood on end. His words: "Feel free to use this in your
+  mods."
+- **Kill Rewards tree**: the bits are SoM's Universal(ish?) Kill Rewards (now in RSQ VisualRewards).
+- **Critical Hits**: the idea of Mikk's Critical Shots, as a concept only.
+- Fonts are Doom's own.
+- The patch's own code and upgrade trees: presidentkoopa, on the same MIT terms as Gun Bonsai.
+- Built for stock QuestZDoom 17.3 by Emawind84 and Team Beef. No engine changes.
