@@ -137,3 +137,5 @@ Found while rewriting the READMEs from the code (11-03 evening). None fixed yet;
 52. No Melee Hands by default: Start With Melee Hands and Slappers Only are off and nothing else gives the gloves,
     so on defaults punches, swat, Hadouken, bullet-meeting and Headlock punches can't be used. Owner: default on?
 53. No menu rows: off-hand grip keys, re-hit wait, uppercut rise, reach pad (in Reset All).
+54. Shoot Thrown Grenades: a hitscan is tested against BOTH hands' rays (the shot doesn't say which hand fired), so
+    a pointing hand that didn't fire can set a grenade off. Predates 11-03.
