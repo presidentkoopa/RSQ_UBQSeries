@@ -232,6 +232,6 @@ through Virtual Punch Out via SuperPunchOut (presidentkoopa); the count is the S
 Punch-Out!! announcer, as SuperPunchOut ships it. Punch-Out!! is Nintendo's. (The gloves,
 the punch reader and the punch and star sounds moved to RSQ Melee, which carries their
 credits: SuperPunchOut's, and Ermac's glove mesh and fit.)
-Kill Rewards: SoM's "Universal(ish?) Kill Rewards" v1.0 (the bits on a kill, their three
-orb sprites and the drop rules), folded into this patch 2026-11-02 with his permission
-("Feel free to use anything in this mod for yourself"). Thank you, SoM.
+Kill Rewards (SoM's "Universal(ish?) Kill Rewards" v1.0: the bits, their orb sprites, the
+drop rules) moved to RSQ VisualRewards on 2026-11-03 and is credited there. This patch keeps
+the Kill Rewards path nodes (credit SoM for the bits they reward).

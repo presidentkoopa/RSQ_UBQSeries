@@ -1,0 +1,6 @@
+server noarchive string vrp_spawn = "";
+server noarchive string vrp_kill = "";
+server noarchive string vrp_census = "";
+server noarchive string vrp_svc = "";
+server noarchive int    vrp_cv = 0;
+server noarchive int    vrp_rep = 0;

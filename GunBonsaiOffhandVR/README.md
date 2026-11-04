@@ -14,6 +14,13 @@ addon keeps their **upgrades** (Gun Bonsai offering them, their levels, their nu
 names, so a save keeps what you learned. With RSQ_Melee loaded the glove upgrades work as before; without
 it there are no gloves and none is offered (nor Guard).
 
+**Moved to RSQ VisualRewards (2026-11-03):** Kill Rewards (SoM's bits on a kill, the `rsqgb_kr_*` settings, its menu
+page) now lives in [RSQ_VisualRewards](../VisualRewards/). Use this addon's pk3 from 2026-11-03 or later: an older
+one still holds Kill Rewards and clashes with VisualRewards. This addon keeps the four path nodes (Bit Scavenger,
+Rich Bits, Magnet, Lucky Kill) under the same class names; VisualRewards reads their levels by name, and they are
+offered only while VisualRewards is loaded. Without VisualRewards: no Kill Rewards, and Gun Bonsai VR works as
+before (rig, 2026-11-03).
+
 Pk3: `pk3/RSQ_GunBonsaiVR.pk3` (it was `Gameplay_GB_VR_Offhand_Patch.0.10.6.pk3`; delete the old one).
 
 ## Load order
@@ -24,7 +31,7 @@ BD22_VR-Reloaded_2.0.3ha_hotfix.pk3 -> (any other RSQ pk3s) -> **GunBonsai-0.10.
 
 - Needs Gun Bonsai 0.10.6 by ToxicFrog (not included). Put it right before this pk3.
 - Needs no other RSQ pk3. Each series upgrade path is offered only while its mod is loaded (the glove
-  upgrades and Guard with RSQ_Melee).
+  upgrades and Guard with RSQ_Melee; the Kill Rewards path with RSQ_VisualRewards).
 - Plain Doom 2 without Brutal Doom: the addon uses no Brutal Doom code and should work, but every recorded
   run used the Brutal Doom order. Needs a dual-wield VR engine (QuestZDoom).
 - Other Gun Bonsai patches that replace the same files will clash with this one. Not recommended together.
@@ -52,7 +59,7 @@ RSQ Gun Bonsai VR page:
 | Row | Default | What it does |
 |---|---|---|
 | Stock Gun Bonsai Upgrades | Silvergun | Silvergun: Gun Bonsai's own upgrades that do not mesh with the series are out of the pool everywhere (ours, the player, BD22's guns): Dark Harvest, Life / Armour / Ammo Leech (Kill Rewards covers them), Intuition (HP Bars does it), Juggler, Player Damage, Thorns. All: every stock upgrade back. Takes effect within a second; an upgrade a save already holds keeps working. (2026-11-02, not yet run.) |
-| Kill Rewards | On | Monsters burst into bits of health (25), armour (10) and ammo (5 rounds) when they die: SoM's Universal Kill Rewards, folded in (2026-11-02, not yet run). Defaults are the owner's own settings (2026-11-03): By Health, one bit per 10 spawn health, x3 for a boss (a Cyberdemon: 1200 bits, all of them drop), each other bit dropping at 50% (the chance is rolled once, per bit; Range had been rolling it twice, so 50% gave ~25%); the mix Custom 15 health / 20 armour / 65 ammo; ammo for any gun carried; bits vanish after 7 s. (Range, on the page: 1-3 bits a kill.) Its page: Bits per Kill (Few / Standard / Many), Boss Fountain (x1 / x3 / x5), What Drops (Even Mix / Mostly Health / Armour / Ammo), Bits Vanish After (Never / 7 s / 15 s / 30 s / 1 min), Ammo Bits Give (The Gun in Hand / Any Gun I Carry), Bits Fly to Me (m). SoM's raw numbers (Drop Mode, ratios 0-100, chance, the two ammo types, Range) sit under Tuning on the same page. No Reset All row: the menu's defaults are the cvar defaults above. Bits now lie ON the floor (2026-11-03, owner's report "invisible once they hit the floor": the three sprites had no offset, so a landed bit was drawn under the floor; now offset 5,15 and renamed KRBH / KRBA / KRBM, because BD22 VR's sniper already uses sprite RQKM). Rig only, not headset-confirmed. Legendary and champion monsters get the ordinary 1-3 bits (no BOSS flag); their showers are their own mods' loot, except a Champions Titan, which Champions makes BOSS, so it gets the boss fountain. |
+| Kill Rewards | (moved) | **Moved to RSQ VisualRewards on 2026-11-03** (`RSQ_VisualRewards.pk3`, with the HP bars and damage numbers): the bits, every `rsqgb_kr_*` setting (same names, so your settings stay), its menu page and SoM's credit. This addon keeps the Kill Rewards **path** (Bit Scavenger "Gastropub", Rich Bits, Magnet, Lucky Kill), offered only while VisualRewards is loaded. |
 | XP Source | Damage | Damage (Gun Bonsai's own) / Style (RSQ Score's bonus points become XP, split along the combo chain: the finishing tool 50 %, the setup tools 50 %, plus 10 % to the player bar) / Both. Style without RSQ Score acts as Damage. |
 | Force Learns From the Saber | On | When the main saber earns XP (its cuts, its throw, the shots it bats back, the score its kills earn), the Force hand also gets a share of it, on top. Only the saber: no gun, tool or off-hand saber ever feeds the Force. (2026-11-03, rig only, not headset-confirmed.) |
 | Share (%) | 25 | That share, 0-100. |
@@ -60,8 +67,8 @@ RSQ Gun Bonsai VR page:
 | Screen Skin | Mockup | Which screens draw Gun Bonsai: Gun Bonsai (its own) / Mockup (the owner's mockups) / Hex Rail / Terminal. |
 | Ammo And Health | On | With a skin: per-hand ammo, health, face and armour along the bottom (hides Brutal Doom's HUD under it). |
 
-Reset All (bottom of the page, asks first): every row on this page, its Kill Rewards page and its Tuning page back to
-its default.
+Reset All (bottom of the page, asks first): every row on this page and its Tuning page back to its default (Kill
+Rewards' settings are reset from RSQ VisualRewards' page since 2026-11-03).
 
 Tuning and Debug page: Force Base Strength (0: an unlearned Force power does nothing; learned, levels 1-4 are 40 / 70 /
 100 / 130 % of the saber's own), First Star
@@ -248,16 +255,17 @@ Rig-checked (logs) only: **not yet headset-confirmed**.
   Sense; Smoke, Flash after Cook Sense 2; Charm, Infight after Flash; Incendiary after Big Bang; Freeze after Frag).
   The service gained "freeze" (RSQ_Dazed's freeze with an optional shatter: the next hard hit does that many times).
 - **Service, for the owning mods**: `RSQ_MeleeUpgradeService` "unlocked" (a weapon node learned, level >= 1) and
-  "punlocked" (a player node), beside "level" and "plevel". `RSQ_Upgrade_Base.Has / PHas / LevelOf` are how a
+  "punlocked" (a player node), beside "level" and "plevel". For RSQ VisualRewards' Kill Rewards (2026-11-03): "plevel"
+  for the four path nodes, GetString "kr.lucky" (why a kill was lucky) and "kr.luckyfx" (Lucky Kill's burst, thump
+  and Score touch). Asks back `RSQVR_Service` "kr.loaded" before it offers the path. `RSQ_Upgrade_Base.Has / PHas / LevelOf` are how a
   tree node asks for its parent in `IsSuitableFor*`.
 - **Reads RSQ_Accessibility**: Handedness (HUD sides), Colour Blind Mode (HUD and status screen), Text Size
   (screens). Also (2026-11-01, not yet headset-confirmed): Rumble Strength scales every rumble of this addon
   (gloves, guard); Seated Play lowers the Guard box with your eyes (QuestZDoom keeps the view height where it
   was when you sit, so seated fists at the face were below the box). (Those two reads for the gloves and Guard are
   RSQ_Melee's own now.)
-- **Reads RSQ_Miniboss** (2026-11-03, by name): a miniboss counts as a BOSS for the kill rewards (the boss fountain,
-  always drops) while Miniboss's "Boss Kill Rewards" switch is on (`RSQMB_Service` `bossfor` `"rewards"`, asked only
-  when the monster carries `RSQMB_Ward`); and StartHealth (Knockdown, Executioner) reads the HIGHER of LegenDoom's
+- **Reads RSQ_Miniboss** (2026-11-03, by name): (the kill rewards' miniboss-as-boss rule, `RSQMB_Service` `bossfor`
+  `"rewards"`, moved to RSQ VisualRewards with Kill Rewards); StartHealth (Knockdown, Executioner) reads the HIGHER of LegenDoom's
   boss and normal legendary percentage for a miniboss Miniboss made legendary that way (`bossfor` `"ldhealth"`). Every other boss check
   (the melee bonuses, Knockdown's boss rule) still reads the engine's BOSS flag only, so a miniboss gets them as any
   monster. Without RSQ_Miniboss: exactly as before. Rig only, not headset-confirmed.

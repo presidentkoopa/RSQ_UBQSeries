@@ -30,7 +30,7 @@ MODS = {
                      'MODELDEF.txt', 'CREDITS.txt', 'VOXELDEF.txt', 'ANIMDEFS.txt', 'zscript', 'sprites', 'models/rsqls']),
     'Grapple':      ('RSQ_Grapple.pk3', 'list', ['zscript.txt', 'MAPINFO.txt', 'CVARINFO.txt', 'KEYCONF.txt', 'MENUDEF.txt',
                      'SNDINFO.txt', 'CREDITS.txt', 'MODELDEF.txt', 'zscript', 'sprites', 'sounds', 'models']),
-    'TopHPBars':    ('RSQ_HPBars.pk3', 'sub', 'pk3'),
+    'VisualRewards': ('RSQ_VisualRewards.pk3', 'sub', 'pk3'),   # HP bars + damage numbers + Kill Rewards (was TopHPBars / RSQ_HPBars.pk3)
     'Accessibility': ('RSQ_Accessibility.pk3', 'list', ['zscript.txt', 'CVARINFO.txt', 'MENUDEF.txt', 'KEYCONF.txt',
                      'MAPINFO.txt', 'GLDEFS.txt', 'CREDITS.txt', 'zscript', 'shaders']),
     'Score':        ('RSQ_Score.pk3', 'list', ['zscript.txt', 'MAPINFO.txt', 'CVARINFO.txt', 'SNDINFO.txt', 'TEXTCOLO.txt',

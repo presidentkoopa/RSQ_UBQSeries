@@ -1,0 +1,41 @@
+# vr_full (rig only, not headset-confirmed; qzd17.3 rig, doom2, 2026-11-03). Script errors from our packs: 0; voxeldef lines (BD_VoxelPack's own): 4
+RSQ Gun Bonsai VR: stock upgrades: Silvergun (8 pruned)
+VRP t0 cvars: rsqgb_kr_enabled=true rsqgb_kr_mode=0 rsqgb_kr_amount=1 rsqgb_kr_boss=3 rsqgb_kr_mix=4 rsqgb_kr_chance=50 rsqgb_kr_life=7 rsqgb_kr_ammo_mode=1 rsqgb_kr_magnet=0 rsqgb_kr_ratio_ammo=65 rsqthp_scheme=0 rsqthp_scale=0.3 rsqthp_dmg=true rsqthp_dn_size=1 rsqthp_lvl=true
+DN3_EV t2 player at -860,250,64 angle 90
+VRP t10 spawn 0 CyberdemonSpawner@06_XMVE_MonsterExpansion_Doom2.pk3@decorate.txt (1000 hp)
+VRP t10 spawn 1 ImpSpawner@06_XMVE_MonsterExpansion_Doom2.pk3@decorate.txt (1000 hp)
+DN3_EV t10 spawn 0 SergeantSpawner@06_XMVE_MonsterExpansion_Doom2.pk3@decorate.txt health 1000
+DN3_EV t10 spawn 1 ImpSpawner@06_XMVE_MonsterExpansion_Doom2.pk3@decorate.txt health 1000
+VRP t11 slot 0 is Thamuz (3800 hp)
+VRP t11 slot 1 is Imp (80 hp)
+DN3_EV t11 slot 0 is ShotgunGuy1 health 40
+DN3_EV t11 slot 1 is Imp3 health 117
+VRP t20 services: RSQVR_Service yes (loaded 1, kr.loaded 1, kr.on 1, kr.magnet 0.0 m), RSQ_MeleeUpgradeService yes | BitScavenger gbovr 0 vr 0 | RichBits gbovr 0 vr 0 | Magnet gbovr 0 vr 0 | LuckyKill gbovr 0 vr 0 | classes: RSQ_KRHandler 1 RSQ_KRPerk 1 RSQ_KRHealthBit 1; handler instance 1
+DN3_EV t21 hands: override 1 main -851.5,260.2,97.9 angle 0.0 pitch 0.0 off -868.5,260.2,97.9 eye z 108.0 weapon Rifle
+DN3_EV t30 hit 1 Imp3 for 10 (None): health 117 -> 107 (z 8.0 floor 8.0 top 57.2 height 48.0)
+DN3_EV t36 hit 1 Imp3 for 12 (None): health 107 -> 95 (z 8.0 floor 8.0 top 57.2 height 48.0)
+DN3_EV t42 hit 1 Imp3 for 15 (None): health 95 -> 80 (z 8.0 floor 8.0 top 57.2 height 48.0)
+DN3_EV t50 shot at ShotgunGuy1 (hitbox None) aim z 52 over its floor: health 40 -> 25, HitHead 0, hit ShotgunGuy1
+RSQ KR t50: ShotgunGuy1 (40 hp) burst into 3 bits of 4 rolled: 0 health, 0 armour, 3 ammo
+DN3_EV t50 died ShotgunGuy1 health -14
+DN3_COUNT t60 actors 558 (monsters alive 24, HP bars 1) visualthinkers 22 (our glyphs 22, showing 18) numbers 4 pool 22 free 4 peak 22 stolen 0
+DN3_EV t70 bonsai-level-up 0 5
+DN3_EV t100 bonsai-level-up 1 3
+DN3_SUM t140 made 5 totals 1 kills 1 heads 1 overkills 0 gains 0 banners 1 tags 1 clamped 0 peak glyphs 50 pool 50 stolen 0
+VRP t158 census bits 3 (health 0, armour 0, ammo 3; other RSQ_KR 0) on the floor 3, drawn 3, height over floor 0.0..0.0, nearest 162, sprite KRBH/KRBA/KRBM
+VRP t160 kill 0 Thamuz (3800 hp, spawn 3800, BOSS 1)
+RSQ KR t160: Thamuz (3800 hp, boss) burst into 1140 bits of 1140 rolled: 173 health, 240 armour, 727 ammo
+DN3_EV t160 died Thamuz health -50
+VRP t165 census bits 1143 (health 173, armour 240, ammo 730; other RSQ_KR 0) on the floor 3, drawn 1143, height over floor 0.0..52.0, nearest 162, sprite KRBH/KRBA/KRBM
+RSQ KR t170: DyingShotgunguyHitInEye (40 hp) burst into 0 bits of 4 rolled: 0 health, 0 armour, 0 ammo
+VRP t170 died DyingShotgunguyHitInEye (helper 0, COUNTKILL 0, spawn 40 hp)
+VRP t170 died Dying_Headshot (helper 1, COUNTKILL 0, spawn 9999 hp)
+VRP t172 died BootSmearerGreen (helper 1, COUNTKILL 0, spawn 1000 hp)
+VRP t180 kill 1 Imp (80 hp, spawn 80, BOSS 0)
+RSQ KR t180: Imp (80 hp) burst into 6 bits of 8 rolled: 1 health, 2 armour, 3 ammo
+DN3_EV t180 died Imp health -50
+VRP t185 census bits 1149 (health 174, armour 242, ammo 733; other RSQ_KR 0) on the floor 1143, drawn 1149, height over floor 0.0..52.0, nearest 162, sprite KRBH/KRBA/KRBM
+VRP t240 census bits 1149 (health 174, armour 242, ammo 733; other RSQ_KR 0) on the floor 1149, drawn 1149, height over floor 0.0..0.0, nearest 162, sprite KRBH/KRBA/KRBM
+VRP t400 census bits 1146 (health 174, armour 242, ammo 730; other RSQ_KR 0) on the floor 1146, drawn 1146, height over floor 0.0..0.0, nearest 178, sprite KRBH/KRBA/KRBM
+VRP t420 census bits 6 (health 1, armour 2, ammo 3; other RSQ_KR 0) on the floor 6, drawn 6, height over floor 0.0..0.0, nearest 178, sprite KRBH/KRBA/KRBM
+VRP t440 census bits 0 (health 0, armour 0, ammo 0; other RSQ_KR 0) on the floor 0, drawn 0, height over floor 0.0..0.0, nearest 0, sprite -

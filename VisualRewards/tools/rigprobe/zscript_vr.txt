@@ -1,0 +1,138 @@
+version "4.14"
+// TEST ONLY -- never shipped. The VisualRewards merge (2026-11-03) on the QZD 17.3 rig. Names only (services and class
+// names as strings), so it loads with or without VisualRewards and Gun Bonsai VR.
+//   vrp_spawn  "Class:fwd:side|..."    spawned at t10 ahead of the player (vrp_rep 1: with Brutal Doom's replacement)
+//   vrp_kill   "tic:idx|..."           monster idx killed by the player at tic (DamageMobj, its health + 50)
+//   vrp_census "tic|..."               Kill Rewards bits in the world: per class, on the floor, height over the floor, drawn
+//   vrp_svc    "tic|..."               what the services answer (RSQVR_Service, RSQ_MeleeUpgradeService) for the player
+//   vrp_cv     tic                     prints every rsqgb_kr_* and some rsqthp_* values (the ini check)
+// Log lines start VRP.
+class VRP_Probe : EventHandler
+{
+	Array<Actor> mons;
+	static clearscope int CI(Name n) { let c = CVar.FindCVar(n); return c ? c.GetInt() : 0; }
+	static clearscope String CS(Name n) { let c = CVar.FindCVar(n); return c ? c.GetString() : ""; }
+	static bool AtList(String s, int t)
+	{
+		Array<String> L; s.Split(L, "|", TOK_SKIPEMPTY);
+		for (int i = 0; i < L.Size(); i++) if (L[i].ToInt() == t) return true;
+		return false;
+	}
+	Vector3 Ahead(PlayerPawn pmo, double fwd, double side)
+	{
+		Vector2 fw = (cos(pmo.angle), sin(pmo.angle)), rt = (cos(pmo.angle - 90), sin(pmo.angle - 90));
+		return (pmo.Pos.xy + fw * fwd + rt * side, pmo.Pos.z);
+	}
+
+	override void WorldThingSpawned(WorldEvent e)
+	{
+		// XMVE / BD spawners hand over to the real monster: the first counted monster near a slot takes it
+		let a = e.Thing;
+		if (!a || !a.bIsMonster || !a.bCountKill || level.maptime < 10 || level.maptime > 20) return;
+		for (int i = 0; i < mons.Size(); i++)
+		{
+			if (mons[i] && mons[i] != a && mons[i].bCountKill && mons[i].health > 0) continue;
+			if (!mons[i] || (mons[i].Pos.xy - a.Pos.xy).Length() < 64) { mons[i] = a; Console.Printf("VRP t%d slot %d is %s (%d hp)", level.maptime, i, a.GetClassName(), a.health); return; }
+		}
+	}
+
+	override void WorldTick()
+	{
+		let pmo = PlayerPawn(players[consoleplayer].mo);
+		if (!pmo) return;
+		int t = level.maptime;
+		Array<String> L, F;
+		if (t == 10)
+		{
+			CS('vrp_spawn').Split(L, "|", TOK_SKIPEMPTY);
+			for (int i = 0; i < L.Size(); i++)
+			{
+				F.Clear(); L[i].Split(F, ":");
+				let m = Actor.Spawn(F[0], Ahead(pmo, F[1].ToDouble(), F[2].ToDouble()), CI('vrp_rep') ? ALLOW_REPLACE : NO_REPLACE);
+				if (m) { m.angle = pmo.angle + 180; m.SetZ(m.floorz); }
+				mons.Push(m);
+				Console.Printf("VRP t%d spawn %d %s (%d hp)", t, i, m ? m.GetClassName() : 'null', m ? m.health : 0);
+			}
+		}
+		for (int i = 0; i < mons.Size(); i++) if (mons[i] && mons[i].health > 0) { mons[i].target = null; mons[i].Speed = 0; mons[i].Vel.xy = (0, 0); }
+		L.Clear(); CS('vrp_kill').Split(L, "|", TOK_SKIPEMPTY);
+		for (int i = 0; i < L.Size(); i++)
+		{
+			F.Clear(); L[i].Split(F, ":");
+			if (F[0].ToInt() != t) continue;
+			int k = F[1].ToInt();
+			let m = (k >= 0 && k < mons.Size()) ? mons[k] : null;
+			if (!m || m.health <= 0) { Console.Printf("VRP t%d kill %d: nothing there", t, k); continue; }
+			Console.Printf("VRP t%d kill %d %s (%d hp, spawn %d, BOSS %d)", t, k, m.GetClassName(), m.health, m.SpawnHealth(), m.bBoss);
+			m.DamageMobj(pmo, pmo, m.health + 50, 'None', DMG_FORCED);
+		}
+		if (AtList(CS('vrp_census'), t)) Census(t, pmo);
+		if (AtList(CS('vrp_svc'), t)) Services(t, pmo);
+		if (CI('vrp_cv') == t) Cvars(t);
+	}
+
+	void Census(int t, PlayerPawn pmo)
+	{
+		static const Name CL[] = { "RSQ_KRHealthBit", "RSQ_KRArmorBit", "RSQ_KRAmmoBit" };
+		int n[3], floor[3], drawn[3];
+		double lo = 1e9, hi = -1e9, near = 1e9;
+		int other = 0;
+		let it = ThinkerIterator.Create("Inventory");
+		Inventory a;
+		while (a = Inventory(it.Next()))
+		{
+			if (a.owner) continue;
+			String cn = a.GetClassName();
+			if (cn.Left(6) != "RSQ_KR") continue;
+			int k = -1;
+			for (int i = 0; i < 3; i++) if (cn == CL[i]) k = i;
+			if (k < 0) { other++; continue; }
+			n[k]++;
+			double over = a.Pos.z - a.floorz;
+			if (over <= 0.5 && abs(a.Vel.z) < 0.01) floor[k]++;
+			if (!a.bInvisible && a.Alpha > 0 && a.sprite != 0 && a.CurState) drawn[k]++;
+			lo = min(lo, over); hi = max(hi, over); near = min(near, a.Distance2D(pmo));
+		}
+		int tot = n[0] + n[1] + n[2];
+		Console.Printf("VRP t%d census bits %d (health %d, armour %d, ammo %d; other RSQ_KR %d) on the floor %d, drawn %d, height over floor %.1f..%.1f, nearest %.0f, sprite %s",
+			t, tot, n[0], n[1], n[2], other, floor[0] + floor[1] + floor[2], drawn[0] + drawn[1] + drawn[2], tot ? lo : 0, tot ? hi : 0, tot ? near : 0,
+			tot ? "KRBH/KRBA/KRBM" : "-");
+	}
+
+	void Services(int t, PlayerPawn pmo)
+	{
+		let vr = ServiceIterator.Find("RSQVR_Service").Next();
+		let gb = ServiceIterator.Find("RSQ_MeleeUpgradeService").Next();
+		static const String KN[] = { "BitScavenger", "RichBits", "Magnet", "LuckyKill" };
+		String s = String.Format("VRP t%d services: RSQVR_Service %s", t, vr ? "yes" : "NO");
+		if (vr) s = s .. String.Format(" (loaded %d, kr.loaded %d, kr.on %d, kr.magnet %.1f m)", vr.GetInt("loaded"), vr.GetInt("kr.loaded"), vr.GetInt("kr.on"),
+			vr.GetDouble("kr.magnet", "", 0, 0, pmo));
+		s = s .. String.Format(", RSQ_MeleeUpgradeService %s", gb ? "yes" : "NO");
+		for (int i = 0; i < KN.Size(); i++)
+			s = s .. String.Format(" | %s gbovr %d vr %d", KN[i], gb ? gb.GetInt("plevel", KN[i], 0, 0, pmo) : -1, vr ? vr.GetInt("kr.perk", KN[i], 0, 0, pmo) : -1);
+		String khn = "RSQ_KRHandler", kpn = "RSQ_KRPerk", hbn = "RSQ_KRHealthBit";
+		Class<Object> kh = khn, kp = kpn, hb = hbn;
+		s = s .. String.Format(" | classes: RSQ_KRHandler %d RSQ_KRPerk %d RSQ_KRHealthBit %d; handler instance %d", kh != null, kp != null, hb != null,
+			EventHandler.Find(khn) != null);
+		Console.Printf("%s", s);
+	}
+
+	void Cvars(int t)
+	{
+		static const Name CV[] = { 'rsqgb_kr_enabled', 'rsqgb_kr_mode', 'rsqgb_kr_amount', 'rsqgb_kr_boss', 'rsqgb_kr_mix', 'rsqgb_kr_chance',
+			'rsqgb_kr_life', 'rsqgb_kr_ammo_mode', 'rsqgb_kr_magnet', 'rsqgb_kr_ratio_ammo', 'rsqthp_scheme', 'rsqthp_scale', 'rsqthp_dmg', 'rsqthp_dn_size', 'rsqthp_lvl' };
+		String s = String.Format("VRP t%d cvars:", t);
+		for (int i = 0; i < CV.Size(); i++) { let c = CVar.FindCVar(CV[i]); s = s .. String.Format(" %s=%s", CV[i], c ? c.GetString() : "MISSING"); }
+		Console.Printf("%s", s);
+	}
+
+	override void WorldThingDied(WorldEvent e)
+	{
+		let a = e.Thing;
+		if (!a || !a.bIsMonster) return;
+		let vr = ServiceIterator.Find("RSQVR_Service").Next();
+		int helper = vr ? vr.GetInt("helper", "", 0, 0, a) : -1;
+		if (helper == 1 || !a.bCountKill)
+			Console.Printf("VRP t%d died %s (helper %d, COUNTKILL %d, spawn %d hp)", level.maptime, a.GetClassName(), helper, a.bCountKill, a.SpawnHealth());
+	}
+}

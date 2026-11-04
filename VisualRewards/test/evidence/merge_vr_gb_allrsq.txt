@@ -1,0 +1,9 @@
+# vr_gb_allrsq (rig only, not headset-confirmed; qzd17.3 rig, doom2, 2026-11-03). Script errors from our packs: 0; voxeldef lines (BD_VoxelPack's own): 0
+RSQ Gun Bonsai VR: stock upgrades: Silvergun (8 pruned)
+VRP t0 cvars: rsqgb_kr_enabled=true rsqgb_kr_mode=0 rsqgb_kr_amount=1 rsqgb_kr_boss=3 rsqgb_kr_mix=4 rsqgb_kr_chance=50 rsqgb_kr_life=7 rsqgb_kr_ammo_mode=1 rsqgb_kr_magnet=0 rsqgb_kr_ratio_ammo=65 rsqthp_scheme=0 rsqthp_scale=0.3 rsqthp_dmg=true rsqthp_dn_size=1 rsqthp_lvl=true
+VRP t10 spawn 0 DoomImp (60 hp)
+VRP t10 slot 0 is DoomImp (60 hp)
+VRP t30 services: RSQVR_Service yes (loaded 1, kr.loaded 1, kr.on 1, kr.magnet 0.0 m), RSQ_MeleeUpgradeService yes | BitScavenger gbovr 0 vr 0 | RichBits gbovr 0 vr 0 | Magnet gbovr 0 vr 0 | LuckyKill gbovr 0 vr 0 | classes: RSQ_KRHandler 1 RSQ_KRPerk 1 RSQ_KRHealthBit 1; handler instance 1
+VRP t40 kill 0 DoomImp (60 hp, spawn 60, BOSS 0)
+RSQ KR t40: DoomImp (60 hp) burst into 3 bits of 6 rolled: 0 health, 1 armour, 2 ammo
+VRP t45 census bits 3 (health 0, armour 1, ammo 2; other RSQ_KR 0) on the floor 0, drawn 3, height over floor 32.0..52.0, nearest 127, sprite KRBH/KRBA/KRBM

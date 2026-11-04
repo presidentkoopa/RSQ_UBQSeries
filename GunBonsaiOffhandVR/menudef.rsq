@@ -55,84 +55,12 @@ OptionMenu "RSQ_MeleeOptions"
 	Slider "$RSQ_MENU_FORCE_SHARE", "rsq_force_share", 0, 100, 5, 0
 	Option "$RSQ_MENU_SHIELDGAUGE", "rsq_hud_shield", "OnOff"
 	StaticText " "
-	Option "$RSQ_MENU_KR", "rsqgb_kr_enabled", "OnOff"
-	Submenu "$RSQ_MENU_KR_PAGE", "RSQ_KillRewards"
-	StaticText " "
 	Option "Screen Skin", "rsq_ui_skin", "RSQUI_Skins"
 	Option "Ammo And Health", "rsq_ui_bottom", "OnOff"
 	StaticText " "
 	Submenu "$RSQ_MENU_ADV", "RSQ_MeleeAdvanced"
 	StaticText " "
-	SafeCommand "$RSQ_MENU_RESETALL", "resetcvar rsq_stock_mode; resetcvar rsqgb_berserk_gauge; resetcvar rsqgb_gauge_anim; resetcvar rsq_xp_source; resetcvar rsq_force_learns; resetcvar rsq_force_share; resetcvar rsq_hud_shield; resetcvar rsqgb_kr_enabled; resetcvar rsqgb_kr_amount; resetcvar rsqgb_kr_boss; resetcvar rsqgb_kr_mix; resetcvar rsqgb_kr_life; resetcvar rsqgb_kr_ammo_mode; resetcvar rsqgb_kr_magnet; resetcvar rsqgb_kr_mode; resetcvar rsqgb_kr_hp_ratio; resetcvar rsqgb_kr_chance; resetcvar rsqgb_kr_ratio_health; resetcvar rsqgb_kr_ratio_armor; resetcvar rsqgb_kr_ratio_ammo; resetcvar rsqgb_kr_ammotype1; resetcvar rsqgb_kr_ammotype2; resetcvar rsqgb_kr_min; resetcvar rsqgb_kr_max; resetcvar rsqgb_kr_rnd; resetcvar rsqgb_kr_debug; resetcvar rsq_ui_skin; resetcvar rsq_ui_bottom; resetcvar rsq_force_start; resetcvar rsq_star_first; resetcvar rsq_star_every; resetcvar rsq_hook_xp; resetcvar rsq_xp_style_scale; resetcvar rsq_xp_style_player; resetcvar rsq_ui_inset; resetcvar rsq_ui_hud_scale", "$RSQ_MENU_RESETALL_Q"
-}
-
-// Kill Rewards, in plain words (the owner, 2026-11-02: "the menu I do not understand"). SoM's raw numbers are on
-// Tuning and Debug below, so nothing he loved is lost.
-OptionValue "RSQ_KRAmounts"
-{
-	0, "$RSQ_MENU_KR_FEW"
-	1, "$RSQ_MENU_KR_STANDARD"
-	2, "$RSQ_MENU_KR_MANY"
-	3, "$RSQ_MENU_KR_CUSTOM"
-}
-OptionValue "RSQ_KRBoss"
-{
-	1, "x1"
-	3, "x3"
-	5, "x5"
-}
-OptionValue "RSQ_KRMixes"
-{
-	0, "$RSQ_MENU_KR_EVEN"
-	1, "$RSQ_MENU_KR_MHEALTH"
-	2, "$RSQ_MENU_KR_MARMOUR"
-	3, "$RSQ_MENU_KR_MAMMO"
-	4, "$RSQ_MENU_KR_CUSTOM"
-}
-OptionValue "RSQ_KRLives"
-{
-	0, "$RSQ_MENU_KR_NEVER"
-	7, "7 s"
-	15, "15 s"
-	30, "30 s"
-	60, "1 min"
-}
-OptionValue "RSQ_KRAmmoModes"
-{
-	0, "$RSQ_MENU_KR_GUNINHAND"
-	1, "$RSQ_MENU_KR_ANYGUN"
-}
-OptionValue "RSQ_KRModes"
-{
-	0, "$RSQ_MENU_KR_BYHEALTH"
-	1, "$RSQ_MENU_KR_RANGE"
-}
-
-OptionMenu "RSQ_KillRewards"
-{
-	Title "$RSQ_MENU_KR_PAGE"
-	Option "$RSQ_MENU_KR", "rsqgb_kr_enabled", "OnOff"
-	StaticText " "
-	Option "$RSQ_MENU_KR_AMOUNT", "rsqgb_kr_amount", "RSQ_KRAmounts"
-	Option "$RSQ_MENU_KR_BOSS", "rsqgb_kr_boss", "RSQ_KRBoss"
-	Option "$RSQ_MENU_KR_MIX", "rsqgb_kr_mix", "RSQ_KRMixes"
-	Option "$RSQ_MENU_KR_LIFE", "rsqgb_kr_life", "RSQ_KRLives"
-	Option "$RSQ_MENU_KR_AMMO", "rsqgb_kr_ammo_mode", "RSQ_KRAmmoModes"
-	Slider "$RSQ_MENU_KR_MAGNET", "rsqgb_kr_magnet", 0.0, 4.0, 0.5, 1
-	StaticText " "
-	StaticText "$RSQ_MENU_KR_TUNING", "Gold"
-	Option "$RSQ_MENU_KR_MODE", "rsqgb_kr_mode", "RSQ_KRModes"
-	Slider "$RSQ_MENU_KR_HPRATIO", "rsqgb_kr_hp_ratio", 1, 100, 1, 0
-	Slider "$RSQ_MENU_KR_CHANCE", "rsqgb_kr_chance", 0, 100, 5, 0
-	Slider "$RSQ_MENU_KR_RHEALTH", "rsqgb_kr_ratio_health", 0, 100, 5, 0
-	Slider "$RSQ_MENU_KR_RARMOUR", "rsqgb_kr_ratio_armor", 0, 100, 5, 0
-	Slider "$RSQ_MENU_KR_RAMMO", "rsqgb_kr_ratio_ammo", 0, 100, 5, 0
-	Option "$RSQ_MENU_KR_AT1", "rsqgb_kr_ammotype1", "OnOff"
-	Option "$RSQ_MENU_KR_AT2", "rsqgb_kr_ammotype2", "OnOff"
-	Slider "$RSQ_MENU_KR_MIN", "rsqgb_kr_min", 1, 25, 1, 0
-	Slider "$RSQ_MENU_KR_MAX", "rsqgb_kr_max", 1, 25, 1, 0
-	Option "$RSQ_MENU_KR_RND", "rsqgb_kr_rnd", "OnOff"
-	Option "Debug Log", "rsqgb_kr_debug", "OnOff"
+	SafeCommand "$RSQ_MENU_RESETALL", "resetcvar rsq_stock_mode; resetcvar rsqgb_berserk_gauge; resetcvar rsqgb_gauge_anim; resetcvar rsq_xp_source; resetcvar rsq_force_learns; resetcvar rsq_force_share; resetcvar rsq_hud_shield; resetcvar rsq_ui_skin; resetcvar rsq_ui_bottom; resetcvar rsq_force_start; resetcvar rsq_star_first; resetcvar rsq_star_every; resetcvar rsq_hook_xp; resetcvar rsq_xp_style_scale; resetcvar rsq_xp_style_player; resetcvar rsq_ui_inset; resetcvar rsq_ui_hud_scale", "$RSQ_MENU_RESETALL_Q"
 }
 
 OptionMenu "RSQ_MeleeAdvanced"

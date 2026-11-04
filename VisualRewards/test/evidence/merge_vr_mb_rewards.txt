@@ -1,0 +1,8 @@
+# vr_mb_rewards (rig only, not headset-confirmed; qzd17.3 rig, doom2, 2026-11-03). Script errors from our packs: 0; voxeldef lines (BD_VoxelPack's own): 0
+RSQ Gun Bonsai VR: stock upgrades: Silvergun (8 pruned)
+CASE_rewards_on
+RSQ KR t39: Zombieman (20 hp) burst into 0 bits of 2 rolled: 0 health, 0 armour, 0 ammo
+RSQ KR t41: DoomImp (60 hp, miniboss as boss) burst into 18 bits of 18 rolled: 2 health, 6 armour, 10 ammo
+CASE_rewards_off
+RSQ KR t59: Zombieman (20 hp) burst into 1 bits of 2 rolled: 0 health, 0 armour, 1 ammo
+RSQ KR t62: DoomImp (60 hp) burst into 2 bits of 6 rolled: 1 health, 0 armour, 1 ammo

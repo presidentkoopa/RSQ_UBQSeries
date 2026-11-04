@@ -1,0 +1,11 @@
+# vr_gb_alone (rig only, not headset-confirmed; qzd17.3 rig, doom2, 2026-11-03). Script errors from our packs: 0; voxeldef lines (BD_VoxelPack's own): 0
+RSQ Gun Bonsai VR: stock upgrades: Silvergun (8 pruned)
+VRP t0 cvars: rsqgb_kr_enabled=MISSING rsqgb_kr_mode=MISSING rsqgb_kr_amount=MISSING rsqgb_kr_boss=MISSING rsqgb_kr_mix=MISSING rsqgb_kr_chance=MISSING rsqgb_kr_life=MISSING rsqgb_kr_ammo_mode=MISSING rsqgb_kr_magnet=MISSING rsqgb_kr_ratio_ammo=MISSING rsqthp_scheme=MISSING rsqthp_scale=MISSING rsqthp_dmg=MISSING rsqthp_dn_size=MISSING rsqthp_lvl=MISSING
+VRP t10 spawn 0 DoomImp (60 hp)
+VRP t10 slot 0 is DoomImp (60 hp)
+VRP t20 services: RSQVR_Service NO, RSQ_MeleeUpgradeService yes | BitScavenger gbovr 0 vr -1 | RichBits gbovr 0 vr -1 | Magnet gbovr 0 vr -1 | LuckyKill gbovr 0 vr -1 | classes: RSQ_KRHandler 0 RSQ_KRPerk 1 RSQ_KRHealthBit 0; handler instance 0
+RSQ Gun Bonsai VR: debug Add All: 154 node levels added
+VRP t60 kill 0 DoomImp (60 hp, spawn 60, BOSS 0)
+VRP t62 census bits 0 (health 0, armour 0, ammo 0; other RSQ_KR 0) on the floor 0, drawn 0, height over floor 0.0..0.0, nearest 0, sprite -
+VRP t80 census bits 0 (health 0, armour 0, ammo 0; other RSQ_KR 0) on the floor 0, drawn 0, height over floor 0.0..0.0, nearest 0, sprite -
+VRP t130 services: RSQVR_Service NO, RSQ_MeleeUpgradeService yes | BitScavenger gbovr 0 vr -1 | RichBits gbovr 0 vr -1 | Magnet gbovr 0 vr -1 | LuckyKill gbovr 0 vr -1 | classes: RSQ_KRHandler 0 RSQ_KRPerk 1 RSQ_KRHealthBit 0; handler instance 0

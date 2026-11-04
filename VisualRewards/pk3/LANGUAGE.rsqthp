@@ -1,0 +1,60 @@
+// RSQ VisualRewards -- Damage Numbers: colours by damage type, from damnums by Xaser Acheron (MIT), renamed.
+// Another mod can add RSQTHP_DMG_TYPECOLOR_<type> = "RSQTHP_Dam<colour>"; damnums' own DAMNUM_TYPECOLOR_<type> = "Dam<colour>" is read too.
+
+[enu default]
+
+RSQTHP_DMG_TYPECOLOR_STEEL        = "RSQTHP_DamWhite";
+RSQTHP_DMG_TYPECOLOR_BLOOD        = "RSQTHP_DamRed";
+RSQTHP_DMG_TYPECOLOR_ICE          = "RSQTHP_DamLightBlue";
+RSQTHP_DMG_TYPECOLOR_FIRE         = "RSQTHP_DamOrange";
+RSQTHP_DMG_TYPECOLOR_EARTH        = "RSQTHP_DamBrown";
+RSQTHP_DMG_TYPECOLOR_QUAKE        = "RSQTHP_DamBrown";
+RSQTHP_DMG_TYPECOLOR_ELECTRIC     = "RSQTHP_DamYellow";
+RSQTHP_DMG_TYPECOLOR_LIGHTNING    = "RSQTHP_DamYellow";
+RSQTHP_DMG_TYPECOLOR_GRAVITY      = "RSQTHP_DamPurple";
+RSQTHP_DMG_TYPECOLOR_POISON       = "RSQTHP_DamPurple";
+RSQTHP_DMG_TYPECOLOR_POISONCLOUD  = "RSQTHP_DamPurple";
+RSQTHP_DMG_TYPECOLOR_DARK         = "RSQTHP_DamBlack";
+RSQTHP_DMG_TYPECOLOR_ROCKET       = "RSQTHP_DamGold";
+RSQTHP_DMG_TYPECOLOR_EXPLODE      = "RSQTHP_DamGold";
+RSQTHP_DMG_TYPECOLOR_EXPLOSIVE    = "RSQTHP_DamGold";
+RSQTHP_DMG_TYPECOLOR_EXPLOSION    = "RSQTHP_DamGold";
+RSQTHP_DMG_TYPECOLOR_PLASMA       = "RSQTHP_DamCyan";
+RSQTHP_DMG_TYPECOLOR_DISINTEGRATE = "RSQTHP_DamGreen";
+RSQTHP_DMG_TYPECOLOR_BFG          = "RSQTHP_DamGreen";
+RSQTHP_DMG_TYPECOLOR_BFGSPLASH    = "RSQTHP_DamGreen";
+
+// Kill Rewards' menu (SoM's Kill Rewards; moved here from RSQ Gun Bonsai VR's LANGUAGE on 2026-11-03, same names)
+RSQ_MENU_KR = "Kill Rewards";
+RSQ_MENU_KR_PAGE = "Kill Rewards Options";
+RSQ_MENU_KR_AMOUNT = "Bits per Kill";
+RSQ_MENU_KR_FEW = "Few (1 per 20 health)";
+RSQ_MENU_KR_STANDARD = "Standard (1 per 10)";
+RSQ_MENU_KR_MANY = "Many (1 per 5)";
+RSQ_MENU_KR_CUSTOM = "Custom (below)";
+RSQ_MENU_KR_BOSS = "Boss Fountain";
+RSQ_MENU_KR_MIX = "What Drops";
+RSQ_MENU_KR_EVEN = "Even Mix";
+RSQ_MENU_KR_MHEALTH = "Mostly Health";
+RSQ_MENU_KR_MARMOUR = "Mostly Armour";
+RSQ_MENU_KR_MAMMO = "Mostly Ammo";
+RSQ_MENU_KR_LIFE = "Bits Vanish After";
+RSQ_MENU_KR_NEVER = "Never";
+RSQ_MENU_KR_AMMO = "Ammo Bits Give";
+RSQ_MENU_KR_GUNINHAND = "The Gun in Hand";
+RSQ_MENU_KR_ANYGUN = "Any Gun I Carry";
+RSQ_MENU_KR_MAGNET = "Bits Fly to Me (m, 0 = off)";
+RSQ_MENU_KR_TUNING = "Tuning (SoM's numbers; the presets above set these unless Custom)";
+RSQ_MENU_KR_MODE = "Drop Mode";
+RSQ_MENU_KR_BYHEALTH = "By Health";
+RSQ_MENU_KR_RANGE = "Range";
+RSQ_MENU_KR_HPRATIO = "Custom: Health per Bit";
+RSQ_MENU_KR_CHANCE = "Drop Chance %";
+RSQ_MENU_KR_RHEALTH = "Custom Mix: Health";
+RSQ_MENU_KR_RARMOUR = "Custom Mix: Armour";
+RSQ_MENU_KR_RAMMO = "Custom Mix: Ammo";
+RSQ_MENU_KR_AT1 = "Ammo Type 1 Counts";
+RSQ_MENU_KR_AT2 = "Ammo Type 2 Counts (clips)";
+RSQ_MENU_KR_MIN = "Range: Fewest Bits";
+RSQ_MENU_KR_MAX = "Range: Most Bits";
+RSQ_MENU_KR_RND = "Range: Random Between";

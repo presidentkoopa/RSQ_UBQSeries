@@ -1,0 +1,18 @@
+# old_gbnodes (rig only, not headset-confirmed; qzd17.3 rig, doom2, 2026-11-03). Script errors from our packs: 0; voxeldef lines (BD_VoxelPack's own): 0
+RSQ Gun Bonsai VR: stock upgrades: Silvergun (8 pruned)
+VRP t0 cvars: rsqgb_kr_enabled=true rsqgb_kr_mode=0 rsqgb_kr_amount=1 rsqgb_kr_boss=3 rsqgb_kr_mix=4 rsqgb_kr_chance=50 rsqgb_kr_life=7 rsqgb_kr_ammo_mode=1 rsqgb_kr_magnet=0 rsqgb_kr_ratio_ammo=65 rsqthp_scheme=0 rsqthp_scale=0.3 rsqthp_dmg=true rsqthp_dn_size=1 rsqthp_lvl=true
+FP kr [stage 0] has: | offered: BitScavenger
+FP kr reads: scavenger 0, rich 0, magnet 0 (0.0 m), lucky 0
+FP kr granted RSQ_Upgrade_BitScavenger
+FP kr [stage 1] has: BitScavenger1 | offered: BitScavenger RichBits Magnet
+FP kr reads: scavenger 1, rich 0, magnet 0 (0.0 m), lucky 0
+RSQ KR t53: DoomImp (60 hp) burst into 5 bits of 8 rolled: 1 health, 0 armour, 4 ammo
+FP kr granted RSQ_Upgrade_RichBits
+FP kr granted RSQ_Upgrade_Magnet
+FP kr [stage 2] has: BitScavenger1 RichBits1 Magnet1 | offered: BitScavenger RichBits Magnet LuckyKill
+FP kr reads: scavenger 1, rich 1, magnet 1 (2.0 m), lucky 0
+FP kr bits: health 1 -> 51, armour 0 -> 20, clips 50 -> 50 (weapon Pistol)
+VM execution aborted: tried to write to address zero.
+Called from RSQ_KRArmorBit.TryPickup at RSQ_GunBonsaiVR.pk3:rsq/zscript/killrewards.zs, line -1
+Called from RSQ_KRArmorBit.BitTick at RSQ_GunBonsaiVR.pk3:rsq/zscript/killrewards.zs, line 273
+Called from RSQ_KRArmorBit.Tick at RSQ_GunBonsaiVR.pk3:rsq/zscript/killrewards.zs, line 311

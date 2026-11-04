@@ -1,0 +1,21 @@
+# vr_alone_kr (rig only, not headset-confirmed; qzd17.3 rig, doom2, 2026-11-03). Script errors from our packs: 0; voxeldef lines (BD_VoxelPack's own): 0
+VRP t10 spawn 0 DoomImp (60 hp)
+VRP t10 spawn 1 Cyberdemon (4000 hp)
+VRP t10 slot 0 is DoomImp (60 hp)
+VRP t10 slot 1 is Cyberdemon (4000 hp)
+VRP t20 services: RSQVR_Service yes (loaded 1, kr.loaded 1, kr.on 1, kr.magnet 0.0 m), RSQ_MeleeUpgradeService NO | BitScavenger gbovr -1 vr 0 | RichBits gbovr -1 vr 0 | Magnet gbovr -1 vr 0 | LuckyKill gbovr -1 vr 0 | classes: RSQ_KRHandler 1 RSQ_KRPerk 0 RSQ_KRHealthBit 1; handler instance 1
+VRP t21 cvars: rsqgb_kr_enabled=true rsqgb_kr_mode=0 rsqgb_kr_amount=1 rsqgb_kr_boss=3 rsqgb_kr_mix=4 rsqgb_kr_chance=50 rsqgb_kr_life=7 rsqgb_kr_ammo_mode=1 rsqgb_kr_magnet=0 rsqgb_kr_ratio_ammo=65 rsqthp_scheme=0 rsqthp_scale=0.3 rsqthp_dmg=true rsqthp_dn_size=1 rsqthp_lvl=true
+VRP t39 census bits 0 (health 0, armour 0, ammo 0; other RSQ_KR 0) on the floor 0, drawn 0, height over floor 0.0..0.0, nearest 0, sprite -
+VRP t40 kill 0 DoomImp (60 hp, spawn 60, BOSS 0)
+RSQ KR t40: DoomImp (60 hp) burst into 3 bits of 6 rolled: 0 health, 0 armour, 3 ammo
+VRP t42 census bits 3 (health 0, armour 0, ammo 3; other RSQ_KR 0) on the floor 0, drawn 3, height over floor 41.0..41.0, nearest 198, sprite KRBH/KRBA/KRBM
+VRP t60 census bits 3 (health 0, armour 0, ammo 3; other RSQ_KR 0) on the floor 3, drawn 3, height over floor 0.0..0.0, nearest 198, sprite KRBH/KRBA/KRBM
+VRP t79 census bits 3 (health 0, armour 0, ammo 3; other RSQ_KR 0) on the floor 3, drawn 3, height over floor 0.0..0.0, nearest 198, sprite KRBH/KRBA/KRBM
+VRP t80 kill 1 Cyberdemon (4000 hp, spawn 4000, BOSS 1)
+RSQ KR t80: Cyberdemon (4000 hp, boss) burst into 1200 bits of 1200 rolled: 203 health, 208 armour, 789 ammo
+VRP t85 census bits 1203 (health 203, armour 208, ammo 792; other RSQ_KR 0) on the floor 3, drawn 1203, height over floor 0.0..52.0, nearest 198, sprite KRBH/KRBA/KRBM
+VRP t120 census bits 1203 (health 203, armour 208, ammo 792; other RSQ_KR 0) on the floor 1185, drawn 1203, height over floor 0.0..8.0, nearest 198, sprite KRBH/KRBA/KRBM
+VRP t280 census bits 1203 (health 203, armour 208, ammo 792; other RSQ_KR 0) on the floor 1203, drawn 1203, height over floor 0.0..0.0, nearest 198, sprite KRBH/KRBA/KRBM
+VRP t300 census bits 1200 (health 203, armour 208, ammo 789; other RSQ_KR 0) on the floor 1200, drawn 1200, height over floor 0.0..0.0, nearest 223, sprite KRBH/KRBA/KRBM
+VRP t330 census bits 0 (health 0, armour 0, ammo 0; other RSQ_KR 0) on the floor 0, drawn 0, height over floor 0.0..0.0, nearest 0, sprite -
+VRP t350 census bits 0 (health 0, armour 0, ammo 0; other RSQ_KR 0) on the floor 0, drawn 0, height over floor 0.0..0.0, nearest 0, sprite -

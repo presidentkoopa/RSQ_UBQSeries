@@ -1,0 +1,27 @@
+# vr_new_load (rig only, not headset-confirmed; qzd17.3 rig, doom2, 2026-11-03). Script errors from our packs: 0; voxeldef lines (BD_VoxelPack's own): 0
+RSQ Gun Bonsai VR: stock upgrades: Silvergun (8 pruned)
+VRP t5 cvars: rsqgb_kr_enabled=true rsqgb_kr_mode=0 rsqgb_kr_amount=1 rsqgb_kr_boss=5 rsqgb_kr_mix=4 rsqgb_kr_chance=77 rsqgb_kr_life=30 rsqgb_kr_ammo_mode=1 rsqgb_kr_magnet=0 rsqgb_kr_ratio_ammo=65 rsqthp_scheme=6 rsqthp_scale=0.3 rsqthp_dmg=true rsqthp_dn_size=1.5 rsqthp_lvl=true
+VRP t95 census bits 5 (health 0, armour 4, ammo 1; other RSQ_KR 0) on the floor 5, drawn 5, height over floor 0.0..0.0, nearest 96, sprite KRBH/KRBA/KRBM
+VRP t96 cvars: rsqgb_kr_enabled=true rsqgb_kr_mode=0 rsqgb_kr_amount=1 rsqgb_kr_boss=5 rsqgb_kr_mix=4 rsqgb_kr_chance=77 rsqgb_kr_life=30 rsqgb_kr_ammo_mode=1 rsqgb_kr_magnet=0 rsqgb_kr_ratio_ammo=65 rsqthp_scheme=6 rsqthp_scale=0.3 rsqthp_dmg=true rsqthp_dn_size=1.5 rsqthp_lvl=true
+VRP t97 services: RSQVR_Service yes (loaded 1, kr.loaded 1, kr.on 1, kr.magnet 0.0 m), RSQ_MeleeUpgradeService yes | BitScavenger gbovr 0 vr 0 | RichBits gbovr 0 vr 0 | Magnet gbovr 0 vr 0 | LuckyKill gbovr 0 vr 0 | classes: RSQ_KRHandler 1 RSQ_KRPerk 1 RSQ_KRHealthBit 1; handler instance 1
+VRP t100 census bits 5 (health 0, armour 4, ammo 1; other RSQ_KR 0) on the floor 5, drawn 5, height over floor 0.0..0.0, nearest 96, sprite KRBH/KRBA/KRBM
+RSQ KR t106: DoomImp (60 hp) burst into 4 bits of 6 rolled: 1 health, 1 armour, 2 ammo
+RSQ KR t106: Zombieman (20 hp) burst into 2 bits of 2 rolled: 0 health, 1 armour, 1 ammo
+RSQ KR t106: Zombieman (20 hp) burst into 1 bits of 2 rolled: 0 health, 0 armour, 1 ammo
+RSQ KR t106: Zombieman (20 hp) burst into 1 bits of 2 rolled: 0 health, 0 armour, 1 ammo
+RSQ KR t106: Zombieman (20 hp) burst into 2 bits of 2 rolled: 0 health, 0 armour, 2 ammo
+RSQ KR t106: Zombieman (20 hp) burst into 1 bits of 2 rolled: 0 health, 0 armour, 1 ammo
+RSQ KR t106: Zombieman (20 hp) burst into 1 bits of 2 rolled: 0 health, 0 armour, 1 ammo
+RSQ KR t106: Zombieman (20 hp) burst into 2 bits of 2 rolled: 1 health, 0 armour, 1 ammo
+RSQ KR t106: Zombieman (20 hp) burst into 2 bits of 2 rolled: 0 health, 0 armour, 2 ammo
+RSQ KR t106: Zombieman (20 hp) burst into 2 bits of 2 rolled: 0 health, 0 armour, 2 ammo
+RSQ KR t106: Zombieman (20 hp) burst into 1 bits of 2 rolled: 0 health, 1 armour, 0 ammo
+RSQ KR t106: Zombieman (20 hp) burst into 2 bits of 2 rolled: 0 health, 0 armour, 2 ammo
+RSQ KR t106: DoomImp (60 hp) burst into 4 bits of 6 rolled: 1 health, 0 armour, 3 ammo
+RSQ KR t106: DoomImp (60 hp) burst into 4 bits of 6 rolled: 2 health, 0 armour, 2 ammo
+RSQ KR t106: DoomImp (60 hp, miniboss as boss) burst into 30 bits of 30 rolled: 5 health, 5 armour, 20 ammo
+RSQ KR t106: Zombieman (20 hp) burst into 2 bits of 2 rolled: 1 health, 0 armour, 1 ammo
+RSQ KR t106: DoomImp (60 hp) burst into 4 bits of 6 rolled: 1 health, 0 armour, 3 ammo
+RSQ KR t106: DoomImp (60 hp) burst into 6 bits of 6 rolled: 1 health, 1 armour, 4 ammo
+RSQ KR t106: DoomImp (60 hp) burst into 4 bits of 6 rolled: 2 health, 1 armour, 1 ammo
+RSQ KR t106: DoomImp (60 hp) burst into 5 bits of 6 rolled: 1 health, 1 armour, 3 ammo

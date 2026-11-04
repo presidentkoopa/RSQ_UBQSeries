@@ -6,7 +6,7 @@
 set -e
 # Player-facing pk3 names (2026-10-28, the owner): RSQ_ everywhere, no "Badass". Old names to delete
 # from a load order: UltraBadassQuestSaber.pk3 (now RSQ_Saber), UltraBadassShieldSaw.pk3 (RSQ_ShieldSaw),
-# RSQ_TopHPBars.pk3 (RSQ_HPBars), Gameplay_GB_VR_Offhand_Patch.0.10.6.pk3 (RSQ_GunBonsaiVR).
+# RSQ_TopHPBars.pk3 and RSQ_HPBars.pk3 (both now RSQ_VisualRewards, 2026-11-03), Gameplay_GB_VR_Offhand_Patch.0.10.6.pk3 (RSQ_GunBonsaiVR).
 HUB="$(cd "$(dirname "$0")" && pwd)"
 OUT="$HUB/pk3"
 mkdir -p "$OUT"
@@ -56,11 +56,12 @@ rm -f "$OUT/RSQ_Grapple.pk3"
 zip -q -r -X "$OUT/RSQ_Grapple.pk3" zscript.txt MAPINFO.txt CVARINFO.txt KEYCONF.txt MENUDEF.txt SNDINFO.txt CREDITS.txt MODELDEF.txt zscript sprites sounds models
 echo "built pk3/RSQ_Grapple.pk3"
 
-# TopHPBars: the mod lives in pk3/ (its art is generated from coldcite's originals by tools/gen_art.py).
-cd "$HUB/TopHPBars"
-rm -f "$OUT/RSQ_HPBars.pk3"
-(cd pk3 && zip -q -r -X "$OUT/RSQ_HPBars.pk3" .)
-echo "built pk3/RSQ_HPBars.pk3"
+# VisualRewards (was TopHPBars, RSQ_HPBars.pk3, until 2026-11-03): the mod lives in pk3/ (its bar art is generated from
+# coldcite's originals by tools/gen_art.py). HP bars, damage numbers, level-up displays and Kill Rewards.
+cd "$HUB/VisualRewards"
+rm -f "$OUT/RSQ_VisualRewards.pk3"
+(cd pk3 && zip -q -r -X "$OUT/RSQ_VisualRewards.pk3" .)
+echo "built pk3/RSQ_VisualRewards.pk3"
 
 # Accessibility: the shared menu and settings.
 cd "$HUB/Accessibility"

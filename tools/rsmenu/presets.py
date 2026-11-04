@@ -117,7 +117,7 @@ MODS = {
      'Top Left': {'rs_score_x': 15, 'rs_score_y': 10}, 'Top Centre': {'rs_score_x': 50, 'rs_score_y': 10},
      'Bottom Right': {'rs_score_x': 85, 'rs_score_y': 80}}),
  ]),
- 'TopHPBars/pk3': ('MENUDEF.txt', 'CVARINFO.txt', [
+ 'VisualRewards/pk3': ('MENUDEF.txt', 'CVARINFO.txt', [
   ('RSQTHP_P_Size', ['Small', 'Standard', 'Large'], {
      'Small': {'rsqthp_scale': 0.15}, 'Large': {'rsqthp_scale': 0.5}}),
  ]),

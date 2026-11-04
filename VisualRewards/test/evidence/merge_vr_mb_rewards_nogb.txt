@@ -1,0 +1,7 @@
+# vr_mb_rewards_nogb (rig only, not headset-confirmed; qzd17.3 rig, doom2, 2026-11-03). Script errors from our packs: 0; voxeldef lines (BD_VoxelPack's own): 0
+CASE_rewards_on
+RSQ KR t38: Zombieman (20 hp) burst into 1 bits of 2 rolled: 0 health, 0 armour, 1 ammo
+RSQ KR t41: DoomImp (60 hp, miniboss as boss) burst into 18 bits of 18 rolled: 2 health, 1 armour, 15 ammo
+CASE_rewards_off
+RSQ KR t59: Zombieman (20 hp) burst into 2 bits of 2 rolled: 0 health, 0 armour, 2 ammo
+RSQ KR t62: DoomImp (60 hp) burst into 4 bits of 6 rolled: 1 health, 0 armour, 3 ammo

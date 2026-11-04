@@ -14,7 +14,7 @@ gen RSQTR  TacticalRig/zscript/rsqtr/rsmenu.zs
 gen RSQSM  SlowMo/zscript/rsqsm/rsmenu.zs
 gen RSQLS  LaserSight/zscript/rsqls/rsmenu.zs
 gen RSQGR  Grapple/zscript/rsqgr/rsmenu.zs
-gen RSQTHP TopHPBars/pk3/zscript/rsqthp/rsmenu.zs
+gen RSQTHP VisualRewards/pk3/zscript/rsqthp/rsmenu.zs
 gen RSQSC  Score/zscript/rsscore/rsmenu.zs
 gen RSQMB  Miniboss/zscript/rsqmb/rsmenu.zs
 gen RSQGBV GunBonsaiOffhandVR/rsq/zscript/rsmenu.zs

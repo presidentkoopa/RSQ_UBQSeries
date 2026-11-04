@@ -21,7 +21,7 @@ class RSQ_Upgrade_Bandolier : RSQ_Upgrade_GrenadeMarker
 }
 
 // SCAVENGER, the grenade's (after Bandolier 1): grenades scattered a map 4 + 2 -> 6 + 3, 8 + 4, 10 + 5 (singles + packs,
-// the odds rising with them); 3: one Kill Rewards ammo bit in four is a grenade. (RSQGN_Scatter, RSQ_KRAmmoBit)
+// the odds rising with them); 3: one Kill Rewards ammo bit in four is a grenade. (RSQGN_Scatter; RSQ_KRAmmoBit in RSQ VisualRewards asks "level" "Scavenger")
 class RSQ_Upgrade_Scavenger : RSQ_Upgrade_GrenadeMarker
 {
 	static double Share(uint lv) { return 1.0 + 0.5 * int(lv); }

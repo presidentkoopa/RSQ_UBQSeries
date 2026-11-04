@@ -83,7 +83,7 @@ class RSQM play
 	static void Touch(String id, Actor pawn, Actor victim)
 	{
 		if (!pawn || !pawn.player || !victim) return;
-		// a critical or a Finisher marks the body for Kill Rewards' Lucky Kill (killrewards.zs), Score or no Score
+		// a critical or a Finisher marks the body for Kill Rewards' Lucky Kill (RSQ VisualRewards asks "kr.lucky"), Score or no Score
 		if (id == "crit" || id == "headshot" || id == "backstab" || id == "finisher")
 		{
 			let d = RSQ_Dazed.On(victim);
@@ -249,7 +249,11 @@ class RSQM play
 //   "credit.push"  objectArg = a Weapon: damage the player's own body deals until "credit.pop"
 //                  is paid to that weapon (the ShieldSaw's bash and grind). intArg = type hint.
 //   "credit.pop"
-//   "plevel"       stringArg = a PLAYER upgrade's short name, objectArg = the pawn. >= 0.
+//   "plevel"       stringArg = a PLAYER upgrade's short name, objectArg = the pawn. >= 0. (RSQ VisualRewards' Kill Rewards
+//                  reads the Kill Rewards path this way: BitScavenger, RichBits, Magnet, LuckyKill.)
+//   "kr.luckyfx"   Lucky Kill's burst, thump and Score touch (objectArg the body, intArg the player, doubleArg the level);
+//   GetString "kr.lucky"  why a kill was lucky, "" for none (objectArg the body, intArg the tic it died). Both for
+//                  RSQ VisualRewards, which owns Kill Rewards since 2026-11-03.
 //   "claim"        objectArg = an actor whose master is a Weapon: pays it (and its puffs) to it.
 //   "ram"          objectArg = a monster the ShieldSaw just bashed, intArg = player number,
 //                  doubleArg = how hard: Battering Ram turns it into a missile, if learned.
@@ -386,6 +390,18 @@ class RSQ_MeleeUpgradeService : Service
 			}
 			return 0;
 		}
+		// "kr.luckyfx" (RSQ VisualRewards' Kill Rewards, Lucky Kill): objectArg = the body, intArg = the killer's player number,
+		// doubleArg = the Lucky Kill level: the big burst (RSQ Melee's, by name), its thump and Score's "lucky" touch. 1 done.
+		if (request == "kr.luckyfx")
+		{
+			let a = Actor(objectArg);
+			if (!a || intArg < 0 || intArg >= MAXPLAYERS || !playeringame[intArg] || !players[intArg].mo) return 0;
+			int lv = clamp(int(doubleArg), 1, 3);
+			RSQM.Burst("RSQML_Burst5", a.pos + (0, 0, a.height * 0.6), 1.5 + 0.5 * lv, 0);
+			a.A_StartSound("rsqml/fx/heavy", CHAN_AUTO, CHANF_OVERLAP, 1.0);
+			RSQM.Touch("lucky", players[intArg].mo, a);
+			return 1;
+		}
 		if (request == "ram")
 		{
 			let mo = Actor(objectArg);
@@ -398,6 +414,23 @@ class RSQ_MeleeUpgradeService : Service
 			return lv;
 		}
 		return 0;
+	}
+
+	// GetString "kr.lucky" (RSQ VisualRewards' Kill Rewards asks it a tic after a kill by a Lucky Kill player): objectArg = the
+	// body, intArg = the tic it died. Why it was a lucky kill -- a critical / headshot / backstab / Finisher that landed within a
+	// tic of the death (RSQ_Dazed, set by RSQM.Touch), or RSQ Score's big moment ("kill.big") -- or "" for none.
+	override String GetString(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
+	{
+		if (request == "kr.lucky")
+		{
+			let a = Actor(objectArg);
+			if (!a) return "";
+			let d = RSQ_Dazed(a.FindInventory("RSQ_Dazed"));
+			if (d && d.luckyTic > 0 && intArg - d.luckyTic <= 1) return d.luckyWhy;
+			let s = RSQM.Svc("RS_ScoreService");
+			if (s && s.GetInt("kill.big", "", 0, 0, a) == 1) return "Score big moment";
+		}
+		return "";
 	}
 
 	override double GetDouble(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
