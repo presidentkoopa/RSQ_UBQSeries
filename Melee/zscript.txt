@@ -6,6 +6,7 @@ version "4.14"
 // Distance Grab). Needs no other RSQ pk3. See README.md.
 #include "zscript/rsqml/rsmenu.zs"   // Radiant Silvergun Options: the series' shared menu pieces (tools/rsmenu)
 #include "zscript/rsqml/a11y.zs"     // RSQML_A11y: RSQ_Accessibility's settings, read by name (Accessibility/tools/a11y_template.zs)
+#include "zscript/rsqml/handsync.zs" // RSQML_HandSync: the hands where the last frame put them, carried to the body now (tools/handsync)
 #include "zscript/rsqml/core.zs"
 #include "zscript/rsqml/service.zs"
 #include "zscript/rsqml/sparks.zs"    // the hit sparks (Capcom vs. SNK 2 art, tools/sparks.py)

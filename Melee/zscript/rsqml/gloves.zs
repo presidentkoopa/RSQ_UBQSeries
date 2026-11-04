@@ -336,7 +336,9 @@ class RSQML_Gloves : StaticEventHandler
 		if (!ok) { st.prevValid = false; return; }
 		// THE VELOCITY, SuperPunchOut's way: the hand against the pawn at the top of the tic
 		// (Prev), one tic, no averaging; a snap turn or a one-tic jump no arm makes is dropped.
-		Vector3 loc = hp - pmo.Prev;
+		// 2026-11-03: against the body's X/Y and the VIEW's height (RSQML_HandSync.Body), not the feet: the hands hang
+		// off the view, and the engine moves the view against the feet on every stair and landing
+		Vector3 loc = hp - RSQML_HandSync.Body(pmo);
 		int dt = now - st.prevTic;
 		bool had = st.prevValid;
 		Vector3 prev = st.loc;

@@ -214,8 +214,12 @@ class RSQML_Hands play
 		// out of VR the engine writes both hands to the pawn's chest (hw_vrmodes.cpp SetUp): never a real pose
 		if (!pmo.OverrideAttackPosDir || !pmo.player.PlayInVR) return (0, 0, 0), false;
 		if (pmo.AttackPos == pmo.OffhandPos) return (0, 0, 0), false;
-		Vector3 p = RSQML_A11y.Ctrl(pmo, h) == 0 ? pmo.AttackPos : pmo.OffhandPos;
+		int c = RSQML_A11y.Ctrl(pmo, h);
+		Vector3 p = c == 0 ? pmo.AttackPos : pmo.OffhandPos;
 		if (p == (0, 0, 0)) return p, false;
+		// 2026-11-03: the frame's hand carried to where the body is this tic (RSQML_HandSync), or a tic with no frame
+		// read a still hand as a step-long swing (owner: "strafing left and right causes the melee 'whoosh'")
+		p = RSQML_HandSync.Fix(pmo, p, c);
 		Vector3 d = p - pmo.Pos;
 		if (d.xy.Length() > ARM_MAX || d.z < -ARM_MAX || d.z > pmo.Height + ARM_MAX) return p, false;
 		return p, true;

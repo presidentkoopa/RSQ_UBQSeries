@@ -380,14 +380,14 @@ class RSQML_Headlock : StaticEventHandler
 		Vector3 arm = (0, 0, 0);
 		if (cHave[n])
 		{
-			arm = (hp - cPalm[n]) - (pmo.Pos - cBody[n]);
+			arm = (hp - cPalm[n]) - (RSQML_HandSync.Body(pmo) - cBody[n]);	// 2026-11-03: the body at the view's height (the hands hang off the view)
 			if (arm.Length() > 64.0) arm = (0, 0, 0);    // moved, not swung
 			armAt = (armAt + 1) % VWIN;
 			armRing[armAt] = arm;
 			if (armN < VWIN) armN++;
 		}
 		cPalm[n] = hp;
-		cBody[n] = pmo.Pos;
+		cBody[n] = RSQML_HandSync.Body(pmo);
 		cHave[n] = true;
 		// SLAM (Gun Bonsai VR, the off glove): the off hand swung DOWN hard while holding drives it into the floor
 		int slLv = RSQML.GrappleLevel(pmo, "Slam");

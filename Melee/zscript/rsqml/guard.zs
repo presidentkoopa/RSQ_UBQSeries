@@ -114,10 +114,13 @@ class RSQML_Guard : StaticEventHandler
 			int i = pn * 2 + h;
 			if (ok && pushOk[i])
 			{
-				Vector3 v = (hp - pmo.pos) - (pushPrev[i] - pmo.Prev);
+				// 2026-11-03: the hand against the BODY (RSQML_HandSync.Body). This read (hp - pos) - (pushPrev - Prev),
+				// but Prev is already this tic's position when WorldTick runs (P_Ticker clears interpolation first), so it
+				// was the hand's WORLD step: walking forward with the guard up read as a 4.9 m/s push, over PARRY_MPS.
+				Vector3 v = (hp - RSQML_HandSync.Body(pmo)) - pushPrev[i];
 				if ((v.xy dot fwd) * TICRATE / upm >= PARRY_MPS) pushing++;
 			}
-			pushPrev[i] = hp;
+			pushPrev[i] = hp - RSQML_HandSync.Body(pmo);
 			pushOk[i] = ok;
 		}
 		if (pushing == 2) pushTic[pn] = level.maptime;
