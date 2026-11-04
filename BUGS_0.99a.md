@@ -109,3 +109,14 @@ Found while rewriting the READMEs from the code (11-03 evening). None fixed yet;
 41. Stale comments: state.zs input summary (lock-on/throw now Use / off trigger); CVARINFO `ssq_perfect` "faster
     return" (really 1.6x faster turned shot + doubled shove).
 42. RSQ_ShieldSaw.pk3 still carries the old README: rebuild once the hands lane's ShieldSaw changes are committed.
+
+## TacticalRig
+43. SlowMo files the cigarette's slow motion as "automatic", not "smoke", whenever Gun Bonsai VR's Smoker is level 1+
+    (clock.zs ~358 matches only length == Slow Motion Seconds x 1000; cig.zs SmokeSecs adds 2 s per level). Smoke
+    rules and switch don't apply. Fix: tag the pulse by name instead of by length.
+44. Guns from packs other than Brutal Doom / BD22 VR / RSQ Saber are never drawn on the body (rig.zs DrawMarkers hides
+    anything not in RSQTRFIT); fit.zs header claims a pickup-size fallback that no longer exists; Flip These Guns /
+    Stored Gun Turn do little for them. Decide: restore the fallback or fix the comments.
+45. Menu leftovers: unused OptionValue "RSQTR_Pairs"; `rsqtr_debug_throw` missing from Reset All; stray comment text
+    on `rsqtr_icon_turn` in CVARINFO; Body Turn Angle/Delay only act with "Torso Catches Up With Head" on.
+46. cig.zs header still says "Rig only, not headset-confirmed" (owner confirmed every mod in the headset 11-03).
