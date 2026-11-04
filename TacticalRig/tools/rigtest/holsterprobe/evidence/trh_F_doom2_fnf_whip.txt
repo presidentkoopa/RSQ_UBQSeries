@@ -1,0 +1,147 @@
+trh: t0 hover -1/-1 | main Pistol off None pend nc | flare ph 0 n 4 | whip filed -1 | guns: | shown: RSQFF_:0
+trh: t1 hover -1/-1 | main Pistol off None pend nc | flare ph 0 n 4 | whip filed 11 | guns: | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: region 11 Whip at -0.06 forward -0.30 left -0.84 up from the eyes (eyes 1.45 m over the floor), radius 0.09
+trh: region 12 Flare at -0.06 forward 0.30 left -0.84 up from the eyes (eyes 1.45 m over the floor), radius 0.09
+trh: t35 hover -1/-1 | main Pistol off None pend nc | flare ph 0 n 4 | whip filed 11 | guns: | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t40 hover -1/-1 | main Pistol off None pend Chaingun | flare ph 0 n 4 | whip filed 11 | guns: | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t45 hover -1/-1 | main Pistol off None pend SuperShotgun | flare ph 0 n 4 | whip filed 11 | guns: | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t55 hover -1/-1 | main SuperShotgun off None pend nc | flare ph 0 n 4 | whip filed 11 | guns: | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t70 hover -1/-1 | main SuperShotgun off None pend nc | flare ph 0 n 4 | whip filed 11 | guns: | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t85 hover 0/-1 | main SuperShotgun off None pend nc | flare ph 0 n 4 | whip filed 11 | guns: | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t98 hover 0/-1 | main SuperShotgun off None pend Fist | flare ph 0 n 4 | whip filed 11 | guns: 0=SuperShotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t105 hover 0/-1 | main SuperShotgun off None pend Fist | flare ph 0 n 4 | whip filed 11 | guns: 0=SuperShotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t108 hover -1/-1 | main SuperShotgun off None pend Fist | flare ph 0 n 4 | whip filed 11 | guns: 0=SuperShotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t113 hover -1/-1 | main Fist off None pend nc | flare ph 0 n 4 | whip filed 11 | guns: 0=SuperShotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t133 hover -1/-1 | main Fist off None pend Shotgun | flare ph 0 n 4 | whip filed 11 | guns: 0=SuperShotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t140 hover -1/-1 | main Fist off None pend Shotgun | flare ph 0 n 4 | whip filed 11 | guns: 0=SuperShotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t148 hover -1/-1 | main Shotgun off None pend nc | flare ph 0 n 4 | whip filed 11 | guns: 0=SuperShotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+TRH_F_HOVER
+trh: t173 hover -1/12 | main Shotgun off None pend nc | flare ph 0 n 4 | whip filed 11 | guns: 0=SuperShotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t175 hover -1/12 | main Shotgun off None pend nc | flare ph 0 n 4 | whip filed 11 | guns: 0=SuperShotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t188 hover -1/-1 | main Shotgun off None pend nc | flare ph 0 n 4 | whip filed 11 | guns: 0=SuperShotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+TRH_F_TAKE
+trh: t198 hover -1/12 | main Shotgun off None pend nc | flare ph 0 n 4 | whip filed 11 | guns: 0=SuperShotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+T_RIG flare holster t210: a flare drawn into the off hand
+trh: t210 hover -1/12 | main Shotgun off None pend nc | flare ph 0 n 4 | whip filed 11 | guns: 0=SuperShotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+RSQFF take t211: a flare in the off hand (had nothing), 3 left in the pocket
+trh: t211 hover -1/12 | main Shotgun off RSQFF_Held pend nc | flare ph 1 n 3 | whip filed 11 | guns: 0=SuperShotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t221 hover -1/-1 | main Shotgun off RSQFF_Held pend nc | flare ph 1 n 3 | whip filed 11 | guns: 0=SuperShotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+TRH_F_BACK
+trh: t245 hover -1/-1 | main Shotgun off RSQFF_Held pend nc | flare ph 1 n 3 | whip filed 11 | guns: 0=SuperShotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+RSQFF strike t246: 12.07 m/s down (13.65 m/s in all, needs 1.40 down), lit in a moment unless it was a reach to a holster
+RSQFF strike t246: not a strike, the hand is in a Tactical Rig place
+trh: t246 hover -1/12 | main Shotgun off RSQFF_Held pend nc | flare ph 1 n 3 | whip filed 11 | guns: 0=SuperShotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+T_RIG flare holster t258: the unlit flare goes back
+RSQFF back t259: in the pocket again (4)
+trh: t259 hover -1/12 | main Shotgun off None pend nc | flare ph 0 n 4 | whip filed 11 | guns: 0=SuperShotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t269 hover -1/-1 | main Shotgun off None pend nc | flare ph 0 n 4 | whip filed 11 | guns: 0=SuperShotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t280 hover -1/-1 | main Shotgun off None pend nc | flare ph 0 n 4 | whip filed 11 | guns: 0=SuperShotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+TRH_F_TAKE2
+trh: t294 hover -1/12 | main Shotgun off None pend nc | flare ph 0 n 4 | whip filed 11 | guns: 0=SuperShotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+T_RIG flare holster t306: a flare drawn into the off hand
+RSQFF take t307: a flare in the off hand (had nothing), 3 left in the pocket
+trh: t307 hover -1/12 | main Shotgun off RSQFF_Held pend nc | flare ph 1 n 3 | whip filed 11 | guns: 0=SuperShotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t315 hover -1/12 | main Shotgun off RSQFF_Held pend nc | flare ph 1 n 3 | whip filed 11 | guns: 0=SuperShotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t317 hover -1/-1 | main Shotgun off RSQFF_Held pend nc | flare ph 1 n 3 | whip filed 11 | guns: 0=SuperShotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+TRH_F_OFFDRAW_OTHER_HOLSTER
+RSQFF strike t342: 9.62 m/s down (11.03 m/s in all, needs 1.40 down), lit in a moment unless it was a reach to a holster
+RSQFF strike t342: not a strike, the hand is in a Tactical Rig place
+trh: t342 hover -1/0 | main Shotgun off RSQFF_Held pend nc | flare ph 1 n 3 | whip filed 11 | guns: 0=SuperShotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t350 hover -1/0 | main Shotgun off RSQFF_Held pend nc | flare ph 1 n 3 | whip filed 11 | guns: 0=SuperShotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t355 hover -1/0 | main Shotgun off RSQFF_Held pend SuperShotgun | flare ph 1 n 3 | whip filed 11 | guns: | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+RSQFF back t359: in the pocket again (4)
+trh: t359 hover -1/0 | main Shotgun off SuperShotgun pend nc | flare ph 0 n 4 | whip filed 11 | guns: | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t365 hover -1/-1 | main Shotgun off SuperShotgun pend nc | flare ph 0 n 4 | whip filed 11 | guns: | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t385 hover -1/-1 | main Shotgun off SuperShotgun pend nc | flare ph 0 n 4 | whip filed 11 | guns: | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+TRH_F_OFF_GUN_BACK_TO_HIP
+trh: t410 hover -1/0 | main Shotgun off SuperShotgun pend nc | flare ph 0 n 4 | whip filed 11 | guns: | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t420 hover -1/0 | main Shotgun off SuperShotgun pend nc | flare ph 0 n 4 | whip filed 11 | guns: | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t423 hover -1/0 | main Shotgun off None pend nc | flare ph 0 n 4 | whip filed 11 | guns: 0=SuperShotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t433 hover -1/-1 | main Shotgun off None pend nc | flare ph 0 n 4 | whip filed 11 | guns: 0=SuperShotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t455 hover -1/-1 | main Shotgun off None pend nc | flare ph 0 n 4 | whip filed 11 | guns: 0=SuperShotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+TRH_F_TAKE3
+trh: t458 hover -1/12 | main Shotgun off None pend nc | flare ph 0 n 4 | whip filed 11 | guns: 0=SuperShotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+T_RIG flare holster t470: a flare drawn into the off hand
+RSQFF take t471: a flare in the off hand (had nothing), 3 left in the pocket
+trh: t471 hover -1/12 | main Shotgun off RSQFF_Held pend nc | flare ph 1 n 3 | whip filed 11 | guns: 0=SuperShotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t481 hover -1/-1 | main Shotgun off RSQFF_Held pend nc | flare ph 1 n 3 | whip filed 11 | guns: 0=SuperShotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t490 hover -1/-1 | main Shotgun off RSQFF_Held pend nc | flare ph 1 n 3 | whip filed 11 | guns: 0=SuperShotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+TRH_F_EMPTY_GUN_HOLSTER
+RSQFF strike t506: 5.42 m/s down (6.85 m/s in all, needs 1.40 down), lit in a moment unless it was a reach to a holster
+RSQFF strike t506: not a strike, the hand is in a Tactical Rig place
+trh: t506 hover -1/6 | main Shotgun off RSQFF_Held pend nc | flare ph 1 n 3 | whip filed 11 | guns: 0=SuperShotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+RSQFF back t519: in the pocket again (4)
+trh: t519 hover -1/6 | main Shotgun off None pend nc | flare ph 0 n 4 | whip filed 11 | guns: 0=SuperShotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t525 hover -1/6 | main Shotgun off None pend nc | flare ph 0 n 4 | whip filed 11 | guns: 0=SuperShotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t529 hover -1/-1 | main Shotgun off None pend nc | flare ph 0 n 4 | whip filed 11 | guns: 0=SuperShotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+TRH_F_TAKE4
+trh: t554 hover -1/12 | main Shotgun off None pend nc | flare ph 0 n 4 | whip filed 11 | guns: 0=SuperShotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t560 hover -1/12 | main Shotgun off None pend nc | flare ph 0 n 4 | whip filed 11 | guns: 0=SuperShotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+T_RIG flare holster t566: a flare drawn into the off hand
+RSQFF take t567: a flare in the off hand (had nothing), 3 left in the pocket
+trh: t567 hover -1/12 | main Shotgun off RSQFF_Held pend nc | flare ph 1 n 3 | whip filed 11 | guns: 0=SuperShotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t577 hover -1/-1 | main Shotgun off RSQFF_Held pend nc | flare ph 1 n 3 | whip filed 11 | guns: 0=SuperShotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t595 hover -1/-1 | main Shotgun off RSQFF_Held pend nc | flare ph 1 n 3 | whip filed 11 | guns: 0=SuperShotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+TRH_F_MAIN_SLOT_SWITCH
+trh: t602 hover -1/-1 | main Shotgun off RSQFF_Held pend Chaingun | flare ph 1 n 3 | whip filed 11 | guns: 0=SuperShotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t617 hover -1/-1 | main Chaingun off RSQFF_Held pend nc | flare ph 1 n 3 | whip filed 11 | guns: 0=SuperShotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t630 hover -1/-1 | main Chaingun off RSQFF_Held pend nc | flare ph 1 n 3 | whip filed 11 | guns: 0=SuperShotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+TRH_F_MAIN_NEXT
+trh: t642 hover -1/-1 | main Chaingun off RSQFF_Held pend Fist | flare ph 1 n 3 | whip filed 11 | guns: 0=SuperShotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t657 hover -1/-1 | main Fist off RSQFF_Held pend nc | flare ph 1 n 3 | whip filed 11 | guns: 0=SuperShotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t665 hover -1/-1 | main Fist off RSQFF_Held pend nc | flare ph 1 n 3 | whip filed 11 | guns: 0=SuperShotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+TRH_F_MAIN_HAND_AT_FLARE
+trh: t682 hover 12/-1 | main Fist off RSQFF_Held pend nc | flare ph 1 n 3 | whip filed 11 | guns: 0=SuperShotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+T_RIG flare holster t694: refused (hand 0, flare 1)
+trh: t700 hover 12/-1 | main Fist off RSQFF_Held pend nc | flare ph 1 n 3 | whip filed 11 | guns: 0=SuperShotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t705 hover -1/-1 | main Fist off RSQFF_Held pend nc | flare ph 1 n 3 | whip filed 11 | guns: 0=SuperShotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+TRH_F_LIGHT
+RSQFF light t731: struck by the trigger, burns 60 s
+trh: t731 hover -1/-1 | main Fist off RSQFF_Held pend nc | flare ph 2 n 3 | whip filed 11 | guns: 0=SuperShotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+RSQFF lights t735: 1 burning, 1 giving light (cap 3, radius 140), peak 1
+trh: t735 hover -1/-1 | main Fist off RSQFF_Held pend nc | flare ph 2 n 3 | whip filed 11 | guns: 0=SuperShotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+TRH_F_LIT_AT_HOLSTER
+trh: t768 hover -1/12 | main Fist off RSQFF_Held pend nc | flare ph 2 n 3 | whip filed 11 | guns: 0=SuperShotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+RSQFF lights t770: 1 burning, 1 giving light (cap 3, radius 140), peak 1
+trh: t770 hover -1/12 | main Fist off RSQFF_Held pend nc | flare ph 2 n 3 | whip filed 11 | guns: 0=SuperShotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+T_RIG flare holster t780: refused (hand 1, flare 2)
+RSQFF thrown t781 at (-105 782 73), 0.00 m/s, vel (0.0 0.0 0.0) a tic
+trh: t781 hover -1/12 | main Fist off None pend nc | flare ph 0 n 3 | whip filed 11 | guns: 0=SuperShotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t781 a flare left the hand: RSQFF_Flare at (-105 782 73)
+trh: t791 hover -1/-1 | main Fist off None pend nc | flare ph 0 n 3 | whip filed 11 | guns: 0=SuperShotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+RSQFF lights t805: 1 burning, 1 giving light (cap 3, radius 140), peak 1
+trh: t805 hover -1/-1 | main Fist off None pend nc | flare ph 0 n 3 | whip filed 11 | guns: 0=SuperShotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+TRH_F_OFF_GUN_TO_HIP
+trh: t836 hover -1/0 | main Fist off None pend nc | flare ph 0 n 3 | whip filed 11 | guns: 0=SuperShotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+RSQFF lights t840: 1 burning, 1 giving light (cap 3, radius 140), peak 1
+trh: t840 hover -1/0 | main Fist off None pend nc | flare ph 0 n 3 | whip filed 11 | guns: 0=SuperShotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t849 hover -1/0 | main Fist off None pend SuperShotgun | flare ph 0 n 3 | whip filed 11 | guns: | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t850 hover -1/0 | main Fist off SuperShotgun pend nc | flare ph 0 n 3 | whip filed 11 | guns: | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t859 hover -1/-1 | main Fist off SuperShotgun pend nc | flare ph 0 n 3 | whip filed 11 | guns: | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+RSQFF lights t875: 1 burning, 1 giving light (cap 3, radius 140), peak 1
+trh: t875 hover -1/-1 | main Fist off SuperShotgun pend nc | flare ph 0 n 3 | whip filed 11 | guns: | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+TRH_F_TAKE5
+trh: t884 hover -1/12 | main Fist off SuperShotgun pend nc | flare ph 0 n 3 | whip filed 11 | guns: | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+T_RIG flare holster t896: a flare drawn into the off hand
+RSQFF take t897: a flare in the off hand (had SuperShotgun), 2 left in the pocket
+trh: t897 hover -1/12 | main Fist off RSQFF_Held pend nc | flare ph 1 n 2 | whip filed 11 | guns: | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t907 hover -1/-1 | main Fist off RSQFF_Held pend nc | flare ph 1 n 2 | whip filed 11 | guns: | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+RSQFF lights t910: 1 burning, 1 giving light (cap 3, radius 140), peak 1
+trh: t910 hover -1/-1 | main Fist off RSQFF_Held pend nc | flare ph 1 n 2 | whip filed 11 | guns: | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+TRH_F_LIGHT2
+RSQFF light t933: struck by the trigger, burns 60 s
+trh: t933 hover -1/-1 | main Fist off RSQFF_Held pend nc | flare ph 2 n 2 | whip filed 11 | guns: | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+RSQFF lights t945: 2 burning, 2 giving light (cap 3, radius 140), peak 2
+trh: t945 hover -1/-1 | main Fist off RSQFF_Held pend nc | flare ph 2 n 2 | whip filed 11 | guns: | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+TRH_F_OFFDRAW_LIT
+trh: t970 hover -1/0 | main Fist off RSQFF_Held pend nc | flare ph 2 n 2 | whip filed 11 | guns: | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+RSQFF lights t980: 2 burning, 2 giving light (cap 3, radius 140), peak 2
+trh: t980 hover -1/0 | main Fist off RSQFF_Held pend nc | flare ph 2 n 2 | whip filed 11 | guns: | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+RSQFF thrown t983 at (-101 784 76), 0.00 m/s, vel (0.0 0.0 0.0) a tic
+trh: t983 hover -1/0 | main Fist off SuperShotgun pend nc | flare ph 0 n 2 | whip filed 11 | guns: | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t983 a flare left the hand: RSQFF_Flare at (-101 784 76)
+trh: t993 hover -1/-1 | main Fist off SuperShotgun pend nc | flare ph 0 n 2 | whip filed 11 | guns: | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+RSQFF lights t1015: 2 burning, 2 giving light (cap 3, radius 140), peak 2
+trh: t1015 hover -1/-1 | main Fist off SuperShotgun pend nc | flare ph 0 n 2 | whip filed 11 | guns: | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+RSQFF lights t1050: 2 burning, 2 giving light (cap 3, radius 140), peak 2
+trh: t1050 hover -1/-1 | main Fist off SuperShotgun pend nc | flare ph 0 n 2 | whip filed 11 | guns: | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)

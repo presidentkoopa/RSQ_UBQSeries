@@ -18,7 +18,8 @@
 //   GetInt("rig.drawtic", "", 0, 0, pawn)   level.maptime of that player's last draw from
 //                                           a holster this map, or -1 (RSQ_Score's Quick Draw)
 //   GetString("rig.drawn", "", 0, 0, pawn)  the weapon class that draw brought up, or ""
-//   GetInt("rig.holster", "<weapon class>", 0, 0, pawn)  the region that gun is holstered in, or -1
+//   GetInt("rig.holster", "<weapon class>", 0, 0, pawn)  the region that gun is holstered in, or -1 (RSQ Whip's
+//                                           whip: 11, its own holster, while that is on and it is not in a hand)
 //   GetString("rig.regionname", "", region)              that region's name ("Left hip" ...)
 // (RSQ Wheel badges a holstered gun's card with where it hangs.)
 // These two are synced play state (the draw is a network event), so they answer for any
@@ -88,6 +89,9 @@ class RSQTR_RigService : Service
 		{
 			int n = who ? who.PlayerNumber() : consoleplayer;
 			if (n < 0 || n >= MAXPLAYERS || stringArg == "") return -1;
+			// the whip lives in its own holster while that is on (rig.zs WhipApply)
+			if (stringArg ~== RSQTR_Rig.WHIP_CLASS && playeringame[n] && players[n].mo && RSQTR_Rig.WhipHolsterOn(players[n]))
+				return (!RSQTR_Rig.WhipOf(players[n].mo) || RSQTR_Rig.WhipInHand(players[n].mo)) ? -1 : RSQTR_Region.WHIP;
 			for (int r = 0; r < RSQTR_Region.N; r++)
 				if (rig.lastPut[n * RSQTR_Region.N + r] ~== stringArg) return r;
 			return -1;

@@ -93,6 +93,8 @@ here (the body, the holsters, the torso that follows your turns) is worked out i
 | Throw a gun | Swing the hand fast (2.5 m/s) outside every holster, then grip, or Use with the main hand | Lands as a pickup you can take again |
 | Grenade | Either hand at the belt buckle, grip | Again with the grenade in hand: your gun comes back |
 | Saber | Main hand at the main-side saber spot, off hand at the other | Needs RSQ Saber; a saber put on any empty holster goes to its own spot |
+| Whip | The whip's hand at the whip holster, grip (or Use): put away, or drawn | Needs RSQ Whip. Main-hand hip, 8 cm behind and 9 cm outside the saber spot, same height; the hand RSQ Whip's Whip In names. Never goes in a gun holster: a draw from another holster, the weapon wheel or a slot key leaves it in its own; a whip put on an empty gun holster goes home |
+| Flare | Off hand at the flare holster, grip: an unlit flare comes up; grip with an unlit flare: it goes back | Needs RSQ FnF; the mirror of the whip holster on the off-hand hip, the same flares as FnF's chest pocket. A lit flare cannot go in (FnF's rule: the grip drops it at your feet, burning). An off-hand draw from another holster puts an unlit flare back here, lets a lit one fall |
 | Recenter torso | Both controllers against your chest (within 0.20 m of a point 0.30 m under your eyes) for 0.4 s | No grip, Use or fire held; let go before doing it again |
 | Recenter Torso key | Bindable: Customize Controls → RSQ Tactical Rig, or the rig's own page | |
 | Move a holster | Move Holsters by Hand on: grip inside a ring, carry it, let go | The keyring moves the same way |
@@ -164,6 +166,10 @@ Options → Radiant Silvergun Options → RSQ Tactical Rig
 | Torso Catches Up With Head | Off | Older turn rule: a head held round eases the torso after it |
 | Leave Shoulder to ShieldSaw | On | Off shoulder is the shield's while it is stowed there |
 | Saber on Hip Too | Off | The main saber also clips to the hips |
+| Whip Holster | On | RSQ Whip's whip has its own holster on the main-hand hip |
+| Show Whip in Holster | On | The whip hangs coiled there while it is in neither hand |
+| Flare Holster | On | RSQ FnF's flares have their own holster on the off-hand hip |
+| Show Flare in Holster | On | A flare hangs there while you carry one |
 | Slow Motion After a Smoke | On | RSQ SlowMo when the cigarette is flicked |
 | Refill Each Level | On | The pocket refills |
 
@@ -174,7 +180,8 @@ Stored Gun Turn (0), Flip These Guns (blank), Mirror Distance (1.0 m), Body Turn
 (1.0 s) for Torso Catches Up With Head, Torso: Ignore Looking Down Past (25 degrees), Press Delay (3 tics), Throw
 Swing Speed (2.5 m/s), Thrown Gun Damage (1.0), Main Grip Keys (446), Off Grip Keys (443 436), Reset All. Sub pages:
 - Holster Positions: forward, left, up and size in metres from your eyes for every holster, the grenade spot, the
-  keyring and both saber spots. Hips 0.70 m down, 0.18 m out; chest 0.46 down, 0.12 out, 0.10 forward; shoulders
+  keyring, both saber spots, the whip holster and the flare holster (their side value is toward the main hand for the
+  whip, toward the off hand for the flare: 0.06 m back, 0.30 m out, 0.84 m down, size 0.09). Hips 0.70 m down, 0.18 m out; chest 0.46 down, 0.12 out, 0.10 forward; shoulders
   0.10 down, 0.18 out, 0.08 back.
 - Torso Fit: Height (-0.20 m), Forward (-0.04 m), Size (1.0), Helmet Height (0), Low Health Glow (under 35).
 - Cigarette: Mouth Zone Size (1.0), Mouth Cigarette Forward (0.12 m), Mouth Cigarette Down (0.07 m), Smoke Time

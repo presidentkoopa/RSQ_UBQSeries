@@ -50,6 +50,15 @@ user float rsqtr_r7_f =  0.10; user float rsqtr_r7_l = -0.12; user float rsqtr_r
 nosave float rsqtr_r8_f = 0.14; nosave float rsqtr_r8_l = 0.13; nosave float rsqtr_r8_u = -0.70; nosave float rsqtr_r8_rad = 0.12;
 user float rsqtr_r9_f = 0.02;  user float rsqtr_r9_l =  0.21; user float rsqtr_r9_u = -0.84; user float rsqtr_r9_rad = 0.10;
 user float rsqtr_r10_f = 0.02; user float rsqtr_r10_l = -0.21; user float rsqtr_r10_u = -0.84; user float rsqtr_r10_rad = 0.10;
+// 11 the whip holster, 12 the flare holster (owner 11-03 20:14): behind and outside the saber spots, the same height.
+// Their "left" is toward a hand: the whip's toward the MAIN hand, the flare's toward the OFF hand. This machine only
+// (nosave, as the keyring's): only this machine reads where its own hands reach.
+nosave float rsqtr_r11_f = -0.06; nosave float rsqtr_r11_l = 0.30; nosave float rsqtr_r11_u = -0.84; nosave float rsqtr_r11_rad = 0.09;
+nosave float rsqtr_r12_f = -0.06; nosave float rsqtr_r12_l = 0.30; nosave float rsqtr_r12_u = -0.84; nosave float rsqtr_r12_rad = 0.09;
+user bool   rsqtr_whip_holster = true;   // RSQ Whip's whip has its own holster on the main hand's hip (and never goes into a gun holster)
+user bool   rsqtr_flare_holster = true;  // RSQ FnF's flares have their own holster on the off hand's hip (the same flares as its pocket)
+nosave bool rsqtr_whip_show   = true;    // the whip hangs coiled at its holster while it is in neither hand
+nosave bool rsqtr_flare_show  = true;    // a flare hangs at its holster while you carry one
 
 user int    rsqtr_profile_active = 1;     // the holster profile in use: its colour on the spheres (1 blue, 2 orange, 3 purple, 4 yellow)
 // Profiles are this machine's alone (nosave: never sent to other players). As user settings they

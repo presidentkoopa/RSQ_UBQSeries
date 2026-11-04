@@ -1,0 +1,5 @@
+Script error, "trhprobe.pk3:zscript.txt" line 43:
+Script error, "trhprobe.pk3:zscript.txt" line 43:
+Script error, "trhprobe.pk3:zscript.txt" line 48:
+Script error, "trhprobe.pk3:zscript.txt" line 48:
+Script error, "trhprobe.pk3:zscript.txt" line 49:

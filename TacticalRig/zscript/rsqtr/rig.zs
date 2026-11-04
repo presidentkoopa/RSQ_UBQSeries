@@ -26,12 +26,14 @@ class RSQTR_Region
 	// profile saved before the chest pair has them empty: they keep the values they had. One saved
 	// before the keyring had index 8 (then retired, the lower back) empty: loading it puts the keyring
 	// back at its default (Profile).
-	const N = 11;
-	static const String NAMES[] = { "Left hip", "Right hip", "", "Grenades", "Left shoulder", "Right shoulder", "Left chest", "Right chest", "Keyring", "Left saber", "Right saber" };
+	const N = 13;
+	static const String NAMES[] = { "Left hip", "Right hip", "", "Grenades", "Left shoulder", "Right shoulder", "Left chest", "Right chest", "Keyring", "Left saber", "Right saber", "Whip", "Flare" };
 	const SABER_L = 9;
 	const GRENADES = 3;
 	const KEYRING = 8;
 	const SABER_R = 10;
+	const WHIP = 11;
+	const FLARE = 12;
 	static bool Retired(int r) { return r == 2; }
 
 	// Defaults, metres from the head in the body frame: forward, left, up, radius (0: retired).
@@ -45,10 +47,18 @@ class RSQTR_Region
 	// 0.13 to the off-hand side, 0.70 under the eyes), radius its old grab reach (GRAB_M, 0.12). Its "left" is
 	// TOWARD THE OFF HAND (mirrored for a left-handed layout, as it always hung), not the body's left.
 	// It is no gun holster: only the keyring and its key-doors grip use it.
-	static const double DF[] = {  0.00,  0.00, 0,  0.12, -0.08, -0.08,  0.10,  0.10,  0.14,  0.02,  0.02 };
-	static const double DL[] = {  0.18, -0.18, 0,  0.00,  0.18, -0.18,  0.12, -0.12,  0.13,  0.21, -0.21 };
-	static const double DU[] = { -0.70, -0.70, 0, -0.62, -0.10, -0.10, -0.46, -0.46, -0.70, -0.84, -0.84 };
-	static const double DR[] = {  0.14,  0.14, 0,  0.08,  0.14,  0.14,  0.11,  0.11,  0.12,  0.10,  0.10 };
+	// 11 THE WHIP and 12 THE FLARE (owner 2026-11-03 20:14: "a dedicated whip holster on the right hip, a few units behind
+	// and to the right (outside) of the lightsaber holster, same height above the ground; and its mirror on the left hip
+	// for the flare"). Measured against the saber spots' own numbers (above: 0.02 forward, 0.21 out, 0.84 under the eyes,
+	// radius 0.10): 0.08 m further back and 0.09 m further out, the same 0.84 down -- 0.12 m (4.1 map units at 34 a metre)
+	// from the saber spot's centre, 0.19 m from the hip holster's. Radius 0.09: the spheres touch the saber's and the hip's
+	// a little, and the nearest centre wins (WorldTick), so each is found by reaching a hand's width past the saber.
+	// Their "left" is TOWARD A HAND (as the keyring's): the whip's toward the MAIN hand, the flare's toward the OFF hand
+	// (Settings turns it into the body's left for the engine's handedness, LeftHanded, as the saber spots follow it).
+	static const double DF[] = {  0.00,  0.00, 0,  0.12, -0.08, -0.08,  0.10,  0.10,  0.14,  0.02,  0.02, -0.06, -0.06 };
+	static const double DL[] = {  0.18, -0.18, 0,  0.00,  0.18, -0.18,  0.12, -0.12,  0.13,  0.21, -0.21,  0.30,  0.30 };
+	static const double DU[] = { -0.70, -0.70, 0, -0.62, -0.10, -0.10, -0.46, -0.46, -0.70, -0.84, -0.84, -0.84, -0.84 };
+	static const double DR[] = {  0.14,  0.14, 0,  0.08,  0.14,  0.14,  0.11,  0.11,  0.12,  0.10,  0.10,  0.09,  0.09 };
 }
 
 class RSQTR_Rig : EventHandler
@@ -198,6 +208,10 @@ class RSQTR_Rig : EventHandler
 		}
 		// the keyring's "left" is toward the off hand (RSQTR_Region.DL's note)
 		if (RSQTR_Body.LayoutLeft()) cL[RSQTR_Region.KEYRING] = -cL[RSQTR_Region.KEYRING];
+		// the whip's "left" is toward the main hand, the flare's toward the off hand (RSQTR_Region.DL's note)
+		bool lh = RSQTR_Body.LeftHanded();
+		if (!lh) cL[RSQTR_Region.WHIP] = -cL[RSQTR_Region.WHIP];
+		if (lh) cL[RSQTR_Region.FLARE] = -cL[RSQTR_Region.FLARE];
 	}
 
 	// Where region r is, in the world, for this player.
@@ -341,6 +355,69 @@ class RSQTR_Rig : EventHandler
 			|| n.IndexOf("rsqgn_") == 0 || n.IndexOf("rsq_grenade") == 0;
 	}
 
+	// ---- THE WHIP AND FLARE HOLSTERS (owner 2026-11-03 20:14, "Build both now") ---------------------------------------
+	// Two dedicated holsters, each holding ONE thing and nothing else, found by name (the rig works without either mod):
+	//   THE WHIP (RSQ Whip's RSQWP_WhipWeapon) at place 11, on the main hand's hip (rsqtr_whip_holster). Like the saber's
+	//   spot it holds no copy: the whip is in its holster whenever you own it and it is in neither hand. So it never goes
+	//   into a gun holster (HoldsGun / IsMovedGun / Content leave it out while this holster is on), and whatever takes it
+	//   out of the hand -- a draw from another holster, the weapon wheel, a slot key, BD's own switches -- leaves it home.
+	//   A hand holding it at an EMPTY gun holster puts it home (as the saber's "put anywhere, goes home"). Drawn into the
+	//   hand RSQ Whip's Whip In names (rsqwp_whip_hand, by name: main unless set to the off hand); only that hand works it.
+	//   THE FLARE (RSQ FnF's road flare) at place 12, on the off hand's hip (rsqtr_flare_holster). It holds the same
+	//   flares as FnF's chest pocket (its RSQFF_Ammo): the off hand grips there and FnF's own take brings an unlit flare up
+	//   (its "rsqff_take", which waits out the engine's two-hand steadying and gives the hand back what it had); an unlit
+	//   flare gripped there goes back (FnF's "rsqff_back"). A LIT FLARE CANNOT GO IN (FnF's rule: only unlit flares go
+	//   back): the rig refuses with a short tick and FnF's own grip rule acts as anywhere else (a still grip drops it at
+	//   your feet, burning; a swing throws it). Taken from the off hand any other way (an off-hand draw from another
+	//   holster, another weapon raised there), FnF itself puts an unlit flare back (so it is in this holster again) and
+	//   lets a lit one fall burning. FnF's state is asked of its RSQFF_Service ("flare.phase", "flare.count").
+	// Each shows on the body as its own model while stored (rsqtr_whip_show / rsqtr_flare_show): the class RSQ Whip /
+	// RSQ FnF ship for it (RSQWP_Stowed, RSQFF_Stowed, MODELDEF in their pk3s), spawned by name; without it, nothing.
+	const WHIP_CLASS = "RSQWP_WhipWeapon";
+	static bool WhipLoaded() { String n = WHIP_CLASS; class<Weapon> c = n; return c != null; }
+	static bool FlareLoaded() { String n = "RSQFF_Held"; class<Weapon> c = n; return c != null; }
+	static bool IsWhip(Weapon w) { if (!w) return false; String n = w.GetClassName(); return n ~== WHIP_CLASS; }
+	static bool WhipHolsterOn(PlayerInfo p) { return Flag("rsqtr_whip_holster", p, true) && WhipLoaded(); }
+	static bool FlareHolsterOn(PlayerInfo p)
+	{
+		if (!Flag("rsqtr_flare_holster", p, true) || !FlareLoaded()) return false;
+		let c = CVar.FindCVar("rsqff_on");
+		return !c || c.GetBool();
+	}
+	// a whip that stays out of the gun holsters: the holster is on for its owner
+	static bool HomeWhip(Weapon w) { return IsWhip(w) && w.Owner && w.Owner.player && WhipHolsterOn(w.Owner.player); }
+	static Weapon WhipOf(PlayerPawn pmo)
+	{
+		String n = WHIP_CLASS;
+		class<Weapon> c = n;
+		return (c && pmo) ? Weapon(pmo.FindInventory(c)) : null;
+	}
+	// the hand the whip belongs to: the hand holding it, else RSQ Whip's Whip In (0 main, 1 off)
+	static int WhipHand(PlayerPawn pmo)
+	{
+		let w = WhipOf(pmo);
+		let p = pmo.player;
+		if (w && p.ReadyWeapon == w) return 0;
+		if (w && p.OffhandWeapon == w) return 1;
+		let cv = CVar.GetCVar("rsqwp_whip_hand", p);
+		return (cv && cv.GetInt() == 1) ? 1 : 0;
+	}
+	static bool WhipInHand(PlayerPawn pmo)
+	{
+		let w = WhipOf(pmo);
+		let p = pmo.player;
+		return w && (p.ReadyWeapon == w || p.OffhandWeapon == w || p.PendingWeapon == w);
+	}
+	// RSQ FnF, asked by name: the flare in that player's off hand (0 none, 1 unlit, 2 lit; -1 no answer) and the flares
+	// carried (its pocket's count, the same flares this holster holds)
+	static int FlareAsk(String what, PlayerPawn pmo)
+	{
+		let it = ServiceIterator.Find("RSQFF_Service");
+		Service s;
+		while (s = it.Next()) return s.GetInt(what, "", pmo.PlayerNumber(), 0, pmo);
+		return -1;
+	}
+
 	// The weapon an empty hand holds: a slot-1 weapon you own, the fist rather than
 	// the chainsaw (the higher SelectionOrder: Doom picks the chainsaw first).
 	// rsqtr_empty names one explicitly.
@@ -444,6 +521,7 @@ class RSQTR_Rig : EventHandler
 			return;
 		}
 		if (!pmo || pmo.health <= 0) return;
+		if (e.Name == "rsqtr_whip") { WhipApply(pmo, e.Args[0] & 1, e.Args[1] != 0); return; }
 		if (e.Name == "rsqtr_holster_off") { HolsterOff(pmo, e.Args[0]); return; }
 		if (e.Name == "rsqtr_draw_off") { DrawOff(pmo, e.Args[0]); return; }
 		if (e.Name == "rsqtr_holster") Holster(pmo, e.Args[0]);
@@ -790,14 +868,46 @@ class RSQTR_Rig : EventHandler
 		if (Flag("rsqtr_debug_throw", p, false)) Console.Printf("T_BOOMERANG t%d %s back %s", level.maptime, cls, lv >= 2 ? "in the hand" : "in a holster");
 	}
 
-	// The gun in gun holster r for player n: what was put there, while you still own it.
+	// The gun in gun holster r for player n: what was put there, while you still own it. A whip filed in a gun holster
+	// before the whip holster existed (or while it was off) is not there while the whip holster is on: it is home.
 	String Content(PlayerPawn pmo, int r)
 	{
 		if (!pmo || !IsGunRegion(r)) return "";
 		String c = lastPut[pmo.PlayerNumber() * RSQTR_Region.N + r];
 		if (c == "") return "";
+		if (c ~== WHIP_CLASS && WhipHolsterOn(pmo.player)) return "";
 		class<Weapon> wc = c;
 		return (wc && pmo.FindInventory(wc)) ? c : "";
+	}
+
+	// THE WHIP HOLSTER'S ACTION (every machine, from the network event): put the whip away from hand h, or draw it into h.
+	private void WhipApply(PlayerPawn pmo, int h, bool draw)
+	{
+		let p = pmo.player;
+		int n = pmo.PlayerNumber();
+		let w = WhipOf(pmo);
+		if (!w || !WhipHolsterOn(p)) return;
+		bool dbg = Flag("rsqtr_messages", p, false);
+		if (!draw)
+		{
+			if (h == 0 && p.ReadyWeapon == w)
+			{
+				let empty = EmptyHand(pmo);
+				if (empty && empty != w) p.PendingWeapon = empty;
+			}
+			else if (h == 1 && p.OffhandWeapon == w) EmptyOff(pmo);
+			else return;
+			pmo.A_StartSound("rsqtr/holster", CHAN_AUTO, CHANF_LOCAL, 0.8);
+			if (dbg) Console.Printf("T_RIG whip holster t%d: the whip goes home from the %s hand", level.maptime, h ? "off" : "main");
+			return;
+		}
+		if (p.ReadyWeapon == w || p.OffhandWeapon == w) return;
+		if (h == 0) { w.bOffhandWeapon = false; p.PendingWeapon = w; }
+		else { w.bOffhandWeapon = true; QueueOff(n, WHIP_CLASS); }
+		drawTic[n * 2 + h] = level.maptime + 1;
+		drawClass[n * 2 + h] = w.GetClassName();
+		pmo.A_StartSound("rsqtr/draw", CHAN_AUTO, CHANF_LOCAL, 0.8);
+		if (dbg) Console.Printf("T_RIG whip holster t%d: the whip drawn into the %s hand", level.maptime, h ? "off" : "main");
 	}
 
 	// A real gun in the main hand: not the empty hand (fists / BD22Q's hands), not a saber.
@@ -805,6 +915,7 @@ class RSQTR_Rig : EventHandler
 	{
 		let w = pmo.player.ReadyWeapon;
 		if (!w || IsSaber(w) || RSQTR_Cig.IsProp(w)) return false;    // the cigarette is no gun (never thrown, never holstered)
+		if (HomeWhip(w)) return false;                                 // the whip has its own holster
 		let empty = EmptyHand(pmo);
 		return w != empty;
 	}
@@ -815,7 +926,7 @@ class RSQTR_Rig : EventHandler
 	// are not guns the rig moves (Dual is its own key).
 	static bool IsMovedGun(Weapon w)
 	{
-		if (!w || IsSaber(w) || RSQTR_Cig.IsProp(w)) return false;
+		if (!w || IsSaber(w) || RSQTR_Cig.IsProp(w) || HomeWhip(w)) return false;
 		let d = GetDefaultByType(w.GetClass());
 		return d && !d.bOffhandWeapon;
 	}
@@ -1482,6 +1593,7 @@ class RSQTR_Rig : EventHandler
 		double f, l, u;
 		BodyOffsets(pmo, editAt, f, l, u);
 		if (r == RSQTR_Region.KEYRING && RSQTR_Body.LayoutLeft()) l = -l;     // its "left" is toward the off hand
+		if ((r == RSQTR_Region.WHIP && !RSQTR_Body.LeftHanded()) || (r == RSQTR_Region.FLARE && RSQTR_Body.LeftHanded())) l = -l;   // toward a hand
 		CVar.FindCVar(String.Format("rsqtr_r%d_f", r)).SetFloat(f);
 		CVar.FindCVar(String.Format("rsqtr_r%d_l", r)).SetFloat(l);
 		CVar.FindCVar(String.Format("rsqtr_r%d_u", r)).SetFloat(u);
@@ -1502,6 +1614,8 @@ class RSQTR_Rig : EventHandler
 		if (IsSaberRegion(r)) { if (!SaberLoaded()) return false; }
 		else if (IsGrenadeRegion(r)) { if (!HasGrenadeWeapon() || !Flag("rsqtr_grenades", pmo.player, true)) return false; }
 		else if (r == RSQTR_Region.KEYRING) { if (!Flag("rsqtr_keyring", pmo.player, true)) return false; }
+		else if (r == RSQTR_Region.WHIP) { if (!WhipHolsterOn(pmo.player)) return false; }
+		else if (r == RSQTR_Region.FLARE) { if (!FlareHolsterOn(pmo.player)) return false; }
 		else if (!IsGunRegion(r)) return false;      // a retired index (RSQTR_Region.Retired)
 		return !RSQTR_Hooks.Claimed(pmo, r);
 	}
@@ -1538,8 +1652,29 @@ class RSQTR_Rig : EventHandler
 			}
 			return;
 		}
+		if (r == RSQTR_Region.WHIP) { WhipPress(pmo, p, h); return; }
+		if (r == RSQTR_Region.FLARE) { FlarePress(pmo, p, h); return; }
 		Array<String> own;
 		Owned(pmo, r, own);
+		// THE WHIP AND AN UNLIT FLARE PUT ON AN EMPTY GUN HOLSTER GO TO THEIR OWN (as the saber below): the hand holding
+		// one at an empty gun holster puts it home. At a full one the gun is drawn as always (the whip is no gun here,
+		// HoldsGun), and the whip -- or the flare, which FnF puts back once the hand is taken -- is home.
+		if (IsGunRegion(r) && Content(pmo, r) == "")
+		{
+			let hw = h == 0 ? p.ReadyWeapon : p.OffhandWeapon;
+			if (HomeWhip(hw))
+			{
+				EventHandler.SendNetworkEvent("rsqtr_whip", h, 0);
+				RSQTR_Buzzer.Start(pmo, h, 0.55, 5);
+				return;
+			}
+			if (h == 1 && FlareHolsterOn(p) && FlareAsk("flare.phase", pmo) == 1)
+			{
+				EventHandler.SendNetworkEvent("rsqff_back");
+				RSQTR_Buzzer.Start(pmo, h, 0.55, 5);
+				return;
+			}
+		}
 		// A SABER PUT ANYWHERE GOES TO ITS OWN HOLSTER (the owner, 10-27: "if I try to put the
 		// sabers anywhere else, they just jump to their dedicated slots"). Put on an empty holster,
 		// the saber goes home instead; on a holster with a gun, the gun is drawn as always and the
@@ -1644,6 +1779,53 @@ class RSQTR_Rig : EventHandler
 		// a saber spot lists one saber at most (Owned): draw it
 		EventHandler.SendNetworkEvent("rsqtr_draw", r, 0);
 		RSQTR_Buzzer.Start(pmo, h, 0.65, 6);
+	}
+
+	// THE WHIP HOLSTER: the whip's own hand (WhipHand) puts it away or draws it; a gun in that hand stays in the inventory
+	// (as at the saber's spot). The other hand, or no whip, does nothing.
+	private void WhipPress(PlayerPawn pmo, PlayerInfo p, int h)
+	{
+		let w = WhipOf(pmo);
+		bool dbg = Flag("rsqtr_messages", p, false);
+		if (!w || h != WhipHand(pmo))
+		{
+			RSQTR_Buzzer.Start(pmo, h, 0.12, 2);
+			if (dbg) pmo.A_Print(!w ? "Whip: none" : "Whip: the other hand's", 0, RSQTR_A11y.PrintFont());
+			return;
+		}
+		bool inHand = (h == 0 ? p.ReadyWeapon : p.OffhandWeapon) == w;
+		EventHandler.SendNetworkEvent("rsqtr_whip", h, inHand ? 0 : 1);
+		RSQTR_Buzzer.Start(pmo, h, inHand ? 0.55 : 0.65, inHand ? 5 : 6);
+	}
+
+	// THE FLARE HOLSTER: the off hand only (the flare is RSQ FnF's off-hand weapon). Empty of a flare: one comes up, unlit
+	// (FnF's take); an unlit flare goes back (FnF's back); a lit one cannot go in (refused; FnF's own grip rule acts).
+	private void FlarePress(PlayerPawn pmo, PlayerInfo p, int h)
+	{
+		bool dbg = Flag("rsqtr_messages", p, false);
+		int ph = FlareAsk("flare.phase", pmo);
+		if (h != 1 || ph < 0 || ph == 2)
+		{
+			RSQTR_Buzzer.Start(pmo, h, 0.12, 2);
+			if (dbg) Console.Printf("T_RIG flare holster t%d: refused (hand %d, flare %d)", level.maptime, h, ph);
+			return;
+		}
+		if (ph == 1)
+		{
+			EventHandler.SendNetworkEvent("rsqff_back");
+			RSQTR_Buzzer.Start(pmo, h, 0.55, 5);
+			if (dbg) Console.Printf("T_RIG flare holster t%d: the unlit flare goes back", level.maptime);
+			return;
+		}
+		if (FlareAsk("flare.count", pmo) <= 0)
+		{
+			RSQTR_Buzzer.Start(pmo, h, 0.12, 2);
+			pmo.A_Print("No flares left", 1);
+			return;
+		}
+		EventHandler.SendNetworkEvent("rsqff_take");
+		RSQTR_Buzzer.Start(pmo, h, 0.65, 6);
+		if (dbg) Console.Printf("T_RIG flare holster t%d: a flare drawn into the off hand", level.maptime);
 	}
 
 	// The sphere's skin (MODELDEF RSQTR_Marker): A blue idle, B green with a hand inside, C-E
@@ -1779,6 +1961,7 @@ class RSQTR_Rig : EventHandler
 				}
 				if (put != "" && fitT.Find(put) < 0) put = "";
 			}
+			if (r == RSQTR_Region.WHIP || r == RSQTR_Region.FLARE) { DrawStowed(pmo, p, r, at, live); continue; }
 			if (icons && live && put != "")
 			{
 				if (!icon[r]) icon[r] = Actor.Spawn("RSQTR_Icon", at);
@@ -1799,6 +1982,45 @@ class RSQTR_Rig : EventHandler
 			else if (icon[r]) icon[r].bINVISIBLE = true;
 			if (IsGrenadeRegion(r)) DrawNade(pmo, p, at, live);
 		}
+	}
+
+	// ---- THE WHIP AND THE FLARE ON THE BODY (owner 2026-11-03 20:14: "draw the holstered whip/flare on the body as their
+	// models when stored, switchable") -------------------------------------------------------------------------------
+	// The whip, coiled, while you own it and it is in neither hand (nor being raised); a flare while you carry one (the
+	// holster shares FnF's pocket: one in the hand, more in the holster, one still shows). Each is its own mod's class
+	// (RSQWP_Stowed, RSQFF_Stowed: their MODELDEF sizes the mesh to the real thing and centres it on the actor), spawned
+	// by name and held in icon[] so the mirror copies it. Hung as worn, in the body's frame:
+	//   the whip's coil flat against the outside of the hip, the coil facing out (the mesh's coil plane is its own X-Z),
+	//     the handle down and toward the back (STOW_WHIP_ROLL leans it a little out at the bottom, as a clip holds it);
+	//   the flare upright, cap up, leaning STOW_FLARE_LEAN forward so the cap is toward the hand reaching down.
+	// Size: Stored Gun Size (rsqtr_icon_scale) scales both. Left-handed: each is on its own hand's side (Settings) and the
+	// whip's handle still points back (the coil is symmetric; the roll is mirrored).
+	const STOW_WHIP_ROLL = 8;
+	const STOW_FLARE_LEAN = 15;
+	private void DrawStowed(PlayerPawn pmo, PlayerInfo p, int r, Vector3 at, bool live)
+	{
+		bool whip = r == RSQTR_Region.WHIP;
+		bool want = live && Flag(whip ? "rsqtr_whip_show" : "rsqtr_flare_show", p, true);
+		if (want) want = whip ? (WhipOf(pmo) && !WhipInHand(pmo)) : FlareAsk("flare.count", pmo) > 0;
+		String cn = whip ? "RSQWP_Stowed" : "RSQFF_Stowed";
+		class<Actor> c = cn;
+		if (!want || !c)
+		{
+			if (icon[r]) icon[r].bINVISIBLE = true;
+			return;
+		}
+		if (icon[r] && icon[r].GetClass() != c) { icon[r].Destroy(); icon[r] = null; }
+		if (!icon[r]) icon[r] = Actor.Spawn(c, at);
+		let a = icon[r];
+		if (!a) return;
+		double by = (body && body.primed) ? body.yaw : pmo.angle;
+		double side = (whip != RSQTR_Body.LeftHanded()) ? -1 : 1;     // +1 the body's left side, -1 its right
+		double sc = Num("rsqtr_icon_scale", p, 1.0);
+		a.SetOrigin(at, true);
+		a.Scale = (sc, sc);
+		if (whip) { a.angle = by; a.pitch = 0; a.roll = -side * STOW_WHIP_ROLL; }
+		else { a.angle = by; a.pitch = -(90 - STOW_FLARE_LEAN); a.roll = 0; }
+		a.bINVISIBLE = false;
 	}
 
 	// ---- THE GRENADE IN ITS HOLSTER (owner 2026-11-03 17:10: "When I have a grenade in my inventory I should see it in
@@ -2040,7 +2262,8 @@ class RSQTR_Rig : EventHandler
 		let it = ThinkerIterator.Create("Actor");
 		Actor a;
 		while (a = Actor(it.Next()))
-			if (a is "RSQTR_Marker" || a is "RSQTR_Icon" || a is "RSQTR_TorsoPart" || a is "RSQTR_MarinePart" || a is "RSQTR_HelmetPart" || a is "RSQTR_HeldShow" || a is "RSQTR_AmmoDigit") a.Destroy();
+			if (a is "RSQTR_Marker" || a is "RSQTR_Icon" || a is "RSQTR_TorsoPart" || a is "RSQTR_MarinePart" || a is "RSQTR_HelmetPart" || a is "RSQTR_HeldShow" || a is "RSQTR_AmmoDigit"
+				|| a.GetClassName() == 'RSQWP_Stowed' || a.GetClassName() == 'RSQFF_Stowed') a.Destroy();
 	}
 
 	// OnRegister also runs when a save is loaded (a level's handlers get no WorldLoaded

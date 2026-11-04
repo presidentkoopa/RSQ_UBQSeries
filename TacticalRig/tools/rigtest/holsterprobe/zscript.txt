@@ -1,0 +1,70 @@
+version "4.14"
+// TEST ONLY (never ships). The whip and flare holsters (owner 2026-11-03 20:14). Logs a line on every change (and once a
+// second): each hand's region, both hands' weapons and the one being raised, the flare's phase and count (asked of FnF's
+// service), where the whip is filed (rig.holster), every gun holster's contents, and the stowed whip / flare actors that
+// are VISIBLE, with where they sit from their holster's centre (metres, body frame: forward, left, up). Class names are
+// looked up at run time, so it loads without the whip or FnF.
+class RSQTRHolsterProbe : EventHandler
+{
+	String last;
+	override void WorldTick()
+	{
+		let p = players[0];
+		let mo = p.mo;
+		if (!mo) return;
+		let rg = RSQTR_Rig.Get();
+		if (!rg) return;
+		String sh = "";
+		static const String CLS[] = { "RSQWP_Stowed", "RSQFF_Stowed" };
+		static const int REG[] = { 11, 12 };
+		for (int k = 0; k < 2; k++)
+		{
+			String cn = CLS[k];
+			class<Actor> c = cn;
+			if (!c) { sh = sh .. String.Format(" %s:noclass", cn); continue; }
+			Vector3 at = rg.RegionAt(mo, REG[k]);
+			int vis = 0; String where = "";
+			let it = ThinkerIterator.Create(c);
+			Actor a;
+			while (a = Actor(it.Next()))
+			{
+				if (a.bINVISIBLE) continue;
+				vis++;
+				double f, l, u;
+				rg.BodyOffsets(mo, a.pos, f, l, u);
+				double f0, l0, u0;
+				rg.BodyOffsets(mo, at, f0, l0, u0);
+				where = where .. String.Format("(d %.2f %.2f %.2f a%.0f p%.0f r%.0f)", f - f0, l - l0, u - u0, Actor.DeltaAngle(rg.BodyYaw(mo), a.angle), a.pitch, a.roll);
+			}
+			sh = sh .. String.Format(" %s:%d%s", cn.Mid(0, 6), vis, where);
+		}
+		String guns = "";
+		for (int r = 0; r < RSQTR_Region.N; r++) { String c = rg.Content(mo, r); if (c != "") guns = guns .. String.Format(" %d=%s", r, c); }
+		int ph = RSQTR_Rig.FlareAsk("flare.phase", mo), cnt = RSQTR_Rig.FlareAsk("flare.count", mo);
+		let svc = ServiceIterator.Find("RSQTR_RigService").Next();
+		int wr = svc ? svc.GetInt("rig.holster", "RSQWP_WhipWeapon", 0, 0, mo) : -9;
+		String now = String.Format("hover %d/%d | main %s off %s pend %s | flare ph %d n %d | whip filed %d | guns:%s | shown:%s",
+			rg.HoverRegion(0), rg.HoverRegion(1), p.ReadyWeapon ? p.ReadyWeapon.GetClassName() : 'none', p.OffhandWeapon ? p.OffhandWeapon.GetClassName() : 'none',
+			(p.PendingWeapon && p.PendingWeapon != WP_NOCHANGE) ? p.PendingWeapon.GetClassName() : 'nc', ph, cnt, wr, guns, sh);
+		if (now != last || level.maptime % 35 == 0)
+		{
+			Console.Printf("trh: t%d %s", level.maptime, now);
+			last = now;
+		}
+		// where the two holsters are, from the eyes, in room metres (x right, y up from the floor, z back: qz_*hand's axes)
+		if (level.maptime == 30)
+		{
+			for (int k = 11; k <= 12; k++)
+			{
+				double f, l, u;
+				rg.BodyOffsets(mo, rg.RegionAt(mo, k), f, l, u);
+				Console.Printf("trh: region %d %s at %.2f forward %.2f left %.2f up from the eyes (eyes %.2f m over the floor), radius %.2f", k, RSQTR_Region.NAMES[k], f, l, u, (mo.player.viewz - mo.floorz) * RSQTR_Body.Ps() / RSQTR_Body.Upm(), rg.RegionRadius(p, k));
+			}
+		}
+	}
+	// a lying burning flare: logged where it lies
+	override void WorldThingSpawned(WorldEvent e)
+	{
+		if (e.Thing && e.Thing.GetClassName() == 'RSQFF_Flare') Console.Printf("trh: t%d a flare left the hand: %s at (%.0f %.0f %.0f)", level.maptime, e.Thing.GetClassName(), e.Thing.pos.x, e.Thing.pos.y, e.Thing.pos.z);
+	}
+}
