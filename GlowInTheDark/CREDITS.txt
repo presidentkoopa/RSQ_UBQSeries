@@ -19,10 +19,18 @@ GLOWING LIQUIDS -- after GlowingLiquids
   1.1's liquid glow was "built off of GlowingLiquids by Finder153"
   (https://forum.zdoom.org/viewtopic.php?f=46&t=69911); its GLDEFS list was extensively added to by the owner.
 
+RS RADIANCE -- presidentkoopa
+  The owner's later direction for this concept (UZDXREMA): colour policies in a seeded window, seamless rooms,
+  waves, looks, reactive lighting. Ideas carried over where QuestZDoom 17.3 allows; no code copied.
+
 WRITTEN FOR THIS PACK
-  The ZScript (zscript/rsqgd): the map-start pass, the switches, the service. tools/gen_liquids.py.
+  All ZScript (zscript/rsqgd): the map-start pass, profiles, the writer, living liquids, the things that matter,
+  the reactions, the service, the menu rows. tools/gen_liquids.py.
+  "Subdued" light style: the idea of the Subdued Lights mod (double radius, half brightness), applied to this
+  mod's own few lights only; nothing of that mod is used.
 
 PLAYS WELL WITH (not bundled, not changed)
-  DarkDoomZ by Caligari87 (Dark Doom concept by Josh771). This mod never touches what DarkDoomZ changes (sector light
-  levels, fog density, its flashlight): it only writes the floor/ceiling glow of each sector.
+  DarkDoomZ by Caligari87 (Dark Doom concept by Josh771). This mod writes glow colours, not what DarkDoomZ owns
+  (light levels, fog, its flashlight); during a miniboss it lowers DarkDoomZ's own Post-Gain setting and puts it
+  back, and a menu row can apply a profile's DarkDoomZ Mode/Preset.
   1.1's readme also recommended MoreLights, Lights2.wad, Subtle Lights and SynthDoom Vol4.

@@ -1,20 +1,73 @@
-// RSQ Glow In The Dark -- settings. Server cvars (the host's settings, the same on every machine), saved
-// between sessions (1.1's were noarchive and reset every launch). Yes-style picks are on by default.
-// The 1.1 name each one replaces is given after it.
+// RSQ Glow In The Dark -- settings. Server cvars (the host's, the same on every machine), remembered between
+// sessions (1.1's were noarchive). Yes-style rows default on, Option-style off. 1.1's names in brackets.
 
-server bool rsqgd_enabled = true;      // the whole mod (new: 1.1 had no master switch; its GLDEFS always ran)
-server bool rsqgd_planes = true;       // floor and ceiling glow on the walls of every sector   (1.1 color_toggle)
-server bool rsqgd_liquids = true;      // the owner's Glow list (liquids, slime, lava, screens, exit signs) glows
-                                       // in each flat's own colour                               (1.1: always on)
-server bool rsqgd_liquid_own = true;   // those flats keep their own colour under the floor/ceiling glow; off =
-                                       // 1.1 exactly (its floor/ceiling colour painted over them)
-server bool rsqgd_fixed = false;       // fixed colours below instead of random ones               (1.1 color_ovrand)
-server int rsqgd_height = 64;          // how far the glow reaches up/down the walls, map units    (1.1 height: it
-                                       // existed in 1.1's cvarinfo but its script always used 64)
-server int rsqgd_ceil_r = 135;         // fixed ceiling glow colour                                (1.1 color_red)
-server int rsqgd_ceil_g = 135;         //                                                          (1.1 color_green)
-server int rsqgd_ceil_b = 135;         //                                                          (1.1 color_blue)
-server int rsqgd_floor_r = 135;        // fixed floor glow colour                                  (1.1 color_redd)
-server int rsqgd_floor_g = 135;        //                                                          (1.1 color_greenn)
-server int rsqgd_floor_b = 135;        //                                                          (1.1 color_bluee)
-user int rsqgd_debug = 0;              // 1: one console line per map (sectors, groups, glowing flats, DarkDoomZ)
+// ---- the main page ----
+server bool rsqgd_enabled = true;        // the whole mod
+server int rsqgd_profile = 2;            // 0 Custom, 1 Random Profile, 2 Classic (1.1), 3.. named (zscript/rsqgd/profiles.zs)
+server int rsqgd_reroll = 1;             // new colours: 0 Never, 1 Every Map (1.1), 2 On Each Death, 3 On Each Level-Up, 4 Every N Minutes
+server int rsqgd_reroll_min = 5;         //   N for Every N Minutes
+server int rsqgd_seed = 1337;            //   the colour seed for Never (Shuffle Now writes a new one)
+server float rsqgd_strength = 1.0;       // overall glow strength (on top of the profile's)
+server int rsqgd_height = 64;            // glow height: 64 = the profile as written     (1.1 height: in its cvarinfo, never used)
+
+// ---- glow types ----
+server bool rsqgd_planes = true;         // floor and ceiling glow on every room's walls  (1.1 color_toggle)
+server bool rsqgd_liquids = true;        // liquids glow (the owner's Glow list, GLDEFS.txt)  (1.1: always on)
+server int rsqgd_liquid_own = 1;         // liquid colour: 0 like 1.1 (the room's colour paints over them), 1 the profile
+                                         //   decides, 2 always their own colour
+server bool rsqgd_living = true;         // living liquids: each liquid breathes in its own colour and rhythm
+server bool rsqgd_splash = true;         // splash flares: something dying in a liquid flares the pool
+server bool rsqgd_guess = true;          // also glow flats whose NAME says liquid (unknown map packs, Oblige, TERRAIN)
+server bool rsqgd_hazards = true;        // floors that hurt (and are not a known liquid) throb red
+server bool rsqgd_secrets = false;       // secret rooms shimmer gold until found
+server bool rsqgd_darkboost = true;      // glow stronger in dark rooms (pairs with DarkDoomZ)
+server int rsqgd_groupby = 0;            // one colour per: 0 the profile decides (Classic: tag group), 1 tag group (1.1), 2 room
+server bool rsqgd_blend = false;         // blend neighbouring rooms' colours (RS Radiance's seamless walls)
+
+// ---- things that matter ----
+server bool rsqgd_things = true;         // switches, exits, locked doors (their key's colour), teleporter pads glow
+server bool rsqgd_things_doors = true;   //   ordinary doors too (a faint cool edge)
+server float rsqgd_things_strength = 1.0;
+server int rsqgd_items = 1;              // keys and pickups drawn bright: 0 off, 1 keys and powerups, 2 + health and
+                                         //   armour, 3 + ammo and weapons
+
+// ---- reactions (each found by name; nothing happens without the other mod) ----
+server bool rsqgd_mb = true;             // RSQ Miniboss: the map turns its colour and throbs while it lives
+server int rsqgd_mb_colour = 1;          //   0 blood red, 1 the miniboss's own colour (red until RSQ Miniboss says it), 2 custom
+server color rsqgd_mb_custom = "ff 00 00";
+server bool rsqgd_mb_darken = true;      //   the map darkens meanwhile (through DarkDoomZ's post-gain when it is loaded)
+server int rsqgd_mb_dark = 48;           //   by how much light
+server bool rsqgd_wave = true;           // Gun Bonsai level-up: a gold wave rolls across the map's glow
+server color rsqgd_wave_color = "ff c0 20";
+server bool rsqgd_combo = true;          // RSQ Score: the glow climbs with the kill chain
+server float rsqgd_combo_gain = 0.08;    //   per kill in the chain (up to 10)
+server bool rsqgd_slowmo = true;         // RSQ SlowMo: the glow drains toward cold grey while time is slowed
+
+// ---- custom look (profile Custom) ----
+server int rsqgd_c_floor_mode = 0;       // 0 any colour (1.1), 1 fixed (the sliders), 2 a profile's colours, 3 off
+server int rsqgd_c_ceil_mode = 0;
+server int rsqgd_c_palette = 4;          // the profile whose colours mode 2 uses
+server int rsqgd_ceil_r = 135;           // fixed ceiling colour   (1.1 color_red)
+server int rsqgd_ceil_g = 135;           //                        (1.1 color_green)
+server int rsqgd_ceil_b = 135;           //                        (1.1 color_blue)
+server int rsqgd_floor_r = 135;          // fixed floor colour     (1.1 color_redd)
+server int rsqgd_floor_g = 135;          //                        (1.1 color_greenn)
+server int rsqgd_floor_b = 135;          //                        (1.1 color_bluee)
+server float rsqgd_c_jitter = 0.0;
+server float rsqgd_c_strength = 1.0;
+server float rsqgd_c_floor_gain = 1.0;
+server float rsqgd_c_ceil_gain = 1.0;
+server int rsqgd_c_shape = 0;            // 0 steady, 1 breathe, 2 heartbeat, 3 candle, 4 hue drift, 5 ripple
+server float rsqgd_c_rate = 10.0;        // cycles per minute
+server float rsqgd_c_depth = 0.3;
+server int rsqgd_c_liquid = 0;           // 0 own colour, 1 lean to the room's, 2 the room's
+
+// ---- quality (the Quality row sets these; Quest = no dynamic lights) ----
+server int rsqgd_budget = 128;           // rooms re-written per tic at most while something moves (2/3 near the players)
+server int rsqgd_liq_lights = 0;         // real lights over the largest pools (Quest 0, PCVR 4)
+server int rsqgd_item_lights = 0;        // small lights on the most important items (Quest 0, PCVR 6)
+server int rsqgd_light_style = 1;        // our lights: 0 Normal, 1 Subdued (double radius, half brightness)
+
+// ---- housekeeping ----
+server int rsqgd_ddz_saved = -9999;      // DarkDoomZ's post-gain while a big moment darkened the map (put back after)
+user int rsqgd_debug = 0;                // 1: a line per map; 2: + a line per second (ms per tic, writes, lights)

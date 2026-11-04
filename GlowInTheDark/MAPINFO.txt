@@ -1,4 +1,4 @@
 GameInfo
 {
-	AddEventHandlers = "RSQGD_Handler"
+	AddEventHandlers = "RSQGD_Session", "RSQGD_Handler"
 }

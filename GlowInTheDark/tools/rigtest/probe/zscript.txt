@@ -8,12 +8,32 @@ class RSGDP_Handler : EventHandler
 	{
 		let mo = players[e.Player].mo;
 		if (!mo) return;
-		if (e.Name == "rsgdp_tp")
+		if (e.Name == "rsgdp_tp" && (e.Args[0] || e.Args[1]))
 		{
 			mo.SetOrigin((e.Args[0], e.Args[1], 0), false);
 			mo.SetZ(mo.floorz);
 			mo.angle = e.Args[2]; mo.pitch = 0;
 			mo.vel = (0, 0, 0);
+		}
+		else if (e.Name == "rsgdp_door")
+		{
+			// the Nth locked door (Door_LockedRaise / Generic_Door with a lock): stand 160 in front of it, facing it
+			int want = e.Args[0], n = 0;
+			for (int l = 0; l < Level.Lines.Size(); l++)
+			{
+				Line ln = Level.Lines[l];
+				if (!(ln.special == 13 || (ln.special == 202 && ln.args[4]))) continue;
+				if (n++ != want) continue;
+				Vector2 a = ln.v1.p, b = ln.v2.p, mid = (a + b) / 2, d = b - a;
+				Vector2 nrm = (d.y, -d.x).Unit();
+				Vector2 at = mid + nrm * 160;
+				if (Level.PointInSector(at) != ln.frontsector) { nrm = -nrm; at = mid + nrm * 160; }
+				mo.SetOrigin((at.x, at.y, 0), false);
+				mo.SetZ(mo.floorz);
+				mo.angle = atan2(mid.y - at.y, mid.x - at.x); mo.pitch = 0; mo.vel = (0, 0, 0);
+				Console.Printf("[RSGDP] door %d line %d lock %d at %.0f %.0f", want, l, ln.special == 13 ? ln.args[3] : ln.args[4], at.x, at.y);
+				break;
+			}
 		}
 		else if (e.Name == "rsgdp_dump")
 		{
@@ -29,6 +49,8 @@ class RSGDP_Handler : EventHandler
 			let s = mo.CurSector;
 			let it = ServiceIterator.Find("RSQGD_Service"); Service sv = it ? it.Next() : null;
 			if (sv) Console.Printf("[RSGDP] service: enabled %d liquid-sectors %d darkdoomz %d", sv.GetInt("enabled"), sv.GetInt("liquid", "", -1), sv.GetInt("darkdoomz"));
+			let pg = CVar.FindCVar("ddz_postgain");
+			if (pg) Console.Printf("[RSGDP] ddz_postgain %d", pg.GetInt());
 			Console.Printf("[RSGDP] tic %d sector %d floor %s glow %06x h %.0f | ceil %s glow %06x h %.0f | planes colour %d flat-own %d off %d | light %d",
 				Level.maptime, s.Index(), TexMan.GetName(s.GetTexture(0)), int(s.GetGlowColor(0)) & 0xFFFFFF, s.GetGlowHeight(0),
 				TexMan.GetName(s.GetTexture(1)), int(s.GetGlowColor(1)) & 0xFFFFFF, s.GetGlowHeight(1), on, tex, off, s.lightlevel);

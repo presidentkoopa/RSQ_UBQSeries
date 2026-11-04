@@ -22,30 +22,189 @@ AddOptionMenu "RSQ_RSOptions"
 }
 // ----------------------------------------------------------------------------------------------------
 
+OptionValue "RSQGD_Reroll"
+{
+	0, "Never"
+	1, "Every Map"
+	2, "On Each Death"
+	3, "On Each Level-Up"
+	4, "Every N Minutes"
+}
+OptionValue "RSQGD_LiquidOwn"
+{
+	0, "Like 1.1 (Room Colour)"
+	1, "Profile Decides"
+	2, "Always Their Own"
+}
+OptionValue "RSQGD_GroupBy"
+{
+	0, "Profile Decides"
+	1, "Tag Group (1.1)"
+	2, "Each Room"
+}
+OptionValue "RSQGD_Items"
+{
+	0, "Off"
+	1, "Keys and Powerups"
+	2, "+ Health and Armour"
+	3, "+ Ammo and Weapons"
+}
+OptionValue "RSQGD_MbColour"
+{
+	0, "Blood Red"
+	1, "The Miniboss's Own"
+	2, "Custom"
+}
+OptionValue "RSQGD_PlaneMode"
+{
+	0, "Any Colour (1.1)"
+	1, "Fixed (Sliders)"
+	2, "A Profile's Colours"
+	3, "Off"
+}
+OptionValue "RSQGD_Shape"
+{
+	0, "Steady"
+	1, "Breathe"
+	2, "Heartbeat"
+	3, "Candle"
+	4, "Hue Drift"
+	5, "Ripple"
+}
+OptionValue "RSQGD_CLiquid"
+{
+	0, "Own Colour"
+	1, "Lean to the Room's"
+	2, "The Room's Colour"
+}
+OptionValue "RSQGD_LightStyle"
+{
+	0, "Normal"
+	1, "Subdued"
+}
+OptionValue "RSQGD_Debug"
+{
+	0, "Off"
+	1, "One Line per Map"
+	2, "+ Every Second"
+}
+// QUALITY: Quest = no dynamic lights at all; PCVR = a few, Subdued. The plane glow itself is the same on both.
+OptionString "RSQGD_P_Quality"
+{
+	"rsqgd_budget 128 rsqgd_liq_lights 0 rsqgd_item_lights 0", "Quest"
+	"rsqgd_budget 512 rsqgd_liq_lights 4 rsqgd_item_lights 6 rsqgd_light_style 1", "PCVR"
+}
+
 OptionMenu "RSQGD_Options"
 {
 	Title "RSQ GLOW IN THE DARK"
 	Option "Glow In The Dark", "rsqgd_enabled", "OnOff"
 	StaticText ""
-	Option "Floor and Ceiling Glow", "rsqgd_planes", "OnOff", "rsqgd_enabled"
-	Option "Liquids and Lit Flats Glow", "rsqgd_liquids", "OnOff", "rsqgd_enabled"
-	Option "Liquids Keep Their Own Colour", "rsqgd_liquid_own", "OnOff", "rsqgd_enabled"
-	Slider "Glow Height", "rsqgd_height", 8, 256, 8, 0, "rsqgd_enabled"
+	RSQGDProfile "Profile", "rsqgd_profile"
+	RSQGDNote 0
+	RSQGDNote 1
+	RSQGDPairing "Use This DarkDoomZ Pairing"
+	Command "Shuffle Profile Now", "netevent rsqgd_shuffle"
+	Option "Re-roll Colours", "rsqgd_reroll", "RSQGD_Reroll"
+	Slider "  Every N Minutes", "rsqgd_reroll_min", 1, 30, 1, 0
+	Slider "Strength", "rsqgd_strength", 0.1, 2.0, 0.05, 2
+	Slider "Glow Height", "rsqgd_height", 8, 256, 8, 0
+	RSQGDPreset "Quality", "RSQGD_P_Quality"
 	StaticText ""
-	Option "Fixed Colours (no random)", "rsqgd_fixed", "OnOff", "rsqgd_enabled"
+	Submenu "Glow Types", "RSQGD_Types"
+	Submenu "Things That Matter", "RSQGD_Things"
+	Submenu "Reactions", "RSQGD_React"
+	Submenu "Custom Look", "RSQGD_Custom"
+	Submenu "Tuning and Debug", "RSQGD_Tuning"
+}
+
+OptionMenu "RSQGD_Types"
+{
+	Title "GLOW TYPES"
+	Option "Floor and Ceiling Glow", "rsqgd_planes", "OnOff"
+	Option "Liquids Glow", "rsqgd_liquids", "OnOff"
+	Option "  Liquid Colour", "rsqgd_liquid_own", "RSQGD_LiquidOwn"
+	Option "  Living Liquids", "rsqgd_living", "OnOff"
+	Option "  Splash Flares", "rsqgd_splash", "OnOff"
+	Option "  Guess Liquids by Name", "rsqgd_guess", "OnOff"
+	Option "Floors That Hurt Throb Red", "rsqgd_hazards", "OnOff"
+	Option "Secret Rooms Shimmer", "rsqgd_secrets", "OnOff"
+	Option "Stronger in the Dark", "rsqgd_darkboost", "OnOff"
+	Option "One Colour Per", "rsqgd_groupby", "RSQGD_GroupBy"
+	Option "Blend Neighbouring Rooms", "rsqgd_blend", "OnOff"
+}
+
+OptionMenu "RSQGD_Things"
+{
+	Title "THINGS THAT MATTER"
+	Option "Switches, Exits, Locked Doors", "rsqgd_things", "OnOff"
+	Option "  Ordinary Doors Too", "rsqgd_things_doors", "OnOff"
+	Slider "  Strength", "rsqgd_things_strength", 0.2, 2.0, 0.1, 1
+	StaticText "Locked doors glow in their key's colour, brighter once you hold it.", "darkgray"
 	StaticText ""
-	StaticText "Ceiling Glow", "gold"
-	Slider "Red", "rsqgd_ceil_r", 0, 255, 15, 0, "rsqgd_fixed"
-	Slider "Green", "rsqgd_ceil_g", 0, 255, 15, 0, "rsqgd_fixed"
-	Slider "Blue", "rsqgd_ceil_b", 0, 255, 15, 0, "rsqgd_fixed"
+	Option "Keys and Pickups Glow", "rsqgd_items", "RSQGD_Items"
+}
+
+OptionMenu "RSQGD_React"
+{
+	Title "REACTIONS"
+	StaticText "Each needs its mod loaded; none needs any other.", "darkgray"
 	StaticText ""
-	StaticText "Floor Glow", "gold"
-	Slider "Red", "rsqgd_floor_r", 0, 255, 15, 0, "rsqgd_fixed"
-	Slider "Green", "rsqgd_floor_g", 0, 255, 15, 0, "rsqgd_fixed"
-	Slider "Blue", "rsqgd_floor_b", 0, 255, 15, 0, "rsqgd_fixed"
+	Option "Miniboss Tint (RSQ Miniboss)", "rsqgd_mb", "OnOff"
+	Option "  Colour", "rsqgd_mb_colour", "RSQGD_MbColour"
+	ColorPicker "  Custom Colour", "rsqgd_mb_custom"
+	Option "  Darken the Map", "rsqgd_mb_darken", "OnOff"
+	Slider "  By", "rsqgd_mb_dark", 8, 128, 8, 0
 	StaticText ""
-	StaticText "Changes show within a second. Random colours are drawn once per map.", "darkgray"
+	Option "Level-Up Wave (Gun Bonsai)", "rsqgd_wave", "OnOff"
+	ColorPicker "  Wave Colour", "rsqgd_wave_color"
 	StaticText ""
-	Option "Debug Line in the Console", "rsqgd_debug", "OnOff"
-	SafeCommand "Reset All", "resetcvar rsqgd_enabled rsqgd_planes rsqgd_liquids rsqgd_liquid_own rsqgd_fixed rsqgd_height rsqgd_ceil_r rsqgd_ceil_g rsqgd_ceil_b rsqgd_floor_r rsqgd_floor_g rsqgd_floor_b rsqgd_debug", "Reset all RSQ Glow In The Dark settings?"
+	Option "Combo Glow (RSQ Score)", "rsqgd_combo", "OnOff"
+	Slider "  Per Kill", "rsqgd_combo_gain", 0.02, 0.2, 0.02, 2
+	StaticText ""
+	Option "SlowMo Drain (RSQ SlowMo)", "rsqgd_slowmo", "OnOff"
+}
+
+OptionMenu "RSQGD_Custom"
+{
+	Title "CUSTOM LOOK"
+	StaticText "Used when Profile is Custom.", "darkgray"
+	StaticText ""
+	Option "Floor Glow", "rsqgd_c_floor_mode", "RSQGD_PlaneMode"
+	Option "Ceiling Glow", "rsqgd_c_ceil_mode", "RSQGD_PlaneMode"
+	RSQGDProfile "  Colours From", "rsqgd_c_palette"
+	StaticText ""
+	StaticText "Ceiling Glow (Fixed)", "gold"
+	Slider "Red", "rsqgd_ceil_r", 0, 255, 15, 0
+	Slider "Green", "rsqgd_ceil_g", 0, 255, 15, 0
+	Slider "Blue", "rsqgd_ceil_b", 0, 255, 15, 0
+	StaticText ""
+	StaticText "Floor Glow (Fixed)", "gold"
+	Slider "Red", "rsqgd_floor_r", 0, 255, 15, 0
+	Slider "Green", "rsqgd_floor_g", 0, 255, 15, 0
+	Slider "Blue", "rsqgd_floor_b", 0, 255, 15, 0
+	StaticText ""
+	Slider "Strength", "rsqgd_c_strength", 0.1, 2.0, 0.05, 2
+	Slider "Colour Wander", "rsqgd_c_jitter", 0, 1, 0.05, 2
+	Slider "Floor Balance", "rsqgd_c_floor_gain", 0, 2, 0.1, 1
+	Slider "Ceiling Balance", "rsqgd_c_ceil_gain", 0, 2, 0.1, 1
+	Option "Pulse", "rsqgd_c_shape", "RSQGD_Shape"
+	Slider "  Speed (per minute)", "rsqgd_c_rate", 1, 90, 1, 0
+	Slider "  Depth", "rsqgd_c_depth", 0, 1, 0.05, 2
+	Option "Liquids", "rsqgd_c_liquid", "RSQGD_CLiquid"
+}
+
+OptionMenu "RSQGD_Tuning"
+{
+	Title "TUNING AND DEBUG"
+	Slider "Rooms per Tic While Moving", "rsqgd_budget", 32, 1024, 32, 0
+	Slider "Lights Over Pools", "rsqgd_liq_lights", 0, 8, 1, 0
+	Slider "Lights on Items", "rsqgd_item_lights", 0, 12, 1, 0
+	Option "Light Style", "rsqgd_light_style", "RSQGD_LightStyle"
+	StaticText "Subdued: double radius, half brightness. Wider lights touch more walls, so each costs more.", "darkgray"
+	StaticText ""
+	Slider "Colour Seed (Never)", "rsqgd_seed", 0, 65535, 1, 0
+	Option "Debug Lines in the Console", "rsqgd_debug", "RSQGD_Debug"
+	StaticText ""
+	SafeCommand "Reset All", "resetcvar rsqgd_enabled rsqgd_profile rsqgd_reroll rsqgd_reroll_min rsqgd_seed rsqgd_strength rsqgd_height rsqgd_planes rsqgd_liquids rsqgd_liquid_own rsqgd_living rsqgd_splash rsqgd_guess rsqgd_hazards rsqgd_secrets rsqgd_darkboost rsqgd_groupby rsqgd_blend rsqgd_things rsqgd_things_doors rsqgd_things_strength rsqgd_items rsqgd_mb rsqgd_mb_colour rsqgd_mb_custom rsqgd_mb_darken rsqgd_mb_dark rsqgd_wave rsqgd_wave_color rsqgd_combo rsqgd_combo_gain rsqgd_slowmo rsqgd_c_floor_mode rsqgd_c_ceil_mode rsqgd_c_palette rsqgd_ceil_r rsqgd_ceil_g rsqgd_ceil_b rsqgd_floor_r rsqgd_floor_g rsqgd_floor_b rsqgd_c_jitter rsqgd_c_strength rsqgd_c_floor_gain rsqgd_c_ceil_gain rsqgd_c_shape rsqgd_c_rate rsqgd_c_depth rsqgd_c_liquid rsqgd_budget rsqgd_liq_lights rsqgd_item_lights rsqgd_light_style rsqgd_debug", "Reset all RSQ Glow In The Dark settings?"
 }

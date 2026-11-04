@@ -1,8 +1,5 @@
 version "4.14"
 
-// RSQ Glow In The Dark -- the owner's Glow In The Dark 1.1 (October 2021) rewritten in ZScript, for stock
-// QuestZDoom 17.3 (ZScript and lumps only, no engine changes). See README.md and CREDITS.txt.
-#include "zscript/rsqgd/rsmenu.zs"    // Radiant Silvergun Options: the series' shared menu pieces (tools/rsmenu)
-#include "zscript/rsqgd/liquids.zs"   // GENERATED from GLDEFS.txt by tools/gen_liquids.py
-#include "zscript/rsqgd/handler.zs"
-#include "zscript/rsqgd/service.zs"
+// RSQ Glow In The Dark -- the owner's Glow In The Dark 1.1 (October 2021) rewritten in ZScript and taken as far as
+// stock QuestZDoom 17.3 allows (ZScript and lumps only, no engine changes). See README.md and CREDITS.txt.
+#include "zscript/rsqgd/rsqgd.zs"
