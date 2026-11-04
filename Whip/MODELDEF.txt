@@ -45,3 +45,21 @@ Model RSQWP_WhipWeapon
 	FrameIndex WHPH A 0 0
 	FrameIndex WHPH A 7 0
 }
+
+// THE COILED WHIP for RSQ Tactical Rig's whip holster (RSQWP_Stowed; the rig places and turns it). tools/gen_whipcoil.py:
+// map units at scale 1 (the handle 8 long, radius 1.17; the thong radius 0.79 tapering to 0.14, three loops of 4.1),
+// the coil in the model's X-Z plane centred on the origin, so it lies flat against the hip; CORRECTPIXELSTRETCH as the
+// whip's own pieces, so the loops stay round.
+Model RSQWP_Stowed
+{
+	Path "models/rsqwp"
+	Model 0 "rsqwp_coil.md3"
+	SurfaceSkin 0 0 "rsqwhip.png"
+	SurfaceSkin 0 1 "rsqwhiph.png"
+	Scale 1.0 1.0 1.0
+	USEACTORPITCH
+	USEACTORROLL
+	CORRECTPIXELSTRETCH
+	FrameIndex RSWP A 0 0
+}
+

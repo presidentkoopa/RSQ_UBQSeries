@@ -102,7 +102,13 @@ extend class RSQWP_Whip
 	RSQWP_LockCentre aimCen[NW];
 
 	// Whip Swing Reach, as map units of straight-line distance (34 room units a metre; RSQWP_Util.Metres)
-	static double SwingReachM() { return clamp(RSQWP_Util.Num("rsqwp_swing_reach", 9), 3.0, 20.0); }
+	// WHIP SWING REACH, the rangefinder's and the aimed swing's reach (rsqwp_swing_reach, 9 m; slider 3..MAX_REACH). The
+	// cap (owner 11-03 20:14: "a range slider so it can be extended ... max generous"): measured on SWINGTST with the reach
+	// at 60, the rangefinder gold on B's east wall 56.3 m off, the crack cast there (8 tics) and latched, a 1907-unit rope
+	// (the hook's range and the rope follow the reach: Latch sets h.range from it, so nothing else caps it); at the default
+	// 9 the same wall reads "out of reach (9.0 m)". So 60 m, the longest sightline measured.
+	const MAX_REACH = 60.0;
+	static double SwingReachM() { return clamp(RSQWP_Util.Num("rsqwp_swing_reach", 9), 3.0, MAX_REACH); }
 
 	// An EMPTY OFF HAND, as the series tests it (see the top): nothing in it, or a fist of any of the parents'.
 	static clearscope bool OffFree(PlayerInfo p)

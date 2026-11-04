@@ -187,3 +187,22 @@ class RSQWP_WhipWeapon : Weapon
 		Goto Ready;
 	}
 }
+
+// THE WHIP, COILED, IN RSQ TACTICAL RIG'S WHIP HOLSTER (owner 2026-11-03 20:14: "draw the holstered whip on the body as its
+// model when stored"). The rig spawns this by name at its whip holster (main-hand hip) while the whip is in neither hand,
+// and turns it to the body's heading; the whip only says what it looks like: three loops of its own plaited thong and its
+// wrapped handle (models/rsqwp/rsqwp_coil.md3, tools/gen_whipcoil.py), the size of the whip in your hand. Never in play.
+class RSQWP_Stowed : Actor
+{
+	Default
+	{
+		+NOINTERACTION +NOBLOCKMAP +NOGRAVITY +NOTELEPORT +DONTSPLASH +NOTONAUTOMAP
+		Radius 1; Height 1;
+	}
+	States
+	{
+	Spawn:
+		RSWP A -1;
+		Stop;
+	}
+}

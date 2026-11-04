@@ -1,0 +1,40 @@
+# 11-03 (owner 20:14) whip: no bit targeting, and the rangefinder's reach. qzd17.3 rig, SWINGTST, whp probe (whp_scripts.py bits / range).
+## bits (PRE: SWINGTST + RSQ_VisualRewards): health/armour/ammo bits at 150-170 ahead, a Clip at 230, an ammo bit 5 units from it, an imp at 260; trigger held, one crack; then bits + a Stimpack round the tip, a plain crack
+T_WPW 0 MARK t173 -> Clip (1 of 1)
+T_WPW 0 MARK t193 kept on Clip (locked: the hand points away, 0 other candidate(s) there)
+T_WPW 0 WIND-UP t199: the thong stiffens
+T_WPW 0 UNCOIL t199: paying out from 21.0 to 0
+T_WPW 0 SWING t211: hand 9.9
+T_WPW 0 RELEASE t215: hand 0.1 of peak 9.9
+T_WPW 0 CRACK #1 t216 LOCKED -> Clip at 215 units
+T_WPW 0 MARK t217 -> Clip (1 of 2)
+T_WPW 0 MARK t235 -> DoomImp (1 of 1)
+whp_ITEM 90 RSQ_KRHealthBit pos 214 512 96 vel 0.0 0.0 0.0 lying
+whp_ITEM 90 RSQ_KRArmorBit pos 224 523 96 vel 0.0 0.0 0.0 lying
+whp_ITEM 90 RSQ_KRAmmoBit pos 234 500 96 vel 0.0 0.0 0.0 lying
+whp_ITEM 90 Clip gone (taken)
+whp_ITEM 90 RSQ_KRAmmoBit pos 298 541 96 vel 0.0 0.0 0.0 lying
+T_WPW 0 REEL t272: quiet 30 tics, back into the coil
+T_WPW 0 WIND-UP t289: the thong stiffens
+T_WPW 0 UNCOIL t290: paying out from 18.3 to 0
+T_WPW 0 SWING t301: hand 9.9
+T_WPW 0 RELEASE t305: hand 0.1 of peak 9.9
+T_WPW 0 CRACK #2 t306 speed 45.1 at (121 506 181) 63 from the hand: target None, lines 0, fetched 1
+whp_ITEM 150 RSQ_KRHealthBit pos 214 512 96 vel 0.0 0.0 0.0 lying
+whp_ITEM 150 RSQ_KRArmorBit pos 224 523 96 vel 0.0 0.0 0.0 lying
+whp_ITEM 150 RSQ_KRAmmoBit pos 234 500 96 vel 0.0 0.0 0.0 lying
+whp_ITEM 150 Clip gone (taken)
+whp_ITEM 150 RSQ_KRAmmoBit pos 298 541 96 vel 0.0 0.0 0.0 lying
+whp_ITEM 150 RSQ_KRHealthBit pos 142 512 166 vel 0.0 0.0 0.0 lying
+whp_ITEM 150 RSQ_KRArmorBit pos 148 521 160 vel 0.0 0.0 0.0 lying
+whp_ITEM 150 RSQ_KRAmmoBit pos 136 504 170 vel 0.0 0.0 0.0 lying
+whp_ITEM 150 Stimpack pos 79 513 127 vel -5.0 -0.3 -2.8 lying
+## range: rsqwp_swing_reach 9 (ray at pitch 13 on the pit's ceiling, then level east at B's far wall, one crack)
+T_WPW 0 AIM t174 VALID Ceiling at (684 519 192) 8.8 m, normal (0.00 0.00 -1.00) (survey's sign faces the hand), anchor (684 519 188)
+T_WPW 0 AIM t209 INVALID: out of reach (9.0 m, portals 0)
+T_WPW 0 CAST t256 refused: out of reach (9.0 m) -- an ordinary crack (the beam still wins: no lock-on, no mark, no snag)
+## range: rsqwp_swing_reach 60 (ray at pitch 13 on the pit's ceiling, then level east at B's far wall, one crack)
+T_WPW 0 AIM t174 VALID Ceiling at (684 519 192) 8.8 m, normal (0.00 0.00 -1.00) (survey's sign faces the hand), anchor (684 519 188)
+T_WPW 0 AIM t209 VALID Wall at (2304 519 191) 56.3 m, normal (-1.00 -0.00 0.00) (survey's sign faces the hand), anchor (2300 519 191)
+T_WPW 0 CAST #1 t256 -> wall anchor (2300 519 191), 56.0 m, flies 8 tics (beam held)
+T_WPW 0 SWING LATCH t264 wall at (2284 519 191), rope 1907, take-up to 0, hop 0, player (378 512 96) vel (0.0 0.0 0.0) -- waiting for a start (grip / jump), its take-up 214

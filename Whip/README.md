@@ -106,7 +106,7 @@ Front page of RSQ Whip. "On" = on by default (CVARINFO default). "Option" = off 
 | Whip Aim | Assist | Free (hits what the tip touches), Assist (what is nearest the tip), Lock (other hand points, alt-fire holds; the crack flies to it). |
 | Catch Edges (snag) | On | A lash that catches an edge wraps round it and becomes a rope. |
 | Aimed Swing (other hand's alt-fire aims) | On | The other hand's alt-fire aims a ray, and a crack with the ray gold swings you from that wall or ceiling. |
-| Whip Swing Reach (m) | 9 | How far the aimed swing can anchor (3 to 20 m). |
+| Whip Swing Reach (m) | 9 | How far the aimed swing and its off-hand rangefinder can anchor (3 to 60 m; latched at 56 m on the rig). |
 | Beam Wins Over Lock-On | On | While the ray is held (or 1 s after letting go on gold) the crack goes to its spot: no mark, lock-on, edge snag or monster/pickup at the tip. |
 | Off Hand Free While Snagged | On | A gun into the off hand never drops the rope. Off: it drops an aimed swing's rope. |
 | Off-Hand Grip Starts Swing | On | Latched from the ground, an empty off hand gripping the whip pulls you up the rope and starts the swing. |
@@ -159,7 +159,7 @@ The whip's length is MIT's (no slider since the coil, 11-02). Tuning and Debug h
 (x reference, 1), **Leather Damping** (x reference, 1), **Whip Air Drag** (1: it settles in about a second) and
 **Hand Smoothing** (0.8 tics; 0 = the raw hand).
 
-**Why Whip Swing Reach is 9 m (3 to 20):** a swing that starts almost level, at the full rope length L, reaches
+**Why Whip Swing Reach is 9 m (3 to 60):** a swing that starts almost level, at the full rope length L, reaches
 sqrt(2 g L) at the bottom (Doom's gravity is 1 map unit/tic^2). At 9 m (306 units) that is 24.7 units a tic. That
 falls in the target band of 22 to 26, under the engine's 30 cap (MAXMOVE), so good swings don't all clip to the same
 speed. On the rig a 312-unit rope bottomed at 22.9. 3 m still fits a normal Doom room with a 128-unit ceiling. Past

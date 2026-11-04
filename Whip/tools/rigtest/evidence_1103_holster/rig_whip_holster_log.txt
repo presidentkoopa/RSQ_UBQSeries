@@ -1,0 +1,24 @@
+TRH_W_HOVER
+TRH_W_HOLSTER
+T_RIG whip holster t216: the whip goes home from the main hand
+TRH_W_DRAW
+T_RIG whip holster t285: the whip drawn into the main hand
+TRH_W_GUN_FROM_HIP
+TRH_W_GUN_BACK_TO_HIP
+TRH_W_DRAW2
+T_RIG whip holster t489: the whip drawn into the main hand
+TRH_W_EMPTY_GUN_HOLSTER
+T_RIG whip holster t557: the whip goes home from the main hand
+TRH_W_DRAW3
+T_RIG whip holster t625: the whip drawn into the main hand
+TRH_W_SLOT3
+TRH_W_DRAW4
+T_RIG whip holster t740: the whip drawn into the main hand
+TRH_W_WEAPNEXT
+TRH_W_DRAW5
+T_RIG whip holster t852: the whip drawn into the main hand
+TRH_W_USE_CHAINGUN
+TRH_W_OFF_AT_WHIP
+TRH_W_GUN_IN_HAND_AT_WHIP
+T_RIG whip holster t1011: the whip drawn into the main hand
+TRH_W_GUN_FROM_HIP2

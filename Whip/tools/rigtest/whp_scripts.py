@@ -172,7 +172,7 @@ def run(scen, hand='r'):
 
 # ---- THE AIMED SWING (swing.zs) on SWINGTST ------------------------------------------------------------------------
 SWINGS = ('aim', 'ceil', 'wallanchor', 'chain', 'refuse', 'snag', 'ohold', 'ohceil', 'ohgun',
-          'beammon', 'bits', 'offgun', 'gripstart', 'jumpstart', 'reelclimb')
+          'beammon', 'bits', 'range', 'offgun', 'gripstart', 'jumpstart', 'reelclimb')
 # AIM WITH OFF-HAND FIRE (11-03): the off trigger pressed as the real controller presses it -- qz_ltrigger, which
 # QuestZDoom's input posts as KEY_LSHIFT (bound +oh_attack), so the key road the whip eats is the one tested (the
 # console's +oh_attack would set the button and skip it). qz_rgrip held + qz_ltrigger = KEY_LALT (+oh_altatk).
@@ -241,6 +241,15 @@ def swing_scen(scen):
         at(64, 'qz_lstick "0 1"'); at(76, 'qz_lstick "0 0"')     # after the hop has landed: a step off the lip
         at(200, '+altattack'); at(202, '-altattack')
         T = 240
+    elif scen == 'range':
+        # THE RANGEFINDER'S REACH (11-03, Whip Swing Reach up to 60 m): at A's lip facing east, the ray on the pit's ceiling
+        # (pitch 13: ~8 m), then level east (B's east wall, 56.6 m: out of reach at the default 9 m, gold with the reach set
+        # high; XCMD="rsqwp_swing_reach 60"); one crack with it level; the rope's length and anchor logged
+        at(0, 'netevent whp_tp 378 512 0')
+        at(5, '+oh_altatk'); at(5, lpose(13)); at(40, lpose(2))
+        cracks.append(60)
+        at(100, '-oh_altatk')
+        T = 200
     elif scen == 'snag':
         # the old edge snag, no ray: stood under the A/P lintel (its edge at z 192, x 384), one wind-up and crack
         at(0, 'netevent whp_tp 372 512 0')
