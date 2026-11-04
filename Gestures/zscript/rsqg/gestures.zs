@@ -350,7 +350,9 @@ class RSQG_Handler : EventHandler
 				insTics[h] = 0;
 				continue;
 			}
-			Vector3 rel = RSQG_Pose.FromEyes(pmo, h);
+			// 2026-11-03 (owner: "strafing left and right causes the melee 'whoosh'"): the frame's hand carried to where the
+			// body is this tic (RSQG_HandSync), or a tic with no frame read a still hand as a step-long punch
+			Vector3 rel = RSQG_Pose.Metric(RSQG_HandSync.Fix(pmo, RSQG_Pose.HandPos(pmo, h), RSQG_Pose.Src(pmo, h)) - RSQG_Pose.EyePos(pmo));
 			if (live[h])
 			{
 				Vector3 v = (rel - prevRel[h]) * TICRATE;

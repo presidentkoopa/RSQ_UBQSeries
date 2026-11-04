@@ -2,5 +2,5 @@
 // answers RSQG_Service.
 GameInfo
 {
-	AddEventHandlers = "RSQG_Handler"
+	AddEventHandlers = "RSQG_HandSync", "RSQG_Handler"
 }
