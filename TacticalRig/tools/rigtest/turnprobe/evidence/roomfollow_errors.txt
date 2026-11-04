@@ -1,0 +1,7 @@
+# TEST ONLY. Torso Follows Room Turns, script errors, final pk3s, qzd17.3 rig, doom2 MAP01. Rig only, not headset-confirmed.
+# Script: give all, the rig's page and Rig Options opened, the new switch off and on, both Recenter commands, a snap, a zombieman and an imp, then a real 90 turn with the gun at the ready (the room follow fires).
+# e_tr doom2 + RSQ_TacticalRig alone; e_gb doom2 + Gun Bonsai 0.10.6 + the 19 committed RSQ pk3s (RSQ_FlashFlare.pk3 is another lane's uncommitted file, not loaded) with the new rig; e_full doom2, 01 brutal22test6, 02 BD22_VoxelPack, 03 BD22_VR-Reloaded_2.0.3q (newest in rs_brutal22weaponsq/pk3), XMVE 04-07, Gun Bonsai 0.10.6, the same RSQ pk3s.
+e_tr script errors: 0  VM aborts: 0  script ran to the end: 1  lines naming RSQ_ with error/abort: 0
+e_gb script errors: 0  VM aborts: 0  script ran to the end: 1  lines naming RSQ_ with error/abort: 0
+e_full script errors: 4  VM aborts: 0  script ran to the end: 1  lines naming RSQ_ with error/abort: 0
+the 4 in e_full: "02_BD22_VoxelPack.pk3:voxeldef.txt" line 66: -- "02_BD22_VoxelPack.pk3:voxeldef.txt" line 72: -- "02_BD22_VoxelPack.pk3:voxeldef.txt" line 77: -- "02_BD22_VoxelPack.pk3:voxeldef.txt" line 892: 

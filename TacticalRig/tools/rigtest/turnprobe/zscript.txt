@@ -40,6 +40,12 @@ class RSQTRTurnProbe : EventHandler
 			Console.Printf("trr t%d rec %d gap %.3f %.3f hover %d %d main %.3f %.3f %.3f off %.3f %.3f %.3f ssrec %d", level.maptime, bb ? bb.recentered : -1, rig.recGap[0], rig.recGap[1], rig.HoverRegion(0), rig.HoverRegion(1), l0.x, l0.y, l0.z, l1.x, l1.y, l1.z, ss ? ss.kRecentered : -1);
 		}
 		// TRR END
+		// TRC BEGIN (dropped for PROBE=old and PROBE=rec: torso follows room turns, 11-03 19:31)
+		// each hand from the neck along the floor (m), its angle off the look (deg), its height from the eyes (m), in front?
+		let bc = rig ? rig.GetBody() : null;
+		if (bc && mo.player == players[consoleplayer])
+			Console.Printf("trc t%d for %d on %d turns %d main %.3f %.1f %.3f %d off %.3f %.1f %.3f %d", level.maptime, bc.roomFor, bc.roomOn, bc.roomTurns, bc.roomDist[0], bc.roomAng[0], bc.roomUp[0], bc.roomIn[0], bc.roomDist[1], bc.roomAng[1], bc.roomUp[1], bc.roomIn[1]);
+		// TRC END
 		// TRQ BEGIN (dropped for PROBE=old: the 11-03 keeper's queues)
 		let b = rig ? rig.GetBody() : null;
 		if (b && b.turns && CVar.FindCVar('trt_queues').GetBool())

@@ -1,0 +1,67 @@
+# TEST ONLY. (f) Torso Follows Room Turns OFF (set rsqtr_body_room 0) against the pk3 of 3bf3d2f19 (before it existed), same scripts, same rig, RSQ ShieldSaw at HEAD. Rig only, not headset-confirmed.
+# Per script: tics logged, trt lines (pawn, both controller yaws, rig body, ShieldSaw bodies, pitch) that differ tic for tic, and rec_check.py segment summaries that differ.
+rmroom: errors off 0 / 3bf3d2f19 0 | tics 669 / 669 | differing trt lines 4 | differing segment summaries 0 of 6
+rmreach: errors off 0 / 3bf3d2f19 0 | tics 859 / 859 | differing trt lines 64 | differing segment summaries 2 of 5
+rmglance: errors off 0 / 3bf3d2f19 0 | tics 426 / 426 | differing trt lines 5 | differing segment summaries 0 of 2
+rmdraw: errors off 0 / 3bf3d2f19 0 | tics 599 / 599 | differing trt lines 4 | differing segment summaries 0 of 4
+recroom: errors off 0 / 3bf3d2f19 0 | tics 296 / 296 | differing trt lines 141 | differing segment summaries 4 of 6
+recreach: errors off 0 / 3bf3d2f19 0 | tics 299 / 299 | differing trt lines 5 | differing segment summaries 0 of 3
+rechold: errors off 0 / 3bf3d2f19 0 | tics 411 / 411 | differing trt lines 0 | differing segment summaries 0 of 8
+snap: errors off 0 / 3bf3d2f19 0 | tics 451 / 451 | differing trt lines 2 | differing segment summaries 0 of 17
+# Tics where the BODY differs: rmroom 0, rmglance 0, rmdraw 0, rechold 0; snap 1 (the whole run a tic apart at one snap, below); recreach 1 and rmreach 13, all in the SMOOTH-turning reach's return (vr_snapTurn 5: the keeper's step matcher, which with smooth turning follows head and hands by the frames it sees, README Known limits; both end on the head); recroom 90 (one hitched run, below). The other differing lines differ only in the controller yaws by one rendered frame's step (the engine writes them a frame late; which tic a frame lands on varies run to run):
+90c90
+< trt t89 a 139.99 h0 45.00 h1 45.00 rig 90.00 ssk 90.00 ssq 90.00 pitch 0.0
+---
+> trt t89 a 139.99 h0 50.00 h1 50.00 rig 90.00 ssk 90.00 ssq 90.00 pitch 0.0
+209c209
+< trt t208 a 149.99 h0 60.00 h1 60.00 rig 90.00 ssk 90.00 ssq 90.00 pitch 0.0
+---
+> trt t208 a 149.99 h0 65.00 h1 65.00 rig 90.00 ssk 90.00 ssq 90.00 pitch 0.0
+468c468
+< trt t467 a 166.48 h0 76.50 h1 76.50 rig 90.00 ssk 90.00 ssq 90.00 pitch 0.0
+---
+> trt t467 a 166.48 h0 78.00 h1 78.00 rig 90.00 ssk 90.00 ssq 90.00 pitch 0.0
+513c513
+< trt t512 a 99.00 h0 10.50 h1 10.50 rig 90.00 ssk 90.00 ssq 90.00 pitch 0.0
+---
+> trt t512 a 99.00 h0 9.00 h1 9.00 rig 90.00 ssk 90.00 ssq 90.00 pitch 0.0
+289,290c289,290
+< trt t288 a -180.01 h0 -270.01 h1 -270.01 rig -180.00 ssk -180.00 ssq 135.00 pitch 0.0
+< trt t289 a -180.01 h0 -270.01 h1 -270.01 rig -180.00 ssk -180.00 ssq -180.00 pitch 0.0
+---
+> trt t288 a -180.01 h0 -315.01 h1 -315.01 rig -225.00 ssk 135.00 ssq 135.00 pitch 0.0
+> trt t289 a -180.01 h0 -270.01 h1 -270.01 rig -180.00 ssk -180.00 ssq 135.00 pitch 0.0
+# rmreach: the two differing summaries are 0.01 degree of pawn in the smooth reach (a frame's timing).
+4,5c4,5
+< TRT_REACH_SMOOTH           pawn    -0.00 trk    +0.00 | rig    +0.00 (most  75.00, ends   +0.00 vs head) | shield    +0.00 (most  75.00, ends   +0.00 vs head) | recenters rig 0 ss 0
+< TRT_END                    pawn    +0.00 trk    +0.00 | rig    +0.00 (most   0.00, ends   +0.00 vs head) | shield    +0.00 (most   0.00, ends   +0.00 vs head) | recenters rig 0 ss 0
+---
+> TRT_REACH_SMOOTH           pawn    +0.01 trk    +0.01 | rig    +0.00 (most  75.00, ends   -0.01 vs head) | shield    +0.00 (most  75.00, ends   -0.01 vs head) | recenters rig 0 ss 0
+> TRT_END                    pawn    +0.00 trk    +0.00 | rig    +0.00 (most   0.00, ends   -0.01 vs head) | shield    +0.00 (most   0.00, ends   -0.01 vs head) | recenters rig 0 ss 0
+# recroom, first run OFF: a rig hitch -- the console script's waits bunched, the pawn held 5 tics at 134.99 then jumped 30 degrees in one tic (t93 -> t94), and the keeper read that one-tic jump of head and hands as a view jump (rig +30). Pawn per tic, t87-t97:
+t87 129.99 t88 134.99 t89 134.99 t90 134.99 t91 134.99 t92 134.99 t93 134.99 t94 164.99 t95 169.99 t96 174.98 t97 179.98 
+# The same script OFF run twice more: segment summaries identical to 3bf3d2f19's:
+recroom OFF run 2: differing segment summaries 0 of 6
+recroom OFF run 3: differing segment summaries 0 of 6
+# 3bf3d2f19 recroom summaries (= OFF runs 2 and 3):
+TRT_ROOM90                 pawn   +89.98 trk    -0.02 | rig    +0.00 (most   0.00, ends  -89.98 vs head) | shield    +0.00 (most   0.00, ends  -89.98 vs head) | recenters rig 0 ss 0
+TRT_RECENTER_GESTURE       pawn    +0.00 trk    +0.00 | rig   +89.98 (most  89.98, ends   +0.00 vs head) | shield   +89.98 (most  89.98, ends   +0.00 vs head) | recenters rig 1 ss 0
+TRT_SNAP_AFTER             pawn   -45.00 trk   -45.00 | rig   -45.00 (most  45.00, ends   +0.00 vs head) | shield   -45.00 (most  45.00, ends   +0.00 vs head) | recenters rig 0 ss 0
+TRT_ROOM_BACK              pawn   -89.98 trk    +0.02 | rig    +0.00 (most   0.00, ends  +89.98 vs head) | shield    +0.00 (most   0.00, ends  +89.98 vs head) | recenters rig 0 ss 0
+TRT_KEY                    pawn    +0.00 trk    +0.00 | rig   -89.98 (most  89.98, ends   +0.00 vs head) | shield   -89.98 (most  89.98, ends   +0.00 vs head) | recenters rig 2 ss 0
+TRT_END                    pawn    +0.00 trk    +0.00 | rig    +0.00 (most   0.00, ends   +0.00 vs head) | shield    +0.00 (most   0.00, ends   +0.00 vs head) | recenters rig 0 ss 0
+# rmreach / recreach smooth-reach tics where the body differs (OFF line || 3bf3d2f19 pawn, body):
+trt t801 a 54.01 h0 -38.00 h1 -30.00 rig 60.00 ssk 60.00 ssq 48.80 pitch 8.0 || 54.01 48.80
+trt t802 a 58.51 h0 -33.20 h1 -26.20 rig 60.00 ssk 60.00 ssq 60.00 pitch 7.0 || 58.51 63.80
+trt t803 a 63.01 h0 -28.50 h1 -22.50 rig 60.00 ssk 60.00 ssq 60.00 pitch 6.0 || 63.01 63.80
+trt t804 a 67.51 h0 -23.80 h1 -18.80 rig 60.00 ssk 60.00 ssq 60.00 pitch 5.0 || 67.51 63.80
+trt t805 a 72.00 h0 -19.00 h1 -15.00 rig 60.00 ssk 60.00 ssq 60.00 pitch 4.0 || 72.01 63.80
+trt t806 a 76.50 h0 -14.20 h1 -11.20 rig 60.00 ssk 60.00 ssq 60.00 pitch 3.0 || 76.51 63.80
+trt t807 a 81.00 h0 -9.50 h1 -7.50 rig 82.50 ssk 82.50 ssq 60.00 pitch 2.0 || 81.01 63.80
+trt t808 a 85.50 h0 -4.80 h1 -3.80 rig 82.50 ssk 82.50 ssq 82.50 pitch 1.0 || 85.51 86.20
+trt t809 a 90.00 h0 0.00 h1 0.00 rig 82.50 ssk 82.50 ssq 82.50 pitch 0.0 || 90.01 86.20
+trt t810 a 90.00 h0 0.00 h1 0.00 rig 82.50 ssk 82.50 ssq 82.50 pitch 0.0 || 90.01 86.20
+trt t811 a 90.00 h0 0.00 h1 0.00 rig 82.50 ssk 82.50 ssq 82.50 pitch 0.0 || 90.01 86.20
+trt t812 a 90.00 h0 0.00 h1 0.00 rig 82.50 ssk 82.50 ssq 82.50 pitch 0.0 || 90.01 86.20
+trt t813 a 90.00 h0 0.00 h1 0.00 rig 90.00 ssk 90.00 ssq 82.50 pitch 0.0 || 90.01 86.20
+trt t192 a 54.01 h0 -33.50 h1 -25.50 rig 63.80 ssk 63.80 ssq 63.80 pitch 8.0 || 54.01 60.00

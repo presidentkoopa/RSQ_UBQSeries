@@ -38,9 +38,11 @@ doom2.wad -> 01 brutal22test6 -> 02 BD22_VoxelPack -> 03 BD22_VR-Reloaded_2.0.3j
 - **Draw:** reach to a full holster with an empty hand and squeeze the grip.
 - **Recenter the torso:** hold both controllers against your chest for about half a second, without pressing
   anything. You hear a soft click and feel a tick in both hands: the torso and every holster now face where your
-  head faces. Do this after you physically turn round in your room (the torso turns only with snap and smooth turns,
-  never on its own); the bound key *Recenter Torso* does the same. It also recenters on its own at every map start,
+  head faces. Do this when the torso is not where you want it; the bound key *Recenter Torso* does the same. It also recenters on its own at every map start,
   level change, loaded save and respawn.
+- **Turning round in your room:** hold your gun (or both hands) in front of you at chest height and face the new
+  way. After about 1.5 s the torso eases round to where you face (*Torso Follows Room Turns*, on). Looking round, or
+  reaching to the side or down for a holster, does not turn it.
 - **Swap:** grip at a full holster with a gun in hand. The two swap.
 - **Grenade:** grip at the belt buckle. The hand grenade comes to your main hand (Brutal Doom's, or RSQ
   Grenade's without Brutal Doom). Grip there again to get your gun back.
@@ -147,6 +149,7 @@ default.
 | Move Holsters by Hand | Option | Grip a sphere (a holster or the keyring), carry it, let go: it is saved. |
 | Mirror | While Moving Holsters | A copy of you about a metre out: Off / While Moving Holsters / Always. Only you see it. |
 | Holster Profiles | - | Save and load four layouts: Standing A (Blue), Standing B (Orange), Seated A (Purple), Seated B (Yellow). The keyring's place is in them; a profile saved before 2026-11-01 puts the keyring at its default. |
+| Torso Follows Room Turns | On | You physically turn in your room: when your head has faced more than 45 degrees away from the torso for 1.5 s, with both hands held in front of you the whole time (each at chest or gun-ready height: no lower than 0.40 m under your eyes and no higher than 0.10 m over them, within 0.55 m of your neck along the floor, within 40 degrees of where you look; an off hand on a long gun's fore-end, ahead of the main hand, counts), no hand in a holster and not looking down, the torso eases round to your head in about half a second and lands on it. Reaching to the side for holsters (hands low or at arm's length), looking round for under 1.5 s, or looking aside with your hands left in front of the torso never turns it. Snaps stay exact. (11-03 19:31; rig only, not headset-confirmed.) |
 | Recenter: Both Hands to Chest | On | Both controllers held against your chest (each within 0.20 m of a point 0.12 m in front of and 0.30 m under your eyes, measured in the direction you look) for 0.4 s, with no grip, Use or trigger pressed: the torso turns to where your head faces, with a soft click and a tick in both hands. With the torso already facing within 20 degrees of your head, a hand inside any holster also stops it (so it cannot fire while you draw from the chest holsters). After it fires, move a hand away before it can fire again. (11-03; rig only, not headset-confirmed.) |
 | Recenter Torso | - | The same as a key: bind it here or in Customize Controls (section *RSQ Tactical Rig*). |
 | Torso | Option | A torso the holsters sit on, coloured by armour, breathing red at low health. |
@@ -202,6 +205,25 @@ and the next snap exact; the key's command recentered a real 90 back to 0.00; se
 one-handed chest-holster draw, both hands at the chest with a grip held, with Use held, for only 0.3 s, and both hands in
 both chest holsters (and in the pose) for 1.1 s: no recenter; a loaded save, a level change and a respawn each left the
 torso 0.00 from the head after a real 90. RSQ ShieldSaw's shield on it: the same to the hundredth. Script errors: 0.
+
+**Torso follows room turns (the owner's pick, 11-03 19:31: "the torso follows snap turn, great, but if i physically
+stand and turn, it stays in place"; smart catch-up; rig only, not headset-confirmed).** There is no body tracker, so a
+turn in the room is read from how it looks: the head held more than 45 degrees off the torso for 1.5 s with BOTH hands
+in front of you (in the head's frame) the whole time, no hand in a holster, not looking down. Then the torso eases round
+(0.3 of what is left each tic, at most 12 degrees a tic: 16 tics for 90) and lands on the head. Thresholds from the rig
+(`gen_room_script.py rmmeasure`, `room_check.py`; from the neck along the floor / off the look / from the eyes): gun at
+the ready 0.47 m / 32 deg / -0.30 m; hands at the chest 0.23 / 18 / -0.30; a two-hand long gun 0.34 / 17 / -0.24 and
+fore-end 0.65 / 0 / -0.22; the owner's reach (both hands 75-95 degrees round, looking 90 there) main hand 0.58 / 5 /
+-0.55, off hand 0.47 / 25 / -0.45; hands at a hip -0.80; a hand in the hip holster -0.85, in the chest holsters -0.61.
+Measured (`evidence/roomfollow_after.txt`): a real 90 left, back right, left with a two-hand long gun, and right slowly:
+the torso landed 1.66 s after the head stopped (1.06 s for the slow one, whose head was already 45 off before it
+stopped), 0.00 from the head, ShieldSaw's shield with it, and the next snap exact; the owner's reach held 3.4 s (20 down,
+and level), both hands at the hip, and the reach with smooth turning: no room turn (0.00); a look 60 and 90 aside with
+hands in front for 1.3 s (the count reached 40 and 44 of 52) and a look 75 aside for 3 s with the hands left in front of
+the torso: 0.00; a draw from the hip holster looking 60 there (level and 20 down) and from a chest holster looking 50
+there, 3.4 s each: 0.00; 16 snaps right then left 45.00 each at 90 and 35 fps, with and without live sway; switched off,
+the same scripts tic for tic as 3bf3d2f19 (`evidence/roomfollow_off_vs_3bf3d2f19.txt`). Script errors: 0 (rig alone, +
+Gun Bonsai + all RSQ, the full BD order: only BD_VoxelPack's 4 voxeldef lines; `evidence/roomfollow_errors.txt`).
 
 **The torso and looking down (11-03; rig only, not headset-confirmed).** Two causes of the torso moving under you: a
 look down at a side holster (45-60 degrees of pitch with the head turned) held a second counted as the body turning,
@@ -320,6 +342,14 @@ simulated rig.
     d. Draw from a chest holster with one hand: no click. Hands to your chest with a grip held: no click.
     e. Bind *Recenter Torso*, turn round in the room, press it: the torso faces where you look.
     f. Turn round in the room, then load a save / go to the next level / die and respawn: the torso faces you.
+23. **Torso Follows Room Turns** (11-03 19:31; rig only, not headset-confirmed). Turn on *Torso*.
+    a. Hold a gun at your chest and physically turn 90 degrees in your room: within about 2 s the torso eases round
+       and faces where you look. Same with a long gun held in both hands.
+    b. Reach both hands out to one side while looking there and hold 3 s: the torso does not turn.
+    c. Look 60-90 degrees aside with the gun in front for about a second, look back: no turn.
+    d. Look at your hip and draw from the hip holster: no turn.
+    e. Snap turn a full circle and back: exact, as before. Switch it off: a room turn leaves the torso until you
+       recenter, as before.
 
 ## Works with
 
@@ -361,6 +391,11 @@ simulated rig.
   hands 75-95 degrees out to the side while looking 90 degrees there turned the torso 75 degrees (as far as the hand
   that turned least) and held it there while the reach was held; it came back as the hands came back. Snap turning
   has no such case (0.00). Play with snap turning, or recenter after such a reach.
+- **Torso Follows Room Turns cannot tell a turn from a held look (11-03 19:31).** Standing still and looking 45+
+  degrees to one side for 1.5 s with both hands held in front of you at chest height (as if aiming there) looks
+  exactly like turning your body there, so the torso turns. Hands low or out to the side (reaching for holsters),
+  a hand in a holster, or looking down never turns it. With smooth turning the step matcher already carries a rigid
+  head-and-hands turn before the 1.5 s are up.
 
 - **Holstered guns may look squashed** (a model flag was tried and backed out because it could not be
   checked on the rig). Check in the mirror.

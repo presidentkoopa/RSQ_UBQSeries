@@ -1,0 +1,131 @@
+# TEST ONLY. Torso Follows Room Turns (rsqtr_body_room, on; the owner 11-03 19:31, smart catch-up). qzd17.3 rig, doom2 MAP01, 90 fps. Rig only, not headset-confirmed.
+# gen_room_script.py + room_check.py. Per segment: pawn (head in the world) and tracking-space turn; TacticalRig body (rig) and RSQ ShieldSaw's synced body (shield, on the rig's body service): turn, most strayed, end vs head;
+# room-follow turns, longest head-held count (52 tics = 1.5 s fires it), when the ease started and landed after the head stopped; each hand at the segment's middle tic: from the neck along the floor m, off the look deg, from the eyes m, in front 1/0; holsters the hands were in (main/off, -1 none).
+# pk3s: the new RSQ_TacticalRig.pk3 + RSQ_ShieldSaw.pk3 at HEAD (ba219cfc1).
+
+== rmmeasure: script errors 0, VM aborts 0
+# (the poses jump in one tic here, so the keeper reads the 90-degree head-and-hands jump into M_HIPS as a view jump; only the hand readings matter in this run)
+TRT_M_READY                  pawn    +0.00 trk    +0.00 | rig    +0.00 (most   0.00, ends   +0.00 vs head) | shield    +0.00 (ends   +0.00 vs head) | room turns 0, count max 0 | mid: main 0.472 -32.0 -0.300 1 off 0.472 +32.0 -0.300 1 | hover -1/-1
+TRT_M_CHEST                  pawn    +0.00 trk    +0.00 | rig    +0.00 (most   0.00, ends   +0.00 vs head) | shield    +0.00 (ends   +0.00 vs head) | room turns 0, count max 0 | mid: main 0.231 -17.7 -0.300 1 off 0.231 +17.7 -0.300 1 | hover -1/-1
+TRT_M_LONGGUN                pawn    +0.00 trk    +0.00 | rig    +0.00 (most   0.00, ends   +0.00 vs head) | shield    +0.00 (ends   +0.00 vs head) | room turns 0, count max 0 | mid: main 0.335 -17.4 -0.240 1 off 0.650 +0.0 -0.220 1 | hover -1/-1
+TRT_M_AIMED                  pawn    +0.00 trk    +0.00 | rig    +0.00 (most   0.00, ends   +0.00 vs head) | shield    +0.00 (ends   +0.00 vs head) | room turns 0, count max 0 | mid: main 0.408 -11.3 -0.150 1 off 0.720 -1.6 -0.130 1 | hover -1/-1
+TRT_M_REACH                  pawn   -90.00 trk    +0.00 | rig    +0.00 (most   0.00, ends  +90.00 vs head) | shield    +0.00 (ends  +90.00 vs head) | room turns 0, count max 0 | mid: main 0.580 -4.9 -0.550 0 off 0.473 +25.0 -0.450 0 | hover -1/-1
+TRT_M_HIPS                   pawn    +0.00 trk    +0.00 | rig   -90.00 (most  90.00, ends   +0.00 vs head) | shield   -90.00 (ends   +0.00 vs head) | room turns 0, count max 0 | mid: main 0.431 -6.7 -0.800 0 off 0.296 +19.8 -0.750 0 | hover -1/-1
+TRT_M_HIPDRAW                pawn   +30.00 trk    +0.00 | rig    +0.00 (most   0.00, ends  -30.00 vs head) | shield    +0.00 (ends  -30.00 vs head) | room turns 0, count max 0 | mid: main 0.271 -19.4 -0.850 0 off 0.472 +32.0 -0.300 1 | hover -1/-1
+TRT_M_CHESTHOLSTERS          pawn   +60.00 trk    +0.00 | rig    +0.00 (most   0.00, ends  -90.00 vs head) | shield    +0.00 (ends  -90.00 vs head) | room turns 0, count max 0 | mid: main 0.233 -31.0 -0.610 0 off 0.233 +31.0 -0.610 0 | hover -1/-1 6/-1
+TRT_END                      pawn    +0.00 trk    +0.00 | rig    +0.00 (most   0.00, ends  -90.00 vs head) | shield    +0.00 (ends  -90.00 vs head) | room turns 0, count max 0 | mid: main 0.233 -31.0 -0.610 0 off 0.233 +31.0 -0.610 0 | hover 6/-1
+
+== rmroom: script errors 0, VM aborts 0
+TRT_ROOM90L                  pawn   +89.98 trk    -0.02 | rig   +89.98 (most  89.98, ends   +0.00 vs head) | shield   +89.98 (ends   +0.00 vs head) | room turns 1, count max 52 | eased from 1.23s, landed 1.66s after the head stopped | mid: main 0.472 -32.0 -0.300 1 off 0.472 +32.0 -0.300 1 | hover -1/-1
+TRT_ROOM90R_BACK             pawn   -89.98 trk    +0.02 | rig   -89.98 (most  89.98, ends   +0.00 vs head) | shield   -89.98 (ends   +0.00 vs head) | room turns 1, count max 52 | eased from 1.23s, landed 1.66s after the head stopped | mid: main 0.472 -32.0 -0.300 1 off 0.472 +32.0 -0.300 1 | hover -1/-1
+TRT_ROOM90L_LONGGUN          pawn   +89.98 trk    -0.02 | rig   +89.98 (most  89.98, ends   +0.00 vs head) | shield   +89.98 (ends   +0.00 vs head) | room turns 1, count max 52 | eased from 1.23s, landed 1.66s after the head stopped | mid: main 0.335 -17.3 -0.240 1 off 0.650 +0.0 -0.220 1 | hover -1/-1
+TRT_ROOM90R_SLOW             pawn   -89.98 trk    +0.02 | rig   -89.98 (most  89.98, ends   +0.00 vs head) | shield   -89.98 (ends   +0.00 vs head) | room turns 1, count max 52 | eased from 0.63s, landed 1.06s after the head stopped | mid: main 0.472 -32.0 -0.300 1 off 0.472 +32.0 -0.300 1 | hover -1/-1
+TRT_SNAP_AFTER               pawn   -45.00 trk   -45.00 | rig   -45.00 (most  45.00, ends   +0.00 vs head) | shield   -45.00 (ends   +0.00 vs head) | room turns 0, count max 0 | mid: main 0.472 -32.0 -0.300 1 off 0.472 +32.0 -0.300 1 | hover -1/-1
+TRT_END                      pawn    +0.00 trk    +0.00 | rig    +0.00 (most   0.00, ends   +0.00 vs head) | shield    +0.00 (ends   +0.00 vs head) | room turns 0, count max 0 | mid: main 0.472 -32.0 -0.300 1 off 0.472 +32.0 -0.300 1 | hover -1/-1
+
+== rmreach: script errors 0, VM aborts 0
+TRT_REACH_DOWN20             pawn    -0.00 trk    +0.00 | rig    +0.00 (most   0.00, ends   +0.00 vs head) | shield    +0.00 (ends   +0.00 vs head) | room turns 0, count max 0 | mid: main 0.580 -5.0 -0.550 0 off 0.473 +25.0 -0.450 0 | hover -1/-1
+TRT_REACH_LEVEL              pawn    -0.00 trk    +0.00 | rig    +0.00 (most   0.00, ends   +0.00 vs head) | shield    +0.00 (ends   +0.00 vs head) | room turns 0, count max 0 | mid: main 0.552 -5.2 -0.550 0 off 0.447 +26.5 -0.450 0 | hover -1/-1
+TRT_HIPS                     pawn    -0.00 trk    +0.00 | rig    +0.00 (most   0.00, ends   +0.00 vs head) | shield    +0.00 (ends   +0.00 vs head) | room turns 0, count max 0 | mid: main 0.431 -6.7 -0.800 0 off 0.296 +19.8 -0.750 0 | hover -1/-1 -1/7
+TRT_REACH_SMOOTH             pawn    -0.00 trk    +0.00 | rig    +0.00 (most  75.00, ends   +0.00 vs head) | shield    +0.00 (ends   +0.00 vs head) | room turns 0, count max 0 | mid: main 0.580 -5.0 -0.550 0 off 0.473 +25.0 -0.450 0 | hover -1/-1
+TRT_END                      pawn    +0.00 trk    +0.00 | rig    +0.00 (most   0.00, ends   +0.00 vs head) | shield    +0.00 (ends   +0.00 vs head) | room turns 0, count max 0 | mid: main 0.472 -32.0 -0.300 1 off 0.472 +32.0 -0.300 1 | hover -1/-1
+
+== rmglance: script errors 0, VM aborts 0
+TRT_GLANCE60L_1.3S           pawn    +0.00 trk    +0.00 | rig    +0.00 (most   0.00, ends   +0.00 vs head) | shield    +0.00 (ends   +0.00 vs head) | room turns 0, count max 40 | mid: main 0.472 -32.0 -0.300 1 off 0.472 +32.0 -0.300 1 | hover -1/-1
+TRT_GLANCE90R_1.3S           pawn    +0.00 trk    +0.00 | rig    +0.00 (most   0.00, ends   +0.00 vs head) | shield    +0.00 (ends   +0.00 vs head) | room turns 0, count max 44 | mid: main 0.472 -32.0 -0.300 1 off 0.472 +32.0 -0.300 1 | hover -1/-1
+TRT_LOOK75L_HANDS_AT_TORSO   pawn    +0.00 trk    +0.00 | rig    +0.00 (most   0.00, ends   +0.00 vs head) | shield    +0.00 (ends   +0.00 vs head) | room turns 0, count max 0 | mid: main 0.360 -100.2 -0.300 0 off 0.476 -28.2 -0.300 1 | hover -1/-1
+TRT_END                      pawn    +0.00 trk    +0.00 | rig    +0.00 (most   0.00, ends   +0.00 vs head) | shield    +0.00 (ends   +0.00 vs head) | room turns 0, count max 0 | mid: main 0.472 -32.0 -0.300 1 off 0.472 +32.0 -0.300 1 | hover -1/-1
+
+== rmdraw: script errors 0, VM aborts 0
+TRT_HIPDRAW_LEVEL            pawn    -0.00 trk    +0.00 | rig    +0.00 (most   0.00, ends   +0.00 vs head) | shield    +0.00 (ends   +0.00 vs head) | room turns 0, count max 0 | mid: main 0.271 -19.4 -0.850 0 off 0.472 +32.0 -0.300 1 | hover -1/-1 1/-1 7/-1
+TRT_HIPDRAW_DOWN20           pawn    -0.00 trk    +0.00 | rig    +0.00 (most   0.00, ends   +0.00 vs head) | shield    +0.00 (ends   +0.00 vs head) | room turns 0, count max 0 | mid: main 0.298 -17.6 -0.850 0 off 0.496 +30.3 -0.300 1 | hover -1/-1 1/-1 7/-1
+TRT_CHESTDRAW_LOOK50         pawn    -0.00 trk    +0.00 | rig    +0.00 (most   0.00, ends   +0.00 vs head) | shield    +0.00 (ends   +0.00 vs head) | room turns 0, count max 0 | mid: main 0.256 -0.1 -0.610 0 off 0.472 +32.0 -0.300 1 | hover -1/-1 7/-1
+TRT_END                      pawn    +0.00 trk    +0.00 | rig    +0.00 (most   0.00, ends   +0.00 vs head) | shield    +0.00 (ends   +0.00 vs head) | room turns 0, count max 0 | mid: main 0.472 -32.0 -0.300 1 off 0.472 +32.0 -0.300 1 | hover -1/-1
+
+# the ease of TRT_ROOM90L, body per tic while it moved (0.3 of what is left, at most 12 a tic, lands on the head within 1 degree):
+t140 +12.00, t141 +12.00, t142 +12.00, t143 +12.00, t144 +12.00, t145 +8.99, t146 +6.30, t147 +4.41, t148 +3.08, t149 +2.16, t150 +1.51, t151 +1.06, t152 +0.74, t153 +0.52, t154 +0.36, t155 +0.85
+
+== smooth turning (vr_snapTurn 5), the rmroom turns: the 11-03 keeper's step matcher already carries a rigid head-and-hands turn (README Known limits), so the room follow is never needed (0 turns)
+TRT_ROOM90L                  pawn   +89.98 trk    -0.02 | rig   +89.98 (most  89.98, ends   +0.00 vs head) | shield   +89.98 (ends   +0.00 vs head) | room turns 0, count max 0 | mid: main 0.472 -32.0 
+TRT_ROOM90R_BACK             pawn   -89.98 trk    +0.02 | rig   -89.98 (most  89.98, ends   +0.00 vs head) | shield   -89.98 (ends   +0.00 vs head) | room turns 0, count max 0 | mid: main 0.472 -32.0 
+TRT_ROOM90L_LONGGUN          pawn   +89.98 trk    -0.02 | rig   +89.98 (most  89.98, ends   +0.00 vs head) | shield   +89.98 (ends   +0.00 vs head) | room turns 0, count max 0 | mid: main 0.335 -17.3 
+TRT_ROOM90R_SLOW             pawn   -89.98 trk    +0.02 | rig   -89.98 (most  89.98, ends   +0.00 vs head) | shield   -89.98 (ends   +0.00 vs head) | room turns 0, count max 0 | mid: main 0.472 -32.0 
+TRT_END                      pawn    +0.00 trk    +0.00 | rig    +0.00 (most   0.00, ends   +0.00 vs head) | shield    +0.00 (ends   +0.00 vs head) | room turns 0, count max 0 | mid: main 0.472 -32.0 
+
+== full BD order (doom2, 01 brutal22test6, 02 BD22_VoxelPack, 03 BD22_VR-Reloaded_2.0.3q, XMVE 04-07, Gun Bonsai 0.10.6, the 19 committed RSQ pk3s with the new rig), rmroom: script errors 4 (all BD_VoxelPack voxeldef)
+TRT_ROOM90L                  pawn   +89.98 trk    -0.02 | rig   +89.98 (most  89.98, ends   +0.00 vs head) | shield   +89.98 (ends   +0.00 vs head) | room turns 1, count max 52 | eased from 1.26s, landed 1.69s after the head stopped | mid: main 0.472 -32.0 -0.300 1 off 0.472 +32.0 -0.300 1 | hover -1/-1
+TRT_ROOM90R_BACK             pawn   -89.98 trk    +0.02 | rig   -89.98 (most  89.98, ends   +0.00 vs head) | shield   -89.98 (ends   +0.00 vs head) | room turns 1, count max 52 | eased from 1.23s, landed 1.66s after the head stopped | mid: main 0.472 -32.0 -0.300 1 off 0.472 +32.0 -0.300 1 | hover -1/-1
+TRT_ROOM90L_LONGGUN          pawn   +89.98 trk    -0.02 | rig   +89.98 (most  89.98, ends   +0.00 vs head) | shield   +89.98 (ends   +0.00 vs head) | room turns 1, count max 52 | eased from 1.23s, landed 1.66s after the head stopped | mid: main 0.335 -17.3 -0.240 1 off 0.650 +0.0 -0.220 1 | hover -1/-1
+TRT_ROOM90R_SLOW             pawn   -89.98 trk    +0.02 | rig   -89.98 (most  89.98, ends   +0.00 vs head) | shield   -89.98 (ends   +0.00 vs head) | room turns 1, count max 52 | eased from 0.69s, landed 1.11s after the head stopped | mid: main 0.472 -32.0 -0.300 1 off 0.472 +32.0 -0.300 1 | hover -1/-1
+TRT_SNAP_AFTER               pawn   -45.00 trk   -45.00 | rig   -45.00 (most  45.00, ends   +0.00 vs head) | shield   -45.00 (ends   +0.00 vs head) | room turns 0, count max 0 | mid: main 0.472 -32.0 -0.300 1 off 0.472 +32.0 -0.300 1 | hover -1/-1
+TRT_END                      pawn    +0.00 trk    +0.00 | rig    +0.00 (most   0.00, ends   +0.00 vs head) | shield    +0.00 (ends   +0.00 vs head) | room turns 0, count max 0 | mid: main 0.472 -32.0 -0.300 1 off 0.472 +32.0 -0.300 1 | hover -1/-1
+
+# (e) the turn battery's 16 snaps (8 right, 8 left), live sway (snapj), at 90 and 35 fps, rig + shield
+== snap @90 fps: script errors 0
+TRT_SNAP_R1          tracking   -45.00  rig   -45.00 (rig-tracking  +0.00)  shield   -45.00 (shield-tracking  +0.00, shield-rig  +0.00)  | snap: pawn step -45.00 at +2, rig over it -45.00, shield over it -45.00
+TRT_SNAP_R2          tracking   -45.00  rig   -45.00 (rig-tracking  +0.00)  shield   -45.00 (shield-tracking  +0.00, shield-rig  +0.00)  | snap: pawn step -45.00 at +2, rig over it -45.00, shield over it -45.00
+TRT_SNAP_R3          tracking   -45.00  rig   -45.00 (rig-tracking  +0.00)  shield   -45.00 (shield-tracking  +0.00, shield-rig  +0.00)  | snap: pawn step -45.00 at +2, rig over it -45.00, shield over it -45.00
+TRT_SNAP_R4          tracking   -45.00  rig   -45.00 (rig-tracking  +0.00)  shield   -45.00 (shield-tracking  +0.00, shield-rig  +0.00)  | snap: pawn step -45.00 at +2, rig over it -45.00, shield over it -45.00
+TRT_SNAP_R5          tracking   -45.01  rig   -45.00 (rig-tracking  +0.01)  shield   -45.00 (shield-tracking  +0.01, shield-rig  +0.00)  | snap: pawn step -45.01 at +2, rig over it -45.00, shield over it -45.00
+TRT_SNAP_R6          tracking   -45.00  rig   -45.00 (rig-tracking  +0.00)  shield   -45.00 (shield-tracking  +0.00, shield-rig  +0.00)  | snap: pawn step -45.00 at +2, rig over it -45.00, shield over it -45.00
+TRT_SNAP_R7          tracking   -45.00  rig   -45.00 (rig-tracking  +0.00)  shield   -45.00 (shield-tracking  +0.00, shield-rig  +0.00)  | snap: pawn step -45.00 at +2, rig over it -45.00, shield over it -45.00
+TRT_SNAP_R8          tracking   -45.00  rig   -45.00 (rig-tracking  +0.00)  shield   -45.00 (shield-tracking  +0.00, shield-rig  +0.00)  | snap: pawn step -45.00 at +2, rig over it -45.00, shield over it -45.00
+TRT_SNAP_L1          tracking    45.00  rig    45.00 (rig-tracking  -0.00)  shield    45.00 (shield-tracking  -0.00, shield-rig  +0.00)  | snap: pawn step +45.00 at +2, rig over it +45.00, shield over it +45.00
+TRT_SNAP_L2          tracking    45.00  rig    45.00 (rig-tracking  +0.00)  shield    45.00 (shield-tracking  +0.00, shield-rig  +0.00)  | snap: pawn step +45.00 at +2, rig over it +45.00, shield over it +45.00
+TRT_SNAP_L3          tracking    45.00  rig    45.00 (rig-tracking  +0.00)  shield    45.00 (shield-tracking  +0.00, shield-rig  +0.00)  | snap: pawn step +45.00 at +2, rig over it +45.00, shield over it +45.00
+TRT_SNAP_L4          tracking    45.00  rig    45.00 (rig-tracking  +0.00)  shield    45.00 (shield-tracking  +0.00, shield-rig  +0.00)  | snap: pawn step +45.00 at +2, rig over it +45.00, shield over it +45.00
+TRT_SNAP_L5          tracking    45.01  rig    45.00 (rig-tracking  -0.01)  shield    45.00 (shield-tracking  -0.01, shield-rig  +0.00)  | snap: pawn step +45.01 at +2, rig over it +45.00, shield over it +45.00
+TRT_SNAP_L6          tracking    45.00  rig    45.00 (rig-tracking  +0.00)  shield    45.00 (shield-tracking  +0.00, shield-rig  +0.00)  | snap: pawn step +45.00 at +2, rig over it +45.00, shield over it +45.00
+TRT_SNAP_L7          tracking    45.00  rig    45.00 (rig-tracking  +0.00)  shield    45.00 (shield-tracking  +0.00, shield-rig  +0.00)  | snap: pawn step +45.00 at +2, rig over it +45.00, shield over it +45.00
+TRT_SNAP_L8          tracking    45.00  rig    45.00 (rig-tracking  +0.00)  shield    45.00 (shield-tracking  +0.00, shield-rig  +0.00)  | snap: pawn step +45.00 at +2, rig over it +45.00, shield over it +45.00
+== snapj @90 fps: script errors 0
+TRT_SNAP_R1          tracking   -45.30  rig   -45.00 (rig-tracking  +0.30)  shield   -45.00 (shield-tracking  +0.30, shield-rig  +0.00)  | snap: pawn step -45.00 at +2, rig over it -45.00, shield over it -45.00
+TRT_SNAP_R2          tracking   -44.80  rig   -45.00 (rig-tracking  -0.20)  shield   -45.00 (shield-tracking  -0.20, shield-rig  +0.00)  | snap: pawn step -45.10 at +2, rig over it -45.00, shield over it -45.00
+TRT_SNAP_R3          tracking   -44.61  rig   -45.00 (rig-tracking  -0.39)  shield   -45.00 (shield-tracking  -0.39, shield-rig  +0.00)  | snap: pawn step -44.50 at +2, rig over it -45.00, shield over it -45.00
+TRT_SNAP_R4          tracking   -45.40  rig   -45.00 (rig-tracking  +0.40)  shield   -45.00 (shield-tracking  +0.40, shield-rig  +0.00)  | snap: pawn step -45.41 at +2, rig over it -45.00, shield over it -45.00
+TRT_SNAP_R5          tracking   -44.50  rig   -45.00 (rig-tracking  -0.50)  shield   -45.00 (shield-tracking  -0.50, shield-rig  +0.00)  | snap: pawn step -44.80 at +2, rig over it -45.00, shield over it -45.00
+TRT_SNAP_R6          tracking   -45.70  rig   -45.00 (rig-tracking  +0.70)  shield   -45.00 (shield-tracking  +0.70, shield-rig  +0.00)  | snap: pawn step -45.30 at +2, rig over it -45.00, shield over it -45.00
+TRT_SNAP_R7          tracking   -44.19  rig   -45.00 (rig-tracking  -0.81)  shield   -45.00 (shield-tracking  -0.81, shield-rig  +0.00)  | snap: pawn step -44.91 at +2, rig over it -45.00, shield over it -45.00
+TRT_SNAP_R8          tracking   -45.60  rig   -45.00 (rig-tracking  +0.60)  shield   -45.00 (shield-tracking  +0.60, shield-rig  +0.00)  | snap: pawn step -45.00 at +2, rig over it -45.00, shield over it -45.00
+TRT_SNAP_L1          tracking    45.60  rig    45.00 (rig-tracking  -0.60)  shield    45.00 (shield-tracking  -0.60, shield-rig  +0.00)  | snap: pawn step +44.60 at +2, rig over it +45.00, shield over it +45.00
+TRT_SNAP_L2          tracking    44.70  rig    45.00 (rig-tracking  +0.30)  shield    45.00 (shield-tracking  +0.30, shield-rig  +0.00)  | snap: pawn step +44.91 at +2, rig over it +45.00, shield over it +45.00
+TRT_SNAP_L3          tracking    44.90  rig    45.00 (rig-tracking  +0.10)  shield    45.00 (shield-tracking  +0.10, shield-rig  +0.00)  | snap: pawn step +44.29 at +2, rig over it +45.00, shield over it +45.00
+TRT_SNAP_L4          tracking    45.00  rig    45.00 (rig-tracking  +0.00)  shield    45.00 (shield-tracking  +0.00, shield-rig  +0.00)  | snap: pawn step +45.10 at +2, rig over it +45.00, shield over it +45.00
+TRT_SNAP_L5          tracking    44.51  rig    45.00 (rig-tracking  +0.49)  shield    45.00 (shield-tracking  +0.49, shield-rig  +0.00)  | snap: pawn step +44.61 at +2, rig over it +45.00, shield over it +45.00
+TRT_SNAP_L6          tracking    45.61  rig    45.00 (rig-tracking  -0.61)  shield    45.00 (shield-tracking  -0.61, shield-rig  +0.00)  | snap: pawn step +45.41 at +2, rig over it +45.00, shield over it +45.00
+TRT_SNAP_L7          tracking    44.39  rig    45.00 (rig-tracking  +0.61)  shield    45.00 (shield-tracking  +0.61, shield-rig  +0.00)  | snap: pawn step +44.90 at +2, rig over it +45.00, shield over it +45.00
+TRT_SNAP_L8          tracking    45.59  rig    45.00 (rig-tracking  -0.59)  shield    45.00 (shield-tracking  -0.59, shield-rig  +0.00)  | snap: pawn step +45.30 at +2, rig over it +45.00, shield over it +45.00
+== snap @35 fps: script errors 0
+TRT_SNAP_R1          tracking   -45.00  rig   -45.00 (rig-tracking  +0.00)  shield   -45.00 (shield-tracking  +0.00, shield-rig  +0.00)  | snap: pawn step -45.00 at +2, rig over it -45.00, shield over it -45.00
+TRT_SNAP_R2          tracking   -45.00  rig   -45.00 (rig-tracking  +0.00)  shield   -45.00 (shield-tracking  +0.00, shield-rig  +0.00)  | snap: pawn step -45.00 at +2, rig over it -45.00, shield over it -45.00
+TRT_SNAP_R3          tracking   -45.00  rig   -45.00 (rig-tracking  +0.00)  shield   -45.00 (shield-tracking  +0.00, shield-rig  +0.00)  | snap: pawn step -45.00 at +2, rig over it -45.00, shield over it -45.00
+TRT_SNAP_R4          tracking   -45.00  rig   -45.00 (rig-tracking  +0.00)  shield   -45.00 (shield-tracking  +0.00, shield-rig  +0.00)  | snap: pawn step -45.00 at +2, rig over it -45.00, shield over it -45.00
+TRT_SNAP_R5          tracking   -45.01  rig   -45.00 (rig-tracking  +0.01)  shield   -45.00 (shield-tracking  +0.01, shield-rig  +0.00)  | snap: pawn step -45.01 at +2, rig over it -45.00, shield over it -45.00
+TRT_SNAP_R6          tracking   -45.00  rig   -45.00 (rig-tracking  +0.00)  shield   -45.00 (shield-tracking  +0.00, shield-rig  +0.00)  | snap: pawn step -45.00 at +3, rig over it -45.00, shield over it -45.00
+TRT_SNAP_R7          tracking   -45.00  rig   -45.00 (rig-tracking  +0.00)  shield   -45.00 (shield-tracking  +0.00, shield-rig  +0.00)  | snap: pawn step -45.00 at +2, rig over it -45.00, shield over it -45.00
+TRT_SNAP_R8          tracking   -45.00  rig   -45.00 (rig-tracking  +0.00)  shield   -45.00 (shield-tracking  +0.00, shield-rig  +0.00)  | snap: pawn step -45.00 at +2, rig over it -45.00, shield over it -45.00
+TRT_SNAP_L1          tracking    45.00  rig    45.00 (rig-tracking  -0.00)  shield    45.00 (shield-tracking  -0.00, shield-rig  +0.00)  | snap: pawn step +45.00 at +2, rig over it +45.00, shield over it +45.00
+TRT_SNAP_L2          tracking    45.00  rig    45.00 (rig-tracking  +0.00)  shield    45.00 (shield-tracking  +0.00, shield-rig  +0.00)  | snap: pawn step +45.00 at +2, rig over it +45.00, shield over it +45.00
+TRT_SNAP_L3          tracking    45.00  rig    45.00 (rig-tracking  +0.00)  shield    45.00 (shield-tracking  +0.00, shield-rig  +0.00)  | snap: pawn step +45.00 at +2, rig over it +45.00, shield over it +45.00
+TRT_SNAP_L4          tracking    45.00  rig    45.00 (rig-tracking  +0.00)  shield    45.00 (shield-tracking  +0.00, shield-rig  +0.00)  | snap: pawn step +45.00 at +2, rig over it +45.00, shield over it +45.00
+TRT_SNAP_L5          tracking    45.01  rig    45.00 (rig-tracking  -0.01)  shield    45.00 (shield-tracking  -0.01, shield-rig  +0.00)  | snap: pawn step +45.01 at +2, rig over it +45.00, shield over it +45.00
+TRT_SNAP_L6          tracking    45.00  rig    45.00 (rig-tracking  +0.00)  shield    45.00 (shield-tracking  +0.00, shield-rig  +0.00)  | snap: pawn step +45.00 at +2, rig over it +45.00, shield over it +45.00
+TRT_SNAP_L7          tracking    45.00  rig    45.00 (rig-tracking  +0.00)  shield    45.00 (shield-tracking  +0.00, shield-rig  +0.00)  | snap: pawn step +45.00 at +2, rig over it +45.00, shield over it +45.00
+TRT_SNAP_L8          tracking    45.00  rig    45.00 (rig-tracking  +0.00)  shield    45.00 (shield-tracking  +0.00, shield-rig  +0.00)  | snap: pawn step +45.00 at +2, rig over it +45.00, shield over it +45.00
+== snapj @35 fps: script errors 0
+TRT_SNAP_R1          tracking   -45.30  rig   -45.00 (rig-tracking  +0.30)  shield   -45.00 (shield-tracking  +0.30, shield-rig  +0.00)  | snap: pawn step -45.00 at +2, rig over it -45.00, shield over it -45.00
+TRT_SNAP_R2          tracking   -44.80  rig   -45.00 (rig-tracking  -0.20)  shield   -45.00 (shield-tracking  -0.20, shield-rig  +0.00)  | snap: pawn step -45.10 at +2, rig over it -45.00, shield over it -45.00
+TRT_SNAP_R3          tracking   -44.61  rig   -45.00 (rig-tracking  -0.39)  shield   -45.00 (shield-tracking  -0.39, shield-rig  +0.00)  | snap: pawn step -44.50 at +2, rig over it -45.00, shield over it -45.00
+TRT_SNAP_R4          tracking   -45.40  rig   -45.00 (rig-tracking  +0.40)  shield   -45.00 (shield-tracking  +0.40, shield-rig  +0.00)  | snap: pawn step -45.41 at +2, rig over it -45.00, shield over it -45.00
+TRT_SNAP_R5          tracking   -44.50  rig   -45.00 (rig-tracking  -0.50)  shield   -45.00 (shield-tracking  -0.50, shield-rig  +0.00)  | snap: pawn step -44.80 at +2, rig over it -45.00, shield over it -45.00
+TRT_SNAP_R6          tracking   -45.70  rig   -45.00 (rig-tracking  +0.70)  shield   -45.00 (shield-tracking  +0.70, shield-rig  +0.00)  | snap: pawn step -45.30 at +2, rig over it -45.00, shield over it -45.00
+TRT_SNAP_R7          tracking   -44.19  rig   -45.00 (rig-tracking  -0.81)  shield   -45.00 (shield-tracking  -0.81, shield-rig  +0.00)  | snap: pawn step -44.91 at +2, rig over it -45.00, shield over it -45.00
+TRT_SNAP_R8          tracking   -45.60  rig   -45.00 (rig-tracking  +0.60)  shield   -45.00 (shield-tracking  +0.60, shield-rig  +0.00)  | snap: pawn step -45.00 at +2, rig over it -45.00, shield over it -45.00
+TRT_SNAP_L1          tracking    45.60  rig    45.00 (rig-tracking  -0.60)  shield    45.00 (shield-tracking  -0.60, shield-rig  +0.00)  | snap: pawn step +44.60 at +2, rig over it +45.00, shield over it +45.00
+TRT_SNAP_L2          tracking    44.69  rig    45.00 (rig-tracking  +0.31)  shield    45.00 (shield-tracking  +0.31, shield-rig  +0.00)  | snap: pawn step +44.90 at +2, rig over it +45.00, shield over it +45.00
+TRT_SNAP_L3          tracking    44.90  rig    45.00 (rig-tracking  +0.10)  shield    45.00 (shield-tracking  +0.10, shield-rig  +0.00)  | snap: pawn step +44.29 at +2, rig over it +45.00, shield over it +45.00
+TRT_SNAP_L4          tracking    45.00  rig    45.00 (rig-tracking  +0.00)  shield    45.00 (shield-tracking  +0.00, shield-rig  +0.00)  | snap: pawn step +45.10 at +2, rig over it +45.00, shield over it +45.00
+TRT_SNAP_L5          tracking    44.51  rig    45.00 (rig-tracking  +0.49)  shield    45.00 (shield-tracking  +0.49, shield-rig  +0.00)  | snap: pawn step +44.61 at +2, rig over it +45.00, shield over it +45.00
+TRT_SNAP_L6          tracking    45.60  rig    45.00 (rig-tracking  -0.60)  shield    45.00 (shield-tracking  -0.60, shield-rig  +0.00)  | snap: pawn step +45.40 at +2, rig over it +45.00, shield over it +45.00
+TRT_SNAP_L7          tracking    44.40  rig    45.00 (rig-tracking  +0.60)  shield    45.00 (shield-tracking  +0.60, shield-rig  +0.00)  | snap: pawn step +44.90 at +2, rig over it +45.00, shield over it +45.00
+TRT_SNAP_L8          tracking    45.60  rig    45.00 (rig-tracking  -0.60)  shield    45.00 (shield-tracking  -0.60, shield-rig  +0.00)  | snap: pawn step +45.30 at +2, rig over it +45.00, shield over it +45.00
