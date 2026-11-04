@@ -83,6 +83,19 @@ Model RSQTR_CigProp
 	FrameIndex RSCG B 0 0
 }
 
+// A cigarette standing in the pocket (RSQTR_CigStowed): the held cigarette's mesh, unlit, levelled the same way.
+Model RSQTR_CigStowed
+{
+	Path "models/rsqtr"
+	Model 0 "rtcig.md3"
+	Skin 0 "rtcig.jpg"
+	Scale 0.3 0.3 0.3
+	PitchOffset 22
+	USEACTORPITCH
+	USEACTORROLL
+	FrameIndex RSCG A 0 0
+}
+
 Model RSQTR_Butt
 {
 	Path "models/rsqtr"

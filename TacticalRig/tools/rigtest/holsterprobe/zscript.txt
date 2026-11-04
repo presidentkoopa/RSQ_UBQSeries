@@ -38,6 +38,18 @@ class RSQTRHolsterProbe : EventHandler
 			}
 			sh = sh .. String.Format(" %s:%d%s", cn.Mid(0, 6), vis, where);
 		}
+		// the rest worn on the body (11-03 "always show"): visible counts of each, mirror copies included
+		static const String WCLS[] = { "RSQTR_CigStowed", "RSQTR_NadeShow", "SSQ_Prop", "RSQTR_Icon" };
+		String worn = "";
+		for (int k = 0; k < WCLS.Size(); k++)
+		{
+			String cn = WCLS[k];
+			class<Actor> c = cn;
+			int vis = 0;
+			if (c) { let it = ThinkerIterator.Create(c); Actor a; while (a = Actor(it.Next())) if (!a.bINVISIBLE && a.GetClass() == c) vis++; }
+			worn = worn .. String.Format(" %s=%d", cn.Mid(cn.IndexOf("_") + 1), vis);
+		}
+		sh = sh .. " |" .. worn;
 		String guns = "";
 		for (int r = 0; r < RSQTR_Region.N; r++) { String c = rg.Content(mo, r); if (c != "") guns = guns .. String.Format(" %d=%s", r, c); }
 		int ph = RSQTR_Rig.FlareAsk("flare.phase", mo), cnt = RSQTR_Rig.FlareAsk("flare.count", mo);

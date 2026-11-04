@@ -2263,7 +2263,8 @@ class RSQTR_Rig : EventHandler
 		Actor a;
 		while (a = Actor(it.Next()))
 			if (a is "RSQTR_Marker" || a is "RSQTR_Icon" || a is "RSQTR_TorsoPart" || a is "RSQTR_MarinePart" || a is "RSQTR_HelmetPart" || a is "RSQTR_HeldShow" || a is "RSQTR_AmmoDigit"
-				|| a.GetClassName() == 'RSQWP_Stowed' || a.GetClassName() == 'RSQFF_Stowed') a.Destroy();
+				|| a.GetClassName() == 'RSQWP_Stowed' || a.GetClassName() == 'RSQFF_Stowed' || a is "RSQTR_CigStowed" || a is "RSQTR_NadeShow"
+				|| a.special2 == RSQTR_MirrorView.MIRROR_MARK) a.Destroy();
 	}
 
 	// OnRegister also runs when a save is loaded (a level's handlers get no WorldLoaded
@@ -2302,6 +2303,9 @@ class RSQTR_AmmoDigit : Actor
 class RSQTR_NadeShow : Actor
 {
 	int how;                        // 0 not chosen yet, 1 BD22 VR's mesh, 2 RSQ Grenade's, 3 a sprite, 4 nothing
+	String ammoUsed;
+	// the mirror's copy (mirror.zs Copy): the same mesh chosen (A_ChangeModel is not copied with the actor)
+	void Mimic(RSQTR_NadeShow o) { if (o && !how && o.how) Choose(o.ammoUsed); }
 	double sprH;                    // the sprite's height in pixels (3)
 	const BODY_H = 17.01;           // the mesh's body height in model units (frame 2)
 	const TILT = 35;                // degrees the top leans away from you (pitch, nose down = top out)
@@ -2347,6 +2351,7 @@ class RSQTR_NadeShow : Actor
 	}
 	void Show(Vector3 at, double yaw, double metres, String ammo)
 	{
+		ammoUsed = ammo;
 		if (!how) Choose(ammo);
 		if (how == 4) { bINVISIBLE = true; return; }
 		double u = RSQTR_Body.Upm();

@@ -172,6 +172,7 @@ Options → Radiant Silvergun Options → RSQ Tactical Rig
 | Show Flare in Holster | On | A flare hangs there while you carry one |
 | Slow Motion After a Smoke | On | RSQ SlowMo when the cigarette is flicked |
 | Refill Each Level | On | The pocket refills |
+| Show Cigarettes in Pocket | On | The cigarettes left in the pocket stand in it on your chest |
 
 **Holster Profiles**: Save and Load for Standing A (blue), Standing B (orange), Seated A (purple), Seated B (yellow).
 

@@ -1,5 +1,122 @@
-Script error, "trhprobe.pk3:zscript.txt" line 43:
-Script error, "trhprobe.pk3:zscript.txt" line 43:
-Script error, "trhprobe.pk3:zscript.txt" line 48:
-Script error, "trhprobe.pk3:zscript.txt" line 48:
-Script error, "trhprobe.pk3:zscript.txt" line 49:
+trh: t0 hover -1/-1 | main Pistol off None pend nc | flare ph 0 n 4 | whip filed -1 | guns: | shown: RSQFF_:0
+trh: t1 hover -1/-1 | main Pistol off None pend nc | flare ph 0 n 4 | whip filed 11 | guns: | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: region 11 Whip at -0.06 forward -0.30 left -0.84 up from the eyes (eyes 1.45 m over the floor), radius 0.09
+trh: region 12 Flare at -0.06 forward 0.30 left -0.84 up from the eyes (eyes 1.45 m over the floor), radius 0.09
+trh: t35 hover -1/-1 | main Pistol off None pend nc | flare ph 0 n 4 | whip filed 11 | guns: | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t40 hover -1/-1 | main Pistol off None pend Chaingun | flare ph 0 n 4 | whip filed 11 | guns: | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t50 hover -1/-1 | main Pistol off None pend Shotgun | flare ph 0 n 4 | whip filed 11 | guns: | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t55 hover -1/-1 | main Shotgun off None pend nc | flare ph 0 n 4 | whip filed 11 | guns: | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t70 hover -1/-1 | main Shotgun off None pend nc | flare ph 0 n 4 | whip filed 11 | guns: | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t90 hover 0/-1 | main Shotgun off None pend nc | flare ph 0 n 4 | whip filed 11 | guns: | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t103 hover 0/-1 | main Shotgun off None pend Fist | flare ph 0 n 4 | whip filed 11 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t105 hover 0/-1 | main Shotgun off None pend Fist | flare ph 0 n 4 | whip filed 11 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t113 hover -1/-1 | main Shotgun off None pend Fist | flare ph 0 n 4 | whip filed 11 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t118 hover -1/-1 | main Fist off None pend nc | flare ph 0 n 4 | whip filed 11 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t138 hover -1/-1 | main Fist off None pend RSQWP_WhipWeapon | flare ph 0 n 4 | whip filed -1 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t140 hover -1/-1 | main Fist off None pend RSQWP_WhipWeapon | flare ph 0 n 4 | whip filed -1 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t153 hover -1/-1 | main RSQWP_WhipWeapon off None pend nc | flare ph 0 n 4 | whip filed -1 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t175 hover -1/-1 | main RSQWP_WhipWeapon off None pend nc | flare ph 0 n 4 | whip filed -1 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+TRH_W_HOVER
+trh: t178 hover 11/-1 | main RSQWP_WhipWeapon off None pend nc | flare ph 0 n 4 | whip filed -1 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t193 hover -1/-1 | main RSQWP_WhipWeapon off None pend nc | flare ph 0 n 4 | whip filed -1 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+TRH_W_HOLSTER
+trh: t203 hover 11/-1 | main RSQWP_WhipWeapon off None pend nc | flare ph 0 n 4 | whip filed -1 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t210 hover 11/-1 | main RSQWP_WhipWeapon off None pend nc | flare ph 0 n 4 | whip filed -1 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+T_RIG whip holster t216: the whip goes home from the main hand
+trh: t216 hover 11/-1 | main RSQWP_WhipWeapon off None pend Fist | flare ph 0 n 4 | whip filed -1 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t223 hover 11/-1 | main Fist off None pend nc | flare ph 0 n 4 | whip filed 11 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t226 hover -1/-1 | main Fist off None pend nc | flare ph 0 n 4 | whip filed 11 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t245 hover -1/-1 | main Fist off None pend nc | flare ph 0 n 4 | whip filed 11 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+TRH_W_DRAW
+trh: t271 hover 11/-1 | main Fist off None pend nc | flare ph 0 n 4 | whip filed 11 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t280 hover 11/-1 | main Fist off None pend nc | flare ph 0 n 4 | whip filed 11 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+T_RIG whip holster t284: the whip drawn into the main hand
+trh: t284 hover 11/-1 | main Fist off None pend RSQWP_WhipWeapon | flare ph 0 n 4 | whip filed -1 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t294 hover -1/-1 | main Fist off None pend RSQWP_WhipWeapon | flare ph 0 n 4 | whip filed -1 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t299 hover -1/-1 | main RSQWP_WhipWeapon off None pend nc | flare ph 0 n 4 | whip filed -1 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t315 hover -1/-1 | main RSQWP_WhipWeapon off None pend nc | flare ph 0 n 4 | whip filed -1 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+TRH_W_GUN_FROM_HIP
+trh: t339 hover 0/-1 | main RSQWP_WhipWeapon off None pend nc | flare ph 0 n 4 | whip filed -1 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t350 hover 0/-1 | main RSQWP_WhipWeapon off None pend nc | flare ph 0 n 4 | whip filed -1 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t352 hover 0/-1 | main RSQWP_WhipWeapon off None pend Shotgun | flare ph 0 n 4 | whip filed -1 | guns: | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t359 hover 0/-1 | main Shotgun off None pend nc | flare ph 0 n 4 | whip filed 11 | guns: | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t362 hover -1/-1 | main Shotgun off None pend nc | flare ph 0 n 4 | whip filed 11 | guns: | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t385 hover -1/-1 | main Shotgun off None pend nc | flare ph 0 n 4 | whip filed 11 | guns: | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+TRH_W_GUN_BACK_TO_HIP
+trh: t407 hover 0/-1 | main Shotgun off None pend nc | flare ph 0 n 4 | whip filed 11 | guns: | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t420 hover 0/-1 | main Shotgun off None pend Fist | flare ph 0 n 4 | whip filed 11 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t430 hover -1/-1 | main Shotgun off None pend Fist | flare ph 0 n 4 | whip filed 11 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t435 hover -1/-1 | main Fist off None pend nc | flare ph 0 n 4 | whip filed 11 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t455 hover -1/-1 | main Fist off None pend nc | flare ph 0 n 4 | whip filed 11 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+TRH_W_DRAW2
+trh: t475 hover 11/-1 | main Fist off None pend nc | flare ph 0 n 4 | whip filed 11 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+T_RIG whip holster t488: the whip drawn into the main hand
+trh: t488 hover 11/-1 | main Fist off None pend RSQWP_WhipWeapon | flare ph 0 n 4 | whip filed -1 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t490 hover 11/-1 | main Fist off None pend RSQWP_WhipWeapon | flare ph 0 n 4 | whip filed -1 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t498 hover -1/-1 | main Fist off None pend RSQWP_WhipWeapon | flare ph 0 n 4 | whip filed -1 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t503 hover -1/-1 | main RSQWP_WhipWeapon off None pend nc | flare ph 0 n 4 | whip filed -1 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t525 hover -1/-1 | main RSQWP_WhipWeapon off None pend nc | flare ph 0 n 4 | whip filed -1 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+TRH_W_EMPTY_GUN_HOLSTER
+trh: t543 hover 6/-1 | main RSQWP_WhipWeapon off None pend nc | flare ph 0 n 4 | whip filed -1 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+T_RIG whip holster t556: the whip goes home from the main hand
+trh: t556 hover 6/-1 | main RSQWP_WhipWeapon off None pend Fist | flare ph 0 n 4 | whip filed -1 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t560 hover 6/-1 | main RSQWP_WhipWeapon off None pend Fist | flare ph 0 n 4 | whip filed -1 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t563 hover 6/-1 | main Fist off None pend nc | flare ph 0 n 4 | whip filed 11 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t566 hover -1/-1 | main Fist off None pend nc | flare ph 0 n 4 | whip filed 11 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t595 hover -1/-1 | main Fist off None pend nc | flare ph 0 n 4 | whip filed 11 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+TRH_W_DRAW3
+trh: t611 hover 11/-1 | main Fist off None pend nc | flare ph 0 n 4 | whip filed 11 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+T_RIG whip holster t624: the whip drawn into the main hand
+trh: t624 hover 11/-1 | main Fist off None pend RSQWP_WhipWeapon | flare ph 0 n 4 | whip filed -1 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t630 hover 11/-1 | main Fist off None pend RSQWP_WhipWeapon | flare ph 0 n 4 | whip filed -1 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t634 hover -1/-1 | main Fist off None pend RSQWP_WhipWeapon | flare ph 0 n 4 | whip filed -1 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t639 hover -1/-1 | main RSQWP_WhipWeapon off None pend nc | flare ph 0 n 4 | whip filed -1 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t665 hover -1/-1 | main RSQWP_WhipWeapon off None pend nc | flare ph 0 n 4 | whip filed -1 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+TRH_W_SLOT3
+trh: t679 hover -1/-1 | main RSQWP_WhipWeapon off None pend SuperShotgun | flare ph 0 n 4 | whip filed -1 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t686 hover -1/-1 | main SuperShotgun off None pend nc | flare ph 0 n 4 | whip filed 11 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t700 hover -1/-1 | main SuperShotgun off None pend nc | flare ph 0 n 4 | whip filed 11 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+TRH_W_DRAW4
+trh: t724 hover 11/-1 | main SuperShotgun off None pend nc | flare ph 0 n 4 | whip filed 11 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t735 hover 11/-1 | main SuperShotgun off None pend nc | flare ph 0 n 4 | whip filed 11 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+T_RIG whip holster t737: the whip drawn into the main hand
+trh: t737 hover 11/-1 | main SuperShotgun off None pend RSQWP_WhipWeapon | flare ph 0 n 4 | whip filed -1 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t747 hover -1/-1 | main SuperShotgun off None pend RSQWP_WhipWeapon | flare ph 0 n 4 | whip filed -1 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t752 hover -1/-1 | main RSQWP_WhipWeapon off None pend nc | flare ph 0 n 4 | whip filed -1 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t770 hover -1/-1 | main RSQWP_WhipWeapon off None pend nc | flare ph 0 n 4 | whip filed -1 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+TRH_W_WEAPNEXT
+trh: t792 hover -1/-1 | main RSQWP_WhipWeapon off None pend Pistol | flare ph 0 n 4 | whip filed -1 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t799 hover -1/-1 | main Pistol off None pend nc | flare ph 0 n 4 | whip filed 11 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t805 hover -1/-1 | main Pistol off None pend nc | flare ph 0 n 4 | whip filed 11 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+TRH_W_DRAW5
+trh: t837 hover 11/-1 | main Pistol off None pend nc | flare ph 0 n 4 | whip filed 11 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t840 hover 11/-1 | main Pistol off None pend nc | flare ph 0 n 4 | whip filed 11 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+T_RIG whip holster t850: the whip drawn into the main hand
+trh: t850 hover 11/-1 | main Pistol off None pend RSQWP_WhipWeapon | flare ph 0 n 4 | whip filed -1 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t860 hover -1/-1 | main Pistol off None pend RSQWP_WhipWeapon | flare ph 0 n 4 | whip filed -1 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t865 hover -1/-1 | main RSQWP_WhipWeapon off None pend nc | flare ph 0 n 4 | whip filed -1 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t875 hover -1/-1 | main RSQWP_WhipWeapon off None pend nc | flare ph 0 n 4 | whip filed -1 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+TRH_W_USE_CHAINGUN
+trh: t905 hover -1/-1 | main RSQWP_WhipWeapon off None pend Chaingun | flare ph 0 n 4 | whip filed -1 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t910 hover -1/-1 | main RSQWP_WhipWeapon off None pend Chaingun | flare ph 0 n 4 | whip filed -1 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t912 hover -1/-1 | main Chaingun off None pend nc | flare ph 0 n 4 | whip filed 11 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t945 hover -1/-1 | main Chaingun off None pend nc | flare ph 0 n 4 | whip filed 11 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+TRH_W_OFF_AT_WHIP
+trh: t950 hover -1/11 | main Chaingun off None pend nc | flare ph 0 n 4 | whip filed 11 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t973 hover -1/-1 | main Chaingun off None pend nc | flare ph 0 n 4 | whip filed 11 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t980 hover -1/-1 | main Chaingun off None pend nc | flare ph 0 n 4 | whip filed 11 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+TRH_W_GUN_IN_HAND_AT_WHIP
+trh: t998 hover 11/-1 | main Chaingun off None pend nc | flare ph 0 n 4 | whip filed 11 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+T_RIG whip holster t1011: the whip drawn into the main hand
+trh: t1011 hover 11/-1 | main Chaingun off None pend RSQWP_WhipWeapon | flare ph 0 n 4 | whip filed -1 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t1015 hover 11/-1 | main Chaingun off None pend RSQWP_WhipWeapon | flare ph 0 n 4 | whip filed -1 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t1021 hover -1/-1 | main Chaingun off None pend RSQWP_WhipWeapon | flare ph 0 n 4 | whip filed -1 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t1026 hover -1/-1 | main RSQWP_WhipWeapon off None pend nc | flare ph 0 n 4 | whip filed -1 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t1050 hover -1/-1 | main RSQWP_WhipWeapon off None pend nc | flare ph 0 n 4 | whip filed -1 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+TRH_W_GUN_FROM_HIP2
+trh: t1066 hover 0/-1 | main RSQWP_WhipWeapon off None pend nc | flare ph 0 n 4 | whip filed -1 | guns: 0=Shotgun | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t1079 hover 0/-1 | main RSQWP_WhipWeapon off None pend Shotgun | flare ph 0 n 4 | whip filed -1 | guns: | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t1085 hover 0/-1 | main RSQWP_WhipWeapon off None pend Shotgun | flare ph 0 n 4 | whip filed -1 | guns: | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t1086 hover 0/-1 | main Shotgun off None pend nc | flare ph 0 n 4 | whip filed 11 | guns: | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t1089 hover -1/-1 | main Shotgun off None pend nc | flare ph 0 n 4 | whip filed 11 | guns: | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)
+trh: t1120 hover -1/-1 | main Shotgun off None pend nc | flare ph 0 n 4 | whip filed 11 | guns: | shown: RSQFF_:1(d 0.00 0.00 0.00 a0 p-75 r0)

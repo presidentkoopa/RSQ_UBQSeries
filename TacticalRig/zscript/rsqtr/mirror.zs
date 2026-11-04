@@ -18,6 +18,14 @@ class RSQTR_MirrorView play
 	Actor mMark[RSQTR_Region.N];
 	Actor mIcon[RSQTR_Region.N];
 	Actor mHand[2];
+	// THE REST OF WHAT YOU WEAR (11-03, the owner: "the torso rig will need to always show cigarette, whip, grenade, sabers,
+	// shieldsaw"): the grenade at the buckle (rig.nadeShow), the cigarettes in the pocket (RSQTR_Cig.packShow) and RSQ
+	// ShieldSaw's shield on your back (its SSQ_Prop, found by name within EXTRA_NEAR of you). The stowed guns, sabers,
+	// whip and flare are icon[] above.
+	const NEXTRA = 6;
+	const EXTRA_NEAR = 1.5;    // metres
+	const MIRROR_MARK = 0x52534D52;
+	Actor mExtra[NEXTRA];
 
 	// The plane: a point on it, its normal (the body's forward), the body's yaw; `back`
 	// shows the rig turned to face away instead of reflected; `side` shifts it to the left.
@@ -49,6 +57,8 @@ class RSQTR_MirrorView play
 		if (!m) return null;
 		let si = RSQTR_Icon(src), mi = RSQTR_Icon(m);
 		if (si && mi && si.wearing != "") mi.Wear(si.wearing, si.Scale.X, si.Alpha);
+		let sn = RSQTR_NadeShow(src), mn = RSQTR_NadeShow(m);
+		if (sn && mn) mn.Mimic(sn);
 		m.SetOrigin(Map(src.pos), true);
 		m.angle = MapAngle(src.angle);
 		m.pitch = src.pitch;
@@ -83,6 +93,26 @@ class RSQTR_MirrorView play
 			mMark[r] = Copy(mMark[r], rig.marker[r]);
 			mIcon[r] = Copy(mIcon[r], rig.icon[r]);
 		}
+		Actor src[NEXTRA];
+		int ns = 0;
+		src[ns++] = rig.nadeShow;
+		let cig = RSQTR_Cig.Get();
+		for (int k = 0; k < RSQTR_Cig.PACK_SHOWN; k++) src[ns++] = cig ? cig.packShow[k] : null;
+		String sn = "SSQ_Prop";
+		class<Actor> sc = sn;
+		Actor shield = null;
+		if (sc)
+		{
+			let it = ThinkerIterator.Create(sc);
+			Actor a;
+			while (a = Actor(it.Next())) if (!a.bINVISIBLE && RSQTR_Body.RoomMetres(a.pos, pmo.pos + (0, 0, pmo.height * 0.5)) < EXTRA_NEAR) { shield = a; break; }
+		}
+		src[ns++] = shield;
+		for (int k = 0; k < NEXTRA; k++)
+		{
+			mExtra[k] = Copy(mExtra[k], k < ns ? src[k] : null);
+			if (mExtra[k]) mExtra[k].special2 = MIRROR_MARK;    // a copy of another mod's class: ClearLocalMarks knows it by this
+		}
 		for (int h = 0; h < 2; h++)
 		{
 			if (!mHand[h]) mHand[h] = Actor.Spawn("RSQTR_Marker", head);
@@ -107,6 +137,7 @@ class RSQTR_MirrorView play
 			if (mIcon[r]) mIcon[r].bINVISIBLE = true;
 		}
 		for (int h = 0; h < 2; h++) if (mHand[h]) mHand[h].bINVISIBLE = true;
+		for (int k = 0; k < NEXTRA; k++) if (mExtra[k]) mExtra[k].bINVISIBLE = true;
 	}
 }
 

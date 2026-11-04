@@ -78,4 +78,16 @@ def W(lefty):
     return b
 def write(name, b):
     with open(os.path.join(HERE, 'trh_script%s.txt' % name), 'w') as f: f.write(b + 'wait 20; quit\n')
-write('F', F(False)); write('FL', F(True)); write('W', W(False)); write('WL', W(True))
+# ALL / ALLL (owner 11-03 20:51, "the torso rig will need to always show cigarette, whip, grenade, sabers, shieldsaw"):
+# everything owned and stowed, the mirror (front, then back) with the torso; then each in a hand in turn (its spot empty).
+# Loads TacticalRig + FnF + Whip + Saber + ShieldSaw + Grenade. Frames: EVERY.
+def ALL(lefty):
+    b = ('wait 40; con_notifytime 0; vr_control_scheme %d; %s; %s; set rsqtr_cig 1; set rsqtr_vest 0; set rsqtr_markers 0; '
+         'set rsqtr_mirror 2; set rsqtr_mirror_m 0.5; set rsqtr_mirror_view 0; qz_hmd "0 1.6 0 -30 0 0"; '
+         'give shotgun; give RSQWP_WhipWeapon; give UBQS_Saber; give UBQS_SaberOff; give SSQ_ShieldSaw; give RSQGN_Ammo 3; wait 5; use Shotgun; '
+         % (10 if lefty else 0, REST_R, REST_L))
+    b += 'wait 60; echo TRH_ALL_FRONT; wait 40; set rsqtr_mirror_view 1; echo TRH_ALL_BACK; wait 40; set rsqtr_mirror_view 0; '
+    b += 'use RSQWP_WhipWeapon; wait 40; echo TRH_ALL_WHIP_IN_HAND; wait 40; use UBQS_Saber; wait 40; echo TRH_ALL_SABER_IN_HAND; wait 40; '
+    b += 'use Shotgun; wait 40; set rsqtr_cig 0; echo TRH_ALL_CIG_OFF; wait 40; '
+    return b
+write('F', F(False)); write('FL', F(True)); write('W', W(False)); write('WL', W(True)); write('ALL', ALL(False)); write('ALLL', ALL(True))

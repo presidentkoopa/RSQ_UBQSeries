@@ -314,7 +314,7 @@ class RSQTR_Cig : EventHandler
 		Steps();
 
 		let p = players[consoleplayer];
-		if (!p || !p.mo || p.mo.health <= 0) { HideMark(); HideCue(); return; }
+		if (!p || !p.mo || p.mo.health <= 0) { HideMark(); HideCue(); HidePack(); return; }
 		let pmo = p.mo;
 		int n = consoleplayer;
 		// USE, EDGE-BASED: the rising edge of the key in this tic's command OR the unmodified one the input built
@@ -335,7 +335,7 @@ class RSQTR_Cig : EventHandler
 		if (keyEdge && !useEdge && RSQTR_Rig.Flag("rsqtr_messages", p, false)) Console.Printf("T_CIG t%d Use caught as a key press (not in the command: a tap shorter than a tic)", level.maptime);
 		useEdge = useEdge || keyEdge;
 		if (useEdge) useActTic = level.maptime;
-		if (!RSQTR_Rig.Flag("rsqtr_cig", p, false)) { HideMark(); HideCue(); return; }
+		if (!RSQTR_Rig.Flag("rsqtr_cig", p, false)) { HideMark(); HideCue(); HidePack(); return; }
 		let rig = RSQTR_Rig.Get();
 		Vector3 pocket = Pocket(pmo);
 		bool msg = RSQTR_Rig.Flag("rsqtr_messages", p, false);
@@ -447,7 +447,42 @@ class RSQTR_Cig : EventHandler
 		}
 
 		ShowMark(pocket, nearest);
+		ShowPack(pmo, p, pocket);
 	}
+
+	// THE CIGARETTES IN THE POCKET, ON THE BODY (owner 2026-11-03 20:51: "the torso rig will need to always show cigarette
+	// (when enabled), whip, grenade, sabers, shieldsaw"). With Cigarettes on, while the pocket holds any (RSQTR_CigPack),
+	// up to PACK_SHOWN of them stand in it, filter end up, poking PACK_UP above the pocket's centre, side by side PACK_GAP
+	// apart across the chest, following the torso (Pocket: the rig's body). Ermac's cigarette mesh, unlit (RSQTR_CigStowed).
+	// One in the hand or mouth is not in the pocket: only the pocket's count is shown. Off with Show Cigarettes in Pocket
+	// (rsqtr_cig_show), the rig off, or out of VR (the rig's own rule: no controllers, no rig).
+	const PACK_SHOWN = 3;
+	const PACK_UP = 0.035;
+	const PACK_GAP = 0.014;
+	transient Actor packShow[PACK_SHOWN];      // read by the mirror (mirror.zs)
+	private void ShowPack(PlayerPawn pmo, PlayerInfo p, Vector3 pocket)
+	{
+		int cnt = Packs(pmo);
+		if (cnt <= 0 || !RSQTR_Rig.Flag("rsqtr_cig_show", p, true) || !RSQTR_Rig.Flag("rsqtr_on", p, true) || !pmo.OverrideAttackPosDir) { HidePack(); return; }
+		let rig = RSQTR_Rig.Get();
+		double by = rig ? rig.BodyYaw(pmo) : pmo.angle;
+		double u = RSQTR_Body.Upm();
+		int shown = min(cnt, PACK_SHOWN);
+		for (int k = 0; k < PACK_SHOWN; k++)
+		{
+			if (k >= shown) { if (packShow[k]) packShow[k].bINVISIBLE = true; continue; }
+			if (!packShow[k]) packShow[k] = Actor.Spawn("RSQTR_CigStowed", pocket);
+			let a = packShow[k];
+			if (!a) continue;
+			double side = (k - (shown - 1) * 0.5) * PACK_GAP * u;
+			a.SetOrigin(pocket + (-sin(by) * side, cos(by) * side, PACK_UP * u / RSQTR_Body.Ps()), true);
+			a.angle = by;
+			a.pitch = 90;            // nose (the burning end) down: the filter up, out of the pocket
+			a.roll = 0;
+			a.bINVISIBLE = false;
+		}
+	}
+	private void HidePack() { for (int k = 0; k < PACK_SHOWN; k++) if (packShow[k]) packShow[k].bINVISIBLE = true; }
 
 	private void ShowMark(Vector3 at, double nearest)
 	{
@@ -1479,6 +1514,17 @@ class RSQTR_Smoke : Actor
 }
 
 // The pocket's count, carried with the player from level to level.
+// A cigarette standing in the pocket (RSQTR_Cig.ShowPack): Ermac's mesh, unlit, turned by the actor. Local, never in play.
+class RSQTR_CigStowed : Actor
+{
+	Default
+	{
+		+NOINTERACTION +NOBLOCKMAP +NOGRAVITY +NOTELEPORT +DONTSPLASH +NOTONAUTOMAP
+		Radius 1; Height 1;
+	}
+	States { Spawn: RSCG A -1; Stop; }
+}
+
 class RSQTR_CigPack : Inventory
 {
 	int held;                    // what was out when this was last written (RSQTR_Cig.PH_*), for a level change
