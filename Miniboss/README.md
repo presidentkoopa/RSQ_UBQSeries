@@ -1,242 +1,153 @@
 # RSQ Miniboss
 
-Once per map, one strong monster becomes a miniboss, fed by three nearby monsters, its **thralls**. Dotted
-particle lines join each thrall to it. While thralls live, the miniboss shrugs off most damage and has
-their powers. Kill a thrall and time slows (with RSQ_SlowMo): a window to hurt the miniboss or kill the
-next thrall. The miniboss has three lives; after each lost life it is briefly invulnerable and dead thralls
-rise again. Get greedy (hit the miniboss while thralls live and let the window run out) and every monster
-on the map turns fast and aggressive until the miniboss dies. Rebuilt from Tartlman's Minibosses! v0.1.1.
+Every level picks a champion from its own monsters, binds it to a crew of thralls that feed it, and dares you to go for the head first.
 
-Pk3: `pk3/RSQ_Miniboss.pk3`.
+Status: 0.99 — played and confirmed working in the headset; refinement and bug fixing ongoing.
 
-## Load order
+RSQ is a series of VR mods for stock QuestZDoom 17.3, built in ZScript alone with no engine changes. RSQ Miniboss is a
+rebuild of Tartlman's Minibosses! with new rules, and it reads monsters by their health, never their class name, so it
+works the same on Doom's monsters, Brutal Doom's and most monster packs.
 
-doom2.wad -> 01 brutal22test6 -> 02 BD22_VoxelPack -> 03 BD22_VR-Reloaded_2.0.3j -> 04-07 XMVE ->
-**RSQ_Miniboss.pk3** (after the other series pk3s and any monster
-mods)
+## Standout feature: the set piece
 
-- Works on plain Doom 2 without Brutal Doom (run on vanilla doom2 on the rig). No monster class is named.
-- Needs no other RSQ pk3 to load. **The slow-time window needs RSQ_SlowMo**; without it a thrall's death
-  still opens the window for the chain and greed rules, but time does not slow. Score awards need RSQ_Score.
-- Champions and LegenDoom Lite (optional, not RSQ): thralls are made legendary, and the miniboss inherits
-  their champion powers.
+A few seconds into a level, the miniboss is chosen: usually the toughest thing on the map. Its thralls are the best
+monsters around it. Glowing beaded lines run from each thrall into the miniboss, showing who feeds whom.
 
-## Setup
+- While its thralls live, the miniboss shrugs off most of your damage (80% with all of them up, less for each one down).
+- It has three lives, shown as orbs circling its head. Knock one off and it refills, turns invulnerable behind a gold
+  ring, and when the ring ends its dead thralls rise again.
+- Every thrall you kill **slows time** around you (with RSQ SlowMo loaded). Kill another inside the window and the window
+  stretches. Chain the whole crew in one long slow-motion sweep.
+- Hit the miniboss while its thralls still stand and you arm the **greed rule**. If the slow window runs out with the
+  miniboss and a thrall still alive, every monster on the map is enraged: twice as fast and far quicker to shoot, until
+  the miniboss dies. Kill it while its thralls still stand, before the rage comes, and RSQ Score pays a Greedy bonus.
 
-- No buttons to bind.
-- Menu: Options -> Radiant Silvergun Options -> **RSQ Miniboss**. Numbers and Reset All are on its
-  **Tuning and Debug** page.
-
-## What to do in VR
-
-Nothing special. Find the monster the particle lines run into; kill its thralls first.
-
-## How to read it
-
-- **Miniboss**: white beads run along dotted lines into it; one orb per life circles its head (the last one
-  red and pulsing); a gold ring while it is invulnerable.
-- **Thrall**: a marker over it and a dotted line to the miniboss. A faint grey line goes to a dead thrall
-  that will rise.
-- **Thrall killed**: an imp-fireball burst sound and the line shatters.
-- **Life lost**: a BFG blast sound and a burst.
-- **Rage**: the Icon of Sin's sight sound; red sparks rise off every enraged monster.
+You choose: clear the crew the safe way, or go for the throat and live with the consequences.
 
 ## Features
 
-Front page (RSQ Miniboss):
+**Choosing**
+- One miniboss per level by default (up to 4), drawn from the strongest third of the level's monsters, weighted by
+  health. A Baron among imps is nearly always the one.
+- Up to 3 thralls (1 to 8), the best monsters within 1024 units, never stronger than their miniboss.
+- Monsters the engine already treats as bosses are never picked.
+
+**The fight**
+- **Thrall Shield**: damage cut by up to 80%, shared out per living thrall.
+- **Lives**: 3 by default. Each lost life gives 5 seconds of invulnerability plus 1 second per living thrall.
+- **Revive Thralls**: dead thralls rise when that invulnerability ends.
+- **Slow window**: 4 seconds per thrall kill, +3 seconds for each chained kill, up to 12 seconds.
+- **Greed Rule**: struck while thralls live, then the window ends with a thrall still up: map-wide rage until the
+  miniboss dies. Everything enraged is put back exactly as it was afterwards.
+- **Effects**: thrall links, life orbs (the last one burns red), the invulnerability ring, shatter lines when a thrall
+  dies, red sparks over enraged monsters. All engine particles, drawn only within 4000 units of you.
+- Sounds are Doom's own: a BFG burst for a lost life, a fireball pop for a thrall, the Icon of Sin's roar for the rage.
+
+**Counts as a boss** (each on its own switch; the engine's boss flag is never set)
+- **Boss Kill Rewards**: RSQ VisualRewards' Kill Rewards treat it as a boss kill.
+- **Can't Be Yanked**: RSQ Grapple and RSQ Whip pull you to it instead of yanking it.
+- **Can't Be Headlocked**: RSQ Melee's headlock refuses it.
+- **LegenDoom: Best Health**: made legendary here, it gets the higher of LegenDoom Lite's boss and normal legendary health.
+- **Map-wide Roar** (optional, off by default): its sight and death sounds carry across the map.
+- **Can't Be Morphed** (optional, off by default).
+
+**With other monster mods**
+- **LegenDoom Lite**: every thrall is made legendary, and a legendary thrall makes the miniboss legendary too.
+- **Champions**: champion thralls are picked first, and the miniboss inherits their powers, up to 4. Yellow, White, Dark
+  Green, Cyan and Titan powers pass on as they are; Dark Red and Undying add a life each (up to +2); Black adds 50% damage;
+  any other colour or mutation makes it 50% tougher (up to x2).
+
+## How To Play
+
+1. Add the pk3 to your load order. A miniboss is picked on every level by default.
+2. Look for the beaded lines. The monster they all run into is the miniboss; the life orbs over its head confirm it.
+3. The safe way: kill the thralls first. Each kill slows time, so line the next one up fast to chain the window. With
+   the crew down, the miniboss takes full damage.
+4. The greedy way: hit the miniboss early. If you cannot finish it or its crew before the slow window ends, the whole
+   map comes at you at double speed.
+5. When a life breaks, back off. The gold ring means it cannot be hurt, and its fallen thralls are about to stand up.
+6. Too hard or too easy? Change **Fight** to Easier or Harder, or **How Often** to Rare or Some Maps.
+
+## Controls
+
+RSQ Miniboss adds no buttons. You fight it with whatever you play with.
+
+| Action | How (VR) | Notes |
+|---|---|---|
+| Find the miniboss | Look for the lines and the circling orbs | Gold ring: invulnerable. Last orb red: last life. |
+| Start a slow window | Kill a thrall | Needs RSQ SlowMo for the slow motion itself. |
+| Chain the window | Kill another thrall before it ends | +3 s each, up to 12 s. |
+| Arm the greed rule | Hit the miniboss while a thrall lives | Clear every thrall in time to disarm it. |
+
+## Menu
+
+**Options → Radiant Silvergun Options → RSQ Miniboss**
 
 | Row | Default | What it does |
 |---|---|---|
 | Minibosses | On | Minibosses appear at all. |
-| How Often | Every Map | Rare (25 %) / Some Maps (50 %) / Every Map. |
-| Fight | Standard | Easier (2 thralls, 2 lives, 50 % shield, 3 s invulnerable) / Standard (3, 3, 80 %, 5 s) / Harder (5, 4, 90 %, 8 s). |
-| Legendary Thralls | On | With LegenDoom Lite: every thrall is made legendary (BD imp 80 -> 240 HP). |
-| Inherit Powers | On | The miniboss gets its thralls' powers (Champions colours, extra lives, more damage or toughness; legendary if any thrall is). Kept until it dies. |
-| Revive Thralls | On | Dead thralls rise when the miniboss's invulnerability ends. A gibbed thrall stays dead. |
-| Greed Rule | On | Hit the miniboss while thralls live; when the slow window runs out (or 4 s after the hit with no window) and it and a thrall still stand, every monster is enraged: twice as fast, fires twice as often. Clearing the thralls first disarms it. |
-| Effects | On | The lines, orbs, ring, markers and sparks (particles only). |
-| Score Awards | On | Sends RSQ_Score: Thrall Slow Kill 100, Miniboss 500, Greedy 1000 (killed with thralls alive and no rage). |
+| How Often | Every Map | Rare (25%), Some Maps (50%), Every Map (100%). |
+| Fight | Standard | Easier, Standard, Harder: thralls, lives, shield and invulnerability together. |
+| Legendary Thralls | On | With LegenDoom Lite, every thrall is made legendary. |
+| Inherit Powers | On | The miniboss inherits its thralls' powers. |
+| Revive Thralls | On | Dead thralls rise when its invulnerability ends. |
+| Greed Rule | On | The greed rule. |
+| Effects | On | Links, orbs, ring and sparks. Per player. |
+| Score Awards | On | Sends awards to RSQ Score. |
+| Boss Kill Rewards | On | Counts as a boss for Kill Rewards. |
+| LegenDoom: Best Health | On | Higher of LegenDoom's boss and normal legendary health. |
+| Can't Be Yanked | On | Grapple and Whip cannot yank it. |
+| Can't Be Headlocked | On | Melee's headlock refuses it. |
+| Map-wide Roar | Off | Sight and death sounds at full volume map-wide. |
+| Can't Be Morphed | Off | Immune to morphing. |
 
-**Counts as a Boss** (same page, 2026-11-03). A miniboss never gets the engine's BOSS flag: that would switch off
-yanks, throws, the headlock, knockdowns, grenade charm/infight and Gun Bonsai's melee bonuses across the series. It
-counts as a boss only in the systems below, each on its own switch (all in Reset All). Every other boss check in the
-series is untouched: knockdowns, knockback, grenade charm/infight and Gun Bonsai melee bonuses treat it as any monster.
+**Tuning and Debug**
 
 | Row | Default | What it does |
 |---|---|---|
-| Boss Kill Rewards | On | Kill Rewards (RSQ VisualRewards since 2026-11-03; before that inside RSQ Gun Bonsai VR) treats it as a boss: the boss fountain (x3 bits, `rsqgb_kr_boss`) and every bit drops. |
-| LegenDoom: Best Health | On | When Miniboss makes it legendary (Inherit Powers, a legendary thrall), it gets the HIGHER of LegenDoom's boss legendary health (`LD_legendaryhealthboss`, 200 % by LegenDoom Lite's default) and its normal one (`LD_legendaryhealth`, 300 %). With the defaults that is the normal 300 % (BD imp 80: 240); raise the boss % above the normal and it gets that (400 %: 320). Off: the normal one, always. |
-| Can't Be Yanked | On | RSQ Grapple's and RSQ Whip's yank and throw refuse it as they refuse a boss: the hook or the whip pulls you to it instead. |
-| Can't Be Headlocked | On | RSQ Melee's headlock refuses it as it refuses a boss. |
-| Map-wide Roar | Off | Its sight and death sounds play at full volume across the map (FULLVOLSEE / FULLVOLDEATH); its own flags come back when it dies (the death flag 3 s later, after its scream). |
-| Can't Be Morphed | Off | DONTMORPH while it is a miniboss; its own flag back when it dies. |
-
-Tuning and Debug page:
-
-| Row | Default |
-|---|---|
-| Per Map | 1 |
-| Map Chance | 100 % |
-| Thralls | 3 |
-| Lives | 3 (in all: it dies on the third) |
-| Thrall Range | 1024 map units |
-| Power Cap | 4 distinct powers |
-| Thrall Shield | 80 % damage shrugged off with every thrall alive (less per dead thrall) |
-| Invulnerable Time | 5 s |
-| Per Thrall | +1 s per living thrall |
-| Slow Window | 4 s |
-| Chain Bonus | +3 s per thrall killed in the window |
-| Window Cap | 12 s |
-| Slow Depth | -1 (RSQ_SlowMo's own) |
-| Rage Speed | x2 |
-| Effects Range | 4000 map units |
-| Debug Lines | Off (prints to the console only) |
-| Reset All | |
-
-## Test it
-
-Load the order above plus RSQ_SlowMo.pk3 and RSQ_Miniboss.pk3 (add RSQ_Score.pk3 for step 9). Use a map
-with plenty of monsters (MAP02 or later). A miniboss needs at least one other monster within range of it.
-Built 2026-10-27; its handoff says it was never run on a headset.
-
-1. Start the map. Within a second, dotted particle lines with white beads join a few monsters to one strong
-   one. Orbs circle the strong one's head (three, the last red).
-2. Shoot the miniboss while all thralls live: it barely loses health (80 % shrugged off).
-3. Kill a thrall: a burst sound, its line shatters, the world slows for about 4 s.
-4. Kill a second thrall inside that window: the slow lasts about 3 s longer.
-5. With every thrall dead, the miniboss takes full damage. Bring it down: it does not die but loses an orb,
-   with a BFG blast sound and a gold ring. Shots do nothing while the ring shows (5 s, +1 s per living
-   thrall).
-6. When the ring ends, dead thralls rise (a faint grey line led to each). A gibbed one stays dead.
-7. Kill it on its third life.
-8. Greed: on a new map, hit the miniboss while thralls live and let the slow window run out with a thrall
-   alive. The Icon of Sin's sight sound plays; every monster sheds red sparks, moves twice as fast and fires
-   more. It ends when the miniboss dies.
-9. With RSQ_Score: killing a thrall during the slow window, the miniboss, and a greedy kill each add points.
-10. Fight -> Easier: two thralls, two orbs. How Often -> Rare: most maps have none.
-11. Effects Off: no lines, orbs or sparks; the rules still work.
-12. Reset All (Tuning and Debug).
+| Per Map | 1 | Minibosses per level, 0 to 4. |
+| Map Chance | 100 | % chance a level gets any. |
+| Thralls | 3 | Thralls per miniboss, 1 to 8. |
+| Lives | 3 | Lives in all. |
+| Thrall Range | 1024 | How far from the miniboss a thrall may stand (map units). |
+| Power Cap | 4 | Most distinct powers inherited (legendary not counted). |
+| Thrall Shield | 80 | % of damage shrugged off with every thrall alive. |
+| Invulnerable Time | 5.0 | Seconds invulnerable after a lost life. |
+| Per Thrall | 1.0 | Extra seconds per living thrall. |
+| Slow Window | 4.0 | Seconds of slow time per thrall kill. |
+| Chain Bonus | 3.0 | Extra seconds per chained kill. |
+| Window Cap | 12 | The window's longest, seconds. |
+| Slow Depth | -1 | World speed % in the window; -1 uses RSQ SlowMo's own. |
+| Rage Speed | 2.00 | Enraged monsters' speed multiplier. |
+| Effects Range | 4000 | Effects drawn only within this distance of you. Per player. |
+| Debug Lines | Off | Console lines for every rule as it fires. |
+| Reset All | | Resets every RSQ Miniboss setting. |
 
 ## Works with
 
-- **RSQ_SlowMo** (sent to): each thrall death asks for the slow window.
-- **RSQ_Score** (sent to): the three awards.
-- Champions and LegenDoom Lite: powers inherited, thralls made legendary.
-- Other mods can ask it (RSQMB_Service): is this a miniboss / thrall, enraged, lives, invulnerable,
-  shield, greed, window. RSQ_TopHPBars asks "miniboss" and "thrall" for its crown and chain-link marks (2026-11-01).
-- **Counts as a Boss, for other mods** (2026-11-03): `RSQMB_Service` `GetInt("bossfor", <system>, 0, 0, monster)`
-  answers 1 when the monster is a miniboss and that system's switch is on. Systems: `"rewards"` (a living miniboss,
-  or one that died this tic or the last, so a WorldThingDied handler gets it whichever runs first), `"yank"`,
-  `"headlock"` (a living miniboss), `"ldhealth"` (Miniboss made it legendary with spawn x the HIGHER of
-  `LD_legendaryhealthboss` and `LD_legendaryhealth` / 100; a reader uses that max; stays 1 for that monster). Ask cheaply: first look for the `RSQMB_Ward` inventory by name, only then find
-  the service. Asked by: RSQ Gun Bonsai VR (kill rewards; its StartHealth for Knockdown / Executioner), RSQ ShieldSaw
-  (the disc's tier health), RSQ Grapple and RSQ Whip (yank), RSQ Melee (headlock). Each still loads and works alone.
-- Does not read RSQ_Accessibility.
+- **Alone**: the whole set piece works: lives, shield, revives, greed and rage. Without RSQ SlowMo the window still runs
+  (it times the greed rule and chains), there is just no slow motion.
+- **RSQ SlowMo**: each thrall kill slows the world to SlowMo's depth for the window.
+- **RSQ Score**: Thrall Slow Kill (a thrall killed inside the window), Miniboss and Greedy awards, each paid as a share of
+  that kill's own score.
+- **RSQ VisualRewards**: HP bars mark the miniboss and its thralls; Kill Rewards treat it as a boss (switch above).
+- **RSQ Glow In The Dark**: the map's glow reacts while a miniboss lives.
+- **RSQ Grapple, RSQ Whip, RSQ Melee**: refuse to yank or headlock it (switches above).
+- **RSQ ShieldSaw and RSQ Gun Bonsai VR**: read its true legendary health when it was made legendary here.
+- **LegenDoom Lite and Champions**: see Features. Both are optional and found by name.
+- **Brutal Doom**: works as is. Brutal Doom's gore and props are never enraged.
 
-## Known limits / open
+## Credits and licence
 
-- Never headset-run: effect readability, sizes, colours, how long the fight takes.
-- Score shows the three awards on their own rows (Thrall Slow Kill, Miniboss, Greedy; 2026-11-01, rig-checked).
-- Open questions from the owner's notes: lives 3 in all (the original had 3 extra); greed counts even
-  before any thrall died (4 s fuse); revived thralls come back at plain health; thrall kills by
-  infighting open the window too (no award).
+- Origin: **Minibosses! v0.1.1 by Tartlman** (ZDoom forum, November 2019; "All code by me. Special thanks to the Hideous
+  Destructor server for helping me out!"). The idea of a miniboss with extra lives, thralls tied to it by trails, damage
+  cut per living thrall, invulnerability after a lost life and thralls raised again comes from it. This is a rebuild; its
+  code is not copied. Its to-do list asked for LegenDoom compatibility, and this delivers it.
+- Set-piece design (legendary thralls, inherited powers, slow time on a thrall's death, the chain, the greed rule):
+  presidentkoopa.
+- Code: written for this pack. Effects are engine particles; no sprites or sounds are shipped (the IWAD's own sounds are
+  used by name).
+- Recognised by name, not shipped: Champions, LegenDoom Lite, RSQ SlowMo, RSQ Score.
+- QuestZDoom: Emawind and Team Beef.
 
-- Counts as a Boss (2026-11-03): rig only, not headset-confirmed. Key lines: `tools/rigtest/evidence_1103.txt`
-  (`tools/rigtest/run_all.sh` reruns everything). LegenDoom: Best Health applies only when MINIBOSS makes it
-  legendary; a monster LegenDoom Lite made legendary on its own before it was chosen keeps the normal legendary
-  health (LegenDoom's ACS keeps that number in a script local, out of reach). Rounding: when the boss % is the higher, the
-  number comes out within one StartHealth point x (LD_legendaryhealth / 100) of exact (measured exact on a doom2 imp). Built for
-  LegenDoom Lite 4.2's ACS (`LEGNDLIB.acs LDMonsterInit`); LegenDoom 3.0 was not tested.
-
-## The owner's design and ideas (kept as written)
-
-The design below is what was built, except its "Later" line (RS Monsters' EX tier). The "Idea for later"
-under "powers stay" (orbs per thrall, orbs in the puzzle) is not built: discuss before building.
-
-### The design (owner, 10-27)
-- A miniboss is fed by THRALLS (three, by default): boosted legendary champions (Champions + LegenDoom Lite), joined to it by trails. It INHERITS the powers of all its thralls.
-- Killing a thrall SLOWS TIME (RSQ_SlowMo): a window to damage the miniboss -- or to kill another thrall, which keeps the slow time going.
-- Clear the thralls, then fight the miniboss.
-- Greedy play: attack the miniboss directly and you probably won't kill it before the slow-down runs out; then ALL monsters get double aggression and speed until the miniboss dies.
-- The original's mechanics to keep and optimise: miniboss lives (default 3), living thralls cut the miniboss's damage taken, losing a life gives a short invulnerability, dead thralls revive when it ends.
-- Later: this is where RS Monsters' EX tier is reached (EX is not tier-locked).
-
-### Owner (10-27 23:53): powers stay
-Keep all inherited powers until the miniboss dies (as 1.0 does) -- the owner prefers it to stripping them.
-Idea for later (owner never built it): the original's orbs around the miniboss blink out as each thrall dies;
-work them into the puzzle somehow. 1.0 shows one orb per LIFE and a link per thrall; a later pass could give
-each thrall an orb of its colour/power, and make the orbs part of the play. Discuss before building.
-
-More ideas (thrall orbs, orbs as a puzzle, EX tier, open questions): `docs/IDEAS.md`.
-
-## Credits
-
-From the old README:
-
-> Credit the original: **Minibosses! v0.1.1 by Tartlman** (ZDoom forum, Nov 2019; "All code by me. Special thanks to the Hideous Destructor server"), on hiatus since 2019. (The original used Doom 2 IWAD sprites as placeholder effects; this rebuild uses engine particles only.) Tartlman's own to-do list included "special legendoom compatibility" -- which this rebuild delivers.
-
-> Tartlman's original files stay in `original/` (owner, 10-28: "I like the og style. Keep.").
-
-`CREDITS.txt`, unchanged:
-
-```
-RSQ_Miniboss -- credits
-=======================
-
-The Radiant Silvergun Quest series' set-piece miniboss. For stock QuestZDoom 17.3: ZScript and lumps only, no
-engine changes.
-
-WHERE IT COMES FROM
-  Minibosses! v0.1.1 by Tartlman (ZDoom forum, November 2019; "All code by me. Special thanks to
-  the Hideous Destructor server for helping me out!"), on hiatus since 2019 -- the origin of this
-  mod: a miniboss with extra lives, thralls tied to it by trails, damage cut per living thrall,
-  invulnerability after a lost life and thralls raised again when it ends. Kept unmodified in the
-  repo's original/ folder. Its code is not copied: this is a rebuild. Its to-do list asked for
-  "special legendoom compatibility"; this rebuild delivers it.
-
-WHAT THIS PK3 SHIPS, AND WHOSE IT IS
-  The project owner (presidentkoopa)
-      The set-piece design: thralls as boosted legendary champions, the inherited powers, slow time
-      on a thrall's death, the chain, the greed rule.
-  Written for this pack
-      All code (zscript/rsqmb). The effects are engine particles: no sprites or sounds are shipped
-      (the cues use the IWAD's own sounds by name: weapons/bfgx, imp/shotx, brain/sight, vile/raise).
-
-NOT SHIPPED, ONLY RECOGNISED BY NAME (nothing links)
-  Champions (its champion_* tokens and cvars), LegenDoom Lite (its LDLegendaryMonster* tokens and
-  LDLegendaryMonsterPickupGuaranteed), RSQ_SlowMo (rsm_pulse, RSQSM_Service), RSQ_Score
-  (RS_ScoreService "award").
-  QuestZDoom: Emawind and Team Beef.
-
-SHARING
-  Free to share as part of the Radiant Silvergun Quest series.
-```
-
-## Appendix: as built, for builders (the earlier README, unchanged)
-
-### As built (agent-mb, 10-27) -- measured on rig C (QZD 17.3 script, stock engine)
-
-Load after the series. `RSQ_Miniboss.pk3` (`./build.sh`). Options -> Radiant Silvergun Options -> RSQ Miniboss. What each setting does: `CVARINFO.txt`.
-
-**Choosing** (tic 10, after LegenDoom Lite's tic 1-2 marking and Champions' tic-3 delayer): 1 miniboss per map (`rsqmb_per_map`), from the strongest third of the level's monsters weighted by spawn health (never BOSS-flagged, never a Dark Red / Undying champion), with 3 thralls (`rsqmb_thralls`) within 1024 units, none stronger than it: champions first, legendaries next, then the nearest. No class names: the same on Doom's and Brutal Doom's monsters. With LegenDoom Lite, every thrall is made legendary by LDL's own `LDLegendaryMonsterPickupGuaranteed` (measured: BD imp 80 -> 240 hp).
-
-**Inheritance** (a "power", read from the two mods' code): a Champions colour is a token plus a controller thinker; a controller can't be made from outside without linking, so:
-- TOKEN powers (Yellow, White, Dark Green, Cyan, Titan): the token is given; Champions' own handler does the work. Measured: Yellow on a legendary miniboss, after its transform, BaronBall 30.0 vs 15.0 default (Champions' boosted x2). Under `champion_Dormant 1` they sleep until the miniboss is a transformed legendary, as on any champion.
-- LIFE powers (Dark Red, Undying): +1 life each, at most +2 (measured: lives 3 -> 4).
-- STAT powers: Black +50% damage dealt (cap x2); every other colour or mutation +50% toughness (damage taken / toughness, cap x2).
-- Legendary: any legendary thrall makes the miniboss legendary (measured: BD Baron 1200 -> 3600).
-- Same colour twice counts once; at most 4 distinct powers (`rsqmb_inherit_max`), thrall order; legendary not counted.
-
-**Lives / shield / invulnerability / revive** (the original's, kept and fixed): 3 lives in all (`rsqmb_lives`). BUDDHA holds it at 1 hp; it then refills to the most health it has had and is invulnerable 5 s + 1 s per LIVING thrall (measured 175 / 210 / 245 / 280 tics for 0-3 living). Hit while invulnerable: 0 damage. Living thralls cut damage taken linearly: 80% with all alive (taken 20.0 / 46.7 / 73.3 / 100%; the original's integer division made it 20% or nothing). All of it lives in `ModifyDamage` on a token (Champions overwrites `DamageFactor` itself). When the invulnerability ends the dead thralls rise (`A_RaiseSelf`, tried for 5 s); a gibbed-away (destroyed) thrall is gone for good.
-
-**Slow time**: a thrall's death opens a 4 s window (`rsqmb_slow`) and asks RSQ_SlowMo for it by `rsm_pulse` (re-sent each second; depth = SlowMo's own `rsm_depth`). Another thrall killed in the window adds 3 s (`rsqmb_slow_chain`), up to 12 s (`rsqmb_slow_max`). Measured: 140 -> 205 (chain) -> capped 210 at a 6 s cap; SlowMo scale 250 permille in the window.
-
-**Greed**: a player striking the miniboss while thralls live arms it. It comes due when the slow window runs out (struck with none running: 4 s later). Miniboss alive and a thrall standing then -> EVERY monster enraged until the miniboss dies: Speed x2 (`rsqmb_rage_speed`), `MissileChanceMult` and `MinMissileChance` halved (the fire threshold halves at every range), reaction spent. Clearing the thralls first disarms it. Measured: 70 monsters on MAP02 (BD) 4.0/0.5/200 -> 8.0/0.25/100, back after the kill; restored only where nobody changed a value since (LegenDoom's transform mid-rage keeps its own 0.0625). RSQ_SlowMo never writes a monster's Speed, so the two compose. Save/load twice mid-rage: no double application (12.0 stays 12.0).
-
-**Score** (`RS_ScoreService "award"`, by name, just the push): "Thrall Slow Kill" 100 (a thrall killed in the window), "Miniboss" 500, "Greedy" 1000 (killed with thralls alive and no rage). Score has a row of its own for each (2026-11-01).
-
-**For other mods**: `RSQMB_Service` (see `zscript/rsqmb/service.zs`): `miniboss`, `thrall`, `enraged`, `lives`, `invulnerable`, `shield`, `greed`, `window`, `living`, `legendary`, `bossfor`; objects `boss` / `thrall`; string `powers`. Console: `netevent rsqmb_state`, `netevent rsqmb_choose`.
-
-**FX** (engine particles, 0 actors; the original warped 30 actors per thrall every tic): a dotted link per living thrall with white beads running INTO the miniboss, a marker over each thrall, a faint grey line to a dead thrall that will rise, one orb per life circling its head (the last one red and pulsing), a gold ring while invulnerable, a red spark rising off each enraged monster. Drawn only within 4000 units of you.
-
-**Cost** (`rsqmb_debug 1`, MSTimeF): 0.015-0.05 ms/tic of script on the full order; choosing 1.2 ms once (MAP02, 70 monsters); starting the rage 0.8 ms once; 6-20 particles spawned per tic.
+Free to share as part of the Radiant Silvergun Quest series.
