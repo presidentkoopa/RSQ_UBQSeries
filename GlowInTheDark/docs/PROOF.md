@@ -17,8 +17,15 @@ Console test triggers (in the mod, for the rig and for trying reactions alone): 
 | v2_rerolls.png | Every Map: two loads, two colourings (seeds 125668571 / 1577653); On Each Death: killed, map restarted, new seed (71190178 -> 104295347) |
 | v2_profiles_roomB.png, v2_profiles_nukage.png | 12 + 3 profiles in the same rooms (fixed seed) |
 
+| v099a_miniboss_own_colour.png | 0.99a: doom2 MAP11, `rsqmb_per_map 4; netevent rsqmb_choose`: no miniboss / before (always blood red, glow 542409) / after, Pain Elemental = boss 0, its own colour ff3cc8 (glow 763d5b) / after, boss 0 killed, Hell Knight = boss 1, 40e0ff (glow 2fa99c) |
+| v099a_wave_plain_gb.png | 0.99a: doom2 MAP02, `netevent bonsai-debug,w-xp 600000` with plain Gun Bonsai 0.10.6: before no wave (glow 1f4dc9) / after, Gun Bonsai's own `bonsai-level-up` event, wave (a7a39c); with RSQ Gun Bonsai VR too, the VR poll's wave (b4ac9b), the event left alone (one wave) |
+
 ## Logs (rsqgd_debug 2)
 - RSQ Miniboss real: `mb 0.85`, light 112 -> 64 (no DarkDoomZ: per-sector offset, given back exactly).
+- 0.99a, RSQ Miniboss "colour": `[L57] boss 0 PainElemental colour ff3cc8 / boss 1 HellKnight 40e0ff / boss 2 Arachnotron ffb020
+  / boss 3 Arachnotron a060ff`; `[RSQGD] miniboss tint: 4 alive, colour ff3cc8`, boss 0 killed -> `3 alive, colour 40e0ff`.
+- 0.99a, plain Gun Bonsai: before `wave 0` after "Your Pistol is ready to level up!"; after `[RSQGD] level-up (Gun Bonsai)
+  tic 61` and `wave 1`. GB + RSQ Gun Bonsai VR: only `[RSQGD] level-up (Gun Bonsai VR)`, once.
 - RSQ SlowMo real: `sm 0.24` while slowed. Gun Bonsai real: `wave 1` on "Your Pistol is ready to level up!".
 - RSQ Score: `kill monsters` kills are not credited to the player by Score, so the chain was shown with the test trigger only.
 - DarkDoomZ found by name (`darkdoomz 1`); its post-gain lowered by 48 during the tint and put back.

@@ -74,7 +74,7 @@ class RSQGD_Handler : EventHandler
 	transient bool live;                   // false straight after a savegame load
 
 	// ---- reactions ----
-	double mbMix;  int mbColour, mbLive;   // miniboss tint
+	double mbMix;  int mbColour, mbLive, mbN;   // miniboss tint (mbN: RSQ Miniboss's own count)
 	int tintUntil, tintColour;             // another mod's tint (service "event.tint")
 	double smMix;                          // slow motion
 	double combo; int comboN, comboTic; Array<int> lastSerial;
@@ -703,6 +703,7 @@ class RSQGD_Handler : EventHandler
 	override void NetworkProcess(ConsoleEvent e)
 	{
 		if (!ready) return;
+		if (e.Name == "bonsai-level-up") { BonsaiEvent(e); return; }
 		if (e.Name ~== "rsqgd_shuffle")
 		{
 			int p = I("rsqgd_profile", 2);
@@ -725,15 +726,16 @@ class RSQGD_Handler : EventHandler
 		//   netevent rsqgd_test_reroll     a re-roll (as a death or level-up would)
 		let mo = players[e.Player].mo;
 		if (e.Name ~== "rsqgd_test_mb") { testMb = e.Args[0]; mbColour = MinibossColour(null); }
-		else if (e.Name ~== "rsqgd_test_wave" && mo) LevelUp(mo);
+		else if (e.Name ~== "rsqgd_test_wave" && mo) LevelUp(mo, "test");
 		else if (e.Name ~== "rsqgd_test_combo") { comboN = e.Args[0]; combo = min(comboN, 10) * F("rsqgd_combo_gain", 0.08); comboTic = Level.maptime; }
 		else if (e.Name ~== "rsqgd_test_slowmo") testSm = e.Args[0];
 		else if (e.Name ~== "rsqgd_test_flare" && mo) Flare(mo.CurSector.Index(), 0xC0C0C0, 35);
 		else if (e.Name ~== "rsqgd_test_reroll") Reroll();
 	}
 
-	void LevelUp(Actor who)
+	void LevelUp(Actor who, String from = "")
 	{
+		if (I("rsqgd_debug", 0) > 0) Console.Printf("[RSQGD] level-up (%s) tic %d: wave from player %d", from, Level.maptime, who && who.player ? who.PlayerNumber() : -1);
 		if (who) StartWave(who.pos.xy, I("rsqgd_wave_color", 0xFFC020) & 0xFFFFFF);
 		if (I("rsqgd_reroll", 1) == 3) Reroll();
 	}

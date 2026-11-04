@@ -131,7 +131,7 @@ RSQ Miniboss adds no buttons. You fight it with whatever you play with.
 - **RSQ Score**: Thrall Slow Kill (a thrall killed inside the window), Miniboss and Greedy awards, each paid as a share of
   that kill's own score.
 - **RSQ VisualRewards**: HP bars mark the miniboss and its thralls; Kill Rewards treat it as a boss (switch above).
-- **RSQ Glow In The Dark**: the map's glow reacts while a miniboss lives.
+- **RSQ Glow In The Dark**: the map's glow takes the miniboss's own colour (its beaded lines' and life orbs') while it lives.
 - **RSQ Grapple, RSQ Whip, RSQ Melee**: refuse to yank or headlock it (switches above).
 - **RSQ ShieldSaw and RSQ Gun Bonsai VR**: read its true legendary health when it was made legendary here.
 - **LegenDoom Lite and Champions**: see Features. Both are optional and found by name.

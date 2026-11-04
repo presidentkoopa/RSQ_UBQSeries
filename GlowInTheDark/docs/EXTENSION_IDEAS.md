@@ -5,10 +5,10 @@ Sources: [R] RS Radiance (the owner's later direction), [E] the owner's event no
 Status after the owner's picks (18:26, 18:37, 18:43): **BUILT** (a row in the menu), **NOT WANTED**, or **OPEN**.
 
 ## Reactions to the game
-1. **Level-up wave** [E] BUILT: a gold wave rolls out from the player across every floor/ceiling glow | plane glow per sector, sectors bucketed by distance when the wave starts, only the band's buckets written per tic | low | Gun Bonsai VR patch `RSQGB_Service` "level"/"name" per hand.
+1. **Level-up wave** [E] BUILT: a gold wave rolls out from the player across every floor/ceiling glow | plane glow per sector, sectors bucketed by distance when the wave starts, only the band's buckets written per tic | low | Gun Bonsai VR patch `RSQGB_Service` "level"/"name" per hand; without it, plain Gun Bonsai's own `bonsai-level-up` netevent.
 2. **Combo glow** [E] BUILT: the glow climbs with RSQ Score's kill chain and settles after 4 s | colour gain + height | low | `RS_ScoreService` "kill.serial".
 3. **SlowMo drain** [E] BUILT: the glow drains toward a cold grey while time is slowed | colour mix | low | `RSQSM_Service` "active", "scale".
-4. **Miniboss tint** [E] BUILT: while an RSQ Miniboss lives, the map turns blood red (or its colour) with a heartbeat and darkens; back when it dies | colour + height on all sectors (near ones every 2 tics) | low | `RSQMB_Service` "miniboss" (+ "colour", asked).
+4. **Miniboss tint** [E] BUILT: while an RSQ Miniboss lives, the map turns blood red (or its colour) with a heartbeat and darkens; back when it dies | colour + height on all sectors (near ones every 2 tics) | low | `RSQMB_Service` "miniboss" + "colour" (its set piece's colour).
 5. **Low-health throb** [E] NOT WANTED.
 6. **Berserk red** [E] NOT WANTED.
 7. **Kills near liquids flare** [E] BUILT as splash flares (9).

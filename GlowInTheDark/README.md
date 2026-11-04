@@ -119,7 +119,7 @@ Options → Radiant Silvergun Options → RSQ Glow In The Dark
 | Row | Default | What it does |
 |---|---|---|
 | Miniboss Tint (RSQ Miniboss) | On | The map takes a colour and throbs while a miniboss lives |
-| Colour | The Miniboss's Own | Blood Red, The Miniboss's Own (red for now), Custom |
+| Colour | The Miniboss's Own | Blood Red, The Miniboss's Own (the colour of its own beaded lines and life orbs), Custom |
 | Custom Colour | Red | For Custom |
 | Darken the Map | On | The map darkens meanwhile |
 | By | 48 | How much light |
@@ -143,8 +143,8 @@ Runs alone, with any map set. It finds the others by name:
 - **DarkDoomZ** (Caligari87): the two pair naturally; each profile names a DarkDoomZ setting to go with it. During a
   miniboss it lowers DarkDoomZ's own brightness setting and puts it back afterwards, even after a quit mid-fight.
   Without DarkDoomZ the map's own light is lowered and given back exactly.
-- **RSQ Miniboss**: the miniboss tint.
-- **RSQ Gun Bonsai VR** (with Gun Bonsai): the level-up wave.
+- **RSQ Miniboss**: the miniboss tint, in the miniboss's own colour.
+- **Gun Bonsai** (ToxicFrog's): the level-up wave, from Gun Bonsai alone; with RSQ Gun Bonsai VR, for each hand's gun.
 - **RSQ Score**: the combo glow.
 - **RSQ SlowMo**: the slow-motion drain.
 - **Brutal Doom**: its splash flats are in the liquid list.

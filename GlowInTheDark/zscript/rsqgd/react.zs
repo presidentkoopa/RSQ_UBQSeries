@@ -2,10 +2,13 @@
 // works alone). Polled a few times a second, one service call each; with the other mod absent nothing happens.
 //
 //   RSQ Miniboss  RSQMB_Service "miniboss" (how many alive)        -> the map turns the miniboss's colour, throbs
-//                 "colour" on the boss (asked; not answered yet)    -> its own colour; else blood red
+//                 GetObject("boss", n), "colour" on it              -> the live miniboss's own colour (its tethers' and
+//                                                                      life orbs'); else blood red
 //   RSQ SlowMo    RSQSM_Service "active", "scale"                   -> the glow drains toward a cold grey
 //   RSQ Score     RS_ScoreService "kill.serial" per player          -> each scored kill within 4 s climbs the chain
 //   Gun Bonsai VR RSQGB_Service "level", "xp.permille", "name"     -> a gold wave rolls out from the player
+//   Gun Bonsai    its own netevent "bonsai-level-up" (args 1, level) -> the same wave, when the VR patch is absent
+//                 (plain Gun Bonsai 0.10.6: sent when a weapon's XP bar fills, MODDING.md "Netevents emitted")
 //   DarkDoomZ     its cvar ddz_postgain (read, lowered, put back)   -> the map darkens while a miniboss lives
 
 extend class RSQGD_Handler
@@ -28,21 +31,34 @@ extend class RSQGD_Handler
 		{
 			let s = FindSvc("RSQMB_Service");
 			if (s) n = max(0, s.GetInt("miniboss"));
-			if (n > 0 && mbLive == 0) mbColour = MinibossColour(s);
+			// a new fight, or one of several minibosses gone: the colour of the first one still alive
+			if (n > 0 && (mbLive == 0 || n != mbN))
+			{
+				mbColour = MinibossColour(s);
+				if (I("rsqgd_debug", 0) > 0) Console.Printf("[RSQGD] miniboss tint: %d alive, colour %06x", n, mbColour);
+			}
 		}
+		mbN = n;
 		if (testMb > 0 && mbLive == 0) mbColour = MinibossColour(null);
 		mbLive = n + testMb;
 	}
 
 	int MinibossColour(Service s)
 	{
-		int mode = I("rsqgd_mb_colour", 1);      // 0 blood red, 1 the miniboss's own (red when it has none), 2 custom
+		int mode = I("rsqgd_mb_colour", 1);      // 0 blood red, 1 the miniboss's own (red if RSQ Miniboss gives none), 2 custom
 		if (mode == 2) return I("rsqgd_mb_custom", 0xFF0000) & 0xFFFFFF;
 		if (mode == 1 && s)
 		{
-			let boss = s.GetObject("boss", "", 0);
-			int c = boss ? s.GetInt("colour", "", 0, 0, boss) : -1;
-			if (c > 0) return c & 0xFFFFFF;
+			// the first miniboss still alive (an earlier one of this map may be dead): its own colour
+			for (int i = 0; i < 64; i++)
+			{
+				let boss = s.GetObject("boss", "", i);
+				if (!boss) break;
+				if (s.GetInt("miniboss", "", 0, 0, boss) != 1) continue;
+				int c = s.GetInt("colour", "", 0, 0, boss);
+				if (c > 0) return c & 0xFFFFFF;
+				break;
+			}
 		}
 		return 0xB00008;
 	}
@@ -154,6 +170,27 @@ extend class RSQGD_Handler
 		}
 	}
 
+	// ---- Gun Bonsai, plain: its own "bonsai-level-up" netevent (NetworkProcess) ----
+	// Gun Bonsai sends it from play code when a weapon's XP bar fills (args[0] 1 = a weapon, 0 = the player's own
+	// level; args[1] the level). Only the weapon one waves (the same moment the VR patch's poll waves on). With the
+	// VR patch loaded its poll below does it per hand, so the event is left alone (no second wave). The event names no
+	// player: every machine sends one, from its own console player, so in netplay only the first player's copy counts
+	// and the wave rolls from that player.
+	void BonsaiEvent(ConsoleEvent e)
+	{
+		if (e.Args[0] != 1) return;
+		if (!B("rsqgd_wave", true) && I("rsqgd_reroll", 1) != 3) return;
+		if (FindSvc("RSQGB_Service")) return;
+		if (multiplayer)
+		{
+			int first = 0;
+			while (first < MAXPLAYERS && !playeringame[first]) first++;
+			if (e.Player != first) return;
+		}
+		let mo = players[e.Player].mo;
+		if (mo) LevelUp(mo, "Gun Bonsai");
+	}
+
 	// ---- Gun Bonsai (the VR patch's service) ----
 	void PollBonsai()
 	{
@@ -174,7 +211,7 @@ extend class RSQGD_Handler
 				int lv = s.GetInt("level", "", hand, 0, mo);
 				bool full = s.GetInt("xp.permille", "", hand, 0, mo) >= 1000;
 				int code = lv * 2 + (full ? 1 : 0);
-				if (w == gbWeap[k] && gbLvl[k] >= 0 && code > gbLvl[k] && !(lv > gbLvl[k] / 2 && (gbLvl[k] & 1))) LevelUp(mo);
+				if (w == gbWeap[k] && gbLvl[k] >= 0 && code > gbLvl[k] && !(lv > gbLvl[k] / 2 && (gbLvl[k] & 1))) LevelUp(mo, "Gun Bonsai VR");
 				gbWeap[k] = w;
 				gbLvl[k] = code;
 			}

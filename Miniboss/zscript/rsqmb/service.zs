@@ -13,6 +13,8 @@
 //   window        tics left in the slow window (no object needed)
 //   living        its living thralls (miniboss or thrall: the set piece it belongs to)
 //   legendary     1 if it inherited legendary status
+//   colour        its set piece's colour, 0xRRGGBB (miniboss or thrall, dead or alive): the colour its own tethers,
+//                 life orbs and bursts are drawn in (handler.zs PALETTE, one per miniboss in order); else -1
 //   bossfor       COUNTS AS A BOSS (owner 2026-11-03: never the engine's BOSS flag). stringArg names the system; 1 when
 //                 the monster is a miniboss AND that system's switch in the RSQ Miniboss menu is on, else 0:
 //                   "rewards"   Boss Kill Rewards (rsqmb_boss_rewards, on): a living miniboss, or one that died this
@@ -71,6 +73,7 @@ class RSQMB_Service : Service
 		if (request ~== "greed") return (isBoss && b.greedArmed) ? 1 : 0;
 		if (request ~== "living") return (b && !b.done) ? b.Living() : 0;
 		if (request ~== "legendary") return (isBoss && b.legendary) ? 1 : 0;
+		if (request ~== "colour" || request ~== "color") return b ? (int(b.col) & 0xFFFFFF) : -1;
 		if (request ~== "bossfor")
 		{
 			if (!b || !a || b.mb != a) return 0;

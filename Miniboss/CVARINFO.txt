@@ -20,7 +20,7 @@ server bool   rsqmb_greed         = true;   // the greed rule
 server float  rsqmb_rage_speed    = 2.0;    // enraged monsters' speed multiplier
 server bool   rsqmb_score         = true;   // push awards to RSQ_Score
 // COUNTS AS A BOSS (owner 2026-11-03): a miniboss never gets the engine's BOSS flag; it counts as a boss only here.
-server bool   rsqmb_boss_rewards   = true;  // RSQ Gun Bonsai VR's kill rewards: the boss fountain (x rsqgb_kr_boss) and always drops
+server bool   rsqmb_boss_rewards   = true;  // RSQ VisualRewards' Kill Rewards: the boss fountain (x rsqgb_kr_boss) and always drops
 server bool   rsqmb_boss_ldhealth  = true;  // made legendary by Miniboss: the HIGHER of LegenDoom's boss and normal legendary health
 server bool   rsqmb_boss_roar      = false; // its sight and death sounds at full volume across the map (FULLVOLSEE / FULLVOLDEATH)
 server bool   rsqmb_boss_nomorph   = false; // can't be morphed (DONTMORPH)

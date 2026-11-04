@@ -33,7 +33,7 @@ server int rsqgd_items = 1;              // keys and pickups drawn bright: 0 off
 
 // ---- reactions (each found by name; nothing happens without the other mod) ----
 server bool rsqgd_mb = true;             // RSQ Miniboss: the map turns its colour and throbs while it lives
-server int rsqgd_mb_colour = 1;          //   0 blood red, 1 the miniboss's own colour (red until RSQ Miniboss says it), 2 custom
+server int rsqgd_mb_colour = 1;          //   0 blood red, 1 the miniboss's own colour (RSQ Miniboss "colour"), 2 custom
 server color rsqgd_mb_custom = "ff 00 00";
 server bool rsqgd_mb_darken = true;      //   the map darkens meanwhile (through DarkDoomZ's post-gain when it is loaded)
 server int rsqgd_mb_dark = 48;           //   by how much light
