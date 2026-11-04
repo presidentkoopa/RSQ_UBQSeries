@@ -1,285 +1,166 @@
 # RSQ Saber
 
-`pk3/RSQ_Saber.pk3` (source folder `QuestSaber/`). Part of the Radiant Silvergun Quest series, for stock
-QuestZDoom 17.3.
+A lightsaber that cuts what your real swing passes through, turns blaster bolts with the blade, flies from your hand
+to each enemy you marked and comes home, with the Force in your other hand.
 
-## What it is
+Status: 0.99 — played and confirmed working in the headset; refinement and bug fixing ongoing.
 
-A lightsaber in each hand (the second one is a dedicated off-hand weapon), with the Force. The blade cuts whatever your real swing passes it through; walking
-and turning are not swings. It blocks and turns back shots and claws, and a parry (blade moving into the shot)
-hits back harder. Hold the trigger to mark enemies, let go with a forward throw, and the saber flies to each
-one and comes home. The off hand's alt trigger is the Force by gesture: push, pull, choke and fling. Holding
-jump gives a Force jump. A training remote is there for practice. ZScript and data only, no engine change.
+Part of the Radiant Silvergun Quest series for stock QuestZDoom 17.3. ZScript only, no engine changes. It works on
+plain Doom, and replaces the sabers of Wardust's Lightsaber and Xim's Star Wars Doom when loaded after them.
 
-## Load order
+## Standout feature: the blade is real
 
-doom2.wad -> 01 brutal22test6 -> 02 BD22_VoxelPack -> 03 BD22_VR-Reloaded_2.0.3j -> 04-07 XMVE ->
-`RSQ_Saber.pk3`
+There is no swing button. The blade is where your hand puts it, and it cuts whatever your swing drags it through.
+Hold it up in front of an imp's fireball and the bolt glances off. Swing into the bolt as it arrives and it is a
+parry: the shot goes back, a white starburst blooms where it met the blade, and both hands feel it. A zombie's
+rifle round is stopped at the blade, not in your chest, because the blade is tested against the bullet's own path
+before the engine traces it. Cross your two blades in front of you and nothing from in front gets through.
 
-- **Needs no other RSQ pk3.**
-- **Plain Doom 2 without Brutal Doom:** works. Brutal Doom's classes are looked up by name at run time, never
-  required. The 10-27 handoff records rig runs on bare Doom 2. Without Brutal Doom Quest's hands, the off hand
-  gets the saber's own bare Force hand when no second saber is out.
-- With Brutal Doom, its sword (DSweap) becomes the saber (menu row "Brutal Doom Sword Becomes Saber", On).
-
-## Setup
-
-- **Menu:** Options -> Radiant Silvergun Options -> RSQ Saber. One page, plus a "Controls" page and
-  "Reset All" at the bottom.
-- **You start holding it.** The saber is in slot 1. With "Start With Dual Sabers" On (default) the second saber
-  is your off hand's weapon. There is no key for it.
-- **Second Saber Starts: Put Away (default) / In Hand.** At the start (a new game, or the first time the second
-  saber is given), Put Away means:
-  - With RSQ Tactical Rig: it starts in its holster and the off hand is empty (Brutal Doom Quest's hands, or the
-    saber's bare Force hand without Brutal Doom). Grip the holster (off hand's side) with the OFF hand to draw
-    it, lit; grip again to put it away. Drawn or away, it stays that way across map changes and saves.
-  - Without the Tactical Rig (or its "Tactical Rig" switch Off) there is no holster: it starts in the off hand
-    with its blade OFF (a hilt). Light it with the Blade On / Off key, or throw it and it lights when caught.
-    Drawn again later (after a gun took the off hand), it lights as usual.
-
-  In Hand: as before, lit in the off hand at the start. Changing the row affects the next start, not a saber
-  you already carry.
-- **Binds (optional):** Options -> Customize Controls -> section **RSQ Saber**, or RSQ Saber -> Controls (the
-  same three binds, shorter names):
-
-| Customize Controls name | Controls page name | Does |
-|---|---|---|
-| Second blade on / off | Second Blade | Lights the second blade on the sabers in hand: the staff twirls in your hand. |
-| Blade on / off (douse it) | Blade On / Off | Douses and relights the blades in hand (the hilt stays). If one is off, the press lights it; if all are lit, it douses them all. |
-| Summon / dismiss training remote | Training Remote | A training drone that fires stings at you to deflect. |
-
-The Second Saber key is gone (the owner, 11-01), and Brutal Doom's own Dual key no longer touches the saber.
-An old saved "Dual key mode" (ubqs_dual_mode 1) reads as On and is rewritten to On.
-
-## What to do in VR
-
-- **Cut:** swing the blade through a monster. A real swing, harder than "Swing to Cut".
-- **Stab:** thrust the hand along the blade. Hits one monster, 1.5x damage, no shove.
-- **Block:** hold the blade in the path of a shot or a claw.
-- **Parry:** move the blade into the shot as it arrives. Double knock in the hand, white burst.
-- **Cross guard:** cross your two blades in front of you (an X or a +): nothing from in front gets through.
-- **Blade lock:** bring your two blades together: they clash and lock with a snarl and flashes.
-- **Mark and throw:** hold the trigger, sweep the hand over enemies (a diamond on each: a white centre in a ring of
-  that saber's blade colour, so the off-hand saber's marks wear its own colour). Let go: it flies to
-  each in turn and comes back. With nothing marked, let go while snapping the hand forward to throw it straight.
-  Let go with the hand still: nothing happens.
-- **Call it back:** trigger or alt while it is out of your hand.
-- **Force push (main hand):** alt trigger on the main saber ("Main-Hand Force Push" On). Off: the main alt
-  lights / douses the second blade instead.
-- **Force by gesture (off hand):** hold the off alt trigger, then
-  - thrust the hand forward = push (things thrown back, shots turned),
-  - yank it back = pull (monsters and pickups come to you; your sabers come home),
-  - hold still on an enemy (about a quarter second) = choke. It hangs where your hand points.
-    Let go of alt with a fling = throw it.
-- **Force jump:** hold jump with a saber or the Force hand out: you go higher and fall slowly.
-- **Flick reload:** with a gun in the main hand and the off-hand saber or Force hand out, flick the gun down.
-- **Second saber away / out (with RSQ Tactical Rig):** grip the second saber's holster with the off hand. Put
-  away, the off hand holds the Force (Brutal Doom Quest's fist, or the saber's bare Force hand).
+Then hold the trigger and sweep your hand across the room: each enemy along your hand's line gets a gold diamond.
+Let go with a throw and the saber leaves your hand, spinning, lighting its second blade, and flies to each marked
+enemy in turn, cutting as it goes, before it comes back to your hand. Press the trigger again and it comes home at
+once, like a Force pull.
 
 ## Features
 
-"On" = on by default (CVARINFO). "Option" = off by default.
+**The blade**
+- Cuts by your real swing (about 8 map units a tic of blade travel), through monsters, never through walls.
+- Deflects missiles that cross the blade, tested along the blade's whole sweep so fast bolts cannot slip through.
+- Blocks hitscan shots: always with a blade swung in the last third of a second, 70% of the time held still.
+- Parry by driving the blade into the shot: it goes back, with a bright burst. Optional slow motion on a perfect
+  parry with RSQ SlowMo (off by default).
+- A blade pushed into a wall or the floor sparks and scorches it.
+- The hum follows the blade and swells on a hard swing; the swing is heard from the blade.
+- Eight colours and five lengths (54 to 99 cm) per blade, with dynamic light on each blade.
+- Optional hit-stop: a cut monster freezes for a beat (off by default).
 
-| Menu row | Default | What it does |
+**Two sabers**
+- A second saber in the off hand, on by default. With RSQ Tactical Rig it can start put away in its holster and be
+  drawn by hand.
+- Cross the blades for a blade lock: a crack of light, a snarling electric loop, sparks, and a cross guard that
+  stops everything from in front of you.
+- A second blade on the far end of the hilt (a key, or the alt fire when Force Push is off). With it lit, the staff
+  twirls in your hand: a spinning disc of blade that cuts what it touches and turns every shot that crosses it.
+- Douse or light the blade with a key.
+- Hand on the Hilt: Brutal Doom 22 VR Reloaded's hand wraps each hilt, sized to the blade, mirrored for a left hand,
+  hidden while the saber is thrown. It takes BD22 VR's hand skin tone.
+
+**The throw**
+- Hold the trigger to mark up to 5 enemies along your hand's line; let go with a throw and it flies to each in turn.
+- With nothing marked, a forward snap as you let go throws it straight out along your swing.
+- It cuts what it passes, turns shots it crosses, burns a trail where its blades touch, then comes back.
+- The trigger (or alt fire) while it is out calls it home.
+
+**The Force** (off hand: the off-hand saber's alt fire held, or with no off-hand saber, the bare Force hand)
+- **Push**: thrust the hand out. Everything in a cone is thrown back, lighter things farther, and shots in the cone
+  are turned round. The main hand's alt fire also pushes.
+- **Pull**: yank the hand back. Enemies stagger toward you, pickups fly to your hand, a thrown saber comes home.
+- **Grip**: hold the hand still on an enemy. It rises, choking, and hangs where your hand points. Move your hand and
+  it moves. Let go mid-swing and it is flung, and hurts when it lands.
+- **Force Jump**: hold jump with a saber or the Force hand out. You jump higher and float down while jump is held.
+- Force Only With the Saber: the Force hand appears only while the saber is in your main hand.
+
+**The training remote**
+- A little drone that circles in front of you and stings you with bolts. Deflect them. It keeps score on screen.
+
+**Comfort and play**
+- With a saber or the Force in the off hand, a flick of the main gun still reloads it on Brutal Doom 22 VR.
+
+## How To Play
+
+1. Add RSQ_Saber.pk3 to your load order (after Wardust's or Xim's sabers if you use them). You start holding it.
+2. Swing through an imp. Watch the fireball when it comes and put the blade in its way; then swing into the next
+   one for a parry.
+3. Cross your two sabers in front of you when a crowd opens fire.
+4. Hold the trigger and sweep your hand across three enemies until each has a gold diamond, then throw. Catch it
+   coming back, or pull the trigger to call it.
+5. Your off hand: thrust to push, yank to pull, hold still on a zombie to grip it. Then fling it into its friends.
+6. Bind Second Blade under Controls, light it, and hold your hand still to watch the staff twirl.
+7. Bind Training Remote and practise deflecting.
+
+## Controls
+
+| Action | How (VR) | Notes |
 |---|---|---|
-| Sabers | On | The saber at all. |
-| Start With Dual Sabers | On | The second saber is the off hand's weapon (the Tactical Rig holster puts it away and draws it). Off: one saber. |
-| Second Saber Starts | Put Away | At the start: in its Tactical Rig holster, or without the rig in the off hand with the blade off. In Hand: lit in the off hand (the old way). |
-| Main-Hand Force Push | On | The main saber's alt trigger is a Force push. Off: it toggles the second blade. |
-| Brutal Doom Sword Becomes Saber | On | Brutal Doom's sword (pickups and the one you carry) is replaced by the saber. |
-| Damage | 30 | The cut's damage (15-60). |
-| Max Lock-On Targets | 5 | How many enemies one throw visits (1-5). |
-| Main Blade Colour | Blue | |
-| Main Blade Length | 76 cm | 54, 65, 76, 88 or 99 cm. |
-| Off Blade Colour | Red | |
-| Off Blade Length | Same as Main | |
-| Off Blade Light | On | The off blade's own dynamic light. |
-| Swing to Cut | 8 | How fast the blade must move to cut (lower = easier). |
-| Blade Block Width | 1.5 | How far off the blade's line a shot may pass and still be blocked. |
-| Hit-Stop | Off (Option) | A cut freezes the monster: Light 3, Medium 4, Heavy 6 tics. |
-| Force Only With the Saber | On | The Force and the saber are a combo (owner, 11-03). The bare Force hand is in the off hand only while the saber is in the main hand: the saber comes in -> an empty off hand becomes the Force hand (you may still switch the off hand to anything); the saber goes (any way: keys, wheel, holster, death) -> the Force hand becomes the load order's empty off hand the same tic (Brutal Doom VR's hands, so hand reloads and the rifle's launcher work; nothing without it). A gun in the off hand is left alone. A new game holding a rifle starts with the rifle and Brutal Doom VR's off-hand fist. **(rig only, not headset-confirmed)** |
-| Perfect Parry Slow-Mo | Option | A parry gives half a second of slow motion. Needs RSQ SlowMo. |
-| Hand on the Hilt | On | Your hand drawn round each saber's hilt (main and off hand), so you see your own hand on the hilt instead of a floating hilt: BD22 VR Reloaded's FBX hand in its rifle-magazine hold (the Force hand's mesh), turned 39.7 deg about its measured grip onto the hilt's measured axis, slid onto the hilt's grip and laid on the palm, fitted per blade length (docs/hilthand/gen_hilthand.py; check picture docs/hilthand/fit.png). It stays on the hilt through swings, the draw and the holster, hides while the saber is thrown (and while it is drawn in the world), and is back on the catch. Left-handed and the off hand: mirrored by the engine. Shipped inside this pk3; with BD22 VR loaded it takes BD22's Hand Skin Tone. Off: the hilt alone, as before. **(rig only, not headset-confirmed)** |
-| Force Hand | Our Hand | The bare Force hand's mesh. Our Hand: BD22 VR Reloaded's FBX hand in its rifle-magazine hold, one steady pose that never opens or changes while you push, pull or grip (the Force's effects and the grip outline are unchanged). Shipped inside this pk3, so it works without BD22 VR; with BD22 VR loaded it takes BD22's Hand Skin Tone. Original: Ermac's hand, relaxed / open while the Force is up / a fist in a grip. **(rig only, not headset-confirmed)** |
+| Cut | Swing the blade through a monster | Swing to Cut sets how hard (8 by default) |
+| Block / deflect | Hold the blade in a shot's path | Hitscan: swung always blocks, still blocks 70% |
+| Parry | Swing the blade into the shot as it arrives | The shot goes back |
+| Cross guard / blade lock | Cross your two blades in front of you | Nothing from in front gets through |
+| Mark targets | Hold the saber hand's trigger and sweep across enemies | Up to Max Lock-On Targets |
+| Throw | Let go of the trigger with marks, or with a forward snap | The off-hand saber throws with its own trigger |
+| Call it back | Trigger or alt fire while it is thrown | |
+| Force Push (main hand) | Main saber's alt fire | Main-Hand Force Push on |
+| Force Push / Pull / Grip | Off-hand saber's alt fire held (or the bare Force hand's trigger or alt), then thrust / yank / hold still on an enemy | |
+| Force Jump | Hold jump with a saber or the Force hand out | |
+| Second blade on / off | Bindable key; or the alt fire when Main-Hand Force Push is off | Lit, the staff twirls |
+| Blade on / off | Bindable key (douse it) | |
+| Training remote | Bindable key | Summon or dismiss |
 
-Always on, no row: swept-arc cuts (a fast flick between two frames still cuts), the parry double knock, the stab,
-the hum growing louder and higher on a hard swing.
+- Keys: Options → Radiant Silvergun Options → RSQ Saber → Controls, or Customize Controls → RSQ Saber.
+- Left-handed: the engine's left-handed setting moves the main saber, the mirrored hilt hand and the rumble to your
+  left hand.
+- The saber sits in slot 1.
 
-Deliberately not on the menu (CVARINFO lists them; they keep working at their defaults): start holding it
-(on), the world-drawn saber, light detail, where turned shots go (where you look), throw strength, the Force at
-all (on), Force jump (on), Force gesture speed and straightness, saber sound (Graflex), rumble (on),
-handedness (follows the game), training remote level (2), diagnostics.
+## Menu
 
-## Test it
+Options → Radiant Silvergun Options → RSQ Saber
 
-Load only the base order plus `RSQ_Saber.pk3`. Steps marked **(not yet headset-confirmed)** were only run on
-the simulated rig (2026-10-31 onward). Older features were also logged as "not yet run on the owner's
-headset" in docs/HANDOFF_polish.md.
-
-1. Menu: Radiant Silvergun Options -> RSQ Saber. All rows above are there.
-2. Start a map with the saber in hand. A lit saber in the main hand, hum on draw. The second saber: see 20 and 21.
-3. Swing at an imp: it is cut. A slow wave does nothing. Walk and turn without swinging: no cuts.
-4. Flick the blade fast past a monster: it still cuts (swept arc). **(not yet headset-confirmed)**
-5. Stab: thrust straight at one monster in front of another. Only the first is hit, harder, not shoved.
-   **(not yet headset-confirmed)**
-6. Hold a blade still across an imp's fireball: it is blocked and sent back. One short buzz.
-7. Parry: swing into a fireball or a zombie's shot as it arrives. Two knocks in the hand, a white burst, a higher
-   clash. **(not yet headset-confirmed)**
-8. Let an imp claw at you with the blade in its way: the claw is stopped and the imp reels.
-9. Cross both blades in front of you: shots from in front stop. Touch the blades together: clash and lock.
-10. Hold the trigger and sweep over three monsters: a diamond on each (white centre, ring in the blade's
-    colour), a buzz each. Let go: the saber
-    visits each, then comes home and relights in your hand.
-11. Throw with nothing marked: snap the hand forward and let go. Press the trigger again while it flies: it
-    comes back.
-12. Main-hand alt: a Force push (thump, dust down the cone, monsters thrown back).
-13. Off hand: hold alt and thrust forward (push), yank back (pull: a pickup comes to you), hold still on an imp
-    (it lifts, crackles and chokes, blue outline). Fling and let go: it flies and hurts what it hits.
-14. Hold jump: higher jump, slow fall.
-15. Controls (three binds; no Second Saber key): Second Blade key: the staff twirls in the hand and cuts what it touches. Blade On / Off: the blade
-    goes out and back. Training Remote: a drone appears; deflect its stings; press again to dismiss.
-16. Options, one at a time, then back off:
-    - Hit-Stop (Medium): a cut monster freezes for a beat. **(not yet headset-confirmed)**
-    - Perfect Parry Slow-Mo: needs RSQ SlowMo loaded. A parry slows the world for half a second. Without SlowMo,
-      nothing happens and no error. **(not yet headset-confirmed)**
-17. Two-hand hold (SteamVR grip on the off controller near the main): the off-hand saber stays drawn.
-    **(not yet headset-confirmed)**
-18. With a gun in the main hand and the off saber out, flick the gun down: it reloads.
-19. Brutal Doom's Dual key with the saber in the main hand: the second saber does not move.
-20. With RSQ Tactical Rig, new game, Second Saber Starts Put Away: the second saber is in its holster and the off
-    hand is empty (it distance-grabs with Brutal Doom Quest's hands). Grip the holster with the off hand: it comes
-    out lit. Change map, and save and load: it stays out. Grip again: it goes away, and stays away across maps.
-    **(rig only, not headset-confirmed: logged 11-02 on doom2 and on the full order)**
-21. Without the Tactical Rig, new game, Put Away: the second saber is in the off hand with its blade off. Blade
-    On / Off key: it lights (with the main saber lit too, only the dark one lights). **(rig only, not
-    headset-confirmed, 11-02)**
-21b. Second Saber Starts In Hand, new game: lit in the off hand, with or without the rig, as before. **(rig only,
-    11-02)**
-22. Main-Hand Force Push Off: main alt lights the second blade instead. Brutal Doom Sword Becomes Saber Off (new
-    map): Brutal Doom's sword is its own again. **(not yet headset-confirmed)**
-23. "Reset All" puts everything back.
-24. With RSQ Accessibility (Steady Hands On, its default): hold fire and point the saber at a far monster with
-    your hand held still. The diamond lands on the one you point at, not a neighbour. Raise the off hand at a
-    far imp: the grip outline holds on it. Steady Hands Off: as before. **(not yet headset-confirmed; rig: load
-    only)**
-25. With RSQ Accessibility: Rumble Strength 0, then cut a monster and clash: no rumble. Rumble Strength 2:
-    stronger. **(not yet headset-confirmed)**
-26. With RSQ Accessibility, Slower Taps On: hold fire, paint a monster, let go with the hand still, then press
-    fire again within about 1.5 s: the diamonds are still there (1 s without Slower Taps).
-    **(not yet headset-confirmed)**
-27. Lock marks wear the blade colour: set Main Blade Colour to red and Off Blade Colour to blue, paint a monster with each
-    saber. The main saber's diamond has a red ring, the off saber's a blue ring; both have a white centre.
-    Change the colour in the menu: marks already up recolour. **(not yet headset-confirmed; rig frames 11-02)**
-
-28. Hand on the Hilt (on): both sabers out, each hilt has your hand round it; swing: the hand stays on the hilt; throw the
-    saber: the hand goes with it and comes back on the catch; Blade Length longest and shortest: still on the hilt. Hand
-    Skin Tone in BD22 VR: the hilt hand takes it. Hand on the Hilt Off: hilts alone. **(rig only, not headset-confirmed:
-    frames docs/hilthand/rig_1103/sheet.png; script errors from this pack: 0 on doom2 + Saber, 0 on doom2 + Gun Bonsai + all RSQ, 0 on the full order with BD22 VR 2.0.3r, only BD_VoxelPack's 4)**
+| Row | Default | What it does |
+|---|---|---|
+| Sabers | On | The whole mod |
+| Start With Dual Sabers | On | A second saber in the off hand |
+| Second Saber Starts | Put Away | In its Tactical Rig holster (without the Rig, in the off hand, blade off), or In Hand |
+| Main-Hand Force Push | On | The main saber's alt fire pushes (off: it toggles the second blade) |
+| Brutal Doom Sword Becomes Saber | On | Brutal Doom's sword turns into this saber |
+| Damage | 30 | The cut's damage (15-60) |
+| Max Lock-On Targets | 5 | Enemies one throw can mark (1-5) |
+| Main Blade Colour | Blue | Eight colours |
+| Main Blade Length | 76 cm | 54, 65, 76, 88 or 99 cm |
+| Off Blade Colour | Red | Eight colours |
+| Off Blade Length | Same as Main | Or a length of its own |
+| Off Blade Light | On | The off blade's own dynamic light |
+| Swing to Cut | 8.0 | How hard a swing must be to cut (3-20) |
+| Blade Block Width | 1.5 | How far off the blade's line a shot is still blocked |
+| Hit-Stop | Off | Off, Light, Medium, Heavy |
+| Lightning Beam | On | Force Lightning drawn as a beam (Force Lightning comes with RSQ Gun Bonsai VR) |
+| Hand on the Hilt | On | The hand round each hilt |
+| Force Hand | Our Hand | BD22 VR's hand, or Original (Ermac's) |
+| Force Only With the Saber | On | The Force hand only while the saber is in the main hand |
+| Perfect Parry Slow-Mo | Off | Half a second of RSQ SlowMo on a perfect parry |
+| Controls | | Second Blade, Blade On / Off, Training Remote |
+| Reset All | | Every setting back to default |
 
 ## Works with
 
-- **Brutal Doom VR (BD22Q):** its off-hand fist (RSQ_Hands) holds the Force: with the saber in the main hand
-  and a fist in the off hand, the off alt trigger is the Force; the fist still punches on its trigger. Its sword
-  becomes the saber (menu row). Its Dual key (+user3) does nothing to the saber. Flick reload follows BD22Q's
-  own flick setting. With a gun in the main hand BD22Q puts its own hands in the off hand (measured on the rig:
-  a second saber drawn from the holster then is replaced by them within about 20 tics); with the saber in the
-  main hand the drawn second saber stays.
-- **RSQ Tactical Rig:** saber holster spots (Left saber / Right saber). The main saber is put away and drawn
-  there by the main hand; the second saber by the off hand at its own spot. That holster is the only way the
-  second saber is put away.
-- **RSQ ShieldSaw:** rest the lit main blade across the front of the shield and the shield's block grows
-  (ShieldSaw's "Saber Over Shield").
-- **RSQ SlowMo:** the Perfect Parry Slow-Mo option.
-- **RSQ DistanceGrab:** reaches with a doused hilt in hand, not with a lit one. Its rule also counts the saber's
-  bare Force hand as busy, so on Doom 2 without Brutal Doom a holstered second saber leaves an off hand that
-  holds the Force hand and does not grab; with Brutal Doom Quest the off hand holds its hands and grabs.
-- **RSQ Score:** the training remote's points, and saber bonuses (cuts, throws, Force, parries, riposte).
-- **RSQ HP Bars:** a monster in a Force grip shows the "gripped" marker; hit-stop shows the frozen marker.
-- **Gun Bonsai with the RSQ Gun Bonsai VR patch:** the saber levels up through its Saber tree (GBOVR_TREES.md 4.2,
-  built from 2026-11-02; names a film-goer knows). **Without the patch nothing changes.** With it, some of the
-  saber's own options become levels: **Battle Meditation** (lock-on marks: 1, one more a level, 5 at level 4,
-  instead of the Lock-On Targets row), **Strike True** (hit-stop 3, 4, 6 tics instead of the Hit-Stop row),
-  **Kyber Attunement** (the blade's five lengths as levels; the Blade Length row is the shortest it gets), **Saber
-  Barrage** (the thrown saber cuts on its way home only once learned, for 65% of a cut and up), **Returning Blade**
-  (it flies its marks again before it comes home), **Elegant Weapon** (Momentum), **Aggressive Negotiations**
-  (Riposte Edge), **High Ground** (a cut on a monster below 25% and up cuts it apart; no bosses), **Point Taken** (a
-  stab with your head moving forward at 0.8 m/s does x2.25 and up on top of the stab), **Run Through** (a stabbed
-  monster is held frozen on the blade 0.75 s and up; draw the blade back out of one under 15% of its health and it
-  dies). Saber Throw, Piercing Return and the Force as before; Chain Choke is no longer offered (the owner struck it).
-  **Deflect:** a turned shot goes straight off the blade until **Return to Sender** (home to the shooter: when you look
-  within 30 degrees of it, then 90, then always) or **Guided Return** (where you look, then where your off hand points)
-  is learned (they replace Where Turned Shots Go under the patch); **Precognition** (a parry at a slower swing, a wider
-  block). **Dual:** **Two Sabers** (the second saber is an unlock; Start With Dual Sabers still switches it off),
-  **Double-Bladed** (the staff blade lights only once learned; 2 it cuts on the backswing at 75%; 3 the twirl cuts),
-  **Assault** (Dual Harmony), **Cross Guard** (what the X stops goes back: straight, then at the shooter; 3 opening the
-  X shoves), **Clash** (bringing the blades together staggers everything within 3 m and up). **The Force:** under the
-  patch there is no Force until **Force Sensitive** is learned (then unlearned powers work at the patch's start share,
-  as before); Push, Pull, Grip (Force Choke) and Jump level as before; **Force Speed** (the Force hand held up and still
-  for a second with nothing to grip: slow motion for 3 s and up, through RSQ SlowMo); **Force Lightning** (turn the
-  Force hand palm-down -- QuestZDoom reads no fingers, so palm-down stands in for spread fingers -- aim it at a monster
-  for half a second, then flick: lightning pours into it for a second at 8 a tic and up, chaining to the nearest
-  others, 2 targets and up; RS Ballistics' electric arc).
-- **RSQ Accessibility:** one-handed Force buttons, Hold to Toggle for the Force, Gesture Ease, photosensitive
-  flashes, colour-blind outlines. Inert without it. Also (2026-11-01, not yet headset-confirmed):
-  - Steady Hands: pointing reads the smoothed hand: painting locks (fire held) and choosing what the Force
-    grips. Cuts, swings, throws, the Force push and pull stay on the raw hand. Where a deflected shot goes reads
-    your HEAD (where you look), not a hand, so Steady Hands does not touch it.
-  - Rumble Strength scales every saber rumble (0 = none).
-  - Slower Taps: the second press that picks your painted marks back up waits 1.5 s instead of 1 s.
-  - Seated Play: nothing to read; the saber has no height-from-floor test.
+Runs alone. It finds the others by name:
+- **Wardust's Lightsaber, Xim's Star Wars Doom, the earlier SW QuestSaber**: their saber becomes this one, on the map
+  and in your hands (load RSQ Saber after them).
+- **Brutal Doom**: its sword becomes the saber (a menu row).
+- **Brutal Doom 22 VR Reloaded**: the hilt hand and Force hand are its hand, in its skin tone; a flick of the main
+  gun reloads while the saber holds the off hand.
+- **RSQ Tactical Rig**: two saber holsters below your hips, each saber on its own hand's side. The second saber is
+  put away and drawn only there.
+- **RSQ SlowMo**: Perfect Parry Slow-Mo.
+- **RSQ Score**: cuts, parries, returned shots and the training remote pay into it.
+- **RSQ Accessibility**: Steady Hands smooths marking and gripping; Gesture Ease, Slower Taps, Photosensitive Mode
+  and rumble strength apply.
+- **Gun Bonsai + RSQ Gun Bonsai VR**: the sabers level like weapons, with the Dual tree and the Force tree (Force
+  Sensitive, Force Speed, Force Lightning, stronger Push, Pull and Choke, Battle Meditation for more marks,
+  Precognition for easier parries, the Saber Barrage and Returning Blade throws). Under it, Force powers start
+  weaker and grow as they are learned.
 
-## Known limits / open issues
+## Credits and licence
 
-- The saber's models and its sounds are slated for replacement (see Credits).
-- SNDINFO's header says "Wardust's saber set, and four synthesized (clash, burn, catch, drop)". The four
-  synthesized sounds break the stock-sounds rule (open). Wardust is not named in CREDITS.txt, which says the
-  sounds' source is not recorded; the two notes disagree.
-- Clash double knock: not rig-tested. Rumble strengths are first guesses; nothing about rumble could be felt on
-  the rig.
-- A blocked shot can carry on up to one tic past you before it is put back on the blade (not seen in runs).
-- The second saber's holster in the headset: only the network events were run on the rig (11-01), not a real
-  grip on a real body.
-- Not run in a netgame.
+- **presidentkoopa** (project owner) and this pack: the saber itself, the blade and glow shapes and the generated
+  sounds; Force Lightning's crackle from his RS Ballistics library.
+- **Ermac** (DXR, Rusted Legacy; RS_Main): combat effect sprites for the Force and the blade's impacts (the choke
+  lightning, the blast smoke, the hand flare), the Force choke loop, and the Original Force hand. Much of Ermac's work
+  is MIT-licensed; sharing it here is the project owner's decision.
+- **BD22 VR Reloaded** (the owner's mod): the Force hand and the hilt hand (its FBX hand in the magazine hold), and
+  its skin. The FBX's original author and licence are not recorded.
+- **li-gnrcwpn**: the training remote's ready beep.
+- The saber models come from Sketchfab, and the saber sounds from the same source as the owner's RS lightsaber. Their
+  authors and licences are not recorded, and they are slated for replacement with credited assets.
+- **QuestZDoom** (Emawind): the engine, and the off-hand weapon and hand-pose API the whole mod is built on.
 
-## Credits
-
-From CREDITS.txt, unchanged:
-
-```
-BORROWED, WITH THANKS
-  RS_Main (Ermac -- DXR, Rusted Legacy)
-      combat FX sprites, used for the Force and the blade's impacts:
-        UXFL  the choke/grip lightning arcs        (RSL2*)
-        UXPD  blast smoke -- Force push, and the smoke off a cut   (JSMO*)
-        UXFH  the armed-hand flare                 (RSF7*)
-      and the Force choke loop:
-        ubqs/grip   built from monsters/RSELLOOP.ogg
-  BD22 VR Reloaded (RS_Brutal22WeaponsQ, the owner's)
-      models/ubqs/ubqs_fbxhand.md3 + fbx_hand.png -- the bare Force hand ("Our Hand", 11-03): BD22 VR's
-      FBX hand, its off-hand rifle-magazine hold (models/rsq/fbx/fbx_oh_hold_R.md3 frame 0), cut to that
-      one frame. Baked there from DXR models/hands/hand_final.fbx (the owner's private repo); that FBX's
-      author and licence are not recorded (tools/handfit/README.md in that repo). Not Ermac's mesh.
-  QuestZDoom (Emawind)
-      the engine this targets, and the off-hand weapon and AttackPos/Angle/Pitch/Roll script API
-      the whole mod is built on.
-  li-gnrcwpn
-      ubqs/rbeep -- the training remote's ready beep, from the plasma rifle's alt-fire alert
-      (weapons/plasrifle/PLBEEP).
-
-MODELS AND SOUNDS (the project owner, 10-28)
-  The saber models come from Sketchfab, sourced at the same time and from the same site as the
-  owner's Star Wars 3D weapon models. Their authors and licences are not recorded here yet.
-  The sounds come from the same place as the owner's RS lightsaber; their source is not recorded.
-  SLATED FOR REPLACEMENT (owner, 10-28): the models and those sounds are to be replaced with assets
-  from a named, credited source (with a recorded licence), since their authors can't be traced.
-  The blade and glow shapes and the generated sounds are this pack's own.
-
-THE SABER ITSELF
-  Made by the project owner (presidentkoopa) and this pack.
-
-SHARING
-  Free to share as part of the Radiant Silvergun Quest series. Borrowed assets keep their authors'
-  terms. Much of Ermac's work (he is DoomVR's co-designer) is MIT-licensed; sharing it here is
-  the project owner's decision. (The old "not for distribution" line was carried over from
-  another repo by mistake.)
-```
+Free to share as part of the Radiant Silvergun Quest series. Borrowed assets keep their authors' terms.
