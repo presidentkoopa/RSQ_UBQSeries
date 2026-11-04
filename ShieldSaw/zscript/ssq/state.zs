@@ -1454,7 +1454,8 @@ class SSQ_Handler : EventHandler
 		{
 			double yaw, pitch, roll; int grip;
 			[yaw, pitch, roll, grip] = SSQ_Hand.UnpackAng(e.Args[1]);
-			mPose[i].Push(mo.pos + SSQ_Hand.UnpackPos(e.Args[0]), mo.pos, mo.angle, yaw, pitch, roll, grip != 0, Level.maptime);
+			Vector3 bodyNow = SSQ_HandSync.Body(mo);	// the pawn's X/Y and the view's height (SSQ_HandSync)
+			mPose[i].Push(bodyNow + SSQ_Hand.UnpackPos(e.Args[0]), bodyNow, mo.angle, yaw, pitch, roll, grip != 0, Level.maptime);
 			mPose[i].left = (e.Args[2] & 1) != 0;
 			// Args[2]: bit 0 left-handed; bits 1-20 the smoothed aim's yaw / pitch (10 bits each) with bit 21 saying it
 			// is there (Steady Hands on at the sender); bits 22-29 the sender's seat drop in cm (Seated Play)
@@ -1737,7 +1738,11 @@ class SSQ_Handler : EventHandler
 			int ip = SSQ_Hand.ClampI(int(round((ap + 90.0) / 180.0 * 1023.0)), 0, 1023);
 			extra |= (iy << 1) | (ip << 11) | (1 << 21);
 		}
-		EventHandler.SendNetworkEvent("ssq-pose", SSQ_Hand.PackPos(hand - mo.pos), SSQ_Hand.PackAng(yaw, pitch, roll, grip), extra);
+		// 2026-11-03 (owner: "strafing left and right causes the melee 'whoosh'"): the frame's hand carried to where the body
+		// is this tic, measured from the body at the VIEW's height (SSQ_HandSync): a tic with no frame read a still hand as
+		// a step-long swing, and a stair's view dip as a drop of the hand
+		hand = SSQ_HandSync.Fix(mo, hand, ctl);
+		EventHandler.SendNetworkEvent("ssq-pose", SSQ_Hand.PackPos(hand - SSQ_HandSync.Body(mo)), SSQ_Hand.PackAng(yaw, pitch, roll, grip), extra);
 	}
 
 }

@@ -1,4 +1,4 @@
 GameInfo
 {
-	AddEventHandlers = "SSQ_Handler", "SSQ_OffFlick"
+	AddEventHandlers = "SSQ_HandSync", "SSQ_Handler", "SSQ_OffFlick"
 }
