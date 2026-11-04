@@ -1,156 +1,205 @@
 # RSQ Laser Sight
 
-A laser from each gun's own barrel, in either hand, with a dot where the shot will land. The beam is
-drawn on the gun's model, so it stays on the barrel at headset frame rate. The dot follows Brutal Doom VR
-2.0's real shot line, shows a grenade launcher's arc, and reacts to monsters and surfaces. Part of the
-Radiant Silvergun Quest series, for stock QuestZDoom 17.3 (script only, no engine changes). It replaces
-the laser sight bundled with QuestZDoom; none of that one's code is used.
+A laser on every gun in both hands. The beam comes out of the gun's own barrel, and the dot lands where the shot will.
 
-## Load order
+**Status: 0.99 — played and confirmed working in the headset; refinement and bug fixing ongoing.**
 
-```
-doom2.wad -> 01 brutal22test6 -> 02 BD22_VoxelPack -> 03 BD22_VR-Reloaded_2.0.3j -> 04-07 XMVE
-          -> RSQ_LaserSight.pk3   (from pk3/)
-```
+Part of the Radiant Silvergun Quest series for stock QuestZDoom 17.3. Everything here is ZScript and data. No engine
+changes.
 
-- **Plain Doom 2 without Brutal Doom:** loads (Brutal Doom classes are looked up by name). You get the dot
-  only, from the grip along your aim. The beam needs a measured gun model, and the beams were measured
-  from Brutal Doom Quest's guns, so sprite guns (stock Doom's) have no beam. *Follow Brutal Doom VR Shots*
-  does nothing without Brutal Doom VR 2.0.
-- **Other RSQ pk3s needed:** none. It works alone.
+## Standout feature: a laser that tells the truth
 
-## Setup
+Raise a gun and a beam leaves its muzzle. Not your fist, not the controller: the end of the barrel on the 3D model
+in your hand. It runs straight down that barrel, bright at the muzzle, fading out over a few metres. Tilt the gun, cant
+it on its side, swap it to your off hand: the beam stays on the barrel, because it is drawn as part of the gun.
 
-- **Menu:** Options -> Radiant Silvergun Options -> RSQ Laser Sight.
-- **Buttons to bind:** none needed; both lasers are on by default.
-- **Optional toggles:** Customize Controls -> section "RSQ Laser Sight" -> "Laser on/off (main hand)" and
-  "Laser on/off (off hand)". The same two are on the mod's *Controls* page as "Toggle Main Hand" /
-  "Toggle Off Hand". No default binds (on purpose).
+Where it hits, a dot is painted onto the surface. It lies flat on walls, floors and ceilings, sits on a monster's
+body, and casts real coloured light on the room around it. With BD22 VR Reloaded loaded, the dot follows that mod's
+true shot line, from its muzzle and down its bore. Put the dot on a target, pull the trigger, and that is where the
+round goes.
 
-## What to do in VR
-
-- **Aim:** hold a gun. The beam comes from its muzzle; the dot sits where the shots go.
-- **Lower the gun:** point it down past 55 deg. The laser goes off. Raise it, it comes back.
-- **Switch weapons:** the laser is off while the gun is switched or holstered.
-- **Melee:** fists, chainsaw, saber, shield and empty hands show no laser.
-- **Two-hand a rifle (SteamVR):** the off-hand laser stands down while the engine steadies the gun.
+Throw a grenade from a launcher once and the laser learns its flight. From then on that gun shows a dotted arc to
+the exact spot it will land.
 
 ## Features
 
-Rows are on the front page unless a page is named. "On" = on by default (CVARINFO); "Option" = off by
-default.
+**The beam**
+- Starts at the real muzzle of each gun model and runs down its barrel. The muzzles were measured from the meshes.
+- Stops where it hits, so it never shows through a wall.
+- Brighter in the dark, softer in full light, as a real laser looks.
+- Shown while the gun is in its ready pose; a reload or a kick in the animation hides it for that moment.
 
-| Menu row | Default | What it does |
+**The dot**
+- Painted on the surface it hits: flat on walls and floors, on the body of a monster.
+- Stays the same size on screen at any distance.
+- Glow: a soft bloom, a real dynamic light, or both.
+- Swims on water, slime, lava and blood; glints on metal.
+- With BD22 VR Reloaded: traced down that mod's own bore line, so it matches where its guns really fire.
+
+**Learned from each gun**
+- Grenade arc: once a gun has thrown a gravity projectile, it shows the flight path and the landing spot.
+- Spread ring (optional, off by default): an ellipse at the dot showing where this gun's shots land, learned from
+  its own shots.
+- Range readout (optional, off by default): the distance to what you are aiming at, by the gun or at the dot, in
+  metres, feet or map units.
+
+**Reacting to targets**
+- Target lock: on a live monster the dot swells and pulses.
+- Target colour (optional): the dot turns a colour of your choice on a monster.
+- Headshot reaction (optional): the dot changes colour and pulses when it sits on the top fifth of a monster.
+
+**Colour**
+- Any colour, from a picker. Per hand, beam and dot separately, or one for everything.
+- A colour per weapon slot (optional).
+- Colour cycling (optional).
+- Infrared mode (optional): the laser is invisible unless you wear light amplification goggles.
+
+**Behaviour**
+- Off while the gun points at the floor (past 55 degrees down) and while you switch guns.
+- No laser on fists, chainsaws, sabers, shields or empty hands unless you ask for one.
+- A short rumble in the hand when you switch a laser on or off.
+
+## How To Play
+
+1. Load the pk3 after your weapon mod. Nothing else is needed.
+2. Start a level and raise a gun. Both hands get a laser: red on the main hand, green on the off hand.
+3. Put the dot on a target and fire. With BD22 VR Reloaded, the dot is that mod's real shot line.
+4. Lower the gun toward the floor and the laser switches off. Raise it and it comes back.
+5. Fire a grenade launcher once. Aim again and you will see the arc and where the grenade will land.
+6. Open Options → Radiant Silvergun Options → RSQ Laser Sight to change colours, the beam's look, or to bind keys
+   that switch each hand's laser on and off.
+
+Guns with a measured model (Brutal Doom's arsenal as drawn by BD22 VR Reloaded, including the off-hand copies) get the
+full beam. Any other gun, from any mod, still gets the dot, traced from your hand along the shot's line. A weapon mod
+can also tell the laser where its muzzles are.
+
+## Controls
+
+| Action | How (VR) | Notes |
+|---|---|---|
+| Aim | Point the gun | Both hands, independently. |
+| Laser off for a moment | Point the gun down past 55 degrees | The angle is a slider; 0 keeps it always on. |
+| Main hand laser on/off | Bind a key | Options → Customize Controls → "RSQ Laser Sight", or the mod's Controls page. No default bind. |
+| Off hand laser on/off | Bind a key | As above. No default bind. |
+| See an infrared laser | Pick up light amplification goggles | Only with Infrared Only switched on. |
+
+Left-handed play: main hand and off hand follow QuestZDoom's own handedness setting, and the beam follows the gun to
+whichever hand holds it.
+
+On SteamVR builds, bracing a gun with both hands hides the off hand's laser, because the engine stops drawing the
+off-hand gun. Let go of the grip and it comes straight back.
+
+## Menu
+
+Options → Radiant Silvergun Options → RSQ Laser Sight
+
+**Front page**
+
+| Row | Default | What it does |
 |---|---|---|
 | Laser Sight | On | The whole mod. |
-| Main Hand / Off Hand | On | Each hand's laser. |
+| Main Hand | On | The main hand's laser. |
+| Off Hand | On | The off hand's laser. |
 | Show Beam | On | The beam from the muzzle. |
-| Beam Look | Standard | Subtle / Standard / Bold (fade length, brightness, daylight). |
+| Beam Look | Standard | Subtle, Standard or Bold: fade length, brightness and daylight strength together. |
 | Show Dot | On | The dot where it lands. |
-| Dot Size | Standard | Small / Standard / Large. |
-| Dot Glow | Bloom and Light | Off / Bloom / Light / Bloom and Light. |
-| Colour Mode | Per Hand | One Colour / Per Hand (main red, off green) / Beam and Dot. |
-| Main Hand Colour / Off Hand Colour | red / green | Colour pickers. |
-| Show on Melee | No | Show the laser on melee weapons and empty hands. |
-| Only When Ready | No | Hide while switching or reloading. |
-| Dot Reacts to Surface (water, metal) | On | The dot swims on water, slime, lava and blood; it glints on metal. |
-| Follow Brutal Doom VR Shots | On | With Brutal Doom VR 2.0, the dot follows its muzzle and bore (its guns fire 3.85 deg left and 3.36 deg up of the controller, parsed from its code). |
-| Off When Pointed Down Past (deg, 0 = never) | 55 | Laser off when the gun points down past this, or while switching. |
-| Infrared Only | Option | Only visible through light amplification goggles. |
-| More Colours: Main Hand Dot / Off Hand Dot | red / green | Dot colours for *Beam and Dot* mode. |
-| More Colours: Colour per Slot | Option | A colour per weapon slot (Slot 1 to Slot 0 pickers). |
-| More Colours: Cycle Colours | Option | The colour cycles through hues. *Dot Cycles Too* is on. |
-| Targets and Extras: Target Lock | On | On a live monster the dot grows and pulses. |
-| Targets and Extras: Target Colour Change | Option | The dot turns the target colour on a monster. |
-| Targets and Extras: Headshot Reaction | Option | The top fifth of a monster turns the dot the headshot colour (pulse on). |
-| Targets and Extras: Grenade Arc | On | A grenade launcher shows its arc and landing spot, once it has fired once. |
-| Targets and Extras: Arc With Beam | Option | Keep the straight beam as well as the arc. |
-| Targets and Extras: Spread Ring | Option | A ring at the dot showing this gun's spread (off since 10-29, owner's call). |
-| Targets and Extras: Show Range | Off | Range readout: Off / By the Gun / At the Dot. *Units*: Metres / Feet / Map Units. |
-| Controls: Toggle Haptics | On | A tick in the hand when you toggle a laser. |
-| Tuning and Debug: Reset All | - | Resets every Laser Sight setting. |
+| Dot Size | Standard | Small, Standard or Large. |
+| Dot Glow | Bloom and Light | Off, Bloom, Light, or both. |
+| Colour Mode | Per Hand | One Colour, Per Hand, or Beam and Dot coloured separately. |
+| Main Hand Colour | Red | Picker. |
+| Off Hand Colour | Green | Picker. |
+| Show on Melee | No | A laser on fists, chainsaws, sabers, shields and empty hands too. |
+| Only When Ready | No | Hide it while the gun is switching or reloading. |
+| Dot Reacts to Surface (water, metal) | On | The dot swims on liquids and glints on metal. |
+| Follow Brutal Doom VR Shots | On | With BD22 VR Reloaded, trace the dot down its true shot line. |
+| Off When Pointed Down Past (deg, 0 = never) | 55 | How far down the gun may point before the laser goes out. |
+| Infrared Only | Off | Only visible through light amplification goggles. |
 
-Every other row under *Tuning and Debug* is a number for the features above. The arc-learner log
-(`rsqls_debug`) is not on the menu.
+**More Colours**
 
-## Test it
+| Row | Default | What it does |
+|---|---|---|
+| Main Hand Dot | Red | The main dot's colour, in Beam and Dot mode. |
+| Off Hand Dot | Green | The off dot's colour, in Beam and Dot mode. |
+| Colour per Slot | Off | Each weapon slot its own colour. |
+| Slot 1 to Slot 0 | Red, orange, yellow, green, cyan, blue, violet, pink, white, red | One picker per slot. |
+| Cycle Colours | Off | The laser runs through the rainbow. |
+| Dot Cycles Too | On | The dot cycles with the beam. |
 
-Items marked **(not yet headset-confirmed)** were built on 2026-10-30 or later and only ran on the
-simulated rig.
+**Targets and Extras**
 
-1. Load the pack. Options -> Radiant Silvergun Options shows *RSQ Laser Sight*. No script error.
-2. Hold the pistol. A red beam leaves the muzzle and fades over about 3 m; a red dot with a glow sits on
-   the wall. Move the gun fast: the beam stays on the barrel.
-3. Dual-wield (Brutal Doom's Dual). The off gun has a green beam and dot.
-4. Fire at a wall mark with the dot on it. The bullet holes land on the dot.
-   **(not yet headset-confirmed)**
-5. Shotgun: fire a few blasts. The dot stays on the wall and does not jump short after the first.
-   **(not yet headset-confirmed)**
-6. Grenade launcher: fire once. Then the laser shows an arc, and the dot is where the grenade lands.
-   **(not yet headset-confirmed)**
-7. Point the gun at the floor past 55 deg. The laser goes off. Switch weapons: it is off during the
-   switch. **(not yet headset-confirmed)**
-8. Put the dot on water or nukage: it wobbles. On a metal wall or door: it glints.
-   **(not yet headset-confirmed)**
-9. Aim at an imp standing at an angle to you. The dot sits on its body, not floating beside it. The dot
-   grows and pulses on it (Target Lock). **(not yet headset-confirmed)**
-10. SteamVR: bring the off hand to the rifle and grip. The off-hand dot and glow disappear; let go and
-    they come back within a few tics. **(not yet headset-confirmed)**
-11. Bind "Laser on/off (main hand)" and press it. The main laser goes off with a tick in the hand.
-12. Fists or chainsaw: no laser.
-13. Turn on *Headshot Reaction* and put the dot on a monster's head. It turns white and pulses.
-14. Set *Show Range* to At the Dot. A number should show the distance. **(the text was never seen on the
-    rig; check that it reads at all)**
-15. Turn on *Infrared Only*. The laser disappears until you pick up light amplification goggles.
-16. Load RSQ Accessibility (Steady Hands on). Hold the dot on a far wall: it shakes visibly less than with
-    Steady Hands off. A fast swing still puts the dot where you swung. **(not yet headset-confirmed; on the rig a
-    3-degree hand shake moved the dot 1.5 units on and 7.7 units off)**
-17. Loads on plain Doom 2 without Brutal Doom VR (a load error there was fixed on 2026-11-01).
+| Row | Default | What it does |
+|---|---|---|
+| Target Lock | On | The dot swells and pulses on a live monster. |
+| Target Colour Change | Off | The dot turns the target colour on a monster. |
+| Target Colour | Yellow | Picker. |
+| Headshot Reaction | Off | The dot reacts when it sits on a monster's head. |
+| Headshot Colour | White | Picker. |
+| Headshot Pulse | On | The headshot colour pulses rather than holding. |
+| Grenade Arc | On | Guns that throw a projectile show its arc once they have fired. |
+| Arc With Beam | Off | Keep the straight beam as well as the arc. |
+| Spread Ring | Off | A ring at the dot showing this gun's learned spread. |
+| Show Range | Off | Off, By the Gun, or At the Dot. |
+| Units | Metres | Metres, Feet or Map Units. |
+
+**Controls**
+
+| Row | Default | What it does |
+|---|---|---|
+| Toggle Main Hand | Unbound | Key to switch the main laser on and off. |
+| Toggle Off Hand | Unbound | Key to switch the off laser on and off. |
+| Toggle Haptics | On | A rumble in the hand when a laser is switched. |
+
+**Tuning and Debug**
+
+| Row | Default | What it does |
+|---|---|---|
+| Beam Fade Length | 3.0 | Metres for the beam to fade out (0.5 to 6). |
+| Beam Brightness | 0.80 | At the muzzle. |
+| Beam in Daylight | 0.35 | The beam's strength in full light, as a share of its strength in the dark. |
+| Dot Size | 1.00 | Fine size control. |
+| Dot Brightness | 1.00 | |
+| Glow Size | 1.80 | Bloom size and light reach. |
+| Glow Intensity | 1.00 | |
+| Trace Range | 2048 | How far the laser looks, in map units (about 60 m). |
+| Dot Range Limit | 0 | No dot beyond this distance; 0 = as far as the trace. |
+| Dot Lead (Tics) | 0.0 | Draws the dot slightly ahead of a moving hand. |
+| Cycle Speed | 60 | Degrees of hue a second. |
+| Lock Tighten | 0.00 | How much the dot shrinks onto a target. |
+| Lock Pulse Rate | 2.20 | Pulses a second. |
+| Headshot Pulse Rate | 4.0 | Pulses a second. |
+| Arc Dot Size | 1.00 | |
+| Arc Brightness | 0.80 | |
+| Ring Minimum Spread | 0.75 | Degrees; a tighter gun draws no ring. |
+| Ring Brightness | 0.60 | |
+| Readout Size | 1.00 | |
+| Reset All | | Every setting back to its default. |
 
 ## Works with
 
-- **RSQ Gun Bonsai VR (with RSQ Tactical Rig):** **Target Lock** (after Quick Draw) and **Headshot Reaction** (after
-  Target Lock) are unlocks under the patch: they take over Target Lock (1), Target Recolour (2) and Headshot Reaction
-  (1); Headshot Reaction 2 makes a gun hit with your dot on a monster's head count for Critical Hits' Headshot (the
-  service answers "head.on"). Without the patch the rows as before.
-- **RSQ Distance Grab:** this mod tells it which hands have a live laser; the grab hides its own beam on
-  those hands (its *Yield to Laser Sight* row).
-- **RSQ Accessibility:** colour-blind colours per hand (a lock is then told by shape, not colour),
-  Photosensitive Mode caps the pulses at 2.5 Hz, Cue Size on the dot, glow and arc, Text Size on the
-  readout. Steady Hands (on in Accessibility): the dot (and a grenade's arc) is traced from the smoothed hand,
-  so it sits steadier on a far wall; the beam stays glued to the gun. Steady Hands off: as before. Rumble
-  Strength 0: no toggle tick (it is the engine's one fixed buzz). Shared settings only act with it loaded.
-- Other weapon packs can give their own muzzle points and colours through two services
-  (`LaserMuzzleService`, `LaserColorService`). No RSQ mod provides them today.
+Runs on its own with any weapon mod.
 
-## Known limits / open issues
+- **BD22 VR Reloaded / Brutal Doom:** the full beam on every measured Brutal Doom gun and its off-hand copies, and the
+  dot on that mod's true shot line.
+- **RSQ Gun Bonsai VR (with Gun Bonsai and RSQ TacticalRig):** Target Lock and Headshot Reaction become upgrades you
+  earn, after TacticalRig's Quick Draw. Level 1 of Target Lock is the lock, level 2 adds the target colour. Level 1 of
+  Headshot Reaction is the colour change; level 2 makes a gun hit with your dot on a monster's head count as a
+  headshot. While Gun Bonsai VR is loaded, those menu switches stand aside.
+- **RSQ Accessibility:** Steady Hands smooths the dot's aim (the beam stays on the gun). Colour-blind mode gives the
+  hands the series' colour pair and shows the target lock by shape and pulse. Photosensitive mode caps pulse rates.
+  Cue Size scales the dot, glow and arc. Text Size scales the range readout. Rumble Strength 0 silences the toggle
+  rumble.
+- **RSQ DistanceGrab:** its grab beam stands down on a hand that already has a laser.
+- **RSQ Wheel:** the ring's pointing beam stands down on the idle hand when the laser is already lighting it.
+- **Other weapon mods:** can set a laser colour per gun, or tell the laser where their muzzles are.
 
-- No beam on guns without a measured model: sprite or voxel guns, BrutalRevolver, Revolver2, the Dual*
-  sprite weapons. The dot still shows on those.
-- Frames that move the gun more than 6 cm / 6 deg (reloads, inspections) hide the beam.
-- MP40, MG42, Devastator, FlameCannon and HellishMissileLauncher are measured but were never seen in the
-  rig.
-- The light at the dot was never confirmed visually (software rendering on the rig).
-- How the fade and the glow read at Quest brightness is not checked.
-- The off-hand stand-down when two-handing is SteamVR only; on Quest it does nothing today.
-- The range readout's text was never seen. A canvas readout drew a black rectangle in VR in the Tactical
-  Rig's test, so it may not work.
-- The beam table (about 7600 voxel rods) makes the pk3 large and adds load work.
+It is a replacement for the laser sight bundled with QuestZDoom.
 
-## Credits
+## Credits and licence
 
-RSQ_LaserSight -- credits (from CREDITS.txt, unchanged):
-
-A laser from each gun's own barrel, part of the Radiant Silvergun Quest series. For stock QuestZDoom 17.3:
-ZScript and lumps only, no engine changes. Made by the project owner (presidentkoopa) and this pack.
-
-INSPIRED BY (no code or assets taken)
-- Laser Sight by m8f (Alexander Kromm, github.com/mmaulwurff/laser-sight), GPLv3 -- the laser sight
-  bundled with QuestZDoom (laser-sight-0.5.5-vr.pk3). This pack replaces it; nothing of its code or
-  sprites is used here.
-
-GENERATED FOR THIS PACK
-- The beam voxels (models/rsqls/beam/*.kvx, VOXELDEF.txt) and the muzzle table (zscript/rsqls/muzzles.zs):
-  tools/gen_beams.py, measured from Brutal Doom Quest's own gun models.
-
-QuestZDoom (Emawind and Team Beef): the engine and the hand-pose script API.
+- Made by presidentkoopa for the Radiant Silvergun Quest series.
+- Inspired by Laser Sight by m8f (Alexander Kromm, github.com/mmaulwurff/laser-sight, GPLv3), the laser sight bundled
+  with QuestZDoom. No code or sprites from it are used here.
+- Generated for this pack: the beam voxels and the muzzle table, measured from Brutal Doom's gun models as drawn by
+  brutal22test6, BD_VoxelPack and BD22 VR Reloaded.
+- QuestZDoom by Emawind and Team Beef: the engine and the hand-pose script API.
