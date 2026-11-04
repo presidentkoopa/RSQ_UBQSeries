@@ -127,3 +127,8 @@ Found while rewriting the READMEs from the code (11-03 evening). None fixed yet;
 48. The chest pocket has no marker (only a sound/buzz on a good take, "No flares left" when empty).
 49. `rsqff_keys_off` is in Reset All with no menu row; burn.zs comment names a nonexistent `rsqff_husk` (fixed 10 s);
     handler.zs carries an old "rig only" label.
+
+## Grenade
+50. Shoot Thrown Grenades: any player's shot sets off anyone's thrown grenade (co-op); not stated. Decide/document.
+51. Off-hand grenade path (ring pulled with the main trigger, kind change on off-hand alt fire) follows from the code
+    but is untested on the rig.
