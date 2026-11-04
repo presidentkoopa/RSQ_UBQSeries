@@ -25,10 +25,10 @@ simulated headset only and is marked *not yet headset-confirmed* there.
 | 🎡 | [Wheel](Wheel/) | `RSQ_Wheel.pk3` | A weapon wheel for VR: a ring of weapon cards around your hand, point and let go (or reach in), a data sheet per gun. The owner's REMA wheel. |
 | 🃏 | [GunCards](GunCards/) | `RSQ_GunCards.pk3` | Ammo cards on your guns in Ermac's holo style; check your watch for the full card (or, empty-handed, health/armour/keys). |
 | 🤲 | [Gestures](Gestures/) | `RSQ_Gestures.pk3` | Reads your hands (watch check, thrust, pull, punch, shove, braced) and answers the other mods. Does nothing to the game by itself. |
-| ❤️ | [TopHPBars](TopHPBars/) | `RSQ_HPBars.pk3` | coldcite's Top HP Bars with colour-blind sets, an overheal strip and icons for what the other mods are doing to a monster. |
+| ❤️ | [VisualRewards](VisualRewards/) | `RSQ_VisualRewards.pk3` | What a fight shows and pays you: coldcite's HP bars (colour-blind sets, overheal strip, icons for what the other mods are doing to a monster), damage numbers, Gun Bonsai level-up displays, and SoM's Kill Rewards (monsters burst into health, armour and ammo bits). Replaces `RSQ_HPBars.pk3` and the Kill Rewards inside Gun Bonsai VR (2026-11-03). |
 | 🏆 | [Score](Score/) | `RSQ_Score.pk3` | The arcade score: style bonuses, cross-mod combos, a map target and extra lives. The owner's RS_Score on ijon's Dakka scoring. |
 | 👹 | [Miniboss](Miniboss/) | `RSQ_Miniboss.pk3` | A miniboss each map fed by three thralls; kill a thrall to slow time, get greedy and every monster enrages. Rebuilt from Tartlman's Minibosses!. |
-| 🌳 | [GunBonsaiOffhandVR](GunBonsaiOffhandVR/) | `RSQ_GunBonsaiVR.pk3` | An addon for ToxicFrog's Gun Bonsai 0.10.6 (not included): each hand its own XP, upgrades and HUD, upgrade paths for the series' tools (the gloves' and Guard need RSQ Melee). Loaded right after Gun Bonsai. |
+| 🌳 | [GunBonsaiOffhandVR](GunBonsaiOffhandVR/) | `RSQ_GunBonsaiVR.pk3` | An addon for ToxicFrog's Gun Bonsai 0.10.6 (not included): each hand its own XP, upgrades and HUD, upgrade paths for the series' tools (the gloves' and Guard need RSQ Melee; the Kill Rewards path needs RSQ VisualRewards). Loaded right after Gun Bonsai. |
 | 💣 | [Grenade](Grenade/) | `RSQ_Grenade.pk3` | A hand grenade worked by hand on plain Doom 2: the other hand (or your teeth) pulls the pin, throw it with your arm, cook it, watch it flash red. Brutal Doom VR's handling; stands down for BD22 VR's own grenade. |
 | ♿ | [Accessibility](Accessibility/) | `RSQ_Accessibility.pk3` | One settings page for the whole series: colour-blind, handedness, one-handed, comfort, cues, and one Reset for every mod. |
 
@@ -94,7 +94,7 @@ After that, the full set together.
    | SlowMo | **RSQ SlowMo** |
    | Score | **RSQ Score** |
    | Miniboss | **RSQ Miniboss** |
-   | TopHPBars | **RSQ HP Bars** |
+   | VisualRewards | **RSQ VisualRewards** (HP Bars, Damage Numbers, Level-Up Displays, Kill Rewards pages) |
    | GunBonsaiOffhandVR | **RSQ Gun Bonsai VR** (Gun Bonsai's own menu stays where Gun Bonsai puts it) |
    | Whip | **RSQ Whip** |
    | Wheel | **RSQ Wheel** |

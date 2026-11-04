@@ -64,7 +64,7 @@ series is untouched: knockdowns, knockback, grenade charm/infight and Gun Bonsai
 
 | Row | Default | What it does |
 |---|---|---|
-| Boss Kill Rewards | On | RSQ Gun Bonsai VR's kill rewards treat it as a boss: the boss fountain (x3 bits, `rsqgb_kr_boss`) and every bit drops. |
+| Boss Kill Rewards | On | Kill Rewards (RSQ VisualRewards since 2026-11-03; before that inside RSQ Gun Bonsai VR) treats it as a boss: the boss fountain (x3 bits, `rsqgb_kr_boss`) and every bit drops. |
 | LegenDoom: Best Health | On | When Miniboss makes it legendary (Inherit Powers, a legendary thrall), it gets the HIGHER of LegenDoom's boss legendary health (`LD_legendaryhealthboss`, 200 % by LegenDoom Lite's default) and its normal one (`LD_legendaryhealth`, 300 %). With the defaults that is the normal 300 % (BD imp 80: 240); raise the boss % above the normal and it gets that (400 %: 320). Off: the normal one, always. |
 | Can't Be Yanked | On | RSQ Grapple's and RSQ Whip's yank and throw refuse it as they refuse a boss: the hook or the whip pulls you to it instead. |
 | Can't Be Headlocked | On | RSQ Melee's headlock refuses it as it refuses a boss. |

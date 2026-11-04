@@ -521,6 +521,12 @@ Two things, both read from Gun Bonsai 0.10.6's own source (`ca.ancilla.bonsai/up
 
 ## 3.14 Kill Rewards, folded in (owner, 11-02)
 
+> **Moved 2026-11-03:** Kill Rewards (handler, bits, `rsqgb_kr_*`, its menu page, SoM's credit) now lives in **RSQ
+> VisualRewards** (`VisualRewards/pk3/zscript/rsqvr/killrewards.zs`, `RSQ_VisualRewards.pk3`), with the HP bars and damage
+> numbers. GBOVR keeps the four path nodes (`rsq/zscript/up_killrewards.zs`); VisualRewards reads them by name
+> ("plevel") and asks "kr.lucky" / "kr.luckyfx"; GBOVR offers them only while `RSQVR_Service` "kr.loaded" is 1. Where
+> this section says "GBOVR's rsq/ tree", read VisualRewards.
+
 **His words:** "I love the current implementation, I don't want to lose anything, but the menu I do not
 understand." "I would kill a boss or legendary champion and like 200 bits would come out, it was awesome" (or
 2000). And: "an option to have Kill Rewards On by Default: Yes / No, which lets us get the bits from the start."
@@ -1573,6 +1579,8 @@ second (`clock.zs` GbRefresh); without the patch every read is -1 and every row 
 - Marksman / Dodger now follow Deeper 1, Second Wind Cheaper 1, Time Dilation Marksman 1.
 
 ### 4.10 Kill Rewards (section 3.14; the four path nodes approved) and Critical Hits (section 4.1 I) are player nodes too.
+
+(2026-11-03: `killrewards.zs` moved to RSQ VisualRewards; the four node classes stay here in `up_killrewards.zs`.)
 
 Critical Hits, Headshot and Backstab were built with the Fists tree (4.1 I). **Kill Rewards' path: BUILT 11-02.**
 `killrewards.zs` (the fold) already asked the nodes by name; built now: the four classes (`RSQ_KRPerk`), a once-a-second

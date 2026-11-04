@@ -1,5 +1,11 @@
 # Local agent handoff: RSQ_UBQSeries on the owner's PC
 
+> **Update 2026-11-03 (VisualRewards):** `RSQ_HPBars.pk3` is gone from `pk3/`: the HP bars, damage numbers and level-up
+> displays (folder `TopHPBars/`, now `VisualRewards/`) and Kill Rewards (out of `GunBonsaiOffhandVR/`) are one mod,
+> **RSQ VisualRewards** (`pk3/RSQ_VisualRewards.pk3`, menu "RSQ VisualRewards"). In the owner's load order: remove
+> `RSQ_HPBars.pk3`, add `RSQ_VisualRewards.pk3` among the RSQ pk3s, and use the new `RSQ_GunBonsaiVR.pk3` (the old one
+> still holds Kill Rewards; with both, the classes clash). Settings and saves carry over (same cvar and class names).
+
 > **Update 2026-11-01 (0.9):** melee now lives in **RSQ_Melee** (punches, gloves, shove, Headlock, Guard,
 > Hadouken, Wall Splat, Heavy Hands); Gun Bonsai VR holds only the upgrades; Gestures only reads hands;
 > Distance Grab keeps objects. See WHO_OWNS_WHAT.md. Where this file says otherwise below, that is history.
@@ -20,7 +26,8 @@ The built pk3s live in `pk3/` and are committed. GitHub: https://github.com/pres
 - **No engine changes.** Stock QuestZDoom 17.3; everything is ZScript, DECORATE, MODELDEF and data.
 - **Load order he plays (PCVR, SteamVR), as of 2026-11-01:** doom2.wad -> 01 brutal22test6.pk3 -> the BD22 VR Weapons
   repo's numbered `pk3/` folder (RS_Brutal22WeaponsQ: 02 BD22_VoxelPack, 03 BD22_VR-Reloaded_2.0.3j -- built from that
-  repo with `python build.py`, it is gitignored -- 04-07 XMVE Monster Expansion) -> the RSQ pk3s.
+  repo with `python build.py`, it is gitignored -- 04-07 XMVE Monster Expansion) -> the RSQ pk3s (since 2026-11-03: RSQ_VisualRewards.pk3 instead of RSQ_HPBars.pk3, and
+  Kill Rewards lives there, not in RSQ_GunBonsaiVR.pk3).
   Launch args he uses: `+vr_mode 10 +vid_preferbackend 0`.
 - **Zero script errors from our packs** in that load order before anything is called done. The 4
   "No sprites specified for voxel" errors from BD_VoxelPack's voxeldef are the parent's own; ignore them.
@@ -80,7 +87,7 @@ Four cloud agents are building the owner's "QoL round" picks (PICKS_2026-10-31.m
 | Lane | Folders |
 |---|---|
 | SlowMo + Grapple | `SlowMo/`, `Grapple/` |
-| HP Bars + Wheel | `TopHPBars/`, `Wheel/` |
+| HP Bars + Wheel | `TopHPBars/` (now `VisualRewards/`), `Wheel/` |
 | Gestures + GunCards | `Gestures/`, `GunCards/` |
 | Accessibility | `Accessibility/` |
 

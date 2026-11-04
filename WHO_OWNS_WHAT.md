@@ -43,4 +43,4 @@ gains features when another is loaded.
 | Scoring, combos, awards (counts what the others do; does no melee itself) | Score | Melee (F.E.A.R. Effect award; the Headlock's "grab.hold" touch), Miniboss |
 | Upgrade levels and their numbers (`RSQ_MeleeUpgradeService`) | Gun Bonsai VR addon | Melee, Saber, ShieldSaw, Distance Grab, Grapple, Wheel, Gun Cards |
 | The last punch, the Guard, which mod takes an off-grip press (`RSQML_Service`) | Melee | Gun Bonsai VR (glove upgrades), Distance Grab |
-| Monster markers | HP Bars | reads the others |
+| Monster markers | VisualRewards (the HP bars) | reads the others |
