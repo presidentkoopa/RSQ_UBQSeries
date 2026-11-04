@@ -1,14 +1,14 @@
 # RSQ FnF (Flash and Flare)
 
-A road flare you pull from your chest, strike with a flick of the wrist, and throw into the dark.
+A road flare you pull from your chest, strike with a flick of the wrist and throw into the dark, and a flashlight
+clipped to your chest with a beam you can see in the air.
 
 Status: 0.99 — played and confirmed working in the headset; refinement and bug fixing ongoing.
 
-Part of the Radiant Silvergun Quest series for stock QuestZDoom 17.3. ZScript only, no engine changes. The flare is
-built; the flashlight is new (rig only, not headset-confirmed).
+Part of the Radiant Silvergun Quest series for stock QuestZDoom 17.3. ZScript only, no engine changes.
 
-**Dynamic lights must be on** in the engine's video settings. The flare's light is a real dynamic light; with them off
-you get the flame and sparks but no light.
+**Dynamic lights must be on** in the engine's video settings. The flare's and the flashlight's light are real dynamic
+lights; with them off you get the flame, sparks and the visible beam, but no light on the walls.
 
 ## Standout feature: strike it like the real thing
 
@@ -47,7 +47,7 @@ and the throw is measured against your body, so walking and turning never count 
   flare burns out, the last one that went dark lights again.
 - Subdued Light: twice the radius at half the brightness, for a softer look.
 
-**The flashlight** (rig only, not headset-confirmed)
+**The flashlight**
 - On a clip on your chest, on your off hand's own side. Grip there with the off hand: it comes out switched on. That
   hand's trigger turns it off and on. Grip at the clip again to put it back.
 - Held in Brutal Doom 22 VR Reloaded's shotgun-pump support hand, drawn where your off hand is.
@@ -56,6 +56,7 @@ and the throw is measured against your body, so walking and turning never count 
 - Beam size, colour and quality are menu rows. One light per flashlight; Quest quality keeps the range short.
 - One thing in the off hand at a time: take a flare and the flashlight goes away. Put the flare back and the
   flashlight comes back, on or off as it was.
+- No battery: it stays on as long as you like. On a new level it stays in your hand, switched off.
 - With DarkDoomz loaded, its own flashlight switches off while yours is on.
 
 **Supply**
@@ -70,6 +71,7 @@ and the throw is measured against your body, so walking and turning never count 
 2. Bring your off hand across your chest toward your main-hand side, on your upper chest, and grip.
    You hear the pickup sound and feel a tick. The pocket has no marker: if nothing happens, move a little and grip
    again, or move the pocket under Tuning and Debug.
+   The flashlight is the mirror: your off hand on its own side of your chest, grip, and it comes out on.
 3. Flick the flare hand down hard. Too gentle? Pull the off-hand trigger instead, or lower Strike Speed Down.
 4. Hold it up and walk. Then swing and grip to throw it ahead of you.
 5. Out of flares, the game tells you "No flares left". Look for boxes beside the map's items.
