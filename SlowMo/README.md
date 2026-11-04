@@ -4,6 +4,8 @@ The world slows down. You don't. Enemy bullets turn into rounds you can watch co
 
 **Status: 0.99 — played and confirmed working in the headset; refinement and bug fixing ongoing.**
 
+New since the headset pass (tested on the rig, headset check pending): the Real-Time Countdown bar.
+
 Stock QuestZDoom 17.3 has no world clock that a mod can slow. This mod builds one in ZScript. Every monster,
 missile, gib and sound near you is time-dilated, not frozen. Each one still moves every frame, just by less,
 so slow motion stays smooth in a headset instead of stuttering. Your head and hands always run in real time.

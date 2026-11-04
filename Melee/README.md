@@ -5,6 +5,8 @@ shove, and a headlock that holds a monster still while you work on it.
 
 Status: 0.99 — played and confirmed working in the headset; refinement and bug fixing ongoing.
 
+New since the headset pass (tested on the rig, headset check pending): the hands measured against the frame your headset drew, so walking and strafing never swing a punch, a shove or a guard.
+
 Part of the Radiant Silvergun Quest series for stock QuestZDoom 17.3. ZScript only, no engine changes. It needs no
 other mod and works on plain Doom 2.
 

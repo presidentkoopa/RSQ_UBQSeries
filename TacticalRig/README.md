@@ -4,6 +4,8 @@ Your guns live on your body: reach for your hip, chest or shoulder, grip, and th
 
 Status: 0.99 — played and confirmed working in the headset; refinement and bug fixing ongoing.
 
+New since the headset pass (tested on the rig, headset check pending): the whip and flare holsters, the ammo pouch, the items always shown on the body and in the mirror, the torso following room turns.
+
 Part of the Radiant Silvergun Quest series for stock QuestZDoom 17.3. ZScript only, no engine changes. Built on
 Ermac's idea, his Virtual Tactical Vest for Doom VR, with new code that reads your real controller poses.
 

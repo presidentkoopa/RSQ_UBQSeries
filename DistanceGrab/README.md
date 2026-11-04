@@ -4,6 +4,8 @@ Turn your palm out at anything across the room, flick your wrist, and it flies i
 
 **Status: 0.99 — played and confirmed working in the headset; refinement and bug fixing ongoing.**
 
+New since the headset pass (tested on the rig, headset check pending): Kill Rewards bits are never grabbed; the throw measured against the frame your headset drew, so walking and stairs are no throw.
+
 Gravity-glove grabbing for Doom in VR, built on stock QuestZDoom 17.3 in ZScript alone. No buttons in the
 gesture: your palm is the trigger. Pull ammo, health, keys and guns to you, catch them out of the air, carry a
 barrel in one hand, throw it at an imp and watch it go off. Lift doors by hand. Everything has weight: a keycard

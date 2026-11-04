@@ -4,6 +4,8 @@ A buzzsaw shield for your off hand: block with it, bash with it, rev it into a g
 
 Status: 0.99 — played and confirmed working in the headset; refinement and bug fixing ongoing.
 
+New since the headset pass (tested on the rig, headset check pending): the hand measured against the frame your headset drew, so walking never swings the shield or saw; Shield on the Rig (the stowed shield drawn on RSQ Tactical Rig).
+
 RSQ is a series of VR mods for stock QuestZDoom 17.3, built in ZScript alone with no engine changes. ShieldSaw is a full
 physical shield: the plate that blocks is measured off the same mesh you see in your hand, every throw is launched from
 your real arm speed, and the disc flies a path, ricochets and comes home on its own.

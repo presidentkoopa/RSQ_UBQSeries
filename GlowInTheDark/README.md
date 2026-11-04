@@ -5,6 +5,8 @@ and nukage breathing in their own light, and the doors, switches and keys you ne
 
 Status: 0.99 — played and confirmed working in the headset; refinement and bug fixing ongoing.
 
+New since the headset pass (tested on the rig, headset check pending): the whole rewrite: everything on this page.
+
 Part of the Radiant Silvergun Quest series for stock QuestZDoom 17.3. ZScript only, no engine changes. It is the
 owner's Glow In The Dark 1.1 (2021), rebuilt from scratch in ZScript and taken as far as the stock engine goes.
 

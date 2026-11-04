@@ -4,6 +4,8 @@ A weapon ring that hangs in the air in front of you. Point at a gun with either 
 
 **Status: 0.99 — played and confirmed working in the headset; refinement and bug fixing ongoing.**
 
+New since the headset pass (tested on the rig, headset check pending): the fist, lightsaber and whip card icons; the fist always on the ring.
+
 Part of the Radiant Silvergun Quest series for stock QuestZDoom 17.3. This is presidentkoopa's weapon wheel from his
 own engine, rebuilt in ZScript alone so it runs on the stock engine. No engine changes.
 

@@ -5,6 +5,8 @@ and throw it with your own arm.
 
 Status: 0.99 — played and confirmed working in the headset; refinement and bug fixing ongoing.
 
+New since the headset pass (tested on the rig, headset check pending): shooting thrown grenades and the Shot Grenade Reach slider, the teeth pin pull measured from your real eyes, grenade types without Gun Bonsai.
+
 Part of the Radiant Silvergun Quest series for stock QuestZDoom 17.3. ZScript only, no engine changes. On plain Doom 2
 it adds its own grenade. With Brutal Doom 22 VR Reloaded loaded it stands down completely and BD22 VR's own grenade
 takes over.

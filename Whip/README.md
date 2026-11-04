@@ -5,6 +5,8 @@ pulls them to you, and catches a beam so you can swing across the room.
 
 Status: 0.99 — played and confirmed working in the headset; refinement and bug fixing ongoing.
 
+New since the headset pass (tested on the rig, headset check pending): Hand on the Handle, the coiled whip in RSQ Tactical Rig's whip holster, Whip Swing Reach up to 60 m.
+
 Part of the Radiant Silvergun Quest series for stock QuestZDoom 17.3. ZScript only, no engine changes.
 
 ## Standout feature: a whip that is actually a whip

@@ -17,7 +17,7 @@ pack_list() {   # <folder> <pk3 name> <model dir>
 	cd "$HUB/$1"
 	rm -f "$OUT/$2"
 	F=""
-	for f in zscript.txt MAPINFO.txt CVARINFO.txt TRNSLATE.txt KEYCONF.txt MENUDEF.txt MODELDEF.txt SNDINFO.txt MASSDEF.txt ANIMDEFS.txt TEXTURES.txt GLDEFS.txt RSQTRFIT.txt RSQTRLAY.txt CREDITS.txt; do
+	for f in zscript.txt MAPINFO.txt CVARINFO.txt TRNSLATE.txt KEYCONF.txt MENUDEF.txt MODELDEF.txt SNDINFO.txt MASSDEF.txt ANIMDEFS.txt TEXTURES.txt GLDEFS.txt RSQTRFIT.txt RSQTRLAY.txt CREDITS.txt README.md; do
 		[ -e "$f" ] && F="$F $f"
 	done
 	for d in zscript graphics sprites sounds "$3"; do
@@ -46,14 +46,14 @@ echo "built pk3/RSQ_Saber.pk3"
 # LaserSight: its explicit include list (its build.sh); tools/ and docs/ stay out.
 cd "$HUB/LaserSight"
 rm -f "$OUT/RSQ_LaserSight.pk3"
-zip -q -r -X "$OUT/RSQ_LaserSight.pk3" zscript.txt MAPINFO.txt CVARINFO.txt KEYCONF.txt MENUDEF.txt MODELDEF.txt CREDITS.txt \
+zip -q -r -X "$OUT/RSQ_LaserSight.pk3" zscript.txt MAPINFO.txt CVARINFO.txt KEYCONF.txt MENUDEF.txt MODELDEF.txt CREDITS.txt README.md \
 	VOXELDEF.txt ANIMDEFS.txt zscript sprites models/rsqls
 echo "built pk3/RSQ_LaserSight.pk3"
 
 # Grapple: its explicit include list (jp_original/ is source material and does not ship).
 cd "$HUB/Grapple"
 rm -f "$OUT/RSQ_Grapple.pk3"
-zip -q -r -X "$OUT/RSQ_Grapple.pk3" zscript.txt MAPINFO.txt CVARINFO.txt KEYCONF.txt MENUDEF.txt SNDINFO.txt CREDITS.txt MODELDEF.txt zscript sprites sounds models
+zip -q -r -X "$OUT/RSQ_Grapple.pk3" zscript.txt MAPINFO.txt CVARINFO.txt KEYCONF.txt MENUDEF.txt SNDINFO.txt CREDITS.txt README.md MODELDEF.txt zscript sprites sounds models
 echo "built pk3/RSQ_Grapple.pk3"
 
 # VisualRewards (was TopHPBars, RSQ_HPBars.pk3, until 2026-11-03): the mod lives in pk3/ (its bar art is generated from
@@ -61,24 +61,25 @@ echo "built pk3/RSQ_Grapple.pk3"
 cd "$HUB/VisualRewards"
 rm -f "$OUT/RSQ_VisualRewards.pk3"
 (cd pk3 && zip -q -r -X "$OUT/RSQ_VisualRewards.pk3" .)
+zip -q -X "$OUT/RSQ_VisualRewards.pk3" README.md
 echo "built pk3/RSQ_VisualRewards.pk3"
 
 # Accessibility: the shared menu and settings.
 cd "$HUB/Accessibility"
 rm -f "$OUT/RSQ_Accessibility.pk3"
-zip -q -r -X "$OUT/RSQ_Accessibility.pk3" zscript.txt CVARINFO.txt MENUDEF.txt KEYCONF.txt MAPINFO.txt GLDEFS.txt CREDITS.txt zscript shaders
+zip -q -r -X "$OUT/RSQ_Accessibility.pk3" zscript.txt CVARINFO.txt MENUDEF.txt KEYCONF.txt MAPINFO.txt GLDEFS.txt CREDITS.txt README.md zscript shaders
 echo "built pk3/RSQ_Accessibility.pk3"
 
 # Score: its explicit include list (its build.sh).
 cd "$HUB/Score"
 rm -f "$OUT/RSQ_Score.pk3"
-zip -q -r -X "$OUT/RSQ_Score.pk3" zscript.txt MAPINFO.txt CVARINFO.txt SNDINFO.txt TEXTCOLO.txt MENUDEF.txt RSSCFON.fon2 RSSCFN2.fon2 CREDITS.md zscript sounds graphics 2>/dev/null
+zip -q -r -X "$OUT/RSQ_Score.pk3" zscript.txt MAPINFO.txt CVARINFO.txt SNDINFO.txt TEXTCOLO.txt MENUDEF.txt RSSCFON.fon2 RSSCFN2.fon2 CREDITS.md README.md zscript sounds graphics 2>/dev/null
 echo "built pk3/RSQ_Score.pk3"
 
 # Miniboss: its explicit include list (original/ is Tartlman's mod, source material only).
 cd "$HUB/Miniboss"
 rm -f "$OUT/RSQ_Miniboss.pk3"
-zip -q -r -X "$OUT/RSQ_Miniboss.pk3" zscript.txt MAPINFO.txt CVARINFO.txt MENUDEF.txt CREDITS.txt zscript
+zip -q -r -X "$OUT/RSQ_Miniboss.pk3" zscript.txt MAPINFO.txt CVARINFO.txt MENUDEF.txt CREDITS.txt README.md zscript
 echo "built pk3/RSQ_Miniboss.pk3"
 
 # Whip: a simulated bullwhip; its explicit include list (tools/ stays out).
@@ -117,6 +118,22 @@ cd "$HUB/Melee"
 rm -f "$OUT/RSQ_Melee.pk3"
 zip -q -r -X "$OUT/RSQ_Melee.pk3" zscript.txt MAPINFO.txt CVARINFO.txt MENUDEF.txt MODELDEF.txt SNDINFO.txt LANGUAGE.txt CREDITS.txt README.md zscript models sounds sprites credits
 echo "built pk3/RSQ_Melee.pk3"
+
+# GlowInTheDark: the owner's Glow In The Dark 1.1 rebuilt in ZScript; original/, docs/ and tools/ stay out.
+cd "$HUB/GlowInTheDark"
+rm -f "$OUT/RSQ_GlowInTheDark.pk3"
+zip -q -r -X "$OUT/RSQ_GlowInTheDark.pk3" zscript.txt MAPINFO.txt CVARINFO.txt MENUDEF.txt GLDEFS.txt CREDITS.txt README.md zscript
+echo "built pk3/RSQ_GlowInTheDark.pk3"
+
+# FlashFlare (RSQ FnF): the road flare and the flashlight; docs/ and tools/ stay out.
+cd "$HUB/FlashFlare"
+rm -f "$OUT/RSQ_FnF.pk3"
+F=""
+for f in zscript.txt MAPINFO.txt CVARINFO.txt MENUDEF.txt MODELDEF.txt SNDINFO.txt CREDITS.txt README.md VOXELDEF.txt MODELDEF.torch zscript models sprites graphics voxels sounds; do
+	[ -e "$f" ] && F="$F $f"
+done
+zip -q -r -X "$OUT/RSQ_FnF.pk3" $F
+echo "built pk3/RSQ_FnF.pk3"
 
 # RSQ_GunBonsaiVR (the Gun Bonsai Offhand VR patch): everything but the build script, notes, tools and git files (its build.ps1).
 # Needs Gun Bonsai 0.10.6 (ToxicFrog, not included) loaded just before it.

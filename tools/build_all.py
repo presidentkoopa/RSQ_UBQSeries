@@ -19,23 +19,23 @@ PACK_LIST_FILES = ['zscript.txt', 'MAPINFO.txt', 'CVARINFO.txt', 'TRNSLATE.txt',
 # folder -> (pk3 name, mode, spec)
 #   'list': the named files and folders (missing ones skipped)
 #   'all' : everything in the folder except the exclude patterns
-#   'sub' : everything inside a subfolder
+#   'sub' : everything inside a subfolder; spec (subfolder, [files from the mod folder's root, e.g. README.md])
 MODS = {
-    'DistanceGrab': ('RSQ_DistanceGrab.pk3', 'list', PACK_LIST_FILES + ['zscript', 'graphics', 'sprites', 'sounds', 'models/rsqdg']),
+    'DistanceGrab': ('RSQ_DistanceGrab.pk3', 'list', PACK_LIST_FILES + ['README.md', 'zscript', 'graphics', 'sprites', 'sounds', 'models/rsqdg']),
     'TacticalRig':  ('RSQ_TacticalRig.pk3', 'list', PACK_LIST_FILES + ['README.md', 'zscript', 'graphics', 'sprites', 'sounds', 'models/rsqtr']),
-    'SlowMo':       ('RSQ_SlowMo.pk3', 'list', PACK_LIST_FILES + ['zscript', 'graphics', 'sprites', 'sounds', 'models/rsqsm']),
+    'SlowMo':       ('RSQ_SlowMo.pk3', 'list', PACK_LIST_FILES + ['README.md', 'zscript', 'graphics', 'sprites', 'sounds', 'models/rsqsm']),
     'ShieldSaw':    ('RSQ_ShieldSaw.pk3', 'all', ['docs/*', 'tools/*', '*.sh', '.gitignore', 'HANDOFF.md']),
     'QuestSaber':   ('RSQ_Saber.pk3', 'all', ['docs/*', '.gitignore']),
     'LaserSight':   ('RSQ_LaserSight.pk3', 'list', ['zscript.txt', 'MAPINFO.txt', 'CVARINFO.txt', 'KEYCONF.txt', 'MENUDEF.txt',
-                     'MODELDEF.txt', 'CREDITS.txt', 'VOXELDEF.txt', 'ANIMDEFS.txt', 'zscript', 'sprites', 'models/rsqls']),
+                     'MODELDEF.txt', 'CREDITS.txt', 'README.md', 'VOXELDEF.txt', 'ANIMDEFS.txt', 'zscript', 'sprites', 'models/rsqls']),
     'Grapple':      ('RSQ_Grapple.pk3', 'list', ['zscript.txt', 'MAPINFO.txt', 'CVARINFO.txt', 'KEYCONF.txt', 'MENUDEF.txt',
-                     'SNDINFO.txt', 'CREDITS.txt', 'MODELDEF.txt', 'zscript', 'sprites', 'sounds', 'models']),
-    'VisualRewards': ('RSQ_VisualRewards.pk3', 'sub', 'pk3'),   # HP bars + damage numbers + Kill Rewards (was TopHPBars / RSQ_HPBars.pk3)
+                     'SNDINFO.txt', 'CREDITS.txt', 'README.md', 'MODELDEF.txt', 'zscript', 'sprites', 'sounds', 'models']),
+    'VisualRewards': ('RSQ_VisualRewards.pk3', 'sub', ('pk3', ['README.md'])),   # HP bars + damage numbers + Kill Rewards (was TopHPBars / RSQ_HPBars.pk3)
     'Accessibility': ('RSQ_Accessibility.pk3', 'list', ['zscript.txt', 'CVARINFO.txt', 'MENUDEF.txt', 'KEYCONF.txt',
-                     'MAPINFO.txt', 'GLDEFS.txt', 'CREDITS.txt', 'zscript', 'shaders']),
+                     'MAPINFO.txt', 'GLDEFS.txt', 'CREDITS.txt', 'README.md', 'zscript', 'shaders']),
     'Score':        ('RSQ_Score.pk3', 'list', ['zscript.txt', 'MAPINFO.txt', 'CVARINFO.txt', 'SNDINFO.txt', 'TEXTCOLO.txt',
-                     'MENUDEF.txt', 'RSSCFON.fon2', 'RSSCFN2.fon2', 'CREDITS.md', 'zscript', 'sounds', 'graphics']),
-    'Miniboss':     ('RSQ_Miniboss.pk3', 'list', ['zscript.txt', 'MAPINFO.txt', 'CVARINFO.txt', 'MENUDEF.txt', 'CREDITS.txt', 'zscript']),
+                     'MENUDEF.txt', 'RSSCFON.fon2', 'RSSCFN2.fon2', 'CREDITS.md', 'README.md', 'zscript', 'sounds', 'graphics']),
+    'Miniboss':     ('RSQ_Miniboss.pk3', 'list', ['zscript.txt', 'MAPINFO.txt', 'CVARINFO.txt', 'MENUDEF.txt', 'CREDITS.txt', 'README.md', 'zscript']),
     'Whip':         ('RSQ_Whip.pk3', 'list', ['zscript.txt', 'MAPINFO.txt', 'CVARINFO.txt', 'KEYCONF.txt', 'MENUDEF.txt',
                      'SNDINFO.txt', 'MODELDEF.txt', 'CREDITS.txt', 'README.md', 'zscript', 'sounds', 'models', 'sprites']),
     'Wheel':        ('RSQ_Wheel.pk3', 'list', ['zscript.txt', 'MAPINFO.txt', 'CVARINFO.txt', 'KEYCONF', 'MENUDEF.txt',
@@ -85,7 +85,9 @@ def build(folder):
     elif mode == 'all':
         entries = [(f, r) for f, r in walk(src) if not excluded(r, spec)]
     else:
-        entries = list(walk(os.path.join(src, spec)))
+        sub, extra = spec if isinstance(spec, tuple) else (spec, [])
+        entries = list(walk(os.path.join(src, sub)))
+        entries += [(os.path.join(src, f), f) for f in extra if os.path.isfile(os.path.join(src, f))]
     entries.sort(key=lambda e: e[1])
     if os.path.exists(out):
         os.remove(out)

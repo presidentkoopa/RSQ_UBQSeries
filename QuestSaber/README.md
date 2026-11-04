@@ -5,6 +5,8 @@ to each enemy you marked and comes home, with the Force in your other hand.
 
 Status: 0.99 — played and confirmed working in the headset; refinement and bug fixing ongoing.
 
+New since the headset pass (tested on the rig, headset check pending): Hand on the Hilt; the blade and the Force hand measured against the frame your headset drew, so walking and strafing never swing them.
+
 Part of the Radiant Silvergun Quest series for stock QuestZDoom 17.3. ZScript only, no engine changes. It works on
 plain Doom, and replaces the sabers of Wardust's Lightsaber and Xim's Star Wars Doom when loaded after them.
 

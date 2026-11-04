@@ -4,6 +4,8 @@ The series' body reader: it watches both controllers and tells the other RSQ mod
 
 **Status: 0.99 — played and confirmed working in the headset; refinement and bug fixing ongoing.**
 
+New since the headset pass (tested on the rig, headset check pending): the punch and shove reader measured against the frame your headset drew, so walking and strafing are no gesture.
+
 QuestZDoom 17.3 gives a mod two hand positions and their angles, once a frame, and nothing else. No hand
 velocity, no finger tracking, no gesture system. RSQ Gestures builds all of that in ZScript: it keeps a quarter
 second of movement for each hand, measures everything in metres from your own eyes, and turns it into named

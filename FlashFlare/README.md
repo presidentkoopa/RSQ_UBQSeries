@@ -5,6 +5,8 @@ clipped to your chest with a beam you can see in the air.
 
 Status: 0.99 — played and confirmed working in the headset; refinement and bug fixing ongoing.
 
+New since the headset pass (tested on the rig, headset check pending): the flashlight, the RSQ Tactical Rig flare holster, the voxel flare box.
+
 Part of the Radiant Silvergun Quest series for stock QuestZDoom 17.3. ZScript only, no engine changes.
 
 **Dynamic lights must be on** in the engine's video settings. The flare's and the flashlight's light are real dynamic
