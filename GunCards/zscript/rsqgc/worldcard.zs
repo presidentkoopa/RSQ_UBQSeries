@@ -6,6 +6,8 @@
 //   small card  over the wrist, on the firing line: the magazine big, the reserve small
 //   full card   on the knuckles-up watch check: beside the wrist, the name, MAGAZINE / RESERVE, Gun Bonsai level,
 //               XP and upgrades, in the gun's colour
+//   status card the same check with an EMPTY hand (GC5): health big, armour small, the map's keys (held ones in
+//               their colour, missing ones grey), other keys, grenades (FillStatus; owner 2026-11-04)
 
 class RSQGC_WorldCard play
 {
@@ -13,6 +15,7 @@ class RSQGC_WorldCard play
 	int hand;
 	bool full;
 	bool live;          // its quads exist
+	bool status;        // showing the status card (FillStatus), not a gun's
 	int plate, title, big, small;
 	int row[ROWS];
 	string sig;
@@ -24,6 +27,7 @@ class RSQGC_WorldCard play
 		Hide();
 		full = isFull;
 		live = true;
+		status = false;
 		plate = RSQGC_BB.Add(at, 4, 3, RSQGC_BB.BB_PANEL, 0x808080);
 		title = RSQGC_BB.Add(at, 4, 0.6, RSQGC_BB.BB_TEXT, 0xF0F0F0);
 		big = RSQGC_BB.Add(at, 2, 1.2, RSQGC_BB.BB_DIGITS, 0xFFFFFF);
@@ -90,6 +94,48 @@ class RSQGC_WorldCard play
 		rowsUsed = txt.Size();
 	}
 	int rowsUsed;
+
+	// GC5, the status card (what side.zs BuildStatus draws with the hand): HEALTH big (red at 25 or less), ARMOUR
+	// small in blue; one row per key kind this map has, a held key in its colour and a missing one grey; other keys
+	// as KEYS +N; grenades. Only when it changed.
+	void FillStatus(PlayerPawn pmo, int panelCol, RSQGC_GunCard gc)
+	{
+		string s = "status" .. gc.StatusSig(pmo);
+		if (s == sig) return;
+		sig = s;
+		int hp = max(pmo.Health, 0), ar = RSQGC_GunCard.ArmorOf(pmo);
+		RSQGC_BB.Update(plate, 0, panelCol);
+		RSQGC_BB.SetText(title, "HEALTH        ARMOUR");
+		RSQGC_BB.Update(title, 0, 0xF0F0F0);
+		RSQGC_BB.Update(big, clamp(hp, 0, 999), hp <= 25 ? 0xFF5A46 : 0xFFFFFF);
+		RSQGC_BB.Update(small, clamp(ar, 0, 999), 0x6EA0FF);
+		RSQGC_BB.SetAlpha(small, 1.0);
+		Array<string> txt; Array<int> col;
+		bool cards, skulls;
+		[cards, skulls] = gc.MapKeys(pmo);
+		if (!RSQGC_GunCard.ci("rsqgc_keys", 1)) { cards = false; skulls = false; }
+		int mask, others;
+		[mask, others] = RSQGC_GunCard.HeldKeys(pmo);
+		static const string KNAME[] = { "RED", "YELLOW", "BLUE" };
+		static const int KCOL[] = { 0xFF4040, 0xFFE040, 0x4080FF };
+		for (int t = 0; t < 6; t++)
+		{
+			if (t < 3 ? !cards : !skulls) continue;
+			bool held = (mask & (1 << t)) != 0;
+			txt.Push(KNAME[t % 3] .. (t < 3 ? " KEYCARD" : " SKULL") .. (held ? "" : "  -"));
+			col.Push(held ? KCOL[t % 3] : 0x707070);
+		}
+		if (others > 0) { txt.Push(String.Format("KEYS +%d", others)); col.Push(0xC8C8C8); }
+		int gren = RSQGC_GunCard.Grenades(pmo);
+		if (gren >= 0) { txt.Push(String.Format("GRENADES %d", gren)); col.Push(gren > 0 ? 0xFFB428 : 0x707070); }
+		while (txt.Size() > ROWS) { txt.Pop(); col.Pop(); }
+		for (int i = 0; i < ROWS; i++)
+		{
+			RSQGC_BB.SetText(row[i], i < txt.Size() ? txt[i] : "");
+			if (i < txt.Size()) RSQGC_BB.Update(row[i], 0, col[i]);
+		}
+		rowsUsed = txt.Size();
+	}
 
 	// Placed every tic at the hand, facing the eye. sc: rsqgc_world_scale. up / side: the placement sliders (cm).
 	void Place(PlayerPawn pmo, double sc, double up, double side, double alpha, double inCm = 0)

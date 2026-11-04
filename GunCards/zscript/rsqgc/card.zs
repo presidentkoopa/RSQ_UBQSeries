@@ -731,10 +731,10 @@ class RSQGC_GunCard : EventHandler
 		{
 			bool checking = watchOn && Watching(pmo, hand);
 			watching[hand] = always || checking;
-			// GC5: checking your watch with an EMPTY hand shows health, armour and keys (the status card). On the
-			// hand only (not Draw in the World); the off hand needs its own weapon slot filled to own the layers
-			// (Brutal Doom VR's off-hand fist, RSQ_Hands, is that).
-			status[hand] = checking && EmptyHand(p, hand) && (hand == 0 || p.OffhandWeapon) && !ci("rsqgc_world", 0);
+			// GC5: checking your watch with an EMPTY hand shows health, armour and keys (the status card). Drawn with
+			// the hand, the off hand needs its own weapon slot filled to own the layers (Brutal Doom VR's off-hand
+			// fist, RSQ_Hands, is that); Draw in the World (owner 2026-11-04: "must also show") needs no layers.
+			status[hand] = checking && EmptyHand(p, hand) && (hand == 0 || p.OffhandWeapon || ci("rsqgc_world", 0));
 		}
 		bool show[2];
 		Weapon gun[2], other[2];
@@ -770,6 +770,16 @@ class RSQGC_GunCard : EventHandler
 			bool stat = status[hand] || (!show[hand] && mWasStatus[hand]);
 			Weapon w = gun[hand];
 			Actor owner = hand == 1 ? Actor(p.OffhandWeapon) : Actor(item);
+			if (stat && mShow[hand] > 0 && ci("rsqgc_world", 0))
+			{
+				// GC5 in the world: the status card on the back of the wrist, where the watch card goes
+				ClearHand(p, hand); Side(hand).Remove(p); SideOf(hand, 1).Remove(p);
+				let wc = World(hand);
+				if (!wc.Shown() || !wc.full || !wc.status) { wc.Show(pmo.pos, true); wc.status = true; }
+				wc.FillStatus(pmo, 0x8A8A8A, self);
+				wc.Place(pmo, cv("rsqgc_world_scale", 1.4), WatchNudge(true), WatchNudge(false), mShow[hand] * cv("rsqgc_alpha", 0.85), 0);
+				continue;
+			}
 			if (stat && mShow[hand] > 0 && owner && !ci("rsqgc_world", 0))
 			{
 				// GC5: the status card, flat on the wrist like the watch card
@@ -784,7 +794,7 @@ class RSQGC_GunCard : EventHandler
 				ClearHand(p, hand); Side(hand).Remove(p); SideOf(hand, 1).Remove(p);
 				let wc = World(hand);
 				bool wantFull = full;
-				if (!wc.Shown() || wc.full != wantFull) wc.Show(pmo.pos, wantFull);
+				if (!wc.Shown() || wc.full != wantFull || wc.status) wc.Show(pmo.pos, wantFull);
 				wc.Fill(pmo, w, CardColour(p, w), self);
 				wc.Place(pmo, cv("rsqgc_world_scale", 1.4), wantFull ? WatchNudge(true) : Nudge(true), wantFull ? WatchNudge(false) : Nudge(false), mShow[hand] * cv("rsqgc_alpha", 0.85), wantFull ? 0 : cv("rsqgc_in", 0));
 				continue;

@@ -11,8 +11,8 @@ are made from the same art.
 THE TEXT (2026-11-03, the owner's "our font"): JFO, the JDUI font by Zedas, in the edit "JDUI Brutal Doom
 Ultimate Edition" by Blackmore1014 (ModDB: https://www.moddb.com/addons/jdui-brutal-doom-ultimate-edition).
 tools/card_art/jfo/ holds the glyphs used, copied unchanged from JFO.pk3 (Hires/SmallFont/stcfnNNN.png and
-Hires/BigFont/fontbNNN.png); the tools turn them into voxels. NO REUSE LICENCE IS STATED for JFO / JDUI:
-permission should be asked of Zedas and Blackmore1014 before any public release.
+Hires/BigFont/fontbNNN.png); the tools turn them into voxels. JFO ships with credit to Zedas and Blackmore1014, by the owner's
+decision (2026-11-04).
 
 THE KEY ICONS on the watch card: BD22_VoxelPack's own key voxels seen from the front (tools/card_art/keys/vp_*.png,
 from Voxels/Keys/RKEYA / YKEYA / BKEYA.kvx, keycards by Ghostpilot, and RSKUA / YSKUA / BSKUA.kvx, skull keys by

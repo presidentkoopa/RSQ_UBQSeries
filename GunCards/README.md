@@ -73,7 +73,7 @@ There are no buttons. The cards answer to where your hands are.
 | Show the card by looking (Show Cards: When You Look at the Gun) | Bring the gun within 0.7 m of your eyes, within 30 degrees of where you look | Both numbers are sliders. |
 | Show the card on reload (Show Cards: On Reload) | Hold that hand's reload, or the shared reload | Stays 35 tics after you let go. |
 | Check your watch | Forearm across your chest, wrist 15 to 50 cm from your eyes and within 35 degrees of your view, hand pointing across your body, back of the wrist turned at least 45 degrees toward your face | With RSQ Gestures loaded, its inspect pose is used instead. |
-| Status card | Check your watch with an empty hand or fists | Drawn on the hand only, not with Draw in the World. |
+| Status card | Check your watch with an empty hand or fists | With Draw in the World on, it is built in the world on the back of the wrist (keys as words, not icons). |
 | Hide the small card when aiming (Hide at Your Eye) | Raise the gun within 0.30 m of your eye, pointing where you look | Off by default. |
 
 Left-handed play is handled: the cards follow QuestZDoom's handedness setting and the mirrored left hand, and the R
@@ -154,8 +154,7 @@ Runs on its own with any weapon mod.
   design is his. The cards drawn in the world are made from the same art.
 - The text font is JFO, the JDUI font by Zedas, in the edit "JDUI Brutal Doom Ultimate Edition" by Blackmore1014
   (https://www.moddb.com/addons/jdui-brutal-doom-ultimate-edition). The glyphs are copied unchanged and turned into
-  voxels. No reuse licence is stated for JFO / JDUI: permission should be asked of Zedas and Blackmore1014 before any
-  public release.
+  voxels. It ships with credit to Zedas and Blackmore1014 (owner's decision).
 - Key icons: BD22_VoxelPack's key voxels seen from the front (keycards by Ghostpilot, skull keys by Voxelbro, per the
   voxel pack's credits) when the voxel pack is loaded; otherwise Freedoom's status-bar keys (freedoom2.wad, BSD
   licence).
