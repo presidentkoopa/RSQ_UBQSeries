@@ -35,6 +35,8 @@ The built pk3s live in `pk3/` and are committed. GitHub: https://github.com/pres
   is not working. Say what you could not test.
 - **Look at it before claiming anything visual.**
 - **No hands drawn on props and no hand fitting** (saber, whip, cigarette, lighter: hands were removed on his order).
+  **Changed 2026-11-03 19:25 (owner):** the saber and the whip now draw BD22 VR's FBX hand in its magazine hold round
+  the hilt / handle ("Hand on the Hilt" / "Hand on the Handle", on; FlashFlare does the flashlight). Cigarette and lighter unchanged.
   Brutal Doom owns the hand poses.
 - **No procedural / synthesized sounds.** Stock Doom or Brutal Doom sounds only.
 - **Never modify other people's mods**: ToxicFrog's Gun Bonsai (our addon is `GunBonsaiOffhandVR/` only), Lewisk3's
