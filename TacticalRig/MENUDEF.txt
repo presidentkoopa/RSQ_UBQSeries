@@ -25,13 +25,6 @@ AddOptionMenu "RSQ_RSOptions"
 }
 // ----------------------------------------------------------------------------------------------------
 
-OptionValue "RSQTR_Pairs"
-{
-	0, "Never"
-	1, "If Holstered as a Pair"
-	2, "Always"
-}
-
 OptionValue "RSQTR_MirrorView"
 {
 	0, "Front"
@@ -184,7 +177,7 @@ OptionMenu "RSQTR_Debug"
 	TextField "Main Grip Keys", "rsqtr_keys_main"
 	TextField "Off Grip Keys", "rsqtr_keys_off"
 	StaticText " "
-	SafeCommand "Reset All", "resetcvar rsqtr_grenades rsqtr_nade_show rsqtr_throw rsqtr_throw_use rsqtr_throw_speed rsqtr_throw_hurt rsqtr_throw_damage rsqtr_key_doors rsqtr_ammo_count rsqtr_keyring rsqtr_r3_f rsqtr_r3_l rsqtr_r3_u rsqtr_r3_rad rsqtr_quickswap rsqtr_keep rsqtr_ammo_light rsqtr_autoholster rsqtr_on rsqtr_grip rsqtr_use rsqtr_keys_main rsqtr_keys_off rsqtr_markers rsqtr_icons rsqtr_pairs rsqtr_icon_scale rsqtr_icon_m rsqtr_icon_back_m rsqtr_icon_flip rsqtr_icon_turn rsqtr_haptics rsqtr_messages rsqtr_reach rsqtr_yield_shield rsqtr_saber_hip rsqtr_eye_m rsqtr_seated rsqtr_edit rsqtr_mirror rsqtr_mirror_view rsqtr_mirror_m rsqtr_dwell rsqtr_body_turn rsqtr_body_secs rsqtr_body_down rsqtr_neck rsqtr_body_hands rsqtr_body_catch rsqtr_body_room rsqtr_recenter_hands rsqtr_vest rsqtr_vest_style rsqtr_vest_u rsqtr_vest_f rsqtr_vest_size rsqtr_vest_low rsqtr_vest_fade rsqtr_helmet rsqtr_helmet_u rsqtr_empty rsqtr_cig rsqtr_cig_smoke rsqtr_cig_secs rsqtr_cig_slowmo rsqtr_cig_depth rsqtr_cig_count rsqtr_cig_refill rsqtr_cig_mouth rsqtr_cig_mouth_f rsqtr_cig_mouth_d rsqtr_r0_f rsqtr_r0_l rsqtr_r0_u rsqtr_r0_rad rsqtr_r1_f rsqtr_r1_l rsqtr_r1_u rsqtr_r1_rad rsqtr_r4_f rsqtr_r4_l rsqtr_r4_u rsqtr_r4_rad rsqtr_r5_f rsqtr_r5_l rsqtr_r5_u rsqtr_r5_rad rsqtr_r6_f rsqtr_r6_l rsqtr_r6_u rsqtr_r6_rad rsqtr_r7_f rsqtr_r7_l rsqtr_r7_u rsqtr_r7_rad rsqtr_r8_f rsqtr_r8_l rsqtr_r8_u rsqtr_r8_rad rsqtr_watch_move rsqtr_r9_f rsqtr_r9_l rsqtr_r9_u rsqtr_r9_rad rsqtr_r10_f rsqtr_r10_l rsqtr_r10_u rsqtr_r10_rad rsqtr_r11_f rsqtr_r11_l rsqtr_r11_u rsqtr_r11_rad rsqtr_r12_f rsqtr_r12_l rsqtr_r12_u rsqtr_r12_rad rsqtr_whip_holster rsqtr_flare_holster rsqtr_whip_show rsqtr_flare_show rsqtr_cig_show rsqtr_r13_f rsqtr_r13_l rsqtr_r13_u rsqtr_r13_rad rsqtr_pouch rsqtr_pouch_show", "Reset all RSQ Tactical Rig settings?"
+	SafeCommand "Reset All", "resetcvar rsqtr_grenades rsqtr_nade_show rsqtr_throw rsqtr_throw_use rsqtr_throw_speed rsqtr_throw_hurt rsqtr_throw_damage rsqtr_key_doors rsqtr_ammo_count rsqtr_keyring rsqtr_r3_f rsqtr_r3_l rsqtr_r3_u rsqtr_r3_rad rsqtr_quickswap rsqtr_keep rsqtr_ammo_light rsqtr_autoholster rsqtr_on rsqtr_grip rsqtr_use rsqtr_keys_main rsqtr_keys_off rsqtr_markers rsqtr_icons rsqtr_pairs rsqtr_icon_scale rsqtr_icon_m rsqtr_icon_back_m rsqtr_icon_flip rsqtr_icon_turn rsqtr_haptics rsqtr_messages rsqtr_reach rsqtr_yield_shield rsqtr_saber_hip rsqtr_eye_m rsqtr_seated rsqtr_edit rsqtr_mirror rsqtr_mirror_view rsqtr_mirror_m rsqtr_dwell rsqtr_body_turn rsqtr_body_secs rsqtr_body_down rsqtr_neck rsqtr_body_hands rsqtr_body_catch rsqtr_body_room rsqtr_recenter_hands rsqtr_vest rsqtr_vest_style rsqtr_vest_u rsqtr_vest_f rsqtr_vest_size rsqtr_vest_low rsqtr_vest_fade rsqtr_helmet rsqtr_helmet_u rsqtr_empty rsqtr_cig rsqtr_cig_smoke rsqtr_cig_secs rsqtr_cig_slowmo rsqtr_cig_depth rsqtr_cig_count rsqtr_cig_refill rsqtr_cig_mouth rsqtr_cig_mouth_f rsqtr_cig_mouth_d rsqtr_r0_f rsqtr_r0_l rsqtr_r0_u rsqtr_r0_rad rsqtr_r1_f rsqtr_r1_l rsqtr_r1_u rsqtr_r1_rad rsqtr_r4_f rsqtr_r4_l rsqtr_r4_u rsqtr_r4_rad rsqtr_r5_f rsqtr_r5_l rsqtr_r5_u rsqtr_r5_rad rsqtr_r6_f rsqtr_r6_l rsqtr_r6_u rsqtr_r6_rad rsqtr_r7_f rsqtr_r7_l rsqtr_r7_u rsqtr_r7_rad rsqtr_r8_f rsqtr_r8_l rsqtr_r8_u rsqtr_r8_rad rsqtr_watch_move rsqtr_r9_f rsqtr_r9_l rsqtr_r9_u rsqtr_r9_rad rsqtr_r10_f rsqtr_r10_l rsqtr_r10_u rsqtr_r10_rad rsqtr_r11_f rsqtr_r11_l rsqtr_r11_u rsqtr_r11_rad rsqtr_r12_f rsqtr_r12_l rsqtr_r12_u rsqtr_r12_rad rsqtr_whip_holster rsqtr_flare_holster rsqtr_whip_show rsqtr_flare_show rsqtr_cig_show rsqtr_r13_f rsqtr_r13_l rsqtr_r13_u rsqtr_r13_rad rsqtr_pouch rsqtr_pouch_show rsqtr_debug_throw", "Reset all RSQ Tactical Rig settings?"
 }
 
 OptionMenu "RSQTR_Regions"

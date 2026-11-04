@@ -74,4 +74,4 @@ server float  rsqwp_slide_speed   = 10;     // a leashed monster slides to you t
 server float  rsqwp_slide_gap     = 16;     // and stops this far from you
 server float  rsqwp_retract_speed = 64;     // a let-go line coming back to the hand
 
-server int    rsqwp_debug         = 0;      // 1: log events (T_WP lines), 2: every tic, 3: cost (T_WPWMS), 5: the aimed swing's ray every tic (T_WPW RAY)
+server int    rsqwp_debug         = 0;      // 1: log events (T_WP lines), 2: every tic, 3: cost (T_WPWMS), 4: snags and grip keys (T_WPWK); 5 (rig tests only, not in the menu's Debug Log): the aimed swing's ray every tic (T_WPW RAY)

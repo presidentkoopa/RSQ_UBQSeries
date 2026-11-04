@@ -181,7 +181,7 @@ class RSQFF_HeldLight : RSQFF_Burner
 
 // THROWN, DROPPED, LYING. The flight is RSQ Grenade's (the owner's RS_Grenade numbers, a little lighter: a flare is no
 // grenade): a projectile that bounces off floors, walls and monsters, tumbles end over end, then lies down and slides to a
-// stop, still burning. It hurts nothing. Burnt out, it lies dark for rsqff_husk seconds and goes.
+// stop, still burning. It hurts nothing. Burnt out, it lies dark for HUSK seconds (10, fixed) and goes.
 class RSQFF_Flare : RSQFF_Burner
 {
 	const HALF = 3.9;          // map units from the centre to the burning end (11.5 cm x 0.34; models/rsqff/flare.md3)
