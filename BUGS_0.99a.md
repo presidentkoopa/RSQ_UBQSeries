@@ -139,3 +139,14 @@ Found while rewriting the READMEs from the code (11-03 evening). None fixed yet;
 53. No menu rows: off-hand grip keys, re-hit wait, uppercut rise, reach pad (in Reset All).
 54. Shoot Thrown Grenades: a hitscan is tested against BOTH hands' rays (the shot doesn't say which hand fired), so
     a pointing hand that didn't fire can set a grenade off. Predates 11-03.
+
+## Saber
+55. Lightning Beam row only matters with RSQ Gun Bonsai VR (Force Lightning is a GB node only).
+56. CREDITS.txt: saber models and sounds have unrecorded authors, "slated for replacement" (licence question).
+
+## Glow In The Dark
+57. "The Miniboss's Own" tint colour (default) is half-built: RSQ Miniboss doesn't answer "colour" yet, so it's
+    always red. Add the answer in Miniboss or rename the option.
+58. Level-Up Wave reads RSQ Gun Bonsai VR's service; plain Gun Bonsai without the VR patch gets no wave (row label
+    says "(Gun Bonsai)").
+59. `rsqgd_debug` not in Reset All.
