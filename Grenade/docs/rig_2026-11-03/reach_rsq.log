@@ -1,0 +1,64 @@
+Log started: 2026-11-03 21:04:50
+GTP_R1_REACH_010_NEAR_MISS_015M_SIDE
+RSQGN face t60 hand 0 mouth 0.04 m (reach 0.15) squeeze none held 0/12 ready 1; eyes 0.25 m over viewz, hand 0.12 m under the eyes
+RSQGN face t65 hand 0 mouth 0.04 m (reach 0.15) squeeze trigger held 2/12 ready 1; eyes 0.25 m over viewz, hand 0.12 m under the eyes
+RSQGN face t70 hand 0 mouth 0.04 m (reach 0.15) squeeze trigger held 7/12 ready 1; eyes 0.25 m over viewz, hand 0.12 m under the eyes
+RSQGN teeth t75: hand 0, squeezed by trigger, 0.04 m from the mouth (reach 0.15) for 12 tics
+RSQGN pin out p0 t76 by teeth (hand 0)
+RSQGN release t90: swing 7.22 m/s (throws from 2.50)
+RSQGN thrown p0 t91 hand 0 swing 7.21 m/s, leaves at 7.8 u/tic (8.41 m/s) from (-91 809 98), fuse 350 of 350
+RSQGN flash thrown t91 period 16 left 349 at (-91 815 102)
+GTP t94 hung RSQGN_Thrown at (-96 880 91), 96 ahead
+RSQGN flash thrown t107 period 15 left 333 at (-96 880 91)
+RSQGN flash thrown t122 period 15 left 318 at (-96 880 91)
+RSQGN flash thrown t137 period 14 left 303 at (-96 880 91)
+RSQGN shot missed t141: hand 0, 5.1 units off its centre, reach 3.4
+RSQGN shot t141: nothing set off (1 thrown grenades in the world; one in a hand is never shootable)
+RSQGN flash thrown t151 period 14 left 289 at (-96 880 91)
+GTP_R2_REACH_010_DEAD_ON
+RSQGN flash thrown t165 period 13 left 275 at (-96 880 91)
+RSQGN shot ray t168 (hitscan): hand 0, 86 units out, 0.0 units off its centre (reach 3.4)
+RSQGN shot t169: hitscan by DoomPlayer, in the air (skeet), 78 tics out of the hand, x1.00
+RSQGN boom thrown t169 at (-96 880 91)
+GTP t169 the hung grenade went off
+GTP t169 damaged Zombieman by DoomPlayer via RSQGN_Thrown: 5 (health 15)
+GTP_R3_DEFAULT_035_SHOT_025M_SIDE
+RSQGN face t230 hand 0 mouth 0.04 m (reach 0.15) squeeze none held 0/12 ready 1; eyes 0.25 m over viewz, hand 0.12 m under the eyes
+RSQGN face t235 hand 0 mouth 0.04 m (reach 0.15) squeeze trigger held 4/12 ready 1; eyes 0.25 m over viewz, hand 0.12 m under the eyes
+RSQGN face t240 hand 0 mouth 0.04 m (reach 0.15) squeeze trigger held 9/12 ready 1; eyes 0.25 m over viewz, hand 0.12 m under the eyes
+RSQGN teeth t243: hand 0, squeezed by trigger, 0.04 m from the mouth (reach 0.15) for 12 tics
+RSQGN pin out p0 t244 by teeth (hand 0)
+RSQGN release t258: swing 7.22 m/s (throws from 2.50)
+RSQGN thrown p0 t259 hand 0 swing 7.21 m/s, leaves at 7.8 u/tic (8.41 m/s) from (-91 809 98), fuse 350 of 350
+RSQGN flash thrown t259 period 16 left 349 at (-91 815 102)
+GTP t262 hung RSQGN_Thrown at (-96 880 91), 96 ahead
+RSQGN flash thrown t275 period 15 left 333 at (-96 880 91)
+RSQGN flash thrown t290 period 15 left 318 at (-96 880 91)
+RSQGN flash thrown t305 period 14 left 303 at (-96 880 91)
+RSQGN shot ray t309 (hitscan): hand 0, 86 units out, 8.5 units off its centre (reach 11.9)
+RSQGN shot t310: hitscan by DoomPlayer, in the air (skeet), 51 tics out of the hand, x1.00
+RSQGN boom thrown t310 at (-96 880 91)
+GTP t310 damaged Zombieman by DoomPlayer via RSQGN_Thrown: 27 (health -12)
+GTP t310 the hung grenade went off
+GTP_R4_DEFAULT_035_NEAR_MISS_045M_SIDE
+RSQGN face t370 hand 0 mouth 0.04 m (reach 0.15) squeeze none held 0/12 ready 1; eyes 0.25 m over viewz, hand 0.12 m under the eyes
+RSQGN face t375 hand 0 mouth 0.04 m (reach 0.15) squeeze trigger held 3/12 ready 1; eyes 0.25 m over viewz, hand 0.12 m under the eyes
+RSQGN face t380 hand 0 mouth 0.04 m (reach 0.15) squeeze trigger held 8/12 ready 1; eyes 0.25 m over viewz, hand 0.12 m under the eyes
+RSQGN teeth t384: hand 0, squeezed by trigger, 0.04 m from the mouth (reach 0.15) for 12 tics
+RSQGN pin out p0 t385 by teeth (hand 0)
+RSQGN release t399: swing 7.22 m/s (throws from 2.50)
+RSQGN thrown p0 t400 hand 0 swing 7.21 m/s, leaves at 7.8 u/tic (8.41 m/s) from (-91 809 98), fuse 350 of 350
+RSQGN flash thrown t400 period 16 left 349 at (-91 815 102)
+GTP t403 hung RSQGN_Thrown at (-96 880 91), 96 ahead
+RSQGN flash thrown t416 period 15 left 333 at (-96 880 91)
+RSQGN flash thrown t431 period 15 left 318 at (-96 880 91)
+RSQGN flash thrown t446 period 14 left 303 at (-96 880 91)
+RSQGN shot missed t450: hand 0, 15.3 units off its centre, reach 11.9
+RSQGN shot t450: nothing set off (1 thrown grenades in the world; one in a hand is never shootable)
+RSQGN flash thrown t460 period 14 left 289 at (-96 880 91)
+GTP_R4B_DEAD_ON
+RSQGN flash thrown t474 period 13 left 275 at (-96 880 91)
+RSQGN shot ray t477 (hitscan): hand 0, 86 units out, 0.0 units off its centre (reach 11.9)
+RSQGN shot t478: hitscan by DoomPlayer, in the air (skeet), 78 tics out of the hand, x1.00
+RSQGN boom thrown t478 at (-96 880 91)
+GTP t478 the hung grenade went off

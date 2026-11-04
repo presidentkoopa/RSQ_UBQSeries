@@ -172,16 +172,20 @@ class RSQGN_Handler : EventHandler
 	// SHOOT THROWN GRENADES: the live missiles that are not this mod's own (projectiles are not in the blockmap, so a
 	// grenade cannot find them by area); pruned each tic, kept only while a thrown grenade exists to be shot
 	Array<Actor> missiles;
+	Array<double> missLX, missLY, missLZ;	// ...where each was a tic ago (spawned: where it appeared); MissLast(i)
+	Vector3 MissLast(int i) { return (missLX[i], missLY[i], missLZ[i]); }
+	int nadeSerial;
 	override void WorldThingSpawned(WorldEvent e)
 	{
 		let a = e.Thing;
 		if (!a || !a.bMissile || a is "RSQGN_Thrown" || a is "RSQGN_Bomblet" || !Active()) return;
 		missiles.Push(a);
+		missLX.Push(a.pos.x); missLY.Push(a.pos.y); missLZ.Push(a.pos.z);
 	}
 	void PruneMissiles()
 	{
 		for (int i = missiles.Size() - 1; i >= 0; i--)
-			if (!missiles[i] || missiles[i].bDestroyed || !missiles[i].bMissile) missiles.Delete(i);
+			if (!missiles[i] || missiles[i].bDestroyed || !missiles[i].bMissile) { missiles.Delete(i); missLX.Delete(i); missLY.Delete(i); missLZ.Delete(i); }
 	}
 
 	static RSQGN_Handler Get() { return RSQGN_Handler(EventHandler.Find("RSQGN_Handler")); }
@@ -287,7 +291,21 @@ class RSQGN_Handler : EventHandler
 	override void WorldTick()
 	{
 		if (!Active()) return;
-		PruneMissiles();
+		// SHOOT THROWN GRENADES, projectiles: at the end of the tic every thing has moved, so each grenade's path this tic
+		// (Prev to Pos) is tested against each missile's (RSQGN_Thrown.ShotByMissile, swept)
+		{
+			bool open = missiles.Size() > 0 && RSQGN_Slow.CanShoot();
+			let ti = ThinkerIterator.Create("RSQGN_Thrown");
+			RSQGN_Thrown tg;
+			while (tg = RSQGN_Thrown(ti.Next()))
+			{
+				if (!tg.lastSet) { tg.lastPos = tg.pos; tg.lastSet = true; }
+				if (open && !tg.boomed && tg.age >= RSQGN_Thrown.SHOT_GRACE) tg.ShotByMissile();
+				tg.lastPos = tg.pos;
+			}
+			for (int i = 0; i < missiles.Size(); i++) if (missiles[i]) { missLX[i] = missiles[i].pos.x; missLY[i] = missiles[i].pos.y; missLZ[i] = missiles[i].pos.z; }
+		}
+		PruneMissiles();	// after the test: a missile that burst in this tic's movement still had its path tested
 		for (int n = 0; n < MAXPLAYERS; n++)
 		{
 			if (!playeringame[n]) continue;
@@ -376,19 +394,24 @@ class RSQGN_Handler : EventHandler
 	}
 
 	// SHOOT THROWN GRENADES (owner 11-03 19:43; before it, only the Gun Bonsai VR patch's Skeet node, GBOVR_TREES.md
-	// 4.5 Style): your own shot passing within RSQGN_Thrown.SHOT_R (12 units, 0.35 m) of a thrown grenade, once it is
+	// 4.5 Style): your own shot passing within RSQGN_Thrown.ShotR() (Shot Grenade Reach, 0.35 m = 12 units at most) of a thrown grenade, once it is
 	// SHOT_GRACE tics out of the hand, sets it off there (in the air: a skeet). "Shoot Thrown Grenades" off: only the
 	// Skeet node does, in the air, as before. Melee (a reach of 128 units or less) never does. Only the shooter's
 	// machine knows where VR hands point (the engine writes the pose for the camera player alone), so it tests both
-	// hands' rays and sends where the grenade was; every machine sets off the same one (rsqgn_skeet). The shot itself is
+	// hands' rays and sends the grenade's serial; every machine sets off the same one (rsqgn_skeet). The shot itself is
 	// untouched. Projectiles are caught by the grenade itself (RSQGN_Thrown.ShotByMissile).
-	override bool WorldHitscanPreFired(WorldEvent e)
+	// 11-03 (a scoping read): the railgun (A_RailAttack, BD's RailGun) does not call the hitscan hook on 4.14.3; it
+	// has its own, taken the same way
+	override bool WorldRailgunPreFired(WorldEvent e) { ShotTest(e, "railgun"); return false; }
+	override bool WorldHitscanPreFired(WorldEvent e) { ShotTest(e, "hitscan"); return false; }
+
+	void ShotTest(WorldEvent e, String how)
 	{
 		let pmo = PlayerPawn(e.Thing);
-		if (!pmo || !pmo.player || pmo.PlayerNumber() != consoleplayer || !Active()) return false;
+		if (!pmo || !pmo.player || pmo.PlayerNumber() != consoleplayer || !Active()) return;
 		bool open = RSQGN_Slow.CanShoot();
-		if (!open && RSQGN_Upg.Lv(pmo, "Skeet") <= 0) return false;
-		if (e.AttackDistance > 0 && e.AttackDistance <= 128) return false;	// a punch, a bash: never
+		if (!open && RSQGN_Upg.Lv(pmo, "Skeet") <= 0) return;
+		if (e.AttackDistance > 0 && e.AttackDistance <= 128) return;	// a punch, a bash: never
 		double dist = e.AttackDistance > 0 ? e.AttackDistance : 8192;
 		Vector3 a0, d0, a1, d1;
 		int rays = 1;
@@ -420,19 +443,23 @@ class RSQGN_Handler : EventHandler
 				double along = c dot rd;
 				if (along < 0 || along > dist) continue;
 				double miss = (c - rd * along).Length();
-				if (miss > RSQGN_Thrown.SHOT_R) continue;
+				if (miss > RSQGN_Thrown.ShotR())
+				{
+					if (miss < 2 * RSQGN_Thrown.SHOT_R && Debug(pmo.player)) Console.Printf("RSQGN shot missed t%d: hand %d, %.1f units off its centre, reach %.1f", level.maptime, r, miss, RSQGN_Thrown.ShotR());
+					continue;
+				}
 				if (g.age < RSQGN_Thrown.SHOT_GRACE)
 				{
 					if (Debug(pmo.player)) Console.Printf("RSQGN shot ignored t%d: the grenade is %d tics out of the hand (grace %d)", level.maptime, g.age, RSQGN_Thrown.SHOT_GRACE);
 					continue;
 				}
-				if (Debug(pmo.player)) Console.Printf("RSQGN shot ray t%d: hand %d, %.0f units out, %.1f units off its centre", level.maptime, r, along, miss);
-				EventHandler.SendNetworkEvent("rsqgn_skeet", int(g.pos.x * 8), int(g.pos.y * 8), int(g.pos.z * 8));
-				return false;
+				if (Debug(pmo.player)) Console.Printf("RSQGN shot ray t%d (%s): hand %d, %.0f units out, %.1f units off its centre (reach %.1f)", level.maptime, how, r, along, miss, RSQGN_Thrown.ShotR());
+				EventHandler.SendNetworkEvent("rsqgn_skeet", g.serial, how == "railgun" ? 1 : 0);	// the grenade itself, by its serial (a fast one moves far in the tic the event takes)
+				return;
 			}
 		}
 		if (Debug(pmo.player)) Console.Printf("RSQGN shot t%d: nothing set off (%d thrown grenades in the world; one in a hand is never shootable)", level.maptime, seen);
-		return false;
+		return;
 	}
 
 	override void NetworkProcess(ConsoleEvent e)
@@ -456,16 +483,13 @@ class RSQGN_Handler : EventHandler
 		}
 		if (e.Name == "rsqgn_skeet")
 		{
-			// the thrown grenade nearest the point the shooter's machine saw (within 32 units): this player's own, or with
-			// Shoot Thrown Grenades anyone's
-			Vector3 at = (e.Args[0], e.Args[1], e.Args[2]) / 8.0;
-			RSQGN_Thrown best = null;
-			double bd = 32;
+			// the thrown grenade the shooter's machine saw, by its serial (validated: still live, and this player's own
+			// unless Shoot Thrown Grenades is on)
 			let it = ThinkerIterator.Create("RSQGN_Thrown");
 			RSQGN_Thrown g;
 			bool any = RSQGN_Slow.CanShoot();
-			while (g = RSQGN_Thrown(it.Next())) if (!g.boomed && (any || g.target == pmo) && (g.pos - at).Length() < bd) { bd = (g.pos - at).Length(); best = g; }
-			if (best) best.Shot("hitscan", pmo);	// in the air: a skeet, the Skeet node's multiplier (RSQGN_Thrown.Shot)
+			while (g = RSQGN_Thrown(it.Next()))
+				if (g.serial == e.Args[0] && !g.boomed && (any || g.target == pmo)) { g.Shot(e.Args[1] == 1 ? "railgun" : "hitscan", pmo); break; }
 			return;
 		}
 		int h = HandOf(p);
@@ -527,6 +551,7 @@ class RSQGN_Handler : EventHandler
 		}
 		let g = RSQGN_Thrown(Actor.Spawn("RSQGN_Thrown", at, ALLOW_REPLACE));
 		if (!g) return;
+		g.serial = ++nadeSerial;	// every machine throws the same grenades in the same order: the same serial
 		g.target = pmo;
 		// GUN BONSAI VR (2026-11-02, GBOVR_TREES.md section 1): the grenade weapon earns this throw. Gun Bonsai sees
 		// the thrown grenade at its spawn, before target is set, so it registers nothing and would later guess a

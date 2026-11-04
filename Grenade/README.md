@@ -36,7 +36,7 @@ Changed your mind before cooking it? Take the ring again with your other hand an
 **In the air and on the floor**
 - Bounces off floors, walls and monsters, tumbles, then settles on its side and slides to a stop. Only the fuse sets
   it off.
-- Shoot thrown grenades: your bullets or projectiles passing within 0.35 m of a thrown grenade set it off on the spot,
+- Shoot thrown grenades: your bullets or projectiles passing within 0.35 m (Shot Grenade Reach: tighten it down to 0.10 m) of a thrown grenade set it off on the spot,
   in the air if you are quick. Punches never do, and a grenade is safe for its first 6 tics out of the hand.
 - Optional: only while the world is slowed by RSQ SlowMo (off by default).
 - Thrown grenades slow down with RSQ SlowMo like everything else. Optional: let them run faster than the slowed world
@@ -118,6 +118,7 @@ Options → Radiant Silvergun Options → RSQ Grenade
 | Floor Bounce | 0.5 | Speed kept off a floor |
 | Wall Bounce | 0.25 | Speed kept off a wall |
 | Ground Drag | 0.82 | Slide on the floor (1 is ice) |
+| Shot Grenade Reach (m) | 0.35 | How near a shot must pass a thrown grenade to set it off; 0.10 to 0.35, it only tightens. Fast shots are tested along their whole path; the railgun counts too |
 | Grenade Speed in Slow Motion | 0.5 | How far from the world's speed toward real time (with Faster Grenades on) |
 | Teeth: Mouth Reach (m) | 0.15 | How close to your mouth counts |
 | Teeth: Again Beyond (m) | 0.71 | How far from your mouth before another teeth pull |

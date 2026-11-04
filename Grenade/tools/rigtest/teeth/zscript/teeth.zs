@@ -8,6 +8,8 @@ class GTP_Probe : EventHandler
 	int lastPin;
 	Actor hung, rocket;
 	bool hungWas;
+	Vector3 crossAt;
+	int crossTic;
 	static Actor Newest(Name cn)
 	{
 		let it = ThinkerIterator.Create("Actor");
@@ -42,7 +44,34 @@ class GTP_Probe : EventHandler
 			}
 			return;
 		}
-		if (e.Name != "gtp_mon") return;
+		// gtp_cross <speed> <0 RSQGN_Thrown / 1 HandGrenade> <tics>: a player-owned rocket at <speed> units a tic, aimed from
+		// the eyes so that it crosses the newest thrown grenade's predicted point half-way through tic <tics> from now (so
+		// its tic-end positions straddle the point by speed/2 each side: a point-sampled test can miss it)
+		if (e.Name == "gtp_cross")
+		{
+			Actor g = Newest(e.Args[1] == 1 ? "HandGrenade" : "RSQGN_Thrown");
+			if (!g) { Console.Printf("GTP t%d no grenade to cross", level.maptime); return; }
+			int n = max(e.Args[2], 1);
+			double gr = g.GetGravity();
+			Vector3 at = g.pos + (g.vel.x * n, g.vel.y * n, g.vel.z * n - gr * n * (n - 1) / 2);
+			Vector3 eye = (pmo.pos.x, pmo.pos.y, pmo.player.viewz);
+			Vector3 dir = (at - eye).Unit();
+			double sp = max(e.Args[0], 1);
+			let r = Actor.Spawn("Rocket", at - dir * sp * (n - 0.5) - (0, 0, 4), ALLOW_REPLACE);
+			if (r) { r.target = pmo; r.vel = dir * sp; r.angle = VectorAngle(dir.x, dir.y); rocket = r; crossAt = at; crossTic = level.maptime + n;
+				Console.Printf("GTP t%d rocket at %.0f a tic, to cross the %s at (%.0f %.0f %.0f) in tic %d", level.maptime, sp, g.GetClassName(), at.x, at.y, at.z, crossTic); }
+			return;
+		}
+		if (e.Name != "gtp_rail")
+		{
+			if (e.Name != "gtp_mon") return;
+		}
+		else
+		{
+			pmo.A_CustomRailgun(10, 0, 0, 0, RGF_SILENT | RGF_NOPIERCING, 0, 0, "BulletPuff");
+			Console.Printf("GTP t%d railgun fired (A_CustomRailgun)", level.maptime);
+			return;
+		}
 		let m = Actor.Spawn("DoomImp", pmo.Vec3Angle(e.Args[0] > 0 ? e.Args[0] : 250, pmo.angle, 0), ALLOW_REPLACE);
 		if (m) { m.angle = m.AngleTo(pmo); Console.Printf("GTP t%d spawned %s %.0f ahead", level.maptime, m.GetClassName(), m.Distance2D(pmo)); }
 	}
@@ -63,6 +92,7 @@ class GTP_Probe : EventHandler
 		lastPin = pin;
 		if (hung || hungWas) { if (!hung || hung.bDestroyed || hung.InStateSequence(hung.CurState, hung.FindState("Boom")) || hung.InStateSequence(hung.CurState, hung.FindState("Explode"))) { hungWas = false; Console.Printf("GTP t%d the hung grenade went off", level.maptime); hung = null; } else hung.vel = (0, 0, 0); }
 		if (rocket && !rocket.bDestroyed && hung) Console.Printf("GTP t%d rocket %.0f units from the hung grenade", level.maptime, (rocket.pos - hung.pos).Length());
+		if (rocket && !rocket.bDestroyed && crossTic > 0 && abs(level.maptime - crossTic) <= 1) Console.Printf("GTP t%d rocket %.0f units from the crossing point", level.maptime, (rocket.pos - crossAt).Length());
 		if (rocket && rocket.bDestroyed) rocket = null;
 		let tg = CVar.GetCVar("gtp_thrown", p);
 		if (tg && tg.GetInt() > 0)

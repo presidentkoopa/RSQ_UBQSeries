@@ -1,0 +1,49 @@
+Log started: 2026-11-03 21:03:14
+GTP_C1_ROCKET_20_CROSSES_MIDFLIGHT
+RSQGN face t60 hand 0 mouth 0.04 m (reach 0.15) squeeze none held 0/12 ready 1; eyes 0.25 m over viewz, hand 0.12 m under the eyes
+RSQGN face t65 hand 0 mouth 0.04 m (reach 0.15) squeeze trigger held 2/12 ready 1; eyes 0.25 m over viewz, hand 0.12 m under the eyes
+RSQGN face t70 hand 0 mouth 0.04 m (reach 0.15) squeeze trigger held 7/12 ready 1; eyes 0.25 m over viewz, hand 0.12 m under the eyes
+RSQGN teeth t75: hand 0, squeezed by trigger, 0.04 m from the mouth (reach 0.15) for 12 tics
+RSQGN pin out p0 t76 by teeth (hand 0)
+RSQGN release t90: swing 7.22 m/s (throws from 2.50)
+RSQGN thrown p0 t91 hand 0 swing 7.21 m/s, leaves at 7.8 u/tic (8.41 m/s) from (-91 809 98), fuse 105 of 105
+RSQGN flash thrown t91 period 16 left 104 at (-91 815 102)
+GTP t92 rocket at 20 a tic, to cross the RSQGN_Thrown at (-91 863 121) in tic 99
+RSQGN shot t97: projectile Rocket by DoomPlayer, in the air (skeet), 6 tics out of the hand, x1.00
+RSQGN boom thrown t97 at (-91 849 117)
+GTP t98 rocket 12 units from the crossing point
+GTP t99 rocket 10 units from the crossing point
+GTP t100 rocket 29 units from the crossing point
+GTP_C2_FAST_SHOT_100_CROSSES_MIDFLIGHT
+RSQGN face t155 hand 0 mouth 0.04 m (reach 0.15) squeeze none held 0/12 ready 1; eyes 0.25 m over viewz, hand 0.12 m under the eyes
+RSQGN face t160 hand 0 mouth 0.04 m (reach 0.15) squeeze trigger held 5/12 ready 1; eyes 0.25 m over viewz, hand 0.12 m under the eyes
+RSQGN face t165 hand 0 mouth 0.04 m (reach 0.15) squeeze trigger held 10/12 ready 1; eyes 0.25 m over viewz, hand 0.12 m under the eyes
+RSQGN teeth t167: hand 0, squeezed by trigger, 0.04 m from the mouth (reach 0.15) for 12 tics
+RSQGN pin out p0 t168 by teeth (hand 0)
+RSQGN release t182: swing 7.22 m/s (throws from 2.50)
+RSQGN thrown p0 t183 hand 0 swing 7.21 m/s, leaves at 7.8 u/tic (8.41 m/s) from (-91 808 98), fuse 105 of 105
+RSQGN flash thrown t183 period 16 left 104 at (-91 815 102)
+GTP t190 rocket at 100 a tic, to cross the RSQGN_Thrown at (-91 863 121) in tic 191
+GTP t190 rocket 51 units from the crossing point
+RSQGN shot t191: projectile Rocket by DoomPlayer, in the air (skeet), 8 tics out of the hand, x1.00
+RSQGN boom thrown t191 at (-91 863 121)
+GTP t191 rocket 49 units from the crossing point
+GTP t192 rocket 149 units from the crossing point
+GTP t194 damaged Zombieman by DoomPlayer via Rocket: 4 (health 16)
+GTP_C3_RAILGUN
+RSQGN face t250 hand 0 mouth 0.04 m (reach 0.15) squeeze none held 0/12 ready 1; eyes 0.25 m over viewz, hand 0.12 m under the eyes
+RSQGN face t255 hand 0 mouth 0.04 m (reach 0.15) squeeze trigger held 2/12 ready 1; eyes 0.25 m over viewz, hand 0.12 m under the eyes
+RSQGN face t260 hand 0 mouth 0.04 m (reach 0.15) squeeze trigger held 7/12 ready 1; eyes 0.25 m over viewz, hand 0.12 m under the eyes
+RSQGN teeth t265: hand 0, squeezed by trigger, 0.04 m from the mouth (reach 0.15) for 12 tics
+RSQGN pin out p0 t266 by teeth (hand 0)
+RSQGN release t280: swing 7.22 m/s (throws from 2.50)
+RSQGN thrown p0 t281 hand 0 swing 7.21 m/s, leaves at 7.8 u/tic (8.41 m/s) from (-91 808 98), fuse 105 of 105
+RSQGN flash thrown t281 period 16 left 104 at (-91 815 102)
+GTP t284 hung RSQGN_Thrown at (-96 879 91), 96 ahead
+RSQGN shot ray t294 (railgun): hand 0, 86 units out, 0.0 units off its centre (reach 11.9)
+GTP t294 railgun fired (A_CustomRailgun)
+RSQGN shot t295: railgun by DoomPlayer, in the air (skeet), 14 tics out of the hand, x1.00
+RSQGN boom thrown t295 at (-96 879 91)
+GTP t295 the hung grenade went off
+GTP t295 damaged Zombieman by DoomPlayer via RSQGN_Thrown: 1 (health 15)
+GTP t295 damaged Zombieman by DoomPlayer via RSQGN_Thrown: 5 (health 15)

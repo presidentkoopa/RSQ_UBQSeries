@@ -21,6 +21,9 @@ class RSQGN_Thrown : Actor
 	bool stuckWall;
 	int skeetWin;		// SKEET WINDOW (Gun Bonsai VR patch): its level at the throw
 	int age, brightUntil;
+	int serial;			// SHOOT THROWN GRENADES: which grenade a shot named (hand.zs Throw numbers them)
+	Vector3 lastPos;	// ...where the handler saw it a tic ago (the swept projectile test)
+	bool lastSet;
 	int cooked;			// tics it cooked in the hand before the throw (SLOW BURN reads it)
 	bool teeth;			// its pin came out by the teeth (RSQGN_Service "teeth", for a scorer)
 	bool skeet;			// it was shot out of the air (Skeet; "skeet")
@@ -36,7 +39,15 @@ class RSQGN_Thrown : Actor
 	// metre: the grenade itself is 3 units (9 cm), so a near miss in VR still counts. SHOT_GRACE 6 tics = 0.17 s: at the
 	// slowest throw (2.5 m/s) it is 0.43 m out of the hand by then, so a gun fired from the other hand beside it, or the
 	// throwing hand's own swing, cannot set it off as it leaves.
-	const SHOT_R = 12.0;
+	const SHOT_R = 12.0;		// the largest reach (0.35 m); "Shot Grenade Reach" (rsqgn_shot_r) can only tighten it
+	// the reach in map units: rsqgn_shot_r metres (0.10 to 0.35, owner 11-03 20:30: "let me tighten it some but I won't
+	// make it bigger") x vr_vunits_per_meter, never past SHOT_R
+	static double ShotR()
+	{
+		let c = CVar.FindCVar("rsqgn_shot_r");
+		double m = clamp(c ? c.GetFloat() : 0.35, 0.10, 0.35);
+		return min(m * RSQGN_Geo.Vu(), SHOT_R);
+	}
 	const SHOT_GRACE = 6;
 
 	Default
@@ -80,7 +91,6 @@ class RSQGN_Thrown : Actor
 		prevVel = vel;
 		Super.Tick();
 		if (bDestroyed || boomed || IsFrozen()) return;
-		if (age >= SHOT_GRACE && RSQGN_Slow.CanShoot() && ShotByMissile()) return;
 		if (sticky > 0) Stick();
 		// IMPACT (Gun Bonsai VR patch): it bursts on the first thing it touches -- a bounce (its velocity turned by more
 		// than its fall explains) or the floor -- once it is clear of the hand
@@ -221,10 +231,18 @@ class RSQGN_Thrown : Actor
 		for (int i = 0; i < h.missiles.Size(); i++)
 		{
 			let t = h.missiles[i];
-			if (!t || t.bDestroyed || !t.bMissile || t.bNoInteraction || !t.target || !t.target.player) continue;
+			if (!t || t.bDestroyed || t.bNoInteraction || !t.target || !t.target.player) continue;	// (a missile that burst this tic still counts: it passed)
 			if (t.GetMissileDamage(0, 1) <= 0) continue;	// a trail, a tracer, smoke: decoration that hurts nothing
-			Vector3 c = t.pos + (0, 0, t.height * 0.5) - (pos + (0, 0, height * 0.5));
-			if (c.Length() > SHOT_R + t.radius) continue;
+			// SWEPT (11-03, a scoping read: a fast shot passed through between two samples): the closest the two came over
+			// the last tic, each from where the handler saw it a tic ago to where it is now. (Prev cannot be used: the
+			// engine resets it before WorldTick, which runs before the thinkers.)
+			Vector3 r0 = h.MissLast(i) - lastPos, r1 = t.pos - pos;
+			r0.z += (t.height - height) * 0.5;
+			r1.z += (t.height - height) * 0.5;
+			Vector3 dr = r1 - r0;
+			double ll = dr dot dr;
+			double k = ll > 0 ? clamp(-(r0 dot dr) / ll, 0.0, 1.0) : 1.0;
+			if ((r0 + dr * k).Length() > ShotR() + t.radius) continue;
 			Shot(String.Format("projectile %s", t.GetClassName()), t.target);
 			return true;
 		}
