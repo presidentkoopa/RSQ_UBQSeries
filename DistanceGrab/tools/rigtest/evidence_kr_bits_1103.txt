@@ -1,0 +1,23 @@
+# 11-03 Kill Rewards bits are not grabbed (owner 20:14). doom2 + RSQ_DistanceGrab + RSQ_VisualRewards + probe; scene: health bit 120 ahead, ammo bit 130, Clip 150 at 14 to the side; both hands aimed (AIM poses).
+# script: set rsqdgt_scene "RSQ_KRHealthBit:120:0,RSQ_KRAmmoBit:130:-6,Clip:150:14"; set rsqdg_trace 1; AIM both hands; wait 90
+## head (HEAD pk3, before)
+T_SPAWN RSQ_KRHealthBit at dist=120 side=0  z=56
+T_SPAWN RSQ_KRAmmoBit at dist=130 side=-6  z=56
+T_SPAWN Clip at dist=150 side=14  z=56
+T_EVENT t21 pull.lock hand=0 air=0 thing=Clip from=RSQ_DistanceGrab
+T_EVENT t21 pull.lock hand=1 air=0 thing=RSQ_KRAmmoBit from=RSQ_DistanceGrab
+T_STATE t30 palm=(-88 794 93) yaw=90 pit=-10 rol=96 good=1 palmok=1 armed=1 target=None lock=Clip fly=None prog=0.00 hold=None
+T_STATE t90 palm=(-88 794 93) yaw=90 pit=-10 rol=96 good=1 palmok=1 armed=1 target=None lock=Clip fly=None prog=0.00 hold=None
+T_OBJ RSQ_KRHealthBit pos=(-96 904 56) dist=117 angle=9.2 rule=a health item w=0.60 sight=1 kg=5.00 special=1 thru=0 r=1
+T_OBJ RSQ_KRAmmoBit pos=(-102 914 56) dist=127 angle=9.2 rule=a pickup in the world w=1.00 sight=1 kg=5.00 special=1 thr
+T_OBJ Clip pos=(-82 934 56) dist=144 angle=3.7 rule=ammunition w=0.60 sight=1 kg=0.35 special=1 thru=0 r=20 grav=1
+## new (this commit)
+T_SPAWN RSQ_KRHealthBit at dist=120 side=0  z=56
+T_SPAWN RSQ_KRAmmoBit at dist=130 side=-6  z=56
+T_SPAWN Clip at dist=150 side=14  z=56
+T_EVENT t21 pull.lock hand=0 air=0 thing=Clip from=RSQ_DistanceGrab
+T_STATE t30 palm=(-88 794 93) yaw=90 pit=-10 rol=96 good=1 palmok=1 armed=1 target=None lock=Clip fly=None prog=0.00 hold=None
+T_STATE t90 palm=(-88 794 93) yaw=90 pit=-10 rol=96 good=1 palmok=1 armed=1 target=None lock=Clip fly=None prog=0.00 hold=None
+T_OBJ RSQ_KRHealthBit pos=(-96 904 56) dist=117 angle=9.2 rule=NO w=0.00 sight=1 kg=5.00 special=1 thru=0 r=10 grav=1
+T_OBJ RSQ_KRAmmoBit pos=(-102 914 56) dist=127 angle=9.2 rule=NO w=0.00 sight=1 kg=5.00 special=1 thru=0 r=10 grav=1
+T_OBJ Clip pos=(-82 934 56) dist=144 angle=3.7 rule=ammunition w=0.60 sight=1 kg=0.35 special=1 thru=0 r=20 grav=1

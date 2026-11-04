@@ -319,6 +319,13 @@ class RSQDG_Policy : StaticEventHandler
 		return true;
 	}
 
+	// RSQ VisualRewards' Kill Rewards bits, by name (Decide's note)
+	static clearscope bool NotGrabbed(Actor a)
+	{
+		String n = a.GetClassName();
+		return n.Left(6) ~== "RSQ_KR";
+	}
+
 	// WHY Decide said no, for the refusal log only (rsqdg_trace). Walks Decide's tests in Decide's order.
 	String WhyNot(Actor a, PlayerPawn pmo, PlayerInfo p)
 	{
@@ -329,6 +336,7 @@ class RSQDG_Policy : StaticEventHandler
 		if (a.Radius <= 0 || a.Height <= 0) return "it has no size";
 		if (a.bINVISIBLE || a.GetRenderStyle() == STYLE_None) return "it is invisible";
 		if (a.sprite == tnt1) return "it draws nothing (TNT1: a Brutal Doom spawner placeholder)";
+		if (NotGrabbed(a)) return "a Kill Rewards bit (left to the Force pull)";
 		if (!a.bISMONSTER && a.default.bSHOOTABLE && a.Health <= 0) return "it is dying";
 		if (a.bISMONSTER) return a.Health > 0 ? "a living monster (never pulled)" : "a corpse (What You Can Grab: Corpses is off)";
 		let inv = Inventory(a);
@@ -384,6 +392,13 @@ class RSQDG_Policy : StaticEventHandler
 		// MODELDEF states "TNT1 keys removed (TNT1 means draw nothing in
 		// BD22)" -- and pickups drawn that way are rare.
 		if (a.sprite == tnt1) return null;
+
+		// KILL REWARDS BITS ARE NOT FOR THE GRAB (owner 2026-11-03 20:14: "the Force pull is good for that kind of stuff").
+		// RSQ VisualRewards' health, armour and ammo bits (RSQ_KRHealthBit / RSQ_KRArmorBit / RSQ_KRAmmoBit) are Health,
+		// BasicArmorBonus and Inventory subclasses, so the table took them as pickups and locked them ahead of the item or
+		// corpse beside them. Found by class-name prefix ("RSQ_KR"), so nothing needs VisualRewards loaded. RSQ Saber's
+		// Force pull is its own code and still pulls them.
+		if (NotGrabbed(a)) return null;
 
 		// A DYING PROP IS NOT A PROP. A barrel that has been shot is in its
 		// death sequence for a moment before it explodes; pulling it then
