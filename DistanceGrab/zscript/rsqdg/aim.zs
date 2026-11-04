@@ -159,8 +159,11 @@ class RSQDG_Aim : EventHandler
 			// controller to the other is not a throw nor a flick, so that hand's history restarts.
 			int ctl = RSQDG_Reach.Ctrl(pmo, h);
 			if (ctl != lastCtrl[h]) { primed[h] = false; pitchPrimed[h] = false; lastCtrl[h] = ctl; }
-			Vector3 now = RSQDG_Reach.Palm(pmo, h);
-			Vector3 off = now - pmo.Pos;
+			// 2026-11-03 (owner: "strafing left and right causes the melee 'whoosh'"): the frame's hand carried to where the
+			// body is this tic, against the body at the VIEW's height (RSQDG_HandSync): a tic with no frame read a still
+			// hand as a step-long throw, and a stair's view dip as a drop
+			Vector3 now = RSQDG_HandSync.Fix(pmo, RSQDG_Reach.Palm(pmo, h), ctl);
+			Vector3 off = now - RSQDG_HandSync.Body(pmo);
 			Vector2 flat = Actor.RotateVector(off.xy, -frameYaw);
 			Vector3 rel = (flat.x, flat.y, off.z);
 
