@@ -1,6 +1,7 @@
 // RSQ Grenade -- THE GRENADE KINDS (Gun Bonsai VR patch, GBOVR_TREES.md 4.5 Kinds; the owner's eight, 11-02). Each kind is
-// an unlock on the grenade's own record; the frag is the base kind and the only one without the patch. The holding hand's
-// alt trigger cycles the kinds you own (hand.zs, rsqgn_kind); the kind shows on the grenade itself, its skin recoloured
+// an unlock on the grenade's own record; the frag is the base kind. Without the patch every kind is yours (11-03,
+// rsqgn_kinds_free All Types; Frag Only: the frag alone). The holding hand's alt trigger cycles the kinds you own
+// (hand.zs, rsqgn_kind; rsqgn_kind_alt off: it cycles nothing); the kind shows on the grenade itself, its skin recoloured
 // the WIDE BAND way (tools/gen_kinds.py, MODELDEF.kinds.txt). What a kind does happens where the frag's blast happens
 // (RSQGN_Thrown.Blast), from these.
 class RSQGN_Kind play
@@ -22,7 +23,16 @@ class RSQGN_Kind play
 		static const Name S[] = { 'QGNT', 'QGT1', 'QGT2', 'QGT3', 'QGT4', 'QGT5', 'QGT6', 'QGT7', 'QGT8' };
 		return S[clamp(k, 0, COUNT - 1)];
 	}
-	static bool Owns(Actor who, int k) { return k == FRAG || (k > 0 && k < COUNT && RSQGN_Upg.Lv(who, Node(k)) >= 1); }
+	// Owned: the frag always; with the Gun Bonsai VR patch a kind you have unlocked; WITHOUT the patch (owner 11-03:
+	// "when we load grenade without GBOVR, does alt fire still toggle grenade types? can it?") every kind when
+	// "Grenade Types Without Gun Bonsai" is All Types (rsqgn_kinds_free 1, the default), the frag alone at Frag Only.
+	static bool Owns(Actor who, int k)
+	{
+		if (k == FRAG) return true;
+		if (k <= 0 || k >= COUNT) return false;
+		if (!RSQGN_Upg.On()) { let c = CVar.FindCVar("rsqgn_kinds_free"); return !c || c.GetInt() != 0; }
+		return RSQGN_Upg.Lv(who, Node(k)) >= 1;
+	}
 	static int Next(Actor who, int k)
 	{
 		for (int i = 1; i <= COUNT; i++) { int c = (k + i) % COUNT; if (Owns(who, c)) return c; }
@@ -153,16 +163,19 @@ class RSQGN_Kind play
 			{
 				// RSQ_Dazed's freeze (the Frost Fist's; a boss slowed by half), and the next hard hit shatters it, x2
 				if (gb) gb.GetInt("freeze", "", (2 + lv) * TICRATE, 2.0, t);
+				else RSQGN_Daze.Freeze(t, (2 + lv) * TICRATE);	// without the patch: this mod's own (no shatter)
 				RSQGN_Upg.Touch("freeze.nade", by, t);
 			}
 			else if (k == STUN)
 			{
 				if (gb) gb.GetInt("stagger", "", (2 + lv) * TICRATE, 0, t);
+				else RSQGN_Daze.Stagger(t, (2 + lv) * TICRATE);
 				RSQGN_Upg.Touch("stun.nade", by, t);
 			}
 			else if (k == FLASH)
 			{
 				if (gb) gb.GetInt("stagger", "", (2 + lv) * TICRATE, 0, t);
+				else RSQGN_Daze.Stagger(t, (2 + lv) * TICRATE);
 				LoseTarget(t);
 				RSQGN_Upg.Touch("flash", by, t);
 			}
@@ -185,6 +198,55 @@ class RSQGN_Kind play
 		a.master = gw;
 		let gb = RSQGN_Upg.Svc();
 		if (gb) gb.GetInt("claim", "", 0, 0, a);
+	}
+}
+
+// FREEZE AND STAGGER WITHOUT THE GUN BONSAI VR PATCH (11-03, "Grenade Types Without Gun Bonsai": All Types). With the
+// patch, Freeze, Stun and Flash ask its RSQ_Dazed ("freeze", "stagger"); without it they would do nothing, so they do
+// this much here: FROZEN, nothing it does goes anywhere for the time (the engine's freezetics) in the Ice translation;
+// STAGGERED, held in its pain frames for the time (a monster without a Pain state is held still). Bosses are not
+// frozen or staggered (the patch slows them instead; that stays the patch's). No shatter without the patch.
+class RSQGN_Daze : Inventory
+{
+	int frozenUntil, reelUntil;
+	bool tinted;
+	TranslationID oldTrans;
+	Default { Inventory.MaxAmount 1; +INVENTORY.UNDROPPABLE +INVENTORY.UNTOSSABLE +INVENTORY.UNCLEARABLE }
+
+	static RSQGN_Daze On(Actor t)
+	{
+		if (!t || t.health <= 0 || !t.bIsMonster || t.bBoss) return null;
+		let d = RSQGN_Daze(t.FindInventory("RSQGN_Daze"));
+		if (!d) d = RSQGN_Daze(t.GiveInventoryType("RSQGN_Daze"));
+		return d;
+	}
+	static void Freeze(Actor t, int tics)
+	{
+		let d = On(t);
+		if (!d || tics <= 0) return;
+		d.frozenUntil = max(d.frozenUntil, level.maptime + tics);
+		t.freezetics = max(t.freezetics, tics);
+		if (!d.tinted) { d.oldTrans = t.Translation; t.A_SetTranslation('Ice'); d.tinted = true; }
+	}
+	static void Stagger(Actor t, int tics)
+	{
+		let d = On(t);
+		if (!d || tics <= 0) return;
+		d.reelUntil = max(d.reelUntil, level.maptime + tics);
+	}
+	override void DoEffect()
+	{
+		Super.DoEffect();
+		let t = owner;
+		if (!t) return;
+		if (t.health <= 0) { frozenUntil = reelUntil = 0; }
+		if (tinted && level.maptime >= frozenUntil) { t.Translation = oldTrans; tinted = false; }
+		if (level.maptime < reelUntil && level.maptime >= frozenUntil)
+		{
+			let pain = t.FindState("Pain");
+			if (!pain) t.freezetics = max(t.freezetics, 2);
+			else if (!t.InStateSequence(t.CurState, pain)) t.SetState(pain);
+		}
 	}
 }
 

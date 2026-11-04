@@ -6,9 +6,10 @@
 //      direction of the swing. Let go while still: the spoon flies off and the fuse is lit in your hand (cooking).
 //      Squeeze and let go again to throw it.
 //   3. cook too long and it goes off in your hand.
-//   4. THE FACE ROUTE (RS_Grenade): squeeze the trigger and hold the grenade at your face for a moment: you pull the
-//      pin with your teeth. Two radii, not one: once the pin is out the hand has to have been clear of your face (the
-//      far radius) before it can take another; letting go of the trigger re-arms it too (RS_Grenade's own rule).
+//   4. THE FACE ROUTE (RS_Grenade): squeeze and hold the grenade at your mouth for a moment: you pull the pin with
+//      your teeth (2026-11-03: the mouth measured from the headset, the trigger or a gripped squeeze; Face below).
+//      Once the pin is out the hand has to have been clear of your mouth (the far radius) before it can take another;
+//      letting go re-arms it too (RS_Grenade's own rule).
 //   5. THE FUSE YOU CAN SEE: while the fuse burns the grenade flashes red, faster and faster, with a tick each flash
 //      (RS_Grenade's README; the tick is its GPIN, the flash its idea, built here).
 //
@@ -80,6 +81,49 @@ class RSQGN_Geo play
 	{
 		return (v.x, v.y, v.z * Ps(pmo)).Length() / Vu();
 	}
+
+	// YOUR REAL EYES, where the headset is, in the frame the engine places the hands in (2026-11-03, the teeth fix).
+	// The hands are AttackPos.z = viewz - ViewHeight + (controller height + vr_height_adjust) * vu / ps
+	// (hw_openxrdevice.cpp:595, gl_openvr.cpp GetHandTransform: the same on PC), so the eyes are the same with the
+	// headset's height. player.viewz alone is the pawn's fixed eye (41 units, 1.45 m): 0.25 m under a 1.70 m headset,
+	// more with vr_height_adjust (RSQ Tactical Rig cig.zs Eyes, BD22 VR rsq/scope.zs found the same). With
+	// vr_crouch_use_button off the engine scales viewz to the headset already. No headset height read: viewz.
+	static Vector3 Eyes(PlayerPawn pmo)
+	{
+		let p = pmo.player;
+		double vz = p ? p.viewz : pmo.pos.z + pmo.height * 0.9;
+		double hy = pmo.HmdPosition.y;
+		let cb = CVar.FindCVar("vr_crouch_use_button");
+		if (p && hy > 0.3 && (!cb || cb.GetBool()))
+		{
+			let ha = CVar.FindCVar("vr_height_adjust");
+			vz += (hy + (ha ? ha.GetFloat() : 0)) * Vu() / Ps(pmo) - pmo.ViewHeight;
+		}
+		return (pmo.pos.x, pmo.pos.y, vz);
+	}
+
+	// metres forward along where you look and down from the eyes, in the head's frame (it turns and nods with the
+	// headset; the pawn's yaw and pitch are the headset's in VR). RSQ Tactical Rig cig.zs FromEyes.
+	static Vector3 FromEyes(PlayerPawn pmo, double fwd, double down)
+	{
+		double u = Vu();
+		double hp = clamp(pmo.pitch, -89, 89);
+		double horiz = fwd * cos(hp) - down * sin(hp);
+		double vert = -fwd * sin(hp) - down * cos(hp);
+		return Eyes(pmo) + (cos(pmo.angle) * horiz * u, sin(pmo.angle) * horiz * u, vert * u / Ps(pmo));
+	}
+
+	// room metres from pt to the segment a-b (map points)
+	static double SegDist(PlayerPawn pmo, Vector3 pt, Vector3 a, Vector3 b)
+	{
+		double ps = Ps(pmo), u = Vu();
+		Vector3 ab = b - a, ap = pt - a;
+		ab = (ab.x, ab.y, ab.z * ps) / u;
+		ap = (ap.x, ap.y, ap.z * ps) / u;
+		double ll = ab dot ab;
+		double t = ll > 0 ? clamp((ap dot ab) / ll, 0.0, 1.0) : 0.0;
+		return (ap - ab * t).Length();
+	}
 }
 
 class RSQGN_Handler : EventHandler
@@ -94,6 +138,14 @@ class RSQGN_Handler : EventHandler
 	const RING_GRAB = 12.0;		// cm round the ring the other hand can take it (BD22 VR)
 	const PULL = 8.0;			// cm past that: the pin is out (BD22 VR)
 	const WIN = 7;				// tics of hand history (RSQ Distance Grab's PITCH_WINDOW, ~200 ms)
+	// THE MOUTH (the teeth, 2026-11-03): RSQ Tactical Rig's cigarette zone (cig.zs ZONE_*), from the lips (0.04 m
+	// forward of the eyes, 0.06 under them) to just under the chin (0.08 forward, 0.19 under), in the head's frame;
+	// in it when the controller, the drawn grenade or its ring is within rsqgn_mouth_r of that line
+	const MOUTH_AF = 0.04;
+	const MOUTH_AD = 0.06;
+	const MOUTH_BF = 0.08;
+	const MOUTH_BD = 0.19;
+	const FACE_SLACK = 4;		// tics out of the zone (or off the squeeze) a hold forgives: a wobble is no restart
 
 	// ---- the playsim's state (every machine, from the network events) ----
 	bool armed[MAXPLAYERS];		// pin out
@@ -108,7 +160,7 @@ class RSQGN_Handler : EventHandler
 
 	// ---- the console player's hands (local) ----
 	private transient bool ringHeld, grabPrev, trigPrev, faceReady, altPrev;
-	private transient int faceTic, lastHand, waitUntil;
+	private transient int faceTic, faceMiss, lastHand, waitUntil;
 	private transient bool waitArmed, waitSpoon;
 	private transient Vector3 lastRel[2], rawHand[2];
 	private transient bool primed[2], framePrimed, wasSame;
@@ -513,7 +565,7 @@ class RSQGN_Handler : EventHandler
 		Sample(pmo);
 		int h = HandOf(p);
 		if (h < 0 || pmo.health <= 0) { ringHeld = false; trigPrev = false; faceTic = 0; lastHand = -1; return; }
-		if (h != lastHand) { ringHeld = false; faceTic = 0; faceReady = true; lastHand = h; }
+		if (h != lastHand) { ringHeld = false; faceTic = 0; faceMiss = 0; faceReady = true; lastHand = h; }
 		int o = 1 - h;
 		int btn = p.cmd.buttons;
 		bool trig = (btn & (h == 0 ? BT_ATTACK : BT_OFFHANDATTACK)) != 0;
@@ -522,11 +574,24 @@ class RSQGN_Handler : EventHandler
 		grabPrev = grab;
 		bool trigUp = !trig && trigPrev;
 		trigPrev = trig;
-		// THE KINDS (Gun Bonsai VR patch): the holding hand's alt trigger cycles the kinds you own, until the spoon flies
+		// THE KINDS: the holding hand's alt trigger cycles the kinds you own (Gun Bonsai VR patch) or, without the patch,
+		// every kind (rsqgn_kinds_free, kinds.zs Owns), until the spoon flies. "Alt Fire Cycles Grenade Types"
+		// (rsqgn_kind_alt) off: the alt trigger cycles nothing. At your mouth with the pin in, the alt trigger is the
+		// teeth's squeeze instead (below), so it cycles nothing there.
 		bool alt = (btn & (h == 0 ? BT_ALTATTACK : BT_OFFHANDALTATTACK)) != 0;
 		bool altPress = alt && !altPrev;
 		altPrev = alt;
-		if (altPress && !spoon[n] && RSQGN_Kind.Next(pmo, kind[n]) != kind[n]) Send("rsqgn_kind");
+		double mouth = MouthDist(pmo, h);
+		bool faceOn = PFlag(p, "rsqgn_face", true);
+		bool biting = faceOn && !armed[n] && mouth <= MouthReach(p);
+		if (altPress && !spoon[n])
+		{
+			bool cyc = PFlag(p, "rsqgn_kind_alt", true);
+			int nk = RSQGN_Kind.Next(pmo, kind[n]);
+			if (cyc && !biting && nk != kind[n]) Send("rsqgn_kind");
+			else if (Debug(p))
+				Console.Printf("RSQGN alt t%d: no cycle (%s)", level.maptime, !cyc ? "Alt Fire Cycles Grenade Types is off" : biting ? "at the mouth: the teeth's squeeze" : "no other kind owned");
+		}
 		if (!grab) ringHeld = false;
 		if (level.maptime < waitUntil && armed[n] == waitArmed && spoon[n] == waitSpoon) return;
 		waitUntil = 0;
@@ -553,11 +618,12 @@ class RSQGN_Handler : EventHandler
 				Wait(n);
 				return;
 			}
-			Face(pmo, p, n, h, trig, dbg);
+			Face(pmo, p, n, h, trig || alt, trig ? "trigger" : alt ? "alt" : "none", mouth, dbg);
 			return;
 		}
 		faceTic = 0;
-		if (!trig) faceReady = true;
+		faceMiss = 0;
+		if (!trig && !alt) faceReady = true;
 
 		if (!spoon[n])
 		{
@@ -588,30 +654,57 @@ class RSQGN_Handler : EventHandler
 		}
 	}
 
-	// THE TEETH (RS_Grenade's face route): the trigger squeezed and the grenade held at your face for a run of tics.
-	// The distance is from the drawn grenade to your eyes (the headset), in metres, RS_Grenade's 16 / 24 map units
-	// (0.47 / 0.71 m) and 12 tics. Once taken, the far radius (or letting go of the trigger) re-arms it.
-	private void Face(PlayerPawn pmo, PlayerInfo p, int n, int h, bool trig, bool dbg)
+	// THE TEETH (RS_Grenade's face route): the grenade squeezed and held at your mouth for a run of tics (12).
+	// 2026-11-03 (owner: "I still haven't seen the face-mouth pin pull work"), what it was and what it is:
+	//   THE EYES were player.viewz, the pawn's fixed 1.45 m eye, not the headset (RSQGN_Geo.Eyes): a 1.70 m player's
+	//     mouth sat 0.25 m from where it was looked for, a tall one's with vr_height_adjust past the old 0.47 m.
+	//   THE PLACE was a 0.47 m ball round that point: the chest counted, a high mouth did not. It is now the mouth:
+	//     RSQ Tactical Rig's cigarette zone (lips to under the chin, the head's frame), the controller, the drawn
+	//     grenade or its ring within "Teeth: Mouth Reach" (rsqgn_mouth_r, 0.15 m) of it.
+	//   THE SQUEEZE was the holding hand's fire alone. QuestZDoom's default vr_secondary_button_mappings makes the main
+	//     grip a shift key: grip and trigger together send ALT fire, never fire, so a fist round the grenade at the
+	//     mouth was no squeeze. The holding hand's alt fire counts too here (and cycles no kind while at the mouth).
+	//   A WOBBLE restarted the count: FACE_SLACK tics out of the zone or off the squeeze are forgiven.
+	// Once taken, a hand clear of the mouth by "Teeth: Again Beyond" (0.71 m) or a let-go squeeze re-arms it.
+	double MouthReach(PlayerInfo p) { return clamp(PNum(p, "rsqgn_mouth_r", 0.15), 0.03, 0.40); }
+
+	// metres from the mouth zone's line to the nearest of the controller, the drawn grenade and its ring
+	double MouthDist(PlayerPawn pmo, int h)
 	{
-		if (!PFlag(p, "rsqgn_face", true)) { faceTic = 0; return; }
-		Vector3 head = (pmo.Pos.x, pmo.Pos.y, p.viewz);
-		Vector3 nade = RSQGN_Geo.Pos(pmo, h) + RSQGN_Geo.FromHand(pmo, h, (NADE_F, NADE_L, NADE_U));
-		double dist = RSQGN_Geo.Metres(pmo, nade - head);
-		double near = PNum(p, "rsqgn_face_near", 0.47);
+		Vector3 a = RSQGN_Geo.FromEyes(pmo, MOUTH_AF, MOUTH_AD), b = RSQGN_Geo.FromEyes(pmo, MOUTH_BF, MOUTH_BD);
+		Vector3 c = RSQGN_Geo.Pos(pmo, h);
+		double d = RSQGN_Geo.SegDist(pmo, c, a, b);
+		d = min(d, RSQGN_Geo.SegDist(pmo, c + RSQGN_Geo.FromHand(pmo, h, (NADE_F, NADE_L, NADE_U)), a, b));
+		return min(d, RSQGN_Geo.SegDist(pmo, c + RSQGN_Geo.FromHand(pmo, h, (RING_F, RING_L, RING_U)), a, b));
+	}
+
+	private void Face(PlayerPawn pmo, PlayerInfo p, int n, int h, bool squeeze, String by, double mouth, bool dbg)
+	{
+		if (!PFlag(p, "rsqgn_face", true)) { faceTic = 0; faceMiss = 0; return; }
+		double reach = MouthReach(p);
 		double far = PNum(p, "rsqgn_face_far", 0.71);
-		int hold = int(PNum(p, "rsqgn_face_hold", 12));
-		if (!trig || dist > far) faceReady = true;
-		if (trig && dist <= near) faceTic++; else faceTic = 0;
+		int hold = clamp(int(PNum(p, "rsqgn_face_hold", 12)), 1, 70);
+		bool atMouth = mouth <= reach;
+		if (!squeeze || mouth > far) faceReady = true;
+		if (squeeze && atMouth) { faceTic++; faceMiss = 0; }
+		else if (faceTic > 0 && ++faceMiss > FACE_SLACK) { faceTic = 0; faceMiss = 0; }
 		if (faceReady && faceTic >= hold)
 		{
 			faceReady = false;
 			faceTic = 0;
-			if (dbg) Console.Printf("RSQGN teeth t%d: grenade %.2f m from the eyes for %d tics", level.maptime, dist, hold);
+			faceMiss = 0;
+			if (dbg) Console.Printf("RSQGN teeth t%d: hand %d, squeezed by %s, %.2f m from the mouth (reach %.2f) for %d tics", level.maptime, h, by, mouth, reach, hold);
 			Send("rsqgn_pin", 1);
 			Wait(n);
 		}
-		else if (dbg && trig && level.maptime % 10 == 0)
-			Console.Printf("RSQGN face t%d d=%.2f m near=%.2f far=%.2f held=%d/%d ready=%d", level.maptime, dist, near, far, faceTic, hold, faceReady);
+		else if (dbg && (squeeze || atMouth) && level.maptime % 5 == 0)
+		{
+			Vector3 e = RSQGN_Geo.Eyes(pmo);
+			Vector3 hp = RSQGN_Geo.Pos(pmo, h);
+			Console.Printf("RSQGN face t%d hand %d mouth %.2f m (reach %.2f) squeeze %s held %d/%d ready %d; eyes %.2f m over viewz, hand %.2f m under the eyes",
+				level.maptime, h, mouth, reach, by, faceTic, hold, faceReady, (e.z - p.viewz) * RSQGN_Geo.Ps(pmo) / RSQGN_Geo.Vu(),
+				(e.z - hp.z) * RSQGN_Geo.Ps(pmo) / RSQGN_Geo.Vu());
+		}
 	}
 
 	// what leaves the hand for a hand velocity v (map units a tic): the strength, the lift, the run you were in.

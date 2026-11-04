@@ -1,0 +1,213 @@
+GTP_K1_ALT_CYCLES_ALL_KINDS
+RSQGN face t50 hand 0 mouth 0.49 m (reach 0.15) squeeze alt held 0/12 ready 1; eyes 0.25 m over viewz, hand 0.60 m under the eyes
+RSQGN kind p0 t51: Impact
+RSQGN kind p0 t58: Incendiary
+RSQGN kind p0 t65: Freeze
+RSQGN face t65 hand 0 mouth 0.49 m (reach 0.15) squeeze alt held 0/12 ready 1; eyes 0.25 m over viewz, hand 0.60 m under the eyes
+RSQGN kind p0 t72: Stun
+RSQGN kind p0 t79: Smoke
+RSQGN face t80 hand 0 mouth 0.49 m (reach 0.15) squeeze alt held 0/12 ready 1; eyes 0.25 m over viewz, hand 0.60 m under the eyes
+RSQGN face t85 hand 0 mouth 0.49 m (reach 0.15) squeeze alt held 0/12 ready 1; eyes 0.25 m over viewz, hand 0.60 m under the eyes
+RSQGN kind p0 t86: Flash
+RSQGN kind p0 t93: Charm
+RSQGN face t100 hand 0 mouth 0.49 m (reach 0.15) squeeze alt held 0/12 ready 1; eyes 0.25 m over viewz, hand 0.60 m under the eyes
+RSQGN kind p0 t101: Infight
+RSQGN kind p0 t107: Frag
+GTP_K2_SWITCH_OFF
+RSQGN alt t115: no cycle (Alt Fire Cycles Grenade Types is off)
+RSQGN face t115 hand 0 mouth 0.49 m (reach 0.15) squeeze alt held 0/12 ready 1; eyes 0.25 m over viewz, hand 0.60 m under the eyes
+RSQGN alt t122: no cycle (Alt Fire Cycles Grenade Types is off)
+GTP_K3_FRAG_ONLY
+RSQGN alt t149: no cycle (no other kind owned)
+RSQGN face t150 hand 0 mouth 0.49 m (reach 0.15) squeeze alt held 0/12 ready 1; eyes 0.25 m over viewz, hand 0.60 m under the eyes
+RSQGN alt t156: no cycle (no other kind owned)
+GTP_K4_FREEZE_THROWN_AT_AN_IMP
+RSQGN kind p0 t184: Impact
+RSQGN face t185 hand 0 mouth 0.49 m (reach 0.15) squeeze alt held 0/12 ready 1; eyes 0.25 m over viewz, hand 0.60 m under the eyes
+RSQGN face t190 hand 0 mouth 0.49 m (reach 0.15) squeeze alt held 0/12 ready 1; eyes 0.25 m over viewz, hand 0.60 m under the eyes
+RSQGN kind p0 t191: Incendiary
+RSQGN kind p0 t198: Freeze
+GTP t204 spawned DoomImp 250 ahead
+RSQGN face t210 hand 0 mouth 0.04 m (reach 0.15) squeeze none held 0/12 ready 1; eyes 0.25 m over viewz, hand 0.12 m under the eyes
+RSQGN face t215 hand 0 mouth 0.04 m (reach 0.15) squeeze trigger held 3/12 ready 1; eyes 0.25 m over viewz, hand 0.12 m under the eyes
+RSQGN face t220 hand 0 mouth 0.04 m (reach 0.15) squeeze trigger held 8/12 ready 1; eyes 0.25 m over viewz, hand 0.12 m under the eyes
+RSQGN teeth t224: hand 0, squeezed by trigger, 0.04 m from the mouth (reach 0.15) for 12 tics
+RSQGN pin out p0 t225 by teeth (hand 0)
+RSQGN release t239: swing 7.22 m/s (throws from 2.50)
+RSQGN thrown p0 t240 hand 0 swing 7.21 m/s, leaves at 7.8 u/tic (8.41 m/s) from (-91 809 98), fuse 105 of 105
+GTP t240 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+GTP t240 monster Zombieman health 20 freezetics 0 in pain 0 ice 0
+GTP t240 monster Zombieman health 20 freezetics 0 in pain 0 ice 0
+GTP t240 monster Zombieman health 20 freezetics 0 in pain 0 ice 0
+GTP t240 monster Zombieman health 20 freezetics 0 in pain 0 ice 0
+GTP t240 monster Zombieman health 20 freezetics 0 in pain 0 ice 0
+GTP t240 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+GTP t240 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+GTP t240 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+GTP t240 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+RSQGN flash thrown t240 period 16 left 104 at (-91 815 102)
+GTP t255 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+GTP t255 monster Zombieman health 20 freezetics 0 in pain 0 ice 0
+GTP t255 monster Zombieman health 20 freezetics 0 in pain 0 ice 0
+GTP t255 monster Zombieman health 20 freezetics 0 in pain 0 ice 0
+GTP t255 monster Zombieman health 20 freezetics 0 in pain 0 ice 0
+GTP t255 monster Zombieman health 20 freezetics 0 in pain 0 ice 0
+GTP t255 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+GTP t255 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+GTP t255 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+GTP t255 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+RSQGN flash thrown t256 period 14 left 88 at (-91 924 126)
+GTP t270 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+GTP t270 monster Zombieman health 20 freezetics 0 in pain 0 ice 0
+GTP t270 monster Zombieman health 20 freezetics 0 in pain 0 ice 0
+GTP t270 monster Zombieman health 20 freezetics 0 in pain 0 ice 0
+GTP t270 monster Zombieman health 20 freezetics 0 in pain 0 ice 0
+GTP t270 monster Zombieman health 20 freezetics 0 in pain 0 ice 0
+GTP t270 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+GTP t270 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+GTP t270 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+GTP t270 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+RSQGN flash thrown t270 period 12 left 74 at (-91 1019 90)
+RSQGN flash thrown t282 period 10 left 62 at (-91 1073 86) resting
+GTP t285 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+GTP t285 monster Zombieman health 20 freezetics 0 in pain 0 ice 0
+GTP t285 monster Zombieman health 20 freezetics 0 in pain 0 ice 0
+GTP t285 monster Zombieman health 20 freezetics 0 in pain 0 ice 0
+GTP t285 monster Zombieman health 20 freezetics 0 in pain 0 ice 0
+GTP t285 monster Zombieman health 20 freezetics 0 in pain 0 ice 0
+GTP t285 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+GTP t285 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+GTP t285 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+GTP t285 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+RSQGN flash thrown t292 period 9 left 52 at (-91 1107 79) resting
+GTP t300 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+GTP t300 monster Zombieman health 20 freezetics 0 in pain 0 ice 0
+GTP t300 monster Zombieman health 20 freezetics 0 in pain 0 ice 0
+GTP t300 monster Zombieman health 20 freezetics 0 in pain 0 ice 0
+GTP t300 monster Zombieman health 20 freezetics 0 in pain 0 ice 0
+GTP t300 monster Zombieman health 20 freezetics 0 in pain 0 ice 0
+GTP t300 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+GTP t300 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+GTP t300 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+GTP t300 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+RSQGN flash thrown t301 period 8 left 43 at (-91 1124 80) resting
+RSQGN flash thrown t309 period 7 left 35 at (-91 1125 80) resting
+GTP t315 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+GTP t315 monster Zombieman health 20 freezetics 0 in pain 0 ice 0
+GTP t315 monster Zombieman health 20 freezetics 0 in pain 0 ice 0
+GTP t315 monster Zombieman health 20 freezetics 0 in pain 0 ice 0
+GTP t315 monster Zombieman health 20 freezetics 0 in pain 0 ice 0
+GTP t315 monster Zombieman health 20 freezetics 0 in pain 0 ice 0
+GTP t315 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+GTP t315 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+GTP t315 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+GTP t315 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+RSQGN flash thrown t316 period 6 left 28 at (-91 1125 80) resting
+RSQGN flash thrown t322 period 5 left 22 at (-91 1125 80) resting
+RSQGN flash thrown t327 period 4 left 17 at (-91 1125 80) resting
+GTP t330 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+GTP t330 monster Zombieman health 20 freezetics 0 in pain 0 ice 0
+GTP t330 monster Zombieman health 20 freezetics 0 in pain 0 ice 0
+GTP t330 monster Zombieman health 20 freezetics 0 in pain 0 ice 0
+GTP t330 monster Zombieman health 20 freezetics 0 in pain 0 ice 0
+GTP t330 monster Zombieman health 20 freezetics 0 in pain 0 ice 0
+GTP t330 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+GTP t330 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+GTP t330 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+GTP t330 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+RSQGN flash thrown t331 period 4 left 13 at (-91 1125 80) resting
+RSQGN flash thrown t335 period 3 left 9 at (-91 1125 80) resting
+RSQGN flash thrown t338 period 3 left 6 at (-91 1125 80) resting
+RSQGN flash thrown t341 period 2 left 3 at (-91 1125 80) resting
+RSQGN flash thrown t343 period 2 left 1 at (-91 1125 80) resting
+GTP t345 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+GTP t345 monster Zombieman health 20 freezetics 0 in pain 0 ice 0
+GTP t345 monster Zombieman health 20 freezetics 0 in pain 0 ice 0
+GTP t345 monster Zombieman health 20 freezetics 0 in pain 0 ice 0
+GTP t345 monster Zombieman health 20 freezetics 0 in pain 0 ice 0
+GTP t345 monster Zombieman health 20 freezetics 0 in pain 0 ice 0
+GTP t345 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+GTP t345 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+GTP t345 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+GTP t345 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+RSQGN boom thrown t345 at (-91 1125 80)
+GTP t360 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+GTP t360 monster Zombieman health 20 freezetics 91 in pain 0 ice 1
+GTP t360 monster Zombieman health 20 freezetics 91 in pain 0 ice 1
+GTP t360 monster Zombieman health 20 freezetics 0 in pain 0 ice 0
+GTP t360 monster Zombieman health 20 freezetics 0 in pain 0 ice 0
+GTP t360 monster Zombieman health 20 freezetics 0 in pain 0 ice 0
+GTP t360 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+GTP t360 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+GTP t360 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+GTP t360 monster DoomImp health 60 freezetics 91 in pain 0 ice 1
+GTP t375 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+GTP t375 monster Zombieman health 20 freezetics 76 in pain 0 ice 1
+GTP t375 monster Zombieman health 20 freezetics 76 in pain 0 ice 1
+GTP t375 monster Zombieman health 20 freezetics 0 in pain 0 ice 0
+GTP t375 monster Zombieman health 20 freezetics 0 in pain 0 ice 0
+GTP t375 monster Zombieman health 20 freezetics 0 in pain 0 ice 0
+GTP t375 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+GTP t375 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+GTP t375 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+GTP t375 monster DoomImp health 60 freezetics 76 in pain 0 ice 1
+GTP t390 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+GTP t390 monster Zombieman health 20 freezetics 61 in pain 0 ice 1
+GTP t390 monster Zombieman health 20 freezetics 61 in pain 0 ice 1
+GTP t390 monster Zombieman health 20 freezetics 0 in pain 0 ice 0
+GTP t390 monster Zombieman health 20 freezetics 0 in pain 0 ice 0
+GTP t390 monster Zombieman health 20 freezetics 0 in pain 0 ice 0
+GTP t390 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+GTP t390 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+GTP t390 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+GTP t390 monster DoomImp health 60 freezetics 61 in pain 0 ice 1
+GTP t405 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+GTP t405 monster Zombieman health 20 freezetics 46 in pain 0 ice 1
+GTP t405 monster Zombieman health 20 freezetics 46 in pain 0 ice 1
+GTP t405 monster Zombieman health 20 freezetics 0 in pain 0 ice 0
+GTP t405 monster Zombieman health 20 freezetics 0 in pain 0 ice 0
+GTP t405 monster Zombieman health 20 freezetics 0 in pain 0 ice 0
+GTP t405 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+GTP t405 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+GTP t405 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+GTP t405 monster DoomImp health 60 freezetics 46 in pain 0 ice 1
+GTP t420 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+GTP t420 monster Zombieman health 20 freezetics 31 in pain 0 ice 1
+GTP t420 monster Zombieman health 20 freezetics 31 in pain 0 ice 1
+GTP t420 monster Zombieman health 20 freezetics 0 in pain 0 ice 0
+GTP t420 monster Zombieman health 20 freezetics 0 in pain 0 ice 0
+GTP t420 monster Zombieman health 20 freezetics 0 in pain 0 ice 0
+GTP t420 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+GTP t420 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+GTP t420 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+GTP t420 monster DoomImp health 60 freezetics 31 in pain 0 ice 1
+GTP t435 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+GTP t435 monster Zombieman health 20 freezetics 16 in pain 0 ice 1
+GTP t435 monster Zombieman health 20 freezetics 16 in pain 0 ice 1
+GTP t435 monster Zombieman health 20 freezetics 0 in pain 0 ice 0
+GTP t435 monster Zombieman health 20 freezetics 0 in pain 0 ice 0
+GTP t435 monster Zombieman health 20 freezetics 0 in pain 0 ice 0
+GTP t435 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+GTP t435 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+GTP t435 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+GTP t435 monster DoomImp health 60 freezetics 16 in pain 0 ice 1
+GTP t450 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+GTP t450 monster Zombieman health 20 freezetics 1 in pain 0 ice 1
+GTP t450 monster Zombieman health 20 freezetics 1 in pain 0 ice 1
+GTP t450 monster Zombieman health 20 freezetics 0 in pain 0 ice 0
+GTP t450 monster Zombieman health 20 freezetics 0 in pain 0 ice 0
+GTP t450 monster Zombieman health 20 freezetics 0 in pain 0 ice 0
+GTP t450 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+GTP t450 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+GTP t450 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+GTP t450 monster DoomImp health 60 freezetics 1 in pain 0 ice 1
+GTP t465 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+GTP t465 monster Zombieman health 20 freezetics 0 in pain 0 ice 0
+GTP t465 monster Zombieman health 20 freezetics 0 in pain 0 ice 0
+GTP t465 monster Zombieman health 20 freezetics 0 in pain 0 ice 0
+GTP t465 monster Zombieman health 20 freezetics 0 in pain 0 ice 0
+GTP t465 monster Zombieman health 20 freezetics 0 in pain 0 ice 0
+GTP t465 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+GTP t465 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+GTP t465 monster DoomImp health 60 freezetics 0 in pain 0 ice 0
+GTP t465 monster DoomImp health 60 freezetics 0 in pain 0 ice 0

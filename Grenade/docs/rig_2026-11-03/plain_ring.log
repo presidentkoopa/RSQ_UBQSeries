@@ -1,0 +1,357 @@
+Log started: 2026-11-03 19:33:12
+QZDoom version 4.14.3
+GRP unowned non-pickup HexenArmor at (0 0 0) destroyed 0
+GRP unowned non-pickup BasicArmor at (0 0 0) destroyed 0
+GRP unowned non-pickup RSQGN_Ammo at (0 0 0) destroyed 0
+GRP map MAP01: 24 other items lying, our singles 0, our packs 0
+GRP t20 inv: RSQGN_Grenade 1, RSQGN_Ammo 3, HandGrenades -1, GrenadeAmmo -1; RSQGN_ actors in the world 0; ready Pistol off None
+GRP t50 spawned DoomImp at (-96 1034 56), 250 ahead
+RSQGN face t55 hand 0 mouth 0.43 m (reach 0.15) squeeze trigger held 0/12 ready 1; eyes 0.15 m over viewz, hand 0.50 m under the eyes
+RSQGN face t60 hand 0 mouth 0.43 m (reach 0.15) squeeze trigger held 0/12 ready 1; eyes 0.15 m over viewz, hand 0.50 m under the eyes
+RSQGN ring taken t61 (other hand 0.1 cm from it)
+RSQGN ring pulled t65 (24.9 cm)
+RSQGN pin out p0 t66 by ring (hand 0)
+GRP t80 psp frame 1 btn 1 main (-89.2 784.0 92.8) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 785.2 94.3) off->ring 53.3 cm nade->eyes 0.23 m
+GRP t84 psp frame 1 btn 1 main (-89.2 795.9 95.7) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 97.1) off->ring 49.6 cm nade->eyes 0.41 m
+RSQGN release t86: swing 7.22 m/s (throws from 2.50)
+RSQGN thrown p0 t87 hand 0 swing 7.21 m/s, leaves at 7.8 u/tic (8.41 m/s) from (-91 809 98), fuse 105 of 105
+GRP t87 thrown at (-90.6 808.6 97.9) vel (0.00 6.79 3.79) missile 1 floorz 56.0 frame 0 pitch 0 roll 0
+RSQGN flash thrown t87 period 16 left 104 at (-91 815 102)
+GRP t88 psp frame 0 btn 0 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m
+GRP t88 thrown at (-90.6 815.4 101.7) vel (0.00 6.79 3.52) missile 1 floorz 56.0 frame 1 pitch 319 roll 357
+GRP t89 thrown at (-90.6 822.2 105.2) vel (0.00 6.79 3.25) missile 1 floorz 56.0 frame 1 pitch 320 roll 360
+GRP t90 thrown at (-90.6 829.0 108.4) vel (0.00 6.79 2.98) missile 1 floorz 56.0 frame 1 pitch 322 roll 364
+GRP t91 thrown at (-90.6 835.8 111.4) vel (0.00 6.79 2.71) missile 1 floorz 8.0 frame 1 pitch 323 roll 367
+GRP t92 psp frame 0 btn 0 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m
+GRP t92 thrown at (-90.6 842.6 114.1) vel (0.00 6.79 2.44) missile 1 floorz 8.0 frame 1 pitch 325 roll 371
+GRP t93 thrown at (-90.6 849.4 116.6) vel (0.00 6.79 2.17) missile 1 floorz 8.0 frame 1 pitch 326 roll 374
+GRP t94 thrown at (-90.6 856.2 118.7) vel (0.00 6.79 1.90) missile 1 floorz 8.0 frame 1 pitch 328 roll 378
+GRP t95 thrown at (-90.6 862.9 120.6) vel (0.00 6.79 1.63) missile 1 floorz 8.0 frame 1 pitch 329 roll 381
+GRP t96 psp frame 0 btn 0 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m
+GRP t96 thrown at (-90.6 869.7 122.3) vel (0.00 6.79 1.36) missile 1 floorz 8.0 frame 0 pitch 331 roll 385
+GRP t97 thrown at (-90.6 876.5 123.6) vel (0.00 6.79 1.09) missile 1 floorz 8.0 frame 0 pitch 332 roll 388
+GRP t98 thrown at (-90.6 883.3 124.7) vel (0.00 6.79 0.82) missile 1 floorz 8.0 frame 0 pitch 334 roll 392
+GRP t99 thrown at (-90.6 890.1 125.5) vel (0.00 6.79 0.55) missile 1 floorz 8.0 frame 0 pitch 335 roll 395
+GRP t100 psp frame 0 btn 0 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m
+GRP t100 thrown at (-90.6 896.9 126.1) vel (0.00 6.79 0.28) missile 1 floorz 8.0 frame 0 pitch 337 roll 399
+GRP t101 thrown at (-90.6 903.7 126.4) vel (0.00 6.79 0.01) missile 1 floorz 8.0 frame 0 pitch 338 roll 402
+GRP t102 thrown at (-90.6 910.5 126.4) vel (0.00 6.79 -0.26) missile 1 floorz 8.0 frame 0 pitch 340 roll 406
+GRP t103 thrown at (-90.6 917.3 126.1) vel (0.00 6.79 -0.53) missile 1 floorz 8.0 frame 0 pitch 341 roll 409
+RSQGN flash thrown t103 period 14 left 88 at (-91 924 126)
+GRP t104 psp frame 0 btn 0 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m
+GRP t104 thrown at (-90.6 924.1 125.6) vel (0.00 6.79 -0.80) missile 1 floorz 8.0 frame 1 pitch 343 roll 413
+GRP t105 thrown at (-90.6 930.8 124.8) vel (0.00 6.79 -1.07) missile 1 floorz 8.0 frame 1 pitch 344 roll 416
+GRP t106 thrown at (-90.6 937.6 123.7) vel (0.00 6.79 -1.34) missile 1 floorz 8.0 frame 1 pitch 346 roll 420
+GRP t107 thrown at (-90.6 944.4 122.4) vel (0.00 6.79 -1.61) missile 1 floorz 8.0 frame 1 pitch 347 roll 423
+GRP t108 psp frame 0 btn 0 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m
+GRP t108 thrown at (-90.6 951.2 120.8) vel (0.00 6.79 -1.88) missile 1 floorz 8.0 frame 1 pitch 349 roll 427
+GRP t109 thrown at (-90.6 958.0 118.9) vel (0.00 6.79 -2.15) missile 1 floorz 8.0 frame 1 pitch 350 roll 430
+GRP t110 thrown at (-90.6 964.8 116.7) vel (0.00 6.79 -2.42) missile 1 floorz 8.0 frame 1 pitch 352 roll 434
+GRP t111 thrown at (-90.6 971.6 114.3) vel (0.00 6.79 -2.69) missile 1 floorz 8.0 frame 0 pitch 353 roll 437
+GRP t112 psp frame 0 btn 0 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m
+GRP t112 thrown at (-90.6 978.4 111.6) vel (0.00 6.79 -2.96) missile 1 floorz 8.0 frame 0 pitch 355 roll 441
+GRP t113 thrown at (-90.6 985.2 108.7) vel (0.00 6.79 -3.23) missile 1 floorz 8.0 frame 0 pitch 356 roll 444
+GRP t114 thrown at (-90.6 992.0 105.4) vel (0.00 6.79 -3.50) missile 1 floorz 8.0 frame 0 pitch 358 roll 448
+GRP t115 thrown at (-90.6 998.7 101.9) vel (0.00 6.79 -3.77) missile 1 floorz 16.0 frame 0 pitch 359 roll 451
+GRP t116 psp frame 0 btn 0 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m
+GRP t116 thrown at (-90.6 1005.5 98.2) vel (0.00 6.79 -4.04) missile 1 floorz 16.0 frame 0 pitch 361 roll 455
+GRP t117 thrown at (-90.6 1012.3 94.1) vel (0.00 6.79 -4.31) missile 1 floorz 16.0 frame 0 pitch 362 roll 458
+RSQGN flash thrown t117 period 12 left 74 at (-91 1019 90)
+GRP t118 thrown at (-90.6 1019.1 89.8) vel (0.00 6.79 -4.58) missile 1 floorz 16.0 frame 1 pitch 364 roll 462
+GRP t119 thrown at (-90.6 1025.9 85.2) vel (0.00 6.79 -4.85) missile 1 floorz 16.0 frame 1 pitch 365 roll 465
+GRP t120 psp frame 0 btn 0 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m
+GRP t120 thrown at (-90.6 1032.7 80.4) vel (0.00 6.79 -5.12) missile 1 floorz 16.0 frame 1 pitch 367 roll 469
+GRP t121 thrown at (-90.6 1039.5 75.3) vel (0.00 6.79 -5.39) missile 1 floorz 16.0 frame 1 pitch 368 roll 472
+GRP t122 thrown at (-90.6 1046.3 72.0) vel (0.00 3.40 2.70) missile 0 floorz 16.0 frame 1 pitch 370 roll 476
+GRP t123 thrown at (-90.6 1049.7 74.7) vel (0.00 3.40 2.43) missile 0 floorz 16.0 frame 1 pitch 371 roll 479
+GRP t124 psp frame 0 btn 0 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m
+GRP t124 thrown at (-90.6 1053.1 77.1) vel (0.00 3.40 2.16) missile 0 floorz 16.0 frame 0 pitch 373 roll 483
+GRP t125 thrown at (-90.6 1056.5 79.3) vel (0.00 3.40 1.89) missile 0 floorz 16.0 frame 0 pitch 374 roll 486
+GRP t126 thrown at (-90.6 1059.9 81.2) vel (0.00 3.40 1.62) missile 0 floorz 24.0 frame 0 pitch 376 roll 490
+GRP t127 thrown at (-90.6 1063.2 82.8) vel (0.00 3.40 1.35) missile 0 floorz 24.0 frame 0 pitch 377 roll 493
+GRP t128 psp frame 0 btn 0 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m
+GRP t128 thrown at (-90.6 1066.6 84.1) vel (0.00 3.40 1.08) missile 0 floorz 24.0 frame 0 pitch 379 roll 497
+GRP t129 thrown at (-90.6 1070.0 85.2) vel (0.00 3.40 0.81) missile 0 floorz 24.0 frame 0 pitch 380 roll 500
+RSQGN flash thrown t129 period 10 left 62 at (-91 1073 86) resting
+GRP t130 thrown at (-90.6 1073.4 86.0) vel (0.00 3.40 0.54) missile 0 floorz 24.0 frame 1 pitch 382 roll 504
+GRP t131 thrown at (-90.6 1076.8 86.5) vel (0.00 3.40 0.27) missile 0 floorz 24.0 frame 1 pitch 383 roll 507
+GRP t132 psp frame 0 btn 0 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m
+GRP t132 thrown at (-90.6 1080.2 86.8) vel (0.00 3.40 -0.00) missile 0 floorz 24.0 frame 1 pitch 385 roll 511
+GRP t133 thrown at (-90.6 1083.6 86.8) vel (0.00 3.40 -0.27) missile 0 floorz 24.0 frame 1 pitch 386 roll 514
+GRP t134 thrown at (-90.6 1087.0 86.5) vel (0.00 3.40 -0.54) missile 0 floorz 24.0 frame 1 pitch 388 roll 518
+GRP t135 thrown at (-90.6 1090.4 86.0) vel (0.00 3.40 -0.81) missile 0 floorz 24.0 frame 0 pitch 389 roll 521
+GRP t136 psp frame 0 btn 0 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m
+GRP t136 thrown at (-90.6 1093.8 85.2) vel (0.00 3.40 -1.08) missile 0 floorz 24.0 frame 0 pitch 391 roll 525
+GRP t137 thrown at (-90.6 1097.2 84.1) vel (0.00 3.40 -1.35) missile 0 floorz 24.0 frame 0 pitch 392 roll 528
+GRP t138 thrown at (-90.6 1100.6 82.7) vel (0.00 3.40 -1.62) missile 0 floorz 24.0 frame 0 pitch 394 roll 532
+GRP t139 thrown at (-90.6 1104.0 81.1) vel (0.00 3.40 -1.90) missile 0 floorz 24.0 frame 0 pitch 395 roll 535
+RSQGN flash thrown t139 period 9 left 52 at (-91 1107 79) resting
+GRP t140 psp frame 0 btn 0 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m
+GRP t140 thrown at (-90.6 1107.4 79.2) vel (0.00 3.40 -2.17) missile 0 floorz 24.0 frame 1 pitch 397 roll 539
+GRP t141 thrown at (-90.6 1110.8 77.0) vel (0.00 3.40 -2.44) missile 0 floorz 24.0 frame 1 pitch 398 roll 542
+GRP t142 thrown at (-90.6 1114.2 80.0) vel (0.00 2.78 0.00) missile 0 floorz 24.0 frame 1 pitch 51 roll -134
+GRP t143 thrown at (-90.6 1117.0 80.0) vel (0.00 2.07 0.00) missile 0 floorz 24.0 frame 1 pitch 61 roll -100
+GRP t144 psp frame 0 btn 0 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m
+GRP t144 thrown at (-90.6 1119.0 80.0) vel (0.00 1.54 0.00) missile 0 floorz 24.0 frame 0 pitch 68 roll -75
+GRP t145 thrown at (-90.6 1120.6 80.0) vel (0.00 1.14 0.00) missile 0 floorz 32.0 frame 0 pitch 74 roll -56
+GRP t146 thrown at (-90.6 1121.7 80.0) vel (0.00 0.85 0.00) missile 0 floorz 32.0 frame 0 pitch 78 roll -42
+GRP t147 thrown at (-90.6 1122.6 80.0) vel (0.00 0.63 0.00) missile 0 floorz 32.0 frame 0 pitch 81 roll -32
+GRP t148 psp frame 0 btn 0 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m
+GRP t148 thrown at (-90.6 1123.2 80.0) vel (0.00 0.47 0.00) missile 0 floorz 32.0 frame 0 pitch 83 roll -24
+RSQGN flash thrown t148 period 8 left 43 at (-91 1124 80) resting
+GRP t149 thrown at (-90.6 1123.7 80.0) vel (0.00 0.35 0.00) missile 0 floorz 32.0 frame 1 pitch 85 roll -18
+GRP t150 thrown at (-90.6 1124.0 80.0) vel (0.00 0.26 0.00) missile 0 floorz 32.0 frame 1 pitch 86 roll -13
+GRP t151 thrown at (-90.6 1124.3 80.0) vel (0.00 0.19 0.00) missile 0 floorz 32.0 frame 1 pitch 87 roll -10
+GRP t152 psp frame 0 btn 0 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m
+GRP t152 thrown at (-90.6 1124.5 80.0) vel (0.00 0.14 0.00) missile 0 floorz 32.0 frame 1 pitch 88 roll -8
+GRP t153 thrown at (-90.6 1124.6 80.0) vel (0.00 0.00 0.00) missile 0 floorz 32.0 frame 0 pitch 88 roll -6
+GRP t154 thrown at (-90.6 1124.6 80.0) vel (0.00 0.00 0.00) missile 0 floorz 32.0 frame 0 pitch 89 roll -4
+GRP t155 thrown at (-90.6 1124.6 80.0) vel (0.00 0.00 0.00) missile 0 floorz 32.0 frame 0 pitch 89 roll -3
+GRP t156 psp frame 0 btn 0 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m
+GRP t156 thrown at (-90.6 1124.6 80.0) vel (0.00 0.00 0.00) missile 0 floorz 32.0 frame 0 pitch 89 roll -2
+RSQGN flash thrown t156 period 7 left 35 at (-91 1125 80) resting
+GRP t157 thrown at (-90.6 1124.6 80.0) vel (0.00 0.00 0.00) missile 0 floorz 32.0 frame 1 pitch 89 roll -2
+GRP t158 thrown at (-90.6 1124.6 80.0) vel (0.00 0.00 0.00) missile 0 floorz 32.0 frame 1 pitch 90 roll -1
+GRP t159 thrown at (-90.6 1124.6 80.0) vel (0.00 0.00 0.00) missile 0 floorz 32.0 frame 1 pitch 90 roll -1
+GRP t160 psp frame 0 btn 0 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m
+GRP t160 thrown at (-90.6 1124.6 80.0) vel (0.00 0.00 0.00) missile 0 floorz 32.0 frame 0 pitch 90 roll -1
+GRP t161 thrown at (-90.6 1124.6 80.0) vel (0.00 0.00 0.00) missile 0 floorz 32.0 frame 0 pitch 90 roll -1
+GRP t162 thrown at (-90.6 1124.6 80.0) vel (0.00 0.00 0.00) missile 0 floorz 32.0 frame 0 pitch 90 roll -0
+GRP t163 thrown at (-90.6 1124.6 80.0) vel (0.00 0.00 0.00) missile 0 floorz 32.0 frame 0 pitch 90 roll -0
+RSQGN flash thrown t163 period 6 left 28 at (-91 1125 80) resting
+GRP t164 psp frame 0 btn 0 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m
+GRP t164 thrown at (-90.6 1124.6 80.0) vel (0.00 0.00 0.00) missile 0 floorz 32.0 frame 1 pitch 90 roll -0
+GRP t165 thrown at (-90.6 1124.6 80.0) vel (0.00 0.00 0.00) missile 0 floorz 32.0 frame 1 pitch 90 roll -0
+GRP t166 thrown at (-90.6 1124.6 80.0) vel (0.00 0.00 0.00) missile 0 floorz 32.0 frame 1 pitch 90 roll -0
+GRP t167 thrown at (-90.6 1124.6 80.0) vel (0.00 0.00 0.00) missile 0 floorz 32.0 frame 0 pitch 90 roll -0
+GRP t168 psp frame 0 btn 0 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m
+GRP t168 thrown at (-90.6 1124.6 80.0) vel (0.00 0.00 0.00) missile 0 floorz 32.0 frame 0 pitch 90 roll -0
+GRP t169 thrown at (-90.6 1124.6 80.0) vel (0.00 0.00 0.00) missile 0 floorz 32.0 frame 0 pitch 90 roll -0
+RSQGN flash thrown t169 period 5 left 22 at (-91 1125 80) resting
+GRP t170 thrown at (-90.6 1124.6 80.0) vel (0.00 0.00 0.00) missile 0 floorz 32.0 frame 1 pitch 90 roll -0
+GRP t171 thrown at (-90.6 1124.6 80.0) vel (0.00 0.00 0.00) missile 0 floorz 32.0 frame 1 pitch 90 roll -0
+GRP t172 psp frame 0 btn 0 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m
+GRP t172 thrown at (-90.6 1124.6 80.0) vel (0.00 0.00 0.00) missile 0 floorz 32.0 frame 0 pitch 90 roll -0
+GRP t173 thrown at (-90.6 1124.6 80.0) vel (0.00 0.00 0.00) missile 0 floorz 32.0 frame 0 pitch 90 roll -0
+GRP t174 thrown at (-90.6 1124.6 80.0) vel (0.00 0.00 0.00) missile 0 floorz 32.0 frame 0 pitch 90 roll -0
+RSQGN flash thrown t174 period 4 left 17 at (-91 1125 80) resting
+GRP t175 thrown at (-90.6 1124.6 80.0) vel (0.00 0.00 0.00) missile 0 floorz 32.0 frame 1 pitch 90 roll -0
+GRP t176 psp frame 0 btn 0 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m
+GRP t176 thrown at (-90.6 1124.6 80.0) vel (0.00 0.00 0.00) missile 0 floorz 32.0 frame 1 pitch 90 roll -0
+GRP t177 thrown at (-90.6 1124.6 80.0) vel (0.00 0.00 0.00) missile 0 floorz 32.0 frame 0 pitch 90 roll -0
+GRP t178 thrown at (-90.6 1124.6 80.0) vel (0.00 0.00 0.00) missile 0 floorz 32.0 frame 0 pitch 90 roll -0
+RSQGN flash thrown t178 period 4 left 13 at (-91 1125 80) resting
+GRP t179 thrown at (-90.6 1124.6 80.0) vel (0.00 0.00 0.00) missile 0 floorz 32.0 frame 1 pitch 90 roll -0
+GRP t180 psp frame 0 btn 0 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m
+GRP t180 thrown at (-90.6 1124.6 80.0) vel (0.00 0.00 0.00) missile 0 floorz 32.0 frame 1 pitch 90 roll -0
+GRP t181 thrown at (-90.6 1124.6 80.0) vel (0.00 0.00 0.00) missile 0 floorz 32.0 frame 0 pitch 90 roll -0
+GRP t182 thrown at (-90.6 1124.6 80.0) vel (0.00 0.00 0.00) missile 0 floorz 32.0 frame 0 pitch 90 roll -0
+RSQGN flash thrown t182 period 3 left 9 at (-91 1125 80) resting
+GRP t183 thrown at (-90.6 1124.6 80.0) vel (0.00 0.00 0.00) missile 0 floorz 32.0 frame 1 pitch 90 roll -0
+GRP t184 psp frame 0 btn 0 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m
+GRP t184 thrown at (-90.6 1124.6 80.0) vel (0.00 0.00 0.00) missile 0 floorz 32.0 frame 0 pitch 90 roll -0
+GRP t185 thrown at (-90.6 1124.6 80.0) vel (0.00 0.00 0.00) missile 0 floorz 32.0 frame 0 pitch 90 roll -0
+RSQGN flash thrown t185 period 3 left 6 at (-91 1125 80) resting
+GRP t186 thrown at (-90.6 1124.6 80.0) vel (0.00 0.00 0.00) missile 0 floorz 32.0 frame 1 pitch 90 roll -0
+GRP t187 thrown at (-90.6 1124.6 80.0) vel (0.00 0.00 0.00) missile 0 floorz 32.0 frame 0 pitch 90 roll -0
+GRP t188 psp frame 0 btn 0 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m
+GRP t188 thrown at (-90.6 1124.6 80.0) vel (0.00 0.00 0.00) missile 0 floorz 32.0 frame 0 pitch 90 roll -0
+RSQGN flash thrown t188 period 2 left 3 at (-91 1125 80) resting
+GRP t189 thrown at (-90.6 1124.6 80.0) vel (0.00 0.00 0.00) missile 0 floorz 32.0 frame 1 pitch 90 roll -0
+GRP t190 thrown at (-90.6 1124.6 80.0) vel (0.00 0.00 0.00) missile 0 floorz 32.0 frame 0 pitch 90 roll -0
+RSQGN flash thrown t190 period 2 left 1 at (-91 1125 80) resting
+GRP t191 thrown at (-90.6 1124.6 80.0) vel (0.00 0.00 0.00) missile 0 floorz 32.0 frame 1 pitch 90 roll -0
+GRP t192 psp frame 0 btn 0 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m
+GRP t192 thrown at (-90.6 1124.6 80.0) vel (0.00 0.00 0.00) missile 0 floorz 32.0 frame 0 pitch 90 roll -0
+RSQGN boom thrown t192 at (-91 1125 80)
+GRP t192 damaged DoomImp by DoomPlayer via RSQGN_Thrown: 54 Explosive (health now 6)
+GTP t192 damaged DoomImp by DoomPlayer via RSQGN_Thrown: 54 (health 6)
+GRP t192 damaged Zombieman by DoomPlayer via RSQGN_Thrown: 54 Explosive (health now -34)
+GTP t192 damaged Zombieman by DoomPlayer via RSQGN_Thrown: 54 (health -34)
+GRP t192 died Zombieman, killer DoomPlayer via RSQGN_Thrown
+GRP t192 damaged Zombieman by DoomPlayer via RSQGN_Thrown: 84 Explosive (health now -64)
+GTP t192 damaged Zombieman by DoomPlayer via RSQGN_Thrown: 84 (health -64)
+GRP t192 died Zombieman, killer DoomPlayer via RSQGN_Thrown
+GRP t193 thrown at (-90.6 1124.6 80.0) vel (0.00 0.00 0.00) missile 0 floorz 32.0 frame 0 pitch 90 roll -0
+GRP t193 damaged DoomImp by DoomPlayer via RSQGN_Thrown: 54 Explosive (health now -48)
+GTP t193 damaged DoomImp by DoomPlayer via RSQGN_Thrown: 54 (health -48)
+GRP t193 died DoomImp, killer DoomPlayer via RSQGN_Thrown
+GRP t194 thrown at (-90.6 1124.6 80.0) vel (0.00 0.00 -0.27) missile 0 floorz 32.0 frame 0 pitch 90 roll -0
+GRP t196 psp frame 0 btn 0 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m
+GRP t200 psp frame 0 btn 0 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m
+GRP t204 psp frame 0 btn 0 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m
+GRP t208 psp frame 0 btn 0 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m
+GRP t212 psp frame 0 btn 0 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m
+GRP t216 psp frame 0 btn 0 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m
+GRP t217 inv: RSQGN_Grenade 1, RSQGN_Ammo 2, HandGrenades -1, GrenadeAmmo -1; RSQGN_ actors in the world 74; ready RSQGN_Grenade off None
+RSQGN face t220 hand 0 mouth 0.43 m (reach 0.15) squeeze trigger held 0/12 ready 1; eyes 0.15 m over viewz, hand 0.50 m under the eyes
+RSQGN ring taken t223 (other hand 0.1 cm from it)
+RSQGN face t225 hand 0 mouth 0.43 m (reach 0.15) squeeze trigger held 0/12 ready 1; eyes 0.15 m over viewz, hand 0.50 m under the eyes
+RSQGN ring pulled t226 (24.9 cm)
+RSQGN pin out p0 t227 by ring (hand 0)
+RSQGN pin back in p0 t238
+RSQGN face t240 hand 0 mouth 0.43 m (reach 0.15) squeeze trigger held 0/12 ready 1; eyes 0.15 m over viewz, hand 0.50 m under the eyes
+RSQGN ring taken t245 (other hand 0.1 cm from it)
+RSQGN face t245 hand 0 mouth 0.43 m (reach 0.15) squeeze trigger held 0/12 ready 1; eyes 0.15 m over viewz, hand 0.50 m under the eyes
+RSQGN ring pulled t248 (24.9 cm)
+RSQGN pin out p0 t249 by ring (hand 0)
+RSQGN release t256: swing 0.00 m/s (throws from 2.50)
+RSQGN spoon off p0 t257: cooking (swing was 0.00 m/s)
+RSQGN flash hand t257 period 16 left 105
+RSQGN flash hand t273 period 14 left 89
+RSQGN flash hand t287 period 12 left 75
+RSQGN flash hand t299 period 10 left 63
+RSQGN flash hand t309 period 9 left 53
+RSQGN flash hand t318 period 8 left 44
+RSQGN flash hand t326 period 7 left 36
+RSQGN flash hand t333 period 6 left 29
+RSQGN flash hand t339 period 5 left 23
+RSQGN flash hand t344 period 4 left 18
+RSQGN flash hand t348 period 4 left 14
+RSQGN flash hand t352 period 3 left 10
+RSQGN flash hand t355 period 3 left 7
+RSQGN flash hand t358 period 3 left 4
+RSQGN flash hand t361 period 2 left 1
+RSQGN boom in hand p0 t362 (cooked too long)
+GRP t381 inv: RSQGN_Grenade 1, RSQGN_Ammo 1, HandGrenades -1, GrenadeAmmo -1; RSQGN_ actors in the world 72; ready RSQGN_Grenade off None
+RSQGN face t385 hand 0 mouth 0.11 m (reach 0.15) squeeze trigger held 3/12 ready 1; eyes 0.15 m over viewz, hand 0.10 m under the eyes
+RSQGN face t390 hand 0 mouth 0.11 m (reach 0.15) squeeze trigger held 8/12 ready 1; eyes 0.15 m over viewz, hand 0.10 m under the eyes
+RSQGN teeth t394: hand 0, squeezed by trigger, 0.11 m from the mouth (reach 0.15) for 12 tics
+RSQGN pin out p0 t395 by teeth (hand 0)
+RSQGN release t411: swing 0.00 m/s (throws from 2.50)
+RSQGN spoon off p0 t412: cooking (swing was 0.00 m/s)
+RSQGN flash hand t412 period 16 left 105
+RSQGN flash hand t428 period 14 left 89
+GRP t441 psp frame 2 btn 1 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m
+RSQGN flash hand t442 period 12 left 75
+GRP t444 psp frame 3 btn 1 main (-89.2 784.0 92.8) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 785.2 94.3) off->ring 53.3 cm nade->eyes 0.23 m
+GRP t447 psp frame 3 btn 1 main (-89.2 795.9 95.7) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 97.1) off->ring 49.6 cm nade->eyes 0.41 m
+RSQGN thrown p0 t450 hand 0 swing 7.21 m/s, leaves at 7.8 u/tic (8.41 m/s) from (-91 809 98), fuse 67 of 105 (cooked)
+GRP t450 psp frame 0 btn 0 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m
+GRP t450 thrown at (-90.6 808.6 97.9) vel (0.00 6.79 3.79) missile 1 floorz 56.0 frame 0 pitch 0 roll 0
+RSQGN flash thrown t450 period 11 left 66 at (-91 815 102)
+GRP t451 thrown at (-90.6 815.4 101.7) vel (0.00 6.79 3.52) missile 1 floorz 56.0 frame 1 pitch 187 roll 148
+GRP t452 thrown at (-90.6 822.2 105.2) vel (0.00 6.79 3.25) missile 1 floorz 56.0 frame 1 pitch 188 roll 151
+GRP t453 psp frame 0 btn 0 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m
+GRP t453 thrown at (-90.6 829.0 108.4) vel (0.00 6.79 2.98) missile 1 floorz 56.0 frame 1 pitch 190 roll 155
+GRP t454 thrown at (-90.6 835.8 111.4) vel (0.00 6.79 2.71) missile 1 floorz 8.0 frame 1 pitch 191 roll 158
+GRP t455 thrown at (-90.6 842.6 114.1) vel (0.00 6.79 2.44) missile 1 floorz 8.0 frame 1 pitch 193 roll 162
+GRP t456 psp frame 0 btn 0 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m
+GRP t456 thrown at (-90.6 849.4 116.6) vel (0.00 6.79 2.17) missile 1 floorz 8.0 frame 0 pitch 194 roll 165
+GRP t457 thrown at (-90.6 856.2 118.7) vel (0.00 6.79 1.90) missile 1 floorz 8.0 frame 0 pitch 196 roll 169
+GRP t458 thrown at (-90.6 862.9 120.6) vel (0.00 6.79 1.63) missile 1 floorz 8.0 frame 0 pitch 197 roll 172
+GRP t459 psp frame 0 btn 0 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m
+GRP t459 thrown at (-90.6 869.7 122.3) vel (0.00 6.79 1.36) missile 1 floorz 8.0 frame 0 pitch 199 roll 176
+GRP t460 thrown at (-90.6 876.5 123.6) vel (0.00 6.79 1.09) missile 1 floorz 8.0 frame 0 pitch 200 roll 179
+GRP t461 thrown at (-90.6 883.3 124.7) vel (0.00 6.79 0.82) missile 1 floorz 8.0 frame 0 pitch 202 roll 183
+RSQGN flash thrown t461 period 9 left 55 at (-91 890 126)
+GRP t462 psp frame 0 btn 0 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m
+GRP t462 thrown at (-90.6 890.1 125.5) vel (0.00 6.79 0.55) missile 1 floorz 8.0 frame 1 pitch 203 roll 186
+GRP t463 thrown at (-90.6 896.9 126.1) vel (0.00 6.79 0.28) missile 1 floorz 8.0 frame 1 pitch 205 roll 190
+GRP t464 thrown at (-90.6 903.7 126.4) vel (0.00 6.79 0.01) missile 1 floorz 8.0 frame 1 pitch 206 roll 193
+GRP t465 psp frame 0 btn 0 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m
+GRP t465 thrown at (-90.6 910.5 126.4) vel (0.00 6.79 -0.26) missile 1 floorz 8.0 frame 1 pitch 208 roll 197
+GRP t466 thrown at (-90.6 917.3 126.1) vel (0.00 6.79 -0.53) missile 1 floorz 8.0 frame 0 pitch 209 roll 200
+GRP t467 thrown at (-90.6 924.1 125.6) vel (0.00 6.79 -0.80) missile 1 floorz 8.0 frame 0 pitch 211 roll 204
+GRP t468 psp frame 0 btn 0 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m
+GRP t468 thrown at (-90.6 930.8 124.8) vel (0.00 6.79 -1.07) missile 1 floorz 8.0 frame 0 pitch 212 roll 207
+GRP t469 thrown at (-90.6 937.6 123.7) vel (0.00 6.79 -1.34) missile 1 floorz 8.0 frame 0 pitch 214 roll 211
+GRP t470 thrown at (-90.6 944.4 122.4) vel (0.00 6.79 -1.61) missile 1 floorz 8.0 frame 0 pitch 215 roll 214
+RSQGN flash thrown t470 period 8 left 46 at (-91 951 121)
+GRP t471 psp frame 0 btn 0 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m
+GRP t471 thrown at (-90.6 951.2 120.8) vel (0.00 6.79 -1.88) missile 1 floorz 8.0 frame 1 pitch 217 roll 218
+GRP t472 thrown at (-90.6 958.0 118.9) vel (0.00 6.79 -2.15) missile 1 floorz 8.0 frame 1 pitch 218 roll 221
+GRP t473 thrown at (-90.6 964.8 116.7) vel (0.00 6.79 -2.42) missile 1 floorz 8.0 frame 1 pitch 220 roll 225
+GRP t474 psp frame 0 btn 0 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m
+GRP t474 thrown at (-90.6 971.6 114.3) vel (0.00 6.79 -2.69) missile 1 floorz 8.0 frame 1 pitch 221 roll 228
+GRP t475 thrown at (-90.6 978.4 111.6) vel (0.00 6.79 -2.96) missile 1 floorz 8.0 frame 0 pitch 223 roll 232
+GRP t476 thrown at (-90.6 985.2 108.7) vel (0.00 6.79 -3.23) missile 1 floorz 8.0 frame 0 pitch 224 roll 235
+GRP t477 psp frame 0 btn 0 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m
+GRP t477 thrown at (-90.6 992.0 105.4) vel (0.00 6.79 -3.50) missile 1 floorz 8.0 frame 0 pitch 226 roll 239
+GRP t478 thrown at (-90.6 998.7 101.9) vel (0.00 6.79 -3.77) missile 1 floorz 16.0 frame 0 pitch 227 roll 242
+RSQGN flash thrown t478 period 7 left 38 at (-91 1006 98)
+GRP t479 thrown at (-90.6 1005.5 98.2) vel (0.00 6.79 -4.04) missile 1 floorz 16.0 frame 1 pitch 229 roll 246
+GRP t480 psp frame 0 btn 0 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m
+GRP t480 thrown at (-90.6 1012.3 94.1) vel (0.00 6.79 -4.31) missile 1 floorz 16.0 frame 1 pitch 230 roll 249
+GRP t481 thrown at (-90.6 1019.1 89.8) vel (0.00 6.79 -4.58) missile 1 floorz 16.0 frame 1 pitch 232 roll 253
+GRP t482 thrown at (-90.6 1025.9 85.2) vel (0.00 6.79 -4.85) missile 1 floorz 16.0 frame 0 pitch 233 roll 256
+GRP t483 psp frame 0 btn 0 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m
+GRP t483 thrown at (-90.6 1032.7 80.4) vel (0.00 6.79 -5.12) missile 1 floorz 16.0 frame 0 pitch 235 roll 260
+GRP t484 thrown at (-90.6 1039.5 75.3) vel (0.00 6.79 -5.39) missile 1 floorz 16.0 frame 0 pitch 236 roll 263
+GRP t485 thrown at (-90.6 1046.3 69.9) vel (0.00 6.79 -5.66) missile 1 floorz 16.0 frame 0 pitch 238 roll 267
+RSQGN flash thrown t485 period 6 left 31 at (-91 1053 64)
+GRP t486 psp frame 0 btn 0 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m
+GRP t486 thrown at (-90.6 1053.1 64.2) vel (0.00 6.79 -5.93) missile 1 floorz 16.0 frame 1 pitch 239 roll 270
+GRP t487 thrown at (-90.6 1059.9 58.3) vel (0.00 6.79 -6.20) missile 1 floorz 24.0 frame 1 pitch 241 roll 274
+GRP t488 thrown at (-90.6 1066.6 52.1) vel (0.00 6.79 -6.47) missile 1 floorz 24.0 frame 1 pitch 242 roll 277
+GRP t489 psp frame 0 btn 0 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m
+GRP t489 thrown at (-90.6 1073.4 45.6) vel (0.00 6.79 -6.74) missile 1 floorz 24.0 frame 0 pitch 244 roll 281
+GRP t490 thrown at (-90.6 1080.2 38.9) vel (0.00 6.79 -7.01) missile 1 floorz 24.0 frame 0 pitch 245 roll 284
+GRP t491 thrown at (-90.6 1087.0 31.9) vel (0.00 6.79 -7.28) missile 1 floorz 24.0 frame 0 pitch 247 roll 288
+RSQGN flash thrown t491 period 5 left 25 at (-91 1094 24)
+GRP t492 psp frame 0 btn 0 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m
+GRP t492 thrown at (-90.6 1093.8 24.0) vel (0.00 2.78 3.64) missile 1 floorz 24.0 frame 1 pitch -152 roll -54
+GRP t493 thrown at (-90.6 1096.6 27.6) vel (0.00 2.78 3.37) missile 1 floorz 24.0 frame 1 pitch -151 roll -51
+GRP t494 thrown at (-90.6 1099.4 31.0) vel (0.00 2.78 3.10) missile 1 floorz 24.0 frame 0 pitch -149 roll -47
+GRP t495 psp frame 0 btn 0 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m
+GRP t495 thrown at (-90.6 1102.2 34.1) vel (0.00 2.78 2.83) missile 1 floorz 24.0 frame 0 pitch -148 roll -44
+GRP t496 thrown at (-90.6 1104.9 36.9) vel (0.00 2.78 2.56) missile 1 floorz 24.0 frame 0 pitch -146 roll -40
+RSQGN flash thrown t496 period 5 left 20 at (-91 1108 40)
+GRP t497 thrown at (-90.6 1107.7 39.5) vel (0.00 2.78 2.29) missile 1 floorz 24.0 frame 1 pitch -145 roll -37
+GRP t498 psp frame 0 btn 0 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m
+GRP t498 thrown at (-90.6 1110.5 41.8) vel (0.00 2.78 2.02) missile 1 floorz 24.0 frame 1 pitch -143 roll -33
+GRP t499 thrown at (-90.6 1113.3 43.8) vel (0.00 2.78 1.75) missile 1 floorz 24.0 frame 0 pitch -142 roll -30
+GRP t500 thrown at (-90.6 1116.1 45.6) vel (0.00 2.78 1.48) missile 1 floorz 24.0 frame 0 pitch -140 roll -26
+GRP t501 psp frame 0 btn 0 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m
+GRP t501 thrown at (-90.6 1118.9 47.0) vel (0.00 2.78 1.21) missile 1 floorz 24.0 frame 0 pitch -139 roll -23
+RSQGN flash thrown t501 period 4 left 15 at (-91 1122 48)
+GRP t502 thrown at (-90.6 1121.6 48.3) vel (0.00 2.78 0.94) missile 1 floorz 32.0 frame 1 pitch -137 roll -19
+GRP t503 thrown at (-90.6 1124.4 49.2) vel (0.00 2.78 0.67) missile 1 floorz 32.0 frame 1 pitch -136 roll -16
+GRP t504 psp frame 0 btn 0 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m
+GRP t504 thrown at (-90.6 1127.2 49.9) vel (0.00 2.78 0.40) missile 1 floorz 32.0 frame 0 pitch -134 roll -12
+GRP t505 thrown at (-90.6 1130.0 50.3) vel (0.00 2.78 0.13) missile 1 floorz 32.0 frame 0 pitch -133 roll -9
+RSQGN flash thrown t505 period 3 left 11 at (-91 1133 50)
+GRP t506 thrown at (-90.6 1132.8 50.4) vel (0.00 2.78 -0.14) missile 1 floorz 32.0 frame 1 pitch -131 roll -5
+GRP t507 psp frame 0 btn 0 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m
+GRP t507 thrown at (-90.6 1135.6 50.3) vel (0.00 2.78 -0.41) missile 1 floorz 32.0 frame 0 pitch -130 roll -2
+GRP t508 thrown at (-90.6 1138.3 49.8) vel (0.00 2.78 -0.68) missile 1 floorz 32.0 frame 0 pitch -128 roll 2
+RSQGN flash thrown t508 period 3 left 8 at (-91 1141 49)
+GRP t509 thrown at (-90.6 1141.1 49.2) vel (0.00 2.78 -0.95) missile 1 floorz 32.0 frame 1 pitch -127 roll 5
+GRP t510 psp frame 0 btn 0 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m
+GRP t510 thrown at (-90.6 1143.9 48.2) vel (0.00 2.78 -1.22) missile 1 floorz 32.0 frame 0 pitch -125 roll 9
+GRP t511 thrown at (-90.6 1146.7 47.0) vel (0.00 2.78 -1.49) missile 1 floorz 32.0 frame 0 pitch -124 roll 12
+RSQGN flash thrown t511 period 3 left 5 at (-91 1149 46)
+GRP t512 thrown at (-90.6 1149.5 45.5) vel (0.00 2.78 -1.76) missile 1 floorz 32.0 frame 1 pitch -122 roll 16
+GRP t513 psp frame 0 btn 0 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m
+GRP t513 thrown at (-90.6 1152.3 43.7) vel (0.00 2.78 -2.03) missile 1 floorz 32.0 frame 0 pitch -121 roll 19
+GRP t514 thrown at (-90.6 1152.3 41.7) vel (-0.10 -0.69 -2.30) missile 1 floorz 32.0 frame 0 pitch -119 roll 23
+RSQGN flash thrown t514 period 2 left 2 at (-91 1152 39)
+GRP t515 thrown at (-90.7 1151.6 39.4) vel (-0.10 -0.69 -2.57) missile 1 floorz 32.0 frame 1 pitch -118 roll 26
+GRP t516 psp frame 0 btn 0 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m
+GRP t516 thrown at (-90.8 1150.9 36.8) vel (-0.10 -0.69 -2.84) missile 1 floorz 32.0 frame 0 pitch -116 roll 30
+RSQGN flash thrown t516 period 2 left 0 at (-91 1150 34)
+GRP t517 thrown at (-90.9 1150.2 34.0) vel (-0.10 -0.69 -3.11) missile 1 floorz 32.0 frame 1 pitch -115 roll 33
+RSQGN boom thrown t517 at (-91 1150 32)
+GRP t517 damaged Zombieman by DoomPlayer via RSQGN_Thrown: 81 Explosive (health now -61)
+GTP t517 damaged Zombieman by DoomPlayer via RSQGN_Thrown: 81 (health -61)
+GRP t517 died Zombieman, killer DoomPlayer via RSQGN_Thrown
+GRP t517 damaged Zombieman by DoomPlayer via RSQGN_Thrown: 46 Explosive (health now -26)
+GTP t517 damaged Zombieman by DoomPlayer via RSQGN_Thrown: 46 (health -26)
+GRP t517 died Zombieman, killer DoomPlayer via RSQGN_Thrown
+GRP t517 damaged Zombieman by DoomPlayer via RSQGN_Thrown: 1 Explosive (health now 19)
+GTP t517 damaged Zombieman by DoomPlayer via RSQGN_Thrown: 1 (health 19)
+GRP t518 thrown at (-91.0 1149.5 32.0) vel (0.00 0.00 0.00) missile 0 floorz 32.0 frame 0 pitch -154 roll 25
+GRP t518 damaged Zombieman by DoomPlayer via RSQGN_Thrown: 17 Explosive (health now 2)
+GTP t518 damaged Zombieman by DoomPlayer via RSQGN_Thrown: 17 (health 2)
+GRP t519 psp frame 0 btn 0 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m
+GRP t519 thrown at (-91.0 1149.5 32.0) vel (0.00 0.00 0.00) missile 0 floorz 32.0 frame 0 pitch -154 roll 25
+GRP t522 psp frame 0 btn 0 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m
+GRP t525 psp frame 0 btn 0 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m
+GRP t528 psp frame 0 btn 0 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m
+GRP t531 psp frame 0 btn 0 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m
+GRP t534 psp frame 0 btn 0 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m
+GRP t537 psp frame 0 btn 0 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m
+GRP t540 inv: RSQGN_Grenade 1, RSQGN_Ammo 0, HandGrenades -1, GrenadeAmmo -1; RSQGN_ actors in the world 26; ready Pistol off None
+GRP t540 psp frame 0 btn 0 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m
+GRP t543 psp frame 0 btn 0 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m
+GRP t546 psp frame 0 btn 0 main (-89.2 795.9 87.2) off (-102.8 795.9 87.2) pawn (-96.0 784.0 56.0) view 97.0 ring (-90.9 797.1 88.6) off->ring 35.4 cm nade->eyes 0.55 m

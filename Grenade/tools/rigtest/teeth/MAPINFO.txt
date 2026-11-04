@@ -1,0 +1,1 @@
+GameInfo { AddEventHandlers = "GTP_Probe" }

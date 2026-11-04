@@ -1,0 +1,39 @@
+Log started: 2026-11-03 19:45:05
+QZDoom version 4.14.3
+GTP_G1_WITH_GUN_BONSAI_ALT_CYCLES_OWNED_ONLY
+RSQGN alt t94: no cycle (no other kind owned)
+RSQGN face t95 hand 0 mouth 0.60 m (reach 0.15) squeeze alt held 0/12 ready 1; eyes 0.25 m over viewz, hand 0.25 m under the eyes
+RSQGN alt t101: no cycle (no other kind owned)
+GTP_G2_TEETH_AT_THE_MOUTH
+GTP t108 btn ---- hmd 1.70 adj 0.00 viewz 1.45 m eyes 1.70 m; main: 0.24 under the eyes, 0.58 ahead, old-measure 0.62 m; off: 0.60 under the eyes, 0.35 ahead, old-measure 0.53 m; ready RSQGN_Grenade off None
+GTP t111 btn ---- hmd 1.70 adj 0.00 viewz 1.45 m eyes 1.70 m; main: 0.23 under the eyes, 0.53 ahead, old-measure 0.57 m; off: 0.60 under the eyes, 0.35 ahead, old-measure 0.53 m; ready RSQGN_Grenade off None
+GTP t114 btn ---- hmd 1.70 adj 0.00 viewz 1.45 m eyes 1.70 m; main: 0.21 under the eyes, 0.45 ahead, old-measure 0.48 m; off: 0.60 under the eyes, 0.35 ahead, old-measure 0.53 m; ready RSQGN_Grenade off None
+GTP t117 btn ---- hmd 1.70 adj 0.00 viewz 1.45 m eyes 1.70 m; main: 0.20 under the eyes, 0.40 ahead, old-measure 0.44 m; off: 0.60 under the eyes, 0.35 ahead, old-measure 0.53 m; ready RSQGN_Grenade off None
+GTP t120 btn ---- hmd 1.70 adj 0.00 viewz 1.45 m eyes 1.70 m; main: 0.17 under the eyes, 0.32 ahead, old-measure 0.35 m; off: 0.60 under the eyes, 0.35 ahead, old-measure 0.53 m; ready RSQGN_Grenade off None
+GTP t123 btn ---- hmd 1.70 adj 0.00 viewz 1.45 m eyes 1.70 m; main: 0.16 under the eyes, 0.27 ahead, old-measure 0.30 m; off: 0.60 under the eyes, 0.35 ahead, old-measure 0.53 m; ready RSQGN_Grenade off None
+GTP t126 btn ---- hmd 1.70 adj 0.00 viewz 1.45 m eyes 1.70 m; main: 0.14 under the eyes, 0.19 ahead, old-measure 0.23 m; off: 0.60 under the eyes, 0.35 ahead, old-measure 0.53 m; ready RSQGN_Grenade off None
+GTP t129 btn ---- hmd 1.70 adj 0.00 viewz 1.45 m eyes 1.70 m; main: 0.13 under the eyes, 0.14 ahead, old-measure 0.19 m; off: 0.60 under the eyes, 0.35 ahead, old-measure 0.53 m; ready RSQGN_Grenade off None
+RSQGN face t130 hand 0 mouth 0.04 m (reach 0.15) squeeze none held 0/12 ready 1; eyes 0.25 m over viewz, hand 0.12 m under the eyes
+GTP t132 btn ---- hmd 1.70 adj 0.00 viewz 1.45 m eyes 1.70 m; main: 0.12 under the eyes, 0.10 ahead, old-measure 0.17 m; off: 0.60 under the eyes, 0.35 ahead, old-measure 0.53 m; ready RSQGN_Grenade off None
+RSQGN face t135 hand 0 mouth 0.04 m (reach 0.15) squeeze none held 0/12 ready 1; eyes 0.25 m over viewz, hand 0.12 m under the eyes
+GTP t135 btn ---- hmd 1.70 adj 0.00 viewz 1.45 m eyes 1.70 m; main: 0.12 under the eyes, 0.10 ahead, old-measure 0.17 m; off: 0.60 under the eyes, 0.35 ahead, old-measure 0.53 m; ready RSQGN_Grenade off None
+GTP t138 btn ---- hmd 1.70 adj 0.00 viewz 1.45 m eyes 1.70 m; main: 0.12 under the eyes, 0.10 ahead, old-measure 0.17 m; off: 0.60 under the eyes, 0.35 ahead, old-measure 0.53 m; ready RSQGN_Grenade off None
+RSQGN face t140 hand 0 mouth 0.04 m (reach 0.15) squeeze none held 0/12 ready 1; eyes 0.25 m over viewz, hand 0.12 m under the eyes
+GTP t141 btn ---- hmd 1.70 adj 0.00 viewz 1.45 m eyes 1.70 m; main: 0.12 under the eyes, 0.10 ahead, old-measure 0.17 m; off: 0.60 under the eyes, 0.35 ahead, old-measure 0.53 m; ready RSQGN_Grenade off None
+GTP t144 btn A--- hmd 1.70 adj 0.00 viewz 1.45 m eyes 1.70 m; main: 0.12 under the eyes, 0.10 ahead, old-measure 0.17 m; off: 0.60 under the eyes, 0.35 ahead, old-measure 0.53 m; ready RSQGN_Grenade off None
+RSQGN face t145 hand 0 mouth 0.04 m (reach 0.15) squeeze trigger held 4/12 ready 1; eyes 0.25 m over viewz, hand 0.12 m under the eyes
+GTP t147 btn A--- hmd 1.70 adj 0.00 viewz 1.45 m eyes 1.70 m; main: 0.12 under the eyes, 0.10 ahead, old-measure 0.17 m; off: 0.60 under the eyes, 0.35 ahead, old-measure 0.53 m; ready RSQGN_Grenade off None
+RSQGN face t150 hand 0 mouth 0.04 m (reach 0.15) squeeze trigger held 9/12 ready 1; eyes 0.25 m over viewz, hand 0.12 m under the eyes
+GTP t150 btn A--- hmd 1.70 adj 0.00 viewz 1.45 m eyes 1.70 m; main: 0.12 under the eyes, 0.10 ahead, old-measure 0.17 m; off: 0.60 under the eyes, 0.35 ahead, old-measure 0.53 m; ready RSQGN_Grenade off None
+RSQGN teeth t153: hand 0, squeezed by trigger, 0.04 m from the mouth (reach 0.15) for 12 tics
+GTP t153 btn A--- hmd 1.70 adj 0.00 viewz 1.45 m eyes 1.70 m; main: 0.12 under the eyes, 0.10 ahead, old-measure 0.17 m; off: 0.60 under the eyes, 0.35 ahead, old-measure 0.53 m; ready RSQGN_Grenade off None
+RSQGN pin out p0 t154 by teeth (hand 0)
+GTP t156 btn A--- hmd 1.70 adj 0.00 viewz 1.45 m eyes 1.70 m; main: 0.12 under the eyes, 0.10 ahead, old-measure 0.17 m; off: 0.60 under the eyes, 0.35 ahead, old-measure 0.53 m; ready RSQGN_Grenade off None
+GTP t159 btn A--- hmd 1.70 adj 0.00 viewz 1.45 m eyes 1.70 m; main: 0.12 under the eyes, 0.10 ahead, old-measure 0.17 m; off: 0.60 under the eyes, 0.35 ahead, old-measure 0.53 m; ready RSQGN_Grenade off None
+GTP t162 btn A--- hmd 1.70 adj 0.00 viewz 1.45 m eyes 1.70 m; main: 0.12 under the eyes, 0.10 ahead, old-measure 0.17 m; off: 0.60 under the eyes, 0.35 ahead, old-measure 0.53 m; ready RSQGN_Grenade off None
+GTP t165 btn A--- hmd 1.70 adj 0.00 viewz 1.45 m eyes 1.70 m; main: 0.12 under the eyes, 0.10 ahead, old-measure 0.17 m; off: 0.60 under the eyes, 0.35 ahead, old-measure 0.53 m; ready RSQGN_Grenade off None
+GTP t168 btn A--- hmd 1.70 adj 0.00 viewz 1.45 m eyes 1.70 m; main: 0.12 under the eyes, 0.10 ahead, old-measure 0.17 m; off: 0.60 under the eyes, 0.35 ahead, old-measure 0.53 m; ready RSQGN_Grenade off None
+GTP t171 btn A--- hmd 1.70 adj 0.00 viewz 1.45 m eyes 1.70 m; main: 0.12 under the eyes, 0.10 ahead, old-measure 0.17 m; off: 0.60 under the eyes, 0.35 ahead, old-measure 0.53 m; ready RSQGN_Grenade off None
+GTP t174 btn A--- hmd 1.70 adj 0.00 viewz 1.45 m eyes 1.70 m; main: 0.12 under the eyes, 0.10 ahead, old-measure 0.17 m; off: 0.60 under the eyes, 0.35 ahead, old-measure 0.53 m; ready RSQGN_Grenade off None
+GTP t177 btn A--- hmd 1.70 adj 0.00 viewz 1.45 m eyes 1.70 m; main: 0.12 under the eyes, 0.10 ahead, old-measure 0.17 m; off: 0.60 under the eyes, 0.35 ahead, old-measure 0.53 m; ready RSQGN_Grenade off None
+GTP t180 btn A--- hmd 1.70 adj 0.00 viewz 1.45 m eyes 1.70 m; main: 0.12 under the eyes, 0.10 ahead, old-measure 0.17 m; off: 0.60 under the eyes, 0.35 ahead, old-measure 0.53 m; ready RSQGN_Grenade off None

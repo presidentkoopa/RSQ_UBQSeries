@@ -1,0 +1,48 @@
+Log started: 2026-11-03 19:08:54
+QZDoom version 4.14.3
+GTP t24 btn ---- hmd 1.60 adj 0.00 viewz 1.45 m eyes 1.60 m; main: 0.50 under the eyes, 0.35 ahead, old-measure 0.53 m; off: 0.50 under the eyes, 0.35 ahead, old-measure 0.53 m; ready Pistol off None
+GTP t30 btn ---- hmd 1.60 adj 0.00 viewz 1.45 m eyes 1.60 m; main: 0.50 under the eyes, 0.35 ahead, old-measure 0.53 m; off: 0.50 under the eyes, 0.35 ahead, old-measure 0.53 m; ready Pistol off None
+GTP t36 btn ---- hmd 1.60 adj 0.00 viewz 1.45 m eyes 1.60 m; main: 0.50 under the eyes, 0.35 ahead, old-measure 0.53 m; off: 0.50 under the eyes, 0.35 ahead, old-measure 0.53 m; ready RSQGN_Grenade off None
+GTP t42 btn ---- hmd 1.60 adj 0.00 viewz 1.45 m eyes 1.60 m; main: 0.50 under the eyes, 0.35 ahead, old-measure 0.53 m; off: 0.50 under the eyes, 0.35 ahead, old-measure 0.53 m; ready RSQGN_Grenade off None
+GTP t48 btn ---- hmd 1.60 adj 0.00 viewz 1.45 m eyes 1.60 m; main: 0.50 under the eyes, 0.35 ahead, old-measure 0.53 m; off: 0.50 under the eyes, 0.35 ahead, old-measure 0.53 m; ready Fist off RSQGN_Grenade
+GTP t54 btn ---- hmd 1.60 adj 0.00 viewz 1.45 m eyes 1.60 m; main: 0.50 under the eyes, 0.35 ahead, old-measure 0.53 m; off: 0.50 under the eyes, 0.35 ahead, old-measure 0.53 m; ready Fist off RSQGN_Grenade
+GTP t60 btn ---- hmd 1.60 adj 0.00 viewz 1.45 m eyes 1.60 m; main: 0.50 under the eyes, 0.35 ahead, old-measure 0.53 m; off: 0.50 under the eyes, 0.35 ahead, old-measure 0.53 m; ready Fist off RSQGN_Grenade
+GTP t66 btn ---- hmd 1.60 adj 0.00 viewz 1.45 m eyes 1.60 m; main: 0.50 under the eyes, 0.35 ahead, old-measure 0.53 m; off: 0.50 under the eyes, 0.35 ahead, old-measure 0.53 m; ready Fist off RSQGN_Grenade
+GTP t72 btn ---- hmd 1.60 adj 0.00 viewz 1.45 m eyes 1.60 m; main: 0.50 under the eyes, 0.35 ahead, old-measure 0.53 m; off: 0.50 under the eyes, 0.35 ahead, old-measure 0.53 m; ready Fist off RSQGN_Grenade
+GTP t78 btn ---- hmd 1.60 adj 0.00 viewz 1.45 m eyes 1.60 m; main: 0.50 under the eyes, 0.35 ahead, old-measure 0.53 m; off: 0.50 under the eyes, 0.35 ahead, old-measure 0.53 m; ready Fist off RSQGN_Grenade
+GTP_S7_CHEST_175_NOT_MOUTH
+GTP t84 btn ---- hmd 1.60 adj 0.00 viewz 1.45 m eyes 1.60 m; main: 0.50 under the eyes, 0.35 ahead, old-measure 0.53 m; off: 0.50 under the eyes, 0.35 ahead, old-measure 0.53 m; ready Fist off RSQGN_Grenade
+GTP t90 btn ---- hmd 1.75 adj 0.00 viewz 1.45 m eyes 1.75 m; main: 0.65 under the eyes, 0.35 ahead, old-measure 0.53 m; off: 0.45 under the eyes, 0.30 ahead, old-measure 0.33 m; ready Fist off RSQGN_Grenade
+GTP t96 btn --O- hmd 1.75 adj 0.00 viewz 1.45 m eyes 1.75 m; main: 0.65 under the eyes, 0.35 ahead, old-measure 0.53 m; off: 0.45 under the eyes, 0.30 ahead, old-measure 0.33 m; ready Fist off RSQGN_Grenade
+RSQGN face t100 hand 1 mouth 0.33 m (reach 0.15) squeeze trigger held 0/12 ready 1; eyes 0.30 m over viewz, hand 0.45 m under the eyes
+GTP t102 btn --O- hmd 1.75 adj 0.00 viewz 1.45 m eyes 1.75 m; main: 0.65 under the eyes, 0.35 ahead, old-measure 0.53 m; off: 0.45 under the eyes, 0.30 ahead, old-measure 0.33 m; ready Fist off RSQGN_Grenade
+RSQGN face t105 hand 1 mouth 0.33 m (reach 0.15) squeeze trigger held 0/12 ready 1; eyes 0.30 m over viewz, hand 0.45 m under the eyes
+GTP t108 btn --O- hmd 1.75 adj 0.00 viewz 1.45 m eyes 1.75 m; main: 0.65 under the eyes, 0.35 ahead, old-measure 0.53 m; off: 0.45 under the eyes, 0.30 ahead, old-measure 0.33 m; ready Fist off RSQGN_Grenade
+RSQGN face t110 hand 1 mouth 0.33 m (reach 0.15) squeeze trigger held 0/12 ready 1; eyes 0.30 m over viewz, hand 0.45 m under the eyes
+GTP t114 btn --O- hmd 1.75 adj 0.00 viewz 1.45 m eyes 1.75 m; main: 0.65 under the eyes, 0.35 ahead, old-measure 0.53 m; off: 0.45 under the eyes, 0.30 ahead, old-measure 0.33 m; ready Fist off RSQGN_Grenade
+RSQGN face t115 hand 1 mouth 0.33 m (reach 0.15) squeeze trigger held 0/12 ready 1; eyes 0.30 m over viewz, hand 0.45 m under the eyes
+RSQGN face t120 hand 1 mouth 0.33 m (reach 0.15) squeeze trigger held 0/12 ready 1; eyes 0.30 m over viewz, hand 0.45 m under the eyes
+GTP t120 btn --O- hmd 1.75 adj 0.00 viewz 1.45 m eyes 1.75 m; main: 0.65 under the eyes, 0.35 ahead, old-measure 0.53 m; off: 0.45 under the eyes, 0.30 ahead, old-measure 0.33 m; ready Fist off RSQGN_Grenade
+RSQGN ring missed t125 (other hand 24.1 cm from it, needs < 12)
+GTP t126 btn A-O- hmd 1.75 adj 0.00 viewz 1.45 m eyes 1.75 m; main: 0.65 under the eyes, 0.35 ahead, old-measure 0.53 m; off: 0.45 under the eyes, 0.30 ahead, old-measure 0.33 m; ready RSQGN_Grenade off None
+RSQGN face t130 hand 0 mouth 0.53 m (reach 0.15) squeeze trigger held 0/12 ready 1; eyes 0.30 m over viewz, hand 0.65 m under the eyes
+GTP t132 btn A-O- hmd 1.75 adj 0.00 viewz 1.45 m eyes 1.75 m; main: 0.65 under the eyes, 0.35 ahead, old-measure 0.53 m; off: 0.45 under the eyes, 0.30 ahead, old-measure 0.33 m; ready RSQGN_Grenade off None
+RSQGN face t135 hand 0 mouth 0.53 m (reach 0.15) squeeze trigger held 0/12 ready 1; eyes 0.30 m over viewz, hand 0.65 m under the eyes
+GTP t138 btn A-O- hmd 1.75 adj 0.00 viewz 1.45 m eyes 1.75 m; main: 0.65 under the eyes, 0.35 ahead, old-measure 0.53 m; off: 0.45 under the eyes, 0.30 ahead, old-measure 0.33 m; ready RSQGN_Grenade off None
+RSQGN face t140 hand 0 mouth 0.53 m (reach 0.15) squeeze trigger held 0/12 ready 1; eyes 0.30 m over viewz, hand 0.65 m under the eyes
+GTP t144 btn A-O- hmd 1.75 adj 0.00 viewz 1.45 m eyes 1.75 m; main: 0.65 under the eyes, 0.35 ahead, old-measure 0.53 m; off: 0.45 under the eyes, 0.30 ahead, old-measure 0.33 m; ready RSQGN_Grenade off None
+GTP t150 btn A-O- hmd 1.75 adj 0.00 viewz 1.45 m eyes 1.75 m; main: 0.65 under the eyes, 0.35 ahead, old-measure 0.53 m; off: 0.45 under the eyes, 0.30 ahead, old-measure 0.33 m; ready Fist off None
+GTP t156 btn A-O- hmd 1.75 adj 0.00 viewz 1.45 m eyes 1.75 m; main: 0.65 under the eyes, 0.35 ahead, old-measure 0.53 m; off: 0.45 under the eyes, 0.30 ahead, old-measure 0.33 m; ready Fist off None
+GTP t162 btn A-O- hmd 1.75 adj 0.00 viewz 1.45 m eyes 1.75 m; main: 0.65 under the eyes, 0.35 ahead, old-measure 0.53 m; off: 0.45 under the eyes, 0.30 ahead, old-measure 0.33 m; ready Fist off None
+GTP t168 btn ---- hmd 1.75 adj 0.00 viewz 1.45 m eyes 1.75 m; main: 0.65 under the eyes, 0.35 ahead, old-measure 0.53 m; off: 0.65 under the eyes, 0.35 ahead, old-measure 0.53 m; ready Fist off None
+GTP t174 btn ---- hmd 1.75 adj 0.00 viewz 1.45 m eyes 1.75 m; main: 0.65 under the eyes, 0.35 ahead, old-measure 0.53 m; off: 0.65 under the eyes, 0.35 ahead, old-measure 0.53 m; ready Fist off None
+GTP t180 btn ---- hmd 1.75 adj 0.00 viewz 1.45 m eyes 1.75 m; main: 0.65 under the eyes, 0.35 ahead, old-measure 0.53 m; off: 0.65 under the eyes, 0.35 ahead, old-measure 0.53 m; ready Fist off None
+GTP t186 btn ---- hmd 1.75 adj 0.00 viewz 1.45 m eyes 1.75 m; main: 0.65 under the eyes, 0.35 ahead, old-measure 0.53 m; off: 0.65 under the eyes, 0.35 ahead, old-measure 0.53 m; ready Fist off None
+GTP t192 btn ---- hmd 1.75 adj 0.00 viewz 1.45 m eyes 1.75 m; main: 0.65 under the eyes, 0.35 ahead, old-measure 0.53 m; off: 0.65 under the eyes, 0.35 ahead, old-measure 0.53 m; ready Fist off None
+GTP t198 btn ---- hmd 1.75 adj 0.00 viewz 1.45 m eyes 1.75 m; main: 0.65 under the eyes, 0.35 ahead, old-measure 0.53 m; off: 0.65 under the eyes, 0.35 ahead, old-measure 0.53 m; ready None off Fist
+GTP t204 btn ---- hmd 1.75 adj 0.00 viewz 1.45 m eyes 1.75 m; main: 0.65 under the eyes, 0.35 ahead, old-measure 0.53 m; off: 0.65 under the eyes, 0.35 ahead, old-measure 0.53 m; ready None off Fist
+GTP t210 btn ---- hmd 1.75 adj 0.00 viewz 1.45 m eyes 1.75 m; main: 0.65 under the eyes, 0.35 ahead, old-measure 0.53 m; off: 0.65 under the eyes, 0.35 ahead, old-measure 0.53 m; ready None off Fist
+GTP t216 btn ---- hmd 1.75 adj 0.00 viewz 1.45 m eyes 1.75 m; main: 0.65 under the eyes, 0.35 ahead, old-measure 0.53 m; off: 0.65 under the eyes, 0.35 ahead, old-measure 0.53 m; ready None off Fist
+GTP t222 btn ---- hmd 1.75 adj 0.00 viewz 1.45 m eyes 1.75 m; main: 0.65 under the eyes, 0.35 ahead, old-measure 0.53 m; off: 0.65 under the eyes, 0.35 ahead, old-measure 0.53 m; ready None off Fist
+GTP t228 btn ---- hmd 1.75 adj 0.00 viewz 1.45 m eyes 1.75 m; main: 0.65 under the eyes, 0.35 ahead, old-measure 0.53 m; off: 0.65 under the eyes, 0.35 ahead, old-measure 0.53 m; ready None off Fist
+GTP t234 btn ---- hmd 1.75 adj 0.00 viewz 1.45 m eyes 1.75 m; main: 0.65 under the eyes, 0.35 ahead, old-measure 0.53 m; off: 0.65 under the eyes, 0.35 ahead, old-measure 0.53 m; ready None off Fist

@@ -42,8 +42,10 @@ doom2.wad -> 01 brutal22test6 -> 02 BD22_VoxelPack -> 03 BD22_VR-Reloaded_2.0.3j
    feel it take the ring), and pull the hand away (about 8 cm further): the pin is out. The ring disappears from
    the grenade.
    **Pin back in:** bring that hand back to the top and pull its trigger again (before the spoon has gone).
-3. **Pin out, with your teeth:** squeeze the grenade's trigger and hold the grenade at your face for about a third of
-   a second. To pull another pin that way, take it away from your face first (or let go of the trigger).
+3. **Pin out, with your teeth:** bring the grenade to your mouth and squeeze (its trigger, or grip and trigger
+   together) for about a third of a second. "At your mouth" is from your lips to just under your chin, measured from
+   your headset; the controller, the grenade or its ring may be there. To pull another pin that way, take it away
+   from your mouth first (or let go).
 4. **Squeeze:** hold the grenade's trigger. That is your hand on the spoon.
 5. **Throw:** swing and let go of the trigger mid-swing. It flies at your arm's speed (faster than 2.5 m/s counts as
    a throw), bounces, rolls, settles and goes off when the fuse runs out (3 s from the spoon flying).
@@ -64,7 +66,9 @@ Front page (RSQ Grenade). "On" = on by default (CVARINFO); "Option" = off by def
 | Scatter Grenades | On | Once per map, beside each item lying in the level, a roll: 5 in 126 drops a single grenade, 3 in 126 a pack of three (the UAC Survival Pack's way). |
 | Single Grenades a Map | 4 | At most this many single grenades scattered a map. |
 | Packs of Three a Map | 2 | At most this many packs scattered a map. |
-| Pin With Your Teeth | On | Squeeze and hold the grenade at your face to pull the pin. |
+| Pin With Your Teeth | On | Squeeze and hold the grenade at your mouth to pull the pin. |
+| Alt Fire Cycles Grenade Types | On | The holding hand's alt fire picks the next grenade kind (until the spoon flies). Off: it picks nothing. |
+| Grenade Types Without Gun Bonsai | All Types | Without RSQ Gun Bonsai VR: All Types lets the alt fire cycle every kind; Frag Only keeps the frag alone. With Gun Bonsai VR it is always the kinds you have unlocked. |
 
 Always on (no row): carry 8 grenades, a backpack gives 6 and raises the carry to 16; the red flash and its tick;
 the blast credited to you (the kill, the obituary, the score). With RSQ Gun Bonsai VR loaded (2026-11-02): the
@@ -93,7 +97,10 @@ Sense 2: a cloud 4 / 5 / 6 m wide for 12 / 16 / 20 s that blinds whoever is in i
 (white, after Cook Sense 2: no damage, stunned and blinded 3 / 4 / 5 s), **Charm** (pink, after Flash: they fight
 for you 15 / 20 / 25 s) and **Infight** (green, after Flash: they turn on each other 15 / 20 / 25 s; bosses are
 immune to both). **The holding hand's alt trigger cycles the kinds you own** (until the spoon flies); the grenade
-wears its kind's colour. Without the patch nothing changes.
+wears its kind's colour. **Without the patch** (11-03): the alt trigger cycles every kind (Grenade Types Without Gun
+Bonsai: All Types), each at its level-1 numbers; Freeze, Stun and Flash then use this mod's own freeze (frozen in ice
+3 s, no shatter) and stagger (held in the pain frames 3 s), and bosses are not frozen or staggered. At Frag Only
+there is only the frag, as before.
 
 Tuning and Debug page:
 
@@ -107,8 +114,8 @@ Tuning and Debug page:
 | Floor Bounce | 0.50 | Speed kept off a floor. |
 | Wall Bounce | 0.25 | Speed kept off a wall. |
 | Ground Drag | 0.82 | Per tic on the floor (1 = ice). |
-| Teeth: At (m) | 0.47 | How close to your eyes the grenade must be. |
-| Teeth: Again Beyond (m) | 0.71 | How far it must have gone before the teeth take another pin. |
+| Teeth: Mouth Reach (m) | 0.15 | How close to your mouth (lips to under the chin) the controller, the grenade or its ring must be. |
+| Teeth: Again Beyond (m) | 0.71 | How far from your mouth it must have gone before the teeth take another pin. |
 | Teeth: Hold (tics) | 12 | How long it must stay there (35 tics = 1 s). |
 | Debug Log | Off | Prints the ring, the pin, the swing, the throw, each flash, the blast and the scatter to the console. |
 | Reset All | - | Resets every RSQ Grenade setting. |
@@ -128,7 +135,8 @@ about rumble or sound could be checked there.
 6. Next grenade: pin out, squeeze, let go with the hand still: a clink, the spoon is gone, it flashes red in your
    hand. Squeeze and let go mid-swing: thrown with the rest of the fuse.
 7. Next grenade: pin out, let go still, keep holding: about 3 s later it goes off in your hand.
-8. Squeeze the trigger and hold the grenade at your mouth for a moment: the pin comes out (teeth).
+8. Bring the grenade to your mouth and squeeze for a moment: the pin comes out (teeth). Grip and trigger together
+   work too. Squeezing with the grenade at your chest does nothing.
 9. Walk round a map: grenades (a single, a green pack of three) lie beside other items; never more than 4 singles
    and 2 packs. Walk over one: "You got a Type J Hand Grenade!" / "Picked up a pack of Type J Hand grenades!".
 10. Throw your last grenade: the hand goes back to your best gun.
@@ -147,6 +155,18 @@ MAP01-13 (caps 1/1 on MAP15-17, none with the scatter off); a pack +3 and a sing
 16; switched away with the pin out: kept, pin back in; switched away cooking: gone off (`gren_switch`). Frames looked at: the held grenade with the ring, without it, without the spoon, red; in the off hand (mirrored);
 thrown and flashing in the air, lying on its side, the blast; the two pickup sprites.
 
+What the rig showed on 11-03 (the teeth and the kinds; logs in `docs/rig_2026-11-03/`; rig only, not
+headset-confirmed). The teeth used to measure from `player.viewz`, the pawn's fixed eye 1.45 m up, not from the
+headset: on the rig with the owner's poses (headset 1.65-1.75 m, the controller 12 cm under and 10 cm in front of the
+eyes) the old code pulled the pin with the trigger alone, but **not** with grip and trigger squeezed together under
+QuestZDoom's default button layout (`vr_secondary_button_mappings` on: the main grip is a shift key, so the pair sends
+alt fire and never fire), **not** for a 1.75 m player with `vr_height_adjust` 0.3 (0.48 m from the pawn's eye), and it
+**did** pull it with the grenade held at the chest (0.37 m). Now: the pin came out at the mouth in every pose (standing
+1.65 / 1.70 m, the chin, an upright hold, grip and trigger, 1.75 m + 0.3 height adjust, seated 1.20 m), in the main
+hand and the off hand, and not at the chest (0.33 m from the mouth). The alt fire without Gun Bonsai cycled Impact,
+Incendiary, Freeze, Stun, Smoke, Flash, Charm, Infight, Frag; with the row off and at Frag Only it cycled nothing; a
+Freeze grenade froze three monsters in ice for 105 tics, then thawed them.
+
 ## Works with
 
 - **RSQ Tactical Rig:** its grenade spot on the belt buckle hands out this grenade when Brutal Doom's isn't there
@@ -162,6 +182,8 @@ thrown and flashing in the air, lying on its side, the blast; the two pickup spr
 - **Not yet headset-confirmed** (all of it). Sounds and rumble were not heard or felt on the rig.
 - With the grenade in the off hand, the main trigger that takes the ring also fires the main hand's gun. Pull the pin
   with your teeth, or hold it in the main hand.
+- With Brutal Doom VR Reloaded loaded this mod stands down, so in that load order the teeth are BD22 VR's own (its
+  2.0.3r has the same mouth fix).
 - A throw is read from the fastest moment of the last fifth of a second: letting go still just after a fast move can
   still throw.
 - It goes off in your hand at your body, not exactly at the hand (every machine in a netgame has to agree where).
