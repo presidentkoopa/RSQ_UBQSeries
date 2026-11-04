@@ -70,6 +70,9 @@ class SSQ_Handler : EventHandler
 	transient SSQ_TurnKeeper kTurns;	// the body's turns with the tracking space (turnkeep.zs)
 	transient int kOffFor, kEyeLow, kSentEyeOk;
 	transient bool kSwinging, kPrimed, kSent;
+	transient bool kRecenter, kRecDone;	// RECENTER: asked (the key, the gesture); the gesture fired and waits for a hand to leave
+	transient int kRecFor, kRecentered;	// tics the pose has been held; how many recenters (the turn probe reads it)
+	transient double kRecGap[2];		// each hand's distance from the chest point, metres (the turn probe reads it)
 	transient Actor kMo;
 	// WALL SLAM (pick 12): bodies a bash threw, watched for the wall that stops them
 	Array<Actor>  mSlamWho;
@@ -134,9 +137,12 @@ class SSQ_Handler : EventHandler
 	// slid it a few cm more. Now:
 	//   YAW   the body's (BodyKeep below: the RSQ TacticalRig body.zs rule, copied so this mod works alone): a snap
 	//         or smooth turn shows as both controllers' yaws moving with the pawn's angle (a tic or two apart:
-	//         SSQ_TurnKeeper, 11-03) and turns the body, as do the head and both hands turning together (ssq_body_hands);
-	//         a head turn moves the angle alone and leaves it; a head held more than 35 degrees round for
-	//         1 s is taken as the body turning in the room and the body eases round (at most 3 degrees a tic).
+	//         SSQ_TurnKeeper, 11-03) and turns the body; a head turn moves the angle alone and leaves it. Since 11-03
+	//         18:56 (the owner: "Stick turns + recenter") it NEVER guesses a turn from the head or hands: a real turn in
+	//         the room leaves it until you recenter it (RecenterGesture: both hands to the chest, or the "Recenter
+	//         Torso" key; on its own at map start, respawn, level change and a loaded save). The old guesses stay as
+	//         options, both off: the head and both hands turning together (ssq_body_hands) and a head held more than
+	//         35 degrees round for 1 s easing the body round (ssq_body_catch).
 	//   PLACE the neck, not the eyes: the eyes sit ssq_neck_pivot (9 cm, an anatomical estimate, not measured) in
 	//         front of the neck the head turns on, so the point under the eyes is taken back along the HEAD's yaw to
 	//         the neck and out again along the BODY's: a head turn about the neck leaves it where it was.
@@ -235,12 +241,16 @@ class SSQ_Handler : EventHandler
 		{
 			kYaw = Actor.Normalize180(rigYaw);
 			kPrimed = false;	// the keeper starts again from here if the rig's body stops answering
-			kMo = mo;	// (and takes up the last yaw sent, as after a loaded save)
+			kMo = mo;	// (and then faces the head, as after a recenter)
 		}
-		else if (!kPrimed || kMo != mo)
+		else if (!kPrimed || kMo != mo || kRecenter)
 		{
-			// a loaded save keeps the body it had; a new pawn (respawn) starts facing where it faces
-			kYaw = (!kPrimed && mBodyHave[consoleplayer]) ? mBodyYaw[consoleplayer] : a;
+			// RECENTER (11-03 18:56): map start, a level change, a loaded save (the keeper is transient) and a new pawn
+			// (respawn) start the body facing where the head faces, as do the gesture and the key (kRecenter)
+			kYaw = a;
+			if (kRecenter) RecenterFeel(mo);
+			kRecenter = false;
+			kRecentered++;
 			kLastA = a; kLastH0 = h0; kLastH1 = h1;
 			if (!kTurns) kTurns = new('SSQ_TurnKeeper');
 			kTurns.Prime(a, h0, h1);
@@ -262,7 +272,9 @@ class SSQ_Handler : EventHandler
 			// looking down). NOT held by a hand in the mount's zone: measured on the rig (11-03), a body left 100 degrees
 			// behind a real turn put the mount's zone where the off hand was, and that hold kept it there for good.
 			bool still = abs(mo.pitch) > BODY_STEEP || mo.pitch > BODY_DOWN;
-			kYaw += kTurns.With(kYaw, a, h0, h1, mo.AttackPitch, mo.OffhandPitch, !still && UVI(p, 'ssq_body_hands', 1) != 0);
+			kYaw += kTurns.With(kYaw, a, h0, h1, mo.AttackPitch, mo.OffhandPitch, !still && UVI(p, 'ssq_body_hands', 0) != 0);
+			// the head-held catch-up below is a guess too: off unless "Body Catches Up With Head" (ssq_body_catch, 11-03 18:56)
+			if (UVI(p, 'ssq_body_catch', 0) == 0) still = true;
 			if (mState[consoleplayer] != SS_FLYING && ZoneFrac(mo, mo.OffhandPos) <= ZoneK()) still = true;
 			// looking steeply down at yourself is not turning: the headset's yaw swings wildly there. And A HAND
 			// REACHING FOR THE MOUNT HOLDS THE BODY STILL (ShieldSaw's own addition to the rig's rule): you often
@@ -285,6 +297,15 @@ class SSQ_Handler : EventHandler
 				}
 			}
 			kYaw = Actor.Normalize180(kYaw);
+			RecenterGesture(mo, p);
+		}
+		// on the rig's body, the key recenters the rig's (RSQTR_BodyService "body.recenter": its click and tick)
+		if (kRecenter && rigYaw != 999)
+		{
+			kRecenter = false;
+			let it = ServiceIterator.Find('RSQTR_BodyService');
+			Service sv;
+			while (sv = it.Next()) { double ny = sv.GetDouble('body.recenter', '', 0, 0, mo); if (ny != 999) { kYaw = Actor.Normalize180(ny); break; } }
 		}
 		int eyeState = eyeOk ? 1 : 0;
 		if (kSent && abs(Actor.DeltaAngle(kSentYaw, kYaw)) < 0.25 && eyeState == kSentEyeOk && abs(kEye - kSentEye) < 0.01) return;
@@ -292,6 +313,69 @@ class SSQ_Handler : EventHandler
 		kSentYaw = kYaw; kSentEye = kEye; kSentEyeOk = eyeState;
 		// args: the body's yaw in hundredths of a degree; the standing eyes in mm (0 = none: viewz)
 		EventHandler.SendNetworkEvent("ssq-body", int(round((kYaw % 360.0 + 360.0) % 360.0 * 100.0)), eyeOk ? clamp(int(round(kEye * 1000.0)), 1, 4000) : 0);
+	}
+
+	// ---- RECENTER (the owner's choice, 11-03 18:56: "Stick turns + recenter"), RSQ TacticalRig's (rig.zs RecenterTick)
+	// copied for when this mod is alone. The body turns only with snap and smooth turns (turnkeep.zs), so after a real
+	// turn in the room it is put back in front of you: BOTH HANDS TO THE CHEST (ssq_recenter_hands, on) held REC_HOLD
+	// tics, or the bound key "Recenter Torso" (ssq_recenter). The pose, in the HEAD's frame from your live eyes, room
+	// metres: each controller within REC_RAD of the chest point REC_F forward, on the centre line, REC_U down (measured
+	// on the rig with RSQ TacticalRig's turn probe: controllers held to the sternum read 0.12 forward, +-0.07 left, -0.30
+	// up). It never fires with any fire or Use button held, or (the body within REC_NEAR of the head) a hand in the
+	// shield's mount zone, and once fired a hand
+	// must leave the pose first. With RSQ TacticalRig loaded (and "Turn With the Tactical Rig") the rig's own gesture
+	// does it and the key goes to the rig.
+	const REC_F = 0.12;
+	const REC_U = -0.30;
+	const REC_RAD = 0.20;
+	const REC_HOLD = 14;
+	const REC_NEAR = 20.0;	// a hand in the mount zone counts only with the body this close to the head (the rig's rule)
+
+	void RecenterGesture(PlayerPawn mo, PlayerInfo p)
+	{
+		bool inPose = true;
+		let cb = CVar.FindCVar('vr_crouch_use_button');
+		let ha = CVar.FindCVar('vr_height_adjust');
+		double hy = mo.HmdPosition.y, vu = SSQ_Hand.VU(), ps = SSQ_Hand.PS(mo);
+		// the live eyes: the headset's own height (the hands are placed from it), the nod taken out as the rig does
+		double ez = ((!cb || cb.GetBool()) && hy > 0.3) ? p.viewz - mo.ViewHeight + (hy + (ha ? ha.GetFloat() : 0.0)) * vu / ps : p.viewz;
+		double t = clamp(mo.pitch, -89, 89), nf = (0.10 * (1 - cos(t)) - 0.10 * sin(t)) * vu;
+		Vector3 e = (mo.pos.x + cos(mo.angle) * nf, mo.pos.y + sin(mo.angle) * nf, ez);
+		double c = cos(mo.angle), sn = sin(mo.angle);
+		for (int h = 0; h < 2; h++)
+		{
+			Vector3 d = (h == 0 ? mo.AttackPos : mo.OffhandPos) - e;
+			Vector3 l = ((d.x * c + d.y * sn) / vu, (-d.x * sn + d.y * c) / vu, d.z * ps / vu);
+			kRecGap[h] = (l.x - REC_F, l.y, l.z - REC_U).Length();
+			if (kRecGap[h] > REC_RAD) inPose = false;
+		}
+		if (!inPose) { kRecFor = 0; kRecDone = false; return; }
+		bool busy = (p.cmd.buttons & (BT_USE | BT_ATTACK | BT_ALTATTACK | BT_OFFHANDATTACK | BT_OFFHANDALTATTACK)) != 0
+			|| (abs(Actor.DeltaAngle(kYaw, mo.angle)) < REC_NEAR && (InMount(mo, mo.AttackPos) || InMount(mo, mo.OffhandPos)));
+		if (busy || kRecDone || UVI(p, 'ssq_recenter_hands', 1) == 0) { kRecFor = 0; return; }
+		if (++kRecFor < REC_HOLD) return;
+		kRecFor = 0;
+		kRecDone = true;
+		kYaw = mo.angle;
+		kTurns.Prime(mo.angle, mo.AttackAngle, mo.OffhandAngle);
+		kOffFor = 0; kSwinging = false;
+		kRecentered++;
+		RecenterFeel(mo);
+	}
+
+	// a soft click (Doom's own switch sound, doom2.wad DSSWTCHN, quiet, heard only here) and a short tick in both hands
+	void RecenterFeel(PlayerPawn mo)
+	{
+		mo.A_StartSound("switches/normbutn", CHAN_AUTO, CHANF_LOCAL, 0.3);
+		if (UVI(mo.player, 'ssq_feedback', 1) == 0) return;
+		double rs = SSQ_A11y.Rumble();
+		if (rs <= 0) return;
+		for (int k = 0; k < 2; k++)
+		{
+			let q = SSQ_Buzzer(Actor.Spawn('SSQ_Buzzer', mo.pos));
+			if (!q) continue;
+			q.feels = mo; q.left = k == 0; q.amp = clamp(0.3 * rs, 0.1, max(1.0, rs)); q.total = 3; q.tleft = 3;
+		}
 	}
 
 	// ---- where you take it from (ssq_mount_spot, the "Take It From" row) -------------------------------------
@@ -578,8 +662,12 @@ class SSQ_Handler : EventHandler
 	static void Migrate()
 	{
 		let ver = CVar.FindCVar('ssq_cfgver');
-		if (!ver || ver.GetInt() >= 3) return;
+		if (!ver || ver.GetInt() >= 4) return;
 		int from = ver.GetInt();
+		// 4 (2026-11-03 18:56, "Stick turns + recenter"): the body never guesses a turn from the head or hands, so
+		// "Body Turns With Head and Hands" goes off (it was on from 11-03 13:00) whatever was saved
+		let bh = CVar.FindCVar('ssq_body_hands'); if (bh) bh.SetInt(0);
+		if (from >= 3) { ver.SetInt(4); return; }
 		if (from < 2)
 		{
 			// 2 (2026-10-31, owner: "it sends the projectile directly back to the attacker"): turned shots glance off the
@@ -596,7 +684,7 @@ class SSQ_Handler : EventHandler
 		// now, with far larger grabs; whatever an older config saved under the old meaning goes back to the new defaults
 		static const Name spots[] = { 'ssq_back_fwd', 'ssq_back_up', 'ssq_back_reach', 'ssq_neck_fwd', 'ssq_neck_up', 'ssq_neck_reach' };
 		for (int k = 0; k < 6; k++) { let cv = CVar.FindCVar(spots[k]); if (cv) cv.ResetToDefault(); }
-		ver.SetInt(3);
+		ver.SetInt(4);
 	}
 
 	override void PlayerEntered(PlayerEvent e) { Give(e.PlayerNumber); }
@@ -1384,6 +1472,11 @@ class SSQ_Handler : EventHandler
 			mBodyHave[i] = true;
 			mBodyEyeOk[i] = e.Args[1] > 0;
 			mBodyEye[i] = e.Args[1] / 1000.0;
+		}
+		else if (e.Name == "ssq-recenter")
+		{
+			// "Recenter Torso" (KEYCONF ssq_recenter, 11-03 18:56): the body keeper is this machine's own (BodyKeep)
+			if (i == consoleplayer) kRecenter = true;
 		}
 		else if (e.Name == "ssq-draw")
 		{

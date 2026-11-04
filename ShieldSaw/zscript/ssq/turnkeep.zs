@@ -18,6 +18,13 @@
 // old body 10 degrees off (ShieldSaw's 220-365), a real turn in the room left it 12-25 degrees short, and looking
 // down at a hip holster while swinging the head slid it 13-18 degrees.
 //
+// 11-03 18:56 (the owner: "I am constantly finding myself with the torso 90 degrees turned"): WITH SNAP TURNING (vr_snapTurn
+// over 10) ONLY SNAPS TURN THE BODY; the step matching and settling below run only for SMOOTH turning, where the stick
+// turns the view a little every frame and nothing else can carry the body. (A smooth turn and a rigid turn of head and
+// both hands in the room look the same to ZScript: the engine folds the stick's turn into the headset's yaw before the
+// script sees either, VR_GetMove, so with smooth turning a head-and-hands turn that agrees within the tolerances below
+// can still be taken as one.) TURNING WITH HEAD AND HANDS is OFF by default.
+//
 // NOW, three parts:
 //   SNAPS (ViewJump): a head step of a snap's size in one tic waits for the controllers' matching step and the body
 //   turns by exactly vr_snapTurn.
@@ -30,7 +37,7 @@
 //   degrees). A controller pointed steeply up or down (YAW_PITCH) has no yaw to go by and shares nothing.
 //   SETTLING (below): the totals of every turn put right what the steps missed.
 //
-// TURNING WITH HEAD AND HANDS (ssq_body_hands, on; the owner's ask, 11-03: a real 360 in the room must carry the rig):
+// TURNING WITH HEAD AND HANDS (ssq_body_hands, OFF since 11-03 18:56; the owner's ask, 11-03 13:00: a real 360 in the room must carry the rig):
 // hands held in front of you mark where your body faces. When the head AND both controllers (each held within HAND_PITCH
 // of level, so a hand hanging down or in a holster never counts) all face more than START_AT degrees to the same side of
 // the body for DWELL tics, the body turns to the nearest of the three, up to CHASE degrees a tic, until it is within
@@ -122,6 +129,16 @@ class SSQ_TurnKeeper play
 		// exactly still). Under load the rig rendered one frame in 9 tics, and every wait counted in tics ran out.
 		if (abs(d0) > 0.0001 || abs(d1) > 0.0001) frames++;
 		double j = ViewJump(dA, d0, d1, now, snap);
+		// SNAP TURNING (vr_snapTurn over 10: the engine has no smooth turn then, hw_openxrdevice / VrInputDefault.cpp 269):
+		// the tracking space turns ONLY by snaps, so only a snap turns the body, by exactly vr_snapTurn (ViewJump). No
+		// step matching and no settling: those read the head and hands turning together as a turn, and reaching both hands
+		// to the side while looking there turned the torso 90 degrees (the owner's headset, 11-03 18:56).
+		if (snap > 10)
+		{
+			hAmt.Clear(); hEnd.Clear(); cAmt.Clear(); cEnd.Clear(); tOn = false;
+			Note(j);
+			return j;
+		}
 		// A CONTROLLER POINTED STEEPLY UP OR DOWN HAS NO YAW TO GO BY (measured on the rig: a hand held down at a hip
 		// holster read yaws swinging through 180 degrees while it moved a few centimetres). Its steps match nothing; a
 		// snap still needs only the other controller (ViewJump).

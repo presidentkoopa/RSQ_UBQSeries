@@ -32,6 +32,8 @@ doom2.wad -> 01 brutal22test6 -> 02 BD22_VoxelPack -> 03 BD22_VR-Reloaded_2.0.3j
   - **ShieldSaw: draw / put back / recall**: draw or put back from anywhere, or recall a thrown disc.
   - **ShieldSaw: throw along aim**: a backup throw.
   - **ShieldSaw: lock on (hold)**: only needed if "Lock On With" is set to "Lock Key".
+  - **Recenter Torso**: turns the body the shield hangs on to where you look (also on the front page; with RSQ
+    Tactical Rig loaded it recenters the rig's torso, which the shield hangs on).
   - Nothing else to bind: Use, the off trigger and the off alt are QuestZDoom's own.
 
 ## What to do in VR
@@ -121,14 +123,20 @@ Brutal Doom's stealth-kill cutscene.
 All numbers are room metres in the BODY's frame, from your eyes as they are when you look straight ahead.
 "Off side" is toward your off hand (the left for a right-handed player).
 
-- **The body, not the head.** The spot turns with your body: every snap or smooth turn turns it by exactly the
-  turn (11-03; rig only, not headset-confirmed); turning your head does not, and looking down never does. Your
-  body turning in the room is seen from your head and both hands turning together, hands in front of you ("Body
-  Turns With Head and Hands", on, Mount page), and a head held more than 35 degrees round for over a second is
-  also taken as the body turning and the spot eases round (at most 3 degrees a tic): the RSQ Tactical Rig's rule.
-  While your off hand is reaching into the zone that head-held catch-up waits, so looking over your shoulder
-  while you reach does not move it. With RSQ Tactical Rig loaded the spot hangs on the rig's own body instead
-  ("Turn With the Tactical Rig", on), so the shield and the holsters always turn together. It hangs from your
+- **The body, not the head: stick turns + recenter** (the owner's choice, 11-03 18:56; rig only, not
+  headset-confirmed). The spot turns with the body, and the body turns ONLY with snap and smooth turns, by exactly
+  the turn (with snap turning only a snap turns it); turning your head does not, looking down never does, and it
+  never guesses a turn from your head or hands. After you physically turn round in the room, RECENTER it: hold both
+  controllers against your chest for 0.4 s with nothing pressed ("Recenter: Both Hands to Chest", on, front page:
+  each within 0.20 m of a point 0.12 m in front of and 0.30 m under your eyes, in the direction you look; not with a
+  fire or Use button held, nor, with the body already within 20 degrees of your head, a hand in the shield's zone),
+  or press the bound key "Recenter Torso": a soft click and a tick in both hands, and the body faces where your head
+  faces. It also recenters on its own at map start, level change, a loaded save and respawn. The old guesses are
+  options on the Mount page, both off: "Body Turns With Head and Hands" (head and both hands turning together) and
+  "Body Catches Up With Head" (a head held more than 35 degrees round for over a second). With smooth turning a
+  reach to the side with both hands while looking there can still be taken as a turn (RSQ Tactical Rig's README,
+  Known limits). With RSQ Tactical Rig loaded the spot hangs on the rig's own body instead ("Turn With the Tactical
+  Rig", on), so the shield and the holsters always turn together, and the rig's own recenter turns both. It hangs from your
   neck (your eyes sit about 9 cm in front of it: "Eyes to Neck", an estimate), so turning your head about your
   neck does not slide it either.
 - **The height is your eyes, not the game's.** It hangs from your standing eye height read from the headset (the
@@ -209,7 +217,8 @@ on the simulated rig (2026-10-31 onward).
   holster, and a hand in any rig holster is the rig's press. Over the Off Shoulder: the rig leaves its off-shoulder
   holster to the shield. With "Draw With Use" off the shoulder is the rig's.
   The shield's mount hangs on the rig's body (its `RSQTR_BodyService`, by name; "Turn With the Tactical Rig"), so
-  every snap, smooth turn and real turn carries the shield and the holsters together.
+  every snap, smooth turn and recenter carries the shield and the holsters together (this mod's Recenter Torso key
+  then recenters the rig's torso: `"body.recenter"`).
 - **RSQ Score:** blocks, perfect blocks, turned shots and disc kills pay bonuses.
 - **RSQ HP Bars:** a locked monster shows the "locked" marker; hit-stop shows the frozen marker.
 - **Gun Bonsai with the RSQ Gun Bonsai VR patch:** the ShieldSaw levels up (the tree: GBOVR_TREES.md 4.3).
