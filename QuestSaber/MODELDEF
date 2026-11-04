@@ -40684,6 +40684,38 @@ Model UBQS_ForceHand
 	FrameIndex UBFG A 7 0
 }
 
+// HAND ON THE HILT (the owner, 11-03 19:25): the Force hand's mesh (BD22 VR Reloaded's FBX hand, its rifle-magazine hold)
+// fitted round the hilt, one frame per blade size (docs/hilthand/gen_hilthand.py: measured grip and hilt, the hand turned
+// 39.7 deg onto the hilt's axis, slid onto its grip, the palm laid on it). Drawn by the saber's own overlay (A_UBHand),
+// in BD22's hand block space; slot 7 + Skin 7 "fbx_hand.png" so BD22's Hand Skin Tone tones it.
+Model UBQS_Saber
+{
+	Path "models/ubqs"
+	Model 7 "ubqs_hilthand.md3"
+	Skin 7 "fbx_hand.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex UBHH A 7 0
+	FrameIndex UBHH B 7 1
+	FrameIndex UBHH C 7 2
+	FrameIndex UBHH D 7 3
+	FrameIndex UBHH E 7 4
+}
+
+Model UBQS_SaberOff
+{
+	Path "models/ubqs"
+	Model 7 "ubqs_hilthand.md3"
+	Skin 7 "fbx_hand.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex UBHH A 7 0
+	FrameIndex UBHH B 7 1
+	FrameIndex UBHH C 7 2
+	FrameIndex UBHH D 7 3
+	FrameIndex UBHH E 7 4
+}
+
 Model UBQS_WorldSaber
 {
 	Path "models/ubqs"

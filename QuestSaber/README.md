@@ -99,6 +99,7 @@ An old saved "Dual key mode" (ubqs_dual_mode 1) reads as On and is rewritten to 
 | Hit-Stop | Off (Option) | A cut freezes the monster: Light 3, Medium 4, Heavy 6 tics. |
 | Force Only With the Saber | On | The Force and the saber are a combo (owner, 11-03). The bare Force hand is in the off hand only while the saber is in the main hand: the saber comes in -> an empty off hand becomes the Force hand (you may still switch the off hand to anything); the saber goes (any way: keys, wheel, holster, death) -> the Force hand becomes the load order's empty off hand the same tic (Brutal Doom VR's hands, so hand reloads and the rifle's launcher work; nothing without it). A gun in the off hand is left alone. A new game holding a rifle starts with the rifle and Brutal Doom VR's off-hand fist. **(rig only, not headset-confirmed)** |
 | Perfect Parry Slow-Mo | Option | A parry gives half a second of slow motion. Needs RSQ SlowMo. |
+| Hand on the Hilt | On | Your hand drawn round each saber's hilt (main and off hand), so you see your own hand on the hilt instead of a floating hilt: BD22 VR Reloaded's FBX hand in its rifle-magazine hold (the Force hand's mesh), turned 39.7 deg about its measured grip onto the hilt's measured axis, slid onto the hilt's grip and laid on the palm, fitted per blade length (docs/hilthand/gen_hilthand.py; check picture docs/hilthand/fit.png). It stays on the hilt through swings, the draw and the holster, hides while the saber is thrown (and while it is drawn in the world), and is back on the catch. Left-handed and the off hand: mirrored by the engine. Shipped inside this pk3; with BD22 VR loaded it takes BD22's Hand Skin Tone. Off: the hilt alone, as before. **(rig only, not headset-confirmed)** |
 | Force Hand | Our Hand | The bare Force hand's mesh. Our Hand: BD22 VR Reloaded's FBX hand in its rifle-magazine hold, one steady pose that never opens or changes while you push, pull or grip (the Force's effects and the grip outline are unchanged). Shipped inside this pk3, so it works without BD22 VR; with BD22 VR loaded it takes BD22's Hand Skin Tone. Original: Ermac's hand, relaxed / open while the Force is up / a fist in a grip. **(rig only, not headset-confirmed)** |
 
 Always on, no row: swept-arc cuts (a fast flick between two frames still cuts), the parry double knock, the stab,
@@ -169,6 +170,11 @@ headset" in docs/HANDOFF_polish.md.
 27. Lock marks wear the blade colour: set Main Blade Colour to red and Off Blade Colour to blue, paint a monster with each
     saber. The main saber's diamond has a red ring, the off saber's a blue ring; both have a white centre.
     Change the colour in the menu: marks already up recolour. **(not yet headset-confirmed; rig frames 11-02)**
+
+28. Hand on the Hilt (on): both sabers out, each hilt has your hand round it; swing: the hand stays on the hilt; throw the
+    saber: the hand goes with it and comes back on the catch; Blade Length longest and shortest: still on the hilt. Hand
+    Skin Tone in BD22 VR: the hilt hand takes it. Hand on the Hilt Off: hilts alone. **(rig only, not headset-confirmed:
+    frames docs/hilthand/rig_1103/sheet.png; script errors from this pack: 0 on doom2 + Saber, 0 on doom2 + Gun Bonsai + all RSQ, 0 on the full order with BD22 VR 2.0.3r, only BD_VoxelPack's 4)**
 
 ## Works with
 

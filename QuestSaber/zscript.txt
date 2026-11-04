@@ -535,6 +535,7 @@ class UBQS_SaberBase : Weapon abstract
 		else if (invoker.igniteAnim > 0) f = invoker.IgniteFrame();
 		else if (invoker.doused && !UBQS_Data.IsTwirl(f)) f = 17;   // R: the hilt, blade off
 		invoker.frameNow = f;
+		A_UBHand(f);
 		let psp = player.FindPSprite(invoker.bOffhandWeapon ? PSP_OFFHANDWEAPON : PSP_WEAPON);
 		if (!psp) return;
 		// psp.alpha is IGNORED on a layer without these, so HideWhileAway could not hide the hilt
@@ -582,6 +583,32 @@ class UBQS_SaberBase : Weapon abstract
 		psp.Sprite = GetSpriteIndex(invoker.SpriteNow());
 		psp.Frame = f;
 		// (the hand beam layer is put up above, behind ubqs_hand_glow -- off by default, as he asked)
+	}
+	// HAND ON THE HILT (the owner, 11-03 19:25: "the magazine hold FBX pose for reloading ... put the saber into it. Assume
+	// the hand is set to receive a vertical cylinder"). BD22 VR Reloaded's FBX hand in its rifle-magazine hold (the
+	// same mesh as the Force hand's Our Hand) wrapped round the hilt: an overlay of this saber, so it is drawn from the
+	// same controller, in the same hand (the engine picks the hand by the caller: models.cpp:221), mirrored with it for
+	// the off hand and left-handed schemes, and turned with the draw and the holster (the overlay adds the weapon
+	// layer's y). The fit is baked per blade size (docs/hilthand/gen_hilthand.py: the hand turned 39.7 deg about its
+	// measured grip onto the hilt's measured axis, slid onto the hilt, the palm laid on it): sprite UBHH, frame = size.
+	// Shown with the hilt: not while the saber is thrown, merged or drawn in the world (frame 18 / WorldUp), back on the
+	// catch. ubqs_hilt_hand 0: no hand, as before. MODELDEF slot 7 + Skin 7 "fbx_hand.png", so BD22's Hand Skin Tone
+	// tones it (its handtone.zs finds this class by that text and re-skins slot 7 of the saber).
+	int HandLayer() { return bOffhandWeapon ? 2000042 : 2000041; }   // drawn after both sabers, before the glows
+	action void A_UBHand(int f)
+	{
+		int hl = invoker.HandLayer();
+		bool show = invoker.UInt("ubqs_hilt_hand", 1) != 0 && f != 18 && !(invoker.WorldUp() && !UBQS_Data.IsTwirl(f));
+		let h = player.FindPSprite(hl);
+		if (!h)
+		{
+			if (!show) return;
+			A_Overlay(hl, "HiltHand");
+			h = player.FindPSprite(hl);
+			if (!h) return;
+		}
+		h.Sprite = GetSpriteIndex(show ? "UBHH" : "TNT1");
+		h.Frame = show ? invoker.SizeIdx() : 0;
 	}
 	// THE GLOW, IN THE HAND: a second layer of this saber, drawn ADDITIVE, its model the glow shell baked onto
 	// the blade for every frame (ubqs.py glow_md3) -- drawn with the blade, from the controller, every frame,
@@ -3363,6 +3390,13 @@ class UBQS_SaberBase : Weapon abstract
 	// to, and the thrown saber's, is named here once.
 	GlowHold:
 		G3BS A -1 Bright;
+		Stop;
+	// HAND ON THE HILT's overlay (A_UBHand sets its sprite and frame every tic: UBHH A-E = blade sizes 1-5, TNT1 hidden)
+	HiltHand:
+		UBHH A -1;
+		Stop;
+	HiltHandReg:
+		UBHH BCDE 0;
 		Stop;
 	Register:
 		UXPD A 0; UXPD B 0; UXPD C 0; UXPD D 0; UXPD E 0; UXPD F 0; UXPD G 0; UXPD H 0; UXPD I 0;

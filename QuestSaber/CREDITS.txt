@@ -17,6 +17,8 @@ BORROWED, WITH THANKS
       FBX hand, its off-hand rifle-magazine hold (models/rsq/fbx/fbx_oh_hold_R.md3 frame 0), cut to that
       one frame. Baked there from DXR models/hands/hand_final.fbx (the owner's private repo); that FBX's
       author and licence are not recorded (tools/handfit/README.md in that repo). Not Ermac's mesh.
+      models/ubqs/ubqs_hilthand.md3 -- Hand on the Hilt (11-03): the same hand turned and moved onto the
+      hilt, one frame per blade size (docs/hilthand/gen_hilthand.py); same mesh, same skin.
   QuestZDoom (Emawind)
       the engine this targets, and the off-hand weapon and AttackPos/Angle/Pitch/Roll script API
       the whole mod is built on.
