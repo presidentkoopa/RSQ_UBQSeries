@@ -150,3 +150,8 @@ Found while rewriting the READMEs from the code (11-03 evening). None fixed yet;
 58. Level-Up Wave reads RSQ Gun Bonsai VR's service; plain Gun Bonsai without the VR patch gets no wave (row label
     says "(Gun Bonsai)").
 59. `rsqgd_debug` not in Reset All.
+
+## Whip
+60. No Controls page in its menu; the four binds (Whip Main/Off, Grab Whip Main/Off) live only under Customize
+    Controls -> RSQ Whip, with no default binds.
+61. Debug comment says level 5 shows the aim ray every tic; the menu's Debug Log offers only 0-4.
