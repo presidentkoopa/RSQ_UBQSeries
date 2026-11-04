@@ -75,9 +75,15 @@ class RSQFF_Held : Weapon
 		+INVENTORY.UNDROPPABLE +INVENTORY.UNTOSSABLE
 	}
 
+	// SWITCHABLE (11-03): another off-hand weapon raised into this hand (RSQ Tactical Rig's off-hand draw from a holster,
+	// Brutal Doom's Dual key, the off hand's next-weapon key) lowers the flare, and the handler then puts an unlit one
+	// back in the pocket or lets a lit one fall (Keep). With WRF_NOSWITCH, as until 11-03, such a switch never happened:
+	// the engine's off-hand switch waits for WF_OFFHANDSWITCHOK (QZD player.zs CheckWeaponChange), so the off-hand gun
+	// stayed pending and the flare in the hand (rig, 11-03: an off-hand draw from the hip with a flare out hung 68 tics,
+	// until the flare was put back by hand).
 	action void A_RSQFFReady()
 	{
-		A_WeaponReady(WRF_NOFIRE | WRF_NOSWITCH);
+		A_WeaponReady(WRF_NOFIRE);
 		if (!player || !player.mo) return;
 		let psp = player.FindPSprite(PSP_OFFHANDWEAPON);
 		if (!psp || player.OffhandWeapon != invoker) return;
@@ -153,4 +159,22 @@ class RSQFF_Buzzer : Actor
 	}
 
 	States { Spawn: TNT1 A 20; Stop; }
+}
+
+// A FLARE IN RSQ TACTICAL RIG'S FLARE HOLSTER (owner 2026-11-03 20:14: "draw the holstered whip/flare on the body as their
+// models when stored"). The rig spawns this by name, places it at its flare holster and turns it (cap up); FnF only says
+// what it looks like: the owner's flare (flare.md3), unlit, cap on, real size (MODELDEF: 22.8 cm, centred). Never in play.
+class RSQFF_Stowed : Actor
+{
+	Default
+	{
+		+NOINTERACTION +NOBLOCKMAP +NOGRAVITY +NOTELEPORT +DONTSPLASH +NOTONAUTOMAP
+		Radius 1; Height 1;
+	}
+	States
+	{
+	Spawn:
+		QFFW C -1;
+		Stop;
+	}
 }

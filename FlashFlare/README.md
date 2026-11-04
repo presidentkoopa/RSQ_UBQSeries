@@ -73,6 +73,7 @@ and the throw is measured against your body, so walking and turning never count 
 | Light by trigger | Off-hand trigger | With Light It By on Trigger or Strike or Trigger |
 | Throw | Swing the off hand faster than 2 m/s, then grip or off-hand trigger | Leaves at 1.25x your hand's speed, with a little arc and your walking speed added |
 | Drop | Grip with the hand still, away from the pocket | Lies at your feet, burning |
+| Flare holster (with RSQ Tactical Rig) | Off hand at the Rig's flare holster on your off-hand hip, grip | Takes or puts back an unlit flare, the same flares as the pocket. A lit one cannot go back: the grip drops it, burning. Shown there while you carry one |
 
 - The flare is always in the off hand. With QuestZDoom's left-handed setting the pocket moves to the other side of
   your chest, still toward your main hand.

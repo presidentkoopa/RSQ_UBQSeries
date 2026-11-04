@@ -128,3 +128,19 @@ Model RSQFF_Ammo
 	ZOffset 1.2
 	FrameIndex QFFB A 0 0
 }
+
+// IN RSQ TACTICAL RIG'S FLARE HOLSTER (RSQFF_Stowed; the rig turns it): the lying flare's mesh and skins (unlit, cap on),
+// the same 0.34 scale (22.8 cm: flare.md3 runs -11.27 .. 11.50 along X, measured), centred on the actor (its middle is
+// 0.12 along X, under a millimetre: left as is), turned by the actor's pitch and roll.
+Model RSQFF_Stowed
+{
+	Path "models/rsqff"
+	Model 0 "flare.md3"
+	SurfaceSkin 0 0 "flare.png"
+	SurfaceSkin 0 1 "flaretip.png"
+	SurfaceSkin 0 2 "clear.png"
+	Scale 0.34 0.34 0.34
+	USEACTORPITCH
+	USEACTORROLL
+	FrameIndex QFFW C 0 0
+}

@@ -29,6 +29,7 @@ class RSQFF_Handler : EventHandler
 {
 	const WIN = 7;            // tics of hand history (RSQ Grenade's / Distance Grab's window)
 	const SPUTTER = 24;       // tics it sputters after the strike
+	const STRIKE_HOLD = 3;    // tics a strike waits with RSQ Tactical Rig loaded (a reach to a holster is no strike)
 	const PH_NONE = 0;
 	const PH_UNLIT = 1;
 	const PH_LIT = 2;
@@ -45,8 +46,8 @@ class RSQFF_Handler : EventHandler
 	int lightsPeak;
 
 	// ---- the console player's hands (local) ----
-	private transient bool gripPrev, trigPrev, strikeArmed;
-	private transient int waitUntil, strikeQuiet;
+	private transient bool gripPrev, trigPrev;
+	private transient int waitUntil, strikeQuiet, strikeAt;
 	private transient double myBodyYaw;
 	private transient bool bodyPrimed;
 	private transient Vector3 lastRel[2], rawHand[2];
@@ -342,6 +343,7 @@ class RSQFF_Handler : EventHandler
 
 		if (phase[n] == PH_NONE)
 		{
+			strikeAt = 0;
 			if (gripEdge && atPocket)
 			{
 				if (pmo.CountInv("RSQFF_Ammo") > 0) { Send("rsqff_take"); Wait(6); }
@@ -362,21 +364,36 @@ class RSQFF_Handler : EventHandler
 		{
 			if (gripEdge && atPocket) { Send("rsqff_back"); Wait(6); return; }
 			int by_ = clamp(int(PNum(p, "rsqff_light_by", 2)), 0, 2);
-			if (by_ != 0 && trigEdge) { Send("rsqff_light", 1); Wait(4); return; }
-			if (by_ != 1 && level.maptime - takeTic[n] > 8)
+			if (by_ != 0 && trigEdge) { strikeAt = 0; Send("rsqff_light", 1); Wait(4); return; }
+			// A REACH DOWN TO A HOLSTER IS NO STRIKE (11-03, RSQ Tactical Rig's flare holster on the hip): an unlit flare
+			// carried down to the hip to put it back is a fast downward move, and on the rig it read as a 12 m/s strike
+			// and lit the flare on its way in. With the rig loaded a strike waits STRIKE_HOLD tics; if the off hand is in
+			// one of the rig's places by then (or during), it was a reach, not a strike: dropped, and strikes are ignored
+			// for the hand-history window after (WIN), so the same move is not read again. Without the rig: at once.
+			bool rig = RigLoaded();
+			if (strikeAt > 0 && RigHasHand(pmo))
+			{
+				strikeAt = 0;
+				strikeQuiet = level.maptime + WIN;
+				if (dbg) Console.Printf("RSQFF strike t%d: not a strike, the hand went into a Tactical Rig place", level.maptime);
+			}
+			if (strikeAt > 0 && level.maptime >= strikeAt) { strikeAt = 0; Send("rsqff_light", 0); Wait(4); return; }
+			if (by_ != 1 && level.maptime - takeTic[n] > 8 && strikeAt <= 0 && level.maptime >= strikeQuiet)
 			{
 				// the strike: the fastest recent swing mostly DOWN and fast enough
 				double down = -v.z * RSQFF_Geo.Ps(pmo) / RSQFF_Geo.Vu() * TICRATE;
 				double need = clamp(PNum(p, "rsqff_strike", 1.4), 0.5, 6.0);
 				if (down >= need && down >= 0.6 * ms)
 				{
-					if (dbg) Console.Printf("RSQFF strike t%d: %.2f m/s down (%.2f m/s in all, needs %.2f down)", level.maptime, down, ms, need);
-					Send("rsqff_light", 0);
-					Wait(4);
+					if (dbg) Console.Printf("RSQFF strike t%d: %.2f m/s down (%.2f m/s in all, needs %.2f down)%s", level.maptime, down, ms, need, rig ? ", lit in a moment unless it was a reach to a holster" : "");
+					if (rig && RigHasHand(pmo)) { strikeQuiet = level.maptime + WIN; if (dbg) Console.Printf("RSQFF strike t%d: not a strike, the hand is in a Tactical Rig place", level.maptime); }
+					else if (rig) strikeAt = level.maptime + STRIKE_HOLD;
+					else { Send("rsqff_light", 0); Wait(4); }
 				}
 			}
 			return;
 		}
+		strikeAt = 0;
 
 		// lit: a press while swinging throws; a grip with the hand still drops it
 		if (!gripEdge && !trigEdge) return;
@@ -407,6 +424,8 @@ class RSQFF_Handler : EventHandler
 		EventHandler.SendNetworkEvent("rsqff_v", int(tv.x * 100), int(tv.y * 100), int(tv.z * 100));
 		EventHandler.SendNetworkEvent("rsqff_throw", int(ms * 100));
 	}
+
+	private bool RigLoaded() { return ServiceIterator.Find("RSQTR_RigService").Next() != null; }
 
 	// RSQ Tactical Rig's off hand in one of its places: the grip is the rig's (asked by name; 0 without the rig)
 	private bool RigHasHand(PlayerPawn pmo)
@@ -578,5 +597,26 @@ class RSQFF_Handler : EventHandler
 		}
 		let me = players[consoleplayer];
 		if (Debug(me)) Console.Printf("RSQFF scatter %s: %d items rolled, %d boxes of flares (cap %d)", level.MapName, items.Size(), got, cap);
+	}
+}
+
+// WHAT FnF IS DOING, FOR ANY MOD THAT ASKS BY NAME (RSQ Tactical Rig's flare holster, 11-03). intArg: the player.
+//   GetInt("flare.phase", "", player)   the flare in that player's off hand: 0 none, 1 unlit, 2 lit (-1 FnF off)
+//   GetInt("flare.count", "", player)   flares carried (the pocket's, which the rig's flare holster shares)
+// To take one or put an unlit one back, send FnF's own network events "rsqff_take" / "rsqff_back" (the rig does): they
+// do exactly what a grip at the pocket does, from the same synced state on every machine.
+class RSQFF_Service : Service
+{
+	override int GetInt(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
+	{
+		if (intArg < 0 || intArg >= MAXPLAYERS || !playeringame[intArg] || !players[intArg].mo) return -1;
+		if (request == "flare.count") return players[intArg].mo.CountInv("RSQFF_Ammo");
+		if (request == "flare.phase")
+		{
+			let h = RSQFF_Handler.Get();
+			if (!h || !RSQFF_Handler.On()) return -1;
+			return h.phase[intArg];
+		}
+		return -1;
 	}
 }
