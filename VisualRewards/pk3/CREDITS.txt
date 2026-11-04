@@ -3,7 +3,7 @@ RSQ VisualRewards -- credits
 
 RSQ VisualRewards (2026-11-03) is RSQ HP Bars (the HP bars, the damage numbers, the level-up displays) and Kill
 Rewards (until then inside RSQ Gun Bonsai VR) in one pk3. HP BARS: coldcite (below). DAMAGE NUMBERS: Xaser Acheron
-(below). KILL REWARDS: SoM (below). FONTS: JFO by Zedas / Blackmore1014 (licence note below), Ermac's digits.
+(below). KILL REWARDS: SoM (below). FONTS: JFO by Zedas / Blackmore1014 (shipped with credit, below), Ermac's digits.
 
 
 Top HP Bars 1.04 by coldcite (2017). The layout, the bar art (both styles, all 44 frames), the
@@ -78,8 +78,8 @@ DAMAGE NUMBER FONTS (2026-11-03):
     https://www.moddb.com/addons/jdui-brutal-doom-ultimate-edition). tools/dn_art/jfo_big and jfo_small are
     copied unchanged from RSQ Gun Cards' tools/card_art/jfo (JFO.pk3's Hires/BigFont/fontbNNN.png and
     Hires/SmallFont/stcfnNNN.png); tools/gen_dn_art.py levels their grey and writes the PCVR and Quest
-    textures. NO REUSE LICENCE IS STATED for JFO / JDUI: permission should be asked of Zedas and
-    Blackmore1014 before any public release (the same note as Gun Cards' CREDITS).
+    textures. JFO ships with credit to Zedas and Blackmore1014, by the owner's decision (2026-11-04; the
+    same note as Gun Cards' CREDITS).
   - Ermac's digits (Number Font: Ermac): iamErmac's Force Unleashed holo HUD digits (digit_*.png), as RSQ Gun
     Cards ships them with the owner's blessing (tools/dn_art/ermac, copied from GunCards/tools/card_art).
 

@@ -203,8 +203,8 @@ back to its default.
 - **Damage numbers**: damnums v1.0.2 by Xaser Acheron, with contributions by Major Cooke and thanks to Marrub and
   Zombie. MIT licence, © 2017 Xaser Acheron. Its idea, digit art, colour translations, damage-type colours and motion
   are his.
-- **Fonts**: JFO, the JDUI font by Zedas, in Blackmore1014's "JDUI Brutal Doom Ultimate Edition". No reuse licence is
-  stated for JFO / JDUI. Ermac's digits: iamErmac's Force Unleashed holo HUD digits.
+- **Fonts**: JFO, the JDUI font by Zedas, in Blackmore1014's "JDUI Brutal Doom Ultimate Edition". It ships with credit
+  to Zedas and Blackmore1014 (owner's decision). Ermac's digits: iamErmac's Force Unleashed holo HUD digits.
 - **Kill Rewards**: SoM's Universal(ish?) Kill Rewards v1.0, its bits, orb sprites and drop rules. SoM: "Feel free to
   use anything in this mod for yourself ... I don't need credit, unless you wanted to." We do.
 - Lossvoise's high-visibility retexture is not included. Champions and LegenDoom Lite are read by name; nothing of
