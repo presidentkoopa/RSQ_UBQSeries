@@ -68,3 +68,27 @@ Found while rewriting the READMEs from the code (11-03 evening). None fixed yet;
     event is used): no effect anywhere.
 22. Loaded alone it shows nothing (Show Gesture Names, on by default, has nothing to show).
 23. RSQ_Gestures.pk3 still carries the old README: rebuild once the hands lane's Gestures changes are committed.
+
+## Gun Bonsai VR
+24. Ground Pound, Clear Out, Absorb and Release are offered without RSQ Gestures and then do nothing (tooltips say
+    "Needs RSQ Gestures"); Taunt checks correctly (up_fists.zs ~90, ~106, guard nodes ~437). Gate like Taunt.
+25. The Force hand's records earn XP but every Force node is offered only on saber records: a Force-hand level-up can
+    only offer generic upgrades. Decide (owner).
+26. The binding warning fires at Gun Bonsai's default (mode 1); stale-record pruning runs only in mode 0.
+27. Dead Tuning rows: First Star After / Star Every (Star Punch no longer offered).
+28. No menu rows: dual HUD on/off, which hand a single HUD follows, per-hand HUD positions/mirroring (menu redesign).
+29. Skins don't mirror for left-handers while Gun Bonsai's gauges do. Check visually.
+30. COPYING.md ends mid-sentence (Sungraphica hud.xcf line). Old `readme.txt` still ships in the pk3. zscript.txt
+    comment says nine replaced files; there are ten.
+31. Uncapped nodes: One-Two, Lunge, Executioner, Adrenaline. Decide.
+
+## VisualRewards
+32. JFO Metal (default number font) has no reuse licence (same JFO question).
+33. The CRIT word can only show when another mod asks; none does (Critical Shots is after 2.0).
+34. CVARINFO comments for Number Colour / Damage Type Colours are stale (they apply only with Hit Colours = damnums').
+35. Kill Rewards: with Bits Fly to Me at 0 (default), a VR player standing still never picks bits up. Consider a
+    non-zero default (owner).
+
+## Repo hygiene
+36. `git pull --rebase --autostash` in the shared checkout can race another lane's write and leave the tree
+    mid-rebase (happened once 11-03, restored by hand; backup ref `refs/backup/readme-lane-autostash` can go).
