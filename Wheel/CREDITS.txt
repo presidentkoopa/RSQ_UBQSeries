@@ -22,3 +22,11 @@ models/common). The cards on the guns that use the rest of that art are now thei
 The Card Look's lock-on mark (graphics/WRLKRB.png, WRLKCB.png) is the series' own, copied from RSQ ShieldSaw
 (sprites/SSQRB0.png, SSQCB0.png). Its other art (graphics/WREPLATG, WRECHIP, WREHALO, WREDISC,
 WRESPARK, WRSHADE) is drawn by tools/gen_glow_art.py; its gun colours are measured from RSQ Gun Cards' panel art.
+
+Card icons (owner 2026-11-03; sources and how each was made: sources/icons/SOURCES.md):
+  - The fist card (graphics/WRIFIST.png) is LegenDoom 3.0's brass knuckles, the icon of its standard fists
+    (sprites/Fist/SFISZ0). LegenDoom is by Yholl and its contributors (Kyle873, Sgt_Shivers, Marrub, Perkristian
+    and the others named in its own CREDITS file).
+  - The lightsaber card (graphics/WRISABER.png) is "Jedi Lightsaber (Star Wars)", pixel art by danger_doughnut52
+    on dinopixel.com (24 Aug 2020): https://dinopixel.com/jedi-lightsaber-star-wars-pixel-art-2388
+  - The whip card (graphics/WRIWHIP.png) is the series' own, drawn by sources/icons/gen_whip_icon.py.

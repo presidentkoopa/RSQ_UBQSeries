@@ -3647,6 +3647,7 @@ class wr_Rig : EventHandler
 
 			Array<Class<Weapon> > variants;
 			slotWeapons(pmo, slot, variants);
+			if (mFansEnabled) dropFists(variants);   // RSQ: the fist has its own card (ensureFistCards)
 			if (variants.Size() == 0) continue;
 
 			// COLLAPSED ONLY: move the remembered pick to the front. The test
@@ -3719,6 +3720,8 @@ class wr_Rig : EventHandler
 				mSlotAllDry.Push(allDry);
 			}
 		}
+
+		ensureFistCards(pmo);
 	}
 
 	// Every weapon of one slot this hand may take, in slot order.
@@ -4172,8 +4175,11 @@ class wr_Rig : EventHandler
 		collapseSlot();
 		if (cardIndex < 0 || cardIndex >= mCardSlots.Size()) return;
 
+		// RSQ: the fist's own card (ensureFistCards) never fans, and no fan repeats it
+		if (cardIndex < mTypes.Size() && isFistClass(mTypes[cardIndex])) return;
 		Array<Class<Weapon> > variants;
 		slotWeapons(pmo, mCardSlots[cardIndex], variants);
+		dropFists(variants);
 
 		// THE SAME ORDER THE CARD WAS BUILT FROM. slotWeapons() answers in raw
 		// slot order; the card's face came from the PROMOTED order, and the
@@ -4982,6 +4988,10 @@ class wr_Rig : EventHandler
 		none.SetInvalid();
 		if (it == null) return none;
 
+		// RSQ (owner 2026-11-03): the fist, the lightsaber and the whip wear the Wheel's own icons (ownIcon).
+		TextureID own = ownIcon(it.GetClass());
+		if (own.IsValid()) return own;
+
 		// The pickup sprite -- the thing you'd see lying on the floor. This is
 		// what a weapon is recognisable AS, so it leads.
 		TextureID pickup = spriteOf(it, 'Spawn');
@@ -5006,6 +5016,102 @@ class wr_Rig : EventHandler
 			return cur;
 		}
 		return none;
+	}
+
+	// RSQ (owner 2026-11-03): THE WHEEL'S OWN ICONS for three cards whose own art says little on a card --
+	//   the fist         WRIFIST   LegenDoom 3.0's brass knuckles (its LDFists' icon, SFISZ0)
+	//   the lightsaber   WRISABER  "Jedi Lightsaber (Star Wars)" by danger_doughnut52, dinopixel.com
+	//   the whip         WRIWHIP   drawn for the Wheel (sources/icons/gen_whip_icon.py)
+	// Sources and credits: sources/icons/SOURCES.md, CREDITS.txt. The series' classes are looked up by name
+	// at run time, so none of their mods has to be loaded.
+	clearscope static Class<Actor> clsNamed(Name n) { Class<Actor> c = n; return c; }
+	clearscope static bool descends(Class<Object> c, Class<Object> base)
+	{
+		if (base == null) return false;
+		for (Class<Object> k = c; k != null; k = k.GetParentClass()) if (k == base) return true;
+		return false;
+	}
+
+	// Doom's fist, whatever replaces it (Brutal Doom's Melee_Attacks), and the off hand's fist in a VR set
+	// (BD22 VR-Reloaded's RSQ_Hands).
+	clearscope static bool isFistClass(Class<Actor> c)
+	{
+		if (c == null) return false;
+		if (c is 'Fist') return true;
+		Class<Actor> rep = Actor.GetReplacement('Fist');
+		if (descends(c, rep)) return true;
+		Name n = c.GetClassName();
+		if (n == 'Melee_Attacks') return true;
+		Class<Actor> off = clsNamed('RSQ_Hands');
+		return descends(c, off);
+	}
+
+	clearscope static TextureID ownIcon(Class<Actor> c)
+	{
+		TextureID none;
+		none.SetInvalid();
+		if (c == null) return none;
+		String lump = "";
+		Class<Actor> saber = clsNamed('UBQS_SaberBase');
+		Class<Actor> whip  = clsNamed('RSQWP_WhipWeapon');
+		if (isFistClass(c))           lump = "WRIFIST";
+		else if (descends(c, saber))  lump = "WRISABER";
+		else if (descends(c, whip))   lump = "WRIWHIP";
+		if (lump.Length() == 0) return none;
+		return TexMan.CheckForTexture(lump, TexMan.Type_Any);
+	}
+
+	// THE FIST THIS HAND TAKES: the off hand's own fist first (RSQ_Hands, off hand only), then whatever replaces
+	// Doom's Fist (Brutal Doom: Melee_Attacks), then Doom's Fist. One the player owns and the hand may hold wins;
+	// owning none, the first the hand may hold by its defaults (the pick gives it: commitAs).
+	private Class<Weapon> fistFor(PlayerPawn pmo, int hand)
+	{
+		Array<Class<Weapon> > cand;
+		if (hand == 1) { let o = (Class<Weapon>)(clsNamed('RSQ_Hands')); if (o) cand.Push(o); }
+		let rep = (Class<Weapon>)(Actor.GetReplacement('Fist'));
+		if (rep) cand.Push(rep);
+		let vf = (Class<Weapon>)(clsNamed('Fist'));
+		if (vf && cand.Find(vf) == cand.Size()) cand.Push(vf);
+		for (int i = 0; i < cand.Size(); ++i)
+		{
+			let w = Weapon(pmo.FindInventory(cand[i]));
+			if (w && !(w.bNoHandSwitch && w.bOffhandWeapon != (hand == 1))) return cand[i];
+		}
+		for (int i = 0; i < cand.Size(); ++i)
+		{
+			if (pmo.FindInventory(cand[i])) continue;   // owned, and refused this hand above
+			let d = GetDefaultByType(cand[i]);
+			if (!(d.bNoHandSwitch && d.bOffhandWeapon != (hand == 1))) return cand[i];
+		}
+		return null;
+	}
+
+	// THE FIST IS ALWAYS ON THE RING (owner 2026-11-03), first, as slot 1's card: also when a fan would have hidden
+	// it behind another slot-1 weapon, when a mod keeps it out of the weapon slots, and when the player has none.
+	// Each hand that picks from this ring gets its fist (both with wr_either_hand), unless a card already has it.
+	private void ensureFistCards(PlayerPawn pmo)
+	{
+		int at = 0;
+		for (int h = 0; h < 2; ++h)
+		{
+			if (!eitherHand() && h != ((mRigHand == 1) ? 1 : 0)) continue;
+			Class<Weapon> f = fistFor(pmo, h);
+			if (f == null || mTypes.Find(f) < mTypes.Size()) continue;
+			let held = Weapon(pmo.FindInventory(f));
+			mTypes.Insert(at, f);
+			mCardSlots.Insert(at, 1);
+			mCardColor.Insert(at, cardColorFor(held, 1));
+			mSlotCount.Insert(at, 1);
+			mSlotAllDry.Insert(at, false);
+			++at;
+		}
+	}
+
+	// A fanned slot keeps its fists out of the fan: they have their own card (ensureFistCards).
+	private static void dropFists(in out Array<Class<Weapon> > variants)
+	{
+		for (int i = variants.Size() - 1; i >= 0; --i)
+			if (isFistClass(variants[i])) variants.Delete(i);
 	}
 
 
@@ -5949,9 +6055,10 @@ class wr_Rig : EventHandler
 			// heldNow is the Weapon cast -- null for every inventory-page item,
 			// which is why those cards were blank plates with a name.
 			let heldItem = players[consoleplayer].mo.FindInventory(mTypes[i]);
-			if (heldItem != null && !canvasFace)
+			// RSQ: a fist the player does not own yet still shows its icon (ensureFistCards, ownIcon)
+			if ((heldItem != null || ownIcon(mTypes[i]).IsValid()) && !canvasFace)
 			{
-				TextureID icon = iconFor(heldItem);
+				TextureID icon = heldItem ? iconFor(heldItem) : ownIcon(mTypes[i]);
 
 				if (icon.IsValid())
 				{
@@ -9161,6 +9268,8 @@ class wr_Rig : EventHandler
 
 		for (int i = 0; i < mTypes.Size(); ++i)
 		{
+			// RSQ: a card with the Wheel's own icon (ownIcon) shows that icon, not a pickup model
+			if (ownIcon(mTypes[i]).IsValid()) { mModels.Push(null); mModelFit.Push(1.0); mModelDrop.Push(0); continue; }
 			let a = Actor.Spawn(mTypes[i], pmo.Pos, NO_REPLACE);
 			if (a == null) { mModels.Push(null); mModelFit.Push(1.0); mModelDrop.Push(0); continue; }
 
@@ -9681,7 +9790,13 @@ class wr_Rig : EventHandler
 			int hand = mPokeHand;
 			Class<Weapon> want = HoveredClass();
 			let w = want ? Weapon(pmo.FindInventory(want)) : null;
-			if (w && w.bNoHandSwitch) hand = w.bOffhandWeapon ? 1 : 0;
+			bool fixedHand = w && w.bNoHandSwitch, fixedOff = w && w.bOffhandWeapon;
+			if (!w && want && isFistClass(want))   // RSQ: a fist not owned yet (commitAs gives it): its defaults say the hand
+			{
+				let d = GetDefaultByType(want);
+				fixedHand = d.bNoHandSwitch; fixedOff = d.bOffhandWeapon;
+			}
+			if (fixedHand) hand = fixedOff ? 1 : 0;
 			// braced off hand: the gun goes to the hand that can hold it (offhandBraced)
 			else if (hand == 1 && offhandBraced(pmo)) hand = 0;
 			mRigHand = hand;
@@ -9719,6 +9834,12 @@ class wr_Rig : EventHandler
 		if (want == null) return;
 
 		let weap = Weapon(pmo.FindInventory(want));
+		// RSQ: the fist's card is always on the ring (ensureFistCards); a player without that fist is given it
+		if (weap == null && isFistClass(want))
+		{
+			pmo.GiveInventoryType(want);
+			weap = Weapon(pmo.FindInventory(want));
+		}
 		if (weap == null) { closeRig(); return; }
 
 		// RSQ WH5 (owner's QoL pick): a gun with no ammo at all is not taken. Doom's dry click, and this hand keeps

@@ -34,6 +34,11 @@ BFG with a long heavy thud. After a while you can find a gun by feel.
 **The cards**
 - Colour by Gun: each card washed in its gun's colour, lit from the top, with a halo behind the card you are on.
 - The gun's pickup model (from BD_VoxelPack) turning on its card. A gun without one keeps its icon.
+- The fist is always on the ring, as slot 1's first card: also when a fan would hide it, when a mod leaves it out
+  of the weapon slots, and when you have none (taking the card gives you the fist). It picks Doom's Fist, Brutal
+  Doom's fists, or BD22 VR's off-hand fist, whichever that hand uses.
+- The fist, the lightsaber and the whip have their own icons: LegenDoom's brass knuckles, a pixel-art lightsaber
+  and a coiled whip (credits in CREDITS.txt).
 - Ammo counts and gauges, a slot number, and a mark on the guns you are holding.
 - A big arsenal folds into one card per slot. Rest on a slot and its guns fan out; Use opens the fan at once.
 - Hold the trigger on a gun in a fan and drag it to a new place in its slot. The order is saved.
