@@ -120,3 +120,10 @@ Found while rewriting the READMEs from the code (11-03 evening). None fixed yet;
 45. Menu leftovers: unused OptionValue "RSQTR_Pairs"; `rsqtr_debug_throw` missing from Reset All; stray comment text
     on `rsqtr_icon_turn` in CVARINFO; Body Turn Angle/Delay only act with "Torso Catches Up With Head" on.
 46. cig.zs header still says "Rig only, not headset-confirmed" (owner confirmed every mod in the headset 11-03).
+
+## FnF
+47. "Start With ... and after dying": the starting flares are given once per pawn (RSQFF_Given is UNCLEARABLE), so a
+    respawn doesn't refill the pocket, contrary to the CVARINFO comment / old menu wording. Decide which is intended.
+48. The chest pocket has no marker (only a sound/buzz on a good take, "No flares left" when empty).
+49. `rsqff_keys_off` is in Reset All with no menu row; burn.zs comment names a nonexistent `rsqff_husk` (fixed 10 s);
+    handler.zs carries an old "rig only" label.
