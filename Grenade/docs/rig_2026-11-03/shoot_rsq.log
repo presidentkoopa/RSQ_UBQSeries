@@ -1,0 +1,208 @@
+Log started: 2026-11-03 20:11:45
+GTP_X0_IN_HAND_THEN_HITSCAN_GRACE
+GTP t112 btn ---- hmd 1.70 adj 0.00 viewz 1.45 m eyes 1.70 m; main: 0.40 under the eyes, 0.30 ahead, old-measure 0.33 m; off: 0.40 under the eyes, 0.45 ahead, old-measure 0.48 m; ready Pistol off RSQGN_Grenade
+RSQGN ring missed t115 (other hand 19.1 cm from it, needs < 12)
+GTP t116 btn A--- hmd 1.70 adj 0.00 viewz 1.45 m eyes 1.70 m; main: 0.40 under the eyes, 0.30 ahead, old-measure 0.33 m; off: 0.40 under the eyes, 0.45 ahead, old-measure 0.48 m; ready Pistol off RSQGN_Grenade
+RSQGN shot t119: nothing set off (0 thrown grenades in the world; one in a hand is never shootable)
+GTP t120 btn ---- hmd 1.70 adj 0.00 viewz 1.45 m eyes 1.70 m; main: 0.40 under the eyes, 0.30 ahead, old-measure 0.33 m; off: 0.40 under the eyes, 0.45 ahead, old-measure 0.48 m; ready Pistol off RSQGN_Grenade
+GTP t124 btn ---- hmd 1.70 adj 0.00 viewz 1.45 m eyes 1.70 m; main: 0.40 under the eyes, 0.30 ahead, old-measure 0.33 m; off: 0.40 under the eyes, 0.45 ahead, old-measure 0.48 m; ready Pistol off RSQGN_Grenade
+GTP t128 btn ---- hmd 1.70 adj 0.00 viewz 1.45 m eyes 1.70 m; main: 0.40 under the eyes, 0.30 ahead, old-measure 0.33 m; off: 0.12 under the eyes, 0.10 ahead, old-measure 0.17 m; ready Pistol off RSQGN_Grenade
+RSQGN face t130 hand 1 mouth 0.04 m (reach 0.15) squeeze none held 0/12 ready 1; eyes 0.25 m over viewz, hand 0.12 m under the eyes
+GTP t132 btn --O- hmd 1.70 adj 0.00 viewz 1.45 m eyes 1.70 m; main: 0.40 under the eyes, 0.30 ahead, old-measure 0.33 m; off: 0.12 under the eyes, 0.10 ahead, old-measure 0.17 m; ready Pistol off RSQGN_Grenade
+RSQGN face t135 hand 1 mouth 0.04 m (reach 0.15) squeeze trigger held 5/12 ready 1; eyes 0.25 m over viewz, hand 0.12 m under the eyes
+GTP t136 btn --O- hmd 1.70 adj 0.00 viewz 1.45 m eyes 1.70 m; main: 0.40 under the eyes, 0.30 ahead, old-measure 0.33 m; off: 0.12 under the eyes, 0.10 ahead, old-measure 0.17 m; ready Pistol off RSQGN_Grenade
+RSQGN face t140 hand 1 mouth 0.04 m (reach 0.15) squeeze trigger held 10/12 ready 1; eyes 0.25 m over viewz, hand 0.12 m under the eyes
+GTP t140 btn --O- hmd 1.70 adj 0.00 viewz 1.45 m eyes 1.70 m; main: 0.40 under the eyes, 0.30 ahead, old-measure 0.33 m; off: 0.12 under the eyes, 0.10 ahead, old-measure 0.17 m; ready Pistol off RSQGN_Grenade
+RSQGN teeth t142: hand 1, squeezed by trigger, 0.04 m from the mouth (reach 0.15) for 12 tics
+RSQGN pin out p0 t143 by teeth (hand 1)
+GTP t144 btn --O- hmd 1.70 adj 0.00 viewz 1.45 m eyes 1.70 m; main: 0.40 under the eyes, 0.30 ahead, old-measure 0.33 m; off: 0.12 under the eyes, 0.10 ahead, old-measure 0.17 m; ready Pistol off RSQGN_Grenade
+GTP t148 btn --O- hmd 1.70 adj 0.00 viewz 1.45 m eyes 1.70 m; main: 0.40 under the eyes, 0.30 ahead, old-measure 0.33 m; off: 0.12 under the eyes, 0.10 ahead, old-measure 0.17 m; ready Pistol off RSQGN_Grenade
+GTP t152 btn --O- hmd 1.70 adj 0.00 viewz 1.45 m eyes 1.70 m; main: 0.40 under the eyes, 0.30 ahead, old-measure 0.33 m; off: 0.40 under the eyes, -0.00 ahead, old-measure 0.25 m; ready Pistol off RSQGN_Grenade
+GTP t156 btn --O- hmd 1.70 adj 0.00 viewz 1.45 m eyes 1.70 m; main: 0.40 under the eyes, 0.30 ahead, old-measure 0.33 m; off: 0.25 under the eyes, 0.55 ahead, old-measure 0.59 m; ready Pistol off RSQGN_Grenade
+RSQGN release t157: swing 7.22 m/s (throws from 2.50)
+RSQGN thrown p0 t158 hand 1 swing 7.21 m/s, leaves at 7.8 u/tic (8.42 m/s) from (-101 809 98), fuse 350 of 350
+RSQGN flash thrown t158 period 16 left 349 at (-101 815 102)
+GTP t159 hung RSQGN_Thrown at (-96 880 91), 96 ahead
+RSQGN ring missed t159 (other hand 52.3 cm from it, needs < 12)
+GTP t160 btn ---- hmd 1.70 adj 0.00 viewz 1.45 m eyes 1.70 m; main: 0.40 under the eyes, 0.30 ahead, old-measure 0.33 m; off: 0.20 under the eyes, 0.70 ahead, old-measure 0.73 m; ready Pistol off RSQGN_Grenade
+RSQGN shot ignored t163: the grenade is 5 tics out of the hand (grace 6)
+RSQGN shot ignored t163: the grenade is 5 tics out of the hand (grace 6)
+RSQGN shot t163: nothing set off (1 thrown grenades in the world; one in a hand is never shootable)
+GTP t164 btn ---- hmd 1.70 adj 0.00 viewz 1.45 m eyes 1.70 m; main: 0.40 under the eyes, 0.30 ahead, old-measure 0.33 m; off: 0.20 under the eyes, 0.70 ahead, old-measure 0.73 m; ready Pistol off RSQGN_Grenade
+GTP t168 btn ---- hmd 1.70 adj 0.00 viewz 1.45 m eyes 1.70 m; main: 0.40 under the eyes, 0.30 ahead, old-measure 0.33 m; off: 0.20 under the eyes, 0.70 ahead, old-measure 0.73 m; ready Pistol off RSQGN_Grenade
+RSQGN ring missed t172 (other hand 52.3 cm from it, needs < 12)
+GTP t172 btn A--- hmd 1.70 adj 0.00 viewz 1.45 m eyes 1.70 m; main: 0.40 under the eyes, 0.30 ahead, old-measure 0.33 m; off: 0.20 under the eyes, 0.70 ahead, old-measure 0.73 m; ready Pistol off RSQGN_Grenade
+RSQGN flash thrown t174 period 15 left 333 at (-96 880 91)
+GTP t176 btn ---- hmd 1.70 adj 0.00 viewz 1.45 m eyes 1.70 m; main: 0.40 under the eyes, 0.30 ahead, old-measure 0.33 m; off: 0.20 under the eyes, 0.70 ahead, old-measure 0.73 m; ready Pistol off RSQGN_Grenade
+RSQGN shot ray t177: hand 0, 86 units out, 0.0 units off its centre
+RSQGN shot t178: hitscan by DoomPlayer, in the air (skeet), 20 tics out of the hand, x1.00
+RSQGN boom thrown t178 at (-96 880 91)
+GTP t178 the hung grenade went off
+GTP t178 damaged Zombieman by DoomPlayer via RSQGN_Thrown: 5 (health 15)
+GTP t180 btn ---- hmd 1.70 adj 0.00 viewz 1.45 m eyes 1.70 m; main: 0.40 under the eyes, 0.30 ahead, old-measure 0.33 m; off: 0.20 under the eyes, 0.70 ahead, old-measure 0.73 m; ready Pistol off RSQGN_Grenade
+GTP_X1_GRACE_ROCKET_AT_A_GRENADE_2_TICS_OUT
+RSQGN face t215 hand 0 mouth 0.04 m (reach 0.15) squeeze none held 0/12 ready 1; eyes 0.25 m over viewz, hand 0.12 m under the eyes
+RSQGN face t220 hand 0 mouth 0.04 m (reach 0.15) squeeze trigger held 3/12 ready 1; eyes 0.25 m over viewz, hand 0.12 m under the eyes
+RSQGN face t225 hand 0 mouth 0.04 m (reach 0.15) squeeze trigger held 8/12 ready 1; eyes 0.25 m over viewz, hand 0.12 m under the eyes
+RSQGN teeth t229: hand 0, squeezed by trigger, 0.04 m from the mouth (reach 0.15) for 12 tics
+RSQGN pin out p0 t230 by teeth (hand 0)
+RSQGN release t244: swing 7.22 m/s (throws from 2.50)
+RSQGN thrown p0 t245 hand 0 swing 7.21 m/s, leaves at 7.8 u/tic (8.41 m/s) from (-91 809 98), fuse 350 of 350
+RSQGN flash thrown t245 period 16 left 349 at (-91 815 102)
+GTP t246 hung RSQGN_Thrown at (-96 880 97), 96 ahead
+GTP t247 rocket from 40 units short of the RSQGN_Thrown
+GTP t247 rocket 40 units from the hung grenade
+GTP t248 rocket 20 units from the hung grenade
+GTP t249 rocket 0 units from the hung grenade
+GTP t250 rocket 20 units from the hung grenade
+GTP t251 rocket 40 units from the hung grenade
+GTP_X2_SAME_GRENADE_HELD_STILL_ROCKET_AGAIN
+GTP t252 rocket 60 units from the hung grenade
+GTP t253 rocket 80 units from the hung grenade
+GTP t254 rocket 100 units from the hung grenade
+GTP t255 rocket 120 units from the hung grenade
+GTP t256 rocket 140 units from the hung grenade
+GTP t257 rocket 160 units from the hung grenade
+GTP t258 rocket 180 units from the hung grenade
+GTP t259 rocket 200 units from the hung grenade
+GTP t260 rocket 220 units from the hung grenade
+GTP t261 rocket 240 units from the hung grenade
+RSQGN flash thrown t261 period 15 left 333 at (-96 880 97)
+GTP t262 rocket 260 units from the hung grenade
+GTP t263 rocket from 40 units short of the RSQGN_Thrown
+GTP t263 rocket 40 units from the hung grenade
+GTP t264 rocket 20 units from the hung grenade
+RSQGN shot t264: projectile Rocket by DoomPlayer, in the air (skeet), 19 tics out of the hand, x1.00
+RSQGN boom thrown t264 at (-96 880 97)
+GTP t264 damaged Zombieman by DoomPlayer via RSQGN_Thrown: 6 (health 9)
+GTP t265 the hung grenade went off
+GTP t265 damaged Zombieman by DoomPlayer via RSQGN_Thrown: 20 (health -11)
+GTP_X3_PISTOL_SHOT_IN_THE_AIR
+RSQGN face t305 hand 0 mouth 0.04 m (reach 0.15) squeeze trigger held 1/12 ready 1; eyes 0.25 m over viewz, hand 0.12 m under the eyes
+RSQGN face t310 hand 0 mouth 0.04 m (reach 0.15) squeeze trigger held 6/12 ready 1; eyes 0.25 m over viewz, hand 0.12 m under the eyes
+RSQGN face t315 hand 0 mouth 0.04 m (reach 0.15) squeeze trigger held 11/12 ready 1; eyes 0.25 m over viewz, hand 0.12 m under the eyes
+RSQGN teeth t316: hand 0, squeezed by trigger, 0.04 m from the mouth (reach 0.15) for 12 tics
+RSQGN pin out p0 t317 by teeth (hand 0)
+RSQGN release t331: swing 7.22 m/s (throws from 2.50)
+RSQGN thrown p0 t332 hand 0 swing 7.21 m/s, leaves at 7.8 u/tic (8.41 m/s) from (-91 809 98), fuse 350 of 350
+RSQGN flash thrown t332 period 16 left 349 at (-91 815 102)
+GTP t333 hung RSQGN_Thrown at (-96 880 97), 96 ahead
+RSQGN flash thrown t348 period 15 left 333 at (-96 880 97)
+RSQGN flash thrown t363 period 15 left 318 at (-96 880 97)
+RSQGN shot ray t370: hand 0, 86 units out, 5.7 units off its centre
+RSQGN shot t371: hitscan by DoomPlayer, in the air (skeet), 39 tics out of the hand, x1.00
+RSQGN boom thrown t371 at (-96 880 97)
+GTP t371 the hung grenade went off
+GTP_X4_SWITCH_OFF
+RSQGN face t415 hand 0 mouth 0.04 m (reach 0.15) squeeze none held 0/12 ready 1; eyes 0.25 m over viewz, hand 0.12 m under the eyes
+RSQGN face t420 hand 0 mouth 0.04 m (reach 0.15) squeeze trigger held 3/12 ready 1; eyes 0.25 m over viewz, hand 0.12 m under the eyes
+RSQGN face t425 hand 0 mouth 0.04 m (reach 0.15) squeeze trigger held 8/12 ready 1; eyes 0.25 m over viewz, hand 0.12 m under the eyes
+RSQGN teeth t429: hand 0, squeezed by trigger, 0.04 m from the mouth (reach 0.15) for 12 tics
+RSQGN pin out p0 t430 by teeth (hand 0)
+RSQGN release t444: swing 7.22 m/s (throws from 2.50)
+RSQGN thrown p0 t445 hand 0 swing 7.21 m/s, leaves at 7.8 u/tic (8.41 m/s) from (-91 809 98), fuse 350 of 350
+RSQGN flash thrown t445 period 16 left 349 at (-91 815 102)
+GTP t446 hung RSQGN_Thrown at (-96 880 97), 96 ahead
+RSQGN flash thrown t461 period 15 left 333 at (-96 880 97)
+RSQGN flash thrown t476 period 15 left 318 at (-96 880 97)
+GTP t487 rocket from 40 units short of the RSQGN_Thrown
+GTP t487 rocket 40 units from the hung grenade
+GTP t488 rocket 20 units from the hung grenade
+GTP t489 rocket 0 units from the hung grenade
+GTP t490 rocket 20 units from the hung grenade
+GTP t491 rocket 40 units from the hung grenade
+RSQGN flash thrown t491 period 14 left 303 at (-96 880 97)
+GTP t492 rocket 60 units from the hung grenade
+GTP t493 rocket 80 units from the hung grenade
+GTP t494 rocket 100 units from the hung grenade
+GTP t495 rocket 120 units from the hung grenade
+GTP t496 rocket 140 units from the hung grenade
+GTP t497 rocket 160 units from the hung grenade
+GTP t498 rocket 180 units from the hung grenade
+GTP t499 rocket 200 units from the hung grenade
+GTP t500 rocket 220 units from the hung grenade
+GTP t501 rocket 240 units from the hung grenade
+GTP t502 rocket 260 units from the hung grenade
+GTP t503 rocket 280 units from the hung grenade
+GTP t504 rocket 300 units from the hung grenade
+GTP t505 rocket 320 units from the hung grenade
+RSQGN flash thrown t505 period 14 left 289 at (-96 880 97)
+RSQGN shot ray t506: hand 0, 86 units out, 5.7 units off its centre
+GTP t506 rocket 340 units from the hung grenade
+RSQGN shot t507: hitscan by DoomPlayer, in the air (skeet), 62 tics out of the hand, x1.00
+RSQGN boom thrown t507 at (-96 880 97)
+GTP t507 the hung grenade went off
+GTP_X5_ONLY_IN_SLOW_MOTION_NOT_SLOWED
+RSQGN face t540 hand 0 mouth 0.04 m (reach 0.15) squeeze none held 0/12 ready 1; eyes 0.25 m over viewz, hand 0.12 m under the eyes
+RSQGN face t545 hand 0 mouth 0.04 m (reach 0.15) squeeze trigger held 2/12 ready 1; eyes 0.25 m over viewz, hand 0.12 m under the eyes
+RSQGN face t550 hand 0 mouth 0.04 m (reach 0.15) squeeze trigger held 7/12 ready 1; eyes 0.25 m over viewz, hand 0.12 m under the eyes
+RSQGN teeth t555: hand 0, squeezed by trigger, 0.04 m from the mouth (reach 0.15) for 12 tics
+RSQGN pin out p0 t556 by teeth (hand 0)
+RSQGN release t570: swing 7.22 m/s (throws from 2.50)
+RSQGN thrown p0 t571 hand 0 swing 7.21 m/s, leaves at 7.8 u/tic (8.41 m/s) from (-91 809 98), fuse 350 of 350
+RSQGN flash thrown t571 period 16 left 349 at (-91 815 102)
+GTP t572 hung RSQGN_Thrown at (-96 880 97), 96 ahead
+RSQGN flash thrown t587 period 15 left 333 at (-96 880 97)
+RSQGN flash thrown t602 period 15 left 318 at (-96 880 97)
+GTP_X6_ONLY_IN_SLOW_MOTION_SLOWED
+RSQGN slow t613: world x0.81, grenade x0.81 (was x1.00)
+RSQGN slow t614: world x0.62, grenade x0.62 (was x0.81)
+RSQGN slow t615: world x0.43, grenade x0.43 (was x0.62)
+RSQGN slow t616: world x0.25, grenade x0.25 (was x0.43)
+RSQGN flash thrown t617 period 14 left 306 at (-96 880 97)
+RSQGN flash thrown t631 period 14 left 303 at (-96 880 97)
+RSQGN flash thrown t645 period 14 left 299 at (-96 880 97)
+RSQGN shot ray t650: hand 0, 86 units out, 5.7 units off its centre
+RSQGN shot t651: hitscan by DoomPlayer, in the air (skeet), 80 tics out of the hand, x1.00
+RSQGN boom thrown t651 at (-96 880 97)
+GTP t651 the hung grenade went off
+GTP_X7_SLOWED_GRENADE_SPEED_FAST_OFF
+RSQGN face t715 hand 0 mouth 0.04 m (reach 0.15) squeeze none held 0/12 ready 1; eyes 0.25 m over viewz, hand 0.12 m under the eyes
+RSQGN face t720 hand 0 mouth 0.04 m (reach 0.15) squeeze trigger held 3/12 ready 1; eyes 0.25 m over viewz, hand 0.12 m under the eyes
+RSQGN face t725 hand 0 mouth 0.04 m (reach 0.15) squeeze trigger held 8/12 ready 1; eyes 0.25 m over viewz, hand 0.12 m under the eyes
+RSQGN teeth t729: hand 0, squeezed by trigger, 0.04 m from the mouth (reach 0.15) for 12 tics
+RSQGN pin out p0 t730 by teeth (hand 0)
+RSQGN release t744: swing 7.22 m/s (throws from 2.50)
+RSQGN thrown p0 t745 hand 0 swing 7.21 m/s, leaves at 7.8 u/tic (8.41 m/s) from (-91 809 98), fuse 350 of 350
+GTP t745 RSQGN_Thrown speed 7.78 u/tic gravity 0.270
+RSQGN slow t745: world x0.25, grenade x0.25 (was x1.00)
+RSQGN flash thrown t745 period 16 left 350 at (-91 810 99)
+GTP t746 RSQGN_Thrown speed 1.94 u/tic gravity 0.017
+GTP t747 RSQGN_Thrown speed 1.93 u/tic gravity 0.017
+GTP t748 RSQGN_Thrown speed 1.92 u/tic gravity 0.017
+GTP t749 RSQGN_Thrown speed 1.91 u/tic gravity 0.017
+GTP t750 RSQGN_Thrown speed 1.90 u/tic gravity 0.017
+GTP_X8_SLOWED_GRENADE_SPEED_FAST_ON
+RSQGN slow t756: world x0.25, grenade x0.63 (was x0.25)
+GTP t760 RSQGN_Thrown speed 4.50 u/tic gravity 0.105
+GTP t761 RSQGN_Thrown speed 4.46 u/tic gravity 0.105
+RSQGN flash thrown t761 period 16 left 344 at (-91 853 117)
+GTP t762 RSQGN_Thrown speed 4.43 u/tic gravity 0.105
+GTP_X9_AFTER_SLOW_MOTION
+GTP t763 RSQGN_Thrown speed 4.40 u/tic gravity 0.105
+RSQGN flash thrown t777 period 15 left 334 at (-91 921 125)
+RSQGN flash thrown t792 period 15 left 325 at (-91 984 108)
+RSQGN flash thrown t807 period 15 left 315 at (-91 1048 67)
+RSQGN flash thrown t822 period 14 left 306 at (-91 1101 33) resting
+RSQGN flash thrown t836 period 14 left 297 at (-91 1123 50) resting
+RSQGN flash thrown t850 period 14 left 288 at (-91 1145 46) resting
+RSQGN flash thrown t864 period 13 left 280 at (-91 1163 32) resting
+RSQGN flash thrown t877 period 13 left 271 at (-91 1164 32) resting
+RSQGN flash thrown t890 period 13 left 263 at (-91 1164 32) resting
+RSQGN flash thrown t903 period 12 left 255 at (-91 1164 32) resting
+RSQGN flash thrown t915 period 12 left 248 at (-91 1164 32) resting
+RSQGN flash thrown t927 period 12 left 240 at (-91 1164 32) resting
+RSQGN flash thrown t939 period 11 left 233 at (-91 1164 32) resting
+RSQGN slow t944: world x0.32, grenade x0.66 (was x0.63)
+RSQGN slow t945: world x0.39, grenade x0.70 (was x0.66)
+RSQGN slow t946: world x0.46, grenade x0.73 (was x0.70)
+RSQGN slow t947: world x0.54, grenade x0.77 (was x0.73)
+RSQGN slow t948: world x0.61, grenade x0.80 (was x0.77)
+RSQGN slow t949: world x0.68, grenade x0.84 (was x0.80)
+RSQGN slow t950: world x0.75, grenade x0.87 (was x0.84)
+RSQGN flash thrown t950 period 11 left 225 at (-91 1164 32) resting
+RSQGN slow t951: world x0.82, grenade x0.91 (was x0.87)
+RSQGN slow t952: world x0.89, grenade x0.95 (was x0.91)
+RSQGN slow t953: world x0.96, grenade x0.98 (was x0.95)
+RSQGN slow t954: world x1.00, grenade x1.00 (was x0.98)
+RSQGN flash thrown t961 period 11 left 214 at (-91 1164 32) resting

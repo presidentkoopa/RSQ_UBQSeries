@@ -68,6 +68,9 @@ Front page (RSQ Grenade). "On" = on by default (CVARINFO); "Option" = off by def
 | Packs of Three a Map | 2 | At most this many packs scattered a map. |
 | Pin With Your Teeth | On | Squeeze and hold the grenade at your mouth to pull the pin. |
 | Alt Fire Cycles Grenade Types | On | The holding hand's alt fire picks the next grenade kind (until the spoon flies). Off: it picks nothing. |
+| Shoot Thrown Grenades | On | Shoot a thrown grenade (a bullet, or a projectile like a rocket) and it goes off where it is, your kill. Shot in the air it counts as a skeet (RSQ Score's Trap Shot). It must be 6 tics (0.17 s) out of your hand first, and the shot must pass within 0.35 m of it. A grenade in your hand can never be shot; punches never set one off. |
+| Only in Slow Motion | Off | Shooting thrown grenades works only while RSQ SlowMo has the world slowed. |
+| Faster Grenades in Slow Motion | Off | In slow motion a thrown grenade moves faster than the world (still visibly slow), so you can throw and then shoot it. How much: Grenade Speed in Slow Motion. |
 | Grenade Types Without Gun Bonsai | All Types | Without RSQ Gun Bonsai VR: All Types lets the alt fire cycle every kind; Frag Only keeps the frag alone. With Gun Bonsai VR it is always the kinds you have unlocked. |
 
 Always on (no row): carry 8 grenades, a backpack gives 6 and raises the carry to 16; the red flash and its tick;
@@ -114,6 +117,7 @@ Tuning and Debug page:
 | Floor Bounce | 0.50 | Speed kept off a floor. |
 | Wall Bounce | 0.25 | Speed kept off a wall. |
 | Ground Drag | 0.82 | Per tic on the floor (1 = ice). |
+| Grenade Speed in Slow Motion | 0.50 | With Faster Grenades in Slow Motion: how far from the world's speed up to real speed a thrown grenade moves (0 the world's, 1 real time; at the world's 0.25, 0.5 gives 0.625). |
 | Teeth: Mouth Reach (m) | 0.15 | How close to your mouth (lips to under the chin) the controller, the grenade or its ring must be. |
 | Teeth: Again Beyond (m) | 0.71 | How far from your mouth it must have gone before the teeth take another pin. |
 | Teeth: Hold (tics) | 12 | How long it must stay there (35 tics = 1 s). |
@@ -166,6 +170,17 @@ alt fire and never fire), **not** for a 1.75 m player with `vr_height_adjust` 0.
 hand and the off hand, and not at the chest (0.33 m from the mouth). The alt fire without Gun Bonsai cycled Impact,
 Incendiary, Freeze, Stun, Smoke, Flash, Charm, Infight, Frag; with the row off and at Frag Only it cycled nothing; a
 Freeze grenade froze three monsters in ice for 105 tics, then thawed them.
+
+What the rig showed on 11-03 for shooting and slow motion (`docs/rig_2026-11-03/shoot_rsq.log`; rig only, not
+headset-confirmed): a pistol shot through the grenade in the off hand set nothing off; a grenade held in the air
+ahead was not set off by a pistol shot 5 tics after the throw ("grace 6") or by a rocket passing through it 3 tics
+after, and was set off by the next pistol shot (20 tics) and by a rocket at 19 tics, in the air: a skeet, credited to
+the player; with Shoot Thrown Grenades off a pistol shot and a rocket set nothing off; with Only in Slow Motion
+nothing until RSQ SlowMo slowed the world, then the shot set it off. In slow motion (world 0.25) a thrown grenade went
+from 7.78 to 1.94 units a tic and gravity 0.27 to 0.017; with Faster Grenades on it went to 4.50 units a tic
+(x0.63) and back to full speed with the world. **Changed:** before 11-03 RSQ SlowMo left this grenade in real time
+(it skips the series' own actors by name), so it flew at full speed through slow motion; it now slows with the world
+(its fuse too), unless Faster Grenades in Slow Motion is on or SlowMo's "your own missiles slow too" is off.
 
 ## Works with
 

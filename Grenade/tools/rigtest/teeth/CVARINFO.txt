@@ -1,1 +1,2 @@
 user int gtp_trace = 0;
+user int gtp_thrown = 0;

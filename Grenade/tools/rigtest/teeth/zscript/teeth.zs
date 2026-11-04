@@ -6,10 +6,43 @@
 class GTP_Probe : EventHandler
 {
 	int lastPin;
+	Actor hung, rocket;
+	bool hungWas;
+	static Actor Newest(Name cn)
+	{
+		let it = ThinkerIterator.Create("Actor");
+		Actor a, best;
+		while (a = Actor(it.Next())) if (a.GetClassName() == cn && a.health > -9999 && !a.bDestroyed && a.CurState && !a.InStateSequence(a.CurState, a.FindState("Boom")) && !a.InStateSequence(a.CurState, a.FindState("Explode"))) best = a;
+		return best;
+	}
 	override void NetworkProcess(ConsoleEvent e)
 	{
 		let pmo = players[e.Player].mo;
-		if (!pmo || e.Name != "gtp_mon") return;
+		if (!pmo) return;
+		// gtp_hang <units> [<class 0 RSQGN_Thrown / 1 HandGrenade>]: the newest thrown grenade held still in the air that far
+		// straight ahead of the pawn at the main hand's height (a target for a level shot from a hand at the pawn's x, y)
+		if (e.Name == "gtp_hang" || e.Name == "gtp_rocket")
+		{
+			Actor g = (e.Name == "gtp_rocket" && hung) ? hung : Newest(e.Args[1] == 1 ? "HandGrenade" : "RSQGN_Thrown");
+			if (!g) { Console.Printf("GTP t%d no grenade to %s", level.maptime, e.Name); return; }
+			if (e.Name == "gtp_hang")
+			{
+				double d = e.Args[0] > 0 ? e.Args[0] : 96;
+				g.SetOrigin((pmo.pos.x + cos(pmo.angle) * d, pmo.pos.y + sin(pmo.angle) * d, pmo.AttackPos.z - 1.4), false);
+				g.vel = (0, 0, 0); g.bNoGravity = true; hung = g; hungWas = true;
+				if (e.Args[1] == 1) g.tics = -1;	// BD22's grenade: its fuse (state count) paused while it hangs
+				Console.Printf("GTP t%d hung %s at (%.0f %.0f %.0f), %.0f ahead", level.maptime, g.GetClassName(), g.pos.x, g.pos.y, g.pos.z, d);
+			}
+			else
+			{
+				// a player-owned rocket from 40 units short of the grenade, flying at it
+				Vector3 from = g.pos + (-cos(pmo.angle) * 40, -sin(pmo.angle) * 40, 0);
+				let r = Actor.Spawn("Rocket", from, ALLOW_REPLACE);
+				if (r) { r.target = pmo; r.angle = pmo.angle; r.vel = (cos(pmo.angle) * r.Speed, sin(pmo.angle) * r.Speed, 0); rocket = r; Console.Printf("GTP t%d rocket from 40 units short of the %s", level.maptime, g.GetClassName()); }
+			}
+			return;
+		}
+		if (e.Name != "gtp_mon") return;
 		let m = Actor.Spawn("DoomImp", pmo.Vec3Angle(e.Args[0] > 0 ? e.Args[0] : 250, pmo.angle, 0), ALLOW_REPLACE);
 		if (m) { m.angle = m.AngleTo(pmo); Console.Printf("GTP t%d spawned %s %.0f ahead", level.maptime, m.GetClassName(), m.Distance2D(pmo)); }
 	}
@@ -28,6 +61,17 @@ class GTP_Probe : EventHandler
 		int pin = pc ? pmo.CountInv(pc) : -1;
 		if (pin != lastPin && pc) Console.Printf("GTP t%d BD22 pin %s (RSG_PinOut %d -> %d)", level.maptime, pin > lastPin ? "OUT" : "back", lastPin, pin);
 		lastPin = pin;
+		if (hung || hungWas) { if (!hung || hung.bDestroyed || hung.InStateSequence(hung.CurState, hung.FindState("Boom")) || hung.InStateSequence(hung.CurState, hung.FindState("Explode"))) { hungWas = false; Console.Printf("GTP t%d the hung grenade went off", level.maptime); hung = null; } else hung.vel = (0, 0, 0); }
+		if (rocket && !rocket.bDestroyed && hung) Console.Printf("GTP t%d rocket %.0f units from the hung grenade", level.maptime, (rocket.pos - hung.pos).Length());
+		if (rocket && rocket.bDestroyed) rocket = null;
+		let tg = CVar.GetCVar("gtp_thrown", p);
+		if (tg && tg.GetInt() > 0)
+		{
+			let ti = ThinkerIterator.Create("Actor");
+			Actor a;
+			while (a = Actor(ti.Next())) if ((a.GetClassName() == 'RSQGN_Thrown' || a.GetClassName() == 'HandGrenade') && a.bMissile)
+				Console.Printf("GTP t%d %s speed %.2f u/tic gravity %.3f", level.maptime, a.GetClassName(), a.vel.Length(), a.Gravity);
+		}
 		let cv = CVar.GetCVar("gtp_trace", p);
 		int tr = cv ? cv.GetInt() : 0;
 		if (tr <= 0 || level.maptime % tr) return;

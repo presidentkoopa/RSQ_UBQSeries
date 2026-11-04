@@ -35,6 +35,42 @@ class RSQGN_Upg play
 	}
 }
 
+// SLOW MOTION AND SHOOTING (11-03), RSQ SlowMo asked by name (RSQSM_Service "scale": the world's speed in permille;
+// without it the world is never slowed).
+class RSQGN_Slow play
+{
+	static double WorldScale()
+	{
+		let it = ServiceIterator.Find("RSQSM_Service");
+		let s = it.Next();
+		if (!s) return 1.0;
+		return clamp(s.GetInt("scale", "", 0, 0, null) / 1000.0, 0.01, 1.0);
+	}
+	static bool Slowed() { return WorldScale() < 0.999; }
+	// the speed a thrown grenade runs at: the world's; with "Faster Grenades in Slow Motion" (rsqgn_slowmo_fast) that
+	// much of the way from the world's speed up to real speed ("Grenade Speed in Slow Motion", rsqgn_slowmo_speed, 0.5:
+	// at a world of 0.25 the grenade runs at 0.625, visibly slow and well ahead of everything else)
+	static double GrenadeFactor()
+	{
+		double w = WorldScale();
+		if (w >= 0.9999) return 1.0;
+		let own = CVar.FindCVar("rsqsm_slow_own");	// RSQ SlowMo's "your own missiles slow too" off: a grenade is yours
+		if (own && !own.GetBool()) return 1.0;
+		let f = CVar.FindCVar("rsqgn_slowmo_fast");
+		if (!f || !f.GetBool()) return w;
+		let k = CVar.FindCVar("rsqgn_slowmo_speed");
+		return w + (1.0 - w) * clamp(k ? k.GetFloat() : 0.5, 0.0, 1.0);
+	}
+	// "Shoot Thrown Grenades" (rsqgn_shoot, on), and "Only in Slow Motion" (rsqgn_shoot_slowmo, off)
+	static bool CanShoot()
+	{
+		let c = CVar.FindCVar("rsqgn_shoot");
+		if (c && !c.GetBool()) return false;
+		let o = CVar.FindCVar("rsqgn_shoot_slowmo");
+		return !(o && o.GetBool()) || Slowed();
+	}
+}
+
 // WHAT THE GRENADE TELLS OTHER MODS, by name. "cooked", objectArg = a thrown grenade: the tics it cooked in the hand before
 // it was thrown, -1 for anything else (Gun Bonsai VR's Slow Burn). "fuse.count" / "fuse.amber", intArg = a player number:
 // while the grenade in that player's hand cooks AND they have COOK SENSE 3 (Gun Bonsai VR patch), its whole seconds left /
@@ -60,6 +96,15 @@ class RSQGN_Service : Service
 		if (request == "teeth" || request == "skeet" || request == "impact")
 		{
 			let g = RSQGN_Thrown(objectArg);
+			// BD22 VR Reloaded's hand grenade shot in the air (its rsg/grenade.zs Shoot, 2.0.3r): the blast it leaves
+			// carries the token RSG_Skeet, looked up by name (nothing of BD22 VR is named at compile time)
+			if (!g && request == "skeet")
+			{
+				let a = Actor(objectArg);
+				String tn = "RSG_Skeet";
+				class<Inventory> tc = tn;
+				if (a && tc) return a.FindInventory(tc) ? 1 : 0;
+			}
 			if (!g) return -1;
 			if (request == "teeth") return g.teeth ? 1 : 0;
 			if (request == "skeet") return g.skeet ? 1 : 0;

@@ -38,6 +38,10 @@ OptionMenu "RSQGN_Options"
 	Option "Grenade Types Without Gun Bonsai", "rsqgn_kinds_free", "RSQGN_KindsFree"
 	Option "Your Own Fire Burns You", "rsqgn_fire_self", "RSQGN_FireSelf"
 	StaticText " "
+	Option "Shoot Thrown Grenades", "rsqgn_shoot", "OnOff"
+	Option "Only in Slow Motion", "rsqgn_shoot_slowmo", "OnOff"
+	Option "Faster Grenades in Slow Motion", "rsqgn_slowmo_fast", "OnOff"
+	StaticText " "
 	Submenu "Tuning and Debug", "RSQGN_Tuning"
 }
 
@@ -53,6 +57,7 @@ OptionMenu "RSQGN_Tuning"
 	Slider "Floor Bounce", "rsqgn_bounce", 0.0, 0.9, 0.05, 2
 	Slider "Wall Bounce", "rsqgn_wallbounce", 0.0, 0.9, 0.05, 2
 	Slider "Ground Drag", "rsqgn_friction", 0.30, 1.0, 0.02, 2
+	Slider "Grenade Speed in Slow Motion", "rsqgn_slowmo_speed", 0.0, 1.0, 0.05, 2
 	StaticText " "
 	Slider "Teeth: Mouth Reach (m)", "rsqgn_mouth_r", 0.05, 0.30, 0.01, 2
 	Slider "Teeth: Again Beyond (m)", "rsqgn_face_far", 0.30, 1.50, 0.01, 2
@@ -61,7 +66,7 @@ OptionMenu "RSQGN_Tuning"
 	Option "Skeet Window Slow-Mo", "rsqgn_skeet_window", "OnOff"
 	Option "Debug Log", "rsqgn_debug", "OnOff"
 	StaticText " "
-	SafeCommand "Reset All", "resetcvar rsqgn_on rsqgn_start rsqgn_scatter rsqgn_singles rsqgn_packs rsqgn_fuse rsqgn_gravity rsqgn_bounce rsqgn_wallbounce rsqgn_friction rsqgn_swing rsqgn_throw rsqgn_lift rsqgn_face rsqgn_mouth_r rsqgn_face_far rsqgn_face_hold rsqgn_kind_alt rsqgn_kinds_free rsqgn_skeet_window rsqgn_debug", "Reset all RSQ Grenade settings?"
+	SafeCommand "Reset All", "resetcvar rsqgn_on rsqgn_start rsqgn_scatter rsqgn_singles rsqgn_packs rsqgn_fuse rsqgn_gravity rsqgn_bounce rsqgn_wallbounce rsqgn_friction rsqgn_swing rsqgn_throw rsqgn_lift rsqgn_face rsqgn_mouth_r rsqgn_face_far rsqgn_face_hold rsqgn_kind_alt rsqgn_kinds_free rsqgn_shoot rsqgn_shoot_slowmo rsqgn_slowmo_fast rsqgn_slowmo_speed rsqgn_skeet_window rsqgn_debug", "Reset all RSQ Grenade settings?"
 }
 
 

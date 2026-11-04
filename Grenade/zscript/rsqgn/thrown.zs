@@ -27,6 +27,17 @@ class RSQGN_Thrown : Actor
 	bool impactHit;		// an Impact grenade that burst on what it touched ("impact")
 	int kind;			// THE KINDS (Gun Bonsai VR patch, kinds.zs)
 	Vector3 prevVel;
+	// SLOW MOTION (11-03): RSQ SlowMo leaves the series' own actors in real time, so the grenade slows itself: its
+	// speed, its fall and its fuse run at slowF (RSQGN_Slow.GrenadeFactor: the world's speed, or more with "Faster
+	// Grenades in Slow Motion").
+	double slowF, baseGrav, fuseAcc;
+	// SHOOT THROWN GRENADES (owner 11-03 19:43): a player's shot or projectile within SHOT_R of it sets it off on the
+	// spot, once it is SHOT_GRACE tics out of the hand. SHOT_R 12 map units = 0.35 m round its centre at 34 units a
+	// metre: the grenade itself is 3 units (9 cm), so a near miss in VR still counts. SHOT_GRACE 6 tics = 0.17 s: at the
+	// slowest throw (2.5 m/s) it is 0.43 m out of the hand by then, so a gun fired from the other hand beside it, or the
+	// throwing hand's own swing, cannot set it off as it leaves.
+	const SHOT_R = 12.0;
+	const SHOT_GRACE = 6;
 
 	Default
 	{
@@ -64,9 +75,12 @@ class RSQGN_Thrown : Actor
 
 	override void Tick()
 	{
+		if (slowF <= 0) { slowF = 1; baseGrav = Gravity; }	// the throw set its gravity after the spawn
+		Slow();
 		prevVel = vel;
 		Super.Tick();
 		if (bDestroyed || boomed || IsFrozen()) return;
+		if (age >= SHOT_GRACE && RSQGN_Slow.CanShoot() && ShotByMissile()) return;
 		if (sticky > 0) Stick();
 		// IMPACT (Gun Bonsai VR patch): it bursts on the first thing it touches -- a bounce (its velocity turned by more
 		// than its fall explains) or the floor -- once it is clear of the hand
@@ -108,7 +122,10 @@ class RSQGN_Thrown : Actor
 
 		if (fuse > 0)
 		{
-			fuse--;
+			fuseAcc += slowF;			// slow motion: the fuse burns at the grenade's own speed
+			int burn = int(fuseAcc);
+			fuseAcc -= burn;
+			fuse = max(fuse - burn, 0);
 			if (level.maptime >= flashNext)
 			{
 				int per = RSQGN_Handler.FlashPeriod(fuse, fuseTotal);
@@ -180,6 +197,56 @@ class RSQGN_Thrown : Actor
 			let d = CVar.FindCVar("rsm_depth");
 			EventHandler.SendNetworkEvent("rsm_pulse", tics * 1000 / TICRATE, int(clamp(d ? d.GetFloat() : 0.25, 0.05, 0.95) * 100));
 		}
+	}
+
+	// SLOW MOTION: to the factor it should run at now, from the one it ran at (velocity scaled by the ratio, gravity
+	// by its square, as RSQ SlowMo does to everything it slows)
+	void Slow()
+	{
+		double want = RSQGN_Slow.GrenadeFactor();
+		if (abs(want - slowF) < 0.0005) return;
+		vel *= want / slowF;
+		Gravity = baseGrav * want * want;
+		if (target && target.player && RSQGN_Handler.Debug(target.player))
+			Console.Printf("RSQGN slow t%d: world x%.2f, grenade x%.2f (was x%.2f)", level.maptime, RSQGN_Slow.WorldScale(), want, slowF);
+		slowF = want;
+	}
+
+	// a player's projectile within SHOT_R of it (the rockets, plasma, a thrown thing; not this mod's own grenades).
+	// Projectiles are not in the blockmap, so the handler keeps the list of live missiles (RSQGN_Handler.missiles).
+	bool ShotByMissile()
+	{
+		let h = RSQGN_Handler.Get();
+		if (!h) return false;
+		for (int i = 0; i < h.missiles.Size(); i++)
+		{
+			let t = h.missiles[i];
+			if (!t || t.bDestroyed || !t.bMissile || t.bNoInteraction || !t.target || !t.target.player) continue;
+			if (t.GetMissileDamage(0, 1) <= 0) continue;	// a trail, a tracer, smoke: decoration that hurts nothing
+			Vector3 c = t.pos + (0, 0, t.height * 0.5) - (pos + (0, 0, height * 0.5));
+			if (c.Length() > SHOT_R + t.radius) continue;
+			Shot(String.Format("projectile %s", t.GetClassName()), t.target);
+			return true;
+		}
+		return false;
+	}
+
+	// SHOT: it goes off where it is. In the air it is a skeet (RSQ Score's Trap Shot reads "skeet"; the Gun Bonsai VR
+	// patch's Skeet node adds its multiplier there).
+	void Shot(String how, Actor by)
+	{
+		if (boomed) return;
+		bool air = pos.z > floorz + 2 && !bOnMobj;
+		if (air)
+		{
+			skeet = true;
+			int lv = RSQGN_Upg.Lv(target, "Skeet");
+			if (lv > 0) dmgMult *= RSQGN_Upg.Num("Skeet.mult", lv, 1.0);
+		}
+		if (target && target.player && RSQGN_Handler.Debug(target.player))
+			Console.Printf("RSQGN shot t%d: %s by %s, %s, %d tics out of the hand, x%.2f", level.maptime, how, by ? by.GetClassName() : 'nobody',
+				air ? "in the air (skeet)" : "on the ground", age, dmgMult);
+		Detonate();
 	}
 
 	void Detonate()

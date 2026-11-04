@@ -1,5 +1,4 @@
-Log started: 2026-11-03 19:34:55
-QZDoom version 4.14.3
+Log started: 2026-11-03 20:20:23
 Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 66:
 No sprites specified for voxel.
 Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 72:
@@ -8,6 +7,7 @@ Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 77:
 No sprites specified for voxel.
 Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 892:
 No sprites specified for voxel.
+GTP t24 btn ---- hmd 1.60 adj 0.00 viewz 1.55 m eyes 1.60 m; main: 0.50 under the eyes, 0.35 ahead, old-measure 0.61 m; off: 0.50 under the eyes, 0.35 ahead, old-measure 0.61 m; ready HandGrenades off rsq_hands
 GTP t30 btn ---- hmd 1.60 adj 0.00 viewz 1.55 m eyes 1.60 m; main: 0.50 under the eyes, 0.35 ahead, old-measure 0.61 m; off: 0.50 under the eyes, 0.35 ahead, old-measure 0.61 m; ready HandGrenades off rsq_hands
 GTP t36 btn ---- hmd 1.60 adj 0.00 viewz 1.55 m eyes 1.60 m; main: 0.50 under the eyes, 0.35 ahead, old-measure 0.61 m; off: 0.50 under the eyes, 0.35 ahead, old-measure 0.61 m; ready HandGrenades off rsq_hands
 GTP t42 btn ---- hmd 1.60 adj 0.00 viewz 1.55 m eyes 1.60 m; main: 0.50 under the eyes, 0.35 ahead, old-measure 0.61 m; off: 0.50 under the eyes, 0.35 ahead, old-measure 0.61 m; ready HandGrenades off rsq_hands
@@ -17,13 +17,12 @@ GTP t54 btn ---- hmd 1.70 adj 0.00 viewz 1.55 m eyes 1.70 m; main: 0.60 under th
 RSG face t55 mouth 0.04 m (reach 0.15) squeeze none held 0/12 ready 1
 RSG face t60 mouth 0.04 m (reach 0.15) squeeze none held 0/12 ready 1
 GTP t60 btn ---- hmd 1.70 adj 0.00 viewz 1.55 m eyes 1.70 m; main: 0.12 under the eyes, 0.10 ahead, old-measure 0.11 m; off: 0.60 under the eyes, 0.35 ahead, old-measure 0.61 m; ready HandGrenades off rsq_hands
-rsr key down 447 (¿)
-RSG face t65 mouth 0.04 m (reach 0.15) squeeze trigger held 5/12 ready 1
+RSG face t65 mouth 0.04 m (reach 0.15) squeeze trigger held 4/12 ready 1
 GTP t66 btn A--- hmd 1.70 adj 0.00 viewz 1.55 m eyes 1.70 m; main: 0.12 under the eyes, 0.10 ahead, old-measure 0.11 m; off: 0.60 under the eyes, 0.35 ahead, old-measure 0.61 m; ready HandGrenades off rsq_hands
-RSG face t70 mouth 0.04 m (reach 0.15) squeeze trigger held 10/12 ready 1
-RSG teeth t72: squeezed by trigger, 0.04 m from the mouth (reach 0.15) for 12 tics
-GTP t72 BD22 pin OUT (RSG_PinOut 0 -> 1)
+RSG face t70 mouth 0.04 m (reach 0.15) squeeze trigger held 9/12 ready 1
 GTP t72 btn A--- hmd 1.70 adj 0.00 viewz 1.55 m eyes 1.70 m; main: 0.12 under the eyes, 0.10 ahead, old-measure 0.11 m; off: 0.60 under the eyes, 0.35 ahead, old-measure 0.61 m; ready HandGrenades off rsq_hands
+RSG teeth t73: squeezed by trigger, 0.04 m from the mouth (reach 0.15) for 12 tics
+GTP t73 BD22 pin OUT (RSG_PinOut 0 -> 1)
 GTP t78 btn A--- hmd 1.70 adj 0.00 viewz 1.55 m eyes 1.70 m; main: 0.12 under the eyes, 0.10 ahead, old-measure 0.11 m; off: 0.60 under the eyes, 0.35 ahead, old-measure 0.61 m; ready HandGrenades off rsq_hands
 GTP t84 btn A--- hmd 1.70 adj 0.00 viewz 1.55 m eyes 1.70 m; main: 0.12 under the eyes, 0.10 ahead, old-measure 0.11 m; off: 0.60 under the eyes, 0.35 ahead, old-measure 0.61 m; ready HandGrenades off rsq_hands
 GTP t90 btn A--- hmd 1.70 adj 0.00 viewz 1.55 m eyes 1.70 m; main: 0.12 under the eyes, 0.10 ahead, old-measure 0.11 m; off: 0.60 under the eyes, 0.35 ahead, old-measure 0.61 m; ready HandGrenades off rsq_hands
@@ -31,7 +30,6 @@ GTP t96 btn A--- hmd 1.70 adj 0.00 viewz 1.55 m eyes 1.70 m; main: 0.12 under th
 GTP t102 btn A--- hmd 1.70 adj 0.00 viewz 1.55 m eyes 1.70 m; main: 0.12 under the eyes, 0.10 ahead, old-measure 0.11 m; off: 0.60 under the eyes, 0.35 ahead, old-measure 0.61 m; ready HandGrenades off rsq_hands
 GTP t108 btn A--- hmd 1.70 adj 0.00 viewz 1.55 m eyes 1.70 m; main: 0.12 under the eyes, 0.10 ahead, old-measure 0.11 m; off: 0.60 under the eyes, 0.35 ahead, old-measure 0.61 m; ready HandGrenades off rsq_hands
 GTP t114 btn A--- hmd 1.70 adj 0.00 viewz 1.55 m eyes 1.70 m; main: 0.12 under the eyes, 0.10 ahead, old-measure 0.11 m; off: 0.60 under the eyes, 0.35 ahead, old-measure 0.61 m; ready HandGrenades off rsq_hands
-rsr key up 447 (¿)
 GTP t116 BD22 pin back (RSG_PinOut 1 -> 0)
 GTP t120 btn ---- hmd 1.70 adj 0.00 viewz 1.55 m eyes 1.70 m; main: 0.60 under the eyes, 0.35 ahead, old-measure 0.61 m; off: 0.60 under the eyes, 0.35 ahead, old-measure 0.61 m; ready HandGrenades off rsq_hands
 GTP t126 btn ---- hmd 1.70 adj 0.00 viewz 1.55 m eyes 1.70 m; main: 0.60 under the eyes, 0.35 ahead, old-measure 0.61 m; off: 0.60 under the eyes, 0.35 ahead, old-measure 0.61 m; ready HandGrenades off rsq_hands
