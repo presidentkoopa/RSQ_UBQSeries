@@ -132,3 +132,8 @@ Found while rewriting the READMEs from the code (11-03 evening). None fixed yet;
 50. Shoot Thrown Grenades: any player's shot sets off anyone's thrown grenade (co-op); not stated. Decide/document.
 51. Off-hand grenade path (ring pulled with the main trigger, kind change on off-hand alt fire) follows from the code
     but is untested on the rig.
+
+## Melee
+52. No Melee Hands by default: Start With Melee Hands and Slappers Only are off and nothing else gives the gloves,
+    so on defaults punches, swat, Hadouken, bullet-meeting and Headlock punches can't be used. Owner: default on?
+53. No menu rows: off-hand grip keys, re-hit wait, uppercut rise, reach pad (in Reset All).
