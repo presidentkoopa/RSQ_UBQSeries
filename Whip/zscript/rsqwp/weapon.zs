@@ -18,7 +18,8 @@
 // Either hand, ONE whip: Whip In (rsqwp_whip_hand) picks the hand (whip.zs WhipIn); in the off hand it reads the off-hand
 // trigger and alt-fire (BT_OFFHANDATTACK / BT_OFFHANDALTATTACK).
 //
-// The hand is Brutal Doom VR's own (MODELDEF: its axe grip); while the whip is out it draws its own handle.
+// Hand on the Handle (on): the weapon draws the FBX hand round the drawn handle (A_WhipLook); off, no model: the whip
+// draws its own handle.
 
 class RSQWP_WhipWeapon : Weapon
 {
@@ -148,6 +149,18 @@ class RSQWP_WhipWeapon : Weapon
 	{
 		A_WeaponReady(WRF_NOFIRE);
 		invoker.Tend(PlayerPawn(self));
+		A_WhipLook();
+	}
+	// HAND ON THE HANDLE (owner 2026-11-03, rsqwp_hand_handle, on): the weapon draws BD22 VR's FBX hand in its magazine
+	// hold round the whip's handle (sprite WHPH, MODELDEF: the hand in slot 7 + Skin 7 "fbx_hand.png", so BD22's Hand
+	// Skin Tone tones it; the handle in slot 0). Off: WHPW, no model, as before (the whip draws its own handle).
+	action void A_WhipLook()
+	{
+		let psp = player ? player.FindPSprite(invoker.Hand() ? PSP_OFFHANDWEAPON : PSP_WEAPON) : null;
+		if (!psp) return;
+		bool on = RSQWP_Whip.HandOnHandle(PlayerPawn(self));
+		psp.Sprite = GetSpriteIndex(on ? "WHPH" : "WHPW");
+		psp.Frame = on ? 0 : 1;
 	}
 
 	States
@@ -156,12 +169,16 @@ class RSQWP_WhipWeapon : Weapon
 		WHPW A -1;
 		Stop;
 	Select:
-		WHPW A 1 A_Raise(12);
+		WHPW A 1 { A_Raise(12); A_WhipLook(); }
 		Loop;
 	Deselect:
 		WHPW A 0 { invoker.PutAway(PlayerPawn(self)); }
-		WHPW A 1 A_Lower(12);
+		WHPW A 1 { A_Lower(12); A_WhipLook(); }
 		Wait;
+	// never entered: registers the hand's sprite name (the engine knows a sprite only when a state uses it)
+	HandReg:
+		WHPH A 0;
+		Stop;
 	Ready:
 		WHPW B 1 A_WhipReady();     // B: the hand alone -- the whip is out and draws its own handle
 		Loop;

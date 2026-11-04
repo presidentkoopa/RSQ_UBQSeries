@@ -101,6 +101,7 @@ Front page of RSQ Whip. "On" = on by default (CVARINFO default). "Option" = off 
 | Whip | On | The whip at all. |
 | Whip Weapon in Slot 1 | On | You carry the whip weapon in slot 1. |
 | Whip In | Main Hand | Which hand the whip weapon is in: Main Hand or Off Hand. One whip, in that hand. |
+| Hand on the Handle | On | The whip weapon is drawn as your hand holding the handle: BD22 VR Reloaded's FBX hand in its rifle-magazine hold (the mesh RSQ Saber's Force hand uses; this mod's own copy), with the handle through its grip at RSQ Saber's hilt angle (50.3 deg above where the controller points, the hand turned 39.7 deg about its measured grip, the handle laid on the palm: tools/gen_whiphand.py). The thong leaves the drawn handle's tip. The crack gesture (wind-up, swing, release) still reads the controller exactly as before. Main or off hand, left-handed: mirrored by the engine. With BD22 VR loaded it takes BD22's Hand Skin Tone. Off: the handle alone along the controller, as before. The lasso's off hand is not drawn. **(rig only, not headset-confirmed)** |
 | Whip Style | Real | For the binds: Real (hold, crack it yourself) or Assist (press, it cracks for you). |
 | Whip Aim | Assist | Free (hits what the tip touches), Assist (what is nearest the tip), Lock (other hand points, alt-fire holds; the crack flies to it). |
 | Catch Edges (snag) | On | A lash that catches an edge wraps round it and becomes a rope. |
@@ -237,6 +238,14 @@ are the 11-02 fixes. They were measured on the rig only, so all of them are not 
     gold, wind up and crack: the whip stretches to the spot and you get a small hop. Step off a ledge and swing. Let
     go on the upswing and you keep the speed when you land. Do it again in the air on the next spot: a chain. Turn
     "Aimed Swing" off: the off hand's alt-fire is the gun's again.
+
+21. **Hand on the Handle (11-03, rig only, not headset-confirmed).** Whip out: your hand holds the handle, the coil
+    hanging from its tip. Wind up and crack: the hand stays on the handle, the thong leaves its tip, one crack as before.
+    Whip In Off Hand, and left-handed: the same in the other hand. Hand on the Handle Off: the handle alone, along the
+    controller. Rig (11-03): frames tools/rigtest/hand_1103/sheet.png (idle, swing, crack, left-handed, Off Hand, Gun
+    Bonsai + all RSQ, full order with Hand Skin Tone 0 and 12); the same scripted swing cracks at the same tic with
+    the switch on and off (wind-up t120, release t136, crack t137; tip 44.9 vs 41.8). Script errors from this pack: 0
+    on doom2 + Whip, 0 on doom2 + Gun Bonsai + all RSQ, 0 on the full order (BD22 VR 2.0.3r; only BD_VoxelPack's 4).
 
 ## Works with
 

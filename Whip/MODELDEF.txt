@@ -24,5 +24,24 @@ Model RSQWP_WhipHandle
 	FrameIndex RSWP A 0 0
 }
 
-// THE WHIP WEAPON (weapon.zs) draws no model of its own: no hand (owner 2026-10-31: hands off); the whip draws its
+// THE WHIP WEAPON (weapon.zs): with Hand on the Handle off it draws no model (owner 2026-10-31: hands off) and the whip draws its
 // own handle and thong (whip.zs Draw).
+
+// HAND ON THE HANDLE (owner 2026-11-03 19:25: "the magazine hold FBX pose ... put the whip into it"): BD22 VR Reloaded's FBX
+// hand in its rifle-magazine hold (fbx_oh_hold_R.md3 frame 0, the same mesh as RSQ Saber's Force hand and Hand on the Hilt;
+// this mod's own copy) turned 39.7 deg about its measured grip onto RSQ Saber's measured hilt line, with the whip's handle
+// through the grip, laid on the palm (tools/gen_whiphand.py). BD22's hand block space (Scale -1 1 1, Offset 0 -24 -10).
+// The hand in slot 7 with Skin 7 "fbx_hand.png", so BD22's Hand Skin Tone (its handtone.zs reads that text) tones it.
+// weapon.zs A_WhipLook picks WHPH (this) or WHPW (no model: the whip draws its own handle) by rsqwp_hand_handle.
+Model RSQWP_WhipWeapon
+{
+	Path "models/rsqwp"
+	Model 0 "rsqwp_handle.md3"
+	Skin 0 "rsqwhiph.png"
+	Model 7 "rsqwp_hand.md3"
+	Skin 7 "fbx_hand.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex WHPH A 0 0
+	FrameIndex WHPH A 7 0
+}

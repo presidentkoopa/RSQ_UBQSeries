@@ -79,6 +79,7 @@ class RSQWP_Whip : EventHandler
 	Vector3 wq[NW * NP];         // and one sub-step ago
 	Vector3 wt[NW * NP];         // nodes in map space at the start of this tic (the sweep's start)
 	Vector3 hb[NW], hd[NW];      // last tic's handle base (room) and direction (room, unit)
+	Vector3 ab[NW], ad[NW];      // the same for the AIM line (the controller's): the crack gesture reads it (Hand on the Handle)
 	double  tipSpd[NW];          // fastest the tip went this tic, room units a tic
 	bool    armed[NW];
 	bool    swished[NW];
@@ -491,6 +492,9 @@ class RSQWP_Whip : EventHandler
 		Vector3 b, d;
 		[b, d] = Handle(i, pmo, hand);
 		hb[i] = b; hd[i] = d;
+		Vector3 aimB, aimD;
+		[aimB, aimD] = AimHandle(i, pmo, hand);
+		ab[i] = aimB; ad[i] = aimD;
 		bodyAt[i] = pmo.pos; bodyHad[i] = true;
 		stiff[i] = 0; windTics[i] = 0; windEnd[i] = -100; swinging[i] = false; released[i] = false; swingPk[i] = 0; stuckTics[i] = 0; straightTic[i] = -100;
 		Follow(i, b, d);
@@ -531,12 +535,53 @@ class RSQWP_Whip : EventHandler
 	// the direction over the shoulder and down; Real is the controller as it is.
 	Vector3, Vector3 Handle(int i, PlayerPawn pmo, int hand)
 	{
+		Vector3 b, d;
+		[b, d] = AimHandle(i, pmo, hand);
+		if (!byWeapon[i] || !HandOnHandle(pmo)) return b, d;
+		// HAND ON THE HANDLE (owner 2026-11-03 19:25: the FBX hand's magazine hold, "assume the hand is set to receive a
+		// vertical cylinder ... the whip handle"): the weapon whip's handle is the one drawn in that grip (MODELDEF
+		// RSQWP_WhipWeapon, tools/gen_whiphand.py), RSQ Saber's hilt line: GRIP_UP above the aim, turned with the
+		// controller's roll, its butt below the fist (handfit.zs). The simulated handle starts at the same butt and runs
+		// the same line, so the thong leaves the drawn handle's tip. The crack GESTURE still reads the aim line
+		// (AimHandle: Deliberate, the hand's speed), so the wind-up and the swing are judged exactly as before.
+		double yaw = RSQWP_Util.HandYaw(pmo, hand);
+		double pit = RSQWP_Util.HandPitch(pmo, hand);
+		double rol = RSQWP_Util.Ctrl(pmo, hand) == 0 ? pmo.AttackRoll : pmo.OffhandRoll;
+		Vector3 fw = (cos(pit) * cos(yaw), cos(pit) * sin(yaw), sin(pit));
+		Vector3 flatRight = (sin(yaw), -cos(yaw), 0);
+		Vector3 levelUp = flatRight cross fw;
+		double r = -rol;                 // the engine draws the hand rolled by -AttackRoll (RSQ Saber's BladeDirOf)
+		Vector3 upv = levelUp * cos(r) - flatRight * sin(r);
+		Vector3 right = flatRight * cos(r) + levelUp * sin(r);
+		let cv = CVar.FindCVar('vr_control_scheme');
+		bool leftHanded = cv && cv.GetInt() >= 10;
+		bool physRight = (RSQWP_Util.Ctrl(pmo, hand) == 0) != leftHanded;
+		Vector3 cardX = physRight ? right * HANDX_SIGN : -right * HANDX_SIGN;   // the engine mirrors the physical left hand
+		let vu = CVar.FindCVar('vr_vunits_per_meter');
+		double k = (vu ? vu.GetFloat() : 34.0) * 0.01;   // cm -> room units
+		b += (fw * RSQWP_HandFit.BUTT_FWD + upv * RSQWP_HandFit.BUTT_UP + cardX * RSQWP_HandFit.BUTT_X) * k;
+		d = fw * cos(RSQWP_HandFit.GRIP_UP) + upv * sin(RSQWP_HandFit.GRIP_UP);
+		return b, d.Unit();
+	}
+	const HANDX_SIGN = 1.0;          // card +X along the physical right hand's right (rig-checked: the thong at the drawn tip)
+
+	// the controller's own line (as the handle always was): the base at the hand, along the aim
+	Vector3, Vector3 AimHandle(int i, PlayerPawn pmo, int hand)
+	{
 		Vector3 b = ToRoom(BodyHand(pmo, hand));
 		double yaw = RSQWP_Util.HandYaw(pmo, hand);
 		double pit = RSQWP_Util.HandPitch(pmo, hand);
 		if (wmode[i] == 1) pit += AssistPitch(wage[i]);
 		Vector3 d = (cos(pit) * cos(yaw), cos(pit) * sin(yaw), sin(pit));
 		return b, d.Unit();
+	}
+
+	// Hand on the Handle (rsqwp_hand_handle, the player's own setting, on by default)
+	static bool HandOnHandle(PlayerPawn pmo)
+	{
+		if (!pmo || !pmo.player) return false;
+		let cv = CVar.GetCVar("rsqwp_hand_handle", pmo.player);
+		return !cv || cv.GetInt() != 0;
 	}
 
 	// A lash thrown for you: lift over the shoulder (7 tics), hold (2), snap down (3), follow.
@@ -640,18 +685,23 @@ class RSQWP_Whip : EventHandler
 			// a hand that jumped (a teleport, a load: 24 room units a tic is 24 m/s, no arm does that):
 			// lay the whip out again from where it is, and it must not count as a lash
 			// (in the body's frame now -- Carry took the body's own move and turn out -- so this is the hand alone)
+			Vector3 aimB, aimD;
+			[aimB, aimD] = AimHandle(i, pmo, hand);
 			if ((b - hb[i]).Length() > 24)
 			{
 				Straighten(i, b, d);
 				hb[i] = b; hd[i] = d;
+				ab[i] = aimB; ad[i] = aimD;
 				handSpd[i] = 0; pend[i] = false;
 			}
 			for (int k = 0; k < NP; k++) wt[i * NP + k] = ToMap(wp[i * NP + k]);
 			// how hard the hand has driven the handle lately (its tip's speed, decaying): a crack
 			// needs the hand behind it -- a whip that only falls or settles never cracks. Relative to the body.
-			double hs = ((b + d * HANDLEN) - (hb[i] + hd[i] * HANDLEN)).Length();
+			// (the AIM line's tip, as it always was: Hand on the Handle moves the drawn handle, not the gesture)
+			double hs = ((aimB + aimD * HANDLEN) - (ab[i] + ad[i] * HANDLEN)).Length();
+			ab[i] = aimB; ad[i] = aimD;
 			handSpd[i] = max(handSpd[i] * 0.93, hs);
-			Deliberate(i, pmo, hand, d, hs);
+			Deliberate(i, pmo, hand, aimD, hs);
 			if (byWeapon[i]) Mark(i, pmo, hand); else Lock(i, pmo, hand);
 			Reach(i, pmo, hand);
 			if (wstate[i] == ST_IDLE) continue;     // it latched (an aimed swing: SwingLatch halts it) -- the laid-out thong strikes nothing more
@@ -802,6 +852,8 @@ class RSQWP_Whip : EventHandler
 		}
 		hb[i] = Xf(hb[i], r0, r1, c, s);
 		hd[i] = (hd[i].x * c - hd[i].y * s, hd[i].x * s + hd[i].y * c, hd[i].z);
+		ab[i] = Xf(ab[i], r0, r1, c, s);
+		ad[i] = (ad[i].x * c - ad[i].y * s, ad[i].x * s + ad[i].y * c, ad[i].z);
 		fb[i] = Xf(fb[i], r0, r1, c, s);
 		fv[i] = (fv[i].x * c - fv[i].y * s, fv[i].x * s + fv[i].y * c, fv[i].z);
 		fd[i] = (fd[i].x * c - fd[i].y * s, fd[i].x * s + fd[i].y * c, fd[i].z);
@@ -3246,7 +3298,9 @@ class RSQWP_Whip : EventHandler
 				fresh = true;
 			}
 			if (!r) continue;
-			r.bINVISIBLE = false;
+			// HAND ON THE HANDLE: the weapon's own model draws the handle in the hand (no lag against the hand); this
+			// world piece stays hidden, the thong starts at its tip all the same
+			r.bINVISIBLE = k == 0 && byWeapon[i] && wby[i] && HandOnHandle(wby[i]) && !RSQWP_Util.Flag("rsqwp_handtest", false);
 			if (!fresh) r.SetOrigin(pa, true);
 			Vector3 room = ToRoom(pb - pa);
 			double l = room.Length();
