@@ -65,7 +65,7 @@ class RSQTR_Cig : EventHandler
 	const POCKET_F = 0.12;
 	const POCKET_L = 0.16;
 	const POCKET_U = -0.25;
-	const POCKET_R = 0.09;
+	const POCKET_R = 0.08;     // 0.09 until 11-05: just past the cigarettes standing in it (farthest point 0.068-0.076 m, rtcig.md3 measured)
 	// WHERE THE CIGARETTE SITS IN THE MOUTH (the prop's centre; metres forward of the eyes and under them, in the head's
 	// frame): the "Mouth Cigarette Forward / Down" sliders, rsqtr_cig_mouth_f / _d (MouthF / MouthD). Ermac's mesh at
 	// MODELDEF scale 0.3 runs 0.034 m behind that centre (the filter) to 0.050 m ahead (the burning end;
@@ -499,8 +499,9 @@ class RSQTR_Cig : EventHandler
 		pocketMark.SetOrigin(at, true);
 		pocketMark.bINVISIBLE = false;
 		pocketMark.Alpha = nearest < POCKET_R ? 0.9 : 0.35;
+		if (packShow[0] && !packShow[0].bINVISIBLE) pocketMark.Alpha *= RSQTR_Rig.STOWED_SPHERE;   // not drawn through the cigarettes (11-05)
 		pocketMark.Scale = (POCKET_R * RSQTR_Body.Upm(), POCKET_R * RSQTR_Body.Upm());   // the wireframe sphere: radius 1.0
-		pocketMark.frame = nearest < POCKET_R ? 1 : 0;
+		pocketMark.frame = RSQTR_Rig.MarkerFrame(nearest < POCKET_R, RSQTR_Rig.Opt("rsqtr_profile_active", p, 1), true);   // a utility place's colour (11-05)
 	}
 	private void HideMark() { if (pocketMark) pocketMark.bINVISIBLE = true; }
 

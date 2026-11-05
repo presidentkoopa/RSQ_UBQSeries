@@ -53,12 +53,12 @@ user float rsqtr_r10_f = 0.02; user float rsqtr_r10_l = -0.21; user float rsqtr_
 // 11 the whip holster, 12 the flare holster (owner 11-03 20:14): behind and outside the saber spots, the same height.
 // Their "left" is toward a hand: the whip's toward the MAIN hand, the flare's toward the OFF hand. This machine only
 // (nosave, as the keyring's): only this machine reads where its own hands reach.
-nosave float rsqtr_r11_f = -0.06; nosave float rsqtr_r11_l = 0.30; nosave float rsqtr_r11_u = -0.84; nosave float rsqtr_r11_rad = 0.09;
+nosave float rsqtr_r11_f = -0.06; nosave float rsqtr_r11_l = 0.30; nosave float rsqtr_r11_u = -0.84; nosave float rsqtr_r11_rad = 0.08;
 nosave float rsqtr_r12_f = -0.06; nosave float rsqtr_r12_l = 0.30; nosave float rsqtr_r12_u = -0.84; nosave float rsqtr_r12_rad = 0.09;
 user bool   rsqtr_whip_holster = true;   // RSQ Whip's whip has its own holster on the main hand's hip (and never goes into a gun holster)
 user bool   rsqtr_flare_holster = true;  // RSQ FnF's flares have their own holster on the off hand's hip (the same flares as its pocket)
 // 13 the ammo pouch (owner 11-03 20:46), left of the buckle (toward the off hand): BD22 VR's reloads take from it only
-nosave float rsqtr_r13_f = 0.16; nosave float rsqtr_r13_l = 0.13; nosave float rsqtr_r13_u = -0.61; nosave float rsqtr_r13_rad = 0.045;
+nosave float rsqtr_r13_f = 0.20; nosave float rsqtr_r13_l = 0.14; nosave float rsqtr_r13_u = -0.62; nosave float rsqtr_r13_rad = 0.10;
 user bool   rsqtr_pouch       = true;    // the ammo pouch: Brutal Doom 22 VR's hand reloads take magazines, shells and rounds from it only
 nosave bool rsqtr_pouch_show  = true;    // the pouch drawn on the belt, with a light for the gun in hand's reserve
 

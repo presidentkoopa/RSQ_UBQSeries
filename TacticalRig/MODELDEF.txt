@@ -63,6 +63,15 @@ Model RSQTR_Marker
 	FrameIndex RSTM S 0 0
 	Skin 0 "rtwcbh4.png"
 	FrameIndex RSTM T 0 0
+	// utility places (owner 11-05; rig.zs MarkerFrame): magenta, then the colour-blind palettes' sixth colour (p, t, h)
+	Skin 0 "rtwireut.png"
+	FrameIndex RSTM U 0 0
+	Skin 0 "rtwcbpu.png"
+	FrameIndex RSTM V 0 0
+	Skin 0 "rtwcbtu.png"
+	FrameIndex RSTM W 0 0
+	Skin 0 "rtwcbhu.png"
+	FrameIndex RSTM X 0 0
 }
 
 // Ermac's cigarette (his Virtual Tactical Vest) and his voxel Zippo (ZBlood-VR), held in the hand.

@@ -22,4 +22,11 @@ out = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'models', '
 for v, cols in SETS.items():
     for k, c in enumerate(cols):
         Image.new('RGB', (8, 8), ((c >> 16) & 255, (c >> 8) & 255, c & 255)).save(os.path.join(out, 'rtwcb%s%d.png' % (v, k)))
-print('wrote', sum(len(c) for c in SETS.values()), 'skins to', os.path.normpath(out))
+# UTILITY PLACES (owner 11-05 01:07): one more colour per palette for the places no gun goes in, picked by the same
+# farthest-point search against that palette's five (and against the stock six for rtwireut, normal vision):
+#   rtwireut FF00FF (16.7 from the stock six)  rtwcbpu 33FF99 (8.3, protan/deutan; 3333CC scored 9.0 but is too dim on a
+#   dark wall)  rtwcbtu CC33CC (14.2)  rtwcbhu CC3300 (18.3). MODELDEF frames RSTM U, V, W, X.
+UTIL = {'rtwireut': 0xFF00FF, 'rtwcbpu': 0x33FF99, 'rtwcbtu': 0xCC33CC, 'rtwcbhu': 0xCC3300}
+for n, c in UTIL.items():
+    Image.new('RGB', (8, 8), ((c >> 16) & 255, (c >> 8) & 255, c & 255)).save(os.path.join(out, n + '.png'))
+print('wrote', sum(len(c) for c in SETS.values()) + len(UTIL), 'skins to', os.path.normpath(out))

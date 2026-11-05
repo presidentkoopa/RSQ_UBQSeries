@@ -1,0 +1,35 @@
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 66:
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 72:
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 77:
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 892:
+"rsqtr_r11_rad" is "0.08" (default: "0.08")
+"rsqtr_r13_rad" is "0.1" (default: "0.1")
+"rsqtr_r13_f" is "0.2" (default: "0.2")
+"rsqtr_r13_l" is "0.14" (default: "0.14")
+"rsqtr_r13_u" is "-0.62" (default: "-0.62")
+ZZ_FRONT
+ZZ_RHAND_WHIP
+ZZ_RHAND_HIP
+ZZ_LOOK_R
+ZZ_LOOK_L
+rsr t404 gun 1: IDLE -> EMPTY
+rsr t404 sound Rifle/Reload1 (slot 5)
+rsr t404 gun 1: EMPTY -> DROP
+rsr t408 gun 1: DROP -> EMPTY
+ZZ_ON_MAG_AT_BUCKLE
+rsr t458 gun 1: the rig's pouch only: the off hand is not in it
+ZZ_ON_MAG_AT_NEW_POUCH
+rsr t515 gun 1: the rig's pouch gives a magazine
+rsr t515 gun 1: EMPTY -> CARRY
+rsr t527 gun 1: CARRY -> EMPTY
+ZZ_POUCH_OFF
+ZZ_OFF_MAG_AT_OFF_CHEST
+rsr t668 gun 1: EMPTY -> CARRY
+rsr t680 gun 1: CARRY -> EMPTY
+ZZ_END
+--- before build:
+"rsqtr_r11_rad" is "0.09" (default: "0.09")
+"rsqtr_r13_rad" is "0.045" (default: "0.045")
+"rsqtr_r13_f" is "0.16" (default: "0.16")
+"rsqtr_r13_l" is "0.13" (default: "0.13")
+"rsqtr_r13_u" is "-0.61" (default: "-0.61")

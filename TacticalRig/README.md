@@ -63,7 +63,11 @@ here (the body, the holsters, the torso that follows your turns) is worked out i
 - A flare holster on your off-hand hip for RSQ FnF, sharing its chest pocket's flares, with a flare hanging there
   while you carry one.
 - An ammo pouch just left of the buckle for Brutal Doom 22 VR's hand reloads: reach into it for the magazine, shell
-  or round. Its light shows the reserve of the gun in your hand (green, yellow, red).
+  or round (a 10 cm reach since 11-05). Its light shows the reserve of the gun in your hand (green, yellow, red).
+  Ammo Pouch off: BD22 VR takes ammo from anywhere again.
+- Holster rings: gun holsters (hips, chest, shoulders) are blue (or their profile's colour); every other spot (grenade,
+  keyring, sabers, whip, flare, pouch, FnF's pocket and clip, the cigarette pocket) is magenta; green with a hand inside.
+  A ring with its item in it is drawn faint, so the item shows solid.
 - The cigarettes left in your pocket stand in it on your chest, and the mirror shows your grenade, cigarettes and
   RSQ ShieldSaw's shield along with your holsters.
 
@@ -140,7 +144,7 @@ what the rows already do: Smoker, Chain Smoker, Gun Toss, Boomerang Gun).
 | Tactical Rig | On | The whole rig |
 | Grip Holsters | On | Grips holster and draw |
 | Use Holsters | On | Use holsters and draws too |
-| Holster Rings | Hand Nearby | Never, Hand Nearby, Always |
+| Holster Rings | Hand Nearby | Never, Hand Nearby, Always. Gun holsters blue (profile colour), other spots magenta |
 | Holster Reach | 1.00 | Holster size (0.5 to 2) |
 | Quick Swap | On | A full holster swaps without the press delay |
 | New Guns to Holsters | Off | A new gun fills the first empty holster |
@@ -153,7 +157,7 @@ what the rows already do: Smoker, Chain Smoker, Gun Toss, Boomerang Gun).
 | Saber on Hip Too | Off | The main saber also clips to the hips |
 | Whip Holster | On | RSQ Whip's whip has its own holster on the main-hand hip |
 | Flare Holster | On | RSQ FnF's flares have their own holster on the off-hand hip |
-| Ammo Pouch | On | A pouch left of the belt buckle (off-hand side): with Brutal Doom 22 VR, hand reloads take magazines, shells and rounds from it only |
+| Ammo Pouch | On | A pouch left of the belt buckle (off-hand side): with Brutal Doom 22 VR, hand reloads take magazines, shells and rounds from it only. Off: they take ammo from anywhere |
 | Show Ammo Pouch | On | The pouch on the belt, its light the reserve of the gun in your hand (green, yellow, red) |
 | Shoulder to ShieldSaw | On | Off shoulder is the shield's while it is stowed there |
 | Keyring | On | Keys on your belt |
@@ -207,7 +211,7 @@ Forward (0.12 m), In Mouth Down (0.07 m), Smoke Time (2 s), Slow Motion (6 s), S
 Holster Positions: forward, left, up and size in metres from your eyes for every holster, the grenade spot, the
 keyring, both saber spots, the whip and flare holsters and the ammo pouch (hips 0.70 m down, 0.18 m out; chest 0.46
 down, 0.12 out, 0.10 forward; shoulders 0.10 down, 0.18 out, 0.08 back; whip and flare 0.84 down, 0.30 out, 0.06
-back; pouch 0.61 down, 0.13 toward the off hand, 0.16 forward). Debug: Throw Debug Log (Off).
+back, whip 0.08 size; pouch 0.62 down, 0.14 toward the off hand, 0.20 forward, 0.10 size; cigarette pocket 0.08). Debug: Throw Debug Log (Off).
 
 ## Works with
 

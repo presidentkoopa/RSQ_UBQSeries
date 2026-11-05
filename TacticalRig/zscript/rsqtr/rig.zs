@@ -63,10 +63,19 @@ class RSQTR_Region
 	// 4 cm of its depth): 0.16 forward, 0.13 toward the off hand, 0.61 under the eyes, radius 0.045 -- 0.011 m clear of the
 	// buckle, 0.005 of the off hip, 0.007 of the off chest holster, 0.276 of the flare holster. Its "left" is toward the OFF
 	// hand (the engine's handedness, LeftHanded: the reload's hand), so a left-hander's is beside the buckle on the right.
-	static const double DF[] = {  0.00,  0.00, 0,  0.12, -0.08, -0.08,  0.10,  0.10,  0.14,  0.02,  0.02, -0.06, -0.06,  0.16 };
-	static const double DL[] = {  0.18, -0.18, 0,  0.00,  0.18, -0.18,  0.12, -0.12,  0.13,  0.21, -0.21,  0.30,  0.30,  0.13 };
-	static const double DU[] = { -0.70, -0.70, 0, -0.62, -0.10, -0.10, -0.46, -0.46, -0.70, -0.84, -0.84, -0.84, -0.84, -0.61 };
-	static const double DR[] = {  0.14,  0.14, 0,  0.08,  0.14,  0.14,  0.11,  0.11,  0.12,  0.10,  0.10,  0.09,  0.09, 0.045 };
+	// MUCH LARGER (owner 11-05 01:07 "Ammo pouch needs to be much larger"): radius 0.10 (2.2x), moved 0.04 forward, 0.01
+	// toward the off hand and 0.01 down to (0.20, 0.14, -0.62) -- the belt-bound spot (no further forward than 0.20) where a
+	// 0.10 sphere is closest to clear: it overlaps the off hip's sphere by 0.021 and nothing else; by the nearest-centre rule
+	// (WorldTick) the pouch owns 99% of its sphere (measured, 1 cm grid + Monte Carlo against every place). The old spot
+	// had room for 0.063 at most. SHRUNK TO THE ITEM (owner 11-05 01:07 "their spheres can shrink a little ... just a little
+	// larger than it"): the whip 0.09 -> 0.08, the coiled mesh's thickness out of and into the hip (0.051 / 0.070 m, the
+	// rsqwp_coil.md3 thong measured) plus a centimetre. The grenade (mesh 0.069 m from its centre: 0.08 already), keyring
+	// (keys hang 0.11 m below the ring), flare and sabers (meshes longer than their spheres: 0.116 and 0.125 m half-length,
+	// a hand in the sphere is already on the mesh) keep theirs.
+	static const double DF[] = {  0.00,  0.00, 0,  0.12, -0.08, -0.08,  0.10,  0.10,  0.14,  0.02,  0.02, -0.06, -0.06,  0.20 };
+	static const double DL[] = {  0.18, -0.18, 0,  0.00,  0.18, -0.18,  0.12, -0.12,  0.13,  0.21, -0.21,  0.30,  0.30,  0.14 };
+	static const double DU[] = { -0.70, -0.70, 0, -0.62, -0.10, -0.10, -0.46, -0.46, -0.70, -0.84, -0.84, -0.84, -0.84, -0.62 };
+	static const double DR[] = {  0.14,  0.14, 0,  0.08,  0.14,  0.14,  0.11,  0.11,  0.12,  0.10,  0.10,  0.08,  0.09,  0.10 };
 }
 
 class RSQTR_Rig : EventHandler
@@ -1615,6 +1624,21 @@ class RSQTR_Rig : EventHandler
 			if (bh) bh.SetBool(false);
 			ver.SetInt(6);
 		}
+		// settings version 7 (11-05 01:07): the whip holster shrinks to its coil (0.09 -> 0.08) and the ammo pouch grows
+		// (0.045 -> 0.10, re-placed 0.16/0.13/-0.61 -> 0.20/0.14/-0.62); each moves only while still at its old default
+		if (ver && ver.GetInt() < 7)
+		{
+			let wr = CVar.FindCVar("rsqtr_r11_rad");
+			if (wr && abs(wr.GetFloat() - 0.09) < 0.001) wr.SetFloat(RSQTR_Region.DR[RSQTR_Region.WHIP]);
+			let pf = CVar.FindCVar("rsqtr_r13_f"), pl = CVar.FindCVar("rsqtr_r13_l"), pu = CVar.FindCVar("rsqtr_r13_u"), pr = CVar.FindCVar("rsqtr_r13_rad");
+			int k = RSQTR_Region.POUCH;
+			if (pf && pl && pu && abs(pf.GetFloat() - 0.16) < 0.001 && abs(pl.GetFloat() - 0.13) < 0.001 && abs(pu.GetFloat() + 0.61) < 0.001)
+			{
+				pf.SetFloat(RSQTR_Region.DF[k]); pl.SetFloat(RSQTR_Region.DL[k]); pu.SetFloat(RSQTR_Region.DU[k]);
+			}
+			if (pr && abs(pr.GetFloat() - 0.045) < 0.001) pr.SetFloat(RSQTR_Region.DR[k]);
+			ver.SetInt(7);
+		}
 	}
 
 	private void SaveEdit(PlayerPawn pmo, PlayerInfo p)
@@ -1887,12 +1911,21 @@ class RSQTR_Rig : EventHandler
 		return have * 2 >= cap ? 0 : 1;
 	}
 
-	static int MarkerFrame(bool inside, int prof)
+	// UTILITY PLACES HAVE THEIR OWN COLOUR (owner 11-05 01:07 "utility and off-limit holsters a different colour that we
+	// are not using yet"): every place no gun can be holstered in (grenade, keyring, sabers, whip, flare, pouch, FnF's pocket
+	// and clip, the cigarette pocket) is magenta FF00FF while idle, whatever the profile -- the colour farthest from the six
+	// in use (CIEDE2000 16.7 over a dark wall, drawn as the additive wire is; Accessibility/tools/cvd.py). Colour-blind modes
+	// pick a sixth colour for their palette by the same rule (gen_cb_skins.py): protan/deutan 33FF99, tritan CC33CC, high
+	// contrast CC3300. A hand inside is the same "inside" colour as a gun holster's. Frames U (20), V W X (21-23).
+	const STOWED_SPHERE = 0.4;
+	static int MarkerFrame(bool inside, int prof, bool util = false)
 	{
 		static const int IDLE[] = { 0, 2, 3, 4 };
 		static const int CBBASE[] = { 0, 5, 5, 10, 15 };
+		static const int CBUTIL[] = { 20, 21, 21, 22, 23 };
 		prof = clamp(prof, 1, 4);
 		int cb = RSQTR_CB.Mode();
+		if (util && !inside) return CBUTIL[cb];
 		if (cb) return CBBASE[cb] + (inside ? 0 : prof);
 		return inside ? 1 : IDLE[prof - 1];
 	}
@@ -1922,6 +1955,12 @@ class RSQTR_Rig : EventHandler
 				if (mode >= 2) a = inside ? 0.7 : 0.25;
 				else if (near < rad * 2.5) a = inside ? 0.7 : 0.35 * (1.0 - (near - rad) / (rad * 1.5));
 			}
+			// AN ITEM STOWED IN IT IS NOT GHOSTED (owner 11-05 01:07 "holstered models are like, see through?"): the additive
+			// sphere drawn through the solid item washed it out, so a place showing its item (last tic's: a gun or saber, the
+			// coiled whip, a flare, the grenade, the pouch) draws its sphere at STOWED_SPHERE of the alpha.
+			// (not the pouch: its 0.10 sphere is far larger than the 10 cm pouch and is meant to be seen)
+			bool holds = r != RSQTR_Region.POUCH && ((icon[r] && !icon[r].bINVISIBLE) || (IsGrenadeRegion(r) && nadeShow && !nadeShow.bINVISIBLE));
+			if (holds) a *= STOWED_SPHERE;
 			if (a > 0.01)
 			{
 				if (!marker[r]) marker[r] = Actor.Spawn("RSQTR_Marker", at);
@@ -1936,7 +1975,7 @@ class RSQTR_Rig : EventHandler
 					// alone: a sphere with a hand in it is also brighter and a size larger.
 					double s = rad * RSQTR_Body.Upm() * (inside ? 1.15 : 1.0);   // the wireframe sphere has radius 1.0
 					m.Scale = (s, s);
-					m.frame = MarkerFrame(inside, Opt("rsqtr_profile_active", p, 1));
+					m.frame = MarkerFrame(inside, Opt("rsqtr_profile_active", p, 1), !IsGunRegion(r));
 				}
 			}
 			else if (marker[r]) marker[r].bINVISIBLE = true;
@@ -2017,7 +2056,7 @@ class RSQTR_Rig : EventHandler
 					// One size on the body (a pistol's), longer on the back: the butt shows
 					// over the shoulder at the edge of your view.
 					double metres = sc * (backside ? Num("rsqtr_icon_back_m", p, 0.70) : Num("rsqtr_icon_m", p, 0.25));
-					ic.Wear(put, 0.28 * sc, 0.85);
+					ic.Wear(put, 0.28 * sc, 1.0);     // solid (11-05: at 0.85 Translucent the gun showed its own inside faces)
 					double by = (body && body.primed) ? body.yaw : pmo.angle;
 					ic.Place(ShowAt(at, r, by, metres));
 					Hang(ic, r, by + Num("rsqtr_icon_turn", p, 0), metres, 0.28 * sc);
@@ -2070,7 +2109,7 @@ class RSQTR_Rig : EventHandler
 							m.Alpha = clamp(a, 0.0, 1.0);
 							double s = rad * RSQTR_Body.Upm() * (inside ? 1.15 : 1.0);
 							m.Scale = (s, s);
-							m.frame = MarkerFrame(inside, Opt("rsqtr_profile_active", p, 1));
+							m.frame = MarkerFrame(inside, Opt("rsqtr_profile_active", p, 1), true);
 						}
 					}
 				}
@@ -2577,7 +2616,7 @@ class RSQTR_Icon : Actor
 	Default
 	{
 		+NOINTERACTION +NOBLOCKMAP +NOGRAVITY +NOTELEPORT +DONTSPLASH +NOTONAUTOMAP +BRIGHT
-		RenderStyle "Translucent";
+		RenderStyle "Normal";     // solid (owner 11-05 01:07: "holstered models are like, see through?")
 		Radius 1; Height 1;
 	}
 	States { Spawn: TNT1 A -1; Stop; }
@@ -2622,6 +2661,8 @@ class RSQTR_Icon : Actor
 		}
 		Scale = (sc, sc);
 		Alpha = al;
+		int want = al >= 0.999 ? STYLE_Normal : STYLE_Translucent;
+		if (GetRenderStyle() != want) A_SetRenderStyle(al, want);
 		bINVISIBLE = false;
 	}
 
