@@ -524,8 +524,9 @@ class RSQA_MenuMode : StaticEventHandler
 			copy.rows.Copy(desc.mItems);
 			copies.Push(copy);
 		}
-		// A hub page (no setting of its own: only links and commands, e.g. RSQ VisualRewards) keeps its
-		// section links in Simple, since they are its everyday pages; only its Tuning / Debug link goes.
+		// A hub page (no setting of its own: only links and commands) keeps its section links in Simple, since
+		// they are its everyday pages; only its Test / Tuning / Debug link goes. (No series page is a hub since the
+		// menu pass; kept for a mod that is not yet in step.)
 		bool hub = IsHub(copy.rows);
 		Array<OptionMenuItem> rows;
 		for (int i = 0; i < copy.rows.Size(); i++)
@@ -570,11 +571,13 @@ class RSQA_MenuMode : StaticEventHandler
 	{
 		let sm = OptionMenuItemSubmenu(it);
 		if (!sm || it is "OptionMenuItemCommand") return false;   // a (Safe)Command is a Submenu underneath
-		// Each series mod's menu-name prefix (lower case; from the mods' MENUDEFs). "rsq_melee" is RSQ Gun
-		// Bonsai VR's (RSQ_MeleeOptions / RSQ_MeleeAdvanced), "rsq_killrewards" RSQ VisualRewards' Kill Rewards.
+		// Each series mod's menu-name prefix (lower case; from the mods' MENUDEFs). Since the menu pass (owner 11-04
+		// 19:36) the only page a mod page links is its "Test and Debug" page (<P>_Test; RSQ Gun Bonsai VR's is
+		// RSQ_MeleeAdvanced, "rsq_melee"), so Simple hides exactly that link. "tophpbars_" is VisualRewards' old
+		// settings page, still defined.
 		static const String SERIES[] = {
 			"ubqs_", "ssq_", "rsqtr_", "rsqdg_", "rsqsm_", "rsqls_", "rsqgr_", "rsq_melee", "rsqsc_",
-			"rsqthp_", "tophpbars_", "rsq_killrewards", "rsqmb_", "rsqml_", "rsqwp_", "wr_", "rsqgn_",
+			"rsqthp_", "tophpbars_", "rsqmb_", "rsqml_", "rsqwp_", "wr_", "rsqgn_",
 			"rsqgd_", "rsqff_", "rsqg_", "rsqgc_"
 		};
 		String to = sm.GetAction();
