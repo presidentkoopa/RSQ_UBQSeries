@@ -197,7 +197,9 @@ RSQ Score runs on its own: on plain Doom, every classic bonus works. Every other
 - **Brutal Doom / BD22 VR Reloaded:** Brutal Doom's executions pay **Fatality**, its cuts and boots feed the melee family, and
   BD22 VR's Super Shotgun fired point-blank pays **Coach Gun**.
 - **For modders:** pay a labelled award with `RS_ScoreService` `GetInt("award", "<row>", points, 0, pawn)`. Add a
-  tool to a monster's chain with `GetInt("touch", "<tool>", playerNumber, 0, monster)`. Add your own bonus by
+  tool to a monster's chain with `GetInt("touch", "<tool>", playerNumber, 0, monster)`. Give a player extra lives with
+  `GetInt("givelife", "", n, 0, pawn)` (n 0 or less gives 1; returns the lives now held, -1 without a score): added like
+  an earned life, with an earned life's cue (owner 11-05: "can we have killing a miniboss give a Score life?"). Add your own bonus by
   subclassing `RS_ScoreBonus` and registering it with `RS_ScoreRegistry.RegisterBonus`.
 
 ## Credits and licence

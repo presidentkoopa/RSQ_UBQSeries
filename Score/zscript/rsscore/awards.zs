@@ -75,6 +75,24 @@ class RS_ScoreService : Service
 			let h = RS_ScoreHandler(EventHandler.Find("RS_ScoreHandler"));
 			return h ? h.AwardExternal(Actor(objectArg), stringArg, intArg) : -1;
 		}
+		// A LIFE GIVEN BY ANOTHER MOD (owner 11-05: "can we have killing a miniboss give a Score life?"):
+		//   "givelife"  intArg how many (0 or less: 1), objectArg the player's pawn -> the lives now held, -1 no score
+		// Added the way an earned life is (CheckRewards: extraLives += 1, no cap; LIVES_MAX only caps the pips drawn), with
+		// an earned life's cue: the bar lit blue, then the life sound and the pips' pop (RunRewardCue, next tic). No
+		// whole-view tint unless "Reward Screen Flash" is on. Play scope only.
+		if (request == "givelife")
+		{
+			let pawn = Actor(objectArg);
+			let tr = (pawn && pawn.player) ? RS_ScoreTracker(pawn.FindInventory("RS_ScoreTracker")) : null;
+			if (!tr) return -1;
+			int n = max(1, intArg);
+			tr.extraLives    += n;
+			tr.rewardTic      = level.maptime;
+			tr.rewardKind     = 1;
+			tr.pendingLives  += n;
+			tr.rewardLifeTic  = max(1, level.maptime);
+			return tr.extraLives;
+		}
 		// THE COMBO SYSTEM (combo.zs), for mods that do not link:
 		//   "touch"  stringArg tool id, intArg player number, objectArg the monster -> 1 recorded
 		//   "combo"  stringArg "<name>|<pattern>", intArg pay in permille (from OnRegister) -> 1
