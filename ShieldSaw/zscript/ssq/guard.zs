@@ -322,13 +322,14 @@ class SSQ_Guard : Inventory
 	}
 	// STRIKE TRUE (Gun Bonsai VR patch; the class is RSQ_Upgrade_BashHitStop, the saber's own Strike True has other
 	// numbers): under the patch the node's 4 / 5 / 6 tics, while the Hit-Stop row is on (owner 11-04 "Row can still turn
-	// it off"); without it the rows as before.
+	// it off"), never more than the Hit-Stop Tics slider (owner 11-04: the slider caps the upgrade); without it the rows.
 	static int HitStopTics(PlayerPawn by)
 	{
 		if (SSQ_Handler.SVI('ssq_hitstop', 0) == 0) return 0;
 		if (!SSQ_Upg.On()) return clamp(SSQ_Handler.SVI('ssq_hitstop_tics', 4), 1, 10);
 		int lv = SSQ_Upg.Lv(by ? by.FindInventory('SSQ_ShieldSaw') : null, "BashHitStop");
-		return lv > 0 ? int(SSQ_Upg.Num("BashHitStop.tics", lv, 0)) : 0;
+		if (lv <= 0) return 0;
+		return min(int(SSQ_Upg.Num("BashHitStop.tics", lv, 0)), clamp(SSQ_Handler.SVI('ssq_hitstop_tics', 4), 1, 10));
 	}
 
 	// ---- the block ----------------------------------------------------------------------

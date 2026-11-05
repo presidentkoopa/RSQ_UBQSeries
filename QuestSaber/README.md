@@ -130,7 +130,7 @@ it on), and Hit-Stop and Lock-On Targets cap what Strike True and Battle Meditat
 | **Fighting** | | |
 | Damage | 30 | The cut's damage (15-60) |
 | Swing to Cut | 8.0 | How hard a swing must be to cut (3-20) |
-| Turned Shots Go | Where I Look | Where I Look, At the Shooter, Mirrored |
+| Turned Shots Go | Where I Look | Where I Look, At the Shooter, Mirrored (greyed with Gun Bonsai VR: its Deflect upgrades decide) |
 | Hit-Stop (GB) | Off | Off, Light, Medium, Heavy |
 | Perfect Parry Slow-Mo | Off | Half a second of RSQ SlowMo on a perfect parry |
 | Lock-On Targets (GB) | 5 | Enemies one throw can mark (1-5) |

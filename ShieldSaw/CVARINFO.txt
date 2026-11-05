@@ -102,7 +102,7 @@ server float ssq_slam_min       = 3.0;    // units/tic INTO the wall below which
 server int   ssq_slam_stun      = 8;      // tics the slammed body is frozen in its pain frame
 // HIT-STOP (pick 13, off by default; 01_MELEE 3.6): a bash or a perfect block freezes the monster for a beat
 server bool  ssq_hitstop        = false;
-server int   ssq_hitstop_tics   = 4;      // 01_MELEE 3.6: 3 is a tap, 6 a heavy, 10 reads as a bug
+server int   ssq_hitstop_tics   = 4;      // 01_MELEE 3.6: 3 is a tap, 6 a heavy, 10 reads as a bug; caps Strike True under GBOVR
 // PERFECT-BLOCK SLOW MOTION (pick 14, off by default; apply/05_SLOWMO.md 8): half a second through RSQ SlowMo's
 // rsm_pulse. Nothing hears it when SlowMo is not loaded.
 server bool  ssq_perfect_slowmo = false;

@@ -42,6 +42,7 @@ class RSQWP_Service : Service
 		let w = RSQWP_Whip(EventHandler.Find("RSQWP_Whip"));
 		if (!w || !players[consoleplayer].mo) return 1;
 		if (!w.gbOn) return 0;
+		if (stringArg ~== "PatchDecides") return 1;   // Cracked Fireballs: under Gun Bonsai VR Crack Shot decides (owner 11-04)
 		for (int g = 0; g < RSQWP_Whip.G_N; g++)
 			if (stringArg ~== RSQWP_Whip.GBN[g]) return w.gbLv[consoleplayer * RSQWP_Whip.G_N + g] >= 1 ? 0 : 1;
 		return 0;

@@ -7060,6 +7060,7 @@ class UBQS_SaberService : Service
 	//   ForceLightning: Force Sensitive and Force Lightning learned (Force Lightning exists only as that upgrade)
 	//   StrikeTrue, BattleMeditation: under Gun Bonsai VR those upgrades set the Hit-Stop tics and the lock-on count; the
 	//     rows cap them (Off is off: owner 11-04 "Row can still turn it off"), so each row opens once its upgrade is learned
+	//   PatchDecides: always 1 (Turned Shots Go: the patch sets where turned shots go, owner 11-04)
 	override int GetIntUI(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
 	{
 		if (!(request ~== "menu.locked")) return 0;
@@ -7067,6 +7068,7 @@ class UBQS_SaberService : Service
 		let f = mo ? UBQS_Force(mo.FindInventory("UBQS_Force")) : null;
 		if (!f) return 1;
 		if (!f.uLoaded) return 0;
+		if (stringArg ~== "PatchDecides") return 1;   // Turned Shots Go: under Gun Bonsai VR the patch decides (owner 11-04)
 		if (stringArg ~== "StrikeTrue") return f.uStrikeM > 0 ? 0 : 1;
 		if (stringArg ~== "BattleMeditation") return f.uBMM > 0 ? 0 : 1;
 		if (f.uFS <= 0) return 1;

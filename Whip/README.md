@@ -119,7 +119,7 @@ turn it off.
 | Throws Switches | On | A crack uses a switch it lands on |
 | Fetches Pickups | On | A crack flicks a pickup to you |
 | Crack Fireballs (GB) | Off | Cracks explode missiles |
-| Cracked Fireballs | Explode There | Or Knocked Away, to explode away from you |
+| Cracked Fireballs | Explode There | Or Knocked Away, to explode away from you (greyed with Gun Bonsai VR: Crack Shot and Return Crack decide) |
 | **Monsters** | | |
 | Leash | On | A locked crack catches and pulls a monster |
 | Lasso (GB) | On | Grab the thong with the off hand and whirl it |

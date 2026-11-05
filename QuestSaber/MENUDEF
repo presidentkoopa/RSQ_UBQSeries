@@ -3,7 +3,8 @@
 // with the raw numbers and the debug view. No help text, no presets. Rows behind a Gun Bonsai VR upgrade are UBQSGbOption
 // rows: with RSQ Gun Bonsai VR loaded they grey while the upgrade is not learned, asked of UBQS_SaberService
 // "menu.locked" (zscript.txt); learned, the row still decides (owner 11-04: Off is off; Hit-Stop and Lock-On Targets cap
-// the upgrade's tics and locks). Reset All (UBQSResetAll) resets every row on both
+// the upgrade's tics and locks). Turned Shots Go greys whenever Gun Bonsai VR is loaded: the Deflect nodes decide there
+// ("PatchDecides"). Reset All (UBQSResetAll) resets every row on both
 // pages. Defaults are unchanged except Show Sabers (new, On).
 
 // ---- Radiant Silvergun Options (tools/rsmenu) ----------------------------------------------------
@@ -144,7 +145,7 @@ OptionMenu "UBQS_Options"
 	StaticText "Fighting", "Gold"
 	Slider "Damage", "ubqs_damage", 15, 60, 3, 0
 	Slider "Swing to Cut", "ubqs_swing_cut", 3, 20, 0.5, 1
-	Option "Turned Shots Go", "ubqs_deflect_aim", "UBQS_DeflectAim"
+	UBQSGbOption "Turned Shots Go", "ubqs_deflect_aim", "UBQS_DeflectAim", "UBQS_SaberService", "PatchDecides"
 	UBQSGbOption "Hit-Stop", "ubqs_hitstop", "UBQS_HitStop", "UBQS_SaberService", "StrikeTrue"
 	Option "Perfect Parry Slow-Mo", "ubqs_parry_slowmo", "OnOff"
 	UBQSGbSlider "Lock-On Targets", "ubqs_locks", 1, 5, 1, 0, "UBQS_SaberService", "BattleMeditation"
