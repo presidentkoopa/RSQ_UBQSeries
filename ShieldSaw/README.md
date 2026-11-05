@@ -173,7 +173,7 @@ threshold and speed, arm-or-aim blend, aim forward, slowest throw, disc weight, 
 patience, catch radius, breadcrumbs, hit-tier limits, glance and embed damage and time, rev time, grind gap, rev throw
 bonus, revved blade reach, wall bounces); **Lock-On** (cone, range, keep angle, out-of-sight grace, lock gap, rings kept,
 ring size); **Block and Bash** (deflect assist, swing steering, guard margin, lookahead, turned shot speed, melee shove,
-perfect block speed, bash speed, reach, lean, knockback, lift, wall slam bump and stun, Hit-Stop Tics (GB: the most Strike True may give), brace size
+perfect block speed, bash speed, reach, lean, knockback, lift, wall slam bump and stun, Hit-Stop Tics (GB: the most Strike True may give; learning it raises this to 6 once), brace size
 and gap); **Mount** (shoulder, small of back and neck spots, eyes-to-neck, grab reach and zone, stowed yaw, pitch, roll,
 size); **In the Hand** (held placement). Reset All. The old Shield Size / Throw Feel / Block Assist / Damage presets are
 gone (the owner, 11-04: no presets); each number they set is a row.

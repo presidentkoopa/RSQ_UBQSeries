@@ -28,7 +28,8 @@ class RSQ_Upgrade_Base : TFLV_Upgrade_BaseUpgrade
 		int lv = enabled ? int(level) - rageUp : 0;
 		if (lv < rowSeen) rowSeen = lv;
 		if (lv <= rowSeen) return;
-		// node short name, the level that unlocks the row, the row's cvar, the value "on" is
+		// node short name, the level that unlocks the row, the row's cvar, the value "on" is ("^n": a slider raised to n
+		// if it is below n -- ShieldSaw's Hit-Stop Tics, which caps Strike True's 4/5/6, owner 11-04)
 		static const String T[] = {
 			"Grapple", "1", "rsqgr_on", "1",                     "SwingMomentum", "1", "rsqgr_swing", "1",
 			"TargetLock", "1", "rsqls_lock", "1",                "TargetLock", "2", "rsqls_target_recolor", "1",
@@ -36,7 +37,7 @@ class RSQ_Upgrade_Base : TFLV_Upgrade_BaseUpgrade
 			"LeanDodge", "1", "rsqsm_lean", "1",                 "Matrix", "1", "rsqsm_drain", "1",
 			"Matrix", "1", "rsqsm_trails", "1",
 			"BackPlate", "1", "ssq_guard_stowed", "1",           "ShieldWall", "1", "ssq_perfect_slowmo", "1",
-			"BashHitStop", "1", "ssq_hitstop", "1",
+			"BashHitStop", "1", "ssq_hitstop", "1",              "BashHitStop", "1", "ssq_hitstop_tics", "^6",
 			"Guard", "1", "rsqml_guard", "1",                    "WallSplat", "1", "rsqml_wallsplat", "1",
 			"GroundPound", "1", "rsqml_groundpound", "1",        "ClearOut", "1", "rsqml_clearout", "1",
 			"HumanShield", "1", "rsqml_headlock_shield", "1",    "ReturnFire", "1", "rsqml_hadouken", "1",
@@ -60,9 +61,16 @@ class RSQ_Upgrade_Base : TFLV_Upgrade_BaseUpgrade
 			int at = T[i + 1].ToInt();
 			if (at <= rowSeen || at > lv) continue;
 			let c = CVar.FindCVar(T[i + 2]);
-			if (!c || c.GetFloat() != 0) continue;
+			if (!c) continue;
 			int ty = c.GetRealType();
-			if (ty == CVar.CVAR_Bool) c.SetBool(true);
+			if (T[i + 3].Left(1) == "^")
+			{
+				double up = T[i + 3].Mid(1).ToDouble();
+				if (c.GetFloat() >= up) continue;
+				if (ty == CVar.CVAR_Float) c.SetFloat(up); else c.SetInt(int(up));
+			}
+			else if (c.GetFloat() != 0) continue;
+			else if (ty == CVar.CVAR_Bool) c.SetBool(true);
 			else if (ty == CVar.CVAR_Float) c.SetFloat(T[i + 3].ToDouble());
 			else c.SetInt(T[i + 3].ToInt());
 			let dbg = CVar.FindCVar("rsq_xp_debug");

@@ -52,6 +52,7 @@ it. A ShieldSaw bash pays the shield. Brutal Doom VR Reloaded's travelling bulle
 - Nodes open in order: a child is offered only once its parent reaches the level it asks for.
 - A node that unlocks a row on another mod's page (Grapple's Swing and Momentum, the Laser Sight's Target Lock, Melee's
   Guard and so on) greys that row until it is learned; learning it switches the row on, and the row can still turn it off.
+  ShieldSaw's Hit-Stop Tics slider (it caps Strike True) is raised to 6 once when Strike True is learned, if it is lower.
 
 **XP your way**
 - **XP Source**: Damage (Gun Bonsai's own), Style (RSQ Score's style points become XP, split along the combo that
