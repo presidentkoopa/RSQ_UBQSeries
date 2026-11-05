@@ -47,3 +47,14 @@ of choices... this is overwhelming and difficult to decipher.'"
   internal names, no parentheses essays.
 - Group rows under short section headers (StaticText) so a long page reads as a few small lists.
 - Most important rows at the top of each page.
+
+## Structure, in the owner's words (11-04 19:36) -- this overrides anything above
+"Radiant Silvergun Options: list all 20. We can't have menus-in-menus-in-menus. Each mod has its own menu, and a 'test
+and debug' submenu. Radiant Silvergun Options -> list all 20 (or however many are loaded) -> mod options -> test and debug."
+- Radiant Silvergun Options = one flat list of every loaded mod (in group order, blank-line spacers only, NO group
+  sub menus). Each row opens that mod's page.
+- Each mod page = all its options. The ONLY sub menu on it is "Test and Debug" (that name), at the foot above Reset All.
+- So fold every other sub page (VisualRewards' Bars/Numbers/Level-Up/Kill Rewards, Laser colours/targets/keys, Distance
+  Grab's eight sub pages, Glow's Types/Things/React/Custom, Gun Cards' Place, etc.) into the mod's one page under short
+  section headers, or into Test and Debug if it's tuning/debug. No exceptions for long colour lists: use option rows.
+- No description lines at the top of mod pages; no presets.
