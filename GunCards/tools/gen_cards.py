@@ -62,6 +62,11 @@ RELOAD_S = 0.062                                  # Ermac's RELOAD: 72 x 12 px, 
 # follow JFO's in the label (frames 6-8) and RELOAD (frame 2) sprites; his digits have sprites of their own (Q<d>E / F).
 ERMAC_GLYPHS = [str(d) for d in range(10)] + ['plus']
 RELOAD_AT = (0.0, 0.0, -0.2)
+# RELOAD ON THE SHORT CARD (owner 2026-11-05 03:26 "gun card, fix"): on the short panel (word off) RELOAD and the reserve
+# are centred as one block, like the count and the reserve (SHORT_DROP): RELOAD's top on the big count's top. Measured
+# from the art: big count top 0.56 (JFO) / 0.58 (Ermac), RELOAD half height 0.36 (JFO) / 0.37 (Ermac), so its middle 0.20.
+# Sprite Q<d>U<N|M>, kind 8; the tall card keeps RELOAD_AT.
+RELOAD_SHORT_AT = (0.0, 0.0, 0.20)
 # QoL GC8 (owner, 2026-10-31): the cards take the room's light. A HUD model is lit by the player's sector unless its
 # state is Bright (hw_weapon.cpp GetWeaponLighting), so the generated states carry no Bright.
 BRIGHT = ''
@@ -305,6 +310,19 @@ def main():
                             os.path.join(vdir, lump + '.kvx'), dy=dy)
         frame(spr, 'C', lump, RELOAD_S); line.append('C')
         states.append(('R%s%s' % (mc, dc), spr, line))
+        spr = 'Q' + dc + 'U' + mc   # the short card's RELOAD (RELOAD_SHORT_AT), the same three frames
+        line = []
+        for qi, half in enumerate(QUALITIES):
+            im = jfo.word('RELOAD', half)
+            sc = fit(im, RELOAD_BOX)
+            lump = 'wk%su%s%d' % (dc, mc.lower(), qi)
+            count += jfo_piece(im, sc, add(RELOAD_SHORT_AT, (0, FRONT, 0)), m, os.path.join(vdir, lump + '.kvx'), dy=dy)
+            frame(spr, letters[qi], lump, sc); line.append(letters[qi])
+        lump = 'wk%su%s2' % (dc, mc.lower())
+        count += card_piece(os.path.join(art, 'reload.png'), 72, 12, RELOAD_S, add(RELOAD_SHORT_AT, (0, FRONT, 0)), m,
+                            os.path.join(vdir, lump + '.kvx'), dy=dy)
+        frame(spr, 'C', lump, RELOAD_S); line.append('C')
+        states.append(('U%s%s' % (mc, dc), spr, line))
         # Ermac's digits: Q<d><E|F><0..9> (E big, F small; mirror * 5 + slot), frames 0-9, '+'
         for kind, slots, scale in (('E', BIG_AT, BIG_S), ('F', SMALL_AT, SMALL_S)):
             for si, sat in enumerate(slots):
@@ -360,7 +378,7 @@ def main():
         z.append('\t\tStop;')
     z += ['\t}', '',
           '\t// The first state of a piece. kind 0 panel, 1 label (JFO q * 3 + word, Ermac 6 + word), 2 big digit, 3 small digit',
-          '\t// (JFO, q * GLYPHS + glyph), 4 RELOAD (JFO q, Ermac 2), 5 / 6 Ermac big / small digit, 7 the short panel',
+          '\t// (JFO, q * GLYPHS + glyph), 4 RELOAD (JFO q, Ermac 2), 5 / 6 Ermac big / small digit, 7 the short panel, 8 RELOAD on it',
           '\t// (no word); slot for digits.',
           '\tconst ERMAC_LABEL = 6;',
           '\tconst ERMAC_RELOAD = 2;',
@@ -374,7 +392,7 @@ def main():
           '\t\tint k = depth * 1000 + kind * 100 + (mirrored ? 10 : 0) + slot;',
           '\t\tswitch (k)', '\t\t{']
     for label, spr, frames in states:
-        kind = {'P': 0, 'L': 1, 'B': 2, 'S': 3, 'R': 4, 'E': 5, 'F': 6, 'T': 7}[label[0]]
+        kind = {'P': 0, 'L': 1, 'B': 2, 'S': 3, 'R': 4, 'E': 5, 'F': 6, 'T': 7, 'U': 8}[label[0]]
         mir = 1 if label[1] == 'M' else 0
         dep = int(label[-1])
         slot = int(label[2:-1]) if len(label) > 3 else 0

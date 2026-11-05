@@ -982,7 +982,9 @@ class RSQGC_GunCard : EventHandler
 		if (reloadNow && flip == 0)
 		{
 			for (int k = 1; k < RSQGC_CardStates.SLOTS; k++) Kill(p, base + P_BIG + k);
-			Put(p, base + P_BIG, Nth(RSQGC_CardStates.Piece(4, mir, 0, Depth()), ermac ? RSQGC_CardStates.ERMAC_RELOAD : q), owner, alpha, TransFor(MAG_RED));
+			// on the short card (word off) its own RELOAD, top on the big count's top, so RELOAD and the reserve sit
+			// centred as the count and the reserve do (gen_cards.py RELOAD_SHORT_AT, owner 11-05 03:26)
+			Put(p, base + P_BIG, Nth(RSQGC_CardStates.Piece(ci("rsqgc_label", 1) ? 4 : 8, mir, 0, Depth()), ermac ? RSQGC_CardStates.ERMAC_RELOAD : q), owner, alpha, TransFor(MAG_RED));
 		}
 		else if (reloadNow) Digits(p, 2, mir, base + P_BIG, owner, "0", false, alpha, TransFor(MAG_RED));
 		else Digits(p, 2, mir, base + P_BIG, owner, clamp(loaded, 0, 999).."", false, alpha, tLow >= 0 ? tLow : tDigits);

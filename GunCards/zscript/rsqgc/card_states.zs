@@ -66,6 +66,11 @@ class RSQGC_CardStates : Weapon
 		Q0RN B -1;
 		Q0RN C -1;
 		Stop;
+	UN0:
+		Q0UN A -1;
+		Q0UN B -1;
+		Q0UN C -1;
+		Stop;
 	EN00:
 		Q0E0 A -1;
 		Q0E0 B -1;
@@ -491,6 +496,11 @@ class RSQGC_CardStates : Weapon
 		Q0RM A -1;
 		Q0RM B -1;
 		Q0RM C -1;
+		Stop;
+	UM0:
+		Q0UM A -1;
+		Q0UM B -1;
+		Q0UM C -1;
 		Stop;
 	EM00:
 		Q0E5 A -1;
@@ -918,6 +928,11 @@ class RSQGC_CardStates : Weapon
 		Q1RN B -1;
 		Q1RN C -1;
 		Stop;
+	UN1:
+		Q1UN A -1;
+		Q1UN B -1;
+		Q1UN C -1;
+		Stop;
 	EN01:
 		Q1E0 A -1;
 		Q1E0 B -1;
@@ -1343,6 +1358,11 @@ class RSQGC_CardStates : Weapon
 		Q1RM A -1;
 		Q1RM B -1;
 		Q1RM C -1;
+		Stop;
+	UM1:
+		Q1UM A -1;
+		Q1UM B -1;
+		Q1UM C -1;
 		Stop;
 	EM01:
 		Q1E5 A -1;
@@ -1770,6 +1790,11 @@ class RSQGC_CardStates : Weapon
 		Q2RN B -1;
 		Q2RN C -1;
 		Stop;
+	UN2:
+		Q2UN A -1;
+		Q2UN B -1;
+		Q2UN C -1;
+		Stop;
 	EN02:
 		Q2E0 A -1;
 		Q2E0 B -1;
@@ -2195,6 +2220,11 @@ class RSQGC_CardStates : Weapon
 		Q2RM A -1;
 		Q2RM B -1;
 		Q2RM C -1;
+		Stop;
+	UM2:
+		Q2UM A -1;
+		Q2UM B -1;
+		Q2UM C -1;
 		Stop;
 	EM02:
 		Q2E5 A -1;
@@ -2622,6 +2652,11 @@ class RSQGC_CardStates : Weapon
 		Q3RN B -1;
 		Q3RN C -1;
 		Stop;
+	UN3:
+		Q3UN A -1;
+		Q3UN B -1;
+		Q3UN C -1;
+		Stop;
 	EN03:
 		Q3E0 A -1;
 		Q3E0 B -1;
@@ -3047,6 +3082,11 @@ class RSQGC_CardStates : Weapon
 		Q3RM A -1;
 		Q3RM B -1;
 		Q3RM C -1;
+		Stop;
+	UM3:
+		Q3UM A -1;
+		Q3UM B -1;
+		Q3UM C -1;
 		Stop;
 	EM03:
 		Q3E5 A -1;
@@ -3474,6 +3514,11 @@ class RSQGC_CardStates : Weapon
 		Q4RN B -1;
 		Q4RN C -1;
 		Stop;
+	UN4:
+		Q4UN A -1;
+		Q4UN B -1;
+		Q4UN C -1;
+		Stop;
 	EN04:
 		Q4E0 A -1;
 		Q4E0 B -1;
@@ -3899,6 +3944,11 @@ class RSQGC_CardStates : Weapon
 		Q4RM A -1;
 		Q4RM B -1;
 		Q4RM C -1;
+		Stop;
+	UM4:
+		Q4UM A -1;
+		Q4UM B -1;
+		Q4UM C -1;
 		Stop;
 	EM04:
 		Q4E5 A -1;
@@ -4326,6 +4376,11 @@ class RSQGC_CardStates : Weapon
 		Q5RN B -1;
 		Q5RN C -1;
 		Stop;
+	UN5:
+		Q5UN A -1;
+		Q5UN B -1;
+		Q5UN C -1;
+		Stop;
 	EN05:
 		Q5E0 A -1;
 		Q5E0 B -1;
@@ -4751,6 +4806,11 @@ class RSQGC_CardStates : Weapon
 		Q5RM A -1;
 		Q5RM B -1;
 		Q5RM C -1;
+		Stop;
+	UM5:
+		Q5UM A -1;
+		Q5UM B -1;
+		Q5UM C -1;
 		Stop;
 	EM05:
 		Q5E5 A -1;
@@ -5178,6 +5238,11 @@ class RSQGC_CardStates : Weapon
 		Q6RN B -1;
 		Q6RN C -1;
 		Stop;
+	UN6:
+		Q6UN A -1;
+		Q6UN B -1;
+		Q6UN C -1;
+		Stop;
 	EN06:
 		Q6E0 A -1;
 		Q6E0 B -1;
@@ -5603,6 +5668,11 @@ class RSQGC_CardStates : Weapon
 		Q6RM A -1;
 		Q6RM B -1;
 		Q6RM C -1;
+		Stop;
+	UM6:
+		Q6UM A -1;
+		Q6UM B -1;
+		Q6UM C -1;
 		Stop;
 	EM06:
 		Q6E5 A -1;
@@ -6030,6 +6100,11 @@ class RSQGC_CardStates : Weapon
 		Q7RN B -1;
 		Q7RN C -1;
 		Stop;
+	UN7:
+		Q7UN A -1;
+		Q7UN B -1;
+		Q7UN C -1;
+		Stop;
 	EN07:
 		Q7E0 A -1;
 		Q7E0 B -1;
@@ -6455,6 +6530,11 @@ class RSQGC_CardStates : Weapon
 		Q7RM A -1;
 		Q7RM B -1;
 		Q7RM C -1;
+		Stop;
+	UM7:
+		Q7UM A -1;
+		Q7UM B -1;
+		Q7UM C -1;
 		Stop;
 	EM07:
 		Q7E5 A -1;
@@ -6882,6 +6962,11 @@ class RSQGC_CardStates : Weapon
 		Q8RN B -1;
 		Q8RN C -1;
 		Stop;
+	UN8:
+		Q8UN A -1;
+		Q8UN B -1;
+		Q8UN C -1;
+		Stop;
 	EN08:
 		Q8E0 A -1;
 		Q8E0 B -1;
@@ -7308,6 +7393,11 @@ class RSQGC_CardStates : Weapon
 		Q8RM B -1;
 		Q8RM C -1;
 		Stop;
+	UM8:
+		Q8UM A -1;
+		Q8UM B -1;
+		Q8UM C -1;
+		Stop;
 	EM08:
 		Q8E5 A -1;
 		Q8E5 B -1;
@@ -7681,7 +7771,7 @@ class RSQGC_CardStates : Weapon
 	}
 
 	// The first state of a piece. kind 0 panel, 1 label (JFO q * 3 + word, Ermac 6 + word), 2 big digit, 3 small digit
-	// (JFO, q * GLYPHS + glyph), 4 RELOAD (JFO q, Ermac 2), 5 / 6 Ermac big / small digit, 7 the short panel
+	// (JFO, q * GLYPHS + glyph), 4 RELOAD (JFO q, Ermac 2), 5 / 6 Ermac big / small digit, 7 the short panel, 8 RELOAD on it
 	// (no word); slot for digits.
 	const ERMAC_LABEL = 6;
 	const ERMAC_RELOAD = 2;
@@ -7699,6 +7789,7 @@ class RSQGC_CardStates : Weapon
 		case 700: return d.FindState("TN0");
 		case 100: return d.FindState("LN0");
 		case 400: return d.FindState("RN0");
+		case 800: return d.FindState("UN0");
 		case 500: return d.FindState("EN00");
 		case 501: return d.FindState("EN10");
 		case 502: return d.FindState("EN20");
@@ -7723,6 +7814,7 @@ class RSQGC_CardStates : Weapon
 		case 710: return d.FindState("TM0");
 		case 110: return d.FindState("LM0");
 		case 410: return d.FindState("RM0");
+		case 810: return d.FindState("UM0");
 		case 510: return d.FindState("EM00");
 		case 511: return d.FindState("EM10");
 		case 512: return d.FindState("EM20");
@@ -7747,6 +7839,7 @@ class RSQGC_CardStates : Weapon
 		case 1700: return d.FindState("TN1");
 		case 1100: return d.FindState("LN1");
 		case 1400: return d.FindState("RN1");
+		case 1800: return d.FindState("UN1");
 		case 1500: return d.FindState("EN01");
 		case 1501: return d.FindState("EN11");
 		case 1502: return d.FindState("EN21");
@@ -7771,6 +7864,7 @@ class RSQGC_CardStates : Weapon
 		case 1710: return d.FindState("TM1");
 		case 1110: return d.FindState("LM1");
 		case 1410: return d.FindState("RM1");
+		case 1810: return d.FindState("UM1");
 		case 1510: return d.FindState("EM01");
 		case 1511: return d.FindState("EM11");
 		case 1512: return d.FindState("EM21");
@@ -7795,6 +7889,7 @@ class RSQGC_CardStates : Weapon
 		case 2700: return d.FindState("TN2");
 		case 2100: return d.FindState("LN2");
 		case 2400: return d.FindState("RN2");
+		case 2800: return d.FindState("UN2");
 		case 2500: return d.FindState("EN02");
 		case 2501: return d.FindState("EN12");
 		case 2502: return d.FindState("EN22");
@@ -7819,6 +7914,7 @@ class RSQGC_CardStates : Weapon
 		case 2710: return d.FindState("TM2");
 		case 2110: return d.FindState("LM2");
 		case 2410: return d.FindState("RM2");
+		case 2810: return d.FindState("UM2");
 		case 2510: return d.FindState("EM02");
 		case 2511: return d.FindState("EM12");
 		case 2512: return d.FindState("EM22");
@@ -7843,6 +7939,7 @@ class RSQGC_CardStates : Weapon
 		case 3700: return d.FindState("TN3");
 		case 3100: return d.FindState("LN3");
 		case 3400: return d.FindState("RN3");
+		case 3800: return d.FindState("UN3");
 		case 3500: return d.FindState("EN03");
 		case 3501: return d.FindState("EN13");
 		case 3502: return d.FindState("EN23");
@@ -7867,6 +7964,7 @@ class RSQGC_CardStates : Weapon
 		case 3710: return d.FindState("TM3");
 		case 3110: return d.FindState("LM3");
 		case 3410: return d.FindState("RM3");
+		case 3810: return d.FindState("UM3");
 		case 3510: return d.FindState("EM03");
 		case 3511: return d.FindState("EM13");
 		case 3512: return d.FindState("EM23");
@@ -7891,6 +7989,7 @@ class RSQGC_CardStates : Weapon
 		case 4700: return d.FindState("TN4");
 		case 4100: return d.FindState("LN4");
 		case 4400: return d.FindState("RN4");
+		case 4800: return d.FindState("UN4");
 		case 4500: return d.FindState("EN04");
 		case 4501: return d.FindState("EN14");
 		case 4502: return d.FindState("EN24");
@@ -7915,6 +8014,7 @@ class RSQGC_CardStates : Weapon
 		case 4710: return d.FindState("TM4");
 		case 4110: return d.FindState("LM4");
 		case 4410: return d.FindState("RM4");
+		case 4810: return d.FindState("UM4");
 		case 4510: return d.FindState("EM04");
 		case 4511: return d.FindState("EM14");
 		case 4512: return d.FindState("EM24");
@@ -7939,6 +8039,7 @@ class RSQGC_CardStates : Weapon
 		case 5700: return d.FindState("TN5");
 		case 5100: return d.FindState("LN5");
 		case 5400: return d.FindState("RN5");
+		case 5800: return d.FindState("UN5");
 		case 5500: return d.FindState("EN05");
 		case 5501: return d.FindState("EN15");
 		case 5502: return d.FindState("EN25");
@@ -7963,6 +8064,7 @@ class RSQGC_CardStates : Weapon
 		case 5710: return d.FindState("TM5");
 		case 5110: return d.FindState("LM5");
 		case 5410: return d.FindState("RM5");
+		case 5810: return d.FindState("UM5");
 		case 5510: return d.FindState("EM05");
 		case 5511: return d.FindState("EM15");
 		case 5512: return d.FindState("EM25");
@@ -7987,6 +8089,7 @@ class RSQGC_CardStates : Weapon
 		case 6700: return d.FindState("TN6");
 		case 6100: return d.FindState("LN6");
 		case 6400: return d.FindState("RN6");
+		case 6800: return d.FindState("UN6");
 		case 6500: return d.FindState("EN06");
 		case 6501: return d.FindState("EN16");
 		case 6502: return d.FindState("EN26");
@@ -8011,6 +8114,7 @@ class RSQGC_CardStates : Weapon
 		case 6710: return d.FindState("TM6");
 		case 6110: return d.FindState("LM6");
 		case 6410: return d.FindState("RM6");
+		case 6810: return d.FindState("UM6");
 		case 6510: return d.FindState("EM06");
 		case 6511: return d.FindState("EM16");
 		case 6512: return d.FindState("EM26");
@@ -8035,6 +8139,7 @@ class RSQGC_CardStates : Weapon
 		case 7700: return d.FindState("TN7");
 		case 7100: return d.FindState("LN7");
 		case 7400: return d.FindState("RN7");
+		case 7800: return d.FindState("UN7");
 		case 7500: return d.FindState("EN07");
 		case 7501: return d.FindState("EN17");
 		case 7502: return d.FindState("EN27");
@@ -8059,6 +8164,7 @@ class RSQGC_CardStates : Weapon
 		case 7710: return d.FindState("TM7");
 		case 7110: return d.FindState("LM7");
 		case 7410: return d.FindState("RM7");
+		case 7810: return d.FindState("UM7");
 		case 7510: return d.FindState("EM07");
 		case 7511: return d.FindState("EM17");
 		case 7512: return d.FindState("EM27");
@@ -8083,6 +8189,7 @@ class RSQGC_CardStates : Weapon
 		case 8700: return d.FindState("TN8");
 		case 8100: return d.FindState("LN8");
 		case 8400: return d.FindState("RN8");
+		case 8800: return d.FindState("UN8");
 		case 8500: return d.FindState("EN08");
 		case 8501: return d.FindState("EN18");
 		case 8502: return d.FindState("EN28");
@@ -8107,6 +8214,7 @@ class RSQGC_CardStates : Weapon
 		case 8710: return d.FindState("TM8");
 		case 8110: return d.FindState("LM8");
 		case 8410: return d.FindState("RM8");
+		case 8810: return d.FindState("UM8");
 		case 8510: return d.FindState("EM08");
 		case 8511: return d.FindState("EM18");
 		case 8512: return d.FindState("EM28");
