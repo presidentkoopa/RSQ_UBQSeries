@@ -57,7 +57,7 @@ dodgeable speed. Your shield and saber stop the rounds like any other projectile
 
 **On the HUD**
 - **SlowMo Gauge.** A vertical bar at the side of your view. With Adrenaline on it shows the meter, with a tick at the start line. With Adrenaline off it shows only while time is slowed, filled by how slow (full is your World Speed, or Gun Bonsai VR's Deeper speed once learned, and the shootdodge's speed during a dodge). It's animated: a band of light rises through it, the top edge breathes and a full gauge glints. In RSQ Accessibility's Photosensitive Mode: no glint, the edge held still, the band dimmer.
-- **Real-Time Countdown Bar.** A horizontal bar, green by default, that appears whenever time is slowed by something you didn't choose: a kill moment, the cigarette, a parry, Miniboss's window, a close call. It counts down the real seconds until the world is back at full speed, including the ease out. It hits zero just as time catches up. If something pushes the slow motion longer, the bar refills smoothly with a glint. It sits under RSQ Score's bar (under RSQ Miniboss's Bossfight meter when that is loaded) and above Score's bonus list, smaller than Score and centred under its bar, never wider than it, with a pixel-art hourglass at its left (lined up under Miniboss's skull). Without Score, it goes where Score's bar would be. It is the same block bar as the SlowMo gauge and Gun Bonsai VR's Berserk gauges (same rim, dark well and thickness), and it stays clear of those side gauges.
+- **Real-Time Countdown Bar.** A horizontal bar, green by default, that appears whenever time is slowed by something you didn't choose: a kill moment, the cigarette, a parry, Miniboss's window, a close call. It counts down the real seconds until the world is back at full speed, including the ease out. It hits zero just as time catches up. If something pushes the slow motion longer, the bar refills smoothly with a glint. It sits under RSQ Score's bar (under RSQ Miniboss's Bossfight meter when that is loaded) and above Score's bonus list, smaller than Score and centred under its bar, never wider than it, with a pixel-art hourglass at its left. While Miniboss's meter shows, the bar takes the meter's size and place: the hourglass is the skull's size and straight under it, and the two bars start and end together whatever Meter Size and Bar Size say. Without Score, it goes where Score's bar would be. It is the same block bar as the SlowMo gauge and Gun Bonsai VR's Berserk gauges (same rim, dark well and thickness), and it stays clear of those side gauges.
 - **Color Drain** (optional, off by default). Colours fade out while time is slowed.
 
 ## How To Play
@@ -167,7 +167,7 @@ off (Keep Adrenaline, the gauge and bar rows, Wrist Cross Bursts, Burst).
 | Smooth Walkers | 12 | How many of the nearest walkers are smoothed. |
 | Colour Drain Amount | 0.35 | How much colour goes at full depth. |
 | Gauge Size | 1.5 | The gauge's height. |
-| Bar Size | 1.5 | Size of the countdown bar (never wider than Score's bar). |
+| Bar Size | 1.5 | Size of the countdown bar (never wider than Score's bar). While RSQ Miniboss's meter shows, the bar matches the meter's size instead. |
 | Debug Log | Off | Print every trigger to the console: its name, when, and what happened. |
 
 ## Works with

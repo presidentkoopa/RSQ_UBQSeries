@@ -41,6 +41,10 @@
 //                 watch-check gun move asks this and leaves that Use press alone while it is 1
 //   meter.bottom  (ui) the screen pixel row just under the meter's slot while it is shown (RSQ SlowMo's countdown bar
 //                 and RSQ Score's combo rows go below it), -1 when it is off
+//   meter.x / meter.w / meter.h   (ui, GetDoubleUI; GetIntUI rounds) the meter's BAR in screen pixels while it is shown:
+//                 its left edge, width and thickness (the skull is 1.6 x the thickness, 0.3 x it left of the bar); -1 off.
+//                 RSQ SlowMo's countdown row under it takes these (owner 11-05: the meter and the countdown always line
+//                 up, whatever Meter Size and Bar Size are set to: same icon size, same bar left edge and width)
 // GetObject("boss", "", 0, 0, thrall) -> the thrall's miniboss; ("boss", "", n) -> the n-th miniboss.
 // GetObject("thrall", "", n, 0, miniboss) -> its n-th thrall (dead or alive), null past the end.
 // GetString("powers", "", 0, 0, miniboss) -> what it inherited, comma-separated.
@@ -123,7 +127,23 @@ class RSQMB_Service : Service
 	override int GetIntUI(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
 	{
 		if (request ~== "meter.bottom") return RSQMB_Handler.MeterBottom();
+		if (request ~== "meter.x" || request ~== "meter.w" || request ~== "meter.h") return int(round(MeterBar(request)));
 		return GetIntData(request, stringArg, intArg, doubleArg, objectArg, nameArg);
+	}
+	override double GetDoubleUI(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
+	{
+		if (request ~== "meter.x" || request ~== "meter.w" || request ~== "meter.h") return MeterBar(request);
+		return GetIntUI(request, stringArg, intArg, doubleArg, objectArg, nameArg);
+	}
+	// the bar's rect (hud.zs MeterRect) while the meter is shown, else -1
+	static ui double MeterBar(String request)
+	{
+		if (gamestate != GS_LEVEL || !RSQMB_Handler.MeterShown()) return -1;
+		double x, y, w, h;
+		[x, y, w, h] = RSQMB_Handler.MeterRect();
+		if (request ~== "meter.x") return x;
+		if (request ~== "meter.w") return w;
+		return h;
 	}
 
 	override Object GetObjectData(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)

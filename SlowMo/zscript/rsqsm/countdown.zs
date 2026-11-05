@@ -43,12 +43,17 @@ class RSQSM_Countdown : StaticEventHandler
 	// SIZE AND PLACE (owner 11-05: "i was expecting them to be smaller than the score, neatly fitting centered under it
 	// score bar"): the row -- hourglass, gap, bar -- is sized from RSQ Score's own bar (its thickness x ROWK x Bar Size / 1.5),
 	// never wider than that bar, and centred on it as one group; it follows Score's scale, Text Size and screen shape. RSQ
-	// Miniboss's Bossfight meter row above uses the same maths and the same icon size (its crowned skull), so they line up.
+	// Miniboss's Bossfight meter row above uses the same maths; while it shows, this row takes its bar's rect (below).
 	// Clear of the side gauges' lanes (RSQ Gun Bonsai VR's Berserk gauges stand 2.5 to 3.5 gauge widths in from each side; 4
 	// kept clear): where Score sits near one, the row shrinks, still centred, rather than moving off Score's centre.
 	const GLASS = 1.6;       // the hourglass: a square GLASS x the bar's thickness (the skull's size) ...
 	const KGAP = 0.3;        // ... KGAP left of the bar
 	const ROWK = 0.8;        // the bar's thickness against Score's bar (8 of 120): smaller than Score
+	// LINED UP WITH THE BOSSFIGHT METER (owner 11-05: "The Bossfight meter and SlowMo countdown always line up, whatever
+	// Meter Size and Bar Size are set to"): while RSQ Miniboss's meter shows above, this row takes the meter's bar left edge,
+	// width and thickness (RSQMB_Service "meter.x" / "meter.w" / "meter.h", ui, by name) and sits under it, so the
+	// hourglass is the skull's size and straight under it and the two bars start and end together. Meter Size then sizes
+	// both; Bar Size applies whenever the meter is off or hidden (no Miniboss, Show Meter off, a Bossfight running).
 	static ui double, double, double, double Rect()
 	{
 		double sw = Screen.GetWidth(), sh = Screen.GetHeight();
@@ -56,6 +61,15 @@ class RSQSM_Countdown : StaticEventHandler
 		double sx = sw * f, sy = sh * f, aw = sw * (1 - 2 * f), ah = sh * (1 - 2 * f);
 		double cx, below, sbw;
 		[cx, below, sbw] = ScoreSpot();
+		let mb = ServiceIterator.Find("RSQMB_Service").Next();
+		if (mb)
+		{
+			double mx = mb.GetDoubleUI("meter.x", "", 0, 0, null);
+			double mw = mb.GetDoubleUI("meter.w", "", 0, 0, null);
+			double mh = mb.GetDoubleUI("meter.h", "", 0, 0, null);
+			if (mw > 0 && mh > 0 && mx >= 0)
+				return mx, clamp(below + mh * (0.3 + 0.25), sy, sy + ah - mh), mw, mh;
+		}
 		double per = 112.0 / 11.0 + GLASS + KGAP;     // the row's width per pixel of bar thickness
 		double h = sbw * 8.0 / 120.0 * ROWK * clamp(UCv("rsqsm_cdbar_size", 1.5), 0.5, 2.5) / 1.5;
 		double gw = min(h * per, sbw);

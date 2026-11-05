@@ -19,7 +19,7 @@ No miniboss is picked when a level loads any more. You earn it.
   RSQ Score's style points (style bonuses and combos), then kill chains (kills within 3 seconds), Gun Bonsai XP, and
   slowly from time spent pushing into the map. Without RSQ Score each kill counts for more. It is kept from map to map.
 - **How it looks**: coldcite's Top HP Bars block bar lying down, the same rim, well and size as RSQ SlowMo's countdown bar
-  (whose hourglass lines up under the skull) and the side gauges' style, with a crowned skull at its left. Red while it fills (the skull lights up from the jaw as it does),
+  (which takes the meter's size and place while both show, its hourglass straight under the skull) and the side gauges' style, with a crowned skull at its left. Red while it fills (the skull lights up from the jaw as it does),
   with a band of light running through it.
 - **Full**, it tells you without words: a sting, the bar turns gold and comes alive (the band runs gold, the bar and the
   skull swell with a slow beat, a glint crosses it every few seconds), and (with RSQ Glow In The Dark) the map's glow
@@ -168,7 +168,7 @@ Then the set piece itself:
 | Gun Bonsai XP Fill | 0.20 | Meter points per Gun Bonsai XP point. |
 | Score Per Tier | 4000 | This map's score that raises the tier by one. |
 | Show Meter | On | The meter on the HUD. Per player. |
-| Meter Size | 1.5 | Its size. Per player. |
+| Meter Size | 1.5 | Its size. Per player. RSQ SlowMo's countdown bar under it takes the same size while the meter shows. |
 | *Classic* | | |
 | Classic Pick at Level Load | Off | The old way: a miniboss chosen from the level's monsters at the start. |
 | Per Map | 1 | Classic: minibosses per level, 0 to 4. |

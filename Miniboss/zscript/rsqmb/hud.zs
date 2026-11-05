@@ -46,7 +46,9 @@ extend class RSQMB_Handler
 	// SIZE AND PLACE (owner 11-05: "i was expecting them to be smaller than the score, neatly fitting centered under it
 	// score bar"): the row -- skull, gap, bar -- is sized from RSQ Score's own bar (its thickness x ROWK x Meter Size / 1.5),
 	// never wider than that bar, and centred on it as one group, so it follows Score's scale, Text Size and screen shape.
-	// RSQ SlowMo's countdown row under it uses the same maths and the same icon size (its hourglass), so the two line up.
+	// RSQ SlowMo's countdown row under it takes THIS rect's bar left edge, width and thickness while the meter shows
+	// (RSQMB_Service "meter.x" / "meter.w" / "meter.h", by name), so the two line up whatever Meter Size and its Bar Size
+	// say (owner 11-05); the hourglass is the skull's size.
 	// Clear of the side gauges' lanes (RSQ Gun Bonsai VR's Berserk gauges stand 2.5 to 3.5 gauge widths in from each side;
 	// 4 kept clear): where Score sits near one, the row shrinks, still centred, rather than moving off Score's centre.
 	static ui double, double, double, double MeterRect()
