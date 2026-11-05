@@ -1813,9 +1813,20 @@ class wr_Rig : EventHandler
 			sheetRow(hands.Length() ? (tierWord(tier) .. "  " .. hands) : tierWord(tier),
 			         tierColorOf(w));
 		else if (isLD)
-			sheetRow(hands.Length() ? (wr_CompatLegenDoom.RarityWord(ldRarity) .. "  " .. hands)
-			                        : wr_CompatLegenDoom.RarityWord(ldRarity),
-			         tierColorOf(w));
+		{
+			// RSQ: LegenDoom's legendary name rides the top row with the rarity word ("EPIC  MURDEROUS SHOTGUN",
+			// wr_compat_legendoom.zs TitleOf); the handling note keeps its place only when there is no title
+			string ldWord = wr_CompatLegenDoom.RarityWord(ldRarity);
+			string ldTitle = wr_CompatLegenDoom.TitleOf(w);
+			if (ldTitle.Length())
+			{
+				string top = ldWord .. "  " .. ldTitle.MakeUpper();
+				if (top.CodePointCount() > LD_TOP_WIDTH) top = top.Left(LD_TOP_WIDTH - 1) .. ".";
+				sheetRow(top, tierColorOf(w));
+			}
+			else
+				sheetRow(hands.Length() ? (ldWord .. "  " .. hands) : ldWord, tierColorOf(w));
+		}
 		else if (isDRLA)
 			sheetRow(hands.Length() ? (wr_CompatDRLA.TierWord(drlaTier) .. "  " .. hands)
 			                        : wr_CompatDRLA.TierWord(drlaTier),
@@ -1878,9 +1889,18 @@ class wr_Rig : EventHandler
 		// LegenDoom's rolled effects -- independent of ldRarity above, same
 		// reasoning as DRLA's mods below: read straight off the held
 		// weapon's own owned items, not gated on rarity having been found.
+		// RSQ: the power itself, in LegenDoom's own words ($LD_FX_DESCR_<Name>, its first paragraph, wrapped), on
+		// up to LD_DESCR_ROWS rows; the bare effect name only when LegenDoom has no description for it. Still
+		// switched off by "LegenDoom Effects" (wr_ld_effects), through EffectsOf.
 		string ldEffects = wr_CompatLegenDoom.EffectsOf(w);
 		if (ldEffects.Length() > 0)
-			sheetRow("EFFECT " .. ldEffects, SHEET_TEXT);
+		{
+			Array<string> ldNames, ldLines;
+			wr_CompatLegenDoom.EffectNames(w, ldNames);
+			int nd = ldNames.Size() ? wr_CompatLegenDoom.DescrLines(ldNames[0], LD_DESCR_WIDTH, LD_DESCR_ROWS, ldLines) : 0;
+			if (nd == 0) sheetRow("EFFECT " .. ldEffects, SHEET_TEXT);
+			for (int i = 0; i < nd; ++i) sheetRow(ldLines[i].MakeUpper(), SHEET_TEXT);
+		}
 
 		// DRLA's Mod Station upgrades -- independent of drlaTier above, see
 		// wr_compat_drla.zs, since a mod's own name is built from the held
@@ -10176,6 +10196,9 @@ class wr_Rig : EventHandler
 	const SHEET_GAP_CARDS  = 0.55;   // daylight between ring and sheet
 	const SHEET_TITLE_FRAC = 0.085;  // title height, of sheet height
 	const SHEET_ROW_FRAC   = 0.0204; // one row's height
+	const LD_TOP_WIDTH     = 26;     // RSQ: LegenDoom's title row and description rows, in characters
+	const LD_DESCR_WIDTH   = 24;
+	const LD_DESCR_ROWS    = 3;
 	const SHEET_ROWS_TOP   = 0.21;   // where the first row starts, from the top
 	const SHEET_ROW_PITCH  = 1.30;   // row spacing as a multiple of row height
 

@@ -69,6 +69,34 @@ class wr_CompatLegenDoom
 	// second copy here had nothing to justify it and no way to stay in
 	// sync with the original if the convention ever changed.
 
+	// THE TOKEN PREFIX. LegenDoom's own guns: the weapon's own class name (above). A gun that stands in for a
+	// LegenDoom weapon (BD22 VR's guns under the LDL x BD22 VR patch: Shot_Gun carries LDShotgun's tokens, Rifle and
+	// MiniGun LDChaingun's) has no tokens of its own name, so when the class name finds none the patch is asked,
+	// softly, by name: ServiceIterator.Find("RSLDP_Service") GetStringData("ld_prefix", <class>) -> "LDShotgun" or ""
+	// (the clearscope getter: this class is data scope; the patch answers it from its 11-04 build on).
+	// Without the patch (Wheel alone, LegenDoom alone) the iterator finds nothing and the class name stands.
+	static string PrefixOf(Weapon w)
+	{
+		if (!w) return "";
+		string base = wr_Rig.familyRoot("" .. w.GetClassName());
+		if (!w.Owner) return base;
+		string lg = base .. "Legendary", ef = base .. "Effect_";
+		int ll = int(lg.Length()), el = int(ef.Length());
+		for (Inventory it = w.Owner.Inv; it; it = it.Inv)
+		{
+			string nm = "" .. it.GetClassName();
+			if (nm.Left(ll) == lg || nm.Left(el) == ef) return base;
+		}
+		let svcs = ServiceIterator.Find("RSLDP_Service");
+		Service svc;
+		while (svc = svcs.Next())
+		{
+			string p = svc.GetStringData("ld_prefix", base);
+			if (p.Length() > 0) return p;
+		}
+		return base;
+	}
+
 	// FOUND, RARITY. Order checked is Epic down to Common, matching the order
 	// LegenDoom's own Ready states check in (Pistol.dec and siblings) -- a
 	// weapon only ever carries one of the four, so the order only matters if
@@ -78,7 +106,7 @@ class wr_CompatLegenDoom
 		int none;
 		if (!w || cv("wr_ld_compat", 1.0) <= 0.0) return false, none;
 
-		string base = wr_Rig.familyRoot("" .. w.GetClassName());
+		string base = PrefixOf(w);
 		string wantEpic     = base .. "LegendaryEpic";
 		string wantRare     = base .. "LegendaryRare";
 		string wantUncommon = base .. "LegendaryUncommon";
@@ -159,7 +187,7 @@ class wr_CompatLegenDoom
 	{
 		if (!w || cv("wr_ld_compat", 1.0) <= 0.0 || cv("wr_ld_effects", 1.0) <= 0.0) return "";
 
-		string prefix = wr_Rig.familyRoot("" .. w.GetClassName()) .. "Effect_";
+		string prefix = PrefixOf(w) .. "Effect_";
 		int plen = int(prefix.Length());   // Length() is unsigned; see classNameHash()
 		                                    // in zscript.zs for the same cast and why.
 		string s = "";
@@ -181,5 +209,79 @@ class wr_CompatLegenDoom
 			}
 		}
 		return s;
+	}
+
+	// The rolled effects' own identifiers (LDShotgunEffect_Murderous -> "Murderous"), as LegenDoom names them in
+	// its LANGUAGE lumps. Gated like EffectsOf on wr_ld_compat only: the title row is rarity, not the effects row.
+	static int EffectNames(Weapon w, out Array<string> names)
+	{
+		names.Clear();
+		if (!w || !w.Owner || cv("wr_ld_compat", 1.0) <= 0.0) return 0;
+		string prefix = PrefixOf(w) .. "Effect_";
+		int plen = int(prefix.Length());
+		for (Inventory it = w.Owner.Inv; it; it = it.Inv)
+		{
+			string nm = "" .. it.GetClassName();
+			if (int(nm.Length()) > plen && nm.Left(plen) == prefix) names.Push(nm.Mid(plen));
+		}
+		return names.Size();
+	}
+
+	// LegenDoom's legendary name for the gun: its effect's title ($LD_FX_TITLE_<Name>, "Murderous", "Exorcist's")
+	// and the gun's own name, as LegenDoom's pickup screen and the patch's HUD line read ("Murderous Shotgun").
+	// The raw identifier when the string is missing. "" when the gun has no rolled effect.
+	static string TitleOf(Weapon w)
+	{
+		Array<string> names;
+		if (EffectNames(w, names) == 0) return "";
+		string t = StringTable.Localize("$LD_FX_TITLE_" .. names[0]);
+		if (t.IndexOf("LD_FX_TITLE_") >= 0) t = names[0];
+		return t .. " " .. w.GetTag();
+	}
+
+	// The power, from LegenDoom's own description ($LD_FX_DESCR_<Name>): the first paragraph only (what follows a
+	// blank line is a flavour quote), its \c colour codes taken out (the sheet colours a whole row), wrapped to
+	// `width` characters into `lines`, at most `most` lines (the last one ends in "..." when it was cut).
+	static int DescrLines(string name, int width, int most, out Array<string> lines)
+	{
+		lines.Clear();
+		string d = StringTable.Localize("$LD_FX_DESCR_" .. name);
+		if (d.IndexOf("LD_FX_DESCR_") >= 0) return 0;
+		int cut = d.IndexOf("\n\n");
+		if (cut >= 0) d = d.Left(cut);
+		string plain = "";
+		int n = int(d.Length());
+		for (int i = 0; i < n; ++i)
+		{
+			int ch = d.ByteAt(i);
+			if (ch == 0x1C || (ch == 0x5C && i + 1 < n && d.ByteAt(i + 1) == 0x63))	// a colour code: \c<x> or \c[name]
+			{
+				i += (ch == 0x1C) ? 1 : 2;
+				if (i < n && d.ByteAt(i) == 0x5B) { while (i < n && d.ByteAt(i) != 0x5D) ++i; }
+				continue;
+			}
+			if (ch == 0x0A || (ch == 0x5C && i + 1 < n && d.ByteAt(i + 1) == 0x6E)) { plain = plain .. " "; if (ch == 0x5C) ++i; continue; }
+			plain.AppendCharacter(ch);
+		}
+		Array<string> words;
+		plain.Split(words, " ", TOK_SKIPEMPTY);
+		string cur = "";
+		bool more = false;
+		for (int i = 0; i < words.Size(); ++i)
+		{
+			string next = cur.Length() ? (cur .. " " .. words[i]) : words[i];
+			if (int(next.Length()) <= width) { cur = next; continue; }
+			if (cur.Length()) lines.Push(cur);
+			cur = words[i];
+			if (lines.Size() >= most) { more = true; break; }
+		}
+		if (!more && cur.Length()) lines.Push(cur);
+		if (more && lines.Size())
+		{
+			string last = lines[lines.Size() - 1];
+			if (int(last.Length()) > width - 3) last = last.Left(width - 3);
+			lines[lines.Size() - 1] = last .. "...";
+		}
+		return lines.Size();
 	}
 }

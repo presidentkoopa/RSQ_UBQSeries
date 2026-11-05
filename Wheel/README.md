@@ -156,8 +156,8 @@ Options → Radiant Silvergun Options → RSQ Wheel (one page; Test and Debug an
 | Point at a Gun | On | Point at a gun on the floor to see its sheet. |
 | Compare With Yours | Off | That sheet shows the difference from your current gun. |
 | *Other Mods* | | |
-| LegenDoom Rarity | On | Reader for LegenDoom. |
-| LegenDoom Effects | On |  |
+| LegenDoom Rarity | On | Reader for LegenDoom: the card in the rarity's colour, the rarity and the legendary's name ("EPIC  MURDEROUS SHOTGUN") on the sheet's top row. With the LDL x BD22 VR patch (its 11-04 build), BD22 VR's guns too (rig only, not headset-confirmed). |
+| LegenDoom Effects | On | The power, in LegenDoom's own words, under it. |
 | DoomRL Arsenal Tier | On | Reader for DoomRL Arsenal. |
 | DoomRL Mod Upgrades | On |  |
 | Combined Arms Meters | On | Reader for Combined Arms. |
