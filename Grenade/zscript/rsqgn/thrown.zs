@@ -5,7 +5,10 @@
 // J_ThrownGrenade does, +ALLOWBOUNCEONACTORS), so only the fuse sets it off.
 //
 // The damage is ITS OWN A_Explode (RS_Grenade's / the pack's numbers: 85 over 200, then 75 over 255), so the kill,
-// the obituary and any score go to the player who threw it (target). The look is RSQGN_Blast (blast.zs).
+// the obituary and any score go to the player who threw it (target) -- or, when another player's shot sets it off, to
+// that player (owner 11-04, 0.99a item 50: anyone can shoot any thrown grenade in co-op and the shooter gets the kill;
+// Shot below makes the shooter its target, and `thrower` keeps who threw it for the upgrades that shaped it). The look
+// is RSQGN_Blast (blast.zs).
 class RSQGN_Thrown : Actor
 {
 	int fuse;			// tics left (a cooked grenade arrives with less)
@@ -30,6 +33,8 @@ class RSQGN_Thrown : Actor
 	bool impactHit;		// an Impact grenade that burst on what it touched ("impact")
 	int kind;			// THE KINDS (Gun Bonsai VR patch, kinds.zs)
 	Vector3 prevVel;
+	Actor thrower;		// SET OFF BY ANOTHER PLAYER'S SHOT: who threw it (target is then the shooter, who gets the kill);
+						// null while target is still the thrower. The thrower's upgrades still shape the blast.
 	// SLOW MOTION (11-03): RSQ SlowMo leaves the series' own actors in real time, so the grenade slows itself: its
 	// speed, its fall and its fuse run at slowF (RSQGN_Slow.GrenadeFactor: the world's speed, or more with "Faster
 	// Grenades in Slow Motion").
@@ -261,6 +266,8 @@ class RSQGN_Thrown : Actor
 			int lv = RSQGN_Upg.Lv(target, "Skeet");
 			if (lv > 0) dmgMult *= RSQGN_Upg.Num("Skeet.mult", lv, 1.0);
 		}
+		// another player's shot: the kill is his (the blast's A_Explode credits target), the grenade stays the thrower's
+		if (by && by.player && target && by != target && !thrower) { thrower = target; target = by; }
 		if (target && target.player && RSQGN_Handler.Debug(target.player))
 			Console.Printf("RSQGN shot t%d: %s by %s, %s, %d tics out of the hand, x%.2f", level.maptime, how, by ? by.GetClassName() : 'nobody',
 				air ? "in the air (skeet)" : "on the ground", age, dmgMult);
@@ -299,9 +306,9 @@ class RSQGN_Thrown : Actor
 		Goto Boom;
 	Boom:
 		TNT1 A 0 A_NoBlocking;
-		TNT1 A 0 { RSQGN_Kind.Look(self, kind, target); }
-		TNT1 A 1 { RSQGN_Thrown.Blast(self, target, 0, dmgMult > 0 ? dmgMult : 1.0); }
-		TNT1 A 1 { RSQGN_Thrown.Blast(self, target, 1, dmgMult > 0 ? dmgMult : 1.0); }
+		TNT1 A 0 { RSQGN_Kind.Look(self, kind, thrower ? thrower : target); }
+		TNT1 A 1 { RSQGN_Thrown.Blast(self, thrower ? thrower : target, 0, dmgMult > 0 ? dmgMult : 1.0); }
+		TNT1 A 1 { RSQGN_Thrown.Blast(self, thrower ? thrower : target, 1, dmgMult > 0 ? dmgMult : 1.0); }
 		Stop;
 	}
 
@@ -338,7 +345,7 @@ class RSQGN_Thrown : Actor
 		{
 			let b = RSQGN_Bomblet(Actor.Spawn("RSQGN_Bomblet", at.pos + (0, 0, 8), ALLOW_REPLACE));
 			if (!b) continue;
-			b.target = by;
+			b.target = at.target ? at.target : by;	// the kill is the blast's: the shooter's when another player set it off
 			if (gw)
 			{
 				b.master = gw;

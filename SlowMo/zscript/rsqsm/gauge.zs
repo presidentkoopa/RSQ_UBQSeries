@@ -1,10 +1,10 @@
 // THE SLOWMO GAUGE (2026-11-02; the owner: "repurpose and recolor the TopHPBar as a hud element for SlowMo, arrange it
 // vertically, change the colors or style"). coldcite's Top HP Bars bar, stood on end and coloured electric cyan
-// (TopHPBars/tools/gen_gauges.py: graphics/RSQSMGE empty, RSQSMGF full; his art, "feel free to use this in your mods").
+// (VisualRewards/tools/gen_gauges.py: graphics/RSQSMGE empty, RSQSMGF full, RSQSMGW the white fill; his art, "feel free to use this in your mods").
 //   ADRENALINE ON   the gauge is the meter, 0 to 100: dim while it is below Adrenaline to Start (a white tick marks that
 //                   line), pulsing while slow motion spends it.
-//   ADRENALINE OFF  there is no meter: the gauge shows only while the world is slowed, filled by how slow (the depth
-//                   the World Speed slider sets is full).
+//   ADRENALINE OFF  there is no meter: the gauge shows only while the world is slowed, filled by how slow (full is the
+//                   World Speed slider's depth, Gun Bonsai VR's Deeper depth when learned, the shootdodge's in a dodge).
 // THE FILL IS ALIVE (owner, 11-02): tinted deep blue to cyan to near white as it fills, and (Gauge Animation, on) a band of
 // light rising through it, a breathing edge, a glint when full (RSQSM_GaugeLife below).
 // Drawn on the HUD's layer, at the side of the safe area (the series' rsq_ui_inset when the series UI is loaded, else 4 %
@@ -32,7 +32,13 @@ class RSQSM_Gauge : StaticEventHandler
 		else
 		{
 			if (!slowing) return;
-			double depth = clamp(SCv("rsm_depth", 0.25), 0.05, 0.95);
+			// full is the deepest of his own slow motion now: the World Speed row, or Gun Bonsai VR's Deeper node when learned
+			// (clock.curDepth, Depth()), and the shootdodge's speed while one is in flight (0.99a bug 2: against rsm_depth
+			// alone the gauge sat full through both)
+			double depth = clock.curDepth > 0 ? clock.curDepth : clamp(SCv("rsm_depth", 0.25), 0.05, 0.95);
+			bool dodging = false;
+			for (int n = 0; n < MAXPLAYERS; n++) if (clock.dodgeTic[n] > 0) dodging = true;
+			if (dodging) depth = min(depth, clamp(SCv("rsqsm_dodge_depth", 0.10), 0.05, 0.95));
 			frac = clamp((1.0 - clock.scale) / max(1.0 - depth, 0.05), 0.0, 1.0);
 		}
 		TextureID te = TexMan.CheckForTexture("RSQSMGE", TexMan.Type_Any);

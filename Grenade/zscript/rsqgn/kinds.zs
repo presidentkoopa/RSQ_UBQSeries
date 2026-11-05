@@ -133,6 +133,8 @@ class RSQGN_Kind play
 	}
 
 	// WHAT A KIND DOES at its blast (once). r: the blast's radius (Big Bang's share in it).
+	// `by` is the thrower (his levels shape it); what the effect leaves behind hurts as the blast's own source, at.target:
+	// the shooter's when another player's shot set the grenade off (0.99a item 50: the shooter gets the kill)
 	static void Effect(Actor at, Actor by, int k, double r)
 	{
 		if (k == FRAG || k == IMPACT) return;
@@ -145,13 +147,13 @@ class RSQGN_Kind play
 		{
 			at.A_StartSound("rsqgn/fx/fire", CHAN_AUTO);
 			let f = RSQGN_FireField(Actor.Spawn("RSQGN_FireField", at.pos, ALLOW_REPLACE));
-			if (f) { f.target = by; f.radius2 = r; f.left = (3 + lv) * TICRATE; Claim(f, by); }
+			if (f) { f.target = at.target ? at.target : by; f.radius2 = r; f.left = (3 + lv) * TICRATE; Claim(f, by); }
 			return;
 		}
 		if (k == SMOKE)
 		{
 			let s = RSQGN_Smoke(Actor.Spawn("RSQGN_Smoke", at.pos, ALLOW_REPLACE));
-			if (s) { s.target = by; s.cloud = m * (3 + lv) / 2.0; s.left = (8 + 4 * lv) * TICRATE; }
+			if (s) { s.target = at.target ? at.target : by; s.cloud = m * (3 + lv) / 2.0; s.left = (8 + 4 * lv) * TICRATE; }
 			return;
 		}
 		Inside(at, r, hit);

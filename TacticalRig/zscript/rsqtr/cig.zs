@@ -48,7 +48,8 @@
 //   hand gives way to its gun; neither stays in the inventory. The cigarette and the Zippo are never guns to the rig
 //   (no throw, no holster: rig.zs HoldsGun / IsMovedGun).
 //
-// Rig only, not headset-confirmed.
+// Played and confirmed working in the headset (owner, 2026-11-03). Since then, rig only: the pulse's name for SlowMo
+// (rsqtr_cigslowmo, 0.99a bug 43).
 
 // The idea is Ermac's: the cigarette, its butt and its smoke come from his Virtual Tactical Vest for Doom VR (its credits
 // name him as their modeller; the cigarette's texture is an atlas shared with a Sketchfab cigarette-pack model, its pack
@@ -442,6 +443,9 @@ class RSQTR_Cig : EventHandler
 				int ms = int(SmokeSecs(p) * 1000);
 				int depth = RSQTR_Rig.Opt("rsqtr_cig_depth", p, 25);
 				EventHandler.SendNetworkEvent("rsm_pulse", ms, depth);
+				// the pulse's name for RSQ SlowMo (its clock.zs, as RSQ Melee's rsqml_fear names the shove's): this pulse is the
+				// smoke, whatever Gun Bonsai VR's Smoker made its length (0.99a bug 43). Nothing else reads it; alone it is inert.
+				EventHandler.SendNetworkEvent("rsqtr_cigslowmo", ms, depth);
 				if (msg) Console.Printf("T_CIG slow motion asked: rsm_pulse %d %d", ms, depth);
 			}
 		}

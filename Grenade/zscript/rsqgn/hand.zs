@@ -397,9 +397,14 @@ class RSQGN_Handler : EventHandler
 	// 4.5 Style): your own shot passing within RSQGN_Thrown.ShotR() (Shot Grenade Reach, 0.35 m = 12 units at most) of a thrown grenade, once it is
 	// SHOT_GRACE tics out of the hand, sets it off there (in the air: a skeet). "Shoot Thrown Grenades" off: only the
 	// Skeet node does, in the air, as before. Melee (a reach of 128 units or less) never does. Only the shooter's
-	// machine knows where VR hands point (the engine writes the pose for the camera player alone), so it tests both
-	// hands' rays and sends the grenade's serial; every machine sets off the same one (rsqgn_skeet). The shot itself is
-	// untouched. Projectiles are caught by the grenade itself (RSQGN_Thrown.ShotByMissile).
+	// machine knows where VR hands point (the engine writes the pose for the camera player alone), so it tests the ray
+	// of the hand that fired and sends the grenade's serial; every machine sets off the same one (rsqgn_skeet). The shot
+	// itself is untouched. Projectiles are caught by the grenade itself (RSQGN_Thrown.ShotByMissile).
+	// WHICH HAND FIRED (0.99a bug 54; before, both hands' rays were tested, so the hand that only pointed could set a
+	// grenade off): the shot says so itself. QuestZDoom 17.3's weapon attacks mark an off-hand shot -- A_FireBullets
+	// LAF_ISOFFHAND, A_RailAttack RGF_ISOFFHAND (wadsrc stateprovider.zs) -- and P_LineAttack starts it from OffhandPos
+	// for exactly that flag (p_map.cpp), which the hitscan event carries as AttackLineFlags and the railgun's as
+	// RailParams.flags (events.cpp).
 	// 11-03 (a scoping read): the railgun (A_RailAttack, BD's RailGun) does not call the hitscan hook on 4.14.3; it
 	// has its own, taken the same way
 	override bool WorldRailgunPreFired(WorldEvent e) { ShotTest(e, "railgun"); return false; }
@@ -413,13 +418,14 @@ class RSQGN_Handler : EventHandler
 		if (!open && RSQGN_Upg.Lv(pmo, "Skeet") <= 0) return;
 		if (e.AttackDistance > 0 && e.AttackDistance <= 128) return;	// a punch, a bash: never
 		double dist = e.AttackDistance > 0 ? e.AttackDistance : 8192;
-		Vector3 a0, d0, a1, d1;
-		int rays = 1;
+		Vector3 a0, d0;
+		int fh = 0;	// the hand that fired: its ray is the only one tested
 		if (pmo.OverrideAttackPosDir)
 		{
-			a0 = pmo.AttackPos; d0 = RSQGN_Geo.Dir(pmo, 0, 0, 0);
-			a1 = pmo.OffhandPos; d1 = RSQGN_Geo.Dir(pmo, 1, 0, 0);
-			rays = 2;
+			bool off = how == "railgun" ? (e.RailParams.flags & RGF_ISOFFHAND) != 0 : (e.AttackLineFlags & LAF_ISOFFHAND) != 0;
+			fh = off ? 1 : 0;
+			a0 = off ? pmo.OffhandPos : pmo.AttackPos;
+			d0 = RSQGN_Geo.Dir(pmo, fh, 0, 0);
 		}
 		else
 		{
@@ -435,10 +441,11 @@ class RSQGN_Handler : EventHandler
 			if (g.boomed) continue;
 			seen++;
 			if (!open && (g.target != pmo || g.pos.z <= g.floorz + 2)) continue;	// the Skeet node alone: yours, in the air
-			for (int r = 0; r < rays; r++)
+			for (int k = 0; k < 1; k++)		// one ray: the firing hand's (a loop so a miss can `continue` to the next grenade)
 			{
-				Vector3 ra = r == 0 ? a0 : a1;
-				Vector3 rd = r == 0 ? d0 : d1;
+				int r = fh;
+				Vector3 ra = a0;
+				Vector3 rd = d0;
 				Vector3 c = g.pos + (0, 0, 1.4) - ra;
 				double along = c dot rd;
 				if (along < 0 || along > dist) continue;

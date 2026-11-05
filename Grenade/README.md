@@ -39,7 +39,8 @@ Changed your mind before cooking it? Take the ring again with your other hand an
 - Bounces off floors, walls and monsters, tumbles, then settles on its side and slides to a stop. Only the fuse sets
   it off.
 - Shoot thrown grenades: your bullets or projectiles passing within 0.35 m (Shot Grenade Reach: tighten it down to 0.10 m) of a thrown grenade set it off on the spot,
-  in the air if you are quick. Punches never do, and a grenade is safe for its first 6 tics out of the hand.
+  in the air if you are quick. Punches never do, and a grenade is safe for its first 6 tics out of the hand. Only the
+  ray of the hand that fired counts. In co-op anyone can shoot anyone's thrown grenade, and the shooter gets the kill.
 - Optional: only while the world is slowed by RSQ SlowMo (off by default).
 - Thrown grenades slow down with RSQ SlowMo like everything else. Optional: let them run faster than the slowed world
   (off by default).

@@ -103,6 +103,9 @@ class RSQLS_Sight : EventHandler
 	// ---- THE GUN BONSAI VR PATCH'S LEVELS (GBOVR_TREES.md 4.8), the console player's, once a second ------------------
 	// Target Lock and Headshot Reaction are unlocks under the patch: they take over rsqls_lock (1), rsqls_target_recolor
 	// (2) and rsqls_head (1). Without it the rows as before.
+	// The two nodes exist only when the patch can offer them: they hang from RSQ Tactical Rig's Quick Draw (the patch's
+	// RSQ_LaserPerk -> RSQ_RigPerk.ModLoaded needs RSQTR_RigService). With the patch but no Rig they can never be learned,
+	// so the rows rule then (0.99a bug 8: Target Lock, on by default, could never turn on).
 	transient int gbTic, gbLock, gbHead;
 	transient bool gbOn;
 	void GbRefresh(PlayerPawn pmo)
@@ -110,6 +113,7 @@ class RSQLS_Sight : EventHandler
 		if (gbTic > 0 && level.maptime < gbTic && level.maptime >= gbTic - 35) return;
 		gbTic = level.maptime + 35;
 		let svc = ServiceIterator.Find("RSQ_MeleeUpgradeService").Next();
+		if (svc && !ServiceIterator.Find("RSQTR_RigService").Next()) svc = null;
 		gbOn = svc != null;
 		gbLock = svc ? max(0, svc.GetInt("plevel", "TargetLock", 0, 0, pmo)) : 0;
 		gbHead = svc ? max(0, svc.GetInt("plevel", "HeadshotReaction", 0, 0, pmo)) : 0;

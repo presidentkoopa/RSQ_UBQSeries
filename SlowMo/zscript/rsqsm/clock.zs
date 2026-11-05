@@ -193,12 +193,14 @@ class RSQSM_Clock : EventHandler
 	int BurstMs(int who) { static const int B[] = { 4000, 5000, 6000, 8000 }; int l = Gb(who, 'Longer'); return l < 0 ? BURST_MS : B[clamp(l, 0, 3)]; }
 	double AdrSecs() { int l = GbMax('Longer'); return max(1.0, Cv("rsqsm_adr_secs", 10)) * (1.0 + 0.25 * max(l, 0)); }
 	double CostK() { int l = GbMax('Cheaper'); return 1.0 - 0.2 * clamp(l, 0, 3); }
-	// LEAN DODGE, the unlock (every machine reads it): the node under the patch, the Lean Dodge row without
+	// LEAN DODGE (every machine reads it): the Lean Out of Bullets row always (off is off, with or without the patch;
+	// 0.99a bug 1), and under the patch its Lean Dodge node must be learned as well (the upgrade gates turning it on)
 	static bool LeanOn(int n)
 	{
+		if (Cv("rsqsm_lean", 1) == 0) return false;
 		let c = Get();
 		int g = c ? c.Gb(n, 'LeanDodge') : -1;
-		return g < 0 ? Cv("rsqsm_lean", 1) != 0 : g >= 1;
+		return g < 0 || g >= 1;
 	}
 	// MATRIX: the colour drain and the shot trails at full while slowed, whatever their rows say
 	static clearscope bool MatrixOn()
@@ -292,6 +294,7 @@ class RSQSM_Clock : EventHandler
 	private transient Array<int> pendMs, pendDepth, pendWho;
 	private transient int pendTic;
 	private transient int fearTic[MAXPLAYERS];
+	private transient int smokeTic[MAXPLAYERS];
 
 	override void NetworkProcess(ConsoleEvent e)
 	{
@@ -317,6 +320,9 @@ class RSQSM_Clock : EventHandler
 		// RSQ Melee sends its F.E.A.R. window with the shove's pulse, from the same machine on the same tic
 		// (Melee shove.zs Pulse): seen by name, it marks that pulse as the shove (deliberate).
 		else if (e.Name ~== "rsqml_fear") { if (e.Player >= 0 && e.Player < MAXPLAYERS) fearTic[e.Player] = level.maptime; }
+		// RSQ Tactical Rig's cigarette names its pulse the same way (cig.zs, sent with its rsm_pulse on the same tic): that
+		// pulse is the smoke, whatever its length (0.99a bug 43: Gun Bonsai VR's Smoker lengthens it, so length can't tell)
+		else if (e.Name ~== "rsqtr_cigslowmo") { if (e.Player >= 0 && e.Player < MAXPLAYERS) smokeTic[e.Player] = level.maptime; }
 		else if (e.Name ~== "rsqsm_start" || e.Name.Left(12) ~== "rsqsm_start:")
 		{
 			String who = e.Name.Length() > 12 ? e.Name.Mid(12) : "netevent";
@@ -335,7 +341,7 @@ class RSQSM_Clock : EventHandler
 
 	// WHO SENT AN rsm_pulse (RS_SlowMo's door has no name). Read from the callers' own code, 2026-11-02:
 	//   RSQ Melee shove            rsm_pulse <rsqml_shove_slowmo_ms> 35, then rsqml_fear the same tic  -> deliberate
-	//   RSQ Tactical Rig cigarette rsm_pulse <rsqtr_cig_secs x 1000> <rsqtr_cig_depth> (the sender's own) -> deliberate
+	//   RSQ Tactical Rig cigarette rsm_pulse <smoke ms> <rsqtr_cig_depth>, then rsqtr_cigslowmo the same tic -> deliberate
 	//   RSQ Saber perfect parry (ubqs_parry_slowmo), RSQ ShieldSaw perfect block (ssq_perfect_slowmo): both
 	//     rsm_pulse 500 35, told apart by whose option is on and what the sender holds (ParryOrBlock) -> deliberate
 	//   RSQ Miniboss's slow window (RSQMB_Service "window" > 0, by name), re-sent each second            -> automatic
@@ -353,12 +359,7 @@ class RSQSM_Clock : EventHandler
 			double depth = clamp(dp / 100.0, 0.05, 1.0);
 			bool okWho = who >= 0 && who < MAXPLAYERS && playeringame[who];
 			if (okWho && fearTic[who] == level.maptime) { Trigger("melee.shove", CAT_SHOVE, ms, depth, false, who); continue; }
-			if (okWho)
-			{
-				let cs = CVar.GetCVar("rsqtr_cig_secs", players[who]);
-				let cd = CVar.GetCVar("rsqtr_cig_depth", players[who]);
-				if (cs && cd && ms == int(cs.GetFloat() * 1000) && dp == cd.GetInt()) { Trigger("smoke", CAT_SMOKE, ms, depth, false, who); continue; }
-			}
+			if (okWho && smokeTic[who] == level.maptime) { Trigger("smoke", CAT_SMOKE, ms, depth, false, who); continue; }
 			if (ms == 500 && dp == 35)
 			{
 				int pb = ParryOrBlock(okWho ? who : -1);
@@ -1518,7 +1519,7 @@ class RSQSM_ClawDodge : Inventory
 		let pmo = PlayerPawn(Owner);
 		if (!pmo || !pmo.player || damage <= 0 || !source || source.player || inflictor != source || (flags & DMG_EXPLOSION)) return;
 		let c = RSQSM_Clock.Get();
-		if (!c || c.scale > 0.95 || c.Gb(pmo.PlayerNumber(), 'LeanDodge') < 2) return;
+		if (!c || c.scale > 0.95 || c.Gb(pmo.PlayerNumber(), 'LeanDodge') < 2 || !RSQSM_Clock.LeanOn(pmo.PlayerNumber())) return;
 		if (pmo.Distance2D(source) > source.radius + pmo.radius + 72) return;
 		let b = RSQSM_Body(EventHandler.Find("RSQSM_Body"));
 		if (!b) return;

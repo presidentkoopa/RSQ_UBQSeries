@@ -56,7 +56,7 @@ dodgeable speed. Your shield and saber stop the rounds like any other projectile
 - With too little in the meter you get a short buzz and the player "oof".
 
 **On the HUD**
-- **SlowMo Gauge.** A vertical bar at the side of your view. With Adrenaline on it shows the meter, with a tick at the start line. With Adrenaline off it shows only while time is slowed, filled by how slow. It's animated: a band of light rises through it, the top edge breathes and a full gauge glints.
+- **SlowMo Gauge.** A vertical bar at the side of your view. With Adrenaline on it shows the meter, with a tick at the start line. With Adrenaline off it shows only while time is slowed, filled by how slow (full is your World Speed, or Gun Bonsai VR's Deeper speed once learned, and the shootdodge's speed during a dodge). It's animated: a band of light rises through it, the top edge breathes and a full gauge glints.
 - **Real-Time Countdown Bar.** A horizontal bar, green by default, that appears whenever time is slowed by something you didn't choose: a kill moment, the cigarette, a parry, Miniboss's window, a close call. It counts down the real seconds until the world is back at full speed, including the ease out. It hits zero just as time catches up. If something pushes the slow motion longer, the bar refills smoothly with a glint. It sits under RSQ Score's bar and above Score's bonus list. Without Score, it goes where Score's bar would be.
 - **Color Drain** (optional, off by default). Colours fade out while time is slowed.
 
@@ -185,8 +185,8 @@ RSQ SlowMo runs on its own. It finds the other mods by name at run time and link
 - **Gun Bonsai with RSQ Gun Bonsai VR:** the Adrenaline, Showdown and Time Dilation perks pulse slow motion
   (switchable). The slow-motion upgrades shape it: **Longer** stretches the burst (up to 8 s) and the meter,
   **Deeper** slows the world further (down to 10%), **Cheaper** spends the meter more slowly, and **Matrix** turns
-  on the full colour drain and shot trails. With the patch loaded, leaning out of bullets is unlocked by its
-  **Lean Dodge** upgrade instead of the menu row. At its second level, a lean also dodges a monster's claw.
+  on the full colour drain and shot trails. With the patch loaded, leaning out of bullets also needs its
+  **Lean Dodge** upgrade (the menu row still turns it off). At its second level, a lean also dodges a monster's claw.
 - **Brutal Doom / BD22 VR Reloaded:** Brutal Doom fires many enemy bullets as fast projectiles, and those slow to the same
   dodgeable speed as the rounds. Reload Slowdown catches Brutal Doom's reloads too.
 - **Xortts' Bullet Time X or RS_SlowMo:** two slow-motion systems would stack on each other, so RSQ SlowMo

@@ -184,7 +184,8 @@ Runs on its own with any weapon mod.
 - **RSQ Gun Bonsai VR (with Gun Bonsai and RSQ TacticalRig):** Target Lock and Headshot Reaction become upgrades you
   earn, after TacticalRig's Quick Draw. Level 1 of Target Lock is the lock, level 2 adds the target colour. Level 1 of
   Headshot Reaction is the colour change; level 2 makes a gun hit with your dot on a monster's head count as a
-  headshot. While Gun Bonsai VR is loaded, those menu switches stand aside.
+  headshot. While Gun Bonsai VR and TacticalRig are both loaded, those menu switches stand aside; with Gun Bonsai VR
+  but no TacticalRig the upgrades can't exist, so the switches work as without it.
 - **RSQ Accessibility:** Steady Hands smooths the dot's aim (the beam stays on the gun). Colour-blind mode gives the
   hands the series' colour pair and shows the target lock by shape and pulse. Photosensitive mode caps pulse rates.
   Cue Size scales the dot, glow and arc. Text Size scales the range readout. Rumble Strength 0 silences the toggle

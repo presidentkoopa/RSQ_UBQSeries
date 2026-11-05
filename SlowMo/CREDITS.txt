@@ -14,8 +14,11 @@ WHAT THIS PK3 SHIPS, AND WHOSE IT IS
   Generated for this pack
       The round's placeholder sprite (sprites/rsqsm/RSQRA0.png).
   coldcite (Top HP Bars 1.04, 2017: "Feel free to use this in your mods. You don't have to ask my permission!")
-      The SlowMo gauge (graphics/RSQSMGE, RSQSMGF) is his style-A health bar stood on end, the fill recoloured
-      cyan pixel by pixel (TopHPBars/tools/gen_gauges.py in the series repo).
+      The SlowMo gauge (graphics/RSQSMGE empty, RSQSMGF full, RSQSMGW the fill in white that the HUD tints) is his
+      style-A health bar stood on end, the fill recoloured pixel by pixel (VisualRewards/tools/gen_gauges.py in the
+      series repo).
+      The Real-Time Countdown bar (graphics/RSQSMHE empty, RSQSMHW the fill in white that the HUD tints) is the same
+      style-A bar left lying as he drew it (SlowMo/tools/gen_cdbar.py in the series repo).
   id Software (Doom), played by name from the IWAD, NOT shipped
       The clock's cues: DSGETPOW (slowing), DSPSTOP (back to speed), DSITEMUP (meter full),
       DSNOWAY (not enough adrenaline). See SNDINFO.txt.
