@@ -75,7 +75,7 @@ class RSQDG_RSMenu : OptionMenu
 	}
 
 	// The series' order: the front page each mod adds, and its group (a blank line between groups). The owner's
-	// order by group (MENU_PASS_BRIEF.md, 11-04 18:32): Body (Tactical Rig, Accessibility; Gestures folded into Accessibility 11-05), Hands (Saber,
+	// order by group (MENU_PASS_BRIEF.md, 11-04 18:32): Body (Tactical Rig, Gestures, Accessibility), Hands (Saber,
 	// ShieldSaw, Melee, Whip, Grenade, FnF), Reach (Grapple, Distance Grab, Laser Sight), Game (SlowMo, Score,
 	// Miniboss, VisualRewards, Gun Cards, Wheel, Glow In The Dark, Gun Bonsai VR). Page names from each mod's
 	// MENUDEF: RSQ_MeleeOptions is RSQ Gun Bonsai VR's page (its name predates RSQ Melee); RSQ Melee's is
@@ -83,14 +83,14 @@ class RSQDG_RSMenu : OptionMenu
 	static int Rank(OptionMenuItem it, out int grp)
 	{
 		static const Name PAGES[] = {
-			'RSQTR_Options', 'RSQA_Options',
+			'RSQTR_Options', 'RSQG_Options', 'RSQA_Options',
 			'UBQS_Options', 'SSQ_Options', 'RSQML_Options', 'RSQWP_Options', 'RSQGN_Options', 'RSQFF_Options',
 			'RSQGR_Options', 'RSQDG_Options', 'RSQLS_Options',
 			'RSQSM_Options', 'RSQSC_Options', 'RSQMB_Options', 'RSQTHP_Options', 'RSQGC_Options', 'wr_Options',
 			'RSQGD_Options', 'RSQ_MeleeOptions'
 		};
 		static const int GROUPS[] = {
-			0, 0,
+			0, 0, 0,
 			1, 1, 1, 1, 1, 1,
 			2, 2, 2,
 			3, 3, 3, 3, 3, 3,

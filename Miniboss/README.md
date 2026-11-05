@@ -202,8 +202,9 @@ Then the set piece itself:
 - **RSQ VisualRewards**: HP bars mark the miniboss and its thralls (the crown carries one pip per Bossfight tier, none at tier 0 and 4 at tier 4); Kill Rewards treat it as a boss, a Bossfight's x3 more.
 - **RSQ Grapple, RSQ Whip, RSQ Melee**: refuse to yank or headlock it (switches above).
 - **RSQ ShieldSaw and RSQ Gun Bonsai VR**: read its true legendary health when it was made legendary here.
-- **RSQ Tactical Rig**: its optional "watch check + Use moves the gun" also reads Use at the watch check; with both on, a
-  call-in press also moves the gun.
+- **RSQ Tactical Rig**: its optional "watch check + Use moves the gun" uses the same press. While a Bossfight is ready to
+  call (the meter full, Call It In on), the press calls it in and the gun stays where it is; the rest of the time the press
+  moves the gun as before.
 - **LegenDoom Lite 4.2, LegenDoom 3.0 and Champions**: see Features. All optional and found by name; with LegenDoom 3.0 under
   BD22 VR, load the LDL x BD22 VR patch after it (rig only, not headset-confirmed).
 - **Brutal Doom, XMVE**: a Bossfight brings the map's own (replaced) types. Brutal Doom's gore and props are never enraged.

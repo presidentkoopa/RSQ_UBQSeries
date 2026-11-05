@@ -35,6 +35,10 @@
 //   bossfights    1 when Bossfights are on (rsqmb_enabled)
 //   meter         the Bossfight meter, permille (objectArg the player; none: the console player's), -1 none yet
 //   meter.ready   1 while it is full and waiting
+//   callin        1 while the watch check + Use would call this player's Bossfight in (objectArg the player; none: the
+//                 console player's): Bossfights on, Call It In on, the meter full and not yet called. THE PRESS IS THE
+//                 CALL-IN'S then (owner 11-05: "Calling a Bossfight must never also move the gun"): RSQ Tactical Rig's
+//                 watch-check gun move asks this and leaves that Use press alone while it is 1
 //   meter.bottom  (ui) the screen pixel row just under the meter's slot while it is shown (RSQ SlowMo's countdown bar
 //                 and RSQ Score's combo rows go below it), -1 when it is off
 // GetObject("boss", "", 0, 0, thrall) -> the thrall's miniboss; ("boss", "", n) -> the n-th miniboss.
@@ -92,12 +96,13 @@ class RSQMB_Service : Service
 		}
 		if (request ~== "tier") return (b && b.called) ? b.tier : -1;
 		if (request ~== "bossfights") return RSQMB_Handler.BfOn() ? 1 : 0;
-		if (request ~== "meter" || request ~== "meter.ready")
+		if (request ~== "meter" || request ~== "meter.ready" || request ~== "callin")
 		{
 			Actor p = a;
 			if (!p) p = players[consoleplayer].mo;
 			let m = p ? RSQMB_Meter(p.FindInventory("RSQMB_Meter")) : null;
 			if (request ~== "meter.ready") return (m && m.ready) ? 1 : 0;
+			if (request ~== "callin") return (m && m.ready && !m.called && RSQMB_Handler.BfOn() && RSQMB_Handler.CI('rsqmb_bf_callin', 1)) ? 1 : 0;
 			return m ? int(m.fill) : -1;
 		}
 		if (request ~== "bossfor")

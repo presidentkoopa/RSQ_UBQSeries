@@ -1028,7 +1028,8 @@ class RSQTR_Rig : EventHandler
 	// The holsters' rules: sabers, the ShieldSaw, the cigarette and Zippo, fists / the empty hands and Brutal
 	// Doom's off-hand dual copies (RSQ_Off_*) never move, and a hand holding one blocks the move; Brutal Doom's
 	// Dual (DualPistols ...) stays on BD's own key. A hand inside a holster (or the keyring in edit mode) keeps
-	// Use for the holster: no move while either hand is in one.
+	// Use for the holster: no move while either hand is in one. A Bossfight ready to call (RSQ Miniboss) keeps Use for its
+	// call-in: no move while it would take the press (BossfightCallReady).
 	// Not into the off hand while the engine's two-hand latch is on (WF_TWOHANDSTABILIZED: an off-hand weapon
 	// raised then arrives invisible, apply/07_WHEEL.md 4; TickPairs' note).
 	const WATCH_GRACE = 8;                   // tics after the watch check lets go that a Use press still counts (a thumb on a button can tip the wrist)
@@ -1044,6 +1045,15 @@ class RSQTR_Rig : EventHandler
 		while (s = it.Next()) { int g = s.GetInt("inspect", "", h, 0, pmo); if (g >= 0) return g; }
 		let own = RSQTR_GCopy.Get();
 		return own ? own.Inspect(pmo.PlayerNumber(), h) : -1;
+	}
+
+	// RSQ Miniboss's call-in would take a watch check + Use press now (RSQMB_Service "callin", by name; 0 without Miniboss)
+	static bool BossfightCallReady(PlayerPawn pmo)
+	{
+		let it = ServiceIterator.Find("RSQMB_Service");
+		Service s;
+		while (s = it.Next()) if (s.GetInt("callin", "", 0, 0, pmo) == 1) return true;
+		return false;
 	}
 
 	// What a hand holds, for the move: 0 empty (its empty-hand weapon or nothing), 1 a gun that may move, 2 anything else.
@@ -1094,6 +1104,16 @@ class RSQTR_Rig : EventHandler
 			if (watchTic[k] > 0 && ago >= 0 && ago <= WATCH_GRACE) h = k;
 		}
 		if (h < 0) return;
+		// A BOSSFIGHT READY TO CALL TAKES THE PRESS (owner 11-05: "Calling a Bossfight must never also move the gun"): RSQ
+		// Miniboss calls a full meter's Bossfight in on the same watch check + Use. While its call-in would take this press
+		// (RSQMB_Service "callin", by name: the meter full, not yet called, Call It In on) the press is the call-in's and the
+		// gun stays; otherwise (no Miniboss, the meter not full) the press is ours as before.
+		if (BossfightCallReady(pmo))
+		{
+			if (Flag("rsqtr_messages", p, false)) Console.Printf("T_RIG watch move hand %d t%d: skipped, the press calls the Bossfight in (RSQ Miniboss)", h, level.maptime);
+			watchTic[0] = 0; watchTic[1] = 0;
+			return;
+		}
 		if (!CanWatchMove(pmo, h))
 		{
 			RSQTR_Buzzer.Start(pmo, h, 0.12, 2);
