@@ -18,3 +18,4 @@ version "4.14"
 #include "zscript/rsqwp/whip.zs"
 #include "zscript/rsqwp/swing.zs"
 #include "zscript/rsqwp/weapon.zs"
+#include "zscript/rsqwp/hip.zs"       // Show Whip without RSQ Tactical Rig: the whip at the main hand's hip (the Rig's spot, copied)
