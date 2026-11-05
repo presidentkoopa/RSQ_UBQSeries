@@ -11,5 +11,4 @@ version "4.14"
 #include "zscript/rsqsm/round.zs"
 #include "zscript/rsqsm/body.zs"
 #include "zscript/rsqsm/smooth.zs"
-#include "zscript/rsqsm/gauge.zs"   // the SlowMo gauge: coldcite's HP bar stood on end (2026-11-02)
-#include "zscript/rsqsm/countdown.zs"   // the Real-Time Countdown bar: forced slow motion's time left (2026-11-03)
+#include "zscript/rsqsm/countdown.zs"   // the countdown bar: every slow motion's real time left (2026-11-03; all slow motion 11-05)

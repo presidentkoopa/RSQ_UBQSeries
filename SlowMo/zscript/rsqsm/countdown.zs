@@ -1,13 +1,14 @@
-// THE REAL-TIME COUNTDOWN BAR (owner, 2026-11-03 19:06: "another UI bar, like the two you designed. This one would live
-// below the score bar but above where the combos appear. Horizontal, and count down whenever we slow time outside of player
-// choice -- this would help the player understand when they will be back in real time. Green, with the standard
-// Accessibility options. Animated with life like the other two bars.")
+// THE COUNTDOWN BAR (owner, 2026-11-03 19:06: "another UI bar ... Horizontal, and count down whenever we slow time outside
+// of player choice"; 2026-11-05 03:55: "remove both sidebars, use our new slowdown timer bar for all slowmo, when player
+// triggers it, it starts full, and drains for however long the player has set it to").
 //
-// WHEN: only while a slow NOT of the player's own choosing runs (clock.zs OwnCat / CountdownTick: his key, wrist cross,
-// burst, Wheel, Accessibility button and shootdodge are his; a mod's pulse -- a kill moment, the miniboss window, the
-// cigarette, Gun Bonsai VR, Score, the named door -- and close-call / reload are forced). It holds the REAL time left until
-// the world is at full speed (the hold, then the ease out), empties evenly to zero (level.maptime is never slowed, and the
-// frame's FracTic makes it smooth), then fades. A pulse that pushes the end later refills it smoothly, with a glint.
+// WHEN: EVERY slow motion, from any source (clock.zs CountdownStart / CountdownTick): his key, the wrist cross, its burst,
+// the Wheel, the Accessibility button, the shootdodge, and every pulse (a kill moment or shove, the cigarette, the
+// Bossfight landing, Score, Gun Bonsai VR, close-call, reload, any mod through rsm_pulse or the named door). It starts
+// full and holds the REAL time left until the world is at full speed (the hold, then the ease out), empties evenly to zero
+// (level.maptime is never slowed, and the frame's FracTic makes it smooth), then fades. A slow that starts or pushes the end
+// later refills it to the new time left, with a glint. A held slow with no end of its own (the key, the Wheel, a dodge in
+// the air) drains the adrenaline meter's time with Adrenaline on, and sits full until let go with it off.
 // WHERE: centred under RSQ Score's bar and above its combo rows, read by name (RS_ScoreService "hud.cx" /
 // "hud.bar.bottom"; Score moves its rows below this slot, asking "countdown.bottom" back). Without Score, the spot Score's
 // defaults would put its bar on. Kept inside the series' safe area (rsq_ui_inset).
@@ -20,7 +21,7 @@
 // fill's end breathes, a refill glints. ACCESSIBILITY (RSQ_Accessibility, by name): the colour-blind palette's "have"
 // colour replaces the hue; Photosensitive Mode drops the glint and holds the edge still (the band stays, dimmer).
 // VR: every piece is a quad cropped from the SOURCE (DTA_SrcX / DTA_SrcWidth + DTA_DestWidthF) or a thick line: no clip
-// rectangle, whose scissor misses the projected HUD in VR (gauge.zs Slab, commit ff21977ce).
+// rectangle, whose scissor misses the projected HUD in VR (the old side gauge's Slab, commit ff21977ce).
 class RSQSM_Countdown : StaticEventHandler
 {
 	const FADE_IN = 5.0;      // tics
@@ -187,7 +188,7 @@ class RSQSM_Countdown : StaticEventHandler
 		[x, y, w, h] = Rect();
 		Color mid = BarColor(clock.cdStartTic);
 		Color lo = Color(255, int(mid.r * 0.30), int(mid.g * 0.30), int(mid.b * 0.30));
-		Color hi = RSQSM_GaugeLife.Mix(mid, Color(255, 255, 255, 255), 0.6);
+		Color hi = RSQSM_BarLife.Mix(mid, Color(255, 255, 255, 255), 0.6);
 		bool anim = UCv("rsqsm_cdbar_anim", 1) != 0;
 		bool photo = RSQSM_A11y.Photo();
 		double glint = 0;
@@ -236,7 +237,7 @@ class RSQSM_Countdown : StaticEventHandler
 			double s0 = x + w * double(i) / SLICES, s1 = x + w * double(i + 1) / SLICES;
 			if (s0 >= right) break;
 			double mid01 = (i + 0.5) / SLICES;
-			Slab(tw, x, y, w, h, int(s0), int(ceil(min(right, s1))), RSQSM_GaugeLife.ByLevel(lo, mid, hi, min(mid01, frac)), alpha, false);
+			Slab(tw, x, y, w, h, int(s0), int(ceil(min(right, s1))), RSQSM_BarLife.ByLevel(lo, mid, hi, min(mid01, frac)), alpha, false);
 		}
 		if (glint > 0)
 			Slab(tw, x, y, w, h, x, right, hi, 0.9 * glint * alpha, true);
@@ -252,4 +253,15 @@ class RSQSM_Countdown : StaticEventHandler
 		double glow = photo ? 0.8 : 0.55 + 0.45 * sin(t * 12.0);
 		Screen.DrawThickLine(int(right), int(y), int(right), int(y + h), max(1.0, w / 90.0), hi, int(255 * glow * alpha));
 	}
+}
+
+// THE FILL'S COLOUR STEPS (kept from the removed side gauge, gauge.zs, 11-05): lo at empty, mid at half, hi at full
+class RSQSM_BarLife ui
+{
+	static Color Mix(Color a, Color b, double k)
+	{
+		k = clamp(k, 0.0, 1.0);
+		return Color(255, int(a.r + (b.r - a.r) * k), int(a.g + (b.g - a.g) * k), int(a.b + (b.b - a.b) * k));
+	}
+	static Color ByLevel(Color lo, Color mid, Color hi, double f) { return f < 0.5 ? Mix(lo, mid, f * 2.0) : Mix(mid, hi, (f - 0.5) * 2.0); }
 }

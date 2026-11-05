@@ -861,7 +861,7 @@ error. Not provable headless: how they sound (the gate runs with sound off).
 vertically"):** `TopHPBars/tools/gen_gauges.py` stands coldcite's style-A bar on end (empty + a recoloured full fill
 per gauge). SlowMo (`gauge.zs`, `RSQSM_Gauge`): the adrenaline meter in cyan when Adrenaline is on (dim below
 Adrenaline to Start, a white tick at that line, pulsing while it is spent), and with Adrenaline off a gauge only while
-the world is slowed, filled by how slow; rows SlowMo Gauge (on), Gauge Side, Gauge Size. Gun Bonsai VR
+the world is slowed, filled by how slow; rows SlowMo Gauge (on), Gauge Side, Gauge Size. (SlowMo's gauge REMOVED 11-05, owner 03:55 "remove both sidebars, use our new slowdown timer bar for all slowmo"; the Berserk gauge stays, 03:56.) Gun Bonsai VR
 (`rsq/ui/gauges.zs`, `RSQUI_Gauges`): the Berserk Meter in red, one per glove that has it, on that hand's side, set in
 from the edge; it drains with the time left while the earned Berserk runs; row Berserk Meter Gauge (on). **Headless
 11-02:** a real screenshot from the hidden engine shows both: SlowMo's at 60 with its tick at 25, the Berserk Meter at

@@ -7,15 +7,16 @@ right hud bars you made earlier, all four of these bars should be visually consi
 style-A bar (112 x 11, his block texture, "Feel free to use this in your mods") with ONE rim (his) and ONE well (a dark,
 half-clear inside, so a fill reads on a bright wall and an empty bar still reads as a bar), stood on end or left lying.
 
-VERTICAL GAUGES (the left and right ones; the fill grows from the bottom):
+VERTICAL GAUGES (the fill grows from the bottom):
     <NAME>E.png   the empty gauge: his empty bar (HP_A_00), its rim and the shared well, rotated
     <NAME>F.png   the full gauge: his full bar (HP_A_99), the fill recoloured pixel by pixel (each pixel keeps its
                   brightness against the fill's mean, so his blocks stay; only the hue changes), rotated
     <NAME>W.png   the full gauge in white (the same blocks, brightness kept): the HUD tints it by the level, so the colour
                   moves as it fills, and draws its light (the moving band, the glint) with it
 
-    RSQSMG*  ->  SlowMo/graphics/             SlowMo's adrenaline meter: electric cyan
     RSQGBG*  ->  GunBonsaiOffhandVR/graphics/ Gun Bonsai VR's Berserk Meter: blood red
+    (SlowMo's vertical gauge RSQSMG* is gone: owner 11-05 03:55 "remove both sidebars, use our new slowdown timer bar
+    for all slowmo"; 03:56 "berserk can stay")
 
 HORIZONTAL BARS (left lying as he drew it; the fill grows from the left), the HUD tints the white one:
     <NAME>E.png   the empty bar: his rim and the shared well
@@ -44,7 +45,6 @@ RIM = (50, 50, 50)
 WELL = (8, 10, 12, 120)     # the one well inside every bar's rim (11-05: all four bars alike)
 
 GAUGES = [
-    ('RSQSMG', os.path.join(SERIES, 'SlowMo', 'graphics'), (60, 220, 255)),
     ('RSQGBG', os.path.join(SERIES, 'GunBonsaiOffhandVR', 'graphics'), (230, 40, 40)),
 ]
 HBARS = [

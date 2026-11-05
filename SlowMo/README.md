@@ -56,8 +56,7 @@ dodgeable speed. Your shield and saber stop the rounds like any other projectile
 - With too little in the meter you get a short buzz and the player "oof".
 
 **On the HUD**
-- **SlowMo Gauge.** A vertical bar at the side of your view. With Adrenaline on it shows the meter, with a tick at the start line. With Adrenaline off it shows only while time is slowed, filled by how slow (full is your World Speed, or Gun Bonsai VR's Deeper speed once learned, and the shootdodge's speed during a dodge). It's animated: a band of light rises through it, the top edge breathes and a full gauge glints. In RSQ Accessibility's Photosensitive Mode: no glint, the edge held still, the band dimmer.
-- **Real-Time Countdown Bar.** A horizontal bar, green by default, that appears whenever time is slowed by something you didn't choose: a kill moment, the cigarette, a parry, Miniboss's window, a close call. It counts down the real seconds until the world is back at full speed, including the ease out. It hits zero just as time catches up. If something pushes the slow motion longer, the bar refills smoothly with a glint. It sits under RSQ Score's bar (under RSQ Miniboss's Bossfight meter when that is loaded) and above Score's bonus list, smaller than Score and centred under its bar, never wider than it, with a pixel-art hourglass at its left. While Miniboss's meter shows, the bar takes the meter's size and place: the hourglass is the skull's size and straight under it, and the two bars start and end together whatever Meter Size and Bar Size say. Without Score, it goes where Score's bar would be. It is the same block bar as the SlowMo gauge and Gun Bonsai VR's Berserk gauges (same rim, dark well and thickness), and it stays clear of those side gauges.
+- **Countdown Bar.** A horizontal bar, green by default, for every slow motion, whatever started it: your key, wrist cross, burst, Wheel or shootdodge, a kill moment or shove, the cigarette, a parry, Miniboss's Bossfight landing or window, a close call, any other mod. It starts full and drains over that slow motion's real seconds, reaching zero just as time catches up (the ease out included). A burst lasts its 4 s (longer with Gun Bonsai VR's Longer); another mod's slow motion lasts what it asked for. Held on with Adrenaline on, it shows the time the meter has left, so it is also your adrenaline readout while held; held on with Adrenaline off there is no end, so it sits full until you let go. A new or longer slow motion refills it smoothly with a glint. It sits under RSQ Score's bar (under RSQ Miniboss's Bossfight meter when that is loaded), smaller than Score and centred under it, with a pixel-art hourglass at its left; while Miniboss's meter shows, the two bars line up. Without Score, it goes where Score's bar would be.
 - **Color Drain** (optional, off by default). Colours fade out while time is slowed.
 
 ## How To Play
@@ -90,7 +89,7 @@ Options → Radiant Silvergun Options → **RSQ SlowMo**. One page (the Triggers
 debug log are on **Test and Debug**; **Reset All** at the foot resets both. With RSQ Gun Bonsai VR loaded the page's
 top line reads "GunBonsaiOVR detected. Mod features unlocked via upgrades." and Lean Out of Bullets stays greyed until
 the Lean Dodge node is learned (the row still turns the lean off). A row is greyed while the switch it hangs from is
-off (Keep Adrenaline, the gauge and bar rows, Wrist Cross Bursts, Burst).
+off (Keep Adrenaline, the bar rows, Wrist Cross Bursts, Burst).
 
 | Row | Default | What it does |
 |---|---|---|
@@ -111,10 +110,7 @@ off (Keep Adrenaline, the gauge and bar rows, Wrist Cross Bursts, Burst).
 | Colour Drain | Off | Colours fade while time is slowed. |
 | Shot Trails | On | Your shots leave a fading trail in slow motion. |
 | Missile Wakes | On | Slowed missiles leave a faint wake. |
-| SlowMo Gauge | On | The vertical gauge on the HUD. |
-| Gauge Side | Left | Left or right side of your view. |
-| Gauge Animation | On | The gauge's rising light, breathing edge and glint. |
-| Countdown Bar | On | The bar that counts down to real time during slow motion you didn't start. |
+| Countdown Bar | On | The bar that counts down every slow motion to real time. |
 | Bar Animation | On | The bar's sweeping band, breathing edge and refill glint. |
 | Bar Colour | Green | 17 colours, or Random (a new one each time it appears). |
 | **Your Triggers** (a switch only stops a start, never a stop) | | |
@@ -166,7 +162,6 @@ off (Keep Adrenaline, the gauge and bar rows, Wrist Cross Bursts, Burst).
 | Smooth Range | 1024 | Map units from you that walkers are smoothed. |
 | Smooth Walkers | 12 | How many of the nearest walkers are smoothed. |
 | Colour Drain Amount | 0.35 | How much colour goes at full depth. |
-| Gauge Size | 1.5 | The gauge's height. |
 | Bar Size | 1.5 | Size of the countdown bar (never wider than Score's bar). While RSQ Miniboss's meter shows, the bar matches the meter's size instead. |
 | Debug Log | Off | Print every trigger to the console: its name, when, and what happened. |
 
@@ -205,7 +200,7 @@ RSQ SlowMo runs on its own. It finds the other mods by name at run time and link
   standing down for another slow-motion mod); the round's tracer mesh and the near-miss whiz and crack
   recordings, from his RS_Ballistics library.
 - **coldcite** (Top HP Bars 1.04, 2017: "Feel free to use this in your mods. You don't have to ask my
-  permission!"): the SlowMo gauge and the Real-Time Countdown bar are built from his health-bar art,
+  permission!"): the countdown bar is built from his health-bar art,
   recoloured.
 - **id Software** (Doom): the clock's cue sounds (DSGETPOW, DSPSTOP, DSITEMUP, DSNOWAY), played by name from
   your IWAD. They are not shipped.

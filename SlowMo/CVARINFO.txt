@@ -40,13 +40,9 @@ server bool  rsqsm_smooth       = true;  // 27: nearby walkers move a little eve
 server float rsqsm_smooth_range = 1024;  // map units from a player
 server int   rsqsm_smooth_max   = 12;    // the nearest this many walkers
 user bool    rsqsm_drain        = false; // 28: colours drain while time is slowed (a post-process pass)
-user bool    rsqsm_gauge        = true;  // the SlowMo gauge on the HUD: the adrenaline meter, or how slow while it runs
-user int     rsqsm_gauge_side   = 0;     // 0 left, 1 right
-user float   rsqsm_gauge_size   = 1.5;   // x a third of the screen's height (1.5 from 11-03: 1.0 read too small in the headset)
-user bool    rsqsm_gauge_anim   = true;  // the gauge's light: a band rising through the fill, a breathing edge, a glint when full
 user float   rsqsm_drain_amt    = 0.35;  // how much colour goes at full depth, 0..1
-// the Real-Time Countdown bar (owner 2026-11-03 19:06; countdown.zs): while time is slowed by something other than your own
-// slow motion, a green bar under RSQ Score's bar counts down the real time until full speed
+// the countdown bar (owner 2026-11-03 19:06; 11-05 03:55 "use our new slowdown timer bar for all slowmo"; countdown.zs):
+// every slow motion, whatever started it: a green bar under RSQ Score's bar starts full and counts down the real time left
 user bool    rsqsm_cdbar        = true;  // Real-Time Countdown Bar
 user bool    rsqsm_cdbar_anim   = true;  // Bar Animation: the sweeping band, the breathing edge, the refill glint
 user float   rsqsm_cdbar_size   = 1.5;   // Bar Size: x 0.8 of RSQ Score's bar thickness / 1.5, never wider than Score's bar

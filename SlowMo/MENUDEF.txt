@@ -49,9 +49,6 @@ OptionMenu "RSQSM_Options"
 	Option "Colour Drain", "rsqsm_drain", "OnOff"
 	Option "Shot Trails", "rsqsm_trails", "OnOff"
 	Option "Missile Wakes", "rsqsm_wakes", "OnOff"
-	Option "SlowMo Gauge", "rsqsm_gauge", "OnOff"
-	Option "Gauge Side", "rsqsm_gauge_side", "RSQSM_GaugeSides", "rsqsm_gauge"
-	Option "Gauge Animation", "rsqsm_gauge_anim", "OnOff", "rsqsm_gauge"
 	Option "Countdown Bar", "rsqsm_cdbar", "OnOff"
 	Option "Bar Animation", "rsqsm_cdbar_anim", "OnOff", "rsqsm_cdbar"
 	Option "Bar Colour", "rsqsm_cdbar_color", "RSQSM_CdColors", "rsqsm_cdbar"
@@ -119,16 +116,9 @@ OptionMenu "RSQSM_Test"
 	StaticText " "
 	StaticText "Look", 1
 	Slider "Colour Drain Amount", "rsqsm_drain_amt", 0.05, 1.0, 0.05, 2
-	Slider "Gauge Size", "rsqsm_gauge_size", 0.5, 2.5, 0.1, 1
 	Slider "Bar Size", "rsqsm_cdbar_size", 0.5, 2.5, 0.1, 1
 	StaticText " "
 	Option "Debug Log", "rsqsm_debug", "OnOff"
-}
-
-OptionValue "RSQSM_GaugeSides"
-{
-	0, "Left"
-	1, "Right"
 }
 
 // the Real-Time Countdown bar's colours: the palette the series' new colour rows share (VisualRewards RSQTHP_Col)
