@@ -87,9 +87,10 @@ the catch.
 | Lift a door | Hand on the door, then grip, Use or palm out, and lift | Ordinary manual doors, from the front. |
 | Flip a switch | Palm out against the switch | |
 
-**Key binds** (Options → Radiant Silvergun Options → RSQ Distance Grab → Controls, or Customize Controls → RSQ
-Distance Grab): Grab Main Hand, Grab Off Hand. Desktop defaults G and H; no controller defaults. These binds only
-drive the grab when Button Fallback is on (off by default): press to lock or catch, release to pull or let go.
+**Key binds** (Options → Radiant Silvergun Options → RSQ Distance Grab, Controls: Main Hand Key, Off Hand Key; or
+Customize Controls → RSQ Distance Grab). Desktop defaults G and H; no controller defaults. These binds only drive the
+grab when Grab Keys is on (off by default; the key rows are greyed until then): press to lock or catch, release to
+pull or let go.
 RSQ Grapple and RSQ Whip also use them to take hold of a rope.
 
 Left-handed play works: the engine's left-handed scheme swaps the hands, and the palm test reads both wrists the
@@ -97,100 +98,123 @@ same way.
 
 ## Menu
 
-Options → Radiant Silvergun Options → RSQ Distance Grab
+Options → Radiant Silvergun Options → RSQ Distance Grab. One page (the old What You Can Grab, Beam and Feel and
+Controls pages are on it); every raw number, the grip key codes and the logs are on **Test and Debug**; **Reset All**
+at the foot resets both. Distance Grab has no Gun Bonsai VR gating. A row is greyed while the switch it hangs from is
+off (the door rows under Lift Doors, the rumbles under Haptics, the two key rows under Grab Keys).
 
 | Row | Default | What it does |
 |---|---|---|
 | Distance Grab | On | The whole mechanic. |
-| Reach | Standard | Short, Standard (512 units, about 15 m), Long, Room. |
-| Aim | Standard | Cone width: Precise, Standard (12°), Generous. |
-| Gesture | Standard | Relaxed, Standard or Strict palm and flick. Strict adds a short lock delay. |
+| Reach | 512 | How far you can pull from, map units (about 15 m). |
+| Aim Width | 12 | The cone's half-angle in degrees: how precisely you must point. |
 | Not With Melee | On | A melee hand (weapon, gloves, a punch just thrown, a lit saber) does not reach. |
-| Flight Path | WorldHands | Steer, Lob or WorldHands. |
-| Pull Speed | Standard | Gentle, Standard or Snappy. |
-| Throw Strength | Standard | Soft, Standard or Strong. |
-| Heavy Slows You | On | Carrying heavy things slows you. |
-| Beam | On | The beam from your palm. |
-| Haptics | On | Controller feedback. |
-| Lift Doors | On | Doors can be lifted by hand. |
-
-**What You Can Grab**
-
-| Row | Default | What it does |
-|---|---|---|
-| Barrels | On | |
-| Weapons | On | |
-| Powerups | On | Spheres, berserk, suit, map. |
-| Corpses | Off | |
-| Ammo | On | |
-| Health | On | |
-| Armor | On | |
-| Keys | On | |
-| +1 Bonuses | On | Health and armor bonuses. |
-| Walk-Up Grab | On | Grip with the palm on a thing takes it. |
-| Walk-Up Reach (m) | 0.30 | How close the palm must be. |
 | Line of Sight | On | No grabbing through walls. |
-| Use Pickups on Catch | On | Off: everything caught is carried instead. |
-| Tip With Wrist | On | A held thing tips as you turn your wrist. |
+| Palm Gate | On | The hand reaches only with the palm turned out. Off: whatever its pose. |
+| **Pull** | | |
+| Flight Path | Arc | Steer, Lob or Arc (WorldHands' path). |
 | Pull Gravity | Off | Lets a Steer pull sag. |
 | Duck Under Doors | On | A pull dips under a lower ceiling ahead. |
+| Pull Trail | On | A faint trail behind a pulled thing. |
+| Use Pickups on Catch | On | Off: everything caught is carried instead. |
+| **Carry and Throw** | | |
+| Throw Strength | 1.00 | Scales how hard a release throws. |
+| Heavy Slows You | On | Carrying heavy things slows you. |
+| Tip With Wrist | On | A held thing tips as you turn your wrist. |
+| Hit With What You Hold | On | A held thing swung into a monster hits it. |
+| Body Shield | On | A held corpse or barrel stops shots and fireballs. |
+| Hit-Stop | Off | A monster hit by a thrown thing freezes for a beat: Off, Tap, Beat, Heavy. |
+| Sounds | On | Whoosh on a throw, thud on a catch and a landing. |
+| Landing Dust | On | A hard landing kicks up dust. |
+| **What You Can Grab** | | |
+| Barrels, Weapons, Powerups, Ammo, Health, Armor, Keys, +1 Bonuses | On | Each kind its own switch. |
+| Corpses | Off | |
+| Walk-Up Grab | On | Grip with the palm on a thing takes it. |
+| **Doors and Switches** | | |
+| Lift Doors | On | Doors can be lifted by hand. |
 | Grip Takes Door | On | The grip takes hold of a door. |
 | Use Takes Door | On | Use takes hold of a door. |
 | Palm Takes Door | On | A palm turned out against a door takes hold. |
 | Palm Flips Switches | On | A palm on a switch flips it. |
-
-Living monsters are never pulled.
-
-**Beam and Feel**
-
-| Row | Default | What it does |
-|---|---|---|
-| Yield to Laser Sight | Off | Hide the grab beam on a hand RSQ Laser Sight is lighting. |
-| Show When Idle | On | Draw the beam even when it finds nothing. |
+| **Beam** | | |
+| Beam | On | The beam from your palm. |
 | Dot | On | The dot where the beam lands. |
 | Reach Cone | On | The faint cone. |
+| Show When Idle | On | Draw the beam even when it finds nothing. |
+| Yield to Laser Sight | Off | Hide the grab beam on a hand RSQ Laser Sight is lighting. |
 | Target Glow | On | The target glows in its own outline. |
 | Voxel Flash | On | A voxel target flashes its colour instead. |
 | Recolour Target | Off | Tint the target itself. |
-| Approach Ping | On | A ping that speeds up as a pull closes. |
-| Rumble | On | Rumble feedback (needs the engine's quake haptics above 0). |
-| Held Back Rumble | On | Rumble when a carried thing is held back by a wall. |
 | Catch Flash | On | A green bloom at the palm on a catch. |
-| Palm Gate | On | Off: the hand reaches whatever its pose. |
-| Button Fallback | Off | The grab binds drive the grab too. |
+| **Feel** | | |
+| Haptics | On | Controller feedback. |
+| Rumble | On | Rumble feedback (needs the engine's quake haptics above 0). |
+| Approach Ping | On | A ping that speeds up as a pull closes. |
+| Held Back Rumble | On | Rumble when a carried thing is held back by a wall. |
+| **Controls** | | |
+| Grab Keys | Off | The grab keys below drive the grab too (the palm gesture always works). |
+| Main Hand Key / Off Hand Key | G / H (desktop) | The grab keys; greyed until Grab Keys is on. |
+| Test and Debug | | The page below. |
+| Reset All | | Every setting on both pages back to its default. |
 
-**Controls:** Grab Main Hand, Grab Off Hand (see Controls above).
+Living monsters are never pulled.
 
-**Tuning and Debug**
+**Test and Debug**
 
 | Row | Default | What it does |
 |---|---|---|
-| Hand Lead | 1.0 | Tics the beam is drawn ahead of the hand to hide lag. |
-| Pose Jump Cutoff | 1.0 m | A hand jump this big in one tic is ignored. |
-| Min Impact Speed | 3.0 m/s | Below this a thrown thing does not hurt. |
+| **Gesture** | | |
+| Palm Roll / Roll Tolerance | 90 / 30 | Palm-out roll and how far off still counts, degrees. |
+| Min Hand Pitch | -30 | The hand must be above this pitch to reach. |
+| Flick Strength | 5 | Wrist pitch per tic that counts as the pull flick. |
+| Lock Delay (tics) | 0 | Tics the cone must hold the same target before it locks. |
+| Two-Hand Reach (m) | 0.20 | How close to the barrel line the off hand counts as two-handing. |
+| Hand Lead (tics) | 1.0 | The beam is drawn ahead of the hand to hide lag. |
+| Pose Jump Cutoff (m) | 1.0 | A hand jump this big in one tic is ignored. |
+| Walk-Up Reach (m) | 0.30 | How close the palm must be for a walk-up grab. |
+| Main / Off Grip Key Codes | 446 / 443 436 | The raw grip key codes the walk-up grab reads. |
+| **Pull** | | |
+| Arc Speed | 22 | Metres a second; the flight time is distance over this. |
+| Arc Height | 0.25 | Arc height as a share of the distance. |
+| Arc Pull-In | 1.6 | Above 1 a pull starts slow. |
+| Shortest / Longest Flight (tics) | 6 / 40 | Limits on an Arc pull's time. |
+| Pull Smoothness | 0.6 | How softly a pull settles into the hand. |
+| Pull Spin (turns) | 1.0 | Turns about its own up across a pull. |
+| Tumble | 1.0 | End-over-end turns across a pull. |
+| Lob Height (m) | 1.0 | How high a Lob peaks. |
+| Pull Speed / Steering / Pull Strength | 12 / 40 / 10 kg | The Steer pull. |
+| Flight Width | 2 | A pulled thing's flying radius. |
+| Give Up After (tics) | 140 | A pull that cannot arrive is dropped after at least this. |
+| **Catch and Carry** | | |
+| Catch Distance / Catch Window | 24 / 4 tics | |
+| Hold Distance (m) / Hold Stiffness | 0.30 / 0.6 | The carry's spring. |
 | Max Hold Speed | 40 | Fastest a carried thing moves. |
-| Report Actions | Off | Log what the grab does. |
-| Report Refusals | Off | Log why it refused. |
-| Reset All | — | Puts every setting back to its default. |
-
-Gesture page: Reach (512), Spread (12), Palm Roll (90), Roll Tolerance (30), Min Hand Pitch (-30), Flick Strength
-(5), Lock Delay (0), Two-Hand Reach (0.20 m: how close to the barrel line the off hand counts as two-handing).
-
-Pull page: Arc Speed (22), Arc Height (0.25), Arc Pull-In (1.6), Tumble (1.0), Lob Height (1.0), Pull Speed (12),
-Steering (40), Pull Strength (10 kg), Flight Width (2), Give Up After (140 tics).
-
-Catch and Carry page: Catch Distance (24), Catch Window (4 tics), Throw Strength (1.0), Throw Boost (2.5), Throw
-Lets Go At (2.5 m/s), Stagger From (20 damage), Arm Weight (30 kg), Impact Damage (15 joules a point), Barrel
-Blast: Thrown At (4 m/s), Throw Aim Assist (12°), Hit With What You Hold (On), Swing Hits From (3 m/s), Hit-Stop
-(Off), Two-Hand Lift (2.0), Body Shield (On), Sounds (On), Hold Distance (0.30 m), Hold Stiffness (0.6), Break
-Distance (1.5 m), Half Speed Mass (120 kg), Heavy Sag (1.0), Throw Gravity (0.27), Pull Smoothness (0.6), Pull
-Spin (1.0), Throw Spin (1.0), Pull Trail (On), Landing Dust (On).
-
-Beam and Glow page: Beam Width (1.0), Beam Brightness (0.8), Dot Size (1.0), Cone Brightness (0.45), Glow
-Brightness (1.0), Pulse Period (24 tics).
-
-Haptics and Doors page: Rumble Strength (1.0), Locked Rumble (0.15), Door Commit Point (0.40), Door Lift Gain
-(2.5).
+| Break Distance (m) | 1.5 | Held back this far for half a second and you let go. |
+| Half Speed Mass (kg) | 120 | Carrying this much halves your speed. |
+| Heavy Sag | 1.0 | Heavy things hang lower. |
+| Two-Hand Lift | 2.0 | The other palm on a held thing makes it this many times lighter. |
+| **Throw** | | |
+| Throw Boost | 2.5 | A throw's speed multiplier. |
+| Swing Lets Go (m/s) | 2.5 | An arm swung past this lets go by itself (0 = only the palm). |
+| Throw Aim Assist (deg) | 12 | A throw within this of a monster bends to hit it. |
+| Throw Spin | 1.0 | How fast a thrown thing turns. |
+| Throw Gravity | 0.27 | Share of Doom's gravity a thrown thing falls at. |
+| Flutter | 0.35 | Sideways wobble of a light, fluttering thing in the air. |
+| Air Time Limit (tics) | 1400 | The air lets go of something that never lands after this. |
+| Arm Weight (kg) | 30 | The arm's mass in a throw. |
+| Impact Damage | 15 | Joules of a thrown thing per point of damage. |
+| Min Impact Speed (m/s) | 3.0 | Below this a thrown thing does not hurt. |
+| Stagger From (damage) | 20 | A hit this hard knocks a monster into pain. |
+| Barrel Blast (m/s) | 4 | A barrel thrown this fast goes off where it lands (0 never). |
+| Swing Hits From (m/s) | 3.0 | A held thing slower than this is not a hit. |
+| **Beam and Feel** | | |
+| Beam Width / Beam Brightness | 1.0 / 0.8 | |
+| Dot Size | 1.0 | |
+| Cone Brightness | 0.45 | |
+| Glow Brightness / Pulse Period | 1.0 / 24 tics | |
+| Rumble Strength / Locked Rumble | 1.0 / 0.15 | |
+| Door Commit Point / Door Lift Gain | 0.40 / 2.5 | Let go past this much open and the door finishes; door travel per hand travel. |
+| Report Actions / Report Refusals | Off | Log what the grab does / why it refused. |
 
 ## Works with
 

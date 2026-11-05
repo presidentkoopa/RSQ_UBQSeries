@@ -1,12 +1,12 @@
-// RSQ Distance Grab options, modelled on Brutal Doom Quest 2.0's options page (the owner, 10-28):
-// ONE front page of real choices (short Title Case rows, groups split by blank lines, choices
-// named), sub-pages only for lists of switches, ONE Tuning and Debug page at the end that holds
-// every number. No help text; what each setting does is in CVARINFO's comments and the docs. Every
-// cvar keeps its row. Preset choices: tools/rsmenu/presets.py (Standard = today's defaults).
+// RSQ Distance Grab options (menu pass, owner 11-04): ONE page with every option, most important first, under short
+// headers (the old What You Can Grab, Beam and Feel and Controls pages folded in); ONE "Test and Debug" page with every
+// raw number (the old five tuning pages folded in under headers) and the debug logs; Reset All at the foot covers both
+// (RSQDGResetAll reads the rows). No presets, no help text. Distance Grab has no Gun Bonsai VR gating (reach.zs: the
+// grab has no tree). The grab keys are only read with Grab Keys on (0.99a bug 14): their rows are RSQDGKey rows,
+// greyed while it is off (zscript/rsqdg/menurows.zs).
 //
-// EVERY PAGE MUST BE REACHABLE: an orphaned OptionMenu compiles and loads clean and reads in a
-// headset as the feature removed. One root, added to Radiant Silvergun Options, every page linked
-// from it (tools/rsmenu/menutool.py check finds orphans).
+// EVERY PAGE MUST BE REACHABLE: an orphaned OptionMenu compiles and loads clean and reads in a headset as the feature
+// removed (tools/rsmenu/menutool.py check finds orphans).
 
 // ---- Radiant Silvergun Options (tools/rsmenu) ----------------------------------------------------
 // The series' one Options entry. Every series pk3 carries this same block with its own prefix: the
@@ -34,7 +34,7 @@ OptionValue "RSQDG_FlightMode"
 {
 	0, "Steer"
 	1, "Lob"
-	2, "WorldHands"
+	2, "Arc"
 }
 
 OptionValue "RSQDG_HitStop"
@@ -45,224 +45,149 @@ OptionValue "RSQDG_HitStop"
 	6, "Heavy (6 tics)"
 }
 
-// PRESETS -- written by tools/rsmenu/presets.py (Standard = CVARINFO defaults); edit the script, not here
-OptionString "RSQDG_P_Reach"
-{
-	"rsqdg_reach 384", "Short"
-	"rsqdg_reach 512.0", "Standard"
-	"rsqdg_reach 1024", "Long"
-	"rsqdg_reach 2048", "Room"
-}
-OptionString "RSQDG_P_Aim"
-{
-	"rsqdg_spread 6", "Precise"
-	"rsqdg_spread 12.0", "Standard"
-	"rsqdg_spread 20", "Generous"
-}
-OptionString "RSQDG_P_Gesture"
-{
-	"rsqdg_palm_tol 50 rsqdg_flick_deg 3 rsqdg_lock_dwell 0", "Relaxed"
-	"rsqdg_palm_tol 30.0 rsqdg_flick_deg 5.0 rsqdg_lock_dwell 0", "Standard"
-	"rsqdg_palm_tol 20 rsqdg_flick_deg 8 rsqdg_lock_dwell 8", "Strict"
-}
-OptionString "RSQDG_P_Pull"
-{
-	"rsqdg_flight_speed 8 rsqdg_path_speed 10", "Gentle"
-	"rsqdg_flight_speed 12.0 rsqdg_path_speed 22.0", "Standard"
-	"rsqdg_flight_speed 20 rsqdg_path_speed 24", "Snappy"
-}
-OptionString "RSQDG_P_Throw"
-{
-	"rsqdg_throw_scale 0.5", "Soft"
-	"rsqdg_throw_scale 1.0", "Standard"
-	"rsqdg_throw_scale 2", "Strong"
-}
-// END PRESETS
-
 OptionMenu "RSQDG_Options"
 {
 	Title "RSQ DISTANCE GRAB"
 	Option "Distance Grab", "rsqdg_on", "OnOff"
-	RSQDGPreset "Reach", "RSQDG_P_Reach"
-	RSQDGPreset "Aim", "RSQDG_P_Aim"
-	RSQDGPreset "Gesture", "RSQDG_P_Gesture"
+	Slider "Reach", "rsqdg_reach", 64, 2048, 32, 0
+	Slider "Aim Width", "rsqdg_spread", 2, 45, 1, 0
 	Option "Not With Melee", "rsqdg_yield", "OnOff"
+	Option "Line of Sight", "rsqdg_sight", "OnOff"
+	Option "Palm Gate", "rsqdg_palm", "OnOff"
 	StaticText " "
+	StaticText "Pull", 1
 	Option "Flight Path", "rsqdg_flight_mode", "RSQDG_FlightMode"
-	RSQDGPreset "Pull Speed", "RSQDG_P_Pull"
-	RSQDGPreset "Throw Strength", "RSQDG_P_Throw"
+	Option "Pull Gravity", "rsqdg_flight_gravity", "OnOff"
+	Option "Duck Under Doors", "rsqdg_flight_duck", "OnOff"
+	Option "Pull Trail", "rsqdg_trail", "OnOff"
+	Option "Use Pickups on Catch", "rsqdg_catch_takes", "OnOff"
+	StaticText " "
+	StaticText "Carry and Throw", 1
+	Slider "Throw Strength", "rsqdg_throw_scale", 0.25, 4.0, 0.25, 2
 	Option "Heavy Slows You", "rsqdg_burden", "OnOff"
+	Option "Tip With Wrist", "rsqdg_hold_turn", "OnOff"
+	Option "Hit With What You Hold", "rsqdg_swing", "OnOff"
+	Option "Body Shield", "rsqdg_body_shield", "OnOff"
+	Option "Hit-Stop", "rsqdg_hitstop", "RSQDG_HitStop"
+	Option "Sounds", "rsqdg_sounds", "OnOff"
+	Option "Landing Dust", "rsqdg_dust", "OnOff"
 	StaticText " "
-	Option "Beam", "rsqdg_beam", "OnOff"
-	Option "Haptics", "rsqdg_haptics", "OnOff"
-	Option "Lift Doors", "rsqdg_door", "OnOff"
-	StaticText " "
-	Submenu "What You Can Grab", "RSQDG_Targets"
-	Submenu "Beam and Feel", "RSQDG_Switches"
-	Submenu "Controls", "RSQDG_Keys"
-	StaticText " "
-	Submenu "Tuning and Debug", "RSQDG_Debug"
-}
-
-// ---- switches ------------------------------------------------------------------------------------
-OptionMenu "RSQDG_Targets"
-{
-	Title "WHAT YOU CAN GRAB"
+	StaticText "What You Can Grab", 1
 	Option "Barrels", "rsqdg_barrels", "OnOff"
 	Option "Weapons", "rsqdg_weapons", "OnOff"
 	Option "Powerups", "rsqdg_powerups", "OnOff"
-	Option "Corpses", "rsqdg_corpses", "OnOff"
 	Option "Ammo", "rsqdg_ammo", "OnOff"
 	Option "Health", "rsqdg_health", "OnOff"
 	Option "Armor", "rsqdg_armor", "OnOff"
 	Option "Keys", "rsqdg_keycards", "OnOff"
 	Option "+1 Bonuses", "rsqdg_bonuses", "OnOff"
-	StaticText " "
-	StaticText "THE GRIP UP CLOSE", 1
+	Option "Corpses", "rsqdg_corpses", "OnOff"
 	Option "Walk-Up Grab", "rsqdg_near", "OnOff"
-	Slider "Walk-Up Reach (m)", "rsqdg_near_m", 0.1, 0.6, 0.05, 2
 	StaticText " "
-	Option "Line of Sight", "rsqdg_sight", "OnOff"
-	Option "Use Pickups on Catch", "rsqdg_catch_takes", "OnOff"
-	Option "Tip With Wrist", "rsqdg_hold_turn", "OnOff"
-	Option "Pull Gravity", "rsqdg_flight_gravity", "OnOff"
-	Option "Duck Under Doors", "rsqdg_flight_duck", "OnOff"
-	StaticText " "
-	Option "Grip Takes Door", "rsqdg_door_grip", "OnOff"
-	Option "Use Takes Door", "rsqdg_door_use", "OnOff"
-	Option "Palm Takes Door", "rsqdg_door_palm", "OnOff"
+	StaticText "Doors and Switches", 1
+	Option "Lift Doors", "rsqdg_door", "OnOff"
+	Option "Grip Takes Door", "rsqdg_door_grip", "OnOff", "rsqdg_door"
+	Option "Use Takes Door", "rsqdg_door_use", "OnOff", "rsqdg_door"
+	Option "Palm Takes Door", "rsqdg_door_palm", "OnOff", "rsqdg_door"
 	Option "Palm Flips Switches", "rsqdg_palm_switch", "OnOff"
-}
-
-OptionMenu "RSQDG_Switches"
-{
-	Title "BEAM AND FEEL"
-	Option "Yield to Laser Sight", "rsqdg_ls_yield", "OnOff"
-	Option "Show When Idle", "rsqdg_laser_idle", "OnOff"
+	StaticText " "
+	StaticText "Beam", 1
+	Option "Beam", "rsqdg_beam", "OnOff"
 	Option "Dot", "rsqdg_dot", "OnOff"
 	Option "Reach Cone", "rsqdg_cone", "OnOff"
+	Option "Show When Idle", "rsqdg_laser_idle", "OnOff"
+	Option "Yield to Laser Sight", "rsqdg_ls_yield", "OnOff"
 	Option "Target Glow", "rsqdg_glow", "OnOff"
 	Option "Voxel Flash", "rsqdg_voxel_flash", "OnOff"
 	Option "Recolour Target", "rsqdg_lightup", "OnOff"
-	StaticText " "
-	Option "Approach Ping", "rsqdg_haptic_ramp", "OnOff"
-	Option "Rumble", "rsqdg_rumble", "OnOff"
-	Option "Held Back Rumble", "rsqdg_rumble_carry", "OnOff"
 	Option "Catch Flash", "rsqdg_catch_flash", "OnOff"
 	StaticText " "
-	Option "Palm Gate", "rsqdg_palm", "OnOff"
-	Option "Button Fallback", "rsqdg_button", "OnOff"
+	StaticText "Feel", 1
+	Option "Haptics", "rsqdg_haptics", "OnOff"
+	Option "Rumble", "rsqdg_rumble", "OnOff", "rsqdg_haptics"
+	Option "Approach Ping", "rsqdg_haptic_ramp", "OnOff", "rsqdg_haptics"
+	Option "Held Back Rumble", "rsqdg_rumble_carry", "OnOff", "rsqdg_haptics"
+	StaticText " "
+	StaticText "Controls", 1
+	Option "Grab Keys", "rsqdg_button", "OnOff"
+	RSQDGKey "Main Hand Key", "+rsqdg_main", "rsqdg_button"
+	RSQDGKey "Off Hand Key", "+rsqdg_off", "rsqdg_button"
+	StaticText " "
+	Submenu "Test and Debug", "RSQDG_Test"
+	RSQDGResetAll "Reset All", "Reset all RSQ Distance Grab settings?"
 }
 
-OptionMenu "RSQDG_Keys"
+// ---- Test and Debug: every raw number, the grip key codes, and the debug logs ----------------------
+OptionMenu "RSQDG_Test"
 {
-	Title "CONTROLS"
-	Control "Grab Main Hand", "+rsqdg_main"
-	Control "Grab Off Hand", "+rsqdg_off"
-}
-
-// ---- Tuning and Debug: every number ----------------------------------------------------------------
-OptionMenu "RSQDG_Debug"
-{
-	Title "TUNING AND DEBUG"
-	Submenu "Gesture", "RSQDG_Gesture"
-	Submenu "Pull", "RSQDG_Flight"
-	Submenu "Catch and Carry", "RSQDG_Catch"
-	Submenu "Beam and Glow", "RSQDG_Laser"
-	Submenu "Haptics and Doors", "RSQDG_Feel"
-	StaticText " "
-	Slider "Hand Lead", "rsqdg_lead", 0.0, 2.0, 0.1, 1
-	Slider "Pose Jump Cutoff", "rsqdg_jump_m", 0.25, 3.0, 0.25, 2
-	Slider "Min Impact Speed", "rsqdg_throw_min", 0.0, 10.0, 0.5, 1
-	Slider "Max Hold Speed", "rsqdg_hold_vmax", 10, 80, 5, 0
-	StaticText " "
-	Option "Report Actions", "rsqdg_debug", "OnOff"
-	Option "Report Refusals", "rsqdg_trace", "OnOff"
-	StaticText " "
-	SafeCommand "Reset All", "resetcvar rsqdg_on rsqdg_reach rsqdg_spread rsqdg_sight rsqdg_corpses rsqdg_barrels rsqdg_weapons rsqdg_powerups rsqdg_ammo rsqdg_health rsqdg_armor rsqdg_keycards rsqdg_bonuses rsqdg_near rsqdg_near_m rsqdg_keys_main rsqdg_keys_off rsqdg_button rsqdg_palm rsqdg_palm_roll rsqdg_palm_tol rsqdg_palm_pitch rsqdg_jump_m rsqdg_lock_dwell rsqdg_yield rsqdg_twohand_r rsqdg_lightup rsqdg_glow rsqdg_glow_a rsqdg_voxel_flash rsqdg_flash rsqdg_flick_deg rsqdg_flight_speed rsqdg_steer rsqdg_pull_kg rsqdg_flight_gravity rsqdg_flight_mode rsqdg_arc_apex rsqdg_flight_duck rsqdg_flight_radius rsqdg_flight_timeout rsqdg_catch_radius rsqdg_catch_hold rsqdg_catch_takes rsqdg_throw_scale rsqdg_throw_boost rsqdg_auto_throw rsqdg_throw_stun rsqdg_path_smooth rsqdg_spin rsqdg_throw_spin rsqdg_trail rsqdg_dust rsqdg_throw_assist rsqdg_swing rsqdg_swing_mps rsqdg_hitstop rsqdg_sounds rsqdg_two_hand rsqdg_body_shield rsqdg_arm_kg rsqdg_throw_j rsqdg_throw_min rsqdg_throw_explode rsqdg_hold_dist rsqdg_hold_k rsqdg_hold_vmax rsqdg_hold_break rsqdg_burden rsqdg_burden_kg rsqdg_beam rsqdg_ls_yield rsqdg_beam_w rsqdg_beam_a rsqdg_dot rsqdg_dot_size rsqdg_cone rsqdg_cone_a rsqdg_lead rsqdg_laser_idle rsqdg_haptics rsqdg_haptic_ramp rsqdg_rumble rsqdg_rumble_gain rsqdg_rumble_lock rsqdg_rumble_carry rsqdg_path_speed rsqdg_path_tmin rsqdg_path_tmax rsqdg_path_accel rsqdg_path_arc rsqdg_tumble rsqdg_air_gravity rsqdg_air_flutter rsqdg_air_maxtics rsqdg_hold_turn rsqdg_hold_sag rsqdg_catch_flash rsqdg_debug rsqdg_trace rsqdg_door rsqdg_door_grip rsqdg_door_use rsqdg_door_palm rsqdg_door_commit rsqdg_door_gain rsqdg_palm_switch", "Reset all RSQ Distance Grab settings?"
-}
-
-OptionMenu "RSQDG_Gesture"
-{
-	Title "GESTURE"
-	Slider "Reach", "rsqdg_reach", 64, 2048, 32, 0
-	Slider "Spread", "rsqdg_spread", 2, 45, 1, 1
-	Slider "Palm Roll", "rsqdg_palm_roll", 0, 180, 5, 1
-	Slider "Roll Tolerance", "rsqdg_palm_tol", 5, 90, 5, 1
-	Slider "Min Hand Pitch", "rsqdg_palm_pitch", -90, 60, 5, 1
+	Title "RSQ DISTANCE GRAB: TEST AND DEBUG"
+	StaticText "Gesture", 1
+	Slider "Palm Roll", "rsqdg_palm_roll", 0, 180, 5, 0
+	Slider "Roll Tolerance", "rsqdg_palm_tol", 5, 90, 5, 0
+	Slider "Min Hand Pitch", "rsqdg_palm_pitch", -90, 60, 5, 0
 	Slider "Flick Strength", "rsqdg_flick_deg", 1, 20, 0.5, 1
-	Slider "Lock Delay", "rsqdg_lock_dwell", 0, 35, 1, 0
-	Slider "Two-Hand Reach", "rsqdg_twohand_r", 0.0, 0.4, 0.05, 2
-}
-
-OptionMenu "RSQDG_Flight"
-{
-	Title "PULL"
+	Slider "Lock Delay (tics)", "rsqdg_lock_dwell", 0, 35, 1, 0
+	Slider "Two-Hand Reach (m)", "rsqdg_twohand_r", 0.0, 0.4, 0.05, 2
+	Slider "Hand Lead (tics)", "rsqdg_lead", 0.0, 2.0, 0.1, 1
+	Slider "Pose Jump Cutoff (m)", "rsqdg_jump_m", 0.25, 3.0, 0.25, 2
+	Slider "Walk-Up Reach (m)", "rsqdg_near_m", 0.1, 0.6, 0.05, 2
+	TextField "Main Grip Key Codes", "rsqdg_keys_main"
+	TextField "Off Grip Key Codes", "rsqdg_keys_off"
+	StaticText " "
+	StaticText "Pull", 1
 	Slider "Arc Speed", "rsqdg_path_speed", 4, 40, 1, 1
 	Slider "Arc Height", "rsqdg_path_arc", 0.0, 0.5, 0.05, 2
 	Slider "Arc Pull-In", "rsqdg_path_accel", 1.0, 3.0, 0.1, 1
+	Slider "Shortest Flight (tics)", "rsqdg_path_tmin", 1, 35, 1, 0
+	Slider "Longest Flight (tics)", "rsqdg_path_tmax", 10, 140, 5, 0
+	Slider "Pull Smoothness", "rsqdg_path_smooth", 0.0, 1.0, 0.05, 2
+	Slider "Pull Spin (turns)", "rsqdg_spin", 0.0, 3.0, 0.25, 2
 	Slider "Tumble", "rsqdg_tumble", -2.0, 2.0, 0.5, 1
-	StaticText " "
-	Slider "Lob Height", "rsqdg_arc_apex", 0.25, 3.0, 0.25, 2
-	StaticText " "
+	Slider "Lob Height (m)", "rsqdg_arc_apex", 0.25, 3.0, 0.25, 2
 	Slider "Pull Speed", "rsqdg_flight_speed", 2, 40, 1, 1
 	Slider "Steering", "rsqdg_steer", 5, 150, 5, 0
 	Slider "Pull Strength", "rsqdg_pull_kg", 1, 100, 1, 0
 	Slider "Flight Width", "rsqdg_flight_radius", 1, 16, 1, 0
-	Slider "Give Up After", "rsqdg_flight_timeout", 35, 350, 35, 0
-}
-
-OptionMenu "RSQDG_Catch"
-{
-	Title "CATCH AND CARRY"
+	Slider "Give Up After (tics)", "rsqdg_flight_timeout", 35, 350, 35, 0
+	StaticText " "
+	StaticText "Catch and Carry", 1
 	Slider "Catch Distance", "rsqdg_catch_radius", 8, 64, 4, 0
-	Slider "Catch Window", "rsqdg_catch_hold", 1, 16, 1, 0
-	Slider "Throw Strength", "rsqdg_throw_scale", 0.25, 4.0, 0.25, 2
-	Slider "Throw Boost", "rsqdg_throw_boost", 1.0, 5.0, 0.25, 2
-	Slider "Throw Lets Go At (m/s, 0 = palm only)", "rsqdg_auto_throw", 0.0, 6.0, 0.25, 2
-	Slider "Stagger From (damage)", "rsqdg_throw_stun", 5, 100, 5, 0
-	Slider "Arm Weight", "rsqdg_arm_kg", 5, 100, 5, 0
-	Slider "Impact Damage", "rsqdg_throw_j", 2, 60, 1, 0
-	Slider "Barrel Blast: Thrown At (m/s)", "rsqdg_throw_explode", 0, 15, 0.5, 1
-	Slider "Throw Aim Assist (deg)", "rsqdg_throw_assist", 0, 30, 1, 0
-	Option "Hit With What You Hold", "rsqdg_swing", "OnOff"
-	Slider "Swing Hits From (m/s)", "rsqdg_swing_mps", 1.0, 8.0, 0.5, 1
-	Option "Hit-Stop (thrown hits)", "rsqdg_hitstop", "RSQDG_HitStop"
-	Slider "Two-Hand Lift", "rsqdg_two_hand", 1.0, 4.0, 0.25, 2
-	Option "Body Shield (held corpse/barrel)", "rsqdg_body_shield", "OnOff"
-	Option "Sounds (whoosh, thud)", "rsqdg_sounds", "OnOff"
-	StaticText " "
-	Slider "Hold Distance", "rsqdg_hold_dist", 0.0, 1.5, 0.05, 2
+	Slider "Catch Window (tics)", "rsqdg_catch_hold", 1, 16, 1, 0
+	Slider "Hold Distance (m)", "rsqdg_hold_dist", 0.0, 1.5, 0.05, 2
 	Slider "Hold Stiffness", "rsqdg_hold_k", 0.1, 0.95, 0.05, 2
-	Slider "Break Distance", "rsqdg_hold_break", 0.0, 4.0, 0.25, 2
-	Slider "Half Speed Mass", "rsqdg_burden_kg", 20, 400, 10, 0
+	Slider "Max Hold Speed", "rsqdg_hold_vmax", 10, 80, 5, 0
+	Slider "Break Distance (m)", "rsqdg_hold_break", 0.0, 4.0, 0.25, 2
+	Slider "Half Speed Mass (kg)", "rsqdg_burden_kg", 20, 400, 10, 0
 	Slider "Heavy Sag", "rsqdg_hold_sag", 0.0, 2.0, 0.25, 2
+	Slider "Two-Hand Lift", "rsqdg_two_hand", 1.0, 4.0, 0.25, 2
 	StaticText " "
-	Slider "Throw Gravity", "rsqdg_air_gravity", 0.1, 1.0, 0.01, 2
-	Slider "Pull Smoothness", "rsqdg_path_smooth", 0.0, 1.0, 0.05, 2
-	Slider "Pull Spin (turns)", "rsqdg_spin", 0.0, 3.0, 0.25, 2
+	StaticText "Throw", 1
+	Slider "Throw Boost", "rsqdg_throw_boost", 1.0, 5.0, 0.25, 2
+	Slider "Swing Lets Go (m/s)", "rsqdg_auto_throw", 0.0, 6.0, 0.25, 2
+	Slider "Throw Aim Assist (deg)", "rsqdg_throw_assist", 0, 30, 1, 0
 	Slider "Throw Spin", "rsqdg_throw_spin", 0.0, 3.0, 0.25, 2
-	Option "Pull Trail", "rsqdg_trail", "OnOff"
-	Option "Landing Dust", "rsqdg_dust", "OnOff"
-}
-
-OptionMenu "RSQDG_Laser"
-{
-	Title "BEAM AND GLOW"
+	Slider "Throw Gravity", "rsqdg_air_gravity", 0.1, 1.0, 0.01, 2
+	Slider "Flutter", "rsqdg_air_flutter", 0.0, 2.0, 0.05, 2
+	Slider "Air Time Limit (tics)", "rsqdg_air_maxtics", 140, 4200, 70, 0
+	Slider "Arm Weight (kg)", "rsqdg_arm_kg", 5, 100, 5, 0
+	Slider "Impact Damage", "rsqdg_throw_j", 2, 60, 1, 0
+	Slider "Min Impact Speed (m/s)", "rsqdg_throw_min", 0.0, 10.0, 0.5, 1
+	Slider "Stagger From (damage)", "rsqdg_throw_stun", 5, 100, 5, 0
+	Slider "Barrel Blast (m/s)", "rsqdg_throw_explode", 0, 15, 0.5, 1
+	Slider "Swing Hits From (m/s)", "rsqdg_swing_mps", 1.0, 8.0, 0.5, 1
+	StaticText " "
+	StaticText "Beam and Feel", 1
 	Slider "Beam Width", "rsqdg_beam_w", 0.25, 4.0, 0.25, 2
 	Slider "Beam Brightness", "rsqdg_beam_a", 0.1, 1.0, 0.05, 2
 	Slider "Dot Size", "rsqdg_dot_size", 0.25, 4.0, 0.25, 2
 	Slider "Cone Brightness", "rsqdg_cone_a", 0.05, 1.0, 0.05, 2
 	Slider "Glow Brightness", "rsqdg_glow_a", 0.25, 2.0, 0.25, 2
-	Slider "Pulse Period", "rsqdg_flash", 6, 70, 2, 0
-}
-
-OptionMenu "RSQDG_Feel"
-{
-	Title "HAPTICS AND DOORS"
+	Slider "Pulse Period (tics)", "rsqdg_flash", 6, 70, 2, 0
 	Slider "Rumble Strength", "rsqdg_rumble_gain", 0.0, 2.0, 0.1, 1
 	Slider "Locked Rumble", "rsqdg_rumble_lock", 0.0, 0.6, 0.05, 2
-	StaticText " "
 	Slider "Door Commit Point", "rsqdg_door_commit", 0.1, 0.9, 0.05, 2
 	Slider "Door Lift Gain", "rsqdg_door_gain", 1.0, 5.0, 0.25, 2
+	StaticText " "
+	Option "Report Actions", "rsqdg_debug", "OnOff"
+	Option "Report Refusals", "rsqdg_trace", "OnOff"
 }
