@@ -42,29 +42,7 @@ class OptionMenuItemRSQGDProfile : OptionMenuItem
 	}
 }
 
-// A line of text about the chosen profile: 0 its note, 1 its DarkDoomZ pairing.
-class OptionMenuItemRSQGDNote : OptionMenuItemStaticText
-{
-	int mWhich;
-
-	OptionMenuItemRSQGDNote Init(int which)
-	{
-		Super.Init("", Font.CR_DARKGRAY);
-		mWhich = which;
-		return self;
-	}
-
-	override int Draw(OptionMenuDescriptor desc, int y, int indent, bool selected)
-	{
-		let c = CVar.FindCVar("rsqgd_profile");
-		int p = c ? c.GetInt() : 2;
-		mLabel = mWhich == 0 ? RSQGD_Profiles.Field(p, 14) : RSQGD_Profiles.DdzText(p);
-		if (mWhich == 1 && !CVar.FindCVar("ddz_mode")) mLabel = mLabel .. " (DarkDoomZ not loaded)";
-		return Super.Draw(desc, y, indent, selected);
-	}
-}
-
-// "Use This DarkDoomZ Pairing": sets DarkDoomZ's Mode and Preset to the chosen profile's pairing. Only when
+// "Use DarkDoomZ Pairing": sets DarkDoomZ's Mode and Preset to the chosen profile's pairing. Only when
 // DarkDoomZ is loaded (its cvars exist); DarkDoomZ applies them itself.
 class OptionMenuItemRSQGDPairing : OptionMenuItem
 {

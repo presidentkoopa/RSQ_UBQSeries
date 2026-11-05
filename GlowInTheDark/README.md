@@ -49,9 +49,9 @@ look writes nothing at all after the map starts.
 - Floors that hurt (and are not a known liquid) throb a slow red warning.
 - Optional: secret rooms shimmer gold until you find them (off by default).
 
-**Quality**
-- Quest preset: no dynamic lights at all, a modest write budget. PCVR preset: a few real lights over the largest
-  pools and on the most important items, in the Subdued style (double radius, half brightness).
+**Dynamic lights** (need the engine's dynamic lights on)
+- Off by default (Quest): no dynamic lights at all. On PC, Lights Over Pools and Lights on Items add a few real lights
+  over the largest pools and on the most important items, in the Subdued style (double radius, half brightness).
 
 **Honest limits.** The engine glows walls only: a floor or ceiling cannot glow on its own face. And the glow is per
 room, not per pixel: one colour for a sector's floor glow and one for its ceiling glow.
@@ -59,10 +59,11 @@ room, not per pixel: one colour for a sector's floor glow and one for its ceilin
 ## How To Play
 
 1. Add RSQ_GlowInTheDark.pk3 to your load order. It works in VR and flat.
-2. Open Options → Radiant Silvergun Options → RSQ Glow In The Dark. On a Quest, set Quality to Quest; on PC, PCVR.
-3. Step through Profile with left and right. The line under it tells you what the look is.
+2. Open Options → Radiant Silvergun Options → RSQ Glow In The Dark. On a Quest, leave Dynamic Lights at 0; on PC, try
+   Lights Over Pools 4 and Lights on Items 6.
+3. Step through Profile with left and right.
 4. Start a map. Try a few profiles in the same room to see them change.
-5. Playing with DarkDoomZ? Pick a profile and press Use This DarkDoomZ Pairing: it sets DarkDoomZ's mode and preset
+5. Playing with DarkDoomZ? Pick a profile and press Use DarkDoomZ Pairing: it sets DarkDoomZ's mode and preset
    to the ones that profile was made for.
 
 ## Controls
@@ -75,67 +76,62 @@ room, not per pixel: one colour for a sector's floor glow and one for its ceilin
 
 ## Menu
 
-Options → Radiant Silvergun Options → RSQ Glow In The Dark
+Options → Radiant Silvergun Options → RSQ Glow In The Dark: one page, with Test and Debug and Reset All at its foot.
 
 | Row | Default | What it does |
 |---|---|---|
 | Glow In The Dark | On | The whole mod |
 | Profile | Classic (1.1) | Custom, Random Profile, or one of 35 named looks |
-| Use This DarkDoomZ Pairing | | Sets DarkDoomZ's mode and preset to the profile's (with DarkDoomZ loaded) |
 | Shuffle Profile Now | | New colours (and a new profile on Random) |
+| Use DarkDoomZ Pairing | | Sets DarkDoomZ's mode and preset to the profile's (greyed without DarkDoomZ) |
 | Re-roll Colours | Every Map | Never, Every Map, On Each Death, On Each Level-Up, Every N Minutes |
-| Every N Minutes | 5 | For Every N Minutes |
+| Re-roll Every (min) | 5 | For Every N Minutes |
 | Strength | 1.0 | Overall glow strength |
 | Glow Height | 64 | How far the glow reaches up and down the walls |
-| Quality | Quest | Quest or PCVR |
-
-**Glow Types**
-
-| Row | Default | What it does |
-|---|---|---|
+| *Glow Types* | | |
 | Floor and Ceiling Glow | On | The room glow |
 | Liquids Glow | On | Liquids in their own light |
-| Liquid Colour | Profile Decides | Like 1.1 (Room Colour), Profile Decides, Always Their Own |
+| Liquid Colour | Profile Decides | Room Colour, Profile Decides, Always Their Own |
 | Living Liquids | On | Each liquid breathes |
 | Splash Flares | On | A death in a liquid flares it |
 | Guess Liquids by Name | On | Liquids in unknown map packs |
-| Floors That Hurt Throb Red | On | Damaging floors warn you |
+| Hurt Floors Throb Red | On | Damaging floors warn you |
 | Secret Rooms Shimmer | Off | Gold until found |
 | Stronger in the Dark | On | More glow in dark rooms |
-| One Colour Per | Profile Decides | Profile Decides, Tag Group (1.1), Each Room |
-| Blend Neighbouring Rooms | Off | Rooms made of several sectors read as one colour |
-
-**Things That Matter**
-
-| Row | Default | What it does |
-|---|---|---|
-| Switches, Exits, Locked Doors | On | Their walls glow; locked doors in their key's colour |
+| One Colour Per | Profile Decides | Profile Decides, Tag Group, Each Room |
+| Blend Rooms | Off | Rooms made of several sectors read as one colour |
+| *Things That Matter* | | |
+| Switches, Exits, Locks | On | Their walls glow; locked doors in their key's colour, brighter once you hold it |
 | Ordinary Doors Too | On | A faint edge on plain doors |
-| Strength | 1.0 | How strong those glows are |
-| Keys and Pickups Glow | Keys and Powerups | Off, Keys and Powerups, + Health and Armour, + Ammo and Weapons |
-
-**Reactions** (each needs its mod loaded)
-
-| Row | Default | What it does |
-|---|---|---|
-| Miniboss Tint (RSQ Miniboss) | On | The map takes a colour and throbs while a miniboss lives |
-| Colour | The Miniboss's Own | Blood Red, The Miniboss's Own (the colour of its own beaded lines and life orbs), Custom |
-| Custom Colour | Red | For Custom |
+| Things Strength | 1.0 | How strong those glows are |
+| Keys and Pickups | Keys and Powerups | Off, Keys and Powerups, + Health and Armour, + Ammo and Weapons |
+| *Reactions* (each needs the mod named) | | |
+| Miniboss Tint (Miniboss) | On | With RSQ Miniboss: the map takes a colour and throbs while a miniboss lives |
+| Tint Colour | The Miniboss's Own | Blood Red, The Miniboss's Own (the colour of its own beaded lines and life orbs), Custom |
+| Custom Tint | Red | For Custom |
 | Darken the Map | On | The map darkens meanwhile |
-| By | 48 | How much light |
+| Darken By | 48 | How much light |
 | Level-Up Wave (Gun Bonsai) | On | A wave rolls out when a gun is ready to level up |
 | Wave Colour | Gold | |
 | Combo Glow (RSQ Score) | On | The glow climbs with the kill chain |
-| Per Kill | 0.08 | Per kill, up to 10 |
 | SlowMo Drain (RSQ SlowMo) | On | The glow drains toward grey in slow motion |
+| *Custom Profile* (used when Profile is Custom) | | |
+| Floor Glow / Ceiling Glow | Any Colour | Any Colour, Fixed (the sliders below), A Profile's Colours, Off |
+| Colours From | (a profile) | The profile A Profile's Colours uses |
+| Floor Red / Green / Blue | 135 | The fixed floor colour |
+| Ceiling Red / Green / Blue | 135 | The fixed ceiling colour |
+| Custom Strength | 1.0 | |
+| Pulse | Steady | Steady, Breathe, Heartbeat, Candle, Hue Drift, Ripple |
+| Custom Liquids | Own Colour | Own Colour, Lean to the Room's, The Room's Colour |
+| *Dynamic Lights* (need the engine's dynamic lights on) | | |
+| Light Style | Subdued | Normal, or Subdued (double radius, half brightness; wider lights touch more walls, so each costs more) |
+| Lights Over Pools | 0 | Real lights over the largest pools (0 = none) |
+| Lights on Items | 0 | Real lights on the most important items (0 = none) |
+| Reset All | | Every setting on both pages back to its default |
 
-**Custom Look** (used when Profile is Custom): Floor Glow and Ceiling Glow (Any Colour, Fixed, A Profile's Colours,
-Off), Colours From (a profile), fixed red, green and blue for each (135 grey), Strength (1.0), Colour Wander (0),
-Floor Balance and Ceiling Balance (1.0), Pulse (Steady, Breathe, Heartbeat, Candle, Hue Drift, Ripple), its Speed (10
-a minute) and Depth (0.3), and Liquids (Own Colour, Lean to the Room's, The Room's Colour).
-
-**Tuning and Debug**: Rooms per Tic While Moving (128), Lights Over Pools (0), Lights on Items (0), Light Style
-(Subdued), Colour Seed (1337, used with Re-roll Never), Debug Lines in the Console (Off), Reset All.
+**Test and Debug**: Rooms per Tic (128), Colour Seed (1337, used with Re-roll Never), Combo Per Kill (0.08, up to 10
+kills), Custom Profile's Colour Wander (0), Floor Balance and Ceiling Balance (1.0), Pulse Speed (10 a minute) and Pulse
+Depth (0.3), Debug Log (Off, One Line per Map, + Every Second).
 
 ## Works with
 
