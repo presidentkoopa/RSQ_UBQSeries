@@ -36,3 +36,14 @@ of customisation, nothing confusing or verbose. Short labels. A row's name promi
   Whip", Saber "Show Sabers", ShieldSaw "Show ShieldSaw". Where the Rig already has a "Show ... in Holster" row, the mod's
   row is the one that matters (keep the Rig row only if it still means something distinct, else fold it).
 - Works without the Rig where the mod has its own spot (FnF pocket/clip, ShieldSaw back); with the Rig, at the Rig's spot.
+
+## The feeling (owner 11-04 19:33, the test for every page)
+"I like to offer a lot of options and customization in a simple on / off way, sliders occasionally. I want players to
+feel like 'Wow, I have a lot of choices, this is highly customizable and easy to understand!' and not 'Wow, I have a lot
+of choices... this is overwhelming and difficult to decipher.'"
+- Prefer On/Off rows. Sliders only where a number really matters to play (sizes, speeds, volumes); raw numbers go to
+  Tuning and Debug. Avoid multi-choice lists unless the choices are few and plain-worded.
+- Labels: 1-4 plain words, the thing the player feels ("Bits Fly to Me", not "rsqgb_kr_magnet radius"). No jargon, no
+  internal names, no parentheses essays.
+- Group rows under short section headers (StaticText) so a long page reads as a few small lists.
+- Most important rows at the top of each page.
