@@ -55,7 +55,8 @@ once, like a Force pull.
 
 **The Force** (off hand: the off-hand saber's alt fire held, or with no off-hand saber, the bare Force hand)
 - **Push**: thrust the hand out. Everything in a cone is thrown back, lighter things farther, and shots in the cone
-  are turned round. The main hand's alt fire also pushes.
+  (fireballs, Cacodemon balls, rockets) are turned round: onto the enemy you look at, or the way you pushed. A shot
+  you turn is yours, kill and score. The main hand's alt fire also pushes.
 - **Pull**: yank the hand back. Enemies stagger toward you, pickups fly to your hand, a thrown saber comes home.
 - **Grip**: hold the hand still on an enemy. It rises, choking, and hangs where your hand points. Move your hand and
   it moves. Let go mid-swing and it is flung, and hurts when it lands.

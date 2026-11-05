@@ -5057,19 +5057,7 @@ class UBQS_Force : Inventory
 			if (dist < 1 || dist > range) continue;
 			Vector3 u = to / dist;
 			if (acos(clamp(u dot d, -1.0, 1.0)) > cone) continue;
-			if (mo.bMissile)
-			{
-				if (mo.target == owner) continue;
-				double sp = max(mo.Speed, mo.vel.Length());
-				Actor shooter = mo.target;
-				mo.target = owner;
-				if (!mo.master) mo.master = self;	// XP credit: paid to the Force hand (Gun Bonsai VR), as BatBack pays the saber
-				if (mo.bSeekerMissile) mo.tracer = shooter;
-				mo.vel = u * max(sp, 8.0);
-				mo.angle = VectorAngle(u.x, u.y);
-				mo.pitch = -asin(clamp(u.z, -1.0, 1.0));
-				continue;
-			}
+			if (mo.bMissile) continue;   // the missiles' own pass, below (PushMissiles)
 			if (!mo.bShootable || mo.health <= 0 || mo.bDontThrust || (mo.player && !deathmatch) || (mo.bFriendly && owner.player)) continue;
 			if (!owner.CheckSight(mo, SF_IGNOREVISIBILITY)) continue;
 			double falloff = 1.0 - dist / range * 0.6;
@@ -5077,6 +5065,7 @@ class UBQS_Force : Inventory
 			if (mo.Mass < 0x7FFFFFFF) mo.vel += (u.x * f, u.y * f, max(u.z * f, 0.0) + f * 0.3);   // immovable: hurt, not moved
 			mo.DamageMobj(self, owner, int(pdmg), 'Saber', DMG_THRUSTLESS);
 		}
+		PushMissiles(hp, d, range, cone);
 		Ring(hp, d, 1.0);
 		if (uPush >= 3) Shockwave(pwr, pdmg);
 		// DUST DOWN THE CONE. Three sheets at increasing distance, each wider and fainter, so the shove
@@ -5094,6 +5083,74 @@ class UBQS_Force : Inventory
 		}
 		Buzz();
 	}
+	// THE PUSH TURNS SHOTS BACK (owner, 11-04: "the Force push must turn Doom's fireballs and other missiles back").
+	// It always meant to, but it looked for them in the blockmap, and Doom's fireballs, Cacodemon balls and Revenant
+	// rockets are NOBLOCKMAP: the push's search never met one (rig, 11-03: "finds the ball: no"). Now every missile in
+	// the push's reach and cone that you can see is found by a walk of the missiles (once per push, which has a
+	// cooldown), and sent back as the saber's parry sends a shot where you look (BatBack, aim 1): onto the enemy you are
+	// looking at within 14 degrees when there is one, else the way you pushed. It is yours from then on (target = you:
+	// its kill is yours and RSQ Score sees a monster's shot turned back, Return to Sender), its master is the Force (XP
+	// to the Force hand under Gun Bonsai VR), a homing shot homes on the one that fired it.
+	void PushMissiles(Vector3 hp, Vector3 d, double range, double cone)
+	{
+		Actor pick = null;
+		int turned = 0;
+		let ti = ThinkerIterator.Create("Actor", Thinker.STAT_DEFAULT);
+		Actor mo;
+		while (mo = Actor(ti.Next()))
+		{
+			if (!mo.bMissile || mo.target == owner || mo is "UBQS_Thrown") continue;
+			if (mo.vel.Length() < 0.5) continue;   // a missile at rest (a mine, a puff) is not a shot in flight
+			Vector3 to = level.Vec3Diff(hp, mo.pos);
+			double dist = to.Length();
+			if (dist < 1 || dist > range) continue;
+			if (acos(clamp((to / dist) dot d, -1.0, 1.0)) > cone) continue;
+			if (!owner.CheckSight(mo, SF_IGNOREVISIBILITY)) continue;
+			if (turned == 0) pick = PushGaze(14.0);
+			Vector3 dir = pick ? level.Vec3Diff(mo.pos, (pick.pos.xy, pick.pos.z + pick.height * 0.55)) : d;
+			if (dir.Length() < 0.001) dir = d;
+			dir = dir.Unit();
+			double sp = max(max(mo.Speed, mo.vel.Length()), 8.0);
+			Actor shooter = mo.target;
+			mo.target = owner;
+			if (!mo.master) mo.master = self;	// XP credit: paid to the Force hand (Gun Bonsai VR), as BatBack pays the saber
+			if (mo.bSeekerMissile) mo.tracer = shooter;
+			mo.vel = dir * sp;
+			mo.angle = VectorAngle(dir.x, dir.y);
+			mo.pitch = -asin(clamp(dir.z, -1.0, 1.0));
+			UBQS_FX.Fx(mo.pos, 'UXFL', 13, 1, 0.12, 0.8, 0xBFE0FF, 1.03);
+			turned++;
+			if (IV("ubqs_diag", 0) > 0)
+				Console.Printf("UBQS PUSH t%d turned %s (from %s) toward %s", level.maptime, mo.GetClassName(), shooter ? shooter.GetClassName() : 'none', pick ? pick.GetClassName() : 'the push');
+		}
+	}
+	// the enemy you are looking at, nearest the middle of a `cone`-degree gaze, that you can see (the saber's GazeTarget,
+	// for a Force with no saber in hand)
+	Actor PushGaze(double cone)
+	{
+		Vector3 eye = owner.Vec3Offset(0, 0, owner.player ? owner.player.viewheight : 41.0);
+		Vector3 look = (cos(owner.angle) * cos(owner.pitch), sin(owner.angle) * cos(owner.pitch), -sin(owner.pitch));
+		Actor best = null;
+		double bestScore = 1e9;
+		let it = BlockThingsIterator.CreateFromPos(eye.x, eye.y, eye.z - 1536, 3072, 1536, false);
+		while (it.Next())
+		{
+			Actor m = it.thing;
+			if (!m || m.health <= 0 || m == owner || !m.bShootable) continue;
+			if (!m.bIsMonster && !(m.player && deathmatch)) continue;
+			if (m.bFriendly && !deathmatch) continue;
+			Vector3 to = level.Vec3Diff(eye, (m.pos.xy, m.pos.z + m.height * 0.55));
+			double dist = to.Length();
+			if (dist < 1 || dist > 1536) continue;
+			double off = acos(clamp((to / dist) dot look, -1.0, 1.0));
+			if (off > cone) continue;
+			if (!owner.CheckSight(m, SF_IGNOREVISIBILITY)) continue;
+			double score = off * 40.0 + dist * 0.05;
+			if (score < bestScore) { bestScore = score; best = m; }
+		}
+		return best;
+	}
+
 	// the shock ring: out along the cone (dir 1) or rushing in to the hand (dir -1)
 	void Ring(Vector3 hp, Vector3 d, double dir)
 	{
