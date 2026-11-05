@@ -288,8 +288,19 @@ class RSQGN_Handler : EventHandler
 		flashNext[n] = 0;
 	}
 
+	// THE MENU'S GUN BONSAI VR GATING (RSQGN_Service GetIntUI, upg.zs): the console player's Skeet Window level, asked once a
+	// second here in play (ui code cannot ask Gun Bonsai VR)
+	transient int menuSkeet, menuTic;
+	void MenuRefresh()
+	{
+		if (menuTic > 0 && level.maptime >= menuTic && level.maptime < menuTic + 35) return;
+		menuTic = max(level.maptime, 1);
+		menuSkeet = RSQGN_Upg.Lv(players[consoleplayer].mo, "SkeetWindow");
+	}
+
 	override void WorldTick()
 	{
+		MenuRefresh();
 		if (!Active()) return;
 		// SHOOT THROWN GRENADES, projectiles: at the end of the tic every thing has moved, so each grenade's path this tic
 		// (Prev to Pos) is tested against each missile's (RSQGN_Thrown.ShotByMissile, swept)

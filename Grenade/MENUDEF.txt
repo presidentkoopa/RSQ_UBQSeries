@@ -1,6 +1,8 @@
-// RSQ Grenade options, the series' way (RSQ Miniboss): ONE front page of real choices; ONE Tuning and Debug page that
-// holds the numbers and Reset All. CVARINFO.txt says what each does.
-
+// RSQ Grenade options, the series' menu (MENU_PASS_BRIEF.md, owner 11-04): ONE page with every option under short headers,
+// On/Off first; ONE sub menu, "Test and Debug", with the numbers and the debug log. No help text; CVARINFO.txt says what
+// each does. RSQGNGbOption rows (RSQGN_Service "menu.locked", upg.zs), with RSQ Gun Bonsai VR loaded: Skeet Slow-Mo greys
+// until Skeet Window is learned; Grenade Types always greys (under Gun Bonsai VR the kinds you have learned decide, the row
+// is not read: kinds.zs Owns). Reset All (RSQGNResetAll) resets every row on both pages.
 // ---- Radiant Silvergun Options (tools/rsmenu) ----------------------------------------------------
 // The series' one Options entry. Every series pk3 carries this same block with its own prefix: the
 // parent is PROTECTED, so the first definition stays and later ones add nothing (QZD 17.3 merges a
@@ -26,54 +28,60 @@ AddOptionMenu "RSQ_RSOptions"
 OptionMenu "RSQGN_Options"
 {
 	Title "RSQ GRENADE"
+	RSQGNGbLine ""
+	StaticText "Grenades", "Gold"
 	Option "Grenades", "rsqgn_on", "OnOff"
 	Slider "Start With", "rsqgn_start", 0, 8, 1, 0
-	StaticText " "
-	Option "Scatter Grenades", "rsqgn_scatter", "OnOff"
-	Slider "Single Grenades a Map", "rsqgn_singles", 0, 16, 1, 0
+	Option "Grenades in Levels", "rsqgn_scatter", "OnOff"
+	Slider "Singles a Map", "rsqgn_singles", 0, 16, 1, 0
 	Slider "Packs of Three a Map", "rsqgn_packs", 0, 16, 1, 0
 	StaticText " "
+	StaticText "Throwing", "Gold"
 	Option "Pin With Your Teeth", "rsqgn_face", "OnOff"
-	Option "Alt Fire Cycles Grenade Types", "rsqgn_kind_alt", "OnOff"
-	Option "Grenade Types Without Gun Bonsai", "rsqgn_kinds_free", "RSQGN_KindsFree"
-	Option "Your Own Fire Burns You", "rsqgn_fire_self", "RSQGN_FireSelf"
+	Option "Alt Fire Changes Type", "rsqgn_kind_alt", "OnOff"
+	RSQGNGbOption "Grenade Types", "rsqgn_kinds_free", "RSQGN_KindsFree", "RSQGN_Service", "KindsFree"
+	Option "Your Fire Burns You", "rsqgn_fire_self", "RSQGN_FireSelf"
 	StaticText " "
+	StaticText "Shooting", "Gold"
 	Option "Shoot Thrown Grenades", "rsqgn_shoot", "OnOff"
-	Option "Only in Slow Motion", "rsqgn_shoot_slowmo", "OnOff"
-	Option "Faster Grenades in Slow Motion", "rsqgn_slowmo_fast", "OnOff"
+	Option "Only in Slow-Mo", "rsqgn_shoot_slowmo", "OnOff"
+	Option "Faster in Slow-Mo", "rsqgn_slowmo_fast", "OnOff"
+	RSQGNGbOption "Skeet Slow-Mo (Gun Bonsai VR)", "rsqgn_skeet_window", "OnOff", "RSQGN_Service", "SkeetWindow"
 	StaticText " "
-	Submenu "Tuning and Debug", "RSQGN_Tuning"
+	Submenu "Test and Debug", "RSQGN_Test"
+	RSQGNResetAll "Reset All", "Reset all RSQ Grenade settings?"
 }
 
-OptionMenu "RSQGN_Tuning"
+OptionMenu "RSQGN_Test"
 {
-	Title "TUNING AND DEBUG"
+	Title "RSQ GRENADE: TEST AND DEBUG"
+	StaticText "Throw", "Gold"
 	Slider "Fuse (s)", "rsqgn_fuse", 0.5, 10.0, 0.25, 2
 	Slider "Throw Speed (m/s)", "rsqgn_swing", 1.0, 6.0, 0.25, 2
 	Slider "Throw Strength", "rsqgn_throw", 0.25, 4.0, 0.05, 2
 	Slider "Arc", "rsqgn_lift", 0.0, 1.5, 0.05, 2
 	StaticText " "
+	StaticText "Flight", "Gold"
 	Slider "Gravity", "rsqgn_gravity", 0.05, 1.0, 0.01, 2
 	Slider "Floor Bounce", "rsqgn_bounce", 0.0, 0.9, 0.05, 2
 	Slider "Wall Bounce", "rsqgn_wallbounce", 0.0, 0.9, 0.05, 2
 	Slider "Ground Drag", "rsqgn_friction", 0.30, 1.0, 0.02, 2
-	Slider "Shot Grenade Reach (m)", "rsqgn_shot_r", 0.10, 0.35, 0.01, 2
-	Slider "Grenade Speed in Slow Motion", "rsqgn_slowmo_speed", 0.0, 1.0, 0.05, 2
+	Slider "Shot Reach (m)", "rsqgn_shot_r", 0.10, 0.35, 0.01, 2
+	Slider "Slow-Mo Speed", "rsqgn_slowmo_speed", 0.0, 1.0, 0.05, 2
 	StaticText " "
-	Slider "Teeth: Mouth Reach (m)", "rsqgn_mouth_r", 0.05, 0.30, 0.01, 2
-	Slider "Teeth: Again Beyond (m)", "rsqgn_face_far", 0.30, 1.50, 0.01, 2
-	Slider "Teeth: Hold (tics)", "rsqgn_face_hold", 2, 40, 1, 0
+	StaticText "Teeth", "Gold"
+	Slider "Mouth Reach (m)", "rsqgn_mouth_r", 0.05, 0.30, 0.01, 2
+	Slider "Again Beyond (m)", "rsqgn_face_far", 0.30, 1.50, 0.01, 2
+	Slider "Hold (tics)", "rsqgn_face_hold", 2, 40, 1, 0
 	StaticText " "
-	Option "Skeet Window Slow-Mo", "rsqgn_skeet_window", "OnOff"
 	Option "Debug Log", "rsqgn_debug", "OnOff"
 	StaticText " "
-	SafeCommand "Reset All", "resetcvar rsqgn_on rsqgn_start rsqgn_scatter rsqgn_singles rsqgn_packs rsqgn_fuse rsqgn_gravity rsqgn_bounce rsqgn_wallbounce rsqgn_friction rsqgn_swing rsqgn_throw rsqgn_lift rsqgn_face rsqgn_mouth_r rsqgn_face_far rsqgn_face_hold rsqgn_kind_alt rsqgn_kinds_free rsqgn_shoot rsqgn_shot_r rsqgn_shoot_slowmo rsqgn_slowmo_fast rsqgn_slowmo_speed rsqgn_skeet_window rsqgn_debug", "Reset all RSQ Grenade settings?"
+	RSQGNResetAll "Reset All", "Reset all RSQ Grenade settings?"
 }
-
 
 OptionValue "RSQGN_FireSelf"
 {
-	0, "Auto (Brutal Doom: yes)"
+	0, "Auto"
 	1, "Yes"
 	2, "No"
 }

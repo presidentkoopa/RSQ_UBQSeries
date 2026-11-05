@@ -77,6 +77,20 @@ class RSQGN_Slow play
 // 1 for the fuse's first half (the amber flash), -1 otherwise (RSQ Gun Cards draws the count on the grenade's card).
 class RSQGN_Service : Service
 {
+	// THE MENU (MENU_PASS_BRIEF.md, owner 11-04): GetIntUI("menu.locked", f), asked by the RSQGNGbOption rows only while
+	// RSQ Gun Bonsai VR is loaded. "SkeetWindow": 1 until the console player's grenade has Skeet Window (the row does
+	// nothing without it: thrown.zs). "KindsFree": always 1 (the kinds you have learned decide; kinds.zs Owns never reads
+	// the row under Gun Bonsai VR). Read from RSQGN_Handler's once-a-second cache (hand.zs MenuRefresh).
+	override int GetIntUI(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
+	{
+		if (!(request ~== "menu.locked")) return 0;
+		if (stringArg ~== "KindsFree") return 1;
+		let h = RSQGN_Handler(EventHandler.Find("RSQGN_Handler"));
+		if (!h || !players[consoleplayer].mo) return 1;
+		if (stringArg ~== "SkeetWindow") return h.menuSkeet >= 1 ? 0 : 1;
+		return 0;
+	}
+
 	// "kind.name": intArg a kind -> "Freeze Grenade" (the Weapon Wheel's fan of kinds)
 	override String GetString(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
 	{

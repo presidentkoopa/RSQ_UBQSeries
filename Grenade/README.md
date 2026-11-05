@@ -92,43 +92,33 @@ Changed your mind before cooking it? Take the ring again with your other hand an
 
 ## Menu
 
-Options → Radiant Silvergun Options → RSQ Grenade
+Options → Radiant Silvergun Options → RSQ Grenade. One page, and one sub menu, **Test and Debug**. With RSQ Gun Bonsai VR
+loaded the page starts with "GunBonsaiOVR detected. Mod features unlocked via upgrades."; Skeet Slow-Mo is greyed until
+the Skeet Window upgrade is learned, and Grenade Types is always greyed (the kinds you have learned decide).
 
 | Row | Default | What it does |
 |---|---|---|
+| **Grenades** | | |
 | Grenades | On | The whole mod (it stands down with BD22 VR Reloaded anyway) |
 | Start With | 3 | Grenades at a new game, or after dying (0-8) |
-| Scatter Grenades | On | Grenades beside each map's items |
-| Single Grenades a Map | 4 | Most singles a map |
+| Grenades in Levels | On | Grenades beside each map's items |
+| Singles a Map | 4 | Most singles a map |
 | Packs of Three a Map | 2 | Most packs a map |
+| **Throwing** | | |
 | Pin With Your Teeth | On | The mouth pin pull |
-| Alt Fire Cycles Grenade Types | On | Alt fire changes the type |
-| Grenade Types Without Gun Bonsai | All Types | All Types or Frag Only, when Gun Bonsai VR is not loaded |
-| Your Own Fire Burns You | Auto (Brutal Doom: yes) | Incendiary ground hurts you: Auto, Yes, No |
+| Alt Fire Changes Type | On | Alt fire cycles the grenade types |
+| Grenade Types | All Types | All Types or Frag Only (without Gun Bonsai VR) |
+| Your Fire Burns You | Auto | Incendiary ground hurts you: Auto (Brutal Doom: yes), Yes, No |
+| **Shooting** | | |
 | Shoot Thrown Grenades | On | Shots set off thrown grenades |
-| Only in Slow Motion | Off | ...only while RSQ SlowMo has the world slowed |
-| Faster Grenades in Slow Motion | Off | Thrown grenades run faster than the slowed world |
+| Only in Slow-Mo | Off | ...only while RSQ SlowMo has the world slowed |
+| Faster in Slow-Mo | Off | Thrown grenades run faster than the slowed world |
+| Skeet Slow-Mo (Gun Bonsai VR) | On | Gun Bonsai VR's Skeet Window slow motion (nothing without that upgrade) |
+| Reset All | | Every setting on both pages back to default |
 
-**Tuning and Debug**
-
-| Row | Default | What it does |
-|---|---|---|
-| Fuse (s) | 3.0 | Spoon off to blast |
-| Throw Speed (m/s) | 2.5 | Faster than this throws; slower cooks |
-| Throw Strength | 1.0 | Throw speed as a multiple of your hand's |
-| Arc | 0.35 | Share of the throw's speed added upward |
-| Gravity | 0.27 | The thrown grenade's gravity (1 is Doom's) |
-| Floor Bounce | 0.5 | Speed kept off a floor |
-| Wall Bounce | 0.25 | Speed kept off a wall |
-| Ground Drag | 0.82 | Slide on the floor (1 is ice) |
-| Shot Grenade Reach (m) | 0.35 | How near a shot must pass a thrown grenade to set it off; 0.10 to 0.35, it only tightens. Fast shots are tested along their whole path; the railgun counts too |
-| Grenade Speed in Slow Motion | 0.5 | How far from the world's speed toward real time (with Faster Grenades on) |
-| Teeth: Mouth Reach (m) | 0.15 | How close to your mouth counts |
-| Teeth: Again Beyond (m) | 0.71 | How far from your mouth before another teeth pull |
-| Teeth: Hold (tics) | 12 | How long to hold it there |
-| Skeet Window Slow-Mo | On | Gun Bonsai VR's Skeet Window slow motion (nothing without that upgrade) |
-| Debug Log | Off | Grenade lines in the console |
-| Reset All | | Every setting back to default |
+**Test and Debug**: Fuse (3.0 s), Throw Speed (2.5 m/s), Throw Strength (1.0), Arc (0.35); Gravity (0.27), Floor Bounce
+(0.5), Wall Bounce (0.25), Ground Drag (0.82), Shot Reach (0.35 m: 0.10 to 0.35, it only tightens), Slow-Mo Speed (0.5);
+Teeth Mouth Reach (0.15 m), Again Beyond (0.71 m), Hold (12 tics); Debug Log (Off); Reset All.
 
 ## Works with
 
