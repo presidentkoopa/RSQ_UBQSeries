@@ -18,7 +18,8 @@ WHAT THIS PK3 SHIPS, AND WHOSE IT IS
       style-A health bar stood on end, the fill recoloured pixel by pixel (VisualRewards/tools/gen_gauges.py in the
       series repo).
       The Real-Time Countdown bar (graphics/RSQSMHE empty, RSQSMHW the fill in white that the HUD tints) is the same
-      style-A bar left lying as he drew it (SlowMo/tools/gen_cdbar.py in the series repo).
+      style-A bar left lying as he drew it, with the gauges' rim and well (VisualRewards/tools/gen_gauges.py in the
+      series repo).
   id Software (Doom), played by name from the IWAD, NOT shipped
       The clock's cues: DSGETPOW (slowing), DSPSTOP (back to speed), DSITEMUP (meter full),
       DSNOWAY (not enough adrenaline). See SNDINFO.txt.

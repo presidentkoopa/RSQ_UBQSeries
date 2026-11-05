@@ -13,7 +13,8 @@
 // defaults would put its bar on. Kept inside the series' safe area (rsq_ui_inset).
 // SIZE: a third of the safe height x Bar Size (1.5, the series' new default) x the series HUD Size (rsq_ui_hud_scale / 1.5:
 // 1 at its default or without it) x RSQ Accessibility's Text Size.
-// LOOK: coldcite's Top HP Bars bar (the gauges' family; tools/gen_cdbar.py), tinted Green or the chosen colour (Random: a
+// LOOK: coldcite's Top HP Bars bar (the gauges' family and their rim and well, VisualRewards/tools/gen_gauges.py; owner 11-05:
+// "all four of these bars should be visually consistent"), tinted Green or the chosen colour (Random: a
 // fresh one each time it appears), darker as it empties. Alive (Bar Animation): a light band sweeps along the fill, the
 // fill's end breathes, a refill glints. ACCESSIBILITY (RSQ_Accessibility, by name): the colour-blind palette's "have"
 // colour replaces the hue; Photosensitive Mode drops the glint and holds the edge still (the band stays, dimmer).
@@ -49,7 +50,13 @@ class RSQSM_Countdown : StaticEventHandler
 		double h = w * 11.0 / 112.0;
 		double cx, below;
 		[cx, below] = ScoreSpot();
-		double x = clamp(cx - w * 0.5, sx, sx + aw - w);
+		// kept between the side gauges' lanes (owner 11-05: the four bars one set; RSQ Gun Bonsai VR's Berserk gauges stand
+		// 2.5 to 3.5 gauge widths in from each side, so the bar keeps 4 gauge widths clear; on the rig's square eye the
+		// right gauge crossed this bar's end). Centred under Score's bar wherever that fits.
+		double lane = ah * 0.32 * clamp(SCv("rsq_ui_hud_scale", 1.5), 0.4, 2.5) * 11.0 / 112.0 * 4.0;
+		double xlo = sx + lane, xhi = max(xlo, sx + aw - lane - w);
+		if (w > aw - 2 * lane) { xlo = sx; xhi = sx + aw - w; }
+		double x = clamp(cx - w * 0.5, xlo, xhi);
 		double y = clamp(below + h * 0.35, sy, sy + ah - h);
 		return x, y, w, h;
 	}

@@ -1,0 +1,17 @@
+RSQ Miniboss -- the Bossfight meter's new look, 2026-11-05 (QZD 17.3 rig; rig only, not headset-confirmed)
+Owner 11-05: "i don't want it to say Bossfight ready, just give the meter some life when it fills, the slowmo countdown
+bar should be visually similar to the left and right hud bars you made earlier, all four of these bars should be
+visually consistent".
+
+Run 1/2 (flat, vr_mode 0, screenblocks 11, QZ_RES 480): doom2 + Gun Bonsai 0.10.6 + RSQ Score, SlowMo (adrenaline on),
+Gun Bonsai VR (rsqgb_dbg_all with RSQ_Glove in hand: the Berserk gauge), Melee, Accessibility, Miniboss.
+  netevent rsqmb_fill 450 + rsm_pulse 9000 25: red meter with the skull half lit, the green countdown under it, SlowMo
+  gauge left, Berserk gauge right. rsqmb_fill 1000: gold, the band and a glint running across in successive frames
+  (3 frames apart); rsqa_photosafe 1: no glint, band dimmer. No text on the bar. Script errors 0.
+  Seen: the right Berserk gauge crossed the right end of both horizontal bars on the square eye -> both bars now keep
+  4 gauge widths clear of each side (hud.zs MeterRect, SlowMo countdown.zs Rect).
+Run 3 (VR eye, vr_mode 15, BD order: doom2 + lo2 01-07 with 03 = BD22 VR-Reloaded 2.0.3x + Gun Bonsai 0.10.6 + all
+  19 RSQ pk3s): the four bars together, clear of each other, filling then full. Script errors: 4, all
+  02_BD22_VoxelPack.pk3:voxeldef.txt (lines 66, 72, 77, 892); 0 from our packs.
+Not shown: the Bossfight-running colour (the set piece's palette), the waits text (NO ROOM IN VIEW etc.), a real
+headset, Text Size above 1.

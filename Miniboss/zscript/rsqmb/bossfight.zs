@@ -8,7 +8,7 @@
 //              VR's RSQGB_Service "xp" on the hand's gun) and, slowly, time spent pushing into the map (2 points a
 //              2 s in which you moved). Without RSQ Score each kill counts more (10 + spawn health / 50, at most 30).
 //              x Meter Speed. Frozen while a Bossfight is arriving or alive.
-//   FULL       telegraphed: a sting (the IWAD's DSBOSPIT), "BOSSFIGHT READY" under the bar, and RSQ Glow In The Dark's
+//   FULL       telegraphed: a sting (the IWAD's DSBOSPIT), the meter turning gold and alive (hud.zs; no words, owner 11-05), and RSQ Glow In The Dark's
 //              map glow beating red (RSQGD_Service "event.tint", by name) while it waits.
 //   CALL IT IN the watch check + Use (the watch check from RSQ Gestures' RSQG_Service "inspect", else RSQ Gun Cards' copy
 //              RSQGC_GCopyService, else this mod's own copy, gestcopy.zs): Use is read only while a watch check is

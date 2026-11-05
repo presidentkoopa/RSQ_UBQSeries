@@ -17,8 +17,13 @@ No miniboss is picked when a level loads any more. You earn it.
 - **The meter** sits under RSQ Score's bar (above RSQ SlowMo's countdown bar and Score's combo rows). It fills most from
   RSQ Score's style points (style bonuses and combos), then kill chains (kills within 3 seconds), Gun Bonsai XP, and
   slowly from time spent pushing into the map. Without RSQ Score each kill counts for more. It is kept from map to map.
-- **Full**, it tells you: a sting, **BOSSFIGHT READY** on the bar, and (with RSQ Glow In The Dark) the map's glow beating
-  red like a heart.
+- **How it looks**: coldcite's Top HP Bars block bar lying down, the same rim, well and size as RSQ SlowMo's countdown bar
+  and the side gauges, with a crowned skull at its left. Red while it fills (the skull lights up from the jaw as it does),
+  with a band of light running through it.
+- **Full**, it tells you without words: a sting, the bar turns gold and comes alive (the band runs gold, the bar and the
+  skull swell with a slow beat, a glint crosses it every few seconds), and (with RSQ Glow In The Dark) the map's glow
+  beating red like a heart. With RSQ Accessibility's Photosensitive Mode: no glint, a slower, dimmer beat. If a due
+  Bossfight has to wait, the reason shows small on the bar (for example NO ROOM IN VIEW).
 - **Call it in**: hold the watch check (the wrist turned to your eyes) and press Use. Or wait: it comes by itself about
   a minute after the meter filled.
 - **It arrives in view, at a distance**: somewhere you can see, 12 to 32 m away, with room for the whole crew, in a
@@ -91,7 +96,7 @@ Then the set piece itself:
 ## How To Play
 
 1. Add the pk3 to your load order. Fight as usual: stylish kills and quick chains fill the Bossfight meter under the score.
-2. When it reads BOSSFIGHT READY, find a spot you like, look out over open ground, check your watch and press Use.
+2. When the bar turns gold and the skull lights up, find a spot you like, look out over open ground, check your watch and press Use.
 3. Watch them land. The beaded lines run from each thrall into the miniboss; the orbs over its head are its lives.
 4. The safe way: kill the thralls first. Each kill slows time, so line the next one up fast to chain the window. With
    the crew down, the miniboss takes full damage.
