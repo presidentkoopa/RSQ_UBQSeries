@@ -559,9 +559,9 @@ class RSQTHP_Handler : EventHandler
 	// RSQ_Miniboss's own service by name (RSQMB_Service "miniboss" / "thrall", objectArg the monster: 1 for a living
 	// miniboss / a thrall bound to a living one), so nothing links and without RSQ_Miniboss there is no answer.
 	// 11-05: with LegenDoom's legendary gem and the Bossfight's tier pips. Answers the RSYI frame + 1 (0 nothing):
-	//   1 crown, 2 link, 3 gem, 4 crown + gem, 5 link + gem, 6..8 crown + 1..3 pips, 9..11 crown + 1..3 pips + gem.
-	// Tier (RSQMB_Service "tier", 0..4, -1 when not a Bossfight's or an older RSQ_Miniboss) to pips: 0-1 one, 2 two,
-	// 3-4 three (tier 0 is a middling type, 4 the strongest).
+	//   1 crown, 2 link, 3 gem, 4 crown + gem, 5 link + gem, 6..9 crown + 1..4 pips, 10..13 crown + 1..4 pips + gem.
+	// Tier (RSQMB_Service "tier", 0..4, -1 when not a Bossfight's or an older RSQ_Miniboss) = pips, one per tier (owner
+	// 11-05): tier 0 the bare crown, tier 4 four pips; -1 the crown alone.
 	transient bool mbFound;
 	transient Service mbSvc;
 	int BossMarkOf(Actor a)
@@ -579,8 +579,8 @@ class RSQTHP_Handler : EventHandler
 		if (mid == 1)
 		{
 			int t = mbSvc.GetInt("tier", "", 0, 0, a);
-			int pips = t < 0 ? 0 : (t <= 1 ? 1 : (t == 2 ? 2 : 3));
-			if (pips) return (gem ? 8 : 5) + pips;
+			int pips = clamp(t, 0, 4);
+			if (pips) return (gem ? 9 : 5) + pips;
 			return gem ? 4 : 1;
 		}
 		if (mid == 2) return gem ? 5 : 2;

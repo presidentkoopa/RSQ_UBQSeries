@@ -169,7 +169,8 @@ BOSSMARK = [
 #   ally       a heart, right of the bar on every friendly monster's bar (a cue that is not the blue colour alone)
 #   burning    a flame, right of the bar while fire damage keeps landing on it (BD22's flamethrower, fire on the ground...)
 #   legendary  a gem, above the bar (where the crown goes) on a LegenDoom legendary that has turned
-#   tier pips  1-3 gold 5x5 pips right of the crown: a Bossfight's tier (RSQMB_Service "tier" 0..4)
+#   tier pips  0-4 gold 5x5 pips right of the crown, one per Bossfight tier (RSQMB_Service "tier" 0..4; owner 11-05:
+#              tier 0 = the bare crown, tier 4 = 4 pips)
 WHIPPED = ('whipped', (190, 130, 70), [
     '..####...', '.#oooo#..', '#o####o#.', '#o#..#o#.', '.#o##o#..', '..#oo#...', '.#o##o#..', '#o#..#o#.', '###..###.'])
 ALLY = ('ally', (90, 160, 255), [
@@ -206,7 +207,7 @@ def main():
            '//   Laid out from the bar outward: ally, raised, frozen or held, burning (the lasting ones nearest the bar).',
            '// Friendly main bar: sprite RSYG (frames as RSYA). Damage chunk: sprite RSYH, frame A.',
            '// Above the bar: sprite RSYI, A crown (miniboss), B chain link (thrall), C gem (legendary), D crown + gem,',
-           '//   E link + gem, F..H crown + 1..3 tier pips, I..K crown + 1..3 pips + gem (gem left of the crown, pips right).', '']
+           '//   E link + gem, F..I crown + 1..4 tier pips, J..M crown + 1..4 pips + gem (gem left of the crown, pips right).', '']
     for si, sc in enumerate(SCHEMES):
         s = sc['set']
         for fi, lvl in enumerate(LEVELS):
@@ -264,17 +265,17 @@ def main():
         tex += ['}']
     # miniboss marks: twice the bar's scale like the other icons; centred across (offset x 4 of 9), bottom 10 icon px
     # (20 bar px) above the bar's origin, which is 3 px above the overheal strip's top (17 bar px)
-    # 11-05: one sprite, 37 icon px wide, its origin the crown's centre (x 14): gem 0..8, crown / link / lone gem 10..18,
-    # tier pips at 20, 26, 32 (5 px, 1 px apart), 3 px down from the icon's top (the mock-up's placement). So the crown
+    # 11-05: one sprite, 43 icon px wide, its origin the crown's centre (x 14): gem 0..8, crown / link / lone gem 10..18,
+    # tier pips at 20, 26, 32, 38 (5 px, 1 px apart), 3 px down from the icon's top (the mock-up's placement). So the crown
     # stays where it was over the bar, a legendary miniboss's gem sits LEFT of it and its pips RIGHT: nothing overlaps.
     for k, (name, c, rows) in enumerate(BOSSMARK):
         icon(rows, c).save(os.path.join(OUT, 'RQB%d.png' % (k + 1)))
     icon(LEGENDARY[2], LEGENDARY[1]).save(os.path.join(OUT, 'RQB3.png'))
     icon(TIER_PIP[1], TIER_PIP[0]).save(os.path.join(OUT, 'RQB4.png'))
     top = [('RQB1', 0, 0), ('RQB2', 0, 0), ('RQB3', 0, 0), ('RQB1', 1, 0), ('RQB2', 1, 0)]   # A..E: (centre icon, gem, pips)
-    top += [('RQB1', 0, n) for n in (1, 2, 3)] + [('RQB1', 1, n) for n in (1, 2, 3)]      # F..H, I..K
+    top += [('RQB1', 0, n) for n in (1, 2, 3, 4)] + [('RQB1', 1, n) for n in (1, 2, 3, 4)]   # F..I, J..M
     for f, (mid, gem, pips) in enumerate(top):
-        tex += ['Sprite "RSYI%s0", 37, 9' % FRAMES[f], '{', '\tOffset 14, 19', '\tPatch "%s", 10, 0' % mid]
+        tex += ['Sprite "RSYI%s0", 43, 9' % FRAMES[f], '{', '\tOffset 14, 19', '\tPatch "%s", 10, 0' % mid]
         if gem: tex += ['\tPatch "RQB3", 0, 0']
         tex += ['\tPatch "RQB4", %d, 3' % (20 + 6 * i) for i in range(pips)]
         tex += ['}']

@@ -50,7 +50,7 @@
 //  - ally: a heart in the right-hand row whenever the bar is a friendly monster's (Ally Colour on or off), so an ally
 //    has a cue that is not colour alone. burning: a flame there while fire damage keeps landing (handler.zs, BURN_LINGER).
 //    The right-hand row is laid out from the bar outward: ally, raised, frozen or held, burning (lasting ones nearest).
-//  - legendary: a gem above the bar on a LegenDoom legendary that has turned; tier pips: 1-3 gold pips right of a
+//  - legendary: a gem above the bar on a LegenDoom legendary that has turned; tier pips: 0-4 gold pips right of a
 //    Bossfight miniboss's crown. With a crown the gem sits left of it (one sprite, RSYI, so they never overlap).
 class RSQTHP_Bar : Actor
 {

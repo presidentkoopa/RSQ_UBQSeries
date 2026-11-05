@@ -32,9 +32,9 @@ about a metre from your eyes, and pushed off the aim line of both your guns.
 - Markers beside the bar: hooked, whipped, stunned, locked on and Force-gripped on the left; ally (a heart, so an
   ally doesn't rely on colour alone), raised, frozen or held, and burning (a flame while fire keeps hitting it) on the
   right.
-- Above the bar: a crown or chain for RSQ Miniboss's miniboss and its thralls, 1 to 3 gold pips beside a Bossfight
-  miniboss's crown for its tier, and a pink gem on a LegenDoom legendary once it has turned (left of the crown when it
-  is both).
+- Above the bar: a crown or chain for RSQ Miniboss's miniboss and its thralls, one gold pip per Bossfight tier beside
+  its miniboss's crown (tier 0: the crown alone, up to four pips at tier 4), and a pink gem on a LegenDoom legendary once
+  it has turned (left of the crown when it is both). LegenDoom is optional: without it there is simply no gem.
 - Eight colour sets, including three colour-blind sets and High Contrast, which add patterns as well as colour.
 - LegenDoom's chosen monsters do not give themselves away before they turn.
 

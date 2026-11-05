@@ -15,10 +15,15 @@ Status Markers, no new menu row):
   burn mark on a living monster (a fire death swaps in a Burning* body, which never gets a bar); BD22's flamethrower,
   its FlamethrowerBurningStuff and the RSQ Grenade / Gun Bonsai VR burns all deal "Fire"; RSQ FnF's flare hurts nothing,
   so it never lights the flame.
-- **Legendary** (pink gem, above) and **Bossfight tier pips** (1-3 gold, right of the crown): sprite RSYI A..K, one
-  37 px canvas round the crown (gem left, pips right, never overlapping). Gem = LDLegendaryMonsterTransformed (LegenDoom
+- **Legendary** (pink gem, above) and **Bossfight tier pips** (0-4 gold, right of the crown): sprite RSYI A..M, one
+  43 px canvas round the crown (gem left, pips right, never overlapping). Gem = LDLegendaryMonsterTransformed (LegenDoom
   3.0 LEGENDMON.acs / MonsterStats.dec, Lite 4.2 DECORATE; never on a candidate). Tier = RSQMB_Service "tier" (new read
-  key, 0..4, -1 not a Bossfight's): 0-1 one pip, 2 two, 3-4 three; an older RSQ_Miniboss gives -1: crown only.
+  key, 0..4, -1 not a Bossfight's): one pip per tier (owner 11-05, later the same day: "use 4 pips"; tier 0 the bare
+  crown, tier 4 four pips); an older RSQ_Miniboss gives -1: crown only. LegenDoom is read by class name only and never
+  changed (owner 11-05: "don't make any changes to legendoom, it isn't ours, and we won't always use it"); without it the
+  class lookup is null and no gem is drawn.
+- 4-pip update (11-05): RSYI F..I crown + 1..4 pips, J..M + gem. Proof: a TEXTURES render of every RSYI frame
+  (scratchpad hpicons/rsyi_layout.png) and the BD-order no-error run (hpicons/logs/bdpips.log).
 
 Shown (probe test only, scratchpad hpicons/probe; contact sheet hpicons/hpicons_contact_sheet.png):
 - doom2 + LegenDoom 3.0 + Miniboss + Whip + VisualRewards: hook (old-Whip answer), lash, flame, heart, heart + flame,

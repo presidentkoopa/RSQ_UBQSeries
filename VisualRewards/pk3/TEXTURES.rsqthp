@@ -8,7 +8,7 @@
 //   Laid out from the bar outward: ally, raised, frozen or held, burning (the lasting ones nearest the bar).
 // Friendly main bar: sprite RSYG (frames as RSYA). Damage chunk: sprite RSYH, frame A.
 // Above the bar: sprite RSYI, A crown (miniboss), B chain link (thrall), C gem (legendary), D crown + gem,
-//   E link + gem, F..H crown + 1..3 tier pips, I..K crown + 1..3 pips + gem (gem left of the crown, pips right).
+//   E link + gem, F..I crown + 1..4 tier pips, J..M crown + 1..4 pips + gem (gem left of the crown, pips right).
 
 Sprite "RSYAA0", 112, 11
 {
@@ -4408,62 +4408,71 @@ Sprite "RSYFW0", 68, 9
 	Patch "RQS2", 49, 0
 	Patch "RQS5", 59, 0
 }
-Sprite "RSYIA0", 37, 9
+Sprite "RSYIA0", 43, 9
 {
 	Offset 14, 19
 	Patch "RQB1", 10, 0
 }
-Sprite "RSYIB0", 37, 9
+Sprite "RSYIB0", 43, 9
 {
 	Offset 14, 19
 	Patch "RQB2", 10, 0
 }
-Sprite "RSYIC0", 37, 9
+Sprite "RSYIC0", 43, 9
 {
 	Offset 14, 19
 	Patch "RQB3", 10, 0
 }
-Sprite "RSYID0", 37, 9
+Sprite "RSYID0", 43, 9
 {
 	Offset 14, 19
 	Patch "RQB1", 10, 0
 	Patch "RQB3", 0, 0
 }
-Sprite "RSYIE0", 37, 9
+Sprite "RSYIE0", 43, 9
 {
 	Offset 14, 19
 	Patch "RQB2", 10, 0
 	Patch "RQB3", 0, 0
 }
-Sprite "RSYIF0", 37, 9
+Sprite "RSYIF0", 43, 9
 {
 	Offset 14, 19
 	Patch "RQB1", 10, 0
 	Patch "RQB4", 20, 3
 }
-Sprite "RSYIG0", 37, 9
+Sprite "RSYIG0", 43, 9
 {
 	Offset 14, 19
 	Patch "RQB1", 10, 0
 	Patch "RQB4", 20, 3
 	Patch "RQB4", 26, 3
 }
-Sprite "RSYIH0", 37, 9
+Sprite "RSYIH0", 43, 9
+{
+	Offset 14, 19
+	Patch "RQB1", 10, 0
+	Patch "RQB4", 20, 3
+	Patch "RQB4", 26, 3
+	Patch "RQB4", 32, 3
+}
+Sprite "RSYII0", 43, 9
 {
 	Offset 14, 19
 	Patch "RQB1", 10, 0
 	Patch "RQB4", 20, 3
 	Patch "RQB4", 26, 3
 	Patch "RQB4", 32, 3
+	Patch "RQB4", 38, 3
 }
-Sprite "RSYII0", 37, 9
+Sprite "RSYIJ0", 43, 9
 {
 	Offset 14, 19
 	Patch "RQB1", 10, 0
 	Patch "RQB3", 0, 0
 	Patch "RQB4", 20, 3
 }
-Sprite "RSYIJ0", 37, 9
+Sprite "RSYIK0", 43, 9
 {
 	Offset 14, 19
 	Patch "RQB1", 10, 0
@@ -4471,7 +4480,7 @@ Sprite "RSYIJ0", 37, 9
 	Patch "RQB4", 20, 3
 	Patch "RQB4", 26, 3
 }
-Sprite "RSYIK0", 37, 9
+Sprite "RSYIL0", 43, 9
 {
 	Offset 14, 19
 	Patch "RQB1", 10, 0
@@ -4479,6 +4488,16 @@ Sprite "RSYIK0", 37, 9
 	Patch "RQB4", 20, 3
 	Patch "RQB4", 26, 3
 	Patch "RQB4", 32, 3
+}
+Sprite "RSYIM0", 43, 9
+{
+	Offset 14, 19
+	Patch "RQB1", 10, 0
+	Patch "RQB3", 0, 0
+	Patch "RQB4", 20, 3
+	Patch "RQB4", 26, 3
+	Patch "RQB4", 32, 3
+	Patch "RQB4", 38, 3
 }
 Sprite "RSYGA0", 112, 11
 {
