@@ -71,6 +71,10 @@ here (the body, the holsters, the torso that follows your turns) is worked out i
 - The cigarettes left in your pocket stand in it on your chest, and the mirror shows your grenade, cigarettes and
   RSQ ShieldSaw's shield along with your holsters.
 
+**Throw your gun** (off by default: switch on Throw Guns)
+- Swing hard and press: the gun leaves your hand, flies with your swing and lands as a pickup.
+- A thrown gun that hits a monster hurts and staggers it. Heavier guns and harder throws hit harder.
+
 **Fit it to you**
 - Measure My Height scales the whole rig to your body.
 - Seated play: the rig hangs from your seated eyes.
@@ -103,6 +107,7 @@ here (the body, the holsters, the torso that follows your turns) is worked out i
 |---|---|---|
 | Holster a gun | Hand with a gun inside a holster ring, then grip (or Use) | A full holster swaps: its gun comes out to that hand |
 | Draw a gun | Empty hand inside a full holster, then grip (or Use) | Each hand draws into itself |
+| Throw a gun | Throw Guns on: swing the hand fast (2.5 m/s) outside every holster, then grip, or Use with the main hand (Throw With Use) | Lands as a pickup you can take again |
 | Grenade | Either hand at the belt buckle, grip | Again with the grenade in hand: your gun comes back |
 | Saber | Main hand at the main-side saber spot, off hand at the other | Needs RSQ Saber; a saber put on any empty holster goes to its own spot |
 | Whip | The whip's hand at the whip holster (main-hand hip), grip or Use | Needs RSQ Whip; draws or puts away. A whip put on an empty gun holster goes home |
@@ -162,6 +167,10 @@ what the rows already do: Smoker, Chain Smoker, Gun Toss, Boomerang Gun).
 | Stored Gun Size | 1.00 | Their size (0.25 to 3) |
 | Ammo Light | On | The green / yellow / red light on a full holster |
 | Ammo Count | Off | Round count above each full holster |
+| **Gun Throwing** | | |
+| Throw Guns | Off | Swing-and-press throws |
+| Throw With Use | Off | The main hand throws on Use too (greyed while Throw Guns is off) |
+| Thrown Guns Hurt | On | Thrown guns damage and stagger (greyed while Throw Guns is off) |
 | **Body** | | |
 | Seated | Off | Hang the rig from your seated eyes (this machine only) |
 | Measure My Height | | Reads your headset height and scales the rig |
@@ -195,14 +204,16 @@ The whip, flare and saber shown at their Rig spots follow those mods' own Show r
 
 **Test and Debug**: Stored Guns: Gun Length (0.25 m), Back Gun Length (0.70 m), Gun Turn (0), Flip These Guns (blank).
 Body: Body Turn Angle (35) and Body Turn Delay (1.0 s) for Torso Catches Up, Ignore Looking Down (25 degrees), Mirror
-Distance (1.0 m). Hands: Press Delay (3 tics), Main Grip Keys (446),
+Distance (1.0 m). Hands: Press Delay (3 tics), Throw Speed (2.5 m/s) and Thrown Gun Damage (1.0) (both greyed while
+Throw Guns is off), Main Grip Keys (446),
 Off Grip Keys (443 436), Empty Hand Weapon (blank: the fist). Torso Fit: Torso Height (-0.20 m), Torso Forward
 (-0.04 m), Torso Size (1.0), Helmet Height (0), Low Health Glow (under 35). Cigarette: Mouth Zone Size (1.0), In Mouth
 Forward (0.12 m), In Mouth Down (0.07 m), Smoke Time (2 s), Slow Motion (6 s), Slow Motion Speed (25%), Pack Size (3).
 Holster Positions: forward, left, up and size in metres from your eyes for every holster, the grenade spot, the
 keyring, both saber spots, the whip and flare holsters and the ammo pouch (hips 0.70 m down, 0.18 m out; chest 0.46
 down, 0.12 out, 0.10 forward; shoulders 0.10 down, 0.18 out, 0.08 back; whip and flare 0.84 down, 0.30 out, 0.06
-back, whip 0.08 size; pouch 0.62 down, 0.14 toward the off hand, 0.20 forward, 0.10 size; cigarette pocket 0.08).
+back, whip 0.08 size; pouch 0.62 down, 0.14 toward the off hand, 0.20 forward, 0.10 size; cigarette pocket 0.08). Debug:
+Throw Debug Log (Off).
 
 ## Works with
 
@@ -227,7 +238,8 @@ Runs alone on any load order. It finds the rest by name:
   Headlock waits while your off hand is in a holster.
 - **RSQ Wheel** marks where a gun is holstered; **RSQ Score** reads holster draws for its quick-draw bonus; and the hand reloads of **BD22 VR
   Reloaded** take ammo from the pouch when its pouch-only setting is on.
-- **Gun Bonsai + RSQ Gun Bonsai VR**: Smoker lengthens the smoke's slow motion and makes you
+- **Gun Bonsai + RSQ Gun Bonsai VR**: Gun Toss makes thrown guns hit harder and stagger longer; Boomerang Gun flies a
+  thrown gun back to its holster, or to your hand at level 2 (both offered only while Throw Guns is on); Smoker lengthens the smoke's slow motion and makes you
   untouchable through it; Chain Smoker adds cigarettes to the pack.
 
 ## Credits and licence

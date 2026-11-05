@@ -187,7 +187,8 @@ Reset All still resets them.
 - **RSQ Grapple**: its player tree. The hook starts locked and opens when you learn Grapple. Its XP goes to your
   player level.
 - **RSQ Distance Grab**: throws, and the blasts they set off, pay your player level instead of a gun.
-- **RSQ Tactical Rig**: the Gunslinger tree (Quick Draw, Pair Draw, Smoker, Chain Smoker).
+- **RSQ Tactical Rig**: the Gunslinger tree (Quick Draw, Pair Draw, Gun Toss, Boomerang Gun, Smoker, Chain Smoker; Gun Toss
+  and Boomerang Gun are offered only while the Rig's Throw Guns is on).
   A thrown gun pays its own record. With **RSQ Laser Sight** too: Target Lock and Headshot Reaction.
 - **RSQ SlowMo**: its tree, plus Showdown, Adrenaline, Finisher and the other slow-motion moments.
 - **RSQ Score**: XP Source Style. Score draws its own score line.

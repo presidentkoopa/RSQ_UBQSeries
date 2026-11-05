@@ -315,17 +315,27 @@ class RSQ_RigTreePerk : RSQ_RigPerk
 // never unlocks). The classes stay for saves that hold them; the rig no longer reads them.
 class RSQ_Upgrade_AmmoReadout : RSQ_RigTreePerk { override int Cap() { return 1; } override bool IsSuitableForPlayer(TFLV_PerPlayerStats stats) { return false; } }
 // GUN TOSS (root): a thrown gun hurts x1.5, 2.0, 2.5 and staggers 10 tics a level longer.
-// Not offered (owner 11-05 01:53: gun throwing is switched off and hidden in RSQ Tactical Rig); kept for saves.
+// OFFERED ONLY WHILE RSQ TACTICAL RIG'S GUN THROWING IS ON (owner 11-05: its rows are back, default off; "Make them
+// offerable again only while Tactical Rig's gun throwing is on"): the Rig's Throw Guns, rsqtr_throw, read by name for
+// this player. No Rig (or no such cvar): never offered. Kept for saves either way.
 class RSQ_Upgrade_GunToss : RSQ_RigTreePerk
 {
 	override int Cap() { return 3; }
-	override bool IsSuitableForPlayer(TFLV_PerPlayerStats stats) { return false; }
+	static bool ThrowOn(TFLV_PerPlayerStats stats)
+	{
+		let pawn = stats ? stats.owner : null;
+		if (!pawn || !pawn.player) return false;
+		let cv = CVar.GetCVar("rsqtr_throw", pawn.player);
+		return cv && cv.GetBool();
+	}
+	override bool IsSuitableForPlayer(TFLV_PerPlayerStats stats) { return Super.IsSuitableForPlayer(stats) && ThrowOn(stats); }
 	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("mult", string.format("x%.1f", 1.0 + 0.5 * level)); }
 }
 // BOOMERANG GUN (after Gun Toss 2): a thrown gun that hits a monster flies back to the holster it came from (2: to your hand).
 class RSQ_Upgrade_BoomerangGun : RSQ_RigTreePerk
 {
-	override bool IsSuitableForPlayer(TFLV_PerPlayerStats stats) { return false; }   // not offered (gun throwing off, 11-05)
+	// offered only while the Rig's gun throwing is on (as Gun Toss), after Gun Toss 2
+	override bool IsSuitableForPlayer(TFLV_PerPlayerStats stats) { return Super.IsSuitableForPlayer(stats) && RSQ_Upgrade_GunToss.ThrowOn(stats); }
 	override String Parent() { return "GunToss"; }
 	override int ParentLevel() { return 2; }
 	override int Cap() { return 2; }
