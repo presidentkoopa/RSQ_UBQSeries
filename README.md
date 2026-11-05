@@ -1,4 +1,4 @@
-# Radiant Silvergun Quest
+# Radiant Silvergun
 
 Nineteen VR mods for Doom on stock QuestZDoom 17.3: holsters on your body, a real lightsaber, a simulated bullwhip, a
 grenade you pin with your teeth, a world you can slow down, and a dozen more, all built in ZScript alone.
@@ -6,7 +6,7 @@ grenade you pin with your teeth, a world you can slow down, and a dozen more, al
 Status: 0.99 — every mod played and confirmed working in the headset; the newest additions are tested on the rig with a
 headset check pending (each mod's README lists them). A full headset pass takes the series to 1.0.
 
-By presidentkoopa, with ideas and assets from Ermac and the people credited below.
+Project directed and coordinated by presidentkoopa, with ideas and assets from Ermac and the people credited below.
 
 ## The series at a glance
 
