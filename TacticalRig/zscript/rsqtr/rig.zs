@@ -1008,11 +1008,14 @@ class RSQTR_Rig : EventHandler
 	}
 
 	// ---- MOVE A GUN TO THE OTHER HAND AT THE WATCH CHECK (owner 2026-11-01, rsqtr_watch_move, off by default) ----
-	// "use during watch check, as a toggle on off option". While RSQ_Gestures says a hand's watch check is held
-	// (its "inspect" answer 2, the one that brings up RSQ_GunCards' watch card; asked by name, RSQG_Service), a Use
-	// press (the BT_USE edge) moves the gun in THAT hand to the other hand; a movable gun in the other hand comes
-	// back (a swap). A hand left empty gets its empty-hand weapon (EmptyHand / OffEmptyName). Without RSQ_Gestures
-	// there is no watch check and this does nothing.
+	// "use during watch check, as a toggle on off option". While a hand's watch check is held (RSQ Gestures' "inspect"
+	// answer 2, the one that brings up RSQ_GunCards' watch card), a Use press (the BT_USE edge) moves the gun in THAT
+	// hand to the other hand; a movable gun in the other hand comes back (a swap). A hand left empty gets its empty-hand
+	// weapon (EmptyHand / OffEmptyName).
+	// WHO READS THE WATCH CHECK (owner 2026-11-04 19:45: every mod's standout works without RSQ Gestures): RSQ Gestures
+	// when it is loaded (RSQG_Service, as before); else RSQ Gun Cards' own copy of that reader (RSQGC_GCopyService, by
+	// name: the same reader the watch card shows from); else the Rig's own copy (gestcopy.zs). One reader at a time, the
+	// same pose and numbers in all three (tools/gestcopy).
 	// The holsters' rules: sabers, the ShieldSaw, the cigarette and Zippo, fists / the empty hands and Brutal
 	// Doom's off-hand dual copies (RSQ_Off_*) never move, and a hand holding one blocks the move; Brutal Doom's
 	// Dual (DualPistols ...) stays on BD's own key. A hand inside a holster (or the keyring in edit mode) keeps
@@ -1020,14 +1023,18 @@ class RSQTR_Rig : EventHandler
 	// Not into the off hand while the engine's two-hand latch is on (WF_TWOHANDSTABILIZED: an off-hand weapon
 	// raised then arrives invisible, apply/07_WHEEL.md 4; TickPairs' note).
 	const WATCH_GRACE = 8;                   // tics after the watch check lets go that a Use press still counts (a thumb on a button can tip the wrist)
-	private transient int watchTic[2];       // level.maptime + 1 when Gestures last said that hand's watch check was held
+	private transient int watchTic[2];       // level.maptime + 1 when that hand's watch check was last held (GestureInspect)
 
 	static int GestureInspect(PlayerPawn pmo, int h)
 	{
 		let it = ServiceIterator.Find("RSQG_Service");
 		Service s;
 		while (s = it.Next()) return s.GetInt("inspect", "", h, 0, pmo);
-		return -1;
+		// no RSQ Gestures: RSQ Gun Cards' copy, then our own (-1 from either: it stands down, ask the next)
+		it = ServiceIterator.Find("RSQGC_GCopyService");
+		while (s = it.Next()) { int g = s.GetInt("inspect", "", h, 0, pmo); if (g >= 0) return g; }
+		let own = RSQTR_GCopy.Get();
+		return own ? own.Inspect(pmo.PlayerNumber(), h) : -1;
 	}
 
 	// What a hand holds, for the move: 0 empty (its empty-hand weapon or nothing), 1 a gun that may move, 2 anything else.
