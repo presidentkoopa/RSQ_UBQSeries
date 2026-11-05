@@ -288,7 +288,7 @@ class RSQTHP_DamNumHandler : EventHandler
 		grow = CvI('rsqthp_dmg_grow', 0) != 0;
 		total = CvI('rsqthp_dmg_total', 1) != 0;
 		slam = CvI('rsqthp_dmg_slam', 1) != 0;
-		overkillW = CvI('rsqthp_dmg_overkill', 1) != 0;
+		overkillW = CvI('rsqthp_dmg_overkill', 0) != 0;
 		headW = CvI('rsqthp_dmg_head', 1) != 0;
 		comfort = CvI('rsqthp_dmg_comfort', 1) != 0;
 		maxN = clamp(CvI('rsqthp_dmg_max', 12), 2, 64);

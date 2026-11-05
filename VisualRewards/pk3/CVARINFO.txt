@@ -36,7 +36,7 @@ user   bool   rsqthp_dmg_size     = false; // Size by Hit: bigger hits (share of
 user   bool   rsqthp_dmg_grow     = false; // Grow with Distance: HP Bars' Far Size curve for the hit numbers too (off: 11-03, "no growing")
 user   bool   rsqthp_dmg_total    = true;  // Running Total: a chain's hits roll up in one total centred above the monster's bar
 user   bool   rsqthp_dmg_slam     = true;  // Kill Slam: on the kill the total (or the killing hit) punches once, holds, fades
-user   bool   rsqthp_dmg_overkill = true;  // Overkill Word: OVERKILL over the kill when the last hit went well past zero
+user   bool   rsqthp_dmg_overkill = false; // Overkill Word: OVERKILL over the kill when the last hit went well past zero (off by default, owner 11-04)
 user   bool   rsqthp_dmg_head     = true;  // Headshot Word: HEADSHOT over Brutal Doom's head hits, bigger, a jolt, gold / white cycling
 user   bool   rsqthp_dmg_comfort  = true;  // Out of Your Face: never nearer than ~1 m, off the aim line of either gun
 user   int    rsqthp_dmg_max      = 12;    // Most Numbers: only this many nearest numbers show (Quest default)
@@ -79,8 +79,9 @@ server int   rsqgb_kr_life      = 7;     // Bits Vanish After: seconds, 0 = neve
 server int   rsqgb_kr_ammo_mode = 1;     // Ammo Bits Give: 0 the gun in hand, 1 any gun carried
 server bool  rsqgb_kr_ammotype1 = true;  // which of a gun's two ammo types count (clip mods: SoM's readme)
 server bool  rsqgb_kr_ammotype2 = false;
-server float rsqgb_kr_magnet    = 0.0;   // Bits Fly to Me: metres, 0 = off (the Magnet node raises it)
+server float rsqgb_kr_magnet    = 2.0;   // Bits Fly to Me: metres, 0 = off (the Magnet node raises it); 2 m by default (owner 11-04: a VR player standing still picks bits up)
 server noarchive bool rsqgb_kr_debug = false;   // Debug Log: one console line a kill (what burst into how many bits)
 server int   rsqgb_kr_min       = 1;     // Range mode (SoM's som_kr_min / max / rnd)
 server int   rsqgb_kr_max       = 3;
 server bool  rsqgb_kr_rnd       = true;
+user   int    rsqvr_cfgver = 0;            // settings generation (not a setting): each fix to old settings runs once (killrewards.zs Migrate)

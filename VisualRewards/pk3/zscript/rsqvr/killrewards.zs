@@ -27,7 +27,7 @@
 //   each bit rolls the drop chance (50%, SoM's som_kr_per; a boss always drops every bit), then its KIND by the mix
 //   (Custom 15 / 20 / 65): health (KRBH, 25 health), armour (KRBA, 10 green armour, up to 250), ammo (KRBM, 5 rounds
 //   of any gun you carry, or of the gun in your hand). Bits vanish after 7 s (SoM's 35 tics x 7; 0 = never). Bits Fly
-//   to Me pulls bits inside a radius toward you (0 = off; the Magnet node raises it).
+//   to Me pulls bits inside a radius toward you (2 m; 0 = off; the Magnet node raises it).
 //   The chance is rolled ONCE, per bit, in both modes (2026-11-03). SoM had two: som_kr_chance (Range, per kill) and
 //   som_kr_per (per bit); the owner ran chance 100 / per 50, and this patch had been rolling its one chance twice in
 //   Range (50% gave ~25%). An imp (60 hp) now rolls 6 bits, each at 50%; a boss drops all it rolls.
@@ -47,7 +47,7 @@
 //   rsqgb_kr_life      int    7       seconds a bit lives, 0 = forever
 //   rsqgb_kr_ammo_mode 0 the gun in hand, 1 any gun carried                    (1)
 //   rsqgb_kr_ammotype1 / _ammotype2  bool  on / off   which of a gun's two ammo types count (clip mods: see SoM)
-//   rsqgb_kr_magnet    float  0.0     metres bits drift to you from, 0 off
+//   rsqgb_kr_magnet    float  2.0     metres bits drift to you from, 0 off (0 until 11-04; rsqvr_cfgver moves an old 0 to 2)
 //   rsqgb_kr_min / _max / _rnd   Range mode: 1, 3, on
 class RSQ_KRHandler : EventHandler
 {
@@ -98,7 +98,7 @@ class RSQ_KRHandler : EventHandler
 	static double MagnetM(Actor pawn)
 	{
 		static const double M[] = { 0, 2, 3, 4 };
-		return max(SV("rsqgb_kr_magnet", 0.0), M[clamp(Perk(pawn, "Magnet"), 0, 3)]);
+		return max(SV("rsqgb_kr_magnet", 2.0), M[clamp(Perk(pawn, "Magnet"), 0, 3)]);
 	}
 
 	// health per bit at the Bits per Kill preset
@@ -140,6 +140,23 @@ class RSQ_KRHandler : EventHandler
 		let sv = ServiceIterator.Find("RSQMB_Service").Next();
 		return sv && sv.GetInt("bossfor", "rewards", 0, 0, a) == 1;
 	}
+
+	// SETTINGS GENERATIONS, each once (rsqvr_cfgver; the config saves every value, so a changed CVARINFO default never
+	// reaches a machine that has run the mod: its old value sticks). DistanceGrab's / ShieldSaw's pattern.
+	// 1 (owner, 11-04 18:16): Bits Fly to Me 2 m by default (BUGS_0.99a item 35: at the old 0 a VR player standing still
+	//   never picked a bit up), moved only from the old default 0; the damage numbers' OVERKILL word off by default.
+	static void Migrate()
+	{
+		let ver = CVar.FindCVar("rsqvr_cfgver");
+		if (!ver) return;
+		if (ver.GetInt() < 1)
+		{
+			let c = CVar.FindCVar("rsqgb_kr_magnet"); if (c && c.GetFloat() <= 0) c.SetFloat(2.0);
+			c = CVar.FindCVar("rsqthp_dmg_overkill"); if (c) c.SetBool(false);
+			ver.SetInt(1);
+		}
+	}
+	override void WorldLoaded(WorldEvent e) { Migrate(); }
 
 	override void WorldThingDied(WorldEvent e)
 	{

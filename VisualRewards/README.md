@@ -60,8 +60,9 @@ about a metre from your eyes, and pushed off the aim line of both your guns.
 1. Load the pack. HP bars, damage numbers and Kill Rewards work at once. The level-up displays need Gun Bonsai.
 2. Hurt something. Its bar appears and the numbers start.
 3. Keep hitting the same monster to build the combo. The chain cools off after about three seconds without a hit.
-4. Walk over the bits a monster drops to collect them. They vanish after 7 seconds. Bits only come to you on their
-   own if you set **Bits Fly to Me** above 0, or learn the Magnet node in RSQ Gun Bonsai VR.
+4. Bits a monster drops within 2 m fly to you and are collected, even standing still; walk over the rest. They
+   vanish after 7 seconds. **Bits Fly to Me** sets the reach (0 turns it off); the Magnet node in RSQ Gun Bonsai VR
+   reaches further.
 5. If the screen feels busy, try **Aimed Only** (a bar only on what your guns point at), **Nearest 24 Only**, or
    lower **Most Numbers**.
 
@@ -73,7 +74,7 @@ VisualRewards reads no buttons. It reacts to what you do.
 |---|---|---|
 | See a monster's bar | Hurt it | With Aimed Only on: point either hand's gun at it. The bar stays half a second after you look away. |
 | Build a combo | Keep hitting the same monster | About 3 seconds without a hit ends the chain. |
-| Collect bits | Walk into them | With Bits Fly to Me or Magnet, bits in range fly to you and are collected without moving. |
+| Collect bits | Stand near them, or walk into them | Bits within Bits Fly to Me (2 m) or Magnet's reach fly to you and are collected without moving. |
 | Gains on your wrist | Pick something up | Health and armour land on your off-hand wrist, ammo on the wrist of the hand that uses it. |
 | Left-handed play | Nothing to set | Positions follow your actual hands. |
 
@@ -117,7 +118,7 @@ back to its default.
 | Grow with Distance | Off | Hit numbers grow with distance like the bars. |
 | Running Total | On | A chain's hits roll up in one total above the bar. |
 | Kill Slam | On | The total punches once on the kill. |
-| Overkill Word | On | OVERKILL when the last hit went well past zero. |
+| Overkill Word | Off | OVERKILL when the last hit went well past zero. |
 | Headshot Word | On | HEADSHOT over Brutal Doom's head hits. |
 | Out of Your Face | On | Numbers stay about a metre away and off both guns' aim lines. |
 | Most Numbers | 12 | Only this many of the nearest numbers show (6, 12, 24, 48). |
@@ -156,7 +157,7 @@ back to its default.
 | What Drops | Custom (below) | Even Mix, Mostly Health, Mostly Armour, Mostly Ammo, or the custom mix. |
 | Bits Vanish After | 7 s | 7 s, 15 s, 30 s, 1 min or Never. |
 | Ammo Bits Give | Any Gun I Carry | Or The Gun in Hand. |
-| Bits Fly to Me | 0 (off) | Metres from which bits fly to you. |
+| Bits Fly to Me | 2 | Metres from which bits fly to you (0 off). |
 | Drop Mode | By Health | By Health, or Range (a random count between the two Range rows). |
 | Custom: Health per Bit | 10 | Health per bit when Bits per Kill is Custom. |
 | Drop Chance % | 50 | Chance each bit drops. A boss always drops every bit. |
@@ -182,7 +183,8 @@ back to its default.
 - **Gun Bonsai**: drives both level-up displays. With **RSQ Gun Bonsai VR**, the weapon tag knows which hand's gun
   levelled, and its Kill Rewards tree (Gastropub, Rich Bits, Magnet, Lucky Kill) adds more bits, richer bits, a
   magnet and bonus bursts on critical, Finisher and big-Score kills.
-- **Brutal Doom / BD22**: HEADSHOT on its head hits. Its invisible helper monsters never get a bar, a number or bits.
+- **Brutal Doom / BD22**: HEADSHOT on its head hits. Its invisible helper monsters never get a bar, a number or bits,
+  and neither do the dying bodies a monster leaves (crawling, burning, slumped, last stand): one monster pays once.
 - **RSQ Grapple, RSQ ShieldSaw, RSQ QuestSaber, RSQ Miniboss**: their hooked, stunned, locked, gripped, miniboss and
   thrall markers on the bars.
 - **RSQ SlowMo**: the optional level-up pulse, and numbers that slow with the world.
