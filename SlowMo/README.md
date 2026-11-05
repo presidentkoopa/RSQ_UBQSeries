@@ -56,7 +56,7 @@ dodgeable speed. Your shield and saber stop the rounds like any other projectile
 - With too little in the meter you get a short buzz and the player "oof".
 
 **On the HUD**
-- **Countdown Bar.** A horizontal bar, green by default, for every slow motion, whatever started it: your key, wrist cross, burst, Wheel or shootdodge, a kill moment or shove, the cigarette, a parry, Miniboss's Bossfight landing or window, a close call, any other mod. It starts full and drains over that slow motion's real seconds, reaching zero just as time catches up (the ease out included). A burst lasts its 4 s (longer with Gun Bonsai VR's Longer); another mod's slow motion lasts what it asked for. Held on with Adrenaline on, it shows the time the meter has left, so it is also your adrenaline readout while held; held on with Adrenaline off there is no end, so it sits full until you let go. A new or longer slow motion refills it smoothly with a glint. It sits under RSQ Score's bar (under RSQ Miniboss's Bossfight meter when that is loaded), smaller than Score and centred under it, with a pixel-art hourglass at its left; while Miniboss's meter shows, the two bars line up. Without Score, it goes where Score's bar would be.
+- **Countdown Bar.** A horizontal bar, green by default, for every slow motion, whatever started it: your key, wrist cross, burst, Wheel or shootdodge, a kill moment or shove, the cigarette, a parry, Miniboss's Bossfight landing or window, a close call, any other mod. It starts full and drains over that slow motion's real seconds, reaching zero just as time catches up (the ease out included). A burst lasts its 4 s (longer with Gun Bonsai VR's Longer); another mod's slow motion lasts what it asked for. Held on with Adrenaline on, it shows the time the meter has left, so it is also your adrenaline readout while held; held on with Adrenaline off, it drains over your Slow Motion Length (6 s by default). A shootdodge without Adrenaline has no set length (it ends when you land), so the bar sits full until then. A new or longer slow motion refills it smoothly with a glint. It sits under RSQ Score's bar (under RSQ Miniboss's Bossfight meter when that is loaded), smaller than Score and centred under it, with a pixel-art hourglass at its left; while Miniboss's meter shows, the two bars line up. Without Score, it goes where Score's bar would be.
 - **Color Drain** (optional, off by default). Colours fade out while time is slowed.
 
 ## How To Play
@@ -72,7 +72,7 @@ dodgeable speed. Your shield and saber stop the rounds like any other projectile
 
 | Action | How (VR) | Notes |
 |---|---|---|
-| Slow motion on/off | Bound key: *Slow Motion* (Controls: "RSQ SlowMo" → "Slow motion on/off") | No default binding. Toggles held slow motion. |
+| Slow motion on/off | Bound key: *Slow Motion* (Controls: "RSQ SlowMo" → "Slow motion on/off") | No default binding. Toggles slow motion; with Adrenaline off it ends by itself after Slow Motion Length. |
 | Slow motion on/off (gesture) | Cross your wrists in front of your face and hold about 1/3 s | Wrists within 16 cm of each other, main hand at least 3 cm across onto the off-hand side, 12–60 cm in front of your eyes, from 40 cm below eye level to 15 cm above. Uncross before the next one. |
 | 4-second burst | The same wrist cross, with *Wrist Cross = 4 s Burst* on | A timed slow instead of a toggle. |
 | Shootdodge | Bound key: *Shootdodge* (Controls: "RSQ SlowMo" → "Shootdodge"), thumbstick for direction | Only while standing on the ground (not crouched, not in deep water, and only where the map allows jumping). Leaps the way the stick points, forward if it's centred. Ends when you land, die, run out of adrenaline or after 6 s. |
@@ -96,6 +96,7 @@ off (Keep Adrenaline, the bar rows, Wrist Cross Bursts, Burst).
 | Slow Motion Key | unbound | The key that toggles slow motion. |
 | Shootdodge Key | unbound | The shootdodge key. |
 | World Speed | 0.25 | How fast the world runs while slowed, from 0.05 (near freeze) to 0.95. With Gun Bonsai VR's Deeper learned, slower still: x0.8, 0.6, 0.4 of this. |
+| Slow Motion Length | 6 s | With Adrenaline off, your slow motion (key, wrist cross, Wheel, Accessibility button) ends by itself after this many seconds, 1 to 30; press again to end it sooner. Greyed while Adrenaline is on: the meter decides then. |
 | **Slow Motion** | | |
 | Dodgeable Bullets | On | Enemy hitscans become visible rounds in slow motion. |
 | Lean Out of Bullets | On | Leaning out of a slowed round's path makes it miss. With Gun Bonsai VR: also needs Lean Dodge. |

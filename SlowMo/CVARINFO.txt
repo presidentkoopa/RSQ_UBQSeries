@@ -20,6 +20,7 @@ server bool  rsqsm_wakes        = true;  // slowed missiles leave a wake
 server bool  rsqsm_adrenaline   = false; // the held slow motion costs adrenaline
 server float rsqsm_adr_min      = 25;    // needed to start it
 server float rsqsm_adr_secs     = 10;    // a full meter lasts this long
+server float rsqsm_length       = 6;     // Slow Motion Length: with Adrenaline off, your held slow motion lets go after this many real seconds (1-30)
 server float rsqsm_adr_kill     = 12;    // earned per kill
 server float rsqsm_adr_near     = 4;     // earned per near miss
 server bool  rsqsm_adr_keep     = true;  // the meter carries over to the next level

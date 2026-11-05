@@ -65,6 +65,11 @@ class RSQSM_Clock : EventHandler
 	bool   pulseAuto;        // ... and whether it was automatic
 	int    autoReady;        // maptime the next automatic trigger may start slow motion
 	double adr;              // the adrenaline meter, 0..100
+	// SLOW MOTION LENGTH (owner 11-05: yes to a "Slow Motion Length" slider): with Adrenaline off, his held slow motion (the
+	// key, the wrist cross, the Wheel, the Accessibility button) lets go by itself after rsqsm_length real seconds; pressing
+	// again still ends it early. With Adrenaline on the meter decides, as before. The shootdodge keeps its own end (landing).
+	int    heldUntil;        // maptime the held slow motion lets go (Adrenaline off), 0 none
+	int    heldWho;          // the player who held it on (his cue when it lets go)
 	// ---- THE COUNTDOWN (owner 2026-11-03 19:06; 11-05 03:55 "use our new slowdown timer bar for all slowmo, when player
 	// triggers it, it starts full, and drains for however long the player has set it to"; countdown.zs draws it) --------
 	// Shown for EVERY slow motion: set when any trigger is let in (Trigger: every pulse, the burst, the named door), when he
@@ -215,6 +220,8 @@ class RSQSM_Clock : EventHandler
 	}
 	// RSQ_Accessibility's Min SlowMo Ease (rsqa_slowmo_ramp) is a floor under both: no ease
 	// shorter than it, so the world never lurches into or out of slow motion. 0 / absent: as set.
+	// Slow Motion Length, real seconds (1..30)
+	double HeldSecs() { return clamp(Cv("rsqsm_length", 6), 1.0, 30.0); }
 	double RampIn()  { return max(max(0.0, Cv("rsm_ramp_in", 0.15)), RSQSM_A11y.SlowRamp()); }
 	double RampOut() { return max(max(0.0, Cv("rsm_ramp_out", 0.40)), RSQSM_A11y.SlowRamp()); }
 
@@ -247,6 +254,7 @@ class RSQSM_Clock : EventHandler
 		if (e.IsSaveGame) return;
 		// A level never starts slowed (and nothing carries over: the arrays are empty).
 		on = false; target = 1; scale = 1; pulseUntil = 0; pulseDepth = 1; pulseSrc = ""; pulseAuto = false; autoReady = 0;
+		heldUntil = 0; heldWho = -1;
 		cdOn = false; cdLeft = 0; cdTotal = 0; cdEndAt = 0; cdStartTic = 0; cdRefillTic = 0; cdEndTic = 0;
 		ClearAll();
 		for (int i = 0; i < MAXPLAYERS; i++) { dodgeTic[i] = 0; meK[i] = 1; meGrav[i] = 0; meVx[i] = 0; meVy[i] = 0; }
@@ -450,6 +458,8 @@ class RSQSM_Clock : EventHandler
 		}
 		bool was = on;
 		on = want;
+		if (on && !was) { heldUntil = level.maptime + int(ceil(HeldSecs() * TICRATE)); heldWho = who; }
+		if (!on) heldUntil = 0;
 		if (on) { pulseUntil = 0; CountdownStart(why, true); }     // the toggle outranks a pulse; the bar starts (or refills) full
 		// A CUE ONLY FOR A CHANGE. An rsm_off to a clock already off (the Wheel closing after the
 		// adrenaline meter refused its rsm_on; a meter that ran dry) played the way-out sound and
@@ -638,7 +648,8 @@ class RSQSM_Clock : EventHandler
 	//   the miniboss window                              it re-asks each second: its hold is the window's end
 	//   held on / a shootdodge in the air, Adrenaline on  the time the meter has left (adr x Full Meter (s), Longer, Cheaper):
 	//                                                    it drains with the meter; adrenaline earned meanwhile refills it
-	//   held on / a shootdodge, Adrenaline off           no end of its own: the bar sits full until he lets go (or lands)
+	//   held on, Adrenaline off                          Slow Motion Length (rsqsm_length, real seconds, default 6)
+	//   a shootdodge alone, Adrenaline off               no set end (it ends on landing): the bar sits full until he lands
 	private void CountdownTick()
 	{
 		if (!cdOn) return;
@@ -650,7 +661,9 @@ class RSQSM_Clock : EventHandler
 		double hl = max(0, holdEnd - level.maptime);
 		bool adrOn = Cv("rsqsm_adrenaline", 0) != 0;
 		if (holding && adrOn) hl = max(hl, adr * AdrSecs() * TICRATE / (100.0 * max(CostK(), 0.05)));
-		bool endless = holding && !adrOn;
+		bool timed = on && !adrOn && heldUntil > 0;     // held on, Adrenaline off: Slow Motion Length
+		if (timed) hl = max(hl, heldUntil - level.maptime);
+		bool endless = holding && !adrOn && !timed;
 		if (hl > 0 || endless)
 		{
 			// the depth when the hold ends: the deepest asked for, unless the ease in cannot reach it by then
@@ -887,6 +900,8 @@ class RSQSM_Clock : EventHandler
 		ResolvePulses();
 		CloseCalls();
 
+		// SLOW MOTION LENGTH: with Adrenaline off, the held slow motion lets go by itself when its time is up
+		if (on && heldUntil > 0 && Cv("rsqsm_adrenaline", 0) == 0 && level.maptime >= heldUntil) Aim(false, heldWho, "length");
 		// Where the clock is heading: the toggle, then a pulse, then full speed.
 		if (on) target = Depth();
 		else if (pulseUntil > 0)
