@@ -86,12 +86,12 @@ and the throw is measured against your body, so walking and turning never count 
 | Put it back | Off hand at the pocket with an unlit flare, grip | |
 | Strike it | Flick the flare hand down at 1.4 m/s or more | With Light It By on Strike or Strike or Trigger |
 | Light by trigger | Off-hand trigger | With Light It By on Trigger or Strike or Trigger |
-| Throw | Swing the off hand faster than 2 m/s, then grip or off-hand trigger | Leaves at 1.25x your hand's speed, with a little arc and your walking speed added |
-| Drop | Grip with the hand still, away from the pocket | Lies at your feet, burning |
+| Throw | Swing the off hand faster than 2 m/s and grip or pull the off-hand trigger, or let go of a grip you were holding | Leaves at 1.25x your hand's speed, with a little arc and your walking speed added. A fast move mostly down (a reach to the hip) never throws |
+| Drop | Grip with the hand still, away from the pocket and the Tactical Rig's holsters | Lies at your feet, burning. A lit flare is never put away: at the pocket or a holster the grip leaves it in your hand |
 | Take the flashlight | Off hand at the clip (your off hand's side of your chest), grip | Clip: 0.10 m forward, 0.17 m toward your off hand, 0.22 m under your eyes; reach 0.12 m. Comes out on |
 | Flashlight on / off | The flashlight hand's trigger | A click |
 | Put the flashlight back | Off hand at the clip, grip | |
-| Flare holster (with RSQ Tactical Rig) | Off hand at the Rig's flare holster on your off-hand hip, grip | Takes or puts back an unlit flare, the same flares as the pocket. A lit one cannot go back: the grip drops it, burning. Shown there while you carry one |
+| Flare holster (with RSQ Tactical Rig) | Off hand at the Rig's flare holster on your off-hand hip, grip | Takes or puts back an unlit flare, the same flares as the pocket. A lit one cannot go back: it stays in your hand. Shown there while you carry one |
 
 - The flare is always in the off hand. With QuestZDoom's left-handed setting the pocket moves to the other side of
   your chest, still toward your main hand.
@@ -143,7 +143,7 @@ Runs alone. It finds the others by name:
   turns, recenters). The pocket and the flashlight clip show the Rig's fading holster sphere, like its own holsters. The Rig adds a flare holster on your off-hand hip that holds the same flares as the pocket, with
   a flare model hanging there while you carry one. While your off hand is in one of the Rig's holsters, the grip
   belongs to the Rig, never the pocket, and a fast reach down to a holster is never read as a strike. Drawing a gun
-  into the off hand from a holster puts an unlit flare back (a lit one falls, burning). The Rig never throws the
+  into the off hand from a holster puts an unlit flare back; with a lit flare in the off hand the Rig's holsters do nothing for that hand (the flare stays in it). The Rig never throws the
   flare. The two pockets sit on opposite sides: the Rig's cigarettes on your off-hand side, flares on your main-hand
   side. Without the Rig, the pocket follows snap and stick turns and eases under your head while you look ahead.
 - **Brutal Doom 22 VR Reloaded**: when the flare leaves your hand, the off hand gets BD22 VR's empty hands back (on

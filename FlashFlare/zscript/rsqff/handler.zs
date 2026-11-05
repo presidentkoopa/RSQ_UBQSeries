@@ -41,13 +41,14 @@ class RSQFF_Handler : EventHandler
 	int takeTic[MAXPLAYERS];
 	int takeWant[MAXPLAYERS];         // a take asked for while the engine steadies the gun (level.maptime + 1), done when it lets go
 	bool gripDown[MAXPLAYERS];
+	int trigKeyTic[MAXPLAYERS];       // when a key bound to +oh_attack last went down with a flare out (InputProcess)
 	Vector3 throwAt[MAXPLAYERS], throwVel[MAXPLAYERS];
 	Array<RSQFF_Burner> lit;          // every burning flare, oldest first (the light budget)
 	int lightsPeak;
 
 	// ---- the console player's hands (local) ----
 	private transient bool gripPrev, trigPrev;
-	private transient int waitUntil, strikeQuiet, strikeAt;
+	private transient int waitUntil, strikeQuiet, strikeAt, trigKeySeen, refusedAt;
 	private transient double myBodyYaw;
 	private transient bool bodyPrimed;
 	private transient Vector3 lastRel[2], rawHand[2];
@@ -83,6 +84,13 @@ class RSQFF_Handler : EventHandler
 	override bool InputProcess(InputEvent e)
 	{
 		if (e.Type != InputEvent.Type_KeyDown && e.Type != InputEvent.Type_KeyUp) return false;
+		// THE OFF-HAND TRIGGER AS A KEY TOO (torch.zs's way, 11-05): BD22 VR's own off hand can clear it from the command,
+		// and a tap shorter than a tic never reaches it, so the key going down counts as well (a flare out only)
+		if (e.Type == InputEvent.Type_KeyDown && consoleplayer >= 0 && consoleplayer < MAXPLAYERS && phase[consoleplayer] != PH_NONE)
+		{
+			String b = Bindings.GetBinding(e.KeyScan);
+			if (b.MakeLower().IndexOf("+oh_attack") >= 0) EventHandler.SendNetworkEvent("rsqff_tkey");
+		}
 		let me = players[consoleplayer];
 		let cv = CVar.GetCVar("rsqff_keys_off", me);
 		String s = cv ? cv.GetString() : "443 436";
@@ -110,6 +118,7 @@ class RSQFF_Handler : EventHandler
 		let pmo = players[n].mo;
 		if (!pmo) return;
 		if (e.Name == "rsqff_grip") { gripDown[n] = e.Args[0] != 0; return; }
+		if (e.Name == "rsqff_tkey") { trigKeyTic[n] = level.maptime; return; }
 		if (e.Name == "rsqff_take") { takeWant[n] = level.maptime + 1; return; }
 		if (e.Name == "rsqff_back") { Back(pmo, n, true); return; }
 		if (e.Name == "rsqff_light") { Light(pmo, n, e.Args[0]); return; }
@@ -328,10 +337,16 @@ class RSQFF_Handler : EventHandler
 		Sample(pmo);
 		bool grip = gripDown[n];
 		bool gripEdge = grip && !gripPrev;
+		bool gripUp = !grip && gripPrev;
 		gripPrev = grip;
-		bool trig = (p.cmd.buttons & BT_OFFHANDATTACK) != 0;
+		// the command's button OR the original command's (BD22 VR's off hand can clear it from cmd), or the key itself
+		bool trig = ((p.cmd.buttons | p.original_cmd.buttons) & BT_OFFHANDATTACK) != 0;
 		bool trigEdge = trig && !trigPrev;
 		trigPrev = trig;
+		bool tkey = trigKeyTic[n] != trigKeySeen && trigKeyTic[n] >= level.maptime - 1;
+		trigKeySeen = trigKeyTic[n];
+		if (tkey && !trigEdge && trig) tkey = false;      // the command already holds it: the same press
+		trigEdge = trigEdge || tkey;
 		if (!RSQFF_Geo.InVR(pmo) || pmo.health <= 0) return;
 		if (level.maptime < waitUntil) return;
 		bool dbg = Debug(p);
@@ -339,7 +354,9 @@ class RSQFF_Handler : EventHandler
 		double by = BodyYaw(pmo);
 		Vector3 pk = RSQFF_Geo.Pocket(pmo, by);
 		double d = RSQFF_Geo.Metres(pmo, RSQFF_Geo.Pos(pmo, 1) - pk);
-		bool atPocket = d <= clamp(PNum(p, "rsqff_pocket_r", 0.11), 0.04, 0.4) && !RigHasHand(pmo);
+		bool inRig = RigHasHand(pmo);
+		bool nearPocket = d <= clamp(PNum(p, "rsqff_pocket_r", 0.11), 0.04, 0.4);
+		bool atPocket = nearPocket && !inRig;
 
 		if (phase[n] == PH_NONE)
 		{
@@ -364,7 +381,7 @@ class RSQFF_Handler : EventHandler
 		{
 			if (gripEdge && atPocket) { Send("rsqff_back"); Wait(6); return; }
 			int by_ = clamp(int(PNum(p, "rsqff_light_by", 2)), 0, 2);
-			if (by_ != 0 && trigEdge) { strikeAt = 0; Send("rsqff_light", 1); Wait(4); return; }
+			if (by_ != 0 && trigEdge) { strikeAt = 0; Send("rsqff_light", 1); Wait(4); ClearSamples(); return; }
 			// A REACH DOWN TO A HOLSTER IS NO STRIKE (11-03, RSQ Tactical Rig's flare holster on the hip): an unlit flare
 			// carried down to the hip to put it back is a fast downward move, and on the rig it read as a 12 m/s strike
 			// and lit the flare on its way in. With the rig loaded a strike waits STRIKE_HOLD tics; if the off hand is in
@@ -377,7 +394,7 @@ class RSQFF_Handler : EventHandler
 				strikeQuiet = level.maptime + WIN;
 				if (dbg) Console.Printf("RSQFF strike t%d: not a strike, the hand went into a Tactical Rig place", level.maptime);
 			}
-			if (strikeAt > 0 && level.maptime >= strikeAt) { strikeAt = 0; Send("rsqff_light", 0); Wait(4); return; }
+			if (strikeAt > 0 && level.maptime >= strikeAt) { strikeAt = 0; Send("rsqff_light", 0); Wait(4); ClearSamples(); return; }
 			if (by_ != 1 && level.maptime - takeTic[n] > 8 && strikeAt <= 0 && level.maptime >= strikeQuiet)
 			{
 				// the strike: the fastest recent swing mostly DOWN and fast enough
@@ -388,17 +405,38 @@ class RSQFF_Handler : EventHandler
 					if (dbg) Console.Printf("RSQFF strike t%d: %.2f m/s down (%.2f m/s in all, needs %.2f down)%s", level.maptime, down, ms, need, rig ? ", lit in a moment unless it was a reach to a holster" : "");
 					if (rig && RigHasHand(pmo)) { strikeQuiet = level.maptime + WIN; if (dbg) Console.Printf("RSQFF strike t%d: not a strike, the hand is in a Tactical Rig place", level.maptime); }
 					else if (rig) strikeAt = level.maptime + STRIKE_HOLD;
-					else { Send("rsqff_light", 0); Wait(4); }
+					else { Send("rsqff_light", 0); Wait(4); ClearSamples(); }
 				}
 			}
 			return;
 		}
 		strikeAt = 0;
 
-		// lit: a press while swinging throws; a grip with the hand still drops it
-		if (!gripEdge && !trigEdge) return;
+		// LIT: a press while swinging throws; a grip with the hand still drops it. Also (11-05, owner: "I need to be able to
+		// throw the flare; right now it seems like I can only drop it") LETTING GO of a held grip while swinging throws, as a
+		// thrown thing leaves a hand in every VR game: a grip held through the swing never had a press to throw on, and the
+		// press after it came with the hand already still, a drop. A grip let go slowly does nothing (the flare stays).
+		// A LIT FLARE IS NEVER HOLSTERED (owner 11-05: "A lit flare should not be holstered"): at the chest pocket or in any of
+		// RSQ Tactical Rig's places (its flare holster, a gun holster, ...) a press or a let-go with the hand still, or a fast
+		// reach mostly DOWN into it, leaves the flare in the hand (a short buzz); it only leaves by a throw, a drop away from
+		// them, burning out, or something else taking the hand (death, a new level, another off-hand weapon: it falls burning).
+		bool released = gripUp && ms >= clamp(PNum(p, "rsqff_swing", 2.0), 0.5, 8.0);
+		if (!gripEdge && !trigEdge && !released) return;
 		double need = clamp(PNum(p, "rsqff_swing", 2.0), 0.5, 8.0);
 		Vector3 at = RSQFF_Geo.Tip(pmo) - RSQFF_Geo.Axis(pmo) * 4.0;
+		// a fast move mostly DOWN is a reach to the hip, never a throw, wherever it ends (rig 11-05: the rig's place is
+		// known a tic after the hand arrives, so a 5.3 m/s reach into the flare holster was thrown at the floor)
+		double downMs = -v.z * RSQFF_Geo.Ps(pmo) / RSQFF_Geo.Vu() * TICRATE;
+		if ((nearPocket || inRig) || (ms >= need && downMs >= 0.75 * ms))
+		{
+			if (ms < need || downMs >= 0.5 * ms)
+			{
+				if (level.maptime - refusedAt > 10) RSQFF_Buzzer.Start(pmo, 1, 0.12, 2);
+				refusedAt = level.maptime;
+				if (dbg) Console.Printf("RSQFF lit t%d: stays in the hand (%s, %.2f m/s, %.2f down): a lit flare is never put away", level.maptime, inRig ? "a Tactical Rig place" : (nearPocket ? "the pocket" : "a reach down"), ms, downMs);
+				return;
+			}
+		}
 		if (ms >= need)
 		{
 			Vector3 tv = v * clamp(PNum(p, "rsqff_throw", 1.25), 0.2, 4.0);
@@ -406,6 +444,7 @@ class RSQFF_Handler : EventHandler
 			tv += pmo.vel;
 			SendThrow(at, tv, ms);
 			Wait(6);
+			if (dbg) Console.Printf("RSQFF throw t%d: %.2f m/s on the %s", level.maptime, ms, released ? "grip let go" : (gripEdge ? "grip" : "trigger"));
 		}
 		else if (gripEdge && !atPocket)
 		{
@@ -495,16 +534,20 @@ class RSQFF_Handler : EventHandler
 		lastHandYaw[1] = hy1;
 		for (int h = 0; h < 2; h++)
 		{
-			Vector3 now = RSQFF_Geo.Pos(pmo, h);
-			bool stale = now == rawHand[h];
-			rawHand[h] = now;
+			// 11-05: the frame's hand carried to where the body is this tic, against the body at the view's height
+			// (RSQFF_HandSync, tools/handsync; PCVR-aware: OpenVR hangs the hands off the frame's eye), as Distance Grab and
+			// RSQ Melee measure a swing. The raw field still tells a frame with no new pose (stale).
+			Vector3 raw = RSQFF_Geo.Pos(pmo, h);
+			bool stale = raw == rawHand[h];
+			rawHand[h] = raw;
+			Vector3 now = RSQFF_HandSync.Fix(pmo, raw, h);
 			if (stale && !collapsed)
 			{
 				samples[h * WIN + sampleAt[h]] = (0, 0, 0);
 				sampleAt[h] = (sampleAt[h] + 1) % WIN;
 				continue;
 			}
-			Vector3 off = now - pmo.Pos;
+			Vector3 off = now - RSQFF_HandSync.Body(pmo);
 			Vector2 flat = Actor.RotateVector(off.xy, -frameYaw);
 			Vector3 rel = (flat.x, flat.y, off.z);
 			Vector3 step = rel - lastRel[h];
@@ -516,6 +559,9 @@ class RSQFF_Handler : EventHandler
 		}
 		if (quietTics > 0) quietTics--;
 	}
+
+	// the off hand's history forgotten (the strike's flick is no throw: a grip let go just after lighting read it as one)
+	private void ClearSamples() { for (int i = 0; i < WIN; i++) samples[WIN + i] = (0, 0, 0); }
 
 	private double, Vector3 Peak(PlayerPawn pmo, int h)
 	{

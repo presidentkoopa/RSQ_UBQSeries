@@ -15,7 +15,7 @@ flare uses in the same off-hand MODELDEF placement), so the hand holds the light
 THE FLASHLIGHT (made here, cm, along the gripped cylinder; 0 = the grip's centre): tail cap -8.5, body radius 2.3 (the grip
 is 2.49) to +6.0, a bezel widening to 3.1 by +8.0, the head to +11.0, the lens (radius 2.75) at +10.8 and a glow disc on
 it at +10.9 (shown, full bright, only while it is on). 19.5 cm long, 6.2 cm across the head.
-THE CONE (cone_lo.md3, cone_hi.md3): the visible beam, apex at the origin, along model +Z (up), 64 units long, radius at
+(UNTIL 11-05; now tools/gen_hudcone.py, drawn with the hand) THE CONE (cone_lo.md3, cone_hi.md3): the visible beam, apex at the origin, along model +Z (up), 64 units long, radius at
 the end 64 x tan(20 deg). The actor turns it to the beam (pitch + 90) and scales it: Scale.X = tan(half-angle) / tan(20),
 Scale.Y = the beam's length / 64. 26 frames (A-Z): in frame k the rings past (k + 1) / 26 of its length are folded onto
 that point, so a beam cut short by a wall keeps its fade (the texture's v is fixed per ring) instead of squeezing it.
@@ -169,24 +169,7 @@ def main():
     print('torch_h.md3: the lens centre md3 (%.2f %.2f %.2f), axis (%.3f %.3f %.3f)' % (*lens, *x))
     print('  -> zscript LENS_X/Y/Z for HandPoint: %.2f %.2f %.2f; AX %.3f %.3f %.3f' % (*lens, *x))
 
-    # cones
-    write_md3_frames(os.path.join(M, 'cone_lo.md3'), [cone_surface(12, 8, 0.85, 0.0, 0.5, 'beam')], FRAMES)
-    write_md3_frames(os.path.join(M, 'cone_hi.md3'), [cone_surface(16, 13, 1.0, 0.0, 0.5, 'outer'),
-                                                      cone_surface(16, 13, 0.5, 0.5, 1.0, 'inner')], FRAMES)
-    print('cone_lo.md3 / cone_hi.md3: %d frames, %d units, end radius %.1f at Scale.X 1' % (FRAMES, L0, L0 * math.tan(math.radians(HALF0))))
-
-    # skins
-    W, H = 64, 128
-    im = Image.new('RGBA', (W, H)); px = im.load(); rnd = random.Random(7)
-    for j in range(H):
-        v = j / (H - 1)
-        for i in range(W):
-            inner = i >= W // 2
-            base = (1 - v) ** (1.3 if inner else 1.8) * (0.75 if inner else 0.30)
-            base *= min(1.0, v * 12 + 0.25)       # not a hot point right at the lens
-            base *= 0.9 + 0.1 * rnd.random()      # a little grain
-            px[i, j] = (255, 255, 255, int(255 * max(0, min(1, base))))
-    im.save(os.path.join(M, 'cone.png'))
+    # the visible beam and its hotspot: tools/gen_hudcone.py (11-05: drawn with the hand; the actor cone and sprite are gone)
     tex = Image.new('RGB', (64, 64)); tp = tex.load()
     for j in range(64):
         for i in range(64):
@@ -208,22 +191,11 @@ def main():
             c = max(0.0, 1 - r * 0.45)
             gp[i, j] = (int(255 * c), int(250 * c), int(235 * c))
     glow.save(os.path.join(M, 'torchglow.png'))
-    # the hotspot: white, soft, alpha (AddStencil gives it the beam's colour)
-    hs = Image.new('RGBA', (64, 64)); hp = hs.load()
-    for j in range(64):
-        for i in range(64):
-            r = math.hypot(i - 31.5, j - 31.5) / 31.5
-            hp[i, j] = (255, 255, 255, int(255 * max(0.0, math.exp(-r * r * 3.2) - 0.04)))
-    out = os.path.join(S, 'QFFSA0.png')
-    hs.save(out)
-    from gen_flarebox import png_with_grab
-    data = png_with_grab(open(out, 'rb').read(), 32, 32)
-    open(out, 'wb').write(data)
     # placeholders for the model-only sprites: the flashlight in the hand (QFFT A-D) and the cones (QFFC, QFFK A-Z)
-    names = ['QFFT%s0' % c for c in 'ABCDE'] + ['QFF%s%s0' % (s, chr(65 + k)) for s in 'CK' for k in range(FRAMES)]
+    names = ['QFFT%s0' % c for c in 'ABCDE']
     for nm in names:
         Image.new('RGBA', (4, 4), (0, 0, 0, 0)).save(os.path.join(S, nm + '.png'))
-    print('wrote models/rsqff (rsqff_pumphand, torch_h, cone_lo, cone_hi, skins), sprites/rsqff (QFFSA0, %d placeholders)' % len(names))
+    print('wrote models/rsqff (rsqff_pumphand, torch_h, skins), sprites/rsqff (%d placeholders)' % len(names))
 
 
 if __name__ == '__main__':

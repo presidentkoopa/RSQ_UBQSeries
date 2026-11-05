@@ -1,6 +1,6 @@
 // RSQ FlashFlare -- RSQFF_Handler: the pocket, the hands, the throw, the light budget, boxes in the levels.
-// RSQFF_Torches: the flashlight (zscript/rsqff/torch.zs).
+// RSQFF_Torches: the flashlight (zscript/rsqff/torch.zs). RSQFF_HandSync first (tools/handsync): the hand a throw is measured from.
 GameInfo
 {
-	AddEventHandlers = "RSQFF_Handler", "RSQFF_Torches", "RSQFF_Shown"
+	AddEventHandlers = "RSQFF_HandSync", "RSQFF_Handler", "RSQFF_Torches", "RSQFF_Shown"
 }

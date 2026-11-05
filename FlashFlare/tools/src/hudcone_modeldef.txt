@@ -1,0 +1,612 @@
+Model RSQFF_Torch
+{
+	Path "models/rsqff"
+	Model 1 "hudcone_lo_b.md3"
+	Skin 1 "hudcone_c20.png"
+	Scale -8.0 8.0 8.0
+	Offset 0.0 -24.0 -10.0
+	FORCECULLBACKFACES
+	FrameIndex QFZ0 A 1 0
+	FrameIndex QFZ0 B 1 1
+	FrameIndex QFZ0 C 1 2
+	FrameIndex QFZ0 D 1 3
+	FrameIndex QFZ0 E 1 4
+	FrameIndex QFZ0 F 1 5
+	FrameIndex QFZ0 G 1 6
+	FrameIndex QFZ0 H 1 7
+	FrameIndex QFZ0 I 1 8
+	FrameIndex QFZ0 J 1 9
+	FrameIndex QFZ0 K 1 10
+	FrameIndex QFZ0 L 1 11
+	FrameIndex QFZ0 M 1 12
+	FrameIndex QFZ0 N 1 13
+	FrameIndex QFZ0 O 1 14
+	FrameIndex QFZ0 P 1 15
+	FrameIndex QFZ0 Q 1 16
+	FrameIndex QFZ0 R 1 17
+	FrameIndex QFZ0 S 1 18
+	FrameIndex QFZ0 T 1 19
+	FrameIndex QFZ0 U 1 20
+	FrameIndex QFZ0 V 1 21
+	FrameIndex QFZ0 W 1 22
+	FrameIndex QFZ0 X 1 23
+	FrameIndex QFZ0 Y 1 24
+}
+Model RSQFF_Torch
+{
+	Path "models/rsqff"
+	Model 1 "hudcone_lo_b.md3"
+	Skin 1 "hudcone_c20.png"
+	Scale -8.0 8.0 8.0
+	Offset 0.0 -24.0 -10.0
+	FORCECULLBACKFACES
+	FrameIndex QFZ1 A 1 25
+	FrameIndex QFZ1 B 1 26
+	FrameIndex QFZ1 C 1 27
+	FrameIndex QFZ1 D 1 28
+	FrameIndex QFZ1 E 1 29
+	FrameIndex QFZ1 F 1 30
+	FrameIndex QFZ1 G 1 31
+	FrameIndex QFZ1 H 1 32
+	FrameIndex QFZ1 I 1 33
+	FrameIndex QFZ1 J 1 34
+	FrameIndex QFZ1 K 1 35
+	FrameIndex QFZ1 L 1 36
+	FrameIndex QFZ1 M 1 37
+	FrameIndex QFZ1 N 1 38
+	FrameIndex QFZ1 O 1 39
+	FrameIndex QFZ1 P 1 40
+	FrameIndex QFZ1 Q 1 41
+	FrameIndex QFZ1 R 1 42
+	FrameIndex QFZ1 S 1 43
+	FrameIndex QFZ1 T 1 44
+	FrameIndex QFZ1 U 1 45
+	FrameIndex QFZ1 V 1 46
+	FrameIndex QFZ1 W 1 47
+	FrameIndex QFZ1 X 1 48
+	FrameIndex QFZ1 Y 1 49
+}
+Model RSQFF_Torch
+{
+	Path "models/rsqff"
+	Model 1 "hudcone_lo_b.md3"
+	Skin 1 "hudcone_c20.png"
+	Scale -8.0 8.0 8.0
+	Offset 0.0 -24.0 -10.0
+	FORCECULLBACKFACES
+	FrameIndex QFZ2 A 1 50
+	FrameIndex QFZ2 B 1 51
+	FrameIndex QFZ2 C 1 52
+	FrameIndex QFZ2 D 1 53
+	FrameIndex QFZ2 E 1 54
+	FrameIndex QFZ2 F 1 55
+	FrameIndex QFZ2 G 1 56
+	FrameIndex QFZ2 H 1 57
+	FrameIndex QFZ2 I 1 58
+	FrameIndex QFZ2 J 1 59
+	FrameIndex QFZ2 K 1 60
+	FrameIndex QFZ2 L 1 61
+	FrameIndex QFZ2 M 1 62
+	FrameIndex QFZ2 N 1 63
+	FrameIndex QFZ2 O 1 64
+	FrameIndex QFZ2 P 1 65
+	FrameIndex QFZ2 Q 1 66
+	FrameIndex QFZ2 R 1 67
+	FrameIndex QFZ2 S 1 68
+	FrameIndex QFZ2 T 1 69
+	FrameIndex QFZ2 U 1 70
+	FrameIndex QFZ2 V 1 71
+	FrameIndex QFZ2 W 1 72
+	FrameIndex QFZ2 X 1 73
+	FrameIndex QFZ2 Y 1 74
+}
+Model RSQFF_Torch
+{
+	Path "models/rsqff"
+	Model 1 "hudcone_hi_b.md3"
+	Skin 1 "hudcone_c20.png"
+	Scale -8.0 8.0 8.0
+	Offset 0.0 -24.0 -10.0
+	FORCECULLBACKFACES
+	FrameIndex QFZ3 A 1 0
+	FrameIndex QFZ3 B 1 1
+	FrameIndex QFZ3 C 1 2
+	FrameIndex QFZ3 D 1 3
+	FrameIndex QFZ3 E 1 4
+	FrameIndex QFZ3 F 1 5
+	FrameIndex QFZ3 G 1 6
+	FrameIndex QFZ3 H 1 7
+	FrameIndex QFZ3 I 1 8
+	FrameIndex QFZ3 J 1 9
+	FrameIndex QFZ3 K 1 10
+	FrameIndex QFZ3 L 1 11
+	FrameIndex QFZ3 M 1 12
+	FrameIndex QFZ3 N 1 13
+	FrameIndex QFZ3 O 1 14
+	FrameIndex QFZ3 P 1 15
+	FrameIndex QFZ3 Q 1 16
+	FrameIndex QFZ3 R 1 17
+	FrameIndex QFZ3 S 1 18
+	FrameIndex QFZ3 T 1 19
+	FrameIndex QFZ3 U 1 20
+	FrameIndex QFZ3 V 1 21
+	FrameIndex QFZ3 W 1 22
+	FrameIndex QFZ3 X 1 23
+	FrameIndex QFZ3 Y 1 24
+}
+Model RSQFF_Torch
+{
+	Path "models/rsqff"
+	Model 1 "hudcone_hi_b.md3"
+	Skin 1 "hudcone_c20.png"
+	Scale -8.0 8.0 8.0
+	Offset 0.0 -24.0 -10.0
+	FORCECULLBACKFACES
+	FrameIndex QFZ4 A 1 25
+	FrameIndex QFZ4 B 1 26
+	FrameIndex QFZ4 C 1 27
+	FrameIndex QFZ4 D 1 28
+	FrameIndex QFZ4 E 1 29
+	FrameIndex QFZ4 F 1 30
+	FrameIndex QFZ4 G 1 31
+	FrameIndex QFZ4 H 1 32
+	FrameIndex QFZ4 I 1 33
+	FrameIndex QFZ4 J 1 34
+	FrameIndex QFZ4 K 1 35
+	FrameIndex QFZ4 L 1 36
+	FrameIndex QFZ4 M 1 37
+	FrameIndex QFZ4 N 1 38
+	FrameIndex QFZ4 O 1 39
+	FrameIndex QFZ4 P 1 40
+	FrameIndex QFZ4 Q 1 41
+	FrameIndex QFZ4 R 1 42
+	FrameIndex QFZ4 S 1 43
+	FrameIndex QFZ4 T 1 44
+	FrameIndex QFZ4 U 1 45
+	FrameIndex QFZ4 V 1 46
+	FrameIndex QFZ4 W 1 47
+	FrameIndex QFZ4 X 1 48
+	FrameIndex QFZ4 Y 1 49
+}
+Model RSQFF_Torch
+{
+	Path "models/rsqff"
+	Model 1 "hudcone_hi_b.md3"
+	Skin 1 "hudcone_c20.png"
+	Scale -8.0 8.0 8.0
+	Offset 0.0 -24.0 -10.0
+	FORCECULLBACKFACES
+	FrameIndex QFZ5 A 1 50
+	FrameIndex QFZ5 B 1 51
+	FrameIndex QFZ5 C 1 52
+	FrameIndex QFZ5 D 1 53
+	FrameIndex QFZ5 E 1 54
+	FrameIndex QFZ5 F 1 55
+	FrameIndex QFZ5 G 1 56
+	FrameIndex QFZ5 H 1 57
+	FrameIndex QFZ5 I 1 58
+	FrameIndex QFZ5 J 1 59
+	FrameIndex QFZ5 K 1 60
+	FrameIndex QFZ5 L 1 61
+	FrameIndex QFZ5 M 1 62
+	FrameIndex QFZ5 N 1 63
+	FrameIndex QFZ5 O 1 64
+	FrameIndex QFZ5 P 1 65
+	FrameIndex QFZ5 Q 1 66
+	FrameIndex QFZ5 R 1 67
+	FrameIndex QFZ5 S 1 68
+	FrameIndex QFZ5 T 1 69
+	FrameIndex QFZ5 U 1 70
+	FrameIndex QFZ5 V 1 71
+	FrameIndex QFZ5 W 1 72
+	FrameIndex QFZ5 X 1 73
+	FrameIndex QFZ5 Y 1 74
+}
+Model RSQFF_Torch
+{
+	Path "models/rsqff"
+	Model 1 "hudcone_hi_b.md3"
+	Skin 1 "hudcone_c20.png"
+	Scale -8.0 8.0 8.0
+	Offset 0.0 -24.0 -10.0
+	FORCECULLBACKFACES
+	FrameIndex QFZ6 A 1 75
+	FrameIndex QFZ6 B 1 76
+	FrameIndex QFZ6 C 1 77
+	FrameIndex QFZ6 D 1 78
+	FrameIndex QFZ6 E 1 79
+	FrameIndex QFZ6 F 1 80
+	FrameIndex QFZ6 G 1 81
+	FrameIndex QFZ6 H 1 82
+	FrameIndex QFZ6 I 1 83
+	FrameIndex QFZ6 J 1 84
+	FrameIndex QFZ6 K 1 85
+	FrameIndex QFZ6 L 1 86
+	FrameIndex QFZ6 M 1 87
+	FrameIndex QFZ6 N 1 88
+	FrameIndex QFZ6 O 1 89
+	FrameIndex QFZ6 P 1 90
+	FrameIndex QFZ6 Q 1 91
+	FrameIndex QFZ6 R 1 92
+	FrameIndex QFZ6 S 1 93
+	FrameIndex QFZ6 T 1 94
+	FrameIndex QFZ6 U 1 95
+	FrameIndex QFZ6 V 1 96
+	FrameIndex QFZ6 W 1 97
+	FrameIndex QFZ6 X 1 98
+	FrameIndex QFZ6 Y 1 99
+}
+Model RSQFF_Torch
+{
+	Path "models/rsqff"
+	Model 1 "hudcone_hi_b.md3"
+	Skin 1 "hudcone_c20.png"
+	Scale -8.0 8.0 8.0
+	Offset 0.0 -24.0 -10.0
+	FORCECULLBACKFACES
+	FrameIndex QFZ7 A 1 100
+	FrameIndex QFZ7 B 1 101
+	FrameIndex QFZ7 C 1 102
+	FrameIndex QFZ7 D 1 103
+	FrameIndex QFZ7 E 1 104
+	FrameIndex QFZ7 F 1 105
+	FrameIndex QFZ7 G 1 106
+	FrameIndex QFZ7 H 1 107
+	FrameIndex QFZ7 I 1 108
+	FrameIndex QFZ7 J 1 109
+	FrameIndex QFZ7 K 1 110
+	FrameIndex QFZ7 L 1 111
+	FrameIndex QFZ7 M 1 112
+	FrameIndex QFZ7 N 1 113
+	FrameIndex QFZ7 O 1 114
+	FrameIndex QFZ7 P 1 115
+	FrameIndex QFZ7 Q 1 116
+	FrameIndex QFZ7 R 1 117
+	FrameIndex QFZ7 S 1 118
+	FrameIndex QFZ7 T 1 119
+	FrameIndex QFZ7 U 1 120
+	FrameIndex QFZ7 V 1 121
+	FrameIndex QFZ7 W 1 122
+	FrameIndex QFZ7 X 1 123
+	FrameIndex QFZ7 Y 1 124
+}
+Model RSQFF_Torch
+{
+	Path "models/rsqff"
+	Model 1 "hudcone_hi_b.md3"
+	Skin 1 "hudcone_c20.png"
+	Scale -8.0 8.0 8.0
+	Offset 0.0 -24.0 -10.0
+	FORCECULLBACKFACES
+	FrameIndex QFZ8 A 1 125
+	FrameIndex QFZ8 B 1 126
+	FrameIndex QFZ8 C 1 127
+	FrameIndex QFZ8 D 1 128
+	FrameIndex QFZ8 E 1 129
+	FrameIndex QFZ8 F 1 130
+	FrameIndex QFZ8 G 1 131
+	FrameIndex QFZ8 H 1 132
+	FrameIndex QFZ8 I 1 133
+	FrameIndex QFZ8 J 1 134
+	FrameIndex QFZ8 K 1 135
+	FrameIndex QFZ8 L 1 136
+	FrameIndex QFZ8 M 1 137
+	FrameIndex QFZ8 N 1 138
+	FrameIndex QFZ8 O 1 139
+	FrameIndex QFZ8 P 1 140
+	FrameIndex QFZ8 Q 1 141
+	FrameIndex QFZ8 R 1 142
+	FrameIndex QFZ8 S 1 143
+	FrameIndex QFZ8 T 1 144
+	FrameIndex QFZ8 U 1 145
+	FrameIndex QFZ8 V 1 146
+	FrameIndex QFZ8 W 1 147
+	FrameIndex QFZ8 X 1 148
+	FrameIndex QFZ8 Y 1 149
+}
+Model RSQFF_Torch
+{
+	Path "models/rsqff"
+	Model 1 "hudcone_lo_f.md3"
+	Skin 1 "hudcone_c20.png"
+	Scale -8.0 8.0 8.0
+	Offset 0.0 -24.0 -10.0
+	FORCECULLBACKFACES
+	FrameIndex QFY0 A 1 0
+	FrameIndex QFY0 B 1 1
+	FrameIndex QFY0 C 1 2
+	FrameIndex QFY0 D 1 3
+	FrameIndex QFY0 E 1 4
+	FrameIndex QFY0 F 1 5
+	FrameIndex QFY0 G 1 6
+	FrameIndex QFY0 H 1 7
+	FrameIndex QFY0 I 1 8
+	FrameIndex QFY0 J 1 9
+	FrameIndex QFY0 K 1 10
+	FrameIndex QFY0 L 1 11
+	FrameIndex QFY0 M 1 12
+	FrameIndex QFY0 N 1 13
+	FrameIndex QFY0 O 1 14
+	FrameIndex QFY0 P 1 15
+	FrameIndex QFY0 Q 1 16
+	FrameIndex QFY0 R 1 17
+	FrameIndex QFY0 S 1 18
+	FrameIndex QFY0 T 1 19
+	FrameIndex QFY0 U 1 20
+	FrameIndex QFY0 V 1 21
+	FrameIndex QFY0 W 1 22
+	FrameIndex QFY0 X 1 23
+	FrameIndex QFY0 Y 1 24
+}
+Model RSQFF_Torch
+{
+	Path "models/rsqff"
+	Model 1 "hudcone_lo_f.md3"
+	Skin 1 "hudcone_c20.png"
+	Scale -8.0 8.0 8.0
+	Offset 0.0 -24.0 -10.0
+	FORCECULLBACKFACES
+	FrameIndex QFY1 A 1 25
+	FrameIndex QFY1 B 1 26
+	FrameIndex QFY1 C 1 27
+	FrameIndex QFY1 D 1 28
+	FrameIndex QFY1 E 1 29
+	FrameIndex QFY1 F 1 30
+	FrameIndex QFY1 G 1 31
+	FrameIndex QFY1 H 1 32
+	FrameIndex QFY1 I 1 33
+	FrameIndex QFY1 J 1 34
+	FrameIndex QFY1 K 1 35
+	FrameIndex QFY1 L 1 36
+	FrameIndex QFY1 M 1 37
+	FrameIndex QFY1 N 1 38
+	FrameIndex QFY1 O 1 39
+	FrameIndex QFY1 P 1 40
+	FrameIndex QFY1 Q 1 41
+	FrameIndex QFY1 R 1 42
+	FrameIndex QFY1 S 1 43
+	FrameIndex QFY1 T 1 44
+	FrameIndex QFY1 U 1 45
+	FrameIndex QFY1 V 1 46
+	FrameIndex QFY1 W 1 47
+	FrameIndex QFY1 X 1 48
+	FrameIndex QFY1 Y 1 49
+}
+Model RSQFF_Torch
+{
+	Path "models/rsqff"
+	Model 1 "hudcone_lo_f.md3"
+	Skin 1 "hudcone_c20.png"
+	Scale -8.0 8.0 8.0
+	Offset 0.0 -24.0 -10.0
+	FORCECULLBACKFACES
+	FrameIndex QFY2 A 1 50
+	FrameIndex QFY2 B 1 51
+	FrameIndex QFY2 C 1 52
+	FrameIndex QFY2 D 1 53
+	FrameIndex QFY2 E 1 54
+	FrameIndex QFY2 F 1 55
+	FrameIndex QFY2 G 1 56
+	FrameIndex QFY2 H 1 57
+	FrameIndex QFY2 I 1 58
+	FrameIndex QFY2 J 1 59
+	FrameIndex QFY2 K 1 60
+	FrameIndex QFY2 L 1 61
+	FrameIndex QFY2 M 1 62
+	FrameIndex QFY2 N 1 63
+	FrameIndex QFY2 O 1 64
+	FrameIndex QFY2 P 1 65
+	FrameIndex QFY2 Q 1 66
+	FrameIndex QFY2 R 1 67
+	FrameIndex QFY2 S 1 68
+	FrameIndex QFY2 T 1 69
+	FrameIndex QFY2 U 1 70
+	FrameIndex QFY2 V 1 71
+	FrameIndex QFY2 W 1 72
+	FrameIndex QFY2 X 1 73
+	FrameIndex QFY2 Y 1 74
+}
+Model RSQFF_Torch
+{
+	Path "models/rsqff"
+	Model 1 "hudcone_hi_f.md3"
+	Skin 1 "hudcone_c20.png"
+	Scale -8.0 8.0 8.0
+	Offset 0.0 -24.0 -10.0
+	FORCECULLBACKFACES
+	FrameIndex QFY3 A 1 0
+	FrameIndex QFY3 B 1 1
+	FrameIndex QFY3 C 1 2
+	FrameIndex QFY3 D 1 3
+	FrameIndex QFY3 E 1 4
+	FrameIndex QFY3 F 1 5
+	FrameIndex QFY3 G 1 6
+	FrameIndex QFY3 H 1 7
+	FrameIndex QFY3 I 1 8
+	FrameIndex QFY3 J 1 9
+	FrameIndex QFY3 K 1 10
+	FrameIndex QFY3 L 1 11
+	FrameIndex QFY3 M 1 12
+	FrameIndex QFY3 N 1 13
+	FrameIndex QFY3 O 1 14
+	FrameIndex QFY3 P 1 15
+	FrameIndex QFY3 Q 1 16
+	FrameIndex QFY3 R 1 17
+	FrameIndex QFY3 S 1 18
+	FrameIndex QFY3 T 1 19
+	FrameIndex QFY3 U 1 20
+	FrameIndex QFY3 V 1 21
+	FrameIndex QFY3 W 1 22
+	FrameIndex QFY3 X 1 23
+	FrameIndex QFY3 Y 1 24
+}
+Model RSQFF_Torch
+{
+	Path "models/rsqff"
+	Model 1 "hudcone_hi_f.md3"
+	Skin 1 "hudcone_c20.png"
+	Scale -8.0 8.0 8.0
+	Offset 0.0 -24.0 -10.0
+	FORCECULLBACKFACES
+	FrameIndex QFY4 A 1 25
+	FrameIndex QFY4 B 1 26
+	FrameIndex QFY4 C 1 27
+	FrameIndex QFY4 D 1 28
+	FrameIndex QFY4 E 1 29
+	FrameIndex QFY4 F 1 30
+	FrameIndex QFY4 G 1 31
+	FrameIndex QFY4 H 1 32
+	FrameIndex QFY4 I 1 33
+	FrameIndex QFY4 J 1 34
+	FrameIndex QFY4 K 1 35
+	FrameIndex QFY4 L 1 36
+	FrameIndex QFY4 M 1 37
+	FrameIndex QFY4 N 1 38
+	FrameIndex QFY4 O 1 39
+	FrameIndex QFY4 P 1 40
+	FrameIndex QFY4 Q 1 41
+	FrameIndex QFY4 R 1 42
+	FrameIndex QFY4 S 1 43
+	FrameIndex QFY4 T 1 44
+	FrameIndex QFY4 U 1 45
+	FrameIndex QFY4 V 1 46
+	FrameIndex QFY4 W 1 47
+	FrameIndex QFY4 X 1 48
+	FrameIndex QFY4 Y 1 49
+}
+Model RSQFF_Torch
+{
+	Path "models/rsqff"
+	Model 1 "hudcone_hi_f.md3"
+	Skin 1 "hudcone_c20.png"
+	Scale -8.0 8.0 8.0
+	Offset 0.0 -24.0 -10.0
+	FORCECULLBACKFACES
+	FrameIndex QFY5 A 1 50
+	FrameIndex QFY5 B 1 51
+	FrameIndex QFY5 C 1 52
+	FrameIndex QFY5 D 1 53
+	FrameIndex QFY5 E 1 54
+	FrameIndex QFY5 F 1 55
+	FrameIndex QFY5 G 1 56
+	FrameIndex QFY5 H 1 57
+	FrameIndex QFY5 I 1 58
+	FrameIndex QFY5 J 1 59
+	FrameIndex QFY5 K 1 60
+	FrameIndex QFY5 L 1 61
+	FrameIndex QFY5 M 1 62
+	FrameIndex QFY5 N 1 63
+	FrameIndex QFY5 O 1 64
+	FrameIndex QFY5 P 1 65
+	FrameIndex QFY5 Q 1 66
+	FrameIndex QFY5 R 1 67
+	FrameIndex QFY5 S 1 68
+	FrameIndex QFY5 T 1 69
+	FrameIndex QFY5 U 1 70
+	FrameIndex QFY5 V 1 71
+	FrameIndex QFY5 W 1 72
+	FrameIndex QFY5 X 1 73
+	FrameIndex QFY5 Y 1 74
+}
+Model RSQFF_Torch
+{
+	Path "models/rsqff"
+	Model 1 "hudcone_hi_f.md3"
+	Skin 1 "hudcone_c20.png"
+	Scale -8.0 8.0 8.0
+	Offset 0.0 -24.0 -10.0
+	FORCECULLBACKFACES
+	FrameIndex QFY6 A 1 75
+	FrameIndex QFY6 B 1 76
+	FrameIndex QFY6 C 1 77
+	FrameIndex QFY6 D 1 78
+	FrameIndex QFY6 E 1 79
+	FrameIndex QFY6 F 1 80
+	FrameIndex QFY6 G 1 81
+	FrameIndex QFY6 H 1 82
+	FrameIndex QFY6 I 1 83
+	FrameIndex QFY6 J 1 84
+	FrameIndex QFY6 K 1 85
+	FrameIndex QFY6 L 1 86
+	FrameIndex QFY6 M 1 87
+	FrameIndex QFY6 N 1 88
+	FrameIndex QFY6 O 1 89
+	FrameIndex QFY6 P 1 90
+	FrameIndex QFY6 Q 1 91
+	FrameIndex QFY6 R 1 92
+	FrameIndex QFY6 S 1 93
+	FrameIndex QFY6 T 1 94
+	FrameIndex QFY6 U 1 95
+	FrameIndex QFY6 V 1 96
+	FrameIndex QFY6 W 1 97
+	FrameIndex QFY6 X 1 98
+	FrameIndex QFY6 Y 1 99
+}
+Model RSQFF_Torch
+{
+	Path "models/rsqff"
+	Model 1 "hudcone_hi_f.md3"
+	Skin 1 "hudcone_c20.png"
+	Scale -8.0 8.0 8.0
+	Offset 0.0 -24.0 -10.0
+	FORCECULLBACKFACES
+	FrameIndex QFY7 A 1 100
+	FrameIndex QFY7 B 1 101
+	FrameIndex QFY7 C 1 102
+	FrameIndex QFY7 D 1 103
+	FrameIndex QFY7 E 1 104
+	FrameIndex QFY7 F 1 105
+	FrameIndex QFY7 G 1 106
+	FrameIndex QFY7 H 1 107
+	FrameIndex QFY7 I 1 108
+	FrameIndex QFY7 J 1 109
+	FrameIndex QFY7 K 1 110
+	FrameIndex QFY7 L 1 111
+	FrameIndex QFY7 M 1 112
+	FrameIndex QFY7 N 1 113
+	FrameIndex QFY7 O 1 114
+	FrameIndex QFY7 P 1 115
+	FrameIndex QFY7 Q 1 116
+	FrameIndex QFY7 R 1 117
+	FrameIndex QFY7 S 1 118
+	FrameIndex QFY7 T 1 119
+	FrameIndex QFY7 U 1 120
+	FrameIndex QFY7 V 1 121
+	FrameIndex QFY7 W 1 122
+	FrameIndex QFY7 X 1 123
+	FrameIndex QFY7 Y 1 124
+}
+Model RSQFF_Torch
+{
+	Path "models/rsqff"
+	Model 1 "hudcone_hi_f.md3"
+	Skin 1 "hudcone_c20.png"
+	Scale -8.0 8.0 8.0
+	Offset 0.0 -24.0 -10.0
+	FORCECULLBACKFACES
+	FrameIndex QFY8 A 1 125
+	FrameIndex QFY8 B 1 126
+	FrameIndex QFY8 C 1 127
+	FrameIndex QFY8 D 1 128
+	FrameIndex QFY8 E 1 129
+	FrameIndex QFY8 F 1 130
+	FrameIndex QFY8 G 1 131
+	FrameIndex QFY8 H 1 132
+	FrameIndex QFY8 I 1 133
+	FrameIndex QFY8 J 1 134
+	FrameIndex QFY8 K 1 135
+	FrameIndex QFY8 L 1 136
+	FrameIndex QFY8 M 1 137
+	FrameIndex QFY8 N 1 138
+	FrameIndex QFY8 O 1 139
+	FrameIndex QFY8 P 1 140
+	FrameIndex QFY8 Q 1 141
+	FrameIndex QFY8 R 1 142
+	FrameIndex QFY8 S 1 143
+	FrameIndex QFY8 T 1 144
+	FrameIndex QFY8 U 1 145
+	FrameIndex QFY8 V 1 146
+	FrameIndex QFY8 W 1 147
+	FrameIndex QFY8 X 1 148
+	FrameIndex QFY8 Y 1 149
+}

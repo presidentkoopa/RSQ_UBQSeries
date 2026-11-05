@@ -2,6 +2,7 @@ version "4.14"
 
 // RSQ FlashFlare -- the Radiant Silvergun Quest series' VR road flare, for stock QuestZDoom 17.3 (ZScript and lumps only).
 #include "zscript/rsqff/rsmenu.zs"    // Radiant Silvergun Options: the series' shared menu pieces (tools/rsmenu)
+#include "zscript/rsqff/handsync.zs"  // tools/handsync: the hand where the last frame put it, carried to the body now (PCVR-aware)
 #include "zscript/rsqff/geo.zs"       // hands, eyes, the pocket, the drawn flare's tip
 #include "zscript/rsqff/items.zs"     // the flares you carry, the box, the flare in the hand
 #include "zscript/rsqff/burn.zs"      // a burning flare: its one light, flicker, sparks; thrown and lying
