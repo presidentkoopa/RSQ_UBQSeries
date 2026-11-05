@@ -103,7 +103,7 @@ it. A ShieldSaw bash pays the shield. Brutal Doom VR Reloaded's travelling bulle
 | Two Hands (player) | Akimbo, Crossfire, Alternator | Guns only. Akimbo: +6% a level (5 levels) while both hands fired in the last third of a second. Crossfire: +10% a level on a hit when your other hand hit a different, living target in the last second. Alternator: each hit with the other hand's gun inside two thirds of a second adds +4% a level, up to four in a row. |
 | Southpaw (player) | Body | Whatever your off hand holds hits +6% harder a level. |
 | One-Two, Three-Hit, Dempsey (each glove) | Fists: Combos | Alternate left and right to chain punches. A miss or a pause breaks it. |
-| Ground Pound, Clear Out (each glove) | Fists: Power | Both fists swung down hard together, or both palms thrust forward. Needs RSQ Gestures. |
+| Ground Pound, Clear Out (each glove) | Fists: Power | Both fists swung down hard together, or both palms thrust forward. Needs RSQ Melee (it reads both hands, or RSQ Accessibility does). |
 | Grappler (off glove only) | Fists: Grappler | Human Shield, Headlock Uppercut, Heavier Headlock, Slam, Throw Into, Chokehold. They grow RSQ Melee's off-hand Headlock. |
 | Guard (player) | Guard, Parry, Reflect Guard, Absorb and Release | Both hands up at your face. Parry: drive both guarding hands into a blow just before it lands. |
 | Two Sabers (main saber) | Saber: Dual | Unlocks the off-hand saber. Then Assault (alternating blades stack damage), Cross Guard (the crossed X turns shots) and Clash (blades together send out a shockwave). |
@@ -121,9 +121,9 @@ has learned and who gets paid for it.
 | Pick a level-up card | Thumbstick left/right or up/down, then confirm | Keyboard 1-9 picks directly. Back refuses the level, which costs that level's XP (Gun Bonsai's rule). |
 | Browse the status screen | Thumbstick up/down | On an upgrade: left/right changes its level, confirm toggles it. On a gun: right or confirm steps into its upgrades, left into the player's. |
 | Earn XP with one hand | Fire, swing or punch with that hand | Credited to that hand's weapon. |
-| Ground Pound | Both fists swung down together at 3 m/s or more each | Glove node; needs RSQ Melee and RSQ Gestures. |
-| Clear Out | Both palms thrust forward together | Glove node; needs RSQ Melee and RSQ Gestures. |
-| Taunt | Throw both hands apart, empty or in fists | Player node; needs RSQ Melee and RSQ Gestures. |
+| Ground Pound | Both fists swung down together at 3 m/s or more each | Glove node; needs RSQ Melee. |
+| Clear Out | Both palms thrust forward together | Glove node; needs RSQ Melee. |
+| Taunt | Throw both hands apart, empty or in fists | Player node; needs RSQ Melee. |
 | Evasion / Steady Aim / Lunge | Head moving at 1.2 m/s or more / head under 0.2 m/s / head moving faster than 0.5 m/s | Read from your headset's movement. |
 | Left-handed play | Set handedness in RSQ Accessibility, or QuestZDoom's Control Scheme | Gun Bonsai's own gauges swap sides so the main hand's is on the main hand's side. |
 

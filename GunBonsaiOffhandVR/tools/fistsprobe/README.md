@@ -3,15 +3,15 @@
 The probe that gated the Fists tree headless on 2026-11-02 (GBOVR_TREES.md 4.1, "BUILT" notes). It grants Gun Bonsai
 VR nodes as a level-up would, prints which nodes each glove (or the player) would be offered, lands punches through RSQ
 Melee's own `Deliver` / `Swat` / `ReturnFire` (public for probes), drives the hands through Melee's `RSQML_Sim`, presses
-the Headlock grip with Melee's `rsqml_hgrip`, and sends RSQ Gestures' `rsqg_pair` as Gestures would. It cannot prove
-anything a real hand or Gestures' own reading does, or how anything looks.
+the Headlock grip with Melee's `rsqml_hgrip`, and sends the gesture reader's `rsqg_pair` as it would (RSQ Accessibility's
+since the Gestures fold). It cannot prove anything a real hand or the reader's own reading does, or how anything looks.
 
 Pack it (a pk3 of `zscript.txt` and `MAPINFO.txt`), then run it last, with `tools/qzd_hidden_run.ps1` from the repo
 root (PowerShell):
 
 ```
 $P='E:\DOOMWork\RSQ_UBQSeries\pk3'; $GB='<Gun Bonsai 0.10.6 pk3>'
-& tools\qzd_hidden_run.ps1 -Files "$P\RSQ_Melee.pk3","$P\RSQ_Gestures.pk3",$GB,"$P\RSQ_GunBonsaiVR.pk3",'<fistsprobe.pk3>' -Map MAP01 -WaitTics 105 -Commands @('rsqml_debug 1','netevent fp_hp','netevent fp_tree 0') -Tag fists
+& tools\qzd_hidden_run.ps1 -Files "$P\RSQ_Melee.pk3","$P\RSQ_Accessibility.pk3",$GB,"$P\RSQ_GunBonsaiVR.pk3",'<fistsprobe.pk3>' -Map MAP01 -WaitTics 105 -Commands @('rsqml_debug 1','netevent fp_hp','netevent fp_tree 0') -Tag fists
 ```
 
 It names the saber's classes (UBQS_SaberBase, UBQS_Thrown), so load RSQ_Saber.pk3 too. Saber events: `fp_sab` (0 give, 1 offers and levels, 2 grant), `fp_sabthrow` (two marks and the saber's own Throw), `fp_sabhit` (a hit paid to the saber). Every line it prints starts `FP `; Melee's own lines with `rsqml_debug 1` start `RSQML`.
