@@ -257,7 +257,7 @@ class RSQSM_Clock : EventHandler
 		heldUntil = 0; heldWho = -1;
 		cdOn = false; cdLeft = 0; cdTotal = 0; cdEndAt = 0; cdStartTic = 0; cdRefillTic = 0; cdEndTic = 0;
 		ClearAll();
-		for (int i = 0; i < MAXPLAYERS; i++) { dodgeTic[i] = 0; meK[i] = 1; meGrav[i] = 0; meVx[i] = 0; meVy[i] = 0; }
+		for (int i = 0; i < MAXPLAYERS; i++) { dodgeTic[i] = 0; meK[i] = 1; meGrav[i] = 0; meVx[i] = 0; meVy[i] = 0; freeUntil[i] = 0; }
 		// An EventHandler is rebuilt on every map, so the meter is carried on the player.
 		adr = 0;
 		if (Cv("rsqsm_adr_keep", 1) != 0)
@@ -308,6 +308,8 @@ class RSQSM_Clock : EventHandler
 	private transient int pendTic;
 	private transient int fearTic[MAXPLAYERS];
 	private transient int smokeTic[MAXPLAYERS];
+	private transient int smokeFree[MAXPLAYERS];   // the smoke's pulse asked that this player move at full speed (Rig arg 3)
+	int freeUntil[MAXPLAYERS];                     // ...until this maptime (the smoke's length plus the way out)
 
 	override void NetworkProcess(ConsoleEvent e)
 	{
@@ -335,7 +337,7 @@ class RSQSM_Clock : EventHandler
 		else if (e.Name ~== "rsqml_fear") { if (e.Player >= 0 && e.Player < MAXPLAYERS) fearTic[e.Player] = level.maptime; }
 		// RSQ Tactical Rig's cigarette names its pulse the same way (cig.zs, sent with its rsm_pulse on the same tic): that
 		// pulse is the smoke, whatever its length (0.99a bug 43: Gun Bonsai VR's Smoker lengthens it, so length can't tell)
-		else if (e.Name ~== "rsqtr_cigslowmo") { if (e.Player >= 0 && e.Player < MAXPLAYERS) smokeTic[e.Player] = level.maptime; }
+		else if (e.Name ~== "rsqtr_cigslowmo") { if (e.Player >= 0 && e.Player < MAXPLAYERS) { smokeTic[e.Player] = level.maptime; smokeFree[e.Player] = e.Args[2]; } }
 		else if (e.Name ~== "rsqsm_start" || e.Name.Left(12) ~== "rsqsm_start:")
 		{
 			String who = e.Name.Length() > 12 ? e.Name.Mid(12) : "netevent";
@@ -372,7 +374,13 @@ class RSQSM_Clock : EventHandler
 			double depth = clamp(dp / 100.0, 0.05, 1.0);
 			bool okWho = who >= 0 && who < MAXPLAYERS && playeringame[who];
 			if (okWho && fearTic[who] == level.maptime) { Trigger("melee.shove", CAT_SHOVE, ms, depth, false, who); continue; }
-			if (okWho && smokeTic[who] == level.maptime) { Trigger("smoke", CAT_SMOKE, ms, depth, false, who); continue; }
+			if (okWho && smokeTic[who] == level.maptime)
+			{
+				// RSQ Tactical Rig's Move at Full Speed While Smoking (owner 11-05): the smoker is not slowed for its length
+				if (smokeFree[who]) freeUntil[who] = level.maptime + ms * TICRATE / 1000 + int(Cv("rsm_ramp_out", 0.4) * TICRATE) + 1;
+				Trigger("smoke", CAT_SMOKE, ms, depth, false, who);
+				continue;
+			}
 			if (ms == 500 && dp == 35)
 			{
 				int pb = ParryOrBlock(okWho ? who : -1);
@@ -789,6 +797,7 @@ class RSQSM_Clock : EventHandler
 				if (dodgeTic[n] > 0) { double dr = clamp(Cv("rsqsm_dodge_me", 0.5), 0.0, 1.0); if (dr > 0) k = scale ** dr; }
 				else if (CvWho("rsqsm_me", n, 1) != 0 && ratio > 0) k = scale ** ratio;
 			}
+			if (level.maptime < freeUntil[n]) k = 1.0;   // smoking: full speed (Tactical Rig asked, above)
 			double was = (meK[n] <= 0 || meK[n] > 1) ? 1.0 : meK[n];
 			if (k >= 0.9999)
 			{

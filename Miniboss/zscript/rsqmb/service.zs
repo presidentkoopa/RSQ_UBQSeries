@@ -80,6 +80,8 @@ class RSQMB_Service : Service
 			return n;
 		}
 		if (request ~== "thrall") return isThrall ? 1 : 0;
+		// was this the miniboss itself, alive or dead (RSQ Tactical Rig refills its cigarettes on the kill; owner 11-05)
+		if (request ~== "wasboss") return (b && a && b.mb == a) ? 1 : 0;
 		if (request ~== "enraged")
 		{
 			if (a) return (a.FindInventory("RSQMB_Rage") && a.health > 0) ? 1 : 0;

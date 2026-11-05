@@ -186,7 +186,10 @@ what the rows already do: Smoker, Chain Smoker, Gun Toss, Boomerang Gun).
 | **Cigarettes** | | |
 | Cigarettes | Off | Ermac's cigarette pocket |
 | Smoke Slows Time | On | RSQ SlowMo when the cigarette is flicked (its Real-Time Countdown bar shows how long is left) |
-| Smoke Slow-Mo Time (s) | 6 | How long that slow motion lasts (2-20 s) |
+| Smoke Slow-Mo Time (s) | 6 | How long that slow motion lasts (5-30 s) |
+| Move at Full Speed While Smoking | On | You are not slowed in the smoke's slow motion (needs this RSQ SlowMo or newer) |
+| Cigarette Every N Score (0 Off) | 0 | With RSQ Score, every this many points earns one cigarette, up to the Pack Size |
+| Minibosses Refill Cigarettes | On | With RSQ Miniboss, killing a miniboss fills the pocket to the Pack Size |
 | Refill Each Level | On | The pocket refills |
 | Unlit Cigarette Goes Away | On | A cigarette left unlit in your mouth for 7 s drops out, used up (Test and Debug: Unlit Goes Away After) |
 | Show Cigarettes | On | The cigarettes left in the pocket stand in it on your chest |

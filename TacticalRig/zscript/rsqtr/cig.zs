@@ -169,7 +169,7 @@ class RSQTR_Cig : EventHandler
 		for (int i = 0; i < MAXPLAYERS; i++)
 		{
 			phase[i] = PH_NONE; zipOpen[i] = false; zipSeen[i] = false; swGone[i] = 0; mainWant[i] = ""; offDue[i] = false; exitTic[i] = 0;
-			mouthProp[i] = null; spitTic[i] = -100; restore[i] = false;
+			mouthProp[i] = null; spitTic[i] = -100; restore[i] = false; cigScoreMark[i] = -1;
 			if (!playeringame[i] || !players[i].mo) continue;
 			let pmo = players[i].mo;
 			let p = players[i];
@@ -310,9 +310,60 @@ class RSQTR_Cig : EventHandler
 	bool ZipBurning(int n) { return zipOpen[n] && level.maptime - zipTic[n] >= ZIP_LIT_TICS; }
 
 	// ---- the local loop ----------------------------------------------------------------
+	// MORE CIGARETTES (owner 11-05): RSQ Score's score earns one every rsqtr_cig_score points, and killing a miniboss (RSQ
+	// Miniboss, "wasboss") fills the pocket; never past the Pack Size. Both by name: nothing happens without those mods.
+	int cigScoreMark[MAXPLAYERS];
+	private void CigEarn()
+	{
+		if (level.maptime % 35) return;
+		Service sc = null;
+		for (int n = 0; n < MAXPLAYERS; n++)
+		{
+			if (!playeringame[n] || !players[n].mo) continue;
+			let p = players[n];
+			int step = RSQTR_Rig.Opt("rsqtr_cig_score", p, 0);
+			if (step <= 0 || !RSQTR_Rig.Flag("rsqtr_cig", p, false)) { cigScoreMark[n] = -1; continue; }
+			if (!sc) { sc = ServiceIterator.Find("RS_ScoreService").Next(); if (!sc) return; }
+			int score = sc.GetInt("score", "", 0, 0, p.mo);
+			if (score < 0) continue;
+			int bucket = score / step;
+			if (cigScoreMark[n] < 0 || bucket < cigScoreMark[n]) { cigScoreMark[n] = bucket; continue; }
+			if (bucket > cigScoreMark[n]) { CigGive(p.mo, bucket - cigScoreMark[n], "score"); cigScoreMark[n] = bucket; }
+		}
+	}
+	void CigGive(PlayerPawn pmo, int add, String why)
+	{
+		if (!pmo || add <= 0) return;
+		let p = pmo.player;
+		int cap = (RSQTR_Rig.Opt("rsqtr_cig_count", p, 3) + max(RSQTR_Rig.Gb(p, 'ChainSmoker'), 0));
+		let tok = RSQTR_CigPack(pmo.FindInventory("RSQTR_CigPack"));
+		if (!tok) { pmo.SetInventory("RSQTR_CigPack", 0); tok = RSQTR_CigPack(pmo.FindInventory("RSQTR_CigPack")); }
+		if (!tok) return;
+		int was = tok.Amount;
+		tok.Amount = min(cap, tok.Amount + add);
+		if (tok.Amount > was && RSQTR_Rig.Flag("rsqtr_debug", p, false))
+			Console.Printf("T_RIG cigarettes +%d (%s): %d of %d", tok.Amount - was, why, tok.Amount, cap);
+	}
+	override void WorldThingDied(WorldEvent e)
+	{
+		let a = e.Thing;
+		if (!a || !a.bISMONSTER) return;
+		let it = ServiceIterator.Find("RSQMB_Service");
+		let ms = it.Next();
+		if (!ms || ms.GetInt("wasboss", "", 0, 0, a) != 1) return;
+		for (int n = 0; n < MAXPLAYERS; n++)
+		{
+			if (!playeringame[n] || !players[n].mo) continue;
+			let p = players[n];
+			if (!RSQTR_Rig.Flag("rsqtr_cig", p, false) || !RSQTR_Rig.Flag("rsqtr_cig_boss", p, true)) continue;
+			CigGive(players[n].mo, 99, "miniboss");
+		}
+	}
+
 	override void WorldTick()
 	{
 		Steps();
+		CigEarn();
 
 		let p = players[consoleplayer];
 		if (!p || !p.mo || p.mo.health <= 0) { HideMark(); HideCue(); HidePack(); return; }
@@ -445,7 +496,9 @@ class RSQTR_Cig : EventHandler
 				EventHandler.SendNetworkEvent("rsm_pulse", ms, depth);
 				// the pulse's name for RSQ SlowMo (its clock.zs, as RSQ Melee's rsqml_fear names the shove's): this pulse is the
 				// smoke, whatever Gun Bonsai VR's Smoker made its length (0.99a bug 43). Nothing else reads it; alone it is inert.
-				EventHandler.SendNetworkEvent("rsqtr_cigslowmo", ms, depth);
+				// arg 3: Move at Full Speed While Smoking (owner 11-05: "allow player movement at full speed during smoking-induced
+				// bullet time"); an older SlowMo ignores it
+				EventHandler.SendNetworkEvent("rsqtr_cigslowmo", ms, depth, RSQTR_Rig.Flag("rsqtr_cig_move", p, true) ? 1 : 0);
 				if (msg) Console.Printf("T_CIG slow motion asked: rsm_pulse %d %d", ms, depth);
 			}
 		}
@@ -1088,7 +1141,7 @@ class RSQTR_Cig : EventHandler
 	// how long the flick's slow motion runs: the Smoke Slow-Mo Seconds row, +2 s a Smoker level (6 -> 8, 10, 12)
 	static double SmokeSecs(PlayerInfo p)
 	{
-		return RSQTR_Rig.Num("rsqtr_cig_secs", p, 6) + 2.0 * max(RSQTR_Rig.Gb(p, 'Smoker'), 0);
+		return clamp(RSQTR_Rig.Num("rsqtr_cig_secs", p, 6), 5.0, 30.0) + 2.0 * max(RSQTR_Rig.Gb(p, 'Smoker'), 0);
 	}
 
 	// Smoke from the mouth, out where you face.

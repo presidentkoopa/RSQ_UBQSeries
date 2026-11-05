@@ -123,7 +123,7 @@ off (Keep Adrenaline, the bar rows, Wrist Cross Bursts, Burst).
 | Wheel | On | Opening RSQ Wheel. |
 | Accessibility Button | On | RSQ Accessibility's slow-motion button. |
 | Melee Shove | On | RSQ Melee's gun-butt shove. |
-| Cigarette | On | RSQ Tactical Rig's cigarette. |
+| Cigarette | On | RSQ Tactical Rig's cigarette. With the Rig's Move at Full Speed While Smoking on, you are not slowed during it. |
 | Saber Parry | On | RSQ Saber's perfect parry. |
 | ShieldSaw Block | On | RSQ ShieldSaw's perfect block. |
 | **Automatic Triggers** (they wait out the cooldown) | | |

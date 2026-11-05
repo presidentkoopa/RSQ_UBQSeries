@@ -105,7 +105,10 @@ OptionMenu "RSQTR_Options"
 	StaticText "Cigarettes", "gold"
 	Option "Cigarettes", "rsqtr_cig", "OnOff"
 	Option "Smoke Slows Time", "rsqtr_cig_slowmo", "OnOff"
-	Slider "Smoke Slow-Mo Time (s)", "rsqtr_cig_secs", 2, 20, 1, 0
+	Slider "Smoke Slow-Mo Time (s)", "rsqtr_cig_secs", 5, 30, 1, 0
+	Option "Move at Full Speed While Smoking", "rsqtr_cig_move", "OnOff"
+	Slider "Cigarette Every N Score (0 Off)", "rsqtr_cig_score", 0, 50000, 1000, 0
+	Option "Minibosses Refill Cigarettes", "rsqtr_cig_boss", "OnOff"
 	Option "Refill Each Level", "rsqtr_cig_refill", "OnOff"
 	Option "Unlit Cigarette Goes Away", "rsqtr_cig_unlit", "OnOff"
 	Option "Show Cigarettes", "rsqtr_cig_show", "OnOff"
