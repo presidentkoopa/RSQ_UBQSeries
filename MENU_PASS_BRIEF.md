@@ -26,3 +26,13 @@ of customisation, nothing confusing or verbose. Short labels. A row's name promi
 - Accessibility's "Menus: Simple" must keep working with the new pages (update its lists).
 - Proof: frames of every mod's page (and its Tuning page), with and without GBOVR (gating line + a greyed row);
   zero script errors on the three orders; each README's Menu table updated to match the new rows/labels.
+
+## Stowed items always shown, each with its own toggle (owner 11-04 19:0x)
+"Always show flare, flashlight, whip, sabers, saw. Toggle show ___ on/off in each mod's options."
+- Whenever the player owns it and it isn't in a hand, each item is drawn at its spot on the body: flare (FnF chest pocket
+  and the Rig's flare holster), flashlight (its chest clip), whip (Rig whip holster), sabers (saber holsters), ShieldSaw
+  (on the rig/back).
+- The toggle lives in EACH ITEM'S OWN MOD's options, default On: FnF "Show Flare" and "Show Flashlight", Whip "Show
+  Whip", Saber "Show Sabers", ShieldSaw "Show ShieldSaw". Where the Rig already has a "Show ... in Holster" row, the mod's
+  row is the one that matters (keep the Rig row only if it still means something distinct, else fold it).
+- Works without the Rig where the mod has its own spot (FnF pocket/clip, ShieldSaw back); with the Rig, at the Rig's spot.
