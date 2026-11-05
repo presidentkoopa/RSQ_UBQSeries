@@ -299,9 +299,9 @@ user bool  rsqdg_palm_switch = true;    // a palm laid on a switch flips it (the
 server float rsqdg_path_speed = 22.0;   // metres/sec; the time of flight is distance / this (was 15: owner 10-31, "quicker")
 server float rsqdg_path_tmin  = 6.0;    // tics, the shortest flight
 server float rsqdg_path_tmax  = 40.0;   // tics, the longest (was 70)
-server float rsqdg_path_accel = 1.6;    // e = t^this: 1 is constant speed, above 1 starts slow (it is PULLED)
+server float rsqdg_path_accel = 1.6;    // 1 is constant speed from the first tic, above 1 a slower pick-up (flight.zs PathE, 11-05: the Whip's even pace)
 server float rsqdg_path_arc   = 0.25;   // arc height as a fraction of the launch distance, capped by the route's ceiling (was 0.15)
-server float rsqdg_path_smooth = 0.6;   // how much of the flight eases in and settles softly into the hand (0 = the old pull curve)
+server float rsqdg_path_smooth = 0.6;   // how much of the flight settles softly into the hand (0 = full speed into the palm; PathE)
 server float rsqdg_spin       = 1.0;    // turns about its own up across a pull, as well as the tumble (0 off)
 // End-over-end turns across the whole pull, every flight mode. WorldHands' shipped
 // default 0.5 ("beautiful" in the headset); whole numbers land the way they left,

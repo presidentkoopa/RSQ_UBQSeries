@@ -44,7 +44,7 @@ class RSQDG_Flight : EventHandler
 	//
 	// The owner's RS_WorldHands pull (rs_distance.zs RS_Pull), ported number for
 	// number. A WRITTEN path, not a steered one: each tic the object is placed on
-	//     start + (palm - start) * e,   e = t ^ 1.6        (it is PULLED: slow, then fast)
+	//     start + (palm - start) * e,   e = PathE(t)       (a short pick-up, an even cruise, a soft settle: 11-05)
 	// and lifted by the parabola 4 h e (1 - e), keyed on e so the hump sits in the
 	// middle of the PATH whatever the speed curve does. h = 0.15 x the launch
 	// distance, capped ONCE at launch by the lowest ceiling over the whole route
@@ -770,7 +770,11 @@ class RSQDG_Flight : EventHandler
 			// HOMES TO WHERE YOUR HAND IS NOW, re-read every tic, not to where
 			// it was when you pulled. Over a third of a second your hand has
 			// moved, and an object flying to a stale point arrives beside it.
-			Vector3 palm = RSQDG_Reach.Palm(pmo, h);
+			// THE HAND WHERE THE LAST FRAME PUT IT, carried to where the body is now (RSQDG_HandSync, owner 11-05
+			// "smooth like the Whip"): the raw field is written only when a frame renders and, on PCVR, off the
+			// frame's interpolated eye, so read against a tic it jumps by up to a step of walking -- and the Arc,
+			// which lands on the palm, carried every jump into the object.
+			Vector3 palm = RSQDG_HandSync.Fix(pmo, RSQDG_Reach.Palm(pmo, h), RSQDG_Reach.Ctrl(pmo, h));
 
 			// THE WORLDHANDS PATH places the object itself, then the arrival
 			// below works on where it got to.
@@ -972,13 +976,11 @@ class RSQDG_Flight : EventHandler
 	private bool StepPath(int h, Actor a, Vector3 palm, PlayerInfo p)
 	{
 		double t = min(1.0, double(flyTic[h]) / double(max(1, flyTotal[h])));
-		double acc = max(0.25, RSQDG_Reach.Num("rsqdg_path_accel", p, 1.6));
-		// SMOOTHER (owner 2026-10-31: "smoother, quicker ... some life"): the pulled curve (slow, then fast) blended
-		// with an ease that starts and lands softly, rsqdg_path_smooth of the second: it leaves the floor with a
-		// tug, flies, and settles into the hand instead of slamming into it.
+		double acc = max(1.0, RSQDG_Reach.Num("rsqdg_path_accel", p, 1.6));
 		double sm = clamp(RSQDG_Reach.Num("rsqdg_path_smooth", p, 0.6), 0.0, 1.0);
-		double soft = t * t * t * (t * (t * 6.0 - 15.0) + 10.0);
-		double e = (t ** acc) * (1.0 - sm) + soft * sm;
+		// PathE is how far along the arc's LENGTH: the hump climbs steepest at the start, so an even pace in e
+		// alone still lurched (rig 11-05: 18, 32, 36 units a tic). ArcE finds the e that far along the curve.
+		double e = ArcE(flyFrom[h], palm, flyArcH[h], PathE(t, acc, sm));
 		// HOMES TO WHERE YOUR HAND IS NOW, re-read every tic.
 		Vector3 pos = flyFrom[h] + (palm - flyFrom[h]) * e;
 		pos.z += 4.0 * flyArcH[h] * e * (1.0 - e);
@@ -1007,6 +1009,64 @@ class RSQDG_Flight : EventHandler
 		}
 		a.Vel = (0, 0, 0);
 		return moved;
+	}
+
+	// HOW FAR ALONG THE ARC AT TIME t (0..1), owner 11-05 02:01/02:08: "can the objects come to us with the kind of
+	// smoothness they have with the Whip, but still keep their arc". The Whip's fetch is one throw: the same speed
+	// all the way. The Arc's old timing, t^1.6 blended with a smootherstep, crept off the floor at 2 units a tic
+	// and peaked at 1.5x its average speed (rig 11-05, a 300-unit pull: 2, 7, 13, 19, 24, 29, 31, 32, 31, 28 ...
+	// units a tic) -- a lurch, then a slam. Now the SAME arc (the same points: e still places it on start +
+	// (palm - start) e with the hump 4 h e (1 - e)) at the Whip's even pace: a short pick-up, a constant cruise,
+	// and a settle into the hand. The speed is a ramp from V0 up to cruise over the first R of the flight, cruise,
+	// then down to V1 over the last F; e is its integral, normalised. The two existing rows keep their sense:
+	// Arc Pull-In (rsqdg_path_accel) -- 1 constant speed from the first tic, more is a slower pick-up (R grows
+	// 0.25 per step over 1, at most half the flight); Pull Smoothness (rsqdg_path_smooth) -- how much of the flight
+	// settles softly into the hand (F = half of it). Defaults: R 0.15, F 0.3, peak 1.23x the average.
+	const PATH_V0 = 0.25;   // the speed it leaves the floor at, against the cruise
+	const PATH_V1 = 0.15;   // and arrives in the hand at
+	static double PathE(double t, double acc, double sm)
+	{
+		double r = clamp((acc - 1.0) * 0.25, 0.0, 0.5);
+		double f = clamp(sm * 0.5, 0.0, 0.5);
+		return PathI(clamp(t, 0.0, 1.0), r, f) / PathI(1.0, r, f);
+	}
+	// The e at which the arc from `a` to `b` with hump `hgt` has covered fraction `s` of its length (the curve
+	// sampled in ARC_N chords, the chord interpolated linearly). The same points as before, only the pacing.
+	const ARC_N = 24;
+	static double ArcE(Vector3 a, Vector3 b, double hgt, double s)
+	{
+		if (s <= 0.0) return 0.0;
+		if (s >= 1.0) return 1.0;
+		Vector3 d = b - a;
+		double len[25];   // ARC_N + 1
+		len[0] = 0.0;
+		Vector3 prev = a;
+		for (int i = 1; i <= ARC_N; i++)
+		{
+			double e = double(i) / ARC_N;
+			Vector3 q = a + d * e;
+			q.z += 4.0 * hgt * e * (1.0 - e);
+			len[i] = len[i - 1] + (q - prev).Length();
+			prev = q;
+		}
+		if (len[ARC_N] < 0.001) return s;
+		double want = s * len[ARC_N];
+		for (int i = 1; i <= ARC_N; i++)
+		{
+			if (len[i] < want) continue;
+			double seg = len[i] - len[i - 1];
+			double k = seg > 0.0 ? (want - len[i - 1]) / seg : 0.0;
+			return (i - 1 + k) / ARC_N;
+		}
+		return 1.0;
+	}
+	private static double PathI(double t, double r, double f)
+	{
+		double s = 0.0;
+		if (r > 0.0) { double a = min(t, r); s += PATH_V0 * a + (1.0 - PATH_V0) * a * a / (2.0 * r); }
+		if (t > r) s += min(t, 1.0 - f) - r;
+		if (f > 0.0 && t > 1.0 - f) { double u = t - (1.0 - f); s += u - (1.0 - PATH_V1) * u * u / (2.0 * f); }
+		return s;
 	}
 
 	// ---- the tumble ----------------------------------------------------------
