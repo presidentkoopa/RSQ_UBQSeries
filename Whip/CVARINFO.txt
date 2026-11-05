@@ -27,7 +27,7 @@ server bool   rsqwp_whip_leash    = true;   // Lock: a locked crack on a monster
 server bool   rsqwp_whip_weapon   = true;   // every player carries the whip weapon (slot 1)
 user   int    rsqwp_whip_hand     = 0;      // Whip In: 0 the main hand, 1 the off hand (one whip, in that hand)
 user   int    rsqwp_hand_handle   = 1;      // Hand on the Handle (owner 11-03): the whip weapon drawn as BD22 VR's FBX hand (its magazine hold) round the handle; 0 the handle alone
-user   bool   rsqwp_show          = true;   // Show Whip (owner 11-04): the whip, while you own it and hold it in neither hand, hangs coiled at RSQ Tactical Rig's whip holster (the rig reads this by name; without the rig there is no spot)
+user   bool   rsqwp_show          = true;   // Show Whip (owner 11-04): the whip, while you own it and hold it in neither hand, hangs coiled at the main-hand hip: drawn by the Rig at its whip holster when the Rig is loaded (it reads this by name), else by Whip itself (hip.zs) at the same spot
 server noarchive bool rsqwp_handtest = false; // test only: the world handle drawn beside the hand's (to line them up on the rig)
 server float  rsqwp_whip_prio     = 256;    // the whip weapon: switches, keys and powerups this close (map units, 256 = 8 m) are marked first
 server float  rsqwp_whip_light    = 400;    // the whip weapon's pull: up to this mass a monster is pulled off its feet to you

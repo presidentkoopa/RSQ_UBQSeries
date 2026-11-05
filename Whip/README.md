@@ -107,7 +107,7 @@ while that whip node is not learned (they do nothing until then).
 | Whip | On | The binds whip |
 | Whip in Slot 1 | On | Every player carries the whip weapon |
 | Whip In | Main Hand | Which hand holds it |
-| Show Whip | On | The whip hangs coiled at RSQ Tactical Rig's whip holster while it is in neither hand (needs the Rig) |
+| Show Whip | On | The whip hangs coiled at your main-hand hip while it is in neither hand (at RSQ Tactical Rig's whip holster when the Rig is loaded) |
 | Hand on the Handle | On | The hand round the handle |
 | Whip Style | Real | Real (hold, crack it yourself) or Assist (press, it cracks for you) |
 | Whip Aim | Assist | Free, Assist, or Lock (other hand points, alt fire holds) |
