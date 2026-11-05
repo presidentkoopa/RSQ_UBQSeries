@@ -97,50 +97,42 @@ drew, so only your arms throw punches.
 
 ## Menu
 
-Options → Radiant Silvergun Options → RSQ Melee
+Options → Radiant Silvergun Options → RSQ Melee. One page, and one sub menu, **Test and Debug**. With RSQ Gun Bonsai VR
+loaded the page starts with "GunBonsaiOVR detected. Mod features unlocked via upgrades." and the rows marked GB are greyed
+while that upgrade is not learned (they do nothing until then). Hadouken and Heavy Hands are not greyed: the gloves learn
+them, but any other fist still plays the row.
 
 | Row | Default | What it does |
 |---|---|---|
-| Melee Hands | Auto (FBX with BD22 VR) | Auto, Ermac, or FBX (BD22 VR) |
-| Boxing Gloves | Off | The hands wear boxing gloves (always fists) |
-| Open-Palm Swat | On | Palms knock missiles aside |
-| Fists and Palms Meet Bullets | On | Hands meet monsters' bullets too |
-| Slappers Only | Off | Gloves only, guns put away |
+| **Hands** | | |
 | Start With Melee Hands | Off | The hands at each level start, up in both hands |
+| Hand Model | Auto | Auto (FBX with BD22 VR), Ermac, or FBX (BD22 VR) |
+| Boxing Gloves | Off | The hands wear boxing gloves (always fists) |
+| Slappers Only | Off | Gloves only, guns put away |
+| Open-Palm Swat | On | Palms knock missiles aside |
+| Swat Bullets | On | Hands meet monsters' bullets too |
+| Hit Spark Size | 1.0 | Size of the hit sparks |
+| **Gun Butt Shove** | | |
 | Gun Butt Shove | On | The stock strike |
-| Slow-Mo After a Shove | On | A short RSQ SlowMo beat and the F.E.A.R. Effect |
+| Slow-Mo After Shove | On | A short RSQ SlowMo beat and the F.E.A.R. Effect |
+| **Headlock** | | |
 | Headlock | On | Off-hand grip holds a monster |
-| Headlock: Human Shield (hold until let go) | Off | Held while you grip, facing away |
-| Headlock Punch Extra Blood | On | Blows on a held monster bleed more |
-| Guard | Off | The guard (level 1 without Gun Bonsai VR) |
+| Human Shield (GB) | Off | Held while you grip, facing away |
+| Extra Blood | On | Blows on a held monster bleed more |
+| **Moves** | | |
+| Guard (GB) | Off | The guard (level 1 without Gun Bonsai VR) |
 | Start With Guard (Gun Bonsai VR) | Off | With Gun Bonsai VR, Guard at level 1 before it is learned |
 | Hadouken | Off | Punches return missiles |
-| Wall Splat (Wallflower) | Off | Punched into a wall, it slams |
+| Wall Splat (GB) | Off | Punched into a wall, it slams |
 | Heavy Hands | Off | Heavier punches |
-| Ground Pound | Off | Two-fist shockwave (needs RSQ Gestures) |
-| Clear Out | Off | Two-palm shove (needs RSQ Gestures) |
-| Hit Spark Size | 1.0 | Size of the hit sparks |
+| Ground Pound (RSQ Gestures) (GB) | Off | Two-fist shockwave (needs RSQ Gestures) |
+| Clear Out (RSQ Gestures) (GB) | Off | Two-palm shove (needs RSQ Gestures) |
+| Reset All | | Every setting on both pages back to default |
 
-With RSQ Gun Bonsai VR loaded, the Guard, Hadouken, Wall Splat, Heavy Hands, Ground Pound and Clear Out rows do
-nothing: those moves are its upgrades.
-
-**Tuning and Debug**
-
-| Row | Default | What it does |
-|---|---|---|
-| Punch Min Speed | 2.0 | m/s a punch must average |
-| Punch Full Speed | 7.0 | m/s for full power |
-| Punch Damage | 10 | Base damage (double at full speed) |
-| Uppercut Lift Cap (m of air) | 3.0 | Highest launch; 0 for no cap |
-| Butt Shove Speed (m/s) | 3.6 | How hard the shove must be |
-| Shove Slow-Mo Length (ms) | 300 | The slow-motion beat |
-| Headlock: Reach (m) | 0.30 | Palm to monster |
-| Headlock: Heaviest | 400 | Heaviest monster (imp 100, demon 400, baron 1000) |
-| Headlock: Seconds | 3.0 | How long it is held |
-| Headlock: Throw At (m/s, 0 = never) | 3.0 | Swing speed that throws |
-| Headlock Throw Weight % | 30 | Share of its weight a thrown monster counts as |
-| Debug Log | Off | Off, Each Decision, Also Each F.E.A.R. Hit |
-| Reset All | | Every setting back to default |
+**Test and Debug**: Punch Damage (10), Min Speed (2.0 m/s), Full Speed (7.0 m/s), Re-Hit Wait (6 tics), Uppercut Rise
+(0.50), Lift Cap (3.0 m), Extra Reach (4); Shove Speed (3.6 m/s), Slow-Mo Length (300 ms); Headlock Reach (0.30 m),
+Heaviest (400), Seconds (3.0), Throw At (3.0 m/s, 0 never), Throw Weight % (30), Off Grip Keys (443 436); Debug Log
+(Off); Reset All.
 
 ## Works with
 

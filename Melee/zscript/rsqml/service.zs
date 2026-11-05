@@ -27,6 +27,20 @@
 // RSQ Gun Bonsai VR's glove upgrades read "punch.*" in ModifyDamageDealt (the glove is the inflictor there).
 class RSQML_Service : Service
 {
+	// THE MENU (MENU_PASS_BRIEF.md, owner 11-04): GetIntUI("menu.locked", <upgrade>) 1 while that Gun Bonsai VR upgrade is
+	// not learned by the console player (the row then does nothing), 0 learned. Asked by the RSQMLGbOption rows only while
+	// Gun Bonsai VR is loaded; read from RSQML_Sim's once-a-second cache (core.zs). Not in a game: 1.
+	override int GetIntUI(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
+	{
+		if (!(request ~== "menu.locked")) return 0;
+		let sim = RSQML_Sim(StaticEventHandler.Find("RSQML_Sim"));
+		if (!sim || !players[consoleplayer].mo) return 1;
+		static const String F[] = { "Guard", "WallSplat", "GroundPound", "ClearOut", "HumanShield" };
+		for (int i = 0; i < F.Size(); i++)
+			if (stringArg ~== F[i]) return sim.menuLv[i] < 0 ? 0 : (sim.menuLv[i] >= 1 ? 0 : 1);
+		return 0;
+	}
+
 	override int GetInt(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
 	{
 		if (request == "loaded") return 1;

@@ -1,4 +1,10 @@
-// RSQ Melee -- MENUDEF
+// RSQ Melee -- MENUDEF. The series' menu (MENU_PASS_BRIEF.md, owner 11-04): ONE page with every option under short
+// headers, On/Off first; ONE sub menu, "Test and Debug", with the punch, shove and Headlock numbers, the grip keys and the
+// debug log. No help text. Guard, Wall Splat, Ground Pound, Clear Out and Human Shield are RSQMLGbOption rows: with RSQ
+// Gun Bonsai VR loaded each greys while its upgrade is not learned (RSQML_Service "menu.locked", service.zs). Hadouken and
+// Heavy Hands are plain rows: under Gun Bonsai VR the gloves learn them, but any other fist still plays the row
+// (core.zs FistLevel, owner 11-04 "Punch with any fist"), so the row always acts.
+// Reset All (RSQMLResetAll) resets every row on both pages.
 // ---- Radiant Silvergun Options (tools/rsmenu) ----------------------------------------------------
 // The series' one Options entry. Every series pk3 carries this same block with its own prefix: the
 // parent is PROTECTED, so the first definition stays and later ones add nothing (QZD 17.3 merges a
@@ -24,71 +30,70 @@ AddOptionMenu "RSQ_RSOptions"
 OptionMenu "RSQML_Options"
 {
 	Title "RSQ MELEE"
-	StaticText "Fighting with your body: punches, the open-palm", "gray"
-	StaticText "swat, the gun-butt shove, the Headlock.", "gray"
-	StaticText " "
-	StaticText "Tap a hand's fire: fist or open palm.", "gray"
-	Option "Melee Hands", "rsqml_hands_model", "RSQML_HandsModel"
-	Option "Boxing Gloves", "rsqml_boxing", "OnOff"
-	Option "Open-Palm Swat", "rsqml_swat", "OnOff"
-	Option "Fists and Palms Meet Bullets", "rsqml_bullets", "OnOff"
-	Option "Slappers Only", "rsqml_slappers", "OnOff"
+	RSQMLGbLine ""
+	StaticText "Hands", "Gold"
 	Option "Start With Melee Hands", "rsqml_gloves", "OnOff"
-	StaticText " "
-	StaticText "Gun butt shove: swing the gun in your main hand", "gray"
-	StaticText "at a monster. Stands down with BD22 VR Reloaded.", "gray"
-	Option "Gun Butt Shove", "rsqml_shove", "OnOff"
-	Option "Slow-Mo After a Shove", "rsqml_shove_slowmo", "OnOff"
-	StaticText " "
-	StaticText "Headlock: the off hand's grip on a monster.", "gray"
-	Option "Headlock", "rsqml_headlock", "OnOff"
-	Option "Headlock: Human Shield (hold until let go)", "rsqml_headlock_shield", "OnOff"
-	Option "Headlock Punch Extra Blood", "rsqml_headlock_blood", "OnOff"
-	StaticText " "
-	StaticText "With RSQ Gun Bonsai VR these six are its", "gray"
-	StaticText "upgrades and these rows do nothing. Without it,", "gray"
-	StaticText "each row turns the move on at level 1.", "gray"
-	Option "Guard", "rsqml_guard", "OnOff"
-	Option "Start With Guard (Gun Bonsai VR)", "rsqml_guard_start", "OnOff"
-	Option "Hadouken", "rsqml_hadouken", "OnOff"
-	Option "Wall Splat (Wallflower)", "rsqml_wallsplat", "OnOff"
-	Option "Heavy Hands", "rsqml_heavyhands", "OnOff"
-	Option "Ground Pound", "rsqml_groundpound", "OnOff"
-	Option "Clear Out", "rsqml_clearout", "OnOff"
-	StaticText " "
+	Option "Hand Model", "rsqml_hands_model", "RSQML_HandsModel"
+	Option "Boxing Gloves", "rsqml_boxing", "OnOff"
+	Option "Slappers Only", "rsqml_slappers", "OnOff"
+	Option "Open-Palm Swat", "rsqml_swat", "OnOff"
+	Option "Swat Bullets", "rsqml_bullets", "OnOff"
 	Slider "Hit Spark Size", "rsqml_spark_size", 0.25, 3.0, 0.25, 2
 	StaticText " "
-	Submenu "Tuning and Debug", "RSQML_Tuning"
+	StaticText "Gun Butt Shove", "Gold"
+	Option "Gun Butt Shove", "rsqml_shove", "OnOff"
+	Option "Slow-Mo After Shove", "rsqml_shove_slowmo", "OnOff"
+	StaticText " "
+	StaticText "Headlock", "Gold"
+	Option "Headlock", "rsqml_headlock", "OnOff"
+	RSQMLGbOption "Human Shield", "rsqml_headlock_shield", "OnOff", "RSQML_Service", "HumanShield"
+	Option "Extra Blood", "rsqml_headlock_blood", "OnOff"
+	StaticText " "
+	StaticText "Moves", "Gold"
+	RSQMLGbOption "Guard", "rsqml_guard", "OnOff", "RSQML_Service", "Guard"
+	Option "Start With Guard (Gun Bonsai VR)", "rsqml_guard_start", "OnOff"
+	Option "Hadouken", "rsqml_hadouken", "OnOff"
+	RSQMLGbOption "Wall Splat", "rsqml_wallsplat", "OnOff", "RSQML_Service", "WallSplat"
+	Option "Heavy Hands", "rsqml_heavyhands", "OnOff"
+	RSQMLGbOption "Ground Pound (RSQ Gestures)", "rsqml_groundpound", "OnOff", "RSQML_Service", "GroundPound"
+	RSQMLGbOption "Clear Out (RSQ Gestures)", "rsqml_clearout", "OnOff", "RSQML_Service", "ClearOut"
+	StaticText " "
+	Submenu "Test and Debug", "RSQML_Test"
+	RSQMLResetAll "Reset All", "Reset all RSQ Melee settings?"
 }
 
-OptionMenu "RSQML_Tuning"
+OptionMenu "RSQML_Test"
 {
-	Title "TUNING AND DEBUG"
-	StaticText "Punch (the gloves)", "gold"
-	Slider "Punch Min Speed", "rsqml_punch_min_speed", 0.5, 5.0, 0.25, 2
-	Slider "Punch Full Speed", "rsqml_punch_full_speed", 3.0, 12.0, 0.5, 1
+	Title "RSQ MELEE: TEST AND DEBUG"
+	StaticText "Punch", "Gold"
 	Slider "Punch Damage", "rsqml_punch_damage", 2, 40, 1, 0
-	Slider "Uppercut Lift Cap (m of air)", "rsqml_punch_lift_cap", 0.0, 10.0, 0.5, 1
+	Slider "Min Speed (m/s)", "rsqml_punch_min_speed", 0.5, 5.0, 0.25, 2
+	Slider "Full Speed (m/s)", "rsqml_punch_full_speed", 3.0, 12.0, 0.5, 1
+	Slider "Re-Hit Wait (tics)", "rsqml_punch_rehit", 1, 20, 1, 0
+	Slider "Uppercut Rise", "rsqml_punch_uppercut_rise", 0.1, 0.95, 0.05, 2
+	Slider "Lift Cap (m)", "rsqml_punch_lift_cap", 0.0, 10.0, 0.5, 1
+	Slider "Extra Reach", "rsqml_punch_pad", 0, 16, 1, 0
 	StaticText " "
-	StaticText "Gun butt shove", "gold"
-	Slider "Butt Shove Speed (m/s)", "rsqml_shove_mps", 1.0, 8.0, 0.1, 1
-	Slider "Shove Slow-Mo Length (ms)", "rsqml_shove_slowmo_ms", 100, 1000, 50, 0
+	StaticText "Gun Butt Shove", "Gold"
+	Slider "Shove Speed (m/s)", "rsqml_shove_mps", 1.0, 8.0, 0.1, 1
+	Slider "Slow-Mo Length (ms)", "rsqml_shove_slowmo_ms", 100, 1000, 50, 0
 	StaticText " "
-	StaticText "Headlock", "gold"
-	Slider "Headlock: Reach (m)", "rsqml_headlock_reach", 0.1, 0.6, 0.05, 2
-	Slider "Headlock: Heaviest", "rsqml_headlock_mass", 50, 1000, 50, 0
-	Slider "Headlock: Seconds", "rsqml_headlock_secs", 1, 10, 0.5, 1
-	Slider "Headlock: Throw At (m/s, 0 = never)", "rsqml_headlock_throw", 0.0, 8.0, 0.25, 2
-	Slider "Headlock Throw Weight %", "rsqml_headlock_weight", 10, 100, 5, 0
+	StaticText "Headlock", "Gold"
+	Slider "Reach (m)", "rsqml_headlock_reach", 0.1, 0.6, 0.05, 2
+	Slider "Heaviest", "rsqml_headlock_mass", 50, 1000, 50, 0
+	Slider "Seconds", "rsqml_headlock_secs", 1, 10, 0.5, 1
+	Slider "Throw At (m/s)", "rsqml_headlock_throw", 0.0, 8.0, 0.25, 2
+	Slider "Throw Weight %", "rsqml_headlock_weight", 10, 100, 5, 0
+	TextField "Off Grip Keys", "rsqml_keys_off"
 	StaticText " "
 	Option "Debug Log", "rsqml_debug", "RSQML_Debug"
 	StaticText " "
-	SafeCommand "Reset All", "resetcvar rsqml_headlock_blood; resetcvar rsqml_hands_model; resetcvar rsqml_boxing; resetcvar rsqml_swat; resetcvar rsqml_bullets; resetcvar rsqml_slappers; resetcvar rsqml_gloves; resetcvar rsqml_punch_min_speed; resetcvar rsqml_punch_full_speed; resetcvar rsqml_punch_rehit; resetcvar rsqml_punch_uppercut_rise; resetcvar rsqml_punch_lift_cap; resetcvar rsqml_punch_pad; resetcvar rsqml_punch_damage; resetcvar rsqml_guard; resetcvar rsqml_guard_start; resetcvar rsqml_hadouken; resetcvar rsqml_wallsplat; resetcvar rsqml_heavyhands; resetcvar rsqml_groundpound; resetcvar rsqml_clearout; resetcvar rsqml_shove; resetcvar rsqml_shove_mps; resetcvar rsqml_shove_slowmo; resetcvar rsqml_shove_slowmo_ms; resetcvar rsqml_headlock; resetcvar rsqml_headlock_reach; resetcvar rsqml_headlock_mass; resetcvar rsqml_headlock_secs; resetcvar rsqml_headlock_shield; resetcvar rsqml_headlock_throw; resetcvar rsqml_headlock_weight; resetcvar rsqml_keys_off; resetcvar rsqml_debug", "Reset all RSQ Melee settings?"
+	RSQMLResetAll "Reset All", "Reset all RSQ Melee settings?"
 }
 
 OptionValue "RSQML_HandsModel"
 {
-	0, "Auto (FBX with BD22 VR)"
+	0, "Auto"
 	1, "Ermac"
 	2, "FBX (BD22 VR)"
 }
@@ -97,5 +102,5 @@ OptionValue "RSQML_Debug"
 {
 	0, "Off"
 	1, "Each Decision"
-	2, "Also Each F.E.A.R. Hit"
+	2, "Also F.E.A.R. Hits"
 }

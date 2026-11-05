@@ -274,6 +274,27 @@ class RSQML_Sim : StaticEventHandler
 	bool simOn[MAXPLAYERS * 2];
 	Vector3 simHand[MAXPLAYERS * 2];
 	static RSQML_Sim Get() { return RSQML_Sim(StaticEventHandler.Find("RSQML_Sim")); }
+
+	// THE MENU'S GUN BONSAI VR GATING (RSQML_Service GetIntUI "menu.locked", service.zs): the console player's levels of
+	// the gated rows' upgrades, asked of Gun Bonsai VR once a second here in play (ui code cannot ask it). -1: not asked.
+	//   0 Guard (the player's), 1 WallSplat, 2 GroundPound, 3 ClearOut (the better glove), 4 HumanShield (the off glove)
+	transient int menuLv[5];
+	transient int menuTic;
+	override void WorldTick()
+	{
+		if (menuTic > 0 && level.maptime < menuTic + 35 && level.maptime >= menuTic) return;
+		menuTic = max(level.maptime, 1);
+		let gb = RSQML.GB();
+		let mo = players[consoleplayer].mo;
+		if (!gb || !mo) { for (int i = 0; i < 5; i++) menuLv[i] = -1; return; }
+		let gm = Weapon(mo.FindInventory("RSQ_Glove"));
+		let go = Weapon(mo.FindInventory("RSQ_GloveOff"));
+		menuLv[0] = gb.GetInt("plevel", "Guard", 0, 0, mo);
+		static const String GL[] = { "WallSplat", "GroundPound", "ClearOut" };
+		for (int i = 0; i < 3; i++)
+			menuLv[1 + i] = max(gm ? gb.GetInt("level", GL[i], 0, 0, gm) : 0, go ? gb.GetInt("level", GL[i], 0, 0, go) : 0);
+		menuLv[4] = go ? gb.GetInt("level", "HumanShield", 0, 0, go) : 0;
+	}
 }
 
 // ---- A RUMBLE on one controller (moved from Gun Bonsai VR with its name: a save may hold one) ---------------
