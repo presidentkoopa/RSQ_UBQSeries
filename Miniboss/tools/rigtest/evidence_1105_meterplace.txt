@@ -16,3 +16,9 @@ Run 2 (VR eye, vr_mode 15, BD order: doom2 + lo2 01 + BD22 VR repo 02-07 with 03
 Not shown: the side gauges' Photosensitive look (the SlowMo gauge emptied before rsqa_photosafe 1 was set; Berserk gauge
 not raised), Text Size above 1 and a 16:9 window (the maths follows Score's own pixels, hud.cx / hud.bar.bottom /
 hud.bar.w), the wait line's legibility at headset resolution (at the rig's 480 px it is a few pixels tall), a real headset.
+
+HIDDEN WHILE A BOSSFIGHT RUNS (owner 11-05, via the coordinator): run 3 (flat, doom2 + Gun Bonsai 0.10.6 + all 19 RSQ pk3s,
+rsqmb_bf_first 0, rsqmb_bf_auto 1, netevent rsqmb_fill 1000): frames every 10th: empty meter, filling, gold full; the log
+"RSQMB BOSSFIGHT ARRIVING ... LANDED: boss 0 Zombieman"; from the arrival frame on no meter and no skull, SlowMo's landing
+countdown moved up into the meter's slot under Score. Script errors 0. Not shown: the meter coming back after the miniboss
+dies (not killed in this run).

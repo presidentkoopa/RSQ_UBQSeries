@@ -14,8 +14,9 @@
 // while it fills, gold when full; a band of light sweeps through it and its end breathes, as on the gauges. At its left the
 // crowned skull (RSQMBSK0 dim, RSQMBSK1 lit: original pixel art) fills from the jaw up with the meter. FULL, it comes
 // alive: the band runs gold, the fill and the skull swell with a slow beat, and a glint crosses the bar every few seconds.
-// No words on the bar; when a due Bossfight has to wait, one small line under it: "No Miniboss: " and the reason (bfWhy). While a Bossfight runs, the set
-// piece's own colour, alive the same way. PHOTOSENSITIVE MODE (RSQ_Accessibility, by name: RSQMB_A11y): no glint, the edge
+// No words on the bar; when a due Bossfight has to wait, one small line under it: "No Miniboss: " and the reason (bfWhy).
+// HIDDEN while a Bossfight runs (owner 11-05), from its arrival until its miniboss is dead or done: it shows only while it
+// fills, when full, and full and waiting with its line. PHOTOSENSITIVE MODE (RSQ_Accessibility, by name: RSQMB_A11y): no glint, the edge
 // held still, the beat at most 2.5 a second and dimmed, the band dimmer (as RSQ SlowMo's countdown bar does).
 // VR: every piece is a quad cropped from the SOURCE (DTA_SrcX / DTA_SrcY) or a thick line: no clip rectangle and no
 // Screen.Dim (neither shows on the projected HUD in VR). Rig only, not headset-confirmed.
@@ -32,7 +33,14 @@ extend class RSQMB_Handler
 		let c = CVar.GetCVar(n, players[consoleplayer]);
 		return c ? c.GetFloat() : d;
 	}
-	static ui bool MeterShown() { return BfOn() && UCv("rsqmb_bf_hud", 1) != 0; }
+	// HIDDEN WHILE A BOSSFIGHT RUNS (owner 11-05): from the arrival through the landing until its miniboss is dead or done,
+	// nothing is drawn (and "meter.bottom" answers -1, so RSQ SlowMo's countdown and Score's rows close up under Score)
+	static ui bool MeterShown()
+	{
+		if (!BfOn() || UCv("rsqmb_bf_hud", 1) == 0) return false;
+		let hd = RSQMB_Handler(EventHandler.Find("RSQMB_Handler"));
+		return !(hd && (hd.arrPhase != 0 || (hd.bfBoss && !hd.bfBoss.done)));
+	}
 
 	// x, y, width, height in screen pixels (the bar; the skull sits at its left, SkullRect)
 	// SIZE AND PLACE (owner 11-05: "i was expecting them to be smaller than the score, neatly fitting centered under it
@@ -163,25 +171,17 @@ extend class RSQMB_Handler
 		hudLastT = t;
 		double fill = m ? clamp(m.fill / 1000.0, 0.0, 1.0) : 0.0;
 		bool ready = m && m.ready;
-		bool fight = arrPhase != 0 || (bfBoss && !bfBoss.done);
-		if (fight || ready) fill = 1.0;
+		if (ready) fill = 1.0;
 		if (fill > hudShown) hudShown = min(fill, hudShown + dt / 20.0);
 		else hudShown = fill;
-		bool full = (ready || fight) && hudShown >= 0.999;
+		bool full = ready && hudShown >= 0.999;
 		bool photo = RSQMB_A11y.Photo();
 
 		double x, y, w, h;
 		[x, y, w, h] = MeterRect();
-		// the colours: red while it fills, gold when full (owner's mock-up, 11-05), the set piece's own while one runs
+		// the colours: red while it fills, gold when full (owner's mock-up, 11-05)
 		Color lo, mid, hi;
-		if (fight)
-		{
-			int bi = bfBoss ? bfBoss.idx : bosses.Size();
-			mid = PALETTE[bi % PALETTE.Size()];
-			lo = Color(255, int(mid.r * 0.35), int(mid.g * 0.35), int(mid.b * 0.35));
-			hi = Mix(mid, Color(255, 255, 255, 255), 0.6);
-		}
-		else if (ready) { lo = Color(255, 190, 120, 10); mid = Color(255, 255, 190, 30); hi = Color(255, 255, 228, 130); }
+		if (ready) { lo = Color(255, 190, 120, 10); mid = Color(255, 255, 190, 30); hi = Color(255, 255, 228, 130); }
 		else { lo = Color(255, 90, 10, 8); mid = Color(255, 220, 40, 30); hi = Color(255, 255, 150, 120); }
 		// full: a slow beat (0..1), capped and dimmed in Photosensitive Mode
 		double beat = full ? 0.5 + 0.5 * sin(t * RSQMB_A11y.Deg(BEAT)) : 0.0;

@@ -26,6 +26,7 @@ No miniboss is picked when a level loads any more. You earn it.
   beating red like a heart. With RSQ Accessibility's Photosensitive Mode: no glint, a slower, dimmer beat. No words on
   the bar. If a due Bossfight has to wait, one small line under it says why: No Miniboss: Low Health, No Room, Too Busy
   (a heavy fight), Too Early (the first minute), Near Exit, Cooldown, Map Limit, or No Monsters.
+  While a Bossfight runs (from its arrival until the miniboss is dead) the meter is hidden.
 - **Call it in**: hold the watch check (the wrist turned to your eyes) and press Use. Or wait: it comes by itself about
   a minute after the meter filled.
 - **It arrives in view, at a distance**: somewhere you can see, 12 to 32 m away, with room for the whole crew, in a
