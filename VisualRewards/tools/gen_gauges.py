@@ -28,6 +28,10 @@ THE BOSSFIGHT METER'S CROWNED SKULL (original pixel art, 16 x 16, drawn for the 
 mock-up): RSQMBSK0 dim (bone greyed, the meter not full), RSQMBSK1 lit (the bone shows, red eyes). The HUD draws the dim
 one, then the lit one cropped from the bottom up to the meter's fill, so the skull fills with the bar.
 
+THE COUNTDOWN BAR'S HOURGLASS (original pixel art, 16 x 16, drawn for the series 11-05; owner 11-05: "hourglass icon by the
+slowdown bar"): RSQSMHG, gold plates, pale glass, sand running down. Same grid and outline as the skull, so SlowMo draws it
+at the skull's size and the two rows (meter, countdown) line up.
+
 Run from anywhere: python VisualRewards/tools/gen_gauges.py"""
 import os
 from PIL import Image
@@ -48,6 +52,7 @@ HBARS = [
     ('RSQMBH', os.path.join(SERIES, 'Miniboss', 'graphics')),
 ]
 SKULL_OUT = os.path.join(SERIES, 'Miniboss', 'graphics')
+HOURGLASS_OUT = os.path.join(SERIES, 'SlowMo', 'graphics')
 
 # '#' outline, 'o' crown gold, 'w' bone, 'r' eye
 SK = ['#..#...##...#..#',
@@ -66,6 +71,24 @@ SK = ['#..#...##...#..#',
       '..#w#w#w#w#w#..',
       '...#w#w#w#w#...',
       '....########....']
+
+# '#' outline, 'o' plate gold, 'g' glass, 's' sand
+HG = ['.##############.',
+      '.#oooooooooooo#.',
+      '.##############.',
+      '..#gggggggggg#..',
+      '..#gggggggggg#..',
+      '...#ssssssss#...',
+      '....#ssssss#....',
+      '.....#ssss#.....',
+      '......#ss#......',
+      '.....#gssg#.....',
+      '....#ggssgg#....',
+      '...#ggssssgg#...',
+      '..#ssssssssss#..',
+      '.##############.',
+      '.#oooooooooooo#.',
+      '.##############.']
 
 
 def luma(p): return 0.299 * p[0] + 0.587 * p[1] + 0.114 * p[2]
@@ -109,6 +132,19 @@ def skull(lit):
     return im
 
 
+def hourglass():
+    im = Image.new('RGBA', (16, 16), (0, 0, 0, 0))
+    p = im.load()
+    for y, r in enumerate(HG):
+        assert len(r) == 16, (y, r)
+        for x, ch in enumerate(r):
+            if ch == '#': p[x, y] = (15, 15, 15, 255)
+            elif ch == 'o': p[x, y] = (255, 200, 40, 255)
+            elif ch == 'g': p[x, y] = (150, 185, 205, 120)
+            elif ch == 's': p[x, y] = (245, 220, 150, 255)
+    return im
+
+
 def main():
     empty = Image.open(os.path.join(SRC, 'HP_A_00.png')).convert('RGBA')
     full = Image.open(os.path.join(SRC, 'HP_A_99.png')).convert('RGBA')
@@ -130,6 +166,9 @@ def main():
     skull(False).save(os.path.join(SKULL_OUT, 'RSQMBSK0.png'), optimize=True)
     skull(True).save(os.path.join(SKULL_OUT, 'RSQMBSK1.png'), optimize=True)
     print(f'RSQMBSK0 / RSQMBSK1 -> {SKULL_OUT}  (16 x 16, the crowned skull)')
+    os.makedirs(HOURGLASS_OUT, exist_ok=True)
+    hourglass().save(os.path.join(HOURGLASS_OUT, 'RSQSMHG.png'), optimize=True)
+    print(f'RSQSMHG -> {HOURGLASS_OUT}  (16 x 16, the hourglass)')
 
 
 if __name__ == '__main__':

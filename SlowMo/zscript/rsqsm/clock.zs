@@ -1504,9 +1504,7 @@ class RSQSM_Service : Service
 		if (request ~== "countdown.bottom")
 		{
 			if (!c || (c.rival && RSQSM_Gauge.SCv("rsm_yield", 1) != 0) || !RSQSM_Countdown.Enabled()) return -1;
-			double x, y, w, h;
-			[x, y, w, h] = RSQSM_Countdown.Rect();
-			return int(ceil(y + h));
+			return RSQSM_Countdown.Bottom();
 		}
 		// THE MENU: "menu.locked", "LeanDodge" -> 1 while the Gun Bonsai VR patch is loaded and the console player has
 		// not learned Lean Dodge (LeanOn: the upgrade gates the Lean Out of Bullets row), else 0. From GbRefresh's cache.

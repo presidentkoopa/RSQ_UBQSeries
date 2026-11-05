@@ -14,16 +14,18 @@ works the same on Doom's monsters, Brutal Doom's and most monster packs.
 
 No miniboss is picked when a level loads any more. You earn it.
 
-- **The meter** sits under RSQ Score's bar (above RSQ SlowMo's countdown bar and Score's combo rows). It fills most from
+- **The meter** sits under RSQ Score's bar, smaller than Score and centred under its bar (never wider than it, at any Text
+  Size or screen shape), above RSQ SlowMo's countdown bar and Score's combo rows. It fills most from
   RSQ Score's style points (style bonuses and combos), then kill chains (kills within 3 seconds), Gun Bonsai XP, and
   slowly from time spent pushing into the map. Without RSQ Score each kill counts for more. It is kept from map to map.
 - **How it looks**: coldcite's Top HP Bars block bar lying down, the same rim, well and size as RSQ SlowMo's countdown bar
-  and the side gauges, with a crowned skull at its left. Red while it fills (the skull lights up from the jaw as it does),
+  (whose hourglass lines up under the skull) and the side gauges' style, with a crowned skull at its left. Red while it fills (the skull lights up from the jaw as it does),
   with a band of light running through it.
 - **Full**, it tells you without words: a sting, the bar turns gold and comes alive (the band runs gold, the bar and the
   skull swell with a slow beat, a glint crosses it every few seconds), and (with RSQ Glow In The Dark) the map's glow
-  beating red like a heart. With RSQ Accessibility's Photosensitive Mode: no glint, a slower, dimmer beat. If a due
-  Bossfight has to wait, the reason shows small on the bar (for example NO ROOM IN VIEW).
+  beating red like a heart. With RSQ Accessibility's Photosensitive Mode: no glint, a slower, dimmer beat. No words on
+  the bar. If a due Bossfight has to wait, one small line under it says why: No Miniboss: Low Health, No Room, Too Busy
+  (a heavy fight), Too Early (the first minute), Near Exit, Cooldown, Map Limit, or No Monsters.
 - **Call it in**: hold the watch check (the wrist turned to your eyes) and press Use. Or wait: it comes by itself about
   a minute after the meter filled.
 - **It arrives in view, at a distance**: somewhere you can see, 12 to 32 m away, with room for the whole crew, in a
@@ -196,7 +198,7 @@ Then the set piece itself:
 - **RSQ Glow In The Dark**: the heartbeat while the meter is full; the map's glow takes the miniboss's colour while it lives.
 - **RSQ Gun Bonsai VR** (with Gun Bonsai): XP fills the meter; the player level raises the tier.
 - **RSQ Accessibility (Gestures), RSQ Gun Cards**: their watch-check reader is used first when loaded.
-- **RSQ VisualRewards**: HP bars mark the miniboss and its thralls; Kill Rewards treat it as a boss, a Bossfight's x3 more.
+- **RSQ VisualRewards**: HP bars mark the miniboss and its thralls (the crown now carries 1-3 tier pips for the Bossfight's tier); Kill Rewards treat it as a boss, a Bossfight's x3 more.
 - **RSQ Grapple, RSQ Whip, RSQ Melee**: refuse to yank or headlock it (switches above).
 - **RSQ ShieldSaw and RSQ Gun Bonsai VR**: read its true legendary health when it was made legendary here.
 - **RSQ Tactical Rig**: its optional "watch check + Use moves the gun" also reads Use at the watch check; with both on, a

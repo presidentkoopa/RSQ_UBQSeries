@@ -49,7 +49,7 @@ user float   rsqsm_drain_amt    = 0.35;  // how much colour goes at full depth, 
 // slow motion, a green bar under RSQ Score's bar counts down the real time until full speed
 user bool    rsqsm_cdbar        = true;  // Real-Time Countdown Bar
 user bool    rsqsm_cdbar_anim   = true;  // Bar Animation: the sweeping band, the breathing edge, the refill glint
-user float   rsqsm_cdbar_size   = 1.5;   // Bar Size: x a third of the screen's height long (1.5: the series' VR default)
+user float   rsqsm_cdbar_size   = 1.5;   // Bar Size: x 0.8 of RSQ Score's bar thickness / 1.5, never wider than Score's bar
 user int     rsqsm_cdbar_color  = 15;    // Bar Colour: the series palette (RSQSM_CdColors), 15 Green, 98 Random (fresh each time)
 
 // ---- the owner's QoL round (2026-10-31): options, off by default

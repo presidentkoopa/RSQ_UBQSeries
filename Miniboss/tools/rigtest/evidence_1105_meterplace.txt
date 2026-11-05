@@ -1,0 +1,18 @@
+RSQ Miniboss + SlowMo -- meter and countdown smaller, centred under Score, hourglass, wait line, 2026-11-05
+(QZD 17.3 rig; rig only, not headset-confirmed)
+Owner 11-05: "hourglass icon by the slowdown bar and i was expecting them to be smaller than the score, neatly fitting
+centered under it score bar ... and yes, below it we can say No Miniboss: Low Health / No Room". Also yes to the SlowMo and
+Berserk side gauges dropping their glint in Photosensitive Mode like the Bossfight meter.
+
+Run 1 (flat, vr_mode 0, screenblocks 11, QZ_RES 480, square window): doom2 + Gun Bonsai 0.10.6 + all 19 RSQ pk3s.
+  rsqmb_bf_first 0, rsqmb_bf_minhp 200, rsqmb_bf_auto 2; netevent rsqmb_fill 450 + rsm_pulse 9000 25: Score's line and bar,
+  under it the crowned skull + red meter, under that the hourglass + green countdown; both rows one width (about 64% of
+  Score's bar), centred on Score's bar, hourglass straight under the skull. rsqmb_fill 1000: gold meter; the log
+  "RSQMB bossfight waits: No Miniboss: Low Health" and that line drawn small under the meter, the countdown row moved
+  below it. Script errors 0.
+Run 2 (VR eye, vr_mode 15, BD order: doom2 + lo2 01 + BD22 VR repo 02-07 with 03 = 2.0.3x + Gun Bonsai 0.10.6 + all 19
+  RSQ pk3s): the same stack centred under Score's bar in the eye, then the wait line with the countdown under it. Script
+  errors: 4, all 02_BD22_VoxelPack.pk3:voxeldef.txt (66, 72, 77, 892); 0 from our packs.
+Not shown: the side gauges' Photosensitive look (the SlowMo gauge emptied before rsqa_photosafe 1 was set; Berserk gauge
+not raised), Text Size above 1 and a 16:9 window (the maths follows Score's own pixels, hud.cx / hud.bar.bottom /
+hud.bar.w), the wait line's legibility at headset resolution (at the rig's 480 px it is a few pixels tall), a real headset.

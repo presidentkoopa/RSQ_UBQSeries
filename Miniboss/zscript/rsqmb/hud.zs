@@ -5,16 +5,16 @@
 // Score, where Score's defaults would put its bar (the same maths RSQ SlowMo's countdown uses). It answers
 // RSQMB_Service "meter.bottom" (ui): RSQ SlowMo's countdown bar sits under that, and RSQ Score's combo rows below both.
 // Each mod still places itself when the others are absent. Kept inside the series' safe area (rsq_ui_inset).
-// SIZE: a third of the safe height x Meter Size x the series HUD Size (rsq_ui_hud_scale / 1.5) x RSQ Accessibility's Text
-// Size, 11:112: the same length and thickness as RSQ SlowMo's countdown bar under it, and the thickness the side gauges have
-// for their length (owner 11-05: "all four of these bars should be visually consistent").
+// SIZE (owner 11-05: "smaller than the score, neatly fitting centered under it score bar"): the bar is 0.8 of Score's bar
+// thickness x Meter Size / 1.5, 11:112, and the row (skull + bar) is never wider than Score's bar; it follows Score's scale and
+// so RSQ Accessibility's Text Size. RSQ SlowMo's countdown row under it has the same size and an hourglass where the skull is.
 // LOOK (owner 11-05: "i don't want it to say Bossfight ready, just give the meter some life when it fills"): coldcite's Top
 // HP Bars bar lying down, his rim and the series' well (VisualRewards/tools/gen_gauges.py: graphics/RSQMBHE empty, RSQMBHW
 // the fill in white), the same art as the countdown bar and the side gauges. The fill is tinted in steps along the bar, red
 // while it fills, gold when full; a band of light sweeps through it and its end breathes, as on the gauges. At its left the
 // crowned skull (RSQMBSK0 dim, RSQMBSK1 lit: original pixel art) fills from the jaw up with the meter. FULL, it comes
 // alive: the band runs gold, the fill and the skull swell with a slow beat, and a glint crosses the bar every few seconds.
-// No words, except the reason when a due Bossfight has to wait (bfWhy, small, on the bar). While a Bossfight runs, the set
+// No words on the bar; when a due Bossfight has to wait, one small line under it: "No Miniboss: " and the reason (bfWhy). While a Bossfight runs, the set
 // piece's own colour, alive the same way. PHOTOSENSITIVE MODE (RSQ_Accessibility, by name: RSQMB_A11y): no glint, the edge
 // held still, the beat at most 2.5 a second and dimmed, the band dimmer (as RSQ SlowMo's countdown bar does).
 // VR: every piece is a quad cropped from the SOURCE (DTA_SrcX / DTA_SrcY) or a thick line: no clip rectangle and no
@@ -35,54 +35,62 @@ extend class RSQMB_Handler
 	static ui bool MeterShown() { return BfOn() && UCv("rsqmb_bf_hud", 1) != 0; }
 
 	// x, y, width, height in screen pixels (the bar; the skull sits at its left, SkullRect)
+	// SIZE AND PLACE (owner 11-05: "i was expecting them to be smaller than the score, neatly fitting centered under it
+	// score bar"): the row -- skull, gap, bar -- is sized from RSQ Score's own bar (its thickness x ROWK x Meter Size / 1.5),
+	// never wider than that bar, and centred on it as one group, so it follows Score's scale, Text Size and screen shape.
+	// RSQ SlowMo's countdown row under it uses the same maths and the same icon size (its hourglass), so the two line up.
+	// Clear of the side gauges' lanes (RSQ Gun Bonsai VR's Berserk gauges stand 2.5 to 3.5 gauge widths in from each side;
+	// 4 kept clear): where Score sits near one, the row shrinks, still centred, rather than moving off Score's centre.
 	static ui double, double, double, double MeterRect()
 	{
 		double sw = Screen.GetWidth(), sh = Screen.GetHeight();
 		double f = clamp(CF('rsq_ui_inset', 0.04), 0.0, 0.3);
 		double sx = sw * f, sy = sh * f, aw = sw * (1 - 2 * f), ah = sh * (1 - 2 * f);
-		double w = ah * 0.32 * clamp(UCv("rsqmb_bf_hud_size", 1.5), 0.5, 2.5) * clamp(CF('rsq_ui_hud_scale', 1.5), 0.4, 2.5) / 1.5
-			* RSQMB_A11y.Text();
-		w = min(w, aw);
-		double h = w * 11.0 / 112.0;
-		double cx, below;
-		[cx, below] = ScoreSpot();
-		// kept between the side gauges' lanes (owner 11-05: the four bars one set; RSQ Gun Bonsai VR's Berserk gauges stand
-		// 2.5 to 3.5 gauge widths in from each side, so the bar keeps 4 gauge widths clear; on the rig's square eye the
-		// right gauge crossed this bar's end). Centred under Score's bar wherever that fits.
+		double cx, below, sbw;
+		[cx, below, sbw] = ScoreSpot();
+		double per = 112.0 / 11.0 + SKULL + KGAP;     // the row's width per pixel of bar thickness
+		double h = sbw * 8.0 / 120.0 * ROWK * clamp(UCv("rsqmb_bf_hud_size", 1.5), 0.5, 2.5) / 1.5;
+		double gw = min(h * per, sbw);
 		double lane = ah * 0.32 * clamp(CF('rsq_ui_hud_scale', 1.5), 0.4, 2.5) * 11.0 / 112.0 * 4.0;
-		double kw = h * (SKULL + 0.3);     // the skull at its left
-		double xlo = sx + lane + kw, xhi = max(xlo, sx + aw - lane - w);
-		if (w + kw > aw - 2 * lane) { xlo = sx + kw; xhi = max(xlo, sx + aw - w); }
-		double x = clamp(cx - w * 0.5, xlo, xhi);
-		double y = clamp(below + h * 0.35, sy, sy + ah - h);
-		return x, y, w, h;
+		double room = 2.0 * min(cx - (sx + lane), sx + aw - lane - cx);
+		if (room >= gw * 0.5) gw = min(gw, room);
+		gw = min(gw, aw);
+		h = gw / per;
+		double gx = clamp(cx - gw * 0.5, sx, max(sx, sx + aw - gw));
+		double w = h * 112.0 / 11.0;
+		double y = clamp(below + h * (0.3 + 0.25), sy, sy + ah - h);
+		return gx + h * (SKULL + KGAP), y, w, h;
 	}
-	// the crowned skull: a square SKULL x the bar's thickness, a little left of the bar, centred on it
+	// the crowned skull: a square SKULL x the bar's thickness, KGAP left of the bar, centred on it
 	const SKULL = 1.6;
+	const KGAP = 0.3;
+	const ROWK = 0.8;        // the bar's thickness against Score's bar (8 of 120): smaller than Score
 	static ui double, double, double SkullRect(double x, double y, double h)
 	{
 		double s = h * SKULL;
-		return x - s - h * 0.3, y + (h - s) * 0.5, s;
+		return x - s - h * KGAP, y + (h - s) * 0.5, s;
 	}
 
-	// RSQ Score's bar centre and bottom edge, screen pixels; without Score, where its defaults put it (Score hud.zs)
-	static ui double, double ScoreSpot()
+	// RSQ Score's bar centre, bottom edge and width, screen pixels, asked by name; without Score, where its defaults put it
+	// (Score hud.zs Layout: x 85, y 10, scale 150 x Text Size, bar 120 wide)
+	static ui double, double, double ScoreSpot()
 	{
 		let s = ServiceIterator.Find("RS_ScoreService").Next();
 		if (s)
 		{
 			int cx = s.GetIntUI("hud.cx", "", 0, 0, null);
 			int bot = s.GetIntUI("hud.bar.bottom", "", 0, 0, null);
-			if (cx >= 0 && bot >= 0) return cx, bot;
+			int bw = s.GetIntUI("hud.bar.w", "", 0, 0, null);
+			if (cx >= 0 && bot >= 0 && bw > 0) return cx, bot, bw;
 		}
 		double W = Screen.GetWidth(), H = Screen.GetHeight();
-		int d = 150;
+		int d = clamp(int(150 * RSQMB_A11y.Text()), 25, 400);
 		double aspect = W / H;
 		double scw = round(640 * 100.0 / d), sch = round(480 * 100.0 / d);
 		double wide = sch * aspect;
 		scw *= max(1.0, aspect / (16.0 / 9.0));
 		double cx = Coord(85, wide, 140, wide - scw), cy = Coord(10, sch, 40, 0);
-		return cx * W / scw, (cy + 17) * H / sch;
+		return cx * W / scw, (cy + 17) * H / sch, 120.0 * W / scw;
 	}
 	static ui double Coord(int pos, double range, double padding, double downshift)
 	{
@@ -91,7 +99,7 @@ extend class RSQMB_Handler
 	}
 
 	// RSQMB_Service "meter.bottom": the pixel row under the meter's slot (the skull's bottom: it hangs a little under the
-	// bar), -1 when it is off
+	// bar; under the wait line while one shows), -1 when it is off
 	static ui int MeterBottom()
 	{
 		if (gamestate != GS_LEVEL || !MeterShown()) return -1;
@@ -99,7 +107,22 @@ extend class RSQMB_Handler
 		[x, y, w, h] = MeterRect();
 		double kx, ky, ks;
 		[kx, ky, ks] = SkullRect(x, y, h);
-		return int(ceil(max(y + h, ky + ks)));
+		double bot = max(y + h, ky + ks);
+		if (WaitLine() != "") bot += h * (WAIT_GAP + WAIT_H);
+		return int(ceil(bot));
+	}
+
+	// THE WAIT LINE (owner 11-05: "below it we can say No Miniboss: Low Health / No Room"): bfWhy (bossfight.zs Guard /
+	// TryArrive, already in his words) while a due Bossfight waits; "" otherwise
+	const WAIT_GAP = 0.15;   // under the skull, x the bar's thickness
+	const WAIT_H = 0.8;      // its letters' height, x the bar's thickness
+	static ui String WaitLine()
+	{
+		let hd = RSQMB_Handler(EventHandler.Find("RSQMB_Handler"));
+		if (!hd || hd.bfWhy == "" || hd.arrPhase != 0 || (hd.bfBoss && !hd.bfBoss.done)) return "";
+		if (consoleplayer < 0 || !playeringame[consoleplayer] || !players[consoleplayer].mo) return "";
+		let m = RSQMB_Meter(players[consoleplayer].mo.FindInventory("RSQMB_Meter"));
+		return (m && m.ready) ? hd.bfWhy : "";
 	}
 
 	const SWEEP = 52.0;       // tics for the band to cross the fill (1.5 s), as the countdown bar and the gauges
@@ -226,17 +249,21 @@ extend class RSQMB_Handler
 					DTA_Alpha, 0.45 * beat * beatK, DTA_LegacyRenderStyle, STYLE_Add);
 		}
 
-		// ---- words: only why a due Bossfight waits (owner 11-05: no BOSSFIGHT READY) ----
-		if (ready && !fight && bfWhy != "")
+		// ---- words: one small line under the meter while a due Bossfight waits ("No Miniboss: Low Health"); none on it ----
+		String why = WaitLine();
+		if (why != "")
 		{
+			double kx, ky, ks;
+			[kx, ky, ks] = SkullRect(x, y, h);
+			double gl = kx, gw = x + w - kx;     // the row: skull to the bar's right end
 			Font fnt = NewSmallFont;
-			double s = (h * 0.62) / max(1, fnt.GetHeight());
-			double tw2 = fnt.StringWidth(bfWhy) * s;
-			if (tw2 > w * 0.94) { s *= w * 0.94 / tw2; tw2 = w * 0.94; }
+			double s = (h * WAIT_H) / max(1, fnt.GetHeight());
+			double tw2 = fnt.StringWidth(why) * s;
+			if (tw2 > gw) { s *= gw / tw2; tw2 = gw; }
 			double vw = Screen.GetWidth() / s, vh = Screen.GetHeight() / s;
-			double tx = (x + (w - tw2) * 0.5) / s, ty = (y + (h - fnt.GetHeight() * s) * 0.5) / s;
-			Screen.DrawText(fnt, Font.CR_BLACK, tx + 1, ty + 1, bfWhy, DTA_VirtualWidthF, vw, DTA_VirtualHeightF, vh, DTA_KeepRatio, true, DTA_Alpha, 0.8);
-			Screen.DrawText(fnt, Font.CR_WHITE, tx, ty, bfWhy, DTA_VirtualWidthF, vw, DTA_VirtualHeightF, vh, DTA_KeepRatio, true);
+			double tx = (gl + (gw - tw2) * 0.5) / s, ty = (max(y + h, ky + ks) + h * WAIT_GAP) / s;
+			Screen.DrawText(fnt, Font.CR_BLACK, tx + 1, ty + 1, why, DTA_VirtualWidthF, vw, DTA_VirtualHeightF, vh, DTA_KeepRatio, true, DTA_Alpha, 0.8);
+			Screen.DrawText(fnt, Font.CR_WHITE, tx, ty, why, DTA_VirtualWidthF, vw, DTA_VirtualHeightF, vh, DTA_KeepRatio, true);
 		}
 	}
 }

@@ -105,7 +105,7 @@ extend class RSQMB_Handler
 	Actor  arrProbe;              // the arrival's sound source
 
 	// ---- for the HUD (transient) -------------------------------------------------------------------------------------
-	transient String bfWhy;       // why a due Bossfight waits ("" none)
+	transient String bfWhy;       // why a due Bossfight waits, the HUD's line ("No Miniboss: Low Health"; "" none)
 	transient int bfNextTry;
 	transient Service gdSvc, gbService;
 	transient bool gdChecked;
@@ -355,13 +355,16 @@ extend class RSQMB_Handler
 	}
 
 	// ---- the guardrails, then the spot ---------------------------------------------------------------------------------
+	// Each reason is the line the HUD shows under the meter while a due Bossfight waits, in the owner's words (11-05: "below
+	// it we can say No Miniboss: Low Health / No Room"): No Monsters (none on the roster), Too Early (the first minute),
+	// Map Limit (the map's cap), Cooldown, Low Health, Near Exit, Too Busy (a heavy fight), No Room (no spot in view).
 	void TryArrive(PlayerPawn p, RSQMB_Meter m)
 	{
 		String why = Guard(p);
 		if (why == "")
 		{
 			int tier = Tier(p, m);
-			if (!PlanArrival(p, tier)) why = "NO ROOM IN VIEW";
+			if (!PlanArrival(p, tier)) why = "No Miniboss: No Room";
 			else { StartArrival(p, m, tier); return; }
 		}
 		if (debug && why != bfWhy) Console.Printf("RSQMB bossfight waits: %s", why);
@@ -371,16 +374,16 @@ extend class RSQMB_Handler
 	String Guard(PlayerPawn p)
 	{
 		int now = level.maptime;
-		if (rosterCls.Size() == 0) return "NO MONSTERS HERE";
-		if (now < CI('rsqmb_bf_first', 60) * TICRATE) return "TOO EARLY";
-		if (bfCount >= CI('rsqmb_bf_cap', 2)) return "MAP CAP";
-		if (bfAny && now - bfLastTic < CI('rsqmb_bf_cooldown', 90) * TICRATE) return "COOLDOWN";
-		if (p.health < CI('rsqmb_bf_minhp', 40)) return "LOW HEALTH";
+		if (rosterCls.Size() == 0) return "No Miniboss: No Monsters";
+		if (now < CI('rsqmb_bf_first', 60) * TICRATE) return "No Miniboss: Too Early";
+		if (bfCount >= CI('rsqmb_bf_cap', 2)) return "No Miniboss: Map Limit";
+		if (bfAny && now - bfLastTic < CI('rsqmb_bf_cooldown', 90) * TICRATE) return "No Miniboss: Cooldown";
+		if (p.health < CI('rsqmb_bf_minhp', 40)) return "No Miniboss: Low Health";
 		double ex = CF('rsqmb_bf_exit', 768);
 		for (int i = 0; i < exX.Size(); i++)
 		{
 			double dx = exX[i] - p.pos.x, dy = exY[i] - p.pos.y;
-			if (dx * dx + dy * dy < ex * ex) return "NEAR THE EXIT";
+			if (dx * dx + dy * dy < ex * ex) return "No Miniboss: Near Exit";
 		}
 		int busy = 0, lim = CI('rsqmb_bf_busy', 3);
 		let bi = BlockThingsIterator.Create(p, 1536);
@@ -389,7 +392,7 @@ extend class RSQMB_Handler
 			let a = bi.thing;
 			if (a && a.bISMONSTER && !a.bFRIENDLY && a.health > 0 && a.target == p && !a.bCORPSE && a.Distance2D(p) < 1536) busy++;
 		}
-		if (busy > lim) return "TOO BUSY";
+		if (busy > lim) return "No Miniboss: Too Busy";
 		return "";
 	}
 

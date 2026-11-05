@@ -11,8 +11,9 @@
 // WHERE: centred under RSQ Score's bar and above its combo rows, read by name (RS_ScoreService "hud.cx" /
 // "hud.bar.bottom"; Score moves its rows below this slot, asking "countdown.bottom" back). Without Score, the spot Score's
 // defaults would put its bar on. Kept inside the series' safe area (rsq_ui_inset).
-// SIZE: a third of the safe height x Bar Size (1.5, the series' new default) x the series HUD Size (rsq_ui_hud_scale / 1.5:
-// 1 at its default or without it) x RSQ Accessibility's Text Size.
+// SIZE (owner 11-05: "smaller than the score, neatly fitting centered under it score bar"): 0.8 of Score's bar thickness x
+// Bar Size / 1.5, 11:112; the row (hourglass + bar) never wider than Score's bar, centred on it; it follows Score's scale and
+// so RSQ Accessibility's Text Size. An original pixel-art hourglass (RSQSMHG, gen_gauges.py) at its left, the skull's size.
 // LOOK: coldcite's Top HP Bars bar (the gauges' family and their rim and well, VisualRewards/tools/gen_gauges.py; owner 11-05:
 // "all four of these bars should be visually consistent"), tinted Green or the chosen colour (Random: a
 // fresh one each time it appears), darker as it empties. Alive (Bar Animation): a light band sweeps along the fill, the
@@ -38,49 +39,70 @@ class RSQSM_Countdown : StaticEventHandler
 	static clearscope double SCv(String n, double d) { let c = CVar.FindCVar(n); return c ? c.GetFloat() : d; }
 	static clearscope bool Enabled() { return UCv("rsqsm_cdbar", 1) != 0; }
 
-	// ---- where it goes, in screen pixels: x, y, width, height --------------------------------------------------------
+	// ---- where it goes, in screen pixels: x, y, width, height (the bar; the hourglass sits at its left, GlassRect) ----
+	// SIZE AND PLACE (owner 11-05: "i was expecting them to be smaller than the score, neatly fitting centered under it
+	// score bar"): the row -- hourglass, gap, bar -- is sized from RSQ Score's own bar (its thickness x ROWK x Bar Size / 1.5),
+	// never wider than that bar, and centred on it as one group; it follows Score's scale, Text Size and screen shape. RSQ
+	// Miniboss's Bossfight meter row above uses the same maths and the same icon size (its crowned skull), so they line up.
+	// Clear of the side gauges' lanes (RSQ Gun Bonsai VR's Berserk gauges stand 2.5 to 3.5 gauge widths in from each side; 4
+	// kept clear): where Score sits near one, the row shrinks, still centred, rather than moving off Score's centre.
+	const GLASS = 1.6;       // the hourglass: a square GLASS x the bar's thickness (the skull's size) ...
+	const KGAP = 0.3;        // ... KGAP left of the bar
+	const ROWK = 0.8;        // the bar's thickness against Score's bar (8 of 120): smaller than Score
 	static ui double, double, double, double Rect()
 	{
 		double sw = Screen.GetWidth(), sh = Screen.GetHeight();
 		double f = clamp(SCv("rsq_ui_inset", 0.04), 0.0, 0.3);
 		double sx = sw * f, sy = sh * f, aw = sw * (1 - 2 * f), ah = sh * (1 - 2 * f);
-		double w = ah * 0.32 * clamp(UCv("rsqsm_cdbar_size", 1.5), 0.5, 2.5) * clamp(SCv("rsq_ui_hud_scale", 1.5), 0.4, 2.5) / 1.5
-			* RSQSM_A11y.Text();
-		w = min(w, aw);
-		double h = w * 11.0 / 112.0;
-		double cx, below;
-		[cx, below] = ScoreSpot();
-		// kept between the side gauges' lanes (owner 11-05: the four bars one set; RSQ Gun Bonsai VR's Berserk gauges stand
-		// 2.5 to 3.5 gauge widths in from each side, so the bar keeps 4 gauge widths clear; on the rig's square eye the
-		// right gauge crossed this bar's end). Centred under Score's bar wherever that fits.
+		double cx, below, sbw;
+		[cx, below, sbw] = ScoreSpot();
+		double per = 112.0 / 11.0 + GLASS + KGAP;     // the row's width per pixel of bar thickness
+		double h = sbw * 8.0 / 120.0 * ROWK * clamp(UCv("rsqsm_cdbar_size", 1.5), 0.5, 2.5) / 1.5;
+		double gw = min(h * per, sbw);
 		double lane = ah * 0.32 * clamp(SCv("rsq_ui_hud_scale", 1.5), 0.4, 2.5) * 11.0 / 112.0 * 4.0;
-		double xlo = sx + lane, xhi = max(xlo, sx + aw - lane - w);
-		if (w > aw - 2 * lane) { xlo = sx; xhi = sx + aw - w; }
-		double x = clamp(cx - w * 0.5, xlo, xhi);
-		double y = clamp(below + h * 0.35, sy, sy + ah - h);
-		return x, y, w, h;
+		double room = 2.0 * min(cx - (sx + lane), sx + aw - lane - cx);
+		if (room >= gw * 0.5) gw = min(gw, room);
+		gw = min(gw, aw);
+		h = gw / per;
+		double gx = clamp(cx - gw * 0.5, sx, max(sx, sx + aw - gw));
+		double w = h * 112.0 / 11.0;
+		double y = clamp(below + h * (0.3 + 0.25), sy, sy + ah - h);
+		return gx + h * (GLASS + KGAP), y, w, h;
+	}
+	static ui double, double, double GlassRect(double x, double y, double h)
+	{
+		double s = h * GLASS;
+		return x - s - h * KGAP, y + (h - s) * 0.5, s;
+	}
+	// the pixel row under the row (the hourglass hangs a little under the bar): RSQSM_Service "countdown.bottom"
+	static ui int Bottom()
+	{
+		double x, y, w, h;
+		[x, y, w, h] = Rect();
+		return int(ceil(y + h * (1.0 + (GLASS - 1.0) * 0.5)));
 	}
 
-	// RSQ Score's bar: its centre and its bottom edge, in screen pixels, asked by name; without Score (or an older one that
-	// does not answer), where Score's own defaults (x 85, y 10, scale 150 x Text Size) put it (Score hud.zs, the same maths)
+	// RSQ Score's bar: its centre, its bottom edge and its width, in screen pixels, asked by name; without Score (or an older
+	// one that does not answer), where Score's own defaults (x 85, y 10, scale 150 x Text Size, bar 120) put it (Score hud.zs)
 	// RSQ MINIBOSS'S BOSSFIGHT METER (owner 11-05: under the score, above this bar) sits between: asked by name
-	// (RSQMB_Service "meter.bottom", screen pixels, -1 off), this bar goes under it. Without Miniboss, as before.
-	static ui double, double ScoreSpot()
+	// (RSQMB_Service "meter.bottom", screen pixels, -1 off; under its wait line while one shows), this row goes under it.
+	static ui double, double, double ScoreSpot()
 	{
-		double cx, bot;
-		[cx, bot] = ScoreSpot2();
+		double cx, bot, bw;
+		[cx, bot, bw] = ScoreSpot2();
 		let m = ServiceIterator.Find("RSQMB_Service").Next();
 		if (m) { int mb = m.GetIntUI("meter.bottom", "", 0, 0, null); if (mb > bot) bot = mb; }
-		return cx, bot;
+		return cx, bot, bw;
 	}
-	static ui double, double ScoreSpot2()
+	static ui double, double, double ScoreSpot2()
 	{
 		let s = ServiceIterator.Find("RS_ScoreService").Next();
 		if (s)
 		{
 			int cx = s.GetIntUI("hud.cx", "", 0, 0, null);
 			int bot = s.GetIntUI("hud.bar.bottom", "", 0, 0, null);
-			if (cx >= 0 && bot >= 0) return cx, bot;
+			int bw = s.GetIntUI("hud.bar.w", "", 0, 0, null);
+			if (cx >= 0 && bot >= 0 && bw > 0) return cx, bot, bw;
 		}
 		double W = Screen.GetWidth(), H = Screen.GetHeight();
 		int d = clamp(int(150 * RSQSM_A11y.Text()), 25, 400);
@@ -89,7 +111,7 @@ class RSQSM_Countdown : StaticEventHandler
 		double wide = sch * aspect;
 		scw *= max(1.0, aspect / (16.0 / 9.0));
 		double cx = Coord(85, wide, 140, wide - scw), cy = Coord(10, sch, 40, 0);
-		return cx * W / scw, (cy + 17) * H / sch;     // the bracket (8 tall) is centred 13 under Score's centre
+		return cx * W / scw, (cy + 17) * H / sch, 120.0 * W / scw;     // the bracket (8 tall) is centred 13 under Score's centre
 	}
 	static ui double Coord(int pos, double range, double padding, double downshift)
 	{
@@ -161,6 +183,14 @@ class RSQSM_Countdown : StaticEventHandler
 			if (ga >= 0 && ga < GLINT) glint = 1.0 - ga / GLINT;
 		}
 		Draw(te, tw, x, y, w, h, shown, lo, mid, hi, alpha, anim, photo, glint, t);
+		// the hourglass at its left (owner 11-05: "hourglass icon by the slowdown bar"), the meter's skull's size and place
+		TextureID hg = TexMan.CheckForTexture("RSQSMHG", TexMan.Type_Any);
+		if (hg.IsValid())
+		{
+			double gx, gy, gs;
+			[gx, gy, gs] = GlassRect(x, y, h);
+			Screen.DrawTexture(hg, false, gx, gy, DTA_DestWidthF, gs, DTA_DestHeightF, gs, DTA_Alpha, 0.95 * alpha);
+		}
 	}
 
 	// ONE COLUMN BAND of the bar drawn at x, y, w, h: screen columns a..b, cropped from the source and drawn as its own quad

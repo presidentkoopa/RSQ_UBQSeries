@@ -119,6 +119,9 @@ class RSQUI_GaugeLife ui
 			Slab(tw, x, y, w, h, int(max(top, sliceTop)), int(ceil(sliceBot)), ByLevel(lo, mid, hi, min(mid01, frac)), alpha, false);
 		}
 		if (!anim) return;
+		// PHOTOSENSITIVE MODE (RSQ_Accessibility, by name: RSQGB_A11y; owner 11-05, as the Bossfight meter): no glint, the edge
+		// held still, the band dimmer
+		bool photo = RSQGB_A11y.Photo();
 		// the band: an eighth of the gauge tall, from the bottom up to the fill's top, light added on top of the fill
 		double ph = (t % RISE) / RISE;
 		double bh = h * 0.125;
@@ -126,13 +129,13 @@ class RSQUI_GaugeLife ui
 		double bBot = y + h - (fillH + bh) * ph + bh;
 		double bTop = bBot - bh;
 		if (bBot > top)
-			Slab(tw, x, y, w, h, int(max(top, bTop)), int(min(y + h, bBot)), hi, 0.45 * alpha, true);
+			Slab(tw, x, y, w, h, int(max(top, bTop)), int(min(y + h, bBot)), hi, (photo ? 0.25 : 0.45) * alpha, true);
 		// the edge: a bright line where the fill stops, breathing (DrawThickLine sets no scissor, v_2ddrawer.cpp AddThickLine:
 		// it shows in VR, seen in the rig's eye frame on 11-03)
-		double glow = 0.55 + 0.45 * sin(t * 12.0);
+		double glow = photo ? 0.8 : 0.55 + 0.45 * sin(t * 12.0);
 		Screen.DrawThickLine(int(x), int(top), int(x + w), int(top), max(1.0, h / 90.0), hi, int(255 * glow * alpha));
 		// full: the whole gauge glints, a short flash every couple of seconds
-		if (frac >= 0.999)
+		if (frac >= 0.999 && !photo)
 		{
 			double g = sin(t * 5.0);
 			if (g > 0.8)
