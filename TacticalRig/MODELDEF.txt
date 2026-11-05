@@ -306,3 +306,128 @@ Model RSQTR_PouchShow
 	CORRECTPIXELSTRETCH
 	FrameIndex RTGN A 0 0
 }
+
+// ---- VANILLA (tools/vanilla_holsters.py; do not edit by hand) ----
+// THE VANILLA GUNS ON THE BODY (owner 11-04): BD22 VR's held meshes, one frame each, carried by RSQTR_VH_* (vanilla.zs),
+// so the rig draws them with no Brutal Doom loaded. From 01_brutal22test6.pk3 -> 03_BD22_VR-Reloaded_2.0.3u.pk3.
+// Pistol wears BrutalPistol's held mesh (2IST E, models/bd/BrutalPistol/BrutalPistol.md3)
+Model RSQTR_VH_Pistol
+{
+	Path "models/rsqtr/vanilla"
+	Model 0 "pistol_0.md3"
+	Skin 0 "pistol_0.png"
+	Scale -1 1 1
+	Offset 0.82 -8.333 0
+	ZOffset -1.408
+	AngleOffset 3.854
+	PitchOffset 3.363
+	RollOffset 10.974
+	NoInterpolation
+	FrameIndex RTGN A 0 0
+}
+// Shotgun wears Shot_Gun's held mesh (SHTN A, models/bd/ShotGun/Shotgun.md3)
+Model RSQTR_VH_Shotgun
+{
+	Path "models/rsqtr/vanilla"
+	Model 0 "shotgun_0.md3"
+	Skin 0 "shotgun_0.png"
+	Scale -1 1 1
+	Offset -3.502 -4.257 0
+	ZOffset -8.973
+	AngleOffset 3.854
+	PitchOffset 3.363
+	RollOffset 10.974
+	NoInterpolation
+	FrameIndex RTGN A 0 0
+}
+// SuperShotgun wears SSG's held mesh (SHTN A, models/bd/SSG/SSG.md3)
+Model RSQTR_VH_SuperShotgun
+{
+	Path "models/rsqtr/vanilla"
+	Model 0 "supershotgun_0.md3"
+	Skin 0 "supershotgun_0.png"
+	Scale -1 1 1
+	Offset -3.813 -3.959 0
+	ZOffset -12.773
+	AngleOffset 3.854
+	PitchOffset 3.363
+	RollOffset 10.974
+	NoInterpolation
+	FrameIndex RTGN A 0 0
+}
+// Chaingun wears Minigun's held mesh (CHAG A, models/bd/Minigun/Minigun.md3)
+Model RSQTR_VH_Chaingun
+{
+	Path "models/rsqtr/vanilla"
+	Model 0 "chaingun_0.md3"
+	Skin 0 "chaingun_0.png"
+	Scale -1 1 1
+	Offset -1.156 -5.106 0
+	ZOffset -1.923
+	AngleOffset 3.854
+	PitchOffset 3.363
+	RollOffset 10.974
+	NoInterpolation
+	FrameIndex RTGN A 0 0
+}
+// RocketLauncher wears Rocket_Launcher's held mesh (MISS W, models/bd/RPG/RPG.md3)
+Model RSQTR_VH_RocketLauncher
+{
+	Path "models/rsqtr/vanilla"
+	Model 0 "rocketlauncher_0.md3"
+	Skin 0 "rocketlauncher_0.png"
+	Scale -1 1 1
+	Offset 0.259 -4.608 0
+	ZOffset 0.657
+	AngleOffset 3.854
+	PitchOffset 3.363
+	RollOffset 10.974
+	NoInterpolation
+	FrameIndex RTGN A 0 0
+}
+// PlasmaRifle wears Plasma_Gun's held mesh (PRSG F, models/bd/Plasma_Gun/Plasma.md3)
+Model RSQTR_VH_PlasmaRifle
+{
+	Path "models/rsqtr/vanilla"
+	Model 0 "plasmarifle_0.md3"
+	Skin 0 "plasmarifle_0.png"
+	Scale -1 1 1
+	Offset -0.978 -4.369 0
+	ZOffset -0.265
+	AngleOffset 3.854
+	PitchOffset 3.363
+	RollOffset 10.974
+	NoInterpolation
+	FrameIndex RTGN A 0 0
+}
+// BFG9000 wears BIG_FUCKING_GUN's held mesh (BFGN A, models/bd/BFG/BFG.md3)
+Model RSQTR_VH_BFG9000
+{
+	Path "models/rsqtr/vanilla"
+	Model 0 "bfg9000_0.md3"
+	Skin 0 "bfg9000_0.png"
+	Scale -1 1 1
+	Offset -0.338 -2.964 0
+	ZOffset -0.782
+	AngleOffset 3.854
+	PitchOffset 3.363
+	RollOffset 10.974
+	NoInterpolation
+	FrameIndex RTGN A 0 0
+}
+// Chainsaw wears Chain_saw's held mesh (PAWG A, models/bd/Chain_saw/Chain_saw.md3)
+Model RSQTR_VH_Chainsaw
+{
+	Path "models/rsqtr/vanilla"
+	Model 0 "chainsaw_0.md3"
+	Skin 0 "chainsaw_0.png"
+	Scale -1.5 1.5 1.5
+	Offset 3.195 9.817 0
+	ZOffset -13.64
+	AngleOffset 3.854
+	PitchOffset 3.363
+	RollOffset 10.974
+	NoInterpolation
+	FrameIndex RTGN A 0 0
+}
+// ---- END VANILLA ----

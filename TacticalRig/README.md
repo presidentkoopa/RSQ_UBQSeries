@@ -17,7 +17,8 @@ back out. Each holster holds exactly the gun you put there, and nothing else eve
 holster and the two swap in one motion. Each hand works its own holsters, so you can draw a pistol with your off
 hand while the rifle stays in your main hand.
 
-With Brutal Doom's weapons, the stored gun hangs where you put it, drawn with the 3D model you hold in your hand:
+With Brutal Doom's weapons, and with vanilla Doom's Pistol, Shotgun, Super Shotgun, Chaingun, Rocket Launcher, Plasma Rifle,
+BFG9000 and Chainsaw (drawn in Brutal Doom's matching held models, carried in this pk3), the stored gun hangs where you put it, drawn with the 3D model you hold in your hand:
 muzzle down at the hips, butt toward the middle on the chest, slung across your back from the shoulders. Look down and you see your loadout.
 A small light in each full holster shows its ammo: green, yellow when low or needing a reload, red and blinking
 when empty.
@@ -207,7 +208,7 @@ Swing Speed (2.5 m/s), Thrown Gun Damage (1.0), Main Grip Keys (446), Off Grip K
 
 Runs alone on any load order. It finds the rest by name:
 - **Brutal Doom / BD22 VR Reloaded**: stored guns are drawn with the measured 3D models of Brutal Doom's weapon set
-  (a gun missing from that table is not drawn on the body); the grenade spot hands out Brutal Doom's VR grenade; an
+  (a gun missing from that table is not drawn on the body; vanilla Doom's eight guns use the same models, shipped here); the grenade spot hands out Brutal Doom's VR grenade; an
   empty off hand gets BD22 VR's hands; off-hand draws use its off-hand gun copies.
 - **RSQ Grenade**: without Brutal Doom's grenade, the spot hands out RSQ Grenade's, and glows in the colour of the
   kind in your hand.

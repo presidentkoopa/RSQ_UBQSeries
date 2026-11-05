@@ -11,7 +11,9 @@
 // points forward by construction -- the owner: "really they should be the 3D models I'm
 // using in my hands". Without it: the floor pickup (BD22Q lends voxels through holders). Every lump named RSQTRFIT
 // is read, so a weapon pack can ship its own; a later one wins for the same class. A weapon
-// not in any table is shown at its pickup size and facing, as before.
+// not in any table is NOT drawn on the body (rig.zs DrawMarkers: a flat sprite at the chest read as a stray picture,
+// owner 10-27); the pickup-size fallback this once described is gone. Vanilla Doom's guns have rows of their own
+// (the VANILLA section, tools/vanilla_holsters.py: BD22 VR's held meshes, carried by the rig, owner 11-04).
 class RSQTR_Fit
 {
 	Array<String> cls, holder, spr;

@@ -66,3 +66,15 @@ RSQ_Off_SSG 51.70 -180.0 -0.0 RSQ_Off_SSG -39.74 0.05 -11.40 0.23 SHTN 0
 RSQ_Off_AssaultShotgun 93.92 -180.0 -0.0 RSQ_Off_AssaultShotgun -44.30 0.00 -10.20 0.23 USAS 0
 RSQ_Off_RailGun 152.57 -180.0 -0.0 RSQ_Off_RailGun -62.48 0.05 -5.32 0.21 RAIL 0
 Machinegun 99.78 -180.0 -0.0 Machinegun -46.94 -0.05 -4.59 0.33 MGN1 0
+
+// ---- VANILLA (tools/vanilla_holsters.py; do not edit by hand) ----
+// vanilla Doom's guns in BD22 VR's held meshes, measured from the rig's own one-frame copies (01_brutal22test6.pk3 -> 03_BD22_VR-Reloaded_2.0.3u.pk3)
+Pistol 27.06 -180.0 -0.0 RSQTR_VH_Pistol -32.96 -9.17 -5.76 0.70 RTGN 0
+Shotgun 94.51 -180.0 -0.0 RSQTR_VH_Shotgun -43.27 -5.68 -13.18 0.25 RTGN 0
+SuperShotgun 51.70 -180.0 -0.0 RSQTR_VH_SuperShotgun -36.23 -5.35 -17.45 0.26 RTGN 0
+Chaingun 103.72 -180.0 -0.0 RSQTR_VH_Chaingun -71.25 -2.20 -6.39 0.39 RTGN 0
+RocketLauncher 151.62 -180.0 -0.0 RSQTR_VH_RocketLauncher -4.10 -13.03 5.01 0.25 RTGN 0
+PlasmaRifle 87.54 -180.0 -0.0 RSQTR_VH_PlasmaRifle -55.29 -8.99 -2.74 0.35 RTGN 0
+BFG9000 114.88 -180.0 -0.0 RSQTR_VH_BFG9000 -54.93 -9.50 2.73 0.36 RTGN 0
+Chainsaw 121.87 -180.0 -0.0 RSQTR_VH_Chainsaw -96.89 8.98 -4.37 0.31 RTGN 0
+// ---- END VANILLA ----
