@@ -126,8 +126,8 @@ row off turns them off on the gloves too).
 | Hadouken | Off | Punches return missiles |
 | Wall Splat (GB) | Off | Punched into a wall, it slams |
 | Heavy Hands | Off | Heavier punches |
-| Ground Pound (RSQ Gestures) (GB) | Off | Two-fist shockwave (no other mod needed) |
-| Clear Out (RSQ Gestures) (GB) | Off | Two-palm shove (no other mod needed) |
+| Ground Pound (GB) | Off | Two-fist shockwave (no other mod needed) |
+| Clear Out (GB) | Off | Two-palm shove (no other mod needed) |
 | Reset All | | Every setting on both pages back to default |
 
 **Test and Debug**: Punch Damage (10), Min Speed (2.0 m/s), Full Speed (7.0 m/s), Re-Hit Wait (6 tics), Uppercut Rise
