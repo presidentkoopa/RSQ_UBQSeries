@@ -196,7 +196,10 @@ class RSQM play
 		int sh = v.GetSpawnHealth();
 		String tk = "LDLegendaryMonsterToken";
 		class<Inventory> ct = tk;
-		if (ct && v.FindInventory(ct))
+		// LegenDoom 3.0 (full) with "Legendary Monsters: Disabled" (LD_legendarymonsters 0) gives a legendary no health
+		// at all (LEGENDMON.acs LDMonsterInit), so there is none to assume; LegenDoom Lite 4.2 has no such cvar (unchanged)
+		let ldon = CVar.FindCVar('LD_legendarymonsters');
+		if (ct && v.FindInventory(ct) && !(ldon && ldon.GetInt() == 0))
 		{
 			let cv = CVar.FindCVar(v.bBoss ? 'LD_legendaryhealthboss' : 'LD_legendaryhealth');
 			int pct = cv ? cv.GetInt() : 300;

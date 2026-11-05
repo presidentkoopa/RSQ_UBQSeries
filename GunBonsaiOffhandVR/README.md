@@ -126,36 +126,46 @@ has learned and who gets paid for it.
 
 ## Menu
 
-Options → Radiant Silvergun Options → RSQ Gun Bonsai VR. The same page is linked at the bottom of Gun Bonsai's own
-options.
+Options → Radiant Silvergun Options → RSQ Gun Bonsai VR: one page, with Test and Debug and Reset All at its foot. The
+same page is linked at the bottom of Gun Bonsai's own options.
 
 | Row | Default | What it does |
 |---|---|---|
 | Stock Gun Bonsai Upgrades | Silvergun | Silvergun leaves eight clashing stock upgrades out of the pool. All offers every stock upgrade. |
+| XP Source | Damage | Damage, Style (RSQ Score's style points) or Both. Style without RSQ Score acts as Damage. |
+| Force Learns From Saber | On | The Force hand also gets a share of the main saber's XP. |
+| Force XP Share | 50 | That share, in percent. |
+| *HUD* | | |
+| Screen Skin | Mockup | Gun Bonsai, Mockup, Hex Rail or Terminal. |
+| Ammo and Health Row | On | With a skin on: a bottom row with each hand's ammo, plus health, face and armour. |
+| HUD Size | 1.50 | Size of the skins' in-play HUD. |
+| Dual HUD | On | A HUD for each hand (main top right, off top left; swapped for a left-hander). |
+| Single HUD Follows | Main Hand | With Dual HUD off: the hand the one HUD shows (Main Hand, Off Hand, Last to Earn XP). It falls through to a hand that holds a gun, so it never goes blank. |
+| ShieldSaw Gauge | Off | A third gauge, top centre, while the ShieldSaw rides on your shoulder. |
 | Berserk Meter Gauge | On | A gauge for each glove that has learned Berserk Meter. |
 | Gauge Animation | On | A band of light rises through the fill, its edge breathes, a full gauge glints. |
-| XP Source | Damage | Damage, Style (RSQ Score's style points) or Both. Style without RSQ Score acts as Damage. |
-| Force Learns From the Saber | On | The Force hand also gets a share of the main saber's XP. |
-| Share (%) | 50 | That share. |
-| ShieldSaw Gauge | Off | A third gauge, top centre, while the ShieldSaw rides on your shoulder. |
-| Screen Skin | Mockup | Gun Bonsai, Mockup, Hex Rail or Terminal. |
-| Ammo And Health | On | With a skin on: a bottom row with each hand's ammo, plus health, face and armour. |
-| Reset All | | Puts every row on this page and on Tuning and Debug back to its default. |
+| *HUD Position* (with Dual HUD on) | | |
+| Main HUD Across / Down | 0.99 / 0.02 | Where the main hand's HUD sits, as a share of the screen. |
+| Main HUD Mirror | Both | None, Left-Right, Up-Down or Both (also picks the corner frame). |
+| Off HUD Across / Down | 0.01 / 0.02 | Where the off hand's HUD sits. |
+| Off HUD Mirror | Up-Down | As above; the defaults make the two HUDs mirror images. |
+| Reset All | | Puts every row on this page and on Test and Debug back to its default. |
 
-**Tuning and Debug**
+**Test and Debug**
 
 | Row | Default | What it does |
 |---|---|---|
 | Force Base Strength | 0.00 | How strong an unlearned Force power is, as a share of the saber's own. At 0 a power does nothing until learned. |
-| First Star After | 1 | Star Punch timing. Star Punch is no longer offered; this only affects saves that already learned it. |
-| Star Every | 2 | As above. |
 | Grapple XP | 1.0 | Multiplies the XP the grappling hook earns for your player level. |
 | Style XP Scale | 1.0 | XP per style point, when XP Source is Style or Both. |
-| Style Player Share % | 10 | The extra share of style XP paid to your player level. |
+| Style Player Share | 10 | The extra share (percent) of style XP paid to your player level. |
 | HUD Inset | 0.04 | How much of each screen edge the skins keep clear. |
-| HUD Size | 1.50 | Size of the skins' in-play HUD. |
+| Debug Log | Off | One console line per Style XP payout (who got what for a kill). |
 | Debug: Add All | | Gives every node of this patch at its cap, on the player and every weapon carried. For testing. |
 | Debug: Add Incremental | | One level of every node offered right now. Press again to climb. For testing. |
+
+Star Punch's two timing settings (`rsq_star_first`, `rsq_star_every`) have no rows: Star Punch is no longer offered.
+Reset All still resets them.
 
 ## Works with
 
@@ -180,7 +190,7 @@ options.
 - **RSQ Wheel**: shows each gun's level and progress.
 - **RSQ Accessibility**: Photosensitive Mode dims the level-up flash. Its handedness setting moves the gauges.
 - **Brutal Doom / BD22 VR Reloaded**: bullets that travel before they hit are still paid to the hand that fired them.
-  With a skin and Ammo And Health on, Brutal Doom's full-screen HUD is swapped for the skin's bottom row. Set Screen
+  With a skin and Ammo and Health Row on, Brutal Doom's full-screen HUD is swapped for the skin's bottom row. Set Screen
   Skin back to Gun Bonsai before removing this pack to restore it.
 - **LegenDoom Lite, Champions, RSQ Miniboss**: Knockdown, Executioner and Finisher measure a monster against the
   boosted health it really started with.

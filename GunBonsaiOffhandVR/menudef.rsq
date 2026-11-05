@@ -1,5 +1,6 @@
-// RSQ Gun Bonsai VR -- the patch's options: one short page under Radiant Silvergun Options (the
-// screens' four rows folded in), the numbers on Tuning and Debug. Gun Bonsai's own menu stays where
+// RSQ Gun Bonsai VR -- the patch's options: ONE page under Radiant Silvergun Options (owner 11-04 19:36; the screens'
+// rows and the HUD's per-hand rows on it), the numbers on Test and Debug, Reset All (the series' RSQGBVResetAll).
+// Gun Bonsai VR's own page shows no gating line (MENU_PASS_BRIEF.md). Gun Bonsai's own menu stays where
 // Gun Bonsai puts it; the patch adds a way here at its bottom. (Slappers Only, Start With Gloves and the punch
 // sliders moved to RSQ Melee's page on 2026-11-01.)
 
@@ -44,39 +45,63 @@ OptionValue "RSQ_StockModes"
 	1, "$RSQ_MENU_STOCK_ALL"
 }
 
+OptionValue "RSQ_HudHand"
+{
+	0, "Main Hand"
+	1, "Off Hand"
+	2, "Last to Earn XP"
+}
+
+OptionValue "RSQ_HudMirror"
+{
+	0, "None"
+	1, "Left-Right"
+	2, "Up-Down"
+	3, "Both"
+}
+
 OptionMenu "RSQ_MeleeOptions"
 {
 	Title "RSQ GUN BONSAI VR"
 	Option "$RSQ_MENU_STOCK", "rsq_stock_mode", "RSQ_StockModes"
-	Option "Berserk Meter Gauge", "rsqgb_berserk_gauge", "OnOff"
-	Option "  Gauge Animation", "rsqgb_gauge_anim", "OnOff"
 	Option "$RSQ_MENU_XPSRC", "rsq_xp_source", "RSQ_XPSources"
 	Option "$RSQ_MENU_FORCE_LEARNS", "rsq_force_learns", "OnOff"
 	Slider "$RSQ_MENU_FORCE_SHARE", "rsq_force_share", 0, 100, 5, 0
-	Option "$RSQ_MENU_SHIELDGAUGE", "rsq_hud_shield", "OnOff"
 	StaticText " "
+	StaticText "HUD", 1
 	Option "Screen Skin", "rsq_ui_skin", "RSQUI_Skins"
-	Option "Ammo And Health", "rsq_ui_bottom", "OnOff"
+	Option "Ammo and Health Row", "rsq_ui_bottom", "OnOff"
+	Slider "HUD Size", "rsq_ui_hud_scale", 0.5, 2.0, 0.05, 2
+	Option "Dual HUD", "bonsai_vr_dual_hud", "OnOff"
+	Option "Single HUD Follows", "bonsai_vr_hud_hand", "RSQ_HudHand"
+	Option "$RSQ_MENU_SHIELDGAUGE", "rsq_hud_shield", "OnOff"
+	Option "Berserk Meter Gauge", "rsqgb_berserk_gauge", "OnOff"
+	Option "Gauge Animation", "rsqgb_gauge_anim", "OnOff"
 	StaticText " "
-	Submenu "$RSQ_MENU_ADV", "RSQ_MeleeAdvanced"
+	StaticText "HUD Position", 1
+	Slider "Main HUD Across", "bonsai_vr_hud_main_x", 0.0, 1.0, 0.01, 2
+	Slider "Main HUD Down", "bonsai_vr_hud_main_y", 0.0, 1.0, 0.01, 2
+	Option "Main HUD Mirror", "bonsai_vr_hud_main_mirror", "RSQ_HudMirror"
+	Slider "Off HUD Across", "bonsai_vr_hud_off_x", 0.0, 1.0, 0.01, 2
+	Slider "Off HUD Down", "bonsai_vr_hud_off_y", 0.0, 1.0, 0.01, 2
+	Option "Off HUD Mirror", "bonsai_vr_hud_off_mirror", "RSQ_HudMirror"
 	StaticText " "
-	SafeCommand "$RSQ_MENU_RESETALL", "resetcvar rsq_stock_mode; resetcvar rsqgb_berserk_gauge; resetcvar rsqgb_gauge_anim; resetcvar rsq_xp_source; resetcvar rsq_force_learns; resetcvar rsq_force_share; resetcvar rsq_hud_shield; resetcvar rsq_ui_skin; resetcvar rsq_ui_bottom; resetcvar rsq_force_start; resetcvar rsq_star_first; resetcvar rsq_star_every; resetcvar rsq_hook_xp; resetcvar rsq_xp_style_scale; resetcvar rsq_xp_style_player; resetcvar rsq_ui_inset; resetcvar rsq_ui_hud_scale", "$RSQ_MENU_RESETALL_Q"
+	Submenu "Test and Debug", "RSQ_MeleeAdvanced"
+	// Every cvar a row names on both pages; the third argument adds Star Punch's two (no rows: Star Punch is no longer
+	// offered, GBOVR_TREES.md 2.1 #5; a save that learned it still reads them).
+	RSQGBVResetAll "Reset All", "$RSQ_MENU_RESETALL_Q", "rsq_star_first rsq_star_every"
 }
 
 OptionMenu "RSQ_MeleeAdvanced"
 {
-	Title "$RSQ_MENU_ADV"
+	Title "RSQ GUN BONSAI VR: TEST AND DEBUG"
 	Slider "$RSQ_MENU_FORCE_START", "rsq_force_start", 0.0, 1.0, 0.05, 2
-	Slider "$RSQ_MENU_STAR_FIRST", "rsq_star_first", 0, 20, 1, 0
-	Slider "$RSQ_MENU_STAR_EVERY", "rsq_star_every", 0, 10, 1, 0
 	Slider "$RSQ_MENU_HOOK_XP", "rsq_hook_xp", 0, 3, 0.1, 1
 	Slider "$RSQ_MENU_XPSTYLE", "rsq_xp_style_scale", 0.1, 3, 0.1, 1
 	Slider "$RSQ_MENU_XPPLAYER", "rsq_xp_style_player", 0, 50, 5, 0
-	StaticText " "
 	Slider "HUD Inset", "rsq_ui_inset", 0.0, 0.25, 0.01, 2
-	Slider "HUD Size", "rsq_ui_hud_scale", 0.5, 2.0, 0.05, 2
 	StaticText " "
-	StaticText "Debug (testing every tree)", 1
+	Option "Debug Log", "rsq_xp_debug", "OnOff"
 	Command "Debug: Add All", "netevent rsqgb_dbg_all"
 	Command "Debug: Add Incremental", "netevent rsqgb_dbg_step"
 }
