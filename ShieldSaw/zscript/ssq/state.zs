@@ -742,8 +742,25 @@ class SSQ_Handler : EventHandler
 	}
 
 	// ---- the sim, once a tic, every machine ------------------------------------------
+	// THE MENU'S GUN BONSAI VR GATING (SSQ_ScoreService GetIntUI "menu.locked", score.zs): the console player's levels of
+	// the upgrades that replace a row (0 BackPlate, 1 ShieldWall, 2 BashHitStop), asked once a second here in play. -1:
+	// Gun Bonsai VR not loaded.
+	transient int menuLv[3];
+	transient int menuTic;
+	void MenuRefresh()
+	{
+		if (menuTic > 0 && level.maptime >= menuTic && level.maptime < menuTic + 35) return;
+		menuTic = max(level.maptime, 1);
+		let mo = players[consoleplayer].mo;
+		bool on = SSQ_Upg.On();
+		let saw = mo ? mo.FindInventory('SSQ_ShieldSaw') : null;
+		static const String U[] = { "BackPlate", "ShieldWall", "BashHitStop" };
+		for (int i = 0; i < 3; i++) menuLv[i] = on ? SSQ_Upg.Lv(saw, U[i]) : -1;
+	}
+
 	override void WorldTick()
 	{
+		MenuRefresh();
 		// SHIELD SIZE (Gun Bonsai VR patch): each player's shield scale, kept here for SSQ_Guard.Scale (clearscope)
 		for (int sk = 0; sk < MAXPLAYERS; sk++)
 		{
@@ -1285,11 +1302,11 @@ class SSQ_Handler : EventHandler
 		// the plate's +L side -- the side your arm is on -- forward into your back.
 		if (mState[i] == SS_STOWED)
 		{
-			// owner's default: not drawn when stored (ssq_stow_world, 10-22) -- EXCEPT ON RSQ TACTICAL RIG'S BODY (owner 11-03
-			// 20:51: "the torso rig will need to always show ... shieldsaw"): with the rig loaded (RSQTR_BodyService, by name)
-			// and Shield on the Rig on (ssq_stow_rig), the stowed shield is drawn where it hangs, turning with the rig's torso
-			bool onRig = UVI(p, 'ssq_stow_rig', 1) != 0 && ServiceIterator.Find('RSQTR_BodyService').Next() != null;
-			prop.bInvisible = UVI(p, 'ssq_stow_world', 0) == 0 && !onRig;
+			// SHOW SHIELDSAW (ssq_show, on; owner 11-04: "Always show ... saw. Toggle show ___ on/off in each mod's options"):
+			// the stowed shield is drawn where it hangs -- on RSQ Tactical Rig's body when the rig is loaded (the mount follows
+			// its torso), else at its own mount on your back. It replaced Shield on Back (ssq_stow_world, off) and Shield on the
+			// Rig (ssq_stow_rig) on 11-04.
+			prop.bInvisible = UVI(p, 'ssq_show', 1) == 0;
 			prop.SetOrigin(mount, true);
 			prop.angle = BodyYaw(mo) + UV(p, 'ssq_mount_yaw', 0);
 			prop.pitch = (OnBack(p) ? -MountPropPitch() : MountPropPitch()) + UV(p, 'ssq_mount_pitch', 0);

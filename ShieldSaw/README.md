@@ -70,7 +70,7 @@ flies where you threw it. Changed your mind? Press the trigger again mid-flight 
 - **Saber Over Shield**: with RSQ Saber, rest the lit blade across the front of the plate and the block grows 30% wider.
 - Left-handed play follows QuestZDoom's Control Scheme: the held shield is mirrored and the mount moves to the other side.
 - Optional, off by default: **Hit-Stop** (a bash or perfect block freezes the monster for a beat), **Perfect Block
-  Slow-Mo** (half a second of slow motion through RSQ SlowMo), **Block While Holstered**, **Shield on Back**.
+  Slow-Mo** (half a second of slow motion through RSQ SlowMo), **Block While Holstered**. On by default: **Show ShieldSaw** (the stowed shield drawn on your back, or on RSQ Tactical Rig's body).
 
 ## How To Play
 
@@ -112,70 +112,70 @@ lets your main hand reach for the shield, and the Shield Throw and Flick Reload 
 
 ## Menu
 
-**Options → Radiant Silvergun Options → RSQ ShieldSaw**
+**Options → Radiant Silvergun Options → RSQ ShieldSaw.** One page, and one sub menu, **Test and Debug**. With RSQ Gun
+Bonsai VR loaded the page starts with "GunBonsaiOVR detected. Mod features unlocked via upgrades." and the rows marked GB
+are greyed while the upgrade that replaces them is not learned (Back Plate, Shield Wall, Strike True).
 
 | Row | Default | What it does |
 |---|---|---|
-| Start With Shield | On | Every player spawns with it. |
-| Start in Hand | Off | Spawn with it already drawn. |
-| Draw With Use | On | Use at the mount draws and puts away. Off: only the Draw key does. |
-| Take It From | Small of the Back | Over the Off Shoulder, Small of the Back, Behind the Neck, Small of Back or Neck. |
-| Lock On With | Use | Use (held away from the mount), Lock Key, Throw Button. |
-| Throw Button | Off Trigger | Off Alt, Either, Off Trigger. |
-| Max Locks | 5 | Targets one throw visits, 0 to 5. |
-| Shield Size | Standard | Standard, Large, Largest: model and block together. |
-| Throw Feel | Standard | Easy, Standard, Deliberate: how hard you must throw. |
-| Block Assist | Standard | Low, Standard, High: deflection aim help, guard margin, perfect-block speed. |
-| Damage | Standard | Low, Standard, High: throw, bash and grind damage. |
-| Turned Shots Go | Off the Face and My Swing | To Shooter, Where I Look, Off the Face, Off the Face and My Swing. |
-| Blocked Melee | Stun and Shove | Nothing, Stun, Stun and Shove. |
-| BD22 Monsters | Off | Hit tiers for Brutal Doom's tougher monsters. |
-| Recenter: Both Hands to Chest | On | The recenter gesture. |
-| Recenter Torso | (unbound) | The recenter key. |
+| **Shield** | | |
+| Start With Shield | On | Every player spawns with it |
+| Start in Hand | Off | Spawn with it already drawn |
+| Show ShieldSaw | On | The stowed shield is drawn where it hangs: on RSQ Tactical Rig's body, else at its mount on your back |
+| Take It From | Small of the Back | Over the Shoulder, Small of the Back, Behind the Neck, Back or Neck |
+| Draw With Use | On | Use at the mount draws and puts away (off: only the Draw key) |
+| Mount Marker | When Needed | Never, When Needed, Always: the marker at the grab point |
+| Shield Size | 1.0 | Model and block together (1.0-1.5) |
+| **Block** | | |
+| Shield Blocks | On | The block at all |
+| Block While Holstered (GB) | Off | The stowed shield guards your back |
+| Double Block Size | Off | The blocking plate twice as wide (the model is unchanged) |
+| Blocked Shots | Returned | Cancelled or Returned |
+| Turned Shots Go | Off the Face and My Swing | To Shooter, Where I Look, Off the Face, Off the Face and My Swing |
+| Turn Shots Early | On | Turn shots that cross the plate before they reach you |
+| Muzzle Block | On | Stop bullets whose line crosses the plate |
+| Return Bullets | On | A stopped bullet goes back out |
+| Perfect Block | On | Meeting a shot with a moving plate: faster turned shot, always staggers |
+| Perfect Block Slow-Mo (GB) | Off | Half a second of slow motion (needs RSQ SlowMo) |
+| Saber Over Shield | On | RSQ Saber's lit blade across the plate widens the block |
+| Blocked Melee | Stun and Shove | Nothing, Stun, Stun and Shove |
+| **Bash** | | |
+| Shield Bash | On | The bash |
+| Bash Needs Sight | On | Bash and grind cannot reach through walls or doors |
+| Wall Slam | On | Bashed bodies slam into walls |
+| Hit-Stop (GB) | Off | A bash or perfect block freezes the monster briefly |
+| **Throw** | | |
+| Lock On With | Use | Use (held away from the mount), Lock Key, Throw Button |
+| Throw Button | Off Trigger | Off Alt, Either, Off Trigger |
+| Max Locks | 5 | Targets one throw visits (0-5) |
+| Catch on Return | On | A hand near the returning disc catches it |
+| Hit Tiers | On | Bisect, embed or glance by the monster's health |
+| BD22 Monsters | Off | Hit tiers for Brutal Doom's tougher monsters |
+| **Hands and Body** | | |
+| On Manual Store | Fist | Fist or Previously Held Weapon |
+| Off-Hand Switch | Keep Shield | Keep Shield, or Allow Switch |
+| Recenter: Hands to Chest | On | Both hands to your chest turn the body to your head |
+| Turn With the Rig | On | With RSQ Tactical Rig, the shield hangs on the rig's body |
+| Body Turns With Hands | Off | Head and both hands turning together turn the body at once |
+| Body Catches Up | Off | A head held round eases the body round |
+| **Look and Sound** | | |
+| Block Feedback | On | Block feedback and haptics |
+| Positional Sound | On | Contacts heard where they happen |
+| Others See Shield | Netgame Only | Only Me, Everyone, Netgame Only |
+| Spin Direction | Normal | Flip if the disc spins the wrong way |
+| **Controls** | | Draw / Put Back, Throw Along Aim, Lock On (Hold), Recenter Torso |
+| Reset All | | Every setting on both pages back to default |
 
-**Shield Options**
-
-| Row | Default | What it does |
-|---|---|---|
-| Shield Blocks | On | The block at all. |
-| Block While Holstered | Off | The stowed shield guards your back. |
-| Double Block Radius | Off | The blocking plate is twice as wide (the model is unchanged). |
-| Blocked Projectiles | Returned | Cancelled or Returned. |
-| Turn Shots Early | On | Turn shots that cross the plate before they reach you. |
-| Muzzle Block | On | Stop bullets whose line crosses the plate. |
-| Return Bullets | On | A stopped bullet goes back out. |
-| Perfect Block | On | Meeting a shot with a moving plate: faster turned shot, always staggers. |
-| Shield Bash | On | The bash. |
-| Bash Needs Sight | On | Bash and grind cannot reach through walls or doors. |
-| Wall Slam | On | Bashed bodies slam into walls. |
-| Hit-Stop | Off | A bash or perfect block freezes the monster briefly. |
-| Perfect Block Slow-Mo | Off | Half a second of slow motion (needs RSQ SlowMo). |
-| Saber Over Shield | On | RSQ Saber's lit blade across the plate widens the block. |
-| Hit Tiers | On | Bisect, embed or glance by the monster's health. |
-| Catch on Return | On | A hand near the returning disc catches it. |
-| On Manual Store | Fist | Fist or Previously Held Weapon. |
-| Off-Hand Switch | Keep Shield | Keep Shield, or Allow Switch (QuestZDoom's hand switch puts the shield away). |
-
-**Look and Sound**
-
-| Row | Default | What it does |
-|---|---|---|
-| Block Feedback | On | Block feedback and haptics. |
-| Positional Sound | On | Contacts heard where they happen. |
-| Show Mount | When Needed | Never, When Needed, Always: the marker at the grab point. |
-| Shield on Back | Off | Draw the stowed shield on your back. |
-| Shield on the Rig | On | With RSQ Tactical Rig loaded, the stowed shield is drawn where it hangs on the rig, whatever Shield on Back says. |
-| Others See Shield | Netgame Only | Only Me, Everyone, Netgame Only. |
-| Spin Direction | Normal | Flip if the disc spins the wrong way. |
-
-**Tuning and Debug** holds every number, on five pages: **Shield Fit** (size, disc position, block radius and depth),
-**Throw and Disc** (throw speed and threshold, arm-or-aim blend, disc weight, wind-up, top and return speed, catch radius,
-hit-tier limits, embed and grind damage, rev time, rev throw bonus, wall bounces), **Lock-On** (cone, range, keep angle,
-out-of-sight grace, lock gap, how long rings are kept, ring size), **Block and Bash** (deflect assist, guard margin,
-lookahead, turned shot speed, bullet return damage, melee shove, perfect block speed, bash speed, damage, reach, lean,
-knockback, lift, wall slam damage and stun, hit-stop tics, brace size) and **Mount Position** (the shoulder, back and neck
-spots, eyes-to-neck, body turning options, grab reach and zone, the stowed and held placement). Plus Debug Log, Show
-Block Area and Reset All.
+**Test and Debug** holds every number on one page under short headers: Debug Log and Show Block Area; **Damage** (throw,
+bash, grind, wall slam, bullet return); **Shield Fit** (disc position, block radius and depth); **Throw and Disc** (throw
+threshold and speed, arm-or-aim blend, aim forward, slowest throw, disc weight, wind-up, top and return speed, return
+patience, catch radius, breadcrumbs, hit-tier limits, glance and embed damage and time, rev time, grind gap, rev throw
+bonus, revved blade reach, wall bounces); **Lock-On** (cone, range, keep angle, out-of-sight grace, lock gap, rings kept,
+ring size); **Block and Bash** (deflect assist, swing steering, guard margin, lookahead, turned shot speed, melee shove,
+perfect block speed, bash speed, reach, lean, knockback, lift, wall slam bump and stun, Hit-Stop Tics (GB), brace size
+and gap); **Mount** (shoulder, small of back and neck spots, eyes-to-neck, grab reach and zone, stowed yaw, pitch, roll,
+size); **In the Hand** (held placement). Reset All. The old Shield Size / Throw Feel / Block Assist / Damage presets are
+gone (the owner, 11-04: no presets); each number they set is a row.
 
 ## Works with
 

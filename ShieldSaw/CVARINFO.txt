@@ -62,7 +62,7 @@ server float ssq_rev_throw_bonus = 0.6;   // a full-rev throw adds this fraction
 server bool  ssq_guard          = true;
 server bool  ssq_block_double   = false;  // Double Block Radius: the blocking plate is twice as wide (the shield you see is unchanged); with Gun Bonsai's VR patch loaded the plate grows by its Broadening upgrade instead
 server int   ssq_store_to       = 0;      // On Manual Store: 0 the off hand's fist, 1 the weapon it held before the shield
-server bool  ssq_guard_stowed   = false;  // off: a shield you cannot see does not block. Both this and ssq_stow_world default off, together
+server bool  ssq_guard_stowed   = false;  // off: a stowed shield does not block (with RSQ Gun Bonsai VR its Back Plate upgrade replaces this row)
 server int   ssq_yield_offhand  = 0;      // 0 pin the hands (v0.6 behaviour); 1 let switchhand take the off hand and stow the shield
 server int   ssq_deflect        = 1;      // blocked projectiles: 0 cancelled, 1 return to sender
 server int   ssq_deflect_aim    = 3;      // a turned shot goes: 0 back at the shooter, 1 where you LOOK, 2 mirrored off the face,
@@ -158,8 +158,9 @@ user int   ssq_body_hands       = 0;      // the body the shield hangs on turns 
 user int   ssq_body_catch       = 0;      // a head held 35 degrees round for 1 s eases the body round (OFF since 11-03 18:56: a guess)
 user int   ssq_recenter_hands   = 1;      // both hands held to your chest for 0.4 s turn the body to where your head faces (11-03)
 user int   ssq_rig_body         = 1;      // with RSQ TacticalRig loaded, the shield hangs on the rig's body: shield and holsters turn together (11-03)
-user int   ssq_stow_world       = 0;      // draw the shield on your back while it is stowed (owner: off, 2026-10-22)
-user int   ssq_stow_rig         = 1;      // with RSQ Tactical Rig loaded, the stowed shield is drawn on the rig's body (owner 11-03 20:51)
+user int   ssq_show             = 1;      // Show ShieldSaw (owner 11-04: "Always show ... saw"): the stowed shield is drawn where it
+                                          // hangs -- on RSQ TacticalRig's body when it is loaded, else at its mount on your back.
+                                          // Replaced ssq_stow_world (off) and ssq_stow_rig (on) on 11-04
 user float ssq_mount_yaw        = 0.0;
 user float ssq_mount_pitch      = 0.0;
 user float ssq_mount_roll       = 0.0;
