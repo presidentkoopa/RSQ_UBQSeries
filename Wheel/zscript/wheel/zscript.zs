@@ -1198,6 +1198,7 @@ class wr_Rig : EventHandler
 		mTwoCmp     = false;
 		mPage       = PAGE_WEAPONS;
 
+		resetOwnIcons();   // RSQ 11-05: the own-icon cache, resolved again once for this opening
 		gatherWeapons(pmo);
 		if (mTypes.Size() == 0) return;
 
@@ -3169,6 +3170,7 @@ class wr_Rig : EventHandler
 	{
 		clearPanels();
 
+		resetOwnIcons();   // RSQ 11-05: the own-icon cache, resolved again once for this page
 		gatherWeapons(pmo);
 
 		spawnPanels();
@@ -5048,14 +5050,14 @@ class wr_Rig : EventHandler
 		return c;
 	}
 
-	private static TextureID iconFor(Inventory it)
+	private TextureID iconFor(Inventory it)
 	{
 		TextureID none;
 		none.SetInvalid();
 		if (it == null) return none;
 
-		// RSQ (owner 2026-11-03): the fist, the lightsaber and the whip wear the Wheel's own icons (ownIcon).
-		TextureID own = ownIcon(it.GetClass());
+		// RSQ (owner 2026-11-03): the fist, the lightsaber and the whip wear the Wheel's own icons (ownIcon, cached).
+		TextureID own = ownIconOf(it.GetClass());
 		if (own.IsValid()) return own;
 
 		// RSQ: an off-hand copy with no picture of its own: its gun's pickup sprite and icon (artClass)
@@ -5124,38 +5126,80 @@ class wr_Rig : EventHandler
 	clearscope static bool isFistClass(Class<Actor> c)
 	{
 		if (c == null) return false;
+		return isFistWith(c, Actor.GetReplacement('Fist'), clsNamed('RSQ_Hands'));
+	}
+
+	// isFistClass with Doom's Fist's replacement and RSQ_Hands already looked up (ownIconOf resolves them once)
+	clearscope static bool isFistWith(Class<Actor> c, Class<Actor> rep, Class<Actor> off)
+	{
+		if (c == null) return false;
 		if (c is 'Fist') return true;
-		Class<Actor> rep = Actor.GetReplacement('Fist');
 		if (descends(c, rep)) return true;
 		Name n = c.GetClassName();
 		if (n == 'Melee_Attacks') return true;
-		Class<Actor> off = clsNamed('RSQ_Hands');
 		return descends(c, off);
 	}
 
-	clearscope static TextureID ownIcon(Class<Actor> c)
+	// THE WHEEL'S OWN ICONS' CLASSES, by name (no mod required), in ownLump's order. Until 11-05 ownIcon looked all
+	// nine up on every call; ownIconOf looks them up once per ring opening (owner 11-05: "Fix the Wheel's icon lookup cost").
+	enum EOwnBase { OWN_GLOVE, OWN_SABER, OWN_WHIP, OWN_SSAW, OWN_FLARE, OWN_TORCH, OWN_FORCE, OWN_FISTREP, OWN_HANDS, OWN_N }
+	clearscope static void ownBases(out Array<Class<Actor> > b)
+	{
+		b.Clear();
+		b.Push(clsNamed('RSQ_Glove'));
+		b.Push(clsNamed('UBQS_SaberBase'));
+		b.Push(clsNamed('RSQWP_WhipWeapon'));
+		b.Push(clsNamed('SSQ_ShieldSaw'));
+		b.Push(clsNamed('RSQFF_Held'));
+		b.Push(clsNamed('RSQFF_Torch'));
+		b.Push(clsNamed('UBQS_ForceHand'));
+		b.Push(Actor.GetReplacement('Fist'));
+		b.Push(clsNamed('RSQ_Hands'));
+	}
+
+	clearscope static String ownLump(Class<Actor> c, Array<Class<Actor> > b)
+	{
+		if (c == null || b.Size() < OWN_N) return "";
+		if (descends(c, b[OWN_GLOVE]))                          return "WRIGLOVE";   // before the fist: a glove is its own card
+		if (isFistWith(c, b[OWN_FISTREP], b[OWN_HANDS]))        return "WRIFIST";
+		if (descends(c, b[OWN_SABER]))                          return "WRISABER";
+		if (descends(c, b[OWN_WHIP]))                           return "WRIWHIP";
+		if (descends(c, b[OWN_SSAW]))                           return "WRISSAW";
+		if (descends(c, b[OWN_FLARE]))                          return "WRIFLARE";
+		if (descends(c, b[OWN_TORCH]))                          return "WRITORCH";
+		if (descends(c, b[OWN_FORCE]))                          return "WRIFORCE";
+		return "";
+	}
+
+	// ownIcon, cached (owner 11-05: "Fix the Wheel's icon lookup cost"): the nine classes by name once per ring opening
+	// (resetOwnIcons, before gatherWeapons), then one answer per weapon class -- its texture looked up once, the first
+	// time a card, a fan's card or a canvas face asks; every later ask (spawnPanels asks twice a card, spawnCardModels
+	// once, repaintFaces every tic with wr_canvas on) is a pointer search of this list. Same answers as the old ownIcon.
+	transient Array<Class<Actor> > mOwnBase;
+	transient Array<Class<Actor> > mOwnCls;
+	transient Array<TextureID> mOwnTex;
+
+	private void resetOwnIcons()
+	{
+		mOwnBase.Clear();
+		mOwnCls.Clear();
+		mOwnTex.Clear();
+	}
+
+	private TextureID ownIconOf(Class<Actor> c)
 	{
 		TextureID none;
 		none.SetInvalid();
 		if (c == null) return none;
-		String lump = "";
-		Class<Actor> saber = clsNamed('UBQS_SaberBase');
-		Class<Actor> whip  = clsNamed('RSQWP_WhipWeapon');
-		Class<Actor> ssaw  = clsNamed('SSQ_ShieldSaw');
-		Class<Actor> glove = clsNamed('RSQ_Glove');
-		Class<Actor> flare = clsNamed('RSQFF_Held');
-		Class<Actor> torch = clsNamed('RSQFF_Torch');
-		Class<Actor> force = clsNamed('UBQS_ForceHand');
-		if (descends(c, glove))       lump = "WRIGLOVE";   // before the fist: a glove is its own card
-		else if (isFistClass(c))      lump = "WRIFIST";
-		else if (descends(c, saber))  lump = "WRISABER";
-		else if (descends(c, whip))   lump = "WRIWHIP";
-		else if (descends(c, ssaw))   lump = "WRISSAW";
-		else if (descends(c, flare))  lump = "WRIFLARE";
-		else if (descends(c, torch))  lump = "WRITORCH";
-		else if (descends(c, force))  lump = "WRIFORCE";
-		if (lump.Length() == 0) return none;
-		return TexMan.CheckForTexture(lump, TexMan.Type_Any);
+		int k = mOwnCls.Find(c);
+		if (k < mOwnCls.Size()) return mOwnTex[k];
+		if (mOwnBase.Size() < OWN_N) ownBases(mOwnBase);
+		String lump = ownLump(c, mOwnBase);
+		TextureID t = none;
+		if (lump.Length() > 0) t = TexMan.CheckForTexture(lump, TexMan.Type_Any);
+		mOwnCls.Push(c);
+		mOwnTex.Push(t);
+		return t;
 	}
 
 	// THE FIST THIS HAND TAKES: the off hand's own fist first (RSQ_Hands, off hand only), then whatever replaces
@@ -6152,10 +6196,10 @@ class wr_Rig : EventHandler
 			// heldNow is the Weapon cast -- null for every inventory-page item,
 			// which is why those cards were blank plates with a name.
 			let heldItem = players[consoleplayer].mo.FindInventory(mTypes[i]);
-			// RSQ: a fist the player does not own yet still shows its icon (ensureFistCards, ownIcon)
-			if ((heldItem != null || ownIcon(mTypes[i]).IsValid()) && !canvasFace)
+			// RSQ: a fist the player does not own yet still shows its icon (ensureFistCards, ownIconOf)
+			if ((heldItem != null || ownIconOf(mTypes[i]).IsValid()) && !canvasFace)
 			{
-				TextureID icon = heldItem ? iconFor(heldItem) : ownIcon(mTypes[i]);
+				TextureID icon = heldItem ? iconFor(heldItem) : ownIconOf(mTypes[i]);
 
 				if (icon.IsValid())
 				{
@@ -9384,8 +9428,8 @@ class wr_Rig : EventHandler
 
 		for (int i = 0; i < mTypes.Size(); ++i)
 		{
-			// RSQ: a card with the Wheel's own icon (ownIcon) shows that icon, not a pickup model
-			if (ownIcon(mTypes[i]).IsValid()) { mModels.Push(null); mModelFit.Push(1.0); mModelDrop.Push(0); continue; }
+			// RSQ: a card with the Wheel's own icon (ownIconOf) shows that icon, not a pickup model
+			if (ownIconOf(mTypes[i]).IsValid()) { mModels.Push(null); mModelFit.Push(1.0); mModelDrop.Push(0); continue; }
 			let a = Actor.Spawn(artClass(mTypes[i]), pmo.Pos, NO_REPLACE);   // RSQ: an off-hand copy shows its gun (artClass)
 			if (a == null) { mModels.Push(null); mModelFit.Push(1.0); mModelDrop.Push(0); continue; }
 
