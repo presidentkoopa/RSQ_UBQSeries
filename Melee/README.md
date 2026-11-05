@@ -156,13 +156,16 @@ Runs alone. It finds the others by name:
 - **RSQ Tactical Rig**: the Headlock waits while your off hand is in a holster.
 - **RSQ Accessibility**: rumble strength, seated play and the Off-Hand Modifier apply.
 - **RSQ Grapple, RSQ Weapon Wheel**: the shove stays quiet on the rope or with the wheel open.
+- **RSQ Wheel, RSQ Gun Bonsai VR**: the gloves have their own icon (a red boxing glove) on the Wheel's card and Gun
+  Bonsai VR's status screen, whichever look the hands wear (not yet seen on the rig or in the headset).
 
 ## Credits and licence
 
 - **presidentkoopa** (project owner): the code; the gloves, punch reader, punch classification and Star Punch from
   his SuperPunchOut; the gun-butt shove from his BD22 VR Reloaded; the Headlock from RSQ Distance Grab (its feel from
   his RS_WorldHands); the swing reader from RS_Gestures; the Fists tree sounds from his RS Combat FX and RS
-  Ballistics libraries; the bullet tracer mesh from RS_Ballistics.
+  Ballistics libraries; the bullet tracer mesh from RS_Ballistics; the gloves' icon (sprites/rsqml/RMICA0.png,
+  original pixel art drawn by RSQ Wheel's sources/icons/gen_item_icons.py).
 - **Ermac** (iAmErmac): the boxing-glove mesh and fit (PunchOutVR / Virtual Punch Out); the hand model from Rusted
   Legacy / Doom Force Unleashed, MIT licence (credits/Ermac_RustedLegacy_LICENSE.txt).
 - Punch and star sounds from Punch Out Doom (DerrickDavison), through Virtual Punch Out. Punch-Out!! is Nintendo's.

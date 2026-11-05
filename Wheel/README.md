@@ -41,7 +41,9 @@ BFG with a long heavy thud. After a while you can find a gun by feel.
   Doom's fists, or BD22 VR's off-hand fist, whichever that hand uses.
 - The fist, the lightsaber, the whip and the ShieldSaw have their own icons: LegenDoom's brass knuckles, a pixel-art
   lightsaber, a coiled whip and a round saw-shield (credits in CREDITS.txt; the ShieldSaw's rig only, not
-  headset-confirmed).
+  headset-confirmed). So do RSQ Melee's gloves (a red boxing glove), and, when a mod puts them in a weapon slot, RSQ
+  FnF's flare (a burning road flare) and flashlight (a torch with its beam) and RSQ Saber's Force hand (an open hand
+  with blue push waves); drawn for the series (these four cards not yet seen on the rig or in the headset).
 - Ammo counts and gauges, a slot number, and a mark on the guns you are holding.
 - A big arsenal folds into one card per slot. Rest on a slot and its guns fan out; Use opens the fan at once.
 - Hold the trigger on a gun in a fan and drag it to a new place in its slot. The order is saved.

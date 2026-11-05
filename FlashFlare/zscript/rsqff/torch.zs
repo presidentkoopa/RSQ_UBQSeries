@@ -43,6 +43,7 @@ class RSQFF_Torch : Weapon
 		Weapon.AmmoUse 0;
 		Weapon.Kickback 0;
 		Tag "Flashlight";
+		Inventory.Icon "WRITORCH";   // drawn for the series (Wheel/sources/icons/gen_item_icons.py; owner 2026-11-05)
 		+WEAPON.OFFHANDWEAPON
 		+WEAPON.NOAUTOFIRE +WEAPON.NOALERT +WEAPON.NOAUTOSWITCHTO +WEAPON.CHEATNOTWEAPON +WEAPON.WIMPY_WEAPON
 		+WEAPON.NO_AUTO_SWITCH

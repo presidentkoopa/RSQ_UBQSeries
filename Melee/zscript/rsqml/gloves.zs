@@ -42,6 +42,7 @@ class RSQ_Glove : Weapon
 		Weapon.Kickback 100;
 		Weapon.SlotNumber 1;
 		Tag "$RSQ_GLOVE_TAG";
+		Inventory.Icon "RMICA0";     // the boxing glove, drawn for the series (RSQ Wheel's sources/icons/gen_item_icons.py; owner 2026-11-05)
 		Inventory.PickupMessage "$RSQ_GLOVE_PICKUP";
 		Obituary "$RSQ_GLOVE_OB";
 		+WEAPON.WIMPY_WEAPON

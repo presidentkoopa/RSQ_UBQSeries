@@ -5100,11 +5100,15 @@ class wr_Rig : EventHandler
 		return none;
 	}
 
-	// RSQ (owner 2026-11-03): THE WHEEL'S OWN ICONS for three cards whose own art says little on a card --
+	// RSQ (owner 2026-11-03, 11-05): THE WHEEL'S OWN ICONS for the cards whose own art says little on a card --
 	//   the fist         WRIFIST   LegenDoom 3.0's brass knuckles (its LDFists' icon, SFISZ0)
 	//   the lightsaber   WRISABER  "Jedi Lightsaber (Star Wars)" by danger_doughnut52, dinopixel.com
 	//   the whip         WRIWHIP   drawn for the Wheel (sources/icons/gen_whip_icon.py)
 	//   the shield saw   WRISSAW   drawn for the Wheel (sources/icons/gen_shieldsaw_icon.py; owner 2026-11-05)
+	//   the road flare   WRIFLARE  drawn (sources/icons/gen_item_icons.py; owner 2026-11-05 "Build them now"): RSQ FnF's RSQFF_Held
+	//   the flashlight   WRITORCH  drawn (gen_item_icons.py): RSQ FnF's RSQFF_Torch
+	//   the Force hand   WRIFORCE  drawn (gen_item_icons.py): RSQ Saber's UBQS_ForceHand
+	//   the gloves       WRIGLOVE  drawn (gen_item_icons.py): RSQ Melee's RSQ_Glove / RSQ_GloveOff
 	// Sources and credits: sources/icons/SOURCES.md, CREDITS.txt. The series' classes are looked up by name
 	// at run time, so none of their mods has to be loaded.
 	clearscope static Class<Actor> clsNamed(Name n) { Class<Actor> c = n; return c; }
@@ -5138,10 +5142,18 @@ class wr_Rig : EventHandler
 		Class<Actor> saber = clsNamed('UBQS_SaberBase');
 		Class<Actor> whip  = clsNamed('RSQWP_WhipWeapon');
 		Class<Actor> ssaw  = clsNamed('SSQ_ShieldSaw');
-		if (isFistClass(c))           lump = "WRIFIST";
+		Class<Actor> glove = clsNamed('RSQ_Glove');
+		Class<Actor> flare = clsNamed('RSQFF_Held');
+		Class<Actor> torch = clsNamed('RSQFF_Torch');
+		Class<Actor> force = clsNamed('UBQS_ForceHand');
+		if (descends(c, glove))       lump = "WRIGLOVE";   // before the fist: a glove is its own card
+		else if (isFistClass(c))      lump = "WRIFIST";
 		else if (descends(c, saber))  lump = "WRISABER";
 		else if (descends(c, whip))   lump = "WRIWHIP";
 		else if (descends(c, ssaw))   lump = "WRISSAW";
+		else if (descends(c, flare))  lump = "WRIFLARE";
+		else if (descends(c, torch))  lump = "WRITORCH";
+		else if (descends(c, force))  lump = "WRIFORCE";
 		if (lump.Length() == 0) return none;
 		return TexMan.CheckForTexture(lump, TexMan.Type_Any);
 	}

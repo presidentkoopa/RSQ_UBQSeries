@@ -5991,6 +5991,7 @@ class UBQS_ForceHand : Weapon
 		+WEAPON.CHEATNOTWEAPON
 		Weapon.SelectionOrder 9000;
 		Tag "The Force";
+		Inventory.Icon "WRIFORCE";   // drawn for the series (RSQ Wheel's sources/icons/gen_item_icons.py; owner 2026-11-05)
 	}
 	States
 	{

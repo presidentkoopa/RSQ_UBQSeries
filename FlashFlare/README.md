@@ -148,6 +148,10 @@ Runs alone. It finds the others by name:
   side. Without the Rig, the pocket follows snap and stick turns and eases under your head while you look ahead.
 - **Brutal Doom 22 VR Reloaded**: when the flare leaves your hand, the off hand gets BD22 VR's empty hands back (on
   plain Doom the off hand is simply empty). Its Hand Skin Tone tones the hand holding the flare or the flashlight.
+- **RSQ Wheel, RSQ Gun Bonsai VR**: the flare and the flashlight each have their own icon (a burning road flare, a
+  torch with its beam), shown wherever those mods picture the item in your hand (Gun Bonsai VR's status screen; the
+  Wheel's card, when a mod puts them in a weapon slot). Seen on the status screen on the rig only, not
+  headset-confirmed; the Wheel card not seen.
 - **DarkDoomz**: its flashlight is switched off with its own toggle while yours is on (Stands Down row). Its darkness
   is left alone. The flashlight clip also hangs on RSQ Tactical Rig's body, and a Rig holster can take it by name.
 
@@ -157,6 +161,8 @@ Runs alone. It finds the others by name:
   read from the .blend and turned into the in-hand, lying and box models, scaled to a 22.5 cm road flare. The code.
 - **Brutal Doom 22 VR Reloaded** (the owner's mod): the FBX hand, its off-hand magazine hold and skin, drawn in BD22
   VR's own off-hand placement; its shotgun-pump support hand holds the flashlight.
+- This pack: the flare and flashlight icons (graphics/rsqff/WRIFLARE.png, WRITORCH.png), original pixel art drawn by
+  RSQ Wheel's sources/icons/gen_item_icons.py.
 - **Ermac** (VR-Flashlight, base code by SuaveSteve) and **Caligari87** (DarkDoomz): ideas for the flashlight only.
 - **saegiru's Emergency Flare** (UDV Survival Flares, part of the UAC Survival Pack by JohnnyDoom, forum.zdoom.org t=47229):
   the box and lying-flare sprites and the strike, burning and burnout sounds (renamed), and the numbers: a box of 6,
