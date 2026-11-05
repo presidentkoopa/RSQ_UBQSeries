@@ -625,7 +625,10 @@ class SSQ_Disc : Actor
 		int sh = max(v.SpawnHealth(), v.health);
 		String tk = "LDLegendaryMonsterToken", tr = "LDLegendaryMonsterTransformed";
 		class<Inventory> ct = tk, cr = tr;
-		if (ct && v.FindInventory(ct) && !(cr && v.FindInventory(cr)))
+		// LegenDoom 3.0 (full) with "Legendary Monsters: Disabled" (LD_legendarymonsters 0) gives a legendary no health
+		// and no transform (LEGENDMON.acs LDMonsterInit): no refill to count. LegenDoom Lite 4.2 has no such cvar (unchanged)
+		let ldon = CVar.FindCVar('LD_legendarymonsters');
+		if (ct && v.FindInventory(ct) && !(cr && v.FindInventory(cr)) && !(ldon && ldon.GetInt() == 0))
 		{
 			let cv = CVar.FindCVar(v.bBoss ? 'LD_legendaryhealthboss' : 'LD_legendaryhealth');
 			int pct = cv ? cv.GetInt() : 300;
