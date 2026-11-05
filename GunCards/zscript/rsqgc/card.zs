@@ -509,7 +509,8 @@ class RSQGC_GunCard : EventHandler
 	}
 
 	// ---- seen or not -------------------------------------------------------------------------------------
-	// rsqgc_card: 0 off, 1 always, 2 when you look at the gun, 3 the inspect gesture (RSQ Gestures; without it, as 2),
+	// rsqgc_card: 0 off, 1 always, 2 when you look at the gun, 3 the inspect gesture (RSQ Accessibility's reader; without
+	// it Gun Cards' own copy, gestcopy.zs; as 2 only when that reader's watch check is switched off),
 	// 4 on reload
 	private bool Wanted(PlayerPawn pmo, int hand)
 	{
@@ -528,6 +529,7 @@ class RSQGC_GunCard : EventHandler
 		if (mode == 3)
 		{
 			int g = Inspect(pmo, hand);
+			if (g < 0) g = OwnInspect(pmo, hand);   // owner 11-05 "change": every mod works alone, as Watching does
 			if (g >= 0)
 			{
 				if (g >= ci("rsqgc_inspect_level", 2)) mInspectTill[hand] = level.maptime + ci("rsqgc_linger", 35);

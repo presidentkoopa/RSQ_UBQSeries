@@ -85,7 +85,7 @@ Options → Radiant Silvergun Options → RSQ Gun Cards (one page, then Test and
 
 | Row | Default | What it does |
 |---|---|---|
-| Show Cards | Always | Off, Always, When I Look, Inspect Gesture, On Reload. Inspect Gesture needs RSQ Accessibility (its gesture reader); without it the row reads "When I Look (no Gestures)", which is what it then does. |
+| Show Cards | Always | Off, Always, When I Look, Inspect Gesture, On Reload. Inspect Gesture uses RSQ Accessibility's gesture reader when it is loaded, and Gun Cards' own copy of that reader without it. |
 | Watch Card | When I Check My Watch | Off, When I Check My Watch, or Always On. |
 | Watch Card Shows | Weapon Card | Weapon Card, Status Card, or Both on One Card. An empty hand always shows the Status Card. |
 | Gun Bonsai on Card | Off | Gun Bonsai's level, XP and upgrades under the weapon card (with Gun Bonsai). |
@@ -136,7 +136,7 @@ Options → Radiant Silvergun Options → RSQ Gun Cards (one page, then Test and
 
 Runs on its own with any weapon mod.
 
-- **RSQ Accessibility (its gesture reader):** checking your watch, and Show Cards: Inspect Gesture, use its inspect pose (without it, Inspect Gesture acts as When I Look and the row says so).
+- **RSQ Accessibility (its gesture reader):** checking your watch, and Show Cards: Inspect Gesture, use its inspect pose (without it, Gun Cards' own copy of the same pose).
 - **Gun Bonsai with RSQ Gun Bonsai VR:** the watch card can show each gun's level, XP and upgrades.
 - **RSQ Grenade:** its grenade count on the cards, and a cooking grenade's fuse countdown.
 - **RSQ Wheel:** its palette, font and plates can colour the cards. Gun Cards' watch card replaces the Wheel's wrist
