@@ -164,6 +164,8 @@ Runs alone. It finds the others by name:
 - **RSQ Saber, RSQ Melee**: their bare Force hand and gloves count as an empty off hand for aiming.
 - **RSQ SlowMo**: a leashed monster comes at the slowed world's pace; your rope stays in real time.
 - **RSQ VisualRewards**: the whip never targets its Kill Rewards bits.
+- **RSQ VisualRewards**: a monster the whip has wrapped, lassoed or tied with the bola shows a coiled-lash marker by
+  its HP bar (an older VisualRewards shows the hook instead).
 - **RSQ Accessibility**: Hold to Toggle and Steady Hands apply.
 
 ## Credits and licence

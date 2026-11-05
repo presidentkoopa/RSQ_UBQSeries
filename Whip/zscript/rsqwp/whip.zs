@@ -3440,13 +3440,17 @@ class RSQWP_LockCentre : Actor
 	}
 }
 
-// RSQ HP BARS' MARKERS (owner 11-02): a monster the whip has wrapped (a marked crack, the lasso) or tied to it (Bola)
-// shows HP Bars' HOOKED mark (handler.zs MarkersOf asks every service whose name holds "RSQTHP_Marker").
+// RSQ VISUALREWARDS' MARKERS (owner 11-02; 11-05 its own icon): a monster the whip has wrapped (a marked crack, the
+// lasso) or tied to it (Bola) shows the WHIPPED mark, a coiled lash (handler.zs MarkersOf asks every service whose name
+// holds "RSQTHP_Marker"). "whipped" answers it. "hooked" answers it too, for a VisualRewards from before 11-05 (it knows
+// only hooked, and asks with stringArg ""); a newer one asks hooked with stringArg "whipped" and gets 0, so the lash is
+// never drawn twice.
 class RSQTHP_MarkerWhip : Service
 {
 	override int GetInt(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
 	{
-		if (request != "hooked") return 0;
+		if (request == "hooked" && stringArg == "whipped") return 0;
+		if (request != "hooked" && request != "whipped") return 0;
 		let mo = Actor(objectArg);
 		let w = RSQWP_Whip.Get();
 		if (!mo || !w) return 0;

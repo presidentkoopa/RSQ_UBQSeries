@@ -38,7 +38,21 @@
 //   stunned  RSQ_Grapple: "stunned" == 1 (the yank's landing hold, the whip's crack while in pain)
 //   locked   UltraBadassShieldSaw (SSQ_ScoreService): "locked" == 1 (a lock-on ring is on it)
 //   gripped  UltraBadassQuestSaber (UBQS_SaberService): "gripped" == 1 (a Force grip holds it)
-// Any other mod may answer all four as 1/0 from a Service whose class name contains "RSQTHP_Marker".
+//   whipped  RSQ Whip (RSQTHP_MarkerWhip, 11-05): "whipped" == 1 (its wrap, lasso or bola holds it). Asked of every
+//            "RSQTHP_Marker" service; "hooked" is asked of them with stringArg "whipped" (we draw whipped ourselves), so
+//            a Whip that knows "whipped" answers hooked 0 to us and still answers hooked 1 to an older VisualRewards
+//            (stringArg ""); an older Whip answers "whipped" 0 and hooked 1 to us: its hook, as before.
+// Any other mod may answer all five as 1/0 from a Service whose class name contains "RSQTHP_Marker".
+//
+// THE 11-05 ICONS (owner-approved): BURNING -- WorldThingDamaged stamps the bar when the damage type is fire (Fire,
+// Flames, Flame, Burn, HumanBBQ: BD22's flamethrower stream and FlamethrowerBurningStuff "fire", its imp fireballs
+// "Burn", RSQ Grenade's Incendiary and Gun Bonsai VR's burn "Fire"); the bar shows a flame for BURN_LINGER tics after the
+// last one, read with the markers every 4th tic. Brutal Doom leaves no lasting mark on a living monster that is on fire
+// (brutal22test6: a monster killed by fire is swapped for a Burning* body, which never gets a bar), so the damage IS the
+// mark; RSQ FnF's flare hurts nothing and lights nothing. Engine names only: works with none of those mods.
+// LEGENDARY -- LegenDoom 3.0 and Lite 4.2 (LEGENDMON.acs / MonsterStats.dec): a picked monster carries
+// LDLegendaryMonsterToken and turns (fills to full, stats boosted) when LDLegendaryMonsterStatBoost gives it
+// LDLegendaryMonsterTransformed. The gem shows from that turn, never on a candidate (see LEGENDOOM'S CANDIDATES).
 //
 // FROZEN AND HELD (owner's picks 36 and 37, 2026-10-31), right of the bar, one at a time, every tic. Read off the
 // monster itself, so no mod is asked and nothing links (bar.zs, StatusOf):
@@ -79,7 +93,9 @@ class RSQTHP_Handler : EventHandler
 	transient int sprStat;           // RSYF: A frozen, B held, C raised, D frozen + raised, E held + raised
 	transient int sprAlly;           // RSYG: the friendly bar (HP2)
 	transient int sprChunk;          // RSYH: the damage chunk (HP1)
-	transient int sprBoss;           // RSYI: A the miniboss (crown), B its thrall (chain link)
+	transient int sprBoss;           // RSYI: crown / chain link / gem, tier pips (TEXTURES.rsqthp)
+	transient int sprWhip;           // RSYW: whipped + the other four markers
+	const BURN_LINGER = 24;          // tics the flame stays after the last fire hit (Gun Bonsai VR's burn lands every 17)
 
 	// ---- nearest 24 (HP3) ----------------------------------------------------------------------
 	const NEAR_N = 24;
@@ -175,6 +191,7 @@ class RSQTHP_Handler : EventHandler
 		sprAlly = Actor.GetSpriteIndex('RSYG');
 		sprChunk = Actor.GetSpriteIndex('RSYH');
 		sprBoss = Actor.GetSpriteIndex('RSYI');
+		sprWhip = Actor.GetSpriteIndex('RSYW');
 	}
 
 	private void FindServices()
@@ -346,10 +363,16 @@ class RSQTHP_Handler : EventHandler
 		let a = e.Thing;
 		if (!a || a.health <= 0 || !Eligible(a)) return;
 		let b = Ensure(a, false, a.health + max(0, e.Damage));
+		if (b && IsFire(e.DamageType)) b.burnTic = level.maptime;
 		// a player's hit: the flash (HP7) and the chunk it took off (HP1)
 		Actor src = e.DamageSource;
 		if (!src && e.Inflictor) src = e.Inflictor.target;
 		if (b && src && src != a && src.player && src.player.mo == src) b.PlayerHit(a.health + max(0, e.Damage));
+	}
+
+	static bool IsFire(Name dt)
+	{
+		return dt == 'Fire' || dt == 'Flames' || dt == 'Flame' || dt == 'Burn' || dt == 'HumanBBQ';
 	}
 
 	override void WorldTick()
@@ -493,7 +516,7 @@ class RSQTHP_Handler : EventHandler
 		return b;
 	}
 
-	// what the series' mods say about this monster (bit mask: 1 hooked, 2 stunned, 4 locked, 8 gripped)
+	// what the series' mods say about this monster (bit mask: 1 hooked, 2 stunned, 4 locked, 8 gripped, 16 whipped)
 	int MarkersOf(Actor a)
 	{
 		if (!svcFound) FindServices();
@@ -519,7 +542,8 @@ class RSQTHP_Handler : EventHandler
 				if (s.GetInt("gripped", "", 0, 0, a) == 1) bits |= 8;
 				break;
 			default:
-				if (s.GetInt("hooked", "", 0, 0, a) == 1) bits |= 1;
+				if (s.GetInt("whipped", "", 0, 0, a) == 1) bits |= 16;
+				if (s.GetInt("hooked", "whipped", 0, 0, a) == 1) bits |= 1;
 				if (s.GetInt("stunned", "", 0, 0, a) == 1) bits |= 2;
 				if (s.GetInt("locked", "", 0, 0, a) == 1) bits |= 4;
 				if (s.GetInt("gripped", "", 0, 0, a) == 1) bits |= 8;
@@ -534,15 +558,33 @@ class RSQTHP_Handler : EventHandler
 	// RSQ_MINIBOSS (#16, 2026-11-01): is this the set piece's miniboss (1) or one of its thralls (2)? Asked through
 	// RSQ_Miniboss's own service by name (RSQMB_Service "miniboss" / "thrall", objectArg the monster: 1 for a living
 	// miniboss / a thrall bound to a living one), so nothing links and without RSQ_Miniboss there is no answer.
+	// 11-05: with LegenDoom's legendary gem and the Bossfight's tier pips. Answers the RSYI frame + 1 (0 nothing):
+	//   1 crown, 2 link, 3 gem, 4 crown + gem, 5 link + gem, 6..8 crown + 1..3 pips, 9..11 crown + 1..3 pips + gem.
+	// Tier (RSQMB_Service "tier", 0..4, -1 when not a Bossfight's or an older RSQ_Miniboss) to pips: 0-1 one, 2 two,
+	// 3-4 three (tier 0 is a middling type, 4 the strongest).
 	transient bool mbFound;
 	transient Service mbSvc;
 	int BossMarkOf(Actor a)
 	{
+		if (!a) return 0;
 		if (!mbFound) { mbFound = true; let it = ServiceIterator.Find("RSQMB_Service"); mbSvc = it.Next(); }
-		if (!mbSvc || !a) return 0;
-		if (mbSvc.GetInt("miniboss", "", 0, 0, a) == 1) return 1;
-		if (mbSvc.GetInt("thrall", "", 0, 0, a) == 1) return 2;
-		return 0;
+		if (!champChecked) CheckChampions();
+		bool gem = ldTransformed && a.FindInventory(ldTransformed);
+		int mid = 0;
+		if (mbSvc)
+		{
+			if (mbSvc.GetInt("miniboss", "", 0, 0, a) == 1) mid = 1;
+			else if (mbSvc.GetInt("thrall", "", 0, 0, a) == 1) mid = 2;
+		}
+		if (mid == 1)
+		{
+			int t = mbSvc.GetInt("tier", "", 0, 0, a);
+			int pips = t < 0 ? 0 : (t <= 1 ? 1 : (t == 2 ? 2 : 3));
+			if (pips) return (gem ? 8 : 5) + pips;
+			return gem ? 4 : 1;
+		}
+		if (mid == 2) return gem ? 5 : 2;
+		return gem ? 3 : 0;
 	}
 
 	override void WorldUnloaded(WorldEvent e)

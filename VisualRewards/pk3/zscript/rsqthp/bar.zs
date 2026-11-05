@@ -44,6 +44,14 @@
 //  - HP3 / HP4 (options): culled by the handler (Nearest 24), or past Limit Distance from the viewer: hidden.
 //  - #16 (2026-11-01): RSQ_Miniboss's miniboss wears a crown above its bar, its thralls a chain link (Markers on),
 //    asked through RSQMB_Service every 4th tic with the other series markers.
+//
+// THE 11-05 ICONS (owner-approved mock-up, 2026-11-05), all under Markers, art in tools/gen_art.py:
+//  - whipped: a 5th marker bit (16), left of the bar in the slot nearest it (sprite RSYW: frame = the other four bits).
+//  - ally: a heart in the right-hand row whenever the bar is a friendly monster's (Ally Colour on or off), so an ally
+//    has a cue that is not colour alone. burning: a flame there while fire damage keeps landing (handler.zs, BURN_LINGER).
+//    The right-hand row is laid out from the bar outward: ally, raised, frozen or held, burning (lasting ones nearest).
+//  - legendary: a gem above the bar on a LegenDoom legendary that has turned; tier pips: 1-3 gold pips right of a
+//    Bossfight miniboss's crown. With a crown the gem sits left of it (one sprite, RSYI, so they never overlap).
 class RSQTHP_Bar : Actor
 {
 	Actor who;
@@ -78,6 +86,9 @@ class RSQTHP_Bar : Actor
 	bool lastAlly;          // HP2: drawn in the ally colour
 	double chunkX0, chunkW; // HP1: the chunk's left edge and width, in bar pixels
 	bool statRaised;        // the status part shows the raised arrow (HP8)
+	int statKey;            // what the status part shows: its RSYF frame + 1 (0: nothing)
+	int burnTic;            // the last tic fire damage landed on it (handler.zs WorldThingDamaged); 0 never
+	bool burnNow;           // burning (refreshed with the markers, every 4th tic)
 	double baseAlpha;       // this tic's alpha and style before the hit flash: the parts take these
 	int baseStyle;
 
@@ -229,17 +240,21 @@ class RSQTHP_Bar : Actor
 		}
 		if (Alpha != a || GetRenderStyle() != style) A_SetRenderStyle(a, style);
 
-		// ---- frozen / held, every tic (a hit-stop lasts 3 to 6 tics) ------------------------------
+		// ---- frozen / held, every tic (a hit-stop lasts 3 to 6 tics); raised, burning, ally beside it ------
 		int st = h.markers ? StatusOf() : 0;
+		statNow = st;
 		bool rs = raised && h.markers;
-		if (st != statNow || rs != statRaised)
+		bool bn = burnNow && h.markers;
+		bool fr = h.markers && who.bFriendly && !who.player;       // an ally's bar: the heart (not only the blue)
+		statRaised = rs;
+		// frame = s + 3 * (raised + 2 * (burning + 2 * ally)) - 1 (TEXTURES.rsqthp; A..E as before 11-05)
+		int key = st + 3 * ((rs ? 1 : 0) + 2 * ((bn ? 1 : 0) + 2 * (fr ? 1 : 0)));
+		if (key != statKey)
 		{
-			statNow = st; statRaised = rs;
-			bool want = st || rs;
-			if (want && !stat) stat = RSQTHP_Part(Spawn("RSQTHP_Part", Pos, NO_REPLACE));
-			if (!want && stat) { stat.Destroy(); stat = null; }
-			// frames: A frozen, B held, C raised, D frozen + raised, E held + raised
-			if (stat) { stat.sprite = h.sprStat; stat.frame = rs ? 2 + st : st - 1; }
+			statKey = key;
+			if (key && !stat) stat = RSQTHP_Part(Spawn("RSQTHP_Part", Pos, NO_REPLACE));
+			if (!key && stat) { stat.Destroy(); stat = null; }
+			if (stat) { stat.sprite = h.sprStat; stat.frame = key - 1; }
 		}
 
 		// ---- HP1: the chunk a player's hit took off --------------------------------------------------
@@ -275,9 +290,14 @@ class RSQTHP_Bar : Actor
 				markBits = bits;
 				if (bits && !mark) mark = RSQTHP_Part(Spawn("RSQTHP_Part", Pos, NO_REPLACE));
 				if (!bits && mark) { mark.Destroy(); mark = null; }
-				if (mark) { mark.sprite = h.sprMark; mark.frame = bits - 1; }
+				// whipped (16): RSYW, frame = the other four bits; else RSYZ, frame = the mask - 1
+				if (mark) { if (bits & 16) { mark.sprite = h.sprWhip; mark.frame = bits & 15; } else { mark.sprite = h.sprMark; mark.frame = bits - 1; } }
 			}
-			// RSQ_Miniboss's miniboss (crown) or its thrall (chain link), above the bar (#16)
+			// burning: fire damage landed within BURN_LINGER tics (BD22's flamethrower and its burning ground, RSQ Grenade's
+			// Incendiary, Gun Bonsai VR's burn: each lands again well inside that)
+			burnNow = burnTic > 0 && level.maptime - burnTic <= RSQTHP_Handler.BURN_LINGER;
+			// RSQ_Miniboss's miniboss (crown, with its Bossfight tier pips) or thrall (chain link), and LegenDoom's
+			// legendary (gem), above the bar (#16, 11-05): BossMarkOf answers the RSYI frame + 1
 			int bb = h.markers ? h.BossMarkOf(who) : 0;
 			if (bb != bossBits)
 			{
@@ -450,7 +470,7 @@ class RSQTHP_SpriteNames : Actor
 {
 	States
 	{
-		RSYA A 0; RSYB A 0; RSYC A 0; RSYD A 0; RSYE A 0; RSYZ A 0; RSYF A 0; RSYG A 0; RSYH A 0;
+		RSYA A 0; RSYB A 0; RSYC A 0; RSYD A 0; RSYE A 0; RSYZ A 0; RSYF A 0; RSYG A 0; RSYH A 0; RSYW A 0;
 		RS10 A 0; RS11 A 0; RS12 A 0; RS13 A 0; RS14 A 0;
 		RS20 A 0; RS21 A 0; RS22 A 0; RS23 A 0; RS24 A 0;
 		RS30 A 0; RS31 A 0; RS32 A 0; RS33 A 0; RS34 A 0;

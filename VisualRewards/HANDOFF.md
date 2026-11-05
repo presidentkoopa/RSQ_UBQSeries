@@ -1,5 +1,35 @@
 # RSQ VisualRewards (until 2026-11-03: RSQ_TopHPBars / RSQ HP Bars) -- handoff
 
+## 2026-11-05: the owner's approved HP bar icons (11-05) -- rig only, not headset-confirmed
+
+Done (code: bar.zs, handler.zs; art: tools/gen_art.py -> TEXTURES.rsqthp + RQK5 / RQS4 / RQS5 / RQB3 / RQB4; all under
+Status Markers, no new menu row):
+- **Whipped** (coiled lash, left, nearest the bar): 5th marker bit 16, sprite RSYW A..P (= the other four bits; RSYZ
+  A..O unchanged). RSQ Whip's RSQTHP_MarkerWhip answers "whipped"; VisualRewards asks "hooked" of marker services with
+  stringArg "whipped", which the new Whip answers 0. Old Whip + new VisualRewards: hook (as before). New Whip + old
+  VisualRewards: hook (it asks hooked with ""). 16 more composed textures, drawn only when shown.
+- **Ally** (blue heart) and **burning** (flame), right row: RSYF frame = s + 3 * (raised + 2 * (burning + 2 * ally)) - 1,
+  A..W (A..E unchanged), laid out ally, raised, frozen/held, burning from the bar outward. Ally = friendly and not a
+  player, with or without Ally Colour. Burning = fire damage (Fire / Flames / Flame / Burn / HumanBBQ) landed within
+  24 tics, stamped in WorldThingDamaged, read every 4th tic. Measured from the parent code: brutal22test6 puts no lasting
+  burn mark on a living monster (a fire death swaps in a Burning* body, which never gets a bar); BD22's flamethrower,
+  its FlamethrowerBurningStuff and the RSQ Grenade / Gun Bonsai VR burns all deal "Fire"; RSQ FnF's flare hurts nothing,
+  so it never lights the flame.
+- **Legendary** (pink gem, above) and **Bossfight tier pips** (1-3 gold, right of the crown): sprite RSYI A..K, one
+  37 px canvas round the crown (gem left, pips right, never overlapping). Gem = LDLegendaryMonsterTransformed (LegenDoom
+  3.0 LEGENDMON.acs / MonsterStats.dec, Lite 4.2 DECORATE; never on a candidate). Tier = RSQMB_Service "tier" (new read
+  key, 0..4, -1 not a Bossfight's): 0-1 one pip, 2 two, 3-4 three; an older RSQ_Miniboss gives -1: crown only.
+
+Shown (probe test only, scratchpad hpicons/probe; contact sheet hpicons/hpicons_contact_sheet.png):
+- doom2 + LegenDoom 3.0 + Miniboss + Whip + VisualRewards: hook (old-Whip answer), lash, flame, heart, heart + flame,
+  gems on turned legendaries, a real called-in Bossfight miniboss with gem + crown + 3 pips (RSYI K). Logged frames
+  RSYW A, RSYZ A, RSYF F / L / R, RSYI C / K. New Whip: whipped 1, hooked("") 1, hooked("whipped") 0.
+- BD order (doom2, lo2 01-07 with 03 = 2.0.3x, Gun Bonsai 0.10.6, every RSQ pk3): no script error but BD_VoxelPack's 4
+  voxeldef lines.
+Not shown: 1 and 2 tier pips in a frame (the miniboss's bar only rose after it turned legendary), any icon on a Brutal
+Doom monster (XMVE's ImpSpawner swallowed the probe's row; the BD miniboss stayed invulnerable to the probe), the flame
+from BD22's flamethrower itself (fire damage was dealt by the probe).
+
 ## 2026-11-03 (night): the merge -- RSQ VisualRewards = HP bars + damage numbers + level-ups + Kill Rewards -- read first
 
 Rig only, not headset-confirmed. NEXT_PLAN_2026-11-03.md section 1, the owner's name (11-03 18:38-18:43).

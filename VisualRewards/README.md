@@ -29,8 +29,12 @@ about a metre from your eyes, and pushed off the aim line of both your guns.
 - Bars grow with distance so they stay readable across a room, and are unchanged up close.
 - Overheal: health above full shows as a thin strip above the bar, with pips for each extra lap.
 - A white flash the moment your hit lands. An up arrow on a monster that was raised from the dead.
-- Markers beside the bar: hooked, stunned, locked on, Force-gripped, frozen, held, and a crown or chain for RSQ
-  Miniboss's miniboss and its thralls.
+- Markers beside the bar: hooked, whipped, stunned, locked on and Force-gripped on the left; ally (a heart, so an
+  ally doesn't rely on colour alone), raised, frozen or held, and burning (a flame while fire keeps hitting it) on the
+  right.
+- Above the bar: a crown or chain for RSQ Miniboss's miniboss and its thralls, 1 to 3 gold pips beside a Bossfight
+  miniboss's crown for its tier, and a pink gem on a LegenDoom legendary once it has turned (left of the crown when it
+  is both).
 - Eight colour sets, including three colour-blind sets and High Contrast, which add patterns as well as colour.
 - LegenDoom's chosen monsters do not give themselves away before they turn.
 
@@ -92,7 +96,7 @@ with Test and Debug and Reset All at its foot.
 | Full Bright | Off | Bars ignore sector light. |
 | Fade With Stealth | On | A see-through monster's bar is see-through too. |
 | Overheal Strip | On | The strip for health above full. |
-| Status Markers | On | Hooked, stunned, locked, gripped, frozen, held, miniboss and raised icons. |
+| Status Markers | On | Hooked, whipped, stunned, locked, gripped, ally, raised, frozen, held, burning, miniboss (with Bossfight tier) and legendary icons. |
 | Only Where I Aim | Off | A bar only over the monster either hand's gun points at, even at full health. |
 | Damage Chunk | Off | The health your hit took off stays lit for half a second, then drains. |
 | Blue Bars for Allies | Off | Friendly monsters, such as Brutal Doom's marines, get a blue bar. |
@@ -174,8 +178,12 @@ with Test and Debug and Reset All at its foot.
   magnet and bonus bursts on critical, Finisher and big-Score kills.
 - **Brutal Doom / BD22**: HEADSHOT on its head hits. Its invisible helper monsters never get a bar, a number or bits,
   and neither do the dying bodies a monster leaves (crawling, burning, slumped, last stand): one monster pays once.
-- **RSQ Grapple, RSQ ShieldSaw, RSQ QuestSaber, RSQ Miniboss**: their hooked, stunned, locked, gripped, miniboss and
-  thrall markers on the bars.
+- **RSQ Grapple, RSQ ShieldSaw, RSQ QuestSaber, RSQ Whip, RSQ Miniboss**: their hooked, stunned, locked, gripped,
+  whipped, miniboss (with its Bossfight's tier) and thrall markers on the bars. An older RSQ Whip shows the hook, as it
+  used to.
+- **LegenDoom (3.0 or Lite)**: the gem on a legendary once it turns, never on a monster it has only picked.
+- **Burning**: any fire damage lights the flame (BD22's flamethrower and burning ground, RSQ Grenade's Incendiary,
+  RSQ Gun Bonsai VR's burn). RSQ FnF's flare sets nothing on fire, so it never shows the flame.
 - **RSQ SlowMo**: the optional level-up pulse, and numbers that slow with the world.
 - **RSQ Gun Cards**: +ammo gains land on the gun's card.
 - **RSQ Grenade**: with its Scavenger node at level 3, one ammo bit in four is a grenade.

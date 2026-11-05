@@ -30,6 +30,8 @@
 //                 Cheap first test for callers: the monster carries "RSQMB_Ward" (by name); only then ask.
 //   bossfight     BOSSFIGHT (bossfight.zs): 1 when the monster came with a Bossfight (miniboss or thrall, dead or alive,
 //                 for good: it carries RSQMB_Called); no object: 1 while a Bossfight is arriving or its miniboss lives
+//   tier          the Bossfight's tier 0..4 (bossfight.zs Tier) for a Bossfight's miniboss or thrall (dead or alive);
+//                 -1 for anything else (a classic pick, no set piece). RSQ VisualRewards draws it as 1-3 pips by the crown
 //   bossfights    1 when Bossfights are on (rsqmb_enabled)
 //   meter         the Bossfight meter, permille (objectArg the player; none: the console player's), -1 none yet
 //   meter.ready   1 while it is full and waiting
@@ -88,6 +90,7 @@ class RSQMB_Service : Service
 			if (a) return a.FindInventory("RSQMB_Called") ? 1 : 0;
 			return (h.arrPhase || (h.bfBoss && !h.bfBoss.done)) ? 1 : 0;
 		}
+		if (request ~== "tier") return (b && b.called) ? b.tier : -1;
 		if (request ~== "bossfights") return RSQMB_Handler.BfOn() ? 1 : 0;
 		if (request ~== "meter" || request ~== "meter.ready")
 		{
