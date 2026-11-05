@@ -161,9 +161,9 @@ Runs alone. It finds the others by name:
   put away and drawn only there.
 - **RSQ SlowMo**: Perfect Parry Slow-Mo.
 - **RSQ Score**: cuts, parries, returned shots and the training remote pay into it.
-- **RSQ Wheel, RSQ Gun Bonsai VR**: the Force hand has its own icon (an open hand with blue push waves), shown where
-  those mods picture the item in your hand (Gun Bonsai VR's status screen; seen on the rig only, not
-  headset-confirmed).
+- **RSQ Wheel, RSQ Gun Bonsai VR**: the Force hand has its own icon (an open hand with blue push waves) and the
+  lightsaber shows RSQ Wheel's saber card, where those mods picture the item in your hand (Gun Bonsai VR's status
+  screen; rig only, not headset-confirmed).
 - **RSQ Accessibility**: Steady Hands smooths marking and gripping; Gesture Ease, Slower Taps, Photosensitive Mode
   and rumble strength apply.
 - **Gun Bonsai + RSQ Gun Bonsai VR**: the sabers level like weapons, with the Dual tree and the Force tree (Force
@@ -177,6 +177,8 @@ Runs alone. It finds the others by name:
 - **presidentkoopa** (project owner) and this pack: the saber itself, the blade and glow shapes and the generated
   sounds; Force Lightning's crackle from his RS Ballistics library; the Force hand's icon (graphics/WRIFORCE.png,
   original pixel art drawn by RSQ Wheel's sources/icons/gen_item_icons.py).
+- **danger_doughnut52** (dinopixel.com): the lightsaber's icon (graphics/WRISABER.png, "Jedi Lightsaber (Star Wars)"
+  pixel art, the same file RSQ Wheel uses for its saber card).
 - **Ermac** (DXR, Rusted Legacy; RS_Main): combat effect sprites for the Force and the blade's impacts (the choke
   lightning, the blast smoke, the hand flare), the Force choke loop, and the Original Force hand. Much of Ermac's work
   is MIT-licensed; sharing it here is the project owner's decision.

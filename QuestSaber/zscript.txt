@@ -475,6 +475,9 @@ class UBQS_SaberBase : Weapon abstract
 		+WEAPON.NODEATHINPUT	// TickPSprites still runs CheckWeaponFire on a corpse without this
 		Inventory.PickupMessage "You got a lightsaber!";
 		Inventory.PickupSound "ubqs/catch";
+		// The saber's picture where a mod shows the item in your hand (Gun Bonsai VR's status card read the Spawn
+		// sprite UBPK A, an empty 8x8 model stand-in, and drew a blank card). Same PNG as RSQ Wheel's saber card.
+		Inventory.Icon "WRISABER";
 		Tag "Lightsaber";
 		Obituary "%o was cut down by %k's lightsaber.";
 	}

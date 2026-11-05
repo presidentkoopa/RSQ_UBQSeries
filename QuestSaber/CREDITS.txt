@@ -22,6 +22,9 @@ BORROWED, WITH THANKS
   QuestZDoom (Emawind)
       the engine this targets, and the off-hand weapon and AttackPos/Angle/Pitch/Roll script API
       the whole mod is built on.
+  danger_doughnut52 (dinopixel.com, 24 Aug 2020)
+      graphics/WRISABER.png -- the saber's Inventory.Icon, "Jedi Lightsaber (Star Wars)" pixel art,
+      https://dinopixel.com/jedi-lightsaber-star-wars-pixel-art-2388 (the same file as RSQ Wheel's saber card).
   li-gnrcwpn
       ubqs/rbeep -- the training remote's ready beep, from the plasma rifle's alt-fire alert
       (weapons/plasrifle/PLBEEP).
