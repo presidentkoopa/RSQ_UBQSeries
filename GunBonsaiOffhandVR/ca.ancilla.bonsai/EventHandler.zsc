@@ -123,6 +123,7 @@ class TFLV_EventHandler : StaticEventHandler {
   /* ui */ override void RenderOverlay(RenderEvent evt) {
     if (!ShouldDrawHUD(consoleplayer)) return;
     if (!hud) hud = new("TFLV_HUD");
+    hud.fracTic = evt.FracTic;   // RSQ PATCH: the XP bars' breath runs smooth between tics (HUD.zsc, RSQGB_BarLife)
 
     let stats = playerstats[consoleplayer];
     TFLV_CurrentStats cur;

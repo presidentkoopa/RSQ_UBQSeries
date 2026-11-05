@@ -74,8 +74,12 @@ user bool    rsqgb_berserk_gauge = true;   // the Berserk Meter's gauge, one per
 user bool    rsqgb_gauge_anim   = true;    // its light: a band rising through the fill, a breathing edge, a glint when full
 // ---- Kill Rewards (rsqgb_kr_*) moved to RSQ VisualRewards with the bits on 2026-11-03 (same names, so settings carry over) ----
 
-// Which screens draw Gun Bonsai: 0 its own, 1 the recreation of the owner's mockups, 2 and 3 the alternatives
+// GBOVR Menus and HUD (owner 11-05: "the only hud we want is the Mockup ... GBOVR Menus and HUD : On / Off"):
+// 1 On = the recreation of the owner's mockups (the status screen, the level-up cards, the bottom row, the XP bars'
+// breathing), 0 Off = Gun Bonsai's own screens and gauges. The name is the old Screen Skin's, so a saved value carries:
+// settings version 1 (rsq_ui_cfgver) turns every saved look (Gun Bonsai 0, Hex Rail 2, Terminal 3) into On.
 server int rsq_ui_skin = 1;
+server int rsq_ui_cfgver = 0;
 // The screens: HUD inset (fraction of each side kept clear, for the headset's edge of view),
 // HUD size, and the bottom row (per-hand ammo, health, face, armour).
 server float rsq_ui_inset = 0.04;

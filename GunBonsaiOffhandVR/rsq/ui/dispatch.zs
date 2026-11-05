@@ -6,36 +6,32 @@
 //  Menus     Gun Bonsai opens its three screens by NAME -- Menu.SetMenu("GunBonsaiStatusDisplay")
 //            in ShowInfo, AwaitChoice("GunBonsaiWeaponLevelUpMenu" / "...PlayerLevelUpMenu") in its
 //            upgrade givers. This patch's MENUDEF redefines those three names to point at the
-//            routers in router.zs, which open the skin's menu instead (or behave exactly as Gun
-//            Bonsai's own when rsq_ui_skin is 0). No further Gun Bonsai file is shadowed for it:
+//            routers in router.zs, which open the Mockup's menu instead (or behave exactly as Gun
+//            Bonsai's own with GBOVR Menus and HUD Off, rsq_ui_skin 0). No further Gun Bonsai file is shadowed for it:
 //            the choice still goes back through bonsai-choose-level-up-option, Choose(index).
 //  Hand      The status screen browses both guns. Gun Bonsai's toggle/tune netevents act on
 //            PerPlayerStats.menuHand, so the skin sends rsqui-menu-hand (RSQUI_Handler) first.
 //
 // OTHER MODS' HUDS. While a skin draws:
 //  * RS Score's own score line would sit beside ours, so its user cvar rs_score_hide is set, and
-//    put back as it was (saved in rsq_ui_saved_scorehide) when rsq_ui_skin returns to 0.
+//    put back as it was (saved in rsq_ui_saved_scorehide) when GBOVR Menus and HUD goes Off.
 //  * with rsq_ui_bottom on, the base game's fullscreen HUD would sit under our bottom row. Brutal
 //    Doom's is chosen by its user cvar bd_sbartype; it is set to 5 (a type with no status bar) the same way
 //    (saved in rsq_ui_saved_sbartype). Any other base HUD is left alone and drawn over.
 //  Removing the patch while a skin is on leaves those two as they were set: put them back by hand
-//  (rs_score_hide 0, bd_sbartype 1) or set rsq_ui_skin 0 once before removing it.
+//  (rs_score_hide 0, bd_sbartype 1) or turn GBOVR Menus and HUD Off once before removing it.
 class RSQUI_Dispatch ui
 {
 	RSQUI_Skin skin;
 	int skinIdx;
 	bool made;
 
-	static int SkinIndex()
-	{
-		let cv = CVar.FindCVar("rsq_ui_skin");
-		return cv ? cv.GetInt() : 0;
-	}
+	static int SkinIndex() { return RSQUI_Skin.On() ? 1 : 0; }
 
 	static bool BottomOn()
 	{
 		let cv = CVar.FindCVar("rsq_ui_bottom");
-		return SkinIndex() != 0 && cv && cv.GetBool();
+		return RSQUI_Skin.On() && cv && cv.GetBool();
 	}
 
 	RSQUI_Skin Current()
@@ -104,10 +100,24 @@ class RSQUI_Dispatch ui
 	}
 }
 
-// The skins' own event handler (MAPINFO): the HUD, and the status screen's hand.
+// The skins' own event handler (MAPINFO): the HUD, the status screen's hand, and the settings version.
 class RSQUI_Handler : StaticEventHandler
 {
 	ui RSQUI_Dispatch disp;
+
+	override void OnRegister() { Migrate(); }
+
+	// Saved settings outlive a removed choice, so a saved look is moved once (rsq_ui_cfgver), as RSQ Tactical Rig does.
+	// settings version 1 (owner 11-05, "the only hud we want is the Mockup"): Screen Skin's four looks become GBOVR
+	// Menus and HUD On / Off, and every saved look (Gun Bonsai 0, Mockup 1, Hex Rail 2, Terminal 3) becomes On.
+	static void Migrate()
+	{
+		let ver = CVar.FindCVar("rsq_ui_cfgver");
+		if (!ver || ver.GetInt() >= 1) return;
+		let sk = CVar.FindCVar("rsq_ui_skin");
+		if (sk) sk.SetInt(1);
+		ver.SetInt(1);
+	}
 
 	override void RenderOverlay(RenderEvent e)
 	{

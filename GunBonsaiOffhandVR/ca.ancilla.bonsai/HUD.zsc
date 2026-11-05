@@ -60,12 +60,27 @@ class TFLV_HUD : Object ui {
   uint hudw, hudh;
   uint fbw, fbh;
   uint mirror;
+  // RSQ PATCH (the bars' life, RSQGB_BarLife below): which gauge is being drawn (0 main hand, 1 off hand, 2 the
+  // shield's, 3 the single HUD), and the render's fraction of a tic (EventHandler.RenderOverlay sets it).
+  int lifeSlot;
+  double fracTic;
+  RSQGB_BarLife life0, life1, life2, life3;
+
+  // one bar-life record per gauge, made once (no allocation while drawing)
+  RSQGB_BarLife Life(int slot) {
+    if (slot == 0) { if (!life0) life0 = new("RSQGB_BarLife"); return life0; }
+    if (slot == 1) { if (!life1) life1 = new("RSQGB_BarLife"); return life1; }
+    if (slot == 2) { if (!life2) life2 = new("RSQGB_BarLife"); return life2; }
+    if (!life3) life3 = new("RSQGB_BarLife");
+    return life3;
+  }
 
   // Stock entry point. Uses the stock bonsai_hud_* cvars.
   void Draw(TFLV_CurrentStats stats) {
     double x, y, sc, al; uint mi;
     [x, y, sc, al, mi] = TFLV_Settings.hud_params();
     Calibrate(x, y, sc, al, mi);
+    lifeSlot = 3;
     DrawHUD(stats);
   }
 
@@ -98,6 +113,7 @@ class TFLV_HUD : Object ui {
       hudx = (hudx <= fbw - hudw) ? (fbw - hudw) - hudx : 0;
       mirror ^= 1;
     }
+    lifeSlot = hand ? 1 : 0;
     DrawHUD(stats);
   }
 
@@ -114,6 +130,7 @@ class TFLV_HUD : Object ui {
     // gauge's height), so it touches neither their bars nor their text
     if (sc > 1) sc = sc / 1080;
     hudy += uint(SHIELD_DROP * sc * fbh);
+    lifeSlot = 2;
     DrawHUD(stats);
   }
   const SHIELD_DROP = 0.22;
@@ -334,11 +351,24 @@ class TFLV_HUD : Object ui {
         DTA_Alpha, alpha,
         DTA_DestWidth, hudw, DTA_DestHeight, hudh);
 
+    // RSQ PATCH (owner 11-05, "let's give the GBOVR XP bars some life like we did to the word SCORE"): with GBOVR
+    // Menus and HUD On, each bar breathes around its own colour (RSQGB_BarLife). Off, the bars are Gun Bonsai's own.
+    uint wcol = LevelUp(stats) ? GetShinyColour(34) : weapon_rgb;
+    uint pcol = LevelUp(stats) ? GetShinyColour(68) : player_rgb;
+    if (RSQGB_BarLife.MockupOn()) {
+      let lf = Life(lifeSlot);
+      double t = gametic + fracTic;
+      lf.Watch(stats, t);
+      double wf = stats.wmax > 0 ? stats.wxp / stats.wmax : 0;
+      double pf = stats.pmax > 0 ? double(stats.pxp) / stats.pmax : 0;
+      wcol = lf.Tint(wcol, wf, lf.phaseW, lf.kickW, lf.flareW, t, cb, LevelUp(stats));
+      pcol = lf.Tint(pcol, pf, lf.phaseP, lf.kickP, lf.flareP, t, cb, LevelUp(stats));
+    }
     DrawProgressBar(
-        tex(weapon_tex..face), LevelUp(stats) ? GetShinyColour(34) : weapon_rgb,
+        tex(weapon_tex..face), wcol,
         stats.wxp/stats.wmax, HUD_WXP_X, HUD_WXP_W);
     DrawProgressBar(
-        tex(player_tex..face), LevelUp(stats) ? GetShinyColour(68) : player_rgb,
+        tex(player_tex..face), pcol,
         double(stats.pxp)/(stats.pmax), HUD_PXP_X, HUD_PXP_W);
 
     Text(
@@ -368,6 +398,95 @@ class TFLV_HUD : Object ui {
         weapon_rgb, HUD_INFOTEXT_X, HUD_INFOTEXT_Y, HUD_GRAV_SW);
     }
     alpha = alpha0;
+  }
+}
+
+// RSQGB_BarLife -- THE XP BARS BREATHE (owner 11-05: "let's give the GBOVR XP bars some life like we did to the word
+// SCORE just now"). The idea is the owner's own ScoreLabelColor (hf_score_hud.zs): a calm base that a sine pulse
+// brightens, and a reaction that pushes it toward hot white. Here, around each bar's OWN colour (Gun Bonsai's weapon
+// and player colours, the colour-blind pair, or the level-up cycle), with GBOVR Menus and HUD On:
+//   breath    a 2 s sine in brightness (75..100 % of the colour)
+//   near      past 60 % full the fill warms toward amber (35 % at most) and the breath quickens to 0.8 s
+//   kick      XP gained: a short push toward white (8 tics)
+//   flare     the bar fills (a level waits) or a level is taken: a bright push toward white (24 tics)
+// Photosensitive Mode (RSQ_Accessibility, RSQGB_Photo): the bar's own colour, steady: no breath, kick or flare.
+// Colour-blind modes: brightness only, no warming (the pair keeps its hues). Colour maths only, nothing allocated.
+class RSQGB_BarLife ui {
+  const BREATH = 70.0;   // tics per breath, far from a level (2 s)
+  const QUICK = 28.0;    // tics per breath, at a level (0.8 s)
+  const KICK = 8.0;
+  const FLARE = 24.0;
+
+  bool primed;
+  TFLV_WeaponInfo info;
+  double lastW, lastT;
+  uint lastWl, lastP, lastPl;
+  bool lastReadyW, lastReadyP;
+  double phaseW, phaseP;
+  double kickW, kickP, flareW, flareP;
+
+  static bool MockupOn() {
+    let cv = CVar.FindCVar("rsq_ui_skin");
+    return !cv || cv.GetInt() != 0;
+  }
+
+  // Each frame, before the bars are drawn: what changed since the last one, and the breaths' phases.
+  void Watch(TFLV_CurrentStats stats, double t) {
+    bool readyW = stats.wmax > 0 && stats.wxp >= stats.wmax;
+    bool readyP = stats.pxp >= stats.pmax;
+    if (!primed) {
+      kickW = kickP = flareW = flareP = -1000;
+      lastT = t;
+    } else {
+      // the weapon bar: only while it is the same gun (a swap is not a gain)
+      if (info == stats.winfo) {
+        if (stats.wlvl > lastWl || (readyW && !lastReadyW)) flareW = t;
+        else if (stats.wxp > lastW + 0.0001) kickW = t;
+      }
+      if (stats.plvl > lastPl || (readyP && !lastReadyP)) flareP = t;
+      else if (stats.pxp > lastP) kickP = t;
+    }
+    double dt = clamp(t - lastT, 0.0, 4.0);
+    double wf = stats.wmax > 0 ? stats.wxp / stats.wmax : 0;
+    double pf = stats.pmax > 0 ? double(stats.pxp) / stats.pmax : 0;
+    phaseW += dt * 360.0 / Period(wf);   // dt <= 4 tics: under 52 degrees a frame
+    phaseP += dt * 360.0 / Period(pf);
+    if (phaseW >= 360) phaseW -= 360;
+    if (phaseP >= 360) phaseP -= 360;
+    primed = true;
+    info = stats.winfo;
+    lastW = stats.wxp; lastWl = stats.wlvl; lastReadyW = readyW;
+    lastP = stats.pxp; lastPl = stats.plvl; lastReadyP = readyP;
+    lastT = t;
+  }
+
+  static double Near(double frac) {
+    double n = clamp((frac - 0.6) / 0.4, 0.0, 1.0);
+    return n * n;
+  }
+
+  static double Period(double frac) { return BREATH + (QUICK - BREATH) * Near(frac); }
+
+  static double Fade(double since, double len) {
+    double k = clamp(1.0 - since / len, 0.0, 1.0);
+    return k * k;
+  }
+
+  // The bar's colour this frame (ARGB). ready: a level waits (the colour is Gun Bonsai's cycle; it is not warmed).
+  uint Tint(uint base, double frac, double phase, double kick, double flare, double t, int cb, bool ready) {
+    if (RSQGB_Photo.On()) return base;
+    double r = (base >> 16) & 0xFF, g = (base >> 8) & 0xFF, b = base & 0xFF;
+    double near = ready ? 1.0 : Near(frac);
+    if (!cb && !ready) {
+      double w = 0.35 * near;
+      r += (255 - r) * w; g += (190 - g) * w; b += (90 - b) * w;
+    }
+    double amp = 0.25 + 0.10 * near;
+    double br = 1.0 - amp + amp * (0.5 + 0.5 * sin(phase));
+    r *= br; g *= br; b *= br;
+    double hot = max(0.6 * Fade(t - kick, KICK), 0.85 * Fade(t - flare, FLARE));
+    r += (255 - r) * hot; g += (255 - g) * hot; b += (255 - b) * hot;
+    return 0xFF000000 | (uint(clamp(r, 0, 255)) << 16) | (uint(clamp(g, 0, 255)) << 8) | uint(clamp(b, 0, 255));
   }
 }
 

@@ -69,8 +69,9 @@ OptionMenu "RSQ_MeleeOptions"
 	Slider "$RSQ_MENU_FORCE_SHARE", "rsq_force_share", 0, 100, 5, 0
 	StaticText " "
 	StaticText "HUD", 1
-	Option "Screen Skin", "rsq_ui_skin", "RSQUI_Skins"
-	Option "Ammo and Health Row", "rsq_ui_bottom", "OnOff"
+	// On: the Mockup's screens, bottom row and breathing XP bars; Off: Gun Bonsai's own (rsq/ui/skin.zs)
+	Option "GBOVR Menus and HUD", "rsq_ui_skin", "OnOff"
+	Option "Ammo and Health Row", "rsq_ui_bottom", "OnOff", "rsq_ui_skin"
 	Slider "HUD Size", "rsq_ui_hud_scale", 0.5, 2.0, 0.05, 2
 	Option "Dual HUD", "bonsai_vr_dual_hud", "OnOff"
 	Option "Single HUD Follows", "bonsai_vr_hud_hand", "RSQ_HudHand"
@@ -107,7 +108,7 @@ OptionMenu "RSQ_MeleeAdvanced"
 }
 
 // The screens: Gun Bonsai's three menu names, pointed at the routers (rsq/ui/router.zs), which are
-// Gun Bonsai's own menus with rsq_ui_skin 0 and open the skin's screens otherwise.
+// Gun Bonsai's own menus with GBOVR Menus and HUD Off and open the Mockup's screens when it is On.
 OptionMenu "GunBonsaiStatusDisplay"
 {
 	class RSQUI_StatusRouter
@@ -126,12 +127,5 @@ OptionMenu "GunBonsaiPlayerLevelUpMenu"
 	Title "$TFLV_MENU_PLAYER_LEVELUP_TITLE"
 }
 
-OptionValue "RSQUI_Skins"
-{
-	0, "Gun Bonsai"
-	1, "Mockup"
-	2, "Hex Rail"
-	3, "Terminal"
-}
-
+// (RSQUI_Skins is gone since 11-05: the Mockup is the only look, "GBOVR Menus and HUD" turns it on or off.)
 // (RSQUI_Options, the screens' own page, is folded into RSQ_MeleeOptions and Tuning and Debug.)

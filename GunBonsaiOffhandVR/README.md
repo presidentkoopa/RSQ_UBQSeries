@@ -68,8 +68,11 @@ it. A ShieldSaw bash pays the shield. Brutal Doom VR Reloaded's travelling bulle
   how you move.
 
 **Screens built for the headset**
-- Three redrawn looks for the gauges, the status screen and the level-up cards (Mockup, Hex Rail, Terminal), or Gun
-  Bonsai's own.
+- GBOVR Menus and HUD (On by default): the redrawn status screen and level-up cards (the Mockup), the bottom row, and
+  XP bars that breathe. Off, you get Gun Bonsai's own menus and plain gauges.
+- The XP bars breathe slowly in their own colour, kick brighter when XP comes in, warm up and breathe faster as a level
+  nears, and flare when a level is ready or taken. Photosensitive Mode keeps them steady; colour-blind modes change
+  brightness only.
 - An optional bottom row with each hand's magazine and reserve, plus health, face and armour.
 - A Berserk Meter gauge per glove that has learned it: fills dark crimson to hot orange-white, then burns while the
   Berserk it earned runs.
@@ -139,9 +142,9 @@ same page is linked at the bottom of Gun Bonsai's own options.
 | Force Learns From Saber | On | The Force hand also gets a share of the main saber's XP. |
 | Force XP Share | 50 | That share, in percent. |
 | *HUD* | | |
-| Screen Skin | Mockup | Gun Bonsai, Mockup, Hex Rail or Terminal. |
-| Ammo and Health Row | On | With a skin on: a bottom row with each hand's ammo, plus health, face and armour. |
-| HUD Size | 1.50 | Size of the skins' in-play HUD. |
+| GBOVR Menus and HUD | On | On: the Mockup status screen and level-up cards, the bottom row, breathing XP bars. Off: Gun Bonsai's own menus and gauges. |
+| Ammo and Health Row | On | A bottom row with each hand's ammo, plus health, face and armour. Greyed with GBOVR Menus and HUD off. |
+| HUD Size | 1.50 | Size of the bottom row and the Berserk Meter gauges. |
 | Dual HUD | On | A HUD for each hand (main top right, off top left; swapped for a left-hander). |
 | Single HUD Follows | Main Hand | With Dual HUD off: the hand the one HUD shows (Main Hand, Off Hand, Last to Earn XP). It falls through to a hand that holds a gun, so it never goes blank. |
 | ShieldSaw Gauge | Off | A third gauge, top centre, while the ShieldSaw rides on your shoulder. |
@@ -162,7 +165,7 @@ same page is linked at the bottom of Gun Bonsai's own options.
 | Grapple XP | 1.0 | Multiplies the XP the grappling hook earns for your player level. |
 | Style XP Scale | 1.0 | XP per style point, when XP Source is Style or Both. |
 | Style Player Share | 10 | The extra share (percent) of style XP paid to your player level. |
-| HUD Inset | 0.04 | How much of each screen edge the skins keep clear. |
+| HUD Inset | 0.04 | How much of each screen edge the bottom row and the Berserk Meter gauges keep clear. |
 | Debug Log | Off | One console line per Style XP payout (who got what for a kill). |
 | Debug: Add All | | Gives every node of this patch at its cap, on the player and every weapon carried. For testing. |
 | Debug: Add Incremental | | One level of every node offered right now. Press again to climb. For testing. |
@@ -187,14 +190,14 @@ Reset All still resets them.
 - **RSQ Tactical Rig**: the Gunslinger tree (Quick Draw, Pair Draw, Smoker, Chain Smoker).
   A thrown gun pays its own record. With **RSQ Laser Sight** too: Target Lock and Headshot Reaction.
 - **RSQ SlowMo**: its tree, plus Showdown, Adrenaline, Finisher and the other slow-motion moments.
-- **RSQ Score**: XP Source Style. While a skin is on, Score's own score line is hidden and the skin shows it instead.
+- **RSQ Score**: XP Source Style. Score draws its own score line.
 - **RSQ VisualRewards**: the Kill Rewards tree (Gastropub, Rich Bits, Magnet, Lucky Kill), offered only while it is
   loaded. Its weapon level-up tag rises off the gun that levelled, in whichever hand.
 - **RSQ Wheel**: shows each gun's level and progress.
 - **RSQ Accessibility**: Photosensitive Mode dims the level-up flash. Its handedness setting moves the gauges.
 - **Brutal Doom / BD22 VR Reloaded**: bullets that travel before they hit are still paid to the hand that fired them.
-  With a skin and Ammo and Health Row on, Brutal Doom's full-screen HUD is swapped for the skin's bottom row. Set Screen
-  Skin back to Gun Bonsai before removing this pack to restore it.
+  With GBOVR Menus and HUD and Ammo and Health Row on, Brutal Doom's full-screen HUD is swapped for the bottom row. Turn
+  GBOVR Menus and HUD off before removing this pack to restore it.
 - **LegenDoom Lite, Champions, RSQ Miniboss**: Knockdown, Executioner and Finisher measure a monster against the
   boosted health it really started with.
 - **SuperPunchOut**: its gloves count as melee weapons.
@@ -202,7 +205,7 @@ Reset All still resets them.
 ## Credits and licence
 
 - **Gun Bonsai** © 2022 Rebecca "ToxicFrog" Kelly, MIT licence. The files under `ca.ancilla.bonsai/` are derived from
-  Gun Bonsai 0.10.6; the skins draw Gun Bonsai's own gauge frame art. The full licence is in `COPYING.md`.
+  Gun Bonsai 0.10.6; the gauges are Gun Bonsai's own frame art. The full licence is in `COPYING.md`.
 - `sprites/ui/hud.xcf` © 2022 Sungraphica (sungraphica.itch.io), as noted in `COPYING.md`.
 - **Sounds** from SuperPunchOut (presidentkoopa), which took them from Punch Out Doom (DerrickDavison) via Virtual Punch Out, and the
   Super Punch-Out!! announcer's count.

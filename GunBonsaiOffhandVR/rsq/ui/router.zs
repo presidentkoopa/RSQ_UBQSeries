@@ -1,6 +1,6 @@
 // THE ROUTERS (10-27). MENUDEF points Gun Bonsai's three menu names here. Each router IS Gun
-// Bonsai's own menu (a subclass, built by its own Init), so rsq_ui_skin 0 changes nothing. With a
-// skin on, the router draws nothing and, on its first tic, closes and opens the skin's menu.
+// Bonsai's own menu (a subclass, built by its own Init), so with GBOVR Menus and HUD Off nothing changes. On, the
+// router draws nothing and, on its first tic, closes and opens the Mockup's menu.
 // (A menu cannot open another from inside its own Init: the engine activates the first one after
 // Init returns, on top of whatever Init opened.)
 mixin class RSQUI_Routing
