@@ -91,6 +91,8 @@ There are nearly 190 bonuses in all. Many belong to one mod and fire only when i
 - **Score: N** in gold, top right by default. The word "Score:" breathes and slowly shifts colour. It warms toward
   gold as you near a reward and flares white on a big combo (Living Label).
 - **The reward bar** under it fills toward the next reward. It's blue when the next reward is a life and orange when it's ammo.
+  When it fills, you hear the reward sound and the whole bar lights up in what you got (orange for ammo, blue for a life) while the score
+  flashes. A life also makes the life pips swell and light up. Only the HUD flashes, not the whole view, because a whole-view flash costs extra full-screen passes in each eye in VR.
 - **Life pips** above the score: one animated pip for each extra life you hold, up to ten.
 - **The breakdown** under the bar: "+N  Name" for the base and every bonus that paid, each in its family's colour.
   Quick kills add into the same row while it's on screen, so three fast point-blank kills read as one growing number.
@@ -148,7 +150,8 @@ the debug log are on **Test and Debug**; **Reset All** at the foot resets both. 
 | Slow Motion Moments | On | Big moments ask RSQ SlowMo for a short slow. |
 | Hit-Stop on Big Kills | Off | Big kills stop the world for a beat (needs RSQ SlowMo). |
 | Bar Flash | On | The score and bar flash when points land. |
-| Screen Flash | On | The whole-view colour flash on a reward and a revival. |
+| Screen Flash | On | The whole-view colour flash on a revival. Off also stops Reward Screen Flash. |
+| Reward Screen Flash | Off | The old whole-view colour flash on a reward, on top of the bar's glow. It needs Screen Flash on. |
 | Test and Debug | | The page below. |
 | Reset All | | Every setting on both pages back to its default. |
 

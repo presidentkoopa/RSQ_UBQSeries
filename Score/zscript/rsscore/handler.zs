@@ -180,6 +180,10 @@ class RS_ScoreHandler : EventHandler
 		let tr = GetTracker(mo);
 		if (!tr) { return; }
 
+		// the HUD's reward glow runs off these tics; a new map's clock starts again at 0, so an old one could light it
+		tr.rewardTic  = 0;
+		tr.lifeCueTic = 0;
+
 		int mode = CvarInt("rs_score_startmode", 0);
 		if (mode == 3) { tr.lastResetTic = level.maptime; return; }
 
@@ -873,15 +877,24 @@ class RS_ScoreHandler : EventHandler
 		//
 		// CHANF_LOCAL is what LocalAmbientSound meant: heard only by the player who
 		// earned it, which is also what keeps it out of everyone else's ears in co-op.
+		//
+		// THE CUE IS THE SOUND AND THE BAR, NOT THE WHOLE VIEW (owner 11-05: "can we optimize that effect? it slows down
+		// my game"). In VR the engine draws a player blend as a full-eye quad that each eye adds and each eye then draws
+		// all of (hw_entrypoint.cpp V_DrawBlend per eye -> v_draw.cpp DoDim outside2D -> gles_postprocess.cpp
+		// Draw2D(true) per eye): two full-eye blended passes per eye for 26 tics, 52 with a life, and the 0.6 test tint
+		// covered the rig's eye at ~0.9. The reward now lights Score's own bar and life pips instead (hud.zs
+		// RewardGlow / DrawLives, off rewardTic and lifeCueTic): a few small HUD quads. The whole-view tint is still
+		// there as an option, off ("Reward Screen Flash", rs_score_rewardflash, under the Screen Flash switch).
 		if (tr.owner)
 		{
 			tr.owner.A_StartSound("rsscore/pointreward", CHAN_VOICE, CHANF_LOCAL, 1.0, ATTN_NONE);
 
 			double a = 1.0 - (0.65 ** crossings);
-			if (ScreenFlash(tr.owner)) tr.owner.A_SetBlend("80 D4 FF", RSSC_A11y.Dim(a), 26, "80 D4 FF", 0.0);   // Photosensitive Mode: 40%
+			if (RewardFlash(tr.owner)) tr.owner.A_SetBlend("80 D4 FF", RSSC_A11y.Dim(a), 26, "80 D4 FF", 0.0);   // Photosensitive Mode: 40%
 		}
 
 		tr.rewardTic = level.maptime;
+		tr.rewardKind = newLives > 0 ? 1 : 0;   // what the bar glows as (hud.zs): blue for a life, orange for ammo
 
 		if (newLives > 0)
 		{
@@ -902,7 +915,8 @@ class RS_ScoreHandler : EventHandler
 		mo.A_StartSound("rsscore/fullheal", CHAN_VOICE, CHANF_LOCAL, 1.0, ATTN_NONE);
 
 		double a = 1.0 - (0.5 ** n);
-		if (ScreenFlash(mo)) mo.A_SetBlend("C0 E0 FF", RSSC_A11y.Dim(a), 26, "C0 7C FF", 0.0);
+		if (RewardFlash(mo)) mo.A_SetBlend("C0 E0 FF", RSSC_A11y.Dim(a), 26, "C0 7C FF", 0.0);
+		tr.lifeCueTic = level.maptime;   // the life pips pop and light (hud.zs DrawLives)
 
 		tr.rewardLifeTic = 0;
 		tr.pendingLives  = 0;
@@ -987,7 +1001,9 @@ class RS_ScoreHandler : EventHandler
 			int had  = (step       * perBurst) / 700;
 			int now  = ((step + 1) * perBurst) / 700;
 
-			if (now > had) { mo.GiveInventory(am.GetClass(), now - had); }
+			// GiveInventory spawns an item and runs every handler's WorldThingSpawned and the pickup chain for it: not for
+			// an ammo already full, where it gives nothing (Ammo.HandlePickup) -- the 20 s burst kept spawning for those.
+			if (now > had && (am.Amount < am.MaxAmount || sv_unlimited_pickup)) { mo.GiveInventory(am.GetClass(), now - had); }
 		}
 
 		tr.regenSpent += 1;
@@ -1139,6 +1155,14 @@ class RS_ScoreHandler : EventHandler
 		if (!mo || !mo.player) return false;
 		let cv = CVar.GetCVar("rs_score_screenflash", mo.player);
 		return !cv || cv.GetBool();
+	}
+
+	// The reward's whole-view tint, the old cue (off since 11-05, see CheckRewards): only with Screen Flash on too.
+	static bool RewardFlash(Actor mo)
+	{
+		if (!ScreenFlash(mo)) return false;
+		let cv = CVar.GetCVar("rs_score_rewardflash", mo.player);
+		return cv && cv.GetBool();
 	}
 
 	static int CvarInt(String name, int fallback)

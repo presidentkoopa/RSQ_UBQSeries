@@ -147,6 +147,8 @@ class RS_ScoreTracker : Inventory
 	// the same tic rather than each guessing from its own view.
 	int flashTic;
 	int rewardTic;
+	int rewardKind;      // what the last reward paid: 1 a life, 0 ammo regen (the bar's glow colour)
+	int lifeCueTic;      // the tic the extra-life cue ran (the life pips' pop)
 	int rewardLifeTic;   // the tic the delayed extra-life cue is due on
 	int pendingLives;    // how many lives that cue is announcing
 	int reviveTic;

@@ -83,8 +83,14 @@ class RS_ScoreHUD : EventHandler
 		          && FadeAlpha(tr.flashTic, 0.05, 0.15) > 0.0;
 		double flashAlpha = flash ? RSSC_A11y.Dim(FadeAlpha(tr.flashTic, 0.05, 0.15)) : 0.0;   // Photosensitive Mode: 40%
 
-		DrawScoreLine(tr, handler, pln, vw, vh, centerX, centerY, flashAlpha);
-		DrawBar(tr, handler, pln, vw, vh, centerX, centerY, flashAlpha);
+		// THE REWARD'S VISIBLE CUE (owner 11-05: "can we optimize that effect? it slows down my game"): when the bar fills,
+		// the bar lights in the colour of what it paid (orange ammo, blue a life) and the score line flashes, for the 26 tics
+		// the old whole-view tint ran; a life also pops the life pips (DrawLives). A few small HUD quads instead of the
+		// full-eye passes a blend costs in VR (handler.zs CheckRewards). Photosensitive Mode: 40%.
+		double glow = RSSC_A11y.Dim(FadeAlpha(tr.rewardTic, 0.1, 0.65));
+
+		DrawScoreLine(tr, handler, pln, vw, vh, centerX, centerY, max(flashAlpha, glow));
+		DrawBar(tr, handler, pln, vw, vh, centerX, centerY, flashAlpha, glow);
 		DrawLives(tr, vw, vh, centerX, centerY);
 
 		if (!hideBonuses) { DrawBreakdown(tr, handler, pln, vw, vh, centerX, centerY); }
@@ -199,7 +205,7 @@ class RS_ScoreHUD : EventHandler
 	// the fill's flash. All centred on centerX, vertically centred on centerY+13.
 
 	private ui void DrawBar(RS_ScoreTracker tr, RS_ScoreHandler handler, int pln,
-	                        double vw, double vh, double cx, double cy, double flashAlpha)
+	                        double vw, double vh, double cx, double cy, double flashAlpha, double glow = 0.0)
 	{
 		if (UserBool(pln, "rs_score_norewards", false)) { return; }
 		if (ServerInt("rs_score_rewardtypes", 3) == 4) { return; }
@@ -220,23 +226,32 @@ class RS_ScoreHUD : EventHandler
 
 		double y = cy + 13;
 
+		// the reward glow lights the whole bar in what was just paid (tracker rewardKind), whatever comes next
+		String glowBg = tr.rewardKind == 1 ? "SCOREBG4" : "SCOREBG3";
+		String glowFg = tr.rewardKind == 1 ? "SCOREBR4" : "SCOREBR3";
+
 		DrawCentered(bg, cx, y, vw, vh, 1.0);
 		if (flashAlpha > 0.0) { DrawCentered(bgFlash, cx, y, vw, vh, flashAlpha); }
+		if (glow > 0.0) { DrawCentered(glowBg, cx, y, vw, vh, glow); }
 
 		DrawCentered("SCOREBKT", cx, y, vw, vh, 1.0);
 		DrawBarTag(nextIsLife, cx, y, vw, vh);
 
-		if (handler.threshold <= 0) { return; }
-
-		// barPoints = curPoints % goalPoints; barWidth = 120 * barPoints / goalPoints
-		int barPoints = tr.score % handler.threshold;
-		double barWidth = (BARWIDTH * double(barPoints)) / double(handler.threshold);
-		if (barWidth <= 0.0) { return; }
-
 		double barLeft = cx - (BARWIDTH / 2);
 
-		DrawClipped(fg, cx, y, vw, vh, 1.0, barLeft, barLeft + barWidth);
-		if (flashAlpha > 0.0) { DrawClipped(fgFlash, cx, y, vw, vh, flashAlpha, barLeft, barLeft + barWidth); }
+		// barPoints = curPoints % goalPoints; barWidth = 120 * barPoints / goalPoints
+		if (handler.threshold > 0)
+		{
+			int barPoints = tr.score % handler.threshold;
+			double barWidth = (BARWIDTH * double(barPoints)) / double(handler.threshold);
+			if (barWidth > 0.0)
+			{
+				DrawClipped(fg, cx, y, vw, vh, 1.0, barLeft, barLeft + barWidth);
+				if (flashAlpha > 0.0) { DrawClipped(fgFlash, cx, y, vw, vh, flashAlpha, barLeft, barLeft + barWidth); }
+			}
+		}
+
+		if (glow > 0.0) { DrawClipped(glowFg, cx, y, vw, vh, glow, barLeft, barLeft + BARWIDTH); }
 	}
 
 	// Colour-blind play (rsqa_colorblind, cb.zs): what the bar fills toward is told by its colour
@@ -269,10 +284,30 @@ class RS_ScoreHUD : EventHandler
 		double left = cx - (6 * (lives - 1));
 		double y    = cy - 12;
 
+		// the extra-life cue (handler.zs RunRewardCue sets lifeCueTic): every pip swells up to half again and is lit
+		// (drawn again, added) as the cue fades. Photosensitive Mode: 40%.
+		double pop = RSSC_A11y.Dim(FadeAlpha(tr.lifeCueTic, 0.1, 0.65));
+
 		for (int i = 0; i < lives; i++)
 		{
-			DrawCentered(pip, left + 12.0 * i, y, vw, vh, 1.0);
+			if (pop > 0.0) { DrawPip(pip, left + 12.0 * i, y, vw, vh, 1.0 + 0.5 * pop, pop); }
+			else DrawCentered(pip, left + 12.0 * i, y, vw, vh, 1.0);
 		}
+	}
+
+	private ui void DrawPip(String texName, double cx, double cy, double vw, double vh, double scale, double lit)
+	{
+		TextureID tex = TexMan.CheckForTexture(texName, TexMan.Type_Any);
+		if (!tex.IsValid()) { return; }
+
+		Vector2 size = TexMan.GetScaledSize(tex) * scale;
+		Screen.DrawTexture(tex, false, cx - size.x * 0.5, cy - size.y * 0.5,
+			DTA_VirtualWidthF, vw, DTA_VirtualHeightF, vh, DTA_KeepRatio, true,
+			DTA_DestWidthF, size.x, DTA_DestHeightF, size.y);
+		Screen.DrawTexture(tex, false, cx - size.x * 0.5, cy - size.y * 0.5,
+			DTA_VirtualWidthF, vw, DTA_VirtualHeightF, vh, DTA_KeepRatio, true,
+			DTA_DestWidthF, size.x, DTA_DestHeightF, size.y,
+			DTA_LegacyRenderStyle, STYLE_Add, DTA_Alpha, lit);
 	}
 
 	// --------------------------------------------------------- the breakdown
