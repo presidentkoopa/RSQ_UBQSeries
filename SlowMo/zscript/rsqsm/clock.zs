@@ -1503,6 +1503,16 @@ class RSQSM_Service : Service
 			[x, y, w, h] = RSQSM_Countdown.Rect();
 			return int(ceil(y + h));
 		}
+		// THE MENU: "menu.locked", "LeanDodge" -> 1 while the Gun Bonsai VR patch is loaded and the console player has
+		// not learned Lean Dodge (LeanOn: the upgrade gates the Lean Out of Bullets row), else 0. From GbRefresh's cache.
+		// Not in a game: 1 (nothing is learned yet).
+		if (request ~== "menu.locked")
+		{
+			if (gamestate != GS_LEVEL || !c) return 1;
+			if (!(stringArg ~== "LeanDodge")) return 0;
+			int g = c.Gb(consoleplayer, 'LeanDodge');
+			return (g >= 0 && g < 1) ? 1 : 0;
+		}
 		return -1;
 	}
 }

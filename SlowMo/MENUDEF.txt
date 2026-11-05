@@ -1,7 +1,7 @@
-// RSQ SlowMo options, modelled on Brutal Doom Quest 2.0's options page (the owner, 10-28): ONE front
-// page of real choices, named; ONE Tuning and Debug page at the end that holds every number. Every
-// cvar keeps its row. What each setting does is in CVARINFO's comments and README.md. Preset
-// choices: tools/rsmenu/presets.py (Standard = today's defaults).
+// RSQ SlowMo options (menu pass, owner 11-04): ONE page with every option, most important first, under short
+// headers (the old Triggers page folded in); ONE "Test and Debug" page with the raw numbers and the debug log; Reset
+// All at the foot covers both (RSQSMResetAll reads the rows). No presets, no help text. Lean Out of Bullets is a
+// GbOption row: greyed while RSQ Gun Bonsai VR is loaded and its Lean Dodge node is unlearned (clock.zs LeanOn).
 
 // ---- Radiant Silvergun Options (tools/rsmenu) ----------------------------------------------------
 // The series' one Options entry. Every series pk3 carries this same block with its own prefix: the
@@ -25,63 +25,43 @@ AddOptionMenu "RSQ_RSOptions"
 }
 // ----------------------------------------------------------------------------------------------------
 
-// PRESETS -- written by tools/rsmenu/presets.py (Standard = CVARINFO defaults); edit the script, not here
-OptionString "RSQSM_P_Ease"
-{
-	"rsm_ramp_in 0 rsm_ramp_out 0", "Snap"
-	"rsm_ramp_in 0.15 rsm_ramp_out 0.40", "Standard"
-	"rsm_ramp_in 0.6 rsm_ramp_out 1.2", "Gradual"
-}
-// END PRESETS
-
 OptionMenu "RSQSM_Options"
 {
 	Title "RSQ SLOWMO"
-	Control "Slow Motion", "rsqsm_toggle"
-	Control "Shootdodge", "rsqsm_dodge"
+	RSQSMGbLine ""
+	StaticText " "
+	Control "Slow Motion Key", "rsqsm_toggle"
+	Control "Shootdodge Key", "rsqsm_dodge"
 	Slider "World Speed", "rsm_depth", 0.05, 0.95, 0.05, 2
-	RSQSMPreset "Ease In and Out", "RSQSM_P_Ease"
 	StaticText " "
+	StaticText "Slow Motion", 1
 	Option "Dodgeable Bullets", "rsqsm_rounds", "OnOff"
-	Option "Adrenaline", "rsqsm_adrenaline", "OnOff"
-	Option "Haptics", "rsqsm_haptics", "OnOff"
-	StaticText " "
-	Option "Lean Out of Bullets", "rsqsm_lean", "OnOff"
-	Option "Smooth Walkers", "rsqsm_smooth", "OnOff"
-	Option "Color Drain", "rsqsm_drain", "OnOff"
-	Option "SlowMo Gauge", "rsqsm_gauge", "OnOff"
-	Option "Gauge Side", "rsqsm_gauge_side", "RSQSM_GaugeSides"
-	Option "Gauge Animation", "rsqsm_gauge_anim", "OnOff"
-	Option "Real-Time Countdown Bar", "rsqsm_cdbar", "OnOff"
-	Option "Bar Animation", "rsqsm_cdbar_anim", "OnOff"
-	Slider "Bar Size", "rsqsm_cdbar_size", 0.5, 2.5, 0.1, 1
-	Option "Bar Colour", "rsqsm_cdbar_color", "RSQSM_CdColors"
-	Option "Wrist Cross = 4 s Burst", "rsqsm_gesture_burst", "OnOff"
-	StaticText " "
+	RSQSMGbOption "Lean Out of Bullets", "rsqsm_lean", "OnOff", "RSQSM_Service", "LeanDodge"
 	Option "Slow Me Too", "rsqsm_me", "OnOff"
-	Slider "Slow Me Too Strength", "rsqsm_me_ratio", 0.0, 1.0, 0.1, 1
-	Slider "Shootdodge World Speed", "rsqsm_dodge_depth", 0.05, 0.95, 0.05, 2
-	Slider "Shootdodge Leap", "rsqsm_dodge_leap", 0, 40, 2, 0
-	Slider "Shootdodge Hang", "rsqsm_dodge_me", 0.0, 1.0, 0.1, 1
+	Option "Slow My Missiles", "rsqsm_slow_own", "OnOff"
+	Option "Smooth Walkers", "rsqsm_smooth", "OnOff"
+	Option "Adrenaline", "rsqsm_adrenaline", "OnOff"
+	Option "Keep Adrenaline", "rsqsm_adr_keep", "OnOff", "rsqsm_adrenaline"
+	Option "Haptics", "rsqsm_haptics", "OnOff"
+	Option "Yield to Other Mods", "rsm_yield", "OnOff"
 	StaticText " "
-	Option "Slow Own Missiles", "rsqsm_slow_own", "OnOff"
+	StaticText "Look", 1
+	Option "Colour Drain", "rsqsm_drain", "OnOff"
 	Option "Shot Trails", "rsqsm_trails", "OnOff"
 	Option "Missile Wakes", "rsqsm_wakes", "OnOff"
-	Option "Keep Adrenaline Between Levels", "rsqsm_adr_keep", "OnOff"
+	Option "SlowMo Gauge", "rsqsm_gauge", "OnOff"
+	Option "Gauge Side", "rsqsm_gauge_side", "RSQSM_GaugeSides", "rsqsm_gauge"
+	Option "Gauge Animation", "rsqsm_gauge_anim", "OnOff", "rsqsm_gauge"
+	Option "Countdown Bar", "rsqsm_cdbar", "OnOff"
+	Option "Bar Animation", "rsqsm_cdbar_anim", "OnOff", "rsqsm_cdbar"
+	Option "Bar Colour", "rsqsm_cdbar_color", "RSQSM_CdColors", "rsqsm_cdbar"
 	StaticText " "
-	Submenu "Triggers", "RSQSM_Triggers"
-	Submenu "Tuning and Debug", "RSQSM_Debug"
-}
-
-// ---- Triggers: one on/off row for every way slow motion starts (owner 2026-11-02) -----------------------
-OptionMenu "RSQSM_Triggers"
-{
-	Title "TRIGGERS"
-	StaticText "Yours (never held back)", 1
-	Option "Manual Key", "rsqsm_trig_key", "OnOff"
+	StaticText "Your Triggers", 1
+	Option "Slow Motion Key", "rsqsm_trig_key", "OnOff"
 	Option "Shootdodge", "rsqsm_trig_dodge", "OnOff"
 	Option "Wrist Cross", "rsqsm_gesture", "OnOff"
-	Option "Burst", "rsqsm_trig_burst", "OnOff"
+	Option "Wrist Cross Bursts", "rsqsm_gesture_burst", "OnOff", "rsqsm_gesture"
+	Option "Burst", "rsqsm_trig_burst", "OnOff", "rsqsm_gesture_burst"
 	Option "Wheel", "rsqsm_trig_wheel", "OnOff"
 	Option "Accessibility Button", "rsqsm_trig_a11y", "OnOff"
 	Option "Melee Shove", "rsqsm_trig_shove", "OnOff"
@@ -89,48 +69,60 @@ OptionMenu "RSQSM_Triggers"
 	Option "Saber Parry", "rsqsm_trig_parry", "OnOff"
 	Option "ShieldSaw Block", "rsqsm_trig_block", "OnOff"
 	StaticText " "
-	StaticText "Automatic (wait out the cooldown)", 1
-	Option "Miniboss Window", "rsqsm_auto_miniboss", "OnOff"
-	Option "Close-Call", "rsqsm_closecall", "OnOff"
-	Option "Reload Slowdown", "rsqsm_reload", "OnOff"
+	StaticText "Automatic Triggers", 1
+	Option "Miniboss", "rsqsm_auto_miniboss", "OnOff"
+	Option "Close Call", "rsqsm_closecall", "OnOff"
+	Option "Reload", "rsqsm_reload", "OnOff"
 	Option "Score", "rsqsm_trig_score", "OnOff"
 	Option "Gun Bonsai VR", "rsqsm_trig_gbvr", "OnOff"
-	Option "Other / Unknown Mods", "rsqsm_auto_other", "OnOff"
+	Option "Other Mods", "rsqsm_auto_other", "OnOff"
 	StaticText " "
-	Slider "Auto Slow-Mo Cooldown (s)", "rsqsm_auto_cooldown", 0, 60, 5, 0
+	Submenu "Test and Debug", "RSQSM_Test"
+	RSQSMResetAll "Reset All", "Reset all RSQ SlowMo settings?"
 }
 
-// ---- Tuning and Debug: every number ----------------------------------------------------------------
-OptionMenu "RSQSM_Debug"
+// ---- Test and Debug: every raw number, and the debug log -----------------------------------------
+OptionMenu "RSQSM_Test"
 {
-	Title "TUNING AND DEBUG"
-	Slider "Ease In", "rsm_ramp_in", 0.0, 1.0, 0.05, 2
-	Slider "Ease Out", "rsm_ramp_out", 0.0, 2.0, 0.05, 2
+	Title "RSQ SLOWMO: TEST AND DEBUG"
+	StaticText "Slow Motion", 1
+	Slider "Ease In (s)", "rsm_ramp_in", 0.0, 1.0, 0.05, 2
+	Slider "Ease Out (s)", "rsm_ramp_out", 0.0, 2.0, 0.05, 2
 	Slider "Range", "rsqsm_radius", 1000, 8000, 250, 0
 	Slider "Sound Follows", "rsm_sound_follow", 0.0, 1.0, 0.1, 1
 	Slider "Round Speed", "rsqsm_round_speed", 4, 40, 1, 0
+	Slider "Slow Me Too Strength", "rsqsm_me_ratio", 0.0, 1.0, 0.1, 1
+	Slider "Auto Cooldown (s)", "rsqsm_auto_cooldown", 0, 60, 5, 0
 	StaticText " "
-	Slider "Wrist Gap", "rsqsm_gesture_gap", 0.08, 0.30, 0.01, 2
-	Slider "Wrist Hold", "rsqsm_gesture_hold", 4, 35, 1, 0
-	Slider "Reload Time", "rsqsm_reload_ms", 300, 3000, 100, 0
+	StaticText "Shootdodge", 1
+	Slider "World Speed", "rsqsm_dodge_depth", 0.05, 0.95, 0.05, 2
+	Slider "Leap", "rsqsm_dodge_leap", 0, 40, 2, 0
+	Slider "Hang", "rsqsm_dodge_me", 0.0, 1.0, 0.1, 1
 	StaticText " "
-	Slider "Adrenaline to Start", "rsqsm_adr_min", 0, 100, 5, 0
-	Slider "Full Meter Time", "rsqsm_adr_secs", 3, 30, 1, 0
-	Slider "Adrenaline per Kill", "rsqsm_adr_kill", 0, 50, 1, 0
-	Slider "Adrenaline per Near Miss", "rsqsm_adr_near", 0, 20, 1, 0
+	StaticText "Triggers", 1
+	Slider "Wrist Gap (m)", "rsqsm_gesture_gap", 0.08, 0.30, 0.01, 2
+	Slider "Wrist Hold (tics)", "rsqsm_gesture_hold", 4, 35, 1, 0
+	Slider "Reload Time (ms)", "rsqsm_reload_ms", 300, 3000, 100, 0
+	Slider "Close Call Time (ms)", "rsqsm_closecall_ms", 300, 2000, 100, 0
 	StaticText " "
+	StaticText "Adrenaline", 1
+	Slider "To Start", "rsqsm_adr_min", 0, 100, 5, 0
+	Slider "Full Meter (s)", "rsqsm_adr_secs", 3, 30, 1, 0
+	Slider "Per Kill", "rsqsm_adr_kill", 0, 50, 1, 0
+	Slider "Per Near Miss", "rsqsm_adr_near", 0, 20, 1, 0
+	StaticText " "
+	StaticText "Lean and Walkers", 1
 	Slider "Lean Needed (m)", "rsqsm_lean_m", 0.02, 0.30, 0.01, 2
 	Slider "Lean Baseline (s)", "rsqsm_lean_secs", 0.5, 6.0, 0.25, 2
 	Slider "Smooth Range", "rsqsm_smooth_range", 256, 4096, 128, 0
 	Slider "Smooth Walkers", "rsqsm_smooth_max", 1, 32, 1, 0
-	Slider "Color Drain Amount", "rsqsm_drain_amt", 0.05, 1.0, 0.05, 2
+	StaticText " "
+	StaticText "Look", 1
+	Slider "Colour Drain Amount", "rsqsm_drain_amt", 0.05, 1.0, 0.05, 2
 	Slider "Gauge Size", "rsqsm_gauge_size", 0.5, 2.5, 0.1, 1
-	Slider "Close-Call Time (ms)", "rsqsm_closecall_ms", 300, 2000, 100, 0
+	Slider "Bar Size", "rsqsm_cdbar_size", 0.5, 2.5, 0.1, 1
 	StaticText " "
-	Option "Yield to Other Mods", "rsm_yield", "OnOff"
 	Option "Debug Log", "rsqsm_debug", "OnOff"
-	StaticText " "
-	SafeCommand "Reset All", "resetcvar rsm_depth rsm_ramp_in rsm_ramp_out rsm_yield rsm_sound_follow rsqsm_radius rsqsm_slow_own rsqsm_rounds rsqsm_round_speed rsqsm_trails rsqsm_wakes rsqsm_adrenaline rsqsm_adr_min rsqsm_adr_secs rsqsm_adr_kill rsqsm_adr_near rsqsm_adr_keep rsqsm_gesture rsqsm_gesture_gap rsqsm_gesture_hold rsqsm_reload rsqsm_reload_ms rsqsm_haptics rsqsm_lean rsqsm_lean_m rsqsm_lean_secs rsqsm_smooth rsqsm_smooth_range rsqsm_smooth_max rsqsm_drain rsqsm_drain_amt rsqsm_gauge rsqsm_gauge_side rsqsm_gauge_size rsqsm_gauge_anim rsqsm_cdbar rsqsm_cdbar_anim rsqsm_cdbar_size rsqsm_cdbar_color rsqsm_closecall rsqsm_closecall_ms rsqsm_gesture_burst rsqsm_auto_cooldown rsqsm_auto_other rsqsm_auto_miniboss rsqsm_trig_key rsqsm_trig_dodge rsqsm_dodge_depth rsqsm_dodge_leap rsqsm_dodge_me rsqsm_me rsqsm_me_ratio rsqsm_trig_burst rsqsm_trig_wheel rsqsm_trig_a11y rsqsm_trig_shove rsqsm_trig_smoke rsqsm_trig_parry rsqsm_trig_block rsqsm_trig_score rsqsm_trig_gbvr rsqsm_debug", "Reset all RSQ SlowMo settings?"
 }
 
 OptionValue "RSQSM_GaugeSides"

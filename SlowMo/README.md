@@ -86,86 +86,89 @@ rumble goes to the correct hand.
 
 ## Menu
 
-Options → Radiant Silvergun Options → **RSQ SlowMo**
+Options → Radiant Silvergun Options → **RSQ SlowMo**. One page (the Triggers list is on it); the raw numbers and the
+debug log are on **Test and Debug**; **Reset All** at the foot resets both. With RSQ Gun Bonsai VR loaded the page's
+top line reads "GunBonsaiOVR detected. Mod features unlocked via upgrades." and Lean Out of Bullets stays greyed until
+the Lean Dodge node is learned (the row still turns the lean off). A row is greyed while the switch it hangs from is
+off (Keep Adrenaline, the gauge and bar rows, Wrist Cross Bursts, Burst).
 
 | Row | Default | What it does |
 |---|---|---|
-| Slow Motion | unbound | The key that toggles slow motion. |
-| Shootdodge | unbound | The shootdodge key. |
-| World Speed | 0.25 | How fast the world runs while slowed, from 0.05 (near freeze) to 0.95. |
-| Ease In and Out | Standard | Snap, Standard (0.15 s in / 0.4 s out) or Gradual (0.6 s / 1.2 s). |
+| Slow Motion Key | unbound | The key that toggles slow motion. |
+| Shootdodge Key | unbound | The shootdodge key. |
+| World Speed | 0.25 | How fast the world runs while slowed, from 0.05 (near freeze) to 0.95. With Gun Bonsai VR's Deeper learned, the node's depth is used instead. |
+| **Slow Motion** | | |
 | Dodgeable Bullets | On | Enemy hitscans become visible rounds in slow motion. |
-| Adrenaline | Off | Slow motion costs a meter you earn. |
-| Haptics | On | All of this mod's rumbles. |
-| Lean Out of Bullets | On | Leaning out of a slowed round's path makes it miss. |
+| Lean Out of Bullets | On | Leaning out of a slowed round's path makes it miss. With Gun Bonsai VR: also needs Lean Dodge. |
+| Slow Me Too | On | Your own walking, jumping and falling slow with the world. |
+| Slow My Missiles | On | Your rockets slow with the world. |
 | Smooth Walkers | On | Nearby slowed monsters move a little every frame. |
-| Color Drain | Off | Colours fade while time is slowed. |
+| Adrenaline | Off | Slow motion costs a meter you earn. |
+| Keep Adrenaline | On | The meter carries over to the next level. |
+| Haptics | On | All of this mod's rumbles. |
+| Yield to Other Mods | On | Stand down if another slow-motion mod is loaded. |
+| **Look** | | |
+| Colour Drain | Off | Colours fade while time is slowed. |
+| Shot Trails | On | Your shots leave a fading trail in slow motion. |
+| Missile Wakes | On | Slowed missiles leave a faint wake. |
 | SlowMo Gauge | On | The vertical gauge on the HUD. |
 | Gauge Side | Left | Left or right side of your view. |
 | Gauge Animation | On | The gauge's rising light, breathing edge and glint. |
-| Real-Time Countdown Bar | On | The bar that counts down to real time during slow motion you didn't start. |
+| Countdown Bar | On | The bar that counts down to real time during slow motion you didn't start. |
 | Bar Animation | On | The bar's sweeping band, breathing edge and refill glint. |
-| Bar Size | 1.5 | Length of the countdown bar. |
 | Bar Colour | Green | 17 colours, or Random (a new one each time it appears). |
-| Wrist Cross = 4 s Burst | Off | The wrist cross starts a 4 s burst instead of toggling. |
-| Slow Me Too | On | Your own walking, jumping and falling slow with the world. |
-| Slow Me Too Strength | 1.0 | 1 is as slow as the world, 0.5 half as much, 0 not at all. |
-| Shootdodge World Speed | 0.10 | The world's speed during a shootdodge. |
-| Shootdodge Leap | 12 | The dive's push, in map units a tic (0 = just the jump). |
-| Shootdodge Hang | 0.5 | How much of the world's slowing your dive takes (1 = a jump hangs ten times as long at 10%). |
-| Slow Own Missiles | On | Your rockets slow with the world. |
-| Shot Trails | On | Your shots leave a fading trail in slow motion. |
-| Missile Wakes | On | Slowed missiles leave a faint wake. |
-| Keep Adrenaline Between Levels | On | The meter carries over. |
-
-**Triggers** (one switch for every way slow motion can start; a switch only stops a start, never a stop)
-
-| Row | Default | What it does |
-|---|---|---|
-| Manual Key | On | Your Slow Motion key. |
+| **Your Triggers** (a switch only stops a start, never a stop) | | |
+| Slow Motion Key | On | Your Slow Motion key. |
 | Shootdodge | On | Your Shootdodge key. |
 | Wrist Cross | On | The wrist-cross gesture. |
-| Burst | On | The wrist cross's 4 s burst. |
+| Wrist Cross Bursts | Off | The wrist cross starts a 4 s burst instead of toggling. |
+| Burst | On | That 4 s burst. |
 | Wheel | On | Opening RSQ Wheel. |
 | Accessibility Button | On | RSQ Accessibility's slow-motion button. |
 | Melee Shove | On | RSQ Melee's gun-butt shove. |
 | Cigarette | On | RSQ Tactical Rig's cigarette. |
 | Saber Parry | On | RSQ Saber's perfect parry. |
 | ShieldSaw Block | On | RSQ ShieldSaw's perfect block. |
-| Miniboss Window | On | RSQ Miniboss's slow window (automatic). |
-| Close-Call | Off | A rocket or fireball about to hit you up close (automatic). |
-| Reload Slowdown | Off | A reload buys a moment of slow motion (automatic). |
-| Score | On | RSQ Score's big moments and hit-stop (automatic). |
-| Gun Bonsai VR | On | Gun Bonsai VR's Adrenaline, Showdown and Time Dilation perks (automatic). |
-| Other / Unknown Mods | On | Any other mod that asks for slow motion. |
-| Auto Slow-Mo Cooldown (s) | 25 | Seconds after an automatic slow ends before the next automatic one can start (0 = none). |
+| **Automatic Triggers** (they wait out the cooldown) | | |
+| Miniboss | On | RSQ Miniboss's slow window. |
+| Close Call | Off | A rocket or fireball about to hit you up close. |
+| Reload | Off | A reload buys a moment of slow motion. |
+| Score | On | RSQ Score's big moments and hit-stop. |
+| Gun Bonsai VR | On | Gun Bonsai VR's Adrenaline, Showdown and Time Dilation perks. |
+| Other Mods | On | Any other mod that asks for slow motion. |
+| Test and Debug | | The page below. |
+| Reset All | | Every setting on both pages back to its default. |
 
-**Tuning and Debug**
+**Test and Debug**
 
 | Row | Default | What it does |
 |---|---|---|
-| Ease In | 0.15 | Seconds to slow down. |
-| Ease Out | 0.40 | Seconds to come back to full speed. |
+| Ease In (s) | 0.15 | Seconds to slow down. |
+| Ease Out (s) | 0.40 | Seconds to come back to full speed. |
 | Range | 3000 | Map units around a player that slow. |
 | Sound Follows | 1.0 | How far slowed sounds drop in pitch. |
 | Round Speed | 14 | A round's speed at the set World Speed, map units a tic. |
-| Wrist Gap | 0.16 | How close the wrists must be, metres. |
-| Wrist Hold | 12 | Tics to hold the wrist cross. |
-| Reload Time | 1200 | How long a reload's slow motion lasts, ms. |
-| Adrenaline to Start | 25 | The meter needed to start slow motion. |
-| Full Meter Time | 10 | Seconds a full meter lasts held on. |
-| Adrenaline per Kill | 12 | Earned per kill. |
-| Adrenaline per Near Miss | 4 | Earned per round that passes close. |
+| Slow Me Too Strength | 1.0 | 1 is as slow as the world, 0.5 half as much, 0 not at all. |
+| Auto Cooldown (s) | 25 | Seconds after an automatic slow ends before the next automatic one can start (0 = none). |
+| Shootdodge: World Speed | 0.10 | The world's speed during a shootdodge. |
+| Shootdodge: Leap | 12 | The dive's push, in map units a tic (0 = just the jump). |
+| Shootdodge: Hang | 0.5 | How much of the world's slowing your dive takes (1 = a jump hangs ten times as long at 10%). |
+| Wrist Gap (m) | 0.16 | How close the wrists must be. |
+| Wrist Hold (tics) | 12 | Tics to hold the wrist cross. |
+| Reload Time (ms) | 1200 | How long a reload's slow motion lasts. |
+| Close Call Time (ms) | 700 | How long a close call's slow motion lasts. |
+| Adrenaline: To Start | 25 | The meter needed to start slow motion. |
+| Adrenaline: Full Meter (s) | 10 | Seconds a full meter lasts held on. |
+| Adrenaline: Per Kill | 12 | Earned per kill. |
+| Adrenaline: Per Near Miss | 4 | Earned per round that passes close. |
 | Lean Needed (m) | 0.06 | How far your head must move to count as a lean. |
 | Lean Baseline (s) | 2.0 | How fast your resting spot catches up with your head. |
 | Smooth Range | 1024 | Map units from you that walkers are smoothed. |
 | Smooth Walkers | 12 | How many of the nearest walkers are smoothed. |
-| Color Drain Amount | 0.35 | How much colour goes at full depth. |
+| Colour Drain Amount | 0.35 | How much colour goes at full depth. |
 | Gauge Size | 1.5 | The gauge's height. |
-| Close-Call Time (ms) | 700 | How long a close call's slow motion lasts. |
-| Yield to Other Mods | On | Stand down if another slow-motion mod is loaded. |
+| Bar Size | 1.5 | Length of the countdown bar. |
 | Debug Log | Off | Print every trigger to the console: its name, when, and what happened. |
-| Reset All | — | Puts every RSQ SlowMo setting back to its default. |
 
 ## Works with
 
