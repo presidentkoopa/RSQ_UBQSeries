@@ -34,14 +34,9 @@ user int bonsai_vr_hud_off_mirror = 2;
 // it): Gun Bonsai's own gauge, centred at the top between the two, scaled to fit. Off by default.
 user bool rsq_hud_shield = false;
 
-// Warn once at startup if the upgrade binding mode is not per-weapon.
-// Per-class binding rebinds a single WeaponInfo back and forth when both hands
-// hold the same weapon class, which thrashes. Set to false to silence.
-//
-// Deliberately `server`, not `user`: it is read from the event handler's
-// OnRegister, which is play scope, and user cvars are per-client so play code
-// is not allowed to read them.
-server bool bonsai_vr_warn_binding = true;
+// (bonsai_vr_warn_binding, the startup warning about Gun Bonsai's upgrade binding mode, is gone since 0.99a: measured
+// on the rig in modes 0, 1 and 2, with two different weapons and with two weapons merged into one class, each hand's
+// XP went to its own record and no record piled up -- WeaponInfo.IsLiveInAnotherHand stops the thrash it warned of.)
 
 // ---- the melee upgrades (rsq/) -- all server settings ----
 // (Slappers Only, Start With Gloves and the punch reader's settings moved to RSQ Melee as rsqml_slappers,
@@ -49,10 +44,11 @@ server bool bonsai_vr_warn_binding = true;
 // The Force with this patch loaded: an unlearned power works at this share of the saber's own. 0 (the default, owner
 // 11-03): it does nothing until its node is learned; then level 1-4 is 40 / 70 / 100 / 130 % of the saber's own.
 server float rsq_force_start = 0.0;
-// Force Learns From the Saber (owner 11-03): when the main saber (UBQS_Saber) earns XP, the Force hand
-// (UBQS_ForceHand) also gets this share of it, on top. Only the saber's XP: no gun, tool or off-hand saber feeds it.
+// Force Learns From the Saber (owner 11-03; 50 % since 11-04 18:16: "Force gets 1/2 of saber kill XP"): when the main
+// saber (UBQS_Saber) earns XP, the Force hand (UBQS_ForceHand) also gets this share of it, on top of its own. Only the
+// saber's XP: no gun, tool or off-hand saber feeds it. (The shared blade + Force upgrade pool is not a setting.)
 server bool rsq_force_learns = true;
-server int rsq_force_share = 25;
+server int rsq_force_share = 50;
 // Star Punch banking, SuperPunchOut's `stars <first> <every>` (Soda Popinski's line). RSQ Melee's punch reader reads
 // them by name while the glove has Star Punch.
 server int rsq_star_first = 1;

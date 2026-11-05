@@ -89,7 +89,7 @@ class TFLV_Debug : Object play {
     }
     console.printf("  binding mode %d%s",
       bonsai_upgrade_binding_mode,
-      bonsai_upgrade_binding_mode == TFLV_BIND_WEAPON ? "" : "  <-- not per-weapon; see readme");
+      bonsai_upgrade_binding_mode == TFLV_BIND_WEAPON ? " (each weapon)" : bonsai_upgrade_binding_mode == TFLV_BIND_CLASS ? " (each class)" : " (each weapon, inheritable)");
     console.printf("  infos %d, provenance %d live (dropped %d)",
       stats.weapons.size(), stats.provenance.size(), stats.provDropped);
     console.printf("  resolver: claimed %d, self-claimed %d, inherited %d, scored %d (thin %d), unattributed %d",

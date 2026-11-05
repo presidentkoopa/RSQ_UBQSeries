@@ -135,9 +135,9 @@ done
 zip -q -r -X "$OUT/RSQ_FnF.pk3" $F
 echo "built pk3/RSQ_FnF.pk3"
 
-# RSQ_GunBonsaiVR (the Gun Bonsai Offhand VR patch): everything but the build script, notes, tools and git files (its build.ps1).
+# RSQ_GunBonsaiVR (the Gun Bonsai Offhand VR patch): everything but the build script, notes, the old readme.txt, tools and git files (its build.ps1).
 # Needs Gun Bonsai 0.10.6 (ToxicFrog, not included) loaded just before it.
 cd "$HUB/GunBonsaiOffhandVR"
 rm -f "$OUT/RSQ_GunBonsaiVR.pk3"
-zip -q -r -X "$OUT/RSQ_GunBonsaiVR.pk3" . -x '.git*' 'build.ps1' 'NOTES.md' 'tools/*' 'docs/*' '*.pk3'
+zip -q -r -X "$OUT/RSQ_GunBonsaiVR.pk3" . -x '.git*' 'build.ps1' 'NOTES.md' 'readme.txt' 'tools/*' 'docs/*' '*.pk3'
 echo "built pk3/RSQ_GunBonsaiVR.pk3"

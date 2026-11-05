@@ -41,20 +41,21 @@ it. A ShieldSaw bash pays the shield. Brutal Doom VR Reloaded's travelling bulle
 
 **New upgrade trees** (offered only while the mod they belong to is loaded)
 - **Fists**, per glove: Power, Elements, Combos, Counters, Grappler (off glove only), Berserk, Gun Hand.
-- **Saber**: Focus, Blade, Stab, Deflect, Dual and the Force.
+- **Saber**: Focus, Blade, Stab, Deflect, Dual and the Force. The blade and the Force are one pool: a level-up on the
+  main saber or on the Force hand offers nodes from both, kept on the main saber.
 - **ShieldSaw**: Throw, Block, Bash and Grind.
 - **Grenade**: Carry, Throw, Fuse, Blast, Style, a SlowMo link and eight grenade kinds.
 - **Whip**: Crack, Reach, Wrap, Lasso and Rope.
 - **Player trees**: Two Hands, Body, Guard, Critical Hits, Taunt, Grapple, Gunslinger, Laser Sight, SlowMo and Kill
   Rewards.
-- **Any melee weapon**: Lunge, Executioner, Adrenaline.
+- **Any melee weapon**: Lunge, Executioner, Adrenaline (5 levels each).
 - Nodes open in order: a child is offered only once its parent reaches the level it asks for.
 
 **XP your way**
 - **XP Source**: Damage (Gun Bonsai's own), Style (RSQ Score's style points become XP, split along the combo that
   set up the kill), or Both.
-- **Force Learns From the Saber**: the Force hand takes a share of what the main saber earns. The Force is otherwise
-  paid only for its own blows.
+- **Force Learns From the Saber**: the Force hand keeps the XP of its own blows and also gets half of what the main
+  saber earns, so it still levels when you play mostly with the saber.
 - Score-to-XP, if you turn it on in Gun Bonsai, pays the gun that made each kill.
 
 **A cleaner pool**
@@ -75,8 +76,7 @@ it. A ShieldSaw bash pays the shield. Brutal Doom VR Reloaded's travelling bulle
 
 1. Load Gun Bonsai 0.10.6, then this pack straight after it. Add any other RSQ mods you like.
 2. Open Options → Customize Controls → Gun Bonsai and bind **Display Info** to a controller button.
-3. In Gun Bonsai's own options, set the upgrade binding mode to **individual weapon**. With a gun in each hand, this
-   keeps each gun's record its own. The patch prints a console warning at startup if it is set otherwise.
+3. Gun Bonsai's upgrade binding mode can stay as it is: in every mode each hand's gun keeps its own record.
 4. Pick up a gun in each hand and fight. Watch both corner gauges fill.
 5. When a gauge fills, press Display Info. Choose one of the cards with the thumbstick and confirm.
 6. Every weapon level-up also counts toward your player level. Player levels offer the player trees: Two Hands, Body,
@@ -136,7 +136,7 @@ options.
 | Gauge Animation | On | A band of light rises through the fill, its edge breathes, a full gauge glints. |
 | XP Source | Damage | Damage, Style (RSQ Score's style points) or Both. Style without RSQ Score acts as Damage. |
 | Force Learns From the Saber | On | The Force hand also gets a share of the main saber's XP. |
-| Share (%) | 25 | That share. |
+| Share (%) | 50 | That share. |
 | ShieldSaw Gauge | Off | A third gauge, top centre, while the ShieldSaw rides on your shoulder. |
 | Screen Skin | Mockup | Gun Bonsai, Mockup, Hex Rail or Terminal. |
 | Ammo And Health | On | With a skin on: a bottom row with each hand's ammo, plus health, face and armour. |

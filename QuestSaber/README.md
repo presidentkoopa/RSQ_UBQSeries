@@ -149,7 +149,8 @@ Runs alone. It finds the others by name:
 - **Gun Bonsai + RSQ Gun Bonsai VR**: the sabers level like weapons, with the Dual tree and the Force tree (Force
   Sensitive, Force Speed, Force Lightning, stronger Push, Pull and Choke, Battle Meditation for more marks,
   Precognition for easier parries, the Saber Barrage and Returning Blade throws). Under it, Force powers start
-  weaker and grow as they are learned.
+  weaker and grow as they are learned. The Force hand earns XP for its own blows plus half of the main saber's, and a
+  level-up on either offers blade and Force nodes from one shared pool.
 
 ## Credits and licence
 

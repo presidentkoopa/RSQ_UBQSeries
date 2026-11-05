@@ -76,7 +76,20 @@ class RSQUI_LevelUpMenu : RSQUI_Menu
 	int Owned(int i)
 	{
 		let c = Candidate(i);
-		return (c && bag) ? bag.Level(c.GetClassName()) : 0;
+		if (!c) return 0;
+		// one pool for the blade and the Force (up_saber.zs): on the Force hand's level-up a saber-tree node's level is
+		// the main saber record's, where it is stored
+		let wg = TFLV_WeaponUpgradeGiver(giver);
+		if (!isPlayer && wg && wg.wielded && wg.wielded.wpnClass ~== "UBQS_ForceHand" && c is "RSQ_Upgrade_SaberMarker" && wg.wielded.stats)
+		{
+			let st = wg.wielded.stats;
+			for (int k = 0; k < st.weapons.Size(); k++)
+			{
+				let w = st.weapons[k];
+				if (w && w.wpnClass ~== "UBQS_Saber" && w.upgrades && (!w.wpn || w.wpn.owner == st.owner)) return w.upgrades.Level(c.GetClassName());
+			}
+		}
+		return bag ? bag.Level(c.GetClassName()) : 0;
 	}
 
 	void Pick(int i)

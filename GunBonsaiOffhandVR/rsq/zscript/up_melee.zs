@@ -195,13 +195,14 @@ class RSQ_MeleeHandler : EventHandler
 // LUNGE: the faster your head is travelling when the blow lands, the harder it hits.
 class RSQ_Upgrade_Lunge : RSQ_Upgrade_Base
 {
-	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return info && info.IsMelee(); }
+	const CAP = 5;   // owner 11-04 (item 31)
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return info && info.IsMelee() && LevelOf(info, "Lunge") < CAP; }
 	static double Mult(uint lv, double mps) { return 1.0 + 0.15 * lv * clamp(mps - 0.5, 0.0, 3.0); }
 	override double ModifyDamageDealt(Actor pawn, Actor shot, Actor target, double damage, Name attacktype)
 	{
 		let h = RSQ_MeleeHandler.Get();
 		if (!h || !pawn || !pawn.player) return damage;
-		return damage * Mult(level, h.headMps[pawn.PlayerNumber()]);
+		return damage * Mult(Capped(CAP), h.headMps[pawn.PlayerNumber()]);
 	}
 	override void GetTooltipFields(Dictionary fields, uint level)
 	{
@@ -213,12 +214,13 @@ class RSQ_Upgrade_Lunge : RSQ_Upgrade_Base
 // EXECUTIONER: a staggered monster with little left dies to the next melee hit.
 class RSQ_Upgrade_Executioner : RSQ_Upgrade_Base
 {
-	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return info && info.IsMelee(); }
+	const CAP = 5;   // owner 11-04 (item 31)
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return info && info.IsMelee() && LevelOf(info, "Executioner") < CAP; }
 	static double Share(uint lv) { return min(0.10 + 0.05 * lv, 0.5); }
 	override double ModifyDamageDealt(Actor pawn, Actor shot, Actor target, double damage, Name attacktype)
 	{
 		if (!Monster(target) || target.bBoss) return damage;
-		if (target.health > RSQM.StartHealth(target) * Share(level) || !RSQM.Staggered(target)) return damage;
+		if (target.health > RSQM.StartHealth(target) * Share(Capped(CAP)) || !RSQM.Staggered(target)) return damage;
 		// ENOUGH TO KILL AFTER WHAT IT RESISTS. This answer is the attacker's side of the damage; the
 		// victim's own protection and damage factors still apply after it (p_interaction.cpp: the
 		// passive GetModifiedDamage, then ApplyDamageFactor). health + 1 failed on anything that
@@ -251,7 +253,8 @@ class RSQ_Upgrade_Executioner : RSQ_Upgrade_Base
 // an execution -- fire a short slow-motion pulse through RSQ SlowMo (rsm_pulse, by name).
 class RSQ_Upgrade_Adrenaline : RSQ_Upgrade_Base
 {
-	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return info && info.IsMelee(); }
+	const CAP = 5;   // owner 11-04 (item 31)
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return info && info.IsMelee() && LevelOf(info, "Adrenaline") < CAP; }
 	static int Ms(uint lv) { return min(300 + 150 * lv, 1500); }
 	// rsm_pulse's depth is the world's SPEED in percent (RSQSM_Clock.Pulse: lower is slower), so a
 	// higher level goes deeper: 55% at level 1 down to 30%
@@ -264,8 +267,9 @@ class RSQ_Upgrade_Adrenaline : RSQ_Upgrade_Base
 		bool executed = h.execTic[pn] == gametic;
 		// AND IT CHARGES SLOWMO'S METER: 4 points a melee kill per level (RSQ SlowMo's
 		// RSQSM_Service "adrenaline.add", found by name; nothing when SlowMo or its meter is off)
-		RSQM.Charge(4 * level);
-		if (h.MeleeKill(pn, target, executed)) RSQM.Pulse(pawn, Ms(level), Depth(level));
+		int lv = Capped(CAP);
+		RSQM.Charge(4 * lv);
+		if (h.MeleeKill(pn, target, executed)) RSQM.Pulse(pawn, Ms(lv), Depth(lv));
 	}
 	override void GetTooltipFields(Dictionary fields, uint level)
 	{

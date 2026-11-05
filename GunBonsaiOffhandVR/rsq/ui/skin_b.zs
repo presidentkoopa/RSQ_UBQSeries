@@ -20,8 +20,11 @@ class RSQUI_B_Skin : RSQUI_Skin
 		double W = pen.UnitsWide(), H = pen.UnitsHigh();
 		if (data.stats)
 		{
-			if (data.hands[1].valid) RSQUI_B_Draw.Gauge(pen, data, data.hands[1], 8, 10, true);
-			if (data.hands[0].valid) RSQUI_B_Draw.Gauge(pen, data, data.hands[0], W - 8, 10, false);
+			for (int s = 0; s <= 1; s++)
+			{
+				bool l = RSQUI_Hand.OnLeft(s);
+				if (data.hands[s].valid) RSQUI_B_Draw.Gauge(pen, data, data.hands[s], l ? 8 : W - 8, 10, l);
+			}
 		}
 		if (data.haveScore) RSQUI_B_Draw.Score(pen, data, W / 2, 10);
 		if (RSQUI_Dispatch.BottomOn()) RSQUI_B_Draw.Bottom(pen, data, W, H);
@@ -117,7 +120,7 @@ class RSQUI_B_Draw ui
 		{
 			let hd = d.hands[s];
 			if (!hd.wpn || hd.reserve < 0) continue;
-			bool left = s == 1;
+			bool left = RSQUI_Hand.OnLeft(s);
 			double x = left ? 14 : W - 14;
 			int al = left ? 0 : 2;
 			String big = hd.mag >= 0 ? String.Format("%d", hd.mag) : String.Format("%d", hd.reserve);
@@ -125,7 +128,7 @@ class RSQUI_B_Draw ui
 			if (hd.mag >= 0) pen.Cap(pen.fTerm, 16, String.Format("/ %d", hd.reserve), x, H - 20, PALE, al);
 			double iw = pen.Width(pen.fPix, 20, big);
 			pen.Picture(hd.ammoIcon, left ? x + iw + 6 : x - iw - 30, H - 48, 24, 24);
-			pen.Rect(left ? x : x - 90, H - 6, 90, 2, left ? ORANGE : CYAN, 0.9);
+			pen.Rect(left ? x : x - 90, H - 6, 90, 2, s == 1 ? ORANGE : CYAN, 0.9);   // the colour is the hand's
 		}
 		double cx = W / 2;
 		TextureID face = StatusBar ? StatusBar.GetMugshot(5) : TexMan.CheckForTexture("STFST01", TexMan.Type_Any);

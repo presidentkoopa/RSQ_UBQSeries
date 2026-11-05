@@ -55,8 +55,9 @@ class RSQUI_Gauges : StaticEventHandler
 				alpha = 0.75 + 0.25 * sin(level.maptime * 20.0);
 			}
 			else frac = clamp(double(bm.meter) / RSQ_Upgrade_BerserkMeter.FULL, 0.0, 1.0);
-			// the main hand's on the right, the off hand's on the left, each 2.5 gauge widths in from the edge
-			double x = hand == 0 ? sx + aw - w * 3.5 : sx + w * 2.5;
+			// each on its hand's side (the main hand's on the right for a right-hander, on the left for a left-hander:
+			// RSQUI_Hand.OnLeft), 2.5 gauge widths in from the edge
+			double x = RSQUI_Hand.OnLeft(hand) ? sx + w * 2.5 : sx + aw - w * 3.5;
 			// dark crimson empty, blood red half way, hot orange-white full; an earned Berserk burns orange as it drains
 			if (earned) RSQUI_GaugeLife.Draw(te, tw, x, y, w, h, frac, Color(255, 200, 60, 10), Color(255, 255, 120, 20), Color(255, 255, 220, 140), alpha, anim, t);
 			else RSQUI_GaugeLife.Draw(te, tw, x, y, w, h, frac, Color(255, 110, 10, 10), Color(255, 230, 40, 40), Color(255, 255, 190, 120), alpha, anim, t);

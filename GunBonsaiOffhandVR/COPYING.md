@@ -20,4 +20,20 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+The rest of Gun Bonsai's notice, as it ships with Gun Bonsai 0.10.6 (it covers Gun Bonsai's own art and sounds,
+which are in Gun Bonsai's pk3, not in this patch):
+
 sprites/ui/hud.xcf is ⓒ 2022 Sungraphica <sungraphica.itch.io>, released
+under the CC-BY-4.0 licence.
+
+sprites/ui/penta* and circle* contributed by Craneo.
+
+Content in sprites/items/ and sprites/vfx/ is ⓒ 2020 Willibab
+<willibab.itch.io>, released as "free for non-commercial and commercial use"
+with no formal license.
+
+Other content in sprites/ is from the Freedoom Project; see COPYING.freedoom for
+the license terms.
+
+Content in sounds/ is ⓒ 2021 GameSupplyGuy <gamesupply.itch.io>, released as
+"yes bro u can use it" with no formal license.

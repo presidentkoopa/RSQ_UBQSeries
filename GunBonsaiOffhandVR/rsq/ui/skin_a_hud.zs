@@ -195,23 +195,29 @@ class RSQUI_A_Skin : RSQUI_Skin
 	{
 		Font big = Font.GetFont("HUDFONT_DOOM");
 		if (!big) big = BigFont;
-		// left hand (the off-hand gun): reserve then magazine
-		let off = data.hands[1];
-		if (off.wpn && off.reserve >= 0)
+		// each hand's counter on that hand's side (RSQUI_Hand.OnLeft: the off hand left for a right-hander, the main hand
+		// left for a left-hander); the magazine's colour is the hand's (off gold, main orange)
+		for (int s = 0; s <= 1; s++)
 		{
-			double x = 39;
-			double rw = Digits(big, 16, String.Format("%d", off.reserve), x, H - 78, Font.CR_GOLD, 0, 0.75);
-			if (off.mag >= 0) Digits(big, 16, String.Format("%d", off.mag), x + rw + 6, H - 78, Font.CR_GOLD, 0);
-			pen.Picture(off.ammoIcon, x + rw / 2 - 13, H - 52, 26, 32);
-		}
-		// right hand (the main gun): magazine then reserve, right-aligned
-		let mn = data.hands[0];
-		if (mn.wpn && mn.reserve >= 0)
-		{
-			double xr = W - 39;
-			double rw = Digits(big, 16, String.Format("%d", mn.reserve), xr, H - 78, Font.CR_GOLD, 2, 0.75);
-			if (mn.mag >= 0) Digits(big, 16, String.Format("%d", mn.mag), xr - rw - 6, H - 78, Font.CR_ORANGE, 2);
-			pen.Picture(mn.ammoIcon, xr - rw / 2 - 13, H - 52, 26, 32);
+			let hd = data.hands[s];
+			if (!hd.wpn || hd.reserve < 0) continue;
+			int mc = s == 1 ? Font.CR_GOLD : Font.CR_ORANGE;
+			if (RSQUI_Hand.OnLeft(s))
+			{
+				// the left corner: reserve then magazine
+				double x = 39;
+				double rw = Digits(big, 16, String.Format("%d", hd.reserve), x, H - 78, Font.CR_GOLD, 0, 0.75);
+				if (hd.mag >= 0) Digits(big, 16, String.Format("%d", hd.mag), x + rw + 6, H - 78, mc, 0);
+				pen.Picture(hd.ammoIcon, x + rw / 2 - 13, H - 52, 26, 32);
+			}
+			else
+			{
+				// the right corner: magazine then reserve, right-aligned
+				double xr = W - 39;
+				double rw = Digits(big, 16, String.Format("%d", hd.reserve), xr, H - 78, Font.CR_GOLD, 2, 0.75);
+				if (hd.mag >= 0) Digits(big, 16, String.Format("%d", hd.mag), xr - rw - 6, H - 78, mc, 2);
+				pen.Picture(hd.ammoIcon, xr - rw / 2 - 13, H - 52, 26, 32);
+			}
 		}
 		// centre: health | face | armour
 		double cx = W / 2;

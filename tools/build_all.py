@@ -55,7 +55,7 @@ MODS = {
     'FlashFlare':   ('RSQ_FnF.pk3', 'list', ['zscript.txt', 'MAPINFO.txt', 'CVARINFO.txt', 'MENUDEF.txt', 'MODELDEF.txt',
                      'SNDINFO.txt', 'CREDITS.txt', 'README.md', 'zscript', 'models', 'sprites', 'graphics',
                      'VOXELDEF.txt', 'voxels', 'sounds', 'MODELDEF.torch']),
-    'GunBonsaiOffhandVR': ('RSQ_GunBonsaiVR.pk3', 'all', ['.git*', 'build.ps1', 'NOTES.md', 'tools/*', 'docs/*', '*.pk3']),
+    'GunBonsaiOffhandVR': ('RSQ_GunBonsaiVR.pk3', 'all', ['.git*', 'build.ps1', 'NOTES.md', 'readme.txt', 'tools/*', 'docs/*', '*.pk3']),  # readme.txt: the old pre-README notes (0.99a item 30), not shipped
 }
 
 

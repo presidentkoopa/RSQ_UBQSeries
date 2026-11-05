@@ -48,7 +48,7 @@ class RSQ_Upgrade_Lockstep : RSQ_Upgrade_ShieldMarker
 class RSQ_Upgrade_Deflector : RSQ_Upgrade_SaberMarker
 {
 	static double Mult(uint lv) { return 1.0 + 0.15 * lv; }
-	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return SaberInfo(info) && info.upgrades.Level(GetClassName()) < 5; }
+	override bool Suits(TFLV_WeaponInfo info) { return SaberInfo(info) && info.upgrades.Level(GetClassName()) < 5; }
 	override double ModifyDamageDealt(Actor pawn, Actor shot, Actor target, double damage, Name attacktype)
 	{
 		if (!shot || !shot.bMissile || !shot.master || !RSQM.IsSaberName(shot.master.GetClassName())) return damage;

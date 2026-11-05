@@ -87,7 +87,8 @@ class RSQ_Upgrade_Meteor : RSQ_Upgrade_Base
 // shockwave round you. With Knockdown learned on that glove, what it hits that is no boss goes down for a count of 2.
 class RSQ_Upgrade_GroundPound : RSQ_Upgrade_Base
 {
-	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return GloveInfo(info) && Has(info, "Launcher", 3) && LevelOf(info, "GroundPound") < 3; }
+	// needs RSQ Gestures (its "both hands down"), asked by service name as Taunt does (item 24, 11-04)
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return GloveInfo(info) && Has(info, "Launcher", 3) && LevelOf(info, "GroundPound") < 3 && RSQM.Svc("RSQG_Service") != null; }
 	static double Radius(uint lv) { return 2.0 + 0.5 * lv; }     // metres
 	static int Damage(uint lv) { return 20 + 10 * lv; }
 	static double Speed() { return 3.0; }                        // m/s down, each hand
@@ -103,7 +104,8 @@ class RSQ_Upgrade_GroundPound : RSQ_Upgrade_Base
 // back hard, hurt, and staggered.
 class RSQ_Upgrade_ClearOut : RSQ_Upgrade_Base
 {
-	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return GloveInfo(info) && Has(info, "HeavyHands", 2) && LevelOf(info, "ClearOut") < 3; }
+	// needs RSQ Gestures (its "both palms thrust"), asked by service name as Taunt does (item 24, 11-04)
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return GloveInfo(info) && Has(info, "HeavyHands", 2) && LevelOf(info, "ClearOut") < 3 && RSQM.Svc("RSQG_Service") != null; }
 	static double Range(uint lv) { return 2.0 + 0.5 * lv; }      // metres
 	static int Damage(uint lv) { return 10 + 5 * lv; }
 	static double Push(uint lv) { return 12.0 + 2.0 * lv; }       // map units a tic, on a 100-mass monster
@@ -464,6 +466,8 @@ class RSQ_Upgrade_ReflectGuard : RSQ_GuardPerk
 class RSQ_Upgrade_AbsorbRelease : RSQ_GuardPerk
 {
 	override bool Parent(TFLV_PerPlayerStats stats) { return PHas(stats, "ReflectGuard", 2); }
+	// the release is RSQ Gestures' "both hands apart": offered only with it loaded, as Taunt (item 24, 11-04)
+	override bool ModLoaded() { return Super.ModLoaded() && RSQM.Svc("RSQG_Service") != null; }
 	static double ChargeCap(uint lv) { return 100.0 + 50.0 * lv; }
 	static double Radius(uint lv) { return 3.0 + lv; }    // metres
 	override void GetTooltipFields(Dictionary fields, uint level)
@@ -595,6 +599,7 @@ class RSQ_Upgrade_Rage : RSQ_Upgrade_Base
 			let u = RSQ_Upgrade_Base(info.upgrades.upgrades[i]);
 			if (!u || u == self || !u.enabled) continue;
 			u.level++;
+			u.rageUp = 1;
 			raised.Push(u.GetClassName());
 		}
 		raisedNow = true;
@@ -608,6 +613,8 @@ class RSQ_Upgrade_Rage : RSQ_Upgrade_Base
 			{
 				let u = info.upgrades.upgrades[i];
 				if (u && u != self && raised.Find(u.GetClassName()) < raised.Size() && u.level > 1) u.level--;
+				let b = RSQ_Upgrade_Base(u);
+				if (b && b != self) b.rageUp = 0;
 			}
 		raised.Clear();
 	}

@@ -266,6 +266,26 @@ class TFLV_WeaponInfo : Object play {
     return;
   }
 
+  // RSQ PATCH: the record a picked upgrade goes into. Itself, except a saber-tree node (a subclass of
+  // RSQ_Upgrade_SaberMarker, matched by name: that class lives in the patch's other ZSCRIPT lump) picked on the Force
+  // hand's record (UBQS_ForceHand), which goes into the main saber's record (UBQS_Saber) when the player has one.
+  TFLV_WeaponInfo PoolHolder(TFLV_Upgrade_BaseUpgrade upgrade) {
+    if (!upgrade || !stats || !(wpnClass ~== "UBQS_ForceHand")) return self;
+    bool tree = false;
+    for (class<Object> c = upgrade.GetClass(); c; c = c.GetParentClass()) {
+      if (c.GetClassName() == 'RSQ_Upgrade_SaberMarker') { tree = true; break; }
+    }
+    if (!tree) return self;
+    TFLV_WeaponInfo any = null;
+    for (int i = 0; i < stats.weapons.Size(); i++) {
+      let w = stats.weapons[i];
+      if (!w || !(w.wpnClass ~== "UBQS_Saber")) continue;
+      if (w.wpn && w.wpn.owner == stats.owner) return w;
+      if (!any) any = w;
+    }
+    return any ? any : self;
+  }
+
   void FinishLevelUp(TFLV_Upgrade_BaseUpgrade upgrade) {
     XP -= maxXP;
     ++level;
@@ -273,7 +293,10 @@ class TFLV_WeaponInfo : Object play {
     maxXP = GetXPForLevel(level+1);
 
     if (upgrade) {
-      upgrades.AddUpgrade(upgrade).OnActivate(stats, self);
+      // RSQ PATCH (owner 11-04: one pool for the blade and the Force): a saber-tree node picked on the Force hand's
+      // level-up is stored on the main saber's record, where the saber and the Force read it (rsq up_saber.zs).
+      let into = PoolHolder(upgrade);
+      into.upgrades.AddUpgrade(upgrade).OnActivate(stats, into);
       wpn.owner.A_Log(string.format(
           StringTable.Localize("$TFLV_MSG_WEAPON_LEVELUP"),
           wpn.GetTag(), upgrade.GetName()),

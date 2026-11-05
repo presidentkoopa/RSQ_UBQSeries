@@ -7,6 +7,10 @@ class RSQUI_Hand ui
 {
 	bool valid;              // a gun with a Gun Bonsai info
 	int hand;                // 0 main, 1 off
+	// LEFT-HANDED (0.99a item 29): the skins put each hand's readout on that hand's side of the screen, as Gun Bonsai's
+	// own gauges do (TFLV_HUD.RSQ_LeftLayout: rsqa_handed, else QuestZDoom's Control Scheme). A right-hander's off hand
+	// is on the left; a left-hander's main hand is.
+	static bool OnLeft(int which) { return (which == 1) != TFLV_HUD.RSQ_LeftLayout(); }
 	TFLV_WeaponInfo info;
 	Weapon wpn;
 	String tag;              // the gun's own tag

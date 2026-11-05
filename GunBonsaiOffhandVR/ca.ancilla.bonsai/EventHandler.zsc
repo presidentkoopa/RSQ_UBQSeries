@@ -29,14 +29,9 @@ class TFLV_EventHandler : StaticEventHandler {
     self.service = service;
 
     console.printf("Gun Bonsai VR/offhand patch active: two hands, two HUDs, provenance-based XP.");
-    // VR PATCH: per-class binding rebinds a single WeaponInfo back and forth
-    // when both hands hold the same weapon class, which is the obvious way to
-    // dual-wield. Say so once rather than letting it look like lost progress.
-    if (bonsai_vr_warn_binding && bonsai_upgrade_binding_mode != TFLV_BIND_WEAPON) {
-      console.printf("  WARNING: bonsai_upgrade_binding_mode is not per-weapon. With a weapon in");
-      console.printf("  each hand this can thrash a single WeaponInfo between them. Set it to");
-      console.printf("  'each weapon' in the Gun Bonsai options, or set bonsai_vr_warn_binding 0.");
-    }
+    // (RSQ 0.99a: the binding-mode warning is gone. Every Gun Bonsai binding mode keeps each hand's XP on its own
+    // record -- measured in modes 0/1/2, merged classes included -- because CanRebindTo never takes the weapon live
+    // in the other hand, IsLiveInAnotherHand. Gun Bonsai's own settings are never changed here.)
   }
 
   override void WorldLoaded(WorldEvent evt) {

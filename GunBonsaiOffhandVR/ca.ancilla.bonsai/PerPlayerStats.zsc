@@ -325,7 +325,8 @@ class TFLV_PerPlayerStats : Object play {
   }
 
   // FORCE LEARNS FROM THE SABER (the owner, 11-03: "We can give it a percentage of Lightsaber kills ... it would
-  // help the Force level up too"). rsq_force_learns (on) / rsq_force_share (25 %): whenever the MAIN saber's
+  // help the Force level up too"; 11-04 18:16: "1/2 of saber kill XP"). rsq_force_learns (on) / rsq_force_share
+  // (50 %): whenever the MAIN saber's
   // record (UBQS_Saber) earns XP -- its cuts, its throw, the shots it bats back, the score its kills earn -- the
   // Force hand's record gets that share on top. Nothing else feeds it: no gun, no off-hand saber, no tool.
   bool sharing;
@@ -334,7 +335,7 @@ class TFLV_PerPlayerStats : Object play {
     let on = CVar.FindCVar("rsq_force_learns");
     if (on && !on.GetBool()) return;
     let pc = CVar.FindCVar("rsq_force_share");
-    double pct = clamp(pc ? pc.GetInt() : 25, 0, 100);
+    double pct = clamp(pc ? pc.GetInt() : 50, 0, 100);
     if (pct <= 0) return;
     Weapon fh = Weapon(InvNamed("UBQS_ForceHand"));
     if (!fh) return;

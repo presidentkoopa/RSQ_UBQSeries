@@ -9,6 +9,11 @@ class RSQ_Upgrade_Base : TFLV_Upgrade_BaseUpgrade
 	// These effects key off their own inflictors, so Gun Bonsai's priority chain (which keeps a
 	// poison DoT from proccing an explosion) has nothing to protect here.
 	override bool CheckPriority(Actor inflictor) { return true; }
+	// CAPPED NODES (owner 11-04, item 31: One-Two, Lunge, Executioner, Adrenaline stop at 5). A save that learned one past
+	// its cap keeps it, and its effect stops at the cap: Capped(cap) is the level to use. Rage's +1 while the Berserk lasts
+	// still counts on top (rageUp, set by RSQ_Upgrade_Rage.Raise / Lower).
+	int rageUp;
+	int Capped(int cap) const { return min(int(level), cap + rageUp); }
 	static bool GloveInfo(TFLV_WeaponInfo info) { return info && RSQM.IsGloveName(info.wpnClass); }
 	static bool SaberInfo(TFLV_WeaponInfo info) { return info && RSQM.IsSaberName(info.wpnClass); }
 	static bool ShieldInfo(TFLV_WeaponInfo info) { return info && RSQM.IsShieldName(info.wpnClass); }
@@ -100,13 +105,14 @@ class RSQ_Upgrade_Haymaker : RSQ_Upgrade_Base
 // ONE-TWO: left, right, left -- each alternating hit inside half a second adds to the next.
 class RSQ_Upgrade_OneTwo : RSQ_Upgrade_Base
 {
-	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return GloveInfo(info); }
+	const CAP = 5;
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return GloveInfo(info) && LevelOf(info, "OneTwo") < CAP; }
 	static double Mult(uint lv, int chain) { return 1.0 + 0.15 * lv * clamp(chain - 1, 0, 4); }
 	override double ModifyDamageDealt(Actor pawn, Actor shot, Actor target, double damage, Name attacktype)
 	{
 		int chain = Punch(shot, "punch.chain");
 		if (chain < 0) return damage;
-		return damage * Mult(level, chain);
+		return damage * Mult(Capped(CAP), chain);
 	}
 	override void GetTooltipFields(Dictionary fields, uint level)
 	{

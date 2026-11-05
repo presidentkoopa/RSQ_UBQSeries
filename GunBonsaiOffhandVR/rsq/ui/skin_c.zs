@@ -19,8 +19,11 @@ class RSQUI_C_Skin : RSQUI_Skin
 		double W = pen.UnitsWide(), H = pen.UnitsHigh();
 		if (data.stats)
 		{
-			if (data.hands[1].valid) RSQUI_C_Draw.Readout(pen, data, data.hands[1], 10, 10, true);
-			if (data.hands[0].valid) RSQUI_C_Draw.Readout(pen, data, data.hands[0], W - 10, 10, false);
+			for (int s = 0; s <= 1; s++)
+			{
+				bool l = RSQUI_Hand.OnLeft(s);
+				if (data.hands[s].valid) RSQUI_C_Draw.Readout(pen, data, data.hands[s], l ? 10 : W - 10, 10, l);
+			}
 		}
 		if (data.haveScore) RSQUI_C_Draw.Score(pen, data, W / 2, 10);
 		if (RSQUI_Dispatch.BottomOn()) RSQUI_C_Draw.Bottom(pen, data, W, H);
@@ -66,8 +69,9 @@ class RSQUI_C_Draw ui
 		double x = ax + dir * 10;
 		Bracket(pen, ax, ay, dir * 26, 64, c);
 		pen.Rect(left ? ax + 4 : ax - 214, ay + 4, 210, 60, NAVY, 0.55);
-		pen.Cap(pen.fPix, 8, left ? "OFF" : "MAIN", x, ay + 8, c, al);
-		pen.Cap(pen.fOrb, 13, h.tag, x + dir * (left ? 34 : 42), ay + 6, WHITE, al);
+		bool off = h.hand == 1;   // the label is the hand's, the side is where that hand is (OnLeft)
+		pen.Cap(pen.fPix, 8, off ? "OFF" : "MAIN", x, ay + 8, c, al);
+		pen.Cap(pen.fOrb, 13, h.tag, x + dir * (off ? 34 : 42), ay + 6, WHITE, al);
 		String bar = h.ignored ? "[----------]" : String.Format("[%s]", Blocks(h.ready ? 1 : h.xp / h.xpmax, 10));
 		pen.Cap(pen.fTerm, 16, String.Format("LV%d %s", h.lvl, bar), x, ay + 26, h.ready ? GREEN : c, al);
 		pen.Cap(pen.fTerm, 14, h.ignored ? "" : String.Format("%d/%d  P.LV%d %d/%d", h.xp, h.xpmax, d.plvl, d.pxp, d.pmax),
@@ -90,11 +94,11 @@ class RSQUI_C_Draw ui
 		{
 			let hd = d.hands[s];
 			if (!hd.wpn || hd.reserve < 0) continue;
-			bool left = s == 1;
+			bool left = RSQUI_Hand.OnLeft(s);
 			double ax = left ? 10 : W - 10;
 			double dir = left ? 1 : -1;
 			int al = left ? 0 : 2;
-			Bracket(pen, ax, H - 8, dir * 26, -40, left ? ORANGE : CYAN);
+			Bracket(pen, ax, H - 8, dir * 26, -40, s == 1 ? ORANGE : CYAN);   // the colour is the hand's
 			String t = hd.mag >= 0 ? String.Format("%d|%d", hd.mag, hd.reserve) : String.Format("%d", hd.reserve);
 			pen.Cap(pen.fTerm, 26, t, ax + dir * 10, H - 34, hd.mag >= 0 ? GOLD : PALE, al);
 			double tw = pen.Width(pen.fTerm, 26, t);
