@@ -190,6 +190,14 @@ def jfo_piece(im, scale, local, mirror, out, dy=0.0, cut=100):
 SHORT_TOP = 0.9                                   # cm above the card's middle: the short panel's top (big count top 0.58)
 SHORT_H = int(round((SHORT_TOP + PANEL_H * PANEL_S / 2.0) / PANEL_S))   # 33 px of the 48
 SHORT_BORDER = 4                                  # px of the panel's top edge kept
+# CENTRED ON THE TEXT (owner 2026-11-05 02:01: "more headroom than there is room at the bottom"). Measured from the art
+# (alpha cut-outs as built): the short panel draws z 0.80 .. -2.30 cm, the text big count top .. reserve foot
+# 0.56 .. -2.30 (JFO PCVR), 0.53-0.58 .. -2.30 (JFO Quest), 0.58 .. -2.33 (Ermac): text middle -0.87 in every font, panel
+# middle -0.75: 0.12 cm apart. On the rig (QZD 17.3, a 500 px eye, the card 35 cm off, eye just above it) a 0.12 drop still
+# drew the text 1 px of the card's 64 low in every font and on both hands (gap 2-3 px above, 0-1 below: the glyphs stand
+# FRONT cm proud of the panel and the eye looks down on them), so the drop is 0.17: drawn gaps equal on the rig.
+# The text, the sizes and the tall card stay put.
+SHORT_DROP = 0.17
 _short_dir = None
 def short_panel(png):
     """the panel at 48 x 48, its top SHORT_BORDER rows kept and the rows under them cut so it is SHORT_H tall; written
@@ -256,13 +264,14 @@ def main():
         states.append(('P%s%s' % (mc, dc), spr, line))
         # SHORT panels (owner 2026-11-03 08:40: with the AMMO / MAGAZINE word off the card loses the word's strip):
         # sprite Q<d>T<N|M>, the same panels with their top border kept and the strip under it cut out, so the card
-        # ends SHORT_TOP cm above its middle (just above the big count); everything else stays where it is
+        # ends SHORT_TOP - SHORT_DROP cm above its middle (just above the big count), dropped SHORT_DROP to centre on the
+        # text (owner 11-05); everything else stays where it is
         spr = 'Q' + dc + 'T' + mc
         line = []
         for s_, bg in enumerate(bgs):
             lump = 'wk%st%s%02d' % (dc, mc.lower(), bg)
             sp = short_panel(os.path.join(art, 'ammo_bg%d.png' % bg))
-            count += card_piece(sp, PANEL_W, SHORT_H, PANEL_S, (0, 0, (SHORT_TOP - PANEL_H * PANEL_S / 2.0) / 2.0), m,
+            count += card_piece(sp, PANEL_W, SHORT_H, PANEL_S, (0, 0, (SHORT_TOP - PANEL_H * PANEL_S / 2.0) / 2.0 - SHORT_DROP), m,
                                 os.path.join(vdir, lump + '.kvx'), dy=dy)
             frame(spr, letters[s_], lump, PANEL_S); line.append(letters[s_])
         states.append(('T%s%s' % (mc, dc), spr, line))
