@@ -70,8 +70,6 @@ Every mod's settings live in **Options → Radiant Silvergun Options**, one page
 
 ## The mods
 
-### On your body
-
 **[RSQ Tactical Rig](TacticalRig/README.md)** (RSQ_TacticalRig.pk3)
 Your guns live on your body: six holsters on hips, chest and shoulders, plus spots for grenades, sabers, the whip, a
 flare and an ammo pouch. Reach, grip, draw. The torso follows your stick turns and real room turns, and recenters
@@ -84,8 +82,6 @@ check, a thrust, a shove, both hands together.
 **[RSQ Accessibility](Accessibility/README.md)** (RSQ_Accessibility.pk3)
 One menu that makes the whole series playable your way: one hand, seated, left-handed, colour blind, motion
 sensitive or light sensitive.
-
-### In your hands
 
 **[RSQ Saber](QuestSaber/README.md)** (RSQ_Saber.pk3)
 A lightsaber that cuts what your real swing passes through. Turn bolts with the blade, parry them back, cross two
@@ -111,8 +107,6 @@ own arm. Eight grenade types. Shoot it out of the air. (With BD22 VR Reloaded, i
 A road flare you pull from your chest and strike with a flick of the wrist, and a flashlight clipped to your chest
 with a beam you can see in the air.
 
-### Reaching the world
-
 **[RSQ Grapple](Grapple/README.md)** (RSQ_Grapple.pk3)
 A grappling hook in each hand: aim with your real arm, fire, fling yourself across the map, climb the rope hand over
 hand, or drag monsters to your feet.
@@ -123,8 +117,6 @@ air.
 
 **[RSQ Laser Sight](LaserSight/README.md)** (RSQ_LaserSight.pk3)
 A laser on every gun in both hands, out of the gun's own barrel, with the dot where the shot will land.
-
-### The game around you
 
 **[RSQ SlowMo](SlowMo/README.md)** (RSQ_SlowMo.pk3)
 The world slows down. You don't. Watch enemy rounds coming and lean out of their way.
@@ -164,7 +156,7 @@ more than 170 new upgrades built around what you do with your body. Needs ToxicF
   is built on.
 - **Ermac** (iAmErmac), co-designer of DoomVR (Rusted Legacy, DXR, RS_Main): the shield saw's first VR version, the
   Virtual Tactical Vest idea the Tactical Rig is built on, the cigarette tribute and Zippo, the boxing-glove and hand
-  models, and the Force and impact effects in the saber. His MIT licence covers his code, not ripped meshes.
+  models. His MIT licence covers his code, not ripped meshes.
 - **id Software**: the shield saw's design (Doom: The Dark Ages), the Doom Eternal Classic Slayer torso and helmet
   (rips, prepared in RS_VRBody), Quake's Grunt (cut into a torso by **Vittorio Romeo**'s Quake VR mod), and the stock
   Doom sounds the mods play by name.
