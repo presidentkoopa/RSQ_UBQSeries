@@ -28,6 +28,7 @@ user bool  rsqdg_sight    = true;    // through a wall is not pointing at it
 user bool  rsqdg_corpses  = false;   // a corpse is a prop. OFF by default (the owner, 10-31: "i don't want to grab
                                      // corpses"); was on since 10-29
 user bool  rsqdg_barrels  = true;    // both barrels -- the thing this is for
+user bool  rsqdg_flares   = true;    // RSQ FnF flares lying on the floor, dropped or thrown (owner 11-05)
 user bool  rsqdg_weapons  = true;    // pull a gun to you. The desktop's default
                                      // is off because a HAND grab of a gun is a
                                      // whole interaction; a pull is the pickup

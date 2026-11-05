@@ -247,6 +247,10 @@ class RSQDG_Policy : StaticEventHandler
 		// room. The heaviest weight in the table, 4.0 -- it competes as though
 		// at half the distance -- so the shell box beside it does not quietly
 		// win the barrel you were plainly pointing at.
+		// RSQ FnF's flare, dropped or thrown (owner 11-05: "distancegrab needs to be able to pick up our flares when we
+		// drop or throw them"). By name: with FnF absent the class does not exist and the rule never matches.
+		Rule('RSQFF_Flare', true, 'Flares', "a flare", 2.0);
+
 		Rule('ExplosiveBarrel', true, 'Barrels', "a barrel", 4.0);
 
 		// THE OTHER BARREL, unrelated to the first in any way the engine can
@@ -316,6 +320,7 @@ class RSQDG_Policy : StaticEventHandler
 		if (cat == 'Armor')    return RSQDG_Reach.Flag("rsqdg_armor",    p, true);
 		if (cat == 'Keys')     return RSQDG_Reach.Flag("rsqdg_keycards", p, true);
 		if (cat == 'Bonuses')  return RSQDG_Reach.Flag("rsqdg_bonuses",  p, true);
+		if (cat == 'Flares')   return RSQDG_Reach.Flag("rsqdg_flares",   p, true);
 		return true;
 	}
 

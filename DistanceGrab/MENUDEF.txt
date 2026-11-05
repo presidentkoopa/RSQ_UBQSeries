@@ -74,6 +74,7 @@ OptionMenu "RSQDG_Options"
 	StaticText " "
 	StaticText "What You Can Grab", 1
 	Option "Barrels", "rsqdg_barrels", "OnOff"
+	Option "Flares", "rsqdg_flares", "OnOff"
 	Option "Weapons", "rsqdg_weapons", "OnOff"
 	Option "Powerups", "rsqdg_powerups", "OnOff"
 	Option "Ammo", "rsqdg_ammo", "OnOff"

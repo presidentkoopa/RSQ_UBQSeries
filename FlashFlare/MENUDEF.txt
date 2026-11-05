@@ -47,6 +47,8 @@ OptionMenu "RSQFF_Options"
 	Option "Beam Size", "rsqff_fl_size", "RSQFF_BeamSize"
 	Option "Beam Colour", "rsqff_fl_color", "RSQFF_BeamColour"
 	Option "Beam Quality", "rsqff_fl_quality", "RSQFF_BeamQuality"
+	Slider "Beam Length (m)", "rsqff_fl_cone_m", 1, 15, 1, 0
+	Option "Beam Hotspot", "rsqff_fl_hot", "OnOff"
 	Option "Turn Off DarkDoomz Light", "rsqff_fl_ddz", "OnOff"
 	StaticText " "
 	Submenu "Test and Debug", "RSQFF_Test"

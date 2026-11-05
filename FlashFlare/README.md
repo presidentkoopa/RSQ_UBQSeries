@@ -130,6 +130,8 @@ here is a Gun Bonsai VR upgrade.
 | Beam Size | Medium | Narrow (6/14 degrees), Medium (10/22), Wide (16/32) |
 | Beam Colour | Warm White | Warm White, the series' 17 colours, or Random (a new one each time you switch it on) |
 | Beam Quality | Quest | Quest: range 448, one-layer beam, trace every 2nd tic. PCVR: 640, two layers, a little dust. High: 896, more dust |
+| Beam Length (m) | 4 | How far the visible cone reaches before it fades out (1-15). The light itself still reaches the whole range. |
+| Beam Hotspot | Off | A soft glow sprite where the beam lands. Off: the spot light alone shows it. |
 | Turn Off DarkDoomz Light | On | While yours is on, DarkDoomz's flashlight is switched off with its own toggle |
 | Reset All | | Every setting on both pages back to default |
 

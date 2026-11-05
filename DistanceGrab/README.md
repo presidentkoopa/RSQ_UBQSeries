@@ -127,7 +127,7 @@ off (the door rows under Lift Doors, the rumbles under Haptics, the two key rows
 | Sounds | On | Whoosh on a throw, thud on a catch and a landing. |
 | Landing Dust | On | A hard landing kicks up dust. |
 | **What You Can Grab** | | |
-| Barrels, Weapons, Powerups, Ammo, Health, Armor, Keys, +1 Bonuses | On | Each kind its own switch. |
+| Barrels, Flares, Weapons, Powerups, Ammo, Health, Armor, Keys, +1 Bonuses | On | Each kind its own switch. Flares are RSQ FnF flares lying on the floor, dropped or thrown. |
 | Corpses | Off | |
 | Walk-Up Grab | On | Grip with the palm on a thing takes it. |
 | **Doors and Switches** | | |

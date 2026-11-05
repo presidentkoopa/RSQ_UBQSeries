@@ -191,6 +191,7 @@ class RSQFF_Torches : EventHandler
 	static RSQFF_Torches Get() { return RSQFF_Torches(EventHandler.Find("RSQFF_Torches")); }
 	static bool FlOn() { let c = CVar.FindCVar("rsqff_fl_on"); return !c || c.GetBool(); }
 	static int SInt(String n, int d) { let c = CVar.FindCVar(n); return c ? c.GetInt() : d; }
+	static double SFloat(String n, double d) { let c = CVar.FindCVar(n); return c ? c.GetFloat() : d; }
 	static double LNum(String n, double d) { let c = CVar.FindCVar(n); return c ? c.GetFloat() : d; }
 	static bool Debug(PlayerInfo p) { let c = CVar.GetCVar("rsqff_debug", p); return c && c.GetBool(); }
 
@@ -443,16 +444,20 @@ class RSQFF_Torches : EventHandler
 			k.Prev = lens;
 			k.angle = yaw;
 			k.pitch = 90 + realPitch;
-			double len = range;
+			// BEAM LENGTH (owner 11-05 08:30: "can the cone taper off after a few meters"): the visible cone is its own
+			// length, Beam Length metres (default 4), and fades out over it; the light still reaches the whole range.
+			double coneLen = clamp(SFloat("rsqff_fl_cone_m", 4.0), 1.0, 15.0) * RSQFF_Geo.Vu();
+			coneLen = min(coneLen, double(range));
+			double len = coneLen;
 			if (hitDist[n] > 0)
 			{
 				Vector3 h = hitPos[n] - lens;
-				len = min(range, (h.x, h.y, h.z * ps).Length());
+				len = min(coneLen, (h.x, h.y, h.z * ps).Length());
 			}
-			int fr = clamp(int(ceil(len / range * 26)) - 1, 0, 25);
+			int fr = clamp(int(ceil(len / coneLen * 26)) - 1, 0, 25);
 			k.sprite = k.GetSpriteIndex(q == 0 ? 'QFFC' : 'QFFK');
 			k.frame = fr;
-			k.Scale.Y = range / 64.0;                          // the full length (the frame folds it shorter)
+			k.Scale.Y = coneLen / 64.0;                        // the full length (the frame folds it shorter)
 			k.Scale.X = k.Scale.Y * tan(half) / tan(20.0);     // across: the same stretch, at the beam's own angle
 			k.SetShade(col);
 			k.alpha = q == 0 ? 0.30 : (q == 1 ? 0.34 : 0.38);
@@ -462,7 +467,9 @@ class RSQFF_Torches : EventHandler
 
 		// the hotspot where it lands: sized by the distance, fainter on a glancing wall; it reaches past the light (to 2.5 x its
 		// range, fading from 1 x), so a far wall still shows where the beam lands for no light
-		if (hitDist[n] > 0)
+		// the hotspot is an Option, off by default (owner 11-05 08:30: "it doesn't seem like it lights anything, just slaps
+		// some kind of 'lit' texture on things"): the spot light does the lighting; this sprite only marks where it lands
+		if (hitDist[n] > 0 && SInt("rsqff_fl_hot", 0) > 0)
 		{
 			if (!hot[n]) hot[n] = RSQFF_TorchHot(Actor.Spawn("RSQFF_TorchHot", hitPos[n], NO_REPLACE));
 			let t = hot[n];
