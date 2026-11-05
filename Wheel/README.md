@@ -101,137 +101,131 @@ Left-handed play: main hand and off hand follow QuestZDoom's own handedness sett
 
 ## Menu
 
-Options → Radiant Silvergun Options → RSQ Wheel
-
-**Front page**
+Options → Radiant Silvergun Options → RSQ Wheel (one page; Test and Debug and Reset All at its foot)
 
 | Row | Default | What it does |
 |---|---|---|
 | Weapon Wheel | On | Off stops the ring from opening. |
 | Either Hand Picks | On | Both hands point at and pick from one ring. Off: only the hand that opened it picks. |
 | Opens On | Whichever key you press | Which hand the open keys summon the ring on: as pressed, always main, or always off. |
-| Palette | Standard | Standard, Doom, Hell or Tech. |
-| Font | Ermac's digits | The ring's numerals. |
-| Ring Plates | Its own (Ermac style) | Or the status bar's stone. |
-| Card Look | Colour by Gun | Or Classic. |
-| Size | 1.00 | The whole ring. |
-| Sound | On | |
+| Sound | On |  |
 | Controller Rumble | 1.0 | 0 to 2. QuestZDoom's own haptics switch still overrules it. |
+| Size | 1.00 | The whole ring. |
+| *Controls* | | |
 | Hold, Point, Release | Left thumbstick click | Key bind. |
 | Open or Close | Unbound | Key bind. |
 | Main Hand Wheel | `[` | Key bind. |
 | Off Hand Wheel | `]` | Key bind. |
-
-**Picking**
-
-| Row | Default | What it does |
-|---|---|---|
+| *Picking* | | |
 | Two Hands Compare | Off | A hand on each of two cards shows the two side by side. |
-| Open on the Gun You Hold | Off | The ring opens with your current gun's card under your hand. |
+| Open on Your Gun | Off | The ring opens with your current gun's card under your hand. |
 | Wrist Card | Off | The watch-check card. RSQ Gun Cards' watch card takes over when that mod's is on. |
-| Open at Level Start | Off | |
-| Slow Time While Open | On | Needs RSQ SlowMo, or Stop Time Without SlowMo below. |
-| Closing Ends My SlowMo | Off | Off leaves slow motion you started yourself running when the ring closes. |
-| Stop Time Without SlowMo | Off | Without RSQ SlowMo, the ring freezes the world while it is open. |
-| Pull a Card Out (0 = off) | 1.5 | Hand speed for the pull, in map units a tic (about m/s). |
-| Throw a Gun Back (0 = off) | 2.6 | Hand speed for the throw. |
-| Reach In (0 = off) | 7.0 | How far in front of or behind a card your hand can be and still touch it. |
-| Hold to Pick (tics) | 9 | Shorter is a tap, longer is a hold. |
-| Double Tap: Last Gun (tics) | 10 | 0 turns the double tap off. |
+| Open at Level Start | Off |  |
+| Slow Time While Open | On | Needs RSQ SlowMo, or Freeze Without SlowMo below. |
+| Closing Ends SlowMo | Off | Off leaves slow motion you started yourself running when the ring closes. |
+| Freeze Without SlowMo | Off | Without RSQ SlowMo, the ring freezes the world while it is open. |
+| Pull a Card Out | 1.5 | Hand speed for the pull, in map units a tic (about m/s). 0 turns it off. |
+| Throw a Gun Back | 2.6 | Hand speed for the throw. 0 turns it off. |
+| Reach In | 7.0 | How far in front of or behind a card your hand can be and still touch it. 0 turns it off. |
 | Feel Each Gun's Weight | 1.0 | 0 gives every card the same tick. |
-| Ring Follows Past (degrees, 0 = off) | 45 | Turn further than this and the ring swings back ahead. |
-| Folds After (tics) | 140 | Untouched for this long, the ring closes. A new card under your hand restarts the clock. |
-| Fold Warning (tics, 0 = off) | 25 | The ring fades and your hand feels a tick this long before it folds. |
-| Re-centre Window (tics, 0 = off) | 10 | The same key this soon after opening re-centres instead of closing. |
-
-**Ring and Cards**
-
-| Row | Default | What it does |
-|---|---|---|
+| *Look* | | |
+| Palette | Standard | Standard, Doom, Hell or Tech. |
+| Font | Ermac's digits | The ring's numerals. |
+| Ring Plates | Its own (Ermac style) | Or the status bar's stone. |
+| Card Look | Colour by Gun | Or Classic. |
 | Gun Models on Cards | On | The gun's pickup voxel on its card. |
-| Ammo Counts and Gauges | On | |
+| Ammo Counts | On | Counts and gauges on the cards. |
 | Ammo Readout | LED segments | Or LCD, punched out, or Lozenge badge. |
-| Hover Halo Breathes | Off | |
-| Edge Sweep | Off | A spark running round each card's edge. |
-| Colour Cards by Rarity | On | With a weapon mod that has rarity tiers. |
-| Mark Guns You Hold | On | |
-| Slot Number on Cards | On | |
-| Cards Face You | On | |
+| Rarity Colours | On | With a weapon mod that has rarity tiers. |
+| Mark Guns You Hold | On |  |
+| Slot Numbers | On |  |
+| Cards Face You | On |  |
 | Crowded Slot Opens As | Fan | Or Constellation. |
-| Flash When You Take a Gun | On | |
+| Hover Halo Breathes | Off |  |
+| Edge Sweep | Off | A spark running round each card's edge. |
+| Flash on Pick | On |  |
 | Spark Colour | Slot colour | Or White hot, or Rainbow. |
-| Hovered Card Lights the Room | On | One light, on the hovered card. |
-| Background Stars (0 = off) | 0 | |
-| Idle Shimmer | 0.00 | |
-| Taken Card Spins (degrees) | 360 | |
-
-**Data Sheet**
-
-| Row | Default | What it does |
-|---|---|---|
-| Show Data Sheet | On | |
-| Weapon Stats | On | |
+| Hover Lights the Room | On | One light, on the hovered card. |
+| Background Stars | 0 | 0 = none. |
+| *Data Sheet* | | |
+| Show Data Sheet | On |  |
+| Weapon Stats | On |  |
 | Track Kills and Accuracy | On | Counted by this mod as you play. |
-| Kills and Accuracy This Level | Off | Adds a row for this level only. |
-| Gun Bonsai Level and Upgrades | On | With Gun Bonsai and RSQ Gun Bonsai VR. |
-| Card When Pointing at a Gun | On | Point at a gun on the floor to see its sheet. |
-| Compare With the Gun You Hold | Off | That sheet shows the difference from your current gun. |
+| This Level's Kills | Off | Adds a kills and accuracy row for this level only. |
+| Gun Bonsai Rows | On | With Gun Bonsai and RSQ Gun Bonsai VR. |
+| Point at a Gun | On | Point at a gun on the floor to see its sheet. |
+| Compare With Yours | Off | That sheet shows the difference from your current gun. |
+| *Other Mods* | | |
 | LegenDoom Rarity | On | Reader for LegenDoom. |
-| LegenDoom Effects Row | On | |
+| LegenDoom Effects | On |  |
 | DoomRL Arsenal Tier | On | Reader for DoomRL Arsenal. |
-| DoomRL Mod Upgrades Row | On | |
+| DoomRL Mod Upgrades | On |  |
 | Combined Arms Meters | On | Reader for Combined Arms. |
 | Final Doomer Set | On | Reader for Final Doomer. |
 | MetaDoom Demon Keys | On | Reader for MetaDoom. |
 | ModelSwapper | On | Reader for ModelSwapper; adds its models page. |
+| ModelSwapper: Main Hand | Unbound | Key bind: cycle the main-hand gun's ModelSwapper model. |
+| ModelSwapper: Off Hand | Unbound | Key bind: the same for the off hand. |
 | Lithium | On | Reader for Lithium. |
-| Lithium RPG Stats (ACS) | On | Asks Lithium's own script for its RPG stats. |
+| Lithium RPG Stats | On | Asks Lithium's own script for its RPG stats. |
+| Reset All | | Every setting back to its default (both pages, and the settings with no row). |
 
-Each reader does nothing unless its mod is loaded.
+Each Other Mods reader does nothing unless its mod is loaded.
 
-**Tuning and Debug**
+**Test and Debug**
 
 | Row | Default | What it does |
 |---|---|---|
+| *Picking* | | |
+| Hold to Pick (tics) | 9 | Shorter is a tap, longer is a hold. |
+| Double Tap (tics) | 10 | 0 turns the double tap off. |
+| Ring Follows Past (deg) | 45 | Turn further than this and the ring swings back ahead. 0 = off. |
+| Folds After (tics) | 140 | Untouched for this long, the ring closes. A new card under your hand restarts the clock. |
+| Fold Warning (tics) | 25 | The ring fades and your hand feels a tick this long before it folds. 0 = off. |
+| Re-centre Window (tics) | 10 | The same key this soon after opening re-centres instead of closing. 0 = off. |
+| *Ring* | | |
 | Ring Distance Ahead | 34 | Map units in front of your hand (34 is about a metre). |
-| Ring Radius | 5.0 | |
-| Height Above Hand | 2.0 | |
+| Ring Radius | 5.0 |  |
+| Height Above Hand | 2.0 |  |
 | Lean Toward You | 12 | Degrees. |
-| Wrist Roll Spins the Ring | 0.00 | |
-| Stick Deadzone | 0.20 | |
-| Card Width | 4.20 | |
-| Card Height | 3.00 | |
-| Hovered Card Steps Out | 1.50 | |
-| Hovered Card Grows | 0.06 | |
-| Other Cards Fade To | 0.55 | |
-| Cards Grow In (tics) | 6 | |
-| Card Shadow | 0.32 | |
-| Shadow Offset | 0.35 | |
-| Face Parallax | 0.06 | |
-| Idle Breathing | 0.35 | |
-| Breathing Speed | 1.7 | |
-| Low Ammo Below (share) | 0.25 | |
-| Low Ammo Pulse | 0.35 | |
-| Model Turn Speed | 1.50 | |
-| Model Size | 0.16 | |
-| Model Stand-Off | 3.0 | |
+| Wrist Roll Spins the Ring | 0.00 |  |
+| Stick Deadzone | 0.20 |  |
+| Card Width | 4.20 |  |
+| Card Height | 3.00 |  |
+| Hovered Card Steps Out | 1.50 |  |
+| Hovered Card Grows | 0.06 |  |
+| Other Cards Fade To | 0.55 |  |
+| Cards Grow In (tics) | 6 |  |
+| Card Shadow | 0.32 |  |
+| Shadow Offset | 0.35 |  |
+| Face Parallax | 0.06 |  |
+| Idle Breathing | 0.35 |  |
+| Breathing Speed | 1.7 |  |
+| Low Ammo Below (share) | 0.25 |  |
+| Low Ammo Pulse | 0.35 |  |
+| Model Turn Speed | 1.50 |  |
+| Model Size | 0.16 |  |
+| Model Stand-Off | 3.0 |  |
+| *Cards* | | |
 | Flat Ring Up To (weapons) | 10 | Up to this many guns, each gets its own card; beyond it, one card per slot. |
-| Fan Close Forgiveness (tics) | 6 | |
-| Constellation Lines Apart (tics) | 2 | |
-| Star Brightness | 0.50 | |
-| Light Size | 44 | |
-| Light Holds Across Gaps (tics) | 3 | |
+| Fan Close Forgiveness (tics) | 6 |  |
+| Constellation Lines Apart (tics) | 2 |  |
+| Star Brightness | 0.50 |  |
+| Light Size | 44 |  |
+| Light Holds Across Gaps (tics) | 3 |  |
 | Sparks | 18 | Particles per pick. |
-| Spark Speed | 1.4 | |
-| Volume | 0.65 | |
+| Spark Speed | 1.4 |  |
+| Volume | 0.65 |  |
+| Idle Shimmer | 0.00 |  |
+| Taken Card Spins (deg) | 360 |  |
+| *Data Sheet* | | |
 | Data Sheet Size | 1.00 | In card widths. |
-| Pointing at a Gun: Rest For (tics) | 18 | |
-| Wrist Card: Hold the Pose (tics) | 8 | |
-| Wrist Card Size | 0.6 | |
+| Pointing at a Gun: Rest For (tics) | 18 |  |
+| Wrist Card: Hold the Pose (tics) | 8 |  |
+| Wrist Card Size | 0.6 |  |
 | Palette by Name | Standard | A palette added by another pk3. |
 | Font Set by Name | Ermac | A font set added by another pk3. |
-| Print Diagnostics on Open | Off | |
-| Reset All | | Every setting back to its default. |
+| Debug Log | Off | Prints diagnostics when the ring opens. |
 
 ## Works with
 
