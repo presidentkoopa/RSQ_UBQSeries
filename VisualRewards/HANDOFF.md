@@ -10,9 +10,13 @@ Status Markers, no new menu row):
   VisualRewards: hook (it asks hooked with ""). 16 more composed textures, drawn only when shown.
 - **Ally** (blue heart) and **burning** (flame), right row: RSYF frame = s + 3 * (raised + 2 * (burning + 2 * ally)) - 1,
   A..W (A..E unchanged), laid out ally, raised, frozen/held, burning from the bar outward. Ally = friendly and not a
-  player, with or without Ally Colour. Burning = fire damage (Fire / Flames / Flame / Burn / HumanBBQ) landed within
-  24 tics, stamped in WorldThingDamaged, read every 4th tic. Measured from the parent code: brutal22test6 puts no lasting
-  burn mark on a living monster (a fire death swaps in a Burning* body, which never gets a bar); BD22's flamethrower,
+  player, with or without Ally Colour. Burning = in fire right now (11-05, was a fixed 24 tics): fire damage (Fire / Flames
+  / Flame / Burn / HumanBBQ) lights it in WorldThingDamaged (bar.zs Burned) until that fire's own interval passes with no
+  new hit, put out at the 4th-tic marker read. Intervals parsed from the code that deals it: FlamethrowerProjectile* 1
+  (one a tic), FlamethrowerBurningStuff 26 (Fire.dec), RSQGN_FireField 7; any other source the measured gap between its
+  hits, capped at 26 (Gun Bonsai VR's burn 17). Parsed from the parent code: brutal22test6 and BD22 VR put no burning
+  state on a living monster (no Pain.Fire on any monster, no afterburn token or loop; a fire death swaps in a Burning*
+  body, a dying body that never gets a bar); BD22's flamethrower,
   its FlamethrowerBurningStuff and the RSQ Grenade / Gun Bonsai VR burns all deal "Fire"; RSQ FnF's flare hurts nothing,
   so it never lights the flame.
 - **Legendary** (pink gem, above) and **Bossfight tier pips** (0-4 gold, right of the crown): sprite RSYI A..M, one

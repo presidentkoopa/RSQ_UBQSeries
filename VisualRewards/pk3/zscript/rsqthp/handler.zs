@@ -46,10 +46,18 @@
 //
 // THE 11-05 ICONS (owner-approved): BURNING -- WorldThingDamaged stamps the bar when the damage type is fire (Fire,
 // Flames, Flame, Burn, HumanBBQ: BD22's flamethrower stream and FlamethrowerBurningStuff "fire", its imp fireballs
-// "Burn", RSQ Grenade's Incendiary and Gun Bonsai VR's burn "Fire"); the bar shows a flame for BURN_LINGER tics after the
-// last one, read with the markers every 4th tic. Brutal Doom leaves no lasting mark on a living monster that is on fire
-// (brutal22test6: a monster killed by fire is swapped for a Burning* body, which never gets a bar), so the damage IS the
-// mark; RSQ FnF's flare hurts nothing and lights nothing. Engine names only: works with none of those mods.
+// "Burn", RSQ Grenade's Incendiary and Gun Bonsai VR's burn "Fire"). Brutal Doom gives a LIVING monster no burning
+// state at all (parsed 11-05 from brutal22test6 and BD22 VR: no Pain.Fire on any monster, no afterburn token or loop; a
+// monster killed by fire is swapped for a Burning* body, a dying body that never gets a bar), so "burning" IS being in
+// fire right now: the flame lights on the hit and stays exactly until the fire that hit it has had one of its own
+// intervals to land again (bar.zs Burned). The intervals, parsed from the code that deals the fire:
+//   FlamethrowerProjectile*   1 tic   the stream fires one a tic (BD22 VR Flamethrower.dec, Hold)
+//   FlamethrowerBurningStuff 26 tics  burning ground: A_Explode(16, 64) after each 26 one-tic CFCF frames (BD Fire.dec)
+//   RSQGN_FireField           7 tics  RSQ Grenade's Incendiary burns every 7th tic (Grenade kinds.zs)
+//   anything else            the gap measured between its last two fire hits on this monster, up to BURN_MAXGAP
+//                            (Gun Bonsai VR's burn, every 17; BD22 VR's Flames, every 2; burning bodies' particles)
+// It goes out at the next 4th-tic marker read after that. RSQ FnF's flare hurts nothing and lights nothing. Class
+// names compared as names only: works with none of those mods.
 // LEGENDARY -- LegenDoom 3.0 and Lite 4.2 (LEGENDMON.acs / MonsterStats.dec): a picked monster carries
 // LDLegendaryMonsterToken and turns (fills to full, stats boosted) when LDLegendaryMonsterStatBoost gives it
 // LDLegendaryMonsterTransformed. The gem shows from that turn, never on a candidate (see LEGENDOOM'S CANDIDATES).
@@ -95,7 +103,10 @@ class RSQTHP_Handler : EventHandler
 	transient int sprChunk;          // RSYH: the damage chunk (HP1)
 	transient int sprBoss;           // RSYI: crown / chain link / gem, tier pips (TEXTURES.rsqthp)
 	transient int sprWhip;           // RSYW: whipped + the other four markers
-	const BURN_LINGER = 24;          // tics the flame stays after the last fire hit (Gun Bonsai VR's burn lands every 17)
+	const BURN_STREAM = 1;           // BD22 VR's flamethrower stream: one FlamethrowerProjectileNew* a tic
+	const BURN_GROUND = 26;          // BD's FlamethrowerBurningStuff: one A_Explode every 26 tics
+	const BURN_FIELD = 7;            // RSQ Grenade's RSQGN_FireField: every 7th tic
+	const BURN_MAXGAP = 26;          // an unknown fire source counts as one burn while its hits come this close (BD's longest)
 
 	// ---- nearest 24 (HP3) ----------------------------------------------------------------------
 	const NEAR_N = 24;
@@ -363,7 +374,7 @@ class RSQTHP_Handler : EventHandler
 		let a = e.Thing;
 		if (!a || a.health <= 0 || !Eligible(a)) return;
 		let b = Ensure(a, false, a.health + max(0, e.Damage));
-		if (b && IsFire(e.DamageType)) b.burnTic = level.maptime;
+		if (b && IsFire(e.DamageType)) b.Burned(e.Inflictor);
 		// a player's hit: the flash (HP7) and the chunk it took off (HP1)
 		Actor src = e.DamageSource;
 		if (!src && e.Inflictor) src = e.Inflictor.target;
@@ -373,6 +384,18 @@ class RSQTHP_Handler : EventHandler
 	static bool IsFire(Name dt)
 	{
 		return dt == 'Fire' || dt == 'Flames' || dt == 'Flame' || dt == 'Burn' || dt == 'HumanBBQ';
+	}
+
+	// the interval at which this fire source lands again, parsed from its code; 0: not known (bar.zs measures it)
+	static int FireEvery(Actor inflictor)
+	{
+		if (!inflictor) return 0;
+		Name n = inflictor.GetClassName();
+		if (n == 'FlamethrowerBurningStuff') return BURN_GROUND;
+		if (n == 'RSQGN_FireField') return BURN_FIELD;
+		String cn = n;
+		if (cn.Left(22) ~== "FlamethrowerProjectile") return BURN_STREAM;
+		return 0;
 	}
 
 	override void WorldTick()

@@ -30,8 +30,8 @@ about a metre from your eyes, and pushed off the aim line of both your guns.
 - Overheal: health above full shows as a thin strip above the bar, with pips for each extra lap.
 - A white flash the moment your hit lands. An up arrow on a monster that was raised from the dead.
 - Markers beside the bar: hooked, whipped, stunned, locked on and Force-gripped on the left; ally (a heart, so an
-  ally doesn't rely on colour alone), raised, frozen or held, and burning (a flame while fire keeps hitting it) on the
-  right.
+  ally doesn't rely on colour alone), raised, frozen or held, and burning (a flame while it is in fire, gone once the fire stops landing) on
+  the right.
 - Above the bar: a crown or chain for RSQ Miniboss's miniboss and its thralls, one gold pip per Bossfight tier beside
   its miniboss's crown (tier 0: the crown alone, up to four pips at tier 4), and a pink gem on a LegenDoom legendary once
   it has turned (left of the crown when it is both). LegenDoom is optional: without it there is simply no gem.
@@ -183,7 +183,10 @@ with Test and Debug and Reset All at its foot.
   used to.
 - **LegenDoom (3.0 or Lite)**: the gem on a legendary once it turns, never on a monster it has only picked.
 - **Burning**: any fire damage lights the flame (BD22's flamethrower and burning ground, RSQ Grenade's Incendiary,
-  RSQ Gun Bonsai VR's burn). RSQ FnF's flare sets nothing on fire, so it never shows the flame.
+  RSQ Gun Bonsai VR's burn). Brutal Doom has no afterburn on a living monster, so the flame shows while it is in fire:
+  it goes out once that fire's own interval passes with no new hit (flamethrower stream 1 tic, burning ground 26,
+  Incendiary 7, anything else the gap between its hits, up to 26), checked every 4th tic. RSQ FnF's flare sets
+  nothing on fire, so it never shows the flame.
 - **RSQ SlowMo**: the optional level-up pulse, and numbers that slow with the world.
 - **RSQ Gun Cards**: +ammo gains land on the gun's card.
 - **RSQ Grenade**: with its Scavenger node at level 3, one ammo bit in four is a grenade.

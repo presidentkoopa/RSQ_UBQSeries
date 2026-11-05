@@ -48,7 +48,7 @@
 // THE 11-05 ICONS (owner-approved mock-up, 2026-11-05), all under Markers, art in tools/gen_art.py:
 //  - whipped: a 5th marker bit (16), left of the bar in the slot nearest it (sprite RSYW: frame = the other four bits).
 //  - ally: a heart in the right-hand row whenever the bar is a friendly monster's (Ally Colour on or off), so an ally
-//    has a cue that is not colour alone. burning: a flame there while fire damage keeps landing (handler.zs, BURN_LINGER).
+//    has a cue that is not colour alone. burning: a flame there while it is in fire (handler.zs THE 11-05 ICONS, Burned below).
 //    The right-hand row is laid out from the bar outward: ally, raised, frozen or held, burning (lasting ones nearest).
 //  - legendary: a gem above the bar on a LegenDoom legendary that has turned; tier pips: 0-4 gold pips right of a
 //    Bossfight miniboss's crown. With a crown the gem sits left of it (one sprite, RSYI, so they never overlap).
@@ -87,10 +87,27 @@ class RSQTHP_Bar : Actor
 	double chunkX0, chunkW; // HP1: the chunk's left edge and width, in bar pixels
 	bool statRaised;        // the status part shows the raised arrow (HP8)
 	int statKey;            // what the status part shows: its RSYF frame + 1 (0: nothing)
-	int burnTic;            // the last tic fire damage landed on it (handler.zs WorldThingDamaged); 0 never
-	bool burnNow;           // burning (refreshed with the markers, every 4th tic)
+	int burnUntil;          // the last tic the fire that hit it can land again (Burned); 0 never
+	int burnFreeTic;        // the last tic a fire of no known interval hit it (Burned measures the gap); 0 never
+	bool burnNow;           // burning: lit on the hit, put out with the markers' 4th-tic read
 	double baseAlpha;       // this tic's alpha and style before the hit flash: the parts take these
 	int baseStyle;
+
+	// fire damage landed (handler.zs WorldThingDamaged): it is burning now, and stays so until this fire's own interval
+	// has passed without another hit. Several fires at once: the one that can land latest holds it.
+	void Burned(Actor inflictor)
+	{
+		int now = level.maptime;
+		int every = RSQTHP_Handler.FireEvery(inflictor);
+		if (every <= 0)
+		{
+			int gap = burnFreeTic > 0 ? now - burnFreeTic : 0;
+			every = (gap > 0 && gap <= RSQTHP_Handler.BURN_MAXGAP) ? gap : 1;
+			burnFreeTic = now;
+		}
+		burnUntil = max(burnUntil, now + every);
+		burnNow = true;
+	}
 
 	Default
 	{
@@ -293,9 +310,8 @@ class RSQTHP_Bar : Actor
 				// whipped (16): RSYW, frame = the other four bits; else RSYZ, frame = the mask - 1
 				if (mark) { if (bits & 16) { mark.sprite = h.sprWhip; mark.frame = bits & 15; } else { mark.sprite = h.sprMark; mark.frame = bits - 1; } }
 			}
-			// burning: fire damage landed within BURN_LINGER tics (BD22's flamethrower and its burning ground, RSQ Grenade's
-			// Incendiary, Gun Bonsai VR's burn: each lands again well inside that)
-			burnNow = burnTic > 0 && level.maptime - burnTic <= RSQTHP_Handler.BURN_LINGER;
+			// burning: out once the fire that hit it has had its own interval to land again and hasn't (Burned)
+			if (burnNow && level.maptime > burnUntil) burnNow = false;
 			// RSQ_Miniboss's miniboss (crown, with its Bossfight tier pips) or thrall (chain link), and LegenDoom's
 			// legendary (gem), above the bar (#16, 11-05): BossMarkOf answers the RSYI frame + 1
 			int bb = h.markers ? h.BossMarkOf(who) : 0;
