@@ -2,5 +2,5 @@
 // before Melee existed (legacy.zs keeps the two old Gun Bonsai VR handler names loadable).
 GameInfo
 {
-	AddEventHandlers = "RSQML_HandSync", "RSQML_Sim", "RSQML_Gloves", "RSQML_Slappers", "RSQML_Guard", "RSQML_Shove", "RSQML_Headlock", "RSQML_TwoHand"
+	AddEventHandlers = "RSQML_HandSync", "RSQML_GCopy", "RSQML_Sim", "RSQML_Gloves", "RSQML_Slappers", "RSQML_Guard", "RSQML_Shove", "RSQML_Headlock", "RSQML_TwoHand"
 }
