@@ -36,14 +36,6 @@ OptionValue "RSQTHP_Schemes"
 	7, "Random"
 }
 
-// PRESETS -- written by tools/rsmenu/presets.py (Standard = CVARINFO defaults); edit the script, not here
-OptionString "RSQTHP_P_Size"
-{
-	"rsqthp_scale 0.15", "Small"
-	"rsqthp_scale 0.3", "Standard"
-	"rsqthp_scale 0.5", "Large"
-}
-// END PRESETS
 
 // Damage Numbers (damnums by Xaser Acheron, folded in 2026-11-03): its own choices, renamed
 OptionValue "RSQTHP_DmgFor"
@@ -132,7 +124,7 @@ OptionValue "RSQTHP_HitCol"
 {
 	-2, "By Damage Type"
 	-1, "By Hit Strength"
-	-3, "damnums' (Number Colour)"
+	-3, "Classic (below)"
 	0, "White"
 	1, "Silver"
 	2, "Yellow"
@@ -185,94 +177,102 @@ OptionValue "RSQTHP_Ramps"
 	98, "Random"
 }
 
-// RSQ VISUALREWARDS (2026-11-03): one entry, the old pages under it as they were (the owner redesigns the menus later),
-// one Reset All for everything. The front page keeps its name RSQTHP_Options, so every series pk3's menu order still
-// knows it (tools/rsmenu: rsmenu.zs Rank).
+// RSQ VISUALREWARDS: ONE page (owner 11-04 19:36): HP Bars, Damage Numbers, Kill Rewards and Level-Up under short headers
+// (the four old pages folded in), Test and Debug for the raw numbers, Reset All (the series' RSQTHPResetAll: every cvar a
+// row names on both pages). The page keeps its name RSQTHP_Options, so every series pk3's menu order still knows it.
 OptionMenu "RSQTHP_Options"
 {
 	Title "RSQ VISUALREWARDS"
-	Submenu "HP Bars", "RSQTHP_Bars"
-	Submenu "Damage Numbers", "RSQTHP_Numbers"
-	Submenu "Level-Up Displays", "RSQTHP_LevelUp"
-	Submenu "Kill Rewards", "RSQ_KillRewards"
-	StaticText " "
-	Submenu "Tuning and Debug", "RSQTHP_Tuning"
-	StaticText " "
-	SafeCommand "Reset All", "rsqthp_reset", "Reset every RSQ VisualRewards setting (HP bars, damage numbers, level-up displays, Kill Rewards)?"
-}
-
-OptionMenu "RSQTHP_Bars"
-{
-	Title "HP BARS"
+	StaticText "HP Bars", 1
 	Option "HP Bars", "rsqthp_on", "OnOff"
-	Option "Colours", "rsqthp_scheme", "RSQTHP_Schemes"
-	RSQTHPPreset "Size", "RSQTHP_P_Size"
-	StaticText " "
+	Option "Bar Colours", "rsqthp_scheme", "RSQTHP_Schemes"
+	Slider "Bar Size", "rsqthp_scale", 0.05, 1.0, 0.05, 2
 	Option "Full Bright", "rsqthp_bright", "OnOff"
-	Option "Allow Stealth", "rsqthp_stealth", "OnOff"
-	Option "Overheal", "rsqthp_overheal", "OnOff"
-	Option "Markers", "rsqthp_markers", "OnOff"
-	Option "Aimed Only", "rsqthp_aimed", "OnOff"
+	Option "Fade With Stealth", "rsqthp_stealth", "OnOff"
+	Option "Overheal Strip", "rsqthp_overheal", "OnOff"
+	Option "Status Markers", "rsqthp_markers", "OnOff"
+	Option "Only Where I Aim", "rsqthp_aimed", "OnOff"
 	Option "Damage Chunk", "rsqthp_chunk", "OnOff"
-	Option "Ally Colour", "rsqthp_ally", "OnOff"
+	Option "Blue Bars for Allies", "rsqthp_ally", "OnOff"
 	Option "Nearest 24 Only", "rsqthp_nearest", "OnOff"
 	Option "Distance Limit", "rsqthp_limit", "OnOff"
-}
-
-OptionMenu "RSQTHP_Numbers"
-{
-	Title "DAMAGE NUMBERS"
+	StaticText " "
+	StaticText "Damage Numbers", 1
 	Option "Damage Numbers", "rsqthp_dmg", "OnOff"
 	Option "Numbers For", "rsqthp_dmg_all", "RSQTHP_DmgFor"
-	Option "Shotgun Spray", "rsqthp_dmg_spray", "OnOff"
 	Option "Number Font", "rsqthp_dmg_face", "RSQTHP_DmgFonts"
-	Option "Number Colour", "rsqthp_dmg_colour", "RSQTHP_DmgColours"
-	Option "Number Motion", "rsqthp_dmg_physics", "RSQTHP_DmgPhysics"
-	Option "Damage Type Colours", "rsqthp_dmg_types", "OnOff"
+	Slider "Number Size", "rsqthp_dn_size", 0.25, 3.0, 0.05, 2
+	Slider "Word Size", "rsqthp_dn_wordsize", 0.25, 3.0, 0.05, 2
 	Option "Text Quality", "rsqthp_dmg_q", "RSQTHP_DmgQuality"
 	Option "Hit Colours", "rsqthp_dn_hitcol", "RSQTHP_HitCol"
+	Option "Classic Colour", "rsqthp_dmg_colour", "RSQTHP_DmgColours"
+	Option "Classic Type Colours", "rsqthp_dmg_types", "OnOff"
+	Option "Total Colours", "rsqthp_dn_totcol", "RSQTHP_TotCol"
+	Option "Combo Colours", "rsqthp_dn_ramp", "RSQTHP_Ramps"
+	Option "Headshot Colour", "rsqthp_dn_headcol", "RSQTHP_Col"
 	Option "Pop and Settle", "rsqthp_dmg_pop", "OnOff"
+	Option "Motion Without Pop", "rsqthp_dmg_physics", "RSQTHP_DmgPhysics"
 	Option "Size by Hit", "rsqthp_dmg_size", "OnOff"
 	Option "Grow with Distance", "rsqthp_dmg_grow", "OnOff"
 	Option "Running Total", "rsqthp_dmg_total", "OnOff"
 	Option "Kill Slam", "rsqthp_dmg_slam", "OnOff"
+	Option "Combo Counter", "rsqthp_dn_combo", "OnOff"
+	Option "Combo Shake", "rsqthp_dn_shake", "OnOff"
 	Option "Overkill Word", "rsqthp_dmg_overkill", "OnOff"
 	Option "Headshot Word", "rsqthp_dmg_head", "OnOff"
-	Option "Out of Your Face", "rsqthp_dmg_comfort", "OnOff"
-	Option "Most Numbers", "rsqthp_dmg_max", "RSQTHP_DmgMax"
+	Option "Headshot Flash", "rsqthp_dn_flash", "OnOff"
+	Option "Headshot Cycling", "rsqthp_dn_cycle", "OnOff"
+	Option "Shotgun Spray", "rsqthp_dmg_spray", "OnOff"
 	Option "Gains on You", "rsqthp_dmg_gains", "OnOff"
 	Option "Freeze in Hit-Stop", "rsqthp_dmg_hitstop", "OnOff"
 	Option "Numbers in Slow-Mo", "rsqthp_dmg_slowmo", "RSQTHP_DmgSlowMo"
-	Option "Combo Counter", "rsqthp_dn_combo", "OnOff"
-	Slider "Number Size", "rsqthp_dn_size", 0.25, 3.0, 0.05, 2
-	Slider "Word Size", "rsqthp_dn_wordsize", 0.25, 3.0, 0.05, 2
-	Option "Headshot Flash", "rsqthp_dn_flash", "OnOff"
-	Option "Headshot Cycling", "rsqthp_dn_cycle", "OnOff"
-	Option "Combo Shake", "rsqthp_dn_shake", "OnOff"
+	Option "Out of Your Face", "rsqthp_dmg_comfort", "OnOff"
 	Option "Clear of Walls", "rsqthp_dn_clear", "OnOff"
-	Option "Total Colours", "rsqthp_dn_totcol", "RSQTHP_TotCol"
-	Option "Combo Colours", "rsqthp_dn_ramp", "RSQTHP_Ramps"
-	Option "Headshot Colour", "rsqthp_dn_headcol", "RSQTHP_Col"
-}
-
-OptionMenu "RSQTHP_LevelUp"
-{
-	Title "LEVEL-UP DISPLAYS"
+	Option "Most Numbers", "rsqthp_dmg_max", "RSQTHP_DmgMax"
+	StaticText " "
+	StaticText "Kill Rewards", 1
+	Option "Kill Rewards", "rsqgb_kr_enabled", "OnOff"
+	Option "Bits per Kill", "rsqgb_kr_amount", "RSQ_KRAmounts"
+	Option "Boss Fountain", "rsqgb_kr_boss", "RSQ_KRBoss"
+	Option "What Drops", "rsqgb_kr_mix", "RSQ_KRMixes"
+	Option "Bits Vanish After", "rsqgb_kr_life", "RSQ_KRLives"
+	Option "Ammo Bits Give", "rsqgb_kr_ammo_mode", "RSQ_KRAmmoModes"
+	Slider "Bits Fly to Me (m)", "rsqgb_kr_magnet", 0.0, 4.0, 0.5, 1
+	StaticText " "
+	StaticText "Level-Up", 1
 	Option "Player Level-Up", "rsqthp_lvl", "OnOff"
 	Option "Level-Up Slow-Mo", "rsqthp_lvl_slow", "OnOff"
-	Option "Level-Up Band Colour", "rsqthp_lvl_bandcol", "RSQTHP_Col"
-	Option "Level-Up Text Colour", "rsqthp_lvl_textcol", "RSQTHP_Col"
+	Option "Band Colour", "rsqthp_lvl_bandcol", "RSQTHP_Col"
+	Option "Text Colour", "rsqthp_lvl_textcol", "RSQTHP_Col"
 	Option "Weapon Level-Up", "rsqthp_lvl_wpn", "OnOff"
-	Option "Weapon Tag Border", "rsqthp_lvl_tagcol", "RSQTHP_Col"
+	Option "Weapon Tag Colour", "rsqthp_lvl_tagcol", "RSQTHP_Col"
+	StaticText " "
+	Submenu "Test and Debug", "RSQTHP_Test"
+	RSQTHPResetAll "Reset All", "Reset every RSQ VisualRewards setting?"
 }
 
-OptionMenu "RSQTHP_Tuning"
+OptionMenu "RSQTHP_Test"
 {
-	Title "TUNING AND DEBUG"
-	Slider "Size", "rsqthp_scale", 0.05, 1.0, 0.05, 2
+	Title "RSQ VISUALREWARDS: TEST AND DEBUG"
+	StaticText "HP Bars", 1
 	Slider "Far Size", "rsqthp_far", 1.0, 3.0, 0.25, 2
 	Slider "Height", "rsqthp_offset", -0.5, 0.5, 0.05, 2
 	Slider "Limit Distance", "rsqthp_limitdist", 256, 4096, 128, 0
+	StaticText " "
+	StaticText "Kill Rewards", 1
+	Option "Drop Mode", "rsqgb_kr_mode", "RSQ_KRModes"
+	Slider "Health per Bit", "rsqgb_kr_hp_ratio", 1, 100, 1, 0
+	Slider "Drop Chance", "rsqgb_kr_chance", 0, 100, 5, 0
+	Slider "Mix: Health", "rsqgb_kr_ratio_health", 0, 100, 5, 0
+	Slider "Mix: Armour", "rsqgb_kr_ratio_armor", 0, 100, 5, 0
+	Slider "Mix: Ammo", "rsqgb_kr_ratio_ammo", 0, 100, 5, 0
+	Option "Ammo Type 1 Counts", "rsqgb_kr_ammotype1", "OnOff"
+	Option "Ammo Type 2 Counts", "rsqgb_kr_ammotype2", "OnOff"
+	Slider "Range: Fewest", "rsqgb_kr_min", 1, 25, 1, 0
+	Slider "Range: Most", "rsqgb_kr_max", 1, 25, 1, 0
+	Option "Range: Random", "rsqgb_kr_rnd", "OnOff"
+	StaticText " "
+	Option "Debug Log", "rsqgb_kr_debug", "OnOff"
 }
 
 // COLDCITE'S OWN MENU, TAKEN OVER. If coldcite's TopHPBars pk3 is loaded BEFORE this one, his HUD
@@ -285,8 +285,8 @@ OptionMenu "TopHPBars_Settings"
 	Submenu "RSQ VisualRewards", "RSQTHP_Options"
 }
 
-// KILL REWARDS, in plain words (the owner, 2026-11-02: "the menu I do not understand"); moved from RSQ Gun Bonsai VR with
-// Kill Rewards on 2026-11-03, unchanged. SoM's raw numbers are under Tuning on the same page, so nothing he loved is lost.
+// KILL REWARDS' choices (the owner, 2026-11-02: "the menu I do not understand"); moved from RSQ Gun Bonsai VR with Kill
+// Rewards on 2026-11-03. Its rows are on the one page above; SoM's raw numbers on Test and Debug, so nothing is lost.
 OptionValue "RSQ_KRAmounts"
 {
 	0, "$RSQ_MENU_KR_FEW"
@@ -327,29 +327,3 @@ OptionValue "RSQ_KRModes"
 	1, "$RSQ_MENU_KR_RANGE"
 }
 
-OptionMenu "RSQ_KillRewards"
-{
-	Title "$RSQ_MENU_KR_PAGE"
-	Option "$RSQ_MENU_KR", "rsqgb_kr_enabled", "OnOff"
-	StaticText " "
-	Option "$RSQ_MENU_KR_AMOUNT", "rsqgb_kr_amount", "RSQ_KRAmounts"
-	Option "$RSQ_MENU_KR_BOSS", "rsqgb_kr_boss", "RSQ_KRBoss"
-	Option "$RSQ_MENU_KR_MIX", "rsqgb_kr_mix", "RSQ_KRMixes"
-	Option "$RSQ_MENU_KR_LIFE", "rsqgb_kr_life", "RSQ_KRLives"
-	Option "$RSQ_MENU_KR_AMMO", "rsqgb_kr_ammo_mode", "RSQ_KRAmmoModes"
-	Slider "$RSQ_MENU_KR_MAGNET", "rsqgb_kr_magnet", 0.0, 4.0, 0.5, 1
-	StaticText " "
-	StaticText "$RSQ_MENU_KR_TUNING", "Gold"
-	Option "$RSQ_MENU_KR_MODE", "rsqgb_kr_mode", "RSQ_KRModes"
-	Slider "$RSQ_MENU_KR_HPRATIO", "rsqgb_kr_hp_ratio", 1, 100, 1, 0
-	Slider "$RSQ_MENU_KR_CHANCE", "rsqgb_kr_chance", 0, 100, 5, 0
-	Slider "$RSQ_MENU_KR_RHEALTH", "rsqgb_kr_ratio_health", 0, 100, 5, 0
-	Slider "$RSQ_MENU_KR_RARMOUR", "rsqgb_kr_ratio_armor", 0, 100, 5, 0
-	Slider "$RSQ_MENU_KR_RAMMO", "rsqgb_kr_ratio_ammo", 0, 100, 5, 0
-	Option "$RSQ_MENU_KR_AT1", "rsqgb_kr_ammotype1", "OnOff"
-	Option "$RSQ_MENU_KR_AT2", "rsqgb_kr_ammotype2", "OnOff"
-	Slider "$RSQ_MENU_KR_MIN", "rsqgb_kr_min", 1, 25, 1, 0
-	Slider "$RSQ_MENU_KR_MAX", "rsqgb_kr_max", 1, 25, 1, 0
-	Option "$RSQ_MENU_KR_RND", "rsqgb_kr_rnd", "OnOff"
-	Option "Debug Log", "rsqgb_kr_debug", "OnOff"
-}

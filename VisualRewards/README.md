@@ -63,7 +63,7 @@ about a metre from your eyes, and pushed off the aim line of both your guns.
 4. Bits a monster drops within 2 m fly to you and are collected, even standing still; walk over the rest. They
    vanish after 7 seconds. **Bits Fly to Me** sets the reach (0 turns it off); the Magnet node in RSQ Gun Bonsai VR
    reaches further.
-5. If the screen feels busy, try **Aimed Only** (a bar only on what your guns point at), **Nearest 24 Only**, or
+5. If the screen feels busy, try **Only Where I Aim** (a bar only on what your guns point at), **Nearest 24 Only**, or
    lower **Most Numbers**.
 
 ## Controls
@@ -72,7 +72,7 @@ VisualRewards reads no buttons. It reacts to what you do.
 
 | Action | How (VR) | Notes |
 |---|---|---|
-| See a monster's bar | Hurt it | With Aimed Only on: point either hand's gun at it. The bar stays half a second after you look away. |
+| See a monster's bar | Hurt it | With Only Where I Aim on: point either hand's gun at it. The bar stays half a second after you look away. |
 | Build a combo | Keep hitting the same monster | About 3 seconds without a hit ends the chain. |
 | Collect bits | Stand near them, or walk into them | Bits within Bits Fly to Me (2 m) or Magnet's reach fly to you and are collected without moving. |
 | Gains on your wrist | Pick something up | Health and armour land on your off-hand wrist, ammo on the wrist of the hand that uses it. |
@@ -80,102 +80,91 @@ VisualRewards reads no buttons. It reacts to what you do.
 
 ## Menu
 
-Options → Radiant Silvergun Options → RSQ VisualRewards. One Reset All at the bottom puts every setting on every page
-back to its default.
-
-**HP Bars**
+Options → Radiant Silvergun Options → RSQ VisualRewards: one page (HP Bars, Damage Numbers, Kill Rewards, Level-Up),
+with Test and Debug and Reset All at its foot.
 
 | Row | Default | What it does |
 |---|---|---|
+| *HP Bars* | | |
 | HP Bars | On | Bars over hurt monsters. |
-| Colours | Classic | Classic, Red, Protanopia, Deuteranopia, Tritanopia, High Contrast, Cyan Lavender Orange, Random. RSQ Accessibility's colour-blind setting overrides this. |
-| Size | Standard | Small, Standard or Large. |
+| Bar Colours | Classic | Classic, Red, Protanopia, Deuteranopia, Tritanopia, High Contrast, Cyan Lavender Orange, Random. RSQ Accessibility's colour-blind setting overrides this. |
+| Bar Size | 0.30 | Bar size (0.05 to 1). |
 | Full Bright | Off | Bars ignore sector light. |
-| Allow Stealth | On | A see-through monster's bar is see-through too. |
-| Overheal | On | The strip for health above full. |
-| Markers | On | Hooked, stunned, locked, gripped, frozen, held, miniboss and raised icons. |
-| Aimed Only | Off | A bar only over the monster either hand's gun points at, even at full health. |
+| Fade With Stealth | On | A see-through monster's bar is see-through too. |
+| Overheal Strip | On | The strip for health above full. |
+| Status Markers | On | Hooked, stunned, locked, gripped, frozen, held, miniboss and raised icons. |
+| Only Where I Aim | Off | A bar only over the monster either hand's gun points at, even at full health. |
 | Damage Chunk | Off | The health your hit took off stays lit for half a second, then drains. |
-| Ally Colour | Off | Friendly monsters, such as Brutal Doom's marines, get a blue bar. |
+| Blue Bars for Allies | Off | Friendly monsters, such as Brutal Doom's marines, get a blue bar. |
 | Nearest 24 Only | Off | Only the 24 nearest bars are drawn. |
 | Distance Limit | Off | No bars beyond Limit Distance. |
-
-**Damage Numbers**
-
-| Row | Default | What it does |
-|---|---|---|
+| *Damage Numbers* | | |
 | Damage Numbers | On | Numbers on hits. |
 | Numbers For | Monsters Only | Or All Shootable (never your own body). |
-| Shotgun Spray | Off | One number per pellet instead of one per target per tic. |
 | Number Font | JFO Metal | JFO Metal, Ermac, Classic Doom, Classic Doom (small). |
-| Number Colour | Default | Colour used when Hit Colours is set to damnums'. |
-| Number Motion | Toss | Toss or Float, when Pop and Settle is off. |
-| Damage Type Colours | On | Colour by damage type, when Hit Colours is set to damnums'. |
+| Number Size | 1.00 | Digit size. |
+| Word Size | 1.00 | Size of the words, the combo and the level-up text. |
 | Text Quality | Quest | Quest (half-resolution glyphs) or PCVR. |
-| Hit Colours | By Damage Type | By Damage Type, By Hit Strength, damnums', a fixed colour, or Random. |
+| Hit Colours | By Damage Type | By Damage Type, By Hit Strength, Classic (the two Classic rows below), a fixed colour, or Random. |
+| Classic Colour | Default | Colour used when Hit Colours is Classic. |
+| Classic Type Colours | On | Colour by damage type, when Hit Colours is Classic. |
+| Total Colours | Follow Combo | The total's colour: follows the combo ramp, a fixed colour, or Random. |
+| Combo Colours | White Yellow Orange Red | Six colour ramps, or Random (a fresh ramp each chain). |
+| Headshot Colour | Gold | Any palette colour, or Random. |
 | Pop and Settle | On | White flash, snap out, arc away, fade. |
+| Motion Without Pop | Toss | Toss or Float, when Pop and Settle is off. |
 | Size by Hit | Off | Bigger hits draw a little bigger. |
 | Grow with Distance | Off | Hit numbers grow with distance like the bars. |
 | Running Total | On | A chain's hits roll up in one total above the bar. |
 | Kill Slam | On | The total punches once on the kill. |
+| Combo Counter | On | The "xN" beside the bar. |
+| Combo Shake | On | The total and combo shake a little from x5. |
 | Overkill Word | Off | OVERKILL when the last hit went well past zero. |
 | Headshot Word | On | HEADSHOT over Brutal Doom's head hits. |
-| Out of Your Face | On | Numbers stay about a metre away and off both guns' aim lines. |
-| Most Numbers | 12 | Only this many of the nearest numbers show (6, 12, 24, 48). |
+| Headshot Flash | On | A headshot's number starts white for a few tics. Never with Photosensitive Mode. |
+| Headshot Cycling | On | A shimmer and bobbing letters on headshots. |
+| Shotgun Spray | Off | One number per pellet instead of one per target per tic. |
 | Gains on You | On | +health, +armour and +ammo fly to your wrist. |
 | Freeze in Hit-Stop | On | A number on a frozen monster holds until it moves again. |
 | Numbers in Slow-Mo | World Time | Slow with the world, or move at your own speed. |
-| Combo Counter | On | The "xN" beside the bar. |
-| Number Size | 1.00 | Digit size. |
-| Word Size | 1.00 | Size of the words, the combo and the level-up text. |
-| Headshot Flash | On | A headshot's number starts white for a few tics. Never with Photosensitive Mode. |
-| Headshot Cycling | On | A shimmer and bobbing letters on headshots. |
-| Combo Shake | On | The total and combo shake a little from x5. |
+| Out of Your Face | On | Numbers stay about a metre away and off both guns' aim lines. |
 | Clear of Walls | On | Numbers are traced clear of walls and ceilings. |
-| Total Colours | Follow Combo | The total's colour: follows the combo ramp, a fixed colour, or Random. |
-| Combo Colours | White Yellow Orange Red | Six colour ramps, or Random (a fresh ramp each chain). |
-| Headshot Colour | Gold | Any palette colour, or Random. |
-
-**Level-Up Displays**
-
-| Row | Default | What it does |
-|---|---|---|
-| Player Level-Up | On | The LEVEL UP band. |
-| Level-Up Slow-Mo | Off | A short slow-motion pulse while the band is readable. Needs RSQ SlowMo. |
-| Level-Up Band Colour | Gold | Band colour, or Random. |
-| Level-Up Text Colour | Gold | "LEVEL UP" colour, or Random. |
-| Weapon Level-Up | On | The tag that rises off the gun. |
-| Weapon Tag Border | Gold | The tag's border colour, or Random. |
-
-**Kill Rewards**
-
-| Row | Default | What it does |
-|---|---|---|
+| Most Numbers | 12 | Only this many of the nearest numbers show (6, 12, 24, 48). |
+| *Kill Rewards* | | |
 | Kill Rewards | On | Monsters burst into bits when they die. |
-| Bits per Kill | Standard (1 per 10) | Few (1 per 20 health), Standard (1 per 10), Many (1 per 5), or Custom. |
+| Bits per Kill | Standard (1 per 10) | Few (1 per 20 health), Standard (1 per 10), Many (1 per 5), or Custom (Health per Bit on Test and Debug). |
 | Boss Fountain | x3 | Bits multiplier for bosses (x1, x3, x5). |
-| What Drops | Custom (below) | Even Mix, Mostly Health, Mostly Armour, Mostly Ammo, or the custom mix. |
+| What Drops | Custom (Test and Debug) | Even Mix, Mostly Health, Mostly Armour, Mostly Ammo, or Custom (the mix on Test and Debug). |
 | Bits Vanish After | 7 s | 7 s, 15 s, 30 s, 1 min or Never. |
 | Ammo Bits Give | Any Gun I Carry | Or The Gun in Hand. |
-| Bits Fly to Me | 2 | Metres from which bits fly to you (0 off). |
-| Drop Mode | By Health | By Health, or Range (a random count between the two Range rows). |
-| Custom: Health per Bit | 10 | Health per bit when Bits per Kill is Custom. |
-| Drop Chance % | 50 | Chance each bit drops. A boss always drops every bit. |
-| Custom Mix: Health / Armour / Ammo | 15 / 20 / 65 | Weights for the custom mix. |
-| Ammo Type 1 Counts | On | A gun's main ammo can drop. |
-| Ammo Type 2 Counts (clips) | Off | A gun's second ammo type can drop too. |
-| Range: Fewest Bits / Most Bits | 1 / 3 | The Range mode's limits. |
-| Range: Random Between | On | Range mode picks a random count. |
-| Debug Log | Off | One console line per kill. |
+| Bits Fly to Me (m) | 2 | Metres from which bits fly to you (0 off). |
+| *Level-Up* | | |
+| Player Level-Up | On | The LEVEL UP band. |
+| Level-Up Slow-Mo | Off | A short slow-motion pulse while the band is readable. Needs RSQ SlowMo. |
+| Band Colour | Gold | Band colour, or Random. |
+| Text Colour | Gold | "LEVEL UP" colour, or Random. |
+| Weapon Level-Up | On | The tag that rises off the gun. |
+| Weapon Tag Colour | Gold | The tag's border colour, or Random. |
+| Reset All | | Every setting on both pages back to its default. |
 
-**Tuning and Debug**
+**Test and Debug**
 
 | Row | Default | What it does |
 |---|---|---|
-| Size | 0.30 | Bar size. |
+| *HP Bars* | | |
 | Far Size | 2.00 | How much bars grow at range (1 = off). |
 | Height | 0.10 | Bar height above the sprite, as a share of its height. |
 | Limit Distance | 1536 | The distance used by Distance Limit, in map units. |
+| *Kill Rewards* | | |
+| Drop Mode | By Health | By Health, or Range (a random count between the two Range rows). |
+| Health per Bit | 10 | Health per bit when Bits per Kill is Custom. |
+| Drop Chance | 50 | Chance each bit drops. A boss always drops every bit. |
+| Mix: Health / Armour / Ammo | 15 / 20 / 65 | Weights for the custom mix. |
+| Ammo Type 1 Counts | On | A gun's main ammo can drop. |
+| Ammo Type 2 Counts | Off | A gun's second ammo type can drop too (clip mods). |
+| Range: Fewest / Most | 1 / 3 | The Range mode's limits. |
+| Range: Random | On | Range mode picks a random count. |
+| Debug Log | Off | One console line per kill. |
 
 ## Works with
 
