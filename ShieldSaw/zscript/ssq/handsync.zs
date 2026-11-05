@@ -16,7 +16,7 @@
 //
 // THE FIX, two layers:
 //  1. EXACT, per frame (RSQ Whip's climb and lash already do this, input.zs / whip.zs): the machine with the hands
-//     measures each FRAME the controller against that same frame's pawn (flat) and that frame's eye
+//     measures each FRAME the controller against that same frame's pawn (flat; on PCVR the frame's eye) and that frame's eye
 //     (RenderEvent.ViewPos, height) -- the controller's own offset, with nothing of the body's motion in it -- and
 //     sends it when it changes. The last one before a tic is the one the tic uses. Body() + that offset is the hand.
 //  2. Without a fresh one (menus, the first tics, a renderer that never calls RenderOverlay): the play-side estimate.
@@ -65,13 +65,23 @@ class SSQ_HandSync : StaticEventHandler
 		if (consoleplayer < 0 || consoleplayer >= MAXPLAYERS || !playeringame[consoleplayer]) return;
 		let mo = players[consoleplayer].mo;
 		if (!mo || !mo.OverrideAttackPosDir || mo.AttackPos == mo.OffhandPos) return;
-		int a = Pack(mo.AttackPos - (mo.pos.x, mo.pos.y, e.ViewPos.z));
-		int b = Pack(mo.OffhandPos - (mo.pos.x, mo.pos.y, e.ViewPos.z));
+		// measured from what THIS renderer hung the hands on (owner 11-04 20:08, PCVR: "strafing while going up the
+		// stairs fires off a melee swoosh"). PCVR (vr_mode 10, OpenVR) hangs them off the frame's interpolated eye in X/Y
+		// as well (gl_openvr.cpp:1282 GetHandTransform: r_viewpoint.CenterEyePos, which is RenderEvent.ViewPos), so
+		// against the pawn they wobbled by up to a tic of walking every frame. Rig 2026-11-04, that placement emulated:
+		// RSQ Melee's empty-hand glove punched a monster beside the stairs with the hands still (5 in 20 walks); the off
+		// hand's offset read up to 16 m/s at ~17 fps, 0 with this. OpenXR (Quest, the rig) uses the pawn's X/Y as before.
+		Vector3 ref = OpenVR() ? e.ViewPos : (mo.pos.x, mo.pos.y, e.ViewPos.z);
+		int a = Pack(mo.AttackPos - ref);
+		int b = Pack(mo.OffhandPos - ref);
 		if (a == 0 || b == 0) return;			// out of range: not a hand
 		if (sentAny && a == sent0 && b == sent1 && level.maptime - sentTic < RESEND && level.maptime >= sentTic) return;
 		sent0 = a; sent1 = b; sentAny = true; sentTic = level.maptime;
 		EventHandler.SendNetworkEvent("SSQ_hs", a, b);
 	}
+
+	// QuestZDoom 17.3's VR_OPENVR (hw_vrmodes.h): PCVR through SteamVR
+	static ui bool OpenVR() { let c = CVar.FindCVar('vr_mode'); return c && c.GetInt() == 10; }
 
 	override void NetworkProcess(ConsoleEvent e)
 	{
