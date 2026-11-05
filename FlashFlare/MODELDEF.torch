@@ -120,3 +120,18 @@ Model RSQFF_TorchCone
 	FrameIndex QFFK Y 0 24
 	FrameIndex QFFK Z 0 25
 }
+
+// ON ITS CLIP (RSQFF_TorchStowed, Show Flashlight; zscript/rsqff/stowed.zs turns it lens up): torch.md3, the flashlight
+// alone (tools/gen_torch.py --stowed: x -9.75 .. 9.75, the lens +x, centred, measured), the held light's skins (glow off),
+// at the flare's 0.34 (cm to map units: 19.5 cm long), turned by the actor's pitch.
+Model RSQFF_TorchStowed
+{
+	Path "models/rsqff"
+	Model 0 "torch.md3"
+	SurfaceSkin 0 0 "torch.png"
+	SurfaceSkin 0 1 "torchlens.png"
+	Scale 0.34 0.34 0.34
+	USEACTORPITCH
+	USEACTORROLL
+	FrameIndex QFFT E 0 0
+}

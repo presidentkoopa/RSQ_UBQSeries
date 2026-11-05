@@ -2,5 +2,5 @@
 // RSQFF_Torches: the flashlight (zscript/rsqff/torch.zs).
 GameInfo
 {
-	AddEventHandlers = "RSQFF_Handler", "RSQFF_Torches"
+	AddEventHandlers = "RSQFF_Handler", "RSQFF_Torches", "RSQFF_Shown"
 }

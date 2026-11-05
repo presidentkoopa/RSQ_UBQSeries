@@ -1,6 +1,7 @@
-// RSQ FlashFlare options, the series' way: ONE front page of real choices; ONE Tuning and Debug page with the numbers and
-// Reset All. CVARINFO.txt says what each does.
-
+// RSQ FnF options, the series' menu (MENU_PASS_BRIEF.md, owner 11-04): ONE page with every option under short headers,
+// On/Off first; ONE sub menu, "Test and Debug", with the light numbers, the hands' speeds, the pocket and clip places, the
+// grip keys and the debug log. No help text, no presets (the old Light Preset's three numbers are on Test and Debug).
+// Reset All (RSQFFResetAll) resets every row on both pages. Nothing here is a Gun Bonsai VR upgrade (no gating line).
 // ---- Radiant Silvergun Options (tools/rsmenu) ----------------------------------------------------
 OptionMenu "RSQ_RSOptions" protected
 {
@@ -22,63 +23,66 @@ AddOptionMenu "RSQ_RSOptions"
 OptionMenu "RSQFF_Options"
 {
 	Title "RSQ FNF (FLASH AND FLARE)"
+	StaticText "Flares", "Gold"
 	Option "Flares", "rsqff_on", "OnOff"
-	RSQFFPreset "Light Preset", "RSQFF_Preset"
-	Option "Subdued Light", "rsqff_subdued", "OnOff"
-	Slider "Burn Time (s)", "rsqff_burn", 10, 180, 5, 0
-	StaticText " "
-	Option "Light It By", "rsqff_light_by", "RSQFF_LightBy"
+	Option "Show Flare", "rsqff_show_flare", "OnOff"
 	Option "Show Hand", "rsqff_hand", "OnOff"
+	Option "Light It By", "rsqff_light_by", "RSQFF_LightBy"
+	Option "Soft Light", "rsqff_subdued", "OnOff"
+	Slider "Burn Time (s)", "rsqff_burn", 10, 180, 5, 0
 	Option "Sparks", "rsqff_sparks", "OnOff"
 	Option "Smoke", "rsqff_smoke", "OnOff"
 	Option "Sounds", "rsqff_sound", "OnOff"
 	StaticText " "
+	StaticText "Supply", "Gold"
 	Slider "Start With", "rsqff_start", 0, 24, 1, 0
 	Option "Boxes in Levels", "rsqff_scatter", "OnOff"
 	Slider "Boxes a Map", "rsqff_boxes", 0, 8, 1, 0
-	Option "Pocket Refills Each Level", "rsqff_pocket", "OnOff"
-	Slider "Pocket Refills To", "rsqff_pocket_n", 1, 24, 1, 0
+	Option "Refill Each Level", "rsqff_pocket", "OnOff"
+	Slider "Refill To", "rsqff_pocket_n", 1, 24, 1, 0
 	StaticText " "
+	StaticText "Flashlight", "Gold"
 	Option "Flashlight", "rsqff_fl_on", "OnOff"
+	Option "Show Flashlight", "rsqff_show_torch", "OnOff"
 	Option "Beam Size", "rsqff_fl_size", "RSQFF_BeamSize"
 	Option "Beam Colour", "rsqff_fl_color", "RSQFF_BeamColour"
 	Option "Beam Quality", "rsqff_fl_quality", "RSQFF_BeamQuality"
-	Option "DarkDoomz Flashlight Stands Down", "rsqff_fl_ddz", "OnOff"
+	Option "Turn Off DarkDoomz Light", "rsqff_fl_ddz", "OnOff"
 	StaticText " "
-	Submenu "Tuning and Debug", "RSQFF_Tuning"
+	Submenu "Test and Debug", "RSQFF_Test"
+	RSQFFResetAll "Reset All", "Reset all RSQ FnF settings?"
 }
 
-OptionMenu "RSQFF_Tuning"
+OptionMenu "RSQFF_Test"
 {
-	Title "TUNING AND DEBUG"
+	Title "RSQ FNF: TEST AND DEBUG"
+	StaticText "Flare Light", "Gold"
 	Slider "Light Radius", "rsqff_radius", 48, 480, 4, 0
 	Slider "Most Lit at Once", "rsqff_cap", 1, 12, 1, 0
 	Slider "Flicker Step (tics)", "rsqff_flicker", 1, 10, 1, 0
 	StaticText " "
-	Slider "Strike Speed Down (m/s)", "rsqff_strike", 0.5, 4.0, 0.1, 1
+	StaticText "Hands", "Gold"
+	Slider "Strike Speed (m/s)", "rsqff_strike", 0.5, 4.0, 0.1, 1
 	Slider "Throw Speed (m/s)", "rsqff_swing", 0.5, 6.0, 0.25, 2
 	Slider "Throw Strength", "rsqff_throw", 0.25, 3.0, 0.05, 2
 	Slider "Arc", "rsqff_lift", 0.0, 1.0, 0.05, 2
+	TextField "Off Grip Keys", "rsqff_keys_off"
 	StaticText " "
-	Slider "Pocket Forward (m)", "rsqff_pocket_f", -0.10, 0.40, 0.01, 2
-	Slider "Pocket Toward Main Hand (m)", "rsqff_pocket_l", -0.40, 0.40, 0.01, 2
-	Slider "Pocket Height (m)", "rsqff_pocket_u", -0.90, 0.10, 0.01, 2
-	Slider "Pocket Reach (m)", "rsqff_pocket_r", 0.04, 0.30, 0.01, 2
+	StaticText "Pocket", "Gold"
+	Slider "Forward (m)", "rsqff_pocket_f", -0.10, 0.40, 0.01, 2
+	Slider "Toward Main Hand (m)", "rsqff_pocket_l", -0.40, 0.40, 0.01, 2
+	Slider "Height (m)", "rsqff_pocket_u", -0.90, 0.10, 0.01, 2
+	Slider "Reach (m)", "rsqff_pocket_r", 0.04, 0.30, 0.01, 2
 	StaticText " "
-	Slider "Flashlight Clip Forward (m)", "rsqff_fl_clip_f", -0.10, 0.40, 0.01, 2
-	Slider "Flashlight Clip Toward Off Hand (m)", "rsqff_fl_clip_l", -0.40, 0.40, 0.01, 2
-	Slider "Flashlight Clip Height (m)", "rsqff_fl_clip_u", -0.90, 0.10, 0.01, 2
-	Slider "Flashlight Clip Reach (m)", "rsqff_fl_clip_r", 0.04, 0.30, 0.01, 2
+	StaticText "Flashlight Clip", "Gold"
+	Slider "Forward (m)", "rsqff_fl_clip_f", -0.10, 0.40, 0.01, 2
+	Slider "Toward Off Hand (m)", "rsqff_fl_clip_l", -0.40, 0.40, 0.01, 2
+	Slider "Height (m)", "rsqff_fl_clip_u", -0.90, 0.10, 0.01, 2
+	Slider "Reach (m)", "rsqff_fl_clip_r", 0.04, 0.30, 0.01, 2
 	StaticText " "
 	Option "Debug Log", "rsqff_debug", "OnOff"
 	StaticText " "
-	SafeCommand "Reset All", "resetcvar rsqff_on rsqff_radius rsqff_cap rsqff_flicker rsqff_subdued rsqff_burn rsqff_sparks rsqff_smoke rsqff_sound rsqff_start rsqff_scatter rsqff_boxes rsqff_pocket rsqff_pocket_n rsqff_light_by rsqff_strike rsqff_swing rsqff_throw rsqff_lift rsqff_hand rsqff_pocket_f rsqff_pocket_l rsqff_pocket_u rsqff_pocket_r rsqff_keys_off rsqff_debug rsqff_fl_on rsqff_fl_size rsqff_fl_color rsqff_fl_quality rsqff_fl_ddz rsqff_fl_clip_f rsqff_fl_clip_l rsqff_fl_clip_u rsqff_fl_clip_r", "Reset all RSQ FnF settings?"
-}
-
-OptionString "RSQFF_Preset"
-{
-	"rsqff_radius 140 rsqff_cap 3 rsqff_flicker 4", "Quest"
-	"rsqff_radius 220 rsqff_cap 6 rsqff_flicker 3", "PCVR"
+	RSQFFResetAll "Reset All", "Reset all RSQ FnF settings?"
 }
 
 OptionValue "RSQFF_BeamSize"
@@ -121,7 +125,7 @@ OptionValue "RSQFF_BeamColour"
 
 OptionValue "RSQFF_LightBy"
 {
-	0, "Strike (flick down)"
+	0, "Strike"
 	1, "Trigger"
-	2, "Strike or Trigger"
+	2, "Either"
 }

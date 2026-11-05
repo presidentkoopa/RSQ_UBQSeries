@@ -596,6 +596,19 @@ class RSQFF_Torches : EventHandler
 		if (pmo.pitch < 20) myBodyYaw += Actor.DeltaAngle(myBodyYaw, pmo.angle) * 0.04;
 		return myBodyYaw;
 	}
+	// THE YAW THE CLIP IS DRAWN AT (stowed.zs, Show Flashlight): the body BodyYaw last gave for the console player (no easing
+	// step here); another player's: the rig's body when it is loaded, else where he faces
+	double ShownYaw(PlayerPawn pmo)
+	{
+		let it = ServiceIterator.Find("RSQTR_BodyService");
+		Service s;
+		while (s = it.Next())
+		{
+			double y = s.GetDouble("body.yaw", "", 0, 0, pmo);
+			if (y != 999) return y;
+		}
+		return (pmo.player == players[consoleplayer] && bodyPrimed) ? myBodyYaw : pmo.angle;
+	}
 }
 
 // WHAT THE FLASHLIGHT IS DOING, FOR ANY MOD THAT ASKS BY NAME (a holster of RSQ Tactical Rig's). intArg: the player.

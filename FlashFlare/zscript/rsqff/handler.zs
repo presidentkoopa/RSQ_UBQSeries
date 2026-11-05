@@ -452,6 +452,19 @@ class RSQFF_Handler : EventHandler
 		if (pmo.pitch < 20) myBodyYaw += Actor.DeltaAngle(myBodyYaw, pmo.angle) * 0.04;
 		return myBodyYaw;
 	}
+	// THE YAW THE POCKET IS DRAWN AT (stowed.zs, Show Flare): the body BodyYaw last gave for the console player (no easing
+	// step here); another player's: the rig's body when it is loaded, else where he faces
+	double ShownYaw(PlayerPawn pmo)
+	{
+		let it = ServiceIterator.Find("RSQTR_BodyService");
+		Service s;
+		while (s = it.Next())
+		{
+			double y = s.GetDouble("body.yaw", "", 0, 0, pmo);
+			if (y != 999) return y;
+		}
+		return (pmo.player == players[consoleplayer] && bodyPrimed) ? myBodyYaw : pmo.angle;
+	}
 
 	// ================================================================ the hand's speed (RSQ Grenade hand.zs Sample / Peak)
 	// Each tic the hand's step relative to the pawn, in the tracking space's frame (snap and stick turns turn the pawn AND

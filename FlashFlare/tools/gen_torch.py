@@ -125,10 +125,28 @@ def cone_surface(sides, rings, rad_frac, u0, u1, name):
     return dict(name=name, shader='cone.png', frames=frames, uvs=uvs, tris=tris)
 
 
+def stowed():
+    """torch.md3: the flashlight alone, ON ITS CLIP (RSQFF_TorchStowed, the owner 11-04: "always show ... flashlight"):
+    the same profile and lens, cm, the long axis along +x (the lens +x), centred on its own length (-9.75 .. +9.75), the
+    glow disc left clear (it is off on the clip)."""
+    mid = (PROFILE[0][0] + PROFILE[-1][0]) / 2.0
+    def xf(p): return (p[0] - mid, p[1], p[2])
+    def nf(n): return n
+    surfs = [lathe(PROFILE, 20, xf, nf, 'body', 'torch.png'),
+             disc(LENS_X, LENS_R, 20, xf, nf, 'lens', 'torchlens.png')]
+    lo, hi = write_md3(os.path.join(M, 'torch.md3'), surfs)
+    print('torch.md3: x %.2f..%.2f (lens +x), y %.2f..%.2f, z %.2f..%.2f cm' % (lo[0], hi[0], lo[1], hi[1], lo[2], hi[2]))
+    Image.new('RGBA', (4, 4), (0, 0, 0, 0)).save(os.path.join(S, 'QFFTE0.png'))   # its model-only sprite (RSQFF_TorchStowed)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--bd')
+    ap.add_argument('--stowed', action='store_true', help='write only torch.md3 (the flashlight on its clip)')
     a = ap.parse_args()
+    if a.stowed:
+        stowed()
+        return
     psrc = os.path.join(SRC, 'fbx_s192_L.md3')
     if a.bd:
         open(psrc, 'wb').write(zipfile.ZipFile(a.bd).read('models/rsq/fbx/fbx_s192_L.md3'))
@@ -202,7 +220,7 @@ def main():
     data = png_with_grab(open(out, 'rb').read(), 32, 32)
     open(out, 'wb').write(data)
     # placeholders for the model-only sprites: the flashlight in the hand (QFFT A-D) and the cones (QFFC, QFFK A-Z)
-    names = ['QFFT%s0' % c for c in 'ABCD'] + ['QFF%s%s0' % (s, chr(65 + k)) for s in 'CK' for k in range(FRAMES)]
+    names = ['QFFT%s0' % c for c in 'ABCDE'] + ['QFF%s%s0' % (s, chr(65 + k)) for s in 'CK' for k in range(FRAMES)]
     for nm in names:
         Image.new('RGBA', (4, 4), (0, 0, 0, 0)).save(os.path.join(S, nm + '.png'))
     print('wrote models/rsqff (rsqff_pumphand, torch_h, cone_lo, cone_hi, skins), sprites/rsqff (QFFSA0, %d placeholders)' % len(names))

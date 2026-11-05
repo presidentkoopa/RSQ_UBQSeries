@@ -47,7 +47,7 @@ and the throw is measured against your body, so walking and turning never count 
 - A cap on how many flares give light at once (3 on the Quest preset, 6 on PCVR). Light one more and the oldest lying
   flare fades dark over half a second and burns on as flame and sparks. The one in your hand goes dark last. When a
   flare burns out, the last one that went dark lights again.
-- Subdued Light: twice the radius at half the brightness, for a softer look.
+- Soft Light: twice the radius at half the brightness, for a softer look.
 
 **The flashlight**
 - On a clip on your chest, on your off hand's own side. Grip there with the off hand: it comes out switched on. That
@@ -71,8 +71,8 @@ and the throw is measured against your body, so walking and turning never count 
 
 1. Add RSQ_FnF.pk3 to your load order. Make sure dynamic lights are on. Play in VR: the flare is taken by hand only.
 2. Bring your off hand across your chest toward your main-hand side, on your upper chest, and grip.
-   You hear the pickup sound and feel a tick. The pocket has no marker: if nothing happens, move a little and grip
-   again, or move the pocket under Tuning and Debug.
+   You hear the pickup sound and feel a tick. A flare you carry hangs at the pocket (Show Flare), so you can see where to
+   reach; if nothing happens, move a little and grip again, or move the pocket under Test and Debug.
    The flashlight is the mirror: your off hand on its own side of your chest, grip, and it comes out on.
 3. Flick the flare hand down hard. Too gentle? Pull the off-hand trigger instead, or lower Strike Speed Down.
 4. Hold it up and walk. Then swing and grip to throw it ahead of you.
@@ -101,51 +101,40 @@ and the throw is measured against your body, so walking and turning never count 
 
 ## Menu
 
-Options → Radiant Silvergun Options → RSQ FnF (Flash and Flare)
+Options → Radiant Silvergun Options → RSQ FnF (Flash and Flare). One page, and one sub menu, **Test and Debug**. Nothing
+here is a Gun Bonsai VR upgrade.
 
 | Row | Default | What it does |
 |---|---|---|
+| **Flares** | | |
 | Flares | On | The whole mod |
-| Light Preset | Quest | Quest: radius 140, 3 lit at once, flicker every 4 tics. PCVR: 220, 6, 3 |
-| Subdued Light | Off | Double radius, half brightness |
-| Burn Time (s) | 60 | How long a flare burns (10-180) |
-| Light It By | Strike or Trigger | Strike (flick down), Trigger, or Strike or Trigger |
+| Show Flare | On | A flare you carry hangs at the chest pocket; with RSQ Tactical Rig's flare holster, at that holster |
 | Show Hand | On | Draw the hand holding the flare |
+| Light It By | Either | Strike (flick down), Trigger, or Either |
+| Soft Light | Off | Double radius, half brightness |
+| Burn Time (s) | 60 | How long a flare burns (10-180) |
 | Sparks | On | Sparks off the burning end |
 | Smoke | Off | A thin smoke trail |
 | Sounds | On | Strike, burning, burnout and landing sounds |
-| Start With | 2 | Flares at a new game and after dying (0-24) |
+| **Supply** | | |
+| Start With | 2 | Flares at a new game (0-24) |
 | Boxes in Levels | On | Boxes of 6 beside a map's items |
 | Boxes a Map | 2 | Most boxes in one map (0-8) |
-| Pocket Refills Each Level | Off | Tops the pocket up at each new level |
-| Pocket Refills To | 4 | ...to this many (1-24) |
+| Refill Each Level | Off | Tops the pocket up at each new level |
+| Refill To | 4 | ...to this many (1-24) |
+| **Flashlight** | | |
 | Flashlight | On | The flashlight on its clip |
+| Show Flashlight | On | The flashlight hangs on its chest clip while it is not in the hand |
 | Beam Size | Medium | Narrow (6/14 degrees), Medium (10/22), Wide (16/32) |
 | Beam Colour | Warm White | Warm White, the series' 17 colours, or Random (a new one each time you switch it on) |
-| Beam Quality | Quest | Quest: range 448, a one-layer beam, the trace every 2nd tic. PCVR: 640, a two-layer beam, a little dust. High: 896, more dust |
-| DarkDoomz Flashlight Stands Down | On | While yours is on, DarkDoomz's flashlight is switched off with its own toggle |
+| Beam Quality | Quest | Quest: range 448, one-layer beam, trace every 2nd tic. PCVR: 640, two layers, a little dust. High: 896, more dust |
+| Turn Off DarkDoomz Light | On | While yours is on, DarkDoomz's flashlight is switched off with its own toggle |
+| Reset All | | Every setting on both pages back to default |
 
-**Tuning and Debug**
-
-| Row | Default | What it does |
-|---|---|---|
-| Light Radius | 140 | The light's radius, map units |
-| Most Lit at Once | 3 | Flares giving light at the same time |
-| Flicker Step (tics) | 4 | How often the light's size and colour change |
-| Strike Speed Down (m/s) | 1.4 | How hard the downward flick must be |
-| Throw Speed (m/s) | 2.0 | How fast the hand must move for a press to throw |
-| Throw Strength | 1.25 | Throw speed as a multiple of the hand's |
-| Arc | 0.25 | Share of the throw's speed added upward |
-| Pocket Forward (m) | 0.12 | The pocket, forward of the chest line |
-| Pocket Toward Main Hand (m) | 0.15 | ...toward your main hand's side |
-| Pocket Height (m) | -0.28 | ...under the eyes |
-| Pocket Reach (m) | 0.11 | How near the hand must be |
-| Flashlight Clip Forward (m) | 0.10 | The clip, forward of the chest line |
-| Flashlight Clip Toward Off Hand (m) | 0.17 | ...toward your off hand's side |
-| Flashlight Clip Height (m) | -0.22 | ...under the eyes |
-| Flashlight Clip Reach (m) | 0.12 | How near the hand must be |
-| Debug Log | Off | Flare lines in the console |
-| Reset All | | Every setting back to default |
+**Test and Debug**: Light Radius (140; the old Quest preset, PCVR was 220), Most Lit at Once (3; PCVR 6), Flicker Step (4
+tics; PCVR 3); Strike Speed (1.4 m/s), Throw Speed (2.0 m/s), Throw Strength (1.25), Arc (0.25), Off Grip Keys (443 436);
+Pocket Forward / Toward Main Hand / Height / Reach (0.12 / 0.15 / -0.28 / 0.11 m); Flashlight Clip Forward / Toward Off
+Hand / Height / Reach (0.10 / 0.17 / -0.22 / 0.12 m); Debug Log (Off); Reset All.
 
 ## Works with
 
