@@ -39,6 +39,7 @@ class RSQLS_Learn : StaticEventHandler
 	Array<int>    hits;
 	Array<double> pSpeed, pGrav, pElev, pYaw;
 	Array<bool>   pKnown;
+	Array<bool>   pStraight;   // its shot was seen flying straight (a NOGRAVITY missile): never a lob
 
 	private Array<Actor> pend;
 	private transient double cSp[2];
@@ -59,7 +60,7 @@ class RSQLS_Learn : StaticEventHandler
 		if (i >= 0) return i;
 		keys.Push(k); hits.Push(0);
 		for (int b = 0; b < BINS; b++) { binsH.Push(0); binsV.Push(0); }
-		pSpeed.Push(0); pGrav.Push(0); pElev.Push(0); pYaw.Push(0); pKnown.Push(false);
+		pSpeed.Push(0); pGrav.Push(0); pElev.Push(0); pYaw.Push(0); pKnown.Push(false); pStraight.Push(false);
 		return keys.Size() - 1;
 	}
 
@@ -106,7 +107,7 @@ class RSQLS_Learn : StaticEventHandler
 		// A GUN THAT FIRES HITSCANS IS NOT A LOB (rig 2026-10-31): Brutal Doom's shotguns also throw gravity tracers
 		// and particles along the barrel, which read as a grenade's arc and dropped the dot short after the first
 		// shot. A hit seen for this weapon means its shot is the straight line.
-		if (me.hits[i] > 0) return false, 0, 0, 0, 0;
+		if (me.hits[i] > 0 || me.pStraight[i]) return false, 0, 0, 0, 0;
 		return true, me.pSpeed[i], me.pGrav[i], me.pElev[i], me.pYaw[i];
 	}
 
@@ -130,7 +131,10 @@ class RSQLS_Learn : StaticEventHandler
 	override void WorldThingSpawned(WorldEvent e)
 	{
 		let m = e.Thing;
-		if (m && m.bMISSILE && !m.bNOGRAVITY && m.Gravity > 0) pend.Push(m);
+		// Straight missiles too (owner 11-05: "lasersight on bd plasma rifle appears as an arc dotted line"): the plasma
+		// ball is NOGRAVITY, so only the gun's gravity sparks were seen and learned as a lob. Now the fastest missile a
+		// hand puts out decides: a straight one marks the gun straight (see WorldTick).
+		if (m && m.bMISSILE) pend.Push(m);
 	}
 
 	override void WorldTick()
@@ -145,9 +149,10 @@ class RSQLS_Learn : StaticEventHandler
 			// WHICH HAND THREW IT (rig 2026-10-31: the nearer grip picked the wrong hand when both were close, and a
 			// launcher's grenade was learned onto the empty off hand): of the hands it left near (within 96), the one
 			// it left ALONG -- its velocity nearest that hand's aim, within 30 deg.
-			double g = level.gravity * m.CurSector.gravity * m.Gravity * 0.00125;
+			bool lobs = !m.bNOGRAVITY && m.Gravity > 0;
+			double g = lobs ? level.gravity * m.CurSector.gravity * m.Gravity * 0.00125 : 0;
 			Vector3 v = m.vel;
-			if (m.pos.z > m.floorz + 2) v.z += g;      // one tic of gravity has been applied since it left: put it back
+			if (lobs && m.pos.z > m.floorz + 2) v.z += g;      // one tic of gravity has been applied since it left: put it back
 			double sp = v.Length();
 			Vector3 was = m.pos - m.vel;
 			bool dbg = RSQLS_Hand.Flag("rsqls_debug", players[consoleplayer], false);
@@ -179,6 +184,15 @@ class RSQLS_Learn : StaticEventHandler
 			let pmo = PlayerPawn(m.target);
 			if (!pmo) continue;
 			int i = Slot(KeyOf(w, AltHeld(pmo.player, h == 1)));
+			// THE SHOT FLIES STRAIGHT (plasma, rockets, BFG): the gun is not a lob, whatever sparks it also throws.
+			if (m.bNOGRAVITY || m.Gravity <= 0)
+			{
+				pStraight[i] = true;
+				pKnown[i] = false;
+				if (RSQLS_Hand.Flag("rsqls_debug", players[consoleplayer], false))
+					Console.Printf("[RSQLS] STRAIGHT %s: %s speed %.1f", keys[i], m.GetClassName(), sp);
+				continue;
+			}
 			// A known shot is not unlearned by something much slower (a smoke puff a tic later).
 			if (pKnown[i] && sp < pSpeed[i] * 0.5) continue;
 			Vector3 v = cV[h];
