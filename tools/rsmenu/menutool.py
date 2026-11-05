@@ -5,7 +5,11 @@
   menutool.py defaults <CVARINFO>           name = default, one per line
   menutool.py check <mod folder>            every page reachable from the front page, every cvar a
                                             row names exists, every preset's "Standard" equals the
-                                            CVARINFO defaults, every cvar that had a row still has one
+                                            CVARINFO defaults, every cvar that had a row still has one;
+                                            the menu-pass structure (owner 11-04 19:36): the front page's
+                                            only sub menu is "Test and Debug", no page below that, no
+                                            presets, a Reset All on the front page that covers every cvar
+                                            a row names (<P>ResetAll covers them by construction)
 Rows = every item but StaticText; sliders = Slider rows.
 """
 import re, sys, os, glob
@@ -72,7 +76,15 @@ def read_menudefs(paths):
         for k, v in a.items(): adds.setdefault(k, []).extend(v)
     return menus, adds, ovals, order
 
-def is_row(k): return k.lower() != 'statictext'
+def is_row(k): return k.lower() != 'statictext' and not k.lower().endswith('gbline')
+
+def kind(k):
+    """a row kind with the series' prefixed custom kinds folded: <P>GbOption -> option, <P>GbSlider -> slider"""
+    kl = k.lower()
+    if kl.endswith('gboption'): return 'option'
+    if kl.endswith('gbslider'): return 'slider'
+    if kl.endswith('resetall'): return 'resetall'
+    return kl
 
 def counts(rows):
     r = [x for x in rows if is_row(x[0])]
@@ -157,7 +169,7 @@ def main():
         named = set()
         for n in own:
             for k, a in menus[n]:
-                kl = k.lower()
+                kl = kind(k)
                 if kl in ('option', 'slider', 'colorpicker', 'textfield', 'numberfield') and len(a) > 1:
                     c = a[1].lower(); named.add(c)
                     if c not in defs and not c.startswith(('vr_', 'gl_', 'snd_')): print(f'  row {a[0]!r} names unknown cvar {c}'); bad += 1
@@ -175,6 +187,27 @@ def main():
                         for c, v in zip(pr[0::2], pr[1::2]):
                             if c.lower() in defs and not num_eq(defs[c.lower()][1], v):
                                 print(f'  preset {a[0]!r}: Standard sets {c} {v}, default is {defs[c.lower()][1]}'); bad += 1
+        # the menu-pass structure: front -> its one "Test and Debug" sub menu -> nothing deeper; no presets
+        subs = [a for k, a in menus[front] if kind(k) == 'submenu' and len(a) > 1]
+        if [x[0] for x in subs] != ['Test and Debug']:
+            print(f'  STRUCTURE: front page sub menus are {[x[0] for x in subs]}, want exactly ["Test and Debug"]'); bad += 1
+        for n in own:
+            if n == front: continue
+            for k, a in menus[n]:
+                if kind(k) == 'submenu': print(f'  STRUCTURE: page {n} opens another page {a[1:2]}'); bad += 1
+        for n in own:
+            for k, a in menus[n]:
+                if kind(k).endswith('preset'): print(f'  STRUCTURE: preset row {a[0]!r} on {n} (no presets)'); bad += 1
+        resets = [(k, a) for k, a in menus[front] if (kind(k) == 'resetall') or (kind(k) == 'safecommand' and a and a[0] == 'Reset All')]
+        if not resets: print('  NO Reset All on the front page'); bad += 1
+        for k, a in resets:
+            if kind(k) == 'resetall': continue
+            lst = set()
+            for cmd in (a[1].split(';') if len(a) > 1 else []):
+                w = cmd.split()
+                if w and w[0].lower() == 'resetcvar': lst |= set(x.lower() for x in w[1:])
+            miss = sorted(c for c in named if c not in lst and not c.startswith(('vr_', 'gl_', 'snd_')))
+            if miss: print(f'  Reset All misses: {" ".join(miss)}'); bad += 1
         if len(sys.argv) > 3:   # a list of cvars that had rows before: each must still have one
             for c in open(sys.argv[3]).read().split():
                 if c not in named: print(f'  LOST ROW for cvar {c}'); bad += 1
@@ -186,7 +219,7 @@ def main():
         out = set()
         for n in order:
             for k, a in menus[n]:
-                if k.lower() in ('option', 'slider', 'colorpicker', 'textfield', 'numberfield') and len(a) > 1: out.add(a[1].lower())
+                if kind(k) in ('option', 'slider', 'colorpicker', 'textfield', 'numberfield') and len(a) > 1: out.add(a[1].lower())
         print(' '.join(sorted(out)))
 if __name__ == '__main__':
     sys.exit(main() or 0)

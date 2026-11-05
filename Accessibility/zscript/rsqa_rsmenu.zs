@@ -102,6 +102,15 @@ class RSQA_RSMenu : OptionMenu
 		return PAGES.Size();
 	}
 
+	// RSQ Gun Bonsai VR is loaded: its service is here (the same test the mods' own code makes, by name).
+	static bool GbLoaded()
+	{
+		let it = ServiceIterator.Find("RSQ_MeleeUpgradeService");
+		Service s;
+		while (s = it.Next()) if (s.GetClassName() == 'RSQ_MeleeUpgradeService') return true;
+		return false;
+	}
+
 	static int Group(OptionMenuItem it)
 	{
 		int g;
@@ -209,5 +218,269 @@ class OptionMenuItemRSQAPreset : OptionMenuItemOptionBase
 		String text = sel >= 0 ? StringTable.Localize(OptionValues.GetText(mValues, sel)) : "Custom";
 		drawValue(indent, y, OptionMenuSettings.mFontColorValue, text, isGrayed());
 		return indent;
+	}
+}
+
+// ==== GUN BONSAI VR GATING (MENU_PASS_BRIEF.md, owner 11-04) =========================================================
+// When RSQ Gun Bonsai VR is loaded (its service RSQ_MeleeUpgradeService exists), a mod page whose rows are unlocked by
+// Gun Bonsai VR upgrades shows ONE top line, and each row behind an upgrade the player has not learned is greyed out
+// (not hidden, no extra text; a greyed row cannot be selected). Without Gun Bonsai VR: no line, nothing greyed.
+//
+//   RSQAGbLine "Gold"                                            the top line (its text is fixed here; the argument is
+//                                                               its font colour, "" = Gold). Without GBOVR it takes
+//                                                               itself off the page, so it leaves no blank row.
+//   RSQAGbOption "Label", "cvar", "OnOff", "Service", "feature"   an Option row greyed while <feature> is locked
+//   RSQAGbSlider "Label", "cvar", min, max, step, prec, "Service", "feature"   the same for a Slider row
+//
+// THE QUERY (each mod answers for its own gated features, by name, so the menu needs no class of the mod or of GBOVR):
+//   the row finds the service class named "Service" (exact class name, e.g. "RSQGR_Service") and asks it, in ui scope,
+//       GetIntUI("menu.locked", "<feature>")   ->  1 = locked (grey the row), anything else = open
+//   only while Gun Bonsai VR is loaded. The mod answers from what it already caches in play (e.g. the Tactical Rig's
+//   once-a-second GbRefresh of "punlocked" / "plevel"); ui code may read play fields but not call play functions, so
+//   GetIntUI reads the cache, never GBOVR itself. Not in a game (no console player): the mod answers 1 (nothing is
+//   learned yet). A mod that does not answer leaves its rows open (0 is open), so a row can never be greyed by mistake.
+// Same rows, the same query, in every series pk3; asked at most once a menu tic per row.
+
+class OptionMenuItemRSQAGbLine : OptionMenuItemStaticText
+{
+	const TEXT = "GunBonsaiOVR detected. Mod features unlocked via upgrades.";
+
+	OptionMenuItemRSQAGbLine Init(String colour = "")
+	{
+		Super.Init(TEXT, -1, true);
+		mColor = colour.Length() ? Font.FindFontColor(colour) : Font.CR_GOLD;
+		return self;
+	}
+
+	override int Draw(OptionMenuDescriptor desc, int y, int indent, bool selected)
+	{
+		if (RSQA_RSMenu.GbLoaded()) drawLabel(indent, y, mColor);
+		return -1;
+	}
+
+	// Without GBOVR the line takes itself off the open page (the option menu ticks every row of its page each menu
+	// tic, before the first frame is drawn), so the page reads exactly as it does without this row.
+	override void Ticker()
+	{
+		if (RSQA_RSMenu.GbLoaded()) return;
+		let m = OptionMenu(Menu.GetCurrentMenu());
+		if (!m || !m.mDesc) return;
+		let d = m.mDesc;
+		for (int i = 0; i < d.mItems.Size(); i++)
+		{
+			if (d.mItems[i] != self) continue;
+			d.mItems.Delete(i);
+			if (d.mSelectedItem > i) d.mSelectedItem--;
+			// a spacer right under the line at the top of the page goes with it
+			if (i == 0 && d.mItems.Size() > 0 && OptionMenuItemRSQARSLink.IsSpacer(d.mItems[0]))
+			{
+				d.mItems.Delete(0);
+				if (d.mSelectedItem > 0) d.mSelectedItem--;
+			}
+			return;
+		}
+	}
+}
+
+// One row's lock, asked of its own mod's service; shared by the gated row kinds below.
+class RSQA_GbGate ui
+{
+	Name svc;
+	String feature;
+	int tic;
+	bool locked, asked;
+
+	static RSQA_GbGate Make(String service, String feature)
+	{
+		let g = new("RSQA_GbGate");
+		g.svc = service;
+		g.feature = feature;
+		return g;
+	}
+
+	bool IsLocked()
+	{
+		if (!RSQA_RSMenu.GbLoaded()) return false;
+		int t = Menu.MenuTime();
+		if (asked && t == tic) return locked;
+		asked = true;
+		tic = t;
+		locked = false;
+		let it = ServiceIterator.Find(svc);
+		Service s;
+		while (s = it.Next())
+		{
+			if (s.GetClassName() != svc) continue;
+			locked = s.GetIntUI("menu.locked", feature) == 1;
+			break;
+		}
+		return locked;
+	}
+}
+
+class OptionMenuItemRSQAGbOption : OptionMenuItemOption
+{
+	RSQA_GbGate mGate;
+
+	OptionMenuItemRSQAGbOption Init(String label, Name command, Name values, String service, String feature, CVar graycheck = null, int graycheckVal = 0)
+	{
+		Super.Init(label, command, values, graycheck, 0, graycheckVal);
+		mGate = RSQA_GbGate.Make(service, feature);
+		return self;
+	}
+
+	override bool IsGrayed() { return Super.IsGrayed() || (mGate && mGate.IsLocked()); }
+}
+
+class OptionMenuItemRSQAGbSlider : OptionMenuItemSlider
+{
+	RSQA_GbGate mGate;
+
+	OptionMenuItemRSQAGbSlider Init(String label, Name command, double min, double max, double step, int showval, String service, String feature, CVar graycheck = null, int graycheckVal = 0)
+	{
+		Super.Init(label, command, min, max, step, showval, graycheck, graycheckVal);
+		mGate = RSQA_GbGate.Make(service, feature);
+		return self;
+	}
+
+	override bool IsGrayed() { return Super.IsGrayed() || (mGate && mGate.IsLocked()); }
+}
+
+// ==== THE "TEST AND DEBUG" PATTERN (MENU_PASS_BRIEF.md; owner 11-04 19:36 "mod options -> test and debug") ========
+// Radiant Silvergun Options is one flat list of the loaded mods. Each mod has ONE page with all its options (most
+// important first, plain 1-4 word labels, On/Off rows first, sliders only where a number matters to play, small
+// groups under short StaticText headers, no description lines, no presets), and at its foot
+//       StaticText " "
+//       Submenu "Test and Debug", "<P>_Test"
+//       RSQAResetAll "Reset All", "Reset all <Mod name> settings?"
+// and ONE page   OptionMenu "<P>_Test" { Title "<MOD NAME>: TEST AND DEBUG" ... }   holding the raw numbers,
+// distances, timings, grip-key text fields and debug logs. No other sub page anywhere: a long list (colours,
+// holster positions) goes on the mod page or the Test and Debug page under short headers.
+//
+// RSQAResetAll is a confirmed "Reset All" row that resets EVERY setting a row names on its page and on every page its
+// Submenu rows open under the same menu-name prefix (the part up to the first "_", e.g. RSQTR_), recursively: Option,
+// Slider, ColorPicker, TextField, NumberField rows, the Gb rows above, and every cvar a Preset row sets. So a row
+// added later is covered without editing a list. A third argument adds cvars that have no row (space separated).
+// Engine settings a page may show (vr_, gl_, snd_ ...) are never reset. The pages are read as they were parsed, so a
+// page Accessibility's Simple menus has thinned is still reset in full; RSQ Accessibility's "Reset Every Mod" runs
+// this row like any other Reset All (it is a SafeCommand labelled "Reset All").
+class OptionMenuItemRSQAResetAll : OptionMenuItemSafeCommand
+{
+	OptionMenuDescriptor mPage;
+	Array<OptionMenuItem> mParsed;   // the page's rows above this one, as parsed
+	String mExtra;
+
+	OptionMenuItemRSQAResetAll Init(OptionMenuDescriptor desc, String label, String prompt = "", String extra = "")
+	{
+		Super.Init(label, 'none', prompt);
+		mPage = desc;
+		if (desc) mParsed.Copy(desc.mItems);
+		mExtra = extra;
+		return self;
+	}
+
+	override bool MenuEvent(int mkey, bool fromcontroller)
+	{
+		if (mkey == Menu.MKEY_MBYes)
+		{
+			int n = ResetNow();
+			Console.Printf("%s: %d settings reset", mPage ? String.Format("%s", mPage.mMenuName) : "Reset All", n);
+			return true;
+		}
+		return Super.MenuEvent(mkey, fromcontroller);
+	}
+
+	// Every cvar this row resets (the menu's own check and probes read it too).
+	void Names(out Array<String> names)
+	{
+		names.Clear();
+		Array<Name> seen;
+		String pre = mPage ? Prefix(mPage.mMenuName) : "";
+		if (mPage) seen.Push(mPage.mMenuName);
+		Collect(mParsed, pre, names, seen, 0);
+		if (mPage) Collect(mPage.mItems, pre, names, seen, 0);
+		Array<String> t;
+		mExtra.Split(t, " ", TOK_SKIPEMPTY);
+		for (int i = 0; i < t.Size(); i++) Add(names, t[i]);
+	}
+
+	int ResetNow()
+	{
+		Array<String> names;
+		Names(names);
+		int n = 0;
+		for (int i = 0; i < names.Size(); i++)
+		{
+			let cv = CVar.FindCVar(names[i]);
+			if (!cv) continue;
+			cv.ResetToDefault();
+			n++;
+		}
+		return n;
+	}
+
+	static String Prefix(Name page)
+	{
+		String s = String.Format("%s", page);
+		s = s.MakeLower();
+		int u = s.IndexOf("_");
+		return u >= 0 ? s.Left(u + 1) : s;
+	}
+
+	static void Add(out Array<String> names, String n)
+	{
+		String l = n.MakeLower();
+		static const String ENGINE[] = { "vr_", "gl_", "snd_", "vid_", "r_", "m_", "hud_", "am_", "con_", "in_", "joy_" };
+		for (int i = 0; i < ENGINE.Size(); i++) if (l.IndexOf(ENGINE[i]) == 0) return;
+		if (l == "" || l == "none") return;
+		for (int i = 0; i < names.Size(); i++) if (names[i] == l) return;
+		names.Push(l);
+	}
+
+	static void Collect(Array<OptionMenuItem> rows, String pre, out Array<String> names, out Array<Name> seen, int depth)
+	{
+		for (int i = 0; i < rows.Size(); i++)
+		{
+			let it = rows[i];
+			if (!it) continue;
+			if (it is "OptionMenuItemSubmenu")
+			{
+				if (it is "OptionMenuItemCommand" || depth >= 4) continue;
+				Name to = it.GetAction();
+				if (to == 'RSQ_RSOptions' || pre == "") continue;
+				String tl = String.Format("%s", to);
+				tl = tl.MakeLower();
+				if (tl.IndexOf(pre) != 0) continue;
+				bool done = false;
+				for (int j = 0; j < seen.Size(); j++) if (seen[j] == to) { done = true; break; }
+				if (done) continue;
+				seen.Push(to);
+				let d = OptionMenuDescriptor(MenuDescriptor.GetDescriptor(to));
+				if (d) Collect(d.mItems, pre, names, seen, depth + 1);
+				continue;
+			}
+			let ob = OptionMenuItemOptionBase(it);
+			String cls = it.GetClassName();
+			cls = cls.MakeLower();
+			if (ob && cls.IndexOf("preset") >= 0)
+			{
+				// a preset row: each choice is "cvar value cvar value ..."
+				int cnt = OptionValues.GetCount(ob.mValues);
+				for (int c = 0; c < cnt; c++)
+				{
+					Array<String> t;
+					String pairs = OptionValues.GetTextValue(ob.mValues, c);
+					pairs.Split(t, " ", TOK_SKIPEMPTY);
+					for (int k = 0; k + 1 < t.Size(); k += 2) Add(names, t[k]);
+				}
+				continue;
+			}
+			if (it is "OptionMenuItemOption" || it is "OptionMenuItemSlider" || it is "OptionMenuItemColorPicker"
+				|| it is "OptionMenuFieldBase")
+			{
+				Name a = it.GetAction();
+				Add(names, String.Format("%s", a));
+			}
+		}
 	}
 }
