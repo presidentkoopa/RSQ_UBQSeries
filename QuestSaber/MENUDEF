@@ -1,16 +1,9 @@
-// RSQ Saber options, modelled on Brutal Doom Quest 2.0's options page (the owner, 10-28): ONE front
-// page with every real choice as a short Title Case row, groups split by blank lines, choices NAMED
-// (a slider only where the number itself matters). No help text on the page.
-//
-// ELEVEN ROWS, ONE PAGE (the owner, 10-30: "Yes, sure, 11 rows, one page. Let's do it."). The old
-// page was 142 value rows across 14 pages, and 97 of the cvars behind them wanted the value they
-// already had. The Tuning and Debug tree is gone, and so are the presets: a preset row set five rows
-// that no longer exist, and the two it really stood for -- Damage and Size -- are now rows of their
-// own. Fifteen cvars are still live with no row here; they are listed and explained in CVARINFO.
-// Defaults are unchanged except ubqs_dual_mode (1 -> 2), so nobody's saved settings move.
-// 11-01 (worklist #14): two rows for behaviour that was on in code with no row or CVARINFO entry --
-// Main-Hand Force Push (ubqs_alt) and Brutal Doom Sword Becomes Saber (ubqs_bd_sword), both On, both in
-// Reset All. The Controls page lost its Second Saber key the same day.
+// RSQ Saber options, the series' menu (MENU_PASS_BRIEF.md, owner 11-04): ONE page with every option, short Title Case
+// rows under short headers, On/Off first, sliders only where the number matters to play; ONE sub menu, "Test and Debug",
+// with the raw numbers and the debug view. No help text, no presets. Rows behind a Gun Bonsai VR upgrade are UBQSGbOption
+// rows: with RSQ Gun Bonsai VR loaded they grey while the upgrade is not learned (or always, where the upgrade replaces
+// the row), asked of UBQS_SaberService "menu.locked" (zscript.txt). Reset All (UBQSResetAll) resets every row on both
+// pages. Defaults are unchanged except Show Sabers (new, On).
 
 // ---- Radiant Silvergun Options (tools/rsmenu) ----------------------------------------------------
 // UNCHANGED, AND IT MUST STAY UNCHANGED. The series' one Options entry. Every series pk3 carries this
@@ -36,6 +29,7 @@ AddOptionMenu "RSQ_RSOptions"
 }
 // ----------------------------------------------------------------------------------------------------
 
+
 OptionValue "UBQS_Colors"
 {
 	0, "Blue"
@@ -47,10 +41,8 @@ OptionValue "UBQS_Colors"
 	6, "Cyan"
 	7, "White"
 }
-// START WITH DUAL SABERS. 2: the second saber is the off hand's weapon (it starts there; RSQ Tactical
-// Rig's off-hand holster puts it away and draws it). 0: one saber. The old value 1 -- the Dual key mode
-// -- was retired with the key (the owner, 11-01: "No more second saber key"); a saved 1 reads as 2 and
-// the host rewrites it to 2 (UBQS_Bridge.WorldLoaded and DualMode() in zscript.txt).
+// START WITH DUAL SABERS. 2: the second saber is the off hand's weapon. 0: one saber. A saved 1 (the retired Dual key
+// mode) reads as 2 (UBQS_Bridge.WorldLoaded and DualMode() in zscript.txt).
 OptionValue "UBQS_DualStart"
 {
 	2, "On"
@@ -61,11 +53,8 @@ OptionValue "UBQS_DualStartPlace"
 	0, "Put Away"
 	1, "In Hand"
 }
-// THE FIVE BLADES THAT EXIST, AND THEIR REAL LENGTHS. ubqs_size is not continuous: ResolveSizeIdx
-// snaps it to the nearest of 0.70 0.85 1.00 1.15 1.30 (zscript.txt:30, :466-478), and the blade is
-// 26.0 map units times that (:851), which at vr_vunits_per_meter 34 (hw_vrmodes.cpp:94) is 54 65 76
-// 88 99 cm. The labels are those lengths, so the row cannot promise a blade the mod cannot draw.
-// Two more scales would need a MODELDEF regen -- see CHANGES.md Part C.
+// THE FIVE BLADES THAT EXIST: ubqs_size snaps to 0.70 0.85 1.00 1.15 1.30 (zscript.txt ResolveSizeIdx), 26.0 map units
+// times that at 34 units a metre: 54 65 76 88 99 cm.
 OptionValue "UBQS_Length"
 {
 	0.70, "54 cm"
@@ -83,16 +72,12 @@ OptionValue "UBQS_LengthOff"
 	1.15, "88 cm"
 	1.30, "99 cm"
 }
-
-// HIT-STOP (the owner's pick 2, off by default): how long a cut monster freezes, in tics
-// (surveys/01_MELEE 3.6: "3 is a tap, 6 is a heavy, 10 reads as a bug").
-// THE BARE FORCE HAND'S MESH (the owner, 11-03: Ermac's Force hand "goes nuts", opening and flaring).
 OptionValue "UBQS_FHandMesh"
 {
 	0, "Our Hand"
 	1, "Original"
 }
-
+// HIT-STOP: tics a cut monster freezes (surveys/01_MELEE 3.6: "3 is a tap, 6 is a heavy, 10 reads as a bug")
 OptionValue "UBQS_HitStop"
 {
 	0, "Off"
@@ -100,48 +85,104 @@ OptionValue "UBQS_HitStop"
 	4, "Medium"
 	6, "Heavy"
 }
+// ubqs_lights: lights per blade (0 none, 1 one: Quest, 2, 3: PC)
+OptionValue "UBQS_Lights"
+{
+	0, "Off"
+	1, "Low"
+	2, "Medium"
+	3, "High"
+}
+OptionValue "UBQS_Sound"
+{
+	0, "Graflex"
+	1, "Vader"
+	2, "Rogue Rebel"
+}
+OptionValue "UBQS_DeflectAim"
+{
+	1, "Where I Look"
+	0, "At the Shooter"
+	2, "Mirrored"
+}
+OptionValue "UBQS_Lefty"
+{
+	-1, "Auto"
+	0, "Right"
+	1, "Left"
+}
+OptionValue "UBQS_Diag"
+{
+	0, "Off"
+	1, "Blade Line"
+	2, "Glow Readout"
+}
 
 OptionMenu "UBQS_Options"
 {
 	Title "RSQ SABER"
+	UBQSGbLine ""
+	StaticText "Sabers", "Gold"
 	Option "Sabers", "ubqs_on", "OnOff"
-	Option "Start With Dual Sabers", "ubqs_dual_mode", "UBQS_DualStart"
+	Option "Start With Saber", "ubqs_start", "OnOff"
+	Option "Dual Sabers", "ubqs_dual_mode", "UBQS_DualStart"
 	Option "Second Saber Starts", "ubqs_dual_start", "UBQS_DualStartPlace"
-	Option "Main-Hand Force Push", "ubqs_alt", "OnOff"
-	Option "Brutal Doom Sword Becomes Saber", "ubqs_bd_sword", "OnOff"
-	Slider "Damage", "ubqs_damage", 15, 60, 3, 0
-	Slider "Max Lock-On Targets", "ubqs_locks", 1, 5, 1, 0
-	StaticText " "
-	Option "Main Blade Colour", "ubqs_color", "UBQS_Colors"
-	Option "Main Blade Length", "ubqs_size", "UBQS_Length"
-	Option "Off Blade Colour", "ubqs_color_off", "UBQS_Colors"
-	Option "Off Blade Length", "ubqs_size_off", "UBQS_LengthOff"
-	Option "Off Blade Light", "ubqs_lights_offhand", "OnOff"
-	StaticText " "
-	Slider "Swing to Cut", "ubqs_swing_cut", 3, 20, 0.5, 1
-	Slider "Blade Block Width", "ubqs_blade_width", 0.5, 6, 0.5, 1
-	Option "Hit-Stop", "ubqs_hitstop", "UBQS_HitStop"
-	Option "Lightning Beam", "ubqs_lightning_beam", "OnOff"
+	Option "Show Sabers", "ubqs_show", "OnOff"
 	Option "Hand on the Hilt", "ubqs_hilt_hand", "OnOff"
-	Option "Force Hand", "ubqs_fhand_mesh", "UBQS_FHandMesh"
-	Option "Force Only With the Saber", "ubqs_force_saber", "OnOff"
+	Option "Sword Becomes Saber", "ubqs_bd_sword", "OnOff"
+	StaticText " "
+	StaticText "Blades", "Gold"
+	Option "Main Colour", "ubqs_color", "UBQS_Colors"
+	Option "Main Length", "ubqs_size", "UBQS_Length"
+	Option "Off Colour", "ubqs_color_off", "UBQS_Colors"
+	Option "Off Length", "ubqs_size_off", "UBQS_LengthOff"
+	Option "Blade Light", "ubqs_lights", "UBQS_Lights"
+	Option "Off Blade Light", "ubqs_lights_offhand", "OnOff"
+	Option "Saber Sound", "ubqs_saber_sound", "UBQS_Sound"
+	StaticText " "
+	StaticText "Fighting", "Gold"
+	Slider "Damage", "ubqs_damage", 15, 60, 3, 0
+	Slider "Swing to Cut", "ubqs_swing_cut", 3, 20, 0.5, 1
+	Option "Turned Shots Go", "ubqs_deflect_aim", "UBQS_DeflectAim"
+	UBQSGbOption "Hit-Stop", "ubqs_hitstop", "UBQS_HitStop", "UBQS_SaberService", "StrikeTrue"
 	Option "Perfect Parry Slow-Mo", "ubqs_parry_slowmo", "OnOff"
+	UBQSGbSlider "Lock-On Targets", "ubqs_locks", 1, 5, 1, 0, "UBQS_SaberService", "BattleMeditation"
+	Option "Rumble", "ubqs_haptics", "OnOff"
 	StaticText " "
-	Submenu "Controls", "UBQS_Keys"
+	StaticText "The Force", "Gold"
+	Option "The Force", "ubqs_force", "OnOff"
+	UBQSGbOption "Force Push on Alt", "ubqs_alt", "OnOff", "UBQS_SaberService", "ForcePush"
+	UBQSGbOption "Force Jump", "ubqs_force_jump", "OnOff", "UBQS_SaberService", "ForceJump"
+	Option "Force Only With Saber", "ubqs_force_saber", "OnOff"
+	Option "Force Hand", "ubqs_fhand_mesh", "UBQS_FHandMesh"
+	UBQSGbOption "Lightning Beam (Gun Bonsai VR)", "ubqs_lightning_beam", "OnOff", "UBQS_SaberService", "ForceLightning"
 	StaticText " "
-	SafeCommand "Reset All", "resetcvar ubqs_on ubqs_dual_mode ubqs_dual_start ubqs_alt ubqs_bd_sword ubqs_damage ubqs_locks ubqs_color ubqs_size ubqs_color_off ubqs_size_off ubqs_lights_offhand ubqs_swing_cut ubqs_blade_width ubqs_hitstop ubqs_parry_slowmo ubqs_start ubqs_world_saber ubqs_lights ubqs_deflect_aim ubqs_deflect_lead ubqs_throw_min ubqs_force ubqs_force_jump ubqs_lightning_beam ubqs_hilt_hand ubqs_fhand_mesh ubqs_force_saber ubqs_force_gesture ubqs_gesture_straight ubqs_saber_sound ubqs_haptics ubqs_lefty ubqs_remote_level ubqs_diag", "Reset all RSQ Saber settings?"
-}
-
-// The SAME bind targets as Customize Controls (KEYCONF's aliases), so a key bound in either place
-// shows as bound in both. (The Second Saber key is gone, the owner 11-01: the second saber is an off-hand
-// weapon, put away and drawn at its Tactical Rig holster.) These three are the only inputs the mod has that are not the trigger, and
-// the second blade and the douse are reachable nowhere else -- so this page stays.
-// (The old duplicate "Summon / Dismiss Remote" Command row is gone: the Control row above it binds
-// the same alias.)
-OptionMenu "UBQS_Keys"
-{
-	Title "CONTROLS"
+	StaticText "Controls", "Gold"
 	Control "Second Blade", "ubqs_blade2_toggle"
 	Control "Blade On / Off", "ubqs_ignite_toggle"
 	Control "Training Remote", "ubqs_remote_toggle"
+	StaticText " "
+	Submenu "Test and Debug", "UBQS_Test"
+	UBQSResetAll "Reset All", "Reset all RSQ Saber settings?", "ubqs_world_saber"
+}
+
+OptionMenu "UBQS_Test"
+{
+	Title "RSQ SABER: TEST AND DEBUG"
+	StaticText "Blade", "Gold"
+	Slider "Block Width", "ubqs_blade_width", 0.5, 6, 0.5, 1
+	Slider "Shot Lookahead (tics)", "ubqs_deflect_lead", 1, 6, 0.5, 1
+	Slider "Throw Needs (speed)", "ubqs_throw_min", 0.5, 4, 0.1, 1
+	Slider "Swing Hum Boost", "ubqs_hum_swing", 0, 3, 0.1, 1
+	StaticText " "
+	StaticText "Force Gestures", "Gold"
+	Slider "Gesture Sharpness", "ubqs_force_gesture", 0.5, 6, 0.25, 2
+	Slider "Gesture Straightness", "ubqs_gesture_straight", 0.2, 0.95, 0.05, 2
+	StaticText " "
+	StaticText "Other", "Gold"
+	Slider "Remote Start Level", "ubqs_remote_level", 1, 3, 1, 0
+	Option "Rumble Hand", "ubqs_lefty", "UBQS_Lefty"
+	Option "Debug View", "ubqs_diag", "UBQS_Diag"
+	StaticText " "
+	UBQSResetAll "Reset All", "Reset all RSQ Saber settings?", "ubqs_world_saber"
 }

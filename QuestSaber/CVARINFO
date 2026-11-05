@@ -18,7 +18,8 @@
 // THE ONE EXCEPTION is ubqs_haptic_clash, whose call site falls back to 0 against a default of 1
 // (zscript.txt:2723) -- so that one needs a code edit, not just a deletion. See CHANGES.md Part B.
 
-// ---- THE MENU: eleven rows, one page ---------------------------------------------------------------
+// ---- THE MENU (since the 11-04 menu pass every cvar here has a row on the page or on Test and Debug, except
+// ubqs_world_saber and the retired ubqs_blade_guard; the "not on the menu" notes below are history) ------------------
 server bool  ubqs_on            = true;   // the saber at all
 server int   ubqs_dual_mode     = 2;      // "Start With Dual Sabers": 2 On (the second saber is the off hand's
                                           // weapon; RSQ Tactical Rig's holster puts it away and draws
@@ -64,8 +65,9 @@ server int   ubqs_hitstop       = 0;      // (owner's pick 2, 2026-10-31; off by
 server bool  ubqs_parry_slowmo  = false;  // (owner's pick 5; off by default) a perfect parry asks RSQ SlowMo
                                           // for half a second of slow motion (rsm_pulse 500 35); nothing
                                           // happens without SlowMo
+user  bool   ubqs_show          = true;   // Show Sabers (owner 11-04): each saber you own and do not hold is drawn in its RSQ
+                                          // Tactical Rig holster (the rig reads this by name); without the rig there is no spot
 user  float  ubqs_hum_swing     = 1.1;    // how much louder the hum gets on a hard swing (0 = steady)
-server float ubqs_blade_guard   = 6.0;    // retired 2026-10-31 (ubqs_blade_width replaces it); read by nothing
 
 server bool  ubqs_bd_sword      = true;   // (worklist #14, menu row 11-01) Brutal Doom's sword (DSweap)
                                           // becomes the saber: its pickups and the one you carry. Read

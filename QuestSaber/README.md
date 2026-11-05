@@ -89,13 +89,13 @@ once, like a Force pull.
 | Block / deflect | Hold the blade in a shot's path | Hitscan: swung always blocks, still blocks 70% |
 | Parry | Swing the blade into the shot as it arrives | The shot goes back |
 | Cross guard / blade lock | Cross your two blades in front of you | Nothing from in front gets through |
-| Mark targets | Hold the saber hand's trigger and sweep across enemies | Up to Max Lock-On Targets |
+| Mark targets | Hold the saber hand's trigger and sweep across enemies | Up to Lock-On Targets |
 | Throw | Let go of the trigger with marks, or with a forward snap | The off-hand saber throws with its own trigger |
 | Call it back | Trigger or alt fire while it is thrown | |
-| Force Push (main hand) | Main saber's alt fire | Main-Hand Force Push on |
+| Force Push (main hand) | Main saber's alt fire | Force Push on Alt on |
 | Force Push / Pull / Grip | Off-hand saber's alt fire held (or the bare Force hand's trigger or alt), then thrust / yank / hold still on an enemy | |
 | Force Jump | Hold jump with a saber or the Force hand out | |
-| Second blade on / off | Bindable key; or the alt fire when Main-Hand Force Push is off | Lit, the staff twirls |
+| Second blade on / off | Bindable key; or the alt fire when Force Push on Alt is off | Lit, the staff twirls |
 | Blade on / off | Bindable key (douse it) | |
 | Training remote | Bindable key | Summon or dismiss |
 
@@ -106,32 +106,48 @@ once, like a Force pull.
 
 ## Menu
 
-Options → Radiant Silvergun Options → RSQ Saber
+Options → Radiant Silvergun Options → RSQ Saber. One page, and one sub menu, **Test and Debug**. With RSQ Gun Bonsai VR
+loaded the page starts with "GunBonsaiOVR detected. Mod features unlocked via upgrades." and the rows marked GB below are
+greyed while their upgrade is not learned (Hit-Stop and Lock-On Targets stay greyed: under Gun Bonsai VR the Strike True
+and Battle Meditation upgrades replace them).
 
 | Row | Default | What it does |
 |---|---|---|
+| **Sabers** | | |
 | Sabers | On | The whole mod |
-| Start With Dual Sabers | On | A second saber in the off hand |
+| Start With Saber | On | Begin holding one (off: pick it up) |
+| Dual Sabers | On | A second saber, the off hand's weapon |
 | Second Saber Starts | Put Away | In its Tactical Rig holster (without the Rig, in the off hand, blade off), or In Hand |
-| Main-Hand Force Push | On | The main saber's alt fire pushes (off: it toggles the second blade) |
-| Brutal Doom Sword Becomes Saber | On | Brutal Doom's sword turns into this saber |
-| Damage | 30 | The cut's damage (15-60) |
-| Max Lock-On Targets | 5 | Enemies one throw can mark (1-5) |
-| Main Blade Colour | Blue | Eight colours |
-| Main Blade Length | 76 cm | 54, 65, 76, 88 or 99 cm |
-| Off Blade Colour | Red | Eight colours |
-| Off Blade Length | Same as Main | Or a length of its own |
-| Off Blade Light | On | The off blade's own dynamic light |
-| Swing to Cut | 8.0 | How hard a swing must be to cut (3-20) |
-| Blade Block Width | 1.5 | How far off the blade's line a shot is still blocked |
-| Hit-Stop | Off | Off, Light, Medium, Heavy |
-| Lightning Beam | On | Force Lightning drawn as a beam (Force Lightning comes with RSQ Gun Bonsai VR) |
+| Show Sabers | On | Each saber you own and don't hold is drawn in its RSQ Tactical Rig holster (needs the Rig) |
 | Hand on the Hilt | On | The hand round each hilt |
-| Force Hand | Our Hand | BD22 VR's hand, or Original (Ermac's) |
-| Force Only With the Saber | On | The Force hand only while the saber is in the main hand |
+| Sword Becomes Saber | On | Brutal Doom's sword turns into this saber |
+| **Blades** | | |
+| Main Colour / Off Colour | Blue / Red | Eight colours |
+| Main Length / Off Length | 76 cm / Same as Main | 54, 65, 76, 88 or 99 cm |
+| Blade Light | Low | Lights per blade: Off, Low (Quest), Medium, High |
+| Off Blade Light | On | The off blade's own light |
+| Saber Sound | Graflex | Graflex, Vader, Rogue Rebel |
+| **Fighting** | | |
+| Damage | 30 | The cut's damage (15-60) |
+| Swing to Cut | 8.0 | How hard a swing must be to cut (3-20) |
+| Turned Shots Go | Where I Look | Where I Look, At the Shooter, Mirrored |
+| Hit-Stop (GB) | Off | Off, Light, Medium, Heavy |
 | Perfect Parry Slow-Mo | Off | Half a second of RSQ SlowMo on a perfect parry |
-| Controls | | Second Blade, Blade On / Off, Training Remote |
-| Reset All | | Every setting back to default |
+| Lock-On Targets (GB) | 5 | Enemies one throw can mark (1-5) |
+| Rumble | On | Controller buzz |
+| **The Force** | | |
+| The Force | On | Push, pull, grip, jump |
+| Force Push on Alt (GB) | On | The main saber's alt fire pushes (off: it toggles the second blade) |
+| Force Jump (GB) | On | Hold jump with a saber or the Force hand out |
+| Force Only With Saber | On | The Force hand only while the saber is in the main hand |
+| Force Hand | Our Hand | BD22 VR's hand, or Original (Ermac's) |
+| Lightning Beam (Gun Bonsai VR) (GB) | On | Force Lightning drawn as a beam; Force Lightning exists only as a Gun Bonsai VR upgrade |
+| **Controls** | | Second Blade, Blade On / Off, Training Remote |
+| Reset All | | Every setting on both pages back to default |
+
+**Test and Debug**: Block Width (1.5), Shot Lookahead (3 tics), Throw Needs (1.5), Swing Hum Boost (1.1), Gesture
+Sharpness (2.0), Gesture Straightness (0.55), Remote Start Level (2), Rumble Hand (Auto), Debug View (Off: Blade Line,
+Glow Readout), Reset All.
 
 ## Works with
 
