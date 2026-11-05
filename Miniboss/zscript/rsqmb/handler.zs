@@ -89,6 +89,7 @@ class RSQMB_Handler : EventHandler
 		fxOn       = CLocal('rsqmb_fx', 1) != 0;
 		double fr  = CLocal('rsqmb_fx_range', 4000);
 		fxRange2   = fr * fr;
+		fxDensity  = clamp(int(CLocal('rsqmb_fx_density', 0)), 0, 2);
 	}
 
 	private void FindServices()
@@ -117,6 +118,7 @@ class RSQMB_Handler : EventHandler
 		Refresh();
 		double t0 = debug ? MSTimeF() : 0;
 		Tick2();
+		if (bosses.Size() && fxOn && UseSprites()) FxEnsureDriver();
 		if (debug) { double dt = MSTimeF() - t0; costMs += dt; costTics++; }
 	}
 
@@ -445,7 +447,7 @@ class RSQMB_Handler : EventHandler
 		bool inSlow = WindowActive();
 		OpenWindow();
 		a.A_StartSound("imp/shotx", CHAN_AUTO, 0, 1.0, 0.6);
-		if (fxOn && b.mb) b.Shatter(RSQMB_Boss.Mid(a), RSQMB_Boss.Mid(b.mb));
+		FxBreak(b, a);
 		if (killer && inSlow) Award(killer, "Thrall Slow Kill", 100);
 		if (debug) Console.Printf("RSQMB thrall %d of boss %d died (killer %s) living %d window %d tics%s",
 			i, b.idx, killer ? "player" : "none", b.Living(), windowEnd - level.maptime, inSlow ? " CHAIN" : "");
@@ -456,7 +458,7 @@ class RSQMB_Handler : EventHandler
 		if (b.done) return;
 		bool greedy = b.Living() > 0 && !b.enraged;
 		b.Finish();
-		if (fxOn && b.mb) RSQMB_Boss.Burst(RSQMB_Boss.Mid(b.mb), b.col, 48, 7.0, 10);
+		FxBossDied(b);
 		if (b.enraged) EndRage(b);
 		if (killer)
 		{
@@ -579,8 +581,10 @@ class RSQMB_Handler : EventHandler
 	void PrintState()
 	{
 		if (debug && costTics > 0)
-			Console.Printf("RSQMB cost: %.4f ms/tic script over %d tics, particles %.1f/tic", costMs / costTics, costTics, fxParticles / double(costTics));
-		costMs = 0; costTics = 0; fxParticles = 0;
+			Console.Printf("RSQMB cost: %.4f ms/tic script over %d tics, particles %.1f/tic, sprites %.1f/tic shown (peak %d, pool %d, density %d), %.1f moves/tic, %d spawned",
+				costMs / costTics, costTics, fxParticles / double(costTics), fxShown / double(costTics), fxPeak, fxp ? fxp.pool.Size() : 0, fxDensity,
+				fxWrites / double(costTics), fxSpawned);
+		costMs = 0; costTics = 0; fxParticles = 0; fxShown = 0; fxWrites = 0; fxSpawned = 0; fxPeak = 0;
 		Console.Printf("RSQ_Miniboss: %d miniboss(es), window %d tics, rage %d (%d monsters), SlowMo %s, Score %s",
 			bosses.Size(), max(0, windowEnd - level.maptime), rageCount, raged.Size(),
 			Loaded("RSQSM_Service") ? "yes" : "no", Loaded("RS_ScoreService") ? "yes" : "no");

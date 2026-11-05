@@ -23,6 +23,13 @@ AddOptionMenu "RSQ_RSOptions"
 }
 // ----------------------------------------------------------------------------------------------------
 
+OptionValue "RSQMB_Density"
+{
+	0, "Low"
+	1, "Medium"
+	2, "High"
+}
+
 OptionValue "RSQMB_Often"
 {
 	25, "Rare"
@@ -38,6 +45,7 @@ OptionMenu "RSQMB_Options"
 	Option "Minibosses", "rsqmb_enabled", "OnOff"
 	Option "How Often", "rsqmb_map_chance", "RSQMB_Often"
 	Option "Effects", "rsqmb_fx", "OnOff"
+	Option "Effects Density", "rsqmb_fx_density", "RSQMB_Density"
 	StaticText " "
 	StaticText "Fight", 1
 	Slider "Thralls", "rsqmb_thralls", 1, 8, 1, 0

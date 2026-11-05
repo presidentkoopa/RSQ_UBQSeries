@@ -7,8 +7,8 @@
 // its dead thralls rise again (A_RaiseSelf, the engine's own raise: Champions re-dresses a revived
 // champion itself). On its last life BUDDHA goes back to what the monster had.
 //
-// The FX are particles, not actors: no thinkers, no collision, nothing saved, nothing for RSQ_SlowMo to
-// slow. The original's link trails were rsqmb density x thralls ACTORS warped every tic (30 x n).
+// The FX are the original's IWAD sprites drawn as a pooled set of VisualThinkers (fx.zs); these particles are only
+// the fallback when a sprite can't be found. The original's link trails were 30 ACTORS a thrall warped every tic.
 // ============================================================================
 
 class RSQMB_Boss : Thinker
@@ -21,6 +21,7 @@ class RSQMB_Boss : Thinker
 	int    maxHP;
 	bool   ownBuddha;            // the monster's own BUDDHA before we took it
 	int    invulUntil, reviveUntil;
+	int    invulFrom;            // the tic it last lost a life (the flames light from it)
 	double toughness, outMult;   // inherited: damage taken / toughness, damage dealt x outMult
 	Array<String> powers;        // what it inherited, for the service and the log
 	bool   legendary;            // inherited LegenDoom Lite's legendary status
@@ -112,10 +113,14 @@ class RSQMB_Boss : Thinker
 
 		// Invulnerability over: the dead rise (tried for a few seconds: a corpse must finish falling,
 		// and have room).
-		if (invulUntil > 0 && level.maptime == invulUntil && h && h.revive) reviveUntil = level.maptime + 5 * TICRATE;
+		if (invulUntil > 0 && level.maptime == invulUntil)
+		{
+			if (h && h.revive) reviveUntil = level.maptime + 5 * TICRATE;
+			if (h) h.FxInvulEnd(self);
+		}
 		if (level.maptime < reviveUntil) Revive();
 
-		if (h && h.fxOn) FX(h);
+		if (h && h.fxOn && !h.UseSprites()) FX(h);   // the particle fallback; the sprites are fx.zs
 	}
 
 	private void LoseLife(RSQMB_Handler h)
@@ -123,10 +128,11 @@ class RSQMB_Boss : Thinker
 		lives--;
 		mb.health = max(maxHP, 1);
 		double secs = h ? h.invulSecs + h.invulBonus * Living() : 5.0;
+		invulFrom = level.maptime;
 		invulUntil = level.maptime + max(1, int(secs * TICRATE));
 		if (lives <= 1) mb.bBUDDHA = ownBuddha;
 		mb.A_StartSound("weapons/bfgx", CHAN_AUTO, 0, 1.0, 0.5);
-		if (h && h.fxOn) Burst(Mid(mb), col, 40, 6.0, 9);
+		if (h) h.FxLifeLost(self);
 		if (h && h.debug) Console.Printf("RSQMB life lost: boss %d lives %d hp %d invuln %d tics living %d", idx, lives, mb.health, invulUntil - level.maptime, Living());
 	}
 
@@ -143,7 +149,7 @@ class RSQMB_Boss : Thinker
 			{
 				thrState[i] = ST_ALIVE;
 				let h = H();
-				if (h && h.fxOn) Burst(Mid(t), col, 24, 4.0, 7);
+				if (h && h.fxOn && !h.UseSprites()) Burst(Mid(t), col, 24, 4.0, 7);
 				if (h && h.debug) Console.Printf("RSQMB thrall %d of boss %d rose (hp %d)", i, idx, t.health);
 			}
 		}
@@ -220,11 +226,11 @@ class RSQMB_Boss : Thinker
 			if (!t) continue;
 			t.TakeInventory("RSQMB_Thrall", 1);
 			let h = H();
-			if (h && h.fxOn && thrState[i] == ST_ALIVE) Shatter(Mid(t), mb ? Mid(mb) : Mid(t));
+			if (h && thrState[i] == ST_ALIVE) h.FxBreak(self, t);
 		}
 	}
 
-	// ---- FX: particles only --------------------------------------------------------------------
+	// ---- FX: the particle fallback (fx.zs draws the sprites) --------------------------------------------------------------------
 	static Vector3 Mid(Actor a) { return a.pos + (0, 0, a.height * 0.6); }
 
 	static void P(Vector3 at, Color c, double size, int life, double alpha, Vector3 vel = (0, 0, 0), RSQMB_Handler h = null)

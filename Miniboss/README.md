@@ -39,8 +39,10 @@ You choose: clear the crew the safe way, or go for the throat and live with the 
 - **Slow window**: 4 seconds per thrall kill, +3 seconds for each chained kill, up to 12 seconds.
 - **Greed Enrages Monsters**: struck while thralls live, then the window ends with a thrall still up: map-wide rage until the
   miniboss dies. Everything enraged is put back exactly as it was afterwards.
-- **Effects**: thrall links, life orbs (the last one burns red), the invulnerability ring, shatter lines when a thrall
-  dies, red sparks over enraged monsters. All engine particles, drawn only within 4000 units of you.
+- **Effects**: the original Minibosses!' art, in each set piece's own colour: a BFG ball over each thrall, plasma beads
+  along its link, BFG and plasma bursts when a link breaks, life orbs circling the boss (the last one swells with its
+  health), flames while it is invulnerable; red sparks over enraged monsters. The IWAD's sprites drawn by a small pooled
+  set of VisualThinkers (Effects Density sets the beads, flames and the cap), only within 4000 units of you.
 - Sounds are Doom's own: a BFG burst for a lost life, a fireball pop for a thrall, the Icon of Sin's roar for the rage.
 
 **Counts as a boss** (each on its own switch; the engine's boss flag is never set)
@@ -88,7 +90,8 @@ RSQ Miniboss adds no buttons. You fight it with whatever you play with.
 | Minibosses | On | Minibosses appear at all. |
 | How Often | Every Map | Rare (25%), Some Maps (50%), Every Map (100%). |
 | Fight | Standard | Easier, Standard, Harder: thralls, lives, shield and invulnerability together. |
-| Effects | On | Links, orbs, ring and sparks. Per player. |
+| Effects | On | Links, orbs, flames and sparks. Per player. |
+| Effects Density | Low | Low (Quest-safe), Medium, High: beads a link, flames, and the cap on effects drawn. Per player. |
 | *Thralls* | | |
 | Legendary Thralls (LegenDoom) | On | With LegenDoom (Lite or 3.0), every thrall is made legendary. |
 | Revive Thralls | On | Dead thralls rise when its invulnerability ends. |
@@ -150,8 +153,8 @@ RSQ Miniboss adds no buttons. You fight it with whatever you play with.
   code is not copied. Its to-do list asked for LegenDoom compatibility, and this delivers it.
 - Set-piece design (legendary thralls, inherited powers, slow time on a thrall's death, the chain, the greed rule):
   presidentkoopa.
-- Code: written for this pack. Effects are engine particles; no sprites or sounds are shipped (the IWAD's own sounds are
-  used by name).
+- Effects design (the IWAD sprites BFS1, APLS, BFE1, APBX, BAL2, FIRE in AddStencil): Tartlman's Minibosses!.
+- Code: written for this pack. No sprites or sounds are shipped (the IWAD's own sprites and sounds are used by name).
 - Recognised by name, not shipped: Champions, LegenDoom Lite, LegenDoom 3.0, RSQ SlowMo, RSQ Score.
 - QuestZDoom: Emawind and Team Beef.
 
