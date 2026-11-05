@@ -118,7 +118,7 @@ and Battle Meditation upgrades replace them).
 | Start With Saber | On | Begin holding one (off: pick it up) |
 | Dual Sabers | On | A second saber, the off hand's weapon |
 | Second Saber Starts | Put Away | In its Tactical Rig holster (without the Rig, in the off hand, blade off), or In Hand |
-| Show Sabers | On | Each saber you own and don't hold is drawn in its RSQ Tactical Rig holster (needs the Rig) |
+| Show Sabers | On | Each saber you own and don't hold hangs at the hip: in its RSQ Tactical Rig holster, or without the Rig at the same spot, drawn by this mod |
 | Hand on the Hilt | On | The hand round each hilt |
 | Sword Becomes Saber | On | Brutal Doom's sword turns into this saber |
 | **Blades** | | |
