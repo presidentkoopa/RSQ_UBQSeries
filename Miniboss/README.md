@@ -199,7 +199,7 @@ Then the set piece itself:
 - **RSQ Glow In The Dark**: the heartbeat while the meter is full; the map's glow takes the miniboss's colour while it lives.
 - **RSQ Gun Bonsai VR** (with Gun Bonsai): XP fills the meter; the player level raises the tier.
 - **RSQ Accessibility (Gestures), RSQ Gun Cards**: their watch-check reader is used first when loaded.
-- **RSQ VisualRewards**: HP bars mark the miniboss and its thralls (the crown now carries 1-3 tier pips for the Bossfight's tier); Kill Rewards treat it as a boss, a Bossfight's x3 more.
+- **RSQ VisualRewards**: HP bars mark the miniboss and its thralls (the crown carries one pip per Bossfight tier, none at tier 0 and 4 at tier 4); Kill Rewards treat it as a boss, a Bossfight's x3 more.
 - **RSQ Grapple, RSQ Whip, RSQ Melee**: refuse to yank or headlock it (switches above).
 - **RSQ ShieldSaw and RSQ Gun Bonsai VR**: read its true legendary health when it was made legendary here.
 - **RSQ Tactical Rig**: its optional "watch check + Use moves the gun" also reads Use at the watch check; with both on, a
