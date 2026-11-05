@@ -23,6 +23,13 @@ AddOptionMenu "RSQ_RSOptions"
 }
 // ----------------------------------------------------------------------------------------------------
 
+OptionValue "RSQMB_FillFrom"
+{
+	0, "Score"
+	1, "Gun Bonsai"
+	2, "Both"
+}
+
 OptionValue "RSQMB_Density"
 {
 	0, "Low"
@@ -37,6 +44,7 @@ OptionMenu "RSQMB_Options"
 	Title "RSQ MINIBOSS"
 	Option "Bossfights", "rsqmb_enabled", "OnOff"
 	Slider "Meter Speed", "rsqmb_bf_speed", 0.25, 4, 0.25, 2
+	Option "Bossfight Meter Fills From", "rsqmb_bf_from", "RSQMB_FillFrom"
 	Option "Call It In: Watch Check + Use", "rsqmb_bf_callin", "OnOff"
 	Option "Effects", "rsqmb_fx", "OnOff"
 	Option "Effects Density", "rsqmb_fx_density", "RSQMB_Density"

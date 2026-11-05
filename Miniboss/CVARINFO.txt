@@ -15,6 +15,7 @@ server float  rsqmb_bf_slow       = 3.0;    // seconds of RSQ SlowMo for the lan
 server int    rsqmb_bf_bits       = 3;      // x more RSQ VisualRewards boss bits for a Bossfight's miniboss
 server float  rsqmb_bf_style      = 0.25;   // meter points a RSQ Score style point
 server float  rsqmb_bf_xp         = 0.2;    // meter points a Gun Bonsai XP point
+server int    rsqmb_bf_from       = 2;      // Bossfight Meter Fills From: 0 Score (style), 1 Gun Bonsai (XP), 2 Both; kills, chains and time always (owner 11-05)
 server int    rsqmb_bf_tier_score = 4000;   // this map's RSQ Score points a tier
 user   bool   rsqmb_bf_hud        = true;   // the meter on the HUD
 user   float  rsqmb_bf_hud_size   = 1.5;    // its size

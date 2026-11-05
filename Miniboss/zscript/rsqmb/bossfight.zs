@@ -8,6 +8,11 @@
 //              VR's RSQGB_Service "xp" on the hand's gun) and, slowly, time spent pushing into the map (2 points a
 //              2 s in which you moved). Without RSQ Score each kill counts more (10 + spawn health / 50, at most 30).
 //              x Meter Speed. Frozen while a Bossfight is arriving or alive.
+//              FILLS FROM (owner 11-05: "GBOVR fills the miniboss meter? what about the Score? can we have option to toggle
+//              one, the other, or both?"): rsqmb_bf_from 0 Score, 1 Gun Bonsai, 2 Both (default). Kills, chains and time
+//              fill it in every setting, so it fills with neither mod. A choice whose mod is not loaded falls back to the
+//              other one when that is loaded (Score chosen, no Score: Gun Bonsai XP fills it; and the other way), else to
+//              kills and time alone (FillSources). A kill counts 4 while Score's style fills it, else the bigger plain value.
 //   FULL       telegraphed: a sting (the IWAD's DSBOSPIT), the meter turning gold and alive (hud.zs; no words, owner 11-05), and RSQ Glow In The Dark's
 //              map glow beating red (RSQGD_Service "event.tint", by name) while it waits.
 //   CALL IT IN the watch check + Use (the watch check from RSQ Gestures' RSQG_Service "inspect", else RSQ Gun Cards' copy
@@ -199,6 +204,26 @@ extend class RSQMB_Handler
 		if (gdSvc) gdSvc.GetInt("event.tint", "", col, secs);
 	}
 
+	// WHAT FILLS THE METER besides kills, chains and time (rsqmb_bf_from: 0 Score, 1 Gun Bonsai, 2 Both): RSQ Score's style
+	// points, Gun Bonsai XP (RSQ Gun Bonsai VR), each only when its mod answers by name. A choice whose mod is absent falls
+	// back to the other when that one is loaded. The debug log says the sources whenever they change.
+	transient int fillSaid;
+	bool, bool FillSources()
+	{
+		if (!svcChecked) FindServices();
+		int pick = CI('rsqmb_bf_from', 2);
+		bool sc = scoreSvc != null, gb = GbSvc() != null;
+		bool useScore = sc && (pick != 1 || !gb);
+		bool useGb = gb && (pick != 0 || !sc);
+		int said = 1 + pick * 4 + (useScore ? 1 : 0) * 16 + (useGb ? 1 : 0) * 32;
+		if (debug && said != fillSaid)
+			Console.Printf("RSQMB meter fills from: kills, chains, time%s%s (chosen %s; Score %s, Gun Bonsai VR %s)",
+				useScore ? ", Score style" : "", useGb ? ", Gun Bonsai XP" : "",
+				pick == 0 ? "Score" : (pick == 1 ? "Gun Bonsai" : "Both"), sc ? "loaded" : "absent", gb ? "loaded" : "absent");
+		fillSaid = said;
+		return useScore, useGb;
+	}
+
 	Service GbSvc()
 	{
 		if (!gbService) { let it = ServiceIterator.Find("RSQGB_Service"); gbService = it.Next(); }
@@ -216,7 +241,9 @@ extend class RSQMB_Handler
 		int now = level.maptime;
 		m.chain = (now - m.lastKill <= CHAIN_TICS) ? m.chain + 1 : 1;
 		m.lastKill = now;
-		double pts = scoreSvc ? 4 : min(30.0, 10 + victim.SpawnHealth() / 50.0);
+		bool useScore, useGb;
+		[useScore, useGb] = FillSources();
+		double pts = useScore ? 4 : min(30.0, 10 + victim.SpawnHealth() / 50.0);
 		if (m.chain > 1) pts += min(30, 6 * (m.chain - 1));
 		Fill(m, pts, m.chain > 1 ? String.Format("kill, chain %d", m.chain) : "kill");
 	}
@@ -228,6 +255,8 @@ extend class RSQMB_Handler
 		if (!svcChecked) FindServices();
 		int now = level.maptime;
 		bool on = BfOn();
+		bool useScore, useGb;
+		[useScore, useGb] = FillSources();
 		for (int pn = 0; pn < MAXPLAYERS; pn++)
 		{
 			if (!playeringame[pn] || !players[pn].mo) continue;
@@ -243,8 +272,8 @@ extend class RSQMB_Handler
 			}
 			if (!on) continue;
 			if (scoreSvc && m.scoreBase < 0) m.scoreBase = scoreSvc.GetInt("score", "", 0, 0, p);
-			// RSQ Score's style points, kill by kill
-			if (scoreSvc)
+			// RSQ Score's style points, kill by kill (when Score is a fill source, FillSources)
+			if (useScore)
 			{
 				int serial = scoreSvc.GetInt("kill.serial", "", pn);
 				if (serial >= 0)
@@ -260,8 +289,11 @@ extend class RSQMB_Handler
 					m.seenSerial = serial;
 				}
 			}
-			// Gun Bonsai XP on the main hand's gun, every 8 tics
-			if ((now + pn) % 8 == 0 && GbSvc()) GbStep(p, m);
+			// (not a source now: keep the place, so switching it back on never counts what came meanwhile)
+			else if (scoreSvc) { int ser = scoreSvc.GetInt("kill.serial", "", pn); if (ser >= 0) m.seenSerial = ser; }
+			// Gun Bonsai XP on the main hand's gun, every 8 tics (not a source now: start afresh when it is again)
+			if ((now + pn) % 8 == 0 && useGb) GbStep(p, m);
+			else if (!useGb) m.gbGun = null;
 			// pushing into the map: every 2 s you moved
 			if ((now + pn) % 70 == 0)
 			{

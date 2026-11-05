@@ -54,9 +54,11 @@ Then the set piece itself:
 ## Features
 
 **Bossfight**
-- Meter: Score style x 0.25 (at most 120 a kill), 4 a kill (10 + health / 50 without Score, at most 30), +6 per kill in a
-  chain (at most +30), Gun Bonsai XP x 0.2 (needs RSQ Gun Bonsai VR), 2 every 2 seconds you moved. x Meter Speed. A
-  Bossfight's own monsters never fill it, and it is frozen while one runs.
+- Meter: Score style x 0.25 (at most 120 a kill), 4 a kill (10 + health / 50 while Score's style is not filling it, at
+  most 30), +6 per kill in a chain (at most +30), Gun Bonsai XP x 0.2 (needs RSQ Gun Bonsai VR), 2 every 2 seconds you
+  moved. x Meter Speed. A Bossfight's own monsters never fill it, and it is frozen while one runs.
+- Bossfight Meter Fills From picks Score style, Gun Bonsai XP or both (Both by default); kills, chains and time count in
+  every setting. If the chosen mod is missing, the other one fills it when loaded; with neither, kills and time do.
 - The call-in reads the watch check from RSQ Accessibility (which now holds RSQ Gestures), or RSQ Gun Cards' copy of it, or this mod's own copy (so it works
   with neither loaded). Use is only read while a watch check is held.
 - The spot: the map's own monster start spots in front of you and points along your view, each tested with a probe the
@@ -126,6 +128,7 @@ Then the set piece itself:
 |---|---|---|
 | Bossfights | On | The meter fills and called-in fights come. |
 | Meter Speed | 1.00 | How fast the meter fills (0.25 to 4). |
+| Bossfight Meter Fills From | Both | Score (its style points), Gun Bonsai (Gun Bonsai VR's XP) or Both. Kills, chains and time always fill it. A choice whose mod is not loaded uses the other one if that is loaded, else kills and time alone. |
 | Call It In: Watch Check + Use | On | Off: a full meter's fight only comes by itself. |
 | Effects | On | Links, orbs, flames, teleport fog and sparks. Per player. |
 | Effects Density | Low | Low (Quest-safe), Medium, High: beads a link, flames, and the cap on effects drawn. Per player. |
@@ -193,11 +196,11 @@ Then the set piece itself:
 - **Alone**: the whole Bossfight works: the meter fills from kills, chains and time, the watch check is read by this mod's
   own copy, and the set piece runs in full. Without RSQ SlowMo there is no slow motion (the window still times the
   greed rule and chains).
-- **RSQ Score**: its style points fill the meter most; the meter sits under its bar and its combo rows go below; Thrall
+- **RSQ Score**: its style points fill the meter most (unless Fills From is Gun Bonsai); the meter sits under its bar and its combo rows go below; Thrall
   Slow Kill, Miniboss, Greedy and Bossfight rows.
 - **RSQ SlowMo**: the landing and each thrall kill slow the world; its countdown bar sits under the meter.
 - **RSQ Glow In The Dark**: the heartbeat while the meter is full; the map's glow takes the miniboss's colour while it lives.
-- **RSQ Gun Bonsai VR** (with Gun Bonsai): XP fills the meter; the player level raises the tier.
+- **RSQ Gun Bonsai VR** (with Gun Bonsai): XP fills the meter (unless Fills From is Score); the player level raises the tier.
 - **RSQ Accessibility (Gestures), RSQ Gun Cards**: their watch-check reader is used first when loaded.
 - **RSQ VisualRewards**: HP bars mark the miniboss and its thralls (the crown carries one pip per Bossfight tier, none at tier 0 and 4 at tier 4); Kill Rewards treat it as a boss, a Bossfight's x3 more.
 - **RSQ Grapple, RSQ Whip, RSQ Melee**: refuse to yank or headlock it (switches above).
