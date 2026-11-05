@@ -964,6 +964,21 @@ class RSQTR_Cig : EventHandler
 				if (age >= smokeTics[n]) Spit(pmo, n, true, null, "smoked");
 			}
 
+			// UNLIT CIGARETTE GOES AWAY (owner, 11-05: "if the cigarette is not lit within seven seconds after being in the
+			// mouth, it goes away"): in the mouth, unlit, for rsqtr_cig_unlit_secs (level.maptime tics, as the smoke is
+			// timed) -> it drops from the mouth, used up as a smoked one is (the pocket's count went down when it came out
+			// and is not given back), the Zippo goes and the hands get their guns back. No slow motion, no smoulder.
+			if (phase[n] == PH_MOUTH && RSQTR_Rig.Flag("rsqtr_cig_unlit", p, true)
+				&& age >= clamp(RSQTR_Rig.Opt("rsqtr_cig_unlit_secs", p, 7), 3, 20) * TICRATE)
+			{
+				if (msg) Console.Printf("T_CIG t%d unlit in the mouth for %d tics -> gone (used up)", level.maptime, age);
+				Flick(pmo, n, true, false);
+				if (mouthProp[n]) mouthProp[n].Destroy();
+				mouthProp[n] = null;
+				HandsBack(pmo, n, null, "unlit too long");
+				SetPhase(n, PH_NONE);
+			}
+
 			// THE NET, EVERY TIC: with no cigarette out, the Zippo leaves any hand at once (and any queue), and a cigarette
 			// still up in the main hand with no switch away under way gives way to the hand's gun.
 			if (phase[n] == PH_NONE && !restore[n] && pmo.health > 0)
@@ -1014,7 +1029,7 @@ class RSQTR_Cig : EventHandler
 	// THE FLICK: a small thrown cigarette, a short arc away from you, a tiny ember, the rig's foley.
 	// From the hand (an unlit cigarette, out along the hand, away from the head) or from the mouth (the smoked butt,
 	// straight out ahead; it smoulders where it lands and draws monsters, as Ermac's did).
-	private void Flick(PlayerPawn pmo, int n, bool fromMouth)
+	private void Flick(PlayerPawn pmo, int n, bool fromMouth, bool lit = true)
 	{
 		Vector3 from;
 		Vector2 dir;
@@ -1033,12 +1048,13 @@ class RSQTR_Cig : EventHandler
 			// a little of where the hand points, so a flick goes the way the wrist goes
 			dir = (dir + (cos(ha), sin(ha)) * 0.5).Unit();
 		}
-		let b = RSQTR_Butt(Actor.Spawn(fromMouth ? "RSQTR_Butt" : "RSQTR_FlickedCig", from));
+		// (an unlit one out of the mouth, Unlit Cigarette Goes Away: the whole cigarette, which lies there and fades)
+		let b = RSQTR_Butt(Actor.Spawn(fromMouth && lit ? "RSQTR_Butt" : "RSQTR_FlickedCig", from));
 		if (b)
 		{
 			b.vel = (dir.x * FLICK_SPEED, dir.y * FLICK_SPEED, FLICK_UP) + pmo.vel;
 			b.target = pmo;
-			b.smoulder = fromMouth;
+			b.smoulder = fromMouth && lit;
 			b.spin = 24;
 			b.angle = atan2(dir.y, dir.x);
 			b.Ember();

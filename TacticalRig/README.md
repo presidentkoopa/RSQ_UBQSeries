@@ -188,6 +188,7 @@ what the rows already do: Smoker, Chain Smoker, Gun Toss, Boomerang Gun).
 | Smoke Slows Time | On | RSQ SlowMo when the cigarette is flicked (its Real-Time Countdown bar shows how long is left) |
 | Smoke Slow-Mo Time (s) | 6 | How long that slow motion lasts (2-20 s) |
 | Refill Each Level | On | The pocket refills |
+| Unlit Cigarette Goes Away | On | A cigarette left unlit in your mouth for 7 s drops out, used up (Test and Debug: Unlit Goes Away After) |
 | Show Cigarettes | On | The cigarettes left in the pocket stand in it on your chest |
 | **Setup** | | |
 | Move Holsters by Hand | Off | Grab and place holsters |
@@ -208,7 +209,7 @@ Distance (1.0 m). Hands: Press Delay (3 tics), Throw Speed (2.5 m/s) and Thrown 
 Throw Guns is off), Main Grip Keys (446),
 Off Grip Keys (443 436), Empty Hand Weapon (blank: the fist). Torso Fit: Torso Height (-0.20 m), Torso Forward
 (-0.04 m), Torso Size (1.0), Helmet Height (0), Low Health Glow (under 35). Cigarette: Mouth Zone Size (1.0), In Mouth
-Forward (0.12 m), In Mouth Down (0.07 m), Smoke Time (2 s), Slow Motion (6 s), Slow Motion Speed (25%), Pack Size (3).
+Forward (0.12 m), In Mouth Down (0.07 m), Smoke Time (2 s), Unlit Goes Away After (7 s), Slow Motion (6 s), Slow Motion Speed (25%), Pack Size (3).
 Holster Positions: forward, left, up and size in metres from your eyes for every holster, the grenade spot, the
 keyring, both saber spots, the whip and flare holsters and the ammo pouch (hips 0.70 m down, 0.18 m out; chest 0.46
 down, 0.12 out, 0.10 forward; shoulders 0.10 down, 0.18 out, 0.08 back; whip and flare 0.84 down, 0.30 out, 0.06

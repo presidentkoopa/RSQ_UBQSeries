@@ -107,6 +107,7 @@ OptionMenu "RSQTR_Options"
 	Option "Smoke Slows Time", "rsqtr_cig_slowmo", "OnOff"
 	Slider "Smoke Slow-Mo Time (s)", "rsqtr_cig_secs", 2, 20, 1, 0
 	Option "Refill Each Level", "rsqtr_cig_refill", "OnOff"
+	Option "Unlit Cigarette Goes Away", "rsqtr_cig_unlit", "OnOff"
 	Option "Show Cigarettes", "rsqtr_cig_show", "OnOff"
 	StaticText " "
 	StaticText "Setup", "gold"
@@ -166,6 +167,7 @@ OptionMenu "RSQTR_Test"
 	Slider "In Mouth Forward (m)", "rsqtr_cig_mouth_f", 0.04, 0.25, 0.01, 2
 	Slider "In Mouth Down (m)", "rsqtr_cig_mouth_d", 0.00, 0.15, 0.01, 2
 	Slider "Smoke Time (s)", "rsqtr_cig_smoke", 1, 5, 0.5, 1
+	Slider "Unlit Goes Away After (s)", "rsqtr_cig_unlit_secs", 3, 20, 1, 0
 	Slider "Slow Motion Speed (%)", "rsqtr_cig_depth", 10, 90, 5, 0
 	Slider "Pack Size", "rsqtr_cig_count", 1, 20, 1, 0
 	StaticText " "
