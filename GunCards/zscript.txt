@@ -9,6 +9,7 @@ version "4.10"
 // Moved out of RSQ Wheel (2026-10-31); needs no other mod. See card.zs for how it draws.
 
 #include "zscript/rsqgc/rsmenu.zs"       // Radiant Silvergun Options: the series' shared menu pieces (tools/rsmenu)
+#include "zscript/rsqgc/menu.zs"         // the Show Cards row (honest without RSQ Gestures)
 #include "zscript/rsqgc/pallum.zs"       // the palette's brightness table (for the world cards' colours)
 #include "zscript/rsqgc/look.zs"         // colours and fonts: the Wheel's when it is loaded, our own otherwise
 #include "zscript/rsqgc/bonsai.zs"       // Gun Bonsai level and upgrades, by name

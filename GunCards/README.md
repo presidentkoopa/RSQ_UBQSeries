@@ -61,7 +61,7 @@ built as a voxel with its place on the wrist baked in.
 4. Bring your forearm up across your chest and turn the back of your wrist to your face. The watch card appears on the
    back of your hand.
 5. Holster to your fists and check your watch again: health, armour and keys.
-6. Prefer a cleaner view? Options → Radiant Silvergun Options → RSQ Gun Cards → Show Cards → When You Look at the Gun.
+6. Prefer a cleaner view? Options → Radiant Silvergun Options → RSQ Gun Cards → Show Cards → When I Look.
 
 ## Controls
 
@@ -70,7 +70,7 @@ There are no buttons. The cards answer to where your hands are.
 | Action | How (VR) | Notes |
 |---|---|---|
 | Read the small card | Look at your wrist | Shows all the time by default. |
-| Show the card by looking (Show Cards: When You Look at the Gun) | Bring the gun within 0.7 m of your eyes, within 30 degrees of where you look | Both numbers are sliders. |
+| Show the card by looking (Show Cards: When I Look) | Bring the gun within 0.7 m of your eyes, within 30 degrees of where you look | Both numbers are sliders on Test and Debug. |
 | Show the card on reload (Show Cards: On Reload) | Hold that hand's reload, or the shared reload | Stays 35 tics after you let go. |
 | Check your watch | Forearm across your chest, wrist 15 to 50 cm from your eyes and within 35 degrees of your view, hand pointing across your body, back of the wrist turned at least 45 degrees toward your face | With RSQ Gestures loaded, its inspect pose is used instead. |
 | Status card | Check your watch with an empty hand or fists | With Draw in the World on, it is built in the world on the back of the wrist (keys as words, not icons). |
@@ -81,64 +81,62 @@ and L labels follow the hands as you hold them.
 
 ## Menu
 
-Options → Radiant Silvergun Options → RSQ Gun Cards
-
-**Front page**
+Options → Radiant Silvergun Options → RSQ Gun Cards (one page, then Test and Debug and Reset All at its foot)
 
 | Row | Default | What it does |
 |---|---|---|
-| Show Cards | Always | Off, Always, When You Look at the Gun, Inspect Gesture (RSQ Gestures; without it, as looking), On Reload. |
-| Card Colour | Each Gun Its Own | Or By Ammo Type, or one of ten colours for every card. |
+| Show Cards | Always | Off, Always, When I Look, Inspect Gesture, On Reload. Inspect Gesture needs RSQ Gestures; without it the row reads "When I Look (no Gestures)", which is what it then does. |
 | Watch Card | When I Check My Watch | Off, When I Check My Watch, or Always On. |
 | Watch Card Shows | Weapon Card | Weapon Card, Status Card, or Both on One Card. An empty hand always shows the Status Card. |
-| Show Gun Bonsai on Card | Off | Gun Bonsai's level, XP and upgrades under the weapon card. |
-| Text Quality | Quest | Quest or PCVR. |
-| Small Card Font | JFO | JFO, or Ermac's own lettering and digits. |
-| Draw in the World | Off | Cards built in the world at the hand. |
-| Tilt to Your Eyes | Off | The small card turns toward your face. |
-| Hide at Your Eye | Off | The small card hides while the gun is at your eye. |
-
-**Placement**
-
-| Row | Default | What it does |
-|---|---|---|
-| Small card: Up / Down | 0 | Degrees about the hand. |
-| Small card: Left / Right | 0 | Degrees. |
-| Small card: In / Out (cm) | 0 | Along the forearm, in 1.5 cm steps. |
-| Watch card: Up / Down | 0 | Degrees. |
-| Watch card: Left / Right (in the world) | 0 | Only with Draw in the World. |
-| Size in the World | 1.40 | Only with Draw in the World. |
-
-**Tuning and Debug**
-
-| Row | Default | What it does |
-|---|---|---|
-| Both Guns on the Main Card | Off | The off hand's rounds in the main card's small row. |
-| Panel (0 = each gun its own) | 0 | One of Ermac's 18 panels for every gun. |
-| Material | Glass | Solid, Glass or Glow. |
-| Strength | 0.85 | How solid glass or glow is. |
+| Gun Bonsai on Card | Off | Gun Bonsai's level, XP and upgrades under the weapon card (with Gun Bonsai). |
+| *Look* | | |
+| Card Colour | Each Gun Its Own | Or By Ammo Type, or one of ten colours for every card. |
 | Small Card Colours | Ermac's | Or the Wheel's palette. |
-| AMMO / MAGAZINE Word | On | |
+| Small Card Font | JFO | JFO, or Ermac's own lettering and digits. |
+| Text Quality | Quest | Quest or PCVR. |
+| Material | Glass | Solid, Glass or Glow. |
+| Card Opacity | 0.85 | How solid glass or glow is. |
+| AMMO Word | On | The AMMO / MAGAZINE word. |
 | Low Ammo Colour | On | The green, yellow, red magazine count. |
 | Key Icons | On | On the status card. |
 | Only This Map's Keys | On | Off shows all six keys. |
-| Low Below (share of a magazine) | 0.25 | Red at or below this. |
+| Both Guns on One Card | Off | The off hand's rounds in the main card's small row. |
+| *Behaviour* | | |
+| Draw in the World | Off | Cards built in the world at the hand. |
+| Tilt to Your Eyes | Off | The small card turns toward your face. |
+| Hide at Your Eye | Off | The small card hides while the gun is at your eye. |
+| *Placement* | | |
+| Small Card Up | 0 | Degrees about the hand. |
+| Small Card Side | 0 | Degrees. |
+| Small Card In | 0 | Along the forearm (cm), in 1.5 cm steps. |
+| Watch Card Up | 0 | Degrees. |
+| Watch Card Side | 0 | Only with Draw in the World. |
+| World Card Size | 1.40 | Only with Draw in the World. |
+| Reset All | | Every setting back to its default. |
+
+**Test and Debug**
+
+| Row | Default | What it does |
+|---|---|---|
+| Panel (0 = per gun) | 0 | One of Ermac's 18 panels for every gun. |
+| Low Below (share) | 0.25 | Red at or below this share of a magazine. |
 | Fade (tics) | 4 | |
-| Look: Gun Within (metres) | 0.70 | |
-| Look: Within (degrees) | 30 | |
+| Look: Reach (m) | 0.70 | When I Look: the gun within this many metres of the eyes. |
+| Look: Cone (deg) | 30 | And within this many degrees of where you look. |
 | Watch Check Shows | Once It Is Held | Or As the Twist Starts (RSQ Gestures). |
 | Stays After (tics) | 35 | How long a card stays after the pose ends or reload is let go. |
-| Tilt: At Most (degrees) | 20 | |
-| Hide at Eye: Within (metres) | 0.30 | |
-| Pickup +N Stays (tics) | 52 | |
-| Show Hand Numbers on Screen | Off | The engine's hand data on screen, for a bug report screenshot. |
+| Tilt: Most (deg) | 20 | |
+| Eye Reach (m) | 0.30 | Hide at Your Eye: the hand within this distance of the eye. |
+| Pickup +N (tics) | 52 | How long a pickup's "+N" shows. |
+| Hand Numbers on Screen | Off | The engine's hand data on screen, for a bug report screenshot. |
+| Debug Log | Off | One console line per kill the cards count. |
 | Reset All | | Every setting back to its default. |
 
 ## Works with
 
 Runs on its own with any weapon mod.
 
-- **RSQ Gestures:** checking your watch, and Show Cards: Inspect Gesture, use its inspect pose.
+- **RSQ Gestures:** checking your watch, and Show Cards: Inspect Gesture, use its inspect pose (without it, Inspect Gesture acts as When I Look and the row says so).
 - **Gun Bonsai with RSQ Gun Bonsai VR:** the watch card can show each gun's level, XP and upgrades.
 - **RSQ Grenade:** its grenade count on the cards, and a cooking grenade's fuse countdown.
 - **RSQ Wheel:** its palette, font and plates can colour the cards. Gun Cards' watch card replaces the Wheel's wrist

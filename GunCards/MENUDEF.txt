@@ -1,5 +1,5 @@
-// RSQ Gun Cards -- MENUDEF. The series' shape (Whip, SlowMo): one short front page of real choices, Placement,
-// then Tuning and Debug last with Reset All. What each setting does is in CVARINFO.txt's comments and README.md.
+// RSQ Gun Cards -- MENUDEF. The owner's shape (11-04 19:36): ONE page with every option under short headers, then
+// Test and Debug (the raw numbers) and Reset All at its foot. What each setting does is in CVARINFO.txt's comments and README.md.
 
 // ---- Radiant Silvergun Options (tools/rsmenu) ----------------------------------------------------
 // The series' one Options entry. Every series pk3 carries this same block with its own prefix: the
@@ -26,62 +26,57 @@ AddOptionMenu "RSQ_RSOptions"
 OptionMenu "RSQGC_Options"
 {
 	Title "RSQ GUN CARDS"
-	Option "Show Cards", "rsqgc_card", "RSQGC_Show"
-	Option "Card Colour", "rsqgc_color", "RSQGC_Colors"
+	RSQGCShow "Show Cards", "rsqgc_card", "RSQGC_Show"
 	Option "Watch Card", "rsqgc_watch", "RSQGC_WatchModes"
 	Option "Watch Card Shows", "rsqgc_watch_shows", "RSQGC_WatchShows"
-	Option "Show Gun Bonsai on Card", "rsqgc_watch_bonsai", "OnOff"
-	Option "Text Quality", "rsqgc_text_q", "RSQGC_TextQ"
+	Option "Gun Bonsai on Card", "rsqgc_watch_bonsai", "OnOff"
+	StaticText " "
+	StaticText "Look", 1
+	Option "Card Colour", "rsqgc_color", "RSQGC_Colors"
+	Option "Small Card Colours", "rsqgc_tint", "RSQGC_Tints"
 	Option "Small Card Font", "rsqgc_small_font", "RSQGC_SmallFont"
+	Option "Text Quality", "rsqgc_text_q", "RSQGC_TextQ"
+	Option "Material", "rsqgc_look", "RSQGC_Looks"
+	Slider "Card Opacity", "rsqgc_alpha", 0.1, 1.0, 0.05, 2
+	Option "AMMO Word", "rsqgc_label", "OnOff"
+	Option "Low Ammo Colour", "rsqgc_lowwarn", "OnOff"
+	Option "Key Icons", "rsqgc_keys", "OnOff"
+	Option "Only This Map's Keys", "rsqgc_keys_map", "OnOff"
+	Option "Both Guns on One Card", "rsqgc_hands", "OnOff"
+	StaticText " "
+	StaticText "Behaviour", 1
 	Option "Draw in the World", "rsqgc_world", "OnOff"
 	Option "Tilt to Your Eyes", "rsqgc_tilt", "OnOff"
 	Option "Hide at Your Eye", "rsqgc_hide_eye", "OnOff"
 	StaticText " "
-	Submenu "Placement", "RSQGC_Place"
-	Submenu "Tuning and Debug", "RSQGC_Tuning"
+	StaticText "Placement", 1
+	Slider "Small Card Up", "rsqgc_up", -30, 30, 0.5, 1
+	Slider "Small Card Side", "rsqgc_side", -30, 30, 0.5, 1
+	Slider "Small Card In", "rsqgc_in", -6, 6, 1.5, 1
+	Slider "Watch Card Up", "rsqgc_watch_up", -30, 30, 0.5, 1
+	Slider "Watch Card Side", "rsqgc_watch_side", -30, 30, 0.5, 1
+	Slider "World Card Size", "rsqgc_world_scale", 0.5, 2.5, 0.05, 2
+	StaticText " "
+	Submenu "Test and Debug", "RSQGC_Test"
+	RSQGCResetAll "Reset All", "Reset all RSQ Gun Cards settings?"
 }
 
-OptionMenu "RSQGC_Place"
+OptionMenu "RSQGC_Test"
 {
-	Title "PLACEMENT"
-	StaticText "Small card", gold
-	Slider "Up / Down", "rsqgc_up", -30, 30, 0.5, 1
-	Slider "Left / Right", "rsqgc_side", -30, 30, 0.5, 1
-	Slider "In / Out (cm)", "rsqgc_in", -6, 6, 1.5, 1
-	StaticText " "
-	StaticText "Watch card", gold
-	Slider "Up / Down", "rsqgc_watch_up", -30, 30, 0.5, 1
-	Slider "Left / Right (in the world)", "rsqgc_watch_side", -30, 30, 0.5, 1
-	StaticText " "
-	Slider "Size in the World", "rsqgc_world_scale", 0.5, 2.5, 0.05, 2
-}
-
-OptionMenu "RSQGC_Tuning"
-{
-	Title "TUNING AND DEBUG"
-	Option "Both Guns on the Main Card", "rsqgc_hands", "OnOff"
-	Slider "Panel (0 = each gun its own)", "rsqgc_style", 0, 18, 1, 0
-	Option "Material", "rsqgc_look", "RSQGC_Looks"
-	Slider "Strength", "rsqgc_alpha", 0.1, 1.0, 0.05, 2
-	Option "Small Card Colours", "rsqgc_tint", "RSQGC_Tints"
-	Option "AMMO / MAGAZINE Word", "rsqgc_label", "OnOff"
-	Option "Low Ammo Colour", "rsqgc_lowwarn", "OnOff"
-	Option "Key Icons", "rsqgc_keys", "OnOff"
-	Option "Only This Map's Keys", "rsqgc_keys_map", "OnOff"
-	Slider "Low Below (share of a magazine)", "rsqgc_lowammo_frac", 0.0, 0.9, 0.05, 2
+	Title "RSQ GUN CARDS: TEST AND DEBUG"
+	Slider "Panel (0 = per gun)", "rsqgc_style", 0, 18, 1, 0
+	Slider "Low Below (share)", "rsqgc_lowammo_frac", 0.0, 0.9, 0.05, 2
 	Slider "Fade (tics)", "rsqgc_fade", 1, 12, 1, 0
-	StaticText " "
-	Slider "Look: Gun Within (metres)", "rsqgc_glance_reach", 0.3, 1.2, 0.05, 2
-	Slider "Look: Within (degrees)", "rsqgc_glance_cone", 10, 60, 1, 0
+	Slider "Look: Reach (m)", "rsqgc_glance_reach", 0.3, 1.2, 0.05, 2
+	Slider "Look: Cone (deg)", "rsqgc_glance_cone", 10, 60, 1, 0
 	Option "Watch Check Shows", "rsqgc_inspect_level", "RSQGC_Inspect"
 	Slider "Stays After (tics)", "rsqgc_linger", 0, 105, 5, 0
-	Slider "Tilt: At Most (degrees)", "rsqgc_tilt_max", 5, 45, 5, 0
-	Slider "Hide at Eye: Within (metres)", "rsqgc_eye_reach", 0.15, 0.5, 0.05, 2
-	Slider "Pickup +N Stays (tics)", "rsqgc_plus_tics", 10, 140, 5, 0
+	Slider "Tilt: Most (deg)", "rsqgc_tilt_max", 5, 45, 5, 0
+	Slider "Eye Reach (m)", "rsqgc_eye_reach", 0.15, 0.5, 0.05, 2
+	Slider "Pickup +N (tics)", "rsqgc_plus_tics", 10, 140, 5, 0
 	StaticText " "
-	Option "Show Hand Numbers on Screen", "rsqgc_show_hands", "OnOff"
-	StaticText " "
-	SafeCommand "Reset All", "rsqgc_reset", "Reset all RSQ Gun Cards settings?"
+	Option "Hand Numbers on Screen", "rsqgc_show_hands", "OnOff"
+	Option "Debug Log", "rsqgc_debug_log", "OnOff"
 }
 
 OptionValue "RSQGC_WatchModes"
@@ -112,7 +107,7 @@ OptionValue "RSQGC_Show"
 {
 	0, "Off"
 	1, "Always"
-	2, "When You Look at the Gun"
+	2, "When I Look"
 	3, "Inspect Gesture"
 	4, "On Reload"
 }
