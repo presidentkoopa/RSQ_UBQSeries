@@ -381,7 +381,7 @@ class RSQTR_Rig : EventHandler
 	//   your feet, burning; a swing throws it). Taken from the off hand any other way (an off-hand draw from another
 	//   holster, another weapon raised there), FnF itself puts an unlit flare back (so it is in this holster again) and
 	//   lets a lit one fall burning. FnF's state is asked of its RSQFF_Service ("flare.phase", "flare.count").
-	// Each shows on the body as its own model while stored (rsqtr_whip_show / rsqtr_flare_show): the class RSQ Whip /
+	// Each shows on the body as its own model while stored (RSQ Whip's Show Whip / RSQ FnF's Show Flare, by name): the class RSQ Whip /
 	// RSQ FnF ship for it (RSQWP_Stowed, RSQFF_Stowed, MODELDEF in their pk3s), spawned by name; without it, nothing.
 	const WHIP_CLASS = "RSQWP_WhipWeapon";
 	static bool WhipLoaded() { String n = WHIP_CLASS; class<Weapon> c = n; return c != null; }
@@ -1985,6 +1985,8 @@ class RSQTR_Rig : EventHandler
 					if (sw && sw != p.ReadyWeapon && sw != p.OffhandWeapon) { put = own[k]; break; }
 				}
 				if (put != "" && fitT.Find(put) < 0) put = "";
+				// SHOW SABERS (owner 11-04 menu pass): RSQ Saber's own row (ubqs_show, by name; on without it) decides
+				if (!Flag("ubqs_show", p, true)) put = "";
 			}
 			if (r == RSQTR_Region.WHIP || r == RSQTR_Region.FLARE) { DrawStowed(pmo, p, r, at, live); continue; }
 			if (r == RSQTR_Region.POUCH) { DrawPouch(pmo, p, at, live); continue; }
@@ -2077,7 +2079,9 @@ class RSQTR_Rig : EventHandler
 	private void DrawStowed(PlayerPawn pmo, PlayerInfo p, int r, Vector3 at, bool live)
 	{
 		bool whip = r == RSQTR_Region.WHIP;
-		bool want = live && Flag(whip ? "rsqtr_whip_show" : "rsqtr_flare_show", p, true);
+		// SHOW WHIP / SHOW FLARE (owner 11-04 menu pass): the item's own mod's row decides (RSQ Whip's rsqwp_show, RSQ FnF's
+		// rsqff_show_flare, read by name; on when that mod has no such row). The rig's old Show ... in Holster rows are gone.
+		bool want = live && Flag(whip ? "rsqwp_show" : "rsqff_show_flare", p, true);
 		if (want) want = whip ? (WhipOf(pmo) && !WhipInHand(pmo)) : FlareAsk("flare.count", pmo) > 0;
 		String cn = whip ? "RSQWP_Stowed" : "RSQFF_Stowed";
 		class<Actor> c = cn;
