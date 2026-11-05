@@ -131,37 +131,45 @@ Guns work either way round. Score on the Wrist floats above whichever controller
 
 ## Menu
 
-Options → Radiant Silvergun Options → **RSQ Score**
+Options → Radiant Silvergun Options → **RSQ Score**. One page; the raw numbers (position, caps, the reward target) and
+the debug log are on **Test and Debug**; **Reset All** at the foot resets both. Score has no Gun Bonsai VR gating.
 
 | Row | Default | What it does |
 |---|---|---|
 | Show Score | Yes | Shows or hides the whole display, including the wrist digits. |
-| Size | Large | Small, Standard or Large. |
-| Place | Top Right | Top Right, Top Left, Top Centre or Bottom Right. |
+| Size | 150 | The display's size, 50-200. |
 | Living Label | On | The word "Score:" breathes and shifts colour. |
+| Score on the Wrist | Off | Your total above the off-hand controller (VR only). |
+| **Rewards** | | |
+| Show Reward Bar | Yes | The bar that fills toward the next reward. |
 | Target Reward | Life Every Time | What crossing the target pays: Ammo Then Life, Life Then Ammo, Ammo Only, Life Every Time or Nothing. |
 | New Map Keeps | Nothing | What carries to the next map: Nothing, Total, Total and Rewards, or Everything. |
+| **Big Moments** | | |
 | Slow Motion Moments | On | Big moments ask RSQ SlowMo for a short slow. |
 | Hit-Stop on Big Kills | Off | Big kills stop the world for a beat (needs RSQ SlowMo). |
-| Score on the Wrist | Off | Your total above the off-hand controller (VR only). |
 | Bar Flash | On | The score and bar flash when points land. |
 | Screen Flash | On | The whole-view colour flash on a reward and a revival. |
+| Test and Debug | | The page below. |
+| Reset All | | Every setting on both pages back to its default. |
 
-**Tuning and Debug**
+**Test and Debug**
 
 | Row | Default | What it does |
 |---|---|---|
-| Size | 150 | The display's size, 50–200. |
-| Across | 85 | Horizontal position, 0–100. |
-| Down | 10 | Vertical position, 0–100. |
-| Bonus Display Time | 35 | How long breakdown rows stay, in tics (35 = 1 second, up to 193). |
-| Raised Monster Pay | 100 | Percent of base paid for monsters that weren't on the map at the start (raised, spawned). |
+| Across | 85 | Horizontal position, 0-100. |
+| Down | 10 | Vertical position, 0-100. |
+| Bonus Time (0 Hides) | 35 | How long breakdown rows stay, in tics (35 = 1 second, up to 193); 0 hides the breakdown. |
 | Kill Bonus Cap | 300 | The most all bonuses on one kill can add, as a percent of base (0 = no cap). |
-| Melee Bonus Cap | 0 | Cap on the Melee family per kill (0 = no cap). |
-| Counterplay Bonus Cap | 0 | Cap on the Counterplay family per kill (0 = no cap). |
-| Slow Motion Cooldown | 6 | Seconds between slow-motion moments. |
-| Slow Motion Style | 50 | Percent of a kill's style, daring and melee bonuses that Stretched Second adds in slow motion. |
-| Reset All | — | Puts every RSQ Score setting back to its default. |
+| Efficiency / Style / Daring / Melee / Counterplay Cap | 0 | Each bonus family's cap per kill, percent of base (0 = no cap). |
+| Target Size (%) | 50 | The reward target: this share of (average monster worth x monsters counted). |
+| Fewest Monsters | 140 | The monster count used is at least this. |
+| Most Monsters | 800 | And at most this. |
+| Round To | 5000 | The target is rounded to this many points (and never below it). |
+| Ammo Refill (%) | 40 | An ammo reward refills this share of each ammo type's maximum. |
+| Raised Monster Pay (%) | 100 | Percent of base paid for monsters that weren't on the map at the start (raised, spawned). |
+| Slow Motion: Cooldown (s) | 6 | Seconds between slow-motion moments. |
+| Slow Motion: Style Share (%) | 50 | Percent of a kill's style, daring and melee bonuses that Stretched Second adds in slow motion. |
+| Debug Log | Off | Logs the scoring to the console. |
 
 ## Works with
 

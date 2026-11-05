@@ -1,6 +1,6 @@
-// RSQ Score options, modelled on Brutal Doom Quest 2.0's options page (the owner, 10-28): ONE front
-// page of real choices, named; ONE Tuning and Debug page at the end that holds every number. Every
-// cvar keeps its row. Preset choices: tools/rsmenu/presets.py (Standard = today's defaults).
+// RSQ Score options (menu pass, owner 11-04): ONE page with every option, most important first, under short headers;
+// ONE "Test and Debug" page with the raw numbers (caps, the reward target, positions) and the debug log; Reset All at
+// the foot covers both (RSQSCResetAll reads the rows). No presets, no help text. Score has no Gun Bonsai VR gating.
 
 // ---- Radiant Silvergun Options (tools/rsmenu) ----------------------------------------------------
 // The series' one Options entry. Every series pk3 carries this same block with its own prefix: the
@@ -41,56 +41,57 @@ OptionValue "RSQSC_Start"
 	3, "Everything"
 }
 
-// PRESETS -- written by tools/rsmenu/presets.py (Standard = CVARINFO defaults); edit the script, not here
-OptionString "RSQSC_P_Size"
-{
-	"rs_score_scale 75", "Small"
-	"rs_score_scale 100", "Standard"
-	"rs_score_scale 150", "Large"
-}
-OptionString "RSQSC_P_Place"
-{
-	"rs_score_x 85 rs_score_y 10", "Top Right"
-	"rs_score_x 15 rs_score_y 10", "Top Left"
-	"rs_score_x 50 rs_score_y 10", "Top Centre"
-	"rs_score_x 85 rs_score_y 80", "Bottom Right"
-}
-// END PRESETS
-
 OptionMenu "RSQSC_Options"
 {
 	Title "RSQ SCORE"
 	Option "Show Score", "rs_score_hide", "NoYes"
-	RSQSCPreset "Size", "RSQSC_P_Size"
-	RSQSCPreset "Place", "RSQSC_P_Place"
+	Slider "Size", "rs_score_scale", 50, 200, 5, 0
 	Option "Living Label", "rs_score_alive", "OnOff"
-	StaticText " "
-	Option "Target Reward", "rs_score_rewardtypes", "RSQSC_Rewards"
-	Option "New Map Keeps", "rs_score_startmode", "RSQSC_Start"
-	Option "Slow Motion Moments", "rs_score_slowmo", "OnOff"
-	Option "Hit-Stop on Big Kills", "rs_score_hitstop", "OnOff"
 	Option "Score on the Wrist", "rs_score_wrist", "OnOff"
 	StaticText " "
+	StaticText "Rewards", 1
+	Option "Show Reward Bar", "rs_score_norewards", "NoYes"
+	Option "Target Reward", "rs_score_rewardtypes", "RSQSC_Rewards"
+	Option "New Map Keeps", "rs_score_startmode", "RSQSC_Start"
+	StaticText " "
+	StaticText "Big Moments", 1
+	Option "Slow Motion Moments", "rs_score_slowmo", "OnOff"
+	Option "Hit-Stop on Big Kills", "rs_score_hitstop", "OnOff"
 	Option "Bar Flash", "rs_score_flash", "OnOff"
 	Option "Screen Flash", "rs_score_screenflash", "OnOff"
 	StaticText " "
-	Submenu "Tuning and Debug", "RSQSC_Tuning"
+	Submenu "Test and Debug", "RSQSC_Test"
+	RSQSCResetAll "Reset All", "Reset all RSQ Score settings?"
 }
 
-OptionMenu "RSQSC_Tuning"
+// ---- Test and Debug: every raw number, and the debug log -----------------------------------------
+OptionMenu "RSQSC_Test"
 {
-	Title "TUNING AND DEBUG"
-	Slider "Size", "rs_score_scale", 50, 200, 5, 0
+	Title "RSQ SCORE: TEST AND DEBUG"
+	StaticText "Display", 1
 	Slider "Across", "rs_score_x", 0, 100, 1, 0
 	Slider "Down", "rs_score_y", 0, 100, 1, 0
-	Slider "Bonus Display Time", "rs_score_bonustime", 35, 193, 7, 0
+	Slider "Bonus Time (0 Hides)", "rs_score_bonustime", 0, 193, 7, 0
 	StaticText " "
-	Slider "Raised Monster Pay", "rs_score_farmpercent", 0, 100, 5, 0
+	StaticText "Bonus Caps (0 = None)", 1
 	Slider "Kill Bonus Cap", "rs_score_cap_kill", 0, 1000, 50, 0
-	Slider "Melee Bonus Cap", "rs_score_cap_melee", 0, 300, 10, 0
-	Slider "Counterplay Bonus Cap", "rs_score_cap_counter", 0, 300, 10, 0
-	Slider "Slow Motion Cooldown", "rs_score_slowmo_cooldown", 1, 30, 1, 0
-	Slider "Slow Motion Style", "rs_score_slowstyle", 0, 100, 10, 0
+	Slider "Efficiency Cap", "rs_score_cap_efficiency", 0, 300, 10, 0
+	Slider "Style Cap", "rs_score_cap_style", 0, 300, 10, 0
+	Slider "Daring Cap", "rs_score_cap_daring", 0, 300, 10, 0
+	Slider "Melee Cap", "rs_score_cap_melee", 0, 300, 10, 0
+	Slider "Counterplay Cap", "rs_score_cap_counter", 0, 300, 10, 0
 	StaticText " "
-	SafeCommand "Reset All", "resetcvar rs_score_hide rs_score_alive rs_score_flash rs_score_screenflash rs_score_bonustime rs_score_scale rs_score_x rs_score_y rs_score_rewardtypes rs_score_startmode rs_score_farmpercent rs_score_cap_efficiency rs_score_cap_style rs_score_cap_daring rs_score_cap_melee rs_score_cap_counter rs_score_cap_kill rs_score_slowmo rs_score_slowmo_cooldown rs_score_slowstyle rs_score_hitstop rs_score_wrist", "Reset all RSQ Score settings?"
+	StaticText "Reward Target", 1
+	Slider "Target Size (%)", "rs_score_monsterscalar", 10, 200, 5, 0
+	Slider "Fewest Monsters", "rs_score_monstermin", 0, 500, 10, 0
+	Slider "Most Monsters", "rs_score_monstermax", 100, 2000, 50, 0
+	Slider "Round To", "rs_score_interval", 1000, 20000, 1000, 0
+	Slider "Ammo Refill (%)", "rs_score_regenpercent", 0, 400, 10, 0
+	Slider "Raised Monster Pay (%)", "rs_score_farmpercent", 0, 100, 5, 0
+	StaticText " "
+	StaticText "Slow Motion", 1
+	Slider "Cooldown (s)", "rs_score_slowmo_cooldown", 1, 30, 1, 0
+	Slider "Style Share (%)", "rs_score_slowstyle", 0, 100, 10, 0
+	StaticText " "
+	Option "Debug Log", "rs_score_debug", "OnOff"
 }
