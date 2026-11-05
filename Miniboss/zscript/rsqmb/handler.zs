@@ -8,8 +8,9 @@
 //              monsters within rsqmb_radius (none stronger than it): champions first, then
 //              legendaries, then the nearest.
 //              Class names are never used, so it is the same on Doom's monsters and Brutal Doom's.
-//   LEGENDARY  With LegenDoom Lite loaded and rsqmb_legend_thralls on, every thrall is made legendary
-//              with LegenDoom Lite's own LDLegendaryMonsterPickupGuaranteed (by name). A dormant
+//   LEGENDARY  With LegenDoom Lite 4.2 or LegenDoom 3.0 (full) loaded and rsqmb_legend_thralls on, every thrall is made
+//              legendary with LegenDoom's own LDLegendaryMonsterPickupGuaranteed (by name; both ship it, with the same
+//              tokens and LDMonsterInit; 3.0's drop is a weapon, the LDL x BD22 VR patch's BD22 VR gun). A dormant
 //              champion (Champions' champion_Dormant) wakes when its legendary transforms.
 //   INHERITING see Inherit() below: the rule and its caps.
 //   SLOW TIME  A thrall's death opens a window (rsqmb_slow s) and asks RSQ_SlowMo for it by its own
@@ -373,10 +374,19 @@ class RSQMB_Handler : EventHandler
 	// boss / normal for the tic or two until the ACS has read it (LDHealthDone puts it back), so the set health and the
 	// transform's refill are both spawn x LD_legendaryhealthboss / 100 (to within the rounding of one StartHealth point
 	// x the normal factor). When the normal factor is the higher (or equal), LegenDoom's own result already is it.
+	// LegenDoom 3.0 (full) has LD_legendarymonsters (LEGENDMON.acs LDMonsterInit): 0 "Disabled" gives a legendary NO
+	// health at all (no x LD_legendaryhealth, no transform), 1 "Enabled" and 2 "Mod behaviour only" give it as Lite does.
+	// LegenDoom Lite 4.2 has no such cvar (CI's default 1: always on). With it at 0 there is no legendary health to make
+	// the better of, so nothing is asked and "ldhealth" stays 0 (rig 11-04: it answered 1 on a plain 80 hp imp).
 	void LDBossHealth(RSQMB_Boss b)
 	{
 		if (CI('rsqmb_boss_ldhealth', 1) == 0) return;
 		let mb = b.mb;
+		if (CI('LD_legendarymonsters', 1) == 0)
+		{
+			if (debug) Console.Printf("RSQMB LegenDoom best health: %s skipped, LD_legendarymonsters 0 (LegenDoom gives legendaries no health)", mb.GetClassName());
+			return;
+		}
 		int nm = CI('LD_legendaryhealth', 300) / 100, bm = CI('LD_legendaryhealthboss', 200) / 100;
 		int spawn = mb.SpawnHealth();
 		int best = max(nm, bm);

@@ -1,0 +1,123 @@
+version "4.14"
+// TEST ONLY (never ships). RSQ Miniboss under LegenDoom 3.0 vs LegenDoom Lite 4.2 (+ Champions, the LDL x BD22 VR patch)
+// on the qzd17.3 rig. Links nothing: RSQ Miniboss through RSQMB_Service, LegenDoom and Champions by class name.
+//   netevent mbx_report     each miniboss: class, hp, spawn, lives, legendary (service and LegenDoom's token), colour,
+//                           powers, champion tokens; each thrall: legendary, champion; every eligible monster in range
+//                           with its champion mark (champions-first check)
+//   netevent mbx_hurt <n>   miniboss 0 takes n from the player (logs hp before/after and the shield it had)
+//   netevent mbx_killthrall thrall <arg> of miniboss 0 dies (player the source)
+//   netevent mbx_killboss   miniboss 0 takes a killing blow from the player (a life, or the end)
+//   netevent mbx_freeze     every monster frozen (so the fight is scripted, not played)
+// After miniboss 0 dies, every Inventory spawned within 60 tics is logged (the legendary drop and Kill Rewards bits).
+class MBX_Probe : EventHandler
+{
+	Actor boss;
+	int deadAt;
+	Vector3 deadPos;
+
+	static bool HasN(Actor a, String n) { class<Inventory> c = n; return a && c && a.FindInventory(c, true); }
+	static Service Svc() { return ServiceIterator.Find("RSQMB_Service").Next(); }
+
+	static String Champ(Actor a)
+	{
+		static const String COL[] = { "DarkRed", "Red", "Orange", "Yellow", "DarkGreen", "Green", "Cyan", "Blue", "Indigo",
+			"Violet", "Pink", "Magenta", "Black", "Grey", "White", "Bronze", "Silver", "Gold", "Titan", "Undying", "Ghost", "Balloon" };
+		String s = "";
+		for (int i = 0; i < COL.Size(); i++) if (HasN(a, "champion_" .. COL[i] .. "Token")) s = s .. (s == "" ? "" : "+") .. COL[i];
+		if (s == "" && HasN(a, "champion_Token")) s = "champion?";
+		return s == "" ? "-" : s;
+	}
+
+	override void WorldTick()
+	{
+		let sv = Svc();
+		if (!sv) return;
+		if (!boss) { boss = Actor(sv.GetObject("boss", "", 0)); if (boss) Console.Printf("MBX t%d miniboss 0 is %s", level.maptime, boss.GetClassName()); }
+		if (boss && boss.health <= 0 && !deadAt) { deadAt = level.maptime; deadPos = boss.pos; Console.Printf("MBX t%d miniboss 0 %s dead at (%.0f %.0f)", level.maptime, boss.GetClassName(), deadPos.x, deadPos.y); }
+	}
+
+	override void WorldThingSpawned(WorldEvent e)
+	{
+		if (!deadAt || level.maptime - deadAt > 60 || !e.Thing) return;
+		let i = e.Thing;
+		String n = i.GetClassName();
+		bool ld = n.Left(2) == "LD" || n.Left(5) == "RSLDP";
+		if (!ld && !(i is "Inventory")) return;
+		if (i is "Inventory" && Inventory(i).Owner) return;
+		double d = (i.pos.xy - deadPos.xy).Length();
+		if (ld || d < 256) Console.Printf("MBX t%d spawned %s at %.0f from the miniboss%s", level.maptime, n, d, ld ? " (LEGENDARY DROP)" : "");
+	}
+
+	void Report()
+	{
+		let sv = Svc();
+		if (!sv) { Console.Printf("MBX no RSQMB_Service"); return; }
+		for (int n = 0; n < 4; n++)
+		{
+			let b = Actor(sv.GetObject("boss", "", n));
+			if (!b) continue;
+			int col = sv.GetInt("colour", "", 0, 0, b);
+			Console.Printf("MBX t%d boss %d %s hp %d spawn %d | miniboss %d lives %d legendary(svc) %d LDtoken %d LDtransformed %d | colour %06X | powers [%s] | champion %s | bossfor rewards %d ldhealth %d | shield %d permille | greed %d enraged %d",
+				level.maptime, n, b.GetClassName(), b.health, b.SpawnHealth(), sv.GetInt("miniboss", "", 0, 0, b), sv.GetInt("lives", "", 0, 0, b),
+				sv.GetInt("legendary", "", 0, 0, b), HasN(b, "LDLegendaryMonsterToken"), HasN(b, "LDLegendaryMonsterTransformed"), col,
+				sv.GetString("powers", "", 0, 0, b), Champ(b), sv.GetInt("bossfor", "rewards", 0, 0, b), sv.GetInt("bossfor", "ldhealth", 0, 0, b),
+				sv.GetInt("shield", "", 0, 0, b), sv.GetInt("greed", "", 0, 0, b), sv.GetInt("enraged", "", 0, 0, b));
+			Array<Actor> th;
+			for (int k = 0; k < 8; k++)
+			{
+				let t = Actor(sv.GetObject("thrall", "", k, 0, b));
+				if (!t) { if (k < 8 && sv.GetObject("thrall", "", k + 1, 0, b)) Console.Printf("MBX    thrall %d gone (actor destroyed)", k); continue; }
+				th.Push(t);
+				Console.Printf("MBX    thrall %d %s hp %d spawn %d dist %.0f | thrall %d LDtoken %d | champion %s | colour %06X",
+					k, t.GetClassName(), t.health, t.SpawnHealth(), t.Distance3D(b), sv.GetInt("thrall", "", 0, 0, t), HasN(t, "LDLegendaryMonsterToken"), Champ(t),
+					sv.GetInt("colour", "", 0, 0, t));
+			}
+			// champions first: every other living, countkill monster within range and not stronger, with its champion mark
+			double r = CVar.FindCVar("rsqmb_radius") ? CVar.FindCVar("rsqmb_radius").GetInt() : 1024;
+			let it = ThinkerIterator.Create("Actor");
+			Actor a; int champsLeft = 0, plainTaken = 0;
+			while (a = Actor(it.Next()))
+			{
+				if (a == b || !a.bISMONSTER || a.player || !a.bCOUNTKILL || a.health <= 0 || a.SpawnHealth() > b.SpawnHealth() || a.Distance3D(b) > r) continue;
+				bool taken = th.Find(a) < th.Size();
+				String c = Champ(a);
+				if (!taken && c != "-" && sv.GetInt("thrall", "", 0, 0, a) == 0 && sv.GetInt("miniboss", "", 0, 0, a) == 0) champsLeft++;
+				if (taken && c == "-") plainTaken++;
+				Console.Printf("MBX      in range: %s dist %.0f champion %s LD %d %s", a.GetClassName(), a.Distance3D(b), c, HasN(a, "LDLegendaryMonsterToken"), taken ? "THRALL" : "");
+			}
+			Console.Printf("MBX    champions-first: plain thralls %d, champions in range left out %d (%s)", plainTaken, champsLeft,
+				(plainTaken > 0 && champsLeft > 0) ? "VIOLATED" : "ok");
+		}
+	}
+
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		let p = players[0].mo; if (!p) return;
+		let sv = Svc();
+		Actor b = sv ? Actor(sv.GetObject("boss", "", 0)) : null;
+		if (e.Name == "mbx_report") Report();
+		else if (e.Name == "mbx_freeze")
+		{
+			let it = ThinkerIterator.Create("Actor"); Actor a; int n = 0;
+			while (a = Actor(it.Next())) if (a.bISMONSTER && !a.player) { a.freezetics = 100000; n++; }
+			Console.Printf("MBX t%d froze %d monsters", level.maptime, n);
+		}
+		else if (e.Name == "mbx_hurt" && b)
+		{
+			int h0 = b.health, sh = sv.GetInt("shield", "", 0, 0, b);
+			b.DamageMobj(null, p, e.Args[0], 'None');
+			Console.Printf("MBX t%d hurt %s by %d with shield %d permille: hp %d -> %d (took %d)", level.maptime, b.GetClassName(), e.Args[0], sh, h0, b.health, h0 - b.health);
+		}
+		else if (e.Name == "mbx_killthrall" && b)
+		{
+			let t = Actor(sv.GetObject("thrall", "", e.Args[0], 0, b));
+			if (t && t.health > 0) { t.freezetics = 0; t.DamageMobj(null, p, t.health, 'None', DMG_FORCED); /* just its health: an ordinary death (a gib leaves no corpse to raise) */ Console.Printf("MBX t%d thrall %d %s killed: hp %d", level.maptime, e.Args[0], t.GetClassName(), t.health); }
+		}
+		else if (e.Name == "mbx_killboss" && b)
+		{
+			int h0 = b.health;
+			b.DamageMobj(null, p, 100000, 'None');   // under TELEFRAG_DAMAGE: BUDDHA (the lives) applies
+			Console.Printf("MBX t%d killing blow on %s: hp %d -> %d, lives now %d", level.maptime, b.GetClassName(), h0, b.health, sv.GetInt("lives", "", 0, 0, b));
+		}
+	}
+}

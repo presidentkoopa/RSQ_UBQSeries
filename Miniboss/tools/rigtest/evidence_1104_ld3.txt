@@ -1,0 +1,482 @@
+# RSQ Miniboss with full LegenDoom 3.0 vs LegenDoom Lite 4.2 -- rig only, not headset-confirmed (qzd17.3 rig, doom2 MAP01, 2026-11-04)
+# Order: doom2 -> lo2 01-07 (03 = 03_BD22_VR-Reloaded_2.0.3v) -> GunBonsai 0.10.6 -> LegenDoom 3.0 | Lite 4.2 -> mk-champions 2021-03-09 -> LDL_BD22VR_Patch -> all RSQ pk3s -> ld3probe
+# Script: ld3_script.txt (LD_legendaryhealthboss 400 so the boss factor beats the normal 300; champion_OverrideChance 35). Runner: ld3_run.sh
+# mbf_*: the fixed RSQ_Miniboss.pk3; mbld3_c / mbldl_c / mbld3_lm*: the HEAD pk3 before the fix (same code except LD_legendarymonsters 0).
+
+## mbf_ld3
+RSQMB LegenDoom best health asked: NetherDarkImp spawn 126 x 4 (boss 400%) not x 3 (300%): StartHealth 0 -> 168 for its ACS
+RSQMB bound: boss 0 NetherDarkImp hp 126 lives 3 thralls 3 powers [Blue, Yellow, Legendary] tough 1.50 out 1.00
+MBX t10 miniboss 0 is NetherDarkImp
+RSQMB LegenDoom best health: boss 0 NetherDarkImp legendary 1 hp 504 (asked 504; StartHealth back to 0, SpawnHealth 126)
+CASE_chosen
+MBX t71 froze 19 monsters
+MBX t71 boss 0 NetherDarkImp hp 504 spawn 126 | miniboss 1 lives 3 legendary(svc) 1 LDtoken 1 LDtransformed 0 | colour FF3CC8 | powers [Blue,Yellow,Legendary] | champion Yellow | bossfor rewards 1 ldhealth 1 | shield 133 permille | greed 0 enraged 0
+MBX    thrall 0 Imp hp 240 spawn 80 dist 80 | thrall 1 LDtoken 1 | champion Blue | colour FF3CC8
+MBX    thrall 1 Imp hp 240 spawn 80 dist 963 | thrall 1 LDtoken 1 | champion Yellow | colour FF3CC8
+MBX    thrall 2 Imp3 hp 351 spawn 117 dist 80 | thrall 1 LDtoken 1 | champion - | colour FF3CC8
+MBX    champions-first: plain thralls 1, champions in range left out 0 (ok)
+CASE_shield_greed
+RSQMB greed armed on boss 0: due in 140 tics
+MBX t74 hurt NetherDarkImp by 40 with shield 133 permille: hp 504 -> 499 (took 5)
+MBX t77 boss 0 NetherDarkImp hp 499 spawn 126 | miniboss 1 lives 3 legendary(svc) 1 LDtoken 1 LDtransformed 0 | colour FF3CC8 | powers [Blue,Yellow,Legendary] | champion Yellow | bossfor rewards 1 ldhealth 1 | shield 133 permille | greed 1 enraged 0
+MBX    thrall 0 Imp hp 240 spawn 80 dist 80 | thrall 1 LDtoken 1 | champion Blue | colour FF3CC8
+MBX    thrall 1 Imp hp 240 spawn 80 dist 963 | thrall 1 LDtoken 1 | champion Yellow | colour FF3CC8
+MBX    thrall 2 Imp3 hp 351 spawn 117 dist 80 | thrall 1 LDtoken 1 | champion - | colour FF3CC8
+MBX    champions-first: plain thralls 1, champions in range left out 0 (ok)
+RSQMB rage start: 0.392 ms (once)
+RSQMB GREED: boss 0 enraged, 19 monsters x2.0 speed
+CASE_greed_due
+MBX t226 boss 0 NetherDarkImp hp 499 spawn 126 | miniboss 1 lives 3 legendary(svc) 1 LDtoken 1 LDtransformed 0 | colour FF3CC8 | powers [Blue,Yellow,Legendary] | champion Yellow | bossfor rewards 1 ldhealth 1 | shield 133 permille | greed 0 enraged 1
+MBX    thrall 0 Imp hp 240 spawn 80 dist 80 | thrall 1 LDtoken 1 | champion Blue | colour FF3CC8
+MBX    thrall 1 Imp hp 240 spawn 80 dist 963 | thrall 1 LDtoken 1 | champion Yellow | colour FF3CC8
+MBX    thrall 2 Imp3 hp 351 spawn 117 dist 80 | thrall 1 LDtoken 1 | champion - | colour FF3CC8
+MBX    champions-first: plain thralls 1, champions in range left out 0 (ok)
+RSQMB thrall 0 of boss 0 died (killer player) living 2 window 140 tics
+RSQ KR t226: Imp (80 hp) burst into 3 bits of 8 rolled: 0 health, 1 armour, 2 ammo
+MBX t226 thrall 0 Imp killed: hp 0
+RSLDP drop: LDChaingunPickupLegendary -> RSLDP_LegendaryPickup slot Chaingun rarity Common effect Exorcist
+CASE_life
+MBX t229 killing blow on NetherDarkImp: hp 499 -> 1, lives now 3
+RSQMB life lost: boss 0 lives 2 hp 504 invuln 245 tics living 2
+MBX t233 boss 0 NetherDarkImp hp 504 spawn 126 | miniboss 1 lives 2 legendary(svc) 1 LDtoken 1 LDtransformed 0 | colour FF3CC8 | powers [Blue,Yellow,Legendary] | champion Yellow | bossfor rewards 1 ldhealth 1 | shield 0 permille | greed 0 enraged 1
+MBX    thrall 0 Imp hp 0 spawn 80 dist 80 | thrall 0 LDtoken 1 | champion Blue | colour FF3CC8
+MBX    thrall 1 Imp hp 240 spawn 80 dist 963 | thrall 1 LDtoken 1 | champion Yellow | colour FF3CC8
+MBX    thrall 2 Imp3 hp 351 spawn 117 dist 80 | thrall 1 LDtoken 1 | champion - | colour FF3CC8
+MBX    champions-first: plain thralls 1, champions in range left out 0 (ok)
+CASE_after_invuln_revive
+MBX t563 boss 0 NetherDarkImp hp 504 spawn 126 | miniboss 1 lives 2 legendary(svc) 1 LDtoken 1 LDtransformed 0 | colour FF3CC8 | powers [Blue,Yellow,Legendary] | champion Yellow | bossfor rewards 1 ldhealth 1 | shield 311 permille | greed 0 enraged 1
+MBX    thrall 0 gone (actor destroyed)
+MBX    thrall 1 Imp hp 240 spawn 80 dist 963 | thrall 1 LDtoken 1 | champion Yellow | colour FF3CC8
+MBX    thrall 2 Imp3 hp 345 spawn 117 dist 80 | thrall 1 LDtoken 1 | champion - | colour FF3CC8
+MBX    champions-first: plain thralls 1, champions in range left out 0 (ok)
+CASE_finish
+RSQMB thrall 1 of boss 0 died (killer player) living 1 window 140 tics
+RSQ KR t566: Imp (80 hp) burst into 4 bits of 8 rolled: 1 health, 0 armour, 3 ammo
+MBX t566 thrall 1 Imp killed: hp 0
+RSQMB award "Thrall Slow Kill" 100 -> RS_ScoreService
+RSQMB thrall 2 of boss 0 died (killer player) living 0 window 245 tics CHAIN
+RSQ KR t566: Imp3 (117 hp) burst into 7 bits of 12 rolled: 0 health, 3 armour, 4 ammo
+MBX t566 thrall 2 Imp3 killed: hp 0
+RSLDP drop: LDChaingunPickupLegendary -> RSLDP_LegendaryPickup slot Chaingun rarity Common effect Gravitic
+RSLDP drop: LDPistolPickupLegendary -> RSLDP_LegendaryPickup slot Pistol rarity Uncommon effect Unlikely
+MBX t568 killing blow on NetherDarkImp: hp 504 -> 1, lives now 2
+RSQMB life lost: boss 0 lives 1 hp 504 invuln 1 tics living 0
+RSQMB flags at death: boss 0 NetherDarkImp FULLVOLSEE 0 FULLVOLDEATH 0 DONTMORPH 0 BOSS 0 (roar 0 nomorph 0; own 0 0 0)
+RSQMB award "Miniboss" 500 -> RS_ScoreService
+RSQMB boss 0 died (killer player) rage 0
+RSQ KR t574: NetherDarkImp (126 hp, miniboss as boss) burst into 38 bits of 38 rolled: 1 health, 6 armour, 31 ammo
+MBX t574 killing blow on NetherDarkImp: hp 504 -> -66162, lives now 0
+MBX t574 miniboss 0 NetherDarkImp dead at (320 224)
+MBX t574 spawned LDRandomLegendaryDropNormal at 6 from the miniboss (LEGENDARY DROP)
+MBX t574 spawned LDFistsPickupLegendary at 15 from the miniboss (LEGENDARY DROP)
+RSLDP drop: LDFistsPickupLegendary -> RSLDP_LegendaryPickup slot Fists rarity Uncommon effect ProStrat
+MBX t577 killing blow on NetherDarkImp: hp -66162 -> -66162, lives now 0
+MBX t581 killing blow on NetherDarkImp: hp -66162 -> -66162, lives now 0
+MBX t584 killing blow on NetherDarkImp: hp -66162 -> -66162, lives now 0
+MBX t589 killing blow on NetherDarkImp: hp -66162 -> -66162, lives now 0
+CASE_end
+
+## mbf_ldl
+RSQMB LegenDoom best health asked: Imp spawn 80 x 4 (boss 400%) not x 3 (300%): StartHealth 0 -> 107 for its ACS
+RSQMB bound: boss 0 Imp hp 80 lives 3 thralls 3 powers [White, Grey, Legendary] tough 1.50 out 1.00
+MBX t10 miniboss 0 is Imp
+RSQMB LegenDoom best health: boss 0 Imp legendary 1 hp 321 (asked 320; StartHealth back to 0, SpawnHealth 80)
+CASE_chosen
+MBX t71 froze 19 monsters
+MBX t71 boss 0 Imp hp 321 spawn 80 | miniboss 1 lives 3 legendary(svc) 1 LDtoken 1 LDtransformed 0 | colour FF3CC8 | powers [White,Grey,Legendary] | champion White | bossfor rewards 1 ldhealth 1 | shield 133 permille | greed 0 enraged 0
+MBX    thrall 0 LabguyB hp 162 spawn 54 dist 575 | thrall 1 LDtoken 1 | champion White | colour FF3CC8
+MBX    thrall 1 LabguyB hp 162 spawn 54 dist 937 | thrall 1 LDtoken 1 | champion Grey | colour FF3CC8
+MBX    thrall 2 PistolZombiePatch hp 120 spawn 40 dist 112 | thrall 1 LDtoken 1 | champion - | colour FF3CC8
+MBX    champions-first: plain thralls 1, champions in range left out 0 (ok)
+CASE_shield_greed
+RSQMB greed armed on boss 0: due in 140 tics
+MBX t73 hurt Imp by 40 with shield 133 permille: hp 321 -> 316 (took 5)
+MBX t76 boss 0 Imp hp 316 spawn 80 | miniboss 1 lives 3 legendary(svc) 1 LDtoken 1 LDtransformed 0 | colour FF3CC8 | powers [White,Grey,Legendary] | champion White | bossfor rewards 1 ldhealth 1 | shield 133 permille | greed 1 enraged 0
+MBX    thrall 0 LabguyB hp 162 spawn 54 dist 575 | thrall 1 LDtoken 1 | champion White | colour FF3CC8
+MBX    thrall 1 LabguyB hp 162 spawn 54 dist 937 | thrall 1 LDtoken 1 | champion Grey | colour FF3CC8
+MBX    thrall 2 PistolZombiePatch hp 120 spawn 40 dist 112 | thrall 1 LDtoken 1 | champion - | colour FF3CC8
+MBX    champions-first: plain thralls 1, champions in range left out 0 (ok)
+RSQMB rage start: 0.519 ms (once)
+RSQMB GREED: boss 0 enraged, 19 monsters x2.0 speed
+CASE_greed_due
+MBX t225 boss 0 Imp hp 316 spawn 80 | miniboss 1 lives 3 legendary(svc) 1 LDtoken 1 LDtransformed 0 | colour FF3CC8 | powers [White,Grey,Legendary] | champion White | bossfor rewards 1 ldhealth 1 | shield 133 permille | greed 0 enraged 1
+MBX    thrall 0 LabguyB hp 162 spawn 54 dist 575 | thrall 1 LDtoken 1 | champion White | colour FF3CC8
+MBX    thrall 1 LabguyB hp 162 spawn 54 dist 937 | thrall 1 LDtoken 1 | champion Grey | colour FF3CC8
+MBX    thrall 2 PistolZombiePatch hp 120 spawn 40 dist 112 | thrall 1 LDtoken 1 | champion - | colour FF3CC8
+MBX    champions-first: plain thralls 1, champions in range left out 0 (ok)
+RSQMB thrall 0 of boss 0 died (killer player) living 2 window 140 tics
+RSQ KR t225: LabguyB (54 hp) burst into 2 bits of 5 rolled: 0 health, 0 armour, 2 ammo
+MBX t225 thrall 0 LabguyB killed: hp 0
+CASE_life
+MBX t231 killing blow on Imp: hp 316 -> 1, lives now 3
+RSQMB life lost: boss 0 lives 2 hp 321 invuln 245 tics living 2
+MBX t234 boss 0 Imp hp 321 spawn 80 | miniboss 1 lives 2 legendary(svc) 1 LDtoken 1 LDtransformed 0 | colour FF3CC8 | powers [White,Grey,Legendary] | champion White | bossfor rewards 1 ldhealth 1 | shield 0 permille | greed 0 enraged 1
+MBX    thrall 0 LabguyB hp 0 spawn 54 dist 575 | thrall 0 LDtoken 1 | champion White | colour FF3CC8
+MBX    thrall 1 LabguyB hp 162 spawn 54 dist 937 | thrall 1 LDtoken 1 | champion Grey | colour FF3CC8
+MBX    thrall 2 PistolZombiePatch hp 120 spawn 40 dist 112 | thrall 1 LDtoken 1 | champion - | colour FF3CC8
+MBX    champions-first: plain thralls 1, champions in range left out 0 (ok)
+CASE_after_invuln_revive
+MBX t563 boss 0 Imp hp 321 spawn 80 | miniboss 1 lives 2 legendary(svc) 1 LDtoken 1 LDtransformed 0 | colour FF3CC8 | powers [White,Grey,Legendary] | champion White | bossfor rewards 1 ldhealth 1 | shield 311 permille | greed 0 enraged 1
+MBX    thrall 0 gone (actor destroyed)
+MBX    thrall 1 LabguyB hp 162 spawn 54 dist 937 | thrall 1 LDtoken 1 | champion Grey | colour FF3CC8
+MBX    thrall 2 PistolZombiePatch hp 120 spawn 40 dist 112 | thrall 1 LDtoken 1 | champion - | colour FF3CC8
+MBX    champions-first: plain thralls 1, champions in range left out 0 (ok)
+CASE_finish
+RSQMB thrall 1 of boss 0 died (killer player) living 1 window 140 tics
+RSQ KR t565: LabguyB (54 hp) burst into 3 bits of 5 rolled: 0 health, 2 armour, 1 ammo
+MBX t565 thrall 1 LabguyB killed: hp 0
+RSQMB award "Thrall Slow Kill" 100 -> RS_ScoreService
+RSQMB thrall 2 of boss 0 died (killer player) living 0 window 245 tics CHAIN
+RSQ KR t565: PistolZombiePatch (40 hp) burst into 2 bits of 4 rolled: 0 health, 1 armour, 1 ammo
+MBX t565 thrall 2 PistolZombiePatch killed: hp 0
+MBX t569 killing blow on Imp: hp 321 -> 1, lives now 2
+RSQMB life lost: boss 0 lives 1 hp 321 invuln 1 tics living 0
+RSQMB flags at death: boss 0 Imp FULLVOLSEE 0 FULLVOLDEATH 0 DONTMORPH 0 BOSS 0 (roar 0 nomorph 0; own 0 0 0)
+RSQMB award "Miniboss" 500 -> RS_ScoreService
+RSQMB boss 0 died (killer player) rage 0
+RSQ KR t573: Imp (80 hp, miniboss as boss) burst into 24 bits of 24 rolled: 4 health, 2 armour, 18 ammo
+MBX t573 killing blow on Imp: hp 321 -> -66345, lives now 0
+MBX t573 miniboss 0 Imp dead at (32 656)
+MBX t573 spawned LDLiteTier1Item at 6 from the miniboss (LEGENDARY DROP)
+MBX t573 spawned Stimpack2 at 10 from the miniboss
+MBX t573 spawned AmmoRocket at 10 from the miniboss
+MBX t577 killing blow on Imp: hp -66345 -> -66345, lives now 0
+MBX t577 spawned PistolSpawner at 53 from the miniboss
+MBX t581 killing blow on Imp: hp -66345 -> -66345, lives now 0
+MBX t585 killing blow on Imp: hp -66345 -> -66345, lives now 0
+MBX t588 killing blow on Imp: hp -66345 -> -66345, lives now 0
+CASE_end
+
+## mbld3_c
+RSQMB LegenDoom best health asked: Imp spawn 80 x 4 (boss 400%) not x 3 (300%): StartHealth 0 -> 107 for its ACS
+RSQMB bound: boss 0 Imp hp 80 lives 4 thralls 3 powers [Green, DarkRed, Legendary] tough 1.50 out 1.00
+MBX t10 miniboss 0 is Imp
+RSQMB LegenDoom best health: boss 0 Imp legendary 1 hp 321 (asked 320; StartHealth back to 0, SpawnHealth 80)
+CASE_chosen
+MBX t71 froze 19 monsters
+MBX t71 boss 0 Imp hp 321 spawn 80 | miniboss 1 lives 4 legendary(svc) 1 LDtoken 1 LDtransformed 0 | colour FF3CC8 | powers [Green,DarkRed,Legendary] | champion - | bossfor rewards 1 ldhealth 1 | shield 133 permille | greed 0 enraged 0
+MBX    thrall 0 Imp hp 240 spawn 80 dist 491 | thrall 1 LDtoken 1 | champion Green | colour FF3CC8
+MBX    thrall 1 PistolZombiePatch hp 120 spawn 40 dist 509 | thrall 1 LDtoken 1 | champion DarkRed | colour FF3CC8
+MBX    thrall 2 PistolZombiePatch hp 120 spawn 40 dist 112 | thrall 1 LDtoken 1 | champion - | colour FF3CC8
+MBX    champions-first: plain thralls 1, champions in range left out 0 (ok)
+CASE_shield_greed
+RSQMB greed armed on boss 0: due in 140 tics
+MBX t88 hurt Imp by 40 with shield 133 permille: hp 321 -> 316 (took 5)
+MBX t88 boss 0 Imp hp 316 spawn 80 | miniboss 1 lives 4 legendary(svc) 1 LDtoken 1 LDtransformed 0 | colour FF3CC8 | powers [Green,DarkRed,Legendary] | champion - | bossfor rewards 1 ldhealth 1 | shield 133 permille | greed 1 enraged 0
+MBX    thrall 0 Imp hp 240 spawn 80 dist 491 | thrall 1 LDtoken 1 | champion Green | colour FF3CC8
+MBX    thrall 1 PistolZombiePatch hp 120 spawn 40 dist 509 | thrall 1 LDtoken 1 | champion DarkRed | colour FF3CC8
+MBX    thrall 2 PistolZombiePatch hp 120 spawn 40 dist 112 | thrall 1 LDtoken 1 | champion - | colour FF3CC8
+MBX    champions-first: plain thralls 1, champions in range left out 0 (ok)
+CASE_greed_due
+CASE_life
+RSQMB rage start: 1.327 ms (once)
+RSQMB GREED: boss 0 enraged, 19 monsters x2.0 speed
+MBX t229 boss 0 Imp hp 316 spawn 80 | miniboss 1 lives 4 legendary(svc) 1 LDtoken 1 LDtransformed 0 | colour FF3CC8 | powers [Green,DarkRed,Legendary] | champion - | bossfor rewards 1 ldhealth 1 | shield 133 permille | greed 0 enraged 1
+MBX    thrall 0 Imp hp 240 spawn 80 dist 491 | thrall 1 LDtoken 1 | champion Green | colour FF3CC8
+MBX    thrall 1 PistolZombiePatch hp 120 spawn 40 dist 509 | thrall 1 LDtoken 1 | champion DarkRed | colour FF3CC8
+MBX    thrall 2 PistolZombiePatch hp 120 spawn 40 dist 112 | thrall 1 LDtoken 1 | champion - | colour FF3CC8
+MBX    champions-first: plain thralls 1, champions in range left out 0 (ok)
+RSQMB thrall 0 of boss 0 died (killer player) living 2 window 140 tics
+RSQ KR t229: Imp (80 hp) burst into 3 bits of 8 rolled: 0 health, 0 armour, 3 ammo
+MBX t229 thrall 0 Imp killed: hp 0
+MBX t229 killing blow on Imp: hp 316 -> 1, lives now 4
+RSQMB life lost: boss 0 lives 3 hp 321 invuln 245 tics living 2
+RSLDP drop: LDFistsPickupLegendary -> RSLDP_LegendaryPickup slot Fists rarity Rare effect Vampiric
+MBX t238 boss 0 Imp hp 321 spawn 80 | miniboss 1 lives 3 legendary(svc) 1 LDtoken 1 LDtransformed 0 | colour FF3CC8 | powers [Green,DarkRed,Legendary] | champion - | bossfor rewards 1 ldhealth 1 | shield 0 permille | greed 0 enraged 1
+MBX    thrall 0 Imp hp 0 spawn 80 dist 491 | thrall 0 LDtoken 1 | champion Green | colour FF3CC8
+MBX    thrall 1 PistolZombiePatch hp 120 spawn 40 dist 509 | thrall 1 LDtoken 1 | champion DarkRed | colour FF3CC8
+MBX    thrall 2 PistolZombiePatch hp 120 spawn 40 dist 112 | thrall 1 LDtoken 1 | champion - | colour FF3CC8
+MBX    champions-first: plain thralls 1, champions in range left out 0 (ok)
+RSQMB thrall 0 of boss 0 rose (hp 80)
+CASE_after_invuln_revive
+MBX t563 boss 0 Imp hp 321 spawn 80 | miniboss 1 lives 3 legendary(svc) 1 LDtoken 1 LDtransformed 0 | colour FF3CC8 | powers [Green,DarkRed,Legendary] | champion - | bossfor rewards 1 ldhealth 1 | shield 133 permille | greed 0 enraged 1
+MBX    thrall 0 Imp hp 80 spawn 80 dist 491 | thrall 1 LDtoken 1 | champion Green | colour FF3CC8
+MBX    thrall 1 PistolZombiePatch hp 120 spawn 40 dist 509 | thrall 1 LDtoken 1 | champion DarkRed | colour FF3CC8
+MBX    thrall 2 PistolZombiePatch hp 120 spawn 40 dist 112 | thrall 1 LDtoken 1 | champion - | colour FF3CC8
+MBX    champions-first: plain thralls 1, champions in range left out 0 (ok)
+CASE_finish
+RSQMB thrall 0 of boss 0 died (killer player) living 2 window 140 tics
+RSQ KR t565: Imp (80 hp) burst into 6 bits of 8 rolled: 2 health, 1 armour, 3 ammo
+MBX t565 thrall 0 Imp killed: hp 0
+RSQMB award "Thrall Slow Kill" 100 -> RS_ScoreService
+RSQMB thrall 1 of boss 0 died (killer player) living 1 window 245 tics CHAIN
+RSQ KR t565: PistolZombiePatch (40 hp) burst into 2 bits of 4 rolled: 0 health, 0 armour, 2 ammo
+MBX t565 thrall 1 PistolZombiePatch killed: hp 0
+RSQMB award "Thrall Slow Kill" 100 -> RS_ScoreService
+RSQMB thrall 2 of boss 0 died (killer player) living 0 window 350 tics CHAIN
+RSQ KR t565: PistolZombiePatch (40 hp) burst into 2 bits of 4 rolled: 0 health, 0 armour, 2 ammo
+MBX t565 thrall 2 PistolZombiePatch killed: hp 0
+RSLDP drop: LDPistolPickupLegendary -> RSLDP_LegendaryPickup slot Pistol rarity Uncommon effect Serious
+RSLDP drop: LDPistolPickupLegendary -> RSLDP_LegendaryPickup slot Pistol rarity Rare effect Whittling
+MBX t568 killing blow on Imp: hp 321 -> 1, lives now 3
+RSQMB life lost: boss 0 lives 2 hp 321 invuln 1 tics living 0
+MBX t574 killing blow on Imp: hp 321 -> 1, lives now 2
+RSQMB life lost: boss 0 lives 1 hp 321 invuln 1 tics living 0
+RSQMB flags at death: boss 0 Imp FULLVOLSEE 0 FULLVOLDEATH 0 DONTMORPH 0 BOSS 0 (roar 0 nomorph 0; own 0 0 0)
+RSQMB award "Miniboss" 500 -> RS_ScoreService
+RSQMB boss 0 died (killer player) rage 0
+RSQ KR t577: Imp (80 hp, miniboss as boss) burst into 24 bits of 24 rolled: 7 health, 5 armour, 12 ammo
+MBX t577 killing blow on Imp: hp 321 -> -66346, lives now 0
+MBX t577 miniboss 0 Imp dead at (32 656)
+MBX t577 spawned LDFistsPickupLegendary at 13 from the miniboss (LEGENDARY DROP)
+RSLDP drop: LDFistsPickupLegendary -> RSLDP_LegendaryPickup slot Fists rarity Epic effect Persistent
+MBX t580 killing blow on Imp: hp -66346 -> -66346, lives now 0
+MBX t580 spawned PistolSpawner at 50 from the miniboss
+MBX t584 killing blow on Imp: hp -66346 -> -66346, lives now 0
+MBX t590 killing blow on Imp: hp -66346 -> -66346, lives now 0
+CASE_end
+
+## mbldl_c
+RSQMB LegenDoom best health asked: PlasmaZombie spawn 80 x 4 (boss 400%) not x 3 (300%): StartHealth 0 -> 107 for its ACS
+RSQMB bound: boss 0 PlasmaZombie hp 80 lives 3 thralls 3 powers [Green, DarkGreen, Legendary] tough 1.50 out 1.00
+MBX t10 miniboss 0 is PlasmaZombie
+RSQMB LegenDoom best health: boss 0 PlasmaZombie legendary 1 hp 321 (asked 320; StartHealth back to 0, SpawnHealth 80)
+CASE_chosen
+MBX t70 froze 19 monsters
+MBX t70 boss 0 PlasmaZombie hp 321 spawn 80 | miniboss 1 lives 3 legendary(svc) 1 LDtoken 1 LDtransformed 0 | colour FF3CC8 | powers [Green,DarkGreen,Legendary] | champion DarkGreen | bossfor rewards 1 ldhealth 1 | shield 133 permille | greed 0 enraged 0
+MBX    thrall 0 RifleZombie hp 120 spawn 40 dist 128 | thrall 1 LDtoken 1 | champion Green | colour FF3CC8
+MBX    thrall 1 PistolZombiePatch hp 120 spawn 40 dist 819 | thrall 1 LDtoken 1 | champion DarkGreen | colour FF3CC8
+MBX    thrall 2 RifleZombie hp 120 spawn 40 dist 320 | thrall 1 LDtoken 1 | champion - | colour FF3CC8
+MBX    champions-first: plain thralls 1, champions in range left out 0 (ok)
+CASE_shield_greed
+RSQMB greed armed on boss 0: due in 140 tics
+MBX t72 hurt PlasmaZombie by 40 with shield 133 permille: hp 321 -> 316 (took 5)
+MBX t76 boss 0 PlasmaZombie hp 316 spawn 80 | miniboss 1 lives 3 legendary(svc) 1 LDtoken 1 LDtransformed 0 | colour FF3CC8 | powers [Green,DarkGreen,Legendary] | champion DarkGreen | bossfor rewards 1 ldhealth 1 | shield 133 permille | greed 1 enraged 0
+MBX    thrall 0 RifleZombie hp 120 spawn 40 dist 128 | thrall 1 LDtoken 1 | champion Green | colour FF3CC8
+MBX    thrall 1 PistolZombiePatch hp 120 spawn 40 dist 819 | thrall 1 LDtoken 1 | champion DarkGreen | colour FF3CC8
+MBX    thrall 2 RifleZombie hp 120 spawn 40 dist 320 | thrall 1 LDtoken 1 | champion - | colour FF3CC8
+MBX    champions-first: plain thralls 1, champions in range left out 0 (ok)
+RSQMB rage start: 0.450 ms (once)
+RSQMB GREED: boss 0 enraged, 19 monsters x2.0 speed
+CASE_greed_due
+MBX t226 boss 0 PlasmaZombie hp 316 spawn 80 | miniboss 1 lives 3 legendary(svc) 1 LDtoken 1 LDtransformed 0 | colour FF3CC8 | powers [Green,DarkGreen,Legendary] | champion DarkGreen | bossfor rewards 1 ldhealth 1 | shield 133 permille | greed 0 enraged 1
+MBX    thrall 0 RifleZombie hp 120 spawn 40 dist 128 | thrall 1 LDtoken 1 | champion Green | colour FF3CC8
+MBX    thrall 1 PistolZombiePatch hp 120 spawn 40 dist 819 | thrall 1 LDtoken 1 | champion DarkGreen | colour FF3CC8
+MBX    thrall 2 RifleZombie hp 120 spawn 40 dist 320 | thrall 1 LDtoken 1 | champion - | colour FF3CC8
+MBX    champions-first: plain thralls 1, champions in range left out 0 (ok)
+RSQMB thrall 0 of boss 0 died (killer player) living 2 window 140 tics
+RSQ KR t226: RifleZombie (40 hp) burst into 3 bits of 4 rolled: 0 health, 1 armour, 2 ammo
+MBX t226 thrall 0 RifleZombie killed: hp 0
+CASE_life
+MBX t228 killing blow on PlasmaZombie: hp 316 -> 1, lives now 3
+RSQMB life lost: boss 0 lives 2 hp 321 invuln 245 tics living 2
+MBX t234 boss 0 PlasmaZombie hp 321 spawn 80 | miniboss 1 lives 2 legendary(svc) 1 LDtoken 1 LDtransformed 0 | colour FF3CC8 | powers [Green,DarkGreen,Legendary] | champion DarkGreen | bossfor rewards 1 ldhealth 1 | shield 0 permille | greed 0 enraged 1
+MBX    thrall 0 RifleZombie hp 0 spawn 40 dist 128 | thrall 0 LDtoken 1 | champion Green | colour FF3CC8
+MBX    thrall 1 PistolZombiePatch hp 120 spawn 40 dist 819 | thrall 1 LDtoken 1 | champion DarkGreen | colour FF3CC8
+MBX    thrall 2 RifleZombie hp 120 spawn 40 dist 320 | thrall 1 LDtoken 1 | champion - | colour FF3CC8
+MBX    champions-first: plain thralls 1, champions in range left out 0 (ok)
+RSQMB thrall 0 of boss 0 rose (hp 40)
+CASE_after_invuln_revive
+MBX t564 boss 0 PlasmaZombie hp 321 spawn 80 | miniboss 1 lives 2 legendary(svc) 1 LDtoken 1 LDtransformed 0 | colour FF3CC8 | powers [Green,DarkGreen,Legendary] | champion DarkGreen | bossfor rewards 1 ldhealth 1 | shield 133 permille | greed 0 enraged 1
+MBX    thrall 0 RifleZombie hp 40 spawn 40 dist 128 | thrall 1 LDtoken 1 | champion Green | colour FF3CC8
+MBX    thrall 1 PistolZombiePatch hp 120 spawn 40 dist 819 | thrall 1 LDtoken 1 | champion DarkGreen | colour FF3CC8
+MBX    thrall 2 RifleZombie hp 120 spawn 40 dist 320 | thrall 1 LDtoken 1 | champion - | colour FF3CC8
+MBX    champions-first: plain thralls 1, champions in range left out 0 (ok)
+CASE_finish
+RSQMB thrall 0 of boss 0 died (killer player) living 2 window 140 tics
+RSQ KR t570: RifleZombie (40 hp) burst into 4 bits of 4 rolled: 1 health, 0 armour, 3 ammo
+MBX t570 thrall 0 RifleZombie killed: hp 0
+RSQMB award "Thrall Slow Kill" 100 -> RS_ScoreService
+RSQMB thrall 1 of boss 0 died (killer player) living 1 window 245 tics CHAIN
+RSQ KR t570: PistolZombiePatch (40 hp) burst into 2 bits of 4 rolled: 0 health, 0 armour, 2 ammo
+MBX t570 thrall 1 PistolZombiePatch killed: hp 0
+RSQMB award "Thrall Slow Kill" 100 -> RS_ScoreService
+RSQMB thrall 2 of boss 0 died (killer player) living 0 window 350 tics CHAIN
+RSQ KR t570: RifleZombie (40 hp) burst into 4 bits of 4 rolled: 2 health, 1 armour, 1 ammo
+MBX t570 thrall 2 RifleZombie killed: hp 0
+MBX t570 killing blow on PlasmaZombie: hp 321 -> 1, lives now 2
+RSQMB life lost: boss 0 lives 1 hp 321 invuln 1 tics living 0
+RSQMB flags at death: boss 0 PlasmaZombie FULLVOLSEE 0 FULLVOLDEATH 0 DONTMORPH 0 BOSS 0 (roar 0 nomorph 0; own 0 0 0)
+RSQMB award "Miniboss" 500 -> RS_ScoreService
+RSQMB boss 0 died (killer player) rage 0
+RSQ KR t574: PlasmaZombie (80 hp, miniboss as boss) burst into 24 bits of 24 rolled: 6 health, 3 armour, 15 ammo
+MBX t574 killing blow on PlasmaZombie: hp 321 -> -66345, lives now 0
+CASE_end
+
+## mbf_ldl_nopatch
+RSQMB LegenDoom best health asked: Imp3 spawn 117 x 4 (boss 400%) not x 3 (300%): StartHealth 0 -> 156 for its ACS
+RSQMB bound: boss 0 Imp3 hp 117 lives 3 thralls 3 powers [Green, Legendary] tough 1.50 out 1.00
+MBX t10 miniboss 0 is Imp3
+RSQMB LegenDoom best health: boss 0 Imp3 legendary 1 hp 468 (asked 468; StartHealth back to 0, SpawnHealth 117)
+CASE_chosen
+MBX t70 froze 19 monsters
+MBX t70 boss 0 Imp3 hp 468 spawn 117 | miniboss 1 lives 3 legendary(svc) 1 LDtoken 1 LDtransformed 0 | colour FF3CC8 | powers [Green,Legendary] | champion - | bossfor rewards 1 ldhealth 1 | shield 133 permille | greed 0 enraged 0
+MBX    thrall 0 Imp hp 240 spawn 80 dist 260 | thrall 1 LDtoken 1 | champion Green | colour FF3CC8
+MBX    thrall 1 Imp hp 240 spawn 80 dist 256 | thrall 1 LDtoken 1 | champion - | colour FF3CC8
+MBX    thrall 2 PistolZombiePatch hp 120 spawn 40 dist 866 | thrall 1 LDtoken 1 | champion - | colour FF3CC8
+MBX    champions-first: plain thralls 2, champions in range left out 0 (ok)
+CASE_shield_greed
+RSQMB greed armed on boss 0: due in 140 tics
+MBX t73 hurt Imp3 by 40 with shield 133 permille: hp 468 -> 463 (took 5)
+MBX t77 boss 0 Imp3 hp 463 spawn 117 | miniboss 1 lives 3 legendary(svc) 1 LDtoken 1 LDtransformed 0 | colour FF3CC8 | powers [Green,Legendary] | champion - | bossfor rewards 1 ldhealth 1 | shield 133 permille | greed 1 enraged 0
+MBX    thrall 0 Imp hp 240 spawn 80 dist 260 | thrall 1 LDtoken 1 | champion Green | colour FF3CC8
+MBX    thrall 1 Imp hp 240 spawn 80 dist 256 | thrall 1 LDtoken 1 | champion - | colour FF3CC8
+MBX    thrall 2 PistolZombiePatch hp 120 spawn 40 dist 866 | thrall 1 LDtoken 1 | champion - | colour FF3CC8
+MBX    champions-first: plain thralls 2, champions in range left out 0 (ok)
+RSQMB rage start: 0.488 ms (once)
+RSQMB GREED: boss 0 enraged, 19 monsters x2.0 speed
+CASE_greed_due
+CASE_life
+MBX t228 boss 0 Imp3 hp 463 spawn 117 | miniboss 1 lives 3 legendary(svc) 1 LDtoken 1 LDtransformed 0 | colour FF3CC8 | powers [Green,Legendary] | champion - | bossfor rewards 1 ldhealth 1 | shield 133 permille | greed 0 enraged 1
+MBX    thrall 0 Imp hp 240 spawn 80 dist 260 | thrall 1 LDtoken 1 | champion Green | colour FF3CC8
+MBX    thrall 1 Imp hp 240 spawn 80 dist 256 | thrall 1 LDtoken 1 | champion - | colour FF3CC8
+MBX    thrall 2 PistolZombiePatch hp 120 spawn 40 dist 866 | thrall 1 LDtoken 1 | champion - | colour FF3CC8
+MBX    champions-first: plain thralls 2, champions in range left out 0 (ok)
+RSQMB thrall 0 of boss 0 died (killer player) living 2 window 140 tics
+RSQ KR t228: Imp (80 hp) burst into 6 bits of 8 rolled: 0 health, 0 armour, 6 ammo
+MBX t228 thrall 0 Imp killed: hp 0
+MBX t228 killing blow on Imp3: hp 463 -> 1, lives now 3
+RSQMB life lost: boss 0 lives 2 hp 468 invuln 245 tics living 2
+MBX t238 boss 0 Imp3 hp 468 spawn 117 | miniboss 1 lives 2 legendary(svc) 1 LDtoken 1 LDtransformed 0 | colour FF3CC8 | powers [Green,Legendary] | champion - | bossfor rewards 1 ldhealth 1 | shield 0 permille | greed 0 enraged 1
+MBX    thrall 0 Imp hp 0 spawn 80 dist 260 | thrall 0 LDtoken 1 | champion Green | colour FF3CC8
+MBX    thrall 1 Imp hp 240 spawn 80 dist 256 | thrall 1 LDtoken 1 | champion - | colour FF3CC8
+MBX    thrall 2 PistolZombiePatch hp 120 spawn 40 dist 866 | thrall 1 LDtoken 1 | champion - | colour FF3CC8
+MBX    champions-first: plain thralls 2, champions in range left out 0 (ok)
+RSQMB thrall 0 of boss 0 rose (hp 80)
+CASE_after_invuln_revive
+MBX t564 boss 0 Imp3 hp 468 spawn 117 | miniboss 1 lives 2 legendary(svc) 1 LDtoken 1 LDtransformed 0 | colour FF3CC8 | powers [Green,Legendary] | champion - | bossfor rewards 1 ldhealth 1 | shield 133 permille | greed 0 enraged 1
+MBX    thrall 0 Imp hp 80 spawn 80 dist 260 | thrall 1 LDtoken 1 | champion Green | colour FF3CC8
+MBX    thrall 1 Imp hp 240 spawn 80 dist 256 | thrall 1 LDtoken 1 | champion - | colour FF3CC8
+MBX    thrall 2 PistolZombiePatch hp 120 spawn 40 dist 866 | thrall 1 LDtoken 1 | champion - | colour FF3CC8
+MBX    champions-first: plain thralls 2, champions in range left out 0 (ok)
+CASE_finish
+RSQMB thrall 0 of boss 0 died (killer player) living 2 window 140 tics
+RSQ KR t566: Imp (80 hp) burst into 5 bits of 8 rolled: 0 health, 1 armour, 4 ammo
+MBX t566 thrall 0 Imp killed: hp 0
+RSQMB award "Thrall Slow Kill" 100 -> RS_ScoreService
+RSQMB thrall 1 of boss 0 died (killer player) living 1 window 245 tics CHAIN
+RSQ KR t566: Imp (80 hp) burst into 5 bits of 8 rolled: 1 health, 3 armour, 1 ammo
+MBX t566 thrall 1 Imp killed: hp 0
+RSQMB award "Thrall Slow Kill" 100 -> RS_ScoreService
+RSQMB thrall 2 of boss 0 died (killer player) living 0 window 350 tics CHAIN
+RSQ KR t566: PistolZombiePatch (40 hp) burst into 0 bits of 4 rolled: 0 health, 0 armour, 0 ammo
+MBX t566 thrall 2 PistolZombiePatch killed: hp 0
+MBX t569 killing blow on Imp3: hp 468 -> 1, lives now 2
+RSQMB life lost: boss 0 lives 1 hp 468 invuln 1 tics living 0
+RSQMB flags at death: boss 0 Imp3 FULLVOLSEE 0 FULLVOLDEATH 0 DONTMORPH 0 BOSS 0 (roar 0 nomorph 0; own 0 0 0)
+RSQMB award "Miniboss" 500 -> RS_ScoreService
+RSQMB boss 0 died (killer player) rage 0
+RSQ KR t572: Imp3 (117 hp, miniboss as boss) burst into 35 bits of 35 rolled: 6 health, 6 armour, 23 ammo
+MBX t572 killing blow on Imp3: hp 468 -> -66198, lives now 0
+MBX t572 miniboss 0 Imp3 dead at (1200 864)
+MBX t572 spawned LDLiteTier1Item at 6 from the miniboss (LEGENDARY DROP)
+MBX t572 spawned Stimpack2 at 5 from the miniboss
+MBX t572 spawned AmmoShell at 5 from the miniboss
+MBX t579 killing blow on Imp3: hp -66198 -> -66198, lives now 0
+MBX t582 killing blow on Imp3: hp -66198 -> -66198, lives now 0
+MBX t586 killing blow on Imp3: hp -66198 -> -66198, lives now 0
+MBX t589 killing blow on Imp3: hp -66198 -> -66198, lives now 0
+CASE_end
+
+## mbf_ld3_nopatch
+RSQMB bound: boss 0 LDDoomImp hp 180 lives 3 thralls 3 powers [DarkGreen, Legendary] tough 1.00 out 1.00
+MBX t10 miniboss 0 is LDDoomImp
+CASE_chosen
+MBX t70 froze 22 monsters
+MBX t70 boss 0 LDDoomImp hp 180 spawn 60 | miniboss 1 lives 3 legendary(svc) 1 LDtoken 1 LDtransformed 0 | colour FF3CC8 | powers [DarkGreen,Legendary] | champion DarkGreen | bossfor rewards 1 ldhealth 0 | shield 199 permille | greed 0 enraged 0
+MBX    thrall 0 LDDoomImp hp 180 spawn 60 dist 1007 | thrall 1 LDtoken 1 | champion DarkGreen | colour FF3CC8
+MBX    thrall 1 LDDoomImp hp 180 spawn 60 dist 48 | thrall 1 LDtoken 1 | champion - | colour FF3CC8
+MBX    thrall 2 LDDoomImp hp 180 spawn 60 dist 260 | thrall 1 LDtoken 1 | champion - | colour FF3CC8
+MBX    champions-first: plain thralls 2, champions in range left out 0 (ok)
+CASE_shield_greed
+RSQMB greed armed on boss 0: due in 140 tics
+MBX t72 hurt LDDoomImp by 40 with shield 199 permille: hp 180 -> 172 (took 8)
+MBX t75 boss 0 LDDoomImp hp 172 spawn 60 | miniboss 1 lives 3 legendary(svc) 1 LDtoken 1 LDtransformed 0 | colour FF3CC8 | powers [DarkGreen,Legendary] | champion DarkGreen | bossfor rewards 1 ldhealth 0 | shield 199 permille | greed 1 enraged 0
+MBX    thrall 0 LDDoomImp hp 180 spawn 60 dist 1007 | thrall 1 LDtoken 1 | champion DarkGreen | colour FF3CC8
+MBX    thrall 1 LDDoomImp hp 180 spawn 60 dist 48 | thrall 1 LDtoken 1 | champion - | colour FF3CC8
+MBX    thrall 2 LDDoomImp hp 180 spawn 60 dist 260 | thrall 1 LDtoken 1 | champion - | colour FF3CC8
+MBX    champions-first: plain thralls 2, champions in range left out 0 (ok)
+RSQMB rage start: 0.296 ms (once)
+RSQMB GREED: boss 0 enraged, 19 monsters x2.0 speed
+CASE_greed_due
+MBX t225 boss 0 LDDoomImp hp 172 spawn 60 | miniboss 1 lives 3 legendary(svc) 1 LDtoken 1 LDtransformed 0 | colour FF3CC8 | powers [DarkGreen,Legendary] | champion DarkGreen | bossfor rewards 1 ldhealth 0 | shield 199 permille | greed 0 enraged 1
+MBX    thrall 0 LDDoomImp hp 180 spawn 60 dist 1007 | thrall 1 LDtoken 1 | champion DarkGreen | colour FF3CC8
+MBX    thrall 1 LDDoomImp hp 180 spawn 60 dist 48 | thrall 1 LDtoken 1 | champion - | colour FF3CC8
+MBX    thrall 2 LDDoomImp hp 180 spawn 60 dist 260 | thrall 1 LDtoken 1 | champion - | colour FF3CC8
+MBX    champions-first: plain thralls 2, champions in range left out 0 (ok)
+RSQMB thrall 0 of boss 0 died (killer player) living 2 window 140 tics
+RSQ KR t225: LDDoomImp (60 hp) burst into 2 bits of 6 rolled: 0 health, 0 armour, 2 ammo
+MBX t225 thrall 0 LDDoomImp killed: hp 0
+CASE_life
+MBX t229 killing blow on LDDoomImp: hp 172 -> 1, lives now 3
+RSQMB life lost: boss 0 lives 2 hp 180 invuln 245 tics living 2
+MBX t235 boss 0 LDDoomImp hp 180 spawn 60 | miniboss 1 lives 2 legendary(svc) 1 LDtoken 1 LDtransformed 0 | colour FF3CC8 | powers [DarkGreen,Legendary] | champion DarkGreen | bossfor rewards 1 ldhealth 0 | shield 0 permille | greed 0 enraged 1
+MBX    thrall 0 LDDoomImp hp 0 spawn 60 dist 1007 | thrall 0 LDtoken 1 | champion DarkGreen | colour FF3CC8
+MBX    thrall 1 LDDoomImp hp 180 spawn 60 dist 48 | thrall 1 LDtoken 1 | champion - | colour FF3CC8
+MBX    thrall 2 LDDoomImp hp 180 spawn 60 dist 260 | thrall 1 LDtoken 1 | champion - | colour FF3CC8
+MBX    champions-first: plain thralls 2, champions in range left out 0 (ok)
+RSQMB thrall 0 of boss 0 rose (hp 60)
+CASE_after_invuln_revive
+MBX t563 boss 0 LDDoomImp hp 180 spawn 60 | miniboss 1 lives 2 legendary(svc) 1 LDtoken 1 LDtransformed 0 | colour FF3CC8 | powers [DarkGreen,Legendary] | champion DarkGreen | bossfor rewards 1 ldhealth 0 | shield 199 permille | greed 0 enraged 1
+MBX    thrall 0 LDDoomImp hp 60 spawn 60 dist 1007 | thrall 1 LDtoken 1 | champion DarkGreen | colour FF3CC8
+MBX    thrall 1 LDDoomImp hp 180 spawn 60 dist 48 | thrall 1 LDtoken 1 | champion - | colour FF3CC8
+MBX    thrall 2 LDDoomImp hp 180 spawn 60 dist 260 | thrall 1 LDtoken 1 | champion - | colour FF3CC8
+MBX    champions-first: plain thralls 2, champions in range left out 0 (ok)
+CASE_finish
+RSQMB thrall 0 of boss 0 died (killer player) living 2 window 140 tics
+RSQ KR t565: LDDoomImp (60 hp) burst into 3 bits of 6 rolled: 0 health, 0 armour, 3 ammo
+MBX t565 thrall 0 LDDoomImp killed: hp 0
+RSQMB award "Thrall Slow Kill" 100 -> RS_ScoreService
+RSQMB thrall 1 of boss 0 died (killer player) living 1 window 245 tics CHAIN
+RSQ KR t565: LDDoomImp (60 hp) burst into 2 bits of 6 rolled: 1 health, 0 armour, 1 ammo
+MBX t565 thrall 1 LDDoomImp killed: hp 0
+RSQMB award "Thrall Slow Kill" 100 -> RS_ScoreService
+RSQMB thrall 2 of boss 0 died (killer player) living 0 window 350 tics CHAIN
+RSQ KR t565: LDDoomImp (60 hp) burst into 3 bits of 6 rolled: 0 health, 1 armour, 2 ammo
+MBX t565 thrall 2 LDDoomImp killed: hp 0
+MBX t568 killing blow on LDDoomImp: hp 180 -> 1, lives now 2
+RSQMB life lost: boss 0 lives 1 hp 180 invuln 1 tics living 0
+RSQMB flags at death: boss 0 LDDoomImp FULLVOLSEE 0 FULLVOLDEATH 0 DONTMORPH 0 BOSS 0 (roar 0 nomorph 0; own 0 0 0)
+RSQMB award "Miniboss" 500 -> RS_ScoreService
+RSQMB boss 0 died (killer player) rage 0
+RSQ KR t572: LDDoomImp (60 hp, miniboss as boss) burst into 18 bits of 18 rolled: 3 health, 1 armour, 14 ammo
+MBX t572 killing blow on LDDoomImp: hp 180 -> -99820, lives now 0
+MBX t572 miniboss 0 LDDoomImp dead at (1248 608)
+MBX t572 spawned LDRandomLegendaryDropNormal at 6 from the miniboss (LEGENDARY DROP)
+MBX t572 spawned LDPistolPickupLegendary at 10 from the miniboss (LEGENDARY DROP)
+MBX t576 killing blow on LDDoomImp: hp -99820 -> -99820, lives now 0
+MBX t580 killing blow on LDDoomImp: hp -99820 -> -99820, lives now 0
+MBX t585 killing blow on LDDoomImp: hp -99820 -> -99820, lives now 0
+MBX t588 killing blow on LDDoomImp: hp -99820 -> -99820, lives now 0
+CASE_end
+
+## LD_legendarymonsters (3.0 only): before the fix (HEAD pk3) and after
+-- mbld3_lm0
+RSQMB LegenDoom best health asked: Imp spawn 80 x 4 (boss 400%) not x 3 (300%): StartHealth 0 -> 107 for its ACS
+RSQMB bound: boss 0 Imp hp 80 lives 3 thralls 3 powers [Legendary] tough 1.00 out 1.00
+MBX t10 miniboss 0 is Imp
+RSQMB LegenDoom best health: boss 0 Imp legendary 1 hp 80 (asked 320; StartHealth back to 0, SpawnHealth 80)
+MBX t60 boss 0 Imp hp 80 spawn 80 | miniboss 1 lives 3 legendary(svc) 1 LDtoken 1 LDtransformed 0 | colour FF3CC8 | powers [Legendary] | champion - | bossfor rewards 1 ldhealth 1 | shield 199 permille | greed 0 enraged 0
+MBP_LD t60 boss 0 Imp hp 80 spawn 80: GBVR StartHealth 320, ShieldSaw TierHealth 400 (bossfor ldhealth 1)
+-- mbld3_lm2
+RSQMB LegenDoom best health asked: Imp spawn 80 x 4 (boss 400%) not x 3 (300%): StartHealth 0 -> 107 for its ACS
+RSQMB bound: boss 0 Imp hp 80 lives 3 thralls 3 powers [Blue, Green, Legendary] tough 2.00 out 1.00
+MBX t10 miniboss 0 is Imp
+RSQMB LegenDoom best health: boss 0 Imp legendary 1 hp 321 (asked 320; StartHealth back to 0, SpawnHealth 80)
+MBX t60 boss 0 Imp hp 321 spawn 80 | miniboss 1 lives 3 legendary(svc) 1 LDtoken 1 LDtransformed 1 | colour FF3CC8 | powers [Blue,Green,Legendary] | champion - | bossfor rewards 1 ldhealth 1 | shield 99 permille | greed 0 enraged 0
+MBP_LD t60 boss 0 Imp hp 321 spawn 80: GBVR StartHealth 320, ShieldSaw TierHealth 321 (bossfor ldhealth 1)
+-- mbld3_fix_lm0
+RSQMB LegenDoom best health: Imp3 skipped, LD_legendarymonsters 0 (LegenDoom gives legendaries no health)
+RSQMB bound: boss 0 Imp3 hp 117 lives 3 thralls 3 powers [Cyan, Violet, Legendary] tough 1.50 out 1.00
+MBX t10 miniboss 0 is Imp3
+MBX t61 boss 0 Imp3 hp 117 spawn 117 | miniboss 1 lives 3 legendary(svc) 1 LDtoken 1 LDtransformed 0 | colour FF3CC8 | powers [Cyan,Violet,Legendary] | champion Yellow+Cyan+Black | bossfor rewards 1 ldhealth 0 | shield 133 permille | greed 
+MBP_LD t61 boss 0 Imp3 hp 117 spawn 117: GBVR StartHealth 351, ShieldSaw TierHealth 468 (bossfor ldhealth 0)
+-- mbld3_fix_lm1
+RSQMB LegenDoom best health asked: MinigunGuy spawn 80 x 4 (boss 400%) not x 3 (300%): StartHealth 0 -> 107 for its ACS
+RSQMB bound: boss 0 MinigunGuy hp 80 lives 3 thralls 3 powers [Pink, Cyan, White, Legendary] tough 1.50 out 1.00
+MBX t10 miniboss 0 is MinigunGuy
+RSQMB LegenDoom best health: boss 0 MinigunGuy legendary 1 hp 321 (asked 320; StartHealth back to 0, SpawnHealth 80)
+MBX t60 boss 0 MinigunGuy hp 321 spawn 80 | miniboss 1 lives 3 legendary(svc) 1 LDtoken 1 LDtransformed 0 | colour FF3CC8 | powers [Pink,Cyan,White,Legendary] | champion Cyan+White | bossfor rewards 1 ldhealth 1 | shield 133 permille | gree
+MBP_LD t60 boss 0 MinigunGuy hp 321 spawn 80: GBVR StartHealth 320, ShieldSaw TierHealth 641 (bossfor ldhealth 1)
+
+## Script errors (the 4 voxeldef lines are BD_VoxelPack's own)
+mbf_ld3: script errors 0 (voxeldef 4)
+mbf_ldl: script errors 0 (voxeldef 4)
+mbf_ldl_nopatch: script errors 0 (voxeldef 4)
+mbf_ld3_nopatch: script errors 0 (voxeldef 4)
+mbf_alone: script errors 0 (voxeldef 0)
+mbf_gb_allrsq: script errors 0 (voxeldef 0)
+mbf_alone_ld3: script errors 0 (voxeldef 0)
+mbf_alone_ldl: script errors 0 (voxeldef 0)
+mbld3_fix_lm0: script errors 0 (voxeldef 4)
+mbld3_fix_lm1: script errors 0 (voxeldef 4)
