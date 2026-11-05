@@ -25,7 +25,8 @@
 // key "Recenter Torso" (rsqtr_recenter), and on its own at map start, respawn, level change and a loaded save.
 // TORSO FOLLOWS ROOM TURNS (rsqtr_body_room, on; the owner's pick, 11-03 19:31, after "if i physically stand and turn,
 // it stays in place"): the one exception, a smart catch-up (RoomFollow below): the head held 45+ degrees off the torso
-// for 1.5 s with both hands held in front of you, never a hand in a holster, never looking down.
+// for 1.5 s with the hands anywhere (11-05 00:57: "Hands anywhere but a holster"), never a hand in a holster or reaching
+// far out to the side, never looking down.
 // The two old guesses stay as options, both OFF: "Torso Turns With Head and Hands" (rsqtr_body_hands: head and both
 // hands turning together) and "Torso Catches Up With Head" (rsqtr_body_catch: a head turned past rsqtr_body_turn
 // degrees, 35, held rsqtr_body_secs, 1 s, eases the body round); neither acts while you look down (past
@@ -90,7 +91,7 @@ class RSQTR_Body play
 		// The head and both hands turned the same way in the room (rsqtr_body_hands, OFF since 11-03 18:56: it is a
 		// guess, and reaching to the side for holsters while looking there made it): the body follows them.
 		yaw += turns.With(yaw, a, h0, h1, pmo.AttackPitch, pmo.OffhandPitch, !still && RSQTR_Rig.Flag("rsqtr_body_hands", p, false));
-		// A real turn in the room with the hands held in front (rsqtr_body_room, on; the owner, 11-03 19:31): RoomFollow.
+		// A real turn in the room, the hands anywhere but a holster or a reach (rsqtr_body_room, on; 11-03 19:31, 11-05 00:57): RoomFollow.
 		yaw += RoomFollow(pmo, a, still);
 
 		// A head held far round for long enough (rsqtr_body_catch, OFF since 11-03 18:56): the body has turned in the room.
@@ -126,55 +127,55 @@ class RSQTR_Body play
 
 	// TORSO FOLLOWS ROOM TURNS (rsqtr_body_room, on; the owner, 11-03 19:31: "the torso follows snap turn, great, but if i
 	// physically stand and turn, it stays in place"; his pick: smart catch-up). There is no body tracker, so a real turn
-	// in the room is read from what it looks like and a reach to the side does not: the head held more than ROOM_OFF
-	// degrees off the torso for ROOM_TICS, the whole time with BOTH hands held in front of you in the HEAD's frame
-	// (RoomHand: at chest / gun-ready height, close to the neck, within ROOM_ANG of where you look; an off hand on a long
-	// gun's fore-end, ahead of the main hand, counts too), no hand in any holster, not looking down (rsqtr_body_down).
-	// Then the torso eases round to the head (ROOM_EASE of what is left a tic, at most ROOM_MAX degrees: 16 tics,
-	// under half a second, for 90) and lands on it exactly. A reach to the side for the holsters puts a hand low (the hip and
-	// chest holsters hang 0.70 and 0.46 m under the standing view height) or out at arm's length, and a glance aside lasts under ROOM_TICS: neither
-	// turns it. Measured on the rig (turnprobe, gen_room_script.py rmmeasure, evidence/roomfollow_*.txt; from the neck along
-	// the floor / off the look / from the eyes): gun at the ready 0.47 m / 32 deg / -0.30 m each hand; hands at the chest
-	// 0.23 / 18 / -0.30; a two-hand long gun's grip hand 0.34 / 17 / -0.24 and fore-end hand 0.65 / 0 / -0.22 (aimed:
-	// 0.72 / 2 / -0.13); the owner's reach (both hands 75-95 deg round while looking 90 there) main hand 0.58 / 5 / -0.55,
-	// off hand 0.47 / 25 / -0.45; both hands down at a hip -0.80 and -0.75; a hand in the hip holster -0.85, in the chest
-	// holsters -0.61. So the reach misses by 0.15 m of height and 0.03 m of distance on its main hand, 0.05 m of height on
-	// its off hand; the ready pose passes with 0.10 m of height, 0.08 m of distance and 8 degrees to spare.
-	// Snaps and smooth turns are the keeper's and stay exact; this only ever turns the torso toward the head.
+	// in the room is read from what it looks like: the head held more than ROOM_OFF degrees off the torso for ROOM_TICS.
+	// THE HANDS MAY BE ANYWHERE (the owner, 11-05 00:57, PCVR: "when I turn my actual body in real life the rig does not
+	// adjust"; his pick: "Hands anywhere but a holster"). Until 11-05 both hands had to be held in front at gun-ready
+	// height, so a turn with the hands lowered, hanging or at the hips never counted. Now the count stops only for:
+	//  - a hand inside any holster or rig place (RSQTR_Rig.HandBusy: within its sphere; a grip or draw there is in it),
+	//  - a hand REACHING (RoomHand): more than ROOM_REACH from the neck along the floor AND more than ROOM_REACH_ANG off
+	//    the TORSO's facing, unless it is held like a gun (within ROOM_ANG of the look, ROOM_LOW to ROOM_HIGH from the
+	//    eyes: a long gun's fore-end, a one-hand aim). The owner's old bad case, both hands reached 75-95 deg to one side
+	//    while looking there, has its main hand 0.58 m out and 0.55 m under the eyes: reaching, no turn.
+	//  - looking down (rsqtr_body_down), or a snap still on its way.
+	// Then the torso eases round to the head (ROOM_EASE of what is left a tic, at most ROOM_MAX degrees: 16 tics for 90)
+	// and lands on it exactly. A glance aside lasts under ROOM_TICS and never turns it. Snaps and smooth turns are the
+	// keeper's and stay exact; this only ever turns the torso toward the head.
+	// THE HAND ON PCVR (commit 264493242): OpenVR hangs the hands off the frame's interpolated eye in X/Y, so read against
+	// the pawn a still hand moved by up to a tic of walking each frame and could read as reaching while you walk; the
+	// hand here is RSQTR_HandSync.Fix's (the frame's offset carried to the body this tic) along the floor, the raw height.
+	// Measured on the rig (turnprobe, gen_room_script.py, evidence/roomfollow_anywhere.txt).
 	const ROOM_OFF = 45.0;     // degrees: the head this far off the torso...
-	const ROOM_TICS = 52;      // ...for this many tics (1.5 s), the hands in front the whole time
-	const ROOM_DIST = 0.55;    // metres: each hand at most this far from the neck along the floor
-	const ROOM_ANG = 40.0;     // degrees: and at most this far off where the head faces
-	const ROOM_LOW = -0.40;    // metres from the eyes: no lower than this (a hand in the chest holsters read -0.61, the hip one -0.85)
-	const ROOM_HIGH = 0.10;    // and no higher than this
-	const ROOM_FAR = 0.80;     // metres: an off hand on a long gun's fore-end, this far out at most...
-	const ROOM_AHEAD = 0.10;   // ...at least this much further forward than the main hand...
-	const ROOM_SIDE = 0.25;    // ...and within this much of it to the side
+	const ROOM_TICS = 52;      // ...for this many tics (1.5 s), no hand in a holster or reaching the whole time
+	const ROOM_REACH = 0.50;   // metres from the neck along the floor: a hand further out than this...
+	const ROOM_REACH_ANG = 45.0;   // ...and more than this many degrees off the torso's facing is reaching...
+	const ROOM_ANG = 40.0;     // ...unless it is held like a gun: within this many degrees of the look...
+	const ROOM_LOW = -0.40;    // ...no lower than this from the eyes (the owner's reach: -0.55; a hand in the chest holsters -0.61)...
+	const ROOM_HIGH = 0.10;    // ...and no higher than this
 	const ROOM_EASE = 0.3;     // of what is left, each tic, while it turns
 	const ROOM_MAX = 12.0;     // most degrees a tic
 	const ROOM_LAND = 1.0;     // degrees: this close, it lands on the head
-	int roomFor;               // tics the head has been held off with the hands in front
+	int roomFor;               // tics the head has been held off with no hand busy or reaching
 	bool roomOn;               // easing round
 	int roomTurns;             // how many times it turned (the turn probe reads it)
-	double roomDist[2], roomAng[2], roomUp[2];   // each hand, this tic (the probe reads them)
-	bool roomIn[2];
+	double roomDist[2], roomAng[2], roomUp[2];   // each hand, this tic: from the neck (m), off the look (deg), from the eyes (m)
+	bool roomIn[2];            // each hand, this tic: free (not reaching)
 
 	double RoomFollow(PlayerPawn pmo, double a, bool still)
 	{
 		let p = pmo.player;
 		if (!RSQTR_Rig.Flag("rsqtr_body_room", p, true) || p != players[consoleplayer]) { roomFor = 0; roomOn = false; return 0; }
-		Vector3 l0 = HeadLocal(pmo, pmo.AttackPos), l1 = HeadLocal(pmo, pmo.OffhandPos);
-		roomIn[0] = RoomHand(l0, 0);
-		roomIn[1] = RoomHand(l1, 1);
-		// AN OFF HAND ON A LONG GUN (the owner's ask: a two-hand grip counts as hands in front): further out than a
-		// hand at the chest, but ahead of the main hand, beside it and at its height, within ROOM_ANG of the look
-		if (!roomIn[1] && roomIn[0] && roomDist[1] <= ROOM_FAR && abs(roomAng[1]) <= ROOM_ANG && roomUp[1] >= ROOM_LOW && roomUp[1] <= ROOM_HIGH
-			&& l1.x - l0.x >= ROOM_AHEAD && abs(l1.y - l0.y) <= ROOM_SIDE) roomIn[1] = true;
+		double off = Actor.DeltaAngle(yaw, a);
+		roomIn[0] = RoomHand(pmo, 0, off);
+		roomIn[1] = RoomHand(pmo, 1, off);
 		let rig = RSQTR_Rig.Get();
 		bool holster = rig && (rig.HandBusy(0) || rig.HandBusy(1));
-		double off = Actor.DeltaAngle(yaw, a);
-		// looking down, a hand in a holster (a draw), or a snap still on its way: no turn, and none under way
-		if (still || holster || turns.jPend != 0) { roomFor = 0; roomOn = false; return 0; }
+		// looking down or a snap still on its way: no turn, and none under way
+		if (still || turns.jPend != 0) { roomFor = 0; roomOn = false; return 0; }
+		// AN EASE ALREADY UNDER WAY FINISHES (11-05): hands hanging at your sides sit inside the hip holsters' spheres
+		// (a hand 0.25 m out at 0.82 m is 0.10 m from the hip holster's middle, radius 0.14), so as the torso came round
+		// under them the holster caught the hand and stopped the turn about 30 degrees short. A hand in a holster stops
+		// the count, never a turn already decided (16 tics for 90).
+		if (holster && !roomOn) { roomFor = 0; return 0; }
 		if (roomOn)
 		{
 			if (abs(off) <= ROOM_LAND) { roomOn = false; roomFor = 0; roomTurns++; return off; }
@@ -186,15 +187,20 @@ class RSQTR_Body play
 		return clamp(off * ROOM_EASE, -ROOM_MAX, ROOM_MAX);
 	}
 
-	// one hand at chest / gun-ready height in front of you, in the head's frame (HeadLocal: forward, left, up from the
-	// eyes, metres), measured from the neck (NECK_BACK behind the eyes) along the floor
-	bool RoomHand(Vector3 l, int h)
+	// one hand in the head's frame (HeadLocal: forward, left, up from the eyes, metres), measured from the neck
+	// (NECK_BACK behind the eyes) along the floor; off = the head's angle off the torso. True = not reaching.
+	bool RoomHand(PlayerPawn pmo, int h, double off)
 	{
+		Vector3 raw = h == 0 ? pmo.AttackPos : pmo.OffhandPos;
+		Vector3 f = RSQTR_HandSync.Fix(pmo, raw, h);
+		Vector3 l = HeadLocal(pmo, (f.x, f.y, raw.z));
 		double fx = l.x + NECK_BACK;
 		roomDist[h] = (fx, l.y).Length();
-		roomAng[h] = atan2(l.y, fx);
+		roomAng[h] = roomDist[h] > 0.001 ? atan2(l.y, fx) : 0;
 		roomUp[h] = l.z;
-		return fx > 0 && roomDist[h] <= ROOM_DIST && abs(roomAng[h]) <= ROOM_ANG && l.z >= ROOM_LOW && l.z <= ROOM_HIGH;
+		if (roomDist[h] <= ROOM_REACH) return true;
+		if (abs(Actor.DeltaAngle(0, roomAng[h] + off)) <= ROOM_REACH_ANG) return true;
+		return abs(roomAng[h]) <= ROOM_ANG && l.z >= ROOM_LOW && l.z <= ROOM_HIGH;
 	}
 
 	// RECENTER (11-03 18:56): the body faces where the head faces, yaw only, from this tic on. The keeper starts again

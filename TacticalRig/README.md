@@ -174,7 +174,7 @@ what the rows already do: Smoker, Chain Smoker, Gun Toss, Boomerang Gun).
 | Torso Style | Doom Marine | Doom Marine or Quake Grunt |
 | Helmet | On | The marine's helmet, seen in mirrors |
 | Torso Fades Looking Down | On | The torso thins as you look down |
-| Torso Follows Room Turns | On | The torso follows a real turn made with your hands in front |
+| Torso Follows Room Turns | On | The torso follows a real turn in the room: your head held 45+ degrees round for 1.5 s, hands anywhere except in a holster or reaching far out to the side; looking down never turns it |
 | Head and Hands Turn | Off | Older turn rule: head and both hands turning together |
 | Torso Catches Up | Off | Older turn rule: a head held round eases the torso after it |
 | Recenter by Hands | On | The recenter gesture: both hands to the chest |
