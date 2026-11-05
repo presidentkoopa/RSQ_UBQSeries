@@ -12,7 +12,7 @@ other mod and works on plain Doom 2.
 
 ## Standout feature: it knows which punch you threw
 
-Put up your Melee Hands and throw a punch. The mod follows your fist the whole way in: it only counts once your hand
+Put up your fists (any fists: Doom's, Brutal Doom's, an empty hand, or Melee Hands) and throw a punch. The mod follows your fist the whole way in: it only counts once your hand
 has travelled 15 cm toward the monster on consecutive tics, and the harder you swing, the harder it lands, up to
 twice the base damage at full speed. It reads the shape of the swing against the line to the monster, not where you
 look or how you hold the controller. Straight in is a jab. Across is a hook. Rising is an uppercut, and an uppercut
@@ -64,9 +64,10 @@ drew, so only your arms throw punches.
 ## How To Play
 
 1. Add RSQ_Melee.pk3 to your load order and play in VR.
-2. The gun-butt shove and the Headlock work straight away. For the punches, turn on Options → Radiant Silvergun
-   Options → RSQ Melee → Start With Melee Hands (or Slappers Only for a fists-only run). The hands come up in both
-   hands at the next level start; after that they live in slot 1.
+2. Everything works straight away. A hand punches whenever it holds fists: Doom's Fist, Brutal Doom's fists and
+   BD22 VR's free off hand, an empty hand, or Melee Hands. For Melee's own hands (Ermac's or BD22 VR's hand, or
+   boxing gloves), turn on Options → Radiant Silvergun Options → RSQ Melee → Start With Melee Hands (or Slappers Only
+   for a fists-only run). The hands come up in both hands at the next level start; after that they live in slot 1.
 3. Walk up to an imp and throw a jab, then a hook with the other hand. Then an uppercut from low down.
 4. Tap your off-hand trigger to open that palm. When the next fireball comes, swing your palm through it.
 5. Reach out with your off hand, grip a zombie, hold it, and punch it with your main hand. Swing the off hand to throw
@@ -147,9 +148,13 @@ Runs alone. It finds the others by name:
 - **Gun Bonsai + RSQ Gun Bonsai VR**: the gloves level like weapons. Guard, Hadouken, Wall Splat, Heavy Hands,
   Ground Pound and Clear Out become upgrades, joined by the Fists tree (Uppercut as an unlock, Launcher, Juggle,
   Meteor, Star Punch, combos), the Guard's tree (Parry, Reflect Guard, Absorb and Release, Swat Back) and the
-  Grappler's nodes for the Headlock (heavier holds, Slam, Chokehold, Headlock Uppercut, Human Shield).
+  Grappler's nodes for the Headlock (heavier holds, Slam, Chokehold, Headlock Uppercut, Human Shield). Other fists
+  can't learn the glove upgrades: they always uppercut and play Hadouken, Heavy Hands and Wall Splat by their Melee rows.
 - **BD22 VR Reloaded**: the shove stands down for BD22 VR's own butt strike (the slow-mo beat still follows its hits);
-  Melee Hands use its FBX hand and skin tone.
+  Melee Hands use its FBX hand and skin tone. Its fists punch (main hand, and the off hand while it is free). With
+  BD22 VR's own VR Punching on, its blow does the damage and Melee adds the rest (which punch, the knock, the
+  uppercut's lift, the Headlock's moves), so a swing never hits twice. With a Brutal Doom fist, the trigger tap that
+  opens your palm also throws that fist's own trigger punch.
 - **Brutal Doom**: the shove plays Brutal Doom's swing and kick sounds, and its monsters react to the kick themselves.
 - **RSQ Distance Grab**: a monster thrown out of the Headlock flies through its throw code; the two share the grip.
 - **RSQ Gestures**: reads both hands for Ground Pound and Clear Out.

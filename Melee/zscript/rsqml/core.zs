@@ -84,7 +84,19 @@ class RSQML play
 	{
 		let gb = GB();
 		if (!gb) return 1;
-		return glove ? gb.GetInt("level", short, 0, 0, glove) : 0;
+		// ANY FIST (owner, 11-04): a fist that is not one of the gloves (Doom's Fist, Brutal Doom's, an empty hand) can
+		// never learn it from Gun Bonsai VR, so it plays it as without Gun Bonsai VR: always there
+		if (!glove || !IsGloveName(glove.GetClassName())) return 1;
+		return gb.GetInt("level", short, 0, 0, glove);
+	}
+
+	// A PUNCH MOVE FOR THE FIST IN THAT HAND (owner, 11-04: "Punch with any fist"). One of the gloves: MoveLevel, as
+	// before. Any other fist (Doom's Fist, Brutal Doom's, an empty hand): Gun Bonsai VR's glove upgrades are offered to
+	// the gloves only, so that fist plays the Melee row at level 1, as without Gun Bonsai VR.
+	static int FistLevel(Actor pawn, Weapon fist, String short, String cvarName)
+	{
+		if (fist && IsGloveName(fist.GetClassName())) return MoveLevel(pawn, fist, short, cvarName);
+		return SVI(cvarName, 0) != 0 ? 1 : 0;
 	}
 
 	// RSQ SCORE's combo ledger: this player's move `id` touched that monster (RS_ScoreService "touch", by name; nothing

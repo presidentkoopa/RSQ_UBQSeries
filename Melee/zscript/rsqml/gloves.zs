@@ -188,6 +188,10 @@ class RSQ_PunchHand play
 	int prevTic;
 	double prevYaw;
 	Vector3 path;         // this swing's travel so far, real metres (the vertical x pixelstretch): which punch it is
+	// this hand's last landed punch (Deliver), copied onto the glove when the fist is one (RSQ_Glove's fields, same names)
+	double lastPower, lastSpeed;
+	int lastKind, lastChain, lastHand, lastHeight, lastKinds, lastRun;
+	bool lastBody, lastCounter, lastStar;
 }
 
 class RSQML_Gloves : StaticEventHandler
@@ -238,7 +242,7 @@ class RSQML_Gloves : StaticEventHandler
 	static bool PalmOpen(PlayerPawn pmo, int h)
 	{
 		let gl = Get();
-		if (!gl || !pmo || RSQML_HandLook.Gloved()) return false;
+		if (!gl || !pmo || (RSQML_HandLook.Gloved() && GloveIn(pmo, h))) return false;   // boxing gloves on Melee's own hands: fists
 		int i = pmo.PlayerNumber() * 2 + h;
 		return i >= 0 && i < MAXPLAYERS * 2 && gl.openPalm[i];
 	}
@@ -249,7 +253,7 @@ class RSQML_Gloves : StaticEventHandler
 		bool down = (pmo.player.cmd.buttons & (h == 0 ? BT_ATTACK : BT_OFFHANDATTACK)) != 0;
 		int now = level.maptime;
 		if (down && !wasDown[i]) pressTic[i] = now;
-		if (!down && wasDown[i] && now - pressTic[i] <= TAP_TICS && HandOf(pmo.PlayerNumber(), h).lastHit < pressTic[i] && !RSQML_HandLook.Gloved())
+		if (!down && wasDown[i] && now - pressTic[i] <= TAP_TICS && HandOf(pmo.PlayerNumber(), h).lastHit < pressTic[i] && !(RSQML_HandLook.Gloved() && GloveIn(pmo, h)))
 		{
 			openPalm[i] = !openPalm[i];
 			pmo.A_StartSound("misc/w_pkup", CHAN_AUTO, CHANF_LOCAL, 0.15);   // a soft click: you changed the hand
@@ -269,6 +273,63 @@ class RSQML_Gloves : StaticEventHandler
 	{
 		if (!pmo || !pmo.player) return null;
 		return RSQ_Glove(h == 0 ? pmo.player.ReadyWeapon : pmo.player.OffhandWeapon);
+	}
+
+	// ---- ANY FIST PUNCHES (owner, 11-04 18:16: "Punch with any fist"; BUGS_0.99a item 52) ----------------------------
+	// Until 11-04 the punch, the palm swat, the Hadouken, meeting bullets and the Headlock's punches read only a hand that
+	// held Melee's own RSQ_Glove / RSQ_GloveOff, which nothing gives unless Start With Melee Hands is on. Now a hand
+	// punches whenever it holds any fist (by class name, so nothing is linked):
+	//   Melee's gloves and SuperPunchOut's (RSQ_Glove*, SPO_Glove*)
+	//   Doom's Fist and anything made from it (plain Doom 2)
+	//   Brutal Doom's fists, Melee_Attacks (brutal22test6 actors/Weapons/Melee.dec: "Replaces Fist", not a subclass)
+	//   BD22 VR's off hand, RSQ_Hands, while it is BD22 VR's free fist: its free-hand layer (2200, hands.zs
+	//     RSQ_Layers.FREEHAND) on its "AmmoH" state, the closed hand -- BD22 VR's own OffFist() test, read off the psprite
+	//     because its freeFist field cannot be read without linking. Not while it supports a gun, reloads or is hidden.
+	//   an EMPTY hand (no weapon in it: stock QuestZDoom's off hand with nothing in it)
+	// Not fists: the sabers, the ShieldSaw, the Force hand and the chainsaws (each has its own blow; core.zs's empty-hand
+	// list for Slappers Only and the Guard keeps them, this list does not).
+	const BD22_FREEHAND = 2200;
+	static Weapon, bool FistIn(PlayerPawn pmo, int h)
+	{
+		if (!pmo || !pmo.player) return null, false;
+		let w = h == 0 ? pmo.player.ReadyWeapon : pmo.player.OffhandWeapon;
+		if (!w) return null, true;
+		return w, IsFist(pmo, w);
+	}
+	static bool IsFist(PlayerPawn pmo, Weapon w)
+	{
+		if (!w) return true;
+		String n = w.GetClassName();
+		if (RSQML.IsGloveName(n) || w is "Fist" || n ~== "Melee_Attacks") return true;
+		if (n ~== "RSQ_Hands")
+		{
+			let psp = pmo.player.FindPSprite(BD22_FREEHAND);
+			State closed = w.FindState("AmmoH");
+			return psp && psp.Caller == w && closed && psp.CurState == closed;
+		}
+		return false;
+	}
+	// WHO DEALS THE BLOW: the fist weapon itself (as the gloves always were: Gun Bonsai credits a weapon naming itself),
+	// or the player for an empty hand and BD22 VR's free hand (an off-hand helper, never a weapon you level).
+	static Actor FistInflictor(PlayerPawn pmo, Weapon w)
+	{
+		if (!w || w.GetClassName() == 'RSQ_Hands') return pmo;
+		return w;
+	}
+	// ONE BLOW PER SWING. BD22 VR has its own VR punching (rsq_punch, a user setting, OFF by default: src/CVARINFO.rsq;
+	// zscript/rsq/fists.zs RSQ_FistHand reads the swing and spawns BD22's MeleeStrikeNormal, 10, from the hand; hands.zs
+	// OffPunch does the off-trigger punch). With it ON and a hand holding BD22's fists (Melee_Attacks, RSQ_Hands), that
+	// swing's damage is BD22's: Melee's punch lands everything else -- which punch it was, the knock, the uppercut's lift,
+	// Heavy Hands, Wall Splat, the Headlock's Uppercut and RSQ Score's hooks -- and no damage of its own. With it OFF
+	// (the default), BD22 deals nothing for a swing and Melee's punch is the blow. The swat, the Hadouken and meeting
+	// bullets are never damage on a body, so they work either way.
+	static bool BD22Punches(PlayerPawn pmo, Weapon w)
+	{
+		if (!w || !pmo || !pmo.player) return false;
+		Name n = w.GetClassName();
+		if (n != 'Melee_Attacks' && n != 'RSQ_Hands') return false;
+		let c = CVar.GetCVar("rsq_punch", pmo.player);
+		return c && c.GetInt() != 0;
 	}
 
 	// The controller, or nothing (RSQML_Hands.Pos: out of VR the engine writes both hands to the pawn's chest).
@@ -317,17 +378,18 @@ class RSQML_Gloves : StaticEventHandler
 			RSQML_Body.Ensure(pmo);
 			for (int h = 0; h < 2; h++)
 			{
-				let g = GloveIn(pmo, h);
+				Weapon g; bool fist;
+				[g, fist] = FistIn(pmo, h);
 				// the off hand holding a monster in the Headlock grips it: no punches from that hand meanwhile
-				if (h == 1 && hl && hl.HoldsAny(pn)) g = null;
-				if (!g) { HandOf(pn, h).prevValid = false; continue; }
+				if (h == 1 && hl && hl.HoldsAny(pn)) fist = false;
+				if (!fist) { HandOf(pn, h).prevValid = false; continue; }
 				TapShape(pmo, h);
 				Read(pmo, g, h);
 			}
 		}
 	}
 
-	private void Read(PlayerPawn pmo, RSQ_Glove g, int h)
+	private void Read(PlayerPawn pmo, Weapon g, int h)
 	{
 		let st = HandOf(pmo.PlayerNumber(), h);
 		Vector3 hp; bool ok;
@@ -359,7 +421,7 @@ class RSQML_Gloves : StaticEventHandler
 		Swing(pmo, g, h, st);
 	}
 
-	private void Swing(PlayerPawn pmo, RSQ_Glove g, int h, RSQ_PunchHand st)
+	private void Swing(PlayerPawn pmo, Weapon g, int h, RSQ_PunchHand st)
 	{
 		double upm = RSQML.UnitsPerMetre();
 		double ps = level.pixelstretch > 0.1 ? level.pixelstretch : 1.2;
@@ -397,7 +459,7 @@ class RSQML_Gloves : StaticEventHandler
 		}
 		if (mps >= minSpeed && (missiles.Size() > 0 || rounds.Size() > 0))
 		{
-			int rfLv = RSQML.MoveLevel(pmo, g, "ReturnFire", "rsqml_hadouken");
+			int rfLv = RSQML.FistLevel(pmo, g, "ReturnFire", "rsqml_hadouken");
 			if (rfLv > 0) ReturnFire(pmo, g, h, st, rfLv);
 		}
 
@@ -592,8 +654,9 @@ class RSQML_Gloves : StaticEventHandler
 			if (pmo.health <= 0) continue;
 			for (int h = 0; h < 2; h++)
 			{
-				let g = GloveIn(pmo, h);
-				if (!g) continue;
+				Weapon g; bool fist;
+				[g, fist] = FistIn(pmo, h);
+				if (!fist) continue;
 				let st = HandOf(pn, h);
 				if (!st.prevValid) continue;
 				double mps = st.vel.Length() / upm;
@@ -604,7 +667,7 @@ class RSQML_Gloves : StaticEventHandler
 				Vector3 centre = pmo.pos + (0, 0, pmo.height * 0.5);
 				double along = (st.hand - from) dot dir;
 				if (along < 0 || along > (centre - from).Length() + pmo.radius * 2) continue;
-				int lv = open ? RSQML.GBLevel(g, "SwatBack") : RSQML.MoveLevel(pmo, g, "ReturnFire", "rsqml_hadouken");
+				int lv = open ? RSQML.GBLevel(g, "SwatBack") : RSQML.FistLevel(pmo, g, "ReturnFire", "rsqml_hadouken");
 				if (!open && lv <= 0) continue;   // a fist without the Hadouken is a fist: the bullet goes where it was going
 				bool back = lv > 0 && sh.health > 0;
 				if (back)
@@ -627,7 +690,7 @@ class RSQML_Gloves : StaticEventHandler
 	// Ballistics" -- SlowMo's tracer mesh, his RS_Ballistics library). A visible round, fast (56 units a tic), from the
 	// hand at the shooter's middle, that does the shot's damage x the move's multiplier on whatever it meets: yours
 	// (target), paid to that glove (Claim), and listed as a returned shot so RSQ Score reads "returned.by" on its kill.
-	private void ReturnBullet(PlayerPawn pmo, RSQ_Glove g, Vector3 at, Actor sh, int damage, double mult, bool byPalm)
+	private void ReturnBullet(PlayerPawn pmo, Weapon g, Vector3 at, Actor sh, int damage, double mult, bool byPalm)
 	{
 		Vector3 aim = level.Vec3Diff(at, sh.pos + (0, 0, sh.height * 0.5));
 		if (aim.Length() < 1.0) return;
@@ -718,7 +781,7 @@ class RSQML_Gloves : StaticEventHandler
 	const HADO_LEAD = 2.0;
 
 	// public so a probe can test it without hands (as Deliver)
-	void ReturnFire(PlayerPawn pmo, RSQ_Glove g, int h, RSQ_PunchHand st, int lv)
+	void ReturnFire(PlayerPawn pmo, Weapon g, int h, RSQ_PunchHand st, int lv)
 	{
 		double gr = 0.09 * RSQML.UnitsPerMetre() + RSQML.SV("rsqml_punch_pad", 4.0);
 		for (int i = missiles.Size() - 1; i >= 0; i--)
@@ -781,7 +844,7 @@ class RSQML_Gloves : StaticEventHandler
 	// in your hand. Public so a probe can test it without hands (as Deliver).
 	Actor caught[MAXPLAYERS * 2];
 	int caughtTic[MAXPLAYERS * 2], caughtUntil[MAXPLAYERS * 2], caughtLv[MAXPLAYERS * 2];
-	void CatchTick(PlayerPawn pmo, RSQ_Glove g, int h, RSQ_PunchHand st)
+	void CatchTick(PlayerPawn pmo, Weapon g, int h, RSQ_PunchHand st)
 	{
 		int i = pmo.PlayerNumber() * 2 + h;
 		if (i < 0 || i >= MAXPLAYERS * 2) return;
@@ -871,7 +934,7 @@ class RSQML_Gloves : StaticEventHandler
 	// missile at its shooter instead of aside, at RSQ_Upgrade_SwatBack.Mult, paid to that glove. Public so a probe can test
 	// it without hands (as Deliver).
 	const SWAT_MPS = 1.5;
-	void Swat(PlayerPawn pmo, RSQ_Glove g, int h, RSQ_PunchHand st)
+	void Swat(PlayerPawn pmo, Weapon g, int h, RSQ_PunchHand st)
 	{
 		int sbLv = RSQML.GBLevel(g, "SwatBack");
 		double gr = 0.09 * RSQML.UnitsPerMetre() + RSQML.SV("rsqml_punch_pad", 4.0);
@@ -929,10 +992,12 @@ class RSQML_Gloves : StaticEventHandler
 	{
 		if (!pmo || !pmo.player || !v || v.health <= 0) return false;
 		int h = -1;
-		RSQ_Glove g = null;
-		if (pmo.player.ReadyWeapon is "RSQ_Glove") { g = RSQ_Glove(pmo.player.ReadyWeapon); h = 0; }
-		else if (pmo.player.OffhandWeapon is "RSQ_Glove") { g = RSQ_Glove(pmo.player.OffhandWeapon); h = 1; }
-		if (!g) return false;
+		Weapon g = null;
+		bool fist;
+		[g, fist] = FistIn(pmo, 0);
+		if (fist) h = 0;
+		else { [g, fist] = FistIn(pmo, 1); if (fist) h = 1; }
+		if (h < 0) return false;
 		Vector3 from = pmo.OverrideAttackPosDir ? (h == 0 ? pmo.AttackPos : pmo.OffhandPos) : pmo.pos + (0, 0, pmo.height * 0.6);
 		Vector3 mid = v.pos + (0, 0, v.height * 0.6);
 		Vector3 dir = mid - from;
@@ -957,10 +1022,13 @@ class RSQML_Gloves : StaticEventHandler
 	// the inflictor: with Gun Bonsai VR loaded, Gun Bonsai credits that glove (a weapon naming itself is its own
 	// claim) and its glove upgrades shape the number from what is written here (asked through RSQML_Service).
 	// Public so a probe can land one without a controller.
-	void Deliver(PlayerPawn pmo, RSQ_Glove g, int h, Actor victim, double avgMps, Vector3 dir, Vector3 at, Vector3 path = (0, 0, 0))
+	void Deliver(PlayerPawn pmo, Weapon g, int h, Actor victim, double avgMps, Vector3 dir, Vector3 at, Vector3 path = (0, 0, 0))
 	{
-		if (!pmo || !g || !victim || victim.health <= 0) return;
+		if (!pmo || !victim || victim.health <= 0) return;
 		int pn = pmo.PlayerNumber();
+		// THE PUNCH'S RECORD (what Gun Bonsai VR's glove upgrades read through RSQML_Service "punch.*"): on the glove
+		// when the fist is one; for any other fist it is worked out the same and kept here (r)
+		let r = RSQ_PunchHand(HandOf(pn, h));
 		int now = level.maptime;
 		double minSpeed = RSQML.SV("rsqml_punch_min_speed", 2.0);
 		double fullSpeed = RSQML.SV("rsqml_punch_full_speed", 7.0);
@@ -970,24 +1038,24 @@ class RSQML_Gloves : StaticEventHandler
 		double tl = toFoe.Length();
 		toFoe = tl > 0.5 ? toFoe / tl : (cos(pmo.angle), sin(pmo.angle));
 
-		g.lastHand = h;
-		g.lastSpeed = avgMps;
-		g.lastPower = clamp((avgMps - minSpeed) / max(fullSpeed - minSpeed, 0.1), 0.0, 1.0);
-		g.lastKind = ClassifySwing(dir, path, toFoe, rise);
+		r.lastHand = h;
+		r.lastSpeed = avgMps;
+		r.lastPower = clamp((avgMps - minSpeed) / max(fullSpeed - minSpeed, 0.1), 0.0, 1.0);
+		r.lastKind = ClassifySwing(dir, path, toFoe, rise);
 		// UPPERCUT, AN UNLOCK under Gun Bonsai VR (GBOVR_TREES.md 4.1 A, owner 11-02): until that glove learns it a rising
 		// punch lands as a jab (the jab's spark, no lift). Without Gun Bonsai VR every glove uppercuts, as before.
-		if (g.lastKind == PK_UPPER && RSQML.UnlockLevel(g, "Uppercut") <= 0) g.lastKind = PK_JAB;
+		if (r.lastKind == PK_UPPER && RSQML.UnlockLevel(g, "Uppercut") <= 0) r.lastKind = PK_JAB;
 		// COMBOS (4.1 C): the kinds inside a second (Three-Hit, Finisher), and the Dempsey run (alternating hooks)
-		g.lastKinds = NoteKind(pn, g.lastKind, now);
-		if (g.lastKind == PK_HOOK && runCount[pn] > 0 && runHand[pn] != h && now - runTic[pn] <= DEMPSEY_TICS) runCount[pn]++;
-		else runCount[pn] = g.lastKind == PK_HOOK ? 1 : 0;
+		r.lastKinds = NoteKind(pn, r.lastKind, now);
+		if (r.lastKind == PK_HOOK && runCount[pn] > 0 && runHand[pn] != h && now - runTic[pn] <= DEMPSEY_TICS) runCount[pn]++;
+		else runCount[pn] = r.lastKind == PK_HOOK ? 1 : 0;
 		runHand[pn] = h;
 		runTic[pn] = now;
-		g.lastRun = runCount[pn];
+		r.lastRun = runCount[pn];
 		double upFrac = clamp((at.z - victim.pos.z) / max(victim.height, 1.0), 0.0, 1.0);
-		g.lastBody = g.lastKind != PK_UPPER && upFrac < 0.6;
-		g.lastHeight = int(upFrac * 1000);
-		g.lastCounter = RSQML.InAttack(victim) || autoCounter;
+		r.lastBody = r.lastKind != PK_UPPER && upFrac < 0.6;
+		r.lastHeight = int(upFrac * 1000);
+		r.lastCounter = RSQML.InAttack(victim) || autoCounter;
 
 		// ONE-TWO: the other hand, inside half a second, keeps the chain; the same hand or a gap
 		// starts a new one
@@ -995,19 +1063,19 @@ class RSQML_Gloves : StaticEventHandler
 		else chainCount[pn] = 1;
 		chainLastHand[pn] = h;
 		chainLastTic[pn] = now;
-		g.lastChain = chainCount[pn];
+		r.lastChain = chainCount[pn];
 
 		// STAR PUNCH (a Gun Bonsai VR glove upgrade; nothing without it): an uppercut thrown with that hand's trigger
 		// squeezed, while a star is banked (SuperPunchOut's StarArmed, with the trigger standing in for the grip as its
 		// QZD seam does). The bank lives on the main-hand glove (saved, and kept across levels).
 		let gb = RSQML.GB();
-		int starLv = gb ? gb.GetInt("level", "StarPunch", 0, 0, g) : 0;
+		int starLv = (gb && g && RSQML.IsGloveName(g.GetClassName())) ? gb.GetInt("level", "StarPunch", 0, 0, g) : 0;
 		let bank = RSQ_Glove(pmo.FindInventory("RSQ_Glove"));
-		if (!bank) bank = g;
+		if (!bank) bank = RSQ_Glove(g);
 		int btn = pmo.player.cmd.buttons;
 		bool squeeze = (btn & (h == 0 ? (BT_ATTACK | BT_ALTATTACK) : (BT_OFFHANDATTACK | BT_OFFHANDALTATTACK))) != 0;
-		g.lastStar = starLv > 0 && bank.bankStars > 0 && g.lastKind == PK_UPPER && squeeze;
-		if (g.lastStar) bank.bankStars--;
+		r.lastStar = starLv > 0 && bank && bank.bankStars > 0 && r.lastKind == PK_UPPER && squeeze;
+		if (r.lastStar) bank.bankStars--;
 
 		// THE PUNCH: Brutal Doom's own fist is MeleeStrikeNormal (10) and its strong punch
 		// MeleeStrike2 (20) -- parsed from brutal22test6 Melee.dec -- so a glove runs 10 at the
@@ -1016,12 +1084,12 @@ class RSQML_Gloves : StaticEventHandler
 		// RSQ_Upgrade_Juggle's window (Gun Bonsai VR does the harder hit, asking "launch.age"; read before the blow lands)
 		int jAge = RSQML.GBLevel(g, "Juggle") > 0 ? RSQML_Launched.AgeFor(victim, pn) : -1;
 		bool juggle = jAge >= 0 && jAge <= JUGGLE_TICS;
-		int dmg = int(RSQML.SV("rsqml_punch_damage", 10.0) * (1.0 + g.lastPower));
+		int dmg = int(RSQML.SV("rsqml_punch_damage", 10.0) * (1.0 + r.lastPower));
 		// HEADLOCK UPPERCUT (Gun Bonsai VR, the off glove's node; 4.1 E): an uppercut on the monster your off hand holds
 		// hits harder, lets go and launches it higher
 		let hlk = RSQML_Headlock.Get();
 		int huLv = 0;
-		if (g.lastKind == PK_UPPER && hlk && hlk.collar[pn] == victim) huLv = RSQML.GrappleLevel(pmo, "HeadlockUppercut");
+		if (r.lastKind == PK_UPPER && hlk && hlk.collar[pn] == victim) huLv = RSQML.GrappleLevel(pmo, "HeadlockUppercut");
 		if (huLv > 0) dmg = int(dmg * RSQML.Num("HeadlockUppercut.mult", huLv, 0, 1.75));
 		// THE BERSERK PACK (owner, 2026-11-02, GBOVR_TREES.md 4.1 F): x5 while you hold it (Doom's own fist is x10; the
 		// shove already reads it, shove.zs BUTT_DMG_ZERK). Before this a Berserk punch did the same 10 to 20.
@@ -1038,18 +1106,33 @@ class RSQML_Gloves : StaticEventHandler
 		}
 		// RAGE (Gun Bonsai VR, 4.1 F) under the Berserk: 2 the hit-stop doubles, 3 the knock x1.5
 		int rgLv = zerk ? RSQML.GBLevel(g, "Rage") : 0;
-		if (RSQML.Debug() > 0) { static const String kn[] = { "jab", "hook", "uppercut" }; Console.Printf("RSQML punch lands: %s, %.2f m/s, path %.2f %.2f %.2f m", kn[g.lastKind], avgMps, path.x, path.y, path.z); }
+		if (RSQML.Debug() > 0) { static const String kn[] = { "jab", "hook", "uppercut" }; Console.Printf("RSQML punch lands: %s, %.2f m/s, path %.2f %.2f %.2f m", kn[r.lastKind], avgMps, path.x, path.y, path.z); }
 		if (autoMult > 0) dmg = int(dmg * autoMult);	// AutoPunch's share
-		victim.SpawnBlood(at, VectorAngle(dir.x, dir.y), dmg);
-		RSQML_Spark.Punch(g.lastKind, RSQML_Spark.OnSkin(victim, at), dir, pmo, h);   // a spark per kind of blow, along the fist (sparks.zs)
+		// the record onto the glove, before the blow: Gun Bonsai VR reads it in ModifyDamageDealt
+		let gl = RSQ_Glove(g);
+		if (gl)
+		{
+			gl.lastHand = r.lastHand; gl.lastSpeed = r.lastSpeed; gl.lastPower = r.lastPower; gl.lastKind = r.lastKind;
+			gl.lastKinds = r.lastKinds; gl.lastRun = r.lastRun; gl.lastBody = r.lastBody; gl.lastHeight = r.lastHeight;
+			gl.lastCounter = r.lastCounter; gl.lastChain = r.lastChain; gl.lastStar = r.lastStar;
+		}
+		// ONE BLOW PER SWING: BD22 VR's own VR punching owns a BD22 fist's damage when it is on (BD22Punches); a punch
+		// nobody swung (AutoPunch) is never BD22's
+		bool bdBlow = autoMult <= 0 && BD22Punches(pmo, g);
+		RSQML_Spark.Punch(r.lastKind, RSQML_Spark.OnSkin(victim, at), dir, pmo, h);   // a spark per kind of blow, along the fist (sparks.zs)
 		if (juggle) RSQML_Burst.At("RSQML_Burst4", at, 0.75, RSQML_Burst.ByLevel(RSQML.GBLevel(g, "Juggle"), 3));
-		victim.DamageMobj(g, pmo, dmg, 'Melee', DMG_THRUSTLESS);
-		pmo.A_StartSound(g.lastStar ? "rsqml/star" : "rsqml/punch", CHAN_AUTO, 0, 1.0);
-		RSQ_Buzz.Start(pmo, h, 0.5 + 0.5 * g.lastPower + (g.lastStar ? 0.5 : 0.0), g.lastStar ? 10 : 5);
+		if (!bdBlow)
+		{
+			victim.SpawnBlood(at, VectorAngle(dir.x, dir.y), dmg);
+			victim.DamageMobj(FistInflictor(pmo, g), pmo, dmg, 'Melee', DMG_THRUSTLESS);
+		}
+		if (RSQML.Debug() > 0) { String fn = g ? String.Format("%s", g.GetClassName()) : "an empty hand"; Console.Printf("RSQML punch by %s: %s", fn, bdBlow ? "BD22 VR's punching deals the damage (rsq_punch on), Melee adds the rest" : String.Format("%d damage", dmg)); }
+		pmo.A_StartSound(r.lastStar ? "rsqml/star" : "rsqml/punch", CHAN_AUTO, 0, 1.0);
+		RSQ_Buzz.Start(pmo, h, 0.5 + 0.5 * r.lastPower + (r.lastStar ? 0.5 : 0.0), r.lastStar ? 10 : 5);
 		// HEAVY HANDS (pick 52): the punch stops it for a beat and throws it further. With Gun Bonsai VR: once that glove
 		// has learned it, at its numbers (RSQ_Upgrade_HeavyHands.Knock / Freeze). Without: the Heavy Hands row
 		// (rsqml_heavyhands, off) at level 1's (knock +25%; 2 tics, 4 for a punch at half speed or more).
-		int hhLv = RSQML.MoveLevel(pmo, g, "HeavyHands", "rsqml_heavyhands");
+		int hhLv = RSQML.FistLevel(pmo, g, "HeavyHands", "rsqml_heavyhands");
 		if (huLv > 0 && victim && victim.health > 0)
 		{
 			hlk.LetGo(pn);
@@ -1058,29 +1141,29 @@ class RSQML_Gloves : StaticEventHandler
 		}
 		if (victim && victim.health > 0 && !victim.bDontThrust)
 		{
-			double kk = (2.0 + 6.0 * g.lastPower) * clamp(100.0 / max(victim.mass, 1.0), 0.08, 2.0);
+			double kk = (2.0 + 6.0 * r.lastPower) * clamp(100.0 / max(victim.mass, 1.0), 0.08, 2.0);
 			if (hhLv > 0) kk *= RSQML.Num("HeavyHands.knock", hhLv, 0, 1.25);
 			if (rgLv >= 3) kk *= 1.5;
-			if (g.lastKind == PK_UPPER || juggle) Launch(victim, toFoe, g.lastPower, hhLv, pmo, g, huLv > 0 ? RSQML.Num("HeadlockUppercut.lift", huLv, 0, 1.5) : 1.0);
+			if (r.lastKind == PK_UPPER || juggle) Launch(victim, toFoe, r.lastPower, hhLv, pmo, g, huLv > 0 ? RSQML.Num("HeadlockUppercut.lift", huLv, 0, 1.5) : 1.0);
 			else victim.vel += dir * kk;
 		}
 		if (hhLv > 0 && victim && victim.health > 0 && !victim.player)
 		{
-			int ft = int(RSQML.Num("HeavyHands.freeze", hhLv, g.lastPower, g.lastPower >= 0.5 ? 4 : 2));
+			int ft = int(RSQML.Num("HeavyHands.freeze", hhLv, r.lastPower, r.lastPower >= 0.5 ? 4 : 2));
 			if (rgLv >= 2) ft *= 2;
 			victim.freezetics = max(victim.freezetics, ft);
 			if (RSQML.Debug() > 0) Console.Printf("RSQML heavy hands: %s frozen %d tics, vel %.1f", victim.GetClassName(), ft, victim.vel.xy.Length());
 		}
 		// WALL SPLAT (pick 54): watched while it flies; a wall that stops it hurts it (splat.zs RSQ_Splat). With Gun
 		// Bonsai VR: once that glove has learned it. Without: the Wall Splat row (rsqml_wallsplat, off), at level 1.
-		int wsLv = RSQML.MoveLevel(pmo, g, "WallSplat", "rsqml_wallsplat");
+		int wsLv = RSQML.FistLevel(pmo, g, "WallSplat", "rsqml_wallsplat");
 		if (wsLv > 0 && victim && victim.health > 0) RSQ_Splat.Arm(victim, pmo, g, wsLv);
 		// RSQ SCORE's hooks for the Power branch (GBOVR_TREES.md 4.1 A; nothing without RSQ Score)
 		if (victim)
 		{
 			if (hhLv > 0) RSQML.Touch("hit.heavy", pmo, victim);
-			if (g.lastBody) RSQML.Touch("hit.body", pmo, victim);
-			if (g.lastKind == PK_UPPER) RSQML.Touch("punch.uppercut", pmo, victim);
+			if (r.lastBody) RSQML.Touch("hit.body", pmo, victim);
+			if (r.lastKind == PK_UPPER) RSQML.Touch("punch.uppercut", pmo, victim);
 			if (juggle) RSQML.Touch("juggle", pmo, victim);
 		}
 		if (juggle && RSQML.Debug() > 0) { String jn = "(dead)"; if (victim) jn = victim.GetClassName(); Console.Printf("RSQML juggle: %s hit %d tics after its launch", jn, jAge); }
@@ -1090,11 +1173,11 @@ class RSQML_Gloves : StaticEventHandler
 		// after. The defaults are Soda Popinski's line, `stars 1 2` (sodapopinski.txt), capped at
 		// rules.txt's `maxstars 3`. Only a glove with Star Punch banks; a star spent does not.
 		// The two numbers are Gun Bonsai VR's settings (rsq_star_first / rsq_star_every, read by name).
-		if (starLv > 0 && !g.lastStar)
+		if (starLv > 0 && !r.lastStar && bank)
 		{
 			int first = RSQML.SVI("rsq_star_first", 1), every = RSQML.SVI("rsq_star_every", 2);
 			bank.bankLanded++;
-			bool earn = g.lastCounter;
+			bool earn = r.lastCounter;
 			if (first > 0 && bank.bankLanded == first) earn = true;
 			if (every > 0 && bank.bankLanded > first && ((bank.bankLanded - first) % every) == 0) earn = true;
 			if (earn && bank.bankStars < 3)
