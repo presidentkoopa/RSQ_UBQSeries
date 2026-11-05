@@ -33,6 +33,20 @@
 // core's (MAPINFO order).
 class RSQWP_Service : Service
 {
+	// THE MENU (MENU_PASS_BRIEF.md, owner 11-04): GetIntUI("menu.locked", <node>) 1 while that RSQ Gun Bonsai VR whip node
+	// is not learned by the console player (its row then does nothing: whip.zs Unlock), 0 learned. Asked by the
+	// RSQWPGbOption rows only while Gun Bonsai VR is loaded; read from RSQWP_Whip's once-a-second cache (GbRefresh).
+	override int GetIntUI(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
+	{
+		if (!(request ~== "menu.locked")) return 0;
+		let w = RSQWP_Whip(EventHandler.Find("RSQWP_Whip"));
+		if (!w || !players[consoleplayer].mo) return 1;
+		if (!w.gbOn) return 0;
+		for (int g = 0; g < RSQWP_Whip.G_N; g++)
+			if (stringArg ~== RSQWP_Whip.GBN[g]) return w.gbLv[consoleplayer * RSQWP_Whip.G_N + g] >= 1 ? 0 : 1;
+		return 0;
+	}
+
 	override int GetInt(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
 	{
 		let ev = RSQWP_Events.Get();

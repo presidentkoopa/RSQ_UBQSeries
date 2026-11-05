@@ -24,6 +24,7 @@ server bool   rsqwp_whip_leash    = true;   // Lock: a locked crack on a monster
 server bool   rsqwp_whip_weapon   = true;   // every player carries the whip weapon (slot 1)
 user   int    rsqwp_whip_hand     = 0;      // Whip In: 0 the main hand, 1 the off hand (one whip, in that hand)
 user   int    rsqwp_hand_handle   = 1;      // Hand on the Handle (owner 11-03): the whip weapon drawn as BD22 VR's FBX hand (its magazine hold) round the handle; 0 the handle alone
+user   bool   rsqwp_show          = true;   // Show Whip (owner 11-04): the whip, while you own it and hold it in neither hand, hangs coiled at RSQ Tactical Rig's whip holster (the rig reads this by name; without the rig there is no spot)
 server noarchive bool rsqwp_handtest = false; // test only: the world handle drawn beside the hand's (to line them up on the rig)
 server float  rsqwp_whip_prio     = 256;    // the whip weapon: switches, keys and powerups this close (map units, 256 = 8 m) are marked first
 server float  rsqwp_whip_light    = 400;    // the whip weapon's pull: up to this mass a monster is pulled off its feet to you
@@ -74,4 +75,4 @@ server float  rsqwp_slide_speed   = 10;     // a leashed monster slides to you t
 server float  rsqwp_slide_gap     = 16;     // and stops this far from you
 server float  rsqwp_retract_speed = 64;     // a let-go line coming back to the hand
 
-server int    rsqwp_debug         = 0;      // 1: log events (T_WP lines), 2: every tic, 3: cost (T_WPWMS), 4: snags and grip keys (T_WPWK); 5 (rig tests only, not in the menu's Debug Log): the aimed swing's ray every tic (T_WPW RAY)
+server int    rsqwp_debug         = 0;      // 1: log events (T_WP lines), 2: every tic, 3: cost (T_WPWMS), 4: snags and grip keys (T_WPWK); 5: the aimed swing's ray every tic (T_WPW RAY)

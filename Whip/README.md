@@ -97,48 +97,59 @@ let go at the top with all your speed.
 
 ## Menu
 
-Options → Radiant Silvergun Options → RSQ Whip
+Options → Radiant Silvergun Options → RSQ Whip. One page, and one sub menu, **Test and Debug**. With RSQ Gun Bonsai VR
+loaded the page starts with "GunBonsaiOVR detected. Mod features unlocked via upgrades." and the rows marked GB are greyed
+while that whip node is not learned (they do nothing until then).
 
 | Row | Default | What it does |
 |---|---|---|
+| **Whip** | | |
 | Whip | On | The binds whip |
-| Whip Weapon in Slot 1 | On | Every player carries the whip weapon |
+| Whip in Slot 1 | On | Every player carries the whip weapon |
 | Whip In | Main Hand | Which hand holds it |
+| Show Whip | On | The whip hangs coiled at RSQ Tactical Rig's whip holster while it is in neither hand (needs the Rig) |
 | Hand on the Handle | On | The hand round the handle |
 | Whip Style | Real | Real (hold, crack it yourself) or Assist (press, it cracks for you) |
-| Whip Aim | Assist | Free, Assist, or Lock |
-| Catch Edges (snag) | On | A lash that catches an edge becomes a rope |
-| Aimed Swing | On | The other hand's alt fire aims an anchor |
-| Whip Swing Reach (m) | 9 | How far the aimed swing can anchor (3-60) |
-| Aim With Off-Hand Fire | On | An empty off hand's fire aims too |
-| Beam Wins Over Lock-On | On | The aim beam beats any mark |
-| Off Hand Free While Snagged | On | A gun into the off hand never lets go of the rope |
-| Off-Hand Grip Starts Swing | On | Grip the whip to start swinging |
-| Jump Starts Swing | On | Jump to start swinging |
-| Jump Lift / Jump Push | 10 / 8 | The jump start's lift and push |
+| Whip Aim | Assist | Free, Assist, or Lock (other hand points, alt fire holds) |
+| **Crack** | | |
+| Stun | On | A crack breaks off a monster's attack |
+| Knockback | Off | A crack knocks the monster about |
+| Hit-Stop | Off | A crack freezes it for a beat |
 | Throws Switches | On | A crack uses a switch it lands on |
 | Fetches Pickups | On | A crack flicks a pickup to you |
-| Leash (Lock) | On | A locked crack catches and pulls a monster |
-| Stun | On | A crack breaks off a monster's attack |
-| Lasso (off-hand grip) | On | Whirl and throw it as a lasso |
-| Crack Knocks Enemies Back | Off | A crack knocks the monster about |
-| Swing a Wrapped Monster (flail) | On | A wrapped monster swings with your arm |
-| Keep the Mark When You Lift | On | The mark survives the lift before a crack |
+| Crack Fireballs (GB) | Off | Cracks explode missiles |
+| Cracked Fireballs | Explode There | Or Knocked Away, to explode away from you |
+| **Monsters** | | |
+| Leash | On | A locked crack catches and pulls a monster |
+| Lasso (GB) | On | Grab the thong with the off hand and whirl it |
+| Flail | On | A wrapped monster swings with your arm |
+| Keep the Mark | On | The mark survives the lift before a crack |
 | Yank Grace | Off | No yank right after a wrap |
-| Crack Fireballs Out of the Air | Off | Cracks explode missiles |
-| Cracked Fireballs and Rockets | Explode where cracked | Or knocked away to explode there |
-| Hit-Stop | Off | A crack freezes it for a beat |
-| Mantle Over Ledges | On | Up and over a ledge |
-| Keep Momentum on Landing | On | Your swing's speed carries on |
+| **Swinging** | | |
+| Catch Edges (GB) | On | A lash that catches an edge becomes a rope |
+| Aimed Swing | On | The other hand's alt fire aims an anchor |
+| Swing Reach (m) | 9 | How far the aimed swing can anchor (3-60) |
+| Aim With Off Hand | On | An empty off hand's fire aims too |
+| Beam Beats Lock-On | On | The aim beam beats any mark |
+| Off Hand Stays Free | On | A gun into the off hand never lets go of the rope |
+| Grip Starts Swing | On | Grip the whip to start swinging |
+| Jump Starts Swing | On | Jump to start swinging |
+| Mantle (GB) | On | Up and over a ledge |
+| Keep Momentum (GB) | On | Your swing's speed carries on after landing |
+| **Climbing** | | |
 | Rope Climbing | On | Hand over hand |
+| Free Hand Only | On | Only an empty hand takes the rope |
+| Grab Keys Grip Rope | On | RSQ Distance Grab's grab binds take the rope too |
+| **Controls** | | Whip (Main), Whip (Off), Grab Whip (Main), Grab Whip (Off): no default binds |
+| Reset All | | Every setting on both pages back to default |
 
-**Tuning and Debug**: Crack Speed (20), Damage (12 at the hardest crack), Hardest Crack Speed (43), Lasso Grip Reach
-(0.30 m), Aim Reach (40), Switch/Key/Powerup Mark Range (256), Pulled Off Feet Up To (mass 400), Can't Be Pulled From
-(mass 1000), Thickness (1.0), Leather Stiffness and Damping (1.0 x the reference), Whip Air Drag (1.0), Hand
-Smoothing (0.8 tics), Reel Speed (3), Shortest Rope (32), Top Speed (30), Swing Lean (0.25), Arm Pump (0.12), Air Drag
-(0.002), Rope Friction (0.025), Ledge Hop (6), Free Hand Only (On), Grips From Grab (On), Grab Reach (16), Climb Speed
-Cap (8), Heaviest Leashed (1000), Leash Pull (10), Snag Edge Height (16), Rope Meets Body (0.6), Rope Draw Pieces
-(12), Leash Stops At (16), Let-Go Return Speed (64), Debug Log (Off), Reset All.
+**Test and Debug**: Crack Speed (20), Damage (12), Hardest Crack Speed (43), Aim Reach (40), Mark Range (256), Pulled Up To
+(mass 400), Too Heavy From (mass 1000), Lasso Reach (0.30 m); Thickness (1.0), Stiffness (1.0), Damping (1.0), Air Drag
+(1.0), Hand Smoothing (0.8 tics), Draw Pieces (12), Let-Go Return Speed (64); Reel Speed (3), Shortest Rope (32), Top
+Speed (30), Stick Lean (0.25), Arm Pump (0.12), Swing Air Drag (0.002), Rope Friction (0.025), Ledge Hop (6), Snag Edge
+Height (16), Rope Meets Body (0.6), Jump Lift (10), Jump Push (8); Grab Reach (16), Climb Speed Cap (8), Heaviest Leashed
+(1000), Leash Pull (10), Leash Stops At (16), Off Grip Keys (443 436); Debug Log (Off, Events, Every Tic, Cost, Snags and
+Grip Keys, Aim Ray Every Tic); Reset All.
 
 ## Works with
 
