@@ -1683,6 +1683,15 @@ class RSQTR_Rig : EventHandler
 			}
 			return;
 		}
+		// A LIT FLARE IS NEVER HOLSTERED (owner 11-05: "A lit flare should not be holstered"): with RSQ FnF's flare lit in the
+		// off hand, that hand's grip at any place here does nothing (a short buzz) -- no draw or swap that would take the hand
+		// and let it fall, nothing put away. FnF keeps it in the hand there too; it leaves by a throw or a drop elsewhere.
+		if (h == 1 && FlareAsk("flare.phase", pmo) == 2)
+		{
+			RSQTR_Buzzer.Start(pmo, h, 0.12, 2);
+			if (Flag("rsqtr_messages", p, false)) Console.Printf("T_RIG t%d: %s refused, a lit flare is in the off hand", level.maptime, RSQTR_Region.NAMES[r]);
+			return;
+		}
 		if (r == RSQTR_Region.POUCH) return;     // the pouch is Brutal Doom VR's: its reload reads "pouch.at" (no rig action here)
 		if (r == RSQTR_Region.WHIP) { WhipPress(pmo, p, h); return; }
 		if (r == RSQTR_Region.FLARE) { FlarePress(pmo, p, h); return; }

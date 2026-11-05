@@ -107,7 +107,7 @@ here (the body, the holsters, the torso that follows your turns) is worked out i
 | Grenade | Either hand at the belt buckle, grip | Again with the grenade in hand: your gun comes back |
 | Saber | Main hand at the main-side saber spot, off hand at the other | Needs RSQ Saber; a saber put on any empty holster goes to its own spot |
 | Whip | The whip's hand at the whip holster (main-hand hip), grip or Use | Needs RSQ Whip; draws or puts away. A whip put on an empty gun holster goes home |
-| Flare | Off hand at the flare holster (off-hand hip), grip | Needs RSQ FnF; an unlit flare comes up or goes back. A lit one cannot go in |
+| Flare | Off hand at the flare holster (off-hand hip), grip | Needs RSQ FnF; an unlit flare comes up or goes back. A lit one cannot go in: while it is lit, the off hand's grip at any Rig spot does nothing |
 | Ammo pouch | Off hand in the pouch left of the buckle, press as BD22 VR's reload asks | With BD22 VR's pouch-only setting on, reloads take ammo only from here |
 | Recenter torso | Both controllers against your chest (within 0.20 m of a point 0.30 m under your eyes) for 0.4 s | No grip, Use or fire held; let go before doing it again |
 | Recenter Torso key | Bindable: Customize Controls → RSQ Tactical Rig, or the rig's own page | |
@@ -181,7 +181,8 @@ what the rows already do: Smoker, Chain Smoker, Gun Toss, Boomerang Gun).
 | Recenter Torso | | Bind the recenter key |
 | **Cigarettes** | | |
 | Cigarettes | Off | Ermac's cigarette pocket |
-| Smoke Slows Time | On | RSQ SlowMo when the cigarette is flicked |
+| Smoke Slows Time | On | RSQ SlowMo when the cigarette is flicked (its Real-Time Countdown bar shows how long is left) |
+| Smoke Slow-Mo Time (s) | 6 | How long that slow motion lasts (2-20 s) |
 | Refill Each Level | On | The pocket refills |
 | Show Cigarettes | On | The cigarettes left in the pocket stand in it on your chest |
 | **Setup** | | |
