@@ -1,7 +1,7 @@
 #!/bin/bash
 # TEST ONLY (never ships). The QoL round on the rig, the owner's Brutal Doom order:
 #   tools/rigtest/qol.sh <name> <secs> "<console script>"
-# Packs RSQ_Gestures.pk3 (build.sh) and qolprobe; EXTRA = more pk3s after ours (RSQ_Wheel for GE1).
+# Packs RSQ_Accessibility.pk3 (build.sh) and qolprobe; EXTRA = more pk3s after ours (RSQ_Wheel for GE1).
 # Env: OUT (logs and frames), QZ_DUMP_EVERY / QZ_RES for frames, MAP (warp), GDB=1 logs every controller rumble
 # (VRMode::Vibrate) as T_VIBRATE lines in <name>.out (as GunCards/tools/rigtest/run.sh does).
 set -u
@@ -25,7 +25,7 @@ cd "$RIG"
 QZ_DUMP_DIR="$D" QZ_RES=${QZ_RES:-240} EGL_PLATFORM=surfaceless LIBGL_ALWAYS_SOFTWARE=1 LD_LIBRARY_PATH="$RIG" \
   flock -o -x /home/claude/rig.lock timeout "$SECS" "${PRE[@]}" ./qzdoom -config "$OUT/$NAME.ini" -iwad "$G/doom2.wad" \
   -file "$G/brutal22test6.pk3" "$G/BD_VoxelPack.pk3" "$G/BD22_VR-Reloaded_2_0_3h.pk3" "$G/BD22_VR-Reloaded_2.0.3ha_hotfix.pk3" \
-  "$HERE/build/RSQ_Gestures.pk3" ${EXTRA:-} "$OUT/qolprobe.pk3" \
+  "$HERE/build/RSQ_Accessibility.pk3" ${EXTRA:-} "$OUT/qolprobe.pk3" \
   -nosound -warp ${MAP:-1} -skill 3 +logfile "$D.log" "+$SCRIPT" > "$D.out" 2>&1
 echo "rc=$? frames=$(ls "$D" | wc -l) log=$D.log"
 rm -f "$OUT/$NAME.ini"

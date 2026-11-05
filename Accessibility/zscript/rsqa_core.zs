@@ -498,7 +498,7 @@ class RSQA_MenuMode : StaticEventHandler
 		'UBQS_Options', 'SSQ_Options', 'RSQTR_Options', 'RSQDG_Options', 'RSQSM_Options',
 		'RSQLS_Options', 'RSQGR_Options', 'RSQ_MeleeOptions', 'RSQSC_Options', 'RSQTHP_Options',
 		'RSQMB_Options', 'RSQML_Options', 'RSQWP_Options', 'wr_Options', 'RSQGN_Options',
-		'RSQGD_Options', 'RSQFF_Options', 'RSQG_Options', 'RSQGC_Options'
+		'RSQGD_Options', 'RSQFF_Options', 'RSQGC_Options'
 	};
 
 	override void UiTick()
@@ -578,7 +578,7 @@ class RSQA_MenuMode : StaticEventHandler
 		static const String SERIES[] = {
 			"ubqs_", "ssq_", "rsqtr_", "rsqdg_", "rsqsm_", "rsqls_", "rsqgr_", "rsq_melee", "rsqsc_",
 			"rsqthp_", "tophpbars_", "rsqmb_", "rsqml_", "rsqwp_", "wr_", "rsqgn_",
-			"rsqgd_", "rsqff_", "rsqg_", "rsqgc_"
+			"rsqgd_", "rsqff_", "rsqgc_"
 		};
 		String to = sm.GetAction();
 		to = to.MakeLower();

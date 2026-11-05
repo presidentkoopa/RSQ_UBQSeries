@@ -150,7 +150,7 @@ Runs alone. It finds the others by name:
   opens your palm also throws that fist's own trigger punch.
 - **Brutal Doom**: the shove plays Brutal Doom's swing and kick sounds, and its monsters react to the kick themselves.
 - **RSQ Distance Grab**: a monster thrown out of the Headlock flies through its throw code; the two share the grip.
-- **RSQ Gestures**: reads both hands for Ground Pound and Clear Out when it is loaded; without it Melee reads them with its own copy of Gestures' two-hand reader (the same moves and numbers).
+- **RSQ Accessibility (its gesture reader)**: reads both hands for Ground Pound and Clear Out when it is loaded; without it Melee reads them with its own copy of that two-hand reader (the same moves and numbers).
 - **RSQ SlowMo**: the beat after a shove, and the F.E.A.R. window.
 - **RSQ Score**: the Headlock combo, the F.E.A.R. Effect award, returned missiles.
 - **RSQ Tactical Rig**: the Headlock waits while your off hand is in a holster.

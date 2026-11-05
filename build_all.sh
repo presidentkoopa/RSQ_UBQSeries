@@ -100,11 +100,7 @@ rm -f "$OUT/RSQ_GunCards.pk3"
 zip -q -r -X "$OUT/RSQ_GunCards.pk3" zscript.txt MAPINFO.txt CVARINFO.txt KEYCONF.txt MENUDEF.txt MODELDEF.txt TEXTURES.txt VOXELDEF.txt CREDITS.txt README.md zscript models sprites graphics voxels
 echo "built pk3/RSQ_GunCards.pk3"
 
-# Gestures: what the hands are doing (inspect, thrust, both hands) for any series mod that asks; tools/ stays out.
-cd "$HUB/Gestures"
-rm -f "$OUT/RSQ_Gestures.pk3"
-zip -q -r -X "$OUT/RSQ_Gestures.pk3" zscript.txt MAPINFO.txt CVARINFO.txt KEYCONF.txt MENUDEF.txt CREDITS.txt README.md zscript
-echo "built pk3/RSQ_Gestures.pk3"
+# (Gestures: retired 2026-11-05, its gesture reader is in Accessibility now.)
 
 # Grenade: the VR hand grenade (its own on plain Doom; stands down for Brutal Doom VR's); tools/ stays out.
 cd "$HUB/Grenade"

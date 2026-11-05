@@ -6,8 +6,8 @@ identical; regenerate them all after changing it:
     python3 tools/gestcopy/gen_gestcopy.py            every mod in COPIES
     python3 tools/gestcopy/gen_gestcopy.py --check    exit 1 if a written copy differs from what the template makes
 
-The template is itself a copy of Gestures/zscript/rsqg/gestures.zs (RSQG_Handler) and pose.zs (RSQG_Pose). Every run
-also checks every rsqg_* default the template reads against Gestures/CVARINFO.txt (what Gestures really uses when it is
+The template is itself a copy of Accessibility/zscript/rsqg/gestures.zs (RSQG_Handler) and pose.zs (RSQG_Pose). Every run
+also checks every rsqg_* default the template reads against Accessibility/CVARINFO.txt (what Gestures really uses when it is
 loaded; gestures.zs's own fallbacks can differ, e.g. rsqg_inspect_way 0 in code, 2 in CVARINFO), and that each cvar is
 one Gestures reads, so the copies cannot drift from Gestures' numbers unnoticed.
 
@@ -17,14 +17,16 @@ import os, re, sys
 
 HUB = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 TEMPLATE = os.path.join(HUB, 'tools', 'gestcopy', 'gestcopy_template.zs')
-GESTURES = os.path.join(HUB, 'Gestures', 'zscript', 'rsqg', 'gestures.zs')
-CVARINFO = os.path.join(HUB, 'Gestures', 'CVARINFO.txt')
+# The gesture reader lives in RSQ Accessibility since 2026-11-05 (RSQ Gestures folded in, same class and cvar names).
+GESTURES = os.path.join(HUB, 'Accessibility', 'zscript', 'rsqg', 'gestures.zs')
+CVARINFO = os.path.join(HUB, 'Accessibility', 'CVARINFO.txt')
 
 # out file, prefix, mod name, parts, HandSync class, debug cvar
 COPIES = [
     ('GunCards/zscript/rsqgc/gestcopy.zs', 'RSQGC', 'RSQ Gun Cards', {'INSPECT'}, 'RSQGC_HandSync', 'rsqgc_debug_log'),
     ('TacticalRig/zscript/rsqtr/gestcopy.zs', 'RSQTR', 'RSQ Tactical Rig', {'INSPECT'}, 'RSQTR_HandSync', 'rsqtr_messages'),
     ('Melee/zscript/rsqml/gestcopy.zs', 'RSQML', 'RSQ Melee', {'PAIR'}, 'RSQML_HandSync', 'rsqml_debug'),
+    ('Miniboss/zscript/rsqmb/gestcopy.zs', 'RSQMB', 'RSQ Miniboss', {'INSPECT'}, 'RSQMB_HandSync', 'rsqmb_debug'),
 ]
 
 
@@ -73,7 +75,7 @@ def check_numbers():
             print('NOT IN GESTURES CVARINFO: %s' % name); bad += 1
         elif vals != {ci[name]}:
             print('DEFAULT DIFFERS: %s template %s, Gestures CVARINFO %s' % (name, sorted(vals), ci[name])); bad += 1
-    print('%d rsqg_* defaults compared with Gestures/CVARINFO.txt: %s' % (len(tpl), 'all equal' if not bad else '%d differ' % bad))
+    print('%d rsqg_* defaults compared with Accessibility/CVARINFO.txt: %s' % (len(tpl), 'all equal' if not bad else '%d differ' % bad))
     return bad == 0
 
 

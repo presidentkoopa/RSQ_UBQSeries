@@ -1,4 +1,5 @@
+// RSQG_HandSync first (tools/handsync); RSQG_Handler is the gesture reader (was RSQ_Gestures), answering RSQG_Service.
 GameInfo
 {
-	AddEventHandlers = "RSQA_Handler", "RSQA_QoL", "RSQA_MenuMode"
+	AddEventHandlers = "RSQG_HandSync", "RSQA_Handler", "RSQA_QoL", "RSQA_MenuMode", "RSQG_Handler"
 }

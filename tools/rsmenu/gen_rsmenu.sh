@@ -21,7 +21,6 @@ gen RSQGBV GunBonsaiOffhandVR/rsq/zscript/rsmenu.zs
 gen RSQWH  Wheel/zscript/wheel/rsmenu.zs
 gen RSQWP  Whip/zscript/rsqwp/rsmenu.zs
 gen RSQGC  GunCards/zscript/rsqgc/rsmenu.zs
-gen RSQG   Gestures/zscript/rsqg/rsmenu.zs
 gen RSQGN  Grenade/zscript/rsqgn/rsmenu.zs
 gen RSQML  Melee/zscript/rsqml/rsmenu.zs
 gen RSQFF  FlashFlare/zscript/rsqff/rsmenu.zs

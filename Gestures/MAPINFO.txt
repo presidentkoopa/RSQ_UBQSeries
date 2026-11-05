@@ -1,6 +1,0 @@
-// RSQG_Handler measures the hands (only while a mod is asking, or the events are switched on) and
-// answers RSQG_Service.
-GameInfo
-{
-	AddEventHandlers = "RSQG_HandSync", "RSQG_Handler"
-}

@@ -136,7 +136,7 @@ Options → Radiant Silvergun Options → RSQ Gun Cards (one page, then Test and
 
 Runs on its own with any weapon mod.
 
-- **RSQ Gestures:** checking your watch, and Show Cards: Inspect Gesture, use its inspect pose (without it, Inspect Gesture acts as When I Look and the row says so).
+- **RSQ Accessibility (its gesture reader):** checking your watch, and Show Cards: Inspect Gesture, use its inspect pose (without it, Inspect Gesture acts as When I Look and the row says so).
 - **Gun Bonsai with RSQ Gun Bonsai VR:** the watch card can show each gun's level, XP and upgrades.
 - **RSQ Grenade:** its grenade count on the cards, and a cooking grenade's fuse countdown.
 - **RSQ Wheel:** its palette, font and plates can colour the cards. Gun Cards' watch card replaces the Wheel's wrist

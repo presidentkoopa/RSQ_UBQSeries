@@ -5,3 +5,9 @@ version "4.14"
 #include "zscript/rsqa_hand.zs"
 #include "zscript/rsqa_core.zs"
 #include "zscript/rsqa_qol.zs"
+// The series' gesture reader (was RSQ_Gestures until 0.99a; owner 11-05: folded in here, one fewer pk3). Same class
+// names (RSQG_Service, RSQG_Handler...) and cvars (rsqg_*), so every mod that asks RSQG_Service by name finds it here.
+#include "zscript/rsqg/a11y.zs"     // RSQG_A11y: Accessibility's settings, read by name (tools/a11y_template.zs)
+#include "zscript/rsqg/pose.zs"
+#include "zscript/rsqg/handsync.zs" // RSQG_HandSync (tools/handsync)
+#include "zscript/rsqg/gestures.zs"

@@ -31,7 +31,7 @@ ENGINE = r'E:\DOOMWork\QZD17-engine\build\Release'
 OUT_DIR = os.path.join(HUB, 'tools', 'series_check')
 REPORT = os.path.join(OUT_DIR, 'last_report.md')
 
-MODS = ['Accessibility', 'DistanceGrab', 'Gestures', 'Grapple', 'Grenade', 'GunBonsaiOffhandVR', 'GunCards', 'LaserSight',
+MODS = ['Accessibility', 'DistanceGrab', 'Grapple', 'Grenade', 'GunBonsaiOffhandVR', 'GunCards', 'LaserSight',
         'Melee', 'Miniboss', 'QuestSaber', 'Score', 'ShieldSaw', 'SlowMo', 'TacticalRig', 'VisualRewards', 'Wheel', 'Whip']
 SKIP_DIRS = ('test', 'tests', 'tools', 'docs', 'probe', 'evidence', '_old', 'ca.ancilla.bonsai', 'original')
 CMP = r'(?:~==|==|!=)'   # every way a ZScript compares a string: `~==`, `==`, `!=`

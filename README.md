@@ -1,6 +1,6 @@
 # Radiant Silvergun Quest
 
-Twenty VR mods for Doom on stock QuestZDoom 17.3: holsters on your body, a real lightsaber, a simulated bullwhip, a
+Nineteen VR mods for Doom on stock QuestZDoom 17.3: holsters on your body, a real lightsaber, a simulated bullwhip, a
 grenade you pin with your teeth, a world you can slow down, and a dozen more, all built in ZScript alone.
 
 Status: 0.99 — every mod played and confirmed working in the headset; the newest additions are tested on the rig with a
@@ -13,8 +13,7 @@ By presidentkoopa, with ideas and assets from Ermac and the people credited belo
 | | Mod | pk3 | In one line |
 |---|---|---|---|
 | 🎒 | [Tactical Rig](TacticalRig/) | `RSQ_TacticalRig.pk3` | Holsters on your real body, a torso that turns with you, an ammo pouch, Ermac's cigarette. |
-| 🤲 | [Gestures](Gestures/) | `RSQ_Gestures.pk3` | Reads your hands for the other mods: watch check, thrust, shove, both hands together. |
-| ♿ | [Accessibility](Accessibility/) | `RSQ_Accessibility.pk3` | One-handed, seated, left-handed, colour-blind and comfort options for the whole series. |
+| ♿ | [Accessibility](Accessibility/) | `RSQ_Accessibility.pk3` | One-handed, seated, left-handed, colour-blind and comfort options for the whole series, and the gesture reader the other mods ask (watch check, both hands together). |
 | ⚔️ | [Saber](QuestSaber/) | `RSQ_Saber.pk3` | A lightsaber that cuts with your real swing, turns bolts, flies to marked enemies; the Force in your other hand. |
 | 🛡️ | [ShieldSaw](ShieldSaw/) | `RSQ_ShieldSaw.pk3` | Block, bash and grind with a buzzsaw shield, then throw it through your targets and catch it. |
 | 🥊 | [Melee](Melee/) | `RSQ_Melee.pk3` | It knows which punch you threw: jabs, hooks, uppercuts, palm swats, gun-butt shoves, headlocks. |
@@ -75,13 +74,11 @@ Your guns live on your body: six holsters on hips, chest and shoulders, plus spo
 flare and an ammo pouch. Reach, grip, draw. The torso follows your stick turns and real room turns, and recenters
 when you hold both hands to your chest. Throw a gun at a monster, wear a marine torso, smoke Ermac's cigarette.
 
-**[RSQ Gestures](Gestures/README.md)** (RSQ_Gestures.pk3)
-The series' body reader. It watches both controllers and tells the other mods what your hands are doing: the watch
-check, a thrust, a shove, both hands together.
-
 **[RSQ Accessibility](Accessibility/README.md)** (RSQ_Accessibility.pk3)
 One menu that makes the whole series playable your way: one hand, seated, left-handed, colour blind, motion
-sensitive or light sensitive.
+sensitive or light sensitive. It also carries the series' gesture reader (RSQ Gestures until 11-05, folded in): it
+tells the other mods what your hands are doing, the watch check and both hands together. Remove any old
+RSQ_Gestures.pk3 from your folder: loaded beside this Accessibility it gives duplicate class errors.
 
 **[RSQ Saber](QuestSaber/README.md)** (RSQ_Saber.pk3)
 A lightsaber that cuts what your real swing passes through. Turn bolts with the blade, parry them back, cross two

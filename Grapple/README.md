@@ -197,7 +197,7 @@ RSQ Grapple runs alone. It finds the other mods by name, so load order among RSQ
 - **RSQ Score:** Indiana Jones points for gap crossings, plus the hook's stunts for its scoring.
 - **RSQ Miniboss:** a miniboss set to "Can't Be Yanked" is treated as a boss: an anchor.
 - **RSQ VisualRewards:** HP bars show when a monster is hooked or stunned by the hook.
-- **RSQ Gestures** and **RSQ Melee:** no gestures or melee swings are read while you climb, swing or reel.
+- **RSQ Accessibility (its gesture reader)** and **RSQ Melee:** no gestures or melee swings are read while you climb, swing or reel.
 - **RSQ Accessibility:** Steady Hands smooths the aim and the aim dot. Hold to Toggle latches the fire bind.
   Slower Taps lengthens the tap window. One-Handed lets the main controller fire the off hook. Gesture Ease
   widens Grab Reach. The Comfort Vignette reacts to rope speed. Rumble Strength scales the thump.
