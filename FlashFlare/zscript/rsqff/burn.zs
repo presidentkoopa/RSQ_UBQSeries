@@ -179,8 +179,9 @@ class RSQFF_HeldLight : RSQFF_Burner
 	States { Spawn: TNT1 A -1; Stop; }
 }
 
-// THROWN, DROPPED, LYING. The flight is RSQ Grenade's (the owner's RS_Grenade numbers, a little lighter: a flare is no
-// grenade): a projectile that bounces off floors, walls and monsters, tumbles end over end, then lies down and slides to a
+// THROWN, DROPPED, LYING. The flight is RSQ Grenade's (thrown.zs, the owner's RS_Grenade numbers; 11-05 05:14 "needs to
+// throw like grenade does"): its gravity 0.27 and its lazy tumble (3.5 degrees a tic, the second axis 0.43 of it); the
+// bounces stay a flare's, lighter. A projectile that bounces off floors, walls and monsters, then lies down and slides to a
 // stop, still burning. It hurts nothing. Burnt out, it lies dark for HUSK seconds (10, fixed) and goes.
 class RSQFF_Flare : RSQFF_Burner
 {
@@ -198,7 +199,7 @@ class RSQFF_Flare : RSQFF_Burner
 		Mass 5;
 		Speed 10;
 		Damage 0;
-		Gravity 0.3;
+		Gravity 0.27;
 		+MOVEWITHSECTOR;
 		BounceType "Doom";
 		BounceFactor 0.35;
@@ -235,7 +236,8 @@ class RSQFF_Flare : RSQFF_Burner
 		if (bMissile && (!bBOUNCEONWALLS || (grounded && abs(vel.z) < 0.6))) bMissile = false;
 		if (!grounded)
 		{
-			pitch += 9;     // end over end
+			pitch += 3.5;           // RSQ Grenade thrown.zs: about one lazy turn per two seconds
+			roll += 3.5 * 0.43;
 		}
 		else
 		{

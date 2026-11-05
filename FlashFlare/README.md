@@ -19,8 +19,8 @@ main hand still has its gun. Flick the flare hand sharply down, the way you stri
 a burst of sparks, sputters for a moment, then settles into a flickering red-orange burn that lights the
 room around you. The light sits on the burning end you see in your hand and follows it as you move.
 
-Swing your arm and press, and the flare leaves your hand at your arm's own speed and direction. It tumbles end over
-end, bounces off the floor and walls, slides to a stop, and lies there burning. Light a corridor ahead of you, toss
+Throw it the way you throw an RSQ Grenade: hold the off-hand trigger, swing, and let go. The flare leaves your hand
+at your arm's own speed and direction, with the grenade's arc. It tumbles, bounces off the floor and walls, slides to a stop, and lies there burning. Light a corridor ahead of you, toss
 one into a dark room before you go in, or leave a trail behind you.
 
 All of it is ZScript on a stock engine: the pocket hangs on your body, the strike is read from your hand's motion,
@@ -34,6 +34,7 @@ and the throw is measured against your body, so walking and turning never count 
 - A sputter on the strike, then a flickering burn: the light's size and colour shift a little every few tics.
 - Burns 60 seconds by default, in your hand or on the floor, and dies away over its last two seconds.
 - Burnt out in your hand, the spent flare drops. A spent flare lies dark for 10 seconds, then is gone.
+- Thrown like RSQ Grenade: hold the off-hand trigger, swing, let go. Let go with the hand still and it stays in your hand.
 - Thrown flares bounce off floors, walls and monsters, then lie burning. They hurt nothing.
 - Drop one at your feet: grip with the hand still.
 - Unlit flares go back in the pocket by hand. Anything else that takes the off hand (another weapon, death, a new
@@ -75,7 +76,7 @@ and the throw is measured against your body, so walking and turning never count 
    reach; if nothing happens, move a little and grip again, or move the pocket under Test and Debug.
    The flashlight is the mirror: your off hand on its own side of your chest, grip, and it comes out on.
 3. Flick the flare hand down hard. Too gentle? Pull the off-hand trigger instead, or lower Strike Speed Down.
-4. Hold it up and walk. Then swing and grip to throw it ahead of you.
+4. Hold it up and walk. To throw it, hold the off-hand trigger, swing, and let go mid-swing, as with RSQ Grenade.
 5. Out of flares, the game tells you "No flares left". Look for boxes beside the map's items.
 
 ## Controls
@@ -86,7 +87,7 @@ and the throw is measured against your body, so walking and turning never count 
 | Put it back | Off hand at the pocket with an unlit flare, grip | |
 | Strike it | Flick the flare hand down at 1.4 m/s or more | With Light It By on Strike or Strike or Trigger |
 | Light by trigger | Off-hand trigger | With Light It By on Trigger or Strike or Trigger |
-| Throw | Swing the off hand faster than 2 m/s and grip or pull the off-hand trigger, or let go of a grip you were holding | Leaves at 1.25x your hand's speed, with a little arc and your walking speed added. A fast move mostly down (a reach to the hip) never throws |
+| Throw | Hold the off-hand trigger, swing, and let go while the hand moves faster than 2 m/s (RSQ Grenade's throw). A grip let go mid-swing, or a grip while swinging, throws too | Leaves at your hand's own speed (Throw Strength 1.0), with the grenade's arc (0.35) and your walking speed added. Let go of the trigger with the hand still: it stays in your hand. A grip with a fast move mostly down (a reach to the hip) never throws |
 | Drop | Grip with the hand still, away from the pocket and the Tactical Rig's holsters | Lies at your feet, burning. A lit flare is never put away: at the pocket or a holster the grip leaves it in your hand |
 | Take the flashlight | Off hand at the clip (your off hand's side of your chest), grip | Clip: 0.10 m forward, 0.17 m toward your off hand, 0.22 m under your eyes; reach 0.12 m. Comes out on |
 | Flashlight on / off | The flashlight hand's trigger | A click |
@@ -132,7 +133,7 @@ here is a Gun Bonsai VR upgrade.
 | Reset All | | Every setting on both pages back to default |
 
 **Test and Debug**: Light Radius (140; the old Quest preset, PCVR was 220), Most Lit at Once (3; PCVR 6), Flicker Step (4
-tics; PCVR 3); Strike Speed (1.4 m/s), Throw Speed (2.0 m/s), Throw Strength (1.25), Arc (0.25), Off Grip Keys (443 436);
+tics; PCVR 3); Strike Speed (1.4 m/s), Throw Speed (2.0 m/s), Throw Strength (1.0), Arc (0.35), Off Grip Keys (443 436);
 Pocket Forward / Toward Main Hand / Height / Reach (0.12 / 0.15 / -0.28 / 0.11 m); Flashlight Clip Forward / Toward Off
 Hand / Height / Reach (0.10 / 0.17 / -0.22 / 0.12 m); Debug Log (Off); Reset All.
 

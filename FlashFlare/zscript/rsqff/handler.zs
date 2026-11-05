@@ -7,9 +7,12 @@
 //      pull that hand's trigger (rsqff_light_by: Strike / Trigger / Strike or Trigger). It catches with a burst of sparks,
 //      sputters for about two-thirds of a second, then burns.
 //   3. HOLD it up to light the way. Its light follows the burning end you see.
-//   4. THROW: grip (or pull the trigger) while swinging the arm faster than rsqff_swing (2 m/s): it leaves at the hand's own
-//      speed and direction, measured against your body (walking and turning are no swing; RSQ Grenade's measure), tumbles,
-//      bounces and lies burning. Grip with the hand still (away from the pocket): you DROP it at your feet, burning.
+//   4. THROW, AS RSQ GRENADE THROWS (owner 11-05 05:14: "still cannot throw flare, needs to throw like grenade does"):
+//      the flare hand's TRIGGER is your hold on it. Squeeze it (the squeeze that lit it counts), swing, and LET GO while
+//      the hand moves faster than rsqff_swing (2 m/s): it leaves at the hand's own speed and direction (RSQ Grenade
+//      hand.zs's release, measure and launch, copied here), tumbles, bounces and lies burning. Let go with the hand still:
+//      it stays in your hand. A grip let go mid-swing, or a grip while swinging, throws too; a grip with the hand still
+//      (away from the pocket) DROPS it at your feet, burning.
 //   5. It burns rsqff_burn seconds (60) in the hand or on the floor, then dies away; burnt out in the hand, the hand lets
 //      the spent flare fall.
 // Put away any other way (another mod or key takes the off hand, death, a new level): an unlit flare goes back in the
@@ -42,6 +45,7 @@ class RSQFF_Handler : EventHandler
 	int takeWant[MAXPLAYERS];         // a take asked for while the engine steadies the gun (level.maptime + 1), done when it lets go
 	bool gripDown[MAXPLAYERS];
 	int trigKeyTic[MAXPLAYERS];       // when a key bound to +oh_attack last went down with a flare out (InputProcess)
+	bool trigKeyHeld[MAXPLAYERS];     // ...and whether it is still down (its key-up sent too: the grenade's release needs it)
 	Vector3 throwAt[MAXPLAYERS], throwVel[MAXPLAYERS];
 	Array<RSQFF_Burner> lit;          // every burning flare, oldest first (the light budget)
 	int lightsPeak;
@@ -61,6 +65,7 @@ class RSQFF_Handler : EventHandler
 	private ui Array<int> keysOff;
 	private ui String keysFrom;
 	private ui bool keyState;
+	private ui bool trigKeyState;     // the +oh_attack key as this machine last sent it
 
 	static RSQFF_Handler Get() { return RSQFF_Handler(EventHandler.Find("RSQFF_Handler")); }
 
@@ -86,10 +91,19 @@ class RSQFF_Handler : EventHandler
 		if (e.Type != InputEvent.Type_KeyDown && e.Type != InputEvent.Type_KeyUp) return false;
 		// THE OFF-HAND TRIGGER AS A KEY TOO (torch.zs's way, 11-05): BD22 VR's own off hand can clear it from the command,
 		// and a tap shorter than a tic never reaches it, so the key going down counts as well (a flare out only)
-		if (e.Type == InputEvent.Type_KeyDown && consoleplayer >= 0 && consoleplayer < MAXPLAYERS && phase[consoleplayer] != PH_NONE)
+		// 11-05 05:14: its key-UP is sent as well, so letting go of the trigger is seen even when the command never held it
+		if (consoleplayer >= 0 && consoleplayer < MAXPLAYERS)
 		{
-			String b = Bindings.GetBinding(e.KeyScan);
-			if (b.MakeLower().IndexOf("+oh_attack") >= 0) EventHandler.SendNetworkEvent("rsqff_tkey");
+			bool kd = e.Type == InputEvent.Type_KeyDown;
+			if ((kd && phase[consoleplayer] != PH_NONE) || (!kd && trigKeyState))
+			{
+				String b = Bindings.GetBinding(e.KeyScan);
+				if (b.MakeLower().IndexOf("+oh_attack") >= 0)
+				{
+					trigKeyState = kd;
+					EventHandler.SendNetworkEvent("rsqff_tkey", kd ? 1 : 0);
+				}
+			}
 		}
 		let me = players[consoleplayer];
 		let cv = CVar.GetCVar("rsqff_keys_off", me);
@@ -110,6 +124,12 @@ class RSQFF_Handler : EventHandler
 		return false;
 	}
 
+	// a menu opened with the trigger key down never sees its key-up: let it go here, so the hold is never stuck
+	override void UiTick()
+	{
+		if (trigKeyState && menuactive != Menu.Off) { trigKeyState = false; EventHandler.SendNetworkEvent("rsqff_tkey", 0); }
+	}
+
 	// ================================================================ events (every machine)
 	override void NetworkProcess(ConsoleEvent e)
 	{
@@ -118,7 +138,7 @@ class RSQFF_Handler : EventHandler
 		let pmo = players[n].mo;
 		if (!pmo) return;
 		if (e.Name == "rsqff_grip") { gripDown[n] = e.Args[0] != 0; return; }
-		if (e.Name == "rsqff_tkey") { trigKeyTic[n] = level.maptime; return; }
+		if (e.Name == "rsqff_tkey") { trigKeyHeld[n] = e.Args[0] != 0; if (trigKeyHeld[n]) trigKeyTic[n] = level.maptime; return; }
 		if (e.Name == "rsqff_take") { takeWant[n] = level.maptime + 1; return; }
 		if (e.Name == "rsqff_back") { Back(pmo, n, true); return; }
 		if (e.Name == "rsqff_light") { Light(pmo, n, e.Args[0]); return; }
@@ -182,6 +202,18 @@ class RSQFF_Handler : EventHandler
 		phase[n] = PH_NONE;
 		let c = carrier[n];
 		carrier[n] = null;
+		// RSQ Grenade hand.zs Throw: a hand never further than an arm's length, and a hand through a wall leaves from where
+		// the wall stops it (a missile ignores the player who threw it, so starting inside the player is fine)
+		Vector3 mid = pmo.Pos + (0, 0, pmo.Height * 0.6);
+		if ((at - mid).Length() > 96) at = mid;
+		Vector3 dv = at - mid;
+		double dl = dv.Length();
+		if (dl > 0.5)
+		{
+			FLineTraceData tr;
+			pmo.LineTrace(VectorAngle(dv.x, dv.y), dl, -atan2(dv.z, dv.xy.Length()), TRF_THRUACTORS, mid.z - pmo.pos.z, 0, 0, tr);
+			if (tr.HitType != TRACE_HitNone && tr.Distance < dl) at = mid + dv / dl * max(0, tr.Distance - 4);
+		}
 		let f = RSQFF_Flare(Actor.Spawn("RSQFF_Flare", at, NO_REPLACE));
 		if (f)
 		{
@@ -340,12 +372,14 @@ class RSQFF_Handler : EventHandler
 		bool gripUp = !grip && gripPrev;
 		gripPrev = grip;
 		// the command's button OR the original command's (BD22 VR's off hand can clear it from cmd), or the key itself
-		bool trig = ((p.cmd.buttons | p.original_cmd.buttons) & BT_OFFHANDATTACK) != 0;
+		bool cmdTrig = ((p.cmd.buttons | p.original_cmd.buttons) & BT_OFFHANDATTACK) != 0;
+		bool trig = cmdTrig || trigKeyHeld[n];
 		bool trigEdge = trig && !trigPrev;
+		bool trigUp = !trig && trigPrev;      // RSQ Grenade hand.zs:648: the hold let go
 		trigPrev = trig;
 		bool tkey = trigKeyTic[n] != trigKeySeen && trigKeyTic[n] >= level.maptime - 1;
 		trigKeySeen = trigKeyTic[n];
-		if (tkey && !trigEdge && trig) tkey = false;      // the command already holds it: the same press
+		if (tkey && !trigEdge && trigPrev) tkey = false;  // the command or the key already held it: the same press
 		trigEdge = trigEdge || tkey;
 		if (!RSQFF_Geo.InVR(pmo) || pmo.health <= 0) return;
 		if (level.maptime < waitUntil) return;
@@ -412,19 +446,36 @@ class RSQFF_Handler : EventHandler
 		}
 		strikeAt = 0;
 
-		// LIT: a press while swinging throws; a grip with the hand still drops it. Also (11-05, owner: "I need to be able to
-		// throw the flare; right now it seems like I can only drop it") LETTING GO of a held grip while swinging throws, as a
-		// thrown thing leaves a hand in every VR game: a grip held through the swing never had a press to throw on, and the
-		// press after it came with the hand already still, a drop. A grip let go slowly does nothing (the flare stays).
-		// A LIT FLARE IS NEVER HOLSTERED (owner 11-05: "A lit flare should not be holstered"): at the chest pocket or in any of
-		// RSQ Tactical Rig's places (its flare holster, a gun holster, ...) a press or a let-go with the hand still, or a fast
-		// reach mostly DOWN into it, leaves the flare in the hand (a short buzz); it only leaves by a throw, a drop away from
-		// them, burning out, or something else taking the hand (death, a new level, another off-hand weapon: it falls burning).
-		bool released = gripUp && ms >= clamp(PNum(p, "rsqff_swing", 2.0), 0.5, 8.0);
-		if (!gripEdge && !trigEdge && !released) return;
+		// LIT. THE THROW IS RSQ GRENADE'S (hand.zs:709-727; owner 11-05 05:14: "still cannot throw flare, needs to throw like
+		// grenade does"). The cause it fixes: until now only a trigger PRESS while swinging threw (and a grip); the press
+		// comes as the swing starts, with the hand still slow, so it was "no throw", and the LET-GO a grenade throws on was
+		// never read at all. Now, as the grenade: the flare hand's trigger is your hold on it; let go of it while the hand
+		// moves at rsqff_swing or more and it is thrown at the swing's speed and direction (the fastest 2-tic window of the
+		// last 7 tics, measured against the body: Sample / Peak below), with the grenade's launch (LaunchVel); let go with
+		// the hand still and it stays in your hand (the grenade cooks there; a flare is already burning). A trigger press
+		// does nothing more (the grenade's squeeze). This path asks nothing of the pocket or the Tactical Rig: a let-go
+		// trigger is a throw wherever the hand is, as the grenade's is.
 		double need = clamp(PNum(p, "rsqff_swing", 2.0), 0.5, 8.0);
 		Vector3 at = RSQFF_Geo.Tip(pmo) - RSQFF_Geo.Axis(pmo) * 4.0;
-		// a fast move mostly DOWN is a reach to the hip, never a throw, wherever it ends (rig 11-05: the rig's place is
+		if (trigUp)
+		{
+			if (dbg) Console.Printf("RSQFF release t%d: swing %.2f m/s (throws from %.2f)", level.maptime, ms, need);
+			if (ms >= need)
+			{
+				SendThrow(at, LaunchVel(pmo, v), ms);
+				Wait(6);
+			}
+			return;
+		}
+		// THE GRIP, as before (11-05 00:43, "I can only drop it"): a grip let go while swinging, or a grip pressed while
+		// swinging, throws the same way; a grip with the hand still drops it at your feet, away from the pocket.
+		// A LIT FLARE IS NEVER HOLSTERED (owner 11-05: "A lit flare should not be holstered"): at the chest pocket or in any of
+		// RSQ Tactical Rig's places a grip with the hand still, or a fast reach mostly DOWN into it, leaves the flare in the
+		// hand (a short buzz); it only leaves by a throw, a drop away from them, burning out, or something else taking the
+		// hand (death, a new level, another off-hand weapon: it falls burning).
+		bool released = gripUp && ms >= need;
+		if (!gripEdge && !released) return;
+		// a fast move mostly DOWN is a reach to the hip, never a grip throw, wherever it ends (rig 11-05: the rig's place is
 		// known a tic after the hand arrives, so a 5.3 m/s reach into the flare holster was thrown at the floor)
 		double downMs = -v.z * RSQFF_Geo.Ps(pmo) / RSQFF_Geo.Vu() * TICRATE;
 		if ((nearPocket || inRig) || (ms >= need && downMs >= 0.75 * ms))
@@ -439,19 +490,26 @@ class RSQFF_Handler : EventHandler
 		}
 		if (ms >= need)
 		{
-			Vector3 tv = v * clamp(PNum(p, "rsqff_throw", 1.25), 0.2, 4.0);
-			tv.z += tv.xy.Length() * clamp(PNum(p, "rsqff_lift", 0.25), 0.0, 1.5);
-			tv += pmo.vel;
-			SendThrow(at, tv, ms);
+			SendThrow(at, LaunchVel(pmo, v), ms);
 			Wait(6);
-			if (dbg) Console.Printf("RSQFF throw t%d: %.2f m/s on the %s", level.maptime, ms, released ? "grip let go" : (gripEdge ? "grip" : "trigger"));
+			if (dbg) Console.Printf("RSQFF throw t%d: %.2f m/s on the %s", level.maptime, ms, released ? "grip let go" : "grip");
 		}
 		else if (gripEdge && !atPocket)
 		{
 			SendThrow(at, pmo.vel + v * 0.5, 0);
 			Wait(6);
 		}
-		else if (dbg) Console.Printf("RSQFF press t%d: %.2f m/s, no throw (needs %.2f)", level.maptime, ms, need);
+	}
+
+	// WHAT LEAVES THE HAND for a hand velocity v (map units a tic): RSQ Grenade hand.zs LaunchVel (RS_Grenade's flight),
+	// without its Gun Bonsai VR nodes: the hand's own velocity times Throw Strength, a lift of Arc times its speed across
+	// the ground (a hard throw arcs more than a gentle one), and the run you were in carried on with it.
+	static Vector3 LaunchVel(PlayerPawn pmo, Vector3 v)
+	{
+		let p = pmo.player;
+		Vector3 tv = v * clamp(PNum(p, "rsqff_throw", 1.0), 0.2, 4.0);
+		tv.z += tv.xy.Length() * clamp(PNum(p, "rsqff_lift", 0.35), 0.0, 1.5);
+		return tv + pmo.vel;
 	}
 
 	private void Send(String nm, int a = 0) { EventHandler.SendNetworkEvent(nm, a); }
@@ -602,7 +660,9 @@ class RSQFF_Handler : EventHandler
 	// SETTINGS VERSION (rsqff_cfgver, the series' way: RSQ Tactical Rig's rsqtr_cfgver, the Wheel's wr_cfgver). A saved
 	// setting outlives a new default, so one still at its OLD default is moved to the new one, once.
 	//   1 (owner 11-03 20:26: "start with 2"): Start With 4 -> 2.
-	const CFG_VERSION = 1;
+	//   2 (owner 11-05 05:14: "needs to throw like grenade does"): RSQ Grenade's throw numbers, Throw Strength 1.25 -> 1.0,
+	//     Arc 0.25 -> 0.35.
+	const CFG_VERSION = 2;
 	private transient bool migrated;
 	private void Migrate()
 	{
@@ -614,6 +674,13 @@ class RSQFF_Handler : EventHandler
 		{
 			let st = CVar.FindCVar("rsqff_start");
 			if (st && st.GetInt() == 4) st.SetInt(2);
+		}
+		if (ver.GetInt() < 2)
+		{
+			let th = CVar.FindCVar("rsqff_throw");
+			if (th && abs(th.GetFloat() - 1.25) < 0.001) th.SetFloat(1.0);
+			let li = CVar.FindCVar("rsqff_lift");
+			if (li && abs(li.GetFloat() - 0.25) < 0.001) li.SetFloat(0.35);
 		}
 		ver.SetInt(CFG_VERSION);
 	}
