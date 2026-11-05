@@ -1,6 +1,6 @@
 # Radiant Silvergun
 
-Nineteen VR mods for Doom on stock QuestZDoom 17.3: holsters on your body, a real lightsaber, a simulated bullwhip, a
+Nineteen VR mods for Doom on stock QuestZDoom 17.3 PCVR or Mobile: holsters on your body, a real lightsaber, a simulated bullwhip, a
 grenade you pin with your teeth, a world you can slow down, and a dozen more, all built in ZScript alone.
 
 Status: 0.99 — every mod played and confirmed working in the headset; the newest additions are tested on the rig with a
