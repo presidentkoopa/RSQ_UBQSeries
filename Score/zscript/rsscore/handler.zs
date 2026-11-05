@@ -775,7 +775,22 @@ class RS_ScoreHandler : EventHandler
 			int pn = who.PlayerNumber();
 			int k = KillIndex(LastKill(pn));
 			if (k >= 0 && kTic[k] == level.maptime) points = max(1, int(round(kBase[k] * mult)));
+			// MINIBOSS AND GREEDY COME BEFORE THEIR KILL IS RECORDED (owner 11-05): RSQ Miniboss pays them as the
+			// miniboss dies, before Score's WorldThingDied records that kill, so there was no base yet and they paid
+			// a flat 500 / 1000 on any monster. They wait now for the kill this tic (RecordKill: that kill's base
+			// times 1.0 / 1.5, like every other award); with no kill recorded by the next tic, the flat points.
+			else if (label ~== "Miniboss" || label ~== "Greedy")
+			{
+				pendWho.Push(who); pendLabel.Push(label); pendMult.Push(mult); pendFlat.Push(points); pendTic.Push(level.maptime);
+				return points;
+			}
 		}
+		return PayLabel(who, label, points);
+	}
+
+	// an award's points onto its row (the Base row for an unknown label) and into the score
+	private int PayLabel(Actor who, String label, int points)
+	{
 		let tr = GetTracker(who);
 		if (!tr) return -1;
 		EnsureRows(tr);
@@ -783,7 +798,31 @@ class RS_ScoreHandler : EventHandler
 		for (int k = 1; k < rowName.Size(); k++) if (rowName[k] ~== label) { row = k; break; }
 		AddRowAt(tr, row, points);
 		Pay(tr, points);
+		if (DebugOn()) Console.Printf("RS_Score: award %s paid %d", label, points);
 		return points;
+	}
+
+	// awards waiting for their kill (Miniboss, Greedy: AwardExternal)
+	Array<Actor> pendWho;
+	Array<String> pendLabel;
+	Array<double> pendMult;
+	Array<int> pendFlat, pendTic;
+
+	// a kill recorded: the awards waiting for it this tic are paid on its base. Called with pn -1 (WorldTick): the ones
+	// left from an earlier tic, whose kill never came, are paid their flat points.
+	private void SettleAwards(int pn, int base)
+	{
+		for (int i = pendWho.Size() - 1; i >= 0; i--)
+		{
+			Actor who = pendWho[i];
+			bool mine = pn >= 0 && who && who.player && who.PlayerNumber() == pn && pendTic[i] == level.maptime;
+			bool stale = pn < 0 && pendTic[i] < level.maptime;
+			if (!mine && !stale) continue;
+			int points = mine ? max(1, int(round(base * pendMult[i]))) : pendFlat[i];
+			String label = pendLabel[i];
+			pendWho.Delete(i); pendLabel.Delete(i); pendMult.Delete(i); pendFlat.Delete(i); pendTic.Delete(i);
+			if (who && who.player) PayLabel(who, label, points);
+		}
 	}
 
 	// A bonus's pay onto its row (or rows: a bonus with several splits what it paid by its shares for
@@ -926,6 +965,7 @@ class RS_ScoreHandler : EventHandler
 
 	override void WorldTick()
 	{
+		if (pendWho.Size() > 0) SettleAwards(-1, 0);
 		for (int i = 0; i < MAXPLAYERS; i++)
 		{
 			if (!playeringame[i] || !players[i].mo) { continue; }
@@ -1138,6 +1178,7 @@ class RS_ScoreHandler : EventHandler
 		if (kSerial.Size() >= 16) { kSerial.Delete(0); kPn.Delete(0); kBase.Delete(0); kStyle.Delete(0); kChain.Delete(0); kVictim.Delete(0); kBig.Delete(0); kTic.Delete(0); }
 		kSerial.Push(killSerial); kPn.Push(ev.killerNum); kBase.Push(ev.basePoints); kStyle.Push(max(0, total - ev.basePoints)); kChain.Push(c); kVictim.Push(ev.victim); kBig.Push(0); kTic.Push(level.maptime);
 		if (DebugOn()) Console.Printf("RS_Score: kill #%d p%d base %d style %d chain %s", killSerial, ev.killerNum, ev.basePoints, max(0, total - ev.basePoints), c);
+		if (pendWho.Size() > 0) SettleAwards(ev.killerNum, ev.basePoints);
 	}
 
 	// the newest kill serial of player pn (0: none this map)
