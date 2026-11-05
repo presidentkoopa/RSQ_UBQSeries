@@ -176,7 +176,7 @@ Reset All still resets them.
   order matters. Gun Bonsai itself is not modified.
 - **RSQ Melee**: the Fists tree, Lunge, Executioner and Adrenaline on the gloves, and the Guard and Taunt nodes. The
   Guard branch also opens if Melee's Start With Guard is on.
-- **RSQ Gestures**: Ground Pound, Clear Out, Taunt and Absorb and Release are done through its two-hand gestures.
+- **RSQ Accessibility (its gesture reader)**: Ground Pound, Clear Out, Taunt and Absorb and Release are done through its two-hand gestures.
 - **RSQ QuestSaber**: the saber and Force trees. The second saber, the second blade and the Force become things you
   learn.
 - **RSQ ShieldSaw**: its tree, and the optional shoulder gauge.
@@ -184,7 +184,7 @@ Reset All still resets them.
 - **RSQ Grapple**: its player tree. The hook starts locked and opens when you learn Grapple. Its XP goes to your
   player level.
 - **RSQ Distance Grab**: throws, and the blasts they set off, pay your player level instead of a gun.
-- **RSQ Tactical Rig**: the Gunslinger tree (Quick Draw, Pair Draw, Gun Toss, Boomerang Gun, Smoker, Chain Smoker).
+- **RSQ Tactical Rig**: the Gunslinger tree (Quick Draw, Pair Draw, Smoker, Chain Smoker).
   A thrown gun pays its own record. With **RSQ Laser Sight** too: Target Lock and Headshot Reaction.
 - **RSQ SlowMo**: its tree, plus Showdown, Adrenaline, Finisher and the other slow-motion moments.
 - **RSQ Score**: XP Source Style. While a skin is on, Score's own score line is hidden and the skin shows it instead.

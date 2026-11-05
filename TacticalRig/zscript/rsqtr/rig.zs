@@ -1639,6 +1639,15 @@ class RSQTR_Rig : EventHandler
 			if (pr && abs(pr.GetFloat() - 0.045) < 0.001) pr.SetFloat(RSQTR_Region.DR[k]);
 			ver.SetInt(7);
 		}
+		// settings version 8 (owner 11-05 01:53, "switch off weapon throwing and hide the options for it, I'm not happy
+		// with it"): gun throwing goes off, whatever was saved; its rows are out of the menu
+		if (ver && ver.GetInt() < 8)
+		{
+			let th = CVar.FindCVar("rsqtr_throw"), tu = CVar.FindCVar("rsqtr_throw_use");
+			if (th) th.SetBool(false);
+			if (tu) tu.SetBool(false);
+			ver.SetInt(8);
+		}
 	}
 
 	private void SaveEdit(PlayerPawn pmo, PlayerInfo p)
