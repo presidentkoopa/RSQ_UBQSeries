@@ -1,6 +1,5 @@
-// RSQ Miniboss options, modelled on Brutal Doom Quest 2.0's options page (the owner, 10-28): ONE front
-// page of real choices, named; ONE Tuning and Debug page at the end that holds every number. Every
-// cvar keeps its row. CVARINFO.txt says what each does. Preset choices: tools/rsmenu/presets.py.
+// RSQ Miniboss options (owner 11-04 19:36): ONE page of real choices under short headers, ONE Test and Debug
+// page at its foot that holds the numbers. Every cvar keeps its row. CVARINFO.txt says what each does.
 
 // ---- Radiant Silvergun Options (tools/rsmenu) ----------------------------------------------------
 // The series' one Options entry. Every series pk3 carries this same block with its own prefix: the
@@ -24,68 +23,64 @@ AddOptionMenu "RSQ_RSOptions"
 }
 // ----------------------------------------------------------------------------------------------------
 
-// PRESETS -- written by tools/rsmenu/presets.py (Standard = CVARINFO defaults); edit the script, not here
-OptionString "RSQMB_P_Fight"
+OptionValue "RSQMB_Often"
 {
-	"rsqmb_thralls 2 rsqmb_lives 2 rsqmb_shield 50 rsqmb_invuln 3", "Easier"
-	"rsqmb_thralls 3 rsqmb_lives 3 rsqmb_shield 80 rsqmb_invuln 5.0", "Standard"
-	"rsqmb_thralls 5 rsqmb_lives 4 rsqmb_shield 90 rsqmb_invuln 8", "Harder"
+	25, "Rare"
+	50, "Some Maps"
+	100, "Every Map"
 }
-OptionString "RSQMB_P_Often"
-{
-	"rsqmb_map_chance 25", "Rare"
-	"rsqmb_map_chance 50", "Some Maps"
-	"rsqmb_map_chance 100", "Every Map"
-}
-// END PRESETS
 
+// MENU PASS (owner 11-04): one page of On/Off rows under short headers, the numbers on Test and Debug (owner 11-04 19:36: no presets).
+// Reset All (rsmenu ResetAll) resets every cvar a row names on both pages (rsqmb_debug too).
 OptionMenu "RSQMB_Options"
 {
 	Title "RSQ MINIBOSS"
 	Option "Minibosses", "rsqmb_enabled", "OnOff"
-	RSQMBPreset "How Often", "RSQMB_P_Often"
-	RSQMBPreset "Fight", "RSQMB_P_Fight"
-	StaticText " "
-	Option "Legendary Thralls", "rsqmb_legend_thralls", "OnOff"
-	Option "Inherit Powers", "rsqmb_inherit", "OnOff"
-	Option "Revive Thralls", "rsqmb_revive", "OnOff"
-	Option "Greed Rule", "rsqmb_greed", "OnOff"
+	Option "How Often", "rsqmb_map_chance", "RSQMB_Often"
 	Option "Effects", "rsqmb_fx", "OnOff"
+	StaticText " "
+	StaticText "Fight", 1
+	Slider "Thralls", "rsqmb_thralls", 1, 8, 1, 0
+	Slider "Lives", "rsqmb_lives", 1, 9, 1, 0
+	StaticText " "
+	StaticText "Rules", 1
+	Option "Legendary Thralls (LegenDoom)", "rsqmb_legend_thralls", "OnOff"
+	Option "Revive Thralls", "rsqmb_revive", "OnOff"
+	Option "Inherit Powers", "rsqmb_inherit", "OnOff"
+	Option "Greed Enrages Monsters", "rsqmb_greed", "OnOff"
 	Option "Score Awards", "rsqmb_score", "OnOff"
 	StaticText " "
 	StaticText "Counts as a Boss", 1
 	Option "Boss Kill Rewards", "rsqmb_boss_rewards", "OnOff"
-	Option "LegenDoom: Best Health", "rsqmb_boss_ldhealth", "OnOff"
+	Option "Legendary Boss Health", "rsqmb_boss_ldhealth", "OnOff"
 	Option "Can't Be Yanked", "rsqmb_boss_noyank", "OnOff"
 	Option "Can't Be Headlocked", "rsqmb_boss_noheadlock", "OnOff"
-	Option "Map-wide Roar", "rsqmb_boss_roar", "OnOff"
 	Option "Can't Be Morphed", "rsqmb_boss_nomorph", "OnOff"
+	Option "Map-wide Roar", "rsqmb_boss_roar", "OnOff"
 	StaticText " "
-	Submenu "Tuning and Debug", "RSQMB_Tuning"
+	Submenu "Test and Debug", "RSQMB_Test"
+	RSQMBResetAll "Reset All", "Reset all RSQ Miniboss settings?"
 }
 
-OptionMenu "RSQMB_Tuning"
+OptionMenu "RSQMB_Test"
 {
-	Title "TUNING AND DEBUG"
+	Title "RSQ MINIBOSS: TEST AND DEBUG"
+	StaticText "Fight", 1
 	Slider "Per Map", "rsqmb_per_map", 0, 4, 1, 0
 	Slider "Map Chance", "rsqmb_map_chance", 0, 100, 5, 0
-	Slider "Thralls", "rsqmb_thralls", 1, 8, 1, 0
-	Slider "Lives", "rsqmb_lives", 1, 9, 1, 0
-	StaticText " "
 	Slider "Thrall Range", "rsqmb_radius", 256, 4096, 128, 0
 	Slider "Power Cap", "rsqmb_inherit_max", 0, 12, 1, 0
 	Slider "Thrall Shield", "rsqmb_shield", 0, 95, 5, 0
-	Slider "Invulnerable Time", "rsqmb_invuln", 0, 15, 0.5, 1
-	Slider "Per Thrall", "rsqmb_invuln_bonus", 0, 5, 0.5, 1
+	Slider "Invulnerable (s)", "rsqmb_invuln", 0, 15, 0.5, 1
+	Slider "Per Thrall (s)", "rsqmb_invuln_bonus", 0, 5, 0.5, 1
 	StaticText " "
-	Slider "Slow Window", "rsqmb_slow", 1, 10, 0.5, 1
-	Slider "Chain Bonus", "rsqmb_slow_chain", 0, 10, 0.5, 1
-	Slider "Window Cap", "rsqmb_slow_max", 2, 30, 1, 0
+	StaticText "Slow Window", 1
+	Slider "Window (s)", "rsqmb_slow", 1, 10, 0.5, 1
+	Slider "Chain Bonus (s)", "rsqmb_slow_chain", 0, 10, 0.5, 1
+	Slider "Window Cap (s)", "rsqmb_slow_max", 2, 30, 1, 0
 	Slider "Slow Depth", "rsqmb_slow_depth", -1, 90, 5, 0
 	Slider "Rage Speed", "rsqmb_rage_speed", 1, 4, 0.25, 2
 	Slider "Effects Range", "rsqmb_fx_range", 1000, 8000, 250, 0
 	StaticText " "
-	Option "Debug Lines", "rsqmb_debug", "OnOff"
-	StaticText " "
-	SafeCommand "Reset All", "resetcvar rsqmb_enabled rsqmb_per_map rsqmb_map_chance rsqmb_thralls rsqmb_radius rsqmb_legend_thralls rsqmb_inherit rsqmb_inherit_max rsqmb_lives rsqmb_shield rsqmb_invuln rsqmb_invuln_bonus rsqmb_revive rsqmb_slow rsqmb_slow_chain rsqmb_slow_max rsqmb_slow_depth rsqmb_greed rsqmb_rage_speed rsqmb_score rsqmb_fx rsqmb_fx_range rsqmb_boss_rewards rsqmb_boss_ldhealth rsqmb_boss_roar rsqmb_boss_nomorph rsqmb_boss_noyank rsqmb_boss_noheadlock", "Reset all RSQ Miniboss settings?"
+	Option "Debug Log", "rsqmb_debug", "OnOff"
 }

@@ -103,13 +103,6 @@ MODS = {
      'Gentle': {'rsqgr_slide_speed': 6, 'rsqgr_mass_max': 400},
      'Strong': {'rsqgr_slide_speed': 18, 'rsqgr_mass_max': 2000}}),
  ]),
- 'Miniboss': ('MENUDEF.txt', 'CVARINFO.txt', [
-  ('RSQMB_P_Fight', ['Easier', 'Standard', 'Harder'], {
-     'Easier': {'rsqmb_thralls': 2, 'rsqmb_lives': 2, 'rsqmb_shield': 50, 'rsqmb_invuln': 3},
-     'Harder': {'rsqmb_thralls': 5, 'rsqmb_lives': 4, 'rsqmb_shield': 90, 'rsqmb_invuln': 8}}),
-  ('RSQMB_P_Often', ['Rare', 'Some Maps', 'Every Map'], {
-     'Rare': {'rsqmb_map_chance': 25}, 'Some Maps': {'rsqmb_map_chance': 50}}),
- ]),
  'Score': ('MENUDEF.txt', 'CVARINFO.txt', [
   ('RSQSC_P_Size', ['Small', 'Standard', 'Large'], {
      'Small': {'rs_score_scale': 75}, 'Large': {'rs_score_scale': 150}}),
@@ -117,14 +110,10 @@ MODS = {
      'Top Left': {'rs_score_x': 15, 'rs_score_y': 10}, 'Top Centre': {'rs_score_x': 50, 'rs_score_y': 10},
      'Bottom Right': {'rs_score_x': 85, 'rs_score_y': 80}}),
  ]),
- 'VisualRewards/pk3': ('MENUDEF.txt', 'CVARINFO.txt', [
-  ('RSQTHP_P_Size', ['Small', 'Standard', 'Large'], {
-     'Small': {'rsqthp_scale': 0.15}, 'Large': {'rsqthp_scale': 0.5}}),
- ]),
 }
 
-# A label with no entry in its preset's choices is the defaults ("Standard", or Score's "Top Right",
-# Miniboss's "Every Map").
+# A label with no entry in its preset's choices is the defaults ("Standard", or Score's "Top Right").
+# (Miniboss and VisualRewards dropped their presets in the menu pass, owner 11-04 19:36: no presets.)
 
 def fmt(v):
     if isinstance(v, float):

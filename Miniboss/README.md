@@ -37,7 +37,7 @@ You choose: clear the crew the safe way, or go for the throat and live with the 
 - **Lives**: 3 by default. Each lost life gives 5 seconds of invulnerability plus 1 second per living thrall.
 - **Revive Thralls**: dead thralls rise when that invulnerability ends.
 - **Slow window**: 4 seconds per thrall kill, +3 seconds for each chained kill, up to 12 seconds.
-- **Greed Rule**: struck while thralls live, then the window ends with a thrall still up: map-wide rage until the
+- **Greed Enrages Monsters**: struck while thralls live, then the window ends with a thrall still up: map-wide rage until the
   miniboss dies. Everything enraged is put back exactly as it was afterwards.
 - **Effects**: thrall links, life orbs (the last one burns red), the invulnerability ring, shatter lines when a thrall
   dies, red sparks over enraged monsters. All engine particles, drawn only within 4000 units of you.
@@ -47,12 +47,12 @@ You choose: clear the crew the safe way, or go for the throat and live with the 
 - **Boss Kill Rewards**: RSQ VisualRewards' Kill Rewards treat it as a boss kill.
 - **Can't Be Yanked**: RSQ Grapple and RSQ Whip pull you to it instead of yanking it.
 - **Can't Be Headlocked**: RSQ Melee's headlock refuses it.
-- **LegenDoom: Best Health**: made legendary here, it gets the higher of LegenDoom Lite's boss and normal legendary health.
+- **Legendary Boss Health**: made legendary here, it gets the higher of LegenDoom's (Lite 4.2 or 3.0) boss and normal legendary health (none when LegenDoom 3.0's Legendary Monsters is Disabled).
 - **Map-wide Roar** (optional, off by default): its sight and death sounds carry across the map.
 - **Can't Be Morphed** (optional, off by default).
 
 **With other monster mods**
-- **LegenDoom Lite**: every thrall is made legendary, and a legendary thrall makes the miniboss legendary too.
+- **LegenDoom Lite or LegenDoom 3.0**: every thrall is made legendary, and a legendary thrall makes the miniboss legendary too. With LegenDoom 3.0 and the LDL x BD22 VR patch, the legendary miniboss drops a BD22 VR gun.
 - **Champions**: champion thralls are picked first, and the miniboss inherits their powers, up to 4. Yellow, White, Dark
   Green, Cyan and Titan powers pass on as they are; Dark Red and Undying add a life each (up to +2); Black adds 50% damage;
   any other colour or mutation makes it 50% tougher (up to x2).
@@ -88,23 +88,27 @@ RSQ Miniboss adds no buttons. You fight it with whatever you play with.
 | Minibosses | On | Minibosses appear at all. |
 | How Often | Every Map | Rare (25%), Some Maps (50%), Every Map (100%). |
 | Fight | Standard | Easier, Standard, Harder: thralls, lives, shield and invulnerability together. |
-| Legendary Thralls | On | With LegenDoom Lite, every thrall is made legendary. |
-| Inherit Powers | On | The miniboss inherits its thralls' powers. |
-| Revive Thralls | On | Dead thralls rise when its invulnerability ends. |
-| Greed Rule | On | The greed rule. |
 | Effects | On | Links, orbs, ring and sparks. Per player. |
+| *Thralls* | | |
+| Legendary Thralls (LegenDoom) | On | With LegenDoom (Lite or 3.0), every thrall is made legendary. |
+| Revive Thralls | On | Dead thralls rise when its invulnerability ends. |
+| Inherit Powers | On | The miniboss inherits its thralls' powers. |
+| Greed Enrages Monsters | On | The greed rule: hit the miniboss while a thrall lives and, if a thrall still stands when the window ends, every monster is enraged. |
 | Score Awards | On | Sends awards to RSQ Score. |
+| *Counts as a Boss* | | |
 | Boss Kill Rewards | On | Counts as a boss for Kill Rewards. |
-| LegenDoom: Best Health | On | Higher of LegenDoom's boss and normal legendary health. |
+| Legendary Boss Health | On | Higher of LegenDoom's boss and normal legendary health. |
 | Can't Be Yanked | On | Grapple and Whip cannot yank it. |
 | Can't Be Headlocked | On | Melee's headlock refuses it. |
-| Map-wide Roar | Off | Sight and death sounds at full volume map-wide. |
 | Can't Be Morphed | Off | Immune to morphing. |
+| Map-wide Roar | Off | Sight and death sounds at full volume map-wide. |
+| Reset All | | Resets every RSQ Miniboss setting (both pages). |
 
 **Tuning and Debug**
 
 | Row | Default | What it does |
 |---|---|---|
+| *Fight* | | |
 | Per Map | 1 | Minibosses per level, 0 to 4. |
 | Map Chance | 100 | % chance a level gets any. |
 | Thralls | 3 | Thralls per miniboss, 1 to 8. |
@@ -112,15 +116,16 @@ RSQ Miniboss adds no buttons. You fight it with whatever you play with.
 | Thrall Range | 1024 | How far from the miniboss a thrall may stand (map units). |
 | Power Cap | 4 | Most distinct powers inherited (legendary not counted). |
 | Thrall Shield | 80 | % of damage shrugged off with every thrall alive. |
-| Invulnerable Time | 5.0 | Seconds invulnerable after a lost life. |
-| Per Thrall | 1.0 | Extra seconds per living thrall. |
-| Slow Window | 4.0 | Seconds of slow time per thrall kill. |
-| Chain Bonus | 3.0 | Extra seconds per chained kill. |
-| Window Cap | 12 | The window's longest, seconds. |
+| Invulnerable (s) | 5.0 | Seconds invulnerable after a lost life. |
+| Per Thrall (s) | 1.0 | Extra seconds per living thrall. |
+| *Slow Window* | | |
+| Window (s) | 4.0 | Seconds of slow time per thrall kill. |
+| Chain Bonus (s) | 3.0 | Extra seconds per chained kill. |
+| Window Cap (s) | 12 | The window's longest, seconds. |
 | Slow Depth | -1 | World speed % in the window; -1 uses RSQ SlowMo's own. |
 | Rage Speed | 2.00 | Enraged monsters' speed multiplier. |
 | Effects Range | 4000 | Effects drawn only within this distance of you. Per player. |
-| Debug Lines | Off | Console lines for every rule as it fires. |
+| Debug Log | Off | Console lines for every rule as it fires. |
 | Reset All | | Resets every RSQ Miniboss setting. |
 
 ## Works with
@@ -134,7 +139,7 @@ RSQ Miniboss adds no buttons. You fight it with whatever you play with.
 - **RSQ Glow In The Dark**: the map's glow takes the miniboss's own colour (its beaded lines' and life orbs') while it lives.
 - **RSQ Grapple, RSQ Whip, RSQ Melee**: refuse to yank or headlock it (switches above).
 - **RSQ ShieldSaw and RSQ Gun Bonsai VR**: read its true legendary health when it was made legendary here.
-- **LegenDoom Lite and Champions**: see Features. Both are optional and found by name.
+- **LegenDoom Lite 4.2, LegenDoom 3.0 and Champions**: see Features. All optional and found by name; with LegenDoom 3.0 under BD22 VR, load the LDL x BD22 VR patch after it (rig only, not headset-confirmed).
 - **Brutal Doom**: works as is. Brutal Doom's gore and props are never enraged.
 
 ## Credits and licence
@@ -147,7 +152,7 @@ RSQ Miniboss adds no buttons. You fight it with whatever you play with.
   presidentkoopa.
 - Code: written for this pack. Effects are engine particles; no sprites or sounds are shipped (the IWAD's own sounds are
   used by name).
-- Recognised by name, not shipped: Champions, LegenDoom Lite, RSQ SlowMo, RSQ Score.
+- Recognised by name, not shipped: Champions, LegenDoom Lite, LegenDoom 3.0, RSQ SlowMo, RSQ Score.
 - QuestZDoom: Emawind and Team Beef.
 
 Free to share as part of the Radiant Silvergun Quest series.
