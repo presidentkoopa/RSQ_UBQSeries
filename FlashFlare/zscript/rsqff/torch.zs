@@ -15,10 +15,17 @@
 // drawn in BD22 VR's off-hand MODELDEF placement (as the flare is), toned by its Hand Skin Tone (model slot 7).
 //
 // BUDGET (FLASHLIGHT_PROPOSAL.md 2: a spot light costs like a point light of its whole range): ONE spot light per flashlight,
-// no shadow map, its range set by Beam Quality (Quest 448, PCVR 640, High 896). The cone and its hotspot are two overlay
-// layers of the flashlight's own model (11-05: drawn with the hand every frame; tools/gen_hudcone.py), unlit, additive, full
-// bright, in the beam's colour; one LineTrace a tic (every 2nd tic on Quest) sets their length. Dust (PCVR, High) is
-// particles, no actors.
+// no shadow map, its range set by Beam Quality (Quest 448, PCVR 640, High 896). The cone is one model, unlit (additive,
+// full bright, drawn AddStencil in the beam's colour); the hotspot one sprite, no light; one LineTrace a tic (every 2nd tic
+// on Quest). Dust (PCVR, High) is particles, no actors.
+// THE CONE IS A WORLD ACTOR, NEVER AN OVERLAY OF THE HAND (owner 11-05 06:02: "the flashlight hides enemy sprites when over
+// them?"): in VR QuestZDoom 17.3 draws the player's HUD models after the opaque scene and before the translucent pass
+// (hw_drawinfo.cpp: DrawPlayerSprites ahead of RenderTranslucent when RenderPlayerSpritesInScene) with depth writes on and
+// their depth squeezed into the near 0.3 (hw_models.cpp BeginDrawHUDModel), and every sprite is drawn in that translucent
+// pass (hw_drawlistadd.cpp AddSprite), so a beam drawn with the hand (11-05 01:15 to 06:02) hid every monster behind it. An
+// AddStencil actor is drawn in the translucent pass itself, sorted, with no depth writes. Its lag (owner 11-05 00:43: "The
+// flashlight cone lags") is met by moving it a tic ahead each tic: the engine draws it between where it was (Prev, set to
+// the lens now) and where it is (one tic on), so it sits on the hand instead of a tic behind.
 //
 // THE OTHER MODS, BY NAME:
 //   RSQ Tactical Rig: the clip hangs on its body ("body.yaw"); while the off hand is in one of its places the grip is the
@@ -34,8 +41,6 @@
 class RSQFF_Torch : Weapon
 {
 	const GLOW = 7312;       // the overlay layer of the glowing lens
-	const CONE_B = 7313;     // the beam's back-facing copy (drawn first), MODELDEF QFZn
-	const CONE_F = 7314;     // the beam's front-facing copy and its hotspot, MODELDEF QFYn
 
 	Default
 	{
@@ -65,38 +70,7 @@ class RSQFF_Torch : Weapon
 		let gl = player.FindPSprite(GLOW);
 		if (on && !gl) A_Overlay(GLOW, "Glow");
 		else if (!on && gl) player.SetPSprite(GLOW, null);
-		// THE BEAM, DRAWN WITH THE HAND (owner 11-05 00:43: "The flashlight cone lags"): two overlay layers of this weapon, so
-		// the engine draws the cone and its hotspot in the hand's own transform every frame (an actor moved once a tic trailed
-		// the hand). The handler (Beam) picks the mesh, the length frame, the alpha and the colour each tic.
-		let h = RSQFF_Torches.Get();
-		int combo = (on && h) ? h.coneCombo[n] : -1;
-		for (int k = 0; k < 2; k++)
-		{
-			int id = k == 0 ? CONE_B : CONE_F;
-			let cp = player.FindPSprite(id);
-			if (combo < 0) { if (cp) player.SetPSprite(id, null); continue; }
-			if (!cp)
-			{
-				if (k == 0) A_Overlay(id, "ConeB"); else A_Overlay(id, "ConeF");
-				A_OverlayFlags(id, PSPF_RENDERSTYLE | PSPF_ALPHA | PSPF_FORCESTYLE, true);
-				A_OverlayRenderStyle(id, STYLE_Add);
-				cp = player.FindPSprite(id);
-				if (!cp) continue;
-			}
-			cp.Sprite = GetSpriteIndex(Name(String.Format("%s%d", k == 0 ? "QFZ" : "QFY", combo)));
-			cp.Frame = h.coneFrame[n];
-			cp.Alpha = h.coneAlpha[n];
-		}
-		// the beam's colour: the skin of model slot 1 (MODELDEF), changed only when it changes
-		int col = h ? h.coneCol[n] : 20;
-		if (combo >= 0 && col != invoker.skinCol)
-		{
-			invoker.skinCol = col;
-			A_ChangeModel('None', 1, "", 'None', 1, "models/rsqff", Name(String.Format("hudcone_c%02d.png", col)));
-		}
 	}
-	int skinCol;
-	override void PostBeginPlay() { Super.PostBeginPlay(); skinCol = 20; }
 
 	States
 	{
@@ -118,32 +92,8 @@ class RSQFF_Torch : Weapon
 	Glow:
 		QFFT D 1 Bright;
 		Loop;
-	ConeB:
-		QFZ0 A -1 Bright;
-		Stop;
-	ConeF:
-		QFY0 A -1 Bright;
-		Stop;
 	Frames:
 		QFFT BC 0;
-		QFZ0 ABCDEFGHIJKLMNOPQRSTUVWXY 0;
-		QFZ1 ABCDEFGHIJKLMNOPQRSTUVWXY 0;
-		QFZ2 ABCDEFGHIJKLMNOPQRSTUVWXY 0;
-		QFZ3 ABCDEFGHIJKLMNOPQRSTUVWXY 0;
-		QFZ4 ABCDEFGHIJKLMNOPQRSTUVWXY 0;
-		QFZ5 ABCDEFGHIJKLMNOPQRSTUVWXY 0;
-		QFZ6 ABCDEFGHIJKLMNOPQRSTUVWXY 0;
-		QFZ7 ABCDEFGHIJKLMNOPQRSTUVWXY 0;
-		QFZ8 ABCDEFGHIJKLMNOPQRSTUVWXY 0;
-		QFY0 ABCDEFGHIJKLMNOPQRSTUVWXY 0;
-		QFY1 ABCDEFGHIJKLMNOPQRSTUVWXY 0;
-		QFY2 ABCDEFGHIJKLMNOPQRSTUVWXY 0;
-		QFY3 ABCDEFGHIJKLMNOPQRSTUVWXY 0;
-		QFY4 ABCDEFGHIJKLMNOPQRSTUVWXY 0;
-		QFY5 ABCDEFGHIJKLMNOPQRSTUVWXY 0;
-		QFY6 ABCDEFGHIJKLMNOPQRSTUVWXY 0;
-		QFY7 ABCDEFGHIJKLMNOPQRSTUVWXY 0;
-		QFY8 ABCDEFGHIJKLMNOPQRSTUVWXY 0;
 		Stop;
 	}
 }
@@ -155,6 +105,49 @@ class RSQFF_TorchSpot : SpotLight
 	{
 		+DYNAMICLIGHT.NOSHADOWMAP
 		+DYNAMICLIGHT.ATTENUATE
+	}
+}
+
+// the visible beam: tools/gen_torch.py's cone (along model +Z), turned by pitch + 90, its frame the length (A-Z, 1/26 steps),
+// QFFC the Quest cone, QFFK the two-layer one. AddStencil: drawn in the translucent pass with no depth writes, so it never
+// hides a monster behind it (11-05 06:02)
+class RSQFF_TorchCone : Actor
+{
+	Default
+	{
+		+NOINTERACTION +NOBLOCKMAP +NOGRAVITY +DONTSPLASH +NOTONAUTOMAP +NOTELEPORT
+		RenderStyle "AddStencil";
+		Alpha 0.3;
+		RenderRadius 1024;
+		Radius 1; Height 1;
+	}
+	States
+	{
+	Spawn:
+		QFFC A -1 Bright;
+		Stop;
+	Frames:
+		QFFC ABCDEFGHIJKLMNOPQRSTUVWXYZ 0 Bright;
+		QFFK ABCDEFGHIJKLMNOPQRSTUVWXYZ 0 Bright;
+		Stop;
+	}
+}
+
+// where the beam lands: one soft sprite, no light
+class RSQFF_TorchHot : Actor
+{
+	Default
+	{
+		+NOINTERACTION +NOBLOCKMAP +NOGRAVITY +DONTSPLASH +NOTONAUTOMAP +NOTELEPORT +FORCEXYBILLBOARD
+		RenderStyle "AddStencil";
+		Alpha 0.5;
+		Radius 1; Height 1;
+	}
+	States
+	{
+	Spawn:
+		QFFS A -1 Bright;
+		Stop;
 	}
 }
 
@@ -180,10 +173,10 @@ class RSQFF_Torches : EventHandler
 	bool gripDown[MAXPLAYERS];
 	int ddzWait[MAXPLAYERS];
 	RSQFF_TorchSpot spot[MAXPLAYERS];
-	int coneCombo[MAXPLAYERS];        // the beam drawn with the hand (RSQFF_Torch CONE_B / CONE_F): mesh 0-8 (-1 none),
-	int coneFrame[MAXPLAYERS];        // its length frame (0-23, 24 = the full range, nothing met),
-	double coneAlpha[MAXPLAYERS];     // its alpha
-	int coneCol[MAXPLAYERS];          // and its colour (Shade index)
+	RSQFF_TorchCone cone[MAXPLAYERS];
+	RSQFF_TorchHot hot[MAXPLAYERS];
+	Vector3 lastLens[MAXPLAYERS];     // the lens a tic ago (the cone is moved a tic ahead of the hand)
+	bool lastLensOk[MAXPLAYERS];
 	double hitDist[MAXPLAYERS];       // map units along the beam to what it meets (0: nothing in reach)
 	Vector3 hitPos[MAXPLAYERS], hitNorm[MAXPLAYERS];
 	int traceAt[MAXPLAYERS];
@@ -326,8 +319,10 @@ class RSQFF_Torches : EventHandler
 	private void LightsOff(int n)
 	{
 		if (spot[n]) spot[n].Destroy();
-		spot[n] = null;
-		coneCombo[n] = -1;
+		if (cone[n]) cone[n].Destroy();
+		if (hot[n]) hot[n].Destroy();
+		spot[n] = null; cone[n] = null; hot[n] = null;
+		lastLensOk[n] = false;
 		hitDist[n] = 0;
 	}
 
@@ -428,33 +423,63 @@ class RSQFF_Torches : EventHandler
 			Trace(pmo, n, lens, yaw, mapPitch, range * 2.5);
 		}
 
-		// THE CONE AND ITS HOTSPOT are drawn with the hand (RSQFF_Torch CONE_B / CONE_F, MODELDEF QFZn / QFYn): here only which
-		// mesh (quality x Beam Size), how long (the frame whose length is the longest not past what the beam meets; the meshes
-		// are measured at vr_weaponScale 1.02, so scaled by the real one), the alpha and the colour
-		coneCombo[n] = q * 3 + clamp(SInt("rsqff_fl_size", 1), 0, 2);
+		// the cone, a tic ahead: Pos = the lens plus its last tic's move, Prev = the lens now, so the engine's interpolation
+		// (Prev -> Pos over the tic) draws it where the hand is drawn, not a tic behind (owner 11-05 00:43: "The flashlight
+		// cone lags"). A jump (a teleport, a new level) is not carried ahead.
+		Vector3 ahead = lens;
+		if (lastLensOk[n])
+		{
+			Vector3 mv = lens - lastLens[n];
+			if (mv.Length() < 24) ahead = lens + mv;
+		}
+		lastLens[n] = lens;
+		lastLensOk[n] = true;
 		double half = (inner + outer) * 0.5;
-		let wsv = CVar.FindCVar("vr_weaponScale");
-		double wsr = (wsv ? wsv.GetFloat() : 1.02) / 1.02;
-		double full = range / 34.0;
-		int fr = 24;
+		if (!cone[n]) cone[n] = RSQFF_TorchCone(Actor.Spawn("RSQFF_TorchCone", lens, NO_REPLACE));
+		let k = cone[n];
+		if (k)
+		{
+			k.SetOrigin(ahead, true);
+			k.Prev = lens;
+			k.angle = yaw;
+			k.pitch = 90 + realPitch;
+			double len = range;
+			if (hitDist[n] > 0)
+			{
+				Vector3 h = hitPos[n] - lens;
+				len = min(range, (h.x, h.y, h.z * ps).Length());
+			}
+			int fr = clamp(int(ceil(len / range * 26)) - 1, 0, 25);
+			k.sprite = k.GetSpriteIndex(q == 0 ? 'QFFC' : 'QFFK');
+			k.frame = fr;
+			k.Scale.Y = range / 64.0;                          // the full length (the frame folds it shorter)
+			k.Scale.X = k.Scale.Y * tan(half) / tan(20.0);     // across: the same stretch, at the beam's own angle
+			k.SetShade(col);
+			k.alpha = q == 0 ? 0.30 : (q == 1 ? 0.34 : 0.38);
+			// dust: motes drifting in the beam (PCVR one every 3rd tic, High one a tic)
+			if (q > 0 && (q == 2 || level.maptime % 3 == 0)) Dust(pmo, lens, rd, len, half, col, ps);
+		}
+
+		// the hotspot where it lands: sized by the distance, fainter on a glancing wall; it reaches past the light (to 2.5 x its
+		// range, fading from 1 x), so a far wall still shows where the beam lands for no light
 		if (hitDist[n] > 0)
 		{
-			Vector3 hv = hitPos[n] - lens;
-			double lm = (hv.x, hv.y, hv.z * ps).Length() / RSQFF_Geo.Vu();
-			fr = 0;
-			for (int k = 1; k < 24; k++) if (0.25 * (full / 0.25) ** (k / 23.0) * wsr <= lm) fr = k;
+			if (!hot[n]) hot[n] = RSQFF_TorchHot(Actor.Spawn("RSQFF_TorchHot", hitPos[n], NO_REPLACE));
+			let t = hot[n];
+			if (t)
+			{
+				double d = hitDist[n];
+				t.SetOrigin(hitPos[n] - dir * 2, true);
+				double r = d * tan(outer) * 0.75;
+				t.Scale.X = t.Scale.Y = clamp(r / 32.0, 0.08, 6.0);
+				double face = abs(dir dot hitNorm[n]);
+				double fade = d <= range ? 1.0 : clamp(1.0 - (d - range) / (1.5 * range), 0.0, 1.0);   // the hotspot reaches past the light
+				t.alpha = (0.25 + 0.45 * face) * fade * (d < 24 ? d / 24.0 : 1.0);
+				t.SetShade(col);
+				t.bInvisible = t.alpha <= 0.01;
+			}
 		}
-		coneFrame[n] = fr;
-		coneAlpha[n] = q == 0 ? 0.30 : (q == 1 ? 0.34 : 0.38);
-		coneCol[n] = c == RANDOM_COL ? pick[n] : clamp(c, 0, 20);
-		if (coneCol[n] > 16) coneCol[n] = 20;
-		// dust: motes drifting in the beam (PCVR one every 3rd tic, High one a tic)
-		if (q > 0 && (q == 2 || level.maptime % 3 == 0))
-		{
-			double len = range;
-			if (hitDist[n] > 0) { Vector3 h = hitPos[n] - lens; len = min(range, (h.x, h.y, h.z * ps).Length()); }
-			Dust(pmo, lens, rd, len, half, col, ps);
-		}
+		else if (hot[n]) hot[n].bInvisible = true;
 
 		// DarkDoomz's flashlight stands down while ours is on
 		if (SInt("rsqff_fl_ddz", 1) > 0 && level.maptime >= ddzWait[n] && level.maptime % 10 == 0) StandDown(pmo, n);

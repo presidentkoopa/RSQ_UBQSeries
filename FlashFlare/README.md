@@ -55,7 +55,8 @@ and the throw is measured against your body, so walking and turning never count 
   hand's trigger turns it off and on. Grip at the clip again to put it back.
 - Held in Brutal Doom 22 VR Reloaded's shotgun-pump support hand, drawn where your off hand is.
 - One real spot light from the lens, plus a beam you can see in the air. The beam stops where it meets a wall or a
-  monster, and a soft spot shows where it lands, even past the light's reach.
+  monster, and a soft spot shows where it lands, even past the light's reach. Monsters stay visible through the beam
+  (it is drawn see-through in the world, moved a tic ahead so it keeps up with your hand).
 - Beam size, colour and quality are menu rows. One light per flashlight; Quest quality keeps the range short.
 - One thing in the off hand at a time: take a flare and the flashlight goes away. Put the flare back and the
   flashlight comes back, on or off as it was.
