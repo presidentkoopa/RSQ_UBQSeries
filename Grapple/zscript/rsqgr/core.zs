@@ -99,10 +99,22 @@ class RSQGR_Core : EventHandler
 
 	// ---- fire -------------------------------------------------------------------
 
+	int lockedMsgTic[MAXPLAYERS];   // the last "learn it in Gun Bonsai" message (Fire, the Grapple unlock)
+
 	void Fire(PlayerPawn pmo, int pn, int hand, Vector3 org, Vector3 dir)
 	{
 		// THE GRAPPLE UNLOCK (Gun Bonsai VR, GBOVR_TREES.md 4.6): with the patch loaded the hook fires once learned
-		if (RSQGR_Perks.Locked(pmo)) { if (RSQGR_Util.Flag("rsqgr_debug", false)) Console.Printf("T_GR p%d: the Grapple is not learned, no hook", pn); return; }
+		if (RSQGR_Perks.Locked(pmo))
+		{
+			if (RSQGR_Util.Flag("rsqgr_debug", false)) Console.Printf("T_GR p%d: the Grapple is not learned, no hook", pn);
+			// say so (0.99a item 18), at most once every 3 seconds; A_Print shows on that player's own screen only
+			if (pn >= 0 && pn < MAXPLAYERS && (lockedMsgTic[pn] == 0 || level.maptime - lockedMsgTic[pn] >= 105 || level.maptime < lockedMsgTic[pn]))
+			{
+				lockedMsgTic[pn] = max(level.maptime, 1);
+				pmo.A_Print("Grapple: learn it in Gun Bonsai", 2, RSQGR_A11y.PrintFont());
+			}
+			return;
+		}
 		// A hand pushed through a wall would fire from behind it: if the line from the
 		// eye to the hand is blocked, the claw starts at the eye instead.
 		Vector3 eye = pmo.Pos + (0, 0, pmo.player.viewz - pmo.Pos.z);

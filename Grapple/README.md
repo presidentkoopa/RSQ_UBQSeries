@@ -167,8 +167,8 @@ Options → Radiant Silvergun Options → RSQ Grapple
 RSQ Grapple runs alone. It finds the other mods by name, so load order among RSQ pk3s does not matter.
 
 - **RSQ Gun Bonsai VR (with Gun Bonsai):** the hook becomes something you earn. It does not fire until the
-  Grapple node is learned, and the Momentum node takes the place of the Swing and Momentum row. Upgrades: Long
-  Line (range), Fast Reel (faster claw and harder yank), Heavy Haul (pull heavier monsters, stagger bosses), Get
+  Grapple node is learned (a press before then says "Grapple: learn it in Gun Bonsai"), and the Momentum node takes
+  the place of the Swing and Momentum row. Upgrades: Long Line (range), Fast Reel (faster claw and harder yank), Heavy Haul (pull heavier monsters, stagger bosses), Get
   Over Here (what comes to you arrives staggered), Bowling (what comes to you strikes what is in its way), Barbed
   Claw (the bite hurts), Slingshot (faster release from a swing), Steady Line (a still swing settles faster),
   Double Hook (two hooked monsters slammed together), Zip Kick (arriving fast on a monster hurts it), Scorpion

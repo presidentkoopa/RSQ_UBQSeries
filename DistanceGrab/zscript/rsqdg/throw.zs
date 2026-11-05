@@ -34,23 +34,6 @@
 // watching it land.
 class RSQDG_Throw : EventHandler
 {
-	// Gun Bonsai VR patch perks (RSQDG_Perks): levels per player, refreshed once a second
-	transient int pkTic[MAXPLAYERS], pkReach[MAXPLAYERS], pkGrip[MAXPLAYERS], pkHeave[MAXPLAYERS], pkCatch[MAXPLAYERS];
-	// GBOVR_TREES.md 4.7 (11-02): Dead Eye, Heavy Lift, Straight Pull, Body Shield (an unlock: pkOn says the patch answers)
-	transient int pkEye[MAXPLAYERS], pkLift[MAXPLAYERS], pkStraight[MAXPLAYERS], pkShield[MAXPLAYERS];
-	transient bool pkOn;
-	void RefreshPerks(int pn, Actor pawn)
-	{
-		if (pkTic[pn] > 0 && level.maptime < pkTic[pn] && level.maptime >= pkTic[pn] - 35) return;
-		pkTic[pn] = level.maptime + 35;
-		pkReach[pn] = 0; pkGrip[pn] = 0; pkHeave[pn] = 0; pkCatch[pn] = 0;
-		pkEye[pn] = 0; pkLift[pn] = 0; pkStraight[pn] = 0; pkShield[pn] = 0;
-		// THE GRAB HAS NO TREE (owner, 11-03: "It's a needed player thing. Imagine if Half-Life Alyx made you level up the
-		// gravity gloves"). The patch's grab nodes are no longer offered and this never asks for them: every level is 0,
-		// every factor 1 and the Body Shield row rules, with or without Gun Bonsai VR. The arrays stay so the readers
-		// (RSQDG_Perks) keep their shape should a tree ever return.
-		pkOn = false;
-	}
 
 	const MAX_WATCH  = 16;
 	const LIFE_TICS  = 105;     // three seconds; nothing flies longer than that
@@ -650,7 +633,6 @@ class RSQDG_Throw : EventHandler
 
 	override void WorldTick()
 	{
-		for (int pn = 0; pn < MAXPLAYERS; pn++) if (playeringame[pn] && players[pn].mo) RefreshPerks(pn, players[pn].mo);
 		let p = players[consoleplayer];
 		if (!p) return;
 

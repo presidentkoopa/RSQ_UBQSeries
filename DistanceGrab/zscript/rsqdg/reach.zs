@@ -499,12 +499,7 @@ class RSQDG_Reach
 	static double Num(String n, PlayerInfo p, double d)
 	{
 		let c = CVar.GetCVar(n, p);
-		double v = c ? c.GetFloat() : d;
-		// the five settings Gun Bonsai's VR patch can grow (RSQDG_Perks); 1 without it
-		if (n.Left(6) == "rsqdg_" && (n == "rsqdg_reach" || n == "rsqdg_pull_kg" || n == "rsqdg_burden_kg"
-			|| n == "rsqdg_arm_kg" || n == "rsqdg_catch_radius"))
-			v *= RSQDG_Perks.Factor(n, p);
-		return v;
+		return c ? c.GetFloat() : d;
 	}
 
 	static bool Flag(String n, PlayerInfo p, bool d)
@@ -521,52 +516,7 @@ class RSQDG_Reach
 }
 
 
-// GUN BONSAI'S VR PATCH: THE GRAB HAS NO TREE (owner, 11-03; it did from 11-02 to 11-03). RSQDG_Throw.RefreshPerks
-// no longer asks the patch for anything, so every level here is 0 and every factor 1, with or without it: the grab is
-// its rows. The readers stay (a factor of 1, a level of 0) so the call sites keep their shape.
-//   Long Arm     rsqdg_reach         +15% a level
-//   Iron Grip    rsqdg_pull_kg       +50% a level (heavier things come easier), rsqdg_burden_kg +25%
-//   Heavy Hitter rsqdg_arm_kg        +25% a level (a heavy thing leaves the hand faster)
-//   Air Catch    rsqdg_catch_radius  +25% a level
-class RSQDG_Perks
-{
-	// read anywhere (the grab's cvar reads are data scope); RSQDG_Throw.WorldTick refreshes the levels
-	static double Factor(String n, PlayerInfo p)
-	{
-		if (!p || !p.mo) return 1.0;
-		let th = RSQDG_Throw(EventHandler.Find("RSQDG_Throw"));
-		if (!th) return 1.0;
-		int pn = p.mo.PlayerNumber();
-		if (pn < 0 || pn >= MAXPLAYERS) return 1.0;
-		if (n == "rsqdg_reach") return 1.0 + 0.15 * th.pkReach[pn];
-		if (n == "rsqdg_pull_kg") return 1.0 + 0.50 * th.pkGrip[pn];
-		if (n == "rsqdg_burden_kg") return 1.0 + 0.25 * th.pkGrip[pn];
-		if (n == "rsqdg_arm_kg") return 1.0 + 0.25 * th.pkHeave[pn];
-		if (n == "rsqdg_catch_radius") return 1.0 + 0.25 * th.pkCatch[pn];
-		return 1.0;
-	}
-	// a level of the tree's newer nodes (GBOVR_TREES.md 4.7): "DeadEye", "HeavyLift", "StraightPull", "BodyShield"; 0 without
-	// the patch
-	static int Level(String n, PlayerInfo p)
-	{
-		if (!p || !p.mo) return 0;
-		let th = RSQDG_Throw(EventHandler.Find("RSQDG_Throw"));
-		if (!th) return 0;
-		int pn = p.mo.PlayerNumber();
-		if (pn < 0 || pn >= MAXPLAYERS) return 0;
-		if (n == "DeadEye") return th.pkEye[pn];
-		if (n == "HeavyLift") return th.pkLift[pn];
-		if (n == "StraightPull") return th.pkStraight[pn];
-		if (n == "BodyShield") return th.pkShield[pn];
-		return 0;
-	}
-	// BODY SHIELD, an unlock under the patch: without it the Body Shield row (1 or 0); with it the node's level (0 until
-	// learned)
-	static int Shield(PlayerInfo p)
-	{
-		let th = RSQDG_Throw(EventHandler.Find("RSQDG_Throw"));
-		if (!th || !th.pkOn) return RSQDG_Reach.Flag("rsqdg_body_shield", p, true) ? 1 : 0;
-		return Level("BodyShield", p);
-	}
-	static bool PatchOn() { let th = RSQDG_Throw(EventHandler.Find("RSQDG_Throw")); return th && th.pkOn; }
-}
+// GUN BONSAI'S VR PATCH: THE GRAB HAS NO TREE (owner, 11-03: "Imagine if Half-Life Alyx made you level up the gravity
+// gloves"). The grab is its rows, with or without the patch. (RSQDG_Perks, the readers the 11-02 tree left behind -- Long
+// Arm, Iron Grip, Heavy Hitter, Air Catch, Dead Eye, Heavy Lift, Straight Pull, Body Shield -- always read 0 / x1 after
+// 11-03 and were removed in 0.99a, item 17: behaviour unchanged.)

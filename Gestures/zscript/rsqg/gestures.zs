@@ -3,7 +3,9 @@
 //
 // THREE KINDS, as in RS_Gestures:
 //   POSE      one hand held a certain way: INSPECT (new here, the weapon cards' "show me"), STILL.
-//   IMPULSE   one hand moving fast along its own axis: THRUST (away), PULL (back). rsg_signals.zs.
+//   IMPULSE   one hand moving fast along its own axis: THRUST (away, + ) or PULL (back, -), the "thrust" answer.
+//             (Its rsqg_thrust / rsqg_pull events, and the punch / shove events, behind "Thrust and Pull Events", were
+//             removed in 0.99a: no mod listened. Every answer below is still given to whoever asks.)
 //   BOTH      a relationship between the two hands: both swept DOWN past the hips, thrown APART from
 //             the chest, both PALMS held out. rsg_pair.zs. And new here (2026-11-02, for RSQ Melee's Clear Out,
 //             GBOVR_TREES.md 4.1 A): both palms THRUST forward together, side by side.
@@ -46,7 +48,7 @@
 //   Level.RealSeconds -> gametic: this runs every real tic (RSQ_SlowMo slows monsters, not the tic)
 //
 // COST. Nothing is measured unless a mod asked something in the last second (IDLE tics), or the
-// signals / two-hand events are switched on, or debug is: otherwise WorldTick is one comparison.
+// two-hand events are switched on, or debug is: otherwise WorldTick is one comparison.
 // THE TWO-HAND EVENTS run while their switch is on OR while a mod has asked about them ("pair.ago") in the
 // last second (2026-11-02): a move built on one (RSQ Melee's Ground Pound and Clear Out, once learned) asks, so
 // it works without the player finding this menu. The switch stays off by default.
@@ -54,8 +56,8 @@
 // NETPLAY (QZD has none; do not make it worse). The pose is local hardware, written for the camera
 // player only, so every answer is about the console player and 0 for anyone else. The detectors keep
 // their state in this handler, on the machine with the hands. Anything the game should act on leaves
-// as a network event (rsqg_thrust, rsqg_pull, rsqg_pair: the RS_Gestures shape, an index and a
-// hundredths magnitude) for the receiver to apply to e.Player. Inspect is a look (a card shows), so it
+// as a network event (rsqg_pair: the RS_Gestures shape, an index and a hundredths magnitude) for the receiver to apply
+// to e.Player. Inspect is a look (a card shows), so it
 // is a query, not an event.
 class RSQG_Handler : EventHandler
 {
@@ -86,7 +88,7 @@ class RSQG_Handler : EventHandler
 	int insState[2], insTics[2], insStateTics[2];
 
 	// ONE HAND
-	int stillFor[2], lastImpulse[2];
+	int stillFor[2];
 
 	// PUNCH, per hand (gloves.zs RSQ_PunchHand): armed, the travel so far toward where you face, its tics,
 	// and the last punch: its gametic (0 never), kind (PK_*), average speed m/s
@@ -172,8 +174,7 @@ class RSQG_Handler : EventHandler
 	}
 
 	// the switches, looked up once (user cvars: retried while the player is not there yet)
-	CVar cvSignals, cvTwohand, cvDebug;
-	int SwSignals() { if (!cvSignals) cvSignals = CVar.FindCVar("rsqg_signals"); return cvSignals ? cvSignals.GetInt() : 0; }
+	CVar cvTwohand, cvDebug;
 	int SwTwohand() { if (!cvTwohand) cvTwohand = CVar.FindCVar("rsqg_twohand"); return cvTwohand ? cvTwohand.GetInt() : 0; }
 	int SwDebug()   { if (!cvDebug) cvDebug = CVar.FindCVar("rsqg_debug"); return cvDebug ? cvDebug.GetInt() : 0; }
 	// the two-hand events are read: switched on, or a mod asked about them in the last second
@@ -181,7 +182,7 @@ class RSQG_Handler : EventHandler
 
 	bool Running(int dbg)
 	{
-		return gametic - lastAsk <= IDLE || SwSignals() || TwoHandWanted() || dbg == 1 || dbg == 2 || gametic < measureTill;
+		return gametic - lastAsk <= IDLE || TwoHandWanted() || dbg == 1 || dbg == 2 || gametic < measureTill;
 	}
 
 	// ---- QUIET (GE1): the rope and the Wheel, asked by name -----------------------------------------------
@@ -370,8 +371,7 @@ class RSQG_Handler : EventHandler
 		Measure(pmo);
 
 		bool quiet = Quiet(pmo);
-		if (SwSignals() || SwDebug() > 0) Signals(pmo, quiet);
-		else { stillFor[0] = StillNow(0) ? stillFor[0] + 1 : 0; stillFor[1] = StillNow(1) ? stillFor[1] + 1 : 0; }
+		stillFor[0] = StillNow(0) ? stillFor[0] + 1 : 0; stillFor[1] = StillNow(1) ? stillFor[1] + 1 : 0;
 		if (TwoHandWanted()) TwoHand(pmo, quiet);
 
 		bool br = IsBraced(pmo.player);
@@ -504,33 +504,6 @@ class RSQG_Handler : EventHandler
 		return PeakVel(h) dot ax;
 	}
 
-	void Signals(PlayerPawn pmo, bool quiet)
-	{
-		bool fire = SwSignals() && !quiet;   // GE1: never while climbing the rope or pointing at the Wheel
-		double need = Num("rsqg_thrust_mps", 2.0), ageCap = Num("rsqg_thrust_age", 150);
-		int repeat = Opt("rsqg_thrust_repeat", 12);
-		for (int h = 0; h < 2; h++)
-		{
-			stillFor[h] = StillNow(h) ? stillFor[h] + 1 : 0;
-			if (!fire || !live[h] || ringN[h] <= 0) continue;
-			if (gametic - lastImpulse[h] < repeat) continue;
-			double age = PeakAgeMs(h);
-			if (age < 0 || (ageCap > 0 && age > ageCap)) continue;
-			double along = ThrustAlong(pmo, h);
-			// a peak from before the last announcement is the same movement (rsg_pair's SAME_PEAK rule)
-			if (gametic - int(age * TICRATE / 1000.0 + 0.5) <= lastImpulse[h]) continue;
-			String ev = "";
-			if (along >= need) ev = "rsqg_thrust";
-			else if (along <= -need) ev = "rsqg_pull";
-			if (ev == "") continue;
-			EventHandler.SendNetworkEvent(ev, h, int(round(abs(along) * 100)), 0);
-			lastImpulse[h] = gametic;
-			Say((ev == "rsqg_thrust" ? "thrust (" : "pull (") .. HandName(h) .. ")");
-			if (SwDebug() >= 1)
-				Console.Printf("\c[Gold]rsqg: %s, %s hand, %.2f m/s (t%d)", ev == "rsqg_thrust" ? "thrust" : "pull", h == 0 ? "main" : "off", abs(along), level.maptime);
-		}
-	}
-
 	// ---- BRACED --------------------------------------------------------------------------------------
 	// The engine's own latch, readable from any scope. WeaponState is play state the engine keeps for
 	// every player, so unlike the hand pose this answer is true for any player, not only this machine's.
@@ -618,7 +591,6 @@ class RSQG_Handler : EventHandler
 		{
 			// THE SHOVE (GE2): its own answer, never a punch. (Its blow, the butt shove, is RSQ Melee's: it reads the swing itself.)
 			shoveTic[h] = gametic; shoveTwo[h] = two; shoveMps[h] = avg;
-			if (SwSignals()) EventHandler.SendNetworkEvent("rsqg_shove", h, two ? 1 : 0, int(round(avg * 100)));
 			Say((two ? "two-hand shove (" : "shove (") .. HandName(h) .. ")");
 			if (SwDebug() >= 1)
 				Console.Printf("\c[Gold]rsqg: shove%s, %s hand, %.2f m/s, with %s (t%d)", two ? " (two hands)" : "", HandName(h), avg, CarryName(pmo, h), level.maptime);
@@ -626,7 +598,6 @@ class RSQG_Handler : EventHandler
 		}
 		int kind = Classify(u, face, rise);
 		punchTic[h] = gametic; punchKind[h] = kind; punchMps[h] = avg;
-		if (SwSignals()) EventHandler.SendNetworkEvent("rsqg_punch", h, kind, int(round(avg * 100)));
 		String kn = kind == PK_JAB ? "jab" : kind == PK_HOOK ? "hook" : "uppercut";
 		Say(kn .. " (" .. HandName(h) .. ")");
 		if (SwDebug() >= 1)

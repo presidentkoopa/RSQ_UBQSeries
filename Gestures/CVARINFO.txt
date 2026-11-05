@@ -22,13 +22,9 @@ user float  rsqg_inspect_pitch   = 60;     // the gun may point at most this far
 user float  rsqg_inspect_still   = 1.2;    // the hand must be slower than this (metres a second) to start
 user float  rsqg_inspect_slack   = 0.05;   // once on, the place may drift this far (metres) before it drops
 
-// ---- ONE HAND: thrust and pull along the hand's own axis, stillness (RS_Gestures' rsg_signals) ---------
-// Off by default, as in RS_Gestures: the switch buys the rsqg_thrust / rsqg_pull events. The queries
-// answer whenever a mod asks.
-user bool   rsqg_signals         = false;
-user float  rsqg_thrust_mps      = 2.0;    // speed along the hand needed for a thrust (or back, for a pull)
-user float  rsqg_thrust_age      = 150;    // ...and the fastest instant must be this fresh (ms; 0 = any in the last quarter second)
-user int    rsqg_thrust_repeat   = 12;     // tics before the same hand may thrust again
+// ---- ONE HAND: stillness; thrust / pull along the hand's own axis is answered as a speed ("thrust") ----------
+// (rsqg_signals, "Thrust and Pull Events", and its rsqg_thrust_mps / _age / _repeat were removed in 0.99a with the
+// thrust / pull / punch / shove events they switched on: no mod listened. The owner's call, 11-04.)
 user float  rsqg_still_mps       = 0.3;    // below this a hand counts as still (shared with palms out)
 
 // ---- BOTH HANDS: down past the hips, thrown apart, both palms out (RS_Gestures' rsg_twohand) -----------

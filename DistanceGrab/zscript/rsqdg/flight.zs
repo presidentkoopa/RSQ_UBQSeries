@@ -922,28 +922,16 @@ class RSQDG_Flight : EventHandler
 
 	// At launch: the time of flight from the distance, and the arc this route
 	// allows. All of it from rs_distance.zs RS_Pull.Start.
-	// how hard the flick that launched this pull was, over the threshold (grab.zs Resolve sets it before Launch; 0 for a
-	// launch with no flick): SNAP PULL (Straight Pull) pops a pull flicked at twice the threshold or more into a high arc
-	double flickRatio;
-
 	private void StartPath(int hand, Actor a, Vector3 palm, PlayerInfo p)
 	{
 		Vector3 mid0 = MidOf(a);
 		double dist = (mid0 - palm).Length();
-		int sp = RSQDG_Perks.Level("StraightPull", p);
-		// STRAIGHT PULL 2 (Gun Bonsai VR): pulls 25% faster
-		double upt = max(0.1, RSQDG_Reach.MetresToUnits(RSQDG_Reach.Num("rsqdg_path_speed", p, 15.0) * (sp >= 2 ? 1.25 : 1.0)) / TICRATE);
+		double upt = max(0.1, RSQDG_Reach.MetresToUnits(RSQDG_Reach.Num("rsqdg_path_speed", p, 15.0)) / TICRATE);
 		double lo = max(1.0, RSQDG_Reach.Num("rsqdg_path_tmin", p, 6.0));
 		double hi = max(lo, RSQDG_Reach.Num("rsqdg_path_tmax", p, 70.0));
 		flyTotal[hand] = int(clamp(dist / upt, lo, hi));
 		flyFrom[hand] = mid0;
 		double want = dist * RSQDG_Reach.Num("rsqdg_path_arc", p, 0.15);
-		// SNAP PULL (Gun Bonsai VR's Straight Pull; owner 11-02: "some kind of smooth arc, like Alyx, something
-		// impressive"): a hard flick pops it up into an arc 1.6x the pull's own (rsqdg_path_arc: 0.4 of the distance at
-		// the default, under the ceiling as ever) and lands it in the hand a fifth sooner. It flew dead straight before.
-		bool snap = sp >= 1 && flickRatio >= 2.0;
-		if (snap) { want *= 1.6; flyTotal[hand] = max(int(lo), int(flyTotal[hand] * 0.8)); }
-		flickRatio = 0;
 		double cap = MeasureArc(a, mid0, palm);
 		flyArcH[hand] = (cap < 0.0) ? want : min(want, cap);
 		a.Vel = (0, 0, 0);

@@ -36,7 +36,6 @@ OptionMenu "RSQG_Options"
 	Option "Watch Check Tick", "rsqg_inspect_tick", "OnOff"
 	Option "Show Gesture Names", "rsqg_names", "OnOff"
 	StaticText " "
-	Option "Thrust and Pull Events", "rsqg_signals", "OnOff"
 	Option "Two-Hand Events", "rsqg_twohand", "OnOff"
 	Option "  Both Hands Down", "rsqg_two_down", "OnOff"
 	Option "  Both Hands Apart", "rsqg_two_apart", "OnOff"
@@ -66,9 +65,6 @@ OptionMenu "RSQG_Tuning"
 	Slider "Drift Allowed Once On (m)", "rsqg_inspect_slack", 0.0, 0.2, 0.01, 2
 	StaticText " "
 	StaticText "One hand", "gold"
-	Slider "Thrust Speed (m/s)", "rsqg_thrust_mps", 0.5, 8.0, 0.1, 1
-	Slider "Thrust Fresher Than (ms)", "rsqg_thrust_age", 0, 250, 10, 0
-	Slider "Thrust Repeat (tics)", "rsqg_thrust_repeat", 0, 35, 1, 0
 	Slider "Still Under (m/s)", "rsqg_still_mps", 0.05, 1.5, 0.05, 2
 	StaticText " "
 	StaticText "Both hands", "gold"

@@ -332,7 +332,6 @@ class RSQDG_Grab : EventHandler
 		if (upRate >= need)
 		{
 			let fl = RSQDG_Flight.Get();
-			if (fl) fl.flickRatio = upRate / max(need, 0.1);	// Straight Pull reads it
 			if (fl && fl.Launch(hand, a, p.mo, p))
 			{
 				// The peak lingers in the window for a fifth of a second after

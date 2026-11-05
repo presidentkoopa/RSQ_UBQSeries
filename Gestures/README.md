@@ -35,7 +35,6 @@ you read. Left and right hands are mirrored correctly.
 **One hand**
 - **Punch:** jab, hook or uppercut, named from how an empty hand travelled against the way you face.
 - **Shove:** the same swing with a gun in hand, one hand or two. Never counted as a punch.
-- **Thrust and pull:** a fast move along the hand's own pointing line, away from you or back.
 - A swing with a blade (axe, sword, chainsaw) is neither. A braced two-hand gun or both hands driving the same
   way together is never a punch.
 
@@ -73,7 +72,6 @@ you read. Left and right hands are mirrored correctly.
 | Watch check | Gun hand 0.15 to 0.65 m in front of your eyes, from 0.30 m below to 0.20 m above eye level, within 0.35 m to the side. Gun no more than 60° up or down. Back of the wrist turned at least 45° toward your face. Hold still about 0.2 s. | Either hand. Holds while the twist stays above 30°. |
 | Jab, hook, uppercut | Empty hand moves 0.15 m toward where you face at 2 m/s or faster | Uppercut: mostly upward. Hook: mostly sideways. |
 | Shove | The same swing with a gun in that hand, or both hands on the gun | Never a punch. |
-| Thrust / pull | Hand moves 2 m/s along its own pointing line, away or back | |
 | Both hands down | Both hands moving down at 2 m/s, ending below your hips (0.60 m below your eyes), within 0.12 s of each other | |
 | Both hands apart | From within 0.50 m of your chest, the gap between your hands opening at 2 m/s | |
 | Both palms out | Both hands at least 0.25 m in front of your eyes, above your hips, pointing 40° up or more, still, triggers released, 0.25 m apart sideways, held 0.4 s | QuestZDoom reads no fingers, so "palm out" means hand up and trigger off. |
@@ -95,7 +93,6 @@ Options → Radiant Silvergun Options → RSQ Gestures
 | Watch Check Off | Off | On: the watch check is never read. RSQ Gun Cards then uses its own look-at-the-gun test. |
 | Watch Check Tick | On | A light tick in that controller when the watch check holds. |
 | Show Gesture Names | On | Names each recognised gesture low in your view. |
-| Thrust and Pull Events | Off | Broadcasts thrust, pull, punch and shove as game events. No current RSQ mod listens for them. |
 | Two-Hand Events | Off | Reads the two-hand gestures all the time. Mods that use them switch them on while they need them. |
 | Both Hands Down | On | This two-hand gesture may fire. |
 | Both Hands Apart | On | This two-hand gesture may fire. |
@@ -117,9 +114,6 @@ Options → Radiant Silvergun Options → RSQ Gestures
 | Gun Points Up/Down At Most | 60° | Steepest the gun may point. |
 | Hand Still Under (m/s) | 1.2 | The hand must be slower than this to start. |
 | Drift Allowed Once On (m) | 0.05 | How far the hand may drift once held. |
-| Thrust Speed (m/s) | 2.0 | Speed along the hand for a thrust or pull. |
-| Thrust Fresher Than (ms) | 150 | The fastest moment must be this recent. |
-| Thrust Repeat (tics) | 12 | Wait before the same hand thrusts again. |
 | Still Under (m/s) | 0.30 | Below this a hand counts as still. |
 | Together Within (ms) | 120 | How far apart in time two hands may move and still be one gesture. |
 | Peak Fresher Than (ms) | 180 | Each hand's fastest moment must be this recent. |
