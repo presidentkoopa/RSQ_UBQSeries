@@ -93,74 +93,91 @@ Grab Rope (Off). Left-handed play works: the engine's left-handed scheme swaps w
 
 ## Menu
 
-Options → Radiant Silvergun Options → RSQ Grapple
+Options → Radiant Silvergun Options → RSQ Grapple. One page; the raw numbers are on **Test and Debug**; **Reset All**
+at the foot resets both. Greyed rows keep their setting but do nothing in the current mode: the Rope rows need Wall
+Hook "Rope" or Swing and Momentum on (OG makes no rope); Calm Swing, Slack Rope Lets Go and Keep Momentum need Swing
+and Momentum; the Monsters rows need their Monster Hook mode; the Whip rows need Whip Instead of Hook. With RSQ Gun
+Bonsai VR loaded the page's top line reads "GunBonsaiOVR detected. Mod features unlocked via upgrades." and Grapple
+and Swing and Momentum stay greyed until their nodes (Grapple, Momentum) are learned.
 
 | Row | Default | What it does |
 |---|---|---|
-| Grapple | On | The hook is available. |
+| Grapple | On | The hook is available. With Gun Bonsai VR: once its Grapple node is learned. |
 | Wall Hook | OG | OG: a one-off fling toward the claw. Rope: pulled to the claw, then hang. |
-| Swing and Momentum | Off | The swinging rope that keeps your speed, whatever Wall Hook says. |
-| Range | Standard | How far the claw reaches: Short, Standard (780), Long. |
-| Swing Feel | Standard | Floaty, Standard or Snappy: claw speed, reel, lean and top speed together. |
-| Rope Climbing | On | A free hand on Grab Rope climbs. |
-| Two Hands on the Rope | On | Both hands may hold at once. Off: a new hand takes over. |
+| Swing and Momentum | Off | The swinging rope that keeps your speed, whatever Wall Hook says. With Gun Bonsai VR: its Momentum node. |
+| Range | 780 | How far the claw reaches, map units. |
 | Hook Thump | On | A thump in the hand on a bite or a catch. |
-| Calm Swing (Stick Back) | On | Stick back brakes a swing. |
-| Slack Rope Lets Go | On | A slack rope on the floor lets go after 3 seconds. |
-| Rope Wraps Corners | On | The rope bends round corners. |
-| Mantle (Stick Forward) | On | Stick forward under a lip climbs over it. |
-| Hook Switches and Doors | Off | The claw uses switches and doors it hits. |
-| Aim Dot (Empty Hand) | Off | A faint dot where the claw would bite. |
-| Rope Look | Chain | Chain links or a cable. |
-| Monster Hook | OG | OG, Slide, Yank or Lasso. |
-| Monster Pull | Standard | Gentle, Standard or Strong: slide speed and heaviest monster pulled. |
-| Split Pull by Weight | Off | Slide mode: share the pull by weight. |
-| Lasso Flick Throw | On | A hard flick throws a lassoed monster. |
-| Tumble | Spin | How a yanked monster turns in the air: Off, Spin, Flip, Both. |
-| Throw Damage | On | A yanked monster is hurt by its landing or what it hits. |
-| Whip | Off | The binds crack a whip instead of firing the claw. |
-| Look | JP | JP, Combat FX or Ballistics art and sound. |
+| Aim Dot | Off | A faint dot where the claw would bite. |
+| Hook Uses Switches | Off | The claw uses switches and doors it hits. |
 | Score Stunts | On | Gap crossings pay RSQ Score's Indiana Jones. |
+| **Rope** | | |
+| Rope Climbing | On | A free hand on Grab Rope climbs. |
+| Two Hands on Rope | On | Both hands may hold at once. Off: a new hand takes over. |
+| Empty Hand Only | On | Only an empty hand may climb. |
+| Grab Keys Hold Rope | On | RSQ Distance Grab's grab binds take hold of the rope. |
+| Wraps Corners | On | The rope bends round corners. |
+| Mantle Over Ledges | On | Stick forward under a lip climbs over it. |
+| Calm Swing | On | Stick back brakes a swing (Swing and Momentum). |
+| Slack Rope Lets Go | On | A slack rope on the floor lets go after 3 seconds (Swing and Momentum). |
+| Keep Momentum | On | A swing keeps its speed when you land (Swing and Momentum). |
+| Rope Look | Chain | Chain links or a cable. |
+| **Monsters** | | |
+| Monster Hook | OG | OG, Slide, Yank or Lasso. |
+| Split Pull by Weight | Off | Slide: share the pull by weight. |
+| Lasso Flick Throw | On | Lasso: a hard flick throws the monster. |
+| Tumble | Spin | Yank and Lasso: how a thrown monster turns in the air: Off, Spin, Flip, Both. |
+| Throw Damage | On | Yank and Lasso: a thrown monster is hurt by its landing or what it hits. |
+| Art and Sound | JP | JP, Combat FX or Ballistics art and sound. |
+| **Whip** | | |
+| Whip Instead of Hook | Off | The fire binds crack a whip instead of firing the claw. |
+| Whip Stun | On | A crack knocks the monster into pain. |
+| Whip Snag | On | The tip wraps round things above your hand (the rope). |
+| **Controls** | | |
+| Fire Hook: Main / Off | Unbound | The hook binds (also in Customize Controls, "RSQ Grapple"). |
+| Grab Rope: Main / Off | Unbound | The rope grip binds. |
+| Test and Debug | | The page below. |
+| Reset All | | Every setting on both pages back to its default. |
 
-**Tuning and Debug** holds every number:
+**Test and Debug**
 
 | Row | Default | What it does |
 |---|---|---|
-| Range | 780 | Claw reach, map units. |
+| **Hook** | | |
 | Hook Speed | 40 | Claw flight speed, units per tic. |
-| Reel Speed | 12 | Rope taken in per tic while reeling. |
+| Return Speed | 64 | How fast the claw comes back. |
+| Tap to Let Go (tics) | 8 | A press shorter than this is a tap. |
+| **Rope** | | |
+| Reel Speed | 12 | Rope taken in per tic while reeling (and the lasso's reel). |
+| Shortest Rope | 32 | Rope length when fully reeled. |
+| Rope Height | 0.60 | Where the rope meets your body, share of your height. |
+| Ledge Hop | 6 | Lift when letting go at the top of a wall. |
+| Grab Reach | 16 | How close the hand must be to the rope. |
+| Climb Speed Cap | 8 | Most the body moves per tic by hand. |
+| Top Speed | 30 | Speed cap on the rope and on a yank. |
 | Swing Lean | 0.25 | How hard the stick pumps a swing. |
-| Top Speed | 30 | Speed cap on the rope. |
-| Monster Pull | 10 | How fast a sliding monster comes. |
-| Heaviest Pulled | 1000 | Heavier monsters are anchors. |
+| Air Drag | 0.002 | Swing speed lost to air each tic. |
+| Rope Friction | 0.025 | A small constant loss that settles a swing. |
+| **Rope Look** | | |
 | Chain Links | 160 | Most chain links per rope. |
 | Link Size | 0.125 | Size of each link. |
 | Rope Pieces | 12 | Pieces a slack cable is drawn in. |
 | Rope Thickness | 0.6 | Cable thickness. |
-| Shortest Rope | 32 | Rope length when fully reeled. |
-| Rope Height | 0.60 | Where the rope meets your body, share of your height. |
-| Air Drag | 0.002 | Swing speed lost to air each tic. |
-| Rope Friction | 0.025 | A small constant loss that settles a swing. |
-| Ledge Hop | 6 | Lift when letting go at the top of a wall. |
-| Keep Momentum | On | A swing keeps its speed when you land. |
-| Return Speed | 64 | How fast the claw comes back. |
-| Tap to Let Go (tics) | 8 | A press shorter than this is a tap. |
-| Stop Distance | 16 | A sliding monster stops this far from you. |
-| Free Hand Only | On | Only an empty hand may climb. |
-| Grips From Grab | On | RSQ Distance Grab's grab binds take hold of the rope. |
-| Grab Reach | 16 | How close the hand must be to the rope. |
-| Climb Speed Cap | 8 | Most the body moves per tic by hand. |
-| Heaviest Thrown | 1000 | Heaviest monster the Yank throws. |
-| Throw Air | 0.27 | Gravity on a yanked monster in free flight, share of Doom's. |
-| Throw Turns | 1 | Whole turns over a yank. |
-| Throw Stun | 8 | Tics a yanked monster stays stunned after landing. |
+| **Monsters** | | |
+| Heaviest Pulled | 1000 | Heavier monsters (and bosses) are anchors. |
+| Slide Speed | 10 | How fast a sliding monster comes. |
+| Stop Distance | 16 | A pulled monster stops this far from you. |
+| Heaviest Thrown | 1000 | Heaviest monster the Yank and Lasso throw. |
+| Widest Thrown | 64 | Widest monster (radius) they throw. |
+| Tallest Thrown | 110 | Tallest monster they throw. |
+| Throw Air | 0.27 | Gravity on a thrown monster in free flight, share of Doom's. |
+| Throw Turns | 1 | Whole turns over a throw. |
+| Throw Stun | 8 | Tics a thrown monster stays stunned after landing. |
 | Lasso Speed | 24 | Fastest a lassoed monster follows your arm. |
+| **Whip** | | |
 | Whip Reach | 192 | Whip length, map units. |
 | Whip Damage | 12 | Damage of a crack. |
-| Whip Stun | On | A crack knocks the monster into pain. |
-| Whip Snag | On | The tip wraps round things above your hand. |
+| Snag Height | 16 | How far above the hand the tip must hit to snag. |
 | Debug Log | Off | Logs every hook tic to the console. |
-| Reset All | — | Puts every setting back to its default. |
 
 ## Works with
 

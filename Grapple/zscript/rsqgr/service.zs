@@ -82,6 +82,18 @@ class RSQGR_Service : Service
 		return ev.Answer(request, Actor(objectArg), intArg);
 	}
 
+	// THE MENU (ui): GetIntUI("menu.locked", "Grapple" | "Momentum") -> 1 while Gun Bonsai VR is loaded and the console
+	// player has not learned that node (the rows' greying: rsmenu.zs GbOption), else 0. Read from perks.zs's cache
+	// (Gate), never from the patch itself. Not in a game: 1 (nothing is learned yet).
+	override int GetIntUI(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
+	{
+		if (!(request ~== "menu.locked")) return -1;
+		if (consoleplayer < 0 || consoleplayer >= MAXPLAYERS || !playeringame[consoleplayer] || !players[consoleplayer].mo || gamestate != GS_LEVEL) return 1;
+		Name what = stringArg ~== "Momentum" ? 'Momentum' : 'Grapple';
+		int g = RSQGR_Perks.Gate(players[consoleplayer].mo, what);
+		return g == 0 ? 1 : 0;
+	}
+
 	override Object GetObject(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
 	{
 		let ev = RSQGR_Events.Get();

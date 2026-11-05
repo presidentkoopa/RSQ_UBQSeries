@@ -1,6 +1,7 @@
 version "4.14"
 
 #include "zscript/rsqgr/rsmenu.zs"   // Radiant Silvergun Options: the series' shared menu pieces (tools/rsmenu)
+#include "zscript/rsqgr/menurows.zs" // RSQ Grapple rows greyed while their rope or monster mode is off
 // RSQ_Grapple -- a grappling hook for stock QuestZDoom 17.3 (VR). No engine change.
 // Part of the Radiant Silvergun Quest series. Credits: CREDITS.txt.
 
