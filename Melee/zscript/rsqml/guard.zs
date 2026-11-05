@@ -49,7 +49,7 @@ class RSQML_Guard : StaticEventHandler
 	static int GuardLevel(PlayerPawn pmo)
 	{
 		int lv = RSQML.MoveLevel(pmo, null, "Guard", "rsqml_guard");
-		if (lv <= 0 && RSQML.GB() && RSQML.SVI("rsqml_guard_start", 0) != 0) lv = 1;
+		if (lv <= 0 && RSQML.GB() && RSQML.SVI("rsqml_guard_start", 0) != 0 && RSQML.SVI("rsqml_guard", 1) != 0) lv = 1;   // the Guard row still decides
 		return lv;
 	}
 	// a player node of the Guard's tree (0 without Gun Bonsai VR: these have no row)

@@ -96,7 +96,7 @@ off (Keep Adrenaline, the gauge and bar rows, Wrist Cross Bursts, Burst).
 |---|---|---|
 | Slow Motion Key | unbound | The key that toggles slow motion. |
 | Shootdodge Key | unbound | The shootdodge key. |
-| World Speed | 0.25 | How fast the world runs while slowed, from 0.05 (near freeze) to 0.95. With Gun Bonsai VR's Deeper learned, the node's depth is used instead. |
+| World Speed | 0.25 | How fast the world runs while slowed, from 0.05 (near freeze) to 0.95. With Gun Bonsai VR's Deeper learned, slower still: x0.8, 0.6, 0.4 of this. |
 | **Slow Motion** | | |
 | Dodgeable Bullets | On | Enemy hitscans become visible rounds in slow motion. |
 | Lean Out of Bullets | On | Leaning out of a slowed round's path makes it miss. With Gun Bonsai VR: also needs Lean Dodge. |
@@ -187,8 +187,9 @@ RSQ SlowMo runs on its own. It finds the other mods by name at run time and link
   your shot trails and the countdown bar. Photosensitive Mode drops the bar's glint and holds its edge still.
 - **Gun Bonsai with RSQ Gun Bonsai VR:** the Adrenaline, Showdown and Time Dilation perks pulse slow motion
   (switchable). The slow-motion upgrades shape it: **Longer** stretches the burst (up to 8 s) and the meter,
-  **Deeper** slows the world further (down to 10%), **Cheaper** spends the meter more slowly, and **Matrix** turns
-  on the full colour drain and shot trails. With the patch loaded, leaning out of bullets also needs its
+  **Deeper** slows the world further (down to 10% at the default World Speed), **Cheaper** spends the meter more slowly,
+  and **Matrix** turns on the full colour drain and shot trails (learning it switches both rows on; either row can still
+  turn its part off). With the patch loaded, leaning out of bullets also needs its
   **Lean Dodge** upgrade (the menu row still turns it off). At its second level, a lean also dodges a monster's claw.
 - **Brutal Doom / BD22 VR Reloaded:** Brutal Doom fires many enemy bullets as fast projectiles, and those slow to the same
   dodgeable speed as the rounds. Reload Slowdown catches Brutal Doom's reloads too.

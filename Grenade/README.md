@@ -94,7 +94,8 @@ Changed your mind before cooking it? Take the ring again with your other hand an
 
 Options → Radiant Silvergun Options → RSQ Grenade. One page, and one sub menu, **Test and Debug**. With RSQ Gun Bonsai VR
 loaded the page starts with "GunBonsaiOVR detected. Mod features unlocked via upgrades."; Skeet Slow-Mo is greyed until
-the Skeet Window upgrade is learned, and Grenade Types is always greyed (the kinds you have learned decide).
+the Skeet Window upgrade is learned, and Grenade Types is greyed until you learn a grenade type (then All Types gives
+the types you have learned, Frag Only the frag alone).
 
 | Row | Default | What it does |
 |---|---|---|
@@ -107,7 +108,7 @@ the Skeet Window upgrade is learned, and Grenade Types is always greyed (the kin
 | **Throwing** | | |
 | Pin With Your Teeth | On | The mouth pin pull |
 | Alt Fire Changes Type | On | Alt fire cycles the grenade types |
-| Grenade Types | All Types | All Types or Frag Only (without Gun Bonsai VR) |
+| Grenade Types | All Types | All Types or Frag Only (with Gun Bonsai VR, All Types = the types you have learned) |
 | Your Fire Burns You | Auto | Incendiary ground hurts you: Auto (Brutal Doom: yes), Yes, No |
 | **Shooting** | | |
 | Shoot Thrown Grenades | On | Shots set off thrown grenades |

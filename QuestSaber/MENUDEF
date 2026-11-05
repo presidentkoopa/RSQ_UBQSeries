@@ -1,8 +1,9 @@
 // RSQ Saber options, the series' menu (MENU_PASS_BRIEF.md, owner 11-04): ONE page with every option, short Title Case
 // rows under short headers, On/Off first, sliders only where the number matters to play; ONE sub menu, "Test and Debug",
 // with the raw numbers and the debug view. No help text, no presets. Rows behind a Gun Bonsai VR upgrade are UBQSGbOption
-// rows: with RSQ Gun Bonsai VR loaded they grey while the upgrade is not learned (or always, where the upgrade replaces
-// the row), asked of UBQS_SaberService "menu.locked" (zscript.txt). Reset All (UBQSResetAll) resets every row on both
+// rows: with RSQ Gun Bonsai VR loaded they grey while the upgrade is not learned, asked of UBQS_SaberService
+// "menu.locked" (zscript.txt); learned, the row still decides (owner 11-04: Off is off; Hit-Stop and Lock-On Targets cap
+// the upgrade's tics and locks). Reset All (UBQSResetAll) resets every row on both
 // pages. Defaults are unchanged except Show Sabers (new, On).
 
 // ---- Radiant Silvergun Options (tools/rsmenu) ----------------------------------------------------

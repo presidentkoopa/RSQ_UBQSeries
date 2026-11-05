@@ -1,8 +1,8 @@
 // RSQ Grenade options, the series' menu (MENU_PASS_BRIEF.md, owner 11-04): ONE page with every option under short headers,
 // On/Off first; ONE sub menu, "Test and Debug", with the numbers and the debug log. No help text; CVARINFO.txt says what
 // each does. RSQGNGbOption rows (RSQGN_Service "menu.locked", upg.zs), with RSQ Gun Bonsai VR loaded: Skeet Slow-Mo greys
-// until Skeet Window is learned; Grenade Types always greys (under Gun Bonsai VR the kinds you have learned decide, the row
-// is not read: kinds.zs Owns). Reset All (RSQGNResetAll) resets every row on both pages.
+// until Skeet Window is learned; Grenade Types greys until a grenade kind is learned (then All Types = the kinds you have
+// learned, Frag Only = the frag alone: kinds.zs Owns; owner 11-04 "Row can still turn it off"). Reset All (RSQGNResetAll) resets every row on both pages.
 // ---- Radiant Silvergun Options (tools/rsmenu) ----------------------------------------------------
 // The series' one Options entry. Every series pk3 carries this same block with its own prefix: the
 // parent is PROTECTED, so the first definition stays and later ones add nothing (QZD 17.3 merges a

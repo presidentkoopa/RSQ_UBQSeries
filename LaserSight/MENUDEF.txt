@@ -1,7 +1,8 @@
 // RSQ Laser Sight options (menu pass, owner 11-04): ONE page with every option, most important first, under short
 // headers; ONE "Test and Debug" page with the raw numbers and the debug log; Reset All at the foot covers both
 // (RSQLSResetAll reads the rows). No presets, no help text. Rows behind a Gun Bonsai VR upgrade are GbOption rows:
-// greyed while RSQ Gun Bonsai VR (with RSQ Tactical Rig, which offers those nodes) is loaded and the node is unlearned.
+// greyed while RSQ Gun Bonsai VR (with RSQ Tactical Rig, which offers those nodes) is loaded and the node is unlearned;
+// learned, the row turns it on or off (owner 11-04). The top GbLine shows only under that load ("menu.gated", sight.zs).
 
 // ---- Radiant Silvergun Options (tools/rsmenu) ----------------------------------------------------
 // The series' one Options entry. Every series pk3 carries this same block with its own prefix: the
@@ -57,7 +58,7 @@ OptionValue "RSQLS_Units"
 OptionMenu "RSQLS_Options"
 {
 	Title "RSQ LASER SIGHT"
-	RSQLSGbLine ""
+	RSQLSGbLine "", "RSQLS_SightService"
 	StaticText " "
 	Option "Laser Sight", "rsqls_on", "OnOff"
 	Option "Main Hand", "rsqls_main", "OnOff"

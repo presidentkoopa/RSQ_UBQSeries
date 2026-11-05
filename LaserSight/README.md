@@ -93,9 +93,10 @@ off-hand gun. Let go of the grip and it comes straight back.
 
 Options → Radiant Silvergun Options → RSQ Laser Sight. One page; the raw numbers and the debug log are on **Test and
 Debug**; **Reset All** at the foot resets both. With RSQ Gun Bonsai VR and RSQ Tactical Rig loaded (the Rig is what
-offers the laser nodes), Target Lock, Colour on Target and Headshot Reaction follow the upgrades instead of their rows:
-they stay greyed until Target Lock 1, Target Lock 2 and Headshot Reaction 1 are learned, and the page's top line reads
-"GunBonsaiOVR detected. Mod features unlocked via upgrades." Without the Rig the rows rule as without Gun Bonsai VR.
+offers the laser nodes), Target Lock, Colour on Target and Headshot Reaction are unlocked by the upgrades: they stay
+greyed until Target Lock 1, Target Lock 2 and Headshot Reaction 1 are learned, and the page's top line reads
+"GunBonsaiOVR detected. Mod features unlocked via upgrades." Learning one switches its row on; the row can still turn it
+off. Without the Rig nothing is gated: no top line, and the rows work as without Gun Bonsai VR.
 A colour row is greyed while the switch it belongs to is off.
 
 | Row | Default | What it does |
@@ -175,8 +176,9 @@ Runs on its own with any weapon mod.
 - **RSQ Gun Bonsai VR (with Gun Bonsai and RSQ TacticalRig):** Target Lock and Headshot Reaction become upgrades you
   earn, after TacticalRig's Quick Draw. Level 1 of Target Lock is the lock, level 2 adds the target colour. Level 1 of
   Headshot Reaction is the colour change; level 2 makes a gun hit with your dot on a monster's head count as a
-  headshot. While Gun Bonsai VR and TacticalRig are both loaded, those menu switches stand aside; with Gun Bonsai VR
-  but no TacticalRig the upgrades can't exist, so the switches work as without it.
+  headshot. While Gun Bonsai VR and TacticalRig are both loaded, each menu switch works once its upgrade is learned
+  (learning turns it on, the switch can turn it off); with Gun Bonsai VR but no TacticalRig the upgrades can't exist,
+  so the switches work as without it.
 - **RSQ Accessibility:** Steady Hands smooths the dot's aim (the beam stays on the gun). Colour-blind mode gives the
   hands the series' colour pair and shows the target lock by shape and pulse. Photosensitive mode caps pulse rates.
   Cue Size scales the dot, glow and arc. Text Size scales the range readout. Rumble Strength 0 silences the toggle

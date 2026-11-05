@@ -229,6 +229,11 @@ class OptionMenuItemRSQMLPreset : OptionMenuItemOptionBase
 //   RSQMLGbLine "Gold"                                            the top line (its text is fixed here; the argument is
 //                                                               its font colour, "" = Gold). Without GBOVR it takes
 //                                                               itself off the page, so it leaves no blank row.
+//   RSQMLGbLine "", "Service"                                     the same, shown only when that service answers
+//                                                               GetIntUI("menu.gated") == 1: the mod says this load gates
+//                                                               a row (owner 11-04: Laser Sight with GBOVR but no Rig has
+//                                                               nothing gated, so no line). The answer must stay the same
+//                                                               for the whole load (it may only depend on what is loaded).
 //   RSQMLGbOption "Label", "cvar", "OnOff", "Service", "feature"   an Option row greyed while <feature> is locked
 //   RSQMLGbSlider "Label", "cvar", min, max, step, prec, "Service", "feature"   the same for a Slider row
 //
@@ -245,24 +250,40 @@ class OptionMenuItemRSQMLGbLine : OptionMenuItemStaticText
 {
 	const TEXT = "GunBonsaiOVR detected. Mod features unlocked via upgrades.";
 
-	OptionMenuItemRSQMLGbLine Init(String colour = "")
+	Name mSvc;
+
+	OptionMenuItemRSQMLGbLine Init(String colour = "", String service = "")
 	{
 		Super.Init(TEXT, -1, true);
 		mColor = colour.Length() ? Font.FindFontColor(colour) : Font.CR_GOLD;
+		mSvc = service.Length() ? Name(service) : 'None';
 		return self;
+	}
+
+	// GBOVR is loaded and, when the row names a service, that mod says this load gates a row of its page
+	bool Shown()
+	{
+		if (!RSQML_RSMenu.GbLoaded()) return false;
+		if (mSvc == 'None') return true;
+		let it = ServiceIterator.Find(mSvc);
+		Service s;
+		while (s = it.Next())
+			if (s.GetClassName() == mSvc) return s.GetIntUI("menu.gated") == 1;
+		return false;
 	}
 
 	override int Draw(OptionMenuDescriptor desc, int y, int indent, bool selected)
 	{
-		if (RSQML_RSMenu.GbLoaded()) drawLabel(indent, y, mColor);
+		if (Shown()) drawLabel(indent, y, mColor);
 		return -1;
 	}
 
-	// Without GBOVR the line takes itself off the open page (the option menu ticks every row of its page each menu
-	// tic, before the first frame is drawn), so the page reads exactly as it does without this row.
+	// Not shown (no GBOVR, or nothing gated under this load), the line takes itself off the open page (the option menu
+	// ticks every row of its page each menu tic, before the first frame is drawn), so the page reads exactly as it does
+	// without this row.
 	override void Ticker()
 	{
-		if (RSQML_RSMenu.GbLoaded()) return;
+		if (Shown()) return;
 		let m = OptionMenu(Menu.GetCurrentMenu());
 		if (!m || !m.mDesc) return;
 		let d = m.mDesc;

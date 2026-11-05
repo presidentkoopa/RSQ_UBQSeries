@@ -198,8 +198,8 @@ class RSQSM_Body : EventHandler
 		let cv = CVar.GetCVar("rsqsm_drain", me);
 		let yv = CVar.FindCVar("rsm_yield");
 		bool stood = clock && clock.rival && (!yv || yv.GetBool());
-		bool matrix = RSQSM_Clock.MatrixOn();	// MATRIX (Gun Bonsai VR): the full drain while slowed, whatever the row says
-		if (((cv && cv.GetBool()) || matrix) && clock && !stood)
+		bool matrix = RSQSM_Clock.MatrixOn();	// MATRIX (Gun Bonsai VR): the full drain while slowed, while the Colour Drain row is on
+		if (cv && cv.GetBool() && clock && !stood)
 		{
 			double depth = clamp(clock.curDepth > 0 ? clock.curDepth : 0.25, 0.05, 0.95);	// Deeper's, under the patch
 			double k = clamp((1.0 - clock.scale) / max(1.0 - depth, 0.05), 0.0, 1.0);

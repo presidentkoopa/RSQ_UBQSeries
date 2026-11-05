@@ -79,7 +79,7 @@ server int   rsqgb_kr_life      = 7;     // Bits Vanish After: seconds, 0 = neve
 server int   rsqgb_kr_ammo_mode = 1;     // Ammo Bits Give: 0 the gun in hand, 1 any gun carried
 server bool  rsqgb_kr_ammotype1 = true;  // which of a gun's two ammo types count (clip mods: SoM's readme)
 server bool  rsqgb_kr_ammotype2 = false;
-server float rsqgb_kr_magnet    = 2.0;   // Bits Fly to Me: metres, 0 = off (the Magnet node raises it); 2 m by default (owner 11-04: a VR player standing still picks bits up)
+server float rsqgb_kr_magnet    = 2.0;   // Bits Fly to Me: metres, 0 = off (also with Magnet learned; the Magnet node raises a row that is on); 2 m by default (owner 11-04: a VR player standing still picks bits up)
 server noarchive bool rsqgb_kr_debug = false;   // Debug Log: one console line a kill (what burst into how many bits)
 server int   rsqgb_kr_min       = 1;     // Range mode (SoM's som_kr_min / max / rnd)
 server int   rsqgb_kr_max       = 3;

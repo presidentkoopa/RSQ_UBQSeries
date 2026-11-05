@@ -252,12 +252,16 @@ class RSQWP_Whip : EventHandler
 		if (!pmo || !pmo.player) return 0;
 		return w.gbLv[pmo.PlayerNumber() * G_N + g];
 	}
-	// an option row the tree takes over: the row without the patch, the node learned with it
+	// an option row the tree unlocks: the row without the patch; with it the node learned AND the row (owner 11-04 "Row
+	// can still turn it off": learned, the row decides; learning switches the row on once, GBOVR's RowsOnLearn)
 	static bool Unlock(Actor pmo, int g, String cv, bool fb)
 	{
 		int l = Gb(pmo, g);
-		return l < 0 ? RSQWP_Util.Flag(cv, fb) : l >= 1;
+		return (l < 0 || l >= 1) && RSQWP_Util.Flag(cv, fb);
 	}
+	// MANTLE: the row; under Gun Bonsai VR also its node learned. HIT-STOP: the row; under it also Strike True learned.
+	static bool MantleOn(Actor pmo) { return Gb(pmo, G_MANTLE) != 0 && RSQWP_Util.Flag("rsqwp_mantle", true); }
+	static bool HitStopOn(Actor pmo) { return Gb(pmo, G_STRIKE) != 0 && RSQWP_Util.Flag("rsqwp_whip_hitstop", false); }
 	static bool GbAny(int g)
 	{
 		for (int n = 0; n < MAXPLAYERS; n++) if (playeringame[n] && players[n].mo && Gb(players[n].mo, g) >= 1) return true;
@@ -617,7 +621,7 @@ class RSQWP_Whip : EventHandler
 	// BlockThingsIterator ever returns one); the list is pruned as they explode (MF_MISSILE cleared).
 	override void WorldThingSpawned(WorldEvent e)
 	{
-		if (e.Thing && e.Thing.bMISSILE && (gbOn ? GbAny(G_CRACKSHOT) : RSQWP_Util.Flag("rsqwp_whip_fireball", false))) missiles.Push(e.Thing);
+		if (e.Thing && e.Thing.bMISSILE && (!gbOn || GbAny(G_CRACKSHOT)) && RSQWP_Util.Flag("rsqwp_whip_fireball", false)) missiles.Push(e.Thing);
 	}
 
 	void WorldTick2()
@@ -2775,9 +2779,9 @@ class RSQWP_Whip : EventHandler
 				}
 				continue;
 			}
-			// the Mantle node under Gun Bonsai VR (2: from a swing too), the row without
+			// the Mantle row; under Gun Bonsai VR also its node learned (2: from a swing too)
 			int mlv = Gb(pmo, G_MANTLE);
-			if (mlv < 0 ? !RSQWP_Util.Flag("rsqwp_mantle", true) : mlv < 1) continue;
+			if (!MantleOn(pmo)) continue;
 			for (int hand = 0; hand < 2; hand++)
 			{
 				int i = pn * 2 + hand;
@@ -2866,10 +2870,11 @@ class RSQWP_Whip : EventHandler
 		}
 		// HIT-STOP (option, owner's pick 10; surveys/01_MELEE 3.6): the cracked monster freezes for a beat --
 		// 3 tics for the lightest crack ("a tap") to 6 for the hardest ("a heavy"); 10 reads as a bug.
-		// STRIKE TRUE (Gun Bonsai VR): the option becomes levels, 3 / 4 / 6 tics whatever the crack
+		// STRIKE TRUE (Gun Bonsai VR): the option becomes levels, 3 / 4 / 6 tics whatever the crack -- while the Hit-Stop
+		// row is on (owner 11-04 "Row can still turn it off"; unlearned under the patch, none)
 		int frz = 0;
 		int stl = Gb(pmo, G_STRIKE);
-		if (crack && v && !v.bDestroyed && v.Health > 0 && v.bISMONSTER && (stl > 0 || (stl < 0 && RSQWP_Util.Flag("rsqwp_whip_hitstop", false))))
+		if (crack && v && !v.bDestroyed && v.Health > 0 && v.bISMONSTER && HitStopOn(pmo))
 		{
 			static const int ST[] = { 0, 3, 4, 6 };
 			frz = stl > 0 ? ST[clamp(stl, 1, 3)] : int(3 + 3 * hk + 0.5);

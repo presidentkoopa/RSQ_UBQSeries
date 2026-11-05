@@ -236,20 +236,26 @@ class SSQ_Guard : Inventory
 
 	// BACK PLATE (Gun Bonsai VR patch, GBOVR_TREES.md 4.3 Block): what a shield you are not holding does. 0 nothing, 1
 	// blocks, 2 blocks and turns shots (missiles and bullets) as a held one does. Without the patch Block While Holstered
-	// (ssq_guard_stowed) is both or neither, as before; under it the node replaces that row.
+	// (ssq_guard_stowed) is both or neither, as before; under it the node's level, while that row is on (owner 11-04
+	// "Row can still turn it off": the node unlocks the row, the row decides; learning switches it on once, GBOVR).
 	static int BackPlate(PlayerPawn mo)
 	{
-		if (!SSQ_Upg.On()) return SSQ_Handler.SVI('ssq_guard_stowed', 0) != 0 ? 2 : 0;
+		bool row = SSQ_Handler.SVI('ssq_guard_stowed', 0) != 0;
+		if (!SSQ_Upg.On()) return row ? 2 : 0;
+		if (!row) return 0;
 		return clamp(SSQ_Upg.Lv(mo ? mo.FindInventory('SSQ_ShieldSaw') : null, "BackPlate"), 0, 2);
 	}
 	// the plate Plate() just found turns what it stops: always in the hand, on the back only at Back Plate 2
 	bool PlateTurns() { return plateHeld != 0 || BackPlate(PlayerPawn(Owner)) >= 2; }
 
 	// SHIELD WALL (Gun Bonsai VR patch): how long a perfect block slows time, ms (0 none). Without the patch the
-	// Perfect-Block Slow-Mo row's half second, as before; under it the node's levels (0.75 / 1 / 1.25 s) replace the row.
+	// Perfect-Block Slow-Mo row's half second, as before; under it the node's levels (0.75 / 1 / 1.25 s), while the row
+	// is on (owner 11-04 "Row can still turn it off").
 	static int ShieldWallMs(PlayerPawn mo)
 	{
-		if (!SSQ_Upg.On()) return SSQ_Handler.SVI('ssq_perfect_slowmo', 0) != 0 ? 500 : 0;
+		bool row = SSQ_Handler.SVI('ssq_perfect_slowmo', 0) != 0;
+		if (!SSQ_Upg.On()) return row ? 500 : 0;
+		if (!row) return 0;
 		int lv = SSQ_Upg.Lv(mo ? mo.FindInventory('SSQ_ShieldSaw') : null, "ShieldWall");
 		return lv > 0 ? int(SSQ_Upg.Num("ShieldWall.ms", lv, 0)) : 0;
 	}
@@ -315,10 +321,12 @@ class SSQ_Guard : Inventory
 		if (tics > 0) t.freezetics = max(t.freezetics, tics);
 	}
 	// STRIKE TRUE (Gun Bonsai VR patch; the class is RSQ_Upgrade_BashHitStop, the saber's own Strike True has other
-	// numbers): under the patch the node's 4 / 5 / 6 tics replace the Hit-Stop rows; without it the rows as before.
+	// numbers): under the patch the node's 4 / 5 / 6 tics, while the Hit-Stop row is on (owner 11-04 "Row can still turn
+	// it off"); without it the rows as before.
 	static int HitStopTics(PlayerPawn by)
 	{
-		if (!SSQ_Upg.On()) return SSQ_Handler.SVI('ssq_hitstop', 0) != 0 ? clamp(SSQ_Handler.SVI('ssq_hitstop_tics', 4), 1, 10) : 0;
+		if (SSQ_Handler.SVI('ssq_hitstop', 0) == 0) return 0;
+		if (!SSQ_Upg.On()) return clamp(SSQ_Handler.SVI('ssq_hitstop_tics', 4), 1, 10);
 		int lv = SSQ_Upg.Lv(by ? by.FindInventory('SSQ_ShieldSaw') : null, "BashHitStop");
 		return lv > 0 ? int(SSQ_Upg.Num("BashHitStop.tics", lv, 0)) : 0;
 	}

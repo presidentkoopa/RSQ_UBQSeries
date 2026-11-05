@@ -238,11 +238,11 @@ class RSQML_Headlock : StaticEventHandler
 		if (RSQML.Debug() > 0) Console.Printf("RSQML headlock: holding %s (t%d)", a.GetClassName(), level.maptime);
 	}
 
-	// HUMAN SHIELD: with Gun Bonsai VR, the off glove's node; without it, the row
+	// HUMAN SHIELD: the row; with Gun Bonsai VR, and the off glove's node learned (owner 11-04 "Row can still turn it off")
 	static bool ShieldOn(PlayerPawn pmo)
 	{
-		if (RSQML.GB()) return RSQML.GrappleLevel(pmo, "HumanShield") > 0;
-		return Flag("rsqml_headlock_shield", false);
+		if (!Flag("rsqml_headlock_shield", false)) return false;
+		return !RSQML.GB() || RSQML.GrappleLevel(pmo, "HumanShield") > 0;
 	}
 
 	// LET GO NOW (Headlock Uppercut): the hold ends and the freeze with it, so the blow can move it this tic

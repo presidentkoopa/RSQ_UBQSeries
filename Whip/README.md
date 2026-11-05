@@ -99,7 +99,8 @@ let go at the top with all your speed.
 
 Options → Radiant Silvergun Options → RSQ Whip. One page, and one sub menu, **Test and Debug**. With RSQ Gun Bonsai VR
 loaded the page starts with "GunBonsaiOVR detected. Mod features unlocked via upgrades." and the rows marked GB are greyed
-while that whip node is not learned (they do nothing until then).
+while that whip node is not learned (they do nothing until then). Learning one turns its row on; the row can still
+turn it off.
 
 | Row | Default | What it does |
 |---|---|---|
@@ -114,7 +115,7 @@ while that whip node is not learned (they do nothing until then).
 | **Crack** | | |
 | Stun | On | A crack breaks off a monster's attack |
 | Knockback | Off | A crack knocks the monster about |
-| Hit-Stop | Off | A crack freezes it for a beat |
+| Hit-Stop (GB) | Off | A crack freezes it for a beat |
 | Throws Switches | On | A crack uses a switch it lands on |
 | Fetches Pickups | On | A crack flicks a pickup to you |
 | Crack Fireballs (GB) | Off | Cracks explode missiles |

@@ -808,14 +808,31 @@ class UBQS_SaberBase : Weapon abstract
 		if (f) f.Push(HandPos(), Aim());
 	}
 
+	// BATTLE MEDITATION (Gun Bonsai VR): one mark, one more a level, never more than the Lock-On Targets row (owner 11-04
+	// "Row can still turn it off": the row still sets fewer; at its default 5 the node decides); the row without the patch
+	int MostLocks()
+	{
+		int most = clamp(UInt("ubqs_locks", 5), 1, 8);
+		if (gbOn) most = min(most, clamp(int(UBQS_Upg.Num("BattleMeditation.locks", uBM, 1 + uBM)), 1, 8));
+		return most;
+	}
+	// HIT-STOP (pick 2, ubqs_hitstop, off by default; 01_MELEE 3.6). STRIKE TRUE (Gun Bonsai VR): the row's three settings
+	// as levels under the patch -- the row still decides (owner 11-04 "Row can still turn it off"): Off is off, and Light /
+	// Medium cap it (learning sets Heavy once, GBOVR's RowsOnLearn)
+	int HitStopTics()
+	{
+		int hstop = clamp(UInt("ubqs_hitstop", 0), 0, 10);
+		if (gbOn) hstop = min(hstop, int(UBQS_Upg.Num("StrikeTrue.tics", uStrike, 0)));
+		return hstop;
+	}
+
 	// ---- PAINTING: the enemy nearest your hand's line, inside a narrow cone, one every few tics ---------------
 	Array<Actor> locks;
 	int lastPaintTic;
 	void Paint()
 	{
-		// BATTLE MEDITATION (Gun Bonsai VR): one mark, one more a level; the Lock-On Targets row without the patch
 		UpgRefresh();
-		int most = gbOn ? clamp(int(UBQS_Upg.Num("BattleMeditation.locks", uBM, 1 + uBM)), 1, 8) : clamp(UInt("ubqs_locks", 5), 1, 8);
+		int most = MostLocks();
 		// A DEAD LOCK IS NOT A LOCK. Its mark destroys itself and NextLeg skips it, but it still counted
 		// against ubqs_locks -- so killing what you painted mid-hold stopped you painting anything else.
 		for (int k = locks.Size() - 1; k >= 0; k--)
@@ -2061,9 +2078,7 @@ class UBQS_SaberBase : Weapon abstract
 		bool   cutAny = false;
 		bool   ripe = uRiposte > 0 && level.maptime <= primedUntil;
 		double um = UpgCutMult(ripe);
-		int    hstop = clamp(UInt("ubqs_hitstop", 0), 0, 10);   // pick 2, off by default (01_MELEE §3.6)
-		// STRIKE TRUE (Gun Bonsai VR): the Hit-Stop row's three settings as levels under the patch
-		if (gbOn) hstop = int(UBQS_Upg.Num("StrikeTrue.tics", uStrike, 0));
+		int    hstop = HitStopTics();   // pick 2, off by default; Strike True under Gun Bonsai VR (HitStopTics)
 		// THE BLADE WALKED THROUGH THE TIC, not tested where it happens to be now. A 90-unit blade crosses a
 		// 20-radius imp in well under a tic on a hard swing, so both samples could sit either side of the body
 		// and the swing passed clean through it -- the harder you swung, the more it missed. Deflect() has
@@ -4745,6 +4760,7 @@ class UBQS_Force : Inventory
 	int    uPush, uPull, uChoke, uJump, uChain;
 	// THE FORCE'S TREE (GBOVR_TREES.md 4.2): Force Sensitive (the unlock under the patch), Force Speed, Force Lightning
 	int    uFS, uSpeed, uLight;
+	int    uStrikeM, uBMM;          // the menu's: Strike True / Battle Meditation, best on any saber (UBQS_SaberService menu.locked)
 	Array<Actor> lightBeams;        // FORCE LIGHTNING's bolt: one UBQS_LightningBeam per hop (Bolt / KillBeams)
 	Actor  lightAim, lightTarget;  // FORCE LIGHTNING: what the palm-out hand is aimed at, and what the bolt pours into
 	int    lightCharge, lightUntil, lightLv;
@@ -5515,8 +5531,11 @@ class UBQS_Force : Inventory
 		if (!svc)
 		{
 			uPush = 0; uPull = 0; uChoke = 0; uJump = 0; uChain = 0; uStart = 1.0; uFS = 0; uSpeed = 0; uLight = 0;
+			uStrikeM = 0; uBMM = 0;
 			return;
 		}
+		uStrikeM = max(0, svc.GetInt("level", "StrikeTrue", 0, 0, owner));
+		uBMM     = max(0, svc.GetInt("level", "BattleMeditation", 0, 0, owner));
 		uPush  = max(0, svc.GetInt("level", "ForcePush", 0, 0, owner));
 		uPull  = max(0, svc.GetInt("level", "ForcePull", 0, 0, owner));
 		uChoke = max(0, svc.GetInt("level", "ForceChoke", 0, 0, owner));
@@ -7039,16 +7058,17 @@ class UBQS_SaberService : Service
 	// never from Gun Bonsai VR itself (ui scope).
 	//   ForcePush / ForceJump: Force Sensitive and that power learned (or Gun Bonsai VR's unlearned start share above 0)
 	//   ForceLightning: Force Sensitive and Force Lightning learned (Force Lightning exists only as that upgrade)
-	//   StrikeTrue, BattleMeditation: under Gun Bonsai VR those upgrades REPLACE the Hit-Stop and Lock-On Targets rows
-	//     (zscript.txt: "if (gbOn) hstop = ... StrikeTrue", "most = gbOn ? ... BattleMeditation"), so the rows are always 1
+	//   StrikeTrue, BattleMeditation: under Gun Bonsai VR those upgrades set the Hit-Stop tics and the lock-on count; the
+	//     rows cap them (Off is off: owner 11-04 "Row can still turn it off"), so each row opens once its upgrade is learned
 	override int GetIntUI(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
 	{
 		if (!(request ~== "menu.locked")) return 0;
-		if (stringArg ~== "StrikeTrue" || stringArg ~== "BattleMeditation") return 1;
 		let mo = players[consoleplayer].mo;
 		let f = mo ? UBQS_Force(mo.FindInventory("UBQS_Force")) : null;
 		if (!f) return 1;
 		if (!f.uLoaded) return 0;
+		if (stringArg ~== "StrikeTrue") return f.uStrikeM > 0 ? 0 : 1;
+		if (stringArg ~== "BattleMeditation") return f.uBMM > 0 ? 0 : 1;
 		if (f.uFS <= 0) return 1;
 		if (stringArg ~== "ForcePush") return (f.uPush > 0 || f.uStart > 0) ? 0 : 1;
 		if (stringArg ~== "ForceJump") return (f.uJump > 0 || f.uStart > 0) ? 0 : 1;

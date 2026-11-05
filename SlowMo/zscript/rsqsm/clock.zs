@@ -127,11 +127,15 @@ class RSQSM_Clock : EventHandler
 		return CvP(n, players[consoleplayer], d);
 	}
 	// DEEPER (Gun Bonsai VR, GBOVR_TREES.md 4.9; owner 11-03: the base is today's): at level 0 the World Speed row, as
-	// without the patch; learned, the node's -- 0.2, 0.15, 0.1 (the best among the players). curDepth keeps it for the drawing.
+	// without the patch; learned, 0.2, 0.15, 0.1 at the default World Speed (0.25; the best among the players). The row
+	// still sets the depth (owner 11-04 "Row can still turn it off": Deeper has no row of its own, so World Speed scales
+	// it -- the node deepens what the row sets by x0.8, 0.6, 0.4, and a shallower row gives a shallower slow motion).
+	// curDepth keeps it for the drawing.
 	double Depth()
 	{
-		if (gbOn) { int l = GbMax('Deeper'); if (l >= 1) { static const double D[] = { 0.2, 0.15, 0.1 }; return D[clamp(l, 1, 3) - 1]; } }
-		return clamp(Cv("rsm_depth", 0.25), 0.05, 0.95);
+		double d = clamp(Cv("rsm_depth", 0.25), 0.05, 0.95);
+		if (gbOn) { int l = GbMax('Deeper'); if (l >= 1) { static const double DEEP_K[] = { 0.8, 0.6, 0.4 }; double k = DEEP_K[clamp(l, 1, 3) - 1]; return clamp(d * k, 0.05, 0.95); } }
+		return d;
 	}
 	double curDepth;
 
@@ -202,7 +206,8 @@ class RSQSM_Clock : EventHandler
 		int g = c ? c.Gb(n, 'LeanDodge') : -1;
 		return g < 0 || g >= 1;
 	}
-	// MATRIX: the colour drain and the shot trails at full while slowed, whatever their rows say
+	// MATRIX: the colour drain and the shot trails at full while slowed -- each while its own row is on (owner 11-04 "Row
+	// can still turn it off"; learning Matrix switches both rows on once, GBOVR's RowsOnLearn)
 	static clearscope bool MatrixOn()
 	{
 		let c = RSQSM_Clock(EventHandler.Find("RSQSM_Clock"));

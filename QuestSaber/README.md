@@ -108,8 +108,8 @@ once, like a Force pull.
 
 Options → Radiant Silvergun Options → RSQ Saber. One page, and one sub menu, **Test and Debug**. With RSQ Gun Bonsai VR
 loaded the page starts with "GunBonsaiOVR detected. Mod features unlocked via upgrades." and the rows marked GB below are
-greyed while their upgrade is not learned (Hit-Stop and Lock-On Targets stay greyed: under Gun Bonsai VR the Strike True
-and Battle Meditation upgrades replace them).
+greyed while their upgrade is not learned. Learned, the row still decides: Off is off (learning a switch's upgrade turns
+it on), and Hit-Stop and Lock-On Targets cap what Strike True and Battle Meditation give.
 
 | Row | Default | What it does |
 |---|---|---|

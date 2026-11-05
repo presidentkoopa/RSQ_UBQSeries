@@ -14,6 +14,85 @@ class RSQ_Upgrade_Base : TFLV_Upgrade_BaseUpgrade
 	// still counts on top (rageUp, set by RSQ_Upgrade_Rage.Raise / Lower).
 	int rageUp;
 	int Capped(int cap) const { return min(int(level), cap + rageUp); }
+
+	// ---- LEARNING TURNS ITS ROW ON (owner 11-04, "Row can still turn it off") -------------------------------------
+	// A mod row that a node unlocks is greyed until the node is learned; learned, the ROW decides (off is off, the mod
+	// checks row AND node), and learning switches that row on once, so a learned upgrade starts on. rowSeen is the
+	// level whose rows have been switched on (saved with the bag, so a reload or a new map never switches them again;
+	// a save from before this starts at 0 and switches on, once, the rows of what it already learned -- which is what
+	// those rows did then, since a learned node used to override them). Only a row that is off now (0) is set; the
+	// cvar is found by name, so a mod that is not loaded is skipped. RSQ_MeleeHandler.WorldTick runs LearnRows.
+	int rowSeen;
+	void RowsOnLearn()
+	{
+		int lv = enabled ? int(level) - rageUp : 0;
+		if (lv < rowSeen) rowSeen = lv;
+		if (lv <= rowSeen) return;
+		// node short name, the level that unlocks the row, the row's cvar, the value "on" is
+		static const String T[] = {
+			"Grapple", "1", "rsqgr_on", "1",                     "SwingMomentum", "1", "rsqgr_swing", "1",
+			"TargetLock", "1", "rsqls_lock", "1",                "TargetLock", "2", "rsqls_target_recolor", "1",
+			"HeadshotReaction", "1", "rsqls_head", "1",
+			"LeanDodge", "1", "rsqsm_lean", "1",                 "Matrix", "1", "rsqsm_drain", "1",
+			"Matrix", "1", "rsqsm_trails", "1",
+			"BackPlate", "1", "ssq_guard_stowed", "1",           "ShieldWall", "1", "ssq_perfect_slowmo", "1",
+			"BashHitStop", "1", "ssq_hitstop", "1",
+			"Guard", "1", "rsqml_guard", "1",                    "WallSplat", "1", "rsqml_wallsplat", "1",
+			"GroundPound", "1", "rsqml_groundpound", "1",        "ClearOut", "1", "rsqml_clearout", "1",
+			"HumanShield", "1", "rsqml_headlock_shield", "1",    "ReturnFire", "1", "rsqml_hadouken", "1",
+			"HeavyHands", "1", "rsqml_heavyhands", "1",
+			"CrackShot", "1", "rsqwp_whip_fireball", "1",        "Lasso", "1", "rsqwp_whip_lasso", "1",
+			"Snag", "1", "rsqwp_whip_snag", "1",                 "Mantle", "1", "rsqwp_mantle", "1",
+			"WhipMomentum", "1", "rsqwp_carry", "1",             "WhipStrikeTrue", "1", "rsqwp_whip_hitstop", "1",
+			"SkeetWindow", "1", "rsqgn_skeet_window", "1",
+			"Impact", "1", "rsqgn_kinds_free", "1",              "Incendiary", "1", "rsqgn_kinds_free", "1",
+			"Freeze", "1", "rsqgn_kinds_free", "1",              "Stun", "1", "rsqgn_kinds_free", "1",
+			"Smoke", "1", "rsqgn_kinds_free", "1",               "Flash", "1", "rsqgn_kinds_free", "1",
+			"Charm", "1", "rsqgn_kinds_free", "1",               "Infight", "1", "rsqgn_kinds_free", "1",
+			"StrikeTrue", "1", "ubqs_hitstop", "6",              "ForcePush", "1", "ubqs_alt", "1",
+			"ForceJump", "1", "ubqs_force_jump", "1",            "Magnet", "1", "rsqgb_kr_magnet", "2"
+		};
+		String me = GetClassName();
+		me = me.Mid(12);   // "RSQ_Upgrade_"
+		for (int i = 0; i + 3 < T.Size(); i += 4)
+		{
+			if (!(T[i] ~== me)) continue;
+			int at = T[i + 1].ToInt();
+			if (at <= rowSeen || at > lv) continue;
+			let c = CVar.FindCVar(T[i + 2]);
+			if (!c || c.GetFloat() != 0) continue;
+			int ty = c.GetRealType();
+			if (ty == CVar.CVAR_Bool) c.SetBool(true);
+			else if (ty == CVar.CVAR_Float) c.SetFloat(T[i + 3].ToDouble());
+			else c.SetInt(T[i + 3].ToInt());
+			let dbg = CVar.FindCVar("rsq_xp_debug");
+			if (dbg && dbg.GetBool())
+				Console.Printf("RSQ learn: %s %d -> row %s on", me, lv, T[i + 2]);
+		}
+		rowSeen = lv;
+	}
+	// every RSQ node a player holds, in the player bag and in every weapon's record
+	static void LearnRows(PlayerPawn pmo)
+	{
+		let stats = TFLV_PerPlayerStats.GetStatsFor(pmo);
+		if (!stats) return;
+		if (stats.upgrades)
+			for (int i = 0; i < stats.upgrades.upgrades.Size(); ++i)
+			{
+				let u = RSQ_Upgrade_Base(stats.upgrades.upgrades[i]);
+				if (u) u.RowsOnLearn();
+			}
+		for (int w = 0; w < stats.weapons.Size(); ++w)
+		{
+			let info = stats.weapons[w];
+			if (!info || !info.upgrades) continue;
+			for (int i = 0; i < info.upgrades.upgrades.Size(); ++i)
+			{
+				let u = RSQ_Upgrade_Base(info.upgrades.upgrades[i]);
+				if (u) u.RowsOnLearn();
+			}
+		}
+	}
 	static bool GloveInfo(TFLV_WeaponInfo info) { return info && RSQM.IsGloveName(info.wpnClass); }
 	static bool SaberInfo(TFLV_WeaponInfo info) { return info && RSQM.IsSaberName(info.wpnClass); }
 	static bool ShieldInfo(TFLV_WeaponInfo info) { return info && RSQM.IsShieldName(info.wpnClass); }

@@ -94,11 +94,14 @@ class RSQ_KRHandler : EventHandler
 		if (shortName == "LuckyKill") return h.lvLucky[n];
 		return 0;
 	}
-	// MAGNET: bits inside 2, 3, 4 m drift to you; the Bits Fly to Me row (metres) when it reaches further
+	// MAGNET: bits inside 2, 3, 4 m drift to you; the Bits Fly to Me row (metres) when it reaches further. The row at 0 is
+	// off, Magnet or not (owner 11-04 "Row can still turn it off"; learning Magnet sets an Off row to 2 m once, GBOVR).
 	static double MagnetM(Actor pawn)
 	{
 		static const double M[] = { 0, 2, 3, 4 };
-		return max(SV("rsqgb_kr_magnet", 2.0), M[clamp(Perk(pawn, "Magnet"), 0, 3)]);
+		double row = SV("rsqgb_kr_magnet", 2.0);
+		if (row <= 0) return 0;
+		return max(row, M[clamp(Perk(pawn, "Magnet"), 0, 3)]);
 	}
 
 	// health per bit at the Bits per Kill preset

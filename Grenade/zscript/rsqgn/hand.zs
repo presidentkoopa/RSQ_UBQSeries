@@ -289,13 +289,16 @@ class RSQGN_Handler : EventHandler
 	}
 
 	// THE MENU'S GUN BONSAI VR GATING (RSQGN_Service GetIntUI, upg.zs): the console player's Skeet Window level, asked once a
-	// second here in play (ui code cannot ask Gun Bonsai VR)
-	transient int menuSkeet, menuTic;
+	// second here in play (ui code cannot ask Gun Bonsai VR); and how many grenade kinds they have learned
+	transient int menuSkeet, menuKinds, menuTic;
 	void MenuRefresh()
 	{
 		if (menuTic > 0 && level.maptime >= menuTic && level.maptime < menuTic + 35) return;
 		menuTic = max(level.maptime, 1);
-		menuSkeet = RSQGN_Upg.Lv(players[consoleplayer].mo, "SkeetWindow");
+		let mo = players[consoleplayer].mo;
+		menuSkeet = RSQGN_Upg.Lv(mo, "SkeetWindow");
+		menuKinds = 0;
+		for (int k = RSQGN_Kind.FRAG + 1; k < RSQGN_Kind.COUNT; k++) if (RSQGN_Upg.Lv(mo, RSQGN_Kind.Node(k)) >= 1) menuKinds++;
 	}
 
 	override void WorldTick()

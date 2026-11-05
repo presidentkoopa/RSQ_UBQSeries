@@ -51,6 +51,8 @@ class RSQ_MeleeHandler : EventHandler
 		for (int pn = 0; pn < MAXPLAYERS; pn++)
 		{
 			if (!playeringame[pn] || !players[pn].mo) continue;
+			// a node learned since the last look switches its mod's row on, once (RSQ_Upgrade_Base.RowsOnLearn)
+			if ((level.maptime + pn) % 35 == 0) RSQ_Upgrade_Base.LearnRows(players[pn].mo);
 			if (simHead[pn]) { headMps[pn] = simHeadMps[pn]; continue; }
 			let pmo = players[pn].mo;
 			Vector3 h = pmo.HmdPosition;

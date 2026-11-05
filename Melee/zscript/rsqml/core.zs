@@ -52,13 +52,16 @@ class RSQML play
 	static Service GB() { return Svc("RSQ_MeleeUpgradeService"); }
 
 	// A MOVE THAT IS A GUN BONSAI UPGRADE (Guard, Hadouken, Wall Splat, Heavy Hands). With Gun Bonsai VR loaded:
-	// the level learned (on that glove's record; Guard on the player's), 0 until it is learned. Without it: the
-	// Melee menu row, which plays it at level 1. short = the upgrade's class name after RSQ_Upgrade_.
+	// the level learned (on that glove's record; Guard on the player's), 0 until it is learned -- and 0 while its Melee
+	// row is off (owner 11-04 "Row can still turn it off": the upgrade unlocks the row, the row decides; learning
+	// switches the row on once, GBOVR's RowsOnLearn). Without it: the Melee menu row, which plays it at level 1.
+	// short = the upgrade's class name after RSQ_Upgrade_.
 	static int MoveLevel(Actor pawn, Weapon glove, String short, String cvarName)
 	{
 		let gb = GB();
 		if (gb)
 		{
+			if (SVI(cvarName, 1) == 0) return 0;
 			if (glove) return gb.GetInt("level", short, 0, 0, glove);
 			return gb.GetInt("plevel", short, 0, 0, pawn);
 		}

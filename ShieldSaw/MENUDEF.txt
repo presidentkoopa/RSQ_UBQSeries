@@ -3,8 +3,8 @@
 // the mount places), the debug log and the block-area view. No help text, no presets (the old Size / Throw Feel / Block
 // Assist / Damage presets set numbers that are each a row of their own now). What each setting does is in CVARINFO's
 // comments and README.md. Block While Holstered, Perfect Block Slow-Mo and Hit-Stop are SSQGbOption rows: with RSQ Gun
-// Bonsai VR loaded the Back Plate / Shield Wall / Strike True upgrades replace them, so each greys while its upgrade is not
-// learned (SSQ_ScoreService "menu.locked", score.zs). Reset All (SSQResetAll) resets every row on both pages.
+// Bonsai VR loaded the Back Plate / Shield Wall / Strike True upgrades unlock them: each greys while its upgrade is not
+// learned (SSQ_ScoreService "menu.locked", score.zs); learned, the row turns it on or off (owner 11-04). Reset All (SSQResetAll) resets every row on both pages.
 // ---- Radiant Silvergun Options (tools/rsmenu) ----------------------------------------------------
 // The series' one Options entry. Every series pk3 carries this same block with its own prefix: the
 // parent is PROTECTED, so the first definition stays and later ones add nothing (QZD 17.3 merges a

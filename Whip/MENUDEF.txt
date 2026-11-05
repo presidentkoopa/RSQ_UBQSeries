@@ -1,8 +1,9 @@
 // RSQ Whip -- MENUDEF. The series' menu (MENU_PASS_BRIEF.md, owner 11-04): ONE page with every option under short
 // headers, On/Off first, the four binds as Control rows; ONE sub menu, "Test and Debug", with the numbers, the grip keys and
-// the debug log. No help text. Rows the RSQ Gun Bonsai VR whip tree takes over (Catch Edges = Snag, Lasso, Crack Fireballs =
-// Crack Shot, Mantle, Keep Momentum = Momentum) are RSQWPGbOption rows: with Gun Bonsai VR loaded each greys while its
-// upgrade is not learned (RSQWP_Service "menu.locked", service.zs). Reset All (RSQWPResetAll) resets every row on both
+// the debug log. No help text. Rows the RSQ Gun Bonsai VR whip tree unlocks (Catch Edges = Snag, Lasso, Crack Fireballs =
+// Crack Shot, Mantle, Keep Momentum = Momentum, Hit-Stop = Strike True) are RSQWPGbOption rows: with Gun Bonsai VR loaded
+// each greys while its upgrade is not learned (RSQWP_Service "menu.locked", service.zs); learned, the row turns it on or
+// off (owner 11-04). Reset All (RSQWPResetAll) resets every row on both
 // pages; KEYCONF's rsqwp_reset alias (tools/gen_reset.py) does the same from the console.
 // ---- Radiant Silvergun Options (tools/rsmenu) ----------------------------------------------------
 // The series' one Options entry. Every series pk3 carries this same block with its own prefix: the
@@ -42,7 +43,7 @@ OptionMenu "RSQWP_Options"
 	StaticText "Crack", "Gold"
 	Option "Stun", "rsqwp_whip_stun", "OnOff"
 	Option "Knockback", "rsqwp_whip_crackknock", "OnOff"
-	Option "Hit-Stop", "rsqwp_whip_hitstop", "OnOff"
+	RSQWPGbOption "Hit-Stop", "rsqwp_whip_hitstop", "OnOff", "RSQWP_Service", "WhipStrikeTrue"
 	Option "Throws Switches", "rsqwp_whip_lines", "OnOff"
 	Option "Fetches Pickups", "rsqwp_whip_fetch", "OnOff"
 	RSQWPGbOption "Crack Fireballs", "rsqwp_whip_fireball", "OnOff", "RSQWP_Service", "CrackShot"

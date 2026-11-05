@@ -112,7 +112,7 @@ class SSQ_ScoreMemory play
 class SSQ_ScoreService : Service
 {
 	// THE MENU (MENU_PASS_BRIEF.md, owner 11-04): GetIntUI("menu.locked", <upgrade>) 1 while that RSQ Gun Bonsai VR upgrade,
-	// which replaces the row under it (guard.zs BackPlate / ShieldWallMs / HitStopTics), is not learned by the console
+	// which unlocks the row under it (guard.zs BackPlate / ShieldWallMs / HitStopTics: learned, the row decides), is not learned by the console
 	// player; 0 learned. Asked by the SSQGbOption / SSQGbSlider rows only while Gun Bonsai VR is loaded; read from
 	// SSQ_Handler's once-a-second cache (state.zs MenuRefresh).
 	override int GetIntUI(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)

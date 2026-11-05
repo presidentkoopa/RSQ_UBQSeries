@@ -98,13 +98,14 @@ at the foot resets both. Greyed rows keep their setting but do nothing in the cu
 Hook "Rope" or Swing and Momentum on (OG makes no rope); Calm Swing, Slack Rope Lets Go and Keep Momentum need Swing
 and Momentum; the Monsters rows need their Monster Hook mode; the Whip rows need Whip Instead of Hook. With RSQ Gun
 Bonsai VR loaded the page's top line reads "GunBonsaiOVR detected. Mod features unlocked via upgrades." and Grapple
-and Swing and Momentum stay greyed until their nodes (Grapple, Momentum) are learned.
+and Swing and Momentum stay greyed until their nodes (Grapple, Momentum) are learned. Learning one turns its row on;
+the row can still turn it off.
 
 | Row | Default | What it does |
 |---|---|---|
 | Grapple | On | The hook is available. With Gun Bonsai VR: once its Grapple node is learned. |
 | Wall Hook | OG | OG: a one-off fling toward the claw. Rope: pulled to the claw, then hang. |
-| Swing and Momentum | Off | The swinging rope that keeps your speed, whatever Wall Hook says. With Gun Bonsai VR: its Momentum node. |
+| Swing and Momentum | Off | The swinging rope that keeps your speed, whatever Wall Hook says. With Gun Bonsai VR: once its Momentum node is learned. |
 | Range | 780 | How far the claw reaches, map units. |
 | Hook Thump | On | A thump in the hand on a bite or a catch. |
 | Aim Dot | Off | A faint dot where the claw would bite. |
@@ -184,8 +185,8 @@ and Swing and Momentum stay greyed until their nodes (Grapple, Momentum) are lea
 RSQ Grapple runs alone. It finds the other mods by name, so load order among RSQ pk3s does not matter.
 
 - **RSQ Gun Bonsai VR (with Gun Bonsai):** the hook becomes something you earn. It does not fire until the
-  Grapple node is learned (a press before then says "Grapple: learn it in Gun Bonsai"), and the Momentum node takes
-  the place of the Swing and Momentum row. Upgrades: Long Line (range), Fast Reel (faster claw and harder yank), Heavy Haul (pull heavier monsters, stagger bosses), Get
+  Grapple node is learned (a press before then says "Grapple: learn it in Gun Bonsai"), and the Momentum node unlocks
+  the Swing and Momentum row (learning turns the row on; the row can still turn it off). Upgrades: Long Line (range), Fast Reel (faster claw and harder yank), Heavy Haul (pull heavier monsters, stagger bosses), Get
   Over Here (what comes to you arrives staggered), Bowling (what comes to you strikes what is in its way), Barbed
   Claw (the bite hurts), Slingshot (faster release from a swing), Steady Line (a still swing settles faster),
   Double Hook (two hooked monsters slammed together), Zip Kick (arriving fast on a monster hurts it), Scorpion

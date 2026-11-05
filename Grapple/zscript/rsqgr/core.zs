@@ -30,11 +30,12 @@ class RSQGR_Core : EventHandler
 	// it. playing with momentum is nice and should be a toggle option"). Off (default): a wall rope pulls you
 	// straight to the claw and you stop there (Pull). On: the rope you hang and swing from, and the speed you
 	// keep after it (Swing's pendulum, KeepMomentum, the coast) -- exactly as 10-27..11-01.
-	// With the Gun Bonsai VR patch loaded the MOMENTUM unlock is this row, per player (perks.zs Gate).
+	// With the Gun Bonsai VR patch loaded the MOMENTUM node unlocks this row, per player (perks.zs Gate): unlearned, off;
+	// learned, the row decides (owner 11-04 "Row can still turn it off"; learning switches the row on once, GBOVR).
 	clearscope static bool SwingMode(PlayerPawn pmo = null)
 	{
 		int g = RSQGR_Perks.Gate(pmo, 'Momentum');
-		return g < 0 ? RSQGR_Util.Flag("rsqgr_swing", false) : g >= 1;
+		return (g < 0 || g >= 1) && RSQGR_Util.Flag("rsqgr_swing", false);
 	}
 
 	clearscope static RSQGR_Core Get() { return RSQGR_Core(EventHandler.Find("RSQGR_Core")); }
@@ -449,7 +450,7 @@ class RSQGR_Core : EventHandler
 		h.noProgress = 0;
 		Thump(h, "latch");
 		// THE OG (Wall Hook: OG, the default since 11-03; owner: "let me go and carry my momentum LIKE THE OG DOES").
-		// Swing and Momentum on (or Gun Bonsai VR's Momentum learned) is the swing rope instead, whatever this row says.
+		// Swing and Momentum on (under Gun Bonsai VR: and its Momentum learned) is the swing rope instead, whatever this row says.
 		if (!SwingMode(pmo) && RSQGR_Util.Opt("rsqgr_geo_mode", 1) == 1)
 		{
 			OGFling(pmo, h.ogPoint);

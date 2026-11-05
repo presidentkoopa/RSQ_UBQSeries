@@ -99,8 +99,9 @@ drew, so only your arms throw punches.
 
 Options → Radiant Silvergun Options → RSQ Melee. One page, and one sub menu, **Test and Debug**. With RSQ Gun Bonsai VR
 loaded the page starts with "GunBonsaiOVR detected. Mod features unlocked via upgrades." and the rows marked GB are greyed
-while that upgrade is not learned (they do nothing until then). Hadouken and Heavy Hands are not greyed: the gloves learn
-them, but any other fist still plays the row.
+while that upgrade is not learned (they do nothing until then). Learning one turns its row on; the row can still turn
+it off. Hadouken and Heavy Hands are not greyed: the gloves learn them, but any other fist still plays the row (and the
+row off turns them off on the gloves too).
 
 | Row | Default | What it does |
 |---|---|---|

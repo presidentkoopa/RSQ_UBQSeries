@@ -101,8 +101,9 @@ class RSQLS_Sight : EventHandler
 		return me ? me.beamMask : 0;
 	}
 	// ---- THE GUN BONSAI VR PATCH'S LEVELS (GBOVR_TREES.md 4.8), the console player's, once a second ------------------
-	// Target Lock and Headshot Reaction are unlocks under the patch: they take over rsqls_lock (1), rsqls_target_recolor
-	// (2) and rsqls_head (1). Without it the rows as before.
+	// Target Lock and Headshot Reaction are unlocks under the patch: they unlock rsqls_lock (1), rsqls_target_recolor
+	// (2) and rsqls_head (1) -- unlearned the feature is off, learned the ROW decides (owner 11-04 "Row can still turn it
+	// off"; learning switches the row on once, GBOVR's RowsOnLearn). Without the patch the rows as before.
 	// The two nodes exist only when the patch can offer them: they hang from RSQ Tactical Rig's Quick Draw (the patch's
 	// RSQ_LaserPerk -> RSQ_RigPerk.ModLoaded needs RSQTR_RigService). With the patch but no Rig they can never be learned,
 	// so the rows rule then (0.99a bug 8: Target Lock, on by default, could never turn on).
@@ -118,9 +119,9 @@ class RSQLS_Sight : EventHandler
 		gbLock = svc ? max(0, svc.GetInt("plevel", "TargetLock", 0, 0, pmo)) : 0;
 		gbHead = svc ? max(0, svc.GetInt("plevel", "HeadshotReaction", 0, 0, pmo)) : 0;
 	}
-	static clearscope bool Lock(PlayerInfo p)    { let me = RSQLS_Sight(EventHandler.Find("RSQLS_Sight")); return (me && me.gbOn) ? me.gbLock >= 1 : RSQLS_Hand.Flag("rsqls_lock", p, true); }
-	static clearscope bool Recolor(PlayerInfo p) { let me = RSQLS_Sight(EventHandler.Find("RSQLS_Sight")); return (me && me.gbOn) ? me.gbLock >= 2 : RSQLS_Hand.Flag("rsqls_target_recolor", p, false); }
-	static clearscope bool Head(PlayerInfo p)    { let me = RSQLS_Sight(EventHandler.Find("RSQLS_Sight")); return (me && me.gbOn) ? me.gbHead >= 1 : RSQLS_Hand.Flag("rsqls_head", p, false); }
+	static clearscope bool Lock(PlayerInfo p)    { let me = RSQLS_Sight(EventHandler.Find("RSQLS_Sight")); return (!me || !me.gbOn || me.gbLock >= 1) && RSQLS_Hand.Flag("rsqls_lock", p, true); }
+	static clearscope bool Recolor(PlayerInfo p) { let me = RSQLS_Sight(EventHandler.Find("RSQLS_Sight")); return (!me || !me.gbOn || me.gbLock >= 2) && RSQLS_Hand.Flag("rsqls_target_recolor", p, false); }
+	static clearscope bool Head(PlayerInfo p)    { let me = RSQLS_Sight(EventHandler.Find("RSQLS_Sight")); return (!me || !me.gbOn || me.gbHead >= 1) && RSQLS_Hand.Flag("rsqls_head", p, false); }
 	// HEADSHOT REACTION 2: the monster each hand's dot sat on the head of, and when. REMA port: local state (the console
 	// player's laser) feeding damage -- fine on QuestZDoom, which has no netplay (owner 11-02).
 	Actor dotHead[2];
@@ -128,7 +129,7 @@ class RSQLS_Sight : EventHandler
 	static int HeadOn(Actor target)
 	{
 		let me = RSQLS_Sight(EventHandler.Find("RSQLS_Sight"));
-		if (!me || !target || !me.gbOn || me.gbHead < 2) return 0;
+		if (!me || !target || !me.gbOn || me.gbHead < 2 || !playeringame[consoleplayer] || !Head(players[consoleplayer])) return 0;   // the Headshot Reaction row too
 		for (int h = 0; h < 2; h++) if (me.dotHead[h] == target && level.maptime - me.headTic[h] <= 1) return 1;
 		return 0;
 	}
@@ -962,8 +963,12 @@ class RSQLS_SightService : Service
 	// patch rules that row (gbOn: the patch AND RSQ Tactical Rig, which offers the nodes; GbRefresh) and the console player
 	// has not learned it: Target Lock 1, Target Lock 2, Headshot Reaction 1 (Lock / Recolor / Head above). Else 0.
 	// Not in a game: 1 when the patch and the Rig are loaded (nothing is learned yet), else 0.
+	// GetIntUI("menu.gated") -> 1 when this load gates any row (the patch AND the Rig), else 0: the page's GbLine shows
+	// only then (owner 11-04: with the patch but no Rig nothing here is gated, so no line).
 	override int GetIntUI(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
 	{
+		if (request ~== "menu.gated")
+			return (ServiceIterator.Find("RSQ_MeleeUpgradeService").Next() && ServiceIterator.Find("RSQTR_RigService").Next()) ? 1 : 0;
 		if (!(request ~== "menu.locked")) return -1;
 		if (!ServiceIterator.Find("RSQ_MeleeUpgradeService").Next() || !ServiceIterator.Find("RSQTR_RigService").Next()) return 0;
 		let me = RSQLS_Sight(EventHandler.Find("RSQLS_Sight"));

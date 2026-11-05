@@ -77,7 +77,7 @@ class RSQSM_Shots : EventHandler
 		let clock = RSQSM_Clock.Get();
 		if (!clock || clock.StoodDown() || !clock.Active()) return;
 		if (!e.Thing || !e.Thing.player) return;
-		if (RSQSM_Clock.Cv("rsqsm_trails", 1) == 0 && !RSQSM_Clock.MatrixOn()) return;	// MATRIX: trails whatever the row says
+		if (RSQSM_Clock.Cv("rsqsm_trails", 1) == 0) return;	// the Shot Trails row decides, Matrix or not (owner 11-04)
 		if (e.AttackLineFlags & LAF_ISMELEEATTACK) return;
 		Vector3 a = e.AttackPos, b = e.DamagePosition;
 		Vector3 d = level.Vec3Diff(a, b);

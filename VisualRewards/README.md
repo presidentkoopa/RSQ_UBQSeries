@@ -61,8 +61,8 @@ about a metre from your eyes, and pushed off the aim line of both your guns.
 2. Hurt something. Its bar appears and the numbers start.
 3. Keep hitting the same monster to build the combo. The chain cools off after about three seconds without a hit.
 4. Bits a monster drops within 2 m fly to you and are collected, even standing still; walk over the rest. They
-   vanish after 7 seconds. **Bits Fly to Me** sets the reach (0 turns it off); the Magnet node in RSQ Gun Bonsai VR
-   reaches further.
+   vanish after 7 seconds. **Bits Fly to Me** sets the reach (0 turns it off, also with Magnet); the Magnet node in RSQ
+   Gun Bonsai VR reaches further.
 5. If the screen feels busy, try **Only Where I Aim** (a bar only on what your guns point at), **Nearest 24 Only**, or
    lower **Most Numbers**.
 

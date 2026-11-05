@@ -114,7 +114,8 @@ lets your main hand reach for the shield, and the Shield Throw and Flick Reload 
 
 **Options → Radiant Silvergun Options → RSQ ShieldSaw.** One page, and one sub menu, **Test and Debug**. With RSQ Gun
 Bonsai VR loaded the page starts with "GunBonsaiOVR detected. Mod features unlocked via upgrades." and the rows marked GB
-are greyed while the upgrade that replaces them is not learned (Back Plate, Shield Wall, Strike True).
+are greyed while the upgrade that unlocks them is not learned (Back Plate, Shield Wall, Strike True). Learning one
+turns its row on; the row can still turn it off.
 
 | Row | Default | What it does |
 |---|---|---|

@@ -37,7 +37,12 @@ class RSQML_Service : Service
 		if (!sim || !players[consoleplayer].mo) return 1;
 		static const String F[] = { "Guard", "WallSplat", "GroundPound", "ClearOut", "HumanShield" };
 		for (int i = 0; i < F.Size(); i++)
-			if (stringArg ~== F[i]) return sim.menuLv[i] < 0 ? 0 : (sim.menuLv[i] >= 1 ? 0 : 1);
+		{
+			if (!(stringArg ~== F[i])) continue;
+			// Start With Guard gives Guard at level 1 before it is learned: the Guard row then acts, so it is open
+			if (i == 0 && sim.menuLv[0] >= 0 && RSQML.SVI("rsqml_guard_start", 0) != 0) return 0;
+			return sim.menuLv[i] < 0 ? 0 : (sim.menuLv[i] >= 1 ? 0 : 1);
+		}
 		return 0;
 	}
 

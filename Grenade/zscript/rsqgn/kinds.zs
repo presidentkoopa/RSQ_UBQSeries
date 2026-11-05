@@ -23,14 +23,17 @@ class RSQGN_Kind play
 		static const Name S[] = { 'QGNT', 'QGT1', 'QGT2', 'QGT3', 'QGT4', 'QGT5', 'QGT6', 'QGT7', 'QGT8' };
 		return S[clamp(k, 0, COUNT - 1)];
 	}
-	// Owned: the frag always; with the Gun Bonsai VR patch a kind you have unlocked; WITHOUT the patch (owner 11-03:
-	// "when we load grenade without GBOVR, does alt fire still toggle grenade types? can it?") every kind when
-	// "Grenade Types Without Gun Bonsai" is All Types (rsqgn_kinds_free 1, the default), the frag alone at Frag Only.
+	// Owned: the frag always; at Frag Only (rsqgn_kinds_free 0) nothing else. At All Types (1, the default): WITHOUT the
+	// patch (owner 11-03: "when we load grenade without GBOVR, does alt fire still toggle grenade types? can it?") every
+	// kind; with the Gun Bonsai VR patch the kinds you have learned (owner 11-04 "Row can still turn it off": the row
+	// still decides; learning a kind switches it back to All Types once, GBOVR's RowsOnLearn).
 	static bool Owns(Actor who, int k)
 	{
 		if (k == FRAG) return true;
 		if (k <= 0 || k >= COUNT) return false;
-		if (!RSQGN_Upg.On()) { let c = CVar.FindCVar("rsqgn_kinds_free"); return !c || c.GetInt() != 0; }
+		let c = CVar.FindCVar("rsqgn_kinds_free");
+		if (c && c.GetInt() == 0) return false;
+		if (!RSQGN_Upg.On()) return true;
 		return RSQGN_Upg.Lv(who, Node(k)) >= 1;
 	}
 	static int Next(Actor who, int k)

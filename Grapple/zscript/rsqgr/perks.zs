@@ -22,7 +22,7 @@
 //                20 + 15 lv each and staggered 35 + 15 lv
 // GBOVR_TREES.md 4.6 (11-02) added:
 //   Grapple      THE UNLOCK: with the patch loaded the hook fires only once it is learned (core's Fire)
-//   Momentum     THE UNLOCK of Swing and Momentum: with the patch, this node is the rsqgr_swing row (SwingMode)
+//   Momentum     THE UNLOCK of Swing and Momentum: with the patch, the rsqgr_swing row works once this is learned (SwingMode)
 //   ZipKick      arriving on a monster via the rope at 3 m/s or more hurts it 10 + 10 lv, x your speed over 3 m/s
 //                (up to x3), and knocks it on (ZipTick)
 //   Scorpion     a monster the hook brings to you is punched at full power by an empty fist, x1 + 0.25 lv, as a
