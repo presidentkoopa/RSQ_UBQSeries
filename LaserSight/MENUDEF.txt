@@ -1,8 +1,7 @@
-// RSQ Laser Sight options, modelled on Brutal Doom Quest 2.0's options page (the owner, 10-28): ONE
-// front page of real choices (short Title Case rows, groups split by blank lines, choices named),
-// sub-pages only for lists of switches and colours, ONE Tuning and Debug page at the end that holds
-// every number. No help text (StaticText " " is only a spacer). Every cvar keeps its row. Preset
-// choices: tools/rsmenu/presets.py (Standard = today's defaults).
+// RSQ Laser Sight options (menu pass, owner 11-04): ONE page with every option, most important first, under short
+// headers; ONE "Test and Debug" page with the raw numbers and the debug log; Reset All at the foot covers both
+// (RSQLSResetAll reads the rows). No presets, no help text. Rows behind a Gun Bonsai VR upgrade are GbOption rows:
+// greyed while RSQ Gun Bonsai VR (with RSQ Tactical Rig, which offers those nodes) is loaded and the node is unlearned.
 
 // ---- Radiant Silvergun Options (tools/rsmenu) ----------------------------------------------------
 // The series' one Options entry. Every series pk3 carries this same block with its own prefix: the
@@ -55,109 +54,81 @@ OptionValue "RSQLS_Units"
 	2, "Map Units"
 }
 
-// PRESETS -- written by tools/rsmenu/presets.py (Standard = CVARINFO defaults); edit the script, not here
-OptionString "RSQLS_P_Beam"
-{
-	"rsqls_beam_len 1.5 rsqls_beam_a 0.4 rsqls_beam_daylight 0", "Subtle"
-	"rsqls_beam_len 3.0 rsqls_beam_a 0.8 rsqls_beam_daylight 0.35", "Standard"
-	"rsqls_beam_len 5 rsqls_beam_a 1 rsqls_beam_daylight 0.7", "Bold"
-}
-OptionString "RSQLS_P_Dot"
-{
-	"rsqls_spot_size 0.6", "Small"
-	"rsqls_spot_size 1.0", "Standard"
-	"rsqls_spot_size 1.75", "Large"
-}
-// END PRESETS
-
 OptionMenu "RSQLS_Options"
 {
 	Title "RSQ LASER SIGHT"
+	RSQLSGbLine ""
+	StaticText " "
 	Option "Laser Sight", "rsqls_on", "OnOff"
 	Option "Main Hand", "rsqls_main", "OnOff"
 	Option "Off Hand", "rsqls_off", "OnOff"
 	StaticText " "
+	StaticText "Beam and Dot", 1
 	Option "Show Beam", "rsqls_beam", "OnOff"
-	RSQLSPreset "Beam Look", "RSQLS_P_Beam"
 	Option "Show Dot", "rsqls_pointer", "OnOff"
-	RSQLSPreset "Dot Size", "RSQLS_P_Dot"
+	Slider "Dot Size", "rsqls_spot_size", 0.25, 4.0, 0.05, 2
 	Option "Dot Glow", "rsqls_glow", "RSQLS_Glow"
+	Option "Dot Reacts to Surface", "rsqls_surface", "OnOff"
+	Option "Infrared Only", "rsqls_ir", "OnOff"
 	StaticText " "
+	StaticText "When It Shows", 1
+	Option "Show on Melee", "rsqls_show_melee", "YesNo"
+	Option "Only When Ready", "rsqls_ready_only", "YesNo"
+	Slider "Off When Aimed Down", "rsqls_lower_deg", 0, 90, 5, 0
+	Option "Follow Brutal Doom Shots", "rsqls_bd_bore", "OnOff"
+	StaticText " "
+	StaticText "Targets", 1
+	RSQLSGbOption "Target Lock", "rsqls_lock", "OnOff", "RSQLS_SightService", "TargetLock"
+	RSQLSGbOption "Colour on Target", "rsqls_target_recolor", "OnOff", "RSQLS_SightService", "TargetColour"
+	ColorPicker "Target Colour", "rsqls_col_target", "rsqls_target_recolor"
+	RSQLSGbOption "Headshot Reaction", "rsqls_head", "OnOff", "RSQLS_SightService", "Headshot"
+	ColorPicker "Headshot Colour", "rsqls_col_head", "rsqls_head"
+	Option "Headshot Pulse", "rsqls_head_pulse", "OnOff", "rsqls_head"
+	StaticText " "
+	StaticText "Extras", 1
+	Option "Grenade Arc", "rsqls_arc", "OnOff"
+	Option "Arc With Beam", "rsqls_arc_beam", "OnOff", "rsqls_arc"
+	Option "Spread Ring", "rsqls_spread", "OnOff"
+	Option "Show Range", "rsqls_readout", "RSQLS_Readout"
+	Option "Range Units", "rsqls_readout_units", "RSQLS_Units"
+	StaticText " "
+	StaticText "Colours", 1
 	Option "Colour Mode", "rsqls_color_mode", "RSQLS_ColorMode"
 	ColorPicker "Main Hand Colour", "rsqls_col_main"
 	ColorPicker "Off Hand Colour", "rsqls_col_off"
-	StaticText " "
-	Option "Show on Melee", "rsqls_show_melee", "YesNo"
-	Option "Only When Ready", "rsqls_ready_only", "YesNo"
-	Option "Dot Reacts to Surface (water, metal)", "rsqls_surface", "OnOff"
-	Option "Follow Brutal Doom VR Shots", "rsqls_bd_bore", "OnOff"
-	Slider "Off When Pointed Down Past (deg, 0 = never)", "rsqls_lower_deg", 0, 90, 5, 0
-	Option "Infrared Only", "rsqls_ir", "OnOff"
-	StaticText " "
-	Submenu "More Colours", "RSQLS_ColorOptions"
-	Submenu "Targets and Extras", "RSQLS_TargetOptions"
-	Submenu "Controls", "RSQLS_Keys"
-	StaticText " "
-	Submenu "Tuning and Debug", "RSQLS_Debug"
-}
-
-// ---- switches ------------------------------------------------------------------------------------
-OptionMenu "RSQLS_ColorOptions"
-{
-	Title "MORE COLOURS"
 	ColorPicker "Main Hand Dot", "rsqls_col_dot_main"
 	ColorPicker "Off Hand Dot", "rsqls_col_dot_off"
-	StaticText " "
-	Option "Colour per Slot", "rsqls_col_per_slot", "OnOff"
-	ColorPicker "Slot 1", "rsqls_col_slot1"
-	ColorPicker "Slot 2", "rsqls_col_slot2"
-	ColorPicker "Slot 3", "rsqls_col_slot3"
-	ColorPicker "Slot 4", "rsqls_col_slot4"
-	ColorPicker "Slot 5", "rsqls_col_slot5"
-	ColorPicker "Slot 6", "rsqls_col_slot6"
-	ColorPicker "Slot 7", "rsqls_col_slot7"
-	ColorPicker "Slot 8", "rsqls_col_slot8"
-	ColorPicker "Slot 9", "rsqls_col_slot9"
-	ColorPicker "Slot 0", "rsqls_col_slot0"
-	StaticText " "
 	Option "Cycle Colours", "rsqls_cycle", "OnOff"
-	Option "Dot Cycles Too", "rsqls_cycle_dot", "OnOff"
-}
-
-OptionMenu "RSQLS_TargetOptions"
-{
-	Title "TARGETS AND EXTRAS"
-	Option "Target Lock", "rsqls_lock", "OnOff"
-	Option "Target Colour Change", "rsqls_target_recolor", "OnOff"
-	ColorPicker "Target Colour", "rsqls_col_target"
-	Option "Headshot Reaction", "rsqls_head", "OnOff"
-	ColorPicker "Headshot Colour", "rsqls_col_head"
-	Option "Headshot Pulse", "rsqls_head_pulse", "OnOff"
+	Option "Dot Cycles Too", "rsqls_cycle_dot", "OnOff", "rsqls_cycle"
+	Option "Colour per Slot", "rsqls_col_per_slot", "OnOff"
+	ColorPicker "Slot 1", "rsqls_col_slot1", "rsqls_col_per_slot"
+	ColorPicker "Slot 2", "rsqls_col_slot2", "rsqls_col_per_slot"
+	ColorPicker "Slot 3", "rsqls_col_slot3", "rsqls_col_per_slot"
+	ColorPicker "Slot 4", "rsqls_col_slot4", "rsqls_col_per_slot"
+	ColorPicker "Slot 5", "rsqls_col_slot5", "rsqls_col_per_slot"
+	ColorPicker "Slot 6", "rsqls_col_slot6", "rsqls_col_per_slot"
+	ColorPicker "Slot 7", "rsqls_col_slot7", "rsqls_col_per_slot"
+	ColorPicker "Slot 8", "rsqls_col_slot8", "rsqls_col_per_slot"
+	ColorPicker "Slot 9", "rsqls_col_slot9", "rsqls_col_per_slot"
+	ColorPicker "Slot 0", "rsqls_col_slot0", "rsqls_col_per_slot"
 	StaticText " "
-	Option "Grenade Arc", "rsqls_arc", "OnOff"
-	Option "Arc With Beam", "rsqls_arc_beam", "OnOff"
-	Option "Spread Ring", "rsqls_spread", "OnOff"
-	StaticText " "
-	Option "Show Range", "rsqls_readout", "RSQLS_Readout"
-	Option "Units", "rsqls_readout_units", "RSQLS_Units"
-}
-
-OptionMenu "RSQLS_Keys"
-{
-	Title "CONTROLS"
+	StaticText "Controls", 1
 	Control "Toggle Main Hand", "toggle rsqls_main"
 	Control "Toggle Off Hand", "toggle rsqls_off"
-	Option "Toggle Haptics", "rsqls_haptics", "OnOff"
+	Option "Toggle Rumble", "rsqls_haptics", "OnOff"
+	StaticText " "
+	Submenu "Test and Debug", "RSQLS_Test"
+	RSQLSResetAll "Reset All", "Reset all RSQ Laser Sight settings?"
 }
 
-// ---- Tuning and Debug: every number ----------------------------------------------------------------
-OptionMenu "RSQLS_Debug"
+// ---- Test and Debug: every raw number, and the debug log -----------------------------------------
+OptionMenu "RSQLS_Test"
 {
-	Title "TUNING AND DEBUG"
+	Title "RSQ LASER SIGHT: TEST AND DEBUG"
+	StaticText "Beam and Dot", 1
 	Slider "Beam Fade Length", "rsqls_beam_len", 0.5, 6.0, 0.25, 2
 	Slider "Beam Brightness", "rsqls_beam_a", 0.1, 1.0, 0.05, 2
 	Slider "Beam in Daylight", "rsqls_beam_daylight", 0.0, 1.0, 0.05, 2
-	Slider "Dot Size", "rsqls_spot_size", 0.25, 4.0, 0.05, 2
 	Slider "Dot Brightness", "rsqls_spot_a", 0.0, 1.0, 0.05, 2
 	Slider "Glow Size", "rsqls_glow_scale", 1.1, 4.0, 0.05, 2
 	Slider "Glow Intensity", "rsqls_glow_int", 0.1, 4.0, 0.05, 2
@@ -165,16 +136,19 @@ OptionMenu "RSQLS_Debug"
 	Slider "Dot Range Limit", "rsqls_dot_range", 0, 8192, 32, 0
 	Slider "Dot Lead (Tics)", "rsqls_lead", 0.0, 2.0, 0.1, 1
 	StaticText " "
+	StaticText "Targets and Colours", 1
 	Slider "Cycle Speed", "rsqls_cycle_speed", 6.0, 360.0, 6.0, 0
 	Slider "Lock Tighten", "rsqls_lock_tighten", 0.0, 0.9, 0.05, 2
 	Slider "Lock Pulse Rate", "rsqls_lock_rate", 0.25, 8.0, 0.25, 2
 	Slider "Headshot Pulse Rate", "rsqls_head_pulse_hz", 0.5, 20.0, 0.5, 1
 	StaticText " "
+	StaticText "Extras", 1
 	Slider "Arc Dot Size", "rsqls_arc_size", 0.25, 4.0, 0.25, 2
 	Slider "Arc Brightness", "rsqls_arc_a", 0.1, 1.0, 0.05, 2
 	Slider "Ring Minimum Spread", "rsqls_spread_min", 0.0, 5.0, 0.25, 2
 	Slider "Ring Brightness", "rsqls_spread_a", 0.1, 1.0, 0.05, 2
 	Slider "Readout Size", "rsqls_readout_size", 0.5, 3.0, 0.25, 2
 	StaticText " "
-	SafeCommand "Reset All", "resetcvar rsqls_on; resetcvar rsqls_main; resetcvar rsqls_off; resetcvar rsqls_pointer; resetcvar rsqls_show_melee; resetcvar rsqls_ready_only; resetcvar rsqls_lower_deg; resetcvar rsqls_surface; resetcvar rsqls_bd_bore; resetcvar rsqls_spot_size; resetcvar rsqls_spot_a; resetcvar rsqls_glow; resetcvar rsqls_glow_scale; resetcvar rsqls_glow_int; resetcvar rsqls_ir; resetcvar rsqls_beam; resetcvar rsqls_beam_a; resetcvar rsqls_beam_len; resetcvar rsqls_beam_daylight; resetcvar rsqls_lead; resetcvar rsqls_lock; resetcvar rsqls_lock_tighten; resetcvar rsqls_lock_rate; resetcvar rsqls_range; resetcvar rsqls_dot_range; resetcvar rsqls_target_recolor; resetcvar rsqls_col_target; resetcvar rsqls_color_mode; resetcvar rsqls_col_main; resetcvar rsqls_col_off; resetcvar rsqls_col_dot_main; resetcvar rsqls_col_dot_off; resetcvar rsqls_col_per_slot; resetcvar rsqls_col_slot1; resetcvar rsqls_col_slot2; resetcvar rsqls_col_slot3; resetcvar rsqls_col_slot4; resetcvar rsqls_col_slot5; resetcvar rsqls_col_slot6; resetcvar rsqls_col_slot7; resetcvar rsqls_col_slot8; resetcvar rsqls_col_slot9; resetcvar rsqls_col_slot0; resetcvar rsqls_cycle; resetcvar rsqls_cycle_speed; resetcvar rsqls_cycle_dot; resetcvar rsqls_head; resetcvar rsqls_col_head; resetcvar rsqls_head_pulse; resetcvar rsqls_head_pulse_hz; resetcvar rsqls_haptics; resetcvar rsqls_arc; resetcvar rsqls_arc_beam; resetcvar rsqls_arc_size; resetcvar rsqls_arc_a; resetcvar rsqls_spread; resetcvar rsqls_spread_min; resetcvar rsqls_spread_a; resetcvar rsqls_readout; resetcvar rsqls_readout_units; resetcvar rsqls_readout_size", "Reset all RSQ Laser Sight settings?"
+	Option "Debug Log", "rsqls_debug", "OnOff"
 }
+

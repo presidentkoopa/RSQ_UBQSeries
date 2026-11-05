@@ -957,4 +957,21 @@ class RSQLS_SightService : Service
 			return RSQLS_Sight.HeadOn(Actor(objectArg));
 		return -1;
 	}
+
+	// THE MENU (ui): GetIntUI("menu.locked", "TargetLock" | "TargetColour" | "Headshot") -> 1 while the Gun Bonsai VR
+	// patch rules that row (gbOn: the patch AND RSQ Tactical Rig, which offers the nodes; GbRefresh) and the console player
+	// has not learned it: Target Lock 1, Target Lock 2, Headshot Reaction 1 (Lock / Recolor / Head above). Else 0.
+	// Not in a game: 1 when the patch and the Rig are loaded (nothing is learned yet), else 0.
+	override int GetIntUI(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
+	{
+		if (!(request ~== "menu.locked")) return -1;
+		if (!ServiceIterator.Find("RSQ_MeleeUpgradeService").Next() || !ServiceIterator.Find("RSQTR_RigService").Next()) return 0;
+		let me = RSQLS_Sight(EventHandler.Find("RSQLS_Sight"));
+		if (gamestate != GS_LEVEL || !me) return 1;
+		if (!me.gbOn) return 0;
+		if (stringArg ~== "TargetLock") return me.gbLock < 1 ? 1 : 0;
+		if (stringArg ~== "TargetColour") return me.gbLock < 2 ? 1 : 0;
+		if (stringArg ~== "Headshot") return me.gbHead < 1 ? 1 : 0;
+		return 0;
+	}
 }

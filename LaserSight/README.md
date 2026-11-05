@@ -91,73 +91,64 @@ off-hand gun. Let go of the grip and it comes straight back.
 
 ## Menu
 
-Options → Radiant Silvergun Options → RSQ Laser Sight
-
-**Front page**
+Options → Radiant Silvergun Options → RSQ Laser Sight. One page; the raw numbers and the debug log are on **Test and
+Debug**; **Reset All** at the foot resets both. With RSQ Gun Bonsai VR and RSQ Tactical Rig loaded (the Rig is what
+offers the laser nodes), Target Lock, Colour on Target and Headshot Reaction follow the upgrades instead of their rows:
+they stay greyed until Target Lock 1, Target Lock 2 and Headshot Reaction 1 are learned, and the page's top line reads
+"GunBonsaiOVR detected. Mod features unlocked via upgrades." Without the Rig the rows rule as without Gun Bonsai VR.
+A colour row is greyed while the switch it belongs to is off.
 
 | Row | Default | What it does |
 |---|---|---|
 | Laser Sight | On | The whole mod. |
 | Main Hand | On | The main hand's laser. |
 | Off Hand | On | The off hand's laser. |
+| **Beam and Dot** | | |
 | Show Beam | On | The beam from the muzzle. |
-| Beam Look | Standard | Subtle, Standard or Bold: fade length, brightness and daylight strength together. |
 | Show Dot | On | The dot where it lands. |
-| Dot Size | Standard | Small, Standard or Large. |
+| Dot Size | 1.00 | The dot's size. |
 | Dot Glow | Bloom and Light | Off, Bloom, Light, or both. |
-| Colour Mode | Per Hand | One Colour, Per Hand, or Beam and Dot coloured separately. |
-| Main Hand Colour | Red | Picker. |
-| Off Hand Colour | Green | Picker. |
+| Dot Reacts to Surface | On | The dot swims on liquids and glints on metal. |
+| Infrared Only | Off | Only visible through light amplification goggles. |
+| **When It Shows** | | |
 | Show on Melee | No | A laser on fists, chainsaws, sabers, shields and empty hands too. |
 | Only When Ready | No | Hide it while the gun is switching or reloading. |
-| Dot Reacts to Surface (water, metal) | On | The dot swims on liquids and glints on metal. |
-| Follow Brutal Doom VR Shots | On | With BD22 VR Reloaded, trace the dot down its true shot line. |
-| Off When Pointed Down Past (deg, 0 = never) | 55 | How far down the gun may point before the laser goes out. |
-| Infrared Only | Off | Only visible through light amplification goggles. |
-
-**More Colours**
-
-| Row | Default | What it does |
-|---|---|---|
-| Main Hand Dot | Red | The main dot's colour, in Beam and Dot mode. |
-| Off Hand Dot | Green | The off dot's colour, in Beam and Dot mode. |
-| Colour per Slot | Off | Each weapon slot its own colour. |
-| Slot 1 to Slot 0 | Red, orange, yellow, green, cyan, blue, violet, pink, white, red | One picker per slot. |
-| Cycle Colours | Off | The laser runs through the rainbow. |
-| Dot Cycles Too | On | The dot cycles with the beam. |
-
-**Targets and Extras**
-
-| Row | Default | What it does |
-|---|---|---|
+| Off When Aimed Down | 55 | Degrees the gun may point down before the laser goes out (0 = never). |
+| Follow Brutal Doom Shots | On | With BD22 VR Reloaded, trace the dot down its true shot line. |
+| **Targets** | | |
 | Target Lock | On | The dot swells and pulses on a live monster. |
-| Target Colour Change | Off | The dot turns the target colour on a monster. |
+| Colour on Target | Off | The dot turns the target colour on a monster. |
 | Target Colour | Yellow | Picker. |
 | Headshot Reaction | Off | The dot reacts when it sits on a monster's head. |
 | Headshot Colour | White | Picker. |
 | Headshot Pulse | On | The headshot colour pulses rather than holding. |
+| **Extras** | | |
 | Grenade Arc | On | Guns that throw a projectile show its arc once they have fired. |
 | Arc With Beam | Off | Keep the straight beam as well as the arc. |
 | Spread Ring | Off | A ring at the dot showing this gun's learned spread. |
 | Show Range | Off | Off, By the Gun, or At the Dot. |
-| Units | Metres | Metres, Feet or Map Units. |
+| Range Units | Metres | Metres, Feet or Map Units. |
+| **Colours** | | |
+| Colour Mode | Per Hand | One Colour, Per Hand, or Beam and Dot coloured separately. |
+| Main Hand Colour / Off Hand Colour | Red / Green | Pickers. |
+| Main Hand Dot / Off Hand Dot | Red / Green | The dots' colours, in Beam and Dot mode. |
+| Cycle Colours | Off | The laser runs through the rainbow. |
+| Dot Cycles Too | On | The dot cycles with the beam. |
+| Colour per Slot | Off | Each weapon slot its own colour. |
+| Slot 1 to Slot 0 | Red, orange, yellow, green, cyan, blue, violet, pink, white, red | One picker per slot. |
+| **Controls** | | |
+| Toggle Main Hand / Off Hand | Unbound | Keys that switch each laser on and off. |
+| Toggle Rumble | On | A rumble in the hand when a laser is switched. |
+| Test and Debug | | The page below. |
+| Reset All | | Every setting on both pages back to its default. |
 
-**Controls**
-
-| Row | Default | What it does |
-|---|---|---|
-| Toggle Main Hand | Unbound | Key to switch the main laser on and off. |
-| Toggle Off Hand | Unbound | Key to switch the off laser on and off. |
-| Toggle Haptics | On | A rumble in the hand when a laser is switched. |
-
-**Tuning and Debug**
+**Test and Debug**
 
 | Row | Default | What it does |
 |---|---|---|
 | Beam Fade Length | 3.0 | Metres for the beam to fade out (0.5 to 6). |
 | Beam Brightness | 0.80 | At the muzzle. |
 | Beam in Daylight | 0.35 | The beam's strength in full light, as a share of its strength in the dark. |
-| Dot Size | 1.00 | Fine size control. |
 | Dot Brightness | 1.00 | |
 | Glow Size | 1.80 | Bloom size and light reach. |
 | Glow Intensity | 1.00 | |
@@ -173,7 +164,7 @@ Options → Radiant Silvergun Options → RSQ Laser Sight
 | Ring Minimum Spread | 0.75 | Degrees; a tighter gun draws no ring. |
 | Ring Brightness | 0.60 | |
 | Readout Size | 1.00 | |
-| Reset All | | Every setting back to its default. |
+| Debug Log | Off | Logs what the grenade-arc learner sees. |
 
 ## Works with
 
