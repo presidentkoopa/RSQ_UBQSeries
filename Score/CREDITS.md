@@ -29,8 +29,15 @@ WTFPL. What came from there:
   Fly, in Painkiller": they are *Painkiller*'s sounds, and *Dakka*'s WTFPL does not
   list them among the files it covers.
 
-**Not carried across:** *Dakka*'s revival fire-and-explosion actors. The extra-life
-mechanic is implemented; the spectacle is not.
+**The revival, rebuilt (owner 11-05: "i wanted an optimized version of that"):** *Dakka*'s
+revival (`decorate/main/scorestuff.dec` DakkaReviveExplosion, RevivalFlame, RevivalFlameGround,
+RevivalIntervention; `acs/score/score_reward.h` Score_CheckRevival) is rebuilt in `revive.zs` from
+its numbers: the A_Explode(384, 256) blast with no self-damage, the protection, the ring 80 out
+turning 2.5 degrees a tic for 70 tics with flames on eight spokes rising 2.5 a tic, and the last
+burst. Its actors are not copied: a fixed pool of 32 flames does the drawing. *Dakka*'s flame
+sprite (DFLM) is **not** carried: *Dakka*'s CREDITS give its minigun flames as Duke Nukem 3D /
+Hexen and its WTFPL does not list them. The flames are doom2.wad's Arch-vile fire (FIRE A-H),
+read from the IWAD the player already has.
 
 ## What is ours, and is not ijon's
 
@@ -50,6 +57,8 @@ mechanic is implemented; the spectacle is not.
 ## The Quest series version
 
 The Brutal Doom kill rule, the Melee family, the physical bonuses, the suite bonuses, the
-slow-motion moments, the menu and the light revival cue are the Quest series' (2026-10-27), built on
-the owner's RS_Score (presidentkoopa), which is built on ijon's design. It is published with the series, the two
+slow-motion moments, the menu and the pooled revival fire are the Quest series' (2026-10-27), built on
+the owner's RS_Score (presidentkoopa), which is built on ijon's design. The breathing "Score:" word's colours (the calm-blue-to-warm
+breath, the white-gold reaction, the letter wave) are from the owner's own earlier Score HUD (hf_score_hud.zs
+ScoreLabelColor / HF_ScoreReact). It is published with the series, the two
 fonts above shipping with credit to Blue Shadow and Jimmy (owner's decision).

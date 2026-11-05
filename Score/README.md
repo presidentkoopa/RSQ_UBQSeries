@@ -77,8 +77,11 @@ There are nearly 190 bonuses in all. Many belong to one mod and fire only when i
 - Each map sets a target score from its monster count and their average health. Every time your score crosses
   it, you earn a reward.
 - By default every reward is an **extra life**. While you hold one, a hit that would kill you leaves you at
-  1 HP, then you're revived to full health with a sound and a short warm flash. Damage that ignores this
-  (a telefrag, for example) still kills you, and you lose every life you held.
+  1 HP, then you're revived to full health, as in *Dakka*: the revive sound, a blast that hurts everything within
+  256 units but you (*Dakka*'s 384 damage), no damage to you for about 2.7 seconds, and a turning ring and rising column
+  of fire round you, 80 units out (Revival Fire). The fire is 32 pooled flames and one light, spawned once, instead of
+  *Dakka*'s ~1,150 flames. Damage that ignores the hold (a telefrag, for example) still kills you, and you lose every
+  life you held. Code only, not rig-tested, not headset-confirmed (owner 11-05: "i wanted an optimized version of that").
 - Other reward modes alternate lives with an **ammo burst**: 40% of every ammo type you carry, given back over 20 seconds, for any weapon set.
 
 **Slow-motion moments** (with RSQ SlowMo)
@@ -88,8 +91,10 @@ There are nearly 190 bonuses in all. Many belong to one mod and fire only when i
   briefly drops the world to 5% speed. At most once a second, and never while time is already slowed.
 
 **The HUD**
-- **Score: N** in gold, top right by default. The word "Score:" breathes and slowly shifts colour. It warms toward
-  gold as you near a reward and flares white on a big combo (Living Label).
+- **Score: N** in gold, top right by default. The word "Score:" breathes every 2 seconds, from calm blue to warm
+  yellow, and flares hot white-gold when points land or on a big combo (Living Label; the owner's own label colours).
+  It warms toward gold as you near a reward. Letter Wave runs the breath across the word letter by letter.
+  Photosensitive Mode holds it at one steady colour; a colour-blind setting keeps the breath as brightness only.
 - **The reward bar** under it fills toward the next reward. It's blue when the next reward is a life and orange when it's ammo.
   When it fills, you hear the reward sound and the whole bar lights up in what you got (orange for ammo, blue for a life) while the score
   flashes. A life also makes the life pips swell and light up. Only the HUD flashes, not the whole view, because a whole-view flash costs extra full-screen passes in each eye in VR.
@@ -140,7 +145,8 @@ the debug log are on **Test and Debug**; **Reset All** at the foot resets both. 
 |---|---|---|
 | Show Score | Yes | Shows or hides the whole display, including the wrist digits. |
 | Size | 150 | The display's size, 50-200. |
-| Living Label | On | The word "Score:" breathes and shifts colour. |
+| Living Label | On | The word "Score:" breathes, blue to warm, and flares when points land. |
+| Letter Wave | Off | The breath runs across the word letter by letter instead of all at once. |
 | Score on the Wrist | Off | Your total above the off-hand controller (VR only). |
 | **Rewards** | | |
 | Show Reward Bar | Yes | The bar that fills toward the next reward. |
@@ -149,9 +155,11 @@ the debug log are on **Test and Debug**; **Reset All** at the foot resets both. 
 | **Big Moments** | | |
 | Slow Motion Moments | On | Big moments ask RSQ SlowMo for a short slow. |
 | Hit-Stop on Big Kills | Off | Big kills stop the world for a beat (needs RSQ SlowMo). |
+| Revival Fire | On | The ring and column of fire round you when a life is used. The blast and protection happen either way. |
 | Bar Flash | On | The score and bar flash when points land. |
-| Screen Flash | On | The whole-view colour flash on a revival. Off also stops Reward Screen Flash. |
+| Screen Flash | On | The switch for the two whole-view flashes below. Off stops both. |
 | Reward Screen Flash | Off | The old whole-view colour flash on a reward, on top of the bar's glow. It needs Screen Flash on. |
+| Revival Screen Flash | Off | A warm whole-view flash when a life is used. It needs Screen Flash on; never in Photosensitive Mode. |
 | Test and Debug | | The page below. |
 | Reset All | | Every setting on both pages back to its default. |
 
@@ -213,8 +221,9 @@ RSQ Score runs on its own: on plain Doom, every classic bonus works. Every other
 - The `TEXTCOLO` colour definitions come from *Dakka*, renamed so that both mods can load together.
 - **presidentkoopa** (project owner): RS_Score, the registry, the anti-farming rule, the caps, the generalised
   ammo regeneration and the gravity-aware Air bonus. The Quest series version adds the Brutal Doom kill rule, the Melee
-  and Counterplay families, the physical, suite and combo bonuses, the slow-motion moments, the menu and the light revival cue.
+  and Counterplay families, the physical, suite and combo bonuses, the slow-motion moments, the menu and the pooled revival fire.
 - The six score sounds in `sounds/score/` are *Dakka*'s files (byte for byte), which *Dakka* credits to People Can
-  Fly, *Painkiller*. *Dakka*'s revival effects are not carried across.
+  Fly, *Painkiller*. *Dakka*'s revival (the blast, the protection, the ring and column of fire) is rebuilt from its
+  code with a fixed pool of flames; the flame sprite is doom2.wad's Arch-vile fire, not *Dakka*'s (see CREDITS.md).
 
 The fonts ship with credit to Blue Shadow and Jimmy (owner's decision). See [CREDITS.md](CREDITS.md).

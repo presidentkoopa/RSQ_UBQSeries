@@ -177,9 +177,27 @@ class RS_ScoreHUD : EventHandler
 		double y     = (cy + 7) - fnt.GetHeight();  // y fraction .2: bottom edge
 
 		if (UserBool(pln, "rs_score_alive", true))
-			Screen.DrawText(fnt, Font.FindFontColor("RSScore_White"), x, y, label,
-				DTA_VirtualWidthF, vw, DTA_VirtualHeightF, vh, DTA_KeepRatio, true,
-				DTA_Color, LabelColor(tr, handler));
+		{
+			// "Letter Wave" (rs_score_labelwave): the owner's mode 2, each letter its own colour; Photosensitive Mode
+			// holds the word still, so it draws whole
+			if (UserBool(pln, "rs_score_labelwave", false) && !RSSC_A11y.Photo())
+			{
+				int n = label.Length();
+				double lx = x;
+				for (int i = 0; i < n; i++)
+				{
+					String ch = label.Mid(i, 1);
+					Screen.DrawText(fnt, Font.FindFontColor("RSScore_White"), lx, y, ch,
+						DTA_VirtualWidthF, vw, DTA_VirtualHeightF, vh, DTA_KeepRatio, true,
+						DTA_Color, LabelColor(tr, handler, i, n));
+					lx += fnt.StringWidth(ch);
+				}
+			}
+			else
+				Screen.DrawText(fnt, Font.FindFontColor("RSScore_White"), x, y, label,
+					DTA_VirtualWidthF, vw, DTA_VirtualHeightF, vh, DTA_KeepRatio, true,
+					DTA_Color, LabelColor(tr, handler));
+		}
 		else
 			Screen.DrawText(fnt, Font.FindFontColor("RSScore_White"), x, y, label,
 				DTA_VirtualWidthF, vw, DTA_VirtualHeightF, vh, DTA_KeepRatio, true);
@@ -382,71 +400,76 @@ class RS_ScoreHUD : EventHandler
 
 	// ------------------------------------------------------------ the living word
 	//
-	// THE WORD "Score:" BREATHES (the owner, 10-27: like Gun Bonsai's XP bars, whose frame cycles the
-	// rainbow on a level-up -- HUD.zsc GetShinyColour -- but gentler). rs_score_alive (on) turns it off;
-	// only the word changes, the number, the bar and the breakdown keep their look. It multiplies the
-	// word's own white (DTA_Color), so it is a tint of the same letters:
-	//   * a slow pastel hue cycle (24 s round), the letters never less than 60% white;
-	//   * a breath in brightness (88..100%, one every 4 s);
-	//   * as the bar nears its reward (the last quarter) it warms toward gold and breathes twice as fast;
-	//   * a big combo (combo.zs: a named combo, or three tools or more) lifts it to full white for a second.
-	// RSQ_Accessibility: Photosensitive Mode holds it still (no cycle, no breath, no lift: only the slow
-	// warming, which follows the bar); a colour-blind setting drops the hue cycle and the warming (they
-	// would be colour alone) and keeps the breath, which speeds up near the reward instead.
-	private ui int LabelColor(RS_ScoreTracker tr, RS_ScoreHandler handler)
+	// THE WORD "Score:" BREATHES, in the owner's colours (owner 11-05; his own earlier Score HUD, hf_score_hud.zs
+	// ScoreLabelColor / DrawScoreLabel / HF_ScoreReact, the label colour only). rs_score_alive (on) turns it off; only
+	// the word changes. It multiplies the word's own white (DTA_Color):
+	//   * pulse = 0.5 + 0.5 * sin(ms * 0.18 deg): one breath every 2 s, on the game clock (it stops with a pause);
+	//   * the colour runs with it from calm blue (110,170,230) to warm (250,240,140);
+	//   * a reaction pushes it toward hot white-gold (255,255,70): a fresh award (points landing, a 7-tic flash) plus
+	//     half a combo pop (EaseOutBack over 10 tics), as his HF_ScoreReact; and ours, a big combo (combo.zs: a named
+	//     combo, or three tools or more) holds it there and eases back over a second;
+	//   * ours too: as the bar nears its reward (the last quarter) the word warms toward gold;
+	//   * "Letter Wave" (rs_score_labelwave) is his mode 2: each letter 55 degrees on from the last.
+	// RSQ_Accessibility: Photosensitive Mode holds the word still (the breath's middle colour, no pulse, no reaction,
+	// no wave; only the slow warming, which follows the bar); a colour-blind setting keeps the breath as brightness
+	// alone (white letters, 62..100%), the reaction as full white, and near the reward the breath grows deeper
+	// instead of warmer (a colour change alone would not read).
+	private ui int LabelColor(RS_ScoreTracker tr, RS_ScoreHandler handler, int idx = 0, int n = 1)
 	{
-		double t = level.maptime + 0.0;
 		bool photo = RSSC_A11y.Photo();
 		bool cb = RS_ScoreCB.Mode() != 0;
 		double near = handler.threshold > 0 ? clamp((tr.ProgressFraction(handler.threshold) - 0.75) / 0.25, 0.0, 1.0) : 0.0;
 
-		// the hue cycle, pastel: mixed 60% toward white
-		double r = 1, g = 1, b = 1;
-		if (!photo && !cb)
+		double ms = level.maptime * (1000.0 / TICRATE);
+		double phase = n > 1 ? 55.0 * idx : 0.0;
+		double pulse = photo ? 0.5 : 0.5 + 0.5 * sin(ms * 0.18 + phase);   // sin takes degrees
+		double react = photo ? 0.0 : LabelReact(tr);
+
+		double r, g, b;
+		if (cb)
 		{
-			double hr, hg, hb;
-			[hr, hg, hb] = Hue((t / 840.0) % 1.0);
-			r = 0.6 + 0.4 * hr; g = 0.6 + 0.4 * hg; b = 0.6 + 0.4 * hb;
+			double lo = 0.62 - 0.22 * near;
+			double v = photo ? 0.85 : lo + (1.0 - lo) * pulse;
+			v += (1.0 - v) * react;
+			r = g = b = 255 * v;
 		}
-		// warming toward gold (FFC860) near the reward
-		if (!cb && near > 0)
+		else
 		{
-			double k = 0.9 * near;
-			r = r + (1.00 - r) * k; g = g + (0.78 - g) * k; b = b + (0.38 - b) * k;
-		}
-		// the breath
-		double v = 1.0;
-		if (!photo)
-		{
-			double period = 140.0 / (1.0 + near);
-			v = 0.88 + 0.12 * (0.5 + 0.5 * sin(t * 360.0 / period));
-			// a big combo: full white, easing back over a second
-			int age = level.maptime - tr.bigComboTic;
-			if (tr.bigComboTic > 0 && age >= 0 && age < 35)
+			r = 110 + 140 * pulse;
+			g = 170 + 70  * pulse;
+			b = 230 - 90  * pulse;
+			if (near > 0)
 			{
-				double k = 1.0 - age / 35.0;
-				r += (1 - r) * k; g += (1 - g) * k; b += (1 - b) * k; v += (1 - v) * k;
+				double k = 0.8 * near;   // toward gold, FFC860
+				r += (255 - r) * k; g += (200 - g) * k; b += (96 - b) * k;
 			}
+			r += (255 - r) * react;
+			g += (255 - g) * react;
+			b += (70  - b) * react;
 		}
-		int ir = clamp(int(255 * r * v), 0, 255), ig = clamp(int(255 * g * v), 0, 255), ib = clamp(int(255 * b * v), 0, 255);
+		int ir = clamp(int(r), 0, 255), ig = clamp(int(g), 0, 255), ib = clamp(int(b), 0, 255);
 		return 0xFF000000 | (ir << 16) | (ig << 8) | ib;
 	}
 
-	// a hue (0..1) at full saturation
-	private ui double, double, double Hue(double h)
+	// 0..1 heat from recent scoring (the owner's HF_ScoreReact: award flash + half the combo pop), and a big combo's lift
+	private ui double LabelReact(RS_ScoreTracker tr)
 	{
-		double x = h * 6.0;
-		int seg = int(x) % 6;
-		double f = x - floor(x);
-		switch (seg)
+		double heat = 0.0;
+		int age = level.maptime - tr.flashTic;
+		if (tr.flashTic > 0 && age >= 0)
 		{
-			case 0: return 1, f, 0;
-			case 1: return 1 - f, 1, 0;
-			case 2: return 0, 1, f;
-			case 3: return 0, 1 - f, 1;
-			case 4: return f, 0, 1;
+			if (age <= 7)  heat += (7 - age) / 7.0;
+			if (age <= 10) heat += 0.5 * EaseOutBack((10 - age) / 10.0);
 		}
-		return 1, 0, 1 - f;
+		int cage = level.maptime - tr.bigComboTic;
+		if (tr.bigComboTic > 0 && cage >= 0 && cage < 35) heat = max(heat, 1.0 - cage / 35.0);
+		return clamp(heat, 0.0, 1.0);
+	}
+
+	private ui double EaseOutBack(double t)
+	{
+		double c1 = 1.70158, c3 = c1 + 1.0, u = t - 1.0;
+		return 1.0 + c3 * u * u * u + c1 * u * u;
 	}
 
 	// the share of the screen's height the display moves down while the Gun Bonsai VR patch's ShieldSaw

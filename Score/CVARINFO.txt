@@ -80,11 +80,16 @@ server noarchive bool rs_score_debug = false;
 user bool rs_score_hide         = false;
 user bool rs_score_norewards    = false;
 user bool rs_score_flash        = true;
-user bool rs_score_screenflash  = true;   // the whole-view colour flash on a revival, and the master switch for the one below (Quest series)
+user bool rs_score_screenflash  = true;   // the master switch for the whole-view tints below (Quest series)
 // THE REWARD'S WHOLE-VIEW TINT, OFF (owner 11-05: "can we optimize that effect? it slows down my game"): a reward lights
 // Score's bar and life pips instead (hud.zs). On, the old tint comes back too (only with rs_score_screenflash on).
 user bool rs_score_rewardflash  = false;
-user bool rs_score_alive        = true;   // the word "Score:" breathes and slowly changes colour (hud.zs LabelColor)
+// THE REVIVAL (owner 11-05: "i wanted an optimized version of that"): the original's column of fire on a life spent
+// (revive.zs), on; its whole-view tint, off (and only with rs_score_screenflash on).
+user bool rs_score_revivefire   = true;
+user bool rs_score_reviveflash  = false;
+user bool rs_score_alive        = true;   // the word "Score:" breathes, calm blue to warm, every 2 s (hud.zs LabelColor)
+user bool rs_score_labelwave    = false;  // ... letter by letter, a wave across the word, instead of all at once
 user int  rs_score_bonustime    = 35;
 user int  rs_score_scale        = 150;   // "Large" (from 11-03: 100 read too small in the headset)
 user int  rs_score_x            = 85;

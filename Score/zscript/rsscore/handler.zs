@@ -1010,9 +1010,8 @@ class RS_ScoreHandler : EventHandler
 		tr.regenTimer -= 1;
 	}
 
-	// Extra lives hold the player in buddha and catch them at 1 hp.
-	// The revival's fire-and-explosion actors have not been brought across; the
-	// mechanic is here and the spectacle is a later decision.
+	// Extra lives hold the player in buddha and catch them at 1 hp. A life spent plays the original's revival:
+	// the blast and the column of fire, from a fixed pool (revive.zs, owner 11-05).
 	private void RunExtraLives(Actor mo, RS_ScoreTracker tr)
 	{
 		let p = mo.player;
@@ -1056,12 +1055,20 @@ class RS_ScoreHandler : EventHandler
 
 				tr.extraLives -= 1;
 				tr.reviveTic = level.maptime;
-				// THE REVIVAL, KEPT CHEAP FOR A QUEST. Dakka's revival was fire and explosion
-				// actors (not carried, see CREDITS.md); here a life spent is a sound and one short
-				// warm flash -- no actors, no particles, nothing for the headset to draw but a tint,
-				// and the tint is the player's to turn off (rs_score_screenflash).
+				// THE REVIVAL (owner 11-05: "the score, it fires off a column of fire like in the original when we use a
+				// life, right? ... i wanted an optimized version of that"). Dakka's Score_CheckRevival, parsed: the
+				// revive sound, DakkaReviveExplosion (A_Explode(384, 256), no self-damage, and its ring and column of
+				// fire) and RevivalIntervention (no damage while it plays). Here: the same sound, the same blast and
+				// the guard, and the fire drawn by a pool of 32 flames spawned once (revive.zs) instead of ~1,150
+				// flames each spawning a sprite a tic. "Revival Fire" (rs_score_revivefire, on) turns the fire off;
+				// the blast and the guard stay, they are the revival.
+				// THE WHOLE-VIEW TINT is off by default, like the reward's (396300e8e: a blend is two full-eye passes
+				// per eye in VR): "Revival Screen Flash" (rs_score_reviveflash), under Screen Flash. Photosensitive
+				// Mode: the fire plays, never the tint.
 				mo.A_StartSound("rsscore/revive", CHAN_VOICE, CHANF_LOCAL, 1.0, ATTN_NONE);
-				if (ScreenFlash(mo)) mo.A_SetBlend("FF C0 60", RSSC_A11y.Dim(0.45), 20, "FF 60 20", 0.0);
+				RS_ScoreReviveFire.Begin(mo, ReviveFire(mo));
+				mo.GiveInventory("RS_ScoreReviveGuard", 1);
+				if (ReviveFlash(mo)) mo.A_SetBlend("FF C0 60", 0.45, 20, "FF 60 20", 0.0);
 
 				if (DebugOn())
 				{
@@ -1162,6 +1169,22 @@ class RS_ScoreHandler : EventHandler
 	{
 		if (!ScreenFlash(mo)) return false;
 		let cv = CVar.GetCVar("rs_score_rewardflash", mo.player);
+		return cv && cv.GetBool();
+	}
+
+	// The revival's column of fire (revive.zs): on unless this player turned it off.
+	static bool ReviveFire(Actor mo)
+	{
+		if (!mo || !mo.player) return false;
+		let cv = CVar.GetCVar("rs_score_revivefire", mo.player);
+		return !cv || cv.GetBool();
+	}
+
+	// The revival's whole-view tint (off since 11-05): only with Screen Flash on too, and never in Photosensitive Mode.
+	static bool ReviveFlash(Actor mo)
+	{
+		if (!ScreenFlash(mo) || RSSC_A11y.Photo()) return false;
+		let cv = CVar.GetCVar("rs_score_reviveflash", mo.player);
 		return cv && cv.GetBool();
 	}
 
