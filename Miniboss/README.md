@@ -37,8 +37,8 @@ No miniboss is picked when a level loads any more. You earn it.
   more than 3 awake monsters are after you, when there is no room in view, during the cooldown, and after 2 a map.
 - **Kill its miniboss** for a guaranteed drop (a gun from this map's types that you don't have yet; under Brutal Doom,
   whose map guns are not guns until touched, one from your weapon slots no higher than one above your best; else a power-up),
-  three times the boss bits from RSQ VisualRewards' Kill Rewards, Champions' own loot for the powers it inherited, and
-  RSQ Score's Miniboss and Bossfight rows.
+  three times the boss bits from RSQ VisualRewards' Kill Rewards, Champions' own loot for the powers it inherited,
+  RSQ Score's Miniboss and Bossfight rows, and one RSQ Score extra life.
 
 Then the set piece itself:
 
@@ -129,6 +129,7 @@ Then the set piece itself:
 | Bossfights | On | The meter fills and called-in fights come. |
 | Meter Speed | 1.00 | How fast the meter fills (0.25 to 4). |
 | Bossfight Meter Fills From | Both | Score (its style points), Gun Bonsai (Gun Bonsai VR's XP) or Both. Kills, chains and time always fill it. A choice whose mod is not loaded uses the other one if that is loaded, else kills and time alone. |
+| Bossfight Kill Gives a Life | On | Killing a Bossfight's miniboss gives you one RSQ Score extra life (needs RSQ Score). |
 | Call It In: Watch Check + Use | On | Off: a full meter's fight only comes by itself. |
 | Effects | On | Links, orbs, flames, teleport fog and sparks. Per player. |
 | Effects Density | Low | Low (Quest-safe), Medium, High: beads a link, flames, and the cap on effects drawn. Per player. |
@@ -197,7 +198,7 @@ Then the set piece itself:
   own copy, and the set piece runs in full. Without RSQ SlowMo there is no slow motion (the window still times the
   greed rule and chains).
 - **RSQ Score**: its style points fill the meter most (unless Fills From is Gun Bonsai); the meter sits under its bar and its combo rows go below; Thrall
-  Slow Kill, Miniboss, Greedy and Bossfight rows.
+  Slow Kill, Miniboss, Greedy and Bossfight rows; a Bossfight's miniboss killed gives one extra life.
 - **RSQ SlowMo**: the landing and each thrall kill slow the world; its countdown bar sits under the meter.
 - **RSQ Glow In The Dark**: the heartbeat while the meter is full; the map's glow takes the miniboss's colour while it lives.
 - **RSQ Gun Bonsai VR** (with Gun Bonsai): XP fills the meter (unless Fills From is Score); the player level raises the tier.

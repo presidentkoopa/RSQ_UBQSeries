@@ -45,6 +45,7 @@ OptionMenu "RSQMB_Options"
 	Option "Bossfights", "rsqmb_enabled", "OnOff"
 	Slider "Meter Speed", "rsqmb_bf_speed", 0.25, 4, 0.25, 2
 	Option "Bossfight Meter Fills From", "rsqmb_bf_from", "RSQMB_FillFrom"
+	Option "Bossfight Kill Gives a Life", "rsqmb_bf_life", "OnOff"
 	Option "Call It In: Watch Check + Use", "rsqmb_bf_callin", "OnOff"
 	Option "Effects", "rsqmb_fx", "OnOff"
 	Option "Effects Density", "rsqmb_fx_density", "RSQMB_Density"

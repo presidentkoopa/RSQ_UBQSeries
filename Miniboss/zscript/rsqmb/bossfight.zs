@@ -37,7 +37,8 @@
 //              LegenDoom / Champions inheritance) and set on you.
 //   PAYOFF     its miniboss killed: a guaranteed drop (a gun from this map's weapon types you don't have, else a power-up),
 //              RSQ VisualRewards' boss bits x rsqmb_bf_bits more (RSQMB_Service "bossfor" "rewards.x"), RSQ Score's
-//              "Bossfight" row, Champions' own loot (the powers it inherited).
+//              "Bossfight" row and one RSQ Score extra life (RS_ScoreService "givelife", rsqmb_bf_life), Champions' own
+//              loot (the powers it inherited).
 // Rig only, not headset-confirmed.
 // ============================================================================
 
@@ -672,6 +673,17 @@ extend class RSQMB_Handler
 			Award(killer, "Bossfight", max(1, 2 * (b.mb ? b.mb.SpawnHealth() : 500)));
 			let m = MeterOf(killer, true);
 			if (m) m.beaten++;
+		}
+		// A SCORE LIFE (owner 11-05: "can we have killing a miniboss give a Score life?"): one RSQ Score extra life to the
+		// player who killed it (else the console player), through RS_ScoreService "givelife", by name; Score plays its own
+		// life cue. Bossfight Kill Gives a Life (rsqmb_bf_life, on). Without Score nothing happens.
+		Actor lifeTo = (killer && killer.player) ? killer : who;
+		if (lifeTo && lifeTo.player && CI('rsqmb_bf_life', 1))
+		{
+			if (!svcChecked) FindServices();
+			int lives = scoreSvc ? scoreSvc.GetInt("givelife", "", 1, 0, lifeTo) : -1;
+			if (debug) Console.Printf("RSQMB bossfight: a Score life for player %d -> %s", lifeTo.PlayerNumber(),
+				lives >= 0 ? String.Format("%d extra lives held", lives) : (scoreSvc ? "Score has no score for this player" : "no RSQ Score loaded"));
 		}
 		Actor at = b.mb ? b.mb : who;
 		if (at) Drop(at, who);
