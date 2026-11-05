@@ -42,6 +42,7 @@ class RSQWP_Whip : EventHandler
 	const NP = NN + 1;
 	const LINK = 2.448;          // 0.072 m x 34 room units a metre
 	const HANDLEN = 8.0;          // the handle, map units (~24 cm)
+	const DETACH = 32.0;          // room units (~0.94 m): the thong's root this far from the handle's tip has come off it (WorldTick2)
 	// A longer whip later (owner: a doubled "super whip" maybe) is LenMult() 2: every link twice as long, the same 25
 	// nodes; the bend below (EI/lam over the link's length^4) and the coil's loop size follow the link by themselves.
 	static double LenMult() { return 1.0; }
@@ -189,6 +190,7 @@ class RSQWP_Whip : EventHandler
 	int     stuckTics[NW];       // tics in a row a link was found on the far side of a wall (Repair)
 	int     straightTic[NW];     // the last straighten (Repair)
 	int     tendTic[NW];         // the whip weapon tended this hand this tic (weapon.zs Tend); a weapon whip nobody tends is gone
+	bool    snapDraw[NW];        // the next Draw puts every piece where it is with no interpolation (Seat, Straighten on a jump)
 	int     handMoveAt[MAXPLAYERS];  // Whip In: the next tic the whip may be moved to its hand
 	// THE COIL (owner 11-02: "we hold it coiled ... shorten the length of it and extend it during the attack"). Not
 	// attacking, the inner links lie in a coil held at the handle (pinned to it, drawn as the thong) and only a short
@@ -513,6 +515,7 @@ class RSQWP_Whip : EventHandler
 		{
 			cp[i] = cgoal[i]; cps[i] = 0; ch[i] = (0, 0);
 			LayOut(i, b, d);
+			snapDraw[i] = true;
 		}
 		Noise(pmo, 'unfurl', ToMap(b));
 		if (wmode[i] == 1) Throw(i, pmo, hand);
@@ -524,6 +527,27 @@ class RSQWP_Whip : EventHandler
 	void WeaponUp(int i, PlayerPawn pmo)
 	{
 		if (wstate[i] == ST_OUT && wmode[i] == 0 && wby[i] == pmo) RollUp(i);
+	}
+
+	// SEAT THE WHIP ON THE HAND THAT DREW IT (owner 11-05 04:17: "when whip is taken from holster, the whip and handle are
+	// far, far apart ... before we holstered it, it was fine, but now it's like two separate pieces"). The weapon came into
+	// this hand while the whip was still out: the thong is laid out again from this hand's drawn handle (Handle), still,
+	// the handle's smoothed path restarted there, the body's frame re-taken, and the next Draw puts every piece there with
+	// no interpolation (snapDraw). Code only, not rig-tested, not headset-confirmed.
+	void Seat(int i, PlayerPawn pmo, int hand)
+	{
+		if (!pmo || wstate[i] == ST_IDLE) return;
+		Vector3 b, d;
+		[b, d] = Handle(i, pmo, hand);
+		Vector3 aimB, aimD;
+		[aimB, aimD] = AimHandle(i, pmo, hand);
+		bodyAt[i] = pmo.pos; bodyHad[i] = true;
+		Straighten(i, b, d);
+		hb[i] = b; hd[i] = d;
+		ab[i] = aimB; ad[i] = aimD;
+		handSpd[i] = 0; pend[i] = false;
+		snapDraw[i] = true;
+		if (RSQWP_Util.Flag("rsqwp_debug", false)) Console.Printf("T_WPW %d SEAT t%d: drawn into the hand, the thong laid out from its handle", i, level.maptime);
 	}
 
 	void RollUp(int i)
@@ -691,12 +715,20 @@ class RSQWP_Whip : EventHandler
 			// (in the body's frame now -- Carry took the body's own move and turn out -- so this is the hand alone)
 			Vector3 aimB, aimD;
 			[aimB, aimD] = AimHandle(i, pmo, hand);
-			if ((b - hb[i]).Length() > 24)
+			// THE THONG OFF ITS HANDLE (owner 11-05 04:17: "the whip and handle are far, far apart"): its root (node 0, the
+			// handle's tip as the sim last put it) further from the handle's tip as last drawn than any lag of the smoothed
+			// handle reaches (DETACH plus the slack) is a whip that came apart from its handle -- laid out again from the hand, the same way
+			// (plus how far the smoothed handle can trail a fast hand: rsqwp_whip_smooth tics of the hand's recent speed, x2)
+			double rootOff = ((hb[i] + hd[i] * HANDLEN) - wp[i * NP]).Length();
+			double rootSlack = DETACH + handSpd[i] * (1.0 + 2.0 * clamp(RSQWP_Util.Num("rsqwp_whip_smooth", 0.8), 0.0, 4.0));
+			if ((b - hb[i]).Length() > 24 || rootOff > rootSlack)
 			{
+				if (RSQWP_Util.Flag("rsqwp_debug", false)) Console.Printf("T_WPW %d RESEAT t%d: hand moved %.1f, thong root %.1f off the handle's tip (rootSlack %.1f)", i, level.maptime, (b - hb[i]).Length(), rootOff, rootSlack);
 				Straighten(i, b, d);
 				hb[i] = b; hd[i] = d;
 				ab[i] = aimB; ad[i] = aimD;
 				handSpd[i] = 0; pend[i] = false;
+				snapDraw[i] = true;
 			}
 			for (int k = 0; k < NP; k++) wt[i * NP + k] = ToMap(wp[i * NP + k]);
 			// how hard the hand has driven the handle lately (its tip's speed, decaying): a crack
@@ -785,11 +817,19 @@ class RSQWP_Whip : EventHandler
 		for (int hand = 0; hand < 2; hand++)
 		{
 			Vector3 h = RSQWP_Util.Ctrl(mo, hand) == 0 ? mo.AttackPos : mo.OffhandPos;
-			Vector3 rel = (h.x - mo.pos.x, h.y - mo.pos.y, h.z - e.ViewPos.z);
+			// PCVR (vr_mode 10, OpenVR) hangs the hands off the frame's interpolated eye in X/Y too (gl_openvr.cpp:1282
+			// GetHandTransform: r_viewpoint.CenterEyePos = RenderEvent.ViewPos), and draws the handle there; against the pawn
+			// the thong's root trailed the drawn handle by up to a tic of the body's motion. Measured from what this renderer
+			// hung the hand on, as the series' HandSync does since 264493242. OpenXR (Quest): the pawn's X/Y as before.
+			Vector3 ref = OpenVR() ? e.ViewPos : (mo.pos.x, mo.pos.y, e.ViewPos.z);
+			Vector3 rel = h - ref;
 			if (abs(rel.x) > 200 || abs(rel.y) > 200 || abs(rel.z) > 200) continue;
 			EventHandler.SendNetworkEvent(hand ? "rsqwp_hp1" : "rsqwp_hp0", int(rel.x * 256), int(rel.y * 256), int(rel.z * 256));
 		}
 	}
+
+	// QuestZDoom 17.3's VR_OPENVR (hw_vrmodes.h): PCVR through SteamVR
+	static ui bool OpenVR() { let c = CVar.FindCVar('vr_mode'); return c && c.GetInt() == 10; }
 
 	const TURN_TOL = 1.5;        // degrees: both controllers' yaws moved by the same amount within this ...
 	const TURN_POS = 4.0;        // ... and both turned round the pawn by it within this (map units)
@@ -3306,15 +3346,16 @@ class RSQWP_Whip : EventHandler
 			// HAND ON THE HANDLE: the weapon's own model draws the handle in the hand (no lag against the hand); this
 			// world piece stays hidden, the thong starts at its tip all the same
 			r.bINVISIBLE = k == 0 && byWeapon[i] && wby[i] && HandOnHandle(wby[i]) && !RSQWP_Util.Flag("rsqwp_handtest", false);
-			if (!fresh) r.SetOrigin(pa, true);
+			if (!fresh) r.SetOrigin(pa, !snapDraw[i]);     // a snap (Seat, a re-laid thong): no smear from where it was
 			Vector3 room = ToRoom(pb - pa);
 			double l = room.Length();
-			if (l < 0.01) { r.scale = (w, 0.001); continue; }
+			if (l < 0.01) { r.scale = (w, 0.001); if (fresh || snapDraw[i]) r.ClearInterpolation(); continue; }
 			r.angle = atan2(room.y, room.x);
 			r.pitch = -atan2(room.z, room.xy.Length()) + 90;
 			r.scale = (w, l / RSQWP_Rope.ROPE_L);
-			if (fresh) r.ClearInterpolation();
+			if (fresh || snapDraw[i]) r.ClearInterpolation();
 		}
+		snapDraw[i] = false;
 	}
 
 	void Halt(int i)

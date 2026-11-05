@@ -81,6 +81,9 @@ class RSQWP_WhipWeapon : Weapon
 		if (!pmo || !pmo.player || !w || !core || !RSQWP_Util.Flag("rsqwp_on", true)) return;
 		int hand = Hand();
 		int i = pmo.PlayerNumber() * 2 + hand;
+		// DRAWN THIS TIC (owner 11-05 04:17, from a holster: "the whip and handle are far, far apart"): the weapon was not
+		// in this hand last tic (a Tactical Rig holster draw, the hip spot, a slot key, Whip In's hand switch, the Wheel)
+		bool drawn = level.maptime - w.tendTic[i] > 1;
 		w.tendTic[i] = level.maptime;     // this hand's whip is this weapon's (whip.zs: a weapon whip nobody tends is gone)
 		bool trig = TriggerHeld();
 		bool alt = AltHeld();
@@ -113,8 +116,12 @@ class RSQWP_WhipWeapon : Weapon
 			return;
 		}
 		if (hadHook) { hadHook = false; core.held[i] = false; core.pressFired[i] = false; }
-		if (w.wstate[i] != RSQWP_Whip.ST_OUT || w.wby[i] != pmo) w.Start(i, pmo, hand, 0);
+		// the whip is this weapon's BEFORE it starts, so Start lays the thong out from the DRAWN handle's tip (Hand on the
+		// Handle, whip.zs Handle) and not from the controller's aim line, as it did until 11-05; and a whip still out when the
+		// weapon comes (back) into the hand is seated on that hand's handle at once, every link snapped there (whip.zs Seat)
 		w.byWeapon[i] = true;
+		if (w.wstate[i] != RSQWP_Whip.ST_OUT || w.wby[i] != pmo) w.Start(i, pmo, hand, 0);
+		else if (drawn) w.Seat(i, pmo, hand);
 		w.markHeld[i] = trig;
 		if (altPress && trig) w.markNext[i] = true;
 		// the lasso: the off hand closed on the thong (only the main-hand whip has an off hand to spin it). Two routes:
