@@ -72,7 +72,7 @@ There are no buttons. The cards answer to where your hands are.
 | Read the small card | Look at your wrist | Shows all the time by default. |
 | Show the card by looking (Show Cards: When I Look) | Bring the gun within 0.7 m of your eyes, within 30 degrees of where you look | Both numbers are sliders on Test and Debug. |
 | Show the card on reload (Show Cards: On Reload) | Hold that hand's reload, or the shared reload | Stays 35 tics after you let go. |
-| Check your watch | Forearm across your chest, wrist 15 to 50 cm from your eyes and within 35 degrees of your view, hand pointing across your body, back of the wrist turned at least 45 degrees toward your face | With RSQ Gestures loaded, its inspect pose is used instead. |
+| Check your watch | Forearm across your chest, wrist 15 to 50 cm from your eyes and within 35 degrees of your view, hand pointing across your body, back of the wrist turned at least 45 degrees toward your face | The gesture reader's watch-check pose is used instead (RSQ Accessibility's, or Gun Cards' own copy without it); this looser pose only when that reader's watch check is switched off. |
 | Status card | Check your watch with an empty hand or fists | With Draw in the World on, it is built in the world on the back of the wrist (keys as words, not icons). |
 | Hide the small card when aiming (Hide at Your Eye) | Raise the gun within 0.30 m of your eye, pointing where you look | Off by default. |
 
@@ -85,7 +85,7 @@ Options → Radiant Silvergun Options → RSQ Gun Cards (one page, then Test and
 
 | Row | Default | What it does |
 |---|---|---|
-| Show Cards | Always | Off, Always, When I Look, Inspect Gesture, On Reload. Inspect Gesture needs RSQ Gestures; without it the row reads "When I Look (no Gestures)", which is what it then does. |
+| Show Cards | Always | Off, Always, When I Look, Inspect Gesture, On Reload. Inspect Gesture needs RSQ Accessibility (its gesture reader); without it the row reads "When I Look (no Gestures)", which is what it then does. |
 | Watch Card | When I Check My Watch | Off, When I Check My Watch, or Always On. |
 | Watch Card Shows | Weapon Card | Weapon Card, Status Card, or Both on One Card. An empty hand always shows the Status Card. |
 | Gun Bonsai on Card | Off | Gun Bonsai's level, XP and upgrades under the weapon card (with Gun Bonsai). |
@@ -123,7 +123,7 @@ Options → Radiant Silvergun Options → RSQ Gun Cards (one page, then Test and
 | Fade (tics) | 4 | |
 | Look: Reach (m) | 0.70 | When I Look: the gun within this many metres of the eyes. |
 | Look: Cone (deg) | 30 | And within this many degrees of where you look. |
-| Watch Check Shows | Once It Is Held | Or As the Twist Starts (RSQ Gestures). |
+| Watch Check Shows | Once It Is Held | Or As the Twist Starts. |
 | Stays After (tics) | 35 | How long a card stays after the pose ends or reload is let go. |
 | Tilt: Most (deg) | 20 | |
 | Eye Reach (m) | 0.30 | Hide at Your Eye: the hand within this distance of the eye. |

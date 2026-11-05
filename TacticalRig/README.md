@@ -112,7 +112,7 @@ here (the body, the holsters, the torso that follows your turns) is worked out i
 | Recenter Torso key | Bindable: Customize Controls → RSQ Tactical Rig, or the rig's own page | |
 | Move a holster | Move Holsters by Hand on: grip inside a ring, carry it, let go | The keyring moves the same way |
 | Keys to a door | Keys Open Doors by Hand on: grip at the keyring, hold, touch a locked door | The engine's own lock check decides |
-| Move a gun to the other hand | Move Gun at Watch on, RSQ Gestures loaded: hold the watch check, press Use | A gun in the other hand swaps |
+| Move a gun to the other hand | Move Gun at Watch on: hold the watch check, press Use | A gun in the other hand swaps |
 | Cigarette | Main hand at the chest pocket (left chest for right-handers), grip or Use | Cigarette in the main hand, Zippo in the off hand |
 | ...into the mouth | Cigarette at your lips, Use | Use anywhere else flicks it away |
 | ...light it | Zippo's flame at the tip, off-hand fire | Off-hand fire elsewhere flicks the lid open or shut |
@@ -144,7 +144,7 @@ what the rows already do: Smoker, Chain Smoker, Gun Toss, Boomerang Gun).
 | Quick Swap | On | A full holster swaps without the press delay |
 | New Guns to Holsters | Off | A new gun fills the first empty holster |
 | Keep Between Levels | On | Holsters keep their guns |
-| Move Gun at Watch | Off | Use during RSQ Gestures' watch check moves that hand's gun across |
+| Move Gun at Watch | Off | Use during the watch check moves that hand's gun across |
 | Hang From Neck | On | A nod does not slide the rig |
 | **Spots** | | |
 | Grenade Spot | On | The belt-buckle grenade |
