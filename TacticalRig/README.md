@@ -121,7 +121,7 @@ here (the body, the holsters, the torso that follows your turns) is worked out i
 
 - Use acts for whichever hand is in a holster, the main hand first. The main hand's grip reaches the rig only when
   the engine sends it as a key (its secondary button mappings off); Use always works. The grip keys can be changed
-  under Tuning and Debug.
+  under Test and Debug.
 - A hand must rest in a holster for 3 tics before a press counts, so a hand passing through does nothing.
 - On PC (SteamVR), an off-hand draw made while the engine is steadying a two-handed gun arrives when you let go of
   the grip.
@@ -130,79 +130,83 @@ here (the body, the holsters, the torso that follows your turns) is worked out i
 
 ## Menu
 
-Options → Radiant Silvergun Options → RSQ Tactical Rig
+Options → Radiant Silvergun Options → RSQ Tactical Rig. One page; the raw numbers are on its **Test and Debug** page.
+Tactical Rig has no Gun Bonsai VR line: none of its rows is unlocked by an upgrade (the Gunslinger nodes only add to
+what the rows already do: Smoker, Chain Smoker, Gun Toss, Boomerang Gun).
 
 | Row | Default | What it does |
 |---|---|---|
+| **Holsters** | | |
 | Tactical Rig | On | The whole rig |
 | Grip Holsters | On | Grips holster and draw |
 | Use Holsters | On | Use holsters and draws too |
-| Move Gun at Watch (Use) | Off | Use during RSQ Gestures' watch check moves that hand's gun across |
-| Reach | Standard | Holster size: Tight, Standard, Easy |
 | Holster Rings | Hand Nearby | Never, Hand Nearby, Always |
-| Seated | Off | Hang the rig from your seated eyes (this machine only) |
-| Measure My Height | | Reads your headset height and scales the rig |
-| Move Holsters by Hand | Off | Grab and place holsters |
-| Mirror | While Moving Holsters | Off, While Moving Holsters, Always |
-| Holster Profiles | | Save and load four layouts |
-| Torso Follows Room Turns | On | The torso follows a real turn made with your hands in front |
-| Recenter: Both Hands to Chest | On | The recenter gesture |
-| Recenter Torso | | Bind the recenter key |
-| Torso | Off | Show a torso |
-| Torso Style | Doom marine | Doom marine or Quake Grunt |
-| Helmet | On | The marine's helmet, seen in mirrors |
-| Cigarettes | Off | Ermac's cigarette pocket |
-
-**Rig Options**
-
-| Row | Default | What it does |
-|---|---|---|
+| Holster Reach | 1.00 | Holster size (0.5 to 2) |
 | Quick Swap | On | A full holster swaps without the press delay |
-| Keep Holsters Between Levels | On | Holsters keep their guns |
-| Ammo Light on Holsters | On | The green / yellow / red light |
-| Ammo Count on Holsters | Off | Round count above each full holster |
-| New Guns Go to a Holster | Off | A new gun fills the first empty holster |
+| New Guns to Holsters | Off | A new gun fills the first empty holster |
+| Keep Between Levels | On | Holsters keep their guns |
+| Move Gun at Watch | Off | Use during RSQ Gestures' watch check moves that hand's gun across |
+| Hang From Neck | On | A nod does not slide the rig |
+| **Spots** | | |
 | Grenade Spot | On | The belt-buckle grenade |
-| Show Grenade in Holster | On | A grenade hangs there while you have one |
-| Throw Guns | On | Swing-and-press throws |
-| Main Hand Throws With Use | On | The main hand throws on Use |
-| Thrown Guns Hurt | On | Thrown guns damage and stagger |
-| Keyring | On | Keys on your belt |
-| Keys Open Doors by Hand | Off | Touch keys to locked doors |
-| Show Stored Guns | On | Holstered guns drawn on the body |
-| Stored Gun Size | Standard | Small, Standard, Large |
-| Haptics | On | Controller ticks |
-| Messages | Off | Short text notes |
-| Mirror Shows | Both | Front, Back or Both |
-| Torso Fades Looking Down | On | The torso thins as you look down |
-| Holsters Hang From Neck | On | A nod does not slide the rig |
-| Torso Turns With Head and Hands | Off | Older turn rule: head and both hands turning together |
-| Torso Catches Up With Head | Off | Older turn rule: a head held round eases the torso after it |
-| Leave Shoulder to ShieldSaw | On | Off shoulder is the shield's while it is stowed there |
+| Show Grenade | On | A grenade hangs there while you have one |
 | Saber on Hip Too | Off | The main saber also clips to the hips |
 | Whip Holster | On | RSQ Whip's whip has its own holster on the main-hand hip |
-| Show Whip in Holster | On | The whip hangs coiled there while it is in neither hand |
 | Flare Holster | On | RSQ FnF's flares have their own holster on the off-hand hip |
-| Show Flare in Holster | On | A flare hangs there while you carry one |
 | Ammo Pouch | On | A pouch left of the belt buckle (off-hand side): with Brutal Doom 22 VR, hand reloads take magazines, shells and rounds from it only |
 | Show Ammo Pouch | On | The pouch on the belt, its light the reserve of the gun in your hand (green, yellow, red) |
-| Slow Motion After a Smoke | On | RSQ SlowMo when the cigarette is flicked |
+| Shoulder to ShieldSaw | On | Off shoulder is the shield's while it is stowed there |
+| Keyring | On | Keys on your belt |
+| Keys Open Doors | Off | Touch keys to locked doors |
+| **Stored Guns** | | |
+| Show Stored Guns | On | Holstered guns drawn on the body |
+| Stored Gun Size | 1.00 | Their size (0.25 to 3) |
+| Ammo Light | On | The green / yellow / red light on a full holster |
+| Ammo Count | Off | Round count above each full holster |
+| **Gun Throwing** | | |
+| Throw Guns | On | Swing-and-press throws |
+| Throw With Use | On | The main hand throws on Use |
+| Thrown Guns Hurt | On | Thrown guns damage and stagger |
+| **Body** | | |
+| Seated | Off | Hang the rig from your seated eyes (this machine only) |
+| Measure My Height | | Reads your headset height and scales the rig |
+| Torso | Off | Show a torso |
+| Torso Style | Doom Marine | Doom Marine or Quake Grunt |
+| Helmet | On | The marine's helmet, seen in mirrors |
+| Torso Fades Looking Down | On | The torso thins as you look down |
+| Torso Follows Room Turns | On | The torso follows a real turn made with your hands in front |
+| Head and Hands Turn | Off | Older turn rule: head and both hands turning together |
+| Torso Catches Up | Off | Older turn rule: a head held round eases the torso after it |
+| Recenter by Hands | On | The recenter gesture: both hands to the chest |
+| Recenter Torso | | Bind the recenter key |
+| **Cigarettes** | | |
+| Cigarettes | Off | Ermac's cigarette pocket |
+| Smoke Slows Time | On | RSQ SlowMo when the cigarette is flicked |
 | Refill Each Level | On | The pocket refills |
-| Show Cigarettes in Pocket | On | The cigarettes left in the pocket stand in it on your chest |
+| Show Cigarettes | On | The cigarettes left in the pocket stand in it on your chest |
+| **Setup** | | |
+| Move Holsters by Hand | Off | Grab and place holsters |
+| Mirror | While Moving | Off, While Moving, Always |
+| Mirror Shows | Both | Front, Back or Both |
+| Haptics | On | Controller ticks |
+| Messages | Off | Short text notes |
+| **Holster Profiles** | | Save and Load for Standing A (blue), Standing B (orange), Seated A (purple), Seated B (yellow) |
+| Test and Debug | | The page below |
+| Reset All | | Every row on this page and on Test and Debug |
 
-**Holster Profiles**: Save and Load for Standing A (blue), Standing B (orange), Seated A (purple), Seated B (yellow).
+The whip, flare and saber shown at their Rig spots follow those mods' own Show rows (RSQ Whip "Show Whip", RSQ FnF
+"Show Flare", RSQ Saber "Show Sabers"); the Rig has no Show row of its own for them.
 
-**Tuning and Debug**: Reach (1.0), Stored Gun Size (1.0), Stored Gun Length (0.25 m), Back Gun Length (0.70 m),
-Stored Gun Turn (0), Flip These Guns (blank), Mirror Distance (1.0 m), Body Turn Angle (35) and Body Turn Delay
-(1.0 s) for Torso Catches Up With Head, Torso: Ignore Looking Down Past (25 degrees), Press Delay (3 tics), Throw
-Swing Speed (2.5 m/s), Thrown Gun Damage (1.0), Main Grip Keys (446), Off Grip Keys (443 436), Reset All. Sub pages:
-- Holster Positions: forward, left, up and size in metres from your eyes for every holster, the grenade spot, the
-  keyring, both saber spots, the whip and flare holsters and the ammo pouch. Hips 0.70 m down, 0.18 m out; chest 0.46
-  down, 0.12 out, 0.10 forward; shoulders 0.10 down, 0.18 out, 0.08 back; whip and flare 0.84 down, 0.30 out, 0.06
-  back; pouch 0.61 down, 0.13 toward the off hand, 0.16 forward.
-- Torso Fit: Height (-0.20 m), Forward (-0.04 m), Size (1.0), Helmet Height (0), Low Health Glow (under 35).
-- Cigarette: Mouth Zone Size (1.0), Mouth Cigarette Forward (0.12 m), Mouth Cigarette Down (0.07 m), Smoke Time
-  (2 s), Slow Motion Seconds (6), Slow Motion Speed (25%), Pack Size (3).
+**Test and Debug**: Stored Guns: Gun Length (0.25 m), Back Gun Length (0.70 m), Gun Turn (0), Flip These Guns (blank).
+Body: Body Turn Angle (35) and Body Turn Delay (1.0 s) for Torso Catches Up, Ignore Looking Down (25 degrees), Mirror
+Distance (1.0 m). Hands: Press Delay (3 tics), Throw Speed (2.5 m/s), Thrown Gun Damage (1.0), Main Grip Keys (446),
+Off Grip Keys (443 436), Empty Hand Weapon (blank: the fist). Torso Fit: Torso Height (-0.20 m), Torso Forward
+(-0.04 m), Torso Size (1.0), Helmet Height (0), Low Health Glow (under 35). Cigarette: Mouth Zone Size (1.0), In Mouth
+Forward (0.12 m), In Mouth Down (0.07 m), Smoke Time (2 s), Slow Motion (6 s), Slow Motion Speed (25%), Pack Size (3).
+Holster Positions: forward, left, up and size in metres from your eyes for every holster, the grenade spot, the
+keyring, both saber spots, the whip and flare holsters and the ammo pouch (hips 0.70 m down, 0.18 m out; chest 0.46
+down, 0.12 out, 0.10 forward; shoulders 0.10 down, 0.18 out, 0.08 back; whip and flare 0.84 down, 0.30 out, 0.06
+back; pouch 0.61 down, 0.13 toward the off hand, 0.16 forward). Debug: Throw Debug Log (Off).
 
 ## Works with
 

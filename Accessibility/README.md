@@ -48,8 +48,7 @@ mod asks this pk3 by name, and works exactly as before when it is not there.
   Force jump. It is a per-eye post-process pass, so it moves with your head with no lag, and it eases in and out so it
   never snaps. Light, Medium or Strong.
 - **Vignette on Knockback**: the vignette also on a big knockback (a rocket blast, an Arch-vile's toss) and on a long fall.
-- **Min SlowMo Ease**: the slowest a slow-motion change may ramp, up to 2 seconds.
-- **Comfort Preset**: one row that sets Vignette Medium, Min SlowMo Ease 1 s and Photosensitive Mode together.
+- **Slow-Mo Ease**: the slowest a slow-motion change may ramp, up to 2 seconds.
 
 **Body and hands**
 - **Handedness**: Right- or Left-Handed here also sets QuestZDoom's own Control Scheme, so the guns, the hands and every
@@ -69,15 +68,15 @@ mod asks this pk3 by name, and works exactly as before when it is not there.
 - **Brace Cue**: a rumble, a click, or both the moment the brace latches with a gun in your off hand.
 
 **Menus**
-- **Menus: Simple** takes the niche sub-page links off the series' front pages, leaving the everyday switches. Full puts them back.
-- **Reset Every Series Mod** runs the Reset All row of every loaded series mod in one go (this page is kept).
+- **Menus: Simple** takes the Test and Debug link off each series mod's page, leaving the everyday switches. Full puts it back.
+- **Reset Every Mod** runs the Reset All row of every loaded series mod in one go (this page is kept).
 
 ## How To Play
 
 1. Load this pk3 with any RSQ mods. Load order among RSQ pk3s does not matter.
 2. Open **Options → Radiant Silvergun Options → Accessibility**. Everything starts off or neutral.
 3. Left-handed? Set **Handedness** to Left-Handed once. QuestZDoom's control scheme follows.
-4. Prone to motion sickness? Pick **Comfort Preset: Comfort**, then try **Vignette on Knockback**.
+4. Prone to motion sickness? Set **Comfort Vignette: Medium**, **Slow-Mo Ease 1 s** and **Photosensitive Mode**, then try **Vignette on Knockback**.
 5. Playing seated? Leave **Seated Play** on Auto, or set Seated. Stand once and pick **Measure Standing Height** first
    for the best fit.
 6. One hand only? Turn on **One-Handed**, bind **Off-Hand Modifier** to a button you can reach, then open **Gesture
@@ -106,37 +105,45 @@ Left-handed play: set Handedness (above). The rumbles and cue arrows follow the 
 
 ## Menu
 
-**Options → Radiant Silvergun Options → Accessibility**
+**Options → Radiant Silvergun Options → Accessibility**. One page; its **Test and Debug** page holds the debug log.
+Accessibility is never gated by Gun Bonsai VR.
 
 | Row | Default | What it does |
 |---|---|---|
+| **Seeing** | | |
 | Colour Blind Mode | Off | Off, Protanopia, Deuteranopia, Tritanopia, High Contrast. |
-| Handedness | Follow QuestZDoom | Right- or Left-Handed also sets QuestZDoom's Control Scheme. |
 | Photosensitive Mode | Off | Series flashes and pulses at most 2.5 a second, strong flashes at 40%. |
-| One-Handed | Off | Enables the Off-Hand Modifier and the Gesture Buttons. |
-| Off-Hand Modifier | (unbound) | The bind itself. |
-| Gesture Buttons | | Sub page of binds (see Controls). |
-| Gesture Ease | 0.0 | 0 to 1: gestures wider (x1 to x2), speeds and holds lower (x1 to x0.5). |
-| Hold to Toggle | Off | Held binds (modifier, reach, Force grip, ShieldSaw lock key) become toggles. |
-| Comfort Preset | Off | Off or Comfort (Vignette Medium, Min SlowMo Ease 1 s, Photosensitive On). Shows Custom otherwise. |
-| Comfort Vignette | Off | Off, Light, Medium, Strong. |
-| Vignette on Knockback | Off | Also on big knockbacks and long falls. |
-| Min SlowMo Ease | 0.0 | Seconds, up to 2. 0 keeps RSQ SlowMo's own. |
-| Seated Play | Auto | Standing, Seated, Auto. |
-| Measure Standing Height | | Stores your standing eye height. |
-| Steady Hands | On | Smoothed hand poses for the series. |
-| Slower Taps | Off | Tap windows x1.5. |
 | Cue Size | 1.00 | x0.5 to x3. |
 | Text Size | 1.00 | x1 to x3. |
+| **Hands** | | |
+| Handedness | Follow QuestZDoom | Right- or Left-Handed also sets QuestZDoom's Control Scheme. |
+| Steady Hands | On | Smoothed hand poses for the series. |
+| Slower Taps | Off | Tap windows x1.5. |
+| Hold to Toggle | Off | Held binds (modifier, reach, Force grip, ShieldSaw lock key) become toggles. |
+| Gesture Ease | 0.0 | 0 to 1: gestures wider (x1 to x2), speeds and holds lower (x1 to x0.5). |
+| **One Hand** | | |
+| One-Handed | Off | Enables the Off-Hand Modifier and the gesture buttons below. |
+| Off-Hand Modifier | (unbound) | The bind itself. |
+| Grab Pull, Grab Reach, Force Push, Force Pull, Force Grip, Shield Throw, Flick Reload, Wrist Cross | (unbound) | The gesture buttons (see Controls). |
+| **Comfort** | | |
+| Comfort Vignette | Off | Off, Light, Medium, Strong. |
+| Vignette on Knockback | Off | Also on big knockbacks and long falls. |
+| Slow-Mo Ease (s) | 0.0 | The slowest a slow-motion change may ramp, up to 2 s. 0 keeps RSQ SlowMo's own. |
+| Seated Play | Auto | Standing, Seated, Auto. |
+| Measure Standing Height | | Stores your standing eye height. |
+| **Cues and Rumble** | | |
 | Sound Cues | Off | Off, Visual, Rumble, Both. |
 | Wake Cues | Off | Also cue monsters waking or teleporting in (needs Sound Cues). |
 | Rumble Strength | 1.0 | x0 to x2. |
 | Rumble Backup | Off | Rumbles as the engine's buzz when Quake Haptics is 0. |
+| **Two-Hand Brace** | | |
 | Two-Hand Brace | QuestZDoom's | Off turns QuestZDoom's Two Handed Weapons off. |
 | Brace Cue | Off | Off, Rumble, Sound, Both. |
-| Menus | Full | Full or Simple. |
-| Reset All | | Resets this page (Handedness and Two-Hand Brace are kept). |
-| Reset Every Series Mod | | Runs every loaded series mod's own Reset All. |
+| **Menus** | | |
+| Menus | Full | Full or Simple (Simple hides each series mod's Test and Debug link). |
+| Test and Debug | | Debug Log (Off): the knockback and wake detections, to the console. |
+| Reset All | | Resets this page and Test and Debug (Handedness and Two-Hand Brace are kept). |
+| Reset Every Mod | | Runs every loaded series mod's own Reset All. |
 
 ## Works with
 
@@ -144,7 +151,7 @@ Left-handed play: set Handedness (above). The rumbles and cue arrows follow the 
   cue all work with no other mod loaded.
 - **The RSQ series**: every series mod reads these settings by name. Distance Grab, Grapple, Whip, Melee, Gestures,
   ShieldSaw and Saber honour the Off-Hand Modifier. Grapple and Whip swings and the Saber's Force jump drive the comfort
-  vignette. Distance Grab, ShieldSaw and Saber answer the Gesture Buttons; RSQ SlowMo answers Wrist Cross and Min SlowMo
+  vignette. Distance Grab, ShieldSaw and Saber answer the gesture buttons; RSQ SlowMo answers Wrist Cross and Slow-Mo
   Ease.
 - **RSQ Gun Bonsai VR**: Text Size scales its screens.
 - **Brutal Doom / BD22 VR Reloaded**: nothing special is needed. The brace cue only fires with a real gun (one that uses

@@ -59,11 +59,11 @@ you read. Left and right hands are mirrored correctly.
    wrist toward your eyes. Hold still for a fraction of a second. You feel a tick.
 3. **Fit it to your body:** open Options → Radiant Silvergun Options → RSQ Gestures and press Measure Me. Close
    the menu, stand tall and hold both arms straight out to your sides. Two seconds later it measures for one
-   second and shows your eye height and reach. Fit Zones to My Body turns on by itself.
+   second and shows your eye height and reach. Fit to My Body turns on by itself.
 4. **Watch the names:** leave Show Gesture Names on while you learn. When a punch, shove or two-hand move
    registers, its name appears low in your view.
-5. **Tune if needed:** if the watch check is hard to hit, lower Inspect Twist. If it triggers by accident, raise
-   Inspect Hold.
+5. **Tune if needed:** if the watch check is hard to hit, lower Twist On (Test and Debug). If it triggers by accident, raise
+   Hold.
 
 ## Controls
 
@@ -78,67 +78,78 @@ you read. Left and right hands are mirrored correctly.
 | Both palms thrust | Both hands driven forward at 2.5 m/s, mostly forward, pointing at least 20° up, above your hips, 0.25 m apart | Not while braced on a two-hand gun. |
 | Measure Me | Menu button, then stand tall with arms straight out to the sides | |
 
-No buttons or key binds. Every distance above scales with Fit Zones to My Body. Left-handed play works: the
+No buttons or key binds. Every distance above scales with Fit to My Body. Left-handed play works: the
 engine's left-handed control scheme swaps the hands, and the watch check's twist direction follows.
 
 ## Menu
 
-Options → Radiant Silvergun Options → RSQ Gestures
+Options → Radiant Silvergun Options → RSQ Gestures. One page; the numbers are on its **Test and Debug** page. No Gun
+Bonsai VR line: Gestures has no upgrades.
 
 | Row | Default | What it does |
 |---|---|---|
-| Inspect Twist Way | Back of Wrist (watch) | Which way the wrist turns for the watch check: back of wrist, pulse side, or either. |
-| Inspect Twist (degrees) | 45 | How far the wrist must turn to start the watch check. |
-| Inspect Hold (tics) | 6 | How long the pose is held before it counts (35 tics = 1 second). |
-| Watch Check Off | Off | On: the watch check is never read. RSQ Gun Cards then uses its own look-at-the-gun test. |
-| Watch Check Tick | On | A light tick in that controller when the watch check holds. |
-| Show Gesture Names | On | Names each recognised gesture low in your view. |
-| Two-Hand Events | Off | Reads the two-hand gestures all the time. Mods that use them switch them on while they need them. |
+| **Watch Check** | | |
+| Watch Check | On | Off: the watch check is never read. RSQ Gun Cards then uses its own look-at-the-gun test. |
+| Wrist Turn | Watch Side | Which way the wrist turns for the watch check: Watch Side (back of the wrist), Palm Up, or Either Way. |
+| Tick When Ready | On | A light tick in that controller when the watch check holds. |
+| **Both Hands** | | |
+| Two-Hand Gestures | Off | Reads the two-hand gestures all the time. Mods that use them switch them on while they need them. |
 | Both Hands Down | On | This two-hand gesture may fire. |
 | Both Hands Apart | On | This two-hand gesture may fire. |
 | Both Palms Out | On | This two-hand gesture may fire. |
 | Both Palms Thrust | On | This two-hand gesture may fire. |
-| Fit Zones to My Body | Off | Scales every zone to your measured eye height and reach. |
+| **My Body** | | |
+| Fit to My Body | Off | Scales every zone to your measured eye height and reach. |
 | Measure Me | — | Measures you (see How To Play). |
+| **Display** | | |
+| Show Gesture Names | On | Names each recognised gesture low in your view. |
+| Test and Debug | — | The page below. |
+| Reset All | — | Every row on this page and on Test and Debug, and your measurements. |
 
-**Tuning and Debug** holds every number:
+**Test and Debug**:
 
 | Row | Default | What it does |
 |---|---|---|
-| Twist To Drop (degrees) | 30 | Below this twist the watch check lets go. |
-| Lowest (below eyes) | 0.30 m | Lowest the watch-check hand may be. |
-| Highest (above eyes) | 0.20 m | Highest. |
-| Nearest (in front) | 0.15 m | Nearest in front of your eyes. |
-| Furthest (in front) | 0.65 m | Furthest. |
-| To The Side | 0.35 m | Furthest to either side. |
-| Gun Points Up/Down At Most | 60° | Steepest the gun may point. |
-| Hand Still Under (m/s) | 1.2 | The hand must be slower than this to start. |
-| Drift Allowed Once On (m) | 0.05 | How far the hand may drift once held. |
+| **Watch Check** | | |
+| Twist On (deg) | 45 | How far the wrist must turn to start the watch check. |
+| Twist Off (deg) | 30 | Below this twist the watch check lets go. |
+| Hold (tics) | 6 | How long the pose is held before it counts (35 tics = 1 second). |
+| Below Eyes (m) | 0.30 | Lowest the watch-check hand may be. |
+| Above Eyes (m) | 0.20 | Highest. |
+| Nearest (m) | 0.15 | Nearest in front of your eyes. |
+| Furthest (m) | 0.65 | Furthest. |
+| To the Side (m) | 0.35 | Furthest to either side. |
+| Gun Tilt Max (deg) | 60 | Steepest the gun may point. |
+| Hand Still (m/s) | 1.2 | The hand must be slower than this to start. |
+| Drift Allowed (m) | 0.05 | How far the hand may drift once held. |
+| Tick Strength | 0.35 | Strength of the tick. |
+| **One Hand** | | |
 | Still Under (m/s) | 0.30 | Below this a hand counts as still. |
-| Together Within (ms) | 120 | How far apart in time two hands may move and still be one gesture. |
-| Peak Fresher Than (ms) | 180 | Each hand's fastest moment must be this recent. |
-| Refire After (ms) | 500 | Wait before the same two-hand gesture fires again. |
-| Down: Speed (m/s) | 2.0 | Downward speed for both hands down. |
-| Down: How Straight | 0.50 | Share of the movement that must be downward. |
+| **Both Hands** | | |
+| Together (ms) | 120 | How far apart in time two hands may move and still be one gesture. |
+| Peak Age (ms) | 180 | Each hand's fastest moment must be this recent. |
+| Refire (ms) | 500 | Wait before the same two-hand gesture fires again. |
+| Down Speed (m/s) | 2.0 | Downward speed for both hands down. |
+| Down Straightness | 0.50 | Share of the movement that must be downward. |
 | Hips Below Eyes (m) | 0.60 | Where your hips are. |
-| Apart: Speed (m/s) | 2.0 | How fast the gap opens. |
+| Apart Speed (m/s) | 2.0 | How fast the gap opens. |
 | Chest Below Eyes (m) | 0.40 | Where your chest is. |
-| Thrown From Within (m) | 0.50 | Hands must start this close to your chest. |
-| Palms: In Front (m) | 0.25 | Each hand at least this far in front. |
-| Palms: Held (ms) | 400 | How long palms out is held. |
-| Palms: Pointing Up (degrees) | 40 | How far up each hand points. |
-| Palms: Apart Sideways (m) | 0.25 | Side gap between the hands (thrust too). |
-| Thrust: Speed (m/s) | 2.5 | Forward speed for both palms thrust. |
-| Thrust: How Straight | 0.60 | Share of the movement that must be forward. |
-| Thrust: Pointing Up (degrees) | 20 | How far up each hand points. |
+| Apart From Chest (m) | 0.50 | Hands must start this close to your chest. |
+| Palms Ahead (m) | 0.25 | Each hand at least this far in front. |
+| Palms Held (ms) | 400 | How long palms out is held. |
+| Palms Up (deg) | 40 | How far up each hand points. |
+| Palms Apart (m) | 0.25 | Side gap between the hands (thrust too). |
+| Thrust Speed (m/s) | 2.5 | Forward speed for both palms thrust. |
+| Thrust Straightness | 0.60 | Share of the movement that must be forward. |
+| Thrust Palms Up (deg) | 20 | How far up each hand points. |
+| **Punch and Shove** | | |
 | Punch Speed (m/s) | 2.0 | Average speed over the swing. |
 | Punch Repeat (tics) | 6 | Wait before the same hand punches again. |
 | Uppercut Rise | 0.50 | Upward share that makes an uppercut. |
-| Punch Answered For (ms) | 300 | How long a punch or shove stays "just happened" for other mods. |
-| Two-Hand Shove Share | 0.60 | The other hand moving this much the same way makes it a two-hand shove. |
-| Watch Check Tick Strength | 0.35 | Strength of the tick. |
-| Debug Log | Off | Writes gestures and hand numbers to the console. |
-| Reset All | — | Puts every setting back to its default. |
+| Punch Kept (ms) | 300 | How long a punch or shove stays "just happened" for other mods. |
+| Shove Share | 0.60 | The other hand moving this much the same way makes it a two-hand shove. |
+| **Debug** | | |
+| Debug Log | Off | Off, Events, Events + Hands (once a second), Events + Hands + Cost. |
 
 ## Works with
 
