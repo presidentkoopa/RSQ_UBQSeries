@@ -3,8 +3,8 @@
 // Two cards, in Ermac's Force Unleashed style and art (CREDITS.txt):
 //   the small card   beside the wrist stub, right of it on the main hand, left of it on the off hand: his panel,
 //                    his AMMO / MAGAZINE word, the rounds in the gun big and the reserve small (this file)
-//   the watch card   check your watch, the back of the wrist to your face (RSQ Gestures' inspect; without it, the
-//                    forearm across the chest) and the full card lies flat on the back-of-the-hand side of that wrist: the gun's name, MAGAZINE / RESERVE,
+//   the watch card   check your watch, the back of the wrist to your face (RSQ Gestures' inspect; without it, Gun Cards'
+//                    own copy of that reader, gestcopy.zs: the same pose) and the full card lies flat on the back-of-the-hand side of that wrist: the gun's name, MAGAZINE / RESERVE,
 //                    Gun Bonsai level, XP and upgrades (side.zs)
 // Each gun has its own colour (by weapon slot), or one simple colour for every card (rsqgc_color).
 //
@@ -30,7 +30,8 @@
 // (A_OverlayFlags needs a calling layer, p_pspr.cpp:1011). RSQGC_CardItem keeps a hidden helper layer whose state
 // sets them on every card piece made since it last ran.
 //
-// Needs nothing else. With RSQ Gestures loaded the watch check is its inspect pose; with Gun Bonsai and RSQ Gun
+// Needs nothing else. The watch check is RSQ Gestures' inspect pose: asked of Gestures when it is loaded, else read by
+// Gun Cards' own copy of it (gestcopy.zs, RSQGC_GCopyService: RSQ Tactical Rig asks that by name too); with Gun Bonsai and RSQ Gun
 // Bonsai VR loaded the watch card shows levels and upgrades; with RSQ Wheel loaded the world cards follow its look.
 
 class RSQGC_CardItem : CustomInventory
@@ -559,11 +560,23 @@ class RSQGC_GunCard : EventHandler
 		return (to / d) dot look >= cos(cv("rsqgc_glance_cone", 30));
 	}
 
-	// CHECKING YOUR WATCH with this hand: RSQ Gestures' inspect when that mod is loaded (the back of the wrist turned to
-	// the face), otherwise the forearm across the chest, the wrist in front of the face, the back of the wrist up.
+	// Gun Cards' own copy of that inspect reader (gestcopy.zs), asked only while RSQ Gestures is absent: the same pose
+	// rules and numbers, the same answer (0 not, 1 entering, 2 held); -1 when Gestures is loaded or the copy is missing
+	static int OwnInspect(PlayerPawn pmo, int hand)
+	{
+		let h = RSQGC_GCopy.Get();
+		return h ? h.Inspect(pmo.PlayerNumber(), hand) : -1;
+	}
+
+	// CHECKING YOUR WATCH with this hand: RSQ Gestures' inspect (the back of the wrist turned to the face). With RSQ
+	// Gestures loaded it is asked, as before; without it Gun Cards reads the same pose itself (owner 2026-11-04 19:45: the
+	// watch card is Gun Cards' standout and must not need another mod). The looser pose below (the forearm across the chest,
+	// the wrist 15-50 cm before the eyes) was the fallback without Gestures until then; now it runs only where it ran with
+	// Gestures loaded too: Gestures there with its watch-check pose switched off (its "inspect" -1), exactly as before.
 	private bool Watching(PlayerPawn pmo, int hand)
 	{
 		int g = Inspect(pmo, hand);
+		if (g < 0) g = OwnInspect(pmo, hand);
 		if (g >= 0)
 		{
 			if (g >= ci("rsqgc_inspect_level", 2)) mInspectTill[hand] = level.maptime + ci("rsqgc_linger", 35);
