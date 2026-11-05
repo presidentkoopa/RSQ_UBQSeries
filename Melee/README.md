@@ -45,8 +45,8 @@ drew, so only your arms throw punches.
 - **Hadouken**: a punch into a monster's missile sends it back at its shooter.
 - **Wall Splat**: a monster you punch into a wall slams into it, hurts and reels.
 - **Heavy Hands**: a landed punch freezes the monster for a beat and knocks it further.
-- **Ground Pound**: both fists swung down together send a shockwave round you (needs RSQ Gestures).
-- **Clear Out**: both palms thrust forward together shove everything in front of you back hard (needs RSQ Gestures).
+- **Ground Pound**: both fists swung down together send a shockwave round you (both hands read by RSQ Accessibility's gesture reader, or by Melee itself without it).
+- **Clear Out**: both palms thrust forward together shove everything in front of you back hard (read the same way).
 
 **The gun-butt shove** (on by default)
 - Swing the gun in your main hand forward at a monster, hard (3.6 m/s), and the stock hits like Brutal Doom's kick,
@@ -88,8 +88,8 @@ drew, so only your arms throw punches.
 | Gun-butt shove | Main hand with a gun, driven forward at 3.6 m/s | 12 tics between shoves |
 | Headlock | Off-hand grip on a monster within 0.30 m | Up to mass 400 (a demon) |
 | Throw a held monster | Swing the off hand at 3 m/s or more | Within 60 degrees of where you face |
-| Ground Pound | Both fists swung down hard together | Needs RSQ Gestures; Ground Pound on |
-| Clear Out | Both palms thrust forward together | Needs RSQ Gestures; Clear Out on |
+| Ground Pound | Both fists swung down hard together | Ground Pound on |
+| Clear Out | Both palms thrust forward together | Clear Out on |
 
 - The off-hand grip is read from the keys the engine sends for it (443, or 436 while the main grip is held).
 - With RSQ Distance Grab loaded, one grip press goes to one mod: the Headlock takes it only when a holdable monster is
@@ -126,8 +126,8 @@ row off turns them off on the gloves too).
 | Hadouken | Off | Punches return missiles |
 | Wall Splat (GB) | Off | Punched into a wall, it slams |
 | Heavy Hands | Off | Heavier punches |
-| Ground Pound (RSQ Gestures) (GB) | Off | Two-fist shockwave (needs RSQ Gestures) |
-| Clear Out (RSQ Gestures) (GB) | Off | Two-palm shove (needs RSQ Gestures) |
+| Ground Pound (RSQ Gestures) (GB) | Off | Two-fist shockwave (no other mod needed) |
+| Clear Out (RSQ Gestures) (GB) | Off | Two-palm shove (no other mod needed) |
 | Reset All | | Every setting on both pages back to default |
 
 **Test and Debug**: Punch Damage (10), Min Speed (2.0 m/s), Full Speed (7.0 m/s), Re-Hit Wait (6 tics), Uppercut Rise
