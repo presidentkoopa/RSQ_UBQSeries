@@ -4,14 +4,14 @@ Your calls from 11-04 are noted. Extra fixes you asked for in the same pass: For
 
 | # | Item | Status |
 |---|---|---|
-| 1 | SlowMo: Lean Out of Bullets row ignored with Gun Bonsai VR | In progress: the row will always be able to turn it off; the upgrade still decides turning it on. |
-| 2 | SlowMo: gauge stuck full during Deeper / shootdodge | In progress: gauge measures against the real depth. |
-| 3 | SlowMo: CREDITS missing coldcite's bar art | In progress: credits added. |
+| 1 | SlowMo: Lean Out of Bullets row ignored with Gun Bonsai VR | FIXED (735d4ab87): the row can always turn the lean off; the upgrade still decides turning it on. |
+| 2 | SlowMo: gauge stuck full during Deeper / shootdodge | FIXED (735d4ab87): gauge measures the real depth. |
+| 3 | SlowMo: CREDITS missing coldcite's bar art | FIXED (735d4ab87). |
 | 4 | Score: sound origins missing from CREDITS | FIXED (383b26123): origins recorded. |
 | 5 | Score: fonts credit contradicts itself | FIXED (383b26123): your call, the fonts ship with credit. |
 | 6 | Score: settings with no menu row | Menu pass (you said: fix them now). |
 | 7 | Score: stale Headshot comment | FIXED (383b26123). |
-| 8 | Laser Sight REAL BUG: Target Lock can never turn on (GBOVR without the Rig) | In progress: falls back to the menu switches when the upgrade path isn't there. |
+| 8 | Laser Sight REAL BUG: Target Lock can never turn on (GBOVR without the Rig) | FIXED (735d4ab87): menu switches rule unless Gun Bonsai VR and the Rig are both loaded. |
 | 9 | Gun Cards: JFO font licence | FIXED (1c5d2405b): your call, ships with credit. |
 | 10 | Gun Cards: status card missing with Draw in the World | FIXED (1c5d2405b): your call, it shows in both modes. |
 | 11 | Gun Cards: Inspect Gesture label | Menu pass. |
@@ -46,18 +46,18 @@ Your calls from 11-04 are noted. Extra fixes you asked for in the same pass: For
 | 40 | ShieldSaw: no CREDITS.txt | FIXED (9a1f611b3): the README's history (id Software, Ermac's Rusted Legacy) shipped as CREDITS.txt. |
 | 41 | ShieldSaw: stale comments | FIXED (9a1f611b3). |
 | 42 | ShieldSaw: old README in pk3 | FIXED (bccb472dd). |
-| 43 | Rig: cigarette slow-mo filed as automatic | In progress: tagged by name. |
+| 43 | Rig: cigarette slow-mo filed as automatic | FIXED (735d4ab87): tagged by name; also refused when the Cigarette switch is off. |
 | 44 | Rig: other packs' guns not drawn on the body | FIXED (c54b220c0): vanilla's eight guns drawn with BD's meshes, no BD needed. |
-| 45 | Rig: menu leftovers | FIXED in part (9d687a780); rest in progress. |
-| 46 | Rig: stale cig.zs label | In progress. |
+| 45 | Rig: menu leftovers | FIXED (9d687a780). |
+| 46 | Rig: stale cig.zs label | FIXED (735d4ab87). |
 | 47 | FnF: flares after death | NOT A BUG: dying restarts the map and refills; a netplay refill was added. |
 | 48 | FnF: chest pocket has no marker | Your call: always show flare, flashlight, whip, sabers, saw, each with a Show toggle in its own mod (menu pass). |
 | 49 | FnF: stale comment, grip key row | FIXED (9d687a780) comment; row in menu pass. |
-| 50 | Grenade: co-op, anyone can shoot any grenade | Your call: kept, shooter gets the kill (being documented). |
-| 51 | Grenade: off-hand grenade untested | In progress: rig test, fix what fails. |
+| 50 | Grenade: co-op, anyone can shoot any grenade | FIXED (735d4ab87, BD22 2.0.3v): shooter gets the kill. |
+| 51 | Grenade: off-hand grenade untested | NOT A BUG: the off-hand grenade worked end to end on the rig. |
 | 52 | Melee: no fists by default | FIXED (8a7082db0): punch with any fists. |
 | 53 | Melee: settings with no rows | Menu pass. |
-| 54 | Grenade: either hand's ray can set off a grenade | In progress: only the hand that fired. |
+| 54 | Grenade: either hand's ray can set off a grenade | FIXED (735d4ab87, BD22 2.0.3v): only the hand that fired. |
 | 55 | Saber: Lightning Beam row needs Gun Bonsai VR | Menu pass (label). |
 | 56 | Saber: model/sound authors unrecorded | FIXED (2a5a7a2eb): your call, ships with the credits you gave. |
 | 57 | Glow: Miniboss's Own colour always red | FIXED (0bb9489d5): Miniboss reports each boss's colour. |
