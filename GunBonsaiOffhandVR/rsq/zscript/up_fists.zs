@@ -17,6 +17,15 @@ class RSQ_FistMath
 {
 	static clearscope double LiftM(double up) { return up * up * 0.5 * 1.2 / 34.0; }
 	static clearscope String Metres(double m) { return String.Format("%.1f m", m); }
+	// SOMEONE READS BOTH HANDS (owner 2026-11-04 19:45): RSQ Gestures, or RSQ Melee's own copy of Gestures' two-hand reader
+	// (its RSQML_GCopyService "pair.reader" 1, by name), which Melee uses when Gestures is not loaded. The two-hand moves
+	// (Ground Pound, Clear Out, Absorb and Release's release, Taunt) are offered with either; nothing else changes.
+	static play bool TwoHandReader()
+	{
+		if (RSQM.Svc("RSQG_Service")) return true;
+		let s = RSQM.Svc("RSQML_GCopyService");
+		return s && s.GetInt("pair.reader") == 1;
+	}
 }
 
 // UPPERCUT (an unlock): without it, under Gun Bonsai VR, a rising punch is a jab and lifts nothing. Learned, a rising
@@ -87,8 +96,8 @@ class RSQ_Upgrade_Meteor : RSQ_Upgrade_Base
 // shockwave round you. With Knockdown learned on that glove, what it hits that is no boss goes down for a count of 2.
 class RSQ_Upgrade_GroundPound : RSQ_Upgrade_Base
 {
-	// needs RSQ Gestures (its "both hands down"), asked by service name as Taunt does (item 24, 11-04)
-	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return GloveInfo(info) && Has(info, "Launcher", 3) && LevelOf(info, "GroundPound") < 3 && RSQM.Svc("RSQG_Service") != null; }
+	// needs someone reading "both hands down": RSQ Gestures or RSQ Melee's own copy (TwoHandReader; item 24, 11-04)
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return GloveInfo(info) && Has(info, "Launcher", 3) && LevelOf(info, "GroundPound") < 3 && RSQ_FistMath.TwoHandReader(); }
 	static double Radius(uint lv) { return 2.0 + 0.5 * lv; }     // metres
 	static int Damage(uint lv) { return 20 + 10 * lv; }
 	static double Speed() { return 3.0; }                        // m/s down, each hand
@@ -104,8 +113,8 @@ class RSQ_Upgrade_GroundPound : RSQ_Upgrade_Base
 // back hard, hurt, and staggered.
 class RSQ_Upgrade_ClearOut : RSQ_Upgrade_Base
 {
-	// needs RSQ Gestures (its "both palms thrust"), asked by service name as Taunt does (item 24, 11-04)
-	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return GloveInfo(info) && Has(info, "HeavyHands", 2) && LevelOf(info, "ClearOut") < 3 && RSQM.Svc("RSQG_Service") != null; }
+	// needs someone reading "both palms thrust": RSQ Gestures or RSQ Melee's own copy (TwoHandReader; item 24, 11-04)
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return GloveInfo(info) && Has(info, "HeavyHands", 2) && LevelOf(info, "ClearOut") < 3 && RSQ_FistMath.TwoHandReader(); }
 	static double Range(uint lv) { return 2.0 + 0.5 * lv; }      // metres
 	static int Damage(uint lv) { return 10 + 5 * lv; }
 	static double Push(uint lv) { return 12.0 + 2.0 * lv; }       // map units a tic, on a 100-mass monster
@@ -466,8 +475,8 @@ class RSQ_Upgrade_ReflectGuard : RSQ_GuardPerk
 class RSQ_Upgrade_AbsorbRelease : RSQ_GuardPerk
 {
 	override bool Parent(TFLV_PerPlayerStats stats) { return PHas(stats, "ReflectGuard", 2); }
-	// the release is RSQ Gestures' "both hands apart": offered only with it loaded, as Taunt (item 24, 11-04)
-	override bool ModLoaded() { return Super.ModLoaded() && RSQM.Svc("RSQG_Service") != null; }
+	// the release is "both hands apart": offered only with RSQ Gestures or RSQ Melee's own copy reading it (item 24, 11-04)
+	override bool ModLoaded() { return Super.ModLoaded() && RSQ_FistMath.TwoHandReader(); }
 	static double ChargeCap(uint lv) { return 100.0 + 50.0 * lv; }
 	static double Radius(uint lv) { return 3.0 + lv; }    // metres
 	override void GetTooltipFields(Dictionary fields, uint level)
@@ -718,7 +727,7 @@ class RSQ_Upgrade_RifleButt : RSQ_Upgrade_Base
 class RSQ_Upgrade_Taunt : RSQ_Perk
 {
 	override int Cap() { return 3; }
-	override bool ModLoaded() { return RSQM.Svc("RSQML_Service") != null && RSQM.Svc("RSQG_Service") != null; }
+	override bool ModLoaded() { return RSQM.Svc("RSQML_Service") != null && RSQ_FistMath.TwoHandReader(); }   // "both hands apart", Gestures' or Melee's copy
 	static int Tics(uint lv) { return 35 * (2 + lv); }
 	static double Range() { return 10.0; }   // metres
 	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("time", AsSeconds(Tics(level))); }
