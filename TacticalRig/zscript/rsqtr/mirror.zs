@@ -22,7 +22,7 @@ class RSQTR_MirrorView play
 	// shieldsaw"): the grenade at the buckle (rig.nadeShow), the cigarettes in the pocket (RSQTR_Cig.packShow) and RSQ
 	// ShieldSaw's shield on your back (its SSQ_Prop, found by name within EXTRA_NEAR of you). The stowed guns, sabers,
 	// whip and flare are icon[] above.
-	const NEXTRA = 6;
+	const NEXTRA = 8;
 	const EXTRA_NEAR = 1.5;    // metres
 	const MIRROR_MARK = 0x52534D52;
 	Actor mExtra[NEXTRA];
@@ -108,6 +108,7 @@ class RSQTR_MirrorView play
 			while (a = Actor(it.Next())) if (!a.bINVISIBLE && RSQTR_Body.RoomMetres(a.pos, pmo.pos + (0, 0, pmo.height * 0.5)) < EXTRA_NEAR) { shield = a; break; }
 		}
 		src[ns++] = shield;
+		for (int k = 0; k < 2; k++) src[ns++] = rig.fnfMark[k];    // RSQ FlashFlare's pocket and clip spheres (rig.zs DrawFnFMarkers)
 		for (int k = 0; k < NEXTRA; k++)
 		{
 			mExtra[k] = Copy(mExtra[k], k < ns ? src[k] : null);

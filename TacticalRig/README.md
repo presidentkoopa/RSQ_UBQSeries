@@ -216,7 +216,8 @@ Runs alone on any load order. It finds the rest by name:
 - **RSQ ShieldSaw**: its shield hangs on this torso and turns with it; its Recenter key recenters both. The off
   shoulder is left to the stowed shield.
 - **RSQ Whip**: its whip holster and the coiled whip shown there. **RSQ FnF**: its flare holster, sharing the
-  pocket's flares, and its pocket hangs on this torso.
+  pocket's flares, and its pocket hangs on this torso. FnF's chest pocket and flashlight clip show the same fading
+  holster sphere as the Rig's own places (Holster Markers), at FnF's own size.
 - **RSQ Gestures**: the watch-check gun move.
 - **RSQ SlowMo**: the slow motion after a smoke.
 - **RSQ Accessibility**: Seated Play, handedness, rumble strength, text size and colour-blind ring colours apply here.

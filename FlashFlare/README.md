@@ -151,7 +151,7 @@ Options → Radiant Silvergun Options → RSQ FnF (Flash and Flare)
 
 Runs alone. It finds the others by name:
 - **RSQ Tactical Rig**: the pocket hangs on the Rig's torso and turns with its holsters (stick turns, followed room
-  turns, recenters). The Rig adds a flare holster on your off-hand hip that holds the same flares as the pocket, with
+  turns, recenters). The pocket and the flashlight clip show the Rig's fading holster sphere, like its own holsters. The Rig adds a flare holster on your off-hand hip that holds the same flares as the pocket, with
   a flare model hanging there while you carry one. While your off hand is in one of the Rig's holsters, the grip
   belongs to the Rig, never the pocket, and a fast reach down to a holster is never read as a strike. Drawing a gun
   into the off hand from a holster puts an unlit flare back (a lit one falls, burning). The Rig never throws the

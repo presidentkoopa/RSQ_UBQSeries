@@ -125,6 +125,7 @@ class RSQTR_Rig : EventHandler
 		return best, (bv.x * c - bv.y * sn, bv.x * sn + bv.y * c, bv.z);
 	}
 	transient Actor marker[RSQTR_Region.N];   // read by the mirror (mirror.zs)
+	transient Actor fnfMark[2];               // RSQ FlashFlare's flare pocket and flashlight clip (DrawFnFMarkers), read by the mirror too
 	transient Actor icon[RSQTR_Region.N];
 	transient Actor pip[RSQTR_Region.N];      // the ammo light in a full holster
 	transient Actor nadeShow;                 // the grenade at the grenade spot (DrawNade)
@@ -2007,6 +2008,57 @@ class RSQTR_Rig : EventHandler
 			else if (icon[r]) icon[r].bINVISIBLE = true;
 			if (IsGrenadeRegion(r)) DrawNade(pmo, p, at, live);
 		}
+		DrawFnFMarkers(pmo, p, mode);
+	}
+
+	// EVERY GRAB ZONE ON THE BODY SHOWS THE SPHERE (owner 11-04 19:07: "I would expect all of my holsters to have that
+	// spherical fading holster zone"). RSQ FlashFlare's flare pocket and flashlight clip are FnF's own grab zones and FnF
+	// draws nothing there, so with both loaded the rig draws its marker at the spot FnF publishes (RSQFF_Service
+	// GetDouble "pocket.x/y/z/r" and "clip.x/y/z/r", asked with this body's yaw), with the same switch (rsqtr_markers,
+	// edit mode shows all), the same fade and colours as the rig's own places, at FnF's own radius. Green while the off
+	// hand (the one that takes from them) is inside. FnF alone draws nothing, as before.
+	private void DrawFnFMarkers(PlayerPawn pmo, PlayerInfo p, int mode)
+	{
+		static const String Z[] = { "pocket", "clip" };
+		let it = ServiceIterator.Find("RSQFF_Service");
+		let svc = it.Next();
+		double by = BodyYaw(pmo);
+		for (int k = 0; k < 2; k++)
+		{
+			double a = 0;
+			Vector3 at = (0, 0, 0);
+			double rad = 0;
+			if (svc && mode > 0)
+			{
+				String z = Z[k];
+				double x = svc.GetDouble(z .. ".x", "", 0, by, pmo);
+				rad = svc.GetDouble(z .. ".r", "", 0, by, pmo);
+				if (x < 1e8 && rad > 0 && rad < 1e8)
+				{
+					at = (x, svc.GetDouble(z .. ".y", "", 0, by, pmo), svc.GetDouble(z .. ".z", "", 0, by, pmo));
+					double near = 1e9;
+					for (int h = 0; h < 2; h++) near = min(near, RSQTR_Body.RoomMetres(RSQTR_Body.Hand(pmo, h), at));
+					bool inside = RSQTR_Body.RoomMetres(RSQTR_Body.Hand(pmo, 1), at) <= rad;
+					if (mode >= 2) a = inside ? 0.7 : 0.25;
+					else if (near < rad * 2.5) a = inside ? 0.7 : 0.35 * (1.0 - (near - rad) / (rad * 1.5));
+					if (a > 0.01)
+					{
+						if (!fnfMark[k]) fnfMark[k] = Actor.Spawn("RSQTR_Marker", at);
+						let m = fnfMark[k];
+						if (m)
+						{
+							m.SetOrigin(at, true);
+							m.bINVISIBLE = false;
+							m.Alpha = clamp(a, 0.0, 1.0);
+							double s = rad * RSQTR_Body.Upm() * (inside ? 1.15 : 1.0);
+							m.Scale = (s, s);
+							m.frame = MarkerFrame(inside, Opt("rsqtr_profile_active", p, 1));
+						}
+					}
+				}
+			}
+			if (a <= 0.01 && fnfMark[k]) fnfMark[k].bINVISIBLE = true;
+		}
 	}
 
 	// ---- THE WHIP AND THE FLARE ON THE BODY (owner 2026-11-03 20:14: "draw the holstered whip/flare on the body as their
@@ -2182,6 +2234,7 @@ class RSQTR_Rig : EventHandler
 			if (icon[r]) icon[r].bINVISIBLE = true;
 			if (pip[r]) pip[r].bINVISIBLE = true;
 		}
+		for (int k = 0; k < 2; k++) if (fnfMark[k]) fnfMark[k].bINVISIBLE = true;
 		if (nadeShow) nadeShow.bINVISIBLE = true;
 		for (int k = 0; k < 6; k++) HideAmmo(k);
 	}

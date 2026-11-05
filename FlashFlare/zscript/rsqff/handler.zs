@@ -605,8 +605,41 @@ class RSQFF_Handler : EventHandler
 //   GetInt("flare.count", "", player)   flares carried (the pocket's, which the rig's flare holster shares)
 // To take one or put an unlit one back, send FnF's own network events "rsqff_take" / "rsqff_back" (the rig does): they
 // do exactly what a grip at the pocket does, from the same synced state on every machine.
+// WHERE FnF's GRAB ZONES ARE (RSQ Tactical Rig draws its holster sphere there, owner 11-04 19:07). objectArg: the pawn,
+// doubleArg: the body's yaw to hang them by (the asker's; FnF follows the rig's body anyway).
+//   GetDouble("pocket.x" / ".y" / ".z", "", 0, yaw, pawn)  the flare pocket's centre, map units; ".r" its grab radius in
+//   metres (rsqff_pocket_r). "clip.*" the same for the flashlight clip (rsqff_fl_clip_r). 1e9 when that zone is off
+//   (FnF off, Flashlight off) or the pawn is not in VR.
 class RSQFF_Service : Service
 {
+	override double GetDouble(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
+	{
+		let pmo = PlayerPawn(objectArg);
+		if (!pmo || !RSQFF_Geo.InVR(pmo) || request.Length() < 3) return 1e9;
+		String axis = request.Mid(request.Length() - 1);
+		String zone = request.Left(request.Length() - 2);
+		Vector3 at;
+		double r;
+		if (zone == "pocket")
+		{
+			if (!RSQFF_Handler.On()) return 1e9;
+			at = RSQFF_Geo.Pocket(pmo, doubleArg);
+			r = clamp(RSQFF_Handler.PNum(pmo.player, "rsqff_pocket_r", 0.11), 0.04, 0.4);
+		}
+		else if (zone == "clip")
+		{
+			if (!RSQFF_Torches.FlOn()) return 1e9;
+			at = RSQFF_Torches.Clip(pmo, doubleArg);
+			r = clamp(RSQFF_Torches.LNum("rsqff_fl_clip_r", 0.12), 0.04, 0.4);
+		}
+		else return 1e9;
+		if (axis == "x") return at.x;
+		if (axis == "y") return at.y;
+		if (axis == "z") return at.z;
+		if (axis == "r") return r;
+		return 1e9;
+	}
+
 	override int GetInt(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
 	{
 		if (intArg < 0 || intArg >= MAXPLAYERS || !playeringame[intArg] || !players[intArg].mo) return -1;
