@@ -112,7 +112,7 @@ here (the body, the holsters, the torso that follows your turns) is worked out i
 | Recenter Torso key | Bindable: Customize Controls → RSQ Tactical Rig, or the rig's own page | |
 | Move a holster | Move Holsters by Hand on: grip inside a ring, carry it, let go | The keyring moves the same way |
 | Keys to a door | Keys Open Doors by Hand on: grip at the keyring, hold, touch a locked door | The engine's own lock check decides |
-| Move a gun to the other hand | Move Gun at Watch on: hold the watch check, press Use | A gun in the other hand swaps |
+| Move a gun to the other hand | Move Gun at Watch on: hold the watch check, press Use | A gun in the other hand swaps. While an RSQ Miniboss Bossfight is ready to call, that press calls it in instead and the gun stays |
 | Cigarette | Main hand at the chest pocket (left chest for right-handers), grip or Use | Cigarette in the main hand, Zippo in the off hand |
 | ...into the mouth | Cigarette at your lips, Use | Use anywhere else flicks it away |
 | ...light it | Zippo's flame at the tip, off-hand fire | Off-hand fire elsewhere flicks the lid open or shut |
@@ -144,7 +144,7 @@ what the rows already do: Smoker, Chain Smoker, Gun Toss, Boomerang Gun).
 | Quick Swap | On | A full holster swaps without the press delay |
 | New Guns to Holsters | Off | A new gun fills the first empty holster |
 | Keep Between Levels | On | Holsters keep their guns |
-| Move Gun at Watch | Off | Use during the watch check moves that hand's gun across |
+| Move Gun at Watch | Off | Use during the watch check moves that hand's gun across (not while a Bossfight is ready to call: the press is its call-in) |
 | Hang From Neck | On | A nod does not slide the rig |
 | **Spots** | | |
 | Grenade Spot | On | The belt-buckle grenade |
@@ -220,6 +220,8 @@ Runs alone on any load order. It finds the rest by name:
   holster sphere as the Rig's own places (Holster Markers), at FnF's own size.
 - **RSQ Accessibility (its gesture reader)**: the watch-check gun move.
 - **RSQ SlowMo**: the slow motion after a smoke.
+- **RSQ Miniboss**: while its Bossfight is ready to call, the watch check + Use calls it in and Move Gun at Watch skips
+  that press (asked by name, RSQMB_Service "callin").
 - **RSQ Accessibility**: Seated Play, handedness, rumble strength, text size and colour-blind ring colours apply here.
 - **RSQ Distance Grab** leaves a hand alone while it is in a holster or holds the cigarette or Zippo; **RSQ Melee**'s
   Headlock waits while your off hand is in a holster.
