@@ -39,8 +39,9 @@ BFG with a long heavy thud. After a while you can find a gun by feel.
 - The fist is always on the ring, as slot 1's first card: also when a fan would hide it, when a mod leaves it out
   of the weapon slots, and when you have none (taking the card gives you the fist). It picks Doom's Fist, Brutal
   Doom's fists, or BD22 VR's off-hand fist, whichever that hand uses.
-- The fist, the lightsaber and the whip have their own icons: LegenDoom's brass knuckles, a pixel-art lightsaber
-  and a coiled whip (credits in CREDITS.txt).
+- The fist, the lightsaber, the whip and the ShieldSaw have their own icons: LegenDoom's brass knuckles, a pixel-art
+  lightsaber, a coiled whip and a round saw-shield (credits in CREDITS.txt; the ShieldSaw's rig only, not
+  headset-confirmed).
 - Ammo counts and gauges, a slot number, and a mark on the guns you are holding.
 - A big arsenal folds into one card per slot. Rest on a slot and its guns fan out; Use opens the fan at once.
 - Hold the trigger on a gun in a fan and drag it to a new place in its slot. The order is saved.
@@ -156,7 +157,7 @@ Options → Radiant Silvergun Options → RSQ Wheel (one page; Test and Debug an
 | Point at a Gun | On | Point at a gun on the floor to see its sheet. |
 | Compare With Yours | Off | That sheet shows the difference from your current gun. |
 | *Other Mods* | | |
-| LegenDoom Rarity | On | Reader for LegenDoom: the card in the rarity's colour, the rarity and the legendary's name ("EPIC  MURDEROUS SHOTGUN") on the sheet's top row. With the LDL x BD22 VR patch (its 11-04 build), BD22 VR's guns too (rig only, not headset-confirmed). |
+| LegenDoom Rarity | On | Reader for LegenDoom: the card in the rarity's colour, the rarity ("EPIC") on the sheet's top row and the legendary's name ("MURDEROUS SHOTGUN") on the row under it. With the LDL x BD22 VR patch (its 11-04 build), BD22 VR's guns too (rig only, not headset-confirmed). |
 | LegenDoom Effects | On | The power, in LegenDoom's own words, under it. |
 | DoomRL Arsenal Tier | On | Reader for DoomRL Arsenal. |
 | DoomRL Mod Upgrades | On |  |

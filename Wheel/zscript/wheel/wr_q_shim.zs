@@ -942,8 +942,9 @@ class wr_VRState : EventHandler
 		{
 			bool active = (hand == mLaserHand);
 			if (!active && !mBoth) { if (mBeam[hand]) mBeam[hand].bInvisible = true; continue; }
-			// the idle hand's dim beam stands down where RSQ_LaserSight already draws one
-			if (!active && laserBeamOn(hand)) { if (mBeam[hand]) mBeam[hand].bInvisible = true; continue; }
+			// ONE BEAM PER HAND (owner 11-05): where RSQ_LaserSight already draws a beam on a hand -- the pointing
+			// hand too -- the ring draws none; that hand picks along the laser's own line (wr_Rig.aimPos / laserLine)
+			if (laserBeamOn(hand)) { if (mBeam[hand]) mBeam[hand].bInvisible = true; continue; }
 			Vector3 org = wr_Rig.aimPos(PlayerPawn(mo), hand);   // the beams point: Steady Hands (wr_Rig.aimPos)
 			Vector3 dir = wr_Rig.aimDir(PlayerPawn(mo), hand);
 			double len = active ? mLaserRange : 0;
@@ -981,6 +982,16 @@ class wr_VRState : EventHandler
 			mSight = it.Next();
 		}
 		return mSight && mSight.GetInt("laser.beam", "", hand) > 0;
+	}
+	// The line Laser Sight drew that hand's beam on (GetDouble "laser.line"); false when it drew none there, or an
+	// older Laser Sight without the request answers a zero direction.
+	bool, Vector3, Vector3 laserLine(int hand)
+	{
+		if (!laserBeamOn(hand)) return false, (0, 0, 0), (0, 0, 0);
+		Vector3 d = (mSight.GetDouble("laser.line", "dx", hand), mSight.GetDouble("laser.line", "dy", hand), mSight.GetDouble("laser.line", "dz", hand));
+		if (d.Length() < 0.5) return false, (0, 0, 0), (0, 0, 0);
+		Vector3 o = (mSight.GetDouble("laser.line", "x", hand), mSight.GetDouble("laser.line", "y", hand), mSight.GetDouble("laser.line", "z", hand));
+		return true, o, d.Unit();
 	}
 
 	private void drawBeam(Actor mo, int hand, Vector3 org, Vector3 dir, double len, double alpha)

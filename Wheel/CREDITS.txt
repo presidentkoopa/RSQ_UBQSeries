@@ -30,3 +30,4 @@ Card icons (owner 2026-11-03; sources and how each was made: sources/icons/SOURC
   - The lightsaber card (graphics/WRISABER.png) is "Jedi Lightsaber (Star Wars)", pixel art by danger_doughnut52
     on dinopixel.com (24 Aug 2020): https://dinopixel.com/jedi-lightsaber-star-wars-pixel-art-2388
   - The whip card (graphics/WRIWHIP.png) is the series' own, drawn by sources/icons/gen_whip_icon.py.
+  - The ShieldSaw card (graphics/WRISSAW.png) is the series' own, drawn by sources/icons/gen_shieldsaw_icon.py.

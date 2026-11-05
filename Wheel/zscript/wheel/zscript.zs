@@ -1814,15 +1814,17 @@ class wr_Rig : EventHandler
 			         tierColorOf(w));
 		else if (isLD)
 		{
-			// RSQ: LegenDoom's legendary name rides the top row with the rarity word ("EPIC  MURDEROUS SHOTGUN",
-			// wr_compat_legendoom.zs TitleOf); the handling note keeps its place only when there is no title
+			// RSQ: the rarity word on its own row, LegenDoom's legendary name on the row under it ("EPIC" /
+			// "MURDEROUS SHOTGUN", wr_compat_legendoom.zs TitleOf; owner 11-05); the handling note keeps its place
+			// only when there is no title
 			string ldWord = wr_CompatLegenDoom.RarityWord(ldRarity);
 			string ldTitle = wr_CompatLegenDoom.TitleOf(w);
 			if (ldTitle.Length())
 			{
-				string top = ldWord .. "  " .. ldTitle.MakeUpper();
-				if (top.CodePointCount() > LD_TOP_WIDTH) top = top.Left(LD_TOP_WIDTH - 1) .. ".";
-				sheetRow(top, tierColorOf(w));
+				string nm = ldTitle.MakeUpper();
+				if (nm.CodePointCount() > LD_TOP_WIDTH) nm = nm.Left(LD_TOP_WIDTH - 1) .. ".";
+				sheetRow(ldWord, tierColorOf(w));
+				sheetRow(nm, tierColorOf(w));
 			}
 			else
 				sheetRow(hands.Length() ? (ldWord .. "  " .. hands) : ldWord, tierColorOf(w));
@@ -5002,6 +5004,50 @@ class wr_Rig : EventHandler
 		return tex;
 	}
 
+	// RSQ (owner 11-05, "Off-hand axe wheel needs to use axe art"): AN OFF-HAND COPY SHOWS ITS GUN'S ART. BD22
+	// VR-Reloaded's off-hand copies (RSQ_Off_BrutalAxe : BrutalAxe and the RSQ_Off_* guns) share their gun's pickup
+	// sprite but not its pickup model (MODELDEF is per class), so the card's prop drew the wrong picture. An off-hand
+	// weapon derived from a gun with the same pickup sprite, or a weapon whose Spawn state draws nothing at all, takes
+	// the art (pickup model, sprite, icon) of that parent gun. By the class tree only: no mod is named, and any other
+	// weapon is untouched.
+	clearscope static bool spawnShows(Class<Actor> c)
+	{
+		if (c == null) return false;
+		State st = GetDefaultByType(c).FindState('Spawn');
+		if (st == null || !st.ValidateSpriteFrame()) return false;
+		TextureID t; bool m; Vector2 sc;
+		[t, m, sc] = st.GetSpriteTexture(0);
+		return t.IsValid() && !(TexMan.GetName(t).Left(4) ~== "TNT1");
+	}
+	clearscope static TextureID spawnTex(Class<Actor> c)
+	{
+		TextureID t; t.SetInvalid();
+		State st = c ? GetDefaultByType(c).FindState('Spawn') : null;
+		if (st == null || !st.ValidateSpriteFrame()) return t;
+		bool m; Vector2 sc;
+		[t, m, sc] = st.GetSpriteTexture(0);
+		return t;
+	}
+	clearscope static Class<Actor> artClass(Class<Actor> c)
+	{
+		if (c == null || !(c is 'Weapon')) return c;
+		// AN OFF-HAND COPY OF A GUN (+WEAPON.OFFHANDWEAPON, derived from that gun, same pickup sprite): the gun's own
+		// art. Its pickup MODEL is defined for the gun's class only (MODELDEF is per class; the copy's block holds just
+		// the held model), so a prop spawned as the copy drew the wrong picture on its card.
+		let wd = Weapon(GetDefaultByType(c));
+		let pc = (Class<Actor>)(c.GetParentClass());
+		if (wd && wd.bOffhandWeapon && pc && pc is 'Weapon' && pc != 'Weapon')
+		{
+			let pd = Weapon(GetDefaultByType(pc));
+			TextureID a = spawnTex(c), b = spawnTex(pc);
+			if (pd && !pd.bOffhandWeapon && (!spawnShows(c) || (a.IsValid() && a == b))) return pc;
+		}
+		if (spawnShows(c)) return c;
+		for (Class<Actor> k = (Class<Actor>)(c.GetParentClass()); k != null && k is 'Weapon' && k != 'Weapon'; k = (Class<Actor>)(k.GetParentClass()))
+			if (spawnShows(k)) return k;
+		return c;
+	}
+
 	private static TextureID iconFor(Inventory it)
 	{
 		TextureID none;
@@ -5011,6 +5057,22 @@ class wr_Rig : EventHandler
 		// RSQ (owner 2026-11-03): the fist, the lightsaber and the whip wear the Wheel's own icons (ownIcon).
 		TextureID own = ownIcon(it.GetClass());
 		if (own.IsValid()) return own;
+
+		// RSQ: an off-hand copy with no picture of its own: its gun's pickup sprite and icon (artClass)
+		Class<Actor> art = artClass(it.GetClass());
+		if (art != it.GetClass())
+		{
+			let d = Inventory(GetDefaultByType(art));
+			State ast = d ? d.FindState('Spawn') : null;
+			if (ast && ast.ValidateSpriteFrame())
+			{
+				TextureID at; bool am; Vector2 asc;
+				[at, am, asc] = ast.GetSpriteTexture(0);
+				if (at.IsValid()) return at;
+			}
+			if (d && d.AltHUDIcon.IsValid()) return d.AltHUDIcon;
+			if (d && d.Icon.IsValid()) return d.Icon;
+		}
 
 		// The pickup sprite -- the thing you'd see lying on the floor. This is
 		// what a weapon is recognisable AS, so it leads.
@@ -5042,6 +5104,7 @@ class wr_Rig : EventHandler
 	//   the fist         WRIFIST   LegenDoom 3.0's brass knuckles (its LDFists' icon, SFISZ0)
 	//   the lightsaber   WRISABER  "Jedi Lightsaber (Star Wars)" by danger_doughnut52, dinopixel.com
 	//   the whip         WRIWHIP   drawn for the Wheel (sources/icons/gen_whip_icon.py)
+	//   the shield saw   WRISSAW   drawn for the Wheel (sources/icons/gen_shieldsaw_icon.py; owner 2026-11-05)
 	// Sources and credits: sources/icons/SOURCES.md, CREDITS.txt. The series' classes are looked up by name
 	// at run time, so none of their mods has to be loaded.
 	clearscope static Class<Actor> clsNamed(Name n) { Class<Actor> c = n; return c; }
@@ -5074,9 +5137,11 @@ class wr_Rig : EventHandler
 		String lump = "";
 		Class<Actor> saber = clsNamed('UBQS_SaberBase');
 		Class<Actor> whip  = clsNamed('RSQWP_WhipWeapon');
+		Class<Actor> ssaw  = clsNamed('SSQ_ShieldSaw');
 		if (isFistClass(c))           lump = "WRIFIST";
 		else if (descends(c, saber))  lump = "WRISABER";
 		else if (descends(c, whip))   lump = "WRIWHIP";
+		else if (descends(c, ssaw))   lump = "WRISSAW";
 		if (lump.Length() == 0) return none;
 		return TexMan.CheckForTexture(lump, TexMan.Type_Any);
 	}
@@ -8188,8 +8253,24 @@ class wr_Rig : EventHandler
 	{
 		return pmo && pmo.player && pmo.OverrideAttackPosDir && wr_A11y.SteadyOn(pmo);
 	}
+	// RSQ (owner 11-05, "having two lasers is rough"): A HAND WHOSE GUN DRAWS RSQ LASER SIGHT'S BEAM POINTS ALONG THAT
+	// BEAM. Laser Sight publishes the line it drew each hand's beam on (RSQLS_SightService GetDouble "laser.line": the
+	// gun's muzzle and barrel from its held model), asked by name through wr_VRState, so nothing links against it.
+	// The card pick, what it lands on and the other hand's compare all follow it, and the ring draws no beam of its own
+	// for that hand (wr_VRState). An empty hand, a hand with no beam, or no Laser Sight: the ring's own pointer below.
+	static bool, Vector3, Vector3 laserLine(PlayerPawn pmo, int hand)
+	{
+		let st = wr_VRState.Get();
+		if (!pmo || !pmo.player || pmo.PlayerNumber() != consoleplayer || !st) return false, (0, 0, 0), (0, 0, 0);
+		bool got; Vector3 o, d;
+		[got, o, d] = st.laserLine(hand == 1 ? 1 : 0);   // unpacked: a returned call forwards only its first value
+		return got, o, d;
+	}
 	static Vector3 aimPos(PlayerPawn pmo, int hand)
 	{
+		bool lz; Vector3 lo, ld;
+		[lz, lo, ld] = laserLine(pmo, hand);
+		if (lz) return lo;
 		if (!steadyOn(pmo)) return handPos(pmo, hand);
 		let s = wr_A11y.Svc();
 		int pn = pmo.PlayerNumber(), h = (hand == 1) ? 1 : 0;
@@ -8197,6 +8278,9 @@ class wr_Rig : EventHandler
 	}
 	static Vector3 aimDir(PlayerPawn pmo, int hand)
 	{
+		bool lz; Vector3 lo, ld;
+		[lz, lo, ld] = laserLine(pmo, hand);
+		if (lz) return ld;
 		if (!steadyOn(pmo)) return handDir(pmo, hand);
 		let s = wr_A11y.Svc();
 		int pn = pmo.PlayerNumber(), h = (hand == 1) ? 1 : 0;
@@ -9290,7 +9374,7 @@ class wr_Rig : EventHandler
 		{
 			// RSQ: a card with the Wheel's own icon (ownIcon) shows that icon, not a pickup model
 			if (ownIcon(mTypes[i]).IsValid()) { mModels.Push(null); mModelFit.Push(1.0); mModelDrop.Push(0); continue; }
-			let a = Actor.Spawn(mTypes[i], pmo.Pos, NO_REPLACE);
+			let a = Actor.Spawn(artClass(mTypes[i]), pmo.Pos, NO_REPLACE);   // RSQ: an off-hand copy shows its gun (artClass)
 			if (a == null) { mModels.Push(null); mModelFit.Push(1.0); mModelDrop.Push(0); continue; }
 
 			// bSpecial is the one that matters: an Inventory actor in the world

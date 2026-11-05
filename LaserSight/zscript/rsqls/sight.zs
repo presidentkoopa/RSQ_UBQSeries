@@ -95,6 +95,16 @@ class RSQLS_Sight : EventHandler
 	// through RSQLS_SightService. Console player only, like the drawing.
 	transient int liveMask;
 	transient int beamMask;   // the same, beam only
+	// The line each hand's beam was drawn on this tic (its muzzle and barrel, from the held model), for RSQ Wheel's
+	// card pick (owner 11-05: "use the gun's laser sight to select from the wheel"). Valid while beamMask has the hand.
+	transient Vector3 lineAt[2], lineDir[2];
+	static bool, Vector3, Vector3 BeamLine(int h)
+	{
+		let me = RSQLS_Sight(EventHandler.Find("RSQLS_Sight"));
+		h &= 1;
+		if (!me || !((me.beamMask >> h) & 1)) return false, (0, 0, 0), (0, 0, 0);
+		return true, me.lineAt[h], me.lineDir[h];
+	}
 	static int BeamHands()
 	{
 		let me = RSQLS_Sight(EventHandler.Find("RSQLS_Sight"));
@@ -456,12 +466,14 @@ class RSQLS_Sight : EventHandler
 		// shot's own line (OverrideAttackPosDir) -- or from the point a weapon pack's
 		// LaserMuzzleService names.
 		Vector3 muzzle, dir;
+		Vector3 beamAt, beamDir;   // the beam's own line (the mesh's muzzle and barrel), kept for BeamLine
 		if (pi >= 0)
 		{
 			let wsc = CVar.FindCVar("vr_weaponScale");
 			double ws = wsc ? wsc.GetFloat() : 1.0;
 			muzzle = RSQLS_Hand.HudPoint(pmo, h, RSQLS_Beams.Offset(pi) + RSQLS_Beams.Muzzle(pi) * ws);
 			dir = RSQLS_Hand.HudDir(pmo, h, RSQLS_Beams.Barrel(pi));
+			beamAt = muzzle; beamDir = dir;
 		}
 		else
 		{
@@ -614,7 +626,7 @@ class RSQLS_Sight : EventHandler
 				beamOn = true;
 			}
 		}
-		if (beamOn) beamShown[h] = true;
+		if (beamOn) { beamShown[h] = true; lineAt[h] = beamAt; lineDir[h] = beamDir; }
 		else HideBeam(h);
 
 		// ---- the spot: painted on what it hit ----------------------------------
@@ -942,6 +954,9 @@ class RSQLS_Sight : EventHandler
 //   GetInt("laser.active", "", hand)  -> 1 if a laser (beam or dot) drew on that
 //                                        hand (0 main, 1 off) last tic, else 0
 //   GetInt("laser.beam", "", hand)    -> the same for the beam alone
+//   GetDouble("laser.line", "x"|"y"|"z"|"dx"|"dy"|"dz", hand) -> the line that hand's beam was drawn on last tic
+//                                        (muzzle in map units, unit barrel direction); 0 when no beam drew there.
+//                                        RSQ Wheel picks its cards along it (one beam per hand, owner 11-05).
 // RSQ_DistanceGrab asks this so its grab beam stands down on a hand the laser
 // already lights.
 class RSQLS_SightService : Service
@@ -957,6 +972,21 @@ class RSQLS_SightService : Service
 		if (request == "head.on")
 			return RSQLS_Sight.HeadOn(Actor(objectArg));
 		return -1;
+	}
+
+	override double GetDouble(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
+	{
+		if (request != "laser.line") return 0;
+		bool got; Vector3 at, dir;
+		[got, at, dir] = RSQLS_Sight.BeamLine(intArg);
+		if (!got) return 0;
+		if (stringArg == "x") return at.x;
+		if (stringArg == "y") return at.y;
+		if (stringArg == "z") return at.z;
+		if (stringArg == "dx") return dir.x;
+		if (stringArg == "dy") return dir.y;
+		if (stringArg == "dz") return dir.z;
+		return 0;
 	}
 
 	// THE MENU (ui): GetIntUI("menu.locked", "TargetLock" | "TargetColour" | "Headshot") -> 1 while the Gun Bonsai VR
