@@ -1,6 +1,9 @@
 // ============================================================================
 // RSQ_Miniboss -- the set piece (an EventHandler: one per level, saved with it).
 //
+//   BOSSFIGHT  (owner 2026-11-05) the set piece is CALLED IN: bossfight.zs (the meter, the call-in, the arrival in
+//              view, the payoff). What follows under CHOOSING is the old pick at level load, kept behind
+//              rsqmb_classic ("Classic Pick at Level Load", Test and Debug, off).
 //   CHOOSING   At tic 10 (after LegenDoom Lite marks its legendaries, tic 1-2, and Champions' delayer,
 //              tic 3), rsqmb_per_map minibosses, picked from the strongest third of the level's
 //              monsters weighted by spawn health (never a BOSS-flagged one, a Dark Red or an Undying
@@ -108,6 +111,7 @@ class RSQMB_Handler : EventHandler
 	{
 		if (e.IsSaveGame || e.IsReopen) return;
 		chosen = false; bosses.Clear(); windowEnd = 0; nextPulse = 0; rageCount = 0; raged.Clear();
+		bfScanned = false; bfCount = 0; bfLastTic = 0; bfAny = false; bfBoss = null; arrPhase = 0;
 	}
 
 	// Leaving the level: everything the greed rule changed is put back (a hub keeps its monsters).
@@ -118,7 +122,8 @@ class RSQMB_Handler : EventHandler
 		Refresh();
 		double t0 = debug ? MSTimeF() : 0;
 		Tick2();
-		if (bosses.Size() && fxOn && UseSprites()) FxEnsureDriver();
+		BfTick();
+		if ((bosses.Size() || arrPhase || (fxp && fxp.shots.Size())) && fxOn && UseSprites()) FxEnsureDriver();
 		if (debug) { double dt = MSTimeF() - t0; costMs += dt; costTics++; }
 	}
 
@@ -127,10 +132,12 @@ class RSQMB_Handler : EventHandler
 	private void Tick2()
 	{
 		int now = level.maptime;
+		if (!bfScanned && now >= SELECT_AT) BfScan();
 		if (!chosen && now >= SELECT_AT)
 		{
 			chosen = true;
-			if (CI('rsqmb_enabled', 1) && random[rsqmb](1, 100) <= CI('rsqmb_map_chance', 100)) Choose(CI('rsqmb_per_map', 1));
+			// the old pick at level load: only with Classic Pick at Level Load on (off; Bossfights are called in)
+			if (CI('rsqmb_classic', 0) && random[rsqmb](1, 100) <= CI('rsqmb_map_chance', 100)) Choose(CI('rsqmb_per_map', 1));
 		}
 		if (bosses.Size() == 0) return;
 
@@ -432,6 +439,12 @@ class RSQMB_Handler : EventHandler
 	override void WorldThingDied(WorldEvent e)
 	{
 		if (e.Thing && bosses.Size() > 0) Death(e.Thing, PlayerOf(e.Inflictor));
+		if (e.Thing && bfScanned)
+		{
+			Actor k = PlayerOf(e.Inflictor);
+			if (!k && e.Thing.target && e.Thing.target.player) k = e.Thing.target;
+			BfKill(e.Thing, k);
+		}
 	}
 
 	private void Death(Actor a, Actor killer)
@@ -460,6 +473,7 @@ class RSQMB_Handler : EventHandler
 		b.Finish();
 		FxBossDied(b);
 		if (b.enraged) EndRage(b);
+		if (b.called) BfPayoff(b, killer);
 		if (killer)
 		{
 			Award(killer, "Miniboss", 500);
@@ -574,7 +588,14 @@ class RSQMB_Handler : EventHandler
 	//   netevent rsqmb_choose    picks minibosses again now (ignores the map chance)
 	override void NetworkProcess(ConsoleEvent e)
 	{
-		if (e.Name ~== "rsqmb_state") PrintState();
+		if (e.Name ~== "rsqmb_state") { PrintState(); BfState(); }
+		else if (e.Name ~== "rsqmb_callin") CallIn(e.Player);
+		else if (e.Name ~== "rsqmb_fill")
+		{
+			// test door: the meter to Args[0] permille (1000: full now)
+			let m = MeterOf(players[e.Player].mo, true);
+			if (m) { m.ready = false; m.fill = clamp(e.Args[0], 0, 999); if (e.Args[0] >= 1000) Ready(m); }
+		}
 		else if (e.Name ~== "rsqmb_choose") { Refresh(); Choose(max(1, CI('rsqmb_per_map', 1))); PrintState(); }
 	}
 

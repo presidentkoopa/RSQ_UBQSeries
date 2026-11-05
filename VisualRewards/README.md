@@ -52,7 +52,7 @@ about a metre from your eyes, and pushed off the aim line of both your guns.
 **Kill Rewards** (SoM's Universal(ish?) Kill Rewards)
 - Monsters burst into bits when they die, from the first kill: health (25), armour (+10, up to 250) and ammo (5
   rounds for a gun you carry).
-- Bigger monsters drop more, and bosses drop a fountain.
+- Bigger monsters drop more, and bosses drop a fountain (an RSQ Miniboss Bossfight's miniboss: x3 more, its own setting).
 - A plain-words menu with presets, and SoM's raw numbers kept underneath.
 
 ## How To Play

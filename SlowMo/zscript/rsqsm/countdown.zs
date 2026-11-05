@@ -56,7 +56,17 @@ class RSQSM_Countdown : StaticEventHandler
 
 	// RSQ Score's bar: its centre and its bottom edge, in screen pixels, asked by name; without Score (or an older one that
 	// does not answer), where Score's own defaults (x 85, y 10, scale 150 x Text Size) put it (Score hud.zs, the same maths)
+	// RSQ MINIBOSS'S BOSSFIGHT METER (owner 11-05: under the score, above this bar) sits between: asked by name
+	// (RSQMB_Service "meter.bottom", screen pixels, -1 off), this bar goes under it. Without Miniboss, as before.
 	static ui double, double ScoreSpot()
+	{
+		double cx, bot;
+		[cx, bot] = ScoreSpot2();
+		let m = ServiceIterator.Find("RSQMB_Service").Next();
+		if (m) { int mb = m.GetIntUI("meter.bottom", "", 0, 0, null); if (mb > bot) bot = mb; }
+		return cx, bot;
+	}
+	static ui double, double ScoreSpot2()
 	{
 		let s = ServiceIterator.Find("RS_ScoreService").Next();
 		if (s)

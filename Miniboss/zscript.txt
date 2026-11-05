@@ -8,3 +8,7 @@ version "4.14"
 #include "zscript/rsqmb/handler.zs"
 #include "zscript/rsqmb/fx.zs"
 #include "zscript/rsqmb/service.zs"
+#include "zscript/rsqmb/bossfight.zs"   // BOSSFIGHT: the meter, the call-in, the arrival in view, the payoff
+#include "zscript/rsqmb/hud.zs"         // the Bossfight meter under RSQ Score's bar
+#include "zscript/rsqmb/handsync.zs"    // RSQMB_HandSync: the hands where the last frame put them, carried to the body now (tools/handsync)
+#include "zscript/rsqmb/gestcopy.zs"    // RSQMB_GCopy: the watch check without RSQ Gestures or RSQ Gun Cards (tools/gestcopy)

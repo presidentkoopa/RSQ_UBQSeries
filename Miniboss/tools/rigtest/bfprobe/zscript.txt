@@ -1,0 +1,84 @@
+version "4.14"
+// TEST ONLY (never ships): Bossfight proof doors.
+//   bfp_kill N        the player kills the N nearest living monsters (not Bossfight ones), a tic apart
+//   bfp_killthralls   the player kills every living thrall of every miniboss
+//   bfp_killboss      the player kills every living miniboss
+//   bfp_hp N          the player's health to N
+//   bfp_legend        the nearest living monster is made legendary (LegenDoom's guaranteed pickup)
+//   bfp_look          every 35 tics: the player's health, the meter, Bossfight monsters near
+class BFP_Handler : EventHandler
+{
+	int killLeft, nextKill;
+	bool look;
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		let p = players[e.Player].mo;
+		if (!p) return;
+		if (e.Name ~== "bfp_kill") { killLeft = max(1, e.Args[0]); nextKill = level.maptime; }
+		else if (e.Name ~== "bfp_hp") { p.health = e.Args[0]; p.player.health = e.Args[0]; Console.Printf("BFP health %d", p.health); }
+		else if (e.Name ~== "bfp_killthralls" || e.Name ~== "bfp_killboss")
+		{
+			let s = ServiceIterator.Find("RSQMB_Service").Next();
+			if (!s) return;
+			let it = ThinkerIterator.Create("Actor");
+			Actor a;
+			Array<Actor> v;
+			while (a = Actor(it.Next()))
+			{
+				if (!a.bISMONSTER || a.health <= 0) continue;
+				bool want = e.Name ~== "bfp_killboss" ? s.GetInt("miniboss", "", 0, 0, a) == 1 : s.GetInt("thrall", "", 0, 0, a) == 1;
+				if (want) v.Push(a);
+			}
+			for (int i = 0; i < v.Size(); i++) { Console.Printf("BFP kill %s (%s)", v[i].GetClassName(), e.Name); v[i].DamageMobj(p, p, v[i].health + 100000, 'Bullet', DMG_FORCED); }
+		}
+		else if (e.Name ~== "bfp_legend")
+		{
+			Actor best = Nearest(p);
+			String ln = "LDLegendaryMonsterPickupGuaranteed"; class<Inventory> c = ln;
+			if (best && c) { best.GiveInventory(c, 1); Console.Printf("BFP legendary made: %s", best.GetClassName()); }
+		}
+		else if (e.Name ~== "bfp_look") look = !look;
+	}
+	Actor Nearest(Actor p)
+	{
+		let it = ThinkerIterator.Create("Actor");
+		Actor a, best;
+		double bd = 1e12;
+		String cn = "RSQMB_Called";
+		class<Inventory> cc = cn;
+		while (a = Actor(it.Next()))
+		{
+			if (!a.bISMONSTER || a.health <= 0 || a.player || (cc && a.FindInventory(cc))) continue;
+			double d = a.Distance3D(p);
+			if (d < bd) { bd = d; best = a; }
+		}
+		return best;
+	}
+	ui int lastUi;
+	override void RenderOverlay(RenderEvent e)
+	{
+		if (level.maptime - lastUi < 35) return;
+		lastUi = level.maptime;
+		let m = ServiceIterator.Find("RSQMB_Service").Next();
+		let s = ServiceIterator.Find("RS_ScoreService").Next();
+		let sm = ServiceIterator.Find("RSQSM_Service").Next();
+		Console.Printf("BFP ui t%d screen %dx%d meter.bottom %d score.bar.bottom %d countdown.bottom %d svc %s", level.maptime, Screen.GetWidth(), Screen.GetHeight(),
+			m ? m.GetIntUI("meter.bottom", "", 0, 0, null) : -9, s ? s.GetIntUI("hud.bar.bottom", "", 0, 0, null) : -9, sm ? sm.GetIntUI("countdown.bottom", "", 0, 0, null) : -9, m ? m.GetClassName() : 'none');
+	}
+	override void WorldTick()
+	{
+		let p = players[consoleplayer].mo;
+		if (!p) return;
+		if (killLeft > 0 && level.maptime >= nextKill)
+		{
+			let a = Nearest(p);
+			if (a) { Console.Printf("BFP kill %s at %.0f", a.GetClassName(), a.Distance3D(p)); a.DamageMobj(p, p, a.health + 1000, 'Bullet', DMG_FORCED); }
+			killLeft--; nextKill = level.maptime + 8;
+		}
+		if (look && level.maptime % 35 == 0)
+		{
+			let s = ServiceIterator.Find("RSQMB_Service").Next();
+			Console.Printf("BFP t%d health %d meter %d ready %d bossfight %d", level.maptime, p.health, s ? s.GetInt("meter") : -1, s ? s.GetInt("meter.ready") : -1, s ? s.GetInt("bossfight") : -1);
+		}
+	}
+}

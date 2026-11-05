@@ -1,0 +1,160 @@
+RSQ Miniboss -- BOSSFIGHT rig evidence, 2026-11-05 (QZD 17.3 rig, rig only, not headset-confirmed)
+Probe: tools/rigtest/bfprobe (test only). Frames: the session scratchpad bossfight/key/.
+
+== Run A: doom2 MAP01 + Score + SlowMo + Glow + VisualRewards + Miniboss + probe: meter from kills + Score style, ready,
+   called in by the watch check (own copy of Gestures' reader, qz_rhand pose) + Use, arrival in view, kill, drop, bits
+RSQMB bossfight scan: 2 types [Zombieman 20, DoomImp 60], 19 spots, 1 exits, 3 weapon types
+STEP1_KILLS
+BFP kill DoomImp at 57
+RS_Score: kill #1 p0 base 60 style 6 chain gun.pistol
+RSQ KR t22: DoomImp (60 hp) burst into 2 bits of 6 rolled: 0 health, 0 armour, 2 ammo
+RSQMB meter +4.0 (kill) -> 4
+RSQMB meter +1.5 (Score style 6) -> 6
+BFP kill Zombieman at 57
+RS_Score: kill #2 p0 base 20 style 3 chain gun.pistol
+RSQ KR t30: Zombieman (20 hp) burst into 1 bits of 2 rolled: 0 health, 1 armour, 0 ammo
+RSQMB meter +10.0 (kill, chain 2) -> 16
+RSQMB meter +0.8 (Score style 3) -> 16
+BFP kill DoomImp at 57
+RS_Score: kill #3 p0 base 60 style 9 chain gun.pistol
+RSQ KR t38: DoomImp (60 hp) burst into 2 bits of 6 rolled: 1 health, 0 armour, 1 ammo
+RSQMB meter +16.0 (kill, chain 3) -> 32
+RSQMB meter +2.3 (Score style 9) -> 35
+BFP kill Zombieman at 59
+RS_Score: kill #4 p0 base 20 style 9 chain gun.pistol
+RSQ KR t46: Zombieman (20 hp) burst into 2 bits of 2 rolled: 0 health, 0 armour, 2 ammo
+RSQMB meter +22.0 (kill, chain 4) -> 57
+RSQMB meter +2.3 (Score style 9) -> 59
+RSQMB bossfight: meter 59 ready 0 called 0 won 0 | map count 0 active 0 arriving 0 waits "" | 2 types 19 spots 1 exits 3 weapons
+STEP2_FULL_FROM_KILLS
+BFP kill DoomImp at 57
+RS_Score: kill #5 p0 base 60 style 12 chain gun.pistol
+RSQ KR t88: DoomImp (60 hp) burst into 3 bits of 6 rolled: 0 health, 1 armour, 2 ammo
+RSQMB meter +28.0 (kill, chain 5) -> 988
+RSQMB meter +3.0 (Score style 12) -> 991
+BFP kill DoomImp at 59
+RS_Score: kill #6 p0 base 60 style 29 chain gun.pistol
+RSQ KR t96: DoomImp (60 hp) burst into 2 bits of 6 rolled: 1 health, 1 armour, 0 ammo
+RSQMB meter +34.0 (kill, chain 6) -> 1000
+RSQMB BOSSFIGHT READY (auto in 60 s)
+STEP3_TELEGRAPH
+STEP4_CALLIN
+RSQMB watch check (own copy of RSQ Gestures' inspect): main hand 0 -> 1 (t181)
+RSQMB watch check (own copy of RSQ Gestures' inspect): main hand 1 -> 2 (t186)
+RSQMB BOSSFIGHT CALLED IN (watch check + Use) by player 0
+RSQMB bossfight tier 0 (Gun Bonsai level -1, map score 348, won 0)
+RSQMB bossfight spot: found after 1 of 14 candidates (near 384 far 1024): DoomImp at 414 units with 3 thralls
+RSQMB BOSSFIGHT ARRIVING: tier 0, DoomImp + 3 thralls, SlowMo asked
+RSQMB watch check (own copy of RSQ Gestures' inspect): main hand 2 -> 0 (t215)
+RSQMB bound: boss 0 DoomImp hp 60 lives 1 thralls 3 powers [] tough 1.00 out 1.00
+RSQMB BOSSFIGHT LANDED: boss 0 DoomImp hp 60, 3 thralls, map count 1
+STEP5_KILL
+BFP kill Zombieman (bfp_killthralls)
+RSQMB thrall 0 of boss 0 died (killer player) living 2 window 140 tics
+RS_Score: kill #7 p0 base 20 style 5 chain gun.pistol
+RSQ KR t325: Zombieman (20 hp) burst into 0 bits of 2 rolled: 0 health, 0 armour, 0 ammo
+BFP kill Zombieman (bfp_killthralls)
+RSQMB award "Thrall Slow Kill" 100 -> RS_ScoreService
+RSQMB thrall 1 of boss 0 died (killer player) living 1 window 245 tics CHAIN
+RS_Score: kill #8 p0 base 20 style 20 chain gun.pistol
+RSQ KR t325: Zombieman (20 hp) burst into 0 bits of 2 rolled: 0 health, 0 armour, 0 ammo
+BFP kill Zombieman (bfp_killthralls)
+RSQMB award "Thrall Slow Kill" 100 -> RS_ScoreService
+RSQMB thrall 2 of boss 0 died (killer player) living 0 window 350 tics CHAIN
+RS_Score: kill #9 p0 base 20 style 34 chain gun.pistol
+RSQ KR t325: Zombieman (20 hp) burst into 2 bits of 2 rolled: 0 health, 0 armour, 2 ammo
+BFP kill DoomImp (bfp_killboss)
+RSQMB award "Bossfight" 2000 -> RS_ScoreService
+RSQMB bossfight drop: gun RocketLauncher (3 guns not owned of 3 map types)
+RSQMB award "Miniboss" 500 -> RS_ScoreService
+RSQMB boss 0 died (killer player) rage 0
+RS_Score: kill #10 p0 base 60 style 35 chain gun.pistol
+RSQ KR t340: DoomImp (60 hp, miniboss as boss) burst into 54 bits of 54 rolled: 7 health, 11 armour, 36 ammo
+RSQMB meter +8.8 (Score style 35) -> 9
+RSQMB bossfight: meter 9 ready 0 called 0 won 1 | map count 1 active 0 arriving 0 waits "" | 2 types 19 spots 1 exits 3 weapons
+
+== Run B: low-health guardrail holding, then the auto-arrival 60 s after full (no call), landing slow motion
+adding /home/claude/RSQ_UBQSeries/pk3/RSQ_SlowMo.pk3, 34 lumps
+GL_EXTENSIONS: GL_ANDROID_extension_pack_es31a GL_ANGLE_pack_reverse_row_order GL_ANGLE_texture_compression_dxt3 GL_ANGLE_texture_compression_dxt5 GL_APPLE_sync GL_APPLE_texture_max_level GL_ARM_shader_framebuffer_fetch_depth_stencil GL_EXT_EGL_image_storage GL_EXT_EGL_image_storage_compression GL_EXT_base_instance GL_EXT_blend_func_extended GL_EXT_blend_minmax GL_EXT_buffer_storage GL_EXT_clear_texture GL_EXT_clip_control GL_EXT_clip_cull_distance GL_EXT_color_buffer_float GL_EXT_color_buffer_half_float GL_EXT_compressed_ETC1_RGB8_sub_texture GL_EXT_conservative_depth GL_EXT_copy_image GL_EXT_debug_label GL_EXT_depth_clamp GL_EXT_discard_framebuffer GL_EXT_disjoint_timer_query GL_EXT_draw_buffers GL_EXT_draw_buffers_indexed GL_EXT_draw_elements_base_vertex GL_EXT_draw_instanced GL_EXT_float_blend GL_EXT_frag_depth GL_EXT_geometry_point_size GL_EXT_geometry_shader GL_EXT_gpu_shader5 GL_EXT_instanced_arrays GL_EXT_map_buffer_range GL_EXT_memory_object GL_EXT_memory_object_fd GL_EXT_multi_draw_arrays GL_EXT_multi_draw_indirect GL_EXT_occlusion_query_boolean GL_EXT_polygon_offset_clamp GL_EXT_primitive_bounding_box GL_EXT_read_format_bgra GL_EXT_render_snorm GL_EXT_robustness GL_EXT_sRGB_write_control GL_EXT_separate_shader_objects GL_EXT_shader_clock GL_EXT_shader_framebuffer_fetch GL_EXT_shader_framebuffer_fetch_non_coherent GL_EXT_shader_group_vote GL_EXT_shader_implicit_conversions GL_EXT_shader_integer_mix GL_EXT_shader_io_blocks GL_EXT_shadow_samplers GL_EXT_tessellation_point_size GL_EXT_tessellation_shader GL_EXT_texture_border_clamp GL_EXT_texture_buffer GL_EXT_texture_compression_bptc GL_EXT_texture_compression_dxt1 GL_EXT_texture_compression_rgtc GL_EXT_texture_compression_s3tc GL_EXT_texture_compression_s3tc_srgb GL_EXT_texture_cube_map_array GL_EXT_texture_filter_anisotropic GL_EXT_texture_filter_minmax GL_EXT_texture_format_BGRA8888 GL_EXT_texture_mirror_clamp_to_edge GL_EXT_texture_norm16 GL_EXT_texture_query_lod GL_EXT_texture_rg GL_EXT_texture_sRGB_R8 GL_EXT_texture_sRGB_RG8 GL_EXT_texture_sRGB_decode GL_EXT_texture_shadow_lod GL_EXT_texture_storage GL_EXT_texture_storage_compression GL_EXT_texture_type_2_10_10_10_REV GL_EXT_texture_view GL_EXT_unpack_subimage GL_KHR_blend_equation_advanced GL_KHR_blend_equation_advanced_coherent GL_KHR_context_flush_control GL_KHR_debug GL_KHR_no_error GL_KHR_parallel_shader_compile GL_KHR_robust_buffer_access_behavior GL_KHR_robustness GL_KHR_texture_compression_astc_ldr GL_KHR_texture_compression_astc_sliced_3d GL_MESA_bgra GL_MESA_framebuffer_flip_y GL_MESA_sampler_objects GL_MESA_shader_integer_functions GL_NV_alpha_to_coverage_dither_control GL_NV_conditional_render GL_NV_draw_buffers GL_NV_fbo_color_attachments GL_NV_generate_mipmap_sRGB GL_NV_image_formats GL_NV_pack_subimage GL_NV_pixel_buffer_object GL_NV_read_buffer GL_NV_read_depth GL_NV_read_depth_stencil GL_NV_read_stencil GL_NV_shader_noperspective_interpolation GL_NV_texture_barrier GL_OES_EGL_image GL_OES_EGL_image_external GL_OES_EGL_image_external_essl3 GL_OES_EGL_sync GL_OES_compressed_ETC1_RGB8_texture GL_OES_copy_image GL_OES_depth24 GL_OES_depth_texture GL_OES_depth_texture_cube_map GL_OES_draw_buffers_indexed GL_OES_draw_elements_base_vertex GL_OES_element_index_uint GL_OES_fbo_render_mipmap GL_OES_geometry_point_size GL_OES_geometry_shader GL_OES_get_program_binary GL_OES_gpu_shader5 GL_OES_mapbuffer GL_OES_packed_depth_stencil GL_OES_primitive_bounding_box GL_OES_required_internalformat GL_OES_rgb8_rgba8 GL_OES_sample_shading GL_OES_sample_variables GL_OES_shader_image_atomic GL_OES_shader_io_blocks GL_OES_shader_multisample_interpolation GL_OES_standard_derivatives GL_OES_stencil8 GL_OES_surfaceless_context GL_OES_tessellation_point_size GL_OES_tessellation_shader GL_OES_texture_3D GL_OES_texture_border_clamp GL_OES_texture_buffer GL_OES_texture_cube_map_array GL_OES_texture_float GL_OES_texture_float_linear GL_OES_texture_half_float GL_OES_texture_half_float_linear GL_OES_texture_npot GL_OES_texture_stencil8 GL_OES_texture_storage_multisample_2d_array GL_OES_texture_view GL_OES_vertex_array_object GL_OES_vertex_half_float GL_OES_viewport_array GL_OVR_multiview GL_OVR_multiview2
+RSQMB bossfight scan: 2 types [Zombieman 20, DoomImp 60], 19 spots, 1 exits, 3 weapon types
+B1_HALF
+B2_READY
+RSQMB BOSSFIGHT READY (auto in 60 s)
+B3_LOWHP
+BFP health 20
+RSQMB bossfight waits: LOW HEALTH
+B4_HEAL
+BFP health 100
+RSQMB bossfight tier 0 (Gun Bonsai level -1, map score 0, won 0)
+RSQMB bossfight spot: found after 4 of 14 candidates (near 384 far 1024): DoomImp at 832 units with 3 thralls
+RSQ_SlowMo: trigger bossfight t2410: countdown bar: forced slow motion, counting down to real time
+RSQ_SlowMo: trigger bossfight t2410: started 3000 ms at 25% (deliberate), pulse until t2515
+RSQMB BOSSFIGHT ARRIVING: tier 0, DoomImp + 3 thralls, SlowMo asked
+RSQMB bound: boss 0 DoomImp hp 60 lives 1 thralls 3 powers [] tough 1.00 out 1.00
+RSQMB BOSSFIGHT LANDED: boss 0 DoomImp hp 60, 3 thralls, map count 1
+RSQ_SlowMo: trigger countdown t2525: countdown bar: gone (real time)
+B5_KILL
+RSQMB thrall 0 of boss 0 died (killer player) living 2 window 140 tics
+RSQMB award "Thrall Slow Kill" 100 -> RS_ScoreService
+RSQMB thrall 1 of boss 0 died (killer player) living 1 window 245 tics CHAIN
+RSQMB award "Thrall Slow Kill" 100 -> RS_ScoreService
+RSQMB thrall 2 of boss 0 died (killer player) living 0 window 350 tics CHAIN
+RSQ_SlowMo: trigger miniboss t2661: countdown bar: forced slow motion, counting down to real time
+RSQ_SlowMo: trigger miniboss t2661: started 5000 ms at 25% (automatic), pulse until t2836
+RSQMB award "Bossfight" 120 -> RS_ScoreService
+RSQMB bossfight drop: gun RocketLauncher (3 guns not owned of 3 map types)
+RSQMB award "Miniboss" 500 -> RS_ScoreService
+RSQMB boss 0 died (killer player) rage 0
+RSQ KR t2680: DoomImp (60 hp, miniboss as boss) burst into 54 bits of 54 rolled: 11 health, 20 armour, 23 ammo
+RSQ_SlowMo: trigger miniboss t2696: merged 5000 ms at 25% (automatic), pulse until t2871
+RSQ_SlowMo: trigger miniboss t2731: merged 5000 ms at 25% (automatic), pulse until t2906
+RSQMB bossfight: meter 0 ready 0 called 0 won 1 | map count 1 active 0 arriving 0 waits "" | 2 types 19 spots 1 exits 3 weapons
+
+== Run LD: doom2 + brutal22test6 + BD_VoxelPack + BD22 VR 2.0.3x + XMVE 04-07 + LegenDoom 3.0 + Champions + LDL patch + Miniboss
+RSQMB bossfight scan: 6 types [RifleZombie 40, PistolZombiePatch 40, LabguyP 54, Labgal 54, Imp 80, SuperImp 80], 18 spots, 1 exits, 0 weapon types
+LD1_NORMAL_LEGENDARY
+BFP legendary made: Imp
+BFP kill Imp at 74
+RSLDP drop: LDFistsPickupLegendary suppressed (not from a Bossfight; LegenDoom + Champions + RSQ Miniboss)
+LD2_BOSSFIGHT
+RSQMB BOSSFIGHT READY (auto in 60 s)
+RSQMB BOSSFIGHT CALLED IN (watch check + Use) by player 0
+RSQMB bossfight tier 0 (Gun Bonsai level -1, map score -1, won 0)
+RSQMB bossfight spot: found after 3 of 14 candidates (near 384 far 1024): Labgal at 832 units with 3 thralls
+RSQMB BOSSFIGHT ARRIVING: tier 0, Labgal + 3 thralls, SlowMo absent
+RSQMB bound: boss 0 Labgal hp 45 lives 1 thralls 3 powers [Red, Blue, Legendary] tough 2.00 out 1.00
+RSQMB BOSSFIGHT LANDED: boss 0 Labgal hp 45, 3 thralls, map count 1
+RSQMB bossfight: meter 0 ready 0 called 0 won 0 | map count 1 active 1 arriving 0 waits "" | 6 types 18 spots 1 exits 0 weapons
+LD3_KILL_THRALLS
+BFP kill LabguyP (bfp_killthralls)
+RSLDP legendary died: LabguyP came with a Bossfight
+BFP kill RifleZombie (bfp_killthralls)
+RSQMB award "Thrall Slow Kill" 100 -> (no Score)
+RSLDP legendary died: RifleZombie came with a Bossfight
+BFP kill LabguyP (bfp_killthralls)
+RSQMB award "Thrall Slow Kill" 100 -> (no Score)
+RSLDP legendary died: LabguyP came with a Bossfight
+RSLDP drop: LDFistsPickupLegendary kept (from a Bossfight)
+RSLDP drop: LDFistsPickupLegendary was at the map origin (25,8), moved to the legendary's death spot (-96,1568)
+RSLDP drop: LDFistsPickupLegendary -> RSLDP_LegendaryPickup slot Fists rarity Common effect Annoying
+RSLDP drop: LDChaingunPickupLegendary kept (from a Bossfight)
+RSLDP drop: LDChaingunPickupLegendary was at the map origin (20,13), moved to the legendary's death spot (-96,1568)
+RSLDP drop: LDChaingunPickupLegendary -> RSLDP_LegendaryPickup slot Chaingun rarity Rare effect Killstreaker
+RSLDP drop: LDFistsPickupLegendary kept (from a Bossfight)
+RSLDP drop: LDFistsPickupLegendary was at the map origin (19,14), moved to the legendary's death spot (-96,1568)
+RSLDP drop: LDFistsPickupLegendary -> RSLDP_LegendaryPickup slot Fists rarity Rare effect Lucky
+LD4_KILL_BOSS
+BFP kill Labgal (bfp_killboss)
+RSQMB award "Bossfight" 108 -> (no Score)
+RSQMB bossfight drop: power-up EnergySphere_Vox (0 guns not owned of 0 map types)
+RSQMB award "Miniboss" 500 -> (no Score)
+RSQMB boss 0 died (killer player) rage 0
+RSLDP legendary died: Labgal came with a Bossfight
+RSLDP drop: LDChaingunPickupLegendary kept (from a Bossfight)
+RSLDP drop: LDChaingunPickupLegendary was at the map origin (9,-1), moved to the legendary's death spot (-56,1343)
+RSLDP drop: LDChaingunPickupLegendary -> RSLDP_LegendaryPickup slot Chaingun rarity Common effect Gravitic
+RSQMB bossfight: meter 30 ready 0 called 0 won 1 | map count 1 active 0 arriving 0 waits "" | 6 types 18 spots 1 exits 0 weapons
+   script errors in that run: only BD_VoxelPack's 4 voxeldef lines
+
+== Run D: the drop when every map gun is owned (falls back to the weapon slots, at most one above the best held)
+RSQMB bossfight drop: gun SuperShotgun (2 guns not owned of 3 map types)

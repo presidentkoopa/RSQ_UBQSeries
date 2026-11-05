@@ -31,6 +31,8 @@ class RSQMB_Boss : Thinker
 	int    greedDeadline;
 	int    bornAt;
 	int    diedAt;               // the tic it died (Boss Kill Rewards counts a just-killed miniboss)
+	bool   called;               // a Bossfight (called in, bossfight.zs), not the classic pick
+	int    tier;                 // the Bossfight's tier, 0..4
 
 	// COUNTS AS A BOSS (owner 2026-11-03): never the engine's BOSS flag; only the systems the owner picked, each on
 	// its own switch. The two flag-borne ones are written only while their switch is on, and put back after.

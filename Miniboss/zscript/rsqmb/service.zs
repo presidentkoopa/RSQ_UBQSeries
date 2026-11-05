@@ -25,7 +25,16 @@
 //                               Miniboss made it legendary with spawn x max(LD_legendaryhealthboss, LD_legendaryhealth)
 //                               / 100 (the HIGHER of the two); stays 1 for that monster (dead or alive). A reader then
 //                               uses that max where it would use LD_legendaryhealth
+//                   "rewards.x" Bossfight bits (rsqmb_bf_bits, 3): how many times MORE Boss Kill Rewards bits this miniboss
+//                               is worth (a Bossfight's miniboss, under the same rule as "rewards"); 1 for any other
 //                 Cheap first test for callers: the monster carries "RSQMB_Ward" (by name); only then ask.
+//   bossfight     BOSSFIGHT (bossfight.zs): 1 when the monster came with a Bossfight (miniboss or thrall, dead or alive,
+//                 for good: it carries RSQMB_Called); no object: 1 while a Bossfight is arriving or its miniboss lives
+//   bossfights    1 when Bossfights are on (rsqmb_enabled)
+//   meter         the Bossfight meter, permille (objectArg the player; none: the console player's), -1 none yet
+//   meter.ready   1 while it is full and waiting
+//   meter.bottom  (ui) the screen pixel row just under the meter's slot while it is shown (RSQ SlowMo's countdown bar
+//                 and RSQ Score's combo rows go below it), -1 when it is off
 // GetObject("boss", "", 0, 0, thrall) -> the thrall's miniboss; ("boss", "", n) -> the n-th miniboss.
 // GetObject("thrall", "", n, 0, miniboss) -> its n-th thrall (dead or alive), null past the end.
 // GetString("powers", "", 0, 0, miniboss) -> what it inherited, comma-separated.
@@ -74,9 +83,25 @@ class RSQMB_Service : Service
 		if (request ~== "living") return (b && !b.done) ? b.Living() : 0;
 		if (request ~== "legendary") return (isBoss && b.legendary) ? 1 : 0;
 		if (request ~== "colour" || request ~== "color") return b ? (int(b.col) & 0xFFFFFF) : -1;
+		if (request ~== "bossfight")
+		{
+			if (a) return a.FindInventory("RSQMB_Called") ? 1 : 0;
+			return (h.arrPhase || (h.bfBoss && !h.bfBoss.done)) ? 1 : 0;
+		}
+		if (request ~== "bossfights") return RSQMB_Handler.BfOn() ? 1 : 0;
+		if (request ~== "meter" || request ~== "meter.ready")
+		{
+			Actor p = a;
+			if (!p) p = players[consoleplayer].mo;
+			let m = p ? RSQMB_Meter(p.FindInventory("RSQMB_Meter")) : null;
+			if (request ~== "meter.ready") return (m && m.ready) ? 1 : 0;
+			return m ? int(m.fill) : -1;
+		}
 		if (request ~== "bossfor")
 		{
 			if (!b || !a || b.mb != a) return 0;
+			if (stringArg ~== "rewards.x")
+				return (b.called && RSQMB_Handler.CI('rsqmb_boss_rewards', 1) && (!b.done || level.maptime - b.diedAt <= 1)) ? max(1, RSQMB_Handler.CI('rsqmb_bf_bits', 3)) : 1;
 			if (stringArg ~== "rewards") return (RSQMB_Handler.CI('rsqmb_boss_rewards', 1) && (!b.done || level.maptime - b.diedAt <= 1)) ? 1 : 0;
 			if (stringArg ~== "yank") return (RSQMB_Handler.CI('rsqmb_boss_noyank', 1) && isBoss) ? 1 : 0;
 			if (stringArg ~== "headlock") return (RSQMB_Handler.CI('rsqmb_boss_noheadlock', 1) && isBoss) ? 1 : 0;
@@ -88,7 +113,10 @@ class RSQMB_Service : Service
 	override int GetInt(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
 	{ return GetIntData(request, stringArg, intArg, doubleArg, objectArg, nameArg); }
 	override int GetIntUI(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
-	{ return GetIntData(request, stringArg, intArg, doubleArg, objectArg, nameArg); }
+	{
+		if (request ~== "meter.bottom") return RSQMB_Handler.MeterBottom();
+		return GetIntData(request, stringArg, intArg, doubleArg, objectArg, nameArg);
+	}
 
 	override Object GetObjectData(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
 	{

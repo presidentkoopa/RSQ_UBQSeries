@@ -144,6 +144,17 @@ class RSQ_KRHandler : EventHandler
 		return sv && sv.GetInt("bossfor", "rewards", 0, 0, a) == 1;
 	}
 
+	// RSQ MINIBOSS'S BOSSFIGHT (owner 11-05: "tons of Kill Rewards bits"): a called-in miniboss is worth this many times
+	// the boss bits (RSQMB_Service "bossfor" "rewards.x", by name; 1 for any other boss, or without Miniboss).
+	static int BossfightX(Actor a)
+	{
+		String wn = "RSQMB_Ward";
+		class<Inventory> wc = wn;
+		if (!a || !wc || !a.FindInventory(wc)) return 1;
+		let sv = ServiceIterator.Find("RSQMB_Service").Next();
+		return sv ? clamp(sv.GetInt("bossfor", "rewards.x", 0, 0, a), 1, 20) : 1;
+	}
+
 	// SETTINGS GENERATIONS, each once (rsqvr_cfgver; the config saves every value, so a changed CVARINFO default never
 	// reaches a machine that has run the mod: its old value sticks). DistanceGrab's / ShieldSaw's pattern.
 	// 1 (owner, 11-04 18:16): Bits Fly to Me 2 m by default (BUGS_0.99a item 35: at the old 0 a VR player standing still
@@ -174,7 +185,7 @@ class RSQ_KRHandler : EventHandler
 		if (!killer && a.target && a.target.player) killer = a.target;
 
 		bool boss = BossHere(a);
-		int mult = boss ? max(0, SVI("rsqgb_kr_boss", 3)) : 1;
+		int mult = boss ? max(0, SVI("rsqgb_kr_boss", 3)) * BossfightX(a) : 1;
 		int num = 0;
 		if (SVI("rsqgb_kr_mode", 0) == 1)
 		{

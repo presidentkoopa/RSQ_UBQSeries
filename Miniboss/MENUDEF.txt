@@ -30,20 +30,14 @@ OptionValue "RSQMB_Density"
 	2, "High"
 }
 
-OptionValue "RSQMB_Often"
-{
-	25, "Rare"
-	50, "Some Maps"
-	100, "Every Map"
-}
-
 // MENU PASS (owner 11-04): one page of On/Off rows under short headers, the numbers on Test and Debug (owner 11-04 19:36: no presets).
 // Reset All (rsmenu ResetAll) resets every cvar a row names on both pages (rsqmb_debug too).
 OptionMenu "RSQMB_Options"
 {
 	Title "RSQ MINIBOSS"
-	Option "Minibosses", "rsqmb_enabled", "OnOff"
-	Option "How Often", "rsqmb_map_chance", "RSQMB_Often"
+	Option "Bossfights", "rsqmb_enabled", "OnOff"
+	Slider "Meter Speed", "rsqmb_bf_speed", 0.25, 4, 0.25, 2
+	Option "Call It In: Watch Check + Use", "rsqmb_bf_callin", "OnOff"
 	Option "Effects", "rsqmb_fx", "OnOff"
 	Option "Effects Density", "rsqmb_fx_density", "RSQMB_Density"
 	StaticText " "
@@ -73,9 +67,30 @@ OptionMenu "RSQMB_Options"
 OptionMenu "RSQMB_Test"
 {
 	Title "RSQ MINIBOSS: TEST AND DEBUG"
-	StaticText "Fight", 1
+	StaticText "Bossfight", 1
+	Slider "Arrives By Itself (s)", "rsqmb_bf_auto", 0, 300, 10, 0
+	Slider "Map Start Wait (s)", "rsqmb_bf_first", 0, 300, 10, 0
+	Slider "Cooldown (s)", "rsqmb_bf_cooldown", 0, 600, 10, 0
+	Slider "Per Map Cap", "rsqmb_bf_cap", 1, 10, 1, 0
+	Slider "Wait Under Health", "rsqmb_bf_minhp", 0, 100, 5, 0
+	Slider "Wait Over Awake Monsters", "rsqmb_bf_busy", 0, 20, 1, 0
+	Slider "Nearest Arrival", "rsqmb_bf_near", 128, 2048, 64, 0
+	Slider "Farthest Arrival", "rsqmb_bf_far", 256, 4096, 64, 0
+	Slider "Exit Distance", "rsqmb_bf_exit", 0, 2048, 64, 0
+	Slider "Landing Slow Motion (s)", "rsqmb_bf_slow", 0, 5, 0.5, 1
+	Slider "Bits Multiplier", "rsqmb_bf_bits", 1, 10, 1, 0
+	Slider "Score Style Fill", "rsqmb_bf_style", 0, 2, 0.05, 2
+	Slider "Gun Bonsai XP Fill", "rsqmb_bf_xp", 0, 2, 0.05, 2
+	Slider "Score Per Tier", "rsqmb_bf_tier_score", 500, 20000, 500, 0
+	Option "Show Meter", "rsqmb_bf_hud", "OnOff"
+	Slider "Meter Size", "rsqmb_bf_hud_size", 0.5, 2.5, 0.1, 1
+	StaticText " "
+	StaticText "Classic", 1
+	Option "Classic Pick at Level Load", "rsqmb_classic", "OnOff"
 	Slider "Per Map", "rsqmb_per_map", 0, 4, 1, 0
 	Slider "Map Chance", "rsqmb_map_chance", 0, 100, 5, 0
+	StaticText " "
+	StaticText "Fight", 1
 	Slider "Thrall Range", "rsqmb_radius", 256, 4096, 128, 0
 	Slider "Power Cap", "rsqmb_inherit_max", 0, 12, 1, 0
 	Slider "Thrall Shield", "rsqmb_shield", 0, 95, 5, 0

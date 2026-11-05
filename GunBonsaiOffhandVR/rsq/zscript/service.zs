@@ -20,6 +20,7 @@
 //   GetInt "xp.permille"  xp / xp.next in thousandths, 0..1000; -1 = no record
 //   GetInt "count"        how many upgrades the gun has; -1 = no record
 //   GetInt "hand"         0 main hand, 1 off hand, -1 neither (objectArg = the Weapon)
+//   GetInt "player.level" the PLAYER's Gun Bonsai level (objectArg = the PlayerPawn); -1 = no record (RSQ Miniboss's tier)
 //   GetString "upgrades"  the gun's upgrades in Gun Bonsai's own order (the order it shows them):
 //                           "Name:level:max:Class:on:Colour|Name:level:max:Class:on:Colour|..."
 //                         Name   the display name Gun Bonsai shows (its LANGUAGE "<Class>_Name",
@@ -117,6 +118,7 @@ class RSQGB_Read
 			if (w.owner.player.OffhandWeapon == w) return 1;
 			return -1;
 		}
+		if (request == "player.level") { let st = StatsOf(Actor(o)); return st ? int(st.level) : -1; }
 		let info = InfoOf(o, hand);
 		if (!info) return -1;
 		if (request == "level") return int(info.level);

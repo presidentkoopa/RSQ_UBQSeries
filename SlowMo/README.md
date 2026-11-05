@@ -57,7 +57,7 @@ dodgeable speed. Your shield and saber stop the rounds like any other projectile
 
 **On the HUD**
 - **SlowMo Gauge.** A vertical bar at the side of your view. With Adrenaline on it shows the meter, with a tick at the start line. With Adrenaline off it shows only while time is slowed, filled by how slow (full is your World Speed, or Gun Bonsai VR's Deeper speed once learned, and the shootdodge's speed during a dodge). It's animated: a band of light rises through it, the top edge breathes and a full gauge glints.
-- **Real-Time Countdown Bar.** A horizontal bar, green by default, that appears whenever time is slowed by something you didn't choose: a kill moment, the cigarette, a parry, Miniboss's window, a close call. It counts down the real seconds until the world is back at full speed, including the ease out. It hits zero just as time catches up. If something pushes the slow motion longer, the bar refills smoothly with a glint. It sits under RSQ Score's bar and above Score's bonus list. Without Score, it goes where Score's bar would be.
+- **Real-Time Countdown Bar.** A horizontal bar, green by default, that appears whenever time is slowed by something you didn't choose: a kill moment, the cigarette, a parry, Miniboss's window, a close call. It counts down the real seconds until the world is back at full speed, including the ease out. It hits zero just as time catches up. If something pushes the slow motion longer, the bar refills smoothly with a glint. It sits under RSQ Score's bar (under RSQ Miniboss's Bossfight meter when that is loaded) and above Score's bonus list. Without Score, it goes where Score's bar would be.
 - **Color Drain** (optional, off by default). Colours fade out while time is slowed.
 
 ## How To Play
@@ -176,7 +176,7 @@ RSQ SlowMo runs on its own. It finds the other mods by name at run time and link
 
 - **RSQ Score:** a big kill can ask for a short slow-motion moment, or an optional hit-stop. Score pays a
   share of a kill's style when it lands in slow motion (full for slow motion you started, half for automatic,
-  none for Score's own). The countdown bar slots in under Score's bar and moves Score's bonus list below it.
+  none for Score's own). The countdown bar slots in under Score's bar (and under RSQ Miniboss's Bossfight meter) and moves Score's bonus list below it.
 - **RSQ Wheel:** opening the Wheel slows time while you pick.
 - **RSQ Melee, RSQ Tactical Rig, RSQ Saber, RSQ ShieldSaw, RSQ Miniboss:** the shove, the cigarette, the
   perfect parry, the perfect block and the miniboss window each start slow motion, each with its own switch.

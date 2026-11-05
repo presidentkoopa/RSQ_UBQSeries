@@ -138,11 +138,15 @@ class RS_ScoreHUD : EventHandler
 	// sits under the bar while its row is on; the combo rows start below it (asked by name: RSQSM_Service
 	// "countdown.bottom", screen pixels). Answers how far down, in this HUD's virtual units, the rows must move; 0 when
 	// SlowMo is not loaded, its bar is switched off, or there is room already.
+	// RSQ MINIBOSS'S BOSSFIGHT METER (owner 11-05) sits between the bar and the countdown (RSQMB_Service "meter.bottom");
+	// SlowMo's bar already goes under it, and without SlowMo the rows go under the meter.
 	static ui double CountdownShift(double rowsTop, double vh)
 	{
+		int px = -1;
 		let s = ServiceIterator.Find("RSQSM_Service").Next();
-		if (!s) return 0.0;
-		int px = s.GetIntUI("countdown.bottom", "", 0, 0, null);
+		if (s) px = s.GetIntUI("countdown.bottom", "", 0, 0, null);
+		let mb = ServiceIterator.Find("RSQMB_Service").Next();
+		if (mb) px = max(px, mb.GetIntUI("meter.bottom", "", 0, 0, null));
 		if (px <= 0) return 0.0;
 		double need = px * vh / Screen.GetHeight() + 2;
 		return max(0.0, need - rowsTop);

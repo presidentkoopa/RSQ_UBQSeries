@@ -1,7 +1,26 @@
 // RSQ_Miniboss settings. What each does (the menu carries no notes):
-server bool   rsqmb_enabled       = true;   // minibosses appear at all
-server int    rsqmb_per_map       = 1;      // minibosses chosen per level (0-4)
-server int    rsqmb_map_chance    = 100;    // % chance a level gets any
+server bool   rsqmb_enabled       = true;   // BOSSFIGHTS: the meter fills and a called-in miniboss fight arrives (bossfight.zs)
+server float  rsqmb_bf_speed      = 1.0;    // Meter Speed: x on everything that fills the meter
+server bool   rsqmb_bf_callin     = true;   // Call It In: the watch check + Use calls a full meter's Bossfight in (off: it only comes by itself)
+server int    rsqmb_bf_auto       = 60;     // seconds after the meter filled that it comes by itself (0: only when called)
+server int    rsqmb_bf_first      = 60;     // never in a map's first seconds
+server int    rsqmb_bf_cooldown   = 90;     // seconds after one began before the next may come
+server int    rsqmb_bf_cap        = 2;      // most Bossfights a map
+server int    rsqmb_bf_minhp      = 40;     // it waits while your health is under this
+server int    rsqmb_bf_busy       = 3;      // it waits while more awake monsters than this are after you within 1536
+server float  rsqmb_bf_near       = 384;    // the arrival spot: at least this far from you (map units; 32 = 1 m)
+server float  rsqmb_bf_far        = 1024;   // and at most this far
+server float  rsqmb_bf_exit       = 768;    // it waits within this of an exit line
+server float  rsqmb_bf_slow       = 3.0;    // seconds of RSQ SlowMo for the landing (0: none)
+server int    rsqmb_bf_bits       = 3;      // x more RSQ VisualRewards boss bits for a Bossfight's miniboss
+server float  rsqmb_bf_style      = 0.25;   // meter points a RSQ Score style point
+server float  rsqmb_bf_xp         = 0.2;    // meter points a Gun Bonsai XP point
+server int    rsqmb_bf_tier_score = 4000;   // this map's RSQ Score points a tier
+user   bool   rsqmb_bf_hud        = true;   // the meter on the HUD
+user   float  rsqmb_bf_hud_size   = 1.5;    // its size
+server bool   rsqmb_classic       = false;  // the old pick at level load (rsqmb_per_map, rsqmb_map_chance), off: Bossfights are called in
+server int    rsqmb_per_map       = 1;      // classic pick: minibosses chosen per level (0-4)
+server int    rsqmb_map_chance    = 100;    // classic pick: % chance a level gets any
 server int    rsqmb_thralls       = 3;      // thralls per miniboss (1-8)
 server int    rsqmb_radius        = 1024;   // how far from the miniboss a thrall may stand (map units)
 server bool   rsqmb_legend_thralls = true;  // with LegenDoom Lite: every thrall is made legendary

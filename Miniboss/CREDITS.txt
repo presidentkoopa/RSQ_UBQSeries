@@ -16,6 +16,15 @@ WHAT THIS PK3 SHIPS, AND WHOSE IT IS
   The project owner (presidentkoopa)
       The set-piece design: thralls as boosted legendary champions, the inherited powers, slow time
       on a thrall's death, the chain, the greed rule.
+      Bossfight (2026-11-05): called in, never picked at level load; the meter fed by style, kill chains, Gun
+      Bonsai XP and time; the watch check + Use call-in; arrival in view at a distance in slow motion; what
+      arrives scaling with progress; the payoff (a gun or power-up, extra bits, the Bossfight score row); legendary
+      weapons only from Bossfights with LegenDoom + Champions.
+  Joshua Hard (Dynamic Enemy Reinforcements v3, MIT; a fork of AID)
+      The idea the Bossfight's arrival borrows: a map's own monster start spots are places a monster fits, so
+      reinforcements are spawned there (as new actors of the map's own types, tested for room, in teleport fog).
+      Its code is not copied: bossfight.zs tests its spots with a probe the size of each monster, adds points
+      along the player's view, and needs the player's line of sight.
   Tartlman (Minibosses! v0.1.1)
       The effects' design, kept on the owner's word (2026-11-05): the IWAD's own sprites in AddStencil
       over each thrall (BFS1), along its trail (APLS), breaking (BFE1, APBX), the life orbs (BAL2) and
@@ -23,13 +32,16 @@ WHAT THIS PK3 SHIPS, AND WHOSE IT IS
   Written for this pack
       All code (zscript/rsqmb), including the pooled VisualThinker drawing of those effects. No sprites
       or sounds are shipped: the sprites are the IWAD's, looked up by name, and the cues use the IWAD's
-      own sounds by name (weapons/bfgx, imp/shotx, brain/sight, vile/raise). Engine particles stand in
+      own sounds by name (weapons/bfgx, imp/shotx, brain/sight, vile/raise; the Bossfight's brain/spit sting,
+      misc/teleport, misc/chat, misc/w_pkup). The arrival's teleport fog is the original's BFE1 / APBX art. Engine particles stand in
       only if an IWAD sprite can't be found.
 
 NOT SHIPPED, ONLY RECOGNISED BY NAME (nothing links)
   Champions (its champion_* tokens and cvars), LegenDoom Lite (its LDLegendaryMonster* tokens and
-  LDLegendaryMonsterPickupGuaranteed), RSQ_SlowMo (rsm_pulse, RSQSM_Service), RSQ_Score
-  (RS_ScoreService "award").
+  LDLegendaryMonsterPickupGuaranteed), RSQ_SlowMo (rsm_pulse, RSQSM_Service "start"), RSQ_Score
+  (RS_ScoreService "award", "kill.serial", "kill.style", "score", "hud.cx"), RSQ Glow In The Dark (RSQGD_Service
+  "event.tint"), RSQ Gun Bonsai VR (RSQGB_Service "xp", "player.level"), RSQ Gestures / RSQ Gun Cards (the watch
+  check: RSQG_Service, RSQGC_GCopyService; gestcopy.zs is this mod's own copy of Gestures' reader, tools/gestcopy).
   QuestZDoom: Emawind and Team Beef.
 
 SHARING

@@ -178,7 +178,8 @@ RSQ Score runs on its own: on plain Doom, every classic bonus works. Every other
 - **The RSQ series:** RSQ Saber, ShieldSaw, Whip, Grapple, Distance Grab, Melee, Grenade, Tactical Rig and
   SlowMo each become tools in the combo chain and bring their own bonuses. Grapple pays **Indiana Jones** for a
   gap crossed on the rope. The saber's training remote pays **Deflect** and **Remote Down**. RSQ Miniboss's kills pay as
-  shares of the kill's base.
+  shares of the kill's base (Thrall Slow Kill, Miniboss, Greedy, and **Bossfight**, 2 x, for a called-in miniboss). RSQ
+  Miniboss's Bossfight meter reads each kill's style points and sits under the bar; the bonus list goes below it.
 - **RSQ SlowMo:** big moments and the optional hit-stop use its slow motion. Slow motion you started pays the
   full Stretched Second share. Automatic slow motion pays half, and Score's own pays none. SlowMo's Real-Time
   Countdown bar sits under Score's bar, and the breakdown moves down to make room.

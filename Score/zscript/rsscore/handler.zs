@@ -765,6 +765,7 @@ class RS_ScoreHandler : EventHandler
 		if (label ~== "Thrall Slow Kill") mult = 0.3;
 		else if (label ~== "Miniboss") mult = 1.0;
 		else if (label ~== "Greedy") mult = 1.5;
+		else if (label ~== "Bossfight") mult = 2.0;     // the called-in miniboss (owner 11-05), on top of Miniboss's 1.0
 		if (mult > 0)
 		{
 			int pn = who.PlayerNumber();
