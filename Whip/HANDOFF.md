@@ -1,5 +1,36 @@
 # HANDOFF -- RSQ_Whip (PROJECT WHIP), 2026-10-30
 
+## 2026-11-04: Swing Assist: Grab Snag (owner 19:49) -- rig only, not headset-confirmed
+Owner: "once snagged, grabbing the whip with the off hand gives us vertical lift and also forward momentum as a kind of
+swing assist ... grab the damn thing and be lifted up a little and moved forward at a reasonable speed, as a toggle."
+
+### Done (measured: rig qzd17.3, SWINGTST, whp probe scen 11, `whp_scripts.py assistwall` / `gripstart` / `assistnosnag`)
+- `rsqwp_swing_assist` (on; Whip page "Swing Assist: Grab Snag", under Grip Starts Swing), `rsqwp_swing_assistlift` 8
+  and `rsqwp_swing_assistspeed` 10 (Test and Debug "Assist Lift" 0-20, "Assist Speed" 0-30). swing.zs core.GrabAssist:
+  the grip start (once per rope, h.started) sets vel.z = max(vel.z, lift) and raises the level speed toward the point
+  under the anchor to the speed (never cuts a faster run), in place of the grip's 6-unit hop; then CapSpeed (Gun Bonsai
+  VR Momentum's cap). No SlowMo scaling: the player runs on real time (util.zs WorldScale), as the jump start.
+- The take-up's rate cap ate it at first (core.Swing holds inward speed to 1.5 x takeRate: 12 forward -> 7.3 the next
+  tic). With the assist the take-up's pace is max(GRIP_PULL, |vel| / 1.5). Assist off: unchanged (GRIP_PULL).
+- Defaults from the rig: a stick run is 9.5 u/tic and a running jump rises 36 units (z 96 -> 132). Lift 8 rises 35-36.
+
+| rig run (doom2 + Whip, SWINGTST) | off | on (8 / 10) |
+|---|---|---|
+| wall ahead and above (the pit's lip, 6.8 m, anchor z 210): vel the tic after the grip | (3.7 0.1 7.3) | (10.0 0.3 8.0) |
+| ... rise by +8 tics / ground covered in 20 tics | 33 u / 146 u (touches down at +21) | 35 u / 225 u (no touch-down) |
+| ceiling 8.8 m (gripstart): vel after / rise / 20 tics | (4.9 0.1 6.8) / 27 u / 109 u | (10.0 0.2 8.0) / 36 u / 182 u |
+| no snag, same grip (assistnosnag) | -- | no START, pos and vel 0 through the grip |
+Afterwards the rope runs as before (rope 72 / 288 held, pendulum swings; a let-go 34 tics on kept 15.5 flat via GRACE).
+Frames: scratchpad `laneassist_frames/aw_strip_off_on.png`. Script errors: doom2 + Whip 0; doom2 + GunBonsai 0.10.6 +
+all RSQ 0; full order (03 = 2.0.3v) 4, all 02_BD22_VoxelPack's voxeldef; the assist fired on both (BD's rsq_hands off hand).
+
+### Open
+- On the lip anchor one assisted run (8/10) swung far enough under the lip into the pit that the rope lost sight of its
+  anchor for 3 checks and slipped (the existing corner rule, core.Swing Sees) 81 tics after the start; 8/12 held 129 tics.
+- On the ceiling the assist reaches under the anchor with the rope slack and falls into the arc until it catches (the
+  rope's own catch: vz -21 -> +12.7). Feel is the owner's call; Assist Lift / Assist Speed tune it.
+- Not headset-tested.
+
 ## 2026-11-03: the beam wins, no bits, the off hand free while snagged, grip / jump start the swing, the reel is a climb (owner 11:20-12:06) -- rig only, not headset-confirmed
 Owner: "the offhand beam ... takes precedence over any actor-lock-on ... Once snagged ... we grab the whip with the offhand
 to get height and begin our swing, OR we press jump"; 11:35 "whip needs to not target bits"; 11:52 "slower whip reel in

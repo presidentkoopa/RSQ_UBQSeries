@@ -18,6 +18,9 @@ server bool   rsqwp_swing_grip     = true;  // Off-Hand Grip Starts Swing: snagg
 server bool   rsqwp_swing_jump     = true;  // Jump Starts Swing: snagged, a jump lifts you and pushes you on where you face, keeping all your speed (once a rope)
 server float  rsqwp_swing_jumplift = 10;    // Jump Lift: the jump start's upward speed, map units a tic (the engine's jump is 8; never stacked on it)
 server float  rsqwp_swing_jumppush = 8;     // Jump Push: the jump start's push where you face, map units a tic, added to the speed you had
+server bool   rsqwp_swing_assist   = true;  // Swing Assist: Grab Snag (owner 11-04): the grip start lifts you and carries you on toward the anchor, once a rope (swing.zs GrabAssist)
+server float  rsqwp_swing_assistlift = 8;   // Assist Lift: its upward speed, map units a tic (8 = the engine's jump; rig: 36 units up, a running jump's rise)
+server float  rsqwp_swing_assistspeed = 10; // Assist Speed: its level speed toward the point under the anchor, map units a tic (rig: a run is 9.5); raised to, never added
 server bool   rsqwp_whip_lines    = true;   // the crack throws a switch (any use line) it lands on
 server bool   rsqwp_whip_fetch    = true;   // the crack flicks a loose pickup near it to you
 server bool   rsqwp_whip_leash    = true;   // Lock: a locked crack on a monster with the bind still held catches it and pulls it in

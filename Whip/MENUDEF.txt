@@ -63,6 +63,7 @@ OptionMenu "RSQWP_Options"
 	Option "Beam Beats Lock-On", "rsqwp_swing_beamwins", "OnOff"
 	Option "Off Hand Stays Free", "rsqwp_swing_offfree", "OnOff"
 	Option "Grip Starts Swing", "rsqwp_swing_grip", "OnOff"
+	Option "Swing Assist: Grab Snag", "rsqwp_swing_assist", "OnOff"
 	Option "Jump Starts Swing", "rsqwp_swing_jump", "OnOff"
 	RSQWPGbOption "Mantle", "rsqwp_mantle", "OnOff", "RSQWP_Service", "Mantle"
 	RSQWPGbOption "Keep Momentum", "rsqwp_carry", "OnOff", "RSQWP_Service", "WhipMomentum"
@@ -117,6 +118,8 @@ OptionMenu "RSQWP_Test"
 	Slider "Rope Meets Body", "rsqwp_attach", 0.1, 1.0, 0.05, 2
 	Slider "Jump Lift", "rsqwp_swing_jumplift", 0, 20, 1, 0
 	Slider "Jump Push", "rsqwp_swing_jumppush", 0, 20, 1, 0
+	Slider "Assist Lift", "rsqwp_swing_assistlift", 0, 20, 1, 0
+	Slider "Assist Speed", "rsqwp_swing_assistspeed", 0, 30, 1, 0
 	StaticText " "
 	StaticText "Climbing and Leash", "Gold"
 	Slider "Grab Reach", "rsqwp_grab_reach", 4, 40, 2, 0

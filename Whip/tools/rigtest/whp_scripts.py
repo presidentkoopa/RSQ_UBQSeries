@@ -172,7 +172,8 @@ def run(scen, hand='r'):
 
 # ---- THE AIMED SWING (swing.zs) on SWINGTST ------------------------------------------------------------------------
 SWINGS = ('aim', 'ceil', 'wallanchor', 'chain', 'refuse', 'snag', 'ohold', 'ohceil', 'ohgun',
-          'beammon', 'bits', 'range', 'offgun', 'gripstart', 'jumpstart', 'reelclimb')
+          'beammon', 'bits', 'range', 'offgun', 'gripstart', 'jumpstart', 'reelclimb',
+          'assistwall', 'assistnosnag')
 # AIM WITH OFF-HAND FIRE (11-03): the off trigger pressed as the real controller presses it -- qz_ltrigger, which
 # QuestZDoom's input posts as KEY_LSHIFT (bound +oh_attack), so the key road the whip eats is the one tested (the
 # console's +oh_attack would set the button and skip it). qz_rgrip held + qz_ltrigger = KEY_LALT (+oh_altatk).
@@ -357,6 +358,24 @@ def swing_scen(scen):
         at(70, 'qz_lgrip 1'); at(90, 'qz_lgrip 0')
         if os.environ.get('GREL'): g = int(os.environ['GREL']); at(g, '+altattack'); at(g + 2, '-altattack')
         T = int(os.environ.get('GT', '200'))
+    elif scen == 'assistwall':
+        # SWING ASSIST: GRAB SNAG (owner 11-04): on A's floor at x 150, facing east; the beam (AWP: its pitch, default 22)
+        # on the wall ahead and above -- the pit's lip, A's upper wall at x 384, z 210 (6.8 m) -- crack, snag, waiting; the
+        # left hand to the right (the handle) at t60, closes t70-t90: the grip start. The switch and sliders must be set
+        # BEFORE the map loads (prefix the script: "rsqwp_swing_assist 0; ..."): on the rig a server cvar set in-game
+        # after another in the same line did not take (XCMD's rsqwp_debug 0 after WDBG's 1 left the log on).
+        at(0, 'netevent whp_tp 150 512 180')
+        at(5, lpose(float(os.environ.get('AWP', '22')))); at(5, 'qz_ltrigger 1'); at(30, 'qz_ltrigger 0')
+        cracks.append(20)
+        at(60, lpose(20, 0, 0.12, 1.32, -0.32))
+        at(70, 'qz_lgrip 1'); at(90, 'qz_lgrip 0')
+        T = int(os.environ.get('GT', '200'))
+    elif scen == 'assistnosnag':
+        # no snag: the same grip (left hand to the handle, closes t70-t90) with no beam and no crack -- nothing may move him
+        at(0, 'netevent whp_tp 150 512 180')
+        at(60, lpose(20, 0, 0.12, 1.32, -0.32))
+        at(70, 'qz_lgrip 1'); at(90, 'qz_lgrip 0')
+        T = 140
     elif scen == 'jumpstart':
         # JUMP STARTS THE SWING (11-03): beam (t5-t30), crack, snag from the lip, waiting; +jump at t70; let go (the whip
         # hand's alt-fire) at JREL on the upswing; STEP=1 instead steps off the lip (stick t70-t80, today's start)

@@ -133,6 +133,7 @@ while that whip node is not learned (they do nothing until then).
 | Beam Beats Lock-On | On | The aim beam beats any mark |
 | Off Hand Stays Free | On | A gun into the off hand never lets go of the rope |
 | Grip Starts Swing | On | Grip the whip to start swinging |
+| Swing Assist: Grab Snag | On | That grip also lifts you a little and carries you on toward the snag |
 | Jump Starts Swing | On | Jump to start swinging |
 | Mantle (GB) | On | Up and over a ledge |
 | Keep Momentum (GB) | On | Your swing's speed carries on after landing |
@@ -147,7 +148,7 @@ while that whip node is not learned (they do nothing until then).
 (mass 400), Too Heavy From (mass 1000), Lasso Reach (0.30 m); Thickness (1.0), Stiffness (1.0), Damping (1.0), Air Drag
 (1.0), Hand Smoothing (0.8 tics), Draw Pieces (12), Let-Go Return Speed (64); Reel Speed (3), Shortest Rope (32), Top
 Speed (30), Stick Lean (0.25), Arm Pump (0.12), Swing Air Drag (0.002), Rope Friction (0.025), Ledge Hop (6), Snag Edge
-Height (16), Rope Meets Body (0.6), Jump Lift (10), Jump Push (8); Grab Reach (16), Climb Speed Cap (8), Heaviest Leashed
+Height (16), Rope Meets Body (0.6), Jump Lift (10), Jump Push (8), Assist Lift (8), Assist Speed (10); Grab Reach (16), Climb Speed Cap (8), Heaviest Leashed
 (1000), Leash Pull (10), Leash Stops At (16), Off Grip Keys (443 436); Debug Log (Off, Events, Every Tic, Cost, Snags and
 Grip Keys, Aim Ray Every Tic); Reset All.
 

@@ -60,7 +60,8 @@
 //   GRIP (rsqwp_swing_grip, on): an empty off hand closes (its grip key, or a grab bind) within GRIP_REACH (0.5 m) of
 //     the whip hand or the rope -- two hands on the whip. The rope is taken up GRIP_LIFT (24 units, 0.7 m: one hand-
 //     over-hand pull) more than the arc needs, at GRIP_PULL 6 a tic, with the old hop: you rise and swing from where
-//     you stood. That press never becomes a climbing hold (the next one does).
+//     you stood. That press never becomes a climbing hold (the next one does). With SWING ASSIST: GRAB SNAG on
+//     (rsqwp_swing_assist, the default) the hop is a lift and a forward speed instead (core.GrabAssist, below).
 //   JUMP (rsqwp_swing_jump, on; any off hand): +jump's press (BT_JUMP, its edge). Up: vel.z = max(vel.z, Jump Lift),
 //     so the engine's own floor jump that tic (JumpZ 8) is never stacked on (no double jump). Forward: Jump Push
 //     along where you FACE, the part pointing away from the anchor taken out (the rope would only eat it) and the push
@@ -487,6 +488,27 @@ extend class RSQWP_Core
 		return m <= GRIP_REACH_M;
 	}
 
+	// SWING ASSIST: GRAB SNAG (owner 11-04 19:49: "grab the damn thing and be lifted up a little and moved forward at a
+	// reasonable speed, as a toggle"; rsqwp_swing_assist, on). The grip start, once per rope (h.started), gives a
+	// one-shot lift and a forward speed instead of the grip's small hop; from the next tic the rope runs as ever
+	// (pendulum, reel, climb, mantle, let go with the speed kept). Up: vel.z = max(vel.z, Assist Lift) -- never stacked
+	// on a jump already rising. Forward: level, toward the point under the anchor (where you face if you stand under
+	// it); the speed along it is raised to Assist Speed, never cut (a run you already had is kept), and the rest of your
+	// speed kept. Then the swing's cap (CapSpeed: Gun Bonsai VR's Momentum raises it). The player runs on real time under
+	// RSQ SlowMo (util.zs WorldScale: only the world slows), so -- like the jump start -- nothing is scaled.
+	static double AssistLift() { return clamp(RSQWP_Util.Num("rsqwp_swing_assistlift", 8), 0.0, 20.0); }
+	static double AssistSpeed() { return clamp(RSQWP_Util.Num("rsqwp_swing_assistspeed", 10), 0.0, 30.0); }
+	Vector3 GrabAssist(RSQWP_Hook h, PlayerPawn pmo)
+	{
+		pmo.vel.z = max(pmo.vel.z, AssistLift());
+		Vector2 d = h.anchor.xy - pmo.Pos.xy;
+		Vector2 f = d.Length() > 16 ? d.Unit() : Actor.AngleToVector(pmo.Angle, 1);
+		double along = pmo.vel.xy dot f;
+		double want = AssistSpeed();
+		if (along < want) pmo.vel += (f * (want - along), 0);
+		return (f, 0);
+	}
+
 	// THE START (see swing.zs's top): once per rope, by the off hand's grip (an aimed swing, the off hand empty) or by a
 	// jump (any whip rope, any off hand). True when it started this tic.
 	bool SwingStart(RSQWP_Hook h, PlayerPawn pmo, int pn, bool grounded, double minLen)
@@ -515,9 +537,17 @@ extend class RSQWP_Core
 		if (want >= minLen && want < h.ropeLen - 1) { h.autoLen = want; h.fullLen = 0; }
 		h.takeRate = grip ? GRIP_PULL : 0;
 		Vector3 fd = (0, 0, 0);
+		bool assist = grip && RSQWP_Util.Flag("rsqwp_swing_assist", true);
 		if (grip)
 		{
-			if (grounded) pmo.vel.z = max(pmo.vel.z, RSQWP_Whip.SWING_HOP);
+			if (assist)
+			{
+				fd = GrabAssist(h, pmo);
+				// the take-up (a reel) holds the speed in toward the anchor to 1.5 x its pace (core.Swing): at GRIP_PULL it
+				// ate the assist (rig: 12 forward -> 7.3 the next tic). Its pace follows the assist instead.
+				h.takeRate = max(GRIP_PULL, pmo.vel.Length() / 1.5);
+			}
+			else if (grounded) pmo.vel.z = max(pmo.vel.z, RSQWP_Whip.SWING_HOP);
 			// this press is the start, not a climbing hold (the next press climbs)
 			wantGrip[pn * 2 + 1] = false;
 			if (h.gripHand == 1) h.gripHand = -1;
@@ -548,8 +578,9 @@ extend class RSQWP_Core
 		CapSpeed(pmo);
 		Carry(pmo);
 		if (RSQWP_Util.Flag("rsqwp_debug", false))
-			Console.Printf("T_WPW START t%d by %s%s: rope %.0f, take-up to %.0f; vel (%.1f %.1f %.1f) %.1f flat %.1f -> (%.1f %.1f %.1f) %.1f flat %.1f; push dir (%.2f %.2f %.2f); off hand %s",
-				level.maptime, jump ? "JUMP" : "GRIP", grip ? String.Format(" (%.2f m from the whip)", gm) : (grounded ? " from the ground" : " in the air"), len0, h.autoLen,
+			Console.Printf("T_WPW START t%d by %s%s%s: rope %.0f, take-up to %.0f; vel (%.1f %.1f %.1f) %.1f flat %.1f -> (%.1f %.1f %.1f) %.1f flat %.1f; push dir (%.2f %.2f %.2f); off hand %s",
+				level.maptime, jump ? "JUMP" : "GRIP", grip ? String.Format(" (%.2f m from the whip)", gm) : (grounded ? " from the ground" : " in the air"),
+				grip ? (assist ? String.Format(" ASSIST lift %.1f speed %.1f", AssistLift(), AssistSpeed()) : " no assist (Swing Assist: Grab Snag off)") : "", len0, h.autoLen,
 				v0.x, v0.y, v0.z, v0.Length(), v0.xy.Length(), pmo.vel.x, pmo.vel.y, pmo.vel.z, pmo.vel.Length(), pmo.vel.xy.Length(), fd.x, fd.y, fd.z,
 				pmo.player.OffhandWeapon ? pmo.player.OffhandWeapon.GetClassName() : 'none');
 		return true;
