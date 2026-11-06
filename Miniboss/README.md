@@ -82,7 +82,9 @@ Then the set piece itself:
   along its link, BFG and plasma bursts when a link breaks, life orbs circling the boss (the last one swells with its
   health), flames while it is invulnerable; red sparks over enraged monsters. The IWAD's sprites drawn by a small pooled
   set of VisualThinkers, only within 4000 units of you. Each link is the original's own trail: 30 plasma beads from
-  thrall to miniboss, moved every tic, at every density (Effects Density sets the flames and the cap).
+  thrall to miniboss, moved every tic, at every density (Effects Density sets the flames and the cap). Since 1.0 a
+  link's 30 beads are placed in one pass (a bead that did not move is left alone): the same picture for less than half
+  the script time (rig: 0.24 -> 0.12 ms a tic with 8 thralls all moving; rig only, not headset-confirmed).
 - Sounds are Doom's own: a BFG burst for a lost life, a fireball pop for a thrall, the Icon of Sin's roar for the rage.
 
 **Counts as a boss** (each on its own switch; the engine's boss flag is never set)

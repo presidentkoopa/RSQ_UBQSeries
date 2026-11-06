@@ -126,7 +126,7 @@ class RSQMB_FxPool play
 		if (used >= cap) return;
 		RSQMB_Fx f;
 		int fi = Frame(s, age);
-		if (used < pool.Size()) f = pool[used];
+		if (used < int(pool.Size())) f = pool[used];
 		else
 		{
 			f = RSQMB_Fx(VisualThinker.Spawn("RSQMB_Fx", tex[seqStart[s] + fi], at, (0, 0, 0), alpha, SPF_FULLBRIGHT, 0, sc, (0, 0), STYLE_AddStencil));
@@ -153,6 +153,53 @@ class RSQMB_FxPool play
 		if (f.colShown != c) { f.colShown = c; f.scolor = c; }
 		if (f.Scale != sc) f.Scale = sc;
 		if (f.Alpha != alpha) f.Alpha = alpha;
+	}
+
+	// One link's 30 beads in one tight loop (1.0 opt, 11-06: "i do not want to lose quality but let's try and optimize
+	// this"). Draws exactly what 30 Show() calls drew (same spots, frame, colour, scale 1, alpha 0.3, Prev = last tic's
+	// spot), with the work done once a link instead of once a bead: the frame and its texture once, the link's start and
+	// step once (bead j = start + step * j, BeadPos's own arithmetic), and a bead that did not move is not written and not
+	// re-sectored (UpdateSector, a BSP walk, only for a bead that moved). Rig-measured before/after: proof/miniboss/opt_*.
+	void BeadLink(RSQMB_Handler h, int k0, Vector3 start, Vector3 step, int nb, int t, Color c, int cap)
+	{
+		int s = SQ_BEAD;
+		int fi = Frame(s, t);
+		TextureID bt = tex[seqStart[s] + fi];
+		for (int j = 0; j < nb; j++)
+		{
+			if (used >= cap) return;
+			Vector3 at = start + step * j;
+			RSQMB_Fx f;
+			if (used < int(pool.Size())) f = pool[used];
+			else
+			{
+				f = RSQMB_Fx(VisualThinker.Spawn("RSQMB_Fx", bt, at, (0, 0, 0), 0.3, SPF_FULLBRIGHT, 0, (1, 1), (0, 0), STYLE_AddStencil));
+				if (!f) return;
+				f.ChangeStatNum(RSQMB_Fx.STAT_FX);
+				f.key = -1;
+				pool.Push(f);
+				if (h.debug) h.fxSpawned++;
+			}
+			used++;
+			int key = k0 | j;
+			if (f.key != key)
+			{
+				// a slot taking this bead over: everything set, as Show did
+				f.key = key;
+				f.Put(at, at);
+				f.seqShown = s; f.frameShown = fi; f.Texture = bt;
+				f.colShown = c; f.scolor = c;
+				f.Scale = (1, 1);
+				f.Alpha = 0.3;
+				if (h.debug) h.fxWrites++;
+				continue;
+			}
+			// Show's Put(at, Pos): Prev = last tic's spot, Pos = this one. Unmoved and settled: nothing to write.
+			if (!(f.Pos == at)) { f.Put(at, f.Pos); if (h.debug) h.fxWrites++; }
+			else if (!(f.Prev == at)) f.Prev = at;
+			if (f.frameShown != fi || f.seqShown != s) { f.seqShown = s; f.frameShown = fi; f.Texture = bt; }
+			if (f.colShown != c) { f.colShown = c; f.scolor = c; }
+		}
 	}
 
 	void Shot(Vector3 at, int s, Color c, Vector2 sc, double alpha, int cap)
@@ -282,9 +329,9 @@ extend class RSQMB_Handler
 					if (!th || b.thrState[i] != RSQMB_Boss.ST_ALIVE) continue;
 					int ki = kb | (i << 10);
 					fxp.Show(self, ki, th.pos + (0, 0, th.height + 4 + 4 * sin(t * 8.0)), true, true, RSQMB_FxPool.SQ_BALL, t, b.col, (0.5, 0.5), 0.5, cap);
-					// the original's trail: 30 APLS beads (scale 1, alpha 0.3), every tic, interpolated
-					for (int j = 0; j < nb; j++)
-						fxp.Show(self, ki | (1 << 9) | j, BeadPos(b.mb, th, j, nb), true, true, RSQMB_FxPool.SQ_BEAD, t, b.col, (1, 1), 0.3, cap);
+					// the original's trail: 30 APLS beads (scale 1, alpha 0.3), every tic, interpolated; BeadPos's spots,
+					// worked out once a link (BeadLink)
+					fxp.BeadLink(self, ki | (1 << 9), b.mb.pos + (0, 0, b.mb.height * 0.5), level.Vec3Diff(b.mb.pos, th.pos) / double(nb), nb, t, b.col, cap);
 				}
 				// lives: one orb a life, circling; the last one full and swelling with the boss's health (as the original)
 				for (int l = 0; l < b.lives && l < 31; l++)
