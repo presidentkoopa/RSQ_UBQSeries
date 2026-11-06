@@ -823,7 +823,9 @@ class RSQGC_GunCard : EventHandler
 				bool wantFull = full;
 				if (!wc.Shown() || wc.full != wantFull || wc.status) wc.Show(pmo.pos, wantFull);
 				wc.Fill(pmo, w, CardColour(p, w), self);
-				wc.Place(pmo, cv("rsqgc_world_scale", 1.4), wantFull ? WatchNudge(true) : Nudge(true), wantFull ? WatchNudge(false) : Nudge(false), mShow[hand] * cv("rsqgc_alpha", 0.85), wantFull ? 0 : cv("rsqgc_in", 0));
+				double sSide, sUp, sIn;
+				[sSide, sUp, sIn] = RSQGC_Spots.SpotFor(w.GetClassName());   // this gun's spot (spots.zs)
+				wc.Place(pmo, cv("rsqgc_world_scale", 1.4), wantFull ? WatchNudge(true) : sUp, wantFull ? WatchNudge(false) : sSide, mShow[hand] * cv("rsqgc_alpha", 0.85), wantFull ? 0 : sIn);
 				continue;
 			}
 			World(hand).Hide();
@@ -978,6 +980,10 @@ class RSQGC_GunCard : EventHandler
 			tLow = TransFor(FuseAmber(p) ? 0xFFB428 : 0xFF3020);
 			if (ci("rsqgc_debug_log", 0)) Console.Printf("rsqgc: fuse count %d (%s)", fc, FuseAmber(p) ? "amber" : "red");
 		}
+		// THIS GUN'S SPOT (owner 11-06, spots.zs): its saved Up / Side / In, else the Placement sliders
+		double spS, spU, spI;
+		[spS, spU, spI] = RSQGC_Spots.SpotFor(w.GetClassName());
+		mSpotSide[hand] = spS; mSpotUp[hand] = spU; mSpotIn[hand] = spI;
 		TiltTo(pmo, hand, mir);
 		mCurTilt = hand;
 
@@ -1059,8 +1065,8 @@ class RSQGC_GunCard : EventHandler
 		if (!ps) return;
 		ps.bAddBob = false;
 		ps.bAddWeapon = false;
-		ps.x = cv("rsqgc_side", 0) * 4 + mTiltX[mCurTilt];        // degrees about the model origin
-		ps.y = 32 + cv("rsqgc_up", 0) * 4 + mTiltY[mCurTilt];
+		ps.x = mSpotSide[mCurTilt] * 4 + mTiltX[mCurTilt];        // degrees about the model origin (this gun's spot, spots.zs)
+		ps.y = 32 + mSpotUp[mCurTilt] * 4 + mTiltY[mCurTilt];
 		ps.alpha = alpha;
 		ps.Translation = trans >= 0 ? TranslationID(trans) : TranslationID(0);
 	}
@@ -1076,6 +1082,7 @@ class RSQGC_GunCard : EventHandler
 	// (hw_vrmodes.cpp:468), which turns a yaw round. Card centre (tools/gen_cards.py CARD, model cm about the
 	// origin): 6.6 right, 11.3 down, 16.9 forward, moved back by rsqgc_in.
 	int mCurTilt;
+	double mSpotSide[2], mSpotUp[2], mSpotIn[2];   // the small card's spot this tic per hand (spots.zs)
 	void TiltTo(PlayerPawn pmo, int hand, bool mir)
 	{
 		mTiltX[hand] = 0; mTiltY[hand] = 0;
@@ -1095,7 +1102,7 @@ class RSQGC_GunCard : EventHandler
 		double sx = mir ? -1 : 1;                                                // where the card sits: right of a main hand
 		Vector3 eye = (pmo.pos.xy, pmo.player.viewz);
 		Vector3 ox = (0, 5, 30);                                                 // the model origin, hand-local cm
-		Vector3 c0 = (6.6 * sx, -11.3, -16.9 + cv("rsqgc_in", 0));               // the card about it
+		Vector3 c0 = (6.6 * sx, -11.3, -16.9 + mSpotIn[hand]);                   // the card about it (this gun's In)
 		double lim = clamp(cv("rsqgc_tilt_max", 20), 0, 60);
 		double a = 0, b = 0;
 		for (int it = 0; it < 3; it++)
@@ -1135,7 +1142,7 @@ class RSQGC_GunCard : EventHandler
 	int Depth()
 	{
 		int mid = RSQGC_CardStates.DEPTHS / 2;
-		int k = int(floor(cv("rsqgc_in", 0) / RSQGC_CardStates.DEPTH_STEP + 0.5)) + mid;
+		int k = int(floor(mSpotIn[mCurTilt] / RSQGC_CardStates.DEPTH_STEP + 0.5)) + mid;   // this gun's In (spots.zs)
 		return clamp(k, 0, RSQGC_CardStates.DEPTHS - 1);
 	}
 

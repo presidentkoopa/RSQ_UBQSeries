@@ -20,6 +20,10 @@ user float  rsqgc_in = 0;              // the small card: in (+, toward you alon
 user float  rsqgc_watch_up = 0;        // the watch card: up (+) or down, degrees
 user float  rsqgc_watch_side = 0;      // the watch card drawn in the world: sideways
 user float  rsqgc_world_scale = 1.4;   // size of the cards drawn in the world
+// the small card's spot per gun (owner 11-06, spots.zs): ";class=side,up,in;..." (lower-case class names, degrees,
+// degrees, cm). nosave: this machine only and out of the userinfo (whose size limit the Tactical Rig's profiles hit);
+// kept in the ini, so it survives saves, maps and sessions. Our cap: 4000 characters (~120 guns), oldest dropped.
+nosave string rsqgc_spots = "";
 
 // ---- tuning
 user int    rsqgc_hands = 0;           // 1: both guns on the main hand's small card (the off hand's rounds in the small row)

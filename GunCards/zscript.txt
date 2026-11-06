@@ -24,3 +24,4 @@ version "4.10"
 #include "zscript/rsqgc/side.zs"         // the watch card on both sides of the wrist
 #include "zscript/rsqgc/worldcard.zs"    // the same cards drawn in the world (rsqgc_world)
 #include "zscript/rsqgc/glow.zs"         // Card Glow (Quest: fullbright; PCVR: and a small light), No Background
+#include "zscript/rsqgc/spots.zs"        // the small card's spot per gun (owner 11-06), and its menu rows

@@ -30,6 +30,13 @@ built as a voxel with its place on the wrist baked in.
 - Pick up ammo and a "+N" shows in the reserve's place for a moment.
 - A cooking grenade (RSQ Grenade) shows its fuse seconds, amber then red.
 - Shows always, when you look at the gun, on the inspect gesture, or while you hold reload. Your choice.
+- Each gun can have its own spot (2026-11-06; boots clean, not rig-tested): Advanced on the Gun Cards page moves the
+  card of the gun in your main hand (Up, Side, In) and saves that spot for that gun only, by its class, so every mod's
+  guns get their own. Guns without one use the Placement sliders. Saved on this machine (setting `rsqgc_spots`), kept
+  between maps, saves and sessions; in netplay your spots only move your own cards. Grab-and-drag by hand: not built yet
+  (no free button; waiting on the owner's choice).
+- The card can turn up / down and left / right (it swings round the wrist as it turns: that is how it is drawn), and
+  slide in or out 6 cm along the forearm. It cannot roll, and cannot move further in or out, without new voxels.
 
 **The watch card**
 - Weapon card: magazine and reserve, grenades, kills with this gun this level.
@@ -76,7 +83,7 @@ There are no buttons. The cards answer to where your hands are.
 | Read the small card | Look at your wrist | Shows all the time by default. |
 | Show the card by looking (Show Cards: When I Look) | Bring the gun within 0.7 m of your eyes, within 30 degrees of where you look | Both numbers are sliders on Test and Debug. |
 | Show the card on reload (Show Cards: On Reload) | Hold that hand's reload, or the shared reload | Stays 35 tics after you let go. |
-| Check your watch | Forearm across your chest, wrist 15 to 50 cm from your eyes and within 35 degrees of your view, hand pointing across your body, back of the wrist turned at least 45 degrees toward your face | The gesture reader's watch-check pose is used instead (RSQ Accessibility's, or Gun Cards' own copy without it); this looser pose only when that reader's watch check is switched off. |
+| Check your watch | Forearm across your chest, wrist 15 to 50 cm from your eyes and within 35 degrees of your view, hand pointing across your body, back of the wrist turned at least 45 degrees toward your face | The gesture reader's watch-check pose is used instead (RSQ Accessibility's, or Gun Cards' own copy without it; back of the wrist turned 35 degrees since 11-06, was 45: Accessibility's Watch Check Twist); this looser pose only when that reader's watch check is switched off. |
 | Status card | Check your watch with an empty hand or fists | With Draw in the World on, it is built in the world on the back of the wrist (keys as words, not icons). |
 | Hide the small card when aiming (Hide at Your Eye) | Raise the gun within 0.30 m of your eye, pointing where you look | Off by default. |
 
@@ -117,7 +124,13 @@ Options → Radiant Silvergun Options → RSQ Gun Cards (one page, then Test and
 | Watch Card Up | 0 | Degrees. |
 | Watch Card Side | 0 | Only with Draw in the World. |
 | World Card Size | 1.40 | Only with Draw in the World. |
-| Reset All | | Every setting back to its default. |
+| *Advanced: This Gun's Small Card* | | The gun in your main hand (named on the row under the header). |
+| Up (pitch) | Placement's | Saves this gun's own spot. -60 to 60 degrees. |
+| Side (yaw) | Placement's | -60 to 60 degrees. |
+| In (cm) | Placement's | -6 to 6 cm in 1.5 cm steps (the card is built at those places; further is clamped). |
+| Reset This Gun's Card | | This gun back to the Placement spot. |
+| Reset All Saved Spots | | Every gun back to the Placement spot. |
+| Reset All | | Every setting back to its default (the saved per-gun spots are kept: Reset All Saved Spots clears them). |
 
 **Test and Debug**
 

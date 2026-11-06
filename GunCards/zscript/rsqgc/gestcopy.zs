@@ -252,7 +252,7 @@ class RSQGC_GCopy : StaticEventHandler
 		bool still = SpeedNow(h) < Num("rsqg_inspect_still", 1.2);
 		if (s == 0)
 		{
-			if (still && InspectPose(pmo, h, 0, Num("rsqg_inspect_twist", 45)))
+			if (still && InspectPose(pmo, h, 0, Num("rsqg_inspect_twist", 35)))
 			{
 				insTics[h] = 1;
 				SetInspect(h, Opt("rsqg_inspect_hold", 6) <= 1 ? 2 : 1);
@@ -261,7 +261,7 @@ class RSQGC_GCopy : StaticEventHandler
 			return;
 		}
 		double slack = Num("rsqg_inspect_slack", 0.05);
-		bool keep = InspectPose(pmo, h, slack, Num("rsqg_inspect_untwist", 30));
+		bool keep = InspectPose(pmo, h, slack, Num("rsqg_inspect_untwist", 20));
 		if (!keep || (s == 1 && !still)) { insTics[h] = 0; SetInspect(h, 0); return; }
 		insTics[h]++;
 		if (s == 1 && insTics[h] >= Opt("rsqg_inspect_hold", 6)) SetInspect(h, 2);

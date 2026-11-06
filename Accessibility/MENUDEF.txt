@@ -115,6 +115,7 @@ OptionMenu "RSQA_Options"
 	StaticText "Gestures", "gold"
 	Option "Watch Check", "rsqg_inspect_off", "RSQG_OnIfZero"
 	Option "Wrist Turn", "rsqg_inspect_way", "RSQG_TwistWays"
+	Slider "Watch Check Twist (deg)", "rsqg_inspect_twist", 20, 90, 5, 0
 	Option "Tick When Ready", "rsqg_inspect_tick", "OnOff"
 	Option "Two-Hand Gestures", "rsqg_twohand", "OnOff"
 	Option "Both Hands Down", "rsqg_two_down", "OnOff"

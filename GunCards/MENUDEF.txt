@@ -58,6 +58,14 @@ OptionMenu "RSQGC_Options"
 	Slider "Watch Card Side", "rsqgc_watch_side", -30, 30, 0.5, 1
 	Slider "World Card Size", "rsqgc_world_scale", 0.5, 2.5, 0.05, 2
 	StaticText " "
+	StaticText "Advanced: This Gun's Small Card", 1
+	RSQGCSpotGun ""
+	RSQGCSpotSlider "Up (pitch)", 1, -60, 60, 0.5, 1
+	RSQGCSpotSlider "Side (yaw)", 0, -60, 60, 0.5, 1
+	RSQGCSpotSlider "In (cm)", 2, -6, 6, 1.5, 1
+	RSQGCSpotReset "Reset This Gun's Card", 0, "Put this gun's small card back on the Placement spot?"
+	RSQGCSpotReset "Reset All Saved Spots", 1, "Put every gun's small card back on the Placement spot?"
+	StaticText " "
 	Submenu "Test and Debug", "RSQGC_Test"
 	RSQGCResetAll "Reset All", "Reset all RSQ Gun Cards settings?"
 }

@@ -159,7 +159,7 @@ eye height and reach. Fit to My Body turns on by itself.
 
 | Action | How (VR) | Notes |
 |---|---|---|
-| Watch check | Gun hand 0.15 to 0.65 m in front of your eyes, from 0.30 m below to 0.20 m above eye level, within 0.35 m to the side. Gun no more than 60° up or down. Back of the wrist turned at least 45° toward your face. Hold still about 0.2 s. | Either hand. Holds while the twist stays above 30°. |
+| Watch check | Gun hand 0.15 to 0.65 m in front of your eyes, from 0.30 m below to 0.20 m above eye level, within 0.35 m to the side. Gun no more than 60° up or down. Back of the wrist turned at least 35° toward your face (Watch Check Twist; 45° before 11-06). Hold still about 0.2 s. | Either hand. Holds while the twist stays above 20°. |
 | Jab, hook, uppercut | Empty hand moves 0.15 m toward where you face at 2 m/s or faster | Uppercut: mostly upward. Hook: mostly sideways. |
 | Shove | The same swing with a gun in that hand, or both hands on the gun | Never a punch. |
 | Both hands down | Both hands moving down at 2 m/s, ending below your hips (0.60 m below your eyes), within 0.12 s of each other | |
@@ -210,6 +210,7 @@ Accessibility is never gated by Gun Bonsai VR.
 | **Gestures** | | |
 | Watch Check | On | Off: the watch check is never read. RSQ Gun Cards then uses its own look-at-the-gun test. |
 | Wrist Turn | Watch Side | Which way the wrist turns for the watch check: Watch Side (back of the wrist), Palm Up, or Either Way. |
+| Watch Check Twist (deg) | 35 | How far the wrist must turn for the watch check (the same setting as Test and Debug's Twist On). Lower is looser. 45 before 11-06. |
 | Tick When Ready | On | A light tick in that controller when the watch check holds. |
 | Two-Hand Gestures | Off | Reads the two-hand gestures all the time. Mods that use them switch them on while they need them. |
 | Both Hands Down, Both Hands Apart, Both Palms Out, Both Palms Thrust | On | Each two-hand gesture may fire. |
@@ -227,8 +228,8 @@ Accessibility is never gated by Gun Bonsai VR.
 | Row | Default | What it does |
 |---|---|---|
 | **Watch Check** | | |
-| Twist On (deg) | 45 | How far the wrist must turn to start the watch check. |
-| Twist Off (deg) | 30 | Below this twist the watch check lets go. |
+| Twist On (deg) | 35 | How far the wrist must turn to start the watch check. |
+| Twist Off (deg) | 20 | Below this twist the watch check lets go. |
 | Hold (tics) | 6 | How long the pose is held before it counts (35 tics = 1 second). |
 | Below Eyes (m) | 0.30 | Lowest the watch-check hand may be. |
 | Above Eyes (m) | 0.20 | Highest. |
