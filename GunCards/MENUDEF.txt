@@ -38,6 +38,7 @@ OptionMenu "RSQGC_Options"
 	Option "Text Quality", "rsqgc_text_q", "RSQGC_TextQ"
 	Option "Material", "rsqgc_look", "RSQGC_Looks"
 	Slider "Card Opacity", "rsqgc_alpha", 0.1, 1.0, 0.05, 2
+	Option "Card Glow", "rsqgc_glow", "RSQGC_Glow"
 	Option "AMMO Word", "rsqgc_label", "OnOff"
 	Option "Low Ammo Colour", "rsqgc_lowwarn", "OnOff"
 	Option "Key Icons", "rsqgc_keys", "OnOff"
@@ -50,8 +51,8 @@ OptionMenu "RSQGC_Options"
 	Option "Hide at Your Eye", "rsqgc_hide_eye", "OnOff"
 	StaticText " "
 	StaticText "Placement", 1
-	Slider "Small Card Up", "rsqgc_up", -30, 30, 0.5, 1
-	Slider "Small Card Side", "rsqgc_side", -30, 30, 0.5, 1
+	Slider "Small Card Up", "rsqgc_up", -60, 60, 0.5, 1
+	Slider "Small Card Side", "rsqgc_side", -60, 60, 0.5, 1
 	Slider "Small Card In", "rsqgc_in", -6, 6, 1.5, 1
 	Slider "Watch Card Up", "rsqgc_watch_up", -30, 30, 0.5, 1
 	Slider "Watch Card Side", "rsqgc_watch_side", -30, 30, 0.5, 1
@@ -97,6 +98,12 @@ OptionValue "RSQGC_SmallFont"
 	0, "JFO"
 	1, "Ermac"
 }
+OptionValue "RSQGC_Glow"
+{
+	0, "Off"
+	1, "Quest"
+	2, "PCVR"
+}
 OptionValue "RSQGC_TextQ"
 {
 	0, "Quest"
@@ -131,6 +138,7 @@ OptionValue "RSQGC_Looks"
 	0, "Solid"
 	1, "Glass"
 	2, "Glow"
+	3, "No Background"
 }
 OptionValue "RSQGC_Tints"
 {

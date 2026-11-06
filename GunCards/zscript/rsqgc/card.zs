@@ -226,6 +226,13 @@ class RSQGC_GunCard : EventHandler
 		return cn == 'Melee_Attacks' || cn == 'RSQ_Hands' || cn == 'Fist';
 	}
 
+	// a weapon held with no ammo to count (melee: the saber, the whip, the ShieldSaw, gloves)
+	static bool NothingToCount(PlayerInfo p, int hand)
+	{
+		Weapon w = hand == 1 ? p.OffhandWeapon : p.ReadyWeapon;
+		return w && Loaded(w) < 0;
+	}
+
 	static double cv(string n, double f) { let c = CVar.FindCVar(n); return c ? c.GetFloat() : f; }
 	static int ci(string n, int f) { let c = CVar.FindCVar(n); return c ? c.GetInt() : f; }
 
@@ -719,7 +726,7 @@ class RSQGC_GunCard : EventHandler
 		int watchMode = ci("rsqgc_watch", 1);     // 0 off, 1 when you check your watch, 2 always (owner 2026-10-31)
 		bool watchOn = watchMode > 0;
 		bool always = watchMode == 2;
-		if (p.playerstate != PST_LIVE || (ci("rsqgc_card", 1) <= 0 && !watchOn)) { ClearAll(p); return; }
+		if (p.playerstate != PST_LIVE || (ci("rsqgc_card", 1) <= 0 && !watchOn)) { ClearAll(p); GlowLights(pmo); return; }
 
 		let item = RSQGC_CardItem(pmo.FindInventory("RSQGC_CardItem"));
 		if (!item) item = RSQGC_CardItem(pmo.GiveInventoryType("RSQGC_CardItem"));
@@ -727,7 +734,7 @@ class RSQGC_GunCard : EventHandler
 
 		// see-through: rsqgc_look 0 solid, 1 glass, 2 glow
 		int look = ci("rsqgc_look", 1);
-		item.mStyle = look == 2 ? STYLE_Add : look == 1 ? STYLE_Translucent : 0;
+		item.mStyle = look == 2 ? STYLE_Add : (look == 1 || look == 3) ? STYLE_Translucent : 0;   // 3: No Background, the text as glass
 		if (look > 0 && !p.FindPSprite(L_FX)) p.SetPSprite(L_FX, item.FindState("Fx"), false, item);
 		if (item.mStyle != item.mStyleSet)
 		{
@@ -749,7 +756,12 @@ class RSQGC_GunCard : EventHandler
 			// GC5: checking your watch with an EMPTY hand shows health, armour and keys (the status card). Drawn with
 			// the hand, the off hand needs its own weapon slot filled to own the layers (Brutal Doom VR's off-hand
 			// fist, RSQ_Hands, is that); Draw in the World (owner 2026-11-04: "must also show") needs no layers.
-			status[hand] = checking && EmptyHand(p, hand) && (hand == 0 || p.OffhandWeapon || ci("rsqgc_world", 0));
+			// EVERY WEAPON (owner 11-06, BUGS_1.0 #24: "guncards need to show on every weapon, at least the wrist card when
+			// toggled on ... i know the saber has no ammo but we still have the combined card, and the status card"): a
+			// weapon with nothing to count (RSQ Saber, Whip, ShieldSaw, Melee's gloves, any pack's melee weapon) shows the
+			// status card on the wrist as an empty hand does; and with Watch Card: Always On (owner 11-06: "an option to
+			// always draw wrist cards"), an empty or melee hand shows it always too, not only on a watch check.
+			status[hand] = (checking || always) && (EmptyHand(p, hand) || NothingToCount(p, hand)) && (hand == 0 || p.OffhandWeapon || ci("rsqgc_world", 0));
 		}
 		bool show[2];
 		Weapon gun[2], other[2];
@@ -830,7 +842,15 @@ class RSQGC_GunCard : EventHandler
 			Side(hand).Remove(p); SideOf(hand, 1).Remove(p);
 			Draw(p, pmo, hand, owner, w, other[hand], other[hand] != null);
 		}
+		// CARD GLOW: PCVR's small light at each hand whose card shows (glow.zs)
+		for (int hand = 0; hand < 2; hand++)
+		{
+			Weapon w = gun[hand];
+			mLightCol[hand] = (status[hand] || mWasStatus[hand] || !w) ? 0x8A8A8A : CardColour(p, w);
+		}
+		GlowLights(pmo);
 	}
+	int mLightCol[2];
 
 	// ---- the cards in the world -----------------------------------------------------------------------------
 	RSQGC_WorldCard mWorld[2];
@@ -860,7 +880,7 @@ class RSQGC_GunCard : EventHandler
 		int style = StyleFor(p, w);
 		int q = Quality();
 		string sig = Signature(pmo, w, 9, style) .. (mir ? " m" : "") .. String.Format(" c%d q%d v%d b%d w%d %.2f", ci("rsqgc_color", 0), q, shows, ci("rsqgc_watch_bonsai", 0), ci("rsqgc_lowwarn", 1), cv("rsqgc_lowammo_frac", 0.25))
-			.. ExtraSig(pmo, hand, w) .. (shows == 2 ? StatusSig(pmo) : "");
+			.. ExtraSig(pmo, hand, w) .. (shows == 2 ? StatusSig(pmo) : "") .. RSQGC_Glow.Sig();
 		if (sig != c.sig || c.mir != mir || c.rot != rot)
 		{
 			c.sig = sig; c.mir = mir; c.rot = rot; c.quality = q;
@@ -910,7 +930,7 @@ class RSQGC_GunCard : EventHandler
 		bool mir = Mirrored(p, hand);
 		int rot = SideRot(pmo, hand);
 		int q = Quality();
-		string sig = "status" .. StatusSig(pmo) .. String.Format(" q%d", q) .. (mir ? " m" : "");
+		string sig = "status" .. StatusSig(pmo) .. String.Format(" q%d", q) .. (mir ? " m" : "") .. RSQGC_Glow.Sig();
 		SideOf(hand, 1).Remove(p);
 		let c = SideOf(hand, 0);
 		if (sig != c.sig || c.mir != mir || c.rot != rot)
@@ -964,10 +984,12 @@ class RSQGC_GunCard : EventHandler
 		// the panel
 		int style = StyleFor(p, w);
 		// with the AMMO / MAGAZINE word off the panel is the short one (owner 08:40): no empty strip, the numbers stay put
-		Put(p, base + P_PANEL, Nth(RSQGC_CardStates.Piece(ci("rsqgc_label", 1) ? 0 : 7, mir, 0, Depth()), style), owner, alpha, tPanel);
+		// NO BACKGROUND (Material: No Background, owner 11-06): the panel is left out, only the words and numbers show
+		if (RSQGC_Glow.NoPanel()) Kill(p, base + P_PANEL);
+		else Put(p, base + P_PANEL, Nth(RSQGC_Glow.CPiece(ci("rsqgc_label", 1) ? 0 : 7, mir, 0, Depth()), style), owner, alpha, tPanel);
 		// the word: MAGAZINE on a gun with one, AMMO otherwise
 		int lab = HasMagazine(w) ? 1 : 0;
-		if (ci("rsqgc_label", 1)) Put(p, base + P_LABEL, Nth(RSQGC_CardStates.Piece(1, mir, 0, Depth()), ermac ? RSQGC_CardStates.ERMAC_LABEL + lab : q * RSQGC_CardStates.LABELS + lab), owner, alpha, tLabel);
+		if (ci("rsqgc_label", 1)) Put(p, base + P_LABEL, Nth(RSQGC_Glow.CPiece(1, mir, 0, Depth()), ermac ? RSQGC_CardStates.ERMAC_LABEL + lab : q * RSQGC_CardStates.LABELS + lab), owner, alpha, tLabel);
 		else Kill(p, base + P_LABEL);
 		// the big number, right-aligned in three slots; GC3: RELOAD in its place on an empty magazine with rounds to
 		// load (Ermac's lettering, tools/gen_cards.py), in the empty colour
@@ -986,7 +1008,7 @@ class RSQGC_GunCard : EventHandler
 			for (int k = 1; k < RSQGC_CardStates.SLOTS; k++) Kill(p, base + P_BIG + k);
 			// on the short card (word off) its own RELOAD, top on the big count's top, so RELOAD and the reserve sit
 			// centred as the count and the reserve do (gen_cards.py RELOAD_SHORT_AT, owner 11-05 03:26)
-			Put(p, base + P_BIG, Nth(RSQGC_CardStates.Piece(ci("rsqgc_label", 1) ? 4 : 8, mir, 0, Depth()), ermac ? RSQGC_CardStates.ERMAC_RELOAD : q), owner, alpha, TransFor(MAG_RED));
+			Put(p, base + P_BIG, Nth(RSQGC_Glow.CPiece(ci("rsqgc_label", 1) ? 4 : 8, mir, 0, Depth()), ermac ? RSQGC_CardStates.ERMAC_RELOAD : q), owner, alpha, TransFor(MAG_RED));
 		}
 		else if (reloadNow) Digits(p, 2, mir, base + P_BIG, owner, "0", false, alpha, TransFor(MAG_RED));
 		else Digits(p, 2, mir, base + P_BIG, owner, clamp(loaded, 0, 999).."", false, alpha, tLow >= 0 ? tLow : tDigits);
@@ -1012,8 +1034,8 @@ class RSQGC_GunCard : EventHandler
 			int ch = s.ByteAt(ci0);
 			int g = ch == 43 ? RSQGC_CardStates.GLYPH_PLUS : ch - 48;   // '+' (GC2)
 			// JFO: kind 2 / 3, frame Text Quality * GLYPHS + glyph; Ermac (Small Card Font): kind 5 / 6, frame glyph
-			if (ci("rsqgc_small_font", 0) == 1) Put(p, base + k, Nth(RSQGC_CardStates.Piece(kind + 3, mir, k, Depth()), g), owner, alpha, trans);
-			else Put(p, base + k, Nth(RSQGC_CardStates.Piece(kind, mir, k, Depth()), Quality() * RSQGC_CardStates.GLYPHS + g), owner, alpha, trans);
+			if (ci("rsqgc_small_font", 0) == 1) Put(p, base + k, Nth(RSQGC_Glow.CPiece(kind + 3, mir, k, Depth()), g), owner, alpha, trans);
+			else Put(p, base + k, Nth(RSQGC_Glow.CPiece(kind, mir, k, Depth()), Quality() * RSQGC_CardStates.GLYPHS + g), owner, alpha, trans);
 		}
 	}
 

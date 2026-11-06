@@ -2,7 +2,9 @@
 // of player choice"; 2026-11-05 03:55: "remove both sidebars, use our new slowdown timer bar for all slowmo, when player
 // triggers it, it starts full, and drains for however long the player has set it to").
 //
-// WHEN: EVERY slow motion, from any source (clock.zs CountdownStart / CountdownTick): his key, the wrist cross, its burst,
+// WHEN (owner 2026-11-06: "RIGHT = the automatic slow-mo countdown, shown ONLY while the game has slowed time by itself"):
+// the countdown runs for EVERY slow motion (clock.zs) but the bar SHOWS only while an automatic trigger let it in (clock.cdAuto).
+// The stored slow-mo bar (the adrenaline meter) is drawn here too, at its left. Before 11-06: EVERY slow motion, from any source (clock.zs CountdownStart / CountdownTick): his key, the wrist cross, its burst,
 // the Wheel, the Accessibility button, the shootdodge, and every pulse (a kill moment or shove, the cigarette, the
 // Bossfight landing, Score, Gun Bonsai VR, close-call, reload, any mod through rsm_pulse or the named door). It starts
 // full and holds the REAL time left until the world is at full speed (the hold, then the ease out), empties evenly to zero
@@ -31,6 +33,7 @@ class RSQSM_Countdown : StaticEventHandler
 	const SWEEP = 52.0;       // tics for the band to cross the fill (1.5 s)
 	const SLICES = 8;
 	const RANDOM = 98;
+	const GLIDE = 6.0;        // tics for the stored bar to glide aside (or back) as the countdown comes and goes
 
 	ui double shown;          // the fraction drawn (a refill climbs to the clock's; emptying follows it exactly)
 	ui double lastT;
@@ -40,28 +43,34 @@ class RSQSM_Countdown : StaticEventHandler
 	static clearscope double SCv(String n, double d) { let c = CVar.FindCVar(n); return c ? c.GetFloat() : d; }
 	static clearscope bool Enabled() { return UCv("rsqsm_cdbar", 1) != 0; }
 
-	// ---- where it goes, in screen pixels: x, y, width, height (the bar; the hourglass sits at its left, GlassRect) ----
-	// SIZE AND PLACE (owner 11-05: "i was expecting them to be smaller than the score, neatly fitting centered under it
-	// score bar"): the row -- hourglass, gap, bar -- is sized from RSQ Score's own bar (its thickness x ROWK x Bar Size / 1.5),
-	// never wider than that bar, and centred on it as one group; it follows Score's scale, Text Size and screen shape. RSQ
-	// Miniboss's Bossfight meter row above uses the same maths; while it shows, this row takes its bar's rect (below).
-	// Clear of the side gauges' lanes (RSQ Gun Bonsai VR's Berserk gauges stand 2.5 to 3.5 gauge widths in from each side; 4
-	// kept clear): where Score sits near one, the row shrinks, still centred, rather than moving off Score's centre.
+	// ---- where it goes, in screen pixels ------------------------------------------------------------------------------
+	// TWO BARS SIDE BY SIDE (owner 2026-11-06, his approved layout): under the SCORE word, then RSQ Miniboss's Bossfight bar,
+	// then a pair: LEFT the stored slow-mo (the adrenaline meter, the old charge bar back), RIGHT this countdown, which shows
+	// only while the game slowed time by itself. One bar alone is centred; when the second appears the pair glides so the
+	// two together are centred. Each is a row: an hourglass (the same icon, its trim recoloured: black for stored, brown
+	// for the countdown), a gap, the bar. The two rows are always the same size, so a bar never changes size when the other
+	// comes or goes.
+	// SIZE (owner 11-05: "smaller than the score, neatly fitting centered under it score bar"): the PAIR is sized from RSQ
+	// Score's bar (its thickness x ROWK x Bar Size / 1.5) and never wider than that bar; it follows Score's scale, Text
+	// Size and screen shape. Clear of the side gauges' lanes (RSQ Gun Bonsai VR's Berserk gauges stand 2.5 to 3.5 gauge
+	// widths in from each side; 4 kept clear): where Score sits near one, the pair shrinks rather than leaving Score's centre.
+	// LINED UP WITH THE BOSSFIGHT METER (owner 11-05: "always line up, whatever Meter Size and Bar Size are set to"): while
+	// RSQ Miniboss's meter shows above (RSQMB_Service "meter.x" / "meter.w" / "meter.h", ui, by name), the pair spans the
+	// meter's row exactly: the left hourglass starts under the skull, the right bar ends where the meter ends.
 	const GLASS = 1.6;       // the hourglass: a square GLASS x the bar's thickness (the skull's size) ...
-	const KGAP = 0.3;        // ... KGAP left of the bar
+	const KGAP = 0.3;        // ... KGAP left of its bar
 	const ROWK = 0.8;        // the bar's thickness against Score's bar (8 of 120): smaller than Score
-	// LINED UP WITH THE BOSSFIGHT METER (owner 11-05: "The Bossfight meter and SlowMo countdown always line up, whatever
-	// Meter Size and Bar Size are set to"): while RSQ Miniboss's meter shows above, this row takes the meter's bar left edge,
-	// width and thickness (RSQMB_Service "meter.x" / "meter.w" / "meter.h", ui, by name) and sits under it, so the
-	// hourglass is the skull's size and straight under it and the two bars start and end together. Meter Size then sizes
-	// both; Bar Size applies whenever the meter is off or hidden (no Miniboss, Show Meter off, a Bossfight running).
-	static ui double, double, double, double Rect()
+	const PGAP = 1.2;        // the gap between the two rows, in bar thicknesses
+	const PER = 112.0 / 11.0 + 1.6 + 0.3;   // one row's width per pixel of bar thickness (bar + GLASS + KGAP)
+	// the slot: the pair's centre x, the bars' top y, their thickness h
+	static ui double, double, double Slot()
 	{
 		double sw = Screen.GetWidth(), sh = Screen.GetHeight();
 		double f = clamp(SCv("rsq_ui_inset", 0.04), 0.0, 0.3);
 		double sx = sw * f, sy = sh * f, aw = sw * (1 - 2 * f), ah = sh * (1 - 2 * f);
 		double cx, below, sbw;
 		[cx, below, sbw] = ScoreSpot();
+		double pairK = 2.0 * PER + PGAP;
 		let mb = ServiceIterator.Find("RSQMB_Service").Next();
 		if (mb)
 		{
@@ -69,33 +78,46 @@ class RSQSM_Countdown : StaticEventHandler
 			double mw = mb.GetDoubleUI("meter.w", "", 0, 0, null);
 			double mh = mb.GetDoubleUI("meter.h", "", 0, 0, null);
 			if (mw > 0 && mh > 0 && mx >= 0)
-				return mx, clamp(below + mh * (0.3 + 0.25), sy, sy + ah - mh), mw, mh;
+			{
+				double left = mx - mh * (GLASS + KGAP), span = mx + mw - left;
+				double h = span / pairK;
+				return left + span * 0.5, clamp(below + h * (0.3 + 0.25), sy, sy + ah - h), h;
+			}
 		}
-		double per = 112.0 / 11.0 + GLASS + KGAP;     // the row's width per pixel of bar thickness
 		double h = sbw * 8.0 / 120.0 * ROWK * clamp(UCv("rsqsm_cdbar_size", 1.5), 0.5, 2.5) / 1.5;
-		double gw = min(h * per, sbw);
+		double pw = min(h * pairK, sbw);
 		double lane = ah * 0.32 * clamp(SCv("rsq_ui_hud_scale", 1.5), 0.4, 2.5) * 11.0 / 112.0 * 4.0;
 		double room = 2.0 * min(cx - (sx + lane), sx + aw - lane - cx);
-		if (room >= gw * 0.5) gw = min(gw, room);
-		gw = min(gw, aw);
-		h = gw / per;
-		double gx = clamp(cx - gw * 0.5, sx, max(sx, sx + aw - gw));
-		double w = h * 112.0 / 11.0;
-		double y = clamp(below + h * (0.3 + 0.25), sy, sy + ah - h);
-		return gx + h * (GLASS + KGAP), y, w, h;
+		if (room >= pw * 0.5) pw = min(pw, room);
+		pw = min(pw, aw);
+		h = pw / pairK;
+		cx = clamp(cx, sx + pw * 0.5, max(sx + pw * 0.5, sx + aw - pw * 0.5));
+		return cx, clamp(below + h * (0.3 + 0.25), sy, sy + ah - h), h;
+	}
+	// a row's place: k 0 alone (centred), -1 the pair's left, 1 the pair's right; between (-1..0) while it glides. Answers
+	// the BAR's x, y, w, h (the hourglass sits at its left, GlassRect)
+	static ui double, double, double, double RowRect(double cx, double y, double h, double k)
+	{
+		double rw = h * PER;
+		double off = (rw + h * PGAP) * 0.5 * k;        // a row's centre moves half a row and half the gap each way
+		double rx = cx + off - rw * 0.5;
+		return rx + h * (GLASS + KGAP), y, h * 112.0 / 11.0, h;
 	}
 	static ui double, double, double GlassRect(double x, double y, double h)
 	{
 		double s = h * GLASS;
 		return x - s - h * KGAP, y + (h - s) * 0.5, s;
 	}
-	// the pixel row under the row (the hourglass hangs a little under the bar): RSQSM_Service "countdown.bottom"
+	// the pixel row under the pair (the hourglass hangs a little under the bar): RSQSM_Service "countdown.bottom"
 	static ui int Bottom()
 	{
-		double x, y, w, h;
-		[x, y, w, h] = Rect();
+		double cx, y, h;
+		[cx, y, h] = Slot();
 		return int(ceil(y + h * (1.0 + (GLASS - 1.0) * 0.5)));
 	}
+	// either bar can show: the countdown's row, or the stored bar's (it needs Adrenaline on: without it nothing is stored)
+	static clearscope bool StoreOn() { return UCv("rsqsm_storebar", 1) != 0 && SCv("rsqsm_adrenaline", 0) != 0; }
+	static clearscope bool AnyOn() { return Enabled() || StoreOn(); }
 
 	// RSQ Score's bar: its centre, its bottom edge and its width, in screen pixels, asked by name; without Score (or an older
 	// one that does not answer), where Score's own defaults (x 85, y 10, scale 150 x Text Size, bar 120) put it (Score hud.zs)
@@ -151,61 +173,106 @@ class RSQSM_Countdown : StaticEventHandler
 		return Pal(i);
 	}
 
+	ui double pairK;          // 0 the stored bar alone and centred, -1 it has glided left to make room for the countdown
+
 	override void RenderOverlay(RenderEvent e)
 	{
 		if (gamestate != GS_LEVEL || !playeringame[consoleplayer] || !players[consoleplayer].mo) return;
 		if (screenblocks > 11 || automapactive) return;
-		if (!Enabled()) return;
+		if (!AnyOn()) return;
 		let clock = RSQSM_Clock(EventHandler.Find("RSQSM_Clock"));
 		if (!clock || (clock.rival && SCv("rsm_yield", 1) != 0)) return;
 		double t = level.maptime + e.FracTic;
 		double dt = clamp(t - lastT, 0.0, 3.0);
 		lastT = t;
 
-		double alpha, target;
+		// THE COUNTDOWN (right): only while the slow running now (or easing out) was let in by an automatic trigger
+		double alpha = 0, target = 0;
+		bool cdVis = false;
 		if (clock.cdOn)
 		{
-			alpha = clamp((t - clock.cdStartTic) / FADE_IN, 0.0, 1.0);
 			double left = max(0.0, clock.cdLeft - e.FracTic);
 			target = clock.cdTotal > 0 ? clamp(left / clock.cdTotal, 0.0, 1.0) : 1.0;
 			if (clock.cdStartTic != lastStart) { lastStart = clock.cdStartTic; shown = target; }
+			if (clock.cdAuto)
+			{
+				cdVis = true;
+				alpha = clamp((t - max(clock.cdStartTic, clock.cdAutoTic)) / FADE_IN, 0.0, 1.0);
+			}
 		}
 		else
 		{
 			double age = t - clock.cdEndTic;
-			if (clock.cdEndTic <= 0 || age >= FADE_OUT || age < 0) { shown = 0; return; }
-			alpha = 1.0 - age / FADE_OUT;
+			if (clock.cdAuto && clock.cdEndTic > 0 && age < FADE_OUT && age >= 0) { cdVis = true; alpha = 1.0 - age / FADE_OUT; }
 			target = 0;
+			if (!cdVis) shown = 0;
 		}
+		if (!Enabled()) cdVis = false;
 		// emptying follows the clock exactly; a refill climbs to it over REFILL tics
 		if (target > shown) shown = min(target, shown + dt / REFILL);
 		else shown = target;
 
+		bool stVis = StoreOn();
+		// the glide: the stored bar moves aside over GLIDE tics when the countdown appears, and back when it has gone
+		double want = (stVis && cdVis) ? -1.0 : 0.0;
+		if (pairK > want) pairK = max(want, pairK - dt / GLIDE);
+		else pairK = min(want, pairK + dt / GLIDE);
+		if (!cdVis && !stVis) return;
+
 		TextureID te = TexMan.CheckForTexture("RSQSMHE", TexMan.Type_Any);
 		TextureID tw = TexMan.CheckForTexture("RSQSMHW", TexMan.Type_Any);
 		if (!te.IsValid() || !tw.IsValid()) return;
-		double x, y, w, h;
-		[x, y, w, h] = Rect();
-		Color mid = BarColor(clock.cdStartTic);
-		Color lo = Color(255, int(mid.r * 0.30), int(mid.g * 0.30), int(mid.b * 0.30));
-		Color hi = RSQSM_BarLife.Mix(mid, Color(255, 255, 255, 255), 0.6);
+		double cx, y, h;
+		[cx, y, h] = Slot();
 		bool anim = UCv("rsqsm_cdbar_anim", 1) != 0;
 		bool photo = RSQSM_A11y.Photo();
-		double glint = 0;
-		if (anim && !photo && clock.cdOn && clock.cdRefillTic > 0)
+		double x, w;
+
+		if (stVis)
 		{
-			double ga = t - clock.cdRefillTic;
-			if (ga >= 0 && ga < GLINT) glint = 1.0 - ga / GLINT;
+			// THE STORED SLOW-MO (left; the old charge bar, owner 11-06 "the bar showing how much SlowMo we've built up"): the
+			// adrenaline meter 0..100, its old colours (deep blue empty, electric cyan half, near white full). Dim below
+			// Adrenaline to Start (a white tick marks that line), pulsing while slow motion spends it.
+			double frac = clamp(clock.adr / 100.0, 0.0, 1.0);
+			double need = clamp(SCv("rsqsm_adr_min", 25), 0, 100) / 100.0;
+			bool spending = clock.on;
+			for (int n = 0; n < MAXPLAYERS; n++) if (clock.dodgeTic[n] > 0) spending = true;
+			double sa = frac < need ? 0.5 : 1.0;
+			if (spending && !photo) sa *= 0.75 + 0.25 * sin(t * 20.0);
+			[x, y, w, h] = RowRect(cx, y, h, pairK);
+			Draw(te, tw, x, y, w, h, frac, Color(255, 30, 60, 200), Color(255, 60, 220, 255), Color(255, 225, 250, 255),
+				sa, anim, photo, 0, t, 1.0);
+			if (need > 0.001)
+			{
+				int tx = int(x + w * need);
+				Screen.DrawThickLine(tx, int(y - h * 0.3), tx, int(y + h * 1.3), max(1.0, w / 112.0), 0xFFFFFFFF, int(255 * 0.8));
+			}
+			DrawGlass("RSQSMHS", x, y, h, 0.95);
 		}
-		Draw(te, tw, x, y, w, h, shown, lo, mid, hi, alpha, anim, photo, glint, t);
-		// the hourglass at its left (owner 11-05: "hourglass icon by the slowdown bar"), the meter's skull's size and place
-		TextureID hg = TexMan.CheckForTexture("RSQSMHG", TexMan.Type_Any);
-		if (hg.IsValid())
+		if (cdVis)
 		{
-			double gx, gy, gs;
-			[gx, gy, gs] = GlassRect(x, y, h);
-			Screen.DrawTexture(hg, false, gx, gy, DTA_DestWidthF, gs, DTA_DestHeightF, gs, DTA_Alpha, 0.95 * alpha);
+			[x, y, w, h] = RowRect(cx, y, h, stVis ? 1.0 : 0.0);
+			Color mid = BarColor(clock.cdStartTic);
+			Color lo = Color(255, int(mid.r * 0.30), int(mid.g * 0.30), int(mid.b * 0.30));
+			Color hi = RSQSM_BarLife.Mix(mid, Color(255, 255, 255, 255), 0.6);
+			double glint = 0;
+			if (anim && !photo && clock.cdOn && clock.cdRefillTic > 0)
+			{
+				double ga = t - clock.cdRefillTic;
+				if (ga >= 0 && ga < GLINT) glint = 1.0 - ga / GLINT;
+			}
+			Draw(te, tw, x, y, w, h, shown, lo, mid, hi, alpha, anim, photo, glint, t, alpha);
+			// the hourglass at its left (owner 11-05: "hourglass icon by the slowdown bar"), the meter's skull's size and place
+			DrawGlass("RSQSMHG", x, y, h, 0.95 * alpha);
 		}
+	}
+	static ui void DrawGlass(String tex, double x, double y, double h, double a)
+	{
+		TextureID hg = TexMan.CheckForTexture(tex, TexMan.Type_Any);
+		if (!hg.IsValid()) return;
+		double gx, gy, gs;
+		[gx, gy, gs] = GlassRect(x, y, h);
+		Screen.DrawTexture(hg, false, gx, gy, DTA_DestWidthF, gs, DTA_DestHeightF, gs, DTA_Alpha, a);
 	}
 
 	// ONE COLUMN BAND of the bar drawn at x, y, w, h: screen columns a..b, cropped from the source and drawn as its own quad
@@ -225,9 +292,9 @@ class RSQSM_Countdown : StaticEventHandler
 	}
 
 	static ui void Draw(TextureID te, TextureID tw, double x, double y, double w, double h, double frac, Color lo, Color mid, Color hi,
-		double alpha, bool anim, bool photo, double glint, double t)
+		double alpha, bool anim, bool photo, double glint, double t, double wellAlpha)
 	{
-		Screen.DrawTexture(te, false, x, y, DTA_DestWidthF, w, DTA_DestHeightF, h, DTA_Alpha, 0.9 * alpha);
+		Screen.DrawTexture(te, false, x, y, DTA_DestWidthF, w, DTA_DestHeightF, h, DTA_Alpha, 0.9 * wellAlpha);
 		if (frac <= 0.001) return;
 		double right = x + w * frac;
 		// the fill in SLICES columns from the left, each tinted by its place: dark at the left end climbing toward light, so a

@@ -178,9 +178,12 @@ class RS_ScoreHUD : EventHandler
 
 		if (UserBool(pln, "rs_score_alive", true))
 		{
-			// "Letter Wave" (rs_score_labelwave): the owner's mode 2, each letter its own colour; Photosensitive Mode
-			// holds the word still, so it draws whole
-			if (UserBool(pln, "rs_score_labelwave", false) && !RSSC_A11y.Photo())
+			// "Letters" (rs_score_letters, owner 11-06): Uniform, the word breathes as one; Wave, the owner's mode 2, each
+			// letter its own colour in a smooth sequence; Chaos, each letter breathes on its own. Photosensitive Mode holds
+			// the word still, so it draws whole
+			let lcv = CVar.GetCVar("rs_score_letters", players[pln]);
+			int mode = lcv ? lcv.GetInt() : 0;
+			if (mode > 0 && !RSSC_A11y.Photo())
 			{
 				int n = label.Length();
 				double lx = x;
@@ -189,7 +192,7 @@ class RS_ScoreHUD : EventHandler
 					String ch = label.Mid(i, 1);
 					Screen.DrawText(fnt, Font.FindFontColor("RSScore_White"), lx, y, ch,
 						DTA_VirtualWidthF, vw, DTA_VirtualHeightF, vh, DTA_KeepRatio, true,
-						DTA_Color, LabelColor(tr, handler, i, n));
+						DTA_Color, LabelColor(tr, handler, i, n, mode == 2));
 					lx += fnt.StringWidth(ch);
 				}
 			}
@@ -409,12 +412,15 @@ class RS_ScoreHUD : EventHandler
 	//     half a combo pop (EaseOutBack over 10 tics), as his HF_ScoreReact; and ours, a big combo (combo.zs: a named
 	//     combo, or three tools or more) holds it there and eases back over a second;
 	//   * ours too: as the bar nears its reward (the last quarter) the word warms toward gold;
-	//   * "Letter Wave" (rs_score_labelwave) is his mode 2: each letter 55 degrees on from the last.
+	//   * "Letters" Wave (rs_score_letters 1) is his mode 2: each letter 55 degrees on from the last;
+	//   * "Letters" Chaos (rs_score_letters 2, owner 11-06 "random chaos"): each letter breathes on its own, at its own pace
+	//     (0.55x to 1.6x the breath) from its own starting point, both fixed per letter, so it never flickers: it stays a
+	//     breath, just never in step.
 	// RSQ_Accessibility: Photosensitive Mode holds the word still (the breath's middle colour, no pulse, no reaction,
 	// no wave; only the slow warming, which follows the bar); a colour-blind setting keeps the breath as brightness
 	// alone (white letters, 62..100%), the reaction as full white, and near the reward the breath grows deeper
 	// instead of warmer (a colour change alone would not read).
-	private ui int LabelColor(RS_ScoreTracker tr, RS_ScoreHandler handler, int idx = 0, int n = 1)
+	private ui int LabelColor(RS_ScoreTracker tr, RS_ScoreHandler handler, int idx = 0, int n = 1, bool chaos = false)
 	{
 		bool photo = RSSC_A11y.Photo();
 		bool cb = RS_ScoreCB.Mode() != 0;
@@ -422,7 +428,16 @@ class RS_ScoreHUD : EventHandler
 
 		double ms = level.maptime * (1000.0 / TICRATE);
 		double phase = n > 1 ? 55.0 * idx : 0.0;
-		double pulse = photo ? 0.5 : 0.5 + 0.5 * sin(ms * 0.18 + phase);   // sin takes degrees
+		double rate = 1.0;
+		if (chaos && n > 1)
+		{
+			// a fixed pace and start per letter (a small hash of its place), so each breathes on its own
+			double v1 = sin(idx * 78.233 + 12.9898) * 43758.5453, v2 = sin(idx * 39.346 + 11.135) * 24634.6345;
+			double h1 = v1 - floor(v1), h2 = v2 - floor(v2);
+			rate = 0.55 + 1.05 * h1;
+			phase = 360.0 * h2;
+		}
+		double pulse = photo ? 0.5 : 0.5 + 0.5 * sin(ms * 0.18 * rate + phase);   // sin takes degrees
 		double react = photo ? 0.0 : LabelReact(tr);
 
 		double r, g, b;

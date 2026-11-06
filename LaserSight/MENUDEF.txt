@@ -67,6 +67,7 @@ OptionMenu "RSQLS_Options"
 	StaticText "Beam and Dot", 1
 	Option "Show Beam", "rsqls_beam", "OnOff"
 	Option "Show Dot", "rsqls_pointer", "OnOff"
+	Option "Dot Only on Enemies", "rsqls_dot_enemy", "OnOff", "rsqls_pointer"
 	Slider "Dot Size", "rsqls_spot_size", 0.25, 4.0, 0.05, 2
 	Option "Dot Glow", "rsqls_glow", "RSQLS_Glow"
 	Option "Dot Reacts to Surface", "rsqls_surface", "OnOff"

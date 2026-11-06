@@ -236,6 +236,7 @@ OptionMenu "RSQTHP_Options"
 	Option "Boss Fountain", "rsqgb_kr_boss", "RSQ_KRBoss"
 	Option "What Drops", "rsqgb_kr_mix", "RSQ_KRMixes"
 	Option "Bits Vanish After", "rsqgb_kr_life", "RSQ_KRLives"
+	Option "Bits Vanish As", "rsqgb_kr_vanish", "RSQ_KRVanish"
 	Option "Ammo Bits Give", "rsqgb_kr_ammo_mode", "RSQ_KRAmmoModes"
 	Slider "Bits Fly to Me (m)", "rsqgb_kr_magnet", 0.0, 4.0, 0.5, 1
 	StaticText " "
@@ -327,3 +328,10 @@ OptionValue "RSQ_KRModes"
 	1, "$RSQ_MENU_KR_RANGE"
 }
 
+
+// how a Kill Rewards bit goes when its time is up (owner 11-06)
+OptionValue "RSQ_KRVanish"
+{
+	0, "Blink Out"
+	1, "Fade Out"
+}

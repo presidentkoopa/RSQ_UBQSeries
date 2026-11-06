@@ -70,7 +70,8 @@ server bool  rsqls_haptics       = true;  // a tick in the hand when you toggle 
 
 // ---- phase 3: learned from each gun, the pack's muzzles, the range readout ----
 server bool  rsqls_arc          = true;    // a thrown weapon (grenades) shows its arc, once it has fired once
-server bool  rsqls_arc_beam     = false;   // keep the straight beam as well as the arc
+server bool  rsqls_arc_beam     = false;   // the beam as well as the arc's dots, bent along the arc (owner 11-06; it was straight)
+server bool  rsqls_dot_enemy    = false;   // Dot Only on Enemies (owner 11-06): the dot shows only on a live hostile monster
 server float rsqls_arc_size     = 1.0;     // arc dot size
 server float rsqls_arc_a        = 0.8;     // arc dot brightness
 server bool  rsqls_spread       = false;   // OFF by default (owner 10-29: no ring). a ring at the spot: where this gun's shots can land (its widest spread seen)

@@ -38,6 +38,10 @@ built as a voxel with its place on the wrist baked in.
 - Gun Bonsai's level, XP and upgrades under the weapon card (optional, off by default).
 - Reads right way up whichever way your arm is turned.
 
+**Every weapon (2026-11-06; rig only, not headset-confirmed)**
+- A weapon with no ammo to count (RSQ Saber, Whip, ShieldSaw, Melee's gloves, fists) shows the status card on the wrist on
+  a watch check, and always with Watch Card: Always On.
+
 **Look**
 - Ermac's Force Unleashed holo panels, each gun its own colour by weapon slot.
 - Or one colour for every card, or colour by ammo type: bullets gold, shells red, rockets orange, cells cyan, fuel
@@ -86,7 +90,7 @@ Options → Radiant Silvergun Options → RSQ Gun Cards (one page, then Test and
 | Row | Default | What it does |
 |---|---|---|
 | Show Cards | Always | Off, Always, When I Look, Inspect Gesture, On Reload. Inspect Gesture uses RSQ Accessibility's gesture reader when it is loaded, and Gun Cards' own copy of that reader without it. |
-| Watch Card | When I Check My Watch | Off, When I Check My Watch, or Always On. |
+| Watch Card | When I Check My Watch | Off, When I Check My Watch, or Always On (the wrist card always drawn; an empty or melee hand shows the status card always). |
 | Watch Card Shows | Weapon Card | Weapon Card, Status Card, or Both on One Card. An empty hand always shows the Status Card. |
 | Gun Bonsai on Card | Off | Gun Bonsai's level, XP and upgrades under the weapon card (with Gun Bonsai). |
 | *Look* | | |
@@ -94,7 +98,8 @@ Options → Radiant Silvergun Options → RSQ Gun Cards (one page, then Test and
 | Small Card Colours | Ermac's | Or the Wheel's palette. |
 | Small Card Font | JFO | JFO, or Ermac's own lettering and digits. |
 | Text Quality | Quest | Quest or PCVR. |
-| Material | Glass | Solid, Glass or Glow. |
+| Material | Glass | Solid, Glass, Glow or No Background (the panel left out, only the text). |
+| Card Glow | Off | Quest: the cards are fullbright (they keep their colours in the dark). PCVR: the same plus a small dynamic light at the hand (needs dynamic lights on). |
 | Card Opacity | 0.85 | How solid glass or glow is. |
 | AMMO Word | On | The AMMO / MAGAZINE word. |
 | Low Ammo Colour | On | The green, yellow, red magazine count. |
@@ -106,8 +111,8 @@ Options → Radiant Silvergun Options → RSQ Gun Cards (one page, then Test and
 | Tilt to Your Eyes | Off | The small card turns toward your face. |
 | Hide at Your Eye | Off | The small card hides while the gun is at your eye. |
 | *Placement* | | |
-| Small Card Up | 0 | Degrees about the hand. |
-| Small Card Side | 0 | Degrees. |
+| Small Card Up | 0 | Degrees about the hand, -60 to 60. |
+| Small Card Side | 0 | Degrees, -60 to 60. |
 | Small Card In | 0 | Along the forearm (cm), in 1.5 cm steps. |
 | Watch Card Up | 0 | Degrees. |
 | Watch Card Side | 0 | Only with Draw in the World. |

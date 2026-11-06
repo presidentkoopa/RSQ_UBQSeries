@@ -261,6 +261,7 @@ class RSQGC_BB : EventHandler
 			if (hide) { a.bInvisible = true; continue; }
 			a.bInvisible = false;
 			a.A_SetRenderStyle(r.alpha, STYLE_Translucent);
+			a.bBright = RSQGC_Glow.Mode() > 0;     // Card Glow (owner 11-06): fullbright in the world too
 			a.Translation = TransFor(RSQGC_Look.Col(r.col));
 			Vector3 at = r.pos + mR * (r.pOX[p] * hw) + mU * (r.pOY[p] * hh) + lift;
 			if (r.pKind[p] == 1) a.scale = (r.pSX[p] * hw, r.pSY[p] * hh);

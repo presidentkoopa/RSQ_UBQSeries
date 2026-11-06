@@ -75,6 +75,7 @@ server int   rsqgb_kr_ratio_health = 15; // Custom weights (SoM's som_kr_*_ratio
 server int   rsqgb_kr_ratio_armor  = 20;
 server int   rsqgb_kr_ratio_ammo   = 65;
 server int   rsqgb_kr_chance    = 50;    // % each bit drops; a boss always drops (SoM's som_kr_per; the owner's 50)
+server int   rsqgb_kr_vanish    = 0;     // Bits Vanish As (owner 11-06): 0 Blink Out (fullbright flashes, faster and faster, then gone), 1 Fade Out (about a second)
 server int   rsqgb_kr_life      = 7;     // Bits Vanish After: seconds, 0 = never (SoM's ticks x multiplier; the owner's 35 x 7 = 7 s)
 server int   rsqgb_kr_ammo_mode = 1;     // Ammo Bits Give: 0 the gun in hand, 1 any gun carried
 server bool  rsqgb_kr_ammotype1 = true;  // which of a gun's two ammo types count (clip mods: SoM's readme)

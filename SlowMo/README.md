@@ -48,6 +48,7 @@ dodgeable speed. Your shield and saber stop the rounds like any other projectile
 - An optional 4-second burst on the wrist cross instead of a toggle.
 - Other mods can start it: opening the RSQ Wheel, a Melee shove, the Tactical Rig cigarette, a Saber perfect parry, a ShieldSaw perfect block, Score's big kills, Miniboss's slow window and Gun Bonsai VR perks.
 - Every trigger has its own on/off switch. Automatic triggers wait out a 25-second cooldown so they don't fire all the time. The ones you start yourself are never held back.
+- More automatic triggers, each off by default (owner 11-06): **Grenade Blast** (Brutal Doom's hand grenade or RSQ Grenade's, yours), **Over-Under Blast** (the 40 mm under BD22 VR's Rifle and Machinegun, `ShortGrenade`), **Low Health** (your health falls to Low Health At, 25 by default), and **Reload When: Always / Low Health**.
 - Optional and off by default: **Close-Call** (a rocket or fireball about to hit you up close sets off a short slow) and **Reload Slowdown** (a reload buys a moment of slow motion).
 
 **Adrenaline (optional, off by default)**
@@ -56,7 +57,8 @@ dodgeable speed. Your shield and saber stop the rounds like any other projectile
 - With too little in the meter you get a short buzz and the player "oof".
 
 **On the HUD**
-- **Countdown Bar.** A horizontal bar, green by default, for every slow motion, whatever started it: your key, wrist cross, burst, Wheel or shootdodge, a kill moment or shove, the cigarette, a parry, Miniboss's Bossfight landing or window, a close call, any other mod. It starts full and drains over that slow motion's real seconds, reaching zero just as time catches up (the ease out included). A burst lasts its 4 s (longer with Gun Bonsai VR's Longer); another mod's slow motion lasts what it asked for. Held on with Adrenaline on, it shows the time the meter has left, so it is also your adrenaline readout while held; held on with Adrenaline off, it drains over your Slow Motion Length (6 s by default). A shootdodge without Adrenaline has no set length (it ends when you land), so the bar sits full until then. A new or longer slow motion refills it smoothly with a glint. It sits under RSQ Score's bar (under RSQ Miniboss's Bossfight meter when that is loaded), smaller than Score and centred under it, with a pixel-art hourglass at its left; while Miniboss's meter shows, the two bars line up. Without Score, it goes where Score's bar would be.
+- **Two bars (2026-11-06; rig only, not headset-confirmed).** Under Score (and under Miniboss's Bossfight meter) sit two bars side by side. LEFT, the **stored slow-mo bar** (the old charge bar, back): with Adrenaline on, it is the meter, filling as you earn and draining while you spend; dim below Adrenaline: To Start (a white tick marks that line). Its hourglass has black trim. RIGHT, the **countdown bar**, now shown ONLY while the game slowed time by itself (an automatic trigger: Miniboss, Score, Gun Bonsai VR, close call, reload, grenade blast, over-under blast, low health, other mods); its hourglass has brown trim. One bar alone is centred; when the other appears the pair glides so both are centred. The pair is never wider than Score's bar; while the Bossfight meter shows, the pair spans exactly its row. Your own slow motion (key, wrist cross, Wheel, shootdodge, cigarette, shove, parry, block) shows no countdown.
+- **Countdown Bar (before 11-06).** A horizontal bar, green by default, for every slow motion, whatever started it: your key, wrist cross, burst, Wheel or shootdodge, a kill moment or shove, the cigarette, a parry, Miniboss's Bossfight landing or window, a close call, any other mod. It starts full and drains over that slow motion's real seconds, reaching zero just as time catches up (the ease out included). A burst lasts its 4 s (longer with Gun Bonsai VR's Longer); another mod's slow motion lasts what it asked for. Held on with Adrenaline on, it shows the time the meter has left, so it is also your adrenaline readout while held; held on with Adrenaline off, it drains over your Slow Motion Length (6 s by default). A shootdodge without Adrenaline has no set length (it ends when you land), so the bar sits full until then. A new or longer slow motion refills it smoothly with a glint. It sits under RSQ Score's bar (under RSQ Miniboss's Bossfight meter when that is loaded), smaller than Score and centred under it, with a pixel-art hourglass at its left; while Miniboss's meter shows, the two bars line up. Without Score, it goes where Score's bar would be.
 - **Color Drain** (optional, off by default). Colours fade out while time is slowed.
 
 ## How To Play
@@ -111,7 +113,8 @@ off (Keep Adrenaline, the bar rows, Wrist Cross Bursts, Burst).
 | Colour Drain | Off | Colours fade while time is slowed. |
 | Shot Trails | On | Your shots leave a fading trail in slow motion. |
 | Missile Wakes | On | Slowed missiles leave a faint wake. |
-| Countdown Bar | On | The bar that counts down every slow motion to real time. |
+| Stored Slow-Mo Bar | On | The adrenaline meter as a bar left of the countdown (needs Adrenaline on). |
+| Countdown Bar | On | The bar that counts down an automatic slow motion to real time. |
 | Bar Animation | On | The bar's sweeping band, breathing edge and refill glint. |
 | Bar Colour | Green | 17 colours, or Random (a new one each time it appears). |
 | **Your Triggers** (a switch only stops a start, never a stop) | | |
@@ -130,6 +133,10 @@ off (Keep Adrenaline, the bar rows, Wrist Cross Bursts, Burst).
 | Miniboss | On | RSQ Miniboss's slow window. |
 | Close Call | Off | A rocket or fireball about to hit you up close. |
 | Reload | Off | A reload buys a moment of slow motion. |
+| Reload When | Always | Always, or only at or under Low Health At. |
+| Grenade Blast | Off | Your grenade's blast (Brutal Doom's or RSQ Grenade's). |
+| Over-Under Blast | Off | The blast of BD22 VR's Rifle / Machinegun 40 mm (secondary fire). |
+| Low Health | Off | Your health falls to Low Health At or under. |
 | Score | On | RSQ Score's big moments and hit-stop. |
 | Gun Bonsai VR | On | Gun Bonsai VR's Adrenaline, Showdown and Time Dilation perks. |
 | Other Mods | On | Any other mod that asks for slow motion. |
@@ -154,6 +161,9 @@ off (Keep Adrenaline, the bar rows, Wrist Cross Bursts, Burst).
 | Wrist Hold (tics) | 12 | Tics to hold the wrist cross. |
 | Reload Time (ms) | 1200 | How long a reload's slow motion lasts. |
 | Close Call Time (ms) | 700 | How long a close call's slow motion lasts. |
+| Blast Time (ms) | 1000 | A grenade or over-under blast's slow motion. |
+| Low Health Time (ms) | 2000 | Low Health's slow motion. |
+| Low Health At | 25 | The health line for Low Health and Reload When. |
 | Adrenaline: To Start | 25 | The meter needed to start slow motion. |
 | Adrenaline: Full Meter (s) | 10 | Seconds a full meter lasts held on. |
 | Adrenaline: Per Kill | 12 | Earned per kill. |

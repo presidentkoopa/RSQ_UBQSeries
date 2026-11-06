@@ -31,6 +31,7 @@ user float rsqsm_gesture_gap    = 0.16;  // how close the wrists, metres
 user int   rsqsm_gesture_hold   = 12;    // tics to hold the pose
 user bool  rsqsm_reload         = false; // a reload buys a moment of slow motion (automatic: the cooldown applies)
 user int   rsqsm_reload_ms      = 1200;
+user int   rsqsm_reload_when    = 0;     // Reload When: 0 Always, 1 only at or under Low Health At (owner 11-06)
 user bool  rsqsm_haptics        = true;
 
 // ---- the owner's picks from the Quest teardown (2026-10-31): the body in slow motion (body.zs, smooth.zs)
@@ -48,6 +49,8 @@ user bool    rsqsm_cdbar        = true;  // Real-Time Countdown Bar
 user bool    rsqsm_cdbar_anim   = true;  // Bar Animation: the sweeping band, the breathing edge, the refill glint
 user float   rsqsm_cdbar_size   = 1.5;   // Bar Size: x 0.8 of RSQ Score's bar thickness / 1.5, never wider than Score's bar
 user int     rsqsm_cdbar_color  = 15;    // Bar Colour: the series palette (RSQSM_CdColors), 15 Green, 98 Random (fresh each time)
+// (owner 11-06: the countdown bar shows only while the game slowed time by itself; the stored bar is back at its left)
+user bool    rsqsm_storebar     = true;  // Stored Slow-Mo Bar: the adrenaline meter (with Adrenaline on): fills as you earn, drains as you spend
 
 // ---- the owner's QoL round (2026-10-31): options, off by default
 server bool  rsqsm_closecall    = false; // SM2: a rocket or fireball about to hit you up close sets off a short slow-mo pulse (automatic)
@@ -83,3 +86,11 @@ server bool  rsqsm_trig_parry    = true; // RSQ Saber's perfect parry
 server bool  rsqsm_trig_block    = true; // RSQ ShieldSaw's perfect block
 server bool  rsqsm_trig_score    = true; // RSQ Score's big moment and hit-stop (automatic)
 server bool  rsqsm_trig_gbvr     = true; // Gun Bonsai VR patch's Adrenaline, Showdown and Time Dilation perks (automatic)
+
+// ---- more automatic triggers (owner 2026-11-06, BUGS_1.0 #10; clock.zs Blasts / LowHealth): off by default ---------
+server bool  rsqsm_trig_grenade  = false; // a grenade's blast (Brutal Doom's hand grenade, RSQ Grenade's)
+server bool  rsqsm_trig_ou       = false; // the blast of BD22 VR's over-under 40 mm (Rifle, Machinegun secondary fire)
+server bool  rsqsm_trig_lowhp    = false; // Low Health / Near Death: your health falls to Low Health At or under
+server int   rsqsm_lowhp_at      = 25;    // Low Health At: the health line (also Reload When = Low Health)
+server int   rsqsm_blast_ms      = 1000;  // Blast Time (ms): a blast's slow motion
+server int   rsqsm_lowhp_ms      = 2000;  // Low Health Time (ms)

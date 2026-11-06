@@ -41,13 +41,22 @@ OptionValue "RSQSC_Start"
 	3, "Everything"
 }
 
+// the word's letters (owner 11-06: "can i have the letters breathe independently of one another, perhaps in a smooth
+// sequence or in random chaos?" -- both, a menu choice, today's uniform kept)
+OptionValue "RSQSC_Letters"
+{
+	0, "Uniform"
+	1, "Wave"
+	2, "Chaos"
+}
+
 OptionMenu "RSQSC_Options"
 {
 	Title "RSQ SCORE"
 	Option "Show Score", "rs_score_hide", "NoYes"
 	Slider "Size", "rs_score_scale", 50, 200, 5, 0
 	Option "Living Label", "rs_score_alive", "OnOff"
-	Option "Letter Wave", "rs_score_labelwave", "OnOff"
+	Option "Letters", "rs_score_letters", "RSQSC_Letters", "rs_score_alive"
 	Option "Score on the Wrist", "rs_score_wrist", "OnOff"
 	StaticText " "
 	StaticText "Rewards", 1

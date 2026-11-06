@@ -24,7 +24,8 @@ user float  rsqgc_world_scale = 1.4;   // size of the cards drawn in the world
 // ---- tuning
 user int    rsqgc_hands = 0;           // 1: both guns on the main hand's small card (the off hand's rounds in the small row)
 user int    rsqgc_style = 0;           // Ermac's panel: 0 each gun its own by weapon slot, 1..18 one for all
-user int    rsqgc_look = 1;            // 0 solid, 1 glass, 2 glow
+user int    rsqgc_look = 1;            // 0 solid, 1 glass, 2 glow, 3 no background (the panel left out, the text as glass; owner 11-06)
+user int    rsqgc_glow = 0;            // Card Glow (owner 11-06): 0 off, 1 Quest (the cards fullbright), 2 PCVR (fullbright and a small light at the hand)
 user float  rsqgc_alpha = 0.85;        // how solid glass / glow is
 user int    rsqgc_tint = 0;            // the small card's colours: 0 Ermac's own, 1 the Wheel's palette (Standard without it)
 user int    rsqgc_label = 1;           // the AMMO / MAGAZINE word

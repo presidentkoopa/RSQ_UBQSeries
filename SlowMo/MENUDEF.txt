@@ -50,6 +50,7 @@ OptionMenu "RSQSM_Options"
 	Option "Colour Drain", "rsqsm_drain", "OnOff"
 	Option "Shot Trails", "rsqsm_trails", "OnOff"
 	Option "Missile Wakes", "rsqsm_wakes", "OnOff"
+	Option "Stored Slow-Mo Bar", "rsqsm_storebar", "OnOff", "rsqsm_adrenaline"
 	Option "Countdown Bar", "rsqsm_cdbar", "OnOff"
 	Option "Bar Animation", "rsqsm_cdbar_anim", "OnOff", "rsqsm_cdbar"
 	Option "Bar Colour", "rsqsm_cdbar_color", "RSQSM_CdColors", "rsqsm_cdbar"
@@ -71,6 +72,10 @@ OptionMenu "RSQSM_Options"
 	Option "Miniboss", "rsqsm_auto_miniboss", "OnOff"
 	Option "Close Call", "rsqsm_closecall", "OnOff"
 	Option "Reload", "rsqsm_reload", "OnOff"
+	Option "Reload When", "rsqsm_reload_when", "RSQSM_ReloadWhen", "rsqsm_reload"
+	Option "Grenade Blast", "rsqsm_trig_grenade", "OnOff"
+	Option "Over-Under Blast", "rsqsm_trig_ou", "OnOff"
+	Option "Low Health", "rsqsm_trig_lowhp", "OnOff"
 	Option "Score", "rsqsm_trig_score", "OnOff"
 	Option "Gun Bonsai VR", "rsqsm_trig_gbvr", "OnOff"
 	Option "Other Mods", "rsqsm_auto_other", "OnOff"
@@ -102,6 +107,9 @@ OptionMenu "RSQSM_Test"
 	Slider "Wrist Hold (tics)", "rsqsm_gesture_hold", 4, 35, 1, 0
 	Slider "Reload Time (ms)", "rsqsm_reload_ms", 300, 3000, 100, 0
 	Slider "Close Call Time (ms)", "rsqsm_closecall_ms", 300, 2000, 100, 0
+	Slider "Blast Time (ms)", "rsqsm_blast_ms", 300, 3000, 100, 0
+	Slider "Low Health Time (ms)", "rsqsm_lowhp_ms", 500, 5000, 100, 0
+	Slider "Low Health At", "rsqsm_lowhp_at", 5, 75, 5, 0
 	StaticText " "
 	StaticText "Adrenaline", 1
 	Slider "To Start", "rsqsm_adr_min", 0, 100, 5, 0
@@ -143,4 +151,10 @@ OptionValue "RSQSM_CdColors"
 	15, "Green"
 	16, "Lime"
 	98, "Random"
+}
+
+OptionValue "RSQSM_ReloadWhen"
+{
+	0, "Always"
+	1, "Low Health"
 }

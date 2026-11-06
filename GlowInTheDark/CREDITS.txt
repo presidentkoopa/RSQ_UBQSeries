@@ -28,9 +28,8 @@ MORE LIGHTS -- Jakie (GitHub: SnakieJakie)
   projects. No need to ask me. Have fun!" and "Anyone is free to download the last version and build off of my
   work, even without credit." (Its earlier "Jakie License" (c) 2022 Jakie -- use, copy, modify, merge, publish,
   distribute and sublicense, but not sell -- was deleted by the author on 2023-08-19.) Credited here all the same.
-  Checked 2026-11-06 against the repo (Src/filter/doom.id, doom.freedoom): this pk3 ships no More Lights file, no
-  dynamic lights and none of its own glowing-flat entries (light panels, computer flats, teleporters); the 54 flat
-  names both lists share are Doom's stock liquids.
+  Its glowing-flat list is merged into this pack's GLDEFS.txt by the owner (computer screens, blood falls and the
+  rest of More Lights' glow entries, alongside 1.1's liquids). No More Lights dynamic lights are shipped.
 
 RS RADIANCE -- presidentkoopa
   The owner's later direction for this concept (UZDXREMA): colour policies in a seeded window, seamless rooms,

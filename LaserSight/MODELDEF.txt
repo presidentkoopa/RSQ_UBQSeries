@@ -11,3 +11,14 @@ Model RSQLS_Readout
 	CORRECTPIXELSTRETCH
 	FrameIndex RSLQ A 0 0
 }
+
+// The beam along a thrown weapon's arc: one segment (sight.zs LayArcBeam).
+Model RSQLS_ArcSeg
+{
+	Path "models/rsqls"
+	Model 0 "rslsseg.md3"
+	Skin 0 "rslsseg.png"
+	Scale 1.0 1.0 1.0
+	USEACTORPITCH
+	FrameIndex RSLV A 0 0
+}

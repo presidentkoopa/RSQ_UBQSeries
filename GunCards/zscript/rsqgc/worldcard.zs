@@ -196,7 +196,7 @@ class RSQGC_WorldCard play
 			for (int i = 0; i < ROWS; i++)
 				Lay(row[i], c, 0, top - 2.9 * sc - i * 0.85 * sc, w - 1, 0.6 * sc, u, nyaw, ntilt, roll, Wv, Upv, N, 0.05);
 		}
-		RSQGC_BB.SetAlpha(plate, alpha);
+		RSQGC_BB.SetAlpha(plate, RSQGC_Glow.NoPanel() ? 0.0 : alpha);   // Material: No Background (owner 11-06)
 		RSQGC_BB.SetAlpha(title, alpha); RSQGC_BB.SetAlpha(big, alpha);
 		for (int i = 0; i < ROWS; i++) if (row[i]) RSQGC_BB.SetAlpha(row[i], alpha);
 	}

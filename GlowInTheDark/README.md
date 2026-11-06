@@ -158,8 +158,8 @@ Runs alone, with any map set. It finds the others by name:
 - **GlowingLiquids** by Finder153, which 1.1's liquid glow was built on.
 - **More Lights** by Jakie (SnakieJakie, https://github.com/SnakieJakie/More-Lights), discontinued in August 2023:
   Glow In The Dark changed when the owner added it. Licence: the author gives "full permission to use More Lights for
-  any projects" and lets anyone "build off of my work, even without credit" (its README); credited anyway. No More
-  Lights file ships in this pk3 (see CREDITS.txt).
+  any projects" and lets anyone "build off of my work, even without credit" (its README); credited anyway. Its glowing-flat list
+  is merged into this pack's GLDEFS.txt (see CREDITS.txt).
 - The Subdued light style is the idea of the Subdued Lights mod (double radius, half brightness); nothing of that mod
   is used.
 - **DarkDoomZ** by Caligari87 (Dark Doom concept by Josh771): played with, not bundled or changed.

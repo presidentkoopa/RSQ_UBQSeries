@@ -89,7 +89,8 @@ user bool rs_score_rewardflash  = false;
 user bool rs_score_revivefire   = true;
 user bool rs_score_reviveflash  = false;
 user bool rs_score_alive        = true;   // the word "Score:" breathes, calm blue to warm, every 2 s (hud.zs LabelColor)
-user bool rs_score_labelwave    = false;  // ... letter by letter, a wave across the word, instead of all at once
+user int  rs_score_letters      = 0;      // Letters (owner 11-06): 0 Uniform (the word breathes as one), 1 Wave (a smooth sequence
+                                          // across the word, his old Letter Wave), 2 Chaos (each letter on its own pace and phase)
 user int  rs_score_bonustime    = 35;
 user int  rs_score_scale        = 150;   // "Large" (from 11-03: 100 read too small in the headset)
 user int  rs_score_x            = 85;

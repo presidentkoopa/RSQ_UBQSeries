@@ -107,6 +107,7 @@ A colour row is greyed while the switch it belongs to is off.
 | **Beam and Dot** | | |
 | Show Beam | On | The beam from the muzzle. |
 | Show Dot | On | The dot where it lands. |
+| Dot Only on Enemies | Off | The dot shows only on a live hostile monster. |
 | Dot Size | 1.00 | The dot's size. |
 | Dot Glow | Bloom and Light | Off, Bloom, Light, or both. |
 | Dot Reacts to Surface | On | The dot swims on liquids and glints on metal. |
@@ -125,7 +126,7 @@ A colour row is greyed while the switch it belongs to is off.
 | Headshot Pulse | On | The headshot colour pulses rather than holding. |
 | **Extras** | | |
 | Grenade Arc | On | Guns that throw a projectile show its arc once they have fired. |
-| Arc With Beam | Off | Keep the straight beam as well as the arc. |
+| Arc With Beam | Off | The beam as well as the arc's dots, bent along the arc (since 11-06; it was a straight line). |
 | Spread Ring | Off | A ring at the dot showing this gun's learned spread. |
 | Show Range | Off | Off, By the Gun, or At the Dot. |
 | Range Units | Metres | Metres, Feet or Map Units. |

@@ -30,7 +30,7 @@ mock-up): RSQMBSK0 dim (bone greyed, the meter not full), RSQMBSK1 lit (the bone
 one, then the lit one cropped from the bottom up to the meter's fill, so the skull fills with the bar.
 
 THE COUNTDOWN BAR'S HOURGLASS (original pixel art, 16 x 16, drawn for the series 11-05; owner 11-05: "hourglass icon by the
-slowdown bar"): RSQSMHG, gold plates, pale glass, sand running down. Same grid and outline as the skull, so SlowMo draws it
+slowdown bar"): RSQSMHG, pale glass, sand running down; since 11-06 brown plates (the countdown), and RSQSMHS black plates (the stored bar). Same grid and outline as the skull, so SlowMo draws it
 at the skull's size and the two rows (meter, countdown) line up.
 
 Run from anywhere: python VisualRewards/tools/gen_gauges.py"""
@@ -132,14 +132,20 @@ def skull(lit):
     return im
 
 
-def hourglass():
+# THE TWO HOURGLASSES (owner 2026-11-06: "Both bars use the SAME icon (the hourglass), recoloured slightly: stored bar black
+# trim, auto bar brown trim"): the same glass and sand, only the plates (the trim) change.
+TRIM_BROWN = (140, 85, 40)   # RSQSMHG: the countdown (automatic slow motion)
+TRIM_BLACK = (48, 48, 54)    # RSQSMHS: the stored slow-mo bar (a shade over the outline so the plates still read)
+
+
+def hourglass(trim=TRIM_BROWN):
     im = Image.new('RGBA', (16, 16), (0, 0, 0, 0))
     p = im.load()
     for y, r in enumerate(HG):
         assert len(r) == 16, (y, r)
         for x, ch in enumerate(r):
             if ch == '#': p[x, y] = (15, 15, 15, 255)
-            elif ch == 'o': p[x, y] = (255, 200, 40, 255)
+            elif ch == 'o': p[x, y] = trim + (255,)
             elif ch == 'g': p[x, y] = (150, 185, 205, 120)
             elif ch == 's': p[x, y] = (245, 220, 150, 255)
     return im
@@ -167,8 +173,14 @@ def main():
     skull(True).save(os.path.join(SKULL_OUT, 'RSQMBSK1.png'), optimize=True)
     print(f'RSQMBSK0 / RSQMBSK1 -> {SKULL_OUT}  (16 x 16, the crowned skull)')
     os.makedirs(HOURGLASS_OUT, exist_ok=True)
-    hourglass().save(os.path.join(HOURGLASS_OUT, 'RSQSMHG.png'), optimize=True)
-    print(f'RSQSMHG -> {HOURGLASS_OUT}  (16 x 16, the hourglass)')
+    save_hourglasses()
+
+
+def save_hourglasses():
+    os.makedirs(HOURGLASS_OUT, exist_ok=True)
+    hourglass(TRIM_BROWN).save(os.path.join(HOURGLASS_OUT, 'RSQSMHG.png'), optimize=True)
+    hourglass(TRIM_BLACK).save(os.path.join(HOURGLASS_OUT, 'RSQSMHS.png'), optimize=True)
+    print(f'RSQSMHG (brown trim) / RSQSMHS (black trim) -> {HOURGLASS_OUT}  (16 x 16, the hourglasses)')
 
 
 if __name__ == '__main__':

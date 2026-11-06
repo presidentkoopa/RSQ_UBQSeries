@@ -45,6 +45,7 @@
 //   rsqgb_kr_ratio_health / _armor / _ammo   int 0..100  15 20 65 (Custom)
 //   rsqgb_kr_chance    int    50      % each bit drops (bosses always)
 //   rsqgb_kr_life      int    7       seconds a bit lives, 0 = forever
+//   rsqgb_kr_vanish    int    0       how it goes: 0 Blink Out, 1 Fade Out (owner 11-06; VanishTick)
 //   rsqgb_kr_ammo_mode 0 the gun in hand, 1 any gun carried                    (1)
 //   rsqgb_kr_ammotype1 / _ammotype2  bool  on / off   which of a gun's two ammo types count (clip mods: see SoM)
 //   rsqgb_kr_magnet    float  2.0     metres bits drift to you from, 0 off (0 until 11-04; rsqvr_cfgver moves an old 0 to 2)
@@ -282,6 +283,42 @@ class RSQ_KRHandler : EventHandler
 mixin class RSQ_KRBit
 {
 	int bitLife;
+	// HOW A BIT GOES (owner 2026-11-06, BUGS_1.0 #37: "Nice fade-out: or flash fullbright a few tics, faster and faster,
+	// then blink out"; he chose both, a menu choice, Blink Out the default): rsqgb_kr_vanish 0 BLINK OUT, its last BLINK_T
+	// tics it flashes fullbright (a 2-tic flash, additive and full, then its own look), the gaps shrinking from 12 tics to
+	// 1, then it is gone; 1 FADE OUT, its last FADE_T tics (about a second) it fades smoothly to nothing. RSQ
+	// Accessibility's Photosensitive Mode always fades (no strobe).
+	bool vanishing;
+	int vanStyle;
+	double vanAlpha;
+	void VanishTick(int left)
+	{
+		int BLINK_T = 70;
+		int FADE_T = 35;
+		bool fade = RSQ_KRHandler.SVI("rsqgb_kr_vanish", 0) == 1 || RSQTHP_A11y.Photo();
+		if (left > (fade ? FADE_T : BLINK_T)) return;
+		if (!vanishing) { vanishing = true; vanStyle = GetRenderStyle(); vanAlpha = alpha; }
+		if (fade)
+		{
+			if (vanStyle == STYLE_Normal) A_SetRenderStyle(vanAlpha, STYLE_Translucent);
+			alpha = vanAlpha * clamp(left / double(FADE_T), 0.0, 1.0);
+			bBright = false;
+			return;
+		}
+		// the flashes: 2 tics each from the window's start, the gap after each 3/4 of the last (12 tics down to 1)
+		int t = BLINK_T - left, pos = 0;
+		double gap = 12;
+		bool on = false;
+		while (pos <= t)
+		{
+			if (t < pos + 2) { on = true; break; }
+			pos += 2 + int(gap);
+			gap = max(1.0, gap * 0.75);
+		}
+		bBright = on;
+		if (on) A_SetRenderStyle(1.0, STYLE_Add);
+		else A_SetRenderStyle(vanAlpha, vanStyle);
+	}
 
 	void BitTick()
 	{
@@ -292,6 +329,7 @@ mixin class RSQ_KRBit
 		if (Owner || !bSpecial) return;
 		int life = RSQ_KRHandler.SVI("rsqgb_kr_life", 7);
 		if (life > 0 && ++bitLife >= life * TICRATE) { Destroy(); return; }
+		if (life > 0) VanishTick(life * TICRATE - bitLife);
 		// Bits Fly to Me: inside the radius a bit drifts to the nearest player's hand height
 		if (level.maptime & 1) return;
 		// MAGNET (the path node) or the row, whichever reaches further, per player

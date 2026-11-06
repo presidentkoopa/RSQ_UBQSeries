@@ -82,6 +82,12 @@ class RSQSM_Clock : EventHandler
 	int    cdStartTic;       // maptime the bar appeared (also seeds Random colour)
 	int    cdRefillTic;      // maptime of the last refill (the glint)
 	int    cdEndTic;         // maptime it reached zero (the fade)
+	// THE TWO BARS (owner 2026-11-06, approved layout: stored slow-mo LEFT, the automatic countdown RIGHT): the countdown bar
+	// shows ONLY while the game slowed time by itself (an automatic trigger, Trigger isAuto); his own slow motion (the key,
+	// the wrist cross, the Wheel, a dodge, his own deliberate pulses) leaves it hidden. cdAuto: the slow running now (or
+	// easing out) was let in by an automatic trigger; cdAutoTic: maptime that became so (the bar's fade in).
+	bool   cdAuto;
+	int    cdAutoTic;
 	bool   rival;            // decided once per map
 	RSQSM_Smooth smooth;     // the walkers' step-spreader (smooth.zs), made on first use
 
@@ -256,6 +262,7 @@ class RSQSM_Clock : EventHandler
 		on = false; target = 1; scale = 1; pulseUntil = 0; pulseDepth = 1; pulseSrc = ""; pulseAuto = false; autoReady = 0;
 		heldUntil = 0; heldWho = -1;
 		cdOn = false; cdLeft = 0; cdTotal = 0; cdEndAt = 0; cdStartTic = 0; cdRefillTic = 0; cdEndTic = 0;
+		cdAuto = false; cdAutoTic = 0;
 		ClearAll();
 		for (int i = 0; i < MAXPLAYERS; i++) { dodgeTic[i] = 0; meK[i] = 1; meGrav[i] = 0; meVx[i] = 0; meVy[i] = 0; freeUntil[i] = 0; }
 		// An EventHandler is rebuilt on every map, so the meter is carried on the player.
@@ -468,7 +475,7 @@ class RSQSM_Clock : EventHandler
 		on = want;
 		if (on && !was) { heldUntil = level.maptime + int(ceil(HeldSecs() * TICRATE)); heldWho = who; }
 		if (!on) heldUntil = 0;
-		if (on) { pulseUntil = 0; CountdownStart(why, true); }     // the toggle outranks a pulse; the bar starts (or refills) full
+		if (on) { pulseUntil = 0; CountdownStart(why, true); SetCdAuto(false); }     // the toggle outranks a pulse; the bar starts (or refills) full
 		// A CUE ONLY FOR A CHANGE. An rsm_off to a clock already off (the Wheel closing after the
 		// adrenaline meter refused its rsm_on; a meter that ran dry) played the way-out sound and
 		// rumble with nothing ending (measured on the rig, bugfix pass 10-31: rsm_off with the clock
@@ -487,7 +494,7 @@ class RSQSM_Clock : EventHandler
 	// ONE SWITCH PER TRIGGER (the Triggers page). User switches (the player's own inputs) are read for the
 	// player who sent it; server ones are the world's.
 	enum ECat { CAT_NONE, CAT_CLOSECALL, CAT_RELOAD, CAT_OTHER, CAT_MINIBOSS, CAT_KEY, CAT_WRIST, CAT_BURST, CAT_WHEEL,
-		CAT_A11Y, CAT_SHOVE, CAT_SMOKE, CAT_PARRY, CAT_BLOCK, CAT_SCORE, CAT_GBVR, CAT_DODGE }
+		CAT_A11Y, CAT_SHOVE, CAT_SMOKE, CAT_PARRY, CAT_BLOCK, CAT_SCORE, CAT_GBVR, CAT_DODGE, CAT_GRENADE, CAT_OU, CAT_LOWHP }
 	static double CvWho(String n, int who, double d)
 	{
 		return (who >= 0 && who < MAXPLAYERS && playeringame[who]) ? CvP(n, players[who], d) : Cv(n, d);
@@ -512,6 +519,9 @@ class RSQSM_Clock : EventHandler
 		case CAT_SCORE:     return Cv("rsqsm_trig_score", 1) != 0;
 		case CAT_GBVR:      return Cv("rsqsm_trig_gbvr", 1) != 0;
 		case CAT_OTHER:     return Cv("rsqsm_auto_other", 1) != 0;
+		case CAT_GRENADE:   return Cv("rsqsm_trig_grenade", 0) != 0;
+		case CAT_OU:        return Cv("rsqsm_trig_ou", 0) != 0;
+		case CAT_LOWHP:     return Cv("rsqsm_trig_lowhp", 0) != 0;
 		}
 		return true;
 	}
@@ -519,7 +529,8 @@ class RSQSM_Clock : EventHandler
 	{
 		static const String names[] = { "-", "Close-Call", "Reload Slowdown", "Other / Unknown Mods", "Miniboss Window",
 			"Manual Key", "Wrist Cross", "Burst", "Wheel", "Accessibility Button", "Melee Shove", "Cigarette",
-			"Saber Parry", "ShieldSaw Block", "Score", "Gun Bonsai VR", "Shootdodge" };
+			"Saber Parry", "ShieldSaw Block", "Score", "Gun Bonsai VR", "Shootdodge", "Grenade Blast", "Over-Under Blast",
+			"Low Health" };
 		return (cat >= 0 && cat < names.Size()) ? names[cat] : "?";
 	}
 	double Cooldown() { return clamp(Cv("rsqsm_auto_cooldown", 25), 0.0, 120.0); }
@@ -551,8 +562,9 @@ class RSQSM_Clock : EventHandler
 		Pulse(ms, depth);
 		pulseSrc = src;
 		pulseAuto = isAuto;
-		CountdownStart(src);     // every slow motion shows the bar (owner 11-05 03:55); CountdownTick refills it when the end moves later
+		CountdownStart(src);     // every slow motion runs the countdown (owner 11-05 03:55); CountdownTick refills it when the end moves later
 		                         // (not on every ask: the miniboss window re-asks each second)
+		SetCdAuto(isAuto);       // ... and the bar shows only for an automatic one (owner 11-06)
 		if (isAuto) autoReady = max(autoReady, pulseUntil + int(Cooldown() * TICRATE));
 		Log(src, String.Format("%s %d ms at %d%% (%s), pulse until t%d", fresh ? "started" : "merged", ms, int(depth * 100 + 0.5),
 			isAuto ? "automatic" : "deliberate", pulseUntil));
@@ -639,6 +651,11 @@ class RSQSM_Clock : EventHandler
 		cdEndAt = 0;
 		cdTotal = 0;
 		Log(src, "countdown bar: slow motion, counting down to real time");
+	}
+	private void SetCdAuto(bool a)
+	{
+		if (a && !cdAuto) cdAutoTic = level.maptime;
+		cdAuto = a;
 	}
 	private void CountdownEnd(String why)
 	{
@@ -774,6 +791,7 @@ class RSQSM_Clock : EventHandler
 			pmo.vel.xy += dir * leap;
 			dodgeTic[n] = level.maptime;
 			CountdownStart("shootdodge", true);
+			SetCdAuto(false);
 			pmo.A_StartSound("rsqsm/in", CHAN_AUTO, 0, 0.8);
 			RSQSM_Buzz.Start(pmo, 0, 0.6, 8);
 			RSQSM_Buzz.Start(pmo, 1, 0.6, 8);
@@ -938,6 +956,8 @@ class RSQSM_Clock : EventHandler
 
 		Adrenaline();
 		Reloads();
+		Blasts();
+		LowHealth();
 		SlowMe();
 		CountdownTick();
 
@@ -1073,6 +1093,7 @@ class RSQSM_Clock : EventHandler
 	override void WorldThingSpawned(WorldEvent e)
 	{
 		if (e.Thing && e.Thing.bMISSILE && !StoodDown()) WatchCloseCall(e.Thing);
+		if (e.Thing && !StoodDown()) WatchBlast(e.Thing);
 		if (Active() && !StoodDown() && e.Thing) { Refresh(); Consider(e.Thing, true); }
 	}
 
@@ -1357,6 +1378,9 @@ class RSQSM_Clock : EventHandler
 			let p = players[n];
 			let w = p.ReadyWeapon;
 			bool wanted = w && CvP("rsqsm_reload", p, 0) != 0;
+			// RELOAD: ALWAYS, OR ONLY UNDER LOW HEALTH (owner 11-06, BUGS_1.0 #10): Reload When = Low Health asks his health
+			// to be at or under Low Health At
+			if (wanted && CvP("rsqsm_reload_when", p, 0) == 1 && !(p.mo && p.health > 0 && p.health <= LowAt())) wanted = false;
 			bool r = false, moved = false;
 			int a1 = (w && w.Ammo1) ? w.Ammo1.Amount : 0;
 			int a2 = (w && w.Ammo2) ? w.Ammo2.Amount : 0;
@@ -1374,6 +1398,87 @@ class RSQSM_Clock : EventHandler
 			lastW[n] = w; lastA1[n] = a1; lastA2[n] = a2;
 		}
 		reloadPrimed = true;     // the first tic after a load only looks
+	}
+
+	// ---- BLASTS AND LOW HEALTH (owner 2026-11-06, BUGS_1.0 #10: "grenade blast, over-under rifle or machinegun secondary
+	// blast, ... Low Health / Near Death"). Automatic triggers, each its own row, off by default: the cooldown and the
+	// World Speed slider's speed (Trigger), the hold from Blast Time / Low Health Time. Found BY NAME, nothing linked:
+	//   GRENADE      Brutal Doom's hand grenade (HandGrenade, HandGrenadeAlt: BD22 VR Grenades.dec; its Explode state, not
+	//                its Death, which is the grenade landing), RSQ Grenade's thrown one (RSQGN_Thrown: its Boom state) and
+	//                the one that goes off in the hand (RSQGN_HandBlast: its spawn is the blast)
+	//   OVER-UNDER   the 40 mm under BD22 VR's Rifle and Machinegun (Rifle.dec FireGrenade / RSM_AltGrenade, Machinegun.dec:
+	//                A_FireCustomMissile("ShortGrenade")): its Death state, or its end
+	// Only a player's own (its target, the shooter, is a player). A watched one that is simply gone counts as a blast.
+	const BL_GRENADE = 1;
+	const BL_OU = 2;
+	private Array<Actor> blWatch;
+	private Array<int> blKind;
+	private Array<int> blOwner;   // the player whose it was when last seen alive (-1 none): a destroyed one's target is lost
+	static int BlastKind(Actor a)
+	{
+		Name c = a.GetClassName();
+		if (c == 'HandGrenade' || c == 'HandGrenadeAlt' || c == 'RSQGN_Thrown' || c == 'RSQGN_HandBlast') return BL_GRENADE;
+		if (c == 'ShortGrenade') return BL_OU;
+		return 0;
+	}
+	static int OwnerOf(Actor a) { return (a && !a.bDestroyed && a.target && a.target.player) ? a.target.PlayerNumber() : -1; }
+	void WatchBlast(Actor a)
+	{
+		if (Cv("rsqsm_trig_grenade", 0) == 0 && Cv("rsqsm_trig_ou", 0) == 0) return;
+		int k = BlastKind(a);
+		if (k == 0) return;
+		if (a.GetClassName() == 'RSQGN_HandBlast') { BlastAt(OwnerOf(a), k); return; }   // in the hand: its spawn is the blast
+		blWatch.Push(a);
+		blKind.Push(k);
+		blOwner.Push(OwnerOf(a));
+	}
+	static bool InSeq(Actor a, State s) { return s && a.CurState && Actor.InStateSequence(a.CurState, s); }
+	private void Blasts()
+	{
+		for (int i = blWatch.Size() - 1; i >= 0; i--)
+		{
+			Actor a = blWatch[i];
+			bool boom;
+			if (!a || a.bDestroyed) boom = true;
+			else
+			{
+				int o = OwnerOf(a);
+				if (o >= 0) blOwner[i] = o;
+				if (a.FindState("Explode", true) || a.FindState("Boom", true)) boom = InSeq(a, a.FindState("Explode", true)) || InSeq(a, a.FindState("Boom", true));
+				else boom = InSeq(a, a.FindState("Death", true)) || InSeq(a, a.FindState("XDeath", true));
+			}
+			if (!boom) continue;
+			int k = blKind[i], who = blOwner[i];
+			blWatch.Delete(i);
+			blKind.Delete(i);
+			blOwner.Delete(i);
+			BlastAt(who, k);
+		}
+	}
+	private void BlastAt(int who, int k)
+	{
+		String src = k == BL_GRENADE ? "grenade" : "overunder";
+		if (who < 0 || who >= MAXPLAYERS || !playeringame[who]) { Log(src, "blast: not a player's, ignored"); return; }
+		Trigger(src, k == BL_GRENADE ? CAT_GRENADE : CAT_OU, BlastMs(), Depth(), true, who);
+	}
+	int BlastMs() { return int(clamp(Cv("rsqsm_blast_ms", 1000), 100, 5000)); }
+	static int LowAt() { return int(clamp(Cv("rsqsm_lowhp_at", 25), 1, 100)); }
+	// LOW HEALTH / NEAR DEATH: his health falls to Low Health At or under, from above it (once per fall: it must climb back
+	// over the line before it can go again); a dead player never counts
+	private transient int lastHp[MAXPLAYERS];
+	private transient bool hpPrimed;
+	private void LowHealth()
+	{
+		int at = LowAt();
+		for (int n = 0; n < MAXPLAYERS; n++)
+		{
+			if (!playeringame[n] || !players[n].mo) { lastHp[n] = 0; continue; }
+			int hp = players[n].health;
+			if (hpPrimed && lastHp[n] > at && hp > 0 && hp <= at)
+				Trigger("lowhealth", CAT_LOWHP, int(clamp(Cv("rsqsm_lowhp_ms", 2000), 100, 10000)), Depth(), true, n);
+			lastHp[n] = hp;
+		}
+		hpPrimed = true;
 	}
 
 	// ---- the gesture (local; it only sends the toggle) ------------------------------------------
@@ -1546,7 +1651,7 @@ class RSQSM_Service : Service
 		if (request ~== "countdown") return (c && c.cdOn) ? int(ceil(c.cdLeft)) : -1;
 		if (request ~== "countdown.bottom")
 		{
-			if (!c || (c.rival && RSQSM_Countdown.SCv("rsm_yield", 1) != 0) || !RSQSM_Countdown.Enabled()) return -1;
+			if (!c || (c.rival && RSQSM_Countdown.SCv("rsm_yield", 1) != 0) || !RSQSM_Countdown.AnyOn()) return -1;
 			return RSQSM_Countdown.Bottom();
 		}
 		// THE MENU: "menu.locked", "LeanDodge" -> 1 while the Gun Bonsai VR patch is loaded and the console player has

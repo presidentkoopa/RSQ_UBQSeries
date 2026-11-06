@@ -93,7 +93,7 @@ There are nearly 190 bonuses in all. Many belong to one mod and fire only when i
 **The HUD**
 - **Score: N** in gold, top right by default. The word "Score:" breathes every 2 seconds, from calm blue to warm
   yellow, and flares hot white-gold when points land or on a big combo (Living Label; the owner's own label colours).
-  It warms toward gold as you near a reward. Letter Wave runs the breath across the word letter by letter.
+  It warms toward gold as you near a reward. Letters picks how the word's letters breathe: Uniform (all together), Wave (a smooth sequence across the word) or Chaos (each letter on its own pace).
   Photosensitive Mode holds it at one steady colour; a colour-blind setting keeps the breath as brightness only.
 - **The reward bar** under it fills toward the next reward. It's blue when the next reward is a life and orange when it's ammo.
   When it fills, you hear the reward sound and the whole bar lights up in what you got (orange for ammo, blue for a life) while the score
@@ -146,7 +146,7 @@ the debug log are on **Test and Debug**; **Reset All** at the foot resets both. 
 | Show Score | Yes | Shows or hides the whole display, including the wrist digits. |
 | Size | 150 | The display's size, 50-200. |
 | Living Label | On | The word "Score:" breathes, blue to warm, and flares when points land. |
-| Letter Wave | Off | The breath runs across the word letter by letter instead of all at once. |
+| Letters | Uniform | Uniform: the word breathes as one. Wave: the breath runs across the word letter by letter. Chaos: each letter breathes on its own pace and timing. |
 | Score on the Wrist | Off | Your total above the off-hand controller (VR only). |
 | **Rewards** | | |
 | Show Reward Bar | Yes | The bar that fills toward the next reward. |

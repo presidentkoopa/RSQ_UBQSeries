@@ -140,6 +140,7 @@ with Test and Debug and Reset All at its foot.
 | Boss Fountain | x3 | Bits multiplier for bosses (x1, x3, x5). |
 | What Drops | Custom (Test and Debug) | Even Mix, Mostly Health, Mostly Armour, Mostly Ammo, or Custom (the mix on Test and Debug). |
 | Bits Vanish After | 7 s | 7 s, 15 s, 30 s, 1 min or Never. |
+| Bits Vanish As | Blink Out | Blink Out: fullbright flashes, faster and faster, then gone (its last 2 s). Fade Out: a smooth fade over its last second. Photosensitive Mode always fades. |
 | Ammo Bits Give | Any Gun I Carry | Or The Gun in Hand. |
 | Bits Fly to Me (m) | 2 | Metres from which bits fly to you (0 off). |
 | *Level-Up* | | |

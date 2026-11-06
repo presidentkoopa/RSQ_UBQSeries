@@ -78,7 +78,7 @@ class RSQGC_SideCard play
 			int a = RSQGC_SideStates.Adv(ch);
 			if (a <= 0) continue;
 			if (u + a > RSQGC_SideStates.SMALL_UNITS) break;
-			Add(RSQGC_SideStates.Glyph(quality, Fam(), u, ch), col, RSQGC_SideStates.RowY(row, Fam()));
+			Add(RSQGC_Glow.SGlyph(quality, Fam(), u, ch), col, RSQGC_SideStates.RowY(row, Fam()));
 			u += a;
 		}
 		Used(row);
@@ -91,7 +91,7 @@ class RSQGC_SideCard play
 		{
 			int u = u0 + i * 2;
 			if (u + 2 > RSQGC_SideStates.BIG_UNITS) break;
-			Add(RSQGC_SideStates.Glyph(2 + quality, Fam(), u, s.ByteAt(i)), col, RSQGC_SideStates.RowY(row, Fam()));
+			Add(RSQGC_Glow.SGlyph(2 + quality, Fam(), u, s.ByteAt(i)), col, RSQGC_SideStates.RowY(row, Fam()));
 		}
 		Used(row);
 	}
@@ -160,11 +160,12 @@ class RSQGC_SideCard play
 	// the panel: the smallest height that holds the last row used, laid FIRST so the text stands in front
 	void Panel(int panelCol)
 	{
+		if (RSQGC_Glow.NoPanel()) return;    // Material: No Background (owner 11-06)
 		int need = RSQGC_SideStates.PANEL_NEED[lastRow];
 		int hi = 0;
 		while (hi < RSQGC_SideStates.PANEL_H.Size() - 1 && RSQGC_SideStates.PANEL_H[hi] < need) hi++;
 		let pnl = new("RSQGC_SideOp");
-		pnl.st = RSQGC_SideStates.Panel(Fam(), hi); pnl.col = panelCol;
+		pnl.st = RSQGC_Glow.SPanel(Fam(), hi); pnl.col = panelCol;
 		if (pnl.st) ops.Insert(0, pnl);
 	}
 
@@ -201,8 +202,8 @@ class RSQGC_SideCard play
 		int fam = Fam();
 		double y = RSQGC_SideStates.RowY(row, fam);
 		bool any = false;
-		if (cards) for (int t = 0; t < 3; t++) { Add(RSQGC_SideStates.Key(src, fam, t, 0, !(heldMask & (1 << t))), -1, y); any = true; }
-		if (skulls) for (int t = 3; t < 6; t++) { Add(RSQGC_SideStates.Key(src, fam, t, cards, !(heldMask & (1 << t))), -1, y); any = true; }
+		if (cards) for (int t = 0; t < 3; t++) { Add(RSQGC_Glow.SKey(src, fam, t, 0, !(heldMask & (1 << t))), -1, y); any = true; }
+		if (skulls) for (int t = 3; t < 6; t++) { Add(RSQGC_Glow.SKey(src, fam, t, cards, !(heldMask & (1 << t))), -1, y); any = true; }
 		if (any) Used(row);
 		// other keys as "+N" after the icons, where it does not run into G:n
 		int gren = RSQGC_GunCard.Grenades(pmo);

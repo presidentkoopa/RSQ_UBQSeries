@@ -49,6 +49,19 @@ class RSQLS_Glow : RSQLS_Spot
 // thin circle at 0.9 of the sprite's radius); the range readout, a quad model
 // wearing the canvas texture RSLRANGE that the UI writes (see UiTick).
 class RSQLS_ArcDot : RSQLS_Spot {}
+// THE BEAM ALONG THE ARC (owner 2026-11-06, BUGS_1.0 #38): one segment of the beam bent along a thrown weapon's arc, a
+// crossed-quad model (MODELDEF RSQLS_ArcSeg, tools/gen_assets.py) laid from one point of the arc to the next
+class RSQLS_ArcSeg : Actor
+{
+	Default
+	{
+		+NOINTERACTION +NOBLOCKMAP +NOGRAVITY +NOTELEPORT +DONTSPLASH +NOTONAUTOMAP
+		+BRIGHT
+		RenderStyle "Add";
+		Radius 1; Height 1;
+	}
+	States { Spawn: RSLV A -1 Bright; Stop; }
+}
 class RSQLS_Ring : RSQLS_Spot
 {
 	States { Spawn: RSLR A -1 Bright; Stop; }
@@ -162,6 +175,10 @@ class RSQLS_Sight : EventHandler
 	const RING_PX = 28.8;      // RSLR's ring radius in pixels (0.9 x 32)
 	private Actor arcDot[48];  // ARC_N per hand
 	private bool  arcShown[2];
+	const SEG_N = 64;          // the most segments of the beam bent along an arc, per hand
+	const SEG_LEN = 8.0;       // map units a segment covers at most (shorter arcs: fewer segments)
+	private Actor arcSeg[128]; // SEG_N per hand
+	private bool  segShown[2];
 	private Actor ring[2];
 	private Actor readout;
 	// The simulated path (no dynamic arrays of vectors on 4.12-4.14: three of doubles).
@@ -231,7 +248,13 @@ class RSQLS_Sight : EventHandler
 		for (int i = 0; i < ARC_N; i++) Hide(arcDot[h * ARC_N + i]);
 		arcShown[h] = false;
 	}
-	private void HideHand(int h) { HideBeam(h); HideSpot(h); HideArc(h); Hide(ring[h]); rangeM[h] = 0; muzzlePrimed[h] = false; }
+	private void HideArcBeam(int h)
+	{
+		if (!segShown[h]) return;
+		for (int i = 0; i < SEG_N; i++) Hide(arcSeg[h * SEG_N + i]);
+		segShown[h] = false;
+	}
+	private void HideHand(int h) { HideBeam(h); HideSpot(h); HideArc(h); HideArcBeam(h); Hide(ring[h]); rangeM[h] = 0; muzzlePrimed[h] = false; }
 
 	// ---- which hands have a laser right now -----------------------------------
 	private bool HandLive(PlayerInfo p, int h)
@@ -508,7 +531,10 @@ class RSQLS_Sight : EventHandler
 		double aSp, aGr, aEl, aYw;
 		if (w && RSQLS_Hand.Flag("rsqls_arc", p, true))
 			[arcOn, aSp, aGr, aEl, aYw] = RSQLS_Learn.Arc(w);
-		if (arcOn && !RSQLS_Hand.Flag("rsqls_arc_beam", p, false)) wantBeam = false;
+		// THE BEAM BENDS WITH THE ARC (owner 2026-11-06: "the grenade launcher laser is a straight line and not an arc"):
+		// with Arc With Beam on, the beam is drawn along the arc (LayArcBeam), never straight; off, only the dots show
+		bool arcBeam = arcOn && wantBeam && RSQLS_Hand.Flag("rsqls_arc_beam", p, false);
+		if (arcOn) wantBeam = false;
 
 		// ---- the trace: from the muzzle, along the barrel -------------------------
 		// TRF_ABSPOSITION with coordinates computed here and zero offsets:
@@ -601,6 +627,16 @@ class RSQLS_Sight : EventHandler
 		TranslationID dotTint  = RSQLS_Colors.Tint(dotRgb);
 		rangeRgb[h] = dotRgb;
 		if (arcOn) LayArc(h, dotTint, p); else HideArc(h);
+		// the bent beam: a measured gun only in its ready pose (as the straight beam), any other gun whenever its arc is
+		// known (it has no pose to check); its colour and brightness are the beam's
+		if (arcBeam && (row >= 0 || ci < 0))
+		{
+			Sector bs = Level.PointInSector(muzzle.xy);
+			double blit = bs ? clamp(bs.lightlevel / 255.0, 0.0, 1.0) : 0.5;
+			double ba = RSQLS_Hand.Num("rsqls_beam_a", p, 0.8) * (1.0 - (1.0 - RSQLS_Hand.Num("rsqls_beam_daylight", p, 0.35)) * blit);
+			LayArcBeam(h, RSQLS_Colors.Tint(beamRgb), clamp(ba, 0.05, 1.0));
+		}
+		else HideArcBeam(h);
 
 		// The room's light at the muzzle, 0..1. Dark rooms show the beam.
 		Sector sec = Level.PointInSector(muzzle.xy);
@@ -632,7 +668,9 @@ class RSQLS_Sight : EventHandler
 		// ---- the spot: painted on what it hit ----------------------------------
 		double dist = (end - muzzle).Length();
 		double dotRange = RSQLS_Hand.Num("rsqls_dot_range", p, 0.0);
-		if (!wantDot || !hit || sky || (dotRange > 0 && dist > dotRange)) { HideSpot(h); Hide(ring[h]); return; }
+		// DOT ONLY ON ENEMIES (owner 2026-11-06, BUGS_1.0 #38, off by default): the dot shows only on a live hostile monster
+		bool enemyOnly = RSQLS_Hand.Flag("rsqls_dot_enemy", p, false);
+		if (!wantDot || !hit || sky || (dotRange > 0 && dist > dotRange) || (enemyOnly && !hostile)) { HideSpot(h); Hide(ring[h]); return; }
 
 		let s = spot[h];
 		Vector3 at = drawEnd;
@@ -824,6 +862,50 @@ class RSQLS_Sight : EventHandler
 		arcShown[h] = true;
 	}
 
+	// THE BEAM ALONG THE ARC: the simulated path cut into equal segments (at most SEG_LEN map units, at most SEG_N), each
+	// a thin crossed-quad rod laid from one point to the next (Scale.Y its length, Scale.X its thickness; pitch 90 turns
+	// the model's +Z onto the level, then up or down by the segment's own climb).
+	private void LayArcBeam(int h, TranslationID tint, double alpha)
+	{
+		int n = arcX.Size();
+		if (n < 2) { HideArcBeam(h); return; }
+		double total = 0;
+		for (int i = 1; i < n; i++) total += (ArcAt(i) - ArcAt(i - 1)).Length();
+		if (total < 1) { HideArcBeam(h); return; }
+		int segs = clamp(int(ceil(total / SEG_LEN)), 1, SEG_N);
+		double thick = 0.5 * RSQLS_A11y.Cue();
+		int seg = 1;
+		double segStart = 0, segLen = (ArcAt(1) - ArcAt(0)).Length();
+		Vector3 prev = ArcAt(0);
+		for (int k = 0; k < SEG_N; k++)
+		{
+			int slot = h * SEG_N + k;
+			if (k >= segs) { Hide(arcSeg[slot]); continue; }
+			double want = total * (k + 1) / segs;
+			while (seg < n - 1 && segStart + segLen < want)
+			{
+				segStart += segLen;
+				seg++;
+				segLen = (ArcAt(seg) - ArcAt(seg - 1)).Length();
+			}
+			double f = segLen > 0.001 ? clamp((want - segStart) / segLen, 0.0, 1.0) : 0.0;
+			Vector3 at = ArcAt(seg - 1) + (ArcAt(seg) - ArcAt(seg - 1)) * f;
+			Vector3 d = at - prev;
+			double len = d.Length();
+			arcSeg[slot] = Ensure(arcSeg[slot], "RSQLS_ArcSeg");
+			let a = arcSeg[slot];
+			if (!a) { prev = at; continue; }
+			Put(a, segShown[h], prev);
+			a.Angle = VectorAngle(d.x, d.y);
+			a.Pitch = 90 - atan2(d.z, d.xy.Length());
+			a.Scale = (thick, max(len, 0.01));
+			a.Alpha = alpha;
+			a.Translation = tint;
+			prev = at;
+		}
+		segShown[h] = true;
+	}
+
 	// The ring: the widest spread this gun has shown, drawn at the spot as an
 	// ellipse (horizontal and vertical spread separately), facing the surface the
 	// way the spot does. Not on an arc, and not before the gun has fired.
@@ -942,7 +1024,7 @@ class RSQLS_Sight : EventHandler
 	{
 		for (int h = 0; h < 2; h++)
 		{
-			arcShown[h] = false;
+			arcShown[h] = false; segShown[h] = false;
 			beamShown[h] = false; spotShown[h] = false; lightOn[h] = false;
 			muzzlePrimed[h] = false; hitPrimed[h] = false;
 		}
