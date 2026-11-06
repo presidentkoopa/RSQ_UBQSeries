@@ -16,3 +16,6 @@ Read with IDEAS_DEATH_BONES_A.md and _B.md. Nothing here is built yet.
      legendary or Champions champion LoB monster always drops 3.
 4. **Near-death first.** When a lethal hit lands, the near-death mode catches you first; only if you fail it is a
    Score life spent.
+5. **Flashlight growth goes through Gun Bonsai VR** (owner, 11-06 06:48): more colours, more battery life and the
+   like are GBOVR upgrades, settled in the GBOVR tree pass. The colour list gets trimmed to 6-8 first; the owner
+   then decides what each colour does. Shortlist offered: Warm White, White, Amber, Red, Green, Cyan, Blue, UV.
