@@ -43,8 +43,8 @@ OptionValue "RSQLS_ColorMode"
 
 OptionValue "RSQLS_BeamType"
 {
-	0, "Standard"
-	1, "Glow"
+	0, "Quest"
+	1, "PC VR"
 }
 
 OptionValue "RSQLS_Readout"
@@ -72,7 +72,7 @@ OptionMenu "RSQLS_Options"
 	StaticText " "
 	StaticText "Beam and Dot", 1
 	Option "Show Beam", "rsqls_beam", "OnOff"
-	Option "Beam Type", "rsqls_beam_type", "RSQLS_BeamType", "rsqls_beam"
+	Option "Laser", "rsqls_beam_type", "RSQLS_BeamType", "rsqls_beam"
 	Option "Show Dot", "rsqls_pointer", "OnOff"
 	Option "Dot Only on Enemies", "rsqls_dot_enemy", "OnOff", "rsqls_pointer"
 	Slider "Dot Size", "rsqls_spot_size", 0.25, 4.0, 0.05, 2

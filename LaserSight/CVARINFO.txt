@@ -71,7 +71,7 @@ server bool  rsqls_haptics       = true;  // a tick in the hand when you toggle 
 // ---- phase 3: learned from each gun, the pack's muzzles, the range readout ----
 server bool  rsqls_arc          = true;    // a thrown weapon (grenades) shows its arc, once it has fired once
 server bool  rsqls_arc_beam     = true;    // the beam as well as the arc's dots, bent along the arc (owner 11-06; it was straight). ON by default (owner 11-06 06:59)
-server int   rsqls_beam_type    = 0;       // Beam Type (owner 11-06): 0 Standard (the plain beam), 1 Glow (a whiter core inside a soft halo); every beam, straight and along the arc, both hands
+server int   rsqls_beam_type    = 0;       // Laser (owner 11-06): 0 Quest (the voxel beam), 1 PC VR (a whiter core inside a soft halo); every beam, straight and along the arc, both hands
 server bool  rsqls_dot_enemy    = false;   // Dot Only on Enemies (owner 11-06): the dot shows only on a live hostile monster
 server float rsqls_arc_size     = 1.0;     // arc dot size
 server float rsqls_arc_a        = 0.8;     // arc dot brightness

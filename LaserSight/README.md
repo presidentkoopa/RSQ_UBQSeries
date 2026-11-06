@@ -5,7 +5,7 @@ A laser on every gun in both hands. The beam comes out of the gun's own barrel, 
 **Status: 0.99 — played and confirmed working in the headset; refinement and bug fixing ongoing.**
 
 New on 11-06 (rig only, not headset-confirmed): Dot Only on Enemies; the beam bent along the grenade arc (Arc With
-Beam, on, now one continuous line); Beam Type (Standard / Glow).
+Beam, on, now one continuous line); Laser (Quest / PC VR).
 
 Part of the Radiant Silvergun Quest series for stock QuestZDoom 17.3. Everything here is ZScript and data. No engine
 changes.
@@ -31,10 +31,10 @@ the exact spot it will land.
 - Stops where it hits, so it never shows through a wall.
 - Brighter in the dark, softer in full light, as a real laser looks.
 - Shown while the gun is in its ready pose; a reload or a kick in the animation hides it for that moment.
-- Beam Type (Standard / Glow): Glow draws a whiter core inside a soft halo of the beam colour, on every beam (the
-  straight one and the one bent along a grenade arc), both hands the same. Rig only, not headset-confirmed. Glow's halo
+- Laser (Quest / PC VR): PC VR draws a whiter core inside a soft halo of the beam colour, on every beam (the
+  straight one and the one bent along a grenade arc), both hands the same. Rig only, not headset-confirmed. PC VR's halo
   rods make the pk3 about 16 MB bigger (about 26 MB) and are loaded at startup whichever type is picked, so they cost
-  memory on the Quest even on Standard.
+  memory on the Quest even on Quest.
 
 **The dot**
 - Painted on the surface it hits: flat on walls and floors, on the body of a monster.
@@ -115,7 +115,7 @@ A colour row is greyed while the switch it belongs to is off.
 | Off Hand | On | The off hand's laser. |
 | **Beam and Dot** | | |
 | Show Beam | On | The beam from the muzzle. |
-| Beam Type | Standard | Standard: the plain beam. Glow: a whiter core inside a soft halo, on the straight beam and the arc beam alike. |
+| Laser | Quest | Quest: the voxel beam. PC VR: a whiter core inside a soft halo, on the straight beam and the arc beam alike. |
 | Show Dot | On | The dot where it lands. |
 | Dot Only on Enemies | Off | The dot shows only on a live hostile monster. |
 | Dot Size | 1.00 | The dot's size. |
