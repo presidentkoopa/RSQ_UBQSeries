@@ -1,0 +1,6 @@
+// TEST ONLY: technique (a), a material shader on its own copy of the beam skin.
+HardwareShader RSLSPCVA
+{
+	Shader "shaders/rsqls_beam.fp"
+	Speed 1.0
+}

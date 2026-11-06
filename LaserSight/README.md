@@ -18,7 +18,7 @@ body, and casts real coloured light on the room around it. With BD22 VR Reloaded
 true shot line, from its muzzle and down its bore. Put the dot on a target, pull the trigger, and that is where the
 round goes.
 
-Throw a grenade from a launcher once and the laser learns its flight. From then on that gun shows a dotted arc to
+Throw a grenade from a launcher once and the laser learns its flight. From then on that gun shows its beam bent along a dotted arc to
 the exact spot it will land.
 
 ## Features
@@ -28,6 +28,9 @@ the exact spot it will land.
 - Stops where it hits, so it never shows through a wall.
 - Brighter in the dark, softer in full light, as a real laser looks.
 - Shown while the gun is in its ready pose; a reload or a kick in the animation hides it for that moment.
+- Beam Look (Quest / PCVR): PCVR gives the beam bent along a grenade arc a living look, rippling liquid with a moving
+  caustic sheet (Unreal 1 style), drawn by a shader. Quest keeps the solid beam. The straight beam is the same in both
+  for now.
 
 **The dot**
 - Painted on the surface it hits: flat on walls and floors, on the body of a monster.
@@ -106,6 +109,7 @@ A colour row is greyed while the switch it belongs to is off.
 | Off Hand | On | The off hand's laser. |
 | **Beam and Dot** | | |
 | Show Beam | On | The beam from the muzzle. |
+| Beam Look | Quest | Quest: the solid beam. PCVR: the bent beam along a grenade arc becomes a living beam (rippling liquid with a moving caustic sheet, Unreal 1 style). The straight beam looks the same in both for now. |
 | Show Dot | On | The dot where it lands. |
 | Dot Only on Enemies | Off | The dot shows only on a live hostile monster. |
 | Dot Size | 1.00 | The dot's size. |
@@ -126,7 +130,7 @@ A colour row is greyed while the switch it belongs to is off.
 | Headshot Pulse | On | The headshot colour pulses rather than holding. |
 | **Extras** | | |
 | Grenade Arc | On | Guns that throw a projectile show its arc once they have fired. |
-| Arc With Beam | Off | The beam as well as the arc's dots, bent along the arc (since 11-06; it was a straight line). |
+| Arc With Beam | On | The beam as well as the arc's dots, bent along the arc (since 11-06; it was a straight line). On by default since 11-06. |
 | Spread Ring | Off | A ring at the dot showing this gun's learned spread. |
 | Show Range | Off | Off, By the Gun, or At the Dot. |
 | Range Units | Metres | Metres, Feet or Map Units. |

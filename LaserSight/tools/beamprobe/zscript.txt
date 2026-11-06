@@ -1,0 +1,82 @@
+version "4.12"
+// TEST ONLY (never ships). Beam Look trial: rows of arc-beam segments in front of the eye, against a darkened room.
+// Row 1 (top) today's segment (RSQLS_ArcSeg), then technique a (shader), b (warp2), c (flipbook). Red left, green right.
+// rslsp_thick: the segment thickness (0.5 = the game's own).
+class RSLSP_SegA : RSQLS_ArcSeg {}
+class RSLSP_SegB : RSQLS_ArcSeg {}
+class RSLSP_SegC : RSQLS_ArcSeg {}
+class RSLSP_Probe : EventHandler
+{
+	override void WorldTick()
+	{
+		let p = players[consoleplayer];
+		if (!p || !p.mo) return;
+		let mc = CVar.FindCVar("rslsp_mode");
+		if (mc && mc.GetInt() == 1) { RealPath(p); return; }
+		if (level.maptime == 30)
+		{
+			for (int i = 0; i < level.Sectors.Size(); i++) level.Sectors[i].lightlevel = 80;
+			let tc = CVar.FindCVar("rslsp_thick");
+			double thick = tc ? tc.GetFloat() : 0.5;
+			let dc = CVar.FindCVar("rslsp_dist");
+			double dist = dc ? dc.GetFloat() : 20;
+			Name cls[4] = { 'RSQLS_ArcSeg', 'RSLSP_SegA', 'RSLSP_SegB', 'RSLSP_SegC' };
+			Vector2 f = (cos(p.mo.angle), sin(p.mo.angle));
+			Vector2 l = (-f.y, f.x);
+			Vector3 c0 = (p.mo.pos.xy + f * dist, p.viewz);
+			for (int r = 0; r < 4; r++)
+			{
+				for (int side = 0; side < 2; side++)
+				{
+					int rgb = side == 0 ? 0xFF2010 : 0x20FF30;
+					for (int s = 0; s < 3; s++)
+					{
+						double y0 = (side == 0 ? 20.0 : -2.0) - s * 6.0;   // left (+l) to right
+						Vector3 a = c0 + (l * y0, 9.0 - r * 6.0);
+						Vector3 b = c0 + (l * (y0 - 6.0), 9.0 - r * 6.0);
+						Vector3 d = b - a;
+						let seg = Actor.Spawn(cls[r], a);
+						if (!seg) { Console.Printf("RSLSP no spawn %s", cls[r]); continue; }
+						seg.Angle = VectorAngle(d.x, d.y);
+						seg.Pitch = 90 - atan2(d.z, d.xy.Length());
+						seg.Scale = (thick, d.Length());
+						seg.Alpha = 0.8;
+						seg.Translation = RSQLS_Colors.Tint(rgb);
+					}
+				}
+			}
+			Console.Printf("RSLSP rows spawned t%d thick %.2f dist %.1f angle %.1f", level.maptime, thick, dist, p.mo.angle);
+		}
+	}
+
+	// rslsp_mode 1: the REAL path. Darken the room, have the main hand put out a gravity missile once (as a grenade
+	// launcher does), so RSQLS_Learn learns the held gun's arc; with rsqls_arc_beam 1 LaserSight then lays its bent
+	// beam. Logs which segment class LaserSight drew (RSQLS_ArcSeg = Quest, RSQLS_ArcSegPC = PCVR).
+	void RealPath(PlayerInfo p)
+	{
+		if (level.maptime == 30) for (int i = 0; i < level.Sectors.Size(); i++) level.Sectors[i].lightlevel = 80;
+		if (level.maptime == 200)
+		{
+			let m = Actor.Spawn("RSLSP_Lob", p.mo.AttackPos);
+			if (m)
+			{
+				m.target = p.mo;
+				m.Vel = RSQLS_Hand.Dir(p.mo, 0) * 20;
+				Console.Printf("RSLSP lob t%d from %.1f %.1f %.1f weapon %s", level.maptime, m.pos.x, m.pos.y, m.pos.z, p.ReadyWeapon ? p.ReadyWeapon.GetClassName() : 'none');
+			}
+		}
+		if (level.maptime > 200 && level.maptime % 35 == 0)
+		{
+			int q = 0, pc = 0;
+			let it = ThinkerIterator.Create("RSQLS_ArcSeg");
+			Actor a;
+			while (a = Actor(it.Next())) if (!a.bINVISIBLE) { if (a.GetClassName() == 'RSQLS_ArcSegPC') pc++; else q++; }
+			Console.Printf("RSLSP t%d visible arc segments: Quest %d, PCVR %d (rsqls_beam_look %d)", level.maptime, q, pc, CVar.FindCVar("rsqls_beam_look").GetInt());
+		}
+	}
+}
+class RSLSP_Lob : Actor
+{
+	Default { Projectile; -NOGRAVITY; Gravity 0.5; Radius 2; Height 2; Speed 20; }
+	States { Spawn: TNT1 A -1; Stop; Death: TNT1 A 1; Stop; }
+}

@@ -62,6 +62,9 @@ class RSQLS_ArcSeg : Actor
 	}
 	States { Spawn: RSLV A -1 Bright; Stop; }
 }
+// Beam Look: PCVR (owner 2026-11-06, BUGS_1.0 #42): the same segment wearing the living-beam skin, which GLDEFS gives a
+// material shader (models/rsqls/rsqls_beam.fp: Unreal 1's rippled liquid and scrolling caustic). Quest keeps RSQLS_ArcSeg.
+class RSQLS_ArcSegPC : RSQLS_ArcSeg {}
 class RSQLS_Ring : RSQLS_Spot
 {
 	States { Spawn: RSLR A -1 Bright; Stop; }
@@ -533,7 +536,7 @@ class RSQLS_Sight : EventHandler
 			[arcOn, aSp, aGr, aEl, aYw] = RSQLS_Learn.Arc(w);
 		// THE BEAM BENDS WITH THE ARC (owner 2026-11-06: "the grenade launcher laser is a straight line and not an arc"):
 		// with Arc With Beam on, the beam is drawn along the arc (LayArcBeam), never straight; off, only the dots show
-		bool arcBeam = arcOn && wantBeam && RSQLS_Hand.Flag("rsqls_arc_beam", p, false);
+		bool arcBeam = arcOn && wantBeam && RSQLS_Hand.Flag("rsqls_arc_beam", p, true);
 		if (arcOn) wantBeam = false;
 
 		// ---- the trace: from the muzzle, along the barrel -------------------------
@@ -634,7 +637,7 @@ class RSQLS_Sight : EventHandler
 			Sector bs = Level.PointInSector(muzzle.xy);
 			double blit = bs ? clamp(bs.lightlevel / 255.0, 0.0, 1.0) : 0.5;
 			double ba = RSQLS_Hand.Num("rsqls_beam_a", p, 0.8) * (1.0 - (1.0 - RSQLS_Hand.Num("rsqls_beam_daylight", p, 0.35)) * blit);
-			LayArcBeam(h, RSQLS_Colors.Tint(beamRgb), clamp(ba, 0.05, 1.0));
+			LayArcBeam(h, RSQLS_Colors.Tint(beamRgb), clamp(ba, 0.05, 1.0), p);
 		}
 		else HideArcBeam(h);
 
@@ -865,7 +868,7 @@ class RSQLS_Sight : EventHandler
 	// THE BEAM ALONG THE ARC: the simulated path cut into equal segments (at most SEG_LEN map units, at most SEG_N), each
 	// a thin crossed-quad rod laid from one point to the next (Scale.Y its length, Scale.X its thickness; pitch 90 turns
 	// the model's +Z onto the level, then up or down by the segment's own climb).
-	private void LayArcBeam(int h, TranslationID tint, double alpha)
+	private void LayArcBeam(int h, TranslationID tint, double alpha, PlayerInfo p)
 	{
 		int n = arcX.Size();
 		if (n < 2) { HideArcBeam(h); return; }
@@ -874,6 +877,8 @@ class RSQLS_Sight : EventHandler
 		if (total < 1) { HideArcBeam(h); return; }
 		int segs = clamp(int(ceil(total / SEG_LEN)), 1, SEG_N);
 		double thick = 0.5 * RSQLS_A11y.Cue();
+		// Beam Look: Quest draws today's segment, PCVR the living one; a segment of the other look is swapped out
+		Class<Actor> segCls = RSQLS_Hand.Opt("rsqls_beam_look", p, 0) == 1 ? "RSQLS_ArcSegPC" : "RSQLS_ArcSeg";
 		int seg = 1;
 		double segStart = 0, segLen = (ArcAt(1) - ArcAt(0)).Length();
 		Vector3 prev = ArcAt(0);
@@ -892,7 +897,8 @@ class RSQLS_Sight : EventHandler
 			Vector3 at = ArcAt(seg - 1) + (ArcAt(seg) - ArcAt(seg - 1)) * f;
 			Vector3 d = at - prev;
 			double len = d.Length();
-			arcSeg[slot] = Ensure(arcSeg[slot], "RSQLS_ArcSeg");
+			if (arcSeg[slot] && arcSeg[slot].GetClass() != segCls) { arcSeg[slot].Destroy(); arcSeg[slot] = null; }
+			arcSeg[slot] = Ensure(arcSeg[slot], segCls);
 			let a = arcSeg[slot];
 			if (!a) { prev = at; continue; }
 			Put(a, segShown[h], prev);

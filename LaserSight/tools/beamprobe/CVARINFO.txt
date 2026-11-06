@@ -1,0 +1,3 @@
+user float rslsp_thick = 0.5;
+user float rslsp_dist = 20.0;
+user int rslsp_mode = 0;

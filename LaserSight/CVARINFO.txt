@@ -70,7 +70,8 @@ server bool  rsqls_haptics       = true;  // a tick in the hand when you toggle 
 
 // ---- phase 3: learned from each gun, the pack's muzzles, the range readout ----
 server bool  rsqls_arc          = true;    // a thrown weapon (grenades) shows its arc, once it has fired once
-server bool  rsqls_arc_beam     = false;   // the beam as well as the arc's dots, bent along the arc (owner 11-06; it was straight)
+server bool  rsqls_arc_beam     = true;    // the beam as well as the arc's dots, bent along the arc (owner 11-06; it was straight). ON by default (owner 11-06 06:59)
+server int   rsqls_beam_look    = 0;       // Beam Look (owner 11-06, BUGS_1.0 #42): 0 Quest (today's solid beam), 1 PCVR (the living beam on the arc: GLDEFS shader)
 server bool  rsqls_dot_enemy    = false;   // Dot Only on Enemies (owner 11-06): the dot shows only on a live hostile monster
 server float rsqls_arc_size     = 1.0;     // arc dot size
 server float rsqls_arc_a        = 0.8;     // arc dot brightness

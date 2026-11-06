@@ -22,3 +22,14 @@ Model RSQLS_ArcSeg
 	USEACTORPITCH
 	FrameIndex RSLV A 0 0
 }
+
+// Beam Look: PCVR -- the arc segment with the living beam (GLDEFS shader on its skin).
+Model RSQLS_ArcSegPC
+{
+	Path "models/rsqls"
+	Model 0 "rslsseg.md3"
+	Skin 0 "rslspcva.png"
+	Scale 1.0 1.0 1.0
+	USEACTORPITCH
+	FrameIndex RSLV A 0 0
+}

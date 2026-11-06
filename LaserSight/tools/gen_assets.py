@@ -116,6 +116,12 @@ def main():
             'Model RSQLS_ArcSeg', '{', '\tPath "models/rsqls"', '\tModel 0 "rslsseg.md3"',
             '\tSkin 0 "rslsseg.png"', '\tScale 1.0 1.0 1.0', '\tUSEACTORPITCH',
             '\tFrameIndex RSLV A 0 0', '}', '']
+    # Beam Look: PCVR (owner 2026-11-06, BUGS_1.0 #42): the same segment wearing the liquid sheet
+    # (tools/gen_pcvr_beam.py a), which GLDEFS gives the living-beam shader (models/rsqls/rsqls_beam.fp).
+    out += ['// Beam Look: PCVR -- the arc segment with the living beam (GLDEFS shader on its skin).',
+            'Model RSQLS_ArcSegPC', '{', '\tPath "models/rsqls"', '\tModel 0 "rslsseg.md3"',
+            '\tSkin 0 "rslspcva.png"', '\tScale 1.0 1.0 1.0', '\tUSEACTORPITCH',
+            '\tFrameIndex RSLV A 0 0', '}', '']
     open(os.path.join(ROOT, 'MODELDEF.txt'), 'w').write('\n'.join(out))
     print('assets written')
 

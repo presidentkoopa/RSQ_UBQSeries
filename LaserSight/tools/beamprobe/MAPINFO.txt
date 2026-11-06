@@ -1,0 +1,2 @@
+// TEST ONLY (never ships): Beam Look trial probe.
+GameInfo { AddEventHandlers = "RSLSP_Probe" }
