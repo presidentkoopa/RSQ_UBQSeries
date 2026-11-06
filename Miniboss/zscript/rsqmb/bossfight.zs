@@ -109,6 +109,7 @@ extend class RSQMB_Handler
 	Array<String> arrCls;
 	Array<Actor>  arrMon;
 	Actor  arrProbe;              // the arrival's sound source
+	bool   arrForce;              // Ignore Spawn Restrictions set this one down untested: the landing keeps what lands
 
 	// ---- for the HUD (transient) -------------------------------------------------------------------------------------
 	transient String bfWhy;       // why a due Bossfight waits, the HUD's line ("No Miniboss: Low Health"; "" none)
@@ -404,13 +405,26 @@ extend class RSQMB_Handler
 		bfWhy = why;
 	}
 
+	// IGNORE SPAWN RESTRICTIONS (owner 2026-11-06, rsqmb_bf_ignore, off): a due Bossfight comes regardless of the guardrails on
+	// WHEN and WHERE it may land: Too Early (the map's first rsqmb_bf_first s), Low Health (under rsqmb_bf_minhp), Near Exit
+	// (within rsqmb_bf_exit of an exit line), Too Busy (more than rsqmb_bf_busy awake monsters after you) and No Room (the spot:
+	// PlanArrival takes the first candidate spot in front of you without the room, sight and thrall-room tests when none passes
+	// them). Left as they are: No Monsters (nothing to send), and Map Limit (rsqmb_bf_cap) and Cooldown (rsqmb_bf_cooldown):
+	// those limit HOW OFTEN one comes, not where or when it may spawn, and keep their own rows.
+	static bool IgnoreRestrictions() { return CI('rsqmb_bf_ignore', 0) != 0; }
 	String Guard(PlayerPawn p)
 	{
 		int now = level.maptime;
 		if (rosterCls.Size() == 0) return "No Miniboss: No Monsters";
-		if (now < CI('rsqmb_bf_first', 60) * TICRATE) return "No Miniboss: Too Early";
+		bool ign = IgnoreRestrictions();
+		if (!ign && now < CI('rsqmb_bf_first', 60) * TICRATE) return "No Miniboss: Too Early";
 		if (bfCount >= CI('rsqmb_bf_cap', 2)) return "No Miniboss: Map Limit";
 		if (bfAny && now - bfLastTic < CI('rsqmb_bf_cooldown', 90) * TICRATE) return "No Miniboss: Cooldown";
+		if (ign)
+		{
+			if (debug) Console.Printf("RSQMB bossfight guardrails ignored (Ignore Spawn Restrictions): would have waited for: %s", Waits(p));
+			return "";
+		}
 		if (p.health < CI('rsqmb_bf_minhp', 40)) return "No Miniboss: Low Health";
 		double ex = CF('rsqmb_bf_exit', 768);
 		for (int i = 0; i < exX.Size(); i++)
@@ -427,6 +441,28 @@ extend class RSQMB_Handler
 		}
 		if (busy > lim) return "No Miniboss: Too Busy";
 		return "";
+	}
+	// (for the debug log) which of the ignored guardrails would have held it: Too Early, Low Health, Near Exit, Too Busy
+	String Waits(PlayerPawn p)
+	{
+		String w = "";
+		if (level.maptime < CI('rsqmb_bf_first', 60) * TICRATE) w = w .. " Too Early";
+		if (p.health < CI('rsqmb_bf_minhp', 40)) w = w .. " Low Health";
+		double ex = CF('rsqmb_bf_exit', 768);
+		for (int i = 0; i < exX.Size(); i++)
+		{
+			double dx = exX[i] - p.pos.x, dy = exY[i] - p.pos.y;
+			if (dx * dx + dy * dy < ex * ex) { w = w .. " Near Exit"; break; }
+		}
+		int busy = 0;
+		let bi = BlockThingsIterator.Create(p, 1536);
+		while (bi.Next())
+		{
+			let a = bi.thing;
+			if (a && a.bISMONSTER && !a.bFRIENDLY && a.health > 0 && a.target == p && !a.bCORPSE && a.Distance2D(p) < 1536) busy++;
+		}
+		if (busy > CI('rsqmb_bf_busy', 3)) w = w .. " Too Busy";
+		return w == "" ? " nothing" : w;
 	}
 
 	int Tier(PlayerPawn p, RSQMB_Meter m)
@@ -530,6 +566,68 @@ extend class RSQMB_Handler
 			}
 			if (arrX.Size() - 1 >= max(1, (tc.Size() + 1) / 2)) ok = true;
 		}
+		// IGNORE SPAWN RESTRICTIONS (Guard above): no candidate passed the room, sight and thrall-room tests. In turn:
+		//   1  the same candidates (in front, at the set distance) without the sight test, with as many thralls as fit (1+)
+		//   2  anywhere: the map's monster start spots, nearest first (128+ units away), then rings round you (384, 256, 160),
+		//      the miniboss and 1+ thralls still where they fit
+		//   3  the first candidate of 1 or 2 untested: the miniboss and thralls set down there whether they fit or not (the
+		//      landing then keeps them: arrForce)
+		arrForce = false;
+		if (!ok && IgnoreRestrictions())
+		{
+			ok = LooseSpot(pr, p, bc, tc, cx, cy, cz);
+			Array<double> ax, ay, az;
+			if (!ok)
+			{
+				Array<double> dd;
+				for (int i = 0; i < spX.Size(); i++)
+				{
+					double l = level.Vec2Diff(p.pos.xy, (spX[i], spY[i])).Length();
+					if (l < 128) continue;
+					int at = 0;
+					while (at < dd.Size() && dd[at] <= l) at++;
+					dd.Insert(at, l); ax.Insert(at, spX[i]); ay.Insert(at, spY[i]); az.Insert(at, spZ[i]);
+				}
+				static const double RING[] = { 384, 256, 160 };
+				for (int r = 0; r < RING.Size(); r++)
+					for (int k = 0; k < 8; k++)
+					{
+						double ang = p.angle + k * 45;
+						ax.Push(p.pos.x + cos(ang) * RING[r]); ay.Push(p.pos.y + sin(ang) * RING[r]); az.Push(p.pos.z);
+					}
+				ok = LooseSpot(pr, p, bc, tc, ax, ay, az);
+			}
+			if (!ok)
+			{
+				bool useA = cx.Size() == 0;
+				int n2 = useA ? ax.Size() : cx.Size();
+				if (n2 > 0)
+				{
+					double x0 = useA ? ax[0] : cx[0], y0 = useA ? ay[0] : cy[0], z0 = useA ? az[0] : cz[0];
+					Fits(pr, bc, x0, y0, z0);
+					double bz = pr.pos.z;
+					arrX.Clear(); arrY.Clear(); arrZ.Clear(); arrCls.Clear();
+					arrX.Push(x0); arrY.Push(y0); arrZ.Push(bz); arrCls.Push(bc.GetClassName());
+					double br = GetDefaultByType(bc).radius;
+					double base = VectorAngle(p.pos.x - x0, p.pos.y - y0);
+					for (int t = 0; t < tc.Size(); t++)
+					{
+						class<Actor> c = tc[t];
+						if (!c) continue;
+						double tr = GetDefaultByType(c).radius;
+						double ring = br + tr + 16 + (t >= 8 ? tr * 2 + 24 : 0);
+						double a = base + 90 + (t % 8) * 45;
+						double x = x0 + cos(a) * ring, y = y0 + sin(a) * ring;
+						Fits(pr, c, x, y, bz);
+						arrX.Push(x); arrY.Push(y); arrZ.Push(pr.pos.z); arrCls.Push(c.GetClassName());
+					}
+					ok = true;
+					arrForce = true;
+				}
+			}
+			if (debug) Console.Printf("RSQMB bossfight spot (Ignore Spawn Restrictions): %s", !ok ? "none at all" : arrForce ? "set down untested"
+				: String.Format("%s at %.0f units with %d thralls, past the usual tests", arrCls[0], level.Vec2Diff(p.pos.xy, (arrX[0], arrY[0])).Length(), arrX.Size() - 1));
+		}
 		if (ok)
 		{
 			pr.A_SetSize(4, 4, false);
@@ -553,6 +651,47 @@ extend class RSQMB_Handler
 		if (pr.ceilingz - fz < h + 4) return false;
 		pr.SetOrigin((x, y, fz), false);
 		return pr.TestMobjLocation();
+	}
+
+	// IGNORE SPAWN RESTRICTIONS' looser spot (PlanArrival): the first candidate where the miniboss fits and at least one
+	// thrall fits round it; no sight test. Fills arrX..arrCls.
+	bool LooseSpot(Actor pr, PlayerPawn p, class<Actor> bc, Array<String> tc, Array<double> cx, Array<double> cy, Array<double> cz)
+	{
+		for (int i = 0; i < cx.Size() && i < 48; i++)
+		{
+			if (!Fits(pr, bc, cx[i], cy[i], cz[i])) continue;
+			double bz = pr.pos.z;
+			arrX.Clear(); arrY.Clear(); arrZ.Clear(); arrCls.Clear();
+			arrX.Push(cx[i]); arrY.Push(cy[i]); arrZ.Push(bz); arrCls.Push(bc.GetClassName());
+			double br = GetDefaultByType(bc).radius;
+			double base = VectorAngle(p.pos.x - cx[i], p.pos.y - cy[i]);
+			for (int t = 0; t < tc.Size(); t++)
+			{
+				class<Actor> c = tc[t];
+				if (!c) continue;
+				double tr = GetDefaultByType(c).radius;
+				double r1 = br + tr + 16, r2 = r1 + tr * 2 + 24;
+				for (int k = 0; k < 16; k++)
+				{
+					double ring = k < 8 ? r1 : r2;
+					double a = base + 90 + (k % 8) * 45 + (k >= 8 ? 22.5 : 0);
+					double x = cx[i] + cos(a) * ring, y = cy[i] + sin(a) * ring;
+					bool clash = false;
+					for (int q = 1; q < arrX.Size(); q++)
+					{
+						double dx = arrX[q] - x, dy = arrY[q] - y;
+						class<Actor> qc = arrCls[q];
+						double rr = tr + GetDefaultByType(qc).radius + 4;
+						if (dx * dx + dy * dy < rr * rr) { clash = true; break; }
+					}
+					if (clash || !Fits(pr, c, x, y, bz) || abs(pr.pos.z - bz) > 48) continue;
+					arrX.Push(x); arrY.Push(y); arrZ.Push(pr.pos.z); arrCls.Push(c.GetClassName());
+					break;
+				}
+			}
+			if (arrX.Size() >= 2) return true;
+		}
+		return false;
 	}
 
 	// ---- the arrival ----------------------------------------------------------------------------------------------------
@@ -587,7 +726,7 @@ extend class RSQMB_Handler
 			{
 				class<Actor> c = arrCls[i];
 				Actor a = c ? Actor.Spawn(c, (arrX[i], arrY[i], arrZ[i]), ALLOW_REPLACE) : null;
-				if (a && !a.TestMobjLocation()) { a.ClearCounters(); a.Destroy(); a = null; }
+				if (a && !arrForce && !a.TestMobjLocation()) { a.ClearCounters(); a.Destroy(); a = null; }
 				if (a)
 				{
 					if (p) a.angle = a.AngleTo(p);

@@ -51,4 +51,7 @@ The owner's words are kept as written; numbers are added so later files can poin
 | 40 | Melee | Plan to use the (not yet attached) sprites for melee attacks; contact sheet with sprites, colour choices, and which moveset each pairs with. Keep the bought ones; the community ones are great too. |
 | 41 | **[BD22]** LegenDoom patch | Sitrep: hoped for a "LegenBrutalDoom", not getting there. |
 
+| 42 | Laser Sight (added 11-06 06:20) | "Kickass lasers": an Unreal-1-style living, smoky/liquid shimmer on the laser beam, PCVR only. A Quest / PCVR setting; Quest keeps today's solid beam. |
+| 43 | SlowMo (added 11-06 06:12) | Heavy Hit Slowdown (spec in BUGS_1.0_STATUS.md), grenade blast 3 s, Low Health trigger removed, a cause line under the automatic bar; Miniboss "Ignore Spawn Restrictions". |
+
 **Testing:** if the test rig is reachable, plan one large confirmation test at the end, once the code is done.

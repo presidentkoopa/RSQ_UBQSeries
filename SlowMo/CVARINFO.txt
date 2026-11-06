@@ -87,10 +87,18 @@ server bool  rsqsm_trig_block    = true; // RSQ ShieldSaw's perfect block
 server bool  rsqsm_trig_score    = true; // RSQ Score's big moment and hit-stop (automatic)
 server bool  rsqsm_trig_gbvr     = true; // Gun Bonsai VR patch's Adrenaline, Showdown and Time Dilation perks (automatic)
 
-// ---- more automatic triggers (owner 2026-11-06, BUGS_1.0 #10; clock.zs Blasts / LowHealth): off by default ---------
+// ---- more automatic triggers (owner 2026-11-06, BUGS_1.0 #10; clock.zs Blasts): off by default ---------
 server bool  rsqsm_trig_grenade  = false; // a grenade's blast (Brutal Doom's hand grenade, RSQ Grenade's)
 server bool  rsqsm_trig_ou       = false; // the blast of BD22 VR's over-under 40 mm (Rifle, Machinegun secondary fire)
-server bool  rsqsm_trig_lowhp    = false; // Low Health / Near Death: your health falls to Low Health At or under
-server int   rsqsm_lowhp_at      = 25;    // Low Health At: the health line (also Reload When = Low Health)
-server int   rsqsm_blast_ms      = 1000;  // Blast Time (ms): a blast's slow motion
-server int   rsqsm_lowhp_ms      = 2000;  // Low Health Time (ms)
+server int   rsqsm_lowhp_at      = 25;    // Low Health At: the health line for Reload When = Low Health
+server int   rsqsm_blast_ms      = 3000;  // Blast Time (ms): a blast's slow motion (owner 11-06: 3 s, was 1000 ms)
+// (owner 11-06: the Low Health trigger is removed: rsqsm_trig_lowhp and rsqsm_lowhp_ms are gone)
+
+// ---- HEAVY HIT SLOWDOWN (owner 2026-11-06, approved spec; clock.zs HeavyHits): an automatic trigger, ON -----------
+server bool  rsqsm_trig_heavy    = true;  // Heavy Hit Slowdown: a heavy hit from a legendary, champion, boss, big demon, miniboss or thrall
+server int   rsqsm_heavy_pct     = 75;    // Heavy Hit Size (% of max health): what one tic's damage must add up to
+server bool  rsqsm_heavy_vile    = true;  // Arch-Vile Blast: an Arch-Vile's flame attack (any heavy hit of it)
+server bool  rsqsm_heavy_blasted = true;  // Blasted Off Your Feet: the hit throws you up (vertical speed up by 10+ units a tic)
+server bool  rsqsm_heavy_behind  = true;  // Hit From Behind: the attacker over 60 degrees off where your head faces
+server bool  rsqsm_heavy_armour  = true;  // Armour Broken: the hit takes your last armour
+server int   rsqsm_heavy_cool    = 3;     // its cooldown: 0 Once per 20 s, 1 Once per 60 s, 2 Use Shared, 3 No Limit

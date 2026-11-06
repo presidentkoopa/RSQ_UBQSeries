@@ -75,10 +75,18 @@ OptionMenu "RSQSM_Options"
 	Option "Reload When", "rsqsm_reload_when", "RSQSM_ReloadWhen", "rsqsm_reload"
 	Option "Grenade Blast", "rsqsm_trig_grenade", "OnOff"
 	Option "Over-Under Blast", "rsqsm_trig_ou", "OnOff"
-	Option "Low Health", "rsqsm_trig_lowhp", "OnOff"
 	Option "Score", "rsqsm_trig_score", "OnOff"
 	Option "Gun Bonsai VR", "rsqsm_trig_gbvr", "OnOff"
 	Option "Other Mods", "rsqsm_auto_other", "OnOff"
+	StaticText " "
+	StaticText "Heavy Hit Slowdown", 1
+	Option "Heavy Hit Slowdown", "rsqsm_trig_heavy", "OnOff"
+	Slider "Heavy Hit Size (% of max health)", "rsqsm_heavy_pct", 10, 100, 5, 0, "rsqsm_trig_heavy"
+	Option "Arch-Vile Blast", "rsqsm_heavy_vile", "OnOff", "rsqsm_trig_heavy"
+	Option "Blasted Off Your Feet", "rsqsm_heavy_blasted", "OnOff", "rsqsm_trig_heavy"
+	Option "Hit From Behind", "rsqsm_heavy_behind", "OnOff", "rsqsm_trig_heavy"
+	Option "Armour Broken", "rsqsm_heavy_armour", "OnOff", "rsqsm_trig_heavy"
+	Option "Cooldown", "rsqsm_heavy_cool", "RSQSM_HeavyCool", "rsqsm_trig_heavy"
 	StaticText " "
 	Submenu "Test and Debug", "RSQSM_Test"
 	RSQSMResetAll "Reset All", "Reset all RSQ SlowMo settings?"
@@ -108,7 +116,6 @@ OptionMenu "RSQSM_Test"
 	Slider "Reload Time (ms)", "rsqsm_reload_ms", 300, 3000, 100, 0
 	Slider "Close Call Time (ms)", "rsqsm_closecall_ms", 300, 2000, 100, 0
 	Slider "Blast Time (ms)", "rsqsm_blast_ms", 300, 3000, 100, 0
-	Slider "Low Health Time (ms)", "rsqsm_lowhp_ms", 500, 5000, 100, 0
 	Slider "Low Health At", "rsqsm_lowhp_at", 5, 75, 5, 0
 	StaticText " "
 	StaticText "Adrenaline", 1
@@ -151,6 +158,15 @@ OptionValue "RSQSM_CdColors"
 	15, "Green"
 	16, "Lime"
 	98, "Random"
+}
+
+// Heavy Hit Slowdown's cooldown (owner 11-06): Use Shared is the Auto Cooldown every automatic trigger waits out
+OptionValue "RSQSM_HeavyCool"
+{
+	0, "Once per 20 s"
+	1, "Once per 60 s"
+	2, "Use Shared"
+	3, "No Limit"
 }
 
 OptionValue "RSQSM_ReloadWhen"

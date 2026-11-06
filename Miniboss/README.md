@@ -35,6 +35,10 @@ No miniboss is picked when a level loads any more. You earn it.
   map's score and your Bossfights won climb.
 - **It waits** (and says why on the bar) during a map's first minute, near the exit, while your health is low, while
   more than 3 awake monsters are after you, when there is no room in view, during the cooldown, and after 2 a map.
+- **Ignore Spawn Restrictions** (off; owner 11-06; rig only, not headset-confirmed): a due Bossfight comes anyway during the
+  first minute, near the exit, with low health, in a heavy fight and with no room in view (it then takes a spot anywhere it
+  fits, and as a last resort sets the monsters down untested). The cooldown, the 2-a-map cap and "no monsters in this map"
+  still apply: they limit how often one comes, not where or when.
 - **Kill its miniboss** for a guaranteed drop (a gun from this map's types that you don't have yet; under Brutal Doom,
   whose map guns are not guns until touched, one from your weapon slots no higher than one above your best; else a power-up),
   three times the boss bits from RSQ VisualRewards' Kill Rewards, Champions' own loot for the powers it inherited,
@@ -134,6 +138,7 @@ Then the set piece itself:
 | Bossfight Meter Fills From | Both | Score (its style points), Gun Bonsai (Gun Bonsai VR's XP) or Both. Kills, chains and time always fill it. A choice whose mod is not loaded uses the other one if that is loaded, else kills and time alone. |
 | Bossfight Kill Gives a Life | On | Killing a Bossfight's miniboss gives you one RSQ Score extra life (needs RSQ Score). |
 | Call It In: Watch Check + Use | On | Off: a full meter's fight only comes by itself. |
+| Ignore Spawn Restrictions | Off | A due Bossfight comes regardless of Too Early, Near Exit, Low Health, Too Busy and No Room. Cooldown and Per Map Cap still apply. |
 | Effects | On | Links, orbs, flames, teleport fog and sparks. Per player. |
 | Effects Density | Low | Low (Quest-safe), Medium, High: flames and the cap on effects drawn (links always use the original's 30 beads). Per player. |
 | *Fight* | | |

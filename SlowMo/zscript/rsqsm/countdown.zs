@@ -42,6 +42,11 @@ class RSQSM_Countdown : StaticEventHandler
 	static clearscope double UCv(String n, double d) { let c = CVar.GetCVar(n, players[consoleplayer]); return c ? c.GetFloat() : d; }
 	static clearscope double SCv(String n, double d) { let c = CVar.FindCVar(n); return c ? c.GetFloat() : d; }
 	static clearscope bool Enabled() { return UCv("rsqsm_cdbar", 1) != 0; }
+	// WHICH SLOWS SHOW THE BAR (owner 11-06 07:00): with Adrenaline off, every slow motion, his own too (the key, the wrist
+	// cross and its burst, the Wheel, the Accessibility button, a shootdodge, the cigarette, a shove, a parry or block,
+	// Miniboss's Bossfight landing) as well as every automatic one; with Adrenaline on, only an automatic one (his own
+	// spends the stored bar, which is then the meter)
+	static clearscope bool ShowsFor(RSQSM_Clock clock) { return clock && (clock.cdAuto || SCv("rsqsm_adrenaline", 0) == 0); }
 
 	// ---- where it goes, in screen pixels ------------------------------------------------------------------------------
 	// TWO BARS SIDE BY SIDE (owner 2026-11-06, his approved layout): under the SCORE word, then RSQ Miniboss's Bossfight bar,
@@ -108,12 +113,47 @@ class RSQSM_Countdown : StaticEventHandler
 		double s = h * GLASS;
 		return x - s - h * KGAP, y + (h - s) * 0.5, s;
 	}
-	// the pixel row under the pair (the hourglass hangs a little under the bar): RSQSM_Service "countdown.bottom"
+	// the pixel row under the pair (the hourglass hangs a little under the bar; under the cause line while one shows):
+	// RSQSM_Service "countdown.bottom"
 	static ui int Bottom()
 	{
 		double cx, y, h;
 		[cx, y, h] = Slot();
-		return int(ceil(y + h * (1.0 + (GLASS - 1.0) * 0.5)));
+		double bot = y + h * (1.0 + (GLASS - 1.0) * 0.5);
+		if (CauseShown() != "") bot += h * (CAUSE_GAP + CAUSE_H);
+		return int(ceil(bot));
+	}
+
+	// THE CAUSE LINE (owner 2026-11-06: "under the right-hand automatic countdown bar, while it runs, one short line naming
+	// what caused it ... in the same style as Miniboss's blocker text under its bar"): RSQ Miniboss's wait line's look
+	// (hud.zs: NewSmallFont, white on a black drop shadow, letters 0.8 of the bar's thickness, 0.15 of it under the icon,
+	// centred on the row from the icon to the bar's end, shrunk to fit it). The clock's cdCause, while the countdown bar shows
+	// (it fades with the bar and is gone with it).
+	const CAUSE_GAP = 0.15;
+	const CAUSE_H = 0.8;
+	static ui String CauseShown()
+	{
+		if (!Enabled()) return "";
+		let clock = RSQSM_Clock(EventHandler.Find("RSQSM_Clock"));
+		if (!clock || !ShowsFor(clock) || clock.cdCause == "") return "";
+		if (clock.cdOn) return clock.cdCause;
+		double age = level.maptime - clock.cdEndTic;
+		return (clock.cdEndTic > 0 && age >= 0 && age < FADE_OUT) ? clock.cdCause : "";
+	}
+	static ui void DrawCause(String why, double x, double y, double w, double h, double alpha)
+	{
+		if (why == "" || alpha <= 0.01) return;
+		double gx, gy, gs;
+		[gx, gy, gs] = GlassRect(x, y, h);
+		double gl = gx, gw = x + w - gx;     // the row: the hourglass to the bar's right end
+		Font fnt = NewSmallFont;
+		double s = (h * CAUSE_H) / max(1, fnt.GetHeight());
+		double tw2 = fnt.StringWidth(why) * s;
+		if (tw2 > gw) { s *= gw / tw2; tw2 = gw; }
+		double vw = Screen.GetWidth() / s, vh = Screen.GetHeight() / s;
+		double tx = (gl + (gw - tw2) * 0.5) / s, ty = (max(y + h, gy + gs) + h * CAUSE_GAP) / s;
+		Screen.DrawText(fnt, Font.CR_BLACK, tx + 1, ty + 1, why, DTA_VirtualWidthF, vw, DTA_VirtualHeightF, vh, DTA_KeepRatio, true, DTA_Alpha, 0.8 * alpha);
+		Screen.DrawText(fnt, Font.CR_WHITE, tx, ty, why, DTA_VirtualWidthF, vw, DTA_VirtualHeightF, vh, DTA_KeepRatio, true, DTA_Alpha, alpha);
 	}
 	// either bar can show: the countdown's row, or the stored bar's (it needs Adrenaline on: without it nothing is stored)
 	static clearscope bool StoreOn() { return UCv("rsqsm_storebar", 1) != 0 && SCv("rsqsm_adrenaline", 0) != 0; }
@@ -194,7 +234,7 @@ class RSQSM_Countdown : StaticEventHandler
 			double left = max(0.0, clock.cdLeft - e.FracTic);
 			target = clock.cdTotal > 0 ? clamp(left / clock.cdTotal, 0.0, 1.0) : 1.0;
 			if (clock.cdStartTic != lastStart) { lastStart = clock.cdStartTic; shown = target; }
-			if (clock.cdAuto)
+			if (ShowsFor(clock))
 			{
 				cdVis = true;
 				alpha = clamp((t - max(clock.cdStartTic, clock.cdAutoTic)) / FADE_IN, 0.0, 1.0);
@@ -203,7 +243,7 @@ class RSQSM_Countdown : StaticEventHandler
 		else
 		{
 			double age = t - clock.cdEndTic;
-			if (clock.cdAuto && clock.cdEndTic > 0 && age < FADE_OUT && age >= 0) { cdVis = true; alpha = 1.0 - age / FADE_OUT; }
+			if (ShowsFor(clock) && clock.cdEndTic > 0 && age < FADE_OUT && age >= 0) { cdVis = true; alpha = 1.0 - age / FADE_OUT; }
 			target = 0;
 			if (!cdVis) shown = 0;
 		}
@@ -264,6 +304,7 @@ class RSQSM_Countdown : StaticEventHandler
 			Draw(te, tw, x, y, w, h, shown, lo, mid, hi, alpha, anim, photo, glint, t, alpha);
 			// the hourglass at its left (owner 11-05: "hourglass icon by the slowdown bar"), the meter's skull's size and place
 			DrawGlass("RSQSMHG", x, y, h, 0.95 * alpha);
+			DrawCause(clock.cdCause, x, y, w, h, alpha);
 		}
 	}
 	static ui void DrawGlass(String tex, double x, double y, double h, double a)

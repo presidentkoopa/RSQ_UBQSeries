@@ -1,0 +1,211 @@
+version "4.14"
+// TEST ONLY. Never ships. Heavy Hit Slowdown, the cause line, Blast Time and Miniboss's Ignore Spawn Restrictions on the rig
+// (owner's spec 2026-11-06). hh_mode picks the script; every line starts T_ for grep.
+//   1  frames: a small hit and a heavy hit from the map's Cyberdemon (as Brutal Doom / XMVE replace it), then a lethal one
+//   2  the cooldown rows, then the four extras (ordinary zombies in front and behind, armour, an Arch-Vile's real attack)
+//   3  grenade blast: Brutal Doom VR's HandGrenade, yours, 250 ahead: how long the slow holds
+//   4  Miniboss: a full, called meter in the map's first minute: waits (Too Early) with Ignore off, comes with it on;
+//      then heavy hits during the Bossfight with Once per 60 s
+class RSQSMH_Probe : EventHandler
+{
+	Actor cyber, zFront, zBack, vile, mb;
+	int t0;
+	bool started;
+	static clearscope int Mode() { let c = CVar.FindCVar("hh_mode"); return c ? c.GetInt() : 0; }
+	static void SetI(String n, int v) { let c = CVar.FindCVar(n); if (c) c.SetInt(v); }
+
+	Actor Near(Vector2 at, Actor not1 = null, Actor not2 = null)
+	{
+		let it = ThinkerIterator.Create("Actor");
+		Actor a, best;
+		double bd = 1e9;
+		while (a = Actor(it.Next()))
+		{
+			if (!a.bISMONSTER || a.health <= 0 || a.player || a == not1 || a == not2) continue;
+			double d = (a.pos.xy - at).Length();
+			if (d < bd) { bd = d; best = a; }
+		}
+		return best;
+	}
+	void Spawned(String what, Actor a)
+	{
+		if (!a) { Console.Printf("T_SPAWN t%d %s: none", level.maptime, what); return; }
+		Console.Printf("T_SPAWN t%d %s: %s \"%s\" health %d boss %d bigkind %d vile %d at %.0f %.0f", level.maptime, what, a.GetClassName(), a.GetTag(), a.health,
+			a.bBOSS, RSQSM_Clock.BigKind(a), RSQSM_Clock.BigKind(a, true), a.pos.x, a.pos.y);
+	}
+	void Hit(Actor src, int hp, int dmg, String why)
+	{
+		let pmo = players[consoleplayer].mo;
+		pmo.A_SetHealth(hp);
+		Console.Printf("T_HIT t%d %s: health %d, %d from %s (max health %d, jumpz %.1f)", level.maptime, why, hp, dmg, src ? String.Format("%s", src.GetClassName()) : "nothing", pmo.GetMaxHealth(true), pmo.JumpZ);
+		pmo.DamageMobj(src, src, dmg, 'None');
+		Console.Printf("T_AFTER t%d health %d", level.maptime, pmo.health);
+	}
+	void Clk()
+	{
+		let c = RSQSM_Clock.Get();
+		if (c) Console.Printf("T_CLK t%d scale %.2f target %.2f pulseUntil %d cdOn %d cdAuto %d cdLeft %.0f cause \"%s\" src %s, his own movement x%.2f", level.maptime, c.scale, c.target,
+			c.pulseUntil, c.cdOn, c.cdAuto, c.cdLeft, c.cdCause, c.pulseSrc, c.meK[consoleplayer]);
+	}
+	ui int frames;
+	override void RenderOverlay(RenderEvent e)
+	{
+		frames++;
+		if (Mode() != 0 && frames % 3 == 0) Console.Printf("T_FRAME %d maptime %d", frames, level.maptime);
+	}
+	override void WorldTick()
+	{
+		let p = players[consoleplayer];
+		if (!p || !p.mo) return;
+		let pmo = p.mo;
+		int m = Mode();
+		if (m == 0) return;
+		if (!started) { started = true; t0 = level.maptime; Console.Printf("T_START maptime %d mode %d", t0, m); }
+		int t = level.maptime - t0 + 1;
+		Vector2 fwd = (cos(pmo.angle), sin(pmo.angle));
+		if (t == 5)
+		{
+			SetI("rsqsm_debug", 1); SetI("rsqsm_trig_heavy", 1); SetI("rsqsm_heavy_pct", 75); SetI("rsqsm_heavy_cool", 3);
+			SetI("rsqsm_heavy_vile", 1); SetI("rsqsm_heavy_blasted", 1); SetI("rsqsm_heavy_behind", 1); SetI("rsqsm_heavy_armour", 1);
+			SetI("rsqsm_auto_cooldown", 25); SetI("rsqsm_cdbar", 1); SetI("rsqsm_me", 1);
+		}
+		if ((m == 1 || m == 2 || m == 4) && t == 8)
+			Actor.Spawn("Cyberdemon", (pmo.pos.xy + fwd * 600, pmo.floorz), ALLOW_REPLACE);
+		if ((m == 1 || m == 2 || m == 4) && t == 30) { cyber = Near(pmo.pos.xy + fwd * 600); Spawned("cyberdemon", cyber); }
+		if (m == 1)
+		{
+			if (t == 40) Hit(cyber, 100, 30, "small hit");
+			if (t == 60) Hit(cyber, 100, 80, "heavy hit");
+			if (t == 260) Hit(cyber, 50, 80, "lethal hit");
+			if (t % 5 == 0 && t < 260) Clk();
+		}
+		if (m == 2)
+		{
+			if (t == 10)
+			{
+				Actor.Spawn("ZombieMan", (pmo.pos.xy + fwd * 200 + (fwd.y, -fwd.x) * 64, pmo.floorz), ALLOW_REPLACE);
+				Actor.Spawn("ZombieMan", (pmo.pos.xy - fwd * 200, pmo.floorz), ALLOW_REPLACE);
+			}
+			if (t == 31)
+			{
+				zFront = Near(pmo.pos.xy + fwd * 200 + (fwd.y, -fwd.x) * 64, cyber); Spawned("zombie in front", zFront);
+				zBack = Near(pmo.pos.xy - fwd * 200, cyber, zFront); Spawned("zombie behind", zBack);
+			}
+			if (t == 60) Hit(cyber, 100, 80, "heavy hit, No Limit");
+			if (t == 230) { SetI("rsqsm_heavy_cool", 0); Hit(cyber, 100, 80, "heavy hit, Once per 20 s, 170 tics after the last"); }
+			if (t == 250) { SetI("rsqsm_heavy_cool", 1); Hit(cyber, 100, 80, "heavy hit, Once per 60 s"); }
+			if (t == 270) { SetI("rsqsm_heavy_cool", 2); Hit(cyber, 100, 80, "heavy hit, Use Shared (the shared cooldown not running)"); }
+			if (t == 420) { SetI("rsqsm_heavy_cool", 2); Hit(cyber, 100, 80, "heavy hit, Use Shared (the shared cooldown running)"); }
+			if (t == 440) { SetI("rsqsm_heavy_cool", 3); Hit(cyber, 100, 80, "heavy hit, No Limit (shared cooldown running)"); }
+			if (t == 600) { SetI("rsqsm_heavy_cool", 0); Hit(cyber, 100, 80, "heavy hit, Once per 20 s, 160 tics after the last"); }
+			if (t == 1150) { SetI("rsqsm_heavy_cool", 0); Hit(cyber, 100, 80, "heavy hit, Once per 20 s, 710 tics after the last"); }
+			if (t == 1300) { SetI("rsqsm_heavy_cool", 3); Hit(zFront, 100, 80, "heavy hit, ordinary zombie in front"); }
+			if (t == 1330) Hit(zBack, 100, 80, "heavy hit, ordinary zombie behind");
+			if (t == 1340) Hit(zBack, 100, 60, "small hit, ordinary zombie behind");
+			if (t == 1480)
+			{
+				pmo.GiveInventory("GreenArmor", 1);
+				let ar = BasicArmor(pmo.FindInventory("BasicArmor"));
+				if (ar) { ar.Amount = 5; Console.Printf("T_ARMOUR t%d armour %d save %.2f", t, ar.Amount, ar.SavePercent); }
+			}
+			if (t == 1500) Hit(zFront, 100, 90, "heavy hit, ordinary zombie in front, 5 armour left");
+			if (t == 1600) Actor.Spawn("Archvile", (pmo.pos.xy + fwd * 256 - (fwd.y, -fwd.x) * 64, pmo.floorz), ALLOW_REPLACE);
+			if (t == 1625) { vile = Near(pmo.pos.xy + fwd * 256 - (fwd.y, -fwd.x) * 64, cyber, zFront); Spawned("arch-vile", vile); }
+			if (t == 1650)
+			{
+				// the extras alone first: Arch-Vile Blast off, so a vile's fire still fires as a big demon unless...
+				pmo.A_SetHealth(400);
+				// an explosion at his feet from the zombie in front (A_Explode: its own knockback)
+				let b = Actor.Spawn("RSQSMH_Boom", pmo.pos + (fwd * 8, 0), NO_REPLACE);
+				if (b) { b.target = zFront; Console.Printf("T_HIT t%d explosion at his feet from %s, health 400, A_Explode 300, vel.z %.1f", t, zFront ? String.Format("%s", zFront.GetClassName()) : "none", pmo.vel.z); }
+			}
+			if (t == 1652) Console.Printf("T_VEL t%d vel.z %.1f health %d", t, pmo.vel.z, pmo.health);
+			if (t == 1800 && vile)
+			{
+				pmo.A_SetHealth(200);
+				vile.target = pmo;
+				vile.A_VileTarget();
+				Console.Printf("T_HIT t%d arch-vile %s real attack (Brutal Doom's A_VileAttack(\"vile/stop\",20,70,70,2.0,\"Fire\",0)), health 200, sight %d", t, vile.GetClassName(), vile.CheckSight(pmo));
+				vile.A_VileAttack("vile/stop", 20, 70, 70, 2.0, "Fire", 0);
+				Console.Printf("T_AFTER t%d health %d vel.z %.1f", t, pmo.health, pmo.vel.z);
+			}
+			if ((t >= 1290 && t % 10 == 0) || (t < 1290 && t % 15 == 0)) Clk();
+		}
+		if (m == 3)
+		{
+			if (t == 10) { SetI("rsqsm_trig_grenade", 1); SetI("rsqsm_auto_cooldown", 25); }
+			if (t == 40)
+			{
+				let g = Actor.Spawn("HandGrenade", (pmo.pos.xy + fwd * 250, pmo.pos.z + 40), NO_REPLACE);
+				if (g) { g.target = pmo; g.vel = (0, 0, 0); }
+				Console.Printf("T_GRENADE t%d %s, blast time %d ms", t, g ? String.Format("%s", g.GetClassName()) : "none", CVar.FindCVar("rsqsm_blast_ms").GetInt());
+			}
+			if (t >= 40 && t % 5 == 0) Clk();
+		}
+		if (m == 6)
+		{
+			// the owner's 07:00 addition: his own slow motion with Adrenaline off shows the bar and its line; on, it doesn't
+			if (t == 10) { SetI("rsqsm_adrenaline", 0); SetI("rsqsm_trig_key", 1); SetI("rsqsm_trig_shove", 1); SetI("rsqsm_trig_dodge", 1); SetI("rsqsm_length", 3); }
+			if (t == 30) { Console.Printf("T_OWN t%d Slow Motion key (rsm_toggle 2), Adrenaline off, Slow Motion Length 3 s", t); EventHandler.SendNetworkEvent("rsm_toggle", 2); }
+			if (t == 200) { Console.Printf("T_OWN t%d Melee shove's pulse (rsm_pulse 600 35 + rsqml_fear)", t); EventHandler.SendNetworkEvent("rsm_pulse", 600, 35); EventHandler.SendNetworkEvent("rsqml_fear"); }
+			if (t == 300) { Console.Printf("T_OWN t%d Shootdodge key (rsqsm_dodge)", t); EventHandler.SendNetworkEvent("rsqsm_dodge"); }
+			if (t == 420) { SetI("rsqsm_adrenaline", 1); let c = RSQSM_Clock.Get(); if (c) c.adr = 100; Console.Printf("T_OWN t%d Adrenaline ON (meter 100), Slow Motion key", t); EventHandler.SendNetworkEvent("rsm_toggle", 2); }
+			if (t == 520) { EventHandler.SendNetworkEvent("rsm_toggle", 2); }
+			if (t % 10 == 0) { Clk(); let c = RSQSM_Clock.Get(); if (c) Console.Printf("T_SHOWS t%d countdown bar shown %d", t, c.cdOn && RSQSM_Countdown.ShowsFor(c)); }
+		}
+		if (m == 5)
+		{
+			// Low Health and No Room: the map's first minute is off (0), health 20 (under 40), the arrival spot 2048-4096 away
+			if (t == 10) { SetI("rsqmb_debug", 1); SetI("rsqmb_enabled", 1); SetI("rsqmb_bf_ignore", 0); SetI("rsqmb_bf_first", 0); SetI("rsqmb_bf_near", 2048); SetI("rsqmb_bf_far", 4096); }
+			if (t == 40)
+			{
+				pmo.A_SetHealth(20);
+				let mt = RSQMB_Meter(pmo.FindInventory("RSQMB_Meter"));
+				if (!mt) mt = RSQMB_Meter(pmo.GiveInventoryType("RSQMB_Meter"));
+				if (mt) { mt.fill = 1000; mt.ready = true; mt.readyAt = t; mt.called = true; }
+				Console.Printf("T_MB t%d meter full and called in, health 20, arrival 2048-4096 away, Ignore Spawn Restrictions OFF", t);
+			}
+			if (t == 120) { pmo.A_SetHealth(100); Console.Printf("T_MB t%d health 100 (only the room is left in the way)", t); }
+			if (t == 200) { pmo.A_SetHealth(20); SetI("rsqmb_bf_ignore", 1); Console.Printf("T_MB t%d health 20 again, Ignore Spawn Restrictions ON", t); }
+			if (t % 35 == 0 && t <= 400)
+			{
+				let h = RSQMB_Handler(EventHandler.Find("RSQMB_Handler"));
+				let sv = ServiceIterator.Find("RSQMB_Service").Next();
+				Console.Printf("T_MB t%d waits \"%s\" bossfight %d arriving %d", t, h ? h.bfWhy : "?", sv ? sv.GetInt("bossfight") : -1, h ? h.arrPhase : -1);
+			}
+		}
+		if (m == 4)
+		{
+			if (t == 10) { SetI("rsqmb_debug", 1); SetI("rsqmb_enabled", 1); SetI("rsqmb_bf_ignore", 0); SetI("rsqmb_bf_first", 60); SetI("rsqmb_bf_auto", 60); }
+			if (t == 40)
+			{
+				let mt = RSQMB_Meter(pmo.FindInventory("RSQMB_Meter"));
+				if (!mt) mt = RSQMB_Meter(pmo.GiveInventoryType("RSQMB_Meter"));
+				if (mt) { mt.fill = 1000; mt.ready = true; mt.readyAt = t; mt.called = true; }
+				Console.Printf("T_MB t%d meter full and called in, Ignore Spawn Restrictions OFF (map's first %d s)", t, CVar.FindCVar("rsqmb_bf_first").GetInt());
+			}
+			if (t == 200) { SetI("rsqmb_bf_ignore", 1); Console.Printf("T_MB t%d Ignore Spawn Restrictions ON", t); }
+			if (t % 35 == 0 && t <= 600)
+			{
+				let h = RSQMB_Handler(EventHandler.Find("RSQMB_Handler"));
+				let sv = ServiceIterator.Find("RSQMB_Service").Next();
+				Console.Printf("T_MB t%d waits \"%s\" bossfight %d arriving %d", t, h ? h.bfWhy : "?", sv ? sv.GetInt("bossfight") : -1, h ? h.arrPhase : -1);
+			}
+			if (t == 450)
+			{
+				let sv = ServiceIterator.Find("RSQMB_Service").Next();
+				mb = sv ? Actor(sv.GetObject("boss", "", 0)) : null;
+				Spawned("bossfight miniboss", mb);
+				SetI("rsqsm_heavy_cool", 1);
+			}
+			if (t == 460) Hit(mb, 100, 80, "heavy hit from the miniboss, Once per 60 s, Bossfight on");
+			if (t == 480) Hit(mb, 100, 80, "heavy hit from the miniboss again 20 tics later, Once per 60 s, Bossfight on");
+			if (t == 500) Hit(cyber, 100, 80, "heavy hit from the cyberdemon, Once per 60 s, Bossfight on");
+		}
+	}
+}
+class RSQSMH_Boom : Actor
+{
+	Default { +NOINTERACTION }
+	States { Spawn: TNT1 A 1 NoDelay A_Explode(300, 128, XF_NOSPLASH, false, 0); Stop; }
+}

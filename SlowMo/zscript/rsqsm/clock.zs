@@ -88,6 +88,9 @@ class RSQSM_Clock : EventHandler
 	// easing out) was let in by an automatic trigger; cdAutoTic: maptime that became so (the bar's fade in).
 	bool   cdAuto;
 	int    cdAutoTic;
+	// THE CAUSE LINE (owner 2026-11-06): what let in the slow running now, in a few words, drawn under the countdown bar while
+	// it shows (countdown.zs): set by every trigger let in (Trigger: CauseWord, or the words a trigger passes, Heavy Hit's)
+	String cdCause;
 	bool   rival;            // decided once per map
 	RSQSM_Smooth smooth;     // the walkers' step-spreader (smooth.zs), made on first use
 
@@ -262,7 +265,7 @@ class RSQSM_Clock : EventHandler
 		on = false; target = 1; scale = 1; pulseUntil = 0; pulseDepth = 1; pulseSrc = ""; pulseAuto = false; autoReady = 0;
 		heldUntil = 0; heldWho = -1;
 		cdOn = false; cdLeft = 0; cdTotal = 0; cdEndAt = 0; cdStartTic = 0; cdRefillTic = 0; cdEndTic = 0;
-		cdAuto = false; cdAutoTic = 0;
+		cdAuto = false; cdAutoTic = 0; cdCause = ""; hhLast = 0;
 		ClearAll();
 		for (int i = 0; i < MAXPLAYERS; i++) { dodgeTic[i] = 0; meK[i] = 1; meGrav[i] = 0; meVx[i] = 0; meVy[i] = 0; freeUntil[i] = 0; }
 		// An EventHandler is rebuilt on every map, so the meter is carried on the player.
@@ -475,7 +478,7 @@ class RSQSM_Clock : EventHandler
 		on = want;
 		if (on && !was) { heldUntil = level.maptime + int(ceil(HeldSecs() * TICRATE)); heldWho = who; }
 		if (!on) heldUntil = 0;
-		if (on) { pulseUntil = 0; CountdownStart(why, true); SetCdAuto(false); }     // the toggle outranks a pulse; the bar starts (or refills) full
+		if (on) { pulseUntil = 0; CountdownStart(why, true); SetCdAuto(false); cdCause = CauseWord(why); }     // the toggle outranks a pulse; the bar starts (or refills) full
 		// A CUE ONLY FOR A CHANGE. An rsm_off to a clock already off (the Wheel closing after the
 		// adrenaline meter refused its rsm_on; a meter that ran dry) played the way-out sound and
 		// rumble with nothing ending (measured on the rig, bugfix pass 10-31: rsm_off with the clock
@@ -494,7 +497,7 @@ class RSQSM_Clock : EventHandler
 	// ONE SWITCH PER TRIGGER (the Triggers page). User switches (the player's own inputs) are read for the
 	// player who sent it; server ones are the world's.
 	enum ECat { CAT_NONE, CAT_CLOSECALL, CAT_RELOAD, CAT_OTHER, CAT_MINIBOSS, CAT_KEY, CAT_WRIST, CAT_BURST, CAT_WHEEL,
-		CAT_A11Y, CAT_SHOVE, CAT_SMOKE, CAT_PARRY, CAT_BLOCK, CAT_SCORE, CAT_GBVR, CAT_DODGE, CAT_GRENADE, CAT_OU, CAT_LOWHP }
+		CAT_A11Y, CAT_SHOVE, CAT_SMOKE, CAT_PARRY, CAT_BLOCK, CAT_SCORE, CAT_GBVR, CAT_DODGE, CAT_GRENADE, CAT_OU, CAT_HEAVY }
 	static double CvWho(String n, int who, double d)
 	{
 		return (who >= 0 && who < MAXPLAYERS && playeringame[who]) ? CvP(n, players[who], d) : Cv(n, d);
@@ -521,7 +524,7 @@ class RSQSM_Clock : EventHandler
 		case CAT_OTHER:     return Cv("rsqsm_auto_other", 1) != 0;
 		case CAT_GRENADE:   return Cv("rsqsm_trig_grenade", 0) != 0;
 		case CAT_OU:        return Cv("rsqsm_trig_ou", 0) != 0;
-		case CAT_LOWHP:     return Cv("rsqsm_trig_lowhp", 0) != 0;
+		case CAT_HEAVY:     return Cv("rsqsm_trig_heavy", 1) != 0;
 		}
 		return true;
 	}
@@ -530,7 +533,7 @@ class RSQSM_Clock : EventHandler
 		static const String names[] = { "-", "Close-Call", "Reload Slowdown", "Other / Unknown Mods", "Miniboss Window",
 			"Manual Key", "Wrist Cross", "Burst", "Wheel", "Accessibility Button", "Melee Shove", "Cigarette",
 			"Saber Parry", "ShieldSaw Block", "Score", "Gun Bonsai VR", "Shootdodge", "Grenade Blast", "Over-Under Blast",
-			"Low Health" };
+			"Heavy Hit Slowdown" };
 		return (cat >= 0 && cat < names.Size()) ? names[cat] : "?";
 	}
 	double Cooldown() { return clamp(Cv("rsqsm_auto_cooldown", 25), 0.0, 120.0); }
@@ -544,12 +547,14 @@ class RSQSM_Clock : EventHandler
 	// ONE WAY IN FOR EVERY PULSE. Every trigger needs its switch; a deliberate one is never refused for time; an
 	// automatic one also waits out the cooldown -- except one that only stretches the pulse it started itself (the
 	// miniboss window re-asks each second). Answers whether it was let in.
-	bool Trigger(String src, int cat, int ms, double depth, bool isAuto, int who = -1)
+	// cause: the words under the countdown bar ("" = CauseWord(src)). shared: false for an automatic trigger with a cooldown
+	// of its own (Heavy Hit Slowdown, unless its Cooldown row says Use Shared): it neither waits out nor starts the shared one.
+	bool Trigger(String src, int cat, int ms, double depth, bool isAuto, int who = -1, String cause = "", bool shared = true)
 	{
 		if (StoodDown()) { Log(src, "refused: stood down (another slow-motion mod)"); return false; }
 		if (on) { Log(src, "not needed: slow motion is held on"); return false; }
 		if (!CatOn(cat, who)) { Log(src, String.Format("refused: its switch is off (%s)", CatName(cat))); return false; }
-		if (isAuto)
+		if (isAuto && shared)
 		{
 			bool stretch = pulseUntil > 0 && pulseAuto && pulseSrc == src;
 			if (!stretch && level.maptime < autoReady)
@@ -565,10 +570,30 @@ class RSQSM_Clock : EventHandler
 		CountdownStart(src);     // every slow motion runs the countdown (owner 11-05 03:55); CountdownTick refills it when the end moves later
 		                         // (not on every ask: the miniboss window re-asks each second)
 		SetCdAuto(isAuto);       // ... and the bar shows only for an automatic one (owner 11-06)
-		if (isAuto) autoReady = max(autoReady, pulseUntil + int(Cooldown() * TICRATE));
-		Log(src, String.Format("%s %d ms at %d%% (%s), pulse until t%d", fresh ? "started" : "merged", ms, int(depth * 100 + 0.5),
-			isAuto ? "automatic" : "deliberate", pulseUntil));
+		cdCause = cause != "" ? cause : CauseWord(src);
+		if (isAuto && shared) autoReady = max(autoReady, pulseUntil + int(Cooldown() * TICRATE));
+		Log(src, String.Format("%s %d ms at %d%% (%s), pulse until t%d, cause line \"%s\"", fresh ? "started" : "merged", ms, int(depth * 100 + 0.5),
+			isAuto ? (shared ? "automatic" : "automatic, own cooldown") : "deliberate", pulseUntil, cdCause));
 		return true;
+	}
+
+	// THE CAUSE LINE'S WORDS for each trigger (owner 2026-11-06: "one short line naming what caused it, for EVERY automatic
+	// slowdown"; 07:00: with Adrenaline off, his OWN slow motion shows the bar and its line too). With Adrenaline on only an
+	// automatic slow shows the bar (the stored bar is the meter), so only those words are seen then. A named-door caller
+	// (rsqsm_start:<who>) is shown by its own name.
+	static String CauseWord(String src)
+	{
+		static const String keys[] = { "grenade", "overunder", "reload", "closecall", "miniboss", "score", "gunbonsai", "othermod",
+			"smoke", "melee.shove", "saber.parry", "shieldsaw.block", "parry.or.block", "wristcross.burst", "bossfight", "heavyhit",
+			"key", "wristcross", "wheel", "a11y.button", "shootdodge" };
+		static const String words[] = { "GRENADE BLAST", "OVER-UNDER BLAST", "RELOAD", "CLOSE CALL", "MINIBOSS", "SCORE", "GUN BONSAI", "OTHER MOD",
+			"CIGARETTE", "SHOVE", "PARRY", "BLOCK", "PARRY", "BURST", "BOSSFIGHT", "HEAVY HIT",
+			"SLOW MOTION", "WRIST CROSS", "WHEEL", "SLOW MOTION", "SHOOTDODGE" };
+		for (int i = 0; i < keys.Size(); i++) if (src ~== keys[i]) return words[i];
+		String w = src;
+		w.Replace(".", " ");
+		w.Replace("_", " ");
+		return w.MakeUpper();
 	}
 
 	// THE NAMED DOOR (netevent rsqsm_start:<who>, RSQSM_Service "start"): 0 ms = 4 s, speed 0 = the slider.
@@ -792,6 +817,7 @@ class RSQSM_Clock : EventHandler
 			dodgeTic[n] = level.maptime;
 			CountdownStart("shootdodge", true);
 			SetCdAuto(false);
+			cdCause = CauseWord("shootdodge");
 			pmo.A_StartSound("rsqsm/in", CHAN_AUTO, 0, 0.8);
 			RSQSM_Buzz.Start(pmo, 0, 0.6, 8);
 			RSQSM_Buzz.Start(pmo, 1, 0.6, 8);
@@ -924,6 +950,7 @@ class RSQSM_Clock : EventHandler
 		curDepth = Depth();
 		LocalGesture();
 		if (StoodDown()) return;
+		HeavyHits();             // last tic's hits, against the snapshots taken at the end of last tic's WorldTick
 		ResolvePulses();
 		CloseCalls();
 
@@ -957,9 +984,9 @@ class RSQSM_Clock : EventHandler
 		Adrenaline();
 		Reloads();
 		Blasts();
-		LowHealth();
 		SlowMe();
 		CountdownTick();
+		HeavySnap();             // his vertical speed and armour now, for the next tic's hits
 
 		bool running = Active();
 		if (!running && act.Size() == 0) return;
@@ -1351,6 +1378,7 @@ class RSQSM_Clock : EventHandler
 	override void WorldThingDamaged(WorldEvent e)
 	{
 		if (e.Thing && e.Thing.player && e.Damage > 0) AddAdrenaline(e.Damage * 0.5);
+		if (e.Thing && e.Thing.player && e.Damage > 0 && !StoodDown()) HeavyNote(e);
 		if (e.Thing && e.Thing.bISMONSTER && e.Thing.health <= 0 && e.Thing != lastKilled)
 		{
 			Actor src = e.DamageSource;
@@ -1400,9 +1428,10 @@ class RSQSM_Clock : EventHandler
 		reloadPrimed = true;     // the first tic after a load only looks
 	}
 
-	// ---- BLASTS AND LOW HEALTH (owner 2026-11-06, BUGS_1.0 #10: "grenade blast, over-under rifle or machinegun secondary
-	// blast, ... Low Health / Near Death"). Automatic triggers, each its own row, off by default: the cooldown and the
-	// World Speed slider's speed (Trigger), the hold from Blast Time / Low Health Time. Found BY NAME, nothing linked:
+	// ---- BLASTS (owner 2026-11-06, BUGS_1.0 #10: "grenade blast, over-under rifle or machinegun secondary blast"; the Low
+	// Health trigger added with them was removed the same day, owner's spec). Automatic triggers, each its own row, off by
+	// default: the cooldown and the World Speed slider's speed (Trigger), the hold from Blast Time (3 s, owner 11-06). Found
+	// BY NAME, nothing linked:
 	//   GRENADE      Brutal Doom's hand grenade (HandGrenade, HandGrenadeAlt: BD22 VR Grenades.dec; its Explode state, not
 	//                its Death, which is the grenade landing), RSQ Grenade's thrown one (RSQGN_Thrown: its Boom state) and
 	//                the one that goes off in the hand (RSQGN_HandBlast: its spawn is the blast)
@@ -1461,24 +1490,168 @@ class RSQSM_Clock : EventHandler
 		if (who < 0 || who >= MAXPLAYERS || !playeringame[who]) { Log(src, "blast: not a player's, ignored"); return; }
 		Trigger(src, k == BL_GRENADE ? CAT_GRENADE : CAT_OU, BlastMs(), Depth(), true, who);
 	}
-	int BlastMs() { return int(clamp(Cv("rsqsm_blast_ms", 1000), 100, 5000)); }
+	int BlastMs() { return int(clamp(Cv("rsqsm_blast_ms", 3000), 100, 5000)); }
+	// Low Health At (Reload When = Low Health)
 	static int LowAt() { return int(clamp(Cv("rsqsm_lowhp_at", 25), 1, 100)); }
-	// LOW HEALTH / NEAR DEATH: his health falls to Low Health At or under, from above it (once per fall: it must climb back
-	// over the line before it can go again); a dead player never counts
-	private transient int lastHp[MAXPLAYERS];
-	private transient bool hpPrimed;
-	private void LowHealth()
+
+	// ---- HEAVY HIT SLOWDOWN (owner 2026-11-06, his approved spec) -------------------------------------------------------
+	// A HEAVY HIT: all the damage a player takes in one tic (what WorldThingDamaged reports: health lost, after armour) adds
+	// up to Heavy Hit Size % of his MAX health (GetMaxHealth(true), 75 % by default). It slows the world for HH_MS (3 s) at the
+	// World Speed slider's speed, a normal pulse (Slow Me Too slows him with it). It fires when that tic's damage came from:
+	//   a LegenDoom legendary (LDLegendaryMonsterToken / LDLegendaryMonsterTransformed), a Champions champion
+	//   (champion_PersistentInfo), RSQ Miniboss's miniboss or one of its thralls (RSQMB_Service "miniboss" / "thrall", by
+	//   name), a +BOSS monster, or a big demon (BigKind: a Cyberdemon, Spider Mastermind, Baron of Hell, Hell Knight, Mancubus,
+	//   Arch-Vile or Revenant by class, parent or the class it or a parent replaces: Brutal Doom's and XMVE's included);
+	// or, whatever hit him, when one of the four extras (each its own row, on) is true of it:
+	//   ARCH-VILE BLAST  an Arch-Vile's flame attack: the source is an Arch-Vile (BigKind) and the damage is its fire (damage
+	//                    type Fire, or the inflictor is not the vile itself: A_VileAttack's blast comes from its fire)
+	//   BLASTED          the hit threw him up: his vertical speed rose by HH_BLAST_VZ (10) map units a tic or more over that
+	//                    tic (a jump is 8; a jump made the same tic is taken off first)
+	//   HIT FROM BEHIND  the attacker's middle was over HH_VIEW (60) degrees off where his head faced (yaw and pitch: in VR
+	//                    the pawn's angle and pitch are the headset's), so outside his view (Score's No-Look uses 60 too)
+	//   ARMOUR BROKEN    he had armour before the tic and has none after it
+	// NEVER on a hit that kills him (a future "Second Wind" owns those). ITS COOLDOWN (rsqsm_heavy_cool): Once per 20 s, Once
+	// per 60 s (from the last heavy-hit slowdown's start), Use Shared (the Auto Cooldown every automatic trigger shares), No
+	// Limit (default). While RSQ Miniboss's Bossfight is on (RSQMB_Service "bossfight": arriving, or its miniboss alive) every
+	// heavy hit fires, whatever the row says. The cause line names it: ARCH-VILE BLAST, HEAVY HIT: <the monster's tag>,
+	// BLASTED, HIT FROM BEHIND, ARMOUR BROKEN, in that order of precedence.
+	const HH_MS = 3000;
+	const HH_BLAST_VZ = 10.0;
+	const HH_VIEW = 60.0;
+	int hhLast;                                   // maptime the last heavy-hit slowdown started (0 none this map)
+	private transient int    hhDmg[MAXPLAYERS];   // this tic's damage so far
+	private transient bool   hhSpecial[MAXPLAYERS], hhVile[MAXPLAYERS], hhBehind[MAXPLAYERS];
+	private transient Array<String> hhName;       // the special attacker's tag (MAXPLAYERS long once used)
+	private transient double hhVz[MAXPLAYERS];    // his vertical speed at the end of last tic's WorldTick
+	private transient int    hhArm[MAXPLAYERS];   // ... and his armour
+	private transient bool   hhPrimed;
+
+	static bool HasInv(Actor a, String n) { class<Inventory> c = n; return c && a.FindInventory(c, true); }
+	// a big demon: a Cyberdemon, Spider Mastermind, Baron of Hell, Hell Knight, Mancubus, Arch-Vile or Revenant by class or
+	// parent, or a class (or a parent of it) that replaces one. vileOnly: the Arch-Vile alone.
+	static bool Descends(class<Object> c, class<Object> base)
 	{
-		int at = LowAt();
+		for (; c; c = c.GetParentClass()) if (c == base) return true;
+		return false;
+	}
+	static bool BigKind(Actor a, bool vileOnly = false)
+	{
+		static const Name big[] = { 'Archvile', 'Cyberdemon', 'SpiderMastermind', 'BaronOfHell', 'HellKnight', 'Fatso', 'Revenant' };
+		int nk = vileOnly ? 1 : big.Size();
+		for (class<Object> k = a.GetClass(); k; k = k.GetParentClass())
+		{
+			class<Actor> c = (class<Actor>)(k);
+			for (int d = 0; c && d < 8; d++)
+			{
+				for (int i = 0; i < nk; i++) { class<Object> bc = big[i]; if (bc && Descends(c, bc)) return true; }
+				class<Actor> r = Actor.GetReplacee(c);
+				if (!r || r == c) break;
+				c = r;
+			}
+		}
+		return false;
+	}
+	private transient bool hhMbLooked;
+	private transient Service hhMb;
+	private Service HhMbSvc()
+	{
+		if (!hhMbLooked) { hhMbLooked = true; hhMb = ServiceIterator.Find("RSQMB_Service").Next(); }
+		return hhMb;
+	}
+	// what kind of attacker it is, "" none of the special kinds
+	private String SpecialKind(Actor src)
+	{
+		if (HasInv(src, "LDLegendaryMonsterToken") || HasInv(src, "LDLegendaryMonsterTransformed")) return "legendary";
+		if (HasInv(src, "champion_PersistentInfo")) return "champion";
+		let mb = HhMbSvc();
+		if (mb && mb.GetInt("miniboss", "", 0, 0, src) == 1) return "miniboss";
+		if (mb && mb.GetInt("thrall", "", 0, 0, src) == 1) return "thrall";
+		if (src.bBOSS) return "boss";
+		if (BigKind(src)) return "big demon";
+		return "";
+	}
+	private void HeavyNote(WorldEvent e)
+	{
+		if (Cv("rsqsm_trig_heavy", 1) == 0) return;
+		int n = e.Thing.PlayerNumber();
+		if (n < 0 || n >= MAXPLAYERS) return;
+		if (hhName.Size() < MAXPLAYERS) for (int i = hhName.Size(); i < MAXPLAYERS; i++) hhName.Push("");
+		hhDmg[n] += e.Damage;
+		Actor src = e.DamageSource;
+		if (!src || src == e.Thing || src.player) return;
+		String k = SpecialKind(src);
+		if (k != "" && !hhSpecial[n]) { hhSpecial[n] = true; hhName[n] = src.GetTag(); }
+		if (BigKind(src, true) && (e.DamageType == 'Fire' || (e.Inflictor && e.Inflictor != src))) hhVile[n] = true;
+		let pmo = e.Thing;
+		Vector3 eye = (pmo.pos.xy, pmo.player.viewz);
+		Vector3 d = level.Vec3Diff(eye, src.pos + (0, 0, src.height * 0.5));
+		if (d.Length() > 0.01)
+		{
+			Vector3 f = (cos(pmo.angle) * cos(pmo.pitch), sin(pmo.angle) * cos(pmo.pitch), -sin(pmo.pitch));
+			double off = acos(clamp(d.Unit() dot f, -1.0, 1.0));
+			if (off > HH_VIEW) hhBehind[n] = true;
+		}
+		String via = e.Inflictor ? String.Format("%s", e.Inflictor.GetClassName()) : "none";
+		Log("heavyhit", String.Format("player %d took %d (%s from %s \"%s\" via %s, type %s)%s, %d this tic", n, e.Damage,
+			k != "" ? k : "ordinary", src.GetClassName(), src.GetTag(), via, e.DamageType,
+			hhBehind[n] ? ", from outside his view" : "", hhDmg[n]));
+	}
+	static int ArmourOf(Actor a) { let ar = a ? a.FindInventory("BasicArmor") : null; return ar ? ar.Amount : 0; }
+	private bool BossfightOn() { let mb = HhMbSvc(); return mb && mb.GetInt("bossfight") == 1; }
+	private void HeavyHits()
+	{
 		for (int n = 0; n < MAXPLAYERS; n++)
 		{
-			if (!playeringame[n] || !players[n].mo) { lastHp[n] = 0; continue; }
-			int hp = players[n].health;
-			if (hpPrimed && lastHp[n] > at && hp > 0 && hp <= at)
-				Trigger("lowhealth", CAT_LOWHP, int(clamp(Cv("rsqsm_lowhp_ms", 2000), 100, 10000)), Depth(), true, n);
-			lastHp[n] = hp;
+			int dmg = hhDmg[n];
+			bool special = hhSpecial[n], vile = hhVile[n], behind = hhBehind[n];
+			String name = hhName.Size() > n ? hhName[n] : "";
+			hhDmg[n] = 0; hhSpecial[n] = false; hhVile[n] = false; hhBehind[n] = false;
+			if (dmg <= 0 || !hhPrimed || !playeringame[n] || !players[n].mo || Cv("rsqsm_trig_heavy", 1) == 0) continue;
+			let p = players[n];
+			let pmo = p.mo;
+			int maxHp = max(1, pmo.GetMaxHealth(true));
+			double pct = clamp(Cv("rsqsm_heavy_pct", 75), 1, 1000);
+			double need = maxHp * pct / 100.0;
+			if (p.health <= 0 || pmo.health <= 0) { Log("heavyhit", String.Format("not fired: %d this tic killed player %d (Second Wind's, not ours)", dmg, n)); continue; }
+			if (dmg < need) { Log("heavyhit", String.Format("not fired: %d this tic is under %.0f%% of max health %d (%.1f needed)", dmg, pct, maxHp, need)); continue; }
+			double rise = pmo.vel.z - hhVz[n];
+			if (p.jumpTics == -1) rise -= pmo.JumpZ;
+			bool blasted = rise >= HH_BLAST_VZ;
+			bool broken = hhArm[n] > 0 && ArmourOf(pmo) <= 0;
+			bool xVile = vile && Cv("rsqsm_heavy_vile", 1) != 0;
+			bool xBlast = blasted && Cv("rsqsm_heavy_blasted", 1) != 0;
+			bool xBehind = behind && Cv("rsqsm_heavy_behind", 1) != 0;
+			bool xArm = broken && Cv("rsqsm_heavy_armour", 1) != 0;
+			String what = String.Format("%d this tic of max health %d (%.0f%% needed %.1f): attacker %s, vile fire %d, vertical speed up %.1f, outside view %d, armour %d -> %d",
+				dmg, maxHp, pct, need, special ? name : "not special", int(vile), rise, int(behind), hhArm[n], ArmourOf(pmo));
+			String cause = "";
+			if (xVile) cause = "ARCH-VILE BLAST";
+			else if (special) cause = "HEAVY HIT: " .. name.MakeUpper();
+			else if (xBlast) cause = "BLASTED";
+			else if (xBehind) cause = "HIT FROM BEHIND";
+			else if (xArm) cause = "ARMOUR BROKEN";
+			if (cause == "") { Log("heavyhit", "not fired: heavy, but nothing it needs (" .. what .. ")"); continue; }
+			int mode = int(Cv("rsqsm_heavy_cool", 3));
+			bool fight = BossfightOn();
+			int now = level.maptime;
+			if (!fight && (mode == 0 || mode == 1) && hhLast > 0)
+			{
+				int wait = (mode == 0 ? 20 : 60) * TICRATE;
+				if (now - hhLast < wait) { Log("heavyhit", String.Format("refused: its own cooldown (Once per %d s), %.1f s left (%s)", mode == 0 ? 20 : 60, (hhLast + wait - now) / double(TICRATE), what)); continue; }
+			}
+			Log("heavyhit", String.Format("heavy hit qualifies, cause line \"%s\" (%s)%s", cause, what, fight ? ", Bossfight on: no cooldown" : ""));
+			if (Trigger("heavyhit", CAT_HEAVY, HH_MS, Depth(), true, n, cause, mode == 2 && !fight)) hhLast = now;
 		}
-		hpPrimed = true;
+	}
+	private void HeavySnap()
+	{
+		for (int n = 0; n < MAXPLAYERS; n++)
+		{
+			bool ok = playeringame[n] && players[n].mo;
+			hhVz[n] = ok ? players[n].mo.vel.z : 0;
+			hhArm[n] = ok ? ArmourOf(players[n].mo) : 0;
+		}
+		hhPrimed = true;
 	}
 
 	// ---- the gesture (local; it only sends the toggle) ------------------------------------------

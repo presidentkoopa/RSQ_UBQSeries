@@ -8,6 +8,7 @@ server int    rsqmb_bf_cooldown   = 90;     // seconds after one began before th
 server int    rsqmb_bf_cap        = 2;      // most Bossfights a map
 server int    rsqmb_bf_minhp      = 40;     // it waits while your health is under this
 server int    rsqmb_bf_busy       = 3;      // it waits while more awake monsters than this are after you within 1536
+server bool   rsqmb_bf_ignore     = false;  // Ignore Spawn Restrictions (owner 11-06): a due Bossfight comes regardless of Too Early, Low Health, Near Exit, Too Busy and No Room (bossfight.zs Guard / PlanArrival)
 server float  rsqmb_bf_near       = 384;    // the arrival spot: at least this far from you (map units; 32 = 1 m)
 server float  rsqmb_bf_far        = 1024;   // and at most this far
 server float  rsqmb_bf_exit       = 768;    // it waits within this of an exit line
