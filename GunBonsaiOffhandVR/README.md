@@ -71,8 +71,13 @@ it. A ShieldSaw bash pays the shield. Brutal Doom VR Reloaded's travelling bulle
 - GBOVR Menus and HUD (On by default): the redrawn status screen and level-up cards (the Mockup), the bottom row, and
   XP bars that breathe. Off, you get Gun Bonsai's own menus and plain gauges.
 - The XP bars breathe slowly in their own colour, kick brighter when XP comes in, warm up and breathe faster as a level
-  nears, and flare when a level is ready or taken. Photosensitive Mode keeps them steady; colour-blind modes change
+  nears (with Colour Cycle off), and flare when a level is ready or taken. Photosensitive Mode keeps them steady; colour-blind modes change
   brightness only.
+- Colour Cycle (On by default, each hand on its own): the gauge's frame, weapon XP bar and player XP bar cycle through
+  the colours, the colour rippling from frame to bars. Speed, Spread and Intensity tune it per hand. Off, the gauge has
+  Gun Bonsai's colours. A waiting level-up cycles whatever the switch. Photosensitive Mode: no cycling (the switch acts
+  as off, and a level-up shows its colours held still). Any colour-blind mode turns the switch off for both hands (the
+  colour-blind bar pair shows, as before); a level-up there still cycles and the whole HUD breathes in brightness.
 - An optional bottom row with each hand's magazine and reserve, plus health, face and armour.
 - A Berserk Meter gauge per glove that has learned it: fills dark crimson to hot orange-white, then burns while the
   Berserk it earned runs.
@@ -155,6 +160,12 @@ same page is linked at the bottom of Gun Bonsai's own options.
 | Main HUD Mirror | Both | None, Left-Right, Up-Down or Both (also picks the corner frame). |
 | Off HUD Across / Down | 0.01 / 0.02 | Where the off hand's HUD sits. |
 | Off HUD Mirror | Up-Down | As above; the defaults make the two HUDs mirror images. |
+| *HUD Colour Cycle* | | |
+| Main HUD Colour Cycle | On | The main hand's gauge frame and XP bars cycle through the colours. Off: Gun Bonsai's colours. Also colours the shield gauge and the single HUD. |
+| Main HUD Cycle Speed | 1.0 | How fast it cycles (0 = still). Also the level-up cycle's speed. |
+| Main HUD Cycle Spread | 1.0 | How far apart in the cycle the frame and the two bars are. |
+| Main HUD Cycle Intensity | 1.0 | Brightness of the cycle. 1.0 / 1.0 / 1.0 is Gun Bonsai's own level-up cycle. |
+| Off HUD Colour Cycle, Speed, Spread, Intensity | On, 1.0, 1.0, 1.0 | The same for the off hand's gauge. |
 | Reset All | | Puts every row on this page and on Test and Debug back to its default. |
 
 **Test and Debug**
@@ -210,6 +221,8 @@ Reset All still resets them.
 - `sprites/ui/hud.xcf` © 2022 Sungraphica (sungraphica.itch.io), as noted in `COPYING.md`.
 - **Sounds** from SuperPunchOut (presidentkoopa), which took them from Punch Out Doom (DerrickDavison) via Virtual Punch Out, and the
   Super Punch-Out!! announcer's count.
+- **HUD Colour Cycle**: Gun Bonsai's own GetShinyColour level-up cycle (ToxicFrog, MIT), made an always-on option with
+  per-hand speed, spread and intensity in presidentkoopa's fork of Gun Bonsai's HUD.
 - **Berserk Meter gauge art**: coldcite's Top HP Bars bar, stood on end. His words: "Feel free to use this in your
   mods."
 - **Kill Rewards tree**: the bits are SoM's Universal(ish?) Kill Rewards (now in RSQ VisualRewards).

@@ -87,6 +87,17 @@ OptionMenu "RSQ_MeleeOptions"
 	Slider "Off HUD Down", "bonsai_vr_hud_off_y", 0.0, 1.0, 0.01, 2
 	Option "Off HUD Mirror", "bonsai_vr_hud_off_mirror", "RSQ_HudMirror"
 	StaticText " "
+	// Colour Cycle per hand (ca.ancilla.bonsai/HUD.zsc CycleOr; the sliders also tune the level-up cycle, so not greyed)
+	StaticText "HUD Colour Cycle", 1
+	Option "Main HUD Colour Cycle", "bonsai_vr_hud_main_cycle", "OnOff"
+	Slider "Main HUD Cycle Speed", "bonsai_vr_hud_main_cyclespeed", 0.0, 3.0, 0.1, 1
+	Slider "Main HUD Cycle Spread", "bonsai_vr_hud_main_gradient", 0.0, 3.0, 0.1, 1
+	Slider "Main HUD Cycle Intensity", "bonsai_vr_hud_main_intensity", 0.0, 2.0, 0.1, 1
+	Option "Off HUD Colour Cycle", "bonsai_vr_hud_off_cycle", "OnOff"
+	Slider "Off HUD Cycle Speed", "bonsai_vr_hud_off_cyclespeed", 0.0, 3.0, 0.1, 1
+	Slider "Off HUD Cycle Spread", "bonsai_vr_hud_off_gradient", 0.0, 3.0, 0.1, 1
+	Slider "Off HUD Cycle Intensity", "bonsai_vr_hud_off_intensity", 0.0, 2.0, 0.1, 1
+	StaticText " "
 	Submenu "Test and Debug", "RSQ_MeleeAdvanced"
 	// Every cvar a row names on both pages; the third argument adds Star Punch's two (no rows: Star Punch is no longer
 	// offered, GBOVR_TREES.md 2.1 #5; a save that learned it still reads them).

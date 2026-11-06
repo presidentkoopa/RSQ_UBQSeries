@@ -304,17 +304,56 @@ class TFLV_HUD : Object ui {
     return clamp(triangle(x) - 17, 0, 17);
   }
 
+  // RSQ PATCH (owner 11-06: "give the HUD the life from my old fork's HUD"). Gun Bonsai's own GetShinyColour
+  // (ToxicFrog, MIT) with the owner's per-hand tuning from his fork, and its ambient cycle (CycleOr). Each hand's gauge
+  // reads its own set (the off hand's gauge bonsai_vr_hud_off_*, the main hand's, the shield gauge and the single HUD
+  // bonsai_vr_hud_main_*):
+  //   *_cycle       Colour Cycle: the frame and both bars cycle all the time (else Gun Bonsai's colours, as before)
+  //   *_cyclespeed  scales the tic rate (0 = frozen)
+  //   *_gradient    Spread: scales the 0 / 34 / 68 offsets between frame, weapon bar and player bar
+  //   *_intensity   scales the brightness (clamped to 255)
+  // Defaults 1.0 / 1.0 / 1.0 are Gun Bonsai's stock cycle exactly (RGB triangle waves 34 tics apart, period 102).
+  // A level-up waiting still turns everything to the cycle, whatever the switch (stock Gun Bonsai).
+  // Colour-blind modes (RSQGB_CB): the switch reads as off for both hands (CycleOn).
+  // Photosensitive Mode (RSQGB_Photo): no cycling at all: the switch reads as off, and the level-up's colours are held
+  // still at tic 102 (frame red, weapon bar green, player bar blue at the default Spread).
+  string CyclePrefix() {
+    return lifeSlot == 1 ? "bonsai_vr_hud_off_" : "bonsai_vr_hud_main_";
+  }
+  double CycleF(string cvn, double def) {
+    CVar c = CVar.GetCVar(cvn, players[consoleplayer]);
+    return c ? c.GetFloat() : def;
+  }
+
   uint GetShinyColour(int offset) {
     // Simple RGB cycle. Ramps up R to max, then G to max, then R to 0, then B
     // to max, etc. Ramps are in increments of 15.
     // To do this we generate a triangle wave with a wavelength of (255/15*6)
     // from the tic counter, centered at 0 for red, 34 for green, and 68 for blue.
-    int tick = gametic % (255/15*6) - 255/15*3;
-    uint r = 15 * clamped_triangle(offset + gametic);
-    uint g = 15 * clamped_triangle(offset + gametic - 34);
-    uint b = 15 * clamped_triangle(offset + gametic - 68);
+    string p = CyclePrefix();
+    double speed = CycleF(p.."cyclespeed", 1.0);
+    double grad = CycleF(p.."gradient", 1.0);
+    double inten = CycleF(p.."intensity", 1.0);
+    int t = RSQGB_Photo.On() ? 102 : int(gametic * speed);
+    int o = int(offset * grad);
+    uint r = clamp(int(15 * inten * clamped_triangle(o + t)), 0, 255);
+    uint g = clamp(int(15 * inten * clamped_triangle(o + t - 34)), 0, 255);
+    uint b = clamp(int(15 * inten * clamped_triangle(o + t - 68)), 0, 255);
     // ARGB8 format
     return 0xFF000000 | r<<16 | g<<8 | b;
+  }
+
+  // The hand's Colour Cycle switch (off under Photosensitive Mode, and under any colour-blind mode: owner 11-06 06:59,
+  // "color blind turns off the HUD life"; the colour-blind pair is drawn as before). A level-up under a colour-blind
+  // mode stays as it was: the cycle plus the whole HUD breathing in brightness, so it does not rest on colour alone.
+  bool CycleOn() {
+    if (RSQGB_Photo.On() || RSQGB_CB.Mode()) return false;
+    CVar c = CVar.GetCVar(CyclePrefix().."cycle", players[consoleplayer]);
+    return c && c.GetBool();
+  }
+  // With the switch on, the cycle at this offset; off, the colour given (today's, untouched).
+  uint CycleOr(uint base, int offset) {
+    return CycleOn() ? GetShinyColour(offset) : base;
   }
 
   bool LevelUp(TFLV_CurrentStats stats) {
@@ -347,22 +386,24 @@ class TFLV_HUD : Object ui {
 
     Screen.DrawTexture(tex(frame_tex..face), false, hudx, hudy,
         DTA_VirtualWidth, fbw, DTA_VirtualHeight, fbh, DTA_KeepRatio, true,
-        DTA_Color, LevelUp(stats) ? GetShinyColour(0) : frame_rgb,
+        DTA_Color, LevelUp(stats) ? GetShinyColour(0) : CycleOr(frame_rgb, 0),
         DTA_Alpha, alpha,
         DTA_DestWidth, hudw, DTA_DestHeight, hudh);
 
     // RSQ PATCH (owner 11-05, "let's give the GBOVR XP bars some life like we did to the word SCORE"): with GBOVR
     // Menus and HUD On, each bar breathes around its own colour (RSQGB_BarLife). Off, the bars are Gun Bonsai's own.
-    uint wcol = LevelUp(stats) ? GetShinyColour(34) : weapon_rgb;
-    uint pcol = LevelUp(stats) ? GetShinyColour(68) : player_rgb;
+    // RSQ PATCH (11-06): with this hand's Colour Cycle on, the bars cycle too, 34 and 68 tics behind the frame.
+    uint wcol = LevelUp(stats) ? GetShinyColour(34) : CycleOr(weapon_rgb, 34);
+    uint pcol = LevelUp(stats) ? GetShinyColour(68) : CycleOr(player_rgb, 68);
+    bool cyc = CycleOn();
     if (RSQGB_BarLife.MockupOn()) {
       let lf = Life(lifeSlot);
       double t = gametic + fracTic;
       lf.Watch(stats, t);
       double wf = stats.wmax > 0 ? stats.wxp / stats.wmax : 0;
       double pf = stats.pmax > 0 ? double(stats.pxp) / stats.pmax : 0;
-      wcol = lf.Tint(wcol, wf, lf.phaseW, lf.kickW, lf.flareW, t, cb, LevelUp(stats));
-      pcol = lf.Tint(pcol, pf, lf.phaseP, lf.kickP, lf.flareP, t, cb, LevelUp(stats));
+      wcol = lf.Tint(wcol, wf, lf.phaseW, lf.kickW, lf.flareW, t, cb, LevelUp(stats), cyc);
+      pcol = lf.Tint(pcol, pf, lf.phaseP, lf.kickP, lf.flareP, t, cb, LevelUp(stats), cyc);
     }
     DrawProgressBar(
         tex(weapon_tex..face), wcol,
@@ -473,11 +514,12 @@ class RSQGB_BarLife ui {
   }
 
   // The bar's colour this frame (ARGB). ready: a level waits (the colour is Gun Bonsai's cycle; it is not warmed).
-  uint Tint(uint base, double frac, double phase, double kick, double flare, double t, int cb, bool ready) {
+  // cycling: the hand's Colour Cycle is on (the colour is the cycle; it is not warmed either, as with ready).
+  uint Tint(uint base, double frac, double phase, double kick, double flare, double t, int cb, bool ready, bool cycling = false) {
     if (RSQGB_Photo.On()) return base;
     double r = (base >> 16) & 0xFF, g = (base >> 8) & 0xFF, b = base & 0xFF;
     double near = ready ? 1.0 : Near(frac);
-    if (!cb && !ready) {
+    if (!cb && !ready && !cycling) {
       double w = 0.35 * near;
       r += (255 - r) * w; g += (190 - g) * w; b += (90 - b) * w;
     }
