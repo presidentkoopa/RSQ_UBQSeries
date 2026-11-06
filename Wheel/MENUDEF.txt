@@ -47,6 +47,7 @@ OptionString "wr_Palettes"
 
 OptionString "wr_FontSets"
 {
+	"JFO",       "JFO"
 	"StatusBar", "Status bar numerals"
 	"SmallGold", "Small gold numerals"
 	"SmallGrey", "Small grey numerals"
@@ -136,6 +137,8 @@ OptionMenu wr_Options
 	Option "Closing Ends SlowMo",       "wr_slowmo_cancel", "OnOff"
 	// Without RSQ SlowMo: the ring stops time itself while it is open.
 	Option "Freeze Without SlowMo",     "wr_own_freeze",   "OnOff"
+	// The ring stops time while it is open, with or without RSQ SlowMo (owner 2026-11-06).
+	Option "Freeze Time While Open",    "wr_freeze",       "OnOff"
 	Slider "Pull a Card Out",           "wr_pull_speed",   0.0, 4.0, 0.1, 1
 	Slider "Throw a Gun Back",          "wr_throw_speed",  0.0, 5.0, 0.1, 1
 	// How far in front of or behind the cards your hand may be and still touch one.

@@ -33,3 +33,13 @@ Card icons (owner 2026-11-03; sources and how each was made: sources/icons/SOURC
   - The ShieldSaw card (graphics/WRISSAW.png) is the series' own, drawn by sources/icons/gen_shieldsaw_icon.py.
   - The gloves, flare, flashlight and Force hand cards (graphics/WRIGLOVE.png, WRIFLARE.png, WRITORCH.png,
     WRIFORCE.png; owner 2026-11-05) are the series' own, drawn by sources/icons/gen_item_icons.py.
+
+THE TEXT (2026-11-06, the owner's "the nice font"): JFO, the JDUI font by Zedas, in the edit "JDUI Brutal Doom
+Ultimate Edition" by Blackmore1014 (ModDB: https://www.moddb.com/addons/jdui-brutal-doom-ultimate-edition), the
+same glyph files RSQ Gun Cards and RSQ VisualRewards ship: graphics/WRJSnnn.png (its SmallFont) and WRJBnnn.png
+(its BigFont digits), copied unchanged from GunCards/tools/card_art/jfo (JFO.pk3's Hires/SmallFont/stcfnNNN.png
+and Hires/BigFont/fontbNNN.png) by tools/gen_jfo.py. JFO ships with credit to Zedas and Blackmore1014, by the
+owner's decision (2026-11-04). Characters JFO does not have (. , ( ) ' ! ? % and the like) are the IWAD's own
+DoomFont glyphs, by lump name.
+
+The holster padlock (graphics/WRILOCK.png, owner 2026-11-06) is the series' own, drawn by tools/gen_lock_icon.py.

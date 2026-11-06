@@ -14,3 +14,7 @@ fontset DoomFont   { words WRG 9 7   numbers WRG 9 7 }     // DoomFont for every
 // >>> WRERMAC (tools/gen_ring_art.py)
 fontset Ermac      { words WRG 9 7   numbers WRE 12 12 }   // DoomFont words, Ermac's digits (the default)
 // <<< WRERMAC
+
+// >>> WRJFO (tools/gen_jfo.py)
+fontset JFO        { halves WRJ 17 32   numbers WRK 1 1 }   // JFO words (proportional, half cells), JFO big digits (the default)
+// <<< WRJFO

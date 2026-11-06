@@ -86,6 +86,11 @@ class RSQTR_Rig : EventHandler
 	bool   gripDown[MAXPLAYERS * 2];
 	String lastPut[MAXPLAYERS * RSQTR_Region.N];   // the weapon last holstered there (its icon)
 	bool lastPair[MAXPLAYERS * RSQTR_Region.N];    // ...and it went away as a PAIR (one in each hand)
+	// HOLSTER LOCK (owner 2026-11-06, BUGS_1.0 item 18; rsqtr_holster_lock, on): the gun locked to each gun holster ("" none).
+	// Set and cleared by "rsqtr_lock" (RSQ Wheel's alt-fire on a card). A locked gun always goes back to its own holster
+	// (Holster / HolsterOff), New Guns to Holsters never fills a holster locked to another gun, and every unlocked gun
+	// behaves as before.
+	String lockCls[MAXPLAYERS * RSQTR_Region.N];
 	String offNext[MAXPLAYERS];                     // the off-hand weapon to raise once the main hand has switched
 	int offWait[MAXPLAYERS];
 	// The last draw from a holster, PER HAND (11-03: since 11-02 each hand draws its own gun, and a scorer judges the
@@ -554,6 +559,7 @@ class RSQTR_Rig : EventHandler
 		if (!pmo || pmo.health <= 0) return;
 		if (e.Name == "rsqtr_whip") { WhipApply(pmo, e.Args[0] & 1, e.Args[1] != 0); return; }
 		if (e.Name == "rsqtr_holster_off") { HolsterOff(pmo, e.Args[0]); return; }
+		if (e.Name == "rsqtr_lock") { ToggleLock(pmo, e.Args[0]); return; }
 		if (e.Name == "rsqtr_draw_off") { DrawOff(pmo, e.Args[0]); return; }
 		if (e.Name == "rsqtr_holster") Holster(pmo, e.Args[0]);
 		else if (e.Name == "rsqtr_draw") Draw(pmo, e.Args[0], e.Args[1]);
@@ -632,6 +638,55 @@ class RSQTR_Rig : EventHandler
 	// swap: that one comes out); grip a full holster with your hand empty and you draw it; an
 	// empty holster with an empty hand does nothing.
 	static bool IsGunRegion(int r) { return r == 0 || r == 1 || r == 4 || r == 5 || r == 6 || r == 7; }
+	static bool LockOn(PlayerInfo p) { return Flag("rsqtr_holster_lock", p, true); }
+	// the gun holster cls is locked to, or -1 (none, or Holster Lock off)
+	int LockedTo(int n, String cls)
+	{
+		if (n < 0 || n >= MAXPLAYERS || cls == "" || !playeringame[n] || !LockOn(players[n])) return -1;
+		for (int r = 0; r < RSQTR_Region.N; r++) if (lockCls[n * RSQTR_Region.N + r] ~== cls) return r;
+		return -1;
+	}
+	// alt-fire on the Wheel: lock the gun in holster r to it, or unlock the holster
+	private void ToggleLock(PlayerPawn pmo, int r)
+	{
+		let p = pmo.player;
+		if (!LockOn(p) || !IsGunRegion(r)) return;
+		int n = pmo.PlayerNumber();
+		int k = n * RSQTR_Region.N + r;
+		if (lockCls[k] != "")
+		{
+			if (Flag("rsqtr_messages", p, false)) Console.Printf("T_LOCK t%d: %s unlocked from %s", level.maptime, lockCls[k], RSQTR_Region.NAMES[r]);
+			lockCls[k] = "";
+			pmo.A_StartSound("rsqtr/holster", CHAN_AUTO, CHANF_LOCAL, 0.5);
+			return;
+		}
+		String c = lastPut[k];
+		if (c == "") return;      // a gun in no holster: nothing (the owner's rule)
+		for (int j = 0; j < RSQTR_Region.N; j++) if (lockCls[n * RSQTR_Region.N + j] ~== c) lockCls[n * RSQTR_Region.N + j] = "";
+		lockCls[k] = c;
+		pmo.A_StartSound("rsqtr/holster", CHAN_AUTO, CHANF_LOCAL, 0.5);
+		if (Flag("rsqtr_messages", p, false)) Console.Printf("T_LOCK t%d: %s locked to %s", level.maptime, c, RSQTR_Region.NAMES[r]);
+	}
+	// A LOCKED GUN GOES HOME. The hand holding gun cls at gun holster r, cls locked to holster home (not r): cls goes into
+	// home, and r's gun (if any) comes out to that hand as a draw. A gun someone put in home meanwhile goes into r, so no
+	// holstered gun is lost. Returns the gun that comes out to the hand (or null).
+	private Weapon LockedHome(PlayerPawn pmo, String cls, int r, int home)
+	{
+		int n = pmo.PlayerNumber();
+		int base = n * RSQTR_Region.N;
+		String atR = Content(pmo, r);
+		String atHome = lastPut[base + home];
+		class<Weapon> ic = atR;
+		Weapon outW = (atR != "" && !(atR ~== cls) && ic) ? Weapon(pmo.FindInventory(ic)) : null;
+		for (int k = 0; k < RSQTR_Region.N; k++) if (lastPut[base + k] ~== cls) { lastPut[base + k] = ""; lastPair[base + k] = false; }
+		lastPut[base + home] = cls; lastPair[base + home] = false;
+		lastPut[base + r] = (atHome != "" && !(atHome ~== cls)) ? atHome : "";
+		lastPair[base + r] = false;
+		if (Flag("rsqtr_messages", pmo.player, false))
+			Console.Printf("T_LOCK t%d: %s is locked to %s: it goes there, not to %s%s", level.maptime, cls, RSQTR_Region.NAMES[home], RSQTR_Region.NAMES[r],
+				outW ? String.Format(" (%s comes out)", outW.GetClassName()) : "");
+		return outW;
+	}
 	static bool IsSaberRegion(int r) { return r == RSQTR_Region.SABER_L || r == RSQTR_Region.SABER_R; }
 	static bool IsGrenadeRegion(int r) { return r == RSQTR_Region.GRENADES; }
 	// the colour of RSQ Grenade's kind in this player's hand (its "kind.colour", by name; -1 the frag or no RSQ Grenade)
@@ -657,6 +712,17 @@ class RSQTR_Rig : EventHandler
 	// or quoted class name would be resolved at compile time and fail without that pk3 ("Unknown class name").
 	static String NadeWeapon()
 	{
+		// BD22 VR's grenade standing down for RSQ Grenade's (BD22's rsg_rsq_nade, or RSQ Grenade's rsqgn_replace_bd, with
+		// RSQ Grenade's handler there): the spot hands out RSQ Grenade's grenades
+		{
+			String rn = RSQ_GRENADE;
+			class<Weapon> rc = rn;
+			String hn = "RSQGN_Handler";
+			class<StaticEventHandler> hc = hn;
+			let c1 = CVar.FindCVar("rsg_rsq_nade"), c2 = CVar.FindCVar("rsqgn_replace_bd");
+			bool yield = (c1 && c1.GetInt() != 0) || (c2 && c2.GetInt() != 0);
+			if (rc && hc && yield && (EventHandler.Find(hc) || StaticEventHandler.Find(hc))) return rn;
+		}
 		String wn = GRENADE_WEAPON;
 		class<Weapon> wc = wn;
 		if (wc) return wn;
@@ -958,8 +1024,22 @@ class RSQTR_Rig : EventHandler
 	static bool IsMovedGun(Weapon w)
 	{
 		if (!w || IsSaber(w) || RSQTR_Cig.IsProp(w) || HomeWhip(w)) return false;
+		// BD22 VR's off-hand version of a gun (2.0.3y: it passes between hands, BD22 turns it into the right version
+		// in each hand) is a gun the rig moves, filed under its gun's name (MainOf)
+		String cn = w.GetClassName();
+		if (!(MainOf(cn) ~== cn)) return true;
 		let d = GetDefaultByType(w.GetClass());
 		return d && !d.bOffhandWeapon;
+	}
+
+	// The main-hand gun a BD22 VR off-hand version belongs to, asked by name (RSQ_BD22OffhandService "main.of"): the class
+	// itself for anything else, and without BD22 VR.
+	static String MainOf(String cls)
+	{
+		let sv = ServiceIterator.Find("RSQ_BD22OffhandService").Next();
+		if (!sv || cls == "") return cls;
+		String m = sv.GetString("main.of", cls);
+		return m != "" ? m : cls;
 	}
 
 	static bool OffHoldsGun(PlayerPawn pmo) { return IsMovedGun(pmo.player.OffhandWeapon); }
@@ -982,7 +1062,16 @@ class RSQTR_Rig : EventHandler
 		let w = p.OffhandWeapon;
 		if (!IsMovedGun(w)) return;
 		int n = pmo.PlayerNumber();
-		String cls = w.GetClassName();
+		String cls = MainOf(w.GetClassName());     // BD22 VR's off-hand version goes in under its gun's name
+		int lockHome = LockedTo(n, cls);
+		if (lockHome >= 0 && lockHome != r)
+		{
+			let outW = LockedHome(pmo, cls, r, lockHome);
+			if (outW && outW != p.ReadyWeapon) { outW.bOffhandWeapon = true; QueueOff(n, outW.GetClassName()); }
+			else EmptyOff(pmo);
+			pmo.A_StartSound("rsqtr/holster", CHAN_AUTO, CHANF_LOCAL, 0.8);
+			return;
+		}
 		String was = Content(pmo, r);
 		for (int k = 0; k < RSQTR_Region.N; k++)
 			if (k != r && lastPut[n * RSQTR_Region.N + k] == cls) lastPut[n * RSQTR_Region.N + k] = "";
@@ -1193,6 +1282,26 @@ class RSQTR_Rig : EventHandler
 					cls = single;
 				}
 			}
+		}
+		int lockHome = IsGunRegion(r) && HoldsGun(pmo) ? LockedTo(n, cls) : -1;
+		if (lockHome >= 0 && lockHome != r)
+		{
+			incoming = LockedHome(pmo, cls, r, lockHome);
+			if (incoming && incoming != w)
+			{
+				if (IsMovedGun(incoming)) incoming.bOffhandWeapon = false;
+				p.PendingWeapon = incoming;
+				drawTic[n * 2] = level.maptime + 1;
+				drawClass[n * 2] = incoming.GetClassName();
+				pmo.A_StartSound("rsqtr/draw", CHAN_AUTO, CHANF_LOCAL, 0.8);
+			}
+			else
+			{
+				let empty = EmptyHand(pmo);
+				if (empty && empty != w) p.PendingWeapon = empty;
+			}
+			pmo.A_StartSound("rsqtr/holster", CHAN_AUTO, CHANF_LOCAL, 0.8);
+			return;
 		}
 		if (IsSaberRegion(r))
 		{
@@ -2415,16 +2524,19 @@ class RSQTR_Rig : EventHandler
 			{
 				int k = n * RSQTR_Region.N + r;
 				if (lastPut[k] == "") { lastPut[k] = L.put[k]; lastPair[k] = L.pair[k]; }
+				if (lockCls[k] == "") lockCls[k] = L.lock[k];
 			}
 		}
 	}
+
+	String lastLock(int n, int r) { return LockOn(players[n]) ? lockCls[n * RSQTR_Region.N + r] : ""; }
 
 	private void TickLoadout()
 	{
 		let L = RSQTR_Loadout.Get();
 		if (L)
 		{
-			for (int k = 0; k < MAXPLAYERS * RSQTR_Region.N; k++) { L.put[k] = lastPut[k]; L.pair[k] = lastPair[k]; }
+			for (int k = 0; k < MAXPLAYERS * RSQTR_Region.N; k++) { L.put[k] = lastPut[k]; L.pair[k] = lastPair[k]; L.lock[k] = lockCls[k]; }
 			L.have = true;
 		}
 		if (level.maptime % 5 != 0) return;
@@ -2455,6 +2567,9 @@ class RSQTR_Rig : EventHandler
 				{
 					int r = AUTO_ORDER[j];
 					if (Content(pmo, r) != "") continue;
+					// HOLSTER LOCK: never into a holster locked to another gun
+					String lk = lastLock(n, r);
+					if (lk != "" && !(lk ~== cls)) continue;
 					lastPut[n * RSQTR_Region.N + r] = cls;
 					lastPair[n * RSQTR_Region.N + r] = false;
 					if (n == consoleplayer)
@@ -2615,11 +2730,12 @@ class RSQTR_Loadout : StaticEventHandler
 {
 	String put[MAXPLAYERS * RSQTR_Region.N];
 	bool pair[MAXPLAYERS * RSQTR_Region.N];
+	String lock[MAXPLAYERS * RSQTR_Region.N];   // the holster locks (rig.zs lockCls)
 	bool have;
 	static RSQTR_Loadout Get() { return RSQTR_Loadout(StaticEventHandler.Find("RSQTR_Loadout")); }
 	override void NewGame()
 	{
-		for (int k = 0; k < MAXPLAYERS * RSQTR_Region.N; k++) { put[k] = ""; pair[k] = false; }
+		for (int k = 0; k < MAXPLAYERS * RSQTR_Region.N; k++) { put[k] = ""; pair[k] = false; lock[k] = ""; }
 		have = false;
 	}
 }

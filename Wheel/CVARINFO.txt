@@ -74,6 +74,9 @@ user bool wr_slowmo_cancel = false;
 // RSQ (owner's pick 38, 2026-10-31): without RSQ SlowMo loaded, opening the ring stops the world itself
 // (Level.SetFrozen) -- off by default: off, time runs on and nothing is sent. With SlowMo loaded it is not read.
 user bool wr_own_freeze = false;
+// RSQ (owner 2026-11-06, BUGS_1.0 item 25): Freeze Time While Open -- the ring stops the world while it is open,
+// with or without RSQ SlowMo (then SlowMo is not asked). Off by default.
+user bool wr_freeze = false;
 
 // RSQ: THE WRIST CARD. Bring a forearm up across your chest as if checking a watch (wrist in front of
 // your face, hand pointing across the body) and hold it wr_watch_dwell tics: that hand's gun shows
@@ -90,7 +93,7 @@ user float wr_pull_speed = 1.5;
 user float wr_throw_speed = 2.6;
 user int   wr_watch_dwell = 8;
 user float wr_watch_scale = 0.6;
-user string wr_fontset = "Ermac";
+user string wr_fontset = "JFO";
 user int  wr_doubletap = 10;
 // RSQ QoL round (owner's picks, 2026-10-31). WH2-WH5 and WH7 are always on; these two are options, off by default.
 // WH6: the ring opens with the card of the gun this hand holds where the hand points, so the hand starts on it.

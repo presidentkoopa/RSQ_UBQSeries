@@ -294,6 +294,7 @@ class wr_Rig : EventHandler
 	Array<int> mShadows;          // one dark quad behind each card
 	Array<int> mSlotNums;         // the key you would press, on the card it maps to
 	Array<int> mMarks;            // "you already have this", per card
+	Array<int> mLockMarks;        // RSQ: the padlock on a card whose gun is locked to its holster (RSQ Tactical Rig)
 	Array<int> mStackBadges;      // "+N", when this card is hiding others behind it
 	Array<int> mSlotCount;        // how many weapons TOTAL share this card's slot
 	// Parallel to mStackBadges/mSlotCount: true when a collapsed card's
@@ -797,6 +798,32 @@ class wr_Rig : EventHandler
 			return;
 		}
 
+		if (e.Name ~== "wr_lock")
+		{
+			let pmo = players[consoleplayer].mo;
+			if (cvBool("wr_debug", false)) Console.Printf("RSQ Wheel: alt-fire on a card (open %d, hovered %d)", mOpen, mHovered);
+			if (pmo == null || !mOpen || mHovered == 0 || mPage != PAGE_WEAPONS) return;
+			Class<Weapon> c = HoveredClass();
+			if (c == null) return;
+			let sv = ServiceIterator.Find("RSQTR_RigService").Next();
+			if (!sv) return;
+			// the holster it is in (the rig keeps a gun under the name it holstered it as: its own, or its gun's for a
+			// BD22 VR off-hand version), and whether that holster takes locks at all ("rig.lockable": Holster Lock on)
+			int r = sv.GetInt("rig.holster", c.GetClassName(), 0, 0, pmo);
+			int lk = sv.GetInt("rig.locked", c.GetClassName(), 0, 0, pmo);
+			if (lk >= 0) r = lk;
+			if (r < 0 || sv.GetInt("rig.lockable", "", r, 0, pmo) <= 0)
+			{
+				if (cvBool("wr_debug", false)) Console.Printf("RSQ Wheel: lock %s: in no holster (or Holster Lock off): nothing", c.GetClassName());
+				return;
+			}
+			EventHandler.SendNetworkEvent("rsqtr_lock", r);
+			feedback(Sound("wristrig/lock"), 0.4, 50);
+			if (cvBool("wr_debug", false)) Console.Printf("RSQ Wheel: %s %s holster %d", lk >= 0 ? "unlock" : "lock", c.GetClassName(), r);
+			mRebuildTics = 2;   // the padlock follows once the rig has done it (its event lands next tic)
+			return;
+		}
+
 		if (e.Name ~== "wr_grab")
 		{
 			let pmo = players[consoleplayer].mo;
@@ -935,6 +962,14 @@ class wr_Rig : EventHandler
 			return false;
 		}
 
+		// RSQ HOLSTER LOCK (owner 2026-11-06): alt-fire on a gun's card locks it to the holster it is in, or unlocks it
+		// (RSQ Tactical Rig's, by its "rsqtr_lock" event; a gun in no holster: nothing happens). Consumed: it never fires.
+		if (alt && mPage == PAGE_WEAPONS)
+		{
+			EventHandler.SendNetworkEvent("wr_lock");
+			return true;
+		}
+
 		if (!fire && !(mTouching && wr_Keybind.isKeyFor(e.KeyScan, "+use"))) return false;
 
 		// RSQ WH7: the trigger on a FAN card holds it. Let go without moving and it is picked, as a press on a fan
@@ -1059,7 +1094,11 @@ class wr_Rig : EventHandler
 		Class<Weapon> cb = HoveredClass();
 		mHovered = keep;
 		if (!ca || !cb || ca == cb) return null, 0;
-		return Weapon(pmo.FindInventory(cb)), other;
+		// RSQ: that hand's own version of the card (resolvePick); a card whose home is the first hand is not a second pick
+		Class<Weapon> rc; int rh;
+		[rc, rh] = resolvePick(pmo, cb, other);
+		if (rh != other || !rc) return null, 0;
+		return Weapon(pmo.FindInventory(rc)), other;
 	}
 
 	// RSQ WH3: the second hand's gun, after commit() has given the first hand its own (and closed the ring).
@@ -1073,7 +1112,8 @@ class wr_Rig : EventHandler
 		if (noAmmo(w)) { dryClick(w); return; } // WH5 for this hand too: it keeps its gun
 		let had = (hand == 1) ? pmo.player.OffhandWeapon : pmo.player.ReadyWeapon;
 		if (had == w) return;
-		equipInstantly(pmo, w, hand);
+		if (isShieldSaw(w.GetClass())) EventHandler.SendNetworkEvent("ssq-draw");   // RSQ ShieldSaw draws its own (commitAs)
+		else equipInstantly(pmo, w, hand);
 		feedback(Sound("wristrig/lock"), 0.6, 70);
 		if (cvBool("wr_debug", false)) Console.Printf("RSQ Wheel: two-hand pick: hand %d takes %s", hand, w.GetClassName());
 	}
@@ -1106,7 +1146,8 @@ class wr_Rig : EventHandler
 		if (!w || w.Owner != pmo) return;
 		let now = (hand == 1) ? pmo.player.OffhandWeapon : pmo.player.ReadyWeapon;
 		if (hand == 1 && offhandBraced(pmo)) { feedback(Sound("wristrig/nope"), 0.35, 60); return; }
-		equipInstantly(pmo, w, hand);
+		if (isShieldSaw(w.GetClass())) EventHandler.SendNetworkEvent("ssq-draw");   // RSQ ShieldSaw draws its own (commitAs)
+		else equipInstantly(pmo, w, hand);
 		mPrevWeap[hand] = now;
 		feedback(Sound("wristrig/lock"), 0.5, 60);
 	}
@@ -3234,6 +3275,10 @@ class wr_Rig : EventHandler
 		{
 			if (mMarks[i]) wr_BB.RemoveBillboard(mMarks[i]);
 		}
+		for (int i = 0; i < mLockMarks.Size(); ++i)
+		{
+			if (mLockMarks[i]) wr_BB.RemoveBillboard(mLockMarks[i]);
+		}
 		for (int i = 0; i < mStackBadges.Size(); ++i)
 		{
 			if (mStackBadges[i]) wr_BB.RemoveBillboard(mStackBadges[i]);
@@ -3255,6 +3300,7 @@ class wr_Rig : EventHandler
 			if (mGroups[i]) wr_BB.RemoveBillboardGroup(mGroups[i]);
 		}
 		mMarks.Clear();
+		mLockMarks.Clear();
 		mStackBadges.Clear();
 		mShadows.Clear();
 		mSlotNums.Clear();
@@ -3281,6 +3327,7 @@ class wr_Rig : EventHandler
 		mFaces.Clear();
 		mCardX.Clear(); mCardY.Clear(); mCardZ.Clear();
 		mMarks.Clear();
+		mLockMarks.Clear();
 		mStackBadges.Clear();
 		mShadows.Clear();
 		mSlotNums.Clear();
@@ -3497,7 +3544,7 @@ class wr_Rig : EventHandler
 
 	// Geometry generation. Bump this whenever the numbers below change and every
 	// existing config picks them up once, automatically.
-	const CFG_VERSION = 27;
+	const CFG_VERSION = 28;
 
 	private void migrateConfig()
 	{
@@ -3520,6 +3567,13 @@ class wr_Rig : EventHandler
 		// "the comparison card is nice, but not needed"): Edge Sweep off, and the comparison card off on both
 		// routes (two hands on two cards, and a floor gun against the one in hand).
 		if (from < 27) { setCv("wr_edge_sweep", 0); setCv("wr_twohand_compare", 0); setCv("wr_inspect_delta", 0); }
+		// Gen 28 (owner 2026-11-06: "the nice font"): the ring's text in JFO. A config still on the old default (Ermac's
+		// digits with DoomFont words) moves to JFO; a font set the player picked otherwise stays.
+		if (from < 28)
+		{
+			let fs = CVar.FindCVar("wr_fontset");
+			if (fs && fs.GetString() ~== "Ermac") fs.SetString("JFO");
+		}
 		stamp.SetInt(CFG_VERSION);
 	}
 
@@ -3671,7 +3725,7 @@ class wr_Rig : EventHandler
 
 			Array<Class<Weapon> > variants;
 			slotWeapons(pmo, slot, variants);
-			if (mFansEnabled) dropFists(variants);   // RSQ: the fist has its own card (ensureFistCards)
+			dropFists(variants);   // RSQ: the fist has its one card (ensureFistCards), fanned or flat
 			if (variants.Size() == 0) continue;
 
 			// COLLAPSED ONLY: move the remembered pick to the front. The test
@@ -3780,7 +3834,11 @@ class wr_Rig : EventHandler
 			// that -- filtering on it would hide guns nothing has stowed.
 			// RSQ: no bHolsterHidden on QZD 17.3 (a REMA weapon flag); nothing is skipped.
 
-			if (!eitherHand() && held.bNoHandSwitch && held.bOffhandWeapon != (mRigHand == 1)) continue;
+			// RSQ (BD22 VR one entry): an off-hand version is not a card of its own while you own its gun
+			Class<Weapon> mainGun = mainOfCopy(type);
+			if (mainGun && pmo.FindInventory(mainGun)) continue;
+			// RSQ (owner 2026-11-06): a weapon with a home hand (homeHandOf) is offered to either hand
+			if (!eitherHand() && held.bNoHandSwitch && held.bOffhandWeapon != (mRigHand == 1) && homeHandOf(type) < 0) continue;
 
 			into.Push(type);
 		}
@@ -4457,8 +4515,29 @@ class wr_Rig : EventHandler
 	// path answers to that and to nothing else.
 	private void bulletTime(bool on)
 	{
-		if (on && !cvBool("wr_bullettime", true)) return;
 		if (on == mBtOn) return;
+		// RSQ (owner 2026-11-06, BUGS_1.0 item 25: "option for wheel to freeze time"): FREEZE TIME WHILE OPEN, off by
+		// default. On, the ring stops the world itself (Level.SetFrozen, as Freeze Without SlowMo below), with or without
+		// RSQ SlowMo, and asks SlowMo for nothing. Off, everything below is as it was.
+		if (on && cvBool("wr_freeze", false))
+		{
+			Level.SetFrozen(true);
+			players[consoleplayer].timefreezer = 1;
+			mFroze = true;
+			mBtOn = true;
+			if (cvBool("wr_debug", false)) Console.Printf("RSQ Wheel: Freeze Time While Open: the world stops (t%d)", level.maptime);
+			return;
+		}
+		if (!on && mFroze && !mSlowSent)
+		{
+			Level.SetFrozen(false);
+			players[consoleplayer].timefreezer = 0;
+			mFroze = false;
+			mBtOn = false;
+			if (cvBool("wr_debug", false)) Console.Printf("RSQ Wheel: the ring closed: the world runs (t%d)", level.maptime);
+			return;
+		}
+		if (on && !cvBool("wr_bullettime", true)) return;
 
 		// RSQ: RSQ SlowMo when it is loaded -- its own on/off events, which it holds until told
 		// otherwise -- and BulletTimeX's toggle (REMA's route) when it is not.
@@ -4478,9 +4557,13 @@ class wr_Rig : EventHandler
 				int running = sm.GetInt("running");
 				mSlowWasOn = running >= 0 ? running > 0 : sm.GetInt("active") > 0;
 				if (!mSlowWasOn) EventHandler.SendNetworkEvent("rsm_on");
+				mSlowSent = true;
 			}
-			else if (!mSlowWasOn || cvBool("wr_slowmo_cancel", false))
-				EventHandler.SendNetworkEvent("rsm_off");
+			else
+			{
+				if (mSlowSent && (!mSlowWasOn || cvBool("wr_slowmo_cancel", false))) EventHandler.SendNetworkEvent("rsm_off");
+				mSlowSent = false;
+			}
 		}
 		else if (on)
 		{
@@ -4507,6 +4590,7 @@ class wr_Rig : EventHandler
 	}
 	bool mFroze;       // RSQ: this ring stopped the world itself (no SlowMo, wr_own_freeze)
 	bool mSlowWasOn;   // RSQ: RSQ SlowMo was already running when the ring opened
+	bool mSlowSent;    // RSQ: this opening went through RSQ SlowMo (so its close does too)
 
 	private void tintCard(int id, bool lit)
 	{
@@ -5232,20 +5316,20 @@ class wr_Rig : EventHandler
 	// Each hand that picks from this ring gets its fist (both with wr_either_hand), unless a card already has it.
 	private void ensureFistCards(PlayerPawn pmo)
 	{
-		int at = 0;
-		for (int h = 0; h < 2; ++h)
-		{
-			if (!eitherHand() && h != ((mRigHand == 1) ? 1 : 0)) continue;
-			Class<Weapon> f = fistFor(pmo, h);
-			if (f == null || mTypes.Find(f) < mTypes.Size()) continue;
-			let held = Weapon(pmo.FindInventory(f));
-			mTypes.Insert(at, f);
-			mCardSlots.Insert(at, 1);
-			mCardColor.Insert(at, cardColorFor(held, 1));
-			mSlotCount.Insert(at, 1);
-			mSlotAllDry.Insert(at, false);
-			++at;
-		}
+		// ONE FIST CARD (owner 2026-11-06: "i do not need two selectable fists... just one button giving the correct
+		// fist to the selecting hand"). The card wears the main hand's fist (the off hand's if only it has one, or the
+		// ring's hand with Either Hand Picks off); taking it gives the picking hand its own fist (resolvePick).
+		int h0 = eitherHand() ? 0 : ((mRigHand == 1) ? 1 : 0);
+		Class<Weapon> f = fistFor(pmo, h0);
+		if (f == null && eitherHand()) f = fistFor(pmo, 1);
+		if (f == null) return;
+		for (int i = 0; i < mTypes.Size(); ++i) if (isFistClass(mTypes[i])) return;
+		let held = Weapon(pmo.FindInventory(f));
+		mTypes.Insert(0, f);
+		mCardSlots.Insert(0, 1);
+		mCardColor.Insert(0, cardColorFor(held, 1));
+		mSlotCount.Insert(0, 1);
+		mSlotAllDry.Insert(0, false);
 	}
 
 	// A fanned slot keeps its fists out of the fan: they have their own card (ensureFistCards).
@@ -6297,6 +6381,19 @@ class wr_Rig : EventHandler
 			}
 			mMarks.Push(mid);
 
+			// RSQ HOLSTER LOCK (owner 2026-11-06, BUGS_1.0 item 18): a padlock on the card while RSQ Tactical Rig has
+			// this gun locked to its holster (asked by name: RSQTR_RigService "rig.locked"; nothing without the rig).
+			int lkid = 0;
+			if (wcls && mPage == PAGE_WEAPONS && lockedRegion(wcls) >= 0)
+			{
+				lkid = wr_BB.AddBillboardPersistent(
+					(0, 0, 0), 0.6, 0.6, 0, 0,
+					wr_BB.BBF_FIXED, wr_BB.BB_TEXTURE, 0,
+					0xFFFFFF, wr_BB.BBFL_NOHIT, 0, "WRILOCK");
+				if (cvBool("wr_debug", false)) Console.Printf("RSQ Wheel: %s is locked to holster %d: padlock on its card", wcls.GetClassName(), lockedRegion(wcls));
+			}
+			mLockMarks.Push(lkid);
+
 			// THE SLOT NUMBER, in the corner opposite the marker.
 			//
 			// The ring's bearings are fixed per slot precisely so it can be
@@ -7057,6 +7154,7 @@ class wr_Rig : EventHandler
 			if (i < mLabels.Size())  fade(mLabels[i], cardAlpha);
 			if (i < mAmmos.Size())   fade(mAmmos[i], cardAlpha);
 			if (i < mMarks.Size())   fade(mMarks[i], cardAlpha);
+			if (i < mLockMarks.Size()) fade(mLockMarks[i], cardAlpha);
 			if (i < mStackBadges.Size()) fade(mStackBadges[i], cardAlpha);
 
 			// The model floats a little in FRONT of its plate, so the card backs
@@ -7091,6 +7189,17 @@ class wr_Rig : EventHandler
 				                                 panelH * 0.13 * pulse);
 				wr_BB.OrientBillboard(mMarks[i], faceYaw, tilt, wr_BB.BBF_FIXED);
 				wr_BB.RollBillboard(mMarks[i], roll);
+			}
+			// RSQ: the holster padlock, the card's bottom-right corner
+			if (i < mLockMarks.Size() && mLockMarks[i] != 0)
+			{
+				wr_BB.MoveBillboard(mLockMarks[i],
+					pos + lift * 1.5
+					    + viewRight * (panelW * 0.33 * pulse)
+					    - (0, 0, panelH * 0.22 * pulse));
+				wr_BB.ResizeBillboard(mLockMarks[i], panelW * 0.26 * pulse, panelW * 0.26 * pulse);
+				wr_BB.OrientBillboard(mLockMarks[i], faceYaw, tilt, wr_BB.BBF_FIXED);
+				wr_BB.RollBillboard(mLockMarks[i], roll);
 			}
 
 			if (i < mPlates.Size())
@@ -9275,6 +9384,13 @@ class wr_Rig : EventHandler
 	// whole point of the swap and the _2 lookup is that picking your other
 	// hand's gun is a reasonable thing to ask for, and a marker that greyed it
 	// out would be undoing that.
+	static bool sameCard(Class<Weapon> held, Class<Weapon> card)
+	{
+		if (held == card) return true;
+		if (isFistClass(card) && isFistClass(held)) return true;
+		return cardOf(held) == cardOf(card);
+	}
+
 	private int heldWhere(Class<Weapon> type) const
 	{
 		if (type == null) return 0;
@@ -9283,8 +9399,9 @@ class wr_Rig : EventHandler
 		                            : players[consoleplayer].ReadyWeapon;
 		let other = otherHandWeapon();
 
-		if (mine  != null && mine.GetClass()  == type) return 1;
-		if (other != null && other.GetClass() == type) return 2;
+		// RSQ: an off-hand version marks its gun's card, any fist the fist's card (one card each, resolvePick)
+		if (mine  != null && sameCard(mine.GetClass(), type))  return 1;
+		if (other != null && sameCard(other.GetClass(), type)) return 2;
 		return 0;
 	}
 
@@ -9945,25 +10062,127 @@ class wr_Rig : EventHandler
 
 	// RSQ: the gun goes into the hand that picked it. A gun that only fits one hand
 	// (bNoHandSwitch) goes to that hand whichever hand pointed at it.
+	// RSQ (owner 2026-11-06, BUGS_1.0 items 1 and 15, and the BD22 VR one-entry rule): resolvePick says what the card
+	// gives the hand that picked it -- that hand's fist, a weapon's home hand, or that hand's version of a BD22 VR gun.
 	private void commit(PlayerPawn pmo)
 	{
-		if (eitherHand() && mPage == PAGE_WEAPONS)
+		mPickCls = null;
+		if (mPage == PAGE_WEAPONS)
 		{
-			int hand = mPokeHand;
-			Class<Weapon> want = HoveredClass();
-			let w = want ? Weapon(pmo.FindInventory(want)) : null;
-			bool fixedHand = w && w.bNoHandSwitch, fixedOff = w && w.bOffhandWeapon;
-			if (!w && want && isFistClass(want))   // RSQ: a fist not owned yet (commitAs gives it): its defaults say the hand
-			{
-				let d = GetDefaultByType(want);
-				fixedHand = d.bNoHandSwitch; fixedOff = d.bOffhandWeapon;
-			}
-			if (fixedHand) hand = fixedOff ? 1 : 0;
-			// braced off hand: the gun goes to the hand that can hold it (offhandBraced)
-			else if (hand == 1 && offhandBraced(pmo)) hand = 0;
+			int hand = eitherHand() ? mPokeHand : ((mRigHand == 1) ? 1 : 0);
+			Class<Weapon> c;
+			[c, hand] = resolvePick(pmo, HoveredClass(), hand);
+			mPickCls = c;
 			mRigHand = hand;
 		}
 		commitAs(pmo);
+		mPickCls = null;
+	}
+
+	// RSQ HOLSTER LOCK: the holster RSQ Tactical Rig has this gun locked to, or -1 (no lock, no rig, Holster Lock off).
+	private int lockedRegion(Class<Weapon> c)
+	{
+		if (!c) return -1;
+		let sv = ServiceIterator.Find("RSQTR_RigService").Next();
+		if (!sv) return -1;
+		return sv.GetInt("rig.locked", c.GetClassName(), 0, 0, players[consoleplayer].mo);
+	}
+
+	Class<Weapon> mPickCls;   // RSQ: what this pick equips (commit: resolvePick); null = the card's own class
+	private Class<Weapon> pickClass() const { return mPickCls ? mPickCls : HoveredClass(); }
+
+	// HOME HANDS (owner 2026-11-06: "cannot select shieldsaw from wheel, i need to select with either hand but have it
+	// live in offhand once selected. same rule for saber and whip and grenade but they go in mainhand."): either hand
+	// picks them; RSQ ShieldSaw's shield always ends in the off hand, RSQ Saber's saber, RSQ Whip's whip and RSQ
+	// Grenade's grenade always in the main hand. By the class tree, names looked up at run time (no mod is needed).
+	// -1: no home hand. RSQ Saber's second blade (UBQS_SaberOff) is not on the list and is left as it was.
+	clearscope static int homeHandOf(Class<Actor> c)
+	{
+		if (c == null) return -1;
+		if (descends(c, clsNamed('SSQ_ShieldSaw')))    return 1;
+		if (descends(c, clsNamed('UBQS_Saber')))       return 0;
+		if (descends(c, clsNamed('RSQWP_WhipWeapon'))) return 0;
+		if (descends(c, clsNamed('RSQGN_Grenade')))    return 0;
+		return -1;
+	}
+	clearscope static bool isShieldSaw(Class<Actor> c) { return c != null && descends(c, clsNamed('SSQ_ShieldSaw')); }
+
+	// BD22 VR'S OFF-HAND VERSION OF A GUN (its RSQ_Off_<gun>). Asked by name first (RSQ_BD22OffhandService: "main.of" gives
+	// the gun a version belongs to, "off.of" a gun's version; 2.0.3y). Without that service, by the class tree: a weapon
+	// that is an off-hand weapon by default and a subclass of a gun that is not. Returns the gun, or null.
+	static Service offSvc() { return ServiceIterator.Find("RSQ_BD22OffhandService").Next(); }
+	static Class<Weapon> mainOfCopy(Class<Actor> c)
+	{
+		if (c == null) return null;
+		let wc = (Class<Weapon>)(c);
+		if (wc == null) return null;
+		let sv = offSvc();
+		if (sv)
+		{
+			String cn = wc.GetClassName();
+			String m = sv.GetString("main.of", cn);
+			if (m == "" || m ~== cn) return null;
+			Class<Weapon> mc = m;
+			return mc;
+		}
+		let d = GetDefaultByType(wc);
+		if (!d.bOffhandWeapon) return null;
+		let pc = (Class<Weapon>)(wc.GetParentClass());
+		if (pc == null || pc.GetClassName() == 'Weapon') return null;
+		if (GetDefaultByType(pc).bOffhandWeapon) return null;
+		return pc;
+	}
+	// The card a weapon is shown on: an off-hand version shares its gun's card.
+	static Class<Weapon> cardOf(Class<Weapon> c) { let m = mainOfCopy(c); return m ? m : c; }
+
+	// The off-hand version of gun c that the player owns, or null.
+	private static Weapon offCopyOf(PlayerPawn pmo, Class<Weapon> c)
+	{
+		if (!pmo || !c) return null;
+		let sv = offSvc();
+		if (sv)
+		{
+			String o = sv.GetString("off.of", c.GetClassName());
+			if (o == "") return null;
+			Class<Weapon> oc = o;
+			return oc ? Weapon(pmo.FindInventory(oc)) : null;
+		}
+		for (let it = pmo.Inv; it; it = it.Inv)
+		{
+			let w = Weapon(it);
+			if (w && w.GetClass() != c && mainOfCopy(w.GetClass()) == c) return w;
+		}
+		return null;
+	}
+
+	// WHAT A CARD GIVES THE HAND THAT PICKED IT, and which hand that ends up being.
+	//   the fist's card (one card, owner 2026-11-06: "just one button giving the correct fist to the selecting hand"):
+	//     the picking hand's own fist (fistFor)
+	//   a weapon with a home hand (homeHandOf): that weapon, in its home hand
+	//   a BD22 VR gun with an off-hand version: the main hand takes the gun, the off hand its version (one card each;
+	//     the BD22 lane's "whichever hand selects gets its version")
+	//   anything else: as before -- a bNoHandSwitch weapon goes to its own hand, a braced off hand passes to the main
+	private Class<Weapon>, int resolvePick(PlayerPawn pmo, Class<Weapon> want, int hand)
+	{
+		if (want == null || pmo == null) return want, hand;
+		if (isFistClass(want)) { let f = fistFor(pmo, hand); if (f) want = f; }
+		int home = homeHandOf(want);
+		if (home >= 0) return want, home;
+		Class<Weapon> main = mainOfCopy(want);
+		if (main && pmo.FindInventory(main)) want = main;     // a version's card is its gun's
+		let w = Weapon(pmo.FindInventory(want));
+		let d = GetDefaultByType(want);
+		bool fixedHand = w ? w.bNoHandSwitch : d.bNoHandSwitch;
+		bool fixedOff  = w ? w.bOffhandWeapon : d.bOffhandWeapon;
+		if (hand == 1 && !fixedHand)
+		{
+			let cp = offCopyOf(pmo, want);
+			if (cp && !offhandBraced(pmo)) return cp.GetClass(), 1;
+		}
+		if (fixedHand) hand = fixedOff ? 1 : 0;
+		// braced off hand: the gun goes to the hand that can hold it (offhandBraced)
+		else if (hand == 1 && offhandBraced(pmo)) hand = 0;
+		return want, hand;
 	}
 
 	private void commitAs(PlayerPawn pmo)
@@ -9981,7 +10200,7 @@ class wr_Rig : EventHandler
 		{
 			int h = (mRigHand == 1) ? 1 : 0;
 			let had = (h == 1) ? pmo.player.OffhandWeapon : pmo.player.ReadyWeapon;
-			Class<Weapon> want = HoveredClass();
+			Class<Weapon> want = pickClass();
 			if (had && (!want || !(had is want))) { mPrevWeap[h] = had; mLastPickHand = h; }
 		}
 		if (mPage == PAGE_MODELS)    { commitModel(pmo);     return; }
@@ -9992,8 +10211,12 @@ class wr_Rig : EventHandler
 		// A KIND CARD (the fan of kinds): RSQ Grenade takes the kind (its "kind.set"), then the grenade is equipped as any card
 		int pickKind = HoveredKind();
 		if (pickKind >= 0) { let sv = ServiceIterator.Find("RSQGN_Service").Next(); if (sv) sv.GetInt("kind.set", "", pmo.PlayerNumber(), pickKind); }
-		Class<Weapon> want = HoveredClass();
+		Class<Weapon> want = pickClass();
 		if (want == null) return;
+		Class<Weapon> cardCls = HoveredClass();   // the card's own class (a slot's remembered pick is the card)
+		// RSQ ShieldSaw: only its own Draw puts the shield in the hand (its handler takes back a shield anything else
+		// puts there), so the ring asks it by its network event, "ssq-draw", by name. Nothing to do if it is in hand.
+		bool viaSaw = isShieldSaw(want);
 
 		let weap = Weapon(pmo.FindInventory(want));
 		// RSQ: the fist's card is always on the ring (ensureFistCards); a player without that fist is given it
@@ -10030,7 +10253,7 @@ class wr_Rig : EventHandler
 		//
 		// Order matters. Swapping first would be a worse outcome reached faster.
 		bool swapped = false;
-		if (weap == otherHandWeapon())
+		if (!viaSaw && weap == otherHandWeapon())
 		{
 			let twin = freeTwinOf(pmo, want);
 			if (twin != null)
@@ -10111,7 +10334,7 @@ class wr_Rig : EventHandler
 			if (hitCard < mCardSlots.Size())
 			{
 				int pickedSlot = mCardSlots[hitCard];
-				if (pickedSlot >= 0 && pickedSlot < 10) mLastPicked[pickedSlot] = want;
+				if (pickedSlot >= 0 && pickedSlot < 10) mLastPicked[pickedSlot] = cardCls ? cardCls : want;
 			}
 		}
 		else
@@ -10147,14 +10370,20 @@ class wr_Rig : EventHandler
 				if (mExpanded >= 0 && mExpanded < mCardSlots.Size())
 				{
 					int pickedSlot = mCardSlots[mExpanded];
-					if (pickedSlot >= 0 && pickedSlot < 10) mLastPicked[pickedSlot] = want;
+					if (pickedSlot >= 0 && pickedSlot < 10) mLastPicked[pickedSlot] = cardCls ? cardCls : want;
 				}
 			}
 		}
 
 		// The swap already did its own equipping, above, because it needed to
 		// read the outgoing weapon before anything moved.
-		if (!swapped) equipInstantly(pmo, weap, mRigHand);
+		if (viaSaw)
+		{
+			if (pmo.player.OffhandWeapon != weap) EventHandler.SendNetworkEvent("ssq-draw");
+			if (cvBool("wr_debug", false)) Console.Printf("RSQ Wheel: ShieldSaw picked by hand %d: %s", mPokeHand, pmo.player.OffhandWeapon != weap ? "ssq-draw sent" : "already in the off hand");
+		}
+		else if (!swapped) equipInstantly(pmo, weap, mRigHand);
+		if (cvBool("wr_debug", false)) Console.Printf("RSQ Wheel: pick %s (card %s) -> hand %d", weap.GetClassName(), cardCls ? cardCls.GetClassName() : 'none', mRigHand);
 		closeRig(true);
 	}
 

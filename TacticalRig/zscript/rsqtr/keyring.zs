@@ -26,7 +26,40 @@ class RSQTR_Keyring : EventHandler
 	const TOUCH_M = 0.12;       // metres from the hand to the door's line that counts as touching it
 	transient int keysIn;       // the hand holding the keys + 1 (0 = on the ring)
 	transient bool gripWas[2];
+	transient int gripUp[2];    // tics the keys' hand's grip has been up
+	const GRIP_GRACE = 5;
 	transient int lastLine, lastLineTic;
+
+	// ---- THE KEYS IN THE OFF HAND (owner 2026-11-06, BUGS_1.0 item 39; both of his picks, under Keys Open Doors) -----
+	// Grab the ring with the off hand (its grip, held: the keys stay in that hand while it is), take them to a locked door:
+	//   FIRE (the off hand's trigger) = unlock and open: the door's own line used through the engine's lock check, as the
+	//     touch does (rsqtr_keydoor). The off hand does not touch-open: it waits for the trigger.
+	//   or HOLD ALT-FIRE AND RAISE THE HAND = lift the door: RSQ Distance Grab's door lift, driven through its own events
+	//     by name (rsqdg_doorgrab / rsqdg_doorlift / rsqdg_doorrel: the door follows the hand, its key check is
+	//     Distance Grab's, let go past its commit point and the door opens on its own). Without Distance Grab, or on a
+	//     door it does not lift (a tagged one), raising the hand KEY_RAISE_M opens it as the trigger does.
+	// While the off hand holds the keys its trigger and alt-fire are the keys' (eaten in InputProcess, so the off-hand
+	// weapon does not fire). The main hand keeps the old touch-to-open.
+	const KEY_REACH_M = 0.25;   // metres from the off hand to a locked door's line for the trigger / the lift
+	const KEY_RAISE_M = 0.12;   // metres of raise that opens it without Distance Grab
+	bool keyFire[MAXPLAYERS], keyAlt[MAXPLAYERS];   // synced: the off hand's trigger / alt-fire while it holds the keys
+	transient bool fireWas, altWas;
+	transient int liftLine;      // the door line being lifted (-1 none)
+	transient bool liftDG;       // ...through Distance Grab's events
+	transient double liftZ0, liftCeil0, liftSent;
+
+	// ui: while this machine's off hand holds the keys, its trigger and alt-fire belong to them
+	override bool InputProcess(InputEvent e)
+	{
+		if (e.Type != InputEvent.Type_KeyDown && e.Type != InputEvent.Type_KeyUp) return false;
+		String cmd = Bindings.GetBinding(e.KeyScan);
+		bool f = cmd ~== "+oh_attack", a = cmd ~== "+oh_altatk";
+		if (!f && !a) return false;
+		bool down = e.Type == InputEvent.Type_KeyDown;
+		if (keysIn != 2 && down) return false;      // not holding the keys: the gun's, as always
+		EventHandler.SendNetworkEvent("rsqtr_keybtn", a ? 1 : 0, down ? 1 : 0);
+		return keysIn == 2;
+	}
 
 	// a line whose use needs a key: a lock number (UDMF), or one of the locked specials' lock argument
 	static bool IsLocked(Line ln)
@@ -71,10 +104,15 @@ class RSQTR_Keyring : EventHandler
 				RSQTR_Buzzer.Start(pmo, h, 0.3, 3);
 				if (RSQTR_Rig.Flag("rsqtr_messages", p, false)) Console.Printf("T_KEYS in hand %d t%d", h, level.maptime);
 			}
-			if (!g && keysIn == h + 1) keysIn = 0;
+			// let go for a few tics before the keys go back: QuestZDoom moves the off grip from one key to another while
+			// the main grip is held (443 -> 436, its shift), and the off hand's alt-fire is the main grip + off trigger
+			// ...and while the off hand's alt-fire is held (its own key route takes the off grip's key away), the keys stay
+			if (g || (h == 1 && keyAlt[n])) gripUp[h] = 0;
+			else if (keysIn == h + 1 && ++gripUp[h] >= GRIP_GRACE) keysIn = 0;
 		}
-		if (keysIn == 0) return ringAt;
+		if (keysIn == 0) { EndLift(); return ringAt; }
 		Vector3 hand = RSQTR_Body.Hand(pmo, keysIn - 1);
+		if (keysIn == 2) { OffKeys(pmo, p, hand); return hand; }
 		double reach = TOUCH_M * RSQTR_Body.Upm();
 		let it = BlockLinesIterator.CreateFromPos(hand, 64, reach + 16);
 		Line best = null; double bd = reach;
@@ -95,8 +133,111 @@ class RSQTR_Keyring : EventHandler
 		return hand;
 	}
 
+	// the nearest locked door line within m metres of the hand, or null
+	static Line LockedNear(Vector3 hand, double m)
+	{
+		double reach = m * RSQTR_Body.Upm();
+		let it = BlockLinesIterator.CreateFromPos(hand, 64, reach + 16);
+		Line best = null; double bd = reach;
+		while (it.Next())
+		{
+			let ln = it.CurLine;
+			if (!IsLocked(ln)) continue;
+			double dd = SegDist(hand.xy, ln);
+			if (dd <= bd) { bd = dd; best = ln; }
+		}
+		return best;
+	}
+
+	private static bool DGThere() { return ServiceIterator.Find("RSQDG_DoorService").Next() != null; }
+
+	// a door RSQ Distance Grab lifts by hand: a manual door special (tag 0) with a sector behind it (its FindDoor rule)
+	static bool DGLiftable(Line l)
+	{
+		if (!l || !l.backsector || l.args[0] != 0) return false;
+		int sp = l.special;
+		return sp == 11 || sp == 12 || sp == 13 || sp == 202;
+	}
+
+	private void EndLift()
+	{
+		if (liftLine >= 0 && liftDG) EventHandler.SendNetworkEvent("rsqdg_doorrel", liftLine);
+		liftLine = -1;
+	}
+
+	// this machine's off hand holding the keys: the trigger opens, alt-fire held and a raise lifts
+	private void OffKeys(PlayerPawn pmo, PlayerInfo p, Vector3 hand)
+	{
+		int n = consoleplayer;
+		bool f = keyFire[n], a = keyAlt[n];
+		bool fPress = f && !fireWas, aPress = a && !altWas;
+		fireWas = f; altWas = a;
+		bool log = RSQTR_Rig.Flag("rsqtr_messages", p, false);
+		if (fPress)
+		{
+			Line l = LockedNear(hand, KEY_REACH_M);
+			if (log) Console.Printf("T_KEYS t%d off-hand trigger: %s", level.maptime, l ? String.Format("locked door line %d", l.Index()) : "no locked door in reach");
+			if (l)
+			{
+				EventHandler.SendNetworkEvent("rsqtr_keydoor", l.Index(), level.PointOnLineSide(pmo.pos.xy, l));
+				RSQTR_Buzzer.Start(pmo, 1, 0.6, 5);
+			}
+			else RSQTR_Buzzer.Start(pmo, 1, 0.12, 2);
+		}
+		if (aPress && liftLine < 0)
+		{
+			Line l = LockedNear(hand, KEY_REACH_M);
+			if (l)
+			{
+				liftLine = l.Index();
+				liftDG = DGThere() && DGLiftable(l);
+				liftZ0 = hand.z;
+				Vector2 mid = l.v1.p + l.delta * 0.5;
+				liftCeil0 = l.backsector ? l.backsector.ceilingplane.ZatPoint(mid) : 0;
+				liftSent = liftCeil0;
+				if (liftDG) EventHandler.SendNetworkEvent("rsqdg_doorgrab", liftLine);
+				RSQTR_Buzzer.Start(pmo, 1, 0.4, 4);
+				if (log) Console.Printf("T_KEYS t%d off-hand alt-fire on locked door line %d: %s", level.maptime, liftLine, liftDG ? "lifted by hand (RSQ Distance Grab)" : "raise to open");
+			}
+			else if (log) Console.Printf("T_KEYS t%d off-hand alt-fire: no locked door in reach", level.maptime);
+		}
+		if (liftLine >= 0)
+		{
+			if (!a) { if (log) Console.Printf("T_KEYS t%d alt-fire let go: door line %d released", level.maptime, liftLine); EndLift(); return; }
+			double rise = hand.z - liftZ0;
+			if (liftDG)
+			{
+				let gc = CVar.FindCVar("rsqdg_door_gain");
+				double target = liftCeil0 + rise * (gc ? gc.GetFloat() : 2.5);
+				if (abs(target - liftSent) >= 0.25)
+				{
+					EventHandler.SendNetworkEvent("rsqdg_doorlift", liftLine, int(target * 8));
+					liftSent = target;
+				}
+			}
+			else if (rise >= KEY_RAISE_M * RSQTR_Body.Upm())
+			{
+				Line l = level.Lines[liftLine];
+				EventHandler.SendNetworkEvent("rsqtr_keydoor", liftLine, level.PointOnLineSide(pmo.pos.xy, l));
+				RSQTR_Buzzer.Start(pmo, 1, 0.6, 5);
+				if (log) Console.Printf("T_KEYS t%d raised %.2f m: door line %d opened", level.maptime, rise / RSQTR_Body.Upm(), liftLine);
+				liftLine = -1;
+			}
+		}
+	}
+
 	override void NetworkProcess(ConsoleEvent e)
 	{
+		if (e.Name == "rsqtr_keybtn")
+		{
+			int b = e.Player;
+			if (b < 0 || b >= MAXPLAYERS) return;
+			if (e.Args[0] == 1) keyAlt[b] = e.Args[1] != 0;
+			else keyFire[b] = e.Args[1] != 0;
+			if (RSQTR_Rig.Flag("rsqtr_messages", players[b], false))
+				Console.Printf("T_KEYS t%d off-hand %s %s (the keys')", level.maptime, e.Args[0] == 1 ? "alt-fire" : "trigger", e.Args[1] ? "down" : "up");
+			return;
+		}
 		if (e.Name != "rsqtr_keydoor") return;
 		int n = e.Player;
 		if (n < 0 || n >= MAXPLAYERS || !playeringame[n]) return;
@@ -162,6 +303,7 @@ class RSQTR_Keyring : EventHandler
 
 	private void Hide()
 	{
+		EndLift();
 		if (ring) ring.bINVISIBLE = true;
 		for (int k = 0; k < MAXK; k++) if (keyShow[k]) keyShow[k].bINVISIBLE = true;
 	}
@@ -169,6 +311,7 @@ class RSQTR_Keyring : EventHandler
 	// The drawings are this machine's alone and held by transient pointers: a save carries orphans, cleared on load.
 	override void OnRegister()
 	{
+		liftLine = -1;
 		let it = ThinkerIterator.Create("Actor");
 		Actor a;
 		while (a = Actor(it.Next())) if (a is "RSQTR_RingShow" || a is "RSQTR_KeyShow") a.Destroy();

@@ -94,6 +94,18 @@ class RSQTR_RigService : Service
 			while (ds = dit.Next()) if (ds.GetInt("door.holding", "", h, 0, null) >= 0) return 1;
 			return 0;
 		}
+		// HOLSTER LOCK (rig.zs lockCls): the holster this gun is locked to, or -1; and whether gun holster intArg takes a lock
+		if (request == "rig.locked")
+		{
+			int n = who ? who.PlayerNumber() : consoleplayer;
+			return rig.LockedTo(n, stringArg);
+		}
+		if (request == "rig.lockable")
+		{
+			int n = who ? who.PlayerNumber() : consoleplayer;
+			if (n < 0 || n >= MAXPLAYERS || !playeringame[n]) return 0;
+			return (RSQTR_Rig.LockOn(players[n]) && RSQTR_Rig.IsGunRegion(intArg)) ? 1 : 0;
+		}
 		if (request == "rig.holster")
 		{
 			int n = who ? who.PlayerNumber() : consoleplayer;

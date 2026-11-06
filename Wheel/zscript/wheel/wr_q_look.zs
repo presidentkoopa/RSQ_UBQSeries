@@ -71,6 +71,9 @@ class wr_Look play
 	static string NumPrefix()  { let s = St(); return (s && s.mNumPfx != "") ? s.mNumPfx : "WRD"; }
 	static double WordAspect() { let s = St(); return (s && s.mWordAsp > 0) ? s.mWordAsp : 9.0 / 7.0; }
 	static double NumAspect()  { let s = St(); return (s && s.mNumAsp > 0) ? s.mNumAsp : 14.0 / 16.0; }
+	// RSQ (owner 2026-11-06, JFO): the word cells are HALF cells laid out proportionally (WRFONTS "halves"): a
+	// character takes as many halves as <pfx><code>a / b / c exist (wr_BB.buildText)
+	static bool WordHalves()   { let s = St(); return s && s.mHalves; }
 }
 
 class wr_LookState play
@@ -81,17 +84,18 @@ class wr_LookState play
 	Array<int> mFrom, mTo;
 	string mWordPfx, mNumPfx;
 	double mWordAsp, mNumAsp;
+	bool   mHalves;
 
 	void Refresh()
 	{
 		let pc = CVar.FindCVar('wr_palette');
 		let fc = CVar.FindCVar('wr_fontset');
 		string pn = pc ? pc.GetString() : "Standard";
-		string fn = fc ? fc.GetString() : "StatusBar";
+		string fn = fc ? fc.GetString() : "JFO";
 		if (mBuilt && pn ~== mPalName && fn ~== mFontName) return;
 		mPalName = pn; mFontName = fn; mBuilt = true;
 		mFrom.Clear(); mTo.Clear();
-		mWordPfx = ""; mNumPfx = ""; mWordAsp = 0; mNumAsp = 0;
+		mWordPfx = ""; mNumPfx = ""; mWordAsp = 0; mNumAsp = 0; mHalves = false;
 		ReadBlocks("WRPALS", "palette", pn, true);
 		ReadBlocks("WRFONTS", "fontset", fn, false);
 		let dbg = CVar.FindCVar('wr_debug');
@@ -123,7 +127,8 @@ class wr_LookState play
 					for (; j + 3 < tok.Size() && tok[j] != "}"; j += 4)
 					{
 						double asp = tok[j + 3].ToDouble() > 0 ? tok[j + 2].ToDouble() / tok[j + 3].ToDouble() : 0;
-						if (tok[j] ~== "words")   { mWordPfx = tok[j + 1]; mWordAsp = asp; }
+						if (tok[j] ~== "words")   { mWordPfx = tok[j + 1]; mWordAsp = asp; mHalves = false; }
+						if (tok[j] ~== "halves")  { mWordPfx = tok[j + 1]; mWordAsp = asp; mHalves = true; }
 						if (tok[j] ~== "numbers") { mNumPfx = tok[j + 1];  mNumAsp = asp; }
 					}
 				}

@@ -6,6 +6,8 @@ A weapon ring that hangs in the air in front of you. Point at a gun with either 
 
 New since the headset pass (tested on the rig, headset check pending): the fist, lightsaber and whip card icons; the fist always on the ring.
 
+New on 11-06 (rig only, not headset-confirmed): the text in JFO with proportional spacing; one fist card; one card per gun (BD22 VR's off-hand versions); the shield, saber, whip and grenade from either hand to their own hand; alt-fire locks a gun to its Tactical Rig holster; Freeze Time While Open.
+
 Part of the Radiant Silvergun Quest series for stock QuestZDoom 17.3. This is presidentkoopa's weapon wheel from his
 own engine, rebuilt in ZScript alone so it runs on the stock engine. No engine changes.
 
@@ -37,8 +39,15 @@ BFG with a long heavy thud. After a while you can find a gun by feel.
 - Colour by Gun: each card washed in its gun's colour, lit from the top, with a halo behind the card you are on.
 - The gun's pickup model (from BD_VoxelPack) turning on its card. A gun without one keeps its icon.
 - The fist is always on the ring, as slot 1's first card: also when a fan would hide it, when a mod leaves it out
-  of the weapon slots, and when you have none (taking the card gives you the fist). It picks Doom's Fist, Brutal
-  Doom's fists, or BD22 VR's off-hand fist, whichever that hand uses.
+  of the weapon slots, and when you have none (taking the card gives you the fist). One fist card: the hand that
+  takes it gets its own fist (Doom's Fist, Brutal Doom's fists, or BD22 VR's off-hand fist).
+- One card per gun: a gun with an off-hand version (BD22 VR's) shows once, and the hand that takes it gets its own
+  version (the off hand the off-hand copy, the main hand the gun).
+- Either hand can take RSQ ShieldSaw's shield, RSQ Saber's saber, RSQ Whip's whip and RSQ Grenade's grenade: the
+  shield always ends up in the off hand (drawn by ShieldSaw itself), the others always in the main hand.
+- Alt-fire on a gun's card while that gun sits in an RSQ Tactical Rig holster locks it to that holster (a brass
+  padlock on the card); alt-fire again unlocks it. A locked gun always goes back to its own holster. Alt-fire on a
+  gun in no holster does nothing. The switch is the Rig's "Holster Lock (Wheel Alt-Fire)", on.
 - The fist, the lightsaber, the whip and the ShieldSaw have their own icons: LegenDoom's brass knuckles, a pixel-art
   lightsaber, a coiled whip and a round saw-shield (credits in CREDITS.txt; the ShieldSaw's rig only, not
   headset-confirmed). So do RSQ Melee's gloves (a red boxing glove), and, when a mod puts them in a weapon slot, RSQ
@@ -60,6 +69,7 @@ BFG with a long heavy thud. After a while you can find a gun by feel.
 **Time**
 - With RSQ SlowMo loaded, time slows while the ring is open.
 - Without it, the ring can stop time instead (optional, off by default).
+- Freeze Time While Open (off by default): the ring stops time while it is open, with or without RSQ SlowMo.
 
 **Wrist card** (optional, off by default): bring your forearm up across your chest as if checking a watch and the gun in
 that hand shows a small card.
@@ -84,6 +94,7 @@ that hand shows a small card.
 | Back to your last gun | Double tap the left thumbstick click | Second press within 10 tics. |
 | Take the card you point at | Trigger or off-hand trigger | Any distance. The press never reaches your gun. |
 | Take the card your hand is in | Use | With your hand inside the card. |
+| Lock a gun to its holster | Alt-fire on its card | Needs RSQ Tactical Rig and the gun in one of its holsters. Again unlocks. |
 | Pull a gun out | Hand inside a card, snap it back toward you | Faster than about 1.5 m/s. |
 | Put a gun away | Snap the hand holding it toward the ring, not at a card | Faster than about 2.6 m/s. The hand goes back to its fist. |
 | Pick for both hands | One hand on each of two cards, release the button | Each hand takes its own gun. |
@@ -127,13 +138,14 @@ Options → Radiant Silvergun Options → RSQ Wheel (one page; Test and Debug an
 | Slow Time While Open | On | Needs RSQ SlowMo, or Freeze Without SlowMo below. |
 | Closing Ends SlowMo | Off | Off leaves slow motion you started yourself running when the ring closes. |
 | Freeze Without SlowMo | Off | Without RSQ SlowMo, the ring freezes the world while it is open. |
+| Freeze Time While Open | Off | The ring stops the world while it is open, with or without RSQ SlowMo (then SlowMo is not used). |
 | Pull a Card Out | 1.5 | Hand speed for the pull, in map units a tic (about m/s). 0 turns it off. |
 | Throw a Gun Back | 2.6 | Hand speed for the throw. 0 turns it off. |
 | Reach In | 7.0 | How far in front of or behind a card your hand can be and still touch it. 0 turns it off. |
 | Feel Each Gun's Weight | 1.0 | 0 gives every card the same tick. |
 | *Look* | | |
 | Palette | Standard | Standard, Doom, Hell or Tech. |
-| Font | Ermac's digits | The ring's numerals. |
+| Font | JFO | The ring's text: JFO (words spaced by their letters' own widths, JFO's big digits), or the older sets (Ermac's digits, DoomFont, the status bar's numerals). |
 | Ring Plates | Its own (Ermac style) | Or the status bar's stone. |
 | Card Look | Colour by Gun | Or Classic. |
 | Gun Models on Cards | On | The gun's pickup voxel on its card. |
@@ -227,7 +239,7 @@ Each Other Mods reader does nothing unless its mod is loaded.
 | Wrist Card: Hold the Pose (tics) | 8 |  |
 | Wrist Card Size | 0.6 |  |
 | Palette by Name | Standard | A palette added by another pk3. |
-| Font Set by Name | Ermac | A font set added by another pk3. |
+| Font Set by Name | JFO | A font set added by another pk3. |
 | Debug Log | Off | Prints diagnostics when the ring opens. |
 
 ## Works with
@@ -238,7 +250,7 @@ Runs on its own with any weapon mod.
 - **RSQ Gun Cards:** the ring's colours are Gun Cards' colours, so a gun looks the same on both. Gun Cards' watch card
   replaces the Wheel's wrist card when it is on.
 - **Gun Bonsai with RSQ Gun Bonsai VR:** the data sheet shows each gun's level, progress and upgrades.
-- **RSQ TacticalRig:** the data sheet shows where each gun is holstered.
+- **RSQ TacticalRig:** the data sheet shows where each gun is holstered; alt-fire on a card locks that gun to its holster.
 - **RSQ Laser Sight:** the ring's beam stands down on the idle hand when the laser already lights it.
 - **RSQ Accessibility:** Steady Hands smooths card pointing. Slower Taps stretches the tap, hold and double-tap
   windows. Seated Play moves the wrist card's pose to your seated eyes. Colour-blind mode turns the cards neutral and
@@ -254,6 +266,8 @@ Runs on its own with any weapon mod.
 - The art drawn from the IWAD is the IWAD's own, used by lump name and never copied: STBAR, STCFN033-095 (DoomFont),
   STTNUM0-9, STTMINUS, STTPRCNT.
 - The ring's plates and digits are drawn from Ermac's Force Unleashed holo HUD art, used with the owner's blessing.
+- The text is JFO, the JDUI font by Zedas, in Blackmore1014's edit "JDUI Brutal Doom Ultimate Edition", as RSQ Gun
+  Cards and RSQ VisualRewards ship it, with credit to both (CREDITS.txt).
 - The lock-on mark is the series' own, from RSQ ShieldSaw. The glow art is drawn by this pack's tools; its gun colours
   are measured from RSQ Gun Cards' panel art.
 - The rumble route to the controllers is the series' (RSQ ShieldSaw).

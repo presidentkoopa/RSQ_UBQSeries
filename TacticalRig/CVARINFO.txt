@@ -108,6 +108,7 @@ user bool  rsqtr_nade_show   = true;    // a grenade hangs at the grenade spot w
 user bool  rsqtr_throw       = false;   // OFF by default (owner 11-05 01:53: not happy with it; settings version 8 turned a saved On off once); its rows are back so it can be switched on (owner 11-05). grip with the hand swinging fast, outside a holster: the gun in it is thrown away
 user float rsqtr_throw_speed = 2.5;     // how fast the hand must swing to throw, metres a second
 user bool  rsqtr_throw_use   = false;   // OFF by default (owner 11-05). the MAIN hand also throws on a Use press with that swing (its grip is the gun's own; owner 11-03)
+user bool  rsqtr_holster_lock = true;  // HOLSTER LOCK (owner 2026-11-06): RSQ Wheel's alt-fire on a holstered gun's card locks it to that holster
 user bool  rsqtr_keyring     = true;    // the keys you carry hang on a ring on your belt
 user bool  rsqtr_throw_hurt  = true;    // a thrown gun that hits a monster hurts and staggers it, by the gun's weight and the throw speed
 user float rsqtr_throw_damage = 1.0;   // the thrown-gun hit's damage, as a multiple

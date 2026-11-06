@@ -211,17 +211,40 @@ class wr_BB : EventHandler
 	}
 	static void SetBillboardFont(int id, int slot) {}
 
-	// Width a single line draws at this height: DoomFont cells are 9 x 7, one per character.
+	// Width a single line draws at this height: one cell a character, or with a "halves" font set (JFO) the halves
+	// that line takes (buildHalves), trailing spaces not counted.
+	static double LineCells(string ln)
+	{
+		if (AllNumeral(ln) || !wr_Look.WordHalves()) return ln.CodePointCount();
+		let b = Get();
+		if (!b) return ln.CodePointCount() * 2;
+		string pfx = wr_Look.WordPrefix();
+		if (!(pfx ~== b.mHalfPfx)) { b.mHalfN.Clear(); b.mHalfPfx = pfx; }
+		string up = ln.MakeUpper();
+		int n = 0, lastInk = 0;
+		for (int i = 0; i < int(up.Length()); i++)
+		{
+			int ch = up.ByteAt(i);
+			int hn = (ch == 32) ? 0 : b.halvesOf(pfx, ch);
+			n += max(hn, 1);
+			if (hn > 0) lastInk = n;
+		}
+		return lastInk;
+	}
 	static double MeasureBillboardText(string text, double height, int fontSlot = 0)
 	{
-		return text.CodePointCount() * height * (AllNumeral(text) ? wr_Look.NumAspect() : wr_Look.WordAspect());
+		Array<string> lines;
+		text.Split(lines, "\n");
+		double widest = 0;
+		for (int i = 0; i < lines.Size(); i++) widest = max(widest, LineCells(lines[i]));
+		return widest * height * (AllNumeral(text) ? wr_Look.NumAspect() : wr_Look.WordAspect());
 	}
 	static Vector2 MeasureBillboardTextBlock(string text, double height, int fontSlot = 0)
 	{
 		Array<string> lines;
 		text.Split(lines, "\n");
-		int widest = 0;
-		for (int i = 0; i < lines.Size(); i++) widest = max(widest, lines[i].CodePointCount());
+		double widest = 0;
+		for (int i = 0; i < lines.Size(); i++) widest = max(widest, LineCells(lines[i]));
 		return (widest * height * (AllNumeral(text) ? wr_Look.NumAspect() : wr_Look.WordAspect()), max(1, lines.Size()) * height);
 	}
 
@@ -578,10 +601,86 @@ class wr_BB : EventHandler
 		return true;
 	}
 
+	// RSQ (owner 2026-11-06: "the nice font", JFO; "some of the kerning is off"): WORDS IN HALF CELLS. A font set
+	// marked "halves" (WRFONTS) draws each character as the halves it has -- <pfx><code>a, b, c, as many as exist
+	// (tools/gen_jfo.py: a JFO glyph two, a narrow one (I :) one, a DoomFont stand-in one to three) -- and a space as
+	// one blank half, so a name is spaced by its letters' own widths, as Gun Cards lays JFO out, instead of one fixed
+	// cell a letter. Each half is one surface of a strip, as a cell was. The halves a code has are looked up once.
+	Map<int, int> mHalfN;
+	int halvesOf(string pfx, int ch)
+	{
+		if (ch < 33 || ch > 95) return 1;
+		int key = ch;
+		if (mHalfN.CheckKey(key)) return mHalfN.Get(key);
+		int n = 0;
+		static const string L[] = { "a", "b", "c" };
+		for (int k = 0; k < 3; k++)
+			if (TexMan.CheckForTexture(String.Format("%s%03d%s", pfx, ch, L[k]), TexMan.Type_Any).IsValid()) n = k + 1;
+		mHalfN.Insert(key, n);
+		return n;
+	}
+	string mHalfPfx;
+
+	private void buildHalves(wr_BBRec r, string text, string pfx, double aspect)
+	{
+		if (!(pfx ~== mHalfPfx)) { mHalfN.Clear(); mHalfPfx = pfx; }
+		static const string L[] = { "a", "b", "c" };
+		string blank = String.Format("%sBLNK", pfx);
+		Array<string> lines;
+		text.Split(lines, "\n");
+		if (lines.Size() == 0) return;
+		// every line as its run of half cells (texture names; "" a blank half)
+		Array<string> cells;
+		Array<int> lineStart, lineLen;
+		int widest = 1;
+		for (int li = 0; li < lines.Size(); li++)
+		{
+			string ln = lines[li];
+			lineStart.Push(cells.Size());
+			int len = ln.Length();
+			for (int i = 0; i < len; i++)
+			{
+				int ch = ln.ByteAt(i);
+				int hn = (ch == 32) ? 0 : halvesOf(pfx, ch);
+				if (hn <= 0) { cells.Push(""); continue; }
+				for (int k = 0; k < hn; k++) cells.Push(String.Format("%s%03d%s", pfx, ch, L[k]));
+			}
+			// trailing blanks do not count toward the width (a centred name stays centred)
+			int e = cells.Size();
+			while (e > lineStart[li] && cells[e - 1] == "") e--;
+			lineLen.Push(e - lineStart[li]);
+			widest = max(widest, lineLen[li]);
+		}
+		int n = lines.Size();
+		double cellH = min(1.0 / n, (r.w / max(r.h, 0.001)) / (widest * aspect));
+		double cellW = cellH * aspect * (r.h / max(r.w, 0.001));
+		for (int li = 0; li < n; li++)
+		{
+			int len = lineLen[li], at = lineStart[li];
+			double rowY = (n - 1) * 0.5 - li;
+			double x0 = -len * cellW * 0.5;
+			for (int k0 = 0; k0 < len; k0 += STRIP_CELLS)
+			{
+				int need = min(STRIP_CELLS, len - k0);
+				let a = newPart(r, "wr_BBStrip", (x0 + k0 * cellW) * 2.0, rowY * cellH * 2.0, cellW * 2.0, cellH * 2.0, 1);
+				if (!a) continue;
+				int sc = need <= 4 ? 4 : need <= 8 ? 8 : need <= 12 ? 12 : STRIP_CELLS;
+				if (sc != STRIP_CELLS)
+					a.A_ChangeModel("", 0, "models/wrq", String.Format("strip%d.obj", sc), 0, "", "", 0);
+				for (int k = 0; k < sc; k++)
+				{
+					string g = (k < need && cells[at + k0 + k] != "") ? cells[at + k0 + k] : blank;
+					a.A_ChangeModel("", 0, "", "", k, "", g, CMDL_USESURFACESKIN);
+				}
+			}
+		}
+	}
+
 	private void buildText(wr_BBRec r, string text)
 	{
 		text = text.MakeUpper();
 		bool num = AllNumeral(text);
+		if (!num && wr_Look.WordHalves()) { buildHalves(r, text, wr_Look.WordPrefix(), wr_Look.WordAspect()); return; }
 		// the font set in force (wr_q_look.zs): which cells draw words and which draw numbers
 		double aspect = num ? wr_Look.NumAspect() : wr_Look.WordAspect();
 		string pfx = num ? wr_Look.NumPrefix() : wr_Look.WordPrefix();

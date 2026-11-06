@@ -35,6 +35,10 @@ here (the body, the holsters, the torso that follows your turns) is worked out i
 - Holsters keep their guns from level to level. After a death or pistol start a holster stays empty until you
   own that gun again, then it is back where you kept it.
 - Optional: new guns you pick up go straight into the first empty holster (off by default).
+- Holster Lock (on): with RSQ Wheel, alt-fire on a holstered gun's card locks it to that holster (a padlock on the
+  card); alt-fire again unlocks it. A locked gun always goes back to its own holster: holster it anywhere else, or
+  hold it at another full holster, and it goes home while that holster's gun comes out to your hand. New Guns to
+  Holsters never fills a holster locked to another gun. Unlocked guns work as before. (Rig only, not headset-confirmed.)
 - Optional: each full holster shows its round count as small digits above the ring (off by default).
 - Brutal Doom's two-gun weapons (dual pistols and the like) go in as one gun, so a draw gives you one.
 
@@ -55,8 +59,12 @@ here (the body, the holsters, the torso that follows your turns) is worked out i
 **More on the body**
 - Grenade spot on the belt buckle: grip it and the pack's hand grenade comes to your main hand; grip again and your
   gun comes back. A grenade hangs there while you have one, and its light shows the count (green 2+, yellow 1, red 0).
-- Keyring beside it: every key you carry hangs from a ring on your belt, swaying as you move.
-- Optional: take the keys off the ring and touch them to a locked door to open it (off by default).
+- Keyring beside it: every key you carry hangs from a ring on your belt, swaying as you move. It appears with your
+  first key; with no keys there is nothing on the belt.
+- Optional, Keys Open Doors (off by default): grab the keys off the ring. With the OFF hand: hold them at a locked
+  door and pull the off-hand trigger to unlock and open it, or hold off-hand alt-fire and raise your hand to lift the
+  door (RSQ Distance Grab's door lift, the door following your hand; without Distance Grab the raise opens it). The
+  main hand opens a locked door by touching the keys to it. (Rig only, not headset-confirmed.)
 - Two saber spots below the hips for RSQ Saber's hilts, each on its own hand's side.
 - A whip holster on your main-hand hip for RSQ Whip, the whip hanging coiled there whenever it is out of your hand.
   It never ends up in a gun holster.
@@ -116,7 +124,7 @@ here (the body, the holsters, the torso that follows your turns) is worked out i
 | Recenter torso | Both controllers against your chest (within 0.20 m of a point 0.30 m under your eyes) for 0.4 s | No grip, Use or fire held; let go before doing it again |
 | Recenter Torso key | Bindable: Customize Controls → RSQ Tactical Rig, or the rig's own page | |
 | Move a holster | Move Holsters by Hand on: grip inside a ring, carry it, let go | The keyring moves the same way |
-| Keys to a door | Keys Open Doors by Hand on: grip at the keyring, hold, touch a locked door | The engine's own lock check decides |
+| Keys to a door | Keys Open Doors on: grip at the keyring, hold. Off hand: at a locked door pull the trigger (unlock and open), or hold alt-fire and raise the hand (lift it). Main hand: touch the door | The engine's own lock check decides. While the off hand holds the keys its trigger and alt-fire are the keys' |
 | Move a gun to the other hand | Move Gun at Watch on: hold the watch check, press Use | A gun in the other hand swaps. While an RSQ Miniboss Bossfight is ready to call, that press calls it in instead and the gun stays |
 | Cigarette | Main hand at the chest pocket (left chest for right-handers), grip or Use | Cigarette in the main hand, Zippo in the off hand |
 | ...into the mouth | Cigarette at your lips, Use | Use anywhere else flicks it away |
@@ -147,7 +155,8 @@ what the rows already do: Smoker, Chain Smoker, Gun Toss, Boomerang Gun).
 | Holster Rings | Hand Nearby | Never, Hand Nearby, Always. Gun holsters blue (profile colour), other spots magenta |
 | Holster Reach | 1.00 | Holster size (0.5 to 2) |
 | Quick Swap | On | A full holster swaps without the press delay |
-| New Guns to Holsters | Off | A new gun fills the first empty holster |
+| New Guns to Holsters | Off | A new gun fills the first empty holster (never one locked to another gun) |
+| Holster Lock (Wheel Alt-Fire) | On | RSQ Wheel's alt-fire on a holstered gun's card locks it to that holster; a locked gun always goes home |
 | Keep Between Levels | On | Holsters keep their guns |
 | Move Gun at Watch | Off | Use during the watch check moves that hand's gun across (not while a Bossfight is ready to call: the press is its call-in) |
 | Hang From Neck | On | A nod does not slide the rig |
@@ -161,7 +170,7 @@ what the rows already do: Smoker, Chain Smoker, Gun Toss, Boomerang Gun).
 | Show Ammo Pouch | On | The pouch on the belt, its light the reserve of the gun in your hand (green, yellow, red) |
 | Shoulder to ShieldSaw | On | Off shoulder is the shield's while it is stowed there |
 | Keyring | On | Keys on your belt |
-| Keys Open Doors | Off | Touch keys to locked doors |
+| Keys Open Doors | Off | Take the keys to locked doors: off-hand trigger opens, off-hand alt-fire held and a raise lifts; the main hand opens by touch |
 | **Stored Guns** | | |
 | Show Stored Guns | On | Holstered guns drawn on the body |
 | Stored Gun Size | 1.00 | Their size (0.25 to 3) |
@@ -238,9 +247,10 @@ Runs alone on any load order. It finds the rest by name:
 - **RSQ Miniboss**: while its Bossfight is ready to call, the watch check + Use calls it in and Move Gun at Watch skips
   that press (asked by name, RSQMB_Service "callin").
 - **RSQ Accessibility**: Seated Play, handedness, rumble strength, text size and colour-blind ring colours apply here.
+- **RSQ Distance Grab** lifts a locked door held by the off hand's keys (its own door events, by name);
 - **RSQ Distance Grab** leaves a hand alone while it is in a holster or holds the cigarette or Zippo; **RSQ Melee**'s
   Headlock waits while your off hand is in a holster.
-- **RSQ Wheel** marks where a gun is holstered; **RSQ Score** reads holster draws for its quick-draw bonus; and the hand reloads of **BD22 VR
+- **RSQ Wheel** marks where a gun is holstered, and its alt-fire locks a gun to its holster (Holster Lock); **RSQ Score** reads holster draws for its quick-draw bonus; and the hand reloads of **BD22 VR
   Reloaded** take ammo from the pouch when its pouch-only setting is on.
 - **Gun Bonsai + RSQ Gun Bonsai VR**: Gun Toss makes thrown guns hit harder and stagger longer; Boomerang Gun flies a
   thrown gun back to its holster, or to your hand at level 2 (both offered only while Throw Guns is on); Smoker lengthens the smoke's slow motion and makes you
