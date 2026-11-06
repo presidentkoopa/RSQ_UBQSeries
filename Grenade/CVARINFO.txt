@@ -1,6 +1,10 @@
 // RSQ Grenade -- settings. What each does (the menu carries no notes). Server: they change the game for everyone
 // (what is given, scattered, how the grenade flies and burns). User: how YOUR hands are read.
-server bool   rsqgn_on          = true;   // the whole mod (with Brutal Doom VR Reloaded loaded it stands down anyway)
+server bool   rsqgn_on          = true;   // the whole mod (with Brutal Doom VR Reloaded loaded it stands down, unless rsqgn_replace_bd)
+// Replace Brutal Doom's Grenade (owner, BUGS_1.0 item 21, 2026-11-06): off, this pack stands down for BD22 VR Reloaded's own grenade (as
+// before). On, it does NOT stand down: RSQ Grenade runs with BD22 VR loaded. THE HANDSHAKE: BD22 VR Reloaded reads this cvar BY NAME
+// (CVar.FindCVar("rsqgn_replace_bd"): null when RSQ Grenade is not loaded) and stands its own grenade down while it is true.
+server bool   rsqgn_replace_bd  = false;
 server int    rsqgn_start       = 3;      // grenades you start with (a new game, or after dying); 0-8
 server bool   rsqgn_scatter     = true;   // grenades scattered beside each map's items (the UAC Survival Pack's way)
 server int    rsqgn_singles     = 4;      // ...at most this many single grenades a map (the pack's uac_grenamt)

@@ -31,6 +31,7 @@ OptionMenu "RSQGN_Options"
 	RSQGNGbLine ""
 	StaticText "Grenades", "Gold"
 	Option "Grenades", "rsqgn_on", "OnOff"
+	Option "Replace Brutal Doom's Grenade", "rsqgn_replace_bd", "OnOff"
 	Slider "Start With", "rsqgn_start", 0, 8, 1, 0
 	Option "Grenades in Levels", "rsqgn_scatter", "OnOff"
 	Slider "Singles a Map", "rsqgn_singles", 0, 16, 1, 0

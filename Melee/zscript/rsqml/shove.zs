@@ -316,6 +316,8 @@ class RSQML_Shove : StaticEventHandler
 			// scored inside the blow), the one tool for the gun-butt shove, BD22 VR's butt strike and the pistol whip, so a
 			// kill by it is no Boot and shove > gun has its own rows
 			RSQML.Touch("shove", pmo, t);
+			// the orange starburst where the stock met it (sparks.zs; owner 11-06)
+			RSQML_Spark.Shove(RSQML_Spark.OnSkin(t, a));
 			t.DamageMobj(pmo, pmo, dmg, 'Kick');
 			landed++;
 			if (t && !t.bDestroyed && t.health > 0 && !bdPain) Knock(pmo, t);
@@ -324,6 +326,9 @@ class RSQML_Shove : StaticEventHandler
 				Console.Printf("\c[Gold]rsqml: butt shove hit %s for %d%s, health %d, vel %.1f %.1f %.1f (t%d)", t.GetClassName(), dmg,
 					bdPain ? " (its own Pain.Kick knocks it)" : "", t ? t.health : 0, t ? t.vel.x : 0, t ? t.vel.y : 0, t ? t.vel.z : 0, level.maptime);
 		}
+		// A SWITCH OR A DOOR in the stock's way, when no body took the blow (owner, BUGS_1.0 item 13): worked as a Use press
+		// on that line, the series' one rule (core.zs UseLineAlong), along the shove's own reach
+		if (landed == 0 && RSQML.UseLineAlong(pmo, a, d, BUTT_REACH, "butt shove")) RSQ_Buzz.Start(pmo, 0, 0.6, 4);
 		if (landed > 0)
 		{
 			if (RSQML.HasSound("Kick/flesh") && struck[0] && !struck[0].bDestroyed) struck[0].A_StartSound("Kick/flesh", CHAN_AUTO);

@@ -33,9 +33,13 @@ drew, so only your arms throw punches.
 - Fist or open palm per hand: tap that hand's trigger to switch.
 - Jab, hook and uppercut, read from the swing. Damage scales with speed, from 10 at 2 m/s up to 20 at 7 m/s.
 - Uppercuts launch, capped at 3 m of air.
+- Any punch that meets a switch or a door works it, like pressing Use on it (the line's special decides, so a WAD's own switch textures work the same). The gun-butt shove does too.
+- Optional (off): Uppercut Kicks Barrels. An uppercut into a barrel does no damage and kicks it up and away in an arc, like Brutal Doom's kick.
 - Open-palm swat: a palm swung at 1.5 m/s or more through a monster's missile knocks it aside.
 - Fists and palms meet bullets: a monster's bullet met by your hand is knocked away (or returned with the Hadouken).
-- Hit sparks on every blow, with an adjustable size.
+- Hit sparks on every blow, with an adjustable size: orange for jabs and hooks, violet for uppercuts and the Hadouken, blue
+  for the Guard, red for counters and perfects, bigger the faster the swing; a starburst on the gun-butt shove, dust on
+  Ground Pound, Wall Splat and the barrel kick, chicks and stars over a monster Heavy Hands freezes.
 - Slappers Only (off by default): gloves on both hands, every gun put away, gun pickups gone. Turn it off and your
   guns come back.
 
@@ -112,6 +116,7 @@ row off turns them off on the gloves too).
 | Slappers Only | Off | Gloves only, guns put away |
 | Open-Palm Swat | On | Palms knock missiles aside |
 | Swat Bullets | On | Hands meet monsters' bullets too |
+| Uppercut Kicks Barrels | Off | An uppercut kicks a barrel up and away, no damage |
 | Hit Spark Size | 1.0 | Size of the hit sparks |
 | **Gun Butt Shove** | | |
 | Gun Butt Shove | On | The stock strike |
@@ -172,8 +177,8 @@ Runs alone. It finds the others by name:
 - **Brutal Doom** (Sergeant Mark IV): the fist and kick numbers and the monsters' kick thrusts, parsed, not shipped;
   its sounds played by name when loaded.
 - **id Software**: stock Doom sounds played by name (swing, punch, the guard and the swat).
-- Hit sparks: Capcom vs. SNK 2 sparks, ripped and converted by Phantom.of.the.Server (property of Capcom,
-  non-commercial); the Hadouken burst from his Random Sprite Rips (non-commercial). Readmes in credits/.
+- Hit sparks, dizzy chicks/stars and dust: community sprite sheet ripped by shezzor (source game rights belong to their
+  owners; non-commercial).
 - Impact bursts: "VFX Hit Impact" by kiddolink, a paid asset pack bought for this series; not for re-sale or
   redistribution as an asset pack.
 - Gun Bonsai is by Rebecca "ToxicFrog" Kelly (MIT).

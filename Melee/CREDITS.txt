@@ -40,13 +40,10 @@ MELEE'S HANDS (2026-11-02)
   frames 0 and 1, and fbx_hand.png), baked there from the owner's own hand model, at BD22 VR's fit. Its skin tones
   are BD22 VR's own textures, read from BD22 VR's pk3 when it is loaded (none shipped here).
 
-HIT SPARKS (2026-11-02)
-  Capcom vs. SNK 2 hit sparks, ripped and converted by Phantom.of.the.Server; property of Capcom, non-commercial.
-  (Normal, Special and Super Spark, all four angles of each, and the Guard sparks; credits/CvS2hitsparks_Readme.txt.)
-  Random Sprite Rips, ripped by Phantom.of.the.Server: "This is just a compilation of some stuff I ripped for my
-  chars along the time. Use it freely. The sprites are property of their respective game companies, so they cannot
-  be used for any commercial purposes." (the Hadouken hit burst; credits/RandomSpriteRips_Readme.txt).
-  Converted by Melee/tools/sparks.py (keyed, cropped, shrunk; nothing repainted).
+HIT SPARKS (2026-11-06)
+  Hit sparks, dizzy chicks/stars and dust: community sprite sheet ripped by shezzor (source game rights belong to their
+  owners; non-commercial). Cut and recoloured (the KOF palette) by Melee/tools/hitsheet.py; rotations baked, nothing
+  repainted. (The Capcom vs. SNK 2 sparks used until 11-06 are gone.)
 
 FISTS TREE SOUNDS (2026-11-02)
   From the owner's two sound wells, RS Combat FX and RS Ballistics (presidentkoopa's libraries), one file at a time;

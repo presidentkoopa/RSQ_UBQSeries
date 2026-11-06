@@ -23,6 +23,9 @@ server float rsqml_punch_lift_cap = 3.0;   // no launch (uppercut, Launcher, Jug
 server float rsqml_punch_pad = 4.0;
 // Brutal Doom's own punch is 10 (MeleeStrikeNormal); a full-speed glove doubles it.
 server float rsqml_punch_damage = 10.0;
+// Uppercut Kicks Barrels (owner, BUGS_1.0 item 22): an uppercut into a barrel does no damage and lifts it up and away on a
+// forward arc, Brutal Doom's kick (gloves.zs KickBarrel). Off: a barrel is not a punch target, as before.
+server bool  rsqml_uppercut_barrels = false;
 
 // ---- THE MOVES THAT ARE GUN BONSAI VR UPGRADES -------------------------------------------------------------------
 // With RSQ Gun Bonsai VR loaded each is earned as its upgrade and these rows do nothing. Without it, each row plays its

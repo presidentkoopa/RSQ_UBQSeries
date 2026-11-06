@@ -494,7 +494,30 @@ class RSQML_Gloves : StaticEventHandler
 		double gr = 0.09 * upm + RSQML.SV("rsqml_punch_pad", 4.0);
 		Actor victim = Contact(pmo, st.prevHand, st.hand, gr);
 		if (dbg) { String vn = "nothing"; if (victim) vn = victim.GetClassName(); Console.Printf("RSQML punch %s swing %.2f m/s avg -> %s", h ? "L" : "R", avg, vn); }
-		if (!victim) return;
+		if (!victim)
+		{
+			// UPPERCUT KICKS BARRELS (option, off): an uppercut into a barrel lifts it up and away, no damage
+			bool used = RSQML.SVI("rsqml_uppercut_barrels", 0) != 0 && KickBarrel(pmo, g, h, st, avg, gr);
+			// A SWITCH OR A DOOR the fist meets this tic (any punch: jab, hook, uppercut): worked as a Use press
+			// (core.zs UseLineAlong). Not when BD22 VR's own punching deals this fist's blow: its punch works the line itself
+			// (its fists.zs PunchUse), and two would flip a repeatable switch twice.
+			if (!used && !BD22Punches(pmo, g))
+			{
+				Vector3 mv = level.Vec3Diff(st.prevHand, st.hand);
+				used = RSQML.UseLineAlong(pmo, st.prevHand, mv, mv.Length() + gr, h ? "punch L" : "punch R");
+			}
+			if (used)
+			{
+				RSQ_Buzz.Start(pmo, h, 0.5, 4);
+				st.armed = false;
+				st.swinging = false;
+				st.approach = 0;
+				st.approachTics = 0;
+				st.path = (0, 0, 0);
+				st.lastHit = now;
+			}
+			return;
+		}
 		Vector3 dir = st.vel;
 		if (dir.Length() < 0.001) dir = level.Vec3Diff(st.hand, victim.pos);
 		dir = dir.Unit();
@@ -510,7 +533,55 @@ class RSQML_Gloves : StaticEventHandler
 		st.lastHit = now;
 	}
 
-	static Actor Contact(PlayerPawn pmo, Vector3 a, Vector3 b, double gr)
+	// A BARREL: Doom's ExplosiveBarrel or anything that replaces it (Brutal Doom's ExplosiveBarrel1 replaces it with no
+	// parent, so the replacement chain is walked, as RSQ Distance Grab's policy.zs StandsFor does), still standing.
+	static bool IsBarrel(Actor mo)
+	{
+		if (!mo || !mo.bShootable || mo.health <= 0 || mo.bIsMonster || mo.player) return false;
+		Class<Actor> c = mo.GetClass();
+		for (int d = 0; c && d <= 4; d++)
+		{
+			for (class<Object> p = c; p; p = p.GetParentClass()) if (p.GetClassName() == 'ExplosiveBarrel') return true;
+			Class<Actor> r = Actor.GetReplacee(c);
+			if (!r || r == c) break;
+			c = r;
+		}
+		return false;
+	}
+
+	// UPPERCUT KICKS BARRELS (owner, BUGS_1.0 item 22, 2026-11-06: "option for no damage to be done to barrels when we
+	// uppercut, this way we have a way to 'kick' barrels like in Brutal Doom, give them some lift in a forward arc";
+	// rsqml_uppercut_barrels, off). The fist meets a barrel this tic and the swing reads as an uppercut (as Deliver reads
+	// it, the same Gun Bonsai VR unlock included): the barrel takes NO damage and flies up and away from you on a 45-degree
+	// arc -- up as an uppercut lifts a monster (5 map units a tic at the slowest, 9 at full speed, under Uppercut Lift
+	// Cap), and as fast forward. You are its target, so its blast is yours when it goes off. A jab or a hook into a barrel
+	// does nothing, as before.
+	bool KickBarrel(PlayerPawn pmo, Weapon g, int h, RSQ_PunchHand st, double avg, double gr)
+	{
+		Actor b = Contact(pmo, st.prevHand, st.hand, gr, true);
+		if (!b) return false;
+		Vector2 toB = b.pos.xy - pmo.pos.xy;
+		double tl = toB.Length();
+		toB = tl > 0.5 ? toB / tl : (cos(pmo.angle), sin(pmo.angle));
+		Vector3 dir = st.vel.Length() > 0.001 ? st.vel.Unit() : (toB, 0);
+		int kind = ClassifySwing(dir, st.path, toB, RSQML.SV("rsqml_punch_uppercut_rise", 0.5));
+		if (kind == PK_UPPER && RSQML.UnlockLevel(g, "Uppercut") <= 0) kind = PK_JAB;
+		if (kind != PK_UPPER) return false;
+		double minSpeed = RSQML.SV("rsqml_punch_min_speed", 2.0), fullSpeed = RSQML.SV("rsqml_punch_full_speed", 7.0);
+		double power = clamp((avg - minSpeed) / max(fullSpeed - minSpeed, 0.1), 0.0, 1.0);
+		double up = 5.0 + 4.0 * power;
+		double capM = RSQML.SV("rsqml_punch_lift_cap", 3.0);
+		if (capM > 0) up = min(up, sqrt(2.0 * capM * RSQML.UnitsPerMetre() / RSQML.Stretch()));
+		b.vel.z = max(b.vel.z, up);
+		b.vel.xy += toB * up;
+		b.target = pmo;
+		RSQML_Spark.Dust(b.pos + (0, 0, 4));
+		pmo.A_StartSound("rsqml/punch", CHAN_AUTO, 0, 1.0);
+		if (RSQML.Debug() > 0) Console.Printf("RSQML uppercut kicks %s: up %.1f, forward %.1f, no damage (health %d)", b.GetClassName(), up, up, b.health);
+		return true;
+	}
+
+	static Actor Contact(PlayerPawn pmo, Vector3 a, Vector3 b, double gr, bool barrels = false)
 	{
 		Actor best = null;
 		double bestD = 1e9;
@@ -518,7 +589,7 @@ class RSQML_Gloves : StaticEventHandler
 		while (it.Next())
 		{
 			Actor mo = it.thing;
-			if (!RSQML.IsFoe(pmo, mo)) continue;
+			if (barrels ? !IsBarrel(mo) : !RSQML.IsFoe(pmo, mo)) continue;
 			// nearest approach of the glove's path this tic to the body's axis, in the plane
 			Vector2 c = mo.pos.xy;
 			Vector2 ab = b.xy - a.xy;
@@ -1120,7 +1191,7 @@ class RSQML_Gloves : StaticEventHandler
 		// ONE BLOW PER SWING: BD22 VR's own VR punching owns a BD22 fist's damage when it is on (BD22Punches); a punch
 		// nobody swung (AutoPunch) is never BD22's
 		bool bdBlow = autoMult <= 0 && BD22Punches(pmo, g);
-		RSQML_Spark.Punch(r.lastKind, RSQML_Spark.OnSkin(victim, at), dir, pmo, h);   // a spark per kind of blow, along the fist (sparks.zs)
+		RSQML_Spark.Punch(r.lastKind, RSQML_Spark.OnSkin(victim, at), dir, pmo, h, r.lastPower, r.lastCounter);   // a spark per kind of blow, its size by the swing's speed, red on a counter (sparks.zs)
 		if (juggle) RSQML_Burst.At("RSQML_Burst4", at, 0.75, RSQML_Burst.ByLevel(RSQML.GBLevel(g, "Juggle"), 3));
 		if (!bdBlow)
 		{
@@ -1153,6 +1224,7 @@ class RSQML_Gloves : StaticEventHandler
 			int ft = int(RSQML.Num("HeavyHands.freeze", hhLv, r.lastPower, r.lastPower >= 0.5 ? 4 : 2));
 			if (rgLv >= 2) ft *= 2;
 			victim.freezetics = max(victim.freezetics, ft);
+			RSQML_Spark.Dizzy(victim, ft);   // chicks and stars over its head for the freeze (sparks.zs)
 			if (RSQML.Debug() > 0) Console.Printf("RSQML heavy hands: %s frozen %d tics, vel %.1f", victim.GetClassName(), ft, victim.vel.xy.Length());
 		}
 		// WALL SPLAT (pick 54): watched while it flies; a wall that stops it hurts it (splat.zs RSQ_Splat). With Gun
@@ -1213,6 +1285,7 @@ class RSQML_Gloves : StaticEventHandler
 		if (capM > 0) up = min(up, sqrt(2.0 * capM * RSQML.UnitsPerMetre() / RSQML.Stretch()));
 		victim.vel.z = max(victim.vel.z, up);
 		victim.vel.xy += toFoe * (2.0 + 3.0 * power) * heavy;
+		RSQML_Spark.LaunchDust(victim);   // the dust puff on the launch (sparks.zs)
 		int air = int(2.0 * up);   // up and down again at gravity 1
 		if (air >= 4) RSQML.Stagger(victim, air);
 		if (by)

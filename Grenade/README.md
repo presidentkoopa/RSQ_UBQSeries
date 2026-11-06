@@ -9,7 +9,7 @@ New since the headset pass (tested on the rig, headset check pending): shooting 
 
 Part of the Radiant Silvergun Quest series for stock QuestZDoom 17.3. ZScript only, no engine changes. On plain Doom 2
 it adds its own grenade. With Brutal Doom 22 VR Reloaded loaded it stands down completely and BD22 VR's own grenade
-takes over.
+takes over, unless Replace Brutal Doom's Grenade is on.
 
 ## Standout feature: the pin, the spoon and your teeth
 
@@ -100,7 +100,8 @@ the types you have learned, Frag Only the frag alone).
 | Row | Default | What it does |
 |---|---|---|
 | **Grenades** | | |
-| Grenades | On | The whole mod (it stands down with BD22 VR Reloaded anyway) |
+| Grenades | On | The whole mod (it stands down with BD22 VR Reloaded unless the next row is on) |
+| Replace Brutal Doom's Grenade | Off | With BD22 VR Reloaded loaded, this grenade stays and BD22 VR's own stands down (needs the BD22 VR side's matching switch, which reads this setting by name) |
 | Start With | 3 | Grenades at a new game, or after dying (0-8) |
 | Grenades in Levels | On | Grenades beside each map's items |
 | Singles a Map | 4 | Most singles a map |
@@ -125,7 +126,7 @@ Teeth Mouth Reach (0.15 m), Again Beyond (0.71 m), Hold (12 tics); Debug Log (Of
 
 Runs alone on plain Doom 2. It finds the others by name:
 - **Brutal Doom 22 VR Reloaded**: RSQ Grenade stands down entirely (no grenade, no scatter, no start grenades);
-  BD22 VR's own grenade is the one you use.
+  BD22 VR's own grenade is the one you use. With Replace Brutal Doom's Grenade on it is the other way round.
 - **RSQ Tactical Rig**: without BD22 VR, the Rig's belt-buckle grenade spot hands out this grenade, shows it hanging
   there, and glows in the colour of the type in your hand.
 - **RSQ SlowMo**: thrown grenades slow with the world (unless SlowMo is set to leave your own missiles in real time);

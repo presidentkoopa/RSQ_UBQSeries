@@ -1784,7 +1784,12 @@ class RSQWP_Whip : EventHandler
 		return false;
 	}
 
-	const LOCK_RANGE = 512.0;    // map units (~15 m)
+	// ONE REACH FOR EVERYTHING (owner, BUGS_1.0 item 30, 2026-11-06: "increase our snag range ... is our whip target range
+	// the same across the board?" -- his pick: "A little longer everywhere"). Until 11-06: monsters and pickups 512 map
+	// units (15 m) for the mark and the lock, switches, keys and powerups marked first within rsqwp_whip_prio 256 (7.5 m),
+	// the aimed swing's anchor rsqwp_swing_reach 9 m. Now one number, Whip Reach (rsqwp_target_reach, 20 m: the longest
+	// of the old ones, 15 m, raised by a third), for all of them (swing.zs SwingReachM).
+	static double LockRange() { return SwingReachM() * 34.0; }
 	const LOCK_CONE = 7.0;       // degrees round the pointing hand
 	const REACH_TICS = 5;
 
@@ -1807,7 +1812,7 @@ class RSQWP_Whip : EventHandler
 			bool wasLine = lockLine[i];
 			Actor best = null;
 			double bestA = LOCK_CONE;
-			let it = BlockThingsIterator.CreateFromPos(org.x, org.y, org.z, 64, LOCK_RANGE, false);
+			let it = BlockThingsIterator.CreateFromPos(org.x, org.y, org.z, 64, LockRange(), false);
 			while (it.Next())
 			{
 				let a = it.thing;
@@ -1820,7 +1825,7 @@ class RSQWP_Whip : EventHandler
 				Vector3 c = a.pos + (0, 0, a.height * 0.5);
 				Vector3 to = c - org;
 				double d = to.Length();
-				if (d < 8 || d > LOCK_RANGE) continue;
+				if (d < 8 || d > LockRange()) continue;
 				double ang = acos(clamp((to / d) dot dir, -1.0, 1.0));
 				// a wide target may be off the ray by its own radius
 				double slack = atan2(a.radius, d);
@@ -1835,9 +1840,9 @@ class RSQWP_Whip : EventHandler
 				// a switch on the ray
 				let tr = GetTracer();
 				tr.shooter = pmo;
-				if (tr.Trace(org, level.PointInSector(org.xy), dir, LOCK_RANGE, 0, RSQWP_Tracer.WALLMASK, true, pmo)
+				if (tr.Trace(org, level.PointInSector(org.xy), dir, LockRange(), 0, RSQWP_Tracer.WALLMASK, true, pmo)
 					&& tr.Results.HitType == TRACE_HitWall && tr.Results.HitLine && tr.Results.HitLine.special
-					&& (tr.Results.HitLine.activation & (SPAC_Use | SPAC_Impact | SPAC_UseThrough)))
+					&& (tr.Results.HitLine.activation & LINE_MASK))
 				{
 					lockLine[i] = true;
 					lockAt[i] = tr.Results.HitPos - dir * 2;
@@ -1851,7 +1856,7 @@ class RSQWP_Whip : EventHandler
 	// ---- the whip weapon: mark, pull, lasso (owner 2026-10-31) ---------------------------------
 
 	const MARK_CONE = 20.0;      // degrees round the whip hand for monsters and other pickups
-	const PRIO_CONE = 70.0;      // switches, keys and powerups: anywhere roughly ahead, within rsqwp_whip_prio
+	const PRIO_CONE = 70.0;      // switches, keys and powerups: anywhere roughly ahead, within the one reach (LockRange)
 	const WRAP_TICS = 70;        // how long the whip stays wrapped round a monster waiting for the pull
 	const PULL_MIN = 1.5;        // the hand going back from the target, map units a tic (~1.5 m/s): a tug
 	const PULL_FULL = 4.0;       // ~4 m/s: a violent pull, the full yank
@@ -1877,7 +1882,7 @@ class RSQWP_Whip : EventHandler
 	}
 
 	// MARK: while the trigger is held the whip hand points. The candidates are switches, keys and powerups within
-	// rsqwp_whip_prio (nearest first), then monsters and pickups along the hand (within MARK_CONE, LOCK_RANGE,
+	// the one reach (LockRange; nearest first), then monsters and pickups along the hand (within MARK_CONE, LockRange(),
 	// nearest first). The mark stays on what it is on while that is still a candidate; alt-fire moves it to the
 	// next. Let go of the trigger and the mark is lost. The next crack flies to it (Crack, Reach).
 	void Mark(int i, PlayerPawn pmo, int hand)
@@ -1894,9 +1899,10 @@ class RSQWP_Whip : EventHandler
 		Vector3 org = RSQWP_Util.AimPos(pmo, hand);
 		Vector3 dir = RSQWP_Util.MapDir(RSQWP_Util.AimYaw(pmo, hand), RSQWP_Util.AimPitch(pmo, hand));
 		// QUICK MARK (Gun Bonsai VR): pickups and switches marked 2 m further a level
-		double prio = max(0.0, RSQWP_Util.Num("rsqwp_whip_prio", 256)) + 68.0 * max(0, Gb(pmo, G_QUICK));
+		double range = LockRange();
+		double prio = range + 68.0 * max(0, Gb(pmo, G_QUICK));   // the one reach (LockRange), and Quick Mark's 2 m a level past it
 		cA.Clear(); cL.Clear(); cPx.Clear(); cPy.Clear(); cPz.Clear(); cK.Clear();
-		let it = BlockThingsIterator.CreateFromPos(org.x, org.y, org.z, 64, LOCK_RANGE, false);
+		let it = BlockThingsIterator.CreateFromPos(org.x, org.y, org.z, 64, prio, false);
 		while (it.Next())
 		{
 			let a = it.thing;
@@ -1910,9 +1916,10 @@ class RSQWP_Whip : EventHandler
 			Vector3 c = a.pos + (0, 0, a.height * 0.5);
 			Vector3 to = c - org;
 			double d = to.Length();
-			if (d < 8 || d > LOCK_RANGE) continue;
+			if (d < 8 || d > prio) continue;
 			double ang = acos(clamp((to / d) dot dir, -1.0, 1.0)) - atan2(a.radius, d);
 			bool first = item && Priority(inv) && d <= prio && ang <= PRIO_CONE;
+			if (!first && d > range) continue;
 			if (!first && ang > MARK_CONE) continue;
 			if (!pmo.CheckSight(a, SF_IGNOREVISIBILITY | SF_IGNOREWATERBOUNDARY)) continue;
 			AddCand(a, null, c, first ? d : 100000 + d);
@@ -1925,7 +1932,7 @@ class RSQWP_Whip : EventHandler
 			while (li.Next())
 			{
 				Line l = li.CurLine;
-				if (!l || !l.special || IsDoor(l.special) || !(l.activation & (SPAC_Use | SPAC_Impact | SPAC_UseThrough))) continue;
+				if (!l || !l.special || IsDoor(l.special) || !(l.activation & LINE_MASK)) continue;
 				Vector2 a = l.v1.p, dl = l.delta;
 				double len2 = dl dot dl;
 				if (len2 <= 0) continue;
@@ -2003,7 +2010,7 @@ class RSQWP_Whip : EventHandler
 	}
 
 	// the marked thing is still one to crack, wherever the hand points now: a monster alive, a pickup not taken,
-	// within LOCK_RANGE of the hand and in sight; a switch within LOCK_RANGE
+	// within LockRange() of the hand and in sight; a switch within LockRange()
 	bool StillMarkable(int i, PlayerPawn pmo, Vector3 org)
 	{
 		let a = lockOn[i];
@@ -2013,10 +2020,10 @@ class RSQWP_Whip : EventHandler
 			let inv = Inventory(a);
 			if (inv) { if (inv.Owner || !inv.bSPECIAL) return false; }
 			else if (a.Health <= 0 || !a.bSHOOTABLE) return false;
-			if ((a.pos + (0, 0, a.height * 0.5) - org).Length() > LOCK_RANGE) return false;
+			if ((a.pos + (0, 0, a.height * 0.5) - org).Length() > LockRange()) return false;
 			return pmo.CheckSight(a, SF_IGNOREVISIBILITY | SF_IGNOREWATERBOUNDARY);
 		}
-		if (markLine[i]) return (lockAt[i] - org).Length() <= LOCK_RANGE;
+		if (markLine[i]) return (lockAt[i] - org).Length() <= LockRange();
 		return false;
 	}
 
@@ -2041,7 +2048,7 @@ class RSQWP_Whip : EventHandler
 		Vector3 c = v.pos + (0, 0, v.height * 0.6);
 		Vector3 roomTo = ToRoom(c) - ToRoom(hp);
 		double dist = roomTo.Length();
-		if (dist > LOCK_RANGE * 1.3) { EndWrap(i); return; }
+		if (dist > LockRange() * 1.3) { EndWrap(i); return; }
 		// the thong stays out to it: the outer half laid along the line, the tip on the monster
 		wlen[i] = max(baseLen[i], dist + 8);
 		int o = i * NP;
@@ -2440,7 +2447,7 @@ class RSQWP_Whip : EventHandler
 	// THE LASSO'S CATCH REACH (owner 11-02): tied to the whip's length at 4x -- 7.2 m for MIT's 1.8 m, more with a
 	// longer whip -- under the lock's range (15 m). It was 2x, which halved to 3.6 m when the whip became 1.8 m.
 	const LASSO_REACH_K = 4.0;
-	double LassoReach(int i) { return min(LOCK_RANGE, wlen[i] * LASSO_REACH_K); }
+	double LassoReach(int i) { return min(LockRange(), wlen[i] * LASSO_REACH_K); }
 
 	// A locked crack's flight: the thong pays out to the target over REACH_TICS (its length grows
 	// to the distance and the outer links are drawn along the line to it, the physics doing the
@@ -2657,7 +2664,10 @@ class RSQWP_Whip : EventHandler
 			&& bestZ < min(best.frontsector.ceilingplane.ZatPoint(bestP), best.backsector.ceilingplane.ZatPoint(bestP)))
 			struck.z = bestZ + 4;            // a beam: its face is above the corner
 		else struck.z = bestZ - 4;           // a lip: its face is below
-		return Snag(i, pmo, hand, (bestP.x, bestP.y, bestZ), dir, sec, struck);
+		if (!Snag(i, pmo, hand, (bestP.x, bestP.y, bestZ), dir, sec, struck)) return false;
+		// the line the whip wrapped is worked too when it has a special (a switch, a door: owner, BUGS_1.0 item 13)
+		if (RSQWP_Util.Flag("rsqwp_whip_lines", true)) UseLine(pmo, best, "snag");
+		return true;
 	}
 
 	// Something a whip can wrap round: an EDGE, not a flat wall. A two-sided line hit just under
@@ -3197,17 +3207,43 @@ class RSQWP_Whip : EventHandler
 		while (it.Next())
 		{
 			Line l = it.CurLine;
-			if (!l || !l.special || !(l.activation & (SPAC_Use | SPAC_Impact | SPAC_UseThrough))) continue;
+			if (!UseType(l)) continue;
 			// distance from the tip to the line, in 2D
 			Vector2 a = l.v1.p, d = l.delta;
 			double len2 = d dot d;
 			double t = len2 > 0 ? clamp(((at.xy - a) dot d) / len2, 0.0, 1.0) : 0.0;
 			if ((at.xy - (a + d * t)).Length() > reach) continue;
-			int side = level.PointOnLineSide(pmo.pos.xy, l);
-			int type = (l.activation & SPAC_Impact) ? SPAC_Impact : ((l.activation & SPAC_UseThrough) ? SPAC_UseThrough : SPAC_Use);
-			if (l.Activate(pmo, side, type)) n++;
+			if (UseLine(pmo, l, "crack")) n++;
 		}
 		return n;
+	}
+
+	// SWITCHES AND DOORS BY BLOW, the series' one rule (owner, BUGS_1.0 item 13, 2026-11-06: "punch, jab, hook, uppercut,
+	// whip, pistol whip, gun buttshove... all of this activates switches"; RSQ Melee's core.zs UseLineAlong is the same).
+	// The LINE'S SPECIAL decides, never its texture: a WAD's custom switch texture is a switch because its line has a
+	// special, and the engine flips whatever texture it wears the same way. Worked as a Use press if the line takes Use,
+	// else UseThrough, else Push, else Impact (a shoot-switch). Until 11-06 the crack took Impact first.
+	const LINE_MASK = SPAC_Use | SPAC_UseThrough | SPAC_Push | SPAC_Impact;
+	static int UseType(Line l)
+	{
+		if (!l || !l.special) return 0;
+		if (l.activation & SPAC_Use) return SPAC_Use;
+		if (l.activation & SPAC_UseThrough) return SPAC_UseThrough;
+		if (l.activation & SPAC_Push) return SPAC_Push;
+		if (l.activation & SPAC_Impact) return SPAC_Impact;
+		return 0;
+	}
+	bool UseLine(PlayerPawn pmo, Line l, String why)
+	{
+		int type = UseType(l);
+		if (!type || !pmo) return false;
+		int sp = l.special;
+		int side = level.PointOnLineSide(pmo.pos.xy, l);
+		bool ok = l.Activate(pmo, side, type);
+		if (RSQWP_Util.Flag("rsqwp_debug", false))
+			Console.Printf("T_WPW LINE t%d %s on line %d (special %d, as %s): %s", level.maptime, why, l.Index(), sp,
+				type == SPAC_Use ? "Use" : type == SPAC_UseThrough ? "UseThrough" : type == SPAC_Push ? "Push" : "Impact", ok ? "worked" : "refused");
+		return ok;
 	}
 
 	// A FETCHED PICKUP IS TAKEN WHEN IT REACHES YOU (owner 11-02): the engine picks an item up only when the player moves

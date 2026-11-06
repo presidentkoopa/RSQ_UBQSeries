@@ -39,7 +39,8 @@ let go at the top with all your speed.
 - Hold the other hand's alt fire (or, with the whip in your main hand and the off hand empty, its fire) to cast a
   dotted aim ray with a diamond: gold where the whip can anchor (a wall or a ceiling within reach), red where it
   cannot. Crack, and the whip flies to that spot and latches. The beam wins over any monster mark.
-- Reach is 9 m by default, adjustable from 3 to 60 m.
+- Whip Reach (20 m by default, 3 to 60 m) is one reach for everything: the aimed swing's anchor and every mark and lock
+  (monsters, pickups, switches, keys, powerups).
 - Start the swing by closing your off hand on the whip or by jumping: the jump lifts you and pushes you on where you
   face.
 
@@ -78,7 +79,7 @@ let go at the top with all your speed.
 | Action | How (VR) | Notes |
 |---|---|---|
 | Crack | Snap the forearm or flick the wrist | The tip must pass the crack speed |
-| Mark a target | Hold the whip hand's trigger and point | Switches, keys and powerups within 8 m first |
+| Mark a target | Hold the whip hand's trigger and point | Switches, keys and powerups within Whip Reach first |
 | Next target | Whip hand's alt fire | |
 | Send the whip to the mark | Crack while marked | |
 | Swing a wrapped monster | Keep the trigger held and swing your arm | |
@@ -112,11 +113,12 @@ turn it off.
 | Hand on the Handle | On | The hand round the handle |
 | Whip Style | Real | Real (hold, crack it yourself) or Assist (press, it cracks for you) |
 | Whip Aim | Assist | Free, Assist, or Lock (other hand points, alt fire holds) |
+| Whip Reach (m) | 20 | One reach for marks, locks and the aimed swing (3-60) |
 | **Crack** | | |
 | Stun | On | A crack breaks off a monster's attack |
 | Knockback | Off | A crack knocks the monster about |
 | Hit-Stop (GB) | Off | A crack freezes it for a beat |
-| Throws Switches | On | A crack uses a switch it lands on |
+| Throws Switches | On | A crack (or a snag, or an aimed swing latching) uses a switch or door it lands on, as a Use press |
 | Fetches Pickups | On | A crack flicks a pickup to you |
 | Crack Fireballs (GB) | Off | Cracks explode missiles |
 | Cracked Fireballs | Explode There | Or Knocked Away, to explode away from you (greyed with Gun Bonsai VR: Crack Shot and Return Crack decide) |
@@ -129,7 +131,6 @@ turn it off.
 | **Swinging** | | |
 | Catch Edges (GB) | On | A lash that catches an edge becomes a rope |
 | Aimed Swing | On | The other hand's alt fire aims an anchor |
-| Swing Reach (m) | 9 | How far the aimed swing can anchor (3-60) |
 | Aim With Off Hand | On | An empty off hand's fire aims too |
 | Beam Beats Lock-On | On | The aim beam beats any mark |
 | Off Hand Stays Free | On | A gun into the off hand never lets go of the rope |
@@ -145,7 +146,7 @@ turn it off.
 | **Controls** | | Whip (Main), Whip (Off), Grab Whip (Main), Grab Whip (Off): no default binds |
 | Reset All | | Every setting on both pages back to default |
 
-**Test and Debug**: Crack Speed (20), Damage (12), Hardest Crack Speed (43), Aim Reach (40), Mark Range (256), Pulled Up To
+**Test and Debug**: Crack Speed (20), Damage (12), Hardest Crack Speed (43), Aim Reach (40), Pulled Up To
 (mass 400), Too Heavy From (mass 1000), Lasso Reach (0.30 m); Thickness (1.0), Stiffness (1.0), Damping (1.0), Air Drag
 (1.0), Hand Smoothing (0.8 tics), Draw Pieces (12), Let-Go Return Speed (64); Reel Speed (3), Shortest Rope (32), Top
 Speed (30), Stick Lean (0.25), Arm Pump (0.12), Swing Air Drag (0.002), Rope Friction (0.025), Ledge Hop (6), Snag Edge

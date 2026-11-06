@@ -210,6 +210,44 @@ class RSQML play
 			if (c.GetClassName() == n) return true;
 		return false;
 	}
+
+	// ---- SWITCHES AND DOORS BY BLOW (owner, BUGS_1.0 item 13, 2026-11-06: "punch, jab, hook, uppercut, whip, pistol
+	// whip, gun buttshove... all of this activates switches") ------------------------------------------------------
+	// A blow that meets a line with a special works it, as a Use press on that line would. The LINE'S SPECIAL decides,
+	// never its texture: a WAD's custom switch texture is a switch because its line has a special, and the engine flips
+	// whatever texture it wears (its ANIMDEFS / SWITCHES entry) the same way. The series' one rule (Whip's crack follows
+	// it too): Use if the line takes Use, else UseThrough, else Push, else Impact (a shoot-switch hit by the fist).
+	// Line.Activate runs the engine's own P_ActivateLine: the key check and its locked message, the switch's flip and
+	// sound, a one-shot switch losing its special, all as for a Use press.
+	const LINE_MASK = SPAC_Use | SPAC_UseThrough | SPAC_Push | SPAC_Impact;
+	static int LineUseType(Line l)
+	{
+		if (!l || !l.special) return 0;
+		if (l.activation & SPAC_Use) return SPAC_Use;
+		if (l.activation & SPAC_UseThrough) return SPAC_UseThrough;
+		if (l.activation & SPAC_Push) return SPAC_Push;
+		if (l.activation & SPAC_Impact) return SPAC_Impact;
+		return 0;
+	}
+	// the first wall along from -> from + dir * dist: a line with a special there is worked. TRF_ABSPOSITION so the start
+	// is the hand itself (gloves.zs ClearPath says why), TRF_THRUACTORS so a body in the way is not the wall.
+	static bool UseLineAlong(PlayerPawn pmo, Vector3 from, Vector3 dir, double dist, String who)
+	{
+		if (!pmo || dist <= 0 || dir.Length() < 0.0001) return false;
+		dir = dir.Unit();
+		FLineTraceData t;
+		pmo.LineTrace(VectorAngle(dir.x, dir.y), dist, VectorAngle(dir.xy.Length(), -dir.z),
+			TRF_ABSPOSITION | TRF_THRUACTORS, from.z, from.x, from.y, t);
+		if (t.HitType != TRACE_HitWall || !t.HitLine) return false;
+		Line l = t.HitLine;
+		int type = LineUseType(l);
+		if (!type) return false;
+		int sp = l.special;
+		bool ok = l.Activate(pmo, t.LineSide, type);
+		if (Debug() > 0) Console.Printf("RSQML %s on line %d (special %d, as %s): %s", who, l.Index(), sp,
+			type == SPAC_Use ? "Use" : type == SPAC_UseThrough ? "UseThrough" : type == SPAC_Push ? "Push" : "Impact", ok ? "worked" : "refused");
+		return ok;
+	}
 }
 
 // ---- THE HANDS ---------------------------------------------------------------------------------------------

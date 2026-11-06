@@ -112,6 +112,7 @@ OptionMenu "SSQ_Options"
 	Option "Show ShieldSaw", "ssq_show", "OnOff"
 	Option "Take It From", "ssq_mount_spot", "SSQ_MountSpot"
 	Option "Draw With Use", "ssq_shoulder_use", "OnOff"
+	Option "Next/Prev Offhand Weapon", "ssq_offhand_cycle", "OnOff"
 	Option "Mount Marker", "ssq_marker", "SSQ_Marker"
 	Slider "Shield Size", "ssq_shield_scale", 1.0, 1.5, 0.125, 3
 	StaticText " "

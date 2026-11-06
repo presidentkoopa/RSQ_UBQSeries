@@ -53,7 +53,8 @@ flies where you threw it. Changed your mind? Press the trigger again mid-flight 
 - **Shield bash**: shove the plate along its face (a quick snap, or a firm lean) into a monster to hit and knock it back.
 - **Wall slam**: a body you bash into a wall takes extra damage by how hard it hit, and is stunned for a moment.
 - **Grind**: with the saw revved, press the blades into a monster and it is chewed, each body no more than once every
-  4 tics. The blades reach 6 cm past the rim.
+  4 tics. The blades reach 6 cm past the rim. Every grind hit throws the monster's own blood (Brutal Doom's blood on
+  Brutal Doom's monsters).
 - Bashes and grinds never reach through walls or doors.
 
 **Throwing**
@@ -125,6 +126,7 @@ turns its row on; the row can still turn it off.
 | Show ShieldSaw | On | The stowed shield is drawn where it hangs: on RSQ Tactical Rig's body, else at its mount on your back |
 | Take It From | Small of the Back | Over the Shoulder, Small of the Back, Behind the Neck, Back or Neck |
 | Draw With Use | On | Use at the mount draws and puts away (off: only the Draw key) |
+| Next/Prev Offhand Weapon | Off | QuestZDoom's next / previous off-hand weapon reach the shield too |
 | Mount Marker | When Needed | Never, When Needed, Always: the marker at the grab point |
 | Shield Size | 1.0 | Model and block together (1.0-1.5) |
 | **Block** | | |

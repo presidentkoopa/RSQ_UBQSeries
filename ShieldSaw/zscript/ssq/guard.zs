@@ -287,6 +287,19 @@ class SSQ_Guard : Inventory
 		if (!saw || !saw.Revved()) return 0;
 		return SSQ_Upg.Lv(saw, "RevShield");
 	}
+	// THE GRIND BLEEDS (owner, BUGS_1.0 item 17, 2026-11-06: "when i attack it doesn't seem to throw off blood when i rev
+	// into monsters"). DamageMobj alone spawns no blood (only a bullet's or a puff's hit does), so every grind hit throws the
+	// body's own blood: SpawnBlood spawns its BloodType -- Brutal Doom's own blood actors on Brutal Doom's monsters when it
+	// is loaded, Doom's Blood otherwise -- and TraceBleed puts its splats on the walls and floor behind it. Before the
+	// damage, so a body the hit kills (or gibs away) still bleeds. Nothing for a NOBLOOD thing (a barrel, a Lost Soul).
+	static void Bleed(PlayerPawn mo, Actor t, Vector3 at, int dmg)
+	{
+		if (!mo || !t || t.bNoBlood || t.bDormant || dmg <= 0) return;
+		double ang = mo.AngleTo(t);
+		t.SpawnBlood(at, ang + 180, dmg);
+		t.TraceBleed(dmg, mo);
+	}
+
 	// one grind hit on what clawed the plate, paid to the saw like the grind in HeldTick
 	static void ClawGrind(PlayerPawn mo, SSQ_ShieldSaw saw, Actor t)
 	{
@@ -294,9 +307,10 @@ class SSQ_Guard : Inventory
 		let upg = SSQ_Upg.Svc();
 		SSQ_Upg.Touch("rev.block", mo, t);
 		if (upg && saw) upg.GetInt("credit.push", "", 2, 0, saw);
+		Vector3 at = t.pos + (0, 0, t.height * 0.5);
+		Bleed(mo, t, at, GrindDamage(mo));
 		t.DamageMobj(mo, mo, GrindDamage(mo), 'Saw');
 		if (upg && saw) upg.GetInt("credit.pop", "", 0, 0, saw);
-		Vector3 at = t.pos + (0, 0, t.height * 0.5);
 		SSQ_FX.At(mo, at, "ssq/grind", CHAN_5, 0.9);
 		SSQ_FX.Sparks(mo, at, (0, 0, 1), 6);
 	}
@@ -1093,6 +1107,7 @@ class SSQ_Guard : Inventory
 				}
 				else { g.grindWho.Push(t); g.grindWhen.Push(mo.Level.maptime); g.grindStart.Push(mo.Level.maptime); }
 				int dmg = GrindDamage(mo);	// HUNGRY BLADES (Gun Bonsai VR patch) raises it
+				Bleed(mo, t, C + n * (t.radius * 0.5), dmg);
 				if (upg) upg.GetInt("credit.push", "", 2, 0, saw);
 				t.DamageMobj(mo, mo, dmg, 'Saw');
 				if (upg) upg.GetInt("credit.pop", "", 0, 0, saw);

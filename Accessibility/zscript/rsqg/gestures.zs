@@ -591,7 +591,7 @@ class RSQG_Handler : EventHandler
 		{
 			// THE SHOVE (GE2): its own answer, never a punch. (Its blow, the butt shove, is RSQ Melee's: it reads the swing itself.)
 			shoveTic[h] = gametic; shoveTwo[h] = two; shoveMps[h] = avg;
-			Say((two ? "two-hand shove (" : "shove (") .. HandName(h) .. ")");
+			Say("gun-butt shove (" .. HandName(h) .. ")");
 			if (SwDebug() >= 1)
 				Console.Printf("\c[Gold]rsqg: shove%s, %s hand, %.2f m/s, with %s (t%d)", two ? " (two hands)" : "", HandName(h), avg, CarryName(pmo, h), level.maptime);
 			return;

@@ -109,7 +109,9 @@ extend class RSQWP_Whip
 	// (the hook's range and the rope follow the reach: Latch sets h.range from it, so nothing else caps it); at the default
 	// 9 the same wall reads "out of reach (9.0 m)". So 60 m, the longest sightline measured.
 	const MAX_REACH = 60.0;
-	static double SwingReachM() { return clamp(RSQWP_Util.Num("rsqwp_swing_reach", 9), 3.0, MAX_REACH); }
+	// 11-06 (owner, BUGS_1.0 item 30: one reach for everything, a little longer): Whip Reach (rsqwp_target_reach, 20 m) is the
+	// aimed swing's reach AND every mark's and lock's (whip.zs LockRange). The old rsqwp_swing_reach (9 m) is no longer read.
+	static double SwingReachM() { return clamp(RSQWP_Util.Num("rsqwp_target_reach", 20), 3.0, MAX_REACH); }
 
 	// An EMPTY OFF HAND, as the series tests it (see the top): nothing in it, or a fist of any of the parents'.
 	static clearscope bool OffFree(PlayerInfo p)
@@ -399,6 +401,9 @@ extend class RSQWP_Whip
 		h.struck = castHit[i];          // on the face itself (core: struck - hitDir x 6 = 6 out, traced 16 in)
 		core.hooks[i] = h;
 		core.Latch(h, i);
+		// A SWITCH OR A DOOR where the aimed swing latched on a wall: worked as the crack works one (owner, BUGS_1.0 item 13;
+		// whip.zs UseLine), the wall right at the hit
+		if (castPlane[i] != 2 && abs(castN[i].z) < 0.5 && RSQWP_Util.Flag("rsqwp_whip_lines", true)) Switches(pmo, castHit[i], 4);
 		bool grounded = pmo.pos.z <= pmo.floorz + 0.5 || pmo.bOnMobj;
 		double hop = 0;
 		if (h.phase == RSQWP_Hook.PH_LATCH)

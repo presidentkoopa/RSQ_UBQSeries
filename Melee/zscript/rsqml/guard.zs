@@ -142,7 +142,7 @@ class RSQML_Guard : StaticEventHandler
 
 	// THE GUARD FLASH (the owner's pick, 2026-11-02): where the blow is stopped -- between it and your face, 12 map
 	// units (35 cm) from your eyes toward whatever struck (a missile from where it is) -- the Guard spark (sparks.zs
-	// MLGD) and stock Doom 2's tick (DSTINK, as rsqml/guard).
+	// MZBM, the blue-white hit) and stock Doom 2's tick (DSTINK, as rsqml/guard).
 	static void Flash(PlayerPawn pawn, Actor from)
 	{
 		Vector3 eye = RSQML_Hands.EyePos(pawn);
@@ -163,6 +163,7 @@ class RSQML_Guard : StaticEventHandler
 		Vector3 d = level.Vec3Diff(eye, to);
 		if (d.Length() < 0.01) d = (cos(pawn.angle), sin(pawn.angle), 0);
 		RSQML_Burst.At("RSQML_Burst4", eye + d.Unit() * 14.0, size, frames);
+		RSQML_Spark.Perfect(eye + d.Unit() * 12.0);   // the red-white spark of a perfect (sparks.zs)
 		pawn.A_StartSound("rsqml/fx/clang", CHAN_AUTO, CHANF_OVERLAP, 1.0);
 	}
 

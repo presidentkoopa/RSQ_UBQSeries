@@ -72,6 +72,7 @@ class RSQ_Splat : Inventory
 		}
 		mo.SpawnBlood(mo.pos + (0, 0, mo.height * 0.5), VectorAngle(-lastVel.x, -lastVel.y), dmg);
 		mo.A_StartSound("rsqml/smash", CHAN_AUTO, 0, 1.0);
+		RSQML_Spark.Dust(mo.pos + (0, 0, mo.height * 0.3));   // the dust cloud on the wall (sparks.zs)
 		RSQML.Touch("wall", by, mo);   // RSQ Score: the Wall Splat's mark on the blow (its sheet S20), before it lands
 		mo.DamageMobj(inf, by, dmg, 'Melee', DMG_THRUSTLESS);
 		if (!mo || mo.health <= 0) return;

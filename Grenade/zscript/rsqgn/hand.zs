@@ -28,7 +28,8 @@
 //
 // STANDS DOWN with Brutal Doom VR Reloaded (its RSG_Handler, looked up by a String at run time: a quoted class name
 // is resolved when the script compiles and would break this pack without Brutal Doom): then nothing here runs, and
-// BD22 VR's own grenade does everything.
+// BD22 VR's own grenade does everything -- unless Replace Brutal Doom's Grenade (rsqgn_replace_bd) is on: then this
+// pack runs, and BD22 VR stands its own grenade down on reading that cvar by name (Active, ReplacesBD).
 
 class RSQGN_Geo play
 {
@@ -198,9 +199,20 @@ class RSQGN_Handler : EventHandler
 		return c != null;
 	}
 
+	// REPLACE BRUTAL DOOM'S GRENADE (rsqgn_replace_bd, off; owner, BUGS_1.0 item 21): on, this pack does not stand down for
+	// BD22 VR Reloaded. BD22 VR reads the same cvar by name and stands ITS grenade down (CVARINFO.txt says the handshake).
+	static bool ReplacesBD()
+	{
+		let cv = CVar.FindCVar("rsqgn_replace_bd");
+		if (cv && cv.GetBool()) return true;
+		// BD22 VR's own "Use RSQ Grenade Instead" row (rsg_rsq_nade) means the same thing from its side
+		let bd = CVar.FindCVar("rsg_rsq_nade");
+		return bd && bd.GetBool();
+	}
+
 	static bool Active()
 	{
-		if (BDVR()) return false;
+		if (BDVR() && !ReplacesBD()) return false;
 		let cv = CVar.FindCVar("rsqgn_on");
 		return !cv || cv.GetBool();
 	}

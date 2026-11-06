@@ -159,6 +159,7 @@ class RSQML_TwoHand : StaticEventHandler
 		}
 		pmo.A_StartSound("rsqml/fx/thud", CHAN_AUTO, CHANF_OVERLAP, 1.0);
 		RSQML_Burst.At("RSQML_Burst5", pmo.pos + (0, 0, 4), 1.5, RSQML_Burst.ByLevel(lv, 3));
+		RSQML_Spark.Dust(pmo.pos + (0, 0, 4), 1.5);   // the dust cloud (sparks.zs)
 		pmo.A_QuakeEx(1, 1, 2, 8, 0, r, "", QF_SCALEDOWN);
 		RSQ_Buzz.Start(pmo, 0, 1.0, 10);
 		RSQ_Buzz.Start(pmo, 1, 1.0, 10);

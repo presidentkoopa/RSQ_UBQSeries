@@ -11,7 +11,7 @@ stay white-hot, alpha kept). Each row is cropped to the UNION box of its frames 
 Melee/sprites/rsqml/<NAME><frame>0.png with a grAb chunk putting the origin at the box's centre. It prints each one's
 size and the Scale that makes its long side WORLD map units (34 a metre); sparks.zs RSQML_Burst uses it.
 
-THE ART RULE (GBOVR_TREES.md 4): CvS2's sparks are the blow itself, on every punch; these bursts are what a blow DOES,
+THE ART RULE (GBOVR_TREES.md 4): the hit sparks (tools/hitsheet.py, since 11-06) are the blow itself, on every punch; these bursts are what a blow DOES,
 only on the moments that earn it -- combos, criticals, perfects, the elements, the launches -- and they play frames by
 level (sparks.zs)."""
 import io, os, sys, zipfile

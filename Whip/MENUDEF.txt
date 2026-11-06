@@ -40,6 +40,7 @@ OptionMenu "RSQWP_Options"
 	Option "Hand on the Handle", "rsqwp_hand_handle", "OnOff"
 	Option "Whip Style", "rsqwp_whip_mode", "RSQWP_WhipModes"
 	Option "Whip Aim", "rsqwp_whip_aim", "RSQWP_WhipAims"
+	Slider "Whip Reach (m)", "rsqwp_target_reach", 3, 60, 0.5, 1
 	StaticText " "
 	StaticText "Crack", "Gold"
 	Option "Stun", "rsqwp_whip_stun", "OnOff"
@@ -60,7 +61,6 @@ OptionMenu "RSQWP_Options"
 	StaticText "Swinging", "Gold"
 	RSQWPGbOption "Catch Edges", "rsqwp_whip_snag", "OnOff", "RSQWP_Service", "Snag"
 	Option "Aimed Swing", "rsqwp_swing", "OnOff"
-	Slider "Swing Reach (m)", "rsqwp_swing_reach", 3, 60, 0.5, 1
 	Option "Aim With Off Hand", "rsqwp_swing_ohfire", "OnOff"
 	Option "Beam Beats Lock-On", "rsqwp_swing_beamwins", "OnOff"
 	Option "Off Hand Stays Free", "rsqwp_swing_offfree", "OnOff"
@@ -93,7 +93,6 @@ OptionMenu "RSQWP_Test"
 	Slider "Damage", "rsqwp_whip_damage", 0, 40, 2, 0
 	Slider "Hardest Crack Speed", "rsqwp_whip_hardcrack", 25, 120, 1, 0
 	Slider "Aim Reach", "rsqwp_whip_assist", 16, 96, 4, 0
-	Slider "Mark Range", "rsqwp_whip_prio", 0, 768, 32, 0
 	Slider "Pulled Up To (mass)", "rsqwp_whip_light", 50, 1000, 50, 0
 	Slider "Too Heavy From (mass)", "rsqwp_whip_heavy", 200, 5000, 100, 0
 	Slider "Lasso Reach (m)", "rsqwp_lasso_reach", 0.1, 0.6, 0.05, 2

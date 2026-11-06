@@ -41,6 +41,7 @@ class SSQ_Handler : EventHandler
 	bool  mStowLatch[MAXPLAYERS];	// holstered with Use: no re-draw until Use is let go
 	int   mCatchGrace[MAXPLAYERS];	// tics after a catch before the grip is read again
 	int   mDrawGrace[MAXPLAYERS];	// tics after a draw before an empty off hand counts as eviction
+	int   mCycleTic[MAXPLAYERS];	// the last Next / Prev Offhand Weapon press (ssq_offhand_cycle), gametic + 1; 0 none
 	int   mStartDrawn[MAXPLAYERS];	// countdown to the draw at spawn (ssq_start_drawn)
 	bool  mInZone[MAXPLAYERS];		// kept for the debug line; the zone-hides-the-gun pass was retired
 	// THE LOCK-ON YOU SEE. While the shield is held, a cone from where the off hand points picks
@@ -791,6 +792,8 @@ class SSQ_Handler : EventHandler
 
 			// nothing but Draw() puts the shield in the hand: undo the engine filling an empty
 			// off hand with it, or a level change re-raising it
+			// ... unless the player cycled to it (Next / Prev Offhand Weapon, ssq_offhand_cycle): then it is drawn
+			if (mState[i] == SS_STOWED && (p.OffhandWeapon == saw || p.PendingWeapon == saw) && CycledLately(i)) { mCycleTic[i] = 0; Draw(i); }
 			if (mState[i] != SS_DRAWN && p.OffhandWeapon == saw) Unstow(i);
 			if (mState[i] == SS_DRAWN) { if (SVI('ssq_yield_offhand', 0) != 0) HoldOrYield(i, saw); else PinHands(i, saw); }
 			if (mState[i] == SS_FLYING && !mDisc[i]) { mState[i] = SS_STOWED; }
@@ -830,6 +833,23 @@ class SSQ_Handler : EventHandler
 			LocksTick(i);
 			Props(i);
 		}
+	}
+
+	bool CycledLately(int i) { return mCycleTic[i] > 0 && gametic - mCycleTic[i] <= 20; }
+
+	// NEXT / PREV OFFHAND WEAPON, as a key (ssq_offhand_cycle): a key whose binding is QuestZDoom's off-hand weapon cycle
+	// ("weapnext 1" / "weapprev 1") going down sends one network event (the way RSQ Tactical Rig's cigarette reads the same
+	// keys). The key is never eaten: the engine's own switch still runs.
+	override bool InputProcess(InputEvent e)
+	{
+		if (e.Type != InputEvent.Type_KeyDown) return false;
+		if (consoleplayer < 0 || consoleplayer >= MAXPLAYERS || !playeringame[consoleplayer]) return false;
+		if (UVI(players[consoleplayer], 'ssq_offhand_cycle', 0) == 0) return false;
+		String b = Bindings.GetBinding(e.KeyScan);
+		b = b.MakeLower();
+		if (b.IndexOf("weapnext 1") >= 0) EventHandler.SendNetworkEvent("ssq-cycle", 1);
+		else if (b.IndexOf("weapprev 1") >= 0) EventHandler.SendNetworkEvent("ssq-cycle", -1);
+		return false;
 	}
 
 	// USE in the zone: holstered -> draw; drawn -> holster
@@ -1510,6 +1530,38 @@ class SSQ_Handler : EventHandler
 			if (mState[i] == SS_STOWED) Draw(i);
 			else if (mState[i] == SS_DRAWN) Stow(i, true);
 			else if (mDisc[i]) SSQ_Disc(mDisc[i]).Recall();
+		}
+		else if (e.Name == "ssq-cycle")
+		{
+			// NEXT / PREV OFFHAND WEAPON (ssq_offhand_cycle, off; owner, BUGS_1.0 item 17): the shield is one of the off
+			// hand's weapons in the cycle (slot 1), as well as everything else that draws it. The engine's own switch for
+			// the same key press arrives as its own command; this decides, from the engine's own pick (player.zs
+			// PickNextWeapon / PickPrevWeapon, hand 1), whether the press lands on the shield or leaves it.
+			if (UVI(players[i], 'ssq_offhand_cycle', 0) == 0) return;
+			let saw = SSQ_ShieldSaw(mo.FindInventory('SSQ_ShieldSaw'));
+			if (!saw) return;
+			mCycleTic[i] = gametic + 1;
+			if (mState[i] == SS_STOWED)
+			{
+				Weapon pick = e.Args[0] > 0 ? mo.PickNextWeapon(1) : mo.PickPrevWeapon(1);
+				if (pick == saw || players[i].PendingWeapon == saw || players[i].OffhandWeapon == saw) { mCycleTic[i] = 0; Draw(i); }
+				if (UVI(players[i], 'ssq_debug', 0)) { String pn = "nothing"; if (pick) pn = pick.GetClassName(); Console.Printf("ssq: p%d cycle %s while stowed: the pick is %s", i, e.Args[0] > 0 ? "next" : "prev", pn); }
+			}
+			else if (mState[i] == SS_DRAWN)
+			{
+				// the pick from the shield (it is the off hand's weapon now), then the shield goes to its mount and the
+				// pick comes up in the off hand
+				Weapon pick = e.Args[0] > 0 ? mo.PickNextWeapon(1) : mo.PickPrevWeapon(1);
+				if (!pick || pick == saw) return;
+				mPrevOff[i] = pick.GetClass();
+				mFistNext[i] = false;
+				Unstow(i);
+				ClearLocks(i);
+				mState[i] = SS_STOWED;
+				mStowLatch[i] = true;
+				mo.A_StartSound("ssq/stow", CHAN_6);
+				if (UVI(players[i], 'ssq_debug', 0)) Console.Printf("ssq: p%d cycle %s while drawn: shield to the mount, %s to the off hand", i, e.Args[0] > 0 ? "next" : "prev", pick.GetClassName());
+			}
 		}
 		else if (e.Name == "ssq-lock")
 		{

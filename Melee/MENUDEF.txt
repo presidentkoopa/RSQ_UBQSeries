@@ -38,6 +38,7 @@ OptionMenu "RSQML_Options"
 	Option "Slappers Only", "rsqml_slappers", "OnOff"
 	Option "Open-Palm Swat", "rsqml_swat", "OnOff"
 	Option "Swat Bullets", "rsqml_bullets", "OnOff"
+	Option "Uppercut Kicks Barrels", "rsqml_uppercut_barrels", "OnOff"
 	Slider "Hit Spark Size", "rsqml_spark_size", 0.25, 3.0, 0.25, 2
 	StaticText " "
 	StaticText "Gun Butt Shove", "Gold"

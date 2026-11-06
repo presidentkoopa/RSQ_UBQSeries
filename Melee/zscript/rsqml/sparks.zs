@@ -1,36 +1,34 @@
-// HIT SPARKS (2026-11-02; the owner: "we need different hitsprites for different attacks so we know they are truly
-// different"). His art: Capcom vs. SNK 2's hit sparks (ripped by Phantom.of.the.Server), one kind per blow, and the
-// Hadouken hit from Random Sprite Rips (the same ripper). Built by Melee/tools/sparks.py: keyed, cropped to each
-// sequence's union box (the art's axis stays put), shrunk, origin at the box's centre; the Scale below is the one the
-// tool printed for the world size it was asked (map units, 34 a metre).
-//
-// Sizes (owner 2026-11-02: "pretty big... they should be like monster head height"): about a monster's head, then
-// times Hit Spark Size (rsqml_spark_size, 1.0).
-//   MLSN  Normal Spark   a jab / straight                    15 frames, 14 units tall (was 44)
-//   MLSS  Special Spark  a hook / side swing, the palm swat  15 frames, 16 (was 50)
-//   MLSU  Super Spark    an uppercut, the Hadouken's return  15 frames, 18 (was 60)
-//   MLGD  Guard          the guard taking a blow             24 frames, 8 (was 18; drawn about 35 cm from your eyes)
-//   MLHD  Hadouken hit   with the Super Spark on a return     6 frames, 12 (was 30)
-//
-// Additive, full bright, billboards; no blockmap, no gravity, nothing touches them. The four-letter names were checked
-// against every RSQ pk3, the load order's Brutal Doom, BD22 VR and XMVE pk3s (lumps and actor text): no other user.
+// HIT SPARKS (owner, 2026-11-06, BUGS_1.0 item 40; the approved plan proof/melee/melee_sprite_plan_kof.png). The community
+// sheet "ripped by shezzor", cut and recoloured by tools/hitsheet.py: the sheet's 4-frame hit -- flash > hit-stop black >
+// ring -- in three size rows, in the KOF palette (the highlights stay white-hot). The Capcom vs. SNK 2 sparks used until
+// 11-06 are gone; kiddolink's bought bursts (below) are unchanged, at the same moments.
+//   MZO S/M/L  orange-white   jab, hook, the palm swat; the size row by swing speed (slow small, mid, fast large)
+//   MZV S/M/L  violet-white   uppercut (size by speed too), the Hadouken's return (mid)
+//   MZBM       blue-white     the Guard soaking a blow
+//   MZRM       red-white      a counter punch (the monster in its wind-up), a perfect (Parry, Reflect Guard)
+//   MZSH       the orange starburst as drawn, Melee's own gun-butt shove
+//   MZDU       dust: Ground Pound, Wall Splat, the uppercut barrel kick (5 frames); the uppercut's launch (the first 2)
+//   MZDZ       Heavy Hands' freeze: yellow chicks and stars circling over the monster's head
+// VARIETY (owner): each blow picks at random one of three baked rotations (0, 22, 45 degrees: frames A-D, E-H, I-L) and
+// a flip, so no two look alike. Drawn as painted (Translucent: the hit-stop frame is black), full bright, billboards;
+// times Hit Spark Size (rsqml_spark_size). No blood frames. The four-letter names: MZ** is used by no RSQ pk3.
 class RSQML_Spark : Actor
 {
 	Default
 	{
 		+NOINTERACTION +NOBLOCKMAP +NOGRAVITY +DONTSPLASH +NOTONAUTOMAP +FORCEXYBILLBOARD +BRIGHT
-		RenderStyle "Add";
+		RenderStyle "Translucent";
 		Alpha 1.0;
 	}
 
-	static Actor Put(String cls, Vector3 at)
+	static Actor Put(String cls, Vector3 at, double size = 1.0)
 	{
 		Actor a = Actor.Spawn(cls, at, NO_REPLACE);
 		if (a)
 		{
 			CVar cv = CVar.FindCVar("rsqml_spark_size");
 			double k = cv ? clamp(cv.GetFloat(), 0.25, 3.0) : 1.0;
-			a.Scale *= k;
+			a.Scale *= k * size;
 		}
 		return a;
 	}
@@ -46,80 +44,172 @@ class RSQML_Spark : Actor
 		return (xy.x, xy.y, clamp(glove.z, victim.pos.z + 4, victim.pos.z + victim.height));
 	}
 
-	// a landed punch: RSQML_Gloves.PK_JAB / PK_HOOK / PK_UPPER.
-	// THE STREAK FOLLOWS THE FIST (2026-11-02; the owner: jab, hook and uppercut "need work... better, not bigger"). Each
-	// CvS2 spark comes at four angles (sparks.py: 1 = 79, 2 = 56, 3 = 34, 4 = 11 degrees, each falling to the right). The
-	// blow's travel, as the puncher sees it (across: the view's right; up: the vertical x pixelstretch), picks the
-	// nearest, mirrored when it rises to the right. A blow driven straight in (little across or up) takes the 56-degree
-	// one, mirrored for the off hand, so the two hands' jabs cross.
-	static void Punch(int kind, Vector3 at, Vector3 dir = (0, 0, 0), Actor viewer = null, int hand = 0)
+	// a landed punch: RSQML_Gloves.PK_JAB / PK_HOOK / PK_UPPER; power 0..1 the swing's speed (Deliver's lastPower);
+	// counter: the monster was in its attack wind-up. (dir, viewer and hand are kept for callers; the art has no streak.)
+	static void Punch(int kind, Vector3 at, Vector3 dir = (0, 0, 0), Actor viewer = null, int hand = 0, double power = 0.5, bool counter = false)
 	{
-		static const String cls[] = { "RSQML_SparkNormal", "RSQML_SparkSpecial", "RSQML_SparkSuper" };
-		int v = 1;
-		bool flip = false;
-		if (viewer && dir.Length() > 0.0001)
-		{
-			Vector2 right = (sin(viewer.angle), -cos(viewer.angle));
-			double ps = level.pixelstretch > 0.1 ? level.pixelstretch : 1.2;
-			double rgt = dir.xy dot right, up = dir.z * ps;
-			double across = sqrt(rgt * rgt + up * up);
-			if (across < 0.3 * dir.Length()) { v = 2; flip = hand == 1; }
-			else
-			{
-				double a = atan2(abs(up), abs(rgt));   // 0 across the view, 90 straight up or down
-				v = a >= 67.5 ? 1 : a >= 45.0 ? 2 : a >= 22.5 ? 3 : 4;
-				flip = rgt * up > 0;
-			}
-		}
-		String c = cls[clamp(kind, 0, 2)];
-		if (v > 1) c = String.Format("%s%d", c, v);
-		Actor s = Put(c, at);
-		if (s && flip) s.bXFlip = true;
+		if (counter) { Put("RSQML_HitRM", at); return; }
+		String row = power < 0.34 ? "S" : power < 0.67 ? "M" : "L";
+		Put((kind == 2 ? "RSQML_HitV" : "RSQML_HitO") .. row, at);
 	}
-	static void Hadouken(Vector3 at) { Put("RSQML_SparkSuper", at); Put("RSQML_SparkHadouken", at); }
-	static void Swat(Vector3 at) { Put("RSQML_SparkSpecial", at); }
-	static void Guard(Vector3 at) { Put("RSQML_SparkGuard", at); }
+	static void Hadouken(Vector3 at) { Put("RSQML_HitVM", at); }
+	static void Swat(Vector3 at) { Put("RSQML_HitOM", at); }
+	// 35 cm from your eyes: half the size a blow's spark is
+	static void Guard(Vector3 at) { Put("RSQML_HitBM", at, 0.5); }
+	static void Perfect(Vector3 at, double size = 0.5) { Put("RSQML_HitRM", at, size); }
+	static void Shove(Vector3 at) { Put("RSQML_HitShove", at); }
+	static void Dust(Vector3 at, double size = 1.0) { Put("RSQML_Dust", at, size); }
+	static void LaunchDust(Actor mo) { if (mo) Put("RSQML_DustPuff", mo.pos + (0, 0, 4)); }
+	// Heavy Hands: chicks and stars circling over its head while it is frozen
+	static void Dizzy(Actor mo, int tics)
+	{
+		if (!mo || tics <= 0) return;
+		for (int k = 0; k < 4; k++)
+		{
+			let d = RSQML_Dizzy(Put("RSQML_Dizzy", mo.pos + (0, 0, mo.height + 4)));
+			if (!d) continue;
+			d.tracer = mo; d.phase = k * 90.0; d.life = max(tics, 18); d.frame = k;
+		}
+	}
+
+	// THE VARIETY: one of the three baked rotations, and a flip, at random per blow
+	action state A_Variety()
+	{
+		invoker.bXFlip = random(0, 1) == 1;
+		int r = random(0, 2);
+		if (r == 0) return ResolveState("R0");
+		if (r == 1) return ResolveState("R22");
+		return ResolveState("R45");
+	}
 
 	States { Spawn: TNT1 A 1; Stop; }
 }
 
-class RSQML_SparkNormal : RSQML_Spark
+// a 4-frame hit: flash, hit-stop, ring (A-D 0 degrees, E-H 22, I-L 45)
+class RSQML_HitOS : RSQML_Spark
 {
-	Default { Scale 0.0729; }
-	States { Spawn: MLSN ABCDEFGHIJKLMNO 1 Bright; Stop; }
+	Default { Scale 0.1081; }
+	States
+	{
+	Spawn: TNT1 A 0 NoDelay A_Variety; Stop;
+	R0:  MZOS A 2 Bright; MZOS B 2 Bright; MZOS C 2 Bright; MZOS D 3 Bright; Stop;
+	R22: MZOS E 2 Bright; MZOS F 2 Bright; MZOS G 2 Bright; MZOS H 3 Bright; Stop;
+	R45: MZOS I 2 Bright; MZOS J 2 Bright; MZOS K 2 Bright; MZOS L 3 Bright; Stop;
+	}
 }
-class RSQML_SparkNormal2 : RSQML_SparkNormal { States { Spawn: MLN2 ABCDEFGHIJKLMNO 1 Bright; Stop; } }
-class RSQML_SparkNormal3 : RSQML_SparkNormal { States { Spawn: MLN3 ABCDEFGHIJKLMNO 1 Bright; Stop; } }
-class RSQML_SparkNormal4 : RSQML_SparkNormal { States { Spawn: MLN4 ABCDEFGHIJKLMNO 1 Bright; Stop; } }
-class RSQML_SparkSpecial : RSQML_Spark
+class RSQML_HitOM : RSQML_HitOS
 {
-	Default { Scale 0.0833; }
-	States { Spawn: MLSS ABCDEFGHIJKLMNO 1 Bright; Stop; }
+	States
+	{
+	R0:  MZOM A 2 Bright; MZOM B 2 Bright; MZOM C 2 Bright; MZOM D 3 Bright; Stop;
+	R22: MZOM E 2 Bright; MZOM F 2 Bright; MZOM G 2 Bright; MZOM H 3 Bright; Stop;
+	R45: MZOM I 2 Bright; MZOM J 2 Bright; MZOM K 2 Bright; MZOM L 3 Bright; Stop;
+	}
 }
-class RSQML_SparkSpecial2 : RSQML_SparkSpecial { States { Spawn: MLP2 ABCDEFGHIJKLMNO 1 Bright; Stop; } }
-class RSQML_SparkSpecial3 : RSQML_SparkSpecial { States { Spawn: MLP3 ABCDEFGHIJKLMNO 1 Bright; Stop; } }
-class RSQML_SparkSpecial4 : RSQML_SparkSpecial { States { Spawn: MLP4 ABCDEFGHIJKLMNO 1 Bright; Stop; } }
-class RSQML_SparkSuper : RSQML_Spark
+class RSQML_HitOL : RSQML_HitOS
 {
+	States
+	{
+	R0:  MZOL A 2 Bright; MZOL B 2 Bright; MZOL C 2 Bright; MZOL D 3 Bright; Stop;
+	R22: MZOL E 2 Bright; MZOL F 2 Bright; MZOL G 2 Bright; MZOL H 3 Bright; Stop;
+	R45: MZOL I 2 Bright; MZOL J 2 Bright; MZOL K 2 Bright; MZOL L 3 Bright; Stop;
+	}
+}
+class RSQML_HitVS : RSQML_HitOS
+{
+	States
+	{
+	R0:  MZVS A 2 Bright; MZVS B 2 Bright; MZVS C 2 Bright; MZVS D 3 Bright; Stop;
+	R22: MZVS E 2 Bright; MZVS F 2 Bright; MZVS G 2 Bright; MZVS H 3 Bright; Stop;
+	R45: MZVS I 2 Bright; MZVS J 2 Bright; MZVS K 2 Bright; MZVS L 3 Bright; Stop;
+	}
+}
+class RSQML_HitVM : RSQML_HitOS
+{
+	States
+	{
+	R0:  MZVM A 2 Bright; MZVM B 2 Bright; MZVM C 2 Bright; MZVM D 3 Bright; Stop;
+	R22: MZVM E 2 Bright; MZVM F 2 Bright; MZVM G 2 Bright; MZVM H 3 Bright; Stop;
+	R45: MZVM I 2 Bright; MZVM J 2 Bright; MZVM K 2 Bright; MZVM L 3 Bright; Stop;
+	}
+}
+class RSQML_HitVL : RSQML_HitOS
+{
+	States
+	{
+	R0:  MZVL A 2 Bright; MZVL B 2 Bright; MZVL C 2 Bright; MZVL D 3 Bright; Stop;
+	R22: MZVL E 2 Bright; MZVL F 2 Bright; MZVL G 2 Bright; MZVL H 3 Bright; Stop;
+	R45: MZVL I 2 Bright; MZVL J 2 Bright; MZVL K 2 Bright; MZVL L 3 Bright; Stop;
+	}
+}
+class RSQML_HitBM : RSQML_HitOS
+{
+	States
+	{
+	R0:  MZBM A 2 Bright; MZBM B 2 Bright; MZBM C 2 Bright; MZBM D 3 Bright; Stop;
+	R22: MZBM E 2 Bright; MZBM F 2 Bright; MZBM G 2 Bright; MZBM H 3 Bright; Stop;
+	R45: MZBM I 2 Bright; MZBM J 2 Bright; MZBM K 2 Bright; MZBM L 3 Bright; Stop;
+	}
+}
+class RSQML_HitRM : RSQML_HitOS
+{
+	States
+	{
+	R0:  MZRM A 2 Bright; MZRM B 2 Bright; MZRM C 2 Bright; MZRM D 3 Bright; Stop;
+	R22: MZRM E 2 Bright; MZRM F 2 Bright; MZRM G 2 Bright; MZRM H 3 Bright; Stop;
+	R45: MZRM I 2 Bright; MZRM J 2 Bright; MZRM K 2 Bright; MZRM L 3 Bright; Stop;
+	}
+}
+// the gun-butt shove's starburst, as drawn (A-E 0 degrees, F-J 22, K-O 45)
+class RSQML_HitShove : RSQML_Spark
+{
+	Default { Scale 0.1209; }
+	States
+	{
+	Spawn: TNT1 A 0 NoDelay A_Variety; Stop;
+	R0:  MZSH ABCDE 2 Bright; Stop;
+	R22: MZSH FGHIJ 2 Bright; Stop;
+	R45: MZSH KLMNO 2 Bright; Stop;
+	}
+}
+// the dust cloud (5 frames; a flip only), and its first two frames as the uppercut's launch puff
+class RSQML_Dust : RSQML_Spark
+{
+	Default { Scale 0.2097; -BRIGHT }
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay { invoker.bXFlip = random(0, 1) == 1; }
+		MZDU ABCDE 3;
+		Stop;
+	}
+}
+class RSQML_DustPuff : RSQML_Dust { States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay { invoker.bXFlip = random(0, 1) == 1; }
+		MZDU AB 3;
+		Stop;
+	}
+}
+// Heavy Hands' dizzy: frame 0-1 a chick, 2-3 a star, circling over the frozen monster's head for its freeze
+class RSQML_Dizzy : RSQML_Spark
+{
+	double phase;
+	int life;
 	Default { Scale 0.0938; }
-	States { Spawn: MLSU ABCDEFGHIJKLMNO 1 Bright; Stop; }
-}
-class RSQML_SparkSuper2 : RSQML_SparkSuper { States { Spawn: MLU2 ABCDEFGHIJKLMNO 1 Bright; Stop; } }
-class RSQML_SparkSuper3 : RSQML_SparkSuper { States { Spawn: MLU3 ABCDEFGHIJKLMNO 1 Bright; Stop; } }
-class RSQML_SparkSuper4 : RSQML_SparkSuper { States { Spawn: MLU4 ABCDEFGHIJKLMNO 1 Bright; Stop; } }
-class RSQML_SparkGuard : RSQML_Spark
-{
-	Default { Scale 0.0899; }
-	States { Spawn: MLGD ABCDEFGHIJKLMNOPQRSTUVWX 1 Bright; Stop; }
-}
-class RSQML_SparkHadouken : RSQML_Spark
-{
-	Default { Scale 0.1017; }
-	States { Spawn: MLHD ABCDEF 2 Bright; Stop; }
+	override void Tick()
+	{
+		if (!tracer || tracer.bDestroyed || tracer.health <= 0 || --life <= 0) { Destroy(); return; }
+		double a = phase + level.maptime * 18.0;
+		double r = max(8.0, tracer.radius * 0.6);
+		SetOrigin(tracer.pos + (cos(a) * r, sin(a) * r, tracer.height + 4 + sin(a * 2) * 1.5), true);
+	}
+	States { Spawn: MZDZ ABCD -1 Bright; Stop; }
 }
 
 // ---- THE BURSTS (2026-11-02): kiddolink's "VFX Hit Impact" (paid, the owner's: "I want that one in there for sure"),
-// built by tools/bursts.py. The art rule (GBOVR_TREES.md 4): the CvS2 spark above is the blow on every punch; a burst is
+// built by tools/bursts.py. The art rule (GBOVR_TREES.md 4): the hit spark above is the blow on every punch; a burst is
 // what a blow DOES, only on the moments that earn it: combos, criticals, perfects, the elements, the launches. 40 map
 // units across at size 1 (callers: 0.75 a combo step, 1.5 a Finisher or a critical, 2 the Guard's release), times Hit
 // Spark Size. FRAMES BY LEVEL: args[0] is how many frames play (0 = all): 3 at a node's level 1, two more a level, the
