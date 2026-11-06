@@ -757,3 +757,30 @@ touch) is `Melee/zscript/rsqml/headlock.zs` now, its settings `rsqml_headlock*`.
   Rig (plain Doom 2, simulated off hand): a barrel 2 units from the palm, an imp 4 → Melee 0, this mod ready;
   the imp alone → Melee 1, this mod not ready (logs `mel_hl_dg2`).
 - D33's no-THRUACTORS and FORCEINFIGHTING reasoning and D34's mass gate went with the code (headlock.zs).
+
+## D40 — 1.0 ROUND (owner, BUGS_1.0.md items 4, 16, 20). 2026-11-06. Rig only, not headset-confirmed.
+
+- **The throw (item 20: "sometimes it doesn't follow through, or it drops at my feet").** Two causes in hold.zs:
+  1. The auto-throw (D36) read the arm from the RAW palm, one tic apart, against the pawn. A tic with no new frame
+     (the hands are written per rendered frame: a hitch, a heavy load, PCVR) read as the hand stopping -- the
+     "slowing" that lets go -- mid-swing (no follow-through), and walking forward turned the frame after it into an
+     outward "swing" past 2.5 m/s, so the next tic let go of a thing the arm never threw. Rig, the hand still and
+     walking with a held barrel (QZ_RES 480): old "the throw lets go ... released at 0.0 m/s (dropped)"; new: held
+     until the grip was let go. Now the decision reads aim.zs's hand (HandSync, the body's motion out, the tracking
+     frame), skips a tic with no new pose (two running is a real stop) and shares the step after it over the tics it
+     covers (`StepWorld` / `StepFresh`).
+  2. What left the hand was the fastest 2-tic window of the last ~200 ms in ANY direction, so a wind-up faster than
+     the throw threw it backwards. Rig, a fast wind-up into a shorter forward throw: old, the barrel landed behind the
+     player (146 deg off the facing); new, 3.8 deg off, ahead. Now the fastest window moving away from you (within 60
+     deg of the facing, the auto-throw's own gate) is used (`aim.zs ThrowVelocity`; none: the old read).
+  Forward throw (`[RSQDG] tNNN hand 0: the throw lets go ... heading 0 deg off your facing`): 5.8 m/s, as before.
+- **Flares (item 4).** The rule (`RSQFF_Flare`, Flares switch) was there but no flare was ever seen: FnF's flare was
+  NOBLOCKMAP (a Projectile) and the cone searches the blockmap. FnF fixed that on its side. Rig: a lying flare locked,
+  pulled and caught (`hand 0 CAUGHT RSQFF_Flare (1.0 kg)`). A thrown flare that strikes a monster asks FnF to set it on
+  fire (throw.zs Strike -> `RSQFF_Service` "flare.hit", by name); this mod's own impact damage is unchanged.
+- **Off-hand guns (item 16: "auto equip everytime").** The off-hand raise went through PendingWeapon (the main hand's
+  switch slot): it waited for a main-hand switch and gave up after 70 tics, and anything else that took the slot
+  took it from us. It is now raised straight into the off hand (`flight.zs RaiseOff`), only waiting for the engine's
+  two-hand latch. A gun you already own with full ammo, caught in the off hand, is now equipped there too (the floor
+  copy is still carried); rig: old off=None, new off=Shotgun. The axe itself is still handed over by BD22 VR's
+  rsvr/axegrab.zs (melee weapons are its); not testable here (no Brutal Doom).

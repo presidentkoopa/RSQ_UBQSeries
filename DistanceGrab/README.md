@@ -4,7 +4,7 @@ Turn your palm out at anything across the room, flick your wrist, and it flies i
 
 **Status: 0.99 — played and confirmed working in the headset; refinement and bug fixing ongoing.**
 
-New since the headset pass (tested on the rig, headset check pending): Kill Rewards bits are never grabbed; the throw measured against the frame your headset drew, so walking and stairs are no throw.
+New since the headset pass (tested on the rig, headset check pending): throws that follow through and never drop at your feet, FnF flares can be grabbed, off-hand guns equipped every time (D40); Kill Rewards bits are never grabbed; the throw measured against the frame your headset drew, so walking and stairs are no throw.
 
 Gravity-glove grabbing for Doom in VR, built on stock QuestZDoom 17.3 in ZScript alone. No buttons in the
 gesture: your palm is the trigger. Pull ammo, health, keys and guns to you, catch them out of the air, carry a
@@ -32,7 +32,8 @@ the catch.
   under doorways, tumbles and spins, then settles softly into your palm. Steer and Lob paths are also offered.
 - **Weight:** every object has a mass. Light things fly, heavy ones resist.
 - **Catch it:** an open palm takes it out of the air. Pickups are used on the catch (or carried, if you prefer).
-- **Guns go to the hand that grabbed them,** main or off.
+- **Guns go to the hand that grabbed them,** main or off. A gun caught in the off hand is equipped there at once,
+  even one you already own (D40).
 
 **Carry and throw**
 - **Carry:** a barrel (or a corpse, if switched on) stays in your hand on a spring. Heavy things trail, sag and
@@ -80,7 +81,7 @@ the catch.
 | Pull | Flick the wrist up (5° per tic or faster) as you roll the palm back | |
 | Let go of a lock | Roll the palm back slowly | |
 | Catch | Palm out when the object reaches your hand | A miss drops it at your feet. |
-| Throw | Swing the arm forward past 2.5 m/s while carrying | Lets go as the swing slows. Rolling the palm back mid-swing throws too. |
+| Throw | Swing the arm forward past 2.5 m/s while carrying | Lets go as the swing slows, at the speed of the forward swing (never the wind-up's). Walking and frame hitches are no swing. Rolling the palm back mid-swing throws too. |
 | Set down | Roll the palm back with the hand still | |
 | Two-hand lift | Other palm on the carried object, that hand empty | |
 | Walk-up grab | Grip with the palm within 0.30 m of a pickup or barrel | Release the grip to drop; release while moving to throw. |
@@ -127,7 +128,7 @@ off (the door rows under Lift Doors, the rumbles under Haptics, the two key rows
 | Sounds | On | Whoosh on a throw, thud on a catch and a landing. |
 | Landing Dust | On | A hard landing kicks up dust. |
 | **What You Can Grab** | | |
-| Barrels, Flares, Weapons, Powerups, Ammo, Health, Armor, Keys, +1 Bonuses | On | Each kind its own switch. Flares are RSQ FnF flares lying on the floor, dropped or thrown. |
+| Barrels, Flares, Weapons, Powerups, Ammo, Health, Armor, Keys, +1 Bonuses | On | Each kind its own switch. Flares are RSQ FnF flares lying on the floor, dropped or thrown (once landed); a flare you throw into a monster sets it on fire (FnF, with Brutal Doom). |
 | Corpses | Off | |
 | Walk-Up Grab | On | Grip with the palm on a thing takes it. |
 | **Doors and Switches** | | |

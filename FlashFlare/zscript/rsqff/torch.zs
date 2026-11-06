@@ -189,7 +189,13 @@ class RSQFF_Torches : EventHandler
 	private transient double myBodyYaw;
 
 	static RSQFF_Torches Get() { return RSQFF_Torches(EventHandler.Find("RSQFF_Torches")); }
-	static bool FlOn() { let c = CVar.FindCVar("rsqff_fl_on"); return !c || c.GetBool(); }
+	static bool FlOn() { let c = CVar.FindCVar("rsqff_fl_on"); return (!c || c.GetBool()) && !DdzTakesOver(); }
+	// DARKDOOMZ FLASHLIGHT TAKES OVER (owner 11-06, BUGS_1.0 item 9; rsqff_fl_ddz_take, off): with DarkDoomZ loaded (found
+	// by its flashlight item's name, DarkDoomZ_Flashlight; Caligari87's mod is never touched) OUR flashlight stands down
+	// whole -- no clip, nothing to take, one in the hand goes back, "Turn Off DarkDoomz Light" does nothing -- so
+	// DarkDoomZ's own flashlight (its item, its key, its spot light) is the only one and works as it ships.
+	static bool DdzLoaded() { String n = "DarkDoomZ_Flashlight"; class<Object> c = n; return c != null; }
+	static bool DdzTakesOver() { let c = CVar.FindCVar("rsqff_fl_ddz_take"); return c && c.GetBool() && DdzLoaded(); }
 	static int SInt(String n, int d) { let c = CVar.FindCVar(n); return c ? c.GetInt() : d; }
 	static double SFloat(String n, double d) { let c = CVar.FindCVar(n); return c ? c.GetFloat() : d; }
 	static double LNum(String n, double d) { let c = CVar.FindCVar(n); return c ? c.GetFloat() : d; }

@@ -6,6 +6,7 @@ version "4.14"
 #include "zscript/rsqff/geo.zs"       // hands, eyes, the pocket, the drawn flare's tip
 #include "zscript/rsqff/items.zs"     // the flares you carry, the box, the flare in the hand
 #include "zscript/rsqff/burn.zs"      // a burning flare: its one light, flicker, sparks; thrown and lying
+#include "zscript/rsqff/fire.zs"      // a thrown flare that hits: its little damage, and with Brutal Doom the burn
 #include "zscript/rsqff/handler.zs"   // the pocket, strike, throw, the light budget, boxes in the levels
 #include "zscript/rsqff/torch.zs"     // the flashlight: the clip, the switch, the beam (one spot light, the cone, the hotspot)
 #include "zscript/rsqff/stowed.zs"    // Show Flare / Show Flashlight: the flare at the pocket, the flashlight on its clip

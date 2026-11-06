@@ -33,6 +33,8 @@ OptionMenu "RSQFF_Options"
 	Option "Sparks", "rsqff_sparks", "OnOff"
 	Option "Smoke", "rsqff_smoke", "OnOff"
 	Option "Sounds", "rsqff_sound", "OnOff"
+	Option "Shoot Out Flares", "rsqff_shootout", "OnOff"
+	Slider "Boosted monsters ignite below N% health", "rsqff_boost_pct", 0, 100, 5, 0
 	StaticText " "
 	StaticText "Supply", "Gold"
 	Slider "Start With", "rsqff_start", 0, 24, 1, 0
@@ -50,6 +52,7 @@ OptionMenu "RSQFF_Options"
 	Slider "Beam Length (m)", "rsqff_fl_cone_m", 1, 15, 1, 0
 	Option "Beam Hotspot", "rsqff_fl_hot", "OnOff"
 	Option "Turn Off DarkDoomz Light", "rsqff_fl_ddz", "OnOff"
+	Option "DarkDoomZ Flashlight Takes Over", "rsqff_fl_ddz_take", "OnOff"
 	StaticText " "
 	Submenu "Test and Debug", "RSQFF_Test"
 	RSQFFResetAll "Reset All", "Reset all RSQ FnF settings?"

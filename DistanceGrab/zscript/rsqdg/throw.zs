@@ -548,6 +548,16 @@ class RSQDG_Throw : EventHandler
 		// and infighting both go to whoever threw it, and the kick comes from
 		// the direction the object was travelling.
 		t.DamageMobj(a, wBy[i], dmg, 'Melee');
+		// A THROWN FLARE SETS IT ON FIRE (owner 11-06, BUGS_1.0 item 4): RSQ FnF's burning flare, by name; FnF decides
+		// (Brutal Doom only, the kinds that burn) and burns it. The struck monster rides on the flare's tracer.
+		if (t && t.Health > 0 && a && a.GetClassName() == 'RSQFF_Flare')
+		{
+			a.tracer = t;
+			let fit = ServiceIterator.Find("RSQFF_Service");
+			Service fs;
+			while (fs = fit.Next()) fs.GetInt("flare.hit", "", wBy[i] && wBy[i].player ? wBy[i].PlayerNumber() : -1, 0, a);
+			if (a) a.tracer = null;
+		}
 		Stagger(t, kg, speedMps, dir, dmg, p);
 		HitStop(t, p);
 		if (RSQDG_Reach.Flag("rsqdg_debug", p, false))

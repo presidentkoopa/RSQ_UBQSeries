@@ -465,11 +465,11 @@ class RSQDG_Flight : EventHandler
 	//     hands -- QuestZDoom keeps one instance per class; BD22 VR's Dual key gives its own off-hand copy),
 	//     a melee weapon (BD22 VR moves its own axe by hand, rsvr/axegrab.zs, from our grab.event), an
 	//     off-hand-only or NoHandSwitch weapon, a two-handed weapon, the saber or the ShieldSaw.
-	// THE OFF-HAND RAISE WAITS while the main hand is still switching, and for as long as QuestZDoom's
+	// THE OFF-HAND RAISE WAITS (since 11-06 only) for as long as QuestZDoom's
 	// two-hand latch is on (WF_TWOHANDSTABILIZED): an off-hand weapon raised while latched arrives
 	// invisible and dead (player.zs, p_pspr.cpp, hw_weapon.cpp -- the rig's TickPairs note). The latch
 	// is let go with the grip, so the gun arrives on release. A queued gun that is no longer yours is dropped.
-	const OFF_WAIT = 70;                    // tics the raise waits for the main hand's switch (not the latch)
+	const OFF_WAIT = 70;                    // (unused since 11-06: the raise no longer waits for the main hand)
 	private Weapon offNext[MAXPLAYERS];
 	private int    offWait[MAXPLAYERS];
 
@@ -534,9 +534,13 @@ class RSQDG_Flight : EventHandler
 		if (took) HandKeep(pmo, p, hand, w);
 		else if (w && RSQDG_Reach.Flag("rsqdg_catch_takes", p, true))
 		{
+			// EQUIPPED ANYWAY (owner 11-06, BUGS_1.0 item 16: "a weapon caught in the off hand is equipped, every time"):
+			// the gun you already own goes into the hand that caught it all the same; the floor copy is still carried.
+			if (hand == 1) HandKeep(pmo, p, hand, w);
 			// THE ONE DELIBERATE REFUSAL HERE IS THE PICKUP'S OWN: you have this gun and its ammo is full, so
 			// the game will not take it. It stays in the hand as a thing to carry, drop or throw -- and says so.
-			Say(p, String.Format("%s: you have it and its ammo is full -- carried, not taken", WeaponName(w)));
+			Say(p, hand == 1 ? String.Format("%s: you have it and its ammo is full -- yours is in your off hand, this one is carried", WeaponName(w))
+				: String.Format("%s: you have it and its ammo is full -- carried, not taken", WeaponName(w)));
 			if (RSQDG_Reach.Flag("rsqdg_trace", p, false))
 				Console.Printf("[RSQDG] hand %d refused -- the pickup refused %s (owned, ammo full)", hand, w.GetClassName());
 		}
@@ -610,6 +614,19 @@ class RSQDG_Flight : EventHandler
 		if (dbg) Console.Printf("[RSQDG] hand 0 caught %s: into the main hand", w.GetClassName());
 	}
 
+	// an off-hand weapon up into the off hand NOW, as QuestZDoom's BringUpWeapon does for the off hand (RSQ Tactical Rig
+	// cig.zs / RSQ FnF handler.zs RaiseOff): the slot, the flag, the sprite from the bottom through its Select state
+	static void RaiseOff(PlayerInfo p, Weapon w)
+	{
+		if (!p || !w || p.OffhandWeapon == w) return;
+		w.bOffhandWeapon = true;
+		p.OffhandWeapon = w;
+		let psp = p.GetPSprite(PSP_OFFHANDWEAPON);
+		if (psp) psp.y = WEAPONBOTTOM;
+		p.SetPsprite(PSP_OFFHANDWEAPON, w.GetUpState());
+		if (p.mo && w.UpSound) p.mo.A_StartSound(w.UpSound, CHAN_WEAPON);
+	}
+
 	// every player, every tic (the playsim)
 	private void TickOffHand()
 	{
@@ -620,17 +637,18 @@ class RSQDG_Flight : EventHandler
 			let p = players[n];
 			if (!playeringame[n] || !p.mo || p.mo.health <= 0 || w.Owner != p.mo) { offNext[n] = null; continue; }
 			if (p.WeaponState & WF_TWOHANDSTABILIZED) continue;           // the latch: wait, however long
-			if (p.PendingWeapon != WP_NOCHANGE)                            // the main hand is still switching
-			{
-				if (--offWait[n] <= 0) offNext[n] = null;
-				continue;
-			}
+			// NO LONGER WAITS FOR THE MAIN HAND, AND NEVER GIVES UP (owner 11-06, BUGS_1.0 item 16: "it needs to auto
+			// equip everytime"). It went through PendingWeapon, the main hand's own switch slot, so it waited for any
+			// main-hand switch to finish and gave up after OFF_WAIT tics (the gun was never equipped), and anything else
+			// that set PendingWeapon in between took the slot from it. Now it is raised into the off hand at once, as
+			// the engine's off-hand BringUpWeapon does it (RSQ FnF / Tactical Rig RaiseOff, copied): the main hand's
+			// switch goes on untouched.
 			offNext[n] = null;
 			if (!OffHandable(p, w)) continue;
-			w.bOffhandWeapon = true;
-			p.PendingWeapon = w;
+			if (p.PendingWeapon == w) p.PendingWeapon = WP_NOCHANGE;
+			RaiseOff(p, w);
 			if (RSQDG_Reach.Flag("rsqdg_debug", p, false))
-				Console.Printf("[RSQDG] %s raised into the off hand", w.GetClassName());
+				Console.Printf("[RSQDG] t%d %s raised into the off hand", level.maptime, w.GetClassName());
 		}
 	}
 

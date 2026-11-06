@@ -35,8 +35,18 @@ and the throw is measured against your body, so walking and turning never count 
 - Burns 60 seconds by default, in your hand or on the floor, and dies away over its last two seconds.
 - Burnt out in your hand, the spent flare drops. A spent flare lies dark for 10 seconds, then is gone.
 - Thrown like RSQ Grenade: hold the off-hand trigger, swing, let go. Let go with the hand still and it stays in your hand.
-- Thrown flares bounce off floors, walls and monsters, then lie burning. They hurt nothing.
-- Drop one at your feet: grip with the hand still.
+  Closing your grip round it while you hold the trigger does nothing (until 11-06 a grip press dropped it at your feet
+  mid wind-up: that was why it could not be thrown).
+- Thrown flares bounce off floors, walls and monsters, then lie burning. A flying flare that hits a monster does a little
+  damage (4). With Brutal Doom loaded it also sets the monster on fire with Brutal Doom's own Fire damage (2 every 10 tics
+  for 4 s, so Brutal Doom plays its own burning pain and death): zombiemen, shotgunners, chaingunners, SS, imps and their
+  Brutal Doom / XMVE kin (any walking monster of a zombie's or imp's size, 100 health or less). A LegenDoom legendary or a
+  Champions champion only catches fire below "Boosted monsters ignite below N% health" (25 %) of its normal health.
+  Without Brutal Doom: the damage only.
+- A flare lying on the floor (dropped or thrown, once it has landed) can be pulled, caught, carried and thrown with RSQ
+  Distance Grab. Thrown that way into a monster, it sets it on fire the same way.
+- Shoot Out Flares (option, off): a dropped or thrown flare can be shot; a hit puts it out.
+- Drop one at your feet: grip and let go with the hand still (not while you hold the trigger).
 - Unlit flares go back in the pocket by hand. Anything else that takes the off hand (another weapon, death, a new
   level) puts an unlit flare back in the pocket and lets a lit one fall where your hand was, still burning.
 - Flame and sparks off the burning end; an optional thin smoke trail.
@@ -88,8 +98,8 @@ and the throw is measured against your body, so walking and turning never count 
 | Put it back | Off hand at the pocket with an unlit flare, grip | |
 | Strike it | Flick the flare hand down at 1.4 m/s or more | With Light It By on Strike or Strike or Trigger |
 | Light by trigger | Off-hand trigger | With Light It By on Trigger or Strike or Trigger |
-| Throw | Hold the off-hand trigger, swing, and let go while the hand moves faster than 2 m/s (RSQ Grenade's throw). A grip let go mid-swing, or a grip while swinging, throws too | Leaves at your hand's own speed (Throw Strength 1.0), with the grenade's arc (0.35) and your walking speed added. Let go of the trigger with the hand still: it stays in your hand. A grip with a fast move mostly down (a reach to the hip) never throws |
-| Drop | Grip with the hand still, away from the pocket and the Tactical Rig's holsters | Lies at your feet, burning. A lit flare is never put away: at the pocket or a holster the grip leaves it in your hand |
+| Throw | Hold the off-hand trigger, swing, and let go while the hand moves faster than 2 m/s (RSQ Grenade's throw). The grip does nothing while you hold the trigger. Without the trigger, a grip let go mid-swing throws too | Leaves at your hand's own speed (Throw Strength 1.0), with the grenade's arc (0.35) and your walking speed added. Let go of the trigger with the hand still: it stays in your hand. A grip let go with a fast move mostly down (a reach to the hip) never throws |
+| Drop | Grip and let go with the hand still, away from the pocket and the Tactical Rig's holsters (trigger not held) | Lies at your feet, burning. A lit flare is never put away: at the pocket or a holster the grip leaves it in your hand |
 | Take the flashlight | Off hand at the clip (your off hand's side of your chest), grip | Clip: 0.10 m forward, 0.17 m toward your off hand, 0.22 m under your eyes; reach 0.12 m. Comes out on |
 | Flashlight on / off | The flashlight hand's trigger | A click |
 | Put the flashlight back | Off hand at the clip, grip | |
@@ -118,6 +128,8 @@ here is a Gun Bonsai VR upgrade.
 | Sparks | On | Sparks off the burning end |
 | Smoke | Off | A thin smoke trail |
 | Sounds | On | Strike, burning, burnout and landing sounds |
+| Shoot Out Flares | Off | A dropped or thrown flare can be shot; a hit puts it out |
+| Boosted monsters ignite below N% health | 25 | With Brutal Doom: a LegenDoom legendary or Champions champion catches fire from a flare only below this share of its normal health |
 | **Supply** | | |
 | Start With | 2 | Flares at a new game (0-24) |
 | Boxes in Levels | On | Boxes of 6 beside a map's items |
@@ -133,6 +145,7 @@ here is a Gun Bonsai VR upgrade.
 | Beam Length (m) | 4 | How far the visible cone reaches before it fades out (1-15). The light itself still reaches the whole range. |
 | Beam Hotspot | Off | A soft glow sprite where the beam lands. Off: the spot light alone shows it. |
 | Turn Off DarkDoomz Light | On | While yours is on, DarkDoomz's flashlight is switched off with its own toggle |
+| DarkDoomZ Flashlight Takes Over | Off | With DarkDoomZ loaded, our flashlight stands down (no clip, nothing to take, one in your hand goes back) and DarkDoomZ's own flashlight is the only one. Without DarkDoomZ it changes nothing |
 | Reset All | | Every setting on both pages back to default |
 
 **Test and Debug**: Light Radius (140; the old Quest preset, PCVR was 220), Most Lit at Once (3; PCVR 6), Flicker Step (4
@@ -157,7 +170,11 @@ Runs alone. It finds the others by name:
   Wheel's card, when a mod puts them in a weapon slot). Seen on the status screen on the rig only, not
   headset-confirmed; the Wheel card not seen.
 - **DarkDoomz**: its flashlight is switched off with its own toggle while yours is on (Stands Down row). Its darkness
-  is left alone. The flashlight clip also hangs on RSQ Tactical Rig's body, and a Rig holster can take it by name.
+  is left alone. With "DarkDoomZ Flashlight Takes Over" on, ours stands down instead and DarkDoomZ's works as it ships
+  (found by its item's name; DarkDoomZ itself is never changed). Rig only (with a stand-in for DarkDoomZ's item): the real
+  DarkDoomZ was not loaded here.
+- **RSQ Distance Grab**: lying flares are things it can pull, catch, carry and throw (its "Flares" switch).
+- **Brutal Doom, LegenDoom, Champions**: found by name for the flare's burn (above). The flashlight clip also hangs on RSQ Tactical Rig's body, and a Rig holster can take it by name.
 
 ## Credits and licence
 

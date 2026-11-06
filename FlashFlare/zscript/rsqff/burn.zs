@@ -179,6 +179,13 @@ class RSQFF_HeldLight : RSQFF_Burner
 	States { Spawn: TNT1 A -1; Stop; }
 }
 
+// IN THE BLOCKMAP (owner 11-06, BUGS_1.0 item 4: "Cannot target Flare with distance grab"). A Projectile is NOBLOCKMAP by
+// default, and RSQ Distance Grab finds what it can take through the blockmap (cone.zs BlockThingsIterator), so a flare on
+// the floor was never even seen by its cone, whatever its rule said. -NOBLOCKMAP puts it there; it is not solid, so nothing
+// bumps into it. It is a missile only while it flies (Tick below), and Distance Grab takes it once it lies.
+// IT HITS (item 4, fire.zs): a flying flare that strikes a monster does a little damage, and with Brutal Doom sets the kinds
+// that burn on fire. SHOT OUT (item 11, "Shoot Out Flares", off): a dropped or thrown flare can be shot (SHOOTABLE, never
+// auto-aimed at); any damage puts it out (Spend) and it takes none.
 // THROWN, DROPPED, LYING. The flight is RSQ Grenade's (thrown.zs, the owner's RS_Grenade numbers; 11-05 05:14 "needs to
 // throw like grenade does"): its gravity 0.27 and its lazy tumble (3.5 degrees a tic, the second axis 0.43 of it); the
 // bounces stay a flare's, lighter. A projectile that bounces off floors, walls and monsters, then lies down and slides to a
@@ -189,6 +196,7 @@ class RSQFF_Flare : RSQFF_Burner
 	const HUSK = 10;           // seconds a spent flare lies before it goes
 	int age, spentAt;
 	int ownerNum;
+	Actor lastHit;             // the monster this flight already struck (once each)
 
 	Default
 	{
@@ -208,7 +216,36 @@ class RSQFF_Flare : RSQFF_Burner
 		+ALLOWBOUNCEONACTORS;
 		+CANBOUNCEWATER;
 		+THRUGHOST;
+		-NOBLOCKMAP;
+		+NOBLOOD;
+		+NOTAUTOAIMED;
+		+DONTTHRUST;
+		Health 5;
 		BounceSound "rsqff/bounce";
+	}
+
+	// FnF's own throw (a missile): the first touch of each monster this flight, while it really flies
+	override int SpecialMissileHit(Actor victim)
+	{
+		if (victim && victim != target && victim != lastHit && victim.bSHOOTABLE && victim.bISMONSTER && victim.Health > 0
+			&& vel.Length() > 2.0)
+		{
+			lastHit = victim;
+			RSQFF_Fire.Hit(self, victim, target, true, !spent);
+		}
+		return -1;
+	}
+
+	// SHOT OUT: any damage puts a burning flare out; it never takes any
+	override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags, double angle)
+	{
+		if (bSHOOTABLE && !spent)
+		{
+			if (RSQFF_Fire.Debug()) Console.Printf("RSQFF shot out t%d: %s (%d %s damage)", level.maptime, inflictor ? inflictor.GetClassName() : 'nothing', damage, mod);
+			Spend();
+			bSHOOTABLE = false;
+		}
+		return 0;
 	}
 
 	// the burning end, from the centre along where the flare points
@@ -231,9 +268,15 @@ class RSQFF_Flare : RSQFF_Burner
 		Super.Tick();
 		if (bDestroyed || IsFrozen()) return;
 		age++;
+		// SHOOT OUT FLARES (rsqff_shootout): shootable while it burns, unless something holds it (pass-through)
+		if (age % 8 == 1)
+		{
+			bool shoot = !spent && !bTHRUACTORS && SFlag("rsqff_shootout", false);
+			if (bSHOOTABLE != shoot) bSHOOTABLE = shoot;
+		}
 		bool grounded = pos.z <= floorz + 0.25 || bOnMobj;
 		// at rest it is no longer a missile (RSQ Grenade thrown.zs: a missile that rolls into a wall would die on it)
-		if (bMissile && (!bBOUNCEONWALLS || (grounded && abs(vel.z) < 0.6))) bMissile = false;
+		if (bMissile && (!bBOUNCEONWALLS || (grounded && abs(vel.z) < 0.6))) { bMissile = false; lastHit = null; }
 		if (!grounded)
 		{
 			pitch += 3.5;           // RSQ Grenade thrown.zs: about one lazy turn per two seconds

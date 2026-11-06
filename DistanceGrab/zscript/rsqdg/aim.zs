@@ -179,6 +179,10 @@ class RSQDG_Aim : EventHandler
 			palmVel[h * PITCH_WINDOW + palmAt[h]] =
 				(primed[h] && poseTrusted && quietTics <= 0) ? dRel : (0, 0, 0);
 			palmAt[h] = (palmAt[h] + 1) % PITCH_WINDOW;
+			// THIS TIC'S STEP for hold.zs's throw (owner 11-06, D40): a step of exactly nothing is a tic with no new pose
+			// (no frame drew the hands between two tics, so the hand is carried to the body unchanged), not a stop
+			stepNow[h] = (primed[h] && poseTrusted && quietTics <= 0) ? dRel : (0, 0, 0);
+			stepNew[h] = dRel != (0, 0, 0);
 
 			lastRel[h] = rel;
 			primed[h] = true;
@@ -266,6 +270,45 @@ class RSQDG_Aim : EventHandler
 
 	// The old reading (the fastest single tic), kept for the debug line only: the release prints both
 	// so the two estimators can be compared on a real throw.
+	// ---- the throw's own reads (hold.zs, owner 11-06: "Throwing is still off, sometimes it doesn't follow through, or it
+	// drops at my feet"; docs/DECISIONS.md D40) ----
+	private Vector3 stepNow[2];
+	private bool stepNew[2];
+
+	// this tic's palm step, map units, the body's motion taken out (the frame-carried hand, HandSync), in the world
+	Vector3 StepWorld(int hand) const
+	{
+		if (hand != 0 && hand != 1) return (0, 0, 0);
+		Vector2 w = Actor.RotateVector(stepNow[hand].xy, frameYaw);
+		return (w.x, w.y, stepNow[hand].z);
+	}
+
+	// this tic brought a new hand pose (false: a tic with no frame between, the step says nothing)
+	bool StepFresh(int hand) const { return (hand == 0 || hand == 1) && stepNew[hand]; }
+
+	// THE THROW'S VELOCITY: the fastest 2-tic window of the last ~200 ms that moves AWAY from you (across the ground
+	// within 60 degrees of where you face, the auto-throw's own gate), so a wind-up faster than the throw is never
+	// what leaves the hand. None such (a sideways or straight-up toss): PalmVelocity, the old read.
+	Vector3 ThrowVelocity(int hand, double faceAngle) const
+	{
+		if (hand != 0 && hand != 1) return (0, 0, 0);
+		Vector2 face = (cos(faceAngle), sin(faceAngle));
+		Vector3 best = (0, 0, 0);
+		double bestLen = -1.0;
+		for (int i = 0; i < PITCH_WINDOW; i++)
+		{
+			if (i == palmAt[hand]) continue;
+			int j = (i + PITCH_WINDOW - 1) % PITCH_WINDOW;
+			Vector3 v = (palmVel[hand * PITCH_WINDOW + i] + palmVel[hand * PITCH_WINDOW + j]) * 0.5;
+			Vector2 w = Actor.RotateVector(v.xy, frameYaw);
+			double across = w.Length();
+			if (across < 0.001 || (w dot face) <= 0.5 * across) continue;
+			double l = RSQDG_Reach.Metres(v);
+			if (l > bestLen) { bestLen = l; best = (w.x, w.y, v.z); }
+		}
+		return bestLen > 0 ? best : PalmVelocity(hand);
+	}
+
 	double PeakOneTicMps(int hand) const
 	{
 		if (hand != 0 && hand != 1) return 0;
